@@ -126,6 +126,8 @@ if ($_POST['mode'] == 'confirm' or $_POST['mode'] == 'preview') {
 		if ($page_id == "") {
 			header("location: ./index.php?page_id");
 		}
+		sfprintr($page_id);
+		exit;
 		
 		lfSetPreData($arrPageData);
 		
