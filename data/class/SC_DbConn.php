@@ -76,7 +76,11 @@ class SC_DbConn{
 
 	// SELECT文の実行結果を全て取得
 	function getAll($n, $arr = ""){
-
+		if(PEAR::isError($this->conn)) {
+			print("DBへの接続に失敗しました。");
+			return 0;
+		}		
+		
 		if ( $arr ){
 			$result = $this->conn->getAll($n, $arr, DB_FETCHMODE_ASSOC);
 		} else {
