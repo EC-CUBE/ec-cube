@@ -3,7 +3,7 @@
 print("test");
   MyFlush();
 
-for($i = 0; $i < 100; $i++){
+for($i = 0; $i < 1000; $i++){
 	print("aa<br>");
 	MyFlush();
 }
