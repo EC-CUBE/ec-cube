@@ -81,7 +81,6 @@ if(!$fp) {
 	}
 	fclose($fp);
 	print("<img src='/img/install/space_w.gif'><br>");
-	print($cnt - 1 . "/" . $line);
 }
 
 function MyFlush() {
