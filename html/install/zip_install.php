@@ -1,23 +1,4 @@
 <?php
-
-print("                                                                                                                                                                                                                                                                test");
-  MyFlush();
-
-for($i = 0; $i < 100; $i++){
-	print("aa<br>");
-	MyFlush();
-}
-
-function MyFlush() {
-	flush();
-  ob_end_flush();
-  ob_start();
-	
-	
-	sleep(1);
-}
-
-/*
 require_once("../require.php");
 
 define("ZIP_CSV_LINE_MAX", 8192);
@@ -26,10 +7,10 @@ define("IMAGE_MAX", 680);	// 画像の表示個数
 $path = ROOT_DIR . "html/install/KEN_ALL.CSV";
 
 $objQuery = new SC_Query();
-//$objSess = new SC_Session();
+$objSess = new SC_Session();
 
 // 認証可否の判定
-//sfIsSuccess($objSess);
+sfIsSuccess($objSess);
 
 $fp = fopen($path, "r");
 
@@ -38,22 +19,13 @@ for($i = 0; $i < 256; $i++) {
 	print(" ");
 }
 print("\n");
-flush();
+MyFlush();
 
-$cnt = 0;
-while($cnt < 3) {
-	print("a");
-	flush();
-	sleep(1);
-	$cnt++;
-}
-*/
-/*
 if(!$fp) {
 	sfErrorHeader(">> " . $path . "の取得に失敗しました。");
 } else {
 	print("<img src='/img/install/main_w.jpg'><br>");
-	flush();
+	MyFlush();
 	
 	// CSVの件数を数える
 	$line = 0;
@@ -63,7 +35,7 @@ if(!$fp) {
 	}
 	
 	print("<img src='/img/install/space_w.gif'>");
-	flush();
+	MyFlush();
 		
 	// ファイルポインタを戻す
 	fseek($fp, 0);
@@ -103,7 +75,7 @@ if(!$fp) {
 		// $disp_line件ごとに進捗表示する
 		if($cnt % $disp_line == 0 && $img_cnt < IMAGE_MAX) {
 			print("<img src='/img/install/graph_1_w.gif'>");
-			flush();
+			MyFlush();
 			$img_cnt++;
 		}
 	}
@@ -111,5 +83,11 @@ if(!$fp) {
 	print("<img src='/img/install/space_w.gif'><br>");
 	print($cnt - 1 . "/" . $line);
 }
-*/
+
+function MyFlush() {
+	flush();
+	ob_end_flush();
+	ob_start();
+}
+
 ?>
