@@ -1,8 +1,6 @@
 <?php
 
 print("test");
-  MyFlush();
-
 
 sleep(2);
 
