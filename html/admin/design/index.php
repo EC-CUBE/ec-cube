@@ -36,7 +36,7 @@ $objPage->arrEditPage = lfgetPageData();
 $sel   = ", pos.target_id, pos.bloc_id, pos.bloc_row ";
 $from  = ", dtb_blocposition AS pos";
 $where = " where ";
-if ($page_id !== "") {
+if ($page_id != "") {
 	$where .= " lay.page_id = ? AND ";
 	$arrData = array($page_id);
 }
