@@ -6,7 +6,6 @@
 <meta http-equiv="content-type" content="application/xhtml+xml; charset=EUC-JP" />
 <meta http-equiv="content-script-type" content="text/javascript" />
 <meta http-equiv="content-style-type" content="text/css" />
-<link rel="stylesheet" href="/user_data/css/contents.css" type="text/css" media="all" />
 <link rel="stylesheet" href="/css/common.css" type="text/css" media="all" />
 <link rel="stylesheet" href="<!--{$tpl_css}-->" type="text/css" media="all" />
 <script type="text/javascript" src="/js/css.js"></script>
