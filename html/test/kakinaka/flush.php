@@ -4,7 +4,7 @@ print("test");
   MyFlush();
 
 for($i = 0; $i < 100; $i++){
-	print("aa");
+	print("aa<br>");
 	MyFlush();
 }
 
