@@ -43,6 +43,9 @@ if ($page_id != "") {
 $where .= "lay.page_id = pos.page_id AND exists (select bloc_id from dtb_bloc as blc where pos.bloc_id = blc.bloc_id) ORDER BY lay.page_id,pos.target_id, pos.bloc_row, pos.bloc_id ";
 $arrBlocPos = lfgetLayoutData($sel, $from, $where, $arrData );
 
+sfprintr($arrBlocPos);
+
+exit;
 // ブロックを取得
 $arrBloc = lfgetBlocData();
 
