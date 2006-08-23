@@ -1,67 +1,47 @@
+<!--▼HEADER-->
 <table width="780" border="0" cellspacing="0" cellpadding="0" summary=" ">
-  <tr>
-    <td bgcolor="#cccccc"><img src="/user_data/topimg/_.gif" width="1" height="10" alt="" /></td>
-    <td align="center" background="/user_data/topimg/header/bg.jpg">
-      <table width="778" border="0" cellspacing="0" cellpadding="0" summary=" ">
-        <tr>
-          <td bgcolor="#9f0000" height="3"></td>
-        </tr>
-        <tr>
-          <td bgcolor="#cc0000" height="5"></td>
-        </tr>
-      </table>
-      <table width="760" border="0" cellspacing="0" cellpadding="0" summary=" ">
-        <tr>
-          <td height="3"></td>
-        </tr>
-        <tr>
-          <td width="179" valign="top"><a href="<!--{$smarty.const.SITE_URL}-->"><img src="/user_data/topimg/header/logos.jpg" width="179" height="85" /></a></td>
-          <td width="276">
-<!--▼ログインフォームここから（編集しないで下さい）-->
-				<!--{include_php file=$tpl_login_php}-->
-<!--▲ログインフォームここまで（編集しないで下さい）-->
-          </td>
-          <td width="305">
-            <table width="304" border="0" cellspacing="0" cellpadding="0" summary=" ">
-              <tr>
-                <td align="right" colspan="5" height="38"><img src="/user_data/topimg/header/info.gif" width="300" height="50" /> </td>
-              </tr>
-              <tr align="right">
-                <td><a href="/entry/kiyaku.php" onmouseover="chgImg('/user_data/topimg/header/entry_on.gif','entry');" onmouseout="chgImg('/user_data/topimg/header/entry.gif','entry');"><img src="/user_data/topimg/header/entry.gif" width="95" height="20" alt="会員登録" border="0" name="entry" id="entry" /></a>
-                <a href="/contact/index.php" onmouseover="chgImg('/user_data/topimg/header/contact_on.gif','contact');" onmouseout="chgImg('/user_data/topimg/header/contact.gif','contact');"><img src="/user_data/topimg/header/contact.gif" width="95" height="20" alt="お問い合わせ" border="0" name="contact" id="contact" /></a>
-                <a href="/cart/index.php" onmouseover="chgImg('/user_data/topimg/header/cartin_on.gif','cartin');" onmouseout="chgImg('/user_data/topimg/header/cartin.gif','cartin');"><img src="/user_data/topimg/header/cartin.gif" width="95" height="20" alt="カゴの中を見る" border="0" name="cartin" id="cartin" /></a></td>
-              </tr>
-            </table>
-          </td>
-        </tr>
-      </table>
-      <table width="760" border="0" cellspacing="0" cellpadding="0" summary=" ">
-      	 <tr>
-      	 <!--▼NAVI-->
-		 <!--{include file=$tpl_mainnavi}-->
-		 <!--▲NAVI-->
-		 </tr>
-	  </table>
-	
-	<table width="778" cellspacing="0" cellpadding="0" summary=" ">
-		<tr><td bgcolor="#666666" height="1"></td></tr>
-		<tr><td bgcolor="#cccccc" height="4"></td></tr>
-	</table>
-	
-	<!--{if $smarty.server.PHP_SELF == '/index.php'}-->
-	<table width="760" border="0" cellspacing="0" cellpadding="0" summary=" ">
-		<tr>
-			<td><img src="/user_data/topimg/space.gif" width="758" height="5" /></td>
-		</tr>
-		<tr>
-		<!--▼TOPバナー-->
-			<td><img src="/user_data/topimg/banner/head.jpg" width="758" height="40" /></td>
-		<!--▲TOPバナー-->
-		</tr>
-	</table>
-	<!--{/if}-->	  
-    
-    </td>
-    <td bgcolor="#cccccc"><img src="/user_data/topimg/_.gif" width="1" height="10" alt="" /></td>
-  </tr>
+	<tr align="center">
+		<td bgcolor="#cccccc"><img src="/img/common/_.gif" width="1" height="10" alt=""></td>
+		<td bgcolor="#ffffff">
+		<table width="778" border="0" cellspacing="0" cellpadding="0" summary=" ">
+			<tr bgcolor="#ff6600"><td><img src="/img/common/_.gif" width="1" height="3" alt=""></td></tr>
+			<tr bgcolor="#ffa85c"><td><img src="/img/common/_.gif" width="1" height="5" alt=""></td></tr>
+		</table>
+		<table width="762" border="0" cellspacing="0" cellpadding="0" summary=" ">
+			<tr>
+				<td><a href="/index.php"><img src="/img/header/logo.jpg" width="302" height="81" alt="おふとんのインターネットショッピング ふとん屋サン" border="0"></a></td>
+				<td>
+				<table width="460" border="0" cellspacing="0" cellpadding="0" summary=" ">
+					<tr><td height="9"></td></tr>
+					<tr>
+						<td colspan="2"><img src="/img/header/tell.gif" width="460" height="34" alt="お電話でのご注文は0120-000-000 FAXでのご注文は0120-00-0000"></td>
+					</tr>
+					<tr>
+						<td><img src="/img/header/time.gif" width="160" height="38" alt="受付時間：朝9:00~夜7:00 土曜日午後6時迄"></td>
+						<td>
+						<!--BUTTON-->
+						<table width="300" border="0" cellspacing="0" cellpadding="0" summary=" ">
+							<tr>
+								<td><a href="/mypage/login.php" onmouseover="chgImg('/img/header/mypage_on.gif','mypage');" onmouseout="chgImg('/img/header/mypage.gif','mypage');"><img src="/img/header/mypage.gif" width="95" height="20" alt="ログイン情報変更" border="0" name="mypage"></a></td>
+								<td align="center"><a href="/entry/kiyaku.php" onmouseover="chgImg('/img/header/member_on.gif','member');" onmouseout="chgImg('/img/header/member.gif','member');"><img src="/img/header/member.gif" width="95" height="20" alt="会員登録" border="0" name="member"></a></td>
+								<td align="right"><a href="/cart/index.php" onmouseover="chgImg('/img/header/cartin_on.gif','cartin');" onmouseout="chgImg('/img/header/cartin.gif','cartin');"><img src="/img/header/cartin.gif" width="95" height="20" alt="カゴの中を見る" border="0" name="cartin"></a></td>
+							</tr>
+						</table>
+						<!--BUTTON-->
+						</td>
+					</tr>
+				</table>
+				</td>
+			</tr>
+		</table>
+
+		<table width="778" border="0" cellspacing="0" cellpadding="0" summary=" ">
+			<tr><td bgcolor="#666666"><img src="/img/common/_.gif" width="778" height="1" alt=""></td></tr>
+			<tr><td bgcolor="#cccccc"><img src="/img/common/_.gif" width="1" height="4" alt=""></td></tr>
+			<tr><td bgcolor="#ff8a20"><img src="/img/common/_.gif" width="778" height="1" alt=""></td></tr>
+		</table>
+		</td>
+		<td bgcolor="#cccccc"><img src="/img/common/_.gif" width="1" height="10" alt=""></td>
+	</tr>
 </table>
+<!--▲HEADER-->
