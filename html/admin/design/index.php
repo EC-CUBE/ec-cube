@@ -26,7 +26,7 @@ if (isset($_GET['page_id'])) {
 }else if ($_POST['page_id']){
 	$page_id = $_POST['page_id'];
 }else{
-	$page_id = 1;
+	$page_id = "";
 }
 
 // 編集可能ページを取得
@@ -126,9 +126,6 @@ if ($_POST['mode'] == 'confirm' or $_POST['mode'] == 'preview') {
 		if ($page_id == "") {
 			header("location: ./index.php");
 		}
-		sfprintr($page_id);
-		exit;
-		
 		lfSetPreData($arrPageData);
 		
 		$_SESSION['preview'] = "ON";
