@@ -21,7 +21,7 @@ for($i = 0; $i < 256; $i++) {
 }
 print("\n");
 flush();
-
+/*
 if(!$fp) {
 	sfErrorHeader(">> " . $path . "の取得に失敗しました。");
 } else {
@@ -84,4 +84,5 @@ if(!$fp) {
 	print("<img src='/img/install/space_w.gif'><br>");
 	print($cnt - 1 . "/" . $line);
 }
+*/
 ?>
