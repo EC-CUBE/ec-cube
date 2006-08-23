@@ -169,7 +169,7 @@ function fnTargetSelf(){
 							<tr class="fs12n">
 								<td bgcolor="#f2f1ec" align="center" colspan=2>
 									<input type='button' value='保存' name='subm' onclick="fnTargetSelf(); fnFormModeSubmit('form1','confirm','','');"  />
-									<input type='button' value='プレビュー' name='preview' onclick="doPreview();" DISABLED  />
+									<input type='button' value='プレビュー' name='preview' onclick="doPreview();" <!--{if $page_id == ""}--> DISABLED <!--{/if}--> />
 								</td>
 							</tr>
 						</table>
