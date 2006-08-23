@@ -26,7 +26,7 @@ if (isset($_GET['page_id'])) {
 }else if ($_POST['page_id']){
 	$page_id = $_POST['page_id'];
 }else{
-	$page_id = 0;
+	$page_id = 1;
 }
 
 // 編集可能ページを取得
