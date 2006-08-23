@@ -1,67 +1,51 @@
-<table cellspacing="0" cellpadding="0" summary=" " id="category">
+<!--▼商品カテゴリーここから-->
+<table width="166" border="0" cellspacing="0" cellpadding="0" summary=" ">
 	<tr>
-		<td bgcolor="#cc0000" height="3" colspan="3"></td>
+		<td colspan="3"><img src="/img/side/title_cat.jpg" width="166" height="35" alt="商品カテゴリー"></td>
 	</tr>
 	<tr>
-		<td bgcolor="#cccccc"><img src="/img/_.gif" width="1" height="10" alt="" /></td>
-		<td>
-		<table width="168" cellspacing="0" cellpadding="0" summary=" ">
-			<tr>
-				<td><img src="/img/left/category_title.jpg" width="168" height="32" alt="カテゴリ" /></td>
-			</tr>
-		</table>
-		</td>
-		<td bgcolor="#cccccc"><img src="/img/_.gif" width="1" height="10" alt="" /></td>
-	</tr>
-</table>
-<table width="170" cellspacing="0" cellpadding="0" summary=" ">
-	<tr>
-		<td bgcolor="#cccccc"><img src="/img/_.gif" width="1" height="10" alt="" /></td>
-		<td bgcolor="#ecf5ff"><img src="/img/_.gif" width="9" height="1" alt="" /></td>
-		<td bgcolor="#ecf5ff">
-		<table width="150" cellspacing="0" cellpadding="0" summary=" ">
-			<tr>
-				<td height="10"><img src="/img/_.gif" width="20" height="1" alt="" /></td>
-				<td><img src="/img/_.gif" width="130" height="1" alt="" /></td>
-			</tr>
-			<!--{section name=cnt loop=$arrCategory}-->
-			<!--{* 階層2 *}-->
-			<!--{if $arrCategory[cnt].level == 2}-->
-				<!--{if $smarty.section.cnt.index != 0}-->
+		<td bgcolor="#cccccc"><img src="/img/common/_.gif" width="1" height="10" alt=""></td>
+
+		<td align="center" bgcolor="#fff1e3">
+			<table width="146" border="0" cellspacing="0" cellpadding="0" summary=" ">
 				<tr>
-					<td colspan="2" height="15"><img src="/img/left/category_line.gif" width="150" height="1" alt="" /></td>
+					<td height="10"><img src="/img/common/_.gif" width="15" height="1" alt=""></td>
+					<td><img src="/img/common/_.gif" width="131" height="1" alt=""></td>
+				</tr>
+				
+				<!--{section name=cnt loop=$arrTree}-->
+				<!--{assign var=level value="`$arrTree[cnt].level`}-->
+				
+				<!--{* 区切り線表示 *}-->				
+				<!--{if $level == 1 && !$smarty.section.cnt.first}-->
+				<tr><td colspan="2" height="15"><img src="/img/side/line_146.gif" width="146" height="1" alt=""></td></tr>
+				<!--{/if}-->
+				<!--{* カテゴリ名表示 *}-->
+				<!--{assign var=disp_name value="`$arrTree[cnt].category_name`"}-->
+				<!--{if $arrTree[cnt].display == 1}-->
+				<tr>
+					<td colspan="2" class="fs12">
+						<!--{if $tpl_category_id == $arrTree[cnt].category_id || $root_parent_id == $arrTree[cnt].category_id}-->
+							<!--{section name=n loop=`$level-1`}-->&nbsp;&nbsp;<!--{/section}--><!--{if $level == 1}--><img src="/img/common/arrow_red.gif" width="11" height="14" alt=""><!--{/if}-->
+						<!--{else}-->
+							<!--{section name=n loop=`$level-1`}-->&nbsp;&nbsp;<!--{/section}--><!--{if $level == 1}--><img src="/img/common/arrow_blue.gif" width="11" height="14" alt=""><!--{/if}-->
+						<!--{/if}-->
+						<!--{if $tpl_category_id == $arrTree[cnt].category_id }-->
+							<a href="/products/list.php?category_id=<!--{$arrTree[cnt].category_id}-->"><span class="redst"><!--{$disp_name|sfCutString:20|escape}-->(<!--{$arrTree[cnt].product_count|default:0}-->)</span></a>						
+						<!--{else}-->							
+							<a href="/products/list.php?category_id=<!--{$arrTree[cnt].category_id}-->"><!--{$disp_name|sfCutString:20|escape}-->(<!--{$arrTree[cnt].product_count|default:0}-->)</a>
+						<!--{/if}-->
+					</td>
 				</tr>
 				<!--{/if}-->
-				<tr>
-					<!--{if $arrCategory[cnt].category_id == $tpl_category_id || $arrCategory[cnt].category_id == $tpl_parent_category_id}-->
-					<td><a href="<!--{$smarty.const.LIST_C_HTML}--><!--{$arrCategory[cnt].category_id}-->" class="link01"><img src="/img/left/category_icon_down.gif" width="14" height="11" alt="" /></a></td>
-					<!--{else}-->
-					<td><a href="<!--{$smarty.const.LIST_C_HTML}--><!--{$arrCategory[cnt].category_id}-->" class="link01"><img src="/img/left/category_icon.gif" width="14" height="11" alt="" /></a></td>
-					<!--{/if}-->									
-					<!--{if $arrCategory[cnt].category_id != $tpl_category_id}-->
-					<td class="fs12st"><a href="<!--{$smarty.const.LIST_C_HTML}--><!--{$arrCategory[cnt].category_id}-->" class="link01"><!--{$arrCategory[cnt].category_name|escape}-->(<!--{$arrCategory[cnt].product_count|default:0}-->)</a></td>
-					<!--{else}-->
-					<td class="red12st"><a href="<!--{$smarty.const.LIST_C_HTML}--><!--{$arrCategory[cnt].category_id}-->" class="pan"><!--{$arrCategory[cnt].category_name|escape}-->(<!--{$arrCategory[cnt].product_count|default:0}-->)</a></td>
-					<!--{/if}-->
-				</tr>
-			<!--{* 階層3 *}-->
-			<!--{else}-->
-				<tr>
-					<td></td>
-					<!--{if $arrCategory[cnt].category_id != $tpl_category_id}-->
-					<td class="fs12"><a href="<!--{$smarty.const.LIST_C_HTML}--><!--{$arrCategory[cnt].category_id}-->" class="link01"><!--{$arrCategory[cnt].category_name|escape}-->(<!--{$arrCategory[cnt].product_count|default:0}-->)</a></td>
-					<!--{else}-->
-					<td class="red12st"><a href="<!--{$smarty.const.LIST_C_HTML}--><!--{$arrCategory[cnt].category_id}-->" class="pan"><!--{$arrCategory[cnt].category_name|escape}-->(<!--{$arrCategory[cnt].product_count|default:0}-->)</a></td>
-					<!--{/if}-->
-				</tr>
-			<!--{/if}-->							
-			<!--{/section}-->
-		</table>
+				<!--{/section}-->
+			</table>
 		</td>
-		<td bgcolor="#ecf5ff"><img src="/img/_.gif" width="9" height="1" alt="" /></td>
-		<td bgcolor="#cccccc"><img src="/img/_.gif" width="1" height="10" alt="" /></td>
+		<td bgcolor="#cccccc"><img src="/img/common/_.gif" width="1" height="10" alt=""></td>
 	</tr>
 	<tr>
-		<td colspan="5"><img src="/img/left/category_bottom.gif" width="170" height="10" alt="" /></td>
+		<td colspan="3"><img src="/img/side/flame_bottom02.gif" width="166" height="15" alt=""></td>
 	</tr>
+	<tr><td height="10"></td></tr>
 </table>
+<!--▲商品カテゴリーここまで-->
