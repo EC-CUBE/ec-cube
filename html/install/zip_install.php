@@ -1,4 +1,22 @@
 <?php
+
+print("                                                                                                                                                                                                                                                                test");
+  MyFlush();
+
+for($i = 0; $i < 100; $i++){
+	print("aa<br>");
+	MyFlush();
+}
+
+function MyFlush() {
+	flush();
+  ob_end_flush();
+  ob_start();
+	
+	
+	sleep(1);
+}
+
 /*
 require_once("../require.php");
 
@@ -14,7 +32,7 @@ $objQuery = new SC_Query();
 //sfIsSuccess($objSess);
 
 $fp = fopen($path, "r");
-*/
+
 // 一部のIEは256バイト以上受け取ってから表示を開始する。
 for($i = 0; $i < 256; $i++) {
 	print(" ");
@@ -29,6 +47,7 @@ while($cnt < 3) {
 	sleep(1);
 	$cnt++;
 }
+*/
 /*
 if(!$fp) {
 	sfErrorHeader(">> " . $path . "の取得に失敗しました。");
