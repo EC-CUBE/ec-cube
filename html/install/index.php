@@ -172,6 +172,10 @@ function lfDispStep0($objPage) {
 		"data/Smarty/templates_c",
 		"data/Smarty/templates_c/admin",		
 		"data/update",
+		"data/update/save_image",
+		"data/update/temp_image",
+		"data/update/graph_image",		
+		"data/update/csv",
 		"data/logs",
 	);
 	
