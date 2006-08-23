@@ -275,7 +275,7 @@ var NowMaxHeight = 0;		// 現在の最大の高さ
 var MainHeight = 190;
 
 var marginUnused 	= 640;	// 未使用領域の左マージン
-var marginLeftNavi  = 10;	// 左ナビの左マージン
+var marginLeftNavi  = 170;	// 左ナビの左マージン
 var marginRightNavi = 465;	// 右ナビの左マージン
 var marginMain		= 298;	// メイン上下の左マージン
 var marginMainFootTop= 595;	// メイン下の上マージン
