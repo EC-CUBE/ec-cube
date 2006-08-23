@@ -1,6 +1,6 @@
 <body bgcolor="#ffe9e6" text="#555555" link="#3a75af" vlink="#3a75af" alink="#3a75af" leftmargin="0" topmargin="0" marginwidth="0" marginheight="0" onLoad="preLoadImg(); <!--{$tpl_onload}-->">
 <noscript>
-<link rel="stylesheet" href="/css/common.css" type="text/css" />
+<link rel="stylesheet" href="/user_data/css/contents.css" type="text/css" />
 </noscript>
 
 <div align="center">
