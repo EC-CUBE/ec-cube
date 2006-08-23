@@ -169,13 +169,13 @@ function lfDispStep0($objPage) {
 		"html/install.inc",
 		"html/user_data",
 		"html/upload",
+		"data/upload/save_image",
+		"data/upload/temp_image",
+		"data/upload/graph_image",		
+		"data/upload/csv",
 		"data/Smarty/templates_c",
 		"data/Smarty/templates_c/admin",		
 		"data/update",
-		"data/update/save_image",
-		"data/update/temp_image",
-		"data/update/graph_image",		
-		"data/update/csv",
 		"data/logs",
 	);
 	
