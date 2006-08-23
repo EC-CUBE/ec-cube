@@ -2,7 +2,7 @@
 	<!--{assign var=url value="`$smarty.server.REQUEST_URI`"}-->
 <!--{else}-->
 	<!--{assign var=url value="`$smarty.post.url`"}-->
-<!--{/if}-->
+<!--{/if}-->aaaaaaaaaaaaaaaa
 <table width="276" border="0" cellspacing="0" cellpadding="0" summary=" ">
   <tr>
    <td colspan="3"><img src="/img/header/login_top.gif" width="284" height="8" alt="" /></td>
