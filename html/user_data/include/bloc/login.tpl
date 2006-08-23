@@ -17,7 +17,7 @@
 			<!--{if $tpl_login}-->
 			<tr>
 				<td align="center" colspan="3"><span class="fs12">ようこそ <!--{$tpl_name1|escape}-->　<!--{$tpl_name2|escape}--> 様<br />
-				現在の所持ポイント：</span><span class="red12st"> <!--{$tpl_user_point|default:0}--> pt</span></td>
+				現在の所持ポイント：</span><span class="red12st"> <!--{$tpl_user_point|number_format|default:0}--> pt</span></td>
 				<!--{if !$tpl_disable_logout}-->
 				<td width="50"><a href="<!--{$smarty.server.PHP_SELF}-->" onclick="fnFormModeSubmit('login_form', 'logout', '', ''); return false;"><img src="/img/header/logout.gif" width="44" height="21" alt="ログアウト" /></a></td>
 				<!--{/if}-->
