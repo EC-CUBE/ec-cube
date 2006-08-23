@@ -234,153 +234,129 @@ function lnSetSelect(form, name1, name2, val) {
 				<!--{/if}-->
 				<!--{/section}-->
 				<!--▲サブコメントここまで-->
-		<!--お客様の声ここから-->
-		<table width="580" border="0" cellspacing="0" cellpadding="0" summary=" ">
-			<tr>
-				<td><img src="../img/products/title_voice.jpg" width="580" height="30" alt="この商品に対するお客様の声"></td>
-			</tr>
-			<tr><td height="10"></td></tr>
-			<tr>
-				<td>
-				<!--{if count($arrReview) < $smarty.const.REVIEW_REGIST_MAX}-->
-					<!--★新規コメントを書き込む★--><a href="./review.php" onClick="win02('./review.php?product_id=<!--{$arrProduct.product_id}-->','review','580','580'); return false;" onMouseOver="chgImg('../img/products/b_comment_on.gif','review');" onMouseOut="chgImg('../img/right_product/review.gif','review');" target="_blank"><img src="../img/right_product/review.gif" width="150" height="22" alt="新規コメントを書き込む" name="review" id="review" /></a>
-				<!--{/if}-->
-				</td>
-			</tr>
-			<tr><td height="10"></td></tr>
-
-			<!--{section name=cnt loop=$arrReview}-->
-			<tr>
-				<td class="fs12"><strong><!--{$arrReview[cnt].create_date|sfDispDBDate:false}--></strong>　投稿者：<!--{if $arrReview[cnt].reviewer_url}--><a href="<!--{$arrReview[cnt].reviewer_url}-->" target="_blank"><!--{$arrReview[cnt].reviewer_name|escape}--></a><!--{else}--><!--{$arrReview[cnt].reviewer_name|escape}--><!--{/if}-->　おすすめレベル：<span class="red"><!--{assign var=level value=$arrReview[cnt].recommend_level}--><!--{$arrRECOMMEND[$level]|escape}--></span></td>
-			</tr>
-			<tr><td height="5"></td></tr>
-			<tr>
-				<td class="fs14"><strong><!--{$arrReview[cnt].title|escape}--></strong></td>
-			</tr>
-			<tr><td height="5"></td></tr>
-			<tr>
-				<td class="fs12"><!--{$arrReview[cnt].comment|escape|nl2br}--></td>
-			</tr>
-	
-			<!--{if !$smarty.section.cnt.last}-->
-			<tr><td height="20"><img src="../img/common/line_580.gif" width="580" height="1" alt=""></td></tr>
-			<!--{/if}-->
+				
+				<!--お客様の声ここから-->
+				<table width="580" border="0" cellspacing="0" cellpadding="0" summary=" ">
+					<tr>
+						<td><img src="../img/products/title_voice.jpg" width="580" height="30" alt="この商品に対するお客様の声"></td>
+					</tr>
+					<tr><td height="10"></td></tr>
+					<tr>
+						<td>
+						<!--{if count($arrReview) < $smarty.const.REVIEW_REGIST_MAX}-->
+							<!--★新規コメントを書き込む★--><a href="./review.php" onClick="win02('./review.php?product_id=<!--{$arrProduct.product_id}-->','review','580','580'); return false;" onMouseOver="chgImg('../img/products/b_comment_on.gif','review');" onMouseOut="chgImg('../img/right_product/review.gif','review');" target="_blank"><img src="../img/right_product/review.gif" width="150" height="22" alt="新規コメントを書き込む" name="review" id="review" /></a>
+						<!--{/if}-->
+						</td>
+					</tr>
+					<tr><td height="10"></td></tr>
+		
+					<!--{section name=cnt loop=$arrReview}-->
+					<tr>
+						<td class="fs12"><strong><!--{$arrReview[cnt].create_date|sfDispDBDate:false}--></strong>　投稿者：<!--{if $arrReview[cnt].reviewer_url}--><a href="<!--{$arrReview[cnt].reviewer_url}-->" target="_blank"><!--{$arrReview[cnt].reviewer_name|escape}--></a><!--{else}--><!--{$arrReview[cnt].reviewer_name|escape}--><!--{/if}-->　おすすめレベル：<span class="red"><!--{assign var=level value=$arrReview[cnt].recommend_level}--><!--{$arrRECOMMEND[$level]|escape}--></span></td>
+					</tr>
+					<tr><td height="5"></td></tr>
+					<tr>
+						<td class="fs14"><strong><!--{$arrReview[cnt].title|escape}--></strong></td>
+					</tr>
+					<tr><td height="5"></td></tr>
+					<tr>
+						<td class="fs12"><!--{$arrReview[cnt].comment|escape|nl2br}--></td>
+					</tr>
 			
-			<!--{/section}-->
-			
-			<tr><td height="30"></td></tr>
-		</table>
-		<!--お客様の声ここまで-->
+					<!--{if !$smarty.section.cnt.last}-->
+					<tr><td height="20"><img src="../img/common/line_580.gif" width="580" height="1" alt=""></td></tr>
+					<!--{/if}-->
+					
+					<!--{/section}-->
+					
+					<tr><td height="30"></td></tr>
+				</table>
+				<!--お客様の声ここまで-->
 
 				<!--{if $arrRecommend}-->
 				<!--▼オススメ商品ここから-->
-				<div id="osusumetitle"><img src="../img/right_product/recommend.jpg" width="570" height="33" alt="トーカ堂のオススメ商品" /></div>
-				<table cellspacing="0" cellpadding="0" summary=" " id="osusume">
+				<table width="580" border="0" cellspacing="0" cellpadding="0" summary=" ">
+					<tr>
+						<td colspan=2><img src="/img/products/title_recommend.jpg" width="570" height="33" alt="オススメ商品" /></td>
+					</tr>
+					<tr><td colspan=2 height="10"></td></tr>
+					<tr>
+
 					<!--{section name=cnt loop=$arrRecommend step=2}-->
 					<!--{if $smarty.section.cnt.index >= 2}-->
-					<tr>
-						<td height="25"><img src="../img/right_product/recommend_line.gif" width="270" height="1" alt="" /></td>
-						<td id="spacer"></td>
-						<td align="right"><img src="../img/right_product/recommend_line.gif" width="270" height="1" alt="" /></td>
-					</tr>
+
 					<!--{/if}-->
 					<tr valign="top">
 						<td>
-						<table cellspacing="0" cellpadding="0" summary=" " id="contents">
-							<tr valign="top">
-								<!--{*左列*}-->
-								<td id="left"><div id="picture"><a href="<!--{$smarty.const.DETAIL_P_HTML}--><!--{$arrRecommend[cnt].product_id}-->"><!--{if $arrRecommend[cnt].main_list_image != ""}--><!--{assign var=image_path value="`$smarty.const.IMAGE_SAVE_URL`/`$arrRecommend[cnt].main_list_image`"}--><!--{else}--><!--{assign var=image_path value="`$smarty.const.NO_IMAGE_URL`"}--><!--{/if}--><img src="<!--{$image_path|sfRmDupSlash}-->" width="65" height="65" alt="<!--{$arrRecommend[cnt].name|escape}-->" /></a></div></td>
-								<td id="spacer"></td>
-								<td id="right"><span class="fs12"><a href="<!--{$smarty.const.DETAIL_P_HTML}--><!--{$arrRecommend[cnt].product_id}-->"><!--{$arrRecommend[cnt].name|escape}--></a></span><br />
-								<!--{assign var=price02_min value=`$arrRecommend[cnt].price02_min`}-->
-								<!--{assign var=price02_max value=`$arrRecommend[cnt].price02_max`}-->
-								<span class="fs10">トーカ堂価格：</span><span class="red12st">
-								<!--{if $price02_min == $price02_max}-->
-									<!--{$price02_min|sfPreTax:$arrInfo.tax:$arrInfo.tax_rule|number_format}-->
-								<!--{else}-->
-									<!--{$price02_min|sfPreTax:$arrInfo.tax:$arrInfo.tax_rule|number_format}-->〜<!--{$price02_max|sfPreTax:$arrInfo.tax:$arrInfo.tax_rule|number_format}-->
-								<!--{/if}-->
-								円</span><span class="red10">（税込）</span><br />
-								<!--{assign var=price01_min value=`$arrRecommend[cnt].price01_min`}-->
-								<!--{assign var=price01_max value=`$arrRecommend[cnt].price01_max`}-->
-								<!--{if $price01_max > 0}-->
-								<span class="fs10">（参考市場価格：
-									<!--{if $price01_min == $price01_max}-->				
-										<!--{$price01_min|number_format}-->
-									<!--{else}-->
-										<!--{$price01_min|number_format}-->〜<!--{$price01_max|number_format}-->
-									<!--{/if}-->
-									円）</span><br />
-								<!--{/if}-->
-								<span class="fs10">ポイント：</span><span class="red12st">
-								<!--{if $price02_min == $price02_max}-->
-									<!--{$price02_min|sfPrePoint:$arrRecommend[cnt].point_rate:$smarty.const.POINT_RULE:$arrRecommend[cnt].product_id}-->
-								<!--{else}-->
-									<!--{if $price02_min|sfPrePoint:$arrRecommend[cnt].point_rate:$smarty.const.POINT_RULE:$arrRecommend[cnt].product_id == $price02_max|sfPrePoint:$arrRecommend[cnt].point_rate:$smarty.const.POINT_RULE:$arrRecommend[cnt].product_id}-->
-										<!--{$price02_min|sfPrePoint:$arrRecommend[cnt].point_rate:$smarty.const.POINT_RULE:$arrRecommend[cnt].product_id}-->
-									<!--{else}-->
-										<!--{$price02_min|sfPrePoint:$arrRecommend[cnt].point_rate:$smarty.const.POINT_RULE:$arrRecommend[cnt].product_id}-->〜<!--{$price02_max|sfPrePoint:$arrRecommend[cnt].point_rate:$smarty.const.POINT_RULE:$arrRecommend[cnt].product_id}-->
-									<!--{/if}-->
-								<!--{/if}-->
-								</span><span class="red10">Pt</span><br />
-								<span class="fs10"><!--{$arrRecommend[cnt].comment|escape|nl2br}--></span></td>
-								<!--{*左列*}-->
-							</tr>
-						</table>
+							<!-- 左列 -->
+							<table width="220" border="0" cellspacing="0" cellpadding="0" summary=" ">
+								<tr valign="top">
+									<td><a href="<!--{$smarty.const.DETAIL_P_HTML}--><!--{$arrRecommend[cnt].product_id}-->"><!--{if $arrRecommend[cnt].main_list_image != ""}--><!--{assign var=image_path value="`$smarty.const.IMAGE_SAVE_URL`/`$arrRecommend[cnt].main_list_image`"}--><!--{else}--><!--{assign var=image_path value="`$smarty.const.NO_IMAGE_URL`"}--><!--{/if}--><img src="<!--{$image_path|sfRmDupSlash}-->" width="65" height="65" alt="<!--{$arrRecommend[cnt].name|escape}-->" /></a></td>
+									<td align="right">
+									<table width="145" border="0" cellspacing="0" cellpadding="0" summary=" ">
+										<tr>
+											<!--{assign var=price02_min value=`$arrRecommend[cnt].price02_min`}-->
+											<!--{assign var=price02_max value=`$arrRecommend[cnt].price02_max`}-->
+											<td><span class="fs12"><a href="<!--{$smarty.const.DETAIL_P_HTML}--><!--{$arrRecommend[cnt].product_id}-->"><!--{$arrRecommend[cnt].name|escape}--></a></span><br>
+											<span class="red"><span class="fs12">価格</span><span class="fs10">(税込)</span></span><span class="redst"><span class="fs12">：
+											<!--{if $price02_min == $price02_max}-->
+												<!--{$price02_min|sfPreTax:$arrInfo.tax:$arrInfo.tax_rule|number_format}-->
+											<!--{else}-->
+												<!--{$price02_min|sfPreTax:$arrInfo.tax:$arrInfo.tax_rule|number_format}-->~<!--{$price02_max|sfPreTax:$arrInfo.tax:$arrInfo.tax_rule|number_format}-->
+											<!--{/if}-->
+											円</span></span></td>
+										</tr>
+										<tr><td height="5"></td></tr>
+										<tr>
+											<td class="fs10"><!--{$arrRecommend[cnt].comment|escape|nl2br}--></td>
+										</tr>
+									</table>
+									</td>
+								</tr>
+							</table>
+							<!-- 左列 -->
 						</td>
 						<td id="spacer"></td>
 						<!--{assign var=nextCnt value=$smarty.section.cnt.index+1}-->
 						<td>
 						<!--{if $arrRecommend[$nextCnt].product_id}-->
-						<table cellspacing="0" cellpadding="0" summary=" " id="contents">
-							<tr valign="top">
-								<!--{*右列*}-->
-								<td id="left"><div id="picture"><a href="<!--{$smarty.const.DETAIL_P_HTML}--><!--{$arrRecommend[$nextCnt].product_id}-->"><!--{if $arrRecommend[$nextCnt].main_list_image != ""}--><!--{assign var=image_path value="`$smarty.const.IMAGE_SAVE_URL`/`$arrRecommend[$nextCnt].main_list_image`"}--><!--{else}--><!--{assign var=image_path value="`$smarty.const.NO_IMAGE_URL`"}--><!--{/if}--><img src="<!--{$image_path|sfRmDupSlash}-->" width="65" height="65" alt="<!--{$arrRecommend[$nextCnt].product_id}-->" /></a></div></td>
-								<td id="spacer"></td>
-								<td id="right"><span class="fs12"><a href="<!--{$smarty.const.DETAIL_P_HTML}--><!--{$arrRecommend[$nextCnt].product_id}-->"><!--{$arrRecommend[$nextCnt].name|escape}--></a></span><br />
-								<!--{assign var=price02_min value=`$arrRecommend[$nextCnt].price02_min`}-->
-								<!--{assign var=price02_max value=`$arrRecommend[$nextCnt].price02_max`}-->
-								<span class="fs10">トーカ堂価格：</span><span class="red12st">
-								<!--{if $price02_min == $price02_max}-->
-									<!--{$price02_min|sfPreTax:$arrInfo.tax:$arrInfo.tax_rule|number_format}-->
-								<!--{else}-->
-									<!--{$price02_min|sfPreTax:$arrInfo.tax:$arrInfo.tax_rule|number_format}-->〜<!--{$price02_max|sfPreTax:$arrInfo.tax:$arrInfo.tax_rule|number_format}-->
-								<!--{/if}-->
-								円</span><span class="red10">（税込）</span><br />
-								<!--{assign var=price01_min value=`$arrRecommend[$nextCnt].price01_min`}-->
-								<!--{assign var=price01_max value=`$arrRecommend[$nextCnt].price01_max`}-->
-								<!--{if $price01_max > 0}-->
-								<span class="fs10">（参考市場価格：
-									<!--{if $price01_min == $price01_max}-->				
-										<!--{$price01_min|number_format}-->
-									<!--{else}-->
-										<!--{$price01_min|number_format}-->〜<!--{$price01_max|number_format}-->
-									<!--{/if}-->
-									円）</span><br />
-								<!--{/if}-->
-								<span class="fs10">ポイント：</span><span class="red12st">
-								<!--{if $price02_min == $price02_max}-->
-									<!--{$price02_min|sfPrePoint:$arrRecommend[$nextCnt].point_rate:$smarty.const.POINT_RULE:$arrRecommend[$nextCnt].product_id}-->
-								<!--{else}-->
-									<!--{if $price02_min|sfPrePoint:$arrRecommend[$nextCnt].point_rate:$smarty.const.POINT_RULE:$arrRecommend[$nextCnt].product_id == $price02_max|sfPrePoint:$arrRecommend[$nextCnt].point_rate:$smarty.const.POINT_RULE:$arrRecommend[$nextCnt].product_id}-->
-										<!--{$price02_min|sfPrePoint:$arrRecommend[$nextCnt].point_rate:$smarty.const.POINT_RULE:$arrRecommend[$nextCnt].product_id}-->
-									<!--{else}-->
-										<!--{$price02_min|sfPrePoint:$arrRecommend[$nextCnt].point_rate:$smarty.const.POINT_RULE:$arrRecommend[$nextCnt].product_id}-->〜<!--{$price02_max|sfPrePoint:$arrRecommend[$nextCnt].point_rate:$smarty.const.POINT_RULE:$arrRecommend[$nextCnt].product_id}-->
-									<!--{/if}-->
-								<!--{/if}-->
-								</span><span class="red10">Pt</span><br />
-								<span class="fs10"><!--{$arrRecommend[$nextCnt].comment|escape|nl2br}--></span></td>
-								<!--{*右列*}-->
-							</tr>
-						</table>
+						
+							<!-- 右列 -->
+							<table width="220" border="0" cellspacing="0" cellpadding="0" summary=" ">
+								<tr valign="top">
+									<td><a href="<!--{$smarty.const.DETAIL_P_HTML}--><!--{$arrRecommend[$nextCnt].product_id}-->"><!--{if $arrRecommend[$nextCnt].main_list_image != ""}--><!--{assign var=image_path value="`$smarty.const.IMAGE_SAVE_URL`/`$arrRecommend[$nextCnt].main_list_image`"}--><!--{else}--><!--{assign var=image_path value="`$smarty.const.NO_IMAGE_URL`"}--><!--{/if}--><img src="<!--{$image_path|sfRmDupSlash}-->" width="65" height="65" alt="<!--{$arrRecommend[$nextCnt].product_id}-->" /></a></td>
+									<td align="right">
+									<table width="145" border="0" cellspacing="0" cellpadding="0" summary=" ">
+										<tr>
+											<!--{assign var=price02_min value=`$arrRecommend[$nextCnt].price02_min`}-->
+											<!--{assign var=price02_max value=`$arrRecommend[$nextCnt].price02_max`}-->
+											<td><span class="fs12"><a href="<!--{$smarty.const.DETAIL_P_HTML}--><!--{$arrRecommend[cnt].product_id}-->"><!--{$arrRecommend[cnt].name|escape}--></a></span><br>
+											<span class="red"><span class="fs12">価格</span><span class="fs10">(税込)</span></span><span class="redst"><span class="fs12">：
+											<!--{if $price02_min == $price02_max}-->
+												<!--{$price02_min|sfPreTax:$arrInfo.tax:$arrInfo.tax_rule|number_format}-->
+											<!--{else}-->
+												<!--{$price02_min|sfPreTax:$arrInfo.tax:$arrInfo.tax_rule|number_format}-->~<!--{$price02_max|sfPreTax:$arrInfo.tax:$arrInfo.tax_rule|number_format}-->
+											<!--{/if}-->
+											円</span></span></td>
+										</tr>
+										<tr><td height="5"></td></tr>
+										<tr>
+											<td class="fs10"><!--{$arrRecommend[$nextCnt].comment|escape|nl2br}--></td>
+										</tr>
+									</table>
+									</td>
+								</tr>
+							</table>
+							<!-- 右列 -->
 						<!--{/if}-->
 						</td>
 					</tr>
 					<!--{/section}-->
-					<tr><td height="25"></td></tr>
+					<tr><td colspan=2 height="25"></td></tr>
 				</table>
 				<!--{/if}-->
 				<!--▲オススメ商品ここまで-->
+				
 				
 				</td>
 				<!--▲RIGHT CONTENTS-->
