@@ -1,5 +1,5 @@
 <?php
-
+/*
 require_once("../require.php");
 
 define("ZIP_CSV_LINE_MAX", 8192);
@@ -14,7 +14,7 @@ $objQuery = new SC_Query();
 //sfIsSuccess($objSess);
 
 $fp = fopen($path, "r");
-
+*/
 // 一部のIEは256バイト以上受け取ってから表示を開始する。
 for($i = 0; $i < 256; $i++) {
 	print(" ");
