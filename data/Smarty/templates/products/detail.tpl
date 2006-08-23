@@ -285,9 +285,7 @@ function lnSetSelect(form, name1, name2, val) {
 					<!--{section name=cnt loop=$arrRecommend step=2}-->
 					<!--{if $smarty.section.cnt.index >= 2}-->
 					<tr>
-						<td height="25"><img src="../img/right_product/recommend_line.gif" width="270" height="1" alt="" /></td>
-						<td id="spacer"></td>
-						<td align="right"><img src="../img/right_product/recommend_line.gif" width="270" height="1" alt="" /></td>
+						<td coslspan=3 height="25"><img src="../img/right_product/recommend_line.gif" width="270" height="1" alt="" /></td>
 					</tr>
 					<!--{/if}-->
 					
@@ -363,7 +361,6 @@ function lnSetSelect(form, name1, name2, val) {
 				</table>
 				<!--{/if}-->
 				<!--▲オススメ商品ここまで-->
-				
 				
 				</td>
 				<!--▲RIGHT CONTENTS-->
