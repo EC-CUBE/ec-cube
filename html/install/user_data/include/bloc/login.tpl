@@ -23,7 +23,7 @@
 			<!--{if $tpl_login}-->
 				<tr>
 					<td align="center" colspan="3"><span class="fs12">ようこそ <br> <!--{$tpl_name1|escape}-->　<!--{$tpl_name2|escape}--> 様<br />
-					所持ポイント：</span><span class="red12st"> <!--{$tpl_user_point|default:0}--> pt</span></td>
+					所持ポイント：</span><span class="red12st"> <!--{$tpl_user_point|number_format|default:0}--> pt</span></td>
 				</tr>
 				<!--{if !$tpl_disable_logout}-->
 				<tr>
