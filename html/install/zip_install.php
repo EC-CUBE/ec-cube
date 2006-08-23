@@ -45,6 +45,7 @@ if(!$fp) {
 	
 	// 既に書き込まれたデータを数える
 	$end_cnt = $objQuery->count("mtb_zip");
+	$objQuery->begin();
 	
 	$cnt = 1;
 	$img_cnt = 0;
@@ -79,6 +80,7 @@ if(!$fp) {
 			$img_cnt++;
 		}
 	}
+	$objQuery->commit();
 	fclose($fp);
 	print("<img src='/img/install/space_w.gif'><br>");
 }
