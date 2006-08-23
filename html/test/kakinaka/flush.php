@@ -3,7 +3,7 @@
 print("test");
 flush();
 
-sleep(2);
+//sleep(2);
 
 print("aa");
 flush();
