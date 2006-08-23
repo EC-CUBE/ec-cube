@@ -10,12 +10,9 @@ for($i = 0; $i < 100; $i++){
 
 function MyFlush() {
 	flush();
-  ob_end_flush();
-  ob_start();
-	
-	
+	ob_end_flush();
+	ob_start();
 	sleep(1);
 }
-
 
 ?>
