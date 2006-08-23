@@ -16,7 +16,6 @@ require_once(ROOT_DIR."data/include/page_layout.inc");
 class LC_Page {
 	function LC_Page() {
 		/** 必ず指定する **/
-		$this->tpl_mainpage = 'products/detail.tpl';	// メイン
 		$this->tpl_css = '/css/layout/product/detail.css';	// メインCSS
 		/** 必ず指定する **/
 		global $arrSTATUS;
