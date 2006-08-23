@@ -23,7 +23,7 @@ print("\n");
 flush();
 
 $cnt = 0;
-while($cnt < 100) {
+while($cnt < 3) {
 	print("a");
 	flush();
 	sleep(1);
