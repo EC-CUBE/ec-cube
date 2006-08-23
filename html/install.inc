@@ -8,4 +8,5 @@
     define ('DB_PASSWORD', 'password');
     define ('DB_SERVER', 'naka.lockon.co.jp');
     define ('DB_NAME', 'eccube_db');
+	
 ?>
