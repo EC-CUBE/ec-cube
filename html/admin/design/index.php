@@ -40,7 +40,7 @@ if ($page_id != "") {
 	$where .= " lay.page_id = ? AND ";
 	$arrData = array($page_id);
 }
-$where .= "lay.page_id = pos.page_id AND exists (select bloc_id from dtb_bloc as blc where pos.bloc_id = blc.bloc_id) AND page_id != 0 ORDER BY lay.page_id,pos.target_id, pos.bloc_row, pos.bloc_id ";
+$where .= "lay.page_id != 0 AND lay.page_id = pos.page_id AND exists (select bloc_id from dtb_bloc as blc where pos.bloc_id = blc.bloc_id) ORDER BY lay.page_id,pos.target_id, pos.bloc_row, pos.bloc_id ";
 $arrBlocPos = lfgetLayoutData($sel, $from, $where, $arrData );
 
 // ブロックを取得
