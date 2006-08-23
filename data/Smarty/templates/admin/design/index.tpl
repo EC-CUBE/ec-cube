@@ -275,7 +275,7 @@ var NowMaxHeight = 0;		// 現在の最大の高さ
 var MainHeight = 190;
 
 var marginUnused 	= 640;	// 未使用領域の左マージン
-var marginLeftNavi  = 170;	// 左ナビの左マージン
+var marginLeftNavi  = 130;	// 左ナビの左マージン
 var marginRightNavi = 465;	// 右ナビの左マージン
 var marginMain		= 298;	// メイン上下の左マージン
 var marginMainFootTop= 595;	// メイン下の上マージン
@@ -836,7 +836,7 @@ function fnMoveObject() {
 
     // ウィンドウの幅変更比率を取得
 	var moveX = GetWindowSize("width") - scrX;
-	var BlankX = ( GetWindowSize("width") - 780 ) / 2
+	var BlankX = ( GetWindowSize("width") - 878 ) / 2
 	
 	for ( var i = 0; i < all_elms.length; i++) {
 		if (all_elms[i].style.left != "" ) {
