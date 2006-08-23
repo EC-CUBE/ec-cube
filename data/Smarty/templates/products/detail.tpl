@@ -316,7 +316,6 @@ function lnSetSelect(form, name1, name2, val) {
 							</table>
 							<!-- º¸Îó -->
 						</td>
-						<td id="spacer"></td>
 						<!--{assign var=nextCnt value=$smarty.section.cnt.index+1}-->
 						<td>
 						<!--{if $arrRecommend[$nextCnt].product_id}-->
