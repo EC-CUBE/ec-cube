@@ -26,7 +26,7 @@ if (isset($_GET['page_id'])) {
 }else if ($_POST['page_id']){
 	$page_id = $_POST['page_id'];
 }else{
-	$page_id = 0;
+	$page_id = 1;
 }
 
 // 編集可能ページを取得
@@ -36,11 +36,9 @@ $objPage->arrEditPage = lfgetPageData();
 $sel   = ", pos.target_id, pos.bloc_id, pos.bloc_row ";
 $from  = ", dtb_blocposition AS pos";
 $where = " where ";
-if ($page_id != "") {
-	$where .= " lay.page_id = ? AND ";
-	$arrData = array($page_id);
-}
-$where .= "lay.page_id != 0 AND lay.page_id = pos.page_id AND exists (select bloc_id from dtb_bloc as blc where pos.bloc_id = blc.bloc_id) ORDER BY lay.page_id,pos.target_id, pos.bloc_row, pos.bloc_id ";
+$where .= " lay.page_id = ? AND ";
+$where .= "lay.page_id = pos.page_id AND exists (select bloc_id from dtb_bloc as blc where pos.bloc_id = blc.bloc_id) ORDER BY lay.page_id,pos.target_id, pos.bloc_row, pos.bloc_id ";
+$arrData = array($page_id);
 $arrBlocPos = lfgetLayoutData($sel, $from, $where, $arrData );
 
 // ブロックを取得
