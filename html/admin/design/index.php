@@ -41,7 +41,12 @@ $where .= "lay.page_id = pos.page_id AND exists (select bloc_id from dtb_bloc as
 $arrData = array($page_id);
 $arrBlocPos = lfgetLayoutData($sel, $from, $where, $arrData );
 
-sfprintr($arrBlocPos);
+if (count($arrBlocPos) <= 0) {
+	$exists_page = 0;
+}else{
+	$exists_page = 1;
+}
+$objPage->exists_page = $exists_page;
 
 // ブロックを取得
 $arrBloc = lfgetBlocData();
