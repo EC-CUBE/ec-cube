@@ -1,0 +1,44 @@
+<?php
+require_once("./class/SC_GraphPie.php");
+require_once("./class/SC_GraphLine.php");
+
+$objGraphPie = new SC_GraphPie();
+$objGraphLine = new SC_GraphLine();
+
+$arrLegend = array(
+	'»î¸³1',
+	'»î¸³2',
+	'»î¸³3',
+	'»î¸³4',
+	'»î¸³5',
+	'»î¸³6',
+	'»î¸³7',
+	'»î¸³8',
+	'»î¸³5',
+	'»î¸³6',
+	'»î¸³7',
+	'»î¸³8'	
+);
+
+$arrData = array(
+	250,
+	23,
+	33,
+	58,
+	120,
+	300,
+	223,
+	100
+);
+
+// ¥Ç¡¼¥¿¤ò¥»¥Ã¥È¤¹¤ë
+$objGraphPie->setData($arrData);
+// ËÞÎã¤ò¥»¥Ã¥È¤¹¤ë
+$objGraphPie->setLegend($arrLegend);
+
+// ±ß¥°¥é¥ÕÉÁ²è
+$objGraphPie->drawGraph();
+
+// ¥°¥é¥Õ¤Î½ÐÎÏ
+$objGraphPie->outputGraph();
+?>

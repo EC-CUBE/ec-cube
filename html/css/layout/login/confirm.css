@@ -1,0 +1,63 @@
+@charset "euc-jp";
+
+/***コンテンツ***/
+#containerfull #maintitle{
+border: 0;
+margin: 0 0 15px 0;
+padding: 0;
+width: 700px;
+}
+
+#containerfull #subtitle02{
+border: 0;
+margin: 0 0 15px 0;
+padding: 0;
+width: 700px;
+}
+
+/*コメント*/
+#containerfull #comment{
+border: 0;
+margin: 0 0 15px 0;
+padding: 0;
+width: 570px;
+}
+
+
+/**テーブル**/
+
+/*枠*/
+#containerfull #frame{
+border: 0;
+margin: 0;
+padding: 0;
+width: 700px;
+background: #ccc;
+}
+
+/*コンテンツ行*/
+#frame #left{
+background: #ecf5ff;
+width: 170px;
+}
+
+#frame #right{
+background: #fff;
+width: 507px;
+}
+
+/*ボタン*/
+#containerfull #button{
+border: 0;
+margin: 30px 0 15px 0;
+padding: 0;
+text-align: center;
+}
+
+/*ベリサイン*/
+#containerfull #verisign{
+border: 0;
+margin: 35px 65px;
+padding: 0;
+width: 570px;
+}

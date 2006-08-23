@@ -1,0 +1,121 @@
+@charset "euc-jp";
+/***よくある質問(別ウィンドウ)***/
+
+/***全体***/
+#layout{
+border: 0;
+margin: 0 auto;	/*センター揃え*/
+padding: 0;
+}
+
+/***コンテンツ***/
+#layout #maintitle{
+border: 0;
+margin: 15px auto 15px auto;
+padding: 0;
+width: 570px;
+}
+
+#layout #top{
+border: 0;
+margin: 20px auto 15px auto;
+padding: 0;
+text-align: right;
+width: 570px;
+}
+
+#layout #time{
+border: 0;
+margin: 0 auto 5px auto;
+padding: 0;
+text-align: left;
+width: 570px;
+}
+
+
+/*質問内容*/
+#layout #subtitle{
+border-width: 0 0 1px 0;
+border-style: solid;
+border-color: #b3aa82;
+margin: 15px auto 15px auto;
+padding: 10px;
+text-align: left;
+width: 554px;
+background: #eeece3;
+voice-family: "\"}\""; 
+voice-family: inherit;
+width: 570px;
+}
+
+html>body #layout #subtitle{
+width:554px;
+}
+
+/*テーブル*/
+#layout #frame{
+border: 0;
+margin: 0 auto 15px auto;
+padding: 0;
+width: 550px;
+background: #fff;
+text-align: left;
+}
+
+#layout #frame02{
+border: 0;
+margin: 0 auto 15px auto;
+padding: 0;
+width: 570px;
+background: #ccc;
+}
+
+/*frame内テーブルの幅指定*/
+#layout #frame #left{
+width: 30px;
+}
+
+#layout #frame #spacer{
+width: 10px;
+}
+
+#layout #frame #right{
+width: 510px;
+}
+
+/*frame02内テーブルの幅指定*/
+#layout #frame02 #left02{
+width: 20px;
+background: #f5f5f5;
+}
+
+#layout #frame02 #right02a{
+width: 210px;
+background: #fff;
+}
+
+#layout #frame02 #right02b{
+width: 201px;
+background: #fff;
+}
+
+
+/*ライン*/
+#layout #line{
+border: 0;
+margin: 0 auto 15px auto;
+padding: 0;
+width: 570px;
+background: #fff;
+}
+
+/*ボタン*/
+#layout #button{
+border: 0;
+margin: 30px 0 50px 0;
+padding: 0;
+text-align: center;
+}
+
+
+

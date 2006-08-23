@@ -1,0 +1,6 @@
+@charset "euc-jp"; 
+@import "./contents.css";
+@import "./back.css";
+@import "./layout/common/container.css";
+@import "./layout/common/left.css";
+@import "./layout/common/pan.css";

@@ -1,0 +1,257 @@
+@charset "euc-jp";
+
+/***右コンテンツ***/
+#container #right #maintitle{
+border: 0;
+margin: 0;
+padding: 0;
+width: 570px;
+}
+
+#container #right #top{
+border: 0;
+margin: 20px 0 15px 0;
+padding: 0;
+text-align: right;
+width: 570px;
+}
+
+#container #right #contents{
+border: 0;
+margin: 0;
+padding: 0;
+width: 570px;
+}
+
+/*商品名*/
+#container #right #title{
+border-width: 0 0 1px 0;
+border-style: solid;
+border-color: #ccc;
+background: #f0f0f0;
+padding: 8px;
+margin-bottom: 12px;
+width: 554px; 
+voice-family: "\"}\""; 
+voice-family: inherit;
+width: 570px;
+}
+
+html>body #container #right #title {
+width:554px;
+}
+
+#container #right #title #name{
+}
+
+#container #right #title #icon{
+margin-right: 6px;
+}
+
+
+/*商品*/
+#container #right #contents #left{
+width:262px;
+}
+
+#container #right #contents #spacer{
+width:13px;
+}
+
+#container #right #contents #right{
+width:295px;
+}
+
+#container #right #contents #left #picture{
+border-width: 1px;
+border-style: solid;
+border-color: #ccc;
+margin: 0;
+padding: 0;
+}
+
+#container #right #contents #left #more{
+margin-top: 5px;
+padding: 0;
+}
+
+#container #right #contents #right #detail{
+border: 0;
+margin: 8px 0 8px 0;
+padding: 0;
+width: 295px;
+background: #ccc;
+}
+
+#container #right #contents #right #favorite{
+margin: 0 0 3px 0;
+}
+
+#container #right #contents #right #icon{
+margin: 0 0 5px 0;
+}
+
+#container #right #contents #right #price{
+border-width: 1px;
+border-style: solid;
+border-color: #ccc;
+padding: 0;
+margin: 0;
+padding: 0;
+width: 295px;
+background: #ffecf0;
+}
+
+/*詳細*/
+#container #right #commenttitle{
+border-width: 0 0 1px 0;
+border-style: solid;
+border-color: #b3aa82;
+margin: 15px 0 0 0;
+padding: 8px;
+width: 554px;
+background: #eeece3;
+voice-family: "\"}\""; 
+voice-family: inherit;
+width: 570px;
+}
+
+html>body #container #right #commenttitle {
+width:554px;
+}
+
+#container #right #comment{
+border: 0;
+margin: 0;
+padding: 8px;
+width: 554px;
+voice-family: "\"}\""; 
+voice-family: inherit;
+width: 570px;
+}
+
+html>body #container #right #comment {
+width:554px;
+}
+
+#container #right #comment #text{
+border: 0;
+margin: 0;
+padding: 0;
+}
+
+#container #right #comment #picture{
+width: 130px;
+border-width: 1px;
+border-style: solid;
+border-color: #ccc;
+margin: 0;
+padding: 0;
+}
+
+#container #right #comment #more{
+margin-top: 5px;
+padding: 0;
+}
+
+/*お客様の声*/
+#container #right #voicetitle{
+border: 0;
+margin: 0;
+width: 555px;
+}
+
+#container #right #voice{
+border: 0;
+margin: 0;
+padding: 8px;
+width: 554px;
+voice-family: "\"}\""; 
+voice-family: inherit;
+width: 570px;
+}
+
+html>body #container #right #voice {
+width:554px;
+}
+
+#container #right #voice #button{
+border: 0;
+padding: 0;
+margin: 10px 0 5px 0;
+width: 554px;
+}
+
+#container #right #voice #date{
+border: 0;
+padding: 0;
+margin: 0 0 5px 0;
+width: 554px;
+}
+
+#container #right #voice #titlesub{
+border: 0;
+padding: 0;
+margin: 0 0 5px 0;
+width: 554px;
+}
+
+#container #right #voice #comment{
+border: 0;
+padding: 0;
+margin: 0 0 10px 0;
+width: 554px;
+}
+
+#container #right #voice #line{
+height: 10px;
+border: 0;
+padding: 0;
+margin: 0;
+width: 554px;
+}
+
+/*オススメ*/
+#container #right #osusumetitle{
+border: 0;
+margin-bottom: 10px;
+width: 555px;
+}
+
+#container #right #osusume{
+border: 0;
+margin: 0;
+width: 555px;
+}
+
+#container #right #osusume #spacer{
+width: 15px;
+}
+
+#container #right #osusume #contents{
+border: 0;
+margin: 0;
+padding: 0;
+width: 270px;
+text-align: left;
+}
+
+#container #right #osusume #contents #left{
+width: 67px;
+}
+
+#container #right #osusume #contents #spacer{
+width: 10px;
+}
+
+#container #right #osusume #contents #right{
+width: 193px;
+}
+
+#container #right #osusume #contents #left #picture{
+border-width: 1px;
+border-style: solid;
+border-color: #ccc;
+margin: 0;
+padding: 0;
+}

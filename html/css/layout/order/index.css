@@ -1,0 +1,50 @@
+@charset "euc-jp";
+
+/***右コンテンツ***/
+#container #right #maintitle{
+border: 0;
+margin: 0 0 15px 0;
+padding: 0;
+width: 570px;
+}
+
+/*テーブル*/
+#container #right #frame{
+border: 0;
+margin: 0;
+padding: 0;
+width: 570px;
+background: #ccc;
+}
+
+#container #right #frame #left{
+background: #ecf5ff;
+width: 140px;
+}
+
+#container #right #frame #right{
+background: #fff;
+width: 387px;
+}
+
+/*テーブル(入れ子になっているもの)*/
+#container #right #frame #right #history{
+border: 0;
+margin: 0;
+padding: 0;
+width: 387px;
+}
+
+#container #right #frame #right #history #left02{
+width: 120px;
+}
+
+#container #right #frame #right #history #spacer{
+width: 10x;
+}
+
+#container #right #frame #right #history #right02{
+background: #fff;
+width: 257px;
+}
+

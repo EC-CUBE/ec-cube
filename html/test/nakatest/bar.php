@@ -1,0 +1,75 @@
+<?php
+require_once("./class/SC_GraphBar.php");
+
+$objGraphBar = new SC_GraphBar();
+
+$arrData1 = array(
+	3250,
+	423,
+	533,
+	1158,
+	1120,
+	1300,
+	2223,
+	100,
+	250,
+);
+
+$arrData2 = array(
+	533,
+	1158,
+	3250,
+	423,
+	1120,
+	100,
+	250,
+	1300,
+	2223,
+);
+
+$arrData3 = array(
+	1120,
+	1300,
+	2223,
+	100,
+	250,
+	3250,
+	423,
+	533,
+	1158,
+);
+
+$arrXLabel = array(
+	'»î¸³1',
+	'»î¸³2',
+	'»î¸³3',
+	'»î¸³4',
+	'»î¸³5',
+	'»î¸³6',
+	'»î¸³7',
+	'»î¸³8',
+	'»î¸³9',
+	'»î¸³10',
+	'»î¸³11',
+);
+
+$arrLegend = array(
+	'»î¸³1',
+	'»î¸³2',
+	'»î¸³3',
+	'»î¸³4'
+);
+
+// ¥°¥é¥ÕÉÁ²è
+$objGraphBar->setXLabel($arrXLabel);
+$objGraphBar->setXTitle("´ü´Ö(·î)");
+$objGraphBar->setYTitle("Çä¾å¤²(±ß)");
+$objGraphBar->setData($arrData1);
+$objGraphBar->setData($arrData2);
+$objGraphBar->setData($arrData3);
+$objGraphBar->setLegend($arrLegend);
+$objGraphBar->drawGraph();
+
+$objGraphBar->outputGraph();
+
+?>

@@ -1,0 +1,35 @@
+@charset "euc-jp";
+
+/***右コンテンツ***/
+#container #right #maintitle{
+border: 0;
+margin: 0 0 15px 0;
+padding: 0;
+width: 570px;
+}
+
+/*テーブル*/
+#container #right #frame{
+border: 0;
+margin: 0;
+padding: 0;
+width: 570px;
+background: #ccc;
+}
+
+#container #right #ichi{
+border: solid 1px #ccc;
+margin: 35;
+padding: 0;
+width: 500px;
+height: 210px;
+text-align: center;
+}
+
+/*ボタン*/
+#container #right #button{
+border: 0;
+margin: 30px 0 15px 0;
+padding: 0;
+text-align: center;
+}

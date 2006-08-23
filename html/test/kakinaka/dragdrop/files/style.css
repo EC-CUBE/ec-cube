@@ -1,0 +1,93 @@
+.s {
+	LINE-HEIGHT: 130%; FONT-FAMILY: "£Í£Ó £Ð¥´¥·¥Ã¥¯","Hiragino Maru Gothic Pro","¥Ò¥é¥®¥Î´Ý¥´ Pro W4",Osaka,sans-serif
+}
+.m {
+	LINE-HEIGHT: 130%; FONT-FAMILY: "£Í£Ó £Ð¥´¥·¥Ã¥¯","Hiragino Maru Gothic Pro","¥Ò¥é¥®¥Î´Ý¥´ Pro W4",Osaka,sans-serif
+}
+.l {
+	LINE-HEIGHT: 130%; FONT-FAMILY: "£Í£Ó £Ð¥´¥·¥Ã¥¯","Hiragino Maru Gothic Pro","¥Ò¥é¥®¥Î´Ý¥´ Pro W4",Osaka,sans-serif
+}
+BODY {
+	LINE-HEIGHT: 130%; FONT-FAMILY: "£Í£Ó £Ð¥´¥·¥Ã¥¯","Hiragino Maru Gothic Pro","¥Ò¥é¥®¥Î´Ý¥´ Pro W4",Osaka,sans-serif
+}
+TD {
+	LINE-HEIGHT: 130%; FONT-FAMILY: "£Í£Ó £Ð¥´¥·¥Ã¥¯","Hiragino Maru Gothic Pro","¥Ò¥é¥®¥Î´Ý¥´ Pro W4",Osaka,sans-serif
+}
+SPAN {
+	LINE-HEIGHT: 130%; FONT-FAMILY: "£Í£Ó £Ð¥´¥·¥Ã¥¯","Hiragino Maru Gothic Pro","¥Ò¥é¥®¥Î´Ý¥´ Pro W4",Osaka,sans-serif
+}
+INPUT {
+	FONT-FAMILY: "£Í£Ó £Ð¥´¥·¥Ã¥¯","Hiragino Maru Gothic Pro","¥Ò¥é¥®¥Î´Ý¥´ Pro W4",Osaka,sans-serif
+}
+SELECT {
+	FONT-FAMILY: "£Í£Ó £Ð¥´¥·¥Ã¥¯","Hiragino Maru Gothic Pro","¥Ò¥é¥®¥Î´Ý¥´ Pro W4",Osaka,sans-serif
+}
+OPTION {
+	FONT-FAMILY: "£Í£Ó £Ð¥´¥·¥Ã¥¯","Hiragino Maru Gothic Pro","¥Ò¥é¥®¥Î´Ý¥´ Pro W4",Osaka,sans-serif
+}
+TEXTAREA {
+	FONT-FAMILY: "£Í£Ó £Ð¥´¥·¥Ã¥¯","Hiragino Maru Gothic Pro","¥Ò¥é¥®¥Î´Ý¥´ Pro W4",Osaka,sans-serif
+}
+BODY {
+	MARGIN: 10px 0px 0px
+}
+H1 {
+	MARGIN: 10px 0px 0px
+}
+H2 {
+	MARGIN: 10px 0px 0px
+}
+H3 {
+	MARGIN: 10px 0px 0px
+}
+FORM {
+	MARGIN: 10px 0px 0px
+}
+P {
+	MARGIN: 10px 0px 0px
+}
+P.stream {
+	MARGIN-LEFT: 5px
+}
+P.stream_m {
+	MARGIN-LEFT: 15px
+}
+DIV.ri {
+	MARGIN-RIGHT: 10px; TEXT-ALIGN: right
+}
+INPUT {
+	VERTICAL-ALIGN: middle
+}
+FORM {
+	MARGIN: 0px
+}
+A:link {
+	COLOR: #666666; TEXT-DECORATION: underline
+}
+A:visited {
+	COLOR: #666666; TEXT-DECORATION: underline
+}
+A:hover {
+	COLOR: #9966ff; TEXT-DECORATION: underline
+}
+A.cfff {
+	COLOR: #ffffff; TEXT-DECORATION: underline
+}
+A.cfff:visited {
+	COLOR: #ffffff; TEXT-DECORATION: underline
+}
+A.cfff:hover {
+	COLOR: #ffffff; TEXT-DECORATION: underline
+}
+.right {
+	PADDING-RIGHT: 5px; TEXT-ALIGN: right
+}
+.center {
+	TEXT-ALIGN: center
+}
+.smallinput {
+	PADDING-RIGHT: 2px; PADDING-LEFT: 0px; PADDING-BOTTOM: 0px; PADDING-TOP: 0px; HEIGHT: 16px
+}
+LABEL {
+	CURSOR: pointer
+}

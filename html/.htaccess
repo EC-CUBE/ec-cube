@@ -1,0 +1,18 @@
+
+php_value mbstring.http_input EUC-JP
+
+php_value auto_detect_line_endings on
+
+#AuthType Basic
+
+#AuthName "Please enter username and password"
+
+#AuthUserFile /home/web/test1.tokado.jp/html/.htpasswd
+
+#AuthGroupFile /dev/null
+
+#require valid-user
+
+Options -Indexes
+
+

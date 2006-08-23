@@ -1,0 +1,171 @@
+body {
+	font-family: "£Í£Ó £Ð¥´¥·¥Ã¥¯", Osaka;
+	color: #333333;
+	background-color: #E7EFEF;
+	margin: 0px;
+	padding: 0px;
+	font-size: 1em;
+	line-height: 130%;
+}
+
+h1,h2,h3,h4,h5,h6,p {
+	margin: 0;
+}
+
+img {
+	border: none;
+	margin: 0px;
+	padding: 0px;
+}
+
+a img {
+	border: none;
+}
+
+ul {
+    list-style-type: none;
+	margin: 0px;
+	padding: 0px;
+}
+
+a:link {
+	color: #0001CD;
+	text-decoration: underline;
+}
+a:visited {
+	color: #FF9900;
+}
+
+
+a:hover {
+	color: #FF9900;
+	text-decoration: underline;
+}
+.red {
+	color: #FF0000;
+}
+.stext {
+	font-size: 0.7em;
+}
+
+
+
+
+.tabline {
+	margin-bottom: 10px;
+	
+}
+.tdblue {
+	background-color: #D0EFFF;
+	border-collapse: collapse;
+}
+.catetable {
+	width: 285px;
+}
+
+.catetable td {
+	padding: 5px 3px;
+	text-align: left;
+}.catetable h2 {
+	font-size: 1em;
+	margin-bottom: 0.3em;
+}
+.catetable p {
+	font-size: 0.8em;
+}
+.tvspot {
+	margin: 0px;
+	width: 180px;
+	text-align: left;
+}
+.tvspot h2 {
+	margin-bottom: 3px;
+}
+.tvspot p {
+	margin-bottom: 3px;
+}
+.mainBanner {
+	margin: 0px;
+	text-align: center;
+}
+.mainBanner h3 {
+	font-size: 0.8em;
+	font-weight: normal;
+	text-decoration: underline;
+	margin-top: 0px;
+	margin-bottom: 3px;
+	letter-spacing: 0.2em;
+}
+#rightArea {
+	margin-bottom: 10px;
+	background-color: #FFFFFF;
+}
+#rightArea h2 {
+	margin-bottom: 10px;
+}
+#rightArea h3 {
+	border-top-width: 3px;
+	border-top-style: solid;
+	border-right-width: 1px;
+	border-left-width: 1px;
+	border-right-style: solid;
+	border-left-style: solid;
+	border-top-color: #3300CC;
+	border-right-color: #CCCCCC;
+	border-left-color: #CCCCCC;
+}
+#rightArea .searchtab {
+	border-right-width: 1px;
+	border-bottom-width: 1px;
+	border-left-width: 1px;
+	border-right-style: solid;
+	border-bottom-style: solid;
+	border-left-style: solid;
+	border-right-color: #CCCCCC;
+	border-bottom-color: #CCCCCC;
+	border-left-color: #CCCCCC;
+	margin-bottom: 10px;
+	text-align: center;
+	padding: 5px;
+}
+#rightArea .searchtab p {
+	margin-bottom: 5px;
+}
+#rightArea .ranking {
+	border: 1px solid #C40001;
+	margin-top: 10px;
+	margin-bottom: 10px;
+	color: #666666;
+	font-size: 0.8em;
+	width: 168px;
+}
+#rightArea .ranking th {
+	background-color: #C40001;
+	padding: 5px;
+	color: #FFFFFF;
+}
+#rightArea .ranking td {
+	padding: 2px;
+	text-align: left;
+}
+#rightArea .ranktab {
+	border-bottom-width: 1px;
+	border-bottom-style: solid;
+	border-bottom-color: #CCCCCC;
+	margin-top: 5px;
+	text-align: left;
+	margin-bottom: 5px;
+}
+#footer {
+	font-size: 0.8em;
+}
+
+.recom {
+	width: 280px;
+	margin-bottom: 5px;
+	font-size: 0.8em;
+	text-align: left;
+}
+.recom td {
+	padding: 3px;
+}

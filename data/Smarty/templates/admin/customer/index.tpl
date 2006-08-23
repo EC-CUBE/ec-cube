@@ -1,0 +1,365 @@
+<!--★★メインコンテンツ★★-->
+<table width="878" border="0" cellspacing="0" cellpadding="0" summary=" ">
+<form name="search_form" id="search_form" method="post" action="<!--{$smarty.server.PHP_SELF}-->">
+<input type="hidden" name="mode" value="search">
+<!--{foreach key=key item=item from=$arrHidden}-->
+<!--{if $key == 'campaign_id' || $key == 'search_mode'}-->
+<input type="hidden" name="<!--{$key}-->" value="<!--{$item|escape}-->">
+<!--{/if}-->
+<!--{/foreach}-->
+	<tr valign="top">
+		<td background="/img/contents/navi_bg.gif" height="402">
+			<!-- サブナビ -->
+			<!--{include file=$tpl_subnavi}-->
+		</td>
+		<td class="mainbg">
+		<table width="737" border="0" cellspacing="0" cellpadding="0" summary=" ">
+			<!--メインエリア-->
+			<tr>
+				<td align="center">
+				<table width="706" border="0" cellspacing="0" cellpadding="0" summary=" ">
+					<tr><td height="14"></td></tr>
+					<tr>
+						<td colspan="3"><img src="/img/contents/main_top.jpg" width="706" height="14" alt=""></td>
+					</tr>
+					<tr>
+						<td background="/img/contents/main_left.jpg"><img src="/img/common/_.gif" width="14" height="1" alt=""></td>
+						<td bgcolor="#cccccc">
+						<table width="678" border="0" cellspacing="0" cellpadding="0" summary=" ">
+							<tr>
+								<td colspan="3"><img src="/img/contents/contents_title_top.gif" width="678" height="7" alt=""></td>
+							</tr>
+							<tr>
+								<td background="/img/contents/contents_title_left_bg.gif"><img src="/img/contents/contents_title_left.gif" width="22" height="12" alt=""></td>
+								<td bgcolor="#636469" width="638" class="fs14n"><span class="white"><!--コンテンツタイトル-->検索条件設定</span></td>
+								<td background="/img/contents/contents_title_right_bg.gif"><img src="/img/common/_.gif" width="18" height="1" alt=""></td>
+							</tr>
+							<tr>
+								<td colspan="3"><img src="/img/contents/contents_title_bottom.gif" width="678" height="7" alt=""></td>
+							</tr>
+							<tr>
+								<td colspan="3"><img src="/img/contents/main_bar.jpg" width="678" height="10" alt=""></td>
+							</tr>
+						</table>
+						<!--検索条件設定テーブルここから-->
+						<table width="678" border="0" cellspacing="1" cellpadding="8" summary=" ">
+							<tr class="fs12n">
+								<td bgcolor="#f2f1ec" width="110">顧客コード</td>
+								<td bgcolor="#ffffff" width="194"><!--{if $arrErr.search_customer_id}--><span class="red12"><!--{$arrErr.search_customer_id}--></span><br><!--{/if}--><input type="text" name="search_customer_id" maxlength="<!--{$smarty.const.INT_LEN}-->" value="<!--{$arrForm.search_customer_id|escape}-->" size="30" class="box30" <!--{if $arrErr.search_customer_id}--><!--{sfSetErrorStyle}--><!--{/if}--> /></td>
+								<td bgcolor="#f2f1ec" width="110">都道府県</td>
+								<td bgcolor="#ffffff" width="195">
+									<!--{if $arrErr.search_pref}--><span class="red12"><!--{$arrErr.search_pref}--></span><br><!--{/if}-->
+									<select name="search_pref">
+										<option value="" selected="selected" <!--{if $arrErr.search_name}--><!--{sfSetErrorStyle}--><!--{/if}-->>都道府県を選択</option>
+										<!--{html_options options=$arrPref selected=$arrForm.search_pref}-->
+									</select>
+								</td>
+							</tr>
+							<tr class="fs12n">
+								<td bgcolor="#f2f1ec" width="110">顧客名</td>
+								<td bgcolor="#ffffff" width="194"><!--{if $arrErr.search_name}--><span class="red12"><!--{$arrErr.search_name}--></span><br><!--{/if}--><input type="text" name="search_name" maxlength="<!--{$smarty.const.STEXT_LEN}-->" value="<!--{$arrForm.search_name|escape}-->" size="30" class="box30" <!--{if $arrErr.search_name}--><!--{sfSetErrorStyle}--><!--{/if}--> /></td>
+								<td bgcolor="#f2f1ec" width="110">顧客名（カナ）</td>
+								<td bgcolor="#ffffff" width="195"><!--{if $arrErr.search_kana}--><span class="red12"><!--{$arrErr.search_kana}--></span><br><!--{/if}--><input type="text" name="search_kana" maxlength="<!--{$smarty.const.STEXT_LEN}-->" value="<!--{$arrForm.search_kana|escape}-->" size="30" class="box30" <!--{if $arrErr.search_kana}--><!--{sfSetErrorStyle}--><!--{/if}--> /></td>
+							<tr class="fs12n">
+								<td bgcolor="#f2f1ec" width="110">性別</td>
+								<td bgcolor="#ffffff" width="194"><!--{html_checkboxes name="search_sex" options=$arrSex separator="&nbsp;" selected=$arrForm.search_sex}--></td>
+								<td bgcolor="#f2f1ec" width="110">誕生月</td>
+								<td bgcolor="#ffffff" width="195"><!--{if $arrErr.search_birth_month}--><span class="red12"><!--{$arrErr.search_birth_month}--></span><br><!--{/if}-->
+									<select name="search_birth_month" style="<!--{$arrErr.search_birth_month|sfGetErrorColor}-->" >
+										<option value="" selected="selected">--</option>
+										<!--{html_options options=$objDate->getMonth() selected=$arrForm.search_birth_month}-->
+									</select>月
+								</td>
+							</tr>
+							<tr class="fs12n">			
+								<td bgcolor="#f2f1ec" width="110">誕生日</td>
+								<td bgcolor="#ffffff" width="499" colspan="3">
+									<!--{if $arrErr.search_b_start_year || $arrErr.search_b_end_year}--><span class="red12"><!--{$arrErr.search_b_start_year}--><!--{$arrErr.search_b_end_year}--></span><br><!--{/if}-->
+									<select name="search_b_start_year" <!--{if $arrErr.search_b_start_year || $arrErr.search_b_end_year}--><!--{sfSetErrorStyle}--><!--{/if}-->>
+										<option value="" selected="selected">------</option>
+										<!--{html_options options=$arrYear selected=$arrForm.search_b_start_year}-->
+									</select>年
+									<select name="search_b_start_month" <!--{if $arrErr.search_b_start_year || $arrErr.search_b_end_year}--><!--{sfSetErrorStyle}--><!--{/if}-->>
+										<option value="" selected="selected">----</option>
+										<!--{html_options options=$arrMonth selected=$arrForm.search_b_start_month}-->
+									</select>月
+									<select name="search_b_start_day" <!--{if $arrErr.search_b_start_year || $arrErr.search_b_end_year}--><!--{sfSetErrorStyle}--><!--{/if}-->>
+										<option value="" selected="selected">----</option>
+										<!--{html_options options=$arrDay selected=$arrForm.search_b_start_day}-->
+									</select>日〜
+									<select name="search_b_end_year" <!--{if $arrErr.search_b_start_year || $arrErr.search_b_end_year}--><!--{sfSetErrorStyle}--><!--{/if}-->>
+										<option value="" selected="selected">------</option>
+										<!--{html_options options=$arrYear selected=$arrForm.search_b_end_year}-->
+									</select>年
+									<select name="search_b_end_month" <!--{if $arrErr.search_b_start_year || $arrErr.search_b_end_year}--><!--{sfSetErrorStyle}--><!--{/if}-->>
+										<option value="" selected="selected">----</option>
+										<!--{html_options options=$arrMonth selected=$arrForm.search_b_end_month}-->
+									</select>月
+									<select name="search_b_end_day" <!--{if $arrErr.search_b_start_year || $arrErr.search_b_end_year}--><!--{sfSetErrorStyle}--><!--{/if}-->>
+										<option value="" selected="selected">----</option>
+										<!--{html_options options=$arrDay selected=$arrForm.search_b_end_day}-->
+									</select>日
+								</td>
+							</tr>
+							<tr class="fs12n">
+								<td bgcolor="#f2f1ec" width="110">メールアドレス</td>
+								<td bgcolor="#ffffff" width="499" colspan="3"><!--{if $arrErr.search_email}--><span class="red12"><!--{$arrErr.search_email}--></span><!--{/if}--><input type="text" name="search_email" maxlength="<!--{$smarty.const.STEXT_LEN}-->" value="<!--{$arrForm.search_email|escape}-->" size="60" class="box60" <!--{if $arrErr.search_email}--><!--{sfSetErrorStyle}--><!--{/if}-->/></td>
+							</tr>
+							<tr class="fs12n">
+								<td bgcolor="#f2f1ec" width="110">電話番号</td>
+								<td bgcolor="#ffffff" width="499" colspan="3"><!--{if $arrErr.search_tel}--><span class="red12"><!--{$arrErr.search_tel}--></span><br><!--{/if}--><input type="text" name="search_tel" maxlength="<!--{$smarty.const.TEL_LEN}-->" value="<!--{$arrForm.search_tel|escape}-->" size="60" class="box60" /></td>
+							</tr>
+							<tr class="fs12n">
+								<td bgcolor="#f2f1ec" width="110">職業</td>
+								<td bgcolor="#ffffff" width="499" colspan="3"><!--{html_checkboxes name="search_job" options=$arrJob separator="&nbsp;" selected=$arrForm.search_job}--></td>
+							</tr>
+							<tr class="fs12n">
+								<td bgcolor="#f2f1ec" width="110">購入金額</td>
+								<td bgcolor="#ffffff" width="194"><!--{if $arrErr.search_buy_total_from || $arrErr.search_buy_total_to}--><span class="red12"><!--{$arrErr.search_buy_total_from}--><!--{$arrErr.search_buy_total_to}--></span><br><!--{/if}--><input type="text" name="search_buy_total_from" maxlength="<!--{$smarty.const.INT_LEN}-->" value="<!--{$arrForm.search_buy_total_from|escape}-->" size="6" class="box6" <!--{if $arrErr.search_buy_total_from || $arrErr.search_buy_total_to}--><!--{sfSetErrorStyle}--><!--{/if}--> /> 円 〜 <input type="text" name="search_buy_total_to" maxlength="<!--{$smarty.const.INT_LEN}-->" value="<!--{$arrForm.search_buy_total_to|escape}-->" size="6" class="box6" <!--{if $arrErr.search_buy_total_from || $arrErr.search_buy_total_to}--><!--{sfSetErrorStyle}--><!--{/if}--> /> 円</td>
+								<td bgcolor="#f2f1ec" width="110">購入回数</td>
+								<td bgcolor="#ffffff" width="195"><!--{if $arrErr.search_buy_times_from || $arrErr.search_buy_times_to}--><span class="red12"><!--{$arrErr.search_buy_times_from}--><!--{$arrErr.search_buy_times_to}--></span><br><!--{/if}--><input type="text" name="search_buy_times_from" maxlength="<!--{$smarty.const.INT_LEN}-->" value="<!--{$arrForm.search_buy_times_from|escape}-->" size="6" class="box6" <!--{if $arrErr.search_buy_times_from || $arrErr.search_buy_times_to}--><!--{sfSetErrorStyle}--><!--{/if}--> /> 回 〜 <input type="text" name="search_buy_times_to" maxlength="<!--{$smarty.const.INT_LEN}-->" value="<!--{$arrForm.search_buy_times_to|escape}-->" size="6" class="box6" <!--{if $arrErr.search_buy_times_from || $arrErr.search_buy_times_to}--><!--{sfSetErrorStyle}--><!--{/if}--> /> 回</td>
+							</tr>
+							<tr class="fs12n">
+								<td bgcolor="#f2f1ec" width="110">登録・更新日</td>
+								<td bgcolor="#ffffff" width="499" colspan="3">
+									<!--{if $arrErr.search_start_year || $arrErr.search_end_year}--><span class="red12"><!--{$arrErr.search_start_year}--><!--{$arrErr.search_end_year}--></span><br><!--{/if}-->
+									<select name="search_start_year" <!--{if $arrErr.search_start_year || $arrErr.search_end_year}--><!--{sfSetErrorStyle}--><!--{/if}-->>
+										<option value="" selected="selected">------</option>
+										<!--{html_options options=$arrYear selected=$arrForm.search_start_year}-->
+									</select>年
+									<select name="search_start_month" <!--{if $arrErr.search_start_year || $arrErr.search_end_year}--><!--{sfSetErrorStyle}--><!--{/if}-->>
+										<option value="" selected="selected">----</option>
+										<!--{html_options options=$arrMonth selected=$arrForm.search_start_month}-->
+									</select>月
+									<select name="search_start_day" <!--{if $arrErr.search_start_year || $arrErr.search_end_year}--><!--{sfSetErrorStyle}--><!--{/if}-->>
+										<option value="" selected="selected">----</option>
+										<!--{html_options options=$arrDay selected=$arrForm.search_start_day}-->
+									</select>日〜
+									<select name="search_end_year" <!--{if $arrErr.search_start_year || $arrErr.search_end_year}--><!--{sfSetErrorStyle}--><!--{/if}-->>
+										<option value="" selected="selected">------</option>
+										<!--{html_options options=$arrYear selected=$arrForm.search_end_year}-->
+									</select>年
+									<select name="search_end_month" <!--{if $arrErr.search_start_year || $arrErr.search_end_year}--><!--{sfSetErrorStyle}--><!--{/if}-->>
+										<option value="" selected="selected">----</option>
+										<!--{html_options options=$arrMonth selected=$arrForm.search_end_month}-->
+									</select>月
+									<select name="end_day" <!--{if $arrErr.search_start_year || $arrErr.search_end_year}--><!--{sfSetErrorStyle}--><!--{/if}-->>
+										<option value="" selected="selected">----</option>
+										<!--{html_options options=$arrDay selected=$arrForm.search_end_day}-->
+									</select>日
+								</td>
+							</tr>
+				
+							<tr class="fs12n">
+								<td bgcolor="#f2f1ec" width="110">最終購入日</td>
+								<td bgcolor="#ffffff" width="499" colspan="3">
+									<!--{if $arrErr.search_buy_start_year || $arrErr.search_buy_end_year}--><span class="red12"><!--{$arrErr.search_buy_start_year}--><!--{$arrErr.search_buy_end_year}--></span><br><!--{/if}-->
+									<select name="search_buy_start_year" style="<!--{$arrErr.search_buy_start_year|sfGetErrorColor}-->">
+										<option value="" selected="selected">------</option>
+										<!--{html_options options=$objDate->getYear($smarty.const.RELEASE_YEAR)  selected=$arrForm.search_buy_start_year}-->
+									</select>年
+									<select name="search_buy_start_month" style="<!--{$arrErr.search_buy_start_year|sfGetErrorColor}-->">
+										<option value="" selected="selected">----</option>
+										<!--{html_options options=$arrMonth selected=$arrForm.search_buy_start_month}-->
+									</select>月
+									<select name="search_buy_start_day" style="<!--{$arrErr.search_buy_start_year|sfGetErrorColor}-->">
+										<option value="" selected="selected">----</option>
+										<!--{html_options options=$arrDay selected=$arrForm.search_buy_start_day}-->
+									</select>日〜
+									<select name="search_buy_end_year" style="<!--{$arrErr.search_buy_end_year|sfGetErrorColor}-->">
+										<option value="" selected="selected">------</option>
+										<!--{html_options options=$objDate->getYear($smarty.const.RELEASE_YEAR)  selected=$arrForm.search_buy_end_year}-->
+									</select>年
+									<select name="search_buy_end_month" style="<!--{$arrErr.search_buy_end_year|sfGetErrorColor}-->">
+										<option value="" selected="selected">----</option>
+										<!--{html_options options=$arrMonth selected=$arrForm.search_buy_end_month}-->
+									</select>月
+									<select name="search_buy_end_day" style="<!--{$arrErr.search_buy_end_year|sfGetErrorColor}-->">
+										<option value="" selected="selected">----</option>
+										<!--{html_options options=$arrDay selected=$arrForm.search_buy_end_day}-->
+									</select>日
+								</td>
+							</tr>
+							<tr class="fs12n">
+								<td bgcolor="#f2f1ec" width="110">購入商品名</td>
+								<td bgcolor="#ffffff" width="194">
+									<!--{if $arrErr.search_buy_product_name}--><span class="red12"><!--{$arrErr.search_buy_product_name}--></span><!--{/if}-->
+									<span style="<!--{$arrErr.search_buy_product_name|sfGetErrorColor}-->">
+									<input type="text" name="search_buy_product_name" maxlength="<!--{$smarty.const.STEXT_LEN}-->" value="<!--{$arrForm.search_buy_product_name|escape}-->" size="30" class="box30" style="<!--{$arrErr.search_buy_product_name|sfGetErrorColor}-->"/>
+									</span>
+								</td>
+								<td bgcolor="#f2f1ec" width="110">購入商品コード</td>
+								<td bgcolor="#ffffff" width="195">
+								<!--{if $arrErr.search_buy_product_code}--><span class="red12"><!--{$arrErr.search_buy_product_code}--></span><!--{/if}-->
+								<input type="text" name="search_buy_product_code" value="<!--{$arrForm.search_buy_product_code}-->" maxlength="<!--{$smarty.const.STEXT_LEN}-->" style="<!--{$arrErr.search_buy_product_code|sfGetErrorColor}-->" >
+								</td>				
+							</tr>
+							<tr class="fs12n">
+								<td bgcolor="#f2f1ec" width="110">カテゴリ</td>
+								<td bgcolor="#ffffff" width="499" colspan="3">
+									<select name="search_category_id" style="<!--{if $arrErr.search_category_id != ""}-->background-color: <!--{$smarty.const.ERR_COLOR}--><!--{/if}-->">
+										<option value="">選択してください</option>
+										<!--{html_options options=$arrCatList selected=$arrForm.search_category_id}-->
+									</select>
+								</td>
+							</tr>
+						</table>
+						<table width="678" border="0" cellspacing="0" cellpadding="0" summary=" ">
+							<tr>
+								<td bgcolor="#cccccc"><img src="/img/common/_.gif" width="1" height="5" alt=""></td>
+								<td><img src="/img/contents/tbl_top.gif" width="676" height="7" alt=""></td>
+								<td bgcolor="#cccccc"><img src="/img/common/_.gif" width="1" height="5" alt=""></td>
+							</tr>
+							<tr>
+								<td bgcolor="#cccccc"><img src="/img/common/_.gif" width="1" height="10" alt=""></td>
+								<td bgcolor="#e9e7de" align="center">
+								<table border="0" cellspacing="0" cellpadding="0" summary=" ">
+									<tr>
+										<td class="fs12n">検索結果表示件数
+											<select name="page_rows">
+												<!--{html_options options=$arrPageRows selected=$arrForm.page_rows}-->
+											</select> 件</td>
+										</td>
+										<td><img src="/img/common/_.gif" width="10" height="1" alt=""></td>
+										<td><input type="image" name="subm" onMouseover="chgImgImageSubmit('/img/contents/btn_search_on.jpg',this)" onMouseout="chgImgImageSubmit('/img/contents/btn_search.jpg',this)" src="/img/contents/btn_search.jpg" width="123" height="24" alt="この条件で検索する" border="0" onClick="submit();" ></td>
+									</tr>
+								</table>
+								</td>
+								<td bgcolor="#cccccc"><img src="/img/common/_.gif" width="1" height="10" alt=""></td>
+							</tr>
+							<tr>
+								<td colspan="3"><img src="/img/contents/tbl_bottom.gif" width="678" height="8" alt=""></td>
+							</tr>
+						</table>
+						<!--検索条件設定テーブルここまで-->
+						</td>
+						<td background="/img/contents/main_right.jpg"><img src="/img/common/_.gif" width="14" height="1" alt=""></td>
+					</tr>
+					<tr>
+						<td colspan="3"><img src="/img/contents/main_bottom.jpg" width="706" height="14" alt=""></td>
+					</tr>
+					<tr><td height="30"></td></tr>
+				</table>
+				</td>
+			</tr>
+			<!--メインエリア-->
+		</table>
+		</td>
+	</tr>
+</form>	
+</table>
+<!--★★メインコンテンツ★★-->
+
+<!--{if count($arrErr) == 0 and ($smarty.post.mode == 'search' or $smarty.post.mode == 'delete') }-->
+
+<!--★★検索結果一覧★★-->
+<table width="878" border="0" cellspacing="0" cellpadding="0" summary=" ">
+<form name="form1" id="form1" method="post" action="<!--{$smarty.server.PHP_SELF}-->">
+<input type="hidden" name="mode" value="search">
+<input type="hidden" name="edit_customer_id" value="">
+<!--{foreach key=key item=item from=$arrHidden}-->
+<input type="hidden" name="<!--{$key}-->" value="<!--{$item|escape}-->">
+<!--{/foreach}-->
+	<tr><td colspan="2"><img src="/img/contents/search_line.jpg" width="878" height="12" alt=""></td></tr>
+	<tr bgcolor="cbcbcb">
+		<td>
+		<table border="0" cellspacing="0" cellpadding="0" summary=" ">
+			<tr>
+				<td><img src="/img/contents/search_left.gif" width="19" height="22" alt=""></td>
+				<td>
+				<!--検索結果-->
+				<table border="0" cellspacing="0" cellpadding="0" summary=" ">
+					<tr>
+						<td><img src="/img/contents/reselt_left_top.gif" width="22" height="5" alt=""></td>
+						<td background="/img/contents/reselt_top_bg.gif"><img src="/img/common/_.gif" width="1" height="5" alt=""></td>
+						<td><img src="/img/contents/reselt_right_top.gif" width="22" height="5" alt=""></td>
+					</tr>
+					<tr>
+						<td background="/img/contents/reselt_left_bg.gif"><img src="/img/contents/reselt_left_middle.gif" width="22" height="12" alt=""></td>
+						<td bgcolor="#393a48" class="white10">検索結果一覧　<span class="reselt"><!--検索結果数--><!--{$tpl_linemax}-->件</span>&nbsp;が該当しました。</td>
+						<td background="/img/contents/reselt_right_bg.gif"><img src="/img/common/_.gif" width="22" height="8" alt=""></td>
+					</tr>
+					<tr>
+						<td><img src="/img/contents/reselt_left_bottom.gif" width="22" height="5" alt=""></td>
+						<td background="/img/contents/reselt_bottom_bg.gif"><img src="/img/common/_.gif" width="1" height="5" alt=""></td>
+						<td><img src="/img/contents/reselt_right_bottom.gif" width="22" height="5" alt=""></td>
+					</tr>
+				</table>
+				<!--検索結果-->
+				<!--{if $smarty.const.ADMIN_MODE == '1'}-->
+				<input type="button" name="subm" value="検索結果をすべて削除" onclick="fnModeSubmit('delete_all','','');" />
+				<!--{/if}-->
+				</td>
+				<td><img src="/img/common/_.gif" width="8" height="1" alt=""></td>
+				<td><a href="#" onmouseover="chgImg('/img/contents/btn_csv_on.jpg','btn_csv');" onmouseout="chgImg('/img/contents/btn_csv.jpg','btn_csv');"  onclick="fnModeSubmit('csv','','');" ><img src="/img/contents/btn_csv.jpg" width="99" height="22" alt="CSV DOWNLOAD" border="0" name="btn_csv" id="btn_csv"></a></td>
+				<td><img src="/img/common/_.gif" width="8" height="1" alt=""></td>
+				<td><a href="../contents/csv.php?tpl_subno_csv=customer"><span class="fs12n"> >> CSV出力設定へ </span></a></td>
+			</tr>
+		</table>
+		</td>
+		<td align="right">
+			<!--{include file=$tpl_pager}-->
+		</td>									
+	</tr>
+	<tr><td bgcolor="cbcbcb" colspan="2"><img src="/img/common/_.gif" width="1" height="5" alt=""></td></tr>
+</table>
+
+<table width="878" border="0" cellspacing="0" cellpadding="0" summary=" ">
+	<tr>
+		<td bgcolor="#f0f0f0" align="center">
+
+		<!--{if count($search_data) > 0}-->		
+
+			<table width="840" border="0" cellspacing="0" cellpadding="0" summary=" ">
+				<tr><td height="12"></td></tr>
+				<tr>
+					<td bgcolor="#cccccc">
+					<!--検索結果表示テーブル-->
+					<table width="840" border="0" cellspacing="1" cellpadding="5" summary=" ">
+						<tr bgcolor="#636469" align="center" class="fs10n">
+							<td width="10" rowspan="2"><span class="white">種別</span></td>
+							<td width="150"><span class="white">顧客コード</span></td>
+							<td width="300" rowspan="2"><span class="white">顧客名/（カナ）</span></td>
+							<td width="30" rowspan="2"><span class="white">性別</span></td>
+							<td width="250"><span class="white">TEL</span></td>
+							<td width="50" rowspan="2"><span class="white">編集</span></td>
+							<td width="50" rowspan="2"><span class="white">削除</span></td>
+						</tr>
+						<tr bgcolor="#636469" align="center" class="fs12n">
+							<td width=""><span class="white">都道府県</span></td>
+							<td width=""><span class="white">メールアドレス</span></td>
+						</tr>
+						<!--{section name=data loop=$search_data}-->
+							<!--顧客<!--{$smarty.section.data.iteration}-->-->
+							<tr bgcolor="#ffffff" class="fs10n">
+								<td width="" rowspan="2"><!--{if $search_data[data].status eq 1}-->仮<!--{else}-->本<!--{/if}--></td>
+								<td width=""><!--{$search_data[data].customer_id|escape}--></td>
+								<td width="" rowspan="2"><!--{$search_data[data].name01|escape}--> <!--{$search_data[data].name02|escape}-->(<!--{$search_data[data].kana01|escape}--> <!--{$search_data[data].kana02|escape}-->)</td>
+								<td width="" align="center" rowspan="2"><!--{if $search_data[data].sex eq 1}-->男性<!--{else}-->女性<!--{/if}--></td>
+								<td width=""><!--{$search_data[data].tel01|escape}-->-<!--{$search_data[data].tel02|escape}-->-<!--{$search_data[data].tel03|escape}--></td>
+								<td width="" align="center" rowspan="2"><span class="icon_edit">
+									<a href="/" onclick="fnChangeAction('./edit.php'); fnModeSubmit('edit', 'edit_customer_id', <!--{$search_data[data].customer_id}-->); return false;">編集</a></span>
+								</td>
+								<td width="" align="center" rowspan="2"><span class="icon_delete"><a href="/" onclick="fnModeSubmit('delete', 'edit_customer_id', <!--{$search_data[data].customer_id}-->); return false;">削除</a></span></td>
+							</tr>
+							<tr bgcolor="#ffffff" class="fs12n">
+								<td width=""><!--{assign var=pref value=$search_data[data].pref}--><!--{$arrPref[$pref]}--></td>
+								<td width=""><!--{mailto address=$search_data[data].email encode="javascript"}--></a></td>
+							</tr>
+							<!--顧客<!--{$smarty.section.data.iteration}-->-->
+						<!--{/section}-->
+					</table>
+					<!--検索結果表示テーブル-->
+					</td>
+				</tr>
+			</table>
+
+		<!--{/if}-->
+
+		</td>
+	</tr>
+</form>
+</table>		
+<!--★★検索結果一覧★★-->		
+
+<!--{/if}-->

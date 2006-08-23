@@ -1,0 +1,106 @@
+@charset "euc-jp";
+
+/***コンテンツ***/
+#containerfull #maintitle{
+border: 0;
+margin: 0 0 15px 0;
+padding: 0;
+width: 700px;
+}
+
+#containerfull #subtitle01{
+border: 0;
+margin: 0 0 0 0;
+padding: 0;
+width: 700px;
+}
+
+#containerfull #subtitle02{
+border: 0;
+margin: 30px 0 15px 0;
+padding: 0;
+width: 700px;
+}
+
+/**テーブル**/
+/*枠*/
+#containerfull #frame{
+border: 0;
+margin: 0;
+padding: 0;
+width: 700px;
+background: #ccc;
+}
+
+/*コメント*/
+#containerfull #comment01{
+border: 0;
+margin: 20px 0;
+padding: 0;
+width: 700px;
+}
+
+#containerfull #comment02{
+border: 0;
+margin: 20px 0;
+padding: 0;
+width: 700px;
+}
+
+/*お支払方法の指定タイトル行*/
+#containerfull #frame #select{
+width: 100px;
+background: #ecf5ff;
+text-align: center;
+}
+
+#containerfull #frame #payment{
+width: 577px;
+background: #ecf5ff;
+text-align: center;
+}
+
+/*お支払方法の指定コンテンツ行*/
+#containerfull #frame #select_c{
+width: 100px;
+background: #fff;
+text-align: center;
+}
+
+#containerfull #frame #payment_c{
+width: 577px;
+background: #fff;
+}
+
+/*お届け時間の指定*/
+#containerfull #time01{
+border: solid 3px #cddff1;
+margin: 0;
+padding: 0;
+width: 700px;
+background: #f3f9ff;
+}
+
+#containerfull #time02{
+border: solid 3px #cddff1;
+margin: 15px 0 0 0;
+padding: 0;
+width: 700px;
+background: #fff;
+}
+
+/*ボタン*/
+#containerfull #button{
+border: 0;
+margin: 30px 0 15px 0;
+padding: 0;
+text-align: center;
+}
+
+/*ベリサイン*/
+#containerfull #verisign{
+border: 0;
+margin: 35px 65px;
+padding: 0;
+width: 570px;
+}

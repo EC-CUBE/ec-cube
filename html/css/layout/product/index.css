@@ -1,0 +1,125 @@
+@charset "euc-jp";
+
+/***右コンテンツ***/
+#container #right #maintitle{
+border: 0;
+margin: 0 0 15px 0;
+padding: 0;
+width: 570px;
+}
+
+#container #right #contents{
+border: 0;
+margin: 0;
+padding: 0;
+width: 570px;
+}
+
+#container #right #contents #left{
+width: 281px;
+}
+
+#container #right #contents #spacer{
+width: 8px;
+}
+
+#container #right #contents #right{
+width: 281px;
+}
+
+/*BEST1*/
+#container #right #bestone{
+border: 0;
+margin: 0;
+padding: 0;
+width: 570px;
+text-align: left;
+}
+
+#container #right #bestone #left{
+width: 262px;
+}
+
+#container #right #bestone #spacer{
+width: 8px;
+}
+
+#container #right #bestone #right{
+width: 300px;
+}
+
+#container #right #bestone #right #contents{
+border: 0;
+margin: 0;
+padding: 0;
+width: 300px;
+}
+
+#container #right #bestone #right #title{
+border: 0;
+background: #f0f0f0;
+margin: 0;
+padding: 8px;
+text-align: left;
+width: 284px; 
+voice-family: "\"}\""; 
+voice-family: inherit;
+width: 300px;
+}
+
+html>body #container #right #bestone #right #title {
+width:284px;
+}
+
+#container #right #bestone #left #picture{
+border-width: 1px;
+border-style: solid;
+border-color: #ccc;
+margin: 0;
+padding: 0;
+}
+
+/*BEST2*/
+#container #right #besttwo{
+border: 0;
+margin: 0;
+padding: 0;
+width: 281px;
+text-align: left;
+}
+
+#container #right #besttwo #left{
+width: 132px;
+}
+
+#container #right #besttwo #spacer{
+width: 9px;
+}
+
+#container #right #besttwo #right{
+width: 140px;
+}
+
+#container #right #besttwo #right #title{
+border: 0;
+background: #f0f0f0;
+margin: 0;
+padding: 8px;
+text-align: left;
+width: 124px; 
+voice-family: "\"}\""; 
+voice-family: inherit;
+width: 140px;
+}
+
+html>body #container #right #besttwo #right #title {
+width:124px;
+}
+
+#container #right #besttwo #left #picture{
+border-width: 1px;
+border-style: solid;
+border-color: #ccc;
+margin: 0;
+padding: 0;
+}

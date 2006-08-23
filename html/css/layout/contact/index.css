@@ -1,0 +1,52 @@
+@charset "euc-jp";
+/***お問い合わせ***/
+
+
+/***右コンテンツ***/
+#container #right #maintitle{
+border: 0;
+margin: 0 0 15px 0;
+padding: 0;
+width: 570px;
+}
+
+#container #right #subtitle01{
+border: 0;
+margin: 0 0 8px 0;
+padding: 0;
+width: 570px;
+}
+
+#container #right #subtitle02{
+border: 0;
+margin: 0 0 8px 0;
+padding: 0;
+width: 570px;
+}
+
+/*テーブル*/
+#container #right #frame{
+border: 0;
+margin: 0;
+padding: 0;
+width: 570px;
+background: #ccc;
+}
+
+#container #right #frame #left{
+background: #ecf5ff;
+width: 170px;
+}
+
+#container #right #frame #right{
+background: #fff;
+width: 357px;
+}
+
+/*ボタン*/
+#container #right #button{
+border: 0;
+margin: 20px 0 35px 0;
+padding: 0;
+text-align: center;
+}

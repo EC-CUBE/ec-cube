@@ -1,0 +1,143 @@
+@charset "euc-jp";
+/***ポイント制度について***/
+
+/***右コンテンツ***/
+#container #right #maintitle{
+border: 0;
+margin: 0 0 15px 0;
+padding: 0;
+width: 570px;
+}
+
+#container #right #top{
+border: 0;
+margin: 20px 0 15px 0;
+padding: 0;
+text-align: right;
+width: 570px;
+}
+
+#container #right #exsample_text{
+border: 0;
+margin: 5px 10px 15px 10px;
+padding: 0;
+text-align: right;
+width: 550px;
+}
+
+
+/*ポイントの特徴*/
+#container #right #subtitle{
+border-width: 0 0 1px 0;
+border-style: solid;
+border-color: #b3aa82;
+margin: 15px 0 15px 0;
+padding: 0;
+width: 554px;
+background: #eeece3;
+}
+
+#container #right #subtitle img{
+margin: 10px;
+}
+
+/*テーブル*/
+#container #right #frame{
+border: 0;
+margin: 0 10px;
+padding: 0;
+width: 550px;
+background: #fff;
+}
+
+
+#container #right #frame02{
+border-top: 1px solid #ccc;
+border-right: 1px solid #ccc;
+border-bottom: 1px solid #ccc;
+border-left: 1px solid #ccc;
+margin: 10px 10px 0 10px;
+padding: 0;
+width: 546px;
+background: #efefef;
+text-align: center;
+}
+
+
+#container #right #frame02 img{
+margin: 10px;
+}
+
+
+
+#container #right #frame03{
+border: 0;
+margin: 10px 10px 30px 10px;
+padding: 0;
+width: 550px;
+background: #cccccc;
+}
+
+#container #right #frame03 #blue{
+border: 0;
+margin: 0 10px;
+padding: 0;
+width: 548px;
+background: #ecf5ff;
+}
+
+#container #right #frame03 #blue #pagesubtitle{
+border: 0;
+margin: 10px;
+padding: 0;
+width: 528px;
+}
+
+#container #right #frame04{
+border: 0;
+margin: 10px;
+padding: 0;
+width: 550px;
+background: #cccccc;
+text-align: center;
+}
+
+#container #right #frame04 #gray{
+border: 0;
+margin: 0;
+padding: 0;
+width: 548px;
+background: #efefef;
+}
+
+#container #right #frame04 #gray #exsample{
+border: 0;
+margin: 10px;
+}
+
+
+/*ボタン*/
+#container #right #button{
+border: 0;
+margin: 30px 0 15px 0;
+padding: 0;
+text-align: center;
+}
+
+
+/*テーブルの幅指定*/
+#container #right #frame #left02{
+width: 10px;
+}
+
+#container #right #frame #right02{
+width: 540px;
+}
+
+#container #right #frame03 #blue #pagesubtitle #left04{
+width: 220x;
+}
+
+#container #right #frame03 #blue #pagesubtitle #right04{
+width: 308px;
+}

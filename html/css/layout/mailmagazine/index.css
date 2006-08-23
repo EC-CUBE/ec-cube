@@ -1,0 +1,93 @@
+@charset "euc-jp";
+
+/***右コンテンツ***/
+#container #right #maintitle{
+border: 0;
+margin: 0 0 15px 0;
+padding: 0;
+width: 570px;
+}
+
+#container #right #comment{
+border: 0;
+margin: 0 0 25px 0;
+padding: 0;
+width: 570px;
+}
+
+#container #right #comment02{
+border: 0;
+margin: 5px 0 5px 0;
+padding: 0;
+width: 570px;
+}
+
+/**テーブル**/
+#container #right #frame{
+border: 0;
+margin: 0;
+padding: 0;
+width: 570px;
+background: #ccc;
+}
+
+/*ご購読をご希望の方*/
+#container #entry01{
+border: solid 3px #cddff1;
+margin: 0;
+padding: 0;
+width: 564px;
+background: #f3f9ff;
+}
+
+#container #entry01 #entry_form{
+border: 0;
+margin: 0;
+padding: 0;
+width: 334px;
+}
+
+#container #entry01 #entry_button{
+border: 0;
+margin: 0;
+padding: 0;
+width: 190px;
+}
+
+#container #entry01 #entry02{
+border: 0;
+margin: 0px;
+padding: 0;
+width: 330px;
+}
+
+/*配信停止をご希望の方*/
+#container #entry03{
+border: solid 3px #cddff1;
+margin: 0 0 30px 0;
+padding: 0;
+width: 564px;
+background: #f3f9ff;
+}
+
+#container #entry03 #entry_form02{
+border: 0;
+margin: 0;
+padding: 0;
+width: 334px;
+}
+
+/*イメージ例画像*/
+#container #right #image{
+border: 0;
+margin: 20px 0 0 0;
+padding: 0;
+text-align: center;
+}
+
+/*ライン*/
+#container #right #line{
+border: 0;
+margin: 25px 0 20px 0;
+padding: 0;
+}

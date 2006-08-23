@@ -1,0 +1,30 @@
+@charset "euc-jp";
+
+/***エラーＣＳＳ***/
+
+/***コンテンツ***/
+/*枠*/
+#containerfull #frame{
+border: 0;
+margin: 50px 100px;
+padding: 0;
+width: 500px;
+background: #ccc;
+}
+
+/*タイトル行*/
+#containerfull #frame #left{
+background: #fff;
+text-align: center;
+height:150px;
+}
+
+
+
+/*ボタン*/
+#containerfull #button{
+border: 0;
+margin: 30px 0;
+padding: 0;
+text-align: center;
+}

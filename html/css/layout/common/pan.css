@@ -1,0 +1,20 @@
+@charset "euc-jp"; 
+
+/*パンくず*/
+#pan{
+border-width: 0 0 1px 0;
+border-style: solid;
+border-color: #ccc;
+background: #f0f0f0;
+margin: 0;
+padding: 10px;
+text-align: left;
+width: 100%; 
+voice-family: "\"}\""; 
+voice-family: inherit;
+width: 100%;
+}
+
+html>body #pan {
+width:100%;
+} 

@@ -1,0 +1,29 @@
+<script type="text/javascript">
+<!--
+/* [関数名] getInputLength
+* [機　能] 入力文字数をリアルタイム表示
+* [説　明] 半角も全角も1文字としてカウント。改行はノーカウント。
+* [引　数]
+* @param string 文字列
+* [返り値] なし
+*/
+function getInputLength(val){
+    var len = val.length; /* 入力された文字列の長さ */
+    var cnt=x=y=0;
+    for(i=0; ;cnt++){
+        /* 改行のがいくつあるカウント */
+        x = val.indexOf("\n",y);
+         if(x==-1) break;
+         y=x+2;
+    }
+    /* 改行はカウントせず、文字数のみ表示 */
+    document.form11.elements["strlength"].value = len - (cnt * 2);
+}
+//-->
+</script>
+<form name="form11">
+入力した文字列の文字数が、下のテキスト内に表示されます<br>
+<textarea name="area" cols="60" rows="5" wrap="soft" onKeyup="getInputLength(this.value)"></textarea>
+<br>
+入力された文字数：<input type=text size="3" name="strlength" readonly>
+</form>

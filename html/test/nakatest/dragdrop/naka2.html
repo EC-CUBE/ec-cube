@@ -1,0 +1,91 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<!-- saved from url=(0054)http://www.res-system.com/weblog/media/1/dragdrop.html -->
+<HTML><HEAD><TITLE>DragDrop Sample</TITLE>
+<META http-equiv=Content-Type content="text/html; charset=EUC-JP">
+<SCRIPT src="./js/dragdrop.js" type=text/javascript></SCRIPT>
+
+<STYLE TYPE="text/css">
+<!--
+.style_item0{
+	BORDER-RIGHT: #000000 1px solid;
+	BORDER-TOP: #000000 1px solid;
+	BORDER-LEFT: #000000 1px solid;
+	BORDER-BOTTOM: #000000 1px solid;
+	PADDING-RIGHT: 5px;
+	PADDING-LEFT: 5px;
+	PADDING-BOTTOM: 5px;
+	PADDING-TOP: 5px;	
+	CURSOR: move;
+	POSITION: absolute;
+	BACKGROUND-COLOR: #aaaaff;
+	TEXT-ALIGN: center;
+}
+
+.style_item1{
+	BORDER-RIGHT: #000000 1px solid;
+	BORDER-TOP: #000000 1px solid;
+	BORDER-LEFT: #000000 1px solid;
+	BORDER-BOTTOM: #000000 1px solid;
+	PADDING-RIGHT: 5px;
+	PADDING-LEFT: 5px;
+	PADDING-BOTTOM: 5px;
+	PADDING-TOP: 5px;	
+	CURSOR: move;
+	POSITION: absolute;
+	BACKGROUND-COLOR: #ffaaaa;
+	TEXT-ALIGN: center;
+}
+
+.style_item2{
+	BORDER-RIGHT: #000000 1px solid;
+	BORDER-TOP: #000000 1px solid;
+	BORDER-LEFT: #000000 1px solid;
+	BORDER-BOTTOM: #000000 1px solid;
+	PADDING-RIGHT: 5px;
+	PADDING-LEFT: 5px;
+	PADDING-BOTTOM: 5px;
+	PADDING-TOP: 5px;	
+	CURSOR: move;
+	POSITION: absolute;
+	BACKGROUND-COLOR: #aaffaa;
+	TEXT-ALIGN: center;
+}
+
+.style_flame{
+	POSITION: absolute;
+}
+
+-->
+</STYLE>
+
+<META content="MSHTML 6.00.2900.2873" name=GENERATOR></HEAD>
+<BODY>
+<table>
+	<tr><td height="200"></td></tr>
+</table>
+<table width="500" bgcolor="#cccccc"  border="0" cellspacing="1" cellpadding="10" summary=" ">
+<form name="form1" id="form1" method="post" action="./recv_post.php" onsubmit="preSubmit()">
+<input type="hidden" name="item0" value="0">
+<input type="hidden" name="item1" value="0">
+<input type="hidden" name="item2" value="0">
+	<tr>
+		<td bgcolor="#f5f5f5" align="center">カゴに入れる</td>
+	</tr>
+	<tr>
+		<td height="250" id="td1" bgcolor="#ffffff"><DIV id="flame0" class="style_flame" style="TOP: 250px; LEFT: 10px; WIDTH: 500px; HEIGHT: 250px;"></DIV></td>
+	</tr>
+</table>
+<table width="500">
+	<tr><td height="5"></td></tr>
+	<tr><td align="center"><input type="submit" name="subm" value="アイテムの状況を送信"></td></tr>
+</form>
+</table>
+
+<DIV id="item0" class="style_item0" style="TOP: 50px; LEFT: 45px; WIDTH: 100px; HEIGHT: 135px;">
+<img src="./img/item0.jpg"></DIV>
+<DIV id="item1" class="style_item1" style="TOP: 50px; LEFT: 195px; WIDTH: 100px; HEIGHT: 75px;">
+<img src="./img/item1.jpg"></DIV>
+<DIV id="item2" class="style_item2" style="TOP: 50px; LEFT: 345px; WIDTH: 100px; HEIGHT: 75px;">
+<img src="./img/item2.jpg"></DIV>
+</BODY>
+</HTML>

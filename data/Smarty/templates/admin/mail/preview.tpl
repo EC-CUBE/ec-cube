@@ -1,0 +1,1 @@
+<!--{if $escape_flag eq 1}--><!--{$body|escape|nl2br}--><!--{else}--><!--{$body}--><!--{/if}-->

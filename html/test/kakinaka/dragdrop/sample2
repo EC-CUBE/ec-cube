@@ -1,0 +1,28 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<HTML LANG="ja">
+<HEAD>
+<TITLE></TITLE>
+<META HTTP-EQUIV="Content-Type" CONTENT="text/html;charset=Shift_JIS">
+<SCRIPT TYPE="text/javascript" LANGUAGE="JavaScript">
+<!--
+
+//-->
+</SCRIPT>
+<STYLE TYPE="text/css">
+<!--
+.DragWinHandle{behavior:url(draghandle.htc)}
+-->
+</STYLE>
+</HEAD>
+<BODY>
+<div id="Win1" style="width:200px;height:150px;background-color:menu;padding:5px">
+<div class="DragWinHandle" DragWin="Win1" style="width:190px;height:1em;background-color:activeCaption;color:captionText;">
+｡｡Write-Off!!
+</div>
+<small>､ｳ､ﾎ･ｦ･､･ﾉ･ｦ､ﾎ･ｿ･､･ﾈ･�･ﾐ｡ｼ(ﾀﾄ､､､ﾈ､ｳ､�)､ﾄ､ｫ､ﾇ･ﾉ･鬣ﾃ･ｰ･｢･ﾉ･ﾉ･愠ﾃ･ﾗ､ｬ､ﾇ､ｭ､ﾞ､ｹ｡｣</small>
+</div>
+
+<div class="DragWinHandle" DragWin="Win2" id="Win2" style="width:100px;height:100px;background:red">
+</div>
+</BODY>
+</HTML>
