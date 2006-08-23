@@ -21,6 +21,14 @@ for($i = 0; $i < 256; $i++) {
 }
 print("\n");
 flush();
+
+$cnt = 0;
+while($cnt < 100) {
+	print("a");
+	flush();
+	sleep(1);
+	$cnt++;
+}
 /*
 if(!$fp) {
 	sfErrorHeader(">> " . $path . "の取得に失敗しました。");
