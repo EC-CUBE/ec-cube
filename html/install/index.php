@@ -170,6 +170,7 @@ function lfDispStep0($objPage) {
 		"html/user_data",
 		"html/upload",
 		"data/Smarty/templates_c",
+		"data/Smarty/templates_c/admin",		
 		"data/update",
 		"data/logs",
 	);
