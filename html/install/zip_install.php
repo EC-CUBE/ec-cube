@@ -80,12 +80,8 @@ if(!$fp) {
 			$img_cnt++;
 		}
 	}
-	
-	print($cnt - 1 . "/" . $line);
-	
 	fclose($fp);
 	print("<img src='/img/install/space_w.gif'>");
+	print($cnt - 1 . "/" . $line);
 }
-
-
 ?>
