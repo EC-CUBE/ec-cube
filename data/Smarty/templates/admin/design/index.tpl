@@ -276,7 +276,7 @@ var MainHeight = 190;
 
 var marginUnused 	= 690;	// 未使用領域の左マージン
 var marginLeftNavi  = 180;	// 左ナビの左マージン
-var marginRightNavi = 515;	// 右ナビの左マージン
+var marginRightNavi = 512;	// 右ナビの左マージン
 var marginMain		= 348;	// メイン上下の左マージン
 var marginMainFootTop= 595;	// メイン下の上マージン
 
