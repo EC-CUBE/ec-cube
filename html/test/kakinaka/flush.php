@@ -1,11 +1,17 @@
 <?php
 
 print("aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaatest");
-flush();
+  flush();
+  ob_end_flush();
+  ob_start();
+
 
 sleep(2);
 
 print("aa");
-flush();
+  flush();
+  ob_end_flush();
+  ob_start();
+
 
 ?>
