@@ -124,7 +124,7 @@ if ($_POST['mode'] == 'confirm' or $_POST['mode'] == 'preview') {
 	if ($_POST['mode'] == 'preview') {
 		
 		if ($page_id == "") {
-			header("location: ./index.php?page_id");
+			header("location: ./index.php");
 		}
 		sfprintr($page_id);
 		exit;
