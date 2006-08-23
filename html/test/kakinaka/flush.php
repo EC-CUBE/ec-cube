@@ -10,7 +10,6 @@ for($i = 0; $i < 100; $i++){
 
 function MyFlush() {
 	flush();
-	sleep(1);
 }
 
 
