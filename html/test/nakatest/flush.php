@@ -2,6 +2,7 @@
 
 print("test");
 flush();
+flush();
 
 sleep(2);
 
