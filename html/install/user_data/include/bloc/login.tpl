@@ -3,7 +3,7 @@
 	<!--{assign var=url value="`$smarty.server.REQUEST_URI`"}-->
 <!--{else}-->
 	<!--{assign var=url value="`$smarty.post.url`"}-->
-<!--{/if}-->
+<!--{/if}-->aaaaaaaaaaaa
 <table width="166" border="0" cellspacing="0" cellpadding="0" summary=" ">
 <form name="login_form" id="login_form" method="post" action="/frontparts/login_check.php" onsubmit="return fnCheckLogin('login_form')">
 <input type="hidden" name="mode" value="login">
