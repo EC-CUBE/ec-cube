@@ -8,10 +8,10 @@ define("IMAGE_MAX", 680);	// 画像の表示個数
 $path = ROOT_DIR . "html/install/KEN_ALL.CSV";
 
 $objQuery = new SC_Query();
-$objSess = new SC_Session();
+//$objSess = new SC_Session();
 
 // 認証可否の判定
-sfIsSuccess($objSess);
+//sfIsSuccess($objSess);
 
 $fp = fopen($path, "r");
 
