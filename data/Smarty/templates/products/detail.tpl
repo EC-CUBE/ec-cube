@@ -277,15 +277,20 @@ function lnSetSelect(form, name1, name2, val) {
 				<!--▼オススメ商品ここから-->
 				<table width="580" border="0" cellspacing="0" cellpadding="0" summary=" ">
 					<tr>
-						<td colspan=2><img src="/img/products/title_recommend.jpg" width="570" height="33" alt="オススメ商品" /></td>
+						<td colspan=3><img src="/img/products/title_recommend.jpg" width="570" height="33" alt="オススメ商品" /></td>
 					</tr>
-					<tr><td colspan=2 height="10"></td></tr>
+					<tr><td colspan=3 height="10"></td></tr>
 					<tr>
 
 					<!--{section name=cnt loop=$arrRecommend step=2}-->
 					<!--{if $smarty.section.cnt.index >= 2}-->
-
+					<tr>
+						<td height="25"><img src="../img/right_product/recommend_line.gif" width="270" height="1" alt="" /></td>
+						<td id="spacer"></td>
+						<td align="right"><img src="../img/right_product/recommend_line.gif" width="270" height="1" alt="" /></td>
+					</tr>
 					<!--{/if}-->
+					
 					<tr valign="top">
 						<td>
 							<!-- 左列 -->
@@ -317,6 +322,9 @@ function lnSetSelect(form, name1, name2, val) {
 							<!-- 左列 -->
 						</td>
 						<!--{assign var=nextCnt value=$smarty.section.cnt.index+1}-->
+						
+						<td id="spacer"></td>
+						
 						<td>
 						<!--{if $arrRecommend[$nextCnt].product_id}-->
 						
@@ -351,7 +359,7 @@ function lnSetSelect(form, name1, name2, val) {
 						</td>
 					</tr>
 					<!--{/section}-->
-					<tr><td colspan=2 height="25"></td></tr>
+					<tr><td colspan=3 height="25"></td></tr>
 				</table>
 				<!--{/if}-->
 				<!--▲オススメ商品ここまで-->
