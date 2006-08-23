@@ -254,7 +254,7 @@
 								<td width="45" align="center"><input type="text" name="quantity[]" value="<!--{$arrForm.quantity.value[$key]|escape}-->" size="3" class="box3" maxlength="<!--{$arrForm.quantity.length}-->"/></td>
 								<!--{assign var=price value=`$arrForm.price.value[$key]`}-->
 								<!--{assign var=quantity value=`$arrForm.quantity.value[$key]`}-->
-								<td width="84" align="center"><!--{$price|sfPreTax:$arrInfo.tax:$arrInfo.tax_rule|number_format}--> ±ß</td>
+								<td width="84" align="right"><!--{$price|sfPreTax:$arrInfo.tax:$arrInfo.tax_rule|number_format}--> ±ß</td>
 								<td width="94" align="right"><!--{$price|sfPreTax:$arrInfo.tax:$arrInfo.tax_rule|sfMultiply:$quantity|number_format}-->±ß</td>
 							</tr>
 							<!--{/section}-->
