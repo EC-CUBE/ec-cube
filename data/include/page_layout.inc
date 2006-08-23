@@ -25,16 +25,14 @@ function sfGetPageLayout($objPage, $preview = false, $url = ""){
 		$objPage->tpl_mainpage = ROOT_DIR . $arrPageData[0]['tpl_dir'] . $arrPageData[0]['filename'] . ".tpl";
 	}
 	
+	sfprintr($arrPageData);
+	
 	// ページタイトルを設定
 	if (!isset($objPage->tpl_title)) {
 		$objPage->tpl_title = $arrPageData[0]['page_name'];
 	}
 
 	$arrPageLayout = $arrPageData[0];
-
-	// header,footerの使用判断
-	//$arrPageLayout['header_chk'] = $arrPageData[0]['header_chk'];
-	//$arrPageLayout['footer_chk'] = $arrPageData[0]['footer_chk'];
 
 	// 全ナビデータを取得する
 	$arrNavi = lfGetNaviData($url, $preview);
