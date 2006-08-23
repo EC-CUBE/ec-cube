@@ -1,6 +1,6 @@
 <?php
 
-print("test");
+print("                                                                                                                                                                                                                                                                test");
   MyFlush();
 
 for($i = 0; $i < 100; $i++){
