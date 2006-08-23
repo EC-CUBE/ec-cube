@@ -274,10 +274,10 @@ var defMain   = 190;	// メインのデフォルトの高さ
 var NowMaxHeight = 0;		// 現在の最大の高さ
 var MainHeight = 190;
 
-var marginUnused 	= 640;	// 未使用領域の左マージン
-var marginLeftNavi  = 130;	// 左ナビの左マージン
-var marginRightNavi = 465;	// 右ナビの左マージン
-var marginMain		= 298;	// メイン上下の左マージン
+var marginUnused 	= 738;	// 未使用領域の左マージン
+var marginLeftNavi  = 228;	// 左ナビの左マージン
+var marginRightNavi = 563;	// 右ナビの左マージン
+var marginMain		= 396;	// メイン上下の左マージン
 var marginMainFootTop= 595;	// メイン下の上マージン
 
 var gDragged = "";			// ドラッグ中オブジェクト
