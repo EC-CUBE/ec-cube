@@ -25,8 +25,6 @@ function sfGetPageLayout($objPage, $preview = false, $url = ""){
 		$objPage->tpl_mainpage = ROOT_DIR . $arrPageData[0]['tpl_dir'] . $arrPageData[0]['filename'] . ".tpl";
 	}
 	
-	sfprintr($arrPageData);
-	
 	// ページタイトルを設定
 	if (!isset($objPage->tpl_title)) {
 		$objPage->tpl_title = $arrPageData[0]['page_name'];
