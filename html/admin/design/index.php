@@ -41,6 +41,8 @@ $where .= "lay.page_id = pos.page_id AND exists (select bloc_id from dtb_bloc as
 $arrData = array($page_id);
 $arrBlocPos = lfgetLayoutData($sel, $from, $where, $arrData );
 
+sfprintr($arrBlocPos);
+
 // ブロックを取得
 $arrBloc = lfgetBlocData();
 
@@ -82,7 +84,7 @@ if ($_POST['mode'] == 'confirm' or $_POST['mode'] == 'preview') {
 		$arrUpdBlocData[$upd_cnt]['top'] 		= $_POST['top_'.$upd_cnt];							// TOP座標
 		$arrUpdBlocData[$upd_cnt]['update_url']	= $_SERVER['HTTP_REFERER'];							// 更新URL
 	}
-	
+
 	// データの更新を行う
 	$objDBConn = new SC_DbConn;		// DB操作オブジェクト
 	$arrRet = array();				// データ取得用
