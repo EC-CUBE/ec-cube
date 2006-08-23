@@ -120,6 +120,7 @@ if ($_POST['mode'] == 'confirm' or $_POST['mode'] == 'preview') {
 		$arrRet = $objDBConn->query($ins_sql,$arrInsData);
 	}
 
+	// プレビュー処理
 	if ($_POST['mode'] == 'preview') {
 		
 		lfSetPreData($arrPageData);
