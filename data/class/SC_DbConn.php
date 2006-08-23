@@ -20,10 +20,10 @@ class SC_DbConn{
 		if(!isset($objDbConn->connection)) {
 			if($dsn != "") {
 				$objDbConn = DB::connect($dsn);
-				$this->dns = $dsn;
+				$this->dsn = $dsn;
 			} else {
 				$objDbConn = DB::connect(DEFAULT_DSN);
-				$this->dns = DEFAULT_DSN;
+				$this->dsn = DEFAULT_DSN;
 			}
 		}
 		$this->conn = $objDbConn;
