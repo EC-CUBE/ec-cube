@@ -29,7 +29,6 @@ function sfGetPageLayout($objPage, $preview = false, $url = ""){
 	if (!isset($objPage->tpl_title)) {
 		$objPage->tpl_title = $arrPageData[0]['page_name'];
 	}
-	exit;
 
 	$arrPageLayout = $arrPageData[0];
 
