@@ -287,7 +287,7 @@ function lnSetSelect(form, name1, name2, val) {
 					<tr>
 						<td height="25"><img src="../img/right_product/recommend_line.gif" width="250" height="1" alt="" /></td>
 						<td></td>
-						<td align="right"><img src="../img/right_product/recommend_line.gif" width="250" height="1" alt="" /></td>
+						<td align="left"><img src="../img/right_product/recommend_line.gif" width="250" height="1" alt="" /></td>
 					</tr>
 					<!--{/if}-->
 					
