@@ -9,9 +9,9 @@ class SC_DbConn{
 	var $conn;
 	var $result; 
 	var $includePath;
-	
 	var $error_mail_to;
 	var $error_mail_title;
+	var $dsn;
 	
 	// コンストラクタ
 	function SC_DbConn($dsn = ""){
@@ -20,8 +20,10 @@ class SC_DbConn{
 		if(!isset($objDbConn->connection)) {
 			if($dsn != "") {
 				$objDbConn = DB::connect($dsn);
+				$this->dns = $dsn;
 			} else {
 				$objDbConn = DB::connect(DEFAULT_DSN);
+				$this->dns = DEFAULT_DSN;
 			}
 		}
 		$this->conn = $objDbConn;

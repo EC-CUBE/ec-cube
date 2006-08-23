@@ -6,6 +6,6 @@
     define ('DOMAIN_NAME', '.lockon.co.jp');
     define ('DB_USER', 'eccube_db_user');
     define ('DB_PASSWORD', 'password');
-    define ('DB_SERVER', '127.0.0.1');
+    define ('DB_SERVER', 'naka.lockon.co.jp');
     define ('DB_NAME', 'eccube_db');
 ?>
