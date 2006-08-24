@@ -266,7 +266,7 @@ if ($_POST['mode'] == "search" || $_POST['mode'] == "csv"  || $_POST['mode'] == 
 			*/
 				$max = 10;
 			for($i = 0; $i < $max; $i++) {
-				$objPage->arrProducts[] = "dummy";
+				$objPage->arrProducts[$i]['product_id'] = $i;
 			}
 			
 			break;
