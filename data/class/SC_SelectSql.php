@@ -68,16 +68,16 @@ class SC_SelectSql {
 	function selectTermRange($from_year, $from_month, $from_day, $to_year, $to_month, $to_day, $column) {
 
 		sfprintr($from_year .":". $from_month.":". $from_day.":". $to_year.":". $to_month.":". $to_day);
+		$date1 = date("Y/m/d", mktime(0,0,0,$from_month,$from_day,$from_year));
+		$date2 = date("Y/m/d", mktime(0,0,0,$to_month,$to_day,$to_year));
 		
-		// 開始期間だけ指定の場合は本日登録分まで
+		sfprintr($date2);
+		
+		// 開始期間だけ指定の場合
 		if( ( $from_year != "" ) && ( $from_month != "" ) && ( $from_day != "" ) &&	( $to_year == "" ) && ( $to_month == "" ) && ( $to_day == "" ) ) {
-//			list( $date1, $date2, $err ) = sfCheckSetTerm( $from_year, $from_month, $from_day, date("Y"), date("m"), date("d") );
-//  			if ( ! $err ) {
-//				$this->setWhere( $column ." BETWEEN ? AND ?" );
-				$date1 = date("Y/m/d", mktime(0,0,0,$from_month,$from_day,$from_year));
-				$this->setWhere( $column ." >= ?" );
-				$return = array($date1);
- // 			}
+			$date1 = date("Y/m/d", mktime(0,0,0,$from_month,$from_day,$from_year));
+			$this->setWhere( $column ." >= ?" );
+			$return = array($date1);
 		}
 
 		//　開始~終了
