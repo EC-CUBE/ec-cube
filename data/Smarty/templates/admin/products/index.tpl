@@ -242,7 +242,11 @@
 			
 						<!--{section name=cnt loop=$arrProducts}-->
 						<!--¢§¾¦ÉÊ<!--{$smarty.section.cnt.iteration}-->-->
+						<!--{assign var=status value="`$arrProducts[cnt].status`"}-->
+						<tr bgcolor="<!--{$arrPRODUCTSTATUS_COLOR[$status]}-->" class="fs10">
+							<td rowspan="2" align="center"><!--{$arrProducts[cnt].product_id}--></td>
 
+						</tr>
 						<!--¢¥¾¦ÉÊ<!--{$smarty.section.cnt.iteration}-->-->
 						<!--{/section}-->
 						
