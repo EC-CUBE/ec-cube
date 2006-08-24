@@ -161,7 +161,7 @@ $arrProducts = Array
         )
 
 );
-$objPage->arrResults = $arrProducts;
+$objPage->arrProducts = $arrProducts;
 
 // 画面の表示
 $objView->assignobj($objPage);

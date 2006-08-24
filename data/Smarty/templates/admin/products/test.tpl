@@ -317,18 +317,50 @@
 						
 						<!--{section name=cnt loop=$arrProducts}-->
 						<!--{assign var=status value="`$arrResults[cnt].status`"}-->
-						<tr bgcolor="<!--{$arrORDERSTATUS_COLOR[$status]}-->" class="fs10n">
-							<td align="center"><!--{$arrResults[cnt].create_date|sfDispDBDate}--></td>
-							<td align="right"><!--{$arrResults[cnt].order_id}--></td>
-							<td><!--{$arrResults[cnt].order_name01|escape}--> <!--{$arrResults[cnt].order_name02|escape}--></td>
-							<!--{assign var=payment_id value="`$arrResults[cnt].payment_id`"}-->
-							<td align="center"><!--{$arrPayment[$payment_id]}--></td>
-							<td align="right"><!--{$arrResults[cnt].total|number_format}--></td>
-							<td align="center"><!--{$arrResults[cnt].commit_date|sfDispDBDate|default:"Ì¤È¯Á÷"}--></td>
-							<td align="center"><!--{$arrORDERSTATUS[$status]}--></td>
-							<td align="center"><a href="<!--{$smarty.server.PHP_SELF}-->" onclick="fnChangeAction('<!--{$smarty.const.URL_ORDER_EDIT}-->'); fnModeSubmit('pre_edit', 'order_id', '<!--{$arrResults[cnt].order_id}-->'); return false;"><span class="icon_edit">ÊÔ½¸</span></a></td>
-							<td align="center"><a href="<!--{$smarty.server.PHP_SELF}-->" onclick="fnChangeAction('<!--{$smarty.const.URL_ORDER_MAIL}-->'); fnModeSubmit('pre_edit', 'order_id', '<!--{$arrResults[cnt].order_id}-->'); return false;"><span class="icon_mail">ÄÌÃÎ</span></a></td>
-							<td align="center"><a href="<!--{$smarty.server.PHP_SELF}-->" onclick="fnModeSubmit('delete', 'order_id', <!--{$arrResults[cnt].order_id}-->); return false;"><span class="icon_delete">ºï½ü</span></a></td>
+						<tr bgcolor="<!--{$arrPRODUCTSTATUS_COLOR[$status]}-->" class="fs10">
+							<td rowspan="2" align="center"><!--{$arrProducts[cnt].product_id}--></td>
+							<td rowspan="2" align="center">
+							<!--{if $arrProducts[cnt].main_list_image != ""}-->
+								<!--{assign var=image_path value="`$smarty.const.IMAGE_SAVE_URL`/`$arrProducts[cnt].main_list_image`"}-->
+							<!--{else}-->
+								<!--{assign var=image_path value="`$smarty.const.NO_IMAGE_URL`"}-->
+							<!--{/if}-->
+							<img src="<!--{$image_path|sfRmDupSlash}-->" width="65" height="65" alt="<!--{$arrProducts[cnt].name|escape}-->" />
+							</td>
+							<td><!--{$arrProducts[cnt].product_code|escape|default:"-"}--></td>
+							<td><!--{$arrProducts[cnt].name|escape}--></td>
+							<td align="center">
+							<!--{* ºß¸Ë *}-->
+							<!--{if $arrProducts[cnt].stock_unlimited == '1'}-->
+							ÌµÀ©¸Â
+							<!--{else}-->
+							<!--{$arrProducts[cnt].stock|escape|default:"-"}-->
+							<!--{/if}-->
+							</td>
+							<td align="center" rowspan="2"><span class="icon_edit"><a href="/" onclick="fnChangeAction('./product.php'); fnModeSubmit('pre_edit', 'product_id', <!--{$arrProducts[cnt].product_id}-->); return false;" >ÊÔ½¸</a></span></td>
+							<td align="center" rowspan="2"><span class="icon_confirm"><a href="<!--{$smarty.const.SITE_URL|sfTrimURL}-->/products/detail.php?product_id=<!--{$arrProducts[cnt].product_id}-->&admin=on" target="_blank">³ÎÇ§</a></td>
+							<!--{if $smarty.const.OPTION_CLASS_REGIST == 1}-->
+							<td align="center" rowspan="2"><span class="icon_class"><a href="/" onclick="fnChangeAction('./product_class.php'); fnModeSubmit('pre_edit', 'product_id', <!--{$arrProducts[cnt].product_id}-->); return false;" >µ¬³Ê</a></td>
+							<!--{/if}-->
+							<td align="center" rowspan="2"><span class="icon_delete"><a href="/" onclick="fnSetFormValue('category_id', '<!--{$arrProducts[cnt].category_id}-->'); fnModeSubmit('delete', 'product_id', <!--{$arrProducts[cnt].product_id}-->); return false;">ºï½ü</a></span></td>
+						</tr>
+						<tr bgcolor="<!--{$arrPRODUCTSTATUS_COLOR[$status]}-->" class="fs10n">
+							<td align="right">
+							<!--{* ²Á³Ê *}-->
+							<!--{if $arrProducts[cnt].price02 != ""}-->
+							<!--{$arrProducts[cnt].price02|number_format}-->
+							<!--{else}-->
+							-
+							<!--{/if}-->
+							</td>
+							<td>
+							<!--{* ¥«¥Æ¥´¥êÌ¾ *}-->
+							<!--{assign var=key value=$arrProducts[cnt].category_id}-->
+							<!--{$arrCatList[$key]|sfTrim}-->
+							</td>
+							<!--{* É½¼¨ *}-->
+							<!--{assign var=key value=$arrProducts[cnt].status}-->
+							<td align="center"><!--{$arrDISP[$key]}--></td>
 						</tr>
 						<!--{/section}-->
 
