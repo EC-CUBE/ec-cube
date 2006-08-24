@@ -340,3 +340,4 @@ function MyFlush() {
 	ob_start();
 	sleep(1);
 }
+?>
