@@ -9,7 +9,7 @@ class LC_Page {
 	var $arrProducts;
 	var $arrPageMax;
 	function LC_Page() {
-		$this->tpl_mainpage = 'products/test.tpl';
+		$this->tpl_mainpage = 'products/index.tpl';
 		$this->tpl_mainno = 'products';
 		$this->tpl_subnavi = 'products/subnavi.tpl';
 		$this->tpl_subno = 'index';
@@ -48,8 +48,8 @@ $objPage->arrEndMonth = $objDate->getMonth();
 $objPage->arrEndDay = $objDate->getDay();
 
 // 認証可否の判定
-$objSess = new SC_Session();
-sfIsSuccess($objSess);
+//$objSess = new SC_Session();
+//sfIsSuccess($objSess);
 
 //キャンペーンの編集時
 if(sfIsInt($_POST['campaign_id']) && $_POST['mode'] == "camp_search") {
