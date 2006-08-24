@@ -12,7 +12,7 @@ class SC_Session {
 		// セッション開始
 		sfDomainSessionStart();
 		
-/*		// セッション情報の保存
+		// セッション情報の保存
 		if(isset($_SESSION['cert'])) {
 			$this->sid = session_id();
 			$this->cert = $_SESSION['cert'];
@@ -26,7 +26,6 @@ class SC_Session {
 			gfPrintLog("access error.");
 		}
 	}
-	*/
 	/* 認証成功の判定 */
 	function IsSuccess() {
 		global $arrPERMISSION;
