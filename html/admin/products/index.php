@@ -255,11 +255,6 @@ if ($_POST['mode'] == "search" || $_POST['mode'] == "csv"  || $_POST['mode'] == 
 			$objQuery->setorder($order);
 			// 検索結果の取得
 			$objPage->arrProducts = $objQuery->select($col, $from, $where, $arrval);
-//			$arrProducts = $objQuery->select($col, $from, $where, $arrval);
-			
-//			$objPage->arrTest = $arrProducts;
-			
-			$objPage->tpl_mainpage="products/test.tpl";
 
 			break;
 		}
