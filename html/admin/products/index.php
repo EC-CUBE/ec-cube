@@ -2,7 +2,6 @@
 
 require_once("../require.php");
 require_once("./index_csv.php");
-//require_once("../../require2.php");
 
 class LC_Page {
 	var $arrForm;
@@ -11,8 +10,6 @@ class LC_Page {
 	var $arrPageMax;
 	function LC_Page() {
 		$this->tpl_mainpage = 'products/index.tpl';
-//		$this->tpl_mainpage="products/test.tpl";
-
 		$this->tpl_mainno = 'products';
 		$this->tpl_subnavi = 'products/subnavi.tpl';
 		$this->tpl_subno = 'index';
@@ -31,7 +28,7 @@ class LC_Page {
 	}
 }
 
-
+$conn = new SC_DBConn();
 $objPage = new LC_Page();
 $objView = new SC_AdminView();
 $objDate = new SC_Date();
