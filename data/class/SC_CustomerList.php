@@ -166,7 +166,7 @@ class SC_CustomerList extends SC_SelectSql {
 		// 誕生月の検索
 		if (is_numeric($this->arrSql["search_birth_month"])) {
 			$this->setWhere(" EXTRACT(month from birth) = ?");  
-			$this->arrVal[] = $this->arrSql["birth_month"];
+			$this->arrVal[] = $this->arrSql["search_birth_month"];
 		}
 
 		// 登録期間指定
