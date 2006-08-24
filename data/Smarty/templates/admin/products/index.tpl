@@ -239,8 +239,7 @@
 							<td width="430"><span class="white">カテゴリ</span></td>
 							<td width="60"><span class="white">種別</span></td>
 						</tr>
-			
-						<!--{$arrTest}-->
+
 						<!--{section name=cnt loop=$arrTest}-->
 						<!--▼商品<!--{$smarty.section.cnt.iteration}-->-->
 						<!--{assign var=status value="`$arrProducts[cnt].status`"}-->
