@@ -1,29 +1,28 @@
-<!--¢ßCONTENTS-->
-<table width="780" border="0" cellspacing="0" cellpadding="0" summary=" ">
+<!--°˙°˙•·•§•Û•≥•Û•∆•Û•ƒ°˙°˙-->
+<table width="878" border="0" cellspacing="0" cellpadding="0" summary=" ">
 	<tr>
 		<td bgcolor="#ffffff" align="center" valign="top" height="400">
 		<table width="740" border="0" cellspacing="0" cellpadding="0" summary=" ">
 			<tr>
 				<!--¢ßSUB NAVI-->
-				<td class="fs12n">
-				<!--{include file=$tpl_subnavi}-->
-				</td>
+				<td class="fs12n"><!--{include file=$tpl_subnavi}--></td>
 				<!--¢•SUB NAVI-->
-				</tr><tr><td height="25"></td></tr>
+			</tr><tr><td height="25"></td></tr>
 		</table>
-
+		
 		<!--¢ßMAIN CONTENTS-->
 		<table width="740" border="0" cellspacing="0" cellpadding="0" summary=" ">
 			<tr>
-				<td class="fs14n"><strong>¢£æ¶… •ﬁ•π•ø</strong></td>
+				<td class="fs14n"><strong>¢£ºı√Ì¥…Õ˝</strong></td>
 			</tr>
 			<tr height="15">
 				<td></td>
 			</tr>
 		</table>
-
-<form name="search_form" id="search_form" method="post" action="<!--{$smarty.server.PHP_SELF}-->">
-<input type="hidden" name="mode" value="search">
+		
+		<form name="search_form" id="search_form" method="post" action="<!--{$smarty.server.PHP_SELF}-->">
+		<input type="hidden" name="mode" value="search">
+		
 		<!--¢ß∏°∫˜•∆°º•÷•Î§≥§≥§´§È-->
 		<table width="740" border="0" cellspacing="1" cellpadding="5" summary=" " bgcolor="#cccccc">
 			<tr class="fs12n">
