@@ -265,7 +265,7 @@ if ($_POST['mode'] == "search" || $_POST['mode'] == "csv"  || $_POST['mode'] == 
 		}
 	}
 }
-
+*/
 $arrProducts = Array
 (
     '0' => Array
@@ -408,7 +408,7 @@ $arrProducts = Array
 
 );
 
-*/
+
 $objPage->arrProducts = $arrProducts;
 /*
 
