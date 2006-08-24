@@ -29,6 +29,7 @@ class LC_Page {
 }
 
 $objPage = new LC_Page();
+$objView = new SC_View();
 
 session_start();
 
