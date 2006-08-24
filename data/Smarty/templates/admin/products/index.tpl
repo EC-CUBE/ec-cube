@@ -240,6 +240,8 @@
 							<td width="60"><span class="white">種別</span></td>
 						</tr>
 			
+
+						<!--{section name=cnt loop=$arrTest}-->
 						<!--▼商品<!--{$smarty.section.cnt.iteration}-->-->
 						<!--{assign var=status value="`$arrProducts[cnt].status`"}-->
 						<tr bgcolor="<!--{$arrPRODUCTSTATUS_COLOR[$status]}-->" class="fs10">
@@ -288,6 +290,7 @@
 							<td align="center"><!--{$arrDISP[$key]}--></td>
 						</tr>
 						<!--▲商品<!--{$smarty.section.cnt.iteration}-->-->
+						<!--{/section}-->
 						
 					</table>
 					<!--検索結果表示テーブル-->
