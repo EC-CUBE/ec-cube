@@ -31,6 +31,7 @@ $objPage = new LC_Page();
 $objView = new SC_AdminView();
 $objSess = new SC_Session();
 $objDate = new SC_Date();
+/*
 // 登録・更新検索開始年
 $objDate->setStartYear(RELEASE_YEAR);
 $objDate->setEndYear(DATE("Y"));
@@ -98,7 +99,7 @@ if ($_POST['mode'] == "delete") {
 	sfCategory_Count($objQuery);	
 }
 
-/*
+
 if ($_POST['mode'] == "search" || $_POST['mode'] == "csv"  || $_POST['mode'] == "delete" || $_POST['mode'] == "delete_all" || $_POST['mode'] == "camp_search") {
 	// 入力文字の強制変換
 	lfConvertParam();
