@@ -1,18 +1,8 @@
 <!--★★メインコンテンツ★★-->
-<table width="878" border="0" cellspacing="0" cellpadding="0" summary=" ">
+
 <form name="search_form" id="search_form" method="post" action="<!--{$smarty.server.PHP_SELF}-->">
 <input type="hidden" name="mode" value="search">
 
-	<tr valign="top">
-		<td background="/img/contents/navi_bg.gif" height="402">
-			<!-- サブナビ -->
-			<!--{include file=$tpl_subnavi}-->
-		</td>
-		<td>
-		<table width="737" border="0" cellspacing="0" cellpadding="0" summary=" ">
-			<!--メインエリア-->
-			<tr>
-				<td align="center">
 				<table width="706" border="0" cellspacing="0" cellpadding="0" summary=" ">
 					<tr><td height="14"></td></tr>
 					<tr>
@@ -150,10 +140,9 @@
 			</tr>
 			<!--メインエリア-->
 		</table>
-		</td>
-	</tr>
+
 </form>	
-</table>
+
 <!--★★メインコンテンツ★★-->						
 
 		
