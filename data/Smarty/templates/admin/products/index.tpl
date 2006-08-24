@@ -213,6 +213,40 @@
 	<tr>
 		<td bgcolor="#f0f0f0" align="center">
 
+		<!--{if count($arrProducts) > 0}-->		
+
+			<table width="840" border="0" cellspacing="0" cellpadding="0" summary=" ">
+				<tr><td height="12"></td></tr>
+				<tr>
+					<td bgcolor="#cccccc">
+					<!--検索結果表示テーブル-->
+					<table width="840" border="0" cellspacing="1" cellpadding="5" summary=" ">
+						<tr bgcolor="#636469" align="center" class="fs10n">
+							<td width="50" rowspan="2"><span class="white">商品ID</span></td>
+							<td width="90" rowspan="2"><span class="white">商品画像</span></td>
+							<td width="90"><span class="white">商品コード</span></td>
+							<td width="350"><span class="white">商品名</span></td>
+							<td width="60"><span class="white">在庫</span></td>
+							<td width="50" rowspan="2"><span class="white">編集</span></td>
+							<td width="50" rowspan="2"><span class="white">確認</span></td>
+							<!--{if $smarty.const.OPTION_CLASS_REGIST == 1}-->
+							<td width="50" rowspan="2"><span class="white">規格</span></td>
+							<!--{/if}-->
+							<td width="50" rowspan="2"><span class="white">削除</span></td>
+						</tr>
+						<tr bgcolor="#636469" align="center" class="fs10n">
+							<td width="90"><span class="white">価格(円)</span></td>
+							<td width="430"><span class="white">カテゴリ</span></td>
+							<td width="60"><span class="white">種別</span></td>
+						</tr>
+			
+					</table>
+					<!--検索結果表示テーブル-->
+					</td>
+				</tr>
+			</table>
+	
+		<!--{/if}-->
 
 		</td>
 	</tr>
