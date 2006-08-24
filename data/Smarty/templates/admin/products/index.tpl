@@ -247,7 +247,6 @@
 							<td align="center"><!--{$arrProducts[cnt].product_id}--></td>
 
 							<td align="center"><span class="icon_edit"><a href="/" onclick="fnChangeAction('./product.php'); fnModeSubmit('pre_edit', 'product_id', <!--{$arrProducts[cnt].product_id}-->); return false;" > ‘Ω∏</a></span></td>
-							<td align="center"><span class="icon_confirm"><a href="<!--{$smarty.const.SITE_URL|sfTrimURL}-->/products/detail.php?product_id=<!--{$arrProducts[cnt].product_id}-->&admin=on" target="_blank">≥Œ«ß</a></td>
 						</tr>
 
 						<!--¢•æ¶… <!--{$smarty.section.cnt.iteration}-->-->
