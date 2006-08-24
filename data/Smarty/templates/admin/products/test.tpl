@@ -20,7 +20,7 @@
 				<table width="706" border="0" cellspacing="0" cellpadding="0" summary=" ">
 					<tr><td height="14"></td></tr>
 					<tr>
-						<td colspan="3"><img src="" width="706" height="14" alt=""></td>
+						<td colspan="3"><img src="/img/contents/main_top.jpg" width="706" height="14" alt=""></td>
 					</tr>
 					<tr>
 						<td background="/img/contents/main_left.jpg"><img src="/img/common/_.gif" width="14" height="1" alt=""></td>
@@ -139,7 +139,10 @@
 						</td>
 						<td background="/img/contents/main_right.jpg"><img src="/img/common/_.gif" width="14" height="1" alt=""></td>
 					</tr>
-
+					<tr>
+						<td colspan="3"><img src="../../img/contents/main_bottom.jpg" width="706" height="14" alt=""></td>
+					</tr>
+					<tr><td height="30"></td></tr>
 				</table>
 				</td>
 			</tr>
@@ -162,29 +165,29 @@
 <!--{foreach key=key item=item from=$arrHidden}-->
 <input type="hidden" name="<!--{$key}-->" value="<!--{$item|escape}-->">
 <!--{/foreach}-->		
-	<tr><td colspan="2"><img src="/img/contents/search_line.jpg" width="878" height="12" alt=""></td></tr>
+	<tr><td colspan="2"><img src="../../img/contents/search_line.jpg" width="878" height="12" alt=""></td></tr>
 	<tr bgcolor="cbcbcb">
 		<td>
 		<table border="0" cellspacing="0" cellpadding="0" summary=" ">
 			<tr>
-				<td><img src="/img/contents/search_left.gif" width="19" height="22" alt=""></td>
+				<td><img src="../../img/contents/search_left.gif" width="19" height="22" alt=""></td>
 				<td>
 				<!--検索結果-->
 				<table border="0" cellspacing="0" cellpadding="0" summary=" ">
 					<tr>
-						<td><img src="/img/contents/reselt_left_top.gif" width="22" height="5" alt=""></td>
-						<td background="/img/contents/reselt_top_bg.gif"><img src="/img/common/_.gif" width="1" height="5" alt=""></td>
-						<td><img src="/img/contents/reselt_right_top.gif" width="22" height="5" alt=""></td>
+						<td><img src="../../img/contents/reselt_left_top.gif" width="22" height="5" alt=""></td>
+						<td background="../../img/contents/reselt_top_bg.gif"><img src="../../img/common/_.gif" width="1" height="5" alt=""></td>
+						<td><img src="../../img/contents/reselt_right_top.gif" width="22" height="5" alt=""></td>
 					</tr>
 					<tr>
-						<td background="/img/contents/reselt_left_bg.gif"><img src="/img/contents/reselt_left_middle.gif" width="22" height="12" alt=""></td>
+						<td background="../../img/contents/reselt_left_bg.gif"><img src="../../img/contents/reselt_left_middle.gif" width="22" height="12" alt=""></td>
 						<td bgcolor="#393a48" class="white10">検索結果一覧　<span class="reselt"><!--検索結果数--><!--{$tpl_linemax}-->件</span>&nbsp;が該当しました。</td>
-						<td background="/img/contents/reselt_right_bg.gif"><img src="/img/common/_.gif" width="22" height="8" alt=""></td>
+						<td background="../../img/contents/reselt_right_bg.gif"><img src="../../img/common/_.gif" width="22" height="8" alt=""></td>
 					</tr>
 					<tr>
-						<td><img src="/img/contents/reselt_left_bottom.gif" width="22" height="5" alt=""></td>
-						<td background="/img/contents/reselt_bottom_bg.gif"><img src="/img/common/_.gif" width="1" height="5" alt=""></td>
-						<td><img src="/img/contents/reselt_right_bottom.gif" width="22" height="5" alt=""></td>
+						<td><img src="../../img/contents/reselt_left_bottom.gif" width="22" height="5" alt=""></td>
+						<td background="../../img/contents/reselt_bottom_bg.gif"><img src="../../img/common/_.gif" width="1" height="5" alt=""></td>
+						<td><img src="../../img/contents/reselt_right_bottom.gif" width="22" height="5" alt=""></td>
 					</tr>
 				</table>
 				<!--検索結果-->
@@ -192,9 +195,9 @@
 				<input type="button" name="subm" value="検索結果をすべて削除" onclick="fnModeSubmit('delete_all','','');" />
 				<!--{/if}-->
 				</td>
-				<td><img src="/img/common/_.gif" width="8" height="1" alt=""></td>
-				<td><a href="#" onmouseover="chgImg('/img/contents/btn_csv_on.jpg','btn_csv');" onmouseout="chgImg('/img/contents/btn_csv.jpg','btn_csv');"  onclick="fnModeSubmit('csv','','');" ><img src="/img/contents/btn_csv.jpg" width="99" height="22" alt="CSV DOWNLOAD" border="0" name="btn_csv" id="btn_csv"></a></td>
-				<td><img src="/img/common/_.gif" width="8" height="1" alt=""></td>
+				<td><img src="../../img/common/_.gif" width="8" height="1" alt=""></td>
+				<td><a href="#" onmouseover="chgImg('../../img/contents/btn_csv_on.jpg','btn_csv');" onmouseout="chgImg('../../img/contents/btn_csv.jpg','btn_csv');"  onclick="fnModeSubmit('csv','','');" ><img src="../../img/contents/btn_csv.jpg" width="99" height="22" alt="CSV DOWNLOAD" border="0" name="btn_csv" id="btn_csv"></a></td>
+				<td><img src="../../img/common/_.gif" width="8" height="1" alt=""></td>
 				<td><a href="../contents/csv.php?tpl_subno_csv=product"><span class="fs12n"> >> CSV出力設定へ </span></a></td>
 			</tr>
 		</table>
@@ -203,7 +206,7 @@
 			<!--{include file=$tpl_pager}-->
 		</td>									
 	</tr>
-	<tr><td bgcolor="cbcbcb" colspan="2"><img src="/img/common/_.gif" width="1" height="5" alt=""></td></tr>
+	<tr><td bgcolor="cbcbcb" colspan="2"><img src="../../img/common/_.gif" width="1" height="5" alt=""></td></tr>
 </table>
 
 <table width="878" border="0" cellspacing="0" cellpadding="0" summary=" ">
