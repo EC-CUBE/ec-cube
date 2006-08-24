@@ -253,7 +253,8 @@ if ($_POST['mode'] == "search" || $_POST['mode'] == "csv"  || $_POST['mode'] == 
 			$objPage->arrTest = $arrProducts;
 			$objPage->arrProducts = array("a");
 			
-//			sfprintr($objPage->arrProducts);
+			
+			sfprintr($arrProducts);
 
 			break;
 		}
