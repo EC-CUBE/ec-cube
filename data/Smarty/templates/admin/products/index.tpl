@@ -245,14 +245,6 @@
 						<!--{assign var=status value="`$arrProducts[cnt].status`"}-->
 						<tr bgcolor="<!--{$arrPRODUCTSTATUS_COLOR[$status]}-->" class="fs10">
 							<td align="center"><!--{$arrProducts[cnt].product_id}--></td>
-							<td align="center">
-							<!--{if $arrProducts[cnt].main_list_image != ""}-->
-								<!--{assign var=image_path value="`$smarty.const.IMAGE_SAVE_URL`/`$arrProducts[cnt].main_list_image`"}-->
-							<!--{else}-->
-								<!--{assign var=image_path value="`$smarty.const.NO_IMAGE_URL`"}-->
-							<!--{/if}-->
-							<img src="<!--{$image_path|sfRmDupSlash}-->" width="65" height="65" alt="<!--{$arrProducts[cnt].name|escape}-->" />
-							</td>
 
 							<td align="center"><span class="icon_edit"><a href="/" onclick="fnChangeAction('./product.php'); fnModeSubmit('pre_edit', 'product_id', <!--{$arrProducts[cnt].product_id}-->); return false;" > ‘Ω∏</a></span></td>
 							<td align="center"><span class="icon_confirm"><a href="<!--{$smarty.const.SITE_URL|sfTrimURL}-->/products/detail.php?product_id=<!--{$arrProducts[cnt].product_id}-->&admin=on" target="_blank">≥Œ«ß</a></td>
