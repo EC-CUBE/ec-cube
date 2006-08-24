@@ -60,9 +60,7 @@
 								</td>
 								<td bgcolor="#f2f1ec" width="110">æ¶… Ãæ</td>
 								<td bgcolor="#ffffff" width="195">
-								<!--{assign var=key value="search_order_kana"}-->
-								<span class="red12"><!--{$arrErr[$key]}--></span>
-								<input type="text" name="<!--{$key}-->" value="<!--{$arrForm[$key].value|escape}-->" maxlength="<!--{$arrForm[$key].length}-->" style="<!--{$arrErr[$key]|sfGetErrorColor}-->" size="30" class="box30" />				
+									<input type="text" name="search_name" value="<!--{$arrForm.search_name|escape}-->" size="30" class="box30" />
 								</td>
 							</tr>
 							<tr class="fs12n">
