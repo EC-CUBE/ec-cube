@@ -251,8 +251,7 @@ if ($_POST['mode'] == "search" || $_POST['mode'] == "csv"  || $_POST['mode'] == 
 //			$objPage->arrProducts = $objQuery->select($col, $from, $where, $arrval);
 			$arrProducts = $objQuery->select($col, $from, $where, $arrval);
 			$objPage->arrTest = $arrProducts;
-			sfprintr($arrProducts);
-			
+			$objPage->arrProducts = array("a");
 			
 //			sfprintr($objPage->arrProducts);
 
