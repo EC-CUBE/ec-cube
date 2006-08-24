@@ -118,6 +118,8 @@ foreach ($_POST as $key => $val) {
 	}
 }
 
+sfprintr($_POST);
+
 // ¸ÜµÒºï½ü
 if ($_POST['mode'] == "delete") {
 	$sql = "SELECT status,email FROM dtb_customer WHERE customer_id = ? AND delete = 0";
