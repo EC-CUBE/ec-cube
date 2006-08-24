@@ -65,11 +65,11 @@ $objPage->arrEndDay = $objDate->getDay();
 		 ・ブラウザを閉じるまで有効
 		 ・すべてのパスで有効
 		 ・同じドメイン間で共有 */
-		session_set_cookie_params (0, "/", DOMAIN_NAME);
+	//	session_set_cookie_params (0, "/", DOMAIN_NAME);
 		// セッション開始
 		session_start();
 	}
-
+/*
 		// セッション情報の保存
 		if(isset($_SESSION['cert'])) {
 			$this->sid = session_id();
@@ -83,6 +83,7 @@ $objPage->arrEndDay = $objDate->getDay();
 			// ログに記録する
 			gfPrintLog("access error.");
 		}
+*/
 
 //キャンペーンの編集時
 if(sfIsInt($_POST['campaign_id']) && $_POST['mode'] == "camp_search") {
