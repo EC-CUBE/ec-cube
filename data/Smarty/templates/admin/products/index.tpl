@@ -255,13 +255,13 @@
 							<td align="center">h</td>
 							<td align="center">i</td>
 						</tr>
+						<!--¢¥¾¦ÉÊ<!--{$smarty.section.cnt.iteration}-->-->
+						<!--{/section}-->
 						<tr bgcolor="<!--{$arrPRODUCTSTATUS_COLOR[$status]}-->" class="fs10n">
 							<td align="right">j</td>
 							<td>k</td>
 							<td align="center">k</td>
 						</tr>
-						<!--¢¥¾¦ÉÊ<!--{$smarty.section.cnt.iteration}-->-->
-						<!--{/section}-->
 						
 						
 					</table>
