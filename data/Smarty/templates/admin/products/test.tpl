@@ -253,14 +253,6 @@
 							</td>
 							<td><!--{$arrProducts[cnt].product_code|escape|default:"-"}--></td>
 							<td><!--{$arrProducts[cnt].name|escape}--></td>
-							<td align="center">
-							<!--{* 在庫 *}-->
-							<!--{if $arrProducts[cnt].stock_unlimited == '1'}-->
-							無制限
-							<!--{else}-->
-							<!--{$arrProducts[cnt].stock|escape|default:"-"}-->
-							<!--{/if}-->
-							</td>
 						</tr>
 						<!--{/section}-->
 
