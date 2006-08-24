@@ -40,7 +40,6 @@ class SC_Session {
 		}
 		
 		return ACCESS_ERROR;
-		return SUCCESS;
 	}
 	
 	/* セッションの書き込み */
