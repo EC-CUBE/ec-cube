@@ -242,7 +242,7 @@
 						
 						<!--{section name=cnt loop=$arrProducts}-->
 						<tr bgcolor="#636469" align="center" class="fs10n">
-
+							<td align="center"><!--{$arrProducts[cnt].product_id}--></td>
 							<td><!--{$arrProducts[cnt].product_code|escape|default:"-"}--></td>
 							<td><!--{$arrProducts[cnt].name|escape}--></td>
 							<td align="right">
