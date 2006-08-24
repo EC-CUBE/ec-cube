@@ -8,8 +8,8 @@ require_once($include_dir . "/../data/class/SC_View.php");
 require_once($include_dir . "/../data/class/SC_DbConn.php");
 require_once($include_dir . "/../data/class/SC_Session.php");
 
-/*require_once($include_dir . "/../data/class/SC_Query.php");
-require_once($include_dir . "/../data/class/SC_SelectSql.php");
+require_once($include_dir . "/../data/class/SC_Query.php");
+/*require_once($include_dir . "/../data/class/SC_SelectSql.php");
 require_once($include_dir . "/../data/class/SC_CheckError.php");
 require_once($include_dir . "/../data/class/SC_PageNavi.php");
 require_once($include_dir . "/../data/class/SC_Date.php");

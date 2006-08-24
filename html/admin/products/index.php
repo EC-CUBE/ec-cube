@@ -35,7 +35,7 @@ class LC_Page {
 $objPage = new LC_Page();
 $objView = new SC_AdminView();
 $objSess = new SC_Session();
-$objDate = new SC_Date();
+//$objDate = new SC_Date();
 
 /*
 // 登録・更新検索開始年
