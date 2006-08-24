@@ -108,7 +108,7 @@
 									</tr>
 									<!--{/if}-->
 									<tr class="fs12n">
-										<td bgcolor="#f2f1ec" width="160">商品送料<span class="red"> *</span></td>
+										<td bgcolor="#f2f1ec" width="160">商品送料</td>
 										<td bgcolor="#ffffff" width="557">
 										<span class="red12"><!--{$arrErr.deliv_fee}--></span>
 										<input type="text" name="deliv_fee" value="<!--{$arrForm.deliv_fee|escape}-->" size="6" class="box6" maxlength="<!--{$smarty.const.PRICE_LEN}-->" style="<!--{if $arrErr.deliv_fee != ""}-->background-color: <!--{$smarty.const.ERR_COLOR}--><!--{/if}-->"/>円<span class="red10"> （半角数字で入力）</span></td>

@@ -138,19 +138,12 @@ if ( $_POST["mode"] != "edit" && is_numeric($_POST["customer_id"])) {
 			// 現在の会員情報を取得する
 			$arrCusSts = $objQuery->getOne("SELECT status FROM dtb_customer WHERE customer_id = ?", array($_POST["customer_id"]));
 
-			sfprintr($arrCusSts);
-			sfprintr($_POST);
 			// 会員情報が変更されている場合にはシークレット№も更新する。
 			if ($arrCusSts != $_POST['status']){
 				$secret = sfGetUniqRandomId("r");
-				$objPage->arrForm['secret'] = $secret;
-				array_push($arrRegistColumn, array('column' => 'secret', 'convert' => 'n'));
+				$objPage->arrForm['secret_key'] = $secret;
+				array_push($arrRegistColumn, array('column' => 'secret_key', 'convert' => 'n'));
 			}
-			
-			sfprintr($objPage->arrForm);
-			sfprintr($arrRegistColumn);
-			
-			exit;
 			
 			//-- 編集登録
 			sfEditCustomerData($objPage->arrForm, $arrRegistColumn);
