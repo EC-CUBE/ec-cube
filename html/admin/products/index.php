@@ -215,7 +215,7 @@ if ($_POST['mode'] == "search" || $_POST['mode'] == "csv"  || $_POST['mode'] == 
 		default:
 			// 読み込む列とテーブルの指定
 //			$col = "product_id, name, category_id, main_list_image, status, product_code, price01, price02, stock, stock_unlimited";
-			$col = "product_id";
+			$col = "'a'";
 			$from = "vw_products_nonclass";
 
 			// 行数の取得
