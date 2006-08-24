@@ -141,7 +141,8 @@ if ( $_POST["mode"] != "edit" && is_numeric($_POST["customer_id"])) {
 			// 会員情報が変更されている場合にはシークレット№も更新する。
 			if ($arrCusSts != $_POST['status']){
 				$secret = sfGetUniqRandomId("r");
-//				$objQuery
+				$objPage->arrForm['secret'] = $secret;
+				array_push($arrRegistColumn, array('secret'));
 			}
 			
 			sfprintr($objPage->arrForm);
