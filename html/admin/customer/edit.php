@@ -138,6 +138,7 @@ if ( $_POST["mode"] != "edit" && is_numeric($_POST["customer_id"])) {
 			// 現在の会員情報を取得する
 			$arrCusSts = $objQuery->getOne("SELECT status FROM dtb_customer WHERE customer_id = ?", array($_POST["customer_id"]));
 
+			sfprintr($arrCusSts);
 			// 会員情報が変更されている場合にはシークレット№も更新する。
 			if ($arrCusSts != $_POST['status']){
 				$secret = sfGetUniqRandomId("r");
