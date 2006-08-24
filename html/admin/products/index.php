@@ -32,6 +32,7 @@ $objPage = new LC_Page();
 $objView = new SC_AdminView();
 $objSess = new SC_Session();
 $objDate = new SC_Date();
+
 /*
 // 登録・更新検索開始年
 $objDate->setStartYear(RELEASE_YEAR);
@@ -427,7 +428,7 @@ function lfConvertParam() {
 	 *	C :  「全角ひら仮名」を「全角かた仮名」に変換
 	 *	V :  濁点付きの文字を一文字に変換。"K","H"と共に使用します	
 	 *	n :  「全角」数字を「半角(ﾊﾝｶｸ)」に変換
-	 */
+	 *//*
 	$arrConvList['search_name'] = "KVa";
 	$arrConvList['search_product_code'] = "KVa";
 	
@@ -479,5 +480,5 @@ function lfGetIDName($arrCatList) {
 	}
 	return $arrRet;
 }
-*
+*/
 ?>
