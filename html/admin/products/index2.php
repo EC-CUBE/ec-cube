@@ -52,7 +52,23 @@ $objPage->arrEndDay = $objDate->getDay();
 //sfIsSuccess($objSess);
 
 		// セッション開始
-		sfDomainSessionStart();
+	$ret = session_id();
+	
+
+	ヘッダーを送信していてもsession_start()が必要なページがあるので
+	コメントアウトしておく
+	if($ret == "" && !headers_sent()) {
+
+//	if($ret == "") {
+		/* セッションパラメータの指定
+		 ・ブラウザを閉じるまで有効
+		 ・すべてのパスで有効
+		 ・同じドメイン間で共有 */
+		session_set_cookie_params (0, "/", DOMAIN_NAME);
+		// セッション開始
+		session_start();
+	}
+
 		// セッション情報の保存
 		if(isset($_SESSION['cert'])) {
 			$this->sid = session_id();
