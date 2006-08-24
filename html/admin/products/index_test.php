@@ -46,8 +46,10 @@ $objPage->arrEndYear = $objDate->getYear();
 $objPage->arrEndMonth = $objDate->getMonth();
 $objPage->arrEndDay = $objDate->getDay();
 
+		session_start();
+
 // Ç§¾Ú²ÄÈİ¤ÎÈ½Äê
-$objSess = new SC_Session();
+//$objSess = new SC_Session();
 
 //sfIsSuccess($objSess);
 
