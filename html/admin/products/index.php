@@ -11,7 +11,7 @@ class LC_Page {
 	function LC_Page() {
 		$this->tpl_mainpage = 'products/index.tpl';
 		$this->tpl_mainno = 'products';
-//		$this->tpl_subnavi = 'products/subnavi.tpl';
+		$this->tpl_subnavi = 'products/subnavi.tpl';
 		$this->tpl_subno = 'index';
 //		$this->tpl_pager = ROOT_DIR . 'data/Smarty/templates/admin/pager.tpl';
 		$this->tpl_subtitle = '商品マスタ';
@@ -98,6 +98,7 @@ if ($_POST['mode'] == "delete") {
 	sfCategory_Count($objQuery);	
 }
 
+/*
 if ($_POST['mode'] == "search" || $_POST['mode'] == "csv"  || $_POST['mode'] == "delete" || $_POST['mode'] == "delete_all" || $_POST['mode'] == "camp_search") {
 	// 入力文字の強制変換
 	lfConvertParam();
@@ -258,7 +259,7 @@ if ($_POST['mode'] == "search" || $_POST['mode'] == "csv"  || $_POST['mode'] == 
 		}
 	}
 }
-
+*/
 // カテゴリの読込
 $objPage->arrCatList = sfGetCategoryList();
 $objPage->arrCatIDName = lfGetIDName($objPage->arrCatList);
