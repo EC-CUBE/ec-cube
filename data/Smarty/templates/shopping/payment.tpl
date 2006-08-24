@@ -150,7 +150,7 @@
 										今回のお買い物で、<input type="text" name="<!--{$key}-->" value="<!--{$arrForm[$key].value|default:$tpl_user_point}-->" maxlength="<!--{$arrForm[$key].length}-->" style="<!--{$arrErr[$key]|sfGetErrorColor}-->" size="6" class="box6" />&nbsp;ポイントを使用する。</span></td>
 									</tr>
 									<tr>
-										<td height="25"><img src="../img/shopping/line02.gif" width="514" height="1" alt="" /></td>
+										<td height="10"><img src="../img/shopping/line02.gif" width="514" height="1" alt="" /></td>
 									</tr>
 									<tr>
 										<td class="fs12"><input type="radio" id="point_off" name="point_check" value="2" <!--{$arrForm.point_check.value|sfGetChecked:2}--> onclick="fnCheckInputPoint();" /><label for="point_off">ポイントを使用しない</label></td>
