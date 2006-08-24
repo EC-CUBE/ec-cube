@@ -21,6 +21,11 @@
 </script>
 
 </head>
+<body bgcolor="#ffffff" text="#000000" link="#006699" vlink="#006699" alink="#006699" leftmargin="0" topmargin="0" marginwidth="0" marginheight="0" onload="preLoadImg(); <!--{$tpl_onload}-->">
+<noscript>
+<link rel="stylesheet" href="<!--{$smarty.const.URL_ADMIN_CSS}-->common.css" type="text/css" />
+</noscript>
+<div align="center">
 
 
 <!--¢§CONTENTS-->
