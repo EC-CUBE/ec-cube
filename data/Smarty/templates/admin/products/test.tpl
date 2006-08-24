@@ -20,7 +20,7 @@
 				<table width="706" border="0" cellspacing="0" cellpadding="0" summary=" ">
 					<tr><td height="14"></td></tr>
 					<tr>
-						<td colspan="3">tes</td>
+						<td colspan="3"><img src="/img/contents/contents_title_top.gif" width="678" height="7" alt=""></td>
 					</tr>
 					<tr><td height="30"></td></tr>
 				</table>
