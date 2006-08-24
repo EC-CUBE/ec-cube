@@ -46,22 +46,11 @@
 							<tr class="fs12n">
 								<td bgcolor="#f2f1ec" width="110">齒圴ID</td>
 								<td bgcolor="#ffffff" width="194">
-									<!--{assign var=key1 value="search_order_id1"}-->
-									<!--{assign var=key2 value="search_order_id2"}-->
-									<span class="red12"><!--{$arrErr[$key1]}--></span>
-									<span class="red12"><!--{$arrErr[$key2]}--></span>
-									<input type="text" name="<!--{$key1}-->" value="<!--{$arrForm[$key1].value|escape}-->" maxlength="<!--{$arrForm[$key1].length}-->" style="<!--{$arrErr[$key1]|sfGetErrorColor}-->"  size="6" class="box6" />
-									 ℅ 
-									<input type="text" name="<!--{$key2}-->" value="<!--{$arrForm[$key2].value|escape}-->" maxlength="<!--{$arrForm[$key2].length}-->" style="<!--{$arrErr[$key2]|sfGetErrorColor}-->"  size="6" class="box6" />
+									<input type="text" name="search_product_id" value="<!--{$arrForm.search_product_id|escape}-->" size="30" class="box30" />
 								</td>
 								<td bgcolor="#f2f1ec" width="110">筋傘ID</td>
 								<td bgcolor="#ffffff" width="195">
-									<!--{assign var=key value="search_order_status"}-->
-									<span class="red12"><!--{$arrErr[$key]}--></span>
-									<select name="<!--{$key}-->" style="<!--{$arrErr[$key]|sfGetErrorColor}-->">
-									<option value="">薊鎗仄化仁分今中</option>
-									<!--{html_options options=$arrORDERSTATUS selected=$arrForm[$key].value}-->
-									</select>
+									<input type="text" name="search_product_class_id" value="<!--{$arrForm.search_product_class_id|escape}-->" size="30" class="box30" />
 								</td>
 							</tr>
 							<tr class="fs12n">
