@@ -45,14 +45,13 @@
 								</td>
 								<td bgcolor="#f2f1ec" width="110">µ¬³ÊID</td>
 								<td bgcolor="#ffffff" width="195">
-<input type="text" name="search_product_class_id" value="<!--{$arrForm.search_product_class_id|escape}-->" size="30" class="box30" /></td>
+									<input type="text" name="search_product_class_id" value="<!--{$arrForm.search_product_class_id|escape}-->" size="30" class="box30" />
+								</td>
 							</tr>
 							<tr class="fs12n">
-								<td bgcolor="#f2f1ec" width="110">¸ÜµÒÌ¾</td>
+								<td bgcolor="#f2f1ec" width="110">¾¦ÉÊ¥³¡¼¥É</td>
 								<td bgcolor="#ffffff" width="194">
-								<!--{assign var=key value="search_order_name"}-->
-								<span class="red12"><!--{$arrErr[$key]}--></span>
-								<input type="text" name="<!--{$key}-->" value="<!--{$arrForm[$key].value|escape}-->" maxlength="<!--{$arrForm[$key].length}-->" style="<!--{$arrErr[$key]|sfGetErrorColor}-->" size="30" class="box30" />				
+									<input type="text" name="search_product_code" value="<!--{$arrForm.search_product_code|escape}-->" size="30" class="box30" />
 								</td>
 								<td bgcolor="#f2f1ec" width="110">¸ÜµÒÌ¾¡Ê¥«¥Ê¡Ë</td>
 								<td bgcolor="#ffffff" width="195">
