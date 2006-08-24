@@ -6,12 +6,26 @@
 <meta http-equiv="content-type" content="application/xhtml+xml; charset=EUC-JP" />
 <meta http-equiv="content-script-type" content="text/javascript" />
 <meta http-equiv="content-style-type" content="text/css" />
+<link rel="stylesheet" href="<!--{$smarty.const.URL_ADMIN_CSS}-->contents.css" type="text/css" />
+<script type="text/javascript" src="/js/css.js"></script>
+<script type="text/javascript" src="/js/navi.js"></script>
+<script type="text/javascript" src="/js/win_op.js"></script>
+<script type="text/javascript" src="/js/site.js"></script>
+<script type="text/javascript" src="/js/admin.js"></script>
 
 <title><!--{$smarty.const.ADMIN_TITLE}--></title>
+<script language="JavaScript">
+<!--
+<!--{$tpl_javascript}-->
+//-->
+</script>
 
 </head>
 
 <body bgcolor="#ffffff" text="#000000" link="#006699" vlink="#006699" alink="#006699" leftmargin="0" topmargin="0" marginwidth="0" marginheight="0" onload="preLoadImg(); <!--{$tpl_onload}-->">
+<noscript>
+<link rel="stylesheet" href="<!--{$smarty.const.URL_ADMIN_CSS}-->common.css" type="text/css" />
+</noscript>
 <div align="center">
 <a name="top"></a>
 

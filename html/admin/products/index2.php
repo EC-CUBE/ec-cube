@@ -219,7 +219,7 @@ $objPage->arrCatIDName = lfGetIDName($objPage->arrCatList);
 
 // 画面の表示
 $objView->assignobj($objPage);
-$objView->display(MAIN_FRAME);
+$objView->display($objPage->tpl_mainpage);
 
 //---------------------------------------------------------------------------------------------------------------------------------------------------------
 
