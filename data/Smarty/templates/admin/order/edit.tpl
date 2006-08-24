@@ -9,9 +9,11 @@
 	}
 //-->
 </script>
-aaa
 <!--¡ú¡ú¥á¥¤¥ó¥³¥ó¥Æ¥ó¥Ä¡ú¡ú-->
 <table width="878" border="0" cellspacing="0" cellpadding="0" summary=" ">
+
+
+ssssssssssss
 <form name="form1" id="form1" method="post" action="<!--{$smarty.server.PHP_SELF}-->">
 <input type="hidden" name="mode" value="edit">
 <input type="hidden" name="order_id" value="<!--{$tpl_order_id}-->">
