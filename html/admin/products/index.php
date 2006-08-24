@@ -2,6 +2,7 @@
 
 require_once("../require.php");
 require_once("./index_csv.php");
+require_once(ROOT_DIR . "data/lib/ftp.php");
 
 class LC_Page {
 	var $arrForm;
@@ -10,12 +11,9 @@ class LC_Page {
 	var $arrPageMax;
 	function LC_Page() {
 		$this->tpl_mainpage = 'products/index.tpl';
-		$this->tpl_mainno = 'products';
 		$this->tpl_subnavi = 'products/subnavi.tpl';
+		$this->tpl_mainno = 'products';
 		$this->tpl_subno = 'index';
-		$this->tpl_pager = ROOT_DIR . 'data/Smarty/templates/admin/pager.tpl';
-		$this->tpl_subtitle = '商品マスタ';
-
 		global $arrPageMax;
 		$this->arrPageMax = $arrPageMax;
 		global $arrDISP;
@@ -24,14 +22,12 @@ class LC_Page {
 		$this->arrSTATUS = $arrSTATUS;
 		global $arrPRODUCTSTATUS_COLOR;
 		$this->arrPRODUCTSTATUS_COLOR = $arrPRODUCTSTATUS_COLOR;
-
 	}
 }
 
-//$conn = new SC_DBConn();
 $objPage = new LC_Page();
 $objView = new SC_AdminView();
-
+$objSess = new SC_Session();
 $objDate = new SC_Date();
 
 // 登録・更新検索開始年
@@ -50,7 +46,6 @@ $objPage->arrEndDay = $objDate->getDay();
 // 認証可否の判定
 $objSess = new SC_Session();
 sfIsSuccess($objSess);
-
 //キャンペーンの編集時
 if(sfIsInt($_POST['campaign_id']) && $_POST['mode'] == "camp_search") {
 	$objQuery = new SC_Query();
@@ -87,6 +82,9 @@ $objPage->arrHidden['search_pageno'] = $_POST['search_pageno'];
 
 // 商品削除
 if ($_POST['mode'] == "delete") {
+	// 商品に紐づいたファイルを削除する
+	lfDeleteProductFiles($_POST['product_id']);
+	
 	if($_POST['category_id'] != "") {
 		// ランク付きレコードの削除
 		$where = "category_id = " . addslashes($_POST['category_id']);
@@ -99,9 +97,8 @@ if ($_POST['mode'] == "delete") {
 	$objQuery->delete("dtb_products_class", "product_id = ?", array($_POST['product_id']));
 	
 	// 件数カウントバッチ実行
-	sfCategory_Count($objQuery);	
+	$objQuery->getall("SELECT category_count();");	
 }
-
 
 if ($_POST['mode'] == "search" || $_POST['mode'] == "csv"  || $_POST['mode'] == "delete" || $_POST['mode'] == "delete_all" || $_POST['mode'] == "camp_search") {
 	// 入力文字の強制変換
@@ -110,11 +107,10 @@ if ($_POST['mode'] == "search" || $_POST['mode'] == "csv"  || $_POST['mode'] == 
 	$objPage->arrErr = lfCheckError();
 
 	$where = "delete = 0";
-
-	// 入力エラーなし
+	
+	/* 入力エラーなし */
 	if (count($objPage->arrErr) == 0) {
-
-		foreach ($objPage->arrForm as $key => $val) {
+			foreach ($objPage->arrForm as $key => $val) {
 				
 			$val = sfManualEscape($val);
 			
@@ -169,7 +165,7 @@ if ($_POST['mode'] == "search" || $_POST['mode'] == "csv"  || $_POST['mode'] == 
 					foreach ($val as $element){
 						if ($element != ""){
 							if ($tmp_where == ""){
-								$tmp_where.="AND (status LIKE ? ";
+								$tmp_where.="AND (status LIKE ? "; 
 							}else{
 								$tmp_where.="OR status LIKE ? ";
 							}
@@ -179,13 +175,13 @@ if ($_POST['mode'] == "search" || $_POST['mode'] == "csv"  || $_POST['mode'] == 
 					if ($tmp_where != ""){
 						$tmp_where.=")";
 						$where.= "$tmp_where";
-					}
+					}	
 					break;
 				default:
 					break;
 			}
 		}
-
+		
 		$order = "update_date DESC";
 		$objQuery = new SC_Query();
 		
@@ -194,17 +190,8 @@ if ($_POST['mode'] == "search" || $_POST['mode'] == "csv"  || $_POST['mode'] == 
 			// オプションの指定
 			$option = "ORDER BY $order";
 			// CSV出力タイトル行の作成
-			$arrOutput = sfSwapArray(sfgetCsvOutput(1, " WHERE csv_id = 1 AND status = 1"));
-			
-			if (count($arrOutput) <= 0) break;
-			
-			$arrOutputCols = $arrOutput['col'];
-			$arrOutputTitle = $arrOutput['disp_name'];
-			
-			$head = sfGetCSVList($arrOutputTitle);
-			
-			$data = lfGetProductsCSV($where, $option, $arrval, $arrOutputCols);
-
+			$head = sfGetCSVList($arrPRODUCTS_CVSTITLE);
+			$data = lfGetProductsCSV($where, $option, $arrval);
 			// CSVを送信する。
 			sfCSVDownload($head.$data);
 			exit;
@@ -219,22 +206,22 @@ if ($_POST['mode'] == "search" || $_POST['mode'] == "csv"  || $_POST['mode'] == 
 			// 読み込む列とテーブルの指定
 			$col = "product_id, name, category_id, main_list_image, status, product_code, price01, price02, stock, stock_unlimited";
 			$from = "vw_products_nonclass";
-
+				
 			// 行数の取得
 			$linemax = $objQuery->count($from, $where, $arrval);
 			$objPage->tpl_linemax = $linemax;				// 何件が該当しました。表示用
-
+			
 			// ページ送りの処理
 			if(is_numeric($_POST['search_page_max'])) {	
 				$page_max = $_POST['search_page_max'];
 			} else {
 				$page_max = SEARCH_PMAX;
 			}
-
+			
 			// ページ送りの取得
 			$objNavi = new SC_PageNavi($_POST['search_pageno'], $linemax, $page_max, "fnNaviSearchPage", NAVI_PMAX);
+			$objPage->tpl_strnavi = $objNavi->strnavi;		// 表示文字列
 			$startno = $objNavi->start_row;
-			$objPage->arrPagenavi = $objNavi->arrPagenavi;
 			
 			//キャンペーン商品検索時は、全結果の商品IDを変数に格納する
 			if($_POST['search_mode'] == 'campaign') {
@@ -245,14 +232,14 @@ if ($_POST['mode'] == "search" || $_POST['mode'] == "csv"  || $_POST['mode'] == 
 					$objPage->arrHidden['campaign_product_id'] = $pid;
 				}
 			}
-
+			
 			// 取得範囲の指定(開始行番号、行数のセット)
 			$objQuery->setlimitoffset($page_max, $startno);
 			// 表示順序
 			$objQuery->setorder($order);
 			// 検索結果の取得
 			$objPage->arrProducts = $objQuery->select($col, $from, $where, $arrval);
-
+			
 			break;
 		}
 	}
@@ -268,7 +255,7 @@ $objView->display(MAIN_FRAME);
 
 //---------------------------------------------------------------------------------------------------------------------------------------------------------
 
-// 取得文字列の変換 
+/* 取得文字列の変換 */
 function lfConvertParam() {
 	global $objPage;
 	/*
@@ -290,10 +277,12 @@ function lfConvertParam() {
 	}
 }
 
-// エラーチェック 
+/* エラーチェック */
 // 入力エラーチェック
 function lfCheckError() {
 	$objErr = new SC_CheckError();
+	$objErr->doFunc(array("商品ID", "search_product_id", INT_LEN), array("NUM_CHECK"));
+	$objErr->doFunc(array("規格ID", "search_product_class_id", INT_LEN), array("NUM_CHECK"));
 	$objErr->doFunc(array("開始日", "search_startyear", "search_startmonth", "search_startday"), array("CHECK_DATE"));
 	$objErr->doFunc(array("終了日", "search_endyear", "search_endmonth", "search_endday"), array("CHECK_DATE"));
 	$objErr->doFunc(array("開始日", "終了日", "search_startyear", "search_startmonth", "search_startday", "search_endyear", "search_endmonth", "search_endday"), array("CHECK_SET_TERM"));
@@ -327,6 +316,30 @@ function lfGetIDName($arrCatList) {
 		$arrRet[$key] = $val;	
 	}
 	return $arrRet;
+}
+
+// 商品レコードに紐づく画像を削除する
+function lfDeleteProductFiles($product_id) {
+	global $arrWEB_SERVERS;
+	$objQuery = new SC_Query();
+	$col = "file1,file2,file3,file4,file5,file6,main_list_image,main_image,main_large_image,sub_large_image1,sub_large_image2,sub_large_image3,sub_large_image4,sub_large_image5,sub_large_image6";
+	$arrRet = $objQuery->select($col, "dtb_products", "product_id = ?", array($product_id));
+	foreach($arrRet[0] as $file) {
+		if($file != "") {
+			// 自分自身のファイルを削除する
+			$path = IMAGE_SAVE_DIR . $file;
+			if(file_exists($path)) {
+				unlink($path);
+			}				
+			// 自分自身以外のサーバのファイルを削除する
+			foreach($arrWEB_SERVERS as $array) {
+				if($array['host'] != $_SERVER["SERVER_ADDR"]) {
+					$path = FTP_IMAGE_SAVE_DIR . $file;
+					sfFtpDelete($array['host'], $array['user'], $array['pass'], $path);
+				}
+			}
+		}
+	}
 }
 
 ?>
