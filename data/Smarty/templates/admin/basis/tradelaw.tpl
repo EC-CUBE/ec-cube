@@ -41,21 +41,21 @@
 
 								<table width="678" border="0" cellspacing="1" cellpadding="8" summary=" ">
 									<tr>
-										<td bgcolor="#f2f1ec" width="170" class="fs12n">販売業者<span class="red"> *</span></td>
+										<td bgcolor="#f2f1ec" width="200" class="fs12n">販売業者<span class="red"> *</span></td>
 										<td bgcolor="#ffffff" width="547" class="fs10n">
 										<!--{assign var=key value="law_company"}-->
 										<span class="red12"><!--{$arrErr[$key]}--></span>
 										<input type="text" name="<!--{$arrForm[$key].keyname}-->" value="<!--{$arrForm[$key].value|escape}-->" maxlength="<!--{$arrForm[$key].length}-->" style="<!--{$arrErr[$key]|sfGetErrorColor}-->" size="60" class="box60" /><span class="red"> （上限<!--{$arrForm[$key].length}-->文字）</span></td>
 									</tr>
 									<tr>
-										<td bgcolor="#f2f1ec" width="170" class="fs12n">運営責任者<span class="red"> *</span></td>
+										<td bgcolor="#f2f1ec" width="200" class="fs12n">運営責任者<span class="red"> *</span></td>
 										<td bgcolor="#ffffff" width="547" class="fs10n">
 										<!--{assign var=key value="law_manager"}-->
 										<span class="red12"><!--{$arrErr[$key]}--></span>
 										<input type="text" name="<!--{$arrForm[$key].keyname}-->" value="<!--{$arrForm[$key].value|escape}-->" maxlength="<!--{$arrForm[$key].length}-->" style="<!--{$arrErr[$key]|sfGetErrorColor}-->" size="60" class="box60" /><span class="red"> （上限<!--{$arrForm[$key].length}-->文字）</span></td>
 									</tr>
 									<tr class="fs12n">
-										<td bgcolor="#f2f1ec" width="170">郵便番号<span class="red"> *</span></td>
+										<td bgcolor="#f2f1ec" width="200">郵便番号<span class="red"> *</span></td>
 										<td bgcolor="#ffffff" width="547"> 
 										<!--{assign var=key1 value="law_zip01"}-->
 										<!--{assign var=key2 value="law_zip02"}-->
@@ -69,7 +69,7 @@
 										</td>
 									</tr>
 									<tr>
-										<td bgcolor="#f2f1ec" width="170" class="fs12">所在地<span class="red"> *</span></td>
+										<td bgcolor="#f2f1ec" width="200" class="fs12">所在地<span class="red"> *</span></td>
 										<td bgcolor="#ffffff" width="547">
 										<table width="547" border="0" cellspacing="0" cellpadding="0" summary=" ">
 											<tr>
@@ -104,7 +104,7 @@
 										</td>
 									</tr>
 									<tr class="fs12n">
-										<td bgcolor="#f2f1ec" width="170">TEL<span class="red"> *</span></td>
+										<td bgcolor="#f2f1ec" width="200">TEL<span class="red"> *</span></td>
 										<td bgcolor="#ffffff" width="547">
 										<!--{assign var=key1 value="law_tel01"}-->
 										<!--{assign var=key2 value="law_tel02"}-->
@@ -118,7 +118,7 @@
 										</td>
 									</tr>
 									<tr class="fs12n">
-										<td bgcolor="#f2f1ec" width="170">FAX</td>
+										<td bgcolor="#f2f1ec" width="200">FAX</td>
 										<td bgcolor="#ffffff" width="547">
 										<!--{assign var=key1 value="law_fax01"}-->
 										<!--{assign var=key2 value="law_fax02"}-->
@@ -132,7 +132,7 @@
 										</td>
 									</tr>
 									<tr>
-										<td bgcolor="#f2f1ec" width="170" class="fs12n">メールアドレス<span class="red"> *</span></td>
+										<td bgcolor="#f2f1ec" width="200" class="fs12n">メールアドレス<span class="red"> *</span></td>
 										<td bgcolor="#ffffff" width="547" class="fs10n">
 										<!--{assign var=key value="law_email"}-->
 										<span class="red12"><!--{$arrErr[$key]}--></span>
@@ -140,7 +140,7 @@
 										</td>
 									</tr>
 									<tr>
-										<td bgcolor="#f2f1ec" width="170" class="fs12n">URL<span class="red"> *</span></td>
+										<td bgcolor="#f2f1ec" width="200" class="fs12n">URL<span class="red"> *</span></td>
 										<td bgcolor="#ffffff" width="547" class="fs10n">
 										<!--{assign var=key value="law_url"}-->
 										<span class="red12"><!--{$arrErr[$key]}--></span>
@@ -148,42 +148,42 @@
 										</td>
 									</tr>
 									<tr>
-										<td bgcolor="#f2f1ec" width="170" class="fs12n">商品代金以外の必要料金<span class="red"> *</span></td>
+										<td bgcolor="#f2f1ec" width="200" class="fs12n">商品代金以外の必要料金<span class="red"> *</span></td>
 										<td bgcolor="#ffffff" width="547" class="fs10n">
 										<!--{assign var=key value="law_term01"}-->
 										<span class="red12"><!--{$arrErr[$key]}--></span>
 										<textarea name="<!--{$arrForm[$key].keyname}-->" maxlength="<!--{$arrForm[$key].length}-->" cols="60" rows="8" class="area60" style="<!--{$arrErr[$key]|sfGetErrorColor}-->" ><!--{$arrForm[$key].value|escape}--></textarea><span class="red"> （上限<!--{$arrForm[$key].length}-->文字）</span></td>
 									</tr>
 									<tr>
-										<td bgcolor="#f2f1ec" width="170" class="fs12n">注文方法<span class="red"> *</span></td>
+										<td bgcolor="#f2f1ec" width="200" class="fs12n">注文方法<span class="red"> *</span></td>
 										<td bgcolor="#ffffff" width="547" class="fs10n">
 										<!--{assign var=key value="law_term02"}-->
 										<span class="red12"><!--{$arrErr[$key]}--></span>
 										<textarea name="<!--{$arrForm[$key].keyname}-->" maxlength="<!--{$arrForm[$key].length}-->" cols="60" rows="8" class="area60" style="<!--{$arrErr[$key]|sfGetErrorColor}-->" ><!--{$arrForm[$key].value|escape}--></textarea><span class="red"> （上限<!--{$arrForm[$key].length}-->文字）</span></td>
 									</tr>
 									<tr>
-										<td bgcolor="#f2f1ec" width="170" class="fs12n">支払方法<span class="red"> *</span></td>
+										<td bgcolor="#f2f1ec" width="200" class="fs12n">支払方法<span class="red"> *</span></td>
 										<td bgcolor="#ffffff" width="547" class="fs10n">
 										<!--{assign var=key value="law_term03"}-->
 										<span class="red12"><!--{$arrErr[$key]}--></span>
 										<textarea name="<!--{$arrForm[$key].keyname}-->" maxlength="<!--{$arrForm[$key].length}-->" cols="60" rows="8" class="area60" style="<!--{$arrErr[$key]|sfGetErrorColor}-->" ><!--{$arrForm[$key].value|escape}--></textarea><span class="red"> （上限<!--{$arrForm[$key].length}-->文字）</span></td>
 									</tr>
 									<tr>
-										<td bgcolor="#f2f1ec" width="170" class="fs12n">支払期限<span class="red"> *</span></td>
+										<td bgcolor="#f2f1ec" width="200" class="fs12n">支払期限<span class="red"> *</span></td>
 										<td bgcolor="#ffffff" width="547" class="fs10n">
 										<!--{assign var=key value="law_term04"}-->
 										<span class="red12"><!--{$arrErr[$key]}--></span>
 										<textarea name="<!--{$arrForm[$key].keyname}-->" maxlength="<!--{$arrForm[$key].length}-->" cols="60" rows="8" class="area60" style="<!--{$arrErr[$key]|sfGetErrorColor}-->" ><!--{$arrForm[$key].value|escape}--></textarea><span class="red"> （上限<!--{$arrForm[$key].length}-->文字）</span></td>
 									</tr>
 									<tr>
-										<td bgcolor="#f2f1ec" width="170" class="fs12n">引き渡し時期<span class="red"> *</span></td>
+										<td bgcolor="#f2f1ec" width="200" class="fs12n">引き渡し時期<span class="red"> *</span></td>
 										<td bgcolor="#ffffff" width="547" class="fs10n">
 										<!--{assign var=key value="law_term05"}-->
 										<span class="red12"><!--{$arrErr[$key]}--></span>
 										<textarea name="<!--{$arrForm[$key].keyname}-->" maxlength="<!--{$arrForm[$key].length}-->" cols="60" rows="8" class="area60" style="<!--{$arrErr[$key]|sfGetErrorColor}-->" ><!--{$arrForm[$key].value|escape}--></textarea><span class="red"> （上限<!--{$arrForm[$key].length}-->文字）</span></td>
 									</tr>
 									<tr>
-										<td bgcolor="#f2f1ec" width="170" class="fs12n">返品・交換について<span class="red"> *</span></td>
+										<td bgcolor="#f2f1ec" width="200" class="fs12n">返品・交換について<span class="red"> *</span></td>
 										<td bgcolor="#ffffff" width="547" class="fs10n">
 										<!--{assign var=key value="law_term06"}-->
 										<span class="red12"><!--{$arrErr[$key]}--></span>
