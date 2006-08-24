@@ -19,6 +19,9 @@
 				<td align="center">
 				<table width="706" border="0" cellspacing="0" cellpadding="0" summary=" ">
 					<tr><td height="14"></td></tr>
+					<tr>
+						<td colspan="3"><img src="/img/contents/main_top.jpg" width="706" height="14" alt=""></td>
+					</tr>
 				</table>
 				</td>
 			</tr>
