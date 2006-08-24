@@ -30,7 +30,10 @@ class LC_Page {
 $objPage = new LC_Page();
 $objView = new SC_AdminView();
 
-//session_start();
+session_start();
+
+print("aa");
+MyFlush();
 
 $max = 11;
 for($i = 0; $i < $max; $i++) {
@@ -42,6 +45,10 @@ $objView->assignobj($objPage);
 $objView->display(MAIN_FRAME);
 
 //---------------------------------------------------------------------------------------------------------------------------------------------------------
-
+function MyFlush() {
+	flush();
+	ob_end_flush();
+	ob_start();
+}
 
 ?>
