@@ -50,6 +50,8 @@ $objPage->arrEndDay = $objDate->getDay();
 //$objSess = new SC_Session();
 //sfIsSuccess($objSess);
 
+session_start();
+
 //キャンペーンの編集時
 if(sfIsInt($_POST['campaign_id']) && $_POST['mode'] == "camp_search") {
 	$objQuery = new SC_Query();
