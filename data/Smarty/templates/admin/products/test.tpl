@@ -40,6 +40,38 @@
 								<td colspan="3"><img src="/img/contents/main_bar.jpg" width="678" height="10" alt=""></td>
 							</tr>
 						</table>
+						<!--検索条件設定テーブルここから-->
+						<table width="678" border="0" cellspacing="0" cellpadding="0" summary=" ">
+							<tr>
+								<td bgcolor="#cccccc"><img src="/img/common/_.gif" width="1" height="5" alt=""></td>
+								<td><img src="/img/contents/tbl_top.gif" width="676" height="7" alt=""></td>
+								<td bgcolor="#cccccc"><img src="/img/common/_.gif" width="1" height="5" alt=""></td>
+							</tr>
+							<tr>
+								<td bgcolor="#cccccc"><img src="/img/common/_.gif" width="1" height="10" alt=""></td>
+								<td bgcolor="#e9e7de" align="center">
+								<table border="0" cellspacing="0" cellpadding="0" summary=" ">
+									<tr>
+										<td class="fs12n">検索結果表示件数
+											<!--{assign var=key value="search_page_max"}-->
+											<span class="red12"><!--{$arrErr[$key]}--></span>
+											<select name="<!--{$key}-->" style="<!--{$arrErr[$key]|sfGetErrorColor}-->">
+											<!--{html_options options=$arrPageMax selected=$arrForm.search_page_max}-->
+											</select> 件
+										</td>
+										<td><img src="/img/common/_.gif" width="10" height="1" alt=""></td>
+										<td><input type="image" name="subm" onMouseover="chgImgImageSubmit('/img/contents/btn_search_on.jpg',this)" onMouseout="chgImgImageSubmit('/img/contents/btn_search.jpg',this)" src="/img/contents/btn_search.jpg" width="123" height="24" alt="この条件で検索する" border="0" onClick="submit();" ></td>
+									</tr>
+								</table>
+								</td>
+								<td bgcolor="#cccccc"><img src="/img/common/_.gif" width="1" height="10" alt=""></td>
+							</tr>
+							<tr>
+								<td colspan="3"><img src="/img/contents/tbl_bottom.gif" width="678" height="8" alt=""></td>
+							</tr>
+						</table>
+						<!--検索条件設定テーブルここまで-->
+						
 						</td>
 						<td background="/img/contents/main_right.jpg"><img src="/img/common/_.gif" width="14" height="1" alt=""></td>
 					</tr>
