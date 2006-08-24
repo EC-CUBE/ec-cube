@@ -71,7 +71,7 @@ class SC_SelectSql {
 		$date1 = date("Y/m/d", mktime(0,0,0,$from_month,$from_day,$from_year));
 		$date2 = date("Y/m/d", mktime(0,0,0,$to_month,$to_day,$to_year));
 		
-		$date3 = strtotime(date('Y/m/d', mktime(0,0,0,$to_month,$to_day,$to_year) . " + day");
+		$date3 = strtotime(date('Y/m/d', mktime(0,0,0,$to_month,$to_day,$to_year)) . " + day");
 		
 		sfprintr($date3);
 		
