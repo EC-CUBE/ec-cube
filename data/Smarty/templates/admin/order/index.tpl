@@ -101,7 +101,6 @@
 								<!--{html_checkboxes name="search_product_flag" options=$arrSTATUS selected=$arrForm.search_product_flag}-->
 								</td>
 							</tr>
-						</table>						
 						
 						
 							<tr class="fs12n">
