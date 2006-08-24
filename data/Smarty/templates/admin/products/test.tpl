@@ -253,7 +253,6 @@
 							</td>
 							<td><!--{$arrProducts[cnt].product_code|escape|default:"-"}--></td>
 							<td><!--{$arrProducts[cnt].name|escape}--></td>
-							<td></td>
 							<td align="center"><span class="icon_edit"><a href="/" onclick="fnChangeAction('./product.php'); fnModeSubmit('pre_edit', 'product_id', <!--{$arrProducts[cnt].product_id}-->); return false;" >йт╫╦</a></span></td>
 						</tr>
 						<!--{/section}-->
