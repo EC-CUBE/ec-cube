@@ -239,6 +239,10 @@
 							<td width="430"><span class="white">カテゴリ</span></td>
 							<td width="60"><span class="white">種別</span></td>
 						</tr>
+						
+						<!--{section name=cnt loop=$arrProducts}-->
+						<tr bgcolor="#636469" align="center" class="fs10n"><td></td></tr>
+						<!--{/section}-->
 
 						
 					</table>
