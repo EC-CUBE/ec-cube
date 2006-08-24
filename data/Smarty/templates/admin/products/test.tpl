@@ -79,38 +79,40 @@
 							<tr class="fs12n">
 								<td bgcolor="#f2f1ec" width="110">登録・更新日</td>
 								<td bgcolor="#ffffff" width="499" colspan="3">
-									<span class="red"><!--{$arrErr.search_startyear}--></span>
-									<span class="red"><!--{$arrErr.search_endyear}--></span>		
-									<select name="search_startyear" style="<!--{$arrErr.search_startyear|sfGetErrorColor}-->">
+									<span class="red"><!--{$arrErr.search_sbirthyear}--></span>
+									<span class="red"><!--{$arrErr.search_ebirthyear}--></span>		
+									<select name="search_sbirthyear" style="<!--{$arrErr.search_sbirthyear|sfGetErrorColor}-->">
 									<option value="">----</option>
-									<!--{html_options options=$arrStartYear selected=$arrForm.search_startyear}-->
+									<!--{html_options options=$arrBirthYear selected=$arrForm.search_sbirthyear.value}-->
 									</select>年
-									<select name="search_startmonth" style="<!--{$arrErr.search_startyear|sfGetErrorColor}-->">
+									<select name="search_sbirthmonth" style="<!--{$arrErr.search_sbirthyear|sfGetErrorColor}-->">
 									<option value="">--</option>
-									<!--{html_options options=$arrStartMonth selected=$arrForm.search_startmonth}-->
+									<!--{html_options options=$arrMonth selected=$arrForm.search_sbirthmonth.value}-->
 									</select>月
-									<select name="search_startday" style="<!--{$arrErr.search_startyear|sfGetErrorColor}-->">
+									<select name="search_sbirthday" style="<!--{$arrErr.search_sbirthyear|sfGetErrorColor}-->">
 									<option value="">--</option>
-									<!--{html_options options=$arrStartDay selected=$arrForm.search_startday}-->
+									<!--{html_options options=$arrDay selected=$arrForm.search_sbirthday.value}-->
 									</select>日〜
-									<select name="search_endyear" style="<!--{$arrErr.search_endyear|sfGetErrorColor}-->">
+									<select name="search_ebirthyear" style="<!--{$arrErr.search_ebirthyear|sfGetErrorColor}-->">
 									<option value="">----</option>
-									<!--{html_options options=$arrEndYear selected=$arrForm.search_endyear}-->
+									<!--{html_options options=$arrBirthYear selected=$arrForm.search_ebirthyear.value}-->
 									</select>年
-									<select name="search_endmonth" style="<!--{$arrErr.search_endyear|sfGetErrorColor}-->">
+									<select name="search_ebirthmonth" style="<!--{$arrErr.search_ebirthyear|sfGetErrorColor}-->">
 									<option value="">--</option>
-									<!--{html_options options=$arrEndMonth selected=$arrForm.search_endmonth}-->
+									<!--{html_options options=$arrMonth selected=$arrForm.search_ebirthmonth.value}-->
 									</select>月
-									<select name="search_endday" style="<!--{$arrErr.search_endyear|sfGetErrorColor}-->">
+									<select name="search_ebirthday" style="<!--{$arrErr.search_ebirthyear|sfGetErrorColor}-->">
 									<option value="">--</option>
-									<!--{html_options options=$arrEndDay selected=$arrForm.search_endday}-->
+									<!--{html_options options=$arrDay selected=$arrForm.search_ebirthday.value}-->
 									</select>日
 								</td>
 							</tr>
 							<tr class="fs12n">
 								<td bgcolor="#f2f1ec" width="110">ステータス</td>
 								<td bgcolor="#ffffff" width="499" colspan="3">
-								<!--{html_checkboxes name="search_product_flag" options=$arrSTATUS selected=$arrForm.search_product_flag}-->
+								<!--{assign var=key value="search_order_sex"}-->
+								<span class="red12"><!--{$arrErr[$key]}--></span>
+								<!--{html_checkboxes name="$key" options=$arrSex selected=$arrForm[$key].value}-->
 							</td>
 							</tr>
 							<tr class="fs12n">
