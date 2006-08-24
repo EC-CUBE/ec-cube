@@ -1,8 +1,8 @@
 <?php
 
-//require_once("../require.php");
+require_once("../../require.php");
 //require_once("./index_csv.php");
-require_once("../../require2.php");
+//require_once("../../require2.php");
 
 class LC_Page {
 	var $arrForm;

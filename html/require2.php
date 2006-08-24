@@ -1,9 +1,10 @@
 <?php
 $include_dir = realpath(dirname( __FILE__));
-require_once($include_dir . "/../data/conf/conf.php");	/*
+require_once($include_dir . "/../data/conf/conf.php");	
 require_once($include_dir . "/../data/lib/glib.php");
 require_once($include_dir . "/../data/lib/slib.php");
 require_once($include_dir . "/../data/class/SC_View.php");
+/*
 require_once($include_dir . "/../data/class/SC_DbConn.php");
 require_once($include_dir . "/../data/class/SC_Session.php");
 require_once($include_dir . "/../data/class/SC_Query.php");
