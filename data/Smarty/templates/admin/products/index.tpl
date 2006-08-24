@@ -242,8 +242,7 @@
 			
 
 						<!--{section name=cnt loop=$arrProducts}-->
-						<!--{assign var=status value="`$arrProducts[cnt].status`"}-->
-						<tr bgcolor="<!--{$arrPRODUCTSTATUS_COLOR[$status]}-->" class="fs10">
+						<tr class="fs10">
 							<td align="center" rowspan="2">a</td>
 							<td align="center" rowspan="2">b</td>
 							<td>c</td>
@@ -254,7 +253,7 @@
 							<td align="center" rowspan="2">h</td>
 							<td align="center" rowspan="2">i</td>
 						</tr>
-						<tr bgcolor="<!--{$arrPRODUCTSTATUS_COLOR[$status]}-->" class="fs10n">
+						<tr class="fs10n">
 							<td align="right">j</td>
 							<td>k</td>
 							<td align="center">k</td>
