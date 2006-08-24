@@ -70,13 +70,13 @@ $objPage->arrEndDay = $objDate->getDay();
 	//	session_start();
 	}
 
-		// セッション情報の保存
-		if(isset($_SESSION['cert'])) {
-			$this->sid = session_id();
-			$this->cert = $_SESSION['cert'];
-			$this->login_id = $_SESSION['login_id'];
-			$this->authority = $_SESSION['authority'];	// 管理者:0, 一般:1, 閲覧:2
-			$this->member_id = $_SESSION['member_id'];
+	// セッション情報の保存
+	if(isset($_SESSION['cert'])) {
+			$sid = session_id();
+			$cert = $_SESSION['cert'];
+			$login_id = $_SESSION['login_id'];
+			$authority = $_SESSION['authority'];	// 管理者:0, 一般:1, 閲覧:2
+			$member_id = $_SESSION['member_id'];
 			// ログに記録する
 			gfPrintLog("access : user=".$this->login_id." auth=".$this->authority." sid=".$this->sid);
 		} else {
@@ -84,6 +84,14 @@ $objPage->arrEndDay = $objDate->getDay();
 			gfPrintLog("access error.");
 		}
 
+		global $arrPERMISSION;
+			if(isset($arrPERMISSION[$_SERVER['PHP_SELF']])) {
+				// 数値が自分の権限以上のものでないとアクセスできない。
+				if($arrPERMISSION[$_SERVER['PHP_SELF']] < $this->authority) {			
+								// エラーページの表示
+			sfDispError($ret);
+				} 
+			}
 
 //キャンペーンの編集時
 if(sfIsInt($_POST['campaign_id']) && $_POST['mode'] == "camp_search") {
