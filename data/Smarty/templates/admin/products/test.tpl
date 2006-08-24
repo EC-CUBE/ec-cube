@@ -8,7 +8,7 @@
 <!--{/if}-->
 <!--{/foreach}-->
 	<tr valign="top">
-		<td background="/img/contents/navi_bg.gif" height="402">
+		<td background="" height="402">
 			<!-- サブナビ -->
 			<!--{include file=$tpl_subnavi}-->
 		</td>
@@ -20,25 +20,25 @@
 				<table width="706" border="0" cellspacing="0" cellpadding="0" summary=" ">
 					<tr><td height="14"></td></tr>
 					<tr>
-						<td colspan="3"><img src="/img/contents/main_top.jpg" width="706" height="14" alt=""></td>
+						<td colspan="3"><img src="" width="706" height="14" alt=""></td>
 					</tr>
 					<tr>
-						<td background="/img/contents/main_left.jpg"><img src="/img/common/_.gif" width="14" height="1" alt=""></td>
+						<td background=""><img src="" width="14" height="1" alt=""></td>
 						<td bgcolor="#cccccc">
 						<table width="678" border="0" cellspacing="0" cellpadding="0" summary=" ">
 							<tr>
-								<td colspan="3"><img src="/img/contents/contents_title_top.gif" width="678" height="7" alt=""></td>
+								<td colspan="3"><img src="" width="678" height="7" alt=""></td>
 							</tr>
 							<tr>
-								<td background="/img/contents/contents_title_left_bg.gif"><img src="/img/contents/contents_title_left.gif" width="22" height="12" alt=""></td>
+								<td background=""><img src="" width="22" height="12" alt=""></td>
 								<td bgcolor="#636469" width="638" class="fs14n"><span class="white"><!--コンテンツタイトル-->検索条件設定</span></td>
-								<td background="/img/contents/contents_title_right_bg.gif"><img src="/img/common/_.gif" width="18" height="1" alt=""></td>
+								<td background=""><img src="" width="18" height="1" alt=""></td>
 							</tr>
 							<tr>
-								<td colspan="3"><img src="/img/contents/contents_title_bottom.gif" width="678" height="7" alt=""></td>
+								<td colspan="3"><img src="" width="678" height="7" alt=""></td>
 							</tr>
 							<tr>
-								<td colspan="3"><img src="/img/contents/main_bar.jpg" width="678" height="10" alt=""></td>
+								<td colspan="3"><img src="" width="678" height="10" alt=""></td>
 							</tr>
 						</table>
 						<!--検索条件設定テーブルここから-->
@@ -108,12 +108,12 @@
 						</table>
 						<table width="678" border="0" cellspacing="0" cellpadding="0" summary=" ">
 							<tr>
-								<td bgcolor="#cccccc"><img src="/img/common/_.gif" width="1" height="5" alt=""></td>
-								<td><img src="/img/contents/tbl_top.gif" width="676" height="7" alt=""></td>
-								<td bgcolor="#cccccc"><img src="/img/common/_.gif" width="1" height="5" alt=""></td>
+								<td bgcolor="#cccccc"><img src="" width="1" height="5" alt=""></td>
+								<td><img src="" width="676" height="7" alt=""></td>
+								<td bgcolor="#cccccc"><img src="" width="1" height="5" alt=""></td>
 							</tr>
 							<tr>
-								<td bgcolor="#cccccc"><img src="/img/common/_.gif" width="1" height="10" alt=""></td>
+								<td bgcolor="#cccccc"><img src="" width="1" height="10" alt=""></td>
 								<td bgcolor="#e9e7de" align="center">
 								<table border="0" cellspacing="0" cellpadding="0" summary=" ">
 									<tr>
@@ -124,23 +124,23 @@
 											<!--{html_options options=$arrPageMax selected=$arrForm.search_page_max}-->
 											</select> 件
 										</td>
-										<td><img src="/img/common/_.gif" width="10" height="1" alt=""></td>
-										<td><input type="image" name="subm" onMouseover="chgImgImageSubmit('/img/contents/btn_search_on.jpg',this)" onMouseout="chgImgImageSubmit('/img/contents/btn_search.jpg',this)" src="/img/contents/btn_search.jpg" width="123" height="24" alt="この条件で検索する" border="0" onClick="submit();" ></td>
+										<td><img src="" width="10" height="1" alt=""></td>
+										<td><input type="image" name="subm" onMouseover="" onMouseout="" src="" width="123" height="24" alt="この条件で検索する" border="0" onClick="submit();" ></td>
 									</tr>
 								</table>
 								</td>
-								<td bgcolor="#cccccc"><img src="/img/common/_.gif" width="1" height="10" alt=""></td>
+								<td bgcolor="#cccccc"><img src="" width="1" height="10" alt=""></td>
 							</tr>
 							<tr>
-								<td colspan="3"><img src="/img/contents/tbl_bottom.gif" width="678" height="8" alt=""></td>
+								<td colspan="3"><img src="" width="678" height="8" alt=""></td>
 							</tr>
 						</table>
 						<!--検索条件設定テーブルここまで-->
 						</td>
-						<td background="/img/contents/main_right.jpg"><img src="/img/common/_.gif" width="14" height="1" alt=""></td>
+						<td background=""><img src="" width="14" height="1" alt=""></td>
 					</tr>
 					<tr>
-						<td colspan="3"><img src="/img/contents/main_bottom.jpg" width="706" height="14" alt=""></td>
+						<td colspan="3"><img src="" width="706" height="14" alt=""></td>
 					</tr>
 					<tr><td height="30"></td></tr>
 				</table>
@@ -165,29 +165,29 @@
 <!--{foreach key=key item=item from=$arrHidden}-->
 <input type="hidden" name="<!--{$key}-->" value="<!--{$item|escape}-->">
 <!--{/foreach}-->		
-	<tr><td colspan="2"><img src="/img/contents/search_line.jpg" width="878" height="12" alt=""></td></tr>
+	<tr><td colspan="2"><img src="" width="878" height="12" alt=""></td></tr>
 	<tr bgcolor="cbcbcb">
 		<td>
 		<table border="0" cellspacing="0" cellpadding="0" summary=" ">
 			<tr>
-				<td><img src="/img/contents/search_left.gif" width="19" height="22" alt=""></td>
+				<td><img src="" width="19" height="22" alt=""></td>
 				<td>
 				<!--検索結果-->
 				<table border="0" cellspacing="0" cellpadding="0" summary=" ">
 					<tr>
-						<td><img src="/img/contents/reselt_left_top.gif" width="22" height="5" alt=""></td>
-						<td background="/img/contents/reselt_top_bg.gif"><img src="/img/common/_.gif" width="1" height="5" alt=""></td>
-						<td><img src="/img/contents/reselt_right_top.gif" width="22" height="5" alt=""></td>
+						<td><img src="" width="22" height="5" alt=""></td>
+						<td background=""><img src="/img/common/_.gif" width="1" height="5" alt=""></td>
+						<td><img src="" width="22" height="5" alt=""></td>
 					</tr>
 					<tr>
-						<td background="/img/contents/reselt_left_bg.gif"><img src="/img/contents/reselt_left_middle.gif" width="22" height="12" alt=""></td>
+						<td background=""><img src="" width="22" height="12" alt=""></td>
 						<td bgcolor="#393a48" class="white10">検索結果一覧　<span class="reselt"><!--検索結果数--><!--{$tpl_linemax}-->件</span>&nbsp;が該当しました。</td>
-						<td background="/img/contents/reselt_right_bg.gif"><img src="/img/common/_.gif" width="22" height="8" alt=""></td>
+						<td background=""><img src="" width="22" height="8" alt=""></td>
 					</tr>
 					<tr>
-						<td><img src="/img/contents/reselt_left_bottom.gif" width="22" height="5" alt=""></td>
-						<td background="/img/contents/reselt_bottom_bg.gif"><img src="/img/common/_.gif" width="1" height="5" alt=""></td>
-						<td><img src="/img/contents/reselt_right_bottom.gif" width="22" height="5" alt=""></td>
+						<td><img src="" width="22" height="5" alt=""></td>
+						<td background=""><img src="/img/common/_.gif" width="1" height="5" alt=""></td>
+						<td><img src="" width="22" height="5" alt=""></td>
 					</tr>
 				</table>
 				<!--検索結果-->
@@ -195,9 +195,9 @@
 				<input type="button" name="subm" value="検索結果をすべて削除" onclick="fnModeSubmit('delete_all','','');" />
 				<!--{/if}-->
 				</td>
-				<td><img src="/img/common/_.gif" width="8" height="1" alt=""></td>
-				<td><a href="#" onmouseover="chgImg('/img/contents/btn_csv_on.jpg','btn_csv');" onmouseout="chgImg('/img/contents/btn_csv.jpg','btn_csv');"  onclick="fnModeSubmit('csv','','');" ><img src="/img/contents/btn_csv.jpg" width="99" height="22" alt="CSV DOWNLOAD" border="0" name="btn_csv" id="btn_csv"></a></td>
-				<td><img src="/img/common/_.gif" width="8" height="1" alt=""></td>
+				<td><img src="" width="8" height="1" alt=""></td>
+				<td><a href="#" onmouseover="" onmouseout=""  onclick="fnModeSubmit('csv','','');" ><img src="" width="99" height="22" alt="CSV DOWNLOAD" border="0" name="btn_csv" id="btn_csv"></a></td>
+				<td><img src="" width="8" height="1" alt=""></td>
 				<td><a href="../contents/csv.php?tpl_subno_csv=product"><span class="fs12n"> >> CSV出力設定へ </span></a></td>
 			</tr>
 		</table>
@@ -206,7 +206,7 @@
 			<!--{include file=$tpl_pager}-->
 		</td>									
 	</tr>
-	<tr><td bgcolor="cbcbcb" colspan="2"><img src="/img/common/_.gif" width="1" height="5" alt=""></td></tr>
+	<tr><td bgcolor="cbcbcb" colspan="2"><img src="" width="1" height="5" alt=""></td></tr>
 </table>
 
 <table width="878" border="0" cellspacing="0" cellpadding="0" summary=" ">
@@ -221,7 +221,8 @@
 					<td bgcolor="#cccccc">
 					<!--検索結果表示テーブル-->
 					<table width="840" border="0" cellspacing="1" cellpadding="5" summary=" ">
-											<!--{section name=cnt loop=$arrTest}-->
+						<!--{section name=cnt loop=$arrTest}-->
+						
 						<tr bgcolor="#636469" align="center" class="fs10n">
 							<td width="50" rowspan="2"><span class="white">商品ID</span></td>
 							<td width="90" rowspan="2"><span class="white">商品画像</span></td>
