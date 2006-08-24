@@ -56,9 +56,7 @@
 							<tr class="fs12n">
 								<td bgcolor="#f2f1ec" width="110">商品コード</td>
 								<td bgcolor="#ffffff" width="194">
-								<!--{assign var=key value="search_order_name"}-->
-								<span class="red12"><!--{$arrErr[$key]}--></span>
-								<input type="text" name="<!--{$key}-->" value="<!--{$arrForm[$key].value|escape}-->" maxlength="<!--{$arrForm[$key].length}-->" style="<!--{$arrErr[$key]|sfGetErrorColor}-->" size="30" class="box30" />				
+									<input type="text" name="search_product_code" value="<!--{$arrForm.search_product_code|escape}-->" size="30" class="box30" />
 								</td>
 								<td bgcolor="#f2f1ec" width="110">商品名</td>
 								<td bgcolor="#ffffff" width="195">
