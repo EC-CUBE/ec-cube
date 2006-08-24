@@ -110,9 +110,7 @@
 							<tr class="fs12n">
 								<td bgcolor="#f2f1ec" width="110">ステータス</td>
 								<td bgcolor="#ffffff" width="499" colspan="3">
-								<!--{assign var=key value="search_order_sex"}-->
-								<span class="red12"><!--{$arrErr[$key]}--></span>
-								<!--{html_checkboxes name="$key" options=$arrSex selected=$arrForm[$key].value}-->
+								<!--{html_checkboxes name="search_product_flag" options=$arrSTATUS selected=$arrForm.search_product_flag}-->
 							</td>
 							</tr>
 							<tr class="fs12n">
