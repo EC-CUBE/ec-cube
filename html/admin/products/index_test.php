@@ -52,7 +52,7 @@ $objPage->arrEndDay = $objDate->getDay();
 
 session_start();
 
-	$max = 8;
+	$max = 9;
 			for($i = 0; $i < $max; $i++) {
 				$objPage->arrProducts[] = "dummy";
 			}
