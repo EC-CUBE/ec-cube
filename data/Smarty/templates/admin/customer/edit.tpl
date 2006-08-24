@@ -79,7 +79,7 @@
 										<td bgcolor="#ffffff" width="527">
 											<span class="red12"><!--{$arrErr.status}--></span>
 											<input type="radio" name="status"value=1 id="no_mem" <!--{if $list_data.status == 1}--> checked="checked" <!--{/if}--> disabled><label for="no_mem">仮会員</label>
-											<input type="radio" name="status"value=2 id="mem"<!--{if $list_data.status == 2}--> checked="checked" <!--{/if}-->><label for="mem">本会員</label>
+											<input type="radio" name="status"value=2 id="mem"<!--{if $list_data.status == 2}--> checked="checked" <!--{/if}--> disabled><label for="mem">本会員</label>
 										</td>
 									</tr>
 									<tr class="fs12n">
