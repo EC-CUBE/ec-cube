@@ -255,11 +255,6 @@
 							<td><!--{$arrProducts[cnt].name|escape}--></td>
 							<td></td>
 							<td align="center"><span class="icon_edit"><a href="/" onclick="fnChangeAction('./product.php'); fnModeSubmit('pre_edit', 'product_id', <!--{$arrProducts[cnt].product_id}-->); return false;" >ÊÔ½¸</a></span></td>
-							<td align="center"><span class="icon_confirm"><a href="<!--{$smarty.const.SITE_URL|sfTrimURL}-->/products/detail.php?product_id=<!--{$arrProducts[cnt].product_id}-->&admin=on" target="_blank">³ÎÇ§</a></td>
-							<!--{if $smarty.const.OPTION_CLASS_REGIST == 1}-->
-							<td align="center"><span class="icon_class"><a href="/" onclick="fnChangeAction('./product_class.php'); fnModeSubmit('pre_edit', 'product_id', <!--{$arrProducts[cnt].product_id}-->); return false;" >µ¬³Ê</a></td>
-							<!--{/if}-->
-							<td align="center"><span class="icon_delete"><a href="/" onclick="fnSetFormValue('category_id', '<!--{$arrProducts[cnt].category_id}-->'); fnModeSubmit('delete', 'product_id', <!--{$arrProducts[cnt].product_id}-->); return false;">ºï½ü</a></span></td>
 						</tr>
 						<!--{/section}-->
 
