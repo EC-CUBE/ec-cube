@@ -73,11 +73,9 @@ class SC_SelectSql {
 		if( ( $from_year != "" ) && ( $from_month != "" ) && ( $from_day != "" ) &&	( $to_year == "" ) && ( $to_month == "" ) && ( $to_day == "" ) ) {
 			list( $date1, $date2, $err ) = sfCheckSetTerm( $from_year, $from_month, $from_day, date("Y"), date("m"), date("d") );
   			if ( ! $err ) {
-//				$this->setWhere( $column ." BETWEEN ? AND ?" );
-				$this->setWhere( $column ." >= ?" );
+				$this->setWhere( $column ." BETWEEN ? AND ?" );
 				$return = array($date1);
   			}
-			sfprintr($err);
 		}
 
 		//　開始~終了
