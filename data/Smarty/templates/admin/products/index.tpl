@@ -272,20 +272,10 @@
 						</tr>
 						<tr bgcolor="<!--{$arrPRODUCTSTATUS_COLOR[$status]}-->" class="fs10n">
 							<td align="right">
-							<!--{* ²Á³Ê *}-->
-							<!--{if $arrProducts[cnt].price02 != ""}-->
-							<!--{$arrProducts[cnt].price02|number_format}-->
-							<!--{else}-->
 							-
-							<!--{/if}-->
 							</td>
 							<td>
-							<!--{* ¥«¥Æ¥´¥êÌ¾ *}-->
-							<!--{assign var=key value=$arrProducts[cnt].category_id}-->
-							<!--{$arrCatList[$key]|sfTrim}-->
 							</td>
-							<!--{* É½¼¨ *}-->
-							<!--{assign var=key value=$arrProducts[cnt].status}-->
 							<td align="center"><!--{$arrDISP[$key]}--></td>
 						</tr>
 						<!--¢¥¾¦ÉÊ<!--{$smarty.section.cnt.iteration}-->-->
