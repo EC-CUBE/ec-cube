@@ -97,6 +97,8 @@ sfIsSuccess($objSess);
 // POST値の引き継ぎ
 $objPage->arrForm = $_POST;
 
+sfprintr($_POST);
+
 // ページ送り用
 $objPage->arrHidden['search_pageno'] = $_POST['search_pageno'];
 
@@ -145,8 +147,6 @@ if ($_POST['mode'] == "search" || $_POST['mode'] == "csv"  || $_POST['mode'] == 
 	/* 入力エラーなし */
 	if (count($objPage->arrErr) == 0) {
 		
-		
-		sfprintr($objPage->arrForm);
 		//-- 検索データ取得
 		$objSelect = new SC_CustomerList($objPage->arrForm, "customer");
 		if ($_POST["mode"] == 'csv') {

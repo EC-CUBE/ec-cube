@@ -143,7 +143,7 @@
 										<option value="" selected="selected">----</option>
 										<!--{html_options options=$arrMonth selected=$arrForm.search_end_month}-->
 									</select>·î
-									<select name="end_day" <!--{if $arrErr.search_start_year || $arrErr.search_end_year}--><!--{sfSetErrorStyle}--><!--{/if}-->>
+									<select name="search_end_day" <!--{if $arrErr.search_start_year || $arrErr.search_end_year}--><!--{sfSetErrorStyle}--><!--{/if}-->>
 										<option value="" selected="selected">----</option>
 										<!--{html_options options=$arrDay selected=$arrForm.search_end_day}-->
 									</select>Æü
