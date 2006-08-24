@@ -214,7 +214,8 @@ if ($_POST['mode'] == "search" || $_POST['mode'] == "csv"  || $_POST['mode'] == 
 			break;
 		default:
 			// 読み込む列とテーブルの指定
-			$col = "product_id, name, category_id, main_list_image, status, product_code, price01, price02, stock, stock_unlimited";
+//			$col = "product_id, name, category_id, main_list_image, status, product_code, price01, price02, stock, stock_unlimited";
+			$col = "product_id";
 			$from = "vw_products_nonclass";
 
 			// 行数の取得
@@ -250,7 +251,7 @@ if ($_POST['mode'] == "search" || $_POST['mode'] == "csv"  || $_POST['mode'] == 
 			// 検索結果の取得
 			$objPage->arrProducts = $objQuery->select($col, $from, $where, $arrval);
 //			$arrProducts = $objQuery->select($col, $from, $where, $arrval);
-			$objPage->tpl_mainpage="products/test.tpl";
+//			$objPage->tpl_mainpage="products/test.tpl";
 
 			break;
 		}
