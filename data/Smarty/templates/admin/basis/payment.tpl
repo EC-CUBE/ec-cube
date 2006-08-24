@@ -83,7 +83,7 @@
 										<td bgcolor="#e9e7de" align="center">
 										<table border="0" cellspacing="0" cellpadding="0" summary=" ">
 											<tr>
-												<td><input type="button" name="subm2" value="支払方法を追加" onclick="win03('./payment_input.php','payment_input','550','350');" /></td>
+												<td><input type="button" name="subm2" value="支払方法を追加" onclick="win03('./payment_input.php','payment_input','550','400');" /></td>
 											</tr>
 										</table>
 										</td>
