@@ -144,7 +144,7 @@ if ( $_POST["mode"] != "edit" && is_numeric($_POST["customer_id"])) {
 			if ($arrCusSts != $_POST['status']){
 				$secret = sfGetUniqRandomId("r");
 				$objPage->arrForm['secret'] = $secret;
-				array_push($arrRegistColumn, array('secret'));
+				array_push($arrRegistColumn, array('column' => 'secret', 'convert' => 'n'));
 			}
 			
 			sfprintr($objPage->arrForm);
