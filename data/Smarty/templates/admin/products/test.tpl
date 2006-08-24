@@ -124,7 +124,7 @@
 								<!--{assign var=key value="search_order_sex"}-->
 								<span class="red12"><!--{$arrErr[$key]}--></span>
 								<!--{html_checkboxes name="$key" options=$arrSex selected=$arrForm[$key].value}-->
-							</td>
+								</td>
 							</tr>
 						</table>
 						<table width="678" border="0" cellspacing="0" cellpadding="0" summary=" ">
