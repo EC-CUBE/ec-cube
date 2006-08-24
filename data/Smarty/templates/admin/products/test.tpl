@@ -157,10 +157,6 @@
 <!--★★メインコンテンツ★★-->						
 
 		
-		<br />
-		<input type="submit" name="subm" value="この内容で検索する" />
-		</form>
-		
 		<form name="form1" id="form1" method="post" action="<!--{$smarty.server.PHP_SELF}-->">
 		<input type="hidden" name="mode" value="search">
 		<input type="hidden" name="product_id" value="">
