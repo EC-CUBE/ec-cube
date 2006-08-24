@@ -5,6 +5,10 @@ require_once("./index_csv.php");
 //require_once("../../require2.php");
 
 class LC_Page {
+	var $arrForm;
+	var $arrHidden;
+	var $arrProducts;
+	var $arrPageMax;
 	function LC_Page() {
 //		$this->tpl_mainpage = 'products/index.tpl';
 		$this->tpl_mainpage="products/test.tpl";
