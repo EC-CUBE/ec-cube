@@ -48,6 +48,9 @@ $objPage->arrEndDay = $objDate->getDay();
 
 // 認証可否の判定
 $objSess = new SC_Session();
+
+		session_start();
+
 //sfIsSuccess($objSess);
 
 //キャンペーンの編集時
