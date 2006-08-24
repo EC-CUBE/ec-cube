@@ -31,7 +31,7 @@ class LC_Page {
 $conn = new SC_DBConn();
 $objPage = new LC_Page();
 $objView = new SC_AdminView();
-/*
+
 $objDate = new SC_Date();
 
 // 登録・更新検索開始年
@@ -46,7 +46,7 @@ $objDate->setEndYear(DATE("Y"));
 $objPage->arrEndYear = $objDate->getYear();
 $objPage->arrEndMonth = $objDate->getMonth();
 $objPage->arrEndDay = $objDate->getDay();
-*/
+
 // 認証可否の判定
 $objSess = new SC_Session();
 sfIsSuccess($objSess);
