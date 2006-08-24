@@ -40,7 +40,7 @@ $objDate = new SC_Date();
 $objSess = new SC_Session();
 sfIsSuccess($objSess);
 
-/*
+
 // 登録・更新検索開始年
 $objDate->setStartYear(RELEASE_YEAR);
 $objDate->setEndYear(DATE("Y"));
@@ -53,7 +53,7 @@ $objDate->setEndYear(DATE("Y"));
 $objPage->arrEndYear = $objDate->getYear();
 $objPage->arrEndMonth = $objDate->getMonth();
 $objPage->arrEndDay = $objDate->getDay();
-*/
+
 //キャンペーンの編集時
 if(sfIsInt($_POST['campaign_id']) && $_POST['mode'] == "camp_search") {
 	$objQuery = new SC_Query();
