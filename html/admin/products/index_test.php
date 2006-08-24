@@ -32,7 +32,7 @@ $objView = new SC_AdminView();
 
 session_start();
 
-$max = 20;
+$max = 15;
 for($i = 0; $i < $max; $i++) {
 	$objPage->arrProducts[$i]['product_id'] = $i;
 }
