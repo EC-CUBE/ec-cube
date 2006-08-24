@@ -27,6 +27,9 @@ class LC_Page {
 
 	}
 }
+
+$objPage = new LC_Page();
+
 session_start();
 
 $max = 10;
