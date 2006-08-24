@@ -1,100 +1,103 @@
-<!--★★メインコンテンツ★★-->
+<!--▼CONTENTS-->
+<table width="780" border="0" cellspacing="0" cellpadding="0" summary=" ">
+	<tr>
+		<td bgcolor="#ffffff" align="center" valign="top" height="400">
+		<table width="740" border="0" cellspacing="0" cellpadding="0" summary=" ">
+			<tr>
+				<!--▼SUB NAVI-->
+				<td class="fs12n">
+				<!--{include file=$tpl_subnavi}-->
+				</td>
+				<!--▲SUB NAVI-->
+				</tr><tr><td height="25"></td></tr>
+		</table>
+
+		<!--▼MAIN CONTENTS-->
+		<table width="740" border="0" cellspacing="0" cellpadding="0" summary=" ">
+			<tr>
+				<td class="fs14n"><strong>■商品マスタ</strong></td>
+			</tr>
+			<tr height="15">
+				<td></td>
+			</tr>
+		</table>
 
 <form name="search_form" id="search_form" method="post" action="<!--{$smarty.server.PHP_SELF}-->">
 <input type="hidden" name="mode" value="search">
-
-						<!--▼検索テーブルここから-->
-						<table width="678" border="0" cellspacing="1" cellpadding="8" summary=" ">
-							<tr class="fs12n">
-								<td bgcolor="#f0f0f0" width="110">商品コード</td>
-								<td bgcolor="#ffffff" width="248"><input type="text" name="search_product_code" value="<!--{$arrForm.search_product_code|escape}-->" size="30" class="box30" /></td>
-								<td bgcolor="#f0f0f0" width="110">商品名</td>
-								<td bgcolor="#ffffff" width="249"><input type="text" name="search_name" value="<!--{$arrForm.search_name|escape}-->" size="30" class="box30" /></td>
-							</tr>
-							<tr class="fs12n">
-								<td bgcolor="#f0f0f0" width="110">カテゴリ</td>
-								<td bgcolor="#ffffff" width="607" colspan="7">
-								<select name="search_category_id" style="<!--{if $arrErr.search_category_id != ""}-->background-color: <!--{$smarty.const.ERR_COLOR}--><!--{/if}-->">
-								<option value="">選択してください</option>
-								<!--{html_options options=$arrCatList selected=$arrForm.search_category_id}-->
-								</select></td>
-							</tr>
-							<tr class="fs12n">
-								<td bgcolor="#f0f0f0" width="110">登録・更新日</td>
-								<td bgcolor="#ffffff" width="607" colspan="3">
-								<span class="red"><!--{$arrErr.search_startyear}--></span>
-								<span class="red"><!--{$arrErr.search_endyear}--></span>		
-								<select name="search_startyear" style="<!--{$arrErr.search_startyear|sfGetErrorColor}-->">
-								<option value="">----</option>
-								<!--{html_options options=$arrStartYear selected=$arrForm.search_startyear}-->
-								</select>年
-								<select name="search_startmonth" style="<!--{$arrErr.search_startyear|sfGetErrorColor}-->">
-								<option value="">--</option>
-								<!--{html_options options=$arrStartMonth selected=$arrForm.search_startmonth}-->
-								</select>月
-								<select name="search_startday" style="<!--{$arrErr.search_startyear|sfGetErrorColor}-->">
-								<option value="">--</option>
-								<!--{html_options options=$arrStartDay selected=$arrForm.search_startday}-->
-								</select>日〜
-								<select name="search_endyear" style="<!--{$arrErr.search_endyear|sfGetErrorColor}-->">
-								<option value="">----</option>
-								<!--{html_options options=$arrEndYear selected=$arrForm.search_endyear}-->
-								</select>年
-								<select name="search_endmonth" style="<!--{$arrErr.search_endyear|sfGetErrorColor}-->">
-								<option value="">--</option>
-								<!--{html_options options=$arrEndMonth selected=$arrForm.search_endmonth}-->
-								</select>月
-								<select name="search_endday" style="<!--{$arrErr.search_endyear|sfGetErrorColor}-->">
-								<option value="">--</option>
-								<!--{html_options options=$arrEndDay selected=$arrForm.search_endday}-->
-								</select>日
-								</td>
-							</tr>
-							<tr class="fs12n">
-								<td bgcolor="#f0f0f0" width="110">ステータス</td>
-								<td bgcolor="#ffffff" width="607" colspan="3">
-								<!--{html_checkboxes name="search_product_flag" options=$arrSTATUS selected=$arrForm.search_product_flag}-->
-								</td>
-								</tr>
-							<tr class="fs12n">
-								<td bgcolor="#f0f0f0" width="110">種別</td>
-								<td bgcolor="#ffffff" width="607" colspan="3">
-								<!--{html_checkboxes name="search_status" options=$arrDISP selected=$arrForm.search_status}-->
-								</td>
-							</tr>
-							<tr class="fs12n">
-								<td bgcolor="#f0f0f0" width="110">検索結果表示数</td>
-								<td bgcolor="#ffffff" width="607" colspan="3">
-								<!--{assign var=key value="search_page_max"}-->
-								<span class="red12"><!--{$arrErr[$key]}--></span>
-								<select name="<!--{$key}-->" style="<!--{$arrErr[$key]|sfGetErrorColor}-->">
-								<!--{html_options options=$arrPageMax selected=$arrForm.search_page_max}-->
-								</select> 件</td>
-							</tr>
-						</table>
-						<!--▲検索テーブルここまで-->
-								<table border="0" cellspacing="0" cellpadding="0" summary=" ">
-									<tr>
-										<td class="fs12n">検索結果表示件数
-											<!--{assign var=key value="search_page_max"}-->
-											<span class="red12"><!--{$arrErr[$key]}--></span>
-											<select name="<!--{$arrForm[$key].keyname}-->" style="<!--{$arrErr[$key]|sfGetErrorColor}-->">
-											<!--{html_options options=$arrPageMax selected=$arrForm[$key].value}-->
-											</select> 件
-										</td>
-										<td><img src="/img/common/_.gif" width="10" height="1" alt=""></td>
-										<td><input type="image" name="subm" onMouseover="chgImgImageSubmit('/img/contents/btn_search_on.jpg',this)" onMouseout="chgImgImageSubmit('/img/contents/btn_search.jpg',this)" src="/img/contents/btn_search.jpg" width="123" height="24" alt="この条件で検索する" border="0" onClick="submit();" ></td>
-									</tr>
-								</table>
-						<!--検索条件設定テーブルここまで-->
-<img src="/img/contents/main_bottom.jpg" width="706" height="14" alt="">
-
-
-
-</form>	
-
-<!--★★メインコンテンツ★★-->						
-
+		<!--▼検索テーブルここから-->
+		<table width="740" border="0" cellspacing="1" cellpadding="5" summary=" " bgcolor="#cccccc">
+			<tr class="fs12n">
+				<td bgcolor="#f0f0f0" width="110">商品コード</td>
+				<td bgcolor="#ffffff" width="248"><input type="text" name="search_product_code" value="<!--{$arrForm.search_product_code|escape}-->" size="30" class="box30" /></td>
+				<td bgcolor="#f0f0f0" width="110">商品名</td>
+				<td bgcolor="#ffffff" width="249"><input type="text" name="search_name" value="<!--{$arrForm.search_name|escape}-->" size="30" class="box30" /></td>
+			</tr>
+			<tr class="fs12n">
+				<td bgcolor="#f0f0f0" width="110">カテゴリ</td>
+				<td bgcolor="#ffffff" width="607" colspan="7">
+				<select name="search_category_id" style="<!--{if $arrErr.search_category_id != ""}-->background-color: <!--{$smarty.const.ERR_COLOR}--><!--{/if}-->">
+				<option value="">選択してください</option>
+				<!--{html_options options=$arrCatList selected=$arrForm.search_category_id}-->
+				</select></td>
+			</tr>
+			<tr class="fs12n">
+				<td bgcolor="#f0f0f0" width="110">登録・更新日</td>
+				<td bgcolor="#ffffff" width="607" colspan="3">
+				<span class="red"><!--{$arrErr.search_startyear}--></span>
+				<span class="red"><!--{$arrErr.search_endyear}--></span>		
+				<select name="search_startyear" style="<!--{$arrErr.search_startyear|sfGetErrorColor}-->">
+				<option value="">----</option>
+				<!--{html_options options=$arrStartYear selected=$arrForm.search_startyear}-->
+				</select>年
+				<select name="search_startmonth" style="<!--{$arrErr.search_startyear|sfGetErrorColor}-->">
+				<option value="">--</option>
+				<!--{html_options options=$arrStartMonth selected=$arrForm.search_startmonth}-->
+				</select>月
+				<select name="search_startday" style="<!--{$arrErr.search_startyear|sfGetErrorColor}-->">
+				<option value="">--</option>
+				<!--{html_options options=$arrStartDay selected=$arrForm.search_startday}-->
+				</select>日〜
+				<select name="search_endyear" style="<!--{$arrErr.search_endyear|sfGetErrorColor}-->">
+				<option value="">----</option>
+				<!--{html_options options=$arrEndYear selected=$arrForm.search_endyear}-->
+				</select>年
+				<select name="search_endmonth" style="<!--{$arrErr.search_endyear|sfGetErrorColor}-->">
+				<option value="">--</option>
+				<!--{html_options options=$arrEndMonth selected=$arrForm.search_endmonth}-->
+				</select>月
+				<select name="search_endday" style="<!--{$arrErr.search_endyear|sfGetErrorColor}-->">
+				<option value="">--</option>
+				<!--{html_options options=$arrEndDay selected=$arrForm.search_endday}-->
+				</select>日
+				</td>
+			</tr>
+			<tr class="fs12n">
+				<td bgcolor="#f0f0f0" width="110">ステータス</td>
+				<td bgcolor="#ffffff" width="607" colspan="3">
+				<!--{html_checkboxes name="search_product_flag" options=$arrSTATUS selected=$arrForm.search_product_flag}-->
+				</td>
+				</tr>
+			<tr class="fs12n">
+				<td bgcolor="#f0f0f0" width="110">種別</td>
+				<td bgcolor="#ffffff" width="607" colspan="3">
+				<!--{html_checkboxes name="search_status" options=$arrDISP selected=$arrForm.search_status}-->
+				</td>
+			</tr>
+			<tr class="fs12n">
+				<td bgcolor="#f0f0f0" width="110">検索結果表示数</td>
+				<td bgcolor="#ffffff" width="607" colspan="3">
+				<!--{assign var=key value="search_page_max"}-->
+				<span class="red12"><!--{$arrErr[$key]}--></span>
+				<select name="<!--{$key}-->" style="<!--{$arrErr[$key]|sfGetErrorColor}-->">
+				<!--{html_options options=$arrPageMax selected=$arrForm.search_page_max}-->
+				</select> 件</td>
+			</tr>
+		</table>
+		<!--▲検索テーブルここまで-->
+		
+		<br />
+		<input type="submit" name="subm" value="この内容で検索する" />
+		</form>
 		
 		<form name="form1" id="form1" method="post" action="<!--{$smarty.server.PHP_SELF}-->">
 		<input type="hidden" name="mode" value="search">
