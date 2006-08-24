@@ -51,7 +51,7 @@ $objPage->arrEndDay = $objDate->getDay();
 //sfIsSuccess($objSess);
 
 session_start();
-
+/*
 //キャンペーンの編集時
 if(sfIsInt($_POST['campaign_id']) && $_POST['mode'] == "camp_search") {
 	$objQuery = new SC_Query();
@@ -262,7 +262,7 @@ if ($_POST['mode'] == "search" || $_POST['mode'] == "csv"  || $_POST['mode'] == 
 // カテゴリの読込
 $objPage->arrCatList = sfGetCategoryList();
 $objPage->arrCatIDName = lfGetIDName($objPage->arrCatList);
-
+*/
 // 画面の表示
 $objView->assignobj($objPage);
 $objView->display(MAIN_FRAME);
