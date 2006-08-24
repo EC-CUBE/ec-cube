@@ -6,12 +6,12 @@ class SC_Session {
 	var $cert;			// 認証文字列(認証成功の判定に使用)
 	var $sid;			// セッションID
 	var $member_id;		// ログインユーザの主キー
-	
+
 	/* コンストラクタ */
 	function SC_Session() {
 		// セッション開始
 		sfDomainSessionStart();
-		
+
 		// セッション情報の保存
 		if(isset($_SESSION['cert'])) {
 			$this->sid = session_id();
