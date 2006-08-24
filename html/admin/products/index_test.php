@@ -52,6 +52,16 @@ $objPage->arrEndDay = $objDate->getDay();
 
 session_start();
 
+	$max = 8;
+			for($i = 0; $i < $max; $i++) {
+				$objPage->arrProducts[] = "dummy";
+			}
+
+
+
+exit;
+
+
 //キャンペーンの編集時
 if(sfIsInt($_POST['campaign_id']) && $_POST['mode'] == "camp_search") {
 	$objQuery = new SC_Query();
@@ -256,10 +266,7 @@ if ($_POST['mode'] == "search" || $_POST['mode'] == "csv"  || $_POST['mode'] == 
 			// 検索結果の取得
 			//$objPage->arrProducts = $objQuery->select($col, $from, $where, $arrval);
 			*/
-			$max = 8;
-			for($i = 0; $i < $max; $i++) {
-				$objPage->arrProducts[] = "dummy";
-			}
+		
 			
 			break;
 		}
