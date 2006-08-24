@@ -263,6 +263,7 @@ if ($_POST['mode'] == "search" || $_POST['mode'] == "csv"  || $_POST['mode'] == 
 $objPage->arrCatList = sfGetCategoryList();
 $objPage->arrCatIDName = lfGetIDName($objPage->arrCatList);
 */
+
 // 画面の表示
 $objView->assignobj($objPage);
 $objView->display(MAIN_FRAME);
