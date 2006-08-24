@@ -134,6 +134,21 @@ if ( $_POST["mode"] != "edit" && is_numeric($_POST["customer_id"])) {
 		//--　編集
 		if($_POST["mode"] == "complete") {
 			$objPage->tpl_mainpage = 'customer/edit_complete.tpl';
+			
+			// 現在の会員情報を取得する
+			$arrCusSts = $objQuery->getOne("SELECT status FROM dtb_customer WHERE customer_id = ?", array($_POST["customer_id"]));
+
+			// 会員情報が変更されている場合にはシークレット№も更新する。
+			if ($arrCusSts != $_POST['status']){
+				$secret = sfGetUniqRandomId("r");
+//				$objQuery
+			}
+			
+			sfprintr($objPage->arrForm);
+			sfprintr($arrRegistColumn);
+			
+			exit;
+			
 			//-- 編集登録
 			sfEditCustomerData($objPage->arrForm, $arrRegistColumn);
 		}
