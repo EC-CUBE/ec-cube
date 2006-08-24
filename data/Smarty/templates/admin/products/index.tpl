@@ -240,6 +240,12 @@
 							<td width="60"><span class="white">種別</span></td>
 						</tr>
 			
+						<!--{section name=cnt loop=$arrProducts}-->
+						<!--▼商品<!--{$smarty.section.cnt.iteration}-->-->
+
+						<!--▲商品<!--{$smarty.section.cnt.iteration}-->-->
+						<!--{/section}-->
+						
 					</table>
 					<!--検索結果表示テーブル-->
 					</td>
