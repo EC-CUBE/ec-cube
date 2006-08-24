@@ -30,7 +30,7 @@ class LC_Page {
 $objPage = new LC_Page();
 $objView = new SC_AdminView();
 
-session_start();
+//session_start();
 
 $max = 11;
 for($i = 0; $i < $max; $i++) {
