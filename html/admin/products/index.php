@@ -1,6 +1,6 @@
 <?php
 
-require_once("../require.php");
+//require_once("../require.php");
 //require_once("./index_csv.php");
 
 class LC_Page {
