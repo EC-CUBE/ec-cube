@@ -10,8 +10,8 @@ class LC_Page {
 	var $arrProducts;
 	var $arrPageMax;
 	function LC_Page() {
-//		$this->tpl_mainpage = 'products/index.tpl';
-		$this->tpl_mainpage="products/test.tpl";
+		$this->tpl_mainpage = 'products/index.tpl';
+//		$this->tpl_mainpage="products/test.tpl";
 
 		$this->tpl_mainno = 'products';
 		$this->tpl_subnavi = 'products/subnavi.tpl';
@@ -31,139 +31,122 @@ class LC_Page {
 	}
 }
 
-
-$conn = new SC_DBConn();
 $objPage = new LC_Page();
 $objView = new SC_AdminView();
 $objSess = new SC_Session();
-// パラメータ管理クラス
-$objFormParam = new SC_FormParam();
-// パラメータ情報の初期化
-lfInitParam();
-$objFormParam->setParam($_POST);
+$objDate = new SC_Date();
 
-$objFormParam->splitParamCheckBoxes('search_order_sex');
-$objFormParam->splitParamCheckBoxes('search_payment_id');
+
+// 登録・更新検索開始年
+$objDate->setStartYear(RELEASE_YEAR);
+$objDate->setEndYear(DATE("Y"));
+$objPage->arrStartYear = $objDate->getYear();
+$objPage->arrStartMonth = $objDate->getMonth();
+$objPage->arrStartDay = $objDate->getDay();
+// 登録・更新検索終了年
+$objDate->setStartYear(RELEASE_YEAR);
+$objDate->setEndYear(DATE("Y"));
+$objPage->arrEndYear = $objDate->getYear();
+$objPage->arrEndMonth = $objDate->getMonth();
+$objPage->arrEndDay = $objDate->getDay();
+
+// 認証可否の判定
+$objSess = new SC_Session();
+sfIsSuccess($objSess);
+//キャンペーンの編集時
+if(sfIsInt($_POST['campaign_id']) && $_POST['mode'] == "camp_search") {
+	$objQuery = new SC_Query();
+	$search_data = $objQuery->get("dtb_campaign", "search_condition", "campaign_id = ? ", array($_POST['campaign_id']));
+	$arrSearch = unserialize($search_data);
+	foreach ($arrSearch as $key => $val) {
+		$_POST[$key] = $val;
+	}
+}
+
+// POST値の引き継ぎ
+$objPage->arrForm = $_POST;
 
 // 検索ワードの引き継ぎ
 foreach ($_POST as $key => $val) {
-	if (ereg("^search_", $key)) {
+	if (ereg("^search_", $key) || ereg("^campaign_", $key)) {
 		switch($key) {
-			case 'search_order_sex':
-			case 'search_payment_id':
+			case 'search_product_flag':
+			case 'search_status':
 				$objPage->arrHidden[$key] = sfMergeParamCheckBoxes($val);
+				if(!is_array($val)) {
+					$objPage->arrForm[$key] = split("-", $val);
+				}
 				break;
 			default:
 				$objPage->arrHidden[$key] = $val;
 				break;
-		}		
+		}
 	}
 }
 
 // ページ送り用
 $objPage->arrHidden['search_pageno'] = $_POST['search_pageno'];
 
-// 認証可否の判定
-sfIsSuccess($objSess);
-
-if($_POST['mode'] == 'delete') {
-	if(sfIsInt($_POST['order_id'])) {
-		$objQuery = new SC_Query();
-		$where = "order_id = ?";
-		$sqlval['delete'] = '1';
-		$objQuery->update("dtb_order", $sqlval, $where, array($_POST['order_id']));
-	}	
+// 商品削除
+if ($_POST['mode'] == "delete") {
+	if($_POST['category_id'] != "") {
+		// ランク付きレコードの削除
+		$where = "category_id = " . addslashes($_POST['category_id']);
+		sfDeleteRankRecord("dtb_products", "product_id", $_POST['product_id'], $where);
+	} else {
+		sfDeleteRankRecord("dtb_products", "product_id", $_POST['product_id']);
+	}
+	// 子テーブル(商品規格)の削除
+	$objQuery = new SC_Query();
+	$objQuery->delete("dtb_products_class", "product_id = ?", array($_POST['product_id']));
+	
+	// 件数カウントバッチ実行
+	sfCategory_Count($objQuery);	
 }
 
-switch($_POST['mode']) {
-case 'delete':
-case 'csv':
-case 'delete_all':
-case 'search':
-	// 入力値の変換
-	$objFormParam->convParam();
-	$objPage->arrErr = lfCheckError($arrRet);
-	$arrRet = $objFormParam->getHashArray();
-	// 入力なし
+
+if ($_POST['mode'] == "search" || $_POST['mode'] == "csv"  || $_POST['mode'] == "delete" || $_POST['mode'] == "delete_all" || $_POST['mode'] == "camp_search") {
+	// 入力文字の強制変換
+	lfConvertParam();
+	// エラーチェック
+	$objPage->arrErr = lfCheckError();
+
+	$where = "delete = 0";
+
+	// 入力エラーなし
 	if (count($objPage->arrErr) == 0) {
-		$where = "delete = 0";
-		foreach ($arrRet as $key => $val) {
+
+		foreach ($objPage->arrForm as $key => $val) {
+				
+			$val = sfManualEscape($val);
+			
 			if($val == "") {
 				continue;
 			}
-			$val = sfManualEscape($val);
 			
 			switch ($key) {
-				case 'search_order_name':
-					$where .= " AND order_name01||order_name02 ILIKE ?";
-					$nonsp_val = ereg_replace("[ 　]+","",$val);
-					$arrval[] = "%$nonsp_val%";
-					break;
-				case 'search_order_kana':
-					$where .= " AND order_kana01||order_kana02 ILIKE ?";
-					$nonsp_val = ereg_replace("[ 　]+","",$val);
-					$arrval[] = "%$nonsp_val%";
-					break;
-				case 'search_order_id1':
-					$where .= " AND order_id >= ?";
+				case 'search_product_id':
+					$where .= " AND product_id = ?";
 					$arrval[] = $val;
 					break;
-				case 'search_order_id2':
-					$where .= " AND order_id <= ?";
+				case 'search_product_class_id':
+					$where .= " AND product_id IN (SELECT product_id FROM dtb_products_class WHERE product_class_id = ?)";
 					$arrval[] = $val;
 					break;
-				case 'search_order_sex':
-					$tmp_where = "";
-					foreach($val as $element) {
-						if($element != "") {
-							if($tmp_where == "") {
-								$tmp_where .= " AND (order_sex = ?";
-							} else {
-								$tmp_where .= " OR order_sex = ?";
-							}
-							$arrval[] = $element;
-						}
-					}
-					
-					if($tmp_where != "") {
-						$tmp_where .= ")";
-						$where .= " $tmp_where ";
-					}					
-					break;
-				case 'search_order_tel':
-					$where .= " AND (order_tel01||order_tel02||order_tel03) ILIKE ?";
-					$nonmark_val = ereg_replace("[()-]+","",$val);
-					$arrval[] = "$nonmark_val%";
-					break;
-				case 'search_order_email':
-					$where .= " AND order_email ILIKE ?";
+				case 'search_name':
+					$where .= " AND name ILIKE ?";
 					$arrval[] = "%$val%";
 					break;
-				case 'search_payment_id':
-					$tmp_where = "";
-					foreach($val as $element) {
-						if($element != "") {
-							if($tmp_where == "") {
-								$tmp_where .= " AND (payment_id = ?";
-							} else {
-								$tmp_where .= " OR payment_id = ?";
-							}
-							$arrval[] = $element;
-						}
-					}
-					
+				case 'search_category_id':
+					list($tmp_where, $tmp_arrval) = sfGetCatWhere($val);
 					if($tmp_where != "") {
-						$tmp_where .= ")";
-						$where .= " $tmp_where ";
+						$where.= " AND $tmp_where";
+						$arrval = array_merge($arrval, $tmp_arrval);
 					}
 					break;
-				case 'search_total1':
-					$where .= " AND total >= ?";
-					$arrval[] = $val;
-					break;
-				case 'search_total2':
-					$where .= " AND total <= ?";
-					$arrval[] = $val;
+				case 'search_product_code':
+					$where .= " AND product_id IN (SELECT product_id FROM dtb_products_class WHERE product_code ILIKE ? GROUP BY product_id)";
+					$arrval[] = "%$val%";
 					break;
 				case 'search_startyear':
 					$date = sfGetTimestamp($_POST['search_startyear'], $_POST['search_startmonth'], $_POST['search_startday']);
@@ -171,168 +154,332 @@ case 'search':
 					$arrval[] = $date;
 					break;
 				case 'search_endyear':
-					$date = sfGetTimestamp($_POST['search_endyear'], $_POST['search_endmonth'], $_POST['search_endday'], true);
+					$date = sfGetTimestamp($_POST['search_endyear'], $_POST['search_endmonth'], $_POST['search_endday']);
 					$where.= " AND update_date <= ?";
 					$arrval[] = $date;
 					break;
-				case 'search_sbirthyear':
-					$date = sfGetTimestamp($_POST['search_sbirthyear'], $_POST['search_sbirthmonth'], $_POST['search_sbirthday']);
-					$where.= " AND order_birth >= ?";
-					$arrval[] = $date;
+				case 'search_product_flag':
+					global $arrSTATUS;
+					$search_product_flag = sfSearchCheckBoxes($val);
+					if($search_product_flag != "") {
+						$where.= " AND product_flag LIKE ?";
+						$arrval[] = $search_product_flag;					
+					}
 					break;
-				case 'search_ebirthyear':
-					$date = sfGetTimestamp($_POST['search_ebirthyear'], $_POST['search_ebirthmonth'], $_POST['search_ebirthday'], true);
-					$where.= " AND order_birth <= ?";
-					$arrval[] = $date;
-					break;
-				case 'search_order_status':
-					$where.= " AND status = ?";
-					$arrval[] = $val;
+				case 'search_status':
+					$tmp_where = "";
+					foreach ($val as $element){
+						if ($element != ""){
+							if ($tmp_where == ""){
+								$tmp_where.="AND (status LIKE ? ";
+							}else{
+								$tmp_where.="OR status LIKE ? ";
+							}
+							$arrval[]=$element;
+						}
+					}
+					if ($tmp_where != ""){
+						$tmp_where.=")";
+						$where.= "$tmp_where";
+					}
 					break;
 				default:
 					break;
 			}
 		}
-		
+
 		$order = "update_date DESC";
+		$objQuery = new SC_Query();
 		
 		switch($_POST['mode']) {
 		case 'csv':
 			// オプションの指定
 			$option = "ORDER BY $order";
-			
 			// CSV出力タイトル行の作成
-			$arrCsvOutput = sfSwapArray(sfgetCsvOutput(3, " WHERE csv_id = 3 AND status = 1"));
+			$arrOutput = sfSwapArray(sfgetCsvOutput(1, " WHERE csv_id = 1 AND status = 1"));
 			
-			if (count($arrCsvOutput) <= 0) break;
+			if (count($arrOutput) <= 0) break;
 			
-			$arrCsvOutputCols = $arrCsvOutput['col'];
-			$arrCsvOutputTitle = $arrCsvOutput['disp_name'];
-			$head = sfGetCSVList($arrCsvOutputTitle);
-			$data = lfGetCSV("dtb_order", $where, $option, $arrval, $arrCsvOutputCols);
+			$arrOutputCols = $arrOutput['col'];
+			$arrOutputTitle = $arrOutput['disp_name'];
 			
+			$head = sfGetCSVList($arrOutputTitle);
+			
+			$data = lfGetProductsCSV($where, $option, $arrval, $arrOutputCols);
+
 			// CSVを送信する。
 			sfCSVDownload($head.$data);
 			exit;
 			break;
 		case 'delete_all':
 			// 検索結果をすべて削除
+			$where = "product_id IN (SELECT product_id FROM vw_products_nonclass WHERE $where)";
 			$sqlval['delete'] = 1;
-			$objQuery = new SC_Query();
-			$objQuery->update("dtb_order", $sqlval, $where, $arrval);
+			$objQuery->update("dtb_products", $sqlval, $where, $arrval);
 			break;
 		default:
 			// 読み込む列とテーブルの指定
-			$col = "*";
-			$from = "dtb_order";
-			
-			$objQuery = new SC_Query();
+			$col = "product_id, name, category_id, main_list_image, status, product_code, price01, price02, stock, stock_unlimited";
+			$from = "vw_products_nonclass";
+
 			// 行数の取得
 			$linemax = $objQuery->count($from, $where, $arrval);
 			$objPage->tpl_linemax = $linemax;				// 何件が該当しました。表示用
-			
+
 			// ページ送りの処理
 			if(is_numeric($_POST['search_page_max'])) {	
 				$page_max = $_POST['search_page_max'];
 			} else {
 				$page_max = SEARCH_PMAX;
 			}
-			
+
 			// ページ送りの取得
 			$objNavi = new SC_PageNavi($_POST['search_pageno'], $linemax, $page_max, "fnNaviSearchPage", NAVI_PMAX);
 			$startno = $objNavi->start_row;
-			$objPage->arrPagenavi = $objNavi->arrPagenavi;		
+			$objPage->arrPagenavi = $objNavi->arrPagenavi;
 			
+			//キャンペーン商品検索時は、全結果の商品IDを変数に格納する
+			if($_POST['search_mode'] == 'campaign') {
+				$arrRet = $objQuery->select($col, $from, $where, $arrval);
+				if(count($arrRet) > 0) {
+					$arrRet = sfSwapArray($arrRet);
+					$pid = implode("-", $arrRet['product_id']);
+					$objPage->arrHidden['campaign_product_id'] = $pid;
+				}
+			}
+
 			// 取得範囲の指定(開始行番号、行数のセット)
 			$objQuery->setlimitoffset($page_max, $startno);
 			// 表示順序
 			$objQuery->setorder($order);
 			// 検索結果の取得
-			$objPage->arrResults = $objQuery->select($col, $from, $where, $arrval);
+			$objPage->arrProducts = $objQuery->select($col, $from, $where, $arrval);
+//			$arrProducts = $objQuery->select($col, $from, $where, $arrval);
+			
+//			$objPage->arrTest = $arrProducts;
+			
+			$objPage->tpl_mainpage="products/test.tpl";
+
+			break;
 		}
 	}
-	break;
-	
-default:
-	break;
 }
+/*
+$arrProducts = Array
+(
+    '0' => Array
+        (
+            'product_id' => '18',
+            'name' => 'test',
+            'category_id' => '11',
+            'main_list_image' => '08172054_44e458f942afc.gif',
+            'status' => '1',
+            'product_code' => 'cd 01',
+            'price01' => '500',
+            'price02' => '500',
+            'stock' => '43',
+            'stock_unlimited' => ""
+        ),
 
-$objDate = new SC_Date();
-// 登録・更新日検索用
-$objDate->setStartYear(RELEASE_YEAR);
-$objDate->setEndYear(DATE("Y"));
-$objPage->arrRegistYear = $objDate->getYear();
-// 生年月日検索用
-$objDate->setStartYear(BIRTH_YEAR);
-$objDate->setEndYear(DATE("Y"));
-$objPage->arrBirthYear = $objDate->getYear();
-// 月日の設定
-$objPage->arrMonth = $objDate->getMonth();
-$objPage->arrDay = $objDate->getDay();
+    '1' => Array
+        (
+            'product_id' => '14',
+            'name' => 'LPOエビス',
+            'category_id' => '10',
+            'main_list_image' => '08171740_44e42b7f67953.gif',
+            'status' => '1',
+            'product_code' => 'LPO',
+            'price01' => '15000',
+            'price02' => '15000',
+            'stock' => '14999',
+            'stock_unlimited' => ""
+        ),
 
-// 入力値の取得
-$objPage->arrForm = $objFormParam->getFormParamList();
-// 支払い方法の取得
-$arrRet = sfGetPayment();
-$objPage->arrPayment = sfArrKeyValue($arrRet, 'payment_id', 'payment_method');
+    '2' => Array
+        (
+            'product_id' => '16',
+            'name' => 'LPOエビス',
+            'category_id' => '10',
+            'main_list_image' => '08181941_44e59975c535d.gif',
+            'status' => '1',
+            'product_code' => 'LPO',
+            'price01' => '15000',
+            'price02' => '15000',
+            'stock' => '14927',
+            'stock_unlimited' => ""
+        ),
 
+    '3' => Array
+        (
+            'product_id' => '15',
+            'name' => 'LPOエビス',
+            'category_id' => '10',
+            'main_list_image' => '08171740_44e42b7f67953.gif',
+            'status' => '1',
+            'product_code' => 'LPO',
+            'price01' => '15000',
+            'price02' => '15000',
+            'stock' => '14998',
+            'stock_unlimited' => ""
+        ),
+    '4' => Array
+        (
+            'product_id' => '17',
+            'name' => 'LPOエビス',
+            'category_id' => '15',
+            'main_list_image' => '08171740_44e42b7f67953.gif',
+            'status' => '1',
+            'product_code' => 'LPO',
+            'price01' => '15000',
+            'price02' => '15000',
+            'stock' => '0',
+            'stock_unlimited' => ""
+        ),
+
+    '5' => Array
+        (
+            'product_id' => '13',
+            'name' => 'LPOエビス',
+            'category_id' => '10',
+            'main_list_image' => '08171740_44e42b7f67953.gif',
+            'status' => '1',
+            'product_code' => 'LPO',
+            'price01' => '15000',
+            'price02' => '15000',
+            'stock' => '15000',
+            'stock_unlimited' => ""
+        ),
+
+    '6' => Array
+        (
+            'product_id' => '12',
+            'name' => 'LPOエビス',
+            'category_id' => '10',
+            'main_list_image' => '08171740_44e42b7f67953.gif',
+            'status' => '1',
+            'product_code' => 'LPO',
+            'price01' => '15000',
+            'price02' => '15000',
+            'stock' => '15000',
+            'stock_unlimited' => ""
+        ),
+
+    '7' => Array
+        (
+            'product_id' => '11',
+            'name' => 'LPOエビス',
+            'category_id' => '10',
+            'main_list_image' => '08171740_44e42b7f67953.gif',
+            'status' => '1',
+            'product_code' => 'LPO',
+            'price01' => '15000',
+            'price02' => '15000',
+            'stock' => '15000',
+            'stock_unlimited' => ""
+        ),
+    '8' => Array
+        (
+            'product_id' => '10',
+            'name' => 'LPOエビス',
+            'category_id' => '10',
+            'main_list_image' => '08171740_44e42b7f67953.gif',
+            'status' => '1',
+            'product_code' => 'LPO',
+            'price01' => '15000',
+            'price02' => '15000',
+            'stock' => '15000',
+            'stock_unlimited' => ""
+        ),
+
+    '9' => Array
+        (
+            'product_id' => '9',
+            'name' => 'LPOエビス',
+            'category_id' => '10',
+            'main_list_image' => '08171740_44e42b7f67953.gif',
+            'status' => '1',
+            'product_code' => 'LPO',
+            'price01' => '15000',
+            'price02' => '15000',
+            'stock' => '15000',
+            'stock_unlimited' => ""
+        )
+
+);
+
+
+$objPage->arrProducts = $arrProducts;
+*/
+
+// カテゴリの読込
+$objPage->arrCatList = sfGetCategoryList();
+$objPage->arrCatIDName = lfGetIDName($objPage->arrCatList);
+
+// 画面の表示
 $objView->assignobj($objPage);
 $objView->display(MAIN_FRAME);
 
-//-----------------------------------------------------------------------------------------------------------------------------------
-/* パラメータ情報の初期化 */
-function lfInitParam() {
-	global $objFormParam;
-	$objFormParam->addParam("受注番号1", "search_order_id1", INT_LEN, "n", array("MAX_LENGTH_CHECK", "NUM_CHECK"));
-	$objFormParam->addParam("受注番号2", "search_order_id2", INT_LEN, "n", array("MAX_LENGTH_CHECK", "NUM_CHECK"));
-	$objFormParam->addParam("対応状況", "search_order_status", INT_LEN, "n", array("MAX_LENGTH_CHECK", "NUM_CHECK"));
-	$objFormParam->addParam("顧客名", "search_order_name", STEXT_LEN, "KVa", array("MAX_LENGTH_CHECK"));
-	$objFormParam->addParam("顧客名(カナ)", "search_order_kana", STEXT_LEN, "KVCa", array("KANA_CHECK","MAX_LENGTH_CHECK"));
-	$objFormParam->addParam("性別", "search_order_sex", INT_LEN, "n", array("MAX_LENGTH_CHECK"));
-	$objFormParam->addParam("年齢1", "search_age1", INT_LEN, "n", array("MAX_LENGTH_CHECK", "NUM_CHECK"));
-	$objFormParam->addParam("年齢2", "search_age2", INT_LEN, "n", array("MAX_LENGTH_CHECK", "NUM_CHECK"));
-	$objFormParam->addParam("メールアドレス", "search_order_email", STEXT_LEN, "KVa", array("MAX_LENGTH_CHECK"));
-	$objFormParam->addParam("TEL", "search_order_tel", STEXT_LEN, "KVa", array("MAX_LENGTH_CHECK"));
-	$objFormParam->addParam("支払い方法", "search_payment_id", INT_LEN, "n", array("MAX_LENGTH_CHECK", "NUM_CHECK"));
-	$objFormParam->addParam("購入金額1", "search_total1", INT_LEN, "n", array("MAX_LENGTH_CHECK", "NUM_CHECK"));
-	$objFormParam->addParam("購入金額2", "search_total2", INT_LEN, "n", array("MAX_LENGTH_CHECK", "NUM_CHECK"));
-	$objFormParam->addParam("表示件数", "search_page_max", INT_LEN, "n", array("MAX_LENGTH_CHECK", "NUM_CHECK"));
-	$objFormParam->addParam("開始日", "search_startyear", INT_LEN, "n", array("MAX_LENGTH_CHECK", "NUM_CHECK"));
-	$objFormParam->addParam("開始日", "search_startmonth", INT_LEN, "n", array("MAX_LENGTH_CHECK", "NUM_CHECK"));
-	$objFormParam->addParam("開始日", "search_startday", INT_LEN, "n", array("MAX_LENGTH_CHECK", "NUM_CHECK"));
-	$objFormParam->addParam("終了日", "search_endyear", INT_LEN, "n", array("MAX_LENGTH_CHECK", "NUM_CHECK"));
-	$objFormParam->addParam("終了日", "search_endmonth", INT_LEN, "n", array("MAX_LENGTH_CHECK", "NUM_CHECK"));
-	$objFormParam->addParam("終了日", "search_endday", INT_LEN, "n", array("MAX_LENGTH_CHECK", "NUM_CHECK"));
-	$objFormParam->addParam("開始日", "search_sbirthyear", INT_LEN, "n", array("MAX_LENGTH_CHECK", "NUM_CHECK"));
-	$objFormParam->addParam("開始日", "search_sbirthmonth", INT_LEN, "n", array("MAX_LENGTH_CHECK", "NUM_CHECK"));
-	$objFormParam->addParam("開始日", "search_sbirthday", INT_LEN, "n", array("MAX_LENGTH_CHECK", "NUM_CHECK"));
-	$objFormParam->addParam("終了日", "search_ebirthyear", INT_LEN, "n", array("MAX_LENGTH_CHECK", "NUM_CHECK"));
-	$objFormParam->addParam("終了日", "search_ebirthmonth", INT_LEN, "n", array("MAX_LENGTH_CHECK", "NUM_CHECK"));
-	$objFormParam->addParam("終了日", "search_ebirthday", INT_LEN, "n", array("MAX_LENGTH_CHECK", "NUM_CHECK"));
+//---------------------------------------------------------------------------------------------------------------------------------------------------------
+
+// 取得文字列の変換 
+function lfConvertParam() {
+	global $objPage;
+	/*
+	 *	文字列の変換
+	 *	K :  「半角(ﾊﾝｶｸ)片仮名」を「全角片仮名」に変換
+	 *	C :  「全角ひら仮名」を「全角かた仮名」に変換
+	 *	V :  濁点付きの文字を一文字に変換。"K","H"と共に使用します	
+	 *	n :  「全角」数字を「半角(ﾊﾝｶｸ)」に変換
+	 */
+	$arrConvList['search_name'] = "KVa";
+	$arrConvList['search_product_code'] = "KVa";
+	
+	// 文字変換
+	foreach ($arrConvList as $key => $val) {
+		// POSTされてきた値のみ変換する。
+		if(isset($objPage->arrForm[$key])) {
+			$objPage->arrForm[$key] = mb_convert_kana($objPage->arrForm[$key] ,$val);
+		}
+	}
 }
 
-/* 入力内容のチェック */
+// エラーチェック 
+// 入力エラーチェック
 function lfCheckError() {
-	global $objFormParam;
-	// 入力データを渡す。
-	$arrRet =  $objFormParam->getHashArray();
-	$objErr = new SC_CheckError($arrRet);
-	$objErr->arrErr = $objFormParam->checkError();
-	
-	// 特殊項目チェック
-	$objErr->doFunc(array("受注番号1", "受注番号2", "search_order_id1", "search_order_id2"), array("GREATER_CHECK"));
-	$objErr->doFunc(array("年齢1", "年齢2", "search_age1", "search_age2"), array("GREATER_CHECK"));
-	$objErr->doFunc(array("購入金額1", "購入金額2", "search_total1", "search_total2"), array("GREATER_CHECK"));
+	$objErr = new SC_CheckError();
 	$objErr->doFunc(array("開始日", "search_startyear", "search_startmonth", "search_startday"), array("CHECK_DATE"));
 	$objErr->doFunc(array("終了日", "search_endyear", "search_endmonth", "search_endday"), array("CHECK_DATE"));
 	$objErr->doFunc(array("開始日", "終了日", "search_startyear", "search_startmonth", "search_startday", "search_endyear", "search_endmonth", "search_endday"), array("CHECK_SET_TERM"));
-	
-	$objErr->doFunc(array("開始日", "search_sbirthyear", "search_sbirthmonth", "search_sbirthday"), array("CHECK_DATE"));
-	$objErr->doFunc(array("終了日", "search_ebirthyear", "search_ebirthmonth", "search_ebirthday"), array("CHECK_DATE"));
-	$objErr->doFunc(array("開始日", "終了日", "search_sbirthyear", "search_sbirthmonth", "search_sbirthday", "search_ebirthyear", "search_ebirthmonth", "search_ebirthday"), array("CHECK_SET_TERM"));
-
 	return $objErr->arrErr;
 }
 
+// チェックボックス用WHERE文作成
+function lfGetCBWhere($key, $max) {
+	$str = "";
+	$find = false;
+	for ($cnt = 1; $cnt <= $max; $cnt++) {
+		if ($_POST[$key . $cnt] == "1") {
+			$str.= "1";
+			$find = true;
+		} else {
+			$str.= "_";
+		}
+	}
+	if (!$find) {
+		$str = "";
+	}
+	return $str;
+}
+
+// カテゴリIDをキー、カテゴリ名を値にする配列を返す。
+function lfGetIDName($arrCatList) {
+	$max = count($arrCatList);
+	for ($cnt = 0; $cnt < $max; $cnt++ ) {
+		$key = $arrCatList[$cnt]['category_id'];
+		$val = $arrCatList[$cnt]['category_name'];
+		$arrRet[$key] = $val;	
+	}
+	return $arrRet;
+}
 
 ?>
