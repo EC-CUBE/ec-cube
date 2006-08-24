@@ -286,7 +286,7 @@
 	<tr>
 		<td bgcolor="#f0f0f0" align="center">
 
-		<!--{if count($arrProducts) > 0}-->		
+		<!--{if count($arrResults) > 0}-->		
 
 			<table width="840" border="0" cellspacing="0" cellpadding="0" summary=" ">
 				<tr><td height="12"></td></tr>
@@ -308,7 +308,7 @@
 							<td width="50"><span class="white">ºï½ü</span></td>
 						</tr>
 						
-						<!--{section name=cnt loop=$arrProducts}-->
+						<!--{section name=cnt loop=$arrResults}-->
 						<!--{assign var=status value="`$arrProducts[cnt].status`"}-->
 						<tr bgcolor="<!--{$arrORDERSTATUS_COLOR[$status]}-->" class="fs10n">
 							<td align="center"><!--{$arrProducts[cnt].create_date|sfDispDBDate}--></td>
