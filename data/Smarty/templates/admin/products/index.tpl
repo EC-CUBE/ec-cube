@@ -241,8 +241,6 @@
 						</tr>
 			
 
-						<!--{foreach key=key item=item from=$arrProducts}-->
-						
 						<tr class="fs10">
 							<td align="center" rowspan="2">a</td>
 							<td align="center" rowspan="2">b</td>
@@ -259,7 +257,6 @@
 							<td>k</td>
 							<td align="center">k</td>
 						</tr>
-						<!--{/foreach}-->
 						
 						
 					</table>

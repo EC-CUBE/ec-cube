@@ -110,7 +110,7 @@ if ($_POST['mode'] == "search" || $_POST['mode'] == "csv"  || $_POST['mode'] == 
 
 	// 入力エラーなし
 	if (count($objPage->arrErr) == 0) {
-		/*
+
 		foreach ($objPage->arrForm as $key => $val) {
 				
 			$val = sfManualEscape($val);
@@ -182,7 +182,6 @@ if ($_POST['mode'] == "search" || $_POST['mode'] == "csv"  || $_POST['mode'] == 
 					break;
 			}
 		}
-		*/
 
 		$order = "update_date DESC";
 		$objQuery = new SC_Query();
