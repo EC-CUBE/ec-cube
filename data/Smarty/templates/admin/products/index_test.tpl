@@ -37,6 +37,7 @@
 								<td colspan="3"><img src="/img/contents/main_bar.jpg" width="678" height="10" alt=""></td>
 							</tr>
 						</table>
+						<!--{*
 						<!--検索条件設定テーブルここから-->
 						<table width="678" border="0" cellspacing="0" cellpadding="0" summary=" ">
 							<tr>
@@ -68,6 +69,8 @@
 							</tr>
 						</table>
 						<!--検索条件設定テーブルここまで-->
+						*}-->
+						<input type="submit" value="検索">
 						</td>
 						<td background="/img/contents/main_right.jpg"><img src="/img/common/_.gif" width="14" height="1" alt=""></td>
 					</tr>
