@@ -25,7 +25,7 @@ body {
 <div align="center">
 
 <!--¢§CONTENTS-->
-<table width="878" border="0" cellspacing="0" cellpadding="0" summary=" ">
+<table width="780" border="0" cellspacing="0" cellpadding="0" summary=" ">
 	<tr valign="top">
 		<td class="mainbg" >
 		<table width="737" border="0" cellspacing="0" cellpadding="0" summary=" ">
