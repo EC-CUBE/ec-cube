@@ -17,22 +17,22 @@
 						<td colspan="3"><img src="/img/contents/main_top.jpg" width="706" height="14" alt=""></td>
 					</tr>
 					<tr>
-						<td background="/img/contents/main_left.jpg"><img src="/img/common/_.gif" width="14" height="1" alt=""></td>
+						<td background=""><img src="" width="14" height="1" alt=""></td>
 						<td bgcolor="#cccccc">
 						<table width="678" border="0" cellspacing="0" cellpadding="0" summary=" ">
 							<tr>
-								<td colspan="3"><img src="/img/contents/contents_title_top.gif" width="678" height="7" alt=""></td>
+								<td colspan="3"><img src="" width="678" height="7" alt=""></td>
 							</tr>
 							<tr>
-								<td background=""><img src="/img/contents/contents_title_left.gif" width="22" height="12" alt=""></td>
+								<td background=""><img src="" width="22" height="12" alt=""></td>
 								<td bgcolor="#636469" width="638" class="fs14n"><span class="white"><!--コンテンツタイトル-->検索条件設定</span></td>
-								<td background=""><img src="/img/common/_.gif" width="18" height="1" alt=""></td>
+								<td background=""><img src="" width="18" height="1" alt=""></td>
 							</tr>
 							<tr>
-								<td colspan="3"><img src="/img/contents/contents_title_bottom.gif" width="678" height="7" alt=""></td>
+								<td colspan="3"><img src="" width="678" height="7" alt=""></td>
 							</tr>
 							<tr>
-								<td colspan="3"><img src="/img/contents/main_bar.jpg" width="678" height="10" alt=""></td>
+								<td colspan="3"><img src="" width="678" height="10" alt=""></td>
 							</tr>
 						</table>
 
