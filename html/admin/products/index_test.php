@@ -52,14 +52,6 @@ $objPage->arrEndDay = $objDate->getDay();
 
 session_start();
 
-	$max = 10;
-			for($i = 0; $i < $max; $i++) {
-				$objPage->arrProducts[] = "dummy";
-			}
-
-
-
-
 //キャンペーンの編集時
 if(sfIsInt($_POST['campaign_id']) && $_POST['mode'] == "camp_search") {
 	$objQuery = new SC_Query();
