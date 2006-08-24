@@ -76,6 +76,7 @@ class SC_SelectSql {
 //				$this->setWhere( $column ." BETWEEN ? AND ?" );
 				$this->setWhere( $column ." >= ?" );
 				$return = array($date1);
+				sfprintr("dd");
   			}
 		}
 
