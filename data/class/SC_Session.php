@@ -11,8 +11,9 @@ class SC_Session {
 	function SC_Session() {
 		// セッション開始
 		sfDomainSessionStart();
-		// セッション情報の保存
-//		if(isset($_SESSION['cert'])) {
+		
+/*		// セッション情報の保存
+		if(isset($_SESSION['cert'])) {
 			$this->sid = session_id();
 			$this->cert = $_SESSION['cert'];
 			$this->login_id = $_SESSION['login_id'];
@@ -20,12 +21,12 @@ class SC_Session {
 			$this->member_id = $_SESSION['member_id'];
 			// ログに記録する
 			gfPrintLog("access : user=".$this->login_id." auth=".$this->authority." sid=".$this->sid);
-//		} else {
+		} else {
 			// ログに記録する
-//			gfPrintLog("access error.");
-//		}
+			gfPrintLog("access error.");
+		}
 	}
-	
+	*/
 	/* 認証成功の判定 */
 	function IsSuccess() {
 		global $arrPERMISSION;
