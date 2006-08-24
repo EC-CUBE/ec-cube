@@ -240,7 +240,7 @@
 							<td width="60"><span class="white">ºÔ Ã</span></td>
 						</tr>
 			
-
+						<!--{$arrTest}-->
 						<!--{section name=cnt loop=$arrTest}-->
 						<!--¢ßæ¶… <!--{$smarty.section.cnt.iteration}-->-->
 						<!--{assign var=status value="`$arrProducts[cnt].status`"}-->
