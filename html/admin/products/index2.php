@@ -49,7 +49,7 @@ $objPage->arrEndDay = $objDate->getDay();
 
 // 認証可否の判定
 $objSess = new SC_Session();
-sfIsSuccess($objSess);
+//sfIsSuccess($objSess);
 
 sfprintr($_SESSION);
 

@@ -1734,6 +1734,7 @@ function sfDomainSessionStart() {
 	コメントアウトしておく
 	if($ret == "" && !headers_sent()) {
 */
+sfprintr($ret);
 	if($ret == "") {
 		/* セッションパラメータの指定
 		 ・ブラウザを閉じるまで有効
