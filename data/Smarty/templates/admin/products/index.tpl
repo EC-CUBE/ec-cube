@@ -105,59 +105,7 @@
 								<!--{html_checkboxes name="search_product_flag" options=$arrSTATUS selected=$arrForm.search_product_flag}-->
 								</td>
 							</tr>
-							<tr class="fs12n">
-								<td bgcolor="#f2f1ec" width="110">»ÙÊ§ÊýË¡</td>
-								<td bgcolor="#ffffff" width="499" colspan="3">
-								<!--{assign var=key value="search_payment_id"}-->
-								<span class="red12"><!--{$arrErr[$key]|escape}--></span>
-								<!--{html_checkboxes name="$key" options=$arrPayment|escape selected=$arrForm[$key].value}-->
-								</td>
-							</tr>
-							<tr class="fs12n">
-								<td bgcolor="#f2f1ec" width="110">ÅÐÏ¿¡¦¹¹¿·Æü</td>
-								<td bgcolor="#ffffff" width="499" colspan="3">
-									<span class="red"><!--{$arrErr.search_startyear}--></span>
-									<span class="red"><!--{$arrErr.search_endyear}--></span>		
-									<select name="search_startyear"  style="<!--{$arrErr.search_startyear|sfGetErrorColor}-->">
-									<option value="">----</option>
-									<!--{html_options options=$arrRegistYear selected=$arrForm.search_startyear.value}-->
-									</select>Ç¯
-									<select name="search_startmonth" style="<!--{$arrErr.search_startyear|sfGetErrorColor}-->">
-									<option value="">--</option>
-									<!--{html_options options=$arrMonth selected=$arrForm.search_startmonth.value}-->
-									</select>·î
-									<select name="search_startday" style="<!--{$arrErr.search_startyear|sfGetErrorColor}-->">
-									<option value="">--</option>
-									<!--{html_options options=$arrDay selected=$arrForm.search_startday.value}-->
-									</select>Æü¡Á
-									<select name="search_endyear" style="<!--{$arrErr.search_endyear|sfGetErrorColor}-->">
-									<option value="">----</option>
-									<!--{html_options options=$arrRegistYear selected=$arrForm.search_endyear.value}-->
-									</select>Ç¯
-									<select name="search_endmonth" style="<!--{$arrErr.search_endyear|sfGetErrorColor}-->">
-									<option value="">--</option>
-									<!--{html_options options=$arrMonth selected=$arrForm.search_endmonth.value}-->
-									</select>·î
-									<select name="search_endday" style="<!--{$arrErr.search_endyear|sfGetErrorColor}-->">
-									<option value="">--</option>
-									<!--{html_options options=$arrDay selected=$arrForm.search_endday.value}-->
-									</select>Æü
-								</td>
-							</tr>
-							<tr class="fs12n">
-								<td bgcolor="#f2f1ec" width="110">¹ØÆþ¶â³Û</td>
-								<td bgcolor="#ffffff" width="499" colspan="3">
-									<!--{assign var=key1 value="search_total1"}-->
-									<!--{assign var=key2 value="search_total2"}-->
-									<span class="red12"><!--{$arrErr[$key1]}--></span>
-									<span class="red12"><!--{$arrErr[$key2]}--></span>
-									<input type="text" name="<!--{$key1}-->" value="<!--{$arrForm[$key1].value|escape}-->" maxlength="<!--{$arrForm[$key1].length}-->" style="<!--{$arrErr[$key1]|sfGetErrorColor}-->"  size="6" class="box6" />
-									
-									±ß ¡Á 
-									<input type="text" name="<!--{$key2}-->" value="<!--{$arrForm[$key2].value|escape}-->" maxlength="<!--{$arrForm[$key2].length}-->" style="<!--{$arrErr[$key2]|sfGetErrorColor}-->"  size="6" class="box6" />
-									±ß
-								</td>
-							</tr>
+
 						</table>
 						<table width="678" border="0" cellspacing="0" cellpadding="0" summary=" ">
 							<tr>

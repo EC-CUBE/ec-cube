@@ -2,6 +2,11 @@
 <table width="878" border="0" cellspacing="0" cellpadding="0" summary=" ">
 <form name="search_form" id="search_form" method="post" action="<!--{$smarty.server.PHP_SELF}-->">
 <input type="hidden" name="mode" value="search">
+<!--{foreach key=key item=item from=$arrHidden}-->
+<!--{if $key == 'campaign_id' || $key == 'search_mode'}-->
+<input type="hidden" name="<!--{$key}-->" value="<!--{$item|escape}-->">
+<!--{/if}-->
+<!--{/foreach}-->
 	<tr valign="top">
 		<td background="/img/contents/navi_bg.gif" height="402">
 			<!-- サブナビ -->
