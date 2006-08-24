@@ -213,7 +213,7 @@
 	<tr>
 		<td bgcolor="#f0f0f0" align="center">
 
-		<!--{if count($arrProducts) > 0}-->		
+		<!--{if count($arrTest) > 0}-->		
 
 			<table width="840" border="0" cellspacing="0" cellpadding="0" summary=" ">
 				<tr><td height="12"></td></tr>
