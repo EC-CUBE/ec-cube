@@ -52,17 +52,12 @@ $objPage->arrEndDay = $objDate->getDay();
 
 session_start();
 
-	$max = 9;
+	$max = 10;
 			for($i = 0; $i < $max; $i++) {
 				$objPage->arrProducts[] = "dummy";
 			}
 
 
-
-// 画面の表示
-$objView->assignobj($objPage);
-$objView->display(MAIN_FRAME);
-exit;
 
 
 //キャンペーンの編集時
