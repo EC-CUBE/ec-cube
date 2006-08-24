@@ -2,9 +2,15 @@
 <table width="878" border="0" cellspacing="0" cellpadding="0" summary=" ">
 <form name="search_form" id="search_form" method="post" action="<!--{$smarty.server.PHP_SELF}-->">
 <input type="hidden" name="mode" value="search">
+<!--{foreach key=key item=item from=$arrHidden}-->
+<!--{if $key == 'campaign_id' || $key == 'search_mode'}-->
+<input type="hidden" name="<!--{$key}-->" value="<!--{$item|escape}-->">
+<!--{/if}-->
+<!--{/foreach}-->
 	<tr valign="top">
 		<td background="/img/contents/navi_bg.gif" height="402">
 			<!-- サブナビ -->
+			<!--{include file=$tpl_subnavi}-->
 		</td>
 		<td class="mainbg">
 		<table width="737" border="0" cellspacing="0" cellpadding="0" summary=" ">
@@ -114,8 +120,8 @@
 										<td class="fs12n">検索結果表示件数
 											<!--{assign var=key value="search_page_max"}-->
 											<span class="red12"><!--{$arrErr[$key]}--></span>
-											<select name="<!--{$arrForm[$key].keyname}-->" style="<!--{$arrErr[$key]|sfGetErrorColor}-->">
-											<!--{html_options options=$arrPageMax selected=$arrForm[$key].value}-->
+											<select name="<!--{$key}-->" style="<!--{$arrErr[$key]|sfGetErrorColor}-->">
+											<!--{html_options options=$arrPageMax selected=$arrForm.search_page_max}-->
 											</select> 件
 										</td>
 										<td><img src="/img/common/_.gif" width="10" height="1" alt=""></td>
@@ -146,18 +152,19 @@
 	</tr>
 </form>	
 </table>
-<!--★★メインコンテンツ★★-->						
+<!--★★メインコンテンツ★★-->
 
-<!--{if count($arrErr) == 0 and ($smarty.post.mode == 'search' or $smarty.post.mode == 'delete') }-->
+<!--{if count($arrErr) == 0 and ($smarty.post.mode == 'search' or $smarty.post.mode == 'delete')}-->
 
 <!--★★検索結果一覧★★-->
 <table width="878" border="0" cellspacing="0" cellpadding="0" summary=" ">
 <form name="form1" id="form1" method="post" action="<!--{$smarty.server.PHP_SELF}-->">
 <input type="hidden" name="mode" value="search">
-<input type="hidden" name="order_id" value="">		
+<input type="hidden" name="product_id" value="">
+<input type="hidden" name="category_id" value="">
 <!--{foreach key=key item=item from=$arrHidden}-->
 <input type="hidden" name="<!--{$key}-->" value="<!--{$item|escape}-->">
-<!--{/foreach}-->
+<!--{/foreach}-->		
 	<tr><td colspan="2"><img src="/img/contents/search_line.jpg" width="878" height="12" alt=""></td></tr>
 	<tr bgcolor="cbcbcb">
 		<td>
@@ -191,7 +198,7 @@
 				<td><img src="/img/common/_.gif" width="8" height="1" alt=""></td>
 				<td><a href="#" onmouseover="chgImg('/img/contents/btn_csv_on.jpg','btn_csv');" onmouseout="chgImg('/img/contents/btn_csv.jpg','btn_csv');"  onclick="fnModeSubmit('csv','','');" ><img src="/img/contents/btn_csv.jpg" width="99" height="22" alt="CSV DOWNLOAD" border="0" name="btn_csv" id="btn_csv"></a></td>
 				<td><img src="/img/common/_.gif" width="8" height="1" alt=""></td>
-				<td><a href="../contents/csv.php?tpl_subno_csv=order"><span class="fs12n"> >> CSV出力設定へ </span></a></td>
+				<td><a href="../contents/csv.php?tpl_subno_csv=product"><span class="fs12n"> >> CSV出力設定へ </span></a></td>
 			</tr>
 		</table>
 		</td>
@@ -214,43 +221,82 @@
 					<td bgcolor="#cccccc">
 					<!--検索結果表示テーブル-->
 					<table width="840" border="0" cellspacing="1" cellpadding="5" summary=" ">
-
 						<tr bgcolor="#636469" align="center" class="fs10n">
-							<td width="100"><span class="white">受注日</span></td>
-							<td width="89"><span class="white">受注番号</span></td>
-							<td width="90"><span class="white">顧客名</span></td>
-							<td width="65"><span class="white">支払方法</span></td>
-							<td width="70"><span class="white">購入金額(円)</span></td>
-							<td width="80"><span class="white">全商品発送日</span></td>
-							<td width="85"><span class="white">受注対応状況</span></td>
-							<td width="50"><span class="white">編集</span></td>
-							<td width="50"><span class="white">メール</span></td>
-							<td width="50"><span class="white">削除</span></td>
+							<td width="50" rowspan="2"><span class="white">商品ID</span></td>
+							<td width="90" rowspan="2"><span class="white">商品画像</span></td>
+							<td width="90"><span class="white">商品コード</span></td>
+							<td width="350"><span class="white">商品名</span></td>
+							<td width="60"><span class="white">在庫</span></td>
+							<td width="50" rowspan="2"><span class="white">編集</span></td>
+							<td width="50" rowspan="2"><span class="white">確認</span></td>
+							<!--{if $smarty.const.OPTION_CLASS_REGIST == 1}-->
+							<td width="50" rowspan="2"><span class="white">規格</span></td>
+							<!--{/if}-->
+							<td width="50" rowspan="2"><span class="white">削除</span></td>
 						</tr>
-						
+						<tr bgcolor="#636469" align="center" class="fs10n">
+							<td width="90"><span class="white">価格(円)</span></td>
+							<td width="430"><span class="white">カテゴリ</span></td>
+							<td width="60"><span class="white">種別</span></td>
+						</tr>
+			
 						<!--{section name=cnt loop=$arrProducts}-->
+						<!--▼商品<!--{$smarty.section.cnt.iteration}-->-->
 						<!--{assign var=status value="`$arrProducts[cnt].status`"}-->
-						<tr bgcolor="<!--{$arrORDERSTATUS_COLOR[$status]}-->" class="fs10n">
-							<td align="center"><!--{$arrProducts[cnt].create_date|sfDispDBDate}--></td>
-							<td align="right"><!--{$arrProducts[cnt].order_id}--></td>
-							<td><!--{$arrProducts[cnt].order_name01|escape}--> <!--{$arrProducts[cnt].order_name02|escape}--></td>
-							<!--{assign var=payment_id value="`$arrProducts[cnt].payment_id`"}-->
-							<td align="center"><!--{$arrPayment[$payment_id]}--></td>
-							<td align="right"><!--{$arrProducts[cnt].total|number_format}--></td>
-							<td align="center"><!--{$arrProducts[cnt].commit_date|sfDispDBDate|default:"未発送"}--></td>
-							<td align="center"><!--{$arrORDERSTATUS[$status]}--></td>
-							<td align="center"><a href="<!--{$smarty.server.PHP_SELF}-->" onclick="fnChangeAction('<!--{$smarty.const.URL_ORDER_EDIT}-->'); fnModeSubmit('pre_edit', 'order_id', '<!--{$arrProducts[cnt].order_id}-->'); return false;"><span class="icon_edit">編集</span></a></td>
-							<td align="center"><a href="<!--{$smarty.server.PHP_SELF}-->" onclick="fnChangeAction('<!--{$smarty.const.URL_ORDER_MAIL}-->'); fnModeSubmit('pre_edit', 'order_id', '<!--{$arrProducts[cnt].order_id}-->'); return false;"><span class="icon_mail">通知</span></a></td>
-							<td align="center"><a href="<!--{$smarty.server.PHP_SELF}-->" onclick="fnModeSubmit('delete', 'order_id', <!--{$arrProducts[cnt].order_id}-->); return false;"><span class="icon_delete">削除</span></a></td>
+						<tr bgcolor="<!--{$arrPRODUCTSTATUS_COLOR[$status]}-->" class="fs10">
+							<td rowspan="2" align="center"><!--{$arrProducts[cnt].product_id}--></td>
+							<td rowspan="2" align="center">
+							<!--{if $arrProducts[cnt].main_list_image != ""}-->
+								<!--{assign var=image_path value="`$smarty.const.IMAGE_SAVE_URL`/`$arrProducts[cnt].main_list_image`"}-->
+							<!--{else}-->
+								<!--{assign var=image_path value="`$smarty.const.NO_IMAGE_URL`"}-->
+							<!--{/if}-->
+							<img src="<!--{$image_path|sfRmDupSlash}-->" width="65" height="65" alt="<!--{$arrProducts[cnt].name|escape}-->" />
+							</td>
+							<td><!--{$arrProducts[cnt].product_code|escape|default:"-"}--></td>
+							<td><!--{$arrProducts[cnt].name|escape}--></td>
+							<td align="center">
+							<!--{* 在庫 *}-->
+							<!--{if $arrProducts[cnt].stock_unlimited == '1'}-->
+							無制限
+							<!--{else}-->
+							<!--{$arrProducts[cnt].stock|escape|default:"-"}-->
+							<!--{/if}-->
+							</td>
+							<td align="center" rowspan="2"><span class="icon_edit"><a href="/" onclick="fnChangeAction('./product.php'); fnModeSubmit('pre_edit', 'product_id', <!--{$arrProducts[cnt].product_id}-->); return false;" >編集</a></span></td>
+							<td align="center" rowspan="2"><span class="icon_confirm"><a href="<!--{$smarty.const.SITE_URL|sfTrimURL}-->/products/detail.php?product_id=<!--{$arrProducts[cnt].product_id}-->&admin=on" target="_blank">確認</a></td>
+							<!--{if $smarty.const.OPTION_CLASS_REGIST == 1}-->
+							<td align="center" rowspan="2"><span class="icon_class"><a href="/" onclick="fnChangeAction('./product_class.php'); fnModeSubmit('pre_edit', 'product_id', <!--{$arrProducts[cnt].product_id}-->); return false;" >規格</a></td>
+							<!--{/if}-->
+							<td align="center" rowspan="2"><span class="icon_delete"><a href="/" onclick="fnSetFormValue('category_id', '<!--{$arrProducts[cnt].category_id}-->'); fnModeSubmit('delete', 'product_id', <!--{$arrProducts[cnt].product_id}-->); return false;">削除</a></span></td>
 						</tr>
+						<tr bgcolor="<!--{$arrPRODUCTSTATUS_COLOR[$status]}-->" class="fs10n">
+							<td align="right">
+							<!--{* 価格 *}-->
+							<!--{if $arrProducts[cnt].price02 != ""}-->
+							<!--{$arrProducts[cnt].price02|number_format}-->
+							<!--{else}-->
+							-
+							<!--{/if}-->
+							</td>
+							<td>
+							<!--{* カテゴリ名 *}-->
+							<!--{assign var=key value=$arrProducts[cnt].category_id}-->
+							<!--{$arrCatList[$key]|sfTrim}-->
+							</td>
+							<!--{* 表示 *}-->
+							<!--{assign var=key value=$arrProducts[cnt].status}-->
+							<td align="center"><!--{$arrDISP[$key]}--></td>
+						</tr>
+						<!--▲商品<!--{$smarty.section.cnt.iteration}-->-->
 						<!--{/section}-->
-
+						
 					</table>
 					<!--検索結果表示テーブル-->
 					</td>
 				</tr>
 			</table>
-
+	
 		<!--{/if}-->
 
 		</td>
@@ -258,5 +304,4 @@
 </form>
 </table>		
 <!--★★検索結果一覧★★-->		
-
 <!--{/if}-->
