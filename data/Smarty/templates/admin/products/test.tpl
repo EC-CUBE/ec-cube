@@ -245,6 +245,14 @@
 							<td align="center"><!--{$arrProducts[cnt].product_id}--></td>
 							<td><!--{$arrProducts[cnt].product_code|escape|default:"-"}--></td>
 							<td><!--{$arrProducts[cnt].name|escape}--></td>
+							<td align="center">
+							<!--{* ºß¸Ë *}-->
+							<!--{if $arrProducts[cnt].stock_unlimited == '1'}-->
+							ÌµÀ©¸Â
+							<!--{else}-->
+							<!--{$arrProducts[cnt].stock|escape|default:"-"}-->
+							<!--{/if}-->
+							</td>							
 							<td align="right">
 							<!--{* ²Á³Ê *}-->
 							<!--{if $arrProducts[cnt].price02 != ""}-->
