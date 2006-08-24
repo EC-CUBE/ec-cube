@@ -340,7 +340,7 @@ function lfGetIDName($arrCatList) {
 
 
 function MyFlush() {
-	print("aaaaa<br>");
+	print("                                                                                                                                                                                                                                                                aaaaa<br>");
 	flush();
 	ob_end_flush();
 	ob_start();

@@ -263,7 +263,7 @@
 							<!--{$arrProducts[cnt].stock|escape|default:"-"}-->
 							<!--{/if}-->
 							</td>
-							<td align="center" rowspan="2"><span class="icon_edit"><a href="/" onclick="fnChangeAction('./product.php'); fnModeSubmit('pre_edit', 'product_id', <!--{$arrProducts[cnt].product_id}-->); return false;" > ‘Ω∏</a></span></td>
+							<td align="center" rowspan="2"><span class="icon_edit"></td>
 							<td align="center" rowspan="2"><span class="icon_confirm"><a href="<!--{$smarty.const.SITE_URL|sfTrimURL}-->/products/detail.php?product_id=<!--{$arrProducts[cnt].product_id}-->&admin=on" target="_blank">≥Œ«ß</a></td>
 							<!--{if $smarty.const.OPTION_CLASS_REGIST == 1}-->
 							<td align="center" rowspan="2"><span class="icon_class"><a href="/" onclick="fnChangeAction('./product_class.php'); fnModeSubmit('pre_edit', 'product_id', <!--{$arrProducts[cnt].product_id}-->); return false;" >µ¨≥ </a></td>
