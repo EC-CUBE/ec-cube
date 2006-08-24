@@ -28,7 +28,6 @@ class LC_Page {
 	}
 }
 
-$conn = new SC_DBConn();
 $objPage = new LC_Page();
 $objView = new SC_AdminView();
 
@@ -48,7 +47,7 @@ $objPage->arrEndMonth = $objDate->getMonth();
 $objPage->arrEndDay = $objDate->getDay();
 
 // 認証可否の判定
-//$objSess = new SC_Session();
+$objSess = new SC_Session();
 //sfIsSuccess($objSess);
 
 //キャンペーンの編集時
