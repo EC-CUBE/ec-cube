@@ -4,7 +4,7 @@ require_once("./index_csv.php");
 
 class LC_Page {
 	function LC_Page() {
-		$this->tpl_mainpage = 'order/index.tpl';
+		//$this->tpl_mainpage = 'order/index.tpl';
 		$this->tpl_subnavi = 'order/subnavi.tpl';
 		$this->tpl_mainno = 'order';		
 		$this->tpl_subno = 'index';
