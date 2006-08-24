@@ -1729,7 +1729,6 @@ function sfGetCustomerPoint($order_id, $use_point, $add_point) {
 function sfDomainSessionStart() {
 	$ret = session_id();
 	
-	sfprintr($ret);
 /*
 	ヘッダーを送信していてもsession_start()が必要なページがあるので
 	コメントアウトしておく

@@ -32,7 +32,7 @@ class LC_Page {
 }
 
 // Ç§¾Ú²ÄÈÝ¤ÎÈ½Äê
-$objSess = new SC_Session();
+//$objSess = new SC_Session();
 //sfIsSuccess($objSess);
 
 $objPage = new LC_Page();
