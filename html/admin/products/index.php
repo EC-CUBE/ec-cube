@@ -15,7 +15,7 @@ class LC_Page {
 		$this->tpl_subno = 'index';
 		$this->tpl_pager = ROOT_DIR . 'data/Smarty/templates/admin/pager.tpl';
 		$this->tpl_subtitle = '商品マスタ';
-		
+		/*
 		global $arrPageMax;
 		$this->arrPageMax = $arrPageMax;
 		global $arrDISP;
@@ -24,6 +24,7 @@ class LC_Page {
 		$this->arrSTATUS = $arrSTATUS;
 		global $arrPRODUCTSTATUS_COLOR;
 		$this->arrPRODUCTSTATUS_COLOR = $arrPRODUCTSTATUS_COLOR;
+		*/
 	}
 }
 
@@ -405,19 +406,19 @@ $arrProducts = Array
 
 
 $objPage->arrProducts = $arrProducts;
-
+/*
 
 // カテゴリの読込
 $objPage->arrCatList = sfGetCategoryList();
 $objPage->arrCatIDName = lfGetIDName($objPage->arrCatList);
-
+*/
 // 画面の表示
 $objView->assignobj($objPage);
 $objView->display(MAIN_FRAME);
 
 //---------------------------------------------------------------------------------------------------------------------------------------------------------
-
-/* 取得文字列の変換 */
+/*
+// 取得文字列の変換 
 function lfConvertParam() {
 	global $objPage;
 	/*
@@ -438,8 +439,9 @@ function lfConvertParam() {
 		}
 	}
 }
+/*
 
-/* エラーチェック */
+// エラーチェック 
 // 入力エラーチェック
 function lfCheckError() {
 	$objErr = new SC_CheckError();
@@ -477,5 +479,5 @@ function lfGetIDName($arrCatList) {
 	}
 	return $arrRet;
 }
-
+*
 ?>
