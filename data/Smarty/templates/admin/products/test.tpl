@@ -132,6 +132,35 @@
 			</tr>
 		</table>
 		<!--▲検索テーブルここまで-->
+								<table width="678" border="0" cellspacing="0" cellpadding="0" summary=" ">
+							<tr>
+								<td bgcolor="#cccccc"><img src="/img/common/_.gif" width="1" height="5" alt=""></td>
+								<td><img src="/img/contents/tbl_top.gif" width="676" height="7" alt=""></td>
+								<td bgcolor="#cccccc"><img src="/img/common/_.gif" width="1" height="5" alt=""></td>
+							</tr>
+							<tr>
+								<td bgcolor="#cccccc"><img src="/img/common/_.gif" width="1" height="10" alt=""></td>
+								<td bgcolor="#e9e7de" align="center">
+								<table border="0" cellspacing="0" cellpadding="0" summary=" ">
+									<tr>
+										<td class="fs12n">検索結果表示件数
+											<!--{assign var=key value="search_page_max"}-->
+											<span class="red12"><!--{$arrErr[$key]}--></span>
+											<select name="<!--{$arrForm[$key].keyname}-->" style="<!--{$arrErr[$key]|sfGetErrorColor}-->">
+											<!--{html_options options=$arrPageMax selected=$arrForm[$key].value}-->
+											</select> 件
+										</td>
+										<td><img src="/img/common/_.gif" width="10" height="1" alt=""></td>
+										<td><input type="image" name="subm" onMouseover="chgImgImageSubmit('/img/contents/btn_search_on.jpg',this)" onMouseout="chgImgImageSubmit('/img/contents/btn_search.jpg',this)" src="/img/contents/btn_search.jpg" width="123" height="24" alt="この条件で検索する" border="0" onClick="submit();" ></td>
+									</tr>
+								</table>
+								</td>
+								<td bgcolor="#cccccc"><img src="/img/common/_.gif" width="1" height="10" alt=""></td>
+							</tr>
+							<tr>
+								<td colspan="3"><img src="/img/contents/tbl_bottom.gif" width="678" height="8" alt=""></td>
+							</tr>
+						</table>
 						</td>
 						<td background="/img/contents/main_right.jpg"><img src="/img/common/_.gif" width="14" height="1" alt=""></td>
 					</tr>
@@ -146,12 +175,9 @@
 		</table>
 		</td>
 	</tr>
+</form>
 </table>
 <!--★★メインコンテンツ★★-->						
-
-		<br />
-		<input type="submit" name="subm" value="この内容で検索する" />
-		</form>
 		
 		<form name="form1" id="form1" method="post" action="<!--{$smarty.server.PHP_SELF}-->">
 		<input type="hidden" name="mode" value="search">
