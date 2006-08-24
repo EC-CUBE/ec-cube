@@ -8,7 +8,6 @@
 <!--{/if}-->
 <!--{/foreach}-->
 	<tr valign="top">
-
 		<td>
 		<table width="737" border="0" cellspacing="0" cellpadding="0" summary=" ">
 			<!--メインエリア-->
