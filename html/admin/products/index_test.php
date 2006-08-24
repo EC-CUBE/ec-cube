@@ -105,6 +105,7 @@ if ($_POST['mode'] == "delete") {
 }
 
 */
+/*
 if ($_POST['mode'] == "search" || $_POST['mode'] == "csv"  || $_POST['mode'] == "delete" || $_POST['mode'] == "delete_all" || $_POST['mode'] == "camp_search") {
 	// 入力文字の強制変換
 	lfConvertParam();
@@ -257,15 +258,16 @@ if ($_POST['mode'] == "search" || $_POST['mode'] == "csv"  || $_POST['mode'] == 
 			// 検索結果の取得
 			//$objPage->arrProducts = $objQuery->select($col, $from, $where, $arrval);
 			*/
-				$max = 8;
+			$max = 8;
 			for($i = 0; $i < $max; $i++) {
 				$objPage->arrProducts[$i]['product_id'] = $i;
 			}
-			
+/*			
 			break;
 		}
 	}
 }
+*/
 
 /*
 // カテゴリの読込
