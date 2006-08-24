@@ -33,8 +33,7 @@ class LC_Page {
 
 // Ç§¾Ú²ÄÈÝ¤ÎÈ½Äê
 $objSess = new SC_Session();
-sfIsSuccess($objSess);
-
+//sfIsSuccess($objSess);
 
 $objPage = new LC_Page();
 $objView = new SC_AdminView();

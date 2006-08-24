@@ -1728,6 +1728,8 @@ function sfGetCustomerPoint($order_id, $use_point, $add_point) {
 /* ドメイン間で有効なセッションのスタート */
 function sfDomainSessionStart() {
 	$ret = session_id();
+	
+	sfprintr($ret);
 /*
 	ヘッダーを送信していてもsession_start()が必要なページがあるので
 	コメントアウトしておく
