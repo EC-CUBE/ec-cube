@@ -1740,8 +1740,12 @@ function sfDomainSessionStart() {
 		 ・すべてのパスで有効
 		 ・同じドメイン間で共有 */
 		session_set_cookie_params (0, "/", DOMAIN_NAME);
-		// セッション開始
-		session_start();
+		
+		if(!ini_get("session.auto_start")){
+			// セッション開始
+			session_start();
+		}
+
 	}
 }
 

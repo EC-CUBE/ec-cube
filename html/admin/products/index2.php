@@ -48,50 +48,10 @@ $objPage->arrEndMonth = $objDate->getMonth();
 $objPage->arrEndDay = $objDate->getDay();
 
 // 認証可否の判定
-//$objSess = new SC_Session();
-//sfIsSuccess($objSess);
+$objSess = new SC_Session();
+sfIsSuccess($objSess);
 
-		// セッション開始
-	$ret = session_id();
-	
-
-	/*ヘッダーを送信していてもsession_start()が必要なページがあるので
-	コメントアウトしておく
-	*/
-	//if($ret == "" && !headers_sent()) {
-
-	if($ret == "") {
-		/* セッションパラメータの指定
-		 ・ブラウザを閉じるまで有効
-		 ・すべてのパスで有効
-		 ・同じドメイン間で共有 */
-		session_set_cookie_params (0, "/", DOMAIN_NAME);
-		// セッション開始
-	//	session_start();
-	}
-
-	// セッション情報の保存
-	if(isset($_SESSION['cert'])) {
-			$sid = session_id();
-			$cert = $_SESSION['cert'];
-			$login_id = $_SESSION['login_id'];
-			$authority = $_SESSION['authority'];	// 管理者:0, 一般:1, 閲覧:2
-			$member_id = $_SESSION['member_id'];
-			// ログに記録する
-			gfPrintLog("access : user=".$this->login_id." auth=".$this->authority." sid=".$this->sid);
-		} else {
-			// ログに記録する
-			gfPrintLog("access error.");
-		}
-
-		global $arrPERMISSION;
-			if(isset($arrPERMISSION[$_SERVER['PHP_SELF']])) {
-				// 数値が自分の権限以上のものでないとアクセスできない。
-				if($arrPERMISSION[$_SERVER['PHP_SELF']] < $authority) {			
-					// エラーページの表示
-					sfDispError($ret);
-				} 
-			}
+sfprintr($_SESSION);
 
 //キャンペーンの編集時
 if(sfIsInt($_POST['campaign_id']) && $_POST['mode'] == "camp_search") {
