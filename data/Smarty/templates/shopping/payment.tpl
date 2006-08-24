@@ -140,7 +140,7 @@
 								<td>
 								<table cellspacing="0" cellpadding="0" summary=" ">
 									<tr>
-										<td class="fs12"><input type="radio" id="point_on" name="point_check" value="1" <!--{$arrForm.point_check.value|sfGetChecked:1}--> onclick="fnCheckInputPoint();" /><label for="point_on">ポイントを使用する</label></td>
+										<td class="fs14"><input type="radio" id="point_on" name="point_check" value="1" <!--{$arrForm.point_check.value|sfGetChecked:1}--> onclick="fnCheckInputPoint();" /><label for="point_on">ポイントを使用する</label></td>
 									</tr>
 									<tr><td height="2"></td></tr>
 									<tr>
