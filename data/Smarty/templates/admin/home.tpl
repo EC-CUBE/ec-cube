@@ -87,7 +87,7 @@
 								<td><!--{$arrNewOrder[i].name}--></td>
 								<td><!--{$arrNewOrder[i].product_name}--></td>
 								<td><!--{$arrNewOrder[i].payment_method}--></td>
-								<td align="right">\<!--{$arrNewOrder[i].total|number_format}--></td>
+								<td align="right"><!--{$arrNewOrder[i].total|number_format}-->±ß</td>
 							</tr>
 							<!--{/section}-->
 						</table>
