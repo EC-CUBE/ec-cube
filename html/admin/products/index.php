@@ -35,7 +35,6 @@ class LC_Page {
 $objPage = new LC_Page();
 $objView = new SC_AdminView();
 $objDate = new SC_Date();
-$objSess = new SC_Session();
 
 // Ç§¾Ú²ÄÈÝ¤ÎÈ½Äê
 $objSess = new SC_Session();
