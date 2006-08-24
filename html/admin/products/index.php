@@ -36,7 +36,7 @@ $objView = new SC_AdminView();
 $objDate = new SC_Date();
 
 // 認証可否の判定
-$objSess = new SC_Session();
+//$objSess = new SC_Session();
 //sfIsSuccess($objSess);
 
 // 登録・更新検索開始年
