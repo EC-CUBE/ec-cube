@@ -69,7 +69,7 @@ $objPage->arrEndDay = $objDate->getDay();
 		// セッション開始
 	//	session_start();
 	}
-/*
+
 		// セッション情報の保存
 		if(isset($_SESSION['cert'])) {
 			$this->sid = session_id();
@@ -83,7 +83,7 @@ $objPage->arrEndDay = $objDate->getDay();
 			// ログに記録する
 			gfPrintLog("access error.");
 		}
-*/
+
 
 //キャンペーンの編集時
 if(sfIsInt($_POST['campaign_id']) && $_POST['mode'] == "camp_search") {
