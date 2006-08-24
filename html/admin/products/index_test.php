@@ -274,10 +274,11 @@ if ($_POST['mode'] == "search" || $_POST['mode'] == "csv"  || $_POST['mode'] == 
 	}
 }
 
+/*
 // カテゴリの読込
 $objPage->arrCatList = sfGetCategoryList();
 $objPage->arrCatIDName = lfGetIDName($objPage->arrCatList);
-
+*/
 
 // 画面の表示
 $objView->assignobj($objPage);
