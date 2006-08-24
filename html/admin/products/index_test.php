@@ -52,6 +52,7 @@ $objPage->arrEndDay = $objDate->getDay();
 
 session_start();
 
+/*
 //キャンペーンの編集時
 if(sfIsInt($_POST['campaign_id']) && $_POST['mode'] == "camp_search") {
 	$objQuery = new SC_Query();
@@ -103,7 +104,7 @@ if ($_POST['mode'] == "delete") {
 	sfCategory_Count($objQuery);	
 }
 
-
+*/
 if ($_POST['mode'] == "search" || $_POST['mode'] == "csv"  || $_POST['mode'] == "delete" || $_POST['mode'] == "delete_all" || $_POST['mode'] == "camp_search") {
 	// 入力文字の強制変換
 	lfConvertParam();
