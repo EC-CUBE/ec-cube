@@ -403,7 +403,7 @@ $arrProducts = Array
 );
 
 
-$objPage->arrProducts = 
+$objPage->arrProducts = $arrProducts;
 
 
 // カテゴリの読込
