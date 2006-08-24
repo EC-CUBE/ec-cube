@@ -28,7 +28,7 @@ class LC_Page {
 	}
 }
 
-$conn = new SC_DBConn();
+//$conn = new SC_DBConn();
 $objPage = new LC_Page();
 $objView = new SC_AdminView();
 

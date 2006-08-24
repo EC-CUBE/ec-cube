@@ -39,7 +39,7 @@
 						<!--検索条件設定テーブルここから-->
 						<table width="678" border="0" cellspacing="1" cellpadding="8" summary=" ">
 							<tr class="fs12n">
-								<td bgcolor="#f2f1ec" width="110">受注番号</td>
+								<td bgcolor="#f2f1ec" width="110">商品ID</td>
 								<td bgcolor="#ffffff" width="194">
 									<!--{assign var=key1 value="search_order_id1"}-->
 									<!--{assign var=key2 value="search_order_id2"}-->
@@ -49,7 +49,7 @@
 									 〜 
 									<input type="text" name="<!--{$key2}-->" value="<!--{$arrForm[$key2].value|escape}-->" maxlength="<!--{$arrForm[$key2].length}-->" style="<!--{$arrErr[$key2]|sfGetErrorColor}-->"  size="6" class="box6" />
 								</td>
-								<td bgcolor="#f2f1ec" width="110">対応状況</td>
+								<td bgcolor="#f2f1ec" width="110">規格ID</td>
 								<td bgcolor="#ffffff" width="195">
 									<!--{assign var=key value="search_order_status"}-->
 									<span class="red12"><!--{$arrErr[$key]}--></span>
@@ -60,13 +60,13 @@
 								</td>
 							</tr>
 							<tr class="fs12n">
-								<td bgcolor="#f2f1ec" width="110">顧客名</td>
+								<td bgcolor="#f2f1ec" width="110">商品コード</td>
 								<td bgcolor="#ffffff" width="194">
 								<!--{assign var=key value="search_order_name"}-->
 								<span class="red12"><!--{$arrErr[$key]}--></span>
 								<input type="text" name="<!--{$key}-->" value="<!--{$arrForm[$key].value|escape}-->" maxlength="<!--{$arrForm[$key].length}-->" style="<!--{$arrErr[$key]|sfGetErrorColor}-->" size="30" class="box30" />				
 								</td>
-								<td bgcolor="#f2f1ec" width="110">顧客名（カナ）</td>
+								<td bgcolor="#f2f1ec" width="110">商品名</td>
 								<td bgcolor="#ffffff" width="195">
 								<!--{assign var=key value="search_order_kana"}-->
 								<span class="red12"><!--{$arrErr[$key]}--></span>
@@ -74,13 +74,13 @@
 								</td>
 							</tr>
 							<tr class="fs12n">
-								<td bgcolor="#f2f1ec" width="110">メールアドレス</td>
+								<td bgcolor="#f2f1ec" width="110">カテゴリ</td>
 								<td bgcolor="#ffffff" width="194">
 									<!--{assign var=key value="search_order_email"}-->
 									<span class="red12"><!--{$arrErr[$key]}--></span>
 									<input type="text" name="<!--{$key}-->" value="<!--{$arrForm[$key].value|escape}-->" maxlength="<!--{$arrForm[$key].length}-->" style="<!--{$arrErr[$key]|sfGetErrorColor}-->" size="30" class="box30" />				
 								</td>
-								<td bgcolor="#f2f1ec" width="110">TEL</td>
+								<td bgcolor="#f2f1ec" width="110">種別</td>
 								<td bgcolor="#ffffff" width="195">
 									<!--{assign var=key value="search_order_tel"}-->
 									<span class="red12"><!--{$arrErr[$key]}--></span>
@@ -88,7 +88,7 @@
 								</td>
 							</tr>
 							<tr class="fs12n">
-								<td bgcolor="#f2f1ec" width="110">生年月日</td>
+								<td bgcolor="#f2f1ec" width="110">登録・更新日</td>
 								<td bgcolor="#ffffff" width="499" colspan="3">
 									<span class="red"><!--{$arrErr.search_sbirthyear}--></span>
 									<span class="red"><!--{$arrErr.search_ebirthyear}--></span>		
@@ -119,14 +119,66 @@
 								</td>
 							</tr>
 							<tr class="fs12n">
-								<td bgcolor="#f2f1ec" width="110">性別</td>
+								<td bgcolor="#f2f1ec" width="110">ステータス</td>
 								<td bgcolor="#ffffff" width="499" colspan="3">
 								<!--{assign var=key value="search_order_sex"}-->
 								<span class="red12"><!--{$arrErr[$key]}--></span>
 								<!--{html_checkboxes name="$key" options=$arrSex selected=$arrForm[$key].value}-->
 							</td>
 							</tr>
-
+							<tr class="fs12n">
+								<td bgcolor="#f2f1ec" width="110">支払方法</td>
+								<td bgcolor="#ffffff" width="499" colspan="3">
+								<!--{assign var=key value="search_payment_id"}-->
+								<span class="red12"><!--{$arrErr[$key]|escape}--></span>
+								<!--{html_checkboxes name="$key" options=$arrPayment|escape selected=$arrForm[$key].value}-->
+								</td>
+							</tr>
+							<tr class="fs12n">
+								<td bgcolor="#f2f1ec" width="110">登録・更新日</td>
+								<td bgcolor="#ffffff" width="499" colspan="3">
+									<span class="red"><!--{$arrErr.search_startyear}--></span>
+									<span class="red"><!--{$arrErr.search_endyear}--></span>		
+									<select name="search_startyear"  style="<!--{$arrErr.search_startyear|sfGetErrorColor}-->">
+									<option value="">----</option>
+									<!--{html_options options=$arrRegistYear selected=$arrForm.search_startyear.value}-->
+									</select>年
+									<select name="search_startmonth" style="<!--{$arrErr.search_startyear|sfGetErrorColor}-->">
+									<option value="">--</option>
+									<!--{html_options options=$arrMonth selected=$arrForm.search_startmonth.value}-->
+									</select>月
+									<select name="search_startday" style="<!--{$arrErr.search_startyear|sfGetErrorColor}-->">
+									<option value="">--</option>
+									<!--{html_options options=$arrDay selected=$arrForm.search_startday.value}-->
+									</select>日〜
+									<select name="search_endyear" style="<!--{$arrErr.search_endyear|sfGetErrorColor}-->">
+									<option value="">----</option>
+									<!--{html_options options=$arrRegistYear selected=$arrForm.search_endyear.value}-->
+									</select>年
+									<select name="search_endmonth" style="<!--{$arrErr.search_endyear|sfGetErrorColor}-->">
+									<option value="">--</option>
+									<!--{html_options options=$arrMonth selected=$arrForm.search_endmonth.value}-->
+									</select>月
+									<select name="search_endday" style="<!--{$arrErr.search_endyear|sfGetErrorColor}-->">
+									<option value="">--</option>
+									<!--{html_options options=$arrDay selected=$arrForm.search_endday.value}-->
+									</select>日
+								</td>
+							</tr>
+							<tr class="fs12n">
+								<td bgcolor="#f2f1ec" width="110">購入金額</td>
+								<td bgcolor="#ffffff" width="499" colspan="3">
+									<!--{assign var=key1 value="search_total1"}-->
+									<!--{assign var=key2 value="search_total2"}-->
+									<span class="red12"><!--{$arrErr[$key1]}--></span>
+									<span class="red12"><!--{$arrErr[$key2]}--></span>
+									<input type="text" name="<!--{$key1}-->" value="<!--{$arrForm[$key1].value|escape}-->" maxlength="<!--{$arrForm[$key1].length}-->" style="<!--{$arrErr[$key1]|sfGetErrorColor}-->"  size="6" class="box6" />
+									
+									円 〜 
+									<input type="text" name="<!--{$key2}-->" value="<!--{$arrForm[$key2].value|escape}-->" maxlength="<!--{$arrForm[$key2].length}-->" style="<!--{$arrErr[$key2]|sfGetErrorColor}-->"  size="6" class="box6" />
+									円
+								</td>
+							</tr>
 						</table>
 						<table width="678" border="0" cellspacing="0" cellpadding="0" summary=" ">
 							<tr>
