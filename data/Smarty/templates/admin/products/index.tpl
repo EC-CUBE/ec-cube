@@ -208,6 +208,15 @@
 	</tr>
 	<tr><td bgcolor="cbcbcb" colspan="2"><img src="/img/common/_.gif" width="1" height="5" alt=""></td></tr>
 </table>
+
+<table width="878" border="0" cellspacing="0" cellpadding="0" summary=" ">
+	<tr>
+		<td bgcolor="#f0f0f0" align="center">
+
+
+		</td>
+	</tr>
 </form>
+</table>		
 <!--¡ú¡ú¸¡º÷·ë²Ì°ìÍ÷¡ú¡ú-->		
 <!--{/if}-->
