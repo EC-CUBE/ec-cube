@@ -242,8 +242,8 @@
 						
 						<!--{section name=cnt loop=$arrProducts}-->
 						<tr bgcolor="#636469" align="center" class="fs10n">
-						<td rowspan="2" align="center"><!--{$arrProducts[cnt].product_id}--></td>
-							<td rowspan="2" align="center">
+							<td align="center"><!--{$arrProducts[cnt].product_id}--></td>
+							<td align="center">
 							<!--{if $arrProducts[cnt].main_list_image != ""}-->
 								<!--{assign var=image_path value="`$smarty.const.IMAGE_SAVE_URL`/`$arrProducts[cnt].main_list_image`"}-->
 							<!--{else}-->
@@ -251,7 +251,7 @@
 							<!--{/if}-->
 							<img src="<!--{$image_path|sfRmDupSlash}-->" width="65" height="65" alt="<!--{$arrProducts[cnt].name|escape}-->" />
 							</td>
-						
+							<td><!--{$arrProducts[cnt].product_code|escape|default:"-"}--></td>
 						</tr>
 						<!--{/section}-->
 
