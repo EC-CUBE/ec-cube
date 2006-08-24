@@ -35,71 +35,7 @@
 								<td colspan="3"><img src="/img/contents/main_bar.jpg" width="678" height="10" alt=""></td>
 							</tr>
 						</table>
-						<!--検索条件設定テーブルここから-->
-						<table width="678" border="0" cellspacing="1" cellpadding="8" summary=" ">
-							<tr class="fs12">
-								<td bgcolor="#f2f1ec" width="110">商品ID</td>
-								<td bgcolor="#ffffff" width="194"><input type="text" name="search_product_id" value="<!--{$arrForm.search_product_id|escape}-->" size="30" class="box30" /></td>
-								<td bgcolor="#f2f1ec" width="110">規格ID</td>
-								<td bgcolor="#ffffff" width="195"><input type="text" name="search_product_class_id" value="<!--{$arrForm.search_product_class_id|escape}-->" size="30" class="box30" /></td>
-							</tr>
-							<tr class="fs12">
-								<td bgcolor="#f2f1ec" width="110">商品コード</td>
-								<td bgcolor="#ffffff" width="194"><input type="text" name="search_product_code" value="<!--{$arrForm.search_product_code|escape}-->" size="30" class="box30" /></td>
-								<td bgcolor="#f2f1ec" width="110">商品名</td>
-								<td bgcolor="#ffffff" width="195"><input type="text" name="search_name" value="<!--{$arrForm.search_name|escape}-->" size="30" class="box30" /></td>
-							</tr>
-							<tr class="fs12">
-								<td bgcolor="#f2f1ec" width="110">カテゴリ</td>
-								<td bgcolor="#ffffff" width="194">
-									<select name="search_category_id" style="<!--{if $arrErr.search_category_id != ""}-->background-color: <!--{$smarty.const.ERR_COLOR}--><!--{/if}-->">
-									<option value="">選択してください</option>
-									<!--{html_options options=$arrCatList selected=$arrForm.search_category_id}-->
-									</select>
-								</td>
-								<td bgcolor="#f2f1ec" width="110">種別</td>
-								<td bgcolor="#ffffff" width="195">
-									<!--{html_checkboxes name="search_status" options=$arrDISP selected=$arrForm.search_status}-->
-								</td>
-							</tr class="fs12">
-							<tr class="fs12n">
-								<td bgcolor="#f2f1ec" width="110">登録・更新日</td>
-								<td bgcolor="#ffffff" width="499" colspan=3>
-									<span class="red"><!--{$arrErr.search_startyear}--></span>
-									<span class="red"><!--{$arrErr.search_endyear}--></span>		
-									<select name="search_startyear" style="<!--{$arrErr.search_startyear|sfGetErrorColor}-->">
-									<option value="">----</option>
-									<!--{html_options options=$arrStartYear selected=$arrForm.search_startyear}-->
-									</select>年
-									<select name="search_startmonth" style="<!--{$arrErr.search_startyear|sfGetErrorColor}-->">
-									<option value="">--</option>
-									<!--{html_options options=$arrStartMonth selected=$arrForm.search_startmonth}-->
-									</select>月
-									<select name="search_startday" style="<!--{$arrErr.search_startyear|sfGetErrorColor}-->">
-									<option value="">--</option>
-									<!--{html_options options=$arrStartDay selected=$arrForm.search_startday}-->
-									</select>日〜
-									<select name="search_endyear" style="<!--{$arrErr.search_endyear|sfGetErrorColor}-->">
-									<option value="">----</option>
-									<!--{html_options options=$arrEndYear selected=$arrForm.search_endyear}-->
-									</select>年
-									<select name="search_endmonth" style="<!--{$arrErr.search_endyear|sfGetErrorColor}-->">
-									<option value="">--</option>
-									<!--{html_options options=$arrEndMonth selected=$arrForm.search_endmonth}-->
-									</select>月
-									<select name="search_endday" style="<!--{$arrErr.search_endyear|sfGetErrorColor}-->">
-									<option value="">--</option>
-									<!--{html_options options=$arrEndDay selected=$arrForm.search_endday}-->
-									</select>日
-								</td>
-							</tr>
-							<tr class="fs12n">
-								<td bgcolor="#f2f1ec" width="110">ステータス</td>
-								<td bgcolor="#ffffff" width="499" colspan="3">
-								<!--{html_checkboxes name="search_product_flag" options=$arrSTATUS selected=$arrForm.search_product_flag}-->
-								</td>
-							</tr>
-						</table>
+
 						<table width="678" border="0" cellspacing="0" cellpadding="0" summary=" ">
 							<tr>
 								<td bgcolor="#cccccc"><img src="/img/common/_.gif" width="1" height="5" alt=""></td>
@@ -240,6 +176,12 @@
 						<tr bgcolor="<!--{$arrPRODUCTSTATUS_COLOR[$status]}-->" class="fs10">
 							<td rowspan="2" align="center"><!--{$arrProducts[cnt].product_id}--></td>
 							<td rowspan="2" align="center">
+							<!--{if $arrProducts[cnt].main_list_image != ""}-->
+								<!--{assign var=image_path value="`$smarty.const.IMAGE_SAVE_URL`/`$arrProducts[cnt].main_list_image`"}-->
+							<!--{else}-->
+								<!--{assign var=image_path value="`$smarty.const.NO_IMAGE_URL`"}-->
+							<!--{/if}-->
+							<img src="<!--{$image_path|sfRmDupSlash}-->" width="65" height="65" alt="<!--{$arrProducts[cnt].name|escape}-->" />
 							</td>
 							<td><!--{$arrProducts[cnt].product_code|escape|default:"-"}--></td>
 							<td><!--{$arrProducts[cnt].name|escape}--></td>
