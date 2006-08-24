@@ -19,22 +19,11 @@ class LC_Page {
 		$this->tpl_pager = ROOT_DIR . 'data/Smarty/templates/admin/pager.tpl';
 		$this->tpl_subtitle = '商品マスタ';
 
-		global $arrPageMax;
-		$this->arrPageMax = $arrPageMax;
-		global $arrDISP;
-		$this->arrDISP = $arrDISP;
-		global $arrSTATUS;
-		$this->arrSTATUS = $arrSTATUS;
-		global $arrPRODUCTSTATUS_COLOR;
-		$this->arrPRODUCTSTATUS_COLOR = $arrPRODUCTSTATUS_COLOR;
-
 	}
 }
 
 $objPage = new LC_Page();
 $objView = new SC_AdminView();
-$objSess = new SC_Session();
-$objDate = new SC_Date();
 
 $arrProducts = Array
 (
