@@ -10,8 +10,8 @@ class LC_Page {
 	var $arrPageMax;
 	function LC_Page() {
 //		$this->tpl_mainpage = 'products/index.tpl';
-//		$this->tpl_mainpage="products/test.tpl";
-		$this->tpl_mainpage = 'order/index.tpl';
+		$this->tpl_mainpage="products/test.tpl";
+//		$this->tpl_mainpage = 'order/index.tpl';
 
 		$this->tpl_mainno = 'products';
 		$this->tpl_subnavi = 'products/subnavi.tpl';
@@ -265,7 +265,7 @@ if ($_POST['mode'] == "search" || $_POST['mode'] == "csv"  || $_POST['mode'] == 
 		}
 	}
 }
-*/
+
 $arrProducts = Array
 (
     '0' => Array
@@ -408,7 +408,7 @@ $arrProducts = Array
 
 );
 
-
+*/
 $objPage->arrProducts = $arrProducts;
 /*
 
