@@ -1744,10 +1744,10 @@ function sfDomainSessionStart() {
 		if(!ini_get("session.auto_start")){
 			// セッション開始
 			session_start();
-			
+
+						
 			sfprintr("session start!!");
 		}
-
 	}
 }
 
