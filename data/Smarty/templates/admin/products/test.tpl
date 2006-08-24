@@ -66,14 +66,15 @@
 							<tr class="fs12n">
 								<td bgcolor="#f2f1ec" width="110">カテゴリ</td>
 								<td bgcolor="#ffffff" width="194">
-									<select name="search_category_id" style="<!--{if $arrErr.search_category_id != ""}-->background-color: <!--{$smarty.const.ERR_COLOR}--><!--{/if}-->">
-									<option value="">選択してください</option>
-									<!--{html_options options=$arrCatList selected=$arrForm.search_category_id}-->
-									</select>
+									<!--{assign var=key value="search_order_email"}-->
+									<span class="red12"><!--{$arrErr[$key]}--></span>
+									<input type="text" name="<!--{$key}-->" value="<!--{$arrForm[$key].value|escape}-->" maxlength="<!--{$arrForm[$key].length}-->" style="<!--{$arrErr[$key]|sfGetErrorColor}-->" size="30" class="box30" />				
 								</td>
 								<td bgcolor="#f2f1ec" width="110">種別</td>
 								<td bgcolor="#ffffff" width="195">
-									<!--{html_checkboxes name="search_status" options=$arrDISP selected=$arrForm.search_status}-->
+									<!--{assign var=key value="search_order_tel"}-->
+									<span class="red12"><!--{$arrErr[$key]}--></span>
+									<input type="text" name="<!--{$key}-->" value="<!--{$arrForm[$key].value|escape}-->" maxlength="<!--{$arrForm[$key].length}-->" style="<!--{$arrErr[$key]|sfGetErrorColor}-->" size="30" class="box30" />				
 								</td>
 							</tr>
 							<tr class="fs12n">
