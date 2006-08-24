@@ -33,7 +33,6 @@ class LC_Page {
 
 $objPage = new LC_Page();
 $objView = new SC_AdminView();
-//$objSess = new SC_Session();
 $objDate = new SC_Date();
 
 
@@ -51,8 +50,8 @@ $objPage->arrEndMonth = $objDate->getMonth();
 $objPage->arrEndDay = $objDate->getDay();
 
 // 認証可否の判定
-//$objSess = new SC_Session();
-//sfIsSuccess($objSess);
+$objSess = new SC_Session();
+sfIsSuccess($objSess);
 
 //キャンペーンの編集時
 if(sfIsInt($_POST['campaign_id']) && $_POST['mode'] == "camp_search") {
