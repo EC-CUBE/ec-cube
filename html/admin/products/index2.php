@@ -20,7 +20,7 @@ $objPage = new LC_Page();
 $objView = new SC_AdminView();
 $objSess = new SC_Session();
 
-arrResults = Array
+$arrProducts = Array
 (
     '0' => Array
         (
@@ -161,7 +161,7 @@ arrResults = Array
         )
 
 );
-$objPage->arrProducts = $arrProducts;
+$objPage->arrResults = $arrProducts;
 
 // 画面の表示
 $objView->assignobj($objPage);

@@ -286,7 +286,7 @@
 	<tr>
 		<td bgcolor="#f0f0f0" align="center">
 
-		<!--{if count($arrResults) > 0}-->		
+		<!--{if count($arrProducts) > 0}-->		
 
 			<table width="840" border="0" cellspacing="0" cellpadding="0" summary=" ">
 				<tr><td height="12"></td></tr>
@@ -296,19 +296,26 @@
 					<table width="840" border="0" cellspacing="1" cellpadding="5" summary=" ">
 
 						<tr bgcolor="#636469" align="center" class="fs10n">
-							<td width="100"><span class="white">受注日</span></td>
-							<td width="89"><span class="white">受注番号</span></td>
-							<td width="90"><span class="white">顧客名</span></td>
-							<td width="65"><span class="white">支払方法</span></td>
-							<td width="70"><span class="white">購入金額(円)</span></td>
-							<td width="80"><span class="white">全商品発送日</span></td>
-							<td width="85"><span class="white">受注対応状況</span></td>
-							<td width="50"><span class="white">編集</span></td>
-							<td width="50"><span class="white">メール</span></td>
-							<td width="50"><span class="white">削除</span></td>
+							<td width="50" rowspan="2"><span class="white">商品ID</span></td>
+							<td width="90" rowspan="2"><span class="white">商品画像</span></td>
+							<td width="90"><span class="white">商品コード</span></td>
+							<td width="350"><span class="white">商品名</span></td>
+							<td width="60"><span class="white">在庫</span></td>
+							<td width="50" rowspan="2"><span class="white">編集</span></td>
+							<td width="50" rowspan="2"><span class="white">確認</span></td>
+							<!--{if $smarty.const.OPTION_CLASS_REGIST == 1}-->
+							<td width="50" rowspan="2"><span class="white">規格</span></td>
+							<!--{/if}-->
+							<td width="50" rowspan="2"><span class="white">削除</span></td>
 						</tr>
+						<tr bgcolor="#636469" align="center" class="fs10n">
+							<td width="90"><span class="white">価格(円)</span></td>
+							<td width="430"><span class="white">カテゴリ</span></td>
+							<td width="60"><span class="white">種別</span></td>
+						</tr>
+			
 						
-						<!--{section name=cnt loop=$arrResults}-->
+						<!--{section name=cnt loop=$arrProducts}-->
 						<!--{assign var=status value="`$arrResults[cnt].status`"}-->
 						<tr bgcolor="<!--{$arrORDERSTATUS_COLOR[$status]}-->" class="fs10n">
 							<td align="center"><!--{$arrResults[cnt].create_date|sfDispDBDate}--></td>
