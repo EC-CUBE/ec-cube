@@ -241,7 +241,9 @@
 						</tr>
 						
 						<!--{section name=cnt loop=$arrProducts}-->
-						<tr bgcolor="#636469" align="center" class="fs10n"><td></td></tr>
+						<tr bgcolor="#636469" align="center" class="fs10n">
+						<td rowspan="2" align="center"><!--{$arrProducts[cnt].product_id}--></td>
+						</tr>
 						<!--{/section}-->
 
 						
