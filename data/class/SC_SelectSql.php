@@ -67,12 +67,15 @@ class SC_SelectSql {
 	//--　期間検索（○年○月○日か~○年○月○日まで）
 	function selectTermRange($from_year, $from_month, $from_day, $to_year, $to_month, $to_day, $column) {
 
+		sfprintr($from_year .":". $from_month.":". $from_day.":". $to_year.":". $to_month.":". $to_day);
+		
 		// 開始期間だけ指定の場合は本日登録分まで
 		if( ( $from_year != "" ) && ( $from_month != "" ) && ( $from_day != "" ) &&	( $to_year == "" ) && ( $to_month == "" ) && ( $to_day == "" ) ) {
 			list( $date1, $date2, $err ) = sfCheckSetTerm( $from_year, $from_month, $from_day, date("Y"), date("m"), date("d") );
   			if ( ! $err ) {
-				$this->setWhere( $column ." BETWEEN ? AND ?" );
-				$return = array($date1, $date2);
+//				$this->setWhere( $column ." BETWEEN ? AND ?" );
+				$this->setWhere( $column ." >= ?" );
+				$return = array($date1);
   			}
 		}
 
