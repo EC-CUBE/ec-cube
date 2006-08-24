@@ -242,33 +242,7 @@
 						
 						<!--{section name=cnt loop=$arrProducts}-->
 						<tr bgcolor="#636469" align="center" class="fs10n">
-							<td align="center"><!--{$arrProducts[cnt].product_id}--></td>
-							<td><!--{$arrProducts[cnt].product_code|escape|default:"-"}--></td>
-							<td><!--{$arrProducts[cnt].name|escape}--></td>
-							<td align="center">
-							<!--{* 在庫 *}-->
-							<!--{if $arrProducts[cnt].stock_unlimited == '1'}-->
-							無制限
-							<!--{else}-->
-							<!--{$arrProducts[cnt].stock|escape|default:"-"}-->
-							<!--{/if}-->
-							</td>							
-							<td align="right">
-							<!--{* 価格 *}-->
-							<!--{if $arrProducts[cnt].price02 != ""}-->
-							<!--{$arrProducts[cnt].price02|number_format}-->
-							<!--{else}-->
-							-
-							<!--{/if}-->
-							</td>
-							<td>
-							<!--{* カテゴリ名 *}-->
-							<!--{assign var=key value=$arrProducts[cnt].category_id}-->
-							<!--{$arrCatList[$key]|sfTrim}-->
-							</td>
-							<!--{* 表示 *}-->
-							<!--{assign var=key value=$arrProducts[cnt].status}-->
-							<td align="center"><!--{$arrDISP[$key]}--></td>
+							<td>aaa</td>
 						</tr>
 						<!--{/section}-->
 
