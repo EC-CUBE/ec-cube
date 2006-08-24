@@ -253,6 +253,22 @@
 							</td>
 							<td><!--{$arrProducts[cnt].product_code|escape|default:"-"}--></td>
 							<td><!--{$arrProducts[cnt].name|escape}--></td>
+							<td align="right">
+							<!--{* ²Á³Ê *}-->
+							<!--{if $arrProducts[cnt].price02 != ""}-->
+							<!--{$arrProducts[cnt].price02|number_format}-->
+							<!--{else}-->
+							-
+							<!--{/if}-->
+							</td>
+							<td>
+							<!--{* ¥«¥Æ¥´¥êÌ¾ *}-->
+							<!--{assign var=key value=$arrProducts[cnt].category_id}-->
+							<!--{$arrCatList[$key]|sfTrim}-->
+							</td>
+							<!--{* É½¼¨ *}-->
+							<!--{assign var=key value=$arrProducts[cnt].status}-->
+							<td align="center"><!--{$arrDISP[$key]}--></td>
 						</tr>
 						<!--{/section}-->
 
