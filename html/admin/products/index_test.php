@@ -9,7 +9,7 @@ class LC_Page {
 	var $arrProducts;
 	var $arrPageMax;
 	function LC_Page() {
-		$this->tpl_mainpage = 'products/index.tpl';
+		$this->tpl_mainpage = 'products/index_test.tpl';
 		$this->tpl_mainno = 'products';
 		$this->tpl_subnavi = 'products/subnavi.tpl';
 		$this->tpl_subno = 'index';
