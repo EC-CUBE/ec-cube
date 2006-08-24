@@ -165,7 +165,7 @@
 <input type="hidden" name="category_id" value="">
 <!--{foreach key=key item=item from=$arrHidden}-->
 <input type="hidden" name="<!--{$key}-->" value="<!--{$item|escape}-->">
-<!--{/foreach}-->		
+<!--{/foreach}-->	
 	<tr><td colspan="2"><img src="/img/contents/search_line.jpg" width="878" height="12" alt=""></td></tr>
 	<tr bgcolor="cbcbcb">
 		<td>
