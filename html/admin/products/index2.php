@@ -53,7 +53,7 @@ sfIsSuccess($objSess);
 
 sfprintr($_SESSION);
 
-session_destory();
+session_destroy();
 
 //キャンペーンの編集時
 if(sfIsInt($_POST['campaign_id']) && $_POST['mode'] == "camp_search") {
