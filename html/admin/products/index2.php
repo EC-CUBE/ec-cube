@@ -87,9 +87,9 @@ $objPage->arrEndDay = $objDate->getDay();
 		global $arrPERMISSION;
 			if(isset($arrPERMISSION[$_SERVER['PHP_SELF']])) {
 				// 数値が自分の権限以上のものでないとアクセスできない。
-				if($arrPERMISSION[$_SERVER['PHP_SELF']] < $this->authority) {			
-								// エラーページの表示
-			sfDispError($ret);
+				if($arrPERMISSION[$_SERVER['PHP_SELF']] < $authority) {			
+					// エラーページの表示
+					sfDispError($ret);
 				} 
 			}
 
