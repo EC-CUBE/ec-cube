@@ -3,14 +3,6 @@
 <form name="search_form" id="search_form" method="post" action="<!--{$smarty.server.PHP_SELF}-->">
 <input type="hidden" name="mode" value="search">
 
-				<table width="706" border="0" cellspacing="0" cellpadding="0" summary=" ">
-					<tr><td height="14"></td></tr>
-					<tr>
-						<td colspan="3"><img src="/img/contents/main_top.jpg" width="706" height="14" alt=""></td>
-					</tr>
-					<tr>
-						<td background="/img/contents/main_left.jpg"><img src="/img/common/_.gif" width="14" height="1" alt=""></td>
-						<td bgcolor="#cccccc">
 						<table width="678" border="0" cellspacing="0" cellpadding="0" summary=" ">
 							<tr>
 								<td colspan="3"><img src="/img/contents/contents_title_top.gif" width="678" height="7" alt=""></td>
@@ -128,14 +120,8 @@
 							</tr>
 						</table>
 						<!--検索条件設定テーブルここまで-->
-						</td>
-						<td background="/img/contents/main_right.jpg"><img src="/img/common/_.gif" width="14" height="1" alt=""></td>
-					</tr>
-					<tr>
-						<td colspan="3"><img src="/img/contents/main_bottom.jpg" width="706" height="14" alt=""></td>
-					</tr>
-					<tr><td height="30"></td></tr>
-				</table>
+<img src="/img/contents/main_bottom.jpg" width="706" height="14" alt="">
+
 
 
 </form>	
