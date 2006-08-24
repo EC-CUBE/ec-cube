@@ -51,6 +51,22 @@ $objPage->arrEndDay = $objDate->getDay();
 //$objSess = new SC_Session();
 //sfIsSuccess($objSess);
 
+		// セッション開始
+		sfDomainSessionStart();
+		// セッション情報の保存
+		if(isset($_SESSION['cert'])) {
+			$this->sid = session_id();
+			$this->cert = $_SESSION['cert'];
+			$this->login_id = $_SESSION['login_id'];
+			$this->authority = $_SESSION['authority'];	// 管理者:0, 一般:1, 閲覧:2
+			$this->member_id = $_SESSION['member_id'];
+			// ログに記録する
+			gfPrintLog("access : user=".$this->login_id." auth=".$this->authority." sid=".$this->sid);
+		} else {
+			// ログに記録する
+			gfPrintLog("access error.");
+		}
+
 //キャンペーンの編集時
 if(sfIsInt($_POST['campaign_id']) && $_POST['mode'] == "camp_search") {
 	$objQuery = new SC_Query();
