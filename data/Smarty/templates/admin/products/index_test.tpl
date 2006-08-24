@@ -108,6 +108,7 @@
 			<tr>
 				<td><img src="/img/contents/search_left.gif" width="19" height="22" alt=""></td>
 				<td>
+				<!--{*
 				<!--検索結果-->
 				<table border="0" cellspacing="0" cellpadding="0" summary=" ">
 					<tr>
@@ -127,6 +128,7 @@
 					</tr>
 				</table>
 				<!--検索結果-->
+				*}-->
 				<!--{if $smarty.const.ADMIN_MODE == '1'}-->
 				<input type="button" name="subm" value="検索結果をすべて削除" onclick="fnModeSubmit('delete_all','','');" />
 				<!--{/if}-->
