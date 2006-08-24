@@ -251,30 +251,6 @@ if ($_POST['mode'] == "search" || $_POST['mode'] == "csv"  || $_POST['mode'] == 
 			$objPage->arrProducts = $objQuery->select($col, $from, $where, $arrval);
 //			$arrProducts = $objQuery->select($col, $from, $where, $arrval);
 			$objPage->tpl_mainpage="products/test.tpl";
-			$objPage->arrProducts = Array(
-    0 => Array
-        (
-            'product_id' => 18
-        ),
-
-    1 => Array
-        (
-            'product_id' => 14
-        ),
-
-    2 => Array
-        (
-            'product_id' => 16
-        ),
-
-    3 => Array
-        (
-            'product_id' => 15
-        )
-
-);
-
-			
 
 			break;
 		}
