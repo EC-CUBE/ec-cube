@@ -217,6 +217,7 @@ if ($_POST['mode'] == "search" || $_POST['mode'] == "csv"  || $_POST['mode'] == 
 			$objQuery->update("dtb_products", $sqlval, $where, $arrval);
 			break;
 		default:
+			/*
 			// 読み込む列とテーブルの指定
 			$col = "product_id, name, category_id, main_list_image, status, product_code, price01, price02, stock, stock_unlimited";
 			$from = "vw_products_nonclass";
@@ -254,7 +255,7 @@ if ($_POST['mode'] == "search" || $_POST['mode'] == "csv"  || $_POST['mode'] == 
 			
 			// 検索結果の取得
 			//$objPage->arrProducts = $objQuery->select($col, $from, $where, $arrval);
-
+			*/
 			$max = 8;
 			for($i = 0; $i < $max; $i++) {
 				$objPage->arrProducts[] = "dummy";
