@@ -245,6 +245,7 @@
 						<!--{assign var=status value="`$arrProducts[cnt].status`"}-->
 						<tr bgcolor="<!--{$arrPRODUCTSTATUS_COLOR[$status]}-->" class="fs10">
 							<td rowspan="2" align="center"><!--{$arrProducts[cnt].product_id}--></td>
+							<td align="center" rowspan="2"><span class="icon_edit"><a href="/" onclick="fnChangeAction('./product.php'); fnModeSubmit('pre_edit', 'product_id', <!--{$arrProducts[cnt].product_id}-->); return false;" > ‘Ω∏</a></span></td>
 
 						</tr>
 						<!--¢•æ¶… <!--{$smarty.section.cnt.iteration}-->-->
