@@ -35,8 +35,7 @@ $objDate = new SC_Date();
 
 // Ç§¾Ú²ÄÈÝ¤ÎÈ½Äê
 $objSess = new SC_Session();
-sfIsSuccess($objSess);
-
+//sfIsSuccess($objSess);
 
 // ÅÐÏ¿¡¦¹¹¿·¸¡º÷³«»ÏÇ¯
 $objDate->setStartYear(RELEASE_YEAR);
