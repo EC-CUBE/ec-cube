@@ -254,7 +254,7 @@ if ($_POST['mode'] == "search" || $_POST['mode'] == "csv"  || $_POST['mode'] == 
 			$objPage->arrProducts = array("a");
 			
 			
-			sfprintr($arrProducts);
+//			sfprintr($arrProducts);
 
 			break;
 		}
