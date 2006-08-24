@@ -116,7 +116,7 @@
 			</tr>
 			<tr><td height="10"></td></tr>
 			<tr>
-				<td class="fs12n">
+				<td class="fs12">
 					<span class="redst">1ポイントを1円</span>として使用する事ができます。<br />
 					使用する場合は、「ポイントを使用する」にチェックを入れた後、使用するポイントをご記入ください。
 				</td>
