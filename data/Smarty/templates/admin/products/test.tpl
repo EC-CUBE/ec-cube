@@ -38,20 +38,20 @@
 
 						<table width="678" border="0" cellspacing="0" cellpadding="0" summary=" ">
 							<tr>
-								<td bgcolor="#cccccc"><img src="/img/common/_.gif" width="1" height="5" alt=""></td>
-								<td><img src="/img/contents/tbl_top.gif" width="676" height="7" alt=""></td>
-								<td bgcolor="#cccccc"><img src="/img/common/_.gif" width="1" height="5" alt=""></td>
+								<td bgcolor="#cccccc"><img src="" width="1" height="5" alt=""></td>
+								<td><img src="" width="676" height="7" alt=""></td>
+								<td bgcolor="#cccccc"><img src="" width="1" height="5" alt=""></td>
 							</tr>
 							<tr>
-								<td colspan="3"><img src="/img/contents/tbl_bottom.gif" width="678" height="8" alt=""></td>
+								<td colspan="3"><img src="" width="678" height="8" alt=""></td>
 							</tr>
 						</table>
 						<!--検索条件設定テーブルここまで-->
 						</td>
-						<td background="/img/contents/main_right.jpg"><img src="/img/common/_.gif" width="14" height="1" alt=""></td>
+						<td background=""><img src="" width="14" height="1" alt=""></td>
 					</tr>
 					<tr>
-						<td colspan="3"><img src="/img/contents/main_bottom.jpg" width="706" height="14" alt=""></td>
+						<td colspan="3"><img src="" width="706" height="14" alt=""></td>
 					</tr>
 					<tr><td height="30"></td></tr>
 				</table>
