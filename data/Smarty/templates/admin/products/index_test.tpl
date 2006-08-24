@@ -8,10 +8,7 @@
 <!--{/if}-->
 <!--{/foreach}-->
 	<tr valign="top">
-		<td background="/img/contents/navi_bg.gif" height="402">
-			<!-- サブナビ -->
-			<!--{include file=$tpl_subnavi}-->
-		</td>
+
 		<td class="mainbg">
 		<table width="737" border="0" cellspacing="0" cellpadding="0" summary=" ">
 			<!--メインエリア-->
