@@ -461,4 +461,5 @@ function lfCheckNonClass($product_id) {
 	}
 	return true;
 }
+
 ?>

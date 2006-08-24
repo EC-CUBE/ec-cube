@@ -331,12 +331,4 @@ function lfGetIDName($arrCatList) {
 	return $arrRet;
 }
 
-
-function MyFlush() {
-	print("                                                                                                                                                                                                                                                                aaaaa<br>");
-	flush();
-	ob_end_flush();
-	ob_start();
-	sleep(1);
-}
 ?>
