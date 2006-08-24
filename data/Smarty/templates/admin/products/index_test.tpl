@@ -105,10 +105,11 @@
 	<tr bgcolor="cbcbcb">
 		<td>
 		<table border="0" cellspacing="0" cellpadding="0" summary=" ">
+				<!--{*
 			<tr>
 				<td><img src="/img/contents/search_left.gif" width="19" height="22" alt=""></td>
 				<td>
-				<!--{*
+
 				<!--検索結果-->
 				<table border="0" cellspacing="0" cellpadding="0" summary=" ">
 					<tr>
@@ -128,7 +129,7 @@
 					</tr>
 				</table>
 				<!--検索結果-->
-				*}-->
+
 				<!--{if $smarty.const.ADMIN_MODE == '1'}-->
 				<input type="button" name="subm" value="検索結果をすべて削除" onclick="fnModeSubmit('delete_all','','');" />
 				<!--{/if}-->
@@ -138,6 +139,7 @@
 				<td><img src="/img/common/_.gif" width="8" height="1" alt=""></td>
 				<td><a href="../contents/csv.php?tpl_subno_csv=product"><span class="fs12n"> >> CSV出力設定へ </span></a></td>
 			</tr>
+							*}-->
 		</table>
 		</td>
 		<td align="right">
