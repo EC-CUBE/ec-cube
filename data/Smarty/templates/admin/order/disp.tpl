@@ -27,11 +27,6 @@ body {
 <!--¢§CONTENTS-->
 <table width="878" border="0" cellspacing="0" cellpadding="0" summary=" ">
 	<tr valign="top">
-		<td background="/img/contents/navi_bg.gif" height="402">
-			<!--¢§SUB NAVI-->
-			<!--{include file=$tpl_subnavi}-->
-			<!--¢¥SUB NAVI-->
-		</td>
 		<td class="mainbg" >
 		<table width="737" border="0" cellspacing="0" cellpadding="0" summary=" ">
 			<!--¥á¥¤¥ó¥¨¥ê¥¢-->
