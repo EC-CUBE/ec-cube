@@ -1745,7 +1745,6 @@ function sfDomainSessionStart() {
 			// セッション開始
 			session_start();
 
-						
 			sfprintr("session start!!");
 		}
 	}

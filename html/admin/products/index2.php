@@ -26,7 +26,6 @@ class LC_Page {
 
 $objPage = new LC_Page();
 $objView = new SC_AdminView();
-$objSess = new SC_Session();
 $objDate = new SC_Date();
 
 // 登録・更新検索開始年
@@ -45,6 +44,7 @@ $objPage->arrEndDay = $objDate->getDay();
 // 認証可否の判定
 $objSess = new SC_Session();
 sfIsSuccess($objSess);
+session_destroy();
 
 // POST値の引き継ぎ
 $objPage->arrForm = $_POST;

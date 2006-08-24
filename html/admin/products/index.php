@@ -48,8 +48,8 @@ $objPage->arrEndMonth = $objDate->getMonth();
 $objPage->arrEndDay = $objDate->getDay();
 
 // 認証可否の判定
-$objSess = new SC_Session();
-sfIsSuccess($objSess);
+//$objSess = new SC_Session();
+//sfIsSuccess($objSess);
 
 //キャンペーンの編集時
 if(sfIsInt($_POST['campaign_id']) && $_POST['mode'] == "camp_search") {
@@ -264,7 +264,7 @@ $objPage->arrCatIDName = lfGetIDName($objPage->arrCatList);
 
 // 画面の表示
 $objView->assignobj($objPage);
-$objView->display($objPage->tpl_mainpage);
+$objView->display(MAIN_FRAME);
 
 //---------------------------------------------------------------------------------------------------------------------------------------------------------
 
