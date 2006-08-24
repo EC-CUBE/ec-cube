@@ -39,7 +39,6 @@ class SC_Session {
 			return SUCCESS;
 		}
 		
-//		return SUCCESS;
 		return ACCESS_ERROR;
 	}
 	
