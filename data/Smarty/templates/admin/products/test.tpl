@@ -286,7 +286,7 @@
 	<tr>
 		<td bgcolor="#f0f0f0" align="center">
 
-		<!--{if count($arrResults) > 0}-->		
+		<!--{if count($arrProducts) > 0}-->		
 
 			<table width="840" border="0" cellspacing="0" cellpadding="0" summary=" ">
 				<tr><td height="12"></td></tr>
@@ -308,20 +308,20 @@
 							<td width="50"><span class="white">削除</span></td>
 						</tr>
 						
-						<!--{section name=cnt loop=$arrResults}-->
-						<!--{assign var=status value="`$arrResults[cnt].status`"}-->
+						<!--{section name=cnt loop=$arrProducts}-->
+						<!--{assign var=status value="`$arrProducts[cnt].status`"}-->
 						<tr bgcolor="<!--{$arrORDERSTATUS_COLOR[$status]}-->" class="fs10n">
-							<td align="center"><!--{$arrResults[cnt].create_date|sfDispDBDate}--></td>
-							<td align="right"><!--{$arrResults[cnt].order_id}--></td>
-							<td><!--{$arrResults[cnt].order_name01|escape}--> <!--{$arrResults[cnt].order_name02|escape}--></td>
-							<!--{assign var=payment_id value="`$arrResults[cnt].payment_id`"}-->
+							<td align="center"><!--{$arrProducts[cnt].create_date|sfDispDBDate}--></td>
+							<td align="right"><!--{$arrProducts[cnt].order_id}--></td>
+							<td><!--{$arrProducts[cnt].order_name01|escape}--> <!--{$arrProducts[cnt].order_name02|escape}--></td>
+							<!--{assign var=payment_id value="`$arrProducts[cnt].payment_id`"}-->
 							<td align="center"><!--{$arrPayment[$payment_id]}--></td>
-							<td align="right"><!--{$arrResults[cnt].total|number_format}--></td>
-							<td align="center"><!--{$arrResults[cnt].commit_date|sfDispDBDate|default:"未発送"}--></td>
+							<td align="right"><!--{$arrProducts[cnt].total|number_format}--></td>
+							<td align="center"><!--{$arrProducts[cnt].commit_date|sfDispDBDate|default:"未発送"}--></td>
 							<td align="center"><!--{$arrORDERSTATUS[$status]}--></td>
-							<td align="center"><a href="<!--{$smarty.server.PHP_SELF}-->" onclick="fnChangeAction('<!--{$smarty.const.URL_ORDER_EDIT}-->'); fnModeSubmit('pre_edit', 'order_id', '<!--{$arrResults[cnt].order_id}-->'); return false;"><span class="icon_edit">編集</span></a></td>
-							<td align="center"><a href="<!--{$smarty.server.PHP_SELF}-->" onclick="fnChangeAction('<!--{$smarty.const.URL_ORDER_MAIL}-->'); fnModeSubmit('pre_edit', 'order_id', '<!--{$arrResults[cnt].order_id}-->'); return false;"><span class="icon_mail">通知</span></a></td>
-							<td align="center"><a href="<!--{$smarty.server.PHP_SELF}-->" onclick="fnModeSubmit('delete', 'order_id', <!--{$arrResults[cnt].order_id}-->); return false;"><span class="icon_delete">削除</span></a></td>
+							<td align="center"><a href="<!--{$smarty.server.PHP_SELF}-->" onclick="fnChangeAction('<!--{$smarty.const.URL_ORDER_EDIT}-->'); fnModeSubmit('pre_edit', 'order_id', '<!--{$arrProducts[cnt].order_id}-->'); return false;"><span class="icon_edit">編集</span></a></td>
+							<td align="center"><a href="<!--{$smarty.server.PHP_SELF}-->" onclick="fnChangeAction('<!--{$smarty.const.URL_ORDER_MAIL}-->'); fnModeSubmit('pre_edit', 'order_id', '<!--{$arrProducts[cnt].order_id}-->'); return false;"><span class="icon_mail">通知</span></a></td>
+							<td align="center"><a href="<!--{$smarty.server.PHP_SELF}-->" onclick="fnModeSubmit('delete', 'order_id', <!--{$arrProducts[cnt].order_id}-->); return false;"><span class="icon_delete">削除</span></a></td>
 						</tr>
 						<!--{/section}-->
 
