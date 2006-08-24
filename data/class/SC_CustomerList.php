@@ -135,7 +135,7 @@ class SC_CustomerList extends SC_SelectSql {
 		}
 		
 		// 購入金額指定
-		if( is_numeric( $this->arrSql["buy_total_from"] ) || is_numeric( $this->arrSql["buy_total_to"] ) ) {
+		if( is_numeric( $this->arrSql["search_buy_total_from"] ) || is_numeric( $this->arrSql["search_buy_total_to"] ) ) {
 			$arrBuyTotal = $this->selectRange($this->arrSql["buy_total_from"], $this->arrSql["buy_total_to"], "buy_total");
 			foreach ($arrBuyTotal as $data1) {
 				$this->arrVal[] = $data1;
@@ -143,7 +143,7 @@ class SC_CustomerList extends SC_SelectSql {
 		}
 
 		// 購入回数指定
-		if( is_numeric( $this->arrSql["buy_times_from"] ) || is_numeric( $this->arrSql["buy_times_to"] ) ) {
+		if( is_numeric( $this->arrSql["search_buy_times_from"] ) || is_numeric( $this->arrSql["search_buy_times_to"] ) ) {
 			$arrBuyTimes = $this->selectRange($this->arrSql["buy_times_from"], $this->arrSql["buy_times_to"], "buy_times");
 			foreach ($arrBuyTimes as $data2) {
 				$this->arrVal[] = $data2;
@@ -164,7 +164,7 @@ class SC_CustomerList extends SC_SelectSql {
 		}
 
 		// 誕生月の検索
-		if (is_numeric($this->arrSql["birth_month"])) {
+		if (is_numeric($this->arrSql["search_birth_month"])) {
 			$this->setWhere(" EXTRACT(month from birth) = ?");  
 			$this->arrVal[] = $this->arrSql["birth_month"];
 		}

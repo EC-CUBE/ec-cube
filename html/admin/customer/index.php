@@ -118,8 +118,6 @@ foreach ($_POST as $key => $val) {
 	}
 }
 
-sfprintr($_POST);
-
 // 顧客削除
 if ($_POST['mode'] == "delete") {
 	$sql = "SELECT status,email FROM dtb_customer WHERE customer_id = ? AND delete = 0";
@@ -146,6 +144,8 @@ if ($_POST['mode'] == "search" || $_POST['mode'] == "csv"  || $_POST['mode'] == 
 
 	/* 入力エラーなし */
 	if (count($objPage->arrErr) == 0) {
+		
+		sfprintr($objPage->arrForm);
 		
 		//-- 検索データ取得
 		$objSelect = new SC_CustomerList($objPage->arrForm, "customer");
