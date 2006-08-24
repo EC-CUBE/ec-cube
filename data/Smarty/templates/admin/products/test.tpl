@@ -14,6 +14,7 @@
 		</td>
 		<td class="mainbg">
 		<table width="737" border="0" cellspacing="0" cellpadding="0" summary=" ">
+		<!--{*
 			<!--メインエリア-->
 			<tr>
 				<td align="center">
@@ -147,6 +148,7 @@
 				</td>
 			</tr>
 			<!--メインエリア-->
+		*}-->
 		</table>
 		</td>
 	</tr>
