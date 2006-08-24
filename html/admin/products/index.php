@@ -106,7 +106,7 @@ if ($_POST['mode'] == "search" || $_POST['mode'] == "csv"  || $_POST['mode'] == 
 	$objPage->arrErr = lfCheckError();
 
 	$where = "delete = 0";
-/*	
+
 	// 入力エラーなし
 	if (count($objPage->arrErr) == 0) {
 			foreach ($objPage->arrForm as $key => $val) {
@@ -251,7 +251,6 @@ if ($_POST['mode'] == "search" || $_POST['mode'] == "csv"  || $_POST['mode'] == 
 			break;
 		}
 	}
-	*/
 }
 
 // カテゴリの読込
