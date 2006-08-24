@@ -285,6 +285,8 @@ function lfPurchaseHistory($customer_id){
 		//¹ØÆþÍúÎò¾ðÊó¤Î¼èÆÀ
 		$arrPurchaseHistory = $objQuery->select("*", "dtb_order", "customer_id=?", array($customer_id));
 		
+		$objQuery->getlastquery(true);
+		
 		return $arrPurchaseHistory;
 }
 

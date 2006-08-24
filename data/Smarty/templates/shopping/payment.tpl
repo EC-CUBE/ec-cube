@@ -129,10 +129,10 @@
 						<td bgcolor="#ffffff" align="center">
 						<table cellspacing="0" cellpadding="0" summary=" ">
 							<tr>
-								<td class="fs14" colspan="2"><!--{$objCustomer->getValue('name01')|escape}--> <!--{$objCustomer->getValue('name02')|escape}-->様の、現在の所持ポイントは「<span class="redst"><!--{$tpl_user_point|default:0}-->Pt</span>」です。</td>
+								<td class="fs12" colspan="2"><!--{$objCustomer->getValue('name01')|escape}--> <!--{$objCustomer->getValue('name02')|escape}-->様の、現在の所持ポイントは「<span class="redst"><!--{$tpl_user_point|default:0}-->Pt</span>」です。</td>
 							</tr>
 							<tr>
-								<td class="fs14">今回ご購入合計金額：<span class="redst"><!--{$arrData.subtotal|number_format}-->円</span><span class="red">（送料、手数料を含みません。）</span></td>
+								<td class="fs12">今回ご購入合計金額：<span class="redst"><!--{$arrData.subtotal|number_format}-->円</span><span class="red">（送料、手数料を含みません。）</span></td>
 							</tr>
 						</table>
 						<table cellspacing="0" cellpadding="10" summary=" " id="point03">
