@@ -71,7 +71,9 @@ class SC_SelectSql {
 		$date1 = date("Y/m/d", mktime(0,0,0,$from_month,$from_day,$from_year));
 		$date2 = date("Y/m/d", mktime(0,0,0,$to_month,$to_day,$to_year));
 		
-		sfprintr($date2);
+		$date3 = strtotime("date('Y/m/d', mktime(0,0,0,$to_month,$to_day,$to_year) + day");
+		
+		sfprintr($date3);
 		
 		// 開始期間だけ指定の場合
 		if( ( $from_year != "" ) && ( $from_month != "" ) && ( $from_day != "" ) &&	( $to_year == "" ) && ( $to_month == "" ) && ( $to_day == "" ) ) {
