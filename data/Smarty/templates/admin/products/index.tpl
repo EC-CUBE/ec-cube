@@ -240,6 +240,7 @@
 							<td width="60"><span class="white">ºÔ Ã</span></td>
 						</tr>
 			
+						<!--{$arrProducts}-->
 
 						<tr class="fs10">
 							<td align="center" rowspan="2">a</td>
