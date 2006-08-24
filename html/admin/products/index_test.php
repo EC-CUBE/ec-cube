@@ -246,14 +246,19 @@ if ($_POST['mode'] == "search" || $_POST['mode'] == "csv"  || $_POST['mode'] == 
 					$objPage->arrHidden['campaign_product_id'] = $pid;
 				}
 			}
-
+			
 			// 取得範囲の指定(開始行番号、行数のセット)
 			$objQuery->setlimitoffset(10, $startno);
 			// 表示順序
 			$objQuery->setorder($order);
+			
 			// 検索結果の取得
-			$objPage->arrProducts = $objQuery->select($col, $from, $where, $arrval);
-
+			//$objPage->arrProducts = $objQuery->select($col, $from, $where, $arrval);
+			
+			for($i = 0; $i < $max; $i++) {
+				$objPage->arrProducts[] = "dummy";
+			}
+			
 			break;
 		}
 	}
