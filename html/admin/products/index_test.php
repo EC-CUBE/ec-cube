@@ -46,11 +46,8 @@ $objPage->arrEndYear = $objDate->getYear();
 $objPage->arrEndMonth = $objDate->getMonth();
 $objPage->arrEndDay = $objDate->getDay();
 
-		session_start();
-
 // 認証可否の判定
 //$objSess = new SC_Session();
-
 //sfIsSuccess($objSess);
 
 //キャンペーンの編集時
