@@ -136,10 +136,7 @@
 					</tr>
 					<tr><td height="30"></td></tr>
 				</table>
-				</td>
-			</tr>
-			<!--メインエリア-->
-		</table>
+
 
 </form>	
 
