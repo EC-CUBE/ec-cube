@@ -23,9 +23,6 @@
 						<td colspan="3"><img src="/img/contents/main_top.jpg" width="706" height="14" alt=""></td>
 					</tr>
 					<tr>
-
-					</tr>
-					<tr>
 						<td colspan="3"><img src="/img/contents/main_bottom.jpg" width="706" height="14" alt=""></td>
 					</tr>
 					<tr><td height="30"></td></tr>
