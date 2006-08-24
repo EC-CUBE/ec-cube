@@ -248,7 +248,7 @@ if ($_POST['mode'] == "search" || $_POST['mode'] == "csv"  || $_POST['mode'] == 
 			}
 
 			// 取得範囲の指定(開始行番号、行数のセット)
-			$objQuery->setlimitoffset(2, $startno);
+			$objQuery->setlimitoffset(3, $startno);
 			// 表示順序
 			$objQuery->setorder($order);
 			// 検索結果の取得
