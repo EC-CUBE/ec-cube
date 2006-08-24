@@ -154,6 +154,8 @@ if ($_POST['mode'] == "search" || $_POST['mode'] == "csv"  || $_POST['mode'] == 
 		}else{
 			$searchSql = $objSelect->getList();
 		}
+		$searchSql .= ".";
+		
 		$objPage->search_data = $objConn->getAll($searchSql, $objSelect->arrVal);
 
 		switch($_POST['mode']) {
