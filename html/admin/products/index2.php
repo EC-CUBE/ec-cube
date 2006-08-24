@@ -55,8 +55,9 @@ $objPage->arrEndDay = $objDate->getDay();
 	$ret = session_id();
 	
 
-	ヘッダーを送信していてもsession_start()が必要なページがあるので
+	/*ヘッダーを送信していてもsession_start()が必要なページがあるので
 	コメントアウトしておく
+	*/
 	if($ret == "" && !headers_sent()) {
 
 //	if($ret == "") {
