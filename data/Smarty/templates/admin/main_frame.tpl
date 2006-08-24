@@ -6,6 +6,19 @@
 <meta http-equiv="content-type" content="application/xhtml+xml; charset=EUC-JP" />
 <meta http-equiv="content-script-type" content="text/javascript" />
 <meta http-equiv="content-style-type" content="text/css" />
+<link rel="stylesheet" href="<!--{$smarty.const.URL_ADMIN_CSS}-->contents.css" type="text/css" />
+<script type="text/javascript" src="/js/css.js"></script>
+<script type="text/javascript" src="/js/navi.js"></script>
+<script type="text/javascript" src="/js/win_op.js"></script>
+<script type="text/javascript" src="/js/site.js"></script>
+<script type="text/javascript" src="/js/admin.js"></script>
+
+<title><!--{$smarty.const.ADMIN_TITLE}--></title>
+<script language="JavaScript">
+<!--
+<!--{$tpl_javascript}-->
+//-->
+</script>
 
 </head>
 
