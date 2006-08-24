@@ -32,7 +32,6 @@ $objPage = new LC_Page();
 $objView = new SC_AdminView();
 $objSess = new SC_Session();
 $objDate = new SC_Date();
-
 // 登録・更新検索開始年
 $objDate->setStartYear(RELEASE_YEAR);
 $objDate->setEndYear(DATE("Y"));
@@ -46,6 +45,11 @@ $objPage->arrEndYear = $objDate->getYear();
 $objPage->arrEndMonth = $objDate->getMonth();
 $objPage->arrEndDay = $objDate->getDay();
 
+/**************************************************************************************************/
+MyFlush();
+/**************************************************************************************************/
+
+
 // 認証可否の判定
 $objSess = new SC_Session();
 sfIsSuccess($objSess);
@@ -58,6 +62,11 @@ if(sfIsInt($_POST['campaign_id']) && $_POST['mode'] == "camp_search") {
 		$_POST[$key] = $val;
 	}
 }
+
+/**************************************************************************************************/
+MyFlush();
+/**************************************************************************************************/
+
 
 // POST値の引き継ぎ
 $objPage->arrForm = $_POST;
@@ -327,4 +336,13 @@ function lfGetIDName($arrCatList) {
 		$arrRet[$key] = $val;	
 	}
 	return $arrRet;
+}
+
+
+function MyFlush() {
+	print("aaaaa<br>");
+	flush();
+	ob_end_flush();
+	ob_start();
+	sleep(1);
 }
