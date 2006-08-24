@@ -1,8 +1,8 @@
 <?php
 
-//require_once("../../require.php");
-//require_once("./index_csv.php");
-require_once("../../require2.php");
+require_once("../../require.php");
+require_once("./index_csv.php");
+//require_once("../../require2.php");
 
 class LC_Page {
 	var $arrForm;
@@ -10,8 +10,8 @@ class LC_Page {
 	var $arrProducts;
 	var $arrPageMax;
 	function LC_Page() {
-//		$this->tpl_mainpage = 'products/index.tpl';
-		$this->tpl_mainpage="products/test.tpl";
+		$this->tpl_mainpage = 'products/index.tpl';
+//		$this->tpl_mainpage="products/test.tpl";
 //		$this->tpl_mainpage = 'order/index.tpl';
 
 		$this->tpl_mainno = 'products';
@@ -19,7 +19,7 @@ class LC_Page {
 		$this->tpl_subno = 'index';
 		$this->tpl_pager = ROOT_DIR . 'data/Smarty/templates/admin/pager.tpl';
 		$this->tpl_subtitle = '商品マスタ';
-		/*
+
 		global $arrPageMax;
 		$this->arrPageMax = $arrPageMax;
 		global $arrDISP;
@@ -28,16 +28,16 @@ class LC_Page {
 		$this->arrSTATUS = $arrSTATUS;
 		global $arrPRODUCTSTATUS_COLOR;
 		$this->arrPRODUCTSTATUS_COLOR = $arrPRODUCTSTATUS_COLOR;
-		*/
+
 	}
 }
 
 $objPage = new LC_Page();
 $objView = new SC_AdminView();
 $objSess = new SC_Session();
-//$objDate = new SC_Date();
+$objDate = new SC_Date();
 
-/*
+
 // 登録・更新検索開始年
 $objDate->setStartYear(RELEASE_YEAR);
 $objDate->setEndYear(DATE("Y"));
@@ -221,7 +221,6 @@ if ($_POST['mode'] == "search" || $_POST['mode'] == "csv"  || $_POST['mode'] == 
 		default:
 			// 読み込む列とテーブルの指定
 			$col = "product_id, name, category_id, main_list_image, status, product_code, price01, price02, stock, stock_unlimited";
-//			$col = "'a'";
 			$from = "vw_products_nonclass";
 
 			// 行数の取得
@@ -256,17 +255,17 @@ if ($_POST['mode'] == "search" || $_POST['mode'] == "csv"  || $_POST['mode'] == 
 			$objQuery->setorder($order);
 			// 検索結果の取得
 			$objPage->arrProducts = $objQuery->select($col, $from, $where, $arrval);
-			$arrProducts = $objQuery->select($col, $from, $where, $arrval);
+//			$arrProducts = $objQuery->select($col, $from, $where, $arrval);
 			
-			$objPage->arrTest = $arrProducts;
+//			$objPage->arrTest = $arrProducts;
 			
-			$objPage->tpl_mainpage="products/test.tpl";
+//			$objPage->tpl_mainpage="products/test.tpl";
 
 			break;
 		}
 	}
 }
-*/
+/*
 $arrProducts = Array
 (
     '0' => Array
@@ -411,18 +410,18 @@ $arrProducts = Array
 
 
 $objPage->arrProducts = $arrProducts;
-/*
+*/
 
 // カテゴリの読込
 $objPage->arrCatList = sfGetCategoryList();
 $objPage->arrCatIDName = lfGetIDName($objPage->arrCatList);
-*/
+
 // 画面の表示
 $objView->assignobj($objPage);
 $objView->display(MAIN_FRAME);
 
 //---------------------------------------------------------------------------------------------------------------------------------------------------------
-/*
+
 // 取得文字列の変換 
 function lfConvertParam() {
 	global $objPage;
@@ -432,7 +431,7 @@ function lfConvertParam() {
 	 *	C :  「全角ひら仮名」を「全角かた仮名」に変換
 	 *	V :  濁点付きの文字を一文字に変換。"K","H"と共に使用します	
 	 *	n :  「全角」数字を「半角(ﾊﾝｶｸ)」に変換
-	 *//*
+	 */
 	$arrConvList['search_name'] = "KVa";
 	$arrConvList['search_product_code'] = "KVa";
 	
@@ -444,7 +443,6 @@ function lfConvertParam() {
 		}
 	}
 }
-/*
 
 // エラーチェック 
 // 入力エラーチェック
@@ -484,5 +482,5 @@ function lfGetIDName($arrCatList) {
 	}
 	return $arrRet;
 }
-*/
+
 ?>
