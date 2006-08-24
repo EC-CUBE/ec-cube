@@ -59,6 +59,9 @@ session_start();
 
 
 
+// 画面の表示
+$objView->assignobj($objPage);
+$objView->display(MAIN_FRAME);
 exit;
 
 
