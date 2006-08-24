@@ -11,8 +11,9 @@ class LC_Page {
 	function LC_Page() {
 		$this->tpl_mainpage = 'products/index.tpl';
 		$this->tpl_mainno = 'products';
-		$this->tpl_subnavi = 'products/subnavi.tpl';
+//		$this->tpl_subnavi = 'products/subnavi.tpl';
 		$this->tpl_subno = 'index';
+//		$this->tpl_pager = ROOT_DIR . 'data/Smarty/templates/admin/pager.tpl';
 		$this->tpl_subtitle = '商品マスタ';
 		
 		global $arrPageMax;
