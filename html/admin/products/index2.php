@@ -47,13 +47,13 @@ $objPage->arrEndYear = $objDate->getYear();
 $objPage->arrEndMonth = $objDate->getMonth();
 $objPage->arrEndDay = $objDate->getDay();
 
+session_destroy();
+
 // 認証可否の判定
 $objSess = new SC_Session();
 //sfIsSuccess($objSess);
 
 sfprintr($_SESSION);
-
-session_destroy();
 
 //キャンペーンの編集時
 if(sfIsInt($_POST['campaign_id']) && $_POST['mode'] == "camp_search") {

@@ -1734,7 +1734,6 @@ function sfDomainSessionStart() {
 	コメントアウトしておく
 	if($ret == "" && !headers_sent()) {
 */
-sfprintr($ret);
 	if($ret == "") {
 		/* セッションパラメータの指定
 		 ・ブラウザを閉じるまで有効
@@ -1745,6 +1744,8 @@ sfprintr($ret);
 		if(!ini_get("session.auto_start")){
 			// セッション開始
 			session_start();
+			
+			sfprintr("session start!!");
 		}
 
 	}
