@@ -15,19 +15,6 @@
 	document.form2.submit();
 	}
 	
-	// 郵便番号入力呼び出し
-	function lfnCallAddress(form, php_url, tagname1, tagname2, input1, input2) {
-		zip1 = document[form][tagname1].value;
-		zip2 = document[form][tagname2].value;
-		
-		if(zip1.length == 3 && zip2.length == 4) {
-			url = php_url + "?zip1=" + zip1 + "&zip2=" + zip2 + "&input1=" + input1 + "&input2=" + input2;
-			window.open(url,"nomenu","width=500,height=350,scrollbars=yes,resizable=yes,toolbar=no,location=no,directories=no,status=no");
-		} else {
-			alert("郵便番号を正しく入力して下さい。");
-		}
-	}	
-
 //-->
 </script>
 
@@ -40,7 +27,7 @@
 <!--{/foreach}-->
 </form>
 
-<form name="form2" id="form2" method="post" action="<!--{$smarty.server.PHP_SELF}-->">
+<form name="form1" id="form1" method="post" action="<!--{$smarty.server.PHP_SELF}-->">
 <input type="hidden" name="mode" value="confirm">
 <input type="hidden" name="edit_email" value="<!--{$tpl_edit_email}-->">
 <input type="hidden" name="customer_id" value="<!--{$list_data.customer_id|escape}-->">
@@ -259,11 +246,12 @@
 
 <!--★★購入履歴一覧★★-->
 <table width="878" border="0" cellspacing="0" cellpadding="0" summary=" ">
-<form name="form1" id="form1" method="post" action="">
-	<input type="hidden" name="mode" value="edit">
-	<input type="hidden" name="order_id" value="">
-	<input type="hidden" name="search_pageno" value="<!--{$tpl_pageno}-->">
-	<input type="hidden" name="edit_customer_id" value="<!--{$edit_customer_id}-->" >
+<form name="form2" id="form2" method="post" action="">
+<input type="hidden" name="mode" value="edit">
+<input type="hidden" name="order_id" value="">
+<input type="hidden" name="search_pageno" value="<!--{$tpl_pageno}-->">
+<input type="hidden" name="edit_customer_id" value="<!--{$edit_customer_id}-->" >
+
 	<tr><td colspan="2"><img src="/img/contents/search_line.jpg" width="878" height="12" alt=""></td></tr>
 	<tr bgcolor="cbcbcb">
 		<td>
