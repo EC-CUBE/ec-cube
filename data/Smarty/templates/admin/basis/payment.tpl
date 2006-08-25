@@ -58,7 +58,7 @@
 											<table width="194" border="0" cellspacing="0" cellpadding="0" summary=" ">
 												<tr>
 													<td align="right" width="90"><!--{if $arrPaymentListFree[cnt].rule > 0}--><!--{$arrPaymentListFree[cnt].rule|escape|number_format}--><!--{else}-->無制限<!--{/if}--></td>
-													<td align="center"> 〜 </td>
+													<td align="center" width="14">　　〜 </td>
 													<td align="right" width="90"><!--{if $arrPaymentListFree[cnt].upper_rule > 0}--><!--{$arrPaymentListFree[cnt].upper_rule|escape|number_format}--><!--{else}-->無制限<!--{/if}--></td>
 												</tr>
 											</table>
