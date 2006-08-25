@@ -67,6 +67,9 @@ if(sfIsInt($_POST['campaign_id']) && $_POST['mode'] == "camp_search") {
 	}
 }
 
+	sfprintr($_POST);
+
+
 // POST値の引き継ぎ
 $objPage->arrForm = $_POST;
 
@@ -91,7 +94,6 @@ foreach ($_POST as $key => $val) {
 // ページ送り用
 $objPage->arrHidden['search_pageno'] = $_POST['search_pageno'];
 
-	sfprintr($_POST);
 // 商品削除
 if ($_POST['mode'] == "delete") {
 	
