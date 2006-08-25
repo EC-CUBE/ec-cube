@@ -83,8 +83,6 @@ $arrRegistColumn = array(
 //---- 登録除外用カラム配列
 $arrRejectRegistColumn = array("year", "month", "day");
 
-sfprintr($_POST);
-
 //----　顧客編集情報取得
 if ($_POST["mode"] == "edit" && is_numeric($_POST["edit_customer_id"])) {
 
