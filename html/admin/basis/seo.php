@@ -40,6 +40,8 @@ if($_POST['mode'] == "confirm") {
 	
 	$arrPOST = lfConvertParam($_POST);
 	
+	sfprintr($arrPOST);
+	
 	// エラーチェック
 	$objPage->arrErr[$page_id] = lfErrorCheck($arrPOST['meta'][$page_id]);
 	
