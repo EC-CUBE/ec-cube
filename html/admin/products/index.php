@@ -297,6 +297,7 @@ function lfCheckError() {
 	$objErr->doFunc(array("開始日", "search_startyear", "search_startmonth", "search_startday"), array("CHECK_DATE"));
 	$objErr->doFunc(array("終了日", "search_endyear", "search_endmonth", "search_endday"), array("CHECK_DATE"));
 	$objErr->doFunc(array("開始日", "終了日", "search_startyear", "search_startmonth", "search_startday", "search_endyear", "search_endmonth", "search_endday"), array("CHECK_SET_TERM"));
+	$objErr->doFunc(array("規格ID", "search_product_class_id"), array("NUM_CHECK"));
 	return $objErr->arrErr;
 }
 
