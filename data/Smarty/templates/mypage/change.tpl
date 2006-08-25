@@ -142,12 +142,6 @@
 							<tr>
 								<td bgcolor="#f0f0f0" class="fs12n">生年月日<span class="red">※</span></td>
 								<td bgcolor="#ffffff" class="fs12n"><span class="red"><!--{$arrErr.year}--><!--{$arrErr.month}--><!--{$arrErr.day}--></span>
-									<!--{if $arrForm.year != "" && $arrForm.month != "" && $arrForm.day != "" && $birth_check != ""}-->
-									<input type="hidden" name="year" value="<!--{$arrForm.year}-->">
-									<input type="hidden" name="month" value="<!--{$arrForm.month}-->">
-									<input type="hidden" name="day" value="<!--{$arrForm.day}-->">
-									<!--{$arrForm.year}-->&nbsp;年<!--{$arrForm.month}-->&nbsp;月<!--{$arrForm.day}-->&nbsp;日
-									<!--{else}-->
 									<select name="year" style="<!--{$arrErr.year|sfGetErrorColor}-->">
 									<option value="" selected>--</option>
 									<!--{html_options options=$arrYear selected=$arrForm.year}-->
@@ -160,9 +154,9 @@
 									<option value="" selected>--</option>
 									<!--{html_options options=$arrDay selected=$arrForm.day}-->
 									</select>&nbsp;日
-									<!--{/if}-->
 								</td>
 							</tr>
+
 							<tr>
 								<td bgcolor="#f0f0f0"><span class="fs12">希望するパスワード<span class="red">※</span></span><br>
 								<span class="fs10">パスワードは購入時に必要です</span></td>

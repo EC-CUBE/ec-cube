@@ -83,34 +83,28 @@ case 'confirm':
 	$objPage->arrForm = $_POST;
 	$objPage->arrForm = lfConvertParam($objPage->arrForm, $arrRegistColumn);
 	$objPage->arrForm['email'] = strtolower($objPage->arrForm['email']);		// emailはすべて小文字で処理
-	
-	//誕生日不正変更のチェック
-	$arrCustomer = lfGetCustomerData();
-	if ($arrCustomer['birth'] != "" && ($objPage->arrForm['year'] != $arrCustomer['year'] || $objPage->arrForm['month'] != $arrCustomer['month'] || $objPage->arrForm['day'] != $arrCustomer['day'])){
-		sfDispSiteError(CUSTOMER_ERROR);
-	}else{
-		//エラーチェック
-		$objPage->arrErr = lfErrorCheck($objPage->arrForm);
-		$email_flag = true;
-		//メールアドレスを変更している場合、メールアドレスの重複チェック
-		if ($objPage->arrForm['email'] != $objCustomer->getValue('email')){
-			$email_cnt = $objQuery->count("dtb_customer","delete=0 AND email=?", array($objPage->arrForm['email']));
-			if ($email_cnt > 0){
-				$email_flag = false;
-			}
+
+	//エラーチェック
+	$objPage->arrErr = lfErrorCheck($objPage->arrForm);
+	$email_flag = true;
+	//メールアドレスを変更している場合、メールアドレスの重複チェック
+	if ($objPage->arrForm['email'] != $objCustomer->getValue('email')){
+		$email_cnt = $objQuery->count("dtb_customer","delete=0 AND email=?", array($objPage->arrForm['email']));
+		if ($email_cnt > 0){
+			$email_flag = false;
 		}
-		//エラーなしでかつメールアドレスが重複していない場合
-		if ($objPage->arrErr == "" && $email_flag == true){
-			//確認ページへ
-			$objPage->tpl_mainpage = 'mypage/change_confirm.tpl';
-			$objPage->tpl_title = 'MYページ/会員登録内容変更(確認ページ)';
-			$passlen = strlen($objPage->arrForm['password']);
-			$objPage->passlen = lfPassLen($passlen);
-		} else {
-			lfFormReturn($objPage->arrForm,$objPage);
-			if ($email_flag == false){
-				$objPage->arrErr['email'].="既に使用されているメールアドレスです。";
-			}
+	}
+	//エラーなしでかつメールアドレスが重複していない場合
+	if ($objPage->arrErr == "" && $email_flag == true){
+		//確認ページへ
+		$objPage->tpl_mainpage = 'mypage/change_confirm.tpl';
+		$objPage->tpl_title = 'MYページ/会員登録内容変更(確認ページ)';
+		$passlen = strlen($objPage->arrForm['password']);
+		$objPage->passlen = lfPassLen($passlen);
+	} else {
+		lfFormReturn($objPage->arrForm,$objPage);
+		if ($email_flag == false){
+			$objPage->arrErr['email'].="既に使用されているメールアドレスです。";
 		}
 	}
 	break;
