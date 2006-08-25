@@ -104,7 +104,7 @@
 					<!--{assign var=key value="message"}-->
 					<span class="red"><!--{$arrErr[$key]}--></span>
 					<textarea name="<!--{$key}-->" maxlength="<!--{$arrForm[$key].length}-->" style="<!--{$arrErr[$key]|sfGetErrorColor}-->" cols="80" rows="8" class="area80"><!--{$arrForm[$key].value|escape}--></textarea>
-					<span class="red12"> （<!--{$smarty.const.LTEXT_LEN}-->文字まで）</span>
+					<span class="red"> （<!--{$smarty.const.LTEXT_LEN}-->文字まで）</span>
 				</td>
 			</tr>
 			<tr><td height="20"></td></tr>
