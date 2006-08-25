@@ -50,7 +50,7 @@
 										％　小数点以下切り捨て</td>
 									</tr>
 									<tr class="fs12n">
-										<td bgcolor="#f2f1ec" width="1">会員登録時付与ポイント<span class="red"> *</span></td>
+										<td bgcolor="#f2f1ec" width="170">会員登録時付与ポイント<span class="red"> *</span></td>
 										<td bgcolor="#ffffff" width="557">
 										<!--{assign var=key value="welcome_point"}-->
 										<span class="red12"><!--{$arrErr[$key]}--></span>

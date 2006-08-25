@@ -60,7 +60,6 @@ $objView->display(MAIN_FRAME);
 function lfInitParam() {
 	global $objFormParam;
 	$objFormParam->addParam("配送業者名", "name", STEXT_LEN, "KVa", array("EXIST_CHECK", "MAX_LENGTH_CHECK"));
-	$objFormParam->addParam("名称", "service_name", STEXT_LEN, "KVa", array("EXIST_CHECK", "MAX_LENGTH_CHECK"));
 	$objFormParam->addParam("伝票No.確認URL", "confirm_url", STEXT_LEN, "n", array("URL_CHECK", "MAX_LENGTH_CHECK"), "http://");
 	
 	for($cnt = 1; $cnt <= DELIVTIME_MAX; $cnt++) {
@@ -83,7 +82,7 @@ function lfRegistData() {
 
 	// 入力データを渡す。
 	$sqlval['name'] = $arrRet['name'];
-	$sqlval['service_name'] = $arrRet['service_name'];
+	$sqlval['service_name'] = $arrRet['name'];
 	$sqlval['confirm_url'] = $arrRet['confirm_url'];
 	$sqlval['creator_id'] = $_SESSION['member_id'];
 	$sqlval['update_date'] = 'Now()';

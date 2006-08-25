@@ -49,13 +49,6 @@
 										<input type="text" name="<!--{$arrForm[$key].keyname}-->" value="<!--{$arrForm[$key].value|escape}-->" maxlength="<!--{$arrForm[$key].length}-->" style="<!--{$arrErr[$key]|sfGetErrorColor}-->" size="30" class="box30" /></td>
 									</tr>
 									<tr class="fs12n">
-										<td width="100" bgcolor="#f2f1ec">Ì¾¾Î<span class="red"> *</span></td>
-										<td width="617" bgcolor="#ffffff" colspan="3">
-										<!--{assign var=key value="service_name"}-->
-										<span class="red12"><!--{$arrErr[$key]}--></span>
-										<input type="text" name="<!--{$arrForm[$key].keyname}-->" value="<!--{$arrForm[$key].value|escape}-->" maxlength="<!--{$arrForm[$key].length}-->" style="<!--{$arrErr[$key]|sfGetErrorColor}-->" size="30" class="box30" /></td>
-									</tr>
-									<tr class="fs12n">
 										<td width="100" bgcolor="#f2f1ec">ÅÁÉ¼No.URL</td>
 										<td width="617" bgcolor="#ffffff" colspan="3">
 										<!--{assign var=key value="confirm_url"}-->
