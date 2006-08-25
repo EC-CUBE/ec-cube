@@ -98,7 +98,7 @@ sfIsSuccess($objSess);
 $objPage->arrForm = $_POST;
 
 // ページ送り用
-$objPage->arrHidden['search_pageno'] = $_POST['search_pageno'];
+$objPage->arrHidden['pageno'] = $_POST['pageno'];
 
 // 検索ワードの引き継ぎ
 foreach ($_POST as $key => $val) {
