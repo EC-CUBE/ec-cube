@@ -93,7 +93,7 @@
 									<tr class="fs12n">
 										<td bgcolor="#f2f1ec" width="190">Õπ ÿ»÷πÊ<span class="red"> *</span></td>
 										<td bgcolor="#ffffff" width="527"><span class="red12"><!--{$arrErr.kana01}--><!--{$arrErr.kana02}--></span>¢© <input type="text" name="zip01" value="<!--{$list_data.zip01|escape}-->" maxlength="<!--{$smarty.const.ZIP01_LEN}-->" size="6" class="box6" maxlength="3"  <!--{if $arrErr.zip01 != ""}--><!--{sfSetErrorStyle}--><!--{/if}--> /> - <input type="text" name="zip02" value="<!--{$list_data.zip02|escape}-->" maxlength="<!--{$smarty.const.ZIP02_LEN}-->" size="6" class="box6" maxlength="4"  <!--{if $arrErr.zip02 != ""}--><!--{sfSetErrorStyle}--><!--{/if}--> />
-										<input type="button" name="address_input" value="ΩªΩÍ∆˛Œœ" onclick="lfnCallAddress('form2', '<!--{$smarty.const.URL_INPUT_ZIP}-->', 'zip01', 'zip02', 'pref', 'addr01');" /></td>
+										<input type="button" name="address_input" value="ΩªΩÍ∆˛Œœ" onclick="fnCallAddress('<!--{$smarty.const.URL_INPUT_ZIP}-->', 'zip01', 'zip02', 'pref', 'addr01');" /></td>
 									</tr>
 									<tr>
 										<td bgcolor="#f2f1ec" width="190" class="fs12">§¥ΩªΩÍ<span class="red"> *</span></td>
