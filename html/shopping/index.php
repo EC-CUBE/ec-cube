@@ -139,9 +139,9 @@ function lfInitParam() {
 	$objFormParam->addParam("FAX番号3", "order_fax03", TEL_ITEM_LEN, "n", array("MAX_LENGTH_CHECK" ,"NUM_CHECK"));
 	$objFormParam->addParam("メールアドレス", "order_email", STEXT_LEN, "KVa", array("EXIST_CHECK", "SPTAB_CHECK", "NO_SPTAB", "MAX_LENGTH_CHECK", "EMAIL_CHECK", "EMAIL_CHAR_CHECK"));
 	$objFormParam->addParam("メールアドレス（確認）", "order_email_check", STEXT_LEN, "KVa", array("EXIST_CHECK", "SPTAB_CHECK", "NO_SPTAB", "MAX_LENGTH_CHECK", "EMAIL_CHECK", "EMAIL_CHAR_CHECK"), "", false);
-	$objFormParam->addParam("年", "year", INT_LEN, "n", array("EXIST_CHECK"), "", false);
-	$objFormParam->addParam("月", "month", INT_LEN, "n", array("EXIST_CHECK"), "", false);
-	$objFormParam->addParam("日", "day", INT_LEN, "n", array("EXIST_CHECK"), "", false);
+	$objFormParam->addParam("年", "year", INT_LEN, "n", array(""), "", false);
+	$objFormParam->addParam("月", "month", INT_LEN, "n", array(""), "", false);
+	$objFormParam->addParam("日", "day", INT_LEN, "n", array(""), "", false);
 	$objFormParam->addParam("性別", "order_sex", INT_LEN, "n", array("EXIST_CHECK", "MAX_LENGTH_CHECK", "NUM_CHECK"));
 	$objFormParam->addParam("職業", "order_job", INT_LEN, "n", array("MAX_LENGTH_CHECK", "NUM_CHECK"));
 	$objFormParam->addParam("別のお届け先", "deliv_check", INT_LEN, "n", array("MAX_LENGTH_CHECK", "NUM_CHECK"));

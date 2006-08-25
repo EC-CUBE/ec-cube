@@ -297,9 +297,6 @@ function lfErrorCheck($array) {
 	$objErr->doFunc(array("パスワードを忘れたときのヒント 質問", "reminder") ,array("SELECT_CHECK", "NUM_CHECK")); 
 	$objErr->doFunc(array("パスワードを忘れたときのヒント 答え", "reminder_answer", STEXT_LEN) ,array("EXIST_CHECK","SPTAB_CHECK" , "MAX_LENGTH_CHECK"));
 	$objErr->doFunc(array("メールマガジン", "mail_flag") ,array("SELECT_CHECK", "NUM_CHECK"));
-	$objErr->doFunc(array("年", "year"), array("EXIST_CHECK"));
-	$objErr->doFunc(array("月", "month"), array("EXIST_CHECK"));
-	$objErr->doFunc(array("日", "day"), array("EXIST_CHECK"));
 	
 	$objErr->doFunc(array("生年月日", "year", "month", "day"), array("CHECK_DATE"));
 	$objErr->doFunc(array("メールマガジン", 'mail_flag'), array("SELECT_CHECK"));

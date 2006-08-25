@@ -192,7 +192,7 @@
 						</td>
 					</tr>
 					<tr>
-						<td bgcolor="#f0f0f0" class="fs12n">生年月日<span class="red">※</span></td>
+						<td bgcolor="#f0f0f0" class="fs12n">生年月日</td>
 						<td bgcolor="#ffffff" class="fs12n">
 						<table cellspacing="0" cellpadding="0" summary=" ">
 							<tr>
