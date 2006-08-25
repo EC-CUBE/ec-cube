@@ -288,6 +288,7 @@
 		</table>
 		</td>
 	</tr>
+</form>	
 </table>
 <!--¡ú¡ú¥á¥¤¥ó¥³¥ó¥Æ¥ó¥Ä¡ú¡ú-->
 
@@ -295,7 +296,6 @@
 
 <!--¡ú¡ú¸¡º÷·ë²Ì°ìÍ÷¡ú¡ú-->
 <table width="878" border="0" cellspacing="0" cellpadding="0" summary=" ">
-<!--{/foreach}-->
 	<tr><td colspan="2"><img src="/img/contents/search_line.jpg" width="878" height="12" alt=""></td></tr>
 	<tr bgcolor="cbcbcb">
 		<td>
