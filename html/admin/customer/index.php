@@ -102,19 +102,16 @@ $objPage->arrHidden['search_pageno'] = $_POST['search_pageno'];
 
 // 検索ワードの引き継ぎ
 foreach ($_POST as $key => $val) {
-
-	if (ereg("^search_", $key)) {
-		switch($key) {
-			case 'search_sex':
-				$objPage->arrHidden[$key] = sfMergeParamCheckBoxes($val);
-				if(!is_array($val)) {
-					$objPage->arrForm[$key] = split("-", $val);
-				}
-				break;
-			default:
-				$objPage->arrHidden[$key] = $val;
-				break;
-		}
+	switch($key) {
+		case 'sex':
+			$objPage->arrHidden[$key] = sfMergeParamCheckBoxes($val);
+			if(!is_array($val)) {
+				$objPage->arrForm[$key] = split("-", $val);
+			}
+			break;
+		default:
+			$objPage->arrHidden[$key] = $val;
+			break;
 	}
 }
 
