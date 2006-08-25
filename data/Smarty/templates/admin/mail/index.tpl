@@ -44,7 +44,7 @@
 								<td bgcolor="#f2f1ec" width="110">¸ÜµÒÌ¾</td>
 								<td bgcolor="#ffffff" width="248">
 									<!--{if $arrErr.name}--><span class="red12"><!--{$arrErr.name}--></span><br><!--{/if}-->
-									<input type="text" name="name" maxlength="<!--{$smarty.const.STEXT_LEN}-->" value="<!--{$list_data.name|escape}-->" size="30" class="box30"  style="<!--{$arrErr.name|sfGetErrorColor}-->" />
+									<input type="text" name="search_name" maxlength="<!--{$smarty.const.STEXT_LEN}-->" value="<!--{$list_data.name|escape}-->" size="30" class="box30"  style="<!--{$arrErr.name|sfGetErrorColor}-->" />
 								</td>
 								<td bgcolor="#f2f1ec" width="110">¸ÜµÒÌ¾¡Ê¥«¥Ê¡Ë</td>
 								<td bgcolor="#ffffff" width="249">

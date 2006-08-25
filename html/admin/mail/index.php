@@ -85,7 +85,7 @@ case 'back':
 	//-- 入力値コンバート
 	$objPage->list_data = lfConvertParam($_POST, $arrSearchColumn);
 	
-	sfprintr($_POST);
+	sfprintr($objPage->list_data);
 
 	//-- 入力エラーのチェック
 	$objPage->arrErr = lfErrorCheck($objPage->list_data);
