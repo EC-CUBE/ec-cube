@@ -44,7 +44,7 @@
 									<tr align="center" bgcolor="#f2f1ec" class="fs12n">
 										<td width="116">支払方法</td>
 										<td width="96">手数料（円）</td>
-										<td width="194">利用条件（円）</td>
+										<td width="194">利用条件</td>
 										<td width="116">配送サービス</td>
 										<td width="66">編集</td>
 										<td width="66">削除</td>
@@ -57,9 +57,9 @@
 										<td width="194" align="center">
 											<table width="185" border="0" cellspacing="0" cellpadding="0" summary=" ">
 												<tr class="fs12">
-													<td align="center" width="80"><!--{if $arrPaymentListFree[cnt].rule > 0}--><!--{$arrPaymentListFree[cnt].rule|escape|number_format}--><!--{else}-->0<!--{/if}--></td>
+													<td align="center" width="80"><!--{if $arrPaymentListFree[cnt].rule > 0}--><!--{$arrPaymentListFree[cnt].rule|escape|number_format}--><!--{else}-->0<!--{/if}-->円</td>
 													<td align="center"> 〜 </td>
-													<td align="center" width="80"><!--{if $arrPaymentListFree[cnt].upper_rule > 0}--><!--{$arrPaymentListFree[cnt].upper_rule|escape|number_format}--><!--{else}-->無制限<!--{/if}--></td>
+													<td align="center" width="80"><!--{if $arrPaymentListFree[cnt].upper_rule > 0}--><!--{$arrPaymentListFree[cnt].upper_rule|escape|number_format}-->円<!--{else}-->無制限<!--{/if}--></td>
 												</tr>
 											</table>
 										<td width="116"><!--{assign var=key value="`$arrPaymentListFree[cnt].deliv_id`"}--><!--{$arrDelivList[$key]|default:"未登録"}--></td>
