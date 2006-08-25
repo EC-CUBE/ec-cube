@@ -117,6 +117,7 @@ function lfUpdateClass() {
 function lfConvertParam($array) {
 	// 文字変換
 	$arrConvList['kiyaku_title'] = "KVa";
+	$arrConvList['kiyaku_text'] = "KVa";
 
 	foreach ($arrConvList as $key => $val) {
 		// POSTされてきた値のみ変換する。

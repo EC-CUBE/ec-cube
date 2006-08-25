@@ -44,10 +44,10 @@ if($_POST['mode'] == "confirm") {
 	if(count($objPage->arrErr[$page_id]) == 0) {
 
 		// 更新データの変換
-		$arrMETA = lfConvertParam($_POST['meta']['$page_id']);
+		$arrMETA = lfConvertParam($_POST['meta'][$page_id]);
 
 		// 更新データ配列生成
-		$arrUpdData = array($arrPOST['meta'][$page_id]['author'], $arrPOST['meta'][$page_id]['description'], $arrPOST['meta'][$page_id]['keyword'], $page_id);
+		$arrUpdData = array($arrMETA['author'], $arrMETA['description'], $arrMETA['keyword'], $page_id);
 		// データ更新
 		lfUpdPageData($arrUpdData);
 	}else{	
