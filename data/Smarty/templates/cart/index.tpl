@@ -108,10 +108,6 @@
 							<td class="fs12n" bgcolor="#ffffff"><!--{$tpl_total_pretax|number_format}-->±ß</td>
 						</tr>
 						<tr align="right">
-							<td colspan="5" class="fs12n" bgcolor="#f0f0f0">Á÷ÎÁ</td>
-							<td class="fs12n" bgcolor="#ffffff"><!--{$arrData.deliv_fee|number_format}-->±ß</td>
-						</tr>
-						<tr align="right">
 							<td colspan="5" class="fs12n" bgcolor="#f0f0f0">¹ç·×</td>
 							<td class="fs12st" bgcolor="#ffffff"><!--{$arrData.total|number_format}-->±ß</td>
 						</tr>
