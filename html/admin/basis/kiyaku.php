@@ -31,14 +31,13 @@ case 'edit':
 	// 入力文字の変換
 	$objPage->arrForm = lfConvertParam($objPage->arrForm);
 	
-	sfprintr($objPage->arrForm);
 	// エラーチェック
 	$objPage->arrErr = lfErrorCheck();
 	if(count($objPage->arrErr) <= 0) {
 		if($_POST['kiyaku_id'] == "") {
-			lfInsertClass();	// 新規作成
+			lfInsertClass($objPage->arrForm);	// 新規作成
 		} else {
-			lfUpdateClass();	// 既存編集
+			lfUpdateClass($objPage->arrForm);	// 既存編集
 		}
 		// 再表示
 		sfReload();
@@ -89,11 +88,11 @@ $objView->display(MAIN_FRAME);
 //--------------------------------------------------------------------------------------------------------------------------------
 
 /* DBへの挿入 */
-function lfInsertClass() {
+function lfInsertClass($arrData) {
 	$objQuery = new SC_Query();
 	// INSERTする値を作成する。
-	$sqlval['kiyaku_title'] = $_POST['kiyaku_title'];
-	$sqlval['kiyaku_text'] = $_POST['kiyaku_text'];
+	$sqlval['kiyaku_title'] = $arrData['kiyaku_title'];
+	$sqlval['kiyaku_text'] = $arrData['kiyaku_text'];
 	$sqlval['creator_id'] = $_SESSION['member_id'];
 	$sqlval['rank'] = $objQuery->max("dtb_kiyaku", "rank") + 1;
 	$sqlval['update_date'] = "Now()";
@@ -103,11 +102,11 @@ function lfInsertClass() {
 }
 
 /* DBへの更新 */
-function lfUpdateClass() {
+function lfUpdateClass($arrData) {
 	$objQuery = new SC_Query();
 	// UPDATEする値を作成する。
-	$sqlval['kiyaku_title'] = $_POST['kiyaku_title'];
-	$sqlval['kiyaku_text'] = $_POST['kiyaku_text'];
+	$sqlval['kiyaku_title'] = $arrData['kiyaku_title'];
+	$sqlval['kiyaku_text'] = $arrData['kiyaku_text'];
 	$sqlval['update_date'] = "Now()";
 	$where = "kiyaku_id = ?";
 	// UPDATEの実行
