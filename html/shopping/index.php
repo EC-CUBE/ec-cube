@@ -108,15 +108,6 @@ if($objPage->year == '') {
 // 入力値の取得
 $objPage->arrForm = $objFormParam->getFormParamList();
 
-if($objPage->arrForm['month']['value'] == '') {
-	$objPage->month = '--';
-}
-if($objPage->arrForm['day']['value'] == '') {
-	$objPage->day = '--';
-}
-
-sfprintr($objPage->arrForm);
-
 $objView->assignobj($objPage);
 $objView->display(SITE_FRAME);
 //--------------------------------------------------------------------------------------------------------------------------
