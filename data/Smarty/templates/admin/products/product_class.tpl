@@ -66,7 +66,7 @@
 									</td>
 									</tr>
 									<tr>
-										<td align="center" bgcolor="#f2f1ec">
+										<td align="center" bgcolor="#f2f1ec" colspan=2>
 											<input type="button" value="検索結果へ戻る" onclick="fnChangeAction('<!--{$smarty.const.URL_SEARCH_TOP}-->'); fnModeSubmit('search','',''); return false;" >
 											<input type="button" name="btn" value="表示する" onclick="fnModeSubmit('disp','','')">
 										</td>
