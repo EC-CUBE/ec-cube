@@ -97,7 +97,7 @@ define ("ADMIN_MODE", 0);								// 管理モード 1:有効　0:無効(納品時)
 define ("FORGOT_MAIL", 0);								// パスワード忘れの確認メールを送付するか否か。(0:送信しない、1:送信する)
 define ("HTML_TEMPLATE_SUB_MAX", 12);					// 登録できるサブ商品の数
 define ("LINE_LIMIT_SIZE", 60);							// 文字数が多すぎるときに強制改行するサイズ(半角)
-define ("BIRTH_MONTH_POINT", 100);						// 誕生日月ポイント
+define ("BIRTH_MONTH_POINT", 0);						// 誕生日月ポイント
 define ("INPUT_DELIV_FEE", true);						// 配送料の設定画面(true:あり、false:なし)
 
 /* クレジットローン(セントラルファイナンス) */
