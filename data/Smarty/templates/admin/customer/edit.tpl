@@ -251,7 +251,7 @@
 
 <!--¡ú¡ú¹ØÆþÍúÎò°ìÍ÷¡ú¡ú-->
 <table width="878" border="0" cellspacing="0" cellpadding="0" summary=" ">
-input type="hidden" name="order_id" value="">
+<input type="hidden" name="order_id" value="">
 <input type="hidden" name="search_pageno" value="<!--{$tpl_pageno}-->">
 <input type="hidden" name="edit_customer_id" value="<!--{$edit_customer_id}-->" >
 
