@@ -198,7 +198,7 @@
 						<td width="507" bgcolor="#ffffff" class="fs12"><!--{$arrData.deliv_time|escape|default:"指定なし"}--></td>
 					</tr>
 					<tr>
-						<td width="150" bgcolor="#f0f0f0" class="fs12">その他連絡事項</td>
+						<td width="150" bgcolor="#f0f0f0" class="fs12">その他お問い合わせ</td>
 						<td width="507" bgcolor="#ffffff" class="fs12"><!--{$arrData.message|escape|nl2br}--></td>
 					</tr>
 					
