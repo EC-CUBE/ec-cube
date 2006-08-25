@@ -2,7 +2,7 @@
 <!--
 	
 	function fnCustomerPage(pageno) {
-		document.form1.pageno.value = pageno;
+		document.form1.search_pageno.value = pageno;
 		document.form1.submit();
 	}
 	
@@ -41,13 +41,13 @@
 <table width="878" border="0" cellspacing="0" cellpadding="0" summary=" ">
 <form name="form1" id="form1" method="post" action="<!--{$smarty.server.PHP_SELF}-->">
 <!--{foreach from=$smarty.post key="key" item="item"}-->
-<!--{if $key ne "mode" && $key ne "del_mode" && $key ne "edit_customer_id" && $key ne "del_customer_id" && $key ne "pageno" && $key ne "csv_mode"}--><input type="hidden" name="<!--{$key|escape}-->" value="<!--{$item|escape}-->"><!--{/if}-->
+<!--{if $key ne "mode" && $key ne "del_mode" && $key ne "edit_customer_id" && $key ne "del_customer_id" && $key ne "search_pageno" && $key ne "csv_mode"}--><input type="hidden" name="<!--{$key|escape}-->" value="<!--{$item|escape}-->"><!--{/if}-->
 <!--{/foreach}-->
 <input type="hidden" name="mode" value="search">
 <input type="hidden" name="del_mode" value="">
 <input type="hidden" name="edit_customer_id" value="">
 <input type="hidden" name="del_customer_id" value="">
-<input type="hidden" name="pageno" value="<!--{$smarty.post.pageno|escape}-->">
+<input type="hidden" name="search_pageno" value="<!--{$smarty.post.search_pageno|escape}-->">
 <input type="hidden" name="csv_mode" value="">
 	<tr valign="top">
 		<td background="/img/contents/navi_bg.gif" height="402">
