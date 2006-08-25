@@ -47,7 +47,7 @@
 								<td bgcolor="#f2f1ec" width="110">æ¶… ID</td>
 								<td bgcolor="#ffffff" width="194"><input type="text" name="search_product_id" value="<!--{$arrForm.search_product_id|escape}-->" size="30" class="box30" /></td>
 								<td bgcolor="#f2f1ec" width="110">µ¨≥ ID</td>
-								<td bgcolor="#ffffff" width="195"><span class="red"><!--{$arrErr.search_product_class_id}--></span><input type="text" name="search_product_class_id" value="<!--{$arrForm.search_product_class_id|escape}-->" size="30" class="box30"style="<!--{$arrErr.search_product_class_id|sfGetErrorColor}-->; ime-mode: disabled;" /></td>
+								<td bgcolor="#ffffff" width="195"><span class="red"><!--{$arrErr.search_product_class_id}--></span><input type="text" name="search_product_class_id" value="<!--{$arrForm.search_product_class_id|escape}-->" size="30" class="box30"style="<!--{$arrErr.search_product_class_id|sfGetErrorColor}-->" /></td>
 							</tr>
 							<tr class="fs12">
 								<td bgcolor="#f2f1ec" width="110">æ¶… •≥°º•…</td>
