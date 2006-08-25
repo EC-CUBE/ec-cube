@@ -72,6 +72,8 @@ class SC_SelectSql {
 		// FROM
 		$date1 = date("Y/m/d", mktime(0,0,0,$from_month,$from_day,$from_year));	
 		
+		sfprintr($date1);
+		
 		// TO(TO¤Ï+1Æü)
 		$date2 = date("Y/m/d", strtotime(date('Y/m/d', mktime(0,0,0,$to_month,$to_day,$to_year)) . " + day"));
 		
