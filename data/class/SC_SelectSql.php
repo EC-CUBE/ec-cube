@@ -67,6 +67,8 @@ class SC_SelectSql {
 	//--　期間検索（○年○月○日か~○年○月○日まで）
 	function selectTermRange($from_year, $from_month, $from_day, $to_year, $to_month, $to_day, $column) {
 
+		sfprintr($from_year ." : ". $from_month ." : ". $from_day ." : ". $to_year ." : ". $to_month ." : ". $to_day);
+		
 		// FROM
 		$date1 = date("Y/m/d", mktime(0,0,0,$from_month,$from_day,$from_year));	
 		
