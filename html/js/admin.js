@@ -117,7 +117,6 @@ function fnMemberPage(pageno) {
 function fnNaviSearchPage(pageno, mode) {
 
 	document.form1['search_pageno'].value = pageno;
-alert(mode);
 	document.form1['mode'].value = mode;
 	document.form1.submit();
 }
