@@ -83,7 +83,7 @@ class SC_SelectSql {
 			$date1 = date("Y/m/d", mktime(0,0,0,$from_month,$from_day,$from_year));
 			$this->setWhere( $column ." >= " . $date1 );
 //			$return = array($date1);
-sfprintr("fdfd");
+sfprintr($date1);
 		}
 
 		//　開始~終了
