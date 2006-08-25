@@ -24,6 +24,12 @@ class LC_Page {
 		$this->arrSTATUS = $arrSTATUS;
 		global $arrPRODUCTSTATUS_COLOR;
 		$this->arrPRODUCTSTATUS_COLOR = $arrPRODUCTSTATUS_COLOR;
+		/*
+		 session_start時のno-cacheヘッダーを抑制することで
+		 「戻る」ボタン使用時の有効期限切れ表示を抑制する。
+		 private-no-expire:クライアントのキャッシュを許可する。
+		*/
+		session_cache_limiter('private-no-expire');		
 
 	}
 }

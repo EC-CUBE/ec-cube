@@ -65,7 +65,12 @@
 									</select>
 									</td>
 									</tr>
-									<tr><td align="center" bgcolor="#f2f1ec" colspan=2><input type="button" name="btn" value="表示する" onclick="fnModeSubmit('disp','','')"></td></tr>
+									<tr>
+									<!--▼検索結果へ戻る-->
+									<td><input type="button" value="検索結果へ戻る" onclick="fnChangeAction('<!--{$smarty.const.URL_SEARCH_TOP}-->'); fnModeSubmit('search','',''); return false;" ></td>
+									<!--▲検索結果へ戻る-->
+									<td align="center" bgcolor="#f2f1ec" colspan=2><input type="button" name="btn" value="表示する" onclick="fnModeSubmit('disp','','')"></td>
+									</tr>
 								</table>
 
 								<table width="678" border="0" cellspacing="0" cellpadding="0" summary=" ">
@@ -149,11 +154,6 @@
 										<td bgcolor="#e9e7de" align="center">
 										<table border="0" cellspacing="0" cellpadding="0" summary=" ">
 											<tr>
-												<!--{if count($arrSearchHidden) > 0}-->		
-												<!--▼検索結果へ戻る-->
-													<td><input type="button" value="検索結果へ戻る" onclick="fnChangeAction('<!--{$smarty.const.URL_SEARCH_TOP}-->'); fnModeSubmit('search','',''); return false;" ></td>
-												<!--▲検索結果へ戻る-->
-												<!--{/if}-->
 												<td><input type="image" onMouseover="chgImgImageSubmit('/img/contents/btn_regist_on.jpg',this)" onMouseout="chgImgImageSubmit('/img/contents/btn_regist.jpg',this)" src="/img/contents/btn_regist.jpg" width="123" height="24" alt="この内容で登録する" border="0" name="subm" ></td>
 											</tr>
 										</table>
