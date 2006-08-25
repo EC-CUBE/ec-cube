@@ -101,7 +101,7 @@ function func_return(){
 										<td bgcolor="#ffffff" width="527"><!--{$arrJob[$arrForm.job]|escape|default:"未登録"}--></td>
 									</tr>
 									<tr class="fs12n">
-										<td bgcolor="#f2f1ec" width="190">生年月日<span class="red"> *</span></td>
+										<td bgcolor="#f2f1ec" width="190">生年月日</td>
 										<td bgcolor="#ffffff" width="527"><!--{if strlen($arrForm.year) > 0 && strlen($arrForm.month) > 0 && strlen($arrForm.day) > 0}--><!--{$arrForm.year|escape}-->年<!--{$arrForm.month|escape}-->月<!--{$arrForm.day|escape}-->日<!--{else}-->未登録<!--{/if}--></td>
 									</tr>
 									<tr class="fs12n">
