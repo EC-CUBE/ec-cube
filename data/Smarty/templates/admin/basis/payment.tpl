@@ -54,7 +54,14 @@
 									<tr bgcolor="#ffffff" class="fs12n">
 										<td width="116"><!--{$arrPaymentListFree[cnt].payment_method|escape}--></td>
 										<td width="96" align="right"><!--{$arrPaymentListFree[cnt].charge|escape|number_format}--></td>
-										<td width="194" align="center"><!--{if $arrPaymentListFree[cnt].rule > 0}--><!--{$arrPaymentListFree[cnt].rule|escape|number_format}--><!--{else}-->ÌµÀ©¸Â<!--{/if}--> ¡Á <!--{if $arrPaymentListFree[cnt].upper_rule > 0}--><!--{$arrPaymentListFree[cnt].upper_rule|escape|number_format}--><!--{else}-->ÌµÀ©¸Â<!--{/if}--></td>
+										<td width="194" align="center">
+											<table width="194" border="0" cellspacing="0" cellpadding="0" summary=" ">
+												<tr>
+													<td>
+														<!--{if $arrPaymentListFree[cnt].rule > 0}--><!--{$arrPaymentListFree[cnt].rule|escape|number_format}--><!--{else}-->ÌµÀ©¸Â<!--{/if}--> ¡Á <!--{if $arrPaymentListFree[cnt].upper_rule > 0}--><!--{$arrPaymentListFree[cnt].upper_rule|escape|number_format}--><!--{else}-->ÌµÀ©¸Â<!--{/if}--></td>
+													</td>
+												</tr>
+											</table>
 										<td width="116"><!--{assign var=key value="`$arrPaymentListFree[cnt].deliv_id`"}--><!--{$arrDelivList[$key]|default:"Ì¤ÅÐÏ¿"}--></td>
 										<td width="66" align="center"><a href="<!--{$smarty.server.PHP_SELF}-->" onclick="win03('./payment_input.php?mode=pre_edit&payment_id=<!--{$arrPaymentListFree[cnt].payment_id}-->','payment_input','500','420'); return false;">ÊÔ½¸</a></td>
 										<td width="66" align="center"><a href="<!--{$smarty.server.PHP_SELF}-->" onclick="fnModeSubmit('delete', 'payment_id', <!--{$arrPaymentListFree[cnt].payment_id}-->); return false;">ºï½ü</a></td>
