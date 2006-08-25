@@ -81,7 +81,7 @@ class SC_SelectSql {
 		// 開始期間だけ指定の場合
 		if( ( $from_year != "" ) && ( $from_month != "" ) && ( $from_day != "" ) &&	( $to_year == "" ) && ( $to_month == "" ) && ( $to_day == "" ) ) {
 			$this->setWhere( $column ." >= " . $date1 );
-			$return = array($date1);
+//			$return = array($date1);
 		}
 
 		//　開始~終了
