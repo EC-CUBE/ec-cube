@@ -92,7 +92,7 @@ self.moveTo(20,20);self.focus();
 											<!--{assign var=key value="rule"}-->
 											<span class="red12"><!--{$arrErr[$key]}--></span>
 											<input type="text" name="<!--{$arrForm[$key].keyname}-->" value="<!--{$arrForm[$key].value|escape}-->" size="10" class="box10" maxlength="<!--{$arrForm[$key].length}-->" style="<!--{$arrErr[$key]|sfGetErrorColor}-->" />
-											 ±ß</td>
+											 ±ß
 											¡Á
 											<!--{assign var=key value="upper_rule"}-->
 											<span class="red12"><!--{$arrErr[$key]}--></span>
