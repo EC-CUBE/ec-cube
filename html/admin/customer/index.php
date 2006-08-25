@@ -100,7 +100,7 @@ $objPage->arrForm = $_POST;
 sfprintr($_POST);
 
 // ページ送り用
-$objPage->arrHidden['pageno'] = $_POST['pageno'];
+$objPage->arrHidden['search_pageno'] = $_POST['search_pageno'];
 
 // 検索ワードの引き継ぎ
 foreach ($_POST as $key => $val) {
@@ -216,7 +216,7 @@ if ($_POST['mode'] == "search" || $_POST['mode'] == "csv"  || $_POST['mode'] == 
 				$page_max = SEARCH_PMAX;
 			}
 			// ページ送りの取得
-			$objNavi = new SC_PageNavi($_POST['pageno'], $linemax, $page_max, "fnCustomerPage", NAVI_PMAX);
+			$objNavi = new SC_PageNavi($_POST['search_pageno'], $linemax, $page_max, "fnCustomerPage", NAVI_PMAX);
 			$startno = $objNavi->start_row;
 			$objPage->arrPagenavi = $objNavi->arrPagenavi;		
 		}

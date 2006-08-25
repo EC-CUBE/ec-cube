@@ -115,6 +115,7 @@ function fnMemberPage(pageno) {
 
 // ページナビで使用する
 function fnNaviSearchPage(pageno, mode) {
+alert(pageno);
 	document.form1['search_pageno'].value = pageno;
 	document.form1['mode'].value = mode;
 	document.form1.submit();
