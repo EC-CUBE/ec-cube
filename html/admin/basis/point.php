@@ -73,7 +73,7 @@ $objView->display(MAIN_FRAME);
 /* パラメータ情報の初期化 */
 function lfInitParam() {
 	global $objFormParam;
-	$objFormParam->addParam("ポイント付与率", "point_rate", INT_LEN, "n", array("EXIST_CHECK", "MAX_LENGTH_CHECK", "NUM_CHECK"));
+	$objFormParam->addParam("ポイント付与率", "point_rate", PERCENTAGE_LEN, "n", array("EXIST_CHECK", "MAX_LENGTH_CHECK", "NUM_CHECK"));
 	$objFormParam->addParam("会員登録時付与ポイント", "welcome_point", INT_LEN, "n", array("EXIST_CHECK", "MAX_LENGTH_CHECK", "NUM_CHECK"));
 }
 

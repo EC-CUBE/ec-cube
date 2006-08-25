@@ -46,15 +46,15 @@
 										<td bgcolor="#ffffff" width="557">
 										<!--{assign var=key value="point_rate"}-->
 										<span class="red12"><!--{$arrErr[$key]}--></span>
-										<input type="text" name="<!--{$arrForm[$key].keyname}-->" value="<!--{$arrForm[$key].value|escape}-->" maxlength="<!--{$arrForm[$key].length}-->" style="<!--{$arrErr[$key]|sfGetErrorColor}-->" size="6" class="box6" />
+										<input type="text" name="<!--{$arrForm[$key].keyname}-->" value="<!--{$arrForm[$key].value|escape}-->" maxlength="<!--{$arrForm[$key].length}-->" style="<!--{$arrErr[$key]|sfGetErrorColor}-->" size="6" class="box6" maxlength="<!--{$smarty.const.PERCENTAGE_LEN}-->" />
 										％　小数点以下切り捨て</td>
 									</tr>
 									<tr class="fs12n">
-										<td bgcolor="#f2f1ec" width="170">会員登録時付与ポイント<span class="red"> *</span></td>
+										<td bgcolor="#f2f1ec" width="1">会員登録時付与ポイント<span class="red"> *</span></td>
 										<td bgcolor="#ffffff" width="557">
 										<!--{assign var=key value="welcome_point"}-->
 										<span class="red12"><!--{$arrErr[$key]}--></span>
-										<input type="text" name="<!--{$arrForm[$key].keyname}-->" value="<!--{$arrForm[$key].value|escape}-->" maxlength="<!--{$arrForm[$key].length}-->" style="<!--{$arrErr[$key]|sfGetErrorColor}-->" size="6" class="box6" maxlength="<!--{$smarty.const.PERCENTAGE_LEN}-->" />
+										<input type="text" name="<!--{$arrForm[$key].keyname}-->" value="<!--{$arrForm[$key].value|escape}-->" maxlength="<!--{$arrForm[$key].length}-->" style="<!--{$arrErr[$key]|sfGetErrorColor}-->" size="6" class="box6" />
 										 pt</td>
 									</tr>
 
