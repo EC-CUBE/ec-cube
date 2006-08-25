@@ -70,18 +70,16 @@ class SC_SelectSql {
 		sfprintr($from_year ." : ". $from_month ." : ". $from_day ." : ". $to_year ." : ". $to_month ." : ". $to_day);
 		
 		// FROM
-//		$date1 = date("Y/m/d", mktime(0,0,0,$from_month,$from_day,$from_year));	
 		$date1 = $from_year . "/" . $from_month . "/" . $from_day;
-		
-		sfprintr($date1);
 		
 		// TO(TOは+1日)
 		$date2 = date("Y/m/d", strtotime(date('Y/m/d', mktime(0,0,0,$to_month,$to_day,$to_year)) . " + day"));
 		
+		sfprintr($date2);
+		
 		// 開始期間だけ指定の場合
 		if( ( $from_year != "" ) && ( $from_month != "" ) && ( $from_day != "" ) &&	( $to_year == "" ) && ( $to_month == "" ) && ( $to_day == "" ) ) {
 			$this->setWhere( $column ." >= " . $date1 );
-//			$return = array($date1);
 		}
 
 		//　開始~終了
