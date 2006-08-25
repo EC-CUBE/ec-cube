@@ -295,32 +295,32 @@ function lfCheckError($array) {
 
 	$objErr = new SC_CheckError($array);
 	
-	$objErr->doFunc(array("顧客コード", "search_customer_id", INT_LEN), array("NUM_CHECK","MAX_LENGTH_CHECK"));
-	$objErr->doFunc(array("都道府県", "search_pref", 2), array("NUM_CHECK","MAX_LENGTH_CHECK"));
-	$objErr->doFunc(array("顧客名", "search_name", STEXT_LEN), array("MAX_LENGTH_CHECK"));
-	$objErr->doFunc(array("顧客名(カナ)", "search_kana", STEXT_LEN), array("KANA_CHECK", "MAX_LENGTH_CHECK"));
-	$objErr->doFunc(array("誕生日(開始日)", "search_b_start_year", "search_b_start_month", "search_b_start_day"), array("CHECK_DATE"));
-	$objErr->doFunc(array("誕生日(終了日)", "search_b_end_year", "search_b_end_month", "search_b_end_day"), array("CHECK_DATE"));
-	$objErr->doFunc(array("誕生日(開始日)","誕生日(終了日)", "search_b_start_year", "search_b_start_month", "search_b_start_day", "search_b_end_year", "search_b_end_month", "search_b_end_day"), array("CHECK_SET_TERM"));
-	$objErr->doFunc(array("誕生月", "search_birth_month", 2), array("NUM_CHECK","MAX_LENGTH_CHECK"));
-	$objErr->doFunc(array('メールアドレス', "search_email", STEXT_LEN) ,array("EMAIL_CHAR_CHECK", "MAX_LENGTH_CHECK"));
-	$objErr->doFunc(array("電話番号", "search_tel", TEL_LEN), array("NUM_CHECK","MAX_LENGTH_CHECK"));
-	$objErr->doFunc(array("購入金額(開始)", "search_buy_total_from", INT_LEN), array("NUM_CHECK","MAX_LENGTH_CHECK"));
-	$objErr->doFunc(array("購入金額(終了)", "search_buy_total_to", INT_LEN), array("NUM_CHECK","MAX_LENGTH_CHECK"));
-	if ( (is_numeric($array["search_buy_total_from"]) && is_numeric($array["search_buy_total_to"]) ) && ($array["search_buy_total_from"] > $array["search_buy_total_to"]) ) $objErr->arrErr["search_buy_total_from"] .= "※ 購入金額の指定範囲が不正です。";
-	$objErr->doFunc(array("購入回数(開始)", "search_buy_times_from", INT_LEN), array("NUM_CHECK","MAX_LENGTH_CHECK"));
-	$objErr->doFunc(array("購入回数(終了)", "search_buy_times_to", INT_LEN), array("NUM_CHECK","MAX_LENGTH_CHECK"));
-	if ( (is_numeric($array["search_buy_times_from"]) && is_numeric($array["search_buy_times_to"]) ) && ($array["search_buy_times_from"] > $array["search_buy_times_to"]) ) $objErr->arrErr["search_buy_times_from"] .= "※ 購入回数の指定範囲が不正です。";
-	$objErr->doFunc(array("登録・更新日(開始日)", "search_start_year", "search_start_month", "search_start_day",), array("CHECK_DATE"));
-	$objErr->doFunc(array("登録・更新日(終了日)", "search_end_year", "search_end_month", "search_end_day"), array("CHECK_DATE"));	
-	$objErr->doFunc(array("登録・更新日(開始日)","登録・更新日(終了日)", "search_start_year", "search_start_month", "search_start_day", "search_end_year", "search_end_month", "search_end_day"), array("CHECK_SET_TERM"));
-	$objErr->doFunc(array("表示件数", "search_page_rows", 3), array("NUM_CHECK","MAX_LENGTH_CHECK"));	
-	$objErr->doFunc(array("最終購入日(開始日)", "search_buy_start_year", "search_buy_start_month", "search_buy_start_day",), array("CHECK_DATE"));	//最終購入日(開始日)
-	$objErr->doFunc(array("最終購入(終了日)", "search_buy_end_year", "search_buy_end_month", "search_buy_end_day"), array("CHECK_DATE"));			//最終購入日(終了日)
+	$objErr->doFunc(array("顧客コード", "customer_id", INT_LEN), array("NUM_CHECK","MAX_LENGTH_CHECK"));
+	$objErr->doFunc(array("都道府県", "pref", 2), array("NUM_CHECK","MAX_LENGTH_CHECK"));
+	$objErr->doFunc(array("顧客名", "name", STEXT_LEN), array("MAX_LENGTH_CHECK"));
+	$objErr->doFunc(array("顧客名(カナ)", "kana", STEXT_LEN), array("KANA_CHECK", "MAX_LENGTH_CHECK"));
+	$objErr->doFunc(array("誕生日(開始日)", "b_start_year", "b_start_month", "b_start_day"), array("CHECK_DATE"));
+	$objErr->doFunc(array("誕生日(終了日)", "b_end_year", "b_end_month", "b_end_day"), array("CHECK_DATE"));
+	$objErr->doFunc(array("誕生日(開始日)","誕生日(終了日)", "b_start_year", "b_start_month", "b_start_day", "b_end_year", "b_end_month", "b_end_day"), array("CHECK_SET_TERM"));
+	$objErr->doFunc(array("誕生月", "birth_month", 2), array("NUM_CHECK","MAX_LENGTH_CHECK"));
+	$objErr->doFunc(array('メールアドレス', "email", STEXT_LEN) ,array("EMAIL_CHAR_CHECK", "MAX_LENGTH_CHECK"));
+	$objErr->doFunc(array("電話番号", "tel", TEL_LEN), array("NUM_CHECK","MAX_LENGTH_CHECK"));
+	$objErr->doFunc(array("購入金額(開始)", "buy_total_from", INT_LEN), array("NUM_CHECK","MAX_LENGTH_CHECK"));
+	$objErr->doFunc(array("購入金額(終了)", "buy_total_to", INT_LEN), array("NUM_CHECK","MAX_LENGTH_CHECK"));
+	if ( (is_numeric($array["buy_total_from"]) && is_numeric($array["buy_total_to"]) ) && ($array["buy_total_from"] > $array["buy_total_to"]) ) $objErr->arrErr["buy_total_from"] .= "※ 購入金額の指定範囲が不正です。";
+	$objErr->doFunc(array("購入回数(開始)", "buy_times_from", INT_LEN), array("NUM_CHECK","MAX_LENGTH_CHECK"));
+	$objErr->doFunc(array("購入回数(終了)", "buy_times_to", INT_LEN), array("NUM_CHECK","MAX_LENGTH_CHECK"));
+	if ( (is_numeric($array["buy_times_from"]) && is_numeric($array["buy_times_to"]) ) && ($array["buy_times_from"] > $array["buy_times_to"]) ) $objErr->arrErr["buy_times_from"] .= "※ 購入回数の指定範囲が不正です。";
+	$objErr->doFunc(array("登録・更新日(開始日)", "start_year", "start_month", "start_day",), array("CHECK_DATE"));
+	$objErr->doFunc(array("登録・更新日(終了日)", "end_year", "end_month", "end_day"), array("CHECK_DATE"));	
+	$objErr->doFunc(array("登録・更新日(開始日)","登録・更新日(終了日)", "start_year", "start_month", "start_day", "end_year", "end_month", "end_day"), array("CHECK_SET_TERM"));
+	$objErr->doFunc(array("表示件数", "page_rows", 3), array("NUM_CHECK","MAX_LENGTH_CHECK"));	
+	$objErr->doFunc(array("最終購入日(開始日)", "buy_start_year", "buy_start_month", "buy_start_day",), array("CHECK_DATE"));	//最終購入日(開始日)
+	$objErr->doFunc(array("最終購入(終了日)", "buy_end_year", "buy_end_month", "buy_end_day"), array("CHECK_DATE"));			//最終購入日(終了日)
 	//購入金額(from) ＞ 購入金額(to) の場合はエラーとする
-	$objErr->doFunc(array("最終購入日(開始日)","登録・更新日(終了日)", "search_buy_start_year", "search_buy_start_month", "search_buy_start_day", "search_buy_end_year", "search_buy_end_month", "search_buy_end_day"), array("CHECK_SET_TERM"));	
-	$objErr->doFunc(array("購入商品コード", "search_buy_product_code", STEXT_LEN), array("MAX_LENGTH_CHECK"));						//購入商品コード
-	$objErr->doFunc(array("購入商品名", "search_buy_product_name", STEXT_LEN), array("MAX_LENGTH_CHECK"));							//購入商品名称
+	$objErr->doFunc(array("最終購入日(開始日)","登録・更新日(終了日)", "buy_start_year", "buy_start_month", "buy_start_day", "buy_end_year", "buy_end_month", "buy_end_day"), array("CHECK_SET_TERM"));	
+	$objErr->doFunc(array("購入商品コード", "buy_product_code", STEXT_LEN), array("MAX_LENGTH_CHECK"));						//購入商品コード
+	$objErr->doFunc(array("購入商品名", "buy_product_name", STEXT_LEN), array("MAX_LENGTH_CHECK"));							//購入商品名称
 	
 	return $objErr->arrErr;
 }
