@@ -91,10 +91,10 @@ foreach ($_POST as $key => $val) {
 // ページ送り用
 $objPage->arrHidden['search_pageno'] = $_POST['search_pageno'];
 
+	sfprintr($_POST);
 // 商品削除
 if ($_POST['mode'] == "delete") {
 	
-	sfprintr($_POST);
 	if($_POST['category_id'] != "") {
 		// ランク付きレコードの削除
 		$where = "category_id = " . addslashes($_POST['category_id']);
