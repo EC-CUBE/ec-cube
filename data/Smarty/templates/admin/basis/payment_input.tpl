@@ -71,24 +71,24 @@ self.moveTo(20,20);self.focus();
 	
 									<table width="440" border="0" cellspacing="1" cellpadding="8" summary=" ">
 										<tr class="fs12n">
-											<td width="90" bgcolor="#f0f0f0">支払方法<span class="red"> *</span></td>
-											<td width="350" bgcolor="#ffffff">
+											<td width="100" bgcolor="#f0f0f0">支払方法<span class="red"> *</span></td>
+											<td width="340" bgcolor="#ffffff">
 											<!--{assign var=key value="payment_method"}-->
 											<span class="red12"><!--{$arrErr[$key]}--></span>
 											<input type="text" name="<!--{$arrForm[$key].keyname}-->" value="<!--{$arrForm[$key].value|escape}-->" size="30" class="box30" maxlength="<!--{$arrForm[$key].length}-->" style="<!--{$arrErr[$key]|sfGetErrorColor}-->" />
 											</td>
 										</tr>
 										<tr class="fs12n">
-											<td width="90" bgcolor="#f0f0f0">手数料<span class="red"> *</span></td>
-											<td width="350" bgcolor="#ffffff">
+											<td width="100" bgcolor="#f0f0f0">手数料<span class="red"> *</span></td>
+											<td width="340" bgcolor="#ffffff">
 											<!--{assign var=key value="charge"}-->
 											<span class="red12"><!--{$arrErr[$key]}--></span>
 											<input type="text" name="<!--{$arrForm[$key].keyname}-->" value="<!--{$arrForm[$key].value|escape}-->" size="10" class="box10" maxlength="<!--{$arrForm[$key].length}-->" style="<!--{$arrErr[$key]|sfGetErrorColor}-->" />
 											 円</td>
 										</tr>
 										<tr class="fs12n">
-											<td width="90" bgcolor="#f0f0f0">利用条件(円)<span class="red"> *</span></td>
-											<td width="350" bgcolor="#ffffff">
+											<td width="100" bgcolor="#f0f0f0">利用条件(円)<span class="red"> *</span></td>
+											<td width="340" bgcolor="#ffffff">
 											<!--{assign var=key value="rule"}-->
 											<span class="red12"><!--{$arrErr[$key]}--></span>
 											<input type="text" name="<!--{$arrForm[$key].keyname}-->" value="<!--{$arrForm[$key].value|escape}-->" size="10" class="box10" maxlength="<!--{$arrForm[$key].length}-->" style="<!--{$arrErr[$key]|sfGetErrorColor}-->" />
@@ -100,8 +100,8 @@ self.moveTo(20,20);self.focus();
 											 円</td>
 										</tr>
 										<tr class="fs12n">
-											<td width="90" bgcolor="#f0f0f0">配送サービス<span class="red"> *</span></td>
-											<td width="350" bgcolor="#ffffff">
+											<td width="100" bgcolor="#f0f0f0">配送サービス<span class="red"> *</span></td>
+											<td width="340" bgcolor="#ffffff">
 											<!--{assign var=key value="deliv_id"}-->
 											<span class="red12"><!--{$arrErr[$key]}--></span>
 											<select name="deliv_id" style="<!--{$arrErr[$key]|sfGetErrorColor}-->">
@@ -110,8 +110,8 @@ self.moveTo(20,20);self.focus();
 											</select></td>
 										</tr>
 										<tr class="fs12n">
-											<td width="90" bgcolor="#f0f0f0">ロゴ画像</td>
-											<td width="350" bgcolor="#ffffff">
+											<td width="100" bgcolor="#f0f0f0">ロゴ画像</td>
+											<td width="340" bgcolor="#ffffff">
 											<!--{assign var=key value="payment_image"}-->
 											<span class="red12"><!--{$arrErr[$key]}--></span>
 											<!--{if $arrFile[$key].filepath != ""}-->
