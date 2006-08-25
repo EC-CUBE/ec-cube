@@ -102,8 +102,8 @@ function lfInitParam() {
 	global $objFormParam;
 	$objFormParam->addParam("支払方法", "payment_method", STEXT_LEN, "KVa", array("EXIST_CHECK", "MAX_LENGTH_CHECK"));
 	$objFormParam->addParam("手数料", "charge", PRICE_LEN, "n", array("EXIST_CHECK", "NUM_CHECK", "MAX_LENGTH_CHECK"));
-	$objFormParam->addParam("利用条件(〜円以上)", "rule", PRICE_LEN, "n", array("EXIST_CHECK", "NUM_CHECK", "MAX_LENGTH_CHECK"));
-	$objFormParam->addParam("利用条件(〜円以下)", "upper_rule", PRICE_LEN, "n", array("EXIST_CHECK", "NUM_CHECK", "MAX_LENGTH_CHECK"));
+	$objFormParam->addParam("利用条件(〜円以上)", "rule", PRICE_LEN, "n", array("NUM_CHECK", "MAX_LENGTH_CHECK"));
+	$objFormParam->addParam("利用条件(〜円以下)", "upper_rule", PRICE_LEN, "n", array("NUM_CHECK", "MAX_LENGTH_CHECK"));
 	$objFormParam->addParam("配送サービス", "deliv_id", INT_LEN, "n", array("EXIST_CHECK", "NUM_CHECK", "MAX_LENGTH_CHECK"));
 	$objFormParam->addParam("固定", "fix");
 }
