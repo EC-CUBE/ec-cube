@@ -73,7 +73,7 @@ class SC_SelectSql {
 		$date1 = $from_year . "/" . $from_month . "/" . $from_day;
 		
 		// TO
-		$date2 = $to_month . "/" . $to_day . "/" . $to_year;
+		$date2 = $to_year . "/" . $to_month . "/" . $to_day;
 		
 		// 開始期間だけ指定の場合
 		if( ( $from_year != "" ) && ( $from_month != "" ) && ( $from_day != "" ) &&	( $to_year == "" ) && ( $to_month == "" ) && ( $to_day == "" ) ) {
