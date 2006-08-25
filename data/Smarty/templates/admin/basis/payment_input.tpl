@@ -73,17 +73,17 @@ self.moveTo(20,20);self.focus();
 										<tr class="fs12n">
 											<td width="100" bgcolor="#f0f0f0">»ÙÊ§ÊýË¡<span class="red"> *</span></td>
 											<td width="340" bgcolor="#ffffff">
-											<!--{assign var=key value="payment_method"}-->
-											<span class="red12"><!--{$arrErr[$key]}--></span>
-											<input type="text" name="<!--{$arrForm[$key].keyname}-->" value="<!--{$arrForm[$key].value|escape}-->" size="30" class="box30" maxlength="<!--{$arrForm[$key].length}-->" style="<!--{$arrErr[$key]|sfGetErrorColor}-->" />
+											<!--{assign var=key_from value="payment_method"}-->
+											<span class="red12"><!--{$arrErr[$key_to]}--></span>
+											<span class="red12"><!--{$arrErr[$key_from]}--></span>
+											<input type="text" name="<!--{$arrForm[$key_from].keyname}-->" value="<!--{$arrForm[$key_from].value|escape}-->" size="30" class="box30" maxlength="<!--{$arrForm[$key_from].length}-->" style="<!--{$arrErr[$key_from]|sfGetErrorColor}-->" />
 											</td>
 										</tr>
 										<tr class="fs12n">
 											<td width="100" bgcolor="#f0f0f0">¼ê¿ôÎÁ<span class="red"> *</span></td>
 											<td width="340" bgcolor="#ffffff">
-											<!--{assign var=key value="charge"}-->
-											<span class="red12"><!--{$arrErr[$key]}--></span>
-											<input type="text" name="<!--{$arrForm[$key].keyname}-->" value="<!--{$arrForm[$key].value|escape}-->" size="10" class="box10" maxlength="<!--{$arrForm[$key].length}-->" style="<!--{$arrErr[$key]|sfGetErrorColor}-->" />
+											<!--{assign var=key_to value="charge"}-->
+											<input type="text" name="<!--{$arrForm[$key_to].keyname}-->" value="<!--{$arrForm[$key_to].value|escape}-->" size="10" class="box10" maxlength="<!--{$arrForm[$key_to].length}-->" style="<!--{$arrErr[$key_to]|sfGetErrorColor}-->" />
 											 ±ß</td>
 										</tr>
 										<tr class="fs12n">
