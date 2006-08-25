@@ -71,7 +71,7 @@ class SC_SelectSql {
 		
 		// FROM
 //		$date1 = date("Y/m/d", mktime(0,0,0,$from_month,$from_day,$from_year));	
-		$date1 = $from_year . "a/" . $from_month . "/" . $from_day;
+		$date1 = $from_year . "/" . $from_month . "/" . $from_day;
 		
 		sfprintr($date1);
 		
@@ -81,7 +81,7 @@ class SC_SelectSql {
 		// 開始期間だけ指定の場合
 		if( ( $from_year != "" ) && ( $from_month != "" ) && ( $from_day != "" ) &&	( $to_year == "" ) && ( $to_month == "" ) && ( $to_day == "" ) ) {
 			$date1 = date("Y/m/d", mktime(0,0,0,$from_month,$from_day,$from_year));
-			$this->setWhere( $column ." >= ?" );
+			$this->setWhere( $column ." >= ?a" );
 			$return = array($date1);
 		}
 
