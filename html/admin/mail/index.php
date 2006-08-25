@@ -109,6 +109,8 @@ case 'back':
 		// 行数の取得
 		$linemax = $objQuery->count($from, $where, $arrval);
 		$objPage->tpl_linemax = $linemax;				// 何件が該当しました。表示用
+		
+		$objQuery->getlastquery(true);
 
 		// ページ送りの取得
 		$objNavi = new SC_PageNavi($_POST['pageno'], $linemax, SEARCH_PMAX, "fnResultPageNavi", NAVI_PMAX);
