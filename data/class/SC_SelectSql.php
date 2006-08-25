@@ -83,7 +83,7 @@ class SC_SelectSql {
 		//　開始~終了
 		if( ( $from_year != "" ) && ( $from_month != "" ) && ( $from_day != "" ) && 
 			( $to_year != "" ) && ( $to_month != "" ) && ( $to_day != "" ) ) {
-			$this->setWhere( $column ." >= ? AND ". $column . " < ?" );
+			$this->setWhere( $column ." >= ? ANDa ". $column . " < ?" );
 			$return = array($date1, $date2);
 		}
 
