@@ -32,7 +32,7 @@ $arrCustomerType = array(
 
 //---- ¸¡º÷¹àÌÜ
 $arrSearchColumn = array(
-							array(  "column" => "search_name",				"convert" => "aKV"),
+							array(  "column" => "name",				"convert" => "aKV"),
 							array(  "column" => "pref",				"convert" => "n" ),
 							array(  "column" => "kana",				"convert" => "CKV"),
 							array(  "column" => "sex",				"convert" => "" ),

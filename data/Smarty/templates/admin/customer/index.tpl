@@ -45,27 +45,27 @@
 						<table width="678" border="0" cellspacing="1" cellpadding="8" summary=" ">
 							<tr class="fs12n">
 								<td bgcolor="#f2f1ec" width="110">顧客コード</td>
-								<td bgcolor="#ffffff" width="194"><!--{if $arrErr.search_customer_id}--><span class="red12"><!--{$arrErr.search_customer_id}--></span><br><!--{/if}--><input type="text" name="search_customer_id" maxlength="<!--{$smarty.const.INT_LEN}-->" value="<!--{$arrForm.search_customer_id|escape}-->" size="30" class="box30" <!--{if $arrErr.search_customer_id}--><!--{sfSetErrorStyle}--><!--{/if}--> /></td>
+								<td bgcolor="#ffffff" width="194"><!--{if $arrErr.customer_id}--><span class="red12"><!--{$arrErr.customer_id}--></span><br><!--{/if}--><input type="text" name="customer_id" maxlength="<!--{$smarty.const.INT_LEN}-->" value="<!--{$arrForm.search_customer_id|escape}-->" size="30" class="box30" <!--{if $arrErr.customer_id}--><!--{sfSetErrorStyle}--><!--{/if}--> /></td>
 								<td bgcolor="#f2f1ec" width="110">都道府県</td>
 								<td bgcolor="#ffffff" width="195">
-									<!--{if $arrErr.search_pref}--><span class="red12"><!--{$arrErr.search_pref}--></span><br><!--{/if}-->
-									<select name="search_pref">
-										<option value="" selected="selected" <!--{if $arrErr.search_name}--><!--{sfSetErrorStyle}--><!--{/if}-->>都道府県を選択</option>
+									<!--{if $arrErr.pref}--><span class="red12"><!--{$arrErr.pref}--></span><br><!--{/if}-->
+									<select name="pref">
+										<option value="" selected="selected" <!--{if $arrErr.name}--><!--{sfSetErrorStyle}--><!--{/if}-->>都道府県を選択</option>
 										<!--{html_options options=$arrPref selected=$arrForm.search_pref}-->
 									</select>
 								</td>
 							</tr>
 							<tr class="fs12n">
 								<td bgcolor="#f2f1ec" width="110">顧客名</td>
-								<td bgcolor="#ffffff" width="194"><!--{if $arrErr.search_name}--><span class="red12"><!--{$arrErr.search_name}--></span><br><!--{/if}--><input type="text" name="search_name" maxlength="<!--{$smarty.const.STEXT_LEN}-->" value="<!--{$arrForm.search_name|escape}-->" size="30" class="box30" <!--{if $arrErr.search_name}--><!--{sfSetErrorStyle}--><!--{/if}--> /></td>
+								<td bgcolor="#ffffff" width="194"><!--{if $arrErr.name}--><span class="red12"><!--{$arrErr.name}--></span><br><!--{/if}--><input type="text" name="name" maxlength="<!--{$smarty.const.STEXT_LEN}-->" value="<!--{$arrForm.search_name|escape}-->" size="30" class="box30" <!--{if $arrErr.name}--><!--{sfSetErrorStyle}--><!--{/if}--> /></td>
 								<td bgcolor="#f2f1ec" width="110">顧客名（カナ）</td>
-								<td bgcolor="#ffffff" width="195"><!--{if $arrErr.search_kana}--><span class="red12"><!--{$arrErr.search_kana}--></span><br><!--{/if}--><input type="text" name="search_kana" maxlength="<!--{$smarty.const.STEXT_LEN}-->" value="<!--{$arrForm.search_kana|escape}-->" size="30" class="box30" <!--{if $arrErr.search_kana}--><!--{sfSetErrorStyle}--><!--{/if}--> /></td>
+								<td bgcolor="#ffffff" width="195"><!--{if $arrErr.kana}--><span class="red12"><!--{$arrErr.kana}--></span><br><!--{/if}--><input type="text" name="kana" maxlength="<!--{$smarty.const.STEXT_LEN}-->" value="<!--{$arrForm.search_kana|escape}-->" size="30" class="box30" <!--{if $arrErr.kana}--><!--{sfSetErrorStyle}--><!--{/if}--> /></td>
 							<tr class="fs12n">
 								<td bgcolor="#f2f1ec" width="110">性別</td>
-								<td bgcolor="#ffffff" width="194"><!--{html_checkboxes name="search_sex" options=$arrSex separator="&nbsp;" selected=$arrForm.search_sex}--></td>
+								<td bgcolor="#ffffff" width="194"><!--{html_checkboxes name="sex" options=$arrSex separator="&nbsp;" selected=$arrForm.search_sex}--></td>
 								<td bgcolor="#f2f1ec" width="110">誕生月</td>
-								<td bgcolor="#ffffff" width="195"><!--{if $arrErr.search_birth_month}--><span class="red12"><!--{$arrErr.search_birth_month}--></span><br><!--{/if}-->
-									<select name="search_birth_month" style="<!--{$arrErr.search_birth_month|sfGetErrorColor}-->" >
+								<td bgcolor="#ffffff" width="195"><!--{if $arrErr.birth_month}--><span class="red12"><!--{$arrErr.birth_month}--></span><br><!--{/if}-->
+									<select name="birth_month" style="<!--{$arrErr.birth_month|sfGetErrorColor}-->" >
 										<option value="" selected="selected">--</option>
 										<!--{html_options options=$objDate->getMonth() selected=$arrForm.search_birth_month}-->
 									</select>月
@@ -74,28 +74,28 @@
 							<tr class="fs12n">			
 								<td bgcolor="#f2f1ec" width="110">誕生日</td>
 								<td bgcolor="#ffffff" width="499" colspan="3">
-									<!--{if $arrErr.search_b_start_year || $arrErr.search_b_end_year}--><span class="red12"><!--{$arrErr.search_b_start_year}--><!--{$arrErr.search_b_end_year}--></span><br><!--{/if}-->
-									<select name="search_b_start_year" <!--{if $arrErr.search_b_start_year || $arrErr.search_b_end_year}--><!--{sfSetErrorStyle}--><!--{/if}-->>
+									<!--{if $arrErr.b_start_year || $arrErr.b_end_year}--><span class="red12"><!--{$arrErr.b_start_year}--><!--{$arrErr.b_end_year}--></span><br><!--{/if}-->
+									<select name="b_start_year" <!--{if $arrErr.b_start_year || $arrErr.b_end_year}--><!--{sfSetErrorStyle}--><!--{/if}-->>
 										<option value="" selected="selected">------</option>
 										<!--{html_options options=$arrYear selected=$arrForm.search_b_start_year}-->
 									</select>年
-									<select name="search_b_start_month" <!--{if $arrErr.search_b_start_year || $arrErr.search_b_end_year}--><!--{sfSetErrorStyle}--><!--{/if}-->>
+									<select name="b_start_month" <!--{if $arrErr.b_start_year || $arrErr.b_end_year}--><!--{sfSetErrorStyle}--><!--{/if}-->>
 										<option value="" selected="selected">----</option>
 										<!--{html_options options=$arrMonth selected=$arrForm.search_b_start_month}-->
 									</select>月
-									<select name="search_b_start_day" <!--{if $arrErr.search_b_start_year || $arrErr.search_b_end_year}--><!--{sfSetErrorStyle}--><!--{/if}-->>
+									<select name="b_start_day" <!--{if $arrErr.b_start_year || $arrErr.b_end_year}--><!--{sfSetErrorStyle}--><!--{/if}-->>
 										<option value="" selected="selected">----</option>
 										<!--{html_options options=$arrDay selected=$arrForm.search_b_start_day}-->
 									</select>日〜
-									<select name="search_b_end_year" <!--{if $arrErr.search_b_start_year || $arrErr.search_b_end_year}--><!--{sfSetErrorStyle}--><!--{/if}-->>
+									<select name="b_end_year" <!--{if $arrErr.b_start_year || $arrErr.b_end_year}--><!--{sfSetErrorStyle}--><!--{/if}-->>
 										<option value="" selected="selected">------</option>
 										<!--{html_options options=$arrYear selected=$arrForm.search_b_end_year}-->
 									</select>年
-									<select name="search_b_end_month" <!--{if $arrErr.search_b_start_year || $arrErr.search_b_end_year}--><!--{sfSetErrorStyle}--><!--{/if}-->>
+									<select name="b_end_month" <!--{if $arrErr.b_start_year || $arrErr.b_end_year}--><!--{sfSetErrorStyle}--><!--{/if}-->>
 										<option value="" selected="selected">----</option>
 										<!--{html_options options=$arrMonth selected=$arrForm.search_b_end_month}-->
 									</select>月
-									<select name="search_b_end_day" <!--{if $arrErr.search_b_start_year || $arrErr.search_b_end_year}--><!--{sfSetErrorStyle}--><!--{/if}-->>
+									<select name="b_end_day" <!--{if $arrErr.b_start_year || $arrErr.b_end_year}--><!--{sfSetErrorStyle}--><!--{/if}-->>
 										<option value="" selected="selected">----</option>
 										<!--{html_options options=$arrDay selected=$arrForm.search_b_end_day}-->
 									</select>日
@@ -103,47 +103,47 @@
 							</tr>
 							<tr class="fs12n">
 								<td bgcolor="#f2f1ec" width="110">メールアドレス</td>
-								<td bgcolor="#ffffff" width="499" colspan="3"><!--{if $arrErr.search_email}--><span class="red12"><!--{$arrErr.search_email}--></span><!--{/if}--><input type="text" name="search_email" maxlength="<!--{$smarty.const.STEXT_LEN}-->" value="<!--{$arrForm.search_email|escape}-->" size="60" class="box60" <!--{if $arrErr.search_email}--><!--{sfSetErrorStyle}--><!--{/if}-->/></td>
+								<td bgcolor="#ffffff" width="499" colspan="3"><!--{if $arrErr.email}--><span class="red12"><!--{$arrErr.email}--></span><!--{/if}--><input type="text" name="email" maxlength="<!--{$smarty.const.STEXT_LEN}-->" value="<!--{$arrForm.search_email|escape}-->" size="60" class="box60" <!--{if $arrErr.email}--><!--{sfSetErrorStyle}--><!--{/if}-->/></td>
 							</tr>
 							<tr class="fs12n">
 								<td bgcolor="#f2f1ec" width="110">電話番号</td>
-								<td bgcolor="#ffffff" width="499" colspan="3"><!--{if $arrErr.search_tel}--><span class="red12"><!--{$arrErr.search_tel}--></span><br><!--{/if}--><input type="text" name="search_tel" maxlength="<!--{$smarty.const.TEL_LEN}-->" value="<!--{$arrForm.search_tel|escape}-->" size="60" class="box60" /></td>
+								<td bgcolor="#ffffff" width="499" colspan="3"><!--{if $arrErr.tel}--><span class="red12"><!--{$arrErr.tel}--></span><br><!--{/if}--><input type="text" name="tel" maxlength="<!--{$smarty.const.TEL_LEN}-->" value="<!--{$arrForm.search_tel|escape}-->" size="60" class="box60" /></td>
 							</tr>
 							<tr class="fs12n">
 								<td bgcolor="#f2f1ec" width="110">職業</td>
-								<td bgcolor="#ffffff" width="499" colspan="3"><!--{html_checkboxes name="search_job" options=$arrJob separator="&nbsp;" selected=$arrForm.search_job}--></td>
+								<td bgcolor="#ffffff" width="499" colspan="3"><!--{html_checkboxes name="job" options=$arrJob separator="&nbsp;" selected=$arrForm.search_job}--></td>
 							</tr>
 							<tr class="fs12n">
 								<td bgcolor="#f2f1ec" width="110">購入金額</td>
-								<td bgcolor="#ffffff" width="194"><!--{if $arrErr.search_buy_total_from || $arrErr.search_buy_total_to}--><span class="red12"><!--{$arrErr.search_buy_total_from}--><!--{$arrErr.search_buy_total_to}--></span><br><!--{/if}--><input type="text" name="search_buy_total_from" maxlength="<!--{$smarty.const.INT_LEN}-->" value="<!--{$arrForm.search_buy_total_from|escape}-->" size="6" class="box6" <!--{if $arrErr.search_buy_total_from || $arrErr.search_buy_total_to}--><!--{sfSetErrorStyle}--><!--{/if}--> /> 円 〜 <input type="text" name="search_buy_total_to" maxlength="<!--{$smarty.const.INT_LEN}-->" value="<!--{$arrForm.search_buy_total_to|escape}-->" size="6" class="box6" <!--{if $arrErr.search_buy_total_from || $arrErr.search_buy_total_to}--><!--{sfSetErrorStyle}--><!--{/if}--> /> 円</td>
+								<td bgcolor="#ffffff" width="194"><!--{if $arrErr.buy_total_from || $arrErr.buy_total_to}--><span class="red12"><!--{$arrErr.buy_total_from}--><!--{$arrErr.buy_total_to}--></span><br><!--{/if}--><input type="text" name="buy_total_from" maxlength="<!--{$smarty.const.INT_LEN}-->" value="<!--{$arrForm.search_buy_total_from|escape}-->" size="6" class="box6" <!--{if $arrErr.buy_total_from || $arrErr.buy_total_to}--><!--{sfSetErrorStyle}--><!--{/if}--> /> 円 〜 <input type="text" name="buy_total_to" maxlength="<!--{$smarty.const.INT_LEN}-->" value="<!--{$arrForm.search_buy_total_to|escape}-->" size="6" class="box6" <!--{if $arrErr.buy_total_from || $arrErr.buy_total_to}--><!--{sfSetErrorStyle}--><!--{/if}--> /> 円</td>
 								<td bgcolor="#f2f1ec" width="110">購入回数</td>
-								<td bgcolor="#ffffff" width="195"><!--{if $arrErr.search_buy_times_from || $arrErr.search_buy_times_to}--><span class="red12"><!--{$arrErr.search_buy_times_from}--><!--{$arrErr.search_buy_times_to}--></span><br><!--{/if}--><input type="text" name="search_buy_times_from" maxlength="<!--{$smarty.const.INT_LEN}-->" value="<!--{$arrForm.search_buy_times_from|escape}-->" size="6" class="box6" <!--{if $arrErr.search_buy_times_from || $arrErr.search_buy_times_to}--><!--{sfSetErrorStyle}--><!--{/if}--> /> 回 〜 <input type="text" name="search_buy_times_to" maxlength="<!--{$smarty.const.INT_LEN}-->" value="<!--{$arrForm.search_buy_times_to|escape}-->" size="6" class="box6" <!--{if $arrErr.search_buy_times_from || $arrErr.search_buy_times_to}--><!--{sfSetErrorStyle}--><!--{/if}--> /> 回</td>
+								<td bgcolor="#ffffff" width="195"><!--{if $arrErr.buy_times_from || $arrErr.buy_times_to}--><span class="red12"><!--{$arrErr.buy_times_from}--><!--{$arrErr.buy_times_to}--></span><br><!--{/if}--><input type="text" name="buy_times_from" maxlength="<!--{$smarty.const.INT_LEN}-->" value="<!--{$arrForm.search_buy_times_from|escape}-->" size="6" class="box6" <!--{if $arrErr.buy_times_from || $arrErr.buy_times_to}--><!--{sfSetErrorStyle}--><!--{/if}--> /> 回 〜 <input type="text" name="buy_times_to" maxlength="<!--{$smarty.const.INT_LEN}-->" value="<!--{$arrForm.search_buy_times_to|escape}-->" size="6" class="box6" <!--{if $arrErr.buy_times_from || $arrErr.buy_times_to}--><!--{sfSetErrorStyle}--><!--{/if}--> /> 回</td>
 							</tr>
 							<tr class="fs12n">
 								<td bgcolor="#f2f1ec" width="110">登録・更新日</td>
 								<td bgcolor="#ffffff" width="499" colspan="3">
-									<!--{if $arrErr.search_start_year || $arrErr.search_end_year}--><span class="red12"><!--{$arrErr.search_start_year}--><!--{$arrErr.search_end_year}--></span><br><!--{/if}-->
-									<select name="search_start_year" <!--{if $arrErr.search_start_year || $arrErr.search_end_year}--><!--{sfSetErrorStyle}--><!--{/if}-->>
+									<!--{if $arrErr.start_year || $arrErr.end_year}--><span class="red12"><!--{$arrErr.start_year}--><!--{$arrErr.end_year}--></span><br><!--{/if}-->
+									<select name="start_year" <!--{if $arrErr.start_year || $arrErr.end_year}--><!--{sfSetErrorStyle}--><!--{/if}-->>
 										<option value="" selected="selected">------</option>
 										<!--{html_options options=$arrYear selected=$arrForm.search_start_year}-->
 									</select>年
-									<select name="search_start_month" <!--{if $arrErr.search_start_year || $arrErr.search_end_year}--><!--{sfSetErrorStyle}--><!--{/if}-->>
+									<select name="start_month" <!--{if $arrErr.start_year || $arrErr.end_year}--><!--{sfSetErrorStyle}--><!--{/if}-->>
 										<option value="" selected="selected">----</option>
 										<!--{html_options options=$arrMonth selected=$arrForm.search_start_month}-->
 									</select>月
-									<select name="search_start_day" <!--{if $arrErr.search_start_year || $arrErr.search_end_year}--><!--{sfSetErrorStyle}--><!--{/if}-->>
+									<select name="start_day" <!--{if $arrErr.start_year || $arrErr.end_year}--><!--{sfSetErrorStyle}--><!--{/if}-->>
 										<option value="" selected="selected">----</option>
 										<!--{html_options options=$arrDay selected=$arrForm.search_start_day}-->
 									</select>日〜
-									<select name="search_end_year" <!--{if $arrErr.search_start_year || $arrErr.search_end_year}--><!--{sfSetErrorStyle}--><!--{/if}-->>
+									<select name="end_year" <!--{if $arrErr.start_year || $arrErr.end_year}--><!--{sfSetErrorStyle}--><!--{/if}-->>
 										<option value="" selected="selected">------</option>
 										<!--{html_options options=$arrYear selected=$arrForm.search_end_year}-->
 									</select>年
-									<select name="search_end_month" <!--{if $arrErr.search_start_year || $arrErr.search_end_year}--><!--{sfSetErrorStyle}--><!--{/if}-->>
+									<select name="end_month" <!--{if $arrErr.start_year || $arrErr.end_year}--><!--{sfSetErrorStyle}--><!--{/if}-->>
 										<option value="" selected="selected">----</option>
 										<!--{html_options options=$arrMonth selected=$arrForm.search_end_month}-->
 									</select>月
-									<select name="search_end_day" <!--{if $arrErr.search_start_year || $arrErr.search_end_year}--><!--{sfSetErrorStyle}--><!--{/if}-->>
+									<select name="end_day" <!--{if $arrErr.start_year || $arrErr.end_year}--><!--{sfSetErrorStyle}--><!--{/if}-->>
 										<option value="" selected="selected">----</option>
 										<!--{html_options options=$arrDay selected=$arrForm.search_end_day}-->
 									</select>日
@@ -153,28 +153,28 @@
 							<tr class="fs12n">
 								<td bgcolor="#f2f1ec" width="110">最終購入日</td>
 								<td bgcolor="#ffffff" width="499" colspan="3">
-									<!--{if $arrErr.search_buy_start_year || $arrErr.search_buy_end_year}--><span class="red12"><!--{$arrErr.search_buy_start_year}--><!--{$arrErr.search_buy_end_year}--></span><br><!--{/if}-->
-									<select name="search_buy_start_year" style="<!--{$arrErr.search_buy_start_year|sfGetErrorColor}-->">
+									<!--{if $arrErr.buy_start_year || $arrErr.buy_end_year}--><span class="red12"><!--{$arrErr.buy_start_year}--><!--{$arrErr.buy_end_year}--></span><br><!--{/if}-->
+									<select name="buy_start_year" style="<!--{$arrErr.buy_start_year|sfGetErrorColor}-->">
 										<option value="" selected="selected">------</option>
 										<!--{html_options options=$objDate->getYear($smarty.const.RELEASE_YEAR)  selected=$arrForm.search_buy_start_year}-->
 									</select>年
-									<select name="search_buy_start_month" style="<!--{$arrErr.search_buy_start_year|sfGetErrorColor}-->">
+									<select name="buy_start_month" style="<!--{$arrErr.buy_start_year|sfGetErrorColor}-->">
 										<option value="" selected="selected">----</option>
 										<!--{html_options options=$arrMonth selected=$arrForm.search_buy_start_month}-->
 									</select>月
-									<select name="search_buy_start_day" style="<!--{$arrErr.search_buy_start_year|sfGetErrorColor}-->">
+									<select name="buy_start_day" style="<!--{$arrErr.buy_start_year|sfGetErrorColor}-->">
 										<option value="" selected="selected">----</option>
 										<!--{html_options options=$arrDay selected=$arrForm.search_buy_start_day}-->
 									</select>日〜
-									<select name="search_buy_end_year" style="<!--{$arrErr.search_buy_end_year|sfGetErrorColor}-->">
+									<select name="buy_end_year" style="<!--{$arrErr.buy_end_year|sfGetErrorColor}-->">
 										<option value="" selected="selected">------</option>
 										<!--{html_options options=$objDate->getYear($smarty.const.RELEASE_YEAR)  selected=$arrForm.search_buy_end_year}-->
 									</select>年
-									<select name="search_buy_end_month" style="<!--{$arrErr.search_buy_end_year|sfGetErrorColor}-->">
+									<select name="buy_end_month" style="<!--{$arrErr.buy_end_year|sfGetErrorColor}-->">
 										<option value="" selected="selected">----</option>
 										<!--{html_options options=$arrMonth selected=$arrForm.search_buy_end_month}-->
 									</select>月
-									<select name="search_buy_end_day" style="<!--{$arrErr.search_buy_end_year|sfGetErrorColor}-->">
+									<select name="buy_end_day" style="<!--{$arrErr.buy_end_year|sfGetErrorColor}-->">
 										<option value="" selected="selected">----</option>
 										<!--{html_options options=$arrDay selected=$arrForm.search_buy_end_day}-->
 									</select>日
@@ -183,21 +183,21 @@
 							<tr class="fs12n">
 								<td bgcolor="#f2f1ec" width="110">購入商品名</td>
 								<td bgcolor="#ffffff" width="194">
-									<!--{if $arrErr.search_buy_product_name}--><span class="red12"><!--{$arrErr.search_buy_product_name}--></span><!--{/if}-->
-									<span style="<!--{$arrErr.search_buy_product_name|sfGetErrorColor}-->">
-									<input type="text" name="search_buy_product_name" maxlength="<!--{$smarty.const.STEXT_LEN}-->" value="<!--{$arrForm.search_buy_product_name|escape}-->" size="30" class="box30" style="<!--{$arrErr.search_buy_product_name|sfGetErrorColor}-->"/>
+									<!--{if $arrErr.buy_product_name}--><span class="red12"><!--{$arrErr.buy_product_name}--></span><!--{/if}-->
+									<span style="<!--{$arrErr.buy_product_name|sfGetErrorColor}-->">
+									<input type="text" name="buy_product_name" maxlength="<!--{$smarty.const.STEXT_LEN}-->" value="<!--{$arrForm.search_buy_product_name|escape}-->" size="30" class="box30" style="<!--{$arrErr.buy_product_name|sfGetErrorColor}-->"/>
 									</span>
 								</td>
 								<td bgcolor="#f2f1ec" width="110">購入商品コード</td>
 								<td bgcolor="#ffffff" width="195">
-								<!--{if $arrErr.search_buy_product_code}--><span class="red12"><!--{$arrErr.search_buy_product_code}--></span><!--{/if}-->
-								<input type="text" name="search_buy_product_code" value="<!--{$arrForm.search_buy_product_code}-->" maxlength="<!--{$smarty.const.STEXT_LEN}-->" style="<!--{$arrErr.search_buy_product_code|sfGetErrorColor}-->" >
+								<!--{if $arrErr.buy_product_code}--><span class="red12"><!--{$arrErr.buy_product_code}--></span><!--{/if}-->
+								<input type="text" name="buy_product_code" value="<!--{$arrForm.search_buy_product_code}-->" maxlength="<!--{$smarty.const.STEXT_LEN}-->" style="<!--{$arrErr.buy_product_code|sfGetErrorColor}-->" >
 								</td>				
 							</tr>
 							<tr class="fs12n">
 								<td bgcolor="#f2f1ec" width="110">カテゴリ</td>
 								<td bgcolor="#ffffff" width="499" colspan="3">
-									<select name="search_category_id" style="<!--{if $arrErr.search_category_id != ""}-->background-color: <!--{$smarty.const.ERR_COLOR}--><!--{/if}-->">
+									<select name="category_id" style="<!--{if $arrErr.category_id != ""}-->background-color: <!--{$smarty.const.ERR_COLOR}--><!--{/if}-->">
 										<option value="">選択してください</option>
 										<!--{html_options options=$arrCatList selected=$arrForm.search_category_id}-->
 									</select>
