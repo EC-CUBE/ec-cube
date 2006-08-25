@@ -87,7 +87,7 @@ self.moveTo(20,20);self.focus();
 											 ±ß</td>
 										</tr>
 										<tr class="fs12n">
-											<td width="100" bgcolor="#f0f0f0">ÍøÍÑ¾ò·ï(±ß)<span class="red"> *</span></td>
+											<td width="100" bgcolor="#f0f0f0">ÍøÍÑ¾ò·ï(±ß)</td>
 											<td width="340" bgcolor="#ffffff">
 											<!--{assign var=key_from value="rule"}-->
 											<!--{assign var=key_to value="upper_rule"}-->
