@@ -59,7 +59,7 @@
 												<tr class="fs12">
 													<td align="center" width="90"><!--{if $arrPaymentListFree[cnt].rule > 0}--><!--{$arrPaymentListFree[cnt].rule|escape|number_format}--><!--{else}-->無制限<!--{/if}--></td>
 													<td align="center"> 〜 </td>
-													<td align="right" width="90"><!--{if $arrPaymentListFree[cnt].upper_rule > 0}--><!--{$arrPaymentListFree[cnt].upper_rule|escape|number_format}--><!--{else}-->無制限<!--{/if}--></td>
+													<td align="center" width="90"><!--{if $arrPaymentListFree[cnt].upper_rule > 0}--><!--{$arrPaymentListFree[cnt].upper_rule|escape|number_format}--><!--{else}-->無制限<!--{/if}--></td>
 												</tr>
 											</table>
 										<td width="116"><!--{assign var=key value="`$arrPaymentListFree[cnt].deliv_id`"}--><!--{$arrDelivList[$key]|default:"未登録"}--></td>
