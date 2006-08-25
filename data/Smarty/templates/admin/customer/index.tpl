@@ -41,7 +41,14 @@
 <table width="878" border="0" cellspacing="0" cellpadding="0" summary=" ">
 <form name="form1" id="form1" method="post" action="<!--{$smarty.server.PHP_SELF}-->">
 <!--{foreach from=$smarty.post key="key" item="item"}-->
-<!--{if $key ne "mode" && $key ne "del_mode" && $key ne "edit_customer_id" && $key ne "del_customer_id" && $key ne "search_pageno" && $key ne "csv_mode"}--><input type="hidden" name="<!--{$key|escape}-->" value="<!--{$item|escape}-->"><!--{/if}-->
+<!--{if $key ne "mode" && $key ne "del_mode" && $key ne "edit_customer_id" && $key ne "del_customer_id" && $key ne "search_pageno" && $key ne "csv_mode" && $key ne "job" && $key ne "sex"}--><input type="hidden" name="<!--{$key|escape}-->" value="<!--{$item|escape}-->"><!--{/if}-->
+<!--{foreach from=$smarty.post.job key="key" item="item"}-->
+<input type="hidden" name="job[]" value=<!--{$item}-->>
+<!--{/foreach}-->
+<!--{foreach from=$smarty.post.sex key="key" item="item"}-->
+<input type="hidden" name="sex[]" value=<!--{$item}-->>
+<!--{/foreach}-->
+
 <!--{/foreach}-->
 <input type="hidden" name="mode" value="search">
 <input type="hidden" name="del_mode" value="">

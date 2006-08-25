@@ -28,6 +28,10 @@
 <!--{foreach from=$smarty.post.job key="key" item="item"}-->
 <input type="hidden" name="job[]" value=<!--{$item}-->>
 <!--{/foreach}-->
+<!--{foreach from=$smarty.post.sex key="key" item="item"}-->
+<input type="hidden" name="sex[]" value=<!--{$item}-->>
+<!--{/foreach}-->
+
 </form>
 
 <form name="form1" id="form1" method="post" action="<!--{$smarty.server.PHP_SELF}-->">
