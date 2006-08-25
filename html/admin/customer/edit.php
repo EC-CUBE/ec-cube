@@ -124,6 +124,9 @@ if ( $_POST["mode"] != "edit" && is_numeric($_POST["customer_id"])) {
 		}
 		//購入履歴情報の取得
 		$objPage->arrPurchaseHistory = lfPurchaseHistory($_POST['customer_id']);
+		// 支払い方法の取得
+		$objPage->arrPayment = sfGetIDValueList("dtb_payment", "payment_id", "payment_method");
+		
 	} else {
 		//-- 確認
 		if ($_POST["mode"] == "confirm") {
