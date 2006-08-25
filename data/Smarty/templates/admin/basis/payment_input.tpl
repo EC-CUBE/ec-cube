@@ -87,7 +87,7 @@ self.moveTo(20,20);self.focus();
 											 ±ß</td>
 										</tr>
 										<tr class="fs12n">
-											<td width="90" bgcolor="#f0f0f0">ÍøÍÑ¾ò·ï(¡Á±ß°Ê¾å)<span class="red"> *</span></td>
+											<td width="90" bgcolor="#f0f0f0">ÍøÍÑ¾ò·ï(±ß)<span class="red"> *</span></td>
 											<td width="350" bgcolor="#ffffff">
 											<!--{assign var=key value="rule"}-->
 											<span class="red12"><!--{$arrErr[$key]}--></span>

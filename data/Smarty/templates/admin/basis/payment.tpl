@@ -55,7 +55,7 @@
 										<td width="116"><!--{$arrPaymentListFree[cnt].payment_method|escape}--></td>
 										<td width="96" align="right"><!--{$arrPaymentListFree[cnt].charge|escape|number_format}--></td>
 										<td width="194" align="center">
-											<table width="194" border="0" cellspacing="0" cellpadding="0" summary=" ">
+											<table width="185" border="0" cellspacing="0" cellpadding="0" summary=" ">
 												<tr class="fs12">
 													<td align="center" width="80"><!--{if $arrPaymentListFree[cnt].rule > 0}--><!--{$arrPaymentListFree[cnt].rule|escape|number_format}--><!--{else}-->0<!--{/if}--></td>
 													<td align="center"> ¡Á </td>
