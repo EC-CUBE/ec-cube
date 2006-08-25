@@ -87,7 +87,7 @@
 						<table width="678" border="0" cellspacing="1" cellpadding="8" summary=" ">
 							<tr class="fs12n">
 								<td bgcolor="#f2f1ec" width="110">∏‹µ“•≥°º•…</td>
-								<td bgcolor="#ffffff" width="194"><!--{if $arrErr.customer_id}--><span class="red12"><!--{$arrErr.customer_id}--></span><br><!--{/if}--><input type="text" name="customer_id" maxlength="<!--{$smarty.const.INT_LEN}-->" value="<!--{$arrForm.search_customer_id|escape}-->" size="30" class="box30" <!--{if $arrErr.customer_id}--><!--{sfSetErrorStyle}--><!--{/if}--> /></td>
+								<td bgcolor="#ffffff" width="194"><!--{if $arrErr.customer_id}--><span class="red12"><!--{$arrErr.customer_id}--></span><br><!--{/if}--><input type="text" name="customer_id" maxlength="<!--{$smarty.const.INT_LEN}-->" value="<!--{$arrForm.customer_id|escape}-->" size="30" class="box30" <!--{if $arrErr.customer_id}--><!--{sfSetErrorStyle}--><!--{/if}--> /></td>
 								<td bgcolor="#f2f1ec" width="110">≈‘∆ª…‹∏©</td>
 								<td bgcolor="#ffffff" width="195">
 									<!--{if $arrErr.pref}--><span class="red12"><!--{$arrErr.pref}--></span><br><!--{/if}-->

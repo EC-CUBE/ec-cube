@@ -25,6 +25,7 @@
 <!--{foreach from=$smarty.post key="key" item="item"}-->
 	<!--{if $key ne "customer_id" && $key ne "mode" && $key ne "del_mode" && $key ne "edit_customer_id" && $key ne "del_customer_id" && $key ne "csv_mode"}--><input type="hidden" name="<!--{$key|escape}-->" value="<!--{$item|escape}-->"><!--{/if}-->
 <!--{/foreach}-->
+<input type="hidden" name="job[]" value=$smarty.post.job"
 </form>
 
 <form name="form1" id="form1" method="post" action="<!--{$smarty.server.PHP_SELF}-->">
