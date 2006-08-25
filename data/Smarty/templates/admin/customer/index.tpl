@@ -15,7 +15,7 @@
 	
 	function fnDelete(customer_id) {
 		if (confirm('この顧客情報を削除しても宜しいですか？')) {
-			document.form1.del_mode.value = "delete"
+			document.form1.mode.value = "delete"
 			document.form1['del_customer_id'].value = customer_id;
 			document.form1.submit();
 			return false;

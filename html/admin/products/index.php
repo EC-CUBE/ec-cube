@@ -67,7 +67,7 @@ if(sfIsInt($_POST['campaign_id']) && $_POST['mode'] == "camp_search") {
 	}
 }
 
-	sfprintr($_POST);
+sfprintr($_POST);
 
 
 // POST値の引き継ぎ
