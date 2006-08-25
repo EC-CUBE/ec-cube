@@ -37,16 +37,15 @@ $objPage->arrPageData = $arrPageData;
 $page_id = $_POST['page_id'];
 
 if($_POST['mode'] == "confirm") {
-	
-	$arrPOST = lfConvertParam($_POST);
-	
-	sfprintr($arrPOST);
-	
 	// エラーチェック
 	$objPage->arrErr[$page_id] = lfErrorCheck($arrPOST['meta'][$page_id]);
 	
 	// エラーがなければデータを更新
 	if(count($objPage->arrErr[$page_id]) == 0) {
+
+		// 更新データの変換
+		$arrMETA = lfConvertParam($_POST['meta']['$page_id']);
+
 		// 更新データ配列生成
 		$arrUpdData = array($arrPOST['meta'][$page_id]['author'], $arrPOST['meta'][$page_id]['description'], $arrPOST['meta'][$page_id]['keyword'], $page_id);
 		// データ更新
