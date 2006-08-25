@@ -75,8 +75,6 @@ class SC_SelectSql {
 		// TO
 		$date2 = $to_month . "/" . $to_day . "/" . $to_year;
 		
-		sfprintr($date2);
-		
 		// 開始期間だけ指定の場合
 		if( ( $from_year != "" ) && ( $from_month != "" ) && ( $from_day != "" ) &&	( $to_year == "" ) && ( $to_month == "" ) && ( $to_day == "" ) ) {
 			$this->setWhere( $column ." >= " . $date1 );
