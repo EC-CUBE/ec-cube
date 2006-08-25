@@ -214,7 +214,7 @@ if ($_POST['mode'] == "search" || $_POST['mode'] == "csv"  || $_POST['mode'] == 
 				$page_max = SEARCH_PMAX;
 			}
 			// ページ送りの取得
-			$objNavi = new SC_PageNavi($_POST['search_pageno'], $linemax, $page_max, "fnCustomerPage", NAVI_PMAX);
+			$objNavi = new SC_PageNavi($_POST['pageno'], $linemax, $page_max, "fnCustomerPage", NAVI_PMAX);
 			$startno = $objNavi->start_row;
 			$objPage->arrPagenavi = $objNavi->arrPagenavi;		
 		}
