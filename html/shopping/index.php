@@ -104,15 +104,16 @@ $objPage->arrDay = $objDate->getDay();
 if($objPage->year == '') {
 	$objPage->year = '----';
 }
-if($objPage->month == '') {
-	$objPage->month = '--';
-}
-if($objPage->day == '') {
-	$objPage->day = '--';
-}
 
 // 入力値の取得
 $objPage->arrForm = $objFormParam->getFormParamList();
+
+if($objPage->arrForm['month']['value'] == '') {
+	$objPage->month = '--';
+}
+if($objPage->arrForm['day']['value'] == '') {
+	$objPage->day = '--';
+}
 
 sfprintr($objPage->arrForm);
 

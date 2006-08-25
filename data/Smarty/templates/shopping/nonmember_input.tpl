@@ -198,15 +198,15 @@
 							<tr>
 								<td class="fs12n"><span class="red"><!--{$arrErr.year}--><!--{$arrErr.month}--><!--{$arrErr.day}--></span>
 									<select name="year" style="<!--{$arrErr.year|sfGetErrorColor}-->">
-										<!--{html_options options=$arrYear selected=$arrForm.year}-->
+										<!--{html_options options=$arrYear selected=$arrForm.year.value}-->
 									</select>Ç¯
 									<select name="month" style="<!--{$arrErr.year|sfGetErrorColor}-->">
 										<option value="">--</option>
-										<!--{html_options options=$arrMonth selected=$arrForm.month}-->
+										<!--{html_options options=$arrMonth selected=$arrForm.month.value}-->
 									</select>·î
 									<select value="" name="day" style="<!--{$arrErr.year|sfGetErrorColor}-->">
 										<option value="">--</option>\
-										<!--{html_options options=$arrDay selected=$arrForm.day}-->
+										<!--{html_options options=$arrDay selected=$arrForm.day.value}-->
 									</select>Æü</td>
 							</tr>
 							<tr><td height="2"></td></tr>
