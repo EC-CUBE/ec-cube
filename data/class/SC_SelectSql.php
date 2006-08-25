@@ -72,8 +72,8 @@ class SC_SelectSql {
 		// FROM
 		$date1 = $from_year . "/" . $from_month . "/" . $from_day;
 		
-		// TO(TOは+1日)
-		$date2 = date("Y/m/d", strtotime(date('Y/m/d', $date1 . " + day"));
+		// TO
+		$date2 = $to_month . "/" . $to_day . "/" . $to_year;
 		
 		sfprintr($date2);
 		
@@ -85,14 +85,13 @@ class SC_SelectSql {
 		//　開始~終了
 		if( ( $from_year != "" ) && ( $from_month != "" ) && ( $from_day != "" ) && 
 			( $to_year != "" ) && ( $to_month != "" ) && ( $to_day != "" ) ) {
-			$this->setWhere( $column ." >= ? AND ". $column . " < ?" );
+			$this->setWhere( $column ." >= " . $date1 ." AND ". $column . " < date(" . $date2 . ")+1" );
 			$return = array($date1, $date2);
 		}
 
 		// 終了期間だけ指定の場合
 		if( ( $from_year == "" ) && ( $from_month == "" ) && ( $from_day == "" ) && ( $to_year != "" ) && ( $to_month != "" ) && ( $to_day != "" ) ) {
-			$this->setWhere( $column ." < ?" );
-			$return = array($date2);
+			$this->setWhere( $column ." < date(" . $date2 . ")+1");
 		}
 		return $return;
 	}	
