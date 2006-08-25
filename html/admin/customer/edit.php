@@ -51,6 +51,8 @@ $objPage->arrYear = $objDate->getYear();	//　日付プルダウン設定
 $objPage->arrMonth = $objDate->getMonth();
 $objPage->arrDay = $objDate->getDay();
 
+sfprintr($_POST);
+
 //---- 登録用カラム配列
 $arrRegistColumn = array(
 							 array(  "column" => "name01",		"convert" => "aKV" ),
