@@ -33,7 +33,7 @@
 <!--{/foreach}-->
 </form>
 
-<form name="form1" id="form1" method="post" action="<!--{$smarty.server.PHP_SELF}-->">
+<form name="form2" id="form1" method="post" action="<!--{$smarty.server.PHP_SELF}-->">
 <input type="hidden" name="mode" value="confirm">
 <input type="hidden" name="edit_email" value="<!--{$tpl_edit_email}-->">
 <input type="hidden" name="customer_id" value="<!--{$list_data.customer_id|escape}-->">
@@ -252,7 +252,7 @@
 
 <!--¡ú¡ú¹ØÆþÍúÎò°ìÍ÷¡ú¡ú-->
 <table width="878" border="0" cellspacing="0" cellpadding="0" summary=" ">
-<form name="form2" id="form2" method="post" action="">
+<form name="form1" id="form2" method="post" action="">
 <input type="hidden" name="mode" value="edit">
 <input type="hidden" name="order_id" value="">
 <input type="hidden" name="search_pageno" value="<!--{$tpl_pageno}-->">
