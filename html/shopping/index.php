@@ -108,6 +108,8 @@ if($objPage->year == '') {
 // 入力値の取得
 $objPage->arrForm = $objFormParam->getFormParamList();
 
+sfprintr($objPage->arrForm);
+
 $objView->assignobj($objPage);
 $objView->display(SITE_FRAME);
 //--------------------------------------------------------------------------------------------------------------------------
