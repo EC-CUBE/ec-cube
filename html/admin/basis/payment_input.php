@@ -142,8 +142,6 @@ function lfRegistData($payment_id = "") {
 		$where = "payment_id = ?";
 		$objQuery->update("dtb_payment", $sqlval, $where, array($payment_id));
 	}
-	
-	$objQuery->getLastQuery(true);
 }
 
 
