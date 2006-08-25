@@ -379,7 +379,7 @@
 								<td width="" rowspan="2"><!--{$search_data[data].name01|escape}--> <!--{$search_data[data].name02|escape}-->(<!--{$search_data[data].kana01|escape}--> <!--{$search_data[data].kana02|escape}-->)</td>
 								<td width="" align="center" rowspan="2"><!--{if $search_data[data].sex eq 1}-->男性<!--{else}-->女性<!--{/if}--></td>
 								<td width=""><!--{$search_data[data].tel01|escape}-->-<!--{$search_data[data].tel02|escape}-->-<!--{$search_data[data].tel03|escape}--></td>
-								<td width="" align="center" rowspan="2"><span class="icon_edit"><a href="#" onclick="return fnEdit('<!--{$search_data[data].customer_id|escape}-->');"><!--{/if}-->編集<!--{if $search_data[data].status eq 1}--></a><!--{/if}--></span>
+								<td width="" align="center" rowspan="2"><span class="icon_edit"><!--{if $search_data[data].status eq 2}--><a href="#" onclick="return fnEdit('<!--{$search_data[data].customer_id|escape}-->');"><!--{/if}-->編集<!--{if $search_data[data].status eq 1}--></a><!--{/if}--></span>
 								</td>
 								<td width="" align="center" rowspan="2"><span class="icon_delete"><a href="#" onclick="return fnDelete('<!--{$search_data[data].customer_id|escape}-->');">削除</a></span></td>
 							</tr>
