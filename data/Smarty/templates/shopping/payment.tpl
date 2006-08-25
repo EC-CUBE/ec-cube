@@ -82,7 +82,7 @@
 					<!--{/if}-->
 					&nbsp;&nbsp;&nbsp;
 					<!--{assign var=key value="deliv_time_id"}-->
-					<span class="red12"><!--{$arrErr[$key]}--></span>
+					<span class="red"><!--{$arrErr[$key]}--></span>
 					<strong>お届け時間指定：</strong>&nbsp;<select name="<!--{$key}-->" style="<!--{$arrErr[$key]|sfGetErrorColor}-->">	
 					<option value="" selected="">指定なし</option>
 					<!--{html_options options=$arrDelivTime selected=$arrForm[$key].value}-->
@@ -102,7 +102,7 @@
 			<tr>
 				<td class="fs12"><!--★その他お問い合わせ事項★-->
 					<!--{assign var=key value="message"}-->
-					<span class="red12"><!--{$arrErr[$key]}--></span>
+					<span class="red"><!--{$arrErr[$key]}--></span>
 					<textarea name="<!--{$key}-->" maxlength="<!--{$arrForm[$key].length}-->" style="<!--{$arrErr[$key]|sfGetErrorColor}-->" cols="80" rows="8" class="area80"><!--{$arrForm[$key].value|escape}--></textarea>
 					<span class="red12"> （<!--{$smarty.const.LTEXT_LEN}-->文字まで）</span>
 				</td>
