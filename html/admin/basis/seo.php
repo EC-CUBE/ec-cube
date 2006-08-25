@@ -38,18 +38,20 @@ $page_id = $_POST['page_id'];
 
 if($_POST['mode'] == "confirm") {
 	
+	$arrPOST = lfConvertParam($_POST);
+	
 	// エラーチェック
-	$objPage->arrErr[$page_id] = lfErrorCheck($_POST['meta'][$page_id]);
+	$objPage->arrErr[$page_id] = lfErrorCheck($arrPOST['meta'][$page_id]);
 	
 	// エラーがなければデータを更新
 	if(count($objPage->arrErr[$page_id]) == 0) {
 		// 更新データ配列生成
-		$arrUpdData = array($_POST['meta'][$page_id]['author'], $_POST['meta'][$page_id]['description'], $_POST['meta'][$page_id]['keyword'], $page_id);
+		$arrUpdData = array($arrPOST['meta'][$page_id]['author'], $arrPOST['meta'][$page_id]['description'], $arrPOST['meta'][$page_id]['keyword'], $page_id);
 		// データ更新
 		lfUpdPageData($arrUpdData);
 	}else{	
 		// POSTのデータを再表示
-		$arrPageData = lfSetData($arrPageData, $_POST['meta']);
+		$arrPageData = lfSetData($arrPageData, $arrPOST['meta']);
 		$objPage->arrPageData = $arrPageData;
 	}
 }
@@ -133,5 +135,33 @@ function lfSetData($arrPageData, $arrDispData){
 	
 	return $arrPageData;
 }
+
+/* 取得文字列の変換 */
+function lfConvertParam($array) {
+	/*
+	 *	文字列の変換
+	 *	K :  「半角(ﾊﾝｶｸ)片仮名」を「全角片仮名」に変換
+	 *	C :  「全角ひら仮名」を「全角かた仮名」に変換
+	 *	V :  濁点付きの文字を一文字に変換。"K","H"と共に使用します	
+	 *	n :  「全角」数字を「半角(ﾊﾝｶｸ)」に変換
+	 *  a :  全角英数字を半角英数字に変換する
+	 */
+	// 人物基本情報
+	
+	// スポット商品
+	$arrConvList['author'] = "KVa";
+	$arrConvList['description'] = "KVa";
+	$arrConvList['keyword'] = "KVa";
+
+	// 文字変換
+	foreach ($arrConvList as $key => $val) {
+		// POSTされてきた値のみ変換する。
+		if(isset($array[$key])) {
+			$array[$key] = mb_convert_kana($array[$key] ,$val);
+		}
+	}
+	return $array;
+}
+
 
 ?>

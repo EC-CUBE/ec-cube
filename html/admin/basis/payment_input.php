@@ -144,7 +144,6 @@ function lfRegistData($payment_id = "") {
 	}
 }
 
-
 /*　利用条件の数値チェック */
 
 /* 入力内容のチェック */
