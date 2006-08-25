@@ -71,7 +71,7 @@ class SC_SelectSql {
 		
 		// FROM
 //		$date1 = date("Y/m/d", mktime(0,0,0,$from_month,$from_day,$from_year));	
-		$date1 = $from_year . "/" . $from_month . "/" . $from_day;
+		$date1 = $from_year . "a/" . $from_month . "/" . $from_day;
 		
 		sfprintr($date1);
 		
