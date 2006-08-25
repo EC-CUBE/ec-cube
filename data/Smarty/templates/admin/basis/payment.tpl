@@ -44,7 +44,7 @@
 									<tr align="center" bgcolor="#f2f1ec" class="fs12n">
 										<td width="116">支払方法</td>
 										<td width="96">手数料（円）</td>
-										<td width="194">利用条件</td>
+										<td width="194">利用条件（円）</td>
 										<td width="116">配送サービス</td>
 										<td width="66">編集</td>
 										<td width="66">削除</td>
