@@ -93,6 +93,8 @@ $objPage->arrHidden['search_pageno'] = $_POST['search_pageno'];
 
 // 商品削除
 if ($_POST['mode'] == "delete") {
+	
+	sfprintr($_POST);
 	if($_POST['category_id'] != "") {
 		// ランク付きレコードの削除
 		$where = "category_id = " . addslashes($_POST['category_id']);
