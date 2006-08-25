@@ -70,7 +70,7 @@
 				<td class="fs12n">
 				<!--★配達日指定★-->
 					<!--{assign var=key value="deliv_date"}-->
-					<span class="red12"><!--{$arrErr[$key]}--></span>
+					<span class="red"><!--{$arrErr[$key]}--></span>
 					<strong>お届け日指定：</strong>&nbsp;
 					<!--{if !$arrDelivDate}-->
 						ご指定頂けません。

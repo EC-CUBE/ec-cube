@@ -12,8 +12,7 @@
 ご決済方法：<!--{$arrOrder.payment_method}-->
 　お届け日：<!--{$arrOrder.deliv_date|default:"指定なし"}-->
 お届け時間：<!--{$arrOrder.deliv_time|default:"指定なし"}-->
-メッセージ：<!--{$arrOrder.message}-->
-
+メッセージ：<!--{$Message_tmp}-->
 ◎お届け先
 　お名前　：<!--{$arrOrder.deliv_name01}--> <!--{$arrOrder.deliv_name02}-->　様
 　郵便番号：〒<!--{$arrOrder.deliv_zip01}-->-<!--{$arrOrder.deliv_zip02}-->
