@@ -208,8 +208,8 @@ if ($_POST['mode'] == "search" || $_POST['mode'] == "csv"  || $_POST['mode'] == 
 			$objPage->tpl_linemax = $linemax;				// 何件が該当しました。表示用
 	
 			// ページ送りの処理
-			if(is_numeric($_POST['search_page_max'])) {	
-				$page_max = $_POST['search_page_max'];
+			if(is_numeric($_POST['page_max'])) {	
+				$page_max = $_POST['page_max'];
 			} else {
 				$page_max = SEARCH_PMAX;
 			}
@@ -330,48 +330,48 @@ function lfSetWhere($arrForm){
 		if($val == "") continue;
 		
 		switch ($key) {
-			case 'search_product_id':
+			case 'product_id':
 				$where .= " AND product_id = ?";
 				$arrval[] = $val;
 				break;
-			case 'search_product_class_id':
+			case 'product_class_id':
 				$where .= " AND product_id IN (SELECT product_id FROM dtb_products_class WHERE product_class_id = ?)";
 				$arrval[] = $val;
 				break;
-			case 'search_name':
+			case 'name':
 				$where .= " AND name ILIKE ?";
 				$arrval[] = "%$val%";
 				break;
-			case 'search_category_id':
+			case 'category_id':
 				list($tmp_where, $tmp_arrval) = sfGetCatWhere($val);
 				if($tmp_where != "") {
 					$where.= " AND $tmp_where";
 					$arrval = array_merge($arrval, $tmp_arrval);
 				}
 				break;
-			case 'search_product_code':
+			case 'product_code':
 				$where .= " AND product_id IN (SELECT product_id FROM dtb_products_class WHERE product_code ILIKE ? GROUP BY product_id)";
 				$arrval[] = "%$val%";
 				break;
-			case 'search_startyear':
-				$date = sfGetTimestamp($_POST['search_startyear'], $_POST['search_startmonth'], $_POST['search_startday']);
+			case 'startyear':
+				$date = sfGetTimestamp($_POST['startyear'], $_POST['startmonth'], $_POST['startday']);
 				$where.= " AND update_date >= ?";
 				$arrval[] = $date;
 				break;
-			case 'search_endyear':
-				$date = sfGetTimestamp($_POST['search_endyear'], $_POST['search_endmonth'], $_POST['search_endday']);
+			case 'endyear':
+				$date = sfGetTimestamp($_POST['endyear'], $_POST['endmonth'], $_POST['endday']);
 				$where.= " AND update_date <= ?";
 				$arrval[] = $date;
 				break;
-			case 'search_product_flag':
+			case 'product_flag':
 				global $arrSTATUS;
-				$search_product_flag = sfSearchCheckBoxes($val);
-				if($search_product_flag != "") {
+				$product_flag = sfSearchCheckBoxes($val);
+				if($product_flag != "") {
 					$where.= " AND product_flag LIKE ?";
-					$arrval[] = $search_product_flag;					
+					$arrval[] = $product_flag;					
 				}
 				break;
-			case 'search_status':
+			case 'status':
 				$tmp_where = "";
 				foreach ($val as $element){
 					if ($element != ""){
