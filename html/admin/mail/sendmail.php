@@ -121,7 +121,10 @@ for( $i = 0; $i < count( $time_data ); $i++ ) {
 					,$objSite->data["email04"]					//¡¡return_path
 					,$objSite->data["email04"]					//¡¡errors_to
 				 );
-				 
+	
+	if ($_GET['mode'] = "now") {
+		header("Location: /admin/mail/history.php");
+	}
 	echo "complete\n";
 
 }
