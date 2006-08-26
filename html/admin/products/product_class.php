@@ -207,7 +207,9 @@ function lfGetClassCatListEdit($product_id) {
 	$sql.= "ORDER BY rank1 DESC, rank2 DESC";
 	
 	$arrList =  $objQuery->getAll($sql, array($product_id, $product_id));
-		$objQuery->getlastquery(true);
+	
+	sfprintr($arrList);
+//		$objQuery->getlastquery(true);
 
 	
 	$objPage->arrForm["class_id1"] = $arrList[0]['class_id1'];
