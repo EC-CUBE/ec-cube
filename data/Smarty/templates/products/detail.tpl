@@ -67,7 +67,7 @@ function lnSetSelect(form, name1, name2, val) {
 						<table width="290" border="0" cellspacing="0" cellpadding="0" summary=" ">	
 							<tr>
 								<!--{if $arrProduct.main_large_image != ""}-->
-									<div id="picture"><a href="<!--{$smarty.server.PHP_SELF}-->" onclick="win01('./detail_image.php?product_id=<!--{$arrProduct.product_id}-->&image=main_large_image<!--{if $smarty.get.admin == 'on'}-->&admin=on<!--{/if}-->','detail_image','520','534'); return false;" target="_blank"><!--¥á¥¤¥ó²èÁü--><!--{assign var=key value="main_image"}--><img src="<!--{$arrFile[$key].filepath}-->" width="<!--{$arrFile[$key].width}-->" height="<!--{$arrFile[$key].height}-->" alt="<!--{$arrProduct.name|escape}-->" /></a></div>						
+									<div id="picture"><a href="<!--{$smarty.server.PHP_SELF}-->" onclick="win01('./detail_image.php?product_id=<!--{$arrProduct.product_id}-->&image=main_large_image<!--{if $smarty.get.admin == 'on'}-->&admin=on<!--{/if}-->','detail_image','560','580'); return false;" target="_blank"><!--¥á¥¤¥ó²èÁü--><!--{assign var=key value="main_image"}--><img src="<!--{$arrFile[$key].filepath}-->" width="<!--{$arrFile[$key].width}-->" height="<!--{$arrFile[$key].height}-->" alt="<!--{$arrProduct.name|escape}-->" /></a></div>						
 								<!--{else}-->
 									<div id="picture"><!--¥á¥¤¥ó²èÁü--><!--{assign var=key value="main_image"}--><img src="<!--{$arrFile[$key].filepath}-->" width="<!--{$arrFile[$key].width}-->" height="<!--{$arrFile[$key].height}-->" alt="<!--{$arrProduct.name|escape}-->" /></div>
 								<!--{/if}-->
@@ -76,7 +76,7 @@ function lnSetSelect(form, name1, name2, val) {
 							<tr>
 								<td>
 								<!--{if $arrProduct.main_large_image != ""}-->
-									<!--¡ú³ÈÂç¤¹¤ë¡ú--><a href="<!--{$smarty.server.PHP_SELF}-->" onclick="win01('./detail_image.php?product_id=<!--{$arrProduct.product_id}-->&image=main_large_image<!--{if $smarty.get.admin == 'on'}-->&admin=on<!--{/if}-->','detail_image', '520', '534'); return false;" target="_blank"><img src="/img/products/b_expansion.gif" width="94" height="13" alt="²èÁü¤ò³ÈÂç¤¹¤ë" /></a>
+									<!--¡ú³ÈÂç¤¹¤ë¡ú--><a href="<!--{$smarty.server.PHP_SELF}-->" onclick="win01('./detail_image.php?product_id=<!--{$arrProduct.product_id}-->&image=main_large_image<!--{if $smarty.get.admin == 'on'}-->&admin=on<!--{/if}-->','detail_image', '560', '580'); return false;" target="_blank"><img src="/img/products/b_expansion.gif" width="94" height="13" alt="²èÁü¤ò³ÈÂç¤¹¤ë" /></a>
 								<!--{/if}-->
 								</td>
 							</tr>

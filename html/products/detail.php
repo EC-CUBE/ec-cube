@@ -25,7 +25,7 @@ class LC_Page {
 		global $arrRECOMMEND;
 		$this->arrRECOMMEND = $arrRECOMMEND;
 		
-//		$this->tpl_mainpage="products/detail.tpl";
+		$this->tpl_mainpage="products/detail.tpl";
 		
 		/*
 		 session_start時のno-cacheヘッダーを抑制することで
