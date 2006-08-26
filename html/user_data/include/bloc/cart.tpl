@@ -9,7 +9,7 @@
 		<table width="146" border="0" cellspacing="0" cellpadding="0" summary=" ">
 			<tr><td height="5"></td></tr>
 			<tr>
-				<td class="fs10">商品数：<!--{$arrCartList.0.TotalQuantity|default:0}-->点</td>
+				<td class="fs10">商品数：<!--{$arrCartList.0.TotalQuantity|number_format|default:0}-->点</td>
 			</tr>
 			<tr><td height="10"><img src="/img/side/line_146.gif" width="146" height="1" alt=""></td></tr>
 			<tr>

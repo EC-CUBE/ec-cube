@@ -67,7 +67,7 @@
 							<tr class="fs12n">
 								<td bgcolor="#ffffff" align="left">
 									<!--{ if $arrErr.filename != "" }--> <div align="center"> <span class="red12"><!--{$arrErr.filename}--></span></div> <!--{/if}-->
-									ファイル名：<input type="text" name="filename" value="<!--{$arrBlocData.filename|escape}-->" maxlength="<!--{$smarty.const.STEXT_LEN}-->" style="<!--{if $arrErr.filename != ""}-->background-color: <!--{$smarty.const.ERR_COLOR}--><!--{/if}-->" size="60" class="box60" />.tpl<span class="red"> （上限<!--{$smarty.const.STEXT_LEN}-->文字）</span>
+									ファイル名：<input type="text" name="filename" value="<!--{$arrBlocData.filename|escape}-->" maxlength="<!--{$smarty.const.STEXT_LEN}-->" style="<!--{if $arrErr.filename != ""}-->background-color: <!--{$smarty.const.ERR_COLOR}--><!--{/if}--> ime-mode: disabled;" size="60" class="box60" />.tpl<span class="red"> （上限<!--{$smarty.const.STEXT_LEN}-->文字）</span>
 								</td>
 							</tr>
 						
