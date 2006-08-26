@@ -264,7 +264,7 @@ class SC_CustomerList extends SC_SelectSql {
 	}
 	//購入商品コード検索用SQL
 	function getBuyList(){
-		$this->select = "SELECT A.customer_id, A.name01, A.name02, A.kana01, A.kana02, A.sex, A.email, A.tel01, A.tel02, A.tel03, A.pref, A.mail_flag, A.other_flag, A.other_data, B.order_email, B.order_id, C.product_code 
+		$this->select = "SELECT A.customer_id, A.name01, A.name02, A.kana01, A.kana02, A.sex, A.email, A.tel01, A.tel02, A.tel03, A.pref, A.mail_flag, B.order_email, B.order_id, C.product_code 
 						FROM (dtb_customer LEFT OUTER JOIN dtb_customer_mail USING (email)) AS A LEFT OUTER JOIN dtb_order AS B ON 
 						A.email=B.order_email LEFT OUTER JOIN dtb_order_detail AS C ON B.order_id = C.order_id";
 	}

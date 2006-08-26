@@ -337,7 +337,7 @@ function lfRegistData($arrData){
 	$dtb_send_history["mail_method"] = $arrData['mail_method'];
 	$dtb_send_history["subject"] = $arrData['subject'];
 	$dtb_send_history["body"] = $arrData['body'];
-	$dtb_send_history["start_date"] = $arrData['send_year'] ."/".$arrData['send_month']."/".$arrData['send_day']." ".$arrData['send_hour'].":".$arrData['send_minutes'];
+	$dtb_send_history["start_date"] = "now()";
 	$dtb_send_history["creator_id"] = $_SESSION['member_id'];
 	$dtb_send_history["send_count"] = $dataCnt;
 	$arrData['body'] = "";
