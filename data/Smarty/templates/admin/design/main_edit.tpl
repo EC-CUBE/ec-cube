@@ -82,7 +82,7 @@ else if(navigator.userAgent.indexOf("Mozilla") >= 0){
 						<table width="678" border="0" cellspacing="1" cellpadding="8" summary=" ">
 							<tr class="fs12n">
 								<td bgcolor="#ffffff" align="left" colspan=2>
-									<!--{ if $arrErr.page_name != "" }--> <div align="left"> <span class="red12"><!--{$arrErr.page_name}--></span></div> <!--{/if}-->
+									<!--{ if $arrErr.page_name != "" }--> <div align="center"> <span class="red12"><!--{$arrErr.page_name}--></span></div> <!--{/if}-->
 									<!--{if $arrPageData.edit_flg == 2}-->
 										Ì¾¾Î¡§<!--{$arrPageData.page_name|escape}--><input type="hidden" name="page_name" value="<!--{$arrPageData.page_name|escape}-->" />
 									<!--{else}-->
@@ -92,7 +92,7 @@ else if(navigator.userAgent.indexOf("Mozilla") >= 0){
 							</tr>
 							<tr class="fs12n">
 								<td bgcolor="#ffffff" align="left" colspan=2>
-									<!--{ if $arrErr.url != "" }--> <div align="left"> <span class="red12"><!--{$arrErr.url}--></span></div> <!--{/if}-->
+									<!--{ if $arrErr.url != "" }--> <div align="center"> <span class="red12"><!--{$arrErr.url}--></span></div> <!--{/if}-->
 									URL¡§<!--{if $arrPageData.edit_flg == 2}-->
 											<!--{$user_URL}--><!--{$arrPageData.url|escape}-->
 											<input type="hidden" name="url" value="<!--{$arrPageData.filename|escape}-->" maxlength="<!--{$smarty.const.STEXT_LEN}-->" />
