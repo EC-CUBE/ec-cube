@@ -39,7 +39,7 @@
 
 <!--¡ú¡ú¥á¥¤¥ó¥³¥ó¥Æ¥ó¥Ä¡ú¡ú-->
 <table width="878" border="0" cellspacing="0" cellpadding="0" summary=" ">
-<form name="form1" id="form1" method="post" action="<!--{$smarty.server.PHP_SELF}-->">
+<form name="form_search" id="form1" method="post" action="<!--{$smarty.server.PHP_SELF}-->">
 <!--{foreach from=$smarty.post key="key" item="item"}-->
 <!--{if $key ne "mode" && $key ne "del_mode" && $key ne "edit_customer_id" && $key ne "del_customer_id" && $key ne "search_pageno" && $key ne "csv_mode" && $key ne "job" && $key ne "sex"}--><input type="hidden" name="<!--{$key|escape}-->" value="<!--{$item|escape}-->"><!--{/if}-->
 <!--{/foreach}-->
@@ -297,6 +297,17 @@
 
 <!--¡ú¡ú¸¡º÷·ë²Ì°ìÍ÷¡ú¡ú-->
 <table width="878" border="0" cellspacing="0" cellpadding="0" summary=" ">
+<form name="form1" id="form1" method="post" action="<!--{$smarty.server.PHP_SELF}-->">
+<!--{foreach from=$smarty.post key="key" item="item"}-->
+<!--{if $key ne "mode" && $key ne "del_mode" && $key ne "edit_customer_id" && $key ne "del_customer_id" && $key ne "search_pageno" && $key ne "csv_mode" && $key ne "job" && $key ne "sex"}--><input type="hidden" name="<!--{$key|escape}-->" value="<!--{$item|escape}-->"><!--{/if}-->
+<!--{/foreach}-->
+
+<input type="hidden" name="mode" value="search">
+<input type="hidden" name="del_mode" value="">
+<input type="hidden" name="edit_customer_id" value="">
+<input type="hidden" name="del_customer_id" value="">
+<input type="hidden" name="search_pageno" value="<!--{$smarty.post.search_pageno|escape}-->">
+<input type="hidden" name="csv_mode" value="">
 	<tr><td colspan="2"><img src="/img/contents/search_line.jpg" width="878" height="12" alt=""></td></tr>
 	<tr bgcolor="cbcbcb">
 		<td>
