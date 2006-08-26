@@ -193,6 +193,7 @@ function lfGetClassCatListEdit($product_id) {
 	$col = "class_id1, class_id2, name1, name2, rank1, rank2, ";
 	$col.= "product_class_id, product_id, T1_classcategory_id AS classcategory_id1, T2_classcategory_id AS classcategory_id2, ";
 	$col.= "product_code, stock, stock_unlimited, sale_limit, price01, price02, status";
+	$col.= " ,(SELECT name FROM dtb_products AS prd WHERE prd.product_id = T3.product_id) ";
 	
 	$sql = "SELECT $col FROM ";
 	$sql.= "( ";
