@@ -71,7 +71,7 @@
 								<table border="0" cellspacing="0" cellpadding="0" summary=" ">
 									<tr>
 										<td>
-											<a href="./class.php" onmouseover="chgImg('/img/contents/btn_back_on.jpg','back');" onmouseout="chgImg('/img/contents/btn_back.jpg','back');"><img src="/img/contents/btn_back.jpg" width="123" height="24" alt="前のページに戻る" border="0" name="back"></a>
+											<input type="image" onMouseover="chgImgImageSubmit('/img/contents/btn_regist_on.jpg',this)" onMouseout="chgImgImageSubmit('/img/contents/btn_regist.jpg',this)" src="/img/contents/btn_regist.jpg" width="123" height="24" alt="この内容で登録する" border="0" name="subm" >
 										</td>
 									</tr>
 								</table>

@@ -48,11 +48,33 @@
 								<td bgcolor="#ffffff" width="557" class="fs10n">
 								<span class="red12"><!--{$arrErr.name}--></span>
 								<input type="text" name="name" value="<!--{$arrForm.name|escape}-->" maxlength="<!--{$smarty.const.STEXT_LEN}-->" style="" size="30" class="box30"/>
-								<input type="submit" name="subm" value="登録" />
 								<span class="red"> （上限<!--{$smarty.const.STEXT_LEN}-->文字）</span>
 								</td>
 							</tr>
 						</table>
+						<table width="678" border="0" cellspacing="0" cellpadding="0" summary=" ">
+							<tr>
+								<td bgcolor="#cccccc"><img src="/img/common/_.gif" width="1" height="5" alt=""></td>
+								<td><img src="/img/contents/tbl_top.gif" width="676" height="7" alt=""></td>
+								<td bgcolor="#cccccc"><img src="/img/common/_.gif" width="1" height="5" alt=""></td>
+							</tr>
+							<tr>
+								<td bgcolor="#cccccc"><img src="/img/common/_.gif" width="1" height="10" alt=""></td>
+								<td bgcolor="#e9e7de" align="center">
+								<table border="0" cellspacing="0" cellpadding="0" summary=" ">
+									<tr>
+										<td>
+											<input type="image" onMouseover="chgImgImageSubmit('/img/contents/btn_regist_on.jpg',this)" onMouseout="chgImgImageSubmit('/img/contents/btn_regist.jpg',this)" src="/img/contents/btn_regist.jpg" width="123" height="24" alt="この内容で登録する" border="0" name="subm" >
+										</td>
+									</tr>
+								</table>
+								</td>
+								<td bgcolor="#cccccc"><img src="/img/common/_.gif" width="1" height="10" alt=""></td>
+							</tr>
+							<tr>
+								<td colspan="3"><img src="/img/contents/tbl_bottom.gif" width="678" height="8" alt=""></td>
+							</tr>
+						</table>					
 												
 						<table width="678" border="0" cellspacing="0" cellpadding="0" summary=" ">
 							<tr><td colspan="3"><img src="/img/contents/main_bar.jpg" width="678" height="10" alt=""></td></tr>
