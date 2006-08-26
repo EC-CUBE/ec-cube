@@ -118,7 +118,7 @@ aaa
 										<!--{$arrProduct.price02_min|sfPrePoint:$arrProduct.point_rate:$smarty.const.POINT_RULE:$arrProduct.product_id}-->¡Á<!--{$arrProduct.price02_max|sfPrePoint:$arrProduct.point_rate:$smarty.const.POINT_RULE:$arrProduct.product_id}-->
 									<!--{/if}-->
 								<!--{/if}-->
-								</span></span><span class="red10">Pt</span>
+								</span>Pt</span>
 								
 							</tr>
 							<tr><td height="15"></td></tr>
