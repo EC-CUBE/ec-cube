@@ -216,7 +216,7 @@ function lnSetSelect(form, name1, name2, val) {
 						<tr><td height="10"></td></tr>
 						<tr valign="top">
 							<!--{assign var=key value="sub_comment`$smarty.section.cnt.iteration`"}-->
-							<td class="fs12" align="left"><!--★サブテキスト★--><!--{$arrProduct[$key]|nl2br}--></td>
+							<td class="fs12" align="left"><!--★サブテキスト★--><!--{$arrProduct[$key]|nl2br}-->aa</td>
 							<!--拡大写真がある場合ここから-->
 							<!--{assign var=key value="sub_image`$smarty.section.cnt.iteration`"}-->
 							<!--{assign var=lkey value="sub_large_image`$smarty.section.cnt.iteration`"}-->
