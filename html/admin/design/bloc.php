@@ -222,7 +222,7 @@ function lfErrorCheck($array) {
 	global $objPage;
 	$objErr = new SC_CheckError($array);
 	
-	$objErr->doFunc(array("ブロック名", "bloc_name", STEXT_LEN), array("EXIST_CHECK", "SPTAB_CHECK", "MAX_LENGTH_CHECK"));
+	$objErr->doFunc(array("ブロック名", "bloc_name", STEXT_LEN), array("EXIST_CHECK", "SPTAB_CHECK", "MAX_LENGTH_CHECK" ,"ALNUM_CHECK"));
 	$objErr->doFunc(array("ファイル名", "filename", STEXT_LEN), array("EXIST_CHECK", "NO_SPTAB", "MAX_LENGTH_CHECK"));
 	
 	// 同一のファイル名が存在している場合にはエラー
