@@ -51,7 +51,7 @@
 				</tr>
 				<!--{if $errmsg}-->
 				<tr>
-					<td class="red12" align="left"><!--{$errmsg}--></td>
+					<td class="fs12" align="left"><span class="red"><!--{$errmsg}--></span></td>
 				</tr>
 				<!--{/if}-->
 				<tr><td height="15"></td></tr>

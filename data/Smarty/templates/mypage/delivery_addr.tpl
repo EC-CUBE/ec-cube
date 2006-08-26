@@ -69,10 +69,10 @@
 						<td bgcolor="#ffffff">
 							<table cellspacing="0" cellpadding="0" summary=" ">
 								<tr>
-									<td>
+									<td class="fs12">
 										<!--{assign var=key1 value="zip01"}-->
 										<!--{assign var=key2 value="zip02"}-->
-										<span class="red12"><!--{$arrErr[$key1]}--><!--{$arrErr[$key2]}--></span>
+										<span class="red"><!--{$arrErr[$key1]}--><!--{$arrErr[$key2]}--></span>
 										〒&nbsp;<input type="text" name="zip01" value="<!--{if $zip01 == ""}--><!--{$arrOtherDeliv.zip01|escape}--><!--{else}--><!--{$zip01|escape}--><!--{/if}-->" maxlength="<!--{$smarty.const.ZIP01_LEN}-->" style="<!--{$arrErr.zip01|sfGetErrorColor}--> ime-mode: disabled;" size=6 class="box6" />&nbsp;-&nbsp;<input type="text" name="zip02" value="<!--{if $zip02 == ""}--><!--{$arrOtherDeliv.zip02|escape}--><!--{else}--><!--{$zip02|escape}--><!--{/if}-->" maxlength="<!--{$smarty.const.ZIP02_LEN}-->" style="<!--{$arrErr.zip02|sfGetErrorColor}--> ime-mode: disabled;" size=6 class="box6" />
 									</td>
 									<td>
@@ -91,7 +91,7 @@
 						<td bgcolor="#ffffff">
 							<table cellspacing="0" cellpadding="0" summary=" " id="frame02">
 								<tr>
-									<td><span class="red12"><!--{$arrErr.pref}--></span>
+									<td class="fs12"><span class="red"><!--{$arrErr.pref}--></span>
 									<select name="pref" style="<!--{$arrErr.pref|sfGetErrorColor}-->">
 									<option value="" selected>選択してください</option>
 									<!--{if $pref == ""}-->
@@ -103,7 +103,7 @@
 								</tr>
 								<tr><td height="5"></td></tr>
 								<tr>
-									<td><span class="red12"><!--{$arrErr.addr01}--></span>
+									<td class="fs12"><span class="red"><!--{$arrErr.addr01}--></span>
 									<input type="text" name="addr01" value="<!--{if $addr01 == ""}--><!--{$arrOtherDeliv.addr01|escape}--><!--{else}--><!--{$addr01|escape}--><!--{/if}-->" maxlength="<!--{$smarty.const.MTEXT_LEN}-->" style="<!--{$arrErr.addr01|sfGetErrorColor}-->" size=40 class="box40" /></td>
 								</tr>
 								<tr><td height="2"></td></tr>
@@ -112,7 +112,7 @@
 								</tr>
 								<tr><td height="5"></td></tr>
 								<tr>
-									<td><span class="red12"><!--{$arrErr.addr02}--></span>
+									<td class="fs12"><span class="red"><!--{$arrErr.addr02}--></span>
 									<input type="text" name="addr02" value="<!--{if $addr02 == ""}--><!--{$arrOtherDeliv.addr02|escape}--><!--{else}--><!--{$addr02|escape}--><!--{/if}-->" maxlength="<!--{$smarty.const.MTEXT_LEN}-->" style="<!--{$arrErr.addr02|sfGetErrorColor}-->" size=40 class="box40" /></td>
 								</tr>
 								<tr><td height="2"></td></tr>

@@ -14,7 +14,7 @@
 				<form name="form1" method="post" action="./complete.php">
 				<table cellspacing="1" cellpadding="8" summary=" " id="frame">
 					<tr>
-						<td class="red12" id="left"><span class="red"><!--{$arrErr.id}--></span></td>
+						<td class="fs12" id="left"><span class="red"><!--{$arrErr.id}--></span></td>
 					</tr>
 				</table>
 				<div id="button"><a href="javascript:history.back()" onmouseOver="chgImg('../img/button/back_on.gif','back');" onmouseOut="chgImg('../img/button/back.gif','back');"><img src="../img/button/back.gif" width="150" height="30" alt="╠сды" name="back" id="back" /></a></div>

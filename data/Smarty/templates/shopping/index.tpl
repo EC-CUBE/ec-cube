@@ -50,8 +50,8 @@
 									<tr><td height="10"></td></tr>
 									<tr>
 										<td><img src="/img/login/password.gif" width="92" height="13" alt="パスワード"></td>
-										<td>
-											<!--{assign var=key value="login_pass"}--><span class="red12"><!--{$arrErr[$key]}--></span>
+										<td class="fs12">
+											<!--{assign var=key value="login_pass"}--><span class="red"><!--{$arrErr[$key]}--></span>
 											<input type="password" name="<!--{$key}-->" maxlength="<!--{$arrForm[$key].length}-->" style="<!--{$arrErr[$key]|sfGetErrorColor}-->" size="40" class="box40" />
 										</td>
 									</tr>

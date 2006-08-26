@@ -50,7 +50,7 @@
 				</tr>
 				<!--{if $errmsg}-->
 				<tr>
-					<td><span class="red12"><!--{$errmsg}--></span></td>
+					<td class="fs12"><span class="red"><!--{$errmsg}--></span></td>
 				</tr>
 				<!--{/if}-->
 				<tr><td height="15"></td></tr>
