@@ -291,7 +291,7 @@ function lnSetSelect(form, name1, name2, val) {
 				<!--▼オススメ商品ここから-->
 				<table width="580" border="0" cellspacing="0" cellpadding="0" summary=" ">
 					<tr>
-						<td colspan=3 height="20"><img src="/img/products/title_recommend.jpg" width="580" height="20" alt="オススメ商品" /></td>
+						<td colspan=3><img src="/img/products/title_recommend.jpg" width="580" height="30" alt="オススメ商品" /></td>
 					</tr>
 					<tr><td colspan=3 height="10"></td></tr>
 					<tr>
