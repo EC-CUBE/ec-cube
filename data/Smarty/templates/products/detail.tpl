@@ -164,7 +164,7 @@ function lnSetSelect(form, name1, name2, val) {
 									<!--{/section}-->
 									</select>
 								*}-->
-									<input type="text" name="quantity" size="6" class="box6" value="<!--{$arrForm.quantity}-->" maxlength=<!--{$smarty.const.INT_LEN}--> >
+									<input type="text" name="quantity" size="6" class="box6" value="<!--{$arrForm.quantity.value}-->" maxlength=<!--{$smarty.const.INT_LEN}--> >
 								</td>
 							</tr>
 							<tr><td height="20"><img src="../img/common/line_280.gif" width="280" height="1" alt=""></td></tr>
