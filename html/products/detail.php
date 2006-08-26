@@ -174,6 +174,8 @@ $objPage->arrRecommend = lfPreGetRecommendProducts($tmp_id);
 //この商品を買った人はこんな商品も買っています
 $objPage->arrRelateProducts = lfGetRelateProducts($tmp_id);
 
+sfprintr($objPage->arrForm);
+
 $objView->assignobj($objPage);
 $objView->display(SITE_FRAME);
 //-----------------------------------------------------------------------------------------------------------------------------------
