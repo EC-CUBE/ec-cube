@@ -59,7 +59,7 @@ function lnSetSelect(form, name1, name2, val) {
 				<!--詳細ここから-->
 				<table width="580" border="0" cellspacing="0" cellpadding="0" summary=" ">
 					<tr>
-						<td colspan="2" class="fs12"><!--★詳細メインコメント★--><!--{$arrProduct.main_comment}--></td>
+						<td colspan="2" class="fs12"><!--★詳細メインコメント★--><!--{$arrProduct.main_comment|nl2br}--></td>
 					</tr>
 					<tr><td height="15"></td></tr>
 					<tr valign="top">
