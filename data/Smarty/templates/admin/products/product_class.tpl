@@ -105,7 +105,6 @@
 										<input type="hidden" name="class_id2" value="<!--{$class_id2}-->">
 										<tr bgcolor="#f2f1ec" align="center" class="fs12n">
 											<td width="30">ÅÐÏ¿</td>
-											<td width="70">µ¬³ÊID</td>
 											<td width="100">µ¬³Ê1(<!--{$arrClass[$class_id1]|default:"Ì¤ÁªÂò"}-->)</td>
 											<td width="100">µ¬³Ê2(<!--{$arrClass[$class_id2]|default:"Ì¤ÁªÂò"}-->)</td>
 											<td width="80">¾¦ÉÊ¥³¡¼¥É</td>
@@ -127,7 +126,6 @@
 											<input type="hidden" name="name2:<!--{$smarty.section.cnt.iteration}-->" value="<!--{$arrClassCat[cnt].name2}-->">
 											<!--{assign var=key value="check:`$smarty.section.cnt.iteration`"}-->
 											<td align="center"><input type="checkbox" name="check:<!--{$smarty.section.cnt.iteration}-->" value="1" <!--{if $arrForm[$key] == 1}-->checked="checked"<!--{/if}-->></td>
-											<td><!--{$arrClassCat[cnt].product_class_id}--></td>					
 											<td><!--{$arrClassCat[cnt].name1}--></td>
 											<td><!--{$arrClassCat[cnt].name2}--></td>
 											<!--{assign var=key value="product_code:`$smarty.section.cnt.iteration`"}-->

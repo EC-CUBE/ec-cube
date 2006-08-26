@@ -135,7 +135,7 @@ if ($_POST['mode'] == "search" || $_POST['mode'] == "csv"  || $_POST['mode'] == 
 					$arrval[] = $val;
 					break;
 				case 'search_product_class_name': //µ¬³ÊÌ¾¾Î
-					$where_in = " (SELECT classcategory_id FROM dtb_classcategory WHERE class_id IN (SELECT class_id FROM dtb_class WHERE name LIKE '?')) ";
+					$where_in = " (SELECT classcategory_id FROM dtb_classcategory WHERE class_id IN (SELECT class_id FROM dtb_class WHERE name LIKE ?)) ";
 					$where .= " AND product_id IN (SELECT product_id FROM dtb_products_class WHERE classcategory_id1 IN " . $where_in;
 					$where .= " OR classcategory_id2 IN" . $where_in . ")";
 					$arrval[] = "%$val%";
