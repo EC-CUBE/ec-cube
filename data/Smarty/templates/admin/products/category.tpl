@@ -115,22 +115,14 @@
 												<!--{$arrList[cnt].category_name|escape}-->
 											<!--{/if}-->
 											<td align="center">
-											<!--{if $arrList[cnt].level != 1}--> 
 												<!--{if $arrForm.category_id != $arrList[cnt].category_id}-->
 												<a href="<!--{$smarty.server.PHP_SELF}-->" onclick="fnModeSubmit('pre_edit', 'category_id', <!--{$arrList[cnt].category_id}-->); return false;" />編集</a>
 												<!--{else}-->
 												編集中
 												<!--{/if}-->
-											<!--{else}-->
-												-
-											<!--{/if}-->
 											</td>
 											<td align="center">
-											<!--{if $arrList[cnt].level != 1}--> 
 												<a href="<!--{$smarty.server.PHP_SELF}-->" onclick="fnModeSubmit('delete', 'category_id', <!--{$arrList[cnt].category_id}-->); return false;" />削除</a>
-											<!--{else}-->
-												-
-											<!--{/if}-->
 											</td>
 											<td align="center">
 											<!--{* 移動 *}-->
