@@ -117,7 +117,6 @@ $objView->display(MAIN_FRAME);
 /* 規格登録ページ表示用 */
 function lfProductClassPage() {
 	global $objPage;
-	sfprintr($_POST);
 	$objPage->arrHidden = $_POST;
 	$objPage->arrHidden['select_class_id1'] = "";
 	$objPage->arrHidden['select_class_id2'] = "";
@@ -129,6 +128,12 @@ function lfProductClassPage() {
 			$objPage->arrClass[$key] = $arrClass[$key];
 		}
 	}
+	
+	// 商品名を取得
+	$objQuery = new SC_Query();
+	$product_name = $objQuery->getOne("SELECT name FROM dtb_products WHERE product_id = ?", array($_POST['product_id']));
+	$objPage->arrForm['product_name'] = $product_name;
+	
 }
 
 function lfSetDefaultClassCat($objQuery, $product_id, $max) {
