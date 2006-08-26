@@ -46,14 +46,18 @@
 
 								<table width="678" border="0" cellspacing="1" cellpadding="8" summary=" ">
 									<tr>
-									<td bgcolor="#f2f1ec" width="160" class="fs12n">筋傘1<span class="red"> *</span></td>
-									<td bgcolor="#ffffff" width="557" class="fs12n">
-									<span class="red12"><!--{$arrErr.select_class_id1}--></span>
-									<select name="select_class_id1">
-										<option value="">薊鎗仄化仁分今中</option>
-										<!--{html_options options=$arrClass selected=$arrForm.select_class_id1}-->
-									</select>
-									</td>
+										<td bgcolor="#f2f1ec" width="160" class="fs12n">齒圴抩</td>
+										<td bgcolor="#ffffff" width="557" class="fs12n"><!--{$arrForm.product_name}--></td>
+									</tr>
+									<tr>
+										<td bgcolor="#f2f1ec" width="160" class="fs12n">筋傘1<span class="red"> *</span></td>
+										<td bgcolor="#ffffff" width="557" class="fs12n">
+										<span class="red12"><!--{$arrErr.select_class_id1}--></span>
+										<select name="select_class_id1">
+											<option value="">薊鎗仄化仁分今中</option>
+											<!--{html_options options=$arrClass selected=$arrForm.select_class_id1}-->
+										</select>
+										</td>
 									</tr>
 									<tr>
 									<td bgcolor="#f2f1ec" width="160" class="fs12n">筋傘2</td>
