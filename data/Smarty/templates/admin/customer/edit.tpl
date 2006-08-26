@@ -193,7 +193,10 @@
 									</tr>
 									<tr class="fs12n">
 										<td bgcolor="#f2f1ec" width="190">メールマガジン<span class="red"> *</span></td>
-										<td bgcolor="#ffffff" width="527"><span class="red12"><!--{$arrErr.mail_flag}--></span><input type="radio" name="mail_flag" value="1" <!--{if $arrErr.mail_flag != ""}--><!--{sfSetErrorStyle}--><!--{/if}--> <!--{if $list_data.mail_flag eq 1}-->checked<!--{/if}--> />HTML　<input type="radio" name="mail_flag" value="2" <!--{if $arrErr.mail_flag != ""}--><!--{sfSetErrorStyle}--><!--{/if}--> <!--{if $list_data.mail_flag eq 2}-->checked<!--{/if}--> />テキスト　<input type="radio" name="mail_flag" value="3" <!--{if $arrErr.mail_flag != ""}--><!--{sfSetErrorStyle}--><!--{/if}--> <!--{if $list_data.mail_flag eq "" || $list_data.mail_flag eq 3}-->checked<!--{/if}--> />希望しない</td>
+										<td bgcolor="#ffffff" width="527"><span class="red12"><!--{$arrErr.mail_flag}--></span>
+											<input type="radio" name="mail_flag" value="1" <!--{if $arrErr.mail_flag != ""}--><!--{sfSetErrorStyle}--><!--{/if}--> <!--{if $list_data.mail_flag eq 1 or $list_data.mail_flag eq 4}-->checked<!--{/if}--> />HTML　
+											<input type="radio" name="mail_flag" value="2" <!--{if $arrErr.mail_flag != ""}--><!--{sfSetErrorStyle}--><!--{/if}--> <!--{if $list_data.mail_flag eq 2 or $list_data.mail_flag eq 5}-->checked<!--{/if}--> />テキスト　
+											<input type="radio" name="mail_flag" value="3" <!--{if $arrErr.mail_flag != ""}--><!--{sfSetErrorStyle}--><!--{/if}--> <!--{if $list_data.mail_flag eq "" or $list_data.mail_flag eq 3 or $list_data.mail_flag eq 6}-->checked<!--{/if}--> />希望しない</td>
 									</tr>
 									<tr>
 										<td bgcolor="#f2f1ec" width="960" class="fs12n">SHOP用メモ</td>

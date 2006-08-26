@@ -92,8 +92,6 @@ if ($_POST["mode"] == "edit" && is_numeric($_POST["edit_customer_id"])) {
 	$result = $objConn->getAll($sql, array($_POST["edit_customer_id"]));
 	$objPage->list_data = $result[0];
 	
-	sfprintr($objPage->list_data );
-	
 	if (strlen($objPage->list_data["birth_unix"]) > 0) {
 		$objPage->list_data["year"] = date("Y", $objPage->list_data["birth_unix"]);
 		$objPage->list_data["month"] = date("m", $objPage->list_data["birth_unix"]);
