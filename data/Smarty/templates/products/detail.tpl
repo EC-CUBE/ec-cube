@@ -118,7 +118,7 @@ function lnSetSelect(form, name1, name2, val) {
 										<!--{else}-->
 											<!--{$arrProduct.price01_min|number_format}-->¡Á<!--{$arrProduct.price01_max|number_format}-->
 										<!--{/if}-->
-										±ß¡Ë
+										±ß
 										</span><br/>
 									<!--{/if}-->
 								<!--¡ú¥Ý¥¤¥ó¥È¡ú-->
