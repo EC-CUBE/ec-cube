@@ -130,40 +130,41 @@ if ($_POST['mode'] == "search" || $_POST['mode'] == "csv"  || $_POST['mode'] == 
 			}
 			
 			switch ($key) {
-				case 'search_product_id':
+				case 'search_product_id':	// 商品ID
 					$where .= " AND product_id = ?";
 					$arrval[] = $val;
 					break;
-				case 'search_product_class_id':
-					$where .= " AND product_id IN (SELECT product_id FROM dtb_products_class WHERE product_class_id = ?)";
+				case 'search_product_class_id': //規格名称
+					//$where .= " AND product_id IN (SELECT product_id FROM dtb_products_class WHERE product_class_id = ?)";
+					$where .= " AND  product_id IN (SELECT product_id FROM dtb_products_class WHERE classcategory_id1 IN (SELECT classcategory_id FROM dtb_classcategory WHERE class_id IN (SELECT class_id FROM dtb_class WHERE name LIKE '%イ%'))) ";
 					$arrval[] = $val;
 					break;
-				case 'search_name':
+				case 'search_name':			// 商品名
 					$where .= " AND name ILIKE ?";
 					$arrval[] = "%$val%";
 					break;
-				case 'search_category_id':
+				case 'search_category_id':	// カテゴリー
 					list($tmp_where, $tmp_arrval) = sfGetCatWhere($val);
 					if($tmp_where != "") {
 						$where.= " AND $tmp_where";
 						$arrval = array_merge($arrval, $tmp_arrval);
 					}
 					break;
-				case 'search_product_code':
+				case 'search_product_code':	// 商品コード
 					$where .= " AND product_id IN (SELECT product_id FROM dtb_products_class WHERE product_code ILIKE ? GROUP BY product_id)";
 					$arrval[] = "%$val%";
 					break;
-				case 'search_startyear':
+				case 'search_startyear':	// 登録更新日（FROM）
 					$date = sfGetTimestamp($_POST['search_startyear'], $_POST['search_startmonth'], $_POST['search_startday']);
 					$where.= " AND update_date >= ?";
 					$arrval[] = $date;
 					break;
-				case 'search_endyear':
+				case 'search_endyear':		// 登録更新日（TO）
 					$date = sfGetTimestamp($_POST['search_endyear'], $_POST['search_endmonth'], $_POST['search_endday']);
 					$where.= " AND update_date <= ?";
 					$arrval[] = $date;
 					break;
-				case 'search_product_flag':
+				case 'search_product_flag':	//種別
 					global $arrSTATUS;
 					$search_product_flag = sfSearchCheckBoxes($val);
 					if($search_product_flag != "") {
@@ -171,7 +172,7 @@ if ($_POST['mode'] == "search" || $_POST['mode'] == "csv"  || $_POST['mode'] == 
 						$arrval[] = $search_product_flag;					
 					}
 					break;
-				case 'search_status':
+				case 'search_status':		// ステータス
 					$tmp_where = "";
 					foreach ($val as $element){
 						if ($element != ""){
