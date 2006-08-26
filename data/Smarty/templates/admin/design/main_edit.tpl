@@ -69,6 +69,7 @@ else if(navigator.userAgent.indexOf("Mozilla") >= 0){
 						</table>
 
 						<!--▼編集画面　ここから-->
+						<!--{if $arrErr.page_id_err != ""}-->
 						<table width="678" border="0" cellspacing="1" cellpadding="5" summary=" ">
 							<tr>
 								<td bgcolor="#ffffff" align="center" class="fs14">
@@ -76,9 +77,7 @@ else if(navigator.userAgent.indexOf("Mozilla") >= 0){
 								</td>
 							</tr>
 						</table>
-						
-						
-						
+						<!--{/if}-->
 						
 						<table width="678" border="0" cellspacing="1" cellpadding="8" summary=" ">
 							<tr class="fs12n">
