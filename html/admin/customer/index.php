@@ -131,8 +131,6 @@ if ($_POST['mode'] == "delete") {
 	$objConn->query($sql, array($result_customer[0]["email"]));
 }
 
-sfprintr($_POST);
-
 if ($_POST['mode'] == "search" || $_POST['mode'] == "csv"  || $_POST['mode'] == "delete" || $_POST['mode'] == "delete_all") {
 	// 入力文字の強制変換
 	lfConvertParam();
