@@ -89,7 +89,8 @@ function lnSetSelect(form, name1, name2, val) {
 								<td>
 									<!--{section name=flg loop=$arrProduct.product_flag|count_characters}-->
 										<!--{if $arrProduct.product_flag[flg] == "1"}-->
-											<!--{assign var=key value="`$smarty.section.flg.iteration`"}--><img src="<!--{$arrSTATUS_IMAGE[$key]}-->" width="60" height="17" alt="<!--{$arrSTATUS[$key]}-->" id="icon" /> 
+											<!--{assign var=key value="`$smarty.section.flg.iteration`"}-->
+											<img src="<!--{$arrSTATUS_IMAGE[$key]}-->" width="65" height="17" alt="<!--{$arrSTATUS[$key]}-->" id="icon" />
 										<!--{/if}-->
 									<!--{/section}-->
 								</td>

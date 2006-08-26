@@ -25,8 +25,6 @@ class LC_Page {
 		global $arrRECOMMEND;
 		$this->arrRECOMMEND = $arrRECOMMEND;
 		
-		$this->tpl_mainpage = "products/detail.tpl";
-		
 		/*
 		 session_start時のno-cacheヘッダーを抑制することで
 		 「戻る」ボタン使用時の有効期限切れ表示を抑制する。
