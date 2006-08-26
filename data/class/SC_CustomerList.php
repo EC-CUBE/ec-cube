@@ -243,6 +243,8 @@ class SC_CustomerList extends SC_SelectSql {
 			$searchTel = $this->addSearchStr($this->arrSql['cell']);
 			$this->arrVal[] = ereg_replace("-", "", $searchTel);
 		}
+		
+		sfprintr($array);
 
 		$this->setOrder( "customer_id DESC" );
 	}
