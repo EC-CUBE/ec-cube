@@ -46,8 +46,8 @@
 							<tr class="fs12">
 								<td bgcolor="#f2f1ec" width="110">¾¦ÉÊID</td>
 								<td bgcolor="#ffffff" width="194"><input type="text" name="search_product_id" value="<!--{$arrForm.search_product_id|escape}-->" size="30" class="box30" /></td>
-								<td bgcolor="#f2f1ec" width="110">µ¬³ÊID</td>
-								<td bgcolor="#ffffff" width="195"><span class="red"><!--{$arrErr.search_product_class_id}--></span><input type="text" name="search_product_class_id" value="<!--{$arrForm.search_product_class_id|escape}-->" size="30" class="box30"style="<!--{$arrErr.search_product_class_id|sfGetErrorColor}-->" /></td>
+								<td bgcolor="#f2f1ec" width="110">µ¬³ÊÌ¾¾Î</td>
+								<td bgcolor="#ffffff" width="195"><span class="red"><!--{$arrErr.search_product_class_name}--></span><input type="text" name="search_product_class_name" value="<!--{$arrForm.search_product_class_name|escape}-->" size="30" class="box30"style="<!--{$arrErr.search_product_class_name|sfGetErrorColor}-->" /></td>
 							</tr>
 							<tr class="fs12">
 								<td bgcolor="#f2f1ec" width="110">¾¦ÉÊ¥³¡¼¥É</td>
