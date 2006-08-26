@@ -162,8 +162,8 @@ function lfDispProductsList($category_id, $name, $disp_num, $orderby) {
 	$objPage->tpl_pageno = $_POST['pageno'];
 
 	//表示件数でテンプレートを切り替える
-//	$objPage->tpl_mainpage = ROOT_DIR . 'html/user_data/templates/list.tpl';		// メインテンプレート		
-	$objPage->tpl_mainpage = 'products/list15.tpl';		// メインテンプレート		
+	$objPage->tpl_mainpage = ROOT_DIR . 'html/user_data/templates/list.tpl';		// メインテンプレート		
+//	$objPage->tpl_mainpage = 'products/list15.tpl';		// メインテンプレート		
 
 	//表示順序
 	switch($orderby) {
