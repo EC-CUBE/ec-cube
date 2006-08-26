@@ -109,15 +109,15 @@ function lnSetSelect(form, name1, name2, val) {
 									<!--{else}-->
 										<!--{$arrProduct.price02_min|sfPreTax:$arrInfo.tax:$arrInfo.tax_rule|number_format}-->¡Á<!--{$arrProduct.price02_max|sfPreTax:$arrInfo.tax:$arrInfo.tax_rule|number_format}-->
 									<!--{/if}-->
-									±ßa
+									±ß
 								<!--{if $arrProduct.price01_max > 0}-->
-									<span class="fs10">¡Ê»²¹Í»Ô¾ì²Á³Ê¡§
+									¡Ê»²¹Í»Ô¾ì²Á³Ê¡§
 									<!--{if $arrProduct.price01_min == $arrProduct.price01_max}-->				
 										<!--{$arrProduct.price01_min|number_format}-->
 									<!--{else}-->
 										<!--{$arrProduct.price01_min|number_format}-->¡Á<!--{$arrProduct.price01_max|number_format}-->
 									<!--{/if}-->
-									±ß¡Ë</span>
+									±ß¡Ë
 								<!--{/if}-->
 								
 									</span></span>
