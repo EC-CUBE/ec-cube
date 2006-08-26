@@ -207,6 +207,8 @@ if ($_POST['mode'] == "search" || $_POST['mode'] == "csv"  || $_POST['mode'] == 
 			$linemax = $objConn->getOne( $objSelect->getListCount(), $objSelect->arrVal);
 			$objPage->tpl_linemax = $linemax;				// 何件が該当しました。表示用
 	
+			sfprintr($_POST);
+			
 			// ページ送りの処理
 			if(is_numeric($_POST['page_max'])) {	
 				$page_max = $_POST['page_max'];
