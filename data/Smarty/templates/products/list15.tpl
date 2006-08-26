@@ -177,8 +177,7 @@ function lnSetSelect(name1, name2, id, val) {
 							<!--{else}-->
 								<!--¢§Çã¤¤Êª¤«¤´-->
 								<tr valign="top" align="right" id="price">
-									<td id="left"></td>
-									<td id="right">
+									<td id="right" colspan=2>
 										<table cellspacing="0" cellpadding="0" summary=" " id="price">
 											<tr>
 												<td align="center">
