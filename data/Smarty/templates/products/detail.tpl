@@ -87,7 +87,11 @@ function lnSetSelect(form, name1, name2, val) {
 							<!--アイコン-->
 							<tr>
 								<td>
-									<!--{section name=flg loop=$arrProduct.product_flag|count_characters}--><!--{if $arrProduct.product_flag[flg] == "1"}--><!--{assign var=key value="`$smarty.section.flg.iteration`"}--><img src="<!--{$arrSTATUS_IMAGE[$key]}-->" width="60" height="17" alt="<!--{$arrSTATUS[$key]}-->" id="icon" /><!--{/if}--><!--{/section}-->
+									<!--{section name=flg loop=$arrProduct.product_flag|count_characters}-->
+										<!--{if $arrProduct.product_flag[flg] == "1"}-->
+											<!--{assign var=key value="`$smarty.section.flg.iteration`"}--><img src="<!--{$arrSTATUS_IMAGE[$key]}-->" width="60" height="17" alt="<!--{$arrSTATUS[$key]}-->" id="icon" /> 
+										<!--{/if}-->
+									<!--{/section}-->
 								</td>
 							</tr>
 							<tr><td height="5"></td></tr>
@@ -157,13 +161,6 @@ function lnSetSelect(form, name1, name2, val) {
 							<!--{/if}-->
 							<tr>
 								<td class="fs12"><img src="../img/common/arrow_gray.gif" width="15" height="10" alt=""><strong>個　数</strong>
-								<!--{*
-									<select name="quantity">
-									<!--{section name=cnt loop=$tpl_sale_limit}-->
-									<option value="<!--{$smarty.section.cnt.iteration}-->"><!--{$smarty.section.cnt.iteration}--></option>
-									<!--{/section}-->
-									</select>
-								*}-->
 									<!--{if $arrErr.quantity != ""}--><br/><span class="redst"><!--{$arrErr.quantity}--></span><!--{/if}-->
 									<input type="text" name="quantity" size="6" class="box6" value="<!--{$arrForm.quantity.value}-->" maxlength=<!--{$smarty.const.INT_LEN}--> >
 								</td>
