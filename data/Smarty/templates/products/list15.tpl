@@ -211,7 +211,7 @@ function lnSetSelect(name1, name2, id, val) {
 													<!--{assign var=quantity value=quantity`$id`}-->		
 													<tr><td colspan="2" height="10" align="center" class="fs12"><span class="redst"><!--{$arrErr[$quantity]}--></span></td></tr>
 													<tr>
-														<td align="right" width="115" class="fs12st">数量： 
+														<td align="right" width="115" class="fs12st">個数： 
 															<!--{if $arrErr.quantity != ""}--><br/><span class="redst"><!--{$arrErr.quantity}--></span><!--{/if}-->
 															<input type="text" name="<!--{$quantity}-->" size="6" class="box6" value="<!--{$arrForm[$quantity].value}-->" maxlength=<!--{$smarty.const.INT_LEN}--> style="<!--{$arrErr[$quantity]|sfGetErrorColor}-->" >
 														</td>
