@@ -140,7 +140,7 @@
 								</td>
 							</tr>
 							<tr>
-								<td bgcolor="#f0f0f0" class="fs12n">生年月日<span class="red">※</span></td>
+								<td bgcolor="#f0f0f0" class="fs12n">生年月日</td>
 								<td bgcolor="#ffffff" class="fs12n"><span class="red"><!--{$arrErr.year}--><!--{$arrErr.month}--><!--{$arrErr.day}--></span>
 									<select name="year" style="<!--{$arrErr.year|sfGetErrorColor}-->">
 									<option value="" selected>--</option>
