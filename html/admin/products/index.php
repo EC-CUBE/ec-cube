@@ -134,8 +134,7 @@ if ($_POST['mode'] == "search" || $_POST['mode'] == "csv"  || $_POST['mode'] == 
 					$where .= " AND product_id = ?";
 					$arrval[] = $val;
 					break;
-				case 'search_product_class_id': //µ¬³ÊÌ¾¾Î
-					//$where .= " AND product_id IN (SELECT product_id FROM dtb_products_class WHERE product_class_id = ?)";
+				case 'search_product_class_name': //µ¬³ÊÌ¾¾Î
 					$where .= " AND  product_id IN (SELECT product_id FROM dtb_products_class WHERE classcategory_id1 IN (SELECT classcategory_id FROM dtb_classcategory WHERE class_id IN (SELECT class_id FROM dtb_class WHERE name LIKE ?))) ";
 					$arrval[] = "%$val%";
 					break;
@@ -305,7 +304,6 @@ function lfCheckError() {
 	$objErr->doFunc(array("³«»ÏÆü", "search_startyear", "search_startmonth", "search_startday"), array("CHECK_DATE"));
 	$objErr->doFunc(array("½ªÎ»Æü", "search_endyear", "search_endmonth", "search_endday"), array("CHECK_DATE"));
 	$objErr->doFunc(array("³«»ÏÆü", "½ªÎ»Æü", "search_startyear", "search_startmonth", "search_startday", "search_endyear", "search_endmonth", "search_endday"), array("CHECK_SET_TERM"));
-	$objErr->doFunc(array("µ¬³ÊID", "search_product_class_id"), array("NUM_CHECK"));
 	return $objErr->arrErr;
 }
 
