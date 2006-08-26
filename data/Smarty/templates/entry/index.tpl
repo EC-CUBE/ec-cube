@@ -35,7 +35,7 @@
 								<td colspan="2">
 									<!--{assign var=key1 value="zip01"}-->
 									<!--{assign var=key2 value="zip02"}-->
-									<span class="fs12"><span class="red"><!--{$arrErr[$key1]}--><!--{$arrErr[$key2]}--></span></span>
+									<span class="fs12n"><span class="red"><!--{$arrErr[$key1]}--><!--{$arrErr[$key2]}--></span></span>
 									<span class="fs12n">〒&nbsp;</span><input type="text" name="zip01" value="<!--{if $zip01 == ""}--><!--{$arrOtherDeliv.zip01|escape}--><!--{else}--><!--{$zip01|escape}--><!--{/if}-->" maxlength="<!--{$smarty.const.ZIP01_LEN}-->" style="<!--{$arrErr.zip01|sfGetErrorColor}-->; ime-mode: disabled;" size=6 class="box6" />&nbsp;-&nbsp;<input type="text" name="zip02" value="<!--{if $zip02 == ""}--><!--{$arrOtherDeliv.zip02|escape}--><!--{else}--><!--{$zip02|escape}--><!--{/if}-->" maxlength="<!--{$smarty.const.ZIP02_LEN}-->" style="<!--{$arrErr.zip02|sfGetErrorColor}-->; ime-mode: disabled;" size=6 class="box6" />　
 									<a href="http://search.post.japanpost.jp/7zip/" target="_blank"><span class="fs10">郵便番号検索</span></a>
 								</td>
@@ -53,7 +53,7 @@
 						<td bgcolor="#ffffff">
 						<table border="0" cellspacing="0" cellpadding="0" summary=" ">
 							<tr>
-								<td class="fs12"><span class="red"><!--{$arrErr.pref}--><!--{$arrErr.addr01}--><!--{$arrErr.addr02}--></span>
+								<td class="fs12n"><span class="red"><!--{$arrErr.pref}--><!--{$arrErr.addr01}--><!--{$arrErr.addr02}--></span>
 								<select name="pref" style="<!--{$arrErr.pref|sfGetErrorColor}-->">
 								<option value="" selected>都道府県を選択</option>
 								<!--{html_options options=$arrPref selected=$pref}-->
@@ -93,7 +93,7 @@
 						<td bgcolor="#f0f0f0" class="fs12n">メールアドレス<span class="red">※</span></td>
 						<td bgcolor="#ffffff">
 						<table border="0" cellspacing="0" cellpadding="0" summary=" ">
-							<tr><span class="fs12"><span class="red"><!--{$arrErr.email}--><!--{$arrErr.email02}--></span></span>
+							<tr><span class="fs12n"><span class="red"><!--{$arrErr.email}--><!--{$arrErr.email02}--></span></span>
 								<td><input type="text" name="email" size="40" class="box40" value="<!--{$email|escape}-->" style="<!--{$arrErr.email|sfGetErrorColor}-->; ime-mode: disabled;" /></td>
 							</tr>
 							<tr><td height="5"></td></tr>
@@ -149,7 +149,7 @@
 						<td bgcolor="#ffffff">
 						<table cellspacing="0" cellpadding="0" summary=" ">
 							<tr>
-								<td class="fs12"><span class="red"><!--{$arrErr.password}--><!--{$arrErr.password02}--></span><input type="password" name="password" value="<!--{$arrForm.password}-->"size="15" class="box15"  style="<!--{$arrErr.password|sfGetErrorColor}-->"/></td>
+								<td class="fs12n"><span class="red"><!--{$arrErr.password}--><!--{$arrErr.password02}--></span><input type="password" name="password" value="<!--{$arrForm.password}-->"size="15" class="box15"  style="<!--{$arrErr.password|sfGetErrorColor}-->"/></td>
 							</tr>
 							<tr><td height="2"></td></tr>
 							<tr>
@@ -168,7 +168,7 @@
 					</tr>
 					<tr>
 						<td bgcolor="#f0f0f0"  class="fs12">パスワードを忘れた時のヒント<span class="red">※</span></td>
-						<td bgcolor="#ffffff" class="fs12"><span class="red"><!--{$arrErr.reminder}--><!--{$arrErr.reminder_answer}--></span>
+						<td bgcolor="#ffffff" class="fs12n"><span class="red"><!--{$arrErr.reminder}--><!--{$arrErr.reminder_answer}--></span>
 						<table cellspacing="0" cellpadding="0" summary=" ">
 							<tr>
 								<td class="fs12n">質問：</td>
