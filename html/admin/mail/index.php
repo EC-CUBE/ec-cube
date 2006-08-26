@@ -25,7 +25,7 @@ class LC_Page {
 		global $arrPageRows;
 		$this->arrPageRows = $arrPageRows;
 		// ページナビ用
-		$this->tpl_pageno = $_POST['pageno'];
+		$this->tpl_pageno = $_POST['search_pageno'];
 		global $arrMAILMAGATYPE;
 		$this->arrMAILMAGATYPE = $arrMAILMAGATYPE;
 		$this->arrHtmlmail[''] = "すべて";
