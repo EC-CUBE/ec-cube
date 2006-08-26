@@ -119,7 +119,6 @@ aaa
 									<!--{/if}-->
 								<!--{/if}-->
 								Pt</span></span>
-								
 							</tr>
 							<tr><td height="15"></td></tr>
 							<form name="form1" id="form1" method="post" action="<!--{$smarty.server.REQUEST_URI|escape}-->">
@@ -159,11 +158,14 @@ aaa
 							<!--{/if}-->
 							<tr>
 								<td class="fs12"><img src="../img/common/arrow_gray.gif" width="15" height="10" alt=""><strong>¸Ä¡¡¿ô</strong>
+								<!--{*
 									<select name="quantity">
 									<!--{section name=cnt loop=$tpl_sale_limit}-->
 									<option value="<!--{$smarty.section.cnt.iteration}-->"><!--{$smarty.section.cnt.iteration}--></option>
 									<!--{/section}-->
 									</select>
+								*}-->
+									<input name="quantity" size="6" class="box6" value="" type="text">
 								</td>
 							</tr>
 							<tr><td height="20"><img src="../img/common/line_280.gif" width="280" height="1" alt=""></td></tr>
