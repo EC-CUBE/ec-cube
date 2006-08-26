@@ -34,9 +34,9 @@ case 'edit':
 	$objPage->arrErr = lfErrorCheck();
 	if(count($objPage->arrErr) <= 0) {
 		if($_POST['class_id'] == "") {
-			lfInsertClass();	// 新規作成
+			lfInsertClass($objPage->arrForm);	// 新規作成
 		} else {
-			lfUpdateClass();	// 既存編集
+			lfUpdateClass($objPage->arrForm);	// 既存編集
 		}
 		// 再表示
 		sfReload();
@@ -89,10 +89,10 @@ $objView->display(MAIN_FRAME);
 //--------------------------------------------------------------------------------------------------------------------------------
 
 /* DBへの挿入 */
-function lfInsertClass() {
+function lfInsertClass($arrData) {
 	$objQuery = new SC_Query();
 	// INSERTする値を作成する。
-	$sqlval['name'] = $_POST['name'];
+	$sqlval['name'] = $arrData['name'];
 	$sqlval['creator_id'] = $_SESSION['member_id'];
 	$sqlval['rank'] = $objQuery->max("dtb_class", "rank") + 1;
 	// INSERTの実行
@@ -101,14 +101,14 @@ function lfInsertClass() {
 }
 
 /* DBへの更新 */
-function lfUpdateClass() {
+function lfUpdateClass($arrData) {
 	$objQuery = new SC_Query();
 	// UPDATEする値を作成する。
-	$sqlval['name'] = $_POST['name'];
+	$sqlval['name'] = $arrData['name'];
 	$sqlval['update_date'] = "Now()";
 	$where = "class_id = ?";
 	// UPDATEの実行
-	$ret = $objQuery->update("dtb_class", $sqlval, $where, array($_POST['class_id']));
+	$ret = $objQuery->update("dtb_class", $sqlval, $where, array($arrData['class_id']));
 	return $ret;
 }
 
