@@ -220,7 +220,7 @@
 									<td bgcolor="#f2f1ec" width="160" class="fs12n">詳細-サブコメント（<!--{$smarty.section.cnt.iteration}-->）</td>
 									<td bgcolor="#ffffff" width="557" class="fs12n">
 									<!--{assign var=key value="sub_comment`$smarty.section.cnt.iteration`"}-->
-									<!--{$arrForm[$key]}-->
+									<!--{$arrForm[$key]|nl2br}-->
 									</td>
 								</tr>
 								<tr>

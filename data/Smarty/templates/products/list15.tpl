@@ -154,7 +154,7 @@ function lnSetSelect(name1, name2, id, val) {
 							<tr><td colspan="2" bgcolor="#ebebd6"><img src="../img/common/_.gif" width="1" height="2" alt=""></td></tr>
 							<tr><td height="8"></td></tr>
 							<tr>
-								<td colspan="2" class="fs12"><!--¡ú¥³¥á¥ó¥È¡ú--><!--{$arrProducts[cnt].main_list_comment|escape}--></td>
+								<td colspan="2" class="fs12"><!--¡ú¥³¥á¥ó¥È¡ú--><!--{$arrProducts[cnt].main_list_comment|escape|nl2br}--></td>
 							</tr>
 							<tr><td height="8"></td></tr>
 							<tr>
