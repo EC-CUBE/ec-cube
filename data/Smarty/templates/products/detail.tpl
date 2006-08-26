@@ -126,7 +126,7 @@ aaa
 							<input type="hidden" name="product_id" value="<!--{$tpl_product_id}-->">
 							
 							<!--{if $tpl_classcat_find1}-->
-							<tr><td height="5" colspan="2" align="center" class="fs12"><span class="redst"><!--{if $arrErr.classcategory_id1 != ""}-->※ <!--{$tpl_class_name1}-->を入力して下さい。<!--{/if}--></span></td></tr>
+							<tr><td height="5" colspan="2" align="left" class="fs12"><span class="redst"><!--{if $arrErr.classcategory_id1 != ""}-->※ <!--{$tpl_class_name1}-->を入力して下さい。<!--{/if}--></span></td></tr>
 							<tr>
 								<td class="fs12"><img src="../img/common/arrow_gray.gif" width="15" height="10" alt=""><strong><!--{$tpl_class_name1}--></strong></td>
 							</tr>
