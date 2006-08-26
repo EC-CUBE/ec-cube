@@ -117,6 +117,7 @@ $objView->display(MAIN_FRAME);
 /* µ¬³ÊÅÐÏ¿¥Ú¡¼¥¸É½¼¨ÍÑ */
 function lfProductClassPage() {
 	global $objPage;
+	sfprintr($_POST);
 	$objPage->arrHidden = $_POST;
 	$objPage->arrHidden['select_class_id1'] = "";
 	$objPage->arrHidden['select_class_id2'] = "";
@@ -193,7 +194,6 @@ function lfGetClassCatListEdit($product_id) {
 	$col = "class_id1, class_id2, name1, name2, rank1, rank2, ";
 	$col.= "product_class_id, product_id, T1_classcategory_id AS classcategory_id1, T2_classcategory_id AS classcategory_id2, ";
 	$col.= "product_code, stock, stock_unlimited, sale_limit, price01, price02, status";
-	$col.= " ,(SELECT name FROM dtb_products AS prd WHERE prd.product_id = T3.product_id) as product_name";
 	
 	$sql = "SELECT $col FROM ";
 	$sql.= "( ";
@@ -207,11 +207,7 @@ function lfGetClassCatListEdit($product_id) {
 	$sql.= "ORDER BY rank1 DESC, rank2 DESC";
 	
 	$arrList =  $objQuery->getAll($sql, array($product_id, $product_id));
-	
-	sfprintr($arrList);
-//		$objQuery->getlastquery(true);
-
-	
+		
 	$objPage->arrForm["class_id1"] = $arrList[0]['class_id1'];
 	$objPage->arrForm["class_id2"] = $arrList[0]['class_id2'];
 	
