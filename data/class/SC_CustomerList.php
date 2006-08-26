@@ -244,7 +244,6 @@ class SC_CustomerList extends SC_SelectSql {
 			$this->arrVal[] = ereg_replace("-", "", $searchTel);
 		}
 		
-		sfprintr($array);
 		$limit = $array['page_rows'];
 		$offset = $array['page_rows'] * ($array['search_pageno'] - 1);
 //		$offset = 0;
