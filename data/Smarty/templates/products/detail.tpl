@@ -29,7 +29,6 @@ function lnSetSelect(form, name1, name2, val) {
 //-->
 </script>
 
-aaa
 <!--▼CONTENTS-->
 <table width="" cellspacing="0" cellpadding="0" summary=" ">
 	<tr>
@@ -128,7 +127,7 @@ aaa
 							<!--{if $tpl_classcat_find1}-->
 							<tr><td height="5" colspan="2" align="left" class="fs12"><span class="redst"><!--{if $arrErr.classcategory_id1 != ""}-->※ <!--{$tpl_class_name1}-->を入力して下さい。<!--{/if}--></span></td></tr>
 							<tr>
-								<td class="fs12"><img src="../img/common/arrow_gray.gif" width="15" height="10" alt=""><strong><!--{$tpl_class_name1}--></strong></td>
+								<td class="fs12"><img src="/img/common/arrow_gray.gif" width="15" height="10" alt=""><strong><!--{$tpl_class_name1}--></strong></td>
 							</tr>
 							<tr><td height="3"></td></tr>
 							<tr>
@@ -144,7 +143,7 @@ aaa
 							<!--{if $tpl_classcat_find2}-->
 							<tr><td height="5" colspan="2" align="left" class="fs12"><span class="redst"><!--{if $arrErr.classcategory_id2 != ""}-->※ <!--{$tpl_class_name2}-->を入力して下さい。<!--{/if}--></span></td></tr>
 							<tr>
-								<td class="fs12"><img src="../img/common/arrow_gray.gif" width="15" height="10" alt=""><strong><!--{$tpl_class_name2}--></strong></td>
+								<td class="fs12"><img src="/img/common/arrow_gray.gif" width="15" height="10" alt=""><strong><!--{$tpl_class_name2}--></strong></td>
 							</tr>
 							<tr><td height="3"></td></tr>
 							<tr>
@@ -165,7 +164,7 @@ aaa
 									<!--{/section}-->
 									</select>
 								*}-->
-									<input name="quantity" size="6" class="box6" value="" type="text">
+									<input name="quantity" size="6" class="box6" value="<!--{$arrForm.quantity}-->" type="text">
 								</td>
 							</tr>
 							<tr><td height="20"><img src="../img/common/line_280.gif" width="280" height="1" alt=""></td></tr>
