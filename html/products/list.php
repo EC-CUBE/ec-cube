@@ -97,7 +97,6 @@ if(($count >= BEST_MIN) && lfIsRootCategory($category_id) && ($_GET['mode'] != '
 	}else{
 		$arrSearch['name'] = $_GET['name'];
 	}
-
 }
 
 // レイアウトデザインを取得
