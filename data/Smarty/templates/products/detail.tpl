@@ -155,27 +155,29 @@ function lnSetSelect(form, name1, name2, val) {
 							</tr>
 							<tr><td height="10"></td></tr>
 							<!--{/if}-->
+							<!--{if $tpl_stock_find}-->
 							<!--{if $tpl_classcat_find2}-->
-							<tr><td height="5" colspan="2" align="left" class="fs12"><span class="redst"><!--{if $arrErr.classcategory_id2 != ""}-->※ <!--{$tpl_class_name2}-->を入力して下さい。<!--{/if}--></span></td></tr>
-							<tr>
-								<td class="fs12"><img src="/img/common/arrow_gray.gif" width="15" height="10" alt=""><strong><!--{$tpl_class_name2}--></strong></td>
-							</tr>
-							<tr><td height="3"></td></tr>
-							<tr>
-								<td>
-									<select name="classcategory_id2" style="<!--{$arrErr.classcategory_id2|sfGetErrorColor}-->">
-									<option value="">選択してください</option>
-									</select>
-								</td>
-							</tr>
-							<tr><td height="10"></td></tr>
+								<tr><td height="5" colspan="2" align="left" class="fs12"><span class="redst"><!--{if $arrErr.classcategory_id2 != ""}-->※ <!--{$tpl_class_name2}-->を入力して下さい。<!--{/if}--></span></td></tr>
+								<tr>
+									<td class="fs12"><img src="/img/common/arrow_gray.gif" width="15" height="10" alt=""><strong><!--{$tpl_class_name2}--></strong></td>
+								</tr>
+								<tr><td height="3"></td></tr>
+								<tr>
+									<td>
+										<select name="classcategory_id2" style="<!--{$arrErr.classcategory_id2|sfGetErrorColor}-->">
+										<option value="">選択してください</option>
+										</select>
+									</td>
+								</tr>
+								<tr><td height="10"></td></tr>
+								<!--{/if}-->
+								<tr>
+									<td class="fs12"><img src="../img/common/arrow_gray.gif" width="15" height="10" alt=""><strong>個　数</strong>
+										<!--{if $arrErr.quantity != ""}--><br/><span class="redst"><!--{$arrErr.quantity}--></span><!--{/if}-->
+										<input type="text" name="quantity" size="6" class="box6" value="<!--{$arrForm.quantity.value}-->" maxlength=<!--{$smarty.const.INT_LEN}--> style="<!--{$arrErr.quantity|sfGetErrorColor}-->" >
+									</td>
+								</tr>
 							<!--{/if}-->
-							<tr>
-								<td class="fs12"><img src="../img/common/arrow_gray.gif" width="15" height="10" alt=""><strong>個　数</strong>
-									<!--{if $arrErr.quantity != ""}--><br/><span class="redst"><!--{$arrErr.quantity}--></span><!--{/if}-->
-									<input type="text" name="quantity" size="6" class="box6" value="<!--{$arrForm.quantity.value}-->" maxlength=<!--{$smarty.const.INT_LEN}--> style="<!--{$arrErr.quantity|sfGetErrorColor}-->" >
-								</td>
-							</tr>
 							<tr><td height="20"><img src="../img/common/line_280.gif" width="280" height="1" alt=""></td></tr>
 							<tr>
 								<td align="center">
