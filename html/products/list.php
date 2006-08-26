@@ -70,7 +70,7 @@ if(($count >= BEST_MIN) && lfIsRootCategory($category_id) && ($_GET['mode'] != '
 	// 商品TOPの表示処理
 	/** 必ず指定する **/
 //	$objPage->tpl_mainpage = ROOT_DIR . 'html/user_data/templates/list.tpl';		// メインテンプレート	
-	$objPage->tpl_mainpage = 'products/list15.tpl';		// メインテンプレート	
+//	$objPage->tpl_mainpage = 'products/list15.tpl';		// メインテンプレート	
 	
 	
 	$objPage->arrBestItems = sfGetBestProducts($conn, $category_id);
