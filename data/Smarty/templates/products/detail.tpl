@@ -177,8 +177,8 @@ aaa
 										<table width="285" cellspacing="0" cellpadding="0" summary=" ">
 										<tr><td height="10"></td></tr>
 										<tr>
-											<td align="center">
-											<span class="red12">申し訳ございませんが、只今品切れ中です。</span>
+											<td align="center" class="fs12">
+											<span class="red">申し訳ございませんが、只今品切れ中です。</span>
 											</td>
 										</tr>
 										<tr><td height="10"></td></tr>

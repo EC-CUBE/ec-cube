@@ -30,9 +30,9 @@
 			<form name="form1" id="form1" method="post" action="<!--{$smarty.server.PHP_SELF}-->">
 			<input type="hidden" name="mode" value="confirm">
 			<input type="hidden" name="uniqid" value="<!--{$tpl_uniqid}-->">
-			<tr><td>
+			<tr><td class="fs12">
 				<!--{assign var=key value="payment_id"}-->
-				<!--{if $arrErr[$key] != ""}--><span class="red12st"><!--{$arrErr[$key]}--></span><!--{/if}-->
+				<!--{if $arrErr[$key] != ""}--><span class="redst"><!--{$arrErr[$key]}--></span><!--{/if}-->
 			</td></tr>
 			<tr>
 				<td bgcolor="#cccccc">

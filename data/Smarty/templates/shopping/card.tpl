@@ -33,7 +33,7 @@
 				<form name="form1" id="form1" method="post" action="<!--{$smarty.server.PHP_SELF}-->">
 				<input type="hidden" name="mode" value="regist">
 				<input type="hidden" name="uniqid" value="<!--{$tpl_uniqid}-->">
-				<span class="red12st"><!--{$tpl_error}--></span>
+				<span class="redst"><!--{$tpl_error}--></span>
 				<table cellspacing="1" cellpadding="8" summary=" " id="frame">
 					<tr>
 						<td class="fs12n" id="left">ご利用可能なカードの種類</td>

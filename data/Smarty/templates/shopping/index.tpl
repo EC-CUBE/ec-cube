@@ -38,8 +38,8 @@
 									<tr><td height="20"></td></tr>
 									<tr>
 										<td><img src="/img/login/mailadress.gif" width="92" height="13" alt="メールアドレス"></td>
-										<td>
-											<!--{assign var=key value="login_email"}--><span class="red12"><!--{$arrErr[$key]}--></span>
+										<td class="fs12">
+											<!--{assign var=key value="login_email"}--><span class="red"><!--{$arrErr[$key]}--></span>
 											<input type="text" name="<!--{$key}-->" value="<!--{$tpl_login_email|escape}-->" maxlength="<!--{$arrForm[$key].length}-->" style="<!--{$arrErr[$key]|sfGetErrorColor}-->; ime-mode: disabled;" size="40" class="box40" />
 										</td>
 									</tr>
