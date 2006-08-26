@@ -111,7 +111,7 @@ case 'back':
 		$objPage->tpl_linemax = $linemax;				// 何件が該当しました。表示用
 
 		// ページ送りの取得
-		$objNavi = new SC_PageNavi($_POST['pageno'], $linemax, SEARCH_PMAX, "fnResultPageNavi", NAVI_PMAX);
+		$objNavi = new SC_PageNavi($_POST['search_pageno'], $linemax, SEARCH_PMAX, "fnResultPageNavi", NAVI_PMAX);
 		$objPage->arrPagenavi = $objNavi->arrPagenavi;	
 		$startno = $objNavi->start_row;
 
