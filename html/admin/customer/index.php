@@ -210,8 +210,8 @@ if ($_POST['mode'] == "search" || $_POST['mode'] == "csv"  || $_POST['mode'] == 
 			sfprintr($_POST);
 			
 			// ページ送りの処理
-			if(is_numeric($_POST['page_row'])) {	
-				$page_max = $_POST['page_row'];
+			if(is_numeric($_POST['page_rows'])) {	
+				$page_max = $_POST['page_rows'];
 			} else {
 				$page_max = SEARCH_PMAX;
 			}
