@@ -53,7 +53,7 @@
 				<table width="500" border="0" cellspacing="1" cellpadding="10" summary=" ">
 					<tr>
 						<td width="117" bgcolor="#f0f0f0" class="fs12">お名前<span class="red">※</span></td>
-						<td width="340" bgcolor="#ffffff" class="fs12">
+						<td width="340" bgcolor="#ffffff" class="fs12n">
 							<span class="red"><!--{$arrErr.name01}--><!--{$arrErr.name02}--></span>
 							姓&nbsp;<input type="text" name="name01" value="<!--{if $name01 == ""}--><!--{$arrOtherDeliv.name01|escape}--><!--{else}--><!--{$name01|escape}--><!--{/if}-->" maxlength="<!--{$smarty.const.STEXT_LEN}-->" style="<!--{$arrErr.name01|sfGetErrorColor}-->" size=15 class="box15" />　
 							名&nbsp;<input type="text" name="name02" value="<!--{if $name02 == ""}--><!--{$arrOtherDeliv.name02|escape}--><!--{else}--><!--{$name02|escape}--><!--{/if}-->" maxlength="<!--{$smarty.const.STEXT_LEN}-->" style="<!--{$arrErr.name02|sfGetErrorColor}-->" size=15 class="box15" />
