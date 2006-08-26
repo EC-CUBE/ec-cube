@@ -141,6 +141,8 @@ $objPage->arrPayment = lfGetPayment();
 // ÆþÎÏ¾ðÊó¤òÅÏ¤¹
 $objPage->arrForm = $_POST;
 
+sfprintr($_POST);
+
 $objPage->arrInfo = $objSiteInfo->data;
 $objPage->category_id = $category_id;
 $objPage->arrSearch = $arrSearch;
@@ -384,7 +386,7 @@ function lfCheckError($id) {
 	if ($objPage->tpl_classcat_find2[$id]) {
 		$objErr->doFunc(array("µ¬³Ê2", $classcategory_id2, INT_LEN), array("EXIST_CHECK", "NUM_CHECK", "MAX_LENGTH_CHECK"));
 	}
-	$objErr->doFunc(array("¿ôÎÌ", $quantity, INT_LEN), array("EXIST_CHECK", "ZERO_CHECK", "NUM_CHECK", "MAX_LENGTH_CHECK"));
+	$objErr->doFunc(array("¸Ä¿ô", $quantity, INT_LEN), array("EXIST_CHECK", "ZERO_CHECK", "NUM_CHECK", "MAX_LENGTH_CHECK"));
 			
 	return $objErr->arrErr;
 }
