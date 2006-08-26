@@ -38,7 +38,7 @@
 					</tr>
 					<!--{section name=cnt loop=$arrProductsClass}-->
 					<tr bgcolor="#ffffff">
-						<td align="center"><a href="<!--{$smarty.server.PHP_SELF}-->" onclick="win01('/products/detail_image.php?product_id=<!--{$arrProductsClass[cnt].product_id}-->&image=main_image&width=260&height=260','detail_image','280','290'); return false;" target="_blank"><img src="<!--{$smarty.const.IMAGE_SAVE_URL}-->/<!--{$arrProductsClass[cnt].main_list_image}-->" width="65" height="65" alt="" /></a></td>
+						<td align="center"><a href="<!--{$smarty.server.PHP_SELF}-->" onclick="win01('/products/detail_image.php?product_id=<!--{$arrProductsClass[cnt].product_id}-->&image=main_image&width=260&height=260','detail_image','350','350'); return false;" target="_blank"><img src="<!--{$smarty.const.IMAGE_SAVE_URL}-->/<!--{$arrProductsClass[cnt].main_list_image}-->" width="65" height="65" alt="" /></a></td>
 						<td class="fs12">
 							<strong><!--{$arrProductsClass[cnt].name}--></strong><br>
 							<!--{if $arrProductsClass[cnt].classcategory_name1 != ""}-->

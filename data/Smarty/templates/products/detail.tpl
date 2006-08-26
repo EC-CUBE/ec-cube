@@ -225,7 +225,7 @@ function lnSetSelect(form, name1, name2, val) {
 							<table width="215" border="0" cellspacing="0" cellpadding="0" summary=" ">	
 								<tr>
 									<!--{if $arrFile[$lkey].filepath != ""}-->
-										<td align="right"><div id="picture"><a href="<!--{$smarty.server.PHP_SELF}-->" onclick="win01('./detail_image.php?product_id=<!--{$arrProduct.product_id}-->&image=<!--{$lkey}--><!--{if $smarty.get.admin == 'on'}-->&admin=on<!--{/if}-->','detail_image','520','534'); return false;" target="_blank"><!--サブ画像--><img src="<!--{$arrFile[$key].filepath}-->" width="200" height="200" alt="<!--{$arrProduct.name|escape}-->" /></a></div>
+										<td align="right"><div id="picture"><a href="<!--{$smarty.server.PHP_SELF}-->" onclick="win01('./detail_image.php?product_id=<!--{$arrProduct.product_id}-->&image=<!--{$lkey}--><!--{if $smarty.get.admin == 'on'}-->&admin=on<!--{/if}-->','detail_image','560','580'); return false;" target="_blank"><!--サブ画像--><img src="<!--{$arrFile[$key].filepath}-->" width="200" height="200" alt="<!--{$arrProduct.name|escape}-->" /></a></div>
 									<!--{else}-->
 										<td align="right"><img src="<!--{$arrFile[$key].filepath}-->" width="200" height="200" alt="<!--{$arrProduct.name|escape}-->" /></td>
 									<!--{/if}-->
@@ -233,7 +233,7 @@ function lnSetSelect(form, name1, name2, val) {
 								<tr><td height="8"></td></tr>
 								<tr>
 									<!--{if $arrFile[$lkey].filepath != ""}-->
-										<td align="right"><div id="more"><a href="<!--{$smarty.server.PHP_SELF}-->" onclick="win01('./detail_image.php?product_id=<!--{$arrProduct.product_id}-->&image=<!--{$lkey}--><!--{if $smarty.get.admin == 'on'}-->&admin=on<!--{/if}-->','detail_image','520','534'); return false;" onmouseover="chgImg('../img/products/b_expansion_on.gif','expansion02');" onmouseout="chgImg('../img/products/b_expansion.gif','expansion02');" target="_blank"><img src="../img/products/b_expansion.gif" width="94" height="13" alt="画像を拡大する" /></a></div></td>
+										<td align="right"><div id="more"><a href="<!--{$smarty.server.PHP_SELF}-->" onclick="win01('./detail_image.php?product_id=<!--{$arrProduct.product_id}-->&image=<!--{$lkey}--><!--{if $smarty.get.admin == 'on'}-->&admin=on<!--{/if}-->','detail_image','560','580'); return false;" onmouseover="chgImg('../img/products/b_expansion_on.gif','expansion02');" onmouseout="chgImg('../img/products/b_expansion.gif','expansion02');" target="_blank"><img src="../img/products/b_expansion.gif" width="94" height="13" alt="画像を拡大する" /></a></div></td>
 									<!--{/if}-->
 								</tr>
 							</table>

@@ -70,7 +70,7 @@
 						<!--{section name=cnt loop=$arrProductsClass}-->
 						<tr bgcolor="#ffffff" class="fs12n">
 							<td align="center"><a href="<!--{$smarty.server.PHP_SELF}-->" onclick="fnChangeAction('<!--{$smarty.server.PHP_SELF}-->'); fnModeSubmit('delete', 'cart_no', '<!--{$arrProductsClass[cnt].cart_no}-->'); return false;">ºï½ü</a></td>
-							<td ><a href="<!--{$smarty.server.PHP_SELF}-->" onclick="win01('/products/detail_image.php?product_id=<!--{$arrProductsClass[cnt].product_id}-->&image=main_image&width=260&height=260','detail_image','280','290'); return false;" target="_blank"><img src="<!--{$smarty.const.IMAGE_SAVE_URL}-->/<!--{$arrProductsClass[cnt].main_list_image}-->" width="65" height="65" alt="<!--{$arrProductsClass[cnt].name|escape}-->" /></a></td>
+							<td ><a href="<!--{$smarty.server.PHP_SELF}-->" onclick="win01('/products/detail_image.php?product_id=<!--{$arrProductsClass[cnt].product_id}-->&image=main_image&width=260&height=260','detail_image','350','350'); return false;" target="_blank"><img src="<!--{$smarty.const.IMAGE_SAVE_URL}-->/<!--{$arrProductsClass[cnt].main_list_image}-->" width="65" height="65" alt="<!--{$arrProductsClass[cnt].name|escape}-->" /></a></td>
 							<td ><!--{* ¾¦ÉÊÌ¾ *}--><strong><!--{$arrProductsClass[cnt].name|escape}--></storng><br />
 							<!--{if $arrProductsClass[cnt].classcategory_name1 != ""}-->
 								<!--{$arrProductsClass[cnt].class_name1}-->¡§<!--{$arrProductsClass[cnt].classcategory_name1}--><br />
