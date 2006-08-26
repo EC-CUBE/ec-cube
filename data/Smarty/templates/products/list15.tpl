@@ -131,7 +131,7 @@ function lnSetSelect(name1, name2, id, val) {
 							<tr>
 								<td colspan="2">
 								<!--商品ステータス-->
-								<!--{section name=flg loop=$arrProducts[cnt].product_flag|count_characters}--><!--{if $arrProducts[cnt].product_flag[flg] == "1"}--><!--{assign var=key value="`$smarty.section.flg.iteration`"}--><img src="<!--{$arrSTATUS_IMAGE[$key]}-->" width="60" height="17" alt="<!--{$arrSTATUS[$key]}-->" id="icon" /><!--{/if}--><!--{/section}-->
+								<!--{section name=flg loop=$arrProducts[cnt].product_flag|count_characters}--><!--{if $arrProducts[cnt].product_flag[flg] == "1"}--><!--{assign var=key value="`$smarty.section.flg.iteration`"}--><img src="<!--{$arrSTATUS_IMAGE[$key]}-->" width="65" height="17" alt="<!--{$arrSTATUS[$key]}-->" id="icon" /><!--{/if}--><!--{/section}-->
 								<!--商品ステータス-->
 								</td>
 							</tr>
