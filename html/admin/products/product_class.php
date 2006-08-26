@@ -52,7 +52,6 @@ case 'pre_edit':
 	$objQuery = new SC_Query();
 	$where = "product_id = ? AND NOT(classcategory_id1 = 0 AND classcategory_id2 = 0) ";
 	$ret = $objQuery->count("dtb_products_class", $where, array($_POST['product_id']));
-	$objQuery->getlastquery(true);
 	
 	if($ret > 0) {
 		// 規格組み合わせ一覧の取得(DBの値を優先する。)
@@ -207,6 +206,8 @@ function lfGetClassCatListEdit($product_id) {
 	$sql.= "ORDER BY rank1 DESC, rank2 DESC";
 	
 	$arrList =  $objQuery->getAll($sql, array($product_id, $product_id));
+		$objQuery->getlastquery(true);
+
 	
 	$objPage->arrForm["class_id1"] = $arrList[0]['class_id1'];
 	$objPage->arrForm["class_id2"] = $arrList[0]['class_id2'];
