@@ -172,7 +172,7 @@ function lnSetSelect(name1, name2, id, val) {
 							</tr>
 							<!--{if $arrProducts[cnt].stock_max == 0 && $arrProducts[cnt].stock_unlimited_max != 1}-->
 								<tr>
-									<td><span class="red12">申し訳ございませんが、只今品切れ中です。</span></td>
+									<td class="fs12"><span class="red">申し訳ございませんが、只今品切れ中です。</span></td>
 								</tr>
 							<!--{else}-->
 								<!--▼買い物かご-->
@@ -186,7 +186,7 @@ function lnSetSelect(name1, name2, id, val) {
 													<!--{if $tpl_classcat_find1[$id]}-->
 													<!--{assign var=class1 value=classcategory_id`$id`_1}-->
 													<!--{assign var=class2 value=classcategory_id`$id`_2}-->
-													<tr><td colspan="2" height="10" align="center"><span class="red12st"><!--{if $arrErr[$class1] != ""}-->※ <!--{$tpl_class_name1[$id]}-->を入力して下さい。<!--{/if}--></span></td></tr>
+													<tr><td colspan="2" height="10" align="center" class="fs12"><span class="redst"><!--{if $arrErr[$class1] != ""}-->※ <!--{$tpl_class_name1[$id]}-->を入力して下さい。<!--{/if}--></span></td></tr>
 													<tr>
 														<td align="right" class="fs12st"><!--{$tpl_class_name1[$id]|escape}-->： </td>
 														<td>
@@ -198,7 +198,7 @@ function lnSetSelect(name1, name2, id, val) {
 													</tr>
 													<!--{/if}-->
 													<!--{if $tpl_classcat_find2[$id]}-->
-													<tr><td colspan="2" height="5" align="center"><span class="red12st"><!--{if $arrErr[$class2] != ""}-->※ <!--{$tpl_class_name2[$id]}-->を入力して下さい。<!--{/if}--></span></td></tr>
+													<tr><td colspan="2" height="5" align="center" class="fs12"><span class="redst"><!--{if $arrErr[$class2] != ""}-->※ <!--{$tpl_class_name2[$id]}-->を入力して下さい。<!--{/if}--></span></td></tr>
 													<tr>
 														<td align="right" class="fs12st"><!--{$tpl_class_name2[$id]|escape}-->： </td>
 														<td>
@@ -209,7 +209,7 @@ function lnSetSelect(name1, name2, id, val) {
 													</tr>
 													<!--{/if}-->
 													<!--{assign var=quantity value=quantity`$id`}-->		
-													<tr><td colspan="2" height="10" align="center"><span class="red12st"><!--{$arrErr[$quantity]}--></span></td></tr>
+													<tr><td colspan="2" height="10" align="center" class="fs12"><span class="redst"><!--{$arrErr[$quantity]}--></span></td></tr>
 													<tr>
 														<td align="right" width="115" class="fs12st">数量： 
 															<select name="<!--{$quantity}-->" style="<!--{$arrErr[$quantity]|sfGetErrorColor}-->">
