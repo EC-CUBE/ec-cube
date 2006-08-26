@@ -246,8 +246,8 @@ class SC_CustomerList extends SC_SelectSql {
 		
 		sfprintr($array);
 		$limit = $array['page_rows'];
-//		$offset = $array['page_rows'] * $array['search_pageno'];
-		$offset = 0;
+		$offset = $array['page_rows'] * ($array['search_pageno'] - 1);
+//		$offset = 0;
 		$this->setLimitOffset($limit, $offset);
 
 		$this->setOrder( "customer_id DESC" );
