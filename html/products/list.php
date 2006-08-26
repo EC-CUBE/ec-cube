@@ -160,7 +160,6 @@ function lfDispProductsList($category_id, $name, $disp_num, $orderby) {
 	global $objPage;
 	$objQuery = new SC_Query();	
 	$objPage->tpl_pageno = $_POST['pageno'];
-	$objPage->tpl_css = '/css/layout/product/list.css';	// メインCSSパス
 	
 	//表示件数でテンプレートを切り替える
 	$objPage->tpl_mainpage = ROOT_DIR . 'html/user_data/templates/list.tpl';		// メインテンプレート		

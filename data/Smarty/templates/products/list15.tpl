@@ -159,7 +159,7 @@ function lnSetSelect(name1, name2, id, val) {
 									<!--{if $arrProducts[cnt].price02_min == $arrProducts[cnt].price02_max}-->
 										<!--{$arrProducts[cnt].price02_min|sfPreTax:$arrInfo.tax:$arrInfo.tax_rule|number_format}-->
 									<!--{else}-->
-										<!--{$arrProducts[cnt].price02_min|sfPreTax:$arrInfo.tax:$arrInfo.tax_rule|number_format}-->〜<!--{$arrProducts[cnt].price02_max|sfPreTax:$arrInfo.tax:$arrInfo.tax_rule|number_format}-->
+										<!--{$arrProducts[cnt].price02_min|sfPreTax:$arrInfo.tax:$arrInfo.tax_rule|number_format}-->~<!--{$arrProducts[cnt].price02_max|sfPreTax:$arrInfo.tax:$arrInfo.tax_rule|number_format}-->
 									<!--{/if}-->
 									円</span></span>
 								</td>
@@ -184,7 +184,7 @@ function lnSetSelect(name1, name2, id, val) {
 													<!--{assign var=class2 value=classcategory_id`$id`_2}-->
 													<tr><td colspan="2" height="10" align="center"><span class="red12st"><!--{if $arrErr[$class1] != ""}-->※ <!--{$tpl_class_name1[$id]}-->を入力して下さい。<!--{/if}--></span></td></tr>
 													<tr>
-														<td align="right" class="fs12st"><!--{$tpl_class_name1[$id]|escape}-->：&nbsp;</td>
+														<td align="right" class="fs12st"><!--{$tpl_class_name1[$id]|escape}-->： </td>
 														<td>
 															<select name="<!--{$class1}-->" style="<!--{$arrErr[$class1]|sfGetErrorColor}-->" onchange="lnSetSelect('<!--{$class1}-->', '<!--{$class2}-->', '<!--{$id}-->','');">
 															<option value="">選択してください</option>
@@ -196,7 +196,7 @@ function lnSetSelect(name1, name2, id, val) {
 													<!--{if $tpl_classcat_find2[$id]}-->
 													<tr><td colspan="2" height="5" align="center"><span class="red12st"><!--{if $arrErr[$class2] != ""}-->※ <!--{$tpl_class_name2[$id]}-->を入力して下さい。<!--{/if}--></span></td></tr>
 													<tr>
-														<td align="right" class="fs12st"><!--{$tpl_class_name2[$id]|escape}-->：&nbsp;</td>
+														<td align="right" class="fs12st"><!--{$tpl_class_name2[$id]|escape}-->： </td>
 														<td>
 															<select name="<!--{$class2}-->" style="<!--{$arrErr[$class2]|sfGetErrorColor}-->">
 															<option value="">選択してください</option>
@@ -207,12 +207,12 @@ function lnSetSelect(name1, name2, id, val) {
 													<!--{assign var=quantity value=quantity`$id`}-->		
 													<tr><td colspan="2" height="10" align="center"><span class="red12st"><!--{$arrErr[$quantity]}--></span></td></tr>
 													<tr>
-														<td align="right" width="115" class="fs12st">数量：&nbsp;
+														<td align="right" width="115" class="fs12st">数量： 
 															<select name="<!--{$quantity}-->" style="<!--{$arrErr[$quantity]|sfGetErrorColor}-->">
 															<!--{section name=limit loop=$tpl_sale_limit[$id]}-->
 															<option value="<!--{$smarty.section.limit.iteration}-->"><!--{$smarty.section.limit.iteration}--></option>
 															<!--{/section}-->
-															</select>&nbsp;
+															</select> 
 														</td>
 														<td width="170">
 															<a href="" onclick="fnChangeAction('<!--{$smarty.server.REQUEST_URI}-->#product<!--{$id}-->'); fnModeSubmit('cart','product_id','<!--{$id}-->'); return false;" onmouseover="chgImg('/img/products/b_cartin_on.gif','cart<!--{$id}-->');" onmouseout="chgImg('/img/products/b_cartin.gif','cart<!--{$id}-->');"><img src="/img/products/b_cartin.gif" width="115" height="25" alt="カゴに入れる" name="cart<!--{$id}-->" id="cart<!--{$id}-->" /></a>
