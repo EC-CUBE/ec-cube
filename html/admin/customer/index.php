@@ -144,6 +144,17 @@ if ($_POST['mode'] == "search" || $_POST['mode'] == "csv"  || $_POST['mode'] == 
 		
 		//-- 検索データ取得
 		$objSelect = new SC_CustomerList($objPage->arrForm, "customer");
+		
+		// 表示件数設定
+		$page_rows = $objPage->arrForm['page_rows'];
+		if(is_numeric($page_rows)) {	
+			$page_max = $page_rows;
+		} else {
+			$page_max = SEARCH_PMAX;
+		}
+		$offset = $page_max * ($objPage->arrForm['search_pageno'] - 1);
+		$objSelect->setLimitOffset($page_max, $offset);		
+		
 		if ($_POST["mode"] == 'csv') {
 			$searchSql = $objSelect->getListCSV($arrColumnCSV);
 		}else{
@@ -206,13 +217,7 @@ if ($_POST['mode'] == "search" || $_POST['mode'] == "csv"  || $_POST['mode'] == 
 			// 行数の取得
 			$linemax = $objConn->getOne( $objSelect->getListCount(), $objSelect->arrVal);
 			$objPage->tpl_linemax = $linemax;				// 何件が該当しました。表示用
-			
-			// ページ送りの処理
-			if(is_numeric($_POST['page_rows'])) {	
-				$page_max = $_POST['page_rows'];
-			} else {
-				$page_max = SEARCH_PMAX;
-			}
+
 			// ページ送りの取得
 			$objNavi = new SC_PageNavi($_POST['search_pageno'], $linemax, $page_max, "fnCustomerPage", NAVI_PMAX);
 			$startno = $objNavi->start_row;

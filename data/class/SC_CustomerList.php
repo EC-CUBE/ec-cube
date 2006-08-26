@@ -244,10 +244,12 @@ class SC_CustomerList extends SC_SelectSql {
 			$this->arrVal[] = ereg_replace("-", "", $searchTel);
 		}
 		
-		$limit = $array['page_rows'];
-		$offset = $array['page_rows'] * ($array['search_pageno'] - 1);
-//		$offset = 0;
-		$this->setLimitOffset($limit, $offset);
+		// 表示件数設定
+		if ($array['page_rows'] > 0) {
+			$limit = $array['page_rows'];
+			$offset = $array['page_rows'] * ($array['search_pageno'] - 1);
+			$this->setLimitOffset($limit, $offset);
+		}
 
 		$this->setOrder( "customer_id DESC" );
 	}
