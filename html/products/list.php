@@ -141,8 +141,6 @@ $objPage->arrPayment = lfGetPayment();
 // 入力情報を渡す
 $objPage->arrForm = $_POST;
 
-sfprintr($_POST);
-
 $objPage->arrInfo = $objSiteInfo->data;
 $objPage->category_id = $category_id;
 $objPage->arrSearch = $arrSearch;

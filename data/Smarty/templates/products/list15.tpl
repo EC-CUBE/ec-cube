@@ -213,7 +213,7 @@ function lnSetSelect(name1, name2, id, val) {
 													<tr>
 														<td align="right" width="115" class="fs12st">個数： 
 															<!--{if $arrErr.quantity != ""}--><br/><span class="redst"><!--{$arrErr.quantity}--></span><!--{/if}-->
-															<input type="text" name="<!--{$quantity}-->" size="6" class="box6" value="<!--{$arrForm[$quantity].value}-->" maxlength=<!--{$smarty.const.INT_LEN}--> style="<!--{$arrErr[$quantity]|sfGetErrorColor}-->" >
+															<input type="text" name="<!--{$quantity}-->" size="6" class="box6" value="<!--{$arrForm[$quantity]}-->" maxlength=<!--{$smarty.const.INT_LEN}--> style="<!--{$arrErr[$quantity]|sfGetErrorColor}-->" >
 														</td>
 														<td width="170" align="center">
 															<a href="" onclick="fnChangeAction('<!--{$smarty.server.REQUEST_URI}-->#product<!--{$id}-->'); fnModeSubmit('cart','product_id','<!--{$id}-->'); return false;" onmouseover="chgImg('/img/products/b_cartin_on.gif','cart<!--{$id}-->');" onmouseout="chgImg('/img/products/b_cartin.gif','cart<!--{$id}-->');"><img src="/img/products/b_cartin.gif" width="115" height="25" alt="カゴに入れる" name="cart<!--{$id}-->" id="cart<!--{$id}-->" /></a>
