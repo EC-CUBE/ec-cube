@@ -282,7 +282,7 @@
 									<table border="0" cellspacing="0" cellpadding="0" summary=" ">
 										<tr>
 											<td>
-												<input type="image" onMouseover="chgImgImageSubmit('/img/contents/btn_back_on.jpg',this)" onMouseout="chgImgImageSubmit('/img/contents/btn_back.jpg',this)" src="/img/contents/btn_back.jpg" width="123" height="24" alt="前のページに戻る" border="0" name="back" onclick="fnModeSubmit('confirm_return','','')" >
+												<input type="image" onMouseover="chgImgImageSubmit('/img/contents/btn_back_on.jpg',this)" onMouseout="chgImgImageSubmit('/img/contents/btn_back.jpg',this)" src="/img/contents/btn_back.jpg" width="123" height="24" alt="前のページに戻る" border="0" name="back" onclick="fnModeSubmit('confirm_return','','') return false;" >
 												<input type="image" onMouseover="chgImgImageSubmit('/img/contents/btn_regist_on.jpg',this)" onMouseout="chgImgImageSubmit('/img/contents/btn_regist.jpg',this)" src="/img/contents/btn_regist.jpg" width="123" height="24" alt="この内容で登録する" border="0" name="subm" >
 											</td>
 										</tr>
