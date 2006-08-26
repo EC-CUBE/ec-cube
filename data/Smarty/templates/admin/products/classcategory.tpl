@@ -58,23 +58,30 @@
 									<span class="red"> （上限<!--{$smarty.const.STEXT_LEN}-->文字）</span>
 								</td>
 							</tr>
+						</table>
+						<table width="678" border="0" cellspacing="0" cellpadding="0" summary=" ">
+							<tr>
+								<td bgcolor="#cccccc"><img src="/img/common/_.gif" width="1" height="5" alt=""></td>
+								<td><img src="/img/contents/tbl_top.gif" width="676" height="7" alt=""></td>
+								<td bgcolor="#cccccc"><img src="/img/common/_.gif" width="1" height="5" alt=""></td>
+							</tr>
 							<tr>
 								<td bgcolor="#cccccc"><img src="/img/common/_.gif" width="1" height="10" alt=""></td>
 								<td bgcolor="#e9e7de" align="center">
-									<table border="0" cellspacing="0" cellpadding="0" summary=" ">
-										<tr>
-											<td>
-											<input type="submit" name="subm" value="登録" />
-											
-												<a href="./class.php" onmouseover="chgImg('/img/contents/btn_back_on.jpg','back');" onmouseout="chgImg('/img/contents/btn_back.jpg','back');"><img src="/img/contents/btn_back.jpg" width="123" height="24" alt="前のページに戻る" border="0" name="back"></a>
-											</td>
-										</tr>
-									</table>
+								<table border="0" cellspacing="0" cellpadding="0" summary=" ">
+									<tr>
+										<td>
+											<a href="./class.php" onmouseover="chgImg('/img/contents/btn_back_on.jpg','back');" onmouseout="chgImg('/img/contents/btn_back.jpg','back');"><img src="/img/contents/btn_back.jpg" width="123" height="24" alt="前のページに戻る" border="0" name="back"></a>
+										</td>
+									</tr>
+								</table>
 								</td>
 								<td bgcolor="#cccccc"><img src="/img/common/_.gif" width="1" height="10" alt=""></td>
 							</tr>
-						</table>
-						
+							<tr>
+								<td colspan="3"><img src="/img/contents/tbl_bottom.gif" width="678" height="8" alt=""></td>
+							</tr>
+						</table>					
 
 						<table width="678" border="0" cellspacing="0" cellpadding="0" summary=" ">
 							<tr><td colspan="3"><img src="/img/contents/main_bar.jpg" width="678" height="10" alt=""></td></tr>
