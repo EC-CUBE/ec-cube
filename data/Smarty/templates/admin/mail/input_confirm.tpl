@@ -88,8 +88,7 @@
 												<td>
 													<input type="hidden" name="mode" value="template">
 													<input type="button" name="subm02" onClick="return fnInsertValAndSubmit( document.form1, 'mode', 'regist_back', '' )" value="テンプレート設定画面へ戻る" />
-													　<input type="button" name="subm03" onClick="return fnInsertValAndSubmit( document.form1, 'mode', 'regist_complete', '' )" value="配信を予約する" <!--{$list_data.template_id|sfGetEnabled}-->/>
-													　<input type="button" name="subm04" onclick="location.href='./sendmail.php';" value="配信する">
+													　<input type="button" name="subm03" onClick="return fnInsertValAndSubmit( document.form1, 'mode', 'regist_complete', '' )" value="配信する" <!--{$list_data.template_id|sfGetEnabled}-->/>
 													</form>
 													<form name="form2" id="form2" method="post" action="./preview.php" target="_blank">
 													<input type="hidden" name="subject" value="<!--{$list_data.subject|escape}-->">
