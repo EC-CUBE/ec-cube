@@ -48,11 +48,11 @@
 						<table width="678" border="0" cellspacing="1" cellpadding="5" summary=" " bgcolor="#cccccc">
 							<tr>
 								<td bgcolor="#f2f1ec" width="160" class="fs12n">規格名</td>
-								<td bgcolor="#ffffff" width="557" class="fs12n"><!--{$tpl_class_name}--></td>
+								<td bgcolor="#ffffff" width="557" class="fs12n" colspan=2><!--{$tpl_class_name}--></td>
 							</tr>
 							<tr>
 								<td bgcolor="#f2f1ec" width="160" class="fs12n">分類名<span class="red"> *</span></td>
-								<td bgcolor="#ffffff" width="557" class="fs12n">
+								<td bgcolor="#ffffff" width="557" class="fs12n" colspan=2>
 									<span class="red12"><!--{$arrErr.name}--></span>
 									<input type="text" name="name" value="<!--{$arrForm.name|escape}-->" maxlength="<!--{$smarty.const.STEXT_LEN}-->" style="" size="30" class="box30"/>
 									<span class="red"> （上限<!--{$smarty.const.STEXT_LEN}-->文字）</span>
@@ -61,15 +61,15 @@
 							<tr>
 								<td bgcolor="#cccccc"><img src="/img/common/_.gif" width="1" height="10" alt=""></td>
 								<td bgcolor="#e9e7de" align="center">
-								<table border="0" cellspacing="0" cellpadding="0" summary=" ">
-									<tr>
-										<td>
-										<input type="submit" name="subm" value="登録" />
-										
-											<a href="./class.php" onmouseover="chgImg('/img/contents/btn_back_on.jpg','back');" onmouseout="chgImg('/img/contents/btn_back.jpg','back');"><img src="/img/contents/btn_back.jpg" width="123" height="24" alt="前のページに戻る" border="0" name="back"></a>
-										</td>
-									</tr>
-								</table>
+									<table border="0" cellspacing="0" cellpadding="0" summary=" ">
+										<tr>
+											<td>
+											<input type="submit" name="subm" value="登録" />
+											
+												<a href="./class.php" onmouseover="chgImg('/img/contents/btn_back_on.jpg','back');" onmouseout="chgImg('/img/contents/btn_back.jpg','back');"><img src="/img/contents/btn_back.jpg" width="123" height="24" alt="前のページに戻る" border="0" name="back"></a>
+											</td>
+										</tr>
+									</table>
 								</td>
 								<td bgcolor="#cccccc"><img src="/img/common/_.gif" width="1" height="10" alt=""></td>
 							</tr>
