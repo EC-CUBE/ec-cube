@@ -217,7 +217,7 @@ case 'regist_complete':
 			$objPage->tpl_mainpage = 'mail/input_confirm.tpl';
 		} else if( $_POST['mode'] == 'regist_complete' ){
 			lfRegistData($objPage->list_data);
-			header("Location: /admin/mail/sendmail.php");
+			header("Location: /admin/mail/sendmail.php?mode=now");
 			exit;			
 		}
 	}
