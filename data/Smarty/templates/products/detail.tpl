@@ -94,9 +94,6 @@ aaa
 							<tr><td height="5"></td></tr>
 							<!--アイコン-->
 							<tr>
-								<td class="fs10"><!--★商品コード★-->商品コード：<!--{$arrProduct.product_code|escape}--></td>
-							</tr>
-							<tr>
 								<td class="fs18"><span class="orangest"><!--★商品名★--><!--{$arrProduct.name|escape}--></span></td>
 							</tr>
 							<tr><td height="3"></td></tr>
