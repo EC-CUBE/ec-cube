@@ -119,7 +119,7 @@ function lnSetSelect(form, name1, name2, val) {
 											<!--{$arrProduct.price01_min|number_format}-->〜<!--{$arrProduct.price01_max|number_format}-->
 										<!--{/if}-->
 										円
-										</span><br/>
+										</span></span><br/>
 									<!--{/if}-->
 								<!--★ポイント★-->
 									<span class="red"><span class="fs12"> ポイント</span></span><span class="redst"><span class="fs12">：
