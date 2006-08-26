@@ -145,7 +145,7 @@ function lnSetSelect(name1, name2, id, val) {
 								<table width="440" border="0" cellspacing="0" cellpadding="0" summary=" ">
 									<tr><td height="5"></td></tr>
 									<tr>
-										<td class="fs14"><!--¡ú¾¦ÉÊÌ¾¡ú--><a href="<!--{$smarty.const.DETAIL_P_HTML}--><!--{$arrProducts[cnt].product_id}-->"><!--¾¦ÉÊÌ¾--><strong><!--{$arrProducts[cnt].name|escape}--></strong></a></td>
+										<td class="fs14"><!--¡ú¾¦ÉÊÌ¾¡ú--><a href="<!--{$smarty.const.DETAIL_P_HTML}--><!--{$arrProducts[cnt].product_id}-->" class="over"><!--¾¦ÉÊÌ¾--><strong><!--{$arrProducts[cnt].name|escape}--></strong></a></td>
 									</tr>
 									<tr><td height="5"></td></tr>
 								</table>
