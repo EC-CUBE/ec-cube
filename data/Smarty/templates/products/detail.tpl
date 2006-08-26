@@ -163,7 +163,7 @@ function lnSetSelect(form, name1, name2, val) {
 							<tr>
 								<td class="fs12"><img src="../img/common/arrow_gray.gif" width="15" height="10" alt=""><strong>¸Ä¡¡¿ô</strong>
 									<!--{if $arrErr.quantity != ""}--><br/><span class="redst"><!--{$arrErr.quantity}--></span><!--{/if}-->
-									<input type="text" name="quantity" size="6" class="box6" value="<!--{$arrForm.quantity.value}-->" maxlength=<!--{$smarty.const.INT_LEN}--> >
+									<input type="text" name="quantity" size="6" class="box6" value="<!--{$arrForm.quantity.value}-->" maxlength=<!--{$smarty.const.INT_LEN}--> style="<!--{$arrErr.quantity|sfGetErrorColor}-->" >
 								</td>
 							</tr>
 							<tr><td height="20"><img src="../img/common/line_280.gif" width="280" height="1" alt=""></td></tr>

@@ -69,8 +69,6 @@ $count = $objQuery->count("dtb_best_products", "category_id = ?", array($categor
 if(($count >= BEST_MIN) && lfIsRootCategory($category_id) && ($_GET['mode'] != 'search') ) {
 	// 商品TOPの表示処理
 	/** 必ず指定する **/
-	$objPage->tpl_css = '/css/layout/product/index.css';	// メインCSSパス
-	/** 必ず指定する **/
 	$objPage->tpl_mainpage = ROOT_DIR . 'html/user_data/templates/list.tpl';		// メインテンプレート	
 	$objPage->arrBestItems = sfGetBestProducts($conn, $category_id);
 	$objPage->BEST_ROOP_MAX = ceil((BEST_MAX-1)/2);
