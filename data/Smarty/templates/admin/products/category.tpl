@@ -115,7 +115,7 @@
 												<!--{$arrList[cnt].category_name|escape}-->
 											<!--{/if}-->
 											<td align="center">
-											<!--{if $smarty.const.ADMIN_MODE == 1 || $arrList[cnt].level != 1}--> 
+											<!--{if $arrList[cnt].level != 1}--> 
 												<!--{if $arrForm.category_id != $arrList[cnt].category_id}-->
 												<a href="<!--{$smarty.server.PHP_SELF}-->" onclick="fnModeSubmit('pre_edit', 'category_id', <!--{$arrList[cnt].category_id}-->); return false;" />ÊÔ½¸</a>
 												<!--{else}-->
@@ -126,7 +126,7 @@
 											<!--{/if}-->
 											</td>
 											<td align="center">
-											<!--{if $smarty.const.ADMIN_MODE == 1 || $arrList[cnt].level != 1}--> 
+											<!--{if $arrList[cnt].level != 1}--> 
 												<a href="<!--{$smarty.server.PHP_SELF}-->" onclick="fnModeSubmit('delete', 'category_id', <!--{$arrList[cnt].category_id}-->); return false;" />ºï½ü</a>
 											<!--{else}-->
 												-
