@@ -109,7 +109,7 @@ function lnSetSelect(form, name1, name2, val) {
 									<!--{else}-->
 										<!--{$arrProduct.price02_min|sfPreTax:$arrInfo.tax:$arrInfo.tax_rule|number_format}-->¡Á<!--{$arrProduct.price02_max|sfPreTax:$arrInfo.tax:$arrInfo.tax_rule|number_format}-->
 									<!--{/if}-->
-									±ß
+									±ß</span>
 								<!--{if $arrProduct.price01_max > 0}-->
 									¡Ê»²¹Í»Ô¾ì²Á³Ê¡§
 									<!--{if $arrProduct.price01_min == $arrProduct.price01_max}-->				
@@ -120,7 +120,7 @@ function lnSetSelect(form, name1, name2, val) {
 									±ß¡Ë
 								<!--{/if}-->
 								
-									</span></span>
+									</span>
 									<br/>
 								<!--¡ú¥Ý¥¤¥ó¥È¡ú-->
 									<span class="red"><span class="fs12"> ¥Ý¥¤¥ó¥È</span></span><span class="redst"><span class="fs12">¡§
