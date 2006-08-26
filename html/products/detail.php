@@ -143,6 +143,8 @@ $objQuery = new SC_Query();
 $arrRet = $objQuery->select("*", "vw_products_allclass_detail", "product_id = ?", array($tmp_id));
 $objPage->arrProduct = $arrRet[0];
 
+sfprintr($arrRet[0]);
+
 // 購入制限数を取得
 if($objPage->arrProduct['sale_unlimited'] == 1 || $objPage->arrProduct['sale_limit'] > SALE_LIMIT_MAX) {
   $objPage->tpl_sale_limit = SALE_LIMIT_MAX;
