@@ -218,7 +218,7 @@ function lnSetSelect(name1, name2, id, val) {
 															<!--{/section}-->
 															</select> 
 														</td>
-														<td width="170">
+														<td width="170" align="right">
 															<a href="" onclick="fnChangeAction('<!--{$smarty.server.REQUEST_URI}-->#product<!--{$id}-->'); fnModeSubmit('cart','product_id','<!--{$id}-->'); return false;" onmouseover="chgImg('/img/products/b_cartin_on.gif','cart<!--{$id}-->');" onmouseout="chgImg('/img/products/b_cartin.gif','cart<!--{$id}-->');"><img src="/img/products/b_cartin.gif" width="115" height="25" alt="カゴに入れる" name="cart<!--{$id}-->" id="cart<!--{$id}-->" /></a>
 														</td>
 													</tr>
