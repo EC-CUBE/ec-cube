@@ -71,7 +71,7 @@
 							<!--{section name=cnt loop=$arrOtherDeliv}-->
 								<!--{assign var=OtherPref value="`$arrOtherDeliv[cnt].pref`"}--> 
 								<tr bgcolor="#ffffff">
-									<td width="20" class="fs12"><!--{$smarty.section.cnt.iteration}--></td>
+									<td width="15" align="center" class="fs12"><!--{$smarty.section.cnt.iteration}--></td>
 									<td width="80" class="fs12">¤ªÆÏ¤±Àè½»½ê</td>
 									<td width="290" class="fs12">¢©<!--{$arrOtherDeliv[cnt].zip01}-->-<!--{$arrOtherDeliv[cnt].zip02}--><br>
 									<!--{$arrPref[$OtherPref]|escape}--><!--{$arrOtherDeliv[cnt].addr01|escape}--><!--{$arrOtherDeliv[cnt].addr02|escape}--><br>
