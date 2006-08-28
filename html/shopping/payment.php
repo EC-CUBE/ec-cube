@@ -252,7 +252,7 @@ function lfGetDelivDate() {
 				2006/06/13 Nakagawa
 				トーカ堂様運用上3-4日後は、現在日+6日とする。
 			*/
-			$start_day = 6;
+			$start_day = 5;
 			break;
 		//1週間以内
 		case '4':
