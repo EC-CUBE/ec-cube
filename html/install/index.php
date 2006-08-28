@@ -278,7 +278,7 @@ function lfDispStep1($objPage) {
 	// hiddenに入力値を保持
 	$objPage->arrHidden = $objDBParam->getHashArray();
 	$objPage->tpl_mainpage = 'step2.tpl';
-	$objPage->tpl_mode = 'step1';
+	$objPage->tpl_mode = 'step2';
 	return $objPage;
 }
 
