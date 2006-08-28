@@ -64,15 +64,7 @@ $linemax = $objQuery->count($from, $where, $arrval);
 $objQuery->getlastquery(true);
 
 $objPage->tpl_linemax = $linemax;
-/*
-// ページ送りの取得
-$objNavi = new SC_PageNavi($_POST['pageno'], $linemax, $page_max, "fnSearchPageNavi", NAVI_PMAX);
-$objPage->tpl_strnavi = $objNavi->strnavi;		// 表示文字列
-$startno = $objNavi->start_row;
 
-// 取得範囲の指定(開始行番号、行数のセット)
-$objQuery->setlimitoffset($page_max, $startno);
-*/
 // 表示順序
 $objQuery->setorder($order);
 

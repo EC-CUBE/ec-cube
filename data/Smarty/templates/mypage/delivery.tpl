@@ -66,11 +66,12 @@
 						<!--表示エリアここから-->
 						<table width="515" border="0" cellspacing="1" cellpadding="10" summary=" ">
 							<tr>
-								<td colspan="5" bgcolor="#f0f0f0" class="fs12n"><strong>▼お届け先</strong></td>
+								<td colspan="6" bgcolor="#f0f0f0" class="fs12n"><strong>▼お届け先</strong></td>
 							</tr>
 							<!--{section name=cnt loop=$arrOtherDeliv}-->
 								<!--{assign var=OtherPref value="`$arrOtherDeliv[cnt].pref`"}--> 
 								<tr bgcolor="#ffffff">
+									<td width="20" class="fs12"><!--{$smarty.section.iteration}--></td>
 									<td width="80" class="fs12">お届け先住所</td>
 									<td width="290" class="fs12">〒<!--{$arrOtherDeliv[cnt].zip01}-->-<!--{$arrOtherDeliv[cnt].zip02}--><br>
 									<!--{$arrPref[$OtherPref]|escape}--><!--{$arrOtherDeliv[cnt].addr01|escape}--><!--{$arrOtherDeliv[cnt].addr02|escape}--><br>
