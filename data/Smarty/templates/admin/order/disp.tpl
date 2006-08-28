@@ -158,10 +158,7 @@
 								<td bgcolor="#ffffff" width="248">
 								<!--{assign var=key1 value="deliv_zip01"}-->
 								<!--{assign var=key2 value="deliv_zip02"}-->
-								¢©
-								<!--{$arrForm[$key1].value|escape}-->
-								 - 
-								<!--{$arrForm[$key2].value|escape}-->
+								¢©<!--{$arrForm[$key1].value|escape}-->-<!--{$arrForm[$key2].value|escape}-->
 								<input type="button" name="address_input" value="½»½êÆþÎÏ" onclick="fnCallAddress('<!--{$smarty.const.URL_INPUT_ZIP}-->', 'deliv_zip01', 'deliv_zip02', 'deliv_pref', 'deliv_addr01');" />
 								</td>
 								<td bgcolor="#f2f1ec" width="110">TEL</td>
@@ -169,9 +166,7 @@
 								<!--{assign var=key1 value="deliv_tel01"}-->
 								<!--{assign var=key2 value="deliv_tel02"}-->
 								<!--{assign var=key3 value="deliv_tel03"}-->
-								<!--{$arrForm[$key1].value|escape}-->
-								<!--{$arrForm[$key2].value|escape}-->
-								<!--{$arrForm[$key3].value|escape}-->
+								<!--{$arrForm[$key1].value|escape}-->-<!--{$arrForm[$key2].value|escape}-->-<!--{$arrForm[$key3].value|escape}-->
 								</td>
 							</tr>
 							<tr class="fs12n">
@@ -186,14 +181,14 @@
 									</td>
 									</tr>
 									<tr><td height="5"></td></tr>
-									<tr class="fs10n">
+									<tr class="fs12n">
 										<td>
 										<!--{assign var=key value="deliv_addr01"}-->
 										<!--{$arrForm[$key].value|escape}-->
 										</td>
 										</tr>
 										<tr><td height="5"></td></tr>
-										<tr class="fs10n">
+										<tr class="fs12n">
 											<td>
 											<!--{assign var=key value="deliv_addr02"}-->
 											<!--{$arrForm[$key].value|escape}-->
