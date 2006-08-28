@@ -55,7 +55,7 @@ function sfErrorHeader($mess) {
 	print("<table width='100%' border='0' cellspacing='0' cellpadding='0' summary=' '>");
 	print("	<tr>");
 	print("<td bgcolor='#ffddaa' height='50' colspan='2' align='center'>");
-	print("<span class='red'><span class='fs12'>" . $mess . "</span></span>");
+	print("<SPAN style='color:red; font-size:12px'>" . $mess . "</span>");
 	print("</td>");
 	print("	</tr>");
 	print("</table>");	
