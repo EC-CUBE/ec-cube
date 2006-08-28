@@ -22,11 +22,6 @@ $objPage->CustomerName1 = $objCustomer->getvalue('name01');
 $objPage->CustomerName2 = $objCustomer->getvalue('name02');
 $objPage->CustomerPoint = $objCustomer->getvalue('point');
 
-// サイト情報を取得
-$objSiteInfo = new SC_SiteInfo();
-$arrInfo = $objSiteInfo->data;
-$objPage->arrInfo = $arrInfo;
-
 // レイアウトデザインを取得
 $objPage = sfGetPageLayout($objPage, false, "mypage/index.php");
 

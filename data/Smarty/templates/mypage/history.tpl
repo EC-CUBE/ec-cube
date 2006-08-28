@@ -65,7 +65,7 @@
 								<!--{assign var=quantity value=`$arrDisp.quantity[cnt]`}-->
 								<td align="right" class="fs12"><!--{$price|escape|number_format}-->±ß</td>
 								<td align="center" class="fs12"><!--{$quantity|escape}--></td>
-								<td align="right" class="fs12"><!--{$price|sfPreTax:$arrInfo.tax:$arrInfo.tax_rule|sfMultiply:$quantity|number_format}-->±ß</td>
+								<td align="right" class="fs12"><!--{$price|sfPreTax:$arrSiteInfo.tax:$arrSiteInfo.tax_rule|sfMultiply:$quantity|number_format}-->±ß</td>
 							</tr>
 							<!--{/section}-->
 

@@ -38,19 +38,12 @@ if (!$objCustomer->isLoginSuccess() || $cnt == 0){
 	// 配送時間の取得
 	$arrRet = sfGetDelivTime($objPage->arrDisp['payment_id']);
 	$objPage->arrDelivTime = sfArrKeyValue($arrRet, 'time_id', 'time');
-	$objSiteInfo = new SC_SiteInfo();
-	$arrInfo = $objSiteInfo->data;
-	// 基本情報を渡す
-	$objPage->arrInfo = $arrInfo;
-	
+
 	//マイページトップ顧客情報表示用
 	$objPage->CustomerName1 = $objCustomer->getvalue('name01');
 	$objPage->CustomerName2 = $objCustomer->getvalue('name02');
 	$objPage->CustomerPoint = $objCustomer->getvalue('point');
-	
 }
-
-
 
 $objView->assignobj($objPage);
 $objView->display(SITE_FRAME);

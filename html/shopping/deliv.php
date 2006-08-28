@@ -26,7 +26,6 @@ $objPage = new LC_Page();
 $objView = new SC_SiteView();
 $objSiteSess = new SC_SiteSession();
 $objCartSess = new SC_CartSession();
-$objSiteInfo = new SC_SiteInfo();
 $objCustomer = new SC_Customer();
 // クッキー管理クラス
 $objCookie = new SC_Cookie(COOKIE_EXPIRE);

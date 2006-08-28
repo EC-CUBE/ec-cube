@@ -60,9 +60,9 @@
 						<!--{assign var=price02_max value=$arrForm[cnt].price02_max}-->
 						<td class="left04w">
 						<!--{if $price02_min == $price02_max}-->
-						<!--{$price02_min|sfPreTax:$arrInfo.tax:$arrInfo.tax_rule|number_format}-->
+						<!--{$price02_min|sfPreTax:$arrSiteInfo.tax:$arrSiteInfo.tax_rule|number_format}-->
 						<!--{else}-->
-						<!--{$price02_min|sfPreTax:$arrInfo.tax:$arrInfo.tax_rule|number_format}-->¡¡<br/>¡Á<br/><!--{$price02_max|sfPreTax:$arrInfo.tax:$arrInfo.tax_rule|number_format}-->
+						<!--{$price02_min|sfPreTax:$arrSiteInfo.tax:$arrSiteInfo.tax_rule|number_format}-->¡¡<br/>¡Á<br/><!--{$price02_max|sfPreTax:$arrSiteInfo.tax:$arrSiteInfo.tax_rule|number_format}-->
 						<!--{/if}-->
 						±ß</td>
 					</tr>

@@ -17,7 +17,6 @@ $objPage = new LC_Page();
 $objQuery = new SC_Query();
 $objView = new SC_SiteView();
 $objCustomer = new SC_Customer();
-$objSiteInfo = new SC_SiteInfo();
 
 //ログイン判定
 if (!$objCustomer->isLoginSuccess()){
@@ -26,9 +25,6 @@ if (!$objCustomer->isLoginSuccess()){
 
 // レイアウトデザインを取得
 $objPage = sfGetPageLayout($objPage, false, "mypage/index.php");
-
-// 基本情報の取得
-$objPage->arrInfo = $objSiteInfo->data;
 
 //履歴の削除
 if ($_POST['mode'] == 'delete'){
