@@ -10,7 +10,12 @@
 	<tr><td><img src="/img/contents/navi_line.gif" width="140" height="2" alt=""></td></tr>
 	<tr><td class=<!--{if $tpl_subno != 'point'}-->"navi"<!--{else}-->"navi-on"<!--{/if}-->><a href="./point.php" onMouseOver="naviStyleChange('point', '#a5a5a5')" <!--{if $tpl_subno != 'point'}-->onMouseOut="naviStyleChange('point', '#636469')"<!--{/if}--> id="point"><img src="/img/contents/icon.jpg" width="15" height="9" alt="" border="0"><span class="navi_text">ポイント設定</span></a></td></tr>
 	<tr><td><img src="/img/contents/navi_line.gif" width="140" height="2" alt=""></td></tr>
-	<tr><td class=<!--{if $tpl_subno != 'mail'}-->"navi"<!--{else}-->"navi-on"<!--{/if}-->><a href="./mail.php" onMouseOver="naviStyleChange('mail', '#a5a5a5')" <!--{if $tpl_subno != 'mail'}-->onMouseOut="naviStyleChange('mail', '#636469')"<!--{/if}--> id="mail"><img src="/img/contents/icon.jpg" width="15" height="9" alt="" border="0"><span class="navi_text">メール設定</span></a></td></tr>
+
+
+	<tr><td class=<!--{if $tpl_subno != 'mail'}-->"navi"<!--{else}-->"navi-on"<!--{/if}-->><a href="./mail.php" onMouseOver="naviStyleChange('mail', '#a5a5a5')" <!--{if $tpl_subno != 'mail'}-->onMouseOut="naviStyleChange('mail', '#636469')"<!--{/if}--> id="mail"><img src="/img/contents/icon.jpg" width="15" height="9" alt="" border="0"><span class="navi_text">会員規約設定</span></a></td></tr>
+
+
+
 	<tr><td><img src="/img/contents/navi_line.gif" width="140" height="2" alt=""></td></tr>
 	<tr><td class=<!--{if $tpl_subno != 'seo'}-->"navi"<!--{else}-->"navi-on"<!--{/if}-->><a href="./seo.php" onMouseOver="naviStyleChange('seo', '#a5a5a5')" <!--{if $tpl_subno != 'seo'}-->onMouseOut="naviStyleChange('seo', '#636469')"<!--{/if}--> id="seo"><img src="/img/contents/icon.jpg" width="15" height="9" alt="" border="0"><span class="navi_text">SEO管理</span></a></td></tr>
 	<tr><td><img src="/img/contents/navi_line.gif" width="140" height="2" alt=""></td></tr>
