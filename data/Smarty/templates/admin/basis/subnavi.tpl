@@ -1,7 +1,7 @@
 <SCRIPT LANGUAGE="JavaScript">
 <!--
 function Change(ids){
-	document.getElementById(ids).backgroundColor ='00f0ff';
+	document.getElementById(ids).style.backgroundColor ='00f0ff';
 }
 
 function Reset(c){
