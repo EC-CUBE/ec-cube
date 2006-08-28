@@ -51,11 +51,11 @@ case 'step0':
 	$objPage = lfDispStep0_1($objPage);
 	break;	
 // ファイルのコピー
-case 'step0_1':
+/*case 'step0_1':
 	$objPage = lfDispStep1($objPage);
-	break;	
+	break;	*/
 // WEBサイトの設定
-/*case 'step1':
+case 'step1':
 	//入力値のエラーチェック
 	$objPage->arrErr = lfCheckWEBError($objWebParam);
 	if(count($objPage->arrErr) == 0) {
@@ -63,7 +63,7 @@ case 'step0_1':
 	} else {
 		$objPage = lfDispStep1($objPage);
 	}
-	break;*/
+	break;
 // データベースの設定
 case 'step2':
 	//入力値のエラーチェック
