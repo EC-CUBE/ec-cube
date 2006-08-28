@@ -66,8 +66,13 @@ class SC_View {
 		
 		// サイト情報を割り当てる
 		$objSiteInfo = new SC_SiteInfo();
-		$SiteInfo['arrSiteInfo'] = $objSiteInfo->data;
-		foreach ($SiteInfo as $key => $value){
+		$arrInfo['arrSiteInfo'] = $objSiteInfo->data;
+		
+		// 都道府県名を変換
+		global $arrPref;
+		$arrInfo['arrSiteInfo']['pref'] = $arrPref[$arrInfo['arrSiteInfo']['pref']];
+		
+		foreach ($arrInfo as $key => $value){
 			$this->_smarty->assign($key, $value);
 		}
   	}

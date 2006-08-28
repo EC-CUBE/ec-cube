@@ -18,14 +18,6 @@ $objView = new SC_SiteView();
 // レイアウトデザインを取得
 $objPage = sfGetPageLayout($objPage, false, DEF_LAYOUT);
 
-// サイト情報を取得
-$objSiteInfo = new SC_SiteInfo();
-$arrInfo = $objSiteInfo->data;
-
-// 都道府県名を変換
-global $arrPref;
-$arrInfo['pref'] = $arrPref[$arrInfo['pref']];
-
 $objPage->arrInfo = $arrInfo;
 
 $objView->assignobj($objPage);
