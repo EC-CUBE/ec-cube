@@ -12,7 +12,7 @@ class LC_Page {
 }
 
 $objPage = new LC_Page();
-$objView = new SC_SiteView();
+$objView = new SC_UserView('./templates', './temp');
 
 // パラメータ管理クラス
 $objWebParam = new SC_FormParam();
