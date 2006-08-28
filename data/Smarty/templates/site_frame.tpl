@@ -11,7 +11,7 @@
 <script type="text/javascript" src="/js/navi.js"></script>
 <script type="text/javascript" src="/js/win_op.js"></script>
 <script type="text/javascript" src="/js/site.js"></script>
-<title><!--{$tpl_site_title}-->/<!--{$tpl_title|escape}--></title>
+<title><!--{$tpl_shop_name}-->/<!--{$tpl_title|escape}--></title>
 <meta name="author" content="<!--{$arrPageLayout.author|escape}-->">
 <meta name="description" content="<!--{$arrPageLayout.description|escape}-->">
 <meta name="keywords" content="<!--{$arrPageLayout.keyword|escape}-->">
