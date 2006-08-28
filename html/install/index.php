@@ -62,11 +62,17 @@ case 'step1':
 case 'step2':
 	//入力値のエラーチェック
 	$objPage->arrErr = lfCheckDBError($objDBParam);
+	
+	sfPrintR($objPage);
+			
 	if(count($objPage->arrErr) == 0) {
 		$objPage = lfDispStep3($objPage);
 	} else {
 		$objPage = lfDispStep2($objPage);
 	}
+	
+	sfPrintR($objPage);
+	
 	break;
 // テーブルの作成
 case 'step3':
@@ -378,7 +384,6 @@ function lfCheckDBError($objFormParam) {
 			gfPrintLog($objDB->userinfo, "./temp/install.log");
 		}
 	}
-	print_r($objErr);
 	return $objErr->arrErr;
 }
 
