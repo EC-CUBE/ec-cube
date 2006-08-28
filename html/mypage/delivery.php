@@ -62,9 +62,9 @@ $order = "other_deliv_id DESC";
 //お届け先登録件数取得
 $linemax = $objQuery->count($from, $where, $arrval);
 $objQuery->getlastquery(true);
-/*
-$objPage->tpl_linemax = $linemax;
 
+$objPage->tpl_linemax = $linemax;
+/*
 // ページ送りの取得
 $objNavi = new SC_PageNavi($_POST['pageno'], $linemax, $page_max, "fnSearchPageNavi", NAVI_PMAX);
 $objPage->tpl_strnavi = $objNavi->strnavi;		// 表示文字列
