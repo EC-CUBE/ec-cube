@@ -109,12 +109,12 @@
 						</tr>
 						<tr align="right">
 							<td colspan="5" class="fs12n" bgcolor="#f0f0f0">合計</td>
-							<td class="fs12st" bgcolor="#ffffff"><span class="red"><!--{$arrData.total-$arrData.deliv_fee|number_format}-->円</td>
+							<td class="fs12n" bgcolor="#ffffff"><span class="red"><!--{$arrData.total-$arrData.deliv_fee|number_format}-->円</td>
 						</tr>
 						<!--{if $arrData.birth_point > 0}-->
 						<tr align="right">
 							<td colspan="5" class="fs12n" bgcolor="#f0f0f0">お誕生月ポイント</td>
-							<td class="fs12n" bgcolor="#ffffff"><!--{$arrData.birth_point|number_format}-->pt</td>
+							<td class="fs12st" bgcolor="#ffffff"><!--{$arrData.birth_point|number_format}-->pt</td>
 						</tr>
 						<!--{/if}-->
 						<tr align="right">
