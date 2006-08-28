@@ -62,6 +62,9 @@ class SC_View {
 		foreach ($data as $key => $value){
 			$this->_smarty->assign($key, $value);
 		}
+		
+		// サイト情報を割り当てる
+		
   	}
   	
   	// 連想配列内の変数をすべて割り当てる。
@@ -74,18 +77,7 @@ class SC_View {
 	/* サイト初期設定 */
 	function initpath() {
 		$array['tpl_mainnavi'] = ROOT_DIR . 'data/Smarty/templates/frontparts/mainnavi.tpl';
-//		$array['tpl_search_products_php'] = ROOT_DIR . 'html/frontparts/search_products.php';			// 商品検索
-//		$array['tpl_leftnavi'] = 'frontparts/leftnavi.tpl';							// 左ナビ
-		$array['tpl_search_products_php'] = ROOT_DIR . 'html/frontparts/bloc/search_products.php';		// 商品検索
-		$array['tpl_leftnavi'] = ROOT_DIR . 'html/frontparts/bloc/leftnavi.tpl';						// 左ナビ
-		$array['tpl_category_php'] = ROOT_DIR . 'html/frontparts/category.php';		// カテゴリ
-		$array['tpl_pankuzu_php'] = ROOT_DIR . 'html/frontparts/pankuzu.php';		// パンクズ
-		$array['tpl_tv_products'] = 'frontparts/tv_products.tpl';					// TV紹介商品
-		$array['tpl_maintitle'] = 'frontparts/maintitle.tpl';						// 小見出し
-		$array['tpl_login_php'] = ROOT_DIR . 'html/frontparts/login.php';			
-		$array['tpl_banner'] = 'frontparts/banner.tpl';								// バナー
 		$array['tpl_root_id'] = sfGetRootId();
-		$array['tpl_mypage_list'] = 'mypage/list.tpl';								//マイページの編集リスト
 		$this->assignarray($array);
 	}
 }
