@@ -132,7 +132,7 @@ case 'step3':
 	break;
 // テーブル類削除
 case 'drop':
-	print("けす");
+	$objPage = lfDispStep3($objPage);
 	break;
 // 完了画面
 case 'complete':

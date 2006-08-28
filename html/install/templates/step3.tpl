@@ -1,3 +1,21 @@
+<script type="text/javascript">
+<!--
+	// モードとキーを指定してSUBMITを行う。
+	function fnModeSubmit(mode) {
+		switch(mode) {
+		case 'drop':
+			if(!window.confirm('一度削除したデータは、元に戻せません。\n削除しても宜しいですか？')){
+				return;
+			}
+			break;
+		default:
+			break;
+		}
+		document.form1['mode'].value = mode;
+		document.form1.submit();	
+	}
+//-->
+</script>
 
 <table width="502" border="0" cellspacing="1" cellpadding="0" summary=" ">
 <form name="form1" id="form1" method="post" action="<!--{$smarty.server.PHP_SELF}-->">
@@ -20,6 +38,7 @@
 			<td bgcolor="#ffffff" width="332" class="fs12" height="50">
 			<!--{$tpl_message}--><br>
 			<span class="red"><!--{$arrErr.all}--></span>
+			<input type="button" onclick="fnModeSubmit('drop');" value="既存データをすべて削除する">
 			</td>
 		</tr>
 	</table>
