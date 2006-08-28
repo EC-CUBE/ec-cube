@@ -51,6 +51,7 @@ function sf_getBasisData() {
 
 // 装飾付きエラーメッセージの表示
 function sfErrorHeader($mess) {
+	print("<meta http-equiv='Content-Type' content='text/html; charset=EUC-JP'>");
 	print("<table width='100%' border='0' cellspacing='0' cellpadding='0' summary=' '>");
 	print("	<tr>");
 	print("<td bgcolor='#ffddaa' height='50' colspan='2' align='center'>");
