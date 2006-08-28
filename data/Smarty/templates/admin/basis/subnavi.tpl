@@ -1,7 +1,7 @@
 <SCRIPT LANGUAGE="JavaScript">
 <!--
 function Change(c){
-document.backgroundColor="#a5a5a5";
+document.backgroundColor="#FF00FF";
 
 }
 
