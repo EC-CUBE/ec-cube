@@ -6,7 +6,7 @@
 	<tr><td><img src="/img/contents/navi_line.gif" width="140" height="2" alt=""></td></tr>
 	<!--{if $tpl_subno == 'status'}-->
 		<!--{foreach key=key item=item from=$arrORDERSTATUS}-->
-			<tr><td class=<!--{if $key ne $SelectedStatus && $key ne $defaultstatus}-->"subnavi"<!--{else}-->"subnavi-on"<!--{/if}-->><a href="#" onclick="document.form1.search_pageno.value='1'; fnModeSubmit('search','status','<!--{$key}-->' );" onMouseOver="naviStyleChange('status_sub', '#b7b7b7')" <!--{if $key ne $SelectedStatus && $key ne $defaultstatus}-->onMouseOut="naviStyleChange('status_sub', '#818287')"<!--{/if}--> id="status_sub"><span class="subnavi_text"><!--{$item}--></span></a></td></tr>
+			<tr><td class=<!--{if $key ne $SelectedStatus && $key ne $defaultstatus}-->"subnavi"<!--{else}-->"subnavi-on"<!--{/if}-->><a href="#" onclick="document.form1.search_pageno.value='1'; fnModeSubmit('search','status','<!--{$key}-->' );" onMouseOver="naviStyleChange('<!--{$key}-->', '#b7b7b7')" <!--{if $key ne $SelectedStatus && $key ne $defaultstatus}-->onMouseOut="naviStyleChange('<!--{$key}-->', '#818287')"<!--{/if}--> id="<!--{$key}-->"><span class="subnavi_text"><!--{$item}--></span></a></td></tr>
 			<tr><td><img src="/img/contents/navi_subline.gif" width="140" height="2" alt=""></td></tr>
 		<!--{/foreach}-->
 	<!--{/if}-->
