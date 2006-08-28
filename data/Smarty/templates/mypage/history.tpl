@@ -112,11 +112,11 @@
 						<table width="515" border="0" cellspacing="1" cellpadding="10" summary=" ">
 							<tr align="right" bgcolor="#f0f0f0">
 								<td class="fs12n" width="415">ご使用ポイント</td>
-								<td class="fs12n" width="75"bgcolor="#ffffff"><!--{assign var=key value="use_point"}--><!--{$arrDisp[$key]|default:0}--> pt</td>
+								<td class="fs12n" width="75"bgcolor="#ffffff"><!--{assign var=key value="use_point"}--><!--{$arrDisp[$key]|number_format|default:0}--> pt</td>
 							</tr>
 							<tr align="right" bgcolor="#f0f0f0">
 								<td class="fs12n" width="400">今回加算されるポイント</td>
-								<td class="fs12n" width="75" bgcolor="#ffffff"><!--{$arrDisp.add_point|default:0}--> pt</td>
+								<td class="fs12n" width="75" bgcolor="#ffffff"><!--{$arrDisp.add_point|number_format|default:0}--> pt</td>
 							</tr>
 						</table>
 						<!-- 使用ポイントここまで -->

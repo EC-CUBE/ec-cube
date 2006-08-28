@@ -1,14 +1,16 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="ja" lang="ja">
-
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html lang="ja">
 <head>
-<meta http-equiv="content-type" content="application/xhtml+xml; charset=EUC-JP" />
-<meta http-equiv="content-script-type" content="text/javascript" />
-<meta http-equiv="content-style-type" content="text/css" />
-<link rel="stylesheet" href="../css/main.css" type="text/css" media="all" />
-<link rel="stylesheet" href="../css/layout/review/index.css" type="text/css" media="all" />
-<script type="text/javascript" src="../js/css.js"></script>
-<script type="text/javascript" src="../js/navi.js"></script>
+<meta http-equiv="Content-Type" content="text/html; charset=EUC-JP">
+<meta http-equiv="content-script-type" content="text/javascript">
+<meta http-equiv="content-style-type" content="text/css">
+<link rel="stylesheet" href="/user_data/css/contents.css" type="text/css" media="all" />
+<link rel="stylesheet" href="/css/common.css" type="text/css" media="all" />
+<link rel="stylesheet" href="<!--{$tpl_css}-->" type="text/css" media="all" />
+<script type="text/javascript" src="/js/css.js"></script>
+<script type="text/javascript" src="/js/navi.js"></script>
+<script type="text/javascript" src="/js/win_op.js"></script>
+<script type="text/javascript" src="/js/site.js"></script>
 <title><!--{$arrSiteInfo.shop_name}-->/エラー</title>
 </head>
 

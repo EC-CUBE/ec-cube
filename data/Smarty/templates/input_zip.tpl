@@ -5,8 +5,11 @@
 <meta http-equiv="content-script-type" content="text/javascript">
 <meta http-equiv="content-style-type" content="text/css">
 <link rel="stylesheet" href="/user_data/css/contents.css" type="text/css" media="all" />
-<script type="text/javascript" src="/js/navi.js"></script>
+<link rel="stylesheet" href="/css/common.css" type="text/css" media="all" />
+<link rel="stylesheet" href="<!--{$tpl_css}-->" type="text/css" media="all" />
 <script type="text/javascript" src="/js/css.js"></script>
+<script type="text/javascript" src="/js/navi.js"></script>
+<script type="text/javascript" src="/js/win_op.js"></script>
 <script type="text/javascript" src="/js/site.js"></script>
 <title><!--{$arrSiteInfo.shop_name}-->/½»½ê¸¡º÷</title>
 </head>

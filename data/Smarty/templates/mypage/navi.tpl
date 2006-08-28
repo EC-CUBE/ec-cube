@@ -42,7 +42,7 @@
 				<td class="fs12" bgcolor="#ffffff">
 				ようこそ <br/>
 				<!--{$CustomerName1|escape}--> <!--{$CustomerName2|escape}-->様<br>
-				現在の所持ポイントは<span class="redst"><!--{$CustomerPoint|escape|default:"0"}-->pt</span>です。
+				現在の所持ポイントは<span class="redst"><!--{$CustomerPoint|number_format|escape|default:"0"}-->pt</span>です。
 				</td>
 			</tr>
 		</table>

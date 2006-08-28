@@ -34,7 +34,7 @@
 				<td><input type="image" name="subm" src="/img/header/login.gif" width="44" height="21" alt="ログイン" /></a></td>
 			</tr>
 			<tr>
-				<td colspan="2" class="fs10n" align="right"><a href="<!--{$smarty.const.SSL_URL|sfTrimURL}-->/forgot/index.php" onclick="win01('<!--{$smarty.const.SSL_URL|sfTrimURL}-->/forgot/index.php','forget','580','320'); return false;" target="_blank">パスワードを忘れた方はこちら</a></td>
+				<td colspan="2" class="fs10n" align="right"><a href="<!--{$smarty.const.SSL_URL|sfTrimURL}-->/forgot/index.php" onclick="win01('<!--{$smarty.const.SSL_URL|sfTrimURL}-->/forgot/index.php','forget','600','400'); return false;" target="_blank">パスワードを忘れた方はこちら</a></td>
 			</tr>
 			<!--{/if}-->
 		</table>

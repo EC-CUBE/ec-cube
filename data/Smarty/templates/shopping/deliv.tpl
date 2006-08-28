@@ -31,7 +31,7 @@
 			<tr><td height="15"></td></tr>
 			<tr>
 				<td>
-					<a href="/mypage/delivery_addr.php" onclick="win02('/mypage/delivery_addr.php?page=<!--{$smarty.server.PHP_SELF}-->','new_deiv','600','630'); return false;" onmouseover="chgImg('/img/common/newadress_on.gif','addition');" onmouseout="chgImg('/img/common/newadress.gif','addition');"><img src="/img/common/newadress.gif" width="172" height="20" alt="新しいお届け先を追加する" name="addition" id="addition" /></a>
+					<a href="/mypage/delivery_addr.php" onclick="win02('/mypage/delivery_addr.php?page=<!--{$smarty.server.PHP_SELF}-->','new_deiv','600','640'); return false;" onmouseover="chgImg('/img/common/newadress_on.gif','addition');" onmouseout="chgImg('/img/common/newadress.gif','addition');"><img src="/img/common/newadress.gif" width="172" height="20" alt="新しいお届け先を追加する" name="addition" id="addition" /></a>
 				</td>
 			</tr>
 			<tr><td height="20"></td></tr>
@@ -76,7 +76,7 @@
 								<!--{$arrAddr[cnt].name01|escape}--> <!--{$arrAddr[cnt].name02|escape}-->
 							</td>
 							<td align="center">
-								<!--{if !$smarty.section.cnt.first}--><a href="/mypage/delivery_addr.php" onclick="win02('/mypage/delivery_addr.php?page=<!--{$smarty.server.PHP_SELF}-->&other_deliv_id=<!--{$arrAddr[cnt].other_deliv_id}-->','new_deiv','680','560'); return false;">変更</a><!--{/if}-->
+								<!--{if !$smarty.section.cnt.first}--><a href="/mypage/delivery_addr.php" onclick="win02('/mypage/delivery_addr.php?page=<!--{$smarty.server.PHP_SELF}-->&other_deliv_id=<!--{$arrAddr[cnt].other_deliv_id}-->','new_deiv','600','640'); return false;">変更</a><!--{/if}-->
 							</td>
 							<td align="center">
 								<!--{if !$smarty.section.cnt.first}--><a href="<!--{$smarty.server.PHP_SELF}-->" onclick="fnModeSubmit('delete', 'other_deliv_id', '<!--{$arrAddr[cnt].other_deliv_id}-->'); return false">削除</a><!--{/if}-->

@@ -5,7 +5,7 @@
 			alert('最大登録数を超えています');
 			return false;
 		}else{
-			win02('./delivery_addr.php','new_deiv','680','560');
+			win02('./delivery_addr.php','new_deiv','600','640');
 		}
 	}
 
@@ -53,7 +53,7 @@
 							<tr>
 								<td><span class="fs12">登録住所以外へのご住所へ送付される場合等にご利用いただくことができます。</span><br>
 								<span class="fs10">※最大<!--{$smarty.const.DELIV_ADDR_MAX}-->件まで登録できます。</span></td>
-								<td align="right"><a href="/mypage/delivery_addr.php" onclick="opWin('/mypage/delivery_addr.php','delivadd','600','630'); return false;" onmouseover="chgImg('/img/common/newadress_on.gif','newadress');" onmouseout="chgImg('/img/common/newadress.gif','newadress');" target="_blank"><img src="/img/common/newadress.gif" width="160" height="22" alt="新しいお届け先を追加" border="0" name="newadress"></a></td>
+								<td align="right"><a href="/mypage/delivery_addr.php" onclick="opWin('/mypage/delivery_addr.php','delivadd','600','640'); return false;" onmouseover="chgImg('/img/common/newadress_on.gif','newadress');" onmouseout="chgImg('/img/common/newadress.gif','newadress');" target="_blank"><img src="/img/common/newadress.gif" width="160" height="22" alt="新しいお届け先を追加" border="0" name="newadress"></a></td>
 							</tr>
 							<tr><td height="10"></td></tr>
 						</table>
@@ -75,7 +75,7 @@
 									<td width="290" class="fs12">〒<!--{$arrOtherDeliv[cnt].zip01}-->-<!--{$arrOtherDeliv[cnt].zip02}--><br>
 									<!--{$arrPref[$OtherPref]|escape}--><!--{$arrOtherDeliv[cnt].addr01|escape}--><!--{$arrOtherDeliv[cnt].addr02|escape}--><br>
 									<!--{$arrOtherDeliv[cnt].name01|escape}-->&nbsp;<!--{$arrOtherDeliv[cnt].name02|escape}--></td>
-									<td width="30" align="center" class="fs12"><a href="./delivery_addr.php" onclick="win02('./delivery_addr.php?other_deliv_id=<!--{$arrOtherDeliv[cnt].other_deliv_id}-->','deliv_disp','600','630'); return false;">変更</a>
+									<td width="30" align="center" class="fs12"><a href="./delivery_addr.php" onclick="win02('./delivery_addr.php?other_deliv_id=<!--{$arrOtherDeliv[cnt].other_deliv_id}-->','deliv_disp','600','640'); return false;">変更</a>
 									<td width="30" align="center" class="fs12"><a href="#" onclick="fnModeSubmit('delete','other_deliv_id','<!--{$arrOtherDeliv[cnt].other_deliv_id}-->');">削除</a></td>
 								</tr>
 							<!--{/section}-->							
