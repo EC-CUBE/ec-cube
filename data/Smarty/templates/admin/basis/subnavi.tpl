@@ -14,7 +14,7 @@ function Reset(c){
 	<!--ナビ-->
 	<tr><td class=<!--{if $tpl_subno != 'index'}-->"navi"<!--{else}-->"navi-on"<!--{/if}-->><a href="./index.php"><img src="/img/contents/icon.jpg" width="15" height="9" alt="" border="0"><span class="navi_text">SHOPマスタ</span></a></td></tr>
 	<tr><td><img src="/img/contents/navi_line.gif" width="140" height="2" alt=""></td></tr>
-	<tr><td class=<!--{if $tpl_subno != 'tradelaw'}-->"navi"<!--{else}-->"navi-on"<!--{/if}--> ><a href="./tradelaw.php" onmouseover="this.style.backgroundColor='00ff00'"><img src="/img/contents/icon.jpg" width="15" height="9" alt="" border="0"><span class="navi_text">特定商取引法</span></a></td></tr>
+	<tr><td class=<!--{if $tpl_subno != 'tradelaw'}-->"navi"<!--{else}-->"navi-on"<!--{/if}--> ><a href="./tradelaw.php" onmouseover="this.style.backgroundColor='#a5a5a5'"><img src="/img/contents/icon.jpg" width="15" height="9" alt="" border="0"><span class="navi_text">特定商取引法</span></a></td></tr>
 	<tr><td><img src="/img/contents/navi_line.gif" width="140" height="2" alt=""></td></tr>
 	<tr><td class=<!--{if $tpl_subno != 'delivery'}-->"navi"<!--{else}-->"navi-on"<!--{/if}-->><a href="./delivery.php"><img src="/img/contents/icon.jpg" width="15" height="9" alt="" border="0"><span class="navi_text">配送業者<!--{if $smarty.const.INPUT_DELIV_FEE}-->・配送料<!--{/if}-->設定</span></a></td></tr>
 	<tr><td><img src="/img/contents/navi_line.gif" width="140" height="2" alt=""></td></tr>
