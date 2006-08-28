@@ -1,3 +1,6 @@
+<STYLE TYPE="text/css"><!--
+A:hover { color: green; background-color: yellow; }
+--></STYLE> 
 <!-- ★ ページャここから ★-->
 <table border="0" cellspacing="0" cellpadding="0" summary=" ">
 	<tr>
