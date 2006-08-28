@@ -170,6 +170,8 @@ if ($_POST['mode'] == "search" || $_POST['mode'] == "csv"  || $_POST['mode'] == 
 			
 			// CSVカラム取得
 			$arrCsvOutput = (sfgetCsvOutput(2, " WHERE csv_id = 2 AND status = 1"));
+			
+			sfprintr($arrCsvOutput);
 
 			if (count($arrCsvOutput) <= 0) break;
 
