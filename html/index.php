@@ -14,9 +14,7 @@ class LC_Page {
 $objPage = new LC_Page();
 $conn = new SC_DBConn();
 $objSiteInfo = new SC_SiteInfo();
-$objPage->arrSiteInfo = $objSiteInfo['data'];
-
-sfprintr($objPage->arrSiteInfo);
+$objPage->arrSiteInfo = $objSiteInfo->data;
 
 // レイアウトデザインを取得
 $objPage = sfGetPageLayout($objPage, false, "index.php");
