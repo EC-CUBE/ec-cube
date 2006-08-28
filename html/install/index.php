@@ -40,9 +40,7 @@ $objDBParam = lfInitDBParam($objDBParam);
 //フォーム配列の取得
 $objWebParam->setParam($_POST);
 $objDBParam->setParam($_POST);
-
-sfprintr($_POST);
-
+print("   ");
 switch($_POST['mode']) {
 // ようこそ
 case 'welcome':
