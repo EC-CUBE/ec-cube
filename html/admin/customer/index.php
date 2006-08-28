@@ -97,6 +97,8 @@ sfIsSuccess($objSess);
 // POST値の引き継ぎ
 $objPage->arrForm = $_POST;
 
+sfprintr($_POST);
+
 // ページ送り用
 $objPage->arrHidden['search_pageno'] = $_POST['search_pageno'];
 
