@@ -1,7 +1,11 @@
 <SCRIPT LANGUAGE="JavaScript">
 <!--
 function Change(c){
-	document.linkColor="#ffccff";
+document.bgColor="#ffffcc";
+document.fgColor="#ccccff";
+document.linkColor="#ff0000";
+document.vlinkColor="#0000ff";
+document.alinkColor="#ffccff";
 }
 
 function Reset(c){
