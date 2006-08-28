@@ -135,13 +135,9 @@ case 'drop':
 	// 入力データを渡す。
 	$arrRet =  $objDBParam->getHashArray();
 	// テーブルの削除
-	if(count($objPage->arrErr) == 0) {
-		$objPage->arrErr = lfExecuteSQL("./drop_view.sql", $arrRet['db_user'], $arrRet['db_password'], $arrRet['db_server'], $arrRet['db_name']); 
-	}
+	lfExecuteSQL("./drop_view.sql", $arrRet['db_user'], $arrRet['db_password'], $arrRet['db_server'], $arrRet['db_name']); 
 	// ビューの削除
-	if(count($objPage->arrErr) == 0) {
-		$objPage->arrErr = lfExecuteSQL("./drop_table.sql", $arrRet['db_user'], $arrRet['db_password'], $arrRet['db_server'], $arrRet['db_name']); 
-	}
+	lfExecuteSQL("./drop_table.sql", $arrRet['db_user'], $arrRet['db_password'], $arrRet['db_server'], $arrRet['db_name']); 
 	$objPage = lfDispStep3($objPage);
 	break;
 // 完了画面

@@ -38,7 +38,9 @@
 			<td bgcolor="#ffffff" width="332" class="fs12" height="50">
 			<!--{$tpl_message}--><br>
 			<span class="red"><!--{$arrErr.all}--></span>
+			<!--{if $arrErr.all != ""}-->
 			<input type="button" onclick="fnModeSubmit('drop');" value="既存データをすべて削除する">
+			<!--{/if}-->
 			</td>
 		</tr>
 	</table>
