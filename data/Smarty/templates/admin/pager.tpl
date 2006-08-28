@@ -1,3 +1,11 @@
+<script type="text/javascript">
+<!--
+	function test(no) {
+	
+	}
+// -->
+</script>
+
 <!-- ★ ページャここから ★-->
 <table border="0" cellspacing="0" cellpadding="0" summary=" ">
 	<tr>
@@ -15,7 +23,7 @@
 					<tr>
 						<!--{foreach from=$arrPagenavi.arrPageno key="key" item="item"}-->
 						<td><img src="/img/contents/number_line.jpg" width="2" height="17" alt=""></td>
-						<td class=<!--{if $arrPagenavi.now_page == $item}-->"number-on"<!--{else}-->"number"<!--{/if}--> background="/img/contents/number_bg.jpg"><a href=<!--{$smarty.server.PHP_SELF}--> onclick="fnNaviSearchPage(<!--{$item}-->, '<!--{$arrPagenavi.mode}-->'); return false;");" onmouseover="alert('alert!!')" id="name<!--{$item}-->"><!--{$item}--></a></td>
+						<td class=<!--{if $arrPagenavi.now_page == $item}-->"number-on"<!--{else}-->"number"<!--{/if}--> background="/img/contents/number_bg.jpg" id="test<!--{$key}-->"><a href=<!--{$smarty.server.PHP_SELF}--> onclick="fnNaviSearchPage(<!--{$item}-->, '<!--{$arrPagenavi.mode}-->'); return false;");" onmouseover="naviStyleChange2('test<!--{$key}-->', '/img/contents/number_bg_on.jpg');" id="name<!--{$item}-->"><!--{$item}--></a></td>
 						<td><img src="/img/contents/number_line.jpg" width="2" height="17" alt=""></td>
 						<!--{/foreach}-->
 					</tr>
