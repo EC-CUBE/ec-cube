@@ -25,7 +25,4 @@
 	function chgImgImageSubmit(fileName,imgObj){
 	imgObj.src = fileName;
 	
-	function naviStyleChange(ids, color){
-		document.getElementById(ids).style.backgroundColor = color;
-	}	
 }
