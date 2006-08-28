@@ -1,6 +1,6 @@
 <?php
-$current_dir = realpath(dirname(__FILE__));
-require_once($current_dir . "/../module/Smarty/libs/Smarty.class.php");
+$SC_VIEW_PHP_DIR = realpath(dirname(__FILE__));
+require_once($SC_VIEW_PHP_DIR . "/../module/Smarty/libs/Smarty.class.php");
 
 class SC_View {
 	
@@ -8,6 +8,8 @@ class SC_View {
 	
     // コンストラクタ
     function SC_View() {
+		global $SC_VIEW_PHP_DIR;
+		
     	$this->_smarty = new Smarty;
 		$this->_smarty->left_delimiter = '<!--{';
 		$this->_smarty->right_delimiter = '}-->';
@@ -26,7 +28,7 @@ class SC_View {
 		$this->_smarty->register_function("sfPutBR", "sfPutBR");
 		$this->_smarty->register_function("sfRmDupSlash", "sfRmDupSlash");
 		$this->_smarty->register_function("sfCutString", "sfCutString");
-		$this->_smarty->plugins_dir=array("plugins", ROOT_DIR . "data/smarty_extends");
+		$this->_smarty->plugins_dir=array("plugins", $SC_VIEW_PHP_DIR . "/../data/smarty_extends");
 		$this->_smarty->register_function("sf_mb_convert_encoding","sf_mb_convert_encoding");
 		$this->_smarty->register_function("sf_mktime","sf_mktime");
 		$this->_smarty->register_function("sf_date","sf_date");		
@@ -86,7 +88,9 @@ class SC_View {
 
 	/* サイト初期設定 */
 	function initpath() {
-		$array['tpl_mainnavi'] = ROOT_DIR . 'data/Smarty/templates/frontparts/mainnavi.tpl';
+		global $SC_VIEW_PHP_DIR;
+		
+		$array['tpl_mainnavi'] = $SC_VIEW_PHP_DIR . '/../data/Smarty/templates/frontparts/mainnavi.tpl';
 		$array['tpl_root_id'] = sfGetRootId();
 		$this->assignarray($array);
 	}
