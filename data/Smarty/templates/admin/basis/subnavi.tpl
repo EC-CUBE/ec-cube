@@ -2,7 +2,7 @@
 <!--
 function naviStyleChange(ids, color){
 	document.getElementById(ids).style.backgroundColor = color;
-	document.getElementById(ids).style.color = '000000';
+	//document.getElementById(ids).style.color = '000000';
 }
 //-->
 </SCRIPT>
