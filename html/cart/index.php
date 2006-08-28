@@ -86,6 +86,9 @@ default:
 // カート集計処理
 $objPage = sfTotalCart($objPage, $objCartSess, $arrInfo);
 $objPage->arrData = sfTotalConfirm($arrData, $objPage, $objCartSess, $arrInfo, $objCustomer);
+
+sfprintr($objPage->arrData);
+
 $objPage->arrInfo = $arrInfo;
 
 // ログイン判定
@@ -93,7 +96,7 @@ if($objCustomer->isLoginSuccess()) {
 	$objPage->tpl_login = true;
 	$objPage->tpl_user_point = $objCustomer->getValue('point');
 	$objPage->tpl_name = $objCustomer->getValue('name01');
-} 
+}
 
 // 送料無料までの金額を計算
 $tpl_deliv_free = $objPage->arrInfo['free_rule'] - $objPage->tpl_total_pretax;
