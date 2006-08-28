@@ -1,7 +1,7 @@
 <SCRIPT LANGUAGE="JavaScript">
 <!--
 function naviStyleChange(ids, color){
-	document.getElementById('test').style.backgroundColor = "#00FF00";
+	document.getElementById('test').style.backgroundColor = "#00FF00"
 	//document.getElementById(ids).style.color = '000000';
 }
 //-->
