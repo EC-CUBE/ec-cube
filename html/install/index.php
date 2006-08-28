@@ -246,7 +246,8 @@ function lfDispStep0_1($objPage) {
 	// hiddenに入力値を保持
 	$objPage->arrHidden = array_merge($objPage->arrHidden, $objDBParam->getHashArray());
 	$objPage->tpl_mainpage = 'step0_1.tpl';
-	$objPage->tpl_mode = 'step0_1';	
+	$objPage->tpl_mode = 'step0_1';
+	// ファイルコピー
 	$objPage->copy_mess = lfCopyDir("./user_data/", "../../html/user_data/", $objPage->copy_mess);
 	return $objPage;
 }
