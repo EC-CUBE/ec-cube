@@ -81,16 +81,19 @@ class SC_View {
 			$this->_smarty->assign($key, $value);
 		}
 		if($siteinfo) {
-			// サイト情報を割り当てる
-			$objSiteInfo = new SC_SiteInfo();
-			$arrInfo['arrSiteInfo'] = $objSiteInfo->data;
-			
-			// 都道府県名を変換
-			global $arrPref;
-			$arrInfo['arrSiteInfo']['pref'] = $arrPref[$arrInfo['arrSiteInfo']['pref']];
-			
-			foreach ($arrInfo as $key => $value){
-				$this->_smarty->assign($key, $value);
+			if(defined('LOAD_SITEINFO')) {
+	 			// サイト情報を割り当てる
+				$objSiteInfo = new SC_SiteInfo();
+				$arrInfo['arrSiteInfo'] = $objSiteInfo->data;
+				
+				// 都道府県名を変換
+				global $arrPref;
+				$arrInfo['arrSiteInfo']['pref'] = $arrPref[$arrInfo['arrSiteInfo']['pref']];
+				
+				foreach ($arrInfo as $key => $value){
+					$this->_smarty->assign($key, $value);
+				}
+				define('LOAD_SITEINFO', 1);
 			}
 		}		
   	}
