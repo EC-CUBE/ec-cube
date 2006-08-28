@@ -24,6 +24,7 @@
 	
 	function chgImgImageSubmit(fileName,imgObj){
 	imgObj.src = fileName;
+	}
 	
 	// サブナビの表示切替
 	function naviStyleChange(ids, color){
