@@ -251,6 +251,16 @@
 								<!--{$arrForm[$key].value|default:"指定なし"}-->
 								</td>
 							</tr>
+							<tr class="fs12n">
+								<td bgcolor="#f2f1ec" colspan="6">▼メモ</td>
+							</tr>
+							<tr class="fs12n">
+								<td bgcolor="#ffffff" colspan="6">
+								<!--{assign var=key value="note"}-->
+								<span class="red12"><!--{$arrErr[$key]}--></span>
+								<textarea name="<!--{$key}-->" maxlength="<!--{$arrForm[$key].length}-->" cols="80" rows="6" class="area80" style="<!--{$arrErr[$key]|sfGetErrorColor}-->" ><!--{$arrForm[$key].value|escape}--></textarea></td>
+								</td>
+							</tr>							
 						</table>					
 						
 						
