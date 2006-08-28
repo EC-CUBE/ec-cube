@@ -461,7 +461,7 @@ function lfCopyDir($src, $des, $mess, $override = false){
 			if(!$override && file_exists($des.$data)) {
 				$mess.= $des.$data . "：ファイルが存在します\n";
 			} else {
-				if(copy( $data_, $des.$data)) {
+				if(@copy( $data_, $des.$data)) {
 					$mess.= $des.$data . "：コピー成功\n";
 				} else {
 					$mess.= $des.$data . "：コピー失敗\n";
