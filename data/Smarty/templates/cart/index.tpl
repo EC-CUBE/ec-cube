@@ -17,7 +17,7 @@
 					<tr>
 						<td align="center" class="fs14">
 							<!--{if $tpl_login}-->
-							<!--メインコメント--><!--{$tpl_name|escape}--> 様の、現在の所持ポイントは「<span class="redst"><!--{$tpl_user_point|default:0}--> pt</span>」です。<br />
+							<!--メインコメント--><!--{$tpl_name|escape}--> 様の、現在の所持ポイントは「<span class="redst"><!--{$tpl_user_point|number_format|default:0}--> pt</span>」です。<br />
 							<!--{else}-->
 							<!--メインコメント-->ポイント制度をご利用になられる場合は、会員登録後ログインしていだだきますようお願い致します。<br />
 							<!--{/if}-->							
