@@ -93,6 +93,8 @@ $objPage->arrDelivTime = sfArrKeyValue($arrRet, 'time_id', 'time');
 
 $objPage->arrForm = $objFormParam->getFormParamList();
 
+sfprintr($objPage->arrForm);
+
 $objPage->arrInfo = $arrInfo;
 $objView->assignobj($objPage);
 // 表示モード判定
