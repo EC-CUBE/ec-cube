@@ -9,8 +9,7 @@
 			"/img/top/backnumber_on.jpg","/img/top/diary01_on.gif","/img/top/diary02_on.gif","/img/top/more_on.gif",
 			"/img/button/fortop_on.gif","/img/button/back_on.gif","/img/button/back02_on.gif","/img/button/back03_on.gif","/img/button/next_on.gif","/img/button/close_on.gif","/img/button/confirm_on.gif","/img/button/entry_on.gif","/img/button/next_on.gif","/img/button/reji_on.gif","/img/button/send_on.gif","/img/button/top_on.gif",
 			"/img/right_mailmagazine/entry_on.gif","/img/right_mailmagazine/release_on.gif",
-			"/img/shopping/complete_on.gif","/img/shopping/loan_on.gif","/img/login/log_on.gif",
-			"/img/fotter/movement_on.gif","/img/fotter/privacy_on.gif","/img/fotter/tokado_on.gif"
+			"/img/shopping/complete_on.gif","/img/shopping/loan_on.gif","/img/login/log_on.gif"
 		);
 		arrPreLoad = new Array();
 		for (i in arrImgList) {
