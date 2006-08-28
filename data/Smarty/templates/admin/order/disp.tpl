@@ -257,7 +257,7 @@
 							<tr class="fs12n">
 								<td bgcolor="#ffffff" colspan="6">
 								<!--{assign var=key value="note"}-->
-								<!--{$arrForm[$key].value|escape}-->
+								<!--{$arrForm[$key].value|escape|nl2br}-->
 								</td>
 							</tr>							
 						</table>					
