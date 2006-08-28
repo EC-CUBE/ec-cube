@@ -16,7 +16,7 @@
 					<tr>
 						<!--{foreach from=$arrPagenavi.arrPageno key="key" item="item"}-->
 						<td><img src="/img/contents/number_line.jpg" width="2" height="17" alt=""></td>
-						<td class=<!--{if $arrPagenavi.now_page == $item}-->"number-on"<!--{else}-->"number"<!--{/if}-->><a href="<!--{$smarty.server.PHP_SELF}-->" onclick="fnNaviSearchPage(<!--{$item}-->, '<!--{$arrPagenavi.mode}-->'); return false;" onmouseover="naviStyleChange2('test<!--{$item}-->', '#f7c600', 'http://test.ec-cube.net/img/contents/number_bg_on.jpg')" <!--{if $arrPagenavi.now_page != $item}--><!--{/if}--> id = 'test<!--{$item}-->'><!--{$item}--></a></td>
+						<td class=<!--{if $arrPagenavi.now_page == $item}-->"number-on"<!--{else}-->"number"<!--{/if}-->><a href="<!--{$smarty.server.PHP_SELF}-->" onclick="fnNaviSearchPage(<!--{$item}-->, '<!--{$arrPagenavi.mode}-->'); return false;" onmouseover="chgImg('/img/contents/number_bg_on.jpg'','arrow_right');" <!--{if $arrPagenavi.now_page != $item}--><!--{/if}--><!--{$item}-->'><!--{$item}--></a></td>
 						<td><img src="/img/contents/number_line.jpg" width="2" height="17" alt=""></td>
 						<!--{/foreach}-->
 					</tr>
