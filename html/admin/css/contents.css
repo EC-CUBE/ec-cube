@@ -9,7 +9,7 @@ body {
 /*LINK*/
 a:link { color: #006699; text-decoration: none; }
 a:visited { color: #006699; text-decoration: none; }
-//a:hover { color: #f9a406; text-decoration: underline; }
+a:hover { color: #f9a406; text-decoration: underline; }
 
 
 /*FORM*/
