@@ -1,7 +1,7 @@
 <SCRIPT LANGUAGE="JavaScript">
 <!--
 function Change(c){
-	document.tradelaw.alinkColor="#ffccff";
+	document.linkColor="#ffccff";
 }
 
 function Reset(c){
