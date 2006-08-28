@@ -225,8 +225,14 @@ a:hover { color: #f9a406; text-decoration: underline; }
 }
 
 .number a:hover{
+	background: url(/img/contents/number_bg_on.jpg);
+	background-repeat: repeat-x;
 	background-color: #f7c600;
+	padding: 8px;
 	color:#ffffff;
+	font-size: 65%;
+	line-height: 160%;
+	font-weight: bold;
 	text-decoration:none;
 }
 
@@ -248,8 +254,14 @@ a:hover { color: #f9a406; text-decoration: underline; }
 }
 
 .number-on a:hover{
+	background: url(/img/contents/number_bg_on.jpg);
+	background-repeat: repeat-x;
 	background-color: #f7c600;
+	padding: 8px;
 	color:#ffffff;
+	font-size: 65%;
+	line-height: 160%;
+	font-weight: bold;
 	text-decoration:none;
 }
 
