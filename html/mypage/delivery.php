@@ -61,6 +61,7 @@ $order = "other_deliv_id DESC";
 
 //¤ªÆÏ¤±ÀèÅÐÏ¿·ï¿ô¼èÆÀ
 $linemax = $objQuery->count($from, $where, $arrval);
+$objQuery->getlastquery(true);
 /*
 $objPage->tpl_linemax = $linemax;
 
