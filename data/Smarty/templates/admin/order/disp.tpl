@@ -181,7 +181,11 @@
 								</td>
 							</tr>
 						</table>
-						<!--▲配送先情報ここまで-->						
+						<!--▲配送先情報ここまで-->	
+
+						<table width="678" border="0" cellspacing="0" cellpadding="0" summary=" ">
+							<tr><td colspan="3"><img src="/img/contents/main_bar.jpg" width="678" height="10" alt=""></td></tr>
+						</table>
 						
 						<table width="678" border="0" cellspacing="1" cellpadding="8" summary=" ">
 							<tr class="fs12n">
