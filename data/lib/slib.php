@@ -21,6 +21,10 @@ function sfInitInstall() {
 
 // アップデートで生成されたPHPを読み出し
 function sfLoadUpdateModule() {
+	if(ereg("^/install/", $_SERVER['PHP_SELF'])) {
+		return;
+	}
+		
 	//DBから設定情報を取得
 	if(defined('DB_USER') && defined('DB_PASSWORD') && defined('DB_SERVER') && defined('DB_NAME')) {
 		$objConn = new SC_DbConn(DEFAULT_DSN);

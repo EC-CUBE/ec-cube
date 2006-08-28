@@ -8,12 +8,6 @@ class LC_Page {
 			1 => 'PostgreSQL',
 			// 2 => 'mySQL'	// 未対応
 		);
-		/*
-			 session_start時のno-cacheヘッダーを抑制することで
-			 「戻る」ボタン使用時の有効期限切れ表示を抑制する。
-			 private-no-expire:クライアントのキャッシュを許可する。
-		*/
-		session_cache_limiter('private-no-expire');		
 	}
 }
 
