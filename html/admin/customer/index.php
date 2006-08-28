@@ -187,10 +187,11 @@ if ($_POST['mode'] == "search" || $_POST['mode'] == "csv"  || $_POST['mode'] == 
 				$objPage->search_data[$i]["job"]  = $arrJob[ $objPage->search_data[$i]["job"] ];
 			}
 
+			sfprintr($objPage->search_data);
+			exit();
+			
 			//-¡¡CSV½ÐÎÏ
 			$data = lfGetCSVData($objPage->search_data, $arrColumn);
-			
-			sfprintr($data);
 			
 			sfCSVDownload($header.$data);
 			exit;
