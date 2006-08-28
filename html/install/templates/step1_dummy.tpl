@@ -10,6 +10,7 @@
 
 <tr><td height="30"></td></tr>
 <tr><td align="left" class="fs12st">■ECサイトの設定</td></tr>
+<tr><td align="left" class="red12"><!--{$arrErr.all}--></td></tr>
 <tr>
 	<td bgcolor="#cccccc">
 	<table width="500" border="0" cellspacing="1" cellpadding="8" summary=" ">
