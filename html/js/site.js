@@ -1,3 +1,7 @@
+	function naviStyleChange(ids, color){
+		document.getElementById(ids).style.backgroundColor = color;
+	}	
+
 // 親ウィンドウの存在確認
 function fnIsopener() {
     var ua = navigator.userAgent;
