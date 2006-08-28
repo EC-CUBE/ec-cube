@@ -15,7 +15,7 @@
 					<tr>
 						<!--{foreach from=$arrPagenavi.arrPageno key="key" item="item"}-->
 						<td><img src="/img/contents/number_line.jpg" width="2" height="17" alt=""></td>
-						<td class=<!--{if $arrPagenavi.now_page == $item}-->"number-on"<!--{else}-->"number"<!--{/if}-->><a href=<!--{$smarty.server.PHP_SELF}--> onclick="fnNaviSearchPage(<!--{$item}-->, '<!--{$arrPagenavi.mode}-->'); return false;" onMouseOver="naviStyleChange('pager<!--{$item}-->', '#f7c600')" <!--{if $arrPagenavi.now_page == $item}-->onMouseOut="naviStyleChange('pager<!--{$item}-->', '#f7c600')"<!--{/if}--> id="pager<!--{$item}-->"><!--{$item}--></a></td>
+						<td class=<!--{if $arrPagenavi.now_page == $item}-->"number-on"<!--{else}-->"number"<!--{/if}-->><a href="<!--{$smarty.server.PHP_SELF}-->" onclick="fnNaviSearchPage(<!--{$item}-->, '<!--{$arrPagenavi.mode}-->'); return false;" onMouseOver="naviStyleChange('pager<!--{$item}-->', '#f7c600')" <!--{if $arrPagenavi.now_page == $item}-->onMouseOut="naviStyleChange('pager<!--{$item}-->', '#f7c600')"<!--{/if}--> id="pager<!--{$item}-->"><!--{$item}--></a></td>
 						<td><img src="/img/contents/number_line.jpg" width="2" height="17" alt=""></td>
 						<!--{/foreach}-->
 					</tr>
