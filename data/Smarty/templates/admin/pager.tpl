@@ -15,7 +15,7 @@
 					<tr>
 						<!--{foreach from=$arrPagenavi.arrPageno key="key" item="item"}-->
 						<td><img src="/img/contents/number_line.jpg" width="2" height="17" alt=""></td>
-						<td class=<!--{if $arrPagenavi.now_page == $item}-->"number-on"<!--{else}-->"number"<!--{/if}-->><a href="<!--{$smarty.server.PHP_SELF}-->" onmouseover="naviStyleChange('page_no<!--{$item}-->', '#f7c600')" <!--{if $arrPagenavi.now_page != $item}--><!--{/if}--> id = 'page_no<!--{$item}-->'><!--{$item}--></a></td>
+						<td class=<!--{if $arrPagenavi.now_page == $item}-->"number-on"<!--{else}-->"number"<!--{/if}-->><a href="<!--{$smarty.server.PHP_SELF}-->" onmouseover="naviStyleChange('page_no<!--{$item}-->','#f7c600')" <!--{if $arrPagenavi.now_page != $item}--><!--{/if}--> id='page_no<!--{$item}-->'><!--{$item}--></a></td>
 						<td><img src="/img/contents/number_line.jpg" width="2" height="17" alt=""></td>
 						<!--{/foreach}-->
 					</tr>
