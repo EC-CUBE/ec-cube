@@ -15,7 +15,7 @@
 					<tr>
 						<!--{foreach from=$arrPagenavi.arrPageno key="key" item="item"}-->
 						<td><img src="/img/contents/number_line.jpg" width="2" height="17" alt=""></td>
-						<td class=<!--{if $arrPagenavi.now_page == $item}-->"number-on"<!--{else}-->"number"<!--{/if}-->><a href="<!--{$smarty.server.PHP_SELF}-->"  onclick="fnNaviSearchPage(<!--{$item}-->, '<!--{$arrPagenavi.mode}-->'); return false;" onmouseover="this.style.backgroundColor = '#f7c600'" <!--{if $arrPagenavi.now_page != $item}-->onmouseout="this.style.backgroundColor = '#505468'"<!--{/if}--> id='page_no<!--{$item}-->'><!--{$item}--></a></td>
+						<td class=<!--{if $arrPagenavi.now_page == $item}-->"number-on"<!--{else}-->"number"<!--{/if}-->><a href="<!--{$smarty.server.PHP_SELF}-->"  onclick="fnNaviSearchPage(<!--{$item}-->, '<!--{$arrPagenavi.mode}-->'); return false;" onmouseover="alert('YEA!!')" <!--{if $arrPagenavi.now_page != $item}-->onmouseout="this.style.backgroundColor = '#505468'"<!--{/if}--> id='page_no<!--{$item}-->'><!--{$item}--></a></td>
 						<td><img src="/img/contents/number_line.jpg" width="2" height="17" alt=""></td>
 						<!--{/foreach}-->
 					</tr>
