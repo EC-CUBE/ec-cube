@@ -71,9 +71,10 @@ $startno = $objNavi->start_row;
 
 // 取得範囲の指定(開始行番号、行数のセット)
 $objQuery->setlimitoffset($page_max, $startno);
+*/
 // 表示順序
 $objQuery->setorder($order);
-*/
+
 //別のお届け先情報表示
 $objPage->arrOtherDeliv = $objQuery->select("*", $from, $where, $arrval);
 //お届け先登録数をテンプレートに渡す
