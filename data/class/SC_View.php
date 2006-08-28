@@ -67,12 +67,6 @@ class SC_View {
 			$this->_smarty->assign($key, $value);
 		}
 		
-		// サイト情報をすべて割り当てる
-		foreach ($this->arrInfo as $key => $value){
-			$this->_smarty->assign($key, $value);
-		}
-		
-
 		if($siteinfo) {
 			if(!defined('LOAD_SITEINFO')) {
 	 			// サイト情報を取得する
