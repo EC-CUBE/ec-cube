@@ -66,13 +66,10 @@ class SC_View {
 		
 		// サイト情報を割り当てる
 		$objSiteInfo = new SC_SiteInfo();
-		$arrSiteInfo = $objSiteInfo->data;
+		$SiteInfo['arrSiteInfo'] = $objSiteInfo->data;
 		foreach ($arrSiteInfo as $key => $value){
 			$this->_smarty->assign($key, $value);
 		}
-		
-		sfprintr($arrSiteInfo);
-		
   	}
   	
   	// 連想配列内の変数をすべて割り当てる。
