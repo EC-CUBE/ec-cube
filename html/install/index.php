@@ -51,9 +51,9 @@ case 'step0':
 	$objPage = lfDispStep0_1($objPage);
 	break;	
 // ファイルのコピー
-/*case 'step0_1':
+case 'step0_1':
 	$objPage = lfDispStep1($objPage);
-	break;	*/
+	break;	
 // WEBサイトの設定
 case 'step1':
 	//入力値のエラーチェック
@@ -274,9 +274,9 @@ function lfGetFileMode($path) {
 
 // STEP1画面の表示
 function lfDispStep1($objPage) {
-	global $objDBParam;
+//	global $objDBParam;
 	// hiddenに入力値を保持
-	$objPage->arrHidden = $objDBParam->getHashArray();
+//	$objPage->arrHidden = $objDBParam->getHashArray();
 	$objPage->tpl_mainpage = 'step1.tpl';
 	$objPage->tpl_mode = 'step1';
 	return $objPage;
