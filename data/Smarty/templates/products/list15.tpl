@@ -140,6 +140,7 @@ function lnSetSelect(name1, name2, id, val) {
 								</td>
 							</tr>
 							<!--アイコン-->
+							<tr><td height="8"></td></tr>
 							<tr>
 								<td colspan="2" align="center" bgcolor="#f9f9ec">
 								<table width="440" border="0" cellspacing="0" cellpadding="0" summary=" ">
@@ -168,7 +169,7 @@ function lnSetSelect(name1, name2, id, val) {
 									円</span></span>
 								</td>
 								<!--{assign var=name value="detail`$smarty.section.cnt.iteration`"}-->
-								<td align="right"><a href="<!--{$smarty.const.DETAIL_P_HTML}--><!--{$arrProducts[cnt].product_id}-->" onmouseover="chgImg('/img/products/b_detail_on.gif','<!--{$name}-->');" onmouseout="chgImg('/img/products/b_detail.gif','<!--{$name}-->');"><img src="/img/products/b_detail.gif" width="110" height="22" alt="詳しくはこちら" name="<!--{$name}-->" id="<!--{$name}-->" /></a></td>
+								<td align="right"><a href="<!--{$smarty.const.DETAIL_P_HTML}--><!--{$arrProducts[cnt].product_id}-->" onmouseover="chgImg('/img/products/b_detail_on.gif','<!--{$name}-->');" onmouseout="chgImg('/img/products/b_detail.gif','<!--{$name}-->');"><img src="/img/products/b_detail.gif" width="115" height="25" alt="詳しくはこちら" name="<!--{$name}-->" id="<!--{$name}-->" /></a></td>
 							</tr>
 							<!--{if $arrProducts[cnt].stock_max == 0 && $arrProducts[cnt].stock_unlimited_max != 1}-->
 								<tr>
