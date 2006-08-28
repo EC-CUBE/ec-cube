@@ -1,4 +1,10 @@
-
+<SCRIPT LANGUAGE="JavaScript">
+<!--
+function naviStyleChange(ids, color){
+	document.getElementById(ids).style.backgroundColor = color;
+}
+//-->
+</SCRIPT>
 <table width="141" border="0" cellspacing="0" cellpadding="0" summary=" ">
 	<!--ナビ-->
 	<tr><td class=<!--{if $tpl_subno != 'index'}-->"navi"<!--{else}-->"navi-on"<!--{/if}-->><a href="./index.php"><img src="/img/contents/icon.jpg" width="15" height="9" alt="" border="0"><span class="navi_text">SHOPマスタ</span></a></td></tr>
