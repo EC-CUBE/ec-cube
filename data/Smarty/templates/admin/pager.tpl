@@ -1,12 +1,4 @@
-<script type="text/javascript">
-<!--
-	// サブナビの表示切替
-	function naviStyleChange2(ids, color, file){
-		document.getElementById(ids).style.backgroundColor = color;
-		document.getElementById(ids).style.backgroundImage = "url(file)";
-	}	
-// -->
-</script>
+
 <!-- ★ ページャここから ★-->
 <table border="0" cellspacing="0" cellpadding="0" summary=" ">
 	<tr>
