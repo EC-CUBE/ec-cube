@@ -18,6 +18,7 @@ class SC_SiteInfo {
 				$this->conn = new SC_DbConn();			
 			}
 		}
+		
 		if ( is_object($this->conn)){
 			$conn = $this->conn;
 			$sql = "SELECT * FROM dtb_baseinfo";

@@ -59,20 +59,22 @@ class SC_View {
 	}
   	
   	// オブジェクト内の変数をすべて割り当てる。
-  	function assignobj($obj) {
+  	function assignobj($obj, $siteinfo = true) {
 		$data = get_object_vars($obj);
 		
 		foreach ($data as $key => $value){
 			$this->_smarty->assign($key, $value);
 		}
 		
-		// サイト情報を割り当てる
-		$objSiteInfo = new SC_SiteInfo();
-		$arrInfo['arrSiteInfo'] = $objSiteInfo->data;
-		
-		// 都道府県名を変換
-		global $arrPref;
-		$arrInfo['arrSiteInfo']['pref'] = $arrPref[$arrInfo['arrSiteInfo']['pref']];
+		if($siteinfo) {
+			// サイト情報を割り当てる
+			$objSiteInfo = new SC_SiteInfo();
+			$arrInfo['arrSiteInfo'] = $objSiteInfo->data;
+			
+			// 都道府県名を変換
+			global $arrPref;
+			$arrInfo['arrSiteInfo']['pref'] = $arrPref[$arrInfo['arrSiteInfo']['pref']];
+		}
 		
 		foreach ($arrInfo as $key => $value){
 			$this->_smarty->assign($key, $value);
