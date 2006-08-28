@@ -402,9 +402,6 @@ function fnDispChange(disp_id, inner_id, disp_flg){
 	
 }
 
-	function naviStyleChange(ids, color){
-		document.getElementById(ids).style.backgroundColor = color;
-	}	
 
 
 	
