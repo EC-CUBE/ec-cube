@@ -207,7 +207,6 @@ a:hover { color: #f9a406; text-decoration: underline; }
 
 
 /*send-page*/
-/*
 .number a{
 	background: url(/img/contents/number_bg.jpg);
 	background-repeat: repeat-x;
@@ -269,7 +268,7 @@ a:hover { color: #f9a406; text-decoration: underline; }
 	text-decoration:none;
 
 }
-*/
+
 /*IMG*/
 img {
 border: 0;
