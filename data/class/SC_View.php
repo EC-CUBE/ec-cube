@@ -76,7 +76,8 @@ class SC_View {
 			$arrInfo['arrSiteInfo']['pref'] = $arrPref[$arrInfo['arrSiteInfo']['pref']];
 			
 			foreach ($arrInfo as $key => $value){
-			$this->_smarty->assign($key, $value);
+				$this->_smarty->assign($key, $value);
+			}
 		}		
   	}
   	
