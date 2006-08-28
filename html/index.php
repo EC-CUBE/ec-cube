@@ -16,6 +16,8 @@ $conn = new SC_DBConn();
 $objSiteInfo = new SC_SiteInfo();
 $objPage->arrSiteInfo = $objSiteInfo['data'];
 
+sfprintr($objPage->arrSiteInfo);
+
 // レイアウトデザインを取得
 $objPage = sfGetPageLayout($objPage, false, "index.php");
 
