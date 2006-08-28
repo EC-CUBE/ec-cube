@@ -60,7 +60,6 @@ class SC_View {
   	function assignobj($obj) {
 		$data = get_object_vars($obj);
 		
-		sfprintr($data);
 		foreach ($data as $key => $value){
 			$this->_smarty->assign($key, $value);
 		}
@@ -71,6 +70,8 @@ class SC_View {
 		foreach ($arrSiteInfo as $key => $value){
 			$this->_smarty->assign($key, $value);
 		}
+		
+		sfprintr($arrSiteInfo);
 		
   	}
   	
