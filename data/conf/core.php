@@ -16,7 +16,7 @@ define("INCLUDE_DIR", USER_DIR."include/");
 define("BLOC_DIR", "html/user_data/include/bloc/");
 
 // ユーザー作成画面のデフォルトPHPファイル
-define("USER_DEF_PHP", ROOT_DIR.USER_DIR."__default.php");
+define("USER_DEF_PHP", ROOT_DIR."html/__default.php");
 
 // その他画面のデフォルトページレイアウト
 define("DEF_LAYOUT", "products/list.php");
