@@ -377,7 +377,8 @@ function lfCheckDBError($objFormParam) {
 			$objErr->arrErr['all'] = ">> " . $objDB->message . "<br>";
 			gfPrintLog($objDB->userinfo, "./temp/install.log");
 		}
-	}		
+	}
+	print_r($objErr);
 	return $objErr->arrErr;
 }
 
