@@ -1,7 +1,7 @@
 <SCRIPT LANGUAGE="JavaScript">
 <!--
 function Change(this){
-	document.this.style.backgroundColor ='0000ff';
+	document.body.style.backgroundColor ='0000ff';
 }
 
 function Reset(c){
