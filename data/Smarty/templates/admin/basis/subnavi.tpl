@@ -1,7 +1,7 @@
 <SCRIPT LANGUAGE="JavaScript">
 <!--
 function naviStyleChange(ids, color){
-	document.getElementById(ids).style.backgroundColor = "#a5a5a1";
+	document.getElementById(ids).style.backgroundColor = color;
 	//document.getElementById(ids).style.color = '000000';
 }
 //-->
@@ -10,7 +10,7 @@ function naviStyleChange(ids, color){
 	<!--ナビ-->
 	<tr><td class=<!--{if $tpl_subno != 'index'}-->"navi"<!--{else}-->"navi-on"<!--{/if}-->><a href="./index.php"><img src="/img/contents/icon.jpg" width="15" height="9" alt="" border="0"><span class="navi_text">SHOPマスタ</span></a></td></tr>
 	<tr><td><img src="/img/contents/navi_line.gif" width="140" height="2" alt=""></td></tr>
-	<tr><td class=<!--{if $tpl_subno != 'tradelaw'}-->"navi"<!--{else}-->"navi-on"<!--{/if}--> ><a href="./tradelaw.php" OnMouseOver="Change('test', '')" id="test"><img src="/img/contents/icon.jpg" width="15" height="9" alt="" border="0"><span class="navi_text">特定商取引法</span></a></td></tr>
+	<tr><td class=<!--{if $tpl_subno != 'tradelaw'}-->"navi"<!--{else}-->"navi-on"<!--{/if}--> ><a href="./tradelaw.php" OnMouseOver="Change('test', '#a5a5a5')" id="test"><img src="/img/contents/icon.jpg" width="15" height="9" alt="" border="0"><span class="navi_text">特定商取引法</span></a></td></tr>
 	<tr><td><img src="/img/contents/navi_line.gif" width="140" height="2" alt=""></td></tr>
 	<tr><td class=<!--{if $tpl_subno != 'delivery'}-->"navi"<!--{else}-->"navi-on"<!--{/if}-->><a href="./delivery.php"><img src="/img/contents/icon.jpg" width="15" height="9" alt="" border="0"><span class="navi_text">配送業者<!--{if $smarty.const.INPUT_DELIV_FEE}-->・配送料<!--{/if}-->設定</span></a></td></tr>
 	<tr><td><img src="/img/contents/navi_line.gif" width="140" height="2" alt=""></td></tr>
