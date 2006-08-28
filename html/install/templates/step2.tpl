@@ -10,7 +10,7 @@
 
 <tr><td height="30"></td></tr>
 <tr><td align="left" class="fs12st">■データベースの設定</td></tr>
-<tr><td align="left" class="fs12">インストールの前に新しくDBを作成しておく必要があります。</td></tr>
+<tr><td align="left" class="fs12">※インストールの前に新しくDBを作成しておく必要があります。</td></tr>
 <tr><td align="left" class="red12"><!--{$arrErr.all}--></td></tr>
 <tr>
 	<td bgcolor="#cccccc">
