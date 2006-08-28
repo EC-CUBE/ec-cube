@@ -1,12 +1,4 @@
 <!-- ★ ページャここから ★-->
-<script type="text/javascript">
-<!--
-	// サブナビの表示切替
-	function naviStyleChange(ids, color){
-		document.getElementById(ids).style.backgroundColor = color;
-	}	
-// -->
-</script>
 <table border="0" cellspacing="0" cellpadding="0" summary=" ">
 	<tr>
 		<td>
@@ -23,7 +15,7 @@
 					<tr>
 						<!--{foreach from=$arrPagenavi.arrPageno key="key" item="item"}-->
 						<td><img src="/img/contents/number_line.jpg" width="2" height="17" alt=""></td>
-						<td class=<!--{if $arrPagenavi.now_page == $item}-->"number-on"<!--{else}-->"number"<!--{/if}-->><a href="<!--{$smarty.server.PHP_SELF}-->" id="page_on<!--{$item}-->" onclick="fnNaviSearchPage(<!--{$item}-->, '<!--{$arrPagenavi.mode}-->'); return false;" onMouseOver="naviStyleChange('page_on<!--{$item}-->', '#f7c600')" <!--{if $arrPagenavi.now_page == $item}-->onMouseOut="naviStyleChange('page_on<!--{$item}-->', '#505468')"<!--{/if}-->><!--{$item}--></a></td>
+						<td class=<!--{if $arrPagenavi.now_page == $item}-->"number-on"<!--{else}-->"number"<!--{/if}-->><a href="<!--{$smarty.server.PHP_SELF}-->" id="page_on<!--{$item}-->" onclick="fnNaviSearchPage(<!--{$item}-->, '<!--{$arrPagenavi.mode}-->'); return false;" onMouseOver="this.style.backgroundColor = '#f7c600'" <!--{if $arrPagenavi.now_page == $item}-->onMouseOut="this.style.backgroundColor = '#505468'"<!--{/if}-->><!--{$item}--></a></td>
 						<td><img src="/img/contents/number_line.jpg" width="2" height="17" alt=""></td>
 						<!--{/foreach}-->
 					</tr>
