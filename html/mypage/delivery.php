@@ -77,6 +77,9 @@ $objQuery->setorder($order);
 
 //別のお届け先情報表示
 $objPage->arrOtherDeliv = $objQuery->select("*", $from, $where, $arrval);
+
+$objQuery->getlastquery(true);
+
 //お届け先登録数をテンプレートに渡す
 $objPge->deliv_cnt = count($objPage->arrOtherDeliv);
 
