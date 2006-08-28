@@ -132,6 +132,10 @@ case 'step3':
 	break;
 // テーブル類削除
 case 'drop':
+	// テーブルの削除
+	lfExecuteSQL("./drop_view.sql", $arrRet['db_user'], $arrRet['db_password'], $arrRet['db_server'], $arrRet['db_name']); 
+	// ビューの削除
+	lfExecuteSQL("./drop_table.sql", $arrRet['db_user'], $arrRet['db_password'], $arrRet['db_server'], $arrRet['db_name']); 
 	$objPage = lfDispStep3($objPage);
 	break;
 // 完了画面
