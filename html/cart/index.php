@@ -87,8 +87,6 @@ default:
 $objPage = sfTotalCart($objPage, $objCartSess, $arrInfo);
 $objPage->arrData = sfTotalConfirm($arrData, $objPage, $objCartSess, $arrInfo, $objCustomer);
 
-sfprintr($objPage->arrData);
-
 $objPage->arrInfo = $arrInfo;
 
 // ログイン判定

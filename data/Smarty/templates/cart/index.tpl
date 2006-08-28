@@ -114,12 +114,12 @@
 						<!--{if $arrData.birth_point > 0}-->
 						<tr align="right">
 							<td colspan="5" class="fs12n" bgcolor="#f0f0f0">お誕生月ポイント</td>
-							<td class="fs12st" bgcolor="#ffffff"><!--{$arrData.birth_point}-->pt</td>
+							<td class="fs12st" bgcolor="#ffffff"><!--{$arrData.birth_point|number_format}-->pt</td>
 						</tr>
 						<!--{/if}-->
 						<tr align="right">
 							<td colspan="5" class="fs12n" bgcolor="#f0f0f0">今回加算ポイント</td>
-							<td class="fs12st" bgcolor="#ffffff"><!--{$arrData.add_point}-->pt</td>
+							<td class="fs12st" bgcolor="#ffffff"><!--{$arrData.add_point|number_format}-->pt</td>
 						</tr>
 					</table>
 				</td>
