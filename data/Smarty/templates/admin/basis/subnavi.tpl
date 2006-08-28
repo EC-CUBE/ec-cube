@@ -2,10 +2,7 @@
 <!--
 function Change(c){
 document.bgColor="#ffffcc";
-document.fgColor="#ccccff";
 document.linkColor="#ff0000";
-document.vlinkColor="#0000ff";
-document.alinkColor="#ffccff";
 }
 
 function Reset(c){
