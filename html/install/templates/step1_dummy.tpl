@@ -1,4 +1,12 @@
+
 <table width="502" border="0" cellspacing="1" cellpadding="0" summary=" ">
+<form name="form1" id="form1" method="post" action="<!--{$smarty.server.PHP_SELF}-->">
+<input type="hidden" name="mode" value="<!--{$tpl_mode}-->">
+<input type="hidden" name="step" value="0">
+
+<!--{foreach key=key item=item from=$arrHidden}-->
+<input type="hidden" name="<!--{$key}-->" value="<!--{$item|escape}-->">
+<!--{/foreach}-->
 
 <tr><td height="30"></td></tr>
 <tr><td align="left" class="fs12st">■ECサイトの設定</td></tr>
@@ -51,4 +59,5 @@
 		</td>
 	</tr>
 	<tr><td height="30"></td></tr>
+</from>
 </table>

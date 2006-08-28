@@ -155,7 +155,8 @@ $objPage->arrForm = array_merge($objPage->arrForm, $objDBParam->getFormParamList
 
 // SiteInfoを読み込まない
 $objView->assignobj($objPage, false);
-$objView->display('install_frame.tpl');
+//$objView->display('install_frame.tpl');
+$objView->display('$objPage->tpl_mainpage');
 //-----------------------------------------------------------------------------------------------------------------------------------
 // ようこそ画面の表示
 function lfDispWelcome($objPage) {
