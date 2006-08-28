@@ -80,7 +80,6 @@
 <!--¢¥CONTENTS-->
 
 <!--¢§FOOTER-->
-
 <table width="912" border="0" cellspacing="0" cellpadding="0" summary=" ">
 	<tr valign="top">
 		<td background="/img/common/left_bg.jpg"><img src="/img/common/_.gif" width="17" height="1" alt=""></td>
