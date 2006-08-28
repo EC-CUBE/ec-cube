@@ -403,6 +403,8 @@ function lfExecuteSQL($filepath, $db_user, $db_password, $db_server, $db_name) {
 			$sql = fread($fp, filesize($filepath));
 			fclose($fp);
 		}
+		
+		print($dsn);
 			
 		$dsn = "pgsql://".$db_user.":".$db_password."@".$db_server."/".$db_name;
 		$objDB = DB::connect($dsn);
