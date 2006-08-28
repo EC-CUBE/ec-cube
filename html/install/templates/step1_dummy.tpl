@@ -9,54 +9,42 @@
 <!--{/foreach}-->
 
 <tr><td height="30"></td></tr>
-<tr><td align="left" class="fs12st">■データベースの設定</td></tr>
-<tr><td align="left" class="fs12">※インストールの前に新しくDBを作成しておく必要があります。</td></tr>
-<tr><td align="left" class="red12"><!--{$arrErr.all}--></td></tr>
+<tr><td align="left" class="fs12st">■ECサイトの設定</td></tr>
 <tr>
 	<td bgcolor="#cccccc">
 	<table width="500" border="0" cellspacing="1" cellpadding="8" summary=" ">
 		<tr>
-			<td bgcolor="#f2f1ec" width="150" class="fs12n">DBの種類</td>
+			<td bgcolor="#f2f1ec" width="150" class="fs12n">インストールディレクトリ</td>
 			<td bgcolor="#ffffff" width="332" class="fs12">
-			<!--{assign var=key value="db_type"}-->
-			<span class="red"><!--{$arrErr[$key]}--></span>
-			<select name="<!--{$key}-->" style="<!--{$arrErr[$key]|sfGetErrorColor}-->">
-			<!--{html_options options=$arrDB_TYPE selected=$arrForm[$key].value}-->
-			</select>
-			</td>
-		</tr>
-		<tr>
-			<td bgcolor="#f2f1ec" width="150" class="fs12n">DBサーバ</td>
-			<td bgcolor="#ffffff" width="332" class="fs12">
-			<!--{assign var=key value="db_server"}-->
+			<!--{assign var=key value="install_dir"}-->
 			<span class="red"><!--{$arrErr[$key]}--></span>
 			<input type="text" name="<!--{$key}-->" value="<!--{$arrForm[$key].value|escape}-->" maxlength="<!--{$arrForm[$key].length}-->" style="<!--{$arrErr[$key]|sfGetErrorColor}-->" size="50" class="box50" />
 			</td>
 		</tr>
 		<tr>
-			<td bgcolor="#f2f1ec" width="150" class="fs12n">DB名</td>
+			<td bgcolor="#f2f1ec" width="150" class="fs12n">URL(通常)</td>
 			<td bgcolor="#ffffff" width="332" class="fs12">
-			<!--{assign var=key value="db_name"}-->
+			<!--{assign var=key value="normal_url"}-->
 			<span class="red"><!--{$arrErr[$key]}--></span>
 			<input type="text" name="<!--{$key}-->" value="<!--{$arrForm[$key].value|escape}-->" maxlength="<!--{$arrForm[$key].length}-->" style="<!--{$arrErr[$key]|sfGetErrorColor}-->" size="50" class="box50" />
 			</td>
 		</tr>
 		<tr>
-			<td bgcolor="#f2f1ec" width="150" class="fs12n">DBユーザ</td>
+			<td bgcolor="#f2f1ec" width="150" class="fs12n">URL(セキュア)</td>
 			<td bgcolor="#ffffff" width="332" class="fs12">
-			<!--{assign var=key value="db_user"}-->
+			<!--{assign var=key value="secure_url"}-->
 			<span class="red"><!--{$arrErr[$key]}--></span>
 			<input type="text" name="<!--{$key}-->" value="<!--{$arrForm[$key].value|escape}-->" maxlength="<!--{$arrForm[$key].length}-->" style="<!--{$arrErr[$key]|sfGetErrorColor}-->" size="50" class="box50" />
 			</td>
 		</tr>
 		<tr>
-			<td bgcolor="#f2f1ec" width="150" class="fs12n">DBパスワード</td>
+			<td bgcolor="#f2f1ec" width="150" class="fs12n">ドメイン</td>
 			<td bgcolor="#ffffff" width="332" class="fs12">
-			<!--{assign var=key value="db_password"}-->
+			<!--{assign var=key value="domain"}-->
 			<span class="red"><!--{$arrErr[$key]}--></span>
-			<input type="password" name="<!--{$key}-->" value="<!--{$arrForm[$key].value|escape}-->" maxlength="<!--{$arrForm[$key].length}-->" style="<!--{$arrErr[$key]|sfGetErrorColor}-->" size="50" class="box50" />
+			<input type="text" name="<!--{$key}-->" value="<!--{$arrForm[$key].value|escape}-->" maxlength="<!--{$arrForm[$key].length}-->" style="<!--{$arrErr[$key]|sfGetErrorColor}-->" size="50" class="box50" />
 			</td>
-		</tr>		
+		</tr>
 	</table>
 	</td>
 </tr>
