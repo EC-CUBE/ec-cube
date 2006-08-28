@@ -405,6 +405,7 @@ function lfGetCSVData( $array, $arrayIndex){
 	
 	
 	sfprintr($arrayIndex);
+	exit();
 	
 	for ($i=0; $i<count($array); $i++){
 		
