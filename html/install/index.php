@@ -367,7 +367,7 @@ function lfCheckDBError($objFormParam) {
 		// 接続エラー
 		if(PEAR::isError($objDB)) {
 			$objErr->arrErr['all'] = ">> " . $objDB->message;
-			gfPrintLog($objDB->userinfo);
+			gfPrintLog($objDB->userinfo, "./temp/install.log");
 		}
 	}		
 	return $objErr->arrErr;
