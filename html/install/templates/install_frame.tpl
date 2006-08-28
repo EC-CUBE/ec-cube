@@ -25,7 +25,7 @@
 		<table width="878" border="0" cellspacing="0" cellpadding="0" summary=" " background="/img/header/header_bg2.jpg">
 			<tr valign="top">
 				<td><img src="/img/admin/header/logo.jpg" width="230" height="50" alt="EC CUBE" border="0"></td>
-				<td width="648" align="right">
+				<td width="648" align="right"></td>
 			</tr>
 		</table>
 		</td>
@@ -44,7 +44,6 @@
 			<tr valign="top">
 				<td class="mainbg" align="center" height="450">
 				<table width="562" border="0" cellspacing="0" cellpadding="0" summary=" ">
-				<form name="form1" method="post" action="#">
 					<tr><td height="40"></td></tr>
 					<tr>
 						<td colspan="3"><img src="/img/contents/error_top.jpg" width="562" height="14" alt=""></td>
@@ -67,7 +66,6 @@
 					<tr>
 						<td colspan="3"><img src="/img/contents/error_bottom.jpg" width="562" height="14" alt=""></td>
 					</tr>
-				</form>
 				</table>
 				</td>
 			</tr>
