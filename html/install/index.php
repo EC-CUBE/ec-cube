@@ -367,6 +367,8 @@ function lfCheckDBError($objFormParam) {
 function lfExecuteSQL($filepath, $db_user, $db_password, $db_server, $db_name) {
 	$arrErr = array();
 	
+	print("kita");
+	
 	if(!file_exists($filepath)) {
 		$arrErr['all'] = ">> スクリプトファイルが見つかりません";
 	} else {
