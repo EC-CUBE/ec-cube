@@ -219,23 +219,23 @@ function lfDispStep0($objPage) {
 	// 権限エラー等が発生していない場合
 	if(!$err_file) {
 		$path = "../../data/Smarty/templates_c/admin";
-		if(file_exists($path)) {
+		if(!file_exists($path)) {
 			mkdir($path);
 		}
 		$path = "../../html/upload/save_image";
-		if(file_exists($path)) {
+		if(!file_exists($path)) {
 			mkdir($path);
 		}
 		$path = "../../html/upload/temp_image";
-		if(file_exists($path)) {
+		if(!file_exists($path)) {
 			mkdir($path);
 		}
 		$path = "../../html/upload/graph_image";
-		if(file_exists($path)) {
+		if(!file_exists($path)) {
 			mkdir($path);
 		}
 		$path = "../../html/upload/csv";
-		if(file_exists($path)) {
+		if(!file_exists($path)) {
 			mkdir($path);
 		}
 	}
