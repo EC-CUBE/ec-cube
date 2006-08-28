@@ -94,13 +94,13 @@ a:hover { color: #f9a406; text-decoration: underline; }
 	color:#ffffff;
 	text-decoration:none;
 }
-/*
+
 .navi a:hover {
 	background-color: #a5a5a5;
 	color:#000000;
 	text-decoration:none;
 }
-*/
+
 .navi_text {
 	font-size: 75%;
 	padding: 0 0 0 8px;
