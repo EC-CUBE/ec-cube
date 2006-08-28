@@ -41,6 +41,8 @@ $objDBParam = lfInitDBParam($objDBParam);
 $objWebParam->setParam($_POST);
 $objDBParam->setParam($_POST);
 
+sfprintr($_POST);
+
 switch($_POST['mode']) {
 // ようこそ
 case 'welcome':
