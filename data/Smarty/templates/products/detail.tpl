@@ -105,9 +105,9 @@ function lnSetSelect(form, name1, name2, val) {
 								<td><span class="red"><span class="fs12">≤¡≥ </span><span class="fs10">(¿«π˛)</span></span><span class="redst"><span class="fs12">°ß
 								<!--°˙≤¡≥ °˙-->
 									<!--{if $arrProduct.price02_min == $arrProduct.price02_max}-->				
-										<!--{$arrProduct.price02_min|sfPreTax:$arrInfo.tax:$arrInfo.tax_rule|number_format}-->
+										<!--{$arrProduct.price02_min|sfPreTax:$arrSiteInfo.tax:$arrSiteInfo.tax_rule|number_format}-->
 									<!--{else}-->
-										<!--{$arrProduct.price02_min|sfPreTax:$arrInfo.tax:$arrInfo.tax_rule|number_format}-->°¡<!--{$arrProduct.price02_max|sfPreTax:$arrInfo.tax:$arrInfo.tax_rule|number_format}-->
+										<!--{$arrProduct.price02_min|sfPreTax:$arrSiteInfo.tax:$arrSiteInfo.tax_rule|number_format}-->°¡<!--{$arrProduct.price02_max|sfPreTax:$arrSiteInfo.tax:$arrSiteInfo.tax_rule|number_format}-->
 									<!--{/if}-->
 									±ﬂ</span></span><br/>
 									
@@ -319,9 +319,9 @@ function lnSetSelect(form, name1, name2, val) {
 											<td><span class="fs12"><a href="<!--{$smarty.const.DETAIL_P_HTML}--><!--{$arrRecommend[cnt].product_id}-->"><!--{$arrRecommend[cnt].name|escape}--></a></span><br>
 											<span class="red"><span class="fs12">≤¡≥ </span><span class="fs10">(¿«π˛)</span></span><span class="redst"><span class="fs12">°ß
 											<!--{if $price02_min == $price02_max}-->
-												<!--{$price02_min|sfPreTax:$arrInfo.tax:$arrInfo.tax_rule|number_format}-->
+												<!--{$price02_min|sfPreTax:$arrSiteInfo.tax:$arrSiteInfo.tax_rule|number_format}-->
 											<!--{else}-->
-												<!--{$price02_min|sfPreTax:$arrInfo.tax:$arrInfo.tax_rule|number_format}-->è¢∑<!--{$price02_max|sfPreTax:$arrInfo.tax:$arrInfo.tax_rule|number_format}-->
+												<!--{$price02_min|sfPreTax:$arrSiteInfo.tax:$arrSiteInfo.tax_rule|number_format}-->è¢∑<!--{$price02_max|sfPreTax:$arrSiteInfo.tax:$arrSiteInfo.tax_rule|number_format}-->
 											<!--{/if}-->
 											±ﬂ</span></span></td>
 										</tr>
@@ -354,9 +354,9 @@ function lnSetSelect(form, name1, name2, val) {
 											<td><span class="fs12"><a href="<!--{$smarty.const.DETAIL_P_HTML}--><!--{$arrRecommend[cnt].product_id}-->"><!--{$arrRecommend[cnt].name|escape}--></a></span><br>
 											<span class="red"><span class="fs12">≤¡≥ </span><span class="fs10">(¿«π˛)</span></span><span class="redst"><span class="fs12">°ß
 											<!--{if $price02_min == $price02_max}-->
-												<!--{$price02_min|sfPreTax:$arrInfo.tax:$arrInfo.tax_rule|number_format}-->
+												<!--{$price02_min|sfPreTax:$arrSiteInfo.tax:$arrSiteInfo.tax_rule|number_format}-->
 											<!--{else}-->
-												<!--{$price02_min|sfPreTax:$arrInfo.tax:$arrInfo.tax_rule|number_format}-->è¢∑<!--{$price02_max|sfPreTax:$arrInfo.tax:$arrInfo.tax_rule|number_format}-->
+												<!--{$price02_min|sfPreTax:$arrSiteInfo.tax:$arrSiteInfo.tax_rule|number_format}-->è¢∑<!--{$price02_max|sfPreTax:$arrSiteInfo.tax:$arrSiteInfo.tax_rule|number_format}-->
 											<!--{/if}-->
 											±ﬂ</span></span></td>
 										</tr>

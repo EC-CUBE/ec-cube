@@ -14,10 +14,6 @@ class LC_Page {
 $objPage = new LC_Page();
 $conn = new SC_DBConn();
 
-// サイト情報を取得する
-//$objSiteInfo = new SC_SiteInfo();
-//$objPage->arrSiteInfo = $objSiteInfo->data;
-
 // レイアウトデザインを取得
 $objPage = sfGetPageLayout($objPage, false, "index.php");
 

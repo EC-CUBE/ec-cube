@@ -31,7 +31,6 @@ class LC_Page {
 }
 
 $objPage = new LC_Page();
-$objSiteInfo = new SC_SiteInfo();
 $conn = new SC_DBConn();
 
 //表示件数の選択
@@ -138,7 +137,6 @@ $objPage->arrPayment = lfGetPayment();
 // 入力情報を渡す
 $objPage->arrForm = $_POST;
 
-$objPage->arrInfo = $objSiteInfo->data;
 $objPage->category_id = $category_id;
 $objPage->arrSearch = $arrSearch;
 
@@ -226,9 +224,6 @@ function lfDispProductsList($category_id, $name, $disp_num, $orderby) {
 		}
 	}
 
-	// 基本情報を渡す
-	$objPage->arrInfo = $objSiteInfo->data;
-		
 	return $objPage;
 }
 

@@ -81,9 +81,9 @@
 							</td>
 							<td align="right">
 							<!--{if $arrProductsClass[cnt].price02 != ""}-->
-								<!--{$arrProductsClass[cnt].price02|sfPreTax:$arrInfo.tax:$arrInfo.tax_rule|number_format}-->±ß
+								<!--{$arrProductsClass[cnt].price02|sfPreTax:$arrSiteInfo.tax:$arrSiteInfo.tax_rule|number_format}-->±ß
 							<!--{else}-->
-								<!--{$arrProductsClass[cnt].price01|sfPreTax:$arrInfo.tax:$arrInfo.tax_rule|number_format}-->±ß
+								<!--{$arrProductsClass[cnt].price01|sfPreTax:$arrSiteInfo.tax:$arrSiteInfo.tax_rule|number_format}-->±ß
 							<!--{/if}-->						
 							</td>
 							<td align="center" >

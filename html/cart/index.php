@@ -94,9 +94,6 @@ if($objCustomer->isLoginSuccess()) {
 	$objPage->tpl_name = $objCustomer->getValue('name01');
 } 
 
-// 基本情報を渡す
-$objPage->arrInfo = $objSiteInfo->data;
-
 // 送料無料までの金額を計算
 $tpl_deliv_free = $objPage->arrInfo['free_rule'] - $objPage->tpl_total_pretax;
 $objPage->tpl_deliv_free = $tpl_deliv_free;

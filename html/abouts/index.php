@@ -18,8 +18,6 @@ $objView = new SC_SiteView();
 // レイアウトデザインを取得
 $objPage = sfGetPageLayout($objPage, false, DEF_LAYOUT);
 
-$objPage->arrInfo = $arrInfo;
-
 $objView->assignobj($objPage);
 $objView->display(SITE_FRAME);
 

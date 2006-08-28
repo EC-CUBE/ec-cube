@@ -38,7 +38,6 @@ class LC_Page {
 
 $objPage = new LC_Page();
 $objView = new SC_SiteView();
-$objSiteInfo = new SC_SiteInfo();
 $objCustomer = new SC_Customer();
 $objQuery = new SC_Query();
 
@@ -159,8 +158,6 @@ $objPage->tpl_subtitle = $tpl_subtitle;
 $objUpFile->setDBFileList($objPage->arrProduct);
 // ファイル表示用配列を渡す
 $objPage->arrFile = $objUpFile->getFormFileList(IMAGE_TEMP_URL, IMAGE_SAVE_URL);
-// 基本情報を渡す
-$objPage->arrInfo = $objSiteInfo->data;
 // 支払方法の取得
 $objPage->arrPayment = lfGetPayment();
 // 入力情報を渡す
