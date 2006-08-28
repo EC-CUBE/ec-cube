@@ -149,7 +149,7 @@ function lfDispWelcome($objPage) {
 	$objPage->arrHidden = $objWebParam->getHashArray();
 	// hiddenに入力値を保持
 	$objPage->arrHidden = array_merge($objPage->arrHidden, $objDBParam->getHashArray());
-	$objPage->tpl_mainpage = '/welcome.tpl';
+	$objPage->tpl_mainpage = 'welcome.tpl';
 	$objPage->tpl_mode = 'welcome';
 	return $objPage;
 }
