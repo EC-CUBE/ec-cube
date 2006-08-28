@@ -4,7 +4,7 @@ require_once("../require.php");
 define("ZIP_CSV_LINE_MAX", 8192);
 define("IMAGE_MAX", 680);	// 画像の表示個数
 
-$path = ROOT_DIR . "html/install/KEN_ALL.CSV";
+$path = ROOT_DIR . "html/admin/basis/KEN_ALL.CSV";
 
 $objQuery = new SC_Query();
 $objSess = new SC_Session();
