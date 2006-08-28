@@ -67,7 +67,7 @@ class SC_View {
 		// サイト情報を割り当てる
 		$objSiteInfo = new SC_SiteInfo();
 		$SiteInfo['arrSiteInfo'] = $objSiteInfo->data;
-		foreach ($arrSiteInfo as $key => $value){
+		foreach ($SiteInfo as $key => $value){
 			$this->_smarty->assign($key, $value);
 		}
   	}
