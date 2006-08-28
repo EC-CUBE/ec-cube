@@ -122,12 +122,17 @@ case 'step3':
 	}
 	
 	if(count($objPage->arrErr) == 0) {
+		// 設定ファイルの生成
 		lfMakeConfigFile();
-		//$objPage = lfDispComplete($objPage);
 		$objPage = lfDispStep3($objPage);
+		$objPage->tpl_mode = 'complete';
 	} else {
 		$objPage = lfDispStep3($objPage);
 	}
+	break;
+// 完了画面
+case 'complete':
+	$objPage = lfDispComplete($objPage);
 	break;
 case 'return_step0':
 	$objPage = lfDispStep0($objPage);
