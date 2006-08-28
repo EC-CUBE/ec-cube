@@ -31,7 +31,7 @@
 			<tr><td height="15"></td></tr>
 			<tr>
 				<td>
-					<a href="/mypage/delivery_addr.php" onclick="win02('/mypage/delivery_addr.php?page=<!--{$smarty.server.PHP_SELF}-->','new_deiv','600','640'); return false;" onmouseover="chgImg('/img/common/newadress_on.gif','addition');" onmouseout="chgImg('/img/common/newadress.gif','addition');"><img src="/img/common/newadress.gif" width="160" height="20" alt="新しいお届け先を追加する" name="addition" id="addition" /></a>
+					<a href="/mypage/delivery_addr.php" onclick="win02('/mypage/delivery_addr.php?page=<!--{$smarty.server.PHP_SELF}-->','new_deiv','600','640'); return false;" onmouseover="chgImg('/img/common/newadress_on.gif','addition');" onmouseout="chgImg('/img/common/newadress.gif','addition');"><img src="/img/common/newadress.gif" width="160" height="22" alt="新しいお届け先を追加する" name="addition" id="addition" /></a>
 				</td>
 			</tr>
 			<tr><td height="20"></td></tr>

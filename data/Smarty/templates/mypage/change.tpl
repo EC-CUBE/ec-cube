@@ -168,7 +168,7 @@
 									</tr>
 									<tr><td height="2"></td></tr>
 									<tr>
-										<td class="fs10n"><span class="red">半角英数字4~10文字でお願いします。（記号不可）</span></td>
+										<td class="fs10n"><span class="red">半角英数字4〜10文字でお願いします。（記号不可）</span></td>
 									</tr>
 									<tr><td height="5"></td></tr>
 									<tr>

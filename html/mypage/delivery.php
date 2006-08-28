@@ -61,6 +61,7 @@ $page_max = SEARCH_PMAX;
 
 //お届け先登録件数取得
 $linemax = $objQuery->count($from, $where, $arrval);
+/*
 $objPage->tpl_linemax = $linemax;
 
 // ページ送りの取得
@@ -72,7 +73,7 @@ $startno = $objNavi->start_row;
 $objQuery->setlimitoffset($page_max, $startno);
 // 表示順序
 $objQuery->setorder($order);
-
+*/
 //別のお届け先情報表示
 $objPage->arrOtherDeliv = $objQuery->select("*", $from, $where, $arrval);
 //お届け先登録数をテンプレートに渡す
