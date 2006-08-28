@@ -72,6 +72,7 @@ case 'confirm':
 	
 	// 決済方法により画面切替
 	switch($arrData['payment_id']) {
+/* クレジット、ローン、コンビニ決済は次期開発
 	case PAYMENT_CREDIT_ID:
 		header("Location: " . URL_SHOP_CREDIT);
 		break;
@@ -81,6 +82,7 @@ case 'confirm':
 	case PAYMENT_CONVENIENCE_ID:
 		header("Location: " . URL_SHOP_CONVENIENCE);
 		break;
+*/
 	default:
 		header("Location: " . URL_SHOP_COMPLETE);
 		break;

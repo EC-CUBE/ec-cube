@@ -57,7 +57,7 @@ if($_GET['mode'] != 'reload') {
 		if($order_id != "") {
 			sfSendOrderMail($order_id, '1');
 		}
-		
+
 		//コンビニ決済情報の取得
 		$conveni_data = $objQuery->get("dtb_order", "conveni_data", "order_id = ? ", array($order_id));
 		if($conveni_data != "") {

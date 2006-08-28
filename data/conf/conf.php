@@ -107,8 +107,8 @@ define ("CF_STORECODE", "361901000000000");									// 加盟店コード(ハイフンなし
 // define ("CF_STORECODE", "111111111111111");									// 加盟店コード(テスト用)
 
 define ("CF_SIMULATE", "/simulate/simulate.cgi");							// シュミレーション呼び出し
-define ("CF_RETURNURL", SSL_URL . "shopping/loan.php");						// 戻り先
-define ("CF_CANCELURL", SSL_URL . "shopping/loan_cancel.php");				// 戻り先
+// define ("CF_RETURNURL", SSL_URL . "shopping/loan.php");						// 戻り先 ショッピングローンは次期開発
+// define ("CF_CANCELURL", SSL_URL . "shopping/loan_cancel.php");				// 戻り先 ショッピングローンは次期開発
 define ("CF_CONTINUE", "1");												// 呼び出し区分(0:シュミレーションのみ、1:シュミレーション+申込)
 define ("CF_LABOR", "0");													// 役務有無区分(0:無、1:有)
 define ("CF_RESULT", "1");													// 結果応答(1:結果あり、2:結果なし)

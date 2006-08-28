@@ -159,7 +159,6 @@
 								<!--{assign var=key1 value="deliv_zip01"}-->
 								<!--{assign var=key2 value="deliv_zip02"}-->
 								¢©<!--{$arrForm[$key1].value|escape}-->-<!--{$arrForm[$key2].value|escape}-->
-								<input type="button" name="address_input" value="½»½êÆþÎÏ" onclick="fnCallAddress('<!--{$smarty.const.URL_INPUT_ZIP}-->', 'deliv_zip01', 'deliv_zip02', 'deliv_pref', 'deliv_addr01');" />
 								</td>
 								<td bgcolor="#f2f1ec" width="110">TEL</td>
 								<td bgcolor="#ffffff" width="249">
