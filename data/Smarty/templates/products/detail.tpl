@@ -76,7 +76,7 @@ function lnSetSelect(form, name1, name2, val) {
 							<tr>
 								<td>
 								<!--{if $arrProduct.main_large_image != ""}-->
-									<!--★拡大する★--><a href="<!--{$smarty.server.PHP_SELF}-->" onclick="win01('./detail_image.php?product_id=<!--{$arrProduct.product_id}-->&image=main_large_image<!--{if $smarty.get.admin == 'on'}-->&admin=on<!--{/if}-->','detail_image', '560', '580'); return false;" target="_blank"><img src="/img/products/b_expansion.gif" width="94" height="13" alt="画像を拡大する" /></a>
+									<!--★拡大する★--><a href="<!--{$smarty.server.PHP_SELF}-->" onclick="win01('./detail_image.php?product_id=<!--{$arrProduct.product_id}-->&image=main_large_image<!--{if $smarty.get.admin == 'on'}-->&admin=on<!--{/if}-->','detail_image', '560', '580'); return false;" target="_blank"><img src="/img/products/b_expansion.gif" width="85" height="13" alt="画像を拡大する" /></a>
 								<!--{/if}-->
 								</td>
 							</tr>
@@ -235,7 +235,7 @@ function lnSetSelect(form, name1, name2, val) {
 								<tr><td height="8"></td></tr>
 								<tr>
 									<!--{if $arrFile[$lkey].filepath != ""}-->
-										<td align="right"><div id="more"><a href="<!--{$smarty.server.PHP_SELF}-->" onclick="win01('./detail_image.php?product_id=<!--{$arrProduct.product_id}-->&image=<!--{$lkey}--><!--{if $smarty.get.admin == 'on'}-->&admin=on<!--{/if}-->','detail_image','560','580'); return false;" onmouseover="chgImg('../img/products/b_expansion_on.gif','expansion02');" onmouseout="chgImg('../img/products/b_expansion.gif','expansion02');" target="_blank"><img src="../img/products/b_expansion.gif" width="94" height="13" alt="画像を拡大する" /></a></div></td>
+										<td align="right"><div id="more"><a href="<!--{$smarty.server.PHP_SELF}-->" onclick="win01('./detail_image.php?product_id=<!--{$arrProduct.product_id}-->&image=<!--{$lkey}--><!--{if $smarty.get.admin == 'on'}-->&admin=on<!--{/if}-->','detail_image','560','580'); return false;" onmouseover="chgImg('../img/products/b_expansion_on.gif','expansion02');" onmouseout="chgImg('../img/products/b_expansion.gif','expansion02');" target="_blank"><img src="../img/products/b_expansion.gif" width="85" height="13" alt="画像を拡大する" /></a></div></td>
 									<!--{/if}-->
 								</tr>
 							</table>
@@ -258,7 +258,7 @@ function lnSetSelect(form, name1, name2, val) {
 					<tr>
 						<td>
 						<!--{if count($arrReview) < $smarty.const.REVIEW_REGIST_MAX}-->
-							<!--★新規コメントを書き込む★--><a href="./review.php" onClick="win02('./review.php?product_id=<!--{$arrProduct.product_id}-->','review','580','580'); return false;" onMouseOver="chgImg('../img/products/b_comment_on.gif','review');" onMouseOut="chgImg('../img/products/b_comment_on.gif','review');" target="_blank"><img src="../img/products/b_comment_on.gif" width="150" height="22" alt="新規コメントを書き込む" name="review" id="review" /></a>
+							<!--★新規コメントを書き込む★--><a href="./review.php" onClick="win02('./review.php?product_id=<!--{$arrProduct.product_id}-->','review','580','580'); return false;" onMouseOver="chgImg('../img/products/b_comment_on.gif','review');" onMouseOut="chgImg('../img/products/b_comment.gif','review');" target="_blank"><img src="../img/products/b_comment.gif" width="150" height="22" alt="新規コメントを書き込む" name="review" id="review" /></a>
 						<!--{/if}-->
 						</td>
 					</tr>
