@@ -8,7 +8,7 @@ class SC_View {
 	var $arrInfo;	// サイト情報
 	
     // コンストラクタ
-    function SC_View() {
+    function SC_View($siteinfo = true) {
 		global $SC_VIEW_PHP_DIR;
 
     	$this->_smarty = new Smarty;
@@ -37,15 +37,6 @@ class SC_View {
 		if(ADMIN_MODE == '1') {		
 			$this->time_start = time();
 		}
-
-		// サイト情報を割り当てる
-		$objSiteInfo = new SC_SiteInfo();
-		$this->arrInfo['arrSiteInfo'] = $objSiteInfo->data;
-
-		// 都道府県名を変換
-		global $arrPref;
-		$this->arrInfo['arrSiteInfo']['pref'] = $arrPref[$arrInfo['arrSiteInfo']['pref']];
-		
 	}
     
     // テンプレートに値を割り当てる
@@ -80,9 +71,11 @@ class SC_View {
 		foreach ($this->arrInfo as $key => $value){
 			$this->_smarty->assign($key, $value);
 		}
+		
+
 		if($siteinfo) {
 			if(!defined('LOAD_SITEINFO')) {
-	 			// サイト情報を割り当てる
+	 			// サイト情報を取得する
 				$objSiteInfo = new SC_SiteInfo();
 				$arrInfo['arrSiteInfo'] = $objSiteInfo->data;
 				
@@ -90,9 +83,11 @@ class SC_View {
 				global $arrPref;
 				$arrInfo['arrSiteInfo']['pref'] = $arrPref[$arrInfo['arrSiteInfo']['pref']];
 				
+	 			// サイト情報を割り当てる
 				foreach ($arrInfo as $key => $value){
 					$this->_smarty->assign($key, $value);
 				}
+				
 				define('LOAD_SITEINFO', 1);
 			}
 		}		
