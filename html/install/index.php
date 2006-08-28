@@ -123,7 +123,8 @@ case 'step3':
 	
 	if(count($objPage->arrErr) == 0) {
 		lfMakeConfigFile();
-		$objPage = lfDispComplete($objPage);
+		//$objPage = lfDispComplete($objPage);
+		$objPage = lfDispStep3($objPage);
 	} else {
 		$objPage = lfDispStep3($objPage);
 	}
