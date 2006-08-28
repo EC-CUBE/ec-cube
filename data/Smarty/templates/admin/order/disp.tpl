@@ -63,7 +63,6 @@
 							</tr>
 						</table>
 						
-						<!--▼お客様情報ここから-->
 						<table width="678" border="0" cellspacing="1" cellpadding="8" summary=" ">
 							<tr class="fs12n">
 								<td bgcolor="#f0f0f0" width="110">対応状況</td>
@@ -132,6 +131,79 @@
 						<table width="678" border="0" cellspacing="0" cellpadding="0" summary=" ">
 							<tr><td colspan="3"><img src="/img/contents/main_bar.jpg" width="678" height="10" alt=""></td></tr>
 						</table>
+						
+						<!--▼配送先情報ここから-->
+						<table width="678" border="0" cellspacing="1" cellpadding="8" summary=" ">
+							<tr class="fs12n">
+								<td bgcolor="#f2f1ec" width="717" colspan="4">▼配送先情報</td>
+							</tr>
+							<tr class="fs12n">
+								<td bgcolor="#f2f1ec" width="110">お名前</td>
+								<td bgcolor="#ffffff" width="248">
+								<!--{assign var=key1 value="deliv_name01"}-->
+								<!--{assign var=key2 value="deliv_name02"}-->
+								<!--{$arrForm[$key1].value|escape}-->
+								<!--{$arrForm[$key2].value|escape}-->
+								</td>
+								<td bgcolor="#f2f1ec" width="110">お名前（カナ）</td>
+								<td bgcolor="#ffffff" width="249">
+								<!--{assign var=key1 value="deliv_kana01"}-->
+								<!--{assign var=key2 value="deliv_kana02"}-->
+								<!--{$arrForm[$key1].value|escape}-->
+								<!--{$arrForm[$key2].value|escape}-->
+								</td>
+							</tr>
+							<tr class="fs12n">
+								<td bgcolor="#f2f1ec" width="110">郵便番号</td>
+								<td bgcolor="#ffffff" width="248">
+								<!--{assign var=key1 value="deliv_zip01"}-->
+								<!--{assign var=key2 value="deliv_zip02"}-->
+								〒
+								<!--{$arrForm[$key1].value|escape}-->
+								 - 
+								<!--{$arrForm[$key2].value|escape}-->
+								<input type="button" name="address_input" value="住所入力" onclick="fnCallAddress('<!--{$smarty.const.URL_INPUT_ZIP}-->', 'deliv_zip01', 'deliv_zip02', 'deliv_pref', 'deliv_addr01');" />
+								</td>
+								<td bgcolor="#f2f1ec" width="110">TEL</td>
+								<td bgcolor="#ffffff" width="249">
+								<!--{assign var=key1 value="deliv_tel01"}-->
+								<!--{assign var=key2 value="deliv_tel02"}-->
+								<!--{assign var=key3 value="deliv_tel03"}-->
+								<!--{$arrForm[$key1].value|escape}-->
+								<!--{$arrForm[$key2].value|escape}-->
+								<!--{$arrForm[$key3].value|escape}-->
+								</td>
+							</tr>
+							<tr class="fs12n">
+								<td bgcolor="#f2f1ec" width="110">住所</td>
+								<td bgcolor="#ffffff" width="607" colspan="3">
+								<table width="607" border="0" cellspacing="0" cellpadding="0" summary=" ">
+									<tr>
+									<td>
+										<!--{assign var=key value="deliv_pref"}-->
+										<!--{$arrForm[$key].value}-->
+										</select>
+									</td>
+									</tr>
+									<tr><td height="5"></td></tr>
+									<tr class="fs10n">
+										<td>
+										<!--{assign var=key value="deliv_addr01"}-->
+										<!--{$arrForm[$key].value|escape}-->
+										</td>
+										</tr>
+										<tr><td height="5"></td></tr>
+										<tr class="fs10n">
+											<td>
+											<!--{assign var=key value="deliv_addr02"}-->
+											<!--{$arrForm[$key].value|escape}-->
+											</td>
+										</tr>
+								</table>
+								</td>
+							</tr>
+						</table>
+						<!--▲配送先情報ここまで-->						
 						
 						<table width="678" border="0" cellspacing="1" cellpadding="8" summary=" ">
 							<tr class="fs12n">
