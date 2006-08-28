@@ -115,7 +115,7 @@
 								</tr>
 								<tr><td height="2"></td></tr>
 								<tr>
-									<td class="red10">住所は必ず2つに分けてご記入ください。マンション名は必ず記入してください。</td>
+									<td class="fs10"><span class="red">住所は必ず2つに分けてご記入ください。マンション名は必ず記入してください。</span></td>
 								</tr>
 							</table>
 						</td>

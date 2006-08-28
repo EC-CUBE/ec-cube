@@ -86,6 +86,7 @@ default:
 // カート集計処理
 $objPage = sfTotalCart($objPage, $objCartSess, $arrInfo);
 $objPage->arrData = sfTotalConfirm($arrData, $objPage, $objCartSess, $arrInfo, $objCustomer);
+$objPage->arrInfo = $arrInfo;
 
 // ログイン判定
 if($objCustomer->isLoginSuccess()) {
