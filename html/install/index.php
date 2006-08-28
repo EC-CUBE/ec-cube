@@ -185,8 +185,7 @@ function lfDispStep0($objPage) {
 		"html/upload/temp_image",
 		"html/upload/graph_image",		
 		"html/upload/csv",
-		"data/Smarty/templates_c",
-		"data/Smarty/templates_c/admin",		
+		"data/Smarty/templates_c",		
 		"data/update",
 		"data/logs",
 	);
@@ -219,6 +218,12 @@ function lfDispStep0($objPage) {
 			$mess.= ">> ×：$val が見つかりません。<br>";
 			$err_file = true;
 		}
+	}
+	
+	// 権限エラー等が発生していない場合
+	if(!$err_file) {
+		$path = "../../data/Smarty/templates_c/admin";
+		mkdir($path);
 	}
 	
 	$objPage->mess = $mess;
