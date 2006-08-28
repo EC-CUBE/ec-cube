@@ -1,11 +1,8 @@
 <SCRIPT LANGUAGE="JavaScript">
 <!--
-function Change(ids){
-	document.getElementById(ids).style.backgroundColor ='00f0ff';
-}
-
-function Reset(c){
-    eventSource.style.backgroundColor = c;
+function naviStyleChange(ids, color){
+	document.getElementById(ids).style.backgroundColor = color;
+	document.getElementById(ids).style.backgroundColor = #000000;
 }
 //-->
 </SCRIPT>
