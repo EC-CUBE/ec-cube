@@ -1,4 +1,3 @@
-BEGIN;
 CREATE TABLE dtb_kiyaku (
     kiyaku_id serial NOT NULL,
     kiyaku_title text NOT NULL,
