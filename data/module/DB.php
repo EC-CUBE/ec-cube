@@ -33,6 +33,7 @@ if(!defined('DB_PHP_DIR')) {
 	$DB_PHP_DIR = realpath(dirname( __FILE__));
 	define("DB_PHP_DIR", $DB_PHP_DIR);	
 }
+
 // {{{ constants
 // {{{ error codes
 
