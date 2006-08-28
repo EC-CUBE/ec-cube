@@ -369,7 +369,6 @@ function lfCheckDBError($objFormParam) {
 		// 接続エラー
 		if(PEAR::isError($objDB)) {
 			$objErr->arrErr['all'] = ">> " . $objDB->message . "<br>";
-			$objErr->arrErr['all'] = ">> " . "インストールの前にDBを作成しておく必要があります。";			
 			gfPrintLog($objDB->userinfo, "./temp/install.log");
 		}
 	}		
