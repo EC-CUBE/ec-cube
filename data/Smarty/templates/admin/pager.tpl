@@ -1,8 +1,4 @@
 <!-- ★ ページャここから ★-->
-	// サブナビの表示切替
-	function naviStyleChange(ids, color){
-		document.getElementById(ids).style.backgroundColor = color;
-	}	
 <table border="0" cellspacing="0" cellpadding="0" summary=" ">
 	<tr>
 		<td>
