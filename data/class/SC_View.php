@@ -74,11 +74,10 @@ class SC_View {
 			// 都道府県名を変換
 			global $arrPref;
 			$arrInfo['arrSiteInfo']['pref'] = $arrPref[$arrInfo['arrSiteInfo']['pref']];
-		}
-		
-		foreach ($arrInfo as $key => $value){
+			
+			foreach ($arrInfo as $key => $value){
 			$this->_smarty->assign($key, $value);
-		}
+		}		
   	}
   	
   	// 連想配列内の変数をすべて割り当てる。
