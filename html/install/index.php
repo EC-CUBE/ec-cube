@@ -132,6 +132,8 @@ case 'step3':
 	break;
 // テーブル類削除
 case 'drop':
+	// 入力データを渡す。
+	$arrRet =  $objDBParam->getHashArray();
 	// テーブルの削除
 	if(count($objPage->arrErr) == 0) {
 		$objPage->arrErr = lfExecuteSQL("./drop_view.sql", $arrRet['db_user'], $arrRet['db_password'], $arrRet['db_server'], $arrRet['db_name']); 
@@ -403,13 +405,7 @@ function lfExecuteSQL($filepath, $db_user, $db_password, $db_server, $db_name) {
 			$sql = fread($fp, filesize($filepath));
 			fclose($fp);
 		}
-		
-	
-			
 		$dsn = "pgsql://".$db_user.":".$db_password."@".$db_server."/".$db_name;
-		
-			print($dsn);
-		
 		$objDB = DB::connect($dsn);
 		// 接続エラー
 		if(!PEAR::isError($objDB)) {
