@@ -8,7 +8,7 @@
 	<table width="500" border="0" cellspacing="1" cellpadding="8" summary=" ">
 		<tr>
 			<td bgcolor="#ffffff" class="fs12">
-			<textarea name="disp_area" cols="70" rows="20" class="area70"><!--{*$copy_mess*}--></textarea></td>
+			<textarea name="disp_area" cols="70" rows="20" class="area70"><!--{$copy_mess}--></textarea></td>
 			</td>
 		</tr>
 	</table>
