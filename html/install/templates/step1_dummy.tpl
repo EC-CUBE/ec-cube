@@ -24,35 +24,27 @@
 			</td>
 		</tr>
 		<tr>
-			<td bgcolor="#f2f1ec" width="150" class="fs12n">DBサーバ</td>
+			<td bgcolor="#f2f1ec" width="150" class="fs12n">URL(通常)</td>
 			<td bgcolor="#ffffff" width="332" class="fs12">
-			<!--{assign var=key value="db_server"}-->
+			<!--{assign var=key value="normal_url"}-->
 			<span class="red"><!--{$arrErr[$key]}--></span>
 			<input type="text" name="<!--{$key}-->" value="<!--{$arrForm[$key].value|escape}-->" maxlength="<!--{$arrForm[$key].length}-->" style="<!--{$arrErr[$key]|sfGetErrorColor}-->" size="50" class="box50" />
 			</td>
 		</tr>
 		<tr>
-			<td bgcolor="#f2f1ec" width="150" class="fs12n">DB名</td>
+			<td bgcolor="#f2f1ec" width="150" class="fs12n">URL(セキュア)</td>
 			<td bgcolor="#ffffff" width="332" class="fs12">
-			<!--{assign var=key value="db_name"}-->
+			<!--{assign var=key value="secure_url"}-->
 			<span class="red"><!--{$arrErr[$key]}--></span>
 			<input type="text" name="<!--{$key}-->" value="<!--{$arrForm[$key].value|escape}-->" maxlength="<!--{$arrForm[$key].length}-->" style="<!--{$arrErr[$key]|sfGetErrorColor}-->" size="50" class="box50" />
 			</td>
 		</tr>
 		<tr>
-			<td bgcolor="#f2f1ec" width="150" class="fs12n">DBユーザ</td>
+			<td bgcolor="#f2f1ec" width="150" class="fs12n">ドメイン</td>
 			<td bgcolor="#ffffff" width="332" class="fs12">
-			<!--{assign var=key value="db_user"}-->
+			<!--{assign var=key value="domain"}-->
 			<span class="red"><!--{$arrErr[$key]}--></span>
 			<input type="text" name="<!--{$key}-->" value="<!--{$arrForm[$key].value|escape}-->" maxlength="<!--{$arrForm[$key].length}-->" style="<!--{$arrErr[$key]|sfGetErrorColor}-->" size="50" class="box50" />
-			</td>
-		</tr>
-		<tr>
-			<td bgcolor="#f2f1ec" width="150" class="fs12n">DBパスワード</td>
-			<td bgcolor="#ffffff" width="332" class="fs12">
-			<!--{assign var=key value="db_password"}-->
-			<span class="red"><!--{$arrErr[$key]}--></span>
-			<input type="password" name="<!--{$key}-->" value="<!--{$arrForm[$key].value|escape}-->" maxlength="<!--{$arrForm[$key].length}-->" style="<!--{$arrErr[$key]|sfGetErrorColor}-->" size="50" class="box50" />
 			</td>
 		</tr>		
 	</table>
