@@ -5,7 +5,7 @@
 		<!--▼MAIN ONTENTS-->
 		<table width="" border="0" cellspacing="0" cellpadding="0" summary=" ">
 			<tr>
-				<td><img src="/img/abouts/title.jpg" width="580" height="40" alt="ふとん屋サンについて"></td>
+				<td><img src="/img/abouts/title.jpg" width="580" height="40" alt="当サイトについて"></td>
 			</tr>
 			<tr><td height="15"></td></tr>
 			<tr>
