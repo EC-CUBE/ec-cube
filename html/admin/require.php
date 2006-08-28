@@ -15,7 +15,6 @@ require_once($include_dir . "/../../data/class/SC_PageNavi.php");
 require_once($include_dir . "/../../data/class/SC_Date.php");
 require_once($include_dir . "/../../data/class/SC_Image.php");
 require_once($include_dir . "/../../data/class/SC_UploadFile.php");
-require_once($include_dir . "/../../data/class/SC_JpGraph.php");
 require_once($include_dir . "/../../data/class/SC_SiteInfo.php");
 require_once($include_dir . "/../../data/class/GC_SendMail.php");
 require_once($include_dir . "/../../data/class/SC_FormParam.php");

@@ -22,13 +22,15 @@ function sfInitInstall() {
 // アップデートで生成されたPHPを読み出し
 function sfLoadUpdateModule() {
 	//DBから設定情報を取得
-	$objConn = new SC_DbConn(DEFAULT_DSN);
-	$arrRet = $objConn->getAll("SELECT extern_php FROM dtb_update WHERE main_php = ?",array($_SERVER['PHP_SELF']));
-		
-	if($arrRet[0]['extern_php'] != "") {
-		$path = ROOT_DIR . $arrRet[0]['extern_php'];
-		if(file_exists($path)) {
-			require_once($path);
+	if(defined('DB_USER') && defined('DB_PASSWORD') && defined('DB_SERVER') && defined('DB_NAME')) {
+		$objConn = new SC_DbConn(DEFAULT_DSN);
+		$arrRet = $objConn->getAll("SELECT extern_php FROM dtb_update WHERE main_php = ?",array($_SERVER['PHP_SELF']));
+			
+		if($arrRet[0]['extern_php'] != "") {
+			$path = ROOT_DIR . $arrRet[0]['extern_php'];
+			if(file_exists($path)) {
+				require_once($path);
+			}
 		}
 	}
 }
