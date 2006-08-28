@@ -13,6 +13,16 @@ class LC_Page {
 }
 
 $objPage = new LC_Page();
+
+// テンプレートコンパイルディレクトリの書込み権限チェック
+$temp_dir = $INSTALL_DIR . '/temp';
+$mode = lfGetFileMode($temp_dir);
+
+if($mode != '777') {
+	sfErrorHeader($temp_dir . "にユーザ書込み権限を付与して下さい。");
+	exit;
+}
+
 $objView = new SC_UserView($INSTALL_DIR . '/templates', $INSTALL_DIR . '/temp');
 
 // パラメータ管理クラス
