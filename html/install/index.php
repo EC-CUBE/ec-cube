@@ -382,11 +382,11 @@ function lfExecuteSQL($filepath, $db_user, $db_password, $db_server, $db_name) {
 			$ret = $objDB->query($sql);
 			if(PEAR::isError($ret)) {
 				$arrErr['all'] = ">> " . $ret->message;
-				gfPrintLog($ret->userinfo);
+				gfPrintLog($ret->userinfo, "./temp/install.log");
 			}
 		} else {
 			$arrErr['all'] = ">> " . $objDB->message;
-			gfPrintLog($objDB->userinfo);
+			gfPrintLog($objDB->userinfo, "./temp/install.log");
 		}
 	}
 	return $arrErr;
