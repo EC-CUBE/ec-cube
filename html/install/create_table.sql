@@ -1,3 +1,4 @@
+BEGIN;
 CREATE TABLE dtb_kiyaku (
     kiyaku_id serial NOT NULL,
     kiyaku_title text NOT NULL,
@@ -7,17 +8,6 @@ CREATE TABLE dtb_kiyaku (
     create_date timestamp NOT NULL DEFAULT now(),
     update_date timestamp NOT NULL,
     delete  int2 NOT NULL DEFAULT 0
-);
-
-CREATE TABLE dtb_bat_order_daily_age (
-    order_count numeric NOT NULL DEFAULT 0,
-    total numeric NOT NULL DEFAULT 0,
-    total_average numeric NOT NULL DEFAULT 0,
-    start_age int2,
-    end_age int2,
-    member int2,
-    order_date timestamp DEFAULT now(),
-    create_date timestamp NOT NULL DEFAULT now()
 );
 
 CREATE TABLE mtb_zip (
@@ -38,17 +28,31 @@ CREATE TABLE mtb_zip (
     flg6 text
 );
 
+CREATE TABLE dtb_bat_order_daily_age (
+    order_count numeric NOT NULL DEFAULT 0,
+    total numeric NOT NULL DEFAULT 0,
+    total_average numeric NOT NULL DEFAULT 0,
+    start_age int2,
+    end_age int2,
+    member int2,
+    order_date timestamp DEFAULT now(),
+    create_date timestamp NOT NULL DEFAULT now()
+);
+
 CREATE TABLE dtb_update (
     module_id int4 NOT NULL UNIQUE,
     module_name text NOT NULL,
     now_version text,
     latest_version text NOT NULL,
+    module_explain text,
     main_php text NOT NULL,
     extern_php text NOT NULL,
+    sql text,
     other_files text,
     delete int2 NOT NULL DEFAULT 0,
     create_date timestamp NOT NULL DEFAULT now(),
-    update_date timestamp
+    update_date timestamp,
+    release_date timestamp NOT NULL
 );
 
 CREATE TABLE dtb_baseinfo (
@@ -107,7 +111,9 @@ CREATE TABLE dtb_baseinfo (
     top_tpl int4,
     product_tpl int4,
     detail_tpl int4,
-    mypage_tpl int4
+    mypage_tpl int4,
+    good_traded text,
+    message text
 );
 
 CREATE TABLE dtb_deliv (
@@ -132,7 +138,8 @@ CREATE TABLE dtb_delivtime (
 CREATE TABLE dtb_delivfee (
     deliv_id int4 NOT NULL,
     fee_id serial NOT NULL,
-    fee text NOT NULL
+    fee text NOT NULL,
+    pref int2
 );
 
 CREATE TABLE dtb_payment (
@@ -419,12 +426,14 @@ CREATE TABLE dtb_category_total_count (
 );
 
 CREATE TABLE dtb_news (
-    news_id serial NOT NULL,
+    news_id serial NOT NULL UNIQUE,
     news_date timestamp,
     rank int4,
+    news_title text NOT NULL,
     news_comment text,
     news_url text,
-    link_method int2,
+    news_select int2 NOT NULL DEFAULT 0,
+    link_method text,
     creator_id int4 NOT NULL,
     create_date timestamp NOT NULL DEFAULT now(),
     update_date timestamp,
@@ -497,7 +506,9 @@ CREATE TABLE dtb_customer (
 
 CREATE TABLE dtb_customer_mail (
     email text NOT NULL UNIQUE,
-    mail_flag int2
+    mail_flag int2,
+    create_date timestamp NOT NULL DEFAULT now(),
+    update_date timestamp DEFAULT now()
 );
 
 CREATE TABLE dtb_customer_mail_temp (
@@ -820,3 +831,22 @@ CREATE TABLE dtb_csv_sql (
     update_date timestamp NOT NULL DEFAULT now(),
     create_date timestamp NOT NULL DEFAULT now()
 );
+
+CREATE TABLE dtb_user_regist (
+    user_id serial NOT NULL,
+    org_name text,
+    post_name text,
+    name01 text,
+    name02 text,
+    kana01 text,
+    kana02 text,
+    email text NOT NULL,
+    url text,
+    note text,
+    secret_key text NOT NULL UNIQUE,
+    status int2 NOT NULL,
+    delete int2 DEFAULT 0,
+    create_date timestamp NOT NULL,
+    update_date timestamp NOT NULL DEFAULT now()
+);
+
