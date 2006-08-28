@@ -1,7 +1,7 @@
 <?php
 require_once("../require.php");
 
-ini_set("max_execution_time", 60);
+ini_set("max_execution_time", 600);
 
 define("ZIP_CSV_LINE_MAX", 8192);
 define("IMAGE_MAX", 680);	// 画像の表示個数
