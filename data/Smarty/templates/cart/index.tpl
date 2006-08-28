@@ -109,7 +109,7 @@
 						</tr>
 						<tr align="right">
 							<td colspan="5" class="fs12n" bgcolor="#f0f0f0">¹ç·×</td>
-							<td class="fs12st" bgcolor="#ffffff"><!--{$arrData.total-$arrData.deliv_fee|number_format}-->±ß</td>
+							<td class="fs12st" bgcolor="#ffffff"><span class="red"><!--{$arrData.total-$arrData.deliv_fee|number_format}-->±ß</td>
 						</tr>
 						<!--{if $arrData.birth_point > 0}-->
 						<tr align="right">
