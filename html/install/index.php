@@ -149,7 +149,7 @@ function lfDispWelcome($objPage) {
 	$objPage->arrHidden = $objWebParam->getHashArray();
 	// hiddenに入力値を保持
 	$objPage->arrHidden = array_merge($objPage->arrHidden, $objDBParam->getHashArray());
-	$objPage->tpl_mainpage = 'install/welcome.tpl';
+	$objPage->tpl_mainpage = '/welcome.tpl';
 	$objPage->tpl_mode = 'welcome';
 	return $objPage;
 }
@@ -162,7 +162,7 @@ function lfDispStep0($objPage) {
 	$objPage->arrHidden = $objWebParam->getHashArray();
 	// hiddenに入力値を保持
 	$objPage->arrHidden = array_merge($objPage->arrHidden, $objDBParam->getHashArray());
-	$objPage->tpl_mainpage = 'install/step0.tpl';
+	$objPage->tpl_mainpage = 'step0.tpl';
 	$objPage->tpl_mode = 'step0';
 	
 	// プログラムで書込みされるファイル・ディレクトリ
@@ -225,7 +225,7 @@ function lfDispStep0_1($objPage) {
 	$objPage->arrHidden = $objWebParam->getHashArray();
 	// hiddenに入力値を保持
 	$objPage->arrHidden = array_merge($objPage->arrHidden, $objDBParam->getHashArray());
-	$objPage->tpl_mainpage = 'install/step0_1.tpl';
+	$objPage->tpl_mainpage = 'step0_1.tpl';
 	$objPage->tpl_mode = 'step0_1';	
 	$objPage->copy_mess = lfCopyDir("./user_data/", "../../html/user_data/", $objPage->copy_mess);
 	return $objPage;
@@ -241,7 +241,7 @@ function lfDispStep1($objPage) {
 	global $objDBParam;
 	// hiddenに入力値を保持
 	$objPage->arrHidden = $objDBParam->getHashArray();
-	$objPage->tpl_mainpage = 'install/step1.tpl';
+	$objPage->tpl_mainpage = 'step1.tpl';
 	$objPage->tpl_mode = 'step1';
 	return $objPage;
 }
@@ -251,7 +251,7 @@ function lfDispStep2($objPage) {
 	global $objWebParam;
 	// hiddenに入力値を保持
 	$objPage->arrHidden = $objWebParam->getHashArray();
-	$objPage->tpl_mainpage = 'install/step2.tpl';
+	$objPage->tpl_mainpage = 'step2.tpl';
 	$objPage->tpl_mode = 'step2';
 	return $objPage;
 }
@@ -264,7 +264,7 @@ function lfDispStep3($objPage) {
 	$objPage->arrHidden = $objWebParam->getHashArray();
 	// hiddenに入力値を保持
 	$objPage->arrHidden = array_merge($objPage->arrHidden, $objDBParam->getHashArray());
-	$objPage->tpl_mainpage = 'install/step3.tpl';
+	$objPage->tpl_mainpage = 'step3.tpl';
 	$objPage->tpl_mode = 'step3';
 	return $objPage;
 }
@@ -277,7 +277,7 @@ function lfDispComplete($objPage) {
 	$objPage->arrHidden = $objWebParam->getHashArray();
 	// hiddenに入力値を保持
 	$objPage->arrHidden = array_merge($objPage->arrHidden, $objDBParam->getHashArray());
-	$objPage->tpl_mainpage = 'install/complete.tpl';
+	$objPage->tpl_mainpage = 'complete.tpl';
 	$objPage->tpl_mode = 'complete';
 	return $objPage;
 }
