@@ -40,7 +40,7 @@ $objDBParam = lfInitDBParam($objDBParam);
 //フォーム配列の取得
 $objWebParam->setParam($_POST);
 $objDBParam->setParam($_POST);
-print("   ");
+
 switch($_POST['mode']) {
 // ようこそ
 case 'welcome':
@@ -276,7 +276,7 @@ function lfGetFileMode($path) {
 function lfDispStep1($objPage) {
 	global $objDBParam;
 	// hiddenに入力値を保持
-	$objPage->arrHidden = $objDBParam->getHashArray();
+	//$objPage->arrHidden = $objDBParam->getHashArray();
 	$objPage->tpl_mainpage = 'step1.tpl';
 	$objPage->tpl_mode = 'step1';
 	return $objPage;
