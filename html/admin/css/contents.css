@@ -218,7 +218,7 @@ a:hover { color: #f9a406; text-decoration: underline; }
 	font-weight: bold;
 	text-decoration:none;
 }
-/*
+
 .number a:visited {
 	color:#ffffff;
 	text-decoration:none;
@@ -235,7 +235,7 @@ a:hover { color: #f9a406; text-decoration: underline; }
 	font-weight: bold;
 	text-decoration:none;
 }
-*/
+
 .number-on a{
 	background: url(/img/contents/number_bg_on.jpg);
 	background-repeat: repeat-x;
@@ -247,7 +247,7 @@ a:hover { color: #f9a406; text-decoration: underline; }
 	font-weight: bold;
 	text-decoration:none;
 }
-/*
+
 .number-on a:visited {
 	color:#ffffff;
 	text-decoration:none;
@@ -264,7 +264,7 @@ a:hover { color: #f9a406; text-decoration: underline; }
 	font-weight: bold;
 	text-decoration:none;
 }
-*/
+
 /*IMG*/
 img {
 border: 0;
