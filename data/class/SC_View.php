@@ -28,7 +28,7 @@ class SC_View {
 		$this->_smarty->register_function("sfPutBR", "sfPutBR");
 		$this->_smarty->register_function("sfRmDupSlash", "sfRmDupSlash");
 		$this->_smarty->register_function("sfCutString", "sfCutString");
-		$this->_smarty->plugins_dir=array("plugins", $SC_VIEW_PHP_DIR . "/../data/smarty_extends");
+		$this->_smarty->plugins_dir=array("plugins", $SC_VIEW_PHP_DIR . "/../smarty_extends");
 		$this->_smarty->register_function("sf_mb_convert_encoding","sf_mb_convert_encoding");
 		$this->_smarty->register_function("sf_mktime","sf_mktime");
 		$this->_smarty->register_function("sf_date","sf_date");		
@@ -90,7 +90,7 @@ class SC_View {
 	function initpath() {
 		global $SC_VIEW_PHP_DIR;
 		
-		$array['tpl_mainnavi'] = $SC_VIEW_PHP_DIR . '/../data/Smarty/templates/frontparts/mainnavi.tpl';
+		$array['tpl_mainnavi'] = $SC_VIEW_PHP_DIR . '/../Smarty/templates/frontparts/mainnavi.tpl';
 		$array['tpl_root_id'] = sfGetRootId();
 		$this->assignarray($array);
 	}
