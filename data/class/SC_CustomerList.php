@@ -183,6 +183,7 @@ class SC_CustomerList extends SC_SelectSql {
 				
 		// ÃÂÀ¸·î¤Î¸¡º÷
 		sfprintr($this->arrSql);
+		sfprintr($this->arrVal);
 		if (is_numeric($this->arrSql["birth_month"])) {
 			$this->setWhere(" EXTRACT(month from birth) = ?");  
 			$this->arrVal[] = $this->arrSql["birth_month"];
