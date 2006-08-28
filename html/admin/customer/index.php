@@ -324,7 +324,7 @@ function lfCheckError($array) {
 	$objErr->doFunc(array("最終購入日(開始日)","登録・更新日(終了日)", "buy_start_year", "buy_start_month", "buy_start_day", "buy_end_year", "buy_end_month", "buy_end_day"), array("CHECK_SET_TERM"));	
 	$objErr->doFunc(array("購入商品コード", "buy_product_code", STEXT_LEN), array("MAX_LENGTH_CHECK"));						//購入商品コード
 	$objErr->doFunc(array("購入商品名", "buy_product_name", STEXT_LEN), array("MAX_LENGTH_CHECK"));							//購入商品名称
-	
+
 	return $objErr->arrErr;
 }
 
@@ -402,10 +402,6 @@ function lfSetWhere($arrForm){
 
 //---- CSV出力用データ取得
 function lfGetCSVData( $array, $arrayIndex){	
-	
-	
-//	sfprintr($arrayIndex);
-//	exit();
 	
 	for ($i=0; $i<count($array); $i++){
 		
