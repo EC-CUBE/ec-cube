@@ -1,5 +1,6 @@
 <?php
 require_once("../require.php");
+$INSTALL_DIR = realpath(dirname( __FILE__));
 
 class LC_Page {
 	function LC_Page() {
@@ -12,7 +13,7 @@ class LC_Page {
 }
 
 $objPage = new LC_Page();
-$objView = new SC_UserView('./templates', './temp');
+$objView = new SC_UserView($INSTALL_DIR . '/templates', $INSTALL_DIR . '/temp');
 
 // パラメータ管理クラス
 $objWebParam = new SC_FormParam();
