@@ -3,7 +3,7 @@
 	// サブナビの表示切替
 	function naviStyleChange2(ids, color, file){
 		document.getElementById(ids).style.backgroundColor = color;
-		document.getElementById(ids).style.background = url(file);
+		document.getElementById(ids).style.backgroundImage = "url(file)";
 	}	
 // -->
 </script>
