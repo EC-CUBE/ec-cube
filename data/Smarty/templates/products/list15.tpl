@@ -245,7 +245,7 @@ function lnSetSelect(name1, name2, id, val) {
 						<table width="560" border="0" cellspacing="0" cellpadding="0" summary=" ">
 							<tr>
 								<td class="fs12" align="left"><span class="redst"><!--{$tpl_linemax}--></span>件の商品がございます。<!--{$tpl_strnavi}--></td>
-								<td class="fs12" align="right"><span class="fs12"><!--{if $orderby != 'price'}--><a href="#" onclick="fnModeSubmit('', 'orderby', 'price')">価格順</a><!--{else}--><strong>価格順</strong><!--{/if}-->　<!--{if $orderby != "date"}--><a href="#" onclick="fnModeSubmit('', 'orderby', 'date')">新着順</a><!--{else}--><strong>新着順</strong><!--{/if}--> </span></td>
+								<td class="fs12" align="right"><!--{if $orderby != 'price'}--><a href="#" onclick="fnModeSubmit('', 'orderby', 'price')">価格順</a><!--{else}--><strong>価格順</strong><!--{/if}-->　<!--{if $orderby != "date"}--><a href="#" onclick="fnModeSubmit('', 'orderby', 'date')">新着順</a><!--{else}--><strong>新着順</strong><!--{/if}--> </td>
 							</tr>
 						</table>
 						</td>
