@@ -181,10 +181,6 @@ function lfDispStep0($objPage) {
 		"html/install.inc",
 		"html/user_data",
 		"html/upload",
-		"html/upload/save_image",
-		"html/upload/temp_image",
-		"html/upload/graph_image",		
-		"html/upload/csv",
 		"data/Smarty/templates_c",		
 		"data/update",
 		"data/logs",
@@ -224,6 +220,14 @@ function lfDispStep0($objPage) {
 	if(!$err_file) {
 		$path = "../../data/Smarty/templates_c/admin";
 		mkdir($path);
+		$path = "../../html/upload/save_image";
+		mkdir($path);
+		$path = "../../html/upload/temp_image";
+		mkdir($path);
+		$path = "../../html/upload/graph_image";
+		mkdir($path);
+		$path = "../../html/upload/csv";
+		mkdir($path);		
 	}
 	
 	$objPage->mess = $mess;

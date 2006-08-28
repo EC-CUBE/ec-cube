@@ -81,7 +81,7 @@ class SC_View {
 			$this->_smarty->assign($key, $value);
 		}
 		if($siteinfo) {
-			if(defined('LOAD_SITEINFO')) {
+			if(!defined('LOAD_SITEINFO')) {
 	 			// サイト情報を割り当てる
 				$objSiteInfo = new SC_SiteInfo();
 				$arrInfo['arrSiteInfo'] = $objSiteInfo->data;
