@@ -29,8 +29,10 @@
  */
 require_once 'PEAR.php';
 
-
-
+if(!defined('DB_PHP_DIR')) {
+	$DB_PHP_DIR = realpath(dirname( __FILE__));
+	define("DB_PHP_DIR", $DB_PHP_DIR);	
+}
 // {{{ constants
 // {{{ error codes
 
@@ -453,9 +455,9 @@ class DB
 
         if (isset($options['debug']) && $options['debug'] >= 2) {
             // expose php errors with sufficient debug level
-            include_once "DB/{$type}.php";
+            include_once DB_PHP_DIR . "/DB/{$type}.php";
         } else {
-            @include_once "DB/{$type}.php";
+            @include_once DB_PHP_DIR . "/DB/{$type}.php";
         }
 
         $classname = "DB_${type}";
@@ -531,9 +533,9 @@ class DB
 
         if (isset($options['debug']) && $options['debug'] >= 2) {
             // expose php errors with sufficient debug level
-            include_once "DB/${type}.php";
+            include_once DB_PHP_DIR . "/DB/${type}.php";
         } else {
-            @include_once "DB/${type}.php";
+            @include_once DB_PHP_DIR . "/DB/${type}.php";
         }
 
         $classname = "DB_${type}";
