@@ -172,29 +172,12 @@
 							<tr class="fs12n">
 								<td bgcolor="#f2f1ec" width="110">½»½ê</td>
 								<td bgcolor="#ffffff" width="607" colspan="3">
-								<table width="607" border="0" cellspacing="0" cellpadding="0" summary=" ">
-									<tr>
-									<td>
 										<!--{assign var=key value="deliv_pref"}-->
 										<!--{$arrForm[$key].value}-->
-										</select>
-									</td>
-									</tr>
-									<tr><td height="5"></td></tr>
-									<tr class="fs12n">
-										<td>
 										<!--{assign var=key value="deliv_addr01"}-->
 										<!--{$arrForm[$key].value|escape}-->
-										</td>
-										</tr>
-										<tr><td height="5"></td></tr>
-										<tr class="fs12n">
-											<td>
-											<!--{assign var=key value="deliv_addr02"}-->
-											<!--{$arrForm[$key].value|escape}-->
-											</td>
-										</tr>
-								</table>
+										<!--{assign var=key value="deliv_addr02"}-->
+										<!--{$arrForm[$key].value|escape}-->
 								</td>
 							</tr>
 						</table>
