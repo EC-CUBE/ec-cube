@@ -9,7 +9,7 @@ body {
 /*LINK*/
 a:link { color: #006699; text-decoration: none; }
 a:visited { color: #006699; text-decoration: none; }
-a:hover { color: #f9a406; text-decoration: underline; }
+//a:hover { color: #f9a406; text-decoration: underline; }
 
 
 /*FORM*/
@@ -223,9 +223,9 @@ a:hover { color: #f9a406; text-decoration: underline; }
 	color:#ffffff;
 	text-decoration:none;
 }
-
-.number a:hover{
 /*
+.number a:hover{
+
 	background: url(/img/contents/number_bg_on.jpg);
 	background-repeat: repeat-x;
 	background-color: #f7c600;
@@ -235,9 +235,9 @@ a:hover { color: #f9a406; text-decoration: underline; }
 	line-height: 160%;
 	font-weight: bold;
 	text-decoration:none;
-*/
-}
 
+}
+*/
 .number-on a{
 	background: url(/img/contents/number_bg_on.jpg);
 	background-repeat: repeat-x;
@@ -254,9 +254,9 @@ a:hover { color: #f9a406; text-decoration: underline; }
 	color:#ffffff;
 	text-decoration:none;
 }
-
-.number-on a:hover{
 /*
+.number-on a:hover{
+
 	background: url(/img/contents/number_bg_on.jpg);
 	background-repeat: repeat-x;
 	background-color: #f7c600;
@@ -266,9 +266,9 @@ a:hover { color: #f9a406; text-decoration: underline; }
 	line-height: 160%;
 	font-weight: bold;
 	text-decoration:none;
-*/
-}
 
+}
+*/
 /*IMG*/
 img {
 border: 0;
