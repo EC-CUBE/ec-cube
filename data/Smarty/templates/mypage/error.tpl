@@ -9,7 +9,7 @@
 <link rel="stylesheet" href="../css/layout/review/index.css" type="text/css" media="all" />
 <script type="text/javascript" src="../js/css.js"></script>
 <script type="text/javascript" src="../js/navi.js"></script>
-<title>神戸トランスパラン-エラー</title>
+<title><!--{$arrSiteInfo.shop_name}-->/エラー</title>
 </head>
 
 <body onload="preLoadImg()">

@@ -7,7 +7,7 @@
 <script type="text/javascript" src="/js/navi.js"></script>
 <script type="text/javascript" src="/js/site.js"></script>
 <script type="text/javascript" src="/js/win_op.js"></script>
-<title>アンケート　<!--{$QUESTION.title|escape}-->/確認画面</title>
+<title><!--{$arrSiteInfo.shop_name}-->/アンケート　<!--{$QUESTION.title|escape}-->/確認画面</title>
 <script type="text/javascript">
 <!--
 

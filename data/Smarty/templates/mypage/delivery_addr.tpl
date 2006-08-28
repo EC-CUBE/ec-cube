@@ -13,7 +13,7 @@
 <script type="text/javascript" src="/js/navi.js"></script>
 <script type="text/javascript" src="/js/site.js"></script>
 <script type="text/javascript" src="/js/win_op.js"></script>
-<title><!--{$smarty.const.SITE_TITLE}-->-<!--{$tpl_title|escape}--></title>
+<title><!--{$arrSiteInfo.shop_name}-->/<!--{$tpl_title|escape}--></title>
 </head>
 
 <body bgcolor="#ffe9e6" text="#555555" link="#3a75af" vlink="#3a75af" alink="#3a75af" leftmargin="0" topmargin="0" marginwidth="0" marginheight="0" onLoad="preLoadImg(); <!--{$tpl_onload}-->">

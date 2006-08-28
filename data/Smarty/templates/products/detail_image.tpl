@@ -5,7 +5,7 @@
 <meta http-equiv="content-script-type" content="text/javascript">
 <meta http-equiv="content-style-type" content="text/css">
 <link rel="stylesheet" href="../css/contents.css" type="text/css">
-<title><!--{$smarty.const.SITE_TITLE}--></title>
+<title><!--{$arrSiteInfo.shop_name}--></title>
 </head>
 
 <body bgcolor="#ffe9e6" text="#555555" link="#3a75af" vlink="#3a75af" alink="#3a75af" leftmargin="0" topmargin="0" marginwidth="0" marginheight="0">

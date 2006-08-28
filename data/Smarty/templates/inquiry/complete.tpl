@@ -8,7 +8,7 @@
 <script type="text/javascript" src="/js/navi.js"></script>
 <script type="text/javascript" src="/js/site.js"></script>
 <script type="text/javascript" src="/js/win_op.js"></script>
-<title>アンケート（完了ページ）</title>
+<title><!--{$arrSiteInfo.shop_name}-->/アンケート（完了ページ）</title>
 </head>
 
 <body bgcolor="#ffffff" text="#555555" link="#0099cc" vlink="#CC0000" alink="#993399" leftmargin="0" topmargin="0" marginwidth="0" marginheight="0">

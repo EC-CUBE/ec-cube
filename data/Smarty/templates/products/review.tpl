@@ -7,7 +7,7 @@
 <link rel="stylesheet" href="/css/contents.css" type="text/css">
 <script type="text/javascript" src="/js/css.js"></script>
 <script type="text/javascript" src="/js/navi.js"></script>
-<title>お客様の声書き込み（入力ページ）</title>
+<title><!--{$arrSiteInfo.shop_name}-->/お客様の声書き込み（入力ページ）</title>
 </head>
 
 <body bgcolor="#ffe9e6" text="#555555" link="#3a75af" vlink="#3a75af" alink="#3a75af" leftmargin="0" topmargin="0" marginwidth="0" marginheight="0" onLoad="preLoadImg()">
