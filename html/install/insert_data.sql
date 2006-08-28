@@ -18,7 +18,7 @@ values( 'TOPページ', 'index.php', '', '/html/user_data/include/', 'top', 2);
 
 insert into dtb_bloc ( bloc_name, tpl_path, filename, php_path ) values ('カテゴリ','html/user_data/include/bloc/category.tpl','category','html/frontparts/bloc/category.php');
 insert into dtb_bloc ( bloc_name, tpl_path, filename, php_path ) values ('利用ガイド','html/user_data/include/bloc/guide.tpl','guide','');
-insert into dtb_bloc ( bloc_name, tpl_path, filename, php_path ) values ('かごの中','html/user_data/include/bloc/cart.tpl','cart',''html/frontparts/bloc/cart.php'');
+insert into dtb_bloc ( bloc_name, tpl_path, filename, php_path ) values ('かごの中','html/user_data/include/bloc/cart.tpl','cart','html/frontparts/bloc/cart.php');
 insert into dtb_bloc ( bloc_name, tpl_path, filename, php_path ) values ('商品検索','html/user_data/include/bloc/search_products.tpl','search_products','html/frontparts/bloc/search_products.php');
 insert into dtb_bloc ( bloc_name, tpl_path, filename, php_path ) values ('新着情報','html/user_data/include/bloc/news.tpl','news','html/frontparts/bloc/news.php');
 insert into dtb_bloc ( bloc_name, tpl_path, filename, php_path ) values ('ログイン','html/user_data/include/bloc/login.tpl','login','');
