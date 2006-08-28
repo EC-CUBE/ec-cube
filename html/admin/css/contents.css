@@ -82,7 +82,7 @@ a:hover { color: #f9a406; text-decoration: underline; }
 /*navi*/
 .navi a{
 	background: url(/img/contents/navi_bar.gif);
-	background-repeat: no-repeat;
+	background-repeat: repeat-y;
 	background-color: #636469;
 	width:140px;
 	padding: 10px 5px 10px 12px;
@@ -108,7 +108,7 @@ a:hover { color: #f9a406; text-decoration: underline; }
 
 .navi-on a{
 	background: url(/img/contents/navi_bar.gif);
-	background-repeat: no-repeat;
+	background-repeat: repeat-y;
 	background-color: #a5a5a5;
 	width:140px;
 	padding: 10px 5px 10px 12px;
