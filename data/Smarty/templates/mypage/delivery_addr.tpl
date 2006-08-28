@@ -132,7 +132,7 @@
 			<tr><td height="15"></td></tr>
 			<tr>
 				<td align="center">
-					<input type="image" onmouseover="chgImgImageSubmit('/img/common/b_entry_on.gif',this);" onmouseout="chgImgImageSubmit('/img/common/b_entry.gif',this);" src="/img/common/b_entry.gif" width="150" height="30" alt="ÅÐÏ¿" name="register" id="register" />
+					<input type="image" onmouseover="chgImgImageSubmit('/img/common/b_entry_on.gif',this);" onmouseout="chgImgImageSubmit('/img/common/b_entry.gif',this);" src="/img/common/b_entry.gif" width="150" height="30" alt="ÅÐÏ¿¤¹¤ë" name="register" id="register" />
 				</td>
 			</tr>
 			<tr><td height="30"></td></tr>
