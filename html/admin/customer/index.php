@@ -404,8 +404,8 @@ function lfSetWhere($arrForm){
 function lfGetCSVData( $array, $arrayIndex){	
 	
 	
-	sfprintr($arrayIndex);
-	exit();
+//	sfprintr($arrayIndex);
+//	exit();
 	
 	for ($i=0; $i<count($array); $i++){
 		
