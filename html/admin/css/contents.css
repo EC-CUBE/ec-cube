@@ -209,7 +209,7 @@ a:hover { color: #f9a406; text-decoration: underline; }
 /*send-page*/
 .number a{
 	background: url(/img/contents/number_bg.jpg);
-	background-repeat: repeat-y;
+	background-repeat: repeat-x;
 	background-color: #505468;
 	padding: 8px;
 	color:#ffffff;
@@ -238,7 +238,7 @@ a:hover { color: #f9a406; text-decoration: underline; }
 */
 .number-on a{
 	background: url(/img/contents/number_bg_on.jpg);
-	background-repeat: repeat-y;
+	background-repeat: repeat-x;
 	background-color: #f7c600;
 	padding: 8px;
 	color:#ffffff;
