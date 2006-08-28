@@ -139,7 +139,7 @@ $objPage->arrForm = $objWebParam->getFormParamList();
 $objPage->arrForm = array_merge($objPage->arrForm, $objDBParam->getFormParamList());
 
 $objView->assignobj($objPage);
-$objView->display('install/install_frame.tpl');
+$objView->display('install_frame.tpl');
 //-----------------------------------------------------------------------------------------------------------------------------------
 // ようこそ画面の表示
 function lfDispWelcome($objPage) {
