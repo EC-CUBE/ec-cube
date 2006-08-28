@@ -5,11 +5,12 @@ require_once($SC_VIEW_PHP_DIR . "/../module/Smarty/libs/Smarty.class.php");
 class SC_View {
 	
     var $_smarty;
+	var $arrInfo;	// サイト情報
 	
     // コンストラクタ
     function SC_View() {
 		global $SC_VIEW_PHP_DIR;
-		
+
     	$this->_smarty = new Smarty;
 		$this->_smarty->left_delimiter = '<!--{';
 		$this->_smarty->right_delimiter = '}-->';
@@ -32,10 +33,19 @@ class SC_View {
 		$this->_smarty->register_function("sf_mb_convert_encoding","sf_mb_convert_encoding");
 		$this->_smarty->register_function("sf_mktime","sf_mktime");
 		$this->_smarty->register_function("sf_date","sf_date");		
-		
+
 		if(ADMIN_MODE == '1') {		
 			$this->time_start = time();
 		}
+
+		// サイト情報を割り当てる
+		$objSiteInfo = new SC_SiteInfo();
+		$this->arrInfo['arrSiteInfo'] = $objSiteInfo->data;
+
+		// 都道府県名を変換
+		global $arrPref;
+		$this->arrInfo['arrSiteInfo']['pref'] = $arrPref[$arrInfo['arrSiteInfo']['pref']];
+		
 	}
     
     // テンプレートに値を割り当てる
@@ -66,6 +76,10 @@ class SC_View {
 			$this->_smarty->assign($key, $value);
 		}
 		
+		// サイト情報をすべて割り当てる
+		foreach ($this->arrInfo as $key => $value){
+			$this->_smarty->assign($key, $value);
+		}
 		if($siteinfo) {
 			// サイト情報を割り当てる
 			$objSiteInfo = new SC_SiteInfo();
@@ -105,7 +119,7 @@ class SC_AdminView extends SC_View{
 		$this->_smarty->compile_dir = COMPILE_ADMIN_DIR;
 		$this->initpath();
 	}
-	
+
 	function printr($data){
 		print_r($data);
 	}
