@@ -55,15 +55,15 @@ case 'step0_1':
 	$objPage = lfDispStep1($objPage);
 	break;	
 // WEBサイトの設定
-case 'step1':
+/*case 'step1':
 	//入力値のエラーチェック
-//	$objPage->arrErr = lfCheckWEBError($objWebParam);
-//	if(count($objPage->arrErr) == 0) {
-//		$objPage = lfDispStep2($objPage);
-//	} else {
+	$objPage->arrErr = lfCheckWEBError($objWebParam);
+	if(count($objPage->arrErr) == 0) {
+		$objPage = lfDispStep2($objPage);
+	} else {
 		$objPage = lfDispStep1($objPage);
-//	}
-	break;
+	}
+	break;*/
 // データベースの設定
 case 'step2':
 	//入力値のエラーチェック
