@@ -56,12 +56,8 @@ $where = "customer_id=?";
 $arrval = array($objCustomer->getValue('customer_id'));
 $order = "other_deliv_id DESC";
 
-// ページ送りの処理
-//$page_max = SEARCH_PMAX;
-
 //お届け先登録件数取得
 $linemax = $objQuery->count($from, $where, $arrval);
-$objQuery->getlastquery(true);
 
 $objPage->tpl_linemax = $linemax;
 
@@ -70,8 +66,6 @@ $objQuery->setorder($order);
 
 //別のお届け先情報表示
 $objPage->arrOtherDeliv = $objQuery->select("*", $from, $where, $arrval);
-
-$objQuery->getlastquery(true);
 
 //お届け先登録数をテンプレートに渡す
 $objPge->deliv_cnt = count($objPage->arrOtherDeliv);
