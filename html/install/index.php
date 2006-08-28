@@ -363,7 +363,9 @@ function lfCheckDBError($objFormParam) {
 	if(count($objErr->arrErr) == 0) {
 		// 接続確認
 		$dsn = "pgsql://".$arrRet['db_user'].":".$arrRet['db_password']."@".$arrRet['db_server']."/".$arrRet['db_name'];
-		$objDB = DB::connect($dsn);
+		// Debugモード指定
+		$options['debug'] = 3;
+		$objDB = DB::connect($dsn, $options);
 		// 接続エラー
 		if(PEAR::isError($objDB)) {
 			$objErr->arrErr['all'] = ">> " . $objDB->message;
