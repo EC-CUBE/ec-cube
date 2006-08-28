@@ -203,14 +203,14 @@ function lfDispStep0($objPage) {
 				if($mode == "777") {
 					$mess.= ">> ○：$val($mode) は問題ありません。<br>";					
 				} else {
-					$mess.= ">> ×：$val($mode) にユーザ書込み権限を付与して下さい。<br>";
+					$mess.= ">> ×：$val($mode) にユーザ書込み権限(777)を付与して下さい。<br>";
 					$err_file = true;										
 				}
 			} else {
 				if($mode == "666") {
 					$mess.= ">> ○：$val($mode) は問題ありません。<br>";					
 				} else {
-					$mess.= ">> ×：$val($mode) にユーザ書込み権限を付与して下さい。<br>";
+					$mess.= ">> ×：$val($mode) にユーザ書込み権限(666)を付与して下さい。<br>";
 					$err_file = true;							
 				}
 			}	
