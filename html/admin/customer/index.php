@@ -187,9 +187,6 @@ if ($_POST['mode'] == "search" || $_POST['mode'] == "csv"  || $_POST['mode'] == 
 				$objPage->search_data[$i]["job"]  = $arrJob[ $objPage->search_data[$i]["job"] ];
 			}
 
-			sfprintr($objPage->search_data);
-			exit();
-			
 			//-　CSV出力
 			$data = lfGetCSVData($objPage->search_data, $arrColumn);
 			
@@ -405,6 +402,9 @@ function lfSetWhere($arrForm){
 
 //---- CSV出力用データ取得
 function lfGetCSVData( $array, $arrayIndex){	
+	
+	
+	sfprintr($arrayIndex);
 	
 	for ($i=0; $i<count($array); $i++){
 		
