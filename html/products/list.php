@@ -211,6 +211,9 @@ function lfDispProductsList($category_id, $name, $disp_num, $orderby) {
 	$objQuery->setorder($order);
 	// 検索結果の取得
 	$objPage->arrProducts = $objQuery->select("*", "vw_products_allclass", $where, $arrval);
+	
+	$objQuery->getLastQuery(true);
+	
 	// 規格名一覧
 	$arrClassName = sfGetIDValueList("dtb_class", "class_id", "name");
 	// 規格分類名一覧
