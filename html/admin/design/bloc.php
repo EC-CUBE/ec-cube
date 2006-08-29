@@ -137,7 +137,6 @@ function lfgetBlocData($where = '', $arrVal = ''){
 	// SQLÀ¸À®
 	$sql = " SELECT ";
 	$sql .= "	bloc_id";
-	$sql .= "	,bloc_code";
 	$sql .= "	,bloc_name";
 	$sql .= "	,tpl_path";
 	$sql .= "	,filename";
