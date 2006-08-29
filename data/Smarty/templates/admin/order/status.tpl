@@ -102,10 +102,9 @@
 									<td><!--{$arrStatus[cnt].total|number_format}--></td>
 									<td><!--{if $arrStatus[cnt].status eq 5}--><!--{$arrStatus[cnt].commit_date|sfDispDBDate:false}--><!--{else}-->Ì¤È¯Á÷<!--{/if}--></td>
 									<td><!--{$arrORDERSTATUS[$status]}--></td>
-									<td><input type="checkbox" name="move<!--{$smarty.section.cnt.iteration}-->" value="<!--{$arrStatus[cnt].order_id}-->" ></td>
+									<td><input type="checkbox" name="move[]" value="<!--{$arrStatus[cnt].order_id}-->" ></td>
 									</tr>
 									<!--{/section}-->
-									<input type="hidden" name="move_max" value=<!--{$smarty.section.cnt.iteration}-->>
 									</table>
 									
 									<table width="650">
@@ -176,18 +175,16 @@
 		}
 		var i;
 		var checkflag = 0;
-		var max = fm["move_max"].value;
+		var max = fm["move[]"].length;
 		
 		if(max) {
-			for (i=1;i<max;i++){
-				var name = "move"+i;
-				alert(fm[name].checked);
-				if(fm[name].checked == true){
+			for (i=0;i<max;i++){
+				if(fm["move[]"][i].checked == true){
 					checkflag = 1;
 				}
 			}
 		} else {
-			if(fm["move0"].checked == true) {
+			if(fm["move[]"].checked == true) {
 				checkflag = 1;
 			}
 		}
@@ -206,10 +203,10 @@
 	function fnBoxChecked(check){
 		var count;
 		var fm = document.form1;
-		var max = fm["move_max"].value;
-		for(count=1; count<max; count++){
-			var name = "move"+count;
-			fm[name].checked = check;
+		alert(fm["move[]"]);
+		var max = fm["move[]"].length;
+		for(count=0; count<max; count++){
+			fm["move[]"][count].checked = check;
 		}
 	}
 	
