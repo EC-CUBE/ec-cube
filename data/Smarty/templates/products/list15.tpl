@@ -129,7 +129,7 @@ function lnSetSelect(name1, name2, id, val) {
 						<table width="420" border="0" cellspacing="0" cellpadding="0" summary=" ">
 							<!--アイコン-->
 							<tr>
-								<td colspan="2">
+								<td colspan="2"><!--{$arrProducts[cnt].product_flag|count_characters}-->
 								<!--商品ステータス-->
 								<!--{section name=flg loop=$arrProducts[cnt].product_flag|count_characters}-->
 									<!--{if $arrProducts[cnt].product_flag[flg] == "1"}-->
