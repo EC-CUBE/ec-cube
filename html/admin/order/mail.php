@@ -72,6 +72,9 @@ case 'confirm':
 		$objPage->tpl_mainpage = 'order/mail_confirm.tpl';
 		$objView->assignobj($objPage);
 		$objView->display(MAIN_FRAME);
+		
+		sfprintr($objSendMail);
+		
 		exit;	
 	}
 	break;
