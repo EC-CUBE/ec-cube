@@ -158,7 +158,7 @@ if ($_POST['mode'] == "search" || $_POST['mode'] == "csv"  || $_POST['mode'] == 
 					break;
 				case 'search_startyear':	// 登録更新日（FROM）
 					$date = sfGetTimestamp($_POST['search_startyear'], $_POST['search_startmonth'], $_POST['search_startday']);
-					$where.= " AND update_date >= $_POST['search_startyear']/$_POST['search_startmonth']/$_POST['search_startday']";
+					$where.= " AND update_date >= " . $_POST['search_startyear'] . "/" . $_POST['search_startmonth']. "/" .$_POST['search_startday'];
 //					$arrval[] = $date;
 					break;
 				case 'search_endyear':		// 登録更新日（TO）
