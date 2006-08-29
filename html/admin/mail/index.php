@@ -68,6 +68,7 @@ if ($_GET["mode"] == "query" && sfCheckNumLength($_GET["send_id"])) {
 	if (count($list_data['sex']) > 0) {
 		foreach($list_data['sex'] as $key => $val){
 			$list_data['sex'][$key] = $objPage->arrSex[$val];
+			$sex_disp .= $list_data['sex'][$key] . " ";
 		}
 	}
 	
