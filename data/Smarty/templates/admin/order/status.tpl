@@ -105,6 +105,7 @@
 									<td><input type="checkbox" name="move<!--{$smarty.section.cnt.iteration}-->" value="<!--{$arrStatus[cnt].order_id}-->" ></td>
 									</tr>
 									<!--{/section}-->
+									<input type="hidden" name="move_max" value=<!--{$smarty.section.cnt.iteration-1}-->>
 									</table>
 									
 									<table width="650">
@@ -201,10 +202,10 @@
 	}
 	
 	function fnBoxChecked(check){
-	alert("go");
 		var count;
 		var fm = document.form1;
-		var max = fm["move[]"].length;
+//		var max = fm["move[]"].length;
+		var max = fm["move_max"].value;
 		for(count=0; count<max; count++){
 			fm["move[]"][count].checked = check;
 		}
