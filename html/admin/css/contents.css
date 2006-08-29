@@ -141,13 +141,13 @@ a:hover { color: #f9a406; text-decoration: underline; }
 	color:#ffffff;
 	text-decoration:none;
 }
-
+/*
 .subnavi a:hover {
 	background-color: #b7b7b7;
 	color:#000000;
 	text-decoration:none;
 }
-
+*/
 .subnavi_text {
 	font-size: 71%;
 	padding: 0 0 0 8px;
@@ -165,13 +165,13 @@ a:hover { color: #f9a406; text-decoration: underline; }
 	color:#000000;
 	text-decoration:none;
 }
-
+/*
 .subnavi-on a:hover {
 	background-color: #b7b7b7;
 	color:#000000;
 	text-decoration:none;
 }
-
+*/
 
 
 /*icon*/
