@@ -102,7 +102,7 @@
 									<td><!--{$arrStatus[cnt].total|number_format}--></td>
 									<td><!--{if $arrStatus[cnt].status eq 5}--><!--{$arrStatus[cnt].commit_date|sfDispDBDate:false}--><!--{else}-->Ì¤È¯Á÷<!--{/if}--></td>
 									<td><!--{$arrORDERSTATUS[$status]}--></td>
-									<td><input type="checkbox" name="move[]" value="<!--{$arrStatus[cnt].order_id}-->" ></td>
+									<td><input type="checkbox" name="move<!--{$smarty.section.cnt.iteration}-->" value="<!--{$arrStatus[cnt].order_id}-->" ></td>
 									</tr>
 									<!--{/section}-->
 									<input type="hidden" name="move_max" value="<!--{$smarty.section.cnt.iteration-1}-->" >
@@ -205,12 +205,12 @@
 		var count;
 		var fm = document.form1;
 		
-		var max = fm["move[]"].length;
-//		var max = fm.move[1];
+//		var max = fm["move[]"].length;
+		var max = fm.move_max.value;
 		alert(max);
 		
 		for(count=0; count<max; count++){
-			fm["move[]"][count].checked = check;
+			fm["move"count].checked = check;
 		}
 	}
 	
