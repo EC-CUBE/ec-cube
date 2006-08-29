@@ -204,6 +204,7 @@
 		var count;
 		var fm = document.form1;
 		var max = fm["move[]"].length;
+		alert(max);
 		for(count=0; count<max; count++){
 			fm["move[]"][count].checked = check;
 		}
