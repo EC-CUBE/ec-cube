@@ -299,9 +299,9 @@ function lnSetSelect(form, name1, name2, val) {
 					<!--{section name=cnt loop=$arrRecommend step=2}-->
 					<!--{if $smarty.section.cnt.index >= 2}-->
 					<tr>
-						<td height="25"><img src="../img/right_product/recommend_line.gif" width="270" height="1" alt="" /></td>
+						<td height="25"><img src="/img/common/line_280.gif" width="280" height="1" alt="" /></td>
 						<td></td>
-						<td align="left"><img src="../img/right_product/recommend_line.gif" width="270" height="1" alt="" /></td>
+						<td align="left"><img src="/img/common/line_280.gif" width="280" height="1" alt="" /></td>
 					</tr>
 					<!--{/if}-->
 					

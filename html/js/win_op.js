@@ -17,7 +17,7 @@
 <!--
 	function win03(URL,Winname,Wwidth,Wheight){
 		var WIN;
-		WIN = window.open(URL,Winname,"width="+Wwidth+",height="+Wheight+",scrollbars=yes,resizable=yes,toolbar=yes,location=no,directories=no,status=no");
+		WIN = window.open(URL,Winname,"width="+Wwidth+",height="+Wheight+",scrollbars=yes,resizable=yes,toolbar=yes,location=no,directories=no,status=no,menubar=no");
 		WIN.focus();
 	}
 // -->
