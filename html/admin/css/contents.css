@@ -131,7 +131,6 @@ a:hover { color: #f9a406; text-decoration: underline; }
 /*subnavi*/
 .subnavi a{
 	background-color: #818287;
-	height:80;
 	width:140px;
 	padding: 6px 5px 4px 5px;
 	color:#ffffff;
