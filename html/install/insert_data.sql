@@ -14,13 +14,13 @@ INSERT INTO dtb_member (name, login_id, password, creator_id, authority, work, d
 VALUES ('admin','admin','$1$JPUS3lIX$B0FJNs4Q0lv9i.UYBP7do0',0,0,1,0);
 
 -- ブロックデータ
-insert into dtb_bloc ( bloc_name, tpl_path, filename, php_path ) values ('カテゴリ','html/user_data/include/bloc/category.tpl','category','html/frontparts/bloc/category.php');
-insert into dtb_bloc ( bloc_name, tpl_path, filename, php_path ) values ('利用ガイド','html/user_data/include/bloc/guide.tpl','guide','');
-insert into dtb_bloc ( bloc_name, tpl_path, filename, php_path ) values ('かごの中','html/user_data/include/bloc/cart.tpl','cart','html/frontparts/bloc/cart.php');
-insert into dtb_bloc ( bloc_name, tpl_path, filename, php_path ) values ('商品検索','html/user_data/include/bloc/search_products.tpl','search_products','html/frontparts/bloc/search_products.php');
-insert into dtb_bloc ( bloc_name, tpl_path, filename, php_path ) values ('新着情報','html/user_data/include/bloc/news.tpl','news','html/frontparts/bloc/news.php');
-insert into dtb_bloc ( bloc_name, tpl_path, filename, php_path ) values ('ログイン','html/user_data/include/bloc/login.tpl','login','');
-insert into dtb_bloc ( bloc_name, tpl_path, filename, php_path ) values ('オススメ商品','html/user_data/include/bloc/best5.tpl','login','html/frontparts/bloc/best5.php');
+insert into dtb_bloc ( bloc_name, tpl_path, filename, php_path ) values ('カテゴリ',	'html/user_data/include/bloc/category.tpl',			'category','html/frontparts/bloc/category.php');
+insert into dtb_bloc ( bloc_name, tpl_path, filename, php_path ) values ('利用ガイド',	'html/user_data/include/bloc/guide.tpl',			'guide','');
+insert into dtb_bloc ( bloc_name, tpl_path, filename, php_path ) values ('かごの中',	'html/user_data/include/bloc/cart.tpl',				'cart','html/frontparts/bloc/cart.php');
+insert into dtb_bloc ( bloc_name, tpl_path, filename, php_path ) values ('商品検索',	'html/user_data/include/bloc/search_products.tpl',	'search_products','html/frontparts/bloc/search_products.php');
+insert into dtb_bloc ( bloc_name, tpl_path, filename, php_path ) values ('新着情報',	'html/user_data/include/bloc/news.tpl',				'news','html/frontparts/bloc/news.php');
+insert into dtb_bloc ( bloc_name, tpl_path, filename, php_path ) values ('ログイン',	'html/user_data/include/bloc/login.tpl',			'login','');
+insert into dtb_bloc ( bloc_name, tpl_path, filename, php_path ) values ('オススメ商品','html/user_data/include/bloc/best5.tpl',			'best5','html/frontparts/bloc/best5.php');
 
 -- ページデータ
 insert into dtb_pagelayout (page_id,page_name,url)values(0, 'プレビューデータ','');
