@@ -31,9 +31,5 @@
 		document.getElementById(ids).style.backgroundColor = color;
 	}	
 
-	// サブナビの表示切替
-	function naviStyleChange2(ids, file){
-		document.getElementById(ids).style.backgroundImage = "url(" + file + ")";
 
-	}	
 	

@@ -224,7 +224,7 @@ a:hover { color: #f9a406; text-decoration: underline; }
 	color:#ffffff;
 	text-decoration:none;
 }
-/*
+
 .number a:hover{
 
 	background: url(/img/contents/number_bg_on.jpg);
@@ -238,7 +238,7 @@ a:hover { color: #f9a406; text-decoration: underline; }
 	text-decoration:none;
 
 }
-*/
+
 .number-on a{
 	background-repeat: repeat-x;
 	background-color: #f7c600;
@@ -254,7 +254,7 @@ a:hover { color: #f9a406; text-decoration: underline; }
 	color:#ffffff;
 	text-decoration:none;
 }
-/*
+
 .number-on a:hover{
 
 	background: url(/img/contents/number_bg_on.jpg);
@@ -268,7 +268,7 @@ a:hover { color: #f9a406; text-decoration: underline; }
 	text-decoration:none;
 
 }
-*/
+
 /*IMG*/
 img {
 border: 0;
