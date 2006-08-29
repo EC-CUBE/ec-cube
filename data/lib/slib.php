@@ -1380,8 +1380,6 @@ function sfSendOrderMail($order_id, $template_id, $subject = "", $header = "", $
 	$arrOrder = $arrRet[0];
 	$arrOrderDetail = $objQuery->select("*", "dtb_order_detail", $where, array($order_id));
 	
-	sfprintr($arrOrder);
-	
 	// 備考を256バイトで分割
 	$arrMessage = explode("\n",$arrOrder['message']);
 	$Message_tmp = "";
@@ -1419,7 +1417,11 @@ function sfSendOrderMail($order_id, $template_id, $subject = "", $header = "", $
 	$objPage->arrOrderDetail = $arrOrderDetail;
 	
 	$objCustomer = new SC_Customer();
-	$objPage->tpl_user_point = $objCustomer->getValue('point');
+	//$objPage->tpl_user_point = $objCustomer->getValue('point');
+	
+	$objPage->tpl_user_point = $arrOrder['discount'];
+	
+	
 	
 	$objMailView = new SC_SiteView();
 	// メール本文の取得
