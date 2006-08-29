@@ -103,7 +103,7 @@ function lfnCheckSubmit(){
 										<table border="0" cellspacing="0" cellpadding="0" summary=" ">
 											<tr>
 												<td width="30%"></td>
-												<td width="40%" align = "center" valign="upper"><input type="image" onMouseover="chgImgImageSubmit('/img/contents/btn_regist_on.jpg',this)" onMouseout="chgImgImageSubmit('/img/contents/btn_regist.jpg',this)" src="/img/contents/btn_regist.jpg" width="123" height="24" alt="この内容で登録する" border="0" name="subm" onclick="return lfnCheckSubmit();"></td>
+												<td width="40%" align = "center" valign="upper"><input type="image" onMouseover="chgImgImageSubmit('/img/contents/btn_regist_on.jpg',this)" onMouseout="chgImgImageSubmit('/img/contents/btn_regist.jpg',this)" src="/img/contents/btn_regist.jpg" width="123" height="24" alt="この内容で登録する" border="0" name="subm" onclick="return lfnCheckSubmit(); return false;"></td>
 												<td width="30%" align = "right" valign="upper"><input type="button" width="110" height="30" value="文字数カウント" onclick="fnCharCount('form1','body','cnt_footer');" border="0" name="next" id="next" />
 												<br><span class="fs10n">今までに入力したのは<input type="text" name="cnt_footer" size="4" class="box4" readonly = true style="text-align:right">文字です。</span></td>
 											</tr>

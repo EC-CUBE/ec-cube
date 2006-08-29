@@ -17,7 +17,6 @@ class LC_Page {
 		$this->tpl_mainno = 'mail';
 		$this->tpl_subnavi = 'mail/subnavi.tpl';
 		$this->tpl_subno = "template";
-		$this->tpl_subtitle = 'テンプレート設定';
 	}
 }
 
@@ -98,8 +97,8 @@ function lfConvData( $data ){
 	
 	 // 文字列の変換（mb_convert_kanaの変換オプション）							
 	$arrFlag = array(
-					  "subject" => "aKV"
-					 ,"body" => "aKV"
+					  "subject" => "KV"
+					 ,"body" => "KV"
 					);
 		
 	if ( is_array($data) ){
