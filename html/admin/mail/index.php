@@ -70,6 +70,7 @@ if ($_GET["mode"] == "query" && sfCheckNumLength($_GET["send_id"])) {
 			$list_data['sex'][$key] = $objPage->arrSex[$val];
 			$sex_disp .= $list_data['sex'][$key] . " ";
 		}
+		$list_data['sex_disp'] = $sex_disp;
 	}
 	
 	// 職業の変換
