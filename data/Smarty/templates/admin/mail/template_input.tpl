@@ -18,6 +18,8 @@ function lfnCheckSubmit(){
 	} else {
 		if(window.confirm('内容を登録しても宜しいですか')){
 			return true;
+		}else{
+			return false;
 		}
 	}
 }
