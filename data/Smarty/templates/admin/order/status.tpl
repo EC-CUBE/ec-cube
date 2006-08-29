@@ -203,7 +203,7 @@
 	function fnBoxChecked(check){
 		var count;
 		var fm = document.form1;
-		alert(fm["move[]"].value);
+		alert(fm["move[]"].name);
 		var max = fm["move[]"].length;
 		for(count=0; count<max; count++){
 			fm["move[]"][count].checked = check;
