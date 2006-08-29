@@ -42,3 +42,8 @@ COMMENT ON table	dtb_bloc	IS	'ブロック';
 COMMENT ON table	dtb_blocposition	IS	'ブロック配置';
 COMMENT ON table	dtb_csv	IS	'CSV出力設定';
 COMMENT ON table	dtb_csv_sql	IS	'CSV_SQL';
+COMMENT ON table	dtb_update IS 'アップデート';
+COMMENT ON table	dtb_user_regist IS 'ユーザー登録';
+COMMENT ON table	dtb_kiyaku IS '会員規約';
+COMMENT ON table	mtb_zip IS '郵便番号マスタ';
+
