@@ -77,7 +77,9 @@ if ($_GET["mode"] == "query" && sfCheckNumLength($_GET["send_id"])) {
 	if (count($list_data['job']) > 0) {
 		foreach($list_data['job'] as $key => $val){
 			$list_data['job'][$key] = $objPage->arrJob[$val];
+			$job_disp .= $list_data['job'][$key] . " ";
 		}
+		$list_data['job_disp'] = $job_disp;
 	}
 	
 	
