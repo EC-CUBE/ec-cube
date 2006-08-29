@@ -205,8 +205,8 @@
 		var count;
 		var fm = document.form1;
 		
-//		var max = fm["move[]"].length;
-		var max = fm.move[1];
+		var max = fm["move[]"].length;
+//		var max = fm.move[1];
 		alert(max);
 		
 		for(count=0; count<max; count++){
