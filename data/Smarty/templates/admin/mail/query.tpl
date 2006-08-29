@@ -71,7 +71,7 @@ self.moveTo(20,20);self.focus();
 										</tr>
 										<tr class="fs12n">
 											<td bgcolor="#f0f0f0" width="110">都道府県</td>
-											<td bgcolor="#ffffff" width="198"><!--{$list_data.pref|default:"（未指定）"}--></td>
+											<td bgcolor="#ffffff" width="198"><!--{$list_data.pref_disp|default:"（未指定）"}--></td>
 											<td bgcolor="#f0f0f0" width="110">TEL</td>
 											<td bgcolor="#ffffff" width="249"><!--{$list_data.tel|escape|default:"（未指定）"}--></td>
 										</tr>
@@ -83,7 +83,7 @@ self.moveTo(20,20);self.focus();
 										</tr>
 										<tr class="fs12n">
 											<td bgcolor="#f0f0f0" width="110">配信形式</td>
-											<td bgcolor="#ffffff" width="198"><!--{$list_data.htmlmail|escape|default:"（未指定）"}--></td>
+											<td bgcolor="#ffffff" width="198"><!--{$list_data.htmlmail_disp|escape|default:"（未指定）"}--></td>
 											<td bgcolor="#f0f0f0" width="110">購入回数</td>
 											<td bgcolor="#ffffff" width="199"><!--{if $list_data.buy_times_from}--><!--{$list_data.buy_times_from|escape}-->回 〜 <!--{$list_data.buy_times_to|escape}-->回<!--{else}-->（未指定）<!--{/if}--></td>
 										</tr>

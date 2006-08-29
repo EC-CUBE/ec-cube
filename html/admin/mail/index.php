@@ -64,6 +64,12 @@ if ($_GET["mode"] == "query" && sfCheckNumLength($_GET["send_id"])) {
 		
 	$list_data = unserialize($result);
 	
+	// 都道府県を変換
+	$list_data['pref_disp'] = $objPage->arrPref[$list_data['pref']];
+	
+	// 配信形式
+	$list_data['htmlmail_disp'] = $objPage->arrHtmlmail[$list_data['htmlmail']];
+	
 	// 性別の変換
 	if (count($list_data['sex']) > 0) {
 		foreach($list_data['sex'] as $key => $val){
