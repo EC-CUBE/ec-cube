@@ -127,6 +127,9 @@ function lfInitParam() {
 	$objFormParam->addParam("配送時間ID", "deliv_time_id", INT_LEN, "n", array("MAX_LENGTH_CHECK", "NUM_CHECK"));
 	$objFormParam->addParam("対応状況", "status", INT_LEN, "n", array("EXIST_CHECK", "MAX_LENGTH_CHECK", "NUM_CHECK"));
 	$objFormParam->addParam("配達日", "deliv_date", STEXT_LEN, "KVa", array("MAX_LENGTH_CHECK"));
+	$objFormParam->addParam("お支払方法名称", "payment_method");
+	$objFormParam->addParam("配送時間", "deliv_time");
+	
 	// 受注詳細情報
 	$objFormParam->addParam("単価", "price", INT_LEN, "n", array("EXIST_CHECK", "MAX_LENGTH_CHECK", "NUM_CHECK"), '0');
 	$objFormParam->addParam("個数", "quantity", INT_LEN, "n", array("EXIST_CHECK", "MAX_LENGTH_CHECK", "NUM_CHECK"), '0');
@@ -259,6 +262,11 @@ function lfRegistData($order_id) {
 			$sqlval[$key] = $val;
 		}
 	}
+	
+	$sqlval['payment_method'] = "";
+	$sqlval['deliv_time'] = "";
+	
+	sfprintr($_POST);
 	
 	unset($sqlval['total_point']);
 	unset($sqlval['point']);
