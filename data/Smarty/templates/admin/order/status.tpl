@@ -105,8 +105,8 @@
 									<td><input type="checkbox" name="move[]" value="<!--{$arrStatus[cnt].order_id}-->" ></td>
 									</tr>
 									<!--{/section}-->
+									<input type="hidden" name="move_max" value="<!--{$smarty.section.cnt.iteration -1}-->" >
 									</table>
-									<input type="hidden" name="move_max" value="<!--{$smarty.section.cnt.iteration -1}--> >
 									
 									<table width="650">
 									<tr><td height="10"></td></tr>
