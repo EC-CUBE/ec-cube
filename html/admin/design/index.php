@@ -41,7 +41,6 @@ $where .= "lay.page_id = pos.page_id AND exists (select bloc_id from dtb_bloc as
 $arrData = array($page_id);
 $arrBlocPos = lfgetLayoutData($sel, $from, $where, $arrData );
 
-
 // データの存在チェックを行う
 $arrPageData = lfgetPageData("page_id = ?", array($page_id));
 if (count($arrPageData) <= 0) {
@@ -121,13 +120,15 @@ if ($_POST['mode'] == 'confirm' or $_POST['mode'] == 'preview') {
 		$ins_sql .= "	,? ";			// ターゲットID
 		$ins_sql .= "	,? ";			// ブロックID
 		$ins_sql .= "	,? ";			// ブロックの並び順序
+		$ins_sql .= "	,(SELECT filename FROM dtb_bloc WHERE bloc_id = ?) ";			// ファイル名称
 		$ins_sql .= "	)  ";
 
 		// insertデータ生成
 		$arrInsData = array($page_id,
 							 $arrUpdBlocData[$key]['target_id'],
 							 $arrUpdBlocData[$key]['id'],
-							 $arrUpdBlocData[$key]['bloc_row']
+							 $arrUpdBlocData[$key]['bloc_row'],
+							 $arrUpdBlocData[$key]['id']
 							);
 		// SQL実行
 		$arrRet = $objDBConn->query($ins_sql,$arrInsData);
