@@ -294,6 +294,8 @@ function lfRegistData($order_id) {
 	}
 	$arrUpdData = array($arrRet['payment_id'], $deliv_time_id, $order_id, $order_id);
 	$objQuery->query($sql, $arrUpdData);
+	
+	$objQuery->getlastquery(true);
 
 	// 受注詳細データの更新
 	$arrDetail = $objFormParam->getSwapArray(array("product_id", "product_code", "product_name", "price", "quantity", "point_rate", "classcategory_id1", "classcategory_id2", "classcategory_name1", "classcategory_name2"));
