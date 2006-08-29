@@ -93,6 +93,8 @@ case 'back':
 		$objPage->list_data['name'] = sfManualEscape($objPage->list_data['name']);
 		// hidden要素作成
 		$objPage->arrHidden = lfGetHidden($objPage->list_data);
+		
+		$objPage->list_data['customer'] = 1;
 
 		//-- 検索データ取得	
 		$objSelect = new SC_CustomerList($objPage->list_data, "magazine");

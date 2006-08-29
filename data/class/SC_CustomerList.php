@@ -27,7 +27,9 @@ class SC_CustomerList extends SC_SelectSql {
 		// メールマガジンの場合		
 		if($mode == "magazine") {
 			$this->setWhere("(delete = 0 OR delete IS NULL)");
+			$this->setWhere("status = 2");
 			
+			/*　会員のみ対象とする
 			if(is_array($this->arrSql['customer'])) {
 				$tmp_where = "";
 				foreach($this->arrSql['customer'] as $val) {
@@ -57,6 +59,7 @@ class SC_CustomerList extends SC_SelectSql {
 				}
 				$this->setWhere($tmp_where);
 			}
+			*/
 			// 登録日を示すカラム
 			$regdate_col = 'dtb_customer_mail.create_date';
 		}
