@@ -263,11 +263,6 @@ function lfRegistData($order_id) {
 		}
 	}
 	
-	$sqlval['payment_method'] = "";
-	$sqlval['deliv_time'] = "";
-	
-	sfprintr($_POST);
-	
 	unset($sqlval['total_point']);
 	unset($sqlval['point']);
 			
@@ -281,6 +276,16 @@ function lfRegistData($order_id) {
 	
 	// 受注テーブルの更新
 	$objQuery->update("dtb_order", $sqlval, $where, array($order_id), $addcol);
+
+	$sql = "";
+	$sql .= " UPDATE";
+	$sql .= "     dtb_order";
+	$sql .= " SET";
+	$sql .= "     payment_method = (SELECT payment_method FROM dtb_payment WHERE payment_id = ?)";
+	$sql .= "     ,deliv_data = (SELECT time FROM dtb_deliv_time WHERE time_id = ? deliv_id = (SELECT deliv_id FROM dtb_order WHERE order_id = ?))";
+	$sql .= " ";
+	$arrUpdData = array($sqlval['payment_id'], $sqlval['deliv_time_id'], $sqlval['order_id']);
+	$objQuery->query($sql, $arrUpdData);
 	
 	// 受注詳細データの更新
 	$arrDetail = $objFormParam->getSwapArray(array("product_id", "product_code", "product_name", "price", "quantity", "point_rate", "classcategory_id1", "classcategory_id2", "classcategory_name1", "classcategory_name2"));
