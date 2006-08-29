@@ -799,17 +799,19 @@ CREATE TABLE dtb_bloc (
     bloc_id serial NOT NULL,
     bloc_name text,
     tpl_path text,
-    filename text,
+    filename text NOT NULL UNIQUE,
     create_date timestamp NOT NULL DEFAULT now(),
     update_date timestamp NOT NULL DEFAULT now(),
-    php_path text
+    php_path text,
+    del_flg int2 NOT NULL DEFAULT 0
 );
 
 CREATE TABLE dtb_blocposition (
     page_id int4 NOT NULL,
     target_id int4,
     bloc_id int4,
-    bloc_row int4
+    bloc_row int4,
+    filename text
 );
 
 CREATE TABLE dtb_csv (

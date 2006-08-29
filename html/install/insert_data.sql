@@ -20,7 +20,7 @@ insert into dtb_bloc ( bloc_name, tpl_path, filename, php_path ) values ('かごの
 insert into dtb_bloc ( bloc_name, tpl_path, filename, php_path ) values ('商品検索','html/user_data/include/bloc/search_products.tpl','search_products','html/frontparts/bloc/search_products.php');
 insert into dtb_bloc ( bloc_name, tpl_path, filename, php_path ) values ('新着情報','html/user_data/include/bloc/news.tpl','news','html/frontparts/bloc/news.php');
 insert into dtb_bloc ( bloc_name, tpl_path, filename, php_path ) values ('ログイン','html/user_data/include/bloc/login.tpl','login','');
-insert into dtb_bloc ( bloc_name, tpl_path, filename, php_path ) values ('BEST5','html/user_data/include/bloc/best5.tpl','login','html/frontparts/bloc/best5.php');
+insert into dtb_bloc ( bloc_name, tpl_path, filename, php_path ) values ('オススメ商品','html/user_data/include/bloc/best5.tpl','login','html/frontparts/bloc/best5.php');
 
 -- ページデータ
 insert into dtb_pagelayout (page_id,page_name,url)values(0, 'プレビューデータ','');
