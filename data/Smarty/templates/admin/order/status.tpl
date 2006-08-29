@@ -179,7 +179,7 @@
 		var max = fm["move_max"].value;
 		
 		if(max) {
-			for (i=0;i<max;i++){
+			for (i=1;i<max;i++){
 				var name = "move"+i;
 				alert(fm[name].checked);
 				if(fm[name].checked == true){
