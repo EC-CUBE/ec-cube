@@ -283,8 +283,8 @@ function lfRegistData($order_id) {
 	$sql .= " SET";
 	$sql .= "     payment_method = (SELECT payment_method FROM dtb_payment WHERE payment_id = ?)";
 	$sql .= "     ,deliv_data = (SELECT time FROM dtb_deliv_time WHERE time_id = ? deliv_id = (SELECT deliv_id FROM dtb_order WHERE order_id = ?))";
-	$sql .= " ";
-	$arrUpdData = array($sqlval['payment_id'], $sqlval['deliv_time_id'], $sqlval['order_id']);
+	$sql .= " WHERE order_id = ?";
+	$arrUpdData = array($sqlval['payment_id'], $sqlval['deliv_time_id'], $sqlval['order_id'], $sqlval['order_id']);
 	$objQuery->query($sql, $arrUpdData);
 	
 	// 受注詳細データの更新
