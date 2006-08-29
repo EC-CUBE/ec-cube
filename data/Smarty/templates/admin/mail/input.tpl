@@ -45,6 +45,7 @@
 									<tr class="fs12n">
 										<td bgcolor="#f2f1ec" width="200">テンプレート選択<span class="red"> *</span></td>
 										<td bgcolor="#ffffff" width="507">
+										<!--{if $arrErr.template_id}--><br><span class="red12"><!--{$arrErr.template_id}--></span><!--{/if}-->
 										<select name="template_id" onchange="return fnInsertValAndSubmit( document.form1, 'mode', 'template', '' )">
 										<option value="" selected="selected">選択してください</option>
 										<!--{html_options options=$arrTemplate selected=$list_data.template_id}-->
@@ -85,8 +86,8 @@
 										<tr>
 											<td bgcolor="#f2f1ec" class="fs12n">Subject<span class="red"> *</span></td>
 											<td bgcolor="#ffffff" class="fs12n">
+											<!--{if $arrErr.subject}--><span class="red12"><!--{$arrErr.subject}--></span><!--{/if}-->
 											<input type="text" name="subject" size="65" class="box65" <!--{if $arrErr.subject}--><!--{sfSetErrorStyle}--><!--{/if}--> value="<!--{$list_data.subject|escape}-->" />
-											<!--{if $arrErr.subject}--><br><span class="red12"><!--{$arrErr.subject}--></span><!--{/if}-->
 											</td>
 										</tr>
 										<tr>
@@ -94,8 +95,8 @@
 										</tr>
 										<tr>
 											<td bgcolor="#ffffff" colspan="2" class="fs12n">
+											<!--{if $arrErr.body}--><span class="red12"><!--{$arrErr.body}--></span><!--{/if}-->
 											<textarea name="body" cols="90" rows="40" class="area99" <!--{if $arrErr.body}--><!--{sfSetErrorStyle}--><!--{/if}-->><!--{$list_data.body|escape}--></textarea>
-											<!--{if $arrErr.body}--><br><span class="red12"><!--{$arrErr.body}--></span><!--{/if}-->
 											</td>
 										</tr>
 									</table>
