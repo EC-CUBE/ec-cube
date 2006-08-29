@@ -206,7 +206,7 @@
 		var fm = document.form1;
 //		var max = fm["move[]"].length;
 		var max = fm["move_max"].value;
-	alert("go");
+	alert(max);
 		for(count=0; count<max; count++){
 			fm["move[]"][count].checked = check;
 		}
