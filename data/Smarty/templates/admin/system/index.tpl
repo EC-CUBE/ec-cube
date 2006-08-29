@@ -54,7 +54,7 @@
 										<!--▼メンバー一覧ここから-->
 										<table width="650" bgcolor="#cccccc" border="0" cellspacing="1" cellpadding="5" summary=" ">
 											<tr bgcolor="#f2f1ec" align="center" class="fs12n">
-												<td width="70">権限</td>
+												<td width="60">権限</td>
 												<td width="120">名前</td>
 												<td width="119">所属</td>
 												<td width="30">稼動</td>
