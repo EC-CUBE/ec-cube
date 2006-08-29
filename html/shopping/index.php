@@ -100,18 +100,16 @@ $objDate = new SC_Date(START_BIRTH_YEAR);
 $objPage->arrYear = $objDate->getYear('', 1950);	//　日付プルダウン設定
 $objPage->arrMonth = $objDate->getMonth();
 $objPage->arrDay = $objDate->getDay();
-// 入力値の取得
-$objPage->arrForm = $objFormParam->getFormParamList();
-
-
-sfprintr($objPage->year);
 
 if($objPage->year == '') {
 	$objPage->year = '----';
-	$arrForm['year']['value'] = '----';
+	$objPage->arrForm['year']['value'] = '----';
 }
-sfprintr($objPage->year);
-sfprintr($objPage->arrForm);
+
+
+// 入力値の取得
+$objPage->arrForm = $objFormParam->getFormParamList();
+
 
 
 $objView->assignobj($objPage);
