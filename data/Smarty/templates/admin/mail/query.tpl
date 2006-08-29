@@ -88,12 +88,16 @@ self.moveTo(20,20);self.focus();
 											<td bgcolor="#ffffff" width="199"><!--{if $list_data.buy_times_from}--><!--{$list_data.buy_times_from|escape}-->回 〜 <!--{$list_data.buy_times_to|escape}-->回<!--{else}-->（未指定）<!--{/if}--></td>
 										</tr>
 										<tr class="fs12n">
+										<!--{*非会員は選択できない
 											<td bgcolor="#f0f0f0" width="110">種別</td>
 											<td bgcolor="#ffffff" width="198">
 											<!--{$list_data.customer|escape|default:"すべて"}-->
 											</td>
+										*}-->
 											<td bgcolor="#f0f0f0" width="110">購入商品コード</td>
-											<td bgcolor="#ffffff" width="199"><!--{$list_data.buy_product_code|escape|default:"（未指定）"}--></td>
+											<td bgcolor="#ffffff" width="198"><!--{$list_data.buy_product_code|escape|default:"（未指定）"}--></td>
+											<td bgcolor="#f0f0f0" width="110">購入金額</td>
+											<td bgcolor="#ffffff" width="199"><!--{if $list_data.buy_total_from}--><!--{$list_data.buy_total_from|escape}-->円 〜 <!--{$list_data.buy_total_to|escape}-->円<!--{else}-->（未指定）<!--{/if}--></td>
 										</tr>
 										<tr class="fs12n">
 											<td bgcolor="#f0f0f0" width="110">メールアドレス</td>
@@ -127,6 +131,12 @@ self.moveTo(20,20);self.focus();
 												<!--{$list_data.buy_start_year}-->年<!--{$list_data.buy_start_month}-->月<!--{$list_data.buy_start_day}-->日&nbsp;〜&nbsp;<!--{$list_data.buy_end_year}-->年<!--{$list_data.buy_end_month}-->月<!--{$list_data.buy_end_day}-->日
 											<!--{else}-->（未指定）<!--{/if}-->	
 											</td>
+										</tr>
+										<tr class="fs12n">
+											<td bgcolor="#f0f0f0" width="110">購入商品名</td>
+											<td bgcolor="#ffffff" width="198"><!--{$list_data.buy_product_name|escape|default:"（未指定）"}--></td>
+											<td bgcolor="#f0f0f0" width="110">カテゴリ</td>
+											<td bgcolor="#ffffff" width="199"><!--{$list_data.category_id|escape|default:"（未指定）"}--></td>
 										</tr>
 									</table>
 	

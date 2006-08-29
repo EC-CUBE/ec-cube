@@ -64,6 +64,8 @@ if ($_GET["mode"] == "query" && sfCheckNumLength($_GET["send_id"])) {
 		
 	$objPage->list_data = unserialize($result);
 	
+	sfprintr($objPage->list_data);
+	
 	$objView->assignobj($objPage);
 	$objView->display($tpl_path);
 	exit;
