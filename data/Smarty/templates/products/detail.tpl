@@ -86,7 +86,7 @@ function lnSetSelect(form, name1, name2, val) {
 						<table width="280" border="0" cellspacing="0" cellpadding="0" summary=" ">
 							<!--アイコン-->
 							<tr>
-								<td>
+								<td><!--{$arrProduct.product_flag|count}-->
 									<!--{section name=flg loop=$arrProduct.product_flag|count_characters}-->
 										<!--{if $arrProduct.product_flag[flg] == "1"}-->
 											<!--{assign var=key value="`$smarty.section.flg.iteration`"}-->
