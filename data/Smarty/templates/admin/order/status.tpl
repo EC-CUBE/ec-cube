@@ -211,7 +211,7 @@
 //			fm["move[]"][count].checked = check;
 			var name = "move".count;
 			alert(name);
-			fm[].checked = check;
+//			fm[].checked = check;
 		}
 	}
 	
