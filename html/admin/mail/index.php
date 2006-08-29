@@ -232,6 +232,8 @@ case 'regist_complete':
 	$arrCheckColumn = array_merge( $arrSearchColumn, $arrRegistColumn );
 	$objPage->list_data = lfConvertParam($_POST, $arrCheckColumn);
 	
+	sfprintr($_POST);
+	
 	//現在時刻の取得
 	$objPage->arrNowDate = lfGetNowDate();
 
@@ -251,7 +253,6 @@ case 'regist_complete':
 			exit;			
 		}
 	}
-	sfprintr($objPage->list_data);
 	break;
 default:
 	break;
