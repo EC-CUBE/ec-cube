@@ -101,16 +101,14 @@ $objPage->arrYear = $objDate->getYear('', 1950);	//　日付プルダウン設定
 $objPage->arrMonth = $objDate->getMonth();
 $objPage->arrDay = $objDate->getDay();
 
-sfprintr($objPage->year);
+// 入力値の取得
+$objPage->arrForm = $objFormParam->getFormParamList();
 
 if($objPage->year == '') {
 	$objPage->year = '----';
 	$arrForm['year']['value'] = '----';
 }
-sfprintr($objPage->year);
-sfprintr($arrForm);
-// 入力値の取得
-$objPage->arrForm = $objFormParam->getFormParamList();
+
 
 $objView->assignobj($objPage);
 $objView->display(SITE_FRAME);
