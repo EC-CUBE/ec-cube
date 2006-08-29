@@ -182,7 +182,7 @@
 			for (i=0;i<max;i++){
 				var name = "move"+i;
 				alert(name);
-				if(fm[name][i].checked == true){
+				if(fm[name].checked == true){
 					checkflag = 1;
 				}
 			}
