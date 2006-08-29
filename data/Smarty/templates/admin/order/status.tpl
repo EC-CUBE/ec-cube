@@ -202,6 +202,7 @@
 	}
 	
 	function fnBoxChecked(check){
+	alert("go");
 		var count;
 		var fm = document.form1;
 //		var max = fm["move[]"].length;
