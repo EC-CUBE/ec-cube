@@ -292,7 +292,7 @@ function lfRegistData($order_id) {
 	}else{
 		$deliv_time_id = $arrRet['deliv_time_id'];
 	}
-	$arrUpdData = array($arrRet['payment_id'], $deliv_time_id, array($arrRet['payment_id'], $order_id);
+	$arrUpdData = array($arrRet['payment_id'], $deliv_time_id, $arrRet['payment_id'], $order_id);
 	$objQuery->query($sql, $arrUpdData);
 	
 	$objQuery->getlastquery(true);
