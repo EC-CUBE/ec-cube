@@ -61,7 +61,7 @@
 												<td width="58">非稼動</td>
 												<td width="48">編集</td>
 												<td width="48">削除</td>
-												<td width="105">移動</td>
+												<td width="80">移動</td>
 											</tr>
 											<!--{section name=data loop=$list_data}--><!--▼メンバー<!--{$smarty.section.data.iteration}-->-->
 											<tr bgcolor="#ffffff" class="fs12">
