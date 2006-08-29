@@ -230,6 +230,8 @@ case 'regist_back':
 case 'regist_complete':
 	//-- 入力値コンバート
 	$arrCheckColumn = array_merge( $arrSearchColumn, $arrRegistColumn );
+	
+	sfprintr($arrCheckColumn);
 	$objPage->list_data = lfConvertParam($_POST, $arrCheckColumn);
 	
 	//現在時刻の取得
@@ -362,8 +364,6 @@ function lfRegistData($arrData){
 	$search_data = $conn->getAll($objSelect->getListMailMagazine(), $objSelect->arrVal);
 	$dataCnt = count($search_data);
 	
-	sfprintr($arrData);
-
 	$dtb_send_history = array();
 	$dtb_send_history["send_id"] = $conn->getOne("SELECT NEXTVAL('dtb_send_history_send_id_seq')");
 	$dtb_send_history["mail_method"] = $arrData['mail_method'];

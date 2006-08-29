@@ -20,7 +20,7 @@ $arrRegistColumn = array(
 							,array(  "column" => "send_hour",		"convert" => "n" )
 							,array(  "column" => "send_minutes",	"convert" => "n" )
 							,array(  "column" => "subject",			"convert" => "aKV" )
-							,array(  "column" => "body",			"convert" => "aKV" )
+							,array(  "column" => "body",			"convert" => "KV" )
 						);
 
 //---- メルマガ会員種別
