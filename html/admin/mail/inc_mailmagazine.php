@@ -26,7 +26,7 @@ $arrRegistColumn = array(
 //---- ¥á¥ë¥Þ¥¬²ñ°÷¼ïÊÌ
 $arrCustomerType = array(
 						1 => "²ñ°÷",
-						2 => "¥á¥ë¥Þ¥¬ÅÐÏ¿",
+						2 => "Èó²ñ°÷",
 						//3 => "CSVÅÐÏ¿"
 						);
 
