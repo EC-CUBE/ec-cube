@@ -31,8 +31,6 @@ case 'edit':
 	// 入力文字の変換
 	$objPage->arrForm = lfConvertParam($objPage->arrForm);
 	
-	sfprintr($objPage->arrForm);
-	
 	// エラーチェック
 	$objPage->arrErr = lfErrorCheck();
 	if(count($objPage->arrErr) <= 0) {
@@ -135,7 +133,7 @@ function lfConvertParam($array) {
 function lfErrorCheck() {
 	$objErr = new SC_CheckError();
 	$objErr->doFunc(array("規約タイトル", "kiyaku_title", SMTEXT_LEN), array("EXIST_CHECK","SPTAB_CHECK","MAX_LENGTH_CHECK"));
-	$objErr->doFunc(array("規約内容", "kiyaku_title", MTEXT_LEN), array("EXIST_CHECK","SPTAB_CHECK","MAX_LENGTH_CHECK"));
+	$objErr->doFunc(array("規約内容", "kiyaku_text", MTEXT_LEN), array("EXIST_CHECK","SPTAB_CHECK","MAX_LENGTH_CHECK"));
 	if(!isset($objErr->arrErr['name'])) {
 		$objQuery = new SC_Query();
 		$arrRet = $objQuery->select("kiyaku_id, kiyaku_title", "dtb_kiyaku", "delete = 0 AND kiyaku_title = ?", array($_POST['kiyaku_title']));
