@@ -282,7 +282,7 @@ function lfRegistData($order_id) {
 	$sql .= "     dtb_order";
 	$sql .= " SET";
 	$sql .= "     payment_method = (SELECT payment_method FROM dtb_payment WHERE payment_id = ?)";
-	$sql .= "     ,deliv_data = (SELECT time FROM dtb_delivtime WHERE time_id = ? AND deliv_id = (SELECT deliv_id FROM dtb_order WHERE order_id = ?))";
+	$sql .= "     ,deliv_date = (SELECT time FROM dtb_delivtime WHERE time_id = ? AND deliv_id = (SELECT deliv_id FROM dtb_order WHERE order_id = ?))";
 	$sql .= " WHERE order_id = ?";
 	$arrUpdData = array($sqlval['payment_id'], $sqlval['deliv_time_id'], $sqlval['order_id'], $sqlval['order_id']);
 	$objQuery->query($sql, $arrUpdData);
