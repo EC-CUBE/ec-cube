@@ -62,10 +62,18 @@ if ($_GET["mode"] == "query" && sfCheckNumLength($_GET["send_id"])) {
 	$result = $conn->getOne($sql, array($_GET["send_id"]));
 	$tpl_path = "mail/query.tpl";
 		
-	$objPage->list_data = unserialize($result);
+	list_data = unserialize($result);
+	
+	// 性別の変換
+	if (count(list_data['sex']) > 0) {
+		foreach(list_data['sex'] as $key => $val){
+			list_data['sex'][$key] = $objPage->arrSex[$val];
+		}
+	}
+	
 	
 	sfprintr($objPage->list_data);
-	
+	$objPage->list_data = list_data;
 	$objView->assignobj($objPage);
 	$objView->display($tpl_path);
 	exit;
