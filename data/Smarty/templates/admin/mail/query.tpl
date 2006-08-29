@@ -77,7 +77,7 @@ self.moveTo(20,20);self.focus();
 										</tr>
 										<tr class="fs12n">
 											<td bgcolor="#f0f0f0" width="110">性別</td>
-											<td bgcolor="#ffffff" width="198"><!--{$list_data.sex|default:"（未指定）"}--></td>
+											<td bgcolor="#ffffff" width="198"><!--{$list_data.sex_disp|default:"（未指定）"}--></td>
 											<td bgcolor="#f0f0f0" width="110">誕生月</td>
 											<td bgcolor="#ffffff" width="249"><!--{if $list_data.birth_month}--><!--{$list_data.birth_month|escape}-->月<!--{else}-->（未指定）<!--{/if}--></td>				
 										</tr>
@@ -105,7 +105,7 @@ self.moveTo(20,20);self.focus();
 										</tr>
 										<tr class="fs12n">
 											<td bgcolor="#f0f0f0" width="110">職業</td>
-											<td bgcolor="#ffffff" width="507" colspan="3"><!--{$list_data.job|escape|default:"（未指定）"}--></td>
+											<td bgcolor="#ffffff" width="507" colspan="3"><!--{$list_data.job_disp|escape|default:"（未指定）"}--></td>
 										</tr>
 							
 										<tr class="fs12n">

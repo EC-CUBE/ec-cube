@@ -83,7 +83,8 @@ if ($_GET["mode"] == "query" && sfCheckNumLength($_GET["send_id"])) {
 	}
 	
 	// カテゴリ変換
-	$list_data['category_name'] = $objPage->arrCatList[$list_data['category_id']];
+	$arrCatList = sfGetCategoryList();
+	$list_data['category_name'] = $arrCatList[$list_data['category_id']];
 	
 	$objPage->list_data = $list_data;
 	sfprintr($objPage->list_data);
