@@ -141,7 +141,7 @@ function lnSetSelect(name1, name2, id, val) {
 								</td>
 							</tr>
 							<!--アイコン-->
-							<!--{$sts_cnt}-->
+							<<<!--{$sts_cnt}-->>>
 							<!--{if $sts_cnt > 0}-->
 							<tr><td height="8"></td></tr>
 							<!--{/if}-->
