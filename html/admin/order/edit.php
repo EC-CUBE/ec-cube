@@ -268,8 +268,6 @@ function lfRegistData($order_id) {
 			
 	$where = "order_id = ?";
 	
-	sfprintr($arrRet);
-	
 	// 受注ステータスの判定
 	if ($sqlval['status'] == ODERSTATUS_COMMIT) {
 		// 受注テーブルの発送済み日を更新する
