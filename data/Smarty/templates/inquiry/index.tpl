@@ -60,7 +60,7 @@
 					
 					<tr>
 						<td class="fs12n" bgcolor="#ebf9ff" width="150"><span class="red">※</span>お名前</td>
-						<td class="fs12"bgcolor="#ffffff" width="407">
+						<td class="fs12n"bgcolor="#ffffff" width="407">
 							<span class="red"><!--{$arrErr.name01}--><!--{$arrErr.name02}--></span>
 										<input type="text" name="name01" value="<!--{$arrForm.name01|escape}-->" maxlength="<!--{$smarty.const.STEXT_LEN}-->" size="20" class="box20" <!--{if $arrErr.name01}--><!--{sfSetErrorStyle}--><!--{/if}--> />
 							&nbsp;&nbsp;<input type="text" name="name02" value="<!--{$arrForm.name02|escape}-->" maxlength="<!--{$smarty.const.STEXT_LEN}-->" size="20" class="box20" <!--{if $arrErr.name02}--><!--{sfSetErrorStyle}--><!--{/if}--> />

@@ -90,35 +90,6 @@
 						
 						<!--▼FORM-->
 						<table width="678" border="0" cellspacing="1" cellpadding="8" summary=" ">
-						<form name="form2" method="post" action="<!--{$smaryt.server.PHP_SELF}-->">
-							<tr class="fs12n" bgcolor="#f2f1ec" align="center">
-								<td width="42">編集</td>
-								<td width="80">登録日</td>
-								<td width="280">アンケートタイトル</td>
-								<td width="80">ページ参照</td>
-								<td width="80">結果取得</td>
-								<td width="42">削除</td>
-							</tr>
-							<!--{section name=data loop=$list_data}-->
-							<tr bgcolor="#FFFFFF" class="fs12" <!--{if $list_data[data].question_id eq $smarty.request.question_id}--><!--{sfSetErrorStyle}--><!--{/if}-->>
-								<td align="center" class="main"><a href="<!--{$smarty.server.PHP_SELF}-->?question_id=<!--{$list_data[data].question_id}-->">編集</a></td>
-								<td align="center"><!--{$list_data[data].disp_date}--></td>
-								<td><!--{$list_data[data].question_name|escape}--></td>
-								<td align="center"><a href="<!--{$smarty.const.SITE_URL}-->inquiry/index.php?question_id=<!--{$list_data[data].question_id}-->" target="_blank">参照</a></td>
-								<td align="center"><a href="<!--{$smarty.server.PHP_SELF}-->?mode=csv&question_id=<!--{$list_data[data].question_id}-->">download</a></td>
-								<td align="center"><a href="<!--{$smarty.server.PHP_SELF}-->?mode=delete&question_id=<!--{$list_data[data].question_id}-->" onClick="return delete_check()">削除</a></td>
-							</tr>
-							<!--{/section}-->
-						</form>
-						</table>
-						<!--▲FORM-->
-						
-						<table width="678" border="0" cellspacing="0" cellpadding="0" summary=" ">
-							<tr><td colspan="3"><img src="/img/contents/main_bar.jpg" width="678" height="10" alt=""></td></tr>
-						</table>
-
-						<!--▼FORM-->
-						<table width="678" border="0" cellspacing="1" cellpadding="8" summary=" ">
 						<form name="form1" method="post" action="<!--{$smarty.server.PHP_SELF}-->?mode=regist" onSubmit="return func_check(); false;">
 						<input type="hidden" name="question_id" value="<!--{$QUESTION_ID}-->">
 							
@@ -208,6 +179,53 @@
 								<td colspan="3"><img src="/img/contents/tbl_bottom.gif" width="678" height="8" alt=""></td>
 							</tr>
 						</table>
+						
+						<table width="678" border="0" cellspacing="0" cellpadding="0" summary=" ">
+							<tr><td colspan="3"><img src="/img/contents/main_bar.jpg" width="678" height="10" alt=""></td></tr>
+						</table>
+						
+						<table width="678" border="0" cellspacing="0" cellpadding="0" summary=" ">
+							<tr>
+								<td colspan="3"><img src="/img/contents/contents_title_top.gif" width="678" height="7" alt=""></td>
+							</tr>
+							<tr>
+								<td background="/img/contents/contents_title_left_bg.gif"><img src="/img/contents/contents_title_left.gif" width="22" height="12" alt=""></td>
+								<td bgcolor="#636469" width="638" class="fs14n"><span class="white"><!--コンテンツタイトル-->アンケート管理：アンケート<!--{if $QUESTION_ID}-->修正<!--{else}-->作成<!--{/if}--></span></td>
+								<td background="/img/contents/contents_title_right_bg.gif"><img src="/img/common/_.gif" width="18" height="1" alt=""></td>
+							</tr>
+							<tr>
+								<td colspan="3"><img src="/img/contents/contents_title_bottom.gif" width="678" height="7" alt=""></td>
+							</tr>
+							<tr>
+								<td colspan="3"><img src="/img/contents/main_bar.jpg" width="678" height="10" alt=""></td>
+							</tr>
+						</table>
+
+						<!--▼FORM-->
+						<table width="678" border="0" cellspacing="1" cellpadding="8" summary=" ">
+						<form name="form2" method="post" action="<!--{$smaryt.server.PHP_SELF}-->">
+							<tr class="fs12n" bgcolor="#f2f1ec" align="center">
+								<td width="42">編集</td>
+								<td width="80">登録日</td>
+								<td width="280">アンケートタイトル</td>
+								<td width="80">ページ参照</td>
+								<td width="80">結果取得</td>
+								<td width="42">削除</td>
+							</tr>
+							<!--{section name=data loop=$list_data}-->
+							<tr bgcolor="#FFFFFF" class="fs12" <!--{if $list_data[data].question_id eq $smarty.request.question_id}--><!--{sfSetErrorStyle}--><!--{/if}-->>
+								<td align="center" class="main"><a href="<!--{$smarty.server.PHP_SELF}-->?question_id=<!--{$list_data[data].question_id}-->">編集</a></td>
+								<td align="center"><!--{$list_data[data].disp_date}--></td>
+								<td><!--{$list_data[data].question_name|escape}--></td>
+								<td align="center"><a href="<!--{$smarty.const.SITE_URL}-->inquiry/index.php?question_id=<!--{$list_data[data].question_id}-->" target="_blank">参照</a></td>
+								<td align="center"><a href="<!--{$smarty.server.PHP_SELF}-->?mode=csv&question_id=<!--{$list_data[data].question_id}-->">download</a></td>
+								<td align="center"><a href="<!--{$smarty.server.PHP_SELF}-->?mode=delete&question_id=<!--{$list_data[data].question_id}-->" onClick="return delete_check()">削除</a></td>
+							</tr>
+							<!--{/section}-->
+						</form>
+						</table>
+						<!--▲FORM-->
+						
 						<!--登録テーブルここまで-->
 						</td>
 						<td background="/img/contents/main_right.jpg"><img src="/img/common/_.gif" width="14" height="1" alt=""></td>
