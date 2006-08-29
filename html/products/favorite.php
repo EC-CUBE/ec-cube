@@ -21,7 +21,6 @@ if (!$objCustomer->isLoginSuccess()){
 		case 'favorite':
 		$col= "'".$_SESSION['customer']['customer_id']."','".$_POST['product_id']."','1','now()','now()' ";
 		$objQuery->exec("INSERT INTO dtb_customer_favorite VALUES (".$col.")");
-		$objQuery->getLastQuery(true);
 		break;
 	}
 }

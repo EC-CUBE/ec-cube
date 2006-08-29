@@ -41,9 +41,6 @@ $mode = $_POST['mode'];
 switch($_POST['mode']) {
 	// データの登録
 	case "confirm":
-		//$code = mb_internal_encoding();
-		//sfprintr($code);
-
 		// エラーチェック
 		$objPage->arrErr = lfCheckError($_POST);
 		

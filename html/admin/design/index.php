@@ -363,10 +363,6 @@ function lfSetPreData($arrPageData){
 	if (file_exists($del_tpl)){
 		unlink($del_tpl);	
 	}
-	
-	sfprintr(ROOT_DIR . $arrPageData[0]['tpl_dir'].$arrPageData[0]['filename'].".tpl");
-	
-//	exit;
 
 	// tplファイルのコピー
 	copy(ROOT_DIR . $arrPageData[0]['tpl_dir'].$arrPageData[0]['filename'].".tpl", ROOT_DIR . USER_DIR."templates/".$filename.".tpl");

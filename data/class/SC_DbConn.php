@@ -154,7 +154,7 @@ class SC_DbConn{
 		
 		mb_send_mail ( $this->error_mail_to, $this->error_mail_title, "${errmsg}\n".date("Y/m/d H:i:s") );
 		
-		exit(sfprintr($errmsg));
+		exit();
 	}
 }
 
