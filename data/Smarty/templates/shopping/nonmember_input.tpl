@@ -213,6 +213,7 @@
 						</table>
 						</td>
 					</tr>
+					<!--{* 非会員購入時はメルマガ送付は行わない
 					<tr>
 						<td bgcolor="#f0f0f0" class="fs12">メールマガジン送付について<span class="red">※</span></td>
 						<td bgcolor="#ffffff" class="fs12">
@@ -226,6 +227,7 @@
 							<input type="radio" name="<!--{$key}-->" id="no" value="3" <!--{if $arrForm[$key].value == 3}-->checked="checked"<!--{/if}--> style="<!--{$err_mail}-->" /><label for="no">受け取らない</label><br />
 						</td>
 					</tr>
+					*}-->
 					<tr>
 						<td colspan="2" bgcolor="#f0f0f0" class="fs12n">
 							<!--{assign var=key value="deliv_check"}-->
