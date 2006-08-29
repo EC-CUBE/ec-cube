@@ -71,9 +71,9 @@ if ($_GET["mode"] == "query" && sfCheckNumLength($_GET["send_id"])) {
 		}
 	}
 	
-	
-	sfprintr($objPage->list_data);
 	$objPage->list_data = $list_data;
+	sfprintr($objPage->list_data);
+	
 	$objView->assignobj($objPage);
 	$objView->display($tpl_path);
 	exit;
