@@ -85,7 +85,7 @@ if(!$fp) {
 	print("<table width='100%'>");
 	print("<tr><td height='15'></td></tr>");
 	print("<tr>");
-	print("<td align='center'><a href='javascript:window.close()' onmouseover=\"chgImg('/img/common/b_close_on.gif','b_close');\" onmouseout=\"chgImg('/img/common/b_close.gif','b_close');\"><img src='/img/common/b_close.gif' width='140' height='30' alt='岉元月' border='0' name='b_close'></a></td>");
+	print("<td align='center'><a href='javascript:window.close()'><img src='/img/common/b_close.gif' width='140' height='30' alt='岉元月' border='0' name='b_close'></a></td>");
 	print("	</tr>");
 }
 
