@@ -135,6 +135,8 @@ case 'input':
 	$objPage->list_data = lfConvertParam($_POST, $arrSearchColumn);
 	//-- 入力エラーのチェック
 	$objPage->arrErr = lfErrorCheck($objPage->list_data);
+	
+	sfprintr($objPage->arrErr);
 	//-- エラーなし
 	if (!is_array($objPage->arrErr)) {
 		//-- 現在時刻の取得
