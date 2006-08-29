@@ -278,7 +278,7 @@ function lfRegistData($order_id) {
 	
 	// 受注テーブルの更新
 	$objQuery->update("dtb_order", $sqlval, $where, array($order_id), $addcol);
-
+/*
 	$sql = "";
 	$sql .= " UPDATE";
 	$sql .= "     dtb_order";
@@ -288,7 +288,7 @@ function lfRegistData($order_id) {
 	$sql .= " WHERE order_id = ?";
 	$arrUpdData = array($sqlval['payment_id'], $sqlval['deliv_time_id'], $order_id, $order_id);
 	$objQuery->query($sql, $arrUpdData);
-	
+*/
 	// 受注詳細データの更新
 	$arrDetail = $objFormParam->getSwapArray(array("product_id", "product_code", "product_name", "price", "quantity", "point_rate", "classcategory_id1", "classcategory_id2", "classcategory_name1", "classcategory_name2"));
 	$objQuery->delete("dtb_order_detail", $where, array($order_id));
