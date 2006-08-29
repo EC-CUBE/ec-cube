@@ -206,7 +206,7 @@
 		var fm = document.form1;
 		
 //		var max = fm["move[]"].length;
-		var max = fm.move_max.value;
+		var max = fm.move_ma;
 		alert(max);
 		
 		for(count=0; count<max; count++){
