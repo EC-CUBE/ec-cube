@@ -204,7 +204,7 @@ COMMENT ON column	dtb_products_class.stock	IS	'在庫数';
 COMMENT ON column	dtb_products_class.stock_unlimited	IS	'在庫制限（1:無制限)';
 COMMENT ON column	dtb_products_class.sale_limit	IS	'販売制限';
 COMMENT ON column	dtb_products_class.price01	IS	'価格';
-COMMENT ON column	dtb_products_class.price02	IS	'特別価格';
+COMMENT ON column	dtb_products_class.price02	IS	'商品価格';
 COMMENT ON column	dtb_products_class.status	IS	'状態（表示:1、非表示:2）';
 COMMENT ON column	dtb_products_class.creator_id	IS	'作成者ID';
 COMMENT ON column	dtb_products_class.create_date	IS	'作成日時';

@@ -210,8 +210,6 @@ case 'regist_complete':
 	$objPage->tpl_mainpage = 'mail/input.tpl';
 	$objPage->arrHidden = lfGetHidden($objPage->list_data); // hidden要素作成
 	
-	sfprintr($objPage->arrErr);
-	
 	//-- 検索開始
 	if ( ! is_array($objPage->arrErr)) {
 			$objPage->list_data['name'] = sfManualEscape($objPage->list_data['name']);

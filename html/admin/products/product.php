@@ -406,7 +406,7 @@ function lfErrorCheck($array) {
 	if($objPage->tpl_nonclass) {
 		$objErr->doFunc(array("¾¦ÉÊ¥³¡¼¥É", "product_code", STEXT_LEN), array("EXIST_CHECK", "SPTAB_CHECK","MAX_LENGTH_CHECK","MAX_LENGTH_CHECK"));
 		$objErr->doFunc(array("ÄÌ¾ï²Á³Ê", "price01", PRICE_LEN), array("ZERO_CHECK", "SPTAB_CHECK", "NUM_CHECK", "MAX_LENGTH_CHECK"));
-		$objErr->doFunc(array("ÆÃÊÌ²Á³Ê", "price02", PRICE_LEN), array("EXIST_CHECK", "NUM_CHECK", "ZERO_CHECK", "SPTAB_CHECK", "MAX_LENGTH_CHECK"));
+		$objErr->doFunc(array("¾¦ÉÊ²Á³Ê", "price02", PRICE_LEN), array("EXIST_CHECK", "NUM_CHECK", "ZERO_CHECK", "SPTAB_CHECK", "MAX_LENGTH_CHECK"));
 			
 		if($array['stock_unlimited'] != "1") {
 			$objErr->doFunc(array("ºß¸Ë¿ô", "stock", AMOUNT_LEN), array("EXIST_CHECK", "SPTAB_CHECK", "NUM_CHECK", "MAX_LENGTH_CHECK"));

@@ -204,7 +204,7 @@ function lfErrorCheck($array, $flag = '') {
 	 }
 
 	if ( $flag ){
-		$objErr->doFunc(array("テンプレートID", "template_id"), array("EXIST_CHECK", "NUM_CHECK"));
+		$objErr->doFunc(array("テンプレート", "template_id"), array("EXIST_CHECK", "NUM_CHECK"));
 		$objErr->doFunc(array("メール送信法法", "mail_method"), array("EXIST_CHECK", "NUM_CHECK"));
 		/* 自動配信機能はサーバーの設定が必要なため、削除
 		

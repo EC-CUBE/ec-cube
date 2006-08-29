@@ -45,8 +45,8 @@
 									<tr class="fs12n">
 										<td bgcolor="#f2f1ec" width="200">テンプレート選択<span class="red"> *</span></td>
 										<td bgcolor="#ffffff" width="507">
-										<!--{if $arrErr.template_id}--><br><span class="red12"><!--{$arrErr.template_id}--></span><!--{/if}-->
-										<select name="template_id" onchange="return fnInsertValAndSubmit( document.form1, 'mode', 'template', '' )">
+										<!--{if $arrErr.template_id}--><span class="red12"><!--{$arrErr.template_id}--></span><!--{/if}-->
+										<select name="template_id" onchange="return fnInsertValAndSubmit( document.form1, 'mode', 'template', '' ) " style="<!--{$arrErr.template_id|sfGetErrorColor}-->">
 										<option value="" selected="selected">選択してください</option>
 										<!--{html_options options=$arrTemplate selected=$list_data.template_id}-->
 										</select>
