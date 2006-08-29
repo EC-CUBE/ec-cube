@@ -137,12 +137,14 @@ function lfgetBlocData($where = '', $arrVal = ''){
 	// SQLÀ¸À®
 	$sql = " SELECT ";
 	$sql .= "	bloc_id";
+	$sql .= "	bloc_code";
 	$sql .= "	,bloc_name";
 	$sql .= "	,tpl_path";
 	$sql .= "	,filename";
 	$sql .= " 	,create_date";
 	$sql .= " 	,update_date";
 	$sql .= " 	,php_path";
+	$sql .= " 	,del_flg";
 	$sql .= " FROM ";
 	$sql .= " 	dtb_bloc";
 

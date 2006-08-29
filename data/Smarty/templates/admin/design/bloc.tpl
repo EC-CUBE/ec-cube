@@ -108,8 +108,10 @@
 									<a href="<!--{$smarty.server.PHP_SELF}-->?bloc_id=<!--{$item.bloc_id}-->" ><!--{$item.bloc_name}--></a>
 								</td>
 								<td  align="center" width=140 bgcolor="<!--{if $item.bloc_id == $bloc_id}--><!--{$smarty.const.SELECT_RGB}--><!--{else}-->#ffffff<!--{/if}-->">
+									<!--{if $item.del_flg == 0}-->
 									<input type="button" value="ºï½ü" name="del<!--{$item.bloc_id}-->" onclick="fnFormModeSubmit('form_bloc','delete','bloc_id',this.name.substr(3));"  />
 									<input type="hidden" value="<!--{$item.bloc_id}-->" name="del_id<!--{$item.bloc_id}-->">
+									<!--{/if}-->
 								</td>
 							</tr>
 							<!--{/foreach}-->
