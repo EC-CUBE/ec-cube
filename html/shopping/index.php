@@ -111,7 +111,7 @@ if($objPage->year == '') {
 	$arrForm['year']['value'] = '----';
 }
 sfprintr($objPage->year);
-sfprintr($arrForm);
+sfprintr($objPage->arrForm);
 
 
 $objView->assignobj($objPage);
