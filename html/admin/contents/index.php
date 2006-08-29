@@ -162,6 +162,7 @@ function lfConvData( $data ){
 					 ,"day" => "n"
 					 ,"url" => "a"
 					 ,"news_title" => "aKV"
+					 ,"news_comment" => "aKV"
 					 ,"link_method" => "n"
 					);
 		
