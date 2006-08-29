@@ -251,6 +251,7 @@ case 'regist_complete':
 			exit;			
 		}
 	}
+	sfprintr($objPage->list_data);
 	break;
 default:
 	break;
