@@ -209,7 +209,9 @@
 	alert(max);
 		for(count=0; count<max; count++){
 //			fm["move[]"][count].checked = check;
-			fm["move"count].checked = check;
+			var name = "move".count;
+			alert(name);
+			fm[].checked = check;
 		}
 	}
 	
