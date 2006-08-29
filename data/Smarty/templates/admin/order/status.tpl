@@ -178,11 +178,10 @@
 		var checkflag = 0;
 		var max = fm["move_max"].value;
 		
-		alert(max);
-		
 		if(max) {
 			for (i=0;i<max;i++){
 				var name = "move"+i;
+				alert(name);
 				if(fm[name][i].checked == true){
 					checkflag = 1;
 				}
