@@ -82,6 +82,7 @@ if(!$fp) {
 	}
 	fclose($fp);
 	print("<img src='/img/install/space_w.gif'><br>");
+	print("正常に終了しました。&nbsp;<a href='#' onclick='window.close();return false;'>[閉じる]</a><br>");	
 }
 
 function MyFlush() {
