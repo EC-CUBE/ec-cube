@@ -81,12 +81,12 @@ if(!$fp) {
 		}
 	}
 	fclose($fp);
-	print("<img src='/img/install/space_w.gif'><br>");
-	print("<table width='100%'>");
-	print("<tr><td height='15'></td></tr>");
-	print("<tr>");
-	print("<td align='center'><a href='javascript:window.close()'><img src='/img/common/b_close.gif' width='140' height='30' alt='岉元月' border='0' name='b_close'></a></td>");
-	print("	</tr>");
+	print("<img src='/img/install/space_w.gif'><br>\n");
+	print("<table width='100%'>\n");
+	print("<tr><td height='15'></td></tr>\n");
+	print("<tr>\n");
+	print("<td align='center'><a href='javascript:window.close()'><img src='/img/common/b_close.gif' width='140' height='30' alt='岉元月' border='0' name='b_close'></a></td>\n");
+	print("	</tr>\n");
 }
 
 function MyFlush() {
