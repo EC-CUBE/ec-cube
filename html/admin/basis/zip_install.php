@@ -82,7 +82,10 @@ if(!$fp) {
 	}
 	fclose($fp);
 	print("<img src='/img/install/space_w.gif'><br>");
-	print("<span style='font-size:12px;'>正常に終了しました。&nbsp;<a href='#' onclick='window.close();return false;'>[閉じる]</a></span><br>");	
+	print("<table width='100%'>");
+	print("<tr>");
+	print("<td align='center'><a href='javascript:window.close()' onmouseover=\"chgImg('/img/common/b_close_on.gif','b_close');\" onmouseout=\"chgImg('/img/common/b_close.gif','b_close');\"><img src='/img/common/b_close.gif' width='140' height='30' alt='閉じる' border='0' name='b_close'></a></td>");
+	print("	</tr>");
 }
 
 function MyFlush() {
