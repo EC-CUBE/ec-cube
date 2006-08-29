@@ -13,6 +13,7 @@ VALUES ('dummy','dummy','',0,0,1,1);
 INSERT INTO dtb_member (name, login_id, password, creator_id, authority, work, delete) 
 VALUES ('admin','admin','$1$JPUS3lIX$B0FJNs4Q0lv9i.UYBP7do0',0,0,1,0);
 
+-- ブロックデータ
 insert into dtb_bloc ( bloc_name, tpl_path, filename, php_path ) values ('カテゴリ','html/user_data/include/bloc/category.tpl','category','html/frontparts/bloc/category.php');
 insert into dtb_bloc ( bloc_name, tpl_path, filename, php_path ) values ('利用ガイド','html/user_data/include/bloc/guide.tpl','guide','');
 insert into dtb_bloc ( bloc_name, tpl_path, filename, php_path ) values ('かごの中','html/user_data/include/bloc/cart.tpl','cart','html/frontparts/bloc/cart.php');
@@ -21,12 +22,14 @@ insert into dtb_bloc ( bloc_name, tpl_path, filename, php_path ) values ('新着情
 insert into dtb_bloc ( bloc_name, tpl_path, filename, php_path ) values ('ログイン','html/user_data/include/bloc/login.tpl','login','');
 insert into dtb_bloc ( bloc_name, tpl_path, filename, php_path ) values ('BEST5','html/user_data/include/bloc/best5.tpl','login','html/frontparts/bloc/best5.php');
 
+-- ページデータ
 insert into dtb_pagelayout (page_id,page_name,url)values(0, 'プレビューデータ','');
 insert into dtb_pagelayout (page_name,url,php_dir,tpl_dir,filename,edit_flg)values('TOPページ','index.php',' ','/html/user_data/templates/','top',2);
 insert into dtb_pagelayout (page_name,url,php_dir,tpl_dir,filename,edit_flg)values('商品一覧ページ','products/list.php',' ','/html/user_data/templates/','list',2);
 insert into dtb_pagelayout (page_name,url,php_dir,tpl_dir,filename,edit_flg)values('商品詳細','products/detail.php',' ','/html/user_data/templates/','detail',2);
 insert into dtb_pagelayout (page_name,url,php_dir,tpl_dir,filename,edit_flg)values('MYページ','mypage/index.php',' ','','',2);
 
+-- CSVデータ
 insert into dtb_csv(csv_id,col,disp_name,rank)values(1,'product_id','商品ID',1);
 insert into dtb_csv(csv_id,col,disp_name,rank)values(1,'product_class_id','規格ID',2);
 insert into dtb_csv(csv_id,col,disp_name,rank)values(1,'classcategory_id1','規格名1',3);
