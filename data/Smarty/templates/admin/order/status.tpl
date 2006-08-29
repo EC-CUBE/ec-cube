@@ -204,7 +204,7 @@
 		var count;
 		var fm = document.form1;
 		
-		if (fm["move[]"].length => 2) {
+		if (fm["move[]"].length >= 2) {
 			var max = fm["move[]"].length;
 		}else{
 			var max = 1;
