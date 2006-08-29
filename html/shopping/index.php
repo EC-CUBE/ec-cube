@@ -97,9 +97,11 @@ if($objPage->tpl_login_email != "") {
 
 // 選択用日付の取得
 $objDate = new SC_Date(START_BIRTH_YEAR);
-$objPage->arrYear = $objDate->getYear('');	//　日付プルダウン設定
+$objPage->arrYear = $objDate->getYear('', 1950);	//　日付プルダウン設定
 $objPage->arrMonth = $objDate->getMonth();
 $objPage->arrDay = $objDate->getDay();
+
+sfprintr($objPage->year);
 
 if($objPage->year == '') {
 	$objPage->year = '----';
