@@ -95,7 +95,7 @@ function lnSetSelect(form, name1, name2, val) {
 									<!--{/section}-->
 								</td>
 							</tr>
-							<tr><td height="5"></td></tr>
+							<!--{if $arrProduct.product_flag|count > 0 }--><tr><td height="8"></td></tr><!--{/if}-->
 							<!--¥¢¥¤¥³¥ó-->
 							<tr>
 								<td class="fs18"><span class="orangest"><!--¡ú¾¦ÉÊÌ¾¡ú--><!--{$arrProduct.name|escape}--></span></td>
