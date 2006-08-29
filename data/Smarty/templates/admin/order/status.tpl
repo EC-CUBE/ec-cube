@@ -106,6 +106,7 @@
 									</tr>
 									<!--{/section}-->
 									</table>
+									<input type="hidden" name="move[]" value="" >
 									
 									<table width="650">
 									<tr><td height="10"></td></tr>
@@ -203,7 +204,6 @@
 	function fnBoxChecked(check){
 		var count;
 		var fm = document.form1;
-		alert(fm["move[]"].length);
 		var max = fm["move[]"].length;
 		for(count=0; count<max; count++){
 			fm["move[]"][count].checked = check;

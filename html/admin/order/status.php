@@ -140,7 +140,9 @@ function lfStatusMove($status_id,$move){
 		$sql.="WHERE order_id=?";
 		if (isset($move)){
 			foreach ($move as $val){
-			$objQuery->exec($sql, array($val));
+			if ($val != "") {
+				$objQuery->exec($sql, array($val));
+			}
 			$objPage->tpl_onload = "window.alert('選択項目を移動しました。');";
 			}
 		}
