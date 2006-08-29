@@ -47,7 +47,7 @@
 <!--{/section}-->
 -----------------------------------------------------------
 小　計 ￥ <!--{$arrOrder.subtotal|number_format|default:0}--> (うち消費税 ￥<!--{$arrOrder.tax|number_format|default:0}-->）
-値引き ￥ <!--{$arrOrder.use_point + $arrOrder.discount|number_format|default:0}-->
+値引き ￥ <!--{`$arrOrder.use_point + $arrOrder.discount`|number_format|default:0}-->
 送　料 ￥ <!--{$arrOrder.deliv_fee|number_format|default:0}-->
 手数料 ￥ <!--{$arrOrder.charge|number_format|default:0}-->
 ===============================================================
