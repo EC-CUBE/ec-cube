@@ -31,6 +31,8 @@ case 'edit':
 	// 入力文字の変換
 	$objPage->arrForm = lfConvertParam($objPage->arrForm);
 	
+	sfprintr($objPage->arrForm);
+	
 	// エラーチェック
 	$objPage->arrErr = lfErrorCheck();
 	if(count($objPage->arrErr) <= 0) {
