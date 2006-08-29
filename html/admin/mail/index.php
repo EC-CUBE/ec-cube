@@ -230,8 +230,6 @@ case 'regist_back':
 case 'regist_complete':
 	//-- 入力値コンバート
 	$arrCheckColumn = array_merge( $arrSearchColumn, $arrRegistColumn );
-	
-	sfprintr($arrCheckColumn);
 	$objPage->list_data = lfConvertParam($_POST, $arrCheckColumn);
 	
 	//現在時刻の取得
