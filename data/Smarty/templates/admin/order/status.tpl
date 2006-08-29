@@ -176,16 +176,17 @@
 		}
 		var i;
 		var checkflag = 0;
-		var max = fm["move[]"].length;
+		var max = fm["move_max"].value;
 		
 		if(max) {
 			for (i=0;i<max;i++){
-				if(fm["move[]"][i].checked == true){
+				var name = "move"+i;
+				if(fm[name][i].checked == true){
 					checkflag = 1;
 				}
 			}
 		} else {
-			if(fm["move[]"].checked == true) {
+			if(fm["move0"].checked == true) {
 				checkflag = 1;
 			}
 		}
