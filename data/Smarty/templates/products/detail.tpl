@@ -87,16 +87,18 @@ function lnSetSelect(form, name1, name2, val) {
 							<!--アイコン-->
 							<tr>
 								<td>
+									<!--{assign var=sts_cnt value=0}-->
 									<!--{section name=flg loop=$arrProduct.product_flag|count_characters}-->
 										<!--{if $arrProduct.product_flag[flg] == "1"}-->
 											<!--{assign var=key value="`$smarty.section.flg.iteration`"}-->
 											<img src="<!--{$arrSTATUS_IMAGE[$key]}-->" width="65" height="17" alt="<!--{$arrSTATUS[$key]}-->" id="icon" />
+											<!--{assign var=sts_cnt value=$sts_cnt+1}-->
 										<!--{/if}-->
 									<!--{/section}-->
 								</td>
 							</tr>
-							<tr><td height="5"></td></tr>
 							<!--アイコン-->
+							<!--{if $sts_cnt > 0}--><tr><td height="5"></td></tr><!--{/if}-->
 							<tr>
 								<td class="fs18"><span class="orangest"><!--★商品名★--><!--{$arrProduct.name|escape}--></span></td>
 							</tr>
