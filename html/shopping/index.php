@@ -105,6 +105,7 @@ sfprintr($objPage->year);
 
 if($objPage->year == '') {
 	$objPage->year = '----';
+	$arrForm['year']['value'] = '----';
 }
 sfprintr($objPage->year);
 sfprintr($arrForm);
