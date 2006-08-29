@@ -71,6 +71,14 @@ if ($_GET["mode"] == "query" && sfCheckNumLength($_GET["send_id"])) {
 		}
 	}
 	
+	// 職業の変換
+	if (count($list_data['job']) > 0) {
+		foreach($list_data['job'] as $key => $val){
+			$list_data['job'][$key] = $objPage->arrJob[$val];
+		}
+	}
+	
+	
 	$objPage->list_data = $list_data;
 	sfprintr($objPage->list_data);
 	
