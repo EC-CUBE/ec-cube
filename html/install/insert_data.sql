@@ -29,6 +29,29 @@ insert into dtb_pagelayout (page_name,url,php_dir,tpl_dir,filename,edit_flg)valu
 insert into dtb_pagelayout (page_name,url,php_dir,tpl_dir,filename,edit_flg)values('商品詳細','products/detail.php',' ','/html/user_data/templates/','detail',2);
 insert into dtb_pagelayout (page_name,url,php_dir,tpl_dir,filename,edit_flg)values('MYページ','mypage/index.php',' ','','',2);
 
+-- ブロック配置データ
+INSERT INTO dtb_blocposition (1,1,(SELECT bloc_id FROM dtb_bloc WHERE filename = 'category'),2,'category');
+INSERT INTO dtb_blocposition (1,1,(SELECT bloc_id FROM dtb_bloc WHERE filename = 'guide'),3,'guide');
+INSERT INTO dtb_blocposition (1,1,(SELECT bloc_id FROM dtb_bloc WHERE filename = 'cart'),1,'cart');
+INSERT INTO dtb_blocposition (1,3,(SELECT bloc_id FROM dtb_bloc WHERE filename = 'search_products'),2,'search_products');
+INSERT INTO dtb_blocposition (1,4,(SELECT bloc_id FROM dtb_bloc WHERE filename = 'news'),1,'news');
+INSERT INTO dtb_blocposition (1,3,(SELECT bloc_id FROM dtb_bloc WHERE filename = 'login'),1,'login');
+INSERT INTO dtb_blocposition (1,4,(SELECT bloc_id FROM dtb_bloc WHERE filename = 'best5'),2,'best5');
+INSERT INTO dtb_blocposition (2,1,(SELECT bloc_id FROM dtb_bloc WHERE filename = 'category'),2,'category');
+INSERT INTO dtb_blocposition (2,1,(SELECT bloc_id FROM dtb_bloc WHERE filename = 'guide'),3,'guide');
+INSERT INTO dtb_blocposition (2,1,(SELECT bloc_id FROM dtb_bloc WHERE filename = 'cart'),1,'cart');
+INSERT INTO dtb_blocposition (2,5,(SELECT bloc_id FROM dtb_bloc WHERE filename = 'search_products'),0,'search_products');
+INSERT INTO dtb_blocposition (2,5,(SELECT bloc_id FROM dtb_bloc WHERE filename = 'news'),0,'news');
+INSERT INTO dtb_blocposition (2,5,(SELECT bloc_id FROM dtb_bloc WHERE filename = 'login'),0,'login');
+INSERT INTO dtb_blocposition (2,5,(SELECT bloc_id FROM dtb_bloc WHERE filename = 'best5'),0,'best5');
+INSERT INTO dtb_blocposition (3,1,(SELECT bloc_id FROM dtb_bloc WHERE filename = 'category'),2,'category');
+INSERT INTO dtb_blocposition (3,1,(SELECT bloc_id FROM dtb_bloc WHERE filename = 'guide'),3,'guide');
+INSERT INTO dtb_blocposition (3,1,(SELECT bloc_id FROM dtb_bloc WHERE filename = 'cart'),1,'cart');
+INSERT INTO dtb_blocposition (3,5,(SELECT bloc_id FROM dtb_bloc WHERE filename = 'search_products'),0,'search_products');
+INSERT INTO dtb_blocposition (3,5,(SELECT bloc_id FROM dtb_bloc WHERE filename = 'news'),0,'news');
+INSERT INTO dtb_blocposition (3,5,(SELECT bloc_id FROM dtb_bloc WHERE filename = 'login'),0,'login');
+INSERT INTO dtb_blocposition (3,5,(SELECT bloc_id FROM dtb_bloc WHERE filename = 'best5'),0,'best5');
+
 -- CSVデータ
 insert into dtb_csv(csv_id,col,disp_name,rank)values(1,'product_id','商品ID',1);
 insert into dtb_csv(csv_id,col,disp_name,rank)values(1,'product_class_id','規格ID',2);
