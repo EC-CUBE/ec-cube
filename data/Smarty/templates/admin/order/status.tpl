@@ -202,6 +202,7 @@
 	}
 	
 	function fnBoxChecked(check){
+	alert("gos");
 		var count;
 		var fm = document.form1;
 		
