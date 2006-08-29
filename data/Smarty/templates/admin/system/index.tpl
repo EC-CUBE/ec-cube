@@ -54,13 +54,13 @@
 										<!--▼メンバー一覧ここから-->
 										<table width="650" bgcolor="#cccccc" border="0" cellspacing="1" cellpadding="5" summary=" ">
 											<tr bgcolor="#f2f1ec" align="center" class="fs12n">
-												<td width="60">権限</td>
-												<td width="120">名前</td>
-												<td width="119">所属</td>
+												<td width="70">権限</td>
+												<td width="155">名前</td>
+												<td width="155">所属</td>
 												<td width="30">稼動</td>
-												<td width="58">非稼動</td>
-												<td width="48">編集</td>
-												<td width="48">削除</td>
+												<td width="60">非稼動</td>
+												<td width="50">編集</td>
+												<td width="50">削除</td>
 												<td width="80">移動</td>
 											</tr>
 											<!--{section name=data loop=$list_data}--><!--▼メンバー<!--{$smarty.section.data.iteration}-->-->
