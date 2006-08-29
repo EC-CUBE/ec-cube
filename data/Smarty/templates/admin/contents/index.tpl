@@ -116,7 +116,7 @@ function moving(news_id,rank, max_rank) {
 									</tr>
 									<tr>
 										<td background="/img/contents/contents_title_left_bg.gif"><img src="/img/contents/contents_title_left.gif" width="22" height="12" alt=""></td>
-										<td bgcolor="#636469" width="638" class="fs14n"><span class="white"><!--コンテンツタイトル-->新着情報管理</span></td>
+										<td bgcolor="#636469" width="638" class="fs14n"><span class="white"><!--コンテンツタイトル-->新規登録</span></td>
 										<td background="/img/contents/contents_title_right_bg.gif"><img src="/img/common/_.gif" width="18" height="1" alt=""></td>
 									</tr>
 									<tr>
@@ -200,6 +200,23 @@ function moving(news_id,rank, max_rank) {
 									<tr><td colspan="3"><img src="/img/contents/main_bar.jpg" width="678" height="10" alt=""></td></tr>
 								</table>
 								
+								<table width="678" border="0" cellspacing="0" cellpadding="0" summary=" ">
+									<tr>
+										<td colspan="3"><img src="/img/contents/contents_title_top.gif" width="678" height="7" alt=""></td>
+									</tr>
+									<tr>
+										<td background="/img/contents/contents_title_left_bg.gif"><img src="/img/contents/contents_title_left.gif" width="22" height="12" alt=""></td>
+										<td bgcolor="#636469" width="638" class="fs14n"><span class="white"><!--コンテンツタイトル-->登録済み新着情報</span></td>
+										<td background="/img/contents/contents_title_right_bg.gif"><img src="/img/common/_.gif" width="18" height="1" alt=""></td>
+									</tr>
+									<tr>
+										<td colspan="3"><img src="/img/contents/contents_title_bottom.gif" width="678" height="7" alt=""></td>
+									</tr>
+									<tr>
+										<td colspan="3"><img src="/img/contents/main_bar.jpg" width="678" height="10" alt=""></td>
+									</tr>
+								</table>
+
 								<!--▼一覧表示エリアここから-->
 								<table width="678" border="0" cellspacing="1" cellpadding="8" summary=" ">
 								<form name="move" id="move" method="post" action="<!--{$smarty.server.PHP_SELF}-->">
