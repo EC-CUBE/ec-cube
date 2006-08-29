@@ -181,7 +181,7 @@
 		if(max) {
 			for (i=0;i<max;i++){
 				var name = "move"+i;
-				alert(name);
+				alert(fm[name].checked);
 				if(fm[name].checked == true){
 					checkflag = 1;
 				}
