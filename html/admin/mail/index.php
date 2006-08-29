@@ -93,8 +93,7 @@ if ($_GET["mode"] == "query" && sfCheckNumLength($_GET["send_id"])) {
 	$list_data['category_name'] = $arrCatList[$list_data['category_id']];
 	
 	$objPage->list_data = $list_data;
-	sfprintr($objPage->list_data);
-	
+
 	$objView->assignobj($objPage);
 	$objView->display($tpl_path);
 	exit;
