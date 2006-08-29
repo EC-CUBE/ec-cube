@@ -82,6 +82,8 @@ if ($_GET["mode"] == "query" && sfCheckNumLength($_GET["send_id"])) {
 		$list_data['job_disp'] = $job_disp;
 	}
 	
+	// カテゴリ変換
+	$list_data['category_name'] = $objPage->arrCatList[$list_data['category_id'];
 	
 	$objPage->list_data = $list_data;
 	sfprintr($objPage->list_data);

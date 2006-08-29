@@ -136,7 +136,7 @@ self.moveTo(20,20);self.focus();
 											<td bgcolor="#f0f0f0" width="110">購入商品名</td>
 											<td bgcolor="#ffffff" width="198"><!--{$list_data.buy_product_name|escape|default:"（未指定）"}--></td>
 											<td bgcolor="#f0f0f0" width="110">カテゴリ</td>
-											<td bgcolor="#ffffff" width="199"><!--{$list_data.category_id|escape|default:"（未指定）"}--></td>
+											<td bgcolor="#ffffff" width="199"><!--{$list_data.category_name|escape|default:"（未指定）"}--></td>
 										</tr>
 									</table>
 	
