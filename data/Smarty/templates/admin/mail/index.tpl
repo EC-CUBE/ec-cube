@@ -363,7 +363,7 @@
 						<!--{section name=i loop=$arrResults}-->
 						<tr bgcolor="#FFFFFF" class="fs10n">
 							<td align="center"><!--{$smarty.section.i.iteration}--></td>
-							<td align="center"><!--{$arrResults[i].customer_id|default:"¥á¥ë¥Þ¥¬²ñ°÷"}--></td>
+							<td align="center"><!--{$arrResults[i].customer_id|default:"Èó²ñ°÷"}--></td>
 			
 							<!--{assign var=key value="`$arrResults[i].customer_id`"}-->
 							<td align="center">
