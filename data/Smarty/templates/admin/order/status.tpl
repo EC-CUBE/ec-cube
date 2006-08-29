@@ -208,7 +208,8 @@
 		var max = fm["move_max"].value;
 	alert(max);
 		for(count=0; count<max; count++){
-			fm["move[]"][count].checked = check;
+//			fm["move[]"][count].checked = check;
+			fm["move"count].checked = check;
 		}
 	}
 	
