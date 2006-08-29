@@ -111,12 +111,14 @@
 									<input type="text" name="buy_total_to" maxlength="<!--{$smarty.const.INT_LEN}-->" value="<!--{$list_data.buy_total_to|escape}-->" size="6" class="box6" <!--{if $arrErr.buy_total_from || $arrErr.buy_total_to}--><!--{sfSetErrorStyle}--><!--{/if}--> /> 円
 								</td>
 							</tr>
+							<!--{*非会員はメルマガ非対応
 							<tr class="fs12n">
 								<td bgcolor="#f2f1ec" width="110">種別</td>
 								<td bgcolor="#ffffff" width="607" colspan="3">
 								<!--{html_checkboxes name="customer" options=$arrCustomerType separator="&nbsp;" selected=$list_data.customer}-->
 								</td>
 							</tr>
+							*}-->
 							<tr class="fs12n">
 								<td bgcolor="#f2f1ec" width="110">メールアドレス</td>
 								<td bgcolor="#ffffff" width="607" colspan="3">
