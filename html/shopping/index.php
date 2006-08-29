@@ -107,7 +107,7 @@ if($objPage->year == '') {
 	$objPage->year = '----';
 }
 sfprintr($objPage->year);
-
+sfprintr($arrForm);
 // 入力値の取得
 $objPage->arrForm = $objFormParam->getFormParamList();
 

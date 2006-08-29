@@ -198,7 +198,7 @@
 							<tr>
 								<td class="fs12n"><span class="red"><!--{$arrErr.year}--><!--{$arrErr.month}--><!--{$arrErr.day}--></span>
 									<select name="year" style="<!--{$arrErr.year|sfGetErrorColor}-->">
-										<!--{html_options options=$arrYear selected=$arrForm.year}-->
+										<!--{html_options options=$arrYear selected=$arrForm.year.value}-->
 									</select>ǯ
 									<select name="month" style="<!--{$arrErr.year|sfGetErrorColor}-->">
 										<option value="">--</option>
