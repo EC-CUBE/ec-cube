@@ -45,6 +45,7 @@ $linemax = $oquery->count("dtb_member", "delete <> 1 AND member_id <>".ADMIN_ID)
 if($linemax == 1){
 	$objPage->tpl_nomove = "-";
 }
+$objPage->linemax= $linemax;
 
 // ページ送りの処理
 $objNavi = new SC_PageNavi($_GET['pageno'], $linemax, MEMBER_PMAX, "fnMemberPage", NAVI_PMAX);
