@@ -144,6 +144,7 @@ function lnSetSelect(name1, name2, id, val) {
 							<!--アイコン-->
 							<!--{if $$sts_cnt > 0}-->
 							<tr><td height="8"></td></tr>
+							<!--{/if}-->
 							<tr>
 								<td colspan="2" align="center" bgcolor="#f9f9ec">
 								<table width="440" border="0" cellspacing="0" cellpadding="0" summary=" ">
