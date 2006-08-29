@@ -1,6 +1,6 @@
 <table width="840" border="0" cellspacing="1" cellpadding="5" summary=" ">
 	<tr bgcolor="#636469" align="center" class="fs10n">
-		<td width="100">期間</td>
+		<td width="100"><span class="white">期間</span></td>
 		<td width="80"><span class="white">購入件数</span></td>
 		<td width="80"><span class="white">男性</span></td>				
 		<td width="80"><span class="white">女性</span></td>				
