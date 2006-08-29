@@ -1,11 +1,9 @@
 <?php
 
-if (class_exists('LC_CartPage')) {
-	class LC_CartPage {
-		function LC_CartPage() {
-			/** 必ず変更する **/
-			$this->tpl_mainpage = ROOT_DIR . BLOC_DIR.'cart.tpl';	// メイン
-		}
+class LC_CartPage {
+	function LC_CartPage() {
+		/** 必ず変更する **/
+		$this->tpl_mainpage = ROOT_DIR . BLOC_DIR.'cart.tpl';	// メイン
 	}
 }
 
