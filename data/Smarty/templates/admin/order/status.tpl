@@ -105,6 +105,7 @@
 									<td><input type="checkbox" name="move[]" value="<!--{$arrStatus[cnt].order_id}-->" ></td>
 									</tr>
 									<!--{/section}-->
+									<input type="hidden" name="move_max" value="<!--{$smarty.section.cnt.iteration}--> >
 									</table>
 									
 									<table width="650">
@@ -205,7 +206,7 @@
 		var fm = document.form1;
 		
 		var max = fm["move[]"].length;
-		alert(form1.move.value)
+		alert(form1.move)
 		alert(max);
 		
 		for(count=0; count<max; count++){
