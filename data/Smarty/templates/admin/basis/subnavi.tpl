@@ -17,7 +17,7 @@
 	<tr><td class=<!--{if $tpl_subno != 'kiyaku'}-->"navi"<!--{else}-->"navi-on"<!--{/if}-->><a href="./kiyaku.php" onMouseOver="naviStyleChange('kiyaku', '#a5a5a5')" <!--{if $tpl_subno != 'kiyaku'}-->onMouseOut="naviStyleChange('kiyaku', '#636469')"<!--{/if}--> id="kiyaku"><img src="/img/contents/icon.jpg" width="15" height="9" alt="" border="0"><span class="navi_text">会員規約設定</span></a></td></tr>
 	<tr><td><img src="/img/contents/navi_line.gif" width="140" height="2" alt=""></td></tr>
 	<tr><td class=<!--{if $tpl_subno != 'zip_install'}-->"navi"<!--{else}-->"navi-on"<!--{/if}-->><a href="#" onclick="win03('/admin/basis/zip_install.php', 'install', '750', '350');" onMouseOver="naviStyleChange('zip_install', '#a5a5a5')" <!--{if $tpl_subno != 'zip_install'}-->onMouseOut="naviStyleChange('zip_install', '#636469')"<!--{/if}--> id="zip_install"><img src="/img/contents/icon.jpg" width="15" height="9" alt="" border="0"><span class="navi_text">郵便番号DB更新</span></a></td></tr>
-	<tr><td background="/img/contents/main_right.jpg"><img src="/img/common/_.gif" width="1" height="100" alt=""></td>
+	<tr><td><img src="/img/common/_.gif" width="1" height="100" alt=""></td>
 	<tr><td><img src="/img/contents/navi_line.gif" width="140" height="2" alt=""></td></tr>
 	<!--ナビ-->
 </table>
