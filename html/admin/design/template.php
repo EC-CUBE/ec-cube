@@ -132,6 +132,8 @@ function lfgetTemplate(){
 		$arrTemplateImage['image'][$key] = $filepath . $val['template_code'] . "/" . $Image;
 	}
 	
+	sfprintr($arrTemplateImage);
+	
 	// 初期チェック
 	if (isset($arrDefcheck[$disp])){
 		$arrTemplateImage['check'] = $arrDefcheck[$disp];
