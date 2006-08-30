@@ -39,6 +39,8 @@ function lfStartDailyTotal($term, $start, $command = false) {
 	$objQuery->delete("dtb_order_detail", $where);
 	
 	$last_batch = $objQuery->max("create_date", "dtb_bat_order_daily");
+
+	print(strtotime($last_batch));
 	
 	// 最後のバッチ実行からLOAD_BATCH_PASS秒経過していないと実行しない。
 	$batch_pass = date("y/m/d H:i:s", $now_time - LOAD_BATCH_PASS);
