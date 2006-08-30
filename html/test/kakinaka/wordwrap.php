@@ -21,7 +21,7 @@ while($len > $cut_len){
 	$str[] = mb_substr($test,0,$cut_len);
 	$tmp = mb_substr($test, $cut_len, $len);
 	$len = mb_strlen($tmp);
-	print_r $str;
+	print_r($str);
 	MyFlush();
 }
 $str[] = $tmp;
