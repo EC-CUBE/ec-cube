@@ -48,7 +48,7 @@ function lfStartDailyTotal($term, $start, $command = false) {
 		$batch_date = date("Y/m/d", $tmp_time);
 		
 		// 最後のバッチ実行からLOAD_BATCH_PASS秒経過していないと実行しない。
-		$batch_pass = date("Y/m/d H:m:s", $tmp_time - LOAD_BATCH_PASS);
+		$batch_pass = date("Y/m/d H:m:s", $tmp_time + LOAD_BATCH_PASS);
 		$objQuery = new SC_Query();
 		$count = $objQuery->count("dtb_bat_order_daily", "create_date > ?", $batch_pass);
 		$objQuery->getLastQuery();
