@@ -89,7 +89,7 @@ $objView->display(MAIN_FRAME);
  **************************************************************************************************************/
 function lfgetTemplate(){
 	global $objPage;
-	$filepath = "/test/kakinaka/";
+	$filepath = USER_DIR . "templates/";
 	
 	$arrTemplateImage = array();	// 画面表示画像格納用
 	$Image = "";					// イメージの配列要素名格納用
@@ -220,7 +220,8 @@ function lfUpdData(){
  **************************************************************************************************************/
 function lfChangeTemplate(){
 	global $objPage;
-	$tpl_path = "html/test/kakinaka/";
+	$tpl_path = USER_DIR . "templates/";
+	$bloc_path = ROOT_DIR . USER_DIR . "include/bloc/";
 	
 	$tpl_name = "";
 	$tpl_element = "";
@@ -272,10 +273,10 @@ function lfChangeTemplate(){
 		copy($taget_tpl_path . "/detail.tpl", $save_tpl_path . "detail.tpl");
 
 		// mypageはフォルダごとコピー
-		lfFolderCopy($taget_tpl_path."mypage/", $save_tpl_path."mypage/");
+		lfFolderCopy($taget_tpl_path."mypage/", $save_tpl_path . "mypage/");
 
 		// ブロックデータのコピー
-		lfFolderCopy($taget_tpl_path."bloc/", $save_tpl_path."bloc/");
+		lfFolderCopy($taget_tpl_path."bloc/", $bloc_path);
 
 	// mypageの場合にはフォルダごとコピーする
 	}elseif($objPage->tpl_subno_template == $objPage->arrSubnavi[4]){
