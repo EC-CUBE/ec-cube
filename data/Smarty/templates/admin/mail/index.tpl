@@ -356,9 +356,9 @@
 							<td width="20"><span class="white">#</span></td>
 							<td width="80"><span class="white">会員番号</span></td>
 							<td width="80"><span class="white">受注番号</span></td>
-							<td width="120"><span class="white">名前</span></td>				
-							<td width="120"><span class="white">メールアドレス</span></td>	
-							<td width="120"><span class="white">希望配信</span></td>
+							<td width="150"><span class="white">名前</span></td>				
+							<td width="150"><span class="white">メールアドレス</span></td>	
+							<td width="111"><span class="white">希望配信</span></td>
 							<td width="120"><span class="white">登録日</span></td>
 							<td width="40"><span class="white">削除</span></td>		
 						</tr>
