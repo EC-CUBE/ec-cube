@@ -313,7 +313,7 @@
 						<tr bgcolor="<!--{$arrORDERSTATUS_COLOR[$status]}-->" class="fs12n">
 							<td align="center"><!--{$arrResults[cnt].create_date|sfDispDBDate}--></td>
 							<td align="right"><!--{$arrResults[cnt].order_id}--></td>
-							<td><!--{$arrResults[cnt].order_name01|escape}--> <!--{$arrResults[cnt].order_name02|escape}--></td>
+							<td align="center"><!--{$arrResults[cnt].order_name01|escape}--> <!--{$arrResults[cnt].order_name02|escape}--></td>
 							<!--{assign var=payment_id value="`$arrResults[cnt].payment_id`"}-->
 							<td align="center"><!--{$arrPayment[$payment_id]}--></td>
 							<td align="right"><!--{$arrResults[cnt].total|number_format}--></td>
