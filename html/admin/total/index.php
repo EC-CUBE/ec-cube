@@ -458,7 +458,7 @@ function lfGetGraphBar($arrResults, $keyname, $type, $xtitle, $ytitle, $sdate, $
 			$objGraphBar = new SC_GraphBar();
 			
 			foreach(array_keys($arrList) as $val) {
-				$arrKey[] = ereg_replace("°¡", " - ", $val);
+				$arrKey[] = ereg_replace("°¡", "-", $val);
 			}
 			
 			// •∞•È•’…¡≤Ë
