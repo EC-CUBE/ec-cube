@@ -555,7 +555,7 @@ function lfGetOrderMember($type, $sdate, $edate, $objPage, $graph = true) {
 
 /** 商品別集計 **/
 function lfGetOrderProducts($type, $sdate, $edate, $objPage, $graph = true) {
-	
+	sfprintr($where);
 	list($where, $arrval) = lfGetWhereMember('create_date', $sdate, $edate, $type);
 	
 	$sql = "SELECT product_id, T1.product_code, T2.name, T1.products_count, T1.order_count, T1.price, T1.total ";
@@ -628,8 +628,6 @@ function lfGetOrderAge($type, $sdate, $edate, $objPage, $graph = true) {
 
 	$objQuery = new SC_Query();
 	$objPage->arrResults = $objQuery->getall($sql, $arrval);
-	
-	$objQuery->getlastquery(true);
 	
 	$max = count($objPage->arrResults);
 	for($i = 0; $i < $max; $i++) {
