@@ -5,7 +5,7 @@ class LC_Page {
 	function LC_Page() {
 		$this->tpl_mainpage = ROOT_DIR . USER_DIR . 'templates/mypage/history.tpl';
 		$this->tpl_title = "MY¥Ú¡¼¥¸/¹ØÆþÍúÎò¾ÜºÙ";
-		$this->tpl_navi = 'mypage/navi.tpl';
+		$this->tpl_navi = ROOT_DIR . USER_DIR . 'templates/mypage/navi.tpl';
 		$this->tpl_mainno = 'mypage';
 		$this->tpl_mypageno = 'index';
 		session_cache_limiter('private-no-expire');

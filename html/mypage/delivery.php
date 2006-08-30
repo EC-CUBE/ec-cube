@@ -6,7 +6,7 @@ class LC_Page{
 	function LC_Page(){
 		$this->tpl_mainpage = ROOT_DIR . USER_DIR . 'templates/mypage/delivery.tpl';
 		$this->tpl_title = "MYページ/お届け先追加･変更";
-		$this->tpl_navi = 'mypage/navi.tpl';
+		$this->tpl_navi = ROOT_DIR . USER_DIR . 'templates/mypage/navi.tpl';
 		$this->tpl_mainno = 'mypage';
 		$this->tpl_mypageno = 'delivery';
 		global $arrPref;

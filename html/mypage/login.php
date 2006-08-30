@@ -4,7 +4,6 @@ require_once("../require.php");
 class LC_Page{
 	function LC_Page() {
 		$this->tpl_mainpage = ROOT_DIR . USER_DIR . 'templates/mypage/login.tpl';
-		$this->tpl_css = '/css/layout/mypage/login.css';
 		$this->tpl_title = 'MYページ(ログイン)';
 	}
 }
