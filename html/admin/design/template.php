@@ -84,7 +84,7 @@ $objView->display(MAIN_FRAME);
  * 戻り値	：画面に表示する画像(配列)
  **************************************************************************************************************/
 function lfgetTemplate(){
-	global $arrTemplate;
+//	global $arrTemplate;
 	global $objPage;
 	
 	$arrTemplateImage = array();	// 画面表示画像格納用
@@ -92,35 +92,40 @@ function lfgetTemplate(){
 	$disp = "";
 	$arrDefcheck = array();			// radioボタンのデフォルトチェック格納用
 	
-	// DBからデータ取得
+	// DBから現在選択されているデータ取得
 	$arrDefcheck = lfgetTemplaeData();
-
+	
+	// テンプレートデータを取得する
+	$objQuery = new SC_Query();
+	$sql = "SELECT template_code,template_name,file_path FROM dtb_template ORDER BY create_date DESC";
+	$arrTemplate = $objQuery->getall($sql);
+	
 	switch($objPage->tpl_subno_template) {
 		// TOP
 		case $objPage->arrSubnavi[1]:
-			$Image = "TopImage";			// イメージの配列要素名格納用
+			$Image = "TopImage.jpg";			// イメージの配列要素名格納用
 			$disp = $objPage->arrSubnavi[1];
 			break;
 			
 		// 商品一覧
 		case $objPage->arrSubnavi[2]:
-			$Image = "ProdImage";			// イメージの配列要素名格納用
+			$Image = "ProdImage.jpg";			// イメージの配列要素名格納用
 			$disp = $objPage->arrSubnavi[2];
 			break;
 			
 		// 商品詳細
 		case $objPage->arrSubnavi[3]:
-			$Image = "DetailImage";			// イメージの配列要素名格納用
+			$Image = "DetailImage.jpg";			// イメージの配列要素名格納用
 			$disp = $objPage->arrSubnavi[3];
 			break;
 			
 		// MYページ
 		case $objPage->arrSubnavi[4]:
-			$Image = "MypageImage";			//イメージの配列要素名格納用
+			$Image = "MypageImage.jpg";			//イメージの配列要素名格納用
 			$disp = $objPage->arrSubnavi[4];
 			break;
 	}
-		
+
 	// 画像表示配列作成
 	foreach($arrTemplate as $key => $val){
 		$arrTemplateImage['image'][$key] = $val[$Image];
