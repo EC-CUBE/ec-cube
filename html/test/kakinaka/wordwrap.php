@@ -9,8 +9,6 @@ print $str;
 
 //$Message_tmp = mbsplit();
 
-print($Message_tmp);
-
 $test = $str;// "abあcdか1さ0たなはbgfまやらわ";
 
 $str = array();
