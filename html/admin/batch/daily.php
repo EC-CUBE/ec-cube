@@ -30,9 +30,7 @@ function lfStartDailyTotal($term, $start, $command = false) {
 	print("term:" . $term);
 	
 	$now_time = time();
-	
-	print(date("y/m/d H:M:s", time()));
-	
+		
 	// グラフ画像の削除
 	$path = GRAPH_DIR . "*.png";
 	system ("rm -rf $path");
@@ -43,7 +41,7 @@ function lfStartDailyTotal($term, $start, $command = false) {
 	$objQuery->delete("dtb_order_detail", $where);
 		
 	// 最後のバッチ実行からLOAD_BATCH_PASS秒経過していないと実行しない。
-	$batch_pass = date("Y/m/d H:m:s", $now_time);
+	$batch_pass = date("y/m/d H:i:s", $now_time);
 	
 	$objQuery = new SC_Query();
 	$arrRet = $objQuery->select("create_date", "dtb_bat_order_daily", "create_date > ?", array($batch_pass));
