@@ -334,7 +334,7 @@ function lfCheckError() {
 }
 
 /* 折れ線グラフの作成 */
-function lfGetGraphLine($arrResults, $keyname, $type, $xtitle, $ytitle) {
+function lfGetGraphLine($arrResults, $keyname, $type, $xtitle, $ytitle, $sdate, $edate) {
 	
 	$ret_path = "";
 	
@@ -379,7 +379,7 @@ function lfGetGraphLine($arrResults, $keyname, $type, $xtitle, $ytitle) {
 			list($ey, $em, $ed) = split("/" , $arrKey[count($arrKey) - 1]);
 			$startKey = $sy . "年" . $sm . "月" . $sd . "日";
 			$endKey = $ey . "年" . $em . "月" . $ed . "日";
-			$objGraphLine->drawTitle("集計期間：" . $startKey . " - " . $endKey);
+			$objGraphLine->drawTitle("集計期間：" . $sdate . " - " . $edate);
 			
 			// グラフ描画
 			$objGraphLine->drawGraph();
@@ -765,7 +765,7 @@ function lfGetOrderTerm($type, $sdate, $edate, $objPage, $graph = true) {
 		// 折れ線グラフの生成	
 		if($graph) {
 			$image_key = "term_" . $type;
-			$objPage->tpl_image = lfGetGraphLine($objPage->arrResults, $objPage->keyname, $image_key, $xtitle, $ytitle);
+			$objPage->tpl_image = lfGetGraphLine($objPage->arrResults, $objPage->keyname, $image_key, $xtitle, $ytitle, $sdate, $edate);
 		}
 		
 		// 検索結果が0でない場合
