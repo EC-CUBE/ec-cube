@@ -25,16 +25,10 @@ class LC_Page {
 $objPage = new LC_Page();
 $objView = new SC_AdminView();
 $objSess = new SC_Session();
-$arrTemplate = array();
 
 // 認証可否の判定
 $objSess = new SC_Session();
 sfIsSuccess($objSess);
-
-// テンプレートデータを取得する
-$objQuery = new SC_Query();
-$sql = "SELECT template_code,template_name,file_path FROM dtb_template ORDER BY create_date DESC";
-$arrTemplate = $objQuery->getall($sql);
 
 // GETの値を受け取る
 $get_tpl_subno_template = $_GET['tpl_subno_template'];
@@ -95,7 +89,6 @@ $objView->display(MAIN_FRAME);
  **************************************************************************************************************/
 function lfgetTemplate(){
 	global $objPage;
-	global $arrTemplate;
 	$filepath = "/test/kakinaka/";
 	
 	$arrTemplateImage = array();	// 画面表示画像格納用
@@ -105,6 +98,11 @@ function lfgetTemplate(){
 	
 	// DBから現在選択されているデータ取得
 	$arrDefcheck = lfgetTemplaeBaseData();
+	
+	// テンプレートデータを取得する
+	$objQuery = new SC_Query();
+	$sql = "SELECT template_code,template_name,file_path FROM dtb_template ORDER BY create_date DESC";
+	$arrTemplate = $objQuery->getall($sql);
 	
 	switch($objPage->tpl_subno_template) {
 		// TOP
@@ -222,13 +220,17 @@ function lfUpdData(){
  **************************************************************************************************************/
 function lfChangeTemplate(){
 	global $objPage;
-	global $arrTemplate;
 	$tpl_path = "test/kakinaka/";
 	
 	$tpl_name = "";
 	$tpl_element = "";
 	
 	$chk_tpl = $_POST['check_template'];
+	
+	// テンプレートデータを取得する
+	$objQuery = new SC_Query();
+	$sql = "SELECT template_code,template_name,file_path FROM dtb_template WHERE template_code = ?";
+	$arrTemplate = $objQuery->getall($sql, array($chk_tpl));	
 	
 	switch($objPage->tpl_subno_template) {
 		// TOP
@@ -259,7 +261,7 @@ function lfChangeTemplate(){
 			break;
 	}
 	
-	sfprintr($arrTemplate);
+	sfprintr($chk_tpl);
 	
 /*	
 	// TOPを変更した場合には全画面変更
