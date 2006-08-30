@@ -89,6 +89,7 @@ a:hover { color: #f9a406; text-decoration: underline; }
 	color:#ffffff;
 	text-decoration:none;
 	display:block;
+	overflow:auto;
 }
 
 .navi a:visited {
