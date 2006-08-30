@@ -85,7 +85,7 @@ $objView->display(MAIN_FRAME);
  **************************************************************************************************************/
 function lfgetTemplate(){
 	global $objPage;
-	$filepath = "test/kakinaka/";
+	$filepath = "/test/kakinaka/";
 	
 	$arrTemplateImage = array();	// 画面表示画像格納用
 	$Image = "";					// イメージの配列要素名格納用
