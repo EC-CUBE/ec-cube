@@ -1394,7 +1394,7 @@ function sfSendOrderMail($order_id, $template_id, $subject = "", $header = "", $
 	}
 	$objPage->Message_tmp = $Message_tmp;	
 	
-	sfprintr($objPage);
+	sfprintr($objPage->Message_tmp);
 		exit;
 		
 	// 顧客情報の取得
