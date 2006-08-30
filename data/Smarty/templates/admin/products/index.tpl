@@ -182,7 +182,7 @@
 					</tr>
 					<tr>
 						<td background="/img/contents/reselt_left_bg.gif"><img src="/img/contents/reselt_left_middle.gif" width="22" height="12" alt=""></td>
-						<td bgcolor="#393a48" class="white12">検索結果一覧　<span class="reselt"><!--検索結果数--><!--{$tpl_linemax}-->件</span>&nbsp;が該当しました。</td>
+						<td bgcolor="#393a48" class="white10">検索結果一覧　<span class="reselt"><!--検索結果数--><!--{$tpl_linemax}-->件</span>&nbsp;が該当しました。</td>
 						<td background="/img/contents/reselt_right_bg.gif"><img src="/img/common/_.gif" width="22" height="8" alt=""></td>
 					</tr>
 					<tr>
@@ -222,7 +222,7 @@
 					<td bgcolor="#cccccc">
 					<!--検索結果表示テーブル-->
 					<table width="840" border="0" cellspacing="1" cellpadding="5" summary=" ">
-						<tr bgcolor="#636469" align="center" class="fs10n">
+						<tr bgcolor="#636469" align="center" class="fs12n">
 							<td width="50" rowspan="2"><span class="white">商品ID</span></td>
 							<td width="90" rowspan="2"><span class="white">商品画像</span></td>
 							<td width="90"><span class="white">商品コード</span></td>
@@ -235,7 +235,7 @@
 							<!--{/if}-->
 							<td width="50" rowspan="2"><span class="white">削除</span></td>
 						</tr>
-						<tr bgcolor="#636469" align="center" class="fs10n">
+						<tr bgcolor="#636469" align="center" class="fs12n">
 							<td width="90"><span class="white">価格(円)</span></td>
 							<td width="430"><span class="white">カテゴリ</span></td>
 							<td width="60"><span class="white">種別</span></td>
@@ -244,7 +244,7 @@
 						<!--{section name=cnt loop=$arrProducts}-->
 						<!--▼商品<!--{$smarty.section.cnt.iteration}-->-->
 						<!--{assign var=status value="`$arrProducts[cnt].status`"}-->
-						<tr bgcolor="<!--{$arrPRODUCTSTATUS_COLOR[$status]}-->" class="fs10">
+						<tr bgcolor="<!--{$arrPRODUCTSTATUS_COLOR[$status]}-->" class="fs12">
 							<td rowspan="2" align="center"><!--{$arrProducts[cnt].product_id}--></td>
 							<td rowspan="2" align="center">
 							<!--{if $arrProducts[cnt].main_list_image != ""}-->
