@@ -82,11 +82,11 @@ a:hover { color: #f9a406; text-decoration: underline; }
 /*navi*/
 
 /* ---¥Æ¥¹¥È¢§--- */
-.test {
+a.test {
 	width:140px;
 }
 
-a.navi_dummy {
+.navi_dummy {
 	height:33;
 }
 
