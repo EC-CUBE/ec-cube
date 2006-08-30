@@ -188,6 +188,51 @@ insert into dtb_csv(csv_id,col,disp_name,rank)values(3,'status','対応状況',51);
 insert into dtb_csv(csv_id,col,disp_name,rank)values(3,'create_date','注文日時',52);
 insert into dtb_csv(csv_id,col,disp_name,rank)values(3,'update_date','更新日時',53);
 
+-- 支払方法データ
+insert into dtb_payment(payment_method,rank,fix,creator_id)values('代金引換',1,2,1);
+insert into dtb_payment(payment_method,rank,fix,creator_id)values('銀行振込',2,2,1);
+insert into dtb_payment(payment_method,rank,fix,creator_id)values('現金書留',3,2,1);
+insert into dtb_payment(payment_method,rank,fix,creator_id)values('郵便振替',4,2,1);
+
+-- 注文完了メール
+update dtb_mailtemplate set 
+subject = 'ご注文ありがとうございます。',
+header = 
+'この度はご注文いただき誠に有難うございます。
+下記ご注文内容にお間違えがないかご確認下さい。
+
+',
+footer = 
+'
+
+==============================================================☆
+このメッセージはお客様へのお知らせ専用ですので、
+このメッセージへの返信としてご質問をお送りいただいても回答できません。
+ご了承ください。
+
+ご質問やご不明な点がございましたら、こちらからお願いいたします。
+http://------.co.jp
+
+'
+where template_id = 1;
+
+-- 新着情報データ
+insert into dtb_news (news_title, news_comment, creator_id) 
+values('サイトオープンいたしました!','一人暮らしからオフィスなどさまざまなシーンで あなたの生活をサポートするグッズをご家庭へお届けします！一人暮らしからオフィスなどさまざまなシーンで あなたの生活をサポートするグッズをご家庭へお届けします！一人暮らしからオフィスなどさまざまなシーンで あなたの生活をサポートするグッズをご家庭へお届けします！',1);
+
+-- 商品データ
+insert into dtb_products (name,sale_unlimited,category_id,rank,status,product_flag,point_rate,main_list_comment,main_list_image,main_comment,main_image,main_large_image, creator_id)
+values('和菓子3点セット(小春)','1','1','1','1','0','100','一覧-メインコメントダミーテキストです。一覧-メインコメントダミーテキストです。一覧-メインコメントダミーテキストです。一覧-メインコメントダミーテキストです。','08281319_44f26ebbf2435.jpg','詳細-メインコメントダミーテキストです。詳細-メインコメントダミーテキストです。詳細-メインコメントダミーテキストです。詳細-メインコメントダミーテキストです。','08281319_44f26ec47f8c7.jpg','08281319_44f26eca33e2f.jpg', 1);
+insert into dtb_products (name,sale_unlimited,category_id,rank,status,product_flag,point_rate,main_list_comment,main_list_image,main_comment,main_image,main_large_image, creator_id)
+values('和菓子3点セット(花暦)','1','1','1','1','10','100','一覧-メインコメントダミーテキストです。一覧-メインコメントダミーテキストです。一覧-メインコメントダミーテキストです。一覧-メインコメントダミーテキストです。','08281159_44f25c1bb46e4.jpg','詳細-メインコメントダミーテキストです。詳細-メインコメントダミーテキストです。詳細-メインコメントダミーテキストです。詳細-メインコメントダミーテキストです。','08281200_44f25c4be7e1a.jpg','08281201_44f25c6daaf90.jpg', 1);
+
+-- 商品クラスデータ
+insert into dtb_products_class(product_id,classcategory_id1,classcategory_id2,product_code,stock_unlimited,price02,creator_id)
+values('1','0','0','a-001','1','1500','1');
+insert into dtb_products_class(product_id,classcategory_id1,classcategory_id2,product_code,stock_unlimited,price02,creator_id)
+values('2','0','0','a-002','1','1500','1');
+
+
 
 INSERT INTO dtb_kiyaku (kiyaku_title, kiyaku_text, rank, creator_id, update_date, delete) 
 VALUES ('第１条（会員）','1. 「会員」とは、当社が定める手続に従い本規約に同意の上、入会の申し込みを行う個人をいいます。

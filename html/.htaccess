@@ -4,3 +4,5 @@ php_value mbstring.http_input EUC-JP
 php_value auto_detect_line_endings on
 
 Options -Indexes
+
+AddType text/css .css
