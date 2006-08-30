@@ -73,6 +73,8 @@ $objPage->arrTemplate = lfgetTemplate();
 $objPage->MainImage = $objPage->arrTemplate['check'];
 $objPage->arrTemplate['check'] = array($objPage->arrTemplate['check']=>"check");
 
+sfprintr($objPage->arrTemplate);
+
 // 画面の表示
 $objView->assignobj($objPage);
 $objView->display(MAIN_FRAME);
