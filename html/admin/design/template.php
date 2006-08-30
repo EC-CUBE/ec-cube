@@ -274,6 +274,7 @@ function lfChangeTemplate(){
 		// MYPAGEのファイルを取得する
 		$arrMypage=glob($taget_tpl_path."mypage" . "*" );
 		
+		sfprintr($taget_tpl_path);
 		sfprintr(glob($taget_tpl_path . "*" ));
 		
 		// フォルダがなければ作成する
