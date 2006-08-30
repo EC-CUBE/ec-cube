@@ -808,8 +808,8 @@ function sfGetLevelCatList($parent_zero = true) {
 			$arrOutput[$cnt].= "¡¡";
 		}
 		
-		if($arrRet[$cnt]['level'] != LEVEL_MAX) {
-			$arrOutput[$cnt].= ">";
+		for($cat_cnt = 0; $cat_cnt < $arrRet[$cnt]['level']; $cat_cnt++) {
+			$arrOutput[$cnt].= CATEGORY_HEAD;
 		}
 		$arrOutput[$cnt].= $arrRet[$cnt]['category_name'];
 	}
