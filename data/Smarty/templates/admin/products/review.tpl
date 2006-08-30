@@ -221,7 +221,7 @@
 							</tr>
 		
 							<!--{section name=cnt loop=$arrReview}-->
-							<tr bgcolor="#ffffff" class="fs12" align="center">
+							<tr bgcolor="#ffffff" class="fs12">
 								<td><!--{$arrReview[cnt].create_date|sfDispDBDate}--></td>
 								<td><!--{$arrReview[cnt].reviewer_name|escape}--></td>
 								<td><!--{$arrReview[cnt].name|escape}--></td>
