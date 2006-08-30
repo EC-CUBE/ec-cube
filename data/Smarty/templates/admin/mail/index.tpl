@@ -121,7 +121,7 @@
 							*}-->
 							<tr class="fs12n">
 								<td bgcolor="#f2f1ec" width="110">メールアドレス</td>
-								<td bgcolor="#ffffff" width="607" colspan="3">
+								<td bgcolor="#ffffff"colspan="3">
 									<!--{if $arrErr.email}--><span class="red12"><!--{$arrErr.email}--></span><!--{/if}-->
 									<span style="<!--{$arrErr.email|sfGetErrorColor}-->">
 									<input type="text" name="email" maxlength="<!--{$smarty.const.STEXT_LEN}-->" value="<!--{$list_data.email|escape}-->" size="60" class="box60"  style="<!--{$arrErr.email|sfGetErrorColor}-->"/>
@@ -131,7 +131,7 @@
 							
 							<tr class="fs12n">
 								<td bgcolor="#f2f1ec" width="110">職業</td>
-								<td bgcolor="#ffffff" width="607" colspan="3">
+								<td bgcolor="#ffffff" colspan="3">
 									<!--{if $arrErr.job}--><span class="red12"><!--{$arrErr.job}--></span><!--{/if}-->
 									<!--{html_checkboxes name="job" options=$arrJob separator="&nbsp;" selected=$list_data.job}-->
 								</td>
@@ -139,7 +139,7 @@
 				
 							<tr class="fs12n">
 								<td bgcolor="#f2f1ec" width="110">生年月日</td>
-								<td bgcolor="#ffffff" width="607" colspan="3">
+								<td bgcolor="#ffffff" colspan="3">
 									<!--{if $arrErr.b_start_year || $arrErr.b_end_year}--><span class="red12"><!--{$arrErr.b_start_year}--><!--{$arrErr.b_end_year}--></span><br><!--{/if}-->
 									<select name="b_start_year" style="<!--{$arrErr.b_start_year|sfGetErrorColor}-->">
 										<option value="" selected="selected">----</option>
@@ -169,7 +169,7 @@
 							</tr>	
 							<tr class="fs12n">
 								<td bgcolor="#f2f1ec" width="110">登録日</td>
-								<td bgcolor="#ffffff" width="607" colspan="3">
+								<td bgcolor="#ffffff" colspan="3">
 									<!--{if $arrErr.start_year || $arrErr.end_year}--><span class="red12"><!--{$arrErr.start_year}--><!--{$arrErr.end_year}--></span><br><!--{/if}-->
 									<select name="start_year"  style="<!--{$arrErr.start_year|sfGetErrorColor}-->">
 										<option value="" selected="selected">----</option>
@@ -199,7 +199,7 @@
 							</tr>			
 							<tr class="fs12n">
 								<td bgcolor="#f2f1ec" width="110">最終購入日</td>
-								<td bgcolor="#ffffff" width="607" colspan="3">
+								<td bgcolor="#ffffff" colspan="3">
 									<!--{if $arrErr.buy_start_year || $arrErr.buy_end_year}--><span class="red12"><!--{$arrErr.buy_start_year}--><!--{$arrErr.buy_end_year}--></span><br><!--{/if}-->
 									<select name="buy_start_year" style="<!--{$arrErr.buy_start_year|sfGetErrorColor}-->">
 										<option value="" selected="selected">----</option>
