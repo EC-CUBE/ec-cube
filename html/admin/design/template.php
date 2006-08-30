@@ -270,12 +270,13 @@ function lfChangeTemplate(){
 		copy($taget_tpl_path . "/top.tpl", $save_tpl_path . "top.tpl");
 		copy($taget_tpl_path . "/list.tpl", $save_tpl_path . "list.tpl");
 		copy($taget_tpl_path . "/detail.tpl", $save_tpl_path . "detail.tpl");
-		
+
+		// mypageはフォルダごとコピー
 		lfFolderCopy($taget_tpl_path."mypage/", $save_tpl_path."mypage/");
 
 		// ブロックデータのコピー
 		lfFolderCopy($taget_tpl_path."bloc/", $save_tpl_path."bloc/");
-		
+
 	// mypageの場合にはフォルダごとコピーする
 	}elseif($objPage->tpl_subno_template == $objPage->arrSubnavi[4]){
 		lfFolderCopy($taget_tpl_path."mypage/", $save_tpl_path."mypage/");
