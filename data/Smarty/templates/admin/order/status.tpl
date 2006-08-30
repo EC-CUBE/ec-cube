@@ -85,10 +85,10 @@
 										<td width="90">受注日</td>				
 										<td width="100">顧客名</td>				
 										<td width="90">支払方法</td>
-										<td width="71">購入金額（円）</td>
+										<td width="81">購入金額（円）</td>
 										<td width="70">発送日</td>
 										<td width="70">対応状況</td>
-										<td width="30">選択</td>
+										<td width="20">選択</td>
 									</tr>
 									<!--{section name=cnt loop=$arrStatus}-->
 									<!--{assign var=status value="`$arrStatus[cnt].status`"}-->
