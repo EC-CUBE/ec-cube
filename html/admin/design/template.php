@@ -261,20 +261,36 @@ function lfChangeTemplate(){
 			break;
 	}
 	
-	sfprintr($arrTemplate);
-	sfprintr($fileArray=glob( ROOT_DIR. $tpl_path."*.tpl" ));
+	$taget_tpl_path = ROOT_DIR . $tpl_path . $arrTemplate[0]['template_code'];
+	$save_tpl_path = ROOT_DIR . $tpl_path;
 	
 	// TOPを変更した場合には全画面変更
 	if ($objPage->tpl_subno_template == $objPage->arrSubnavi[1]){
 		// テンプレートファイルをコピー
-		copy(ROOT_DIR . $tpl_path . $arrTemplate[0]['template_code'] . "/top.tpl", ROOT_DIR . $tpl_path . "top.tpl");
-		copy(ROOT_DIR . $tpl_path . $arrTemplate[0]['template_code'] . "/list.tpl", ROOT_DIR . $tpl_path . "list.tpl");
-		copy(ROOT_DIR . $tpl_path . $arrTemplate[0]['template_code'] . "/detail.tpl", ROOT_DIR . $tpl_path . "detail.tpl");
-		copy(ROOT_DIR . $tpl_path . $arrTemplate[0]['template_code'] . "/mypage.tpl", ROOT_DIR . $tpl_path . "mypage.tpl");
+		copy($taget_tpl_path . "/top.tpl", $save_tpl_path . "top.tpl");
+		copy($taget_tpl_path . "/list.tpl", $save_tpl_path . "list.tpl");
+		copy($taget_tpl_path . "/detail.tpl", $save_tpl_path . "detail.tpl");
+		
+		// MYPAGEのファイルを取得する
+		$arrMypage = $fileArray=glob($taget_tpl_path ."*.tpl" );
+		
+		// フォルダがなければ作成する
+		if(!is_dir($save_tpl_path."mypage")){
+			mkdir($save_tpl_path."mypage");
+		}
+		
+		foreach($arrMypage as $key => $val){
+			$matches = array();
+			mb_ereg("^(.*[\/])(.*)",$val, $matches);
+			$data=$matches[2];
+			
+			sfprintr($matches);
+//			copy($val, $save_tpl_path . "detail.tpl");
+		}
 
 		// ブロックデータのコピー
 	}else{
 		// テンプレートファイルをコピー
-		copy(ROOT_DIR . $tpl_path . $arrTemplate[0]['template_code'] . "/" . $tpl_name, ROOT_DIR . $tpl_path . $tpl_name);
+		copy($tpl_path . "/" . $tpl_name, $save_tpl_path . $tpl_name);
 	}
 }
