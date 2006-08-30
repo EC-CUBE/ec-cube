@@ -101,7 +101,7 @@ a:hover { color: #f9a406; text-decoration: underline; }
 	text-decoration:none;
 }
 
-.navi-dummy-on a{
+.navi-on-dummy a{
 	background: url(/img/contents/navi_bar.gif);
 	background-repeat: repeat-y;
 	background-color: #a5a5a5;
