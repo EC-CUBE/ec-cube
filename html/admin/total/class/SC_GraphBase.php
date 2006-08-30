@@ -136,7 +136,7 @@ class SC_GraphBase {
 		$text_width = $this->getTextWidth($text, $font_size);
 		$left = ($this->bgw - $text_width) / 2;
 		$top = TITLE_TOP;
-		$this->setText($font_size, $left, $top, $text, $this->title_color);		
+		$this->setText(30, $left, $top, $text, $this->title_color);		
 	}
 	
 	// ログを出力する
