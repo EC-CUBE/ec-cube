@@ -116,7 +116,8 @@ a:hover { color: #f9a406; text-decoration: underline; }
 	padding: 10px 5px 10px 12px;
 	color:#000000;
 	text-decoration:none;
-	display:block;	
+	display:block;
+	overflow:hidden;	
 }
 
 .navi-on a:visited {
