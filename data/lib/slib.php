@@ -12,10 +12,16 @@ sfLoadUpdateModule();
 
 // インストール初期処理
 function sfInitInstall() {
+	// インストール済みが定義されていない。
 	if(!defined('ECCUBE_INSTALL')) {
 		if(!ereg("^/install/", $_SERVER['PHP_SELF'])) {
 			header("Location: /install/");
 		}	
+	} else {
+		$path = ROOT_DIR . "install/index.php";
+		if(file_exists($path)) {
+			sfErrorHeader(">> /install/index.phpはセキュリティホールになります。運用開始前にファイルを削除してください。");
+		}
 	}
 }
 
