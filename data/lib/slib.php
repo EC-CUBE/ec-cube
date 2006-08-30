@@ -774,7 +774,7 @@ function sfGetCategoryList($addwhere = "", $products_check = false) {
 		for($n = 1; $n < $arrRet[$cnt]['level']; $n++) {
 			$arrList[$id].= "¡¡";
 		}
-		if($arrRet[$cnt]['level'] != LEVEL_MAX) {
+		for($cat_cnt = 0; $cat_cnt < $arrRet[$cnt]['level']; $cat_cnt++) {
 			$arrOutput[$cnt].= CATEGORY_HEAD;
 		}
 		$arrList[$id].= $name;
