@@ -163,7 +163,7 @@ case 'search':
 default:
 	if(count($_GET) == 0) {
 		// 1ヶ月分の集計
-		lfStartDailyTotal(31,0);
+		lfStartDailyTotal(300,0);
 	}
 	break;
 }
