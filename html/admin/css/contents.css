@@ -90,7 +90,7 @@ a:hover { color: #f9a406; text-decoration: underline; }
 	background: url(/img/contents/navi_bar.gif);
 	background-repeat: repeat-y;
 	background-color: #636469;
-//	padding: 10px 5px 10px 12px;	
+	padding: 10px 5px 10px 12px;	
 	width:140px;
 	color:#ffffff;
 	text-decoration:none;
@@ -111,7 +111,7 @@ a:hover { color: #f9a406; text-decoration: underline; }
 	background-repeat: repeat-y;
 	background-color: #a5a5a5;
 	width:140px;
-//	padding: 10px 5px 10px 12px;
+	padding: 10px 5px 10px 12px;
 	color:#000000;
 	text-decoration:none;
 }
