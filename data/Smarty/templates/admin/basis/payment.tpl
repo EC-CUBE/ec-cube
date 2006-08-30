@@ -43,8 +43,8 @@
 								<table width="678" border="0" cellspacing="1" cellpadding="5" summary=" ">
 									<tr align="center" bgcolor="#f2f1ec" class="fs12n">
 										<td width="140">支払方法</td>
-										<td width="80">手数料（円）</td>
-										<td width="120">利用条件</td>
+										<td width="70">手数料（円）</td>
+										<td width="130">利用条件</td>
 										<td width="90">配送サービス</td>
 										<td width="50">編集</td>
 										<td width="50">削除</td>
