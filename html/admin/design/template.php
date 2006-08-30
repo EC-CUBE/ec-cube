@@ -130,8 +130,8 @@ function lfgetTemplate(){
 
 	// 画像表示配列作成
 	foreach($arrTemplate as $key => $val){
-		$arrTemplateImage['image'][$key] = $filepath . $val['template_code'] . "/" . $Image;
-		$arrTemplateImage['code'][$key] = $val['template_code'];
+		$arrTemplateImage['image'][$val] = $filepath . $val['template_code'] . "/" . $Image;
+		$arrTemplateImage['code'][$val] = $val['template_code'];
 	}
 	
 	
