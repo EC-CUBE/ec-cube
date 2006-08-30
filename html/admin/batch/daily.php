@@ -40,21 +40,13 @@ function lfStartDailyTotal($term, $start, $command = false) {
 	
 	$ret = $objQuery->max("dtb_bat_order_daily", "create_date");
 	list($batch_last) = split("\.", $ret);
-	
 	$pass = $now_time - strtotime($batch_last);
-	
-	print($pass);
-	
-	// 最後のバッチ実行からLOAD_BATCH_PASS秒経過していないと実行しない。
-	$batch_pass = date("y/m/d H:i:s", $now_time - LOAD_BATCH_PASS);
-	
-	$objQuery = new SC_Query();
-	$arrRet = $objQuery->select("create_date", "dtb_bat_order_daily", "create_date > ?", array($batch_pass));
 		
-	//if(count($arrRet) > 0) {
+	// 最後のバッチ実行からLOAD_BATCH_PASS秒経過していないと実行しない。
+	if($pass > LOAD_BATCH_PASS) {
 		gfPrintLog("LAST BATCH " . $arrRet[0]['create_date'] . " > " . $batch_pass . " -> EXIT BATCH $batch_date");
 		return;
-	//}
+	}
 		
 	// 集計
 	for ($i = $start; $i < $term; $i++) {
