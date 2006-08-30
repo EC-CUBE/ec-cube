@@ -392,7 +392,7 @@ function lfGetGraphLine($arrResults, $keyname, $type, $xtitle, $ytitle, $sdate, 
 }
 
 // 円グラフの作成 
-function lfGetGraphPie($arrResults, $keyname, $type, $title = "", $sdate, $edate) {
+function lfGetGraphPie($arrResults, $keyname, $type, $title, $sdate, $edate) {
 	
 	$ret_path = "";
 	
