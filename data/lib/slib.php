@@ -1389,7 +1389,7 @@ function sfSendOrderMail($order_id, $template_id, $subject = "", $header = "", $
 	$Message_tmp = "";
 	foreach($arrMessage as $key => $val){
 		if (strlen($val) > 250) {
-			$Message_tmp .= wordwrap($val,256,"\n",1);
+			$Message_tmp .= wordwrap($val,250,"\n",1);
 		} else {
 			$Message_tmp .= $val."\n";
 		}
