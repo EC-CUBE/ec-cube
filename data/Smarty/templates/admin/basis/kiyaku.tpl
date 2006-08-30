@@ -89,30 +89,30 @@
 												
 						<table width="678" border="0" cellspacing="1" cellpadding="8" summary=" ">
 							<tr bgcolor="#f2f1ec" align="center" class="fs12n">
-								<td width="272">µ¬Ìó¥¿¥¤¥È¥ë</td>
-								<td width="100">ÊÔ½¸</td>
-								<td width="100">ºï½ü</td>
-								<td width="120">°ÜÆ°</td>
+								<td width="471">µ¬Ìó¥¿¥¤¥È¥ë</td>
+								<td width="50">ÊÔ½¸</td>
+								<td width="50">ºï½ü</td>
+								<td width="70">°ÜÆ°</td>
 							</tr>
 							<!--{section name=cnt loop=$arrKiyaku}-->
 							<tr bgcolor="<!--{if $tpl_class_id != $arrKiyaku[cnt].kiyaku_id}-->#ffffff<!--{else}--><!--{$smarty.const.SELECT_RGB}--><!--{/if}-->" class="fs12">
 								<!--{assign var=kiyaku_id value=$arrKiyaku[cnt].kiyaku_id}-->
-								<td width="272"><!--{* µ¬³ÊÌ¾ *}--><!--{$arrKiyaku[cnt].kiyaku_title|escape}--></td>
-								<td width="100" align="center">
+								<td><!--{* µ¬³ÊÌ¾ *}--><!--{$arrKiyaku[cnt].kiyaku_title|escape}--></td>
+								<td align="center">
 								<!--{if $tpl_kiyaku_id != $arrKiyaku[cnt].kiyaku_id}-->
 								<a href="<!--{$smarty.server.PHP_SELF}-->" onclick="fnModeSubmit('pre_edit', 'kiyaku_id', <!--{$arrKiyaku[cnt].kiyaku_id}-->); return false;">ÊÔ½¸</a>
 								<!--{else}-->
 								ÊÔ½¸Ãæ
 								<!--{/if}-->
 								</td>
-								<td width="100" align="center">
+								<td align="center">
 								<!--{if $arrClassCatCount[$class_id] > 0}-->
 								-
 								<!--{else}-->
 								<a href="<!--{$smarty.server.PHP_SELF}-->" onclick="fnModeSubmit('delete', 'kiyaku_id', <!--{$arrKiyaku[cnt].kiyaku_id}-->); return false;">ºï½ü</a>
 								<!--{/if}-->
 								</td>
-								<td width="120" align="center">
+								<td align="center">
 								<!--{if $smarty.section.cnt.iteration != 1}-->
 								<a href="<!--{$smarty.server.PHP_SELF}-->" onclick="fnModeSubmit('up', 'kiyaku_id', <!--{$arrKiyaku[cnt].kiyaku_id}-->); return false;" />¾å¤Ø</a>
 								<!--{/if}-->

@@ -43,12 +43,12 @@
 								<table width="678" border="0" cellspacing="1" cellpadding="8" summary=" ">
 									<tr align="center" bgcolor="#f2f1ec" class="fs12n">
 										<td width="134">支払方法</td>
-										<td width="64">手数料（円）</td>
+										<td width="69">手数料（円）</td>
 										<td width="124">利用条件</td>
 										<td width="84">配送サービス</td>
 										<td width="44">編集</td>
 										<td width="44">削除</td>
-										<td width="74">移動</td>
+										<td width="69">移動</td>
 									</tr>
 									<!--{section name=cnt loop=$arrPaymentListFree}-->
 									<tr bgcolor="#ffffff" class="fs12n">
