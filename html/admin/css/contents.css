@@ -80,6 +80,11 @@ a:hover { color: #f9a406; text-decoration: underline; }
 
 
 /*navi*/
+.navi {
+	table-layout: fixed;
+	overflow:hidden;
+}
+
 .navi a{
 	background: url(/img/contents/navi_bar.gif);
 	background-repeat: repeat-y;
@@ -89,7 +94,6 @@ a:hover { color: #f9a406; text-decoration: underline; }
 	color:#ffffff;
 	text-decoration:none;
 	display:block;
-	float:left;
 }
 
 .navi a:visited {
