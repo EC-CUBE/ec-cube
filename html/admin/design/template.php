@@ -58,8 +58,7 @@ if ($_POST['mode'] == "confirm"){
 	
 	// テンプレートの上書き
 	lfChangeTemplate();
-	
-	sfprintr($_POST);
+
 }
 
 // POST値の引き継ぎ
@@ -72,8 +71,6 @@ $objPage->arrTemplate = lfgetTemplate();
 // デフォルトチェック取得
 $objPage->MainImage = $objPage->arrTemplate['check'];
 $objPage->arrTemplate['check'] = array($objPage->arrTemplate['check']=>"check");
-
-sfprintr($objPage->arrTemplate);
 
 // 画面の表示
 $objView->assignobj($objPage);

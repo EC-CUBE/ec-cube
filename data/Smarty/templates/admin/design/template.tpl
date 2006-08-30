@@ -77,22 +77,22 @@
 										<!--{assign var=key value=$cnt*$smarty.section.template.step+1}-->
 										<!--{assign var=code value=$arrTemplate.code[$key]}-->
 										<!--{assign var=image value=$arrTemplate.image[$code]}-->
+										<!--{if $image != ""}-->
 										<td bgcolor="#ffffff" align="center"><!--{$arrTemplate[template]}-->
-											<!--{if $image != ""}-->
 											<label for="radio<!--{$key}-->"><img height=200 weight=200 src="<!--{$image}-->" name="1"></label><br>
 											<label for="radio<!--{$key}-->"><input type="radio" name="check_template" value="<!--{$code}-->" id="radio<!--{$key}-->" onClick="ChangeImage('<!--{$image}-->');" <!--{if $arrTemplate.check[$code] != ""}-->checked<!--{/if}-->>ÁªÂò</label>
-											<!--{/if}-->
 										</td>
+										<!--{/if}-->
 										<!--{assign var=cnt value=$smarty.section.template.iteration-1}-->
 										<!--{assign var=key value=$cnt*$smarty.section.template.step+2}-->
 										<!--{assign var=code value=$arrTemplate.code[$key]}-->
 										<!--{assign var=image value=$arrTemplate.image[$code]}-->
+										<!--{if $image != ""}-->
 										<td bgcolor="#ffffff" align="center"><!--{$arrTemplate[template]}-->
-											<!--{if $image != ""}-->
 											<label for="radio<!--{$key}-->"><img height=200 weight=200 src="<!--{$image}-->" name="1"></label><br>
 											<label for="radio<!--{$key}-->"><input type="radio" name="check_template" value="<!--{$code}-->" id="radio<!--{$key}-->" onClick="ChangeImage('<!--{$image}-->');" <!--{if $arrTemplate.check[$code] != ""}-->checked<!--{/if}-->>ÁªÂò</label>
-											<!--{/if}-->
 										</td>
+										<!--{/if}-->
 
 										</tr>
 									<!--{/section}-->
