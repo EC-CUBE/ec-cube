@@ -62,7 +62,7 @@
 										<td bgcolor="#f2f1ec" align="center" colspan="3"><strong>テンプレート一覧</strong></td>
 									</tr>
 									
-									<!--{section name=template loop=$arrTemplate}-->
+									<!--{section name=template loop=$arrTemplate step 1}-->
 									<!--{*foreach key=key item=item from=$arrTemplate.image*}-->
 									<!--{assign var=key value=$smarty.section.template.iteration}-->
 									<!--{assign var=item value=$arrTemplate.image[template]}-->
