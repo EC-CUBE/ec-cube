@@ -272,7 +272,7 @@ function lfChangeTemplate(){
 		copy($taget_tpl_path . "/detail.tpl", $save_tpl_path . "detail.tpl");
 		
 		// MYPAGEのファイルを取得する
-		$arrMypage=glob($taget_tpl_path."mypage" . "*" );
+		$arrMypage=glob($taget_tpl_path."mypage/" . "*" );
 		
 		sfprintr($taget_tpl_path);
 		sfprintr(glob($taget_tpl_path . "*" ));
