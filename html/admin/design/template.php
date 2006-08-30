@@ -285,7 +285,7 @@ function lfChangeTemplate(){
 		lfFolderCopy($taget_tpl_path."mypage/", $save_tpl_path."mypage/");
 	}else{
 		// テンプレートファイルをコピー
-		copy($tpl_path . "/" . $tpl_name, $save_tpl_path . $tpl_name);
+		copy($taget_tpl_path . "/" . $tpl_name, $save_tpl_path . $tpl_name);
 	}
 }
 
