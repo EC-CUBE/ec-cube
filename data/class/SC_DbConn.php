@@ -146,14 +146,14 @@ class SC_DbConn{
 		$errmsg.= $sql . "\n";
 		$errmsg.= $result->message . "\n\n";
 		$errmsg.= $result->userinfo . "\n\n";
-		
+		/*
 		ob_start();
 		print_R($result);	
 		$errmsg .= ob_get_contents();
 		ob_end_clean();	
-		
-		mb_send_mail ( $this->error_mail_to, $this->error_mail_title, "${errmsg}\n".date("Y/m/d H:i:s") );
-		
+		*/
+		print_r($errmsg);
+		//mb_send_mail($this->error_mail_to, $this->error_mail_title, "${errmsg}\n".date("Y/m/d H:i:s"));		
 		exit();
 	}
 }
