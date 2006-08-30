@@ -87,27 +87,27 @@
 							<tr><td colspan="3"><img src="/img/contents/main_bar.jpg" width="678" height="10" alt=""></td></tr>
 						</table>
 
-						<table width="678" border="0" cellspacing="1" cellpadding="5" summary=" " bgcolor="#cccccc">
+						<table width="678" border="0" cellspacing="1" cellpadding="8" summary=" " bgcolor="#cccccc">
 							<tr bgcolor="#f2f1ec" align="center" class="fs12n">
-								<td width="440">µ¬³ÊÌ¾</td>
-								<td width="100">ÊÔ½¸</td>
-								<td width="100">ºï½ü</td>
-								<td width="100">°ÜÆ°</td>
+								<td width="439">µ¬³ÊÌ¾</td>
+								<td width="50">ÊÔ½¸</td>
+								<td width="50">ºï½ü</td>
+								<td width="70">°ÜÆ°</td>
 							</tr>
 							<!--{section name=cnt loop=$arrClassCat}-->
 							<tr  bgcolor="<!--{if $tpl_classcategory_id != $arrClassCat[cnt].classcategory_id}-->#ffffff<!--{else}--><!--{$smarty.const.SELECT_RGB}--><!--{/if}-->" class="fs12">
-								<td width="440"><!--{* µ¬³ÊÌ¾ *}--><!--{$arrClassCat[cnt].name|escape}--></td>
-								<td width="100" align="center" >
+								<td><!--{* µ¬³ÊÌ¾ *}--><!--{$arrClassCat[cnt].name|escape}--></td>
+								<td align="center" >
 								<!--{if $tpl_classcategory_id != $arrClassCat[cnt].classcategory_id}-->
 								<a href="<!--{$smarty.server.PHP_SELF}-->" onclick="fnModeSubmit('pre_edit','classcategory_id', <!--{$arrClassCat[cnt].classcategory_id}-->); return false;">ÊÔ½¸</a>
 								<!--{else}-->
 								ÊÔ½¸Ãæ
 								<!--{/if}-->
 								</td>
-								<td width="100" align="center">
+								<td align="center">
 								<a href="<!--{$smarty.server.PHP_SELF}-->" onclick="fnModeSubmit('delete','classcategory_id', <!--{$arrClassCat[cnt].classcategory_id}-->); return false;">ºï½ü</a>
 								</td>
-								<td width="100" align="center">
+								<td align="center">
 								<!--{if $smarty.section.cnt.iteration != 1}-->
 								<a href="<!--{$smarty.server.PHP_SELF}-->" onclick="fnModeSubmit('up','classcategory_id', <!--{$arrClassCat[cnt].classcategory_id}-->); return false;">¾å¤Ø</a>
 								<!--{/if}-->
