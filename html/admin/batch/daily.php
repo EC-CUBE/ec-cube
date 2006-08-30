@@ -53,7 +53,7 @@ function lfStartDailyTotal($term, $start, $command = false) {
 		$count = $objQuery->count("dtb_bat_order_daily", "create_date > ?", $batch_pass);
 		
 		if($count > 0 && !$command) {
-			gfPrintLog("EXIT BATCH $batch_date");
+			gfPrintLog("LAST BATCH $batch_pass -> EXIT BATCH $batch_date");
 			return;
 		}
 		
