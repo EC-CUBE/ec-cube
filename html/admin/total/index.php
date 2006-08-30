@@ -392,7 +392,7 @@ function lfGetGraphLine($arrResults, $keyname, $type, $xtitle, $ytitle, $sdate, 
 }
 
 // 円グラフの作成 
-function lfGetGraphPie($arrResults, $keyname, $type, $title, $sdate, $edate) {
+function lfGetGraphPie($arrResults, $keyname, $type, $title = "", $sdate = "", $edate = "") {
 	
 	$ret_path = "";
 	
@@ -420,7 +420,7 @@ function lfGetGraphPie($arrResults, $keyname, $type, $title, $sdate, $edate) {
 			$objGraphPie->setData($arrList);
 			// 凡例をセットする
 			$objGraphPie->setLegend(array_keys($arrList));
-
+									
 			// メインタイトル作成
 			$arrKey = array_keys($arrList);
 			list($sy, $sm, $sd) = split("[/ ]" , $sdate);
