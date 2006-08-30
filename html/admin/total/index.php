@@ -375,8 +375,8 @@ function lfGetGraphLine($arrResults, $keyname, $type, $xtitle, $ytitle) {
 			
 			// メインタイトル作成
 			$arrKey = array_keys($arrList);
-			list($sy, $sm, $sd) = split($arrKey[0]);
-			list($ey, $em, $ed) = split($arrKey[count($arrKey) - 1]);
+			list($sy, $sm, $sd) = split("/" , $arrKey[0]);
+			list($ey, $em, $ed) = split("/" , $arrKey[count($arrKey) - 1]);
 			$startKey = $sy . "年" . $sm . "月" . $sd . "日";
 			$startKey = $ey . "年" . $em . "月" . $ed . "日";
 			
