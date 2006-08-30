@@ -20,7 +20,7 @@ function sfInitInstall() {
 	} else {
 		$path = ROOT_DIR . "html/install/index.php";
 		if(file_exists($path)) {
-			sfErrorHeader(">> /install/index.phpはセキュリティホールになります。インストール完了後は、ファイルを削除してください。");
+			sfErrorHeader(">> /install/index.phpが残されています。インストール完了後はファイルを削除してください。");
 		}
 	}
 }
