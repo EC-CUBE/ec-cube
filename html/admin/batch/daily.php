@@ -27,7 +27,7 @@ if($term > 0) {
 // 集計の開始
 function lfStartDailyTotal($term, $start, $command = false) {
 	
-	print($term);
+	print("term:" . $term);
 	
 	$now_time = time();
 	
