@@ -26,6 +26,9 @@ if($term > 0) {
 
 // 集計の開始
 function lfStartDailyTotal($term, $start, $command = false) {
+	
+	print($term);
+	
 	$now_time = time();
 	
 	// グラフ画像の削除
