@@ -86,7 +86,7 @@ a:hover { color: #f9a406; text-decoration: underline; }
 	width:140px;
 }
 
-.navi_dummy {
+a.navi_dummy {
 	height:33;
 }
 
