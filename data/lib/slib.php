@@ -25,7 +25,7 @@ function sfInitInstall() {
 		$objConn = new SC_DbConn(DEFAULT_DSN);
 		$result = $objConn->getAll("SELECT * FROM dtb_baseinfo");
 		if(count($result) == 0) {
-			sfErrorHeader(">> 管理画面から基本情報を登録してください。");
+			sfErrorHeader(">> 管理画面-基本情報管理からSHOPマスタを登録してください。");
 		}		
 	}
 }
