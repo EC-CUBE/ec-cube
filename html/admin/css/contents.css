@@ -86,6 +86,14 @@ a:hover { color: #f9a406; text-decoration: underline; }
 	height:100%;
 }
 
+.test {
+	padding: 10px 5px 10px 12px;	
+	width:140px;
+	color:#ffffff;
+	text-decoration:none;
+}
+
+
 .navi_dummy a{
 	background: url(/img/contents/navi_bar.gif);
 	background-repeat: repeat-y;
