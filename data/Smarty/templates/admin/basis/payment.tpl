@@ -46,8 +46,8 @@
 										<td width="64">手数料（円）</td>
 										<td width="124">利用条件</td>
 										<td width="84">配送サービス</td>
-										<td width="50">編集</td>
-										<td width="50">削除</td>
+										<td width="44">編集</td>
+										<td width="44">削除</td>
 										<td width="74">移動</td>
 									</tr>
 									<!--{section name=cnt loop=$arrPaymentListFree}-->
