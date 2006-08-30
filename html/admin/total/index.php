@@ -568,7 +568,7 @@ function lfGetOrderMember($type, $sdate, $edate, $objPage, $graph = true) {
 	// ±ß¥°¥é¥Õ¤ÎÀ¸À®
 	if($graph) {	
 		$image_key = "member";
-		$objPage->tpl_image = lfGetGraphPie($objPage->arrResults, "member_name", $image_key, "(Çä¾åÈæÎ¨)");
+		$objPage->tpl_image = lfGetGraphPie($objPage->arrResults, "member_name", $image_key, "(Çä¾åÈæÎ¨)", $sdate, $edate);
 	}
 	
 	return $objPage;
