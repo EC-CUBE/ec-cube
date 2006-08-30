@@ -5,7 +5,7 @@ $str = "a¤¢";
 
 //$Message_tmp = wordwrap($str,2,"<br>", 1);
 
-$Message_tmp = mbsplit();
+//$Message_tmp = mbsplit();
 
 print($Message_tmp);
 
