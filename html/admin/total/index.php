@@ -427,7 +427,7 @@ function lfGetGraphPie($arrResults, $keyname, $type, $title = "", $sdate, $edate
 			list($ey, $em, $ed) = split("[/ ]" , $edate);
 			$start_date = $sy . "年" . $sm . "月" . $sd . "日";
 			$end_date = $ey . "年" . $em . "月" . $ed . "日";
-			$objGraphLine->drawTitle("集計期間：" . $start_date . " - " . $end_date);
+			$objGraphPie->drawTitle("集計期間：" . $start_date . " - " . $end_date);
 					
 			// 円グラフ描画
 			$objGraphPie->drawGraph();
@@ -470,7 +470,7 @@ function lfGetGraphBar($arrResults, $keyname, $type, $xtitle, $ytitle, $sdate, $
 			list($ey, $em, $ed) = split("[/ ]" , $edate);
 			$start_date = $sy . "年" . $sm . "月" . $sd . "日";
 			$end_date = $ey . "年" . $em . "月" . $ed . "日";
-			$objGraphLine->drawTitle("集計期間：" . $start_date . " - " . $end_date);
+			$objGraphBar->drawTitle("集計期間：" . $start_date . " - " . $end_date);
 			
 			$objGraphBar->drawGraph();
 			$objGraphBar->outputGraph(false,$path);
