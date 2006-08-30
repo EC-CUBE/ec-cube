@@ -44,7 +44,7 @@
 							<tr bgcolor="#ffffff">
 								<td bgcolor="#ffffff" align="center" valign="top" height="400">
 								<!--{if $tpl_linemax > 0 }-->
-									<table width="650" border="0" cellspacing="0" cellpadding="0" summary=" ">
+									<table border="0" cellspacing="0" cellpadding="0" summary=" ">
 										<tr>
 											<td>
 												<select name="change_status">
