@@ -1402,8 +1402,6 @@ function sfSendOrderMail($order_id, $template_id, $subject = "", $header = "", $
 	$objPage->Message_tmp = $Message_tmp;	
 	*/
 	$objPage->Message_tmp = $arrOrder['message'];
-	
-	exit($arrOrder['message']);
 		
 	// 顧客情報の取得
 	$customer_id = $arrOrder['customer_id'];
