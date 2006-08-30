@@ -80,6 +80,10 @@ a:hover { color: #f9a406; text-decoration: underline; }
 
 
 /*navi*/
+.navi {
+	height:auto;
+}
+
 .navi a{
 	background: url(/img/contents/navi_bar.gif);
 	background-repeat: repeat-y;
