@@ -22,7 +22,7 @@ $objPage = new LC_Page();
 $objView = new SC_SiteView();
 $objCartSess = new SC_CartSession();
 $objSiteSess = new SC_SiteSession();
-$objSiteInfo = new SC_SiteInfo();
+$objSiteInfo = $objView->objSiteInfo;
 $objCustomer = new SC_Customer();
 // 基本情報の取得
 $arrInfo = $objSiteInfo->data;

@@ -36,7 +36,7 @@ $objView = new SC_SiteView();
 $objSiteSess = new SC_SiteSession();
 $objCartSess = new SC_CartSession();
 $objCustomer = new SC_Customer();
-$objSiteInfo = new SC_SiteInfo();
+$objSiteInfo = $objView->objSiteInfo;
 $arrInfo = $objSiteInfo->data;
 
 // 注文一時IDの取得

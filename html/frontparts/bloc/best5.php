@@ -9,7 +9,7 @@ class LC_Best5Page {
 
 $objSubPage = new LC_Best5Page();
 $objSubView = new SC_SiteView();
-$objSiteInfo = new SC_SiteInfo();
+$objSiteInfo = $objView->objSiteInfo;
 
 // 基本情報を渡す
 $objSubPage->arrInfo = $objSiteInfo->data;

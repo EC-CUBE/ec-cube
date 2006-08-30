@@ -17,7 +17,7 @@ class LC_Page {
 $objConn = new SC_DBConn();
 $objPage = new LC_Page();
 $objView = new SC_SiteView();
-$objSiteInfo = new SC_SiteInfo();
+$objSiteInfo = $objView->objSiteInfo;
 $objCustomer = new SC_Customer();
 $CONF = sf_getBasisData();
 $arrInfo = $objSiteInfo->data;

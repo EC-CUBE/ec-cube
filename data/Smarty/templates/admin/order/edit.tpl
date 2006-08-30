@@ -302,28 +302,28 @@
 								<td align="right">
 								<!--{assign var=key value="use_point"}-->
 								<span class="red12"><!--{$arrErr[$key]}--></span>
-								<input type="text" name="<!--{$key}-->" value="<!--{$arrForm[$key].value|escape|default:0}-->" maxlength="<!--{$arrForm[$key].length}-->" style="<!--{$arrErr[$key]|sfGetErrorColor}-->"  size="5" class="box6" />
+								<input type="text" name="<!--{$key}-->" value="<!--{$arrForm[$key].value|escape|number_format|default:0}-->" maxlength="<!--{$arrForm[$key].length}-->" style="<!--{$arrErr[$key]|sfGetErrorColor}-->"  size="5" class="box6" />
 								 pt</td>
 							</tr>
 							<!--{if $arrForm.birth_point.value > 0}-->
 							<tr bgcolor="#ffffff" class="fs12n">
 								<td colspan="5" align="right">お誕生日ポイント</td>
 								<td align="right">
-								<!--{$arrForm.birth_point.value}-->
+								<!--{$arrForm.birth_point.value|number_format}-->
 								 pt</td>
 							</tr>
 							<!--{/if}-->
 							<tr bgcolor="#ffffff" class="fs12n">
 								<td colspan="5" align="right">加算ポイント</td>
 								<td align="right">
-								<!--{$arrForm.add_point.value|default:0}-->
+								<!--{$arrForm.add_point.value|number_format|default:0}-->
 								 pt</td>
 							</tr>
 							<tr bgcolor="#ffffff" class="fs12n">
 								<!--{if $arrDisp.customer_id > 0}-->
 								<td colspan="5" align="right">現在ポイント（ポイントの修正は<a href="<!--{$smarty.server.PHP_SELF}-->" onclick="return fnEdit('<!--{$arrDisp.customer_id}-->');">顧客編集</a>から手動にてお願い致します。）</td>
 								<td align="right">
-								<!--{$arrForm.point.value}-->
+								<!--{$arrForm.point.value|number_format}-->
 								 pt</td>
 								<!--{else}-->
 								<td colspan="5" align="right">現在ポイント</td><td align="center">（なし）</td>

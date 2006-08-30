@@ -5,7 +5,7 @@ require_once($SC_VIEW_PHP_DIR . "/../module/Smarty/libs/Smarty.class.php");
 class SC_View {
 	
     var $_smarty;
-	var $arrInfo;	// サイト情報
+	var $objSiteInfo; // サイト情報
 	
     // コンストラクタ
     function SC_View($siteinfo = true) {
@@ -41,8 +41,8 @@ class SC_View {
 		// サイト情報を取得する
 		if($siteinfo) {
 			if(!defined('LOAD_SITEINFO')) {
-				$objSiteInfo = new SC_SiteInfo();
-				$arrInfo['arrSiteInfo'] = $objSiteInfo->data;
+				$this->objSiteInfo = new SC_SiteInfo();
+				$arrInfo['arrSiteInfo'] = $this->objSiteInfo->data;
 				
 				// 都道府県名を変換
 				global $arrPref;

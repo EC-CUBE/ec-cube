@@ -10,7 +10,7 @@ class LC_CartPage {
 $objSubPage = new LC_CartPage();
 $objSubView = new SC_SiteView();
 $objCart = new SC_CartSession();
-$objSiteInfo = new SC_SiteInfo();
+$objSiteInfo = $objView->objSiteInfo;
 
 if (count($_SESSION[$objCart->key]) > 0){
 	// カート情報を取得

@@ -159,7 +159,7 @@ function lfSendMail($CONF, $objPage){
 	//　パスワード変更お知らせメール送信
 	
 	$objMailText = new SC_SiteView();
-	$objSiteInfo = new SC_SiteInfo();
+	$objSiteInfo = $objView->objSiteInfo;
 	$arrInfo = $objSiteInfo->data;
 	$objPage->tpl_shopname=$arrInfo['shop_name'];
 	$objPage->tpl_infoemail = $arrInfo['email02'];
