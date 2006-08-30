@@ -17,13 +17,11 @@ $cut_len = 10;
 
 $len = mb_strlen($test);
 
-print $len;
-/*
-while($len > $cut_len){
+//while($len > $cut_len){
 	$str[] = mb_substr($test,0,10);
 	$tmp = mb_substr($test, 10, $len);
 	$len = mb_strlen($tmp);
-}
+//}
 $str[] = $tmp;
 */
 print_r($str);
