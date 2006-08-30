@@ -89,7 +89,7 @@ $objView->display(MAIN_FRAME);
  **************************************************************************************************************/
 function lfgetTemplate(){
 	global $objPage;
-	$filepath = USER_DIR . "templates/";
+	$filepath = "/" . USER_DIR . "templates/";
 	
 	$arrTemplateImage = array();	// 画面表示画像格納用
 	$Image = "";					// イメージの配列要素名格納用
@@ -135,6 +135,7 @@ function lfgetTemplate(){
 		$arrTemplateImage['image'][$val['template_code']] = $filepath . $val['template_code'] . "/" . $Image;
 		$arrTemplateImage['code'][$key] = $val['template_code'];
 	}
+	
 	
 	
 	// 初期チェック
