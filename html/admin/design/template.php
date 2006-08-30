@@ -272,14 +272,14 @@ function lfChangeTemplate(){
 		copy($taget_tpl_path . "/detail.tpl", $save_tpl_path . "detail.tpl");
 		
 		// MYPAGEのファイルを取得する
-		$fileArray=glob($taget_tpl_path."mypage" ."*.tpl" );
+		$arrMypage=glob($taget_tpl_path."mypage" . "*" );
 		
 		// フォルダがなければ作成する
 		if(!is_dir($save_tpl_path."mypage")){
 			mkdir($save_tpl_path."mypage");
 		}
 		
-		sfprintr($fileArray);
+		sfprintr($arrMypage);
 		
 		foreach($arrMypage as $key => $val){
 			$matches = array();
