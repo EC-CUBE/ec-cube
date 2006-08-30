@@ -83,7 +83,7 @@ $ARR_TEXT_COLOR = array(55, 55, 55);
 // 背景カラー
 $ARR_BG_COLOR = array(255,255,255);	
 // タイトル文字色
-$ARR_TITLE_COLOR = array(50, 50, 50);
+$ARR_TITLE_COLOR = array(100, 100, 100);
 // グリッド線色
 $ARR_GRID_COLOR = array(200, 200, 200);
 // マークの色
