@@ -25,6 +25,7 @@ class LC_Page {
 $objPage = new LC_Page();
 $objView = new SC_AdminView();
 $objSess = new SC_Session();
+$arrTemplate = array();
 
 // Ç§¾Ú²ÄÈÝ¤ÎÈ½Äê
 $objSess = new SC_Session();
@@ -221,7 +222,7 @@ function lfUpdData(){
 function lfChangeTemplate(){
 	global $arrTemplate;
 	global $objPage;
-	$tpl_path = "";
+	$tpl_path = "test/kakinaka/";
 	
 	$tpl_name = "";
 	$tpl_element = "";
