@@ -129,7 +129,13 @@
 								</td>
 							</tr>
 							
-
+							<tr class="fs12n">
+								<td bgcolor="#f2f1ec" width="110">職業</td>
+								<td bgcolor="#ffffff" colspan="3">
+									<!--{if $arrErr.job}--><span class="red12"><!--{$arrErr.job}--></span><!--{/if}-->
+									<!--{html_checkboxes name="job" options=$arrJob separator="&nbsp;" selected=$list_data.job}-->
+								</td>
+							</tr>
 				
 							<tr class="fs12n">
 								<td bgcolor="#f2f1ec" width="110">生年月日</td>
