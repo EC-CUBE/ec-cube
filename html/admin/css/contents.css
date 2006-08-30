@@ -132,6 +132,7 @@ a:hover { color: #f9a406; text-decoration: underline; }
 .subnavi a{
 	background-color: #818287;
 	width:140px;
+	padding: 6px 5px 4px 5px;
 	color:#ffffff;
 	text-decoration:none;
 }
@@ -155,9 +156,6 @@ a:hover { color: #f9a406; text-decoration: underline; }
 .subnavi-on a{
 	background-color: #b7b7b7;
 	width:140px;
-	padding: 6px 5px 4px 5px;
-	color:#000000;
-	text-decoration:none;
 }
 
 .subnavi-on a:visited {
