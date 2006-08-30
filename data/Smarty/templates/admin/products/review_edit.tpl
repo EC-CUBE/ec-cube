@@ -55,33 +55,33 @@
 							<!--▼編集テーブルここから-->
 							<table width="678" border="0" cellspacing="1" cellpadding="8" summary=" " bgcolor="#cccccc">
 								<tr class="fs12n">
-									<td bgcolor="#f2f1ec" width="160">商品名</td>
-									<td bgcolor="#ffffff" width="557"><!--{$arrReview.name}--></td>
+									<td bgcolor="#f2f1ec" width="200">商品名</td>
+									<td bgcolor="#ffffff" width="443"><!--{$arrReview.name}--></td>
 								</tr>
 								<tr class="fs12n">
-									<td bgcolor="#f2f1ec" width="160">レビュー表示</td>
-									<td bgcolor="#ffffff" width="557"><!--{if $arrErr.status}--><span class="red12"><!--{$arrErr.status}--></span><br /><!--{/if}-->
+									<td bgcolor="#f2f1ec">レビュー表示</td>
+									<td bgcolor="#ffffff"><!--{if $arrErr.status}--><span class="red12"><!--{$arrErr.status}--></span><br /><!--{/if}-->
 									<input type="radio" name="status" value="2" <!--{if $arrReview.status eq 2}-->checked<!--{/if}-->>非表示<!--{if $arrReview.status eq 2 && !$tpl_status_change}--><!--{else}--><input type="radio" name="status" value="1" <!--{if $arrReview.status eq 1}-->checked<!--{/if}-->>表示<!--{/if}--></td>
 								</tr>
 								<tr class="fs12n">
-									<td bgcolor="#f2f1ec" width="160">投稿日</td>
-									<td bgcolor="#ffffff" width="557"><!--{$arrReview.create_date|sfDispDBDate}--></td>
+									<td bgcolor="#f2f1ec">投稿日</td>
+									<td bgcolor="#ffffff"><!--{$arrReview.create_date|sfDispDBDate}--></td>
 								</tr>
 								<tr class="fs12n">
-									<td bgcolor="#f2f1ec" width="160">投稿者名</td>
-									<td bgcolor="#ffffff" width="557"><!--{$arrReview.reviewer_name|escape}--></td>
+									<td bgcolor="#f2f1ec">投稿者名</td>
+									<td bgcolor="#ffffff"><!--{$arrReview.reviewer_name|escape}--></td>
 								</tr>
 								<tr class="fs12n">
-									<td bgcolor="#f2f1ec" width="160">ホームページアドレス</td>
-									<td bgcolor="#ffffff" width="557"><a href="<!--{$arrReview.reviewer_url}-->" target="_blank"><!--{$arrReview.reviewer_url}--></a></td>
+									<td bgcolor="#f2f1ec">ホームページアドレス</td>
+									<td bgcolor="#ffffff"><a href="<!--{$arrReview.reviewer_url}-->" target="_blank"><!--{$arrReview.reviewer_url}--></a></td>
 								</tr>
 								<tr class="fs12n">
-									<td bgcolor="#f2f1ec" width="160">性別</td>
-									<td bgcolor="#ffffff" width="557"><!--{if $arrReview.sex eq 1}-->男性<!--{elseif $arrReview.sex eq 2}-->女性<!--{/if}--></td>
+									<td bgcolor="#f2f1ec">性別</td>
+									<td bgcolor="#ffffff"><!--{if $arrReview.sex eq 1}-->男性<!--{elseif $arrReview.sex eq 2}-->女性<!--{/if}--></td>
 								</tr>
 								<tr class="fs12n">
-									<td bgcolor="#f2f1ec" width="160">おすすめレベル</td>
-									<td bgcolor="#ffffff" width="557">
+									<td bgcolor="#f2f1ec">おすすめレベル</td>
+									<td bgcolor="#ffffff">
 									<!--{assign var=key value="recommend_level"}-->
 									<select name="<!--{$key}-->" style="<!--{$arrErr.recommend_level|sfGetErrorColor}-->" >
 									<option value="" selected="selected">選択してください</option>
@@ -91,13 +91,13 @@
 									</td>
 								</tr>
 								<tr class="fs12n">
-									<td bgcolor="#f2f1ec" width="160">タイトル</td>
-									<td bgcolor="#ffffff" width="557"><span class="red12"><!--{$arrErr.title}--></span>
+									<td bgcolor="#f2f1ec">タイトル</td>
+									<td bgcolor="#ffffff"><span class="red12"><!--{$arrErr.title}--></span>
 									<input type="text" name="title" value="<!--{$arrReview.title|escape}-->" style="<!--{$arrErr.title|sfGetErrorColor}-->" size=30><span class="red12"><!--{$arrErr.title}--></td>
 								</tr>
 								<tr class="fs12n">
-									<td bgcolor="#f2f1ec" width="160">コメント</td>
-									<td bgcolor="#ffffff" width="557"><span class="red12"><!--{$arrErr.comment}--></span>
+									<td bgcolor="#f2f1ec">コメント</td>
+									<td bgcolor="#ffffff"><span class="red12"><!--{$arrErr.comment}--></span>
 									<textarea name="comment" rows="20" cols="60" class="area60" wrap="soft" style="<!--{$arrErr.comment|sfGetErrorColor}-->" ><!--{$arrReview.comment|escape}--></textarea></td>
 								</tr>
 							</table>
