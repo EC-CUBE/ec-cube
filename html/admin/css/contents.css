@@ -86,6 +86,7 @@ a:hover { color: #f9a406; text-decoration: underline; }
 	background-color: #636469;
 	width:140px;
 	padding: 10px 5px 10px 12px;
+	overflow: auto;
 	color:#ffffff;
 	text-decoration:none;
 }
@@ -112,6 +113,7 @@ a:hover { color: #f9a406; text-decoration: underline; }
 	background-color: #a5a5a5;
 	width:140px;
 	padding: 10px 5px 10px 12px;
+	overflow: auto;
 	color:#000000;
 	text-decoration:none;
 }
