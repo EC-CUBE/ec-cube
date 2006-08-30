@@ -70,7 +70,7 @@
 										<!--{assign var=code value=$arrTemplate.code[$key]}-->
 										<!--{assign var=image value=$arrTemplate.image[$code]}-->
 										<td bgcolor="#ffffff" align="center"><!--{$arrTemplate[template]}-->
-											<label for="radio<!--{$key}-->"><img height=200 weight=200 src="<!--{$image}-->" name="1"></label><br>
+											<label for="radio<!--{$key}-->"><image height=200 weight=200 src="<!--{$image}-->" name="1"></label><br>
 											<label for="radio<!--{$key}-->"><input type="radio" name="check_template" value="<!--{$code}-->" id="radio<!--{$key}-->" onClick="ChangeImage('<!--{$image}-->');" <!--{if $arrTemplate.check[$code] != ""}-->checked<!--{/if}-->>ÁªÂò</label>
 										</td>
 										<!--{assign var=cnt value=$smarty.section.template.iteration-1}-->
@@ -79,7 +79,7 @@
 										<!--{assign var=image value=$arrTemplate.image[$code]}-->
 										<!--{if $image != ""}-->
 										<td bgcolor="#ffffff" align="center"><!--{$arrTemplate[template]}-->
-											<label for="radio<!--{$key}-->"><img height=200 weight=200 src="<!--{$image}-->" name="1"></label><br>
+											<label for="radio<!--{$key}-->"><image height=200 weight=200 src="<!--{$image}-->" name="1"></label><br>
 											<label for="radio<!--{$key}-->"><input type="radio" name="check_template" value="<!--{$code}-->" id="radio<!--{$key}-->" onClick="ChangeImage('<!--{$image}-->');" <!--{if $arrTemplate.check[$code] != ""}-->checked<!--{/if}-->>ÁªÂò</label>
 										</td>
 										<!--{/if}-->
@@ -89,7 +89,7 @@
 										<!--{assign var=image value=$arrTemplate.image[$code]}-->
 										<!--{if $image != ""}-->
 										<td bgcolor="#ffffff" align="center"><!--{$arrTemplate[template]}-->
-											<label for="radio<!--{$key}-->"><img height=200 weight=200 src="<!--{$image}-->" name="1"></label><br>
+											<label for="radio<!--{$key}-->"><image height=200 weight=200 src="<!--{$image}-->" name="1"></label><br>
 											<label for="radio<!--{$key}-->"><input type="radio" name="check_template" value="<!--{$code}-->" id="radio<!--{$key}-->" onClick="ChangeImage('<!--{$image}-->');" <!--{if $arrTemplate.check[$code] != ""}-->checked<!--{/if}-->>ÁªÂò</label>
 										</td>
 										<!--{/if}-->
@@ -157,7 +157,7 @@ function lfnModeSubmit(mode) {
 window.onload=function(){
 	var lbs = document.getElementsByTagName('label');
 	for(var i=0;i<lbs.length;i++){
-		var cimgs = lbs[i].getElementsByTagName('img');
+		var cimgs = lbs[i].getElementsByTagName('image');
 		for(var j=0;j<cimgs.length;j++){
 			cimgs[j].formCtrlId = lbs[i].htmlFor;
 			cimgs[j].onclick = function(){document.getElementById(this.formCtrlId).click()};
