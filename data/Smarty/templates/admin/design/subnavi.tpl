@@ -1,4 +1,4 @@
-<table width="141" border="0" cellspacing="0" cellpadding="0" summary=" ">
+<table width="141" border="0" cellspacing="0" cellpadding="0" summary=" " id="menu_navi">
 	<!--ナビ-->
 	<tr><td class=<!--{if $tpl_subno != 'layout'}-->"navi"<!--{else}-->"navi-on"<!--{/if}-->><a href="./index.php" onMouseOver="naviStyleChange('layout', '#a5a5a5')" <!--{if $tpl_subno != 'layout'}-->onMouseOut="naviStyleChange('layout', '#636469')"<!--{/if}--> id="layout"><img src="/img/contents/icon.jpg" width="15" height="9" alt="" border="0"><span class="navi_text">レイアウト設定</span></a></td></tr>
 	<tr><td><img src="/img/contents/navi_line.gif" width="140" height="2" alt=""></td></tr>
