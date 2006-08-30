@@ -334,7 +334,7 @@ function lfInitWebParam($objWebParam) {
 	
 	$install_dir = ereg_replace("html/", "", $_SERVER['DOCUMENT_ROOT']);
 	$normal_url = "http://" . $_SERVER['HTTP_HOST'] . "/";
-	$secure_url = "https://" . $_SERVER['HTTP_HOST'] . "/";
+	$secure_url = "http://" . $_SERVER['HTTP_HOST'] . "/";
 	$domain = ereg_replace("^[a-zA-Z0-9_~=&\?\/-]+\.", "", $_SERVER['HTTP_HOST']);
 		
 	$objWebParam->addParam("インストールディレクトリ", "install_dir", MTEXT_LEN, "", array("EXIST_CHECK","MAX_LENGTH_CHECK"), $install_dir);
