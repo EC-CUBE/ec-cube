@@ -100,7 +100,7 @@
 						</table>
 						
 						<table width="530" border="0" cellspacing="0" cellpadding="0" summary=" ">
-						<form name="member_form" id="member_form" method="post" action="./index.php" onsubmit="return fnCheckLogin('member_form')">
+						<form name="member_form" id="member_form" method="post" action="./index.php">
 						<input type="hidden" name="mode" value="nonmember">
 							<tr>
 								<td class="fs12">会員登録をすると便利なMyページをご利用いただけます。<br>
