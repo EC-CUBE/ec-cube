@@ -82,7 +82,6 @@ a:hover { color: #f9a406; text-decoration: underline; }
 /*navi*/
 .navi {
 	overflow:hidden;	
-	display:block;
 }
 
 .navi a{
@@ -93,6 +92,7 @@ a:hover { color: #f9a406; text-decoration: underline; }
 	padding: 10px 5px 10px 12px;
 	color:#ffffff;
 	text-decoration:none;
+	display:block;
 }
 
 .navi a:visited {
