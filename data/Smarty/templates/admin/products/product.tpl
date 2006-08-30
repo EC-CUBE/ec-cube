@@ -182,7 +182,7 @@
 										<td bgcolor="#f2f1ec" width="160" class="fs12n">詳細-メインコメント<span class="red">(タグ許可)*</span></td>
 										<td bgcolor="#ffffff" width="557" class="fs10n">
 										<span class="red12"><!--{$arrErr.main_comment}--></span>
-										<textarea name="main_comment" value="<!--{$arrForm.main_comment|escape}-->" maxlength="<!--{$smarty.const.LLTEXT_LEN}-->" style="<!--{if $arrErr.main_comment != ""}-->background-color: <!--{$smarty.const.ERR_COLOR}--><!--{/if}-->"  cols="60" rows="8" class="area60"><!--{$arrForm.main_comment|escape}--></textarea><span class="red"> （上限<!--{$smarty.const.LLTEXT_LEN}-->文字）</span></td>
+										<textarea name="main_comment" value="<!--{$arrForm.main_comment|escape}-->" maxlength="<!--{$smarty.const.LLTEXT_LEN}-->" style="<!--{if $arrErr.main_comment != ""}-->background-color: <!--{$smarty.const.ERR_COLOR}--><!--{/if}-->"  cols="60" rows="8" class="area60"><!--{$arrForm.main_comment|escape}--></textarea><br /><span class="red"> （上限<!--{$smarty.const.LLTEXT_LEN}-->文字）</span></td>
 									</tr>
 									<tr>
 										<td bgcolor="#f2f1ec" width="160" class="fs12n">詳細-メイン画像<span class="red"> *</span><br />[260×260]</td>
@@ -192,7 +192,7 @@
 										<!--{if $arrFile[$key].filepath != ""}-->
 										<img src="<!--{$arrFile[$key].filepath}-->" alt="<!--{$arrForm.name|escape}-->" width="<!--{$arrFile[$key].width}-->" height="<!--{$arrFile[$key].height}-->" />　<a href="" onclick="fnModeSubmit('delete_image', 'image_key', '<!--{$key}-->'); return false;">[画像の取り消し]</a><br>
 										<!--{/if}-->
-										<input type="file" name="main_image" size="60" class="box60" style="<!--{$arrErr[$key]|sfGetErrorColor}-->" />
+										<input type="file" name="main_image" size="50" class="box50" style="<!--{$arrErr[$key]|sfGetErrorColor}-->" />
 										<input type="button" name="btn" onclick="fnModeSubmit('upload_image', 'image_key', '<!--{$key}-->')" value="アップロード">
 										</td>
 									</tr>
@@ -204,7 +204,7 @@
 										<!--{if $arrFile[$key].filepath != ""}-->
 										<img src="<!--{$arrFile[$key].filepath}-->" alt="<!--{$arrForm.name|escape}-->" width="<!--{$arrFile[$key].width}-->" height="<!--{$arrFile[$key].height}-->" />　<a href="" onclick="fnModeSubmit('delete_image', 'image_key', '<!--{$key}-->'); return false;">[画像の取り消し]</a><br>
 										<!--{/if}-->
-										<input type="file" name="<!--{$key}-->" size="60" class="box60" style="<!--{$arrErr[$key]|sfGetErrorColor}-->" />
+										<input type="file" name="<!--{$key}-->" size="50" class="box50" style="<!--{$arrErr[$key]|sfGetErrorColor}-->" />
 										<input type="button" name="btn" onclick="fnModeSubmit('upload_image', 'image_key', '<!--{$key}-->')" value="アップロード">
 										</td>
 									</tr>
@@ -216,7 +216,7 @@
 										<!--{if $arrFile[$key].filepath != ""}-->
 										<img src="<!--{$arrFile[$key].filepath}-->" alt="<!--{$arrForm.name|escape}-->" width="<!--{$arrFile[$key].width}-->" height="<!--{$arrFile[$key].height}-->" />　<a href="" onclick="fnModeSubmit('delete_image', 'image_key', '<!--{$key}-->'); return false;">[画像の取り消し]</a><br>
 										<!--{/if}-->
-										<input type="file" name="<!--{$key}-->" size="60" class="box60" />
+										<input type="file" name="<!--{$key}-->" size="50" class="box50" />
 										<input type="button" name="btn" onclick="fnModeSubmit('upload_image', 'image_key', '<!--{$key}-->')" value="アップロード">
 										</td>
 									</tr>
@@ -229,7 +229,7 @@
 										<input type="button" name="pdf" value="ファイル確認" onclick="fnOpenNoMenu('<!--{$arrFile[$key].filepath}-->')"/>
 										<a href="" onclick="fnModeSubmit('delete_image', 'image_key', '<!--{$key}-->'); return false;">[ファイルの取り消し]</a><br>
 										<!--{/if}-->
-										<input type="file" name="<!--{$key}-->" size="60" class="box60" />
+										<input type="file" name="<!--{$key}-->" size="50" class="box50" />
 										<input type="button" name="btn" onclick="fnModeSubmit('upload_image', 'image_key', '<!--{$key}-->')" value="アップロード">
 										</td>
 									</tr>			
