@@ -20,6 +20,7 @@ while($len > $cut_len){
 	$tmp = mb_substr($test, 10, $len);
 	$len = mb_strlen($tmp);
 }
+$str[] = $tmp;
 
 print_r($str);
 
