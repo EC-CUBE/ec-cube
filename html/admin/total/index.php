@@ -427,7 +427,7 @@ function lfGetGraphPie($arrResults, $keyname, $type, $title = "") {
 			list($ey, $em, $ed) = split("/" , $arrKey[count($arrKey) - 1]);
 			$startKey = $sy . "年" . $sm . "月" . $sd . "日";
 			$endKey = $ey . "年" . $em . "月" . $ed . "日";
-			$objGraphLine->drawTitle("集計期間：" . $startKey . " - " . $endKey);
+			$objGraphPie->drawTitle("集計期間：" . $startKey . " - " . $endKey);
 					
 			// 円グラフ描画
 			$objGraphPie->drawGraph();
