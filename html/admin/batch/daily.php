@@ -26,9 +26,7 @@ if($term > 0) {
 
 // 集計の開始
 function lfStartDailyTotal($term, $start, $command = false) {
-	
-	print("term:" . $term);
-	
+		
 	$now_time = time();
 		
 	// グラフ画像の削除
@@ -41,7 +39,7 @@ function lfStartDailyTotal($term, $start, $command = false) {
 	$objQuery->delete("dtb_order_detail", $where);
 		
 	// 最後のバッチ実行からLOAD_BATCH_PASS秒経過していないと実行しない。
-	$batch_pass = date("y/m/d H:i:s", $now_time);
+	$batch_pass = date("y/m/d H:i:s", $now_time - LOAD_BATCH_PASS);
 	
 	$objQuery = new SC_Query();
 	$arrRet = $objQuery->select("create_date", "dtb_bat_order_daily", "create_date > ?", array($batch_pass));
