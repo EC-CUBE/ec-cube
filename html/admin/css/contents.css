@@ -81,6 +81,52 @@ a:hover { color: #f9a406; text-decoration: underline; }
 
 /*navi*/
 
+/* ---テスト▼--- */
+.navi_dummy {
+	height:32px;
+	overflow:auto;
+}
+
+.navi_dummy a{
+	background: url(/img/contents/navi_bar.gif);
+	background-repeat: repeat-y;
+	background-color: #636469;
+	padding: 10px 5px 10px 12px;	
+	width:140px;
+	color:#ffffff;
+	text-decoration:none;
+}
+
+.navi_dummy a:visited {
+	color:#ffffff;
+	text-decoration:none;
+}
+
+.navi_text {
+	font-size: 75%;
+	padding: 0 0 0 8px;
+}
+
+.navi-on-dummy a{
+	background: url(/img/contents/navi_bar.gif);
+	background-repeat: repeat-y;
+	background-color: #a5a5a5;
+	//padding: 10px 5px 10px 12px;
+	width:140px;
+	color:#000000;
+	text-decoration:none;
+}
+
+.navi-on-dummy a:visited {
+	color:#000000;
+	text-decoration:none;
+}
+/* ---テスト---▲ */
+
+
+
+
+
 .navi a{
 	background: url(/img/contents/navi_bar.gif);
 	background-repeat: repeat-y;
