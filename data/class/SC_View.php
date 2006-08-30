@@ -139,7 +139,7 @@ class SC_UserView extends SC_SiteView{
 
 class SC_InstallView extends SC_View{
     function SC_InstallView($template_dir, $compile_dir = COMPILE_DIR) {
-    	parent::SC_View();
+    	parent::SC_View(false);
 		$this->_smarty->template_dir = $template_dir;
 		$this->_smarty->compile_dir = $compile_dir;
 	}
