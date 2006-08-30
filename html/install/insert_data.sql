@@ -196,6 +196,7 @@ insert into dtb_payment(payment_method,rank,fix,creator_id)values('郵便振替',4,2
 
 -- 注文完了メール
 insert into dtb_mailtemplate (template_id, subject, header, footer) values (
+1,
 'ご注文ありがとうございます。',
 'この度はご注文いただき誠に有難うございます。
 下記ご注文内容にお間違えがないかご確認下さい。
