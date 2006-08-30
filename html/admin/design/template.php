@@ -262,18 +262,15 @@ function lfChangeTemplate(){
 	}
 	
 	sfprintr($arrTemplate);
-	
-/*	
 	// TOPを変更した場合には全画面変更
 	if ($objPage->tpl_subno_template == $objPage->arrSubnavi[1]){
 		// テンプレートファイルをコピー
-		copy($arrTemplate[$chk_tpl]["TopTemplate"], ROOT_DIR . $tpl_path . "top.tpl");
-		copy($arrTemplate[$chk_tpl]["ProdTemplate"], ROOT_DIR . $tpl_path . "product.tpl");
-		copy($arrTemplate[$chk_tpl]["DetailTemplate"], ROOT_DIR . $tpl_path . "detail.tpl");
-		copy($arrTemplate[$chk_tpl]["MypageTemplate"], ROOT_DIR . $tpl_path . "mypage.tpl");
+		copy(ROOT_DIR . $tpl_path . $arrTemplate[0]['template_code'] . "top.tpl", ROOT_DIR . $tpl_path . "top.tpl");
+//		copy($arrTemplate[$chk_tpl]["ProdTemplate"], ROOT_DIR . $tpl_path . "product.tpl");
+//		copy($arrTemplate[$chk_tpl]["DetailTemplate"], ROOT_DIR . $tpl_path . "detail.tpl");
+//		copy($arrTemplate[$chk_tpl]["MypageTemplate"], ROOT_DIR . $tpl_path . "mypage.tpl");
 	}else{
 		// テンプレートファイルをコピー
 		copy($arrTemplate[$chk_tpl][$tpl_element], ROOT_DIR . INCLUDE_DIR . $tpl_name);
 	}
-*/
 }
