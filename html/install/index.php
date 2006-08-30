@@ -274,6 +274,7 @@ function lfDispStep0_1($objPage) {
 	$objPage->tpl_mode = 'step0_1';
 	// ファイルコピー
 	$objPage->copy_mess = lfCopyDir("./user_data/", "../../html/user_data/", $objPage->copy_mess);
+	$objPage->copy_mess = lfCopyDir("./save_image/", "../../html/upload/save_image/", $objPage->copy_mess);	
 	return $objPage;
 }
 
