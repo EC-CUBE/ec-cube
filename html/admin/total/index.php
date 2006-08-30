@@ -380,7 +380,7 @@ function lfGetGraphLine($arrResults, $keyname, $type, $xtitle, $ytitle) {
 			$startKey = $sy . "年" . $sm . "月" . $sd . "日";
 			$endKey = $ey . "年" . $em . "月" . $ed . "日";
 			
-			$objGraphLine->drawTitle($startKey . "~" . $endKey);
+			$objGraphLine->drawTitle("集計期間：" . $startKey . "?" . $endKey);
 			
 			// グラフ描画
 			$objGraphLine->drawGraph();
