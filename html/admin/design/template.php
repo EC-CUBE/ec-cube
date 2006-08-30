@@ -158,7 +158,7 @@ function lfgetTemplaeData(){
 	$sql = "";						// データ取得SQL生成用
 	$arrRet = array();				// データ取得用
 	
-	$sql = "SELECT top_tpl AS top, product_tpl AS product, detail_tpl AS detail, mypage_tpl AS mypage FROM dtb_baseinfo";
+	$sql = "SELECT top_tpl AS top, product_tpl AS product, detail_tpl AS detail FROM dtb_baseinfo";
 	$arrRet = $objDBConn->getAll($sql);
 	
 	return $arrRet[0];
