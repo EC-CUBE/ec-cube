@@ -1380,7 +1380,7 @@ function sfSendOrderMail($order_id, $template_id, $subject = "", $header = "", $
 	$arrOrder = $arrRet[0];
 	$arrOrderDetail = $objQuery->select("*", "dtb_order_detail", $where, array($order_id));
 	
-	sfprintr($objPage->Message_tmp);
+	sfprintr($arrOrder['message']);
 	
 	// 備考を250バイトで分割
 	$arrMessage = explode("\n",$arrOrder['message']);
