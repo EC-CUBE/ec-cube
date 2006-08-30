@@ -8,15 +8,6 @@ width: 325px;
 width: 245px;
 }
 
-/*北さんの小部屋*/
-#container #right #contents #left #kobeya{
-border: 0;
-margin: 0;
-padding: 0;
-width: 310px;
-text-align: left;
-}
-
 /*新着情報*/
 #container #right #contents #right #news{
 border: 0;
