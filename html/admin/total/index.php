@@ -463,8 +463,16 @@ function lfGetGraphBar($arrResults, $keyname, $type, $xtitle, $ytitle) {
 			$objGraphBar->setXTitle($xtitle);
 			$objGraphBar->setYTitle($ytitle);
 			$objGraphBar->setData($arrList);
+			
+			// メインタイトル作成
+			$arrKey = array_keys($arrList);
+			list($sy, $sm, $sd) = split("/" , $arrKey[0]);
+			list($ey, $em, $ed) = split("/" , $arrKey[count($arrKey) - 1]);
+			$startKey = $sy . "年" . $sm . "月" . $sd . "日";
+			$endKey = $ey . "年" . $em . "月" . $ed . "日";
+			$objGraphBar->drawTitle("集計期間：" . $startKey . " - " . $endKey);
+			
 			$objGraphBar->drawGraph();
-
 			$objGraphBar->outputGraph(false,$path);
 		}
 
