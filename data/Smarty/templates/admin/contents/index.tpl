@@ -228,10 +228,10 @@ function moving(news_id,rank, max_rank) {
 									<tr bgcolor="#f2f1ec" align="center" class="fs12n">
 										<td width="30">順位</td>
 										<td width="76">日付</td>
-										<td width="380">タイトル</td>
-										<td width="35">編集</td>
-										<td width="35">削除</td>
-										<td width="90">移動</td>
+										<td width="269">タイトル</td>
+										<td width="50">編集</td>
+										<td width="50">削除</td>
+										<td width="100">移動</td>
 									</tr>
 									<!--{if $arrErr.moveposition}-->
 									<tr bgcolor="#ffffff" class="fs12n"><td bgcolor="#ffffff" colspan="6"><span class="red"><!--{$arrErr.moveposition}--></span></td></tr>
