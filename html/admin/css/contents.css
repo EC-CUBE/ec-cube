@@ -80,10 +80,6 @@ a:hover { color: #f9a406; text-decoration: underline; }
 
 
 /*navi*/
-#menu_navi a{
-	width:140px;
-	display:block;
-}
 .navi a{
 	background: url(/img/contents/navi_bar.gif);
 	background-repeat: repeat-y;
@@ -92,6 +88,7 @@ a:hover { color: #f9a406; text-decoration: underline; }
 	padding: 10px 5px 10px 12px;
 	color:#ffffff;
 	text-decoration:none;
+	display:block;
 }
 
 .navi a:visited {
@@ -118,6 +115,7 @@ a:hover { color: #f9a406; text-decoration: underline; }
 	padding: 10px 5px 10px 12px;
 	color:#000000;
 	text-decoration:none;
+	display:block;	
 }
 
 .navi-on a:visited {
