@@ -42,19 +42,19 @@
 				
 							<tr class="fs12n">
 								<td bgcolor="#f2f1ec" width="110">顧客名</td>
-								<td bgcolor="#ffffff" width="248">
+								<td bgcolor="#ffffff" width="194">
 									<!--{if $arrErr.name}--><span class="red12"><!--{$arrErr.name}--></span><br><!--{/if}-->
 									<input type="text" name="name" maxlength="<!--{$smarty.const.STEXT_LEN}-->" value="<!--{$list_data.name|escape}-->" size="30" class="box30"  style="<!--{$arrErr.name|sfGetErrorColor}-->" />
 								</td>
 								<td bgcolor="#f2f1ec" width="110">顧客名（カナ）</td>
-								<td bgcolor="#ffffff" width="249">
+								<td bgcolor="#ffffff" width="195">
 									<!--{if $arrErr.kana}--><span class="red12"><!--{$arrErr.kana}--></span><br><!--{/if}-->
 									<input type="text" name="kana" maxlength="<!--{$smarty.const.STEXT_LEN}-->" value="<!--{$list_data.kana|escape}-->" size="30" class="box30"  style="<!--{$arrErr.kana|sfGetErrorColor}-->" />
 								</td>
 							</tr>
 							<tr class="fs12n">
 								<td bgcolor="#f2f1ec" width="110">都道府県</td>
-								<td bgcolor="#ffffff" width="248">
+								<td bgcolor="#ffffff" width="194">
 									<!--{if $arrErr.pref}--><span class="red12"><!--{$arrErr.pref}--></span><br><!--{/if}-->
 									<select name="pref">
 										<option value="" selected="selected"  style="<!--{$arrErr.pref|sfGetErrorColor}-->">都道府県を選択</option>
@@ -62,18 +62,18 @@
 									</select>
 								</td>
 								<td bgcolor="#f2f1ec" width="110">TEL</td>
-								<td bgcolor="#ffffff" width="249">
+								<td bgcolor="#ffffff" width="195">
 									<!--{if $arrErr.tel}--><span class="red12"><!--{$arrErr.tel}--></span><br><!--{/if}-->
 									<input type="text" name="tel" maxlength="<!--{$smarty.const.TEL_LEN}-->" value="<!--{$list_data.tel|escape}-->" size="30" class="box30" style="<!--{$arrErr.tel|sfGetErrorColor}-->" />
 								</td>
 							</tr>
 							<tr class="fs12n">
 								<td bgcolor="#f2f1ec" width="110">性別</td>
-								<td bgcolor="#ffffff" width="248">
+								<td bgcolor="#ffffff" width="194">
 									<!--{html_checkboxes name="sex" options=$arrSex separator="&nbsp;" selected=$list_data.sex}-->
 								</td>
 								<td bgcolor="#f2f1ec" width="110">誕生月</td>
-								<td bgcolor="#ffffff" width="249">
+								<td bgcolor="#ffffff" width="195">
 									<!--{if $arrErr.birth_month}--><span class="red12"><!--{$arrErr.birth_month}--></span><br><!--{/if}-->
 									<select name="birth_month" style="<!--{$arrErr.birth_month|sfGetErrorColor}-->" >
 										<option value="" selected="selected">--</option>
@@ -83,12 +83,12 @@
 							</tr>
 							<tr class="fs12n">
 								<td bgcolor="#f2f1ec" width="110">配信形式</td>
-								<td bgcolor="#ffffff" width="248">
+								<td bgcolor="#ffffff" width="194">
 									<!--{if $arrErr.htmlmail}--><span class="red12"><!--{$arrErr.htmlmail}--></span><br /><!--{/if}-->
 									<!--{html_radios name="htmlmail" options=$arrHtmlmail separator="&nbsp;" selected=$list_data.htmlmail}-->
 								</td>
 								<td bgcolor="#f2f1ec" width="110">購入回数</td>
-								<td bgcolor="#ffffff" width="249">
+								<td bgcolor="#ffffff" width="195">
 									<!--{if $arrErr.buy_times_from || $arrErr.buy_times_to}--><span class="red12"><!--{$arrErr.buy_times_from}--><!--{$arrErr.buy_times_to}--></span><br><!--{/if}-->
 									<input type="text" name="buy_times_from" maxlength="<!--{$smarty.const.INT_LEN}-->" value="<!--{$list_data.buy_times_from|escape}-->" size="6" class="box6" style="<!--{$arrErr.buy_times_from|sfGetErrorColor}-->" /> 回 〜 
 									<input type="text" name="buy_times_to" maxlength="<!--{$smarty.const.INT_LEN}-->" value="<!--{$list_data.buy_times_to|escape}-->" size="6" class="box6" style="<!--{$arrErr.buy_times_to|sfGetErrorColor}-->" /> 回
@@ -97,13 +97,13 @@
 				
 							<tr class="fs12n">
 								<td bgcolor="#f2f1ec" width="110">購入商品コード</td>
-								<td bgcolor="#ffffff" width="248">
+								<td bgcolor="#ffffff" width="194">
 								<!--{if $arrErr.buy_product_code}--><span class="red12"><!--{$arrErr.buy_product_code}--></span><!--{/if}-->
 								<input type="text" name="buy_product_code" value="<!--{$list_data.buy_product_code}-->" maxlength="<!--{$smarty.const.STEXT_LEN}-->" style="<!--{$arrErr.buy_product_code|sfGetErrorColor}-->" >
 								</td>
 				
 								<td bgcolor="#f2f1ec" width="110">購入金額</td>
-								<td bgcolor="#ffffff" width="249">
+								<td bgcolor="#ffffff" width="195">
 									<!--{if $arrErr.buy_total_from || $arrErr.buy_total_to}-->
 										<span class="red12"><!--{$arrErr.buy_total_from}--><!--{$arrErr.buy_total_to}--></span><br>
 									<!--{/if}-->
@@ -121,7 +121,7 @@
 							*}-->
 							<tr class="fs12n">
 								<td bgcolor="#f2f1ec" width="110">メールアドレス</td>
-								<td bgcolor="#ffffff" width="469" colspan="3">
+								<td bgcolor="#ffffff" colspan="3">
 									<!--{if $arrErr.email}--><span class="red12"><!--{$arrErr.email}--></span><!--{/if}-->
 									<span style="<!--{$arrErr.email|sfGetErrorColor}-->">
 									<input type="text" name="email" maxlength="<!--{$smarty.const.STEXT_LEN}-->" value="<!--{$list_data.email|escape}-->" size="60" class="box60"  style="<!--{$arrErr.email|sfGetErrorColor}-->"/>
@@ -230,14 +230,14 @@
 				
 							<tr class="fs12n">
 								<td bgcolor="#f2f1ec" width="110">購入商品名</td>
-								<td bgcolor="#ffffff" width="248">
+								<td bgcolor="#ffffff" width="194">
 									<!--{if $arrErr.buy_product_name}--><span class="red12"><!--{$arrErr.buy_product_name}--></span><!--{/if}-->
 									<span style="<!--{$arrErr.buy_product_name|sfGetErrorColor}-->">
 									<input type="text" name="buy_product_name" maxlength="<!--{$smarty.const.STEXT_LEN}-->" value="<!--{$list_data.buy_product_name|escape}-->" size="30" class="box30"  style="<!--{$arrErr.buy_product_name|sfGetErrorColor}-->"/>
 									</span>
 								</td>
 								<td bgcolor="#f2f1ec" width="110">カテゴリ</td>
-								<td bgcolor="#ffffff" width="249">
+								<td bgcolor="#ffffff" width="195">
 									<select name="category_id" style="<!--{if $arrErr.category_id != ""}-->background-color: <!--{$smarty.const.ERR_COLOR}--><!--{/if}-->">
 										<option value="">選択してください</option>
 										<!--{html_options options=$arrCatList selected=$list_data.category_id}-->
