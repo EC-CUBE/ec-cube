@@ -14,6 +14,7 @@ $str = array();
 $test = "abあcdかｱ1さ0たなはbgfまやらわ";
 $len = mb_strlen($test);
 $str[] = mb_substr($test,0,10);
+$temp = mb_substr($test, 10, $len)
 
 print_r($str);
 
