@@ -216,7 +216,7 @@ http://------.co.jp
 
 -- 新着情報データ
 insert into dtb_news (news_title, news_comment, creator_id) 
-values('サイトオープンいたしました!','一人暮らしからオフィスなどさまざまなシーンで あなたの生活をサポートするグッズをご家庭へお届けします！一人暮らしからオフィスなどさまざまなシーンで あなたの生活をサポートするグッズをご家庭へお届けします！一人暮らしからオフィスなどさまざまなシーンで あなたの生活をサポートするグッズをご家庭へお届けします！',1);
+values('サイトオープンいたしました!','一人暮らしからオフィスなどさまざまなシーンで あなたの生活をサポートするグッズをご家庭へお届けします！一人暮らしからオフィスなどさまざまなシーンで あなたの生活をサポートするグッズをご家庭へお届けします！一人暮らしからオフィスなどさまざまなシーンで あなたの生活をサポートするグッズをご家庭へお届けします！',1,0);
 
 -- 商品データ
 --insert into dtb_products (name,sale_unlimited,category_id,rank,status,product_flag,point_rate,main_list_comment,main_list_image,main_comment,main_image,main_large_image, creator_id)

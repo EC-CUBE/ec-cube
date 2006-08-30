@@ -46,3 +46,4 @@ DROP TABLE dtb_blocposition;
 DROP TABLE dtb_csv;
 DROP TABLE dtb_csv_sql;
 DROP TABLE dtb_user_regist;
+DROP TABLE dtb_template;
