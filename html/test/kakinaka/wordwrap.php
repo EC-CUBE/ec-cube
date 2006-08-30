@@ -19,6 +19,7 @@ $tmp = $test;
 while($len > $cut_len){
 	$str[] = mb_substr($test,0,$cut_len);
 	$tmp = mb_substr($tmp, $cut_len, $len);
+	print($tmp."<br>");
 	$len = mb_strlen($tmp);
 }
 $str[] = $tmp;
