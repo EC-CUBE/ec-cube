@@ -599,7 +599,7 @@ function lfGetOrderProducts($type, $sdate, $edate, $objPage, $graph = true) {
 	// ±ß¥°¥é¥Õ¤ÎÀ¸À®
 	if($graph) {
 		$image_key = "products_" . $type;
-		$objPage->tpl_image = lfGetGraphPie($objPage->arrResults, "name", $image_key, "(Çä¾åÈæÎ¨)");
+		$objPage->tpl_image = lfGetGraphPie($objPage->arrResults, "name", $image_key, "(Çä¾åÈæÎ¨)", $sdate, $edate);
 	}
 	
 	return $objPage;
