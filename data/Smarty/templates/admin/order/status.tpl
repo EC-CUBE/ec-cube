@@ -79,16 +79,16 @@
 										<tr><td height="10"></td></tr>
 									</table>
 									
-									<table width="650" border="0" cellspacing="1" cellpadding="8" summary=" " bgcolor="#cccccc">
+									<table width="650" border="0" cellspacing="1" cellpadding="5" summary=" " bgcolor="#cccccc">
 									<tr bgcolor="#f2f1ec" align="center" class="fs12n">
-										<td width="75">受注番号</td>
-										<td width="115">受注日</td>				
-										<td width="135">顧客名</td>				
-										<td width="115">支払方法</td>
-										<td width="85">購入金額（円）</td>
-										<td width="85">発送日</td>
-										<td width="75">対応状況</td>
-										<td width="55">選択</td>
+										<td width="50">受注番号</td>
+										<td width="90">受注日</td>				
+										<td width="90">顧客名</td>				
+										<td width="90">支払方法</td>
+										<td width="51">購入金額（円）</td>
+										<td width="70">発送日</td>
+										<td width="70">対応状況</td>
+										<td width="50">選択</td>
 									</tr>
 									<!--{section name=cnt loop=$arrStatus}-->
 									<!--{assign var=status value="`$arrStatus[cnt].status`"}-->
