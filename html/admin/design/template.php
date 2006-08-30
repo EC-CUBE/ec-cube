@@ -31,6 +31,13 @@ $arrTemplate = array();
 $objSess = new SC_Session();
 sfIsSuccess($objSess);
 
+
+	// テンプレートデータを取得する
+	$objQuery = new SC_Query();
+	$sql = "SELECT template_code,template_name,file_path FROM dtb_template ORDER BY create_date DESC";
+	$arrTemplate = $objQuery->getall($sql);
+
+
 // GETの値を受け取る
 $get_tpl_subno_template = $_GET['tpl_subno_template'];
 
@@ -100,11 +107,6 @@ function lfgetTemplate(){
 	
 	// DBから現在選択されているデータ取得
 	$arrDefcheck = lfgetTemplaeData();
-	
-	// テンプレートデータを取得する
-	$objQuery = new SC_Query();
-	$sql = "SELECT template_code,template_name,file_path FROM dtb_template ORDER BY create_date DESC";
-	$arrTemplate = $objQuery->getall($sql);
 	
 	switch($objPage->tpl_subno_template) {
 		// TOP
