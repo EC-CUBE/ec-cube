@@ -372,6 +372,7 @@ function lfGetGraphLine($arrResults, $keyname, $type, $xtitle, $ytitle) {
 			// タイトルセット
 			$objGraphLine->setXTitle($xtitle);
 			$objGraphLine->setYTitle($ytitle);
+			$objGraphLine->drawTitle("テストでござる。");
 			
 			// グラフ描画
 			$objGraphLine->drawGraph();
