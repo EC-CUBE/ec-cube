@@ -81,7 +81,7 @@ a:hover { color: #f9a406; text-decoration: underline; }
 
 /*navi*/
 
-
+/* ---テスト▼--- */
 .navi_dummy a{
 	background: url(/img/contents/navi_bar.gif);
 	background-repeat: repeat-y;
@@ -116,7 +116,7 @@ a:hover { color: #f9a406; text-decoration: underline; }
 	color:#000000;
 	text-decoration:none;
 }
-
+/* ---テスト---▲  */
 
 
 
