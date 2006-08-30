@@ -83,7 +83,7 @@ function lfnCheckSubmit(){
 										</td>
 									</tr>
 									<tr>
-										<td bgcolor="#f0f0f0" colspan="2" class="fs12n">本文<span class="red"> *</span>（名前差し込み時は {name} といれてください）</td>
+										<td bgcolor="#f2f1ec" colspan="2" class="fs12n">本文<span class="red"> *</span>（名前差し込み時は {name} といれてください）</td>
 									</tr>
 									<tr>
 										<td bgcolor="#ffffff" colspan="2">

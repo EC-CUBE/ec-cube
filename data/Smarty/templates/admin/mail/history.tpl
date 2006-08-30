@@ -43,10 +43,10 @@
 								<table width="678" border="0" cellspacing="1" cellpadding="5" summary=" ">
 									<tr bgcolor="#f2f1ec" align="center" class="fs12n">
 										<td width="110">配信開始時刻</td>
-										<td width="360" rowspan="2">Subject</td>
+										<td width="350" rowspan="2">Subject</td>
 										<td width="40" rowspan="2">プレビュー</td>
 										<td width="40" rowspan="2">配信条件</td>
-										<td width="76">配信予定件数</td>
+										<td width="86">配信予定件数</td>
 										<td width="37" rowspan="2">削除</td>
 									</tr>
 									<tr bgcolor="#f2f1ec" align="center" class="fs12n">
