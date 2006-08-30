@@ -1384,6 +1384,8 @@ function sfSendOrderMail($order_id, $template_id, $subject = "", $header = "", $
 	
 	// 備考を250バイトで分割
 	$arrMessage = explode("\n",$arrOrder['message']);
+	
+	sfprintr($arrMessage);
 	$Message_tmp = "";
 	foreach($arrMessage as $key => $val){
 		if (strlen($val) > 250) {
