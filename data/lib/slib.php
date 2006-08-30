@@ -1386,8 +1386,7 @@ function sfSendOrderMail($order_id, $template_id, $subject = "", $header = "", $
 	$arrOrder = $arrRet[0];
 	$arrOrderDetail = $objQuery->select("*", "dtb_order_detail", $where, array($order_id));
 	
-	sfprintr($arrOrder['message']);
-	
+	/*
 	// 備考を256バイトで分割
 	$arrMessage = explode("\n",$arrOrder['message']);
 	
@@ -1401,6 +1400,10 @@ function sfSendOrderMail($order_id, $template_id, $subject = "", $header = "", $
 		}
 	}
 	$objPage->Message_tmp = $Message_tmp;	
+	*/
+	$objPage->Message_tmp = $arrOrder['message'];
+	
+	exit($arrOrder['message']);
 		
 	// 顧客情報の取得
 	$customer_id = $arrOrder['customer_id'];
