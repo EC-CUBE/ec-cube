@@ -130,6 +130,7 @@ function lfgetTemplate(){
 	foreach($arrTemplate as $key => $val){
 //		$arrTemplateImage['image'][$key] = $val[$Image];
 		$arrTemplateImage['image'][$key] = $filepath . $val['template_code'] . "/" . $Image;
+		$arrTemplateImage['code'][$key] = $val['template_code'];
 	}
 	
 	sfprintr($arrTemplateImage);
