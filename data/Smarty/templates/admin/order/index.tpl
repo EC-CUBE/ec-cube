@@ -302,7 +302,7 @@
 							<td width="65"><span class="white">支払方法</span></td>
 							<td width="70"><span class="white">購入金額(円)</span></td>
 							<td width="80"><span class="white">全商品発送日</span></td>
-							<td width="85"><span class="white">受注対応状況</span></td>
+							<td width="85"><span class="white">対応状況</span></td>
 							<td width="50"><span class="white">編集</span></td>
 							<td width="50"><span class="white">メール</span></td>
 							<td width="50"><span class="white">削除</span></td>
