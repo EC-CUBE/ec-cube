@@ -277,6 +277,11 @@ function lfChangeTemplate(){
 
 		// ブロックデータのコピー
 		lfFolderCopy($taget_tpl_path."bloc/", $bloc_path);
+		
+		// ヘッダーコピー
+		copy($taget_tpl_path . "/header.tpl", $save_tpl_path . "header.tpl");
+		copy($taget_tpl_path . "/footer.tpl", $save_tpl_path . "footer.tpl");
+		
 
 	// mypageの場合にはフォルダごとコピーする
 	}elseif($objPage->tpl_subno_template == $objPage->arrSubnavi[4]){
