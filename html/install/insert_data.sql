@@ -218,20 +218,20 @@ insert into dtb_news (news_title, news_comment, creator_id)
 values('サイトオープンいたしました!','一人暮らしからオフィスなどさまざまなシーンで あなたの生活をサポートするグッズをご家庭へお届けします！一人暮らしからオフィスなどさまざまなシーンで あなたの生活をサポートするグッズをご家庭へお届けします！一人暮らしからオフィスなどさまざまなシーンで あなたの生活をサポートするグッズをご家庭へお届けします！',1);
 
 -- 商品データ
-insert into dtb_products (name,sale_unlimited,category_id,rank,status,product_flag,point_rate,main_list_comment,main_list_image,main_comment,main_image,main_large_image, creator_id)
-values('和菓子3点セット(小春)','1','1','1','1','0','100','一覧-メインコメントダミーテキストです。一覧-メインコメントダミーテキストです。一覧-メインコメントダミーテキストです。一覧-メインコメントダミーテキストです。','08281319_44f26ebbf2435.jpg','詳細-メインコメントダミーテキストです。詳細-メインコメントダミーテキストです。詳細-メインコメントダミーテキストです。詳細-メインコメントダミーテキストです。','08281319_44f26ec47f8c7.jpg','08281319_44f26eca33e2f.jpg', 1);
-insert into dtb_products (name,sale_unlimited,category_id,rank,status,product_flag,point_rate,main_list_comment,main_list_image,main_comment,main_image,main_large_image, creator_id)
-values('和菓子3点セット(花暦)','1','1','1','1','10','100','一覧-メインコメントダミーテキストです。一覧-メインコメントダミーテキストです。一覧-メインコメントダミーテキストです。一覧-メインコメントダミーテキストです。','08281159_44f25c1bb46e4.jpg','詳細-メインコメントダミーテキストです。詳細-メインコメントダミーテキストです。詳細-メインコメントダミーテキストです。詳細-メインコメントダミーテキストです。','08281200_44f25c4be7e1a.jpg','08281201_44f25c6daaf90.jpg', 1);
+--insert into dtb_products (name,sale_unlimited,category_id,rank,status,product_flag,point_rate,main_list_comment,main_list_image,main_comment,main_image,main_large_image, creator_id)
+--values('和菓子3点セット(小春)','1','1','1','1','0','100','一覧-メインコメントダミーテキストです。一覧-メインコメントダミーテキストです。一覧-メインコメントダミーテキストです。一覧-メインコメントダミーテキストです。','08281319_44f26ebbf2435.jpg','詳細-メインコメントダミーテキストです。詳細-メインコメントダミーテキストです。詳細-メインコメントダミーテキストです。詳細-メインコメントダミーテキストです。','08281319_44f26ec47f8c7.jpg','08281319_44f26eca33e2f.jpg', 1);
+--insert into dtb_products (name,sale_unlimited,category_id,rank,status,product_flag,point_rate,main_list_comment,main_list_image,main_comment,main_image,main_large_image, creator_id)
+--values('和菓子3点セット(花暦)','1','1','1','1','10','100','一覧-メインコメントダミーテキストです。一覧-メインコメントダミーテキストです。一覧-メインコメントダミーテキストです。一覧-メインコメントダミーテキストです。','08281159_44f25c1bb46e4.jpg','詳細-メインコメントダミーテキストです。詳細-メインコメントダミーテキストです。詳細-メインコメントダミーテキストです。詳細-メインコメントダミーテキストです。','08281200_44f25c4be7e1a.jpg','08281201_44f25c6daaf90.jpg', 1);
 
 -- 商品クラスデータ
-insert into dtb_products_class(product_id,classcategory_id1,classcategory_id2,product_code,stock_unlimited,price02,creator_id)
-values('1','0','0','a-001','1','1500','1');
-insert into dtb_products_class(product_id,classcategory_id1,classcategory_id2,product_code,stock_unlimited,price02,creator_id)
-values('2','0','0','a-002','1','1500','1');
+--insert into dtb_products_class(product_id,classcategory_id1,classcategory_id2,product_code,stock_unlimited,price02,creator_id)
+--values('1','0','0','a-001','1','1500','1');
+--insert into dtb_products_class(product_id,classcategory_id1,classcategory_id2,product_code,stock_unlimited,price02,creator_id)
+--values('2','0','0','a-002','1','1500','1');
 
 -- オススメ商品
-insert into dtb_best_products (rank,product_id, comment, category_id, creator_id)
-values(1,1,'ダミーオススメコメント！',1,1);
+--insert into dtb_best_products (rank,product_id, comment, category_id, creator_id)
+--values(1,1,'ダミーオススメコメント！',1,1);
 
 INSERT INTO dtb_kiyaku (kiyaku_title, kiyaku_text, rank, creator_id, update_date, delete) 
 VALUES ('第１条（会員）','1. 「会員」とは、当社が定める手続に従い本規約に同意の上、入会の申し込みを行う個人をいいます。
