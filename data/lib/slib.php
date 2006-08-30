@@ -1389,7 +1389,7 @@ function sfSendOrderMail($order_id, $template_id, $subject = "", $header = "", $
 	$Message_tmp = "";
 	foreach($arrMessage as $key => $val){
 		if (strlen($val) > 255) {
-			$Message_tmp .= wordwrap($val,255,"\n");
+			$Message_tmp .= wordwrap($val,255,"\n", 1);
 		} else {
 			$Message_tmp .= $val."\n";
 		}
@@ -1397,7 +1397,7 @@ function sfSendOrderMail($order_id, $template_id, $subject = "", $header = "", $
 	$objPage->Message_tmp = $Message_tmp;	
 	
 	sfprintr($objPage->Message_tmp);
-		exit;
+	exit;
 		
 	// 顧客情報の取得
 	$customer_id = $arrOrder['customer_id'];
