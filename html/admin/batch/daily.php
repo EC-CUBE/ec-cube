@@ -38,7 +38,7 @@ function lfStartDailyTotal($term, $start, $command = false) {
 	$where = "order_id IN (SELECT order_id FROM dtb_order WHERE delete = 1)";
 	$objQuery->delete("dtb_order_detail", $where);
 	
-	$last_batch = $objQuery->max("create_date", "dtb_bat_order_daily");
+	$last_batch = $objQuery->max("dtb_bat_order_daily", "create_date");
 
 	print(strtotime($last_batch));
 	
