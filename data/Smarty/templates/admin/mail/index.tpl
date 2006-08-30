@@ -199,7 +199,7 @@
 							</tr>			
 							<tr class="fs12n">
 								<td bgcolor="#f2f1ec" width="110">最終購入日</td>
-								<td bgcolor="#ffffff" colspan="3">
+								<td bgcolor="#ffffff" colspan="3" width="499">
 									<!--{if $arrErr.buy_start_year || $arrErr.buy_end_year}--><span class="red12"><!--{$arrErr.buy_start_year}--><!--{$arrErr.buy_end_year}--></span><br><!--{/if}-->
 									<select name="buy_start_year" style="<!--{$arrErr.buy_start_year|sfGetErrorColor}-->">
 										<option value="" selected="selected">----</option>
