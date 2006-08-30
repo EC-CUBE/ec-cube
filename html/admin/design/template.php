@@ -284,7 +284,6 @@ function lfChangeTemplate(){
 			mb_ereg("^(.*[\/])(.*)",$val, $matches);
 			$data=$matches[2];
 			
-			sfprintr($matches);
 			copy($val, $save_tpl_path . "mypage/" . $data);
 		}
 
