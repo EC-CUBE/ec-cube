@@ -361,10 +361,10 @@
 					<!--検索結果表示テーブル-->
 					<table width="840" border="0" cellspacing="1" cellpadding="5" summary=" ">
 						<tr bgcolor="#636469" align="center" class="fs12n">
-							<td width="10" rowspan="2"><span class="white">種別</span></td>
+							<td width="50" rowspan="2"><span class="white">種別</span></td>
 							<td width="150"><span class="white">顧客コード</span></td>
 							<td width="300" rowspan="2"><span class="white">顧客名/（カナ）</span></td>
-							<td width="30" rowspan="2"><span class="white">性別</span></td>
+							<td width="50" rowspan="2"><span class="white">性別</span></td>
 							<td width="250"><span class="white">TEL</span></td>
 							<td width="50" rowspan="2"><span class="white">編集</span></td>
 							<td width="50" rowspan="2"><span class="white">削除</span></td>
