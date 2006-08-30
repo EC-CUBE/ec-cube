@@ -271,25 +271,31 @@ function lfChangeTemplate(){
 		copy($taget_tpl_path . "/list.tpl", $save_tpl_path . "list.tpl");
 		copy($taget_tpl_path . "/detail.tpl", $save_tpl_path . "detail.tpl");
 		
-		// MYPAGEのファイルを取得する
-		$arrMypage=glob($taget_tpl_path."mypage/" . "*" );
-		
-		// フォルダがなければ作成する
-		if(!is_dir($save_tpl_path."mypage")){
-			mkdir($save_tpl_path."mypage");
-		}
-		
-		foreach($arrMypage as $key => $val){
-			$matches = array();
-			mb_ereg("^(.*[\/])(.*)",$val, $matches);
-			$data=$matches[2];
-			
-			copy($val, $save_tpl_path . "mypage/" . $data);
-		}
+		lfFolderCopy($taget_tpl_path."mypage/", $save_tpl_path."mypage/");
 
 		// ブロックデータのコピー
 	}else{
 		// テンプレートファイルをコピー
 		copy($tpl_path . "/" . $tpl_name, $save_tpl_path . $tpl_name);
+	}
+}
+
+// フォルダをコピーする
+function lfFolderCopy($taget_path, $save_path){
+
+	// フォルダ内のファイルを取得する
+	$arrMypage=glob($taget_path . "*" );
+	
+	// フォルダがなければ作成する
+	if(!is_dir($save_path)){
+		mkdir($save_path);
+	}
+
+	// フォルダ内を全てコピー
+	foreach($arrMypage as $key => $val){
+		$matches = array();
+		mb_ereg("^(.*[\/])(.*)",$val, $matches);
+		$data=$matches[2];
+		copy($val, $save_path . $data);
 	}
 }
