@@ -99,7 +99,7 @@
 								<td bgcolor="#f2f1ec" width="110">¹ØÆþ¾¦ÉÊ¥³¡¼¥É</td>
 								<td bgcolor="#ffffff" width="194">
 								<!--{if $arrErr.buy_product_code}--><span class="red12"><!--{$arrErr.buy_product_code}--></span><!--{/if}-->
-								<input type="text" name="buy_product_code" value="<!--{$list_data.buy_product_code}-->" maxlength="<!--{$smarty.const.STEXT_LEN}-->" style="<!--{$arrErr.buy_product_code|sfGetErrorColor}-->" >
+								<input type="text" name="buy_product_code" value="<!--{$list_data.buy_product_code}-->" maxlength="<!--{$smarty.const.STEXT_LEN}-->" size="30" class="box30" style="<!--{$arrErr.buy_product_code|sfGetErrorColor}-->" >
 								</td>
 				
 								<td bgcolor="#f2f1ec" width="110">¹ØÆþ¶â³Û</td>
