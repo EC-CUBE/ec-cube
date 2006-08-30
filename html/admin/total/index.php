@@ -74,7 +74,8 @@ case 'search':
 				$sdate = $_POST['search_startyear'] . "/" . $_POST['search_startmonth'] . "/" . $_POST['search_startday'];
 				break;
 			case 'search_endyear':
-				$edate = sfGetTimestamp($_POST['search_endyear'], $_POST['search_endmonth'], $_POST['search_endday'], true);
+//				$edate = sfGetTimestamp($_POST['search_endyear'], $_POST['search_endmonth'], $_POST['search_endday'], true);
+				$edate = $_POST['search_endyear'] . "/" . $_POST['search_endmonth'] . "/" . $_POST['search_endday'];
 				break;
 			case 'search_startyear_m':
 				list($sdate, $edate) = sfTermMonth($_POST['search_startyear_m'], $_POST['search_startmonth_m'], CLOSE_DAY);
