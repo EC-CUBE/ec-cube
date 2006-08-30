@@ -31,7 +31,7 @@ class SC_Query {
 		return $ret;
 	}
 
-	function getLastQuery($disp = false) {
+	function getLastQuery($disp = true) {
 		$sql = $this->conn->conn->last_query;
 		if($disp) { 
 			print($sql.";<br />\n");
