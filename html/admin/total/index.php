@@ -392,7 +392,7 @@ function lfGetGraphLine($arrResults, $keyname, $type, $xtitle, $ytitle, $sdate, 
 }
 
 // 円グラフの作成 
-function lfGetGraphPie($arrResults, $keyname, $type, $title = "") {
+function lfGetGraphPie($arrResults, $keyname, $type, $title = "", $sdate, $edate) {
 	
 	$ret_path = "";
 	
@@ -423,11 +423,11 @@ function lfGetGraphPie($arrResults, $keyname, $type, $title = "") {
 
 			// メインタイトル作成
 			$arrKey = array_keys($arrList);
-			list($sy, $sm, $sd) = split("/" , $arrKey[0]);
-			list($ey, $em, $ed) = split("/" , $arrKey[count($arrKey) - 1]);
-			$startKey = $sy . "年" . $sm . "月" . $sd . "日";
-			$endKey = $ey . "年" . $em . "月" . $ed . "日";
-			$objGraphPie->drawTitle("集計期間：" . $startKey . " - " . $endKey);
+			list($sy, $sm, $sd) = split("[/ ]" , $sdate);
+			list($ey, $em, $ed) = split("[/ ]" , $edate);
+			$start_date = $sy . "年" . $sm . "月" . $sd . "日";
+			$end_date = $ey . "年" . $em . "月" . $ed . "日";
+			$objGraphLine->drawTitle("集計期間：" . $start_date . " - " . $end_date);
 					
 			// 円グラフ描画
 			$objGraphPie->drawGraph();
@@ -442,7 +442,7 @@ function lfGetGraphPie($arrResults, $keyname, $type, $title = "") {
 }
 
 // 棒グラフの作成 
-function lfGetGraphBar($arrResults, $keyname, $type, $xtitle, $ytitle) {
+function lfGetGraphBar($arrResults, $keyname, $type, $xtitle, $ytitle, $sdate, $edate) {
 	$ret_path = "";
 	
 	// 結果が0行以上ある場合のみグラフを生成する。
@@ -466,11 +466,11 @@ function lfGetGraphBar($arrResults, $keyname, $type, $xtitle, $ytitle) {
 			
 			// メインタイトル作成
 			$arrKey = array_keys($arrList);
-			list($sy, $sm, $sd) = split("/" , $arrKey[0]);
-			list($ey, $em, $ed) = split("/" , $arrKey[count($arrKey) - 1]);
-			$startKey = $sy . "年" . $sm . "月" . $sd . "日";
-			$endKey = $ey . "年" . $em . "月" . $ed . "日";
-			$objGraphBar->drawTitle("集計期間：" . $startKey . " - " . $endKey);
+			list($sy, $sm, $sd) = split("[/ ]" , $sdate);
+			list($ey, $em, $ed) = split("[/ ]" , $edate);
+			$start_date = $sy . "年" . $sm . "月" . $sd . "日";
+			$end_date = $ey . "年" . $em . "月" . $ed . "日";
+			$objGraphLine->drawTitle("集計期間：" . $start_date . " - " . $end_date);
 			
 			$objGraphBar->drawGraph();
 			$objGraphBar->outputGraph(false,$path);
@@ -632,7 +632,7 @@ function lfGetOrderJob($type, $sdate, $edate, $objPage, $graph = true) {
 	// 円グラフの生成	
 	if($graph) {
 		$image_key = "job_" . $type;
-		$objPage->tpl_image = lfGetGraphPie($objPage->arrResults, "job_name", $image_key, "(売上比率)");
+		$objPage->tpl_image = lfGetGraphPie($objPage->arrResults, "job_name", $image_key, "(売上比率)", $sdate, $edate);
 	}
 	
 	return $objPage;
@@ -673,7 +673,7 @@ function lfGetOrderAge($type, $sdate, $edate, $objPage, $graph = true) {
 		$image_key = "age_" . $type;
 		$xtitle = "(年齢)";
 		$ytitle = "(売上合計)";
-		$objPage->tpl_image = lfGetGraphBar($objPage->arrResults, "age_name", $image_key, $xtitle, $ytitle);
+		$objPage->tpl_image = lfGetGraphBar($objPage->arrResults, "age_name", $image_key, $xtitle, $ytitle, $sdate, $edate);
 	}
 	
 	return $objPage;
