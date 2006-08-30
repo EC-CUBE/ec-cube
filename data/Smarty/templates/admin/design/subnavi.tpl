@@ -31,7 +31,7 @@
 			<tr><td><img src="/img/contents/navi_subline.gif" width="140" height="2" alt=""></td></tr>
 			<tr><td class=<!--{if $tpl_subno_csv != 'order'}-->"subnavi"<!--{else}-->"subnavi-on"<!--{/if}-->><a href="./csv.php?tpl_subno_csv=<!--{$arrSubnavi.3}-->" onMouseOver="naviStyleChange('order_sub', '#b7b7b7')" <!--{if $tpl_subno_csv != 'order'}-->onMouseOut="naviStyleChange('order_sub', '#818287')"<!--{/if}--> id="order_sub"><span class="subnavi_text">受注管理</span></a></td></tr>
 			<tr><td><img src="/img/contents/navi_subline.gif" width="140" height="2" alt=""></td></tr>
-			<tr><td class=<!--{if $tpl_subno_csv != 'csv_sql'}-->"subnavi"<!--{else}-->"subnavi-on"<!--{/if}-->><a href="./csv_sql.php" onMouseOver="naviStyleChange('csv_sql', '#b7b7b7')" <!--{if $tpl_subno_csv != 'csv_sql'}-->onMouseOut="naviStyleChange('csv_sql', '#818287')"<!--{/if}--> id="csv_sql"><span class="subnavi_text">高度な設定</span></a></td></tr>
+			<tr><td class=<!--{if $tpl_subno_template != 'mypage'}-->"subnavi"<!--{else}-->"subnavi-on"<!--{/if}-->><a href="./csv_sql.php" onMouseOver="naviStyleChange('csv_sql', '#b7b7b7')" <!--{if $tpl_subno_csv != 'csv_sql'}-->onMouseOut="naviStyleChange('csv_sql', '#818287')"<!--{/if}--> id="csv_sql"><span class="subnavi_text">高度な設定</span></a></td></tr>
 			<tr><td><img src="/img/contents/navi_subline.gif" width="140" height="2" alt=""></td></tr>
 			
 	<!--{/if}-->
