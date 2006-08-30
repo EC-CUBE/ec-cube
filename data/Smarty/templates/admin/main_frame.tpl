@@ -52,7 +52,7 @@
 						<td><img src="/img/common/_.gif" width="10" height="1" alt=""></td>
 						<td><a href="<!--{$smarty.const.SITE_URL}-->" onmouseover="chgImg('/img/header/sitecheck_on.gif','sitecheck');" onmouseout="chgImg('/img/header/sitecheck.gif','sitecheck');" target="_blank"><img src="/img/header/sitecheck.gif" width="69" height="17" alt="SITE CHECK" border="0" name="sitecheck" id="sitecheck"></a></td>
 						<td><img src="/img/header/welcome.gif" width="91" height="17" alt="WELCOME!"></td>
-						<td class="fs12"><span class="whitest"><!--ログイン名--><!--{$smarty.session.login_name}-->&nbsp;様</span></td>
+						<td class="fs12"><span class="whitest"><!--ログイン名--><!--{$smarty.session.login_name|escape}-->&nbsp;様</span></td>
 						<td><img src="/img/common/_.gif" width="10" height="1" alt=""></td>
 						<td><a href="<!--{$smarty.const.URL_LOGOUT}-->" onmouseover="chgImg('/img/admin/header/logout_on.gif','logout');" onmouseout="chgImg('/img/admin/header/logout.gif','logout');"><img src="/img/admin/header/logout.gif" width="56" height="15" alt="LOGOUT" border="0" name="logout" id="logout"></a></td>
 						<td><img src="/img/common/_.gif" width="15" height="1" alt=""></td>

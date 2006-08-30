@@ -59,7 +59,7 @@
 								<td bgcolor="#f2f1ec" class="fs12">品切れ商品</td>
 								<td bgcolor="#ffffff" class="fs12">
 								<!--{section name=i loop=$arrSoldout}-->
-								<!--{$arrSoldout[i].product_id}-->:<!--{$arrSoldout[i].name}--><br>
+								<!--{$arrSoldout[i].product_id}-->:<!--{$arrSoldout[i].name|escape}--><br>
 								<!--{/section}-->			
 								</td>
 							</tr>
