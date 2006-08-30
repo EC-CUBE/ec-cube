@@ -803,11 +803,11 @@ function sfGetLevelCatList($parent_zero = true) {
 		}
 		
 		$arrOutput[$cnt] = "";
-			 		
+		/*	 		
 		for($n = 1; $n < $arrRet[$cnt]['level']; $n++) {
 			$arrOutput[$cnt].= "¡¡";
 		}
-		
+		*/
 		for($cat_cnt = 0; $cat_cnt < $arrRet[$cnt]['level']; $cat_cnt++) {
 			$arrOutput[$cnt].= CATEGORY_HEAD;
 		}
