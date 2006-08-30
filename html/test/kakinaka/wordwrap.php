@@ -17,12 +17,11 @@ $str = array();
 $cut_len = 10;
 
 $len = mb_strlen($test);
+$tmp = $test;
 while($len > $cut_len){
 	$str[] = mb_substr($test,0,$cut_len);
-	$tmp = mb_substr($test, $cut_len, $len);
+	$tmp = mb_substr($tmp, $cut_len, $len);
 	$len = mb_strlen($tmp);
-	print_r($str);
-	MyFlush();
 }
 $str[] = $tmp;
 print_r($str);
