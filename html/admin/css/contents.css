@@ -80,8 +80,8 @@ a:hover { color: #f9a406; text-decoration: underline; }
 
 
 /*navi*/
-.navi {
-	width:140px;
+#menu_navi {
+	able-layout: fixed;
 }
 
 .navi a{
