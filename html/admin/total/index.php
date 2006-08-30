@@ -457,6 +457,10 @@ function lfGetGraphBar($arrResults, $keyname, $type, $xtitle, $ytitle, $sdate, $
 		if(!file_exists($path)) {
 			$objGraphBar = new SC_GraphBar();
 			
+			foreach(array_keys($arrList) as $val) {
+				$arrKey[] = ereg_replace("¡Á", " - ", $val);
+			}
+			
 			// ¥°¥é¥ÕÉÁ²è
 			$objGraphBar->setXLabel(array_keys($arrList));
 			$objGraphBar->setXTitle($xtitle);
