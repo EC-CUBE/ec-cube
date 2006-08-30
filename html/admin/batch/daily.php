@@ -48,10 +48,10 @@ function lfStartDailyTotal($term, $start, $command = false) {
 	$objQuery = new SC_Query();
 	$arrRet = $objQuery->select("create_date", "dtb_bat_order_daily", "create_date > ?", array($batch_pass));
 		
-	if(count($arrRet) > 0) {
+	//if(count($arrRet) > 0) {
 		gfPrintLog("LAST BATCH " . $arrRet[0]['create_date'] . " > " . $batch_pass . " -> EXIT BATCH $batch_date");
 		return;
-	}
+	//}
 		
 	// ½¸·×
 	for ($i = $start; $i < $term; $i++) {
