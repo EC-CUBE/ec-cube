@@ -195,14 +195,12 @@ insert into dtb_payment(payment_method,rank,fix,creator_id)values('現金書留',3,2
 insert into dtb_payment(payment_method,rank,fix,creator_id)values('郵便振替',4,2,1);
 
 -- 注文完了メール
-update dtb_mailtemplate set 
-subject = 'ご注文ありがとうございます。',
-header = 
+insert into dtb_mailtemplate (template_id, subject, header, footer) values (
+'ご注文ありがとうございます。',
 'この度はご注文いただき誠に有難うございます。
 下記ご注文内容にお間違えがないかご確認下さい。
 
 ',
-footer = 
 '
 
 ==============================================================☆
@@ -213,8 +211,7 @@ footer =
 ご質問やご不明な点がございましたら、こちらからお願いいたします。
 http://------.co.jp
 
-'
-where template_id = 1;
+');
 
 -- 新着情報データ
 insert into dtb_news (news_title, news_comment, creator_id) 
