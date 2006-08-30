@@ -80,7 +80,8 @@ a:hover { color: #f9a406; text-decoration: underline; }
 
 
 /*navi*/
-.navi {
+.navi td{
+	width:140;
 	overflow:hidden;	
 }
 
