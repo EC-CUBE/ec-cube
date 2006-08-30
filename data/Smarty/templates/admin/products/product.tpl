@@ -248,7 +248,7 @@
 										<!--{assign var=key value="sub_comment`$smarty.section.cnt.iteration`"}-->
 										<td bgcolor="#ffffff" width="557" class="fs10n">
 										<span class="red12"><!--{$arrErr[$key]}--></span>
-										<textarea name="sub_comment<!--{$smarty.section.cnt.iteration}-->" cols="60" rows="8" class="area60" maxlength="<!--{$smarty.const.LLTEXT_LEN}-->" style="<!--{$arrErr[$key]|sfGetErrorColor}-->"><!--{$arrForm[$key]|escape}--></textarea><span class="red10"> （上限<!--{$smarty.const.LLTEXT_LEN}-->文字）</span></td>
+										<textarea name="sub_comment<!--{$smarty.section.cnt.iteration}-->" cols="60" rows="8" class="area60" maxlength="<!--{$smarty.const.LLTEXT_LEN}-->" style="<!--{$arrErr[$key]|sfGetErrorColor}-->"><!--{$arrForm[$key]|escape}--></textarea><br /><span class="red10"> （上限<!--{$smarty.const.LLTEXT_LEN}-->文字）</span></td>
 									</tr>
 									<tr>
 										<td bgcolor="#f2f1ec" width="160" class="fs12n">詳細-サブ画像（<!--{$smarty.section.cnt.iteration}-->）<br />[200×200]</td>
@@ -258,7 +258,7 @@
 										<!--{if $arrFile[$key].filepath != ""}-->
 										<img src="<!--{$arrFile[$key].filepath}-->" alt="<!--{$arrForm.name|escape}-->" width="<!--{$arrFile[$key].width}-->" height="<!--{$arrFile[$key].height}-->" />　<a href="" onclick="fnModeSubmit('delete_image', 'image_key', '<!--{$key}-->'); return false;">[画像の取り消し]</a><br>
 										<!--{/if}-->
-										<input type="file" name="<!--{$key}-->" size="60" class="box60" style="<!--{$arrErr[$key]|sfGetErrorColor}-->"/>
+										<input type="file" name="<!--{$key}-->" size="50" class="box50" style="<!--{$arrErr[$key]|sfGetErrorColor}-->"/>
 										<input type="button" name="btn" onclick="fnModeSubmit('upload_image', 'image_key', '<!--{$key}-->')" value="アップロード">
 										</td>
 									</tr>
@@ -270,7 +270,7 @@
 										<!--{if $arrFile[$key].filepath != ""}-->
 										<img src="<!--{$arrFile[$key].filepath}-->" alt="<!--{$arrForm.name|escape}-->" width="<!--{$arrFile[$key].width}-->" height="<!--{$arrFile[$key].height}-->" />　<a href="" onclick="fnModeSubmit('delete_image', 'image_key', '<!--{$key}-->'); return false;">[画像の取り消し]</a><br>
 										<!--{/if}-->
-										<input type="file" name="<!--{$key}-->" size="60" class="box60" style="<!--{$arrErr[$key]|sfGetErrorColor}-->"/>
+										<input type="file" name="<!--{$key}-->" size="50" class="box50" style="<!--{$arrErr[$key]|sfGetErrorColor}-->"/>
 										<input type="button" name="btn" onclick="fnModeSubmit('upload_image', 'image_key', '<!--{$key}-->')" value="アップロード">
 										</td>
 									</tr>
