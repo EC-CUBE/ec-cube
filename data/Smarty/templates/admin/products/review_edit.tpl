@@ -53,7 +53,7 @@
 
 
 							<!--▼編集テーブルここから-->
-							<table width="678" border="0" cellspacing="1" cellpadding="5" summary=" " bgcolor="#cccccc">
+							<table width="678" border="0" cellspacing="1" cellpadding="8" summary=" " bgcolor="#cccccc">
 								<tr class="fs12n">
 									<td bgcolor="#f2f1ec" width="160">商品名</td>
 									<td bgcolor="#ffffff" width="557"><!--{$arrReview.name}--></td>
