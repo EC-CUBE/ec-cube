@@ -27,7 +27,7 @@
 	</tr>
 	<!--{/section}-->
 	
-	<tr bgcolor="#636469" align="center" class="fs10n">
+	<tr bgcolor="#636469" align="center" class="fs12n">
 		<td width="40"><span class="white">½ç°Ì</span></td>
 		<td width="175"><span class="white">¿¦¶È</span></td>
 		<td width="175"><span class="white">¹ØÆþ·ï¿ô</span></td>				

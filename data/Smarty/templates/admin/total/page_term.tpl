@@ -50,7 +50,7 @@
 	</tr>
 	<!--{/section}-->
 	
-	<tr bgcolor="#636469" align="center" class="fs10n">
+	<tr bgcolor="#636469" align="center" class="fs12n">
 		<td width="100"><span class="white">期間</span></td>
 		<td width="80"><span class="white">購入件数</span></td>
 		<td width="80"><span class="white">男性</span></td>				

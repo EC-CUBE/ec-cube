@@ -31,7 +31,7 @@
 	</tr>
 	<!--{/section}-->
 	
-	<tr bgcolor="#636469" align="center" class="fs10n">
+	<tr bgcolor="#636469" align="center" class="fs12n">
 		<td width="40"><span class="white">順位</span></td>
 		<td width="80"><span class="white">商品番号</span></td>
 		<td width="300"><span class="white">商品名</span></td>				
