@@ -256,12 +256,14 @@ function lfChangeTemplate(){
 			$tpl_element = "MypageTemplate";			//イメージの配列要素名格納用
 			$tpl_name = "mypage.tpl";
 			break;
-			
+
 		default:
 			break;
 	}
 	
 	sfprintr($arrTemplate);
+	sfprintr($fileArray=glob( ROOT_DIR. $tpl_path."*" ));
+	
 	// TOPを変更した場合には全画面変更
 	if ($objPage->tpl_subno_template == $objPage->arrSubnavi[1]){
 		// テンプレートファイルをコピー
@@ -269,6 +271,8 @@ function lfChangeTemplate(){
 		copy(ROOT_DIR . $tpl_path . $arrTemplate[0]['template_code'] . "/list.tpl", ROOT_DIR . $tpl_path . "list.tpl");
 		copy(ROOT_DIR . $tpl_path . $arrTemplate[0]['template_code'] . "/detail.tpl", ROOT_DIR . $tpl_path . "detail.tpl");
 		copy(ROOT_DIR . $tpl_path . $arrTemplate[0]['template_code'] . "/mypage.tpl", ROOT_DIR . $tpl_path . "mypage.tpl");
+
+		// ブロックデータのコピー
 	}else{
 		// テンプレートファイルをコピー
 		copy(ROOT_DIR . $tpl_path . $arrTemplate[0]['template_code'] . "/" . $tpl_name, ROOT_DIR . $tpl_path . $tpl_name);
