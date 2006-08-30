@@ -783,7 +783,7 @@ function sfGetCategoryList($addwhere = "", $products_check = false) {
 }
 
 // カテゴリツリーの取得（親カテゴリのValue:0)
-function sfGetLevelCatList($parent_zero = false) {
+function sfGetLevelCatList($parent_zero = true) {
 	$objQuery = new SC_Query();
 	$col = "category_id, category_name, level";
 	$where = "delete = 0";
@@ -792,10 +792,14 @@ function sfGetLevelCatList($parent_zero = false) {
 	$max = count($arrRet);
 	
 	for($cnt = 0; $cnt < $max; $cnt++) {
-		if($arrRet[$cnt]['level'] == LEVEL_MAX) {
-			$arrValue[$cnt] = $arrRet[$cnt]['category_id'];
+		if($parent_zero) {
+			if($arrRet[$cnt]['level'] == LEVEL_MAX) {
+				$arrValue[$cnt] = $arrRet[$cnt]['category_id'];
+			} else {
+				$arrValue[$cnt] = ""; 
+			}
 		} else {
-			$arrValue[$cnt] = ""; 
+			$arrValue[$cnt] = $arrRet[$cnt]['category_id'];
 		}
 		
 		$arrOutput[$cnt] = "";
