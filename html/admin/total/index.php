@@ -375,11 +375,11 @@ function lfGetGraphLine($arrResults, $keyname, $type, $xtitle, $ytitle, $sdate, 
 			
 			// メインタイトル作成
 			$arrKey = array_keys($arrList);
-			list($sy, $sm, $sd) = split("/" , $arrKey[0]);
-			list($ey, $em, $ed) = split("/" , $arrKey[count($arrKey) - 1]);
-			$startKey = $sy . "年" . $sm . "月" . $sd . "日";
-			$endKey = $ey . "年" . $em . "月" . $ed . "日";
-			$objGraphLine->drawTitle("集計期間：" . $sdate . " - " . $edate);
+			list($sy, $sm, $sd) = split("[/ ]" , $sdate);
+			list($ey, $em, $ed) = split("[/ ]" , $edate);
+			$start_date = $sy . "年" . $sm . "月" . $sd . "日";
+			$end_date = $ey . "年" . $em . "月" . $ed . "日";
+			$objGraphLine->drawTitle("集計期間：" . $start_date . " - " . $end_date);
 			
 			// グラフ描画
 			$objGraphLine->drawGraph();
