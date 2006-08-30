@@ -178,8 +178,8 @@
 								</td>
 							</tr>
 							<tr class="fs12n">
-								<td bgcolor="#f2f1ec" width="110">½»½ê</td>
-								<td bgcolor="#ffffff" width="607" colspan="3">
+								<td bgcolor="#f2f1ec">½»½ê</td>
+								<td bgcolor="#ffffff" colspan="3">
 								<table border="0" cellspacing="0" cellpadding="0" summary=" ">
 									<tr>
 									<td>
