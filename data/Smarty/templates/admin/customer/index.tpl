@@ -222,7 +222,7 @@
 									<input type="text" name="buy_product_name" maxlength="<!--{$smarty.const.STEXT_LEN}-->" value="<!--{$arrForm.buy_product_name|escape}-->" size="30" class="box30" style="<!--{$arrErr.buy_product_name|sfGetErrorColor}-->"/>
 									</span>
 								</td>
-								<td bgcolor="#f2f1ec" width="110">購入商品コード</td>
+								<td bgcolor="#f2f1ec" width="110">購入商品<br />コード</td>
 								<td bgcolor="#ffffff" width="195">
 								<!--{if $arrErr.buy_product_code}--><span class="red12"><!--{$arrErr.buy_product_code}--></span><!--{/if}-->
 								<input type="text" name="buy_product_code" value="<!--{$arrForm.buy_product_code}-->" maxlength="<!--{$smarty.const.STEXT_LEN}-->" size="30" class="box30" style="<!--{$arrErr.buy_product_code|sfGetErrorColor}-->" >
