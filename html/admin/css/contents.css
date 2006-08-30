@@ -150,7 +150,7 @@ a:hover { color: #f9a406; text-decoration: underline; }
 */
 .navi_text {
 	font-size: 75%;
-	padding: 0 0 0 8px;
+	//padding: 0 0 0 8px;
 }
 
 .navi-on a{
