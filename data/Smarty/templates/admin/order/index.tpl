@@ -296,12 +296,12 @@
 					<table width="840" border="0" cellspacing="1" cellpadding="5" summary=" ">
 
 						<tr bgcolor="#636469" align="center" class="fs12n">
-							<td width="150"><span class="white">受注日</span></td>
+							<td width="130"><span class="white">受注日</span></td>
 							<td width="99"><span class="white">受注番号</span></td>
 							<td width="100"><span class="white">顧客名</span></td>
 							<td width="75"><span class="white">支払方法</span></td>
 							<td width="80"><span class="white">購入金額(円)</span></td>
-							<td width="100"><span class="white">全商品発送日</span></td>
+							<td width="130"><span class="white">全商品発送日</span></td>
 							<td width="75"><span class="white">対応状況</span></td>
 							<td width="50"><span class="white">編集</span></td>
 							<td width="50"><span class="white">メール</span></td>
