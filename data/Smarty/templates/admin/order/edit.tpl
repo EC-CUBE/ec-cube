@@ -180,7 +180,7 @@
 							<tr class="fs12n">
 								<td bgcolor="#f2f1ec" width="110">½»½ê</td>
 								<td bgcolor="#ffffff" width="607" colspan="3">
-								<table width="607" border="0" cellspacing="0" cellpadding="0" summary=" ">
+								<table border="0" cellspacing="0" cellpadding="0" summary=" ">
 									<tr>
 									<td>
 										<!--{assign var=key value="deliv_pref"}-->

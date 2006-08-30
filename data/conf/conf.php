@@ -163,7 +163,7 @@ define("CATEGORY_MAX", 1000);							// 最大カテゴリ登録数
 /* 表示関連 */
 define ("ADMIN_TITLE", "ECサイト管理ページ");			// 管理ページタイトル
 define ("SELECT_RGB", "#ffffdf");						// 編集時強調表示色
-define ("DISABLED_RGB", "#dddddd");						// 入力項目無効時の表示色
+define ("DISABLED_RGB", "#C9C9C9");						// 入力項目無効時の表示色
 define ("ERR_COLOR", "#ffe8e8");						// エラー時表示色
 define ("CATEGORY_HEAD", "■");							// 親カテゴリ表示文字
 define ("START_BIRTH_YEAR", 1901);						// 生年月日選択開始年
@@ -573,14 +573,14 @@ define("ODERSTATUS_COMMIT", 5);
 /* 商品種別の表示色 */
 $arrPRODUCTSTATUS_COLOR = array(
 	1 => "#FFFFFF",
-	2 => "#DDDDDD",
+	2 => "#C9C9C9",
 	3 => "#DDE6F2"
 );
 
 $arrORDERSTATUS_COLOR = array(
 	1 => "#FFFFFF",
 	2 => "#FFDE9B",
-	3 => "#DDDDDD",
+	3 => "#C9C9C9",
 	4 => "#FFD9D9",
 	5 => "#BFDFFF"
 );
