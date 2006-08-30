@@ -23,7 +23,7 @@ $len = mb_strlen($test);
 	$len = mb_strlen($tmp);
 //}
 $str[] = $tmp;
-
+print($len);
 print_r($str);
 
 ?>
