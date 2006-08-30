@@ -55,8 +55,8 @@
 							<!--▼編集テーブルここから-->
 							<table width="678" border="0" cellspacing="1" cellpadding="8" summary=" " bgcolor="#cccccc">
 								<tr class="fs12n">
-									<td bgcolor="#f2f1ec" width="200">商品名</td>
-									<td bgcolor="#ffffff" width="443"><!--{$arrReview.name}--></td>
+									<td bgcolor="#f2f1ec" width="160">商品名</td>
+									<td bgcolor="#ffffff" width="483"><!--{$arrReview.name}--></td>
 								</tr>
 								<tr class="fs12n">
 									<td bgcolor="#f2f1ec">レビュー表示</td>
