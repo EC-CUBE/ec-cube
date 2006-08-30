@@ -11,7 +11,7 @@ print($Message_tmp);
 
 
 
-$test = "abあcdか1さ0たなはbgfまやらわ";
+$test = "abあcdかｱ1さ0たなはbgfまやらわ";
 print mb_strlen($test)."<br>";
 print mb_substr($test,0,10);
 
