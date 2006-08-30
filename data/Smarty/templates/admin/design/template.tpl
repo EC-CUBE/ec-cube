@@ -67,7 +67,7 @@
 										<!--{if $key%3 == 1}-->
 										<tr class="fs10n">
 										<!--{/if}-->
-										<td bgcolor="#ffffff" align="center"><!--{$template}-->
+										<td bgcolor="#ffffff" align="center"><!--{$arrTemplate[template]}-->
 											<label for="radio<!--{$arrTemplate.image[$template]}-->"><img height=200 weight=200 src="<!--{$item}-->" name="1"></label><br>
 											<label for="radio<!--{$arrTemplate.image[$template]}-->"><input type="radio" name="check_template" value=<!--{$key}--> id="radio<!--{$key}-->" onClick="ChangeImage('<!--{$item}-->');" <!--{if $arrTemplate.check[$key] != ""}-->checked<!--{/if}-->>ÁªÂò</label>
 										</td>
