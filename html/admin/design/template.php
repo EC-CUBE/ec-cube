@@ -262,7 +262,7 @@ function lfChangeTemplate(){
 	}
 	
 	sfprintr($arrTemplate);
-	sfprintr($fileArray=glob( ROOT_DIR. $tpl_path."*" ));
+	sfprintr($fileArray=glob( ROOT_DIR. $tpl_path."*.tpl" ));
 	
 	// TOPを変更した場合には全画面変更
 	if ($objPage->tpl_subno_template == $objPage->arrSubnavi[1]){
