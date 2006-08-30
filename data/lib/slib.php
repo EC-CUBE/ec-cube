@@ -1380,6 +1380,8 @@ function sfSendOrderMail($order_id, $template_id, $subject = "", $header = "", $
 	$arrOrder = $arrRet[0];
 	$arrOrderDetail = $objQuery->select("*", "dtb_order_detail", $where, array($order_id));
 	
+	sfprintr($objPage->Message_tmp);
+	
 	// 備考を250バイトで分割
 	$arrMessage = explode("\n",$arrOrder['message']);
 	$Message_tmp = "";
@@ -1393,7 +1395,8 @@ function sfSendOrderMail($order_id, $template_id, $subject = "", $header = "", $
 	$objPage->Message_tmp = $Message_tmp;	
 	
 	sfprintr($objPage);
-	
+		exit;
+		
 	// 顧客情報の取得
 	$customer_id = $arrOrder['customer_id'];
 	$arrRet = $objQuery->select("point", "dtb_customer", "customer_id = ?", array($customer_id));
@@ -1436,15 +1439,15 @@ function sfSendOrderMail($order_id, $template_id, $subject = "", $header = "", $
 	
 	$objSendMail->setItem('', $tosubject, $body, $from, $arrInfo['shop_name'], $from, $error, $error, $bcc);
 	$objSendMail->setTo($arrOrder["order_email"], $arrOrder["order_name01"] . " ". $arrOrder["order_name02"] ." 様");
-	exit;
-/*	
+
+
 	// 送信フラグ:trueの場合は、送信する。
 	if($send) {
 		if ($objSendMail->sendMail()) {
 			sfSaveMailHistory($order_id, $template_id, $tosubject, $body);
 		}
 	}
-	*/
+
 	return $objSendMail;
 }
 
