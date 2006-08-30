@@ -81,7 +81,7 @@ a:hover { color: #f9a406; text-decoration: underline; }
 
 /*navi*/
 .navi {
-	height:auto;
+	height:40px;
 	overflow:auto;
 }
 
