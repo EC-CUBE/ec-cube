@@ -19,7 +19,7 @@ insert into dtb_bloc ( bloc_name, tpl_path, filename, php_path, del_flg ) values
 insert into dtb_bloc ( bloc_name, tpl_path, filename, php_path, del_flg ) values ('かごの中',	'html/user_data/include/bloc/cart.tpl',				'cart','html/frontparts/bloc/cart.php', 1);
 insert into dtb_bloc ( bloc_name, tpl_path, filename, php_path, del_flg ) values ('商品検索',	'html/user_data/include/bloc/search_products.tpl',	'search_products','html/frontparts/bloc/search_products.php', 1);
 insert into dtb_bloc ( bloc_name, tpl_path, filename, php_path, del_flg ) values ('新着情報',	'html/user_data/include/bloc/news.tpl',				'news','html/frontparts/bloc/news.php', 1);
-insert into dtb_bloc ( bloc_name, tpl_path, filename, php_path, del_flg ) values ('ログイン',	'html/user_data/include/bloc/login.tpl',			'login','html/frontparts/bloc/best5.php', 1);
+insert into dtb_bloc ( bloc_name, tpl_path, filename, php_path, del_flg ) values ('ログイン',	'html/user_data/include/bloc/login.tpl',			'login','html/frontparts/bloc/login.php', 1);
 insert into dtb_bloc ( bloc_name, tpl_path, filename, php_path, del_flg ) values ('オススメ商品','html/user_data/include/bloc/best5.tpl',			'best5','html/frontparts/bloc/best5.php', 1);
 
 -- ページデータ
