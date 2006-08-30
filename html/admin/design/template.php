@@ -221,7 +221,7 @@ function lfUpdData(){
 function lfChangeTemplate(){
 	global $objPage;
 	$tpl_path = USER_DIR . "templates/";
-	$bloc_path = ROOT_DIR . USER_DIR . "include/bloc/";
+	$inc_path = ROOT_DIR . USER_DIR . "include/";
 	
 	$tpl_name = "";
 	$tpl_element = "";
@@ -276,11 +276,11 @@ function lfChangeTemplate(){
 		lfFolderCopy($taget_tpl_path."mypage/", $save_tpl_path . "mypage/");
 
 		// ブロックデータのコピー
-		lfFolderCopy($taget_tpl_path."bloc/", $bloc_path);
+		lfFolderCopy($taget_tpl_path."bloc/", $inc_path . "bloc/");
 		
 		// ヘッダーコピー
-		copy($taget_tpl_path . "/header.tpl", $save_tpl_path . "header.tpl");
-		copy($taget_tpl_path . "/footer.tpl", $save_tpl_path . "footer.tpl");
+		copy($taget_tpl_path . "/header.tpl", $inc_path . "bloc/header.tpl");
+		copy($taget_tpl_path . "/footer.tpl", $inc_path . "bloc/footer.tpl");
 		
 
 	// mypageの場合にはフォルダごとコピーする
