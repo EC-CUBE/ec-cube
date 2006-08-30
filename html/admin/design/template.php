@@ -54,7 +54,7 @@ $objPage->tpl_subno_template = $tpl_subno_template;
 // 登録を押されたばあにはDBへデータを更新に行く
 if ($_POST['mode'] == "confirm"){
 	// DBへデータ更新
-	//lfUpdData();
+	lfUpdData();
 	
 	// テンプレートの上書き
 	//lfChangeTemplate();
