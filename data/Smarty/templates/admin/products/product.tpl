@@ -290,7 +290,7 @@
 										<!--{/if}-->
 										<img src="<!--{$image_path|sfRmDupSlash}-->" width="65" height="65" alt="<!--{$arrRecommend[$recommend_no].name|escape}-->" />
 										</td>
-										<td bgcolor="#ffffff" width="557" class="fs12n">
+										<td bgcolor="#ffffff" width="557" class="fs12">
 										<!--{assign var=key value="recommend_id`$smarty.section.cnt.iteration`"}-->
 										<input type="hidden" name="<!--{$key}-->" value="<!--{$arrRecommend[$recommend_no].product_id|escape}-->">
 										<input type="button" name="change" value="สันน" onclick="win03('./product_select.php?no=<!--{$smarty.section.cnt.iteration}-->', 'search', '500', '500'); " >

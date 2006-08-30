@@ -82,32 +82,32 @@
 						
 						<table width="678" border="0" cellspacing="1" cellpadding="8" summary=" ">
 							<tr bgcolor="#f2f1ec" align="center" class="fs12n">
-								<td width="272">µ¬³ÊÌ¾ (ÅÐÏ¿¿ô)</td>
+								<td width="322">µ¬³ÊÌ¾ (ÅÐÏ¿¿ô)</td>
 								<td width="100">Ê¬ÎàÅÐÏ¿</td>
-								<td width="100">ÊÔ½¸</td>
-								<td width="100">ºï½ü</td>
-								<td width="120">°ÜÆ°</td>
+								<td width="50">ÊÔ½¸</td>
+								<td width="50">ºï½ü</td>
+								<td width="70">°ÜÆ°</td>
 							</tr>
 							<!--{section name=cnt loop=$arrClass}-->
 							<tr bgcolor="<!--{if $tpl_class_id != $arrClass[cnt].class_id}-->#ffffff<!--{else}--><!--{$smarty.const.SELECT_RGB}--><!--{/if}-->" class="fs12">
 								<!--{assign var=class_id value=$arrClass[cnt].class_id}-->
-								<td width="272"><!--{* µ¬³ÊÌ¾ *}--><!--{$arrClass[cnt].name|escape}--> (<!--{$arrClassCatCount[$class_id]|default:0}-->)</td>
-								<td width="100" align="center"><a href="/" onclick="fnClassCatPage(<!--{$arrClass[cnt].class_id}-->); return false;">Ê¬ÎàÅÐÏ¿</a></td>
-								<td width="100" align="center">
+								<td><!--{* µ¬³ÊÌ¾ *}--><!--{$arrClass[cnt].name|escape}--> (<!--{$arrClassCatCount[$class_id]|default:0}-->)</td>
+								<td align="center"><a href="/" onclick="fnClassCatPage(<!--{$arrClass[cnt].class_id}-->); return false;">Ê¬ÎàÅÐÏ¿</a></td>
+								<td align="center">
 								<!--{if $tpl_class_id != $arrClass[cnt].class_id}-->
 								<a href="<!--{$smarty.server.PHP_SELF}-->" onclick="fnModeSubmit('pre_edit', 'class_id', <!--{$arrClass[cnt].class_id}-->); return false;">ÊÔ½¸</a>
 								<!--{else}-->
 								ÊÔ½¸Ãæ
 								<!--{/if}-->
 								</td>
-								<td width="100" align="center">
+								<td align="center">
 								<!--{if $arrClassCatCount[$class_id] > 0}-->
 								-
 								<!--{else}-->
 								<a href="<!--{$smarty.server.PHP_SELF}-->" onclick="fnModeSubmit('delete', 'class_id', <!--{$arrClass[cnt].class_id}-->); return false;">ºï½ü</a>
 								<!--{/if}-->
 								</td>
-								<td width="120" align="center">
+								<td align="center">
 								<!--{if $smarty.section.cnt.iteration != 1}-->
 								<a href="<!--{$smarty.server.PHP_SELF}-->" onclick="fnModeSubmit('up', 'class_id', <!--{$arrClass[cnt].class_id}-->); return false;" />¾å¤Ø</a>
 								<!--{/if}-->

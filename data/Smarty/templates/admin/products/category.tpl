@@ -97,13 +97,13 @@
 									</table>
 									
 									<!--{if count($arrList) > 0}-->
-									<table border="0" cellspacing="1" cellpadding="5" summary=" " bgcolor="#cccccc">
+									<table width="678" border="0" cellspacing="1" cellpadding="8" summary=" " bgcolor="#cccccc">
 										<tr bgcolor="#f2f1ec" align="center" class="fs12n">
-											<td width="30">ID</td>
-											<td width="160">カテゴリ名</td>
-											<td width="60">編集</td>
-											<td width="60">削除</td>
-											<td width="60">移動</td>
+											<td width="50">ID</td>
+											<td width="389">カテゴリ名</td>
+											<td width="50">編集</td>
+											<td width="50">削除</td>
+											<td width="70">移動</td>
 										</tr>
 										<!--{section name=cnt loop=$arrList}-->
 										<tr bgcolor="<!--{if $arrForm.category_id != $arrList[cnt].category_id}-->#ffffff<!--{else}--><!--{$smarty.const.SELECT_RGB}--><!--{/if}-->" align="left" class="fs12n">
