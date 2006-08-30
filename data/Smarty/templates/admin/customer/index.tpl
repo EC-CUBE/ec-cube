@@ -362,7 +362,7 @@
 					<table width="840" border="0" cellspacing="1" cellpadding="5" summary=" ">
 						<tr bgcolor="#636469" align="center" class="fs12n">
 							<td width="50" rowspan="2"><span class="white">種別</span></td>
-							<td width="150"><span class="white">顧客コード</span></td>
+							<td width="120"><span class="white">顧客コード</span></td>
 							<td width="300" rowspan="2"><span class="white">顧客名/（カナ）</span></td>
 							<td width="50" rowspan="2"><span class="white">性別</span></td>
 							<td width="250"><span class="white">TEL</span></td>
@@ -376,14 +376,14 @@
 						<!--{section name=data loop=$search_data}-->
 							<!--顧客<!--{$smarty.section.data.iteration}-->-->
 							<tr bgcolor="#ffffff" class="fs12n">
-								<td width="" rowspan="2"><!--{if $search_data[data].status eq 1}-->仮<!--{else}-->本<!--{/if}--></td>
-								<td width=""><!--{$search_data[data].customer_id|escape}--></td>
-								<td width="" rowspan="2"><!--{$search_data[data].name01|escape}--> <!--{$search_data[data].name02|escape}-->(<!--{$search_data[data].kana01|escape}--> <!--{$search_data[data].kana02|escape}-->)</td>
-								<td width="" align="center" rowspan="2"><!--{if $search_data[data].sex eq 1}-->男性<!--{else}-->女性<!--{/if}--></td>
-								<td width=""><!--{$search_data[data].tel01|escape}-->-<!--{$search_data[data].tel02|escape}-->-<!--{$search_data[data].tel03|escape}--></td>
-								<td width="" align="center" rowspan="2"><span class="icon_edit"><a href="#" onclick="return fnEdit('<!--{$search_data[data].customer_id|escape}-->');">編集</a></span>
+								<td align="center" rowspan="2"><!--{if $search_data[data].status eq 1}-->仮<!--{else}-->本<!--{/if}--></td>
+								<td><!--{$search_data[data].customer_id|escape}--></td>
+								<td rowspan="2"><!--{$search_data[data].name01|escape}--> <!--{$search_data[data].name02|escape}-->(<!--{$search_data[data].kana01|escape}--> <!--{$search_data[data].kana02|escape}-->)</td>
+								<td align="center" rowspan="2"><!--{if $search_data[data].sex eq 1}-->男性<!--{else}-->女性<!--{/if}--></td>
+								<td><!--{$search_data[data].tel01|escape}-->-<!--{$search_data[data].tel02|escape}-->-<!--{$search_data[data].tel03|escape}--></td>
+								<td align="center" rowspan="2"><span class="icon_edit"><a href="#" onclick="return fnEdit('<!--{$search_data[data].customer_id|escape}-->');">編集</a></span>
 								</td>
-								<td width="" align="center" rowspan="2"><span class="icon_delete"><a href="#" onclick="return fnDelete('<!--{$search_data[data].customer_id|escape}-->');">削除</a></span></td>
+								<td align="center" rowspan="2"><span class="icon_delete"><a href="#" onclick="return fnDelete('<!--{$search_data[data].customer_id|escape}-->');">削除</a></span></td>
 							</tr>
 							<tr bgcolor="#ffffff" class="fs12n">
 								<td width=""><!--{assign var=pref value=$search_data[data].pref}--><!--{$arrPref[$pref]}--></td>
