@@ -188,11 +188,11 @@ function lfUpdData(){
 		
 		// TOPを変更した場合には全画面変更
 		if ($objPage->tpl_subno_template == $objPage->arrSubnavi[1]){
-			$arrVal = array($chk_tpl,$chk_tpl,$chk_tpl);
+			$arrVal = array($chk_tpl,$chk_tpl,$chk_tpl,$chk_tpl);
 		}else{
 			$arrVal[$objPage->tpl_subno_template] = $chk_tpl;
 		}
-		$sql= "update dtb_baseinfo set top_tpl = ?, product_tpl = ?, detail_tpl = ?, update_date = now()";
+		$sql= "update dtb_baseinfo set top_tpl = ?, product_tpl = ?, detail_tpl = ?, mypage_tpl = ?, update_date = now()";
 	}else{
 		// INSERT
 		$arrVal = array(null,null,null,null);
