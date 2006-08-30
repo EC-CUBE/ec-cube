@@ -352,7 +352,7 @@
 					<td bgcolor="#cccccc">
 					<!--検索結果表示テーブル-->
 					<table width="840" border="0" cellspacing="1" cellpadding="5" summary=" ">
-						<tr bgcolor="#636469" align="center" class="fs10n">
+						<tr bgcolor="#636469" align="center" class="fs12n">
 							<td width="20"><span class="white">#</span></td>
 							<td width="80"><span class="white">会員番号</span></td>
 							<td width="80"><span class="white">受注番号</span></td>
@@ -363,7 +363,7 @@
 							<td width="40"><span class="white">削除</span></td>		
 						</tr>
 						<!--{section name=i loop=$arrResults}-->
-						<tr bgcolor="#FFFFFF" class="fs10n">
+						<tr bgcolor="#FFFFFF" class="fs12n">
 							<td align="center"><!--{$smarty.section.i.iteration}--></td>
 							<td align="center"><!--{$arrResults[i].customer_id|default:"非会員"}--></td>
 			
