@@ -462,7 +462,7 @@ function lfGetGraphBar($arrResults, $keyname, $type, $xtitle, $ytitle, $sdate, $
 			}
 			
 			// グラフ描画
-			$objGraphBar->setXLabel(array_keys($arrList));
+			$objGraphBar->setXLabel($arrKey);
 			$objGraphBar->setXTitle($xtitle);
 			$objGraphBar->setYTitle($ytitle);
 			$objGraphBar->setData($arrList);
