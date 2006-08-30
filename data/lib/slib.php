@@ -1382,22 +1382,19 @@ function sfSendOrderMail($order_id, $template_id, $subject = "", $header = "", $
 	
 	sfprintr($arrOrder['message']);
 	
-	// 備考を250バイトで分割
+	// 備考を256バイトで分割
 	$arrMessage = explode("\n",$arrOrder['message']);
 	
 	sfprintr($arrMessage);
 	$Message_tmp = "";
 	foreach($arrMessage as $key => $val){
-		if (strlen($val) > 255) {
-			$Message_tmp .= wordwrap($val,255,"\n", 1);
+		if (strlen($val) > 256) {
+			$Message_tmp .= wordwrap($val,256,"\n", 1);
 		} else {
 			$Message_tmp .= $val."\n";
 		}
 	}
 	$objPage->Message_tmp = $Message_tmp;	
-	
-	sfprintr($objPage->Message_tmp);
-	exit;
 		
 	// 顧客情報の取得
 	$customer_id = $arrOrder['customer_id'];
