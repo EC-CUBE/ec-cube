@@ -271,7 +271,7 @@
 							<!--{/if}-->
 							<td align="center" rowspan="2"><span class="icon_delete"><a href="/" onclick="fnSetFormValue('category_id', '<!--{$arrProducts[cnt].category_id}-->'); fnModeSubmit('delete', 'product_id', <!--{$arrProducts[cnt].product_id}-->); return false;">ºï½ü</a></span></td>
 						</tr>
-						<tr bgcolor="<!--{$arrPRODUCTSTATUS_COLOR[$status]}-->" class="fs10n">
+						<tr bgcolor="<!--{$arrPRODUCTSTATUS_COLOR[$status]}-->" class="fs12n">
 							<td align="right">
 							<!--{* ²Á³Ê *}-->
 							<!--{if $arrProducts[cnt].price02 != ""}-->

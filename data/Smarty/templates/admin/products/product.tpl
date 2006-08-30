@@ -158,13 +158,13 @@
 										<td bgcolor="#f2f1ec" width="160" class="fs12n">検索ワード<br />※複数の場合は、カンマ( , )区切りで入力して下さい</td>
 										<td bgcolor="#ffffff" width="557" class="fs10n">
 										<span class="red12"><!--{$arrErr.comment3}--></span>
-										<textarea name="comment3" cols="60" rows="8" class="area60" maxlength="<!--{$smarty.const.LLTEXT_LEN}-->" style="<!--{$arrErr.comment3|sfGetErrorColor}-->"><!--{$arrForm.comment3|escape}--></textarea><span class="red"> （上限<!--{$smarty.const.LLTEXT_LEN}-->文字）</span></td>
+										<textarea name="comment3" cols="60" rows="8" class="area60" maxlength="<!--{$smarty.const.LLTEXT_LEN}-->" style="<!--{$arrErr.comment3|sfGetErrorColor}-->"><!--{$arrForm.comment3|escape}--></textarea><br /><span class="red"> （上限<!--{$smarty.const.LLTEXT_LEN}-->文字）</span></td>
 									</tr>
 									<tr>
 										<td bgcolor="#f2f1ec" width="160" class="fs12n">一覧-メインコメント<span class="red"> *</span></td>
 										<td bgcolor="#ffffff" width="557" class="fs10n">
 										<span class="red12"><!--{$arrErr.main_list_comment}--></span>
-										<textarea name="main_list_comment" maxlength="<!--{$smarty.const.MTEXT_LEN}-->" style="<!--{if $arrErr.main_list_comment != ""}-->background-color: <!--{$smarty.const.ERR_COLOR}--><!--{/if}-->" cols="60" rows="8" class="area60"><!--{$arrForm.main_list_comment|escape}--></textarea><span class="red"> （上限<!--{$smarty.const.MTEXT_LEN}-->文字）</span></td>
+										<textarea name="main_list_comment" maxlength="<!--{$smarty.const.MTEXT_LEN}-->" style="<!--{if $arrErr.main_list_comment != ""}-->background-color: <!--{$smarty.const.ERR_COLOR}--><!--{/if}-->" cols="60" rows="8" class="area60"><!--{$arrForm.main_list_comment|escape}--></textarea><br /><span class="red"> （上限<!--{$smarty.const.MTEXT_LEN}-->文字）</span></td>
 									</tr>
 									<tr>
 										<td bgcolor="#f2f1ec" width="160" class="fs12n">一覧-メイン画像<span class="red"> *</span><br />[130×130]</td>
@@ -174,7 +174,7 @@
 										<!--{if $arrFile[$key].filepath != ""}-->
 										<img src="<!--{$arrFile[$key].filepath}-->" alt="<!--{$arrForm.name|escape}-->" width="<!--{$arrFile[$key].width}-->" height="<!--{$arrFile[$key].height}-->" />　<a href="" onclick="fnModeSubmit('delete_image', 'image_key', '<!--{$key}-->'); return false;">[画像の取り消し]</a><br>
 										<!--{/if}-->
-										<input type="file" name="main_list_image" size="60" class="box60" style="<!--{$arrErr[$key]|sfGetErrorColor}-->" />
+										<input type="file" name="main_list_image" size="50" class="box50" style="<!--{$arrErr[$key]|sfGetErrorColor}-->" />
 										<input type="button" name="btn" onclick="fnModeSubmit('upload_image', 'image_key', '<!--{$key}-->')" value="アップロード">
 										</td>
 									</tr>
