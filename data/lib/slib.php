@@ -794,8 +794,6 @@ function sfGetLevelCatList() {
 	for($cnt = 0; $cnt < $max; $cnt++) {
 		if($arrRet[$cnt]['level'] == LEVEL_MAX) {
 			$arrValue[$cnt] = $arrRet[$cnt]['category_id'];
-		} else {
-			$arrValue[$cnt] = ""; 
 		}
 		
 		$arrOutput[$cnt] = "";

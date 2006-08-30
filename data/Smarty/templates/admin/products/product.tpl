@@ -63,7 +63,7 @@
 										<td bgcolor="#f2f1ec" width="160" class="fs12n">商品カテゴリ<span class="red"> *</span></td>
 										<td bgcolor="#ffffff" width="557">
 										<span class="red12"><!--{$arrErr.category_id}--></span>
-										<select name="category_id" style="<!--{if $arrErr.category_id != ""}-->background-color: <!--{$smarty.const.ERR_COLOR}--><!--{/if}-->" onchange="fnCheckCat(this)">
+										<select name="category_id" style="<!--{if $arrErr.category_id != ""}-->background-color: <!--{$smarty.const.ERR_COLOR}--><!--{/if}-->" onchange="">
 										<option value="">選択してください</option>
 										<!--{html_options values=$arrCatVal output=$arrCatOut selected=$arrForm.category_id}-->
 										</select></td>
