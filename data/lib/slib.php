@@ -1380,11 +1380,11 @@ function sfSendOrderMail($order_id, $template_id, $subject = "", $header = "", $
 	$arrOrder = $arrRet[0];
 	$arrOrderDetail = $objQuery->select("*", "dtb_order_detail", $where, array($order_id));
 	
-	// 備考を256バイトで分割
+	// 備考を250バイトで分割
 	$arrMessage = explode("\n",$arrOrder['message']);
 	$Message_tmp = "";
 	foreach($arrMessage as $key => $val){
-		if (strlen($val) > 255) {
+		if (strlen($val) >= 250) {
 			$Message_tmp .= wordwrap($val,256,"\n",1);
 		} else {
 			$Message_tmp .= $val."\n";
