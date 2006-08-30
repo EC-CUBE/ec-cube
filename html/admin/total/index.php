@@ -477,16 +477,16 @@ function lfGetWhereMember($col_date, $sdate, $edate, $type, $col_member = "custo
 		if ($where != "") {
 			$where.= " AND ";
 		}			
-		$where.= " $col_date >= ? ";
-		$arrval[] = $sdate;
+		$where.= " $col_date >= '". $sdate ."'";
+//		$arrval[] = $sdate;
 	}
 		
 	if($edate != "") {
 		if ($where != "") {
 			$where.= " AND ";
 		}			
-		$where.= " $col_date <= ? ";
-		$arrval[] = $edate;
+		$where.= " $col_date < '" . $edate ."'";
+//		$arrval[] = $edate;
 	}
 	
 	// ²ñ°÷¡¢Èó²ñ°÷¤ÎÈ½Äê
