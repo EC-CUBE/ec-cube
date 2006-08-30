@@ -117,7 +117,7 @@ self.moveTo(20,20);self.focus();
 											<!--{if $arrFile[$key].filepath != ""}-->
 											<img src="<!--{$arrFile[$key].filepath}-->" alt="<!--{$arrForm.name|escape}-->">　<a href="" onclick="fnModeSubmit('delete_image', 'image_key', '<!--{$key}-->'); return false;">[画像の取り消し]</a><br>
 											<!--{/if}-->
-											<input type="file" name="<!--{$key}-->" size="20" class="box20" style="<!--{$arrErr[$key]|sfGetErrorColor}-->" />
+											<input type="file" name="<!--{$key}-->" size="25" class="box25" style="<!--{$arrErr[$key]|sfGetErrorColor}-->" />
 											<input type="button" name="btn" onclick="fnModeSubmit('upload_image', 'image_key', '<!--{$key}-->')" value="アップロード"></td>
 										</tr>						
 									</table>
