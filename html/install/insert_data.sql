@@ -232,7 +232,9 @@ values('1','0','0','a-001','1','1500','1');
 insert into dtb_products_class(product_id,classcategory_id1,classcategory_id2,product_code,stock_unlimited,price02,creator_id)
 values('2','0','0','a-002','1','1500','1');
 
-
+-- オススメ商品
+insert into dtb_best_products (rank,product_id, comment, category_id, creator_id)
+values(1,1,'ダミーオススメコメント！',1,1);
 
 INSERT INTO dtb_kiyaku (kiyaku_title, kiyaku_text, rank, creator_id, update_date, delete) 
 VALUES ('第１条（会員）','1. 「会員」とは、当社が定める手続に従い本規約に同意の上、入会の申し込みを行う個人をいいます。
