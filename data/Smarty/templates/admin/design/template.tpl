@@ -69,9 +69,9 @@
 										<!--{assign var=key value=$cnt*$smarty.section.template.step}-->
 										<!--{assign var=image value=$arrTemplate.image[$key]}-->
 										<!--{assign var=code value=$arrTemplate.code[$key]}-->
-										<td bgcolor="#ffffff" align="center"><!--{$arrTemplate[template]}--><!--{$code}-->
+										<td bgcolor="#ffffff" align="center"><!--{$arrTemplate[template]}-->
 											<label for="radio<!--{$key}-->"><img height=200 weight=200 src="<!--{$image}-->" name="1"></label><br>
-											<label for="radio<!--{$key}-->"><input type="radio" name="check_template" value=<!--{$key}--> id="radio<!--{$key}-->" onClick="ChangeImage('<!--{$image}-->');" <!--{if $arrTemplate.check[$key] != ""}-->checked<!--{/if}-->>联买</label>
+											<label for="radio<!--{$key}-->"><input type="radio" name="check_template" value=<!--{$code}--> id="radio<!--{$key}-->" onClick="ChangeImage('<!--{$image}-->');" <!--{if $arrTemplate.check[$key] != ""}-->checked<!--{/if}-->>联买</label>
 										</td>
 										<!--{assign var=cnt value=$smarty.section.template.iteration-1}-->
 										<!--{assign var=key value=$cnt*$smarty.section.template.step+1}-->
@@ -80,7 +80,7 @@
 										<td bgcolor="#ffffff" align="center"><!--{$arrTemplate[template]}-->
 											<!--{if $image != ""}-->
 											<label for="radio<!--{$key}-->"><img height=200 weight=200 src="<!--{$image}-->" name="1"></label><br>
-											<label for="radio<!--{$key}-->"><input type="radio" name="check_template" value=<!--{$key}--> id="radio<!--{$key}-->" onClick="ChangeImage('<!--{$image}-->');" <!--{if $arrTemplate.check[$key] != ""}-->checked<!--{/if}-->>联买</label>
+											<label for="radio<!--{$key}-->"><input type="radio" name="check_template" value=<!--{$code}--> id="radio<!--{$key}-->" onClick="ChangeImage('<!--{$image}-->');" <!--{if $arrTemplate.check[$key] != ""}-->checked<!--{/if}-->>联买</label>
 											<!--{/if}-->
 										</td>
 										<!--{assign var=cnt value=$smarty.section.template.iteration-1}-->
@@ -90,7 +90,7 @@
 										<td bgcolor="#ffffff" align="center"><!--{$arrTemplate[template]}-->
 											<!--{if $image != ""}-->
 											<label for="radio<!--{$key}-->"><img height=200 weight=200 src="<!--{$image}-->" name="1"></label><br>
-											<label for="radio<!--{$key}-->"><input type="radio" name="check_template" value=<!--{$key}--> id="radio<!--{$key}-->" onClick="ChangeImage('<!--{$image}-->');" <!--{if $arrTemplate.check[$key] != ""}-->checked<!--{/if}-->>联买</label>
+											<label for="radio<!--{$key}-->"><input type="radio" name="check_template" value=<!--{$code}--> id="radio<!--{$key}-->" onClick="ChangeImage('<!--{$image}-->');" <!--{if $arrTemplate.check[$key] != ""}-->checked<!--{/if}-->>联买</label>
 											<!--{/if}-->
 										</td>
 
