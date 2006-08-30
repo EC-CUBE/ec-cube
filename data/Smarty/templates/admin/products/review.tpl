@@ -222,12 +222,12 @@
 		
 							<!--{section name=cnt loop=$arrReview}-->
 							<tr bgcolor="#ffffff" class="fs12">
-								<td><!--{$arrReview[cnt].create_date|sfDispDBDate}--></td>
+								<td align="center"><!--{$arrReview[cnt].create_date|sfDispDBDate}--></td>
 								<td><!--{$arrReview[cnt].reviewer_name|escape}--></td>
 								<td><!--{$arrReview[cnt].name|escape}--></td>
 								<!--{assign var=key value="`$arrReview[cnt].recommend_level`"}-->
 								<td align="center"><!--{$arrRECOMMEND[$key]}--></td>
-								<td><!--{if $arrReview[cnt].status eq 1}-->表示<!--{elseif $arrReview[cnt].status eq 2}-->非表示<!--{/if}--></td>
+								<td align="center"><!--{if $arrReview[cnt].status eq 1}-->表示<!--{elseif $arrReview[cnt].status eq 2}-->非表示<!--{/if}--></td>
 								<td><a href="#" onclick="fnChangeAction('./review_edit.php'); fnModeSubmit('','review_id','<!--{$arrReview[cnt].review_id}-->');">編集</a></td>
 								<td align="center"><a href="#" onclick="fnModeSubmit('delete','review_id','<!--{$arrReview[cnt].review_id}-->'); return false;">削除</a></td>
 							</tr>
