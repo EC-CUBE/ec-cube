@@ -93,7 +93,7 @@ a:hover { color: #f9a406; text-decoration: underline; }
 }
 
 .navi_dummy a:visited {
-	color:#000000;
+	color:#ffffff;
 	text-decoration:none;
 }
 
@@ -143,12 +143,11 @@ a:hover { color: #f9a406; text-decoration: underline; }
 	text-decoration:none;
 }
 */
-/*
 .navi_text {
 	font-size: 75%;
 	padding: 0 0 0 8px;
 }
-*/
+
 .navi-on a{
 	background: url(/img/contents/navi_bar.gif);
 	background-repeat: repeat-y;
