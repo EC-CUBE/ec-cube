@@ -18,7 +18,7 @@ $len = mb_strlen($test);
 while($len > $cut_len){
 	$str[] = mb_substr($test,0,10);
 	$tmp = mb_substr($test, 10, $len);
-	$len = mb_strlen($test);
+	$len = mb_strlen($tmp);
 }
 
 print_r($str);
