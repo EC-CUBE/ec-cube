@@ -269,11 +269,8 @@ function lfChangeTemplate(){
 		copy(ROOT_DIR . $tpl_path . $arrTemplate[0]['template_code'] . "/list.tpl", ROOT_DIR . $tpl_path . "list.tpl");
 		copy(ROOT_DIR . $tpl_path . $arrTemplate[0]['template_code'] . "/detail.tpl", ROOT_DIR . $tpl_path . "detail.tpl");
 		copy(ROOT_DIR . $tpl_path . $arrTemplate[0]['template_code'] . "/mypage.tpl", ROOT_DIR . $tpl_path . "mypage.tpl");
-//		copy($arrTemplate[$chk_tpl]["ProdTemplate"], ROOT_DIR . $tpl_path . "product.tpl");
-//		copy($arrTemplate[$chk_tpl]["DetailTemplate"], ROOT_DIR . $tpl_path . "detail.tpl");
-//		copy($arrTemplate[$chk_tpl]["MypageTemplate"], ROOT_DIR . $tpl_path . "mypage.tpl");
 	}else{
 		// テンプレートファイルをコピー
-		copy($arrTemplate[$chk_tpl][$tpl_element], ROOT_DIR . INCLUDE_DIR . $tpl_name);
+		copy(ROOT_DIR . $tpl_path . $arrTemplate[0]['template_code'] . "/" . $tpl_name, ROOT_DIR . $tpl_path . $tpl_name);
 	}
 }
