@@ -1,5 +1,5 @@
 <table width="840" border="0" cellspacing="1" cellpadding="5" summary=" ">
-	<tr bgcolor="#636469" align="center" class="fs10n">
+	<tr bgcolor="#636469" align="center" class="fs12n">
 		<td width="40"><span class="white">順位</span></td>
 		<td width="80"><span class="white">商品番号</span></td>
 		<td width="300"><span class="white">商品名</span></td>				
@@ -20,7 +20,7 @@
 		<!--{assign var=color value="#D1DEFE"}-->
 	<!--{/if}-->
 
-	<tr bgcolor="<!--{$color}-->" class="fs10">
+	<tr bgcolor="<!--{$color}-->" class="fs12">
 		<td align="center"><!--{*順位*}--><!--{$smarty.section.cnt.iteration}--></td>
 		<td align="right"><!--{*商品番号*}--><!--{$arrResults[cnt].product_code|escape}--></td>
 		<td align="left"><!--{*商品名*}--><!--{$arrResults[cnt].name|sfCutString:40|escape}--></td>
