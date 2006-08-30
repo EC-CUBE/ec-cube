@@ -31,6 +31,8 @@ function lfStartDailyTotal($term, $start, $command = false) {
 	
 	$now_time = time();
 	
+	print(date("y/m/d H:m:s", time()));
+	
 	// グラフ画像の削除
 	$path = GRAPH_DIR . "*.png";
 	system ("rm -rf $path");
