@@ -80,6 +80,10 @@ a:hover { color: #f9a406; text-decoration: underline; }
 
 
 /*navi*/
+#menu_navi {
+	table-layout: fixed;
+
+}
 
 .navi a{
 	background: url(/img/contents/navi_bar.gif);
@@ -132,10 +136,6 @@ a:hover { color: #f9a406; text-decoration: underline; }
 
 
 /*subnavi*/
-#menu_sub_navi {
-	table-layout: fixed;
-}
-
 .subnavi a{
 	background-color: #818287;
 	width:140px;
