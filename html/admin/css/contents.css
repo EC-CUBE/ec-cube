@@ -95,6 +95,7 @@ a:hover { color: #f9a406; text-decoration: underline; }
 	width:140px;
 	color:#ffffff;
 	text-decoration:none;
+	overflow:auto;
 }
 
 .navi_dummy a:visited {
@@ -115,6 +116,7 @@ a:hover { color: #f9a406; text-decoration: underline; }
 	width:140px;
 	color:#000000;
 	text-decoration:none;
+	overflow:auto;
 }
 
 .navi-on-dummy a:visited {
