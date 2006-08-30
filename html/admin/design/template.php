@@ -261,7 +261,7 @@ function lfChangeTemplate(){
 			break;
 	}
 	
-	sfprintr($chk_tpl);
+	sfprintr($arrTemplate);
 	
 /*	
 	// TOPを変更した場合には全画面変更
