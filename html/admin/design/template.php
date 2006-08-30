@@ -265,7 +265,7 @@ function lfChangeTemplate(){
 	// TOPを変更した場合には全画面変更
 	if ($objPage->tpl_subno_template == $objPage->arrSubnavi[1]){
 		// テンプレートファイルをコピー
-		copy(ROOT_DIR . $tpl_path . $arrTemplate[0]['template_code'] . "/top.tpl", ROOT_DIR . $tpl_path . "/top.tpl");
+		copy(ROOT_DIR . $tpl_path . $arrTemplate[0]['template_code'] . "/top.tpl", ROOT_DIR . $tpl_path . "top.tpl");
 //		copy($arrTemplate[$chk_tpl]["ProdTemplate"], ROOT_DIR . $tpl_path . "product.tpl");
 //		copy($arrTemplate[$chk_tpl]["DetailTemplate"], ROOT_DIR . $tpl_path . "detail.tpl");
 //		copy($arrTemplate[$chk_tpl]["MypageTemplate"], ROOT_DIR . $tpl_path . "mypage.tpl");
