@@ -555,8 +555,8 @@ function lfGetOrderMember($type, $sdate, $edate, $objPage, $graph = true) {
 
 /** 商品別集計 **/
 function lfGetOrderProducts($type, $sdate, $edate, $objPage, $graph = true) {
-	sfprintr($where);
 	list($where, $arrval) = lfGetWhereMember('create_date', $sdate, $edate, $type);
+	sfprintr($where);
 	
 	$sql = "SELECT product_id, T1.product_code, T2.name, T1.products_count, T1.order_count, T1.price, T1.total ";
 	$sql.= "FROM ( ";
