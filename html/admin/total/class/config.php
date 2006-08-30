@@ -6,7 +6,7 @@
 // TTFフォントファイル
 define("FONT_PATH", ROOT_DIR . "/data/fonts/ipag.ttf");
 define("FONT_SIZE", 8);			// フォントサイズ
-define("TITLE_FONT_SIZE", 12);	// タイトルフォントサイズ
+define("TITLE_FONT_SIZE", 13);	// タイトルフォントサイズ
 define("BG_WIDTH", 720);		// 背景幅
 define("BG_HEIGHT", 400);		// 背景高さ
 define("LINE_PAD", 5);			// 行間
