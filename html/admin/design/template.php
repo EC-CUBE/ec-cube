@@ -241,7 +241,7 @@ function lfChangeTemplate(){
 		// 商品一覧
 		case $objPage->arrSubnavi[2]:
 			$tpl_element = "ProdTemplate";			// イメージの配列要素名格納用
-			$tpl_name = "product.tpl";
+			$tpl_name = "list.tpl";
 			break;
 			
 		// 商品詳細
