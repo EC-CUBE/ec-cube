@@ -98,7 +98,7 @@
 								<tr class="fs12n">
 									<td bgcolor="#f2f1ec" width="160">コメント</td>
 									<td bgcolor="#ffffff" width="557"><span class="red12"><!--{$arrErr.comment}--></span>
-									<textarea name="comment" rows="20" cols="50" wrap="soft" style="<!--{$arrErr.comment|sfGetErrorColor}-->" ><!--{$arrReview.comment|escape}--></textarea></td>
+									<textarea name="comment" rows="20" cols="60" class="area60" wrap="soft" style="<!--{$arrErr.comment|sfGetErrorColor}-->" ><!--{$arrReview.comment|escape}--></textarea></td>
 								</tr>
 							</table>
 							<!--▲編集テーブルここまで-->
