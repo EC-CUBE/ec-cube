@@ -379,7 +379,6 @@ function lfGetGraphLine($arrResults, $keyname, $type, $xtitle, $ytitle) {
 			list($ey, $em, $ed) = split("/" , $arrKey[count($arrKey) - 1]);
 			$startKey = $sy . "年" . $sm . "月" . $sd . "日";
 			$endKey = $ey . "年" . $em . "月" . $ed . "日";
-			
 			$objGraphLine->drawTitle("集計期間：" . $startKey . " - " . $endKey);
 			
 			// グラフ描画
@@ -421,7 +420,15 @@ function lfGetGraphPie($arrResults, $keyname, $type, $title = "") {
 			$objGraphPie->setData($arrList);
 			// 凡例をセットする
 			$objGraphPie->setLegend(array_keys($arrList));
-		
+
+			// メインタイトル作成
+			$arrKey = array_keys($arrList);
+			list($sy, $sm, $sd) = split("/" , $arrKey[0]);
+			list($ey, $em, $ed) = split("/" , $arrKey[count($arrKey) - 1]);
+			$startKey = $sy . "年" . $sm . "月" . $sd . "日";
+			$endKey = $ey . "年" . $em . "月" . $ed . "日";
+			$objGraphLine->drawTitle("集計期間：" . $startKey . " - " . $endKey);
+					
 			// 円グラフ描画
 			$objGraphPie->drawGraph();
 			
