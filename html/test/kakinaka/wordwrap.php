@@ -13,7 +13,7 @@ print($Message_tmp);
 $test = $str;// "abあcdか1さ0たなはbgfまやらわ";
 
 $str = array();
-$cut_len = 300;
+$cut_len = 10;
 
 $len = mb_strlen($test);
 
