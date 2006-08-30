@@ -81,7 +81,7 @@ a:hover { color: #f9a406; text-decoration: underline; }
 
 /*navi*/
 #menu_navi {
-	able-layout: fixed;
+	table-layout: fixed;
 }
 
 .navi a{
