@@ -98,7 +98,7 @@ function lfgetTemplate(){
 	
 	// テンプレートデータを取得する
 	$objQuery = new SC_Query();
-	$sql = "SELECT template_code,template_name,file_path FROM dtb_template ORDER BY create_date DESC";
+	$sql = "SELECT template_code,template_name,file_path FROM dtb_templates ORDER BY create_date DESC";
 	$arrTemplate = $objQuery->getall($sql);
 	
 	switch($objPage->tpl_subno_template) {
@@ -228,7 +228,7 @@ function lfChangeTemplate(){
 	
 	// テンプレートデータを取得する
 	$objQuery = new SC_Query();
-	$sql = "SELECT template_code,template_name,file_path FROM dtb_template WHERE template_code = ?";
+	$sql = "SELECT template_code,template_name,file_path FROM dtb_templates WHERE template_code = ?";
 	$arrTemplate = $objQuery->getall($sql, array($chk_tpl));	
 	
 	switch($objPage->tpl_subno_template) {

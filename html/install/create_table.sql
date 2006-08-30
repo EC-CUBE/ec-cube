@@ -851,7 +851,7 @@ CREATE TABLE dtb_user_regist (
     update_date timestamp NOT NULL DEFAULT now()
 );
 
-create table dtb_template 
+create table dtb_templates 
 (
 template_code		text		NOT NULL UNIQUE	,
 template_name		text			,
