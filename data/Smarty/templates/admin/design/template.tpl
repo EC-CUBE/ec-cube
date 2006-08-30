@@ -61,18 +61,20 @@
 									<tr class="fs12n">
 										<td bgcolor="#f2f1ec" align="center" colspan="3"><strong>テンプレート一覧</strong></td>
 									</tr>
-									<!--{foreach key=key item=item from=$arrTemplate.image}-->
+									
+									<!--{section name=template loop=$arrTemplate.image}-->
+									<!--{*foreach key=key item=item from=$arrTemplate.image*}-->
 										<!--{if $key%3 == 1}-->
 										<tr class="fs10n">
 										<!--{/if}-->
 										<td bgcolor="#ffffff" align="center">
-											<label for="radio<!--{$key}-->"><img height=200 weight=200 src="<!--{$item}-->" name="1"></label><br>
-											<label for="radio<!--{$key}-->"><input type="radio" name="check_template" value=<!--{$key}--> id="radio<!--{$key}-->" onClick="ChangeImage('<!--{$item}-->');" <!--{if $arrTemplate.check[$key] != ""}-->checked<!--{/if}-->>選択</label>
+											<label for="radio<!--{$arrTemplate.image[$template]}-->"><img height=200 weight=200 src="<!--{$item}-->" name="1"></label><br>
+											<label for="radio<!--{$arrTemplate.image[$template]}-->"><input type="radio" name="check_template" value=<!--{$key}--> id="radio<!--{$key}-->" onClick="ChangeImage('<!--{$item}-->');" <!--{if $arrTemplate.check[$key] != ""}-->checked<!--{/if}-->>選択</label>
 										</td>
 										<!--{if $key%3 == 0}-->
 										</tr>
 										<!--{/if}-->
-									<!--{/foreach}-->
+									<!--{/section}-->
 								</table>
 
 								<table width="678" border="0" cellspacing="0" cellpadding="0" summary=" ">
