@@ -11,7 +11,7 @@ print($Message_tmp);
 
 
 $str = array();
-$test = "abあcdかｱ1さ0たなはbgfまやらわ";
+$test = "abあcdか1さ0たなはbgfまやらわ";
 $len = mb_strlen($test);
 $str[] = mb_substr($test,0,10);
 $str[] = mb_substr($test, 10, $len);
