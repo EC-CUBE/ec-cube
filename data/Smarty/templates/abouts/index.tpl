@@ -21,7 +21,7 @@
 					</tr>
 					<tr>
 						<td bgcolor="#f0f0f0" class="fs12">FAX番号</td>
-						<td bgcolor="#ffffff" class="fs12"><!--{$arrSiteInfo.fax01|escape}-->-<!--{$arrSiteInfo.fax02|escape}-->-<!--{$arrSiteInfo.tel03|escape}--></td>
+						<td bgcolor="#ffffff" class="fs12"><!--{$arrSiteInfo.fax01|escape}-->-<!--{$arrSiteInfo.fax02|escape}-->-<!--{$arrSiteInfo.fax03|escape}--></td>
 					</tr>
 					<tr>
 						<td bgcolor="#f0f0f0" class="fs12">営業時間</td>

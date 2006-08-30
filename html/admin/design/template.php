@@ -134,8 +134,6 @@ function lfgetTemplate(){
 		$arrTemplateImage['code'][$key] = $val['template_code'];
 	}
 	
-	sfprintr($arrDefcheck);
-	sfprintr($arrTemplateImage);
 	
 	// 初期チェック
 	if (isset($arrDefcheck[$disp])){
@@ -143,6 +141,7 @@ function lfgetTemplate(){
 	}else{
 		$arrTemplateImage['check'] = 1;
 	}
+	sfprintr($arrTemplateImage);
 	
 	return $arrTemplateImage;
 }
