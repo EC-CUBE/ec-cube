@@ -12,7 +12,7 @@ print $str;
 $test = $str;// "abあcdか1さ0たなはbgfまやらわ";
 
 $str = array();
-$cut_len = 10;
+$cut_len = 256;
 
 $len = mb_strlen($test);
 $tmp = $test;
