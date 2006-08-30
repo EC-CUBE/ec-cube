@@ -1407,7 +1407,7 @@ function sfSendOrderMail($order_id, $template_id, $subject = "", $header = "", $
 	$customer_id = $arrOrder['customer_id'];
 	$arrRet = $objQuery->select("point", "dtb_customer", "customer_id = ?", array($customer_id));
 	$arrCustomer = $arrRet[0];
-	
+
 	$objPage->arrCustomer = $arrCustomer;
 	$objPage->arrOrder = $arrOrder;
 
