@@ -44,8 +44,6 @@ class SC_View {
 				$objSiteInfo = new SC_SiteInfo();
 				$arrInfo['arrSiteInfo'] = $objSiteInfo->data;
 				
-				sfprintr("ON");
-				
 				// ≈‘∆ª…‹∏©Ãæ§Ú —¥π
 				global $arrPref;
 				$arrInfo['arrSiteInfo']['pref'] = $arrPref[$arrInfo['arrSiteInfo']['pref']];
