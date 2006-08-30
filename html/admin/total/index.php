@@ -70,7 +70,8 @@ case 'search':
 			}
 			switch ($key) {
 			case 'search_startyear':
-				$sdate = sfGetTimestamp($_POST['search_startyear'], $_POST['search_startmonth'], $_POST['search_startday']);
+//				$sdate = sfGetTimestamp($_POST['search_startyear'], $_POST['search_startmonth'], $_POST['search_startday']);
+				$sdate = $_POST['search_startyear'] . "/" . $_POST['search_startmonth'] . "/" . $_POST['search_startday'];
 				break;
 			case 'search_endyear':
 				$edate = sfGetTimestamp($_POST['search_endyear'], $_POST['search_endmonth'], $_POST['search_endday'], true);
@@ -556,7 +557,6 @@ function lfGetOrderMember($type, $sdate, $edate, $objPage, $graph = true) {
 /** 商品別集計 **/
 function lfGetOrderProducts($type, $sdate, $edate, $objPage, $graph = true) {
 	list($where, $arrval) = lfGetWhereMember('create_date', $sdate, $edate, $type);
-	sfprintr($where);
 	
 	$sql = "SELECT product_id, T1.product_code, T2.name, T1.products_count, T1.order_count, T1.price, T1.total ";
 	$sql.= "FROM ( ";
