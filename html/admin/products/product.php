@@ -231,7 +231,7 @@ function lfProductPage() {
 	global $objUpFile;
 	
 	// カテゴリの読込
-	list($objPage->arrCatVal, $objPage->arrCatOut) = sfGetLevelCatList();
+	list($objPage->arrCatVal, $objPage->arrCatOut) = sfGetLevelCatList(false);
 
 	if($objPage->arrForm['status'] == "") {
 		$objPage->arrForm['status'] = 1;
