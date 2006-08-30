@@ -56,8 +56,6 @@ function lfStartDailyTotal($term, $start, $command = false) {
 		$tmp_time = $now_time - ($i * 24 * 3600);
 				
 		$batch_date = date("Y/m/d", $tmp_time);
-		
-		
 		gfPrintLog("LOADING BATCH $batch_date");
 					
 		lfBatOrderDaily($tmp_time);
