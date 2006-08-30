@@ -111,7 +111,7 @@ a:hover { color: #f9a406; text-decoration: underline; }
 	background: url(/img/contents/navi_bar.gif);
 	background-repeat: repeat-y;
 	background-color: #a5a5a5;
-	//padding: 10px 5px 10px 12px;
+	padding: 10px 5px 10px 12px;
 	width:140px;
 	color:#000000;
 	text-decoration:none;
