@@ -70,11 +70,9 @@ case 'search':
 			}
 			switch ($key) {
 			case 'search_startyear':
-//				$sdate = sfGetTimestamp($_POST['search_startyear'], $_POST['search_startmonth'], $_POST['search_startday']);
 				$sdate = $_POST['search_startyear'] . "/" . $_POST['search_startmonth'] . "/" . $_POST['search_startday'];
 				break;
 			case 'search_endyear':
-//				$edate = sfGetTimestamp($_POST['search_endyear'], $_POST['search_endmonth'], $_POST['search_endday'], true);
 				$edate = $_POST['search_endyear'] . "/" . $_POST['search_endmonth'] . "/" . $_POST['search_endday'];
 				break;
 			case 'search_startyear_m':
@@ -478,7 +476,6 @@ function lfGetWhereMember($col_date, $sdate, $edate, $type, $col_member = "custo
 			$where.= " AND ";
 		}			
 		$where.= " $col_date >= '". $sdate ."'";
-//		$arrval[] = $sdate;
 	}
 		
 	if($edate != "") {
@@ -486,7 +483,6 @@ function lfGetWhereMember($col_date, $sdate, $edate, $type, $col_member = "custo
 			$where.= " AND ";
 		}			
 		$where.= " $col_date < date('" . $edate ."')+1";
-//		$arrval[] = $edate;
 	}
 	
 	// 会員、非会員の判定
@@ -730,19 +726,15 @@ function lfGetOrderTerm($type, $sdate, $edate, $objPage, $graph = true) {
 				$where.= " AND ";
 			}			
 			$where.= " order_date >= '". $sdate ."'";
-//			$where.= " order_date >= ? ";
-//			$arrval[] = $sdate;
 		}
 		
 		if($edate != "") {
 			if ($where != "") {
 				$where.= " AND ";
 			}
-			$where.= " order_date < adate('" . $edate ."')";
-//			$where.= " order_date <= ? ";
-//			$arrval[] = $edate;
+			$where.= " order_date < date('" . $edate ."')+1";
 		}
-					
+
 		// 検索結果の取得
 		$objPage->arrResults = $objQuery->select($col, $from, $where, $arrval);
 		
