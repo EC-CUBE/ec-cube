@@ -42,7 +42,7 @@ function lfStartDailyTotal($term, $start, $command = false) {
 	
 	sfPrintR($ret);
 	
-	$batch_last = split("\.", $ret);
+	list($batch_last) = split("\.", $ret);
 	
 	print(strtotime($batch_last));
 	
