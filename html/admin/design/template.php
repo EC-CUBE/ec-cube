@@ -279,6 +279,8 @@ function lfChangeTemplate(){
 			mkdir($save_tpl_path."mypage");
 		}
 		
+		sfprintr($arrMypage);
+		
 		foreach($arrMypage as $key => $val){
 			$matches = array();
 			mb_ereg("^(.*[\/])(.*)",$val, $matches);
