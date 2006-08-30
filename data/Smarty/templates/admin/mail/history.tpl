@@ -50,21 +50,21 @@
 										<td width="37" rowspan="2">削除</td>
 									</tr>
 									<tr bgcolor="#f2f1ec" align="center" class="fs12n">
-										<td width="110">配信終了時刻</td>
-										<td width="76">配信件数</td>
+										<td>配信終了時刻</td>
+										<td>配信件数</td>
 									</tr>
 									<!--{section name=cnt loop=$arrDataList}-->
 									<tr bgcolor="#ffffff" class="fs12n">
-										<td width="110" align="center"><!--{$arrDataList[cnt].start_date|sfDispDBDate|escape}--></td>
-										<td width="360" rowspan="2"><!--{$arrDataList[cnt].subject|escape}--></td>
-										<td width="40" align="center" rowspan="2"><a href="./preview.php?send_id=<!--{$arrDataList[cnt].send_id|escape}-->" target="_blank">確認</a></td>
-										<td width="40" align="center" rowspan="2"><a href="#" onclick="win03('./index.php?mode=query&send_id=<!--{$arrDataList[cnt].send_id|escape}-->','query','700','400'); return false;">確認</a></td>
-										<td width="76" align="center"><!--{$arrDataList[cnt].send_count|escape}--></td>
-										<td width="37" align="center" rowspan="2"><a href="<!--{$smarty.server.PHP_SELF}-->?mode=delete&send_id=<!--{$arrDataList[cnt].send_id|escape}-->" onclick="return window.confirm('配信履歴を削除しても宜しいでしょうか');">削除</a></td>
+										<td align="center"><!--{$arrDataList[cnt].start_date|sfDispDBDate|escape}--></td>
+										<td rowspan="2"><!--{$arrDataList[cnt].subject|escape}--></td>
+										<td align="center" rowspan="2"><a href="./preview.php?send_id=<!--{$arrDataList[cnt].send_id|escape}-->" target="_blank">確認</a></td>
+										<td align="center" rowspan="2"><a href="#" onclick="win03('./index.php?mode=query&send_id=<!--{$arrDataList[cnt].send_id|escape}-->','query','700','400'); return false;">確認</a></td>
+										<td align="center"><!--{$arrDataList[cnt].send_count|escape}--></td>
+										<td align="center" rowspan="2"><a href="<!--{$smarty.server.PHP_SELF}-->?mode=delete&send_id=<!--{$arrDataList[cnt].send_id|escape}-->" onclick="return window.confirm('配信履歴を削除しても宜しいでしょうか');">削除</a></td>
 									</tr>
 									<tr bgcolor="#ffffff" class="fs12n">
-										<td width="110" align="center"><!--{$arrDataList[cnt].end_date|sfDispDBDate|escape}--></td>
-										<td width="76" align="center"><!--{$arrDataList[cnt].complete_count|escape}--></td>
+										<td align="center"><!--{$arrDataList[cnt].end_date|sfDispDBDate|escape}--></td>
+										<td align="center"><!--{$arrDataList[cnt].complete_count|escape}--></td>
 									</tr>
 									<!--{/section}-->
 								</table>
