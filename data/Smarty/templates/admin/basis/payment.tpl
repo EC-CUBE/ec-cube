@@ -40,32 +40,32 @@
 									</tr>
 								</table>
 
-								<table width="678" border="0" cellspacing="1" cellpadding="8" summary=" ">
+								<table width="678" border="0" cellspacing="1" cellpadding="5" summary=" ">
 									<tr align="center" bgcolor="#f2f1ec" class="fs12n">
-										<td width="116">支払方法</td>
-										<td width="96">手数料（円）</td>
-										<td width="194">利用条件</td>
-										<td width="116">配送サービス</td>
-										<td width="66">編集</td>
-										<td width="66">削除</td>
-										<td width="86">移動</td>
+										<td width="100">支払方法</td>
+										<td width="115">手数料（円）</td>
+										<td width="70">利用条件</td>
+										<td width="115">配送サービス</td>
+										<td width="50">編集</td>
+										<td width="50">削除</td>
+										<td width="100">移動</td>
 									</tr>
 									<!--{section name=cnt loop=$arrPaymentListFree}-->
 									<tr bgcolor="#ffffff" class="fs12n">
-										<td width="116"><!--{$arrPaymentListFree[cnt].payment_method|escape}--></td>
-										<td width="96" align="right"><!--{$arrPaymentListFree[cnt].charge|escape|number_format}--></td>
-										<td width="194" align="center">
-											<table width="185" border="0" cellspacing="0" cellpadding="0" summary=" ">
+										<td><!--{$arrPaymentListFree[cnt].payment_method|escape}--></td>
+										<td align="right"><!--{$arrPaymentListFree[cnt].charge|escape|number_format}--></td>
+										<td align="center">
+											<table border="0" cellspacing="0" cellpadding="0" summary=" ">
 												<tr class="fs12">
 													<td align="center" width="80"><!--{if $arrPaymentListFree[cnt].rule > 0}--><!--{$arrPaymentListFree[cnt].rule|escape|number_format}--><!--{else}-->0<!--{/if}-->円</td>
 													<td align="center"> 〜 </td>
 													<td align="center" width="80"><!--{if $arrPaymentListFree[cnt].upper_rule > 0}--><!--{$arrPaymentListFree[cnt].upper_rule|escape|number_format}-->円<!--{else}-->無制限<!--{/if}--></td>
 												</tr>
 											</table>
-										<td width="116"><!--{assign var=key value="`$arrPaymentListFree[cnt].deliv_id`"}--><!--{$arrDelivList[$key]|default:"未登録"}--></td>
-										<td width="66" align="center"><a href="<!--{$smarty.server.PHP_SELF}-->" onclick="win03('./payment_input.php?mode=pre_edit&payment_id=<!--{$arrPaymentListFree[cnt].payment_id}-->','payment_input','500','420'); return false;">編集</a></td>
-										<td width="66" align="center"><a href="<!--{$smarty.server.PHP_SELF}-->" onclick="fnModeSubmit('delete', 'payment_id', <!--{$arrPaymentListFree[cnt].payment_id}-->); return false;">削除</a></td>
-										<td width="86" align="center">
+										<td><!--{assign var=key value="`$arrPaymentListFree[cnt].deliv_id`"}--><!--{$arrDelivList[$key]|default:"未登録"}--></td>
+										<td align="center"><a href="<!--{$smarty.server.PHP_SELF}-->" onclick="win03('./payment_input.php?mode=pre_edit&payment_id=<!--{$arrPaymentListFree[cnt].payment_id}-->','payment_input','500','420'); return false;">編集</a></td>
+										<td align="center"><a href="<!--{$smarty.server.PHP_SELF}-->" onclick="fnModeSubmit('delete', 'payment_id', <!--{$arrPaymentListFree[cnt].payment_id}-->); return false;">削除</a></td>
+										<td align="center">
 										<!--{if $smarty.section.cnt.iteration != 1}-->
 										<a href="<!--{$smarty.server.PHP_SELF}-->" onclick="fnModeSubmit('up','payment_id', <!--{$arrPaymentListFree[cnt].payment_id}-->); return false;">上へ</a>
 										<!--{/if}-->
