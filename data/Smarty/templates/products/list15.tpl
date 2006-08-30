@@ -191,7 +191,7 @@ function lnSetSelect(name1, name2, id, val) {
 													<!--{if $tpl_classcat_find1[$id]}-->
 													<!--{assign var=class1 value=classcategory_id`$id`_1}-->
 													<!--{assign var=class2 value=classcategory_id`$id`_2}-->
-													<tr><td colspan="2" height="10" align="center" class="fs12"><!--{if $arrErr[$class1] != ""}--><span class="redst">※ <!--{$tpl_class_name1[$id]}-->を入力して下さい。<!--{/if}--></span></td></tr>
+													<tr><td colspan="2" height="10" align="center" class="fs12"><span class="redst"><!--{if $arrErr[$class1] != ""}-->※ <!--{$tpl_class_name1[$id]}-->を入力して下さい。<!--{/if}--></span></td></tr>
 													<tr>
 														<td align="right" class="fs12st"><!--{$tpl_class_name1[$id]|escape}-->： </td>
 														<td>
@@ -214,9 +214,10 @@ function lnSetSelect(name1, name2, id, val) {
 													</tr>
 													<!--{/if}-->
 													<!--{assign var=quantity value=quantity`$id`}-->		
-													<tr><td colspan="2" height="10" align="center" class="fs12"><!--{if $arrErr.quantity != ""}--><span class="redst"><!--{$arrErr.quantity}--></span><!--{/if}--></td></tr>
+													<tr><td colspan="2" height="10" align="center" class="fs12"><span class="redst"><!--{$arrErr[$quantity]}--></span></td></tr>
 													<tr>
 														<td align="right" width="115" class="fs12st">個数： 
+															<!--{if $arrErr.quantity != ""}--><br/><span class="redst"><!--{$arrErr.quantity}--></span><!--{/if}-->
 															<input type="text" name="<!--{$quantity}-->" size="6" class="box6" value="<!--{$arrForm[$quantity]}-->" maxlength=<!--{$smarty.const.INT_LEN}--> style="<!--{$arrErr[$quantity]|sfGetErrorColor}-->" >
 														</td>
 														<td width="170" align="center">
