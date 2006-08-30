@@ -809,7 +809,7 @@ function sfGetLevelCatList($parent_zero = true) {
 		}
 		
 		if($arrRet[$cnt]['level'] != LEVEL_MAX) {
-			$arrOutput[$cnt].= CATEGORY_HEAD;
+			$arrOutput[$cnt].= ">";
 		}
 		$arrOutput[$cnt].= $arrRet[$cnt]['category_name'];
 	}

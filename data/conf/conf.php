@@ -157,7 +157,7 @@ define("HTMLMAIL_IMAGE_HEIGHT", 120);					//  HTMLメールテンプレートメール担当画
 define("IMAGE_SIZE", 100);								// 画像サイズ制限(KB)
 define("CSV_SIZE", 2000);								// CSVサイズ制限(KB)
 define("PDF_SIZE", 5000);								// PDFサイズ制限(KB):商品詳細ファイル等
-define("LEVEL_MAX", 3);									// カテゴリの最大階層
+define("LEVEL_MAX", 5);									// カテゴリの最大階層
 define("CATEGORY_MAX", 1000);							// 最大カテゴリ登録数
 
 /* 表示関連 */
