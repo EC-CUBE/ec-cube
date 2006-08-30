@@ -6,7 +6,7 @@ class LC_Page{
 	function LC_Page(){
 		$this->tpl_mainpage = ROOT_DIR . USER_DIR . 'templates/mypage/refusal.tpl';
 		$this->tpl_title = "MYページ/退会手続き(入力ページ)";
-		$this->tpl_navi = 'mypage/navi.tpl';
+		$this->tpl_navi = './navi.tpl';
 		$this->tpl_mainno = 'mypage';
 		$this->tpl_mypageno = 'refusal';
 		//session_cache_limiter('private-no-expire');
