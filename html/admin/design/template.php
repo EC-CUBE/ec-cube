@@ -84,8 +84,8 @@ $objView->display(MAIN_FRAME);
  * 戻り値	：画面に表示する画像(配列)
  **************************************************************************************************************/
 function lfgetTemplate(){
-//	global $arrTemplate;
 	global $objPage;
+	$filepath = ROOT_DIR . "test/kakinaka/";
 	
 	$arrTemplateImage = array();	// 画面表示画像格納用
 	$Image = "";					// イメージの配列要素名格納用
@@ -128,9 +128,10 @@ function lfgetTemplate(){
 
 	// 画像表示配列作成
 	foreach($arrTemplate as $key => $val){
-		$arrTemplateImage['image'][$key] = $val[$Image];
+//		$arrTemplateImage['image'][$key] = $val[$Image];
+		$arrTemplateImage['image'][$key] = $filepath . $val['template_code'] . "/" . $Image;
 	}
-
+	
 	// 初期チェック
 	if (isset($arrDefcheck[$disp])){
 		$arrTemplateImage['check'] = $arrDefcheck[$disp];
