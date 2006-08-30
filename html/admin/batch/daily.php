@@ -44,7 +44,7 @@ function lfStartDailyTotal($term, $start, $command = false) {
 	$pass = $now_time - strtotime($batch_last);
 		
 	// 最後のバッチ実行からLOAD_BATCH_PASS秒経過していないと実行しない。
-	if($pass > LOAD_BATCH_PASS) {
+	if($pass < LOAD_BATCH_PASS) {
 		gfPrintLog("LAST BATCH " . $arrRet[0]['create_date'] . " > " . $batch_pass . " -> EXIT BATCH $batch_date");
 		return;
 	}
