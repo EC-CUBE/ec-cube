@@ -80,7 +80,7 @@ a:hover { color: #f9a406; text-decoration: underline; }
 
 
 /*navi*/
-.navi {
+#menu_navi {
 	table-layout: fixed;
 	overflow:hidden;
 }
