@@ -29,6 +29,7 @@
 	// サブナビの表示切替
 	function naviStyleChange(ids, color){
 		document.getElementById(ids).style.backgroundColor = color;
+		document.getElementById(ids).style.color = "#000000";
 	}	
 
 
