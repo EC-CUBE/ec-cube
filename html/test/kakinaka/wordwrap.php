@@ -18,8 +18,8 @@ $cut_len = 300;
 $len = mb_strlen($test);
 
 while($len > $cut_len){
-	$str[] = mb_substr($test,0,10);
-	$tmp = mb_substr($test, 10, $len);
+	$str[] = mb_substr($test,0,$cut_len);
+	$tmp = mb_substr($test, $cut_len, $len);
 	$len = mb_strlen($tmp);
 }
 $str[] = $tmp;
