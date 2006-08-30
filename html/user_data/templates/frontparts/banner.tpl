@@ -1,2 +1,0 @@
-<div id="free"><a href="/point/index.php"><img src="/img/left/point_b.jpg" width="170" height="90" alt="会員登録をするととってもお得なポイントが使えます！" /></a></div>
-<div id="free"><a href="<!--{$smarty.const.SSL_URL}-->mypage/login.php" onmouseover="chgImg('/img/left/mybtn_on.jpg','mybtn');" onmouseout="chgImg('/img/left/mybtn.jpg','mybtn');"><img src="/img/left/mybtn.jpg" width="170" height="54" alt="マイページはこちら" name="mybtn" id="mybtn" /></a></div>
