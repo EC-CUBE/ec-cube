@@ -72,9 +72,9 @@
 										</tr>
 									</table>
 									
-									<table width="650">
+									<table width="650" border="0" cellspacing="0" cellpadding="0" summary=" ">
 										<tr>
-										<td width="470"></td>
+										<td></td>
 										<td><input type="button" name="btn01" value="全て選択" onclick="fnBoxChecked(true);"> <input type="button" name="btn01" value="全て解除" onclick="fnBoxChecked(false);"></td>
 										</tr>
 										<tr><td height="10"></td></tr>
