@@ -177,7 +177,7 @@ function lfUpdData(){
 	$arrRet = array();				// データ取得用(更新判定)
 
 	// データ取得	
-	$sql = "SELECT top_tpl AS top, product_tpl AS product, detail_tpl AS detail, mypage_tpl AS mypage FROM dtb_baseinfo";
+	$sql = "SELECT top_tpl AS top, product_tpl AS product, detail_tpl AS detail AS mypage FROM dtb_baseinfo";
 	$arrRet = $objDBConn->getAll($sql);
 
 	$chk_tpl = $_POST['check_template'];
