@@ -32,7 +32,7 @@
 								</tr>
 								<tr>
 									<td background="/img/contents/contents_title_left_bg.gif"><img src="/img/contents/contents_title_left.gif" width="22" height="12" alt=""></td>
-									<td bgcolor="#636469" width="638" class="fs14n"><span class="white"><!--コンテンツタイトル-->カテゴリー設定(最大<!--{$smarty.const.MAX_LEVEL}-->階層まで)</span></td>
+									<td bgcolor="#636469" width="638" class="fs14n"><span class="white"><!--コンテンツタイトル-->カテゴリー設定(最大<!--{$smarty.const.LEVEL_MAX}-->階層まで)</span></td>
 									<td background="/img/contents/contents_title_right_bg.gif"><img src="/img/common/_.gif" width="18" height="1" alt=""></td>
 								</tr>
 								<tr>
