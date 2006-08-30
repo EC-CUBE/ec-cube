@@ -261,7 +261,7 @@ function lfChangeTemplate(){
 			break;
 	}
 	
-	$taget_tpl_path = ROOT_DIR . $tpl_path . $arrTemplate[0]['template_code'];
+	$taget_tpl_path = ROOT_DIR . $tpl_path . $arrTemplate[0]['template_code'] . "/";
 	$save_tpl_path = ROOT_DIR . $tpl_path;
 	
 	// TOPを変更した場合には全画面変更
