@@ -855,7 +855,6 @@ create table dtb_template
 (
 template_code		text		NOT NULL UNIQUE	,
 template_name		text			,
-file_path text,
 create_date		timestamp		NOT NULL	default now(),
 update_date		timestamp		NOT NULL	default now()
 );
