@@ -12,7 +12,9 @@ print($Message_tmp);
 
 
 $test = "abあcdかｱ1さ0たなはbgfまやらわ";
-print mb_strlen($test)."<br>";
-print mb_substr($test,0,10);
+$len = mb_strlen($test);
+$str[] = mb_substr($test,0,10);
+
+print_r($str);
 
 ?>
