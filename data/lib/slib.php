@@ -745,7 +745,7 @@ function sfSearchKey($array, $word, $default) {
 }
 
 // カテゴリツリーの取得($products_check:true商品登録済みのものだけ取得)
-function sfGetCategoryList($addwhere = "", $products_check = false) {
+function sfGetCategoryList($addwhere = "", $products_check = false, $head = CATEGORY_HEAD) {
 	$objQuery = new SC_Query();
 	$where = "delete = 0";
 	
@@ -777,7 +777,7 @@ function sfGetCategoryList($addwhere = "", $products_check = false) {
 		}
 		*/
 		for($cat_cnt = 0; $cat_cnt < $arrRet[$cnt]['level']; $cat_cnt++) {
-			$arrList[$id].= CATEGORY_HEAD;
+			$arrList[$id].= $head;
 		}
 		$arrList[$id].= $name;
 	}

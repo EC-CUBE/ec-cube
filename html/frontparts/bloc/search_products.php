@@ -12,7 +12,7 @@ $arrSearch = array();	// 検索項目表示用
 
 // 選択中のカテゴリIDを判定する
 $objSubPage->category_id = sfGetCategoryId($_GET['product_id'], $_GET['category_id']);
-$arrRet = sfGetCategoryList('', true);
+$arrRet = sfGetCategoryList('', true, '&nbsp;');
 
 if(is_array($arrRet)) {
 	// 文字サイズを制限する
