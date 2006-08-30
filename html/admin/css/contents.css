@@ -94,6 +94,7 @@ a:hover { color: #f9a406; text-decoration: underline; }
 .navi a:visited {
 	color:#ffffff;
 	text-decoration:none;
+	overflow: auto;
 }
 /*
 .navi a:hover {
@@ -105,6 +106,7 @@ a:hover { color: #f9a406; text-decoration: underline; }
 .navi_text {
 	font-size: 75%;
 	padding: 0 0 0 8px;
+	overflow: auto;
 }
 
 .navi-on a{
