@@ -226,8 +226,8 @@ function lfErrorCheck($array) {
 	$objErr->doFunc(array("パスワード", 'password', PASSWORD_LEN1, PASSWORD_LEN2), array("EXIST_CHECK", "ALNUM_CHECK", "NUM_RANGE_CHECK"));
 	$objErr->doFunc(array("パスワード(確認)", 'password02', PASSWORD_LEN1, PASSWORD_LEN2), array("EXIST_CHECK", "ALNUM_CHECK", "NUM_RANGE_CHECK"));
 	$objErr->doFunc(array("パスワード", 'パスワード(確認)', 'password', 'password02'), array("EQUAL_CHECK"));
-	$objErr->doFunc(array("パスワードリマインダー 質問", "reminder") ,array("SELECT_CHECK", "NUM_CHECK")); 
-	$objErr->doFunc(array("パスワードリマインダー 答え", "reminder_answer", STEXT_LEN) ,array("EXIST_CHECK", "MAX_LENGTH_CHECK"));
+	$objErr->doFunc(array("パスワードを忘れたときの質問", "reminder") ,array("SELECT_CHECK", "NUM_CHECK")); 
+	$objErr->doFunc(array("パスワードを忘れたときの答え", "reminder_answer", STEXT_LEN) ,array("EXIST_CHECK", "MAX_LENGTH_CHECK"));
 	$objErr->doFunc(array("メールマガジン", "mail_flag") ,array("SELECT_CHECK", "NUM_CHECK"));
 	return $objErr->arrErr;
 	
