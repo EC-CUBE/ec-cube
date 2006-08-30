@@ -81,140 +81,21 @@
 									</select>月
 								</td>				
 							</tr>
-
-				
 							<tr class="fs12n">
-								<td bgcolor="#f2f1ec" width="110">購入商品コード</td>
+								<td bgcolor="#f2f1ec" width="110">配信形式</td>
 								<td bgcolor="#ffffff" width="194">
-								<!--{if $arrErr.buy_product_code}--><span class="red12"><!--{$arrErr.buy_product_code}--></span><!--{/if}-->
-								<input type="text" name="buy_product_code" value="<!--{$list_data.buy_product_code}-->" maxlength="<!--{$smarty.const.STEXT_LEN}-->" size="30" class="box30" style="<!--{$arrErr.buy_product_code|sfGetErrorColor}-->" >
+									<!--{if $arrErr.htmlmail}--><span class="red12"><!--{$arrErr.htmlmail}--></span><br /><!--{/if}-->
+									<!--{html_radios name="htmlmail" options=$arrHtmlmail separator="&nbsp;" selected=$list_data.htmlmail}-->
 								</td>
-				
-								<td bgcolor="#f2f1ec" width="110">購入金額</td>
+								<td bgcolor="#f2f1ec" width="110">購入回数</td>
 								<td bgcolor="#ffffff" width="195">
-									<!--{if $arrErr.buy_total_from || $arrErr.buy_total_to}-->
-										<span class="red12"><!--{$arrErr.buy_total_from}--><!--{$arrErr.buy_total_to}--></span><br>
-									<!--{/if}-->
-									<input type="text" name="buy_total_from" maxlength="<!--{$smarty.const.INT_LEN}-->" value="<!--{$list_data.buy_total_from|escape}-->" size="6" class="box6" <!--{if $arrErr.buy_total_from || $arrErr.buy_total_to}--><!--{sfSetErrorStyle}--><!--{/if}--> /> 円 〜
-									<input type="text" name="buy_total_to" maxlength="<!--{$smarty.const.INT_LEN}-->" value="<!--{$list_data.buy_total_to|escape}-->" size="6" class="box6" <!--{if $arrErr.buy_total_from || $arrErr.buy_total_to}--><!--{sfSetErrorStyle}--><!--{/if}--> /> 円
-								</td>
-							</tr>
-							<!--{*非会員はメルマガ非対応
-							<tr class="fs12n">
-								<td bgcolor="#f2f1ec" width="110">種別</td>
-								<td bgcolor="#ffffff" width="607" colspan="3">
-								<!--{html_checkboxes name="customer" options=$arrCustomerType separator="&nbsp;" selected=$list_data.customer}-->
-								</td>
-							</tr>
-							*}-->
-							<tr class="fs12n">
-								<td bgcolor="#f2f1ec" width="110">メールアドレス</td>
-								<td bgcolor="#ffffff" colspan="3">
-									<!--{if $arrErr.email}--><span class="red12"><!--{$arrErr.email}--></span><!--{/if}-->
-									<span style="<!--{$arrErr.email|sfGetErrorColor}-->">
-									<input type="text" name="email" maxlength="<!--{$smarty.const.STEXT_LEN}-->" value="<!--{$list_data.email|escape}-->" size="60" class="box60"  style="<!--{$arrErr.email|sfGetErrorColor}-->"/>
-									</span>
-								</td>
-							</tr>
-							
-							<tr class="fs12n">
-								<td bgcolor="#f2f1ec" width="110">職業</td>
-								<td bgcolor="#ffffff" colspan="3">
-									<!--{if $arrErr.job}--><span class="red12"><!--{$arrErr.job}--></span><!--{/if}-->
-									<!--{html_checkboxes name="job" options=$arrJob separator="&nbsp;" selected=$list_data.job}-->
+									<!--{if $arrErr.buy_times_from || $arrErr.buy_times_to}--><span class="red12"><!--{$arrErr.buy_times_from}--><!--{$arrErr.buy_times_to}--></span><br><!--{/if}-->
+									<input type="text" name="buy_times_from" maxlength="<!--{$smarty.const.INT_LEN}-->" value="<!--{$list_data.buy_times_from|escape}-->" size="6" class="box6" style="<!--{$arrErr.buy_times_from|sfGetErrorColor}-->" /> 回 〜 
+									<input type="text" name="buy_times_to" maxlength="<!--{$smarty.const.INT_LEN}-->" value="<!--{$list_data.buy_times_to|escape}-->" size="6" class="box6" style="<!--{$arrErr.buy_times_to|sfGetErrorColor}-->" /> 回
 								</td>
 							</tr>
 				
-							<tr class="fs12n">
-								<td bgcolor="#f2f1ec" width="110">生年月日</td>
-								<td bgcolor="#ffffff" colspan="3">
-									<!--{if $arrErr.b_start_year || $arrErr.b_end_year}--><span class="red12"><!--{$arrErr.b_start_year}--><!--{$arrErr.b_end_year}--></span><br><!--{/if}-->
-									<select name="b_start_year" style="<!--{$arrErr.b_start_year|sfGetErrorColor}-->">
-										<option value="" selected="selected">----</option>
-										<!--{html_options options=$objDate->getYear($smarty.const.BIRTH_YEAR) selected=$list_data.b_start_year}-->
-									</select>年
-									<select name="b_start_month" style="<!--{$arrErr.b_start_year|sfGetErrorColor}-->">
-										<option value="" selected="selected">--</option>
-										<!--{html_options options=$objDate->getMonth() selected=$list_data.b_start_month}-->
-									</select>月
-									<select name="b_start_day" style="<!--{$arrErr.b_start_year|sfGetErrorColor}-->">
-										<option value="" selected="selected">--</option>
-										<!--{html_options options=$objDate->getDay() selected=$list_data.b_start_day}-->
-									</select>日&nbsp;〜&nbsp;
-									<select name="b_end_year" style="<!--{$arrErr.b_end_year|sfGetErrorColor}-->">
-										<option value="" selected="selected">----</option>
-										<!--{html_options options=$objDate->getYear($smarty.const.BIRTH_YEAR) selected=$list_data.b_end_year}-->
-									</select>年
-									<select name="b_end_month" style="<!--{$arrErr.b_end_year|sfGetErrorColor}-->">
-										<option value="" selected="selected">--</option>
-										<!--{html_options options=$objDate->getMonth() selected=$list_data.b_end_month}-->
-									</select>月
-									<select name="b_end_day" style="<!--{$arrErr.b_end_year|sfGetErrorColor}-->">
-										<option value="" selected="selected">--</option>
-										<!--{html_options options=$objDate->getDay() selected=$list_data.b_end_day}-->
-									</select>日
-								</td>
-							</tr>	
-							<tr class="fs12n">
-								<td bgcolor="#f2f1ec" width="110">登録日</td>
-								<td bgcolor="#ffffff" colspan="3">
-									<!--{if $arrErr.start_year || $arrErr.end_year}--><span class="red12"><!--{$arrErr.start_year}--><!--{$arrErr.end_year}--></span><br><!--{/if}-->
-									<select name="start_year"  style="<!--{$arrErr.start_year|sfGetErrorColor}-->">
-										<option value="" selected="selected">----</option>
-										<!--{html_options options=$objDate->getYear($smarty.const.RELEASE_YEAR) selected=$list_data.start_year}-->
-									</select>年
-									<select name="start_month" style="<!--{$arrErr.start_year|sfGetErrorColor}-->">
-										<option value="" selected="selected">--</option>
-										<!--{html_options options=$objDate->getMonth() selected=$list_data.start_month}-->
-									</select>月
-									<select name="start_day" style="<!--{$arrErr.start_year|sfGetErrorColor}-->">
-										<option value="" selected="selected">--</option>
-										<!--{html_options options=$objDate->getDay() selected=$list_data.start_day}-->
-									</select>日&nbsp;〜&nbsp;
-									<select name="end_year"  style="<!--{$arrErr.end_year|sfGetErrorColor}-->">
-										<option value="" selected="selected">----</option>
-										<!--{html_options options=$objDate->getYear($smarty.const.RELEASE_YEAR) selected=$list_data.end_year}-->
-									</select>年
-									<select name="end_month" style="<!--{$arrErr.end_year|sfGetErrorColor}-->">
-										<option value="" selected="selected">--</option>
-										<!--{html_options options=$objDate->getMonth() selected=$list_data.end_month}-->
-									</select>月
-									<select name="end_day" style="<!--{$arrErr.end_year|sfGetErrorColor}-->">
-										<option value="" selected="selected">--</option>
-										<!--{html_options options=$objDate->getDay() selected=$list_data.end_day}-->
-									</select>日
-								</td>
-							</tr>			
-							<tr class="fs12n">
-								<td bgcolor="#f2f1ec" width="110">最終購入日</td>
-								<td bgcolor="#ffffff" colspan="3" width="499">
-									<!--{if $arrErr.buy_start_year || $arrErr.buy_end_year}--><span class="red12"><!--{$arrErr.buy_start_year}--><!--{$arrErr.buy_end_year}--></span><br><!--{/if}-->
-									<select name="buy_start_year" style="<!--{$arrErr.buy_start_year|sfGetErrorColor}-->">
-										<option value="" selected="selected">----</option>
-										<!--{html_options options=$objDate->getYear($smarty.const.RELEASE_YEAR)  selected=$list_data.buy_start_year}-->
-									</select>年
-									<select name="buy_start_month" style="<!--{$arrErr.buy_start_year|sfGetErrorColor}-->">
-										<option value="" selected="selected">--</option>
-										<!--{html_options options=$objDate->getMonth() selected=$list_data.buy_start_month}-->
-									</select>月
-									<select name="buy_start_day" style="<!--{$arrErr.buy_start_year|sfGetErrorColor}-->">
-										<option value="" selected="selected">--</option>
-										<!--{html_options options=$objDate->getDay() selected=$list_data.buy_start_day}-->
-									</select>日&nbsp;〜&nbsp;
-									<select name="buy_end_year" style="<!--{$arrErr.buy_end_year|sfGetErrorColor}-->">
-										<option value="" selected="selected">----</option>
-										<!--{html_options options=$objDate->getYear($smarty.const.RELEASE_YEAR)  selected=$list_data.buy_end_year}-->
-									</select>年
-									<select name="buy_end_month" style="<!--{$arrErr.buy_end_year|sfGetErrorColor}-->">
-										<option value="" selected="selected">--</option>
-										<!--{html_options options=$objDate->getMonth()  selected=$list_data.buy_end_month}-->
-									</select>月
-									<select name="buy_end_day" style="<!--{$arrErr.buy_end_year|sfGetErrorColor}-->">
-										<option value="" selected="selected">--</option>
-										<!--{html_options options=$objDate->getDay() selected=$list_data.buy_end_day}-->
-									</select>日
-								</td>
-							</tr>
+
 				
 							<tr class="fs12n">
 								<td bgcolor="#f2f1ec" width="110">購入商品名</td>
