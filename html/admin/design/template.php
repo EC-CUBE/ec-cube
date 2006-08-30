@@ -279,8 +279,8 @@ function lfChangeTemplate(){
 		lfFolderCopy($taget_tpl_path."bloc/", $inc_path . "bloc/");
 		
 		// ヘッダー,フッターコピー
-		copy($taget_tpl_path . "/header.tpl", $inc_path . "bloc/header.tpl");
-		copy($taget_tpl_path . "/footer.tpl", $inc_path . "bloc/footer.tpl");
+		copy($taget_tpl_path . "/header.tpl", $inc_path . "header.tpl");
+		copy($taget_tpl_path . "/footer.tpl", $inc_path . "footer.tpl");
 
 	// mypageの場合にはフォルダごとコピーする
 	}elseif($objPage->tpl_subno_template == $objPage->arrSubnavi[4]){
