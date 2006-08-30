@@ -278,7 +278,7 @@ function lfChangeTemplate(){
 		// ブロックデータのコピー
 		lfFolderCopy($taget_tpl_path."bloc/", $inc_path . "bloc/");
 		
-		// ヘッダーコピー
+		// ヘッダー,フッターコピー
 		copy($taget_tpl_path . "/header.tpl", $inc_path . "bloc/header.tpl");
 		copy($taget_tpl_path . "/footer.tpl", $inc_path . "bloc/footer.tpl");
 		
