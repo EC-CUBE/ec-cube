@@ -34,10 +34,8 @@ $objPage = sfGetPageLayout($objPage, false, "mypage/index.php");
 
 switch ($_POST['mode']){
 	case 'confirm':
-	$this->tpl_mainpage = ROOT_DIR . USER_DIR . 'templates/mypage/refusal_confirm.tpl';
+	$objPage->tpl_mainpage = ROOT_DIR . USER_DIR . 'templates/mypage/refusal_confirm.tpl';
 	$objPage->tpl_title = "MYページ/退会手続き(確認ページ)";
-	
-	sfprintr($_POST);
 
 	break;
 	
