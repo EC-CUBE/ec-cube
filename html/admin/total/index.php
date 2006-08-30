@@ -374,7 +374,6 @@ function lfGetGraphLine($arrResults, $keyname, $type, $xtitle, $ytitle, $sdate, 
 			$objGraphLine->setYTitle($ytitle);
 			
 			// メインタイトル作成
-			$arrKey = array_keys($arrList);
 			list($sy, $sm, $sd) = split("[/ ]" , $sdate);
 			list($ey, $em, $ed) = split("[/ ]" , $edate);
 			$start_date = $sy . "年" . $sm . "月" . $sd . "日";
@@ -408,7 +407,6 @@ function lfGetGraphPie($arrResults, $keyname, $type, $title = "", $sdate = "", $
 		// グラフ画像が存在しない場合だけ作成する
 		if(!file_exists($path)) {
 			$objGraphPie = new SC_GraphPie();
-			$objGraphLine = new SC_GraphLine();
 			
 			/* デバッグ表示用 by naka
 			foreach($arrList as $key => $val) {
@@ -420,9 +418,10 @@ function lfGetGraphPie($arrResults, $keyname, $type, $title = "", $sdate = "", $
 			$objGraphPie->setData($arrList);
 			// 凡例をセットする
 			$objGraphPie->setLegend(array_keys($arrList));
+			
+			print($sdate);
 									
 			// メインタイトル作成
-			$arrKey = array_keys($arrList);
 			list($sy, $sm, $sd) = split("[/ ]" , $sdate);
 			list($ey, $em, $ed) = split("[/ ]" , $edate);
 			$start_date = $sy . "年" . $sm . "月" . $sd . "日";
