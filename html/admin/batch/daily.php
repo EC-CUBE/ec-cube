@@ -39,12 +39,11 @@ function lfStartDailyTotal($term, $start, $command = false) {
 	$objQuery->delete("dtb_order_detail", $where);
 	
 	$ret = $objQuery->max("dtb_bat_order_daily", "create_date");
-	
-	sfPrintR($ret);
-	
 	list($batch_last) = split("\.", $ret);
 	
-	print(strtotime($batch_last));
+	$pass = $now_time - strtotime($batch_last);
+	
+	print($pass);
 	
 	// 最後のバッチ実行からLOAD_BATCH_PASS秒経過していないと実行しない。
 	$batch_pass = date("y/m/d H:i:s", $now_time - LOAD_BATCH_PASS);
