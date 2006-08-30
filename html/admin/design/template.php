@@ -258,6 +258,9 @@ function lfChangeTemplate(){
 			break;
 	}
 	
+	sfprintr($arrTemplate);
+	
+/*	
 	// TOPを変更した場合には全画面変更
 	if ($objPage->tpl_subno_template == $objPage->arrSubnavi[1]){
 		// テンプレートファイルをコピー
@@ -269,4 +272,5 @@ function lfChangeTemplate(){
 		// テンプレートファイルをコピー
 		copy($arrTemplate[$chk_tpl][$tpl_element], ROOT_DIR . INCLUDE_DIR . $tpl_name);
 	}
+*/
 }
