@@ -12,6 +12,7 @@ $arrSearch = array();	// 検索項目表示用
 
 // 選択中のカテゴリIDを判定する
 $objSubPage->category_id = sfGetCategoryId($_GET['product_id'], $_GET['category_id']);
+// カテゴリ検索用選択リスト
 $arrRet = sfGetCategoryList('', true, '　');
 
 if(is_array($arrRet)) {
