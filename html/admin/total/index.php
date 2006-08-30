@@ -485,7 +485,7 @@ function lfGetWhereMember($col_date, $sdate, $edate, $type, $col_member = "custo
 		if ($where != "") {
 			$where.= " AND ";
 		}			
-		$where.= " $col_date < addate('" . $edate ."')+1";
+		$where.= " $col_date < date('" . $edate ."')+1";
 //		$arrval[] = $edate;
 	}
 	
@@ -723,20 +723,24 @@ function lfGetOrderTerm($type, $sdate, $edate, $objPage, $graph = true) {
 			break;
 		}
 		
+
+	// 取得日付の指定
 		if($sdate != "") {
 			if ($where != "") {
 				$where.= " AND ";
 			}			
-			$where.= " order_date >= ? ";
-			$arrval[] = $sdate;
+			$where.= " order_date >= '". $sdate ."'";
+//			$where.= " order_date >= ? ";
+//			$arrval[] = $sdate;
 		}
 		
 		if($edate != "") {
 			if ($where != "") {
 				$where.= " AND ";
-			}			
-			$where.= " order_date <= ? ";
-			$arrval[] = $edate;
+			}
+			$where.= " order_date < date('" . $edate ."')+1";
+//			$where.= " order_date <= ? ";
+//			$arrval[] = $edate;
 		}
 					
 		// 検索結果の取得
