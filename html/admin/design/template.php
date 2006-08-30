@@ -67,6 +67,8 @@ $objPage->arrForm = $_POST;
 $tpl_arrTemplate = array();
 $objPage->arrTemplate = lfgetTemplate();
 
+sfprintr($objPage->arrTemplate);
+
 // デフォルトチェック取得
 $objPage->MainImage = $objPage->arrTemplate['check'];
 $objPage->arrTemplate['check'] = array($objPage->arrTemplate['check']=>"check");

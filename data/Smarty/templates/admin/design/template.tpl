@@ -64,10 +64,12 @@
 									
 									<!--{section name=template loop=$arrTemplate}-->
 									<!--{*foreach key=key item=item from=$arrTemplate.image*}-->
+									<!--{assign var=key value=$smarty.section.template.iteration}-->
+									<!--{assign var=item value=$arrTemplate.image[template]}-->
 										<tr class="fs10n">
-										<td bgcolor="#ffffff" align="center">
-											<label for="radio<!--{$arrTemplate.image[template]}-->"><img height=200 weight=200 src="<!--{$arrTemplate.image[template]}-->" name="1"></label><br>
-											<label for="radio<!--{$arrTemplate.image[template]}-->"><input type="radio" name="check_template" value=<!--{$key}--> id="radio<!--{$key}-->" onClick="ChangeImage('<!--{$item}-->');" <!--{if $arrTemplate.check[$key] != ""}-->checked<!--{/if}-->>ÁªÂò</label>
+										<td bgcolor="#ffffff" align="center"><!--{$arrTemplate[template]}-->
+											<label for="radio<!--{$key}-->"><img height=200 weight=200 src="<!--{$item}-->" name="1"></label><br>
+											<label for="radio<!--{$key}-->"><input type="radio" name="check_template" value=<!--{$key}--> id="radio<!--{$key}-->" onClick="ChangeImage('<!--{$item}-->');" <!--{if $arrTemplate.check[$key] != ""}-->checked<!--{/if}-->>ÁªÂò</label>
 										</td>
 										</tr>
 									<!--{/section}-->
