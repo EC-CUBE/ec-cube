@@ -39,23 +39,24 @@ function lfStartDailyTotal($term, $start, $command = false) {
 	$objQuery = new SC_Query();
 	$where = "order_id IN (SELECT order_id FROM dtb_order WHERE delete = 1)";
 	$objQuery->delete("dtb_order_detail", $where);
-
+	
+	// 最後のバッチ実行からLOAD_BATCH_PASS秒経過していないと実行しない。
+	$batch_pass = date("Y/m/d H:m:s", $now_time - LOAD_BATCH_PASS);
+	
+	$objQuery = new SC_Query();
+	$arrRet = $objQuery->select("create_date", "dtb_bat_order_daily", "create_date > ?", $batch_pass);
+	if(count($arrRet) > 0) {
+		gfPrintLog("LAST BATCH " . $arrRet[0]['create_date'] . " -> EXIT BATCH $batch_date");
+		return;
+	}
+		
 	// 集計
 	for ($i = $start; $i < $term; $i++) {
-		// 基本時間から1日分さかのぼる
+		// 基本時間から$i日分さかのぼる
 		$tmp_time = $now_time - ($i * 24 * 3600);
 				
 		$batch_date = date("Y/m/d", $tmp_time);
 		
-		// 最後のバッチ実行からLOAD_BATCH_PASS秒経過していないと実行しない。
-		$batch_pass = date("Y/m/d H:m:s", $tmp_time + LOAD_BATCH_PASS);
-		$objQuery = new SC_Query();
-		$count = $objQuery->count("dtb_bat_order_daily", "create_date > ?", $batch_pass);
-		$objQuery->getLastQuery();
-		if($count > 0) {
-			gfPrintLog("LAST BATCH $batch_pass -> EXIT BATCH $batch_date");
-			return;
-		}
 		
 		gfPrintLog("LOADING BATCH $batch_date");
 					
