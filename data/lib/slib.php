@@ -22,6 +22,13 @@ function sfInitInstall() {
 		if(file_exists($path)) {
 			sfErrorHeader(">> /install/index.phpはセキュリティホールになります。インストール完了後はファイルを削除してください。");
 		}
+		
+		
+		$objConn = new SC_DbConn(DEFAULT_DSN);
+		$result = $objConn->getAll("SELECT * FROM dtb_baseinfo");
+		if(count($result) == 0) {
+			sfErrorHeader(">> 管理画面から基本情報を登録してください。");
+		}		
 	}
 }
 
@@ -53,8 +60,6 @@ function sf_getBasisData() {
 		foreach ( $result[0] as $key=>$value ){
 			$CONF["$key"] = $value;
 		}
-	} else {
-		sfErrorHeader(">> 管理画面から基本情報を登録してください。");
 	}
 	return $CONF;
 }
