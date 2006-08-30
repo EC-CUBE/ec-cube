@@ -96,7 +96,7 @@
 							</tr>
 				
 							<tr class="fs12n">
-								<td bgcolor="#f2f1ec" width="110">購入商品コード</td>
+								<td bgcolor="#f2f1ec" width="110">購入商品<br />コード</td>
 								<td bgcolor="#ffffff" width="194">
 								<!--{if $arrErr.buy_product_code}--><span class="red12"><!--{$arrErr.buy_product_code}--></span><!--{/if}-->
 								<input type="text" name="buy_product_code" value="<!--{$list_data.buy_product_code}-->" maxlength="<!--{$smarty.const.STEXT_LEN}-->" size="03" class="box6" style="<!--{$arrErr.buy_product_code|sfGetErrorColor}-->" >
