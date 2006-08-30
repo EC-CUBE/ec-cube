@@ -220,7 +220,7 @@ function lfUpdData(){
  **************************************************************************************************************/
 function lfChangeTemplate(){
 	global $objPage;
-	$tpl_path = "test/kakinaka/";
+	$tpl_path = "html/test/kakinaka/";
 	
 	$tpl_name = "";
 	$tpl_element = "";
