@@ -10,7 +10,7 @@ $str = "aあ";
 print($Message_tmp);
 
 
-
+$str = array();
 $test = "abあcdかｱ1さ0たなはbgfまやらわ";
 $len = mb_strlen($test);
 $str[] = mb_substr($test,0,10);
