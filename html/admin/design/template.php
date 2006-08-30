@@ -274,15 +274,10 @@ function lfChangeTemplate(){
 		// MYPAGEのファイルを取得する
 		$arrMypage=glob($taget_tpl_path."mypage/" . "*" );
 		
-		sfprintr($taget_tpl_path);
-		sfprintr(glob($taget_tpl_path . "*" ));
-		
 		// フォルダがなければ作成する
 		if(!is_dir($save_tpl_path."mypage")){
 			mkdir($save_tpl_path."mypage");
 		}
-		
-		sfprintr($arrMypage);
 		
 		foreach($arrMypage as $key => $val){
 			$matches = array();
@@ -290,7 +285,7 @@ function lfChangeTemplate(){
 			$data=$matches[2];
 			
 			sfprintr($matches);
-//			copy($val, $save_tpl_path . "detail.tpl");
+			copy($val, $save_tpl_path . "mypage/" . $data);
 		}
 
 		// ブロックデータのコピー
