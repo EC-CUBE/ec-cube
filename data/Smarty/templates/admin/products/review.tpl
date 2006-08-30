@@ -210,7 +210,7 @@
 						
 						<!--検索結果表示テーブル-->
 						<table width="840" border="0" cellspacing="1" cellpadding="5" summary=" ">
-							<tr bgcolor="#636469" align="center" class="fs12n">
+							<tr bgcolor="#636469" align="center" class="fs12">
 								<td width="130"><span class="white">投稿日</span></td>
 								<td width="100"><span class="white">投稿者名</span></td>
 								<td width="252"><span class="white">商品名</span></td>
