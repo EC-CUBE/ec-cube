@@ -15,7 +15,7 @@ $test = $str;// "abあcdか1さ0たなはbgfまやらわ";
 $cut_len = 10;
 
 $len = mb_strlen($test);
-print $len;
+print $test;
 while($len > $cut_len){
 	$str[] = mb_substr($test,0,10);
 	$tmp = mb_substr($test, 10, $len);
