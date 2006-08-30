@@ -68,7 +68,7 @@ $tpl_arrTemplate = array();
 $objPage->arrTemplate = lfgetTemplate();
 
 // デフォルトチェック取得
-$objPage->MainImage = $objPage->arrTemplate['check'];
+$objPage->MainImage = 1;// $objPage->arrTemplate['check'];
 $objPage->arrTemplate['check'] = array($objPage->arrTemplate['check']=>"check");
 
 // 画面の表示
