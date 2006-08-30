@@ -25,10 +25,16 @@ class LC_Page {
 $objPage = new LC_Page();
 $objView = new SC_AdminView();
 $objSess = new SC_Session();
+$arrTemplate = array();
 
 // 認証可否の判定
 $objSess = new SC_Session();
 sfIsSuccess($objSess);
+
+// テンプレートデータを取得する
+$objQuery = new SC_Query();
+$sql = "SELECT template_code,template_name,file_path FROM dtb_template ORDER BY create_date DESC";
+$arrTemplate = $objQuery->getall($sql);
 
 // GETの値を受け取る
 $get_tpl_subno_template = $_GET['tpl_subno_template'];
@@ -89,6 +95,7 @@ $objView->display(MAIN_FRAME);
  **************************************************************************************************************/
 function lfgetTemplate(){
 	global $objPage;
+	global $arrTemplate
 	$filepath = "/test/kakinaka/";
 	
 	$arrTemplateImage = array();	// 画面表示画像格納用
@@ -97,12 +104,7 @@ function lfgetTemplate(){
 	$arrDefcheck = array();			// radioボタンのデフォルトチェック格納用
 	
 	// DBから現在選択されているデータ取得
-	$arrDefcheck = lfgetTemplaeData();
-	
-	// テンプレートデータを取得する
-	$objQuery = new SC_Query();
-	$sql = "SELECT template_code,template_name,file_path FROM dtb_template ORDER BY create_date DESC";
-	$arrTemplate = $objQuery->getall($sql);
+	$arrDefcheck = lfgetTemplaeBaseData();
 	
 	switch($objPage->tpl_subno_template) {
 		// TOP
@@ -148,12 +150,12 @@ function lfgetTemplate(){
 }
 
 /**************************************************************************************************************
- * 関数名	：lfgetTemplaeData
+ * 関数名	：lfgetTemplaeBaseData
  * 処理内容	：DBに保存されているテンプレートデータを取得する
  * 引数		：なし
  * 戻り値	：DBに保存されているテンプレートデータ(配列)
  **************************************************************************************************************/
-function lfgetTemplaeData(){
+function lfgetTemplaeBaseData(){
 	$objDBConn = new SC_DbConn;		// DB操作オブジェクト
 	$sql = "";						// データ取得SQL生成用
 	$arrRet = array();				// データ取得用
@@ -220,6 +222,7 @@ function lfUpdData(){
  **************************************************************************************************************/
 function lfChangeTemplate(){
 	global $objPage;
+	global $arrTemplate;
 	$tpl_path = "test/kakinaka/";
 	
 	$tpl_name = "";
@@ -256,7 +259,7 @@ function lfChangeTemplate(){
 			break;
 	}
 	
-	sfprintr($chk_tpl);
+	sfprintr($arrTemplate);
 	
 /*	
 	// TOPを変更した場合には全画面変更
