@@ -121,7 +121,7 @@
 							*}-->
 							<tr class="fs12n">
 								<td bgcolor="#f2f1ec" width="110">メールアドレス</td>
-								<td bgcolor="#ffffff"colspan="3">
+								<td bgcolor="#ffffff" width="469" colspan="3">
 									<!--{if $arrErr.email}--><span class="red12"><!--{$arrErr.email}--></span><!--{/if}-->
 									<span style="<!--{$arrErr.email|sfGetErrorColor}-->">
 									<input type="text" name="email" maxlength="<!--{$smarty.const.STEXT_LEN}-->" value="<!--{$list_data.email|escape}-->" size="60" class="box60"  style="<!--{$arrErr.email|sfGetErrorColor}-->"/>
