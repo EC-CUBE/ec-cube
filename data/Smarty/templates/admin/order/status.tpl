@@ -92,13 +92,13 @@
 									</tr>
 									<!--{section name=cnt loop=$arrStatus}-->
 									<!--{assign var=status value="`$arrStatus[cnt].status`"}-->
-									<tr bgcolor="<!--{$arrORDERSTATUS_COLOR[$status]}-->" align="center" class="fs12">
+									<tr bgcolor="<!--{$arrORDERSTATUS_COLOR[$status]}-->" class="fs12">
 									<td><a href ="<!--{$smarty.server.PHP_SELF}-->" onclick="fnOpenWindow('./edit.php?order_id=<!--{$arrStatus[cnt].order_id}-->','order_disp','800','900'); return false;" ><!--{$arrStatus[cnt].order_id}--></td>
 									<td><!--{$arrStatus[cnt].create_date|sfDispDBDate:false}--></td>
 									<td><!--{$arrStatus[cnt].order_name01|escape}--><!--{$arrStatus[cnt].order_name02|escape}--></td>
 									<!--{assign var=payment_id value=`$arrStatus[cnt].payment_id`}-->
 									<td><!--{$arrPayment[$payment_id]|escape}--></td>
-									<td><!--{$arrStatus[cnt].total|number_format}--></td>
+									<td align="right"><!--{$arrStatus[cnt].total|number_format}--></td>
 									<td><!--{if $arrStatus[cnt].status eq 5}--><!--{$arrStatus[cnt].commit_date|sfDispDBDate:false}--><!--{else}-->Ì¤È¯Á÷<!--{/if}--></td>
 									<td><!--{$arrORDERSTATUS[$status]}--></td>
 									<td><input type="checkbox" name="move[]" value="<!--{$arrStatus[cnt].order_id}-->" ></td>
