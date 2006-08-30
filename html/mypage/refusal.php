@@ -4,9 +4,7 @@ require_once("../require.php");
 
 class LC_Page{
 	function LC_Page(){
-		$this->tpl_mainpage = "mypage/refusal.tpl";
-		$this->tpl_css = "/css/layout/mypage/refusal.css";
-		$this->tpl_rightnavi = "frontparts/rightnavi.tpl";
+		$this->tpl_mainpage = ROOT_DIR . USER_DIR . 'templates/mypage/refusal.tpl';
 		$this->tpl_title = "MYページ/退会手続き(入力ページ)";
 		$this->tpl_navi = 'mypage/navi.tpl';
 		$this->tpl_mainno = 'mypage';
@@ -36,8 +34,7 @@ $objPage = sfGetPageLayout($objPage, false, "mypage/index.php");
 
 switch ($_POST['mode']){
 	case 'confirm':
-	$objPage->tpl_mainpage = 'mypage/refusal_confirm.tpl';
-	$objPage->tpl_css = '/css/layout/mypage/refusal_confirm.css';
+	$this->tpl_mainpage = ROOT_DIR . USER_DIR . 'templates/mypage/refusal_confirm.tpl';
 	$objPage->tpl_title = "MYページ/退会手続き(確認ページ)";
 
 	break;

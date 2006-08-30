@@ -4,7 +4,7 @@ require_once("../require.php");
 
 class LC_Page{
 	function LC_Page(){
-		$this->tpl_mainpage = "mypage/refusal_complete.tpl";
+		$this->tpl_mainpage = ROOT_DIR . USER_DIR . 'templates/mypage/refusal_complete.tpl';
 		$this->tpl_title = "MYページ/退会手続き(完了ページ)";
 		$this->tpl_css = '/css/layout/mypage/refusal_complete.css';
 		$this->tpl_navi = 'mypage/navi.tpl';

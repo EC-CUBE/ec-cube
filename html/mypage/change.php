@@ -4,8 +4,7 @@ require_once("../require.php");
 
 class LC_Page{
 	function LC_Page() {
-		$this->tpl_css = '/css/layout/mypage/change.css';
-		$this->tpl_mainpage = 'mypage/change.tpl';
+		$this->tpl_mainpage = ROOT_DIR . USER_DIR . 'templates/mypage/change.tpl';
 		$this->tpl_title = 'MYページ/会員登録内容変更(入力ページ)';
 		$this->tpl_navi = 'mypage/navi.tpl';
 		$this->tpl_mainno = 'mypage';

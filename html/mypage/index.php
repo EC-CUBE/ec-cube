@@ -4,7 +4,7 @@ require_once("../require.php");
 
 class LC_Page{
 	function LC_Page() {
-		$this->tpl_mainpage = 'mypage/index.tpl';
+		$this->tpl_mainpage = ROOT_DIR . USER_DIR . 'templates/mypage/index.tpl';
 		$this->tpl_title = 'MY¥Ú¡¼¥¸/¹ØÆşÍúÎò°ìÍ÷';
 		$this->tpl_navi = ROOT_DIR . 'data/Smarty/templates/mypage/navi.tpl';
 		$this->tpl_mainno = 'mypage';

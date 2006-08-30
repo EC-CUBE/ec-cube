@@ -4,9 +4,7 @@ require_once("../require.php");
 
 class LC_Page{
 	function LC_Page(){
-		$this->tpl_mainpage = "mypage/delivery.tpl";
-		$this->tpl_css = "/css/layout/mypage/delivery.css";
-		$this->tpl_rightnavi = "frontparts/rightnavi.tpl";
+		$this->tpl_mainpage = ROOT_DIR . USER_DIR . 'templates/mypage/delivery.tpl';
 		$this->tpl_title = "MYページ/お届け先追加･変更";
 		$this->tpl_navi = 'mypage/navi.tpl';
 		$this->tpl_mainno = 'mypage';

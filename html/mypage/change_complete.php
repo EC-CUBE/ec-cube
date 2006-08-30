@@ -3,8 +3,7 @@ require_once("../require.php");
 
 class LC_Page{
 	function LC_Page(){
-		$this->tpl_mainpage = 'mypage/change_complete.tpl';
-		$this->tpl_css = '/css/layout/mypage/change_complete.css';
+		$this->tpl_mainpage = ROOT_DIR . USER_DIR . 'templates/mypage/change_complete.tpl';
 		$this->tpl_title = 'MYページ/会員登録内容変更(完了ページ)';
 		$this->tpl_navi = 'mypage/navi.tpl';
 		$this->tpl_mypageno = 'change';

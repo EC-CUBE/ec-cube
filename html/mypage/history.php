@@ -3,8 +3,7 @@ require_once("../require.php");
 
 class LC_Page {
 	function LC_Page() {
-		$this->tpl_mainpage = 'mypage/history.tpl';
-		$this->tpl_rightnavi = 'frontparts/rightnavi.tpl'; 
+		$this->tpl_mainpage = ROOT_DIR . USER_DIR . 'templates/mypage/history.tpl';
 		$this->tpl_title = "MY¥Ú¡¼¥¸/¹ØÆşÍúÎò¾ÜºÙ";
 		$this->tpl_navi = 'mypage/navi.tpl';
 		$this->tpl_mainno = 'mypage';
