@@ -57,7 +57,7 @@ if ($_POST['mode'] == "confirm"){
 	lfUpdData();
 	
 	// テンプレートの上書き
-	//lfChangeTemplate();
+	lfChangeTemplate();
 	
 	sfprintr($_POST);
 }
@@ -143,7 +143,6 @@ function lfgetTemplate(){
 	}else{
 		$arrTemplateImage['check'] = 1;
 	}
-	sfprintr($arrTemplateImage);
 	
 	return $arrTemplateImage;
 }
@@ -159,7 +158,7 @@ function lfgetTemplaeData(){
 	$sql = "";						// データ取得SQL生成用
 	$arrRet = array();				// データ取得用
 	
-	$sql = "SELECT top_tpl AS top, product_tpl AS product, detail_tpl AS detail FROM dtb_baseinfo";
+	$sql = "SELECT top_tpl AS top, product_tpl AS product, detail_tpl AS detail mypage_tpl AS mypage FROM dtb_baseinfo";
 	$arrRet = $objDBConn->getAll($sql);
 	
 	return $arrRet[0];
@@ -178,7 +177,7 @@ function lfUpdData(){
 	$arrRet = array();				// データ取得用(更新判定)
 
 	// データ取得	
-	$sql = "SELECT top_tpl AS top, product_tpl AS product, detail_tpl AS detail FROM dtb_baseinfo";
+	$sql = "SELECT top_tpl AS top, product_tpl AS product, detail_tpl AS detail mypage_tpl AS mypage FROM dtb_baseinfo";
 	$arrRet = $objDBConn->getAll($sql);
 
 	$chk_tpl = $_POST['check_template'];
@@ -222,6 +221,7 @@ function lfUpdData(){
 function lfChangeTemplate(){
 	global $arrTemplate;
 	global $objPage;
+	$tpl_path = "";
 	
 	$tpl_name = "";
 	$tpl_element = "";
@@ -252,15 +252,18 @@ function lfChangeTemplate(){
 			$tpl_element = "MypageTemplate";			//イメージの配列要素名格納用
 			$tpl_name = "mypage.tpl";
 			break;
+			
+		default:
+			break;
 	}
 	
 	// TOPを変更した場合には全画面変更
 	if ($objPage->tpl_subno_template == $objPage->arrSubnavi[1]){
 		// テンプレートファイルをコピー
-		copy($arrTemplate[$chk_tpl]["TopTemplate"], ROOT_DIR . INCLUDE_DIR . "top.tpl");
-		copy($arrTemplate[$chk_tpl]["ProdTemplate"], ROOT_DIR . INCLUDE_DIR . "product.tpl");
-		copy($arrTemplate[$chk_tpl]["DetailTemplate"], ROOT_DIR . INCLUDE_DIR . "detail.tpl");
-		copy($arrTemplate[$chk_tpl]["MypageTemplate"], ROOT_DIR . INCLUDE_DIR . "mypage.tpl");
+		copy($arrTemplate[$chk_tpl]["TopTemplate"], ROOT_DIR . $tpl_path . "top.tpl");
+		copy($arrTemplate[$chk_tpl]["ProdTemplate"], ROOT_DIR . $tpl_path . "product.tpl");
+		copy($arrTemplate[$chk_tpl]["DetailTemplate"], ROOT_DIR . $tpl_path . "detail.tpl");
+		copy($arrTemplate[$chk_tpl]["MypageTemplate"], ROOT_DIR . $tpl_path . "mypage.tpl");
 	}else{
 		// テンプレートファイルをコピー
 		copy($arrTemplate[$chk_tpl][$tpl_element], ROOT_DIR . INCLUDE_DIR . $tpl_name);
