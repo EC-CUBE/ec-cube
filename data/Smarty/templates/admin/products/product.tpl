@@ -300,7 +300,7 @@
 										商品名:<!--{$arrRecommend[$recommend_no].name|escape}--><br>
 										<!--{assign var=key value="recommend_comment`$smarty.section.cnt.iteration`"}-->
 										<span class="red12"><!--{$arrErr[$key]}--></span>
-										<textarea name="<!--{$key}-->" cols="60" rows="8" class="area60" style="<!--{$arrErr[$key]|sfGetErrorColor}-->" ><!--{$arrRecommend[$recommend_no].comment|escape}--></textarea><span class="red10"> （上限<!--{$smarty.const.LTEXT_LEN}-->文字）</span></td>
+										<textarea name="<!--{$key}-->" cols="60" rows="8" class="area60" style="<!--{$arrErr[$key]|sfGetErrorColor}-->" ><!--{$arrRecommend[$recommend_no].comment|escape}--></textarea><br /><span class="red10"> （上限<!--{$smarty.const.LTEXT_LEN}-->文字）</span></td>
 										</td>
 									</tr>
 									<!--{/section}-->
