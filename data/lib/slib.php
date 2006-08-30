@@ -21,9 +21,7 @@ function sfInitInstall() {
 		$path = ROOT_DIR . "html/install/index.php";
 		if(file_exists($path)) {
 			sfErrorHeader(">> /install/index.phpはセキュリティホールになります。インストール完了後はファイルを削除してください。");
-		}
-		
-		
+		}		
 		$objConn = new SC_DbConn(DEFAULT_DSN);
 		$result = $objConn->getAll("SELECT * FROM dtb_baseinfo");
 		if(count($result) == 0) {
