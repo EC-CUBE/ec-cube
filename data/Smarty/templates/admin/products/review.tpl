@@ -211,9 +211,9 @@
 						<!--検索結果表示テーブル-->
 						<table width="840" border="0" cellspacing="1" cellpadding="5" summary=" ">
 							<tr bgcolor="#636469" align="center" class="fs12n">
-								<td width="100"><span class="white">投稿日</span></td>
+								<td width="130"><span class="white">投稿日</span></td>
 								<td width="100"><span class="white">投稿者名</span></td>
-								<td width="282"><span class="white">商品名</span></td>
+								<td width="252"><span class="white">商品名</span></td>
 								<td width="100"><span class="white">おすすめレベル</span></td>
 								<td width="80"><span class="white">表示・非表示</span></td>
 								<td width="50"><span class="white">編集</span></td>
@@ -222,7 +222,7 @@
 		
 							<!--{section name=cnt loop=$arrReview}-->
 							<tr bgcolor="#ffffff" class="fs12" align="center">
-								<td align="center"><!--{$arrReview[cnt].create_date|sfDispDBDate}--></td>
+								<td><!--{$arrReview[cnt].create_date|sfDispDBDate}--></td>
 								<td><!--{$arrReview[cnt].reviewer_name|escape}--></td>
 								<td><!--{$arrReview[cnt].name|escape}--></td>
 								<!--{assign var=key value="`$arrReview[cnt].recommend_level`"}-->
