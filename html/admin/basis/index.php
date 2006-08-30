@@ -57,8 +57,7 @@ if($_POST['mode'] != "") {
 			break;
 		}
 		// 再表示
-		//sfReload();
-		$objPage->tpl_onload = "window.alert('SHOPマスタ登録が完了しました。');";
+		sfReload();
 	}
 } else {
 	$arrCol = lfGetCol();
