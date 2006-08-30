@@ -49,7 +49,7 @@ if ($division != ''){
 	
 }else{
 	// postでデータが渡されなければ新規読み込みと判断をし、プレビュー用データを正規のデータで上書きする
-	if (is_dir($pre_DIR)) {
+	if (!is_dir($pre_DIR)) {
 		mkdir($pre_DIR);
 	}
 	copy($tpl_DIR . "header.tpl", $pre_DIR . "header.tpl");
