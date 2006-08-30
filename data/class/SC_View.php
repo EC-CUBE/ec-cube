@@ -106,7 +106,7 @@ class SC_View {
 
 class SC_AdminView extends SC_View{
     function SC_AdminView() {
-    	parent::SC_View();
+    	parent::SC_View(false);
 		$this->_smarty->template_dir = TEMPLATE_ADMIN_DIR;
 		$this->_smarty->compile_dir = COMPILE_ADMIN_DIR;
 		$this->initpath();
