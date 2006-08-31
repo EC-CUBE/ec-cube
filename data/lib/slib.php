@@ -14,8 +14,8 @@ sfInitInstall();
 sfLoadUpdateModule();
 
 /* テーブルの存在チェックチェック */
-function sfTabaleExists($objQuery, $table_name) {
-	
+function sfTabaleExists($table_name) {
+	$objQuery = new SC_Query();	
 	$sql = "SELECT
 				relname
 			FROM
