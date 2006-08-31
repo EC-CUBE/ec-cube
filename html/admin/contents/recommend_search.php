@@ -29,8 +29,8 @@ if ($_POST['mode'] == "search") {
 	// 入力文字の強制変換
 	lfConvertParam();
 	
-	// 削除されていない。公開商品である。
-	$where = "delete = 0 AND status = 1";
+	
+	$where = "delete = 0";
 	
 	/* 入力エラーなし */
 	foreach ($objPage->arrForm as $key => $val) {
