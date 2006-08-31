@@ -50,11 +50,6 @@ if (count($arrPageData) <= 0) {
 }
 $objPage->exists_page = $exists_page;
 
-// メッセージ表示
-if ($_GET['msg'] == "on") {
-	$objPage->tpl_onload="alert('登録が完了しました。');";
-}
-
 // ブロックを取得
 $arrBloc = lfgetBlocData();
 
