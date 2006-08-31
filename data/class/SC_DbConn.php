@@ -147,8 +147,6 @@ class SC_DbConn{
 		$errmsg.= $result->message . "\n\n";
 		$errmsg.= $result->userinfo . "\n\n";
 		print_r($errmsg);
-		print_R($result);
-
 		/*
 		ob_start();
 		$errmsg .= ob_get_contents();
