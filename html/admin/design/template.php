@@ -288,11 +288,11 @@ function lfChangeTemplate(){
 		lfFolderCopy($taget_tpl_path."bloc/", $inc_path . "bloc/");
 		
 		// ヘッダー,フッターコピー
-		copy($taget_tpl_path . "/header.tpl", $inc_path . "header.tpl");
-		copy($taget_tpl_path . "/footer.tpl", $inc_path . "footer.tpl");
+		copy($taget_tpl_path . "header.tpl", $inc_path . "header.tpl");
+		copy($taget_tpl_path . "footer.tpl", $inc_path . "footer.tpl");
 		
 		// CSSファイルのコピー
-		copy($taget_tpl_path . "/contents.css", $css_path . "contents.css");
+		copy($taget_tpl_path . "contents.css", $css_path . "contents.css");
 
 	// mypageの場合にはフォルダごとコピーする
 	}elseif($objPage->tpl_subno_template == $objPage->arrSubnavi['title'][4]){
