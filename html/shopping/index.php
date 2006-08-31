@@ -41,6 +41,7 @@ if($objCustomer->isLoginSuccess()) {
 	exit;
 }
 
+sfprintr($_POST);
 switch($_POST['mode']) {
 case 'nonmember_confirm':
 	$objPage = lfSetNonMember($objPage);
@@ -50,8 +51,6 @@ case 'confirm':
 	$objFormParam->convParam();
 	$objFormParam->toLower('order_mail');
 	$objFormParam->toLower('order_mail_check');
-	
-	sfprintr($objPage->arrErr);
 	
 	$objPage->arrErr = lfCheckError();
 	// 入力エラーなし
