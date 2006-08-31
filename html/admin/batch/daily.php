@@ -54,7 +54,7 @@ function lfStartDailyTotal($term, $start, $command = false) {
 		// 基本時間から$i日分さかのぼる
 		$tmp_time = $now_time - ($i * 24 * 3600);
 				
-		$batch_date = date("Y-m-d h:i:s", $tmp_time);
+		$batch_date = date("Y/m/d", $tmp_time);
 		gfPrintLog("LOADING BATCH $batch_date");
 					
 		lfBatOrderDaily($tmp_time);
@@ -74,7 +74,7 @@ function lfRealTimeDailyTotal($sdate, $edate) {
 	
 	for($i = 0; $i <= $loop; $i++) {
 		$tmp_time = strtotime($sdate) + ($i * 86400);
-		$batch_date = date("Y/m/d", $tmp_time);
+		$batch_date = date("Y/m/d h:i:s", $tmp_time);
 		print($batch_date . "<br>");
 	}
 }
