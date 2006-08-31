@@ -684,7 +684,7 @@ function fnSetObj( tid, cnt ){
 		moveElm ( arrObj[tid][j].obj, left ,top );
 		
 		// 高さ計算
-		target_height = target_height + arrObj[tid][j].margin + arrObj[tid][j].height + 500;
+		target_height = target_height + arrObj[tid][j].margin + arrObj[tid][j].height + 500px;
 		
 		// hiddenの値を書き換え
 		var top_id = "top_" + arrObj[tid][j].id;
