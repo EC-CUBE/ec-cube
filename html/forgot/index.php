@@ -54,7 +54,7 @@ if ( $_POST['mode'] == 'mail_check' ){
 		$result = $conn->getAll($sql, array($_SESSION['forgot']['email']) );
 		$data = $result[0];
 		
-		if ( $data['reminder_answer'] == $_POST['input_reminder'] ){
+		if ( $data['reminder_answer'] === $_POST['input_reminder'] ){
 			// ヒミツの答えが正しい
 						
 			// 新しいパスワードを設定する

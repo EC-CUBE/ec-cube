@@ -15,6 +15,13 @@ class LC_Page {
 		global $arrJob;
 		$this->arrJob = $arrJob;
 		$this->tpl_onload = 'fnCheckInputDeliv();';
+		
+		/*
+		 session_start時のno-cacheヘッダーを抑制することで
+		 「戻る」ボタン使用時の有効期限切れ表示を抑制する。
+		 private-no-expire:クライアントのキャッシュを許可する。
+		*/
+		session_cache_limiter('private-no-expire');				
 	}
 }
 
@@ -52,8 +59,7 @@ case 'confirm':
 	$objFormParam->toLower('order_mail_check');
 	
 	$objPage->arrErr = lfCheckError();
-	sfprintr($objPage->arrErr);
-	
+
 	// 入力エラーなし
 	if(count($objPage->arrErr) == 0) {
 		// DBへのデータ登録
