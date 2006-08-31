@@ -14,7 +14,7 @@ class LC_Page {
 		$this->text_row 	= 13;
 		$this->tpl_subno = "main_edit";
 		$this->tpl_mainno = "design";
-		$this->tpl_subtitle = 'ページ編集';
+		$this->tpl_subtitle = 'ページ詳細設定';
 	}
 }
 $objPage = new LC_Page();
