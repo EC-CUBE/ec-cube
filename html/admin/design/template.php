@@ -277,9 +277,9 @@ function lfChangeTemplate(){
 	// TOPを変更した場合には全画面変更
 	if ($objPage->tpl_subno_template == $objPage->arrSubnavi['title'][1]){
 		// テンプレートファイルをコピー
-		copy($taget_tpl_path . "/top.tpl", $save_tpl_path . "top.tpl");
-		copy($taget_tpl_path . "/list.tpl", $save_tpl_path . "list.tpl");
-		copy($taget_tpl_path . "/detail.tpl", $save_tpl_path . "detail.tpl");
+		copy($taget_tpl_path . "top.tpl", $save_tpl_path . "top.tpl");
+		copy($taget_tpl_path . "list.tpl", $save_tpl_path . "list.tpl");
+		copy($taget_tpl_path . "detail.tpl", $save_tpl_path . "detail.tpl");
 
 		// mypageはフォルダごとコピー
 		lfFolderCopy($taget_tpl_path."mypage/", $save_tpl_path . "mypage/");
