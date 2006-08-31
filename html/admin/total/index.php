@@ -419,8 +419,6 @@ function lfGetGraphPie($arrResults, $keyname, $type, $title = "", $sdate = "", $
 			$objGraphPie->setData($arrList);
 			// 凡例をセットする
 			$objGraphPie->setLegend(array_keys($arrList));
-			
-			print($sdate);
 									
 			// メインタイトル作成
 			list($sy, $sm, $sd) = split("[/ ]" , $sdate);
