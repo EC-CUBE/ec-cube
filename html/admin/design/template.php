@@ -62,8 +62,6 @@ $objPage->tpl_subno_template = $tpl_subno_template;
 $template_name = $objPage->arrSubnavi['name'][array_keys($objPage->arrSubnavi['title'], $tpl_subno_template)];
 $objPage->template_name = $template_name;
 
-sfprintr($tpl_subno_template);
-
 // 登録を押されたばあにはDBへデータを更新に行く
 if ($_POST['mode'] == "confirm"){
 	// DBへデータ更新
