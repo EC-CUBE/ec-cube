@@ -142,6 +142,16 @@ case 'drop':
 	break;
 // 完了画面
 case 'complete':
+	// ショップマスタ情報の書き込み
+	$objQuery = new SC_Query();
+	$sqlval['shop_name'] = $objWebParam->getValue('shop_name');
+	$sqlval['email01'] = $objWebParam->getValue('admin_mail');
+	$sqlval['email02'] = $objWebParam->getValue('admin_mail');
+	$sqlval['email03'] = $objWebParam->getValue('admin_mail');
+	$sqlval['email04'] = $objWebParam->getValue('admin_mail');
+	$sqlval['email05'] = $objWebParam->getValue('admin_mail');
+	$objQuery->insert("dtb_baseinfo", $sqlval);
+	
 	$objPage = lfDispComplete($objPage);
 	break;
 case 'return_step0':
