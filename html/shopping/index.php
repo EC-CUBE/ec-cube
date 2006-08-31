@@ -211,7 +211,6 @@ function lfCheckError() {
 		$objErr->doFunc(array("電話番号1", "deliv_tel01"), array("EXIST_CHECK"));
 		$objErr->doFunc(array("電話番号2", "deliv_tel02"), array("EXIST_CHECK"));
 		$objErr->doFunc(array("電話番号3", "deliv_tel03"), array("EXIST_CHECK"));
-		$objErr->doFunc(array("メールマガジン", "mail_flag"), array("EXIST_CHECK"));
 	}
 	
 	// 複数項目チェック
