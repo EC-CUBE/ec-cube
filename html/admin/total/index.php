@@ -361,41 +361,38 @@ function lfGetGraphLine($arrResults, $keyname, $type, $xtitle, $ytitle, $sdate, 
 		
 		$path = GRAPH_DIR . $pngname;
 		
-		// グラフ画像が存在しない場合だけ作成する
-		//if(!file_exists($path)) {
-						
-			// ラベル表示インターバルを求める
-			$interval = intval(count($arrList) / 20);
-			if($interval < 1) {
-				$interval = 1;
-			}
-			$objGraphPie = new SC_GraphPie();
-			$objGraphLine = new SC_GraphLine();
-			
-			// 値のセット
-			$objGraphLine->setData($arrList);
-			$objGraphLine->setXLabel(array_keys($arrList));
-			
-			// ラベル回転(日本語不可)
-			if($keyname == "key_day"){
-				$objGraphLine->setXLabelAngle(-45);
-			}
+		// ラベル表示インターバルを求める
+		$interval = intval(count($arrList) / 20);
+		if($interval < 1) {
+			$interval = 1;
+		}
+		$objGraphPie = new SC_GraphPie();
+		$objGraphLine = new SC_GraphLine();
+		
+		// 値のセット
+		$objGraphLine->setData($arrList);
+		$objGraphLine->setXLabel(array_keys($arrList));
+		
+		// ラベル回転(日本語不可)
+		if($keyname == "key_day"){
+			$objGraphLine->setXLabelAngle(-45);
+		}
 
-			// タイトルセット
-			$objGraphLine->setXTitle($xtitle);
-			$objGraphLine->setYTitle($ytitle);
-			
-			// メインタイトル作成
-			list($sy, $sm, $sd) = split("[/ ]" , $sdate);
-			list($ey, $em, $ed) = split("[/ ]" , $edate);
-			$start_date = $sy . "年" . $sm . "月" . $sd . "日";
-			$end_date = $ey . "年" . $em . "月" . $ed . "日";
-			$objGraphLine->drawTitle("集計期間：" . $start_date . " - " . $end_date);
-			
-			// グラフ描画
-			$objGraphLine->drawGraph();
-			$objGraphLine->outputGraph(false, $path);
-		//}
+		// タイトルセット
+		$objGraphLine->setXTitle($xtitle);
+		$objGraphLine->setYTitle($ytitle);
+		
+		// メインタイトル作成
+		list($sy, $sm, $sd) = split("[/ ]" , $sdate);
+		list($ey, $em, $ed) = split("[/ ]" , $edate);
+		$start_date = $sy . "年" . $sm . "月" . $sd . "日";
+		$end_date = $ey . "年" . $em . "月" . $ed . "日";
+		$objGraphLine->drawTitle("集計期間：" . $start_date . " - " . $end_date);
+		
+		// グラフ描画
+		$objGraphLine->drawGraph();
+		$objGraphLine->outputGraph(false, $path);
+
 		// ファイルパスを返す
 		$ret_path = GRAPH_URL . $pngname;
 	}
