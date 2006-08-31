@@ -77,7 +77,7 @@ function lfRealTimeDailyTotal($sdate, $edate) {
 		$batch_date = date("Y/m/d H:i:s", $tmp_time);
 		$objQuery = new SC_Query();
 		$arrRet = $objQuery->select("order_date, create_date", "dtb_bat_order_daily", "order_date = ?", array($batch_date));
-		print($batch_date . " " . $arrRet[0]['create_date'] . " ". $arrRet[0]['order_date']);
+		print($batch_date . " " . $arrRet[0]['create_date'] . " ". $arrRet[0]['order_date'] . "<br>");
 	}
 }
 
