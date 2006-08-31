@@ -94,7 +94,7 @@ if ($_POST['mode'] == "edit_search") {
 foreach($arrSearch as $key => $val){
 	$arrSeachData[$key] = $val;
 }
-$objPage->arrSeachData= $arrSeachData;
+$objPage->arrSearchData= $arrSeachData;
 
 sfprintr($arrSeachData);
 
