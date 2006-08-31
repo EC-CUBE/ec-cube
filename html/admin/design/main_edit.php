@@ -39,7 +39,7 @@ if (isset($_POST['page_id'])) {
 $objPage->page_id = $page_id;
 
 // メッセージ表示
-if ($_GET['mgs'] == "on"{
+if ($_GET['mgs'] == "on"){
 	$objPage->tpl_onload="alert('登録が完了しました。');";
 }
 
