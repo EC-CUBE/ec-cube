@@ -47,6 +47,35 @@ $objPage->tpl_product_id = $_POST['product_id'];
 $objPage->tpl_pageno = $_POST['pageno'];
 
 switch($_POST['mode']) {
+// µ¬³Êºï½üÍ×µá
+case 'delete':
+	$objQuery = new SC_Query();
+	
+	$objQuery->setLimitOffset(1);
+	$where = "product_id = ? AND NOT (classcategory_id1 = 0 AND classcategory_id2 = 0)";
+	$objQuery->setOrder("rank1 DESC, rank2 DESC");
+	$arrRet = $objQuery->select("*", "vw_cross_products_class", $where, array($_POST['product_id']));
+	
+	if(count($arrRet) > 0) {
+
+		$sqlval['product_id'] = $arrRet[0]['product_id'];
+		$sqlval['classcategory_id1'] = '0';
+		$sqlval['classcategory_id2'] = '0';
+		$sqlval['product_code'] = $arrRet[0]['product_code'];
+		$sqlval['stock'] = $arrRet[0]['stock'];
+		$sqlval['price01'] = $arrRet[0]['price01'];
+		$sqlval['price02'] = $arrRet[0]['price02'];
+		$sqlval['creator_id'] = $_SESSION['member_id'];
+		$objQuery->begin();
+		$where = "product_id = ?";
+		$objQuery->delete("dtb_products_class", $where, array($_POST['product_id']));		
+		$objQuery->insert("dtb_products_class", $sqlval);
+		$objQuery->commit();
+	}
+	
+	lfProductClassPage();	// µ¬³ÊÅÐÏ¿¥Ú¡¼¥¸	
+	break;
+	
 // ÊÔ½¸Í×µá
 case 'pre_edit':
 	$objQuery = new SC_Query();
