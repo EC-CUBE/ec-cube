@@ -173,8 +173,8 @@ default:
 	if(count($_GET) == 0) {
 		/*
 			リアルタイム集計に切り替え by Nakagawa 2006/08/31
-		// 1ヶ月分の集計
-		lfStartDailyTotal(31,0);
+			// 1ヶ月分の集計
+			lfStartDailyTotal(31,0);
 		*/
 	}
 	break;
