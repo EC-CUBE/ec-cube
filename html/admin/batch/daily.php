@@ -70,9 +70,7 @@ function lfStartDailyTotal($term, $start, $command = false) {
 */
 function lfRealTimeDailyTotal($sdate, $edate) {
 	$pass = strtotime($edate) - strtotime($sdate);
-	
-	
-	$loop = intval($pass / (24 * 3600));
+	$loop = intval($pass / 86400);
 	
 	print($pass . ":" . $loop);
 }
