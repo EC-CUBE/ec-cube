@@ -63,6 +63,11 @@ function lfStartDailyTotal($term, $start, $command = false) {
 	}
 }
 
+// リアルタイムで集計を実施する。集計が終了しているレコードは実施しない。
+function lfRealTimeDailyTotal() {
+	
+}
+
 // バッチ集計用のSQL文を取得する。
 function lfGetOrderDailySQL() {
 	$sql = "SELECT ";
