@@ -2,4 +2,9 @@ php_value mbstring.language Japanese
 php_value mbstring.http_input EUC-JP
 php_value mbstring.http_output EUC-JP
 php_value auto_detect_line_endings on
-
+php_value output_handler mb_output_handler
+php_value default_charset EUC-JP
+php_value mbstring.internal_encoding EUC-JP
+php_value mbstring.encoding_translation on
+php_value mbstring.detect_order auto
+php_value mbstring.substitute_character none
