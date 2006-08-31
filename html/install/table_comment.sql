@@ -46,5 +46,5 @@ COMMENT ON table	dtb_update IS 'アップデート';
 COMMENT ON table	dtb_user_regist IS 'ユーザー登録';
 COMMENT ON table	dtb_kiyaku IS '会員規約';
 COMMENT ON table	mtb_zip IS '郵便番号マスタ';
-COMMENT ON table	dtb_template IS 'テンプレート';
+COMMENT ON table	dtb_templates IS 'テンプレート';
 
