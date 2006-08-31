@@ -38,6 +38,11 @@ if (isset($_POST['page_id'])) {
 
 $objPage->page_id = $page_id;
 
+// メッセージ表示
+if ($_GET['mgs'] == "on"{
+	$objPage->tpl_onload="alert('登録が完了しました。');";
+}
+
 // page_id が指定されている場合にはテンプレートデータの取得
 if (is_numeric($page_id) and $page_id != '') {
 	$arrPageData = lfgetPageData(" page_id = ? " , array($page_id));
@@ -153,7 +158,7 @@ if ($_POST['mode'] == 'confirm') {
 			$page_id = $arrPageData[0]['page_id'];
 		}
 
-		header("location: ./main_edit.php?page_id=$page_id");
+		header("location: ./main_edit.php?page_id=$page_id&msg=on");
 	}else{
 		// エラーがあれば入力時のデータを表示する
 		$objPage->arrPageData = $_POST;
