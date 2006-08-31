@@ -13,6 +13,30 @@
 	<td bgcolor="#cccccc">
 	<table width="500" border="0" cellspacing="1" cellpadding="8" summary=" ">
 		<tr>
+			<td bgcolor="#f2f1ec" width="150" class="fs12n">店名</td>
+			<td bgcolor="#ffffff" width="332" class="fs12">
+			<!--{assign var=key value="store_name"}-->
+			<span class="red"><!--{$arrErr[$key]}--></span>
+			<input type="text" name="<!--{$key}-->" value="<!--{$arrForm[$key].value|escape}-->" maxlength="<!--{$arrForm[$key].length}-->" style="<!--{$arrErr[$key]|sfGetErrorColor}-->" size="50" class="box50" />
+			</td>
+		</tr>
+		<tr>
+			<td bgcolor="#f2f1ec" width="150" class="fs12n">管理者メールアドレス</td>
+			<td bgcolor="#ffffff" width="332" class="fs12">
+			<!--{assign var=key value="mail_address"}-->
+			<span class="red"><!--{$arrErr[$key]}--></span>
+			<input type="text" name="<!--{$key}-->" value="<!--{$arrForm[$key].value|escape}-->" maxlength="<!--{$arrForm[$key].length}-->" style="<!--{$arrErr[$key]|sfGetErrorColor}-->" size="50" class="box50" />
+			</td>
+		</tr>		
+		<tr>
+			<td bgcolor="#f2f1ec" width="150" class="fs12n">インストールディレクトリ</td>
+			<td bgcolor="#ffffff" width="332" class="fs12">
+			<!--{assign var=key value="install_dir"}-->
+			<span class="red"><!--{$arrErr[$key]}--></span>
+			<input type="text" name="<!--{$key}-->" value="<!--{$arrForm[$key].value|escape}-->" maxlength="<!--{$arrForm[$key].length}-->" style="<!--{$arrErr[$key]|sfGetErrorColor}-->" size="50" class="box50" />
+			</td>
+		</tr>
+		<tr>
 			<td bgcolor="#f2f1ec" width="150" class="fs12n">インストールディレクトリ</td>
 			<td bgcolor="#ffffff" width="332" class="fs12">
 			<!--{assign var=key value="install_dir"}-->
