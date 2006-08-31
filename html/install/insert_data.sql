@@ -275,7 +275,7 @@ INSERT INTO dtb_delivtime VALUES (1, 2, '午後');
 -- 支払方法データ
 INSERT INTO dtb_payment VALUES (4, '郵便振替', 0, NULL, 1, 4, NULL, 2, 1, 0, 1, now(), now(), NULL, NULL);
 INSERT INTO dtb_payment VALUES (3, '現金書留', 0, NULL, 1, 3, NULL, 2, 1, 0, 1, now(), now(), NULL, NULL);
-INSERT INTO dtb_payment VALUES (2, '銀行振込・, 0, NULL, 1, 2, NULL, 2, 1, 0, 1, now(), now(), NULL, NULL);
+INSERT INTO dtb_payment VALUES (2, '銀行振込', 0, NULL, 1, 2, NULL, 2, 1, 0, 1, now(), now(), NULL, NULL);
 INSERT INTO dtb_payment VALUES (1, '代金引換', 0, NULL, 1, 1, NULL, 2, 1, 0, 1, now(), now(), NULL, NULL);
 
 -- 商品データ

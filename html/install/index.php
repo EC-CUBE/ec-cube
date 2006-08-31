@@ -141,7 +141,7 @@ case 'drop':
 	} else {
 		$objPage->tpl_message.="×：ビューの削除に失敗しました。<br>";		
 	}
-	
+
 	// テーブルの削除
 	if(count($objPage->arrErr) == 0) {
 		$objPage->arrErr = lfExecuteSQL("./drop_table.sql", $arrRet['db_user'], $arrRet['db_password'], $arrRet['db_server'], $arrRet['db_name']); 
