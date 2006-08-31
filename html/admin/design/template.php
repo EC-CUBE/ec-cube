@@ -69,7 +69,6 @@ if ($_POST['mode'] == "confirm"){
 	
 	// テンプレートの上書き
 	lfChangeTemplate();
-
 }
 
 // POST値の引き継ぎ
