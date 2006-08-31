@@ -70,10 +70,12 @@ class SC_View {
     
     // テンプレートの処理結果を表示
     function display($template, $no_error = false) {
-		global $GLOBAL_ERR;
-		if(!defined('OUTPUT_ERR')) {
-			print($GLOBAL_ERR);
-			define('OUTPUT_ERR','ON');
+		if(!$no_error) {
+			global $GLOBAL_ERR;
+			if(!defined('OUTPUT_ERR')) {
+				print($GLOBAL_ERR);
+				define('OUTPUT_ERR','ON');
+			}
 		}
 		$this->_smarty->display($template);
 		if(ADMIN_MODE == '1') {
