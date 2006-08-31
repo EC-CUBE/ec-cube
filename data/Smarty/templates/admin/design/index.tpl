@@ -266,7 +266,7 @@ function SC_Size() {
 };
 
 // 変数宣言
-var defUnused = 500+50;	// 未使用領域のデフォルトの高さ
+var defUnused = 500;	// 未使用領域のデフォルトの高さ
 var defNavi   = 400;	// 左右ナビのデフォルトの高さ
 var defMainNavi  = 100;	// メイン上下のデフォルトの高さ
 var defMain   = 190;	// メインのデフォルトの高さ
@@ -697,7 +697,7 @@ function fnSetObj( tid, cnt ){
 function fnSetTargetHeight(){
 
 	var NaviHeight = defNavi;
-	var MainHeadHeight = defMainNavi;
+	var MainHeadHeight = defMainNavi+50;
 	var MainFootHeight = defMainNavi;
 	var UnusedHeight = defUnused;
 

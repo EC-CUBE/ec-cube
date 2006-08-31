@@ -184,8 +184,11 @@ $objPage->arrPageData = $arrPageData[0];
 // 認証可否の判定
 $objSess = new SC_Session();
 sfIsSuccess($objSess);
+
 global $GLOBAL_ERR;
-sfprintr(explode("\n",$GLOBAL_ERR));
+$arrGlobalErr = explode("\n",$GLOBAL_ERR);
+$errCnt = count($arrGlobalErr) - 8;
+$objPage->errCnt = $errCnt;
 
 // 画面の表示
 $objView->assignobj($objPage);
