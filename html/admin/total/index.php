@@ -552,7 +552,7 @@ function lfGetOrderMember($type, $sdate, $edate, $objPage, $graph = true) {
 	list($where, $arrval) = lfGetWhereMember('create_date', $sdate, $edate, $type);
 	
 	// 会員集計の取得
-	$col = "COUNT(*) AS order_count, SUM(total) AS total, int4(AVG(total)) AS total_average, order_sex";
+	$col = "COUNT(*) AS order_count, SUM(total) AS total, int8(AVG(total)) AS total_average, order_sex";
 	$from = "dtb_order";
 	$objQuery = new SC_Query();
 	$objQuery->setGroupBy("order_sex");
@@ -624,7 +624,7 @@ function lfGetOrderJob($type, $sdate, $edate, $objPage, $graph = true) {
 		
 	list($where, $arrval) = lfGetWhereMember('T2.create_date', $sdate, $edate, $type);
 	
-	$sql = "SELECT job, count(*) AS order_count, SUM(total) AS total, int4(AVG(total)) AS total_average ";
+	$sql = "SELECT job, count(*) AS order_count, SUM(total) AS total, int8(AVG(total)) AS total_average ";
 	$sql.= "FROM dtb_customer AS T1 LEFT JOIN dtb_order AS T2 USING ( customer_id ) WHERE $where AND T2.delete = 0";
 	$sql.= "GROUP BY job ORDER BY total DESC";
 	
@@ -697,7 +697,7 @@ function lfGetOrderTerm($type, $sdate, $edate, $objPage, $graph = true) {
 		$tmp_col = "sum(total_order) as total_order, sum(men) as men, sum(women) as women,";
 		$tmp_col.= "sum(men_member) as men_member, sum(men_nonmember) as men_nonmember,";
 		$tmp_col.= "sum(women_member) as women_member, sum(women_nonmember) as women_nonmember,";
-		$tmp_col.= "sum(total) as total, int4(avg(total_average)) as total_average";
+		$tmp_col.= "sum(total) as total, int8(avg(total_average)) as total_average";
 		$objQuery = new SC_Query();
 		
 		switch($type) {

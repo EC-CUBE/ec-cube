@@ -107,7 +107,7 @@ function lfGetOrderDailySQL() {
 	$sql.= "SUM((SELECT COUNT(*) WHERE order_sex = 2 AND customer_id <> 0)) AS women_member, ";
 	$sql.= "SUM((SELECT COUNT(*) WHERE order_sex = 2 AND customer_id = 0)) AS women_nonmember, ";
 	$sql.= "SUM(total) AS total, ";
-	$sql.= "int4(AVG(total)) AS total_average ";
+	$sql.= "int8(AVG(total)) AS total_average ";
 	$sql.= "FROM dtb_order AS T1 LEFT JOIN dtb_customer AS T2 USING ( customer_id ) ";
 	$sql.= "WHERE T1.delete = 0 AND T1.create_date BETWEEN ? AND ?";		// 受注作成日で検索する
 	return $sql;
@@ -187,7 +187,7 @@ function lfBatOrderAge($time) {
 	$age_loop = intval(BAT_ORDER_AGE / 10);
 	
 	// 年齢の範囲を指定してデータ抽出
-	$sql.= "SELECT COUNT(*) AS order_count, SUM(total) AS total, int4(AVG(total)) AS total_average ";
+	$sql.= "SELECT COUNT(*) AS order_count, SUM(total) AS total, int8(AVG(total)) AS total_average ";
 	$sql.= "FROM dtb_order ";
 	
 	// 集計対象日を取得する
