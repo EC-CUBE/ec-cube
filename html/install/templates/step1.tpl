@@ -14,10 +14,11 @@
 	<table width="500" border="0" cellspacing="1" cellpadding="8" summary=" ">
 		<tr>
 			<td bgcolor="#f2f1ec" width="150" class="fs12n">店名</td>
-			<td bgcolor="#ffffff" width="332" class="fs12">
+			<td bgcolor="#ffffff" width="332">
 			<!--{assign var=key value="shop_name"}-->
 			<span class="red"><!--{$arrErr[$key]}--></span>
 			<input type="text" name="<!--{$key}-->" value="<!--{$arrForm[$key].value|escape}-->" maxlength="<!--{$arrForm[$key].length}-->" style="<!--{$arrErr[$key]|sfGetErrorColor}-->" size="50" class="box50" />
+			<br><span class="fs10">※あなたの店名をご記入ください。</span>
 			</td>
 		</tr>
 		<tr>
