@@ -70,7 +70,7 @@
 										<!--{assign var=code value=$arrTemplate.code[$key]}-->
 										<!--{assign var=image value=$arrTemplate.image[$code]}-->
 										<td bgcolor="#ffffff" align="center"><!--{$arrTemplate[template]}-->
-											<label for="radio<!--{$key}-->"><img height=200 width=200 src="<!--{$image}-->" name="1"></label><br>
+											<label for="radio<!--{$key}-->"><img height=200 width=160 src="<!--{$image}-->" name="1"></label><br>
 											<label for="radio<!--{$key}-->"><input type="radio" name="check_template" value="<!--{$code}-->" id="radio<!--{$key}-->" onClick="ChangeImage('<!--{$image}-->');" <!--{if $arrTemplate.check[$code] != ""}-->checked<!--{/if}-->>ÁªÂò</label>
 										</td>
 										<!--{assign var=cnt value=$smarty.section.template.iteration-1}-->
