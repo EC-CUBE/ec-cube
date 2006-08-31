@@ -292,7 +292,7 @@ function lfChangeTemplate(){
 		copy($taget_tpl_path . "/footer.tpl", $inc_path . "footer.tpl");
 		
 		// CSSファイルのコピー
-		copy($taget_tpl_path . "/contents.css", $css_path . "/contents.css");
+		copy($taget_tpl_path . "/contents.css", $css_path . "contents.css");
 
 	// mypageの場合にはフォルダごとコピーする
 	}elseif($objPage->tpl_subno_template == $objPage->arrSubnavi['title'][4]){
