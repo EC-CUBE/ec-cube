@@ -11,34 +11,48 @@
 			<tr>
 				<td bgcolor="#cccccc" align="center">
 				<table width="" border="0" cellspacing="1" cellpadding="10" summary=" ">
+					<!--{if $arrSiteInfo.zip01|escape != ""}-->
 					<tr>
 						<td bgcolor="#f0f0f0" class="fs12">住所</td>
 						<td bgcolor="#ffffff" class="fs12">〒<!--{$arrSiteInfo.zip01|escape}-->-<!--{$arrSiteInfo.zip02|escape}--><br><!--{$arrSiteInfo.pref|escape}--><!--{$arrSiteInfo.addr01|escape}--><!--{$arrSiteInfo.addr02|escape}--></td>
 					</tr>
+					<!--{/if}-->
+					<!--{if $arrSiteInfo.tel01|escape != ""}-->
 					<tr>
 						<td bgcolor="#f0f0f0" class="fs12">電話番号</td>
 						<td bgcolor="#ffffff" class="fs12"><!--{$arrSiteInfo.tel01|escape}-->-<!--{$arrSiteInfo.tel02|escape}-->-<!--{$arrSiteInfo.tel03|escape}--></td>
 					</tr>
+					<!--{/if}-->
+					<!--{if $arrSiteInfo.fax01|escape != ""}-->
 					<tr>
 						<td bgcolor="#f0f0f0" class="fs12">FAX番号</td>
 						<td bgcolor="#ffffff" class="fs12"><!--{$arrSiteInfo.fax01|escape}-->-<!--{$arrSiteInfo.fax02|escape}-->-<!--{$arrSiteInfo.fax03|escape}--></td>
 					</tr>
+					<!--{/if}-->
+					<!--{if $arrSiteInfo.business_hour|escape != ""}-->
 					<tr>
 						<td bgcolor="#f0f0f0" class="fs12">営業時間</td>
 						<td bgcolor="#ffffff" class="fs12"><!--{$arrSiteInfo.business_hour|escape}--></td>
 					</tr>
+					<!--{/if}-->
+					<!--{if $arrSiteInfo.email02|escape != ""}-->
 					<tr>
 						<td bgcolor="#f0f0f0" class="fs12">メールアドレス</td>
 						<td bgcolor="#ffffff" class="fs12"><a href="mailto:<!--{$arrSiteInfo.email02|escape}-->"><!--{$arrSiteInfo.email02|escape}--></a></td>
 					</tr>
+					<!--{/if}-->
+					<!--{if $arrSiteInfo.good_traded|escape != ""}-->
 					<tr>
 						<td width="135" bgcolor="#f0f0f0" class="fs12">取扱商品</td>
 						<td width="402" bgcolor="#ffffff" class="fs12"><!--{$arrSiteInfo.good_traded|escape|nl2br}--></td>
 					</tr>
+					<!--{/if}-->
+					<!--{if $arrSiteInfo.message|escape != ""}-->
 					<tr>
 						<td bgcolor="#f0f0f0" class="fs12">メッセージ</td>
 						<td bgcolor="#ffffff" class="fs12"><!--{$arrSiteInfo.message|escape|nl2br}--></td>
 					</tr>
+					<!--{/if}-->
 				</table>
 				</td>
 			</tr>
