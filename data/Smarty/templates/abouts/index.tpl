@@ -13,8 +13,8 @@
 				<table width="" border="0" cellspacing="1" cellpadding="10" summary=" ">
 					<!--{if $arrSiteInfo.shop_name != ""}-->
 					<tr>
-						<td bgcolor="#f0f0f0" class="fs12">Å¹Ì¾</td>
-						<td bgcolor="#ffffff" class="fs12"><!--{$arrSiteInfo.shop_name|escape}--></td>
+						<td width="135" bgcolor="#f0f0f0" class="fs12">Å¹Ì¾</td>
+						<td width="402" bgcolor="#ffffff" class="fs12"><!--{$arrSiteInfo.shop_name|escape}--></td>
 					</tr>
 					<!--{/if}-->
 					<!--{if $arrSiteInfo.company_name != ""}-->
@@ -55,8 +55,8 @@
 					<!--{/if}-->
 					<!--{if $arrSiteInfo.good_traded != ""}-->
 					<tr>
-						<td width="135" bgcolor="#f0f0f0" class="fs12">¼è°·¾¦ÉÊ</td>
-						<td width="402" bgcolor="#ffffff" class="fs12"><!--{$arrSiteInfo.good_traded|escape|nl2br}--></td>
+						<td bgcolor="#f0f0f0" class="fs12">¼è°·¾¦ÉÊ</td>
+						<td bgcolor="#ffffff" class="fs12"><!--{$arrSiteInfo.good_traded|escape|nl2br}--></td>
 					</tr>
 					<!--{/if}-->
 					<!--{if $arrSiteInfo.message != ""}-->
