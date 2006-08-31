@@ -85,8 +85,13 @@ $arrRegistColumn = array(
 //---- 登録除外用カラム配列
 $arrRejectRegistColumn = array("year", "month", "day");
 
+// 検索条件を保持
+if ($_POST['mode' == "edit_search"]) {
+	
+}
+
 //----　顧客編集情報取得
-if ($_POST["mode"] == "edit" && is_numeric($_POST["edit_customer_id"])) {
+if (($_POST["mode"] == "edit" || $_POST["mode"] == "edit_search") && is_numeric($_POST["edit_customer_id"])) {
 
 	//--　顧客データ取得
 	$sql = "SELECT A.*, EXTRACT(EPOCH FROM A.birth) AS birth_unix, B.mail_flag FROM dtb_customer AS A LEFT OUTER JOIN dtb_customer_mail AS B USING(email)
