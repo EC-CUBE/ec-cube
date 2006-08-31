@@ -103,7 +103,7 @@ case 'confirm':
 		//エラーなしでかつメールアドレスが重複していない場合
 		if ($objPage->arrErr == "" && $email_flag == true){
 			//確認ページへ
-			$objPage->tpl_mainpage = ROOT_DIR . USER_DIR . 'templates/mypage/confirm.tpl';
+			$objPage->tpl_mainpage = ROOT_DIR . USER_DIR . 'templates/mypage/change_confirm.tpl';
 			$objPage->tpl_title = 'MYページ/会員登録内容変更(確認ページ)';
 			$passlen = strlen($objPage->arrForm['password']);
 			$objPage->passlen = lfPassLen($passlen);
