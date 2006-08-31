@@ -140,14 +140,7 @@ case 'drop':
 	if(count($objPage->arrErr) == 0) {
 		$objPage->arrErr = lfExecuteSQL("./drop_table.sql", $arrRet['db_user'], $arrRet['db_password'], $arrRet['db_server'], $arrRet['db_name']); 
 	}
-	if(count($objPage->arrErr) == 0) {
-		// 設定ファイルの生成
-		lfMakeConfigFile();
-		$objPage = lfDispStep3($objPage);
-		$objPage->tpl_mode = 'complete';
-	} else {
-		$objPage = lfDispStep3($objPage);
-	}
+	$objPage = lfDispStep3($objPage);
 	break;
 // 完了画面
 case 'complete':
