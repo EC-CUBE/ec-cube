@@ -59,8 +59,8 @@ if ($get_tpl_subno_template != ""){
 	}
 }
 $objPage->tpl_subno_template = $tpl_subno_template;
-$template_name = $objPage->arrSubnavi['name'][array_keys($objPage->arrSubnavi['title'], $tpl_subno_template)];
-$objPage->template_name = $template_name;
+$key = array_keys($objPage->arrSubnavi['title'], $tpl_subno_template);
+$objPage->template_name = $objPage->arrSubnavi['name'][$key[0]];
 
 sfprintr(array_keys($objPage->arrSubnavi['title'], $tpl_subno_template));
 
