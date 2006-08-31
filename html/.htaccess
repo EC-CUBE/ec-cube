@@ -8,3 +8,4 @@ php_value mbstring.internal_encoding EUC-JP
 php_value mbstring.encoding_translation on
 php_value mbstring.detect_order auto
 php_value mbstring.substitute_character none
+php_value magic_quotes_gpc off
