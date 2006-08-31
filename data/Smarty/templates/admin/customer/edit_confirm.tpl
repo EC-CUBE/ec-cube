@@ -18,6 +18,16 @@ function func_return(){
 	<input type="hidden" name="<!--{$key|escape}-->" value="<!--{$item|escape}-->">
 	<!--{/if}-->
 <!--{/foreach}-->
+<!-- ¸¡º÷¾ò·ï¤ÎÊÝ»ý -->
+<!--{foreach from=$arrSearchData key="key" item="item"}-->
+	<!--{if $key ne "job" && $key ne "sex"}--><input type="hidden" name="search_data[<!--{$key|escape}-->]" value="<!--{$item|escape}-->"><!--{/if}-->
+<!--{/foreach}-->
+<!--{foreach from=$arrSearchData.job key="key" item="item"}-->
+<input type="hidden" name="search_data[job][]" value=<!--{$item}-->>
+<!--{/foreach}-->
+<!--{foreach from=$arrSearchData.sex key="key" item="item"}-->
+<input type="hidden" name="search_data[sex][]" value=<!--{$item}-->>
+<!--{/foreach}-->
 	<tr valign="top">
 		<td background="/img/contents/navi_bg.gif" height="402">
 			<!--¢§SUB NAVI-->

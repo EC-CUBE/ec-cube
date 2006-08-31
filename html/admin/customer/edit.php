@@ -89,7 +89,7 @@ if ($_POST['mode'] == "edit_search") {
 }else{
 	$arrSearch = $_POST['search_data'];
 }
-if(count($arrSearch) > 0){
+if(is_array($arrSearch)){
 	foreach($arrSearch as $key => $val){
 		$arrSearchData[$key] = $val;
 	}
