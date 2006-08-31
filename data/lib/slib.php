@@ -313,7 +313,6 @@ function sfCSVDownload($data, $prefix = ""){
 	Header("Cache-Control: ");
 	Header("Pragma: ");
 	
-	
 	/* i18n~ だと正常に動作しないため、mb~ に変更
 	if (i18n_discover_encoding($data) == 'EUC-JP'){
 		$data = i18n_convert($data,'SJIS','EUC-JP');

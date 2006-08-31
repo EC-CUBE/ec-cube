@@ -10,7 +10,6 @@ class LC_Page {
 		$this->tpl_mainno = 'contents';
 		$this->tpl_subnavi = '';
 		$this->tpl_subno = "";
-		$this->tpl_subtitle = 'オススメ管理';
 	}
 }
 
@@ -30,8 +29,8 @@ if ($_POST['mode'] == "search") {
 	// 入力文字の強制変換
 	lfConvertParam();
 	
-	
-	$where = "delete = 0";
+	// 削除されていない。公開商品である。
+	$where = "delete = 0 AND status = 1";
 	
 	/* 入力エラーなし */
 	foreach ($objPage->arrForm as $key => $val) {
