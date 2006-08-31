@@ -32,7 +32,7 @@ if ($_POST['mode'] == 'confirm'){
 	fwrite($fp, $_POST['css']);
 	fclose($fp);
 	
-	$objPage->tpl_onload="alert('編集が完了しました。');";
+	$objPage->tpl_onload="alert('登録が完了しました。');";
 }
 
 // CSSファイルの読み込み

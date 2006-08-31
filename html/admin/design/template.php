@@ -71,7 +71,7 @@ if ($_POST['mode'] == "confirm"){
 	lfChangeTemplate();
 	
 	// ´°Î»¥á¥Ã¥»¡¼¥¸
-	$objPage->tpl_onload="alert('ÊÔ½¸¤¬´°Î»¤·¤Þ¤·¤¿¡£');";
+	$objPage->tpl_onload="alert('ÅÐÏ¿¤¬´°Î»¤·¤Þ¤·¤¿¡£');";
 
 }
 

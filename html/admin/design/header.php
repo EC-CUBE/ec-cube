@@ -40,7 +40,7 @@ if ($division != ''){
 	if ($_POST['mode'] == 'confirm'){
 		copy($pre_DIR.$division.".tpl", $tpl_DIR.$division.".tpl");
 		// 完了メッセージ（プレビュー時は表示しない）
-		$objPage->tpl_onload="alert('編集が完了しました。');";
+		$objPage->tpl_onload="alert('登録が完了しました。');";
 	}
 
 	// ヘッダーファイルの読み込み(プレビューデータ)

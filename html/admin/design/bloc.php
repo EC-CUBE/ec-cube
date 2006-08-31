@@ -47,6 +47,12 @@ if ($bloc_id != '') {
 	$objPage->arrBlocData = $arrBlocData[0];
 }
 
+// メッセージ表示
+if ($_GET['msg'] == "on") {
+	// 完了メッセージ
+	$objPage->tpl_onload="alert('編集が完了しました。');";
+}
+
 // データ登録処理
 if ($_POST['mode'] == 'confirm') {
 	
