@@ -95,7 +95,6 @@ if(is_array($arrSearch)){
 	}
 }
 
-sfprintr($_POST);
 $objPage->arrSearchData= $arrSearchData;
 
 //----　顧客編集情報取得
