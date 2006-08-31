@@ -42,7 +42,7 @@ $oquery = new SC_Query();
 $linemax = $oquery->count("dtb_member", "delete <> 1 AND member_id <>".ADMIN_ID);
 
 // 稼動中の件数を取得
-$workmax = $oquery->count("dtb_member", "move = 1 AND delete <> 1 AND member_id <>".ADMIN_ID);
+$workmax = $oquery->count("dtb_member", "work = 1 AND delete <> 1 AND member_id <>".ADMIN_ID);
 $objPage->workmax= $workmax;
 
 // ページ送りの処理
