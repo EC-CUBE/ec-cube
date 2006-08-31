@@ -13,6 +13,29 @@ sfInitInstall();
 // アップデートで生成されたPHPを読み出す
 sfLoadUpdateModule();
 
+/* テーブルの存在チェックチェック */
+function sfTabaleExists($objQuery, $table_name) {
+	
+	$sql = "SELECT
+				relname
+			FROM
+			    pg_class
+			WHERE
+				(relkind = 'r' OR relkind = 'v') AND 
+			    relname = ? 
+			GROUP BY
+				relname";
+	
+	$arrRet = $objQuery->getAll($sql, array($table_name));
+	if(count($arrRet) > 0) {
+		$flg = true;
+	} else {
+		$flg = false;
+	}
+	
+	return $flg;
+}
+
 // インストール初期処理
 function sfInitInstall() {
 	// インストール済みが定義されていない。
