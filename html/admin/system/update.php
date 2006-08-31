@@ -166,8 +166,6 @@ function lfLoadUpdateList() {
 function lfInstallModule() {
 	global $objPage;
 	
-	print("kita");
-	
 	$objQuery = new SC_Query();
 	$arrRet = $objQuery->select("module_id, extern_php, other_files, sql, latest_version", "dtb_update", "module_id = ?", array($_POST['module_id']));
 	$flg_ok = true;	// 処理の成功判定
