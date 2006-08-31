@@ -136,9 +136,20 @@ case 'drop':
 	$arrRet =  $objDBParam->getHashArray();
 	// ビューの削除
 	$objPage->arrErr = lfExecuteSQL("./drop_view.sql", $arrRet['db_user'], $arrRet['db_password'], $arrRet['db_server'], $arrRet['db_name']); 
+	if(count($objPage->arrErr) == 0) {
+		$objPage->tpl_message.="○：ビューの削除に成功しました。<br>";
+	} else {
+		$objPage->tpl_message.="×：ビューの削除に失敗しました。<br>";		
+	}
+	
 	// テーブルの削除
 	if(count($objPage->arrErr) == 0) {
 		$objPage->arrErr = lfExecuteSQL("./drop_table.sql", $arrRet['db_user'], $arrRet['db_password'], $arrRet['db_server'], $arrRet['db_name']); 
+		if(count($objPage->arrErr) == 0) {
+			$objPage->tpl_message.="○：テーブルの削除に成功しました。<br>";
+		} else {
+			$objPage->tpl_message.="×：テーブルの削除に失敗しました。<br>";		
+		}
 	}
 	$objPage = lfDispStep3($objPage);
 	break;
