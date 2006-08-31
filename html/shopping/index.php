@@ -51,9 +51,9 @@ case 'confirm':
 	$objFormParam->toLower('order_mail');
 	$objFormParam->toLower('order_mail_check');
 	
+	$objPage->arrErr = lfCheckError();
 	sfprintr($objPage->arrErr);
 	
-	$objPage->arrErr = lfCheckError();
 	// 入力エラーなし
 	if(count($objPage->arrErr) == 0) {
 		// DBへのデータ登録
