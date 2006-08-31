@@ -83,15 +83,16 @@ $arrRegistColumn = array(
 //---- ÅÐÏ¿½ü³°ÍÑ¥«¥é¥àÇÛÎó
 $arrRejectRegistColumn = array("year", "month", "day");
 
-$arrSearch = array();
 // ¸¡º÷¾ò·ï¤òÊÝ»ý
 if ($_POST['mode'] == "edit_search") {
 	$arrSearch = $_POST;
 }else{
 	$arrSearch = $_POST['search_data'];
 }
-foreach($arrSearch as $key => $val){
-	$arrSearchData[$key] = $val;
+if(count($arrSearch) > 0){
+	foreach($arrSearch as $key => $val){
+		$arrSearchData[$key] = $val;
+	}
 }
 $objPage->arrSearchData= $arrSearchData;
 
