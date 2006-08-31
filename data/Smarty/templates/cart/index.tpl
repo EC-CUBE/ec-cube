@@ -26,10 +26,12 @@
 							<!-- カゴの中に商品がある場合にのみ表示 -->
 							<!--{if count($arrProductsClass) > 0 }-->
 								お買い上げ商品の合計金額は「<span class="redst"><!--{$tpl_total_pretax|number_format}-->円</span>」です。
+								<!--{if $arrInfo.free_rule > 0}-->
 								<!--{if $arrData.deliv_fee|number_format > 0}-->
 									あと「<span class="redst"><!--{$tpl_deliv_free|number_format}-->円</span>」で送料無料です！！
 								<!--{else}-->
 									現在、「<span class="redst">送料無料</span>」です！！
+								<!--{/if}-->
 								<!--{/if}-->
 							<!--{/if}-->
 						</td>
