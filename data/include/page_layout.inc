@@ -191,12 +191,12 @@ function lfDelFile($arrData){
 	// ファイルディレクトリ取得
 	$del_php = ROOT_DIR . $arrData['php_dir'] . $arrData['filename'] . ".php";
 	$del_tpl = ROOT_DIR . $arrData['tpl_dir'] . $arrData['filename'] . ".tpl";
-	
+
 	// phpファイルの削除
 	if (file_exists($del_php)){
 		unlink($del_php);	
 	}
-	
+
 	// tplファイルの削除
 	if (file_exists($del_tpl)){
 		unlink($del_tpl);	
