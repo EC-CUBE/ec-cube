@@ -33,7 +33,7 @@
 <!--{if count($arrErr) > 0 || $tpl_message != ""}-->
 <tr>
 	<td bgcolor="#cccccc" class="fs12">
-	<table width="500" border="0" cellspacing="1" cellpadding="8" summary=" ">
+	<table width="500" border="1" cellspacing="1" cellpadding="8" summary=" ">
 		<tr>
 			<td bgcolor="#ffffff" width="332" class="fs12" height="50">
 			<!--{$tpl_message}--><br>
