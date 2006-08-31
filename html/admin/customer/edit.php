@@ -83,6 +83,7 @@ $arrRegistColumn = array(
 //---- 登録除外用カラム配列
 $arrRejectRegistColumn = array("year", "month", "day");
 
+$arrSearch = array();
 // 検索条件を保持
 if ($_POST['mode'] == "edit_search") {
 	$arrSearch = $_POST;
