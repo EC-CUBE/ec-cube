@@ -96,7 +96,7 @@
 										<tr bgcolor="#f2f1ec">
 											<td class="fs12n" align="left">
 												<a href="/" onclick="fnAllCheck(); return false;">全選択</a>　
-												<a href="/" onclick="fnAllUnCheck(); return false;">全解除</a>
+												<a href="/" onclick="fnAllUnCheck(); return false;">全解除</a>　
 												<a href="/" onclick="fnCopyValue('<!--{$cnt}-->', '<!--{$smarty.const.DISABLED_RGB}-->'); return false;">一行目のデータをコピーする</a></td>
 										</tr>
 									</table>
