@@ -75,7 +75,7 @@ function lfRealTimeDailyTotal($sdate, $edate) {
 	for($i = 0; $i <= $loop; $i++) {
 		$tmp_time = strtotime($sdate) + ($i * 86400);
 		$batch_date = date("Y/m/d", $tmp_time);
-		print($batch_date);
+		print($batch_date . "<br>");
 	}
 }
 
