@@ -6,17 +6,26 @@ class LC_Page {
 	var $arrForm;
 	var $arrHidden;
 	var $arrSubnavi = array(
-		1 => 'top',
-		2 => 'product',
-		3 => 'detail',
-		4 => 'mypage',
+		title => array(
+			1 => 'top',
+			2 => 'product',
+			3 => 'detail',
+			4 => 'mypage' 
+		),
+		name =>array(
+			1 => 'TOPページ',
+			2 => '商品一覧',
+			3 => '商品詳細',
+			4 => 'MYページ' 
+		)
 	);
 
 	function LC_Page() {
 		$this->tpl_mainpage = 'design/template.tpl';
 		$this->tpl_subnavi = 'design/subnavi.tpl';
 		$this->tpl_subno = 'template';
-		$this->tpl_subno_template = $this->arrSubnavi[1];
+		$this->tpl_subno_template = $this->arrSubnavi['title'][1];
+		$this->tpl_TemplateName = $this->arrTemplateName['name'][1];
 		$this->tpl_mainno = "design";
 		$this->tpl_subtitle = 'テンプレート設定';
 	}
@@ -36,20 +45,22 @@ $get_tpl_subno_template = $_GET['tpl_subno_template'];
 // GETで値が送られている場合にはその値を元に画面表示を切り替える
 if ($get_tpl_subno_template != ""){
 	// 送られてきた値が配列に登録されていなければTOPを表示
-	if (in_array($get_tpl_subno_template,$objPage->arrSubnavi)){
+	if (in_array($get_tpl_subno_template,$objPage->arrSubnavi['title'])){
 		$tpl_subno_template = $get_tpl_subno_template;
 	}else{
-		$tpl_subno_template = $objPage->arrSubnavi[1];
+		$tpl_subno_template = $objPage->arrSubnavi['title'][1];
 	}
 } else {
 	// GETで値がなければPOSTの値を使用する
 	if ($_POST['tpl_subno_template'] != ""){
 		$tpl_subno_template = $_POST['tpl_subno_template'];
 	}else{
-		$tpl_subno_template = $objPage->arrSubnavi[1];
+		$tpl_subno_template = $objPage->arrSubnavi['title'][1];
 	}
 }
 $objPage->tpl_subno_template = $tpl_subno_template;
+$template_name = $objPage->arrSubnavi['name'][array_keys($objPage->arrSubnavi['title'], $tpl_subno_template)];
+$objPage->template_name = $template_name;
 
 // 登録を押されたばあにはDBへデータを更新に行く
 if ($_POST['mode'] == "confirm"){
@@ -103,27 +114,27 @@ function lfgetTemplate(){
 	
 	switch($objPage->tpl_subno_template) {
 		// TOP
-		case $objPage->arrSubnavi[1]:
+		case $objPage->arrSubnavi['title'][1]:
 			$Image = "TopImage.jpg";			// イメージの配列要素名格納用
-			$disp = $objPage->arrSubnavi[1];
+			$disp = $objPage->arrSubnavi['title'][1];
 			break;
 			
 		// 商品一覧
-		case $objPage->arrSubnavi[2]:
+		case $objPage->arrSubnavi['title'][2]:
 			$Image = "ProdImage.jpg";			// イメージの配列要素名格納用
-			$disp = $objPage->arrSubnavi[2];
+			$disp = $objPage->arrSubnavi['title'][2];
 			break;
 			
 		// 商品詳細
-		case $objPage->arrSubnavi[3]:
+		case $objPage->arrSubnavi['title'][3]:
 			$Image = "DetailImage.jpg";			// イメージの配列要素名格納用
-			$disp = $objPage->arrSubnavi[3];
+			$disp = $objPage->arrSubnavi['title'][3];
 			break;
 			
 		// MYページ
-		case $objPage->arrSubnavi[4]:
+		case $objPage->arrSubnavi['title'][4]:
 			$Image = "MypageImage.jpg";			//イメージの配列要素名格納用
-			$disp = $objPage->arrSubnavi[4];
+			$disp = $objPage->arrSubnavi['title'][4];
 			break;
 	}
 
@@ -185,7 +196,7 @@ function lfUpdData(){
 		$arrVal = $arrRet[0];
 		
 		// TOPを変更した場合には全画面変更
-		if ($objPage->tpl_subno_template == $objPage->arrSubnavi[1]){
+		if ($objPage->tpl_subno_template == $objPage->arrSubnavi['title'][1]){
 			$arrVal = array($chk_tpl,$chk_tpl,$chk_tpl,$chk_tpl);
 		}else{
 			$arrVal[$objPage->tpl_subno_template] = $chk_tpl;
@@ -196,7 +207,7 @@ function lfUpdData(){
 		$arrVal = array(null,null,null,null);
 		
 		// TOPを変更した場合には全画面変更
-		if ($objPage->tpl_subno_template == $objPage->arrSubnavi[1]){
+		if ($objPage->tpl_subno_template == $objPage->arrSubnavi['title'][1]){
 			$arrVal = array($chk_tpl,$chk_tpl,$chk_tpl,$chk_tpl);
 		}else{
 			$arrVal[$chk_tpl-1] =$chk_tpl;
@@ -233,25 +244,25 @@ function lfChangeTemplate(){
 	
 	switch($objPage->tpl_subno_template) {
 		// TOP
-		case $objPage->arrSubnavi[1]:
+		case $objPage->arrSubnavi['title'][1]:
 			$tpl_element = "TopTemplate";			// イメージの配列要素名格納用
 			$tpl_name = "top.tpl";
 			break;
 			
 		// 商品一覧
-		case $objPage->arrSubnavi[2]:
+		case $objPage->arrSubnavi['title'][2]:
 			$tpl_element = "ProdTemplate";			// イメージの配列要素名格納用
 			$tpl_name = "list.tpl";
 			break;
 			
 		// 商品詳細
-		case $objPage->arrSubnavi[3]:
+		case $objPage->arrSubnavi['title'][3]:
 			$tpl_element = "DetailTemplate";			// イメージの配列要素名格納用
 			$tpl_name = "detail.tpl";
 			break;
 			
 		// MYページ
-		case $objPage->arrSubnavi[4]:
+		case $objPage->arrSubnavi['title'][4]:
 			$tpl_element = "MypageTemplate";			//イメージの配列要素名格納用
 			$tpl_name = "mypage.tpl";
 			break;
@@ -264,7 +275,7 @@ function lfChangeTemplate(){
 	$save_tpl_path = ROOT_DIR . $tpl_path;
 	
 	// TOPを変更した場合には全画面変更
-	if ($objPage->tpl_subno_template == $objPage->arrSubnavi[1]){
+	if ($objPage->tpl_subno_template == $objPage->arrSubnavi['title'][1]){
 		// テンプレートファイルをコピー
 		copy($taget_tpl_path . "/top.tpl", $save_tpl_path . "top.tpl");
 		copy($taget_tpl_path . "/list.tpl", $save_tpl_path . "list.tpl");
@@ -281,7 +292,7 @@ function lfChangeTemplate(){
 		copy($taget_tpl_path . "/footer.tpl", $inc_path . "footer.tpl");
 
 	// mypageの場合にはフォルダごとコピーする
-	}elseif($objPage->tpl_subno_template == $objPage->arrSubnavi[4]){
+	}elseif($objPage->tpl_subno_template == $objPage->arrSubnavi['title'][4]){
 		lfFolderCopy($taget_tpl_path."mypage/", $save_tpl_path."mypage/");
 	}else{
 		// テンプレートファイルをコピー
