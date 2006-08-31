@@ -18,7 +18,7 @@ class LC_Page {
 		$this->tpl_subno = 'template';
 		$this->tpl_subno_template = $this->arrSubnavi[1];
 		$this->tpl_mainno = "design";
-		$this->tpl_subtitle = 'テンプレート選択';
+		$this->tpl_subtitle = 'テンプレート設定';
 	}
 }
 
