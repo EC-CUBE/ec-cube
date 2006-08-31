@@ -192,13 +192,11 @@ function lfInstallModule() {
 	if($arrRet[0]['sql'] != "") {
 		// SQL文実行、パラーメータなし、エラー無視
 		$ret = $objQuery->query($arrRet[0]['sql'],"",true);
-		
 		if(DB::isError($ret)) {
-		
-		// エラー文を取得する
-		ereg("\[(.*)\]", $ret->userinfo, $keyword);
-				
-		sfPrintR($keyword);
+			// エラー文を取得する
+			ereg("\[(.*)\]", $ret->userinfo, $arrKey);
+			$objPage->update_mess.=">> テーブル構成の変更に失敗しました。<br>";
+			$objPage->update_mess.= $arrKey[0] . "<br>";
 		} else {
 			$objPage->update_mess.=">> テーブル構成の変更を行いました。<br>";
 		}
