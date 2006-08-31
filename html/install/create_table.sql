@@ -108,10 +108,10 @@ CREATE TABLE dtb_baseinfo (
     point_rate numeric,
     welcome_point numeric,
     update_date timestamp,
-    top_tpl int4,
-    product_tpl int4,
-    detail_tpl int4,
-    mypage_tpl int4,
+    top_tpl text,
+    product_tpl text,
+    detail_tpl text,
+    mypage_tpl text,
     good_traded text,
     message text
 );
