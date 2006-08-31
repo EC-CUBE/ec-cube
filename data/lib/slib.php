@@ -67,7 +67,7 @@ function sf_getBasisData() {
 }
 
 // 装飾付きエラーメッセージの表示
-function sfErrorHeader($mess) {
+function sfErrorHeader($mess, $print = false) {
 	global $GLOBAL_ERR;
 	if($GLOBAL_ERR == "") {
 		$GLOBAL_ERR = "<meta http-equiv='Content-Type' content='text/html; charset=EUC-JP'>\n";
@@ -78,7 +78,11 @@ function sfErrorHeader($mess) {
 	$GLOBAL_ERR.= "<SPAN style='color:red; font-size:12px'><strong>" . $mess . "</strong></span>\n";
 	$GLOBAL_ERR.= "</td>\n";
 	$GLOBAL_ERR.= "	</tr>\n";
-	$GLOBAL_ERR.= "</table>\n";	
+	$GLOBAL_ERR.= "</table>\n";
+	
+	if($print) {
+		print($GLOBAL_ERR);
+	}
 }
 
 /* エラーページの表示 */

@@ -18,7 +18,7 @@ $temp_dir = $INSTALL_DIR . '/temp';
 $mode = lfGetFileMode($temp_dir);
 
 if($mode != '777') {
-	sfErrorHeader($temp_dir . "にユーザ書込み権限(777)を付与して下さい。");
+	sfErrorHeader($temp_dir . "にユーザ書込み権限(777)を付与して下さい。", true);
 	exit;
 }
 
