@@ -87,16 +87,16 @@ $arrRejectRegistColumn = array("year", "month", "day");
 
 // ∏°∫˜æÚ∑Ô§Ú ›ª˝
 if ($_POST['mode'] == "edit_search") {
-	$arrSearch = $_POST;
+	$arrSearchData = $_POST;
 }else{
-	$arrSearch = $_POST['search_data'];
+	$arrSearchData = $_POST['search_data'];
 }
 foreach($arrSearch as $key => $val){
 	$arrSeachData[$key] = $val;
 }
-$objPage->arrSearchData= $arrSeachData;
+$objPage->arrSearchData= $arrSearchData;
 
-sfprintr($arrSeachData);
+sfprintr($arrSearchData);
 
 //----°°∏‹µ“ ‘Ω∏æ ÛºË∆¿
 if (($_POST["mode"] == "edit" || $_POST["mode"] == "edit_search") && is_numeric($_POST["edit_customer_id"])) {
