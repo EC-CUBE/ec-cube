@@ -49,8 +49,8 @@
 										<td width="40">現在Ver</td>
 										<td width="40">最新Ver</td>										
 										<td width="80" align="center">リリース日</td>
-										<td width="65">install</td>
-										<td width="65">uninstall</td>									
+										<td width="50">install</td>
+										<td width="50">uninstall</td>									
 									</tr>
 									<!--{section name=cnt loop=$arrUpdate}-->
 									<tr bgcolor="#ffffff" class="fs12">

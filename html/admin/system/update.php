@@ -35,6 +35,7 @@ case 'install':
 	lfLoadUpdateList();
 	// モジュール郡のインストール
 	lfInstallModule();
+	header("Location: " . $_SERVER['PHP_SELF']);
 	break;
 // アンインストール
 case 'uninstall':
@@ -42,6 +43,7 @@ case 'uninstall':
 	lfLoadUpdateList();
 	// モジュール郡のインストール	
 	lfUninstallModule();
+	header("Location: " . $_SERVER['PHP_SELF']);
 	break;
 default:
 	break;
