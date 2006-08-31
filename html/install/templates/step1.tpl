@@ -23,7 +23,7 @@
 		<tr>
 			<td bgcolor="#f2f1ec" width="150" class="fs12n">管理者メールアドレス</td>
 			<td bgcolor="#ffffff" width="332" class="fs12">
-			<!--{assign var=key value="mail_address"}-->
+			<!--{assign var=key value="admin_mail"}-->
 			<span class="red"><!--{$arrErr[$key]}--></span>
 			<input type="text" name="<!--{$key}-->" value="<!--{$arrForm[$key].value|escape}-->" maxlength="<!--{$arrForm[$key].length}-->" style="<!--{$arrErr[$key]|sfGetErrorColor}-->" size="50" class="box50" />
 			</td>
