@@ -282,8 +282,8 @@ function lfGetDateDefault() {
 		$list['startyear'] = $year;
 		$list['startmonth'] = $month;
 		$list['startday'] = $day;
-		$list['endmonth'] = $month;
 		$list['endyear'] = $year;
+		$list['endmonth'] = $month;
 		$list['endday'] = $day;
 	}
 	
