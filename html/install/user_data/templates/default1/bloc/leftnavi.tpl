@@ -22,8 +22,8 @@
 		<!--{/if}-->
 	</tr>
 	<tr>
-		<!--{* 2006/04/20 KAKINAKA-UPD:¥á¥ë¥Þ¥¬ÅÐÏ¿¤Î¥ê¥ó¥¯Àè¤ò²ñ°÷ÅÐÏ¿¤ËÊÑ¹¹ START *}-->
 		<!--{if $tpl_page_category == "mailmagazine"}-->
+		<!--{* 2006/04/20 KAKINAKA-UPD:¥á¥ë¥Þ¥¬ÅÐÏ¿¤Î¥ê¥ó¥¯Àè¤ò²ñ°÷ÅÐÏ¿¤ËÊÑ¹¹ START *}-->
 		<!--{* <td><a href="/mailmagazine/index.php"><img src="/img/left/mailmagazine_on.jpg" width="170" height="30" alt="¥á¥ë¥Þ¥¬ÅÐÏ¿¡¦²ò½ü" /></a></td> *}-->
 		<td><a href="/entry/kiyaku.php"><img src="/img/left/mailmagazine_on.jpg" width="170" height="30" alt="¥á¥ë¥Þ¥¬ÅÐÏ¿¡¦²ò½ü" /></a></td>
 		<!--{else}-->
