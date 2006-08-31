@@ -72,7 +72,11 @@ function lfRealTimeDailyTotal($sdate, $edate) {
 	$pass = strtotime($edate) - strtotime($sdate);
 	$loop = intval($pass / 86400);
 	
-	print($pass . ":" . $loop);
+	for($i = 0; $i <= $loop; $i++) {
+		$tmp_time = strtotime($sdate) + ($i * 86400);
+		$batch_date = date("Y/m/d", $tmp_time);
+		print($batch_date);
+	}
 }
 
 // バッチ集計用のSQL文を取得する。
