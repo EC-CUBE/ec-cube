@@ -697,7 +697,7 @@ function fnSetObj( tid, cnt ){
 function fnSetTargetHeight(){
 
 	var NaviHeight = defNavi;
-	var MainHeadHeight = defMainNavi+500;
+	var MainHeadHeight = defMainNavi;
 	var MainFootHeight = defMainNavi;
 	var UnusedHeight = defUnused;
 
