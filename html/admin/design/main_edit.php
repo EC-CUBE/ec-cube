@@ -26,7 +26,7 @@ sfIsSuccess($objSess);
 
 // templatesフォルダに書き込み権限を付与
 $template_dir = ROOT_DIR . USER_DIR . "template";
-if(is_writable($template_dir)){
+if(!is_writable($template_dir)){
 	chmod($template_dir, 0666);
 }
 
