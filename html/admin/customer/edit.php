@@ -87,9 +87,12 @@ $arrRejectRegistColumn = array("year", "month", "day");
 
 // ¸¡º÷¾ò·ï¤òÊÝ»ý
 if ($_POST['mode'] == "edit_search") {
-	foreach($_POST as $key => $val){
-		$arrSeachData[$key] = $val;
-	}
+	$arrSearch = $_POST;
+}else{
+	$arrSearch = $_POST['search_data'];
+}
+foreach($arrSearch as $key => $val){
+	$arrSeachData[$key] = $val;
 }
 
 sfprintr($arrSeachData);

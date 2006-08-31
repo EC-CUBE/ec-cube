@@ -22,13 +22,13 @@
 <table width="878" border="0" cellspacing="0" cellpadding="0" summary=" ">
 <form name="form_search" method="post" action="">
 <input type="hidden" name="mode" value="search">
-<!--{foreach from=$smarty.post key="key" item="item"}-->
+<!--{foreach from=$arrSearchData="key" item="item"}-->
 	<!--{if $key ne "customer_id" && $key ne "mode" && $key ne "del_mode" && $key ne "edit_customer_id" && $key ne "del_customer_id" && $key ne "csv_mode" && $key ne "job" && $key ne "sex"}--><input type="hidden" name="<!--{$key|escape}-->" value="<!--{$item|escape}-->"><!--{/if}-->
 <!--{/foreach}-->
-<!--{foreach from=$smarty.post.job key="key" item="item"}-->
+<!--{foreach from=$arrSearchData.job key="key" item="item"}-->
 <input type="hidden" name="job[]" value=<!--{$item}-->>
 <!--{/foreach}-->
-<!--{foreach from=$smarty.post.sex key="key" item="item"}-->
+<!--{foreach from=$arrSearchData.sex key="key" item="item"}-->
 <input type="hidden" name="sex[]" value=<!--{$item}-->>
 <!--{/foreach}-->
 </form>
@@ -37,6 +37,18 @@
 <input type="hidden" name="mode" value="confirm">
 <input type="hidden" name="edit_email" value="<!--{$tpl_edit_email}-->">
 <input type="hidden" name="customer_id" value="<!--{$list_data.customer_id|escape}-->">
+
+<!-- ¸¡º÷¾ò·ï¤ÎÊÝ»ý -->
+<!--{foreach from=$arrSearchData="key" item="item"}-->
+	<!--{if $key ne "job" && $key ne "sex"}--><input type="hidden" name="search_data[<!--{$key|escape}-->]" value="<!--{$item|escape}-->"><!--{/if}-->
+<!--{/foreach}-->
+<!--{foreach from=$arrSearchData.job key="key" item="item"}-->
+<input type="hidden" name="serch_data[job[]]" value=<!--{$item}-->>
+<!--{/foreach}-->
+<!--{foreach from=$arrSearchData.sex key="key" item="item"}-->
+<input type="hidden" name="serch_data[sex[]]" value=<!--{$item}-->>
+<!--{/foreach}-->
+
 	<tr valign="top">
 		<td background="/img/contents/navi_bg.gif" height="402">
 			<!--¢§SUB NAVI-->
