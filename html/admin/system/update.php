@@ -146,7 +146,7 @@ function lfLoadUpdateList() {
 				$sqlval['other_files'] = $arrCSV[9];
 				$sqlval['delete'] = $arrCSV[10];
 				$sqlval['update_date'] = "now()";
-				$sqlval['release_date'] = $arrCSV[13];
+				$sqlval['release_date'] = $arrCSV[12];
 				// 既存レコードのチェック
 				$cnt = $objQuery->count("dtb_update", "module_id = ?", array($sqlval['module_id']));
 				if($cnt > 0) {
