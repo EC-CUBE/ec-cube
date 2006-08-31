@@ -208,6 +208,7 @@
 										<input type="button" name="btn" onclick="fnModeSubmit('upload_image', 'image_key', '<!--{$key}-->')" value="アップロード">
 										</td>
 									</tr>
+									<!--{*　カラー比較画像、商品詳細ファイルは非対応 
 									<tr>
 										<td bgcolor="#f2f1ec" width="160" class="fs12n">カラー比較画像<br />[500×500]</td>
 										<td bgcolor="#ffffff" width="557" class="fs12n">
@@ -233,6 +234,7 @@
 										<input type="button" name="btn" onclick="fnModeSubmit('upload_image', 'image_key', '<!--{$key}-->')" value="アップロード">
 										</td>
 									</tr>			
+									*}-->
 									<!--{section name=cnt loop=$smarty.const.PRODUCTSUB_MAX}-->
 									<!--▼商品<!--{$smarty.section.cnt.iteration}-->-->
 									<tr>
