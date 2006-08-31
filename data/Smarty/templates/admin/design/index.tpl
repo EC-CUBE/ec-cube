@@ -677,7 +677,7 @@ function fnSetObj( tid, cnt ){
 	    }
 
 		// 座標を保持
-		arrObj[tid][j].top = top + 500;
+		arrObj[tid][j].top = top;
 		arrObj[tid][j].left = left;
 
 		// 配置を行う

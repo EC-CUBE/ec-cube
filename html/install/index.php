@@ -164,6 +164,10 @@ case 'complete':
 	$sqlval['email03'] = $objWebParam->getValue('admin_mail');
 	$sqlval['email04'] = $objWebParam->getValue('admin_mail');
 	$sqlval['email05'] = $objWebParam->getValue('admin_mail');
+	$sqlval['top_tpl'] = "default1";
+	$sqlval['product_tpl'] = "default1";
+	$sqlval['detail_tpl'] = "default1";
+	$sqlval['mypage_tpl'] = "default1";
 	$objQuery = new SC_Query($dsn);
 	$cnt = $objQuery->count("dtb_baseinfo");
 	if($cnt > 0) {
