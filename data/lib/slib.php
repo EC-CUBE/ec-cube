@@ -5,6 +5,8 @@ $INC_PATH = realpath( dirname( __FILE__) );
 require_once( $INC_PATH ."/../conf/conf.php" );
 require_once( $INC_PATH ."/../class/SC_DbConn.php" );
 
+$GLOBAL_ERR = "";
+
 // インストール初期処理
 sfInitInstall();
 // アップデートで生成されたPHPを読み出す
@@ -65,14 +67,17 @@ function sf_getBasisData() {
 
 // 装飾付きエラーメッセージの表示
 function sfErrorHeader($mess) {
-	print("<meta http-equiv='Content-Type' content='text/html; charset=EUC-JP'>");
-	print("<table width='100%' border='0' cellspacing='0' cellpadding='0' summary=' '>");
-	print("	<tr>");
-	print("<td bgcolor='#ffeebb' height='25' colspan='2' align='center'>");
-	print("<SPAN style='color:red; font-size:12px'><strong>" . $mess . "</strong></span>");
-	print("</td>");
-	print("	</tr>");
-	print("</table>");	
+	global $GLOBAL_ERR;
+	if($GLOBAL_ERR == "") {
+		$GLOBAL_ERR = "<meta http-equiv='Content-Type' content='text/html; charset=EUC-JP'>\n";
+	}
+	$GLOBAL_ERR.= "<table width='100%' border='0' cellspacing='0' cellpadding='0' summary=' '>\n";
+	$GLOBAL_ERR.= "<tr>\n";
+	$GLOBAL_ERR.= "<td bgcolor='#ffeebb' height='25' colspan='2' align='center'>\n";
+	$GLOBAL_ERR.= "<SPAN style='color:red; font-size:12px'><strong>" . $mess . "</strong></span>\n";
+	$GLOBAL_ERR.= "</td>\n";
+	$GLOBAL_ERR.= "	</tr>\n";
+	$GLOBAL_ERR.= "</table>\n";	
 }
 
 /* エラーページの表示 */
