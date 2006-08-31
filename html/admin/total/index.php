@@ -279,20 +279,12 @@ function lfGetDateDefault() {
 	
 	// セッション情報に開始日付、終了日付が保存されていない。
 	if($_SESSION['total']['startyear'] == "" && $_SESSION['total']['endyear'] == "") {
-		// 当月の末日を求める
-		$last_day = date("d", mktime(0, 0, 0, $month + 1, 0, $year));
-				
-		// 1ヶ月前を求める
-		$day_sec = 3600 * 24;
-		list($syear, $smonth, $sday) = split("/", date("Y/m/d", (mktime(0, 0, 0, $month, $day, $year) - ($day_sec * $last_day))));
-		$list['startyear'] = $syear;
-		$list['startmonth'] = $smonth;
-		$list['startday'] = $sday;
-		
-		// 終了日は現在の日付の1日前（バッチ集計が前日までのため）
+		$list['startyear'] = $year;
+		$list['startmonth'] = $month;
+		$list['startday'] = $day;
 		$list['endmonth'] = $month;
 		$list['endyear'] = $year;
-		$list['endday'] = date("d", (mktime(0, 0, 0, $month, $day, $year) - $day_sec));
+		$list['endday'] = $day;
 	}
 	
 	return $list;	
