@@ -69,6 +69,10 @@ if ($_POST['mode'] == "confirm"){
 	
 	// テンプレートの上書き
 	lfChangeTemplate();
+	
+	// 完了メッセージ
+	$objPage->tpl_onload="alert('編集が完了しました。');";
+
 }
 
 // POST値の引き継ぎ

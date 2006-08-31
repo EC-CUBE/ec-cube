@@ -39,6 +39,8 @@ if ($division != ''){
 	// 登録時はプレビュー用テンプレートをコピーする
 	if ($_POST['mode'] == 'confirm'){
 		copy($pre_DIR.$division.".tpl", $tpl_DIR.$division.".tpl");
+		// 完了メッセージ（プレビュー時は表示しない）
+		$objPage->tpl_onload="alert('編集が完了しました。');";
 	}
 
 	// ヘッダーファイルの読み込み(プレビューデータ)
@@ -47,7 +49,6 @@ if ($division != ''){
 	// フッターファイルの読み込み(プレビューデータ)
 	$footer_data = file_get_contents($pre_DIR . "footer.tpl");
 	
-	$objPage->tpl_onload="alert('編集が完了しました。');";
 	
 }else{
 	// postでデータが渡されなければ新規読み込みと判断をし、プレビュー用データを正規のデータで上書きする
