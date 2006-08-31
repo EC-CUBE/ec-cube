@@ -6,13 +6,13 @@ class LC_Page {
 	var $arrForm;
 	var $arrHidden;
 	var $arrSubnavi = array(
-		title => array(
+		'title' => array(
 			1 => 'top',
 			2 => 'product',
 			3 => 'detail',
 			4 => 'mypage' 
 		),
-		name =>array(
+		'name' =>array(
 			1 => 'TOPページ',
 			2 => '商品一覧',
 			3 => '商品詳細',
