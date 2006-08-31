@@ -47,6 +47,8 @@ if ($division != ''){
 	// フッターファイルの読み込み(プレビューデータ)
 	$footer_data = file_get_contents($pre_DIR . "footer.tpl");
 	
+	$objPage->tpl_onload="alert('編集が完了しました。');";
+	
 }else{
 	// postでデータが渡されなければ新規読み込みと判断をし、プレビュー用データを正規のデータで上書きする
 	if (!is_dir($pre_DIR)) {
