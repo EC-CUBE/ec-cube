@@ -185,6 +185,8 @@ $objPage->arrPageData = $arrPageData[0];
 $objSess = new SC_Session();
 sfIsSuccess($objSess);
 
+sfprintr($GLOBALS);
+
 // 画面の表示
 $objView->assignobj($objPage);
 $objView->display(MAIN_FRAME);
