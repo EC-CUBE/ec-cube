@@ -22,6 +22,8 @@ $objSess = new SC_Session();
 sfIsSuccess($objSess);
 
 
+sfprintr($_POST);
+
 if ($_POST['mode'] == "search") {
 	
 	// POST値の引き継ぎ
