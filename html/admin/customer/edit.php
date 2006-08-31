@@ -94,6 +94,8 @@ if(count($arrSearch) > 0){
 		$arrSearchData[$key] = $val;
 	}
 }
+
+sfprintr($arrSearch);
 $objPage->arrSearchData= $arrSearchData;
 
 //----　顧客編集情報取得
