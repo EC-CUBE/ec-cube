@@ -362,7 +362,7 @@ function lfGetGraphLine($arrResults, $keyname, $type, $xtitle, $ytitle, $sdate, 
 		$path = GRAPH_DIR . $pngname;
 		
 		// グラフ画像が存在しない場合だけ作成する
-		if(!file_exists($path)) {
+		//if(!file_exists($path)) {
 						
 			// ラベル表示インターバルを求める
 			$interval = intval(count($arrList) / 20);
@@ -395,7 +395,7 @@ function lfGetGraphLine($arrResults, $keyname, $type, $xtitle, $ytitle, $sdate, 
 			// グラフ描画
 			$objGraphLine->drawGraph();
 			$objGraphLine->outputGraph(false, $path);
-		}
+		//}
 		// ファイルパスを返す
 		$ret_path = GRAPH_URL . $pngname;
 	}
