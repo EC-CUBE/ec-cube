@@ -27,7 +27,7 @@ function sfTabaleExists($table_name) {
 				relname";
 	$arrRet = $objQuery->getAll($sql, array($table_name));
 	sfPrintR($arrRet);
-		if(count($arrRet) > 0) {
+	if(count($arrRet) > 0) {
 		$flg = true;
 	} else {
 		$flg = false;
