@@ -50,6 +50,11 @@ if (count($arrPageData) <= 0) {
 }
 $objPage->exists_page = $exists_page;
 
+// メッセージ表示
+if ($_GET['msg'] == "on") {
+	$objPage->tpl_onload="alert('登録が完了しました。');";
+}
+
 // ブロックを取得
 $arrBloc = lfgetBlocData();
 
@@ -145,7 +150,7 @@ if ($_POST['mode'] == 'confirm' or $_POST['mode'] == 'preview') {
 		$_SESSION['preview'] = "ON";
 		header("location: /preview/index.php");
 	}else{
-		header("location: ./index.php?page_id=$page_id");
+		header("location: ./index.php?page_id=$page_id&msg=on");
 	}
 }
 

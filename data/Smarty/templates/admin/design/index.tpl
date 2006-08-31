@@ -904,6 +904,8 @@ function init () {
 	
     // 並び替え
 	fnMoveObject();
+	
+	alert('登録が完了しました。');
 }
 
 // 画面のロードイベントに関連付け
