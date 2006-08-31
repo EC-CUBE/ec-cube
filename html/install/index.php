@@ -417,7 +417,7 @@ function lfCheckDBError($objFormParam) {
 			$objErr->arrErr['all'] = ">> " . $objDB->message . "<br>";
 			// エラー文を取得する
 			ereg("\[(.*)\]", $objDB->userinfo, $arrKey);
-			$arrErr['all'].= $arrKey[0] . "<br>";
+			$objErr->arrErr['all'].= $arrKey[0] . "<br>";
 			gfPrintLog($objDB->userinfo, "./temp/install.log");
 		}
 	}
