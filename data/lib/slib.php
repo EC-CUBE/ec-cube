@@ -1402,21 +1402,6 @@ function sfSendOrderMail($order_id, $template_id, $subject = "", $header = "", $
 	$arrOrder = $arrRet[0];
 	$arrOrderDetail = $objQuery->select("*", "dtb_order_detail", $where, array($order_id));
 	
-	/*
-	// 備考を256バイトで分割
-	$arrMessage = explode("\n",$arrOrder['message']);
-	
-	sfprintr($arrMessage);
-	$Message_tmp = "";
-	foreach($arrMessage as $key => $val){
-		if (strlen($val) > 256) {
-			$Message_tmp .= wordwrap($val,256,"\n", 1);
-		} else {
-			$Message_tmp .= $val."\n";
-		}
-	}
-	$objPage->Message_tmp = $Message_tmp;	
-	*/
 	$objPage->Message_tmp = $arrOrder['message'];
 		
 	// 顧客情報の取得
