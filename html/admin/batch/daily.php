@@ -84,7 +84,7 @@ function lfRealTimeDailyTotal($sdate, $edate) {
 			$create_time = strtotime($create_date);
 			$order_time = strtotime($order_date);
 			// オーダー開始日より一日以上後に集計されている場合は集計しなおさない
-			if($order_time + 86400 < $create_time) {
+			if($order_time + 86400 < $create_time || $tmp_time > time()) {
 				gfPrintLog("EXIT BATCH $batch_date");
 				continue;
 			}
