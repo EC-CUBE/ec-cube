@@ -142,10 +142,11 @@ function lfLoadUpdateList() {
 				$sqlval['main_php'] = $arrCSV[5];
 				$sqlval['extern_php'] = $arrCSV[6];
 				$sqlval['sql'] = $arrCSV[7];
-				$sqlval['other_files'] = $arrCSV[8];
-				$sqlval['delete'] = $arrCSV[9];
+				$sqlval['uninstall_sql'] = $arrCSV[8];				
+				$sqlval['other_files'] = $arrCSV[9];
+				$sqlval['delete'] = $arrCSV[10];
 				$sqlval['update_date'] = "now()";
-				$sqlval['release_date'] = $arrCSV[12];
+				$sqlval['release_date'] = $arrCSV[13];
 				// 既存レコードのチェック
 				$cnt = $objQuery->count("dtb_update", "module_id = ?", array($sqlval['module_id']));
 				if($cnt > 0) {
@@ -190,7 +191,10 @@ function lfInstallModule() {
 	// 必要なSQL文の実行
 	if($arrRet[0]['sql'] != "") {
 		// SQL文実行、パラーメータなし、エラー無視
-		$objQuery->query($arrRet[0]['sql'],"",true);
+		$ret = $objQuery->query($arrRet[0]['sql'],"",true);
+		
+		sfPrintR($ret);
+		
 		$objPage->update_mess.=">> テーブル構成の変更を行いました。<br>";
 	}
 	
@@ -206,7 +210,7 @@ function lfUninstallModule() {
 	global $objPage;
 	
 	$objQuery = new SC_Query();
-	$arrRet = $objQuery->select("module_id, extern_php, other_files, sql, latest_version", "dtb_update", "module_id = ?", array($_POST['module_id']));
+	$arrRet = $objQuery->select("module_id, extern_php, other_files, sql, uninstall_sql, latest_version", "dtb_update", "module_id = ?", array($_POST['module_id']));
 	$flg_ok = true;	// 処理の成功判定
 	
 	if(count($arrRet) > 0) {
@@ -226,6 +230,17 @@ function lfUninstallModule() {
 				}
 			}
 		}
+		
+		// 必要なSQL文の実行
+		if($arrRet[0]['uninstall_sql'] != "") {
+			// SQL文実行、パラーメータなし、エラー無視
+			$ret = $objQuery->query($arrRet[0]['uninstall_sql'],"",true);
+			
+			sfPrintR($ret);
+			
+			$objPage->update_mess.=">> テーブル構成の変更を行いました。<br>";
+		}
+		
 	} else {
 		sfErrorHeader(">> 対象の機能は、配布を終了しております。");
 	}

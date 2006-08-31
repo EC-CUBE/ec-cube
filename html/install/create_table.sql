@@ -47,6 +47,7 @@ CREATE TABLE dtb_update (
     main_php text NOT NULL,
     extern_php text NOT NULL,
     sql text,
+    uninstall_sql text,
     other_files text,
     delete int2 NOT NULL DEFAULT 0,
     create_date timestamp NOT NULL DEFAULT now(),
