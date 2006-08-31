@@ -316,8 +316,8 @@ INSERT INTO dtb_classcategory (name,class_id,status,rank,creator_id,create_date,
 INSERT INTO dtb_classcategory (name,class_id,status,rank,creator_id,create_date,update_date,delete) VALUES ('S', 2, NULL, 3, 2, now(), NULL, 0);
 
 -- カテゴリー
-INSERT INTO dtb_category (category_name,parent_category_id,level,rank,creator_id,create_date,update_date,delete) VALUES ('(ダミー)食品', 0, 1, 4, 2, now(), now(), 0);
-INSERT INTO dtb_category (category_name,parent_category_id,level,rank,creator_id,create_date,update_date,delete) VALUES ('(ダミー)雑貨', 0, 1, 5, 2, now(), now(), 0);
+INSERT INTO dtb_category (category_name,parent_category_id,level,rank,creator_id,create_date,update_date,delete) VALUES ('食品', 0, 1, 4, 2, now(), now(), 0);
+INSERT INTO dtb_category (category_name,parent_category_id,level,rank,creator_id,create_date,update_date,delete) VALUES ('雑貨', 0, 1, 5, 2, now(), now(), 0);
 INSERT INTO dtb_category (category_name,parent_category_id,level,rank,creator_id,create_date,update_date,delete) VALUES ('お菓子', 1, 2, 2, 2, now(), now(), 0);
 INSERT INTO dtb_category (category_name,parent_category_id,level,rank,creator_id,create_date,update_date,delete) VALUES ('なべ', 1, 2, 3, 2, now(), now(), 0);
 INSERT INTO dtb_category (category_name,parent_category_id,level,rank,creator_id,create_date,update_date,delete) VALUES ('アイス', 3, 3, 1, 2, now(), now(), 0);
