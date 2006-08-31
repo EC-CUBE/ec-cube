@@ -64,8 +64,13 @@ function lfStartDailyTotal($term, $start, $command = false) {
 }
 
 // リアルタイムで集計を実施する。集計が終了しているレコードは実施しない。
-function lfRealTimeDailyTotal() {
-	
+/*
+	$sdate:YYYY-MM-DD hh:mm:ss形式の日付
+	$edate:YYYY-MM-DD hh:mm:ss形式の日付
+*/
+function lfRealTimeDailyTotal($sdate, $edate) {
+	$pass = strtotime($edate) - strtotime($sdate);
+	print(($pass / (24 * 3600)));
 }
 
 // バッチ集計用のSQL文を取得する。

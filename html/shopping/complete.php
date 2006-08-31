@@ -473,7 +473,6 @@ function lfReduceStock($objQuery, $arrID, $quantity) {
 	} elseif($arrRet[0]['stock_unlimited'] == '1') {
 		$sqlval['stock'] = null;
 		$objQuery->update("dtb_products_class", $sqlval, $where, $arrID);
-		$ret = $objQuery->getLastQuery();
 	// �߸ˤ򸺤餹
 	} else {
 		$sqlval['stock'] = ($arrRet[0]['stock'] - $quantity);
@@ -481,7 +480,6 @@ function lfReduceStock($objQuery, $arrID, $quantity) {
 			$sqlval['stock'] = '0';
 		}		
 		$objQuery->update("dtb_products_class", $sqlval, $where, $arrID);
-		$ret = $objQuery->getLastQuery();
 	}
 }
 ?>

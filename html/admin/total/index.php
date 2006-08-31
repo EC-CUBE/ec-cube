@@ -132,6 +132,9 @@ case 'search':
 			}
 
 			$objPage->tpl_page_type = "total/page_term.tpl";
+			// 未集計データの集計を行う
+			lfRealTimeDailyTotal($sdate, $edate);
+			
 			// 検索結果の取得
 			$objPage = lfGetOrderTerm($type, $sdate, $edate, $objPage);
 			
