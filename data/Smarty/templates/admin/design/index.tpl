@@ -677,7 +677,7 @@ function fnSetObj( tid, cnt ){
 	    }
 
 		// 座標を保持
-		arrObj[tid][j].top = top;
+		arrObj[tid][j].top = top + 500;
 		arrObj[tid][j].left = left;
 
 		// 配置を行う
@@ -769,7 +769,7 @@ function fnSetTargetHeight(){
 				target_height = NaviHeight+100;
 			}
 
-			all_elms[cnt].style.height = target_height + 500
+			all_elms[cnt].style.height = target_height
 			
 			// 各テーブルの高さも変更
 		    for (var i = 0; i < all_td.length; i++) {
