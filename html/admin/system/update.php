@@ -193,7 +193,7 @@ function lfInstallModule() {
 		// SQL文実行、パラーメータなし、エラー無視
 		$ret = $objQuery->query($arrRet[0]['sql'],"",true);
 		
-		sfPrintR($ret);
+		sfPrintR($ret->user_info);
 		
 		$objPage->update_mess.=">> テーブル構成の変更を行いました。<br>";
 	}
