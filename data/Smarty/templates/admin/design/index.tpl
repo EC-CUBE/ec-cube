@@ -760,7 +760,7 @@ function fnSetTargetHeight(){
         	
         	// tidによって処理を分ける
 			if (tid == 'LeftNavi' || tid == 'RightNavi') {
-				target_height = NaviHeight + 50;
+				target_height = NaviHeight;
 			}else if (tid == 'MainHead' ) {
 				target_height = MainHeadHeight;
 			}else if (tid == 'MainFoot') {
@@ -769,7 +769,7 @@ function fnSetTargetHeight(){
 				target_height = NaviHeight+100;
 			}
 
-			all_elms[cnt].style.height = target_height
+			all_elms[cnt].style.height = target_height + 500
 			
 			// 各テーブルの高さも変更
 		    for (var i = 0; i < all_td.length; i++) {
