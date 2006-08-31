@@ -156,19 +156,21 @@ case 'drop':
 // 完了画面
 case 'complete':
 	// ショップマスタ情報の書き込み
-	$objQuery = new SC_Query();
+	$arrRet =  $objDBParam->getHashArray();
+	$dsn = "pgsql://".$arrRet['db_user'].":".$arrRet['db_password']."@".$arrRet['db_server']."/".$arrRet['db_name'];
 	$sqlval['shop_name'] = $objWebParam->getValue('shop_name');
 	$sqlval['email01'] = $objWebParam->getValue('admin_mail');
 	$sqlval['email02'] = $objWebParam->getValue('admin_mail');
 	$sqlval['email03'] = $objWebParam->getValue('admin_mail');
 	$sqlval['email04'] = $objWebParam->getValue('admin_mail');
 	$sqlval['email05'] = $objWebParam->getValue('admin_mail');
+	$objQuery = new SC_Query($dsn);
 	$cnt = $objQuery->count("dtb_baseinfo");
 	if($cnt > 0) {
 		$objQuery->update("dtb_baseinfo", $sqlval);
 	} else {
 		$objQuery->insert("dtb_baseinfo", $sqlval);		
-	}	
+	}
 	global $GLOBAL_ERR;
 	$GLOBAL_ERR = "";
 	$objPage = lfDispComplete($objPage);
