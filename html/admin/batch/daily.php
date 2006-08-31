@@ -70,7 +70,11 @@ function lfStartDailyTotal($term, $start, $command = false) {
 */
 function lfRealTimeDailyTotal($sdate, $edate) {
 	$pass = strtotime($edate) - strtotime($sdate);
-	print(($pass / (24 * 3600)));
+	
+	
+	$loop = intval($pass / (24 * 3600));
+	
+	print($pass . ":" . $loop);
 }
 
 // バッチ集計用のSQL文を取得する。
