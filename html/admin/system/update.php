@@ -207,7 +207,6 @@ function lfInstallModule() {
 		$sqlval['now_version'] = $arrRet[0]['latest_version'];
 		$sqlval['update_date'] = "now()";
 		$objQuery->update("dtb_update", $sqlval, "module_id = ?", array($arrRet[0]['module_id']));
-		$objQuery->getLastQuery();
 	}
 }
 
