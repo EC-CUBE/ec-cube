@@ -187,7 +187,7 @@ sfIsSuccess($objSess);
 
 global $GLOBAL_ERR;
 $arrGlobalErr = explode("\n",$GLOBAL_ERR);
-$errCnt = count($arrGlobalErr) - 8;
+$errCnt = count($arrGlobalErr) - 9;
 $objPage->errCnt = $errCnt;
 
 // 画面の表示
