@@ -42,7 +42,7 @@ $objPage->encode = $objPage->encode;
 $objView->assignobj($objPage);
 
 //画面表示
-$objView->display($objPage->tpl_mainpage);
+$objView->display($objPage->tpl_mainpage, true);
 
 //******************************************************************************************/
 /*
