@@ -82,7 +82,7 @@ if ($_POST['mode'] == "search") {
 	$linemax = $objQuery->count($from, $where, $arrval);
 	$objPage->tpl_linemax = $linemax;				// 何件が該当しました。表示用
 
-	/*	
+	/*	全権表示するように変更
 	// ページ送りの処理
 	if(is_numeric($_POST['search_page_max'])) {	
 		$page_max = $_POST['search_page_max'];
