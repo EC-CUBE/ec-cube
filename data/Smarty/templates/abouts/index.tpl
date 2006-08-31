@@ -11,6 +11,18 @@
 			<tr>
 				<td bgcolor="#cccccc" align="center">
 				<table width="" border="0" cellspacing="1" cellpadding="10" summary=" ">
+					<!--{if $arrSiteInfo.shop_name|escape != ""}-->
+					<tr>
+						<td bgcolor="#f0f0f0" class="fs12">店名</td>
+						<td bgcolor="#ffffff" class="fs12"><!--{$arrSiteInfo.shop_name|escape}--></td>
+					</tr>
+					<!--{/if}-->
+					<!--{if $arrSiteInfo.company_name|escape != ""}-->
+					<tr>
+						<td bgcolor="#f0f0f0" class="fs12">会社名</td>
+						<td bgcolor="#ffffff" class="fs12"><!--{$arrSiteInfo.company_name|escape}--></td>
+					</tr>
+					<!--{/if}-->
 					<!--{if $arrSiteInfo.zip01|escape != ""}-->
 					<tr>
 						<td bgcolor="#f0f0f0" class="fs12">住所</td>
