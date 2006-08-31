@@ -77,7 +77,21 @@ function lfRealTimeDailyTotal($sdate, $edate) {
 		$batch_date = date("Y/m/d H:i:s", $tmp_time);
 		$objQuery = new SC_Query();
 		$arrRet = $objQuery->select("order_date, create_date", "dtb_bat_order_daily", "order_date = ?", array($batch_date));
-		print($batch_date . " " . $arrRet[0]['create_date'] . " ". $arrRet[0]['order_date'] . "<br>");
+		// すでにバッチ処理が終了しているかチェックする。
+		if(count($arrRet) > 0) {
+			list($create_date) = split("\.", $arrRet[0]['create_date']);
+			list($order_date) = split("\.", $arrRet[0]['order_date']);
+			$create_time = strtotime($create_date);
+			$order_time = strtotime($order_date);
+			// オーダー開始日より一日以上後に集計されている場合は集計しなおさない
+			if($order_time + 86400 < $create_time) {
+				gfPrintLog("EXIT BATCH $batch_date");
+			}
+		}
+		gfPrintLog("LOADING BATCH $batch_date");
+		lfBatOrderDaily($tmp_time);
+		lfBatOrderDailyHour($tmp_time);
+		lfBatOrderAge($tmp_time);
 	}
 }
 
