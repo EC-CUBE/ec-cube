@@ -1,6 +1,5 @@
 <?php
 
-
 require_once("../require.php");
 
 class LC_Page {

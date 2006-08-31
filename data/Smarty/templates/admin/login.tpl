@@ -10,7 +10,7 @@
 		<td background="/img/login/bg02.jpg">
 		<table width="280" border="0" cellspacing="0" cellpadding="0" summary=" ">
 			<tr>
-				<td width="110"><img src="/img/login/id.jpg" width="22" height="5" alt="ID"></td>
+				<td width="110"><img src="/img/login/id.jpg" width="55" height="5" alt="ID"></td>
 				<td width="195"><input type="text" name="login_id" size="20" class="box25" /></td>
 			</tr>
 			<tr><td height="7"></td></tr>
