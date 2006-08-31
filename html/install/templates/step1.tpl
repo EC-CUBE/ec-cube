@@ -27,7 +27,13 @@
 			<span class="red"><!--{$arrErr[$key]}--></span>
 			<input type="text" name="<!--{$key}-->" value="<!--{$arrForm[$key].value|escape}-->" maxlength="<!--{$arrForm[$key].length}-->" style="<!--{$arrErr[$key]|sfGetErrorColor}-->" size="50" class="box50" />
 			</td>
-		</tr>		
+		</tr>
+	</td>
+</tr>
+<tr><td align="left" class="fs12st">■WEBサーバの設定</td></tr>
+<tr>
+	<td bgcolor="#cccccc">
+	<table width="500" border="0" cellspacing="1" cellpadding="8" summary=" ">		
 		<tr>
 			<td bgcolor="#f2f1ec" width="150" class="fs12n">インストールディレクトリ</td>
 			<td bgcolor="#ffffff" width="332" class="fs12">
