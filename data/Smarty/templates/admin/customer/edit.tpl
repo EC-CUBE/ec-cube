@@ -23,13 +23,13 @@
 <form name="form_search" method="post" action="">
 <input type="hidden" name="mode" value="search">
 <!--{foreach from=$arrSearchData key="key" item="item"}-->
-	<!--{if $key ne "customer_id" && $key ne "mode" && $key ne "del_mode" && $key ne "edit_customer_id" && $key ne "del_customer_id" && $key ne "csv_mode" && $key ne "job" && $key ne "sex"}--><input type="hidden" name="<!--{$key|escape}-->" value="<!--{$item|escape}-->"><!--{/if}-->
+	<!--{if $key ne "customer_id" && $key ne "mode" && $key ne "del_mode" && $key ne "edit_customer_id" && $key ne "del_customer_id" && $key ne "csv_mode" && $key ne "job" && $key ne "sex"}--><input type="hidden" name="search_data[<!--{$key|escape}-->]" value="<!--{$item|escape}-->"><!--{/if}-->
 <!--{/foreach}-->
 <!--{foreach from=$arrSearchData.job key="key" item="item"}-->
-<input type="hidden" name="job[]" value=<!--{$item}-->>
+<input type="hidden" name="search_data[job[]]" value=<!--{$item}-->>
 <!--{/foreach}-->
 <!--{foreach from=$arrSearchData.sex key="key" item="item"}-->
-<input type="hidden" name="sex[]" value=<!--{$item}-->>
+<input type="hidden" name="search_data[sex[]]" value=<!--{$item}-->>
 <!--{/foreach}-->
 </form>
 
@@ -43,10 +43,10 @@
 	<!--{if $key ne "job" && $key ne "sex"}--><input type="hidden" name="search_data[<!--{$key|escape}-->]" value="<!--{$item|escape}-->"><!--{/if}-->
 <!--{/foreach}-->
 <!--{foreach from=$arrSearchData.job key="key" item="item"}-->
-<input type="hidden" name="serch_data[job[]]" value=<!--{$item}-->>
+<input type="hidden" name="search_data[job[]]" value=<!--{$item}-->>
 <!--{/foreach}-->
 <!--{foreach from=$arrSearchData.sex key="key" item="item"}-->
-<input type="hidden" name="serch_data[sex[]]" value=<!--{$item}-->>
+<input type="hidden" name="search_data[sex[]]" value=<!--{$item}-->>
 <!--{/foreach}-->
 
 	<tr valign="top">
