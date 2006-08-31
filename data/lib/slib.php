@@ -34,17 +34,18 @@ function sfInitInstall() {
 function sfLoadUpdateModule() {
 	if(ereg("^/install/", $_SERVER['PHP_SELF'])) {
 		return;
-	}
-		
+	}		
 	//DBから設定情報を取得
 	if(defined('DB_USER') && defined('DB_PASSWORD') && defined('DB_SERVER') && defined('DB_NAME')) {
 		$objConn = new SC_DbConn(DEFAULT_DSN);
-		$arrRet = $objConn->getAll("SELECT extern_php FROM dtb_update WHERE main_php = ?",array($_SERVER['PHP_SELF']));
-			
-		if($arrRet[0]['extern_php'] != "") {
-			$path = ROOT_DIR . $arrRet[0]['extern_php'];
-			if(file_exists($path)) {
-				require_once($path);
+		// 最初に実行するPHPソースを検索する
+		$arrRet = $objConn->getAll("SELECT extern_php FROM dtb_update WHERE main_php = ? OR main_php IS NULL",array($_SERVER['PHP_SELF']));
+		foreach($arrRet as $array) {
+			if($array['extern_php'] != "") {
+				$path = ROOT_DIR . $array['extern_php'];
+				if(file_exists($path)) {
+					require_once($path);
+				}
 			}
 		}
 	}
