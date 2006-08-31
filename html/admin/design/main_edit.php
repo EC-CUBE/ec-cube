@@ -25,7 +25,7 @@ $objSess = new SC_Session();
 sfIsSuccess($objSess);
 
 // templatesフォルダに書き込み権限を付与
-$template_dir = ROOT_DIR . USER_DIR . "template/";
+$template_dir = ROOT_DIR . USER_DIR . "templates/";
 if(!is_writable($template_dir)){
 	chmod($template_dir, 0666);
 }
