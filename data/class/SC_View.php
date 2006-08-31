@@ -71,7 +71,7 @@ class SC_View {
     // テンプレートの処理結果を表示
     function display($template) {
 		global $GLOBAL_ERR;
-		print($GLOBAL_ERR);
+		print("test" . $GLOBAL_ERR);
 		$this->_smarty->display($template);
 		if(ADMIN_MODE == '1') {
 			$time_end = time();
