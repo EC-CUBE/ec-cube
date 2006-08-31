@@ -49,7 +49,7 @@
 										<td bgcolor="#f2f1ec" align="center"><strong>現在のテンプレート</strong></td>
 									</tr>
 									<tr class="fs12n">
-										<td bgcolor="#ffffff" align="center"><img height=500 weight=500 src=<!--{$arrTemplate.image[$MainImage]}--> name="main_img" ></td>
+										<td bgcolor="#ffffff" align="center"><img height=500px weight=500px src=<!--{$arrTemplate.image[$MainImage]}--> name="main_img" ></td>
 									</tr>
 								</table>
 
