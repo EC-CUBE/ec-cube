@@ -95,6 +95,8 @@ case 'search':
 				$type = 'all';
 			}
 			$objPage->tpl_page_type = "total/page_products.tpl";
+			// 未集計データの集計を行う
+			lfRealTimeDailyTotal($sdate, $edate);
 			// 検索結果の取得
 			$objPage = lfGetOrderProducts($type, $sdate, $edate, $objPage);
 			break;
@@ -104,6 +106,8 @@ case 'search':
 				$type = 'all';
 			}
 			$objPage->tpl_page_type = "total/page_job.tpl";
+			// 未集計データの集計を行う
+			lfRealTimeDailyTotal($sdate, $edate);
 			// 検索結果の取得
 			$objPage = lfGetOrderJob($type, $sdate, $edate, $objPage);
 			break;
@@ -113,6 +117,8 @@ case 'search':
 				$type = 'all';
 			}
 			$objPage->tpl_page_type = "total/page_member.tpl";
+			// 未集計データの集計を行う
+			lfRealTimeDailyTotal($sdate, $edate);
 			// 検索結果の取得
 			$objPage = lfGetOrderMember($type, $sdate, $edate, $objPage);
 			break;
@@ -122,6 +128,8 @@ case 'search':
 				$type = 'all';
 			}
 			$objPage->tpl_page_type = "total/page_age.tpl";
+			// 未集計データの集計を行う
+			lfRealTimeDailyTotal($sdate, $edate);
 			// 検索結果の取得
 			$objPage = lfGetOrderAge($type, $sdate, $edate, $objPage);
 			break;
@@ -130,11 +138,9 @@ case 'search':
 			if($type == "") {
 				$type = 'day';
 			}
-
 			$objPage->tpl_page_type = "total/page_term.tpl";
 			// 未集計データの集計を行う
 			lfRealTimeDailyTotal($sdate, $edate);
-			
 			// 検索結果の取得
 			$objPage = lfGetOrderTerm($type, $sdate, $edate, $objPage);
 			
@@ -165,8 +171,11 @@ case 'search':
 	break;
 default:
 	if(count($_GET) == 0) {
+		/*
+			リアルタイム集計に切り替え by Nakagawa 2006/08/31
 		// 1ヶ月分の集計
-		//lfStartDailyTotal(31,0);
+		lfStartDailyTotal(31,0);
+		*/
 	}
 	break;
 }
