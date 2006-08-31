@@ -44,7 +44,7 @@
 								<!--{if count($arrUpdate) > 0 }-->
 								<table width="678" border="0" cellspacing="1" cellpadding="8" summary=" ">
 									<tr bgcolor="#f2f1ec" align="center" class="fs12n">
-										<td width="120" align="center">機能名</td>
+										<td width="100" align="center">機能名</td>
 										<td width="240">機能説明</td>
 										<td width="40">現在Ver</td>
 										<td width="40">最新Ver</td>										
