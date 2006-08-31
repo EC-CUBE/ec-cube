@@ -15,7 +15,7 @@
 		<tr>
 			<td bgcolor="#f2f1ec" width="150" class="fs12n">店名</td>
 			<td bgcolor="#ffffff" width="332" class="fs12">
-			<!--{assign var=key value="store_name"}-->
+			<!--{assign var=key value="shop_name"}-->
 			<span class="red"><!--{$arrErr[$key]}--></span>
 			<input type="text" name="<!--{$key}-->" value="<!--{$arrForm[$key].value|escape}-->" maxlength="<!--{$arrForm[$key].length}-->" style="<!--{$arrErr[$key]|sfGetErrorColor}-->" size="50" class="box50" />
 			</td>
@@ -31,7 +31,7 @@
 	</table>
 	</td>
 </tr>
-
+<tr><td height="20"></td></tr>
 <tr><td align="left" class="fs12st">■WEBサーバの設定</td></tr>
 <tr>
 	<td bgcolor="#cccccc">
