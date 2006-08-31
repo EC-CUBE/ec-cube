@@ -164,7 +164,8 @@ case 'complete':
 	$sqlval['email04'] = $objWebParam->getValue('admin_mail');
 	$sqlval['email05'] = $objWebParam->getValue('admin_mail');
 	$objQuery->insert("dtb_baseinfo", $sqlval);
-	
+	global $GLOBAL_ERR;
+	$GLOBAL_ERR = "";
 	$objPage = lfDispComplete($objPage);
 	break;
 case 'return_step0':
