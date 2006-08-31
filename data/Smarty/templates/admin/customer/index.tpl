@@ -26,6 +26,7 @@
 		document.form1.action = './edit.php';
 		document.form1.mode.value = "edit"
 		document.form1['edit_customer_id'].value = customer_id;
+		document.form1.search_pageno.value = 1;
 		document.form1.submit();
 		return false;
 	}
