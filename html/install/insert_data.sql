@@ -213,100 +213,112 @@ insert into dtb_news (news_title, news_comment, creator_id)
 values('サイトオープンいたしました!','一人暮らしからオフィスなどさまざまなシーンで あなたの生活をサポートするグッズをご家庭へお届けします！一人暮らしからオフィスなどさまざまなシーンで あなたの生活をサポートするグッズをご家庭へお届けします！一人暮らしからオフィスなどさまざまなシーンで あなたの生活をサポートするグッズをご家庭へお届けします！',1);
 
 -- 配送データ
-INSERT INTO dtb_deliv VALUES (1, 'ダミー配送業者', 'ダミー配送業者', '', 1, 1, 0, 2, now(), now());
+INSERT INTO dtb_deliv (name,service_name,confirm_url,rank,status,delete,creator_id,create_date,update_date)
+VALUES ('ダミー配送業者', 'ダミー配送業者', '', 1, 1, 0, 2, now(), now());
 
-INSERT INTO dtb_delivfee VALUES (1, 1, '1000', 1);
-INSERT INTO dtb_delivfee VALUES (1, 2, '1000', 2);
-INSERT INTO dtb_delivfee VALUES (1, 3, '1000', 3);
-INSERT INTO dtb_delivfee VALUES (1, 4, '1000', 4);
-INSERT INTO dtb_delivfee VALUES (1, 5, '1000', 5);
-INSERT INTO dtb_delivfee VALUES (1, 6, '1000', 6);
-INSERT INTO dtb_delivfee VALUES (1, 7, '1000', 7);
-INSERT INTO dtb_delivfee VALUES (1, 8, '1000', 8);
-INSERT INTO dtb_delivfee VALUES (1, 9, '1000', 9);
-INSERT INTO dtb_delivfee VALUES (1, 10, '1000', 10);
-INSERT INTO dtb_delivfee VALUES (1, 11, '1000', 11);
-INSERT INTO dtb_delivfee VALUES (1, 12, '1000', 12);
-INSERT INTO dtb_delivfee VALUES (1, 13, '1000', 13);
-INSERT INTO dtb_delivfee VALUES (1, 14, '1000', 14);
-INSERT INTO dtb_delivfee VALUES (1, 15, '1000', 15);
-INSERT INTO dtb_delivfee VALUES (1, 16, '1000', 16);
-INSERT INTO dtb_delivfee VALUES (1, 17, '1000', 17);
-INSERT INTO dtb_delivfee VALUES (1, 18, '1000', 18);
-INSERT INTO dtb_delivfee VALUES (1, 19, '1000', 19);
-INSERT INTO dtb_delivfee VALUES (1, 20, '1000', 20);
-INSERT INTO dtb_delivfee VALUES (1, 21, '1000', 21);
-INSERT INTO dtb_delivfee VALUES (1, 22, '1000', 22);
-INSERT INTO dtb_delivfee VALUES (1, 23, '1000', 23);
-INSERT INTO dtb_delivfee VALUES (1, 24, '1000', 24);
-INSERT INTO dtb_delivfee VALUES (1, 25, '1000', 25);
-INSERT INTO dtb_delivfee VALUES (1, 26, '1000', 26);
-INSERT INTO dtb_delivfee VALUES (1, 27, '1000', 27);
-INSERT INTO dtb_delivfee VALUES (1, 28, '1000', 28);
-INSERT INTO dtb_delivfee VALUES (1, 29, '1000', 29);
-INSERT INTO dtb_delivfee VALUES (1, 30, '1000', 30);
-INSERT INTO dtb_delivfee VALUES (1, 31, '1000', 31);
-INSERT INTO dtb_delivfee VALUES (1, 32, '1000', 32);
-INSERT INTO dtb_delivfee VALUES (1, 33, '1000', 33);
-INSERT INTO dtb_delivfee VALUES (1, 34, '1000', 34);
-INSERT INTO dtb_delivfee VALUES (1, 35, '1000', 35);
-INSERT INTO dtb_delivfee VALUES (1, 36, '1000', 36);
-INSERT INTO dtb_delivfee VALUES (1, 37, '1000', 37);
-INSERT INTO dtb_delivfee VALUES (1, 38, '1000', 38);
-INSERT INTO dtb_delivfee VALUES (1, 39, '1000', 39);
-INSERT INTO dtb_delivfee VALUES (1, 40, '1000', 40);
-INSERT INTO dtb_delivfee VALUES (1, 41, '1000', 41);
-INSERT INTO dtb_delivfee VALUES (1, 42, '1000', 42);
-INSERT INTO dtb_delivfee VALUES (1, 43, '1000', 43);
-INSERT INTO dtb_delivfee VALUES (1, 44, '1000', 44);
-INSERT INTO dtb_delivfee VALUES (1, 45, '1000', 45);
-INSERT INTO dtb_delivfee VALUES (1, 46, '1000', 46);
-INSERT INTO dtb_delivfee VALUES (1, 47, '1000', 47);
+INSERT INTO dtb_delivfee (deliv_id,fee,pref) VALUES (1, '1000', 1);
+INSERT INTO dtb_delivfee (deliv_id,fee,pref) VALUES (1, '1000', 2);
+INSERT INTO dtb_delivfee (deliv_id,fee,pref) VALUES (1, '1000', 3);
+INSERT INTO dtb_delivfee (deliv_id,fee,pref) VALUES (1, '1000', 4);
+INSERT INTO dtb_delivfee (deliv_id,fee,pref) VALUES (1, '1000', 5);
+INSERT INTO dtb_delivfee (deliv_id,fee,pref) VALUES (1, '1000', 6);
+INSERT INTO dtb_delivfee (deliv_id,fee,pref) VALUES (1, '1000', 7);
+INSERT INTO dtb_delivfee (deliv_id,fee,pref) VALUES (1, '1000', 8);
+INSERT INTO dtb_delivfee (deliv_id,fee,pref) VALUES (1, '1000', 9);
+INSERT INTO dtb_delivfee (deliv_id,fee,pref) VALUES (1, '1000', 10);
+INSERT INTO dtb_delivfee (deliv_id,fee,pref) VALUES (1, '1000', 11);
+INSERT INTO dtb_delivfee (deliv_id,fee,pref) VALUES (1, '1000', 12);
+INSERT INTO dtb_delivfee (deliv_id,fee,pref) VALUES (1, '1000', 13);
+INSERT INTO dtb_delivfee (deliv_id,fee,pref) VALUES (1, '1000', 14);
+INSERT INTO dtb_delivfee (deliv_id,fee,pref) VALUES (1, '1000', 15);
+INSERT INTO dtb_delivfee (deliv_id,fee,pref) VALUES (1, '1000', 16);
+INSERT INTO dtb_delivfee (deliv_id,fee,pref) VALUES (1, '1000', 17);
+INSERT INTO dtb_delivfee (deliv_id,fee,pref) VALUES (1, '1000', 18);
+INSERT INTO dtb_delivfee (deliv_id,fee,pref) VALUES (1, '1000', 19);
+INSERT INTO dtb_delivfee (deliv_id,fee,pref) VALUES (1, '1000', 20);
+INSERT INTO dtb_delivfee (deliv_id,fee,pref) VALUES (1, '1000', 21);
+INSERT INTO dtb_delivfee (deliv_id,fee,pref) VALUES (1, '1000', 22);
+INSERT INTO dtb_delivfee (deliv_id,fee,pref) VALUES (1, '1000', 23);
+INSERT INTO dtb_delivfee (deliv_id,fee,pref) VALUES (1, '1000', 24);
+INSERT INTO dtb_delivfee (deliv_id,fee,pref) VALUES (1, '1000', 25);
+INSERT INTO dtb_delivfee (deliv_id,fee,pref) VALUES (1, '1000', 26);
+INSERT INTO dtb_delivfee (deliv_id,fee,pref) VALUES (1, '1000', 27);
+INSERT INTO dtb_delivfee (deliv_id,fee,pref) VALUES (1, '1000', 28);
+INSERT INTO dtb_delivfee (deliv_id,fee,pref) VALUES (1, '1000', 29);
+INSERT INTO dtb_delivfee (deliv_id,fee,pref) VALUES (1, '1000', 30);
+INSERT INTO dtb_delivfee (deliv_id,fee,pref) VALUES (1, '1000', 31);
+INSERT INTO dtb_delivfee (deliv_id,fee,pref) VALUES (1, '1000', 32);
+INSERT INTO dtb_delivfee (deliv_id,fee,pref) VALUES (1, '1000', 33);
+INSERT INTO dtb_delivfee (deliv_id,fee,pref) VALUES (1, '1000', 34);
+INSERT INTO dtb_delivfee (deliv_id,fee,pref) VALUES (1, '1000', 35);
+INSERT INTO dtb_delivfee (deliv_id,fee,pref) VALUES (1, '1000', 36);
+INSERT INTO dtb_delivfee (deliv_id,fee,pref) VALUES (1, '1000', 37);
+INSERT INTO dtb_delivfee (deliv_id,fee,pref) VALUES (1, '1000', 38);
+INSERT INTO dtb_delivfee (deliv_id,fee,pref) VALUES (1, '1000', 39);
+INSERT INTO dtb_delivfee (deliv_id,fee,pref) VALUES (1, '1000', 40);
+INSERT INTO dtb_delivfee (deliv_id,fee,pref) VALUES (1, '1000', 41);
+INSERT INTO dtb_delivfee (deliv_id,fee,pref) VALUES (1, '1000', 42);
+INSERT INTO dtb_delivfee (deliv_id,fee,pref) VALUES (1, '1000', 43);
+INSERT INTO dtb_delivfee (deliv_id,fee,pref) VALUES (1, '1000', 44);
+INSERT INTO dtb_delivfee (deliv_id,fee,pref) VALUES (1, '1000', 45);
+INSERT INTO dtb_delivfee (deliv_id,fee,pref) VALUES (1, '1000', 46);
+INSERT INTO dtb_delivfee (deliv_id,fee,pref) VALUES (1, '1000', 47);
 
-INSERT INTO dtb_delivtime VALUES (1, 1, '午前');
-INSERT INTO dtb_delivtime VALUES (1, 2, '午後');
+INSERT INTO dtb_delivtime (deliv_id, time) VALUES (1, '午前');
+INSERT INTO dtb_delivtime (deliv_id, time) VALUES (1, '午後');
 
 -- 支払方法データ
-INSERT INTO dtb_payment VALUES (4, '郵便振替', 0, NULL, 1, 4, NULL, 2, 1, 0, 1, now(), now(), NULL, NULL);
-INSERT INTO dtb_payment VALUES (3, '現金書留', 0, NULL, 1, 3, NULL, 2, 1, 0, 1, now(), now(), NULL, NULL);
-INSERT INTO dtb_payment VALUES (2, '銀行振込', 0, NULL, 1, 2, NULL, 2, 1, 0, 1, now(), now(), NULL, NULL);
-INSERT INTO dtb_payment VALUES (1, '代金引換', 0, NULL, 1, 1, NULL, 2, 1, 0, 1, now(), now(), NULL, NULL);
+INSERT INTO dtb_payment (payment_method,charge,rule,deliv_id,rank,note,fix,status,delete,creator_id,create_date,update_date,payment_image,upper_rule) VALUES ('郵便振替', 0, NULL, 1, 4, NULL, 2, 1, 0, 1, now(), now(), NULL, NULL);
+INSERT INTO dtb_payment (payment_method,charge,rule,deliv_id,rank,note,fix,status,delete,creator_id,create_date,update_date,payment_image,upper_rule) VALUES ('現金書留', 0, NULL, 1, 3, NULL, 2, 1, 0, 1, now(), now(), NULL, NULL);
+INSERT INTO dtb_payment (payment_method,charge,rule,deliv_id,rank,note,fix,status,delete,creator_id,create_date,update_date,payment_image,upper_rule) VALUES ('銀行振込', 0, NULL, 1, 2, NULL, 2, 1, 0, 1, now(), now(), NULL, NULL);
+INSERT INTO dtb_payment (payment_method,charge,rule,deliv_id,rank,note,fix,status,delete,creator_id,create_date,update_date,payment_image,upper_rule) VALUES ('代金引換', 0, NULL, 1, 1, NULL, 2, 1, 0, 1, now(), now(), NULL, NULL);
 
 -- 商品データ
-INSERT INTO dtb_products VALUES (1, 'アイスクリーム', NULL, NULL, 1, 5, 1, 1, '10010', 10, NULL, NULL, 'アイス,バニラ,チョコ,抹茶', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '暑い夏にどうぞ。', '08311201_44f65122ee5fe.jpg', '冷たいものはいかがですか？', '08311202_44f6515906a41.jpg', '08311203_44f651959bcb5.jpg', NULL, '<b>おいしいよ<b>', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0, 2, now(), now(), 2);
-INSERT INTO dtb_products VALUES (2, 'おなべ', NULL, 5, NULL, 4, 1, 1, '11001', 5, NULL, NULL, '鍋,なべ,ナベ', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '一人用からあります。', '08311311_44f661811fec0.jpg', 'たまには鍋でもどうでしょう。', '08311313_44f661dc649fb.jpg', '08311313_44f661e5698a6.jpg', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0, 2, now(), now(), 3);
+INSERT INTO dtb_products (name,deliv_fee,sale_limit,sale_unlimited,category_id,rank,status,product_flag,point_rate,comment1,comment2,comment3,comment4,comment5,comment6,file1,file2,file3,file4,file5,file6,main_list_comment,main_list_image,main_comment,main_image,main_large_image,sub_title1,sub_comment1,sub_image1,sub_large_image1,sub_title2,sub_comment2,sub_image2,sub_large_image2,sub_title3,sub_comment3,sub_image3,sub_large_image3,sub_title4,sub_comment4,sub_image4,sub_large_image4,sub_title5,sub_comment5,sub_image5,sub_large_image5,sub_title6,sub_comment6,sub_image6,sub_large_image6,delete,creator_id,create_date,update_date,deliv_date_id) 
+VALUES ('アイスクリーム', NULL, NULL, 1, 5, 1, 1, '10010', 10, NULL, NULL, 'アイス,バニラ,チョコ,抹茶', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '暑い夏にどうぞ。', '08311201_44f65122ee5fe.jpg', '冷たいものはいかがですか？', '08311202_44f6515906a41.jpg', '08311203_44f651959bcb5.jpg', NULL, '<b>おいしいよ<b>', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0, 2, now(), now(), 2);
+INSERT INTO dtb_products (name,deliv_fee,sale_limit,sale_unlimited,category_id,rank,status,product_flag,point_rate,comment1,comment2,comment3,comment4,comment5,comment6,file1,file2,file3,file4,file5,file6,main_list_comment,main_list_image,main_comment,main_image,main_large_image,sub_title1,sub_comment1,sub_image1,sub_large_image1,sub_title2,sub_comment2,sub_image2,sub_large_image2,sub_title3,sub_comment3,sub_image3,sub_large_image3,sub_title4,sub_comment4,sub_image4,sub_large_image4,sub_title5,sub_comment5,sub_image5,sub_large_image5,sub_title6,sub_comment6,sub_image6,sub_large_image6,delete,creator_id,create_date,update_date,deliv_date_id)
+VALUES ('おなべ', NULL, 5, NULL, 4, 1, 1, '11001', 5, NULL, NULL, '鍋,なべ,ナベ', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '一人用からあります。', '08311311_44f661811fec0.jpg', 'たまには鍋でもどうでしょう。', '08311313_44f661dc649fb.jpg', '08311313_44f661e5698a6.jpg', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0, 2, now(), now(), 3);
 
-INSERT INTO dtb_products_class VALUES (3, 1, 3, 5, 'ice-01', NULL, 1, NULL, 150, 120, NULL, 2, now(), NULL);
-INSERT INTO dtb_products_class VALUES (4, 1, 3, 4, 'ice-01', NULL, 1, NULL, 150, 120, NULL, 2, now(), NULL);
-INSERT INTO dtb_products_class VALUES (5, 1, 2, 6, 'ice-01', NULL, 1, NULL, 150, 120, NULL, 2, now(), NULL);
-INSERT INTO dtb_products_class VALUES (6, 1, 2, 5, 'ice-01', NULL, 1, NULL, 150, 120, NULL, 2, now(), NULL);
-INSERT INTO dtb_products_class VALUES (7, 1, 2, 4, 'ice-01', NULL, 1, NULL, 150, 120, NULL, 2, now(), NULL);
-INSERT INTO dtb_products_class VALUES (8, 1, 1, 6, 'ice-01', NULL, 1, NULL, 150, 120, NULL, 2, now(), NULL);
-INSERT INTO dtb_products_class VALUES (9, 1, 1, 5, 'ice-01', NULL, 1, NULL, 150, 120, NULL, 2, now(), NULL);
-INSERT INTO dtb_products_class VALUES (10, 1, 1, 4, 'ice-01', NULL, 1, NULL, 150, 120, NULL, 2, now(), NULL);
-INSERT INTO dtb_products_class VALUES (2, 1, 3, 6, 'ice-01', NULL, 1, NULL, 150, 120, NULL, 2, now(), NULL);
-INSERT INTO dtb_products_class VALUES (11, 2, 0, 0, 'nabe-01', 100, NULL, NULL, 1700, 1650, NULL, 2, now(), NULL);
+INSERT INTO dtb_products_class (product_id,classcategory_id1,classcategory_id2,product_code,stock,stock_unlimited,sale_limit,price01,price02,status,creator_id,create_date,update_date) 
+VALUES (1, 3, 5, 'ice-01', NULL, 1, NULL, 150, 120, NULL, 2, now(), NULL);
+INSERT INTO dtb_products_class (product_id,classcategory_id1,classcategory_id2,product_code,stock,stock_unlimited,sale_limit,price01,price02,status,creator_id,create_date,update_date)
+VALUES (1, 3, 4, 'ice-01', NULL, 1, NULL, 150, 120, NULL, 2, now(), NULL);
+INSERT INTO dtb_products_class (product_id,classcategory_id1,classcategory_id2,product_code,stock,stock_unlimited,sale_limit,price01,price02,status,creator_id,create_date,update_date)
+VALUES (1, 2, 6, 'ice-01', NULL, 1, NULL, 150, 120, NULL, 2, now(), NULL);
+INSERT INTO dtb_products_class (product_id,classcategory_id1,classcategory_id2,product_code,stock,stock_unlimited,sale_limit,price01,price02,status,creator_id,create_date,update_date)
+VALUES (1, 2, 5, 'ice-01', NULL, 1, NULL, 150, 120, NULL, 2, now(), NULL);
+INSERT INTO dtb_products_class (product_id,classcategory_id1,classcategory_id2,product_code,stock,stock_unlimited,sale_limit,price01,price02,status,creator_id,create_date,update_date)
+VALUES (1, 2, 4, 'ice-01', NULL, 1, NULL, 150, 120, NULL, 2, now(), NULL);
+INSERT INTO dtb_products_class (product_id,classcategory_id1,classcategory_id2,product_code,stock,stock_unlimited,sale_limit,price01,price02,status,creator_id,create_date,update_date)
+VALUES (1, 1, 6, 'ice-01', NULL, 1, NULL, 150, 120, NULL, 2, now(), NULL);
+INSERT INTO dtb_products_class (product_id,classcategory_id1,classcategory_id2,product_code,stock,stock_unlimited,sale_limit,price01,price02,status,creator_id,create_date,update_date)
+VALUES (1, 1, 5, 'ice-01', NULL, 1, NULL, 150, 120, NULL, 2, now(), NULL);
+INSERT INTO dtb_products_class (product_id,classcategory_id1,classcategory_id2,product_code,stock,stock_unlimited,sale_limit,price01,price02,status,creator_id,create_date,update_date)
+VALUES (1, 1, 4, 'ice-01', NULL, 1, NULL, 150, 120, NULL, 2, now(), NULL);
+INSERT INTO dtb_products_class (product_id,classcategory_id1,classcategory_id2,product_code,stock,stock_unlimited,sale_limit,price01,price02,status,creator_id,create_date,update_date)
+VALUES (1, 3, 6, 'ice-01', NULL, 1, NULL, 150, 120, NULL, 2, now(), NULL);
+INSERT INTO dtb_products_class (product_id,classcategory_id1,classcategory_id2,product_code,stock,stock_unlimited,sale_limit,price01,price02,status,creator_id,create_date,update_date)
+VALUES (2, 0, 0, 'nabe-01', 100, NULL, NULL, 1700, 1650, NULL, 2, now(), NULL);
 
-INSERT INTO dtb_recommend_products VALUES (2, 1, 4, 'お口直しに。', 0, 2, now(), now());
+INSERT INTO dtb_recommend_products (product_id,rank,comment,status,creator_id,create_date,update_date) VALUES (1, 4, 'お口直しに。', 0, 2, now(), now());
 
 --規格
-INSERT INTO dtb_class VALUES (2, '大きさ', NULL, 2, 2, now(), NULL, 0, NULL);
-INSERT INTO dtb_class VALUES (1, '味', NULL, 1, 2, now(), now(), 0, NULL);
+INSERT INTO dtb_class (name,status,rank,creator_id,create_date,update_date,delete,product_id) VALUES ('味', NULL, 1, 2, now(), now(), 0, NULL);
+INSERT INTO dtb_class (name,status,rank,creator_id,create_date,update_date,delete,product_id) VALUES ('大きさ', NULL, 2, 2, now(), NULL, 0, NULL);
 
-INSERT INTO dtb_classcategory VALUES (0, NULL, 0, NULL, 0, 0, now(), NULL, 0);
-INSERT INTO dtb_classcategory VALUES (1, 'バニラ', 1, NULL, 1, 2, now(), NULL, 0);
-INSERT INTO dtb_classcategory VALUES (2, 'チョコ', 1, NULL, 2, 2, now(), NULL, 0);
-INSERT INTO dtb_classcategory VALUES (3, '抹茶?', 1, NULL, 3, 2, now(), NULL, 0);
-INSERT INTO dtb_classcategory VALUES (4, 'L', 2, NULL, 1, 2, now(), NULL, 0);
-INSERT INTO dtb_classcategory VALUES (5, 'M', 2, NULL, 2, 2, now(), NULL, 0);
-INSERT INTO dtb_classcategory VALUES (6, 'S', 2, NULL, 3, 2, now(), NULL, 0);
+INSERT INTO dtb_classcategory (name,class_id,status,rank,creator_id,create_date,update_date,delete) VALUES ('バニラ', 1, NULL, 1, 2, now(), NULL, 0);
+INSERT INTO dtb_classcategory (name,class_id,status,rank,creator_id,create_date,update_date,delete) VALUES ('チョコ', 1, NULL, 2, 2, now(), NULL, 0);
+INSERT INTO dtb_classcategory (name,class_id,status,rank,creator_id,create_date,update_date,delete) VALUES ('抹茶?', 1, NULL, 3, 2, now(), NULL, 0);
+INSERT INTO dtb_classcategory (name,class_id,status,rank,creator_id,create_date,update_date,delete) VALUES ('L', 2, NULL, 1, 2, now(), NULL, 0);
+INSERT INTO dtb_classcategory (name,class_id,status,rank,creator_id,create_date,update_date,delete) VALUES ('M', 2, NULL, 2, 2, now(), NULL, 0);
+INSERT INTO dtb_classcategory (name,class_id,status,rank,creator_id,create_date,update_date,delete) VALUES ('S', 2, NULL, 3, 2, now(), NULL, 0);
 
 -- カテゴリー
-INSERT INTO dtb_category VALUES (3, 'お菓子', 1, 2, 2, 2, now(), now(), 0);
-INSERT INTO dtb_category VALUES (1, '(ダミー)食品', 0, 1, 4, 2, now(), now(), 0);
-INSERT INTO dtb_category VALUES (2, '(ダミー)雑貨', 0, 1, 5, 2, now(), now(), 0);
-INSERT INTO dtb_category VALUES (5, 'アイス', 3, 3, 1, 2, now(), now(), 0);
-INSERT INTO dtb_category VALUES (4, 'なべ', 1, 2, 3, 2, now(), now(), 0);
+INSERT INTO dtb_category (category_name,parent_category_id,level,rank,creator_id,create_date,update_date,delete) VALUES ('(ダミー)食品', 0, 1, 4, 2, now(), now(), 0);
+INSERT INTO dtb_category (category_name,parent_category_id,level,rank,creator_id,create_date,update_date,delete) VALUES ('(ダミー)雑貨', 0, 1, 5, 2, now(), now(), 0);
+INSERT INTO dtb_category (category_name,parent_category_id,level,rank,creator_id,create_date,update_date,delete) VALUES ('お菓子', 1, 2, 2, 2, now(), now(), 0);
+INSERT INTO dtb_category (category_name,parent_category_id,level,rank,creator_id,create_date,update_date,delete) VALUES ('なべ', 1, 2, 3, 2, now(), now(), 0);
+INSERT INTO dtb_category (category_name,parent_category_id,level,rank,creator_id,create_date,update_date,delete) VALUES ('アイス', 3, 3, 1, 2, now(), now(), 0);
 
 INSERT INTO dtb_category_count VALUES (4, 1, now());
 INSERT INTO dtb_category_count VALUES (5, 1, now());
@@ -318,8 +330,8 @@ INSERT INTO dtb_category_total_count VALUES (5, 1, now());
 INSERT INTO dtb_category_total_count VALUES (4, 1, now());
 
 -- オススメ
-INSERT INTO dtb_best_products VALUES (1, 0, 1, 1, '', '当店1番人気です。', 2, now(), now(), 0);
-INSERT INTO dtb_best_products VALUES (2, 0, 2, 2, '', 'こちらもおすすめ', 2, now(), now(), 0);
+INSERT INTO dtb_best_products (category_id,rank,product_id,title,comment,creator_id,create_date,update_date,delete) VALUES (0, 1, 1, '', '当店1番人気です。', 2, now(), now(), 0);
+INSERT INTO dtb_best_products (category_id,rank,product_id,title,comment,creator_id,create_date,update_date,delete) VALUES (0, 2, 2, '', 'こちらもおすすめ', 2, now(), now(), 0);
 
 -- テンプレート
 INSERT INTO dtb_templates VALUES('default1','デフォルト1');
