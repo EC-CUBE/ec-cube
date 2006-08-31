@@ -51,8 +51,6 @@ $objPage->arrYear = $objDate->getYear();	//　日付プルダウン設定
 $objPage->arrMonth = $objDate->getMonth();
 $objPage->arrDay = $objDate->getDay();
 
-sfprintr($_POST);
-
 //---- 登録用カラム配列
 $arrRegistColumn = array(
 							 array(  "column" => "name01",		"convert" => "aKV" ),
@@ -95,8 +93,6 @@ foreach($arrSearch as $key => $val){
 	$arrSearchData[$key] = $val;
 }
 $objPage->arrSearchData= $arrSearchData;
-
-sfprintr($arrSearchData);
 
 //----　顧客編集情報取得
 if (($_POST["mode"] == "edit" || $_POST["mode"] == "edit_search") && is_numeric($_POST["edit_customer_id"])) {
