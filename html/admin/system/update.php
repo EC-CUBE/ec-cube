@@ -254,12 +254,12 @@ function lfUninstallModule() {
 		sfErrorHeader(">> 対象の機能は、配布を終了しております。");
 	}
 	
-	if($flg_ok) {
+	//if($flg_ok) {
 		// バージョン情報を削除する。
 		$sqlval['now_version'] = "";
 		$sqlval['update_date'] = "now()";
 		$objQuery->update("dtb_update", $sqlval, "module_id = ?", array($arrRet[0]['module_id']));
-	}
+	//}
 }
 
 
