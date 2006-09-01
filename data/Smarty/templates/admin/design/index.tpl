@@ -881,8 +881,6 @@ function init () {
 
     document.body.ondrag = function () { return false; };
     document.body.onselectstart = function () { return false; };
-    	
-	alert("ggg");
     
     // ウィンドウサイズを取得
 	scrX = GetWindowSize("width");
@@ -903,6 +901,8 @@ function init () {
     
 	// 配列作成
 	fnCreateArr(0);
+		
+	alert("ggg");
 	
     // 並び替え
 	fnMoveObject();
