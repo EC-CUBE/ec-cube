@@ -316,8 +316,6 @@ class SC_Query {
 	function getone($sql, $arrval = array()) {
 		// SQL文の実行
 		$ret = $this->conn->getOne($sql, $arrval);
-		sfprintr("dd");
-
 		return $ret;
 		
 	}
@@ -332,6 +330,8 @@ class SC_Query {
 		// SQL文の実行
 		$ret = $this->conn->getRow($sqlse, $arrval);
 		return $ret;
+sfprintr("dd");
+		
 	}
 		
 	// レコードの削除
