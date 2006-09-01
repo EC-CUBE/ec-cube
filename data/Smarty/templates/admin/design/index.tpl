@@ -586,8 +586,6 @@ function fnSortObj(){
 		// classが drop_target の場合のみ処理を行う
         if ( getAttrValue ( all_elms[cnt], 'class' ) == 'drop_target' ) {
         	var tid = getAttrValue ( all_elms[cnt], 'tid' );
-				
-	alert("ggg");
 			
 			// 配列の並び替え
 			fnChangeObj(tid);
@@ -883,6 +881,8 @@ function init () {
 
     document.body.ondrag = function () { return false; };
     document.body.onselectstart = function () { return false; };
+    	
+	alert("ggg");
     
     // ウィンドウサイズを取得
 	scrX = GetWindowSize("width");
