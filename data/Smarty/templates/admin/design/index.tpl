@@ -605,11 +605,11 @@ function fnCreateArr( addEvt , top , left ){
 	arrObjtmp['MainHead'] = Array();
 	arrObjtmp['MainFoot'] = Array();
 	arrObjtmp['Unused'] = Array();
-	
-	alert("ggg");
 
     for ( var i = 0; i < all_elms.length; i++ ) {
     	
+	
+	alert("ggg");
 
 	    if ( objCheckLine == "" && getAttrValue ( all_elms[i], 'id' ) == 'checkline' ) {
 	    	objCheckLine = all_elms[i];
