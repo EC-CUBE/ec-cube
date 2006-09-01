@@ -47,14 +47,6 @@
 			</td>
 		</tr>
 		<tr>
-			<td bgcolor="#f2f1ec" width="150" class="fs12n">インストールディレクトリ</td>
-			<td bgcolor="#ffffff" width="332" class="fs12">
-			<!--{assign var=key value="install_dir"}-->
-			<span class="red"><!--{$arrErr[$key]}--></span>
-			<input type="text" name="<!--{$key}-->" value="<!--{$arrForm[$key].value|escape}-->" maxlength="<!--{$arrForm[$key].length}-->" style="<!--{$arrErr[$key]|sfGetErrorColor}-->" size="50" class="box50" />
-			</td>
-		</tr>
-		<tr>
 			<td bgcolor="#f2f1ec" width="150" class="fs12n">URL(通常)</td>
 			<td bgcolor="#ffffff" width="332" class="fs12">
 			<!--{assign var=key value="normal_url"}-->
