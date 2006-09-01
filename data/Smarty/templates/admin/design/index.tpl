@@ -898,11 +898,11 @@ function init () {
     
 	// tdタグを取得
 	all_td = document.getElementsByTagName ( 'td' );
+    	
+	alert("ggg");
     
 	// 配列作成
 	fnCreateArr(0);
-		
-	alert("ggg");
 	
     // 並び替え
 	fnMoveObject();
