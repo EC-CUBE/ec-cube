@@ -302,6 +302,8 @@ function sfCSVDownload($data, $prefix = ""){
 	
 	$data = trim($data);
 	
+	sfprintr($data);
+	
 	if($prefix == "") {
 		$dir_name = sfUpDirName();
 		$file_name = $dir_name . date("ymdHis") .".csv";
