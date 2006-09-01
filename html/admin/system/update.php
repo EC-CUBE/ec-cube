@@ -41,7 +41,7 @@ case 'uninstall':
 	// 更新情報を最新にする
 	lfLoadUpdateList();
 	// モジュール郡のインストール	
-	lfUninstallModule();
+//	lfUninstallModule();
 	break;
 default:
 	break;
