@@ -329,9 +329,9 @@ class SC_Query {
 		}
 		// SQL文の実行
 		$ret = $this->conn->getRow($sqlse, $arrval);
+		sfprintr("dd");
+
 		return $ret;
-sfprintr("dd");
-		
 	}
 		
 	// レコードの削除
