@@ -27,6 +27,8 @@ class SC_Query {
 	function select($col, $table, $where = "", $arrval = array()){
 		$sqlse = $this->getsql($col, $table, $where);
 		$ret = $this->conn->getAll($sqlse, $arrval);
+		sfprintr("dd");
+
 
 		return $ret;
 	}
@@ -329,8 +331,7 @@ class SC_Query {
 		}
 		// SQL文の実行
 		$ret = $this->conn->getRow($sqlse, $arrval);
-		sfprintr("dd");
-
+		
 		return $ret;
 	}
 		
