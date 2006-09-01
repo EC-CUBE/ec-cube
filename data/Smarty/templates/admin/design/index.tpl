@@ -108,7 +108,11 @@ function fnTargetSelf(){
 											<!-- ¡ú¡ù¡ú º¸¥Ê¥Ó¥Æ¡¼¥Ö¥ë ¡ù¡ú¡ù -->
 											<td bgcolor="#ffffff" align="center" valign = 'top'>
 											<table border="0" width="165" height="400" cellspacing="1" cellpadding="" summary=" " bgcolor="#cccccc">
-												<tr><td bgcolor="#ffffff" align="center" name='LeftNavi' width="165" height="400" id="layout"></td></tr>
+												<tr>
+													<td bgcolor="#ffffff" align="center" name='LeftNavi' width="165" height="400" id="layout">
+														<div tid="LeftNavi" class="drop_target" id="t1" style="width: 165px; height: 100px;"></div>
+													</td>
+												</tr>
 											</table>
 											</td>
 											<!-- ¡ú¡ù¡ú º¸¥Ê¥Ó¥Æ¡¼¥Ö¥ë ¡ù¡ú¡ù -->
@@ -243,7 +247,6 @@ function fnTargetSelf(){
 <input type="hidden" name="top_<!--{$smarty.foreach.bloc_loop.iteration}-->" value="<!--{$item.bloc_row}-->">
 <!--{/foreach}-->
 
-<div tid="LeftNavi" class="drop_target" id="t1" style="left:155px; top:295px; width: 165px; height: 100px;"></div>
 <div tid="MainHead" class="drop_target" id="t2" style="left:350px; top:295px; width: 165px; height: 100px;"></div>
 <div tid="RightNavi" class="drop_target" id="t3" style="left:540px; top:295px; width: 165px; height: 100px;"></div>
 <div tid="MainFoot" class="drop_target" id="t4" style="left:300px; top:560px; width: 165px; height: 100px;"></div>
