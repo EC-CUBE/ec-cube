@@ -620,6 +620,8 @@ function fnCreateArr( addEvt , top , left ){
         	if (addEvt == 0) {
 	        	addEvent ( all_elms[i], 'mousedown', onMouseDown, false );
         	}
+	
+	alert("ggg");
 
 			var target_id = getAttrValue ( all_elms[i], 'target_id' );	
 			var len = arrObjtmp[target_id].length;
@@ -898,8 +900,6 @@ function init () {
     
 	// tdタグを取得
 	all_td = document.getElementsByTagName ( 'td' );
-    	
-	alert("ggg");
     
 	// 配列作成
 	fnCreateArr(0);
