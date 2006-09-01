@@ -215,9 +215,11 @@ if ($_POST['mode'] == "search" || $_POST['mode'] == "csv"  || $_POST['mode'] == 
 			$head = sfGetCSVList($arrOutputTitle);
 			
 			$data = lfGetProductsCSV($where, $option, $arrval, $arrOutputCols);
+			
+			sfprintr($data);
 
 			// CSVを送信する。
-			sfCSVDownload($head.$data);
+//			sfCSVDownload($head.$data);
 			exit;
 			break;
 		case 'delete_all':

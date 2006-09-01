@@ -324,7 +324,6 @@ function sfCSVDownload($data, $prefix = ""){
 	
 	/* データを出力 */
 	echo $data;
-	exit;
 }
 
 /* 1階層上のディレクトリ名を取得する */
