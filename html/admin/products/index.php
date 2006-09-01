@@ -216,7 +216,7 @@ if ($_POST['mode'] == "search" || $_POST['mode'] == "csv"  || $_POST['mode'] == 
 			
 			$data = lfGetProductsCSV($where, $option, $arrval, $arrOutputCols);
 			
-			sfprintr($data);
+			sfprintr($head);
 
 			// CSVを送信する。
 //			sfCSVDownload($head.$data);
