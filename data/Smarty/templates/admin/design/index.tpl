@@ -611,12 +611,12 @@ function fnCreateArr( addEvt , top , left ){
 
 	    if ( objCheckLine == "" && getAttrValue ( all_elms[i], 'id' ) == 'checkline' ) {
 	    	objCheckLine = all_elms[i];
-	    }
+	    }	
+	alert("ggg");
+	    
 
 		// classが dragged_elm の場合のみ処理を行う
         if ( getAttrValue ( all_elms[i], 'class' ) == 'dragged_elm' ) {
-        	
-	alert("ggg");
         
         	// マウスダウンイベントと関連付けを行う
         	if (addEvt == 0) {
