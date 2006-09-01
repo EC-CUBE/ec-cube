@@ -586,6 +586,8 @@ function fnSortObj(){
 		// classが drop_target の場合のみ処理を行う
         if ( getAttrValue ( all_elms[cnt], 'class' ) == 'drop_target' ) {
         	var tid = getAttrValue ( all_elms[cnt], 'tid' );
+				
+	alert("ggg");
 			
 			// 配列の並び替え
 			fnChangeObj(tid);
@@ -668,8 +670,6 @@ function fnChangeObj( tid ){
 // 配置
 function fnSetObj( tid, cnt ){
 	var target_height = 0;
-	
-	alert("ggg");
 	
 	for ( var j = 0; j < arrObj[tid].length; j++ ) {
 		// 配置する座標の取得
