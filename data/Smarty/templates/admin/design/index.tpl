@@ -121,7 +121,9 @@ function fnTargetSelf(){
 													<!-- ¡ú¡ù¡ú ¥á¥¤¥ó¾åÉô¥Æ¡¼¥Ö¥ë ¡ù¡ú¡ù -->
 													<thead>
 													<tr class="fs12n" align="top">
-														<td bgcolor="#ffffff" valign="top" name='MainHead' height="100" id="layout"></td>
+														<td bgcolor="#ffffff" valign="top" name='MainHead' height="100" id="layout">
+															<div tid="MainHead" class="drop_target" id="t2" style=""></div>
+														</td>
 													</tr>
 													</thead>
 													<!-- ¡ú¡ù¡ú ¥á¥¤¥ó¾åÉô¥Æ¡¼¥Ö¥ë ¡ù¡ú¡ù -->
@@ -247,7 +249,7 @@ function fnTargetSelf(){
 <input type="hidden" name="top_<!--{$smarty.foreach.bloc_loop.iteration}-->" value="<!--{$item.bloc_row}-->">
 <!--{/foreach}-->
 
-<div tid="MainHead" class="drop_target" id="t2" style="left:350px; top:295px; width: 165px; height: 100px;"></div>
+
 <div tid="RightNavi" class="drop_target" id="t3" style="left:540px; top:295px; width: 165px; height: 100px;"></div>
 <div tid="MainFoot" class="drop_target" id="t4" style="left:300px; top:560px; width: 165px; height: 100px;"></div>
 <div tid="Unused" class="drop_target" id="t5" style="left:740px; top:222px; width: 160px; height: 500px;"></div>
