@@ -110,7 +110,7 @@ function fnTargetSelf(){
 											<table border="0" width="165" height="400" cellspacing="1" cellpadding="" summary=" " bgcolor="#cccccc">
 												<tr>
 													<td bgcolor="#ffffff" align="center" name='LeftNavi' width="165" height="400" id="layout">
-														<div tid="LeftNavi" class="drop_target" id="t1" style="left:155px; top:295px; width: 165px; height: 100px;"></div>
+														<div tid="LeftNavi" class="drop_target" id="t1" style="width: 165px; height: 100px;"></div>
 													</td>
 												</tr>
 											</table>
