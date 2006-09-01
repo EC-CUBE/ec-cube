@@ -20,9 +20,6 @@ class SC_Query {
 		}
 		// カウント文の実行
 		$ret = $this->conn->getOne($sqlse, $arrval);
-
-				sfprintr($sqlse);
-
 		return $ret;
 	}
 	
