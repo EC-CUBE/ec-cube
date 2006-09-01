@@ -615,13 +615,13 @@ function fnCreateArr( addEvt , top , left ){
 
 		// classが dragged_elm の場合のみ処理を行う
         if ( getAttrValue ( all_elms[i], 'class' ) == 'dragged_elm' ) {
+        	
+	alert("ggg");
         
         	// マウスダウンイベントと関連付けを行う
         	if (addEvt == 0) {
 	        	addEvent ( all_elms[i], 'mousedown', onMouseDown, false );
         	}
-	
-	alert("ggg");
 
 			var target_id = getAttrValue ( all_elms[i], 'target_id' );	
 			var len = arrObjtmp[target_id].length;
