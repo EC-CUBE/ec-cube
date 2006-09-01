@@ -415,7 +415,6 @@ function getHeight ( elm ) {
 // オブジェクトの座標をセット
 function moveElm ( elm, x, y ) {
 
-alert(x);
     elm.style.left = x + 'px';
     elm.style.top = y + 'px';
 
@@ -669,6 +668,8 @@ function fnChangeObj( tid ){
 // 配置
 function fnSetObj( tid, cnt ){
 	var target_height = 0;
+	
+	alert("ggg");
 	
 	for ( var j = 0; j < arrObj[tid].length; j++ ) {
 		// 配置する座標の取得
