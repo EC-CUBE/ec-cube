@@ -608,7 +608,7 @@ function fnCreateArr( addEvt , top , left ){
 
     for ( var i = 0; i < all_elms.length; i++ ) {
     	
-	alert(i);
+	alert(all_elms.length);
 
 	    if ( objCheckLine == "" && getAttrValue ( all_elms[i], 'id' ) == 'checkline' ) {
 	    	objCheckLine = all_elms[i];
