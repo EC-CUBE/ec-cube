@@ -49,7 +49,7 @@ default:
 
 $col = "module_id, module_name, now_version, latest_version, module_explain, create_date, release_date";
 $objQuery->setorder("module_id");
-//$objPage->arrUpdate = $objQuery->select($col, "dtb_update");
+$objPage->arrUpdate = $objQuery->select($col, "dtb_update");
 
 $objView->assignobj($objPage);		//変数をテンプレートにアサインする
 $objView->display(MAIN_FRAME);		//テンプレートの出力
