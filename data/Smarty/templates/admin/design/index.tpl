@@ -606,17 +606,19 @@ function fnCreateArr( addEvt , top , left ){
 	arrObjtmp['MainFoot'] = Array();
 	arrObjtmp['Unused'] = Array();
 
-    for ( var i = 0; i < all_elms.length; i++ ) {
+	for ( var i = 0; i < all_elms.length; i++ ) {
     
-    alert(i);
+	alert(i);
+	
+	alert(getAttrValue ( all_elms[i], 'class' ));
 
 		// classが dragged_elm の場合のみ処理を行う
-        if ( getAttrValue ( all_elms[i], 'class' ) == 'dragged_elm' ) {
+		if ( getAttrValue ( all_elms[i], 'class' ) == 'dragged_elm' ) {
         
-        	// マウスダウンイベントと関連付けを行う
-        	if (addEvt == 0) {
+			// マウスダウンイベントと関連付けを行う
+			if (addEvt == 0) {
 	        	addEvent ( all_elms[i], 'mousedown', onMouseDown, false );
-        	}
+			}
 
 			var target_id = getAttrValue ( all_elms[i], 'target_id' );	
 			var len = arrObjtmp[target_id].length;
@@ -627,7 +629,7 @@ function fnCreateArr( addEvt , top , left ){
 			arrObjtmp[target_id][len].obj = all_elms[i];
 			arrObjtmp[target_id][len].width = getWidth ( all_elms[i] );
 			arrObjtmp[target_id][len].height = getHeight ( all_elms[i] );
-			
+
 			// ドラッグ中のオブジェクトが存在すれば、どのオブジェクトだけマウスポインタの座標を指定する。
 			if (gDragged != "") {
 				if (did != getAttrValue ( gDragged, 'did' )) {
