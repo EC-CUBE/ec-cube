@@ -83,7 +83,6 @@ class SC_Query {
 	
 	function getall($sql, $arrval = array()) {
 		$ret = $this->conn->getAll($sql, $arrval);
-sfprintr("dd");
 		return $ret;
 	}
 
@@ -317,7 +316,10 @@ sfprintr("dd");
 	function getone($sql, $arrval = array()) {
 		// SQL文の実行
 		$ret = $this->conn->getOne($sql, $arrval);
+		sfprintr("dd");
+
 		return $ret;
+		
 	}
 		
 	// 一行を取得
