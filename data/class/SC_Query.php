@@ -83,7 +83,7 @@ class SC_Query {
 	
 	function getall($sql, $arrval = array()) {
 		$ret = $this->conn->getAll($sql, $arrval);
-spfrintr("dd");
+sfprintr("dd");
 		return $ret;
 	}
 
