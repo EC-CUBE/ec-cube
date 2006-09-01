@@ -27,7 +27,7 @@ class SC_Query {
 	function select($col, $table, $where = "", $arrval = array()){
 		$sqlse = $this->getsql($col, $table, $where);
 		$ret = $this->conn->getAll($sqlse, $arrval);
-		sfprintr("dd");
+		sfprintr($sqlse);
 
 
 		return $ret;
