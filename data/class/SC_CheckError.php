@@ -440,7 +440,7 @@ class SC_CheckError {
 		if(isset($this->arrErr[$value[1]])) {
 			return;
 		}
-		if(strlen($this->arrParam[$value[1]]) > 0 && !ereg("[a-zA-Z0-9_\.@\+\?-]+$",$this->arrParam[$value[1]]) ) {
+		if(strlen($this->arrParam[$value[1]]) > 0 && !ereg("^[a-zA-Z0-9_\.@\+\?-]+$",$this->arrParam[$value[1]]) ) {
 			$this->arrErr[$value[1]] = "※ " . $value[0] . "に使用する文字を正しく入力してください。<br />";
 		}
 	}		
