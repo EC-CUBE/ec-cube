@@ -570,10 +570,6 @@ function isEventOnElm (evt, drop_target_id) {
 	drp_left = drop_target.offsetLeft;
 	drp_top = drop_target.offsetTop;
     
-
-//    var x = getX ( drop_target );
-//    var y = getY ( drop_target );
-    
     var x = drp_left;
     var y = drp_top;
 
@@ -716,12 +712,11 @@ function fnSetTargetHeight(){
         if ( getAttrValue ( all_elms[cnt], 'class' ) == 'drop_target' ) {
         	var tid = getAttrValue ( all_elms[cnt], 'tid' );
 
-
 			for ( var j = 0; j < arrObj[tid].length; j++ ) {
 				target_height = target_height + arrObj[tid][j].margin + arrObj[tid][j].height;
 			}
-			
-			target_height = target_height + 20;
+
+//			target_height = target_height + 20;
 
 			// 左右ナビ、未使用領域の高さを保持
 			if (tid == 'LeftNavi' || tid == 'RightNavi' || tid == 'Unused') {
