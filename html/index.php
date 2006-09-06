@@ -11,10 +11,6 @@ class LC_Page {
 	}
 }
 
-
-sfprintr("a");
-
-
 $objPage = new LC_Page();
 $conn = new SC_DBConn();
 
