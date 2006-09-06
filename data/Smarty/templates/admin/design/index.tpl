@@ -578,15 +578,14 @@ function isEventOnElm (evt, drop_target_id) {
 
     var width = getWidth ( drop_target );
     var height = getHeight ( drop_target );
+    
+    alert(441);
 
     return evtX > x && evtY > y && evtX < x + width && evtY < y + height;
 }
 
 // オブジェクトの並び替えを行う
 function fnSortObj(){
-
-alert("ggg");
-
 	fnSetTargetHeight();
     for ( var cnt = 0; cnt < all_elms.length; cnt++ ) {
 
