@@ -9,8 +9,6 @@ class LC_Page {
 	}
 }
 
-sfprintr($PHP_DIR);
-
 $objPage = new LC_Page();
 $objView = new SC_SiteView();
 

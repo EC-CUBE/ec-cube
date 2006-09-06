@@ -137,7 +137,7 @@ if ($_POST['mode'] == 'confirm') {
 			lfDelFile($arrPageData[0]);
 			
 			// PHPファイル作成
-			$cre_php = ROOT_DIR . USER_DIR . $_POST['url'];
+			$cre_php = ROOT_DIR . USER_DIR . $_POST['url'] . ".php";
 			lfCreatePHPFile($cre_php);
 		}
 
