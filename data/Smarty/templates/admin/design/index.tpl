@@ -597,8 +597,6 @@ function fnSortObj(){
 			// 配列の並び替え
 			fnChangeObj(tid);
 			
-			alert("d");
-			
 			// 配置
 			fnSetObj( tid, cnt );
         }
@@ -674,6 +672,8 @@ function fnChangeObj( tid ){
 // 配置
 function fnSetObj( tid, cnt ){
 	var target_height = 0;
+	
+	alert(tid);
 	
 	for ( var j = 0; j < arrObj[tid].length; j++ ) {
 		// 配置する座標の取得
