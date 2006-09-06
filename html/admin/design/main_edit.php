@@ -333,14 +333,15 @@ function lfCreateFile($path){
 	if (!is_dir(dirname($path))) {
 		mkdir(dirname($path));
 	}
+
+	unlink($path);
 	
 	if(file_exists($path)){
 		sfprintr($_POST['tpl_data']);
-		unlink($path);
 	};
 	
 	// ファイル作成
 	$fp = fopen($path,"w");
 	fwrite($fp, $_POST['tpl_data']);
-	fclose($fp);	
+	fclose($fp);
 }
