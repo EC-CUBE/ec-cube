@@ -1,6 +1,6 @@
 <?php
 $PHP_DIR = realpath(dirname( __FILE__));
-require_once($PHP_DIR . "require.php");
+require_once($_SERVER['DOCUMENT_ROOT'] . "require.php");
 
 class LC_Page {
 	function LC_Page() {
@@ -10,9 +10,7 @@ class LC_Page {
 	}
 }
 
-
 sfprintr($PHP_DIR);
-
 
 $objPage = new LC_Page();
 $objView = new SC_SiteView();
