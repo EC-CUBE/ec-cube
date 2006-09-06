@@ -844,7 +844,7 @@ function fnMoveObject() {
 	var BlankX = ( GetWindowSize("width") - 878 ) / 2
 	
 	for ( var i = 0; i < all_elms.length; i++) {
-	alert(all_elms[i].name);
+	alert(getAttrValue ( all_elms[i], 'class' ));
 	
 		if (all_elms[i].style.left != "" ) {
 
