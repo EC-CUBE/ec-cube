@@ -535,13 +535,9 @@ function onMouseUp(evt) {
 		// 配列の再作成
 		fnCreateArr(1, gOrgY, gOrgX);
     }
-	alert("ggg");
     
     // 並び替え
 	fnSortObj();
-
-    // ドラッグ中はラインを表示
-    objCheckLine.style.visibility = "hidden";    
     
     // hidden要素の書き換え
 	var did = getAttrValue( gDragged, 'did' );
