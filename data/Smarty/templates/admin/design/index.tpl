@@ -522,7 +522,6 @@ function onMouseUp(evt) {
 	    mouseFlg = false;
 	}
 	
-	alert("ggg");
 
     if ( isOnDropTarget (evt) ) {
         // 並び替え
@@ -536,6 +535,7 @@ function onMouseUp(evt) {
 		// 配列の再作成
 		fnCreateArr(1, gOrgY, gOrgX);
     }
+	alert("ggg");
     
     // 並び替え
 	fnSortObj();
