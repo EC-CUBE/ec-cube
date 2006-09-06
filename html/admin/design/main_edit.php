@@ -150,6 +150,8 @@ if ($_POST['mode'] == 'confirm') {
 
 		// TPLファイル作成
 		$cre_tpl = dirname( ROOT_DIR . USER_DIR . "templates/" . $_POST['url']) . "/" . basename($_POST['url']) . '.tpl';
+		
+		sfprintr($cre_tpl);
 
 		lfCreateFile($cre_tpl);
 

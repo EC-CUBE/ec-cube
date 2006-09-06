@@ -196,6 +196,7 @@ function lfDelFile($arrData){
 	
 	// phpファイルの削除
 	if (file_exists($del_php)){
+		sfprintr("delphp");
 		unlink($del_php);	
 	}
 
