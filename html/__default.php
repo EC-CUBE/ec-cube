@@ -1,5 +1,5 @@
 <?php
-###require###
+require_once("###require###");
 
 class LC_Page {
 	function LC_Page() {
