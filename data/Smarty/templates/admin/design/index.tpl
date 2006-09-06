@@ -844,12 +844,10 @@ function fnMoveObject() {
 	var BlankX = ( GetWindowSize("width") - 878 ) / 2
 	
 	for ( var i = 0; i < all_elms.length; i++) {
-	alert(getAttrValue ( all_elms[i], 'class' ));
-	
 		if (all_elms[i].style.left != "" ) {
 
 			var elm_class = getAttrValue ( all_elms[i], 'class' );
-			
+
 			if (elm_class == 'drop_target') {
 				var tid = getAttrValue ( all_elms[i], 'tid' );
 				
@@ -871,6 +869,8 @@ function fnMoveObject() {
 			}
 		}
 	}
+	
+	alert("ggg");
 	
 	scrX = GetWindowSize("width");
 	scrY = GetWindowSize("height");
