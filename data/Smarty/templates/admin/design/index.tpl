@@ -844,6 +844,8 @@ function fnMoveObject() {
 	var BlankX = ( GetWindowSize("width") - 878 ) / 2
 	
 	for ( var i = 0; i < all_elms.length; i++) {
+	alert(all_elms[i].name);
+	
 		if (all_elms[i].style.left != "" ) {
 
 			var elm_class = getAttrValue ( all_elms[i], 'class' );
@@ -914,13 +916,9 @@ function init () {
 
 	// ÇÛÎóºîÀ®
 	fnCreateArr(0);
-alert("go");
-	
-	
 	
     // ÊÂ¤ÓÂØ¤¨
 	fnMoveObject();
-alert("go");
 	
 	<!--{$complate_msg}-->
 }
