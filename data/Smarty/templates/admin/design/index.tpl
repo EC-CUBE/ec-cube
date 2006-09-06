@@ -474,7 +474,6 @@ function onMouseDown (evt) {
 
 // マウスムーブイベント
 function onMouseMove(evt) {
-alert("gg");
 
     // ドラッグ中はラインを表示
     objCheckLine.style.visibility = "visible";  
@@ -484,6 +483,7 @@ alert("gg");
 	var y = getEventY ( evt ) + document.body.scrollTop;					// マウス座標 Y
     var nowleft = getEventX ( evt ) - gDeltaX;	// オブジェクト座標 LEFT
     var nowtop = getEventY ( evt ) - gDeltaY;	// オブジェクト座標 TOP
+alert("gg");
 
 
     // オブジェクトを移動
