@@ -137,13 +137,8 @@ if ($_POST['mode'] == 'confirm') {
 			lfDelFile($arrPageData[0]);
 			
 			// PHPファイル作成
-			// ディレクトリが存在していなければ作成する
 			$cre_php = ROOT_DIR . USER_DIR . $_POST['url'];
-
-			if (!is_dir(dirname($cre_php))) {
-				mkdir(dirname($cre_php));
-			}
-			copy(USER_DEF_PHP, $cre_php . ".php");
+			lfCreatePHPFile($cre_php);
 		}
 
 		// TPLファイル作成
@@ -334,4 +329,28 @@ function lfCreateFile($path){
 	$fp = fopen($path,"w");
 	fwrite($fp, $_POST['tpl_data']);
 	fclose($fp);
+}
+
+/**************************************************************************************************************
+ * 関数名	：lfCreatePHPFile
+ * 処理内容	：PHPファイルを作成する
+ * 引数1	：$path･･･PHPファイルのパス
+ * 戻り値	：なし
+ **************************************************************************************************************/
+function lfCreatePHPFile($path){
+
+	// php保存先ディレクトリが存在していなければ作成する
+	if (!is_dir(dirname($path))) {
+		mkdir(dirname($path));
+	}
+	
+	// ベースとなるPHPファイルの読み込み
+	if (file_exists($path)){
+		$php_data = file_get_contents($path);		
+	}
+	
+	// require.phpの場所を書き換える
+	sfprintr($php_data);
+	
+	copy(USER_DEF_PHP, $path . ".php");	
 }

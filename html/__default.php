@@ -1,6 +1,5 @@
 <?php
-$PHP_DIR = realpath(dirname( __FILE__));
-require_once($_SERVER['DOCUMENT_ROOT'] . "require.php");
+###require###
 
 class LC_Page {
 	function LC_Page() {
