@@ -484,6 +484,8 @@ function onMouseMove(evt) {
     var nowleft = getEventX ( evt ) - gDeltaX;	// オブジェクト座標 LEFT
     var nowtop = getEventY ( evt ) - gDeltaY;	// オブジェクト座標 TOP
 
+alert("gg");
+
     // オブジェクトを移動
     moveElm ( gDragged, nowleft, nowtop );
 	
