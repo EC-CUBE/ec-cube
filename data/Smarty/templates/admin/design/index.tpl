@@ -548,7 +548,6 @@ function onMouseUp(evt) {
 function isOnDropTarget ( evt ) {
    
     for ( var i=0; i<all_elms.length; i++ ) {
-    alert(all_elms[i].id);
         if ( isEventOnElm ( evt, all_elms[i].id ) ) {
             if ( all_elms[i].attributes['tid'] ) {
                 return true;
@@ -557,22 +556,26 @@ function isOnDropTarget ( evt ) {
     }
     return false;
 }
-
-
 function isEventOnElm (evt, drop_target_id) {
 
 	if (drop_target_id == '') {
 		return '';
 	}
+	
+	drp_left = all_elms[cnt].offsetLeft;
+	drp_top = all_elms[cnt].offsetTop;
 
     var evtX = getEventX(evt) + document.body.scrollLeft;
     var evtY = getEventY(evt) + document.body.scrollTop;
     
     var drop_target = document.getElementById( drop_target_id );
 
-    var x = getX ( drop_target );
-    var y = getY ( drop_target );
+//    var x = getX ( drop_target );
+//    var y = getY ( drop_target );
     
+    var x = drp_left;
+    var y = drp_top;
+
     var width = getWidth ( drop_target );
     var height = getHeight ( drop_target );
 
