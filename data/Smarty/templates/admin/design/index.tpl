@@ -673,11 +673,11 @@ function fnChangeObj( tid ){
 function fnSetObj( tid, cnt ){
 	var target_height = 0;
 	
-	alert(tid);
-	
+	drp_left = all_elms[cnt].offsetLeft;
+
 	for ( var j = 0; j < arrObj[tid].length; j++ ) {
 		// 配置する座標の取得
-	    var left = parseInt(all_elms[cnt].style.left) + parseInt(all_elms[cnt].style.width) / 2 - parseInt(arrObj[tid][j].width) / 2;
+	    var left = parseInt(drp_left) + parseInt(all_elms[cnt].style.width) / 2 - parseInt(arrObj[tid][j].width) / 2;
 	    if (j == 0){
 	    	var top = getY ( all_elms[cnt] ) + arrObj[tid][j].margin;
 	    }else{
@@ -690,14 +690,14 @@ function fnSetObj( tid, cnt ){
 
 		// 配置を行う
 		moveElm ( arrObj[tid][j].obj, left ,top + errMargin);
-		
+
 		// 高さ計算
 		target_height = target_height + arrObj[tid][j].margin + arrObj[tid][j].height;
-		
+
 		// hiddenの値を書き換え
 		var top_id = "top_" + arrObj[tid][j].id;
 		document.form1[top_id].value = top;
-		
+
 	}
 }
 
