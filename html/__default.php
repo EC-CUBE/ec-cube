@@ -1,5 +1,5 @@
 <?php
-###require###
+///// ここはrequireに書き換えられます。////
 
 class LC_Page {
 	function LC_Page() {

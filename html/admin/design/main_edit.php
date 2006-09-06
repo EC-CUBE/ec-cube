@@ -350,7 +350,7 @@ function lfCreatePHPFile($path){
 	}
 	
 	// require.phpの場所を書き換える
-	sfprintr($php_data);
+	sfprintr($php_data[1]);
 	exit();
 	
 	copy(USER_DEF_PHP, $path . ".php");	
