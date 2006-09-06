@@ -702,7 +702,7 @@ function fnSetTargetHeight(){
         	var tid = getAttrValue ( all_elms[cnt], 'tid' );
 
 			for ( var j = 0; j < arrObj[tid].length; j++ ) {
-				target_height = target_height + arrObj[tid][j].margin + arrObj[tid][j].Height;
+				target_height = target_height + arrObj[tid][j].margin + arrObj[tid][j].height;
 			}
 
 			// ²¼¤ÎÉý
