@@ -2,6 +2,8 @@
 
 require_once("../require.php");
 
+print("test");
+
 class LC_Page {
 	var $arrSession;
 	var $tpl_mode;
