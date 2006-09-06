@@ -561,14 +561,15 @@ function isEventOnElm (evt, drop_target_id) {
 	if (drop_target_id == '') {
 		return '';
 	}
-	
-	drp_left = all_elms[cnt].offsetLeft;
-	drp_top = all_elms[cnt].offsetTop;
 
     var evtX = getEventX(evt) + document.body.scrollLeft;
     var evtY = getEventY(evt) + document.body.scrollTop;
     
     var drop_target = document.getElementById( drop_target_id );
+    
+	drp_left = drop_target.offsetLeft;
+	drp_top = drop_target.offsetTop;
+    
 
 //    var x = getX ( drop_target );
 //    var y = getY ( drop_target );
@@ -579,8 +580,6 @@ function isEventOnElm (evt, drop_target_id) {
     var width = getWidth ( drop_target );
     var height = getHeight ( drop_target );
     
-    alert(441);
-
     return evtX > x && evtY > y && evtX < x + width && evtY < y + height;
 }
 
