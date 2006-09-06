@@ -589,8 +589,7 @@ function fnSortObj(){
 
 	fnSetTargetHeight();
     for ( var cnt = 0; cnt < all_elms.length; cnt++ ) {
-    	alert("ggg");
-    
+		alert(getAttrValue ( all_elms[cnt], 'class' ));
 
 		// classが drop_target の場合のみ処理を行う
         if ( getAttrValue ( all_elms[cnt], 'class' ) == 'drop_target' ) {
