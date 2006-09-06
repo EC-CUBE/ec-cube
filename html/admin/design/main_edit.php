@@ -335,7 +335,7 @@ function lfCreateFile($path){
 	}
 	
 	if(file_exists($path)){
-		sfprintr("dd");
+		unlink($path);
 	};
 	
 	// ファイル作成
