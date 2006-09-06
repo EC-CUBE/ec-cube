@@ -19,5 +19,4 @@ $objPage = sfGetPageLayout($objPage);
  $objView->assignobj($objPage);
  $objView->display(SITE_FRAME);
 //-----------------------------------------------------------------------------------------------------------------------------------
-
 ?>
