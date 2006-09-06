@@ -367,7 +367,7 @@ function lfDispComplete($objPage) {
 // WEBパラメータ情報の初期化
 function lfInitWebParam($objWebParam) {
 	
-	$install_dir = realpath(dirname( __FILE__) . "/../../");
+	$install_dir = realpath(dirname( __FILE__) . "/../../") . "/";
 	$normal_url = "http://" . $_SERVER['HTTP_HOST'] . "/";
 	$secure_url = "http://" . $_SERVER['HTTP_HOST'] . "/";
 	$domain = ereg_replace("^[a-zA-Z0-9_~=&\?\/-]+\.", "", $_SERVER['HTTP_HOST']);
