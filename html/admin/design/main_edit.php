@@ -334,13 +334,6 @@ function lfCreateFile($path){
 		mkdir(dirname($path));
 	}
 
-	unlink($path);
-	
-	if(file_exists($path)){
-		sfprintr($_POST['tpl_data']);
-		sfprintr("dddd");
-	};
-	
 	// ファイル作成
 	$fp = fopen($path,"w");
 	fwrite($fp, $_POST['tpl_data']);
