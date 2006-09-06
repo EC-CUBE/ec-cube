@@ -481,7 +481,6 @@ function onMouseMove(evt) {
     var nowleft = getEventX ( evt ) - gDeltaX;	// オブジェクト座標 LEFT
     var nowtop = getEventY ( evt ) - gDeltaY;	// オブジェクト座標 TOP
 
-
     // オブジェクトを移動
     moveElm ( gDragged, nowleft, nowtop );
 	
@@ -522,6 +521,8 @@ function onMouseUp(evt) {
 	    removeEvent ( document, 'mouseup', onMouseUp, false );
 	    mouseFlg = false;
 	}
+	
+	alert("ggg");
 
     if ( isOnDropTarget (evt) ) {
         // 並び替え
