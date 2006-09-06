@@ -682,7 +682,7 @@ function fnSetObj( tid, cnt ){
 	    if (j == 0){
 	    	var top = drp_top; //+ arrObj[tid][j].margin;
 	    }else{
-	    	var top = arrObj[tid][j-1].top + arrObj[tid][j].height + arrObj[tid][j].margin ;
+	    	var top = arrObj[tid][j-1].top + arrObj[tid][j].margin ;// arrObj[tid][j].height + 
 	    }
 
 		// 座標を保持
@@ -759,7 +759,7 @@ function fnSetTargetHeight(){
 		NaviHeight = MainHeadHeight + MainFootHeight + MainHeight;	
 	}
 	
-	// 移動
+	// 変更
     for ( var cnt = 0; cnt < all_elms.length; cnt++ ) {
     	var target_height = 0;
 
