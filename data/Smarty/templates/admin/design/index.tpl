@@ -475,9 +475,6 @@ function onMouseDown (evt) {
 // マウスムーブイベント
 function onMouseMove(evt) {
 
-    // ドラッグ中はラインを表示
-    objCheckLine.style.visibility = "visible";  
-    
 	// 現在の座標を取得
 	var x = getEventX ( evt ) + document.body.scrollLeft;					// マウス座標 X
 	var y = getEventY ( evt ) + document.body.scrollTop;					// マウス座標 Y
