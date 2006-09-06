@@ -702,7 +702,7 @@ function fnSetTargetHeight(){
         	var tid = getAttrValue ( all_elms[cnt], 'tid' );
 
 			for ( var j = 0; j < arrObj[tid].length; j++ ) {
-				target_height = target_height + arrObj[tid][j].margin + arrObj[tid][j].offsetHeight;
+				target_height = target_height + arrObj[tid][j].margin + arrObj[tid][j].Height;
 			}
 
 			// 下の幅
@@ -762,7 +762,7 @@ function fnSetTargetHeight(){
 			}
 
 			all_elms[cnt].style.height = target_height
-
+/*
 			// 各テーブルの高さも変更
 		    for (var i = 0; i < all_td.length; i++) {
 		    	if (all_td[i].name == tid) {
@@ -771,7 +771,7 @@ function fnSetTargetHeight(){
 					all_td[i].height = MainHeight;	
 				}
 		    }
-
+*/
 		}
 	}
 }
