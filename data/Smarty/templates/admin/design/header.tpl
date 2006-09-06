@@ -58,7 +58,7 @@ else if(navigator.userAgent.indexOf("Gecko/") >= 0){
 									<tr class="fs12n">
 										<td bgcolor="#ffffff" align="center">
 											<br/>
-												<div style="zoom:0.8"><!--{include file="`$smarty.const.ROOT_DIR`ahtml/user_data/include/preview/header.tpl"}--></div>
+												<div style="zoom:0.8"><!--{include file="`$smarty.const.ROOT_DIR`html/user_data/include/preview/header.tpl"}--></div>
 											<br/>
 										</td>
 									</tr>
