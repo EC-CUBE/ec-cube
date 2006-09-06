@@ -521,9 +521,9 @@ function onMouseUp(evt) {
 	    removeEvent ( document, 'mouseup', onMouseUp, false );
 	    mouseFlg = false;
 	}
-	
 
     if ( isOnDropTarget (evt) ) {
+    alert("gggdf");
         // 並び替え
 		fnSortObj();
     }
@@ -543,8 +543,6 @@ function onMouseUp(evt) {
 	var did = getAttrValue( gDragged, 'did' );
 	var target_id = "target_id_"+did;
 	document.form1[target_id].value = getAttrValue( gDragged, 'target_id' );
-	
-	alert("ddd");
 }
 
 // DropTarget上にオブジェクトが来たかを判断する
