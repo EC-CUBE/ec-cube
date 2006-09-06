@@ -133,9 +133,10 @@ if ($_POST['mode'] == 'confirm') {
 		
 		// ベースデータでなければファイルを削除し、PHPファイルを作成する
 		if (!lfCheckBaseData($page_id)) {
-			sfprintr("ddd");
 			// ファイル削除
 			lfDelFile($arrPageData[0]);
+			
+			sfprintr($arrPageData[0]);
 			
 			// PHPファイル作成
 			// ディレクトリが存在していなければ作成する
