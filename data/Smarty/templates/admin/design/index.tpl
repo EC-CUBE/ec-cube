@@ -909,7 +909,7 @@ function init () {
 		if (elm_class == 'drop_target') {
 			var tid = getAttrValue ( all_elms[i], 'tid' );
 			alert(tid);
-			alert(elm_class.style.left);
+			alert(all_elms[i].style.left);
 		}
 	}
 	
