@@ -350,7 +350,8 @@ function lfCreatePHPFile($path){
 	}
 	
 	// require.phpの場所を書き換える
-	sfprintr($php_data[1]);
+	str_replace("###require###", ROOT_DIR . "require.php", $php_data);
+	sfprintr($php_data);
 	exit();
 	
 	copy(USER_DEF_PHP, $path . ".php");	
