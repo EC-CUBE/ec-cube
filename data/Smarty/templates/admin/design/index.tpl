@@ -481,9 +481,9 @@ function onMouseMove(evt) {
 	// 現在の座標を取得
 	var x = getEventX ( evt ) + document.body.scrollLeft;					// マウス座標 X
 	var y = getEventY ( evt ) + document.body.scrollTop;					// マウス座標 Y
+alert("gg");
     var nowleft = getEventX ( evt ) - gDeltaX;	// オブジェクト座標 LEFT
     var nowtop = getEventY ( evt ) - gDeltaY;	// オブジェクト座標 TOP
-alert("gg");
 
 
     // オブジェクトを移動
