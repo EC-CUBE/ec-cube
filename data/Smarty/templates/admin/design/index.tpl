@@ -896,6 +896,7 @@ function init () {
     // Assign Event Handlers
     //
     
+    alert("gpo");
     // divタグを取得
     all_elms = document.getElementsByTagName ( 'div' );
     
