@@ -19,19 +19,7 @@
         text-align:  center;
         color:       #333;
     }
-
-	#check_line { 
-		background-color: #ff3; 
-		text-align: center; 
-		position: absolute; 
-		z-index: 1; 
-		top: 407px;
-		left: 108px; 
-		width: 100px;
-		height: 0.5px; 
-		visibility: visible 
-	}
-</style>
+s
 <script type="text/javascript">
 
 function doPreview(){
@@ -247,7 +235,7 @@ function fnTargetSelf(){
 
 <!--{foreach key=key item=item from=$tpl_arrBloc name="bloc_loop"}-->
 <div align=center target_id="<!--{$item.target_id}-->" did="<!--{$smarty.foreach.bloc_loop.iteration}-->" class="dragged_elm" id="<!--{$item.target_id}-->"
-	 style="left:350px; top:0px; filter: alpha(opacity=100); opacity: 1; z-index: 2; width: 130px; height: 30px;">
+	 style="left:350px; top:0px; filter: alpha(opacity=100); opacity: 1; z-index: 2; width: 130px;">
 	 <!--{$item.name}-->
 </div>
 <input type="hidden" name="name_<!--{$smarty.foreach.bloc_loop.iteration}-->" value="<!--{$item.name}-->">
