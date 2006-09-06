@@ -676,6 +676,7 @@ function fnSetObj( tid, cnt ){
 	drp_left = all_elms[cnt].offsetLeft;
 
 	for ( var j = 0; j < arrObj[tid].length; j++ ) {
+	alert(tid);
 		// 配置する座標の取得
 	    var left = parseInt(drp_left) + parseInt(all_elms[cnt].style.width) / 2 - parseInt(arrObj[tid][j].width) / 2;
 	    if (j == 0){
