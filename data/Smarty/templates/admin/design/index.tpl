@@ -788,11 +788,6 @@ function fnSetTargetHeight(){
 					all_td[i].height = MainHeight;	
 				}
 		    }
-		    
-		    if (tid == 'MainFoot') {
-				// メイン下部は移動も行う
-			//	all_elms[cnt].style.top = marginMainFootTop + MainHeight + MainHeadHeight - defMain - defMainNavi - 10;
-		    }
 		}
 	}
 }
