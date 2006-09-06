@@ -136,8 +136,6 @@ if ($_POST['mode'] == 'confirm') {
 			// ファイル削除
 			lfDelFile($arrPageData[0]);
 			
-			sfprintr($arrPageData[0]);
-			
 			// PHPファイル作成
 			// ディレクトリが存在していなければ作成する
 			$cre_php = ROOT_DIR . USER_DIR . $_POST['url'];
@@ -150,8 +148,6 @@ if ($_POST['mode'] == 'confirm') {
 
 		// TPLファイル作成
 		$cre_tpl = dirname( ROOT_DIR . USER_DIR . "templates/" . $_POST['url']) . "/" . basename($_POST['url']) . '.tpl';
-		
-		sfprintr($cre_tpl);
 
 		lfCreateFile($cre_tpl);
 
@@ -162,7 +158,7 @@ if ($_POST['mode'] == 'confirm') {
 			$page_id = $arrPageData[0]['page_id'];
 		}
 
-		//header("location: ./main_edit.php?page_id=$page_id&msg=on");
+		header("location: ./main_edit.php?page_id=$page_id&msg=on");
 	}else{
 		// エラーがあれば入力時のデータを表示する
 		$objPage->arrPageData = $_POST;
