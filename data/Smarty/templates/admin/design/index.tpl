@@ -543,6 +543,8 @@ function onMouseUp(evt) {
 	var did = getAttrValue( gDragged, 'did' );
 	var target_id = "target_id_"+did;
 	document.form1[target_id].value = getAttrValue( gDragged, 'target_id' );
+	
+	alert("ddd");
 }
 
 // DropTarget上にオブジェクトが来たかを判断する
