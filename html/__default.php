@@ -1,5 +1,4 @@
 <?php
-phpinfo();
 require_once($_SERVER['DOCUMENT_ROOT'] . "require.php");
 
 class LC_Page {
