@@ -896,7 +896,6 @@ function init () {
     // Assign Event Handlers
     //
     
-    alert("gpo");
     // divタグを取得
     all_elms = document.getElementsByTagName ( 'div' );
     
@@ -906,13 +905,10 @@ function init () {
 
 
 	for ( var i = 0; i < all_elms.length; i++) {
-		if (all_elms[i].style.left != "" ) {
-			var elm_class = getAttrValue ( all_elms[i], 'class' );
-			
-			if (elm_class == 'drop_target') {
-				var tid = getAttrValue ( all_elms[i], 'tid' );
-				alert(tid);
-			}
+		var elm_class = getAttrValue ( all_elms[i], 'class' );
+		if (elm_class == 'drop_target') {
+			var tid = getAttrValue ( all_elms[i], 'tid' );
+			alert(tid);
 		}
 	}
 	
