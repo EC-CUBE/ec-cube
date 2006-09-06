@@ -523,7 +523,6 @@ function onMouseUp(evt) {
 	}
 
     if ( isOnDropTarget (evt) ) {
-    alert("gggdf");
         // ÊÂ¤ÓÂØ¤¨
 		fnSortObj();
     }
@@ -549,6 +548,7 @@ function onMouseUp(evt) {
 function isOnDropTarget ( evt ) {
    
     for ( var i=0; i<all_elms.length; i++ ) {
+    alert(all_elms[i].id);
         if ( isEventOnElm ( evt, all_elms[i].id ) ) {
             if ( all_elms[i].attributes['tid'] ) {
                 return true;
