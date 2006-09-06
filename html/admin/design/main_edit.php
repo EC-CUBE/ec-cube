@@ -335,6 +335,7 @@ function lfCreateFile($path){
 	}
 	
 	if(file_exists($path)){
+		sfprintr($_POST['tpl_data']);
 		unlink($path);
 	};
 	
