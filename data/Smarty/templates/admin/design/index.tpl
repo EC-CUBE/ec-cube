@@ -716,7 +716,8 @@ function fnSetTargetHeight(){
 				target_height = target_height + arrObj[tid][j].margin + arrObj[tid][j].height;
 			}
 
-//			target_height = target_height + 20;
+			// 下の幅
+			target_height = target_height + 20;
 
 			// 左右ナビ、未使用領域の高さを保持
 			if (tid == 'LeftNavi' || tid == 'RightNavi' || tid == 'Unused') {
