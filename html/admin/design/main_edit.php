@@ -345,8 +345,8 @@ function lfCreatePHPFile($path){
 	}
 	
 	// ベースとなるPHPファイルの読み込み
-	if (file_exists($path)){
-		$php_data = file_get_contents($path);		
+	if (file_exists(USER_DEF_PHP)){
+		$php_data = file_get_contents(USER_DEF_PHP);		
 	}
 	
 	// require.phpの場所を書き換える
