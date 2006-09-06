@@ -465,7 +465,7 @@ function onMouseDown (evt) {
 	    addEvent ( document, 'mouseup', onMouseUp, false );
 	    
 	    // ドラッグを開始したときは高さを一度初期化する。
-	   // NowMaxHeight = defNavi;
+	    NowMaxHeight = defNavi;
 	    	    
 	    mouseFlg = true;
 	}
@@ -713,7 +713,7 @@ function fnSetTargetHeight(){
         	var tid = getAttrValue ( all_elms[cnt], 'tid' );
 
 			for ( var j = 0; j < arrObj[tid].length; j++ ) {
-				target_height = target_height + arrObj[tid][j].margin + arrObj[tid][j].height;
+				target_height = target_height + arrObj[tid][j].margin + arrObj[tid][j].offsetHeight;
 			}
 
 			// 下の幅
