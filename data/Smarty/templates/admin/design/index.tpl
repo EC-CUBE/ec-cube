@@ -684,8 +684,6 @@ function fnSetObj( tid, cnt ){
 	    }else{
 	    	var top = arrObj[tid][j-1].top + arrObj[tid][j].height + arrObj[tid][j].margin ;
 	    }
-	    
-	    alert(top);
 
 		// 座標を保持
 		arrObj[tid][j].top = top;
@@ -793,7 +791,7 @@ function fnSetTargetHeight(){
 		    
 		    if (tid == 'MainFoot') {
 				// メイン下部は移動も行う
-				all_elms[cnt].style.top = marginMainFootTop + MainHeight + MainHeadHeight - defMain - defMainNavi - 10;
+			//	all_elms[cnt].style.top = marginMainFootTop + MainHeight + MainHeadHeight - defMain - defMainNavi - 10;
 		    }
 		}
 	}
