@@ -870,12 +870,11 @@ function fnMoveObject() {
 		}
 	}
 	
-	alert("ggg");
-	
 	scrX = GetWindowSize("width");
 	scrY = GetWindowSize("height");
 	
 	fnSortObj();
+	alert("ggg");
 
 }
 
