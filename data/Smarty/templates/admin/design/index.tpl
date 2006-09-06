@@ -674,13 +674,13 @@ function fnSetObj( tid, cnt ){
 	var target_height = 0;
 	
 	drp_left = all_elms[cnt].offsetLeft;
+	drp_top = all_elms[cnt].offsetTop;
 
 	for ( var j = 0; j < arrObj[tid].length; j++ ) {
-	alert(tid);
 		// 配置する座標の取得
 	    var left = parseInt(drp_left) + parseInt(all_elms[cnt].style.width) / 2 - parseInt(arrObj[tid][j].width) / 2;
 	    if (j == 0){
-	    	var top = getY ( all_elms[cnt] ) + arrObj[tid][j].margin;
+	    	var top = drp_top + arrObj[tid][j].margin;
 	    }else{
 	    	var top = arrObj[tid][j-1].top + arrObj[tid][j].height + arrObj[tid][j].margin ;
 	    }
