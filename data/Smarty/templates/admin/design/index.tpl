@@ -585,6 +585,8 @@ function isEventOnElm (evt, drop_target_id) {
 // オブジェクトの並び替えを行う
 function fnSortObj(){
 
+alert("ggg");
+
 	fnSetTargetHeight();
     for ( var cnt = 0; cnt < all_elms.length; cnt++ ) {
 
