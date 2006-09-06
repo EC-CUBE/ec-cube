@@ -881,7 +881,6 @@ function fnMoveObject() {
 
 // 初期処理
 function init () {
-
     document.body.ondrag = function () { return false; };
     document.body.onselectstart = function () { return false; };
     
@@ -901,9 +900,8 @@ function init () {
     
 	// tdタグを取得
 	all_td = document.getElementsByTagName ( 'td' );
-	
 
-
+/**************************************************************************************************************************
 	for ( var i = 0; i < all_elms.length; i++) {
 		var elm_class = getAttrValue ( all_elms[i], 'class' );
 		if (elm_class == 'drop_target') {
@@ -912,10 +910,14 @@ function init () {
 			alert(all_elms[i].offsetLeft);
 		}
 	}
-	
-    
+**************************************************************************************************************************/
+
+alert("go");
 	// 配列作成
 	fnCreateArr(0);
+alert("go");
+	
+	
 	
     // 並び替え
 	fnMoveObject();
