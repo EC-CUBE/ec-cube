@@ -901,6 +901,20 @@ function init () {
     
 	// tdタグを取得
 	all_td = document.getElementsByTagName ( 'td' );
+	
+
+
+	for ( var i = 0; i < all_elms.length; i++) {
+		if (all_elms[i].style.left != "" ) {
+			var elm_class = getAttrValue ( all_elms[i], 'class' );
+			
+			if (elm_class == 'drop_target') {
+				var tid = getAttrValue ( all_elms[i], 'tid' );
+				alert(tid);
+			}
+		}
+	}
+	
     
 	// 配列作成
 	fnCreateArr(0);
