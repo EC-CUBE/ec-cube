@@ -314,7 +314,7 @@ function lfErrorCheck($array) {
 
 /**************************************************************************************************************
  * 関数名	：lfCreateFile
- * 処理内容	：TPLファイルを作成する
+ * 処理内容	：ファイルを作成する
  * 引数1	：$path･･･テンプレートファイルのパス
  * 戻り値	：なし
  **************************************************************************************************************/
@@ -351,8 +351,9 @@ function lfCreatePHPFile($path){
 	
 	// require.phpの場所を書き換える
 	$php_data = str_replace("###require###", ROOT_DIR . "html/require.php", $php_data);
-	sfprintr($php_data);
-	exit();
 	
-	copy(USER_DEF_PHP, $path . ".php");	
+	// phpファイルの作成
+	$fp = fopen($path,"w");
+	fwrite($fp, $php_data);
+	fclose($fp);
 }
