@@ -101,6 +101,7 @@ a:hover { color: #f9a406; text-decoration: underline; }
 #menu_navi {
 	table-layout: fixed;
 	border: none;
+	background-repeat: no-repeat;
 }
 
 .navi a{
