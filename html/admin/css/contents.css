@@ -15,7 +15,7 @@ a:hover { color: #f9a406; text-decoration: underline; }
 
 
 /*FORM*/
-input{ font-size: 13px;}
+input{ font-size: 12px;}
 .box6 { width: 54px; font-size: 13px;}	/*W6*/
 .box10 { width: 82px; font-size: 13px;}	/*W10*/
 .box20 { width: 152px; font-size: 13px;}	/*W20*/
@@ -25,7 +25,7 @@ input{ font-size: 13px;}
 .box40 { width: 292px; font-size: 13px;}	/*W40*/
 .box60 { width: 432px; font-size: 13px;}	/*W60*/
 
-textarea{ font-size: 13px;}
+textarea{ font-size: 12px;}
 .area40 { width: 302px; height: 134px; font-size: 13px;}	/*W40¡ßH8*/
 .area45 { width: 337px; height: 290px; font-size: 13px;}	/*W40¡ßH20*/
 .area46 { width: 337px; height: 134px; font-size: 13px;}	/*W40¡ßH8*/
