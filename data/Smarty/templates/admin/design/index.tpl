@@ -773,6 +773,7 @@ function fnSetTargetHeight(){
     		if (typeof(all_td[i].name) != 'undefined' and all_td[i].name == 'Main') {
 			alert(MainHeight);
 			all_td[i].height = MainHeight-2;
+			}
 		}
     }
 		    
