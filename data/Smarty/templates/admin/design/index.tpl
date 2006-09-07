@@ -500,6 +500,7 @@ function onMouseMove(evt) {
 		    }
 		}else{
 			if ( all_elms[i].attributes['tid'] && all_elms[i].style.background!="#ffffff") {
+				alert(all_elms[i].attributes['tid']);
 				// 背景色の変更
 				all_elms[i].style.background="#ffffff";
 			}
@@ -507,7 +508,6 @@ function onMouseMove(evt) {
     }
     
 }
-
 
 // マウスアップイベント       
 function onMouseUp(evt) {
@@ -872,8 +872,6 @@ function fnMoveObject() {
 	
 	fnSortObj();
 }
-
-
 
 // 初期処理
 function init () {
