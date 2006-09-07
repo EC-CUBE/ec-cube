@@ -3,12 +3,12 @@
 body {
 	background: #fff url(/img/common/bg.jpg);
 	background-repeat: repeat-x;
-	font-family:"£Í£Ó £Ð¥´¥·¥Ã¥¯";
+	font-family:"£Í£Ó £Ð¥´¥·¥Ã¥¯","Hiragino Maru Gothic Pro","¥Ò¥é¥®¥Î´Ý¥´ Pro W4";
 	font-size: 13px;
 }
 
 input,select,option,textarea {
-	font-family:"£Í£Ó £Ð¥´¥·¥Ã¥¯";
+	font-family:"£Í£Ó £Ð¥´¥·¥Ã¥¯","Hiragino Maru Gothic Pro","¥Ò¥é¥®¥Î´Ý¥´ Pro W4";
 	font-size: 13px;
 }
 
