@@ -580,7 +580,6 @@ function fnSortObj(){
 			fnSetObj( tid, cnt );
         }
 	}
-	fnSetTargetHeight();
 }
 
 // 配列の作成
