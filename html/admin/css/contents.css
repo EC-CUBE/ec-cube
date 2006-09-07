@@ -100,8 +100,6 @@ a:hover { color: #f9a406; text-decoration: underline; }
 /*navi*/
 #menu_navi {
 	table-layout: fixed;
-	border:0;
-
 }
 
 .navi a{
