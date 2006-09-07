@@ -14,7 +14,9 @@
 				<table border="0" cellspacing="0" cellpadding="0" summary=" ">
 					<tr>
 						<!--{foreach from=$arrPagenavi.arrPageno key="key" item="item"}-->
+						<td><img src="/img/contents/number_line.jpg" width="2" height="17" alt="" ></td>
 						<td class=<!--{if $arrPagenavi.now_page == $item}-->"number-on"<!--{else}-->"number"<!--{/if}-->><a href=<!--{$smarty.server.PHP_SELF}--> onclick="fnNaviSearchPage(<!--{$item}-->, '<!--{$arrPagenavi.mode}-->'); return false;"><!--{$item}--></a></td>
+						<td><img src="/img/contents/number_line.jpg" width="2" height="17" alt=""></td>
 						<!--{/foreach}-->
 					</tr>
 				</table>
