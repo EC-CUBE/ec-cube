@@ -874,8 +874,8 @@ function init () {
 		if (elm_class == 'dragged_elm') {
 			var tid = getAttrValue ( all_elms[i], 'did' );
 //			alert(tid);
-			alert(all_elms[i].offsetHeight);
-			all_elms[i].height = all_elms[i].offsetHeight;
+			alert(all_elms[i].height);
+			all_elms[i].height = all_elms[i].offsetHeight
 		}
 	}
 /**************************************************************************************************************************/
