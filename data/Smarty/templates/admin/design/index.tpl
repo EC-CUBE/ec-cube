@@ -485,6 +485,9 @@ function onMouseMove(evt) {
 	    if ( isEventOnElm ( evt, all_elms[i].id ) ) {
             if ( all_elms[i].attributes['tid'] ) {
 	            var tid = getAttrValue ( all_elms[i], 'tid' );
+	            
+	            // 背景色の変更
+	            all_elms[i].style.background="#003300";
 
 				// target_id の書き換え
 		        setAttrValue ( gDragged, 'target_id', tid );
@@ -541,7 +544,6 @@ function isOnDropTarget ( evt ) {
     for ( var i=0; i<all_elms.length; i++ ) {
         if ( isEventOnElm ( evt, all_elms[i].id ) ) {
             if ( all_elms[i].attributes['tid'] ) {
-            	all_elms[i].style.background="#ff00ff";
                 return true;
             }
         }
