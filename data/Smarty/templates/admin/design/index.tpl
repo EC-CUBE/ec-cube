@@ -500,7 +500,7 @@ function onMouseMove(evt) {
 		    }
 		}else{
 			if ( all_elms[i].attributes['tid'] && all_elms[i].style.background!="#ffffff") {
-				alert(all_elms[i].attributes['tid']);
+				alert(all_elms[i].attributes['tid'].nodeValue);
 				// «ÿ∑ øß§Œ —ππ
 				all_elms[i].style.background="#ffffff";
 			}
