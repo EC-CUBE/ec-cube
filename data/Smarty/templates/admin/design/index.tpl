@@ -675,6 +675,7 @@ function fnCreateArr( addEvt , top , left ){
 				arrObjtmp[target_id][len].top = (parseInt(getX( all_elms[i] )) + arrObjtmp[target_id][len].height / 2 );
 				arrObjtmp[target_id][len].left = getY( all_elms[i] );
 			}
+			alert("stop");
 		}
     }
     arrObj = arrObjtmp;
