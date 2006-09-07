@@ -439,7 +439,7 @@ function onMouseDown (evt) {
 	    gOrgX = getX ( gDragged );
 	    gOrgY = getY ( gDragged );
 	    gtarget_id = getAttrValue ( gDragged, 'target_id' );
-	/*
+	
 	    //
 	    // Set
 	    //
@@ -449,7 +449,7 @@ function onMouseDown (evt) {
 	    
 	    // ドラッグ中は最前面表示
 	    setZindex ( gDragged , 0);
-	    
+	/*    
 	    addEvent ( document, 'mousemove', onMouseMove, false );
 	    addEvent ( document, 'mouseup', onMouseUp, false );
 	    
