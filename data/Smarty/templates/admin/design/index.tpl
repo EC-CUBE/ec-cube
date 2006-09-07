@@ -236,7 +236,7 @@ function fnTargetSelf(){
 <!--{foreach key=key item=item from=$tpl_arrBloc name="bloc_loop"}-->
 <div align=center target_id="<!--{$item.target_id}-->" did="<!--{$smarty.foreach.bloc_loop.iteration}-->" class="dragged_elm" id="<!--{$item.target_id}-->"
 	 style="left:350px; top:0px; filter: alpha(opacity=100); opacity: 1; width: 120px;">
-	 <!--{$item.name}--><!--{$item.target_id}-->
+	 <!--{$item.name}--><!--{$smarty.foreach.bloc_loop.iteration}-->
 </div>
 <input type="hidden" name="name_<!--{$smarty.foreach.bloc_loop.iteration}-->" value="<!--{$item.name}-->">
 <input type="hidden" name="id_<!--{$smarty.foreach.bloc_loop.iteration}-->" value="<!--{$item.bloc_id}-->">
