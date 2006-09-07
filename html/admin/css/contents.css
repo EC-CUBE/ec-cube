@@ -238,7 +238,10 @@ a:hover { color: #f9a406; text-decoration: underline; }
 	background: url(/img/contents/number_bg.jpg);
 	background-repeat: repeat-x;
 	background-color: #505468;
-	padding: 8px;
+	padding-top: 5px;
+	padding-bottom: 5px;
+	padding-left: 8px;
+	padding-right: 8px;
 	color:#ffffff;
 	font-size: 65%;
 	line-height: 160%;
@@ -256,8 +259,11 @@ a:hover { color: #f9a406; text-decoration: underline; }
 	background: url(/img/contents/number_bg_on.jpg);
 	background-repeat: repeat-x;
 	background-color: #f7c600;
-	padding: 8px;
-	color:#ffffff;
+	padding-top: 5px;
+	padding-bottom: 5px;
+	padding-left: 8px;
+	padding-right: 8px;
+s	color:#ffffff;
 	font-size: 65%;
 	line-height: 160%;
 	font-weight: bold;
@@ -265,8 +271,8 @@ a:hover { color: #f9a406; text-decoration: underline; }
 }
 
 .number-on a{
-	padding-top: 6px;
-	padding-bottom: 6px;
+	padding-top: 5px;
+	padding-bottom: 5px;
 	padding-left: 8px;
 	padding-right: 8px;
 	background: url(/img/contents/number_bg_on.jpg);
@@ -289,7 +295,10 @@ a:hover { color: #f9a406; text-decoration: underline; }
 	background: url(/img/contents/number_bg_on.jpg);
 	background-repeat: repeat-x;
 	background-color: #f7c600;
-	padding: 8px;
+	padding-top: 5px;
+	padding-bottom: 5px;
+	padding-left: 8px;
+	padding-right: 8px;
 	color:#ffffff;
 	font-size: 65%;
 	line-height: 160%;
