@@ -123,7 +123,7 @@ function fnTargetSelf(){
 													<!-- ★☆★ メイン ☆★☆ -->
 													<!-- ★☆★ メイン下部テーブル ☆★☆ -->
 													<tfoot>
-													<tr class="fs12n" align = "bottom">
+													<tr class="fs12n">
 														<td bgcolor="#ffffff" valign="bottom" name='MainFoot' height="100" id="layout">
 															<div tid="MainFoot" class="drop_target" id="t4" style="width: 165px; height: 100px;"></div>
 														</td>
@@ -888,5 +888,5 @@ function init () {
 }
 
 // 画面のロードイベントに関連付け
-//addEvent ( window, 'load', init, false );
+addEvent ( window, 'load', init, false );
 </script>
