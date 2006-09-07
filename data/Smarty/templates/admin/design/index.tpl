@@ -560,7 +560,7 @@ function onMouseUp(evt) {
 	// 半透明、マウスポインタ、最前面処理を戻す
     setOpacity( gDragged, 1);
     setCursor ( gDragged, 'hand' );
-    setZindex ( gDragged , 0);
+    setZindex ( gDragged , 1);
     
     // 並び替え
 	fnSortObj();
