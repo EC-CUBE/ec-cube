@@ -371,6 +371,8 @@ function getAttrValue ( elm, attrname ) {
 	
 	//alert(typeof(elm.attributes[ attrname ]));
 	
+	alert(elm.attributes[ attrname ].nodeValue);
+	
     return elm.attributes[ attrname ].nodeValue;
 }
 
