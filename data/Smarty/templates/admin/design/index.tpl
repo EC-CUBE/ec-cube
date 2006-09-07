@@ -418,7 +418,7 @@ function moveElm ( elm, x, y ) {
 
 // マウスダウンイベント
 function onMouseDown (evt) {
-
+/*
     var target = evt.target ? evt.target : evt.srcElement;
     var x = getEventX ( evt );
     var y = getEventY ( evt );
@@ -458,6 +458,7 @@ function onMouseDown (evt) {
 	    	    
 	    mouseFlg = true;
 	}
+*/
 }
 
 
@@ -754,7 +755,6 @@ function fnSetTargetHeight(){
 			}else if (tid == 'MainFoot') {
 				target_height = MainFootHeight;
 //				alert(all_elms[cnt].offsetTop);
-				all_elms[cnt].offsetTop = all_elms[cnt].offsetTop+2;
 			}else if (tid == 'Unused'){
 				target_height = NaviHeight+100;
 			}
