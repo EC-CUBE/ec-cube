@@ -443,10 +443,8 @@ function getPageScrollY()
 
 // オブジェクトの座標をセット
 function moveElm ( elm, x, y ) {
-
     elm.style.left = x + 'px';
     elm.style.top = y + 'px';
-    alert("stop");
 }
 
 // マウスダウンイベント

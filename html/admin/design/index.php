@@ -170,6 +170,8 @@ foreach($arrBlocPos as $key => $val){
 	}
 }
 
+sfprintr($tpl_arrBloc);
+
 // 未使用のブロックデータを追加
 foreach($arrBloc as $key => $val){
 	if (!lfChkBloc($val, $tpl_arrBloc)) {
