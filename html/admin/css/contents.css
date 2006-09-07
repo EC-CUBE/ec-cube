@@ -273,7 +273,6 @@ a:hover { color: #f9a406; text-decoration: underline; }
 	line-height: 160%;
 	font-weight: bold;
 	text-decoration:none;
-	display: block;
 }
 
 .number-on a:visited {
