@@ -918,17 +918,6 @@ function init () {
 	// tdタグを取得
 	all_td = document.getElementsByTagName ( 'td' );
 
-/****************************************************************************************************
-	// ブロックの高さを取得する
-	for ( var i = 0; i < all_elms.length; i++) {
-		var elm_class = getAttrValue ( all_elms[i], 'class' );
-		
-		if (elm_class == 'dragged_elm') {
-//			all_elms[i].style.height = all_elms[i].offsetHeight;
-			//alert(all_elms[i].offsetHeight);
-		}
-	}
-****************************************************************************************************/
 	// 配列作成
 	fnCreateArr(0);
 	
