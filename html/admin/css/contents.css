@@ -100,18 +100,6 @@ a:hover { color: #f9a406; text-decoration: underline; }
 /*navi*/
 #menu_navi {
 	table-layout: fixed;
-	padding: 0px 0px;
-	background-repeat: no-repeat;
-    margin-top: 0px; 
-    padding-top: 0px; 
-    height: auto; 
-    padding-bottom: 0px; 
-    margin-bottom: 0px;
-    margin-left: 0px; 
-    padding-left: 0px; 
-    height: auto; 
-    padding-right: 0px; 
-    margin-right: 0px;	
 }
 
 .navi a{
