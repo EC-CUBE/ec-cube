@@ -692,7 +692,7 @@ function fnSetTargetHeight(){
 	var MainHeadHeight = defMainNavi;
 	var MainFootHeight = defMainNavi;
 	var UnusedHeight = defUnused;
-/*
+
 	// 高さ計算
     for ( var cnt = 0; cnt < all_elms.length; cnt++ ) {
 		var target_height = 0;
@@ -762,7 +762,7 @@ function fnSetTargetHeight(){
 			}
 
 			all_elms[cnt].style.height = target_height
-
+/*
 			// 各テーブルの高さも変更
 		    for (var i = 0; i < all_td.length; i++) {
 		    	if (all_td[i].name == tid) {
@@ -771,9 +771,9 @@ function fnSetTargetHeight(){
 					all_td[i].height = MainHeight;	
 				}
 		    }
+*/
 		}
 	}
-	*/
 }
 
 //ウインドウサイズ取得
