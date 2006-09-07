@@ -716,7 +716,7 @@ function fnSetTargetHeight(){
 					MainHeadHeight = target_height;
 				}
 			}
-
+s
 			// メイン下部領域の高さを保持
 			if (tid == 'MainFoot') {
 				if (target_height > defMainNavi) {
@@ -727,7 +727,7 @@ function fnSetTargetHeight(){
 	}
 
 	// メイン領域の高さを保持
-	alert(NaviHeight+"/"+MainHeadHeight+"/"+MainFootHeight);
+//	alert(NaviHeight+"/"+MainHeadHeight+"/"+MainFootHeight);
 	MainHeight = NaviHeight - ( MainHeadHeight + MainFootHeight );
 	if (MainHeight < defMain) {
 		MainHeight = defMain;
