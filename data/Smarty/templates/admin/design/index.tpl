@@ -118,7 +118,9 @@ function fnTargetSelf(){
 													<!-- ¡ú¡ù¡ú ¥á¥¤¥ó¾åÉô¥Æ¡¼¥Ö¥ë ¡ù¡ú¡ù -->
 													<!-- ¡ú¡ù¡ú ¥á¥¤¥ó ¡ù¡ú¡ù -->
 													<tr class="fs12n">
-														<td height="" align="center" name='Main'> ¥á¥¤¥ó</td>
+														<td bgcolor="#ffffff" align="center" name='RightNavi' width="165" id="layout">
+															<div tid="RightNavi" class="drop_target" id="t3" style="width: 165px; height: 100px;"></div>
+														</td>
 													</tr>
 													<!-- ¡ú¡ù¡ú ¥á¥¤¥ó ¡ù¡ú¡ù -->
 													<!-- ¡ú¡ù¡ú ¥á¥¤¥ó²¼Éô¥Æ¡¼¥Ö¥ë ¡ù¡ú¡ù -->
