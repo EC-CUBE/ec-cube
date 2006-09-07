@@ -500,6 +500,9 @@ function onMouseMove(evt) {
 				// 配列の並び替え
 				fnChangeObj(tid);
 		    }
+		}else{
+            // 背景色の変更
+            all_elms[i].style.background="#ffffff";
 		}
     }
     
