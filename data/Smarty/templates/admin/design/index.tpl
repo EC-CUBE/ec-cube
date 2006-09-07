@@ -876,6 +876,7 @@ function init () {
 //			alert(tid);
 			alert(all_elms[i].height);
 			all_elms[i].height = all_elms[i].offsetHeight
+			alert(all_elms[i].height);
 		}
 	}
 /**************************************************************************************************************************/
