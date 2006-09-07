@@ -385,12 +385,12 @@ function setAttrValue ( elm, attrname, val ) {
 // オブジェクトのX座標を取得
 function getX ( elm ) {
 //   return parseInt(elm.style.left);
-	return parseInt(elm.style.offsetLeft);
+	return parseInt(elm.offsetLeft);
 }
 
 // オブジェクトのY座標を取得
 function getY ( elm ) {
-	return parseInt(elm.style.offsetTop);
+	return parseInt(elm.offsetTop);
 //    return parseInt(elm.style.top);
 }
 
