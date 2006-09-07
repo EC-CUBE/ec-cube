@@ -265,7 +265,10 @@ a:hover { color: #f9a406; text-decoration: underline; }
 }
 
 .number-on a{
-	padding: 5px;
+	padding-top: 5px;
+	padding-bottom: 5px;
+	padding-left: 8px;
+	padding-right: 8px;
 	background: url(/img/contents/number_bg_on.jpg);
 	background-repeat: repeat-x;
 	background-color: #f7c600;
