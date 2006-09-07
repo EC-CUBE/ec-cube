@@ -96,13 +96,13 @@ function fnTargetSelf(){
 										<tr class="fs12n">
 											<!-- ¡ú¡ù¡ú º¸¥Ê¥Ó¥Æ¡¼¥Ö¥ë ¡ù¡ú¡ù -->
 											<td bgcolor="#ffffff" align="center" valign = 'top'>
-											<table border="0" width="165" height="400" cellspacing="1" cellpadding="" summary=" " bgcolor="#cccccc">
-												<tr>
-													<td bgcolor="#ffffff" align="center" name='LeftNavi' width="165" height="400" id="layout">
-														<div tid="LeftNavi" class="drop_target" id="t1" style="width: 165px; height: 100px;"></div>
-													</td>
-												</tr>
-											</table>
+												<table border="0" width="165" height="400" cellspacing="1" cellpadding="" summary=" " bgcolor="#cccccc">
+													<tr class="fs12n">
+														<td bgcolor="#ffffff" align="center" name='LeftNavi' width="165" height="400" id="layout">
+															<div tid="LeftNavi" class="drop_target" id="t1" style="width: 165px; height: 100px;"></div>
+														</td>
+													</tr>
+												</table>
 											</td>
 											<!-- ¡ú¡ù¡ú º¸¥Ê¥Ó¥Æ¡¼¥Ö¥ë ¡ù¡ú¡ù -->
 											<td bgcolor="#ffffff" align="center" valign = 'top'>
@@ -134,13 +134,13 @@ function fnTargetSelf(){
 											</td>
 											<!-- ¡ú¡ù¡ú ±¦¥Ê¥Ó¥Æ¡¼¥Ö¥ë ¡ù¡ú¡ù -->
 											<td bgcolor="#ffffff" align="center" valign = 'top'>
-											<table border="0" width="165" height="400" cellspacing="1" cellpadding="" summary=" " bgcolor="#cccccc">
-												<tr>
-													<td bgcolor="#ffffff" align="center" name='RightNavi' width="165" height="400" id="layout">
-														<div tid="RightNavi" class="drop_target" id="t3" style="width: 165px; height: 100px;"></div>
-													</td>
-												</tr>
-											</table>
+												<table border="0" width="165" height="400" cellspacing="1" cellpadding="" summary=" " bgcolor="#cccccc">
+													<tr class="fs12n">
+														<td bgcolor="#ffffff" align="center" name='RightNavi' width="165" height="400" id="layout">
+															<div tid="RightNavi" class="drop_target" id="t3" style="width: 165px; height: 100px;"></div>
+														</td>
+													</tr>
+												</table>
 											</td>
 											<!-- ¡ú¡ù¡ú ±¦¥Ê¥Ó¥Æ¡¼¥Ö¥ë ¡ù¡ú¡ù -->
 										</tr>
@@ -738,8 +738,6 @@ function fnSetTargetHeight(){
 	if (NaviHeight < MainHeadHeight + MainFootHeight + MainHeight) {
 		NaviHeight = MainHeadHeight + MainFootHeight + MainHeight;	
 	}
-	
-	alert(NaviHeight+"/"+(MainHeadHeight + MainFootHeight + MainHeight));
 	
 	// ÊÑ¹¹
     for ( var cnt = 0; cnt < all_elms.length; cnt++ ) {
