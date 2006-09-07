@@ -760,16 +760,6 @@ function fnSetTargetHeight(){
 			}
 
 			all_elms[cnt].style.height = target_height
-/************************************************************************************************************
-			// 各テーブルの高さも変更
-		    for (var i = 0; i < all_td.length; i++) {
-		    	if (all_td[i].name == tid) {
-			    	all_td[i].height = all_elms[cnt].style.height;
-		    	} else if (all_td[i].name == 'Main') {
-					all_td[i].height = MainHeight;	
-				}
-		    }
-*************************************************************************************************************/
 		}
 	}
 }
@@ -854,7 +844,7 @@ function fnMoveObject() {
 	scrX = GetWindowSize("width");
 	scrY = GetWindowSize("height");
 	
-	fnSortObj();
+	//fnSortObj();
 }
 
 
