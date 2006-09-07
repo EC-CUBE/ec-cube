@@ -367,7 +367,7 @@ function setZindex(node, val) {
 
 // 値を取得
 function getAttrValue ( elm, attrname ) {
-alert(attrname);
+alert(elm.attributes[ attrname ]);
     return elm.attributes[ attrname ].nodeValue;
 }
 
