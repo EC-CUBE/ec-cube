@@ -79,7 +79,7 @@ function fnTargetSelf(){
 						</table>
 
 						<!--▼レイアウト編集　ここから-->
-						<table width="678" border="0" cellspacing="1" cellpadding="8" summary=" ">
+						<table width="678" border="0" cellspacing="" cellpadding="" summary=" ">
 							<tr class="fs12n">
 								<td bgcolor="#f2f1ec" align="center" colspan=""><strong>レイアウト編集</strong></td>
 								<td bgcolor="#f2f1ec" align="center" colspan=""><strong>未使用ブロック</strong></td>
@@ -152,7 +152,7 @@ function fnTargetSelf(){
 								<!--▲レイアウト　ここまで-->
 				
 								<!--▼未使用ブロック　ここから-->
-								<td bgcolor="#ffffff" align="center" valign = 'top'  cellspacing="" cellpadding="" summary=" ">
+								<td bgcolor="#ffffff" align="center" valign = 'top'>
 									<table width="140" border="0" cellspacing="" cellpadding="" summary=" " bgcolor="#ffffff">
 										<tr class="fs12n">
 											<td bgcolor="#ffffff" align="center" height="400" name="Unused" id="layout">
