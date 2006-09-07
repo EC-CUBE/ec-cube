@@ -96,10 +96,10 @@ function fnTargetSelf(){
 										<tr class="fs12n">
 											<!-- ¡ú¡ù¡ú º¸¥Ê¥Ó¥Æ¡¼¥Ö¥ë ¡ù¡ú¡ù -->
 											<td bgcolor="#ffffff" align="center" valign = 'top'>
-												<table border="0" width="165" height="400" cellspacing="1" cellpadding="" summary=" " bgcolor="#cccccc">
+												<table border="0" height="400" cellspacing="1" cellpadding="" summary=" " bgcolor="#cccccc">
 													<tr class="fs12n">
-														<td bgcolor="#ffffff" align="center" name='LeftNavi' width="165" height="400" id="layout">
-															<div tid="LeftNavi" class="drop_target" id="t1" style="width: 165px; height: 100px;"></div>
+														<td bgcolor="#ffffff" align="center" id="layout">
+															<div tid="LeftNavi" class="drop_target" id="t1" style="width: 145px; height: 100px;"></div>
 														</td>
 													</tr>
 												</table>
