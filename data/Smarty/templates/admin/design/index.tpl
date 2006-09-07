@@ -452,12 +452,12 @@ function onMouseDown (evt) {
 	    
 	    addEvent ( document, 'mousemove', onMouseMove, false );
 	    addEvent ( document, 'mouseup', onMouseUp, false );
-	/*    
+
 	    // ドラッグを開始したときは高さを一度初期化する。
 	    NowMaxHeight = defNavi;
 	    	    
 	    mouseFlg = true;
-	*/
+
 	}
 
 }
