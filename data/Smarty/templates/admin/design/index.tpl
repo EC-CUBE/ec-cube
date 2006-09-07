@@ -405,7 +405,8 @@ function getWidth ( elm ) {
 
 // オブジェクトの高さを取得
 function getHeight ( elm ) {
-    return parseInt( elm.style.height );
+//    return parseInt( elm.style.height );
+    return parseInt( elm.offsetHeight );
 }
 
 // オブジェクトの座標をセット
@@ -733,7 +734,7 @@ function fnSetTargetHeight(){
 	if (MainHeight < defMain) {
 		MainHeight = defMain;
 	}
-	
+
 	// メイン部分のほうが大きい場合には左右ナビも大きくする
 	if (NaviHeight < MainHeadHeight + MainFootHeight + MainHeight) {
 		NaviHeight = MainHeadHeight + MainFootHeight + MainHeight;	
@@ -872,11 +873,7 @@ function init () {
 	for ( var i = 0; i < all_elms.length; i++) {
 		var elm_class = getAttrValue ( all_elms[i], 'class' );
 		if (elm_class == 'dragged_elm') {
-			var tid = getAttrValue ( all_elms[i], 'did' );
-//			alert(tid);
-			alert(all_elms[i].height);
 			all_elms[i].height = all_elms[i].offsetHeight
-			alert(all_elms[i].height);
 		}
 	}
 /**************************************************************************************************************************/
