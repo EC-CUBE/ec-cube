@@ -766,6 +766,8 @@ function fnSetTargetHeight(){
 		}
 	}
 	
+	// tdタグを取得
+	all_td = document.getElementsByTagName ( 'td' );	
 	// メインテーブルの高さも変更
     for (var i = 0; i < all_td.length; i++) {
 		if (typeof(all_td[i].name) != 'undefined') {
