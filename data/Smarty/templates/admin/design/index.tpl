@@ -124,7 +124,7 @@ function fnTargetSelf(){
 													<!-- ¡ú¡ù¡ú ¥á¥¤¥ó²¼Éô¥Æ¡¼¥Ö¥ë ¡ù¡ú¡ù -->
 													<tfoot>
 													<tr class="fs12n">
-														<td bgcolor="#ffffff" valign="bottom" name='MainFoot' height="100" id="layout">
+														<td bgcolor="#ffffff" name='MainFoot' height="100" id="layout">
 															<div tid="MainFoot" class="drop_target" id="t4" style="width: 165px; height: 100px;"></div>
 														</td>
 													</tr>
