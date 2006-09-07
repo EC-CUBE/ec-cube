@@ -678,6 +678,7 @@ function fnCreateArr( addEvt , top , left ){
 			}
 		}
     }
+    
     arrObj = arrObjtmp;
 }
 
@@ -685,7 +686,7 @@ function fnCreateArr( addEvt , top , left ){
 function fnChangeObj( tid ){
 	for ( var i = 0; i < arrObj[tid].length-1; i++ ) {
     	for ( var j = arrObj[tid].length-1; j > i; j-- ) {
-			if ( arrObj[tid][j].top < arrObj[tid][i].top ) {
+			if ( arrObj[tid][j].top <= arrObj[tid][i].top ) {
 				var arrTemp = new Array();
 				arrTemp = arrObj[tid][j];
 				arrObj[tid][j] = arrObj[tid][i];
