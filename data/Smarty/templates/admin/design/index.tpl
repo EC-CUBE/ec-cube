@@ -751,10 +751,10 @@ s
 				target_height = NaviHeight;
 			}else if (tid == 'MainHead' ) {
 				target_height = MainHeadHeight;
-				alert('MainHead'+target_height);
+				alert(target_height);
 			}else if (tid == 'MainFoot') {
 				target_height = MainFootHeight;
-				alert('MainFoot'+target_height);
+				alert(target_height);
 			}else if (tid == 'Unused'){
 				target_height = NaviHeight+100;
 			}
