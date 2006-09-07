@@ -480,7 +480,7 @@ function onMouseDown (evt) {
 	    setOpacity ( gDragged, 0.6 );
 	
 	    // ドラッグ中は最前面表示
-	    setZindex ( gDragged , 210);
+	    setZindex ( gDragged , 100);
 	    
 	    addEvent ( document, 'mousemove', onMouseMove, false );
 	    addEvent ( document, 'mouseup', onMouseUp, false );
