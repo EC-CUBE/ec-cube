@@ -573,8 +573,8 @@ function isEventOnElm (evt, drop_target_id) {
     
     var drop_target = document.getElementById( drop_target_id );
     
-	drp_left = drop_target.offsetLeft;
-	drp_top = drop_target.offsetTop;
+	drp_left = getX(drop_target);
+	drp_top = getY(drop_target);
     
     var x = drp_left;
     var y = drp_top;
