@@ -692,7 +692,7 @@ function fnSetTargetHeight(){
 	var MainHeadHeight = defMainNavi;
 	var MainFootHeight = defMainNavi;
 	var UnusedHeight = defUnused;
-
+/*
 	// 高さ計算
     for ( var cnt = 0; cnt < all_elms.length; cnt++ ) {
 		var target_height = 0;
@@ -706,7 +706,7 @@ function fnSetTargetHeight(){
 			}
 
 			// 下の幅
-			target_height = target_height;
+			target_height = target_height + 20;
 
 			// 左右ナビ、未使用領域の高さを保持
 			if (tid == 'LeftNavi' || tid == 'RightNavi' || tid == 'Unused') {
@@ -771,9 +771,9 @@ function fnSetTargetHeight(){
 					all_td[i].height = MainHeight;	
 				}
 		    }
-
 		}
 	}
+	*/
 }
 
 //ウインドウサイズ取得
