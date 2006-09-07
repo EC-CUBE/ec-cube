@@ -152,7 +152,7 @@ function fnTargetSelf(){
 								<!--▲レイアウト　ここまで-->
 				
 								<!--▼未使用ブロック　ここから-->
-								<td bgcolor="#ffffff" align="center" valign = 'top'>
+								<td bgcolor="#ffffff" align="center" valign = 'top'  cellspacing="" cellpadding="" summary=" ">
 									<table width="140" border="0" cellspacing="" cellpadding="" summary=" " bgcolor="#ffffff">
 										<tr class="fs12n">
 											<td bgcolor="#ffffff" align="center" height="400" name="Unused" id="layout">
