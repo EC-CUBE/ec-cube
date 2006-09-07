@@ -445,7 +445,7 @@ function onMouseDown (evt) {
 	    //
 	   
 	    // ドラッグ中は半透明
-	//    setOpacity ( gDragged, 0.6 );
+	    setOpacity ( gDragged, 0.6 );
 	
 	    // ドラッグ中は最前面表示
 	    setZindex ( gDragged , 0);
