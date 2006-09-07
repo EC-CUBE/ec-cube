@@ -499,8 +499,7 @@ function onMouseMove(evt) {
 				fnChangeObj(tid);
 		    }
 		}else{
-			if ( all_elms[i].attributes['tid'] && all_elms[i].style.background!="#ffffff") {
-				alert(all_elms[i].attributes['tid'].nodeValue);
+			if ( all_elms[i].attributes['tid'] && all_elms[i].attributes['tid'].nodeValue!='Unused' && all_elms[i].style.background!="#ffffff") {
 				// «ÿ∑ øß§Œ —ππ
 				all_elms[i].style.background="#ffffff";
 			}
