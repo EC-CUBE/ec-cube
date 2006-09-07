@@ -736,6 +736,7 @@ function fnSetTargetHeight(){
 	if (MainHeight < defMain) {
 		MainHeight = defMain;
 	}
+	alert(MainHeight);
 	
 	// メイン部分のほうが大きい場合には左右ナビも大きくする
 	if (NaviHeight < MainHeadHeight + MainFootHeight + MainHeight) {
@@ -762,7 +763,7 @@ function fnSetTargetHeight(){
 			}
 
 			all_elms[cnt].style.height = target_height
-/*
+/************************************************************************************************************
 			// 各テーブルの高さも変更
 		    for (var i = 0; i < all_td.length; i++) {
 		    	if (all_td[i].name == tid) {
@@ -771,7 +772,7 @@ function fnSetTargetHeight(){
 					all_td[i].height = MainHeight;	
 				}
 		    }
-*/
+*************************************************************************************************************/
 		}
 	}
 }
