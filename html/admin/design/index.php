@@ -170,8 +170,6 @@ foreach($arrBlocPos as $key => $val){
 	}
 }
 
-sfprintr($tpl_arrBloc);
-
 // 未使用のブロックデータを追加
 foreach($arrBloc as $key => $val){
 	if (!lfChkBloc($val, $tpl_arrBloc)) {
@@ -180,6 +178,8 @@ foreach($arrBloc as $key => $val){
 		$cnt++;
 	}
 }
+
+sfprintr($tpl_arrBloc);
 $objPage->tpl_arrBloc = $tpl_arrBloc;
 $objPage->bloc_cnt = count($tpl_arrBloc);
 $objPage->page_id = $page_id;
