@@ -861,10 +861,6 @@ function init () {
 	// ウィンドウサイズ変更イベントに関連付け
     window.onresize = fnMoveObject;
 
-    //
-    // Assign Event Handlers
-    //
-    
     // divタグを取得
     all_elms = document.getElementsByTagName ( 'div' );
     
@@ -886,14 +882,11 @@ function init () {
 	fnCreateArr(0);
 	
     // 並び替え
-	fnSortObj();
-	
-    // 並び替え
-//	fnMoveObject();
+	fnMoveObject();
 	
 	<!--{$complate_msg}-->
 }
 
 // 画面のロードイベントに関連付け
-addEvent ( window, 'load', init, false );
+//addEvent ( window, 'load', init, false );
 </script>
