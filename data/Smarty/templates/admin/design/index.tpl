@@ -501,8 +501,10 @@ function onMouseMove(evt) {
 				fnChangeObj(tid);
 		    }
 		}else{
-            // «ÿ∑ øß§Œ —ππ
-            all_elms[i].style.background="#ffffff";
+			 if ( all_elms[i].attributes['tid'] ) {
+	            // «ÿ∑ øß§Œ —ππ
+	            all_elms[i].style.background="#ffffff";
+			 }
 		}
     }
     
