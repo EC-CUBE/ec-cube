@@ -446,6 +446,7 @@ function moveElm ( elm, x, y ) {
 
     elm.style.left = x + 'px';
     elm.style.top = y + 'px';
+    alert("stop");
 }
 
 // マウスダウンイベント
