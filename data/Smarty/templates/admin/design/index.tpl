@@ -526,6 +526,8 @@ function onMouseUp(evt) {
     
     // 並び替え
 	fnSortObj();
+    // 並び替え
+	fnSortObj();
     
     // hidden要素の書き換え
 	var did = getAttrValue( gDragged, 'did' );
