@@ -109,8 +109,8 @@ function fnTargetSelf(){
 												<table border="0" width="165" height="400" cellspacing="1" cellpadding="" summary=" " bgcolor="#cccccc">
 													<!-- ¡ú¡ù¡ú ¥á¥¤¥ó¾åÉô¥Æ¡¼¥Ö¥ë ¡ù¡ú¡ù -->
 													<thead>
-													<tr class="fs12n" align="top">
-														<td bgcolor="#ffffff" valign="top" name='MainHead' height="100" id="layout">
+													<tr class="fs12n">
+														<td bgcolor="#ffffff" name='MainHead' height="100" id="layout">
 															<div tid="MainHead" class="drop_target" id="t2" style="width: 165px; height: 100px;"></div>
 														</td>
 													</tr>
