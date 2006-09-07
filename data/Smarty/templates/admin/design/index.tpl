@@ -865,7 +865,6 @@ function init () {
 	// tdタグを取得
 	all_td = document.getElementsByTagName ( 'td' );
 
-/**************************************************************************************************************************/
 	// ブロックの高さを取得する
 	for ( var i = 0; i < all_elms.length; i++) {
 		var elm_class = getAttrValue ( all_elms[i], 'class' );
@@ -873,7 +872,7 @@ function init () {
 			all_elms[i].height = all_elms[i].offsetHeight
 		}
 	}
-/**************************************************************************************************************************/
+	alert("gg");
 
 	// 配列作成
 	fnCreateArr(0);
