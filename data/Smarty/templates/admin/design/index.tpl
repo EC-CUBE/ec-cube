@@ -886,7 +886,10 @@ function init () {
 	fnCreateArr(0);
 	
     // สยคำยุคจ
-	fnMoveObject();
+	fnSortObj();
+	
+    // สยคำยุคจ
+//	fnMoveObject();
 	
 	<!--{$complate_msg}-->
 }
