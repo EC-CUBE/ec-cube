@@ -367,6 +367,7 @@ function setZindex(node, val) {
 
 // 値を取得
 function getAttrValue ( elm, attrname ) {
+alert(elm);
     return elm.attributes[ attrname ].nodeValue;
 }
 
@@ -867,8 +868,6 @@ function init () {
 
 	// ブロックの高さを取得する
 	for ( var i = 0; i < all_elms.length; i++) {
-		alert("gg");
-	
 		var elm_class = getAttrValue ( all_elms[i], 'class' );
 		
 		if (elm_class == 'dragged_elm') {
