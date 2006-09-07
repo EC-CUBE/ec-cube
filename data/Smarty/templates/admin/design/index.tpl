@@ -500,12 +500,6 @@ function onMouseMove(evt) {
 
 // マウスアップイベント       
 function onMouseUp(evt) {
-
-	// 半透明、マウスポインタ、最前面処理を戻す
-    setOpacity( gDragged, 1);
-    setCursor ( gDragged, 'hand' );
-    setZindex ( gDragged , 2);
-
 	// イベントの関連付け解除
 	if (mouseFlg == true) {
 	    removeEvent ( document, 'mousemove', onMouseMove, false );
@@ -529,6 +523,13 @@ function onMouseUp(evt) {
 	var did = getAttrValue( gDragged, 'did' );
 	var target_id = "target_id_"+did;
 	document.form1[target_id].value = getAttrValue( gDragged, 'target_id' );
+	
+
+	// 半透明、マウスポインタ、最前面処理を戻す
+    setOpacity( gDragged, 1);
+    setCursor ( gDragged, 'hand' );
+    setZindex ( gDragged , 2);
+
 }
 
 // DropTarget上にオブジェクトが来たかを判断する
