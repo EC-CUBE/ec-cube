@@ -582,7 +582,7 @@ function isEventOnElm (evt, drop_target_id) {
 	var width = getWidth ( drop_target );
 	var height = getHeight ( drop_target );
     
-	alert(evtX +" / "+ x +" / "+ evtY +" / "+ y +" / "+ width +" / "+ height;);
+	alert(evtX +" / "+ x +" / "+ evtY +" / "+ y +" / "+ width +" / "+ height);
 
     return evtX > x && evtY > y && evtX < x + width && evtY < y + height;
 }
