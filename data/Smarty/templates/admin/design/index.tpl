@@ -1,7 +1,7 @@
 <style type="text/css">    
     div.dragged_elm {
         position:   absolute;
-        z-index:	0;
+        z-index:	1;
         border:     1px solid black;
         background: rgb(195,217,255);
         color:      #333;
