@@ -6,9 +6,6 @@ body {
 	font-family:"£Í£Ó £Ð¥´¥·¥Ã¥¯","Hiragino Maru Gothic Pro","¥Ò¥é¥®¥Î´Ý¥´ Pro W4";
 }
 
-input,select,option,textarea {
-	font-size: 12px;
-}
 
 /*LINK*/
 a:link { color: #006699; text-decoration: none; }
