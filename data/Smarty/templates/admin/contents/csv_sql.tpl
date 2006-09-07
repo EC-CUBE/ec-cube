@@ -151,7 +151,7 @@ function fnTargetSelf(){
 											<td bgcolor="#ffffff" align="left">
 												<span class="red12"><!--{$arrErr.sql}--></span>
 												<div>
-												<textarea name="sql" cols=75 rows=30 align="left" class="area75" wrap=off style="<!--{if $arrErr.sql != ""}-->background-color: <!--{$smarty.const.ERR_COLOR}--><!--{/if}--> width: 547px;"><!--{$arrSqlData.sql}--></textarea>
+												<textarea name="sql" cols=75 rows=30 align="left" wrap=off style="<!--{if $arrErr.sql != ""}-->background-color: <!--{$smarty.const.ERR_COLOR}--><!--{/if}--> width: 547px;"><!--{$arrSqlData.sql}--></textarea>
 												</div>
 												<div align="right">
 												</div>
