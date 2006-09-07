@@ -872,7 +872,7 @@ function init () {
 	for ( var i = 0; i < all_elms.length; i++) {
 		var elm_class = getAttrValue ( all_elms[i], 'class' );
 		if (elm_class == 'dragged_elm') {
-			var tid = getAttrValue ( all_elms[i], 'tid' );
+			var tid = getAttrValue ( all_elms[i], 'did' );
 			alert(tid);
 			alert(all_elms[i].offsetLeft);
 		}
