@@ -568,8 +568,8 @@ function isEventOnElm (evt, drop_target_id) {
 		return '';
 	}
 
-    var evtX = getEventX(evt) + document.body.scrollLeft;
-    var evtY = getEventY(evt) + document.body.scrollTop;
+    var evtX = getEventX(evt) + getPageScrollX;
+    var evtY = getEventY(evt) + getPageScrollY;
     
     var drop_target = document.getElementById( drop_target_id );
     
