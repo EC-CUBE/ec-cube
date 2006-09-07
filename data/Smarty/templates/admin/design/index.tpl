@@ -384,12 +384,14 @@ function setAttrValue ( elm, attrname, val ) {
 
 // オブジェクトのX座標を取得
 function getX ( elm ) {
-   return parseInt(elm.style.left);
+//   return parseInt(elm.style.left);
+	return parseInt(elm.style.offsetLeft);
 }
 
 // オブジェクトのY座標を取得
 function getY ( elm ) {
-    return parseInt(elm.style.top);
+	return parseInt(elm.style.offsetTop);
+//    return parseInt(elm.style.top);
 }
 
 // X座標を取得
@@ -670,8 +672,8 @@ function fnChangeObj( tid ){
 function fnSetObj( tid, cnt ){
 	var target_height = 0;
 	
-	drp_left = all_elms[cnt].offsetLeft;
-	drp_top = all_elms[cnt].offsetTop;
+	drp_left = getX(); //all_elms[cnt].offsetLeft;
+	drp_top = getY(); //all_elms[cnt].offsetTop;
 
 	for ( var j = 0; j < arrObj[tid].length; j++ ) {
 		// 配置する座標の取得
