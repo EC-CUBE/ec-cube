@@ -727,7 +727,7 @@ s
 	}
 
 	// メイン領域の高さを保持
-//	alert(NaviHeight+"/"+MainHeadHeight+"/"+MainFootHeight);
+	alert(NaviHeight+"/"+MainHeadHeight+"/"+MainFootHeight);
 	MainHeight = NaviHeight - ( MainHeadHeight + MainFootHeight );
 	if (MainHeight < defMain) {
 		MainHeight = defMain;
@@ -751,10 +751,8 @@ s
 				target_height = NaviHeight;
 			}else if (tid == 'MainHead' ) {
 				target_height = MainHeadHeight;
-				alert(target_height);
 			}else if (tid == 'MainFoot') {
 				target_height = MainFootHeight;
-				alert(target_height);
 			}else if (tid == 'Unused'){
 				target_height = NaviHeight+100;
 			}
