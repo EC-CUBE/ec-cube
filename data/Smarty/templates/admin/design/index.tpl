@@ -672,7 +672,7 @@ function fnSetObj( tid, cnt ){
 		// 配置を行う
 		moveElm ( arrObj[tid][j].obj, left ,top);
 		
-		alert(top);
+		//alert(top);
 
 		// 高さ計算
 		target_height = target_height + arrObj[tid][j].margin + arrObj[tid][j].height;
