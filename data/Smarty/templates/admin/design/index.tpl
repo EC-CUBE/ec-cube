@@ -732,11 +732,11 @@ function fnSetTargetHeight(){
 	}
 
 	// メイン領域の高さを保持
+	alert(NaviHeight+"/"+MainHeadHeight+"/"+MainFootHeight);
 	MainHeight = NaviHeight - ( MainHeadHeight + MainFootHeight );
 	if (MainHeight < defMain) {
 		MainHeight = defMain;
 	}
-	alert(MainHeight);
 	
 	// メイン部分のほうが大きい場合には左右ナビも大きくする
 	if (NaviHeight < MainHeadHeight + MainFootHeight + MainHeight) {
