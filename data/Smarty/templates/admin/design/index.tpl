@@ -880,7 +880,7 @@ function init () {
 		
 		if (elm_class == 'dragged_elm') {
 			all_elms[i].style.height = all_elms[i].offsetHeight + 'px';
-			alert(all_elms[i].offsetHeight);
+			alert(typeof all_elms[i].offsetHeight);
 		}
 	}
 
