@@ -527,8 +527,7 @@ function onMouseUp(evt) {
     setZindex ( gDragged , 2);
     
     // 並び替え
-//	fnSortObj();
-    
+	fnSortObj();
 }
 
 // DropTarget上にオブジェクトが来たかを判断する
