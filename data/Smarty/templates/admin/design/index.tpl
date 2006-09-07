@@ -844,7 +844,7 @@ function fnMoveObject() {
 	scrX = GetWindowSize("width");
 	scrY = GetWindowSize("height");
 	
-	//fnSortObj();
+	fnSortObj();
 }
 
 
