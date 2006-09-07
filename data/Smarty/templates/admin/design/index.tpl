@@ -81,7 +81,7 @@ function fnTargetSelf(){
 						<!--▼レイアウト編集　ここから-->
 						<table width="678" border="0" cellspacing="" cellpadding="" summary=" ">
 							<tr class="fs12n">
-								<td bgcolor="#f2f1ec" align="center" ><table border="" cellspacing="1" cellpadding="8" summary=" "><tr><td><strong>レイアウト編集</strong></td></tr></table></td>
+								<td bgcolor="#f2f1ec" align="center" ><table border="1" cellspacing="1" cellpadding="8" summary=" "><tr><td><strong>レイアウト編集</strong></td></tr></table></td>
 								<td bgcolor="#f2f1ec" align="center" ><strong>未使用ブロック</strong></td>
 							</tr>
 							<tr class="fs12n">
