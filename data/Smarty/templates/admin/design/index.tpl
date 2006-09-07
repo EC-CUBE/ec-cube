@@ -80,8 +80,8 @@ function fnTargetSelf(){
 
 						<!--▼レイアウト編集　ここから-->
 						<table width="678" border="0" cellspacing="1" cellpadding="8" summary=" ">
-							<tr class="fs12n">
-								<td>
+						<tr class="fs12n">
+						<td>
 						
 						<table width="678" border="0" cellspacing="" cellpadding="" summary=" ">
 							<tr class="fs12n">
@@ -162,10 +162,10 @@ function fnTargetSelf(){
 								</td>
 							</tr>
 						</table>
-						
 						</td>
-						<td>
 						<!--▲レイアウト編集　ここまで-->
+						
+						<td>
 						<table width="678" border="0" cellspacing="" cellpadding="" summary=" ">
 							<tr class="fs12n">
 								<!--▼未使用ブロック　ここから-->
@@ -187,7 +187,7 @@ function fnTargetSelf(){
 							</tr>
 						</table>
 						</td>
-							</tr>
+						</tr>
 						</table>
 						
 						<table width="678" border="0" cellspacing="0" cellpadding="0" summary=" ">
