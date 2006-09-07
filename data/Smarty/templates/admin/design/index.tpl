@@ -739,7 +739,7 @@ function fnSetTargetHeight(){
 		NaviHeight = MainHeadHeight + MainFootHeight + MainHeight;	
 	}
 	
-	alert(NaviHeight+"/"+MainHeadHeight + MainFootHeight + MainHeight);
+	alert(NaviHeight+"/"+(MainHeadHeight + MainFootHeight + MainHeight));
 	
 	// สันน
     for ( var cnt = 0; cnt < all_elms.length; cnt++ ) {
