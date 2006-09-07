@@ -664,6 +664,7 @@ function fnCreateArr( addEvt , top , left ){
 			if (gDragged != "") {
 				if (did != getAttrValue ( gDragged, 'did' )) {
 					// top は常にオブジェクトの中心を取得するようにする
+					alert(arrObjtmp[target_id][len].top);
 					arrObjtmp[target_id][len].top = (parseInt(getX( all_elms[i] )) + arrObjtmp[target_id][len].top / 2 );
 					arrObjtmp[target_id][len].left = getY( all_elms[i] );
 				}else {
