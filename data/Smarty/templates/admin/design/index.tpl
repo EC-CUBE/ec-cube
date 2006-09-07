@@ -516,9 +516,6 @@ function onMouseUp(evt) {
 		fnCreateArr(1, gOrgY, gOrgX);
     }
     
-    // 並び替え
-	fnSortObj();
-
     // hidden要素の書き換え
 	var did = getAttrValue( gDragged, 'did' );
 	var target_id = "target_id_"+did;
@@ -528,6 +525,10 @@ function onMouseUp(evt) {
     setOpacity( gDragged, 1);
     setCursor ( gDragged, 'hand' );
     setZindex ( gDragged , 2);
+    
+    // 並び替え
+	fnSortObj();
+    
 }
 
 // DropTarget上にオブジェクトが来たかを判断する
