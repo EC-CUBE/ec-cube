@@ -341,26 +341,17 @@ function setCursor ( elm, curtype ) {
 function setOpacity(node,val) {
 
     if (node.filters) {
-
-        try {
-           
-            node.filters["alpha"].opacity = val*100;
-
-        }
-        catch (e) {
-        }
-       
+		node.filters["alpha"].opacity = val*100;
     } else if (node.style.opacity) {
-
         node.style.opacity = val;
-
     }
-   
 }
 
 // Zindexを変更する（前面表示切替）
 function setZindex(node, val) {
-	node.style.zIndex = val;
+
+
+	node.zIndex = val;
 }
 
 // 値を取得
@@ -415,12 +406,48 @@ function getHeight ( elm ) {
     return parseInt( elm.offsetHeight );
 }
 
+// ページの可視領域のX座標を取得する
+function getPageScrollX()
+{
+	var x = 0;
+
+	if (document.body && document.body.scrollLeft != null) {
+		x = document.body.scrollLeft;
+	} else if (document.documentElement && document.documentElement.scrollLeft != null) {
+		x = document.documentElement.scrollLeft;
+	} else if (window.scrollX != null) {
+		x = window.scrollX;
+	} else if (window.pageXOffset != null) {
+		x = window.pageXOffset;
+	}
+	
+	return x;
+}
+
+// ページの可視領域のY座標を取得する
+function getPageScrollY()
+{
+	var y = 0;
+	
+	if (document.body && document.body.scrollTop != null) {
+		y = document.body.scrollTop;
+	} else if (document.documentElement && document.documentElement.scrollTop != null) {
+		y = document.documentElement.scrollTop;
+	} else if (window.scrollY != null) {
+		y = window.scrollY;
+	} else if (window.pageYOffset != null) {
+		y = window.pageYOffset;
+	}
+	
+	return y;
+}
+
+
 // オブジェクトの座標をセット
 function moveElm ( elm, x, y ) {
 
     elm.style.left = x + 'px';
     elm.style.top = y + 'px';
-
 }
 
 // マウスダウンイベント
@@ -585,42 +612,6 @@ function isEventOnElm (evt, drop_target_id) {
 //	alert(evtX +" / "+ x +" / "+ evtY +" / "+ y +" / "+ width +" / "+ height);
 
     return evtX > x && evtY > y && evtX < x + width && evtY < y + height;
-}
-
-// ページの可視領域のX座標を取得する
-function getPageScrollX()
-{
-	var x = 0;
-
-	if (document.body && document.body.scrollLeft != null) {
-		x = document.body.scrollLeft;
-	} else if (document.documentElement && document.documentElement.scrollLeft != null) {
-		x = document.documentElement.scrollLeft;
-	} else if (window.scrollX != null) {
-		x = window.scrollX;
-	} else if (window.pageXOffset != null) {
-		x = window.pageXOffset;
-	}
-	
-	return x;
-}
-
-// ページの可視領域のY座標を取得する
-function getPageScrollY()
-{
-	var y = 0;
-	
-	if (document.body && document.body.scrollTop != null) {
-		y = document.body.scrollTop;
-	} else if (document.documentElement && document.documentElement.scrollTop != null) {
-		y = document.documentElement.scrollTop;
-	} else if (window.scrollY != null) {
-		y = window.scrollY;
-	} else if (window.pageYOffset != null) {
-		y = window.pageYOffset;
-	}
-	
-	return y;
 }
 
 // オブジェクトの並び替えを行う
