@@ -265,10 +265,10 @@ function SC_Size() {
 var defUnused = 500;	// 未使用領域のデフォルトの高さ
 var defNavi   = 400;	// 左右ナビのデフォルトの高さ
 var defMainNavi  = 100;	// メイン上下のデフォルトの高さ
-var defMain   = 200;	// メインのデフォルトの高さ
+var defMain   = 190;	// メインのデフォルトの高さ
 
 var NowMaxHeight = 0;		// 現在の最大の高さ
-var MainHeight = 200;
+var MainHeight = 190;
 
 var marginUnused 	= 688;	// 未使用領域の左マージン
 var marginLeftNavi  = 180;	// 左ナビの左マージン
@@ -513,7 +513,7 @@ function onMouseUp(evt) {
 
     if ( isOnDropTarget (evt) ) {
         // 並び替え
-		fnSortObj();
+		//fnSortObj();
     }
     else {
 		// 元の位置に戻す
