@@ -735,7 +735,7 @@ function fnSetTargetHeight(){
 	}
 	
 	// メイン部分のほうが大きい場合には左右ナビも大きくする
-	if (NaviHeight < MainHeadHeight + MainFootHeight + MainHeight) {
+	if (NaviHeight <= MainHeadHeight + MainFootHeight + MainHeight) {
 		NaviHeight = MainHeadHeight + MainFootHeight + MainHeight;	
 	}
 	
