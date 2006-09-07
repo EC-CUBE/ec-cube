@@ -449,10 +449,10 @@ function onMouseDown (evt) {
 	
 	    // ドラッグ中は最前面表示
 	    setZindex ( gDragged , 0);
-	/*    
+	    
 	    addEvent ( document, 'mousemove', onMouseMove, false );
 	    addEvent ( document, 'mouseup', onMouseUp, false );
-	    
+	/*    
 	    // ドラッグを開始したときは高さを一度初期化する。
 	    NowMaxHeight = defNavi;
 	    	    
