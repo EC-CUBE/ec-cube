@@ -485,8 +485,10 @@ function onMouseMove(evt) {
 	            var tid = getAttrValue ( all_elms[i], 'tid' );
 	            
 	            // 背景色の変更
-	            all_elms[i].style.background="#ffffdd";
-
+	            if ( all_elms[i].attributes['tid'].nodeValue!='Unused') {
+		            all_elms[i].style.background="#ffffdd";
+	            }
+	            
 				// target_id の書き換え
 		        setAttrValue ( gDragged, 'target_id', tid );
 
@@ -499,7 +501,7 @@ function onMouseMove(evt) {
 				fnChangeObj(tid);
 		    }
 		}else{
-			if ( all_elms[i].attributes['tid'] && all_elms[i].attributes['tid'].nodeValue!='Unused' && all_elms[i].style.background!="#ffffff") {
+			if ( all_elms[i].attributes['tid'] && all_elms[i].style.background!="#ffffff") {
 				// 背景色の変更
 				all_elms[i].style.background="#ffffff";
 			}
