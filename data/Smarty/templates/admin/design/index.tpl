@@ -150,7 +150,17 @@ function fnTargetSelf(){
 									</table>
 								</td>
 								<!--▲レイアウト　ここまで-->
-				
+							</tr>
+							<tr class="fs12n">
+								<td bgcolor="#f2f1ec" align="center" colspan=2>
+									<input type='button' value='保存' name='subm' onclick="fnTargetSelf(); fnFormModeSubmit('form1','confirm','','');"  />
+									<input type='button' value='プレビュー' name='preview' onclick="doPreview();" <!--{if $page_id == "0" or $exists_page == "0" }-->DISABLED<!--{/if}--> />
+								</td>
+							</tr>
+						</table>
+						<!--▲レイアウト編集　ここまで-->
+						<table width="678" border="0" cellspacing="1" cellpadding="8" summary=" ">
+							<tr class="fs12n">
 								<!--▼未使用ブロック　ここから-->
 								<td bgcolor="#ffffff" align="center" valign = 'top'>
 									<table width="140" border="0" cellspacing="" cellpadding="" summary=" " bgcolor="#ffffff">
@@ -168,14 +178,7 @@ function fnTargetSelf(){
 								</td>
 								<!--▲未使用ブロック　ここまで-->
 							</tr>
-							<tr class="fs12n">
-								<td bgcolor="#f2f1ec" align="center" colspan=2>
-									<input type='button' value='保存' name='subm' onclick="fnTargetSelf(); fnFormModeSubmit('form1','confirm','','');"  />
-									<input type='button' value='プレビュー' name='preview' onclick="doPreview();" <!--{if $page_id == "0" or $exists_page == "0" }-->DISABLED<!--{/if}--> />
-								</td>
-							</tr>
 						</table>
-						<!--▲レイアウト編集　ここまで-->
 						
 						<table width="678" border="0" cellspacing="0" cellpadding="0" summary=" ">
 							<tr><td colspan="3"><img src="/img/contents/main_bar.jpg" width="678" height="10" alt=""></td></tr>
