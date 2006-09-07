@@ -15,6 +15,7 @@ a:hover { color: #f9a406; text-decoration: underline; }
 
 
 /*FORM*/
+input{ font-size: 13px;}
 .box6 { width: 54px; font-size: 13px;}	/*W6*/
 .box10 { width: 82px; font-size: 13px;}	/*W10*/
 .box20 { width: 152px; font-size: 13px;}	/*W20*/
