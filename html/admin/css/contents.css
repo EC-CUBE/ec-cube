@@ -32,7 +32,7 @@ a:hover { color: #f9a406; text-decoration: underline; }
 .area80 { width: 572px; height: 134px; font-size: 10px;}	/*W80¡ßH8*/
 .area96 { width: 694px; height: 420px; font-size: 10px;}	/*W80¡ßH30*/
 .area96_2 { width: 694px; height: 160px; font-size: 10px;}	/*W80¡ßH10*/
-.area90 { width: 694px; height: 420px; font-size: 14px;}	/*W80¡ßH30*/
+.area90 { font-size: 14px;}	/*W80¡ßH30*/
 
 
 /*COLOR*/
