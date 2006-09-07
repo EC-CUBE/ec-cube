@@ -78,6 +78,8 @@ if ($_POST['mode'] == 'confirm' or $_POST['mode'] == 'preview') {
 		$_POST['page_id'] = 0;
 	}
 	
+	sfprintr($_POST);
+	
 	// 更新用にデータを整える
 	$arrUpdBlocData = array();
 	$arrTargetFlip = array_flip($arrTarget);
