@@ -657,14 +657,14 @@ function fnCreateArr( addEvt , top , left ){
 			arrObjtmp[target_id][len] = new SC_Size();
 			arrObjtmp[target_id][len].id = did;
 			arrObjtmp[target_id][len].obj = all_elms[i];
-			arrObjtmp[target_id][len].width = getWidth ( all_elms[i] );
-			arrObjtmp[target_id][len].height = getHeight ( all_elms[i] );
+			arrObjtmp[target_id][len].width = getWidth( all_elms[i] );
+			arrObjtmp[target_id][len].height = getHeight( all_elms[i] );
 
-			// ドラッグ中のオブジェクトが存在すれば、どのオブジェクトだけマウスポインタの座標を指定する。
+			// ドラッグ中のオブジェクトが存在すれば、そのオブジェクトだけマウスポインタの座標を指定する。
 			if (gDragged != "") {
 				if (did != getAttrValue ( gDragged, 'did' )) {
 					// top は常にオブジェクトの中心を取得するようにする
-					arrObjtmp[target_id][len].top = (parseInt(getX( all_elms[i] )) + arrObjtmp[target_id][len].height / 2 );
+					arrObjtmp[target_id][len].top = (parseInt(getX( all_elms[i] )) + getHeight( arrObjtmp[target_id][len] ) / 2 );
 					arrObjtmp[target_id][len].left = getY( all_elms[i] );
 				}else {
 					arrObjtmp[target_id][len].top = top;
@@ -675,7 +675,6 @@ function fnCreateArr( addEvt , top , left ){
 				arrObjtmp[target_id][len].top = (parseInt(getX( all_elms[i] )) + arrObjtmp[target_id][len].height / 2 );
 				arrObjtmp[target_id][len].left = getY( all_elms[i] );
 			}
-			alert("stop");
 		}
     }
     arrObj = arrObjtmp;
