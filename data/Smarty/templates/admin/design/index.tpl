@@ -369,7 +369,7 @@ function setZindex(node, val) {
 function getAttrValue ( elm, attrname ) {
 	//alert(elm.nodeValue);
 	
-	alert(elm.attributes[ attrname ]);
+	alert(typeof(elm.attributes[ attrname ]));
 	
     //return elm.attributes[ attrname ].nodeValue;
 }
