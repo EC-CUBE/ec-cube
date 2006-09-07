@@ -511,11 +511,7 @@ function onMouseUp(evt) {
 	    mouseFlg = false;
 	}
 
-    if ( isOnDropTarget (evt) ) {
-        // 事び仑え
-		//fnSortObj();
-    }
-    else {
+    if ( !isOnDropTarget (evt) ) {
 		// 傅の疤弥に提す
         moveElm ( gDragged, gOrgX, gOrgY );
         setAttrValue ( gDragged, 'target_id', gtarget_id );
@@ -524,8 +520,6 @@ function onMouseUp(evt) {
 		fnCreateArr(1, gOrgY, gOrgX);
     }
     
-    // 事び仑え
-	fnSortObj();
     // 事び仑え
 	fnSortObj();
     
