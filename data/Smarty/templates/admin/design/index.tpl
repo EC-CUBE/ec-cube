@@ -349,7 +349,7 @@ function setOpacity(node,val) {
 // Zindexを変更する（前面表示切替）
 function setZindex(node, val) {
 	node.style.zIndex = val;
-	alert(val);
+//	alert(val);
 }
 
 // 値を取得
@@ -480,7 +480,7 @@ function onMouseDown (evt) {
 	    setOpacity ( gDragged, 0.6 );
 	
 	    // ドラッグ中は最前面表示
-	    setZindex ( gDragged , 0);
+	    setZindex ( gDragged , 2);
 	    
 	    addEvent ( document, 'mousemove', onMouseMove, false );
 	    addEvent ( document, 'mouseup', onMouseUp, false );
@@ -560,7 +560,7 @@ function onMouseUp(evt) {
 	// 半透明、マウスポインタ、最前面処理を戻す
     setOpacity( gDragged, 1);
     setCursor ( gDragged, 'hand' );
-    setZindex ( gDragged , 2);
+    setZindex ( gDragged , 0);
     
     // 並び替え
 	fnSortObj();
