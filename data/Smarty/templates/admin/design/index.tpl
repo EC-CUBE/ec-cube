@@ -118,7 +118,7 @@ function fnTargetSelf(){
 													<!-- ¡ú¡ù¡ú ¥á¥¤¥ó¾åÉô¥Æ¡¼¥Ö¥ë ¡ù¡ú¡ù -->
 													<!-- ¡ú¡ù¡ú ¥á¥¤¥ó ¡ù¡ú¡ù -->
 													<tr class="fs12n">
-														<td height="198" align="center" name='Main'>¥á¥¤¥ó</td>
+														<td height=100% align="center" name='Main'>¥á¥¤¥ó</td>
 													</tr>
 													<!-- ¡ú¡ù¡ú ¥á¥¤¥ó ¡ù¡ú¡ù -->
 													<!-- ¡ú¡ù¡ú ¥á¥¤¥ó²¼Éô¥Æ¡¼¥Ö¥ë ¡ù¡ú¡ù -->
