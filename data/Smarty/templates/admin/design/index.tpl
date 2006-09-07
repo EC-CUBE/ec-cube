@@ -276,14 +276,11 @@ var marginRightNavi = 512;	// 右ナビの左マージン
 var marginMain		= 348;	// メイン上下の左マージン
 var marginMainFootTop= 595;	// メイン下の上マージン
 
-var errMargin=25*<!--{$errCnt}-->;			// エラーメッセージ表示時の上マージン
-
 var gDragged = "";			// ドラッグ中オブジェクト
 var gDropTarget = "";		// ドラッグ開始時のDropTarget
 
 var arrObj = new Object();	// ブロックオブジェクト格納用
 
-var objCheckLine = "";
 var mouseFlg = false;
 
 var all_elms;				// divタグオブジェクト格納用
@@ -671,8 +668,6 @@ function fnSetObj( tid, cnt ){
 
 		// 配置を行う
 		moveElm ( arrObj[tid][j].obj, left ,top);
-		
-		//alert(top);
 
 		// 高さ計算
 		target_height = target_height + arrObj[tid][j].margin + arrObj[tid][j].height;
