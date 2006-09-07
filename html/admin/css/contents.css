@@ -7,7 +7,10 @@ body {
 	font-size: 13px;
 }
 
-
+input,select,option,textarea {
+	font-family:"£Í£Ó £Ð¥´¥·¥Ã¥¯","Hiragino Maru Gothic Pro","¥Ò¥é¥®¥Î´Ý¥´ Pro W4",Osaka,sans-serif;
+	font-size: 13px;
+}
 
 /*LINK*/
 a:link { color: #006699; text-decoration: none; }
@@ -16,24 +19,36 @@ a:hover { color: #f9a406; text-decoration: underline; }
 
 
 /*FORM*/
+.box3 { width: 33px; }	/*W3*/
 .box6 { width: 54px; }	/*W6*/
 .box10 { width: 82px; }	/*W10*/
 .box20 { width: 152px; }	/*W20*/
 .box25 { width: 187px; }	/*W25*/
 .box30 { width: 222px; }	/*W30*/
-.box33 { width: 243px; }	/*W30*/
+.box33 { width: 243px; }	/*W33*/
+.box35 { width: 257px; }	/*W35*/
 .box40 { width: 292px; }	/*W40*/
+.box45 { width: 341px; }	/*W45*/
+.box50 { width: 362px; }	/*W50*/
 .box60 { width: 432px; }	/*W60*/
+.box65 { width: 467px; }	/*W65*/
+.box76 { width: 544px; }	/*W76*/
 
 .area40 { width: 302px; height: 134px; }	/*W40¡ßH8*/
 .area45 { width: 337px; height: 290px; }	/*W40¡ßH20*/
 .area46 { width: 337px; height: 134px; }	/*W40¡ßH8*/
+.area50 { width: 372px; height: 82px; }	/*W50?H4*/
+.area55 { width: 407px; height: 82px; }	/*W50?H4*/
 .area59 { width: 432px; height: 134px; }	/*W59¡ßH8*/
+.area60 { width: 433px; height: 134px; }	/*W60?H8*/
+.area61 { width: 433px; height: 82px; }	/*W60?H4*/
 .area65 { width: 444px; height: 290px; }	/*W65¡ßH20*/
+.area70 { width: 512px; height: 186px; }	/*W70?H12*/
+.area75 { width: 547px; height: 186px; }	/*W75?H12*/
 .area80 { width: 572px; height: 134px; }	/*W80¡ßH8*/
 .area96 { width: 694px; height: 420px; }	/*W80¡ßH30*/
 .area96_2 { width: 694px; height: 160px; }	/*W80¡ßH10*/
-
+.area99 { width: 715px; height: 523px; }	/*W99?H40*/
 
 /*COLOR*/
 .ast { color: #cc0000; font-size: 90%; }
