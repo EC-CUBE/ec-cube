@@ -369,10 +369,10 @@ function setZindex(node, val) {
 function getAttrValue ( elm, attrname ) {
 	//alert(elm.nodeValue);
   var node=elm.item(0);
+	alert(111);
   var txtNode=node.firstChild;
   alert(txtNode.nodeValue);
 	
-	alert(111);
 	
     return elm.attributes[ attrname ].nodeValue;
 }
