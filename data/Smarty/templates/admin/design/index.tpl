@@ -107,29 +107,12 @@ function fnTargetSelf(){
 											<!-- ¡ú¡ù¡ú º¸¥Ê¥Ó¥Æ¡¼¥Ö¥ë ¡ù¡ú¡ù -->
 											<td bgcolor="#ffffff" align="center" valign = 'top'>
 												<table border="0" width="165" height="400" cellspacing="1" cellpadding="" summary=" " bgcolor="#cccccc">
-													<!-- ¡ú¡ù¡ú ¥á¥¤¥ó¾åÉô¥Æ¡¼¥Ö¥ë ¡ù¡ú¡ù -->
-													<thead>
-													<tr class="fs12n">
-														<td bgcolor="#ffffff" valign="top" name='MainHead' height="100" id="layout">
-															<div tid="MainHead" class="drop_target" id="t2" style="width: 165px; height: 100px;"></div>
-														</td>
-													</tr>
-													</thead>
-													<!-- ¡ú¡ù¡ú ¥á¥¤¥ó¾åÉô¥Æ¡¼¥Ö¥ë ¡ù¡ú¡ù -->
 													<!-- ¡ú¡ù¡ú ¥á¥¤¥ó ¡ù¡ú¡ù -->
 													<tr class="fs12n">
 														<td height="190" align="center" name='Main'> ¥á¥¤¥ó</td>
 													</tr>
 													<!-- ¡ú¡ù¡ú ¥á¥¤¥ó ¡ù¡ú¡ù -->
-													<!-- ¡ú¡ù¡ú ¥á¥¤¥ó²¼Éô¥Æ¡¼¥Ö¥ë ¡ù¡ú¡ù -->
-													<tfoot>
-													<tr class="fs12n">
-														<td bgcolor="#ffffff" valign="top" name='MainFoot' height="100" id="layout">
-															<div tid="MainFoot" class="drop_target" id="t4" style="width: 165px; height: 100px;"></div>
-														</td>
-													</tr>
-													</tfoot>
-													<!-- ¡ú¡ù¡ú ¥á¥¤¥ó²¼Éô¥Æ¡¼¥Ö¥ë ¡ù¡ú¡ù -->
+
 												</table>
 											</td>
 											<!-- ¡ú¡ù¡ú ±¦¥Ê¥Ó¥Æ¡¼¥Ö¥ë ¡ù¡ú¡ù -->
