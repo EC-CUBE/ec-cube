@@ -1,7 +1,6 @@
 <style type="text/css">    
     div.dragged_elm {
         position:   absolute;
-        z-index:    100;
         border:     1px solid black;
         background: rgb(195,217,255);
         color:      #333;
@@ -349,7 +348,7 @@ function setOpacity(node,val) {
 
 // Zindexを変更する（前面表示切替）
 function setZindex(node, val) {
-	node.style.zIndex = val+1000;
+	node.style.zIndex = val;
 }
 
 // 値を取得
