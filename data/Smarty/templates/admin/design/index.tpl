@@ -418,7 +418,7 @@ function moveElm ( elm, x, y ) {
 
 // マウスダウンイベント
 function onMouseDown (evt) {
-/*
+
     var target = evt.target ? evt.target : evt.srcElement;
     var x = getEventX ( evt );
     var y = getEventY ( evt );
@@ -458,7 +458,7 @@ function onMouseDown (evt) {
 	    	    
 	    mouseFlg = true;
 	}
-*/
+
 }
 
 
