@@ -427,7 +427,7 @@ function onMouseDown (evt) {
     // Save Information to Globals
     //
   	if (mouseFlg == false) {
-    /*
+    
 	    gDragged = target;
 	
 	    gDeltaX = x - getX(gDragged);
@@ -439,7 +439,7 @@ function onMouseDown (evt) {
 	    gOrgX = getX ( gDragged );
 	    gOrgY = getY ( gDragged );
 	    gtarget_id = getAttrValue ( gDragged, 'target_id' );
-	
+	/*
 	    //
 	    // Set
 	    //
