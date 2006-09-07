@@ -745,7 +745,6 @@ function fnSetTargetHeight(){
 	if (NaviHeight < MainHeadHeight + MainFootHeight + MainHeight) {
 		NaviHeight = MainHeadHeight + MainFootHeight + MainHeight;	
 	}
-	
 	// สันน
     for ( var cnt = 0; cnt < all_elms.length; cnt++ ) {
     	var target_height = 0;
@@ -768,7 +767,7 @@ function fnSetTargetHeight(){
 
 			all_elms[cnt].style.height = target_height
 		}else if ( getAttrValue ( all_elms[cnt], 'class' ) == 'main' ) {
-			alert(111);
+			alert(MainHeight);
 		}
 	}
 }
