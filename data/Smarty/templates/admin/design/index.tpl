@@ -8,7 +8,7 @@
         cursor:		hand;
         PADDING-RIGHT: 	2px;
         PADDING-LEFT: 	2px;
-        PADDING-BOTTOM: 2px; 
+        PADDING-BOTTOM: 4px; 
         PADDING-TOP: 	5px;
         FONT-SIZE: 		12pt;
     }
