@@ -266,6 +266,7 @@ width: 100px;
 }
 
 .number-on a{
+	margin: 8px;
 	background: url(/img/contents/number_bg_on.jpg);
 	background-repeat: repeat-x;
 	background-color: #f7c600;
@@ -274,7 +275,6 @@ width: 100px;
 	line-height: 160%;
 	font-weight: bold;
 	text-decoration:none;
-	margin: 8px;
 	
 }
 
