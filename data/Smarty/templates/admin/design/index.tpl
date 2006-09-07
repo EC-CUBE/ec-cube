@@ -765,9 +765,9 @@ function fnSetTargetHeight(){
 				target_height = NaviHeight+100;
 			}
 
-			all_elms[cnt].style.height = target_height
+			all_elms[cnt].style.height = target_height;
 		}else if ( getAttrValue ( all_elms[cnt], 'class' ) == 'main' ) {
-			all_elms[cnt].style.height = MainHeight;
+			all_elms[cnt].style.height = MainHeight-2;
 		}
 	}
 }
