@@ -179,7 +179,6 @@ foreach($arrBloc as $key => $val){
 	}
 }
 
-sfprintr($tpl_arrBloc);
 $objPage->tpl_arrBloc = $tpl_arrBloc;
 $objPage->bloc_cnt = count($tpl_arrBloc);
 $objPage->page_id = $page_id;
