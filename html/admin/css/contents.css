@@ -264,7 +264,7 @@ width: 100px;
 	font-weight: bold;
 	text-decoration:none;
 }
-/*
+
 .number-on a{
 	background: url(/img/contents/number_bg_on.jpg);
 	background-repeat: repeat-x;
@@ -276,7 +276,7 @@ width: 100px;
 	font-weight: bold;
 	text-decoration:none;
 }
-*/
+
 .number-on a:visited {
 	color:#ffffff;
 	text-decoration:none;
