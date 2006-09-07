@@ -269,13 +269,14 @@ width: 100px;
 	background: url(/img/contents/number_bg_on.jpg);
 	background-repeat: repeat-x;
 	background-color: #f7c600;
-	margin-top : 118px;
-	margin-bottom : 8px;
 	color:#ffffff;
 	font-size: 65%;
 	line-height: 160%;
 	font-weight: bold;
 	text-decoration:none;
+		margin-top : 8px;
+	margin-bottom : 8px;
+	
 }
 
 .number-on a:visited {
