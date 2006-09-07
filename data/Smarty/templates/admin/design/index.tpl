@@ -867,8 +867,9 @@ function init () {
 
 	// ブロックの高さを取得する
 	for ( var i = 0; i < all_elms.length; i++) {
+		alert("gg");
+	
 		var elm_class = getAttrValue ( all_elms[i], 'class' );
-			alert("gg");
 		
 		if (elm_class == 'dragged_elm') {
 			all_elms[i].height = all_elms[i].offsetHeight
