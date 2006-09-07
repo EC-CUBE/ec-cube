@@ -96,7 +96,7 @@
 										<tr>
 											<td bgcolor="#ffffff" colspan="2" class="fs12n">
 											<!--{if $arrErr.body}--><span class="red12"><!--{$arrErr.body}--></span><!--{/if}-->
-											<textarea name="body" cols="90" rows="40" class="area96" <!--{if $arrErr.body}--><!--{sfSetErrorStyle}--><!--{/if}-->><!--{$list_data.body|escape}--></textarea>
+											<textarea name="body" cols="90" rows="40" class="area90" <!--{if $arrErr.body}--><!--{sfSetErrorStyle}--><!--{/if}-->><!--{$list_data.body|escape}--></textarea>
 											</td>
 										</tr>
 									</table>
