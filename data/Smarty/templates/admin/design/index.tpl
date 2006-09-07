@@ -674,7 +674,7 @@ function fnCreateArr( addEvt , top , left ){
 				alert(getAttrValue ( gDragged, 'did' ) + "///" + arrObjtmp[target_id][len].top);
 			} else {
 				// top は常にオブジェクトの中心を取得するようにする
-				arrObjtmp[target_id][len].top = (parseInt(getX( all_elms[i] )) + arrObjtmp[target_id][len].height / 2 );
+				arrObjtmp[target_id][len].top = (parseInt(getX( all_elms[i] )) + getHeight( arrObjtmp[target_id][len] ) / 2 );
 				arrObjtmp[target_id][len].left = getY( all_elms[i] );
 			}
 		}
