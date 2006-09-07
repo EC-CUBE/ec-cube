@@ -349,9 +349,7 @@ function setOpacity(node,val) {
 
 // Zindexを変更する（前面表示切替）
 function setZindex(node, val) {
-
-
-	node.zIndex = val;
+	node.style.zIndex = val;
 }
 
 // 値を取得
