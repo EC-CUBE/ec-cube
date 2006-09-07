@@ -14,7 +14,7 @@
     }
 
     div.drop_target {
-        border:      1px solid black;
+        border:      1px solid gray;
         position:    relative;
         text-align:  center;
         color:       #333;
@@ -788,9 +788,6 @@ function fnSetTargetHeight(){
 			all_td[i].height = MainHeight-2;
 		}
     }
-		    
-	
-	
 }
 
 //ウインドウサイズ取得
