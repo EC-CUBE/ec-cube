@@ -263,6 +263,7 @@ a:hover { color: #f9a406; text-decoration: underline; }
 }
 
 .number-on a{
+	background: url(/img/contents/number_bg_on.jpg);
 	background-repeat: repeat-x;
 	background-color: #f7c600;
 	padding: 8px;
@@ -271,6 +272,7 @@ a:hover { color: #f9a406; text-decoration: underline; }
 	line-height: 160%;
 	font-weight: bold;
 	text-decoration:none;
+	height:10px;
 }
 
 .number-on a:visited {
