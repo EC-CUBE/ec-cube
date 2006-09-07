@@ -243,6 +243,8 @@ a:hover { color: #f9a406; text-decoration: underline; }
 	line-height: 160%;
 	font-weight: bold;
 	text-decoration:none;
+width: 100px; 
+
 }
 
 .number a:visited {
@@ -272,7 +274,6 @@ a:hover { color: #f9a406; text-decoration: underline; }
 	line-height: 160%;
 	font-weight: bold;
 	text-decoration:none;
-width: 100px; 
 }
 
 .number-on a:visited {
