@@ -401,23 +401,7 @@ function getEventX ( evt ) {
 
 // Y座標を取得
 function getEventY ( evt ) {
-//    return evt.pageY ? evt.pageY : evt.clientY;
-	var y = 0;
-	
-	if (null == evt) {
-		evt = window.event;
-	}
-	
-	if (evt.clientY != null) {
-		y = evt.clientY;
-	} else if (evt.pageY != null) {
-		y = evt.pageY;
-	} else if (window.opera != null) {
-		y = (document.documentElement ? window.pageYOffset : 0) + evt.clientY;
-	}
-	
-	return y;
-
+    return evt.clientY ? evt.clientY : evt.pageY;
 }
 
 // オブジェクトの幅を取得
