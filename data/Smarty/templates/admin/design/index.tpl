@@ -879,7 +879,6 @@ function init () {
 		var elm_class = getAttrValue ( all_elms[i], 'class' );
 		
 		if (elm_class == 'dragged_elm') {
-			all_elms[i].height = all_elms[i].offsetHeight
 			all_elms[i].style.height = all_elms[i].offsetHeight
 			alert(all_elms[i].offsetHeight);
 		}
