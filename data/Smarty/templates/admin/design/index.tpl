@@ -86,7 +86,7 @@ function fnTargetSelf(){
 							</tr>
 							<tr class="fs12n">
 								<!--▼レイアウト　ここから-->
-								<td bgcolor="#ffffff" align="center" valign = 'top' width="450">
+								<td bgcolor="#ffffff" align="center" valign = 'top'>
 									<table width="450" border=0 cellspacing="1" cellpadding="" summary=" " bgcolor="ffffff">
 										<tr class="fs12n"><td bgcolor="#ffffff" height=5px colspan=3></td></tr>
 										<tr class="fs12n" height = 50>
