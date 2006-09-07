@@ -500,13 +500,6 @@ function onMouseMove(evt) {
 
 // マウスアップイベント       
 function onMouseUp(evt) {
-	// イベントの関連付け解除
-	if (mouseFlg == true) {
-	    removeEvent ( document, 'mousemove', onMouseMove, false );
-	    removeEvent ( document, 'mouseup', onMouseUp, false );
-	    mouseFlg = false;
-	}
-
     if ( !isOnDropTarget (evt) ) {
 		// 元の位置に戻す
         moveElm ( gDragged, gOrgX, gOrgY );
@@ -524,12 +517,17 @@ function onMouseUp(evt) {
 	var target_id = "target_id_"+did;
 	document.form1[target_id].value = getAttrValue( gDragged, 'target_id' );
 	
-
+	// イベントの関連付け解除
+	if (mouseFlg == true) {
+	    removeEvent ( document, 'mousemove', onMouseMove, false );
+	    removeEvent ( document, 'mouseup', onMouseUp, false );
+	    mouseFlg = false;
+	}
+	
 	// 半透明、マウスポインタ、最前面処理を戻す
     setOpacity( gDragged, 1);
     setCursor ( gDragged, 'hand' );
     setZindex ( gDragged , 2);
-
 }
 
 // DropTarget上にオブジェクトが来たかを判断する
