@@ -672,7 +672,7 @@ function fnCreateArr( addEvt , top , left ){
 				}
 			} else {
 				// top は常にオブジェクトの中心を取得するようにする
-				arrObjtmp[target_id][len].top = (parseInt(getY( all_elms[i] )) + arrObjtmp[target_id][len].height / 2 );
+				arrObjtmp[target_id][len].top = i;
 				arrObjtmp[target_id][len].left = getX( all_elms[i] );
 				alert(getAttrValue ( all_elms[i], 'did' ));
 			}
@@ -686,7 +686,7 @@ function fnCreateArr( addEvt , top , left ){
 function fnChangeObj( tid ){
 	for ( var i = 0; i < arrObj[tid].length-1; i++ ) {
     	for ( var j = arrObj[tid].length-1; j > i; j-- ) {
-			if ( arrObj[tid][j].top <= arrObj[tid][i].top ) {
+			if ( arrObj[tid][j].top < arrObj[tid][i].top ) {
 				var arrTemp = new Array();
 				arrTemp = arrObj[tid][j];
 				arrObj[tid][j] = arrObj[tid][i];
