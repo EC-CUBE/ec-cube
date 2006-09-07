@@ -153,11 +153,10 @@ function fnTargetSelf(){
 				
 								<!--▼未使用ブロック　ここから-->
 								<td bgcolor="#ffffff" align="center" valign = 'top'>
-												<div tid="Unused" class="drop_target" id="t5" style="width: 160px; height: 500px;"></div>
-								
 									<table width="140" border="0" cellspacing="" cellpadding="" summary=" " bgcolor="#ffffff">
 										<tr class="fs12n">
 											<td bgcolor="#ffffff" align="center" height="400" name="Unused" id="layout">
+												<div tid="Unused" class="drop_target" id="t5" style="width: 160px; height: 500px;"></div>
 											</td>
 										</tr>
 										<tr class="fs12n">
