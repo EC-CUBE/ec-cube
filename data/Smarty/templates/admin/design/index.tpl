@@ -119,7 +119,7 @@ function fnTargetSelf(){
 													<!-- ¡ú¡ù¡ú ¥á¥¤¥ó ¡ù¡ú¡ù -->
 													<tr class="fs12n">
 														<td height=198 align="center" name='Main'>
-															<div tid="Main" class="main" style="width: 165px; height: 198px;">¥á¥¤¥ó</div>
+															<div tid="Main" class="main" style="width: 165px; height: 198px;  PADDING-BOTTOM: 50%;PADDING-TOP: 50%;">¥á¥¤¥ó</div>
 														</td>
 													</tr>
 													<!-- ¡ú¡ù¡ú ¥á¥¤¥ó ¡ù¡ú¡ù -->
@@ -127,7 +127,7 @@ function fnTargetSelf(){
 													<tfoot>
 													<tr class="fs12n">
 														<td bgcolor="#ffffff" valign="top" name='MainFoot' height="100" id="layout">
-															<div tid="MainFoot" class="drop_target" id="t4" style="width: 165px; height: 100px; PADDING-BOTTOM: 50%;PADDING-TOP: 50%;"></div>
+															<div tid="MainFoot" class="drop_target" id="t4" style="width: 165px; height: 100px;"></div>
 														</td>
 													</tr>
 													</tfoot>
