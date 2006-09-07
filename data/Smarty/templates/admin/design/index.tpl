@@ -482,7 +482,7 @@ function onMouseMove(evt) {
 	
     for ( var i = 0; i < all_elms.length; i++ ) {
     	// drop_target上にきた場合にのみ処理を行う
-	    if ( isEventOnElm ( evt, all_elms[i].id ) ) {
+	    if ( isEventOnElm ( evt, all_elms[i].id ) ) {	    
             if ( all_elms[i].attributes['tid'] ) {
 	            var tid = getAttrValue ( all_elms[i], 'tid' );
 	            
@@ -579,9 +579,11 @@ function isEventOnElm (evt, drop_target_id) {
     var x = drp_left;
     var y = drp_top;
 
-    var width = getWidth ( drop_target );
-    var height = getHeight ( drop_target );
+	var width = getWidth ( drop_target );
+	var height = getHeight ( drop_target );
     
+	alert(evtX +" / "+ x +" / "+ evtY +" / "+ y +" / "+ width +" / "+ height;);
+
     return evtX > x && evtY > y && evtX < x + width && evtY < y + height;
 }
 
@@ -599,8 +601,7 @@ function getPageScrollX()
 	} else if (window.pageXOffset != null) {
 		x = window.pageXOffset;
 	}
-	alert(x);
-
+	
 	return x;
 }
 
