@@ -572,10 +572,10 @@ function isEventOnElm (evt, drop_target_id) {
     var evtY = getEventY(evt) + getPageScrollY();
     
     var drop_target = document.getElementById( drop_target_id );
-    
-	drp_left = getX(drop_target);
-	drp_top = getY(drop_target);
-    
+
+	drp_left = getX( drop_target );
+	drp_top = getY( drop_target );
+
     var x = drp_left;
     var y = drp_top;
 
@@ -599,6 +599,7 @@ function getPageScrollX()
 	} else if (window.pageXOffset != null) {
 		x = window.pageXOffset;
 	}
+	alert(x);
 
 	return x;
 }
