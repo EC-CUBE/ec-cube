@@ -119,7 +119,7 @@ function fnTargetSelf(){
 													<!-- ¡ú¡ù¡ú ¥á¥¤¥ó ¡ù¡ú¡ù -->
 													<tr class="fs12n">
 														<td height=198 align="center" name='Main'>
-															<div style="width: 165px; height: 198px;  border:     1px solid black;"><span style="vertical-align: bottom;">¥á¥¤¥ó</span></div>
+															<div style="border:     1px solid black;"><span style="vertical-align: bottom;">¥á¥¤¥ó</span></div>
 														</td>
 													</tr>
 													<!-- ¡ú¡ù¡ú ¥á¥¤¥ó ¡ù¡ú¡ù -->
