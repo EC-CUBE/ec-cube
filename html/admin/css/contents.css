@@ -267,8 +267,11 @@ width: 100px;
 
 .number-on a{
 	margin: 8px;
+	background: url(/img/contents/number_bg_on.jpg);
+	background-repeat: repeat-x;
 	background-color: #f7c600;
 
+	
 }
 
 .number-on a:visited {
