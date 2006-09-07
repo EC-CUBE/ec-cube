@@ -544,10 +544,8 @@ function onMouseUp(evt) {
 	for ( var i = 0; i < all_elms.length; i++ ) {
     	// drop_target上にきた場合にのみ処理を行う
 	    if ( isEventOnElm ( evt, all_elms[i].id ) && all_elms[i].attributes['tid']) {
-	    	if (all_elms[i].attributes['tid']) {
-				// 背景色の変更
-				all_elms[i].style.background="#ffffff";
-	    	}
+			// 背景色の変更
+			all_elms[i].style.background="#ffffff";
 		}
     }
 }
