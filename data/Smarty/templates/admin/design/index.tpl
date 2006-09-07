@@ -527,7 +527,7 @@ function onMouseUp(evt) {
     setZindex ( gDragged , 2);
     
     // ÊÂ¤ÓÂØ¤¨
-	fnSortObj();
+//	fnSortObj();
     
 }
 
