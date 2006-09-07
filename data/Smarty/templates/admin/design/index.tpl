@@ -136,7 +136,7 @@ function fnTargetSelf(){
 											<td bgcolor="#ffffff" align="center" valign = 'top'>
 												<table border="0" cellspacing="1" cellpadding="" summary=" " bgcolor="#cccccc">
 													<tr class="fs12n">
-														<td bgcolor="#ffffff" align="center" name='RightNavi'id="layout">
+														<td bgcolor="#ffffff" align="center">
 															<div tid="RightNavi" class="drop_target" id="t3" style="width: 145px; height: 100px;"></div>
 														</td>
 													</tr>
@@ -155,7 +155,7 @@ function fnTargetSelf(){
 								<td bgcolor="#ffffff" align="center" valign = 'top'>
 									<table width="140" border="0" cellspacing="" cellpadding="" summary=" " bgcolor="#ffffff">
 										<tr class="fs12n">
-											<td bgcolor="#ffffff" align="center" height="400" name="Unused" id="layout">
+											<td bgcolor="#ffffff" align="center" >
 												<div tid="Unused" class="drop_target" id="t5" style="width: 160px; height: 500px;"></div>
 											</td>
 										</tr>
