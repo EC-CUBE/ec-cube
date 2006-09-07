@@ -522,7 +522,7 @@ function onMouseUp(evt) {
     
     // 並び替え
 	fnSortObj();
-    
+
     // hidden要素の書き換え
 	var did = getAttrValue( gDragged, 'did' );
 	var target_id = "target_id_"+did;
@@ -566,7 +566,6 @@ function isEventOnElm (evt, drop_target_id) {
 
 // オブジェクトの並び替えを行う
 function fnSortObj(){
-	fnSetTargetHeight();
     for ( var cnt = 0; cnt < all_elms.length; cnt++ ) {
 
 		// classが drop_target の場合のみ処理を行う
@@ -580,6 +579,7 @@ function fnSortObj(){
 			fnSetObj( tid, cnt );
         }
 	}
+	fnSetTargetHeight();
 
 }
 
