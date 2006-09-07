@@ -13,7 +13,7 @@
 				<table width="" border="0" cellspacing="0" cellpadding="0" summary=" ">
 					<tr><td height="60"></td></tr>
 					<tr>
-						<td bgcolor="#ffffff" align="center" class="fs12">
+						<td bgcolor="#ffffff" align="center" class="fs12" style="font-family:'£Í£Ó £Ð¥´¥·¥Ã¥¯','Hiragino Maru Gothic Pro','¥Ò¥é¥®¥Î´Ý¥´ Pro W4',Osaka,sans-serif;">
 							<!--{$tpl_error}-->
 						</td>
 					</tr>
