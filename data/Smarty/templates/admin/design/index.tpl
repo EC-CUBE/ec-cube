@@ -770,7 +770,7 @@ function fnSetTargetHeight(){
     for (var i = 0; i < all_td.length; i++) {
     
 		    alert(i);
-    		if (typeof(all_td[i].name) != 'undefined' and all_td[i].name == 'Main') {
+    		if (all_td[i].name == 'Main') {
 			alert(MainHeight);
 			all_td[i].height = MainHeight-2;
 			}
