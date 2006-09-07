@@ -541,7 +541,7 @@ function isOnDropTarget ( evt ) {
     for ( var i=0; i<all_elms.length; i++ ) {
         if ( isEventOnElm ( evt, all_elms[i].id ) ) {
             if ( all_elms[i].attributes['tid'] ) {
-            	alert(all_elms[i].attributes['tid'].class);
+            	alert(all_elms[i].attributes['tid'].tid);
                 return true;
             }
         }
