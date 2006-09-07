@@ -236,7 +236,7 @@ function fnTargetSelf(){
 <!--{foreach key=key item=item from=$tpl_arrBloc name="bloc_loop"}-->
 <div align=center target_id="<!--{$item.target_id}-->" did="<!--{$smarty.foreach.bloc_loop.iteration}-->" class="dragged_elm" id="<!--{$item.target_id}-->"
 	 style="left:350px; top:0px; filter: alpha(opacity=100); opacity: 1; width: 120px;">
-	 <!--{$item.name}-->
+	 <!--{$item.name}--><!--{$item.target_id}-->
 </div>
 <input type="hidden" name="name_<!--{$smarty.foreach.bloc_loop.iteration}-->" value="<!--{$item.name}-->">
 <input type="hidden" name="id_<!--{$smarty.foreach.bloc_loop.iteration}-->" value="<!--{$item.bloc_id}-->">
@@ -674,8 +674,7 @@ function fnCreateArr( addEvt , top , left ){
 				// top は常にオブジェクトの中心を取得するようにする
 				arrObjtmp[target_id][len].top = (parseInt(getY( all_elms[i] )) + arrObjtmp[target_id][len].height / 2 );
 				arrObjtmp[target_id][len].left = getX( all_elms[i] );
-				//alert(getAttrValue ( all_elms[i], 'value' ));
-				alert(all_elms[i].value);
+				alert(getAttrValue ( all_elms[i], 'did' ));
 			}
 		}
     }
