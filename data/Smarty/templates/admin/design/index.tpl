@@ -79,7 +79,7 @@ function fnTargetSelf(){
 						</table>
 
 						<!--▼レイアウト編集　ここから-->
-						<table width="678" border="0" cellspacing="1" cellpadding="8" summary=" ">
+						<table width="678" border="1" cellspacing="1" cellpadding="8" summary=" ">
 						<tr class="fs12n">
 						<td>
 						
