@@ -371,7 +371,7 @@ function getAttrValue ( elm, attrname ) {
 	
 	alert(elm.attributes[ attrname ]);
 	
-    return elm.attributes[ attrname ].nodeValue;
+    //return elm.attributes[ attrname ].nodeValue;
 }
 
 // 値をセット
