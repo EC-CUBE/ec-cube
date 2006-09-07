@@ -396,7 +396,7 @@ function getY ( elm ) {
 
 // X座標を取得
 function getEventX ( evt ) {
-    return evt.pageX ? evt.pageX : evt.clientX;
+    return evt.clientX ? evt.clientX : evt.pageX;
 }
 
 // Y座標を取得
@@ -570,8 +570,6 @@ function isEventOnElm (evt, drop_target_id) {
 
     var evtX = getEventX(evt) + getPageScrollX();
     var evtY = getEventY(evt) + getPageScrollY();
-    
-    alert(evtY);
     
     var drop_target = document.getElementById( drop_target_id );
 
