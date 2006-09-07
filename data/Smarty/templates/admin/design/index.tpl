@@ -81,12 +81,12 @@ function fnTargetSelf(){
 						<!--▼レイアウト編集　ここから-->
 						<table width="678" border="0" cellspacing="1" cellpadding="8" summary=" ">
 							<tr class="fs12n">
-								<td bgcolor="#f2f1ec" align="center" ><strong>レイアウト編集</strong></td>
-								<td bgcolor="#f2f1ec" align="center" ><strong>未使用ブロック</strong></td>
+								<td bgcolor="#f2f1ec" align="center"><strong>レイアウト編集</strong></td>
+								<td bgcolor="#f2f1ec" align="center"><strong>未使用ブロック</strong></td>
 							</tr>
 							<tr class="fs12n">
 								<!--▼レイアウト　ここから-->
-								<td bgcolor="#ffffff" align="center" valign = 'top'>
+								<td bgcolor="#ffffff" align="center" valign = 'top' width="450">
 									<table width="450" border=0 cellspacing="1" cellpadding="" summary=" " bgcolor="ffffff">
 										<tr class="fs12n"><td bgcolor="#ffffff" height=5px colspan=3></td></tr>
 										<tr class="fs12n" height = 50>
