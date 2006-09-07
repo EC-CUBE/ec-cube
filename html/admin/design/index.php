@@ -79,6 +79,7 @@ if ($_POST['mode'] == 'confirm' or $_POST['mode'] == 'preview') {
 	}
 	
 	sfprintr($_POST);
+	exit;
 	
 	// 更新用にデータを整える
 	$arrUpdBlocData = array();
