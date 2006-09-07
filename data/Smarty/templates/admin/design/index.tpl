@@ -119,7 +119,7 @@ function fnTargetSelf(){
 													<!-- ¡ú¡ù¡ú ¥á¥¤¥ó ¡ù¡ú¡ù -->
 													<tr class="fs12n">
 														<td height=198 align="center" name='Main'>
-															<div tid="Main" class="main" style="width: 165px; height: 198px; vertical-align: middle;">¥á¥¤¥ó</div>
+															<div tid="Main" class="main" style="width: 165px; height: 198px; vertical-align: bottom;">¥á¥¤¥ó</div>
 														</td>
 													</tr>
 													<!-- ¡ú¡ù¡ú ¥á¥¤¥ó ¡ù¡ú¡ù -->
@@ -881,7 +881,7 @@ function init () {
 		
 		if (elm_class == 'dragged_elm') {
 //			all_elms[i].style.height = all_elms[i].offsetHeight;
-			alert(all_elms[i].offsetHeight);
+			//alert(all_elms[i].offsetHeight);
 		}
 	}
 
