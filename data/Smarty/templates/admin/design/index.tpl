@@ -14,7 +14,7 @@
     }
 
     div.drop_target {
-        border:      1px solid gray;
+        border:      0px solid gray;
         position:    relative;
         text-align:  center;
         color:       #333;
