@@ -118,9 +118,7 @@ function fnTargetSelf(){
 													<!-- ¡ú¡ù¡ú ¥á¥¤¥ó¾åÉô¥Æ¡¼¥Ö¥ë ¡ù¡ú¡ù -->
 													<!-- ¡ú¡ù¡ú ¥á¥¤¥ó ¡ù¡ú¡ù -->
 													<tr class="fs12n">
-														<td height=198 align="center" name='Main'>
-															<div style=" border: 1px solid black; vertical-align: bottom;">¥á¥¤¥ó</div>
-														</td>
+														<td height=198 align="center" name='Main'>¥á¥¤¥ó</td>
 													</tr>
 													<!-- ¡ú¡ù¡ú ¥á¥¤¥ó ¡ù¡ú¡ù -->
 													<!-- ¡ú¡ù¡ú ¥á¥¤¥ó²¼Éô¥Æ¡¼¥Ö¥ë ¡ù¡ú¡ù -->
@@ -766,8 +764,6 @@ function fnSetTargetHeight(){
 			}
 
 			all_elms[cnt].style.height = target_height;
-		}else if ( getAttrValue ( all_elms[cnt], 'class' ) == 'main' ) {
-			all_elms[cnt].style.height = MainHeight-2;
 		}
 	}
 }
