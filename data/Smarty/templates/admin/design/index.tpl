@@ -768,8 +768,8 @@ function fnSetTargetHeight(){
 	
 	// メインテーブルの高さも変更
     for (var i = 0; i < all_td.length; i++) {
-    	alert(all_td[i].name);
 		if (all_td[i].name == 'Main') {
+    	alert(all_td[i].name);
 			all_td[i].height = MainHeight-2;
 		}
     }
