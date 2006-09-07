@@ -505,7 +505,6 @@ function onMouseMove(evt) {
 			}
 		}
     }
-    
 }
 
 // マウスアップイベント       
