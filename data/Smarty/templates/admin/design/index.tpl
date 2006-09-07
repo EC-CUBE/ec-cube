@@ -585,6 +585,42 @@ function isEventOnElm (evt, drop_target_id) {
     return evtX > x && evtY > y && evtX < x + width && evtY < y + height;
 }
 
+// ページの可視領域のX座標を取得する
+function getPageScrollX()
+{
+	var x = 0;
+
+	if (document.body && document.body.scrollLeft != null) {
+		x = document.body.scrollLeft;
+	} else if (document.documentElement && document.documentElement.scrollLeft != null) {
+		x = document.documentElement.scrollLeft;
+	} else if (window.scrollX != null) {
+		x = window.scrollX;
+	} else if (window.pageXOffset != null) {
+		x = window.pageXOffset;
+	}
+
+	return x;
+}
+
+// ページの可視領域のY座標を取得する
+function getPageScrollY()
+{
+	var y = 0;
+	
+	if (document.body && document.body.scrollTop != null) {
+		y = document.body.scrollTop;
+	} else if (document.documentElement && document.documentElement.scrollTop != null) {
+		y = document.documentElement.scrollTop;
+	} else if (window.scrollY != null) {
+		y = window.scrollY;
+	} else if (window.pageYOffset != null) {
+		y = window.pageYOffset;
+	}
+	
+	return y;
+}
+
 // オブジェクトの並び替えを行う
 function fnSortObj(){
 	fnSetTargetHeight();
