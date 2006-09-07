@@ -487,7 +487,7 @@ function onMouseMove(evt) {
 	            var tid = getAttrValue ( all_elms[i], 'tid' );
 	            
 	            // 背景色の変更
-	            all_elms[i].style.background="#003300";
+	            all_elms[i].style.background="#ffaaff";
 
 				// target_id の書き換え
 		        setAttrValue ( gDragged, 'target_id', tid );
