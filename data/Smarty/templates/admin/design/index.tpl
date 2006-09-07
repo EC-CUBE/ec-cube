@@ -758,7 +758,6 @@ function fnSetTargetHeight(){
 				target_height = MainHeadHeight;
 			}else if (tid == 'MainFoot') {
 				target_height = MainFootHeight;
-//				alert(all_elms[cnt].offsetTop);
 			}else if (tid == 'Unused'){
 				target_height = NaviHeight+100;
 			}
@@ -771,6 +770,7 @@ function fnSetTargetHeight(){
     for (var i = 0; i < all_td.length; i++) {
 		if (all_td[i].name == 'Main') {
 			all_td[i].height = MainHeight-2;
+			alert(MainHeight);
 		}
     }
 		    
