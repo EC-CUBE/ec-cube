@@ -767,7 +767,7 @@ function fnSetTargetHeight(){
 
 			all_elms[cnt].style.height = target_height
 		}else if ( getAttrValue ( all_elms[cnt], 'class' ) == 'main' ) {
-			alert(MainHeight);
+			all_elms[cnt].style.height = MainHeight;
 		}
 	}
 }
