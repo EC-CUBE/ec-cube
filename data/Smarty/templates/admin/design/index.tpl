@@ -484,7 +484,7 @@ function onMouseMove(evt) {
             if ( all_elms[i].attributes['tid'] ) {
 	            var tid = getAttrValue ( all_elms[i], 'tid' );
 	            
-	            // 背景色の変更
+	            // 背景色の変更 未使用領域は変更しない
 	            if ( all_elms[i].attributes['tid'].nodeValue!='Unused') {
 		            all_elms[i].style.background="#ffffdd";
 	            }
