@@ -373,7 +373,10 @@ function getAttrValue ( elm, attrname ) {
 	
 	//alert(elm.attributes[ attrname ].nodeValue);
 	
-    return elm.attributes[ attrname ].nodeValue;
+	if (typeof(elm.attributes[ attrname ]) != 'undefined') {
+	    return elm.attributes[ attrname ].nodeValue;
+	}
+	
 }
 
 // 値をセット
