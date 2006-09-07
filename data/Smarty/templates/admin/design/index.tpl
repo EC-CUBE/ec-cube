@@ -370,7 +370,7 @@ function getAttrValue ( elm, attrname ) {
 	//alert(elm.nodeValue);
 	alert(111);
   var txtNode=elm.firstChild;
-  alert(txtNode.nodeValue);
+  return txtNode.nodeValue;
 	
 	
     return elm.attributes[ attrname ].nodeValue;
