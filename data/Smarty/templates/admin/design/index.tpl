@@ -735,9 +735,11 @@ function fnSetTargetHeight(){
 	}
 	
 	// メイン部分のほうが大きい場合には左右ナビも大きくする
-	if (NaviHeight <= MainHeadHeight + MainFootHeight + MainHeight) {
+	if (NaviHeight < MainHeadHeight + MainFootHeight + MainHeight) {
 		NaviHeight = MainHeadHeight + MainFootHeight + MainHeight;	
 	}
+	
+	alert(NaviHeight+"/"+MainHeadHeight + MainFootHeight + MainHeight);
 	
 	// 変更
     for ( var cnt = 0; cnt < all_elms.length; cnt++ ) {
