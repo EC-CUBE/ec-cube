@@ -98,10 +98,6 @@ a:hover { color: #f9a406; text-decoration: underline; }
 
 
 /*navi*/
-#menu_navi {
-	table-layout: fixed;
-
-}
 
 .navi a{
 	background: url(/img/contents/navi_bar.gif);
