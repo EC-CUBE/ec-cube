@@ -571,6 +571,8 @@ function isEventOnElm (evt, drop_target_id) {
     var evtX = getEventX(evt) + getPageScrollX();
     var evtY = getEventY(evt) + getPageScrollY();
     
+    alert(evtY);
+    
     var drop_target = document.getElementById( drop_target_id );
 
 	drp_left = getX( drop_target );
@@ -582,7 +584,7 @@ function isEventOnElm (evt, drop_target_id) {
 	var width = getWidth ( drop_target );
 	var height = getHeight ( drop_target );
     
-	alert(evtX +" / "+ x +" / "+ evtY +" / "+ y +" / "+ width +" / "+ height);
+//	alert(evtX +" / "+ x +" / "+ evtY +" / "+ y +" / "+ width +" / "+ height);
 
     return evtX > x && evtY > y && evtX < x + width && evtY < y + height;
 }
