@@ -16,7 +16,7 @@
 			<tr><td height="7"></td></tr>
 			<tr>
 				<td><img src="/img/login/pass.jpg" width="61" height="5" alt="PASSWORD"></td>
-				<td ><input type="password" name="password" size="20" class="box25" style="height: 20px; font-size=8px;"/></td>
+				<td ><input type="password" name="password" size="20" class="box25" /></td>
 			</tr>
 			<tr><td height="10"></td></tr>
 			<!--エラーメッセージここから-->
