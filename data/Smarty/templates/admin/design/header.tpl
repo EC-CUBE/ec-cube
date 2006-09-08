@@ -66,6 +66,7 @@ else if(navigator.userAgent.indexOf("Gecko/") >= 0){
 				alert("aaa");
 			    document.write('tttt' );
 			}
+			alert("aaa");
 		</SCRIPT>
 											<br/>
 										</td>
