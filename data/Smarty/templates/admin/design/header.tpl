@@ -1,21 +1,3 @@
-<SCRIPT language="JavaScript">
-<!--
-browser_type = 0;
-if(navigator.userAgent.indexOf("MSIE") >= 0){
-    browser_type = 1;
-}
-else if(navigator.userAgent.indexOf("Gecko/") >= 0){
-    browser_type = 2;
-}
-
-alert(document.form_header['browser_type'].value);
-document.form_header['browser_type'].value=browser_type;
-document.form_footer['browser_type'].value=browser_type;
-
-
-//-->
-</SCRIPT>
-
 <!--★★メインコンテンツ★★-->
 <table width="878" border="0" cellspacing="0" cellpadding="0" summary=" ">
 	<tr valign="top">
@@ -90,7 +72,7 @@ document.form_footer['browser_type'].value=browser_type;
 										<tr class="fs12n">
 											<td bgcolor="#f2f1ec" align="center">
 												<input type='button' value='登録' name='subm' onclick="fnFormModeSubmit('form_header','confirm','','');"  />
-												<input type='button' value='プレビュー' name='preview' onclick="fnFormModeSubmit('form_header','preview','','');"  />
+												<input type='button' value='プレビュー' name='preview' onclick="lfnSetBrowser(browser_type); fnFormModeSubmit('form_header','preview','','');"  />
 											</td>
 										</tr>
 									</form>
@@ -157,8 +139,8 @@ document.form_footer['browser_type'].value=browser_type;
 </table>
 <!--★★メインコンテンツ★★-->
 
-
 <script type="text/javascript">
+	/* テキストエリアの大きさを変更する */
 	function ChangeSize(button, TextArea, Max, Min, row_tmp){
 		if(TextArea.rows <= Min){
 			TextArea.rows=Max; button.value="小さくする"; row_tmp.value=Max;
@@ -166,4 +148,18 @@ document.form_footer['browser_type'].value=browser_type;
 			TextArea.rows =Min; button.value="大きくする"; row_tmp.value=Min;
 		}
 	}
+	
+	/* ブラウザの種類をセットする */
+	function lfnSetBrowser(item){
+		browser_type = 0;
+		if(navigator.userAgent.indexOf("MSIE") >= 0){
+		    browser_type = 1;
+		}
+		else if(navigator.userAgent.indexOf("Gecko/") >= 0){
+		    browser_type = 2;
+		}
+		document.form_header[item].value=browser_type;
+		document.form_footer[item].value=browser_type;
+	}
+
 </script>
