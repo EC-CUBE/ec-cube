@@ -222,7 +222,7 @@
 					<td bgcolor="#cccccc">
 					<!--検索結果表示テーブル-->
 					<table width="840" border="0" cellspacing="1" cellpadding="5" summary=" ">
-						<tr bgcolor="#636469" align="center" class="fs12n">
+						<tr bgcolor="#636469" align="center" class="fs10n">
 							<td width="50" rowspan="2"><span class="white">商品ID</span></td>
 							<td width="90" rowspan="2"><span class="white">商品画像</span></td>
 							<td width="90"><span class="white">商品コード</span></td>
@@ -244,7 +244,7 @@
 						<!--{section name=cnt loop=$arrProducts}-->
 						<!--▼商品<!--{$smarty.section.cnt.iteration}-->-->
 						<!--{assign var=status value="`$arrProducts[cnt].status`"}-->
-						<tr bgcolor="<!--{$arrPRODUCTSTATUS_COLOR[$status]}-->" class="fs12">
+						<tr bgcolor="<!--{$arrPRODUCTSTATUS_COLOR[$status]}-->" class="fs10">
 							<td rowspan="2" align="center"><!--{$arrProducts[cnt].product_id}--></td>
 							<td rowspan="2" align="center">
 							<!--{if $arrProducts[cnt].main_list_image != ""}-->
@@ -271,7 +271,7 @@
 							<!--{/if}-->
 							<td align="center" rowspan="2"><span class="icon_delete"><a href="/" onclick="fnSetFormValue('category_id', '<!--{$arrProducts[cnt].category_id}-->'); fnModeSubmit('delete', 'product_id', <!--{$arrProducts[cnt].product_id}-->); return false;">削除</a></span></td>
 						</tr>
-						<tr bgcolor="<!--{$arrPRODUCTSTATUS_COLOR[$status]}-->" class="fs12n">
+						<tr bgcolor="<!--{$arrPRODUCTSTATUS_COLOR[$status]}-->" class="fs10n">
 							<td align="right">
 							<!--{* 価格 *}-->
 							<!--{if $arrProducts[cnt].price02 != ""}-->
