@@ -59,8 +59,7 @@ else if(navigator.userAgent.indexOf("Gecko/") >= 0){
 										<td bgcolor="#ffffff" align="center">
 											<br/>
 		<script type="text/javascript">
-			alert("aaa");
-
+			alert(navigator.userAgent.indexOf("MSIE"));
 		</SCRIPT>
 											<br/>
 										</td>
