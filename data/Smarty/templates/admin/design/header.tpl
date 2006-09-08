@@ -59,7 +59,6 @@ else if(navigator.userAgent.indexOf("Gecko/") >= 0){
 										<td bgcolor="#ffffff" align="center">
 											<br/>
 		<script type="text/javascript">
-			alert(browser_type);
 			if(browser_type == 1){
 			    document.write('tttt' );
 			} else {
