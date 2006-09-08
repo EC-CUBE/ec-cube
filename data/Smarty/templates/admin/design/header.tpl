@@ -152,6 +152,7 @@
 	/* ブラウザの種類をセットする */
 	function lfnSetBrowser(item){
 		browser_type = 0;
+		alert(00);
 		if(navigator.userAgent.indexOf("MSIE") >= 0){
 		    browser_type = 1;
 		}
