@@ -61,8 +61,9 @@ else if(navigator.userAgent.indexOf("Gecko/") >= 0){
 		<script type="text/javascript">
 			alert(navigator.userAgent.indexOf("MSIE"));
 			if(navigator.userAgent.indexOf("MSIE") >= 0){
-				alert("aaa");
+			    document.write('tttt' );
 			} else {
+				alert("aaa");
 			}
 		</script>
 											<br/>
