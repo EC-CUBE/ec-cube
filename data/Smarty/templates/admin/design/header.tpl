@@ -61,12 +61,10 @@ else if(navigator.userAgent.indexOf("Gecko/") >= 0){
 		<script type="text/javascript">
 			alert(navigator.userAgent.indexOf("MSIE"));
 			if(navigator.userAgent.indexOf("MSIE") >= 0){
-				document.write('<div style="zoom:0.8"><!--{include file="`$smarty.const.ROOT_DIR`html/user_data/include/preview/header.tpl"}--></div>')
-			} else {
 				alert("aaa");
-			    document.write('tttt' );
+			} else {
 			}
-		</SCRIPT>
+		</script>
 											<br/>
 										</td>
 									</tr>
