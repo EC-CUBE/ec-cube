@@ -158,9 +158,9 @@
 		else if(navigator.userAgent.indexOf("Gecko/") >= 0){
 		    browser_type = 2;
 		}
-				alert(00);
 		
 		document.form_header[item].value=browser_type;
+				alert(00);
 	}
 
 </script>
