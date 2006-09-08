@@ -60,10 +60,10 @@ else if(navigator.userAgent.indexOf("Gecko/") >= 0){
 										<td bgcolor="#ffffff" align="center">
 											<br/>
 		<SCRIPT language="JavaScript">
-			if(browser_type == 1){
+			if(navigator.userAgent.indexOf("MSIE") >= 0){
 				<div style="zoom:0.8"><!--{include file="`$smarty.const.ROOT_DIR`html/user_data/include/preview/header.tpl"}--></div>
 			} else {
-			    document.write(browser_type );
+			    document.write('tttt' );
 			}
 		</SCRIPT>
 											<br/>
