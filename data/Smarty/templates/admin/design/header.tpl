@@ -159,7 +159,6 @@
 		    browser_type = 2;
 		}
 		
-				alert(item);
 		document[form][item].value=browser_type;
 	}
 

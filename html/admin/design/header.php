@@ -47,6 +47,9 @@ if ($division != ''){
 		// テキストエリアの幅を元に戻す(処理の統一のため)
 		$_POST['header_row'] = "";
 		$_POST['footer_row'] = "";
+	}else if ($_POST['mode'] == 'preview'){
+		if ($division == "header") $objPage->header_prev = "on";
+		if ($division == "footer") $objPage->footer_prev = "on";
 	}
 
 	// ヘッダーファイルの読み込み(プレビューデータ)
@@ -54,7 +57,6 @@ if ($division != ''){
 	
 	// フッターファイルの読み込み(プレビューデータ)
 	$footer_data = file_get_contents($pre_DIR . "footer.tpl");
-	
 }else{
 	// postでデータが渡されなければ新規読み込みと判断をし、プレビュー用データを正規のデータで上書きする
 	if (!is_dir($pre_DIR)) {
@@ -81,6 +83,9 @@ if ($_POST['header_row'] != ''){
 if ($_POST['footer_row'] != ''){
 	$objPage->footer_row = $_POST['footer_row'];
 }
+
+// ブラウザタイプ
+$objPage->browser_type = $_POST['browser_type'];
 
 // 画面の表示
 $objView->assignobj($objPage);
