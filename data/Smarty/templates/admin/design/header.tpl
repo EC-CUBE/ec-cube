@@ -43,19 +43,17 @@
 										<td bgcolor="#f2f1ec" align="center"><strong>ヘッダー編集</strong></td>
 									</tr>
 									<!-- プレビューここから -->
+									<!--{ if $header_prev == "on"}-->
 									<tr class="fs12n">
 										<td bgcolor="#ffffff" align="center">
-											<br/>
-											<!--{ if $header_prev == "on"}-->
 												<!--{if $browser_type == 1 }-->
 												    <div style="zoom:0.8"><!--{include file="`$smarty.const.ROOT_DIR`html/user_data/include/preview/header.tpl"}--></div>
 												<!--{ else }-->
 													<span class="red12"><b>プレビューはIEでのみ表示されます。</b></span>
 												<!--{ /if }-->
-											<!--{ /if }-->
-											<br/>
 										</td>
 									</tr>
+									<!--{ /if }-->
 									<!-- プレビューここまで -->
 									
 									<form name="form_header" id="form_header" method="post" action="<!--{$smarty.server.PHP_SELF}-->" >
