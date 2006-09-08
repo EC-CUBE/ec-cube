@@ -72,7 +72,7 @@
 										<tr class="fs12n">
 											<td bgcolor="#f2f1ec" align="center">
 												<input type='button' value='登録' name='subm' onclick="fnFormModeSubmit('form_header','confirm','','');"  />
-												<input type='button' value='プレビュー' name='preview' onclick="lfnSetBrowser(browser_type); fnFormModeSubmit('form_header','preview','','');"  />
+												<input type='button' value='プレビュー' name='preview' onclick="lfnSetBrowser('form_header', 'browser_type'); fnFormModeSubmit('form_header','preview','','');"  />
 											</td>
 										</tr>
 									</form>
@@ -150,7 +150,7 @@
 	}
 	
 	/* ブラウザの種類をセットする */
-	function lfnSetBrowser(item){
+	function lfnSetBrowser(form, item){
 		browser_type = 0;
 		if(navigator.userAgent.indexOf("MSIE") >= 0){
 		    browser_type = 1;
@@ -160,7 +160,7 @@
 		}
 		
 				alert(item);
-		document.form_header[item].value=browser_type;
+		document[form][item].value=browser_type;
 	}
 
 </script>
