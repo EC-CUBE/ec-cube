@@ -119,18 +119,7 @@ else if(navigator.userAgent.indexOf("Gecko/") >= 0){
 										<tr class="fs12n">
 											<td bgcolor="#f2f1ec" align="center">
 												<br/>
-												<div>
-												<SCRIPT language="JavaScript">
-													if(browser_type == 1){
-														document.write('<textarea name="footer" cols=90 rows=<!--{$footer_row}--> align="left" wrap=off >' );
-													}
-													else{
-													    document.write('<textarea name="footer" cols=75 rows=<!--{$footer_row}--> align="left" wrap=off >' );
-													}
-												</SCRIPT><!--{$footer_data}--></textarea>
-												
-												</div>
-						
+												<textarea name="footer" cols=90 rows=<!--{$footer_row}--> align="left" wrap=off style="width: 650px;"><!--{$footer_data}--></textarea>
 												<div align="right">
 												<input type="button" value="大きくする" onClick="ChangeSize(this, footer, 50, 13, footer_row)">
 												</div>
