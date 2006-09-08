@@ -304,7 +304,7 @@ function lfCheckSQL($data){
 		$err = $ret;
 	}
 	
-	sfprintr($ret);
+	sfprintr($err);
 	exit;
 	
 	return $err;
