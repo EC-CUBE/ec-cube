@@ -122,7 +122,7 @@ function init () {
 											<td bgcolor="#cccccc" align="center" colspan=3> •ÿ•√•¿°º…Ù </td>
 										</tr>
 										<tr class="fs12n"><td bgcolor="#ffffff" height=5px colspan=3></td></tr>
-										<tr class="fs12n">
+										<tr>
 											<!-- °˙°˘°˙ ∫∏• •”•∆°º•÷•Î °˘°˙°˘ -->
 											<td bgcolor="#ffffff" align="center" valign = 'top'>
 												<table border="0" height="400" cellspacing="1" cellpadding="" summary=" " bgcolor="#cccccc">
@@ -146,7 +146,7 @@ function init () {
 													</thead>
 													<!-- °˙°˘°˙ •·•§•ÛæÂ…Ù•∆°º•÷•Î °˘°˙°˘ -->
 													<!-- °˙°˘°˙ •·•§•Û °˘°˙°˘ -->
-													<tr class="fs12">
+													<tr class="fs12n">
 														<td height=198 align="center" name='Main'>•·•§•Û</td>
 													</tr>
 													<!-- °˙°˘°˙ •·•§•Û °˘°˙°˘ -->
