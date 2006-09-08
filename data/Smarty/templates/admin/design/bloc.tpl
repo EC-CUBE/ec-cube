@@ -87,6 +87,7 @@
 							<tr class="fs12n">
 								<td bgcolor="#f2f1ec" align="center">
 									<input type='button' value='登録' name='subm' onclick="fnFormModeSubmit('form_bloc','confirm','','');"  />
+									<input type='button' value='プレビュー' name='preview' onclick="fnFormModeSubmit('form_bloc','preview','','');"  />
 								</td>
 							</tr>
 						</table>
