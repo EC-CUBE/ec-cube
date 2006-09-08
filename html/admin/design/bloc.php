@@ -55,8 +55,20 @@ if ($_GET['msg'] == "on") {
 
 // プレビュー表示
 if ($_POST['mode'] == "preview") {
+	// プレビューファイル作成
+	$prev_path = ROOT_DIR . BLOC_DIR . 'bloc_preview.tpl';
+	$fp = fopen($prev_path,"w");
+	fwrite($fp, $_POST['bloc_html']);
+	fclose($fp);
+	
+	// プレビューデータ表示
 	$objPage->preview = "on";
 	$objPage->arrBlocData['tpl_data'] = $_POST['bloc_html'];
+	$objPage->arrBlocData['tpl_path'] = $prev_path;
+	$objPage->arrBlocData['bloc_name'] = $_POST['bloc_name'];
+	$objPage->arrBlocData['filename'] = $_POST['filename'];
+	
+	
 }else{
 	$objPage->preview = "off";
 }

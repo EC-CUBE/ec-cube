@@ -48,7 +48,7 @@
 							<tr class="fs12n">
 								<td bgcolor="#ffffff" align="center">
 									<br/>
-										<!--{$arrBlocData.tpl_data}-->
+										<!--{include file=$arrBlocData.tpl_path}-->
 									<br/>
 								</td>
 							</tr>
