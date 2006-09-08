@@ -651,4 +651,5 @@ function fnMoveObject() {
 	
 	fnSortObj();
 }
-
+// 画面のロードイベントに関連付け
+addEvent ( window, 'load', init, false );

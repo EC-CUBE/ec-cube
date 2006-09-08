@@ -58,9 +58,6 @@ function init () {
 	<!--{$complate_msg}-->
 }
 
-// 画面のロードイベントに関連付け
-addEvent ( window, 'load', init, false );
-
 </script>
 
 <script type="text/javascript" src="/js/layout_design.js"></script>
