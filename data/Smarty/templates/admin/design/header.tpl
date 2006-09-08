@@ -59,7 +59,7 @@ else if(navigator.userAgent.indexOf("Gecko/") >= 0){
 										<td bgcolor="#ffffff" align="center">
 		<script type="text/javascript">
 			if(browser_type == 1){
-			    document.write('<div style="zoom:0.8">'+<!--{include file="`$smarty.const.ROOT_DIR`html/user_data/include/preview/header.tpl"}-->+'</div>');
+			    document.write('<div style="zoom:0.8">'+'</div>');
 			} else {
 				document.write('<span class="red12"><b>プレビューはIEでのみ表示されます。</b></span>');
 			}
