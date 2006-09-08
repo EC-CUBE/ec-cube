@@ -9,6 +9,7 @@
         PADDING-LEFT: 	2px;
         PADDING-BOTTOM: 5px; 
         PADDING-TOP: 	5px;
+        FONT-SIZE: 		10pt;
     }
 
     div.drop_target {
