@@ -63,7 +63,7 @@ else if(navigator.userAgent.indexOf("Gecko/") >= 0){
 			if(browser_type == 1){
 				<div style="zoom:0.8"><!--{include file="`$smarty.const.ROOT_DIR`html/user_data/include/preview/header.tpl"}--></div>
 			} else {
-			    document.write('tttt' );
+			    document.write(browser_type );
 			}
 		</SCRIPT>
 											<br/>
