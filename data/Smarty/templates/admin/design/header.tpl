@@ -7,7 +7,7 @@ if(navigator.userAgent.indexOf("MSIE") >= 0){
 else if(navigator.userAgent.indexOf("Gecko/") >= 0){
     browser_type = 2;
 }
-
+alert("aaa");
 //-->
 </SCRIPT>
 
