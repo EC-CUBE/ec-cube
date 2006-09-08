@@ -57,7 +57,6 @@ else if(navigator.userAgent.indexOf("Gecko/") >= 0){
 									<!-- プレビューここから -->
 									<tr class="fs12n">
 										<td bgcolor="#ffffff" align="center">
-											<br/>
 		<script type="text/javascript">
 			if(browser_type == 1){
 			    document.write('tttt' );
