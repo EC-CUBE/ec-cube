@@ -69,16 +69,7 @@ else if(navigator.userAgent.indexOf("Gecko/") >= 0){
 										<tr class="fs12n">
 											<td bgcolor="#f2f1ec" align="center">
 												<br/>
-												<div>
-												<SCRIPT language="JavaScript">
-													if(browser_type == 1){
-														document.write('<textarea name="header" cols=90 rows=<!--{$header_row}--> align="left" wrap=off>' );
-													}
-													else{
-													    document.write('<textarea name="header" cols=75 rows=<!--{$header_row}--> align="left" wrap=off>' );
-													}
-												</SCRIPT><!--{$header_data}--></textarea>
-												</div>
+													<textarea name="header" cols=90 rows=<!--{$header_row}--> align="left" wrap=off style="width: 650px;"><!--{$header_data}--></textarea>
 												<div align="right">
 												<input type="button" value="大きくする" onClick="ChangeSize(this, header, 50, 13, header_row)">
 												</div>
