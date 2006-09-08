@@ -95,8 +95,8 @@
 									<tr>
 										<td colspan="3"><img src="/img/contents/tbl_bottom.gif" width="678" height="8" alt=""></td>
 									</tr>
-								</table>
 								</form>
+								</table>
 
 								<!--▲ヘッダー編集　ここまで-->
 
