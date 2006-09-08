@@ -30,7 +30,7 @@ $tpl_DIR = ROOT_DIR . INCLUDE_DIR;
 $pre_DIR = ROOT_DIR . INCLUDE_DIR. 'preview/';
 
 // データ更新処理
-if ($division != ''){
+if ($division != ''){d
 	// プレビュー用テンプレートに書き込み	
 	$fp = fopen($pre_DIR.$division.'.tpl',"w");
 	fwrite($fp, $_POST[$division]);
