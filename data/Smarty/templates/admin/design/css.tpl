@@ -59,7 +59,7 @@
 								<table width="678" border="0" cellspacing="1" cellpadding="8" summary=" ">
 									<tr class="fs12n">
 										<td bgcolor="#f2f1ec" align="center">
-											<textarea name="css" cols=90 class="area90" rows=<!--{$area_row}--> align="left" wrap=off><!--{$css_data}--></textarea>
+											<textarea name="css" cols=90 rows=<!--{$area_row}--> align="left" wrap=off style="width: 650px;"><!--{$css_data}--></textarea>
 											<div align="right">
 											<input type="button" value="大きくする" onClick="ChangeSize(this, css, 50, 30, area_row)">
 											</div>

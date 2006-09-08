@@ -303,7 +303,10 @@ function lfCheckSQL($data){
 	if ($objDbConn->conn->isError($ret)){
 		$err = $ret;
 	}
-
+	
+	sfprintr($ret);
+	exit;
+	
 	return $err;
 }
 
