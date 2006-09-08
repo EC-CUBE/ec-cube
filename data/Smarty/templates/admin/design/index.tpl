@@ -113,12 +113,12 @@ function init () {
 								<td bgcolor="#f2f1ec" align="center"><strong>レイアウト編集</strong></td>
 								<td bgcolor="#f2f1ec" align="center"><strong>未使用ブロック</strong></td>
 							</tr>
-							<tr class="fs12n">
+							<tr>
 								<!--▼レイアウト　ここから-->
 								<td bgcolor="#ffffff" align="center" valign = 'top'>
 									<table width="450" border=0 cellspacing="1" cellpadding="" summary=" " bgcolor="ffffff">
 										<tr class="fs12n"><td bgcolor="#ffffff" height=5px colspan=3></td></tr>
-										<tr class="" height = 50>
+										<tr class="fs12n" height = 50>
 											<td bgcolor="#cccccc" align="center" colspan=3> ヘッダー部 </td>
 										</tr>
 										<tr class="fs12n"><td bgcolor="#ffffff" height=5px colspan=3></td></tr>
