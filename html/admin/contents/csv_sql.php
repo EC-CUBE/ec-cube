@@ -63,7 +63,7 @@ switch($_POST['mode']) {
 		if ($errMsg != "") {
 			$errMsg = $objErrMsg->message . "\n" . $objErrMsg->userinfo;
 		}
-		$objPage->sqlerr = $errMsg;
+		$objPage->sqlerr = $errMsg->userinfo;
 
 		$objPage->objView = $objView;
 		
@@ -303,9 +303,6 @@ function lfCheckSQL($data){
 	if ($objDbConn->conn->isError($ret)){
 		$err = $ret;
 	}
-	
-	sfprintr($err);
-	exit;
 	
 	return $err;
 }
