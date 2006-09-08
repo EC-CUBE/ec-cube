@@ -8,11 +8,11 @@ else if(navigator.userAgent.indexOf("Gecko/") >= 0){
     browser_type = 2;
 }
 
+alert(document.form_header['browser_type'].value);
 document.form_header['browser_type'].value=browser_type;
 document.form_footer['browser_type'].value=browser_type;
 
 
-alert(browser_type);
 //-->
 </SCRIPT>
 
