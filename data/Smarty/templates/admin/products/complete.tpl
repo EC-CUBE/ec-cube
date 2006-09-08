@@ -23,7 +23,7 @@
 						<td background="/img/contents/main_left.jpg"><img src="/img/common/_.gif" width="14" height="1" alt=""></td>
 						<td bgcolor="#f2f1ec">
 						<!--完了メッセージテーブルここから-->
-						<table width="678" border="0" cellspacing="1" cellpadding="8" summary=" " height="402">
+						<table width="678" border="0" cellspacing="1" cellpadding="8" summary=" " height="350">
 							<tr class="fs12" >
 								<td height="150" bgcolor="#ffffff" class="fs18n" align="center">登録が完了致しました。<br /> <br /> <br />
 								<a href="./product.php">→続けて登録を行う</a><br /> <br /> <br />
