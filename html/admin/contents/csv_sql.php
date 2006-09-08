@@ -63,7 +63,7 @@ switch($_POST['mode']) {
 		if ($errMsg != "") {
 			$errMsg = $objErrMsg->message . "\n" . $objErrMsg->userinfo;
 		}
-		$objPage->sqlerr = $errMsg->userinfo;
+		$objPage->sqlerr = $errMsg['userinfo'];
 
 		$objPage->objView = $objView;
 		
