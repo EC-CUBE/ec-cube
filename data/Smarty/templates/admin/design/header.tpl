@@ -60,12 +60,7 @@ else if(navigator.userAgent.indexOf("Gecko/") >= 0){
 											<br/>
 		<script type="text/javascript">
 			alert("aaa");
-			if(navigator.userAgent.indexOf("MSIE") >= 0){
-				<div style="zoom:0.8"><!--{include file="`$smarty.const.ROOT_DIR`html/user_data/include/preview/header.tpl"}--></div>
-			} else {
-				alert("aaa");
-			    document.write('tttt' );
-			}
+
 		</SCRIPT>
 											<br/>
 										</td>
@@ -157,7 +152,6 @@ else if(navigator.userAgent.indexOf("Gecko/") >= 0){
 
 
 <script type="text/javascript">
-alert(1232);
 	function ChangeSize(button, TextArea, Max, Min, row_tmp){
 		if(TextArea.rows <= Min){
 			TextArea.rows=Max; button.value="小さくする"; row_tmp.value=Max;
