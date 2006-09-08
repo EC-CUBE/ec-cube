@@ -9,8 +9,8 @@ VALUES (0, 0, 0, 0, now());
 INSERT INTO dtb_member (name, login_id, password, creator_id, authority, work, delete) 
 VALUES ('dummy','dummy','',0,0,1,1);
 
-INSERT INTO dtb_member (name, login_id, password, creator_id, authority, work, delete) 
-VALUES ('admin','admin','$1$JPUS3lIX$B0FJNs4Q0lv9i.UYBP7do0',0,0,1,0);
+INSERT INTO dtb_member (name, login_id, password, creator_id, authority, work, delete, rank) 
+VALUES ('admin','admin','$1$JPUS3lIX$B0FJNs4Q0lv9i.UYBP7do0',0,0,1,0,1);
 
 -- ブロックデータ
 insert into dtb_bloc ( bloc_name, tpl_path, filename, php_path, del_flg ) values ('カテゴリ',	'html/user_data/include/bloc/category.tpl',			'category','html/frontparts/bloc/category.php', 1);
