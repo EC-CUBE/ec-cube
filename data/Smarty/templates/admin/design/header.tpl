@@ -57,11 +57,6 @@ else if(navigator.userAgent.indexOf("Gecko/") >= 0){
 									<!-- プレビューここから -->
 									<tr class="fs12n">
 										<td bgcolor="#ffffff" align="center">
-											<!--{ if($browser_type == 1) }-->
-											    <div style="zoom:0.8"><!--{include file="`$smarty.const.ROOT_DIR`html/user_data/include/preview/header.tpl"}--></div>
-											<!--{ else }-->
-												<span class="red12"><b>プレビューはIEでのみ表示されます。</b></span>
-											<!--{ /if }-->
 										</td>
 									</tr>
 									<!-- プレビューここまで -->
