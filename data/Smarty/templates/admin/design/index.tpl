@@ -52,9 +52,10 @@ function init () {
 	// 配列作成
 	fnCreateArr(0);
 	
-	alert("ggg");
     // 並び替え
 	fnMoveObject();
+	
+	alert("ggg");
 	
 	<!--{$complate_msg}-->
 }
