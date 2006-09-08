@@ -5,10 +5,10 @@
         background: rgb(195,217,255);
         color:      #333;
         cursor:		move;
-        MARGIN-RIGHT: 	2px;
-        MARGIN-LEFT: 	2px;
-        MARGIN-BOTTOM:  8px; 
-        MARGIN-TOP: 	100px;
+        PADDING-RIGHT: 	2px;
+        PADDING-LEFT: 	2px;
+        PADDING-BOTTOM: 5px; 
+        PADDING-TOP: 	5px;
         FONT-SIZE: 		10pt;
     }
 
