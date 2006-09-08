@@ -67,8 +67,6 @@ if ($_POST['mode'] == "preview") {
 	$objPage->arrBlocData['tpl_path'] = $prev_path;
 	$objPage->arrBlocData['bloc_name'] = $_POST['bloc_name'];
 	$objPage->arrBlocData['filename'] = $_POST['filename'];
-	
-	
 }else{
 	$objPage->preview = "off";
 }
