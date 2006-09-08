@@ -53,6 +53,13 @@ if ($_GET['msg'] == "on") {
 	$objPage->tpl_onload="alert('登録が完了しました。');";
 }
 
+// プレビュー表示
+if ($_POST['mode'] == "preview") {
+	$objPage->preview = "on";
+}else{
+	$objPage->preview = "off";
+}
+
 // データ登録処理
 if ($_POST['mode'] == 'confirm') {
 	

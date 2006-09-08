@@ -44,7 +44,7 @@
 							<tr class="fs12n">
 								<td bgcolor="#f2f1ec" align="center"><strong>ブロック編集</strong></td>
 							</tr>
-							<!--{if $arrBlocData.tpl_path != ''}-->
+							<!--{if $arrBlocData.tpl_path != '' and $preview == on}-->
 							<tr class="fs12n">
 								<td bgcolor="#ffffff" align="center">
 									<br/>
