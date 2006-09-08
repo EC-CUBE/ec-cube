@@ -112,7 +112,7 @@ else if(navigator.userAgent.indexOf("Gecko/") >= 0){
 												<br/>
 												<textarea name="footer" cols=90 rows=<!--{$footer_row}--> align="left" wrap=off style="width: 650px;"><!--{$footer_data}--></textarea>
 												<div align="right">
-												<input type="button" value="大きくする" onClick="ChangeSize(this, footer, 50, 13, footer_row)">
+												<input type="button" value=<!--{if $footer_row > 13}-->"小さくする"<!--{else}-->"大きくする"<!--{/if}--> onClick="ChangeSize(this, footer, 50, 13, footer_row)">
 												</div>
 												<br/>
 											</td>
