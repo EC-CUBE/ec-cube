@@ -79,7 +79,7 @@
 									<input type="hidden" name="html_area_row" value="<!--{$text_row}-->">
 									</div>
 									<div align="right">
-									<input type="button" value="大きくする" onClick="ChangeSize(this, bloc_html, 50, 13, html_area_row)">
+									<input type="button" value=<!--{if $text_row > 13}-->"小さくする"<!--{else}-->"大きくする"<!--{/if}--> onClick="ChangeSize(this, bloc_html, 50, 13, html_area_row)">
 									</div>
 									<br/>
 								</td>
