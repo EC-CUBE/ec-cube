@@ -41,6 +41,11 @@ if ($division != ''){
 		copy($pre_DIR.$division.".tpl", $tpl_DIR.$division.".tpl");
 		// 完了メッセージ（プレビュー時は表示しない）
 		$objPage->tpl_onload="alert('登録が完了しました。');";
+		
+		// テキストエリアの幅を元に戻す
+		$_POST['header_row'] = "";
+		$_POST['footer_row'] = ""
+		
 	}
 
 	// ヘッダーファイルの読み込み(プレビューデータ)
@@ -48,10 +53,6 @@ if ($division != ''){
 	
 	// フッターファイルの読み込み(プレビューデータ)
 	$footer_data = file_get_contents($pre_DIR . "footer.tpl");
-	
-	$_POST['header_row'] = "";
-	$_POST['footer_row'] = "";
-	
 	
 }else{
 	// postでデータが渡されなければ新規読み込みと判断をし、プレビュー用データを正規のデータで上書きする
