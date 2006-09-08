@@ -119,7 +119,7 @@
 												<!--{if $arrProductsList[cnt].main_list_image != ""}-->
 												<!--{$smarty.const.IMAGE_SAVE_URL}-->/<!--{$arrProductsList[cnt].main_list_image}-->
 												<!--{else}-->
-												/misc/dummy.gif
+												<!--{$smarty.const.NO_IMAGE_URL}-->
 												<!--{/if}-->
 												" width="65" height="65" alt="" />
 											</td>

@@ -184,7 +184,7 @@ define ("IMAGE_SAVE_DIR", ROOT_DIR . "html/upload/save_image/");				// ²èÁüÊİÂ¸À
 define ("IMAGE_TEMP_URL", "/upload/temp_image/");								// ²èÁü°ì»şÊİÂ¸URL
 define ("IMAGE_SAVE_URL", "/upload/save_image/");								// ²èÁüÊİÂ¸ÀèURL
 define ("CSV_TEMP_DIR", ROOT_DIR. "html/upload/csv/");							// ¥¨¥ó¥³¡¼¥ÉCSV¤Î°ì»şÊİÂ¸Àè
-define ("NO_IMAGE_URL", "/misc/dummy.gif");										// ²èÁü¤¬¤Ê¤¤¾ì¹ç¤ËÉ½¼¨
+define ("NO_IMAGE_URL", "/misc/blank.gif");										// ²èÁü¤¬¤Ê¤¤¾ì¹ç¤ËÉ½¼¨
 
 /* URL¥Ñ¥¹ */
 define ("URL_SYSTEM_TOP", "/admin/system/index.php");		// ¥·¥¹¥Æ¥à´ÉÍı¥È¥Ã¥×
