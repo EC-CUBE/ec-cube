@@ -64,7 +64,7 @@ switch($_POST['mode']) {
 			$errMsg = $objErrMsg->message . "\n" . $objErrMsg->userinfo;
 		}
 		
-		sfprintr($errMsg);
+		sfprintr($objErrMsg);
 		die;
 		$objPage->sqlerr = $errMsg->userinfo;
 
