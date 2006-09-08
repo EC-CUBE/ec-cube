@@ -56,7 +56,7 @@ if ($_GET['msg'] == "on") {
 // プレビュー表示
 if ($_POST['mode'] == "preview") {
 	$objPage->preview = "on";
-	$objPage->arrBlocData.tpl_data = $_POST['bloc_html'];
+	$objPage->arrBlocData['tpl_data'] = $_POST['bloc_html'];
 }else{
 	$objPage->preview = "off";
 }
