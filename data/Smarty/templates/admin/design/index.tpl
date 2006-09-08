@@ -55,8 +55,6 @@ function init () {
     // 並び替え
 	fnMoveObject();
 
-	alert("ggg");
-	
 	<!--{$complate_msg}-->
 }
 
@@ -90,7 +88,7 @@ function init () {
 					<tr>
 						<td background="/img/contents/main_left.jpg"><img src="/img/common/_.gif" width="14" height="1" alt=""></td>
 						<td bgcolor="#cccccc">
-						
+
 						<!--登録テーブルここから-->
 						<table width="678" border="0" cellspacing="0" cellpadding="0" summary=" ">
 							<tr>
