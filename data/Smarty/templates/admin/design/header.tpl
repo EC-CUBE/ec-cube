@@ -45,6 +45,7 @@
 									<!-- プレビューここから -->
 									<tr class="fs12n">
 										<td bgcolor="#ffffff" align="center">
+											<br/>
 											<!--{ if $header_prev == "on"}-->
 												<!--{if $browser_type == 1 }-->
 												    <div style="zoom:0.8"><!--{include file="`$smarty.const.ROOT_DIR`html/user_data/include/preview/header.tpl"}--></div>
@@ -52,6 +53,7 @@
 													<span class="red12"><b>プレビューはIEでのみ表示されます。</b></span>
 												<!--{ /if }-->
 											<!--{ /if }-->
+											<br/>
 										</td>
 									</tr>
 									<!-- プレビューここまで -->
