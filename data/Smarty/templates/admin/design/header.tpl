@@ -59,7 +59,7 @@ else if(navigator.userAgent.indexOf("Gecko/") >= 0){
 										<td bgcolor="#ffffff" align="center">
 		<script type="text/javascript">
 			if(browser_type == 1){
-			    document.write('<div style="zoom:0.8">'+<!--{$header_row}-->+'</div>');
+			    document.write('<div style="zoom:0.8">'+<!--{$header_data}-->+'</div>');
 			} else {
 				document.write('<span class="red12"><b>プレビューはIEでのみ表示されます。</b></span>');
 			}
