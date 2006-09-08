@@ -59,7 +59,7 @@ else if(navigator.userAgent.indexOf("Gecko/") >= 0){
 										<td bgcolor="#ffffff" align="center">
 											<br/>
 		<script type="text/javascript">
-			alert(navigator.userAgent.indexOf("MSIE"));
+			alert(browser_type);
 			if(navigator.userAgent.indexOf("MSIE") >= 0){
 			    document.write('tttt' );
 			} else {
