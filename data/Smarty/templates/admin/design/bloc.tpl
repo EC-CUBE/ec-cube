@@ -75,7 +75,7 @@
 								<td bgcolor="#ffffff" align="center">
 									<br/>
 									<div>
-									<textarea name="bloc_html" cols=75 rows=<!--{$text_row}--> align="left" wrap=off style="width: 547px;"><!--{$arrBlocData.tpl_data}--></textarea>
+									<textarea name="bloc_html" cols=75 rows=<!--{$text_row}--> align="left" wrap=off style="width: 650px;"><!--{$arrBlocData.tpl_data}--></textarea>
 									<input type="hidden" name="html_area_row" value="<!--{$text_row}-->">
 									</div>
 									<div align="right">
