@@ -159,7 +159,6 @@
 		    browser_type = 2;
 		}
 		document.form_header[item].value=browser_type;
-		document.form_footer[item].value=browser_type;
 	}
 
 </script>
