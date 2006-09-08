@@ -157,6 +157,7 @@ else if(navigator.userAgent.indexOf("Gecko/") >= 0){
 
 
 <script type="text/javascript">
+alert(1232);
 	function ChangeSize(button, TextArea, Max, Min, row_tmp){
 		if(TextArea.rows <= Min){
 			TextArea.rows=Max; button.value="小さくする"; row_tmp.value=Max;
