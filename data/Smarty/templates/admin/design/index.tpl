@@ -30,6 +30,37 @@ function doPreview(){
 function fnTargetSelf(){
 	document.form1.target = "_self";
 }
+
+// 初期処理
+function init () {
+    document.body.ondrag = function () { return false; };
+    document.body.onselectstart = function () { return false; };
+    
+    // ウィンドウサイズを取得
+	scrX = GetWindowSize("width");
+	scrY = GetWindowSize("height");    
+    
+	// ウィンドウサイズ変更イベントに関連付け
+    window.onresize = fnMoveObject;
+
+    // divタグを取得
+    all_elms = document.getElementsByTagName ( 'div' );
+    
+	// tdタグを取得
+	all_td = document.getElementsByTagName ( 'td' );
+
+	// 配列作成
+	fnCreateArr(0);
+	
+    // 並び替え
+	fnMoveObject();
+	
+	<!--{$complate_msg}-->
+}
+
+// 画面のロードイベントに関連付け
+addEvent ( window, 'load', init, false );
+
 </script>
 
 <script type="text/javascript" src="/js/layout_design.js"></script>
