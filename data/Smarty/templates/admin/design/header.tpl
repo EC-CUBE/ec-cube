@@ -159,8 +159,8 @@
 		    browser_type = 2;
 		}
 		
+				alert(item);
 		document.form_header[item].value=browser_type;
-				alert(00);
 	}
 
 </script>
