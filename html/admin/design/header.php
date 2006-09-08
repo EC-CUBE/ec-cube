@@ -85,6 +85,8 @@ if ($_POST['footer_row'] != ''){
 // ブラウザタイプ
 $objPage->browser_type = $_POST['browser_type'];
 
+sfprintr($_POST);
+
 // 画面の表示
 $objView->assignobj($objPage);
 $objView->display(MAIN_FRAME);
