@@ -295,7 +295,7 @@
 					<!--検索結果表示テーブル-->
 					<table width="840" border="0" cellspacing="1" cellpadding="5" summary=" ">
 
-						<tr bgcolor="#636469" align="center" class="fs10n">
+						<tr bgcolor="#636469" align="center" class="fs12n">
 							<td width="130"><span class="white">受注日</span></td>
 							<td width="70"><span class="white">受注番号</span></td>
 							<td width="120"><span class="white">顧客名</span></td>
@@ -310,7 +310,7 @@
 						
 						<!--{section name=cnt loop=$arrResults}-->
 						<!--{assign var=status value="`$arrResults[cnt].status`"}-->
-						<tr bgcolor="<!--{$arrORDERSTATUS_COLOR[$status]}-->" class="fs10n">
+						<tr bgcolor="<!--{$arrORDERSTATUS_COLOR[$status]}-->" class="fs12n">
 							<td align="center"><!--{$arrResults[cnt].create_date|sfDispDBDate}--></td>
 							<td align="center"><!--{$arrResults[cnt].order_id}--></td>
 							<td><!--{$arrResults[cnt].order_name01|escape}--> <!--{$arrResults[cnt].order_name02|escape}--></td>
