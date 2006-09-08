@@ -7,7 +7,6 @@ if(navigator.userAgent.indexOf("MSIE") >= 0){
 else if(navigator.userAgent.indexOf("Gecko/") >= 0){
     browser_type = 2;
 }
-alert("aaa");
 //-->
 </SCRIPT>
 
@@ -60,6 +59,7 @@ alert("aaa");
 										<td bgcolor="#ffffff" align="center">
 											<br/>
 		<SCRIPT language="JavaScript">
+			<!--
 			if(navigator.userAgent.indexOf("MSIE") >= 0){
 				<div style="zoom:0.8"><!--{include file="`$smarty.const.ROOT_DIR`html/user_data/include/preview/header.tpl"}--></div>
 			} else {
@@ -67,6 +67,7 @@ alert("aaa");
 			    document.write('tttt' );
 			}
 			alert("aaa");
+			//-->
 		</SCRIPT>
 											<br/>
 										</td>
