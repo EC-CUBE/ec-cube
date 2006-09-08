@@ -62,7 +62,7 @@ else if(navigator.userAgent.indexOf("Gecko/") >= 0){
 			if(browser_type == 1){
 			    document.write('tttt' );
 			} else {
-				document.write('<b>プレビューはIEでのみ表示されます。</b>' );
+				document.write('<span class="redst"><b>プレビューはIEでのみ表示されます。</b></span>' );
 			}
 		</script>
 											<br/>
