@@ -4,7 +4,7 @@
         border:     1px solid black;
         background: rgb(195,217,255);
         color:      #333;
-        cursor:		hand;
+        cursor:		move;
         PADDING-RIGHT: 	2px;
         PADDING-LEFT: 	2px;
         PADDING-BOTTOM: 5px; 
