@@ -60,13 +60,11 @@ switch($_POST['mode']) {
 		
 		// エラー表示
 		$objErrMsg = lfCheckSQL($_POST);
-		if ($errMsg != "") {
+		if ($objErrMsg != "") {
 			$errMsg = $objErrMsg->message . "\n" . $objErrMsg->userinfo;
 		}
 		
-		sfprintr($objErrMsg);
-		die;
-		$objPage->sqlerr = $errMsg->userinfo;
+		$objPage->sqlerr = $errMsg;
 
 		$objPage->objView = $objView;
 		
