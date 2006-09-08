@@ -7,6 +7,10 @@ if(navigator.userAgent.indexOf("MSIE") >= 0){
 else if(navigator.userAgent.indexOf("Gecko/") >= 0){
     browser_type = 2;
 }
+
+document.form_header.browser_type=browser_type;
+document.form_footer.browser_type=browser_type;
+
 //-->
 </SCRIPT>
 
@@ -70,6 +74,7 @@ else if(navigator.userAgent.indexOf("Gecko/") >= 0){
 									<input type="hidden" name="mode" value="">
 									<input type="hidden" name="division" value="header">
 									<input type="hidden" name="header_row" value=<!--{$header_row}-->>
+									<input type="hidden" name="browser_type" value="">
 										<tr class="fs12n">
 											<td bgcolor="#f2f1ec" align="center">
 												<br/>
@@ -83,7 +88,7 @@ else if(navigator.userAgent.indexOf("Gecko/") >= 0){
 										<tr class="fs12n">
 											<td bgcolor="#f2f1ec" align="center">
 												<input type='button' value='登録' name='subm' onclick="fnFormModeSubmit('form_header','confirm','','');"  />
-												<input type='button' value='プレビュー反映' name='preview' onclick="fnFormModeSubmit('form_header','preview','','');"  />
+												<input type='button' value='プレビュー' name='preview' onclick="fnFormModeSubmit('form_header','preview','','');"  />
 											</td>
 										</tr>
 									</form>
@@ -111,6 +116,7 @@ else if(navigator.userAgent.indexOf("Gecko/") >= 0){
 									<input type="hidden" name="mode" value="">
 									<input type="hidden" name="division" value="footer">
 									<input type="hidden" name="footer_row" value=<!--{$footer_row}-->>
+									<input type="hidden" name="browser_type" value="">
 										<tr class="fs12n">
 											<td bgcolor="#f2f1ec" align="center">
 												<br/>

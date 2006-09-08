@@ -29,6 +29,8 @@ $division = $_POST['division'];
 $tpl_DIR = ROOT_DIR . INCLUDE_DIR;
 $pre_DIR = ROOT_DIR . INCLUDE_DIR. 'preview/';
 
+sfprintr($_POST);
+
 // データ更新処理
 if ($division != ''){
 	// プレビュー用テンプレートに書き込み	
