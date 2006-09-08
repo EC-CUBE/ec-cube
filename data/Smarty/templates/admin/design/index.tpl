@@ -5,7 +5,7 @@
         background: rgb(195,217,255);
         color:      #333;
         cursor:		move;
-        margin: 5px;
+        margin: 	8px;
         FONT-SIZE: 		10pt;
     }
 
