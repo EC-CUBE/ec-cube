@@ -54,7 +54,7 @@ function init () {
 	
     // สยคำยุคจ
 	fnMoveObject();
-	
+
 	alert("ggg");
 	
 	<!--{$complate_msg}-->
