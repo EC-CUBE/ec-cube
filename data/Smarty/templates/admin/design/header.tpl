@@ -55,13 +55,22 @@ else if(navigator.userAgent.indexOf("Gecko/") >= 0){
 									<tr class="fs12n">
 										<td bgcolor="#f2f1ec" align="center"><strong>ヘッダー編集</strong></td>
 									</tr>
+									<!-- プレビューここから -->
 									<tr class="fs12n">
 										<td bgcolor="#ffffff" align="center">
 											<br/>
-												<div style="zoom:0.8"><!--{include file="`$smarty.const.ROOT_DIR`html/user_data/include/preview/header.tpl"}--></div>
+		<SCRIPT language="JavaScript">
+			if(browser_type == 1){
+				<div style="zoom:0.8"><!--{include file="`$smarty.const.ROOT_DIR`html/user_data/include/preview/header.tpl"}--></div>
+			} else {
+			    document.write('tttt' );
+			}
+		</SCRIPT>
 											<br/>
 										</td>
 									</tr>
+									<!-- プレビューここまで -->
+									
 									<form name="form_header" id="form_header" method="post" action="<!--{$smarty.server.PHP_SELF}-->" >
 									<input type="hidden" name="mode" value="">
 									<input type="hidden" name="division" value="header">
