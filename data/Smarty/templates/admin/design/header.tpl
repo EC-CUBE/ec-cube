@@ -150,7 +150,7 @@
 											<tr>
 												<td>
 												<input type='button' value='登録' name='subm' onclick="fnFormModeSubmit('form_footer','confirm','','');"  />
-												<input type='button' value='プレビュー' name='preview' onclick="lfnSetBrowser('form_header', 'browser_type'); fnFormModeSubmit('form_footer','preview','','');"  />
+												<input type='button' value='プレビュー' name='preview' onclick="lfnSetBrowser('form_footer', 'browser_type'); fnFormModeSubmit('form_footer','preview','','');"  />
 												</td>
 											</tr>
 										</table>
