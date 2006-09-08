@@ -46,11 +46,11 @@
 									<!--{ if $header_prev == "on"}-->
 									<tr class="fs12n">
 										<td bgcolor="#ffffff" align="center">
-												<!--{if $browser_type == 1 }-->
-												    <div style="zoom:0.8"><!--{include file="`$smarty.const.ROOT_DIR`html/user_data/include/preview/header.tpl"}--></div>
-												<!--{ else }-->
-													<span class="red12"><b>プレビューはIEでのみ表示されます。</b></span>
-												<!--{ /if }-->
+											<!--{if $browser_type == 1 }-->
+											    <div style="zoom:0.8"><!--{include file="`$smarty.const.ROOT_DIR`html/user_data/include/preview/header.tpl"}--></div>
+											<!--{ else }-->
+												<span class="red12"><b>プレビューはIEでのみ表示されます。</b></span>
+											<!--{ /if }-->
 										</td>
 									</tr>
 									<!--{ /if }-->
@@ -90,13 +90,17 @@
 									<tr class="fs12n">
 										<td bgcolor="#f2f1ec" align="center" colspan="3"><strong>フッター編集</strong></td>
 									</tr>
+									<!--{ if $footer_prev == "on"}-->
 									<tr class="fs12n">
 										<td bgcolor="#ffffff" align="center">
-											<br/>
+											<!--{if $browser_type == 1 }-->
 												<div style="zoom:0.8"><!--{include file="`$smarty.const.ROOT_DIR`html/user_data/include/preview/footer.tpl"}--></div>
-											<br/>
+											<!--{ else }-->
+												<span class="red12"><b>プレビューはIEでのみ表示されます。</b></span>
+											<!--{ /if }-->
 										</td>
 									</tr>
+									<!--{ /if }-->
 
 									<form name="form_footer" id="form_footer" method="post" action="<!--{$smarty.server.PHP_SELF}-->" >
 									<input type="hidden" name="mode" value="">
@@ -116,7 +120,7 @@
 										<tr class="fs12n">
 											<td bgcolor="#f2f1ec" align="center">
 												<input type='button' value='登録' name='subm' onclick="fnFormModeSubmit('form_footer','confirm','','');"  />
-												<input type='button' value='プレビュー反映' name='preview' onclick="fnFormModeSubmit('form_footer','preview','','');"  />
+												<input type='button' value='プレビュー' name='preview' onclick="lfnSetBrowser('form_header', 'browser_type'); fnFormModeSubmit('form_footer','preview','','');"  />
 											</td>
 										</tr>
 									</form>
