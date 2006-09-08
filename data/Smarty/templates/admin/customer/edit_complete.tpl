@@ -46,7 +46,7 @@
 
 								<table width="678" border="0" cellspacing="1" cellpadding="8" summary=" ">
 									<tr>
-										<td height="150" bgcolor="#ffffff" class="fs14n" align="center">判峡が窗位米しました。</td>
+										<td  height="402" bgcolor="#ffffff" class="fs14n" align="center">判峡が窗位米しました。</td>
 									</tr>
 								</table>
 
