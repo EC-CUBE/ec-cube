@@ -557,7 +557,6 @@ function fnSetTargetHeight(){
 			}
 
 			all_elms[cnt].style.height = target_height;
-			alert(target_height);
 		}
 	}
 	
