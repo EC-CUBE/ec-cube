@@ -60,7 +60,7 @@ else if(navigator.userAgent.indexOf("Gecko/") >= 0){
 											<br/>
 		<script type="text/javascript">
 			alert(browser_type);
-			if(navigator.userAgent.indexOf("MSIE") >= 0){
+			if(browser_type == 1){
 			    document.write('tttt' );
 			} else {
 				alert("aaa");
