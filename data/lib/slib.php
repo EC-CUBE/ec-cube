@@ -2063,8 +2063,6 @@ function sfEditCustomerData($array, $arrRegistColumn) {
 	if ($array["password"] != DEFAULT_PASSWORD)	$arrRegist["password"] = crypt($array["password"]); 
 	$arrRegist["update_date"] = "NOW()";
 	
-	sfprintr($arrRegist);
-	
 	$sqlval['email'] = $array['email'];
 	$sqlval['mail_flag'] = $array['mail_flag'];
 	//-- йт╫╦епо©╪б╧т
