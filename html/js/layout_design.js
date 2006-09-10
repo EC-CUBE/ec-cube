@@ -106,9 +106,30 @@ function setZindex(node, val) {
 
 // 値を取得
 function getAttrValue ( elm, attrname ) {
+/*
 	if (typeof(elm.attributes[ attrname ]) != 'undefined') {
 	    return elm.attributes[ attrname ].nodeValue;
 	}
+*/	
+	val = "";
+	if((typeof ScriptEngineMajorVersion)=='function')
+	{
+		if( Math.floor(ScriptEngineMajorVersion()) == 5 &&
+			navigator.userAgent.indexOf("Win")!=-1) //win-e5対応
+			{
+			val = elm.attributes.item(attrname)
+			}
+		else
+		{
+			val = elm.attributes.getNamedItem(attrname)
+		}
+	} else {
+		val = elm.attributes.getNamedItem(attrname)
+	}
+	
+	alert(elm.attributes[ attrname ].nodeValue+"/"+val.value);
+	
+	return val.value;
 }
 
 // 値をセット
