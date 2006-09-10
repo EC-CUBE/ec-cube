@@ -120,7 +120,7 @@ function setAttrValue ( elm, attrname, val ) {
 function getX ( elm ) {
 //   return parseInt(elm.style.left);
 
-	alert(elm.offsetLeft);
+	alert("123");
 
 	return parseInt(elm.offsetLeft);
 }
