@@ -28,7 +28,6 @@
 		<tr>
 			<td align="center" bgcolor="#ffffff">
 			<table width="500" border="0" cellspacing="0" cellpadding="0" summary=" ">
-			<form name="form1" method="post" action="./confirm.php">
 				<tr><td height="15"></td></tr>
 				<tr>
 					<td><img src="/img/forget/title.jpg" width="500" height="40" alt="パスワードを忘れた方"></td>
@@ -60,7 +59,6 @@
 					<td align="center"><input type="image" onmouseover="chgImgImageSubmit('/img/common/b_next_on.gif',this)" onmouseout="chgImgImageSubmit('/img/common/b_next.gif',this)" src="/img/common/b_next.gif" width="150" height="30" alt="次へ" border="0" name="next" id="next" /></td>
 				</tr>
 				<tr><td height="30"></td></tr>
-			</form>
 			</table>
 			</td>
 		</tr>
