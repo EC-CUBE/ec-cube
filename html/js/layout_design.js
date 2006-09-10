@@ -111,6 +111,7 @@ function getAttrValue ( elm, attrname ) {
 	    return elm.attributes[ attrname ].nodeValue;
 	}
 */	
+alert(typeof(elm.attributes.getNamedItem(attrname)));
 
 	if (typeof(elm.attributes.getNamedItem(attrname)) != 'object'){
 	val = "";
