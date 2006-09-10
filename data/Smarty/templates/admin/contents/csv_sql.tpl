@@ -12,7 +12,6 @@ function ChangeSize(button, TextArea, Max, Min, row_tmp){
 // SQL確認画面起動
 function doPreview(){
 	document.form1.mode.value="preview"
-	document.form1.target = "_blank";
 	document.form1.submit();
 }
 
