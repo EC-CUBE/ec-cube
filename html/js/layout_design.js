@@ -106,9 +106,6 @@ function setZindex(node, val) {
 
 // 値を取得
 function getAttrValue ( elm, attrname ) {
-
-	alert(attrname);
-
 	if (typeof(elm.attributes[ attrname ]) != 'undefined') {
 	    return elm.attributes[ attrname ].nodeValue;
 	}
@@ -395,6 +392,8 @@ function fnCreateArr( addEvt , top , left ){
 	arrObjtmp['Unused'] = Array();
 
 	for ( var i = 0; i < all_elms.length; i++ ) {
+	
+	alert(all_elms[i].getAttributeNode('class'));
 	
 		// classが dragged_elm の場合のみ処理を行う
 		if ( getAttrValue ( all_elms[i], 'class' ) == 'dragged_elm' ) {
