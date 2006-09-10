@@ -119,9 +119,6 @@ function setAttrValue ( elm, attrname, val ) {
 // オブジェクトのX座標を取得
 function getX ( elm ) {
 //   return parseInt(elm.style.left);
-
-	alert("123");
-
 	return parseInt(elm.offsetLeft);
 }
 
@@ -393,10 +390,14 @@ function fnCreateArr( addEvt , top , left ){
 
 	for ( var i = 0; i < all_elms.length; i++ ) {
 	
-	test = all_elms[i].attributes.item('class');
+	//test = all_elms[i].attributes.item('class');
 	//test = all_elms[i].attributes.getNamedItem('class');
+	//alert(test.nodeValue);
 
-	alert(test.nodeValue);
+var t0 = document.getElementById('i')
+t0a = t0.attributes.getNamedItem('id')
+alert( t0a.value )
+
 
 		// classが dragged_elm の場合のみ処理を行う
 		if ( getAttrValue ( all_elms[i], 'class' ) == 'dragged_elm' ) {
