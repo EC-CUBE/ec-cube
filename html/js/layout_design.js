@@ -106,11 +106,9 @@ function setZindex(node, val) {
 
 // 値を取得
 function getAttrValue ( elm, attrname ) {
-/*
+
 	if (typeof(elm.attributes[ attrname ]) != 'undefined') {
-	    return elm.attributes[ attrname ].nodeValue;
-	}
-*/	
+
 	val = "";
 	if((typeof ScriptEngineMajorVersion)=='function')
 	{
@@ -130,6 +128,8 @@ function getAttrValue ( elm, attrname ) {
 	alert(elm.attributes[ attrname ].nodeValue+"/"+val.value);
 	
 	return val.value;
+		}
+	
 }
 
 // 値をセット
