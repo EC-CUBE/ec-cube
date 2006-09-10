@@ -117,14 +117,14 @@ function getAttrValue ( elm, attrname ) {
 		if( Math.floor(ScriptEngineMajorVersion()) == 5 &&
 			navigator.userAgent.indexOf("Win")!=-1) //win-e5ÂÐ±þ
 			{
-			val = t0.attributes.item(attrname)
+			val = elm.attributes.item(attrname)
 			}
 		else
 		{
-			val = t0.attributes.getNamedItem(attrname)
+			val = elm.attributes.getNamedItem(attrname)
 		}
 	} else {
-		val = t0.attributes.getNamedItem(attrname)
+		val = elm.attributes.getNamedItem(attrname)
 	}
 	
 	return val.value;
