@@ -395,7 +395,8 @@ function fnCreateArr( addEvt , top , left ){
 	//alert(test.nodeValue);
 
 var t0 = document.getElementById(i)
-t0a = t0.attributes.getNamedItem('id')
+t0a = t0.attributes.item('id')
+
 alert( t0a.value )
 
 
