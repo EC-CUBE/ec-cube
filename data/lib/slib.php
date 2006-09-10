@@ -2068,7 +2068,6 @@ function sfEditCustomerData($array, $arrRegistColumn) {
 	//-- ÊÔ½¸ÅÐÏ¿¼Â¹Ô
 	$objQuery->begin();
 	$objQuery->update("dtb_customer", $arrRegist, "customer_id = ? ", array($array['customer_id']));
-	$objQuery->getLastQuery(true);
 	$objQuery->delete("dtb_customer_mail", "email = ?", array($array['email']));
 	$objQuery->insert("dtb_customer_mail", $sqlval);
 	$objQuery->commit();

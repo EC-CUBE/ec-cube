@@ -165,7 +165,7 @@ if ( $_POST["mode"] != "edit" && is_numeric($_POST["customer_id"])) {
 				$objPage->arrForm['secret_key'] = $secret;
 				array_push($arrRegistColumn, array('column' => 'secret_key', 'convert' => 'n'));
 			}
-			
+			sfprintr($objPage->arrForm);
 			//-- йт╫╦епо©
 			sfEditCustomerData($objPage->arrForm, $arrRegistColumn);
 		}
