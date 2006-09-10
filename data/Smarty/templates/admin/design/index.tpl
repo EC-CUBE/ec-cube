@@ -50,7 +50,7 @@ function init () {
 	all_td = document.getElementsByTagName ( 'td' );
 
 	// 配列作成
-	fnCreateArr(0);
+	fnCreateArr(0,0,0);
 	
     // 並び替え
 	fnMoveObject();
