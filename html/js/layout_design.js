@@ -377,6 +377,7 @@ function fnSortObj(){
 
 // 配列の作成
 function fnCreateArr( addEvt , top , left ){
+				alert("ggg");
 
 	var arrObjtmp = new Object();
 	arrObjtmp['LeftNavi'] = Array();
