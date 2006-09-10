@@ -2060,11 +2060,10 @@ function sfEditCustomerData($array, $arrRegistColumn) {
 	}
 
 	//-- パスワードの更新がある場合は暗号化。（更新がない場合はUPDATE文を構成しない）
-	if ($array["password"] != DEFAULT_PASSWORD){
-		$arrRegist["password"] = crypt($array["password"]); 
-		sfprintr($array());
-	} 
+	if ($array["password"] != DEFAULT_PASSWORD)	$arrRegist["password"] = crypt($array["password"]); 
 	$arrRegist["update_date"] = "NOW()";
+	
+	sfprintr($arrRegist);
 	
 	$sqlval['email'] = $array['email'];
 	$sqlval['mail_flag'] = $array['mail_flag'];
