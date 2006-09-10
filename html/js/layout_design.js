@@ -112,7 +112,7 @@ function getAttrValue ( elm, attrname ) {
 	}
 */	
 
-	if (typeof elm.attributes.getNamedItem(attrname) != 'object'){
+	if (typeof(elm.attributes.getNamedItem(attrname)) != 'object'){
 	val = "";
 	if((typeof ScriptEngineMajorVersion)=='function')
 	{
