@@ -396,6 +396,7 @@ function fnCreateArr( addEvt , top , left ){
 
   //1 id名が'test0'のエレメントを変数t0へ入れる
   var t0 = all_elms[i]
+  alert(123);
 
   //2 win-e5を分岐してt0のid属性を変数t0aへ入れる
   if((typeof ScriptEngineMajorVersion)=='function')
@@ -410,6 +411,7 @@ function fnCreateArr( addEvt , top , left ){
       t0a = t0.attributes.getNamedItem('id')
     }
   } else {
+  alert(123);
       t0a = t0.attributes.getNamedItem('id')
   }
 
@@ -421,7 +423,6 @@ function fnCreateArr( addEvt , top , left ){
 
 
   //4 t0aの各アトリビュートをダイアログ表示する
-  alert(123);
   alert( t0a.value )
   alert(123);
 
