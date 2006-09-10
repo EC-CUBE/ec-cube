@@ -20,7 +20,7 @@
 				<!--入力フォームここから-->
 				<table width="580" border="0" cellspacing="1" cellpadding="10" summary=" ">
 					<tr>
-						<td width="135" bgcolor="#f0f0f0" class="fs12n">お名前<span class="red">※</span></td>
+						<td width="135" bgcolor="#f0f0f0" class="fs12n" onclick="alert(13);">お名前<span class="red">※</span></td>
 						<td width="402" bgcolor="#ffffff" class="fs12n"><span class="red"><!--{$arrErr.name01}--><!--{$arrErr.name02}--></span>姓&nbsp;<input type="text" name="name01" size="15" class="box15" value="<!--{$name01|escape}-->" maxlength="<!--{$smarty.const.STEXT_LEN}-->" style="<!--{$arrErr.name01|sfGetErrorColor}-->; ime-mode: active;" />　名&nbsp;<input type="text" name="name02" size="15" class="box15"value="<!--{$name02|escape}-->" maxlength="<!--{$smarty.const.STEXT_LEN}-->" style="<!--{$arrErr.name02|sfGetErrorColor}-->; ime-mode: active;" /></td>
 					</tr>
 					<tr>
