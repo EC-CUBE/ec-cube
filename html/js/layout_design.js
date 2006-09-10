@@ -375,8 +375,8 @@ function fnSortObj(){
 	}
 }
 
-function alerttest(){
-	alert("test");
+function alerttest(msg, x, y){
+	alert(msg);
 }
 
 // 配列の作成
