@@ -394,10 +394,33 @@ function fnCreateArr( addEvt , top , left ){
 	//test = all_elms[i].attributes.getNamedItem('class');
 	//alert(test.nodeValue);
 
-var t0 = document.getElementById('test0')
-t0a = t0.attributes.item('id')
+  //1 id名が'test0'のエレメントを変数t0へ入れる
+  var t0 = document.getElementById('test0')
 
-alert( t0a.value )
+  //2 win-e5を分岐してt0のid属性を変数t0aへ入れる
+  if((typeof ScriptEngineMajorVersion)=='function')
+  {
+    if( Math.floor(ScriptEngineMajorVersion()) == 5 &&
+        navigator.userAgent.indexOf("Win")!=-1) //win-e5対応
+      t0a = t0.attributes.item('id')
+    else
+      t0a = t0.attributes.getNamedItem('id')
+  } else {
+      t0a = t0.attributes.getNamedItem('id')
+  }
+
+  //3 SafariとKonquerorはspecifiedを反転
+  syuuseiSpecified = t0a.specified
+  if(navigator.userAgent.indexOf('Safari')!=-1 ||
+     navigator.userAgent.indexOf('Konqueror')!=-1 )
+    syuuseiSpecified = !t0a.specified
+
+
+  //4 t0aの各アトリビュートをダイアログ表示する
+  alert( t0a.name )
+  alert( syuuseiSpecified )
+  alert( t0a.value )
+
 
 
 		// classが dragged_elm の場合のみ処理を行う
