@@ -395,7 +395,9 @@ function fnCreateArr( addEvt , top , left ){
 	//alert(test.nodeValue);
 
   //1 id名が'test0'のエレメントを変数t0へ入れる
-  var t0 = all_elms[i]
+//  var t0 = all_elms[i]
+  var t0 = document.getElementById('test0')
+
 
   //2 win-e5を分岐してt0のid属性を変数t0aへ入れる
   if((typeof ScriptEngineMajorVersion)=='function')
@@ -414,7 +416,6 @@ function fnCreateArr( addEvt , top , left ){
   }
 
   //3 SafariとKonquerorはspecifiedを反転
-  alert(123);
   /*
   syuuseiSpecified = t0a.specified
   if(navigator.userAgent.indexOf('Safari')!=-1 ||
@@ -422,11 +423,9 @@ function fnCreateArr( addEvt , top , left ){
     syuuseiSpecified = !t0a.specified
   */
 
-  alert(123);
 
   //4 t0aの各アトリビュートをダイアログ表示する
   alert(typeof t0a )
-  alert(123);
 
 
 
