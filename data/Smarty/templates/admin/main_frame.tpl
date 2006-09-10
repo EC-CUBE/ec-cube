@@ -24,7 +24,7 @@
 <noscript>
 <link rel="stylesheet" href="<!--{$smarty.const.URL_ADMIN_CSS}-->common.css" type="text/css" />
 </noscript>
-<div align="center">
+<div align="center" class="" id="">
 <a name="top"></a>
 
 <!--{if $smarty.const.ADMIN_MODE == '1'}-->
@@ -107,7 +107,7 @@
 		<!--{/if}-->
 		<!--{include file=$tpl_mainpage}-->
 		</td>
-		<td background="/img/common/right_bg.jpg"><div align="justify"><img src="/img/common/right.jpg" width="17" height="443" alt=""></div></td>
+		<td background="/img/common/right_bg.jpg"><div align="justify" class="" id=""><img src="/img/common/right.jpg" width="17" height="443" alt=""></div></td>
 	</tr>
 </table>
 <!--¢¥CONTENTS-->
