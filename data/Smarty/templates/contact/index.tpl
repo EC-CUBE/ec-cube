@@ -98,7 +98,7 @@
 						<td bgcolor="#ffffff">
 						<table border="0" cellspacing="0" cellpadding="0" summary=" ">
 							<tr>
-								<td>
+								<td bgcolor="#ffffff" class="fs12n">
 									<span class="red"><!--{$arrErr.email}--><!--{$arrErr.email02}--></span>
 									<input type="text" name="email" size="40" class="box40" value="<!--{$email|escape|default:$arrData.email|escape}-->" maxlength="<!--{$smarty.const.MTEXT_LEN}-->" style="<!--{$arrErr.email|sfGetErrorColor}-->" />
 								</td>
@@ -117,7 +117,7 @@
 					<tr>
 						<td bgcolor="#f0f0f0" class="fs12">お問い合わせ内容<span class="red">※</span><br>
 						<span class="mini">（全角<!--{$smarty.const.MLTEXT_LEN}-->字以下）</span></td>
-						<td bgcolor="#ffffff">
+						<td bgcolor="#ffffff" class="fs12n">
 							<span class="red"><!--{$arrErr.contents}--></span>
 							<textarea name="contents" cols="60" rows="20" class="area60" wrap="hard" maxlength="<!--{$smarty.const.LTEXT_LEN}-->" style="<!--{$arrErr.contents|sfGetErrorColor}-->"><!--{$contents}--></textarea>
 						</td>
