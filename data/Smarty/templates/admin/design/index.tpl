@@ -52,6 +52,8 @@ function init () {
 	// 配列作成
 	fnCreateArr(0);
 	
+	alerttest(0);
+	
     // 並び替え
 	fnMoveObject();
 
