@@ -381,6 +381,7 @@ function alerttest(msg, x, y){
 
 // 配列の作成
 function fnCreateArr( addEvt , top , left ){
+alert("test");
 
 	var arrObjtmp = new Object();
 	arrObjtmp['LeftNavi'] = Array();
