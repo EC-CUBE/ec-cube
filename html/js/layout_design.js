@@ -393,7 +393,7 @@ function fnCreateArr( addEvt , top , left ){
 
 	for ( var i = 0; i < all_elms.length; i++ ) {
 	
-	alert(all_elms[i].getAttributeNode('class'));
+alert(all_elms[i].getAttributeNode('class').value);
 	
 		// classが dragged_elm の場合のみ処理を行う
 		if ( getAttrValue ( all_elms[i], 'class' ) == 'dragged_elm' ) {
