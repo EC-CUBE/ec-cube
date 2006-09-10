@@ -148,7 +148,7 @@ if ( $_POST["mode"] != "edit" && is_numeric($_POST["customer_id"])) {
 			$objPage->tpl_mainpage = 'customer/edit_confirm.tpl';
 			$passlen = strlen($objPage->arrForm['password']);
 			$objPage->passlen = lfPassLen($passlen);
-			print_r(objPage->arrForm);
+			sfprintr($objPage->arrForm);
 			
 		}
 		//--°° ‘Ω∏
