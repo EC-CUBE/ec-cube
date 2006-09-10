@@ -112,8 +112,7 @@ function getAttrValue ( elm, attrname ) {
 	}
 */	
 
-//	if (typeof(elm.attributes.getNamedItem(attrname)) != 'object')
-{
+//	if (typeof(elm.attributes.getNamedItem(attrname)) != 'object'){
 		val = "";
 		if((typeof ScriptEngineMajorVersion)=='function')
 		{
@@ -133,7 +132,7 @@ function getAttrValue ( elm, attrname ) {
 		alert(elm.attributes[ attrname ].nodeValue+"/"+val.value);
 		
 		return val.value;
-	}
+//	}
 }
 
 // 値をセット
