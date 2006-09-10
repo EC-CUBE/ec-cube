@@ -106,9 +106,30 @@ function setZindex(node, val) {
 
 // 値を取得
 function getAttrValue ( elm, attrname ) {
+/*
 	if (typeof(elm.attributes[ attrname ]) != 'undefined') {
 	    return elm.attributes[ attrname ].nodeValue;
 	}
+*/	
+	val = "";
+	if((typeof ScriptEngineMajorVersion)=='function')
+	{
+		if( Math.floor(ScriptEngineMajorVersion()) == 5 &&
+			navigator.userAgent.indexOf("Win")!=-1) //win-e5対応
+			{
+			val = t0.attributes.item(attrname)
+			}
+		else
+		{
+			val = t0.attributes.getNamedItem(attrname)
+		}
+	} else {
+		val = t0.attributes.getNamedItem(attrname)
+	}
+	
+	return val;
+
+	
 }
 
 // 値をセット
@@ -389,46 +410,6 @@ function fnCreateArr( addEvt , top , left ){
 	arrObjtmp['Unused'] = Array();
 
 	for ( var i = 1; i < all_elms.length; i++ ) {
-	
-	//test = all_elms[i].attributes.item('class');
-	//test = all_elms[i].attributes.getNamedItem('class');
-	//alert(test.nodeValue);
-
-  //1 id名が'test0'のエレメントを変数t0へ入れる
-  var t0 = all_elms[i]
-//  var t0 = document.getElementById('test0')
-
-
-  //2 win-e5を分岐してt0のid属性を変数t0aへ入れる
-  if((typeof ScriptEngineMajorVersion)=='function')
-  {
-    if( Math.floor(ScriptEngineMajorVersion()) == 5 &&
-        navigator.userAgent.indexOf("Win")!=-1) //win-e5対応
-        {
-      t0a = t0.attributes.item('id')
-    	}
-    else
-    {
-      t0a = t0.attributes.getNamedItem('id')
-    }
-  } else {
-      t0a = t0.attributes.getNamedItem('id')
-  }
-
-  //3 SafariとKonquerorはspecifiedを反転
-  /*
-  syuuseiSpecified = t0a.specified
-  if(navigator.userAgent.indexOf('Safari')!=-1 ||
-     navigator.userAgent.indexOf('Konqueror')!=-1 )
-    syuuseiSpecified = !t0a.specified
-  */
-
-
-  //4 t0aの各アトリビュートをダイアログ表示する
-  alert(typeof t0a.value )
-
-
-
 		// classが dragged_elm の場合のみ処理を行う
 		if ( getAttrValue ( all_elms[i], 'class' ) == 'dragged_elm' ) {
         
