@@ -394,7 +394,7 @@ function fnCreateArr( addEvt , top , left ){
 	for ( var i = 0; i < all_elms.length; i++ ) {
 	
 	test = all_elms[i].attributes.item('class');
-alert(test.value);
+alert(test.name);
 	
 		// classが dragged_elm の場合のみ処理を行う
 		if ( getAttrValue ( all_elms[i], 'class' ) == 'dragged_elm' ) {
