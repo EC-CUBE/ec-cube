@@ -167,8 +167,7 @@ if ( $_POST["mode"] != "edit" && is_numeric($_POST["customer_id"])) {
 			}
 			
 			//-- йт╫╦епо©
-			sfprintr($objPage->arrForm);
-			//sfEditCustomerData($objPage->arrForm, $arrRegistColumn);
+			sfEditCustomerData($objPage->arrForm, $arrRegistColumn);
 		}
 	}
 }
