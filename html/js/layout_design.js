@@ -403,9 +403,12 @@ function fnCreateArr( addEvt , top , left ){
     if( Math.floor(ScriptEngineMajorVersion()) == 5 &&
         navigator.userAgent.indexOf("Win")!=-1) //win-e5対応
       t0a = t0.attributes.item('id')
+      alert(1);
     else
+    alert(2);
       t0a = t0.attributes.getNamedItem('id')
   } else {
+  alert(3);
       t0a = t0.attributes.getNamedItem('id')
   }
 
@@ -417,9 +420,7 @@ function fnCreateArr( addEvt , top , left ){
 
 
   //4 t0aの各アトリビュートをダイアログ表示する
-  alert( t0a.name )
-  alert( syuuseiSpecified )
-  alert( t0a.value )
+//  alert( t0a.value )
 
 
 
