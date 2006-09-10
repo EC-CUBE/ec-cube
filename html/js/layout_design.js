@@ -129,7 +129,7 @@ function getAttrValue ( elm, attrname ) {
 	
 	//alert(elm.attributes[ attrname ].nodeValue+"/"+val.value);
 	
-	return elm.attributes[ attrname ].nodeValue;
+	return val.value;
 
 	
 }
@@ -411,7 +411,7 @@ function fnCreateArr( addEvt , top , left ){
 	arrObjtmp['MainFoot'] = Array();
 	arrObjtmp['Unused'] = Array();
 
-	for ( var i = 1; i < all_elms.length; i++ ) {
+	for ( var i = 0; i < all_elms.length; i++ ) {
 		// classが dragged_elm の場合のみ処理を行う
 		if ( getAttrValue ( all_elms[i], 'class' ) == 'dragged_elm' ) {
         
