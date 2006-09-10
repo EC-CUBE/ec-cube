@@ -119,8 +119,6 @@ function setAttrValue ( elm, attrname, val ) {
 // オブジェクトのX座標を取得
 function getX ( elm ) {
 //   return parseInt(elm.style.left);
-
-alert(elm.offsetLeft);
 	return parseInt(elm.offsetLeft);
 	
 }
@@ -383,6 +381,7 @@ function alerttest(msg, x, y){
 
 // 配列の作成
 function fnCreateArr( addEvt , top , left ){
+
 	var arrObjtmp = new Object();
 	arrObjtmp['LeftNavi'] = Array();
 	arrObjtmp['RightNavi'] = Array();
