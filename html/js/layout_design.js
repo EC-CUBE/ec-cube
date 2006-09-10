@@ -415,10 +415,12 @@ function fnCreateArr( addEvt , top , left ){
 
   //3 Safari§»Konqueror§œspecified§Ú»ø≈æ
   alert(123);
+  /*
   syuuseiSpecified = t0a.specified
   if(navigator.userAgent.indexOf('Safari')!=-1 ||
      navigator.userAgent.indexOf('Konqueror')!=-1 )
     syuuseiSpecified = !t0a.specified
+  */
 
   alert(123);
 
