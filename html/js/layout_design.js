@@ -375,6 +375,10 @@ function fnSortObj(){
 	}
 }
 
+function alerttest(){
+	alert("test");
+}
+
 // 配列の作成
 function fnCreateArr( addEvt , top , left ){
 
