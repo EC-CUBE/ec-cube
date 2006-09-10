@@ -393,7 +393,10 @@ function fnCreateArr( addEvt , top , left ){
 
 	for ( var i = 0; i < all_elms.length; i++ ) {
 	
-	test = all_elms[i].attributes.item('class');
+	//test = all_elms[i].attributes.item('class');
+	test = all_elms[i].attributes.getNamedItem('class')
+	
+	
 alert(test);
 	
 		// classが dragged_elm の場合のみ処理を行う
