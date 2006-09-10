@@ -384,6 +384,7 @@ function fnCreateArr( addEvt , top , left ){
 	arrObjtmp['MainHead'] = Array();
 	arrObjtmp['MainFoot'] = Array();
 	arrObjtmp['Unused'] = Array();
+				alert("ggg");
 
 	for ( var i = 0; i < all_elms.length; i++ ) {
  
@@ -417,7 +418,6 @@ function fnCreateArr( addEvt , top , left ){
 					arrObjtmp[target_id][len].left = left;
 				}
 			} else {
-				alert("ggg");
 				// top は常にオブジェクトの中心を取得するようにする
 				arrObjtmp[target_id][len].top = i;
 				arrObjtmp[target_id][len].left = getX( all_elms[i] );
