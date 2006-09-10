@@ -8,7 +8,6 @@
 			<tr>
 				<td align="center" bgcolor="#cccccc">
 				<table width="690" border="0" cellspacing="0" cellpadding="20" summary=" ">
-					<tr><td height="5"></td></tr>
 					<tr>
 						<td align="center" height="250" bgcolor="#ffffff" class="fs12"><!--★エラーメッセージ--><!--{$tpl_error}--></td>
 					</tr>
