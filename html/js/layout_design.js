@@ -425,7 +425,7 @@ function fnCreateArr( addEvt , top , left ){
   alert(123);
 
   //4 t0aの各アトリビュートをダイアログ表示する
-  alert(typeof t0a.value )
+  alert(typeof t0a )
   alert(123);
 
 
