@@ -119,6 +119,7 @@ function setAttrValue ( elm, attrname, val ) {
 // オブジェクトのX座標を取得
 function getX ( elm ) {
 //   return parseInt(elm.style.left);
+alert("fff");
 alert(elm.offsetLeft);
 	return parseInt(elm.offsetLeft);
 	
