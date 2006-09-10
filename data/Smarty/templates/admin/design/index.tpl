@@ -1,3 +1,7 @@
+
+<script type="text/javascript" src="/js/layout_design.js"></script>
+
+
 <style type="text/css">    
     div.dragged_elm {
         position:   absolute;
@@ -50,7 +54,7 @@ function init () {
 	all_td = document.getElementsByTagName ( 'td' );
 
 	// 配列作成
-	fnCreateArr(0,0,0);
+	fnCreateArr(0);
 	
     // 並び替え
 	fnMoveObject();
@@ -59,8 +63,6 @@ function init () {
 }
 
 </script>
-
-<script type="text/javascript" src="/js/layout_design.js"></script>
 
 <!--★★メインコンテンツ★★-->
 <table width="878" border="0" cellspacing="0" cellpadding="0" summary=" ">
