@@ -395,8 +395,8 @@ function fnCreateArr( addEvt , top , left ){
 	//alert(test.nodeValue);
 
   //1 id名が'test0'のエレメントを変数t0へ入れる
-//  var t0 = all_elms[i]
-  var t0 = document.getElementById('test0')
+  var t0 = all_elms[i+1]
+//  var t0 = document.getElementById('test0')
 
 
   //2 win-e5を分岐してt0のid属性を変数t0aへ入れる
