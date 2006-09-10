@@ -384,8 +384,6 @@ function fnCreateArr( addEvt , top , left ){
 	arrObjtmp['MainHead'] = Array();
 	arrObjtmp['MainFoot'] = Array();
 	arrObjtmp['Unused'] = Array();
-	
-	alert(1123);
 
 	for ( var i = 0; i < all_elms.length; i++ ) {
  
