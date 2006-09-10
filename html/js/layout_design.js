@@ -376,7 +376,7 @@ function fnSortObj(){
 }
 
 // 配列の作成
-function fnCreateArr( addEvt , top , left ){
+function fnCreateArr( addEvt , top = 0 , left = 0 ){
 
 	var arrObjtmp = new Object();
 	arrObjtmp['LeftNavi'] = Array();
