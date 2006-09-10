@@ -116,7 +116,7 @@ function func_return(){
 									</tr>
 									<tr class="fs12n">
 										<td bgcolor="#f2f1ec" width="190">パスワード<span class="red"> *</span></td>
-										<td bgcolor="#ffffff" width="527">********</td>
+										<td bgcolor="#ffffff" width="527"><!--{$passlen}--></td>
 									</tr>
 									<tr>
 										<td bgcolor="#f2f1ec" width="190" class="fs12n">パスワードを忘れたときのヒント<span class="red"> *</span></td>

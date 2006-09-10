@@ -149,6 +149,7 @@ if ( $_POST["mode"] != "edit" && is_numeric($_POST["customer_id"])) {
 			$passlen = strlen($objPage->arrForm['password']);
 			$objPage->passlen = lfPassLen($passlen);
 			sfprintr($objPage->arrForm);
+			sfprintr($objPage->passlen);
 			
 		}
 		//--°° ‘Ω∏
