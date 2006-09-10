@@ -127,9 +127,9 @@ function getAttrValue ( elm, attrname ) {
 		val = elm.attributes.getNamedItem(attrname)
 	}
 	
-	alert(val.value);
+//	alert(val.value);
 	
-	return val;
+	return val.value;
 
 	
 }
