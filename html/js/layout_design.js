@@ -388,7 +388,7 @@ function fnCreateArr( addEvt , top , left ){
 	arrObjtmp['MainFoot'] = Array();
 	arrObjtmp['Unused'] = Array();
 
-	for ( var i = 0; i < all_elms.length; i++ ) {
+	for ( var i = 1; i < all_elms.length; i++ ) {
 	
 	//test = all_elms[i].attributes.item('class');
 	//test = all_elms[i].attributes.getNamedItem('class');
