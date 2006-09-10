@@ -54,7 +54,7 @@
 					<td class="fs12" align="left"><span class="red"><!--{$errmsg}--></span></td>
 				</tr>
 				<!--{/if}-->
-				<tr><td height="15"><input type="submit"></td></tr>
+				<tr><td height="15"></td></tr>
 				<tr>
 					<td align="center"><input type="image" onmouseover="chgImgImageSubmit('/img/common/b_next_on.gif',this)" onmouseout="chgImgImageSubmit('/img/common/b_next.gif',this)" src="/img/common/b_next.gif" width="150" height="30" alt="¼¡¤Ø" border="0" name="next" id="next" /></td>
 				</tr>
