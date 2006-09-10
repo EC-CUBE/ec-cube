@@ -119,8 +119,6 @@ function setAttrValue ( elm, attrname, val ) {
 // オブジェクトのX座標を取得
 function getX ( elm ) {
 //   return parseInt(elm.style.left);
-alert("fff");
-alert(elm.offsetLeft);
 	return parseInt(elm.offsetLeft);
 	
 }
@@ -419,6 +417,7 @@ function fnCreateArr( addEvt , top , left ){
 					arrObjtmp[target_id][len].left = left;
 				}
 			} else {
+				alert("ggg");
 				// top は常にオブジェクトの中心を取得するようにする
 				arrObjtmp[target_id][len].top = i;
 				arrObjtmp[target_id][len].left = getX( all_elms[i] );
