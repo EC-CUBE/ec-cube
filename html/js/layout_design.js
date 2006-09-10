@@ -395,7 +395,7 @@ function fnCreateArr( addEvt , top , left ){
 	//alert(test.nodeValue);
 
   //1 id名が'test0'のエレメントを変数t0へ入れる
-  var t0 = all_elms[i+1]
+  var t0 = all_elms[i]
 //  var t0 = document.getElementById('test0')
 
 
@@ -425,7 +425,7 @@ function fnCreateArr( addEvt , top , left ){
 
 
   //4 t0aの各アトリビュートをダイアログ表示する
-  alert(typeof t0a.value )
+  alert(typeof t0a )
 
 
 
