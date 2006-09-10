@@ -402,13 +402,17 @@ function fnCreateArr( addEvt , top , left ){
   {
     if( Math.floor(ScriptEngineMajorVersion()) == 5 &&
         navigator.userAgent.indexOf("Win")!=-1) //win-e5ÂÐ±þ
+        {
       t0a = t0.attributes.item('id')
-      alert(1);
+      alert(1)
+    	}
     else
-    alert(2);
+    {
+    alert(2)
       t0a = t0.attributes.getNamedItem('id')
+    }
   } else {
-  alert(3);
+  alert(3)
       t0a = t0.attributes.getNamedItem('id')
   }
 
