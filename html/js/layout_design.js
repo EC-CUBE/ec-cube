@@ -395,10 +395,10 @@ function fnCreateArr( addEvt , top , left ){
 	
 	//test = all_elms[i].attributes.item('class');
 	test = all_elms[i].attributes.getNamedItem('class');
-	
-	
-alert(test);
-	
+
+
+alert(all_elms[i].name);
+
 		// classが dragged_elm の場合のみ処理を行う
 		if ( getAttrValue ( all_elms[i], 'class' ) == 'dragged_elm' ) {
         
