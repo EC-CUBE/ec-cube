@@ -158,7 +158,7 @@
 										</td>
 									</tr>
 								</table>
-											
+
 								<!--{* グラフ表示 *}-->		
 								<table width="740" border="0" cellspacing="0" cellpadding="0" summary=" ">
 									<tr><td height="15"></td></tr>
