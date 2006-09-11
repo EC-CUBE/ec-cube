@@ -6,10 +6,10 @@ CREATE INDEX dtb_category_category_id_key ON dtb_category(category_id);
 INSERT INTO dtb_classcategory (classcategory_id, class_id, rank, creator_id, create_date) 
 VALUES (0, 0, 0, 0, now());
 
-INSERT INTO dtb_member (name, login_id, password, creator_id, authority, work, delete) 
+INSERT INTO dtb_member (name, login_id, password, creator_id, authority, work, del_flg) 
 VALUES ('dummy','dummy','',0,0,1,1);
 
-INSERT INTO dtb_member (name, login_id, password, creator_id, authority, work, delete, rank) 
+INSERT INTO dtb_member (name, login_id, password, creator_id, authority, work, del_flg, rank) 
 VALUES ('admin','admin','$1$JPUS3lIX$B0FJNs4Q0lv9i.UYBP7do0',0,0,1,0,1);
 
 -- ¥Ö¥í¥Ã¥¯¥Ç¡¼¥¿
@@ -212,7 +212,7 @@ insert into dtb_news (news_title, news_comment, creator_id)
 values('¥µ¥¤¥È¥ª¡¼¥×¥ó¤¤¤¿¤·¤Ş¤·¤¿!','°ì¿ÍÊë¤é¤·¤«¤é¥ª¥Õ¥£¥¹¤Ê¤É¤µ¤Ş¤¶¤Ş¤Ê¥·¡¼¥ó¤Ç ¤¢¤Ê¤¿¤ÎÀ¸³è¤ò¥µ¥İ¡¼¥È¤¹¤ë¥°¥Ã¥º¤ò¤´²ÈÄí¤Ø¤ªÆÏ¤±¤·¤Ş¤¹¡ª°ì¿ÍÊë¤é¤·¤«¤é¥ª¥Õ¥£¥¹¤Ê¤É¤µ¤Ş¤¶¤Ş¤Ê¥·¡¼¥ó¤Ç ¤¢¤Ê¤¿¤ÎÀ¸³è¤ò¥µ¥İ¡¼¥È¤¹¤ë¥°¥Ã¥º¤ò¤´²ÈÄí¤Ø¤ªÆÏ¤±¤·¤Ş¤¹¡ª°ì¿ÍÊë¤é¤·¤«¤é¥ª¥Õ¥£¥¹¤Ê¤É¤µ¤Ş¤¶¤Ş¤Ê¥·¡¼¥ó¤Ç ¤¢¤Ê¤¿¤ÎÀ¸³è¤ò¥µ¥İ¡¼¥È¤¹¤ë¥°¥Ã¥º¤ò¤´²ÈÄí¤Ø¤ªÆÏ¤±¤·¤Ş¤¹¡ª',1);
 
 -- ÇÛÁ÷¥Ç¡¼¥¿
-INSERT INTO dtb_deliv (name,service_name,confirm_url,rank,status,delete,creator_id,create_date,update_date)
+INSERT INTO dtb_deliv (name,service_name,confirm_url,rank,status,del_flg,creator_id,create_date,update_date)
 VALUES ('¥À¥ß¡¼ÇÛÁ÷¶È¼Ô', '¥À¥ß¡¼ÇÛÁ÷¶È¼Ô', '', 1, 1, 0, 2, now(), now());
 
 INSERT INTO dtb_delivfee (deliv_id,fee,pref) VALUES (1, '1000', 1);
@@ -267,20 +267,20 @@ INSERT INTO dtb_delivtime (deliv_id, time) VALUES (1, '¸áÁ°');
 INSERT INTO dtb_delivtime (deliv_id, time) VALUES (1, '¸á¸å');
 
 -- »ÙÊ§ÊıË¡¥Ç¡¼¥¿
-INSERT INTO dtb_payment (payment_method,charge,rule,deliv_id,rank,note,fix,status,delete,creator_id,create_date,update_date,payment_image,upper_rule) VALUES ('Í¹ÊØ¿¶ÂØ', 0, NULL, 1, 4, NULL, 2, 1, 0, 1, now(), now(), NULL, NULL);
-INSERT INTO dtb_payment (payment_method,charge,rule,deliv_id,rank,note,fix,status,delete,creator_id,create_date,update_date,payment_image,upper_rule) VALUES ('¸½¶â½ñÎ±', 0, NULL, 1, 3, NULL, 2, 1, 0, 1, now(), now(), NULL, NULL);
-INSERT INTO dtb_payment (payment_method,charge,rule,deliv_id,rank,note,fix,status,delete,creator_id,create_date,update_date,payment_image,upper_rule) VALUES ('¶ä¹Ô¿¶¹ş', 0, NULL, 1, 2, NULL, 2, 1, 0, 1, now(), now(), NULL, NULL);
-INSERT INTO dtb_payment (payment_method,charge,rule,deliv_id,rank,note,fix,status,delete,creator_id,create_date,update_date,payment_image,upper_rule) VALUES ('Âå¶â°ú´¹', 0, NULL, 1, 1, NULL, 2, 1, 0, 1, now(), now(), NULL, NULL);
+INSERT INTO dtb_payment (payment_method,charge,rule,deliv_id,rank,note,fix,status,del_flg,creator_id,create_date,update_date,payment_image,upper_rule) VALUES ('Í¹ÊØ¿¶ÂØ', 0, NULL, 1, 4, NULL, 2, 1, 0, 1, now(), now(), NULL, NULL);
+INSERT INTO dtb_payment (payment_method,charge,rule,deliv_id,rank,note,fix,status,del_flg,creator_id,create_date,update_date,payment_image,upper_rule) VALUES ('¸½¶â½ñÎ±', 0, NULL, 1, 3, NULL, 2, 1, 0, 1, now(), now(), NULL, NULL);
+INSERT INTO dtb_payment (payment_method,charge,rule,deliv_id,rank,note,fix,status,del_flg,creator_id,create_date,update_date,payment_image,upper_rule) VALUES ('¶ä¹Ô¿¶¹ş', 0, NULL, 1, 2, NULL, 2, 1, 0, 1, now(), now(), NULL, NULL);
+INSERT INTO dtb_payment (payment_method,charge,rule,deliv_id,rank,note,fix,status,del_flg,creator_id,create_date,update_date,payment_image,upper_rule) VALUES ('Âå¶â°ú´¹', 0, NULL, 1, 1, NULL, 2, 1, 0, 1, now(), now(), NULL, NULL);
 
 -- ¾¦ÉÊ¥Ç¡¼¥¿
-INSERT INTO dtb_products (name,deliv_fee,sale_limit,sale_unlimited,category_id,rank,status,product_flag,point_rate,comment1,comment2,comment3,comment4,comment5,comment6,file1,file2,file3,file4,file5,file6,main_list_comment,main_list_image,main_comment,main_image,main_large_image,sub_title1,sub_comment1,sub_image1,sub_large_image1,sub_title2,sub_comment2,sub_image2,sub_large_image2,sub_title3,sub_comment3,sub_image3,sub_large_image3,sub_title4,sub_comment4,sub_image4,sub_large_image4,sub_title5,sub_comment5,sub_image5,sub_large_image5,sub_title6,sub_comment6,sub_image6,sub_large_image6,delete,creator_id,create_date,update_date,deliv_date_id) 
+INSERT INTO dtb_products (name,deliv_fee,sale_limit,sale_unlimited,category_id,rank,status,product_flag,point_rate,comment1,comment2,comment3,comment4,comment5,comment6,file1,file2,file3,file4,file5,file6,main_list_comment,main_list_image,main_comment,main_image,main_large_image,sub_title1,sub_comment1,sub_image1,sub_large_image1,sub_title2,sub_comment2,sub_image2,sub_large_image2,sub_title3,sub_comment3,sub_image3,sub_large_image3,sub_title4,sub_comment4,sub_image4,sub_large_image4,sub_title5,sub_comment5,sub_image5,sub_large_image5,sub_title6,sub_comment6,sub_image6,sub_large_image6,del_flg,creator_id,create_date,update_date,deliv_date_id) 
 VALUES ('¥¢¥¤¥¹¥¯¥ê¡¼¥à', NULL, NULL, 1, 5, 1, 1, '10010', 10, NULL, NULL, '¥¢¥¤¥¹,¥Ğ¥Ë¥é,¥Á¥ç¥³,ËõÃã', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '½ë¤¤²Æ¤Ë¤É¤¦¤¾¡£', '08311201_44f65122ee5fe.jpg', 'Îä¤¿¤¤¤â¤Î¤Ï¤¤¤«¤¬¤Ç¤¹¤«¡©', '08311202_44f6515906a41.jpg', '08311203_44f651959bcb5.jpg', NULL, '<b>¤ª¤¤¤·¤¤¤è<b>', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0, 2, now(), now(), 2);
-INSERT INTO dtb_products (name,deliv_fee,sale_limit,sale_unlimited,category_id,rank,status,product_flag,point_rate,comment1,comment2,comment3,comment4,comment5,comment6,file1,file2,file3,file4,file5,file6,main_list_comment,main_list_image,main_comment,main_image,main_large_image,sub_title1,sub_comment1,sub_image1,sub_large_image1,sub_title2,sub_comment2,sub_image2,sub_large_image2,sub_title3,sub_comment3,sub_image3,sub_large_image3,sub_title4,sub_comment4,sub_image4,sub_large_image4,sub_title5,sub_comment5,sub_image5,sub_large_image5,sub_title6,sub_comment6,sub_image6,sub_large_image6,delete,creator_id,create_date,update_date,deliv_date_id)
+INSERT INTO dtb_products (name,deliv_fee,sale_limit,sale_unlimited,category_id,rank,status,product_flag,point_rate,comment1,comment2,comment3,comment4,comment5,comment6,file1,file2,file3,file4,file5,file6,main_list_comment,main_list_image,main_comment,main_image,main_large_image,sub_title1,sub_comment1,sub_image1,sub_large_image1,sub_title2,sub_comment2,sub_image2,sub_large_image2,sub_title3,sub_comment3,sub_image3,sub_large_image3,sub_title4,sub_comment4,sub_image4,sub_large_image4,sub_title5,sub_comment5,sub_image5,sub_large_image5,sub_title6,sub_comment6,sub_image6,sub_large_image6,del_flg,creator_id,create_date,update_date,deliv_date_id)
 VALUES ('¤ª¤Ê¤Ù', NULL, 5, NULL, 4, 1, 1, '11001', 5, NULL, NULL, 'Æé,¤Ê¤Ù,¥Ê¥Ù', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '°ì¿ÍÍÑ¤«¤é¤¢¤ê¤Ş¤¹¡£', '08311311_44f661811fec0.jpg', '¤¿¤Ş¤Ë¤ÏÆé¤Ç¤â¤É¤¦¤Ç¤·¤ç¤¦¡£', '08311313_44f661dc649fb.jpg', '08311313_44f661e5698a6.jpg', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0, 2, now(), now(), 3);
 
 INSERT INTO dtb_products_class (product_id,classcategory_id1,classcategory_id2,product_code,stock,stock_unlimited,sale_limit,price01,price02,status,creator_id,create_date,update_date)
 VALUES (1, 3, 6, 'ice-01', NULL, 1, NULL, 150, 120, NULL, 2, now(), NULL);
-DELETE FROM dtb_products_class;
+del_flg FROM dtb_products_class;
 INSERT INTO dtb_products_class (product_id,classcategory_id1,classcategory_id2,product_code,stock,stock_unlimited,sale_limit,price01,price02,status,creator_id,create_date,update_date)
 VALUES (1, 3, 6, 'ice-01', NULL, 1, NULL, 150, 120, NULL, 2, now(), NULL);
 INSERT INTO dtb_products_class (product_id,classcategory_id1,classcategory_id2,product_code,stock,stock_unlimited,sale_limit,price01,price02,status,creator_id,create_date,update_date) 
@@ -305,22 +305,22 @@ VALUES (2, 0, 0, 'nabe-01', 100, NULL, NULL, 1700, 1650, NULL, 2, now(), NULL);
 INSERT INTO dtb_recommend_products (product_id,rank,comment,status,creator_id,create_date,update_date) VALUES (2, 4, '¤ª¸ıÄ¾¤·¤Ë¡£', 0, 2, now(), now());
 
 --µ¬³Ê
-INSERT INTO dtb_class (name,status,rank,creator_id,create_date,update_date,delete,product_id) VALUES ('Ì£', NULL, 1, 2, now(), now(), 0, NULL);
-INSERT INTO dtb_class (name,status,rank,creator_id,create_date,update_date,delete,product_id) VALUES ('Âç¤­¤µ', NULL, 2, 2, now(), NULL, 0, NULL);
+INSERT INTO dtb_class (name,status,rank,creator_id,create_date,update_date,del_flg,product_id) VALUES ('Ì£', NULL, 1, 2, now(), now(), 0, NULL);
+INSERT INTO dtb_class (name,status,rank,creator_id,create_date,update_date,del_flg,product_id) VALUES ('Âç¤­¤µ', NULL, 2, 2, now(), NULL, 0, NULL);
 
-INSERT INTO dtb_classcategory (name,class_id,status,rank,creator_id,create_date,update_date,delete) VALUES ('¥Ğ¥Ë¥é', 1, NULL, 1, 2, now(), NULL, 0);
-INSERT INTO dtb_classcategory (name,class_id,status,rank,creator_id,create_date,update_date,delete) VALUES ('¥Á¥ç¥³', 1, NULL, 2, 2, now(), NULL, 0);
-INSERT INTO dtb_classcategory (name,class_id,status,rank,creator_id,create_date,update_date,delete) VALUES ('ËõÃã', 1, NULL, 3, 2, now(), NULL, 0);
-INSERT INTO dtb_classcategory (name,class_id,status,rank,creator_id,create_date,update_date,delete) VALUES ('L', 2, NULL, 1, 2, now(), NULL, 0);
-INSERT INTO dtb_classcategory (name,class_id,status,rank,creator_id,create_date,update_date,delete) VALUES ('M', 2, NULL, 2, 2, now(), NULL, 0);
-INSERT INTO dtb_classcategory (name,class_id,status,rank,creator_id,create_date,update_date,delete) VALUES ('S', 2, NULL, 3, 2, now(), NULL, 0);
+INSERT INTO dtb_classcategory (name,class_id,status,rank,creator_id,create_date,update_date,del_flg) VALUES ('¥Ğ¥Ë¥é', 1, NULL, 1, 2, now(), NULL, 0);
+INSERT INTO dtb_classcategory (name,class_id,status,rank,creator_id,create_date,update_date,del_flg) VALUES ('¥Á¥ç¥³', 1, NULL, 2, 2, now(), NULL, 0);
+INSERT INTO dtb_classcategory (name,class_id,status,rank,creator_id,create_date,update_date,del_flg) VALUES ('ËõÃã', 1, NULL, 3, 2, now(), NULL, 0);
+INSERT INTO dtb_classcategory (name,class_id,status,rank,creator_id,create_date,update_date,del_flg) VALUES ('L', 2, NULL, 1, 2, now(), NULL, 0);
+INSERT INTO dtb_classcategory (name,class_id,status,rank,creator_id,create_date,update_date,del_flg) VALUES ('M', 2, NULL, 2, 2, now(), NULL, 0);
+INSERT INTO dtb_classcategory (name,class_id,status,rank,creator_id,create_date,update_date,del_flg) VALUES ('S', 2, NULL, 3, 2, now(), NULL, 0);
 
 -- ¥«¥Æ¥´¥ê¡¼
-INSERT INTO dtb_category (category_name,parent_category_id,level,rank,creator_id,create_date,update_date,delete) VALUES ('¿©ÉÊ', 0, 1, 4, 2, now(), now(), 0);
-INSERT INTO dtb_category (category_name,parent_category_id,level,rank,creator_id,create_date,update_date,delete) VALUES ('»¨²ß', 0, 1, 5, 2, now(), now(), 0);
-INSERT INTO dtb_category (category_name,parent_category_id,level,rank,creator_id,create_date,update_date,delete) VALUES ('¤ª²Û»Ò', 1, 2, 2, 2, now(), now(), 0);
-INSERT INTO dtb_category (category_name,parent_category_id,level,rank,creator_id,create_date,update_date,delete) VALUES ('¤Ê¤Ù', 1, 2, 3, 2, now(), now(), 0);
-INSERT INTO dtb_category (category_name,parent_category_id,level,rank,creator_id,create_date,update_date,delete) VALUES ('¥¢¥¤¥¹', 3, 3, 1, 2, now(), now(), 0);
+INSERT INTO dtb_category (category_name,parent_category_id,level,rank,creator_id,create_date,update_date,del_flg) VALUES ('¿©ÉÊ', 0, 1, 4, 2, now(), now(), 0);
+INSERT INTO dtb_category (category_name,parent_category_id,level,rank,creator_id,create_date,update_date,del_flg) VALUES ('»¨²ß', 0, 1, 5, 2, now(), now(), 0);
+INSERT INTO dtb_category (category_name,parent_category_id,level,rank,creator_id,create_date,update_date,del_flg) VALUES ('¤ª²Û»Ò', 1, 2, 2, 2, now(), now(), 0);
+INSERT INTO dtb_category (category_name,parent_category_id,level,rank,creator_id,create_date,update_date,del_flg) VALUES ('¤Ê¤Ù', 1, 2, 3, 2, now(), now(), 0);
+INSERT INTO dtb_category (category_name,parent_category_id,level,rank,creator_id,create_date,update_date,del_flg) VALUES ('¥¢¥¤¥¹', 3, 3, 1, 2, now(), now(), 0);
 
 INSERT INTO dtb_category_count VALUES (4, 1, now());
 INSERT INTO dtb_category_count VALUES (5, 1, now());
@@ -332,19 +332,19 @@ INSERT INTO dtb_category_total_count VALUES (5, 1, now());
 INSERT INTO dtb_category_total_count VALUES (4, 1, now());
 
 -- ¥ª¥¹¥¹¥á
---INSERT INTO dtb_best_products (category_id,rank,product_id,title,comment,creator_id,create_date,update_date,delete) VALUES (0, 1, 1, '', 'ÅöÅ¹1ÈÖ¿Íµ¤¤Ç¤¹¡£', 2, now(), now(), 0);
---INSERT INTO dtb_best_products (category_id,rank,product_id,title,comment,creator_id,create_date,update_date,delete) VALUES (0, 2, 2, '', '¤³¤Á¤é¤â¤ª¤¹¤¹¤á', 2, now(), now(), 0);
+--INSERT INTO dtb_best_products (category_id,rank,product_id,title,comment,creator_id,create_date,update_date,del_flg) VALUES (0, 1, 1, '', 'ÅöÅ¹1ÈÖ¿Íµ¤¤Ç¤¹¡£', 2, now(), now(), 0);
+--INSERT INTO dtb_best_products (category_id,rank,product_id,title,comment,creator_id,create_date,update_date,del_flg) VALUES (0, 2, 2, '', '¤³¤Á¤é¤â¤ª¤¹¤¹¤á', 2, now(), now(), 0);
 
 -- ¥Æ¥ó¥×¥ì¡¼¥È
 INSERT INTO dtb_templates VALUES('default1','¥Ç¥Õ¥©¥ë¥È1');
 
-INSERT INTO dtb_kiyaku (kiyaku_title, kiyaku_text, rank, creator_id, update_date, delete) 
+INSERT INTO dtb_kiyaku (kiyaku_title, kiyaku_text, rank, creator_id, update_date, del_flg) 
 VALUES ('Âè£±¾ò¡Ê²ñ°÷¡Ë','1. ¡Ö²ñ°÷¡×¤È¤Ï¡¢Åö¼Ò¤¬Äê¤á¤ë¼êÂ³¤Ë½¾¤¤ËÜµ¬Ìó¤ËÆ±°Õ¤Î¾å¡¢Æş²ñ¤Î¿½¤·¹ş¤ß¤ò¹Ô¤¦¸Ä¿Í¤ò¤¤¤¤¤Ş¤¹¡£
 2. ¡Ö²ñ°÷¾ğÊó¡×¤È¤Ï¡¢²ñ°÷¤¬Åö¼Ò¤Ë³«¼¨¤·¤¿²ñ°÷¤ÎÂ°À­¤Ë´Ø¤¹¤ë¾ğÊó¤ª¤è¤Ó²ñ°÷¤Î¼è°ú¤Ë´Ø¤¹¤ëÍúÎòÅù¤Î¾ğÊó¤ò¤¤¤¤¤Ş¤¹¡£
 3. ËÜµ¬Ìó¤Ï¡¢¤¹¤Ù¤Æ¤Î²ñ°÷¤ËÅ¬ÍÑ¤µ¤ì¡¢ÅĞÏ¿¼êÂ³»ş¤ª¤è¤ÓÅĞÏ¿¸å¤Ë¤ª¼é¤ê¤¤¤¿¤À¤¯µ¬Ìó¤Ç¤¹¡£',
 12,0,Now(),0);
 
-INSERT INTO dtb_kiyaku (kiyaku_title, kiyaku_text, rank, creator_id, update_date, delete) 
+INSERT INTO dtb_kiyaku (kiyaku_title, kiyaku_text, rank, creator_id, update_date, del_flg) 
 VALUES ('Âè£²¾ò¡ÊÅĞÏ¿¡Ë','1. ²ñ°÷»ñ³Ê
 ËÜµ¬Ìó¤ËÆ±°Õ¤Î¾å¡¢½êÄê¤ÎÆş²ñ¿½¹ş¤ß¤ò¤µ¤ì¤¿¤ªµÒÍÍ¤Ï¡¢½êÄê¤ÎÅĞÏ¿¼êÂ³´°Î»¸å¤Ë²ñ°÷¤È¤·¤Æ¤Î»ñ³Ê¤òÍ­¤·¤Ş¤¹¡£²ñ°÷ÅĞÏ¿¼êÂ³¤Ï¡¢²ñ°÷¤È¤Ê¤ë¤´ËÜ¿Í¤¬¹Ô¤Ã¤Æ¤¯¤À¤µ¤¤¡£ÂåÍı¤Ë¤è¤ëÅĞÏ¿¤Ï°ìÀÚÇ§¤á¤é¤ì¤Ş¤»¤ó¡£¤Ê¤ª¡¢²áµî¤Ë²ñ°÷»ñ³Ê¤¬¼è¤ê¾Ã¤µ¤ì¤¿Êı¤ä¤½¤ÎÂ¾Åö¼Ò¤¬Áê±ş¤·¤¯¤Ê¤¤¤ÈÈ½ÃÇ¤·¤¿Êı¤«¤é¤Î²ñ°÷¿½¹ş¤Ï¤ªÃÇ¤ê¤¹¤ë¾ì¹ç¤¬¤¢¤ê¤Ş¤¹¡£
 
@@ -357,16 +357,16 @@ VALUES ('Âè£²¾ò¡ÊÅĞÏ¿¡Ë','1. ²ñ°÷»ñ³Ê
 (3)¥Ñ¥¹¥ï¡¼¥É¤òÍÑ¤¤¤ÆÅö¼Ò¤ËÂĞ¤·¤Æ¹Ô¤ï¤ì¤¿°Õ»×É½¼¨¤Ï¡¢²ñ°÷ËÜ¿Í¤Î°Õ»×É½¼¨¤È¤ß¤Ê¤·¡¢¤½¤Î¤¿¤á¤ËÀ¸¤¸¤ë»ÙÊ§Åù¤Ï¤¹¤Ù¤Æ²ñ°÷¤ÎÀÕÇ¤¤È¤Ê¤ê¤Ş¤¹¡£',
 11,0,Now(),0);
 
-INSERT INTO dtb_kiyaku (kiyaku_title, kiyaku_text, rank, creator_id, update_date, delete) 
+INSERT INTO dtb_kiyaku (kiyaku_title, kiyaku_text, rank, creator_id, update_date, del_flg) 
 VALUES ('Âè£³¾ò¡ÊÊÑ¹¹¡Ë','1. ²ñ°÷¤Ï¡¢»áÌ¾¡¢½»½ê¤Ê¤ÉÅö¼Ò¤ËÆÏ¤±½Ğ¤¿»ö¹à¤ËÊÑ¹¹¤¬¤¢¤Ã¤¿¾ì¹ç¤Ë¤Ï¡¢Â®¤ä¤«¤ËÅö¼Ò¤ËÏ¢Íí¤¹¤ë¤â¤Î¤È¤·¤Ş¤¹¡£
 2. ÊÑ¹¹ÅĞÏ¿¤¬¤Ê¤µ¤ì¤Ê¤«¤Ã¤¿¤³¤È¤Ë¤è¤êÀ¸¤¸¤¿Â»³²¤Ë¤Ä¤¤¤Æ¡¢Åö¼Ò¤Ï°ìÀÚÀÕÇ¤¤òÉé¤¤¤Ş¤»¤ó¡£¤Ş¤¿¡¢ÊÑ¹¹ÅĞÏ¿¤¬¤Ê¤µ¤ì¤¿¾ì¹ç¤Ç¤â¡¢ÊÑ¹¹ÅĞÏ¿Á°¤Ë¤¹¤Ç¤Ë¼êÂ³¤¬¤Ê¤µ¤ì¤¿¼è°ú¤Ï¡¢ÊÑ¹¹ÅĞÏ¿Á°¤Î¾ğÊó¤Ë´ğ¤Å¤¤¤Æ¹Ô¤ï¤ì¤Ş¤¹¤Î¤Ç¤´Ãí°Õ¤¯¤À¤µ¤¤¡£',
 10,0,Now(),0);
 
-INSERT INTO dtb_kiyaku (kiyaku_title, kiyaku_text, rank, creator_id, update_date, delete) 
+INSERT INTO dtb_kiyaku (kiyaku_title, kiyaku_text, rank, creator_id, update_date, del_flg) 
 VALUES ('Âè£´¾ò¡ÊÂà²ñ¡Ë','²ñ°÷¤¬Âà²ñ¤ò´õË¾¤¹¤ë¾ì¹ç¤Ë¤Ï¡¢²ñ°÷ËÜ¿Í¤¬Âà²ñ¼êÂ³¤­¤ò¹Ô¤Ã¤Æ¤¯¤À¤µ¤¤¡£½êÄê¤ÎÂà²ñ¼êÂ³¤Î½ªÎ»¸å¤Ë¡¢Âà²ñ¤È¤Ê¤ê¤Ş¤¹¡£',
 9,0,Now(),0);
 
-INSERT INTO dtb_kiyaku (kiyaku_title, kiyaku_text, rank, creator_id, update_date, delete) 
+INSERT INTO dtb_kiyaku (kiyaku_title, kiyaku_text, rank, creator_id, update_date, del_flg) 
 VALUES ('Âè£µ¾ò¡Ê²ñ°÷»ñ³Ê¤ÎÁÓ¼ºµÚ¤ÓÇå½şµÁÌ³¡Ë','1. ²ñ°÷¤¬¡¢²ñ°÷»ñ³Ê¼èÆÀ¿½¹ş¤Îºİ¤Ëµõµ¶¤Î¿½¹ğ¤ò¤·¤¿¤È¤­¡¢ÄÌ¿®ÈÎÇä¤Ë¤è¤ëÂå¶â»ÙÊ§ºÄÌ³¤òÂÕ¤Ã¤¿¤È¤­¡¢¤½¤ÎÂ¾Åö¼Ò¤¬²ñ°÷¤È¤·¤ÆÉÔÅ¬Åö¤ÈÇ§¤á¤ë»öÍ³¤¬¤¢¤ë¤È¤­¤Ï¡¢Åö¼Ò¤Ï¡¢²ñ°÷»ñ³Ê¤ò¼è¤ê¾Ã¤¹¤³¤È¤¬¤Ç¤­¤ë¤³¤È¤È¤·¤Ş¤¹¡£
 2. ²ñ°÷¤¬¡¢°Ê²¼¤Î³Æ¹æ¤ËÄê¤á¤ë¹Ô°Ù¤ò¤·¤¿¤È¤­¤Ï¡¢¤³¤ì¤Ë¤è¤êÅö¼Ò¤¬Èï¤Ã¤¿Â»³²¤òÇå½ş¤¹¤ëÀÕÇ¤¤òÉé¤¤¤Ş¤¹¡£
 (1)²ñ°÷ÈÖ¹æ¡¢¥Ñ¥¹¥ï¡¼¥É¤òÉÔÀµ¤ËÍøÍÑ¤¹¤ë¤³¤È
@@ -375,7 +375,7 @@ VALUES ('Âè£µ¾ò¡Ê²ñ°÷»ñ³Ê¤ÎÁÓ¼ºµÚ¤ÓÇå½şµÁÌ³¡Ë','1. ²ñ°÷¤¬¡¢²ñ°÷»ñ³Ê¼èÆÀ¿½¹ş¤Îºİ¤
 (4)¤½¤ÎÂ¾¡¢¤³¤ÎÍøÍÑµ¬Ìó¤ËÈ¿¤¹¤ë¹Ô°Ù¤ò¤¹¤ë¤³¤È',
 8,0,Now(),0);
 
-INSERT INTO dtb_kiyaku (kiyaku_title, kiyaku_text, rank, creator_id, update_date, delete) 
+INSERT INTO dtb_kiyaku (kiyaku_title, kiyaku_text, rank, creator_id, update_date, del_flg) 
 VALUES ('Âè£¶¾ò¡Ê²ñ°÷¾ğÊó¤Î¼è°·¤¤¡Ë','1. Åö¼Ò¤Ï¡¢¸¶Â§¤È¤·¤Æ²ñ°÷¾ğÊó¤ò²ñ°÷¤Î»öÁ°¤ÎÆ±°Õ¤Ê¤¯Âè»°¼Ô¤ËÂĞ¤·¤Æ³«¼¨¤¹¤ë¤³¤È¤Ï¤¢¤ê¤Ş¤»¤ó¡£¤¿¤À¤·¡¢¼¡¤Î³Æ¹æ¤Î¾ì¹ç¤Ë¤Ï¡¢²ñ°÷¤Î»öÁ°¤ÎÆ±°Õ¤Ê¤¯¡¢Åö¼Ò¤Ï²ñ°÷¾ğÊó¤½¤ÎÂ¾¤Î¤ªµÒÍÍ¾ğÊó¤ò³«¼¨¤Ç¤­¤ë¤â¤Î¤È¤·¤Ş¤¹¡£
 (1)Ë¡Îá¤Ë´ğ¤Å¤­³«¼¨¤òµá¤á¤é¤ì¤¿¾ì¹ç
 (2)Åö¼Ò¤Î¸¢Íø¡¢Íø±×¡¢Ì¾ÍÀÅù¤òÊİ¸î¤¹¤ë¤¿¤á¤ËÉ¬Í×¤Ç¤¢¤ë¤ÈÅö¼Ò¤¬È½ÃÇ¤·¤¿¾ì¹ç
@@ -383,7 +383,7 @@ VALUES ('Âè£¶¾ò¡Ê²ñ°÷¾ğÊó¤Î¼è°·¤¤¡Ë','1. Åö¼Ò¤Ï¡¢¸¶Â§¤È¤·¤Æ²ñ°÷¾ğÊó¤ò²ñ°÷¤Î»öÁ°¤
 3. Åö¼Ò¤Ï¡¢²ñ°÷¤ËÂĞ¤·¤Æ¡¢¥á¡¼¥ë¥Ş¥¬¥¸¥ó¤½¤ÎÂ¾¤ÎÊıË¡¤Ë¤è¤ë¾ğÊóÄó¶¡¡Ê¹­¹ğ¤ò´Ş¤ß¤Ş¤¹¡Ë¤ò¹Ô¤¦¤³¤È¤¬¤Ç¤­¤ë¤â¤Î¤È¤·¤Ş¤¹¡£²ñ°÷¤¬¾ğÊóÄó¶¡¤ò´õË¾¤·¤Ê¤¤¾ì¹ç¤Ï¡¢Åö¼Ò½êÄê¤ÎÊıË¡¤Ë½¾¤¤¡¢¤½¤Î»İ¤òÄÌÃÎ¤·¤ÆÄº¤±¤ì¤Ğ¡¢¾ğÊóÄó¶¡¤òÄä»ß¤·¤Ş¤¹¡£¤¿¤À¤·¡¢ËÜ¥µ¡¼¥Ó¥¹±¿±Ä¤ËÉ¬Í×¤Ê¾ğÊóÄó¶¡¤Ë¤Ä¤­¤Ş¤·¤Æ¤Ï¡¢²ñ°÷¤Î´õË¾¤Ë¤è¤êÄä»ß¤ò¤¹¤ë¤³¤È¤Ï¤Ç¤­¤Ş¤»¤ó¡£',
 7,0,Now(),0);
 
-INSERT INTO dtb_kiyaku (kiyaku_title, kiyaku_text, rank, creator_id, update_date, delete) 
+INSERT INTO dtb_kiyaku (kiyaku_title, kiyaku_text, rank, creator_id, update_date, del_flg) 
 VALUES ('Âè£·¾ò¡Ê¶Ø»ß»ö¹à¡Ë','ËÜ¥µ¡¼¥Ó¥¹¤ÎÍøÍÑ¤Ëºİ¤·¤Æ¡¢²ñ°÷¤ËÂĞ¤·¼¡¤Î³Æ¹æ¤Î¹Ô°Ù¤ò¹Ô¤¦¤³¤È¤ò¶Ø»ß¤·¤Ş¤¹¡£
 
 1. Ë¡Îá¤Ş¤¿¤ÏËÜµ¬Ìó¡¢ËÜ¥µ¡¼¥Ó¥¹¤´ÍøÍÑ¾å¤Î¤´Ãí°Õ¡¢ËÜ¥µ¡¼¥Ó¥¹¤Ç¤Î¤ªÇã¤¤Êª¾å¤Î¤´Ãí°Õ¤½¤ÎÂ¾¤ÎËÜµ¬ÌóÅù¤Ë°ãÈ¿¤¹¤ë¤³¤È
@@ -397,7 +397,7 @@ VALUES ('Âè£·¾ò¡Ê¶Ø»ß»ö¹à¡Ë','ËÜ¥µ¡¼¥Ó¥¹¤ÎÍøÍÑ¤Ëºİ¤·¤Æ¡¢²ñ°÷¤ËÂĞ¤·¼¡¤Î³Æ¹æ¤Î¹Ô°Ù
 9. ¤½¤ÎÂ¾Åö¼Ò¤¬ÉÔÅ¬ÀÚ¤ÈÈ½ÃÇ¤¹¤ë¤³¤È',
 6,0,Now(),0);
 
-INSERT INTO dtb_kiyaku (kiyaku_title, kiyaku_text, rank, creator_id, update_date, delete) 
+INSERT INTO dtb_kiyaku (kiyaku_title, kiyaku_text, rank, creator_id, update_date, del_flg) 
 VALUES ('Âè£¸¾ò¡Ê¥µ¡¼¥Ó¥¹¤ÎÃæÃÇ¡¦Ää»ßÅù¡Ë','1. Åö¼Ò¤Ï¡¢ËÜ¥µ¡¼¥Ó¥¹¤Î²ÔÆ°¾õÂÖ¤òÎÉ¹¥¤ËÊİ¤Ä¤¿¤á¤Ë¡¢¼¡¤Î³Æ¹æ¤Î°ì¤Ë³ºÅö¤¹¤ë¾ì¹ç¡¢Í½¹ğ¤Ê¤·¤Ë¡¢ËÜ¥µ¡¼¥Ó¥¹¤ÎÄó¶¡Á´¤Æ¤¢¤ë¤¤¤Ï°ìÉô¤òÄä»ß¤¹¤ë¤³¤È¤¬¤¢¤ê¤Ş¤¹¡£
 (1)¥·¥¹¥Æ¥à¤ÎÄê´üÊİ¼é¤ª¤è¤Ó¶ÛµŞÊİ¼é¤Î¤¿¤á¤ËÉ¬Í×¤Ê¾ì¹ç
 (2)¥·¥¹¥Æ¥à¤ËÉé²Ù¤¬½¸Ãæ¤·¤¿¾ì¹ç
@@ -405,21 +405,21 @@ VALUES ('Âè£¸¾ò¡Ê¥µ¡¼¥Ó¥¹¤ÎÃæÃÇ¡¦Ää»ßÅù¡Ë','1. Åö¼Ò¤Ï¡¢ËÜ¥µ¡¼¥Ó¥¹¤Î²ÔÆ°¾õÂÖ¤òÎÉ¹
 (4)¤½¤ÎÂ¾¡¢»ß¤à¤òÆÀ¤º¥·¥¹¥Æ¥à¤ÎÄä»ß¤¬É¬Í×¤ÈÅö¼Ò¤¬È½ÃÇ¤·¤¿¾ì¹ç',
 5,0,Now(),0);
 
-INSERT INTO dtb_kiyaku (kiyaku_title, kiyaku_text, rank, creator_id, update_date, delete) 
+INSERT INTO dtb_kiyaku (kiyaku_title, kiyaku_text, rank, creator_id, update_date, del_flg) 
 VALUES ('Âè£¹¾ò¡Ê¥µ¡¼¥Ó¥¹¤ÎÊÑ¹¹¡¦ÇÑ»ß¡Ë','Åö¼Ò¤Ï¡¢¤½¤ÎÈ½ÃÇ¤Ë¤è¤ê¥µ¡¼¥Ó¥¹¤ÎÁ´Éô¤Ş¤¿¤Ï°ìÉô¤ò»öÁ°¤ÎÄÌÃÎ¤Ê¤¯¡¢Å¬µ¹ÊÑ¹¹¡¦ÇÑ»ß¤Ç¤­¤ë¤â¤Î¤È¤·¤Ş¤¹¡£',
 4,0,Now(),0);
 
-INSERT INTO dtb_kiyaku (kiyaku_title, kiyaku_text, rank, creator_id, update_date, delete) 
+INSERT INTO dtb_kiyaku (kiyaku_title, kiyaku_text, rank, creator_id, update_date, del_flg) 
 VALUES ('Âè10¾ò¡ÊÌÈÀÕ¡Ë','1. ÄÌ¿®²óÀş¤ä¥³¥ó¥Ô¥å¡¼¥¿¤Ê¤É¤Î¾ã³²¤Ë¤è¤ë¥·¥¹¥Æ¥à¤ÎÃæÃÇ¡¦ÃÙÂÚ¡¦Ãæ»ß¡¦¥Ç¡¼¥¿¤Î¾Ã¼º¡¢¥Ç¡¼¥¿¤Ø¤ÎÉÔÀµ¥¢¥¯¥»¥¹¤Ë¤è¤êÀ¸¤¸¤¿Â»³²¡¢¤½¤ÎÂ¾Åö¼Ò¤Î¥µ¡¼¥Ó¥¹¤Ë´Ø¤·¤Æ²ñ°÷¤ËÀ¸¤¸¤¿Â»³²¤Ë¤Ä¤¤¤Æ¡¢Åö¼Ò¤Ï°ìÀÚÀÕÇ¤¤òÉé¤ï¤Ê¤¤¤â¤Î¤È¤·¤Ş¤¹¡£
 2. Åö¼Ò¤Ï¡¢Åö¼Ò¤Î¥¦¥§¥Ö¥Ú¡¼¥¸¡¦¥µ¡¼¥Ğ¡¦¥É¥á¥¤¥ó¤Ê¤É¤«¤éÁ÷¤é¤ì¤ë¥á¡¼¥ë¡¦¥³¥ó¥Æ¥ó¥Ä¤Ë¡¢¥³¥ó¥Ô¥å¡¼¥¿¡¦¥¦¥£¥ë¥¹¤Ê¤É¤ÎÍ­³²¤Ê¤â¤Î¤¬´Ş¤Ş¤ì¤Æ¤¤¤Ê¤¤¤³¤È¤òÊİ¾Ú¤¤¤¿¤·¤Ş¤»¤ó¡£
 3. ²ñ°÷¤¬ËÜµ¬ÌóÅù¤Ë°ãÈ¿¤·¤¿¤³¤È¤Ë¤è¤Ã¤ÆÀ¸¤¸¤¿Â»³²¤Ë¤Ä¤¤¤Æ¤Ï¡¢Åö¼Ò¤Ï°ìÀÚÀÕÇ¤¤òÉé¤¤¤Ş¤»¤ó¡£',
 3,0,Now(),0);
 
-INSERT INTO dtb_kiyaku (kiyaku_title, kiyaku_text, rank, creator_id, update_date, delete) 
+INSERT INTO dtb_kiyaku (kiyaku_title, kiyaku_text, rank, creator_id, update_date, del_flg) 
 VALUES ('Âè11¾ò¡ÊËÜµ¬Ìó¤Î²şÄê¡Ë','Åö¼Ò¤Ï¡¢ËÜµ¬Ìó¤òÇ¤°Õ¤Ë²şÄê¤Ç¤­¤ë¤â¤Î¤È¤·¡¢¤Ş¤¿¡¢Åö¼Ò¤Ë¤ª¤¤¤ÆËÜµ¬Ìó¤òÊä½¼¤¹¤ëµ¬Ìó¡Ê°Ê²¼¡ÖÊä½¼µ¬Ìó¡×¤È¤¤¤¤¤Ş¤¹¡Ë¤òÄê¤á¤ë¤³¤È¤¬¤Ç¤­¤Ş¤¹¡£ËÜµ¬Ìó¤Î²şÄê¤Ş¤¿¤ÏÊä½¼¤Ï¡¢²şÄê¸å¤ÎËÜµ¬Ìó¤Ş¤¿¤ÏÊä½¼µ¬Ìó¤òÅö¼Ò½êÄê¤Î¥µ¥¤¥È¤Ë·Ç¼¨¤·¤¿¤È¤­¤Ë¤½¤Î¸úÎÏ¤òÀ¸¤¸¤ë¤â¤Î¤È¤·¤Ş¤¹¡£¤³¤Î¾ì¹ç¡¢²ñ°÷¤Ï¡¢²şÄê¸å¤Îµ¬Ìó¤ª¤è¤ÓÊä½¼µ¬Ìó¤Ë½¾¤¦¤â¤Î¤ÈÃ×¤·¤Ş¤¹¡£',
 2,0,Now(),0);
 
-INSERT INTO dtb_kiyaku (kiyaku_title, kiyaku_text, rank, creator_id, update_date, delete) 
+INSERT INTO dtb_kiyaku (kiyaku_title, kiyaku_text, rank, creator_id, update_date, del_flg) 
 VALUES ('Âè12¾ò¡Ê½àµòË¡¡¢´É³íºÛÈ½½ê¡Ë','ËÜµ¬Ìó¤Ë´Ø¤·¤ÆÊ¶Áè¤¬À¸¤¸¤¿¾ì¹ç¡¢Åö¼ÒËÜÅ¹½êºßÃÏ¤ò´É³í¤¹¤ëÃÏÊıºÛÈ½½ê¤òÂè°ì¿³¤ÎÀìÂ°Åª¹ç°Õ´É³íºÛÈ½½ê¤È¤·¤Ş¤¹¡£ ',
 1,0,Now(),0);
 

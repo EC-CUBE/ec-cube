@@ -6,7 +6,7 @@ CREATE TABLE dtb_kiyaku (
     creator_id int4 NOT NULL,
     create_date timestamp NOT NULL DEFAULT now(),
     update_date timestamp NOT NULL,
-    delete  int2 NOT NULL DEFAULT 0
+    del_flg  int2 NOT NULL DEFAULT 0
 );
 
 CREATE TABLE mtb_zip (
@@ -49,7 +49,7 @@ CREATE TABLE dtb_update (
     sql text,
     uninstall_sql text,
     other_files text,
-    delete int2 NOT NULL DEFAULT 0,
+    del_flg int2 NOT NULL DEFAULT 0,
     create_date timestamp NOT NULL DEFAULT now(),
     update_date timestamp,
     release_date timestamp NOT NULL
@@ -123,7 +123,7 @@ CREATE TABLE dtb_deliv (
     confirm_url text,
     rank int4,
     status int2 NOT NULL DEFAULT 1,
-    delete int2 NOT NULL DEFAULT 0,
+    del_flg int2 NOT NULL DEFAULT 0,
     creator_id int4 NOT NULL,
     create_date timestamp NOT NULL DEFAULT now(),
     update_date timestamp
@@ -152,7 +152,7 @@ CREATE TABLE dtb_payment (
     note text,
     fix int2,
     status int2 NOT NULL DEFAULT 1,
-    delete int2 NOT NULL DEFAULT 0,
+    del_flg int2 NOT NULL DEFAULT 0,
     creator_id int4 NOT NULL,
     create_date timestamp NOT NULL DEFAULT now(),
     update_date timestamp,
@@ -166,7 +166,7 @@ CREATE TABLE dtb_mailtemplate (
     header text,
     footer text,
     creator_id int4 NOT NULL,
-    delete int2 NOT NULL DEFAULT 0,
+    del_flg int2 NOT NULL DEFAULT 0,
     create_date timestamp NOT NULL DEFAULT now(),
     update_date timestamp NOT NULL
 );
@@ -195,7 +195,7 @@ CREATE TABLE dtb_mailmaga_template (
     sub_product_id10 int4,
     sub_product_id11 int4,
     sub_product_id12 int4,
-    delete int2 NOT NULL DEFAULT 0,
+    del_flg int2 NOT NULL DEFAULT 0,
     creator_id int4 NOT NULL,
     create_date timestamp NOT NULL DEFAULT now(),
     update_date timestamp
@@ -211,7 +211,7 @@ CREATE TABLE dtb_send_history (
     start_date timestamp,
     end_date timestamp,
     search_data text,
-    delete int2 NOT NULL DEFAULT 0,
+    del_flg int2 NOT NULL DEFAULT 0,
     creator_id int4 NOT NULL,
     create_date timestamp NOT NULL DEFAULT now(),
     update_date timestamp NOT NULL DEFAULT now()
@@ -277,7 +277,7 @@ CREATE TABLE dtb_products (
     sub_comment6 text,
     sub_image6 text,
     sub_large_image6 text,
-    delete int2 NOT NULL DEFAULT 0,
+    del_flg int2 NOT NULL DEFAULT 0,
     creator_id int4 NOT NULL,
     create_date timestamp NOT NULL DEFAULT now(),
     update_date timestamp,
@@ -309,7 +309,7 @@ CREATE TABLE dtb_class (
     creator_id int4 NOT NULL,
     create_date timestamp NOT NULL DEFAULT now(),
     update_date timestamp,
-    delete  int2 NOT NULL DEFAULT 0,
+    del_flg  int2 NOT NULL DEFAULT 0,
     product_id int4
 );
 
@@ -322,7 +322,7 @@ CREATE TABLE dtb_classcategory (
     creator_id int4 NOT NULL,
     create_date timestamp NOT NULL DEFAULT now(),
     update_date timestamp,
-    delete  int2 NOT NULL DEFAULT 0
+    del_flg  int2 NOT NULL DEFAULT 0
 );
 
 CREATE TABLE dtb_category (
@@ -334,7 +334,7 @@ CREATE TABLE dtb_category (
     creator_id int4 NOT NULL,
     create_date timestamp NOT NULL DEFAULT now(),
     update_date timestamp,
-    delete  int2 NOT NULL DEFAULT 0
+    del_flg  int2 NOT NULL DEFAULT 0
 );
 
 CREATE TABLE dtb_bat_order_daily (
@@ -403,7 +403,7 @@ CREATE TABLE dtb_review (
     creator_id int4 NOT NULL,
     create_date timestamp NOT NULL DEFAULT now(),
     update_date timestamp,
-    delete  int2 NOT NULL DEFAULT 0
+    del_flg  int2 NOT NULL DEFAULT 0
 );
 
 CREATE TABLE dtb_customer_reading (
@@ -437,7 +437,7 @@ CREATE TABLE dtb_news (
     creator_id int4 NOT NULL,
     create_date timestamp NOT NULL DEFAULT now(),
     update_date timestamp,
-    delete  int2 NOT NULL DEFAULT 0
+    del_flg  int2 NOT NULL DEFAULT 0
 );
 
 CREATE TABLE dtb_best_products (
@@ -450,7 +450,7 @@ CREATE TABLE dtb_best_products (
     creator_id int4 NOT NULL,
     create_date timestamp NOT NULL DEFAULT now(),
     update_date timestamp,
-    delete  int2 NOT NULL DEFAULT 0
+    del_flg  int2 NOT NULL DEFAULT 0
 );
 
 CREATE TABLE dtb_mail_history (
@@ -498,7 +498,7 @@ CREATE TABLE dtb_customer (
     status int2 NOT NULL DEFAULT 1,
     create_date timestamp NOT NULL DEFAULT now(),
     update_date timestamp DEFAULT now(),
-    delete  int2 NOT NULL DEFAULT 0,
+    del_flg  int2 NOT NULL DEFAULT 0,
     cell01 text,
     cell02 text,
     cell03 text
@@ -583,7 +583,7 @@ CREATE TABLE dtb_order (
     credit_msg text,
     update_date timestamp,
     commit_date timestamp,
-    delete  int2 NOT NULL DEFAULT 0,
+    del_flg  int2 NOT NULL DEFAULT 0,
     deliv_date text,
     conveni_data text,
     cell01 text,
@@ -655,7 +655,7 @@ CREATE TABLE dtb_order_temp (
     credit_msg text,
     create_date timestamp NOT NULL DEFAULT now(),
     update_date timestamp,
-    delete  int2 NOT NULL DEFAULT 0,
+    del_flg  int2 NOT NULL DEFAULT 0,
     deliv_date text,
     conveni_data text,
     cell01 text,
@@ -709,7 +709,7 @@ CREATE TABLE dtb_member (
     authority int2 NOT NULL,
     rank int4 NOT NULL DEFAULT 0,
     work int2 NOT NULL DEFAULT 1,
-    delete int2 NOT NULL DEFAULT 0,
+    del_flg int2 NOT NULL DEFAULT 0,
     creator_id int4 NOT NULL,
     update_date timestamp,
     create_date timestamp NOT NULL DEFAULT now(),
@@ -721,7 +721,7 @@ CREATE TABLE dtb_question (
     question_name text,
     question text,
     create_date timestamp NOT NULL DEFAULT now(),
-    delete  int2 NOT NULL DEFAULT 0
+    del_flg  int2 NOT NULL DEFAULT 0
 );
 
 CREATE TABLE dtb_question_result (
@@ -749,7 +749,7 @@ CREATE TABLE dtb_question_result (
     question05 text,
     question06 text,
     create_date timestamp NOT NULL DEFAULT now(),
-    delete  int2 NOT NULL DEFAULT 0
+    del_flg  int2 NOT NULL DEFAULT 0
 );
 
 CREATE TABLE dtb_bat_relate_products (
@@ -767,7 +767,7 @@ CREATE TABLE dtb_campaign (
     start_date timestamp NOT NULL,
     end_date timestamp NOT NULL,
     search_condition text,
-    delete int2 NOT NULL DEFAULT 0,
+    del_flg int2 NOT NULL DEFAULT 0,
     create_date timestamp NOT NULL,
     update_date timestamp NOT NULL DEFAULT now()
 );
@@ -847,7 +847,7 @@ CREATE TABLE dtb_user_regist (
     note text,
     secret_key text NOT NULL UNIQUE,
     status int2 NOT NULL,
-    delete int2 DEFAULT 0,
+    del_flg int2 DEFAULT 0,
     create_date timestamp NOT NULL,
     update_date timestamp NOT NULL DEFAULT now()
 );

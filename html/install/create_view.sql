@@ -25,7 +25,7 @@ ON T1.product_id = T2.product_id_sub;
 
 CREATE VIEW vw_products_allclass AS 
 SELECT product_id,product_code_min,product_code_max,price01_min,price01_max,price02_min,price02_max,stock_min,stock_max,stock_unlimited_min,stock_unlimited_max,
-category_rank,category_id,delete,status,name,comment1,comment2,comment3,rank,
+category_rank,category_id,del_flg,status,name,comment1,comment2,comment3,rank,
 main_list_comment,main_image,main_list_image,product_flag,deliv_date_id,sale_limit,point_rate,sale_unlimited,create_date,deliv_fee
 FROM (dtb_products AS T1 RIGHT JOIN 
 (SELECT 
@@ -46,7 +46,7 @@ ON T3.category_id = T4.sub_category_id;
 
 CREATE VIEW vw_products_allclass_detail AS 
 SELECT product_id,price01_min,price01_max,price02_min,price02_max,stock_min,stock_max,stock_unlimited_min,stock_unlimited_max,
-delete,status,name,comment1,comment2,comment3,deliv_fee,main_comment,main_image,main_large_image,
+del_flg,status,name,comment1,comment2,comment3,deliv_fee,main_comment,main_image,main_large_image,
 sub_title1,sub_comment1,sub_image1,sub_large_image1,
 sub_title2,sub_comment2,sub_image2,sub_large_image2,
 sub_title3,sub_comment3,sub_image3,sub_large_image3,
