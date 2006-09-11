@@ -102,7 +102,7 @@ if (($_POST["mode"] == "edit" || $_POST["mode"] == "edit_search") && is_numeric(
 
 	//--　顧客データ取得
 	$sql = "SELECT A.*, EXTRACT(EPOCH FROM A.birth) AS birth_unix, B.mail_flag FROM dtb_customer AS A LEFT OUTER JOIN dtb_customer_mail AS B USING(email)
-			 WHERE A.delete = 0 AND A.customer_id = ?";
+			 WHERE A.del_flg = 0 AND A.customer_id = ?";
 	$result = $objConn->getAll($sql, array($_POST["edit_customer_id"]));
 	$objPage->list_data = $result[0];
 	
@@ -256,7 +256,7 @@ function lfErrorCheck($array) {
 	
 	//現会員の判定 →　現会員もしくは仮登録中は、メアド一意が前提になってるので同じメアドで登録不可
 	if (strlen($array["email"]) > 0) {
-		$sql = "SELECT customer_id FROM dtb_customer WHERE email ILIKE ? escape '#' AND (status = 1 OR status = 2) AND delete = 0 AND customer_id <> ?";
+		$sql = "SELECT customer_id FROM dtb_customer WHERE email ILIKE ? escape '#' AND (status = 1 OR status = 2) AND del_flg = 0 AND customer_id <> ?";
 		$checkMail = ereg_replace( "_", "#_", $array["email"]);
 		$result = $objConn->getAll($sql, array($checkMail, $array["customer_id"]));
 		if (count($result) > 0) {

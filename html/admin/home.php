@@ -57,7 +57,7 @@ $objView->display(MAIN_FRAME);
 // ²ñ°÷¿ô
 function lfGetCustomerCnt($conn){
 	
-	$sql = "SELECT COUNT(customer_id) FROM dtb_customer WHERE delete = 0 AND status = 2";
+	$sql = "SELECT COUNT(customer_id) FROM dtb_customer WHERE del_flg = 0 AND status = 2";
 	$return = $conn->getOne($sql);
 	return $return;
 }
@@ -66,7 +66,7 @@ function lfGetCustomerCnt($conn){
 function lfGetOrderYesterday($conn, $method){
 	if ( $method == 'SUM' or $method == 'COUNT'){
 		$sql = "SELECT ".$method."(total) FROM dtb_order
-				 WHERE delete = 0 AND to_char(create_date,'YYYY/MM/DD') = to_char(now() - interval '1 days','YYYY/MM/DD')";
+				 WHERE del_flg = 0 AND to_char(create_date,'YYYY/MM/DD') = to_char(now() - interval '1 days','YYYY/MM/DD')";
 		$return = $conn->getOne($sql);
 	}
 	return $return;
@@ -78,7 +78,7 @@ function lfGetOrderMonth($conn, $method){
 	
 	if ( $method == 'SUM' or $method == 'COUNT'){
 		$sql = "SELECT ".$method."(total) FROM dtb_order
-				 WHERE delete = 0 AND to_char(create_date,'YYYY/MM') = ? 
+				 WHERE del_flg = 0 AND to_char(create_date,'YYYY/MM') = ? 
 				 AND to_char(create_date,'YYYY/MM/DD') <> to_char(now(),'YYYY/MM/DD')";
 		$return = $conn->getOne($sql, array($month));
 	}
@@ -88,7 +88,7 @@ function lfGetOrderMonth($conn, $method){
 function lfGetTotalCustomerPoint() {
 	$objQuery = new SC_Query();
 	$col = "SUM(point)";
-	$where = "delete = 0";
+	$where = "del_flg = 0";
 	$from = "dtb_customer";
 	$ret = $objQuery->get($from, $col, $where);
 	return $ret;	
@@ -96,14 +96,14 @@ function lfGetTotalCustomerPoint() {
 
 function lfGetReviewYesterday($conn){
 	$sql = "SELECT COUNT (*) FROM dtb_review 
-			 WHERE delete=0 AND to_char(create_date, 'YYYY/MM/DD') = to_char(now() - interval '1 days','YYYY/MM/DD')
+			 WHERE del_flg=0 AND to_char(create_date, 'YYYY/MM/DD') = to_char(now() - interval '1 days','YYYY/MM/DD')
 			 AND to_char(create_date,'YYYY/MM/DD') != to_char(now(),'YYYY/MM/DD')";
 	$return = $conn->getOne($sql);
 	return $return;
 }
 
 function lfGetReviewNonDisp($conn){
-	$sql = "SELECT COUNT (*) FROM dtb_review WHERE delete=0 AND status=2";
+	$sql = "SELECT COUNT (*) FROM dtb_review WHERE del_flg=0 AND status=2";
 	$return = $conn->getOne($sql);
 	return $return;
 }
@@ -124,7 +124,7 @@ function lfGetNewOrder() {
 	$col.= "(SELECT pay.payment_method FROM dtb_payment AS pay WHERE ord.payment_id = pay.payment_id) AS payment_method, ";	
 	$col.= "to_char(create_date, 'YYYY/MM/DD HH24:MI') AS create_date";
 	$from = "dtb_order AS ord";
-	$where = "delete = 0";
+	$where = "del_flg = 0";
 	$objQuery->setoption("ORDER BY create_date DESC LIMIT 10 OFFSET 0");
 	$arrRet = $objQuery->select($col, $from, $where);
 	return $arrRet;

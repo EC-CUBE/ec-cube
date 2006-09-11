@@ -35,7 +35,7 @@ function lfStartDailyTotal($term, $start, $command = false) {
 	
 	// 削除された受注データの受注詳細情報の削除
 	$objQuery = new SC_Query();
-	$where = "order_id IN (SELECT order_id FROM dtb_order WHERE delete = 1)";
+	$where = "order_id IN (SELECT order_id FROM dtb_order WHERE del_flg = 1)";
 	$objQuery->delete("dtb_order_detail", $where);
 	
 	// 最後に更新された日付を取得
@@ -111,7 +111,7 @@ function lfGetOrderDailySQL() {
 	$sql.= "SUM(total) AS total, ";
 	$sql.= "int8(AVG(total)) AS total_average ";
 	$sql.= "FROM dtb_order AS T1 LEFT JOIN dtb_customer AS T2 USING ( customer_id ) ";
-	$sql.= "WHERE T1.delete = 0 AND T1.create_date BETWEEN ? AND ?";		// 受注作成日で検索する
+	$sql.= "WHERE T1.del_flg = 0 AND T1.create_date BETWEEN ? AND ?";		// 受注作成日で検索する
 	return $sql;
 }
 
@@ -203,7 +203,7 @@ function lfBatOrderAge($time) {
 	
 	/* 会員集計 */
 	
-	$base_where = "WHERE (create_date BETWEEN ? AND ?) AND customer_id <> 0 AND delete = 0 ";
+	$base_where = "WHERE (create_date BETWEEN ? AND ?) AND customer_id <> 0 AND del_flg = 0 ";
 	$where = $base_where . " AND (to_number(to_char(age(current_timestamp, order_birth), 'YYY'), 999) BETWEEN ? AND ?) ";
 	
 	// 年齢毎に集計する。
@@ -222,7 +222,7 @@ function lfBatOrderAge($time) {
 	
 	/* 非会員集計 */
 	
-	$base_where = "WHERE (create_date BETWEEN ? AND ?) AND customer_id = 0 AND delete = 0";
+	$base_where = "WHERE (create_date BETWEEN ? AND ?) AND customer_id = 0 AND del_flg = 0";
 	$where = $base_where . " AND (to_number(to_char(age(current_timestamp, order_birth), 'YYY'), 999) BETWEEN ? AND ?) ";
 	
 	// 年齢毎に集計する。
@@ -236,7 +236,7 @@ function lfBatOrderAge($time) {
 	}
 	
 	// 誕生日入力なし
-	$where = $base_where . " AND order_birth IS NULL AND delete = 0";
+	$where = $base_where . " AND order_birth IS NULL AND del_flg = 0";
 	lfBatOrderAgeSub($sql . $where, $start, $end, NULL, NULL, 0);	
 }
 

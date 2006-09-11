@@ -70,13 +70,13 @@ $from = "dtb_review AS A LEFT JOIN dtb_products AS B ON A.product_id = B.product
 
 if ($_POST['mode'] == "delete"){
 	//レビューの削除
-	$objQuery->exec("UPDATE dtb_review SET delete=1 WHERE review_id=?", array($_POST['review_id']));
+	$objQuery->exec("UPDATE dtb_review SET del_flg=1 WHERE review_id=?", array($_POST['review_id']));
 }
 	
 if ($_POST['mode'] == 'search' || $_POST['mode'] == 'csv' || $_POST['mode'] == 'delete'){
 	
 	//削除されていない商品を検索
-	$where="A.delete = 0 AND B.delete = 0";
+	$where="A.del_flg = 0 AND B.del_flg = 0";
 	$objPage->arrForm = $_POST;
 	if (!is_array($_POST['search_sex'])){
 		$objPage->arrForm['search_sex'] = split("-", $_POST['search_sex']);

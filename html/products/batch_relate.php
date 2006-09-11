@@ -12,7 +12,7 @@ $objQuery = new SC_Query();
 
 $objQuery->begin();
 $objQuery->delete("dtb_bat_relate_products");
-$arrCID = $objQuery->select("customer_id", "dtb_order", "delete = 0");
+$arrCID = $objQuery->select("customer_id", "dtb_order", "del_flg = 0");
 foreach($arrCID as $cdata) {
 	$where = "order_id IN (SELECT order_id FROM dtb_order WHERE customer_id = ? )";
 	//¸ÜµÒ¤¬¹ØÆþ¤·¤¿¾¦ÉÊ£É£Ä¤ò¼èÆÀ¤¹¤ë

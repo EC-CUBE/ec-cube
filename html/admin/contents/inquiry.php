@@ -75,7 +75,7 @@ $arrQuestion = array( "0"=>"使用しない", "1"=>"テキストエリア", "2"=>"テキストボ
 				);
 
 
-$sql = "SELECT *, to_char( create_date, 'YYYY/MM/DD' ) as disp_date FROM dtb_question WHERE delete = 0 ORDER BY question_id";
+$sql = "SELECT *, to_char( create_date, 'YYYY/MM/DD' ) as disp_date FROM dtb_question WHERE del_flg = 0 ORDER BY question_id";
 $result = $conn->getAll($sql);
 $objPage->list_data = $result;
 						
@@ -121,14 +121,14 @@ if ( $_GET['mode'] == 'regist' ){
 	}
 } elseif ( ( $_GET['mode'] == 'delete' ) && ( sfCheckNumLength($_GET['question_id']) )  ){
 
-	$sql = "UPDATE dtb_question SET delete = 1 WHERE question_id = ?";
+	$sql = "UPDATE dtb_question SET del_flg = 1 WHERE question_id = ?";
 	$conn->query( $sql, array( $_GET['question_id'] ) );
 	sfReload();
 	
 } elseif ( ( $_GET['mode'] == 'csv' ) && ( sfCheckNumLength($_GET['question_id']) ) ){ 
 
 			$head = sfGetCSVList($arrCVSTITLE);
-			$list_data = $conn->getAll("SELECT result_id,question_id,question_date,question_name,name01,name02,kana01,kana02,zip01,zip02,pref,addr01,addr02,tel01,tel02,tel03,mail01,question01,question02,question03,question04,question05,question06 FROM dtb_question_result WHERE delete = 0 ORDER BY result_id ASC");
+			$list_data = $conn->getAll("SELECT result_id,question_id,question_date,question_name,name01,name02,kana01,kana02,zip01,zip02,pref,addr01,addr02,tel01,tel02,tel03,mail01,question01,question02,question03,question04,question05,question06 FROM dtb_question_result WHERE del_flg = 0 ORDER BY result_id ASC");
 			$data = "";
 			for($i = 0; $i < count($list_data); $i++) {
 				// 各項目をCSV出力用に変換する。

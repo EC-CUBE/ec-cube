@@ -14,9 +14,9 @@ $objView = new SC_SiteView();
 
 // 管理ページからの確認の場合は、非公開の商品も表示する。
 if($_GET['admin'] == 'on') {
-	$where = "delete = 0";
+	$where = "del_flg = 0";
 } else {
-	$where = "delete = 0 AND status = 1";
+	$where = "del_flg = 0 AND status = 1";
 }
 
 // 値の正当性チェック

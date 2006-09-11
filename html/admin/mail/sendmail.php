@@ -6,10 +6,10 @@ $objSite = new SC_SiteInfo($conn);
 
 if($_GET['mode'] == 'now') {
 	//----　未送信データを取得する
-	$time_data = $conn->getAll( "SELECT send_id FROM dtb_send_history  WHERE complete_count = 0 AND delete = 0 ORDER BY send_id ASC, start_date ASC" );
+	$time_data = $conn->getAll( "SELECT send_id FROM dtb_send_history  WHERE complete_count = 0 AND del_flg = 0 ORDER BY send_id ASC, start_date ASC" );
 } else {
 	$sql = "SELECT send_id FROM dtb_send_history  ";
-	$sql.= "WHERE start_date  BETWEEN current_timestamp + '- 5 minutes' AND current_timestamp + '5 minutes' AND delete = 0 ORDER BY send_id ASC, start_date ASC";
+	$sql.= "WHERE start_date  BETWEEN current_timestamp + '- 5 minutes' AND current_timestamp + '5 minutes' AND del_flg = 0 ORDER BY send_id ASC, start_date ASC";
 	//----　30分毎にCronが送信時間データ確認
 	$time_data = $conn->getAll($sql);
 }

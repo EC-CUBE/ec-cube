@@ -34,15 +34,15 @@ $objPage = new LC_Page();
 $objSql = new SC_SelectSql();
 $objSql->setSelect("SELECT member_id,name,department,login_id,authority,rank,work FROM dtb_member");
 $objSql->setOrder("rank DESC");
-$objSql->setWhere("delete <> 1 AND member_id <> ". ADMIN_ID);
+$objSql->setWhere("del_flg <> 1 AND member_id <> ". ADMIN_ID);
 
 //簡易クエリ実行オブジェクト
 $oquery = new SC_Query();
 // 行数の取得
-$linemax = $oquery->count("dtb_member", "delete <> 1 AND member_id <>".ADMIN_ID);
+$linemax = $oquery->count("dtb_member", "del_flg <> 1 AND member_id <>".ADMIN_ID);
 
 // 稼動中の件数を取得
-$workmax = $oquery->count("dtb_member", "work = 1 AND delete <> 1 AND member_id <>".ADMIN_ID);
+$workmax = $oquery->count("dtb_member", "work = 1 AND del_flg <> 1 AND member_id <>".ADMIN_ID);
 $objPage->workmax= $workmax;
 
 // ページ送りの処理

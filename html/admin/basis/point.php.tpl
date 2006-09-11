@@ -137,7 +137,7 @@ default:
 	$objFormParam->setParam($arrRet[0]);
 	//キャンペーンの削除
 	if($_POST['mode'] == 'delete') {
-		$sqlval['delete'] = '1';
+		$sqlval['del_flg'] = '1';
 		$sqlval['update_date'] = 'now()';
 		$objQuery->begin();
 		$objQuery->update("dtb_campaign", $sqlval, "campaign_id = ? ", array($_POST['campaign_id']));
@@ -188,7 +188,7 @@ function lfGetCampaigndata() {
 	$objQuery = new SC_Query;
 	//登録日付順に並べる
 	$objQuery->setorder('update_date DESC');
-	$arrData = $objQuery->select("*", "dtb_campaign", "delete = 0");
+	$arrData = $objQuery->select("*", "dtb_campaign", "del_flg = 0");
 	for($i = 0; $i < count($arrData); $i++) {
 		if ($arrData[$i]['search_condition'] != "") {
 			$arrRet[$i] = unserialize($arrData[$i]['search_condition']);

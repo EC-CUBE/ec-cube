@@ -22,7 +22,7 @@ $objPage = sfGetPageLayout($objPage, false, "mypage/index.php");
 
 //不正アクセス判定
 $from = "dtb_order";
-$where = "delete = 0 AND customer_id = ? AND order_id = ? ";
+$where = "del_flg = 0 AND customer_id = ? AND order_id = ? ";
 $arrval = array($objCustomer->getValue('customer_id'), $_POST['order_id']);
 //DBに情報があるか判定
 $cnt = $objQuery->count($from, $where, $arrval);

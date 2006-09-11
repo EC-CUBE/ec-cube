@@ -75,7 +75,7 @@ case 'search':
 	$arrRet = $objFormParam->getHashArray();
 	// 入力なし
 	if (count($objPage->arrErr) == 0) {
-		$where = "delete = 0";
+		$where = "del_flg = 0";
 		foreach ($arrRet as $key => $val) {
 			if($val == "") {
 				continue;
@@ -206,7 +206,7 @@ case 'search':
 			break;
 		case 'delete_all':
 			// 検索結果をすべて削除
-			$sqlval['delete'] = 1;
+			$sqlval['del_flg'] = 1;
 			$objQuery = new SC_Query();
 			$objQuery->update("dtb_order", $sqlval, $where, $arrval);
 			break;

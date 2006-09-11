@@ -36,7 +36,7 @@ $objPage->tpl_pageno = $_POST['pageno'];
 	
 $col = "order_id, create_date, payment_id, payment_total";
 $from = "dtb_order";
-$where = "delete = 0 AND customer_id=?";
+$where = "del_flg = 0 AND customer_id=?";
 $arrval = array($objCustomer->getvalue('customer_id'));
 $order = "order_id DESC";
 

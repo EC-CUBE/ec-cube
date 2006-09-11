@@ -44,7 +44,7 @@ $objPage->arrReview = lfGetReviewData($_POST['review_id']);
 //登録済みのステータスを渡す
 $objPage->tpl_pre_status = $objPage->arrReview['status'];
 //商品ごとのレビュー表示数取得
-$count = $objQuery->count("dtb_review", "delete=0 AND status=1 AND product_id=?", array($objPage->arrReview['product_id']));
+$count = $objQuery->count("dtb_review", "del_flg=0 AND status=1 AND product_id=?", array($objPage->arrReview['product_id']));
 //レビュー表示数が設定値以上の場合
 if ($count >= REVIEW_REGIST_MAX){
 	//表示は選択できない
@@ -124,7 +124,7 @@ function lfGetReviewData($review_id){
 	$select="review_id, A.product_id, reviewer_name, sex, recommend_level, ";
 	$select.="reviewer_url, title, comment, A.status, A.create_date, A.update_date, name";
 	$from = "dtb_review AS A LEFT JOIN dtb_products AS B ON A.product_id = B.product_id ";
-	$where = "A.delete = 0 AND B.delete = 0 AND review_id = ? ";
+	$where = "A.del_flg = 0 AND B.del_flg = 0 AND review_id = ? ";
 	$arrReview = $objQuery->select($select, $from, $where, array($review_id));
 	if(!empty($arrReview)) {
 		$objPage->arrReview = $arrReview[0];

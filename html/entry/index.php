@@ -262,10 +262,10 @@ function lfErrorCheck($array) {
 	//現会員の判定 →　現会員もしくは仮登録中は、メアド一意が前提になってるので同じメアドで登録不可
 	if (strlen($array["email"]) > 0) {
 		$objQuery = new SC_Query();
-		$arrRet = $objQuery->select("email, update_date, delete", "dtb_customer","email ILIKE ? ORDER BY delete", array($array["email"]));
+		$arrRet = $objQuery->select("email, update_date, del_flg", "dtb_customer","email ILIKE ? ORDER BY del_flg", array($array["email"]));
 				
 		if(count($arrRet) > 0) {
-			if($arrRet[0]['delete'] != '1') {
+			if($arrRet[0]['del_flg'] != '1') {
 				// 会員である場合
 				$objErr->arrErr["email"] .= "※ すでに会員登録で使用されているメールアドレスです。<br />";
 			} else {

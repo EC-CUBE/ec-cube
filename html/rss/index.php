@@ -67,7 +67,7 @@ function lfGetNews($objQuery){
 	$col .= "     ,(SELECT shop_name FROM dtb_baseinfo limit 1) AS shop_name  ";	//店名
 	$col .= "     ,(SELECT email04 FROM dtb_baseinfo limit 1) AS email ";			//代表Emailアドレス
 	$from = "dtb_news";
-	$where = "delete = '0'";
+	$where = "del_flg = '0'";
 	$order = "rank DESC";
 	$objQuery->setorder($order);
 	$arrNews = $objQuery->select($col,$from,$where);

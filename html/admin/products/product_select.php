@@ -30,7 +30,7 @@ if ($_POST['mode'] == "search") {
 	// 入力文字の強制変換
 	lfConvertParam();
 	
-	$where = "delete = 0";
+	$where = "del_flg = 0";
 	
 	/* 入力エラーなし */
 	foreach ($objPage->arrForm as $key => $val) {

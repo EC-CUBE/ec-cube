@@ -78,7 +78,7 @@ default:
 }
 
 // 規格の読込
-$where = "delete <> 1";
+$where = "del_flg <> 1";
 $objQuery->setorder("rank DESC");
 $objPage->arrClass = $objQuery->select("name, class_id", "dtb_class", $where);
 $objPage->arrClassCatCount = sfGetClassCatCount();
@@ -133,7 +133,7 @@ function lfErrorCheck() {
 	
 	if(!isset($objErr->arrErr['name'])) {
 		$objQuery = new SC_Query();
-		$arrRet = $objQuery->select("class_id, name", "dtb_class", "delete = 0 AND name = ?", array($_POST['name']));
+		$arrRet = $objQuery->select("class_id, name", "dtb_class", "del_flg = 0 AND name = ?", array($_POST['name']));
 		// 編集中のレコード以外に同じ名称が存在する場合		
 		if ($arrRet[0]['class_id'] != $_POST['class_id'] && $arrRet[0]['name'] == $_POST['name']) {
 			$objErr->arrErr['name'] = "※ 既に同じ内容の登録が存在します。<br>";

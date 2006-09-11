@@ -97,7 +97,7 @@ default:
 }
 
 // 規格分類の読込
-$where = "delete <> 1 AND class_id = ?";
+$where = "del_flg <> 1 AND class_id = ?";
 $objQuery->setorder("rank DESC");
 $objPage->arrClassCat = $objQuery->select("name, classcategory_id", "dtb_classcategory", $where, array($_GET['class_id']));
 
@@ -111,7 +111,7 @@ function lfInsertClass() {
 	$objQuery = new SC_Query();
 	$objQuery->begin();
 	// 親規格IDの存在チェック
-	$where = "delete <> 1 AND class_id = ?";
+	$where = "del_flg <> 1 AND class_id = ?";
 	$ret = 	$objQuery->get("dtb_class", "class_id", $where, array($_POST['class_id']));
 	if($ret != "") {	
 		// INSERTする値を作成する。

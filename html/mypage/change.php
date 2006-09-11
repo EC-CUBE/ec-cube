@@ -95,7 +95,7 @@ case 'confirm':
 		$email_flag = true;
 		//メールアドレスを変更している場合、メールアドレスの重複チェック
 		if ($objPage->arrForm['email'] != $objCustomer->getValue('email')){
-			$email_cnt = $objQuery->count("dtb_customer","delete=0 AND email=?", array($objPage->arrForm['email']));
+			$email_cnt = $objQuery->count("dtb_customer","del_flg=0 AND email=?", array($objPage->arrForm['email']));
 			if ($email_cnt > 0){
 				$email_flag = false;
 			}

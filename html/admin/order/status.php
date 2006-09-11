@@ -97,10 +97,10 @@ function lfStatusDisp($status,$pageno){
 	
 	$select ="*";
 	$from = "dtb_order";
-	$where="delete=0 AND status=?";
+	$where="del_flg=0 AND status=?";
 	$order = "order_id DESC";
 	
-	$linemax = $objQuery->count("dtb_order", "delete = 0 AND status=?", array($status));
+	$linemax = $objQuery->count("dtb_order", "del_flg = 0 AND status=?", array($status));
 	$objPage->tpl_linemax = $linemax;
 	
 	// ページ送りの処理
@@ -131,7 +131,7 @@ function lfStatusMove($status_id,$move){
 	global $objPage;
 	
 	if ($status_id == 'delete'){
-		$sql="UPDATE dtb_order SET delete=1";
+		$sql="UPDATE dtb_order SET del_flg=1";
 	}elseif ($status_id == 5){
 		$sql="UPDATE dtb_order SET status=".$status_id.",commit_date=now() ";
 	}else{

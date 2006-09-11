@@ -136,7 +136,7 @@ function lfErrorCheck() {
 	$objErr->doFunc(array("規約内容", "kiyaku_text", MTEXT_LEN), array("EXIST_CHECK","SPTAB_CHECK","MAX_LENGTH_CHECK"));
 	if(!isset($objErr->arrErr['name'])) {
 		$objQuery = new SC_Query();
-		$arrRet = $objQuery->select("kiyaku_id, kiyaku_title", "dtb_kiyaku", "delete = 0 AND kiyaku_title = ?", array($_POST['kiyaku_title']));
+		$arrRet = $objQuery->select("kiyaku_id, kiyaku_title", "dtb_kiyaku", "del_flg = 0 AND kiyaku_title = ?", array($_POST['kiyaku_title']));
 		// 編集中のレコード以外に同じ名称が存在する場合		
 		if ($arrRet[0]['kiyaku_id'] != $_POST['kiyaku_id'] && $arrRet[0]['kiyaku_title'] == $_POST['kiyaku_title']) {
 			$objErr->arrErr['name'] = "※ 既に同じ内容の登録が存在します。<br>";

@@ -42,7 +42,7 @@ if ( $_REQUEST['template_id'] ){
 if ( $_GET['mode'] == 'edit' && sfCheckNumLength($_GET['template_id'])===true ){
 	
 	// ÊÔ½¸
-	$sql = "SELECT * FROM dtb_mailmaga_template WHERE template_id = ? AND delete = 0";
+	$sql = "SELECT * FROM dtb_mailmaga_template WHERE template_id = ? AND del_flg = 0";
 	$result = $conn->getAll($sql, array($_GET['template_id']));
 	$objPage->arrForm = $result[0];
 	

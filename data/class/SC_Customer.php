@@ -45,7 +45,7 @@ class SC_Customer {
 	
 	function getCustomerDataFromEmailPass( $pass, $email ) {
 		// 本登録された会員のみ
-		$sql = "SELECT * FROM dtb_customer WHERE email ILIKE ? AND delete = 0 AND status = 2";
+		$sql = "SELECT * FROM dtb_customer WHERE email ILIKE ? AND del_flg = 0 AND status = 2";
 		$result = $this->conn->getAll($sql, array($email));
 		$data = $result[0];
 		
@@ -61,7 +61,7 @@ class SC_Customer {
 	// パスワードを確認せずにログイン
 	function setLogin($email) {
 		// 本登録された会員のみ
-		$sql = "SELECT * FROM dtb_customer WHERE email ILIKE ? AND delete = 0 AND status = 2";
+		$sql = "SELECT * FROM dtb_customer WHERE email ILIKE ? AND del_flg = 0 AND status = 2";
 		$result = $this->conn->getAll($sql, array($email));
 		$data = $result[0];
 		$this->customer_data = $data;
@@ -70,7 +70,7 @@ class SC_Customer {
 	
 	// セッション情報を最新の情報に更新する
 	function updateSession() {
-		$sql = "SELECT * FROM dtb_customer WHERE customer_id = ? AND delete = 0";
+		$sql = "SELECT * FROM dtb_customer WHERE customer_id = ? AND del_flg = 0";
 		$customer_id = $this->getValue('customer_id');
 		$arrRet = $this->conn->getAll($sql, array($customer_id));
 		$this->customer_data = $arrRet[0];

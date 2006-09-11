@@ -26,7 +26,7 @@ sfIsSuccess($objSess);
 // ºï½ü»þ
 if ( sfCheckNumLength($_GET['send_id']) && ($_GET['mode']=='delete') ){
 	
-	$sql = "UPDATE dtb_send_history SET delete = 1 WHERE send_id = ?";
+	$sql = "UPDATE dtb_send_history SET del_flg = 1 WHERE send_id = ?";
 	$conn->query($sql, array($_GET['send_id']) );
 	sfReload();
 
@@ -34,7 +34,7 @@ if ( sfCheckNumLength($_GET['send_id']) && ($_GET['mode']=='delete') ){
 	$col = "*";
 	$from = "dtb_send_history";
 	
-	$where .= " delete = ?";
+	$where .= " del_flg = ?";
 	$arrval[] = 0;
 	
 	$objQuery = new SC_Query();

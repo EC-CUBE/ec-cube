@@ -92,7 +92,7 @@ case 'complete':
 default:
 	if(sfIsInt($_GET['product_id'])) {
 		//商品情報の取得
-		$arrForm = $objQuery->select("product_id, name", "dtb_products", "delete = 0 AND status = 1 AND product_id=?", array($_GET['product_id']));
+		$arrForm = $objQuery->select("product_id, name", "dtb_products", "del_flg = 0 AND status = 1 AND product_id=?", array($_GET['product_id']));
 		if(empty($arrForm)) {
 			sfDispSiteError(PAGE_ERROR);
 		}

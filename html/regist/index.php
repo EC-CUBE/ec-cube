@@ -142,7 +142,7 @@ function lfErrorCheck($array) {
 	}
 	if (! $objErr->arrErr["id"]) {
 
-		$sql = "SELECT customer_id FROM dtb_customer WHERE secret_key = ? AND status = 1 AND delete = 0";
+		$sql = "SELECT customer_id FROM dtb_customer WHERE secret_key = ? AND status = 1 AND del_flg = 0";
 		$result = $objConn->getOne($sql, array($array["id"]));
 
 		if (! is_numeric($result)) {

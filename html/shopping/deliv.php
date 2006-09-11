@@ -67,7 +67,7 @@ case 'login':
 		if(!$objCustomer->getCustomerDataFromEmailPass($arrForm['login_pass'], $arrForm['login_email'])) {
 			// ²¾ÅÐÏ¿¤ÎÈ½Äê
 			$objQuery = new SC_Query;
-			$where = "email = ? AND status = 1 AND delete = 0";
+			$where = "email = ? AND status = 1 AND del_flg = 0";
 			$ret = $objQuery->count("dtb_customer", $where, array($arrForm['login_email']));
 			
 			if($ret > 0) {

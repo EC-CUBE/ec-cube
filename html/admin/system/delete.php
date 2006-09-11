@@ -30,7 +30,7 @@ function fnRenumberRank($conn, $oquery, $id) {
 	// ランクの取得
 	$rank = $oquery->get("dtb_member", "rank", $where);
 	// 削除したレコードより上のランキングを下げてRANKの空きを埋める。
-	$sqlup = "UPDATE dtb_member SET rank = (rank - 1) WHERE rank > $rank AND delete <> 1";
+	$sqlup = "UPDATE dtb_member SET rank = (rank - 1) WHERE rank > $rank AND del_flg <> 1";
 	// UPDATEの実行
 	$ret = $conn->query($sqlup);
 	return $ret;
@@ -39,7 +39,7 @@ function fnRenumberRank($conn, $oquery, $id) {
 // レコードの削除(削除フラグをONにする)
 function fnDeleteRecord($conn, $id) {
 	// ランクを最下位にする、DELフラグON
-	$sqlup = "UPDATE dtb_member SET rank = 0, delete = 1 WHERE member_id = $id";
+	$sqlup = "UPDATE dtb_member SET rank = 0, del_flg = 1 WHERE member_id = $id";
 	// UPDATEの実行
 	$ret = $conn->query($sqlup);
 	return $ret;

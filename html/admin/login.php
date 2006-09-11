@@ -24,7 +24,7 @@ if($ret){
 
 /* 認証パスワードの判定 */
 function fnCheckPassword($conn) {
-	$sql = "SELECT member_id, password, authority, login_date, name FROM dtb_member WHERE login_id = ? AND delete <> 1 AND work = 1";
+	$sql = "SELECT member_id, password, authority, login_date, name FROM dtb_member WHERE login_id = ? AND del_flg <> 1 AND work = 1";
 	$arrcol = array ($_POST['login_id']);
 	// DBから暗号化パスワードを取得する。
 	$data_list = $conn->getAll($sql ,$arrcol); 

@@ -31,7 +31,7 @@ case 'login':
 			exit;
 		} else {
 			$objQuery = new SC_Query;
-			$where = "email ILIKE ? AND status = 1 AND delete = 0";
+			$where = "email ILIKE ? AND status = 1 AND del_flg = 0";
 			$ret = $objQuery->count("dtb_customer", $where, array($arrForm['login_email']));
 			
 			if($ret > 0) {

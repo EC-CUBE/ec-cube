@@ -246,7 +246,7 @@ function lfGetEditData($id, $arrIdData) {
 	global $conn;
 
 	// DB登録情報
-	$sql = "SELECT * FROM dtb_mailmaga_template WHERE template_id = ? AND delete = 0";
+	$sql = "SELECT * FROM dtb_mailmaga_template WHERE template_id = ? AND del_flg = 0";
 	$result = $conn->getAll($sql, array($id));
 
 	//　画像ファイル名

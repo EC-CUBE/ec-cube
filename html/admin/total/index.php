@@ -547,7 +547,7 @@ function lfGetOrderMember($type, $sdate, $edate, $objPage, $graph = true) {
 	$objQuery = new SC_Query();
 	$objQuery->setGroupBy("order_sex");
 	
-	$tmp_where = $where . " AND customer_id <> 0 AND delete = 0 ";
+	$tmp_where = $where . " AND customer_id <> 0 AND del_flg = 0 ";
 	$arrRet = $objQuery->select($col, $from, $tmp_where, $arrval);
 	
 	// 会員購入であることを記録する。
@@ -558,7 +558,7 @@ function lfGetOrderMember($type, $sdate, $edate, $objPage, $graph = true) {
 	$objPage->arrResults = $arrRet;
 	
 	// 非会員集計の取得
-	$tmp_where = $where . " AND customer_id = 0 AND delete = 0 ";
+	$tmp_where = $where . " AND customer_id = 0 AND del_flg = 0 ";
 	$arrRet = $objQuery->select($col, $from, $tmp_where, $arrval);
 	// 非会員購入であることを記録する。
 	$max = count($arrRet);
@@ -615,7 +615,7 @@ function lfGetOrderJob($type, $sdate, $edate, $objPage, $graph = true) {
 	list($where, $arrval) = lfGetWhereMember('T2.create_date', $sdate, $edate, $type);
 	
 	$sql = "SELECT job, count(*) AS order_count, SUM(total) AS total, int8(AVG(total)) AS total_average ";
-	$sql.= "FROM dtb_customer AS T1 LEFT JOIN dtb_order AS T2 USING ( customer_id ) WHERE $where AND T2.delete = 0";
+	$sql.= "FROM dtb_customer AS T1 LEFT JOIN dtb_order AS T2 USING ( customer_id ) WHERE $where AND T2.del_flg = 0";
 	$sql.= "GROUP BY job ORDER BY total DESC";
 	
 	$objQuery = new SC_Query();

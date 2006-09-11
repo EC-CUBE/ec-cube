@@ -64,7 +64,7 @@ function lfGetProduct($category_id) {
 	$objQuery = new SC_Query();
 	$col = "product_id, name, main_list_image, rank, product_code";
 	$table = "vw_products_nonclass";
-	$where = "delete = 0 AND category_id = ?";
+	$where = "del_flg = 0 AND category_id = ?";
 	
 	// 行数の取得
 	$linemax = $objQuery->count($table, $where, array($category_id));

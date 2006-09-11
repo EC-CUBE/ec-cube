@@ -67,13 +67,13 @@ case 'pre_edit':
 case 'delete':
 	$objQuery = new SC_Query();
 	// 子カテゴリのチェック
-	$where = "parent_category_id = ? AND delete = 0";
+	$where = "parent_category_id = ? AND del_flg = 0";
 	$count = $objQuery->count("dtb_category", $where, array($_POST['category_id']));
 	if($count != 0) {
 		$objPage->arrErr['category_name'] = "※ 子カテゴリが存在するため削除できません。<br>";
 	}
 	// 登録商品のチェック
-	$where = "category_id = ? AND delete = 0";
+	$where = "category_id = ? AND del_flg = 0";
 	$count = $objQuery->count("dtb_products", $where, array($_POST['category_id']));
 	if($count != 0) {
 		$objPage->arrErr['category_name'] = "※ カテゴリ内に商品が存在するため削除できません。<br>";
@@ -189,7 +189,7 @@ function lfUpdateCat($category_id) {
 function lfGetCat($parent_category_id) {
 	$objQuery = new SC_Query();
 	$col = "category_id, category_name, level, rank";
-	$where = "delete = 0 AND parent_category_id = ?";
+	$where = "del_flg = 0 AND parent_category_id = ?";
 	$objQuery->setoption("ORDER BY rank DESC");
 	$arrRet = $objQuery->select($col, "dtb_category", $where, array($parent_category_id));
 	return $arrRet;
@@ -240,7 +240,7 @@ function lfGetDownRankID($objQuery, $table, $pid_name, $id_name, $id) {
 	$pid = $objQuery->get($table, $col, $where, $id);
 	// すべての子を取得する。
 	$col = "$id_name";
-	$where = "delete = 0 AND $pid_name = ? ORDER BY rank DESC";
+	$where = "del_flg = 0 AND $pid_name = ? ORDER BY rank DESC";
 	$arrRet = $objQuery->select($col, $table, $where, array($pid));
 	$max = count($arrRet);
 	$down_id = "";
@@ -261,7 +261,7 @@ function lfGetUpRankID($objQuery, $table, $pid_name, $id_name, $id) {
 	$pid = $objQuery->get($table, $col, $where, $id);
 	// すべての子を取得する。
 	$col = "$id_name";
-	$where = "delete = 0 AND $pid_name = ? ORDER BY rank DESC";
+	$where = "del_flg = 0 AND $pid_name = ? ORDER BY rank DESC";
 	$arrRet = $objQuery->select($col, $table, $where, array($pid));
 	$max = count($arrRet);
 	$up_id = "";
@@ -285,7 +285,7 @@ function lfUpRankChilds($objQuery, $table, $pid_name, $id_name, $id, $count) {
 	$arrRet = sfGetChildrenArray($table, $pid_name, $id_name, $id);	
 	$line = sfGetCommaList($arrRet);
 	$sql = "UPDATE $table SET rank = (rank + $count) WHERE $id_name IN ($line) ";
-	$sql.= "AND delete = 0";
+	$sql.= "AND del_flg = 0";
 	$ret = $objQuery->exec($sql);
 	return $ret;
 }
@@ -295,7 +295,7 @@ function lfDownRankChilds($objQuery, $table, $pid_name, $id_name, $id, $count) {
 	$arrRet = sfGetChildrenArray($table, $pid_name, $id_name, $id);	
 	$line = sfGetCommaList($arrRet);
 	$sql = "UPDATE $table SET rank = (rank - $count) WHERE $id_name IN ($line) ";
-	$sql.= "AND delete = 0";
+	$sql.= "AND del_flg = 0";
 	$ret = $objQuery->exec($sql);
 	return $ret;
 }

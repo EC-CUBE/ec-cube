@@ -277,7 +277,7 @@ function lfGetCustomerOrderId($keyword) {
 	if($keyword != "") {
 		$col = "customer_id, order_id";
 		$from = "dtb_order LEFT JOIN dtb_order_detail USING(order_id)";
-		$where = "product_code LIKE ? AND delete = 0";
+		$where = "product_code LIKE ? AND del_flg = 0";
 		$val = sfManualEscape($keyword);
 		$arrVal[] = "%$val%";
 		$objQuery = new SC_Query();

@@ -51,7 +51,7 @@ default:
 
 // 配送業者一覧の取得
 $col = "deliv_id, name, service_name";
-$where = "delete = 0";
+$where = "del_flg = 0";
 $table = "dtb_deliv";
 $objQuery->setorder("rank DESC");
 $objPage->arrDelivList = $objQuery->select($col, $table, $where);

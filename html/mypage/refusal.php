@@ -41,7 +41,7 @@ switch ($_POST['mode']){
 	
 	case 'complete':
 	//²ñ°÷ºï½ü
-	$objQuery->exec("UPDATE dtb_customer SET delete=1 WHERE customer_id=?", array($objCustomer->getValue('customer_id')));
+	$objQuery->exec("UPDATE dtb_customer SET del_flg=1 WHERE customer_id=?", array($objCustomer->getValue('customer_id')));
 	$objQuery->delete("dtb_customer_mail", "email ILIKE ?", array($objCustomer->getValue('email')));
 	$objCustomer->EndSession();
 	//´°Î»¥Ú¡¼¥¸¤Ø

@@ -58,9 +58,9 @@ lfInitFile();
 
 // 管理ページからの確認の場合は、非公開の商品も表示する。
 if($_GET['admin'] == 'on') {
-	$where = "delete = 0";
+	$where = "del_flg = 0";
 } else {
-	$where = "delete = 0 AND status = 1";
+	$where = "del_flg = 0 AND status = 1";
 }
 
 if($_POST['mode'] != "") {
@@ -341,7 +341,7 @@ function lfPreGetRecommendProducts($product_id) {
 	$max = count($arrRet);
 	$no = 0;
 	for($i = 0; $i < $max; $i++) {
-		$where = "delete = 0 AND product_id = ? AND status = 1";
+		$where = "del_flg = 0 AND product_id = ? AND status = 1";
 		$arrProductInfo = $objQuery->select("main_list_image, price02_min, price02_max, price01_min, price01_max, name, point_rate", "vw_products_allclass", $where, array($arrRet[$i]['recommend_product_id'])); 
 				
 		if(count($arrProductInfo) > 0) {
@@ -393,7 +393,7 @@ function lfGetRelateProducts($tmp_id) {
 	//検索条件
 	$col = "name, main_list_image, price01_min, price02_min, price01_max, price02_max, point_rate";
 	$from = "vw_products_allclass AS V ";
-	$where = "delete = 0 AND status = 1 AND (stock_max <> 0 OR stock_max IS NULL) AND product_id = ? ";
+	$where = "del_flg = 0 AND status = 1 AND (stock_max <> 0 OR stock_max IS NULL) AND product_id = ? ";
 	$arrval[] = $tmp_id;
 	//結果の取得
 	$arrProducts = $objQuery->select($col, $from, $where, $arrval);
@@ -407,7 +407,7 @@ function lfGetReviewData($id) {
 	//商品ごとのレビュー情報を取得する
 	$col = "create_date, reviewer_url, reviewer_name, recommend_level, title, comment";
 	$from = "dtb_review";
-	$where = "delete = 0 AND status = 1 AND product_id = ? ";
+	$where = "del_flg = 0 AND status = 1 AND product_id = ? ";
 	$arrval[] = $id;
 	$arrReview = $objQuery->select($col, $from, $where, $arrval);
 	return $arrReview; 
@@ -419,7 +419,7 @@ function lfGetPayment() {
 	$objQuery = new SC_Query;
 	$col = "payment_id, rule, payment_method";
 	$from = "dtb_payment";
-	$where = "delete = 0";
+	$where = "del_flg = 0";
 	$order = "payment_id";
 	$objQuery->setorder($order);
 	$arrRet = $objQuery->select($col, $from, $where);

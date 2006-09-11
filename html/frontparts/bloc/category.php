@@ -27,9 +27,9 @@ function lfGetCatTree($parent_category_id, $count_check = false, $objSubPage) {
 	$from = "dtb_category left join dtb_category_total_count using (category_id)";
 	// 登録商品数のチェック
 	if($count_check) {
-		$where = "delete = 0 AND product_count > 0";
+		$where = "del_flg = 0 AND product_count > 0";
 	} else {
-		$where = "delete = 0";
+		$where = "del_flg = 0";
 	}
 	$objQuery->setoption("ORDER BY rank DESC");
 	$arrRet = $objQuery->select($col, $from, $where);

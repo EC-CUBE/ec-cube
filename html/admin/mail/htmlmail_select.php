@@ -28,7 +28,7 @@ if ($_POST['mode'] == "search") {
 	lfConvertParam();
 	
 	// 削除されていない。公開商品である。
-	$where = "delete = 0 AND status = 1";
+	$where = "del_flg = 0 AND status = 1";
 	
 	/* 入力エラーなし */
 	foreach ($objPage->arrForm as $key => $val) {

@@ -111,7 +111,7 @@ function fnErrorCheck($conn) {
 	
 	// 編集モードでない場合は、重複チェック
 	if (!isset($objErr->arrErr['name']) && $_POST['mode'] != 'edit') {
-		$sql = "SELECT name FROM dtb_member WHERE delete <> 1 AND name = ?";
+		$sql = "SELECT name FROM dtb_member WHERE del_flg <> 1 AND name = ?";
 		$result = $conn->getOne($sql, array($_POST['name'])); 
 		if ( $result ) {
 			$objErr->arrErr['name'] = "既に登録されている名前なので利用できません。<br>";
@@ -124,7 +124,7 @@ function fnErrorCheck($conn) {
 	
 	// 新規モードもしくは、編集モードでログインIDが変更されている場合はチェックする。
 	if (!isset($objErr->arrErr['login_id']) && $_POST['mode'] != 'edit' || ($_POST['mode'] == 'edit' && $_POST['login_id'] != $_POST['old_login_id'])) {
-		$sql = "SELECT login_id FROM dtb_member WHERE delete <> 1 AND login_id = ?";
+		$sql = "SELECT login_id FROM dtb_member WHERE del_flg <> 1 AND login_id = ?";
 		$result = $conn->getOne($sql, array($_POST['login_id'])); 
 		if ( $result != "" ) {
 			$objErr->arrErr['login_id'] = "既に登録されているIDなので利用できません。<br>";
@@ -157,7 +157,7 @@ function fnInsertMember() {
 	$sqlval['authority'] = $_POST['authority'];
 	$sqlval['rank']=  $oquery->max("dtb_member", "rank") + 1;
 	$sqlval['work'] = "1"; // 稼働に設定
-	$sqlval['delete'] = "0";	// 削除フラグをOFFに設定
+	$sqlval['del_flg'] = "0";	// 削除フラグをOFFに設定
 	$sqlval['creator_id'] = $_SESSION['member_id'];
 	// INSERTの実行
 	$ret = $oquery->insert("dtb_member", $sqlval);

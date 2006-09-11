@@ -34,13 +34,13 @@ if ( $_GET['mode'] == "delete" && sfCheckNumLength($_GET['id'])===true ){
 	}
 	
 	// епо©╨О╫Э
-	$sql = "UPDATE dtb_mailmaga_template SET delete = 1 WHERE template_id = ?";
+	$sql = "UPDATE dtb_mailmaga_template SET del_flg = 1 WHERE template_id = ?";
 	$conn->query($sql, array($_GET['id']));
 	sfReload();
 }
 
 
-$sql = "SELECT *, to_char(create_date, 'YYYY/MM/DD HH24:MI') as disp_date FROM dtb_mailmaga_template WHERE delete = 0 ORDER BY create_date DESC";
+$sql = "SELECT *, to_char(create_date, 'YYYY/MM/DD HH24:MI') as disp_date FROM dtb_mailmaga_template WHERE del_flg = 0 ORDER BY create_date DESC";
 $objPage->list_data = $list_data = $conn->getAll($sql);
 $objPage->arrMagazineType = $arrMagazineTypeAll;
 

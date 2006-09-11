@@ -144,7 +144,7 @@ function lfLoadUpdateList() {
 				$sqlval['sql'] = $arrCSV[7];
 				$sqlval['uninstall_sql'] = $arrCSV[8];				
 				$sqlval['other_files'] = $arrCSV[9];
-				$sqlval['delete'] = $arrCSV[10];
+				$sqlval['del_flg'] = $arrCSV[10];
 				$sqlval['update_date'] = "now()";
 				$sqlval['release_date'] = $arrCSV[12];
 				// 既存レコードのチェック

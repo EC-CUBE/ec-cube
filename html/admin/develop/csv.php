@@ -120,7 +120,7 @@ function lfInsertProduct($objQuery) {
 		$sqlval['creator_id'] = '0';
 	}
 		
-	$sqlval['rank'] = $objQuery->max("dtb_products", "rank", "delete = 0 AND category_id = ?", array($sqlval['category_id'])) + 1;
+	$sqlval['rank'] = $objQuery->max("dtb_products", "rank", "del_flg = 0 AND category_id = ?", array($sqlval['category_id'])) + 1;
 	
 	// µ¬³ÊÅÐÏ¿
 	sfInsertProductClass($objQuery, $arrRet, $product_id);

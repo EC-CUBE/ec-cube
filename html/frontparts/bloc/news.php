@@ -18,7 +18,7 @@ $objSubView->display($objSubPage->tpl_mainpage);
 //-----------------------------------------------------------------------------------------------------------------------------------
 function lfGetNews(){
 	$conn = new SC_DBConn();
-	$sql = "SELECT *, to_char(news_date, 'YYYY/MM/DD') as news_date_disp FROM dtb_news WHERE delete = '0' ORDER BY rank DESC";
+	$sql = "SELECT *, to_char(news_date, 'YYYY/MM/DD') as news_date_disp FROM dtb_news WHERE del_flg = '0' ORDER BY rank DESC";
 	$list_data = $conn->getAll($sql);
 	return $list_data;	
 }

@@ -103,7 +103,7 @@ $objPage = sfGetPageLayout($objPage, false, "products/list.php");
 
 if($_POST['mode'] == "cart" && $_POST['product_id'] != "") {
 	// 値の正当性チェック
-	if(!sfIsInt($_POST['product_id']) || !sfIsRecord("dtb_products", "product_id", $_POST['product_id'], "delete = 0 AND status = 1")) {
+	if(!sfIsInt($_POST['product_id']) || !sfIsRecord("dtb_products", "product_id", $_POST['product_id'], "del_flg = 0 AND status = 1")) {
 		sfDispSiteError(PRODUCT_NOT_FOUND);
 	} else {
 		// 入力値の変換
@@ -178,7 +178,7 @@ function lfDispProductsList($category_id, $name, $disp_num, $orderby) {
 	}
 	
 	// 商品検索条件の作成（未削除、表示）
-	$where = "delete = 0 AND status = 1 ";
+	$where = "del_flg = 0 AND status = 1 ";
 	// カテゴリからのWHERE文字列取得
 	if ( $category_id ) {
 		list($tmp_where, $arrval) = sfGetCatWhere($category_id);
@@ -400,7 +400,7 @@ function lfGetPayment() {
 	$objQuery = new SC_Query;
 	$col = "payment_id, rule, payment_method";
 	$from = "dtb_payment";
-	$where = "delete = 0";
+	$where = "del_flg = 0";
 	$order = "payment_id";
 	$objQuery->setorder($order);
 	$arrRet = $objQuery->select($col, $from, $where);

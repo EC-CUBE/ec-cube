@@ -69,7 +69,7 @@ if ( sfCheckNumLength($_POST['category_id']) ){
 
 // 既に登録されている内容を取得する
 $sql = "SELECT B.name, B.main_list_image, A.* FROM dtb_best_products as A INNER JOIN dtb_products as B USING (product_id)
-		 WHERE A.category_id = ? AND A.delete = 0 ORDER BY rank";
+		 WHERE A.category_id = ? AND A.del_flg = 0 ORDER BY rank";
 $arrItems = $conn->getAll($sql, array($objPage->category_id));
 foreach( $arrItems as $data ){
 	$objPage->arrItems[$data['rank']] = $data;
@@ -77,7 +77,7 @@ foreach( $arrItems as $data ){
 
 // 商品変更時は、選択された商品に一時的に置き換える
 if ( $_POST['mode'] == 'set_item'){
-	$sql = "SELECT product_id, name, main_list_image FROM dtb_products WHERE product_id = ? AND delete = 0";
+	$sql = "SELECT product_id, name, main_list_image FROM dtb_products WHERE product_id = ? AND del_flg = 0";
 	$result = $conn->getAll($sql, array($_POST['product_id']));
 	if ( $result ){
 		$data = $result[0];

@@ -116,7 +116,7 @@ if ($_POST['mode'] == "search" || $_POST['mode'] == "csv"  || $_POST['mode'] == 
 	// エラーチェック
 	$objPage->arrErr = lfCheckError();
 
-	$where = "delete = 0";
+	$where = "del_flg = 0";
 
 	// 入力エラーなし
 	if (count($objPage->arrErr) == 0) {
@@ -223,7 +223,7 @@ if ($_POST['mode'] == "search" || $_POST['mode'] == "csv"  || $_POST['mode'] == 
 		case 'delete_all':
 			// 検索結果をすべて削除
 			$where = "product_id IN (SELECT product_id FROM vw_products_nonclass WHERE $where)";
-			$sqlval['delete'] = 1;
+			$sqlval['del_flg'] = 1;
 			$objQuery->update("dtb_products", $sqlval, $where, $arrval);
 			break;
 		default:

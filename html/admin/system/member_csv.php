@@ -15,7 +15,7 @@ function lfGetCSVData() {
 	
 	$oquery = new SC_Query();
 	$cols = "authority,name,department,login_id,work";
-	$oquery->setwhere("delete <> 1");
+	$oquery->setwhere("del_flg <> 1");
 	$oquery->andwhere("member_id <> ".ADMIN_ID);
 	$oquery->setoption("ORDER BY rank DESC");
 	$list_data = $oquery->select($cols, "dtb_member");

@@ -117,11 +117,11 @@ foreach ($_POST as $key => $val) {
 
 // 顧客削除
 if ($_POST['mode'] == "delete") {
-	$sql = "SELECT status,email FROM dtb_customer WHERE customer_id = ? AND delete = 0";
+	$sql = "SELECT status,email FROM dtb_customer WHERE customer_id = ? AND del_flg = 0";
 	$result_customer = $objConn->getAll($sql, array($_POST["edit_customer_id"]));
 
 	if ($result_customer[0]["status"] == 2) {			//本会員削除
-		$arrDel = array("delete" => 1, "update_date" => "NOW()"); 
+		$arrDel = array("del_flg" => 1, "update_date" => "NOW()"); 
 		$objConn->autoExecute("dtb_customer", $arrDel, "customer_id = " .addslashes($_POST["edit_customer_id"]) );
 	} elseif ($result_customer[0]["status"] == 1) {		//仮会員削除
 		$sql = "DELETE FROM dtb_customer WHERE customer_id = ?";
@@ -137,7 +137,7 @@ if ($_POST['mode'] == "search" || $_POST['mode'] == "csv"  || $_POST['mode'] == 
 	// エラーチェック
 	$objPage->arrErr = lfCheckError($objPage->arrForm);
 
-	$where = "delete = 0";
+	$where = "del_flg = 0";
 
 	/* 入力エラーなし */
 	if (count($objPage->arrErr) == 0) {
@@ -196,14 +196,14 @@ if ($_POST['mode'] == "search" || $_POST['mode'] == "csv"  || $_POST['mode'] == 
 		case 'delete_all':
 			// 検索結果をすべて削除
 			$where = "product_id IN (SELECT product_id FROM vw_products_nonclass WHERE $where)";
-			$sqlval['delete'] = 1;
+			$sqlval['del_flg'] = 1;
 			$objQuery->update("dtb_products", $sqlval, $where, $arrval);
 
-			$sql = "SELECT status,email FROM dtb_customer WHERE customer_id = ? AND delete = 0";
+			$sql = "SELECT status,email FROM dtb_customer WHERE customer_id = ? AND del_flg = 0";
 			$result_customer = $objConn->getAll($sql, array($_POST["del_customer_id"]));
 
 			if ($result_customer[0]["status"] == 2) {			//本会員削除
-				$arrDel = array("delete" => 1, "update_date" => "NOW()");
+				$arrDel = array("del_flg" => 1, "update_date" => "NOW()");
 				$objConn->autoExecute("dtb_customer", $arrDel, "customer_id = " .addslashes($_POST["del_customer_id"]) );
 			} elseif ($result_customer[0]["status"] == 1) {		//仮会員削除
 				$sql = "DELETE FROM dtb_customer WHERE customer_id = ?";

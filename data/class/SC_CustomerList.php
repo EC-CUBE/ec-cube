@@ -12,21 +12,21 @@ class SC_CustomerList extends SC_SelectSql {
 		
 		if($mode == "") {
 			// 会員本登録会員で削除していない会員
-			$this->setWhere("status = 2 AND delete = 0 ");		
+			$this->setWhere("status = 2 AND del_flg = 0 ");		
 			// 登録日を示すカラム
 			$regdate_col = 'dtb_customer.update_date';
 		}
 		
 		if($mode == "customer") {
 			// 管理者ページ顧客検索の場合仮登録会員も検索
-			$this->setWhere( "(status = 1 OR status = 2) AND delete = 0 ");		
+			$this->setWhere( "(status = 1 OR status = 2) AND del_flg = 0 ");		
 			// 登録日を示すカラム
 			$regdate_col = 'dtb_customer.update_date';
 		}
 				
 		// メールマガジンの場合		
 		if($mode == "magazine") {
-			$this->setWhere("(delete = 0 OR delete IS NULL)");
+			$this->setWhere("(del_flg = 0 OR del_flg IS NULL)");
 			$this->setWhere("status = 2");
 			
 			/*　会員のみ対象とする

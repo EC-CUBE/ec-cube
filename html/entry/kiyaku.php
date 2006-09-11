@@ -18,7 +18,7 @@ $objPage = sfGetPageLayout($objPage, false, DEF_LAYOUT);
 // 規約内容の取得
 $objQuery = new SC_Query();
 $objQuery->setorder("rank DESC");
-$arrRet = $objQuery->select("kiyaku_title, kiyaku_text", "dtb_kiyaku", "delete <> 1");
+$arrRet = $objQuery->select("kiyaku_title, kiyaku_text", "dtb_kiyaku", "del_flg <> 1");
 
 $max = count($arrRet);
 $objPage->tpl_kiyaku_text = "";

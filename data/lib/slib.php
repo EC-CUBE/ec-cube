@@ -429,7 +429,7 @@ function sfMoveRank($tableName, $keyIdColumn, $keyId, $pos, $where = "") {
 	if( $position < $rank ) $term = "rank + 1";	//入れ替え先の順位が入れ換え元の順位より小さい場合
 
 	//--　指定した順位の商品から移動させる商品までのrankを１つずらす
-	$sql = "UPDATE $tableName SET rank = $term, update_date = NOW() WHERE rank BETWEEN ? AND ? AND delete = 0";
+	$sql = "UPDATE $tableName SET rank = $term, update_date = NOW() WHERE rank BETWEEN ? AND ? AND del_flg = 0";
 	if($where != "") {
 		$sql.= " AND $where";
 	}
@@ -438,7 +438,7 @@ function sfMoveRank($tableName, $keyIdColumn, $keyId, $pos, $where = "") {
 	if( $position < $rank ) $objQuery->exec( $sql, array( $position, $rank - 1 ));
 
 	//-- 指定した順位へrankを書き換える。
-	$sql  = "UPDATE $tableName SET rank = ?, update_date = NOW() WHERE $keyIdColumn = ? AND delete = 0 ";
+	$sql  = "UPDATE $tableName SET rank = ?, update_date = NOW() WHERE $keyIdColumn = ? AND del_flg = 0 ";
 	if($where != "") {
 		$sql.= " AND $where";
 	}
@@ -461,7 +461,7 @@ function sfDeleteRankRecord($table, $colname, $id, $andwhere = "", $delete = fal
 
 	if(!$delete) {
 		// ランクを最下位にする、DELフラグON
-		$sqlup = "UPDATE $table SET rank = 0, delete = 1, update_date = Now() ";
+		$sqlup = "UPDATE $table SET rank = 0, del_flg = 1, update_date = Now() ";
 		$sqlup.= "WHERE $colname = ?";
 		// UPDATEの実行
 		$objQuery->exec($sqlup, array($id));
@@ -484,7 +484,7 @@ function sfIsRecord($table, $col, $arrval, $addwhere = "") {
 	$objQuery = new SC_Query();
 	$arrCol = split("[, ]", $col);
 		
-	$where = "delete = 0";
+	$where = "del_flg = 0";
 	
 	if($addwhere != "") {
 		$where.= " AND $addwhere";
@@ -773,7 +773,7 @@ function sfSearchKey($array, $word, $default) {
 // カテゴリツリーの取得($products_check:true商品登録済みのものだけ取得)
 function sfGetCategoryList($addwhere = "", $products_check = false, $head = CATEGORY_HEAD) {
 	$objQuery = new SC_Query();
-	$where = "delete = 0";
+	$where = "del_flg = 0";
 	
 	if($addwhere != "") {
 		$where.= " AND $addwhere";
@@ -814,7 +814,7 @@ function sfGetCategoryList($addwhere = "", $products_check = false, $head = CATE
 function sfGetLevelCatList($parent_zero = true) {
 	$objQuery = new SC_Query();
 	$col = "category_id, category_name, level";
-	$where = "delete = 0";
+	$where = "del_flg = 0";
 	$objQuery->setoption("ORDER BY rank DESC");
 	$arrRet = $objQuery->select($col, "dtb_category", $where);
 	$max = count($arrRet);
@@ -870,7 +870,7 @@ function sfGetChecked($param, $value) {
 function sfGetIDValueList($table, $keyname, $valname) {
 	$objQuery = new SC_Query();
 	$col = "$keyname, $valname";
-	$objQuery->setwhere("delete = 0");
+	$objQuery->setwhere("del_flg = 0");
 	$objQuery->setorder("rank DESC");
 	$arrList = $objQuery->select($col, $table);
 	$count = count($arrList);
@@ -999,7 +999,7 @@ function sfPrePoint($price, $point_rate, $rule = POINT_RULE, $product_id = "") {
 		$objQuery = new SC_Query();
 		$where = "to_char(now(),'YYYY/MM/DD/HH24') >= to_char(start_date,'YYYY/MM/DD/HH24') AND ";
 		$where .= "to_char(now(),'YYYY/MM/DD/HH24') < to_char(end_date,'YYYY/MM/DD/HH24') AND ";
-		$where .= "delete = 0 AND campaign_id IN (SELECT campaign_id FROM dtb_campaign_detail where product_id = ? )";
+		$where .= "del_flg = 0 AND campaign_id IN (SELECT campaign_id FROM dtb_campaign_detail where product_id = ? )";
 		//登録(更新)日付順
 		$objQuery->setorder('update_date DESC');
 		//キャンペーンポイントの取得
@@ -1042,7 +1042,7 @@ function sfPrePoint($price, $point_rate, $rule = POINT_RULE, $product_id = "") {
 function sfGetClassCatCount() {
 	$sql = "select count(dtb_class.class_id), dtb_class.class_id ";
 	$sql.= "from dtb_class inner join dtb_classcategory on dtb_class.class_id = dtb_classcategory.class_id ";
-	$sql.= "where dtb_class.delete = 0 AND dtb_classcategory.delete = 0 ";
+	$sql.= "where dtb_class.del_flg = 0 AND dtb_classcategory.del_flg = 0 ";
 	$sql.= "group by dtb_class.class_id, dtb_class.name;";
 	$objQuery = new SC_Query();
 	$arrList = $objQuery->getall($sql);
@@ -1287,7 +1287,7 @@ function sfGetDelivTime($payment_id = "") {
 	$deliv_id = "";
 	
 	if($payment_id != "") {
-		$where = "delete = 0 AND payment_id = ?";
+		$where = "del_flg = 0 AND payment_id = ?";
 		$arrRet = $objQuery->select("deliv_id", "dtb_payment", $where, array($payment_id));
 		$deliv_id = $arrRet[0]['deliv_id'];
 	}
@@ -1309,12 +1309,12 @@ function sfGetDelivFee($pref, $payment_id = "") {
 	
 	// 支払い方法が指定されている場合は、対応した配送業者を取得する
 	if($payment_id != "") {
-		$where = "delete = 0 AND payment_id = ?";
+		$where = "del_flg = 0 AND payment_id = ?";
 		$arrRet = $objQuery->select("deliv_id", "dtb_payment", $where, array($payment_id));
 		$deliv_id = $arrRet[0]['deliv_id'];
 	// 支払い方法が指定されていない場合は、先頭の配送業者を取得する
 	} else {
-		$where = "delete = 0";
+		$where = "del_flg = 0";
 		$objQuery->setOrder("rank DESC");
 		$objQuery->setLimitOffset(1);
 		$arrRet = $objQuery->select("deliv_id", "dtb_deliv", $where);
@@ -1340,7 +1340,7 @@ function sfGetDelivFee($pref, $payment_id = "") {
 function sfGetPayment() {
 	$objQuery = new SC_Query();
 	// 購入金額が条件額以下の項目を取得
-	$where = "delete = 0";
+	$where = "del_flg = 0";
 	$objQuery->setorder("fix, rank DESC");
 	$arrRet = $objQuery->select("payment_id, payment_method, rule", "dtb_payment", $where);
 	return $arrRet;	
@@ -1735,7 +1735,7 @@ function sfGetBestProducts( $conn, $category_id = 0){
 	// 既に登録されている内容を取得する
 	$sql = "SELECT name, main_image, main_list_image, price01_min, price01_max, price02_min, price02_max, point_rate,
 			 A.product_id, A.comment FROM dtb_best_products as A LEFT JOIN vw_products_allclass as B 
-			USING (product_id) WHERE A.category_id = ? AND A.delete = 0 AND status = 1 ORDER BY A.rank";
+			USING (product_id) WHERE A.category_id = ? AND A.del_flg = 0 AND status = 1 ORDER BY A.rank";
 	$arrItems = $conn->getAll($sql, array($category_id));
 	return $arrItems;
 }
@@ -2115,7 +2115,7 @@ function sfCategory_Count($objQuery){
 	$sql = " INSERT INTO dtb_category_count(category_id, product_count) ";
 	$sql .= " SELECT T1.category_id, count(T2.category_id) FROM dtb_category AS T1 LEFT JOIN dtb_products AS T2 ";
 	$sql .= " ON T1.category_id = T2.category_id  ";
-	$sql .= " WHERE T2.delete = 0 AND T2.status = 1 ";
+	$sql .= " WHERE T2.del_flg = 0 AND T2.status = 1 ";
 	$sql .= " GROUP BY T1.category_id, T2.category_id ";
 	$objQuery->query($sql);
 	
@@ -2272,9 +2272,9 @@ function sfGetCatTree($parent_category_id, $count_check = false) {
 	$from = "dtb_category left join dtb_category_total_count using (category_id)";
 	// 登録商品数のチェック
 	if($count_check) {
-		$where = "delete = 0 AND product_count > 0";
+		$where = "del_flg = 0 AND product_count > 0";
 	} else {
-		$where = "delete = 0";
+		$where = "del_flg = 0";
 	}
 	$objQuery->setoption("ORDER BY rank DESC");
 	$arrRet = $objQuery->select($col, $from, $where);

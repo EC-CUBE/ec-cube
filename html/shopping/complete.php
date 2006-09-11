@@ -367,7 +367,7 @@ function lfRegistOrderDetail($objQuery, $order_id, $objCartSess) {
 /* 受注一時テーブルの削除 */
 function lfDeleteTempOrder($objQuery, $uniqid) {
 	$where = "order_temp_id = ?";
-	$sqlval['delete'] = 1;
+	$sqlval['del_flg'] = 1;
 	$objQuery->update("dtb_order_temp", $sqlval, $where, array($uniqid));
 	// $objQuery->delete("dtb_order_temp", $where, array($uniqid));
 }
