@@ -523,8 +523,6 @@ class DB
     {
         $dsninfo = DB::parseDSN($dsn);
         $type = $dsninfo['phptype'];
-		
-		print("test");
 
         if (!is_array($options)) {
             /*
@@ -564,6 +562,9 @@ class DB
             $err->addUserInfo($dsn);
             return $err;
         }
+		
+				print("test");
+
 
         return $obj;
     }
