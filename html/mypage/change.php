@@ -139,7 +139,7 @@ case 'complete':
 		$email_flag = true;
 		if($objPage->arrForm['email'] != $objCustomer->getValue('email')) {
 			//メールアドレスの重複チェック
-			$email_cnt = $objQuery->count("dtb_customer","delete=0 AND email=?", array($objPage->arrForm['email']));
+			$email_cnt = $objQuery->count("dtb_customer","del_flg=0 AND email=?", array($objPage->arrForm['email']));
 			if ($email_cnt > 0){
 				$email_flag = false;
 			}
