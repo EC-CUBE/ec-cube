@@ -14,9 +14,6 @@ if($_GET['mode'] == 'now') {
 	$time_data = $conn->getAll($sql);
 }
 
-sfprintr($time_data);
-exit;
-
 $count = count($time_data);
 
 if( $count > 0 ){
@@ -126,7 +123,8 @@ for( $i = 0; $i < count( $time_data ); $i++ ) {
 				 );
 	
 	if ($_GET['mode'] = "now") {
-		header("Location: /admin/mail/history.php");
+		//header("Location: /admin/mail/history.php");
+		sfprintr($objSite);
 	}
 	echo "complete\n";
 
