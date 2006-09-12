@@ -3,7 +3,6 @@
 $CONF_PHP_PATH = realpath( dirname( __FILE__) );
 require_once($CONF_PHP_PATH ."/../../html/install.inc");
 require_once($CONF_PHP_PATH ."/core.php" );
-
 //--------------------------------------------------------------------------------------------------------
 /** アップデート管理用 **/
 // アップデート管理用ファイル格納場所
