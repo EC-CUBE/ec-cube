@@ -219,7 +219,7 @@ function ChangeSize(button, TextArea, Max, Min, row_tmp){
 													</tr>
 													<tr class="fs12n">
 														<td bgcolor="#ffffff" align="center">
-															<select multiple name="choice_list[]" size="30">
+															<select multiple name="choice_list[]" size="30" width=250px>
 															<!--{html_options options=$arrChoice}-->
 															</select>
 														</td>
