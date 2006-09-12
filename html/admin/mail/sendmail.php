@@ -14,6 +14,8 @@ if($_GET['mode'] == 'now') {
 	$time_data = $conn->getAll($sql);
 }
 
+sfprintr($conn);
+
 $count = count($time_data);
 
 if( $count > 0 ){
