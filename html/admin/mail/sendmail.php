@@ -15,6 +15,7 @@ if($_GET['mode'] == 'now') {
 }
 
 sfprintr($time_data);
+exit;
 
 $count = count($time_data);
 
