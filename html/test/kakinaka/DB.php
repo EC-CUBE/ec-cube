@@ -560,10 +560,9 @@ class DB
         $err = $obj->connect($dsninfo, $obj->getOption('persistent'));
         if (DB::isError($err)) {
             $err->addUserInfo($dsn);
+			print_r($err);
             return $err;
         }
-		
-		print_r($obj);
 
         return $obj;
     }
