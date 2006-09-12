@@ -60,13 +60,13 @@ case 'regist':
 		$arrData = sfGetOrderTemp($uniqid);
 		// カート集計を元に最終計算
 		$arrData = sfTotalConfirm($arrData, $objPage, $objCartSess, $arrInfo);
-		
+
 		// カードの認証を行う
 		$arrVal = $objFormParam->getHashArray();
 		$card_no = $arrVal['card_no01'].$arrVal['card_no02'].$arrVal['card_no03'].$arrVal['card_no04'];
 		$card_exp = $arrVal['card_month']. "/" . $arrVal['card_year']; // MM/DD
 		$result = sfGetAuthonlyResult(CGI_DIR, CGI_FILE, $arrVal['name01'], $arrVal['name02'], $card_no, $card_exp, $arrData['payment_total'], $uniqid, $arrVal['jpo_info']);
-		
+
 		// 応答内容の記録
 		$sqlval['credit_result'] = $result['action-code'];
 		$sqlval['credit_msg'] = $result['aux-msg'].$result['MErrMsg'];
