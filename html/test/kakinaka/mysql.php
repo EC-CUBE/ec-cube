@@ -10,8 +10,7 @@ print($dsn."<br>");
 if(($db = DB::connect($dsn)) == 0){
   print "おおっと！データベースに接続できません。";
 }
-print("end");
-$result = $db->query("select * from test");
+$result = $db->query("select * from dtb_baseinfo");
 while($row = $result->fetchRow()){
     print_r($row);
 }
