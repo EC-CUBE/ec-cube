@@ -153,7 +153,7 @@ function fnInsertMember() {
 	$sqlval['name'] = $_POST['name'];
 	$sqlval['department'] = $_POST['department'];
 	$sqlval['login_id'] = $_POST['login_id'];
-	$sqlval['password'] = crypt($_POST['password']);
+	$sqlval['password'] = sha1($_POST['password'] . ":" . AUTH_MAGIC);
 	$sqlval['authority'] = $_POST['authority'];
 	$sqlval['rank']=  $oquery->max("dtb_member", "rank") + 1;
 	$sqlval['work'] = "1"; // ²ÔÆ¯¤ËÀßÄê
@@ -173,7 +173,7 @@ function fnUpdateMember($id) {
 	$sqlval['department'] = $_POST['department'];
 	$sqlval['login_id'] = $_POST['login_id'];
 	if($_POST['password'] != DUMMY_PASS) {
-		$sqlval['password'] = crypt($_POST['password']);
+		$sqlval['password'] = sha1($_POST['password'] . ":" . AUTH_MAGIC);
 	}
 	$sqlval['authority'] = $_POST['authority'];
 	$sqlval['update_date'] = "now()";

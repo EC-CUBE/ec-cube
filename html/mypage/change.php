@@ -301,7 +301,7 @@ function lfRegistData($array, $arrRegistColumn) {
 	}
 
 	//-- パスワードの更新がある場合は暗号化。（更新がない場合はUPDATE文を構成しない）
-	if ($array["password"] != DEFAULT_PASSWORD) $arrRegist["password"] = crypt($array["password"]);
+	if ($array["password"] != DEFAULT_PASSWORD) $arrRegist["password"] = sha1($array["password"] . ":" . AUTH_MAGIC);
 	$arrRegist["update_date"] = "NOW()";
 	
 	//-- 編集登録実行

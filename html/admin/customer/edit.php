@@ -194,7 +194,7 @@ function lfRegisDatat($array, $arrRegistColumn) {
 
 	//-- パスワードの更新がある場合は暗号化。（更新がない場合はUPDATE文を構成しない）
 	if ($array["password"] != DEFAULT_PASSWORD) {
-		$arrRegist["password"] = crypt($array["password"]);
+		$arrRegist["password"] = sha1($array["password"] . ":" . AUTH_MAGIC);
 	} else {
 		unset($arrRegist['password']);
 	}

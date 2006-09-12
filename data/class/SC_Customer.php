@@ -50,7 +50,7 @@ class SC_Customer {
 		$data = $result[0];
 		
 		// パスワードが合っていれば顧客情報をcustomer_dataにセットしてtrueを返す
-		if ( crypt($pass,$data['password'] ) == $data['password'] ){
+		if ( sha1($pass . ":" . AUTH_MAGIC) == $data['password'] ){
 			$this->customer_data = $data;
 			$this->startSession();
 			return true;

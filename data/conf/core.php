@@ -34,5 +34,8 @@ define ("DEFAULT_DSN", "pgsql://" . DB_USER . ":" . DB_PASSWORD . "@" . DB_SERVE
 // 郵便番号専用DB
 define ("ZIP_DSN", DEFAULT_DSN);
 
-define ("USER_URL", SITE_URL."user_data/");					// ユーザー作成ページ等	
+define ("USER_URL", SITE_URL."user_data/"); // ユーザー作成ページ等 
+
+// 認証用 magic
+define ("AUTH_MAGIC", "31eafcbd7a81d7b401a7fdc12bba047c02d1fae6");
 ?>

@@ -67,7 +67,7 @@ if ( $_POST['mode'] == 'mail_check' ){
 			
 			// DBを書き換える
 			$sql = "UPDATE dtb_customer SET password = ?, update_date = now() WHERE customer_id = ?";
-			$conn->query( $sql, array( crypt($objPage->temp_password) ,$data['customer_id']) );
+			$conn->query( $sql, array( sha1($objPage->temp_password . ":" . AUTH_MAGIC) ,$data['customer_id']) );
 			
 			// 完了画面の表示
 			$objPage->tpl_mainpage = 'forgot/complete.tpl';

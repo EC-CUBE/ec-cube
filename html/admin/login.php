@@ -31,7 +31,7 @@ function fnCheckPassword($conn) {
 	// パスワードの取得
 	$password = $data_list[0]['password'];
 	// ユーザ入力パスワードの判定
-	$ret = crypt($_POST['password'], $password);
+	$ret = sha1($_POST['password'] . ":" . AUTH_MAGIC);
 	
 	if ($ret == $password) {
    		// セッション登録

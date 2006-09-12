@@ -175,7 +175,7 @@ function lfRegistData ($array, $arrRegistColumn, $arrRejectRegistColumn) {
 	}
 	
 	// パスワードの暗号化
-	$arrRegist["password"] = crypt($arrRegist["password"]);
+	$arrRegist["password"] = sha1($arrRegist["password"] . ":" . AUTH_MAGIC);
 	
 	$count = 1;
 	while ($count != 0) {
