@@ -105,13 +105,13 @@ define ("INPUT_DELIV_FEE", true);						// 配送料の設定画面(true:あり、false:なし
 
 /* クレジットローン(セントラルファイナンス) */
 define ("CF_HOMEADDR", "https://cf.ufit.ne.jp/dotcredit");					// ホームアドレス
-define ("CF_STORECODE", "361901000000000");									// 加盟店コード(ハイフンなしで）
+define ("CF_STORECODE", "");												// 加盟店コード(ハイフンなしで）
 // define ("CF_HOMEADDR", "https://cf.ufit.ne.jp/dotcredittest");				// ホームアドレス(テスト用)
 // define ("CF_STORECODE", "111111111111111");									// 加盟店コード(テスト用)
 
 define ("CF_SIMULATE", "/simulate/simulate.cgi");							// シュミレーション呼び出し
-// define ("CF_RETURNURL", SSL_URL . "shopping/loan.php");						// 戻り先 ショッピングローンは次期開発
-// define ("CF_CANCELURL", SSL_URL . "shopping/loan_cancel.php");				// 戻り先 ショッピングローンは次期開発
+// define ("CF_RETURNURL", SSL_URL . "shopping/loan.php");					// 戻り先 ショッピングローンは次期開発
+// define ("CF_CANCELURL", SSL_URL . "shopping/loan_cancel.php");			// 戻り先 ショッピングローンは次期開発
 define ("CF_CONTINUE", "1");												// 呼び出し区分(0:シュミレーションのみ、1:シュミレーション+申込)
 define ("CF_LABOR", "0");													// 役務有無区分(0:無、1:有)
 define ("CF_RESULT", "1");													// 結果応答(1:結果あり、2:結果なし)
@@ -247,7 +247,7 @@ define("SEARCH_CATEGORY_LEN", 18);	// 検索カテゴリ最大表示文字数(byte)
 define ("SALE_LIMIT_MAX", 10);		// 購入制限なしの場合の最大購入個数
 define ("SITE_TITLE", "ＥＣ-ＣＵＢＥ  テストサイト");	// HTMLタイトル
 define ("COOKIE_EXPIRE", 365);		// クッキー保持期限(日)
-define ("FREE_DIAL", "0120-339337");
+define ("FREE_DIAL", "");
 
 /* 一般サイトエラー */
 define ("PRODUCT_NOT_FOUND", 1);	// 指定商品ページがない
