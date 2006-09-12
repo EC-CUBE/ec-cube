@@ -1,5 +1,5 @@
 <?php
-include("DB.php"); // PEAR の DB クラスを読み込む
+include("./DB.php"); // PEAR の DB クラスを読み込む
 
 print("start");
 
