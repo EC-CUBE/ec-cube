@@ -213,7 +213,7 @@ function fnTargetSelf(){
 													</tr>
 													<tr class="fs12n">
 														<td bgcolor="#ffffff" align="center">
-															<select name="arrColList[]" size="20" onDblClick="sql.value = sql.value +' , ' + this.value;">
+															<select name="arrColList[]" size="20" style="width:325px; height:300px;" onDblClick="sql.value = sql.value +' , ' + this.value;">
 															<!--{html_options options=$arrColList}-->
 															</select>
 														</td>
