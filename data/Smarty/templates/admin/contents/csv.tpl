@@ -201,7 +201,7 @@ function ChangeSize(button, TextArea, Max, Min, row_tmp){
 													<tr class="fs12n">
 														<td bgcolor="#ffffff" align="center">
 															<span class="red12"><!--{$arrErr.output_list}--></span>
-															<select multiple name="output_list[]" size="30" style="<!--{$arrErr.output_list|sfGetErrorColor}-->; width:500px;">
+															<select multiple name="output_list[]" size="30" style="<!--{$arrErr.output_list|sfGetErrorColor}-->; width:250px;">
 															<!--{html_options options=$arrOutput}-->
 															</select>
 														</td>
