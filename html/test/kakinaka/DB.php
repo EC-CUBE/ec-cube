@@ -563,7 +563,7 @@ class DB
             return $err;
         }
 		
-				print("test");
+//				print("test");
 
 
         return $obj;
