@@ -86,7 +86,6 @@ for( $i = 0; $i < count( $time_data ); $i++ ) {
 											,$objSite->data["email04"]					//　errors_to
 																	 );
 		}
-
 	
 		//-- 送信完了なら1、失敗なら0をメール送信結果フラグとしてDBに挿入
 		if( ! $sendResut ){
@@ -123,8 +122,7 @@ for( $i = 0; $i < count( $time_data ); $i++ ) {
 				 );
 	
 	if ($_GET['mode'] = "now") {
-		//header("Location: /admin/mail/history.php");
-		sfprintr($objSite);
+		header("Location: /admin/mail/history.php");
 	}
 	echo "complete\n";
 
