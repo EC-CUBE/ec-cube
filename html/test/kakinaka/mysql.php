@@ -1,5 +1,5 @@
 <?php
-require_once 'DB.php'; // PEAR の DB クラスを読み込む
+require_once './DB.php'; // PEAR の DB クラスを読み込む
 
 print("start<br>");
 

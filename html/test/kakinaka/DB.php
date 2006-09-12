@@ -523,6 +523,8 @@ class DB
     {
         $dsninfo = DB::parseDSN($dsn);
         $type = $dsninfo['phptype'];
+		
+		print("test");
 
         if (!is_array($options)) {
             /*
