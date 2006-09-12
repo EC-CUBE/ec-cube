@@ -3,7 +3,7 @@ require_once 'DB.php'; // PEAR の DB クラスを読み込む
 
 print("start");
 
-$dsn = "mysql://eccube_db_user:password@210.188.212.163/eccube_db";
+$dsn = "mysql://eccube_db_user:password@kakinaka.ec-cube.net/eccube_db";
 if(($db = DB::connect($dsn)) == 0){
   print "おおっと！データベースに接続できません。";
 }
