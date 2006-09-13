@@ -84,7 +84,7 @@ function lfGetOrderMonth($conn, $method){
 	
 	if ( $method == 'SUM' or $method == 'COUNT'){
 		$sql = "SELECT ".$method."(total) FROM dtb_order
-				 WHERE del_flg = 0 AND to_char(create_date,'YYYY/MM') = ? 
+				 WHERE del_flg = 0 AND cast(substring(create_date,1,6) as date) = ? 
 				 AND cast(substring(create_date,1, 10) as date) <> cast(substring(now(),1, 10) as date)";
 		$return = $conn->getOne($sql, array($month));
 	}
@@ -135,7 +135,7 @@ function lfGetNewOrder() {
 	$col = "ord.order_id, customer_id, (ord.order_name01 || ' ' || ord.order_name02) AS name, ord.total, ";
 	$col.= "(SELECT det.product_name FROM dtb_order_detail AS det WHERE ord.order_id = det.order_id LIMIT 1) AS product_name, ";
 	$col.= "(SELECT pay.payment_method FROM dtb_payment AS pay WHERE ord.payment_id = pay.payment_id) AS payment_method, ";	
-	$col.= "current_timestamp ";
+	$col.= "to_char(create_date, 'YYYY/MM/DD HH24:MI') AS create_date";
 	$from = "dtb_order AS ord";
 	$where = "del_flg = 0";
 	$objQuery->setoption("ORDER BY create_date DESC LIMIT 10 OFFSET 0");
