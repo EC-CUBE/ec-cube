@@ -78,8 +78,6 @@ class SC_DbConn{
 
 	// SELECT文の実行結果を全て取得
 	function getAll($n, $arr = ""){
-				die("test2");
-
 		if(PEAR::isError($this->conn)) {
 			sfErrorHeader("DBへの接続に失敗しました。:" . $this->dsn);
 			return 0;
