@@ -27,10 +27,9 @@ define ("DB_ERROR_MAIL_TO", "error-ml@lockon.co.jp");
 // DBエラーメール件名
 define ("DB_ERROR_MAIL_SUBJECT", "OS_TEST_ERROR");
 
-define("DB_TYPE", "mysql");
 
 // サイト用DB
-//define ("DEFAULT_DSN", "pgsql://" . DB_USER . ":" . DB_PASSWORD . "@" . DB_SERVER . "/" . DB_NAME);
+define("DB_TYPE", "pgsql");
 define ("DEFAULT_DSN", DB_TYPE . "://" . DB_USER . ":" . DB_PASSWORD . "@" . DB_SERVER . "/" . DB_NAME);
 
 // 郵便番号専用DB
