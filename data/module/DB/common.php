@@ -952,6 +952,7 @@ class DB_common extends PEAR
     function &execute($stmt, $data = array())
     {
 		sfprintr("test");
+		exit();
         $realquery = $this->executeEmulateQuery($stmt, $data);
         if (DB::isError($realquery)) {
             return $realquery;
