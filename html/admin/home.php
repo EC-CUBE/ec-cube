@@ -103,11 +103,11 @@ function lfGetTotalCustomerPoint() {
 function lfGetReviewYesterday($conn){
 	// postgresql と mysql とでSQLをわける
 	if (DB_TYPE == "pgsql") {
-		$sql = "SELECT COUNT (*) FROM dtb_review 
+		$sql = "SELECT COUNT(*) FROM dtb_review 
 				 WHERE del_flg=0 AND to_char(create_date, 'YYYY/MM/DD') = to_char(now() - interval '1 days','YYYY/MM/DD')
 				 AND to_char(create_date,'YYYY/MM/DD') != to_char(now(),'YYYY/MM/DD')";
 	}else if (DB_TYPE == "mysql") {
-		$sql = "SELECT COUNT (*) FROM dtb_review 
+		$sql = "SELECT COUNT(*) FROM dtb_review 
 				 WHERE del_flg = 0 AND cast(substring(create_date,1, 10) as date) = DATE_ADD(current_date, interval -1 day)
 				 AND cast(substring(create_date,1, 10) as date) != cast(substring(now(),1, 10) as date)";
 	}
@@ -116,7 +116,7 @@ function lfGetReviewYesterday($conn){
 }
 
 function lfGetReviewNonDisp($conn){
-	$sql = "SELECT COUNT (*) FROM dtb_review WHERE del_flg=0 AND status=2";
+	$sql = "SELECT COUNT(*) FROM dtb_review WHERE del_flg=0 AND status=2";
 	$return = $conn->getOne($sql);
 	return $return;
 }
