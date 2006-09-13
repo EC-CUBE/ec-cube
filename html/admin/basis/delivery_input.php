@@ -63,7 +63,7 @@ function lfInitParam() {
 	$objFormParam->addParam("伝票No.確認URL", "confirm_url", STEXT_LEN, "n", array("URL_CHECK", "MAX_LENGTH_CHECK"), "http://");
 	
 	for($cnt = 1; $cnt <= DELIVTIME_MAX; $cnt++) {
-		$objFormParam->addParam("配送時間$cnt", "time$cnt", STEXT_LEN, "KVa", array("MAX_LENGTH_CHECK"));
+		$objFormParam->addParam("配送時間$cnt", "deliv_time$cnt", STEXT_LEN, "KVa", array("MAX_LENGTH_CHECK"));
 	}
 	
 	if(INPUT_DELIV_FEE) {
@@ -105,7 +105,7 @@ function lfRegistData() {
 	$sqlval = array();
 	// 配送時間の設定
 	for($cnt = 1; $cnt <= DELIVTIME_MAX; $cnt++) {
-		$keyname = "time$cnt";
+		$keyname = "deliv_time$cnt";
 		if($arrRet[$keyname] != "") {
 			$sqlval['deliv_id'] = $deliv_id;
 			$sqlval['deliv_time'] = $arrRet[$keyname];
