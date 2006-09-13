@@ -94,8 +94,10 @@ if ( $_GET['mode'] == 'regist' ){
 		
 		if ( ! is_numeric($_POST['question_id']) ){
 			//епо©
-			$sql = "select nextval('dtb_question_question_id_seq');";
-			$question_id = $conn->getOne($sql);
+//			$sql = "select nextval('dtb_question_question_id_seq');";
+//			$question_id = $conn->getOne($sql);
+			$objQuery = new SC_Query();
+			$deliv_id = $objQuery->nextval('dtb_question', 'question_id');
 			
 			$value = serialize($_POST);
 			$sql_val = array( $value, $_POST['title'] ,$question_id );
