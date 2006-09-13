@@ -108,7 +108,7 @@ function lfRegistData() {
 		$keyname = "time$cnt";
 		if($arrRet[$keyname] != "") {
 			$sqlval['deliv_id'] = $deliv_id;
-			$sqlval['time'] = $arrRet[$keyname];
+			$sqlval['deliv_time'] = $arrRet[$keyname];
 			// INSERTの実行
 			$objQuery->insert("dtb_delivtime", $sqlval);
 		}
@@ -143,7 +143,7 @@ function lfGetDelivData($deliv_id) {
 	$arrRet = $objQuery->select($col, $table, $where, array($deliv_id));
 	$objFormParam->setParam($arrRet[0]);
 	// 配送時間の取得
-	$col = "time";
+	$col = "deliv_time";
 	$where = "deliv_id = ?";
 	$table = "dtb_delivtime";
 	$arrRet = $objQuery->select($col, $table, $where, array($deliv_id));
