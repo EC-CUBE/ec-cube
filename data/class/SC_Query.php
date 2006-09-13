@@ -343,8 +343,16 @@ class SC_Query {
 	}
 	
 	function nextval($table, $colname) {
-		$seqtable = $table . "_" . $colname . "_seq";
-		$ret = $this->conn->getOne("SELECT NEXTVAL('$seqtable')");
+		$sql = "";
+		// postgresqlとmysqlとで処理を分ける
+		if (DB_TYPE == "pgsql") {
+			$seqtable = $table . "_" . $colname . "_seq";
+			$sql = "SELECT NEXTVAL('$seqtable')";
+		}else if (DB_TYPE == "mysql") {
+			$sql = "SELECT last_insert_id();";
+		}
+		
+		$ret = $this->conn->getOne($sql);
 		return $ret;
 	}
 	
