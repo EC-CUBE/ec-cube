@@ -80,7 +80,7 @@ class SC_Query {
 	}
 	
 	function getall($sql, $arrval = array()) {
-		exit();
+		die("test");
 		$ret = $this->conn->getAll($sql, $arrval);
 		return $ret;
 	}
