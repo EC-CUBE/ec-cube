@@ -144,7 +144,7 @@ function lfGetDelivData($deliv_id) {
 	$objFormParam->setParam($arrRet[0]);
 	// 配送時間の取得
 	$col = "deliv_time";
-	$where = "deliv_id = ?  ORDER BY deliv_id";
+	$where = "deliv_id = ?  ORDER BY time_id";
 	$table = "dtb_delivtime";
 	$arrRet = $objQuery->select($col, $table, $where, array($deliv_id));
 	$objQuery->getlastquery();
