@@ -1,6 +1,6 @@
 <?php
 $current_dir = realpath(dirname(__FILE__));
-require_once($current_dir . "/../module/DB.php");
+//require_once($current_dir . "/../module/DB.php");
 
 $objDbConn = "";
 
@@ -82,8 +82,6 @@ class SC_DbConn{
 			sfErrorHeader("DBへの接続に失敗しました。:" . $this->dsn);
 			return 0;
 		}
-		
-		sfprintr($n);
 		
 		if ( $arr ){
 			$result = $this->conn->getAll($n, $arr, DB_FETCHMODE_ASSOC);
