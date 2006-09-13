@@ -50,6 +50,8 @@ class SC_DbConn{
 	// 一件のみ取得
 	function getOne($n, $arr = ""){
 		
+		sfprintr($n);
+		
 		if ( $arr ) {
 			$result = $this->conn->getOne($n, $arr);
 		} else {
