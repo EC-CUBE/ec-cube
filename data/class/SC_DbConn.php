@@ -1,7 +1,7 @@
 <?php
 $current_dir = realpath(dirname(__FILE__));
 require_once($current_dir . "/../module/DB.php");
-//require_once($current_dir . "/../module/DB/common.php");
+require_once($current_dir . "/../module/DB/common.php");
 
 $objDbConn = "";
 
