@@ -1579,8 +1579,6 @@ class DB_common extends PEAR
     function &getAll($query, $params = array(),
                      $fetchmode = DB_FETCHMODE_DEFAULT)
     {
-				die("test");
-
         // compat check, the params and fetchmode parameters used to
         // have the opposite order
         if (!is_array($params)) {

@@ -81,7 +81,9 @@ class SC_DbConn{
 		if(PEAR::isError($this->conn)) {
 			sfErrorHeader("DBへの接続に失敗しました。:" . $this->dsn);
 			return 0;
-		}		
+		}
+		
+		sfprintr($n);
 		
 		if ( $arr ){
 			$result = $this->conn->getAll($n, $arr, DB_FETCHMODE_ASSOC);
