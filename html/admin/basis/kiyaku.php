@@ -78,7 +78,7 @@ default:
 }
 
 // µ¬³Ê¤ÎÆÉ¹þ
-$where = "delete <> 1";
+$where = "del_flg <> 1";
 $objQuery->setorder("rank DESC");
 $objPage->arrKiyaku = $objQuery->select("kiyaku_title, kiyaku_text, kiyaku_id", "dtb_kiyaku", $where);
 
