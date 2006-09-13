@@ -53,6 +53,7 @@ default:
 }
 
 $objPage->arrForm = $objFormParam->getFormParamList();
+sfprintr($objPage->arrForm);
 $objView->assignobj($objPage);
 $objView->display(MAIN_FRAME);
 //--------------------------------------------------------------------------------------------------------------------------------------

@@ -59,7 +59,7 @@
 									<!--{assign var=type value="`$smarty.section.cnt.index%2`"}-->
 									<!--{assign var=keyno value="`$smarty.section.cnt.iteration`"}-->
 									<!--{assign var=key value="deliv_time`$smarty.section.cnt.iteration`"}-->
-									<!--{assign var=key_next value="time`$smarty.section.cnt.iteration+1`"}-->
+									<!--{assign var=key_next value="deliv_time`$smarty.section.cnt.iteration+1`"}-->
 									<!--{if $type == 0}-->
 										<!--{if $arrErr[$key] != "" || $arrErr[$key_next] != ""}-->
 										<tr class="fs12n">
