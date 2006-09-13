@@ -16,21 +16,32 @@ sfLoadUpdateModule();
 /* テーブルの存在チェックチェック */
 function sfTabaleExists($table_name) {
 	$objQuery = new SC_Query();	
-	$sql = "SELECT
-				relname
-			FROM
-			    pg_class
-			WHERE
-				(relkind = 'r' OR relkind = 'v') AND 
-			    relname = ? 
-			GROUP BY
-				relname";
-	$arrRet = $objQuery->getAll($sql, array($table_name));
-	if(count($arrRet) > 0) {
-		$flg = true;
-	} else {
-		$flg = false;
-	}	
+	// postgresqlとmysqlとで処理を分ける
+	if (DB_TYPE == "pgsql") {
+		$sql = "SELECT
+					relname
+				FROM
+				    pg_class
+				WHERE
+					(relkind = 'r' OR relkind = 'v') AND 
+				    relname = ? 
+				GROUP BY
+					relname";
+		$arrRet = $objQuery->getAll($sql, array($table_name));
+		if(count($arrRet) > 0) {
+			$flg = true;
+		} else {
+			$flg = false;
+		}	
+	}else if (DB_TYPE == "mysql") {	
+		$sql = "SHOW TABLE STATUS LIKE ?";
+		$arrRet = $objQuery->getAll($sql, array($table_name));
+		if(count($arrRet) > 0) {
+			$flg = true;
+		} else {
+			$flg = false;
+		}	
+	}
 	return $flg;
 }
 
