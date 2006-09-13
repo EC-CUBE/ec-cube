@@ -53,7 +53,6 @@ default:
 }
 
 $objPage->arrForm = $objFormParam->getFormParamList();
-sfprintr($objPage->arrForm);
 $objView->assignobj($objPage);
 $objView->display(MAIN_FRAME);
 //--------------------------------------------------------------------------------------------------------------------------------------
@@ -139,7 +138,7 @@ function lfGetDelivData($deliv_id) {
 	$objQuery = new SC_Query();
 	// 配送業者一覧の取得
 	$col = "deliv_id, name, service_name, confirm_url";
-	$where = "deliv_id = ?";
+	$where = "deliv_id = ? ORDER BY deliv_id";
 	$table = "dtb_deliv";
 	$arrRet = $objQuery->select($col, $table, $where, array($deliv_id));
 	$objFormParam->setParam($arrRet[0]);
