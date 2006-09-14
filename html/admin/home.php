@@ -84,7 +84,7 @@ function lfGetOrderMonth($conn, $method){
 	
 	if ( $method == 'SUM' or $method == 'COUNT'){
 		$sql = "SELECT ".$method."(total) FROM dtb_order
-				 WHERE del_flg = 0 AND cast(substring(create_date,1,6) as date) = ? 
+				 WHERE del_flg = 0 AND cast(substring(create_date,1,7) as date) = ? 
 				 AND cast(substring(create_date,1, 10) as date) <> cast(substring(now(),1, 10) as date)";
 		$return = $conn->getOne($sql, array($month));
 	}
