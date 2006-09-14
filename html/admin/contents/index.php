@@ -93,7 +93,7 @@ if ($_POST["mode"] == "search" && is_numeric($_POST["news_id"])) {
 	foreach($result[0] as $key => $val ){
 		$objPage->$key = $val;
 	}
-	sfprintr(split($result[0]["news_date_unix"], "/"));
+	sfprintr(split("/",$result[0]["news_date_unix"]));
 /*	
 	$objPage->selected_year = date("Y", $result[0]["news_date_unix"]);		
 	$objPage->selected_month = date("m", $result[0]["news_date_unix"]);
