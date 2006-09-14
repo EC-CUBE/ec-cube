@@ -143,7 +143,7 @@ if ($_POST['mode'] == 'moveRankSet') {
 
 //---- 全データ取得
 //$sql = "SELECT *, EXTRACT(EPOCH FROM news_date) as news_date_unix FROM dtb_news WHERE del_flg = '0' ORDER BY rank DESC";
-$sql = "SELECT * FROM dtb_news WHERE del_flg = '0' ORDER BY rank DESC";
+$sql = "SELECT *, cast(substring(news_date,1, 10) as date) as cast_news_date  FROM dtb_news WHERE del_flg = '0' ORDER BY rank DESC";
 $objPage->list_data = $conn->getAll($sql);
 $objPage->line_max = count($objPage->list_data);
 $sql = "SELECT MAX(rank) FROM dtb_news WHERE del_flg = '0'";		// rankの最大値を取得
