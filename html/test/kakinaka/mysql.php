@@ -16,7 +16,7 @@ while($row = $result->fetchRow()){
 }
 */
 
-$sql = "SELECT * FROM dtb_baseinfo WHERE";
+$sql = "SELECT * FROMdtb_baseinfoWHERE";
 $sql = getMailAddress($sql);
 print_r($sql);
 
