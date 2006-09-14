@@ -87,14 +87,18 @@ if ( $_POST['mode'] == 'regist'){
 
 //----　編集データ取得
 if ($_POST["mode"] == "search" && is_numeric($_POST["news_id"])) {
-	$sql = "SELECT *, EXTRACT(EPOCH FROM news_date) AS news_date_unix FROM dtb_news WHERE news_id = ? ";
+	//$sql = "SELECT *, EXTRACT(EPOCH FROM news_date) AS news_date_unix FROM dtb_news WHERE news_id = ? ";
+	$sql = "SELECT * FROM dtb_news WHERE news_id = ? ";
 	$result = $conn->getAll($sql, array($_POST["news_id"]));
 	foreach($result[0] as $key => $val ){
 		$objPage->$key = $val;
 	}
+	sfprintr(split($result[0]["news_date_unix"], "/"));
+/*	
 	$objPage->selected_year = date("Y", $result[0]["news_date_unix"]);		
 	$objPage->selected_month = date("m", $result[0]["news_date_unix"]);
 	$objPage->selected_day = date("d", $result[0]["news_date_unix"]);
+*/
 	$objPage->edit_mode = "on";
 }
 
