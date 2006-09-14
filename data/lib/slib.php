@@ -2342,7 +2342,7 @@ function GetFirstCat($category_id){
 function sfChangeView($sql){
 	global $arrView;
 	
-	sfprintr($arrView);
+	sfprintr(strtr($sql,$arrView));
 	
 }
 
