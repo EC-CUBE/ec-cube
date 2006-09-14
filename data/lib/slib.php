@@ -2342,11 +2342,10 @@ function GetFirstCat($category_id){
 // view表をインラインビューに変換する
 function sfChangeView($sql){
 	global $arrView;
-	
+
 	$changesql = strtr($sql,$arrView);
-	
+
 	return $changesql;
-	
 }
 
 /* デバッグ用 ------------------------------------------------------------------------------------------------*/

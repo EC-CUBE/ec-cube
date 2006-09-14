@@ -68,7 +68,12 @@ class SC_DbConn{
 	}
 	
 	function getRow($n, $arr = ""){
-		
+
+		// mysqlの場合にはビュー表を変換する
+		if (DB_TYPE == "mysql") {
+			$n = sfChangeView($n);
+		}
+
 		if ( $arr ) {
 			$result = $this->conn->getRow($n, $arr);
 		} else {
@@ -83,11 +88,17 @@ class SC_DbConn{
 
 	// SELECT文の実行結果を全て取得
 	function getAll($n, $arr = ""){
+
+		// mysqlの場合にはビュー表を変換する
+		if (DB_TYPE == "mysql") {
+			$n = sfChangeView($n);
+		}
+		
 		if(PEAR::isError($this->conn)) {
 			sfErrorHeader("DBへの接続に失敗しました。:" . $this->dsn);
 			return 0;
 		}
-		
+
 		if ( $arr ){
 			$result = $this->conn->getAll($n, $arr, DB_FETCHMODE_ASSOC);
 		} else {

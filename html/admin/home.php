@@ -17,8 +17,6 @@ $objSess = new SC_Session();
 // 認証可否の判定
 sfIsSuccess($objSess);
 
-sfprintr(sfChangeView("SELECT * FROM vw_products_nonclass"));
-
 // 現在の会員数
 $objPage->customer_cnt = lfGetCustomerCnt($conn);
 
