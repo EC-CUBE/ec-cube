@@ -93,6 +93,8 @@ if ($_POST["mode"] == "search" && is_numeric($_POST["news_id"])) {
 		$objPage->$key = $val;
 	}
 	$arrData = split("-",$result[0]["cast_news_date"]);
+	
+	sfprintr($arrData);
 
 	$objPage->selected_year = date("Y", $arrData[0]);		
 	$objPage->selected_month = date("m", $arrData[1]);
