@@ -53,6 +53,7 @@ class SC_DbConn{
 		// mysqlの場合にはビュー表を変換する
 		if (DB_TYPE == "mysql") {
 			$n = sfChangeView($n);
+			$n = sfChangeILIKE($n);
 		}
 		
 		if ( $arr ) {
@@ -72,6 +73,7 @@ class SC_DbConn{
 		// mysqlの場合にはビュー表を変換する
 		if (DB_TYPE == "mysql") {
 			$n = sfChangeView($n);
+			$n = sfChangeILIKE($n);
 		}
 
 		if ( $arr ) {
@@ -92,6 +94,7 @@ class SC_DbConn{
 		// mysqlの場合にはビュー表を変換する
 		if (DB_TYPE == "mysql") {
 			$n = sfChangeView($n);
+			$n = sfChangeILIKE($n);
 		}
 		
 		if(PEAR::isError($this->conn)) {

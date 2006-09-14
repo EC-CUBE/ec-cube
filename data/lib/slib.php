@@ -2348,6 +2348,13 @@ function sfChangeView($sql){
 	return $changesql;
 }
 
+// ILIKE検索をLIKE検索に変換する
+function sfChangeILIKE($sql){
+	$arrChange = array("ILIKE" => "LIKE");
+	$changesql = strtr($sql,$arrChange);
+	return $changesql;
+}
+
 /* デバッグ用 ------------------------------------------------------------------------------------------------*/
 function sfPrintR($obj) {
 	print("<div style='font-size: 12px'>\n");
