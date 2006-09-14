@@ -25,7 +25,7 @@ print("end");
 // 文字列の中に存在するメールアドレスのみを取得し、配列として返す
 function getMailAddress($str){
 	$arrMail = array();
-	preg_match_all("/FROM+([a-zA-Z0-9_\.\+\?-]+WHERE+)/", $str, $arrMail);
+	preg_match_all("/FROM+([a-zA-Z0-9_\.\+\?-]+WHERE)/", $str, $arrMail);
 	return $arrMail[0];
 }
 
