@@ -83,9 +83,16 @@ function lfGetOrderMonth($conn, $method){
 	$month = date("Y/m", mktime());
 	
 	if ( $method == 'SUM' or $method == 'COUNT'){
+	// postgresql と mysql とでSQLをわける
+	if (DB_TYPE == "pgsql") {
+		$sql = "SELECT ".$method."(total) FROM dtb_order
+				 WHERE del_flg = 0 AND to_char(create_date,'YYYY/MM') = ? 
+				 AND to_char(create_date,'YYYY/MM/DD') <> to_char(now(),'YYYY/MM/DD')";
+	}else if (DB_TYPE == "mysql") {
 		$sql = "SELECT ".$method."(total) FROM dtb_order
 				 WHERE del_flg = 0 AND cast(substring(create_date,1,7) as date) = ? 
 				 AND cast(substring(create_date,1, 10) as date) <> cast(substring(now(),1, 10) as date)";
+	}
 		$return = $conn->getOne($sql, array($month));
 	}
 	return $return;
