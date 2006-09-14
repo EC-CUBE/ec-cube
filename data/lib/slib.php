@@ -2350,7 +2350,7 @@ function sfChangeView($sql){
 
 // ILIKE検索をLIKE検索に変換する
 function sfChangeILIKE($sql){
-	$arrChange = array("ILIKE" => "LIKE");
+	$arrChange = array("ILIKE" => "LIKE BINARY ");
 	$changesql = strtr($sql,$arrChange);
 	return $changesql;
 }
