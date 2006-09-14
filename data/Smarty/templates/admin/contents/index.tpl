@@ -241,7 +241,7 @@ function moving(news_id,rank, max_rank) {
 										<!--{assign var=db_rank value="`$list_data[data].rank`"}-->
 										<!--{assign var=rank value="`$line_max-$db_rank+1`"}-->
 										<td width="" align="center"><!--{$rank}--></td>
-										<td width="" align="center"><!--{$list_data[data].news_date_unix|date_format:"%Y/%m/%d"}--></td>
+										<td width="" align="center"><!--{$list_data[data].cast_news_date|escape}--></td>
 										<td width="">
 											<!--{if $list_data[data].link_method eq 1 && $list_data[data].news_url != ""}--><a href="<!--{$list_data[data].news_url}-->" ><!--{$list_data[data].news_title|escape|nl2br}--></a>
 											<!--{elseif $list_data[data].link_method eq 1 && $list_data[data].news_url == ""}--><!--{$list_data[data].news_title|escape|nl2br}-->

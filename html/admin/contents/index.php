@@ -96,9 +96,9 @@ if ($_POST["mode"] == "search" && is_numeric($_POST["news_id"])) {
 	
 	sfprintr($arrData);
 
-	$objPage->selected_year = date("Y", $arrData[0]);		
-	$objPage->selected_month = date("m", $arrData[1]);
-	$objPage->selected_day = date("d", $arrData[2]);
+	$objPage->selected_year = $arrData[0];
+	$objPage->selected_month =$arrData[1];
+	$objPage->selected_day =  $arrData[2];
 
 	$objPage->edit_mode = "on";
 }
