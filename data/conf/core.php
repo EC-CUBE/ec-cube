@@ -34,7 +34,7 @@ define("DB_SERVER", "210.188.212.163");
 $port = "3307";
 
 //define ("DEFAULT_DSN", DB_TYPE . "://" . DB_USER . ":" . DB_PASSWORD . "@" . DB_SERVER . ":" . $port . "/" . DB_NAME);
-define ("DEFAULT_DSN", DB_TYPE . "://" . DB_USER . ":" . DB_PASSWORD . "@" . DB_SERVER . ":3306" . "/" . DB_NAME);
+define ("DEFAULT_DSN", DB_TYPE . "://" . DB_USER . ":" . DB_PASSWORD . "@" . DB_SERVER . ":3307" . "/" . DB_NAME);
 
 // Õπ ÿ»÷πÊ¿ÏÕ—DB
 define ("ZIP_DSN", DEFAULT_DSN);
