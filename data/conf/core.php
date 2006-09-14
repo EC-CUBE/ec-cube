@@ -30,11 +30,10 @@ define ("DB_ERROR_MAIL_SUBJECT", "OS_TEST_ERROR");
 
 // サイト用DB
 define("DB_TYPE", "mysql");
+define("PORT", "3307");
 define("DB_SERVER", "210.188.212.163");
-$port = "3307";
 
-//define ("DEFAULT_DSN", DB_TYPE . "://" . DB_USER . ":" . DB_PASSWORD . "@" . DB_SERVER . ":" . $port . "/" . DB_NAME);
-define ("DEFAULT_DSN", DB_TYPE . "://" . DB_USER . ":" . DB_PASSWORD . "@" . DB_SERVER . ":3307" . "/" . DB_NAME);
+define ("DEFAULT_DSN", DB_TYPE . "://" . DB_USER . ":" . DB_PASSWORD . "@" . DB_SERVER . ":" . PORT . "/" . DB_NAME);
 
 // 郵便番号専用DB
 define ("ZIP_DSN", DEFAULT_DSN);
