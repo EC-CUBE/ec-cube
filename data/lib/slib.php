@@ -2339,10 +2339,13 @@ function GetFirstCat($category_id){
 	return $arrRet;
 }
 
+// view表をインラインビューに変換する
 function sfChangeView($sql){
 	global $arrView;
 	
-	sfprintr(strtr($sql,$arrView));
+	$changesql = strtr($sql,$arrView);
+	
+	return $changesql;
 	
 }
 
