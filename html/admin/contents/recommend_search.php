@@ -28,7 +28,7 @@ if ($_POST['mode'] == "search") {
 	lfConvertParam();
 	
 	
-	$where = "delete = 0";
+	$where = "del_flg = 0";
 	
 	/* 入力エラーなし */
 	foreach ($objPage->arrForm as $key => $val) {

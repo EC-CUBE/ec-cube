@@ -106,7 +106,6 @@ if ( $_POST['mode'] == 'delete' && is_numeric($_POST["news_id"])) {
 	
 	// rankを取得
 	$pre_rank = $conn->getone(" SELECT rank FROM dtb_news WHERE del_flg = 0 AND news_id = ? ", array( $_POST['news_id']  ));
-	
 
 	//-- 削除する新着情報以降のrankを1つ繰り上げておく
 	$conn->query("BEGIN");
