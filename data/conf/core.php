@@ -29,7 +29,7 @@ define ("DB_ERROR_MAIL_SUBJECT", "OS_TEST_ERROR");
 
 
 // サイト用DB
-define("DB_TYPE", "mysql");
+define("DB_TYPE", "pgsql");
 //define("DB_SERVER", "test.ec-cube.net");
 define ("DEFAULT_DSN", DB_TYPE . "://" . DB_USER . ":" . DB_PASSWORD . "@" . DB_SERVER . "/" . DB_NAME);
 
