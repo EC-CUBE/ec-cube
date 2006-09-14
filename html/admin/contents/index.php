@@ -103,11 +103,15 @@ if ($_POST["mode"] == "search" && is_numeric($_POST["news_id"])) {
 
 //----　データ削除
 if ( $_POST['mode'] == 'delete' && is_numeric($_POST["news_id"])) {
+	
+	// rankを取得
+	$pre_rank = $conn->getone(" SELECT rank FROM dtb_news WHERE del_flg = 0 AND news_id = ? ", array( $_POST['news_id']  ));
+	
 
 	//-- 削除する新着情報以降のrankを1つ繰り上げておく
 	$conn->query("BEGIN");
-	$sql = "UPDATE dtb_news SET rank = rank - 1, update_date = NOW() WHERE del_flg = 0 AND rank > ( SELECT rank FROM dtb_news WHERE del_flg = 0 AND news_id = ? )";
-	$conn->query( $sql, array( $_POST['news_id']  ) );
+	$sql = "UPDATE dtb_news SET rank = rank - 1, update_date = NOW() WHERE del_flg = 0 AND rank > ?";
+	$conn->query( $sql, array( $pre_rank  ) );
 
 	$sql = "UPDATE dtb_news SET rank = 0, del_flg = 1, update_date = NOW() WHERE news_id = ?";
 	$conn->query( $sql, array( $_POST['news_id'] ) );
@@ -258,11 +262,10 @@ function lfNewsInsert(){
 	$conn->query($sql);
 }
 
-//UPDATE文
 function lfNewsUpdate(){
 	global $conn;
 	global $registDate;
-	
+
 	if ($_POST["link_method"] == "") {
 		$_POST["link_method"] = 1;
 	}	
