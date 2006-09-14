@@ -2339,6 +2339,10 @@ function GetFirstCat($category_id){
 	return $arrRet;
 }
 
+function sfGetFrom(){
+	
+}
+
 /* デバッグ用 ------------------------------------------------------------------------------------------------*/
 function sfPrintR($obj) {
 	print("<div style='font-size: 12px'>\n");

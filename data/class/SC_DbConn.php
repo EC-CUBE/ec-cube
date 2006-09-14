@@ -52,6 +52,11 @@ class SC_DbConn{
 		
 		sfprintr($n);
 		
+		// mysqlの場合にはビュー表を変換する
+		if (DB_TYPE == "mysql") {
+
+		}
+		
 		if ( $arr ) {
 			$result = $this->conn->getOne($n, $arr);
 		} else {

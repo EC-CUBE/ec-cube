@@ -153,7 +153,7 @@ define("OTHER_IMAGE1_HEIGHT", 500);						// その他の画像1
 define("HTMLMAIL_IMAGE_WIDTH",  110);					// HTMLメールテンプレートメール担当画像横
 define("HTMLMAIL_IMAGE_HEIGHT", 120);					//  HTMLメールテンプレートメール担当画像縦
 
-define("IMAGE_SIZE", 100);								// 画像サイズ制限(KB)
+define("IMAGE_SIZE", 1000);								// 画像サイズ制限(KB)
 define("CSV_SIZE", 2000);								// CSVサイズ制限(KB)
 define("PDF_SIZE", 5000);								// PDFサイズ制限(KB):商品詳細ファイル等
 define("LEVEL_MAX", 5);									// カテゴリの最大階層
@@ -269,7 +269,7 @@ define ("FTP_CONNECT_ERROR", 17);	//FTP接続エラー
 define ("CREATE_DB_ERROR", 18);		//DB作成エラー
 define ("DB_IMPORT_ERROR", 19);		//DBインポートエラー
 define ("FILE_NOT_FOUND", 20);		//設定ファイル存在エラー
-define ("WRITE_FILE_ERROR", 21);	//ファイル書き込みエラー
+define ("WRITE_FILE_ERROR", 21);	//書き込みエラー
 
 /* 表示関連 */
 define ("SEPA_CATNAVI", " > ");	// カテゴリ区切り文字
