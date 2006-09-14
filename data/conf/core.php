@@ -31,7 +31,7 @@ define ("DB_ERROR_MAIL_SUBJECT", "OS_TEST_ERROR");
 // サイト用DB
 define("DB_TYPE", "mysql");
 define("DB_SERVER", "210.188.212.163");
-$port = "3307";
+$port = "3306";
 
 define ("DEFAULT_DSN", DB_TYPE . "://" . DB_USER . ":" . DB_PASSWORD . "@" . DB_SERVER . ":" . $port . "/" . DB_NAME);
 
