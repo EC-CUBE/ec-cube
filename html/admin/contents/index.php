@@ -243,10 +243,13 @@ function lfNewsInsert(){
 	if ($_POST["link_method"] == "") {
 		$_POST["link_method"] = 1;
 	}
+	
+	//rankの最大+1を取得する
+	$rank_max = $conn->getone("SELECT MAX(rank) + 1 FROM dtb_news WHERE del_flg = '0'");
 
 	$sql = "INSERT INTO dtb_news (news_date, news_title, creator_id, news_url, link_method, news_comment, rank)
-			VALUES ( ?,?,?,?,?,? , (SELECT MAX(rank) + 1 FROM dtb_news WHERE del_flg = '0'))";
-	$arrRegist = array($registDate, $_POST["news_title"], $_SESSION['member_id'],  $_POST["news_url"], $_POST["link_method"], $_POST["news_comment"]);
+			VALUES ( ?,?,?,?,?,?,?)";
+	$arrRegist = array($registDate, $_POST["news_title"], $_SESSION['member_id'],  $_POST["news_url"], $_POST["link_method"], $_POST["news_comment"], $rank_max);
 
 	$conn->query($sql, $arrRegist);
 	
