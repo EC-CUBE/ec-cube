@@ -50,7 +50,7 @@ class SC_DbConn{
 	// 一件のみ取得
 	function getOne($n, $arr = ""){
 		
-		sfprintr($n);
+//		sfprintr($n);
 		
 		// mysqlの場合にはビュー表を変換する
 		if (DB_TYPE == "mysql") {
