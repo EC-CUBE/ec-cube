@@ -100,7 +100,6 @@ case 'disp':
 		$objPage->arrClassCat = lfGetClassCatListDisp($_POST['select_class_id1'], $_POST['select_class_id2']);
 	}
 	
-	sfprintr($objPage->arrClassCat);
 	lfProductClassPage();	// µ¨≥ ≈–œø•⁄°º•∏
 	break;
 // µ¨≥ ≈–œøÕ◊µ·
@@ -161,6 +160,8 @@ function lfProductClassPage() {
 			$objPage->arrClass[$key] = $arrClass[$key];
 		}
 	}
+	
+	sfprintr($objPage->arrClass);
 	
 	// æ¶… Ãæ§ÚºË∆¿
 	$objQuery = new SC_Query();
