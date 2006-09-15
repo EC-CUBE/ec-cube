@@ -2281,7 +2281,7 @@ function sfGetUnderChildrenArray($arrData, $pid_name, $id_name, $parent) {
 function sfGetCatTree($parent_category_id, $count_check = false) {
 	$objQuery = new SC_Query();
 	$col = "*";
-	$from = "dtb_category as cat left join dtb_category_total_count as ttl on ttl.category_id = cat.category_id";
+	$from = "dtb_category left join dtb_category_total_count using (category_id)";
 	// 登録商品数のチェック
 	if($count_check) {
 		$where = "del_flg = 0 AND product_count > 0";
