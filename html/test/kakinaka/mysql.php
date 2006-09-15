@@ -168,7 +168,7 @@ function sfInArray($sql){
 	global $arrView;
 
 	foreach($arrView as $key => $val){
-		if (strcasecmp($sql, $val) == 0){
+		if (stristr($sql, $val) != ""){
 			$changesql = eregi_replace("($key)", "$val", $sql);
 			sfInArray($changesql);
 		}
