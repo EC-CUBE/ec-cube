@@ -161,7 +161,7 @@ function lfProductClassPage() {
 		}
 	}
 	
-	sfprintr($objPage->arrClass);
+	sfprintr($objPage->arrClassCat);
 	
 	// 商品名を取得
 	$objQuery = new SC_Query();
