@@ -46,6 +46,8 @@ foreach ($_POST as $key => $val) {
 $objPage->tpl_product_id = $_POST['product_id'];
 $objPage->tpl_pageno = $_POST['pageno'];
 
+sfprintr($_POST);
+
 switch($_POST['mode']) {
 // µ¬³Êºï½üÍ×µá
 case 'delete':
@@ -139,8 +141,6 @@ default:
 	lfProductClassPage();	// µ¬³ÊÅÐÏ¿¥Ú¡¼¥¸
 	break;
 }
-
-sfprintr($objPage);
 
 $objView->assignobj($objPage);
 $objView->display(MAIN_FRAME);
