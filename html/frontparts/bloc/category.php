@@ -15,7 +15,7 @@ $category_id = sfGetCategoryId($_GET['product_id'], $_GET['category_id']);
 
 // 選択中のカテゴリID
 $objSubPage->tpl_category_id = $category_id;
-$objSubPage = lfGetCatTree($category_id, true, $objSubPage);
+$objSubPage = lfGetCatTree($category_id, false, $objSubPage);
 
 $objSubView->assignobj($objSubPage);
 $objSubView->display($objSubPage->tpl_mainpage);
