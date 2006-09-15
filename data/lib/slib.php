@@ -1051,17 +1051,14 @@ function sfPrePoint($price, $point_rate, $rule = POINT_RULE, $product_id = "") {
 
 /* 規格分類の件数取得 */
 function sfGetClassCatCount() {
-	$sql = "select count(dtb_class.class_id), dtb_class.class_id ";
+	$sql = "select count(dtb_class.class_id) as count, dtb_class.class_id ";
 	$sql.= "from dtb_class inner join dtb_classcategory on dtb_class.class_id = dtb_classcategory.class_id ";
 	$sql.= "where dtb_class.del_flg = 0 AND dtb_classcategory.del_flg = 0 ";
 	$sql.= "group by dtb_class.class_id, dtb_class.name";
 	$objQuery = new SC_Query();
 	$arrList = $objQuery->getall($sql);
-	$objQuery->getlastquery();
 	// キーと値をセットした配列を取得
 	$arrRet = sfArrKeyValue($arrList, 'class_id', 'count');
-	
-	sfprintr($arrRet);
 	
 	return $arrRet;
 }

@@ -99,6 +99,8 @@ case 'disp':
 		// 規格組み合わせ一覧の取得
 		$objPage->arrClassCat = lfGetClassCatListDisp($_POST['select_class_id1'], $_POST['select_class_id2']);
 	}
+	
+	sfprintr($objPage->arrClassCat);
 	lfProductClassPage();	// 規格登録ページ
 	break;
 // 規格登録要求
