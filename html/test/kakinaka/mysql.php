@@ -54,7 +54,7 @@ $sql = '
 
 //print(preg_replace("/[\r\n\t]/"," ",$sql));
 
-$sql= "SELECT * fROm ILike = ad fd";
+$sql= "SELECT * fROm ILiked = ad fd";
 
 print(eregi_replace("(ILIKE )", "LIKE BINARY ", $sql));
 

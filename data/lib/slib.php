@@ -2377,7 +2377,6 @@ function sfChangeILIKE($sql){
 	$changesql = eregi_replace("(ILIKE )", "LIKE BINARY ", $sql);
 	$changesql = strtr($sql,$arrChange);
 	return $changesql;
-	
 }
 
 /* デバッグ用 ------------------------------------------------------------------------------------------------*/
