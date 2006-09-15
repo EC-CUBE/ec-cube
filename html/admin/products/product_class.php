@@ -46,8 +46,6 @@ foreach ($_POST as $key => $val) {
 $objPage->tpl_product_id = $_POST['product_id'];
 $objPage->tpl_pageno = $_POST['pageno'];
 
-sfprintr($_POST);
-
 switch($_POST['mode']) {
 // 規格削除要求
 case 'delete':
@@ -152,6 +150,9 @@ function lfProductClassPage() {
 	$objPage->arrHidden['select_class_id1'] = "";
 	$objPage->arrHidden['select_class_id2'] = "";
 	$arrClass = sfGetIDValueList("dtb_class", 'class_id', 'name');
+	
+	sfprintr($arrClass);
+	
 	// 規格分類が登録されていない規格は表示しないようにする。
 	$arrClassCatCount = sfGetClassCatCount();
 	foreach($arrClass as $key => $val) {
