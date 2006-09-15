@@ -151,10 +151,10 @@ function lfProductClassPage() {
 	$objPage->arrHidden['select_class_id2'] = "";
 	$arrClass = sfGetIDValueList("dtb_class", 'class_id', 'name');
 	
-	sfprintr($arrClass);
-	
 	// 規格分類が登録されていない規格は表示しないようにする。
 	$arrClassCatCount = sfGetClassCatCount();
+	
+	sfprintr($arrClassCatCount);
 	foreach($arrClass as $key => $val) {
 		if($arrClassCatCount[$key] > 0) {
 			$objPage->arrClass[$key] = $arrClass[$key];
