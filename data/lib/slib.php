@@ -2350,6 +2350,17 @@ function sfChangeMySQL($sql){
 	return $sql;
 }
 
+// 配列の中にデータが存在しているかチェックを行う(大文字小文字の区別なし)
+function sfInArray($sch, $arr){
+	foreach($arr as $key => $val){
+		if (strcasecmp($sch,$val) == 0){
+			return true;
+		}
+	}
+	
+	return false;
+}
+
 // view表をインラインビューに変換する
 function sfChangeView($sql){
 	global $arrView;
@@ -2361,9 +2372,12 @@ function sfChangeView($sql){
 
 // ILIKE検索をLIKE検索に変換する
 function sfChangeILIKE($sql){
-	$arrChange = array("ILIKE" => "LIKE BINARY ");
+	$arrChange = array("ILIKE " => "LIKE BINARY ");
+	
+	$changesql = eregi_replace("(ILIKE )", "LIKE BINARY ", $sql);
 	$changesql = strtr($sql,$arrChange);
 	return $changesql;
+	
 }
 
 /* デバッグ用 ------------------------------------------------------------------------------------------------*/
