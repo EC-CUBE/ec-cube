@@ -173,6 +173,7 @@ function sfInArray($sql){
 			sfInArray($changesql);
 		}
 	}
-	return false;
+
+	return $sql;
 }
 ?> 
