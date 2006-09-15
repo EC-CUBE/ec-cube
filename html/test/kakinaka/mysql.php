@@ -1,4 +1,5 @@
 <?php
+
 require_once './DB.php'; // PEAR の DB クラスを読み込む
 
 // View変換用(MySQL対応)

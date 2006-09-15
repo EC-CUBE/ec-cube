@@ -764,7 +764,7 @@ $arrView = array(
 		T1.name1, T1.name2, T2.product_code, T2.stock, T2.price01, T2.price02, T1.rank1, T1.rank2
 		FROM 
 		(SELECT T1.class_id AS class_id1, T2.class_id AS class_id2, T1.classcategory_id AS classcategory_id1, T2.classcategory_id AS classcategory_id2, T1.name AS name1, T2.name AS name2, T1.rank AS rank1, T2.rank AS rank2
-		FROM dtb_classcategory AS T1, dtb_classcategory AS T2 ) vw_cross_class AS T1 LEFT JOIN dtb_products_class AS T2 
+		FROM dtb_classcategory AS T1, dtb_classcategory AS T2 ) AS T1 LEFT JOIN dtb_products_class AS T2 
 		ON T1.classcategory_id1 = T2.classcategory_id1 AND T1.classcategory_id2 = T2.classcategory_id2) vw_cross_products_class ',
 		
 	"vw_products_nonclass" => '
