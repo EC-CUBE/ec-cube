@@ -63,8 +63,6 @@ class SC_DbConn{
 		}
 		$this->result = $result;
 		
-		$this->conn->getlastquery();
-		
 		return $this->result;
 	}
 	
