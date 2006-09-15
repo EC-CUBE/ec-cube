@@ -235,14 +235,14 @@ function lfGetClassCatListEdit($product_id) {
 	$sql.= "( ";
 	$sql.= "SELECT T1.class_id AS class_id1, T2.class_id AS class_id2, T1.classcategory_id AS T1_classcategory_id, T2.classcategory_id AS T2_classcategory_id, T1.name AS name1, T2.name AS name2, T1.rank AS rank1, T2.rank AS rank2 ";
 	$sql.= "FROM dtb_classcategory AS T1, dtb_classcategory AS T2 ";
-	$sql.= "WHERE T1.class_id || '|' || T2.class_id IN (SELECT class_id1 || '|' || class_id2 FROM vw_cross_products_class WHERE product_id = ? GROUP BY class_id1, class_id2) ";
+	$sql.= "WHERE T1.class_id IN (SELECT class_id1 FROM vw_cross_products_class WHERE product_id = ? GROUP BY class_id1, class_id2) AND T2.class_id IN (SELECT class_id2 FROM vw_cross_products_class WHERE product_id = ? GROUP BY class_id1, class_id2)";
 	$sql.= ") AS T1 ";
 			
 	$sql.= "LEFT JOIN (SELECT * FROM dtb_products_class WHERE product_id = ?) AS T3 ";
 	$sql.= "ON T1_classcategory_id = T3.classcategory_id1 AND T2_classcategory_id = T3.classcategory_id2 ";
 	$sql.= "ORDER BY rank1 DESC, rank2 DESC";
 	
-	$arrList =  $objQuery->getAll($sql, array($product_id, $product_id));
+	$arrList =  $objQuery->getAll($sql, array($product_id, $product_id, $product_id));
 	
 	$objQuery->getlastquery();
 	
