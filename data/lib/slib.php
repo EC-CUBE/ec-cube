@@ -2291,10 +2291,8 @@ function sfGetCatTree($parent_category_id, $count_check = false) {
 	$objQuery->setoption("ORDER BY rank DESC");
 	$arrRet = $objQuery->select($col, $from, $where);
 	
-	$objQuery->getlastquerY();
-	
 	$arrParentID = sfGetParents($objQuery, 'dtb_category', 'parent_category_id', 'category_id', $parent_category_id);
-		
+	
 	foreach($arrRet as $key => $array) {
 		foreach($arrParentID as $val) {
 			if($array['category_id'] == $val) {
@@ -2303,6 +2301,8 @@ function sfGetCatTree($parent_category_id, $count_check = false) {
 			}
 		}
 	}
+	
+	sfprintr($arrRet);
 	return $arrRet;
 }
 
