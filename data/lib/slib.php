@@ -1054,7 +1054,7 @@ function sfGetClassCatCount() {
 	$sql = "select count(dtb_class.class_id), dtb_class.class_id ";
 	$sql.= "from dtb_class inner join dtb_classcategory on dtb_class.class_id = dtb_classcategory.class_id ";
 	$sql.= "where dtb_class.del_flg = 0 AND dtb_classcategory.del_flg = 0 ";
-	$sql.= "group by dtb_class.class_id, dtb_class.name;";
+	$sql.= "group by dtb_class.class_id, dtb_class.name";
 	$objQuery = new SC_Query();
 	$arrList = $objQuery->getall($sql);
 	
