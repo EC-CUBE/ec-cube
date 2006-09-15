@@ -161,8 +161,6 @@ function lfProductClassPage() {
 		}
 	}
 	
-	sfprintr($objPage->arrClassCat);
-	
 	// 商品名を取得
 	$objQuery = new SC_Query();
 	$product_name = $objQuery->getOne("SELECT name FROM dtb_products WHERE product_id = ?", array($_POST['product_id']));
@@ -245,7 +243,9 @@ function lfGetClassCatListEdit($product_id) {
 	$sql.= "ORDER BY rank1 DESC, rank2 DESC";
 	
 	$arrList =  $objQuery->getAll($sql, array($product_id, $product_id));
-		
+	
+	$objQuery->getlastquery();
+	
 	$objPage->arrForm["class_id1"] = $arrList[0]['class_id1'];
 	$objPage->arrForm["class_id2"] = $arrList[0]['class_id2'];
 	
