@@ -169,7 +169,7 @@ function sfInArray($sql){
 
 	foreach($arrView as $key => $val){
 		print($key."<bR>");
-		if (stristr($sql, $val) != ""){
+		if (stristr($sql, $key) != ""){
 			$changesql = eregi_replace("($key)", "$val", $sql);
 			sfInArray($changesql);
 		}
