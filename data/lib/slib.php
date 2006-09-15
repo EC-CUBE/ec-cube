@@ -2339,6 +2339,17 @@ function GetFirstCat($category_id){
 	return $arrRet;
 }
 
+//MySQL用のSQL文に変更する
+function sfChangeMySQL($sql){
+	// 改行、タブを1スペースに変換
+	$sql = preg_replace("/[\r\n\t]/"," ",$sql);
+	
+	$sql = sfChangeView($sql);		// view表をインラインビューに変換する
+	$sql = sfChangeILIKE($sql);	// ILIKE検索をLIKE検索に変換する
+	
+	return $sql;
+}
+
 // view表をインラインビューに変換する
 function sfChangeView($sql){
 	global $arrView;

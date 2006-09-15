@@ -52,7 +52,7 @@ $sql = '
         dtb_products AS T1 RIGHT JOIN (SELECT product_id AS product_id_sub, MIN(product_code) AS product_code_min, MAX(product_code) AS product_code_max, MIN(price01) AS price01_min, MAX(price01) AS price01_max, MIN(price02) AS price02_min, MAX(price02) AS price02_max, MIN(stock) AS stock_min, MAX(stock) AS stock_max, MIN(stock_unlimited) AS stock_unlimited_min, MAX(stock_unlimited) AS stock_unlimited_max FROM dtb_products_class GROUP BY product_id) AS T2 ON T1.product_id = T2.product_id_sub
     ) vw_products_allclass ';
 	
-print(preg_replace("/[\r\n\t]/","",$sql));
+print(preg_replace("/[\r\n\t]/"," ",$sql));
 
 print("end");
 

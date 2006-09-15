@@ -51,10 +51,7 @@ class SC_DbConn{
 	function getOne($n, $arr = ""){
 		
 		// mysqlの場合にはビュー表を変換する
-		if (DB_TYPE == "mysql") {
-			$n = sfChangeView($n);
-			$n = sfChangeILIKE($n);
-		}
+		if (DB_TYPE == "mysql") $n = sfChangeMySQL($n);
 		
 		if ( $arr ) {
 			$result = $this->conn->getOne($n, $arr);
@@ -71,10 +68,7 @@ class SC_DbConn{
 	function getRow($n, $arr = ""){
 
 		// mysqlの場合にはビュー表を変換する
-		if (DB_TYPE == "mysql") {
-			$n = sfChangeView($n);
-			$n = sfChangeILIKE($n);
-		}
+		if (DB_TYPE == "mysql") $n = sfChangeMySQL($n);
 
 		if ( $arr ) {
 			$result = $this->conn->getRow($n, $arr);
@@ -92,10 +86,7 @@ class SC_DbConn{
 	function getAll($n, $arr = ""){
 
 		// mysqlの場合にはビュー表を変換する
-		if (DB_TYPE == "mysql") {
-			$n = sfChangeView($n);
-			$n = sfChangeILIKE($n);
-		}
+		if (DB_TYPE == "mysql") $n = sfChangeMySQL($n);
 		
 		if(PEAR::isError($this->conn)) {
 			sfErrorHeader("DBへの接続に失敗しました。:" . $this->dsn);
