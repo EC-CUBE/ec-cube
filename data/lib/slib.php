@@ -890,6 +890,8 @@ function sfGetIDValueList($table, $keyname, $valname) {
 		$val = $arrList[$cnt][$valname];
 		$arrRet[$key] = $val;
 	}
+	
+	$objQuery->getlastquery();
 	return $arrRet;
 }
 

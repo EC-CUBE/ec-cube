@@ -205,8 +205,6 @@ function lfGetClassCatListDisp($class_id1, $class_id2, $default = true) {
 		
 	}
 	
-	$objQuery->getlastquery();
-	
 	$max = count($arrRet);
 	
 	if($default) {
