@@ -140,6 +140,8 @@ default:
 	break;
 }
 
+sfprintr($objPage);
+
 $objView->assignobj($objPage);
 $objView->display(MAIN_FRAME);
 //-----------------------------------------------------------------------------------------------------------------------------
