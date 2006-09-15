@@ -162,7 +162,6 @@ function lfProductClassPage() {
 	$objQuery = new SC_Query();
 	$product_name = $objQuery->getOne("SELECT name FROM dtb_products WHERE product_id = ?", array($_POST['product_id']));
 	$objPage->arrForm['product_name'] = $product_name;
-	
 }
 
 function lfSetDefaultClassCat($objQuery, $product_id, $max) {
