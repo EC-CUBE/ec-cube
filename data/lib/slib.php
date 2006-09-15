@@ -890,7 +890,6 @@ function sfGetIDValueList($table, $keyname, $valname) {
 		$val = $arrList[$cnt][$valname];
 		$arrRet[$key] = $val;
 	}
-	sfprintr($arrRet);
 	return $arrRet;
 }
 

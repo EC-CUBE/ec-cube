@@ -158,6 +158,8 @@ function lfProductClassPage() {
 		}
 	}
 	
+	sfprintr($arrClassCatCount);
+	
 	// 商品名を取得
 	$objQuery = new SC_Query();
 	$product_name = $objQuery->getOne("SELECT name FROM dtb_products WHERE product_id = ?", array($_POST['product_id']));
