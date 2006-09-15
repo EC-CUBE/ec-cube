@@ -154,7 +154,6 @@ function lfProductClassPage() {
 	// 規格分類が登録されていない規格は表示しないようにする。
 	$arrClassCatCount = sfGetClassCatCount();
 	
-	sfprintr($arrClassCatCount);
 	foreach($arrClass as $key => $val) {
 		if($arrClassCatCount[$key] > 0) {
 			$objPage->arrClass[$key] = $arrClass[$key];
