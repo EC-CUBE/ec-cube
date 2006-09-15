@@ -62,6 +62,9 @@ class SC_DbConn{
 			$this->send_err_mail ($result ,$n);
 		}
 		$this->result = $result;
+		
+		$this->conn->getlastquery();
+		
 		return $this->result;
 	}
 	
