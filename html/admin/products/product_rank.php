@@ -53,6 +53,8 @@ default:
 $objPage->arrTree = sfGetCatTree($_POST['parent_category_id']);
 $objPage->arrProductsList = lfGetProduct($_POST['parent_category_id']);
 
+sfprintr($objPage->arrTree);
+
 $objView->assignobj($objPage);
 $objView->display(MAIN_FRAME);
 
@@ -70,8 +72,6 @@ function lfGetProduct($category_id) {
 	$linemax = $objQuery->count($table, $where, array($category_id));
 	// 順位、該当件数表示用
 	$objPage->tpl_linemax = $linemax;
-	
-	sfprintr($linemax);
 	
 	$objNavi = new SC_PageNavi($objPage->tpl_pageno, $linemax, SEARCH_PMAX, "fnNaviPage", NAVI_PMAX);
 	$startno = $objNavi->start_row;
