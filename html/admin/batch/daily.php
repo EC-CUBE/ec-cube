@@ -177,8 +177,6 @@ function lfBatOrderDaily($time) {
 // 売上げ集計バッチ処理(時間別) 
 function lfBatOrderDailyHour($time) {
 	
-	$sql = lfGetOrderDailySQL();
-	
 	// 集計対象日を取得する
 	$date = date("Y-m-d", $time);
 	$objQuery = new SC_Query();
@@ -190,7 +188,8 @@ function lfBatOrderDailyHour($time) {
 	for($i = 0; $i < 24; $i++) {
 		$sdate = sprintf("%s %02d:00:00", $date, $i);
 		$edate = sprintf("%s %02d:59:59", $date, $i);
-		$arrRet = $objQuery->getall($sql, array($sdate, $edate));
+		$sql = lfGetOrderDailySQL($sdate, $edate);
+		$arrRet = $objQuery->getall($sql);
 		$sqlval = $arrRet[0];
 		// 空文字を"0"に変換
 		foreach($sqlval as $key => $val) {
