@@ -233,7 +233,7 @@ function lfBatOrderAge($time) {
 	$end_date = date("Y/m/d",strtotime("-10 year"));
 	
 	
-	$end_date = time();
+	$end_date = date("Y/m/d H:i:s", time()); 
 	$start_date = date("Y/m/d",strtotime("1 day" ,strtotime($end_date)));
 	
 	sfprintr($start_date);
