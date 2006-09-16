@@ -149,7 +149,7 @@ function lfBatOrderDaily($time) {
 	$sql = lfGetOrderDailySQL($start,$end);
 	
 	$objQuery = new SC_Query();
-	$arrRet = $objQuery->getall($sql, array($start, $end));	
+	$arrRet = $objQuery->getall($sql);	
 		
 	$sqlval = $arrRet[0];
 	
