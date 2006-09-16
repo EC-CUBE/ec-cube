@@ -228,6 +228,11 @@ function lfBatOrderAge($time) {
 	$where = $base_where . " AND current_timestamp BETWEEN ? AND ? ";
 	
 	sfprintr(	date("Y/m/d",strtotime("-10 year")));
+	
+	
+	$startdate = date("Y/m/d",strtotime("-10 year"));
+	
+	sfprintr(date("Y/m/d",strtotime("1 day" ,strtotime(date("Y/m/d",strtotime("-10 year"))))));
 
 	// 年齢毎に集計する。
 	for($i = 0; $i <= $age_loop; $i++) {
