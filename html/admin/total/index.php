@@ -192,7 +192,6 @@ $objPage->arrForm = $objFormParam->getFormParamList();
 
 $objPage->tpl_subtitle = $objPage->arrTitle[$objFormParam->getValue('page')];
 
-
 $objView->assignobj($objPage);
 $objView->display(MAIN_FRAME);
 

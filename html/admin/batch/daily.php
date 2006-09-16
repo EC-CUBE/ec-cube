@@ -98,6 +98,26 @@ function lfRealTimeDailyTotal($sdate, $edate) {
 
 // バッチ集計用のSQL文を取得する。
 function lfGetOrderDailySQL() {
+	$from = " FROM dtb_order AS T1 LEFT JOIN dtb_customer AS T2 USING ( customer_id ) ";
+	$where = " WHERE T1.del_flg = 0 AND T1.create_date BETWEEN ? AND ? ";
+	
+	$sql = "SELECT ";
+	$sql.= "COUNT(*) AS total_order, ";
+	$sql.= "(SELECT sum(cnt) FROM (SELECT COUNT(*) AS cnt FROM $from WHERE $where AND customer_id = 0) AS nonmember ) AS nonmember, ";
+/*	$sql.= "SUM((SELECT COUNT(*) WHERE customer_id <> 0 GROUP BY customer_id)) AS member, ";
+	$sql.= "SUM((SELECT COUNT(*) WHERE order_sex = 1)) AS men, ";
+	$sql.= "SUM((SELECT COUNT(*) WHERE order_sex = 2)) AS women, ";
+	$sql.= "SUM((SELECT COUNT(*) WHERE order_sex = 1 AND customer_id <> 0)) AS men_member, ";
+	$sql.= "SUM((SELECT COUNT(*) WHERE order_sex = 1 AND customer_id = 0)) AS men_nonmember, ";
+	$sql.= "SUM((SELECT COUNT(*) WHERE order_sex = 2 AND customer_id <> 0)) AS women_member, ";
+	$sql.= "SUM((SELECT COUNT(*) WHERE order_sex = 2 AND customer_id = 0)) AS women_nonmember, ";*/
+	$sql.= "SUM(total) AS total, ";
+	$sql.= "int8(AVG(total)) AS total_average ";
+	$sql.= $from;
+	$sql.= $where;		// 受注作成日で検索する
+	
+	
+/*	
 	$sql = "SELECT ";
 	$sql.= "COUNT(*) AS total_order, ";
 	$sql.= "SUM((SELECT COUNT(*) WHERE customer_id = 0)) AS nonmember, ";
@@ -110,8 +130,9 @@ function lfGetOrderDailySQL() {
 	$sql.= "SUM((SELECT COUNT(*) WHERE order_sex = 2 AND customer_id = 0)) AS women_nonmember, ";
 	$sql.= "SUM(total) AS total, ";
 	$sql.= "int8(AVG(total)) AS total_average ";
-	$sql.= "FROM dtb_order AS T1 LEFT JOIN dtb_customer AS T2 USING ( customer_id ) ";
-	$sql.= "WHERE T1.del_flg = 0 AND T1.create_date BETWEEN ? AND ?";		// 受注作成日で検索する
+	$sql.= $from;
+	$sql.= $where;		// 受注作成日で検索する
+*/
 	return $sql;
 }
 
