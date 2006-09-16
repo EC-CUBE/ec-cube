@@ -2290,8 +2290,7 @@ function sfGetCatTree($parent_category_id, $count_check = false) {
 	$col .= " cat.create_date,";
 	$col .= " cat.update_date,";
 	$col .= " cat.del_flg, ";
-	$col .= " ttl.product_count";
-	
+	$col .= " ttl.product_count";	
 	$from = "dtb_category as cat left join dtb_category_total_count as ttl on ttl.category_id = cat.category_id";
 	// 登録商品数のチェック
 	if($count_check) {
