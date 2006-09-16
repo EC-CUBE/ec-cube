@@ -53,8 +53,6 @@ default:
 $objPage->arrTree = sfGetCatTree($_POST['parent_category_id']);
 $objPage->arrProductsList = lfGetProduct($_POST['parent_category_id']);
 
-sfprintr($objPage->arrTree);
-
 $objView->assignobj($objPage);
 $objView->display(MAIN_FRAME);
 
