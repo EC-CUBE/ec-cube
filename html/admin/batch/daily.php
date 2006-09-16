@@ -112,7 +112,7 @@ function lfGetOrderDailySQL($start, $end) {
 	$sql.= "SUM((SELECT COUNT(*) WHERE order_sex = 2 AND customer_id <> 0)) AS women_member, ";
 	$sql.= "SUM((SELECT COUNT(*) WHERE order_sex = 2 AND customer_id = 0)) AS women_nonmember, ";*/
 	$sql.= "SUM(total) AS total, ";
-	$sql.= "int8(AVG(total)) AS total_average ";
+	$sql.= "(AVG(total)) AS total_average ";
 	$sql.= $from;
 	$sql.= $where;		// 受注作成日で検索する
 	
