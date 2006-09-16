@@ -99,11 +99,11 @@ function lfRealTimeDailyTotal($sdate, $edate) {
 // バッチ集計用のSQL文を取得する。
 function lfGetOrderDailySQL($start, $end) {
 	$from = " FROM dtb_order AS T1 LEFT JOIN dtb_customer AS T2 USING ( customer_id ) ";
-	$where = " WHERE T1.del_flg = 0 AND T1.create_date BETWEEN $start AND $end ";
+	$where = " WHERE T1.del_flg = 0 AND T1.create_date BETWEEN '$start' AND '$end' ";
 	
 	$sql = "SELECT ";
 	$sql.= "COUNT(*) AS total_order, ";
-	$sql.= "(SELECT sum(cnt) FROM (SELECT COUNT(*) AS cnt FROM $from WHERE $where AND customer_id = 0) AS nonmember ) AS nonmember, ";
+	$sql.= "(SELECT sum(cnt) FROM (SELECT COUNT(*) AS cnt $from $where AND customer_id = 0) AS nonmember ) AS nonmember, ";
 /*	$sql.= "SUM((SELECT COUNT(*) WHERE customer_id <> 0 GROUP BY customer_id)) AS member, ";
 	$sql.= "SUM((SELECT COUNT(*) WHERE order_sex = 1)) AS men, ";
 	$sql.= "SUM((SELECT COUNT(*) WHERE order_sex = 2)) AS women, ";
