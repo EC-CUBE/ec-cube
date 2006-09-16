@@ -235,6 +235,8 @@ function lfBatOrderAge($time) {
 	
 	$end_date = time();
 	$start_date = date("Y/m/d",strtotime("1 day" ,strtotime($end_date)));
+	
+	sfprintr($start_date);
 
 	// 年齢毎に集計する。
 	for($i = 0; $i <= $age_loop; $i++) {
