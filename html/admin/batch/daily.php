@@ -220,12 +220,15 @@ function lfBatOrderAge($time) {
 	
 	$objQuery = new SC_Query();
 	$objQuery->delete("dtb_bat_order_daily_age", "order_date = ?", array($start));
-	
+
 	/* 会員集計 */
-	
+
 	$base_where = "WHERE (create_date BETWEEN ? AND ?) AND customer_id <> 0 AND del_flg = 0 ";
-	$where = $base_where . " AND (to_number(to_char(age(current_timestamp, order_birth), 'YYY'), 999) BETWEEN ? AND ?) ";
+	//$where = $base_where . " AND (to_number(to_char(age(current_timestamp, order_birth), 'YYY'), 999) BETWEEN ? AND ?) ";
+	$where = $base_where . " AND current_timestamp BETWEEN ? AND ? ";
 	
+	sfprintr(	date("Y/m/d",strtotime("-10 year")));
+
 	// 年齢毎に集計する。
 	for($i = 0; $i <= $age_loop; $i++) {
 		$start_age = $i * 10;
