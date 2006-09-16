@@ -230,9 +230,11 @@ function lfBatOrderAge($time) {
 	sfprintr(	date("Y/m/d",strtotime("-10 year")));
 	
 	
-	$startdate = date("Y/m/d",strtotime("-10 year"));
+	$end_date = date("Y/m/d",strtotime("-10 year"));
 	
-	sfprintr(date("Y/m/d",strtotime("1 day" ,strtotime(date("Y/m/d",strtotime("-10 year"))))));
+	
+	$end_date = now();
+	$start_date = date("Y/m/d",strtotime("1 day" ,strtotime($end_date)));
 
 	// 年齢毎に集計する。
 	for($i = 0; $i <= $age_loop; $i++) {
@@ -243,11 +245,11 @@ function lfBatOrderAge($time) {
 		}
 		lfBatOrderAgeSub($sql . $where, $start, $end, $start_age, $end_age, 1);
 	}
-	
+
 	// 誕生日入力なし
 	$where = $base_where . " AND order_birth IS NULL ";
 	lfBatOrderAgeSub($sql . $where, $start, $end, NULL, NULL, 1);
-	
+
 	/* 非会員集計 */
 	
 	$base_where = "WHERE (create_date BETWEEN ? AND ?) AND customer_id = 0 AND del_flg = 0";
