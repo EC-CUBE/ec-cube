@@ -97,9 +97,9 @@ function lfRealTimeDailyTotal($sdate, $edate) {
 }
 
 // バッチ集計用のSQL文を取得する。
-function lfGetOrderDailySQL() {
+function lfGetOrderDailySQL($start, $end) {
 	$from = " FROM dtb_order AS T1 LEFT JOIN dtb_customer AS T2 USING ( customer_id ) ";
-	$where = " WHERE T1.del_flg = 0 AND T1.create_date BETWEEN ? AND ? ";
+	$where = " WHERE T1.del_flg = 0 AND T1.create_date BETWEEN $start AND $end ";
 	
 	$sql = "SELECT ";
 	$sql.= "COUNT(*) AS total_order, ";
@@ -140,13 +140,13 @@ function lfGetOrderDailySQL() {
 function lfBatOrderDaily($time) {
 	global $arrWDAY;
 	
-	$sql = lfGetOrderDailySQL();
-	
 	// 集計対象日を取得する
 	$date = date("Y-m-d", $time);
 	
 	$start = $date . " 00:00:00";
 	$end = $date . " 23:59:59";
+	
+	$sql = lfGetOrderDailySQL($start,$end);
 	
 	$objQuery = new SC_Query();
 	$arrRet = $objQuery->getall($sql, array($start, $end));	
