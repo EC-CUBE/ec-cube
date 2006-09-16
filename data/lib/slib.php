@@ -40,7 +40,7 @@ function sfTabaleExists($table_name) {
 			$flg = true;
 		} else {
 			$flg = false;
-		}	
+		}
 	}
 	return $flg;
 }

@@ -71,6 +71,8 @@ function lfGetProduct($category_id) {
 	// 順位、該当件数表示用
 	$objPage->tpl_linemax = $linemax;
 	
+	sfprintr($linemax);
+	
 	$objNavi = new SC_PageNavi($objPage->tpl_pageno, $linemax, SEARCH_PMAX, "fnNaviPage", NAVI_PMAX);
 	$startno = $objNavi->start_row;
 	$objPage->tpl_strnavi = $objNavi->strnavi;		// Navi表示文字列
