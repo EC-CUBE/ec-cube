@@ -51,7 +51,7 @@ foreach ($arrNewOrder as $key => $val){
 	$arrNewOrder[$key]['create_date'] = str_replace("-", "/", substr($val['create_date'], 0,19));
 	
 }
-$objPage->arrNewOrder = lfGetNewOrder();
+$objPage->arrNewOrder = $arrNewOrder();
 
 // お知らせ一覧の取得
 $objPage->arrInfo = lfGetInfo();
