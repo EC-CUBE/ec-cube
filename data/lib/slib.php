@@ -2358,7 +2358,7 @@ function sfChangeMySQL($sql){
 	
 	$sql = sfChangeView($sql);		// view表をインラインビューに変換する
 	$sql = sfChangeILIKE($sql);		// ILIKE検索をLIKE検索に変換する
-
+	$sql = sfChangeRANDOM($sql);	// RANDOM()をRAND()に変換する
 	return $sql;
 }
 
@@ -2390,9 +2390,9 @@ function sfChangeILIKE($sql){
 	return $changesql;
 }
 
-// LIKE検索をLIKE BINARY検索に変換する
-function sfChangeLIKE($sql){
-	$changesql = eregi_replace("( LIKE )", " LIKE BINARY ", $sql);
+// RANDOM()をRAND()に変換する
+function sfChangeRANDOM($sql){
+	$changesql = eregi_replace("( RANDOM() )", " RAND() ", $sql);
 	return $changesql;
 }
 
