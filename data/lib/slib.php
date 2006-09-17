@@ -1008,8 +1008,9 @@ function sfPreTax($price, $tax, $tax_rule) {
 function sfPrePoint($price, $point_rate, $rule = POINT_RULE, $product_id = "") {
 	if(sfIsInt($product_id)) {
 		$objQuery = new SC_Query();
-		$where = "to_char(now(),'YYYY/MM/DD/HH24') >= to_char(start_date,'YYYY/MM/DD/HH24') AND ";
-		$where .= "to_char(now(),'YYYY/MM/DD/HH24') < to_char(end_date,'YYYY/MM/DD/HH24') AND ";
+	    $where = "now() >= cast(start_date as date) AND ";
+	    $where .= "now() < cast(end_date as date) AND ";
+		
 		$where .= "del_flg = 0 AND campaign_id IN (SELECT campaign_id FROM dtb_campaign_detail where product_id = ? )";
 		//ÅÐÏ¿(¹¹¿·)ÆüÉÕ½ç
 		$objQuery->setorder('update_date DESC');
