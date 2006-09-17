@@ -107,7 +107,7 @@ function lfGetOrderDailySQL($start, $end) {
 	$sql.= "(SELECT sum(cnt) FROM (SELECT COUNT(*) AS cnt $from $where AND T1.customer_id <> 0) AS member ) AS member, ";
 	$sql.= "(SELECT sum(cnt) FROM (SELECT COUNT(*) AS cnt $from $where AND T1.order_sex = 1) AS men ) AS men, ";
 	$sql.= "(SELECT sum(cnt) FROM (SELECT COUNT(*) AS cnt $from $where AND T1.order_sex = 2) AS women ) AS women, ";
-	$sql.= "(SELECT sum(cnt) FROM (SELECT COUNT(*) AS cnt $from $where AND T1.order_sex = 1 AND T2.customer_id <> 0)) AS men_member ) AS men_member, ";
+	$sql.= "(SELECT sum(cnt) FROM (SELECT COUNT(*) AS cnt $from $where AND T1.order_sex = 1 AND T2.customer_id <> 0) AS men_member ) AS men_member, ";
 	$sql.= "(SELECT sum(cnt) FROM (SELECT COUNT(*) AS cnt $from $where AND T1.order_sex = 1 AND T2.customer_id = 0) AS men_nonmember ) AS men_nonmember, ";
 	$sql.= "(SELECT sum(cnt) FROM (SELECT COUNT(*) AS cnt $from $where AND T1.order_sex = 2 AND T2.customer_id <> 0) AS women_member ) AS women_member, ";
 	$sql.= "(SELECT sum(cnt) FROM (SELECT COUNT(*) AS cnt $from $where AND T1.order_sex = 2 AND T2.customer_id = 0) AS women_nonmember ) AS women_nonmember, ";

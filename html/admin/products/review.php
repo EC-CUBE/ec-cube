@@ -160,6 +160,11 @@ if ($_POST['mode'] == 'search' || $_POST['mode'] == 'csv' || $_POST['mode'] == '
 			case 'search_endyear':
 				if (isset($_POST['search_startyear']) && isset($_POST['search_startmonth']) && isset($_POST['search_startday'])){
 					$date = sfGetTimestamp($_POST['search_endyear'], $_POST['search_endmonth'], $_POST['search_endday']);
+					
+					$end_date = date("Y/m/d",strtotime("1 day" ,strtotime($date)));
+					
+					sfprintr($end_date);
+					
 					$where.= " AND A.create_date <= ? ";
 					$arrval[] = $date;
 				}
