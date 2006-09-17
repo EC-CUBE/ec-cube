@@ -330,8 +330,8 @@ function lfRegistOrderDetail($objQuery, $order_id, $objCartSess) {
 	$arrCart = $objCartSess->getCartList();
 	$max = count($arrCart);
 	
-	sfprintr($order_id);
 	
+	$order_id = '0';
 	// 既に存在する詳細レコードを消しておく。
 	$objQuery->delete("dtb_order_detail", "order_id = ?", $order_id);
 
