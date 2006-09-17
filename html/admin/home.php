@@ -45,6 +45,8 @@ $objPage->review_nondisp_cnt = lfGetReviewNonDisp($conn);
 $objPage->arrSoldout = lfGetSoldOut();
 
 // 新規受付一覧
+$arrNewOrder = lfGetNewOrder();
+sfprintr($arrNewOrder);
 $objPage->arrNewOrder = lfGetNewOrder();
 
 // お知らせ一覧の取得
