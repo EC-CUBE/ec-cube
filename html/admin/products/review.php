@@ -162,7 +162,6 @@ if ($_POST['mode'] == 'search' || $_POST['mode'] == 'csv' || $_POST['mode'] == '
 					$date = sfGetTimestamp($_POST['search_endyear'], $_POST['search_endmonth'], $_POST['search_endday']);
 					$where.= " AND A.create_date <= ? ";
 					$arrval[] = $date;
-					sfprintr($date);
 				}
 				break;
 			}

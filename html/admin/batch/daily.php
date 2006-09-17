@@ -104,13 +104,13 @@ function lfGetOrderDailySQL($start, $end) {
 	$sql = "SELECT ";
 	$sql.= "COUNT(*) AS total_order, ";
 	$sql.= "(SELECT sum(cnt) FROM (SELECT COUNT(*) AS cnt $from $where AND T1.customer_id = 0) AS nonmember ) AS nonmember, ";
-/*	$sql.= "SUM((SELECT COUNT(*) WHERE customer_id <> 0 GROUP BY customer_id)) AS member, ";
-	$sql.= "SUM((SELECT COUNT(*) WHERE order_sex = 1)) AS men, ";
-	$sql.= "SUM((SELECT COUNT(*) WHERE order_sex = 2)) AS women, ";
-	$sql.= "SUM((SELECT COUNT(*) WHERE order_sex = 1 AND customer_id <> 0)) AS men_member, ";
-	$sql.= "SUM((SELECT COUNT(*) WHERE order_sex = 1 AND customer_id = 0)) AS men_nonmember, ";
-	$sql.= "SUM((SELECT COUNT(*) WHERE order_sex = 2 AND customer_id <> 0)) AS women_member, ";
-	$sql.= "SUM((SELECT COUNT(*) WHERE order_sex = 2 AND customer_id = 0)) AS women_nonmember, ";*/
+	$sql.= "(SELECT sum(cnt) FROM (SELECT COUNT(*) AS cnt $from $where AND T1.customer_id <> 0) AS nonmember ) AS member, ";
+	$sql.= "(SELECT sum(cnt) FROM (SELECT COUNT(*) AS cnt $from $where AND T1.order_sex = 1) AS nonmember ) AS men, ";
+	$sql.= "(SELECT sum(cnt) FROM (SELECT COUNT(*) AS cnt $from $where AND T1.order_sex = 2)) AS nonmember ) AS women, ";
+	$sql.= "(SELECT sum(cnt) FROM (SELECT COUNT(*) AS cnt $from $where AND T1.order_sex = 1 AND customer_id <> 0)) AS nonmember ) AS men_member, ";
+	$sql.= "(SELECT sum(cnt) FROM (SELECT COUNT(*) AS cnt $from $where AND T1.order_sex = 1 AND customer_id = 0) AS nonmember ) AS men_nonmember, ";
+	$sql.= "(SELECT sum(cnt) FROM (SELECT COUNT(*) AS cnt $from $where AND T1.order_sex = 2 AND customer_id <> 0) AS nonmember ) AS women_member, ";
+	$sql.= "(SELECT sum(cnt) FROM (SELECT COUNT(*) AS cnt $from $where AND T1.order_sex = 2 AND customer_id = 0) AS nonmember ) AS women_nonmember, ";
 	$sql.= "SUM(total) AS total, ";
 	$sql.= "(AVG(total)) AS total_average ";
 	$sql.= $from;
