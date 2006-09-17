@@ -353,7 +353,7 @@ class SC_Query {
 		}
 		$ret = $this->conn->getOne($sql);
 		
-		$this->conn->getlastquery(true);
+		sfprintr($this->conn->getlastquery(true));
 		
 		return $ret;
 	}
