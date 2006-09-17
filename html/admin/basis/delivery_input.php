@@ -95,8 +95,8 @@ function lfRegistData() {
 		$objQuery->delete("dtb_delivtime", $where, array($deliv_id));
 	} else {
 		// 登録する配送業者IDの取得
-		$deliv_id = $objQuery->nextval('dtb_deliv', 'deliv_id');
-		$sqlval['deliv_id'] = $deliv_id;
+//		$deliv_id = $objQuery->nextval('dtb_deliv', 'deliv_id');
+//		$sqlval['deliv_id'] = $deliv_id;
 		$sqlval['rank'] = $objQuery->max("dtb_deliv", "rank") + 1;
 		// INSERTの実行
 		$objQuery->insert("dtb_deliv", $sqlval);

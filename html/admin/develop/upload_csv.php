@@ -206,9 +206,11 @@ function lfInsertProduct($objQuery) {
 			break;
 		}
 	}
-			
+
+// 自動インクリメントなので不必要			
 //	$product_id = $objQuery->nextval("dtb_products", "product_id");
 //	$sqlval['product_id'] = $product_id;
+
 	$sqlval['status'] = 1;	// 表示に設定する。
 	$sqlval['update_date'] = "Now()";
 	$sqlval['creator_id'] = $_SESSION['member_id'];
