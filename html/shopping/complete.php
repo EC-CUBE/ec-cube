@@ -360,6 +360,10 @@ function lfRegistOrderDetail($objQuery, $order_id, $objCartSess) {
 			lfReduceStock($objQuery, $arrCart[$i]['id'], $arrCart[$i]['quantity']);
 			// INSERT¤Î¼Â¹Ô
 			$objQuery->insert("dtb_order_detail", $sqlval);
+			
+			$objQuery->getlastquery();
+			sfprintr($order_id);
+			exit();
 		} else {
 			sfDispSiteError(CART_NOT_FOUND);
 		}
