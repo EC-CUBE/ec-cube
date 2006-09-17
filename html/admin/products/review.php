@@ -202,6 +202,8 @@ if ($_POST['mode'] == 'search' || $_POST['mode'] == 'csv' || $_POST['mode'] == '
 	//検索結果の取得
 	$objPage->arrReview = $objQuery->select($select, $from, $where, $arrval);
 	
+	$objQuery->getLastQuery();
+	
 	//CSVダウンロード
 	if ($_POST['mode'] == 'csv'){
 		// オプションの指定
