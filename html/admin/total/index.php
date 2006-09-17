@@ -757,13 +757,11 @@ function lfGetOrderTerm($type, $sdate, $edate, $objPage, $graph = true) {
 			if ($where != "") {
 				$where.= " AND ";
 			}
-			$where.= " order_date < date('" . $edate ."')+1";
+			$where.= " order_date < date('" . $edate ."')";
 		}
 
 		// 検索結果の取得
 		$objPage->arrResults = $objQuery->select($col, $from, $where, $arrval);
-		
-		$objQuery->getlastquery();
 		
 		// 折れ線グラフの生成	
 		if($graph) {
