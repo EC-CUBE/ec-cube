@@ -48,7 +48,7 @@ $objPage->arrSoldout = lfGetSoldOut();
 $arrNewOrder = lfGetNewOrder();
 
 foreach ($arrNewOrder as $key => $val){
-	sfprintr($val['create_date'] . "////" . substr($val['create_date'], 1,18));
+	sfprintr($val['create_date'] . "////" . substr($val['create_date'], 0,18));
 	
 }
 $objPage->arrNewOrder = lfGetNewOrder();
