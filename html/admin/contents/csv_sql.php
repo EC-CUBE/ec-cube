@@ -134,7 +134,7 @@ $arrTableList = sfSwapArray($arrTableList);
 
 // 現在選択されているテーブルを取得する
 if ($_POST['selectTable'] == ""){
-	$selectTable = $arrTableList['relname'][0];
+	$selectTable = $arrTableList['table_name'][0];
 }else{
 	$selectTable = $_POST['selectTable'];
 }
