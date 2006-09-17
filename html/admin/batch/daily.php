@@ -232,8 +232,9 @@ function lfBatOrderAge($time) {
 	
 	$end_date = date("Y/m/d H:i:s", time()); 
 	$start_date = date("Y/m/d",strtotime("-10 year"));
+	$start_age = null;
+	$end_age = null;
 	
-	sfprintr($start_date);
 	// 年齢毎に集計する。
 	for($i = 0; $i <= $age_loop; $i++) {
 		$where = $base_where . " AND order_birth >= $start_date";
@@ -305,4 +306,30 @@ function lfBatOrderAgeSub($sql, $start, $end, $start_age, $end_age, $member) {
 	$objQuery->insert("dtb_bat_order_daily_age", $sqlval);
 }
 
+/*
+function lfBatOrderAgeSub($sql, $start, $end, $start_age, $end_age, $member) {
+	$objQuery = new SC_Query();
+	
+	if($start_age != NULL || $end_age != NULL) {
+		$arrRet = $objQuery->getall($sql, array($start, $end, $start_age, $end_age));
+	} else {
+		$arrRet = $objQuery->getall($sql, array($start, $end));
+	}
+	$sqlval = $arrRet[0];
+	
+	// 空文字を"0"に変換
+	foreach($sqlval as $key => $val) {
+		if ($val == "") {
+			$sqlval[$key] = "0";
+		}
+	}
+		
+	$sqlval['order_date'] = $start;
+	$sqlval['start_age'] = "$start_age";
+	$sqlval['end_age'] = "$end_age";
+	$sqlval['member'] = "$member";
+
+	$objQuery->insert("dtb_bat_order_daily_age", $sqlval);
+}
+*/
 ?>
