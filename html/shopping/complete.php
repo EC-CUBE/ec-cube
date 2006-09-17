@@ -294,8 +294,7 @@ function lfRegistOrder($objQuery, $arrData) {
 	unset($sqlval['password']);			// ログインパスワード
 	unset($sqlval['reminder']);			// リマインダー質問
 	unset($sqlval['reminder_answer']);	// リマインダー答え
-	
-//	$sqlval['order_id'] = $order_id;
+
 	$sqlval['status'] = '1';			// 注文ステータス:新規受付に設定
 	
 	// 別のお届け先を指定していない場合、配送先に登録住所をコピーする。
