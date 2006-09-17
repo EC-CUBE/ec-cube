@@ -108,7 +108,7 @@ $arrView = array(
 
 print("start<br>");
 
-$dsn = "mysql://eccube_db_user:password@210.188.212.163/eccube_db";
+$dsn = "mysql://eccube_db_user:password@210.188.212.163:3307/eccube_db";
 print($dsn."<br>");
 
 if(($db = DB::connect($dsn)) == 0){
