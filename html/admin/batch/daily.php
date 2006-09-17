@@ -225,19 +225,18 @@ function lfBatOrderAge($time) {
 
 	$base_where = "WHERE (create_date BETWEEN ? AND ?) AND customer_id <> 0 AND del_flg = 0 ";
 	//$where = $base_where . " AND (to_number(to_char(age(current_timestamp, order_birth), 'YYY'), 999) BETWEEN ? AND ?) ";
-	$where = $base_where . " AND current_timestamp BETWEEN ? AND ? ";
+	$where = $base_where . " AND order_birth BETWEEN ? AND ? ";
 	
-	sfprintr(	date("Y/m/d",strtotime("-10 year")));
+	sfprintr(	date("Y/m/d",strtotime());
 	
 	
 	$end_date = date("Y/m/d",strtotime("-10 year"));
+	$start_date = date("Y/m/d",strtotime("1 day" ,strtotime($end_date)));
 	
 	
 	$end_date = date("Y/m/d H:i:s", time()); 
-	$start_date = date("Y/m/d",strtotime("1 day" ,strtotime($end_date)));
+	$start_date = date("Y/m/d",strtotime("-10 year"));
 	
-	sfprintr($start_date);
-
 	// 年齢毎に集計する。
 	for($i = 0; $i <= $age_loop; $i++) {
 		$start_age = $i * 10;
