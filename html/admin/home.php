@@ -139,7 +139,7 @@ function lfGetSoldOut() {
 // 新規受付一覧
 function lfGetNewOrder() {
 	$objQuery = new SC_Query();
-	$col = "ord.order_id, customer_id, (ord.order_name01 || ' ' || ord.order_name02) AS name, ord.total, ";
+	$col = "ord.order_id, customer_id, ord.order_name01 AS name01, ord.order_name02 AS name02, ord.total, ";
 	$col.= "(SELECT det.product_name FROM dtb_order_detail AS det WHERE ord.order_id = det.order_id LIMIT 1) AS product_name, ";
 	$col.= "(SELECT pay.payment_method FROM dtb_payment AS pay WHERE ord.payment_id = pay.payment_id) AS payment_method, ";	
 	$col.= "create_date AS create_date";
