@@ -46,8 +46,11 @@ $objPage->arrSoldout = lfGetSoldOut();
 
 // 新規受付一覧
 $arrNewOrder = lfGetNewOrder();
-sfprintr($arrNewOrder);
-date("Y/m/d",strtotime("1 day" ,strtotime($arrNewOrder['create_date'])));
+
+foreach ($arrNewOrder as $key => $val){
+	sfprintr(date("Y/m/d",strtotime("1 day" ,strtotime($val['create_date']))));
+	
+}
 $objPage->arrNewOrder = lfGetNewOrder();
 
 // お知らせ一覧の取得
