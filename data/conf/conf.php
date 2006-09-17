@@ -826,7 +826,7 @@ $arrView = array(
 		sub_title4,sub_comment4,sub_image4,sub_large_image4,
 		sub_title5,sub_comment5,sub_image5,sub_large_image5,
 		product_flag,deliv_date_id,sale_limit,point_rate,sale_unlimited,file1,file2,category_id
-		FROM (dtb_products AS T1 RIGHT JOIN 
+		FROM ( SELECT * FROM (dtb_products AS T1 RIGHT JOIN 
 		(SELECT 
 		product_id AS product_id_sub,
 		MIN(price01) AS price01_min,
@@ -837,8 +837,8 @@ $arrView = array(
 		MAX(stock) AS stock_max,
 		MIN(stock_unlimited) AS stock_unlimited_min,
 		MAX(stock_unlimited) AS stock_unlimited_max
-		FROM (SELECT * FROM (dtb_products_class GROUP BY product_id) AS T2
-		ON T1.product_id = T2.product_id_sub)) AS T3 LEFT JOIN (SELECT rank AS category_rank, category_id AS sub_category_id FROM dtb_category) AS T4
+		FROM dtb_products_class GROUP BY product_id) AS T2
+		ON T1.product_id = T2.product_id_sub) AS T3 LEFT JOIN (SELECT rank AS category_rank, category_id AS sub_category_id FROM dtb_category) AS T4
 		ON T3.category_id = T4.sub_category_id) vw_products_allclass_detail ',
 
 	"vw_product_class" => '
