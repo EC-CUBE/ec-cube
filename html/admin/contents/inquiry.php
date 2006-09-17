@@ -35,9 +35,6 @@ $arrCVSTITLE = array(
 			);
 
 
-
-
-
 class LC_Page {
 	var $cnt_question;
 
@@ -75,7 +72,7 @@ $arrQuestion = array( "0"=>"使用しない", "1"=>"テキストエリア", "2"=>"テキストボ
 				);
 
 
-$sql = "SELECT *, to_char( create_date, 'YYYY/MM/DD' ) as disp_date FROM dtb_question WHERE del_flg = 0 ORDER BY question_id";
+$sql = "SELECT *, cast(substring(create_date, 1, 10) as date) as disp_date FROM dtb_question WHERE del_flg = 0 ORDER BY question_id";
 $result = $conn->getAll($sql);
 $objPage->list_data = $result;
 						
