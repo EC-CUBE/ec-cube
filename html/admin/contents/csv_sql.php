@@ -146,7 +146,7 @@ $arrColList =  sfSwapArray($arrColList);
 // テンプレートに出力するデータをセット
 $objPage->arrSqlList = $arrSqlList;																// SQL一覧
 $objPage->arrTableList = sfarrCombine($arrTableList['table_name'], $arrTableList['description']);	// テーブル一覧
-$objPage->arrColList = sfarrCombine($arrColList['attname'],$arrColList['description']);			// カラム一覧
+$objPage->arrColList = sfarrCombine($arrColList['column_name'],$arrColList['description']);			// カラム一覧
 $objPage->selectTable = $selectTable;															// 選択されているテーブル
 $objPage->sql_id = $sql_id;																		// 選択されているSQL
 
