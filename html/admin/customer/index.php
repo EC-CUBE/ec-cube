@@ -152,7 +152,9 @@ if ($_POST['mode'] == "search" || $_POST['mode'] == "csv"  || $_POST['mode'] == 
 			$page_max = SEARCH_PMAX;
 		}
 		
-		sfprintr($objPage->arrForm['search_pageno']);
+		if ($objPage->arrForm['search_pageno'] == 0){
+			$objPage->arrForm['search_pageno'] = 1;
+		}
 		
 		$offset = $page_max * ($objPage->arrForm['search_pageno'] - 1);
 		$objSelect->setLimitOffset($page_max, $offset);		

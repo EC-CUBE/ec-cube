@@ -289,7 +289,7 @@ class SC_CustomerList extends SC_SelectSql {
 
 	//　検索総数カウント用SQL
 	function getListCount() {
-		$this->select = "SELECT COUNT (customer_id) FROM dtb_customer ";	
+		$this->select = "SELECT COUNT(customer_id) FROM dtb_customer ";	
 		return $this->getSql(1);
 	}
 
