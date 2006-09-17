@@ -97,28 +97,28 @@ if ($_POST['mode'] == 'search' || $_POST['mode'] == 'csv' || $_POST['mode'] == '
 			case 'search_reviewer_name':
 				$val = ereg_replace(" ", "%", $val);
 				$val = ereg_replace("　", "%", $val);
-				$where.= "AND reviewer_name ILIKE ? ";
+				$where.= " AND reviewer_name ILIKE ? ";
 				$arrval[] = "%$val%";
 				break;
 				
 			case 'search_reviewer_url':
 				$val = ereg_replace(" ", "%", $val);
 				$val = ereg_replace("　", "%", $val);
-				$where.= "AND reviewer_url ILIKE ? ";
+				$where.= " AND reviewer_url ILIKE ? ";
 				$arrval[] = "%$val%";
 				break;
 				
 			case 'search_name':
 				$val = ereg_replace(" ", "%", $val);
 				$val = ereg_replace("　", "%", $val);
-				$where.= "AND name ILIKE ? ";
+				$where.= " AND name ILIKE ? ";
 				$arrval[] = "%$val%";
 				break;
 				
 			case 'search_product_code':
 				$val = ereg_replace(" ", "%", $val);
 				$val = ereg_replace("　", "%", $val);
-				$where.= "AND A.product_id IN (SELECT product_id FROM dtb_products_class WHERE product_code ILIKE ? )";
+				$where.= " AND A.product_id IN (SELECT product_id FROM dtb_products_class WHERE product_code ILIKE ? )";
 				$arrval[] = "%$val%";
 				break;
 				
@@ -145,7 +145,7 @@ if ($_POST['mode'] == 'search' || $_POST['mode'] == 'csv' || $_POST['mode'] == '
 				break;
 				
 			case 'search_recommend_level':
-				$where.= "AND recommend_level LIKE ? ";
+				$where.= " AND recommend_level LIKE ? ";
 				$arrval[] = $val;
 				break;
 				
