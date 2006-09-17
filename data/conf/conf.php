@@ -838,7 +838,7 @@ $arrView = array(
 		MIN(stock_unlimited) AS stock_unlimited_min,
 		MAX(stock_unlimited) AS stock_unlimited_max
 		FROM dtb_products_class GROUP BY product_id) AS T2
-		ON T1.product_id = T2.product_id_sub) AS T3 LEFT JOIN (SELECT rank AS category_rank, category_id AS sub_category_id FROM dtb_category) AS T4
+		ON T1.product_id = T2.product_id_sub ) ) AS T3 LEFT JOIN (SELECT rank AS category_rank, category_id AS sub_category_id FROM dtb_category) AS T4
 		ON T3.category_id = T4.sub_category_id) vw_products_allclass_detail ',
 
 	"vw_product_class" => '
