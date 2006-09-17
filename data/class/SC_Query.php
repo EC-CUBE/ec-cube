@@ -351,7 +351,7 @@ class SC_Query {
 			$ret = $this->conn->getOne($sql);
 		}else if (DB_TYPE == "mysql") {
 			$sql = "SELECT last_insert_id();";
-			$ret = $this->conn->getAll($sql);
+			$ret = $this->conn->getOne($sql);
 		}
 		
 		return $ret;

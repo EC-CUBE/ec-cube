@@ -297,6 +297,8 @@ function lfRegistOrder($objQuery, $arrData) {
 	
 	$order_id = $objQuery->nextval("dtb_order", "order_id");
 	
+	sfprintr($order_id);
+	
 	if ($order_id == 0) $order_id = 1;
 	
 	$sqlval['order_id'] = $order_id;
