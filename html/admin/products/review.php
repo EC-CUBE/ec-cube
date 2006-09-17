@@ -163,7 +163,7 @@ if ($_POST['mode'] == 'search' || $_POST['mode'] == 'csv' || $_POST['mode'] == '
 					
 					$end_date = date("Y/m/d",strtotime("1 day" ,strtotime($date)));
 					
-					$where.= " AND A.create_date <= cast($end_date as date) ";
+					$where.= " AND A.create_date <= cast('$end_date' as date) ";
 				}
 				break;
 			}
