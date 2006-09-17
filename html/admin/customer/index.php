@@ -130,7 +130,6 @@ if ($_POST['mode'] == "delete") {
 	$sql = "DELETE FROM dtb_customer_mail WHERE email = ?";
 	$objConn->query($sql, array($result_customer[0]["email"]));
 }
-sfprintr("tests");
 if ($_POST['mode'] == "search" || $_POST['mode'] == "csv"  || $_POST['mode'] == "delete" || $_POST['mode'] == "delete_all") {
 	// 入力文字の強制変換
 	lfConvertParam();
@@ -152,6 +151,8 @@ if ($_POST['mode'] == "search" || $_POST['mode'] == "csv"  || $_POST['mode'] == 
 		} else {
 			$page_max = SEARCH_PMAX;
 		}
+		
+		sfprintr($objPage->arrForm['search_pageno']);
 		
 		$offset = $page_max * ($objPage->arrForm['search_pageno'] - 1);
 		$objSelect->setLimitOffset($page_max, $offset);		
