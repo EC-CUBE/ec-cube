@@ -114,6 +114,10 @@ print($dsn."<br>");
 if(($db = DB::connect($dsn)) == 0){
   print "おおっと！データベースに接続できません。";
 }
+
+$result = $db->query("INSERT INTO employee (name) VALUES ('John')");
+
+
 $result = $db->query("SELECT last_insert_id(),last_insert_id()");
 while($row = $result->fetchRow()){
     print_r($row);
