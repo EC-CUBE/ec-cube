@@ -237,9 +237,9 @@ function lfBatOrderAge($time) {
 	
 	// 年齢毎に集計する。
 	for($i = 0; $i <= $age_loop; $i++) {
-		$where = $base_where . " AND order_birth >= '$start_date'";
+		$where = $base_where . " AND order_birth >= cast('$start_date' as date)";
 		if($i <= $age_loop) {
-			$where = $where . " AND order_birth <= '$end_date'";
+			$where = $where . " AND order_birth <= cast('$end_date' as date)";
 		}
 		lfBatOrderAgeSub($sql . $where, $start, $end, $start_age, $end_age, 1);
 		$end_date = date("Y/m/d",strtotime("1 day" ,strtotime($start_date)));
