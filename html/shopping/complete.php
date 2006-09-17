@@ -315,7 +315,7 @@ function lfRegistOrder($objQuery, $arrData) {
 		$sqlval['deliv_tel03'] = $arrData['order_tel03'];
 	}
 	$sqlval['create_date'] = 'now()';			// 受注日
-	$sqlval['commit_date'] = '';			// 受注日
+	$sqlval['commit_date'] = 'null';			// 受注日
 	
 	// INSERTの実行
 	$objQuery->insert("dtb_order", $sqlval);
