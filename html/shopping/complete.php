@@ -319,7 +319,6 @@ function lfRegistOrder($objQuery, $arrData) {
 	$objQuery->insert("dtb_order", $sqlval);
 
 	$order_id = $objQuery->nextval("dtb_order", "order_id");
-	sfprintr($order_id);
 	
 	// ¥á¥ë¥Þ¥¬ÇÛ¿®´õË¾¾ðÊó¤ÎÅÐÏ¿
 	lfRegistNonCustomer($arrData['order_email'], $arrData['mail_flag']);
@@ -363,8 +362,7 @@ function lfRegistOrderDetail($objQuery, $order_id, $objCartSess) {
 			$objQuery->insert("dtb_order_detail", $sqlval);
 			
 			$objQuery->getlastquery();
-			sfprintr($order_id);
-			exit();
+
 		} else {
 			sfDispSiteError(CART_NOT_FOUND);
 		}
