@@ -580,7 +580,7 @@ function lfGetOrderMember($type, $sdate, $edate, $objPage, $graph = true) {
 function lfGetOrderProducts($type, $sdate, $edate, $objPage, $graph = true) {
 	list($where, $arrval) = lfGetWhereMember('create_date', $sdate, $edate, $type);
 	
-	$sql = "SELECT product_id, T1.product_code, T2.name, T1.products_count, T1.order_count, T1.price, T1.total ";
+	$sql = "SELECT T1.product_id, T1.product_code, T2.name, T1.products_count, T1.order_count, T1.price, T1.total ";
 	$sql.= "FROM ( ";
 	$sql.= "SELECT product_id, product_code, price, ";
 	$sql.= "COUNT(*) AS order_count, ";
