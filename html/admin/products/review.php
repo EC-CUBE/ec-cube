@@ -84,6 +84,8 @@ if ($_POST['mode'] == 'search' || $_POST['mode'] == 'csv' || $_POST['mode'] == '
 	//エラーチェック
 	$objPage->arrErr = lfCheckError();
 	
+	sfprintr($_POST);
+	
 	if (!$objPage->arrErr){
 		foreach ($_POST as $key => $val){
 
@@ -156,7 +158,7 @@ if ($_POST['mode'] == 'search' || $_POST['mode'] == 'csv' || $_POST['mode'] == '
 					$arrval[] = $date;
 				}
 				break;
-				
+
 			case 'search_endyear':
 				if (isset($_POST['search_startyear']) && isset($_POST['search_startmonth']) && isset($_POST['search_startday'])){
 					$date = sfGetTimestamp($_POST['search_endyear'], $_POST['search_endmonth'], $_POST['search_endday']);
