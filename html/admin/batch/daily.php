@@ -100,24 +100,8 @@ function lfRealTimeDailyTotal($sdate, $edate) {
 function lfGetOrderDailySQL($start, $end) {
 	$from = " FROM dtb_order AS T1 LEFT JOIN dtb_customer AS T2 USING ( customer_id ) ";
 	$where = " WHERE T1.del_flg = 0 AND T1.create_date BETWEEN '$start' AND '$end' ";
-	
-	$sql = "SELECT ";
-	$sql.= "COUNT(*) AS total_order, ";
-	$sql.= "(SELECT sum(cnt) FROM (SELECT COUNT(*) AS cnt $from $where AND T1.customer_id = 0) AS nonmember ) AS nonmember, ";
-	$sql.= "(SELECT sum(cnt) FROM (SELECT COUNT(*) AS cnt $from $where AND T1.customer_id <> 0) AS member ) AS member, ";
-	$sql.= "(SELECT sum(cnt) FROM (SELECT COUNT(*) AS cnt $from $where AND T1.order_sex = 1) AS men ) AS men, ";
-	$sql.= "(SELECT sum(cnt) FROM (SELECT COUNT(*) AS cnt $from $where AND T1.order_sex = 2) AS women ) AS women, ";
-	$sql.= "(SELECT sum(cnt) FROM (SELECT COUNT(*) AS cnt $from $where AND T1.order_sex = 1 AND T2.customer_id <> 0) AS men_member ) AS men_member, ";
-	$sql.= "(SELECT sum(cnt) FROM (SELECT COUNT(*) AS cnt $from $where AND T1.order_sex = 1 AND T2.customer_id = 0) AS men_nonmember ) AS men_nonmember, ";
-	$sql.= "(SELECT sum(cnt) FROM (SELECT COUNT(*) AS cnt $from $where AND T1.order_sex = 2 AND T2.customer_id <> 0) AS women_member ) AS women_member, ";
-	$sql.= "(SELECT sum(cnt) FROM (SELECT COUNT(*) AS cnt $from $where AND T1.order_sex = 2 AND T2.customer_id = 0) AS women_nonmember ) AS women_nonmember, ";
-	$sql.= "SUM(total) AS total, ";
-	$sql.= "(AVG(total)) AS total_average ";
-	$sql.= $from;
-	$sql.= $where;		// 受注作成日で検索する
-	
-	
-/*	
+
+/*	mysqlでも問題ないように修正
 	$sql = "SELECT ";
 	$sql.= "COUNT(*) AS total_order, ";
 	$sql.= "SUM((SELECT COUNT(*) WHERE customer_id = 0)) AS nonmember, ";
@@ -133,6 +117,21 @@ function lfGetOrderDailySQL($start, $end) {
 	$sql.= $from;
 	$sql.= $where;		// 受注作成日で検索する
 */
+	$sql = "SELECT ";
+	$sql.= "COUNT(*) AS total_order, ";
+	$sql.= "(SELECT sum(cnt) FROM (SELECT COUNT(*) AS cnt $from $where AND T1.customer_id = 0) AS nonmember ) AS nonmember, ";
+	$sql.= "(SELECT sum(cnt) FROM (SELECT COUNT(*) AS cnt $from $where AND T1.customer_id <> 0) AS member ) AS member, ";
+	$sql.= "(SELECT sum(cnt) FROM (SELECT COUNT(*) AS cnt $from $where AND T1.order_sex = 1) AS men ) AS men, ";
+	$sql.= "(SELECT sum(cnt) FROM (SELECT COUNT(*) AS cnt $from $where AND T1.order_sex = 2) AS women ) AS women, ";
+	$sql.= "(SELECT sum(cnt) FROM (SELECT COUNT(*) AS cnt $from $where AND T1.order_sex = 1 AND T2.customer_id <> 0) AS men_member ) AS men_member, ";
+	$sql.= "(SELECT sum(cnt) FROM (SELECT COUNT(*) AS cnt $from $where AND T1.order_sex = 1 AND T2.customer_id = 0) AS men_nonmember ) AS men_nonmember, ";
+	$sql.= "(SELECT sum(cnt) FROM (SELECT COUNT(*) AS cnt $from $where AND T1.order_sex = 2 AND T2.customer_id <> 0) AS women_member ) AS women_member, ";
+	$sql.= "(SELECT sum(cnt) FROM (SELECT COUNT(*) AS cnt $from $where AND T1.order_sex = 2 AND T2.customer_id = 0) AS women_nonmember ) AS women_nonmember, ";
+	$sql.= "SUM(total) AS total, ";
+	$sql.= "(AVG(total)) AS total_average ";
+	$sql.= $from;
+	$sql.= $where;		// 受注作成日で検索する
+
 	return $sql;
 }
 
