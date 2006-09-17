@@ -295,13 +295,7 @@ function lfRegistOrder($objQuery, $arrData) {
 	unset($sqlval['reminder']);			// リマインダー質問
 	unset($sqlval['reminder_answer']);	// リマインダー答え
 	
-	$order_id = $objQuery->nextval("dtb_order", "order_id");
-	
-	sfprintr($order_id);
-	
-	if ($order_id == 0) $order_id = 1;
-	
-	$sqlval['order_id'] = $order_id;
+//	$sqlval['order_id'] = $order_id;
 	$sqlval['status'] = '1';			// 注文ステータス:新規受付に設定
 	
 	// 別のお届け先を指定していない場合、配送先に登録住所をコピーする。
@@ -324,6 +318,9 @@ function lfRegistOrder($objQuery, $arrData) {
 	
 	// INSERTの実行
 	$objQuery->insert("dtb_order", $sqlval);
+
+	$order_id = $objQuery->nextval("dtb_order", "order_id");
+	sfprintr($order_id);
 	
 	// メルマガ配信希望情報の登録
 	lfRegistNonCustomer($arrData['order_email'], $arrData['mail_flag']);
