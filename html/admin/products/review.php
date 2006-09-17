@@ -83,9 +83,7 @@ if ($_POST['mode'] == 'search' || $_POST['mode'] == 'csv' || $_POST['mode'] == '
 	}
 	//エラーチェック
 	$objPage->arrErr = lfCheckError();
-	
-	sfprintr($_POST);
-	
+
 	if (!$objPage->arrErr){
 		foreach ($_POST as $key => $val){
 
@@ -167,6 +165,7 @@ if ($_POST['mode'] == 'search' || $_POST['mode'] == 'csv' || $_POST['mode'] == '
 				}
 				break;
 			}
+		
 		}
 			
 	}

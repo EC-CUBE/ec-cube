@@ -2361,8 +2361,6 @@ function sfChangeMySQL($sql){
 	$sql = sfChangeILIKE($sql);		// ILIKE検索をLIKE検索に変換する
 	$sql = sfChangeRANDOM($sql);	// RANDOM()をRAND()に変換する
 
-	
-	sfprintr($sql);
 	return $sql;
 }
 
