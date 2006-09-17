@@ -296,6 +296,8 @@ function lfRegistOrder($objQuery, $arrData) {
 	unset($sqlval['reminder_answer']);	// リマインダー答え
 	
 	$order_id = $objQuery->nextval("dtb_order", "order_id");
+	
+	sfprintr($order_id);
 	$sqlval['order_id'] = $order_id;
 	$sqlval['status'] = '1';			// 注文ステータス:新規受付に設定
 	
