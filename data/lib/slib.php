@@ -2357,8 +2357,9 @@ function sfChangeMySQL($sql){
 	$sql = preg_replace("/[\r\n\t]/"," ",$sql);
 	
 	$sql = sfChangeView($sql);		// view表をインラインビューに変換する
-	$sql = sfChangeILIKE($sql);	// ILIKE検索をLIKE検索に変換する
-	
+	$sql = sfChangeILIKE($sql);		// ILIKE検索をLIKE検索に変換する
+	$sql = sfChangeLIKE($sql);		// LIKE検索をLIKE BINARY検索に変換する
+
 	return $sql;
 }
 
@@ -2389,6 +2390,13 @@ function sfChangeILIKE($sql){
 	$changesql = eregi_replace("(ILIKE )", "LIKE BINARY ", $sql);
 	return $changesql;
 }
+
+// LIKE検索をLIKE BINARY検索に変換する
+function sfChangeLIKE($sql){
+	$changesql = eregi_replace("( LIKE )", " LIKE BINARY ", $sql);
+	return $changesql;
+}
+
 
 /* デバッグ用 ------------------------------------------------------------------------------------------------*/
 function sfPrintR($obj) {

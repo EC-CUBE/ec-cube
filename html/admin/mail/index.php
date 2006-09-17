@@ -134,7 +134,7 @@ case 'back':
 
 		// 検索結果の取得
 		$objQuery = new SC_Query();
-		$from = "dtb_customer_mail as mail LEFT OUTER JOIN dtb_customer as cus USING(email)";
+		$from = "dtb_customer_mail LEFT OUTER JOIN dtb_customer USING(email)";
 
 		// 行数の取得
 		$linemax = $objQuery->count($from, $where, $arrval);
@@ -150,7 +150,18 @@ case 'back':
 		// 表示順序
 		$objQuery->setorder("customer_id DESC");
 		// 検索結果の取得
-		$col = "cus.customer_id,cus.name01,cus.name02,cus.kana01,cus.kana02,cus.sex,cus.email,cus.tel01,cus.tel02,cus.tel03,cus.pref,mail.mail_flag";
+		$col = "dtb_customer.customer_id,
+			dtb_customer.name01,
+			dtb_customer.name02,
+			dtb_customer.kana01,
+			dtb_customer.kana02,
+			dtb_customer.sex,
+			dtb_customer.email,
+			dtb_customer.tel01,
+			dtb_customer.tel02,
+			dtb_customer.tel03,
+			dtb_customer.pref,
+			dtb_customer_mail.mail_flag";
 		$objPage->arrResults = $objQuery->select($col, $from, $where, $arrval);
 
 		//現在時刻の取得

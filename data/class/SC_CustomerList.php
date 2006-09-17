@@ -129,15 +129,15 @@ class SC_CustomerList extends SC_SelectSql {
 				//¸¡º÷¾ò·ï¤ò´Þ¤Þ¤Ê¤¤
 				if($this->arrSql['not_emailinc'] == '1') {
 					if($sql_where == "") {
-						$sql_where .= "email NOT ILIKE ? ";
+						$sql_where .= "dtb_customer.email NOT ILIKE ? ";
 					} else {
-						$sql_where .= "AND email NOT ILIKE ? ";
+						$sql_where .= "AND dtb_customer.email NOT ILIKE ? ";
 					}
 				} else {				
 					if($sql_where == "") {
-						$sql_where .= "email ILIKE ? ";
+						$sql_where .= "dtb_customer.email ILIKE ? ";
 					} else {
-						$sql_where .= "OR email ILIKE ? ";
+						$sql_where .= "OR dtb_customer.email ILIKE ? ";
 					}
 				}
 				$searchEmail = $this->addSearchStr($val);
