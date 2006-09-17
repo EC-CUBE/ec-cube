@@ -132,6 +132,8 @@ if ($sql_id != "") {
 $arrTableList = lfGetTableList();
 $arrTableList = sfSwapArray($arrTableList);
 
+sfprintr($arrTableList);
+
 // 現在選択されているテーブルを取得する
 if ($_POST['selectTable'] == ""){
 	$selectTable = $arrTableList['relname'][0];
