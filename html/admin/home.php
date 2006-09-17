@@ -47,6 +47,8 @@ $objPage->arrSoldout = lfGetSoldOut();
 // 新規受付一覧
 $objPage->arrNewOrder = lfGetNewOrder();
 
+sfprintr($objPage->arrNewOrder );
+
 // お知らせ一覧の取得
 $objPage->arrInfo = lfGetInfo();
 
