@@ -257,7 +257,22 @@ class SC_CustomerList extends SC_SelectSql {
 	}
 
 	function getListMailMagazine() {
-		$this->select = "SELECT customer_id,name01,name02,kana01,kana02,sex,email,tel01,tel02,tel03,pref, mail_flag FROM dtb_customer_mail LEFT OUTER JOIN dtb_customer USING(email)";
+		$this->select = "
+			SELECT 
+				dtb_customer.customer_id,
+				dtb_customer.name01,
+				dtb_customer.name02,
+				dtb_customer.kana01,
+				dtb_customer.kana02,
+				dtb_customer.sex,
+				dtb_customer.email,
+				dtb_customer.tel01,
+				dtb_customer.tel02,
+				dtb_customer.tel03,
+				dtb_customer.pref, 
+				dtb_customer_mail.mail_flag 
+			FROM 
+				dtb_customer_mail LEFT OUTER JOIN dtb_customer USING(email)";
 		return $this->getSql(0);	
 	}
 	

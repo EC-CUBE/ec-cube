@@ -368,13 +368,16 @@ function lfRegistData($arrData){
 	
 	global $conn;
 	global $arrSearchColumn;
+	
+	$objQuery = new SC_Query();
 		
 	$objSelect = new SC_CustomerList( lfConvertParam($arrData, $arrSearchColumn), "magazine" );
 	$search_data = $conn->getAll($objSelect->getListMailMagazine(), $objSelect->arrVal);
 	$dataCnt = count($search_data);
 	
 	$dtb_send_history = array();
-	$dtb_send_history["send_id"] = $conn->getOne("SELECT NEXTVAL('dtb_send_history_send_id_seq')");
+//	$dtb_send_history["send_id"] = $conn->getOne("SELECT NEXTVAL('dtb_send_history_send_id_seq')");
+	$dtb_send_history["send_id"] = $objQuery->nextval('dtb_send_history', 'send_id');
 	$dtb_send_history["mail_method"] = $arrData['mail_method'];
 	$dtb_send_history["subject"] = $arrData['subject'];
 	$dtb_send_history["body"] = $arrData['body'];
