@@ -230,16 +230,16 @@ function lfBatOrderAge($time) {
 	$end_date = date("Y/m/d",strtotime("-10 year"));
 	$start_date = date("Y/m/d",strtotime("1 day" ,strtotime($end_date)));
 	
-	$end_date = date("Y/m/d H:i:s", time()); 
+	$end_date = date("Y/m/d", time()); 
 	$start_date = date("Y/m/d",strtotime("-10 year"));
 	$start_age = null;
 	$end_age = null;
 	
 	// 年齢毎に集計する。
 	for($i = 0; $i <= $age_loop; $i++) {
-		$where = $base_where . " AND order_birth >= $start_date";
+		$where = $base_where . " AND order_birth >= '$start_date'";
 		if($i <= $age_loop) {
-			$where = $where . " AND order_birth <= $end_date";
+			$where = $where . " AND order_birth <= '$end_date'";
 		}
 		lfBatOrderAgeSub($sql . $where, $start, $end, $start_age, $end_age, 1);
 		$end_date = date("Y/m/d",strtotime("1 day" ,strtotime($start_date)));
