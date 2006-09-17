@@ -165,7 +165,7 @@ if ($_POST['mode'] == 'search' || $_POST['mode'] == 'csv' || $_POST['mode'] == '
 					
 					sfprintr($end_date);
 					
-					$where.= " AND A.create_date <= $end_date ";
+					$where.= " AND A.create_date <= cast($end_date as date) ";
 				}
 				break;
 			}
