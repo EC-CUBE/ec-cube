@@ -101,7 +101,7 @@ $objPage->arrSearchData= $arrSearchData;
 if (($_POST["mode"] == "edit" || $_POST["mode"] == "edit_search") && is_numeric($_POST["edit_customer_id"])) {
 
 	//--　顧客データ取得
-	$sql = "SELECT A.*, EXTRACT(EPOCH FROM A.birth) AS birth_unix, B.mail_flag FROM dtb_customer AS A LEFT OUTER JOIN dtb_customer_mail AS B USING(email)
+	$sql = "SELECT A.*, B.mail_flag FROM dtb_customer AS A LEFT OUTER JOIN dtb_customer_mail AS B USING(email)
 			 WHERE A.del_flg = 0 AND A.customer_id = ?";
 	$result = $objConn->getAll($sql, array($_POST["edit_customer_id"]));
 	$objPage->list_data = $result[0];

@@ -96,7 +96,7 @@ $total_pretax = $objCartSess->getAllProductsTotal($arrInfo);
 $objPage->arrPayment = lfGetPayment($total_pretax);
 // 配送時間の取得
 $arrRet = sfGetDelivTime($objFormParam->getValue('payment_id'));
-$objPage->arrDelivTime = sfArrKeyValue($arrRet, 'time_id', 'time');
+$objPage->arrDelivTime = sfArrKeyValue($arrRet, 'time_id', 'deliv_time');
 $objPage->objCustomer = $objCustomer;
 //　配送日一覧の取得
 $objPage->arrDelivDate = lfGetDelivDate();
