@@ -350,9 +350,8 @@ class SC_Query {
 			$sql = "SELECT NEXTVAL('$seqtable')";
 		}else if (DB_TYPE == "mysql") {
 			$sql = "SELECT last_insert_id();";
-			return mysql_insert_id();
 		}
-		$ret = $this->conn->getOne($sql);
+		$ret = $this->conn->getALL($sql);
 		
 		return $ret;
 	}
