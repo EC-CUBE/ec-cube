@@ -349,11 +349,9 @@ class SC_Query {
 			$seqtable = $table . "_" . $colname . "_seq";
 			$sql = "SELECT NEXTVAL('$seqtable')";
 		}else if (DB_TYPE == "mysql") {
-			$sql = "SELECT last_insert_id();";
+			$sql = "SELECT last_insert_id();a";
 		}
 		$ret = $this->conn->getOne($sql);
-		
-		sfprintr($this->conn->getlastquery(true));
 		
 		return $ret;
 	}
