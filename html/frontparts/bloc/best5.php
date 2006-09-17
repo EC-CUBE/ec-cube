@@ -24,8 +24,8 @@ $objSubView->display($objSubPage->tpl_mainpage);
 function lfGetRanking(){
 	$objQuery = new SC_Query();
 	
-	$col = "A.*, B.name, B.price02_min, B.price01_min, B.main_list_image ";
-	$from = "dtb_best_products AS A INNER JOIN vw_products_allclass AS B ON A.product_id = B.product_id";
+	$col = "A.*, name, price02_min, price01_min, main_list_image ";
+	$from = "dtb_best_products AS A INNER JOIN vw_products_allclass using(product_id)";
 	$where = "status = 1";
 	$order = "rank";
 	$objQuery->setorder($order);
