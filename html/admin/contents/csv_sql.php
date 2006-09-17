@@ -189,11 +189,12 @@ function lfGetTableList(){
 	$sql .= "                     tableowner=? ";
 	$sql .= "                 )";
 	$sql .= " ORDER BY c.relname ";
+	$arrRet = $objQuery->getAll($sql, array(DB_USER));
 	*/
 	$sql = "";
 	$sql .= "SELECT table_name FROM dtb_table_comment WHERE column_name IS NULL ORDER BY table_name";
+	$arrRet = $objQuery->getAll($sql);
 	
-	$arrRet = $objQuery->getAll($sql, array(DB_USER));
 	
 	return $arrRet;
 }
