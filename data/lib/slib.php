@@ -2393,7 +2393,7 @@ function sfChangeILIKE($sql){
 
 // RANDOM()をRAND()に変換する
 function sfChangeRANDOM($sql){
-	$changesql = eregi_replace("(RANDOM )", " RAND ", $sql);
+	$changesql = eregi_replace("(randum )", " RAND ", $sql);
 	return $changesql;
 }
 
