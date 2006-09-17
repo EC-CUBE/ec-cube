@@ -29,7 +29,7 @@ class SC_CustomerList extends SC_SelectSql {
 			$this->setWhere("(del_flg = 0 OR del_flg IS NULL)");
 			$this->setWhere("status = 2");
 			
-			/*　会員のみ対象とする
+			/*　会員のみ対象とするため削除
 			if(is_array($this->arrSql['customer'])) {
 				$tmp_where = "";
 				foreach($this->arrSql['customer'] as $val) {

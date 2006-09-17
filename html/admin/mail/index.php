@@ -134,7 +134,7 @@ case 'back':
 
 		// 検索結果の取得
 		$objQuery = new SC_Query();
-		$from = "dtb_customer_mail LEFT OUTER JOIN dtb_customer USING(email)";
+		$from = "dtb_customer_mail as mail LEFT OUTER JOIN dtb_customer as cus USING(email)";
 
 		// 行数の取得
 		$linemax = $objQuery->count($from, $where, $arrval);
@@ -150,7 +150,7 @@ case 'back':
 		// 表示順序
 		$objQuery->setorder("customer_id DESC");
 		// 検索結果の取得
-		$col = "customer_id,name01,name02,kana01,kana02,sex,email,tel01,tel02,tel03,pref,mail_flag";
+		$col = "cus.customer_id,cus.name01,cus.name02,cus.kana01,cus.kana02,cus.sex,cus.email,cus.tel01,cus.tel02,cus.tel03,cus.pref,mail.mail_flag";
 		$objPage->arrResults = $objQuery->select($col, $from, $where, $arrval);
 
 		//現在時刻の取得
@@ -275,7 +275,7 @@ $objView->display(MAIN_FRAME);
 // 商品コードで検索された場合にヒットした受注番号を取得する。
 function lfGetCustomerOrderId($keyword) {
 	if($keyword != "") {
-		$col = "customer_id, order_id";
+		$col = "dtb_order.customer_id, dtb_order.order_id";
 		$from = "dtb_order LEFT JOIN dtb_order_detail USING(order_id)";
 		$where = "product_code LIKE ? AND del_flg = 0";
 		$val = sfManualEscape($keyword);
