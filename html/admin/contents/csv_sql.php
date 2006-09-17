@@ -192,7 +192,7 @@ function lfGetTableList(){
 	$arrRet = $objQuery->getAll($sql, array(DB_USER));
 	*/
 	$sql = "";
-	$sql .= "SELECT table_name FROM dtb_table_comment WHERE column_name IS NULL ORDER BY table_name";
+	$sql .= "SELECT table_name, description FROM dtb_table_comment WHERE column_name IS NULL ORDER BY table_name";
 	$arrRet = $objQuery->getAll($sql);
 	
 	
@@ -209,7 +209,7 @@ function lfGetTableList(){
 function lfGetColumnList($selectTable){
 	$objQuery = new SC_Query();
 	$arrRet = array();		// 結果取得用
-	
+	/*
 	$sql = "";
 	$sql .= " SELECT";
 	$sql .= "     a.attname,";
@@ -227,7 +227,11 @@ function lfGetColumnList($selectTable){
 	$sql .= "     fldnum";
 	$sql .= " ";
 	$arrRet = $objQuery->getAll($sql, array($selectTable));	
-
+	*/
+	$sql = "";
+	$sql .= " SELECT column_name, description FROM dtb_table_comment WHERE table_name = ?";
+	$arrRet = $objQuery->getAll($sql, array($selectTable));	
+	
 	return $arrRet;
 	
 }
