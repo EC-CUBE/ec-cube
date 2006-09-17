@@ -119,8 +119,6 @@ while($row = $result->fetchRow()){
     print_r($row);
 }
 
-$sql = 'select * from vw_products_allclass ';
-
 //print(preg_replace("/[\r\n\t]/"," ",$sql));
 // print(eregi_replace("(ILIKE )", "LIKE BINARY ", $sql));
 
