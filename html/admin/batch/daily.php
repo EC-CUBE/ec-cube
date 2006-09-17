@@ -227,7 +227,7 @@ function lfBatOrderAge($time) {
 	//$where = $base_where . " AND (to_number(to_char(age(current_timestamp, order_birth), 'YYY'), 999) BETWEEN ? AND ?) ";
 	$where = $base_where . " AND order_birth BETWEEN ? AND ? ";
 	
-	sfprintr(	date("Y/m/d",strtotime(date())));
+	sfprintr(	date("Y/m/d",strtotime(time())));
 	
 	
 	$end_date = date("Y/m/d",strtotime("-10 year"));
