@@ -84,7 +84,7 @@
 							<!--{section name=i loop=$arrNewOrder}-->
 							<tr bgcolor="#ffffff" class="fs10">
 								<td><!--{$arrNewOrder[i].create_date}--></td>
-								<td><!--{$arrNewOrder[i].name|escape}--></td>
+								<td><!--{$arrNewOrder[i].name01|escape}--> <!--{$arrNewOrder[i].name02|escape}--></td>
 								<td><!--{$arrNewOrder[i].product_name|escape}--></td>
 								<td><!--{$arrNewOrder[i].payment_method|escape}--></td>
 								<td align="right"><!--{$arrNewOrder[i].total|number_format}-->±ß</td>
