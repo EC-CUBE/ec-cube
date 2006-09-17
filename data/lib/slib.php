@@ -2358,7 +2358,6 @@ function sfChangeMySQL($sql){
 	
 	$sql = sfChangeView($sql);		// view表をインラインビューに変換する
 	$sql = sfChangeILIKE($sql);		// ILIKE検索をLIKE検索に変換する
-	$sql = sfChangeLIKE($sql);		// LIKE検索をLIKE BINARY検索に変換する
 
 	return $sql;
 }

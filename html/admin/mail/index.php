@@ -376,7 +376,6 @@ function lfRegistData($arrData){
 	$dataCnt = count($search_data);
 	
 	$dtb_send_history = array();
-//	$dtb_send_history["send_id"] = $conn->getOne("SELECT NEXTVAL('dtb_send_history_send_id_seq')");
 	$dtb_send_history["send_id"] = $objQuery->nextval('dtb_send_history', 'send_id');
 	$dtb_send_history["mail_method"] = $arrData['mail_method'];
 	$dtb_send_history["subject"] = $arrData['subject'];
