@@ -48,7 +48,7 @@ function lfStartDailyTotal($term, $start, $command = false) {
 		gfPrintLog("LAST BATCH " . $arrRet[0]['create_date'] . " > " . $batch_pass . " -> EXIT BATCH $batch_date");
 		return;
 	}
-		
+
 	// 集計
 	for ($i = $start; $i < $term; $i++) {
 		// 基本時間から$i日分さかのぼる

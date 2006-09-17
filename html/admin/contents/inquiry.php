@@ -91,15 +91,13 @@ if ( $_GET['mode'] == 'regist' ){
 		
 		if ( ! is_numeric($_POST['question_id']) ){
 			//ÅÐÏ¿
-//			$sql = "select nextval('dtb_question_question_id_seq');";
-//			$question_id = $conn->getOne($sql);
-			$objQuery = new SC_Query();
-			$deliv_id = $objQuery->nextval('dtb_question', 'question_id');
-			
 			$value = serialize($_POST);
 			$sql_val = array( $value, $_POST['title'] ,$question_id );
 			$conn->query("INSERT INTO dtb_question ( question, question_name, question_id ) VALUES (?, ?, ?)", $sql_val );
 			$objPage->MESSAGE = "ÅÐÏ¿¤¬´°Î»¤·¤Þ¤·¤¿";
+			
+			$objQuery = new SC_Query();
+			$question_id = $objQuery->nextval('dtb_question', 'question_id');
 			$objPage->QUESTION_ID = $question_id;
 			sfReload();
 		} else {

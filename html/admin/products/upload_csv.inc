@@ -48,10 +48,10 @@ function lfRegistProduct($objQuery) {
 		$objQuery->update("dtb_products", $sqlval, $where, array($sqlval['product_id']));
 	} else {
 		// ¿·µ¬ÅÐÏ¿
-		$product_id = $objQuery->nextval("dtb_products", "product_id");
-		$sqlval['product_id'] = $product_id;
 		// INSERT¤Î¼Â¹Ô
 		$objQuery->insert("dtb_products", $sqlval);
+		$product_id = $objQuery->nextval("dtb_products", "product_id");
+		$sqlval['product_id'] = $product_id;
 	}
 	
 	// µ¬³ÊÅÐÏ¿
