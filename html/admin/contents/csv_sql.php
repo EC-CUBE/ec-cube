@@ -231,7 +231,7 @@ function lfGetColumnList($selectTable){
 	$arrRet = $objQuery->getAll($sql, array($selectTable));	
 	*/
 	$sql = "";
-	$sql .= " SELECT column_name, description FROM dtb_table_comment WHERE table_name = ?";
+	$sql .= " SELECT column_name, description FROM dtb_table_comment WHERE table_name = ? AND column_name NOT IS NULL";
 	$arrRet = $objQuery->getAll($sql, array($selectTable));	
 	
 	return $arrRet;
