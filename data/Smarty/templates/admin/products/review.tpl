@@ -43,7 +43,7 @@
 								<td bgcolor="#f2f1ec" width="110">投稿者名</td>
 								<td bgcolor="#ffffff" width="248"><input type="text" name="search_reviewer_name" value="<!--{$arrForm.search_reviewer_name|escape}-->" size="30" class="box30" /></td>
 								<td bgcolor="#f2f1ec" width="110">ホームページアドレス</td>
-								<td bgcolor="#ffffff" width="249"><input type="text" name="search_reviewer_url" value="<!--{$arrForm.search_reviwer_url}-->" size="30" class="box30" /></td>
+								<td bgcolor="#ffffff" width="249"><input type="text" name="search_reviewer_url" value="<!--{$arrForm.search_reviewer_url}-->" size="30" class="box30" /></td>
 							</tr>
 							<tr class="fs12n">
 								<td bgcolor="#f2f1ec" width="110">商品名</td>

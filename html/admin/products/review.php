@@ -210,7 +210,10 @@ if ($_POST['mode'] == 'search' || $_POST['mode'] == 'csv' || $_POST['mode'] == '
 		exit;
 	}	
 }
-	
+
+sfprintr($objPage);
+
+
 $objView->assignobj($objPage);
 $objView->display(MAIN_FRAME);
 
