@@ -264,7 +264,6 @@ function init () {
 
 </table>
 <!--★★メインコンテンツ★★-->		
-<p id="test0">こんにちは</p>
 
 <!--{foreach key=key item=item from=$tpl_arrBloc name="bloc_loop"}-->
 <div align=center target_id="<!--{$item.target_id}-->" did="<!--{$smarty.foreach.bloc_loop.iteration}-->" class="dragged_elm" id="<!--{$item.target_id}-->"
