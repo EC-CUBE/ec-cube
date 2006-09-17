@@ -150,6 +150,8 @@ $objPage->arrColList = sfarrCombine($arrColList['column_name'],$arrColList['desc
 $objPage->selectTable = $selectTable;															// 選択されているテーブル
 $objPage->sql_id = $sql_id;																		// 選択されているSQL
 
+sfprintr($objPage->arrTableList);
+
 // POSTされたデータをセットする
 if (count($_POST) > 0) {
 	$arrSqlData[0]['name'] = $_POST['name'];
