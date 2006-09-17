@@ -132,8 +132,6 @@ if ($sql_id != "") {
 $arrTableList = lfGetTableList();
 $arrTableList = sfSwapArray($arrTableList);
 
-sfprintr($arrTableList);
-
 // 現在選択されているテーブルを取得する
 if ($_POST['selectTable'] == ""){
 	$selectTable = $arrTableList['relname'][0];
@@ -147,12 +145,10 @@ $arrColList =  sfSwapArray($arrColList);
 
 // テンプレートに出力するデータをセット
 $objPage->arrSqlList = $arrSqlList;																// SQL一覧
-$objPage->arrTableList = sfarrCombine($arrTableList['relname'], $arrTableList['description']);	// テーブル一覧
+$objPage->arrTableList = sfarrCombine($arrTableList['table_name'], $arrTableList['description']);	// テーブル一覧
 $objPage->arrColList = sfarrCombine($arrColList['attname'],$arrColList['description']);			// カラム一覧
 $objPage->selectTable = $selectTable;															// 選択されているテーブル
 $objPage->sql_id = $sql_id;																		// 選択されているSQL
-
-sfprintr($objPage->arrTableList);
 
 // POSTされたデータをセットする
 if (count($_POST) > 0) {
