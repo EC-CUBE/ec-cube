@@ -48,7 +48,7 @@ $objPage->arrSoldout = lfGetSoldOut();
 $arrNewOrder = lfGetNewOrder();
 
 foreach ($arrNewOrder as $key => $val){
-	sfprintr(date("Y/m/d",strtotime("1 day" ,strtotime($val['create_date']))));
+	sfprintr(date("Y/m/d H:m:s",strtotime("1 day" ,strtotime($val['create_date']))));
 	
 }
 $objPage->arrNewOrder = lfGetNewOrder();
