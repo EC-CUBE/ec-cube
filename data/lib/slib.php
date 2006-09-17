@@ -1308,7 +1308,7 @@ function sfGetDelivTime($payment_id = "") {
 	if($deliv_id != "") {
 		$objQuery->setorder("time_id");
 		$where = "deliv_id = ?";
-		$arrRet= $objQuery->select("time_id, time", "dtb_delivtime", $where, array($deliv_id));
+		$arrRet= $objQuery->select("time_id, deliv_time", "dtb_delivtime", $where, array($deliv_id));
 	}
 	return $arrRet;	
 }

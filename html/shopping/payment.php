@@ -186,7 +186,7 @@ function lfGetDelivTimeInfo($time_id) {
 	$objQuery = new SC_Query();
 	$where = "time_id = ?";
 	$arrRet = $objQuery->select("deliv_id, deliv_time", "dtb_delivtime", $where, array($time_id));
-	return (array($arrRet[0]['deliv_id'], $arrRet[0]['time']));
+	return (array($arrRet[0]['deliv_id'], $arrRet[0]['deliv_time']));
 }
 
 /* DBへデータの登録 */
