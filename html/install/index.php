@@ -445,13 +445,6 @@ function lfExecuteSQL($filepath, $db_user, $db_password, $db_server, $db_name) {
 //		$dsn = "pgsql://".$db_user.":".$db_password."@".$db_server."/".$db_name;
 		$dsn = "mysql://".$db_user.":".$db_password."@".$db_server.":3307/".$db_name;
 
-$dsn = "mysql://eccube_db_user:password@210.188.212.163:3307/eccube_db";
-print($dsn."<br>");
-
-if(($db = DB::connect($dsn)) == 0){
-  print "おおっと！データベースに接続できません。";
-}
-
 		$objDB = DB::connect($dsn);
 		// 接続エラー
 		if(!PEAR::isError($objDB)) {
@@ -465,6 +458,8 @@ if(($db = DB::connect($dsn)) == 0){
 				gfPrintLog($ret->userinfo, "./temp/install.log");
 			}
 		} else {
+			
+			print("aaaaa<br>");
 			$arrErr['all'] = ">> " . $objDB->message;
 			gfPrintLog($objDB->userinfo, "./temp/install.log");
 		}
