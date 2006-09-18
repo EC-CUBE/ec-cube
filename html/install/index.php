@@ -5,8 +5,8 @@ $INSTALL_DIR = realpath(dirname( __FILE__));
 class LC_Page {
 	function LC_Page() {
 		$this->arrDB_TYPE = array(
-			1 => 'PostgreSQL',
-			2 => 'mySQL'	
+			'pgsql' => 'PostgreSQL',
+			'mysql' => 'mySQL'	
 		);
 	}
 }
