@@ -292,6 +292,7 @@ function lfBatOrderAgeSub($sql, $start, $end, $start_age, $end_age, $member) {
 		}
 	}
 		
+	$sqlval['create_date'] = "now()";
 	$sqlval['order_date'] = $start;
 	$sqlval['start_age'] = "$start_age";
 	$sqlval['end_age'] = "$end_age";
