@@ -454,6 +454,8 @@ function lfExecuteSQL($filepath, $db_user, $db_password, $db_server, $db_name) {
 			print_r($sql_split);
 			
 			foreach($sql_split as $key => $val){
+				if ($val != "") {
+					
 				$ret = $objDB->query($val);
 				if(PEAR::isError($ret)) {
 					print($val);
@@ -463,6 +465,7 @@ function lfExecuteSQL($filepath, $db_user, $db_password, $db_server, $db_name) {
 					$arrErr['all'].= $arrKey[0] . "<br>";
 					$objPage->update_mess.=">> テーブル構成の変更に失敗しました。<br>";
 					gfPrintLog($ret->userinfo, "./temp/install.log");
+				}
 				}
 			}
 			
