@@ -420,6 +420,7 @@ function lfCheckDBError($objFormParam) {
 		$arrRet['db_port'] = "";
 	}else{
 		$arrRet['db_port'] = ":".$arrRet['db_port'];
+		$objFormParam->setValue("db_port", $arrRet['db_port']);
 		sfprintr($objFormParam);
 	}
 	
