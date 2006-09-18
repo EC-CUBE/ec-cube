@@ -12,7 +12,6 @@ VALUES ('dummy','dummy','',0,0,1,1);
 INSERT INTO dtb_member (name, login_id, password, creator_id, authority, work, del_flg, rank) 
 VALUES ('admin','admin','2c19f4a742398150cecc80b3e76b673a35b8c19c',0,0,1,0,1);
 
--- ブロックデータ
 insert into dtb_bloc ( bloc_name, tpl_path, filename, php_path, del_flg ) values ('カテゴリ',	'html/user_data/include/bloc/category.tpl',			'category','html/frontparts/bloc/category.php', 1);
 insert into dtb_bloc ( bloc_name, tpl_path, filename, php_path, del_flg ) values ('利用ガイド',	'html/user_data/include/bloc/guide.tpl',			'guide','', 1);
 insert into dtb_bloc ( bloc_name, tpl_path, filename, php_path, del_flg ) values ('かごの中',	'html/user_data/include/bloc/cart.tpl',				'cart','html/frontparts/bloc/cart.php', 1);
@@ -21,14 +20,12 @@ insert into dtb_bloc ( bloc_name, tpl_path, filename, php_path, del_flg ) values
 insert into dtb_bloc ( bloc_name, tpl_path, filename, php_path, del_flg ) values ('ログイン',	'html/user_data/include/bloc/login.tpl',			'login','html/frontparts/bloc/login.php', 1);
 insert into dtb_bloc ( bloc_name, tpl_path, filename, php_path, del_flg ) values ('オススメ商品','html/user_data/include/bloc/best5.tpl',			'best5','html/frontparts/bloc/best5.php', 1);
 
--- ページデータ
 insert into dtb_pagelayout (page_id,page_name,url)values(0, 'プレビューデータ','');
 insert into dtb_pagelayout (page_name,url,php_dir,tpl_dir,filename,edit_flg)values('TOPページ','index.php',' ','/html/user_data/templates/','top',2);
 insert into dtb_pagelayout (page_name,url,php_dir,tpl_dir,filename,edit_flg)values('商品一覧ページ','products/list.php',' ','/html/user_data/templates/','list',2);
 insert into dtb_pagelayout (page_name,url,php_dir,tpl_dir,filename,edit_flg)values('商品詳細','products/detail.php',' ','/html/user_data/templates/','detail',2);
 insert into dtb_pagelayout (page_name,url,php_dir,tpl_dir,filename,edit_flg)values('MYページ','mypage/index.php',' ','','',2);
 
--- ブロック配置データ
 INSERT INTO dtb_blocposition (page_id,target_id,bloc_id,bloc_row,filename)values(1,1,(SELECT bloc_id FROM dtb_bloc WHERE filename = 'category'),2,'category');
 INSERT INTO dtb_blocposition (page_id,target_id,bloc_id,bloc_row,filename)values(1,1,(SELECT bloc_id FROM dtb_bloc WHERE filename = 'guide'),3,'guide');
 INSERT INTO dtb_blocposition (page_id,target_id,bloc_id,bloc_row,filename)values(1,1,(SELECT bloc_id FROM dtb_bloc WHERE filename = 'cart'),1,'cart');
@@ -51,7 +48,6 @@ INSERT INTO dtb_blocposition (page_id,target_id,bloc_id,bloc_row,filename)values
 INSERT INTO dtb_blocposition (page_id,target_id,bloc_id,bloc_row,filename)values(3,5,(SELECT bloc_id FROM dtb_bloc WHERE filename = 'login'),0,'login');
 INSERT INTO dtb_blocposition (page_id,target_id,bloc_id,bloc_row,filename)values(3,5,(SELECT bloc_id FROM dtb_bloc WHERE filename = 'best5'),0,'best5');
 
--- CSVデータ
 insert into dtb_csv(csv_id,col,disp_name,rank)values(1,'product_id','商品ID',1);
 insert into dtb_csv(csv_id,col,disp_name,rank)values(1,'product_class_id','規格ID',2);
 insert into dtb_csv(csv_id,col,disp_name,rank)values(1,'classcategory_id1','規格名1',3);
@@ -187,7 +183,6 @@ insert into dtb_csv(csv_id,col,disp_name,rank)values(3,'status','対応状況',51);
 insert into dtb_csv(csv_id,col,disp_name,rank)values(3,'create_date','注文日時',52);
 insert into dtb_csv(csv_id,col,disp_name,rank)values(3,'update_date','更新日時',53);
 
--- 注文完了メール
 insert into dtb_mailtemplate (template_id, subject, header, footer, creator_id, update_date) values (
 1,
 'ご注文ありがとうございます。',
@@ -207,11 +202,9 @@ http://------.co.jp
 
 ',0,Now());
 
--- 新着情報データ
 insert into dtb_news (news_title, news_comment, creator_id) 
 values('サイトオープンいたしました!','一人暮らしからオフィスなどさまざまなシーンで あなたの生活をサポートするグッズをご家庭へお届けします！一人暮らしからオフィスなどさまざまなシーンで あなたの生活をサポートするグッズをご家庭へお届けします！一人暮らしからオフィスなどさまざまなシーンで あなたの生活をサポートするグッズをご家庭へお届けします！',1);
 
--- 配送データ
 INSERT INTO dtb_deliv (name,service_name,confirm_url,rank,status,del_flg,creator_id,create_date,update_date)
 VALUES ('ダミー配送業者', 'ダミー配送業者', '', 1, 1, 0, 2, now(), now());
 
@@ -266,13 +259,11 @@ INSERT INTO dtb_delivfee (deliv_id,fee,pref) VALUES (1, '1000', 47);
 INSERT INTO dtb_delivtime (deliv_id, deliv_time) VALUES (1, '午前');
 INSERT INTO dtb_delivtime (deliv_id, deliv_time) VALUES (1, '午後');
 
--- 支払方法データ
 INSERT INTO dtb_payment (payment_method,charge,rule,deliv_id,rank,note,fix,status,del_flg,creator_id,create_date,update_date,payment_image,upper_rule) VALUES ('郵便振替', 0, NULL, 1, 4, NULL, 2, 1, 0, 1, now(), now(), NULL, NULL);
 INSERT INTO dtb_payment (payment_method,charge,rule,deliv_id,rank,note,fix,status,del_flg,creator_id,create_date,update_date,payment_image,upper_rule) VALUES ('現金書留', 0, NULL, 1, 3, NULL, 2, 1, 0, 1, now(), now(), NULL, NULL);
 INSERT INTO dtb_payment (payment_method,charge,rule,deliv_id,rank,note,fix,status,del_flg,creator_id,create_date,update_date,payment_image,upper_rule) VALUES ('銀行振込', 0, NULL, 1, 2, NULL, 2, 1, 0, 1, now(), now(), NULL, NULL);
 INSERT INTO dtb_payment (payment_method,charge,rule,deliv_id,rank,note,fix,status,del_flg,creator_id,create_date,update_date,payment_image,upper_rule) VALUES ('代金引換', 0, NULL, 1, 1, NULL, 2, 1, 0, 1, now(), now(), NULL, NULL);
 
--- 商品データ
 INSERT INTO dtb_products (name,deliv_fee,sale_limit,sale_unlimited,category_id,rank,status,product_flag,point_rate,comment1,comment2,comment3,comment4,comment5,comment6,file1,file2,file3,file4,file5,file6,main_list_comment,main_list_image,main_comment,main_image,main_large_image,sub_title1,sub_comment1,sub_image1,sub_large_image1,sub_title2,sub_comment2,sub_image2,sub_large_image2,sub_title3,sub_comment3,sub_image3,sub_large_image3,sub_title4,sub_comment4,sub_image4,sub_large_image4,sub_title5,sub_comment5,sub_image5,sub_large_image5,sub_title6,sub_comment6,sub_image6,sub_large_image6,del_flg,creator_id,create_date,update_date,deliv_date_id) 
 VALUES ('アイスクリーム', NULL, NULL, 1, 5, 1, 1, '10010', 10, NULL, NULL, 'アイス,バニラ,チョコ,抹茶', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '暑い夏にどうぞ。', '08311201_44f65122ee5fe.jpg', '冷たいものはいかがですか？', '08311202_44f6515906a41.jpg', '08311203_44f651959bcb5.jpg', NULL, '<b>おいしいよ<b>', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0, 2, now(), now(), 2);
 INSERT INTO dtb_products (name,deliv_fee,sale_limit,sale_unlimited,category_id,rank,status,product_flag,point_rate,comment1,comment2,comment3,comment4,comment5,comment6,file1,file2,file3,file4,file5,file6,main_list_comment,main_list_image,main_comment,main_image,main_large_image,sub_title1,sub_comment1,sub_image1,sub_large_image1,sub_title2,sub_comment2,sub_image2,sub_large_image2,sub_title3,sub_comment3,sub_image3,sub_large_image3,sub_title4,sub_comment4,sub_image4,sub_large_image4,sub_title5,sub_comment5,sub_image5,sub_large_image5,sub_title6,sub_comment6,sub_image6,sub_large_image6,del_flg,creator_id,create_date,update_date,deliv_date_id)
@@ -314,7 +305,6 @@ INSERT INTO dtb_classcategory (name,class_id,status,rank,creator_id,create_date,
 INSERT INTO dtb_classcategory (name,class_id,status,rank,creator_id,create_date,update_date,del_flg) VALUES ('M', 2, NULL, 2, 2, now(), NULL, 0);
 INSERT INTO dtb_classcategory (name,class_id,status,rank,creator_id,create_date,update_date,del_flg) VALUES ('S', 2, NULL, 3, 2, now(), NULL, 0);
 
--- カテゴリー
 INSERT INTO dtb_category (category_name,parent_category_id,level,rank,creator_id,create_date,update_date,del_flg) VALUES ('食品', 0, 1, 4, 2, now(), now(), 0);
 INSERT INTO dtb_category (category_name,parent_category_id,level,rank,creator_id,create_date,update_date,del_flg) VALUES ('雑貨', 0, 1, 5, 2, now(), now(), 0);
 INSERT INTO dtb_category (category_name,parent_category_id,level,rank,creator_id,create_date,update_date,del_flg) VALUES ('お菓子', 1, 2, 2, 2, now(), now(), 0);
@@ -330,7 +320,6 @@ INSERT INTO dtb_category_total_count VALUES (2, NULL, now());
 INSERT INTO dtb_category_total_count VALUES (5, 1, now());
 INSERT INTO dtb_category_total_count VALUES (4, 1, now());
 
--- テンプレート
 INSERT INTO dtb_templates VALUES('default1','デフォルト1');
 
 INSERT INTO dtb_kiyaku (kiyaku_title, kiyaku_text, rank, creator_id, update_date, del_flg) 
@@ -417,4 +406,3 @@ VALUES ('第11条（本規約の改定）','当社は、本規約を任意に改定できるものとし、また
 INSERT INTO dtb_kiyaku (kiyaku_title, kiyaku_text, rank, creator_id, update_date, del_flg) 
 VALUES ('第12条（準拠法、管轄裁判所）','本規約に関して紛争が生じた場合、当社本店所在地を管轄する地方裁判所を第一審の専属的合意管轄裁判所とします。 ',
 1,0,Now(),0);
-
