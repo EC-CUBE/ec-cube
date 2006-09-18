@@ -263,8 +263,8 @@ INSERT INTO dtb_delivfee (deliv_id,fee,pref) VALUES (1, '1000', 45);
 INSERT INTO dtb_delivfee (deliv_id,fee,pref) VALUES (1, '1000', 46);
 INSERT INTO dtb_delivfee (deliv_id,fee,pref) VALUES (1, '1000', 47);
 
-INSERT INTO dtb_delivtime (deliv_id, time) VALUES (1, '¸áÁ°');
-INSERT INTO dtb_delivtime (deliv_id, time) VALUES (1, '¸á¸å');
+INSERT INTO dtb_delivtime (deliv_id, deliv_time) VALUES (1, '¸áÁ°');
+INSERT INTO dtb_delivtime (deliv_id, deliv_time) VALUES (1, '¸á¸å');
 
 -- »ÙÊ§ÊýË¡¥Ç¡¼¥¿
 INSERT INTO dtb_payment (payment_method,charge,rule,deliv_id,rank,note,fix,status,del_flg,creator_id,create_date,update_date,payment_image,upper_rule) VALUES ('Í¹ÊØ¿¶ÂØ', 0, NULL, 1, 4, NULL, 2, 1, 0, 1, now(), now(), NULL, NULL);

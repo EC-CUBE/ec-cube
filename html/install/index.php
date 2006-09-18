@@ -83,7 +83,7 @@ case 'step3':
 	// ビューの作成
 	if(count($objPage->arrErr) == 0) {
 		// ビューの作成
-		$objPage->arrErr = lfExecuteSQL("./create_view.sql", $arrRet['db_user'], $arrRet['db_password'], $arrRet['db_server'], $arrRet['db_name']); 
+		//$objPage->arrErr = lfExecuteSQL("./create_view.sql", $arrRet['db_user'], $arrRet['db_password'], $arrRet['db_server'], $arrRet['db_name']); 
 		if(count($objPage->arrErr) == 0) {
 			$objPage->tpl_message.="○：ビューの作成に成功しました。<br>";
 		} else {
