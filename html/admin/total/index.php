@@ -599,8 +599,6 @@ function lfGetOrderProducts($type, $sdate, $edate, $objPage, $graph = true) {
 	$objQuery = new SC_Query();
 	$objPage->arrResults = $objQuery->getall($sql, $arrval);
 	
-	$objQuery->getlastquery();
-	
 	// 円グラフの生成
 	if($graph) {
 		$image_key = "products_" . $type;
@@ -653,6 +651,8 @@ function lfGetOrderAge($type, $sdate, $edate, $objPage, $graph = true) {
 
 	$objQuery = new SC_Query();
 	$objPage->arrResults = $objQuery->getall($sql, $arrval);
+	
+	$objQuery->getlastquery();
 	
 	$max = count($objPage->arrResults);
 	for($i = 0; $i < $max; $i++) {

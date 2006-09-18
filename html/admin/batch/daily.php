@@ -236,6 +236,8 @@ function lfBatOrderAge($time) {
 	// 年齢毎に集計する。
 	for($i = 0; $i <= $age_loop; $i++) {
 		$where = $base_where . " AND order_birth >= cast('$start_date' as date)";
+		$start_age = $i * 10;
+		$end_age = $start_age+9;
 		if($i <= $age_loop) {
 			$where = $where . " AND order_birth <= cast('$end_date' as date)";
 		}
