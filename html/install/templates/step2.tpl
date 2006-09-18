@@ -48,7 +48,7 @@ function lfnChangeDisabled(db_type) {
 			<td bgcolor="#f2f1ec" width="150" class="fs12n">¥Ý¡¼¥È</td>
 			<td bgcolor="#ffffff" width="332" class="fs12">
 			<!--{assign var=key value="db_port"}-->
-			<span class="red"><!--{$arrErr[$key]}--></span>
+			<span class="red"><!--{$arrErr[$key]}--></span><!--{$arrForm[$key].value}-->
 			<input type="text" name="<!--{$key}-->" value="<!--{$arrForm[$key].value|escape}-->" maxlength="<!--{$arrForm[$key].length}-->" style="<!--{$arrErr[$key]|sfGetErrorColor}-->" <!--{if $arrForm[$key].value == 'pgsql'}-->disabled=false<!--{else}-->disabled=false;<!--{/if}--> size="6" class="box6" />
 			</td>
 		</tr>
