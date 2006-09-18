@@ -145,7 +145,7 @@ case 'drop':
 	
 	if ($arrRet['db_type'] == 'pgsql'){
 		// ビューの削除
-		$objPage->arrErr = lfExecuteSQL("./drop_view.sql", $arrRet['db_user'], $arrRet['db_password'], $arrRet['db_server'], $arrRet['db_name'], $arrRet['db_type'], $arrRet['db_port']); 
+		$objPage->arrErr = lfExecuteSQL("./drop_view.sql", $arrRet['db_user'], $arrRet['db_password'], $arrRet['db_server'], $arrRet['db_name'], $arrRet['db_type'], $arrRet['db_port'], false); 
 		if(count($objPage->arrErr) == 0) {
 			$objPage->tpl_message.="○：ビューの削除に成功しました。<br>";
 		} else {
@@ -156,7 +156,7 @@ case 'drop':
 
 	// テーブルの削除
 	if(count($objPage->arrErr) == 0) {
-		$objPage->arrErr = lfExecuteSQL("./drop_table_".$arrRet['db_type'].".sql", $arrRet['db_user'], $arrRet['db_password'], $arrRet['db_server'], $arrRet['db_name'], $arrRet['db_type'], $arrRet['db_port']); 
+		$objPage->arrErr = lfExecuteSQL("./drop_table.sql", $arrRet['db_user'], $arrRet['db_password'], $arrRet['db_server'], $arrRet['db_name'], $arrRet['db_type'], $arrRet['db_port'], false); 
 		if(count($objPage->arrErr) == 0) {
 			$objPage->tpl_message.="○：テーブルの削除に成功しました。<br>";
 		} else {
@@ -446,7 +446,7 @@ function lfCheckDBError($objFormParam) {
 }
 
 // SQL文の実行
-function lfExecuteSQL($filepath, $db_user, $db_password, $db_server, $db_name, $db_type, $db_port, $disp_err = false) {
+function lfExecuteSQL($filepath, $db_user, $db_password, $db_server, $db_name, $db_type, $db_port, $disp_err = true) {
 	$arrErr = array();
 
 	if(!file_exists($filepath)) {
