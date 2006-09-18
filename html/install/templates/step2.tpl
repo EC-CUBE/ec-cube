@@ -34,6 +34,14 @@
 			</td>
 		</tr>
 		<tr>
+			<td bgcolor="#f2f1ec" width="150" class="fs12n">ポート</td>
+			<td bgcolor="#ffffff" width="332" class="fs12">
+			<!--{assign var=key value="db_port"}-->
+			<span class="red"><!--{$arrErr[$key]}--></span>
+			<input type="text" name="<!--{$key}-->" value="<!--{$arrForm[$key].value|escape}-->" maxlength="<!--{$arrForm[$key].length}-->" style="<!--{$arrErr[$key]|sfGetErrorColor}-->" size="50" class="box50" />
+			</td>
+		</tr>
+		<tr>
 			<td bgcolor="#f2f1ec" width="150" class="fs12n">DB名</td>
 			<td bgcolor="#ffffff" width="332" class="fs12">
 			<!--{assign var=key value="db_name"}-->
