@@ -109,18 +109,9 @@ if (($_POST["mode"] == "edit" || $_POST["mode"] == "edit_search") && is_numeric(
 	$birth = split(" ", $objPage->list_data["birth"]);
 	$birth = split("/",$birth[0]);
 	
-	sfprintr($birth);
-
-	
-	$objPage->list_data["year"] = substr($objPage->list_data["birth"], 0, 4);
-	$objPage->list_data["month"] = substr($objPage->list_data["birth"], 5, 2);
-	$objPage->list_data["day"] = substr($objPage->list_data["birth"], 7, 2);
-	$objPage->list_data["month"] = 11;
-	$objPage->list_data["day"] = 1;
-	
-	
-	sfprintr($objPage->list_data );
-
+	$objPage->list_data["year"] = $birth[0];
+	$objPage->list_data["month"] = $birth[1];
+	$objPage->list_data["day"] = $birth[2];
 	
 	$objPage->list_data["password"] = DEFAULT_PASSWORD;
 	//DB登録のメールアドレスを渡す
