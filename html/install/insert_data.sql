@@ -331,10 +331,6 @@ INSERT INTO dtb_category_total_count VALUES (2, NULL, now());
 INSERT INTO dtb_category_total_count VALUES (5, 1, now());
 INSERT INTO dtb_category_total_count VALUES (4, 1, now());
 
--- オススメ
---INSERT INTO dtb_best_products (category_id,rank,product_id,title,comment,creator_id,create_date,update_date,del_flg) VALUES (0, 1, 1, '', '当店1番人気です。', 2, now(), now(), 0);
---INSERT INTO dtb_best_products (category_id,rank,product_id,title,comment,creator_id,create_date,update_date,del_flg) VALUES (0, 2, 2, '', 'こちらもおすすめ', 2, now(), now(), 0);
-
 -- テンプレート
 INSERT INTO dtb_templates VALUES('default1','デフォルト1');
 
