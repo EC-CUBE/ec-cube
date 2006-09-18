@@ -31,12 +31,6 @@ $objDBParam = new SC_FormParam();
 $objWebParam = lfInitWebParam($objWebParam);
 $objDBParam = lfInitDBParam($objDBParam);
 
-if ($_POST['db_type'] == 'pgsql') {
-	$_POST['db_port'] = "";
-}else{
-	$_POST['db_port'] = ":".$_POST['db_port'];
-}
-
 //フォーム配列の取得
 $objWebParam->setParam($_POST);
 $objDBParam->setParam($_POST);
@@ -421,6 +415,13 @@ function lfCheckDBError($objFormParam) {
 	
 	$objErr = new SC_CheckError($arrRet);
 	$objErr->arrErr = $objFormParam->checkError();
+	
+	if ($arrRet['db_type'] == 'pgsql') {
+		$arrRet['db_port'] = "";
+	}else{
+		$arrRet['db_port'] = ":".$arrRet['db_port'];
+		sfprintr($objFormParam);
+	}
 	
 	if(count($objErr->arrErr) == 0) {
 		// 接続確認
