@@ -135,7 +135,7 @@ case 'drop':
 	// 入力データを渡す。
 	$arrRet =  $objDBParam->getHashArray();
 	// ビューの削除
-	$objPage->arrErr = lfExecuteSQL("./drop_view.sql", $arrRet['db_user'], $arrRet['db_password'], $arrRet['db_server'], $arrRet['db_name']); 
+//	$objPage->arrErr = lfExecuteSQL("./drop_view.sql", $arrRet['db_user'], $arrRet['db_password'], $arrRet['db_server'], $arrRet['db_name']); 
 	if(count($objPage->arrErr) == 0) {
 		$objPage->tpl_message.="○：ビューの削除に成功しました。<br>";
 	} else {
