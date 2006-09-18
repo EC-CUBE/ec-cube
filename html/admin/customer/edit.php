@@ -107,8 +107,8 @@ if (($_POST["mode"] == "edit" || $_POST["mode"] == "edit_search") && is_numeric(
 	$objPage->list_data = $result[0];
 	
 	$objPage->list_data["year"] = substr($objPage->list_data["birth"], 0, 4);
-	$objPage->list_data["month"] = substr($objPage->list_data["birth"], 5, 6);
-	$objPage->list_data["day"] = substr($objPage->list_data["birth"], 7, 8);
+	$objPage->list_data["month"] = substr($objPage->list_data["birth"], 5, 2);
+	$objPage->list_data["day"] = substr($objPage->list_data["birth"], 7, 2);
 	
 		sfprintr($objPage->list_data );
 
