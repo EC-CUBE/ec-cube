@@ -507,7 +507,7 @@ function lfGetWhereMember($col_date, $sdate, $edate, $type, $col_member = "custo
 		if ($where != "") {
 			$where.= " AND ";
 		}			
-		$where.= " $col_date < date('" . $edate ."')+1";
+		$where.= " $col_date < date('" . $edate ."')";
 	}
 	
 	// ²ñ°÷¡¢Èó²ñ°÷¤ÎÈ½Äê
