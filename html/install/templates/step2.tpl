@@ -5,10 +5,10 @@ function lfnChangeDisabled(db_type) {
 	
 	if (type == 'pgsql') {
 		form1.db_port.value=type
-		form1.db_port.style.disable = true;
+		form1.db_port.style.disabled= true;
 	}else{
 		form1.db_port.value=type
-		form1.db_port.style.disable = false;
+		form1.db_port.style.disabled = false;
 	}
 }
 </script>
