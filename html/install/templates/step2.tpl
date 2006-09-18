@@ -20,7 +20,7 @@
 			<td bgcolor="#ffffff" width="332" class="fs12">
 			<!--{assign var=key value="db_type"}-->
 			<span class="red"><!--{$arrErr[$key]}--></span>
-			<select name="<!--{$key}-->" style="<!--{$arrErr[$key]|sfGetErrorColor}-->" onChange="alert('11');">
+			<select name="<!--{$key}-->" style="<!--{$arrErr[$key]|sfGetErrorColor}-->" onChange="form1.db_port.value='ww'">
 			<!--{html_options options=$arrDB_TYPE selected=$arrForm[$key].value}-->
 			</select>
 			</td>
