@@ -63,7 +63,7 @@ case 'step2':
 	//入力値のエラーチェック
 	$objPage->arrErr = lfCheckDBError($objDBParam);
 	
-	sfprintr($_POST);exit;
+	sfprintr($_POST);
 	
 	if(count($objPage->arrErr) == 0) {
 		$objPage = lfDispStep3($objPage);

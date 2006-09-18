@@ -38,7 +38,7 @@
 			<td bgcolor="#ffffff" width="332" class="fs12">
 			<!--{assign var=key value="db_port"}-->
 			<span class="red"><!--{$arrErr[$key]}--></span>
-			<input type="text" name="<!--{$key}-->" value="<!--{$arrForm[$key].value|escape}-->" maxlength="<!--{$arrForm[$key].length}-->" style="<!--{$arrErr[$key]|sfGetErrorColor}-->" size="50" class="box50" />
+			<input type="text" name="<!--{$key}-->" value="<!--{$arrForm[$key].value|escape}-->" maxlength="<!--{$arrForm[$key].length}-->" style="<!--{$arrErr[$key]|sfGetErrorColor}-->" size="5" class="box5" />
 			</td>
 		</tr>
 		<tr>
