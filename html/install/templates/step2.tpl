@@ -1,8 +1,13 @@
 <script type="text/javascript">
 function lfnChangeDisabled(db_type) {
 
-alert(db_type.value);
-
+	type = db_type.value;
+	
+	if (type == 'pgsql' {
+		form1.db_port.value=type
+	}else{
+		form1.db_port.value=type
+	}
 }
 </script>
 <table width="502" border="0" cellspacing="1" cellpadding="0" summary=" ">
