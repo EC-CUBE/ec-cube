@@ -413,13 +413,15 @@ function lfCheckDBError($objFormParam) {
 	// 入力データを渡す。
 	$arrRet =  $objFormParam->getHashArray();
 	
-	sfprintr($arrRet);exit;
+	if ($arrRet['db_type'] == 'pgsql') {
+		$arrRet['db_port'] = "";
+	}
 	$objErr = new SC_CheckError($arrRet);
 	$objErr->arrErr = $objFormParam->checkError();
 	
 	if(count($objErr->arrErr) == 0) {
 		// 接続確認
-		$dsn = "pgsql://".$arrRet['db_user'].":".$arrRet['db_password']."@".$arrRet['db_server']."/".$arrRet['db_name'];
+		$dsn = $arrRet['db_type']."://".$arrRet['db_user'].":".$arrRet['db_password']."@".$arrRet['db_server'].$arrRet['db_port']."/".$arrRet['db_name'];
 		// Debugモード指定
 		$options['debug'] = 3;
 		$objDB = DB::connect($dsn, $options);
