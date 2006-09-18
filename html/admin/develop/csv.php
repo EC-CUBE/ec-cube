@@ -109,9 +109,11 @@ function lfInsertProduct($objQuery) {
 			break;
 		}
 	}
-				
-	$product_id = $objQuery->nextval("dtb_products", "product_id");
-	$sqlval['product_id'] = $product_id;
+	
+	if (DB_TYPE == "pgsql") {
+		$product_id = $objQuery->nextval("dtb_products", "product_id");
+		$sqlval['product_id'] = $product_id;
+	}
 	$sqlval['status'] = 1;	// 表示に設定する。
 	$sqlval['update_date'] = "Now()";
 	$sqlval['creator_id'] = $_SESSION['member_id'];
@@ -126,6 +128,9 @@ function lfInsertProduct($objQuery) {
 	sfInsertProductClass($objQuery, $arrRet, $product_id);
 	// INSERTの実行
 	$objQuery->fast_insert("dtb_products", $sqlval);
+	if (DB_TYPE == "mysql") {
+		$product_id = $objQuery->nextval("dtb_products", "product_id");
+	}
 }
 
 /* 入力内容のチェック */

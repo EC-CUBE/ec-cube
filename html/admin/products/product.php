@@ -302,13 +302,20 @@ function lfRegistProduct($arrList) {
 	}
 
 	if($arrList['product_id'] == "") {
+		if (DB_TYPE == "pgsql") {
+			$product_id = $objQuery->nextval("dtb_products", "product_id");
+			$sqlval['product_id'] = $product_id;
+		}
 		// カテゴリ内で最大のランクを割り当てる
 		$sqlval['rank'] = $objQuery->max("dtb_products", "rank", "category_id = ?", array($arrList['category_id'])) + 1;
 		// INSERTの実行
 		$objQuery->insert("dtb_products", $sqlval);
 		
-		$product_id = $objQuery->nextval("dtb_products", "product_id");
-		$sqlval['product_id'] = $product_id;
+		if (DB_TYPE == "mysql") {
+			$product_id = $objQuery->nextval("dtb_products", "product_id");
+			$sqlval['product_id'] = $product_id;
+		}
+
 	} else {
 		$product_id = $arrList['product_id'];
 		// 削除要求のあった既存ファイルの削除
