@@ -81,7 +81,7 @@ case 'step3':
 	// 入力データを渡す。
 	$arrRet =  $objDBParam->getHashArray();
 	// テーブルの作成
-	$objPage->arrErr = lfExecuteSQL("./create_table_".$arrRet['db_type']."sql", $arrRet['db_user'], $arrRet['db_password'], $arrRet['db_server'], $arrRet['db_name'], $arrRet['db_type'], $arrRet['db_port']); 
+	$objPage->arrErr = lfExecuteSQL("./create_table_".$arrRet['db_type'].".sql", $arrRet['db_user'], $arrRet['db_password'], $arrRet['db_server'], $arrRet['db_name'], $arrRet['db_type'], $arrRet['db_port']); 
 	if(count($objPage->arrErr) == 0) {
 		$objPage->tpl_message.="○：テーブルの作成に成功しました。<br>";
 	} else {
@@ -449,8 +449,6 @@ function lfCheckDBError($objFormParam) {
 function lfExecuteSQL($filepath, $db_user, $db_password, $db_server, $db_name, $db_type, $db_port, $disp_err = true) {
 	$arrErr = array();
 
-	
-	sfprintr($filepath);
 	if(!file_exists($filepath)) {
 		$arrErr['all'] = ">> スクリプトファイルが見つかりません";
 	} else {
