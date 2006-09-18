@@ -759,6 +759,8 @@ function lfGetOrderTerm($type, $sdate, $edate, $objPage, $graph = true) {
 			}
 			$where.= " order_date < date('" . $edate ."')";
 		}
+		
+		sfprintr($edate);
 
 		// 検索結果の取得
 		$objPage->arrResults = $objQuery->select($col, $from, $where, $arrval);
