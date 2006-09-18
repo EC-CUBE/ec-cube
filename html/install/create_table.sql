@@ -860,3 +860,10 @@ create_date		timestamp		NOT NULL	default now(),
 update_date		timestamp		NOT NULL	default now()
 );
 
+create table dtb_table_comment
+(
+id	int4,
+table_name	text,
+column_name	text,
+description	text
+);
