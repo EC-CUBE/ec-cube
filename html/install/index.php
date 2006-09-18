@@ -449,9 +449,10 @@ function lfExecuteSQL($filepath, $db_user, $db_password, $db_server, $db_name) {
 		// 接続エラー
 		if(!PEAR::isError($objDB)) {
 			
-			print_r(split(";\n",$sql));
+			$sql_split = split(";",$sql);
 			
-			$ret = $objDB->query($sql);
+			foreach($sql_split as $key => $val){
+				$ret = $objDB->query($val);
 			if(PEAR::isError($ret)) {
 				$arrErr['all'] = ">> " . $ret->message . "<br>";
 				// エラー文を取得する
@@ -460,6 +461,8 @@ function lfExecuteSQL($filepath, $db_user, $db_password, $db_server, $db_name) {
 				$objPage->update_mess.=">> テーブル構成の変更に失敗しました。<br>";
 				gfPrintLog($ret->userinfo, "./temp/install.log");
 			}
+			}
+			
 		} else {
 			$arrErr['all'] = ">> " . $objDB->message;
 			gfPrintLog($objDB->userinfo, "./temp/install.log");
