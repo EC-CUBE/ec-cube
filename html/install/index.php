@@ -156,7 +156,7 @@ case 'drop':
 
 	// テーブルの削除
 	if(count($objPage->arrErr) == 0) {
-		$objPage->arrErr = lfExecuteSQL("./drop_table.sql", $arrRet['db_user'], $arrRet['db_password'], $arrRet['db_server'], $arrRet['db_name'], $arrRet['db_type'], $arrRet['db_port']); 
+		$objPage->arrErr = lfExecuteSQL("./drop_table_".$arrRet['db_type'].".sql", $arrRet['db_user'], $arrRet['db_password'], $arrRet['db_server'], $arrRet['db_name'], $arrRet['db_type'], $arrRet['db_port']); 
 		if(count($objPage->arrErr) == 0) {
 			$objPage->tpl_message.="○：テーブルの削除に成功しました。<br>";
 		} else {
