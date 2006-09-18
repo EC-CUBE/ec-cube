@@ -247,7 +247,7 @@ function lfBatOrderAge($time) {
 
 	// 誕生日入力なし
 	$where = $base_where . " AND order_birth IS NULL ";
-	lfBatOrderAgeSub($sql . $where, $start, $end, NULL, NULL, 1);
+	lfBatOrderAgeSub($sql . $where, $start, $end, 999, NULL, 1);
 
 	/* 非会員集計 */
 	
