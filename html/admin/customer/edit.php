@@ -106,11 +106,10 @@ if (($_POST["mode"] == "edit" || $_POST["mode"] == "edit_search") && is_numeric(
 	$result = $objConn->getAll($sql, array($_POST["edit_customer_id"]));
 	$objPage->list_data = $result[0];
 	
-	if (strlen($objPage->list_data["birth_unix"]) > 0) {
-		$objPage->list_data["year"] = date("Y", $objPage->list_data["birth_unix"]);
-		$objPage->list_data["month"] = date("m", $objPage->list_data["birth_unix"]);
-		$objPage->list_data["day"] = date("d", $objPage->list_data["birth_unix"]);
-	}
+	$objPage->list_data["year"] = date("Y", $objPage->list_data["birth"]);
+	$objPage->list_data["month"] = date("m", $objPage->list_data["birth"]);
+	$objPage->list_data["day"] = date("d", $objPage->list_data["birth"]);
+	
 	$objPage->list_data["password"] = DEFAULT_PASSWORD;
 	//DB登録のメールアドレスを渡す
 	$objPage->tpl_edit_email = $result[0]['email'];
