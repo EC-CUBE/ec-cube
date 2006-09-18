@@ -106,6 +106,8 @@ if (($_POST["mode"] == "edit" || $_POST["mode"] == "edit_search") && is_numeric(
 	$result = $objConn->getAll($sql, array($_POST["edit_customer_id"]));
 	$objPage->list_data = $result[0];
 	
+	sfprintr($objPage->list_data );
+	
 	$objPage->list_data["year"] = date("Y", $objPage->list_data["birth"]);
 	$objPage->list_data["month"] = date("m", $objPage->list_data["birth"]);
 	$objPage->list_data["day"] = date("d", $objPage->list_data["birth"]);
