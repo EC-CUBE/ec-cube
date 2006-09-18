@@ -229,8 +229,6 @@ function lfBatOrderAge($time) {
 	$end_date = date("Y/m/d", time()); 
 	$start_date = date("Y/m/d",strtotime("-10 year" ,strtotime($end_date)));
 	$end_date = date("Y/m/d",strtotime("1 day" ,strtotime($end_date)));
-	$start_age = null;
-	$end_age = null;
 	// 年齢毎に集計する。
 	for($i = 0; $i <= $age_loop; $i++) {
 		$where = $base_where . " AND order_birth >= cast('$start_date' as date)";
@@ -256,20 +254,23 @@ function lfBatOrderAge($time) {
 	$base_where = "WHERE (create_date BETWEEN ? AND ?) AND customer_id = 0 AND del_flg = 0";
 	$where = $base_where . " AND (to_number(to_char(age(current_timestamp, order_birth), 'YYY'), 999) BETWEEN ? AND ?) ";
 
-	
 	$end_date = date("Y/m/d", time()); 
-	$start_date = date("Y/m/d",strtotime("-10 year"));
-	$start_age = null;
-	$end_age = null;
+	$start_date = date("Y/m/d",strtotime("-10 year" ,strtotime($end_date)));
+	$end_date = date("Y/m/d",strtotime("1 day" ,strtotime($end_date)));
 	// 年齢毎に集計する。
 	for($i = 0; $i <= $age_loop; $i++) {
 		$where = $base_where . " AND order_birth >= cast('$start_date' as date)";
-		if($i <= $age_loop) {
-			$where = $where . " AND order_birth <= cast('$end_date' as date)";
+		$start_age = $i * 10;
+		if($i < $age_loop) {
+			$end_age = $start_age+9;
+			$where = $where . " AND order_birth < cast('$end_date' as date)";
+		}else{
+			$where = $base_where . " AND order_birth < cast('$end_date' as date)";
+			$end_age = 999;
 		}
 		lfBatOrderAgeSub($sql . $where, $start, $end, $start_age, $end_age, 1);
 		$end_date = date("Y/m/d",strtotime("1 day" ,strtotime($start_date)));
-		$start_date = date("Y/m/d",strtotime("-10 year",strtotime($end_date)));
+		$start_date = date("Y/m/d",strtotime("-10 year",strtotime($start_date)));
 	}
 
 	// 誕生日入力なし
