@@ -277,7 +277,6 @@ function lfGetCustomerData(){
 		$arrForm['month'] = $month;
 		$arrForm['day'] = $day;
 		
-		sfprintr($arrForm);
 	}
 	return $arrForm;
 }
