@@ -105,7 +105,7 @@ class SC_FormParam {
 			$cnt++;
 		}
 	}
-	
+
 	function toLower($key) {
 		$cnt = 0;
 		foreach($this->keyname as $val) {
