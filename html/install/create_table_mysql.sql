@@ -859,4 +859,3 @@ template_name		text			,
 create_date		timestamp		NOT NULL	,
 update_date		timestamp		NOT NULL	
 );
-
