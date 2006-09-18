@@ -453,14 +453,15 @@ function lfExecuteSQL($filepath, $db_user, $db_password, $db_server, $db_name) {
 			
 			foreach($sql_split as $key => $val){
 				$ret = $objDB->query($val);
-			if(PEAR::isError($ret)) {
-				$arrErr['all'] = ">> " . $ret->message . "<br>";
-				// エラー文を取得する
-				ereg("\[(.*)\]", $ret->userinfo, $arrKey);
-				$arrErr['all'].= $arrKey[0] . "<br>";
-				$objPage->update_mess.=">> テーブル構成の変更に失敗しました。<br>";
-				gfPrintLog($ret->userinfo, "./temp/install.log");
-			}
+				if(PEAR::isError($ret)) {
+					print($val);
+					$arrErr['all'] = ">> " . $ret->message . "<br>";
+					// エラー文を取得する
+					ereg("\[(.*)\]", $ret->userinfo, $arrKey);
+					$arrErr['all'].= $arrKey[0] . "<br>";
+					$objPage->update_mess.=">> テーブル構成の変更に失敗しました。<br>";
+					gfPrintLog($ret->userinfo, "./temp/install.log");
+				}
 			}
 			
 		} else {
