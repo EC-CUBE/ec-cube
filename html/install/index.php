@@ -456,7 +456,6 @@ function lfExecuteSQL($filepath, $db_user, $db_password, $db_server, $db_name) {
 					
 				$ret = $objDB->query($val);
 				if(PEAR::isError($ret)) {
-					print($val);
 					$arrErr['all'] = ">> " . $ret->message . "<br>";
 					// エラー文を取得する
 					ereg("\[(.*)\]", $ret->userinfo, $arrKey);
