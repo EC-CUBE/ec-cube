@@ -77,7 +77,6 @@ function lfRealTimeDailyTotal($sdate, $edate) {
 		$batch_date = date("Y/m/d H:i:s", $tmp_time);
 		$objQuery = new SC_Query();
 		$arrRet = $objQuery->select("order_date, create_date", "dtb_bat_order_daily", "order_date = ?", array($batch_date));
-		$objQuery->getlastquery();
 		// すでにバッチ処理が終了しているかチェックする。
 		if(count($arrRet) > 0) {
 			list($create_date) = split("\.", $arrRet[0]['create_date']);
@@ -160,8 +159,6 @@ function lfBatOrderDaily($time) {
 		}
 	}
 	
-	sfprintr($start);
-	
 	$sqlval['create_date'] = 'now()';
 	$sqlval['order_date'] = $start;
 	$sqlval['year'] = date("Y", $time);
@@ -200,6 +197,7 @@ function lfBatOrderDailyHour($time) {
 				$sqlval[$key] = "0";
 			}
 		}
+		$sqlval['create_date'] = "now()";
 		$sqlval['order_date'] = $start;
 		$sqlval['hour'] = "$i";
 		$objQuery->insert("dtb_bat_order_daily_hour", $sqlval);
