@@ -445,11 +445,12 @@ function lfExecuteSQL($filepath, $db_user, $db_password, $db_server, $db_name) {
 //		$dsn = "pgsql://".$db_user.":".$db_password."@".$db_server."/".$db_name;
 		$dsn = "mysql://".$db_user.":".$db_password."@".$db_server.":3307/".$db_name;
 
-		
-		print($sql);
 		$objDB = DB::connect($dsn);
 		// 接続エラー
 		if(!PEAR::isError($objDB)) {
+			
+			print_r(split(":",$sql));
+			
 			$ret = $objDB->query($sql);
 			if(PEAR::isError($ret)) {
 				$arrErr['all'] = ">> " . $ret->message . "<br>";
