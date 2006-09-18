@@ -272,7 +272,6 @@ function lfBatOrderAge($time) {
 		$end_date = date("Y/m/d",strtotime("1 day" ,strtotime($start_date)));
 		$start_date = date("Y/m/d",strtotime("-10 year",strtotime($start_date)));
 	}
-
 	// 誕生日入力なし
 	$where = $base_where . " AND order_birth IS NULL AND del_flg = 0";
 	lfBatOrderAgeSub($sql . $where, $start, $end, NULL, NULL, 0);	
@@ -288,8 +287,6 @@ function lfBatOrderAgeSub($sql, $start, $end, $start_age, $end_age, $member) {
 		$arrRet = $objQuery->getall($sql, array($start, $end));
 	}
 	$sqlval = $arrRet[0];
-	
-	$objQuery->getlastquery();
 	
 	// 空文字を"0"に変換
 	foreach($sqlval as $key => $val) {

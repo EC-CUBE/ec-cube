@@ -652,6 +652,8 @@ function lfGetOrderAge($type, $sdate, $edate, $objPage, $graph = true) {
 	$objQuery = new SC_Query();
 	$objPage->arrResults = $objQuery->getall($sql, $arrval);
 	
+		$objQuery->getlastquery();
+	
 	$max = count($objPage->arrResults);
 	for($i = 0; $i < $max; $i++) {
 		if($objPage->arrResults[$i]['order_count'] > 0) {
