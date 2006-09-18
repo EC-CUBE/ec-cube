@@ -304,7 +304,6 @@ VALUES (2, 0, 0, 'nabe-01', 100, NULL, NULL, 1700, 1650, NULL, 2, now(), NULL);
 
 INSERT INTO dtb_recommend_products (product_id,rank,comment,status,creator_id,create_date,update_date) VALUES (2, 4, 'お口直しに。', 0, 2, now(), now());
 
---規格
 INSERT INTO dtb_class (name,status,rank,creator_id,create_date,update_date,del_flg,product_id) VALUES ('味', NULL, 1, 2, now(), now(), 0, NULL);
 INSERT INTO dtb_class (name,status,rank,creator_id,create_date,update_date,del_flg,product_id) VALUES ('大きさ', NULL, 2, 2, now(), NULL, 0, NULL);
 
