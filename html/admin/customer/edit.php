@@ -109,8 +109,11 @@ if (($_POST["mode"] == "edit" || $_POST["mode"] == "edit_search") && is_numeric(
 	$objPage->list_data["year"] = substr($objPage->list_data["birth"], 0, 4);
 	$objPage->list_data["month"] = substr($objPage->list_data["birth"], 5, 2);
 	$objPage->list_data["day"] = substr($objPage->list_data["birth"], 7, 2);
+	$objPage->list_data["month"] = 11;
+	$objPage->list_data["day"] = 1;
 	
-		sfprintr($objPage->list_data );
+	
+	sfprintr($objPage->list_data );
 
 	
 	$objPage->list_data["password"] = DEFAULT_PASSWORD;
