@@ -3,7 +3,7 @@ function lfnChangeDisabled(db_type) {
 
 	type = db_type.value;
 	
-	if (type == 'pgsql' {
+	if (type == 'pgsql') {
 		form1.db_port.value=type
 	}else{
 		form1.db_port.value=type
