@@ -61,6 +61,14 @@ case 'step1':
 // データベースの設定
 case 'step2':
 	//入力値のエラーチェック
+	if ($_POST['db_type'] == 'pgsql') {
+		$_POST['db_port'] = "";
+	}else{
+		$_POST['db_port'] = ":".$_POST['db_port'];
+		$objDBParam->setValue("db_port", $_POST['db_port']);
+		$objWEBParam->setValue("db_port", $_POST['db_port']);
+	}
+	
 	$objPage->arrErr = lfCheckDBError($objDBParam);
 	
 	if(count($objPage->arrErr) == 0) {
@@ -415,14 +423,6 @@ function lfCheckDBError($objFormParam) {
 	
 	$objErr = new SC_CheckError($arrRet);
 	$objErr->arrErr = $objFormParam->checkError();
-	
-	if ($arrRet['db_type'] == 'pgsql') {
-		$arrRet['db_port'] = "";
-	}else{
-		$arrRet['db_port'] = ":".$arrRet['db_port'];
-		$objFormParam->setValue("db_port", $arrRet['db_port']);
-		sfprintr($objFormParam);
-	}
 	
 	if(count($objErr->arrErr) == 0) {
 		// 接続確認
