@@ -270,8 +270,8 @@ function lfGetCustomerData(){
 	
 	//誕生日の年月日取得
 	if (isset($arrForm['birth'])){
-		$arrDate = sfDispDBDate($arrForm['birth'],false);
-		list($year, $month, $day) = split("/", $arrDate);
+		$birth = split(" ", $arrForm["birth"]);
+		list($year, $month, $day) = split("/",$birth[0]);
 		
 		$arrForm['year'] = $year;
 		$arrForm['month'] = $month;
