@@ -320,7 +320,6 @@ INSERT INTO dtb_category_total_count VALUES (2, NULL, now());
 INSERT INTO dtb_category_total_count VALUES (5, 1, now());
 INSERT INTO dtb_category_total_count VALUES (4, 1, now());
 
-INSERT INTO dtb_templates VALUES('default1','デフォルト1');
 
 INSERT INTO dtb_kiyaku (kiyaku_title, kiyaku_text, rank, creator_id, update_date, del_flg) 
 VALUES ('第１条（会員）','1. 「会員」とは、当社が定める手続に従い本規約に同意の上、入会の申し込みを行う個人をいいます。
