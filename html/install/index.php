@@ -73,7 +73,7 @@ case 'step3':
 	// 入力データを渡す。
 	$arrRet =  $objDBParam->getHashArray();
 	// テーブルの作成
-	$objPage->arrErr = lfExecuteSQL("./create_table.sql", $arrRet['db_user'], $arrRet['db_password'], $arrRet['db_server'], $arrRet['db_name']); 
+	$objPage->arrErr = lfExecuteSQL("./create_table_mysql.sql", $arrRet['db_user'], $arrRet['db_password'], $arrRet['db_server'], $arrRet['db_name']); 
 	if(count($objPage->arrErr) == 0) {
 		$objPage->tpl_message.="○：テーブルの作成に成功しました。<br>";
 	} else {
