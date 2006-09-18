@@ -506,7 +506,8 @@ function lfGetWhereMember($col_date, $sdate, $edate, $type, $col_member = "custo
 	if($edate != "") {
 		if ($where != "") {
 			$where.= " AND ";
-		}			
+		}
+		$edate = date("Y/m/d",strtotime("1 day" ,strtotime($edate)));	
 		$where.= " $col_date < date('" . $edate ."')";
 	}
 	
@@ -757,11 +758,10 @@ function lfGetOrderTerm($type, $sdate, $edate, $objPage, $graph = true) {
 			if ($where != "") {
 				$where.= " AND ";
 			}
+			$edate = date("Y/m/d",strtotime("1 day" ,strtotime($edate)));
 			$where.= " order_date < date('" . $edate ."')";
 		}
-		$edate = date("Y/m/d",strtotime("1 day" ,strtotime($edate)));
-		sfprintr($edate);
-
+		
 		// 検索結果の取得
 		$objPage->arrResults = $objQuery->select($col, $from, $where, $arrval);
 		
