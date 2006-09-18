@@ -160,6 +160,8 @@ function lfBatOrderDaily($time) {
 		}
 	}
 	
+	sfprintr($start);
+	
 	$sqlval['create_date'] = 'now()';
 	$sqlval['order_date'] = $start;
 	$sqlval['year'] = date("Y", $time);
