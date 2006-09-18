@@ -35,7 +35,6 @@ if ($_POST['db_type'] == 'pgsql') {
 	$_POST['db_port'] = "";
 }else{
 	$_POST['db_port'] = ":".$_POST['db_port'];
-	$objFormParam->setValue('db_port',$_POST['db_port']);
 }
 
 //フォーム配列の取得
