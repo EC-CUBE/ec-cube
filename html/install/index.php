@@ -415,6 +415,8 @@ function lfCheckDBError($objFormParam) {
 	
 	if ($arrRet['db_type'] == 'pgsql') {
 		$arrRet['db_port'] = "";
+	}else{
+		$arrRet['db_port'] = ":".$arrRet['db_port'];
 	}
 	$objErr = new SC_CheckError($arrRet);
 	$objErr->arrErr = $objFormParam->checkError();
