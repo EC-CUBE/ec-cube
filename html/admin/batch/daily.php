@@ -283,7 +283,7 @@ function lfBatOrderAgeSub($sql, $start, $end, $start_age, $end_age, $member) {
 	$objQuery = new SC_Query();
 	
 	if($start_age != NULL || $end_age != NULL) {
-		$arrRet = $objQuery->getall($sql, array($start, $end, $start_age, $end_age));
+		$arrRet = $objQuery->getall($sql, array($start, $end));
 	} else {
 		$arrRet = $objQuery->getall($sql, array($start, $end));
 	}
