@@ -450,9 +450,7 @@ function lfExecuteSQL($filepath, $db_user, $db_password, $db_server, $db_name) {
 		if(!PEAR::isError($objDB)) {
 			
 			$sql_split = split(";",$sql);
-			
 			foreach($sql_split as $key => $val){
-				print($val."<br>");
 				if ($val != "") {
 					
 				$ret = $objDB->query($val);
