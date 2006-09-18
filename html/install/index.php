@@ -66,7 +66,6 @@ case 'step2':
 	}else{
 		$_POST['db_port'] = ":".$_POST['db_port'];
 		$objDBParam->setValue("db_port", $_POST['db_port']);
-		$objWEBParam->setValue("db_port", $_POST['db_port']);
 	}
 	
 	$objPage->arrErr = lfCheckDBError($objDBParam);
