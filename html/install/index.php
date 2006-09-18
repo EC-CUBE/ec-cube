@@ -445,6 +445,8 @@ function lfExecuteSQL($filepath, $db_user, $db_password, $db_server, $db_name) {
 //		$dsn = "pgsql://".$db_user.":".$db_password."@".$db_server."/".$db_name;
 		$dsn = "mysql://".$db_user.":".$db_password."@".$db_server.":3307/".$db_name;
 
+		
+		print($sql);
 		$objDB = DB::connect($dsn);
 		// 接続エラー
 		if(!PEAR::isError($objDB)) {
@@ -458,8 +460,6 @@ function lfExecuteSQL($filepath, $db_user, $db_password, $db_server, $db_name) {
 				gfPrintLog($ret->userinfo, "./temp/install.log");
 			}
 		} else {
-			
-			print("aaaaa<br>");
 			$arrErr['all'] = ">> " . $objDB->message;
 			gfPrintLog($objDB->userinfo, "./temp/install.log");
 		}
