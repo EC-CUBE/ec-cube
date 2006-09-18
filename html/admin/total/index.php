@@ -759,7 +759,7 @@ function lfGetOrderTerm($type, $sdate, $edate, $objPage, $graph = true) {
 			}
 			$where.= " order_date < date('" . $edate ."')";
 		}
-		
+		$end_date = date("Y/m/d",strtotime("1 day" ,strtotime($edate)));
 		sfprintr($edate);
 
 		// 検索結果の取得
