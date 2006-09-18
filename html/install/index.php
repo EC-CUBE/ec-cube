@@ -446,7 +446,7 @@ function lfCheckDBError($objFormParam) {
 }
 
 // SQL文の実行
-function lfExecuteSQL($filepath, $db_user, $db_password, $db_server, $db_name, $db_type, $db_port, $disp_err = false) {
+function lfExecuteSQL($filepath, $db_user, $db_password, $db_server, $db_name, $db_type, $db_port, $disp_err = true) {
 	$arrErr = array();
 
 	if(!file_exists($filepath)) {
