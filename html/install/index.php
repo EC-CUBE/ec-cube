@@ -89,9 +89,9 @@ case 'step3':
 	}
 
 	// ビューの作成
-	if(count($objPage->arrErr) == 0) {
+	if(count($objPage->arrErr) == 0 and $arrRet['db_type'] == 'pgsql') {
 		// ビューの作成
-		//$objPage->arrErr = lfExecuteSQL("./create_view.sql", $arrRet['db_user'], $arrRet['db_password'], $arrRet['db_server'], $arrRet['db_name']); 
+		$objPage->arrErr = lfExecuteSQL("./create_view.sql", $arrRet['db_user'], $arrRet['db_password'], $arrRet['db_server'], $arrRet['db_name'], $arrRet['db_type'], $arrRet['db_port']); 
 		if(count($objPage->arrErr) == 0) {
 			$objPage->tpl_message.="○：ビューの作成に成功しました。<br>";
 		} else {
@@ -142,13 +142,17 @@ case 'step3':
 case 'drop':
 	// 入力データを渡す。
 	$arrRet =  $objDBParam->getHashArray();
-	// ビューの削除
-//	$objPage->arrErr = lfExecuteSQL("./drop_view.sql", $arrRet['db_user'], $arrRet['db_password'], $arrRet['db_server'], $arrRet['db_name']); 
-	if(count($objPage->arrErr) == 0) {
-		$objPage->tpl_message.="○：ビューの削除に成功しました。<br>";
-	} else {
-		$objPage->tpl_message.="×：ビューの削除に失敗しました。<br>";		
+	
+	if ($arrRet['db_type'] == 'pgsql'){
+		// ビューの削除
+		$objPage->arrErr = lfExecuteSQL("./drop_view.sql", $arrRet['db_user'], $arrRet['db_password'], $arrRet['db_server'], $arrRet['db_name'], $arrRet['db_type'], $arrRet['db_port']); 
+		if(count($objPage->arrErr) == 0) {
+			$objPage->tpl_message.="○：ビューの削除に成功しました。<br>";
+		} else {
+			$objPage->tpl_message.="×：ビューの削除に失敗しました。<br>";		
+		}
 	}
+
 
 	// テーブルの削除
 	if(count($objPage->arrErr) == 0) {
