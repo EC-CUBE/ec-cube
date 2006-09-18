@@ -289,6 +289,8 @@ function lfBatOrderAgeSub($sql, $start, $end, $start_age, $end_age, $member) {
 	}
 	$sqlval = $arrRet[0];
 	
+	$objQuery->getlastquery();
+	
 	// 空文字を"0"に変換
 	foreach($sqlval as $key => $val) {
 		if ($val == "") {
