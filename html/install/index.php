@@ -63,8 +63,6 @@ case 'step2':
 	//入力値のエラーチェック
 	$objPage->arrErr = lfCheckDBError($objDBParam);
 	
-	sfprintr($_POST);
-	
 	if(count($objPage->arrErr) == 0) {
 		$objPage = lfDispStep3($objPage);
 	} else {
@@ -76,7 +74,7 @@ case 'step3':
 	// 入力データを渡す。
 	$arrRet =  $objDBParam->getHashArray();
 	// テーブルの作成
-	$objPage->arrErr = lfExecuteSQL("./create_table_mysql.sql", $arrRet['db_user'], $arrRet['db_password'], $arrRet['db_server'], $arrRet['db_name']); 
+	$objPage->arrErr = lfExecuteSQL("./create_table_mysql.sql", $arrRet['db_user'], $arrRet['db_password'], $arrRet['db_server'], $arrRet['db_name'], $arrRet['db_port']); 
 	if(count($objPage->arrErr) == 0) {
 		$objPage->tpl_message.="○：テーブルの作成に成功しました。<br>";
 	} else {
@@ -414,6 +412,8 @@ function lfCheckWebError($objFormParam) {
 function lfCheckDBError($objFormParam) {
 	// 入力データを渡す。
 	$arrRet =  $objFormParam->getHashArray();
+	
+	sfprintr($arrRet);exit;
 	$objErr = new SC_CheckError($arrRet);
 	$objErr->arrErr = $objFormParam->checkError();
 	
