@@ -1,4 +1,10 @@
+<script type="text/javascript">
+function lfnChangeDisabled(db_type) {
 
+alert(db_type.value);
+
+}
+</script>
 <table width="502" border="0" cellspacing="1" cellpadding="0" summary=" ">
 <form name="form1" id="form1" method="post" action="<!--{$smarty.server.PHP_SELF}-->">
 <input type="hidden" name="mode" value="<!--{$tpl_mode}-->">
@@ -20,7 +26,7 @@
 			<td bgcolor="#ffffff" width="332" class="fs12">
 			<!--{assign var=key value="db_type"}-->
 			<span class="red"><!--{$arrErr[$key]}--></span>
-			<select name="<!--{$key}-->" style="<!--{$arrErr[$key]|sfGetErrorColor}-->" onChange="form1.db_port.value='ww'">
+			<select name="<!--{$key}-->" style="<!--{$arrErr[$key]|sfGetErrorColor}-->" onChange="lfnChangeDisabled(this)">
 			<!--{html_options options=$arrDB_TYPE selected=$arrForm[$key].value}-->
 			</select>
 			</td>
