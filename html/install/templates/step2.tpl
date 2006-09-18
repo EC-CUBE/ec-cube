@@ -1,7 +1,13 @@
 <script type="text/javascript">
 function lfnChangeDisabled(db_type) {
 
-
+	type = db_type.value;
+	
+	if (type == 'pgsql') {
+		form1.db_port.disabled= true;
+	}else{
+		form1.db_port.disabled = false;
+	}
 }
 </script>
 <table width="502" border="0" cellspacing="1" cellpadding="0" summary=" ">
@@ -43,7 +49,7 @@ function lfnChangeDisabled(db_type) {
 			<td bgcolor="#ffffff" width="332" class="fs12">
 			<!--{assign var=key value="db_port"}-->
 			<span class="red"><!--{$arrErr[$key]}--></span>
-			<input type="text" name="<!--{$key}-->" value="<!--{$arrForm[$key].value|escape}-->" maxlength="<!--{$arrForm[$key].length}-->" style="<!--{$arrErr[$key]|sfGetErrorColor}-->" <!--{if $arrForm.db_type.value eq 'pgsql'}-->disabled=true <!--{else}-->disabled=false<!--{/if}--> size="6" class="box6" />
+			<input type="text" name="<!--{$key}-->" value="<!--{$arrForm.db_type.value}-->" maxlength="<!--{$arrForm[$key].length}-->" style="<!--{$arrErr[$key]|sfGetErrorColor}-->" <!--{if $arrForm.db_type.value eq 'pgsql'}-->disabled=true <!--{else}-->disabled=false<!--{/if}--> size="6" class="box6" />
 			</td>
 		</tr>
 		<tr>
