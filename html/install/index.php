@@ -446,6 +446,7 @@ function lfExecuteSQL($filepath, $db_user, $db_password, $db_server, $db_name) {
 		$dsn = "mysql://".$db_user.":".$db_password."@".$db_server.":3307/".$db_name;
 
 		$objDB = DB::connect($dsn);
+		$sql = "DROP TABLE dtb_kiyaku";
 		// 接続エラー
 		if(!PEAR::isError($objDB)) {
 			
