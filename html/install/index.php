@@ -446,7 +446,7 @@ function lfCheckDBError($objFormParam) {
 }
 
 // SQL文の実行
-function lfExecuteSQL($filepath, $db_user, $db_password, $db_server, $db_name, $db_type, $db_port) {
+function lfExecuteSQL($filepath, $db_user, $db_password, $db_server, $db_name, $db_type, $db_port, $disp_err = false) {
 	$arrErr = array();
 
 	if(!file_exists($filepath)) {
@@ -470,7 +470,7 @@ function lfExecuteSQL($filepath, $db_user, $db_password, $db_server, $db_name, $
 			foreach($sql_split as $key => $val){
 				if ($val != "") {
 					$ret = $objDB->query($val);
-					if(PEAR::isError($ret)) {
+					if(PEAR::isError($ret) and $disp_err) {
 						$arrErr['all'] = ">> " . $ret->message . "<br>";
 						// エラー文を取得する
 						ereg("\[(.*)\]", $ret->userinfo, $arrKey);
