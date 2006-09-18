@@ -247,7 +247,7 @@ function lfBatOrderAge($time) {
 
 	// 誕生日入力なし
 	$where = $base_where . " AND order_birth IS NULL ";
-	lfBatOrderAgeSub($sql . $where, $start, $end, 999, NULL, 1);
+	lfBatOrderAgeSub($sql . $where, $start, $end, NULL, NULL, 1);
 
 	/* 非会員集計 */
 	
@@ -281,11 +281,7 @@ function lfBatOrderAge($time) {
 function lfBatOrderAgeSub($sql, $start, $end, $start_age, $end_age, $member) {
 	$objQuery = new SC_Query();
 	
-	if($start_age != NULL || $end_age != NULL) {
-		$arrRet = $objQuery->getall($sql, array($start, $end));
-	} else {
-		$arrRet = $objQuery->getall($sql, array($start, $end));
-	}
+	$arrRet = $objQuery->getall($sql, array($start, $end));
 	$sqlval = $arrRet[0];
 	
 	// 空文字を"0"に変換

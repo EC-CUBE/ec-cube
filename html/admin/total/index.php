@@ -404,8 +404,6 @@ function lfGetGraphPie($arrResults, $keyname, $type, $title = "", $sdate = "", $
 		$pngname = lfGetGraphPng($type);
 		$path = GRAPH_DIR . $pngname;
 		
-		// グラフ画像が存在しない場合だけ作成する
-		if(!file_exists($path)) {
 			$objGraphPie = new SC_GraphPie();
 			
 			/* デバッグ表示用 by naka
@@ -431,7 +429,7 @@ function lfGetGraphPie($arrResults, $keyname, $type, $title = "", $sdate = "", $
 			
 			// グラフの出力
 			$objGraphPie->outputGraph(false, $path);			
-		}
+
 		// ファイルパスを返す
 		$ret_path = GRAPH_URL . $pngname;
 	}
@@ -451,8 +449,6 @@ function lfGetGraphBar($arrResults, $keyname, $type, $xtitle, $ytitle, $sdate, $
 		$pngname = lfGetGraphPng($type);
 		$path = GRAPH_DIR . $pngname;
 		
-		// グラフ画像が存在しない場合だけ作成する
-		if(!file_exists($path)) {
 			$objGraphBar = new SC_GraphBar();
 			
 			foreach(array_keys($arrList) as $val) {
@@ -475,7 +471,6 @@ function lfGetGraphBar($arrResults, $keyname, $type, $xtitle, $ytitle, $sdate, $
 			
 			$objGraphBar->drawGraph();
 			$objGraphBar->outputGraph(false,$path);
-		}
 
 		// ファイルパスを返す
 		$ret_path = GRAPH_URL . $pngname;
