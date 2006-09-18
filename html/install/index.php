@@ -512,10 +512,12 @@ function lfMakeConfigFile() {
 	"    define ('SITE_URL', '" . $objWebParam->getValue('normal_url') . "');\n" .
 	"    define ('SSL_URL', '" . $objWebParam->getValue('secure_url') . "');\n" .
 	"    define ('DOMAIN_NAME', '" . $domain . "');\n" .
+	"    define ('DB_TYPE', '" . $objDBParam->getValue('db_type') . "');\n" .
 	"    define ('DB_USER', '" . $objDBParam->getValue('db_user') . "');\n" . 
 	"    define ('DB_PASSWORD', '" . $objDBParam->getValue('db_password') . "');\n" .
 	"    define ('DB_SERVER', '" . $objDBParam->getValue('db_server') . "');\n" .
 	"    define ('DB_NAME', '" . $objDBParam->getValue('db_name') . "');\n" .
+	"    define ('DB_PORT', '" . $objDBParam->getValue('db_port') . "');\n" .
 	"?>";
 	
 	if($fp = fopen($filepath,"w")) {
