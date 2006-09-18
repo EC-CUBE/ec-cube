@@ -449,7 +449,7 @@ function lfExecuteSQL($filepath, $db_user, $db_password, $db_server, $db_name) {
 		// 接続エラー
 		if(!PEAR::isError($objDB)) {
 			
-			print_r(split(":",$sql));
+			print_r(split(";",$sql));
 			
 			$ret = $objDB->query($sql);
 			if(PEAR::isError($ret)) {
