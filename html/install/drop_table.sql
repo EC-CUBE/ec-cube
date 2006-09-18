@@ -47,3 +47,4 @@ DROP TABLE dtb_csv;
 DROP TABLE dtb_csv_sql;
 DROP TABLE dtb_user_regist;
 DROP TABLE dtb_templates;
+DROP TABLE dtb_table_comment;
