@@ -445,6 +445,8 @@ function lfExecuteSQL($filepath, $db_user, $db_password, $db_server, $db_name) {
 //		$dsn = "pgsql://".$db_user.":".$db_password."@".$db_server."/".$db_name;
 		$dsn = "mysql://".$db_user.":".$db_password."@".$db_server.":3307/".$db_name;
 
+		
+		print($dsn);
 		$objDB = DB::connect($dsn);
 		// 接続エラー
 		if(!PEAR::isError($objDB)) {
