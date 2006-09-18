@@ -237,9 +237,11 @@ function lfBatOrderAge($time) {
 	for($i = 0; $i <= $age_loop; $i++) {
 		$where = $base_where . " AND order_birth >= cast('$start_date' as date)";
 		$start_age = $i * 10;
-		$end_age = $start_age+9;
 		if($i <= $age_loop) {
+			$end_age = $start_age+9;
 			$where = $where . " AND order_birth <= cast('$end_date' as date)";
+		}else{
+			$end_age = 999;
 		}
 		lfBatOrderAgeSub($sql . $where, $start, $end, $start_age, $end_age, 1);
 		$end_date = date("Y/m/d",strtotime("1 day" ,strtotime($start_date)));
@@ -281,8 +283,7 @@ function lfBatOrderAgeSub($sql, $start, $end, $start_age, $end_age, $member) {
 	$objQuery = new SC_Query();
 	
 	if($start_age != NULL || $end_age != NULL) {
-//		$arrRet = $objQuery->getall($sql, array($start, $end, $start_age, $end_age));
-		$arrRet = $objQuery->getall($sql, array($start, $end));
+		$arrRet = $objQuery->getall($sql, array($start, $end, $start_age, $end_age));
 	} else {
 		$arrRet = $objQuery->getall($sql, array($start, $end));
 	}
