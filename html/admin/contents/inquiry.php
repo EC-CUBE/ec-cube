@@ -95,7 +95,6 @@ if ( $_GET['mode'] == 'regist' ){
 			$sql_val = array( $value, $_POST['title'] ,$question_id );
 			if (DB_TYPE == "pgsql") {
 				$question_id = $objQuery->nextval('dtb_question', 'question_id');
-				$objPage->QUESTION_ID = $question_id;
 			}
 			$conn->query("INSERT INTO dtb_question ( question, question_name, question_id ) VALUES (?, ?, ?)", $sql_val );
 			$objPage->MESSAGE = "≈–œø§¨¥∞Œª§∑§ﬁ§∑§ø";
@@ -104,8 +103,9 @@ if ( $_GET['mode'] == 'regist' ){
 			
 			if (DB_TYPE == "mysql") {
 				$question_id = $objQuery->nextval('dtb_question', 'question_id');
-				$objPage->QUESTION_ID = $question_id;
 			}
+			
+			$objPage->QUESTION_ID = $question_id;
 			sfReload();
 		} else {
 			// ‘Ω∏
