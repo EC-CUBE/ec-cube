@@ -239,7 +239,7 @@ function lfBatOrderAge($time) {
 			$end_age = $start_age+9;
 			$where = $where . " AND order_birth < cast('$end_date' as date)";
 		}else{
-			$where = $base_where . " AND order_birth >= cast('$end_date' as date)";
+			$where = $base_where . " AND order_birth < cast('$end_date' as date)";
 			$end_age = 999;
 		}
 		lfBatOrderAgeSub($sql . $where, $start, $end, $start_age, $end_age, 1);
