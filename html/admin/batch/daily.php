@@ -237,7 +237,7 @@ function lfBatOrderAge($time) {
 	for($i = 0; $i <= $age_loop; $i++) {
 		$where = $base_where . " AND order_birth >= cast('$start_date' as date)";
 		$start_age = $i * 10;
-		if($i <= $age_loop) {
+		if($i < $age_loop) {
 			$end_age = $start_age+9;
 			$where = $where . " AND order_birth <= cast('$end_date' as date)";
 		}else{
