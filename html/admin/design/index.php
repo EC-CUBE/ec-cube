@@ -140,10 +140,8 @@ if ($_POST['mode'] == 'confirm' or $_POST['mode'] == 'preview') {
 	}
 
 	// プレビュー処理
-		sfprintr($_POST);exit();
-
 	if ($_POST['mode'] == 'preview') {
-		if ($page_id == "") {
+		if ($page_id === "") {
 			header("location: ./index.php");
 		}
 		lfSetPreData($arrPageData);
