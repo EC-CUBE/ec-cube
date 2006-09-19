@@ -3,8 +3,9 @@ CREATE INDEX dtb_products_class_product_id_key ON dtb_products_class(product_id)
 CREATE INDEX dtb_order_detail_product_id_key ON dtb_order_detail(product_id);
 CREATE INDEX dtb_category_category_id_key ON dtb_category(category_id);
 
-INSERT INTO dtb_classcategory (classcategory_id, class_id, rank, creator_id, create_date) 
-VALUES (0, 0, 0, 0, now());
+INSERT INTO dtb_classcategory (classcategory_id, class_id, rank, creator_id, create_date, update_date) 
+VALUES (0, 0, 0, 0, now(), now());
+UPDATE dtb_classcategory SET classcategory_id = 0;
 
 INSERT INTO dtb_member (name, login_id, password, creator_id, authority, work, del_flg) 
 VALUES ('dummy','dummy','',0,0,1,1);
