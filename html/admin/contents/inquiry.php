@@ -171,7 +171,6 @@ $objView->display(MAIN_FRAME);
 
 
 
-
 // ------------  エラーチェック処理部 ------------  
 
 function lfGetErrColor( $arr, $err_color ){
@@ -187,11 +186,6 @@ function lfGetErrColor( $arr, $err_color ){
 }
 
 
-
-
-
-
-
 // ------------  エラーチェック処理部 ------------  
 
 function lfErrCheck (){
@@ -205,7 +199,7 @@ function lfErrCheck (){
 	$objErr->doFunc( array( "アンケート名", "title" ), array( "EXIST_CHECK" ) );
 
 	$_POST["contents"] = mb_convert_kana( trim (  $_POST["contents"] ), "K" );
-	$objErr->doFunc( array( "アンケート内容" ,"contents" ), array( "EXIST_CHECK" ) );
+	$objErr->doFunc( array( "アンケート内容" ,"contents". "3000" ), array( "EXIST_CHECK", "MAX_LENGTH_CHECK" ) );
 
 	
 	if ( ! $_POST['question'][0]["name"] ){
