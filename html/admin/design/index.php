@@ -386,22 +386,20 @@ function lfSetPreData($arrPageData){
 	// 更新データの取得
 	$sql = "select page_name, header_chk, footer_chk from dtb_pagelayout where page_id = ?";
 	$ret = $objDBConn->getAll($sql, array($arrPageData[0]['page_id']));
-	
-	sfprintr($ret);
-	exit;
+
 	// dbデータのコピー
 	$sql = " update dtb_pagelayout set ";
-	$sql .= "     page_name = (select page_name from dtb_pagelayout where page_id = ?)";
-	$sql .= "     ,header_chk = (select header_chk from dtb_pagelayout where page_id = ?)";
-	$sql .= "     ,footer_chk = (select footer_chk from dtb_pagelayout where page_id = ?)";
+	$sql .= "     page_name = ?";
+	$sql .= "     ,header_chk = ?";
+	$sql .= "     ,footer_chk = ?";
 	$sql .= "     ,url = ?";
 	$sql .= "     ,tpl_dir = ?";
 	$sql .= "     ,filename = ?";
 	$sql .= " where page_id = 0";
 	
-	$arrUpdData = array($arrPageData[0]['page_id']
-						,$arrPageData[0]['page_id']
-						,$arrPageData[0]['page_id']
+	$arrUpdData = array($ret[0]['page_id']
+						,$ret[0]['page_id']
+						,$ret[0]['page_id']
 						,USER_DIR."templates/"
 						,USER_DIR."templates/"
 						,$filename
