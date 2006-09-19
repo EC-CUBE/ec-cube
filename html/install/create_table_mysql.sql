@@ -854,10 +854,10 @@ CREATE TABLE dtb_user_regist (
 
 create table dtb_templates 
 (
-template_code		varchar(50) NOT NULL UNIQUE	,
-template_name		text			,
-create_date		datetime		NOT NULL	,
-update_date		timestamp		NOT NULL	
+	template_code		varchar(50) NOT NULL UNIQUE	,
+	template_name		text			,
+	create_date		datetime		NOT NULL	,
+	update_date		timestamp		NOT NULL	
 );
 
 create table dtb_table_comment

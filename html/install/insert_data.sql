@@ -9,13 +9,13 @@ VALUES ('dummy','dummy','',0,0,1,1, now());
 INSERT INTO dtb_member (name, login_id, password, creator_id, authority, work, del_flg, rank, create_date) 
 VALUES ('admin','admin','2c19f4a742398150cecc80b3e76b673a35b8c19c',0,0,1,0,1, now());
 
-insert into dtb_bloc ( bloc_name, tpl_path, filename, php_path, del_flg ) values ('¥«¥Æ¥´¥ê',	'html/user_data/include/bloc/category.tpl',			'category','html/frontparts/bloc/category.php', 1);
-insert into dtb_bloc ( bloc_name, tpl_path, filename, php_path, del_flg ) values ('ÍøÍÑ¥¬¥¤¥É',	'html/user_data/include/bloc/guide.tpl',			'guide','', 1);
-insert into dtb_bloc ( bloc_name, tpl_path, filename, php_path, del_flg ) values ('¤«¤´¤ÎÃæ',	'html/user_data/include/bloc/cart.tpl',				'cart','html/frontparts/bloc/cart.php', 1);
-insert into dtb_bloc ( bloc_name, tpl_path, filename, php_path, del_flg ) values ('¾¦ÉÊ¸¡º÷',	'html/user_data/include/bloc/search_products.tpl',	'search_products','html/frontparts/bloc/search_products.php', 1);
-insert into dtb_bloc ( bloc_name, tpl_path, filename, php_path, del_flg ) values ('¿·Ãå¾ğÊó',	'html/user_data/include/bloc/news.tpl',				'news','html/frontparts/bloc/news.php', 1);
-insert into dtb_bloc ( bloc_name, tpl_path, filename, php_path, del_flg ) values ('¥í¥°¥¤¥ó',	'html/user_data/include/bloc/login.tpl',			'login','html/frontparts/bloc/login.php', 1);
-insert into dtb_bloc ( bloc_name, tpl_path, filename, php_path, del_flg ) values ('¥ª¥¹¥¹¥á¾¦ÉÊ','html/user_data/include/bloc/best5.tpl',			'best5','html/frontparts/bloc/best5.php', 1);
+insert into dtb_bloc ( bloc_name, tpl_path, filename, php_path, del_flg, create_date ) values ('¥«¥Æ¥´¥ê',	'html/user_data/include/bloc/category.tpl',			'category','html/frontparts/bloc/category.php', 1, now());
+insert into dtb_bloc ( bloc_name, tpl_path, filename, php_path, del_flg, create_date ) values ('ÍøÍÑ¥¬¥¤¥É',	'html/user_data/include/bloc/guide.tpl',			'guide','', 1, now());
+insert into dtb_bloc ( bloc_name, tpl_path, filename, php_path, del_flg, create_date ) values ('¤«¤´¤ÎÃæ',	'html/user_data/include/bloc/cart.tpl',				'cart','html/frontparts/bloc/cart.php', 1, now());
+insert into dtb_bloc ( bloc_name, tpl_path, filename, php_path, del_flg, create_date ) values ('¾¦ÉÊ¸¡º÷',	'html/user_data/include/bloc/search_products.tpl',	'search_products','html/frontparts/bloc/search_products.php', 1, now());
+insert into dtb_bloc ( bloc_name, tpl_path, filename, php_path, del_flg, create_date ) values ('¿·Ãå¾ğÊó',	'html/user_data/include/bloc/news.tpl',				'news','html/frontparts/bloc/news.php', 1, now());
+insert into dtb_bloc ( bloc_name, tpl_path, filename, php_path, del_flg, create_date ) values ('¥í¥°¥¤¥ó',	'html/user_data/include/bloc/login.tpl',			'login','html/frontparts/bloc/login.php', 1, now());
+insert into dtb_bloc ( bloc_name, tpl_path, filename, php_path, del_flg, create_date ) values ('¥ª¥¹¥¹¥á¾¦ÉÊ','html/user_data/include/bloc/best5.tpl',			'best5','html/frontparts/bloc/best5.php', 1, now());
 
 insert into dtb_pagelayout (page_id,page_name,url, create_date, update_date)values(0, '¥×¥ì¥Ó¥å¡¼¥Ç¡¼¥¿','',now(),now());
 update dtb_pagelayout set page_id = 0;
@@ -46,144 +46,143 @@ INSERT INTO dtb_blocposition (page_id,target_id,bloc_id,bloc_row,filename)values
 INSERT INTO dtb_blocposition (page_id,target_id,bloc_id,bloc_row,filename)values(3,5,(SELECT bloc_id FROM dtb_bloc WHERE filename = 'login'),0,'login');
 INSERT INTO dtb_blocposition (page_id,target_id,bloc_id,bloc_row,filename)values(3,5,(SELECT bloc_id FROM dtb_bloc WHERE filename = 'best5'),0,'best5');
 
-insert into dtb_csv(csv_id,col,disp_name,rank)values(1,'product_id','¾¦ÉÊID',1);
-insert into dtb_csv(csv_id,col,disp_name,rank)values(1,'product_class_id','µ¬³ÊID',2);
-insert into dtb_csv(csv_id,col,disp_name,rank)values(1,'classcategory_id1','µ¬³ÊÌ¾1',3);
-insert into dtb_csv(csv_id,col,disp_name,rank)values(1,'classcategory_id2','µ¬³ÊÌ¾2',4);
-insert into dtb_csv(csv_id,col,disp_name,rank)values(1,'name','¾¦ÉÊÌ¾',5);
-insert into dtb_csv(csv_id,col,disp_name,rank)values(1,'status','¸ø³«¥Õ¥é¥°',6);
-insert into dtb_csv(csv_id,col,disp_name,rank)values(1,'product_flag','¾¦ÉÊ¥¹¥Æ¡¼¥¿¥¹',7);
-insert into dtb_csv(csv_id,col,disp_name,rank)values(1,'product_code','¾¦ÉÊ¥³¡¼¥É',8);
-insert into dtb_csv(csv_id,col,disp_name,rank)values(1,'price01','»²¹Í»Ô¾ì²Á³Ê',9);
-insert into dtb_csv(csv_id,col,disp_name,rank)values(1,'price02','²Á³Ê',10);
-insert into dtb_csv(csv_id,col,disp_name,rank)values(1,'stock','ºß¸Ë¿ô',11);
-insert into dtb_csv(csv_id,col,disp_name,rank)values(1,'deliv_fee','Á÷ÎÁ',12);
-insert into dtb_csv(csv_id,col,disp_name,rank)values(1,'point_rate','¥İ¥¤¥ó¥ÈÉÕÍ¿Î¨',13);
-insert into dtb_csv(csv_id,col,disp_name,rank)values(1,'sale_limit','¹ØÆşÀ©¸Â',14);
-insert into dtb_csv(csv_id,col,disp_name,rank)values(1,'comment1','¥á¡¼¥«¡¼URL',15);
-insert into dtb_csv(csv_id,col,disp_name,rank)values(1,'comment3','¸¡º÷¥ï¡¼¥É',16);
-insert into dtb_csv(csv_id,col,disp_name,rank)values(1,'main_list_comment','°ìÍ÷-¥á¥¤¥ó¥³¥á¥ó¥È',17);
-insert into dtb_csv(csv_id,col,disp_name,rank)values(1,'main_list_image','°ìÍ÷-¥á¥¤¥ó²èÁü',18);
-insert into dtb_csv(csv_id,col,disp_name,rank)values(1,'main_comment','¾ÜºÙ-¥á¥¤¥ó¥³¥á¥ó¥È',19);
-insert into dtb_csv(csv_id,col,disp_name,rank)values(1,'main_image','¾ÜºÙ-¥á¥¤¥ó²èÁü',20);
-insert into dtb_csv(csv_id,col,disp_name,rank)values(1,'main_large_image','¾ÜºÙ-¥á¥¤¥ó³ÈÂç²èÁü ',21);
-insert into dtb_csv(csv_id,col,disp_name,rank)values(1,'file1','¥«¥é¡¼Èæ³Ó²èÁü',22);
-insert into dtb_csv(csv_id,col,disp_name,rank)values(1,'file2','¾¦ÉÊ¾ÜºÙ¥Õ¥¡¥¤¥ë    ',23);
-insert into dtb_csv(csv_id,col,disp_name,rank)values(1,'sub_title1','¾ÜºÙ-¥µ¥Ö¥¿¥¤¥È¥ë¡Ê1¡Ë',24);
-insert into dtb_csv(csv_id,col,disp_name,rank)values(1,'sub_comment1','¾ÜºÙ-¥µ¥Ö¥³¥á¥ó¥È¡Ê1¡Ë',25);
-insert into dtb_csv(csv_id,col,disp_name,rank)values(1,'sub_image1','¾ÜºÙ-¥µ¥Ö²èÁü¡Ê1¡Ë',26);
-insert into dtb_csv(csv_id,col,disp_name,rank)values(1,'sub_large_image1','¾ÜºÙ-¥µ¥Ö³ÈÂç²èÁü¡Ê1¡Ë',27);
-insert into dtb_csv(csv_id,col,disp_name,rank)values(1,'sub_title2','¾ÜºÙ-¥µ¥Ö¥¿¥¤¥È¥ë¡Ê2¡Ë',28);
-insert into dtb_csv(csv_id,col,disp_name,rank)values(1,'sub_comment2','¾ÜºÙ-¥µ¥Ö¥³¥á¥ó¥È¡Ê2¡Ë',29);
-insert into dtb_csv(csv_id,col,disp_name,rank)values(1,'sub_image2','¾ÜºÙ-¥µ¥Ö²èÁü¡Ê2¡Ë',30);
-insert into dtb_csv(csv_id,col,disp_name,rank)values(1,'sub_large_image2','¾ÜºÙ-¥µ¥Ö³ÈÂç²èÁü¡Ê2¡Ë',31);
-insert into dtb_csv(csv_id,col,disp_name,rank)values(1,'sub_title3','¾ÜºÙ-¥µ¥Ö¥¿¥¤¥È¥ë¡Ê3¡Ë',32);
-insert into dtb_csv(csv_id,col,disp_name,rank)values(1,'sub_comment3','¾ÜºÙ-¥µ¥Ö¥³¥á¥ó¥È¡Ê3¡Ë',33);
-insert into dtb_csv(csv_id,col,disp_name,rank)values(1,'sub_image3','¾ÜºÙ-¥µ¥Ö²èÁü¡Ê3¡Ë',34);
-insert into dtb_csv(csv_id,col,disp_name,rank)values(1,'sub_large_image3','¾ÜºÙ-¥µ¥Ö³ÈÂç²èÁü¡Ê3¡Ë',35);
-insert into dtb_csv(csv_id,col,disp_name,rank)values(1,'sub_title4','¾ÜºÙ-¥µ¥Ö¥¿¥¤¥È¥ë¡Ê4¡Ë',36);
-insert into dtb_csv(csv_id,col,disp_name,rank)values(1,'sub_comment4','¾ÜºÙ-¥µ¥Ö¥³¥á¥ó¥È¡Ê4¡Ë',37);
-insert into dtb_csv(csv_id,col,disp_name,rank)values(1,'sub_image4','¾ÜºÙ-¥µ¥Ö²èÁü¡Ê4¡Ë',38);
-insert into dtb_csv(csv_id,col,disp_name,rank)values(1,'sub_large_image4','¾ÜºÙ-¥µ¥Ö³ÈÂç²èÁü¡Ê4¡Ë',39);
-insert into dtb_csv(csv_id,col,disp_name,rank)values(1,'sub_title5','¾ÜºÙ-¥µ¥Ö¥¿¥¤¥È¥ë¡Ê5¡Ë',40);
-insert into dtb_csv(csv_id,col,disp_name,rank)values(1,'sub_comment5','¾ÜºÙ-¥µ¥Ö¥³¥á¥ó¥È¡Ê5¡Ë',41);
-insert into dtb_csv(csv_id,col,disp_name,rank)values(1,'sub_image5','¾ÜºÙ-¥µ¥Ö²èÁü¡Ê5¡Ë',42);
-insert into dtb_csv(csv_id,col,disp_name,rank)values(1,'sub_large_image5','¾ÜºÙ-¥µ¥Ö³ÈÂç²èÁü¡Ê5¡Ë',43);
-insert into dtb_csv(csv_id,col,disp_name,rank)values(1,'deliv_date_id','È¯Á÷ÆüÌÜ°Â',44);
-insert into dtb_csv(csv_id,col,disp_name,rank)values(1,'(SELECT recommend_product_id FROM dtb_recommend_products WHERE vw_product_class.product_id = dtb_recommend_products.product_id ORDER BY update_date DESC limit 1) AS recommend_product_id1','¤ª¤¹¤¹¤á¾¦ÉÊ(1)',45);
-insert into dtb_csv(csv_id,col,disp_name,rank)values(1,'(SELECT comment FROM dtb_recommend_products WHERE vw_product_class.product_id = dtb_recommend_products.product_id ORDER BY update_date DESC limit 1) AS recommend_comment1','¤ª¤¹¤¹¤á¥³¥á¥ó¥È(1)',46);
-insert into dtb_csv(csv_id,col,disp_name,rank)values(1,'(SELECT recommend_product_id FROM dtb_recommend_products WHERE vw_product_class.product_id = dtb_recommend_products.product_id ORDER BY update_date DESC limit 1 offset 1) AS recommend_product_id2','¤ª¤¹¤¹¤á¾¦ÉÊ(2)',47);
-insert into dtb_csv(csv_id,col,disp_name,rank)values(1,'(SELECT comment FROM dtb_recommend_products WHERE vw_product_class.product_id = dtb_recommend_products.product_id ORDER BY update_date DESC limit 1 offset 1) AS recommend_comment2','¤ª¤¹¤¹¤á¥³¥á¥ó¥È(2)',48);
-insert into dtb_csv(csv_id,col,disp_name,rank)values(1,'(SELECT recommend_product_id FROM dtb_recommend_products WHERE vw_product_class.product_id = dtb_recommend_products.product_id ORDER BY update_date DESC limit 1 offset 2) AS recommend_product_id3','¤ª¤¹¤¹¤á¾¦ÉÊ(3)',49);
-insert into dtb_csv(csv_id,col,disp_name,rank)values(1,'(SELECT comment FROM dtb_recommend_products WHERE vw_product_class.product_id = dtb_recommend_products.product_id ORDER BY update_date DESC limit 1 offset 2) AS recommend_comment3','¤ª¤¹¤¹¤á¥³¥á¥ó¥È(3)',50);
-insert into dtb_csv(csv_id,col,disp_name,rank)values(1,'(SELECT recommend_product_id FROM dtb_recommend_products WHERE vw_product_class.product_id = dtb_recommend_products.product_id ORDER BY update_date DESC limit 1 offset 3) AS recommend_product_id4','¤ª¤¹¤¹¤á¾¦ÉÊ(4)',51);
-insert into dtb_csv(csv_id,col,disp_name,rank)values(1,'(SELECT comment FROM dtb_recommend_products WHERE vw_product_class.product_id = dtb_recommend_products.product_id ORDER BY update_date DESC limit 1 offset 3) AS recommend_comment4','¤ª¤¹¤¹¤á¥³¥á¥ó¥È(4)',52);
+insert into dtb_csv(csv_id,col,disp_name,rank,create_date)values(1,'product_id','¾¦ÉÊID',1,now());
+insert into dtb_csv(csv_id,col,disp_name,rank,create_date)values(1,'product_class_id','µ¬³ÊID',2,now());
+insert into dtb_csv(csv_id,col,disp_name,rank,create_date)values(1,'classcategory_id1','µ¬³ÊÌ¾1',3,now());
+insert into dtb_csv(csv_id,col,disp_name,rank,create_date)values(1,'classcategory_id2','µ¬³ÊÌ¾2',4,now());
+insert into dtb_csv(csv_id,col,disp_name,rank,create_date)values(1,'name','¾¦ÉÊÌ¾',5,now());
+insert into dtb_csv(csv_id,col,disp_name,rank,create_date)values(1,'status','¸ø³«¥Õ¥é¥°',6,now());
+insert into dtb_csv(csv_id,col,disp_name,rank,create_date)values(1,'product_flag','¾¦ÉÊ¥¹¥Æ¡¼¥¿¥¹',7,now());
+insert into dtb_csv(csv_id,col,disp_name,rank,create_date)values(1,'product_code','¾¦ÉÊ¥³¡¼¥É',8,now());
+insert into dtb_csv(csv_id,col,disp_name,rank,create_date)values(1,'price01','»²¹Í»Ô¾ì²Á³Ê',9,now());
+insert into dtb_csv(csv_id,col,disp_name,rank,create_date)values(1,'price02','²Á³Ê',10,now());
+insert into dtb_csv(csv_id,col,disp_name,rank,create_date)values(1,'stock','ºß¸Ë¿ô',11,now());
+insert into dtb_csv(csv_id,col,disp_name,rank,create_date)values(1,'deliv_fee','Á÷ÎÁ',12,now());
+insert into dtb_csv(csv_id,col,disp_name,rank,create_date)values(1,'point_rate','¥İ¥¤¥ó¥ÈÉÕÍ¿Î¨',13,now());
+insert into dtb_csv(csv_id,col,disp_name,rank,create_date)values(1,'sale_limit','¹ØÆşÀ©¸Â',14,now());
+insert into dtb_csv(csv_id,col,disp_name,rank,create_date)values(1,'comment1','¥á¡¼¥«¡¼URL',15,now());
+insert into dtb_csv(csv_id,col,disp_name,rank,create_date)values(1,'comment3','¸¡º÷¥ï¡¼¥É',16,now());
+insert into dtb_csv(csv_id,col,disp_name,rank,create_date)values(1,'main_list_comment','°ìÍ÷-¥á¥¤¥ó¥³¥á¥ó¥È',17,now());
+insert into dtb_csv(csv_id,col,disp_name,rank,create_date)values(1,'main_list_image','°ìÍ÷-¥á¥¤¥ó²èÁü',18,now());
+insert into dtb_csv(csv_id,col,disp_name,rank,create_date)values(1,'main_comment','¾ÜºÙ-¥á¥¤¥ó¥³¥á¥ó¥È',19,now());
+insert into dtb_csv(csv_id,col,disp_name,rank,create_date)values(1,'main_image','¾ÜºÙ-¥á¥¤¥ó²èÁü',20,now());
+insert into dtb_csv(csv_id,col,disp_name,rank,create_date)values(1,'main_large_image','¾ÜºÙ-¥á¥¤¥ó³ÈÂç²èÁü ',21,now());
+insert into dtb_csv(csv_id,col,disp_name,rank,create_date)values(1,'file1','¥«¥é¡¼Èæ³Ó²èÁü',22,now());
+insert into dtb_csv(csv_id,col,disp_name,rank,create_date)values(1,'file2','¾¦ÉÊ¾ÜºÙ¥Õ¥¡¥¤¥ë    ',23,now());
+insert into dtb_csv(csv_id,col,disp_name,rank,create_date)values(1,'sub_title1','¾ÜºÙ-¥µ¥Ö¥¿¥¤¥È¥ë¡Ê1¡Ë',24,now());
+insert into dtb_csv(csv_id,col,disp_name,rank,create_date)values(1,'sub_comment1','¾ÜºÙ-¥µ¥Ö¥³¥á¥ó¥È¡Ê1¡Ë',25,now());
+insert into dtb_csv(csv_id,col,disp_name,rank,create_date)values(1,'sub_image1','¾ÜºÙ-¥µ¥Ö²èÁü¡Ê1¡Ë',26,now());
+insert into dtb_csv(csv_id,col,disp_name,rank,create_date)values(1,'sub_large_image1','¾ÜºÙ-¥µ¥Ö³ÈÂç²èÁü¡Ê1¡Ë',27,now());
+insert into dtb_csv(csv_id,col,disp_name,rank,create_date)values(1,'sub_title2','¾ÜºÙ-¥µ¥Ö¥¿¥¤¥È¥ë¡Ê2¡Ë',28,now());
+insert into dtb_csv(csv_id,col,disp_name,rank,create_date)values(1,'sub_comment2','¾ÜºÙ-¥µ¥Ö¥³¥á¥ó¥È¡Ê2¡Ë',29,now());
+insert into dtb_csv(csv_id,col,disp_name,rank,create_date)values(1,'sub_image2','¾ÜºÙ-¥µ¥Ö²èÁü¡Ê2¡Ë',30,now());
+insert into dtb_csv(csv_id,col,disp_name,rank,create_date)values(1,'sub_large_image2','¾ÜºÙ-¥µ¥Ö³ÈÂç²èÁü¡Ê2¡Ë',31,now());
+insert into dtb_csv(csv_id,col,disp_name,rank,create_date)values(1,'sub_title3','¾ÜºÙ-¥µ¥Ö¥¿¥¤¥È¥ë¡Ê3¡Ë',32,now());
+insert into dtb_csv(csv_id,col,disp_name,rank,create_date)values(1,'sub_comment3','¾ÜºÙ-¥µ¥Ö¥³¥á¥ó¥È¡Ê3¡Ë',33,now());
+insert into dtb_csv(csv_id,col,disp_name,rank,create_date)values(1,'sub_image3','¾ÜºÙ-¥µ¥Ö²èÁü¡Ê3¡Ë',34,now());
+insert into dtb_csv(csv_id,col,disp_name,rank,create_date)values(1,'sub_large_image3','¾ÜºÙ-¥µ¥Ö³ÈÂç²èÁü¡Ê3¡Ë',35,now());
+insert into dtb_csv(csv_id,col,disp_name,rank,create_date)values(1,'sub_title4','¾ÜºÙ-¥µ¥Ö¥¿¥¤¥È¥ë¡Ê4¡Ë',36,now());
+insert into dtb_csv(csv_id,col,disp_name,rank,create_date)values(1,'sub_comment4','¾ÜºÙ-¥µ¥Ö¥³¥á¥ó¥È¡Ê4¡Ë',37,now());
+insert into dtb_csv(csv_id,col,disp_name,rank,create_date)values(1,'sub_image4','¾ÜºÙ-¥µ¥Ö²èÁü¡Ê4¡Ë',38,now());
+insert into dtb_csv(csv_id,col,disp_name,rank,create_date)values(1,'sub_large_image4','¾ÜºÙ-¥µ¥Ö³ÈÂç²èÁü¡Ê4¡Ë',39,now());
+insert into dtb_csv(csv_id,col,disp_name,rank,create_date)values(1,'sub_title5','¾ÜºÙ-¥µ¥Ö¥¿¥¤¥È¥ë¡Ê5¡Ë',40,now());
+insert into dtb_csv(csv_id,col,disp_name,rank,create_date)values(1,'sub_comment5','¾ÜºÙ-¥µ¥Ö¥³¥á¥ó¥È¡Ê5¡Ë',41,now());
+insert into dtb_csv(csv_id,col,disp_name,rank,create_date)values(1,'sub_image5','¾ÜºÙ-¥µ¥Ö²èÁü¡Ê5¡Ë',42,now());
+insert into dtb_csv(csv_id,col,disp_name,rank,create_date)values(1,'sub_large_image5','¾ÜºÙ-¥µ¥Ö³ÈÂç²èÁü¡Ê5¡Ë',43,now());
+insert into dtb_csv(csv_id,col,disp_name,rank,create_date)values(1,'deliv_date_id','È¯Á÷ÆüÌÜ°Â',44,now());
+insert into dtb_csv(csv_id,col,disp_name,rank,create_date)values(1,'(SELECT recommend_product_id FROM dtb_recommend_products WHERE vw_product_class.product_id = dtb_recommend_products.product_id ORDER BY update_date DESC limit 1) AS recommend_product_id1','¤ª¤¹¤¹¤á¾¦ÉÊ(1)',45,now());
+insert into dtb_csv(csv_id,col,disp_name,rank,create_date)values(1,'(SELECT comment FROM dtb_recommend_products WHERE vw_product_class.product_id = dtb_recommend_products.product_id ORDER BY update_date DESC limit 1) AS recommend_comment1','¤ª¤¹¤¹¤á¥³¥á¥ó¥È(1)',46,now());
+insert into dtb_csv(csv_id,col,disp_name,rank,create_date)values(1,'(SELECT recommend_product_id FROM dtb_recommend_products WHERE vw_product_class.product_id = dtb_recommend_products.product_id ORDER BY update_date DESC limit 1 offset 1) AS recommend_product_id2','¤ª¤¹¤¹¤á¾¦ÉÊ(2)',47,now());
+insert into dtb_csv(csv_id,col,disp_name,rank,create_date)values(1,'(SELECT comment FROM dtb_recommend_products WHERE vw_product_class.product_id = dtb_recommend_products.product_id ORDER BY update_date DESC limit 1 offset 1) AS recommend_comment2','¤ª¤¹¤¹¤á¥³¥á¥ó¥È(2)',48,now());
+insert into dtb_csv(csv_id,col,disp_name,rank,create_date)values(1,'(SELECT recommend_product_id FROM dtb_recommend_products WHERE vw_product_class.product_id = dtb_recommend_products.product_id ORDER BY update_date DESC limit 1 offset 2) AS recommend_product_id3','¤ª¤¹¤¹¤á¾¦ÉÊ(3)',49,now());
+insert into dtb_csv(csv_id,col,disp_name,rank,create_date)values(1,'(SELECT comment FROM dtb_recommend_products WHERE vw_product_class.product_id = dtb_recommend_products.product_id ORDER BY update_date DESC limit 1 offset 2) AS recommend_comment3','¤ª¤¹¤¹¤á¥³¥á¥ó¥È(3)',50,now());
+insert into dtb_csv(csv_id,col,disp_name,rank,create_date)values(1,'(SELECT recommend_product_id FROM dtb_recommend_products WHERE vw_product_class.product_id = dtb_recommend_products.product_id ORDER BY update_date DESC limit 1 offset 3) AS recommend_product_id4','¤ª¤¹¤¹¤á¾¦ÉÊ(4)',51,now());
+insert into dtb_csv(csv_id,col,disp_name,rank,create_date)values(1,'(SELECT comment FROM dtb_recommend_products WHERE vw_product_class.product_id = dtb_recommend_products.product_id ORDER BY update_date DESC limit 1 offset 3) AS recommend_comment4','¤ª¤¹¤¹¤á¥³¥á¥ó¥È(4)',52,now());
+insert into dtb_csv(csv_id,col,disp_name,rank,create_date)values(2,'customer_id','¸ÜµÒID',1,now());
+insert into dtb_csv(csv_id,col,disp_name,rank,create_date)values(2,'name01','Ì¾Á°1',2,now());
+insert into dtb_csv(csv_id,col,disp_name,rank,create_date)values(2,'name02','Ì¾Á°2',3,now());
+insert into dtb_csv(csv_id,col,disp_name,rank,create_date)values(2,'kana01','¥Õ¥ê¥¬¥Ê1',4,now());
+insert into dtb_csv(csv_id,col,disp_name,rank,create_date)values(2,'kana02','¥Õ¥ê¥¬¥Ê2',5,now());
+insert into dtb_csv(csv_id,col,disp_name,rank,create_date)values(2,'zip01', 'Í¹ÊØÈÖ¹æ1',6,now());
+insert into dtb_csv(csv_id,col,disp_name,rank,create_date)values(2,'zip02', 'Í¹ÊØÈÖ¹æ2',7,now());
+insert into dtb_csv(csv_id,col,disp_name,rank,create_date)values(2,'pref', 'ÅÔÆ»ÉÜ¸©',8,now());
+insert into dtb_csv(csv_id,col,disp_name,rank,create_date)values(2,'addr01', '½»½ê1',9,now());
+insert into dtb_csv(csv_id,col,disp_name,rank,create_date)values(2,'addr02', '½»½ê2',10,now());
+insert into dtb_csv(csv_id,col,disp_name,rank,create_date)values(2,'email', 'E-MAIL',11,now());
+insert into dtb_csv(csv_id,col,disp_name,rank,create_date)values(2,'tel01', 'TEL1',12,now());
+insert into dtb_csv(csv_id,col,disp_name,rank,create_date)values(2,'tel02', 'TEL2',13,now());
+insert into dtb_csv(csv_id,col,disp_name,rank,create_date)values(2,'tel03', 'TEL3',14,now());
+insert into dtb_csv(csv_id,col,disp_name,rank,create_date)values(2,'fax01', 'FAX1',15,now());
+insert into dtb_csv(csv_id,col,disp_name,rank,create_date)values(2,'fax02', 'FAX2',16,now());
+insert into dtb_csv(csv_id,col,disp_name,rank,create_date)values(2,'fax03', 'FAX3',17,now());
+insert into dtb_csv(csv_id,col,disp_name,rank,create_date)values(2,'sex', 'À­ÊÌ',18,now());
+insert into dtb_csv(csv_id,col,disp_name,rank,create_date)values(2,'job', '¿¦¶È',19,now());
+insert into dtb_csv(csv_id,col,disp_name,rank,create_date)values(2,'birth', 'ÃÂÀ¸Æü',20,now());
+insert into dtb_csv(csv_id,col,disp_name,rank,create_date)values(2,'first_buy_date', '½é²ó¹ØÆşÆü',21,now());
+insert into dtb_csv(csv_id,col,disp_name,rank,create_date)values(2,'last_buy_date', 'ºÇ½ª¹ØÆşÆü',22,now());
+insert into dtb_csv(csv_id,col,disp_name,rank,create_date)values(2,'buy_times', '¹ØÆş²ó¿ô',23,now());
+insert into dtb_csv(csv_id,col,disp_name,rank,create_date)values(2,'point', '¥İ¥¤¥ó¥È»Ä¹â',24,now());
+insert into dtb_csv(csv_id,col,disp_name,rank,create_date)values(2,'note', 'È÷¹Í',25,now());
+insert into dtb_csv(csv_id,col,disp_name,rank,create_date)values(2,'create_date','ÅĞÏ¿Æü',26,now());
+insert into dtb_csv(csv_id,col,disp_name,rank,create_date)values(2,'update_date','¹¹¿·Æü',   27,now());
+insert into dtb_csv(csv_id,col,disp_name,rank,create_date)values(3,'order_id','ÃíÊ¸ID',1,now());
+insert into dtb_csv(csv_id,col,disp_name,rank,create_date)values(3,'customer_id','¸ÜµÒID',2,now());
+insert into dtb_csv(csv_id,col,disp_name,rank,create_date)values(3,'message','Í×Ë¾Åù',3,now());
+insert into dtb_csv(csv_id,col,disp_name,rank,create_date)values(3,'order_name01','¸ÜµÒÌ¾1',4,now());
+insert into dtb_csv(csv_id,col,disp_name,rank,create_date)values(3,'order_name02','¸ÜµÒÌ¾2',5,now());
+insert into dtb_csv(csv_id,col,disp_name,rank,create_date)values(3,'order_kana01','¸ÜµÒÌ¾¥«¥Ê1',6,now());
+insert into dtb_csv(csv_id,col,disp_name,rank,create_date)values(3,'order_kana02','¸ÜµÒÌ¾¥«¥Ê2',7,now());
+insert into dtb_csv(csv_id,col,disp_name,rank,create_date)values(3,'order_email','¥á¡¼¥ë¥¢¥É¥ì¥¹',8,now());
+insert into dtb_csv(csv_id,col,disp_name,rank,create_date)values(3,'order_tel01','ÅÅÏÃÈÖ¹æ1',9,now());
+insert into dtb_csv(csv_id,col,disp_name,rank,create_date)values(3,'order_tel02','ÅÅÏÃÈÖ¹æ2',10,now());
+insert into dtb_csv(csv_id,col,disp_name,rank,create_date)values(3,'order_tel03','ÅÅÏÃÈÖ¹æ3',11,now());
+insert into dtb_csv(csv_id,col,disp_name,rank,create_date)values(3,'order_fax01','FAX1',12,now());
+insert into dtb_csv(csv_id,col,disp_name,rank,create_date)values(3,'order_fax02','FAX2',13,now());
+insert into dtb_csv(csv_id,col,disp_name,rank,create_date)values(3,'order_fax03','FAX3',14,now());
+insert into dtb_csv(csv_id,col,disp_name,rank,create_date)values(3,'order_zip01','Í¹ÊØÈÖ¹æ1',15,now());
+insert into dtb_csv(csv_id,col,disp_name,rank,create_date)values(3,'order_zip02','Í¹ÊØÈÖ¹æ2',16,now());
+insert into dtb_csv(csv_id,col,disp_name,rank,create_date)values(3,'order_pref','ÅÔÆ»ÉÜ¸©',17,now());
+insert into dtb_csv(csv_id,col,disp_name,rank,create_date)values(3,'order_addr01','½»½ê1',18,now());
+insert into dtb_csv(csv_id,col,disp_name,rank,create_date)values(3,'order_addr02','½»½ê2',19,now());
+insert into dtb_csv(csv_id,col,disp_name,rank,create_date)values(3,'order_sex','À­ÊÌ',20,now());
+insert into dtb_csv(csv_id,col,disp_name,rank,create_date)values(3,'order_birth','À¸Ç¯·îÆü',21,now());
+insert into dtb_csv(csv_id,col,disp_name,rank,create_date)values(3,'order_job','¿¦¼ï',22,now());
+insert into dtb_csv(csv_id,col,disp_name,rank,create_date)values(3,'deliv_name01','ÇÛÁ÷ÀèÌ¾Á°',23,now());
+insert into dtb_csv(csv_id,col,disp_name,rank,create_date)values(3,'deliv_name02','ÇÛÁ÷ÀèÌ¾Á°',24,now());
+insert into dtb_csv(csv_id,col,disp_name,rank,create_date)values(3,'deliv_kana01','ÇÛÁ÷Àè¥«¥Ê',25,now());
+insert into dtb_csv(csv_id,col,disp_name,rank,create_date)values(3,'deliv_kana02','ÇÛÁ÷Àè¥«¥Ê',26,now());
+insert into dtb_csv(csv_id,col,disp_name,rank,create_date)values(3,'deliv_tel01','ÅÅÏÃÈÖ¹æ1',27,now());
+insert into dtb_csv(csv_id,col,disp_name,rank,create_date)values(3,'deliv_tel02','ÅÅÏÃÈÖ¹æ2',28,now());
+insert into dtb_csv(csv_id,col,disp_name,rank,create_date)values(3,'deliv_tel03','ÅÅÏÃÈÖ¹æ3',29,now());
+insert into dtb_csv(csv_id,col,disp_name,rank,create_date)values(3,'deliv_fax01','FAX1',30,now());
+insert into dtb_csv(csv_id,col,disp_name,rank,create_date)values(3,'deliv_fax02','FAX2',31,now());
+insert into dtb_csv(csv_id,col,disp_name,rank,create_date)values(3,'deliv_fax03','FAX3',32,now());
+insert into dtb_csv(csv_id,col,disp_name,rank,create_date)values(3,'deliv_zip01','Í¹ÊØÈÖ¹æ1',33,now());
+insert into dtb_csv(csv_id,col,disp_name,rank,create_date)values(3,'deliv_zip02','Í¹ÊØÈÖ¹æ2',34,now());
+insert into dtb_csv(csv_id,col,disp_name,rank,create_date)values(3,'deliv_pref','ÅÔÆ»ÉÜ¸©',35,now());
+insert into dtb_csv(csv_id,col,disp_name,rank,create_date)values(3,'deliv_addr01','½»½ê1',36,now());
+insert into dtb_csv(csv_id,col,disp_name,rank,create_date)values(3,'deliv_addr02','½»½ê2',37,now());
+insert into dtb_csv(csv_id,col,disp_name,rank,create_date)values(3,'subtotal','¾®·×',38,now());
+insert into dtb_csv(csv_id,col,disp_name,rank,create_date)values(3,'discount','ÃÍ°ú¤­',39,now());
+insert into dtb_csv(csv_id,col,disp_name,rank,create_date)values(3,'deliv_fee','Á÷ÎÁ',40,now());
+insert into dtb_csv(csv_id,col,disp_name,rank,create_date)values(3,'charge','¼ê¿ôÎÁ',41,now());
+insert into dtb_csv(csv_id,col,disp_name,rank,create_date)values(3,'use_point','»ÈÍÑ¥İ¥¤¥ó¥È',42,now());
+insert into dtb_csv(csv_id,col,disp_name,rank,create_date)values(3,'add_point','²Ã»»¥İ¥¤¥ó¥È',43,now());
+insert into dtb_csv(csv_id,col,disp_name,rank,create_date)values(3,'tax','ÀÇ¶â',44,now());
+insert into dtb_csv(csv_id,col,disp_name,rank,create_date)values(3,'total','¹ç·×',45,now());
+insert into dtb_csv(csv_id,col,disp_name,rank,create_date)values(3,'payment_total','¤ª»ÙÊ§¤¤¹ç·×',46,now());
+insert into dtb_csv(csv_id,col,disp_name,rank,create_date)values(3,'payment_method','»ÙÊ§¤¤ÊıË¡',47,now());
+insert into dtb_csv(csv_id,col,disp_name,rank,create_date)values(3,'deliv_time','ÇÛÁ÷»ş´Ö',48,now());
+insert into dtb_csv(csv_id,col,disp_name,rank,create_date)values(3,'deliv_no','ÇÛÁ÷ÅÁÉ¼ÈÖ¹æ',49,now());
+insert into dtb_csv(csv_id,col,disp_name,rank,create_date)values(3,'note','SHOP¥á¥â',50,now());
+insert into dtb_csv(csv_id,col,disp_name,rank,create_date)values(3,'status','ÂĞ±ş¾õ¶·',51,now());
+insert into dtb_csv(csv_id,col,disp_name,rank,create_date)values(3,'create_date','ÃíÊ¸Æü»ş',52,now());
+insert into dtb_csv(csv_id,col,disp_name,rank,create_date)values(3,'update_date','¹¹¿·Æü»ş',53,now());
 
-insert into dtb_csv(csv_id,col,disp_name,rank)values(2,'customer_id','¸ÜµÒID',1);
-insert into dtb_csv(csv_id,col,disp_name,rank)values(2,'name01','Ì¾Á°1',2);
-insert into dtb_csv(csv_id,col,disp_name,rank)values(2,'name02','Ì¾Á°2',3);
-insert into dtb_csv(csv_id,col,disp_name,rank)values(2,'kana01','¥Õ¥ê¥¬¥Ê1',4);
-insert into dtb_csv(csv_id,col,disp_name,rank)values(2,'kana02','¥Õ¥ê¥¬¥Ê2',5);
-insert into dtb_csv(csv_id,col,disp_name,rank)values(2,'zip01', 'Í¹ÊØÈÖ¹æ1',6);
-insert into dtb_csv(csv_id,col,disp_name,rank)values(2,'zip02', 'Í¹ÊØÈÖ¹æ2',7);
-insert into dtb_csv(csv_id,col,disp_name,rank)values(2,'pref', 'ÅÔÆ»ÉÜ¸©',8);
-insert into dtb_csv(csv_id,col,disp_name,rank)values(2,'addr01', '½»½ê1',9);
-insert into dtb_csv(csv_id,col,disp_name,rank)values(2,'addr02', '½»½ê2',10);
-insert into dtb_csv(csv_id,col,disp_name,rank)values(2,'email', 'E-MAIL',11);
-insert into dtb_csv(csv_id,col,disp_name,rank)values(2,'tel01', 'TEL1',12);
-insert into dtb_csv(csv_id,col,disp_name,rank)values(2,'tel02', 'TEL2',13);
-insert into dtb_csv(csv_id,col,disp_name,rank)values(2,'tel03', 'TEL3',14);
-insert into dtb_csv(csv_id,col,disp_name,rank)values(2,'fax01', 'FAX1',15);
-insert into dtb_csv(csv_id,col,disp_name,rank)values(2,'fax02', 'FAX2',16);
-insert into dtb_csv(csv_id,col,disp_name,rank)values(2,'fax03', 'FAX3',17);
-insert into dtb_csv(csv_id,col,disp_name,rank)values(2,'sex', 'À­ÊÌ',18);
-insert into dtb_csv(csv_id,col,disp_name,rank)values(2,'job', '¿¦¶È',19);
-insert into dtb_csv(csv_id,col,disp_name,rank)values(2,'birth', 'ÃÂÀ¸Æü',20);
-insert into dtb_csv(csv_id,col,disp_name,rank)values(2,'first_buy_date', '½é²ó¹ØÆşÆü',21);
-insert into dtb_csv(csv_id,col,disp_name,rank)values(2,'last_buy_date', 'ºÇ½ª¹ØÆşÆü',22);
-insert into dtb_csv(csv_id,col,disp_name,rank)values(2,'buy_times', '¹ØÆş²ó¿ô',23);
-insert into dtb_csv(csv_id,col,disp_name,rank)values(2,'point', '¥İ¥¤¥ó¥È»Ä¹â',24);
-insert into dtb_csv(csv_id,col,disp_name,rank)values(2,'note', 'È÷¹Í',25);
-insert into dtb_csv(csv_id,col,disp_name,rank)values(2,'create_date','ÅĞÏ¿Æü',26);
-insert into dtb_csv(csv_id,col,disp_name,rank)values(2,'update_date','¹¹¿·Æü',   27);
-
-insert into dtb_csv(csv_id,col,disp_name,rank)values(3,'order_id','ÃíÊ¸ID',1);
-insert into dtb_csv(csv_id,col,disp_name,rank)values(3,'customer_id','¸ÜµÒID',2);
-insert into dtb_csv(csv_id,col,disp_name,rank)values(3,'message','Í×Ë¾Åù',3);
-insert into dtb_csv(csv_id,col,disp_name,rank)values(3,'order_name01','¸ÜµÒÌ¾1',4);
-insert into dtb_csv(csv_id,col,disp_name,rank)values(3,'order_name02','¸ÜµÒÌ¾2',5);
-insert into dtb_csv(csv_id,col,disp_name,rank)values(3,'order_kana01','¸ÜµÒÌ¾¥«¥Ê1',6);
-insert into dtb_csv(csv_id,col,disp_name,rank)values(3,'order_kana02','¸ÜµÒÌ¾¥«¥Ê2',7);
-insert into dtb_csv(csv_id,col,disp_name,rank)values(3,'order_email','¥á¡¼¥ë¥¢¥É¥ì¥¹',8);
-insert into dtb_csv(csv_id,col,disp_name,rank)values(3,'order_tel01','ÅÅÏÃÈÖ¹æ1',9);
-insert into dtb_csv(csv_id,col,disp_name,rank)values(3,'order_tel02','ÅÅÏÃÈÖ¹æ2',10);
-insert into dtb_csv(csv_id,col,disp_name,rank)values(3,'order_tel03','ÅÅÏÃÈÖ¹æ3',11);
-insert into dtb_csv(csv_id,col,disp_name,rank)values(3,'order_fax01','FAX1',12);
-insert into dtb_csv(csv_id,col,disp_name,rank)values(3,'order_fax02','FAX2',13);
-insert into dtb_csv(csv_id,col,disp_name,rank)values(3,'order_fax03','FAX3',14);
-insert into dtb_csv(csv_id,col,disp_name,rank)values(3,'order_zip01','Í¹ÊØÈÖ¹æ1',15);
-insert into dtb_csv(csv_id,col,disp_name,rank)values(3,'order_zip02','Í¹ÊØÈÖ¹æ2',16);
-insert into dtb_csv(csv_id,col,disp_name,rank)values(3,'order_pref','ÅÔÆ»ÉÜ¸©',17);
-insert into dtb_csv(csv_id,col,disp_name,rank)values(3,'order_addr01','½»½ê1',18);
-insert into dtb_csv(csv_id,col,disp_name,rank)values(3,'order_addr02','½»½ê2',19);
-insert into dtb_csv(csv_id,col,disp_name,rank)values(3,'order_sex','À­ÊÌ',20);
-insert into dtb_csv(csv_id,col,disp_name,rank)values(3,'order_birth','À¸Ç¯·îÆü',21);
-insert into dtb_csv(csv_id,col,disp_name,rank)values(3,'order_job','¿¦¼ï',22);
-insert into dtb_csv(csv_id,col,disp_name,rank)values(3,'deliv_name01','ÇÛÁ÷ÀèÌ¾Á°',23);
-insert into dtb_csv(csv_id,col,disp_name,rank)values(3,'deliv_name02','ÇÛÁ÷ÀèÌ¾Á°',24);
-insert into dtb_csv(csv_id,col,disp_name,rank)values(3,'deliv_kana01','ÇÛÁ÷Àè¥«¥Ê',25);
-insert into dtb_csv(csv_id,col,disp_name,rank)values(3,'deliv_kana02','ÇÛÁ÷Àè¥«¥Ê',26);
-insert into dtb_csv(csv_id,col,disp_name,rank)values(3,'deliv_tel01','ÅÅÏÃÈÖ¹æ1',27);
-insert into dtb_csv(csv_id,col,disp_name,rank)values(3,'deliv_tel02','ÅÅÏÃÈÖ¹æ2',28);
-insert into dtb_csv(csv_id,col,disp_name,rank)values(3,'deliv_tel03','ÅÅÏÃÈÖ¹æ3',29);
-insert into dtb_csv(csv_id,col,disp_name,rank)values(3,'deliv_fax01','FAX1',30);
-insert into dtb_csv(csv_id,col,disp_name,rank)values(3,'deliv_fax02','FAX2',31);
-insert into dtb_csv(csv_id,col,disp_name,rank)values(3,'deliv_fax03','FAX3',32);
-insert into dtb_csv(csv_id,col,disp_name,rank)values(3,'deliv_zip01','Í¹ÊØÈÖ¹æ1',33);
-insert into dtb_csv(csv_id,col,disp_name,rank)values(3,'deliv_zip02','Í¹ÊØÈÖ¹æ2',34);
-insert into dtb_csv(csv_id,col,disp_name,rank)values(3,'deliv_pref','ÅÔÆ»ÉÜ¸©',35);
-insert into dtb_csv(csv_id,col,disp_name,rank)values(3,'deliv_addr01','½»½ê1',36);
-insert into dtb_csv(csv_id,col,disp_name,rank)values(3,'deliv_addr02','½»½ê2',37);
-insert into dtb_csv(csv_id,col,disp_name,rank)values(3,'subtotal','¾®·×',38);
-insert into dtb_csv(csv_id,col,disp_name,rank)values(3,'discount','ÃÍ°ú¤­',39);
-insert into dtb_csv(csv_id,col,disp_name,rank)values(3,'deliv_fee','Á÷ÎÁ',40);
-insert into dtb_csv(csv_id,col,disp_name,rank)values(3,'charge','¼ê¿ôÎÁ',41);
-insert into dtb_csv(csv_id,col,disp_name,rank)values(3,'use_point','»ÈÍÑ¥İ¥¤¥ó¥È',42);
-insert into dtb_csv(csv_id,col,disp_name,rank)values(3,'add_point','²Ã»»¥İ¥¤¥ó¥È',43);
-insert into dtb_csv(csv_id,col,disp_name,rank)values(3,'tax','ÀÇ¶â',44);
-insert into dtb_csv(csv_id,col,disp_name,rank)values(3,'total','¹ç·×',45);
-insert into dtb_csv(csv_id,col,disp_name,rank)values(3,'payment_total','¤ª»ÙÊ§¤¤¹ç·×',46);
-insert into dtb_csv(csv_id,col,disp_name,rank)values(3,'payment_method','»ÙÊ§¤¤ÊıË¡',47);
-insert into dtb_csv(csv_id,col,disp_name,rank)values(3,'deliv_time','ÇÛÁ÷»ş´Ö',48);
-insert into dtb_csv(csv_id,col,disp_name,rank)values(3,'deliv_no','ÇÛÁ÷ÅÁÉ¼ÈÖ¹æ',49);
-insert into dtb_csv(csv_id,col,disp_name,rank)values(3,'note','SHOP¥á¥â',50);
-insert into dtb_csv(csv_id,col,disp_name,rank)values(3,'status','ÂĞ±ş¾õ¶·',51);
-insert into dtb_csv(csv_id,col,disp_name,rank)values(3,'create_date','ÃíÊ¸Æü»ş',52);
-insert into dtb_csv(csv_id,col,disp_name,rank)values(3,'update_date','¹¹¿·Æü»ş',53);
 
 INSERT INTO dtb_templates (template_code, template_name, create_date, update_date) VALUES('default1','¥Ç¥Õ¥©¥ë¥È1', now(), now());
 
-insert into dtb_mailtemplate (template_id, subject, header, footer, creator_id, update_date) values (
+insert into dtb_mailtemplate (template_id, subject, header, footer, creator_id, update_date, create_date) values (
 1,
 '¤´ÃíÊ¸¤¢¤ê¤¬¤È¤¦¤´¤¶¤¤¤Ş¤¹¡£',
 '¤³¤ÎÅÙ¤Ï¤´ÃíÊ¸¤¤¤¿¤À¤­À¿¤ËÍ­Æñ¤¦¤´¤¶¤¤¤Ş¤¹¡£
@@ -200,7 +199,7 @@ insert into dtb_mailtemplate (template_id, subject, header, footer, creator_id, 
 ¤´¼ÁÌä¤ä¤´ÉÔÌÀ¤ÊÅÀ¤¬¤´¤¶¤¤¤Ş¤·¤¿¤é¡¢¤³¤Á¤é¤«¤é¤ª´ê¤¤¤¤¤¿¤·¤Ş¤¹¡£
 http://------.co.jp
 
-',0,Now());
+',0,Now(), now());
 
 insert into dtb_news (news_title, news_comment, creator_id, create_date, update_date) 
 values('¥µ¥¤¥È¥ª¡¼¥×¥ó¤¤¤¿¤·¤Ş¤·¤¿!','°ì¿ÍÊë¤é¤·¤«¤é¥ª¥Õ¥£¥¹¤Ê¤É¤µ¤Ş¤¶¤Ş¤Ê¥·¡¼¥ó¤Ç ¤¢¤Ê¤¿¤ÎÀ¸³è¤ò¥µ¥İ¡¼¥È¤¹¤ë¥°¥Ã¥º¤ò¤´²ÈÄí¤Ø¤ªÆÏ¤±¤·¤Ş¤¹¡ª°ì¿ÍÊë¤é¤·¤«¤é¥ª¥Õ¥£¥¹¤Ê¤É¤µ¤Ş¤¶¤Ş¤Ê¥·¡¼¥ó¤Ç ¤¢¤Ê¤¿¤ÎÀ¸³è¤ò¥µ¥İ¡¼¥È¤¹¤ë¥°¥Ã¥º¤ò¤´²ÈÄí¤Ø¤ªÆÏ¤±¤·¤Ş¤¹¡ª°ì¿ÍÊë¤é¤·¤«¤é¥ª¥Õ¥£¥¹¤Ê¤É¤µ¤Ş¤¶¤Ş¤Ê¥·¡¼¥ó¤Ç ¤¢¤Ê¤¿¤ÎÀ¸³è¤ò¥µ¥İ¡¼¥È¤¹¤ë¥°¥Ã¥º¤ò¤´²ÈÄí¤Ø¤ªÆÏ¤±¤·¤Ş¤¹¡ª',1, now(), now());
@@ -324,13 +323,13 @@ INSERT INTO dtb_category_total_count VALUES (2, NULL, now());
 INSERT INTO dtb_category_total_count VALUES (5, 1, now());
 INSERT INTO dtb_category_total_count VALUES (4, 1, now());
 
-INSERT INTO dtb_kiyaku (kiyaku_title, kiyaku_text, rank, creator_id, update_date, del_flg) 
+INSERT INTO dtb_kiyaku (kiyaku_title, kiyaku_text, rank, creator_id, update_date, del_flg, create_date) 
 VALUES ('Âè£±¾ò¡Ê²ñ°÷¡Ë','1. ¡Ö²ñ°÷¡×¤È¤Ï¡¢Åö¼Ò¤¬Äê¤á¤ë¼êÂ³¤Ë½¾¤¤ËÜµ¬Ìó¤ËÆ±°Õ¤Î¾å¡¢Æş²ñ¤Î¿½¤·¹ş¤ß¤ò¹Ô¤¦¸Ä¿Í¤ò¤¤¤¤¤Ş¤¹¡£
 2. ¡Ö²ñ°÷¾ğÊó¡×¤È¤Ï¡¢²ñ°÷¤¬Åö¼Ò¤Ë³«¼¨¤·¤¿²ñ°÷¤ÎÂ°À­¤Ë´Ø¤¹¤ë¾ğÊó¤ª¤è¤Ó²ñ°÷¤Î¼è°ú¤Ë´Ø¤¹¤ëÍúÎòÅù¤Î¾ğÊó¤ò¤¤¤¤¤Ş¤¹¡£
 3. ËÜµ¬Ìó¤Ï¡¢¤¹¤Ù¤Æ¤Î²ñ°÷¤ËÅ¬ÍÑ¤µ¤ì¡¢ÅĞÏ¿¼êÂ³»ş¤ª¤è¤ÓÅĞÏ¿¸å¤Ë¤ª¼é¤ê¤¤¤¿¤À¤¯µ¬Ìó¤Ç¤¹¡£',
-12,0,Now(),0);
+12,0,Now(),0, now());
 
-INSERT INTO dtb_kiyaku (kiyaku_title, kiyaku_text, rank, creator_id, update_date, del_flg) 
+INSERT INTO dtb_kiyaku (kiyaku_title, kiyaku_text, rank, creator_id, update_date, del_flg, create_date) 
 VALUES ('Âè£²¾ò¡ÊÅĞÏ¿¡Ë','1. ²ñ°÷»ñ³Ê
 ËÜµ¬Ìó¤ËÆ±°Õ¤Î¾å¡¢½êÄê¤ÎÆş²ñ¿½¹ş¤ß¤ò¤µ¤ì¤¿¤ªµÒÍÍ¤Ï¡¢½êÄê¤ÎÅĞÏ¿¼êÂ³´°Î»¸å¤Ë²ñ°÷¤È¤·¤Æ¤Î»ñ³Ê¤òÍ­¤·¤Ş¤¹¡£²ñ°÷ÅĞÏ¿¼êÂ³¤Ï¡¢²ñ°÷¤È¤Ê¤ë¤´ËÜ¿Í¤¬¹Ô¤Ã¤Æ¤¯¤À¤µ¤¤¡£ÂåÍı¤Ë¤è¤ëÅĞÏ¿¤Ï°ìÀÚÇ§¤á¤é¤ì¤Ş¤»¤ó¡£¤Ê¤ª¡¢²áµî¤Ë²ñ°÷»ñ³Ê¤¬¼è¤ê¾Ã¤µ¤ì¤¿Êı¤ä¤½¤ÎÂ¾Åö¼Ò¤¬Áê±ş¤·¤¯¤Ê¤¤¤ÈÈ½ÃÇ¤·¤¿Êı¤«¤é¤Î²ñ°÷¿½¹ş¤Ï¤ªÃÇ¤ê¤¹¤ë¾ì¹ç¤¬¤¢¤ê¤Ş¤¹¡£
 
@@ -341,18 +340,18 @@ VALUES ('Âè£²¾ò¡ÊÅĞÏ¿¡Ë','1. ²ñ°÷»ñ³Ê
 (1)¥Ñ¥¹¥ï¡¼¥É¤Ï²ñ°÷ËÜ¿Í¤Î¤ß¤¬ÍøÍÑ¤Ç¤­¤ë¤â¤Î¤È¤·¡¢Âè»°¼Ô¤Ë¾ùÅÏ¡¦ÂßÍ¿¤Ç¤­¤Ê¤¤¤â¤Î¤È¤·¤Ş¤¹¡£
 (2)¥Ñ¥¹¥ï¡¼¥É¤Ï¡¢Â¾¿Í¤ËÃÎ¤é¤ì¤ë¤³¤È¤¬¤Ê¤¤¤è¤¦Äê´üÅª¤ËÊÑ¹¹¤¹¤ëÅù¡¢²ñ°÷ËÜ¿Í¤¬ÀÕÇ¤¤ò¤â¤Ã¤Æ´ÉÍı¤·¤Æ¤¯¤À¤µ¤¤¡£
 (3)¥Ñ¥¹¥ï¡¼¥É¤òÍÑ¤¤¤ÆÅö¼Ò¤ËÂĞ¤·¤Æ¹Ô¤ï¤ì¤¿°Õ»×É½¼¨¤Ï¡¢²ñ°÷ËÜ¿Í¤Î°Õ»×É½¼¨¤È¤ß¤Ê¤·¡¢¤½¤Î¤¿¤á¤ËÀ¸¤¸¤ë»ÙÊ§Åù¤Ï¤¹¤Ù¤Æ²ñ°÷¤ÎÀÕÇ¤¤È¤Ê¤ê¤Ş¤¹¡£',
-11,0,Now(),0);
+11,0,Now(),0, now());
 
-INSERT INTO dtb_kiyaku (kiyaku_title, kiyaku_text, rank, creator_id, update_date, del_flg) 
+INSERT INTO dtb_kiyaku (kiyaku_title, kiyaku_text, rank, creator_id, update_date, del_flg, create_date) 
 VALUES ('Âè£³¾ò¡ÊÊÑ¹¹¡Ë','1. ²ñ°÷¤Ï¡¢»áÌ¾¡¢½»½ê¤Ê¤ÉÅö¼Ò¤ËÆÏ¤±½Ğ¤¿»ö¹à¤ËÊÑ¹¹¤¬¤¢¤Ã¤¿¾ì¹ç¤Ë¤Ï¡¢Â®¤ä¤«¤ËÅö¼Ò¤ËÏ¢Íí¤¹¤ë¤â¤Î¤È¤·¤Ş¤¹¡£
 2. ÊÑ¹¹ÅĞÏ¿¤¬¤Ê¤µ¤ì¤Ê¤«¤Ã¤¿¤³¤È¤Ë¤è¤êÀ¸¤¸¤¿Â»³²¤Ë¤Ä¤¤¤Æ¡¢Åö¼Ò¤Ï°ìÀÚÀÕÇ¤¤òÉé¤¤¤Ş¤»¤ó¡£¤Ş¤¿¡¢ÊÑ¹¹ÅĞÏ¿¤¬¤Ê¤µ¤ì¤¿¾ì¹ç¤Ç¤â¡¢ÊÑ¹¹ÅĞÏ¿Á°¤Ë¤¹¤Ç¤Ë¼êÂ³¤¬¤Ê¤µ¤ì¤¿¼è°ú¤Ï¡¢ÊÑ¹¹ÅĞÏ¿Á°¤Î¾ğÊó¤Ë´ğ¤Å¤¤¤Æ¹Ô¤ï¤ì¤Ş¤¹¤Î¤Ç¤´Ãí°Õ¤¯¤À¤µ¤¤¡£',
-10,0,Now(),0);
+10,0,Now(),0, now());
 
-INSERT INTO dtb_kiyaku (kiyaku_title, kiyaku_text, rank, creator_id, update_date, del_flg) 
+INSERT INTO dtb_kiyaku (kiyaku_title, kiyaku_text, rank, creator_id, update_date, del_flg, create_date) 
 VALUES ('Âè£´¾ò¡ÊÂà²ñ¡Ë','²ñ°÷¤¬Âà²ñ¤ò´õË¾¤¹¤ë¾ì¹ç¤Ë¤Ï¡¢²ñ°÷ËÜ¿Í¤¬Âà²ñ¼êÂ³¤­¤ò¹Ô¤Ã¤Æ¤¯¤À¤µ¤¤¡£½êÄê¤ÎÂà²ñ¼êÂ³¤Î½ªÎ»¸å¤Ë¡¢Âà²ñ¤È¤Ê¤ê¤Ş¤¹¡£',
-9,0,Now(),0);
+9,0,Now(),0, now());
 
-INSERT INTO dtb_kiyaku (kiyaku_title, kiyaku_text, rank, creator_id, update_date, del_flg) 
+INSERT INTO dtb_kiyaku (kiyaku_title, kiyaku_text, rank, creator_id, update_date, del_flg, create_date) 
 VALUES ('Âè£µ¾ò¡Ê²ñ°÷»ñ³Ê¤ÎÁÓ¼ºµÚ¤ÓÇå½şµÁÌ³¡Ë','1. ²ñ°÷¤¬¡¢²ñ°÷»ñ³Ê¼èÆÀ¿½¹ş¤Îºİ¤Ëµõµ¶¤Î¿½¹ğ¤ò¤·¤¿¤È¤­¡¢ÄÌ¿®ÈÎÇä¤Ë¤è¤ëÂå¶â»ÙÊ§ºÄÌ³¤òÂÕ¤Ã¤¿¤È¤­¡¢¤½¤ÎÂ¾Åö¼Ò¤¬²ñ°÷¤È¤·¤ÆÉÔÅ¬Åö¤ÈÇ§¤á¤ë»öÍ³¤¬¤¢¤ë¤È¤­¤Ï¡¢Åö¼Ò¤Ï¡¢²ñ°÷»ñ³Ê¤ò¼è¤ê¾Ã¤¹¤³¤È¤¬¤Ç¤­¤ë¤³¤È¤È¤·¤Ş¤¹¡£
 2. ²ñ°÷¤¬¡¢°Ê²¼¤Î³Æ¹æ¤ËÄê¤á¤ë¹Ô°Ù¤ò¤·¤¿¤È¤­¤Ï¡¢¤³¤ì¤Ë¤è¤êÅö¼Ò¤¬Èï¤Ã¤¿Â»³²¤òÇå½ş¤¹¤ëÀÕÇ¤¤òÉé¤¤¤Ş¤¹¡£
 (1)²ñ°÷ÈÖ¹æ¡¢¥Ñ¥¹¥ï¡¼¥É¤òÉÔÀµ¤ËÍøÍÑ¤¹¤ë¤³¤È
@@ -361,15 +360,15 @@ VALUES ('Âè£µ¾ò¡Ê²ñ°÷»ñ³Ê¤ÎÁÓ¼ºµÚ¤ÓÇå½şµÁÌ³¡Ë','1. ²ñ°÷¤¬¡¢²ñ°÷»ñ³Ê¼èÆÀ¿½¹ş¤Îºİ¤
 (4)¤½¤ÎÂ¾¡¢¤³¤ÎÍøÍÑµ¬Ìó¤ËÈ¿¤¹¤ë¹Ô°Ù¤ò¤¹¤ë¤³¤È',
 8,0,Now(),0);
 
-INSERT INTO dtb_kiyaku (kiyaku_title, kiyaku_text, rank, creator_id, update_date, del_flg) 
+INSERT INTO dtb_kiyaku (kiyaku_title, kiyaku_text, rank, creator_id, update_date, del_flg, create_date) 
 VALUES ('Âè£¶¾ò¡Ê²ñ°÷¾ğÊó¤Î¼è°·¤¤¡Ë','1. Åö¼Ò¤Ï¡¢¸¶Â§¤È¤·¤Æ²ñ°÷¾ğÊó¤ò²ñ°÷¤Î»öÁ°¤ÎÆ±°Õ¤Ê¤¯Âè»°¼Ô¤ËÂĞ¤·¤Æ³«¼¨¤¹¤ë¤³¤È¤Ï¤¢¤ê¤Ş¤»¤ó¡£¤¿¤À¤·¡¢¼¡¤Î³Æ¹æ¤Î¾ì¹ç¤Ë¤Ï¡¢²ñ°÷¤Î»öÁ°¤ÎÆ±°Õ¤Ê¤¯¡¢Åö¼Ò¤Ï²ñ°÷¾ğÊó¤½¤ÎÂ¾¤Î¤ªµÒÍÍ¾ğÊó¤ò³«¼¨¤Ç¤­¤ë¤â¤Î¤È¤·¤Ş¤¹¡£
 (1)Ë¡Îá¤Ë´ğ¤Å¤­³«¼¨¤òµá¤á¤é¤ì¤¿¾ì¹ç
 (2)Åö¼Ò¤Î¸¢Íø¡¢Íø±×¡¢Ì¾ÍÀÅù¤òÊİ¸î¤¹¤ë¤¿¤á¤ËÉ¬Í×¤Ç¤¢¤ë¤ÈÅö¼Ò¤¬È½ÃÇ¤·¤¿¾ì¹ç
 2. ²ñ°÷¾ğÊó¤Ë¤Ä¤­¤Ş¤·¤Æ¤Ï¡¢Åö¼Ò¤Î¡Ö¸Ä¿Í¾ğÊóÊİ¸î¤Ø¤Î¼èÁÈ¤ß¡×¤Ë½¾¤¤¡¢Åö¼Ò¤¬´ÉÍı¤·¤Ş¤¹¡£Åö¼Ò¤Ï¡¢²ñ°÷¾ğÊó¤ò¡¢²ñ°÷¤Ø¤Î¥µ¡¼¥Ó¥¹Äó¶¡¡¢¥µ¡¼¥Ó¥¹ÆâÍÆ¤Î¸ş¾å¡¢¥µ¡¼¥Ó¥¹¤ÎÍøÍÑÂ¥¿Ê¡¢¤ª¤è¤Ó¥µ¡¼¥Ó¥¹¤Î·òÁ´¤«¤Ä±ß³ê¤Ê±¿±Ä¤Î³ÎÊİ¤ò¿Ş¤ëÌÜÅª¤Î¤¿¤á¤Ë¡¢Åö¼Ò¤ª¤¤¤ÆÍøÍÑ¤¹¤ë¤³¤È¤¬¤Ç¤­¤ë¤â¤Î¤È¤·¤Ş¤¹¡£
 3. Åö¼Ò¤Ï¡¢²ñ°÷¤ËÂĞ¤·¤Æ¡¢¥á¡¼¥ë¥Ş¥¬¥¸¥ó¤½¤ÎÂ¾¤ÎÊıË¡¤Ë¤è¤ë¾ğÊóÄó¶¡¡Ê¹­¹ğ¤ò´Ş¤ß¤Ş¤¹¡Ë¤ò¹Ô¤¦¤³¤È¤¬¤Ç¤­¤ë¤â¤Î¤È¤·¤Ş¤¹¡£²ñ°÷¤¬¾ğÊóÄó¶¡¤ò´õË¾¤·¤Ê¤¤¾ì¹ç¤Ï¡¢Åö¼Ò½êÄê¤ÎÊıË¡¤Ë½¾¤¤¡¢¤½¤Î»İ¤òÄÌÃÎ¤·¤ÆÄº¤±¤ì¤Ğ¡¢¾ğÊóÄó¶¡¤òÄä»ß¤·¤Ş¤¹¡£¤¿¤À¤·¡¢ËÜ¥µ¡¼¥Ó¥¹±¿±Ä¤ËÉ¬Í×¤Ê¾ğÊóÄó¶¡¤Ë¤Ä¤­¤Ş¤·¤Æ¤Ï¡¢²ñ°÷¤Î´õË¾¤Ë¤è¤êÄä»ß¤ò¤¹¤ë¤³¤È¤Ï¤Ç¤­¤Ş¤»¤ó¡£',
-7,0,Now(),0);
+7,0,Now(),0, now());
 
-INSERT INTO dtb_kiyaku (kiyaku_title, kiyaku_text, rank, creator_id, update_date, del_flg) 
+INSERT INTO dtb_kiyaku (kiyaku_title, kiyaku_text, rank, creator_id, update_date, del_flg, create_date) 
 VALUES ('Âè£·¾ò¡Ê¶Ø»ß»ö¹à¡Ë','ËÜ¥µ¡¼¥Ó¥¹¤ÎÍøÍÑ¤Ëºİ¤·¤Æ¡¢²ñ°÷¤ËÂĞ¤·¼¡¤Î³Æ¹æ¤Î¹Ô°Ù¤ò¹Ô¤¦¤³¤È¤ò¶Ø»ß¤·¤Ş¤¹¡£
 
 1. Ë¡Îá¤Ş¤¿¤ÏËÜµ¬Ìó¡¢ËÜ¥µ¡¼¥Ó¥¹¤´ÍøÍÑ¾å¤Î¤´Ãí°Õ¡¢ËÜ¥µ¡¼¥Ó¥¹¤Ç¤Î¤ªÇã¤¤Êª¾å¤Î¤´Ãí°Õ¤½¤ÎÂ¾¤ÎËÜµ¬ÌóÅù¤Ë°ãÈ¿¤¹¤ë¤³¤È
@@ -381,30 +380,30 @@ VALUES ('Âè£·¾ò¡Ê¶Ø»ß»ö¹à¡Ë','ËÜ¥µ¡¼¥Ó¥¹¤ÎÍøÍÑ¤Ëºİ¤·¤Æ¡¢²ñ°÷¤ËÂĞ¤·¼¡¤Î³Æ¹æ¤Î¹Ô°Ù
 7. Åö¼Ò¤Î¥µ¡¼¥Ğ¤½¤ÎÂ¾¤Î¥³¥ó¥Ô¥å¡¼¥¿¤ËÉÔÀµ¤Ë¥¢¥¯¥»¥¹¤¹¤ë¤³¤È
 8. ¥Ñ¥¹¥ï¡¼¥É¤òÂè»°¼Ô¤ËÂßÍ¿¡¦¾ùÅÏ¤¹¤ë¤³¤È¡¢¤Ş¤¿¤ÏÂè»°¼Ô¤È¶¦ÍÑ¤¹¤ë¤³¤È
 9. ¤½¤ÎÂ¾Åö¼Ò¤¬ÉÔÅ¬ÀÚ¤ÈÈ½ÃÇ¤¹¤ë¤³¤È',
-6,0,Now(),0);
+6,0,Now(),0, now());
 
-INSERT INTO dtb_kiyaku (kiyaku_title, kiyaku_text, rank, creator_id, update_date, del_flg) 
+INSERT INTO dtb_kiyaku (kiyaku_title, kiyaku_text, rank, creator_id, update_date, del_flg, create_date) 
 VALUES ('Âè£¸¾ò¡Ê¥µ¡¼¥Ó¥¹¤ÎÃæÃÇ¡¦Ää»ßÅù¡Ë','1. Åö¼Ò¤Ï¡¢ËÜ¥µ¡¼¥Ó¥¹¤Î²ÔÆ°¾õÂÖ¤òÎÉ¹¥¤ËÊİ¤Ä¤¿¤á¤Ë¡¢¼¡¤Î³Æ¹æ¤Î°ì¤Ë³ºÅö¤¹¤ë¾ì¹ç¡¢Í½¹ğ¤Ê¤·¤Ë¡¢ËÜ¥µ¡¼¥Ó¥¹¤ÎÄó¶¡Á´¤Æ¤¢¤ë¤¤¤Ï°ìÉô¤òÄä»ß¤¹¤ë¤³¤È¤¬¤¢¤ê¤Ş¤¹¡£
 (1)¥·¥¹¥Æ¥à¤ÎÄê´üÊİ¼é¤ª¤è¤Ó¶ÛµŞÊİ¼é¤Î¤¿¤á¤ËÉ¬Í×¤Ê¾ì¹ç
 (2)¥·¥¹¥Æ¥à¤ËÉé²Ù¤¬½¸Ãæ¤·¤¿¾ì¹ç
 (3)²ĞºÒ¡¢ÄäÅÅ¡¢Âè»°¼Ô¤Ë¤è¤ëË¸³²¹Ô°Ù¤Ê¤É¤Ë¤è¤ê¥·¥¹¥Æ¥à¤Î±¿ÍÑ¤¬º¤Æñ¤Ë¤Ê¤Ã¤¿¾ì¹ç
 (4)¤½¤ÎÂ¾¡¢»ß¤à¤òÆÀ¤º¥·¥¹¥Æ¥à¤ÎÄä»ß¤¬É¬Í×¤ÈÅö¼Ò¤¬È½ÃÇ¤·¤¿¾ì¹ç',
-5,0,Now(),0);
+5,0,Now(),0, now());
 
-INSERT INTO dtb_kiyaku (kiyaku_title, kiyaku_text, rank, creator_id, update_date, del_flg) 
+INSERT INTO dtb_kiyaku (kiyaku_title, kiyaku_text, rank, creator_id, update_date, del_flg, create_date) 
 VALUES ('Âè£¹¾ò¡Ê¥µ¡¼¥Ó¥¹¤ÎÊÑ¹¹¡¦ÇÑ»ß¡Ë','Åö¼Ò¤Ï¡¢¤½¤ÎÈ½ÃÇ¤Ë¤è¤ê¥µ¡¼¥Ó¥¹¤ÎÁ´Éô¤Ş¤¿¤Ï°ìÉô¤ò»öÁ°¤ÎÄÌÃÎ¤Ê¤¯¡¢Å¬µ¹ÊÑ¹¹¡¦ÇÑ»ß¤Ç¤­¤ë¤â¤Î¤È¤·¤Ş¤¹¡£',
-4,0,Now(),0);
+4,0,Now(),0, now());
 
-INSERT INTO dtb_kiyaku (kiyaku_title, kiyaku_text, rank, creator_id, update_date, del_flg) 
+INSERT INTO dtb_kiyaku (kiyaku_title, kiyaku_text, rank, creator_id, update_date, del_flg, create_date) 
 VALUES ('Âè10¾ò¡ÊÌÈÀÕ¡Ë','1. ÄÌ¿®²óÀş¤ä¥³¥ó¥Ô¥å¡¼¥¿¤Ê¤É¤Î¾ã³²¤Ë¤è¤ë¥·¥¹¥Æ¥à¤ÎÃæÃÇ¡¦ÃÙÂÚ¡¦Ãæ»ß¡¦¥Ç¡¼¥¿¤Î¾Ã¼º¡¢¥Ç¡¼¥¿¤Ø¤ÎÉÔÀµ¥¢¥¯¥»¥¹¤Ë¤è¤êÀ¸¤¸¤¿Â»³²¡¢¤½¤ÎÂ¾Åö¼Ò¤Î¥µ¡¼¥Ó¥¹¤Ë´Ø¤·¤Æ²ñ°÷¤ËÀ¸¤¸¤¿Â»³²¤Ë¤Ä¤¤¤Æ¡¢Åö¼Ò¤Ï°ìÀÚÀÕÇ¤¤òÉé¤ï¤Ê¤¤¤â¤Î¤È¤·¤Ş¤¹¡£
 2. Åö¼Ò¤Ï¡¢Åö¼Ò¤Î¥¦¥§¥Ö¥Ú¡¼¥¸¡¦¥µ¡¼¥Ğ¡¦¥É¥á¥¤¥ó¤Ê¤É¤«¤éÁ÷¤é¤ì¤ë¥á¡¼¥ë¡¦¥³¥ó¥Æ¥ó¥Ä¤Ë¡¢¥³¥ó¥Ô¥å¡¼¥¿¡¦¥¦¥£¥ë¥¹¤Ê¤É¤ÎÍ­³²¤Ê¤â¤Î¤¬´Ş¤Ş¤ì¤Æ¤¤¤Ê¤¤¤³¤È¤òÊİ¾Ú¤¤¤¿¤·¤Ş¤»¤ó¡£
 3. ²ñ°÷¤¬ËÜµ¬ÌóÅù¤Ë°ãÈ¿¤·¤¿¤³¤È¤Ë¤è¤Ã¤ÆÀ¸¤¸¤¿Â»³²¤Ë¤Ä¤¤¤Æ¤Ï¡¢Åö¼Ò¤Ï°ìÀÚÀÕÇ¤¤òÉé¤¤¤Ş¤»¤ó¡£',
-3,0,Now(),0);
+3,0,Now(),0, now());
 
-INSERT INTO dtb_kiyaku (kiyaku_title, kiyaku_text, rank, creator_id, update_date, del_flg) 
+INSERT INTO dtb_kiyaku (kiyaku_title, kiyaku_text, rank, creator_id, update_date, del_flg, create_date) 
 VALUES ('Âè11¾ò¡ÊËÜµ¬Ìó¤Î²şÄê¡Ë','Åö¼Ò¤Ï¡¢ËÜµ¬Ìó¤òÇ¤°Õ¤Ë²şÄê¤Ç¤­¤ë¤â¤Î¤È¤·¡¢¤Ş¤¿¡¢Åö¼Ò¤Ë¤ª¤¤¤ÆËÜµ¬Ìó¤òÊä½¼¤¹¤ëµ¬Ìó¡Ê°Ê²¼¡ÖÊä½¼µ¬Ìó¡×¤È¤¤¤¤¤Ş¤¹¡Ë¤òÄê¤á¤ë¤³¤È¤¬¤Ç¤­¤Ş¤¹¡£ËÜµ¬Ìó¤Î²şÄê¤Ş¤¿¤ÏÊä½¼¤Ï¡¢²şÄê¸å¤ÎËÜµ¬Ìó¤Ş¤¿¤ÏÊä½¼µ¬Ìó¤òÅö¼Ò½êÄê¤Î¥µ¥¤¥È¤Ë·Ç¼¨¤·¤¿¤È¤­¤Ë¤½¤Î¸úÎÏ¤òÀ¸¤¸¤ë¤â¤Î¤È¤·¤Ş¤¹¡£¤³¤Î¾ì¹ç¡¢²ñ°÷¤Ï¡¢²şÄê¸å¤Îµ¬Ìó¤ª¤è¤ÓÊä½¼µ¬Ìó¤Ë½¾¤¦¤â¤Î¤ÈÃ×¤·¤Ş¤¹¡£',
-2,0,Now(),0);
+2,0,Now(),0, now());
 
-INSERT INTO dtb_kiyaku (kiyaku_title, kiyaku_text, rank, creator_id, update_date, del_flg) 
+INSERT INTO dtb_kiyaku (kiyaku_title, kiyaku_text, rank, creator_id, update_date, del_flg, create_date) 
 VALUES ('Âè12¾ò¡Ê½àµòË¡¡¢´É³íºÛÈ½½ê¡Ë','ËÜµ¬Ìó¤Ë´Ø¤·¤ÆÊ¶Áè¤¬À¸¤¸¤¿¾ì¹ç¡¢Åö¼ÒËÜÅ¹½êºßÃÏ¤ò´É³í¤¹¤ëÃÏÊıºÛÈ½½ê¤òÂè°ì¿³¤ÎÀìÂ°Åª¹ç°Õ´É³íºÛÈ½½ê¤È¤·¤Ş¤¹¡£ ',
-1,0,Now(),0);
+1,0,Now(),0, now());
