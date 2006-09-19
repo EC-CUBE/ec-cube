@@ -168,7 +168,7 @@ case 'drop':
 case 'complete':
 	// ショップマスタ情報の書き込み
 	$arrRet =  $objDBParam->getHashArray();
-	$dsn = "pgsql://".$arrRet['db_user'].":".$arrRet['db_password']."@".$arrRet['db_server'].$port."/".$arrRet['db_name'];
+	$dsn = $arrRet['db_type']."://".$arrRet['db_user'].":".$arrRet['db_password']."@".$arrRet['db_server'].$port."/".$arrRet['db_name'];
 	$sqlval['shop_name'] = $objWebParam->getValue('shop_name');
 	$sqlval['email01'] = $objWebParam->getValue('admin_mail');
 	$sqlval['email02'] = $objWebParam->getValue('admin_mail');
