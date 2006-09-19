@@ -75,7 +75,7 @@ function lfRegist( $conn, $data ){
 	$result = $conn->getAll($sql, array($_POST['template_id']) );
 	if ( $result ){
 		$sql_where = "template_id = ". addslashes($_POST['template_id']);
-		$conn->query("UPDATE dtb_mailtemplate SET template_id = ?, subject = ?,header = ?, footer,creator_id = ?, update_date = ?", $data);
+		$conn->query("UPDATE dtb_mailtemplate SET template_id = ?, subject = ?,header = ?, footer = ?,creator_id = ?, update_date = ?", $data);
 	}else{
 		$data["create_date"] = "now()";
 		$conn->query("INSERT INTO dtb_mailtemplate (template_id,subject,header,footer,creator_id,update_date,create_date) values ( ?,?,?,?,?,?,? )", $data);
