@@ -340,7 +340,7 @@ function lfUpdData($sql_id = "", $arrData = array()){
 		}
 	}else{
 		// データの新規作成
-		$sql = "INSERT INTO dtb_csv_sql (name, sql) values (?, ?) ";
+		$sql = "INSERT INTO dtb_csv_sql (name, sql, create_date, update_date) values (?, ?, now(), now()) ";
 		$arrVal= array($arrData['name'], $arrData['sql']);
 	}
 	// SQL実行	
