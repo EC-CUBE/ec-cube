@@ -73,14 +73,14 @@ function lfRegist( $conn, $data ){
 	
 	$sql = "SELECT * FROM dtb_mailtemplate WHERE template_id = ?";
 	$result = $conn->getAll($sql, array($_POST['template_id']) );
-	/*
 	if ( $result ){
 		$sql_where = "template_id = ". addslashes($_POST['template_id']);
+		$conn->query("UPDATE dtb_mailtemplate SET template_id = ?, subject,header = ?, footer,creator_id = ?, update_date = ?", $data);
 	}else{
-		$conn->query("INSERT INTO dtb_mailtemplate", $data, $sql_where);	
+		$data["create_date"] = "now()";
+		$conn->query("INSERT INTO dtb_mailtemplate (template_id,subject,header,footer,creator_id,update_date,create_date) values ( ?,?,?,?,?,?,? )", $data);
 	}
-	*/
-	
+
 //	$conn->autoExecute("dtb_mailtemplate", $data, $sql_where);	
 }
 
