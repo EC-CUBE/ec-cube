@@ -184,6 +184,8 @@ insert into dtb_csv(csv_id,col,disp_name,rank)values(3,'status','対応状況',51);
 insert into dtb_csv(csv_id,col,disp_name,rank)values(3,'create_date','注文日時',52);
 insert into dtb_csv(csv_id,col,disp_name,rank)values(3,'update_date','更新日時',53);
 
+INSERT INTO dtb_templates VALUES('default1','デフォルト1');
+
 insert into dtb_mailtemplate (template_id, subject, header, footer, creator_id, update_date) values (
 1,
 'ご注文ありがとうございます。',
