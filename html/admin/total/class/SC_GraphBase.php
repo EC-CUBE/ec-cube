@@ -96,7 +96,7 @@ class SC_GraphBase {
 		}else{
 			imagepng($this->image);
 		}
-		
+
 		imagedestroy($this->image);
 	}
 

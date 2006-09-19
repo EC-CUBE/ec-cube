@@ -132,7 +132,7 @@ CREATE TABLE dtb_deliv (
 CREATE TABLE dtb_delivtime (
     deliv_id int4 NOT NULL,
     time_id serial NOT NULL,
-    time text NOT NULL
+    deliv_time text NOT NULL
 );
 
 CREATE TABLE dtb_delivfee (
