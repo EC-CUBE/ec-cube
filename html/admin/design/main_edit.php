@@ -106,6 +106,8 @@ if ($_POST['mode'] == 'preview') {
 		$sql = "SELECT 0, target_id, bloc_id, bloc_row FROM dtb_blocposition WHERE page_id = ?";
 		$ret = $objDBConn->getAll($sql,array($page_id_old));
 		
+		sfprintr($ret);
+		
 		// blocposition §Ú £¿Ω
 		$sql = " insert into dtb_blocposition (";
 		$sql .= "     page_id,";
