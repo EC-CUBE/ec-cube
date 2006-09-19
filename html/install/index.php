@@ -460,6 +460,8 @@ function lfExecuteSQL($filepath, $db_user, $db_password, $db_server, $db_name, $
 
 		$dsn = $db_type."://".$db_user.":".$db_password."@".$db_server.$port."/".$db_name;
 		
+		sfprintr($dsn);
+		
 		$objDB = DB::connect($dsn);
 		// 接続エラー
 		if(!PEAR::isError($objDB)) {
