@@ -5,7 +5,7 @@ CREATE TABLE dtb_kiyaku (
     rank int NOT NULL DEFAULT 0,
     creator_id int NOT NULL,
     create_date datetime NOT NULL ,
-    update_date timestamp NOT NULL,
+    update_date datetime NOT NULL,
     del_flg  smallint NOT NULL DEFAULT 0
 );
 
@@ -51,7 +51,7 @@ CREATE TABLE dtb_update (
     other_files text,
     del_flg smallint NOT NULL DEFAULT 0,
     create_date datetime NOT NULL ,
-    update_date timestamp,
+    update_date datetime,
     release_date datetime NOT NULL
 );
 
@@ -107,7 +107,7 @@ CREATE TABLE dtb_baseinfo (
     shop_kana text,
     point_rate numeric,
     welcome_point numeric,
-    update_date timestamp,
+    update_date datetime,
     top_tpl text,
     product_tpl text,
     detail_tpl text,
@@ -126,7 +126,7 @@ CREATE TABLE dtb_deliv (
     del_flg smallint NOT NULL DEFAULT 0,
     creator_id int NOT NULL,
     create_date datetime NOT NULL ,
-    update_date timestamp
+    update_date datetime
 );
 
 CREATE TABLE dtb_delivtime (
@@ -155,7 +155,7 @@ CREATE TABLE dtb_payment (
     del_flg smallint NOT NULL DEFAULT 0,
     creator_id int NOT NULL,
     create_date datetime NOT NULL ,
-    update_date timestamp,
+    update_date datetime,
     payment_image text,
     upper_rule numeric
 );
@@ -168,7 +168,7 @@ CREATE TABLE dtb_mailtemplate (
     creator_id int NOT NULL,
     del_flg smallint NOT NULL DEFAULT 0,
     create_date datetime NOT NULL ,
-    update_date timestamp NOT NULL
+    update_date datetime NOT NULL
 );
 
 CREATE TABLE dtb_mailmaga_template (
@@ -198,7 +198,7 @@ CREATE TABLE dtb_mailmaga_template (
     del_flg smallint NOT NULL DEFAULT 0,
     creator_id int NOT NULL,
     create_date datetime NOT NULL ,
-    update_date timestamp
+    update_date datetime
 );
 
 CREATE TABLE dtb_send_history (
@@ -214,7 +214,7 @@ CREATE TABLE dtb_send_history (
     del_flg smallint NOT NULL DEFAULT 0,
     creator_id int NOT NULL,
     create_date datetime NOT NULL ,
-    update_date timestamp NOT NULL 
+    update_date datetime NOT NULL 
 );
 
 CREATE TABLE dtb_send_customer (
@@ -280,7 +280,7 @@ CREATE TABLE dtb_products (
     del_flg smallint NOT NULL DEFAULT 0,
     creator_id int NOT NULL,
     create_date datetime NOT NULL ,
-    update_date timestamp,
+    update_date datetime,
     deliv_date_id int
 );
 
@@ -298,7 +298,7 @@ CREATE TABLE dtb_products_class (
     status smallint,
     creator_id int NOT NULL,
     create_date datetime NOT NULL ,
-    update_date timestamp
+    update_date datetime
 );
 
 CREATE TABLE dtb_class (
@@ -308,7 +308,7 @@ CREATE TABLE dtb_class (
     rank int,
     creator_id int NOT NULL,
     create_date datetime NOT NULL ,
-    update_date timestamp,
+    update_date datetime,
     del_flg  smallint NOT NULL DEFAULT 0,
     product_id int
 );
@@ -321,7 +321,7 @@ CREATE TABLE dtb_classcategory (
     rank int,
     creator_id int NOT NULL,
     create_date datetime NOT NULL ,
-    update_date timestamp,
+    update_date datetime,
     del_flg  smallint NOT NULL DEFAULT 0
 );
 
@@ -333,7 +333,7 @@ CREATE TABLE dtb_category (
     rank int,
     creator_id int NOT NULL,
     create_date datetime NOT NULL ,
-    update_date timestamp,
+    update_date datetime,
     del_flg  smallint NOT NULL DEFAULT 0
 );
 
@@ -386,7 +386,7 @@ CREATE TABLE dtb_recommend_products (
     status smallint NOT NULL DEFAULT 0,
     creator_id int NOT NULL,
     create_date datetime NOT NULL ,
-    update_date timestamp NOT NULL 
+    update_date datetime NOT NULL 
 );
 
 CREATE TABLE dtb_review (
@@ -402,7 +402,7 @@ CREATE TABLE dtb_review (
     status smallint DEFAULT 2,
     creator_id int NOT NULL,
     create_date datetime,
-    update_date timestamp,
+    update_date datetime,
     del_flg  smallint NOT NULL DEFAULT 0
 );
 
@@ -410,7 +410,7 @@ CREATE TABLE dtb_customer_reading (
     reading_product_id int NOT NULL,
     customer_id int NOT NULL,
     create_date datetime NOT NULL,
-    update_date timestamp NOT NULL 
+    update_date datetime NOT NULL 
 );
 
 CREATE TABLE dtb_category_count (
@@ -436,7 +436,7 @@ CREATE TABLE dtb_news (
     link_method text,
     creator_id int NOT NULL,
     create_date datetime NOT NULL ,
-    update_date timestamp,
+    update_date datetime,
     del_flg  smallint NOT NULL DEFAULT 0
 );
 
@@ -449,7 +449,7 @@ CREATE TABLE dtb_best_products (
     comment text,
     creator_id int NOT NULL,
     create_date datetime NOT NULL ,
-    update_date timestamp,
+    update_date datetime,
     del_flg  smallint NOT NULL DEFAULT 0
 );
 
@@ -497,7 +497,7 @@ CREATE TABLE dtb_customer (
     note text,
     status smallint NOT NULL DEFAULT 1,
     create_date datetime NOT NULL ,
-    update_date timestamp ,
+    update_date datetime ,
     del_flg  smallint NOT NULL DEFAULT 0,
     cell01 text,
     cell02 text,
@@ -508,7 +508,7 @@ CREATE TABLE dtb_customer_mail (
     email varchar(50) NOT NULL UNIQUE,
     mail_flag smallint,
     create_date datetime NOT NULL ,
-    update_date timestamp 
+    update_date datetime 
 );
 
 CREATE TABLE dtb_customer_mail_temp (
@@ -516,7 +516,7 @@ CREATE TABLE dtb_customer_mail_temp (
     mail_flag smallint,
     temp_id varchar(50) NOT NULL UNIQUE,
     end_flag smallint,
-    update_date timestamp NOT NULL ,
+    update_date datetime NOT NULL ,
     create_data datetime NOT NULL 
 );
 
@@ -581,7 +581,7 @@ CREATE TABLE dtb_order (
     loan_result text,
     credit_result text,
     credit_msg text,
-    update_date timestamp,
+    update_date datetime,
     commit_date text,
     del_flg  smallint NOT NULL DEFAULT 0,
     deliv_date text,
@@ -654,7 +654,7 @@ CREATE TABLE dtb_order_temp (
     credit_result text,
     credit_msg text,
     create_date datetime NOT NULL ,
-    update_date timestamp,
+    update_date datetime,
     del_flg  smallint NOT NULL DEFAULT 0,
     deliv_date text,
     conveni_data text,
@@ -711,7 +711,7 @@ CREATE TABLE dtb_member (
     work smallint NOT NULL DEFAULT 1,
     del_flg smallint NOT NULL DEFAULT 0,
     creator_id int NOT NULL,
-    update_date timestamp,
+    update_date datetime,
     create_date datetime NOT NULL ,
     login_date datetime
 );
@@ -769,7 +769,7 @@ CREATE TABLE dtb_campaign (
     search_condition text,
     del_flg smallint NOT NULL DEFAULT 0,
     create_date datetime NOT NULL,
-    update_date timestamp NOT NULL 
+    update_date datetime NOT NULL 
 );
 
 CREATE TABLE dtb_campaign_detail (
@@ -793,7 +793,7 @@ CREATE TABLE dtb_pagelayout (
     keyword text,
     update_url text,
     create_date datetime NOT NULL ,
-    update_date timestamp NOT NULL 
+    update_date datetime NOT NULL 
 );
 
 CREATE TABLE dtb_bloc (
@@ -802,7 +802,7 @@ CREATE TABLE dtb_bloc (
     tpl_path text,
     filename varchar(50) NOT NULL UNIQUE,
     create_date datetime NOT NULL ,
-    update_date timestamp NOT NULL ,
+    update_date datetime NOT NULL ,
     php_path text,
     del_flg smallint NOT NULL DEFAULT 0
 );
@@ -823,14 +823,14 @@ CREATE TABLE dtb_csv (
     rank int,
     status smallint NOT NULL DEFAULT 1,
     create_date datetime NOT NULL ,
-    update_date timestamp NOT NULL 
+    update_date datetime NOT NULL 
 );
 
 CREATE TABLE dtb_csv_sql (
     sql_id int auto_increment primary key,
     name text NOT NULL,
     sql text,
-    update_date timestamp NOT NULL ,
+    update_date datetime NOT NULL ,
     create_date datetime NOT NULL 
 );
 
@@ -849,7 +849,7 @@ CREATE TABLE dtb_user_regist (
     status smallint NOT NULL,
     del_flg smallint DEFAULT 0,
     create_date datetime NOT NULL,
-    update_date timestamp NOT NULL 
+    update_date datetime NOT NULL 
 );
 
 create table dtb_templates 
@@ -857,7 +857,7 @@ create table dtb_templates
 	template_code		varchar(50) NOT NULL UNIQUE	,
 	template_name		text			,
 	create_date		datetime		NOT NULL	,
-	update_date		timestamp		NOT NULL	
+	update_date		datetime		NOT NULL	
 );
 
 create table dtb_table_comment
