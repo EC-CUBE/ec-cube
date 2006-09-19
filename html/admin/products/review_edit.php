@@ -31,6 +31,7 @@ foreach ($_POST as $key => $val){
 
 //取得文字列の変換用カラム
 $arrRegistColumn = array (		
+								array( "column" => "update_date"),
 								array( "column" => "status"),
 								array( "column" => "recommend_level"),		
 								array(	"column" => "title",		"convert" => "KVa"),
@@ -140,6 +141,9 @@ function lfRegistReviewData($array, $arrRegistColumn){
 	foreach ($arrRegistColumn as $data) {
 		if (strlen($array[ $data["column"] ]) > 0 ) {
 			$arrRegist[ $data["column"] ] = $array[ $data["column"] ];
+		}
+		if ($data['column'] == 'update_date'){
+			$arrRegist['update_date'] = 'now()';
 		}
 	}
 	//登録実行
