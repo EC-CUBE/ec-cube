@@ -460,8 +460,6 @@ function lfExecuteSQL($filepath, $db_user, $db_password, $db_server, $db_name, $
 
 		$dsn = $db_type."://".$db_user.":".$db_password."@".$db_server.$port."/".$db_name;
 		
-		sfprintr($dsn);
-		
 		$objDB = DB::connect($dsn);
 		// 接続エラー
 		if(!PEAR::isError($objDB)) {
@@ -470,6 +468,7 @@ function lfExecuteSQL($filepath, $db_user, $db_password, $db_server, $db_name, $
 			$sql_split = split(";",$sql);
 			foreach($sql_split as $key => $val){
 				if ($val != "") {
+					sfprintr($val);
 					$ret = $objDB->query($val);
 					if(PEAR::isError($ret) and $disp_err) {
 						$arrErr['all'] = ">> " . $ret->message . "<br>";
