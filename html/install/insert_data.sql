@@ -3,11 +3,11 @@ CREATE INDEX dtb_products_class_product_id_key ON dtb_products_class(product_id)
 CREATE INDEX dtb_order_detail_product_id_key ON dtb_order_detail(product_id);
 CREATE INDEX dtb_category_category_id_key ON dtb_category(category_id);
 
-INSERT INTO dtb_member (name, login_id, password, creator_id, authority, work, del_flg) 
-VALUES ('dummy','dummy','',0,0,1,1);
+INSERT INTO dtb_member (name, login_id, password, creator_id, authority, work, del_flg, create_date) 
+VALUES ('dummy','dummy','',0,0,1,1, now());
 
-INSERT INTO dtb_member (name, login_id, password, creator_id, authority, work, del_flg, rank) 
-VALUES ('admin','admin','2c19f4a742398150cecc80b3e76b673a35b8c19c',0,0,1,0,1);
+INSERT INTO dtb_member (name, login_id, password, creator_id, authority, work, del_flg, rank, create_date) 
+VALUES ('admin','admin','2c19f4a742398150cecc80b3e76b673a35b8c19c',0,0,1,0,1, now());
 
 insert into dtb_bloc ( bloc_name, tpl_path, filename, php_path, del_flg ) values ('カテゴリ',	'html/user_data/include/bloc/category.tpl',			'category','html/frontparts/bloc/category.php', 1);
 insert into dtb_bloc ( bloc_name, tpl_path, filename, php_path, del_flg ) values ('利用ガイド',	'html/user_data/include/bloc/guide.tpl',			'guide','', 1);
@@ -17,12 +17,12 @@ insert into dtb_bloc ( bloc_name, tpl_path, filename, php_path, del_flg ) values
 insert into dtb_bloc ( bloc_name, tpl_path, filename, php_path, del_flg ) values ('ログイン',	'html/user_data/include/bloc/login.tpl',			'login','html/frontparts/bloc/login.php', 1);
 insert into dtb_bloc ( bloc_name, tpl_path, filename, php_path, del_flg ) values ('オススメ商品','html/user_data/include/bloc/best5.tpl',			'best5','html/frontparts/bloc/best5.php', 1);
 
-insert into dtb_pagelayout (page_id,page_name,url)values(0, 'プレビューデータ','');
+insert into dtb_pagelayout (page_id,page_name,url, create_date, update_date)values(0, 'プレビューデータ','',now(),now());
 update dtb_pagelayout set page_id = 0;
-insert into dtb_pagelayout (page_id,page_name,url,php_dir,tpl_dir,filename,edit_flg)values(1,'TOPページ','index.php',' ','/html/user_data/templates/','top',2);
-insert into dtb_pagelayout (page_id,page_name,url,php_dir,tpl_dir,filename,edit_flg)values(2,'商品一覧ページ','products/list.php',' ','/html/user_data/templates/','list',2);
-insert into dtb_pagelayout (page_id,page_name,url,php_dir,tpl_dir,filename,edit_flg)values(3,'商品詳細','products/detail.php',' ','/html/user_data/templates/','detail',2);
-insert into dtb_pagelayout (page_id,page_name,url,php_dir,tpl_dir,filename,edit_flg)values(4,'MYページ','mypage/index.php',' ','','',2);
+insert into dtb_pagelayout (page_id,page_name,url,php_dir,tpl_dir,filename,edit_flg, create_date, update_date)values(1,'TOPページ','index.php',' ','/html/user_data/templates/','top',2,now(),now());
+insert into dtb_pagelayout (page_id,page_name,url,php_dir,tpl_dir,filename,edit_flg, create_date, update_date)values(2,'商品一覧ページ','products/list.php',' ','/html/user_data/templates/','list',2,now(),now());
+insert into dtb_pagelayout (page_id,page_name,url,php_dir,tpl_dir,filename,edit_flg, create_date, update_date)values(3,'商品詳細','products/detail.php',' ','/html/user_data/templates/','detail',2,now(),now());
+insert into dtb_pagelayout (page_id,page_name,url,php_dir,tpl_dir,filename,edit_flg, create_date, update_date)values(4,'MYページ','mypage/index.php',' ','','',2,now(),now());
 
 INSERT INTO dtb_blocposition (page_id,target_id,bloc_id,bloc_row,filename)values(1,1,(SELECT bloc_id FROM dtb_bloc WHERE filename = 'category'),2,'category');
 INSERT INTO dtb_blocposition (page_id,target_id,bloc_id,bloc_row,filename)values(1,1,(SELECT bloc_id FROM dtb_bloc WHERE filename = 'guide'),3,'guide');
@@ -202,8 +202,8 @@ http://------.co.jp
 
 ',0,Now());
 
-insert into dtb_news (news_title, news_comment, creator_id) 
-values('サイトオープンいたしました!','一人暮らしからオフィスなどさまざまなシーンで あなたの生活をサポートするグッズをご家庭へお届けします！一人暮らしからオフィスなどさまざまなシーンで あなたの生活をサポートするグッズをご家庭へお届けします！一人暮らしからオフィスなどさまざまなシーンで あなたの生活をサポートするグッズをご家庭へお届けします！',1);
+insert into dtb_news (news_title, news_comment, creator_id, create_date, update_date) 
+values('サイトオープンいたしました!','一人暮らしからオフィスなどさまざまなシーンで あなたの生活をサポートするグッズをご家庭へお届けします！一人暮らしからオフィスなどさまざまなシーンで あなたの生活をサポートするグッズをご家庭へお届けします！一人暮らしからオフィスなどさまざまなシーンで あなたの生活をサポートするグッズをご家庭へお届けします！',1, now(), now());
 
 INSERT INTO dtb_deliv (name,service_name,confirm_url,rank,status,del_flg,creator_id,create_date,update_date)
 VALUES ('ダミー配送業者', 'ダミー配送業者', '', 1, 1, 0, 2, now(), now());

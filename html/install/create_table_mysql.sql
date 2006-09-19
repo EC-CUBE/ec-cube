@@ -862,7 +862,7 @@ update_date		timestamp		NOT NULL
 
 create table dtb_table_comment
 (
-id	int,
+id	int auto_increment primary key,
 table_name	text,
 column_name	text,
 description	text
