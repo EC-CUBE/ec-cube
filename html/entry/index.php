@@ -183,7 +183,9 @@ function lfRegistData ($array, $arrRegistColumn, $arrRejectRegistColumn) {
 		$count = $objConn->getOne("SELECT COUNT(*) FROM dtb_customer WHERE secret_key = ?", array($uniqid));
 	}
 	
-	$arrRegist["secret_key"] = $uniqid;	//　仮登録ID発行
+	$arrRegist["secret_key"] = $uniqid;		// 仮登録ID発行
+	$arrRegist["create_date"] = "now()"; 	// 作成日
+	$arrRegist["first_buy_date"] = "";	 	// 最初の購入日
 	
 	//-- 仮登録実行
 	$objConn->query("BEGIN");
