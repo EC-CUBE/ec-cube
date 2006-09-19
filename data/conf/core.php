@@ -27,7 +27,6 @@ define ("DB_ERROR_MAIL_TO", "error-ml@lockon.co.jp");
 // DBエラーメール件名
 define ("DB_ERROR_MAIL_SUBJECT", "OS_TEST_ERROR");
 
-
 // サイト用DB
 define ("DEFAULT_DSN", DB_TYPE . "://" . DB_USER . ":" . DB_PASSWORD . "@" . DB_SERVER . DB_PORT . "/" . DB_NAME);
 
@@ -38,4 +37,5 @@ define ("USER_URL", SITE_URL."user_data/"); // ユーザー作成ページ等
 
 // 認証用 magic
 define ("AUTH_MAGIC", "31eafcbd7a81d7b401a7fdc12bba047c02d1fae6");
+
 ?>
