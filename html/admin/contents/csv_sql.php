@@ -145,10 +145,10 @@ $arrColList =  sfSwapArray($arrColList);
 
 // 表示させる内容を編集
 foreach ($arrTableList['description'] as $key => $val) {
-	$arrTableList['description'][$key] = $arrTableList['table_name'][$key] . ":" . $arrTableList['description'][$key];
+	$arrTableList['description'][$key] = $arrTableList['table_name'][$key] . "：" . $arrTableList['description'][$key];
 }
 foreach ($arrColList['description'] as $key => $val) {
-	$arrColList[$key]['description'] = $arrColList[$key]['column_name'] . ":" . $arrColList[$key]['description'];
+	$arrColList['description'][$key] = $arrColList['column_name'][$key] . "：" . $arrColList['description'][$key];
 }
 
 // テンプレートに出力するデータをセット
