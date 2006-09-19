@@ -139,9 +139,9 @@ if ($_POST['mode'] == 'confirm' or $_POST['mode'] == 'preview') {
 		$arrRet = $objDBConn->query($ins_sql,$arrInsData);
 	}
 
+	sfprintr($_POST);
 	// プレビュー処理
 	if ($_POST['mode'] == 'preview') {
-		sfprintr($_POST);
 		if ($page_id == "") {
 			header("location: ./index.php");
 		}
