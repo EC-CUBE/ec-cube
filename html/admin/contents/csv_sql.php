@@ -217,25 +217,6 @@ function lfGetTableList(){
 function lfGetColumnList($selectTable){
 	$objQuery = new SC_Query();
 	$arrRet = array();		// 結果取得用
-	/*
-	$sql = "";
-	$sql .= " SELECT";
-	$sql .= "     a.attname,";
-	$sql .= "     a.attnum as fldnum, ";
-	$sql .= "     (select case count(description) when 0 then a.attname else (select a.attname || ':' || description from pg_description where a.attrelid=objoid and a.attnum=objsubid ) end from pg_description where a.attrelid=objoid and a.attnum=objsubid ) as description ";
-	$sql .= " FROM";
-	$sql .= "     pg_class c,";
-	$sql .= "         pg_attribute a left join pg_description e on (a.attrelid=e.objoid and a.attnum=e.objsubid) ";
-	$sql .= " ";
-	$sql .= " WHERE";
-	$sql .= "     (c.relname=?) AND";
-	$sql .= "     (c.oid=a.attrelid) AND";
-	$sql .= "     a.attnum > 0";
-	$sql .= " ORDER BY";
-	$sql .= "     fldnum";
-	$sql .= " ";
-	$arrRet = $objQuery->getAll($sql, array($selectTable));	
-	*/
 	$sql = "";
 	$sql .= " SELECT column_name, description FROM dtb_table_comment WHERE table_name = ? AND column_name IS NOT NULL";
 	$arrRet = $objQuery->getAll($sql, array($selectTable));	
@@ -293,7 +274,7 @@ function lfGetSqlList($where = "" , $arrData = array()){
 function lfCheckError($data){
 	$objErr = new SC_CheckError();
 	$objErr->doFunc( array("名称", "name"), array("EXIST_CHECK") );
-	$objErr->doFunc( array("SQL文", "sql"), array("EXIST_CHECK") );
+	$objErr->doFunc( array("SQL文", "sql", "30000"), array("EXIST_CHECK", "MAX_LENGTH_CHECK") );
 	
 	// SQLの妥当性チェック
 	if ($objErr->arrErr['sql'] == "") {
