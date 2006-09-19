@@ -83,6 +83,8 @@ function lfRegistData( $arrVal, $id = null ){
 	$sqlval['mail_method'] = $arrVal['mail_method'];
 	$sqlval['creator_id'] = $_SESSION['member_id'];
 	$sqlval['body'] = $arrVal['body'];
+	$sqlval['create_date'] = "now()";
+	$sqlval['update_date'] = "now()";
 	
 	if ( $id ){
 		$query->update("dtb_mailmaga_template", $sqlval, "template_id=".$id );
