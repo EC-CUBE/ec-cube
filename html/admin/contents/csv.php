@@ -95,13 +95,13 @@ function lfUpdCsvOutput($csv_id, $arrData = array()){
 	$objQuery = new SC_Query();
 
 	// ひとまず、全部使用しないで更新する
-	$upd_sql = "UPDATE dtb_csv SET status = 2, rank = NULl WHERE csv_id = ?";
+	$upd_sql = "UPDATE dtb_csv SET status = 2, rank = NULL, update_date = now() WHERE csv_id = ?";
 	$objQuery->query($upd_sql, array($csv_id));
 
 	// 使用するものだけ、再更新する。
 	if (is_array($arrData)) {
 		foreach($arrData as $key => $val){
-			$upd_sql = "UPDATE dtb_csv SET status = 1, rank = ? , update_date = now() WHERE csv_id = ? AND col = ? ";
+			$upd_sql = "UPDATE dtb_csv SET status = 1, rank = ? WHERE csv_id = ? AND col = ? ";
 			$objQuery->query($upd_sql, array($key+1, $csv_id,$val));
 		}
 	}
