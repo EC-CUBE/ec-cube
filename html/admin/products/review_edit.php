@@ -141,10 +141,8 @@ function lfRegistReviewData($array, $arrRegistColumn){
 		if (strlen($array[ $data["column"] ]) > 0 ) {
 			$arrRegist[ $data["column"] ] = $array[ $data["column"] ];
 		}
-		if ($data['column'] == 'update_date'){
-			$arrRegist['update_date'] = 'now()';
-		}
 	}
+	$arrRegist['update_date'] = 'now()';
 	//епо©╪б╧т
 	$objQuery->begin();
 	$objQuery->update("dtb_review", $arrRegist, "review_id='".$_POST['review_id']."'");
