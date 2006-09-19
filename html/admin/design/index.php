@@ -388,7 +388,7 @@ function lfSetPreData($arrPageData){
 	$ret = $objDBConn->getAll($sql, $arrPageData[0]['page_id']);
 	
 	sfprintr($ret);
-	
+	exit;
 	// dbデータのコピー
 	$sql = " update dtb_pagelayout set ";
 	$sql .= "     page_name = (select page_name from dtb_pagelayout where page_id = ?)";
