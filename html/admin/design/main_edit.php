@@ -106,16 +106,17 @@ if ($_POST['mode'] == 'preview') {
 		$sql = "SELECT 0, target_id, bloc_id, bloc_row FROM dtb_blocposition WHERE page_id = ?";
 		$ret = $objDBConn->getAll($sql,array($page_id_old));
 		
-		sfprintr($ret);
-		
-		// blocposition ¤òÊ£À½
-		$sql = " insert into dtb_blocposition (";
-		$sql .= "     page_id,";
-		$sql .= "     target_id,";
-		$sql .= "     bloc_id,";
-		$sql .= "     bloc_row";
-		$sql .= "     )values(?, ?, ?, ?)";
-		$ret = $objDBConn->query($sql,$ret[0]);
+		if (count($ret) > 0) {
+			// blocposition ¤òÊ£À½
+			$sql = " insert into dtb_blocposition (";
+			$sql .= "     page_id,";
+			$sql .= "     target_id,";
+			$sql .= "     bloc_id,";
+			$sql .= "     bloc_row";
+			$sql .= "     )values(?, ?, ?, ?)";
+			$ret = $objDBConn->query($sql,$ret[0]);
+		}
+
 	}
 	
 	$_SESSION['preview'] = "ON";
