@@ -49,7 +49,11 @@ if ( $_POST['mode'] == 'regist' ){
 		// ёдёбепо©
 		$objPage->arrForm['creator_id'] = $_SESSION['member_id'];
 		$objPage->arrForm['update_date'] = "NOW()";
-		$conn->autoExecute("dtb_best_products", $objPage->arrForm );		
+		$objPage->arrForm['create_date'] = "NOW()";
+		
+		$objQuery = new SC_Query();
+		$objQuery->insert("dtb_best_products", $objPage->arrForm );
+//		$conn->autoExecute("dtb_best_products", $objPage->arrForm );
 	}	
 
 } elseif ( $_POST['mode'] == 'delete' ){
