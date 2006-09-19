@@ -141,7 +141,7 @@ if ($_POST['mode'] == 'confirm' or $_POST['mode'] == 'preview') {
 
 	// プレビュー処理
 	if ($_POST['mode'] == 'preview') {
-		
+		sfprintr($_POST);
 		if ($page_id == "") {
 			header("location: ./index.php");
 		}
