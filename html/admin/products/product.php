@@ -310,6 +310,7 @@ function lfRegistProduct($arrList) {
 		// カテゴリ内で最大のランクを割り当てる
 		$sqlval['rank'] = $objQuery->max("dtb_products", "rank", "category_id = ?", array($arrList['category_id'])) + 1;
 		// INSERTの実行
+		$sqlval['create_date'] = "Now()";
 		$objQuery->insert("dtb_products", $sqlval);
 		
 		if (DB_TYPE == "mysql") {
