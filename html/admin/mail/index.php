@@ -387,7 +387,7 @@ function lfRegistData($arrData){
 	$dtb_send_history["send_count"] = $dataCnt;
 	$arrData['body'] = "";
 	$dtb_send_history["search_data"] = serialize($arrData);
-	$conn->autoExecute("dtb_send_history", $dtb_send_history );	
+	$objQuery->insert("dtb_send_history", $dtb_send_history );	
 	
 	if ( is_array( $search_data ) ){
 		foreach( $search_data as $line ){
