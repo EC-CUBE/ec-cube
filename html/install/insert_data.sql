@@ -3,10 +3,6 @@ CREATE INDEX dtb_products_class_product_id_key ON dtb_products_class(product_id)
 CREATE INDEX dtb_order_detail_product_id_key ON dtb_order_detail(product_id);
 CREATE INDEX dtb_category_category_id_key ON dtb_category(category_id);
 
-INSERT INTO dtb_classcategory (classcategory_id, class_id, rank, creator_id, create_date, update_date) 
-VALUES (0, 0, 0, 0, now(), now());
-UPDATE dtb_classcategory SET classcategory_id = 0;
-
 INSERT INTO dtb_member (name, login_id, password, creator_id, authority, work, del_flg) 
 VALUES ('dummy','dummy','',0,0,1,1);
 
@@ -308,6 +304,10 @@ INSERT INTO dtb_classcategory (name,class_id,status,rank,creator_id,create_date,
 INSERT INTO dtb_classcategory (name,class_id,status,rank,creator_id,create_date,update_date,del_flg) VALUES ('L', 2, NULL, 1, 2, now(), NULL, 0);
 INSERT INTO dtb_classcategory (name,class_id,status,rank,creator_id,create_date,update_date,del_flg) VALUES ('M', 2, NULL, 2, 2, now(), NULL, 0);
 INSERT INTO dtb_classcategory (name,class_id,status,rank,creator_id,create_date,update_date,del_flg) VALUES ('S', 2, NULL, 3, 2, now(), NULL, 0);
+
+INSERT INTO dtb_classcategory (classcategory_id, class_id, rank, creator_id, create_date, update_date) 
+VALUES (0, 0, 0, 0, now(), now());
+UPDATE dtb_classcategory SET classcategory_id = 0 WHERE class_id = 0;
 
 INSERT INTO dtb_category (category_name,parent_category_id,level,rank,creator_id,create_date,update_date,del_flg) VALUES ('ø©… ', 0, 1, 4, 2, now(), now(), 0);
 INSERT INTO dtb_category (category_name,parent_category_id,level,rank,creator_id,create_date,update_date,del_flg) VALUES ('ª®≤ﬂ', 0, 1, 5, 2, now(), now(), 0);
