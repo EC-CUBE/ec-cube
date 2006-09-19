@@ -43,7 +43,7 @@ define("BAT_ORDER_AGE", 70);		// 何歳まで集計の対象とするか
 define("PRODUCTS_TOTAL_MAX", 15);	// 商品集計で何位まで表示するか
 
 /** デフォルト値 **/
-define("DEFAULT_PRODUCT_DISP", 1);	// 1:公開 2:非公開
+define("DEFAULT_PRODUCT_DISP", 2);	// 1:公開 2:非公開
 
 /** オプション設定 **/
 define("DELIV_FREE_AMOUNT", 0);				// 送料無料購入個数（0の場合は、何個買っても無料にならない)
