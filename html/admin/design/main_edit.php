@@ -104,7 +104,7 @@ if ($_POST['mode'] == 'preview') {
 	if ($page_id_old != "") {
 		// 登録データを取得
 		$sql = "SELECT 0, target_id, bloc_id, bloc_row FROM dtb_blocposition WHERE page_id = ?";
-		$ret = $objDBConn->query($sql,array($page_id_old));
+		$ret = $objDBConn->getAll($sql,array($page_id_old));
 		
 		// blocposition を複製
 		$sql = " insert into dtb_blocposition (";
