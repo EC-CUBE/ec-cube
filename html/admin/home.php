@@ -153,8 +153,6 @@ function lfGetNewOrder() {
 	$where = "del_flg = 0";
 	$objQuery->setoption("ORDER BY create_date DESC LIMIT 10 OFFSET 0");
 	$arrRet = $objQuery->select($col, $from, $where);
-	
-	$objQuery->getlastquery();
 	return $arrRet;
 }
 

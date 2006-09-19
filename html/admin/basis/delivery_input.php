@@ -155,7 +155,6 @@ function lfGetDelivData($deliv_id) {
 	$where = "deliv_id = ?  ORDER BY time_id";
 	$table = "dtb_delivtime";
 	$arrRet = $objQuery->select($col, $table, $where, array($deliv_id));
-	$objQuery->getlastquery();
 	$objFormParam->setParamList($arrRet, 'deliv_time');
 	// 配送料金の取得
 	$col = "fee";
