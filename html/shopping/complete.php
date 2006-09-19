@@ -205,6 +205,7 @@ function lfRegistPreCustomer($arrData, $arrInfo) {
 	$sqlval['secret_key'] = sfGetUniqRandomId("t"); 
 	
 	$objQuery = new SC_Query();
+	$sqlval['create_date'] = "now()";
 	$objQuery->insert("dtb_customer", $sqlval);
 	
 	// ¸ÜµÒID¤Î¼èÆÀ
@@ -462,6 +463,7 @@ function lfRegistNonCustomer($email, $mail_flag) {
 		$objQuery->delete("dtb_customer_mail", $where, array($email));
 		$sqlval['email'] = $email;
 		$sqlval['mail_flag'] = $mail_flag;
+		$sqlval['create_date'] = "now()";
 		$objQuery->insert("dtb_customer_mail", $sqlval);
 	}
 	$objQuery->commit();

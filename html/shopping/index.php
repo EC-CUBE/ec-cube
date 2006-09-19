@@ -189,6 +189,7 @@ function lfRegistData($uniqid) {
 	$cnt = $objQuery->count("dtb_order_temp", $where, array($uniqid));
 	// 既存データがない場合
 	if ($cnt == 0) {
+		$sqlval['create_date'] = 'Now()';
 		$objQuery->insert("dtb_order_temp", $sqlval);
 	} else {
 		$objQuery->update("dtb_order_temp", $sqlval, $where, array($uniqid));

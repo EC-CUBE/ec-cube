@@ -26,6 +26,7 @@ foreach($arrCID as $cdata) {
 				if($pdata2['product_id'] != $pdata1['product_id']) {
 					//こんな商品ID
 					$sqlval['relate_product_id'] = $pdata2['product_id'];
+					$sqlval['create_date'] = "now()";
 					//データ挿入
 					$objQuery->insert("dtb_bat_relate_products", $sqlval);
 				}

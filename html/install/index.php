@@ -183,7 +183,7 @@ case 'complete':
 	$cnt = $objQuery->count("dtb_baseinfo");
 	if($cnt > 0) {
 		$objQuery->update("dtb_baseinfo", $sqlval);
-	} else {
+	} else {		
 		$objQuery->insert("dtb_baseinfo", $sqlval);		
 	}
 	global $GLOBAL_ERR;
