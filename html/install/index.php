@@ -467,7 +467,7 @@ function lfExecuteSQL($filepath, $db_user, $db_password, $db_server, $db_name, $
 			$sql = preg_replace("/[\r\n\t]/"," ",$sql);
 			$sql_split = split(";",$sql);
 			foreach($sql_split as $key => $val){
-				if ($val != "") {
+				if (trim($val) != "") {
 					sfprintr($val);
 					$ret = $objDB->query($val);
 					if(PEAR::isError($ret) and $disp_err) {
