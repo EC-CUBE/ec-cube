@@ -101,7 +101,7 @@ function lfUpdCsvOutput($csv_id, $arrData = array()){
 	// 使用するものだけ、再更新する。
 	if (is_array($arrData)) {
 		foreach($arrData as $key => $val){
-			$upd_sql = "UPDATE dtb_csv SET status = 1, rank = ? WHERE csv_id = ? AND col = ? ";
+			$upd_sql = "UPDATE dtb_csv SET status = 1, rank = ? , update_date = now() WHERE csv_id = ? AND col = ? ";
 			$objQuery->query($upd_sql, array($key+1, $csv_id,$val));
 		}
 	}

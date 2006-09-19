@@ -116,9 +116,10 @@ if ( (int)$objPage->QUESTION["delete"] !== 0 ){
 					$objPage->arrForm['question0'.($i+1)] = $arrOption[$i]; 
 				}
 			}
-			
+			$objPage->arrForm['create_date'] = "now()";
 			// £Ä£ÂÅÐÏ¿
-			$conn->autoExecute("dtb_question_result", $objPage->arrForm );
+			$objQuery = new SC_Query();
+			$objQuery->insert("dtb_question_result", $objPage->arrForm );
 			
 		//--------- ¢¥ SQL ---------//
 

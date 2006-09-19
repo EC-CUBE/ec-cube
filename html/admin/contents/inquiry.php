@@ -96,7 +96,7 @@ if ( $_GET['mode'] == 'regist' ){
 			if (DB_TYPE == "pgsql") {
 				$question_id = $objQuery->nextval('dtb_question', 'question_id');
 			}
-			$conn->query("INSERT INTO dtb_question ( question, question_name, question_id, create_date, update_date) VALUES (?, ?, ?, now(), now())", $sql_val );
+			$conn->query("INSERT INTO dtb_question ( question, question_name, question_id, create_date) VALUES (?, ?, ?, now())", $sql_val );
 			$objPage->MESSAGE = "ÅÐÏ¿¤¬´°Î»¤·¤Þ¤·¤¿";
 			
 			$objQuery = new SC_Query();
