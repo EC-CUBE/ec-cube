@@ -102,16 +102,18 @@ if ($_POST['mode'] == 'preview') {
 	$ret = $objDBConn->query($sql);
 	
 	if ($page_id_old != "") {
+		// 登録データを取得
+		$sql = "SELECT 0, target_id, bloc_id, bloc_row FROM dtb_blocposition WHERE page_id = ?";
+		$ret = $objDBConn->query($sql,array($page_id_old));
+		
 		// blocposition を複製
-		$sql = " insert into dtb_blocposition ";
-		$sql .= " select ";
-		$sql .= "     0,";
+		$sql = " insert into dtb_blocposition (";
+		$sql .= "     page_id,";
 		$sql .= "     target_id,";
 		$sql .= "     bloc_id,";
 		$sql .= "     bloc_row";
-		$sql .= " from dtb_blocposition";
-		$sql .= " where page_id = ?";
-		$ret = $objDBConn->query($sql,array($page_id_old));
+		$sql .= "     )values(?, ?, ?, ?)";
+		$ret = $objDBConn->query($sql,$ret[0]);
 	}
 	
 	$_SESSION['preview'] = "ON";
