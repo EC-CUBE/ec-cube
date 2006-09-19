@@ -148,6 +148,7 @@ function lfRegistReviewData($array, $arrRegistColumn){
 	//епо©╪б╧т
 	$objQuery->begin();
 	$objQuery->update("dtb_review", $arrRegist, "review_id='".$_POST['review_id']."'");
+	$objQuery->getlastquery();
 	$objQuery->commit();
 }
 ?>
