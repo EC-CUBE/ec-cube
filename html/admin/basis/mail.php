@@ -66,8 +66,6 @@ $objView->display(MAIN_FRAME);
 function lfRegist( $conn, $data ){
 	
 	$data['creator_id'] = $_SESSION['member_id'];
-	sfprintr($conn);
-	sfprintr($data);
 	
 	$sql = "SELECT * FROM dtb_mailtemplate WHERE template_id = ?";
 	$result = $conn->getAll($sql, array($_POST['template_id']) );
@@ -78,7 +76,6 @@ function lfRegist( $conn, $data ){
 		$conn->query("INSERT INTO dtb_mailtemplate (template_id,subject,header,footer,creator_id,update_date,create_date) values ( ?,?,?,?,?,now(),now() )", $data);
 	}
 
-//	$conn->autoExecute("dtb_mailtemplate", $data, $sql_where);	
 }
 
 
