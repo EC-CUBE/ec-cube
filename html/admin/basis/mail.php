@@ -69,7 +69,7 @@ function lfRegist( $conn, $data ){
 	$data["update_date"] = "now()";
 	
 	sfprintr($conn);
-	sfprintr($date);
+	sfprintr($data);
 	
 	$sql = "SELECT * FROM dtb_mailtemplate WHERE template_id = ?";
 	$result = $conn->getAll($sql, array($_POST['template_id']) );
