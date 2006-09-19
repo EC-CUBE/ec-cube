@@ -116,6 +116,7 @@ function lfInsertProduct($objQuery) {
 	}
 	$sqlval['status'] = 1;	// 表示に設定する。
 	$sqlval['update_date'] = "Now()";
+	$sqlval['create_date'] = "Now()";
 	$sqlval['creator_id'] = $_SESSION['member_id'];
 	
 	if($_SESSION['member_id'] == "") {

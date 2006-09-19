@@ -162,6 +162,7 @@ function lfInsertCat($parent_category_id) {
 	
 	// 入力データを渡す。
 	$sqlval = $objFormParam->getHashArray();
+	$sqlval['create_date'] = "Now()";
 	$sqlval['update_date'] = "Now()";
 	$sqlval['creator_id'] = $_SESSION['member_id'];
 	$sqlval['parent_category_id'] = $parent_category_id;

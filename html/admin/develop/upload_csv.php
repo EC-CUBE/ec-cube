@@ -214,6 +214,7 @@ function lfInsertProduct($objQuery) {
 
 	$sqlval['status'] = 1;	// 表示に設定する。
 	$sqlval['update_date'] = "Now()";
+	$sqlval['create_date'] = "Now()";
 	$sqlval['creator_id'] = $_SESSION['member_id'];
 	$sqlval['rank'] = $objQuery->max("dtb_products", "rank", "del_flg = 0 AND category_id = ?", array($sqlval['category_id'])) + 1;
 	

@@ -190,6 +190,7 @@ function lfInsertRecommendProducts($objQuery, $arrList, $product_id) {
 			$sqlval['comment'] = $arrList[$commentkey];
 			$sqlval['rank'] = $rank;
 			$sqlval['creator_id'] = $_SESSION['member_id'];
+			$sqlval['create_date'] = "now()";
 			$objQuery->insert("dtb_recommend_products", $sqlval);
 			$rank--;
 		}

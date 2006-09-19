@@ -87,11 +87,10 @@ function lfRegistData( $arrVal, $id = null ){
 	if ( $id ){
 		$query->update("dtb_mailmaga_template", $sqlval, "template_id=".$id );
 	} else {
+		$sqlval['create_date'] = "now()";
 		$query->insert("dtb_mailmaga_template", $sqlval);
 	}
 }
-
-
 
 function lfConvData( $data ){
 	

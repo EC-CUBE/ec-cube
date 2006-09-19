@@ -49,6 +49,7 @@ function lfRegistProduct($objQuery) {
 	} else {
 		// ¿·µ¬ÅĞÏ¿
 		// INSERT¤Î¼Â¹Ô
+		$sqlval['create_date'] = "now()";
 		$objQuery->insert("dtb_products", $sqlval);
 		$product_id = $objQuery->nextval("dtb_products", "product_id");
 		$sqlval['product_id'] = $product_id;
@@ -69,6 +70,7 @@ function lfRegistProduct($objQuery) {
 				$arrval['recommend_product_id'] = $arrProduct[0]['product_id'];
 				$arrval['comment'] = $arrRet[$comment_key];
 				$arrval['update_date'] = "Now()";
+				$arrval['create_date'] = "Now()";
 				$arrval['creator_id'] = $_SESSION['member_id'];
 				$arrval['rank'] = RECOMMEND_PRODUCT_MAX - $i + 1;
 				$objQuery->insert("dtb_recommend_products", $arrval);
@@ -101,6 +103,7 @@ function lfRegistProductClass($objQuery, $arrList, $product_id, $product_class_i
 		$sqlval['product_id'] = $product_id;
 		$sqlval['classcategory_id1'] = '0';
 		$sqlval['classcategory_id2'] = '0';
+		$sqlval['create_date'] = "now()";
 		$objQuery->insert("dtb_products_class", $sqlval);
 	} else {
 		// ´ûÂ¸ÊÔ½¸

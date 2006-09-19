@@ -102,6 +102,7 @@ function lfRegistData() {
 		}
 		
 		$sqlval['rank'] = $objQuery->max("dtb_deliv", "rank") + 1;
+		$sqlval['create_date'] = 'Now()';
 		// INSERT¤Î¼Â¹Ô
 		$objQuery->insert("dtb_deliv", $sqlval);
 		

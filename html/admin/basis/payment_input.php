@@ -136,6 +136,7 @@ function lfRegistData($payment_id = "") {
 		// INSERTの実行
 		$sqlval['creator_id'] = $_SESSION['member_id'];
 		$sqlval['rank'] = $objQuery->max("dtb_payment", "rank") + 1;
+		$sqlval['create_date'] = 'Now()';
 		$objQuery->insert("dtb_payment", $sqlval);
 	// 既存編集
 	} else {

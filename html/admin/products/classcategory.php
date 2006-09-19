@@ -119,6 +119,7 @@ function lfInsertClass() {
 		$sqlval['class_id'] = $_POST['class_id'];
 		$sqlval['creator_id'] = $_SESSION['member_id'];
 		$sqlval['rank'] = $objQuery->max("dtb_classcategory", "rank", $where, array($_POST['class_id'])) + 1;
+		$sqlval['create_date'] = "now()";
 		// INSERT¤Î¼Â¹Ô
 		$ret = $objQuery->insert("dtb_classcategory", $sqlval);
 	}

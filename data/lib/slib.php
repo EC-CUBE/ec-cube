@@ -1084,6 +1084,7 @@ function sfInsertProductClass($objQuery, $arrList, $product_id) {
 		$sqlval['price01'] = $arrList['price01'];
 		$sqlval['price02'] = $arrList['price02'];
 		$sqlval['creator_id'] = $_SESSION['member_id'];
+		$sqlval['create_date'] = "now()";
 		
 		if($_SESSION['member_id'] == "") {
 			$sqlval['creator_id'] = '0';
@@ -1597,6 +1598,7 @@ function sfRegistTempOrder($uniqid, $sqlval) {
 		if ($cnt == 0) {
 			// 初回書き込み時に会員の登録済み情報を取り込む
 			$sqlval = sfGetCustomerSqlVal($uniqid, $sqlval);
+			$sqlval['create_date'] = "now()";
 			$objQuery->insert("dtb_order_temp", $sqlval);
 		} else {
 			$objQuery->update("dtb_order_temp", $sqlval, $where, array($uniqid));

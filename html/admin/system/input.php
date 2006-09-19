@@ -159,6 +159,7 @@ function fnInsertMember() {
 	$sqlval['work'] = "1"; // 稼働に設定
 	$sqlval['del_flg'] = "0";	// 削除フラグをOFFに設定
 	$sqlval['creator_id'] = $_SESSION['member_id'];
+	$sqlval['create_date'] = "now()";
 	// INSERTの実行
 	$ret = $oquery->insert("dtb_member", $sqlval);
 	return $ret;

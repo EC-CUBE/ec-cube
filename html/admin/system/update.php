@@ -154,6 +154,7 @@ function lfLoadUpdateList() {
 					$objQuery->update("dtb_update", $sqlval, "module_id = ?", array($sqlval['module_id']));
 				} else {
 					// 新規レコードの追加
+					$sqlval['create_date'] = "now()";
 					$objQuery->insert("dtb_update", $sqlval);
 				}
 			}
