@@ -201,7 +201,7 @@ function lfErrCheck (){
 	$objErr->doFunc( array( "アンケート名", "title" ), array( "EXIST_CHECK" ) );
 
 	$_POST["contents"] = mb_convert_kana( trim (  $_POST["contents"] ), "K" );
-	$objErr->doFunc( array( "アンケート内容" ,"contents". "3000" ), array( "EXIST_CHECK", "MAX_LENGTH_CHECK" ) );
+	$objErr->doFunc( array( "アンケート内容" ,"contents", "3000" ), array( "EXIST_CHECK", "MAX_LENGTH_CHECK" ) );
 
 	
 	if ( ! $_POST['question'][0]["name"] ){
