@@ -492,6 +492,7 @@ function lfExecuteSQL($filepath, $db_user, $db_password, $db_server, $db_name, $
 function lfMakeConfigFile() {
 	global $objWebParam;
 	global $objDBParam;
+	global $port;
 	
 	$filepath = $objWebParam->getValue('install_dir') . "/html/install.inc";
 	$domain = $objWebParam->getValue('domain');
@@ -516,7 +517,7 @@ function lfMakeConfigFile() {
 	"    define ('DB_PASSWORD', '" . $objDBParam->getValue('db_password') . "');\n" .
 	"    define ('DB_SERVER', '" . $objDBParam->getValue('db_server') . "');\n" .
 	"    define ('DB_NAME', '" . $objDBParam->getValue('db_name') . "');\n" .
-	"    define ('DB_PORT', '" . $objDBParam->getValue('db_port') . "');\n" .
+	"    define ('DB_PORT', '" . $port . "');\n" .
 	"?>";
 	
 	if($fp = fopen($filepath,"w")) {
