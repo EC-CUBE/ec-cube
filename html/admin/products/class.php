@@ -96,6 +96,7 @@ function lfInsertClass($arrData) {
 	$sqlval['creator_id'] = $_SESSION['member_id'];
 	$sqlval['rank'] = $objQuery->max("dtb_class", "rank") + 1;
 	$sqlval['create_date'] = "now()";
+	$sqlval['update_date'] = "now()";
 	// INSERT¤Î¼Â¹Ô
 	$ret = $objQuery->insert("dtb_class", $sqlval);
 	return $ret;

@@ -1555,6 +1555,9 @@ function sfSaveMailHistory($order_id, $template_id, $subject, $body) {
 	$sqlval['mail_body'] = $body;
 	
 	$objQuery = new SC_Query();
+	
+	$sqlval['create_date'] = "now()";
+	$sqlval['update_date'] = "now()";
 	$objQuery->insert("dtb_mail_history", $sqlval);
 }
 
