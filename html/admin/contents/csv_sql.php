@@ -143,6 +143,14 @@ if ($_POST['selectTable'] == ""){
 $arrColList = lfGetColumnList($selectTable);
 $arrColList =  sfSwapArray($arrColList);
 
+// 表示させる内容を編集
+foreach ($arrTableList as $key => $val) {
+	$arrTableList['description'] = $arrTableList['table_name'] . ":" . $arrTableList['description'];
+}
+foreach ($arrColList as $key => $val) {
+	$arrColList['description'] = $arrColList['column_name'] . ":" . $arrColList['description'];
+}
+
 // テンプレートに出力するデータをセット
 $objPage->arrSqlList = $arrSqlList;																// SQL一覧
 $objPage->arrTableList = sfarrCombine($arrTableList['table_name'], $arrTableList['description']);	// テーブル一覧
