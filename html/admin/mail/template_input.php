@@ -85,7 +85,7 @@ function lfRegistData( $arrVal, $id = null ){
 	$sqlval['body'] = $arrVal['body'];
 	$sqlval['create_date'] = "now()";
 	$sqlval['update_date'] = "now()";
-	
+
 	if ( $id ){
 		$query->update("dtb_mailmaga_template", $sqlval, "template_id=".$id );
 	} else {
