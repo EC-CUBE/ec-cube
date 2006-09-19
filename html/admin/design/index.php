@@ -383,7 +383,7 @@ function lfSetPreData($arrPageData){
 	// tplファイルのコピー
 	copy(ROOT_DIR . $arrPageData[0]['tpl_dir'].$arrPageData[0]['filename'].".tpl", ROOT_DIR . USER_DIR."templates/".$filename.".tpl");
 	
-	sfprintr($arrPageData);
+	sfprintr($arrPageData[0]['page_id']);
 	
 	// 更新データの取得
 	$sql = "select page_name, header_chk, footer_chk from dtb_pagelayout where page_id = ?";
