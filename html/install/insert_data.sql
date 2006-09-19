@@ -21,6 +21,7 @@ insert into dtb_bloc ( bloc_name, tpl_path, filename, php_path, del_flg ) values
 insert into dtb_bloc ( bloc_name, tpl_path, filename, php_path, del_flg ) values ('オススメ商品','html/user_data/include/bloc/best5.tpl',			'best5','html/frontparts/bloc/best5.php', 1);
 
 insert into dtb_pagelayout (page_id,page_name,url)values(0, 'プレビューデータ','');
+update dtb_pagelayout set page_id = 0;
 insert into dtb_pagelayout (page_name,url,php_dir,tpl_dir,filename,edit_flg)values('TOPページ','index.php',' ','/html/user_data/templates/','top',2);
 insert into dtb_pagelayout (page_name,url,php_dir,tpl_dir,filename,edit_flg)values('商品一覧ページ','products/list.php',' ','/html/user_data/templates/','list',2);
 insert into dtb_pagelayout (page_name,url,php_dir,tpl_dir,filename,edit_flg)values('商品詳細','products/detail.php',' ','/html/user_data/templates/','detail',2);
