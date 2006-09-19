@@ -144,10 +144,10 @@ $arrColList = lfGetColumnList($selectTable);
 $arrColList =  sfSwapArray($arrColList);
 
 // 表示させる内容を編集
-foreach ($arrTableList as $key => $val) {
-	$arrTableList[$key]['description'] = $arrTableList[$key]['table_name'] . ":" . $arrTableList[$key]['description'];
+foreach ($arrTableList['description'] as $key => $val) {
+	$arrTableList['description'][$key] = $arrTableList['table_name'][$key] . ":" . $arrTableList['description'][$key];
 }
-foreach ($arrColList as $key => $val) {
+foreach ($arrColList['description'] as $key => $val) {
 	$arrColList[$key]['description'] = $arrColList[$key]['column_name'] . ":" . $arrColList[$key]['description'];
 }
 
