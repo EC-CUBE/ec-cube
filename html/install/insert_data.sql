@@ -201,8 +201,8 @@ http://------.co.jp
 
 ',0,Now(), now());
 
-insert into dtb_news (news_title, news_comment, creator_id, create_date, update_date) 
-values('サイトオープンいたしました!','一人暮らしからオフィスなどさまざまなシーンで あなたの生活をサポートするグッズをご家庭へお届けします！一人暮らしからオフィスなどさまざまなシーンで あなたの生活をサポートするグッズをご家庭へお届けします！一人暮らしからオフィスなどさまざまなシーンで あなたの生活をサポートするグッズをご家庭へお届けします！',1, now(), now());
+insert into dtb_news (news_date,rank, news_title, news_comment, creator_id, create_date, update_date) 
+values(now(),1,'サイトオープンいたしました!','一人暮らしからオフィスなどさまざまなシーンで あなたの生活をサポートするグッズをご家庭へお届けします！一人暮らしからオフィスなどさまざまなシーンで あなたの生活をサポートするグッズをご家庭へお届けします！一人暮らしからオフィスなどさまざまなシーンで あなたの生活をサポートするグッズをご家庭へお届けします！',1, now(), now());
 
 INSERT INTO dtb_deliv (name,service_name,confirm_url,rank,status,del_flg,creator_id,create_date,update_date)
 VALUES ('ダミー配送業者', 'ダミー配送業者', '', 1, 1, 0, 2, now(), now());
