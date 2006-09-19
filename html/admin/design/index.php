@@ -67,6 +67,7 @@ if ($_POST['mode'] == 'new_bloc') {
 if ($_POST['mode'] == 'new_page') {
 	header("location: ./main_edit.php");
 }
+	sfprintr($_POST);
 
 // データ登録処理
 if ($_POST['mode'] == 'confirm' or $_POST['mode'] == 'preview') {
@@ -139,7 +140,6 @@ if ($_POST['mode'] == 'confirm' or $_POST['mode'] == 'preview') {
 		$arrRet = $objDBConn->query($ins_sql,$arrInsData);
 	}
 
-	sfprintr($_POST);
 	// プレビュー処理
 	if ($_POST['mode'] == 'preview') {
 		if ($page_id == "") {
