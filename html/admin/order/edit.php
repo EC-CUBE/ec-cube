@@ -86,7 +86,7 @@ default:
 }
 
 // 支払い方法の取得
-$objPage->arrPayment = sfGetIDValueList("dtb_payment", "payment_id", "payment_method");
+$objPage->arrPayment = sfGValueList("dtb_payment", "payment_id", "payment_method");
 // 配送時間の取得
 $arrRet = sfGetDelivTime($objFormParam->getValue('payment_id'));
 $objPage->arrDelivTime = sfArrKeyValue($arrRet, 'time_id', 'time');
@@ -282,7 +282,7 @@ function lfRegistData($order_id) {
 	$sql .= "     dtb_order";
 	$sql .= " SET";
 	$sql .= "     payment_method = (SELECT payment_method FROM dtb_payment WHERE payment_id = ?)";
-	$sql .= "     ,deliv_time = (SELECT time FROM dtb_delivtime WHERE time_id = ? AND deliv_id = (SELECT deliv_id FROM dtb_payment WHERE payment_id = ? ))";
+	$sql .= "     ,deliv_time = (SELECT deliv_time FROM dtb_delivtime WHERE time_id = ? AND deliv_id = (SELECT deliv_id FROM dtb_payment WHERE payment_id = ? ))";
 	$sql .= " WHERE order_id = ?";
 	
 	if ($arrRet['deliv_time_id'] == "") {
