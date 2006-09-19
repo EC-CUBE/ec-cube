@@ -401,8 +401,8 @@ CREATE TABLE dtb_review (
     comment text NOT NULL,
     status smallint DEFAULT 2,
     creator_id int NOT NULL,
-    create_date timestamp,
     update_date timestamp,
+    create_date timestamp,
     del_flg  smallint NOT NULL DEFAULT 0
 );
 
