@@ -24,7 +24,6 @@ sfIsSuccess($objSess);
 
 $objPage->arrMailTEMPLATE = $arrMAILTEMPLATE;
 
-
 if ( $_POST['mode'] == 'id_set'){
 	// テンプレートプルダウン変更時
 	
@@ -69,12 +68,20 @@ function lfRegist( $conn, $data ){
 	$data['creator_id'] = $_SESSION['member_id'];
 	$data["update_date"] = "now()";
 	
+	sfprintr($conn);
+	sfprintr($date);
+	
 	$sql = "SELECT * FROM dtb_mailtemplate WHERE template_id = ?";
 	$result = $conn->getAll($sql, array($_POST['template_id']) );
+	/*
 	if ( $result ){
 		$sql_where = "template_id = ". addslashes($_POST['template_id']);
+	}else{
+		$conn->query("INSERT INTO dtb_mailtemplate", $data, $sql_where);	
 	}
-	$conn->autoExecute("dtb_mailtemplate", $data, $sql_where);	
+	*/
+	
+//	$conn->autoExecute("dtb_mailtemplate", $data, $sql_where);	
 }
 
 
