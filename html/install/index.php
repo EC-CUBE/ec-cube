@@ -31,6 +31,12 @@ $objDBParam = new SC_FormParam();
 $objWebParam = lfInitWebParam($objWebParam);
 $objDBParam = lfInitDBParam($objDBParam);
 
+if ($_POST['db_type'] == 'pgsql') {
+	$port = "";
+}else{
+	$port = ":".$_POST['db_port'];
+}
+
 //フォーム配列の取得
 $objWebParam->setParam($_POST);
 $objDBParam->setParam($_POST);
@@ -61,13 +67,6 @@ case 'step1':
 // データベースの設定
 case 'step2':
 	//入力値のエラーチェック
-	if ($_POST['db_type'] == 'pgsql') {
-		$_POST['db_port'] = "";
-	}else{
-		$_POST['db_port'] = ":".$_POST['db_port'];
-		$objDBParam->setValue("db_port", $_POST['db_port']);
-	}
-	
 	$objPage->arrErr = lfCheckDBError($objDBParam);
 	
 	if(count($objPage->arrErr) == 0) {
@@ -169,7 +168,7 @@ case 'drop':
 case 'complete':
 	// ショップマスタ情報の書き込み
 	$arrRet =  $objDBParam->getHashArray();
-	$dsn = "pgsql://".$arrRet['db_user'].":".$arrRet['db_password']."@".$arrRet['db_server']."/".$arrRet['db_name'];
+	$dsn = "pgsql://".$arrRet['db_user'].":".$arrRet['db_password']."@".$arrRet['db_server'].$port."/".$arrRet['db_name'];
 	$sqlval['shop_name'] = $objWebParam->getValue('shop_name');
 	$sqlval['email01'] = $objWebParam->getValue('admin_mail');
 	$sqlval['email02'] = $objWebParam->getValue('admin_mail');
@@ -389,7 +388,7 @@ function lfInitWebParam($objWebParam) {
 	$objWebParam->addParam("URL(通常)", "normal_url", MTEXT_LEN, "", array("EXIST_CHECK","URL_CHECK","MAX_LENGTH_CHECK"), $normal_url);
 	$objWebParam->addParam("URL(セキュア)", "secure_url", MTEXT_LEN, "", array("EXIST_CHECK","URL_CHECK","MAX_LENGTH_CHECK"), $secure_url);
 	$objWebParam->addParam("ドメイン", "domain", MTEXT_LEN, "", array("EXIST_CHECK","MAX_LENGTH_CHECK"), $domain);	
-	
+
 	return $objWebParam;
 }
 
@@ -429,7 +428,7 @@ function lfCheckDBError($objFormParam) {
 	
 	if(count($objErr->arrErr) == 0) {
 		// 接続確認
-		$dsn = $arrRet['db_type']."://".$arrRet['db_user'].":".$arrRet['db_password']."@".$arrRet['db_server'].$arrRet['db_port']."/".$arrRet['db_name'];
+		$dsn = $arrRet['db_type']."://".$arrRet['db_user'].":".$arrRet['db_password']."@".$arrRet['db_server'].$port."/".$arrRet['db_name'];
 		// Debugモード指定
 		$options['debug'] = 3;
 		$objDB = DB::connect($dsn, $options);
@@ -457,10 +456,8 @@ function lfExecuteSQL($filepath, $db_user, $db_password, $db_server, $db_name, $
 			fclose($fp);
 		}
 
-		$dsn = $db_type."://".$db_user.":".$db_password."@".$db_server.$db_port."/".$db_name;
+		$dsn = $db_type."://".$db_user.":".$db_password."@".$db_server.$port."/".$db_name;
 		
-		print($dsn);
-
 		$objDB = DB::connect($dsn);
 		// 接続エラー
 		if(!PEAR::isError($objDB)) {
