@@ -420,6 +420,7 @@ function lfCheckWebError($objFormParam) {
 
 // 入力内容のチェック
 function lfCheckDBError($objFormParam) {
+	global $port;
 	// 入力データを渡す。
 	$arrRet =  $objFormParam->getHashArray();
 	
@@ -446,6 +447,7 @@ function lfCheckDBError($objFormParam) {
 
 // SQL文の実行
 function lfExecuteSQL($filepath, $db_user, $db_password, $db_server, $db_name, $db_type, $db_port, $disp_err = true) {
+	global $port;
 	$arrErr = array();
 
 	if(!file_exists($filepath)) {
