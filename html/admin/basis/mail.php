@@ -66,8 +66,6 @@ $objView->display(MAIN_FRAME);
 function lfRegist( $conn, $data ){
 	
 	$data['creator_id'] = $_SESSION['member_id'];
-	$data["update_date"] = "now()";
-	
 	sfprintr($conn);
 	sfprintr($data);
 	
@@ -75,9 +73,8 @@ function lfRegist( $conn, $data ){
 	$result = $conn->getAll($sql, array($_POST['template_id']) );
 	if ( $result ){
 		$sql_where = "template_id = ". addslashes($_POST['template_id']);
-		$conn->query("UPDATE dtb_mailtemplate SET template_id = ?, subject = ?,header = ?, footer = ?,creator_id = ?, update_date = now()", $data);
+		$conn->query("UPDATE dtb_mailtemplate SET template_id = ?, subject = ?,header = ?, footer = ?,creator_id = ?, update_date = now() WHERE".$sql_where, $data);
 	}else{
-		$data["create_date"] = "now()";
 		$conn->query("INSERT INTO dtb_mailtemplate (template_id,subject,header,footer,creator_id,update_date,create_date) values ( ?,?,?,?,?,now(),now() )", $data);
 	}
 
