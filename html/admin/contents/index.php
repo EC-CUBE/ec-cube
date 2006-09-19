@@ -251,7 +251,7 @@ function lfNewsInsert(){
 	$rank_max = $conn->getone("SELECT MAX(rank) + 1 FROM dtb_news WHERE del_flg = '0'");
 
 	$sql = "INSERT INTO dtb_news (news_date, news_title, creator_id, news_url, link_method, news_comment, rank, create_date, update_date)
-			VALUES ( ?,?,?,?,?,?,?)";
+			VALUES ( ?,?,?,?,?,?,?,?,?)";
 	$arrRegist = array($registDate, $_POST["news_title"], $_SESSION['member_id'],  $_POST["news_url"], $_POST["link_method"], $_POST["news_comment"], $rank_max, "now()", "now()");
 
 	$conn->query($sql, $arrRegist);
