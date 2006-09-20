@@ -49,6 +49,8 @@ if($_GET['mode'] != 'reload') {
 		$order_id = lfDoComplete($objQuery, $uniqid);
 		$objQuery->commit();
 		
+		exit();
+		
 		// セッションに保管されている情報を更新する
 		$objCustomer->updateSession();
 
