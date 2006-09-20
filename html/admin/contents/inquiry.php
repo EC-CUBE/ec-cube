@@ -118,6 +118,8 @@ if ( $_GET['mode'] == 'regist' ){
 		}
 	} else {
 		
+		sfprintr($error);
+		
 		//エラー表示
 		$objPage->ERROR = $error;
 		$objPage->QUESTION_ID = $_REQUEST['question_id'];
