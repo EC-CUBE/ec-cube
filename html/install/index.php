@@ -426,11 +426,10 @@ function lfCheckDBError($objFormParam) {
 	$objErr = new SC_CheckError($arrRet);
 	$objErr->arrErr = $objFormParam->checkError();
 	
-	sfprintr($dsn);
-	
 	if(count($objErr->arrErr) == 0) {
 		// 接続確認
 		$dsn = $arrRet['db_type']."://".$arrRet['db_user'].":".$arrRet['db_password']."@".$arrRet['db_server'].$port."/".$arrRet['db_name'];
+	sfprintr($dsn);
 		// Debugモード指定
 		$options['debug'] = 3;
 		$objDB = DB::connect($dsn, $options);
