@@ -29,6 +29,8 @@ function lfGetRanking(){
 	$where = "status = 1";
 	$order = "rank";
 	$objQuery->setorder($order);
+	
+	$objQuery->getlastquery();
 	$arrBestProducts = $objQuery->select($col, $from, $where);
 	return $arrBestProducts;
 }
