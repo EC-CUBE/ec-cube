@@ -86,7 +86,7 @@ if ( $_GET['mode'] == 'regist' ){
 	$error = lfErrCheck();
 
 	if ( ! $error  ){
-		
+		/*
 		if ( ! is_numeric($_POST['question_id']) ){
 			//ÅÐÏ¿
 			$value = serialize($_POST);
@@ -94,7 +94,7 @@ if ( $_GET['mode'] == 'regist' ){
 				$question_id = $objQuery->nextval('dtb_question', 'question_id');
 			}
 			$sql_val = array( $value, $_POST['title'] ,$question_id );
-//			$conn->query("INSERT INTO dtb_question ( question, question_name, question_id, create_date) VALUES (?, ?, ?, now())", $sql_val );
+			$conn->query("INSERT INTO dtb_question ( question, question_name, question_id, create_date) VALUES (?, ?, ?, now())", $sql_val );
 			$objPage->MESSAGE = "ÅÐÏ¿¤¬´°Î»¤·¤Þ¤·¤¿";
 			
 			$objQuery = new SC_Query();
@@ -114,6 +114,7 @@ if ( $_GET['mode'] == 'regist' ){
 			$objPage->QUESTION_ID = $_POST['question_id'];
 			sfReload();
 		}
+		*/
 	} else {
 		
 		//¥¨¥é¡¼É½¼¨
