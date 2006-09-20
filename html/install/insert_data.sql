@@ -23,7 +23,7 @@ insert into dtb_pagelayout (page_name,url,php_dir,tpl_dir,filename,edit_flg, cre
 insert into dtb_pagelayout (page_name,url,php_dir,tpl_dir,filename,edit_flg, create_date, update_date)values('MYページ','mypage/index.php',' ','','',2,now(),now());
 
 insert into dtb_pagelayout (page_id,page_name,url, create_date, update_date)values(0, 'プレビューデータ','',now(),now());
-update dtb_pagelayout set page_id = 5;
+update dtb_pagelayout set page_id = 0 where page_id = 5;
 
 INSERT INTO dtb_blocposition (page_id,target_id,bloc_id,bloc_row,filename)values(1,1,(SELECT bloc_id FROM dtb_bloc WHERE filename = 'category'),2,'category');
 INSERT INTO dtb_blocposition (page_id,target_id,bloc_id,bloc_row,filename)values(1,1,(SELECT bloc_id FROM dtb_bloc WHERE filename = 'guide'),3,'guide');
