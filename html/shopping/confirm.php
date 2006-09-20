@@ -84,7 +84,6 @@ case 'confirm':
 		break;
 */
 	default:
-	exit();
 		header("Location: " . URL_SHOP_COMPLETE);
 		break;
 	}
