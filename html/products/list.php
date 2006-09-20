@@ -206,7 +206,7 @@ function lfDispProductsList($category_id, $name, $disp_num, $orderby) {
 	$objNavi = new SC_PageNavi($_POST['pageno'], $linemax, $disp_num, "fnNaviPage", NAVI_PMAX);
 	
 	$strnavi = $objNavi->strnavi;
-	$strnavi = str_replace('onclick="fnNaviPage', '', $strnavi);
+	$strnavi = str_replace('onclick="fnNaviPage', 'onclick="form1.mode.value=""; fnNaviPage', $strnavi);
 	sfprintr( $strnavi);
 	$objPage->tpl_strnavi = $strnavi;		// 表示文字列
 	$startno = $objNavi->start_row;					// 開始行
