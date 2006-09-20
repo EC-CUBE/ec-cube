@@ -190,8 +190,10 @@ function lfRegistData ($array, $arrRegistColumn, $arrRejectRegistColumn) {
 	
 	//-- 仮登録実行
 	$objConn->query("BEGIN");
-	$objConn->autoExecute("dtb_customer", $arrRegist);
-	
+
+	$objQuery = new SC_Query();
+	$objQuery->insert("dtb_customer", $arrRegist);
+
 	//--　非会員でメルマガ登録しているかの判定
 	$sql = "SELECT count(*) FROM dtb_customer_mail WHERE email = ?";
 	$mailResult = $objConn->getOne($sql, array($arrRegist["email"]));
@@ -212,7 +214,6 @@ function lfRegistData ($array, $arrRegistColumn, $arrRejectRegistColumn) {
 	} else {				//　新規登録の場合
 		$objConn->autoExecute("dtb_customer_mail", $arrRegistMail);		
 	}
-
 	$objConn->query("COMMIT");
 
 	return $uniqid;
