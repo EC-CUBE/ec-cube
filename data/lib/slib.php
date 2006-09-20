@@ -2128,8 +2128,8 @@ function sfCategory_Count($objQuery){
 	$objQuery->query("DELETE FROM dtb_category_total_count");
 	
 	//各カテゴリ内の商品数を数えて格納
-	$sql = " INSERT INTO dtb_category_count(category_id, product_count) ";
-	$sql .= " SELECT T1.category_id, count(T2.category_id) FROM dtb_category AS T1 LEFT JOIN dtb_products AS T2 ";
+	$sql = " INSERT INTO dtb_category_count(category_id, product_count, now()) ";
+	$sql .= " SELECT T1.category_id, count(T2.category_id), now() FROM dtb_category AS T1 LEFT JOIN dtb_products AS T2 ";
 	$sql .= " ON T1.category_id = T2.category_id  ";
 	$sql .= " WHERE T2.del_flg = 0 AND T2.status = 1 ";
 	$sql .= " GROUP BY T1.category_id, T2.category_id ";

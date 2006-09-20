@@ -157,6 +157,7 @@ function lfRegistRecommendData ($array, $arrRegistColumn) {
 		}
 	}
 	$arrRegist['create_date'] = 'now()';
+	$arrRegist['update_date'] = 'now()';
 	$arrRegist['creator_id'] = '0';
 	//-- ÅĞÏ¿¼Â¹Ô
 	$objQuery->begin();

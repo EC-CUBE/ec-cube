@@ -67,6 +67,7 @@ case 'delete':
 		$sqlval['price02'] = $arrRet[0]['price02'];
 		$sqlval['creator_id'] = $_SESSION['member_id'];
 		$sqlval['create_date'] = "now()";
+		$sqlval['update_date'] = "now()";
 
 		$objQuery->begin();
 		$where = "product_id = ?";
@@ -304,6 +305,7 @@ function lfInsertProductClass($arrList, $product_id) {
 			$sqlval['price02'] = $arrList['price02:'.$cnt];
 			$sqlval['creator_id'] = $_SESSION['member_id'];
 			$sqlval['create_date'] = "now()";
+			$sqlval['update_date'] = "now()";
 			// INSERT¤Î¼Â¹Ô
 			$objQuery->insert("dtb_products_class", $sqlval);
 		}
