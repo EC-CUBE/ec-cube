@@ -107,7 +107,7 @@ if (($_POST["mode"] == "edit" || $_POST["mode"] == "edit_search") && is_numeric(
 	$objPage->list_data = $result[0];
 	
 	$birth = split(" ", $objPage->list_data["birth"]);
-	$birth = split("/",$birth[0]);
+	$birth = split("-",$birth[0]);
 	
 	$objPage->list_data["year"] = $birth[0];
 	$objPage->list_data["month"] = $birth[1];

@@ -271,7 +271,7 @@ function lfGetCustomerData(){
 	//誕生日の年月日取得
 	if (isset($arrForm['birth'])){
 		$birth = split(" ", $arrForm["birth"]);
-		list($year, $month, $day) = split("/",$birth[0]);
+		list($year, $month, $day) = split("-",$birth[0]);
 		
 		sfprintr($birth);
 		
