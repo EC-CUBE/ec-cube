@@ -186,7 +186,7 @@ function lfInsertRecommendProducts($objQuery, $arrList, $product_id) {
 		$commentkey = "recommend_comment" . $i;
 		$deletekey = "recommend_delete" . $i;
 		if($arrList[$keyname] != "" && $arrList[$deletekey] != '1') {
-			$sqlval['recommend_product_id'] = $arrList[$keyname];
+//			$sqlval['recommend_product_id'] = $arrList[$keyname];
 			$sqlval['comment'] = $arrList[$commentkey];
 			$sqlval['rank'] = $rank;
 			$sqlval['creator_id'] = $_SESSION['member_id'];
