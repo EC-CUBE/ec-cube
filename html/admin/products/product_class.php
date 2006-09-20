@@ -54,7 +54,7 @@ case 'delete':
 	$objQuery->setLimitOffset(1);
 	$where = "product_id = ? AND NOT (classcategory_id1 = 0 AND classcategory_id2 = 0)";
 	$objQuery->setOrder("rank1 DESC, rank2 DESC");
-	$arrRet = $objQuery->select("*", "vw_cross_products_class", $where, array($_POST['product_id']));
+	$arrRet = $objQuery->select("*", "vw_cross_products_class AS crs_prd", $where, array($_POST['product_id']));
 	
 	if(count($arrRet) > 0) {
 
