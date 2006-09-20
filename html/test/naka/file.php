@@ -5,5 +5,9 @@
 		fwrite($fp, "test");
 	}
 	
+	sleep(10);
+	
 	print("ok");
+	
+	
 ?>
