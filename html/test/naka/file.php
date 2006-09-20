@@ -3,4 +3,6 @@
 		$path = "/var/tmp/test." . $i;
 		fopen($path);
 	}
+	
+	print("ok");
 ?>
