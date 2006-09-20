@@ -30,7 +30,6 @@ function lfGetRanking(){
 	$order = "rank";
 	
 	$arrBestProducts = $objQuery->select($col, $from, $where);
-	$objQuery->getlastquery();
 	return $arrBestProducts;
 }
 

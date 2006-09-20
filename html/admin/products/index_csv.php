@@ -26,7 +26,7 @@ $arrREVIEW_CVSTITLE = array(
 function lfGetProductsCSV($where, $option, $arrval, $arrOutputCols) {
 	global $arrPRODUCTS_CVSCOL;
 
-	$from = "vw_product_class";
+	$from = "vw_product_class AS prdcls";
 	$cols = sfGetCommaList($arrOutputCols);
 	
 	$objQuery = new SC_Query();

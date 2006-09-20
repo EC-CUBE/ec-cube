@@ -139,7 +139,7 @@ default:
 
 $objQuery = new SC_Query();
 // DBから商品情報を取得する。
-$arrRet = $objQuery->select("*", "vw_products_allclass_detail", "product_id = ?", array($tmp_id));
+$arrRet = $objQuery->select("*", "vw_products_allclass_detail AS alldtl", "product_id = ?", array($tmp_id));
 $objPage->arrProduct = $arrRet[0];
 
 // 購入制限数を取得

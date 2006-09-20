@@ -1753,6 +1753,8 @@ function sfGetBestProducts( $conn, $category_id = 0){
 			 A.product_id, A.comment FROM dtb_best_products as A LEFT JOIN vw_products_allclass AS allcls 
 			USING (product_id) WHERE A.category_id = ? AND A.del_flg = 0 AND status = 1 ORDER BY A.rank";
 	$arrItems = $conn->getAll($sql, array($category_id));
+	
+	sfprintr($arrItems);
 	return $arrItems;
 }
 
