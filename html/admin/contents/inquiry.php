@@ -75,6 +75,7 @@ $arrQuestion = array( "0"=>"使用しない", "1"=>"テキストエリア", "2"=>"テキストボ
 $sql = "SELECT *, cast(substring(create_date, 1, 10) as date) as disp_date FROM dtb_question WHERE del_flg = 0 ORDER BY question_id";
 $result = $conn->getAll($sql);
 $objPage->list_data = $result;
+	sfprintr($error);
 						
 if ( $_GET['mode'] == 'regist' ){
 
@@ -86,9 +87,7 @@ if ( $_GET['mode'] == 'regist' ){
 	}
 	
 	$error = lfErrCheck();
-	
-	sfprintr($error);
-		
+
 	if ( ! $error  ){
 		
 		if ( ! is_numeric($_POST['question_id']) ){
