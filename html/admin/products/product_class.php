@@ -199,13 +199,13 @@ function lfGetClassCatListDisp($class_id1, $class_id2, $default = true) {
 	if($class_id2 != "") {
 		// µ¬³Ê1¤Èµ¬³Ê2
 		$sql = "SELECT * ";
-		$sql.= "FROM vw_cross_class ";
+		$sql.= "FROM vw_cross_class AS crs_cls ";
 		$sql.= "WHERE class_id1 = ? AND class_id2 = ? ORDER BY rank1 DESC, rank2 DESC;";
 		$arrRet = $objQuery->getall($sql, array($class_id1, $class_id2));
 	} else {
 		// µ¬³Ê1¤Î¤ß
 		$sql = "SELECT * ";
-		$sql.= "FROM vw_cross_class ";
+		$sql.= "FROM vw_cross_class AS crs_cls ";
 		$sql.= "WHERE class_id1 = ? AND class_id2 = 0 ORDER BY rank1 DESC;";
 		$arrRet = $objQuery->getall($sql, array($class_id1));
 		
