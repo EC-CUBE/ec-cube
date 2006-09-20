@@ -1314,8 +1314,6 @@ function sfGetDelivTime($payment_id = "") {
 		$arrRet= $objQuery->select("time_id, deliv_time", "dtb_delivtime", $where, array($deliv_id));
 	}
 	
-	$objQuery->getlastquery();
-	
 	return $arrRet;	
 }
 
