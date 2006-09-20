@@ -207,7 +207,7 @@ function lfDispProductsList($category_id, $name, $disp_num, $orderby) {
 	
 	$strnavi = $objNavi->strnavi;
 	$strnavi = str_replace('onclick="fnNaviPage', '', $strnavi);
-	sfprintr( $strnavi = );
+	sfprintr( $strnavi);
 	$objPage->tpl_strnavi = $strnavi;		// 表示文字列
 	$startno = $objNavi->start_row;					// 開始行
 	
