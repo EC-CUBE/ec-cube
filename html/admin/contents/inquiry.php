@@ -89,24 +89,18 @@ if ( $_GET['mode'] == 'regist' ){
 	if ( ! $error  ){
 		
 		if ( ! is_numeric($_POST['question_id']) ){
+			$objQuery = new SC_Query();
 			
 			//ÅÐÏ¿
-			sfprintr(1);
 			$value = serialize($_POST);
-			sfprintr(2);
 			if (DB_TYPE == "pgsql") {
-				sfprintr(3);
 				$question_id = $objQuery->nextval('dtb_question', 'question_id');
-				sfprintr(4);
-
 			}
 			
 			$sql_val = array( $value, $_POST['title'] ,$question_id );
 			$conn->query("INSERT INTO dtb_question ( question, question_name, question_id, create_date) VALUES (?, ?, ?, now())", $sql_val );
 			$objPage->MESSAGE = "ÅÐÏ¿¤¬´°Î»¤·¤Þ¤·¤¿";
 
-			$objQuery = new SC_Query();
-			
 			if (DB_TYPE == "mysql") {
 				$question_id = $objQuery->nextval('dtb_question', 'question_id');
 			}
