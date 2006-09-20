@@ -166,7 +166,7 @@ function lfGetRecommendProducts() {
 		$commentkey = "recommend_comment" . $i;
 
 		if($_POST[$keyname] != "" && $_POST[$delkey] != 1) {
-			$arrRet = $objQuery->select("main_list_image, product_code_min, name", "vw_products_allclass", "product_id = ?", array($_POST[$keyname])); 
+			$arrRet = $objQuery->select("main_list_image, product_code_min, name", "vw_products_allclass AS allcls", "product_id = ?", array($_POST[$keyname])); 
 			$arrRecommend[$i] = $arrRet[0];
 			$arrRecommend[$i]['product_id'] = $_POST[$keyname];
 			$arrRecommend[$i]['comment'] = $objPage->arrForm[$commentkey];

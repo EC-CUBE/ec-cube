@@ -82,12 +82,12 @@ function lfGetHtmlTemplateData($id) {
 	$list_data = $result[0];
 
 	// メイン商品の情報取得
-	$sql = "SELECT name, main_image, point_rate, deliv_fee, price01_min, price01_max, price02_min, price02_max FROM vw_products_allclass WHERE product_id = ?";
+	$sql = "SELECT name, main_image, point_rate, deliv_fee, price01_min, price01_max, price02_min, price02_max FROM vw_products_allclass AS allcls WHERE product_id = ?";
 	$main = $conn->getAll($sql, array($list_data["main_product_id"]));
 	$list_data["main"] = $main[0];
 
 	// サブ商品の情報取得
-	$sql = "SELECT product_id, name, main_list_image, price01_min, price01_max, price02_min, price02_max FROM vw_products_allclass WHERE product_id = ?";
+	$sql = "SELECT product_id, name, main_list_image, price01_min, price01_max, price02_min, price02_max FROM vw_products_allclass AS allcls WHERE product_id = ?";
 	$k = 0;
 	$l = 0;
 	for ($i = 1; $i <= 12; $i ++) {

@@ -41,7 +41,7 @@ if ( $_POST['body'] ){
 	$objPage->arrFile = $objUpFile->getFormFileList(IMAGE_TEMP_URL, IMAGE_SAVE_URL);
 	
 	// メイン商品の情報取得
-	$sql = "SELECT name, main_image, point_rate, deliv_fee, price01_min, price01_max, price02_min, price02_max FROM vw_products_allclass WHERE product_id = ?";
+	$sql = "SELECT name, main_image, point_rate, deliv_fee, price01_min, price01_max, price02_min, price02_max FROM vw_products_allclass AS allcls WHERE product_id = ?";
 	$main = $conn->getAll($sql, array($objPage->list_data["main_product_id"]));
 	$objPage->list_data["main"] = $main[0];
 
