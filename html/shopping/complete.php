@@ -41,7 +41,7 @@ if($_GET['mode'] != 'reload') {
 	sfIsPrePage($objSiteSess);
 	// ユーザユニークIDの取得と購入状態の正当性をチェック
 //	$uniqid = sfCheckNormalAccess($objSiteSess, $objCartSess);
-
+$uniqid = "ok";
 	if ($uniqid != "") {
 
 		// 完了処理
