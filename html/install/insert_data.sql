@@ -297,12 +297,12 @@ INSERT INTO dtb_recommend_products (product_id,rank,comment,status,creator_id,cr
 INSERT INTO dtb_class (name,status,rank,creator_id,create_date,update_date,del_flg,product_id) VALUES ('味', NULL, 1, 2, now(), now(), 0, NULL);
 INSERT INTO dtb_class (name,status,rank,creator_id,create_date,update_date,del_flg,product_id) VALUES ('大きさ', NULL, 2, 2, now(), now(), 0, NULL);
 
-INSERT INTO dtb_classcategory (name,class_id,status,rank,creator_id,create_date,update_date,del_flg) VALUES ('バニラ', 1, NULL, 1, 2, now(), NULL, 0);
-INSERT INTO dtb_classcategory (name,class_id,status,rank,creator_id,create_date,update_date,del_flg) VALUES ('チョコ', 1, NULL, 2, 2, now(), NULL, 0);
-INSERT INTO dtb_classcategory (name,class_id,status,rank,creator_id,create_date,update_date,del_flg) VALUES ('抹茶', 1, NULL, 3, 2, now(), NULL, 0);
-INSERT INTO dtb_classcategory (name,class_id,status,rank,creator_id,create_date,update_date,del_flg) VALUES ('L', 2, NULL, 1, 2, now(), NULL, 0);
-INSERT INTO dtb_classcategory (name,class_id,status,rank,creator_id,create_date,update_date,del_flg) VALUES ('M', 2, NULL, 2, 2, now(), NULL, 0);
-INSERT INTO dtb_classcategory (name,class_id,status,rank,creator_id,create_date,update_date,del_flg) VALUES ('S', 2, NULL, 3, 2, now(), NULL, 0);
+INSERT INTO dtb_classcategory (name,class_id,status,rank,creator_id,create_date,update_date,del_flg) VALUES ('バニラ', 1, NULL, 1, 2, now(), now(), 0);
+INSERT INTO dtb_classcategory (name,class_id,status,rank,creator_id,create_date,update_date,del_flg) VALUES ('チョコ', 1, NULL, 2, 2, now(), now(), 0);
+INSERT INTO dtb_classcategory (name,class_id,status,rank,creator_id,create_date,update_date,del_flg) VALUES ('抹茶', 1, NULL, 3, 2, now(), now(), 0);
+INSERT INTO dtb_classcategory (name,class_id,status,rank,creator_id,create_date,update_date,del_flg) VALUES ('L', 2, NULL, 1, 2, now(), now(), 0);
+INSERT INTO dtb_classcategory (name,class_id,status,rank,creator_id,create_date,update_date,del_flg) VALUES ('M', 2, NULL, 2, 2, now(), now(), 0);
+INSERT INTO dtb_classcategory (name,class_id,status,rank,creator_id,create_date,update_date,del_flg) VALUES ('S', 2, NULL, 3, 2, now(), now(), 0);
 
 INSERT INTO dtb_classcategory (classcategory_id, class_id, rank, creator_id, create_date, update_date) 
 VALUES (0, 0, 0, 0, now(), now());
