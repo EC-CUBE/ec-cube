@@ -14,8 +14,7 @@ $objSiteInfo = $objView->objSiteInfo;
 // 基本情報を渡す
 $objSiteInfo = new SC_SiteInfo();
 
-sfprintr($objSiteInfo->data);
-$objSubPage->arrInfo = $arrInfo;
+$objSubPage->arrInfo = $objSiteInfo->data;
 
 
 //おすすめ商品表示
