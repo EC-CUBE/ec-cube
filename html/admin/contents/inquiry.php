@@ -73,7 +73,8 @@ $arrQuestion = array( "0"=>"使用しない", "1"=>"テキストエリア", "2"=>"テキストボ
 $sql = "SELECT *, cast(substring(create_date, 1, 10) as date) as disp_date FROM dtb_question WHERE del_flg = 0 ORDER BY question_id";
 $result = $conn->getAll($sql);
 $objPage->list_data = $result;
-						
+
+/*
 if ( $_GET['mode'] == 'regist' ){
 
 	for ( $i=0; $i<count($_POST["question"]); $i++ ) {
@@ -86,7 +87,7 @@ if ( $_GET['mode'] == 'regist' ){
 	$error = lfErrCheck();
 
 	if ( ! $error  ){
-		/*
+		
 		if ( ! is_numeric($_POST['question_id']) ){
 			//登録
 			$value = serialize($_POST);
@@ -114,7 +115,6 @@ if ( $_GET['mode'] == 'regist' ){
 			$objPage->QUESTION_ID = $_POST['question_id'];
 			sfReload();
 		}
-		*/
 	} else {
 		
 		//エラー表示
@@ -155,7 +155,7 @@ if ( $_GET['mode'] == 'regist' ){
 		}
 	}
 } 
-
+*/
 
 
 
