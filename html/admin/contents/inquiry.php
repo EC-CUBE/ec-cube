@@ -86,6 +86,8 @@ if ( $_GET['mode'] == 'regist' ){
 	}
 	
 	$error = lfErrCheck();
+	
+	sfprintr($error);
 		
 	if ( ! $error  ){
 		
@@ -117,8 +119,6 @@ if ( $_GET['mode'] == 'regist' ){
 			sfReload();
 		}
 	} else {
-		
-		sfprintr($error);
 		
 		//エラー表示
 		$objPage->ERROR = $error;
