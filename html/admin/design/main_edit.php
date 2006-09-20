@@ -213,7 +213,9 @@ function lfEntryPageData($arrData){
 		$sql .= "	  ,header_chk";
 		$sql .= "	  ,footer_chk";
 		$sql .= "	  ,update_url";
-		$sql .= " ) VALUES ( ?,?,?,?,?,?,?,? )";
+		$sql .= "	  ,create_date";
+		$sql .= "	  ,update_date";
+		$sql .= " ) VALUES ( ?,?,?,?,?,?,?,?,now(),now() )";
 		$sql .= " ";
 	}else{
 		// データが存在してる場合にはアップデートを行う

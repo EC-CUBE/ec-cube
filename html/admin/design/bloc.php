@@ -213,7 +213,9 @@ function lfEntryBlocData($arrData){
 		$sql .= "     bloc_name ";		// ブロック名称
 		$sql .= "     ,tpl_path ";		// テンプレート保存先
 		$sql .= "     ,filename ";		// ファイル名称
-		$sql .= " ) VALUES ( ?,?,? )";
+		$sql .= "     ,create_date ";	// 作成日
+		$sql .= "     ,update_date ";	// 更新日
+		$sql .= " ) VALUES ( ?,?,?,now(),now() )";
 		$sql .= " ";
 	}else{
 		// データが存在してる場合にはアップデートを行う
