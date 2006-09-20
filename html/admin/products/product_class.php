@@ -239,7 +239,7 @@ function lfGetClassCatListEdit($product_id) {
 	$sql.= "( ";
 	$sql.= "SELECT T1.class_id AS class_id1, T2.class_id AS class_id2, T1.classcategory_id AS T1_classcategory_id, T2.classcategory_id AS T2_classcategory_id, T1.name AS name1, T2.name AS name2, T1.rank AS rank1, T2.rank AS rank2 ";
 	$sql.= "FROM dtb_classcategory AS T1, dtb_classcategory AS T2 ";
-	$sql.= "WHERE T1.class_id IN (SELECT class_id1 FROM vw_cross_products_class WHERE product_id = ? GROUP BY class_id1, class_id2) AND T2.class_id IN (SELECT class_id2 FROM vw_cross_products_class WHERE product_id = ? GROUP BY class_id1, class_id2)";
+	$sql.= "WHERE T1.class_id IN (SELECT class_id1 FROM vw_cross_products_class AS crs_prd WHERE product_id = ? GROUP BY class_id1, class_id2) AND T2.class_id IN (SELECT class_id2 FROM vw_cross_products_class AS crs_prd WHERE product_id = ? GROUP BY class_id1, class_id2)";
 	$sql.= ") AS T1 ";
 			
 	$sql.= "LEFT JOIN (SELECT * FROM dtb_products_class WHERE product_id = ?) AS T3 ";
