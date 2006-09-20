@@ -58,8 +58,6 @@ if($_GET['mode'] == 'search'){
 	$tpl_subtitle = $arrFirstCat['name'];
 }
 
-sfprintr($_POST);
-
 $objQuery = new SC_Query();
 $count = $objQuery->count("dtb_best_products", "category_id = ?", array($category_id));
 
