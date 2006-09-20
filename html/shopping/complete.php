@@ -40,7 +40,7 @@ if($_GET['mode'] != 'reload') {
 	// 前のページで正しく登録手続きが行われたか判定
 	sfIsPrePage($objSiteSess);
 	// ユーザユニークIDの取得と購入状態の正当性をチェック
-	$uniqid = sfCheckNormalAccess($objSiteSess, $objCartSess);
+//	$uniqid = sfCheckNormalAccess($objSiteSess, $objCartSess);
 
 	if ($uniqid != "") {
 
@@ -49,8 +49,6 @@ if($_GET['mode'] != 'reload') {
 		$objQuery->begin();
 		$order_id = lfDoComplete($objQuery, $uniqid);
 		$objQuery->commit();
-		
-		exit();
 		
 		// セッションに保管されている情報を更新する
 		$objCustomer->updateSession();
