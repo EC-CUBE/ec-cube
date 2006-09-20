@@ -855,7 +855,7 @@ $arrView = array(
 	"vw_category_count" => '
 		(SELECT T1.category_id, T1.category_name, T1.parent_category_id, T1.level, T1.rank, T2.product_count
 		FROM dtb_category AS T1 LEFT JOIN dtb_category_total_count AS T2
-		ON T1.category_id = T2.category_id) vw_category_count '
+		ON T1.category_id = T2.category_id) '
 );
 
 ?>
