@@ -63,7 +63,7 @@ function lfGetProduct($category_id) {
 	
 	$objQuery = new SC_Query();
 	$col = "product_id, name, main_list_image, rank, product_code";
-	$table = "vw_products_nonclass";
+	$table = "vw_products_nonclass AS noncls ";
 	$where = "del_flg = 0 AND category_id = ?";
 	
 	// 行数の取得

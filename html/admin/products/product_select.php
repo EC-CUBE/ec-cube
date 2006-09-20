@@ -72,7 +72,7 @@ if ($_POST['mode'] == "search") {
 	
 	// 読み込む列とテーブルの指定
 	$col = "product_id, name, category_id, main_list_image, status, product_code, price01, stock, stock_unlimited";
-	$from = "vw_products_nonclass";
+	$from = "vw_products_nonclass AS noncls ";
 		
 	$objQuery = new SC_Query();
 	// 行数の取得

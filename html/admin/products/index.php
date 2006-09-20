@@ -222,14 +222,14 @@ if ($_POST['mode'] == "search" || $_POST['mode'] == "csv"  || $_POST['mode'] == 
 			break;
 		case 'delete_all':
 			// 検索結果をすべて削除
-			$where = "product_id IN (SELECT product_id FROM vw_products_nonclass WHERE $where)";
+			$where = "product_id IN (SELECT product_id FROM vw_products_nonclass AS noncls  WHERE $where)";
 			$sqlval['del_flg'] = 1;
 			$objQuery->update("dtb_products", $sqlval, $where, $arrval);
 			break;
 		default:
 			// 読み込む列とテーブルの指定
 			$col = "product_id, name, category_id, main_list_image, status, product_code, price01, price02, stock, stock_unlimited";
-			$from = "vw_products_nonclass";
+			$from = "vw_products_nonclass AS noncls ";
 
 			// 行数の取得
 			$linemax = $objQuery->count($from, $where, $arrval);

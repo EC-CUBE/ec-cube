@@ -220,7 +220,7 @@ function lfPreGetRecommendProducts($product_id) {
 function lfGetProduct($product_id) {
 	$objQuery = new SC_Query();
 	$col = "*";
-	$table = "vw_products_nonclass";
+	$table = "vw_products_nonclass AS noncls ";
 	$where = "product_id = ?";
 	$arrRet = $objQuery->select($col, $table, $where, array($product_id));
 		

@@ -779,7 +779,7 @@ $arrView = array(
 		classcategory_id2
 		FROM dtb_products_class WHERE classcategory_id1 = 0 AND classcategory_id2 = 0) 
 		AS T2
-		ON T1.product_id = T2.product_id_sub) vw_products_nonclass',
+		ON T1.product_id = T2.product_id_sub) ',
 	
 	"vw_products_allclass" => '
 		(SELECT
