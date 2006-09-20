@@ -64,7 +64,7 @@ $objSess = new SC_Session();
 
 // 認証可否の判定
 sfIsSuccess($objSess);
-/*
+
 $arrActive = array( "0"=>"稼働", "1"=>"非稼働" );
 $arrQuestion = array( "0"=>"使用しない", "1"=>"テキストエリア", "2"=>"テキストボックス"
 					, "3"=>"チェックボックス", "4"=>"ラジオボタン" 
@@ -164,7 +164,7 @@ $objPage->cnt_question = 6;
 $objPage->arrActive = $arrActive;
 $objPage->arrQuestion = $arrQuestion;
 
-*/
+
 //----　ページ表示
 $objView->assignobj($objPage);
 $objView->display(MAIN_FRAME);
