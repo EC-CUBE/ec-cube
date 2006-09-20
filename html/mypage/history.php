@@ -36,7 +36,7 @@ if (!$objCustomer->isLoginSuccess() || $cnt == 0){
 	$objPage->arrPayment = sfGetIDValueList("dtb_payment", "payment_id", "payment_method");
 	// 配送時間の取得
 	$arrRet = sfGetDelivTime($objPage->arrDisp['payment_id']);
-	$objPage->arrDelivTime = sfArrKeyValue($arrRet, 'time_id', 'time');
+	$objPage->arrDelivTime = sfArrKeyValue($arrRet, 'time_id', 'deliv_time');
 
 	//マイページトップ顧客情報表示用
 	$objPage->CustomerName1 = $objCustomer->getvalue('name01');

@@ -1306,11 +1306,16 @@ function sfGetDelivTime($payment_id = "") {
 		$deliv_id = $arrRet[0]['deliv_id'];
 	}
 	
+	$objQuery->getlastquery();
+	
 	if($deliv_id != "") {
 		$objQuery->setorder("time_id");
 		$where = "deliv_id = ?";
 		$arrRet= $objQuery->select("time_id, deliv_time", "dtb_delivtime", $where, array($deliv_id));
 	}
+	
+	$objQuery->getlastquery();
+	
 	return $arrRet;	
 }
 
