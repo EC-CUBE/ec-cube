@@ -85,15 +85,11 @@ function lfRegistData($array) {
 	
 	$objQuery->update("dtb_customer", $arrRegist, $where, array($array["id"]));
 	
-	$ret = $objQuery->getLastQuery(false);
-	
 	/* 購入時登録の場合、その回の購入を会員購入とみなす。 */
 	// 会員情報の読み込み
 	$where1 = "secret_key = ? AND status = 2";
 	$customer = $objQuery->select("*", "dtb_customer", $where1, array($secret));
 	// 初回購入情報の読み込み
-//	$where2 = "member_check = 1 AND order_email = ? AND password = ?";
-//	$order_temp_id = $objQuery->get("dtb_order_temp", "order_temp_id", $where2, array($customer[0]['email'], $customer[0]['password']));
 	$order_temp_id = $objQuery->get("dtb_order_temp", "order_temp_id");
 	// 購入情報の更新
 	if ($order_temp_id != null) {

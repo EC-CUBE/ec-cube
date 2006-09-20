@@ -207,12 +207,14 @@ function lfRegistData ($array, $arrRegistColumn, $arrRejectRegistColumn) {
 	} else {
 		$arrRegistMail["mail_flag"] = 6; 
 	}
+	$arrRegistMail["update_date"] = "now()";
 	
 	// 非会員でメルマガ登録している場合
 	if ($mailResult == 1) {		
-		$objConn->autoExecute("dtb_customer_mail", $arrRegistMail, "email = '" .addslashes($arrRegistMail["email"]). "'");			
+		$objQuery->update("dtb_customer_mail", $arrRegistMail, "email = '" .addslashes($arrRegistMail["email"]). "'");			
 	} else {				//　新規登録の場合
-		$objConn->autoExecute("dtb_customer_mail", $arrRegistMail);		
+		$arrRegistMail["create_date"] = "now()";
+		$objQuery->insert("dtb_customer_mail", $arrRegistMail);		
 	}
 	$objConn->query("COMMIT");
 
