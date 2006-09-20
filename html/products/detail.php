@@ -342,7 +342,7 @@ function lfPreGetRecommendProducts($product_id) {
 	$no = 0;
 	for($i = 0; $i < $max; $i++) {
 		$where = "del_flg = 0 AND product_id = ? AND status = 1";
-		$arrProductInfo = $objQuery->select("main_list_image, price02_min, price02_max, price01_min, price01_max, name, point_rate", "vw_products_allclass", $where, array($arrRet[$i]['recommend_product_id'])); 
+		$arrProductInfo = $objQuery->select("main_list_image, price02_min, price02_max, price01_min, price01_max, name, point_rate", "vw_products_allclass  AS allcls", $where, array($arrRet[$i]['recommend_product_id'])); 
 				
 		if(count($arrProductInfo) > 0) {
 			$arrRecommend[$no] = $arrProductInfo[0];
@@ -393,7 +393,7 @@ function lfGetRelateProducts($tmp_id) {
 	$objQuery->setlimit(RELATED_PRODUCTS_MAX);
 	//¸¡º÷¾ò·ï
 	$col = "name, main_list_image, price01_min, price02_min, price01_max, price02_max, point_rate";
-	$from = "vw_products_allclass ";
+	$from = "vw_products_allclass AS allcls ";
 	$where = "del_flg = 0 AND status = 1 AND (stock_max <> 0 OR stock_max IS NULL) AND product_id = ? ";
 	$arrval[] = $tmp_id;
 	//·ë²Ì¤Î¼èÆÀ
