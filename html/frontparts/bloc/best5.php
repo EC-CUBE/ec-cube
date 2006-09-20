@@ -12,9 +12,9 @@ $objSubView = new SC_SiteView();
 $objSiteInfo = $objView->objSiteInfo;
 
 // 基本情報を渡す
-$arrInfo = new SC_SiteInfo();
+$objSiteInfo = new SC_SiteInfo();
 
-sfprintr($arrInfo);
+sfprintr($objSiteInfo->data);
 $objSubPage->arrInfo = $arrInfo;
 
 
