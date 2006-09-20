@@ -66,14 +66,9 @@ case 'step1':
 	break;
 // データベースの設定
 case 'step2':
-$iii=0;
-sfprintr($iii++);
 	//入力値のエラーチェック
 	$objPage->arrErr = lfCheckDBError($objDBParam);
-sfprintr($iii++);
-	
 	if(count($objPage->arrErr) == 0) {
-sfprintr($iii++);
 		$objPage = lfDispStep3($objPage);
 	} else {
 		$objPage = lfDispStep2($objPage);
@@ -430,6 +425,8 @@ function lfCheckDBError($objFormParam) {
 	
 	$objErr = new SC_CheckError($arrRet);
 	$objErr->arrErr = $objFormParam->checkError();
+	
+	sfprintr($dsn);
 	
 	if(count($objErr->arrErr) == 0) {
 		// 接続確認
