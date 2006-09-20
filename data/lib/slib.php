@@ -2145,8 +2145,8 @@ function sfCategory_Count($objQuery){
 		$arrRet = sfGetChildrenArray('dtb_category', 'parent_category_id', 'category_id', $val['category_id']);	
 		$line = sfGetCommaList($arrRet);
 		
-		$sql = " INSERT INTO dtb_category_total_count(category_id, product_count) ";
-		$sql .= " SELECT ?, SUM(product_count) FROM dtb_category_count ";
+		$sql = " INSERT INTO dtb_category_total_count(category_id, product_count, create_date) ";
+		$sql .= " SELECT ?, SUM(product_count), now() FROM dtb_category_count ";
 		$sql .= " WHERE category_id IN (" . $line . ")";
 				
 		$objQuery->query($sql, array($val['category_id']));
