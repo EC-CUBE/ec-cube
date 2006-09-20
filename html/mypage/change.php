@@ -273,8 +273,6 @@ function lfGetCustomerData(){
 		$birth = split(" ", $arrForm["birth"]);
 		list($year, $month, $day) = split("-",$birth[0]);
 		
-		sfprintr($birth);
-		
 		$arrForm['year'] = $year;
 		$arrForm['month'] = $month;
 		$arrForm['day'] = $day;
