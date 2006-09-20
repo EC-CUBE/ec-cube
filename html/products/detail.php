@@ -380,7 +380,7 @@ function lfRegistReadingData($tmp_id, $customer_id){
 	$sqlval['customer_id'] = $customer_id;
 	$sqlval['reading_product_id'] = $tmp_id;
 	$sqlval['create_date'] = 'NOW()';
-	$sqlval['udpate_date'] = 'NOW()';
+	$sqlval['update_date'] = 'NOW()';
 	$objQuery->insert("dtb_customer_reading", $sqlval);
 }
 
