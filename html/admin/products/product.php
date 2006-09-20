@@ -207,7 +207,7 @@ function lfPreGetRecommendProducts($product_id) {
 	$no = 1;
 	
 	for($i = 0; $i < $max; $i++) {
-		$arrProductInfo = $objQuery->select("main_list_image, product_code_min, name", "vw_products_allclass", "product_id = ?", array($arrRet[$i]['recommend_product_id'])); 
+		$arrProductInfo = $objQuery->select("main_list_image, product_code_min, name", "vw_products_allclass AS allcls", "product_id = ?", array($arrRet[$i]['recommend_product_id'])); 
 		$arrRecommend[$no] = $arrProductInfo[0];
 		$arrRecommend[$no]['product_id'] = $arrRet[$i]['recommend_product_id'];
 		$arrRecommend[$no]['comment'] = $arrRet[$i]['comment'];
