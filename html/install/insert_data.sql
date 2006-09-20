@@ -19,10 +19,10 @@ insert into dtb_bloc ( bloc_name, tpl_path, filename, php_path, del_flg, create_
 
 insert into dtb_pagelayout (page_id,page_name,url, create_date, update_date)values(0, 'プレビューデータ','',now(),now());
 update dtb_pagelayout set page_id = 0;
-insert into dtb_pagelayout (page_id,page_name,url,php_dir,tpl_dir,filename,edit_flg, create_date, update_date)values(1,'TOPページ','index.php',' ','/html/user_data/templates/','top',2,now(),now());
-insert into dtb_pagelayout (page_id,page_name,url,php_dir,tpl_dir,filename,edit_flg, create_date, update_date)values(2,'商品一覧ページ','products/list.php',' ','/html/user_data/templates/','list',2,now(),now());
-insert into dtb_pagelayout (page_id,page_name,url,php_dir,tpl_dir,filename,edit_flg, create_date, update_date)values(3,'商品詳細','products/detail.php',' ','/html/user_data/templates/','detail',2,now(),now());
-insert into dtb_pagelayout (page_id,page_name,url,php_dir,tpl_dir,filename,edit_flg, create_date, update_date)values(4,'MYページ','mypage/index.php',' ','','',2,now(),now());
+insert into dtb_pagelayout (page_name,url,php_dir,tpl_dir,filename,edit_flg, create_date, update_date)values('TOPページ','index.php',' ','/html/user_data/templates/','top',2,now(),now());
+insert into dtb_pagelayout (page_name,url,php_dir,tpl_dir,filename,edit_flg, create_date, update_date)values('商品一覧ページ','products/list.php',' ','/html/user_data/templates/','list',2,now(),now());
+insert into dtb_pagelayout (page_name,url,php_dir,tpl_dir,filename,edit_flg, create_date, update_date)values('商品詳細','products/detail.php',' ','/html/user_data/templates/','detail',2,now(),now());
+insert into dtb_pagelayout (page_name,url,php_dir,tpl_dir,filename,edit_flg, create_date, update_date)values('MYページ','mypage/index.php',' ','','',2,now(),now());
 
 INSERT INTO dtb_blocposition (page_id,target_id,bloc_id,bloc_row,filename)values(1,1,(SELECT bloc_id FROM dtb_bloc WHERE filename = 'category'),2,'category');
 INSERT INTO dtb_blocposition (page_id,target_id,bloc_id,bloc_row,filename)values(1,1,(SELECT bloc_id FROM dtb_bloc WHERE filename = 'guide'),3,'guide');
