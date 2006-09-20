@@ -13,6 +13,8 @@ $objSiteInfo = $objView->objSiteInfo;
 
 // 基本情報を渡す
 $arrInfo = new SC_SiteInfo();
+
+sfprintr($arrInfo);
 $objSubPage->arrInfo = $arrInfo;
 
 
