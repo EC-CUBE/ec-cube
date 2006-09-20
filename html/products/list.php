@@ -351,7 +351,7 @@ function lfGetProductsClass($product_id) {
 		// ¾¦ÉÊµ¬³Ê¼èÆÀ
 		$objQuery = new SC_Query();
 		$col = "product_class_id, classcategory_id1, classcategory_id2, class_id1, class_id2, stock, stock_unlimited";
-		$table = "vw_product_class AS prdcls";
+		$table = "vw_product_class ";
 		$where = "product_id = ?";
 		$objQuery->setorder("rank1 DESC, rank2 DESC");
 		$arrRet = $objQuery->select($col, $table, $where, array($product_id));

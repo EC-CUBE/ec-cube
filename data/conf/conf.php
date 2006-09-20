@@ -850,7 +850,7 @@ $arrView = array(
 		ON T1.classcategory_id1 = T2.classcategory_id))
 		AS T3 LEFT JOIN dtb_classcategory AS T4
 		ON T3.classcategory_id2 = T4.classcategory_id) AS T5 LEFT JOIN dtb_products AS T6
-		ON product_id_sub = T6.product_id) vw_product_class ',
+		ON product_id_sub = T6.product_id) ',
 
 	"vw_category_count" => '
 		(SELECT T1.category_id, T1.category_name, T1.parent_category_id, T1.level, T1.rank, T2.product_count
