@@ -62,9 +62,11 @@ $objPage = new LC_Page();
 $objView = new SC_AdminView();
 $objSess = new SC_Session();
 
+$i=0;
+sfprintr($i+1);
+
 // 認証可否の判定
 sfIsSuccess($objSess);
-
 
 $arrActive = array( "0"=>"稼働", "1"=>"非稼働" );
 $arrQuestion = array( "0"=>"使用しない", "1"=>"テキストエリア", "2"=>"テキストボックス"
@@ -72,20 +74,21 @@ $arrQuestion = array( "0"=>"使用しない", "1"=>"テキストエリア", "2"=>"テキストボ
 				);
 
 
+sfprintr($i+1);
+				
 $sql = "SELECT *, cast(substring(create_date, 1, 10) as date) as disp_date FROM dtb_question WHERE del_flg = 0 ORDER BY question_id";
 $result = $conn->getAll($sql);
 $objPage->list_data = $result;
-	sfprintr($error);
-						
+sfprintr($i+1);				
 if ( $_GET['mode'] == 'regist' ){
-
+sfprintr($i+1);
 	for ( $i=0; $i<count($_POST["question"]); $i++ ) {
 		$_POST['question'][$i]['name'] = mb_convert_kana( trim ( $_POST['question'][$i]['name'] ), "K" );
 		for ( $j=0; $j<count( $_POST['question'][$i]['option'] ); $j++ ){
 			$_POST['question'][$i]['option'][$j] = mb_convert_kana( trim ( $_POST['question'][$i]['option'][$j] ) );
 		}
 	}
-	
+sfprintr($i+1);
 	$error = lfErrCheck();
 
 	if ( ! $error  ){
