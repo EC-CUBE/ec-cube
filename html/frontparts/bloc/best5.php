@@ -11,6 +11,11 @@ $objSubPage = new LC_Best5Page();
 $objSubView = new SC_SiteView();
 $objSiteInfo = $objView->objSiteInfo;
 
+sfprintr($objSiteInfo->data);
+
+// 基本情報を渡す
+$objSubPage->arrInfo = $objSiteInfo->data;
+
 //おすすめ商品表示
 $objSubPage->arrBestProducts = lfGetRanking();
 

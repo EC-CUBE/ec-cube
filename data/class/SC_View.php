@@ -54,8 +54,6 @@ class SC_View {
 					$this->_smarty->assign($key, $value);
 				}
 				
-				sfprintr($arrInfo);
-				
 				define('LOAD_SITEINFO', 1);
 			}
 		}
