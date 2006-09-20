@@ -123,6 +123,9 @@ function lfInsertClass() {
 		$sqlval['update_date'] = "now()";
 		// INSERT¤Î¼Â¹Ô
 		$ret = $objQuery->insert("dtb_classcategory", $sqlval);
+		
+		$objQuery->getlastquery();
+		exit();
 	}
 	$objQuery->commit();
 	return $ret;

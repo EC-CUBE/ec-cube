@@ -99,6 +99,9 @@ function lfInsertClass($arrData) {
 	$sqlval['update_date'] = "now()";
 	// INSERT¤Î¼Â¹Ô
 	$ret = $objQuery->insert("dtb_class", $sqlval);
+	
+	$objQuery->getlastquery();
+	exit();
 	return $ret;
 }
 
