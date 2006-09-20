@@ -3,11 +3,11 @@ CREATE INDEX dtb_products_class_product_id_key ON dtb_products_class(product_id)
 CREATE INDEX dtb_order_detail_product_id_key ON dtb_order_detail(product_id);
 CREATE INDEX dtb_category_category_id_key ON dtb_category(category_id);
 
-INSERT INTO dtb_member (name, login_id, password, creator_id, authority, work, del_flg, create_date) 
-VALUES ('dummy','dummy','',0,0,1,1, now());
+INSERT INTO dtb_member (name, login_id, password, creator_id, authority, work, del_flg, create_date, update_date) 
+VALUES ('dummy','dummy','',0,0,1,1, now(), now());
 
-INSERT INTO dtb_member (name, login_id, password, creator_id, authority, work, del_flg, rank, create_date) 
-VALUES ('admin','admin','2c19f4a742398150cecc80b3e76b673a35b8c19c',0,0,1,0,1, now());
+INSERT INTO dtb_member (name, login_id, password, creator_id, authority, work, del_flg, rank, create_date, update_date) 
+VALUES ('admin','admin','2c19f4a742398150cecc80b3e76b673a35b8c19c',0,0,1,0,1, now(), now());
 
 insert into dtb_bloc ( bloc_name, tpl_path, filename, php_path, del_flg, create_date, update_date ) values ('カテゴリ',	'html/user_data/include/bloc/category.tpl', 'category','html/frontparts/bloc/category.php', 1, now(), now());
 insert into dtb_bloc ( bloc_name, tpl_path, filename, php_path, del_flg, create_date, update_date ) values ('利用ガイド',	'html/user_data/include/bloc/guide.tpl', 'guide','', 1, now(), now());
