@@ -184,8 +184,8 @@ function lfRegistData ($array, $arrRegistColumn, $arrRejectRegistColumn) {
 	}
 	
 	$arrRegist["secret_key"] = $uniqid;		// 仮登録ID発行
-	$arrRegist["create_date"] = date("Y/m/d H:i:s"); 	// 作成日
-	$arrRegist["update_date"] = date("Y/m/d H:i:s"); 	// 更新日
+	$arrRegist["create_date"] = "now()"; 	// 作成日
+	$arrRegist["update_date"] = "now()"; 	// 更新日
 	$arrRegist["first_buy_date"] = "";	 	// 最初の購入日
 	
 	//-- 仮登録実行
