@@ -91,12 +91,14 @@ if ( $_GET['mode'] == 'regist' ){
 		if ( ! is_numeric($_POST['question_id']) ){
 			
 			//епо©
+			sfprintr(1);
 			$value = serialize($_POST);
+			sfprintr(2);
 			if (DB_TYPE == "pgsql") {
+				sfprintr(3);
 				$question_id = $objQuery->nextval('dtb_question', 'question_id');
-				$objQuery->getlastquery();
-				sfprintr($question_id);
-				
+				sfprintr(4);
+
 			}
 			
 			$sql_val = array( $value, $_POST['title'] ,$question_id );
