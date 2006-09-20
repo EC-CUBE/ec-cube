@@ -155,7 +155,7 @@ if ( $_GET['mode'] == 'regist' ){
 		}
 	}
 } 
-*/
+
 
 
 
@@ -164,7 +164,7 @@ $objPage->cnt_question = 6;
 $objPage->arrActive = $arrActive;
 $objPage->arrQuestion = $arrQuestion;
 
-
+*/
 //----　ページ表示
 $objView->assignobj($objPage);
 $objView->display(MAIN_FRAME);
