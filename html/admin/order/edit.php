@@ -89,11 +89,9 @@ default:
 $objPage->arrPayment = sfGetIDValueList("dtb_payment", "payment_id", "payment_method");
 // 配送時間の取得
 $arrRet = sfGetDelivTime($objFormParam->getValue('payment_id'));
-
-sfprintr($arrRet);
-
-
 $objPage->arrDelivTime = sfArrKeyValue($arrRet, 'time_id', 'time');
+
+sfprintr($objPage->arrDelivTime);
 
 $objPage->arrForm = $objFormParam->getFormParamList();
 
