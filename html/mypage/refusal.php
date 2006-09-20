@@ -42,7 +42,7 @@ switch ($_POST['mode']){
 	case 'complete':
 	//²ñ°÷ºï½ü
 	$objQuery->exec("UPDATE dtb_customer SET del_flg=1, update_date=now() WHERE customer_id=?", array($objCustomer->getValue('customer_id')));
-	
+
 	$where = "email ILIKE ?";
 	if (DB_TYPE == "mysql")	$where = sfChangeILIKE($where);
 	
