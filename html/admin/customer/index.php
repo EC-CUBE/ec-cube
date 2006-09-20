@@ -70,14 +70,14 @@ $arrColumnCSV= array(
 						16 => array("sql" => "fax03", "csv" => "fax03", "header" => "FAX3"),
 						17 => array("sql" => "CASE WHEN sex = 1 THEN '男性' ELSE '女性' END AS sex", "csv" => "sex", "header" => "性別"),
 						18 => array("sql" => "job", "csv" => "job", "header" => "職業"),
-						19 => array("sql" => "to_char(birth, 'YYYY年MM月DD日') AS birth", "csv" => "birth", "header" => "誕生日"),
-						20 => array("sql" => "to_char(first_buy_date, 'YYYY年MM月DD日HH24:MI') AS first_buy_date", "csv" => "first_buy_date", "header" => "初回購入日"),
-						21 => array("sql" => "to_char(last_buy_date, 'YYYY年MM月DD日HH24:MI') AS last_buy_date", "csv" => "last_buy_date", "header" => "最終購入日"),
+						19 => array("sql" => "cast(birth as date) AS birth", "csv" => "birth", "header" => "誕生日"),
+						20 => array("sql" => "cast(first_buy_date as date) AS first_buy_date", "csv" => "first_buy_date", "header" => "初回購入日"),
+						21 => array("sql" => "cast(last_buy_date as date) AS last_buy_date", "csv" => "last_buy_date", "header" => "最終購入日"),
 						22 => array("sql" => "buy_times", "csv" => "buy_times", "header" => "購入回数"),
 						23 => array("sql" => "point", "csv" => "point", "header" => "ポイント残高"),
 						24 => array("sql" => "note", "csv" => "note", "header" => "備考"),
-						25 => array("sql" => "to_char(create_date, 'YYYY年MM月DD日HH24:MI') AS create_date", "csv" => "create_date", "header" => "登録日"),
-						26 => array("sql" => "to_char(update_date, 'YYYY年MM月DD日HH24:MI') AS update_date", "csv" => "update_date", "header" => "更新日")
+						25 => array("sql" => "cast(create_date as date) AS create_date", "csv" => "create_date", "header" => "登録日"),
+						26 => array("sql" => "cast(update_date as date) AS update_date", "csv" => "update_date", "header" => "更新日")
 					);
 
 //---- ページ初期設定
