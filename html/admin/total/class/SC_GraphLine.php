@@ -55,7 +55,7 @@ class SC_GraphLine extends SC_GraphBase{
 		// Y軸にタイトルを入れる
 		if($this->XTitle != "") {
 			$text_width = $this->getTextWidth($this->XTitle, FONT_SIZE);
-			$x_pos = $this->left + $this->area_width - ($text_width / 2)  + LINE_YTITLE_PAD;
+			$x_pos = $this->left + $this->area_width - ($text_width / 2) + 30;
 			$y_pos = $this->top + $this->area_height + LINE_XTITLE_PAD;
 			$this->setText(FONT_SIZE, $x_pos, $y_pos, $this->XTitle);
 		}
