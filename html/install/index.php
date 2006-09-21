@@ -412,7 +412,7 @@ function lfInitDBParam($objDBParam) {
 	$objDBParam->addParam("DBユーザ", "db_user", MTEXT_LEN, "", array("EXIST_CHECK","MAX_LENGTH_CHECK"), $db_user);
 	$objDBParam->addParam("DBパスワード", "db_password", MTEXT_LEN, "", array("EXIST_CHECK","MAX_LENGTH_CHECK"));	
 	
-	$objDBParam->addParam("skip", "skip", array(""));
+	$objDBParam->addParam("スキップ", "skip", array(""));
 	
 	return $objDBParam;
 }
