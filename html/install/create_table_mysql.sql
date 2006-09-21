@@ -828,10 +828,10 @@ CREATE TABLE dtb_csv (
 
 CREATE TABLE dtb_csv_sql (
     sql_id int auto_increment primary key,
-    name text NOT NULL,
-    sql text,
-    update_date datetime NOT NULL ,
-    create_date datetime NOT NULL 
+    sql_name text NOT NULL,
+    create_sql text,
+    update_date datetime NOT NULL,
+    create_date datetime NOT NULL
 );
 
 CREATE TABLE dtb_user_regist (
