@@ -88,7 +88,7 @@
 										<td bgcolor="#e9e7de" align="center">
 										<table border="0" cellspacing="0" cellpadding="0" summary=" ">
 											<tr>
-												<td><input type="submit" name="subm" value="最新のアップデート情報を取得する"/></td>
+												<td><input type="submit" name="subm" value="バックアップを作成する"/></td>
 											</tr>
 										</table>
 										</td>
@@ -99,9 +99,9 @@
 									</tr>
 								</table>
 
-						<table width="678" border="0" cellspacing="0" cellpadding="0" summary=" ">
-							<tr><td colspan="3"><img src="/img/contents/main_bar.jpg" width="678" height="10" alt=""></td></tr>
-						</table>
+								<table width="678" border="0" cellspacing="0" cellpadding="0" summary=" ">
+									<tr><td colspan="3"><img src="/img/contents/main_bar.jpg" width="678" height="10" alt=""></td></tr>
+								</table>
 								
 								<table width="678" border="0" cellspacing="0" cellpadding="0" summary=" ">
 									<tr>
@@ -168,7 +168,7 @@
 										<td bgcolor="#e9e7de" align="center">
 										<table border="0" cellspacing="0" cellpadding="0" summary=" ">
 											<tr>
-												<td><input type="submit" name="subm" value="最新のアップデート情報を取得する"/></td>
+												<td><input type="submit" name="subm" value="選択したバックアップデータをリストアする"/></td>
 											</tr>
 										</table>
 										</td>
