@@ -55,7 +55,7 @@ class SC_GraphLine extends SC_GraphBase{
 		// Y軸にタイトルを入れる
 		if($this->XTitle != "") {
 			$text_width = $this->getTextWidth($this->XTitle, FONT_SIZE);
-			$x_pos = $this->left + $this->area_width+2000;// - ($text_width / 2);
+			$x_pos = $this->left + $this->area_width - ($text_width / 2);
 			$y_pos = $this->top + $this->area_height + LINE_XTITLE_PAD;
 			$this->setText(FONT_SIZE, $x_pos, $y_pos, $this->XTitle);
 		}
@@ -110,11 +110,6 @@ class SC_GraphLine extends SC_GraphBase{
 			if(($i % $interval) == 0) {
 				$text_width = $this->getTextWidth($this->arrXLabel[$i], FONT_SIZE);
 				$x_pos = $x - ($text_width / 2);
-				
-				if ($this->XLabelAngle == "-45"){
-					$this->x_margin = - $text_width / 4;
-					$this->y_margin = $text_width / 2 + 5;
-				}
 				
 				$this->setText(FONT_SIZE, $x_pos + $this->x_margin, $pos + FONT_SIZE + $this->y_margin, $this->arrXLabel[$i], NULL, $this->XLabelAngle);
 			}
