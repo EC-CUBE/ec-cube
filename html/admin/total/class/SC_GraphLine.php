@@ -56,7 +56,7 @@ class SC_GraphLine extends SC_GraphBase{
 		if($this->XTitle != "") {
 			$text_width = $this->getTextWidth($this->XTitle, FONT_SIZE);
 			$x_pos = $this->left + $this->area_width - ($text_width / 2);
-			$y_pos = $this->top + $this->area_height ;// + LINE_XTITLE_PAD;
+			$y_pos = $this->top + $this->area_height + LINE_XTITLE_PAD + LINE_YTITLE_PAD;
 			$this->setText(FONT_SIZE, $x_pos, $y_pos, $this->XTitle);
 		}
 	}
