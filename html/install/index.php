@@ -78,55 +78,60 @@ case 'step2':
 case 'step3':
 	// 入力データを渡す。
 	$arrRet =  $objDBParam->getHashArray();
-	// テーブルの作成
-	$objPage->arrErr = lfExecuteSQL("./create_table_".$arrRet['db_type'].".sql", $arrRet['db_user'], $arrRet['db_password'], $arrRet['db_server'], $arrRet['db_name'], $arrRet['db_type'], $arrRet['db_port']); 
-	if(count($objPage->arrErr) == 0) {
-		$objPage->tpl_message.="○：テーブルの作成に成功しました。<br>";
-	} else {
-		$objPage->tpl_message.="×：テーブルの作成に失敗しました。<br>";		
+	
+	$skip = $_POST["skip"];
+	if ($skip == "no") {
+		
+		// テーブルの作成
+		$objPage->arrErr = lfExecuteSQL("./create_table_".$arrRet['db_type'].".sql", $arrRet['db_user'], $arrRet['db_password'], $arrRet['db_server'], $arrRet['db_name'], $arrRet['db_type'], $arrRet['db_port']); 
+		if(count($objPage->arrErr) == 0) {
+			$objPage->tpl_message.="○：テーブルの作成に成功しました。<br>";
+		} else {
+			$objPage->tpl_message.="×：テーブルの作成に失敗しました。<br>";		
+		}
+	
+		// ビューの作成
+		if(count($objPage->arrErr) == 0 and $arrRet['db_type'] == 'pgsql') {
+			// ビューの作成
+			$objPage->arrErr = lfExecuteSQL("./create_view.sql", $arrRet['db_user'], $arrRet['db_password'], $arrRet['db_server'], $arrRet['db_name'], $arrRet['db_type'], $arrRet['db_port']); 
+			if(count($objPage->arrErr) == 0) {
+				$objPage->tpl_message.="○：ビューの作成に成功しました。<br>";
+			} else {
+				$objPage->tpl_message.="×：ビューの作成に失敗しました。<br>";		
+			}
+		}	
+		
+		// 初期データの作成
+		if(count($objPage->arrErr) == 0) {
+			$objPage->arrErr = lfExecuteSQL("./insert_data.sql", $arrRet['db_user'], $arrRet['db_password'], $arrRet['db_server'], $arrRet['db_name'], $arrRet['db_type'], $arrRet['db_port']); 
+			if(count($objPage->arrErr) == 0) {
+				$objPage->tpl_message.="○：初期データの作成に成功しました。<br>";
+			} else {
+				$objPage->tpl_message.="×：初期データの作成に失敗しました。<br>";		
+			}
+		}	
+		
+		// カラムコメントの書込み
+		if(count($objPage->arrErr) == 0) {
+			$objPage->arrErr = lfExecuteSQL("./column_comment.sql", $arrRet['db_user'], $arrRet['db_password'], $arrRet['db_server'], $arrRet['db_name'], $arrRet['db_type'], $arrRet['db_port']); 
+			if(count($objPage->arrErr) == 0) {
+				$objPage->tpl_message.="○：カラムコメントの書込みに成功しました。<br>";
+			} else {
+				$objPage->tpl_message.="×：カラムコメントの書込みに失敗しました。<br>";		
+			}
+		}	
+		
+		// テーブルコメントの書込み
+		if(count($objPage->arrErr) == 0) {
+			$objPage->arrErr = lfExecuteSQL("./table_comment.sql", $arrRet['db_user'], $arrRet['db_password'], $arrRet['db_server'], $arrRet['db_name'], $arrRet['db_type'], $arrRet['db_port']); 
+			if(count($objPage->arrErr) == 0) {
+				$objPage->tpl_message.="○：テーブルコメントの書込みに成功しました。<br>";
+			} else {
+				$objPage->tpl_message.="×：テーブルコメントの書込みに失敗しました。<br>";		
+			}
+		}
 	}
 
-	// ビューの作成
-	if(count($objPage->arrErr) == 0 and $arrRet['db_type'] == 'pgsql') {
-		// ビューの作成
-		$objPage->arrErr = lfExecuteSQL("./create_view.sql", $arrRet['db_user'], $arrRet['db_password'], $arrRet['db_server'], $arrRet['db_name'], $arrRet['db_type'], $arrRet['db_port']); 
-		if(count($objPage->arrErr) == 0) {
-			$objPage->tpl_message.="○：ビューの作成に成功しました。<br>";
-		} else {
-			$objPage->tpl_message.="×：ビューの作成に失敗しました。<br>";		
-		}
-	}	
-	
-	// 初期データの作成
-	if(count($objPage->arrErr) == 0) {
-		$objPage->arrErr = lfExecuteSQL("./insert_data.sql", $arrRet['db_user'], $arrRet['db_password'], $arrRet['db_server'], $arrRet['db_name'], $arrRet['db_type'], $arrRet['db_port']); 
-		if(count($objPage->arrErr) == 0) {
-			$objPage->tpl_message.="○：初期データの作成に成功しました。<br>";
-		} else {
-			$objPage->tpl_message.="×：初期データの作成に失敗しました。<br>";		
-		}
-	}	
-	
-	// カラムコメントの書込み
-	if(count($objPage->arrErr) == 0) {
-		$objPage->arrErr = lfExecuteSQL("./column_comment.sql", $arrRet['db_user'], $arrRet['db_password'], $arrRet['db_server'], $arrRet['db_name'], $arrRet['db_type'], $arrRet['db_port']); 
-		if(count($objPage->arrErr) == 0) {
-			$objPage->tpl_message.="○：カラムコメントの書込みに成功しました。<br>";
-		} else {
-			$objPage->tpl_message.="×：カラムコメントの書込みに失敗しました。<br>";		
-		}
-	}	
-	
-	// テーブルコメントの書込み
-	if(count($objPage->arrErr) == 0) {
-		$objPage->arrErr = lfExecuteSQL("./table_comment.sql", $arrRet['db_user'], $arrRet['db_password'], $arrRet['db_server'], $arrRet['db_name'], $arrRet['db_type'], $arrRet['db_port']); 
-		if(count($objPage->arrErr) == 0) {
-			$objPage->tpl_message.="○：テーブルコメントの書込みに成功しました。<br>";
-		} else {
-			$objPage->tpl_message.="×：テーブルコメントの書込みに失敗しました。<br>";		
-		}
-	}
-	
 	if(count($objPage->arrErr) == 0) {
 		// 設定ファイルの生成
 		lfMakeConfigFile();
