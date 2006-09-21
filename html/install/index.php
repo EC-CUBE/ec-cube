@@ -169,7 +169,7 @@ case 'drop':
 case 'skip':
 	// 設定ファイルの生成
 	lfMakeConfigFile();
-	$objPage = lfDispStep3($objPage);
+	$objPage = lfDispComplete($objPage);
 	$objPage->tpl_mode = 'complete';
 	break;
 // 完了画面

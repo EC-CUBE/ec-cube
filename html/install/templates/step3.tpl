@@ -30,6 +30,8 @@
 <tr><td align="left" class="fs12st">■データベースの初期化</td></tr>
 <tr><td align="left" class="fs12">データベースの初期化を開始します</td></tr>
 <tr><td align="left" class="fs12">※すでにテーブル等が作成されている場合は中断されます</td></tr>
+<input type="check_box" onclick="fnModeSubmit('skip'); " value="スキップ"></br>
+
 <!--{if count($arrErr) > 0 || $tpl_message != ""}-->
 <tr>
 	<td bgcolor="#cccccc" class="fs12">
@@ -39,7 +41,6 @@
 			<!--{$tpl_message}--><br>
 			<span class="red"><!--{$arrErr.all}--></span>
 			<!--{if $arrErr.all != ""}-->
-			<input type="button" onclick="fnModeSubmit('skip'); " value="スキップ"></br>
 			<input type="button" onclick="fnModeSubmit('drop');" value="既存データをすべて削除する">
 			<!--{/if}-->
 			</td>
