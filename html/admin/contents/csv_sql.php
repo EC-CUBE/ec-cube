@@ -239,8 +239,8 @@ function lfGetSqlList($where = "" , $arrData = array()){
 	$sql = "";
 	$sql .= " SELECT";
 	$sql .= "     sql_id,";
-	$sql .= "     name,";
-	$sql .= "     sql,";
+	$sql .= "     sql_name,";
+	$sql .= "     csv_sql,";
 	$sql .= "     update_date,";
 	$sql .= "     create_date";
 	$sql .= " FROM";

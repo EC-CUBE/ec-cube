@@ -46,7 +46,7 @@ CREATE TABLE dtb_update (
     module_explain text,
     main_php text NOT NULL,
     extern_php text NOT NULL,
-    update_sql text,
+    install_sql text,
     uninstall_sql text,
     other_files text,
     del_flg int2 NOT NULL DEFAULT 0,
@@ -828,8 +828,8 @@ CREATE TABLE dtb_csv (
 
 CREATE TABLE dtb_csv_sql (
     sql_id serial,
-    name text NOT NULL,
-    sql text,
+    sql_name text NOT NULL,
+    csv_sql text,
     update_date timestamp NOT NULL DEFAULT now(),
     create_date timestamp NOT NULL DEFAULT now()
 );
