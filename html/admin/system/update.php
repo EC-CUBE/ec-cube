@@ -194,7 +194,10 @@ function lfInstallModule() {
 	// 必要なSQL文の実行
 	if($arrRet[0]['install_sql'] != "") {
 		// SQL文実行、パラーメータなし、エラー無視
-		$ret = $objQuery->query($arrRet[0]['install_sql'],"",true);
+		$arrInstallSql = split(";",$arrRet[0]['install_sql']);
+		foreach($arrInstallSql as $key => $val){
+			$ret = $objQuery->query($val,"",true);
+		}
 		if(DB::isError($ret)) {
 			// エラー文を取得する
 			ereg("\[(.*)\]", $ret->userinfo, $arrKey);
