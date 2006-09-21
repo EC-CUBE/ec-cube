@@ -39,7 +39,7 @@
 			<!--{$tpl_message}--><br>
 			<span class="red"><!--{$arrErr.all}--></span>
 			<!--{if $arrErr.all != ""}-->
-			<input type="button" onclick="fnModeSubmit('drop');" value="スキップ"></br>
+			<input type="button" onclick="fnModeSubmit('skip'); " value="スキップ"></br>
 			<input type="button" onclick="fnModeSubmit('drop');" value="既存データをすべて削除する">
 			<!--{/if}-->
 			</td>

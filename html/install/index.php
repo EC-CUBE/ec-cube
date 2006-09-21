@@ -168,6 +168,13 @@ case 'drop':
 	}
 	$objPage = lfDispStep3($objPage);
 	break;
+	
+case 'skip':
+	// 設定ファイルの生成
+	lfMakeConfigFile();
+	$objPage = lfDispStep3($objPage);
+	$objPage->tpl_mode = 'complete';
+	break;
 // 完了画面
 case 'complete':
 	// ショップマスタ情報の書き込み
