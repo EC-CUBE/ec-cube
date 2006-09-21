@@ -9,7 +9,7 @@ class LC_Page {
 		$this->tpl_mainpage = 'system/update.tpl';
 		$this->tpl_subnavi = 'system/subnavi.tpl';
 		$this->tpl_mainno = 'system';		
-		$this->tpl_subno = 'update';
+		$this->tpl_subno = 'bkup';
 		$this->tpl_subtitle = 'アップデート管理';
 	}
 }
