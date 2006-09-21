@@ -189,8 +189,6 @@ function lfInstallModule() {
 		$flg_ok = false;
 	}
 	
-	sfprintr($arrRet);
-
 	// 必要なSQL文の実行
 	if($arrRet[0]['install_sql'] != "") {
 		// SQL文実行、パラーメータなし、エラー無視
