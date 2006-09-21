@@ -35,7 +35,7 @@ define("LINE_AREA_HEIGHT", 300);	// 線グラフ背景のサイズ
 define("LINE_MARK_SIZE", 6);		// 線グラフマークのサイズ
 define("LINE_SCALE_SIZE", 6);		// 目盛り幅
 define("LINE_XLABEL_MAX", 30);		// X軸のラベルの表示制限数
-define("LINE_XTITLE_PAD", 25);		// X軸のタイトルと軸の間隔
+define("LINE_XTITLE_PAD", -5);		// X軸のタイトルと軸の間隔
 define("LINE_YTITLE_PAD", 15);		// Y軸のタイトルと軸の間隔
 
 /* 
