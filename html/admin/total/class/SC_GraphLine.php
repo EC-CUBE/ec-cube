@@ -111,9 +111,6 @@ class SC_GraphLine extends SC_GraphBase{
 				$text_width = $this->getTextWidth($this->arrXLabel[$i], FONT_SIZE);
 				$x_pos = $x - ($text_width / 2);
 				
-					$this->x_margin = - $text_width / 4;
-					$this->y_margin = $text_width / 2 + 5;
-				
 				$this->setText(FONT_SIZE, $x_pos + $this->x_margin, $pos + FONT_SIZE + $this->y_margin, $this->arrXLabel[$i], NULL, $this->XLabelAngle);
 			}
 		}
