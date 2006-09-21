@@ -141,7 +141,7 @@ function lfLoadUpdateList() {
 				$sqlval['module_explain'] = $arrCSV[4];
 				$sqlval['main_php'] = $arrCSV[5];
 				$sqlval['extern_php'] = $arrCSV[6];
-				$sqlval['sql'] = $arrCSV[7];
+				$sqlval['install_sql'] = $arrCSV[7];
 				$sqlval['uninstall_sql'] = $arrCSV[8];				
 				$sqlval['other_files'] = $arrCSV[9];
 				$sqlval['del_flg'] = $arrCSV[10];
@@ -168,7 +168,7 @@ function lfInstallModule() {
 	global $objPage;
 	
 	$objQuery = new SC_Query();
-	$arrRet = $objQuery->select("module_id, extern_php, other_files, sql, latest_version", "dtb_update", "module_id = ?", array($_POST['module_id']));
+	$arrRet = $objQuery->select("module_id, extern_php, other_files, install_sql, latest_version", "dtb_update", "module_id = ?", array($_POST['module_id']));
 	$flg_ok = true;	// 処理の成功判定
 	
 	if(count($arrRet) > 0) {
@@ -216,7 +216,7 @@ function lfUninstallModule() {
 	global $objPage;
 	
 	$objQuery = new SC_Query();
-	$arrRet = $objQuery->select("module_id, extern_php, other_files, sql, uninstall_sql, latest_version", "dtb_update", "module_id = ?", array($_POST['module_id']));
+	$arrRet = $objQuery->select("module_id, extern_php, other_files, install_sql, uninstall_sql, latest_version", "dtb_update", "module_id = ?", array($_POST['module_id']));
 	$flg_ok = true;	// 処理の成功判定
 	
 	if(count($arrRet) > 0) {

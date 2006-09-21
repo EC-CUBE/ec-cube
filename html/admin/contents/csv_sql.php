@@ -329,18 +329,18 @@ function lfUpdData($sql_id = "", $arrData = array()){
 		$arrSqlData = lfGetSqlList(" WHERE sql_id = ?", array($sql_id));
 		if (count($arrSqlData) > 0) {
 			// データ更新
-			$sql = "UPDATE dtb_csv_sql SET name = ?, sql = ?, update_date = now() WHERE sql_id = ? ";
+			$sql = "UPDATE dtb_csv_sql SET sql_name = ?, csv_sql = ?, update_date = now() WHERE sql_id = ? ";
 			$arrVal= array($arrData['name'], $arrData['sql'], $sql_id);
 		}else{
 			// データの新規作成
 			$sql_id = "";
-			$sql = "INSERT INTO dtb_csv_sql (name, sql, create_date, update_date) values (?, ?, now(), now()) ";
+			$sql = "INSERT INTO dtb_csv_sql (sql_name, csv_sql, create_date, update_date) values (?, ?, now(), now()) ";
 			$arrVal= array($arrData['name'], $arrData['sql']);
 			
 		}
 	}else{
 		// データの新規作成
-		$sql = "INSERT INTO dtb_csv_sql (name, sql, create_date, update_date) values (?, ?, now(), now()) ";
+		$sql = "INSERT INTO dtb_csv_sql (sql_name, csv_sql, create_date, update_date) values (?, ?, now(), now()) ";
 		$arrVal= array($arrData['name'], $arrData['sql']);
 	}
 	// SQL実行	
