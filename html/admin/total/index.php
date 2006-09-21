@@ -366,7 +366,7 @@ function lfGetGraphLine($arrResults, $keyname, $type, $xtitle, $ytitle, $sdate, 
 		
 		// ラベル回転(日本語不可)
 		if($keyname == "key_day"){
-			$objGraphLine->setXLabelAngle(-45);
+			$objGraphLine->setXLabelAngle(45);
 		}
 
 		// タイトルセット
