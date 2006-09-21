@@ -85,7 +85,7 @@ function lfRegistData($array) {
 	
 	$objQuery->update("dtb_customer", $arrRegist, $where, array($array["id"]));
 	
-	/* 購入時の会員登録は行わないためDEL
+	/* 購入時の自動会員登録は行わないためDEL
 	// 購入時登録の場合、その回の購入を会員購入とみなす。 
 	// 会員情報の読み込み
 	$where1 = "secret_key = ? AND status = 2";
