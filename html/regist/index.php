@@ -85,7 +85,8 @@ function lfRegistData($array) {
 	
 	$objQuery->update("dtb_customer", $arrRegist, $where, array($array["id"]));
 	
-	/* 購入時登録の場合、その回の購入を会員購入とみなす。 */
+	/* 購入時の会員登録は行わないためDEL
+	// 購入時登録の場合、その回の購入を会員購入とみなす。 
 	// 会員情報の読み込み
 	$where1 = "secret_key = ? AND status = 2";
 	$customer = $objQuery->select("*", "dtb_customer", $where1, array($secret));
@@ -98,6 +99,7 @@ function lfRegistData($array) {
 		$objQuery->update("dtb_order_temp", $arrCustomer, $where3, array($order_temp_id));
 		$objQuery->update("dtb_order", $arrCustomer, $where3, array($order_temp_id));
 	}
+	*/
 
 	$sql = "SELECT mail_flag FROM dtb_customer_mail WHERE email = ?";
 	$result = $objConn->getOne($sql, array($email));
