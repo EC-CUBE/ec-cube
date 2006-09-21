@@ -109,7 +109,7 @@ class SC_GraphLine extends SC_GraphBase{
 			// ラベルを入れる
 			if(($i % $interval) == 0) {
 				$text_width = $this->getTextWidth($this->arrXLabel[$i], FONT_SIZE);
-				$x_pos = $x - ($text_width);
+				$x_pos = $x;
 				
 				$this->setText(FONT_SIZE, $x_pos + $this->x_margin, $pos + FONT_SIZE + $this->y_margin, $this->arrXLabel[$i], NULL, $this->XLabelAngle);
 			}
