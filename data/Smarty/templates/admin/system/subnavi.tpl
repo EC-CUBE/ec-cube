@@ -4,5 +4,7 @@
 	<tr><td><img src="/img/contents/navi_line.gif" width="140" height="2" alt=""></td></tr>
 	<tr><td class=<!--{if $tpl_subno != 'update'}-->"navi"<!--{else}-->"navi-on"<!--{/if}-->><a href="./update.php" onMouseOver="naviStyleChange('update', '#a5a5a5')" <!--{if $tpl_subno != 'update'}-->onMouseOut="naviStyleChange('update', '#636469')"<!--{/if}--> id="update"><img src="/img/contents/icon.jpg" width="15" height="9" alt="" border="0"><span class="navi_text">アップデート管理</span></a></td></tr>
 	<tr><td><img src="/img/contents/navi_line.gif" width="140" height="2" alt=""></td></tr>
+	<tr><td class=<!--{if $tpl_subno != 'bkup'}-->"navi"<!--{else}-->"navi-on"<!--{/if}-->><a href="./update.php" onMouseOver="naviStyleChange('update', '#a5a5a5')" <!--{if $tpl_subno != 'update'}-->onMouseOut="naviStyleChange('update', '#636469')"<!--{/if}--> id="update"><img src="/img/contents/icon.jpg" width="15" height="9" alt="" border="0"><span class="navi_text">バックアップ管理</span></a></td></tr>
+	<tr><td><img src="/img/contents/navi_line.gif" width="140" height="2" alt=""></td></tr>
 	<!--ナビ-->
 </table>
