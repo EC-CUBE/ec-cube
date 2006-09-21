@@ -46,7 +46,7 @@ CREATE TABLE dtb_update (
     module_explain text,
     main_php text NOT NULL,
     extern_php text NOT NULL,
-    sql text,
+    update_sql text,
     uninstall_sql text,
     other_files text,
     del_flg smallint NOT NULL DEFAULT 0,
