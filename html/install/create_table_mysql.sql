@@ -829,7 +829,7 @@ CREATE TABLE dtb_csv (
 CREATE TABLE dtb_csv_sql (
     sql_id int auto_increment primary key,
     sql_name text NOT NULL,
-    create_sql text,
+    csv_sql text,
     update_date datetime NOT NULL,
     create_date datetime NOT NULL
 );
