@@ -196,7 +196,9 @@ function lfInstallModule() {
 		// SQL文実行、パラーメータなし、エラー無視
 		$arrInstallSql = split(";",$arrRet[0]['install_sql']);
 		foreach($arrInstallSql as $key => $val){
-			$ret = $objQuery->query(trim($val),"",true);
+			if (trim($val) != ""){
+				$ret = $objQuery->query(trim($val),"",true);
+			}
 		}
 		if(DB::isError($ret)) {
 			// エラー文を取得する
