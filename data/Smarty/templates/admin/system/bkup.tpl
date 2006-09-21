@@ -77,9 +77,6 @@
 									<!--{/section}-->
 								</table>
 								<!--{/if}-->							
-						<table width="678" border="0" cellspacing="0" cellpadding="0" summary=" ">
-							<tr><td colspan="3"><img src="/img/contents/main_bar.jpg" width="678" height="10" alt=""></td></tr>
-						</table>
 								<table width="678" border="0" cellspacing="0" cellpadding="0" summary=" ">
 									<tr>
 										<td bgcolor="#cccccc"><img src="/img/common/_.gif" width="1" height="5" alt=""></td>
@@ -102,6 +99,9 @@
 									</tr>
 								</table>
 
+						<table width="678" border="0" cellspacing="0" cellpadding="0" summary=" ">
+							<tr><td colspan="3"><img src="/img/contents/main_bar.jpg" width="678" height="10" alt=""></td></tr>
+						</table>
 								
 								<table width="678" border="0" cellspacing="0" cellpadding="0" summary=" ">
 									<tr>
