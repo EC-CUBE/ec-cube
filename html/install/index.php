@@ -81,7 +81,7 @@ case 'step3':
 	
 	$skip = $_POST["skip"];
 	sfprintr($skip);
-	if ($skip != "no") {
+	if ($skip != "on") {
 		// テーブルの作成
 		$objPage->arrErr = lfExecuteSQL("./create_table_".$arrRet['db_type'].".sql", $arrRet['db_user'], $arrRet['db_password'], $arrRet['db_server'], $arrRet['db_name'], $arrRet['db_type'], $arrRet['db_port']); 
 		if(count($objPage->arrErr) == 0) {
