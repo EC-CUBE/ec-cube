@@ -30,7 +30,7 @@
 <tr><td align="left" class="fs12st">■データベースの初期化</td></tr>
 <tr><td align="left" class="fs12">データベースの初期化を開始します</td></tr>
 <tr><td align="left" class="fs12">※すでにテーブル等が作成されている場合は中断されます</td></tr>
-<tr><td align="left" class="fs12"><input type="checkbox" onclick="fnModeSubmit('skip'); " value="スキップ"></td></tr>
+<tr><td align="left" class="fs12"><input type="checkbox" onclick="fnModeSubmit('skip'); "> データベースの初期化処理を行わない</td></tr>
 
 <!--{if count($arrErr) > 0 || $tpl_message != ""}-->
 <tr>
