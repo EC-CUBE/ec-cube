@@ -79,9 +79,6 @@ case 'step3':
 	// 入力データを渡す。
 	$arrRet =  $objDBParam->getHashArray();
 	
-	$skip = $_POST["skip"];
-	if ($skip == "no") {
-		
 		// テーブルの作成
 		$objPage->arrErr = lfExecuteSQL("./create_table_".$arrRet['db_type'].".sql", $arrRet['db_user'], $arrRet['db_password'], $arrRet['db_server'], $arrRet['db_name'], $arrRet['db_type'], $arrRet['db_port']); 
 		if(count($objPage->arrErr) == 0) {
@@ -130,7 +127,7 @@ case 'step3':
 				$objPage->tpl_message.="×：テーブルコメントの書込みに失敗しました。<br>";		
 			}
 		}
-	}
+
 
 	if(count($objPage->arrErr) == 0) {
 		// 設定ファイルの生成
