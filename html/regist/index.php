@@ -84,9 +84,9 @@ function lfRegistData($array) {
 	$arrRegist['point'] = $arrRet[0]['point'] + addslashes($arrInfo['welcome_point']);
 	
 	$objQuery->update("dtb_customer", $arrRegist, $where, array($array["id"]));
-	
+
 	/* 購入時の自動会員登録は行わないためDEL
-	// 購入時登録の場合、その回の購入を会員購入とみなす。 
+	// 購入時登録の場合、その回の購入を会員購入とみなす。
 	// 会員情報の読み込み
 	$where1 = "secret_key = ? AND status = 2";
 	$customer = $objQuery->select("*", "dtb_customer", $where1, array($secret));
