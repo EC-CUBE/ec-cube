@@ -2,7 +2,7 @@
 $SC_GRAPHBAR_DIR = realpath(dirname( __FILE__));
 require_once($SC_GRAPHBAR_DIR . "/SC_GraphLine.php");	
 
-// 折れ線グラフ生成クラス
+// 棒グラフ生成クラス
 class SC_GraphBar extends SC_GraphLine{
     // コンストラクタ
 	function SC_GraphLine(
