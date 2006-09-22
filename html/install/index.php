@@ -24,8 +24,6 @@ if($mode != '777') {
 
 $objView = new SC_InstallView($INSTALL_DIR . '/templates', $INSTALL_DIR . '/temp');
 
-$objPage->arrHidden['db_skip'] = $_POST['db_skip'];
-
 // パラメータ管理クラス
 $objWebParam = new SC_FormParam();
 $objDBParam = new SC_FormParam();
@@ -215,6 +213,10 @@ default:
 $objPage->arrForm = $objWebParam->getFormParamList();
 $objPage->arrForm = array_merge($objPage->arrForm, $objDBParam->getFormParamList());
 
+if (is_set($_POST['skip']){
+	sfprintr("arimasuyo");
+}
+$objPage->arrHidden['db_skip'] = $_POST['db_skip'];
 sfprintr($objPage->arrHidden);
 
 // SiteInfoを読み込まない
