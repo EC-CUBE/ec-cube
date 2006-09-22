@@ -24,21 +24,18 @@ if($mode != '777') {
 
 $objView = new SC_InstallView($INSTALL_DIR . '/templates', $INSTALL_DIR . '/temp');
 
+// パラメータ管理クラス
+$objWebParam = new SC_FormParam();
+$objDBParam = new SC_FormParam();
+// パラメータ情報の初期化
+$objWebParam = lfInitWebParam($objWebParam);
+$objDBParam = lfInitDBParam($objDBParam);
+
 if ($_POST['db_type'] == 'pgsql') {
 	$port = "";
 }else{
 	$port = ":".$_POST['db_port'];
 }
-
-$skip = $_POST["db_skip"];
-
-// パラメータ管理クラス
-$objWebParam = new SC_FormParam();
-$objDBParam = new SC_FormParam();
-// パラメータ情報の初期化
-$objWebParam = lfInitWebParam($objWebParam, $skip);
-$objDBParam = lfInitDBParam($objDBParam);
-
 
 //フォーム配列の取得
 $objWebParam->setParam($_POST);
@@ -61,15 +58,7 @@ case 'step0_1':
 case 'step1':
 	//入力値のエラーチェック
 	$objPage->arrErr = lfCheckWEBError($objWebParam);
-	
 	if(count($objPage->arrErr) == 0) {
-		// 店舗を変更しない場合には完了画面へ遷移
-		if ($skip == "on") {
-			// 設定ファイルの生成
-			lfMakeConfigFile();
-			$objPage = lfDispComplete($objPage);
-			break;
-		}
 		$objPage = lfDispStep2($objPage);
 	} else {
 		$objPage = lfDispStep1($objPage);
@@ -81,6 +70,16 @@ case 'step2':
 	//入力値のエラーチェック
 	$objPage->arrErr = lfCheckDBError($objDBParam);
 	if(count($objPage->arrErr) == 0) {
+		
+		// 店舗を変更しない場合には完了画面へ遷移
+		$skip = $_POST["db_skip"];
+		if ($skip == "on") {
+			// 設定ファイルの生成
+			lfMakeConfigFile();
+			$objPage = lfDispComplete($objPage);
+			break;
+		}
+		
 		$objPage = lfDispStep3($objPage);
 
 	} else {
@@ -351,7 +350,7 @@ function lfDispStep1($objPage) {
 	global $objDBParam;
 	// hiddenに入力値を保持
 	$objPage->arrHidden = $objDBParam->getHashArray();
-	$objPage->tpl_db_skip = $_POST['db_skip'];
+	$objPage->arrHidden['db_skip'] = $_POST['db_skip'];
 	$objPage->tpl_mainpage = 'step1.tpl';
 	$objPage->tpl_mode = 'step1';
 	return $objPage;
@@ -377,7 +376,7 @@ function lfDispStep3($objPage) {
 	$objPage->arrHidden = $objWebParam->getHashArray();
 	// hiddenに入力値を保持
 	$objPage->arrHidden = array_merge($objPage->arrHidden, $objDBParam->getHashArray());
-	$objPage->arrHidden['db_skip'] = $_POST['db_skip'];
+	$objPage->tpl_db_skip = $_POST['db_skip'];
 	$objPage->tpl_mainpage = 'step3.tpl';
 	$objPage->tpl_mode = 'step3';
 	return $objPage;
@@ -398,25 +397,18 @@ function lfDispComplete($objPage) {
 }
 
 // WEBパラメータ情報の初期化
-function lfInitWebParam($objWebParam, $skip="") {
+function lfInitWebParam($objWebParam) {
 	
 	$install_dir = realpath(dirname( __FILE__) . "/../../") . "/";
 	$normal_url = "http://" . $_SERVER['HTTP_HOST'] . "/";
 	$secure_url = "http://" . $_SERVER['HTTP_HOST'] . "/";
 	$domain = ereg_replace("^[a-zA-Z0-9_~=&\?\/-]+\.", "", $_SERVER['HTTP_HOST']);
+	$objWebParam->addParam("店名", "shop_name", MTEXT_LEN, "", array("EXIST_CHECK","MAX_LENGTH_CHECK"));
+	$objWebParam->addParam("管理者メールアドレス", "admin_mail", MTEXT_LEN, "", array("EXIST_CHECK","EMAIL_CHECK","EMAIL_CHAR_CHECK","MAX_LENGTH_CHECK"));
 	$objWebParam->addParam("インストールディレクトリ", "install_dir", MTEXT_LEN, "", array("EXIST_CHECK","MAX_LENGTH_CHECK"), $install_dir);
 	$objWebParam->addParam("URL(通常)", "normal_url", MTEXT_LEN, "", array("EXIST_CHECK","URL_CHECK","MAX_LENGTH_CHECK"), $normal_url);
 	$objWebParam->addParam("URL(セキュア)", "secure_url", MTEXT_LEN, "", array("EXIST_CHECK","URL_CHECK","MAX_LENGTH_CHECK"), $secure_url);
 	$objWebParam->addParam("ドメイン", "domain", MTEXT_LEN, "", array("EXIST_CHECK","MAX_LENGTH_CHECK"), $domain);	
-
-	if ($skip == "on") {
-		$objWebParam->addParam("店名", "shop_name");
-		$objWebParam->addParam("管理者メールアドレス", "admin_mail");
-	}else{
-		$objWebParam->addParam("店名", "shop_name", MTEXT_LEN, "", array("EXIST_CHECK","MAX_LENGTH_CHECK"));
-		$objWebParam->addParam("管理者メールアドレス", "admin_mail", MTEXT_LEN, "", array("EXIST_CHECK","EMAIL_CHECK","EMAIL_CHAR_CHECK","MAX_LENGTH_CHECK"));
-	}
-	
 
 	return $objWebParam;
 }
@@ -443,7 +435,6 @@ function lfInitDBParam($objDBParam) {
 function lfCheckWebError($objFormParam) {
 	// 入力データを渡す。
 	$arrRet =  $objFormParam->getHashArray();
-	
 	$objErr = new SC_CheckError($arrRet);
 	$objErr->arrErr = $objFormParam->checkError();
 	return $objErr->arrErr;
@@ -455,6 +446,8 @@ function lfCheckDBError($objFormParam) {
 	// 入力データを渡す。
 	$arrRet =  $objFormParam->getHashArray();
 	
+	sfprintr($arrRet);
+	exit();
 	$objErr = new SC_CheckError($arrRet);
 	$objErr->arrErr = $objFormParam->checkError();
 	
