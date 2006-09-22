@@ -212,8 +212,6 @@ default:
 $objPage->arrForm = $objWebParam->getFormParamList();
 $objPage->arrForm = array_merge($objPage->arrForm, $objDBParam->getFormParamList());
 
-sfprintr($objPage->arrHidden);
-
 // SiteInfoを読み込まない
 $objView->assignobj($objPage);
 $objView->display('install_frame.tpl');
