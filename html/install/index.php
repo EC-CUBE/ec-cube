@@ -59,6 +59,18 @@ case 'step1':
 	//入力値のエラーチェック
 	$objPage->arrErr = lfCheckWEBError($objWebParam);
 	if(count($objPage->arrErr) == 0) {
+
+		
+		// 店舗を変更しない場合には完了画面へ遷移
+		$skip = $_POST["db_skip"];
+		if ($skip == "on") {
+			// 設定ファイルの生成
+			lfMakeConfigFile();
+			$objPage = lfDispComplete($objPage);
+			break;
+		}
+				
+				
 		$objPage = lfDispStep2($objPage);
 	} else {
 		$objPage = lfDispStep1($objPage);
@@ -70,16 +82,6 @@ case 'step2':
 	//入力値のエラーチェック
 	$objPage->arrErr = lfCheckDBError($objDBParam);
 	if(count($objPage->arrErr) == 0) {
-		
-		// 店舗を変更しない場合には完了画面へ遷移
-		$skip = $_POST["db_skip"];
-		if ($skip == "on") {
-			// 設定ファイルの生成
-			lfMakeConfigFile();
-			$objPage = lfDispComplete($objPage);
-			break;
-		}
-		
 		$objPage = lfDispStep3($objPage);
 
 	} else {
@@ -435,6 +437,9 @@ function lfInitDBParam($objDBParam) {
 function lfCheckWebError($objFormParam) {
 	// 入力データを渡す。
 	$arrRet =  $objFormParam->getHashArray();
+	
+	
+	sfprintr($arrRet);
 	$objErr = new SC_CheckError($arrRet);
 	$objErr->arrErr = $objFormParam->checkError();
 	return $objErr->arrErr;
@@ -446,8 +451,6 @@ function lfCheckDBError($objFormParam) {
 	// 入力データを渡す。
 	$arrRet =  $objFormParam->getHashArray();
 	
-	sfprintr($arrRet);
-	exit();
 	$objErr = new SC_CheckError($arrRet);
 	$objErr->arrErr = $objFormParam->checkError();
 	
