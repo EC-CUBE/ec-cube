@@ -2,7 +2,6 @@
 <table width="878" border="0" cellspacing="0" cellpadding="0" summary=" ">
 <form name="form1" id="form1" method="post" action="">
 <input type="hidden" name="mode" value="edit">
-<input type="hidden" name="module_id" value="">
 	<tr valign="top">
 		<td background="/img/contents/navi_bg.gif" height="402">
 			<!--¢§SUB NAVI-->
