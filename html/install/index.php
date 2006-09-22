@@ -435,13 +435,9 @@ function lfInitDBParam($objDBParam) {
 }
 
 // 入力内容のチェック
-function lfCheckWebError($objFormParam, $skip = "on") {
+function lfCheckWebError($objFormParam) {
 	// 入力データを渡す。
 	$arrRet =  $objFormParam->getHashArray();
-	
-	// 
-		unset($arrRet["shop_name"], $arrRet["admin_mail"]);
-	sfprintr($arrRet);
 	
 	$objErr = new SC_CheckError($arrRet);
 	$objErr->arrErr = $objFormParam->checkError();
