@@ -19,7 +19,7 @@ function lfnOnCheckUpdate(chk) {
 <tr><td height="30"></td></tr>
 <tr><td align="left" class="fs12st">■ECサイトの設定</td></tr>
 <tr>
-	<tr><td align="left" class="fs12"><input type="checkbox" id="skip" name="db_skip" <!--{if $tpl_db_skip == "on"}-->checked<!--{/if}--> onclick="lfnOnCheckUpdate(this);"> <label for="skip">店舗情報を変更しない</label></td></tr><!--{$arrHidden.db_skip}-->
+	<tr><td align="left" class="fs12"><input type="checkbox" id="skip" name="db_skip" <!--{if $tpl_db_skip == "on"}-->checked<!--{/if}--> onclick="lfnOnCheckUpdate(this);"> <label for="skip">店舗情報を変更しない</label></td></tr>
 
 	<td bgcolor="#cccccc">
 	<table width="500" border="0" cellspacing="1" cellpadding="8" summary=" ">
@@ -28,7 +28,7 @@ function lfnOnCheckUpdate(chk) {
 			<td bgcolor="#ffffff" width="332">
 			<!--{assign var=key value="shop_name"}-->
 			<span class="red"><span class="fs12n"><!--{$arrErr[$key]}--></span></span>
-			<input type="text" name="<!--{$key}-->" value="<!--{$arrForm[$key].value|escape}-->" maxlength="<!--{$arrForm[$key].length}-->" style="<!--{$arrErr[$key]|sfGetErrorColor}-->" size="50" class="box50" <!--{if $arrHidden.db_skip.value eq 'on' or $arrForm.db_type.value eq ''}-->disabled=true<!--{/if}-->/>
+			<input type="text" name="<!--{$key}-->" value="<!--{$arrForm[$key].value|escape}-->" maxlength="<!--{$arrForm[$key].length}-->" style="<!--{$arrErr[$key]|sfGetErrorColor}-->" size="50" class="box50" <!--{if $tpl_db_skip eq 'on' or $tpl_db_skip eq ''}-->disabled=true<!--{/if}-->/>
 			<br><span class="fs10">※あなたの店名をご記入ください。</span>
 			</td>
 		</tr>
@@ -37,7 +37,7 @@ function lfnOnCheckUpdate(chk) {
 			<td bgcolor="#ffffff" width="332">
 			<!--{assign var=key value="admin_mail"}-->
 			<span class="red"><span class="fs12n"><!--{$arrErr[$key]}--></span></span>
-			<input type="text" name="<!--{$key}-->" value="<!--{$arrForm[$key].value|escape}-->" maxlength="<!--{$arrForm[$key].length}-->" style="<!--{$arrErr[$key]|sfGetErrorColor}-->" size="50" class="box50" <!--{if $arrHidden.db_skip.value eq 'on' or $arrForm.db_type.value eq ''}-->disabled=true<!--{/if}-->/>
+			<input type="text" name="<!--{$key}-->" value="<!--{$arrForm[$key].value|escape}-->" maxlength="<!--{$arrForm[$key].length}-->" style="<!--{$arrErr[$key]|sfGetErrorColor}-->" size="50" class="box50" <!--{if $tpl_db_skip eq 'on' or $tpl_db_skip eq ''}-->disabled=true<!--{/if}-->/>
 			<br><span class="fs10">※受注メールなどの宛先になります。：(例)example@ec-cube.net</span>
 			</td>
 		</tr>
