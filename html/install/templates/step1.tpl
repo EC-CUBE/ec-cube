@@ -1,11 +1,9 @@
 <script type="text/javascript">
 function lfnOnCheckUpdate(chk) {
-
 	chk_val = chk.checked;
-	alert(chk_val);
 	
-		form1.shop_name.disabled= chk_val;
-		form1.admin_mail.disabled= chk_val;
+	form1.shop_name.disabled= chk_val;
+	form1.admin_mail.disabled= chk_val;
 }
 </script>
 
