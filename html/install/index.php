@@ -447,7 +447,7 @@ function lfCheckDBError($objFormParam) {
 	$arrRet =  $objFormParam->getHashArray();
 	
 	sfprintr($arrRet);
-	
+	exit();
 	$objErr = new SC_CheckError($arrRet);
 	$objErr->arrErr = $objFormParam->checkError();
 	
