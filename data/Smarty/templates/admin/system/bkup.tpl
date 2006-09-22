@@ -62,7 +62,7 @@
 										<td bgcolor="#e9e7de" align="center">
 										<table border="0" cellspacing="0" cellpadding="0" summary=" ">
 											<tr>
-												<td><input type="submit" name="subm" value="バックアップデータを作成する"/></td>
+												<td><input type="button" name="cre_bkup" value="バックアップデータを作成する" onClick="form1.mode.value='bkup'; submit();" /></td>
 											</tr>
 										</table>
 										</td>

@@ -24,10 +24,9 @@ $objSess = new SC_Session();
 sfIsSuccess($objSess);
 
 switch($_POST['mode']) {
-// アップデート情報ファイルを取得
-case 'edit':
-	// 更新情報を最新にする
-	lfLoadUpdateList();
+// バックアップを作成する
+case 'bkup':
+	sfprintr($_POST);
 	break;
 // インストール
 case 'install':
