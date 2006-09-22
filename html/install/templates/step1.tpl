@@ -1,3 +1,17 @@
+<script type="text/javascript">
+function lfnOnCheckUpdate(chk) {
+
+	chk_val = chk.value;
+	alert(chk_val);
+	
+	if (chk_val == 'pgsql') {
+		form1.db_port.disabled= true;
+	}else{
+		form1.db_port.disabled = false;
+	}
+}
+</script>
+
 <table width="502" border="0" cellspacing="1" cellpadding="0" summary=" ">
 <form name="form1" id="form1" method="post" action="<!--{$smarty.server.PHP_SELF}-->">
 <input type="hidden" name="mode" value="<!--{$tpl_mode}-->">
@@ -10,7 +24,7 @@
 <tr><td height="30"></td></tr>
 <tr><td align="left" class="fs12st">■ECサイトの設定</td></tr>
 <tr>
-	<tr><td align="left" class="fs12"><input type="checkbox" id="skip" name="db_skip" <!--{if $tpl_db_skip == "on"}-->checked<!--{/if}-->> <label for="skip">店舗情報を変更しない</label></td></tr>
+	<tr><td align="left" class="fs12"><input type="checkbox" id="skip" name="db_skip" <!--{if $tpl_db_skip == "on"}-->checked<!--{/if}--> onclick="lfnOnCheckUpdate(this);"> <label for="skip">店舗情報を変更しない</label></td></tr>
 
 	<td bgcolor="#cccccc">
 	<table width="500" border="0" cellspacing="1" cellpadding="8" summary=" ">
