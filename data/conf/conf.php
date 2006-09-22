@@ -846,7 +846,19 @@ $arrView = array(
 		(SELECT T3.product_class_id, T3.product_id AS product_id_sub, classcategory_id1, classcategory_id2, 
 		T3.rank AS rank1, T4.rank AS rank2, T3.class_id AS class_id1, T4.class_id AS class_id2,
 		stock, price01, price02, stock_unlimited, product_code
-		FROM ( SELECT * FROM (dtb_products_class AS T1 LEFT JOIN dtb_classcategory AS T2
+		FROM ( SELECT 
+		        T1.product_class_id,
+		        T1.product_id,
+		        classcategory_id1,
+		        classcategory_id2,
+		        T2.rank,
+		        T2.class_id,
+		        stock,
+		        price01,
+		        price02,
+		        stock_unlimited,
+		        product_code		
+		 FROM (dtb_products_class AS T1 LEFT JOIN dtb_classcategory AS T2
 		ON T1.classcategory_id1 = T2.classcategory_id))
 		AS T3 LEFT JOIN dtb_classcategory AS T4
 		ON T3.classcategory_id2 = T4.classcategory_id) AS T5 LEFT JOIN dtb_products AS T6
