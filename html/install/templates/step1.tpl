@@ -1,7 +1,7 @@
 <script type="text/javascript">
 function lfnOnCheckUpdate(chk) {
 
-	chk_val = chk.value;
+	chk_val = chk.checked;
 	alert(chk_val);
 	
 	if (chk_val == 'pgsql') {
