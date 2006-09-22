@@ -10,6 +10,8 @@
 <tr><td height="30"></td></tr>
 <tr><td align="left" class="fs12st">■ECサイトの設定</td></tr>
 <tr>
+	<tr><td align="left" class="fs12"><input type="checkbox" id="skip" name="db_skip" <!--{if $tpl_db_skip == "on"}-->checked<!--{/if}-->> <label for="skip">データベースの初期化処理を行わない</label></td></tr>
+
 	<td bgcolor="#cccccc">
 	<table width="500" border="0" cellspacing="1" cellpadding="8" summary=" ">
 		<tr>
