@@ -24,18 +24,21 @@ if($mode != '777') {
 
 $objView = new SC_InstallView($INSTALL_DIR . '/templates', $INSTALL_DIR . '/temp');
 
-// パラメータ管理クラス
-$objWebParam = new SC_FormParam();
-$objDBParam = new SC_FormParam();
-// パラメータ情報の初期化
-$objWebParam = lfInitWebParam($objWebParam);
-$objDBParam = lfInitDBParam($objDBParam);
-
 if ($_POST['db_type'] == 'pgsql') {
 	$port = "";
 }else{
 	$port = ":".$_POST['db_port'];
 }
+
+$skip = $_POST["db_skip"];
+
+// パラメータ管理クラス
+$objWebParam = new SC_FormParam();
+$objDBParam = new SC_FormParam();
+// パラメータ情報の初期化
+$objWebParam = lfInitWebParam($objWebParam, $skip);
+$objDBParam = lfInitDBParam($objDBParam);
+
 
 //フォーム配列の取得
 $objWebParam->setParam($_POST);
@@ -56,8 +59,6 @@ case 'step0_1':
 	break;	
 // WEBサイトの設定
 case 'step1':
-	$skip = $_POST["db_skip"];
-	
 	//入力値のエラーチェック
 	$objPage->arrErr = lfCheckWEBError($objWebParam, $skip);
 	if(count($objPage->arrErr) == 0) {
@@ -400,18 +401,25 @@ function lfDispComplete($objPage) {
 }
 
 // WEBパラメータ情報の初期化
-function lfInitWebParam($objWebParam) {
+function lfInitWebParam($objWebParam, $skip="") {
 	
 	$install_dir = realpath(dirname( __FILE__) . "/../../") . "/";
 	$normal_url = "http://" . $_SERVER['HTTP_HOST'] . "/";
 	$secure_url = "http://" . $_SERVER['HTTP_HOST'] . "/";
 	$domain = ereg_replace("^[a-zA-Z0-9_~=&\?\/-]+\.", "", $_SERVER['HTTP_HOST']);
-	$objWebParam->addParam("店名", "shop_name", MTEXT_LEN, "", array("EXIST_CHECK","MAX_LENGTH_CHECK"));
-	$objWebParam->addParam("管理者メールアドレス", "admin_mail", MTEXT_LEN, "", array("EXIST_CHECK","EMAIL_CHECK","EMAIL_CHAR_CHECK","MAX_LENGTH_CHECK"));
 	$objWebParam->addParam("インストールディレクトリ", "install_dir", MTEXT_LEN, "", array("EXIST_CHECK","MAX_LENGTH_CHECK"), $install_dir);
 	$objWebParam->addParam("URL(通常)", "normal_url", MTEXT_LEN, "", array("EXIST_CHECK","URL_CHECK","MAX_LENGTH_CHECK"), $normal_url);
 	$objWebParam->addParam("URL(セキュア)", "secure_url", MTEXT_LEN, "", array("EXIST_CHECK","URL_CHECK","MAX_LENGTH_CHECK"), $secure_url);
 	$objWebParam->addParam("ドメイン", "domain", MTEXT_LEN, "", array("EXIST_CHECK","MAX_LENGTH_CHECK"), $domain);	
+
+	if ($skip == "on") {
+		$objWebParam->addParam("店名", "shop_name");
+		$objWebParam->addParam("管理者メールアドレス", "admin_mail");
+	}else{
+		$objWebParam->addParam("店名", "shop_name", MTEXT_LEN, "", array("EXIST_CHECK","MAX_LENGTH_CHECK"));
+		$objWebParam->addParam("管理者メールアドレス", "admin_mail", MTEXT_LEN, "", array("EXIST_CHECK","EMAIL_CHECK","EMAIL_CHAR_CHECK","MAX_LENGTH_CHECK"));
+	}
+	
 
 	return $objWebParam;
 }
