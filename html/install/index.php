@@ -365,6 +365,7 @@ function lfDispStep3($objPage) {
 	$objPage->arrHidden = $objWebParam->getHashArray();
 	// hiddenに入力値を保持
 	$objPage->arrHidden = array_merge($objPage->arrHidden, $objDBParam->getHashArray());
+	$objPage->tpl_db_skip = $_POST['db_skip'];
 	$objPage->tpl_mainpage = 'step3.tpl';
 	$objPage->tpl_mode = 'step3';
 	return $objPage;
