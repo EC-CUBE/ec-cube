@@ -42,9 +42,9 @@
 								</table>
 								
 								<table width="678" border="0" cellspacing="1" cellpadding="8" summary=" ">
-									<tr bgcolor="#f2f1ec" align="center" class="fs12n">
-										<td width="240">機能説明</td>
-										<td width="438">機能説明</td>
+									<tr align="center" class="fs12n">
+										<td bgcolor="#f2f1ec" width="240">機能説明</td>
+										<td bgcolor="#ffffff" width="438">機能説明</td>
 									</tr>
 								</table>
 
