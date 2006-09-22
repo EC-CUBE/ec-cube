@@ -216,6 +216,8 @@ default:
 	break;
 }
 
+sfprintr($_POST);
+
 //フォーム用のパラメータを返す
 $objPage->arrForm = $objWebParam->getFormParamList();
 $objPage->arrForm = array_merge($objPage->arrForm, $objDBParam->getFormParamList());
