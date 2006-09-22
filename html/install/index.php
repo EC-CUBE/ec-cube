@@ -213,7 +213,7 @@ default:
 $objPage->arrForm = $objWebParam->getFormParamList();
 $objPage->arrForm = array_merge($objPage->arrForm, $objDBParam->getFormParamList());
 
-if (is_set($_POST['skip'])){
+if (isset($_POST['skip'])){
 	sfprintr("arimasuyo");
 }
 $objPage->arrHidden['db_skip'] = $_POST['db_skip'];
