@@ -80,7 +80,7 @@ case 'step3':
 	$arrRet =  $objDBParam->getHashArray();
 	
 	$skip = $_POST["db_skip"];
-	
+	sfprintr($_skip);
 	// スキップする場合には完了画面へ遷移
 	if ($skip != "on") {
 		// 設定ファイルの生成
