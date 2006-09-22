@@ -80,7 +80,6 @@ case 'step3':
 	$arrRet =  $objDBParam->getHashArray();
 	
 	$skip = $_POST["skip"];
-	$objPage->arrHidden['db_skip'] = $skip;
 	if ($skip != "on") {
 		// テーブルの作成
 		$objPage->arrErr = lfExecuteSQL("./create_table_".$arrRet['db_type'].".sql", $arrRet['db_user'], $arrRet['db_password'], $arrRet['db_server'], $arrRet['db_name'], $arrRet['db_type'], $arrRet['db_port']); 
@@ -340,6 +339,7 @@ function lfDispStep1($objPage) {
 	global $objDBParam;
 	// hiddenに入力値を保持
 	$objPage->arrHidden = $objDBParam->getHashArray();
+	$objPage->arrHidden['db_skip'] = $_POST['db_skip'];
 	$objPage->tpl_mainpage = 'step1.tpl';
 	$objPage->tpl_mode = 'step1';
 	return $objPage;
@@ -351,7 +351,7 @@ function lfDispStep2($objPage) {
 	global $objDBParam;
 	// hiddenに入力値を保持
 	$objPage->arrHidden = $objWebParam->getHashArray();
-	$objPage->arrHidden['db_skip'] = $objDBParam->getValue('dt_skip');
+	$objPage->arrHidden['db_skip'] = $_POST['db_skip'];
 	$objPage->tpl_mainpage = 'step2.tpl';
 	$objPage->tpl_mode = 'step2';
 	return $objPage;
@@ -378,6 +378,7 @@ function lfDispComplete($objPage) {
 	$objPage->arrHidden = $objWebParam->getHashArray();
 	// hiddenに入力値を保持
 	$objPage->arrHidden = array_merge($objPage->arrHidden, $objDBParam->getHashArray());
+	$objPage->arrHidden['db_skip'] = $_POST['db_skip'];
 	$objPage->tpl_mainpage = 'complete.tpl';
 	$objPage->tpl_mode = 'complete';
 	return $objPage;
@@ -414,7 +415,7 @@ function lfInitDBParam($objDBParam) {
 	$objDBParam->addParam("DB名", "db_name", MTEXT_LEN, "", array("EXIST_CHECK","MAX_LENGTH_CHECK"), $db_name);
 	$objDBParam->addParam("DBユーザ", "db_user", MTEXT_LEN, "", array("EXIST_CHECK","MAX_LENGTH_CHECK"), $db_user);
 	$objDBParam->addParam("DBパスワード", "db_password", MTEXT_LEN, "", array("EXIST_CHECK","MAX_LENGTH_CHECK"));	
-	$objDBParam->addParam("DB_SKIP", "db_skip");	
+
 	return $objDBParam;
 }
 
