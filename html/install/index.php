@@ -213,11 +213,6 @@ default:
 $objPage->arrForm = $objWebParam->getFormParamList();
 $objPage->arrForm = array_merge($objPage->arrForm, $objDBParam->getFormParamList());
 
-if (isset($_POST['chk_db_skip'])){
-	$objPage->arrHidden['db_skip'] = $_POST['skip'];
-}else{
-	$objPage->arrHidden['db_skip'] = $_POST['db_skip'];
-}
 sfprintr($objPage->arrHidden);
 
 // SiteInfoを読み込まない
@@ -353,8 +348,10 @@ function lfDispStep1($objPage) {
 // STEP2画面の表示
 function lfDispStep2($objPage) {
 	global $objWebParam;
+	global $objDBParam;
 	// hiddenに入力値を保持
 	$objPage->arrHidden = $objWebParam->getHashArray();
+	$objPage->arrHidden['db_skip'] = $objDBParam->getValue('dt_skip');
 	$objPage->tpl_mainpage = 'step2.tpl';
 	$objPage->tpl_mode = 'step2';
 	return $objPage;
@@ -417,7 +414,7 @@ function lfInitDBParam($objDBParam) {
 	$objDBParam->addParam("DB名", "db_name", MTEXT_LEN, "", array("EXIST_CHECK","MAX_LENGTH_CHECK"), $db_name);
 	$objDBParam->addParam("DBユーザ", "db_user", MTEXT_LEN, "", array("EXIST_CHECK","MAX_LENGTH_CHECK"), $db_user);
 	$objDBParam->addParam("DBパスワード", "db_password", MTEXT_LEN, "", array("EXIST_CHECK","MAX_LENGTH_CHECK"));	
-	
+	$objDBParam->addParam("DB_SKIP", "db_skip");	
 	return $objDBParam;
 }
 
