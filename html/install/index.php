@@ -60,10 +60,9 @@ case 'step0_1':
 // WEBサイトの設定
 case 'step1':
 	//入力値のエラーチェック
-	$objPage->arrErr = lfCheckWEBError($objWebParam, $skip);
+	$objPage->arrErr = lfCheckWEBError($objWebParam);
+	
 	if(count($objPage->arrErr) == 0) {
-
-		
 		// 店舗を変更しない場合には完了画面へ遷移
 		if ($skip == "on") {
 			// 設定ファイルの生成
@@ -71,8 +70,6 @@ case 'step1':
 			$objPage = lfDispComplete($objPage);
 			break;
 		}
-				
-				
 		$objPage = lfDispStep2($objPage);
 	} else {
 		$objPage = lfDispStep1($objPage);
