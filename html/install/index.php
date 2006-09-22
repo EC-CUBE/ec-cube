@@ -442,8 +442,8 @@ function lfCheckWebError($objFormParam, $skip = "on") {
 	// 
 	if ($skip == "on") {
 		unset($arrRet["shop_name"], $arrRet["admin_mail"]);
-	}
 	sfprintr($arrRet);
+	}
 	
 	$objErr = new SC_CheckError($arrRet);
 	$objErr->arrErr = $objFormParam->checkError();
