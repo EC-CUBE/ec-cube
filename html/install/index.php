@@ -214,7 +214,7 @@ default:
 $objPage->arrForm = $objWebParam->getFormParamList();
 $objPage->arrForm = array_merge($objPage->arrForm, $objDBParam->getFormParamList());
 
-sfprintr($objPage->arrHidden);
+$objPage->arrHidden['db_skip'] = $_POST['db_skip'];
 
 // SiteInfoを読み込まない
 $objView->assignobj($objPage);
@@ -413,8 +413,6 @@ function lfInitDBParam($objDBParam) {
 	$objDBParam->addParam("DB名", "db_name", MTEXT_LEN, "", array("EXIST_CHECK","MAX_LENGTH_CHECK"), $db_name);
 	$objDBParam->addParam("DBユーザ", "db_user", MTEXT_LEN, "", array("EXIST_CHECK","MAX_LENGTH_CHECK"), $db_user);
 	$objDBParam->addParam("DBパスワード", "db_password", MTEXT_LEN, "", array("EXIST_CHECK","MAX_LENGTH_CHECK"));	
-	
-	$objDBParam->addParam("スキップ", "db_skip");
 	
 	return $objDBParam;
 }
