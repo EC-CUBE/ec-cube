@@ -234,6 +234,7 @@ function lfDispWelcome($objPage) {
 	$objPage->arrHidden = $objWebParam->getHashArray();
 	// hiddenに入力値を保持
 	$objPage->arrHidden = array_merge($objPage->arrHidden, $objDBParam->getHashArray());
+	$objPage->arrHidden['db_skip'] = $_POST['db_skip'];
 	$objPage->tpl_mainpage = 'welcome.tpl';
 	$objPage->tpl_mode = 'welcome';
 	return $objPage;
@@ -247,6 +248,7 @@ function lfDispStep0($objPage) {
 	$objPage->arrHidden = $objWebParam->getHashArray();
 	// hiddenに入力値を保持
 	$objPage->arrHidden = array_merge($objPage->arrHidden, $objDBParam->getHashArray());
+	$objPage->arrHidden['db_skip'] = $_POST['db_skip'];
 	$objPage->tpl_mainpage = 'step0.tpl';
 	$objPage->tpl_mode = 'step0';
 	
@@ -329,6 +331,7 @@ function lfDispStep0_1($objPage) {
 	$objPage->arrHidden = $objWebParam->getHashArray();
 	// hiddenに入力値を保持
 	$objPage->arrHidden = array_merge($objPage->arrHidden, $objDBParam->getHashArray());
+	$objPage->arrHidden['db_skip'] = $_POST['db_skip'];
 	$objPage->tpl_mainpage = 'step0_1.tpl';
 	$objPage->tpl_mode = 'step0_1';
 	// ファイルコピー
