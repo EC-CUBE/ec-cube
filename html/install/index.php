@@ -24,6 +24,8 @@ if($mode != '777') {
 
 $objView = new SC_InstallView($INSTALL_DIR . '/templates', $INSTALL_DIR . '/temp');
 
+$objPage->arrHidden['db_skip'] = $_POST['db_skip'];
+
 // パラメータ管理クラス
 $objWebParam = new SC_FormParam();
 $objDBParam = new SC_FormParam();
@@ -79,7 +81,8 @@ case 'step3':
 	// 入力データを渡す。
 	$arrRet =  $objDBParam->getHashArray();
 	
-	$skip = $_POST["db_skip"];
+	$skip = $_POST["skip"];
+	$objPage->arrHidden['db_skip'] = $skip;
 	if ($skip != "on") {
 		// テーブルの作成
 		$objPage->arrErr = lfExecuteSQL("./create_table_".$arrRet['db_type'].".sql", $arrRet['db_user'], $arrRet['db_password'], $arrRet['db_server'], $arrRet['db_name'], $arrRet['db_type'], $arrRet['db_port']); 
@@ -212,8 +215,6 @@ default:
 $objPage->arrForm = $objWebParam->getFormParamList();
 $objPage->arrForm = array_merge($objPage->arrForm, $objDBParam->getFormParamList());
 
-$objPage->arrHidden['db_skip'] = $_POST['db_skip'];
-sfprintr($_POST['db_skip']);
 sfprintr($objPage->arrHidden);
 
 // SiteInfoを読み込まない
