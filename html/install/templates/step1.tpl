@@ -19,7 +19,7 @@ function lfnOnCheckUpdate(chk) {
 <tr><td height="30"></td></tr>
 <tr><td align="left" class="fs12st">■ECサイトの設定</td></tr>
 <tr>
-	<tr><td align="left" class="fs12"><input type="checkbox" id="skip" name="db_skip" <!--{if $tpl_db_skip == "on"}-->checked<!--{/if}--> onclick="lfnOnCheckUpdate(this);"> <label for="skip">店舗情報を変更しない</label></td></tr><!--{arrHidden.db_skip}-->
+	<tr><td align="left" class="fs12"><input type="checkbox" id="skip" name="db_skip" <!--{if $tpl_db_skip == "on"}-->checked<!--{/if}--> onclick="lfnOnCheckUpdate(this);"> <label for="skip">店舗情報を変更しない</label></td></tr><!--{$arrHidden.db_skip}-->
 
 	<td bgcolor="#cccccc">
 	<table width="500" border="0" cellspacing="1" cellpadding="8" summary=" ">
