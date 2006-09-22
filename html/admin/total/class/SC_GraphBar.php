@@ -69,7 +69,7 @@ class SC_GraphBar extends SC_GraphLine{
 			$y = $arrPointList[$i][1];
 			$text_width = $this->getTextWidth(number_format($arrData[$i]), FONT_SIZE);
 			$y_pos = $y - FONT_SIZE - 5;
-			$x_pos = 0;//$x - $text_width / 2;
+			$x_pos = $x - $text_width / 2;
 			$this->setText(FONT_SIZE, $x_pos, $y_pos, number_format($arrData[$i]));
 		}
 	}
