@@ -4,8 +4,9 @@ function lfnOnCheckUpdate(chk) {
 	chk_val = chk.checked;
 	alert(chk_val);
 	
-	if (chk_val == 'pgsql') {
-		form1.db_port.disabled= true;
+	if (chk_val) {
+		form1.shop_name.disabled= true;
+		form1.admin_mail.disabled= true;
 	}else{
 		form1.db_port.disabled = false;
 	}
