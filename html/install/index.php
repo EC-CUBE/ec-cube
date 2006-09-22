@@ -86,6 +86,7 @@ case 'step3':
 		// 設定ファイルの生成
 		lfMakeConfigFile();
 		$objPage = lfDispComplete($objPage);
+		break;
 	}
 	
 	// テーブルの作成
