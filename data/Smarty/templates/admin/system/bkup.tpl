@@ -43,8 +43,8 @@
 								
 								<table width="678" border="0" cellspacing="1" cellpadding="8" summary=" ">
 									<tr align="center" class="fs12n">
-										<td bgcolor="#f2f1ec" width="150">バックアップ名称</td>
-										<td bgcolor="#ffffff" width="528">
+										<td bgcolor="#f2f1ec" width="130">バックアップ名称</td>
+										<td bgcolor="#ffffff" width="548">
 											<span class="red12"><!--{$arrErr.bkup_name}--></span>
 											<input type="text" name="bkup_name" value="<!--{$bkup_name|escape}-->" maxlength="<!--{$smarty.const.STEXT_LEN}-->" size="60" class="box60" style="<!--{if $arrErr.company_name != ""}-->background-color: <!--{$smarty.const.ERR_COLOR}--><!--{/if}-->" /><span class="red"> （上限<!--{$smarty.const.STEXT_LEN}-->文字）</span>
 										</td>
