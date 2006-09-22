@@ -41,6 +41,8 @@ if ($_POST['db_type'] == 'pgsql') {
 $objWebParam->setParam($_POST);
 $objDBParam->setParam($_POST);
 
+sfprintr($_POST);
+
 switch($_POST['mode']) {
 // ようこそ
 case 'welcome':
@@ -80,7 +82,6 @@ case 'step3':
 	$arrRet =  $objDBParam->getHashArray();
 	
 	$skip = $_POST["skip"];
-	sfprintr($skip);
 	if ($skip != "on") {
 		// テーブルの作成
 		$objPage->arrErr = lfExecuteSQL("./create_table_".$arrRet['db_type'].".sql", $arrRet['db_user'], $arrRet['db_password'], $arrRet['db_server'], $arrRet['db_name'], $arrRet['db_type'], $arrRet['db_port']); 
