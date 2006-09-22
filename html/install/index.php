@@ -215,6 +215,7 @@ $objPage->arrForm = $objWebParam->getFormParamList();
 $objPage->arrForm = array_merge($objPage->arrForm, $objDBParam->getFormParamList());
 
 $objPage->arrHidden['db_skip'] = $_POST['db_skip'];
+sfprintr($objPage->arrHidden);
 
 // SiteInfoを読み込まない
 $objView->assignobj($objPage);
