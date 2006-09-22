@@ -211,7 +211,6 @@ default:
 //フォーム用のパラメータを返す
 $objPage->arrForm = $objWebParam->getFormParamList();
 $objPage->arrForm = array_merge($objPage->arrForm, $objDBParam->getFormParamList());
-sfprintr($objPage->arrForm );
 
 // SiteInfoを読み込まない
 $objView->assignobj($objPage);
