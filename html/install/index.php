@@ -66,22 +66,10 @@ case 'step1':
 	break;
 // データベースの設定
 case 'step2':
-
 	//入力値のエラーチェック
 	$objPage->arrErr = lfCheckDBError($objDBParam);
 	if(count($objPage->arrErr) == 0) {
-		
-		// 店舗を変更しない場合には完了画面へ遷移
-		$skip = $_POST["db_skip"];
-		if ($skip == "on") {
-			// 設定ファイルの生成
-			lfMakeConfigFile();
-			$objPage = lfDispComplete($objPage);
-			break;
-		}
-		
 		$objPage = lfDispStep3($objPage);
-
 	} else {
 		$objPage = lfDispStep2($objPage);
 	}
@@ -90,7 +78,17 @@ case 'step2':
 case 'step3':
 	// 入力データを渡す。
 	$arrRet =  $objDBParam->getHashArray();
+	
+	$skip = $_POST["db_skip"];
 
+	// スキップする場合には完了画面へ遷移
+	if ($skip == "on") {
+		// 設定ファイルの生成
+		lfMakeConfigFile();
+		$objPage = lfDispComplete($objPage);
+		break;
+	}
+	
 	// テーブルの作成
 	$objPage->arrErr = lfExecuteSQL("./create_table_".$arrRet['db_type'].".sql", $arrRet['db_user'], $arrRet['db_password'], $arrRet['db_server'], $arrRet['db_name'], $arrRet['db_type'], $arrRet['db_port']); 
 	if(count($objPage->arrErr) == 0) {
