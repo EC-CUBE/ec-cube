@@ -56,13 +56,14 @@ case 'step0_1':
 	break;	
 // WEBサイトの設定
 case 'step1':
+	$skip = $_POST["db_skip"];
+	
 	//入力値のエラーチェック
-	$objPage->arrErr = lfCheckWEBError($objWebParam);
+	$objPage->arrErr = lfCheckWEBError($objWebParam, $skip);
 	if(count($objPage->arrErr) == 0) {
 
 		
 		// 店舗を変更しない場合には完了画面へ遷移
-		$skip = $_POST["db_skip"];
 		if ($skip == "on") {
 			// 設定ファイルの生成
 			lfMakeConfigFile();
@@ -434,12 +435,16 @@ function lfInitDBParam($objDBParam) {
 }
 
 // 入力内容のチェック
-function lfCheckWebError($objFormParam) {
+function lfCheckWebError($objFormParam, $skip = "on") {
 	// 入力データを渡す。
 	$arrRet =  $objFormParam->getHashArray();
 	
-	
+	// 
+	if ($skip == "on") {
+		unset($arrRet["shop_name"], $arrRet["admin_mail"]);
+	}
 	sfprintr($arrRet);
+	
 	$objErr = new SC_CheckError($arrRet);
 	$objErr->arrErr = $objFormParam->checkError();
 	return $objErr->arrErr;
