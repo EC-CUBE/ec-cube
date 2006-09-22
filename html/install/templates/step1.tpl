@@ -28,7 +28,7 @@ function lfnOnCheckUpdate(chk) {
 			<td bgcolor="#ffffff" width="332">
 			<!--{assign var=key value="shop_name"}-->
 			<span class="red"><span class="fs12n"><!--{$arrErr[$key]}--></span></span>
-			<input type="text" name="<!--{$key}-->" value="<!--{$arrForm[$key].value|escape}-->" maxlength="<!--{$arrForm[$key].length}-->" style="<!--{$arrErr[$key]|sfGetErrorColor}-->" size="50" class="box50" />
+			<input type="text" name="<!--{$key}-->" value="<!--{$arrForm[$key].value|escape}-->" maxlength="<!--{$arrForm[$key].length}-->" style="<!--{$arrErr[$key]|sfGetErrorColor}-->" size="50" class="box50" <!--{if $arrHidden.db_skip.value eq 'on' or $arrForm.db_type.value eq ''}-->disabled=true<!--{/if}-->/>
 			<br><span class="fs10">※あなたの店名をご記入ください。</span>
 			</td>
 		</tr>
@@ -37,7 +37,7 @@ function lfnOnCheckUpdate(chk) {
 			<td bgcolor="#ffffff" width="332">
 			<!--{assign var=key value="admin_mail"}-->
 			<span class="red"><span class="fs12n"><!--{$arrErr[$key]}--></span></span>
-			<input type="text" name="<!--{$key}-->" value="<!--{$arrForm[$key].value|escape}-->" maxlength="<!--{$arrForm[$key].length}-->" style="<!--{$arrErr[$key]|sfGetErrorColor}-->" size="50" class="box50" />
+			<input type="text" name="<!--{$key}-->" value="<!--{$arrForm[$key].value|escape}-->" maxlength="<!--{$arrForm[$key].length}-->" style="<!--{$arrErr[$key]|sfGetErrorColor}-->" size="50" class="box50" <!--{if $arrHidden.db_skip.value eq 'on' or $arrForm.db_type.value eq ''}-->disabled=true<!--{/if}-->/>
 			<br><span class="fs10">※受注メールなどの宛先になります。：(例)example@ec-cube.net</span>
 			</td>
 		</tr>
