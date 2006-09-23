@@ -93,7 +93,7 @@ function lfCreateBkupData(){
 		
 		
 		// 全データを取得
-		$arrData = $objQuery->getAll("SELECT * FROM ?", array($val));
+		$arrData = $objQuery->getAll("SELECT * FROM $val");
 		sfprintr($arrData);
 		
 	}
