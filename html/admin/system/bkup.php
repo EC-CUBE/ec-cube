@@ -138,7 +138,13 @@ function lfCreateBkupData(){
 		
 	}
 	$fp = fopen($bkup_dir . "test" . '.csv',"w");
-	fwrite($fp, $csv_data);
+	$ret = fwrite($fp, $csv_data);
+	
+	if (!$ret) {
+		sfprintr("書き込み失敗");
+	}else{
+		sfprintr("書き込み成功");
+	}
 	fclose($fp);
 	
 	
