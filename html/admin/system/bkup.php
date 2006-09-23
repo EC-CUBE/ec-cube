@@ -99,6 +99,8 @@ function lfCreateBkupData(){
 		// CSVデータ生成		
 		$csv_data .= $val . "\n";
 		
+		sfprintr($arrData);
+		
 		//sfprintr(array_keys($arrData[0]));
 		//sfprintr(sfGetCSVList($arrData));
 		
