@@ -125,7 +125,9 @@ function lfCreateBkupData(){
 	// CSV出力
 	// ディレクトリが存在していなければ作成する		
 	if (!is_dir($bkup_dir)) {
-		mkdir($bkup_dir);
+		$ret = mkdir($bkup_dir);
+		
+		sfprintr($ret);
 	sfprintr($bkup_dir);
 		
 	}
