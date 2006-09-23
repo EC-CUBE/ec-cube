@@ -151,7 +151,7 @@ function lfCreateBkupData(){
 	}
 	
 	
-	gfPrintLog("test");
+	//gfPrintLog("test");
 	
 	
 	
