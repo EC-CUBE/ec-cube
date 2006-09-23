@@ -121,6 +121,7 @@ function lfCreateBkupData(){
 		}	
 	}
 	
+	sfprintr($bkup_dir);
 	
 	// CSV出力
 	// ディレクトリが存在していなければ作成する		
@@ -132,9 +133,8 @@ function lfCreateBkupData(){
 		}else{
 			sfprintr("失敗");
 		}
-	sfprintr($bkup_dir);
-		
 	}
+
 	$fp = fopen($bkup_dir . "test" . ".csv","w");
 	if($fp) {
 		$ret = fwrite($fp, $csv_data);
@@ -146,13 +146,7 @@ function lfCreateBkupData(){
 		}
 		fclose($fp);
 	}
-	
-	
 	//gfPrintLog("test");
-	
-	
-	
-	
 }
 
 // 全テーブルリストを取得する
