@@ -39,7 +39,7 @@ case 'bkup':
 		$arrErr = lfCreateBkupData();
 		
 		// DBにデータ更新
-		
+		lfUpdBkupData($_POST);
 	}
 	
 
@@ -94,33 +94,35 @@ function lfCreateBkupData(){
 	// 各テーブル情報を取得する
 	foreach($arrTableList as $key => $val){
 		
-		// テーブル構成を取得
-		$arrColumnList = lfGetColumnList($val);
-		
-		// テーブル構成のCSV出力データ生成
-		
-		
-		// 全データを取得
-		$arrData = $objQuery->getAll("SELECT * FROM $val");
-
-		// CSVデータ生成
-		if (count($arrData) > 0) {
+		if ($val != "dtb_bkup") {
+			// テーブル構成を取得
+			$arrColumnList = lfGetColumnList($val);
 			
-			// カラムをCSV形式に整える
-			$arrKyes = sfGetCommaList(array_keys($arrData[0]), false);
+			// テーブル構成のCSV出力データ生成
 			
-			// データをCSV形式に整える
-			$data = "";
-			foreach($arrData as $data_key => $data_val){
-				$data .= sfGetCSVList($arrData[$data_key]);
-			}
 			
-			// CSV出力データ生成
-			$csv_data .= $val . "\n";
-			$csv_data .= $arrKyes . "\n";
-			$csv_data .= $data;
-			$csv_data .= "\n";
-		}	
+			// 全データを取得
+			$arrData = $objQuery->getAll("SELECT * FROM $val");
+	
+			// CSVデータ生成
+			if (count($arrData) > 0) {
+				
+				// カラムをCSV形式に整える
+				$arrKyes = sfGetCommaList(array_keys($arrData[0]), false);
+				
+				// データをCSV形式に整える
+				$data = "";
+				foreach($arrData as $data_key => $data_val){
+					$data .= sfGetCSVList($arrData[$data_key]);
+				}
+				
+				// CSV出力データ生成
+				$csv_data .= $val . "\n";
+				$csv_data .= $arrKyes . "\n";
+				$csv_data .= $data;
+				$csv_data .= "\n";
+			}	
+		}
 	}
 	$bkup_dir = $bkup_dir . "test" . ".csv";
 
@@ -130,7 +132,6 @@ function lfCreateBkupData(){
 		$err = mkdir(dirname($bkup_dir));
 	}
 	
-
 	if ($err) {
 		$fp = fopen($bkup_dir . "test" . ".csv","w");
 		if($fp) {
@@ -151,7 +152,7 @@ function lfGetTableList(){
 	$objQuery = new SC_Query();
 	
 	if(DB_TYPE == "pgsql"){
-		$sql = "SELECT tablename FROM pg_tables where tableowner = ? ORDER BY tablename ; ";
+		$sql = "SELECT tablename FROM pg_tables WHERE tableowner = ? ORDER BY tablename ; ";
 		$arrRet = $objQuery->getAll($sql, array(DB_USER));
 		$arrRet = sfSwapArray($arrRet);
 		$arrRet = $arrRet['tablename'];
@@ -183,7 +184,14 @@ function lfGetColumnList($table_name){
 
 }
 
-
+// バックアップテーブルにデータを更新する
+function lfUpdBkupData($data){
+	$objQuery = new SC_Query();
+	
+	$sql = "INSERT INTO dtb_bkup (bkup_name,create_date,) values (?,now())";
+	$objQuery->query($sql, array($data['bkup_data']));
+	
+}
 
 
 
