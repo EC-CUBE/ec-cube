@@ -96,7 +96,10 @@ function lfCreateBkupData(){
 		// 全データを取得
 		$arrData = $objQuery->getAll("SELECT * FROM $val");
 
-		// CSVデータ生成		
+		// CSVデータ生成
+		if (count($arrData) > 0) {
+			
+		}	
 		$csv_data .= $val . "\n";
 		
 		sfprintr($arrData);
