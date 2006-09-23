@@ -104,7 +104,7 @@ function lfCreateBkupData(){
 		
 	}
 	
-	sfprintr($csv_data):
+	sfprintr($csv_data);
 	
 	
 	
