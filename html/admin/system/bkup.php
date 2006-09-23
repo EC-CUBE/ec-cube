@@ -78,6 +78,7 @@ function lfCheckError($array){
 
 // バックアップファイル作成
 function lfCreateBkupData(){
+	$objQuery = new SC_Query();
 	
 	// 全テーブル取得
 	$arrTableList = lfGetTableList();
@@ -88,13 +89,12 @@ function lfCreateBkupData(){
 		// テーブル構成を取得
 		$arrColumnList = lfGetColumnList($val);
 		
-		
-		sfprintr($arrColumnList);
-		
+		// テーブル構成のCSV出力データ生成
 		
 		
 		// 全データを取得
-		
+		$arrData = $objQuery->getAll("SELECT * FROM ?", array($val));
+		sfprintr($arrData);
 		
 	}
 	
@@ -140,6 +140,7 @@ function lfGetColumnList($table_name){
 	return sfswaparray($arrRet);
 
 }
+
 
 
 
