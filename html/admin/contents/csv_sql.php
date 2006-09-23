@@ -179,26 +179,7 @@ $objView->display(MAIN_FRAME);
 function lfGetTableList(){
 	$objQuery = new SC_Query();
 	$arrRet = array();		// 結果取得用
-	/*
-	$sql = "";
-	$sql .= " SELECT";
-	$sql .= "     c.relname ,";
-	$sql .= "     c.relname || ':' ||obj_description(c.oid) as description";
-	$sql .= " FROM";
-	$sql .= "     pg_class c,";
-	$sql .= "     pg_user u";
-	$sql .= " WHERE";
-	$sql .= "     c.relowner = u.usesysid AND";
-	$sql .= "     relname IN (SELECT";
-	$sql .= "                     tablename";
-	$sql .= "                 FROM";
-	$sql .= "                     pg_tables";
-	$sql .= "                 WHERE";
-	$sql .= "                     tableowner=? ";
-	$sql .= "                 )";
-	$sql .= " ORDER BY c.relname ";
-	$arrRet = $objQuery->getAll($sql, array(DB_USER));
-	*/
+
 	$sql = "";
 	$sql .= "SELECT table_name, description FROM dtb_table_comment WHERE column_name IS NULL ORDER BY table_name";
 	$arrRet = $objQuery->getAll($sql);

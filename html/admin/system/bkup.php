@@ -62,8 +62,6 @@ default:
 // テンプレートファイルに渡すデータをセット
 $objPage->arrErr = $arrErr;
 
-sfprintr($arrErr);
-
 $objView->assignobj($objPage);		//変数をテンプレートにアサインする
 $objView->display(MAIN_FRAME);		//テンプレートの出力
 
@@ -82,7 +80,9 @@ function lfCheckError($array){
 function lfCreateBkupData(){
 	
 	// 全テーブル取得
+	$arrTableList = lfGetTableList();
 	
+	sfprintr($arrTableList);
 	
 	// テーブル情報を
 	
@@ -92,6 +92,19 @@ function lfCreateBkupData(){
 	
 }
 
+// 全テーブルリストを取得する
+function lfGetTableList(){
+	$objQuery = new SC_Query();
+	
+	if(DB_TYPE == "pgsql"){
+		$sql = "SELECT tablename FROM pg_tables where tableowner = ? ORDER BY tablename ; ";
+		$arrRet = $objQuery->getAll($sql, array(DB_USER));
+	}else if(DB_TYPE == "mysql"){
+		
+	}
+	
+	return $arrRet;
+}
 
 
 
