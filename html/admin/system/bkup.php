@@ -125,8 +125,6 @@ function lfCreateBkupData(){
 	fwrite($fp, $csv_data);
 	fclose($fp);
 	
-		sfprintr($csv_data);
-	
 	
 	
 	
