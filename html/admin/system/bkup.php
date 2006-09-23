@@ -121,11 +121,14 @@ function lfCreateBkupData(){
 		}	
 	}
 	
-	sfprintr($bkup_dir);
 	
 	// CSV出力
 	// ディレクトリが存在していなければ作成する		
-	if (!is_dir($bkup_dir)) mkdir($bkup_dir);
+	if (!is_dir($bkup_dir)) {
+		mkdir($bkup_dir);
+	sfprintr($bkup_dir);
+		
+	}
 	$fp = fopen($bkup_dir . "test" . '.csv',"w");
 	fwrite($fp, $csv_data);
 	fclose($fp);
