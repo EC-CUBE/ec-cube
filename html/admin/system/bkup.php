@@ -103,10 +103,11 @@ function lfCreateBkupData(){
 			$arrKyes = sfGetCommaList(array_keys($arrData[0]), false);
 			
 			// データをCSV形式に整える
+			$data = "";
 			foreach($arrData as $key => $val){
-				$arrDataCSV = sfGetCSVList($arrData[$key]) . "\n";
+				$data .= sfGetCSVList($arrData[$key]) . "\n";
 			}
-			sfprintr($arrDataCSV);
+			sfprintr($data);
 			
 			
 			$csv_data .= $val . "\n";
