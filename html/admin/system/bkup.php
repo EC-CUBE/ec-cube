@@ -188,7 +188,7 @@ function lfGetColumnList($table_name){
 function lfUpdBkupData($data){
 	$objQuery = new SC_Query();
 	
-	$sql = "INSERT INTO dtb_bkup (bkup_name,create_date,) values (?,now())";
+	$sql = "INSERT INTO dtb_bkup (bkup_name,create_date) values (?,now())";
 	$objQuery->query($sql, array($data['bkup_name']));
 	
 }
