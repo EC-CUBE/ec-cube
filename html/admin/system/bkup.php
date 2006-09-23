@@ -36,7 +36,7 @@ case 'bkup':
 	// エラーがなければバックアップ処理を行う	
 	if (count($arrErr) <= 0) {
 		// バックアップファイル作成
-		lfCreateBkupData();
+		$arrErr = lfCreateBkupData();
 		
 		// DBにデータ更新
 		
@@ -138,12 +138,10 @@ function lfCreateBkupData(){
 	}
 
 	if (!$err) {
-		$objPage->arrErr['bkup_name'] = "バックアップに失敗しました。";
+		$arrErr['bkup_name'] = "バックアップに失敗しました。";
 	}
-
-
-
-	//gfPrintLog("test");
+	
+	return $arrErr;
 }
 
 // 全テーブルリストを取得する
