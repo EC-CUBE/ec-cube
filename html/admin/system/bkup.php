@@ -1,4 +1,5 @@
 <?php
+
 require_once("../require.php");
 
 //ページ管理クラス
@@ -123,30 +124,33 @@ function lfCreateBkupData(){
 	
 	$bkup_dir = $bkup_dir . "test" . ".csv";
 	sfprintr($bkup_dir);
-	
+
 	// CSV出力
 	// ディレクトリが存在していなければ作成する		
 	if (!is_dir(dirname($bkup_dir))) {
-		$ret = mkdir(dirname($bkup_dir));
-		
-		if ($ret) {
-			sfprintr("成功");
-		}else{
-			sfprintr("失敗");
-		}
+		$err = mkdir(dirname($bkup_dir));
 	}
 
-	$fp = fopen($bkup_dir . "test" . ".csv","w");
-	if($fp) {
-		$ret = fwrite($fp, $csv_data);
-		
-		if (!$ret) {
-			sfprintr("書き込み失敗");
-		}else{
-			sfprintr("書き込み成功");
+	if ($err) {
+		$fp = fopen($bkup_dir . "test" . ".csv","w");
+		if($fp) {
+			$ret = fwrite($fp, $csv_data);
+			
+			if (!$ret) {
+				sfprintr("書き込み失敗");
+			}else{
+				sfprintr("書き込み成功");
+			}
+			fclose($fp);
 		}
-		fclose($fp);
 	}
+	
+	if (!$err) {
+		$objPage->arrErr['bkup_name'] = "バックアップに失敗しました。";
+	}
+
+
+
 	//gfPrintLog("test");
 }
 
