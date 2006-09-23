@@ -26,8 +26,21 @@ sfIsSuccess($objSess);
 switch($_POST['mode']) {
 // バックアップを作成する
 case 'bkup':
-	sfprintr($_POST);
+	// エラーチェック
+	$arrErr = lfCheckError($_POST);
+
+	// エラーがなければバックアップ処理を行う	
+	if (count($arrErr) <= 0) {
+		// バックアップファイル作成
+		lfCreateBkupData();
+		
+		// DBにデータ更新
+		
+	}
+	
+
 	break;
+	
 // インストール
 case 'install':
 	// 更新情報を最新にする
@@ -46,13 +59,53 @@ default:
 	break;
 }
 
-$col = "module_id, module_name, now_version, latest_version, module_explain, create_date, release_date";
-$objQuery->setorder("module_id");
-$objPage->arrUpdate = $objQuery->select($col, "dtb_update");
+// テンプレートファイルに渡すデータをセット
+$objPage->arrErr = $arrErr;
+
 
 $objView->assignobj($objPage);		//変数をテンプレートにアサインする
 $objView->display(MAIN_FRAME);		//テンプレートの出力
+
 //-------------------------------------------------------------------------------------------------------
+
+// エラーチェック
+function lfCheckError($array){
+	$objErr = new SC_CheckError($array);
+	
+	$objErr->doFunc(array("バックアップ名", "bkup_name", STEXT_LEN), array("EXIST_CHECK","MAX_LENGTH_CHECK"));
+	
+	return $objErr->arrErr;
+}
+
+// バックアップファイル作成
+function lfCreateBkupData(){
+	
+	// 全テーブル取得
+	
+	
+	// テーブル情報を
+	
+	
+	
+	
+	
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 // 更新ファイルの取得
 function lfCopyUpdateFile($val) {
 	global $objPage;
