@@ -105,7 +105,7 @@ function lfCreateBkupData(){
 			// データをCSV形式に整える
 			$data = "";
 			foreach($arrData as $data_key => $data_val){
-				$data .= sfGetCSVList($arrData[$key]);
+				$data .= sfGetCSVList($arrData[$data_key]);
 			}
 			
 			
