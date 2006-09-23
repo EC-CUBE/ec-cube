@@ -103,7 +103,7 @@ function lfGetTableList(){
 		
 	}
 	
-	return ($arrRet);
+	return sfSwapArray($arrRet);
 }
 
 
