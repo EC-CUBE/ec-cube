@@ -121,6 +121,7 @@ function lfCreateBkupData(){
 		}	
 	}
 	
+	$bkup_dir = $bkup_dir . "test" . ".csv";
 	sfprintr($bkup_dir);
 	
 	// CSV½ÐÎÏ
