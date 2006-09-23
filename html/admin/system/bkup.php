@@ -11,6 +11,8 @@ class LC_Page {
 		$this->tpl_mainno = 'system';		
 		$this->tpl_subno = 'bkup';
 		$this->tpl_subtitle = 'バックアップ管理';
+		
+		$this->bkup_dir = ROOT_DIR . USER_DIR . "bkup/";
 	}
 }
 
@@ -78,8 +80,10 @@ function lfCheckError($array){
 
 // バックアップファイル作成
 function lfCreateBkupData(){
+	global $objPage;
 	$objQuery = new SC_Query();
 	$csv_data = "";
+	$bkup_dir = $objPage->bkup_dir;
 	
 	// 全テーブル取得
 	$arrTableList = lfGetTableList();
@@ -108,19 +112,21 @@ function lfCreateBkupData(){
 				$data .= sfGetCSVList($arrData[$data_key]);
 			}
 			
-			
+			// CSV出力データ生成
 			$csv_data .= $val . "\n";
 			$csv_data .= $arrKyes . "\n";
 			$csv_data .= $data;
 			$csv_data .= "\n";
 		}	
-		
-		//sfprintr(array_keys($arrData[0]));
-		//sfprintr(sfGetCSVList($arrData));
-		
 	}
 	
-	sfprintr($csv_data);
+	// CSV出力
+	$fp = fopen(ROOT_DIR . BLOC_DIR . $_POST['filename'] . '.tpl',"w");
+	fwrite($fp, $_POST['bloc_html']);
+	fclose($fp);
+	
+		sfprintr($csv_data);
+	
 	
 	
 	
