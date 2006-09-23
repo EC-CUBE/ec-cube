@@ -106,6 +106,9 @@ function lfCreateBkupData(){
 			sfprintr($arrKyes);
 			//sfprintr($arrData);
 			
+			
+			
+			$csv_data .= "\n"
 		}	
 		
 		//sfprintr(array_keys($arrData[0]));
