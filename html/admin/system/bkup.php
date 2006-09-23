@@ -137,7 +137,7 @@ function lfGetColumnList($table_name){
 		$arrRet = $objQuery->getAll($sql, array($table_name));
 	}
 	
-	return $arrRet;
+	return sfswaparray($arrRet);
 
 }
 
