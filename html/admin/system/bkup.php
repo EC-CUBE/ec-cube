@@ -121,6 +121,8 @@ function lfCreateBkupData(){
 		}	
 	}
 	
+	$bkup_dir = ROOT_DIR . "test";
+	
 	
 	// CSV出力
 	// ディレクトリが存在していなければ作成する		
