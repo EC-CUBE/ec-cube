@@ -98,16 +98,16 @@ function lfCreateBkupData(){
 
 		// CSVデータ生成
 		if (count($arrData) > 0) {
-			$csv_data .= $val . "\n";
-		
+			
+			// カラムを出力
 			$arrKyes = sfGetCommaList(array_keys($arrData[0]), false);
+			
+			
+			sfprintr($arrData);
+			
+			
+			$csv_data .= $val . "\n";
 			$csv_data .= $arrKyes . "\n";
-			
-			sfprintr($arrKyes);
-			//sfprintr($arrData);
-			
-			
-			
 			$csv_data .= "\n";
 		}	
 		
