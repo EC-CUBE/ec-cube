@@ -94,9 +94,9 @@ function lfCreateBkupData(){
 		
 		// 全データを取得
 		$arrData = $objQuery->getAll("SELECT * FROM $val");
-		//sfprintr($arrData);
+		sfprintr($arrData);
 		
-		sfprintr(sfGetCSVList($arrData));
+		//sfprintr(sfGetCSVList($arrData));
 		
 	}
 	
