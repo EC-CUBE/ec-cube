@@ -82,9 +82,21 @@ function lfCreateBkupData(){
 	// 全テーブル取得
 	$arrTableList = lfGetTableList();
 	
-	sfprintr($arrTableList);
-	
-	// テーブル情報を
+	// 各テーブル情報を取得する
+	foreach($arrTableList as $key => $val){
+		
+		// テーブル構成を取得
+		$arrColumnList = lfGetColumnList($val);
+		
+		
+		sfprintr($arrColumnList);
+		
+		
+		
+		// 全データを取得
+		
+		
+	}
 	
 	
 	
@@ -108,7 +120,24 @@ function lfGetTableList(){
 	return $arrRet;
 }
 
+// テーブル構成を取得する
+function lfGetColumnList($table_name){
+	$objQuery = new SC_Query();
 
+	if(DB_TYPE == "pgsql"){
+		$sql = "SELECT 
+					a.attname, t.typname, a.attnotnull, d.adsrc as defval, a.atttypmod,	a.attnum as fldnum,	e.description 
+				FROM 
+					pg_class c,
+					pg_type t,
+					pg_attribute a left join pg_attrdef d on (a.attrelid=d.adrelid and a.attnum=d.adnum)
+								   left join pg_description e on (a.attrelid=e.objoid and a.attnum=e.objsubid)
+				WHERE (c.relname=?) AND (c.oid=a.attrelid) AND (a.atttypid=t.oid) AND a.attnum > 0
+				ORDER BY fldnum";
+		$arrRet = $objQuery->getAll($sql, array($table_name));
+	}
+
+}
 
 
 
