@@ -107,11 +107,10 @@ function lfCreateBkupData(){
 			foreach($arrData as $key => $val){
 				$data .= sfGetCSVList($arrData[$key]);
 			}
-			sfprintr($data);
-			
 			
 			$csv_data .= $val . "\n";
 			$csv_data .= $arrKyes . "\n";
+			$csv_data .= $data;
 			$csv_data .= "\n";
 		}	
 		
