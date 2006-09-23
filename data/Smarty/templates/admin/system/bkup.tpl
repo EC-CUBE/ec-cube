@@ -44,7 +44,7 @@
 									<tr align="center" class="fs12n">
 										<td bgcolor="#f2f1ec" width="130">バックアップ名称<span class="red"> *</span></td>
 										<td bgcolor="#ffffff" width="548">
-											<span class="red12"><!--{$arrErr.bkup_name}--></span>
+											<span class="red12" align=left><!--{$arrErr.bkup_name}--></span>
 											<input type="text" name="bkup_name" value="<!--{$bkup_name|escape}-->" maxlength="<!--{$smarty.const.STEXT_LEN}-->" size="60" class="box60" style="<!--{if $arrErr.bkup_name != ""}-->background-color: <!--{$smarty.const.ERR_COLOR}--><!--{/if}-->" /><span class="red"> （上限<!--{$smarty.const.STEXT_LEN}-->文字）</span>
 										</td>
 									</tr>

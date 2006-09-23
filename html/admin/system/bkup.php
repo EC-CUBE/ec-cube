@@ -62,6 +62,7 @@ default:
 // テンプレートファイルに渡すデータをセット
 $objPage->arrErr = $arrErr;
 
+sfprintr($arrErr);
 
 $objView->assignobj($objPage);		//変数をテンプレートにアサインする
 $objView->display(MAIN_FRAME);		//テンプレートの出力
