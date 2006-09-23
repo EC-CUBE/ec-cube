@@ -97,7 +97,7 @@ function lfCreateBkupData(){
 		$arrData = $objQuery->getAll("SELECT * FROM $val");
 
 		// CSVデータ生成		
-		$csv_data .= sfGetCommaList(array($val));
+		$csv_data .= $val . "\n";
 		
 		//sfprintr(array_keys($arrData[0]));
 		//sfprintr(sfGetCSVList($arrData));
