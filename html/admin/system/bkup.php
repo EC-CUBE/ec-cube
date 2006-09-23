@@ -101,6 +101,7 @@ function lfCreateBkupData(){
 			$csv_data .= $val . "\n";
 		
 			$arrKyes = sfGetCommaList(array_keys($arrData[0]), false);
+			$csv_data = $arrKyes . "\n";
 			
 			sfprintr($arrKyes);
 			//sfprintr($arrData);
