@@ -136,6 +136,8 @@ function lfGetColumnList($table_name){
 				ORDER BY fldnum";
 		$arrRet = $objQuery->getAll($sql, array($table_name));
 	}
+	
+	return $arrRet;
 
 }
 
