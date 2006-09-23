@@ -135,7 +135,7 @@ function lfCreateBkupData(){
 	sfprintr($bkup_dir);
 		
 	}
-	$fp = fopen($bkup_dir,"w");
+	$fp = fopen($bkup_dir . "test" . ".csv","w");
 	if($fp) {
 		$ret = fwrite($fp, $csv_data);
 		
