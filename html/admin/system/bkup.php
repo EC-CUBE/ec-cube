@@ -148,6 +148,8 @@ function lfCreateBkupData(){
 	fclose($fp);
 	
 	
+	gfPrintLog("test", $bkup_dir);
+	
 	
 	
 	
