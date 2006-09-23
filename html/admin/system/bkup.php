@@ -99,11 +99,14 @@ function lfCreateBkupData(){
 		// CSVデータ生成
 		if (count($arrData) > 0) {
 			
-			// カラムを出力
+			// カラムをCSV形式に整える
 			$arrKyes = sfGetCommaList(array_keys($arrData[0]), false);
 			
-			$arrDataTmp = sfGetCSVList($arrData[0]);
-			sfprintr($arrDataTmp);
+			// データをCSV形式に整える
+			foreach($arrData as $key => $val){
+				$arrDataCSV = sfGetCSVList($arrData[$val]);
+			sfprintr($arrDataCSV);
+			}
 			
 			
 			$csv_data .= $val . "\n";
