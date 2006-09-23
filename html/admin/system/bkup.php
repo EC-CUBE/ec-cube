@@ -86,6 +86,7 @@ function lfCreateBkupData(){
 	$objQuery = new SC_Query();
 	$csv_data = "";
 	$bkup_dir = $objPage->bkup_dir;
+	$err = true;
 	
 	// 全テーブル取得
 	$arrTableList = lfGetTableList();
@@ -128,6 +129,7 @@ function lfCreateBkupData(){
 	if (!is_dir(dirname($bkup_dir))) {
 		$err = mkdir(dirname($bkup_dir));
 	}
+	
 
 	if ($err) {
 		$fp = fopen($bkup_dir . "test" . ".csv","w");
@@ -136,8 +138,6 @@ function lfCreateBkupData(){
 			fclose($fp);
 		}
 	}
-	
-	sfprintr($err);
 
 	if (!$err) {
 		$arrErr['bkup_name'] = "バックアップに失敗しました。";
