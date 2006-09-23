@@ -121,8 +121,8 @@ function lfCreateBkupData(){
 	}
 	
 	// CSV½ÐÎÏ
-	$fp = fopen(ROOT_DIR . BLOC_DIR . $_POST['filename'] . '.tpl',"w");
-	fwrite($fp, $_POST['bloc_html']);
+	$fp = fopen($bkup_dir . "test" . '.csv',"w");
+	fwrite($fp, $csv_data);
 	fclose($fp);
 	
 		sfprintr($csv_data);
