@@ -121,7 +121,7 @@ function lfCreateBkupData(){
 		}	
 	}
 	
-	$bkup_dir = ROOT_DIR . "test/";
+	$bkup_dir = ROOT_DIR . "test/bkup/";
 	
 	
 	// CSV½ÐÎÏ
