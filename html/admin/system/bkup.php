@@ -121,9 +121,7 @@ function lfCreateBkupData(){
 			$csv_data .= "\n";
 		}	
 	}
-	
 	$bkup_dir = $bkup_dir . "test" . ".csv";
-	sfprintr($bkup_dir);
 
 	// CSV出力
 	// ディレクトリが存在していなければ作成する		
@@ -135,7 +133,7 @@ function lfCreateBkupData(){
 		$fp = fopen($bkup_dir . "test" . ".csv","w");
 		if($fp) {
 			$ret = fwrite($fp, $csv_data);
-			
+
 			if (!$ret) {
 				sfprintr("書き込み失敗");
 			}else{
@@ -144,7 +142,7 @@ function lfCreateBkupData(){
 			fclose($fp);
 		}
 	}
-	
+
 	if (!$err) {
 		$objPage->arrErr['bkup_name'] = "バックアップに失敗しました。";
 	}
