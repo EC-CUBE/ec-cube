@@ -121,6 +121,8 @@ function lfCreateBkupData(){
 	}
 	
 	// CSV出力
+	// ディレクトリが存在していなければ作成する		
+	if (!is_dir(dirname($bkup_dir))) mkdir(dirname($path));
 	$fp = fopen($bkup_dir . "test" . '.csv',"w");
 	fwrite($fp, $csv_data);
 	fclose($fp);
