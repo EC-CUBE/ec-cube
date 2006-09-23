@@ -102,7 +102,7 @@ function lfCreateBkupData(){
 		
 			$arrKyes = array_keys($arrData[0]);
 			
-			$arrKyes = sfGetCommaList($arrKyes);
+			$arrKyes = sfGetCommaList($arrKyes, false);
 			
 			sfprintr($arrKyes);
 			//sfprintr($arrData);

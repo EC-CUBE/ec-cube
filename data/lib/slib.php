@@ -692,7 +692,11 @@ function sfGetCommaList($array, $space=true) {
 				$line .= $val . ",";
 			}
 		}
-		$line = ereg_replace(", $", "", $line);
+		if ($space) {
+			$line = ereg_replace(", $", "", $line);
+		}else{
+			$line = ereg_replace(",$", "", $line);
+		}
 		return $line;
 	}else{
 		return false;
