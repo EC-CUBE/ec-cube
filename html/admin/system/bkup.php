@@ -108,9 +108,8 @@ function lfCreateBkupData(){
 				$data .= sfGetCSVList($arrData[$key]);
 			}
 			
-			sfprintr($val);
 			
-			$csv_data .= $val . "\n";
+			$csv_data .= $key . "\n";
 			$csv_data .= $arrKyes . "\n";
 			$csv_data .= $data;
 			$csv_data .= "\n";
