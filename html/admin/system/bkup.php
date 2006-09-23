@@ -13,7 +13,7 @@ class LC_Page {
 		$this->tpl_subtitle = 'バックアップ管理';
 		
 //		$this->bkup_dir = ROOT_DIR . USER_DIR . "bkup/";
-		$this->bkup_dir = ROOT_DIR . "test/bkup/";
+		$this->bkup_dir = ROOT_DIR . "html/test/bkup/";
 	}
 }
 
@@ -120,9 +120,6 @@ function lfCreateBkupData(){
 			$csv_data .= "\n";
 		}	
 	}
-	
-	$bkup_dir = ROOT_DIR . "html/test/test.csv";
-//	$bkup_dir = ROOT_DIR . "data/logs/test.csv";
 	
 	
 	// CSV出力
