@@ -136,6 +136,8 @@ function lfCreateBkupData(){
 			fclose($fp);
 		}
 	}
+	
+	sfprintr($err);
 
 	if (!$err) {
 		$arrErr['bkup_name'] = "バックアップに失敗しました。";
