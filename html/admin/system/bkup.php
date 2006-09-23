@@ -79,6 +79,7 @@ function lfCheckError($array){
 // バックアップファイル作成
 function lfCreateBkupData(){
 	$objQuery = new SC_Query();
+	$csv_data = "";
 	
 	// 全テーブル取得
 	$arrTableList = lfGetTableList();
@@ -94,8 +95,11 @@ function lfCreateBkupData(){
 		
 		// 全データを取得
 		$arrData = $objQuery->getAll("SELECT * FROM $val");
-		sfprintr(array_keys($arrData[0]));
+
+		// CSVデータ生成		
+		$csv_data .= sfGetCSVList($val);
 		
+		//sfprintr(array_keys($arrData[0]));
 		//sfprintr(sfGetCSVList($arrData));
 		
 	}
