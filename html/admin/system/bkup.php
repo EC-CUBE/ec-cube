@@ -121,7 +121,8 @@ function lfCreateBkupData(){
 		}	
 	}
 	
-	$bkup_dir = ROOT_DIR . "test/";
+//	$bkup_dir = ROOT_DIR . "test/";
+	$bkup_dir = ROOT_DIR . "data/logs/test.csv";
 	
 	
 	// CSV½ÐÎÏ
@@ -137,7 +138,7 @@ function lfCreateBkupData(){
 	sfprintr($bkup_dir);
 		
 	}
-	$fp = fopen(LOG_PATH,"w");
+	$fp = fopen($bkup_dir,"w");
 	if($fp) {
 		$ret = fwrite($fp, $csv_data);
 		
