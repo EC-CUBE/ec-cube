@@ -127,7 +127,11 @@ function lfCreateBkupData(){
 	if (!is_dir($bkup_dir)) {
 		$ret = mkdir($bkup_dir);
 		
-		sfprintr($ret);
+		if ($ret) {
+			sfprintr("À®¸ù");
+		}else{
+			sfprintr("¼ºÇÔ");
+		}
 	sfprintr($bkup_dir);
 		
 	}
