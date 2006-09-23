@@ -99,11 +99,13 @@ function lfGetTableList(){
 	if(DB_TYPE == "pgsql"){
 		$sql = "SELECT tablename FROM pg_tables where tableowner = ? ORDER BY tablename ; ";
 		$arrRet = $objQuery->getAll($sql, array(DB_USER));
+		$arrRet = sfSwapArray($arrRet);
+		$arrRet = $arrRet['tablename'];
 	}else if(DB_TYPE == "mysql"){
 		
 	}
 	
-	return sfSwapArray($arrRet);
+	return $arrRet;
 }
 
 
