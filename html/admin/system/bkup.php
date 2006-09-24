@@ -16,7 +16,7 @@ class LC_Page {
 		$this->tpl_subtitle = 'バックアップ管理';
 		
 //		$this->bkup_dir = ROOT_DIR . USER_DIR . "bkup/";
-		$this->bkup_dir = ROOT_DIR . "html/test/bkup/";
+		$this->bkup_dir = "../../test/bkup/";
 	}
 }
 
@@ -199,8 +199,7 @@ function lfCreateBkupData($bkup_name){
 	$tar = new Archive_Tar($objPage->bkup_dir . $bkup_name.".tar.gz", TRUE);
 
 	//圧縮をおこなう
-//	$tar->create($bkup_dir);
-	$tar->create("../../test/bkup/" . $bkup_name . "/");
+	$tar->create($bkup_dir);
 
 	if (!$err) {
 		$arrErr['bkup_name'] = "バックアップに失敗しました。";
