@@ -2472,13 +2472,18 @@ function sfDelFile($dir){
 		if ($file == "." or $file == "..") continue;
 		$del_file = $dir . "/" . $file;
 		if(is_file($del_file)){
-			unlink($dir . "/" . $file);
+			$ret = unlink($dir . "/" . $file);
 		}else if (is_dir($del_file)){
-			sfDelFile($del_file);
+			$ret = sfDelFile($del_file);
+		}
+		
+		if(!$ret){
+			return $ret;
 		}
 	}
 	// フォルダを削除
-	rmdir($dir);
+	return rmdir($dir);
+	
 }
 
 /* デバッグ用 ------------------------------------------------------------------------------------------------*/
