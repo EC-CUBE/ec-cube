@@ -200,8 +200,8 @@ function lfCreateBkupData($bkup_name){
 
 	//圧縮をおこなう
 //	$tar->create($bkup_dir);
-	$tar->create("./" . $bkup_name . "/");
-	
+	$tar->create("../../test/bkup/" . $bkup_name . "/");
+
 	if (!$err) {
 		$arrErr['bkup_name'] = "バックアップに失敗しました。";
 	}
