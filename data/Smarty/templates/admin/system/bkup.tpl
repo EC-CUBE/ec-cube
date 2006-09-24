@@ -48,6 +48,16 @@
 											<input type="text" name="bkup_name" value="<!--{$bkup_name|escape}-->" maxlength="<!--{$smarty.const.STEXT_LEN}-->" size="60" class="box60" style="<!--{if $arrErr.bkup_name != ""}-->background-color: <!--{$smarty.const.ERR_COLOR}--><!--{/if}-->" /><span class="red"> （上限<!--{$smarty.const.STEXT_LEN}-->文字）</span>
 										</td>
 									</tr>
+									<tr align="center" class="fs12n">
+										<td bgcolor="#f2f1ec" width="130">バックアップメモ<span class="red"> *</span></td>
+										<td bgcolor="#ffffff" width="548" align=left>
+											<span class="red12"><!--{$arrErr.bkup_memo}--></span>
+												<span class="red12"><!--{$arrErr.sql}--></span>
+												<div>
+												<textarea name="sql" cols=75 rows=30 align="left" wrap=off style="<!--{if $arrErr.sql != ""}-->background-color: <!--{$smarty.const.ERR_COLOR}-->;<!--{/if}--> width: 547px;"><!--{$arrSqlData.sql}--></textarea>
+												</div>
+										</td>
+									</tr>
 								</table>
 
 								<table width="678" border="0" cellspacing="0" cellpadding="0" summary=" ">

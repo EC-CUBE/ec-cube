@@ -153,8 +153,6 @@ function fnTargetSelf(){
 												<div>
 												<textarea name="sql" cols=75 rows=30 align="left" wrap=off style="<!--{if $arrErr.sql != ""}-->background-color: <!--{$smarty.const.ERR_COLOR}-->;<!--{/if}--> width: 547px;"><!--{$arrSqlData.sql}--></textarea>
 												</div>
-												<div align="right">
-												</div>
 											</td>
 										</tr>
 									</table>
