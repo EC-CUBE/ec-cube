@@ -87,7 +87,7 @@ function lfConvertParam($array) {
 	 *  a :  全角英数字を半角英数字に変換する
 	 */
 	$arrConvList['bkup_name'] = "a";
-	$arrConvList['bkup_memo'] = "KVC";
+	$arrConvList['bkup_memo'] = "KVa";
 	
 	// 文字変換
 	foreach ($arrConvList as $key => $val) {
