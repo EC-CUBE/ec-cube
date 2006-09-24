@@ -199,7 +199,7 @@ function lfCreateBkupData($bkup_name){
 	$tar = new Archive_Tar($bkup_dir . $bkup_name.".tar.gz", TRUE);
 
 	//圧縮をおこなう
-	$tar->create($csv_file);
+	$tar->create($bkup_dir);
 	
 	if (!$err) {
 		$arrErr['bkup_name'] = "バックアップに失敗しました。";
