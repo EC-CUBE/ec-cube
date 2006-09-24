@@ -1,6 +1,7 @@
 <?php
 
 require_once("../require.php");
+require_once("../../../data/module/Tar.php");
 
 //ページ管理クラス
 class LC_Page {
@@ -190,7 +191,15 @@ function lfCreateBkupData($bkup_name){
 		$copy_mess = "";
 		$copy_mess = sfCopyDir("../../upload/save_image/", $bkup_dir, $copy_mess);
 	}
-		
+
+	//オブジェクトを作成する
+	//new Archive_Tar(ファイル名,圧縮フラグ);
+	//圧縮フラグTRUEはgzip圧縮をおこなう
+	$tar = new Archive_Tar($bkup_name.".tar.gz", TRUE);
+
+	//圧縮をおこなう
+	$tar->create($bkup_dir);
+
 	if (!$err) {
 		$arrErr['bkup_name'] = "バックアップに失敗しました。";
 	}
