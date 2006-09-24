@@ -131,7 +131,7 @@ function lfCreateBkupData($bkup_name){
 	$err = true;
 	
 	$bkup_dir = $objPage->bkup_dir;
-	$bkup_dir = $bkup_dir . $bkup_name . "bkup_data.csv";
+	$bkup_dir = $bkup_dir . $bkup_name . "/bkup_data.csv";
 
 	// 全テーブル取得
 	$arrTableList = lfGetTableList();
