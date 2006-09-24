@@ -69,7 +69,6 @@ default:
 
 // バックアップリストを取得する
 $arrBkupList = lfGetBkupData("ORDER BY create_date DESC");
-sfprintr($arrBkupList);
 
 // テンプレートファイルに渡すデータをセット
 $objPage->arrErr = $arrErr;
