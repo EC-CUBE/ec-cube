@@ -70,7 +70,7 @@ default:
 // バックアップリストを取得する
 $arrBkupList = lfGetBkupData();
 
-
+sfprintr($arrBkupList);
 
 // テンプレートファイルに渡すデータをセット
 $objPage->arrErr = $arrErr;
