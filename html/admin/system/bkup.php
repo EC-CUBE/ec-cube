@@ -69,12 +69,12 @@ default:
 
 // バックアップリストを取得する
 $arrBkupList = lfGetBkupData("ORDER BY create_date DESC");
-
 sfprintr($arrBkupList);
 
 // テンプレートファイルに渡すデータをセット
 $objPage->arrErr = $arrErr;
 $objPage->arrForm = $arrForm;
+$objPage->arrBkupList = $arrBkupList;
 
 $objView->assignobj($objPage);		//変数をテンプレートにアサインする
 $objView->display(MAIN_FRAME);		//テンプレートの出力
