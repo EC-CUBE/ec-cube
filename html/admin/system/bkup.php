@@ -186,6 +186,8 @@ function lfCreateBkupData($bkup_name){
 	if (!$err) {
 		$copy_mess = "";
 		$copy_mess = sfCopyDir("../../upload/save_image/", $bkup_dir, $copy_mess);
+		
+		sfprintr($copy_mess);
 	}
 	
 		
