@@ -116,18 +116,9 @@
 										<td ><!--{$arrBkupList[cnt].bkup_name}--></td>
 										<td ><!--{$arrBkupList[cnt].bkup_memo}--></td>			
 										<td align="center"><!--{$arrBkupList[cnt].create_date|sfCutString:19:true:false}--></td>
+										<td align="center"><a href="#" onclick="fnModeSubmit('install','module_id','<!--{$arrUpdate[cnt].module_id}-->');">install</a></td>
 										<td align="center">
-										<!--{if $arrUpdate[cnt].now_version != $arrUpdate[cnt].latest_version}-->
-											<a href="#" onclick="fnModeSubmit('install','module_id','<!--{$arrUpdate[cnt].module_id}-->');">install</a></td>
-										<!--{else}-->
-											-
-										<!--{/if}-->										
-										<td align="center">
-										<!--{if $arrUpdate[cnt].now_version != ""}-->
 											<a href="#" onclick="fnModeSubmit('uninstall','module_id','<!--{$arrUpdate[cnt].module_id}-->');">uninstall</a>
-										<!--{else}-->
-											-
-										<!--{/if}-->										
 										</td>	
 									</tr>
 									<!--{/section}-->
