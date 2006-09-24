@@ -102,16 +102,14 @@
 								</table>
 								
 								<!--{* 一覧が存在する場合のみ表示する *}-->
-								<!--{if count($arrUpdate) > 0 }-->
+								<!--{if count($arrBkupList) > 0 }-->
 								<table width="678" border="0" cellspacing="1" cellpadding="8" summary=" ">
 									<tr bgcolor="#f2f1ec" align="center" class="fs12n">
-										<td width="80" align="center">機能名</td>
-										<td width="240">機能説明</td>
-										<td width="40">現在Ver</td>
-										<td width="40">最新Ver</td>										
-										<td width="80" align="center">リリース日</td>
-										<td width="50">install</td>
-										<td width="50">uninstall</td>									
+										<td width="80" align="center">バックアップ名</td>
+										<td width="240">バックアップメモ</td>
+										<td width="40">作成日</td>
+										<td width="40">リストア</td>
+										<td width="80" align="center">削除</td>
 									</tr>
 									<!--{section name=cnt loop=$arrUpdate}-->
 									<tr bgcolor="#ffffff" class="fs12">

@@ -68,7 +68,7 @@ default:
 }
 
 // バックアップリストを取得する
-$arrBkupList = lfGetBkupData("ORDER BY create_date");
+$arrBkupList = lfGetBkupData("ORDER BY create_date DESC");
 
 sfprintr($arrBkupList);
 
