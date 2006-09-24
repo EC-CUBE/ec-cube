@@ -1898,7 +1898,6 @@ function sfCutString($str, $len, $byte = true, $commadisp = true) {
 			$commadisp = false;
 		}
 	}
-	
 	if($commadisp){
 		$ret = $ret . "...";
 	}
