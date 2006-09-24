@@ -66,7 +66,7 @@ case 'install':
 // 削除
 case 'del':
 	// ファイルの削除
-	unlink($objPage->bkup_dir.$_POST['list_name']);
+	unlink($objPage->bkup_dir.$_POST['list_name'] . ".tar.gz");
 
 	// DBから削除
 	$delsql = "DELETE FROM dtb_bkup WHERE bkup_name = ?";
