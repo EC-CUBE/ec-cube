@@ -278,7 +278,7 @@ class Archive_Tar extends PEAR
             else {
                 $this->_cleanFile();
                 $this->_error('Invalid file list');
-                return false;
+                return "false";
             }
 
             $v_result = $this->_addList($v_list, $p_add_dir, $p_remove_dir);
