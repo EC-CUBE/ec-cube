@@ -43,6 +43,8 @@ case 'bkup':
 		
 		// DBにデータ更新
 		lfUpdBkupData($arrData);
+	}else{
+		$arrForm = $arrData;
 	}
 
 	break;
@@ -67,6 +69,7 @@ default:
 
 // テンプレートファイルに渡すデータをセット
 $objPage->arrErr = $arrErr;
+$objPage->arrForm = $arrForm;
 
 $objView->assignobj($objPage);		//変数をテンプレートにアサインする
 $objView->display(MAIN_FRAME);		//テンプレートの出力
