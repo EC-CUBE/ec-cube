@@ -108,7 +108,7 @@
 									<tr bgcolor="#f2f1ec" align="center" class="fs12n">
 										<td width="120" align="center">バックアップ名</td>
 										<td width="240">バックアップメモ</td>
-										<td width="70">作成日</td>
+										<td width="120">作成日</td>
 										<td width="50">リストア</td>
 										<td width="50" align="center">削除</td>
 									</tr>
