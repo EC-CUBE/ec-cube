@@ -67,6 +67,11 @@ default:
 	break;
 }
 
+// バックアップリストを取得する
+$arrBkupList = lfGetBkupData();
+
+
+
 // テンプレートファイルに渡すデータをセット
 $objPage->arrErr = $arrErr;
 $objPage->arrForm = $arrForm;
@@ -75,7 +80,6 @@ $objView->assignobj($objPage);		//変数をテンプレートにアサインする
 $objView->display(MAIN_FRAME);		//テンプレートの出力
 
 //-------------------------------------------------------------------------------------------------------
-
 /* 取得文字列の変換 */
 function lfConvertParam($array) {
 	/*
@@ -107,9 +111,7 @@ function lfCheckError($array){
 	$objErr->doFunc(array("バックアップメモ", "bkup_memo", MTEXT_LEN), array("MAX_LENGTH_CHECK"));
 	
 	// 重複チェック
-	$objQuery = new SC_Query();
-	$sql = "SELECT bkup_name FROM dtb_bkup WHERE bkup_name = ?";
-	$ret = $objQuery->getall($sql,array($array['bkup_name']));
+	$ret = lfGetBkupData("WHERE bkup_name = ?", array($array['bkup_name']));
 	if (count($ret) > 0) {
 		$objErr->arrErr['bkup_name'] = "バックアップ名が重複しています。別名を入力してください。";
 	}
@@ -231,6 +233,17 @@ function lfUpdBkupData($data){
 	$objQuery->query($sql, array($data['bkup_name'],$data['bkup_memo']));
 }
 
+// バックアップテーブルからデータを取得する
+function lfGetBkupData($where = "", $data = array()){
+	$objQuery = new SC_Query();
+	
+	$sql = "SELECT bkup_name, bkup_memo, create_date FROM dtb_bkup";
+	if ($where != "")	$sql .= $where;
+	
+	$ret = $objQuery->getall($sql,$data);
+	
+	return $ret;
+}
 
 
 
