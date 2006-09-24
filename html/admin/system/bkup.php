@@ -191,15 +191,23 @@ function lfCreateBkupData($bkup_name){
 	if ($err) {
 		$copy_mess = "";
 		$copy_mess = sfCopyDir("../../upload/save_image/", $bkup_dir, $copy_mess);
+
+		//オブジェクトを作成する
+		//new Archive_Tar(ファイル名,圧縮フラグ);
+		//圧縮フラグTRUEはgzip圧縮をおこなう
+		$tar = new Archive_Tar($objPage->bkup_dir . $bkup_name.".tar.gz", TRUE);
+	
+		//圧縮をおこなう
+		$err = $tar->create($bkup_dir);
 	}
-
-	//オブジェクトを作成する
-	//new Archive_Tar(ファイル名,圧縮フラグ);
-	//圧縮フラグTRUEはgzip圧縮をおこなう
-	$tar = new Archive_Tar($objPage->bkup_dir . $bkup_name.".tar.gz", TRUE);
-
-	//圧縮をおこなう
-	$tar->create($bkup_dir);
+	
+	// バックアップデータの削除
+	if ($err) {
+		$dh = opendir($bkup_dir);
+		while($file = readdir($dh)){
+			sfPrintR($file);
+		}
+	}
 
 	if (!$err) {
 		$arrErr['bkup_name'] = "バックアップに失敗しました。";
