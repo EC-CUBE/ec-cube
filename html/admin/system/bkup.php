@@ -200,7 +200,7 @@ function lfCreateBkupData($bkup_name){
 		//圧縮をおこなう
 		$zip = $tar->create($bkup_dir);
 		// バックアップデータの削除
-		if ($zip) {
+		if (!$zip) {
 			$dh = opendir($bkup_dir);
 			while($file = readdir($dh)){
 				sfPrintR($file);
