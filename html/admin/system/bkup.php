@@ -105,6 +105,16 @@ function lfCheckError($array){
 	
 	$objErr->doFunc(array("バックアップ名", "bkup_name", STEXT_LEN), array("EXIST_CHECK","MAX_LENGTH_CHECK","NO_SPTAB","ALNUM_CHECK"));
 	$objErr->doFunc(array("バックアップメモ", "bkup_memo", MTEXT_LEN), array("MAX_LENGTH_CHECK"));
+	
+	// 重複チェック
+	$objQuery = new SC_Query();
+	$sql = "SELECT bkup_name FROM dtb_bkup WHERE bkup_name = ?";
+	$ret = $objQuery->getall($sql,array($array['bkup_name']));
+	
+	if (count($ret) > 0) {
+		$objErr->arrErr['bkup_name'] = "バックアップ名が重複しています。別名を入力してください。";
+	}
+	
 
 	return $objErr->arrErr;
 }
