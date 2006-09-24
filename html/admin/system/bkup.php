@@ -65,9 +65,8 @@ case 'install':
 	
 // 削除
 case 'del':
-
 	// ファイルの削除
-	
+	unlink($objPage->bkup_dir.$_POST['list_name']);
 
 	// DBから削除
 	$delsql = "DELETE FROM dtb_bkup WHERE bkup_name = ?";
@@ -201,10 +200,7 @@ function lfCreateBkupData($bkup_name){
 		$zip = $tar->create($bkup_dir);
 		
 		// バックアップデータの削除
-		if (!$zip) {
-			sfDelFile($bkup_dir);
-		}
-		
+		if (!$zip) sfDelFile($bkup_dir);
 	}
 	
 
