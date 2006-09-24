@@ -34,6 +34,7 @@ class SC_View {
 		$this->_smarty->register_function("sf_mktime","sf_mktime");
 		$this->_smarty->register_function("sf_date","sf_date");
 		$this->_smarty->register_function("str_replace","str_replace");
+		
 
 		if(ADMIN_MODE == '1') {		
 			$this->time_start = time();

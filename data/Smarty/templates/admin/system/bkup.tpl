@@ -111,13 +111,11 @@
 										<td width="50">リストア</td>
 										<td width="50" align="center">削除</td>
 									</tr>
-									<!--{section name=cnt loop=$arrUpdate}-->
+									<!--{section name=cnt loop=$arrBkupList}-->
 									<tr bgcolor="#ffffff" class="fs12">
-										<td ><!--{$arrUpdate[cnt].module_name}--></td>
-										<td ><!--{$arrUpdate[cnt].module_explain}--></td>			
-										<td align="center"><!--{$arrUpdate[cnt].now_version|default:'-'}--></td>
-										<td align="center"><!--{$arrUpdate[cnt].latest_version}--></td>
-										<td align="center"><!--{$arrUpdate[cnt].release_date|sfDispDBDate:false}--></td>
+										<td ><!--{$arrBkupList[cnt].bkup_name|default:'-'}--></td>
+										<td ><!--{$arrBkupList[cnt].bkup_memo|default:'-'}--></td>			
+										<td align="center"><!--{$arrBkupList[cnt].create_date|default:'-'}--></td>
 										<td align="center">
 										<!--{if $arrUpdate[cnt].now_version != $arrUpdate[cnt].latest_version}-->
 											<a href="#" onclick="fnModeSubmit('install','module_id','<!--{$arrUpdate[cnt].module_id}-->');">install</a></td>
