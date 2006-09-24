@@ -285,11 +285,9 @@ class Archive_Tar extends PEAR
         }
 
         if ($v_result) {
-			print("_writeFooter");
             $this->_writeFooter();
             $this->_close();
         } else
-			print("_cleanFile");
             $this->_cleanFile();
 
         return $v_result;
