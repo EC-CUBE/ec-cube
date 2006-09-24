@@ -52,10 +52,9 @@
 										<td bgcolor="#f2f1ec" width="130">バックアップメモ</td>
 										<td bgcolor="#ffffff" width="548" align=left>
 											<span class="red12"><!--{$arrErr.bkup_memo}--></span>
-												<span class="red12"><!--{$arrErr.sql}--></span>
-												<div>
-												<textarea name="sql" cols=75 rows=5 align="left" wrap=off style="<!--{if $arrErr.sql != ""}-->background-color: <!--{$smarty.const.ERR_COLOR}-->;<!--{/if}--> width: 547px;"><!--{$arrSqlData.sql}--></textarea>
-												</div>
+											<div>
+											<textarea name="bkup_memo" cols=75 rows=5 align="left" wrap=off style="<!--{if $arrErr.bkup_memo != ""}-->background-color: <!--{$smarty.const.ERR_COLOR}-->;<!--{/if}--> width: 547px;"><!--{$arrSqlData.bkup_memo}--></textarea>
+											</div>
 										</td>
 									</tr>
 								</table>
