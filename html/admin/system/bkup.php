@@ -167,14 +167,14 @@ function lfCreateBkupData($bkup_name){
 		}
 	}
 
-
+	$csv_file = $bkup_dir . "/bkup_data.csv";
 	// CSV出力
 	// ディレクトリが存在していなければ作成する		
-	if (!is_dir(dirname($bkup_dir))) {
-		$err = mkdir(dirname($bkup_dir));
+	if (!is_dir(dirname($csv_file))) {
+		$err = mkdir(dirname($csv_file));
 	}
 	if ($err) {
-		$fp = fopen($bkup_dir . "/bkup_data.csv","w");
+		$fp = fopen($csv_file,"w");
 		if($fp) {
 			$err = fwrite($fp, $csv_data);
 			fclose($fp);
