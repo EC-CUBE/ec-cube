@@ -175,7 +175,7 @@ function lfCreateBkupData($bkup_name){
 	// CSV出力
 	// ディレクトリが存在していなければ作成する		
 	if (!is_dir($csv_file)) {
-		$err = mkdir(dirname($csv_file));
+		$err = mkdir($csv_file);
 	}
 	if ($err) {
 		$fp = fopen($csv_file,"w");
