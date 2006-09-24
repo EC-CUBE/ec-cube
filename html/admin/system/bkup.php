@@ -180,7 +180,14 @@ function lfCreateBkupData($bkup_name){
 			fclose($fp);
 		}
 	}
+	
 
+	// 商品画像ファイルをコピー
+	if (!$err) {
+		
+	}
+	
+		
 	if (!$err) {
 		$arrErr['bkup_name'] = "バックアップに失敗しました。";
 	}

@@ -335,8 +335,8 @@ function lfDispStep0_1($objPage) {
 	$objPage->tpl_mainpage = 'step0_1.tpl';
 	$objPage->tpl_mode = 'step0_1';
 	// ファイルコピー
-	$objPage->copy_mess = lfCopyDir("./user_data/", "../../html/user_data/", $objPage->copy_mess);
-	$objPage->copy_mess = lfCopyDir("./save_image/", "../../html/upload/save_image/", $objPage->copy_mess);	
+	$objPage->copy_mess = sfCopyDir("./user_data/", "../../html/user_data/", $objPage->copy_mess);
+	$objPage->copy_mess = sfCopyDir("./save_image/", "../../html/upload/save_image/", $objPage->copy_mess);	
 	return $objPage;
 }
 
@@ -548,51 +548,4 @@ function lfMakeConfigFile() {
 	}
 }
 
-// ディレクトリ以下のファイルを再帰的にコピー
-function lfCopyDir($src, $des, $mess, $override = false){
-	if(!is_dir($src)){
-		return false;
-	}
-
-	$oldmask = umask(0);
-	$mod= stat($src);
-	
-	// ディレクトリがなければ作成する
-	if(!file_exists($des)) {
-		mkdir($des, $mod[2]);
-	}
-	
-	$fileArray=glob( $src."*" );
-	foreach( $fileArray as $key => $data_ ){
-		// CVS管理ファイルはコピーしない
-		if(ereg("/CVS/Entries", $data_)) {
-			break;
-		}
-		if(ereg("/CVS/Repository", $data_)) {
-			break;
-		}
-		if(ereg("/CVS/Root", $data_)) {
-			break;
-		}
-		
-		mb_ereg("^(.*[\/])(.*)",$data_, $matches);
-		$data=$matches[2];
-		if( is_dir( $data_ ) ){
-			$mess = lfCopyDir( $data_.'/', $des.$data.'/', $mess);
-		}else{
-			if(!$override && file_exists($des.$data)) {
-				$mess.= $des.$data . "：ファイルが存在します\n";
-			} else {
-				if(@copy( $data_, $des.$data)) {
-					$mess.= $des.$data . "：コピー成功\n";
-				} else {
-					$mess.= $des.$data . "：コピー失敗\n";
-				}
-			}
-			$mod=stat($data_ );
-		}
-	}
-	umask($oldmask);
-	return $mess;
-}
 ?>
