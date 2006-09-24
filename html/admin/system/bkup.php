@@ -110,11 +110,9 @@ function lfCheckError($array){
 	$objQuery = new SC_Query();
 	$sql = "SELECT bkup_name FROM dtb_bkup WHERE bkup_name = ?";
 	$ret = $objQuery->getall($sql,array($array['bkup_name']));
-	
 	if (count($ret) > 0) {
 		$objErr->arrErr['bkup_name'] = "バックアップ名が重複しています。別名を入力してください。";
 	}
-	
 
 	return $objErr->arrErr;
 }
@@ -229,8 +227,8 @@ function lfGetColumnList($table_name){
 function lfUpdBkupData($data){
 	$objQuery = new SC_Query();
 	
-	$sql = "INSERT INTO dtb_bkup (bkup_name,create_date) values (?,now())";
-	$objQuery->query($sql, array($data['bkup_name']));
+	$sql = "INSERT INTO dtb_bkup (bkup_name,bkup_memo,create_date) values (?,?,now())";
+	$objQuery->query($sql, array($data['bkup_name'],$data['bkup_memo']));
 }
 
 
