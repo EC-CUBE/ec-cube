@@ -211,6 +211,7 @@ function lfCreateBkupData($bkup_name){
 					rmdir($del_file);
 				}
 			}
+			rmdir($bkup_dir);
 		}
 		
 	}
