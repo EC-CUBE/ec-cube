@@ -177,8 +177,7 @@ class Archive_Tar extends PEAR
     */
     function create($p_filelist)
     {
-		$this->createModify($p_filelist, '', '');
-        return "aaa";
+		return $this->createModify($p_filelist, '', '');
     }
     // }}}
 
@@ -269,7 +268,7 @@ class Archive_Tar extends PEAR
         $v_result = true;
 
         if (!$this->_openWrite())
-            return false;
+            return "false";
 
         if ($p_filelist != '') {
             if (is_array($p_filelist))
