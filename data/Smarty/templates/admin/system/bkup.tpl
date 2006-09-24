@@ -2,6 +2,7 @@
 <table width="878" border="0" cellspacing="0" cellpadding="0" summary=" ">
 <form name="form1" id="form1" method="post" action="">
 <input type="hidden" name="mode" value="edit">
+<input type="hidden" name="list_name" value="">
 	<tr valign="top">
 		<td background="/img/contents/navi_bg.gif" height="402">
 			<!--¢§SUB NAVI-->
@@ -116,9 +117,9 @@
 										<td ><!--{$arrBkupList[cnt].bkup_name}--></td>
 										<td ><!--{$arrBkupList[cnt].bkup_memo}--></td>			
 										<td align="center"><!--{$arrBkupList[cnt].create_date|sfCutString:19:true:false}--></td>
-										<td align="center"><a href="#" onclick="fnModeSubmit('install','module_id','<!--{$arrUpdate[cnt].module_id}-->');">restore</a></td>
+										<td align="center"><a href="#" onclick="fnModeSubmit('restore','list_name','<!--{$arrBkupList[cnt].bkup_name}-->');">restore</a></td>
 										<td align="center">
-											<a href="#" onclick="fnModeSubmit('uninstall','module_id','<!--{$arrUpdate[cnt].module_id}-->');">delete</a>
+											<a href="#" onclick="fnModeSubmit('del','list_name','<!--{$arrBkupList[cnt].bkup_name}-->');">delete</a>
 										</td>	
 									</tr>
 									<!--{/section}-->
