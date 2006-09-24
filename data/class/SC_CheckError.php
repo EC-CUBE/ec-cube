@@ -154,8 +154,6 @@ class SC_CheckError {
 		}
 	}
 	
-	
-
 	/*　最小文字数制限の判定　*/
 	// value[0] = 項目名 value[1] = 判定対象文字列 value[2] = 最小文字数(半角も全角も1文字として数える)
 	function MIN_LENGTH_CHECK( $value ) {		// 入力が指定文字数未満ならエラーを返す

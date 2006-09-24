@@ -30,8 +30,11 @@ sfIsSuccess($objSess);
 switch($_POST['mode']) {
 // バックアップを作成する
 case 'bkup':
+	// 入力文字列の変換
+	$arrData = lfConvertParam($_POST);
+
 	// エラーチェック
-	$arrErr = lfCheckError($_POST);
+	$arrErr = lfCheckError($arrData);
 
 	// エラーがなければバックアップ処理を行う	
 	if (count($arrErr) <= 0) {
@@ -39,7 +42,7 @@ case 'bkup':
 		$arrErr = lfCreateBkupData();
 		
 		// DBにデータ更新
-		lfUpdBkupData($_POST);
+		lfUpdBkupData($arrData);
 	}
 
 	break;
@@ -70,12 +73,36 @@ $objView->display(MAIN_FRAME);		//テンプレートの出力
 
 //-------------------------------------------------------------------------------------------------------
 
+/* 取得文字列の変換 */
+function lfConvertParam($array) {
+	/*
+	 *	文字列の変換
+	 *	K :  「半角(ﾊﾝｶｸ)片仮名」を「全角片仮名」に変換
+	 *	C :  「全角ひら仮名」を「全角かた仮名」に変換
+	 *	V :  濁点付きの文字を一文字に変換。"K","H"と共に使用します	
+	 *	n :  「全角」数字を「半角(ﾊﾝｶｸ)」に変換
+	 *  a :  全角英数字を半角英数字に変換する
+	 */
+	$arrConvList['bkup_name'] = "a";
+	$arrConvList['bkup_memo'] = "KVC";
+	
+	// 文字変換
+	foreach ($arrConvList as $key => $val) {
+		// POSTされてきた値のみ変換する。
+		if(isset($array[$key])) {
+			$array[$key] = mb_convert_kana($array[$key] ,$val);
+		}
+	}
+	return $array;
+}
+
 // エラーチェック
 function lfCheckError($array){
 	$objErr = new SC_CheckError($array);
 	
-	$objErr->doFunc(array("バックアップ名", "bkup_name", STEXT_LEN), array("EXIST_CHECK","MAX_LENGTH_CHECK"));
-	
+	$objErr->doFunc(array("バックアップ名", "bkup_name", STEXT_LEN), array("EXIST_CHECK","MAX_LENGTH_CHECK","NO_SPTAB","ALNUM_CHECK"));
+	$objErr->doFunc(array("バックアップメモ", "bkup_memo", MTEXT_LEN), array("MAX_LENGTH_CHECK"));
+
 	return $objErr->arrErr;
 }
 
