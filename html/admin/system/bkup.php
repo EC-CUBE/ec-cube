@@ -198,16 +198,17 @@ function lfCreateBkupData($bkup_name){
 		$tar = new Archive_Tar($objPage->bkup_dir . $bkup_name.".tar.gz", TRUE);
 	
 		//圧縮をおこなう
-		$err = $tar->create($bkup_dir);
+		$zip = $tar->create($bkup_dir);
+		// バックアップデータの削除
+		if ($zip) {
+			$dh = opendir($bkup_dir);
+			while($file = readdir($dh)){
+				sfPrintR($file);
+			}
+		}
+		
 	}
 	
-	// バックアップデータの削除
-	if ($err) {
-		$dh = opendir($bkup_dir);
-		while($file = readdir($dh)){
-			sfPrintR($file);
-		}
-	}
 
 	if (!$err) {
 		$arrErr['bkup_name'] = "バックアップに失敗しました。";
