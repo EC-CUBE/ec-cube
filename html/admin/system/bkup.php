@@ -59,6 +59,11 @@ case 'install':
 	
 // 削除
 case 'del':
+
+	// ファイルの削除
+	
+
+	// DBから削除
 	$delsql = "DELETE FROM dtb_bkup WHERE bkup_name = ?";
 	$objQuery->query($delsql, array($_POST['list_name']));
 
@@ -126,8 +131,8 @@ function lfCreateBkupData($bkup_name){
 	$err = true;
 	
 	$bkup_dir = $objPage->bkup_dir;
-	$bkup_dir = $bkup_dir . $bkup_name . ".csv";
-	
+	$bkup_dir = $bkup_dir . $bkup_name . "bkup_data.csv";
+
 	// 全テーブル取得
 	$arrTableList = lfGetTableList();
 	
@@ -137,9 +142,6 @@ function lfCreateBkupData($bkup_name){
 		if ($val != "dtb_bkup") {
 			// テーブル構成を取得
 			$arrColumnList = lfGetColumnList($val);
-			
-			// テーブル構成のCSV出力データ生成
-			
 			
 			// 全データを取得
 			$arrData = $objQuery->getAll("SELECT * FROM $val");
@@ -171,7 +173,6 @@ function lfCreateBkupData($bkup_name){
 	if (!is_dir(dirname($bkup_dir))) {
 		$err = mkdir(dirname($bkup_dir));
 	}
-	
 	if ($err) {
 		$fp = fopen($bkup_dir,"w");
 		if($fp) {
