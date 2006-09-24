@@ -39,7 +39,7 @@ case 'bkup':
 	// エラーがなければバックアップ処理を行う	
 	if (count($arrErr) <= 0) {
 		// バックアップファイル作成
-		$arrErr = lfCreateBkupData();
+		$arrErr = lfCreateBkupData($arrData['bkup_name']);
 		
 		// DBにデータ更新
 		lfUpdBkupData($arrData);
@@ -110,12 +110,14 @@ function lfCheckError($array){
 }
 
 // バックアップファイル作成
-function lfCreateBkupData(){
+function lfCreateBkupData($bkup_name){
 	global $objPage;
 	$objQuery = new SC_Query();
 	$csv_data = "";
-	$bkup_dir = $objPage->bkup_dir;
 	$err = true;
+	
+	$bkup_dir = $objPage->bkup_dir;
+	$bkup_dir = $bkup_dir . $bkup_name . ".csv";
 	
 	// 全テーブル取得
 	$arrTableList = lfGetTableList();
@@ -153,7 +155,7 @@ function lfCreateBkupData(){
 			}	
 		}
 	}
-	$bkup_dir = $bkup_dir . "test" . ".csv";
+
 
 	// CSV出力
 	// ディレクトリが存在していなければ作成する		
