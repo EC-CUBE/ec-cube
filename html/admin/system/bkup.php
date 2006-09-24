@@ -170,7 +170,7 @@ function lfCreateBkupData($bkup_name){
 	$csv_file = $bkup_dir . "bkup_data.csv";
 	// CSV出力
 	// ディレクトリが存在していなければ作成する		
-	if (!is_dir(dirname($csv_file))) {
+	if (!is_dir($csv_file)) {
 		$err = mkdir(dirname($csv_file));
 	}
 	if ($err) {
@@ -180,16 +180,12 @@ function lfCreateBkupData($bkup_name){
 			fclose($fp);
 		}
 	}
-	
 
 	// 商品画像ファイルをコピー
 	if ($err) {
 		$copy_mess = "";
 		$copy_mess = sfCopyDir("../../upload/save_image/", $bkup_dir, $copy_mess);
-		
-		sfprintr($copy_mess);
 	}
-	
 		
 	if (!$err) {
 		$arrErr['bkup_name'] = "バックアップに失敗しました。";
