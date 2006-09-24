@@ -196,7 +196,7 @@ function lfCreateBkupData($bkup_name){
 	//オブジェクトを作成する
 	//new Archive_Tar(ファイル名,圧縮フラグ);
 	//圧縮フラグTRUEはgzip圧縮をおこなう
-	$tar = new Archive_Tar($bkup_name.".tar.gz", TRUE);
+	$tar = new Archive_Tar($bkup_dir . $bkup_name.".tar.gz", TRUE);
 
 	//圧縮をおこなう
 	$a = $tar->create($csv_file);
