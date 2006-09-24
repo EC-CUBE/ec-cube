@@ -199,7 +199,7 @@ function lfCreateBkupData($bkup_name){
 	$tar = new Archive_Tar($objPage->bkup_dir . $bkup_name.".tar.gz", TRUE);
 
 	//°µ½Ì¤ò¤ª¤³¤Ê¤¦
-	$tar->create("./" . $bkup_name);
+	$tar->create($bkup_dir);
 	
 	
 	
