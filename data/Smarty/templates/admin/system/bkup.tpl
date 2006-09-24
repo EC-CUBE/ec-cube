@@ -45,14 +45,14 @@
 										<td bgcolor="#f2f1ec" width="130">バックアップ名<span class="red"> *</span></td>
 										<td bgcolor="#ffffff" width="548" align=left>
 											<span class="red12"><!--{$arrErr.bkup_name}--></span>
-											<input type="text" name="bkup_name" value="<!--{$bkup_name|escape}-->" maxlength="<!--{$smarty.const.STEXT_LEN}-->" size="60" class="box60" style="<!--{if $arrErr.bkup_name != ""}-->background-color: <!--{$smarty.const.ERR_COLOR}--><!--{/if}-->" /><span class="red"> （上限<!--{$smarty.const.STEXT_LEN}-->文字）</span>
+											<input type="text" name="bkup_name" value="<!--{$bkup_name|escape}-->" maxlength="<!--{$smarty.const.STEXT_LEN}-->" size="60" class="box60" style="<!--{if $arrErr.bkup_name != ""}-->background-color: <!--{$smarty.const.ERR_COLOR}-->;<!--{/if}--> ime-mode: disabled;" /><span class="red"> （上限<!--{$smarty.const.STEXT_LEN}-->文字）</span>
 										</td>
 									</tr>
 									<tr align="center" class="fs12n">
 										<td bgcolor="#f2f1ec" width="130">バックアップメモ</td>
 										<td bgcolor="#ffffff" width="548" align=left>
 											<span class="red12"><!--{$arrErr.bkup_memo}--></span>
-											<textarea name="bkup_memo" maxlength="<!--{$smarty.const.MTEXT_LEN}-->" cols="60" rows="5" class="area60" style="" ><!--{$arrForm.bkup_memo|escape}--></textarea>
+											<textarea name="bkup_memo" maxlength="<!--{$smarty.const.MTEXT_LEN}-->" cols="60" rows="5" class="area60" style="<!--{if $arrErr.bkup_memo != ""}-->background-color: <!--{$smarty.const.ERR_COLOR}--><!--{/if}-->" ><!--{$arrForm.bkup_memo|escape}--></textarea>
 											<span class="red"> （上限<!--{$smarty.const.MTEXT_LEN}-->文字）</span>
 										</td>
 									</tr>
