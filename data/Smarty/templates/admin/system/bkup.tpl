@@ -113,8 +113,8 @@
 									</tr>
 									<!--{section name=cnt loop=$arrBkupList}-->
 									<tr bgcolor="#ffffff" class="fs12">
-										<td ><!--{$arrBkupList[cnt].bkup_name|default:'-'}--></td>
-										<td ><!--{$arrBkupList[cnt].bkup_memo|default:'-'}--></td>			
+										<td ><!--{$arrBkupList[cnt].bkup_name}--></td>
+										<td ><!--{$arrBkupList[cnt].bkup_memo}--></td>			
 										<td align="center"><!--{$arrBkupList[cnt].create_date|sfCutString:19}--></td>
 										<td align="center">
 										<!--{if $arrUpdate[cnt].now_version != $arrUpdate[cnt].latest_version}-->
