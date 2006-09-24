@@ -1,3 +1,9 @@
 <?php
-	dummy();
+function	dummy() {
+
+}
+function	dummy() {
+	
+}
+	
 ?>

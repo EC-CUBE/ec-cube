@@ -10,4 +10,4 @@ php_value mbstring.detect_order auto
 php_value mbstring.substitute_character none
 php_value magic_quotes_gpc off
 #php_value error_reporting "E_ALL ^ E_NOTICE"
-php_value error_reporting "E_ALL"
+#php_value error_reporting "E_ALL"
