@@ -277,6 +277,7 @@ function sfDelFile($dir){
 	$dh = opendir($dir);
 	// フォルダ内のファイルを削除
 	while($file = readdir($dh)){
+		if ($file == "." or $file == "..") continue;
 		$del_file = $dir . "/" . $file;
 		if(is_file($del_file)){
 			unlink($dir . "/" . $file);
