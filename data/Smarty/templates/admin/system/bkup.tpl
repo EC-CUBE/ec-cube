@@ -52,9 +52,8 @@
 										<td bgcolor="#f2f1ec" width="130">バックアップメモ</td>
 										<td bgcolor="#ffffff" width="548" align=left>
 											<span class="red12"><!--{$arrErr.bkup_memo}--></span>
-											<div>
-											<textarea name="bkup_memo" cols=75 rows=5 align="left" wrap=off style="<!--{if $arrErr.bkup_memo != ""}-->background-color: <!--{$smarty.const.ERR_COLOR}-->;<!--{/if}--> width: 547px;"><!--{$arrSqlData.bkup_memo}--></textarea>
-											</div>
+											<textarea name="bkup_memo" maxlength="<!--{$smarty.const.MTEXT_LEN}-->" cols="60" rows="8" class="area60" style="" ><!--{$arrForm.bkup_memo|escape}--></textarea>
+											<span class="red"> （上限<!--{$smarty.const.MTEXT_LEN}-->文字）</span>
 										</td>
 									</tr>
 								</table>
