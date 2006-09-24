@@ -41,7 +41,6 @@ case 'bkup':
 		// DBにデータ更新
 		lfUpdBkupData($_POST);
 	}
-	
 
 	break;
 	
@@ -190,7 +189,6 @@ function lfUpdBkupData($data){
 	
 	$sql = "INSERT INTO dtb_bkup (bkup_name,create_date) values (?,now())";
 	$objQuery->query($sql, array($data['bkup_name']));
-	
 }
 
 

@@ -1,600 +1,790 @@
 <?php
 require_once("../require.php");
-$INSTALL_DIR = realpath(dirname( __FILE__));
+require_once("./index_sub.php");
+require_once("../batch/daily.php");
+
+require_once("./class/SC_GraphPie.php");
+require_once("./class/SC_GraphLine.php");
+require_once("./class/SC_GraphBar.php");
 
 class LC_Page {
+	var $arrResults;
+	var $keyname;
+	var $tpl_image;
+	var $arrTitle;
 	function LC_Page() {
-		$this->arrDB_TYPE = array(
-			'pgsql' => 'PostgreSQL',
-			'mysql' => 'mySQL'	
-		);
+		$this->tpl_mainpage = 'total/index.tpl';
+		$this->tpl_subnavi = 'total/subnavi.tpl';
+		$this->tpl_graphsubtitle = 'total/subtitle.tpl';
+		$this->tpl_titleimage = '/img/title/title_sale.jpg';
+		$this->tpl_mainno = 'total';
+		global $arrWDAY;
+		$this->arrWDAY = $arrWDAY;
+		// ページタイトル
+		$this->arrTitle[''] = "期間別集計";
+		$this->arrTitle['term'] = "期間別集計";
+		$this->arrTitle['products'] = "商品別集計";
+		$this->arrTitle['age'] = "年代別集計";
+		$this->arrTitle['job'] = "職業別集計";
+		$this->arrTitle['member'] = "会員別集計";
 	}
 }
 
 $objPage = new LC_Page();
+$objView = new SC_AdminView();
+$objSess = new SC_Session();
+// 認証可否の判定
+sfIsSuccess($objSess);
 
-// テンプレートコンパイルディレクトリの書込み権限チェック
-$temp_dir = $INSTALL_DIR . '/temp';
-$mode = lfGetFileMode($temp_dir);
-
-if($mode != '777') {
-	sfErrorHeader($temp_dir . "にユーザ書込み権限(777)を付与して下さい。", true);
-	exit;
-}
-
-$objView = new SC_InstallView($INSTALL_DIR . '/templates', $INSTALL_DIR . '/temp');
+// 入力期間をセッションに記録する
+lfSaveDateSession();
 
 // パラメータ管理クラス
-$objWebParam = new SC_FormParam();
-$objDBParam = new SC_FormParam();
+$objFormParam = new SC_FormParam();
 // パラメータ情報の初期化
-$objWebParam = lfInitWebParam($objWebParam);
-$objDBParam = lfInitDBParam($objDBParam);
+lfInitParam();
+$objFormParam->setParam($_POST);
+$objFormParam->setParam($_GET);
 
-if ($_POST['db_type'] == 'pgsql') {
-	$port = "";
-}else{
-	$port = ":".$_POST['db_port'];
+// 検索ワードの引き継ぎ
+foreach ($_POST as $key => $val) {
+	if (ereg("^search_", $key)) {
+		$objPage->arrHidden[$key] = $val;		
+	}
 }
-
-//フォーム配列の取得
-$objWebParam->setParam($_POST);
-$objDBParam->setParam($_POST);
 
 switch($_POST['mode']) {
-// ようこそ
-case 'welcome':
-	$objPage = lfDispStep0($objPage);
-	break;
-// アクセス権限のチェック
-case 'step0':
-	$objPage = lfDispStep0_1($objPage);
-	break;	
-// ファイルのコピー
-case 'step0_1':
-	$objPage = lfDispStep1($objPage);
-	break;	
-// WEBサイトの設定
-case 'step1':
-	//入力値のエラーチェック
-	$objPage->arrErr = lfCheckWEBError($objWebParam);
-	if(count($objPage->arrErr) == 0) {
-		$objPage = lfDispStep2($objPage);
-	} else {
-		$objPage = lfDispStep1($objPage);
-	}
-	break;
-// データベースの設定
-case 'step2':
+case 'pdf':
+case 'csv':
+case 'search':
+	// 入力値の変換
+	$objFormParam->convParam();
+	$objPage->arrErr = lfCheckError($arrRet);
+	$arrRet = $objFormParam->getHashArray();
+	
+	// 入力エラーなし
+	if (count($objPage->arrErr) == 0) {
+		foreach ($arrRet as $key => $val) {
+			if($val == "") {
+				continue;
+			}
+			switch ($key) {
+			case 'search_startyear':
+				$sdate = $_POST['search_startyear'] . "/" . $_POST['search_startmonth'] . "/" . $_POST['search_startday'];
+				break;
+			case 'search_endyear':
+				$edate = $_POST['search_endyear'] . "/" . $_POST['search_endmonth'] . "/" . $_POST['search_endday'];
+				break;
+			case 'search_startyear_m':
+				list($sdate, $edate) = sfTermMonth($_POST['search_startyear_m'], $_POST['search_startmonth_m'], CLOSE_DAY);
+				break;
+			default:
+				break;
+			}
+		}
 
-	//入力値のエラーチェック
-	$objPage->arrErr = lfCheckDBError($objDBParam);
-	if(count($objPage->arrErr) == 0) {
-		
-		// 店舗を変更しない場合には完了画面へ遷移
-		$skip = $_POST["db_skip"];
-		if ($skip == "on") {
-			// 設定ファイルの生成
-			lfMakeConfigFile();
-			$objPage = lfDispComplete($objPage);
+		if($_POST['type'] != "") {
+			$type = $_POST['type'];
+		}
+				
+		$page = $objFormParam->getValue('page');
+		switch($page) {
+		// 商品別集計
+		case 'products':
+			if($type == "") {
+				$type = 'all';
+			}
+			$objPage->tpl_page_type = "total/page_products.tpl";
+			// 未集計データの集計を行う
+			lfRealTimeDailyTotal($sdate, $edate);
+			// 検索結果の取得
+			$objPage = lfGetOrderProducts($type, $sdate, $edate, $objPage);
+			break;
+		// 職業別集計
+		case 'job':
+			if($type == "") {
+				$type = 'all';
+			}
+			$objPage->tpl_page_type = "total/page_job.tpl";
+			// 未集計データの集計を行う
+			lfRealTimeDailyTotal($sdate, $edate);
+			// 検索結果の取得
+			$objPage = lfGetOrderJob($type, $sdate, $edate, $objPage);
+			break;
+		// 会員別集計
+		case 'member':
+			if($type == "") {
+				$type = 'all';
+			}
+			$objPage->tpl_page_type = "total/page_member.tpl";
+			// 未集計データの集計を行う
+			lfRealTimeDailyTotal($sdate, $edate);
+			// 検索結果の取得
+			$objPage = lfGetOrderMember($type, $sdate, $edate, $objPage);
+			break;
+		// 年代別集計
+		case 'age':
+			if($type == "") {
+				$type = 'all';
+			}
+			$objPage->tpl_page_type = "total/page_age.tpl";
+			// 未集計データの集計を行う
+			lfRealTimeDailyTotal($sdate, $edate);
+			// 検索結果の取得
+			$objPage = lfGetOrderAge($type, $sdate, $edate, $objPage);
+			break;
+		// 期間別集計
+		default:
+			if($type == "") {
+				$type = 'day';
+			}
+			$objPage->tpl_page_type = "total/page_term.tpl";
+			// 未集計データの集計を行う
+			lfRealTimeDailyTotal($sdate, $edate);
+			// 検索結果の取得
+			$objPage = lfGetOrderTerm($type, $sdate, $edate, $objPage);
+			
 			break;
 		}
+
+		if($_POST['mode'] == 'csv') {
+			// CSV出力タイトル行の取得
+			list($arrTitleCol, $arrDataCol) = lfGetCSVColum($page, $objPage->keyname);
+			$head = sfGetCSVList($arrTitleCol);
+			$data = lfGetDataColCSV($objPage->arrResults, $arrDataCol);
+			// CSVを送信する。
+			sfCSVDownload($head.$data, $page."_".$type);
+			exit;
+		}
 		
-		$objPage = lfDispStep3($objPage);
-
-	} else {
-		$objPage = lfDispStep2($objPage);
+		if($_POST['mode'] == 'pdf') {
+			// CSV出力タイトル行の取得
+			list($arrTitleCol, $arrDataCol, $arrColSize, $arrAlign, $title) = lfGetPDFColum($page, $type, $objPage->keyname);
+			$head = sfGetPDFList($arrTitleCol);
+			$data = lfGetDataColPDF($objPage->arrResults, $arrDataCol, 40);
+			// PDF出力用
+			$graph_name = basename($objPage->tpl_image);
+			lfPDFDownload($graph_name, $head . $data, $arrColSize, $arrAlign, $sdate, $edate, $title);
+			exit;	
+		}	
 	}
 	break;
-// テーブルの作成
-case 'step3':
-	// 入力データを渡す。
-	$arrRet =  $objDBParam->getHashArray();
-
-	// テーブルの作成
-	$objPage->arrErr = lfExecuteSQL("./create_table_".$arrRet['db_type'].".sql", $arrRet['db_user'], $arrRet['db_password'], $arrRet['db_server'], $arrRet['db_name'], $arrRet['db_type'], $arrRet['db_port']); 
-	if(count($objPage->arrErr) == 0) {
-		$objPage->tpl_message.="○：テーブルの作成に成功しました。<br>";
-	} else {
-		$objPage->tpl_message.="×：テーブルの作成に失敗しました。<br>";		
-	}
-
-	// ビューの作成
-	if(count($objPage->arrErr) == 0 and $arrRet['db_type'] == 'pgsql') {
-		// ビューの作成
-		$objPage->arrErr = lfExecuteSQL("./create_view.sql", $arrRet['db_user'], $arrRet['db_password'], $arrRet['db_server'], $arrRet['db_name'], $arrRet['db_type'], $arrRet['db_port']); 
-		if(count($objPage->arrErr) == 0) {
-			$objPage->tpl_message.="○：ビューの作成に成功しました。<br>";
-		} else {
-			$objPage->tpl_message.="×：ビューの作成に失敗しました。<br>";		
-		}
-	}	
-	
-	// 初期データの作成
-	if(count($objPage->arrErr) == 0) {
-		$objPage->arrErr = lfExecuteSQL("./insert_data.sql", $arrRet['db_user'], $arrRet['db_password'], $arrRet['db_server'], $arrRet['db_name'], $arrRet['db_type'], $arrRet['db_port']); 
-		if(count($objPage->arrErr) == 0) {
-			$objPage->tpl_message.="○：初期データの作成に成功しました。<br>";
-		} else {
-			$objPage->tpl_message.="×：初期データの作成に失敗しました。<br>";		
-		}
-	}	
-	
-	// カラムコメントの書込み
-	if(count($objPage->arrErr) == 0) {
-		$objPage->arrErr = lfExecuteSQL("./column_comment.sql", $arrRet['db_user'], $arrRet['db_password'], $arrRet['db_server'], $arrRet['db_name'], $arrRet['db_type'], $arrRet['db_port']); 
-		if(count($objPage->arrErr) == 0) {
-			$objPage->tpl_message.="○：カラムコメントの書込みに成功しました。<br>";
-		} else {
-			$objPage->tpl_message.="×：カラムコメントの書込みに失敗しました。<br>";		
-		}
-	}	
-	
-	// テーブルコメントの書込み
-	if(count($objPage->arrErr) == 0) {
-		$objPage->arrErr = lfExecuteSQL("./table_comment.sql", $arrRet['db_user'], $arrRet['db_password'], $arrRet['db_server'], $arrRet['db_name'], $arrRet['db_type'], $arrRet['db_port']); 
-		if(count($objPage->arrErr) == 0) {
-			$objPage->tpl_message.="○：テーブルコメントの書込みに成功しました。<br>";
-		} else {
-			$objPage->tpl_message.="×：テーブルコメントの書込みに失敗しました。<br>";		
-		}
-	}
-
-
-	if(count($objPage->arrErr) == 0) {
-		// 設定ファイルの生成
-		lfMakeConfigFile();
-		$objPage = lfDispStep3($objPage);
-		$objPage->tpl_mode = 'complete';
-	} else {
-		$objPage = lfDispStep3($objPage);
-	}
-	break;
-// テーブル類削除
-case 'drop':
-	// 入力データを渡す。
-	$arrRet =  $objDBParam->getHashArray();
-	
-	if ($arrRet['db_type'] == 'pgsql'){
-		// ビューの削除
-		$objPage->arrErr = lfExecuteSQL("./drop_view.sql", $arrRet['db_user'], $arrRet['db_password'], $arrRet['db_server'], $arrRet['db_name'], $arrRet['db_type'], $arrRet['db_port'], false); 
-		if(count($objPage->arrErr) == 0) {
-			$objPage->tpl_message.="○：ビューの削除に成功しました。<br>";
-		} else {
-			$objPage->tpl_message.="×：ビューの削除に失敗しました。<br>";		
-		}
-	}
-
-
-	// テーブルの削除
-	if(count($objPage->arrErr) == 0) {
-		$objPage->arrErr = lfExecuteSQL("./drop_table.sql", $arrRet['db_user'], $arrRet['db_password'], $arrRet['db_server'], $arrRet['db_name'], $arrRet['db_type'], $arrRet['db_port'], false); 
-		if(count($objPage->arrErr) == 0) {
-			$objPage->tpl_message.="○：テーブルの削除に成功しました。<br>";
-		} else {
-			$objPage->tpl_message.="×：テーブルの削除に失敗しました。<br>";		
-		}
-	}
-	$objPage = lfDispStep3($objPage);
-	break;
-// 完了画面
-case 'complete':
-	// ショップマスタ情報の書き込み
-	$arrRet =  $objDBParam->getHashArray();
-	$dsn = $arrRet['db_type']."://".$arrRet['db_user'].":".$arrRet['db_password']."@".$arrRet['db_server'].$port."/".$arrRet['db_name'];
-	$sqlval['shop_name'] = $objWebParam->getValue('shop_name');
-	$sqlval['email01'] = $objWebParam->getValue('admin_mail');
-	$sqlval['email02'] = $objWebParam->getValue('admin_mail');
-	$sqlval['email03'] = $objWebParam->getValue('admin_mail');
-	$sqlval['email04'] = $objWebParam->getValue('admin_mail');
-	$sqlval['email05'] = $objWebParam->getValue('admin_mail');
-	$sqlval['top_tpl'] = "default1";
-	$sqlval['product_tpl'] = "default1";
-	$sqlval['detail_tpl'] = "default1";
-	$sqlval['mypage_tpl'] = "default1";
-	$objQuery = new SC_Query($dsn);
-	$cnt = $objQuery->count("dtb_baseinfo");
-	if($cnt > 0) {
-		$objQuery->update("dtb_baseinfo", $sqlval);
-	} else {		
-		$objQuery->insert("dtb_baseinfo", $sqlval);		
-	}
-	global $GLOBAL_ERR;
-	$GLOBAL_ERR = "";
-	$objPage = lfDispComplete($objPage);
-	break;
-case 'return_step0':
-	$objPage = lfDispStep0($objPage);
-	break;	
-case 'return_step1':
-	$objPage = lfDispStep1($objPage);
-	break;
-case 'return_step2':
-	$objPage = lfDispStep2($objPage);
-	break;
-case 'return_welcome':
 default:
-	$objPage = lfDispWelcome($objPage);
+	if(count($_GET) == 0) {
+		/*
+			リアルタイム集計に切り替え by Nakagawa 2006/08/31
+			// 1ヶ月分の集計
+			lfStartDailyTotal(31,0);
+		*/
+	}
 	break;
 }
 
-//フォーム用のパラメータを返す
-$objPage->arrForm = $objWebParam->getFormParamList();
-$objPage->arrForm = array_merge($objPage->arrForm, $objDBParam->getFormParamList());
+// 登録・更新日検索用
+$objDate = new SC_Date();
+$objDate->setStartYear(RELEASE_YEAR);
+$objDate->setEndYear(DATE("Y"));
+$objPage->arrYear = $objDate->getYear();
+$objPage->arrMonth = $objDate->getMonth();
+$objPage->arrDay = $objDate->getDay();
+// 入力値の取得
+$objPage->arrForm = $objFormParam->getFormParamList();
 
-// SiteInfoを読み込まない
+$objPage->tpl_subtitle = $objPage->arrTitle[$objFormParam->getValue('page')];
+
 $objView->assignobj($objPage);
-$objView->display('install_frame.tpl');
-//-----------------------------------------------------------------------------------------------------------------------------------
-// ようこそ画面の表示
-function lfDispWelcome($objPage) {
-	global $objWebParam;
-	global $objDBParam;
-	// hiddenに入力値を保持
-	$objPage->arrHidden = $objWebParam->getHashArray();
-	// hiddenに入力値を保持
-	$objPage->arrHidden = array_merge($objPage->arrHidden, $objDBParam->getHashArray());
-	$objPage->arrHidden['db_skip'] = $_POST['db_skip'];
-	$objPage->tpl_mainpage = 'welcome.tpl';
-	$objPage->tpl_mode = 'welcome';
-	return $objPage;
-}
+$objView->display(MAIN_FRAME);
 
-// STEP0画面の表示(ファイル権限チェック) 
-function lfDispStep0($objPage) {
-	global $objWebParam;
-	global $objDBParam;
-	// hiddenに入力値を保持
-	$objPage->arrHidden = $objWebParam->getHashArray();
-	// hiddenに入力値を保持
-	$objPage->arrHidden = array_merge($objPage->arrHidden, $objDBParam->getHashArray());
-	$objPage->arrHidden['db_skip'] = $_POST['db_skip'];
-	$objPage->tpl_mainpage = 'step0.tpl';
-	$objPage->tpl_mode = 'step0';
+//---------------------------------------------------------------------------------------------------------------------------
+/* PDF出力 */
+function lfPDFDownload($image, $table, $arrColSize, $arrAlign, $sdate, $edate, $title) {
 	
-	// プログラムで書込みされるファイル・ディレクトリ
-	$arrWriteFile = array(
-		"html/install.inc",
-		"html/user_data",
-		"html/upload",
-		"data/Smarty/templates_c",		
-		"data/update",
-		"data/logs",
-	);
+	$objPdf = new SC_Pdf();
+	$objPdf->setTableColor("CCCCCC", "F0F0F0", "D1DEFE");
+			
+	// 土台となるPDFファイルの指定
+	$objPdf->setTemplate(PDF_DIR . "total.pdf");
+
+	$disp_sdate = sfDispDBDate($sdate, false);
+	$disp_edate = sfDispDBDate($edate, false);
+				
+	$arrText['title_block'] = $title;
+	$arrText['date_block'] = "$disp_sdate-$disp_edate";
+	$arrImage['graph_block'] = GRAPH_DIR . $image;
 	
-	$mess = "";
-	$err_file = false;
-	foreach($arrWriteFile as $val) {
-		$path = "../../" . $val;		
-		if(file_exists($path)) {
-			$mode = lfGetFileMode("../../" . $val);
-			
-			// ディレクトリの場合
-			if(is_dir($path)) {
-				if($mode == "777") {
-					$mess.= ">> ○：$val($mode) は問題ありません。<br>";					
-				} else {
-					$mess.= ">> ×：$val($mode) にユーザ書込み権限(777)を付与して下さい。<br>";
-					$err_file = true;										
-				}
-			} else {
-				if($mode == "666") {
-					$mess.= ">> ○：$val($mode) は問題ありません。<br>";					
-				} else {
-					$mess.= ">> ×：$val($mode) にユーザ書込み権限(666)を付与して下さい。<br>";
-					$err_file = true;							
-				}
-			}	
-			
+	// 文末の\nを削除する
+	$table = ereg_replace("\n$", "", $table);
+	$arrRet = split("\n", $table);
+	$page_max = intval((count($arrRet) / 35) + 1);
+	
+	for($page = 1; $page <= $page_max; $page++) {
+		if($page > 1) {
+			// 2ページ以降
+			$start_no = 35 * ($page - 1) + 1;
 		} else {
-			$mess.= ">> ×：$val が見つかりません。<br>";
-			$err_file = true;
+			// 開始ページ
+			$start_no = 1;			
 		}
+				
+		$arrText['page_block'] = $page . " / " . $page_max;
+		$objPdf->setTextBlock($arrText);
+		$objPdf->setImageBlock($arrImage);
+		// ブロック値の入力
+		$objPdf->writeBlock();
+		// 最終ページのみ、商品別集計は合計がないので最終行の色を変更しない。
+		if($page == $page_max && $_POST['page'] != 'products') {
+			$last_color_flg = true;
+		} else {
+			$last_color_flg = false;
+		}	
+		$objPdf->writeTableCenter($table, 500, $arrColSize, $arrAlign, 35, $start_no, $last_color_flg);
+		$objPdf->closePage();
+	}
+
+	// PDFの出力
+	$objPdf->output();	
+}
+
+/* セッションに入力期間を記録する */
+function lfSaveDateSession() {
+	if($_POST['form'] == 1) {
+		$_SESSION['total']['startyear_m'] = $_POST['search_startyear_m'];
+		$_SESSION['total']['startmonth_m'] = $_POST['search_startmonth_m'];
 	}
 	
-	// 権限エラー等が発生していない場合
-	if(!$err_file) {
-		$path = "../../data/Smarty/templates_c/admin";
-		if(!file_exists($path)) {
-			mkdir($path);
-		}
-		$path = "../../html/upload/save_image";
-		if(!file_exists($path)) {
-			mkdir($path);
-		}
-		$path = "../../html/upload/temp_image";
-		if(!file_exists($path)) {
-			mkdir($path);
-		}
-		$path = "../../html/upload/graph_image";
-		if(!file_exists($path)) {
-			mkdir($path);
-		}
-		$path = "../../html/upload/csv";
-		if(!file_exists($path)) {
-			mkdir($path);
-		}
+	if($_POST['form'] == 2) {
+		$_SESSION['total']['startyear'] = $_POST['search_startyear'];
+		$_SESSION['total']['startmonth'] = $_POST['search_startmonth'];
+		$_SESSION['total']['startday'] = $_POST['search_startday'];
+		$_SESSION['total']['endyear'] = $_POST['search_endyear'];
+		$_SESSION['total']['endmonth'] = $_POST['search_endmonth'];
+		$_SESSION['total']['endday'] = $_POST['search_endday'];
+	}
+}
+
+/* デフォルト値の取得 */
+function lfGetDateDefault() {
+	$year = date("Y");
+	$month = date("m");
+	$day = date("d");
+	
+	$list = $_SESSION['total'];
+	
+	// セッション情報に開始月度が保存されていない。
+	if($_SESSION['total']['startyear_m'] == "") {
+		$list['startyear_m'] = $year;
+		$list['startmonth_m'] = $month;
 	}
 	
-	$objPage->mess = $mess;
-	$objPage->err_file = $err_file;
-
-	return $objPage;
-}
-
-
-// STEP0_1画面の表示(ファイルのコピー) 
-function lfDispStep0_1($objPage) {
-	global $objWebParam;
-	global $objDBParam;
-	// hiddenに入力値を保持
-	$objPage->arrHidden = $objWebParam->getHashArray();
-	// hiddenに入力値を保持
-	$objPage->arrHidden = array_merge($objPage->arrHidden, $objDBParam->getHashArray());
-	$objPage->arrHidden['db_skip'] = $_POST['db_skip'];
-	$objPage->tpl_mainpage = 'step0_1.tpl';
-	$objPage->tpl_mode = 'step0_1';
-	// ファイルコピー
-	$objPage->copy_mess = lfCopyDir("./user_data/", "../../html/user_data/", $objPage->copy_mess);
-	$objPage->copy_mess = lfCopyDir("./save_image/", "../../html/upload/save_image/", $objPage->copy_mess);	
-	return $objPage;
-}
-
-function lfGetFileMode($path) {
-	$mode = substr(sprintf('%o', fileperms($path)), -3);
-	return $mode;
-}
-
-// STEP1画面の表示
-function lfDispStep1($objPage) {
-	global $objDBParam;
-	// hiddenに入力値を保持
-	$objPage->arrHidden = $objDBParam->getHashArray();
-	$objPage->arrHidden['db_skip'] = $_POST['db_skip'];
-	$objPage->tpl_mainpage = 'step1.tpl';
-	$objPage->tpl_mode = 'step1';
-	return $objPage;
-}
-
-// STEP2画面の表示
-function lfDispStep2($objPage) {
-	global $objWebParam;
-	global $objDBParam;
-	// hiddenに入力値を保持
-	$objPage->arrHidden = $objWebParam->getHashArray();
-	$objPage->arrHidden['db_skip'] = $_POST['db_skip'];
-	$objPage->tpl_mainpage = 'step2.tpl';
-	$objPage->tpl_mode = 'step2';
-	return $objPage;
-}
-
-// STEP3画面の表示
-function lfDispStep3($objPage) {
-	global $objWebParam;
-	global $objDBParam;
-	// hiddenに入力値を保持
-	$objPage->arrHidden = $objWebParam->getHashArray();
-	// hiddenに入力値を保持
-	$objPage->arrHidden = array_merge($objPage->arrHidden, $objDBParam->getHashArray());
-	$objPage->tpl_db_skip = $_POST['db_skip'];
-	$objPage->tpl_mainpage = 'step3.tpl';
-	$objPage->tpl_mode = 'step3';
-	return $objPage;
-}
-
-// 完了画面の表示
-function lfDispComplete($objPage) {
-	global $objWebParam;
-	global $objDBParam;
-	// hiddenに入力値を保持
-	$objPage->arrHidden = $objWebParam->getHashArray();
-	// hiddenに入力値を保持
-	$objPage->arrHidden = array_merge($objPage->arrHidden, $objDBParam->getHashArray());
-	$objPage->arrHidden['db_skip'] = $_POST['db_skip'];
-	$objPage->tpl_mainpage = 'complete.tpl';
-	$objPage->tpl_mode = 'complete';
-	return $objPage;
-}
-
-// WEBパラメータ情報の初期化
-function lfInitWebParam($objWebParam) {
+	// セッション情報に開始日付、終了日付が保存されていない。
+	if($_SESSION['total']['startyear'] == "" && $_SESSION['total']['endyear'] == "") {
+		$list['startyear'] = $year;
+		$list['startmonth'] = $month;
+		$list['startday'] = $day;
+		$list['endyear'] = $year;
+		$list['endmonth'] = $month;
+		$list['endday'] = $day;
+	}
 	
-	$install_dir = realpath(dirname( __FILE__) . "/../../") . "/";
-	$normal_url = "http://" . $_SERVER['HTTP_HOST'] . "/";
-	$secure_url = "http://" . $_SERVER['HTTP_HOST'] . "/";
-	$domain = ereg_replace("^[a-zA-Z0-9_~=&\?\/-]+\.", "", $_SERVER['HTTP_HOST']);
-	$objWebParam->addParam("店名", "shop_name", MTEXT_LEN, "", array("EXIST_CHECK","MAX_LENGTH_CHECK"));
-	$objWebParam->addParam("管理者メールアドレス", "admin_mail", MTEXT_LEN, "", array("EXIST_CHECK","EMAIL_CHECK","EMAIL_CHAR_CHECK","MAX_LENGTH_CHECK"));
-	$objWebParam->addParam("インストールディレクトリ", "install_dir", MTEXT_LEN, "", array("EXIST_CHECK","MAX_LENGTH_CHECK"), $install_dir);
-	$objWebParam->addParam("URL(通常)", "normal_url", MTEXT_LEN, "", array("EXIST_CHECK","URL_CHECK","MAX_LENGTH_CHECK"), $normal_url);
-	$objWebParam->addParam("URL(セキュア)", "secure_url", MTEXT_LEN, "", array("EXIST_CHECK","URL_CHECK","MAX_LENGTH_CHECK"), $secure_url);
-	$objWebParam->addParam("ドメイン", "domain", MTEXT_LEN, "", array("EXIST_CHECK","MAX_LENGTH_CHECK"), $domain);	
-
-	return $objWebParam;
+	return $list;	
 }
 
-// DBパラメータ情報の初期化
-function lfInitDBParam($objDBParam) {
+/* パラメータ情報の初期化 */
+function lfInitParam() {
+	global $objFormParam;
+		
+	// デフォルト値の取得
+	$arrList = lfGetDateDefault();
 	
-	$db_server = "127.0.0.1";
-	$db_port = "3306";
-	$db_name = "eccube_db";
-	$db_user = "eccube_db_user";
+	// 月度集計
+	$objFormParam->addParam("月度", "search_startyear_m", INT_LEN, "n", array("MAX_LENGTH_CHECK", "NUM_CHECK"), $arrList['startyear_m']);
+	$objFormParam->addParam("月度", "search_startmonth_m", INT_LEN, "n", array("MAX_LENGTH_CHECK", "NUM_CHECK"), $arrList['startmonth_m']);
+	// 期間集計
+	$objFormParam->addParam("開始日", "search_startyear", INT_LEN, "n", array("MAX_LENGTH_CHECK", "NUM_CHECK"), $arrList['startyear']);
+	$objFormParam->addParam("開始日", "search_startmonth", INT_LEN, "n", array("MAX_LENGTH_CHECK", "NUM_CHECK"), $arrList['startmonth']);
+	$objFormParam->addParam("開始日", "search_startday", INT_LEN, "n", array("MAX_LENGTH_CHECK", "NUM_CHECK"), $arrList['startday']);
+	$objFormParam->addParam("終了日", "search_endyear", INT_LEN, "n", array("MAX_LENGTH_CHECK", "NUM_CHECK"), $arrList['endyear']);
+	$objFormParam->addParam("終了日", "search_endmonth", INT_LEN, "n", array("MAX_LENGTH_CHECK", "NUM_CHECK"), $arrList['endmonth']);
+	$objFormParam->addParam("終了日", "search_endday", INT_LEN, "n", array("MAX_LENGTH_CHECK", "NUM_CHECK"), $arrList['endday']);
 	
-	$objDBParam->addParam("DBの種類", "db_type", INT_LEN, "", array("EXIST_CHECK","MAX_LENGTH_CHECK"));
-	$objDBParam->addParam("DBサーバ", "db_server", MTEXT_LEN, "", array("EXIST_CHECK","MAX_LENGTH_CHECK"), $db_server);
-	$objDBParam->addParam("DBポート", "db_port", INT_LEN, "", array("MAX_LENGTH_CHECK"), $db_port);
-	$objDBParam->addParam("DB名", "db_name", MTEXT_LEN, "", array("EXIST_CHECK","MAX_LENGTH_CHECK"), $db_name);
-	$objDBParam->addParam("DBユーザ", "db_user", MTEXT_LEN, "", array("EXIST_CHECK","MAX_LENGTH_CHECK"), $db_user);
-	$objDBParam->addParam("DBパスワード", "db_password", MTEXT_LEN, "", array("EXIST_CHECK","MAX_LENGTH_CHECK"));	
-
-	return $objDBParam;
+	// hiddenデータの取得用
+	$objFormParam->addParam("", "page");
+	$objFormParam->addParam("", "type");
 }
 
-// 入力内容のチェック
-function lfCheckWebError($objFormParam) {
+/* 入力内容のチェック */
+function lfCheckError() {
+	global $objFormParam;
 	// 入力データを渡す。
 	$arrRet =  $objFormParam->getHashArray();
 	$objErr = new SC_CheckError($arrRet);
 	$objErr->arrErr = $objFormParam->checkError();
-	return $objErr->arrErr;
-}
-
-// 入力内容のチェック
-function lfCheckDBError($objFormParam) {
-	global $port;
-	// 入力データを渡す。
-	$arrRet =  $objFormParam->getHashArray();
 	
-	sfprintr($arrRet);
-	
-	$objErr = new SC_CheckError($arrRet);
-	$objErr->arrErr = $objFormParam->checkError();
-	
-	if(count($objErr->arrErr) == 0) {
-		// 接続確認
-		$dsn = $arrRet['db_type']."://".$arrRet['db_user'].":".$arrRet['db_password']."@".$arrRet['db_server'].$port."/".$arrRet['db_name'];
-		// Debugモード指定
-		$options['debug'] = 3;
-		$objDB = DB::connect($dsn, $options);
-		// 接続エラー
-		if(PEAR::isError($objDB)) {
-			$objErr->arrErr['all'] = ">> " . $objDB->message . "<br>";
-			// エラー文を取得する
-			ereg("\[(.*)\]", $objDB->userinfo, $arrKey);
-			$objErr->arrErr['all'].= $arrKey[0] . "<br>";
-			gfPrintLog($objDB->userinfo, "./temp/install.log");
-		}
+	// 特殊項目チェック
+	if($_POST['form'] == 1) {
+		$objErr->doFunc(array("月度", "search_startyear_m"), array("ONE_EXIST_CHECK"));
 	}
+	
+	if($_POST['form'] == 2) {
+		$objErr->doFunc(array("期間", "search_startyear", "search_endyear"), array("ONE_EXIST_CHECK"));
+	}
+			
+	$objErr->doFunc(array("月度", "search_startyear_m", "search_startmonth_m"), array("ALL_EXIST_CHECK"));
+	$objErr->doFunc(array("開始日", "search_startyear", "search_startmonth", "search_startday"), array("CHECK_DATE"));
+	$objErr->doFunc(array("終了日", "search_endyear", "search_endmonth", "search_endday"), array("CHECK_DATE"));
+	$objErr->doFunc(array("開始日", "終了日", "search_startyear", "search_startmonth", "search_startday", "search_endyear", "search_endmonth", "search_endday"), array("CHECK_SET_TERM"));
 	return $objErr->arrErr;
 }
 
-// SQL文の実行
-function lfExecuteSQL($filepath, $db_user, $db_password, $db_server, $db_name, $db_type, $db_port, $disp_err = true) {
-	global $port;
-	$arrErr = array();
+/* 折れ線グラフの作成 */
+function lfGetGraphLine($arrResults, $keyname, $type, $xtitle, $ytitle, $sdate, $edate) {
+	
+	$ret_path = "";
+	
+	// 結果が0行以上ある場合のみグラフを生成する。
+	if(count($arrResults) > 0) {
+		
+		// グラフの生成
+		$arrList = sfArrKeyValue($arrResults, $keyname, "total");
 
-	if(!file_exists($filepath)) {
-		$arrErr['all'] = ">> スクリプトファイルが見つかりません";
+		// 一時ファイル名の取得
+		$pngname = lfGetGraphPng($type);
+		
+		$path = GRAPH_DIR . $pngname;
+		
+		// ラベル表示インターバルを求める
+		$interval = intval(count($arrList) / 20);
+		if($interval < 1) {
+			$interval = 1;
+		}
+		$objGraphPie = new SC_GraphPie();
+		$objGraphLine = new SC_GraphLine();
+		
+		// 値のセット
+		$objGraphLine->setData($arrList);
+		$objGraphLine->setXLabel(array_keys($arrList));
+		
+		// ラベル回転(日本語不可)
+		if($keyname == "key_day"){
+			$objGraphLine->setXLabelAngle(45);
+		}
+
+		// タイトルセット
+		$objGraphLine->setXTitle($xtitle);
+		$objGraphLine->setYTitle($ytitle);
+		
+		// メインタイトル作成
+		list($sy, $sm, $sd) = split("[/ ]" , $sdate);
+		list($ey, $em, $ed) = split("[/ ]" , $edate);
+		$start_date = $sy . "年" . $sm . "月" . $sd . "日";
+		$end_date = $ey . "年" . $em . "月" . $ed . "日";
+		$objGraphLine->drawTitle("集計期間：" . $start_date . " - " . $end_date);
+		
+		// グラフ描画
+		$objGraphLine->drawGraph();
+		$objGraphLine->outputGraph(false, $path);
+
+		// ファイルパスを返す
+		$ret_path = GRAPH_URL . $pngname;
+	}
+	return $ret_path;
+}
+
+// 円グラフの作成 
+function lfGetGraphPie($arrResults, $keyname, $type, $title = "", $sdate = "", $edate = "") {
+	
+	$ret_path = "";
+	
+	// 結果が0行以上ある場合のみグラフを生成する。
+	if(count($arrResults) > 0) {
+		// グラフの生成
+		$arrList = sfArrKeyValue($arrResults, $keyname, "total", GRAPH_PIE_MAX, GRAPH_LABEL_MAX);
+		
+		// 一時ファイル名の取得
+		$pngname = lfGetGraphPng($type);
+		$path = GRAPH_DIR . $pngname;
+		
+			$objGraphPie = new SC_GraphPie();
+			
+			/* デバッグ表示用 by naka
+			foreach($arrList as $key => $val) {
+				$objGraphPie->debugPrint("key:$key val:$val");
+			}
+			*/
+			
+			// データをセットする
+			$objGraphPie->setData($arrList);
+			// 凡例をセットする
+			$objGraphPie->setLegend(array_keys($arrList));
+									
+			// メインタイトル作成
+			list($sy, $sm, $sd) = split("[/ ]" , $sdate);
+			list($ey, $em, $ed) = split("[/ ]" , $edate);
+			$start_date = $sy . "年" . $sm . "月" . $sd . "日";
+			$end_date = $ey . "年" . $em . "月" . $ed . "日";
+			$objGraphPie->drawTitle("集計期間：" . $start_date . " - " . $end_date);
+					
+			// 円グラフ描画
+			$objGraphPie->drawGraph();
+			
+			// グラフの出力
+			$objGraphPie->outputGraph(false, $path);			
+
+		// ファイルパスを返す
+		$ret_path = GRAPH_URL . $pngname;
+	}
+	return $ret_path;
+}
+
+// 棒グラフの作成 
+function lfGetGraphBar($arrResults, $keyname, $type, $xtitle, $ytitle, $sdate, $edate) {
+	$ret_path = "";
+	
+	// 結果が0行以上ある場合のみグラフを生成する。
+	if(count($arrResults) > 0) {
+		// グラフの生成
+		$arrList = sfArrKeyValue($arrResults, $keyname, "total", GRAPH_PIE_MAX, GRAPH_LABEL_MAX);
+		
+		// 一時ファイル名の取得
+		$pngname = lfGetGraphPng($type);
+		$path = GRAPH_DIR . $pngname;
+		
+			$objGraphBar = new SC_GraphBar();
+			
+			foreach(array_keys($arrList) as $val) {
+				$arrKey[] = ereg_replace("〜", "-", $val);
+			}
+			
+			// グラフ描画
+			$objGraphBar->setXLabel($arrKey);
+			$objGraphBar->setXTitle($xtitle);
+			$objGraphBar->setYTitle($ytitle);
+			$objGraphBar->setData($arrList);
+			
+			// メインタイトル作成
+			$arrKey = array_keys($arrList);
+			list($sy, $sm, $sd) = split("[/ ]" , $sdate);
+			list($ey, $em, $ed) = split("[/ ]" , $edate);
+			$start_date = $sy . "年" . $sm . "月" . $sd . "日";
+			$end_date = $ey . "年" . $em . "月" . $ed . "日";
+			$objGraphBar->drawTitle("集計期間：" . $start_date . " - " . $end_date);
+			
+			$objGraphBar->drawGraph();
+			$objGraphBar->outputGraph(false,$path);
+
+		// ファイルパスを返す
+		$ret_path = GRAPH_URL . $pngname;
+	}
+	return $ret_path;
+}
+
+// グラフ用のPNGファイル名 
+function lfGetGraphPng($keyname) {
+	if($_POST['search_startyear_m'] != "") {
+		$pngname = sprintf("%s_%02d%02d.png", $keyname, substr($_POST['search_startyear_m'],2), $_POST['search_startmonth_m']);
 	} else {
-  		if($fp = fopen($filepath,"r")) {
-			$sql = fread($fp, filesize($filepath));
-			fclose($fp);
-		}
+		$pngname = sprintf("%s_%02d%02d%02d_%02d%02d%02d.png", $keyname, substr($_POST['search_startyear'], 2), $_POST['search_startmonth'], $_POST['search_startday'], substr($_POST['search_endyear'],2), $_POST['search_endmonth'], $_POST['search_endday']);
+	}
+	return $pngname;
+}
 
-		$dsn = $db_type."://".$db_user.":".$db_password."@".$db_server.$port."/".$db_name;
+// 会員、非会員集計のWHERE分の作成
+function lfGetWhereMember($col_date, $sdate, $edate, $type, $col_member = "customer_id") {
+	// 取得日付の指定
+	if($sdate != "") {
+		if ($where != "") {
+			$where.= " AND ";
+		}			
+		$where.= " $col_date >= '". $sdate ."'";
+	}
 		
-		$objDB = DB::connect($dsn);
-		// 接続エラー
-		if(!PEAR::isError($objDB)) {
-			// 改行、タブを1スペースに変換
-			$sql = preg_replace("/[\r\n\t]/"," ",$sql);
-			$sql_split = split(";",$sql);
-			foreach($sql_split as $key => $val){
-				if (trim($val) != "") {
-					$ret = $objDB->query($val);
-					if(PEAR::isError($ret) and $disp_err) {
-						$arrErr['all'] = ">> " . $ret->message . "<br>";
-						// エラー文を取得する
-						ereg("\[(.*)\]", $ret->userinfo, $arrKey);
-						$arrErr['all'].= $arrKey[0] . "<br>";
-						$objPage->update_mess.=">> テーブル構成の変更に失敗しました。<br>";
-						gfPrintLog($ret->userinfo, "./temp/install.log");
-					}
-				}
-			}
+	if($edate != "") {
+		if ($where != "") {
+			$where.= " AND ";
+		}
+		$edate = date("Y/m/d",strtotime("1 day" ,strtotime($edate)));	
+		$where.= " $col_date < date('" . $edate ."')";
+	}
+	
+	// 会員、非会員の判定
+	switch($type) {
+	// 全体
+	case 'all':
+		break;
+	case 'member':
+		if ($where != "") {
+			$where.= " AND ";
+		}
+		$where.= " $col_member <> 0";
+		break;
+	case 'nonmember':
+		if ($where != "") {
+			$where.= " AND ";
+		}
+		$where.= " $col_member = 0";
+		break;
+	default:
+		break;
+	}
+	
+	return array($where, $arrval);
+}
+
+/** 会員別集計 **/
+function lfGetOrderMember($type, $sdate, $edate, $objPage, $graph = true) {
+	global $arrSex;
+		
+	list($where, $arrval) = lfGetWhereMember('create_date', $sdate, $edate, $type);
+	
+	// 会員集計の取得
+	$col = "COUNT(*) AS order_count, SUM(total) AS total, (AVG(total)) AS total_average, order_sex";
+	$from = "dtb_order";
+	$objQuery = new SC_Query();
+	$objQuery->setGroupBy("order_sex");
+	
+	$tmp_where = $where . " AND customer_id <> 0 AND del_flg = 0 ";
+	$arrRet = $objQuery->select($col, $from, $tmp_where, $arrval);
+	
+	// 会員購入であることを記録する。
+	$max = count($arrRet);
+	for($i = 0; $i < $max; $i++) {
+		$arrRet[$i]['member_name'] = '会員'.$arrSex[$arrRet[$i]['order_sex']];
+	}
+	$objPage->arrResults = $arrRet;
+	
+	// 非会員集計の取得
+	$tmp_where = $where . " AND customer_id = 0 AND del_flg = 0 ";
+	$arrRet = $objQuery->select($col, $from, $tmp_where, $arrval);
+	// 非会員購入であることを記録する。
+	$max = count($arrRet);
+	for($i = 0; $i < $max; $i++) {
+		$arrRet[$i]['member_name'] = '非会員'.$arrSex[$arrRet[$i]['order_sex']];
+	}
+	
+	$objPage->arrResults = array_merge($objPage->arrResults, $arrRet);
+	
+	// 円グラフの生成
+	if($graph) {	
+		$image_key = "member";
+		$objPage->tpl_image = lfGetGraphPie($objPage->arrResults, "member_name", $image_key, "(売上比率)", $sdate, $edate);
+	}
+	
+	return $objPage;
+}
+
+/** 商品別集計 **/
+function lfGetOrderProducts($type, $sdate, $edate, $objPage, $graph = true) {
+	list($where, $arrval) = lfGetWhereMember('create_date', $sdate, $edate, $type);
+	
+	$sql = "SELECT T1.product_id, T1.product_code, T2.name, T1.products_count, T1.order_count, T1.price, T1.total ";
+	$sql.= "FROM ( ";
+	$sql.= "SELECT product_id, product_code, price, ";
+	$sql.= "COUNT(*) AS order_count, ";
+	$sql.= "SUM(quantity) AS products_count, ";
+	$sql.= "(price * sum(quantity)) AS total ";
+	$sql.= "FROM dtb_order_detail WHERE order_id IN (SELECT order_id FROM dtb_order WHERE $where ) ";
+	$sql.= "GROUP BY product_id, product_code, price ";
+	$sql.= ") ";
+	$sql.= "AS T1 LEFT JOIN dtb_products AS T2 USING (product_id) WHERE T2.name IS NOT NULL AND status = 1 ORDER BY T1.total DESC ";
+	
+	if($_POST['mode'] != "csv") {
+		$sql.= "LIMIT " . PRODUCTS_TOTAL_MAX;
+	}
+	
+	$objQuery = new SC_Query();
+	$objPage->arrResults = $objQuery->getall($sql, $arrval);
+	
+	// 円グラフの生成
+	if($graph) {
+		$image_key = "products_" . $type;
+		$objPage->tpl_image = lfGetGraphPie($objPage->arrResults, "name", $image_key, "(売上比率)", $sdate, $edate);
+	}
+	
+	return $objPage;
+}
+
+/** 職業別集計 **/
+function lfGetOrderJob($type, $sdate, $edate, $objPage, $graph = true) {
+	global $arrJob;	
+		
+	list($where, $arrval) = lfGetWhereMember('T2.create_date', $sdate, $edate, $type);
+	
+	$sql = "SELECT job, count(*) AS order_count, SUM(total) AS total, (AVG(total)) AS total_average ";
+	$sql.= "FROM dtb_customer AS T1 LEFT JOIN dtb_order AS T2 USING ( customer_id ) WHERE $where AND T2.del_flg = 0 ";
+	$sql.= "GROUP BY job ORDER BY total DESC";
+	
+	$objQuery = new SC_Query();
+	$objPage->arrResults = $objQuery->getall($sql, $arrval);
 			
+	$max = count($objPage->arrResults);
+	for($i = 0; $i < $max; $i++) {
+		$job_key = $objPage->arrResults[$i]['job'];
+		if($job_key != "") {
+			$objPage->arrResults[$i]['job_name'] = $arrJob[$job_key];
 		} else {
-			$arrErr['all'] = ">> " . $objDB->message;
-			gfPrintLog($objDB->userinfo, "./temp/install.log");
+			$objPage->arrResults[$i]['job_name'] = "未回答";
 		}
 	}
-	return $arrErr;
+	
+	// 円グラフの生成	
+	if($graph) {
+		$image_key = "job_" . $type;
+		$objPage->tpl_image = lfGetGraphPie($objPage->arrResults, "job_name", $image_key, "(売上比率)", $sdate, $edate);
+	}
+	
+	return $objPage;
 }
 
-// 設定ファイルの作成
-function lfMakeConfigFile() {
-	global $objWebParam;
-	global $objDBParam;
-	global $port;
+/** 年代別集計 **/
+function lfGetOrderAge($type, $sdate, $edate, $objPage, $graph = true) {
+
+	list($where, $arrval) = lfGetWhereMember('order_date', $sdate, $edate, $type, "member");
 	
-	$filepath = $objWebParam->getValue('install_dir') . "/html/install.inc";
-	$domain = $objWebParam->getValue('domain');
-	if(!ereg("^\.", $domain)) {
-		$domain = "." . $domain;
+	$sql = "SELECT SUM(order_count) AS order_count, SUM(total) AS total, start_age, end_age ";
+	$sql.= "FROM dtb_bat_order_daily_age WHERE $where ";
+	$sql.= "GROUP BY start_age, end_age ORDER BY start_age, end_age";
+
+	$objQuery = new SC_Query();
+	$objPage->arrResults = $objQuery->getall($sql, $arrval);
+	
+	$max = count($objPage->arrResults);
+	for($i = 0; $i < $max; $i++) {
+		if($objPage->arrResults[$i]['order_count'] > 0) {
+			$objPage->arrResults[$i]['total_average'] = intval($objPage->arrResults[$i]['total'] / $objPage->arrResults[$i]['order_count']);
+		}	
+		$start_age = $objPage->arrResults[$i]['start_age'];
+		$end_age = $objPage->arrResults[$i]['end_age'];
+		if($start_age != "" || $end_age != "") {
+			if($end_age != 999) {
+				$objPage->arrResults[$i]['age_name'] = $start_age . "〜" . $end_age . "歳";
+			} else {
+				$objPage->arrResults[$i]['age_name'] = $start_age . "歳〜";
+			}
+		} else {
+			$objPage->arrResults[$i]['age_name'] = "未回答";
+		}
 	}
 	
-	$root_dir = $objWebParam->getValue('install_dir');
-	if (!ereg("/$", $root_dir)) {
-		$root_dir = $root_dir . "/";
+	// 棒グラフの生成
+	if($graph) {
+		$image_key = "age_" . $type;
+		$xtitle = "(年齢)";
+		$ytitle = "(売上合計)";
+		$objPage->tpl_image = lfGetGraphBar($objPage->arrResults, "age_name", $image_key, $xtitle, $ytitle, $sdate, $edate);
 	}
 	
-	$config_data = 
-	"<?php\n".
-	"    define ('ECCUBE_INSTALL', 'ON');\n" .
-	"    define ('ROOT_DIR', '" . $root_dir . "');\n" . 
-	"    define ('SITE_URL', '" . $objWebParam->getValue('normal_url') . "');\n" .
-	"    define ('SSL_URL', '" . $objWebParam->getValue('secure_url') . "');\n" .
-	"    define ('DOMAIN_NAME', '" . $domain . "');\n" .
-	"    define ('DB_TYPE', '" . $objDBParam->getValue('db_type') . "');\n" .
-	"    define ('DB_USER', '" . $objDBParam->getValue('db_user') . "');\n" . 
-	"    define ('DB_PASSWORD', '" . $objDBParam->getValue('db_password') . "');\n" .
-	"    define ('DB_SERVER', '" . $objDBParam->getValue('db_server') . "');\n" .
-	"    define ('DB_NAME', '" . $objDBParam->getValue('db_name') . "');\n" .
-	"    define ('DB_PORT', '" . $port . "');\n" .
-	"?>";
-	
-	if($fp = fopen($filepath,"w")) {
-		fwrite($fp, $config_data);
-		fclose($fp);
-	}
+	return $objPage;
 }
 
-// ディレクトリ以下のファイルを再帰的にコピー
-function lfCopyDir($src, $des, $mess, $override = false){
-	if(!is_dir($src)){
-		return false;
-	}
-
-	$oldmask = umask(0);
-	$mod= stat($src);
-	
-	// ディレクトリがなければ作成する
-	if(!file_exists($des)) {
-		mkdir($des, $mod[2]);
-	}
-	
-	$fileArray=glob( $src."*" );
-	foreach( $fileArray as $key => $data_ ){
-		// CVS管理ファイルはコピーしない
-		if(ereg("/CVS/Entries", $data_)) {
+/** 期間別集計 **/
+function lfGetOrderTerm($type, $sdate, $edate, $objPage, $graph = true) {
+		
+		$tmp_col = "sum(total_order) as total_order, sum(men) as men, sum(women) as women,";
+		$tmp_col.= "sum(men_member) as men_member, sum(men_nonmember) as men_nonmember,";
+		$tmp_col.= "sum(women_member) as women_member, sum(women_nonmember) as women_nonmember,";
+		$tmp_col.= "sum(total) as total, (avg(total_average)) as total_average";
+		$objQuery = new SC_Query();
+		
+		switch($type) {
+		// 月別
+		case 'month':
+			$col = $tmp_col . ",key_month";
+			$objQuery->setgroupby("key_month");
+			$objQuery->setOrder("key_month");
+			$objPage->keyname = "key_month";
+			$objPage->tpl_tail = "月";
+			$from = "dtb_bat_order_daily";
+			$xtitle = "(月別)";
+			$ytitle = "(売上合計)";
 			break;
-		}
-		if(ereg("/CVS/Repository", $data_)) {
+		// 年別
+		case 'year':
+			$col = $tmp_col . ",key_year";
+			$objQuery->setgroupby("key_year");
+			$objQuery->setOrder("key_year");
+			$objPage->keyname = "key_year";
+			$objPage->tpl_tail = "年";
+			$from = "dtb_bat_order_daily";
+			$xtitle = "(年別)";
+			$ytitle = "(売上合計)";
 			break;
-		}
-		if(ereg("/CVS/Root", $data_)) {
+		// 曜日別
+		case 'wday':
+			$col = $tmp_col . ",key_wday, wday";
+			$objQuery->setgroupby("key_wday, wday");
+			$objQuery->setOrder("wday");
+			$objPage->keyname = "key_wday";
+			$objPage->tpl_tail = "曜日";
+			$from = "dtb_bat_order_daily";
+			$xtitle = "(曜日別)";
+			$ytitle = "(売上合計)";
+			break;
+		// 時間別
+		case 'hour':
+			$col = $tmp_col . ",hour";
+			$objQuery->setgroupby("hour");
+			$objQuery->setOrder("hour");
+			$objPage->keyname = "hour";
+			$objPage->tpl_tail = "時";
+			$from = "dtb_bat_order_daily_hour";
+			$xtitle = "(時間別)";
+			$ytitle = "(売上合計)";
+			break;
+		default:
+			$col = "*";
+			$objQuery->setOrder("key_day");
+			$objPage->keyname = "key_day";
+			$from = "dtb_bat_order_daily";
+			$xtitle = "(日別)";
+			$ytitle = "(売上合計)";
 			break;
 		}
 		
-		mb_ereg("^(.*[\/])(.*)",$data_, $matches);
-		$data=$matches[2];
-		if( is_dir( $data_ ) ){
-			$mess = lfCopyDir( $data_.'/', $des.$data.'/', $mess);
-		}else{
-			if(!$override && file_exists($des.$data)) {
-				$mess.= $des.$data . "：ファイルが存在します\n";
-			} else {
-				if(@copy( $data_, $des.$data)) {
-					$mess.= $des.$data . "：コピー成功\n";
-				} else {
-					$mess.= $des.$data . "：コピー失敗\n";
-				}
-			}
-			$mod=stat($data_ );
+
+	// 取得日付の指定
+		if($sdate != "") {
+			if ($where != "") {
+				$where.= " AND ";
+			}			
+			$where.= " order_date >= '". $sdate ."'";
 		}
-	}
-	umask($oldmask);
-	return $mess;
+		
+		if($edate != "") {
+			if ($where != "") {
+				$where.= " AND ";
+			}
+			$edate = date("Y/m/d",strtotime("1 day" ,strtotime($edate)));
+			$where.= " order_date < date('" . $edate ."')";
+		}
+		
+		// 検索結果の取得
+		$objPage->arrResults = $objQuery->select($col, $from, $where, $arrval);
+		
+		// 折れ線グラフの生成	
+		if($graph) {
+			$image_key = "term_" . $type;
+			$objPage->tpl_image = lfGetGraphLine($objPage->arrResults, $objPage->keyname, $image_key, $xtitle, $ytitle, $sdate, $edate);
+		}
+		
+		// 検索結果が0でない場合
+		if(count($objPage->arrResults) > 0) {
+			// 最終集計行取得する
+			$col = $tmp_col;
+			$objQuery = new SC_Query();
+			$arrRet = $objQuery->select($col, $from, $where, $arrval);
+			$arrRet[0][$objPage->keyname] = "合計";
+			$objPage->arrResults[] = $arrRet[0];
+		}
+
+		// 平均値の計算
+		$max = count($objPage->arrResults);
+		for($i = 0; $i < $max; $i++) {
+			if($objPage->arrResults[$i]['total_order'] > 0) {
+				$objPage->arrResults[$i]['total_average'] = intval($objPage->arrResults[$i]['total'] / $objPage->arrResults[$i]['total_order']);
+			}
+		}
+		
+		return $objPage;
 }
+
 ?>

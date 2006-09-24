@@ -356,6 +356,19 @@ class SC_Query {
 		return $ret;
 	}
 	
+	function curval($table, $colname) {
+		$sql = "";
+		if (DB_TYPE == "pgsql") {
+			$seqtable = $table . "_" . $colname . "_seq";
+			$sql = "SELECT CURTVAL('$seqtable')";
+		}else if (DB_TYPE == "mysql") {
+			$sql = "SELECT last_insert_id();";
+		}
+		$ret = $this->conn->getOne($sql);
+		
+		return $ret;
+	}	
+	
 	function query($n ,$arr = "", $ignore_err = false){
 		$result = $this->conn->query($n, $arr, $ignore_err);
 		return $result;
