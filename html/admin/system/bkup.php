@@ -237,7 +237,7 @@ function lfUpdBkupData($data){
 function lfGetBkupData($where = "", $data = array()){
 	$objQuery = new SC_Query();
 	
-	$sql = "SELECT bkup_name, bkup_memo, create_date FROM dtb_bkup";
+	$sql = "SELECT bkup_name, bkup_memo, create_date FROM dtb_bkup ";
 	if ($where != "")	$sql .= $where;
 	
 	$ret = $objQuery->getall($sql,$data);
