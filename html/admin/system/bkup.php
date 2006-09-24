@@ -164,7 +164,7 @@ function lfCreateBkupData($bkup_name){
 	}
 	
 	if ($err) {
-		$fp = fopen($bkup_dir . "test" . ".csv","w");
+		$fp = fopen($bkup_dir,"w");
 		if($fp) {
 			$err = fwrite($fp, $csv_data);
 			fclose($fp);
