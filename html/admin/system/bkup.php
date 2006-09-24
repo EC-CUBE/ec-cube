@@ -1,8 +1,8 @@
 <?php
 
 require_once("../require.php");
-//require_once("../../../data/module/Tar.php");
-require_once("./Tar.php");
+require_once("../../../data/module/Tar.php");
+//require_once("./Tar.php");
 
 //ページ管理クラス
 class LC_Page {
@@ -201,9 +201,6 @@ function lfCreateBkupData($bkup_name){
 	//圧縮をおこなう
 	$a = $tar->create($csv_file);
 	
-	sfprintr($a);
-	sfprintr($tar);
-
 	if (!$err) {
 		$arrErr['bkup_name'] = "バックアップに失敗しました。";
 	}
