@@ -56,12 +56,12 @@ case 'install':
 	// モジュール郡のインストール
 	lfInstallModule();
 	break;
-// アンインストール
-case 'uninstall':
-	// 更新情報を最新にする
-	lfLoadUpdateList();
-	// モジュール郡のインストール	
-	lfUninstallModule();
+	
+// 削除
+case 'del':
+	$delsql = "DELETE FROM dtb_bkup WHERE bkup_name = ?";
+	$objQuery->query($delsql, array($_POST['list_name']));
+
 	break;
 default:
 	break;
