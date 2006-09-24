@@ -2446,7 +2446,7 @@ function sfCopyDir($src, $des, $mess, $override = false){
 		mb_ereg("^(.*[\/])(.*)",$data_, $matches);
 		$data=$matches[2];
 		if( is_dir( $data_ ) ){
-			$mess = lfCopyDir( $data_.'/', $des.$data.'/', $mess);
+			$mess = sfCopyDir( $data_.'/', $des.$data.'/', $mess);
 		}else{
 			if(!$override && file_exists($des.$data)) {
 				$mess.= $des.$data . "：ファイルが存在します\n";

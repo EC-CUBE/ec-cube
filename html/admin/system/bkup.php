@@ -184,7 +184,8 @@ function lfCreateBkupData($bkup_name){
 
 	// 商品画像ファイルをコピー
 	if (!$err) {
-		
+		$copy_mess = "";
+		$copy_mess = sfCopyDir("../../upload/save_image/", dirname($bkup_dir), $copy_mess);
 	}
 	
 		
