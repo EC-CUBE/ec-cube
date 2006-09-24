@@ -116,9 +116,9 @@
 										<td ><!--{$arrBkupList[cnt].bkup_name}--></td>
 										<td ><!--{$arrBkupList[cnt].bkup_memo}--></td>			
 										<td align="center"><!--{$arrBkupList[cnt].create_date|sfCutString:19:true:false}--></td>
-										<td align="center"><a href="#" onclick="fnModeSubmit('install','module_id','<!--{$arrUpdate[cnt].module_id}-->');">install</a></td>
+										<td align="center"><a href="#" onclick="fnModeSubmit('install','module_id','<!--{$arrUpdate[cnt].module_id}-->');">restore</a></td>
 										<td align="center">
-											<a href="#" onclick="fnModeSubmit('uninstall','module_id','<!--{$arrUpdate[cnt].module_id}-->');">uninstall</a>
+											<a href="#" onclick="fnModeSubmit('uninstall','module_id','<!--{$arrUpdate[cnt].module_id}-->');">delete</a>
 										</td>	
 									</tr>
 									<!--{/section}-->
