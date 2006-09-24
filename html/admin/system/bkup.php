@@ -204,7 +204,12 @@ function lfCreateBkupData($bkup_name){
 		if (!$zip) {
 			$dh = opendir($bkup_dir);
 			while($file = readdir($dh)){
-				unlink($bkup_dir . "/" . $file);
+				$del_file = $bkup_dir . "/" . $file;
+				if(is_file($del_file)){
+					unlink($bkup_dir . "/" . $file);
+				}else if (is_dir($del_file)){
+					rmdir($del_file);
+				}
 			}
 		}
 		
