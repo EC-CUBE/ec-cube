@@ -285,11 +285,9 @@ class Archive_Tar extends PEAR
         }
 
         if ($v_result) {
-			print("_writeFooter");
             $this->_writeFooter();
             $this->_close();
         } else
-			print("_cleanFile");
             $this->_cleanFile();
 
         return $v_result;
@@ -610,7 +608,7 @@ class Archive_Tar extends PEAR
         if ($this->_file == 0) {
             $this->_error('Unable to open in write mode \''
 			              .$this->_tarname.'\'');
-            return $this->_tarname;
+            return false;
         }
 
         return true;
