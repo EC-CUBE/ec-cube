@@ -131,7 +131,7 @@ function lfCreateBkupData($bkup_name){
 	$err = true;
 	
 	$bkup_dir = $objPage->bkup_dir;
-	$bkup_dir = $bkup_dir . $bkup_name;
+	$bkup_dir = $bkup_dir . $bkup_name . "/";
 
 	// 全テーブル取得
 	$arrTableList = lfGetTableList();
@@ -167,7 +167,7 @@ function lfCreateBkupData($bkup_name){
 		}
 	}
 
-	$csv_file = $bkup_dir . "/bkup_data.csv";
+	$csv_file = $bkup_dir . "bkup_data.csv";
 	// CSV出力
 	// ディレクトリが存在していなければ作成する		
 	if (!is_dir(dirname($csv_file))) {
