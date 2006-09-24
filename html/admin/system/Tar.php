@@ -268,7 +268,7 @@ class Archive_Tar extends PEAR
         $v_result = true;
 
         if (!$this->_openWrite())
-            return "false";
+            return false;
 
         if ($p_filelist != '') {
             if (is_array($p_filelist))

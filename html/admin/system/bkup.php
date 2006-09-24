@@ -202,6 +202,7 @@ function lfCreateBkupData($bkup_name){
 	$a = $tar->create($csv_file);
 	
 	sfprintr($a);
+	sfprintr($tar);
 
 	if (!$err) {
 		$arrErr['bkup_name'] = "バックアップに失敗しました。";
