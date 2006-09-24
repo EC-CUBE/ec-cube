@@ -202,16 +202,7 @@ function lfCreateBkupData($bkup_name){
 		
 		// バックアップデータの削除
 		if (!$zip) {
-			$dh = opendir($bkup_dir);
-			while($file = readdir($dh)){
-				$del_file = $bkup_dir . "/" . $file;
-				if(is_file($del_file)){
-					unlink($bkup_dir . "/" . $file);
-				}else if (is_dir($del_file)){
-					rmdir($del_file);
-				}
-			}
-			rmdir($bkup_dir);
+			sfDelFile($bkup_dir);
 		}
 		
 	}
@@ -281,6 +272,21 @@ function lfGetBkupData($where = "", $data = array()){
 	return $ret;
 }
 
+// 指定したフォルダ内のファイルを全て削除する
+function sfDelFile($dir){
+	$dh = opendir($dir);
+	// フォルダ内のファイルを削除
+	while($file = readdir($dh)){
+		$del_file = $dir . "/" . $file;
+		if(is_file($del_file)){
+			unlink($dir . "/" . $file);
+		}else if (is_dir($del_file)){
+			sfDelFile($del_file);
+		}
+	}
+	// フォルダを削除
+	rmdir($dir);
+}
 
 
 
