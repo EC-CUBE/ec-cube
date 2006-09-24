@@ -115,7 +115,7 @@
 									<tr bgcolor="#ffffff" class="fs12">
 										<td ><!--{$arrBkupList[cnt].bkup_name|default:'-'}--></td>
 										<td ><!--{$arrBkupList[cnt].bkup_memo|default:'-'}--></td>			
-										<td align="center"><!--{$arrBkupList[cnt].create_date|default:'-'}--></td>
+										<td align="center"><!--{$arrBkupList[cnt].create_date|sfCutString:19}--></td>
 										<td align="center">
 										<!--{if $arrUpdate[cnt].now_version != $arrUpdate[cnt].latest_version}-->
 											<a href="#" onclick="fnModeSubmit('install','module_id','<!--{$arrUpdate[cnt].module_id}-->');">install</a></td>
