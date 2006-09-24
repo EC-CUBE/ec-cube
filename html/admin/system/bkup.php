@@ -42,7 +42,11 @@ case 'bkup':
 		$arrErr = lfCreateBkupData($arrData['bkup_name']);
 		
 		// DBにデータ更新
-		if (count($arrErr) <= 0) lfUpdBkupData($arrData);
+		if (count($arrErr) <= 0) {
+			lfUpdBkupData($arrData);
+		}else{
+			$arrForm = $arrData;
+		}
 	}else{
 		$arrForm = $arrData;
 	}
