@@ -1882,19 +1882,25 @@ function sfEncodeFile($filepath, $enc_type, $out_dir) {
 	return 	$outpath;
 }
 
-function sfCutString($str, $len, $byte = true) {
+function sfCutString($str, $len, $byte = true, $commadisp = true) {
 	if($byte) {
 		if(strlen($str) > ($len + 2)) {
-			$ret =substr($str, 0, $len) . "...";
+			$ret =substr($str, 0, $len);
 		} else {
 			$ret = $str;
+			$commadisp = false;
 		}
 	} else {
 		if(mb_strlen($str) > ($len + 1)) {
-			$ret = mb_substr($str, 0, $len) . "...";
+			$ret = mb_substr($str, 0, $len);
 		} else {
 			$ret = $str;
+			$commadisp = false;
 		}
+	}
+	
+	if($commadisp){
+		$ret = $ret . "...";
 	}
 	return $ret;
 }
