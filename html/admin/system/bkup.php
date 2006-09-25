@@ -423,7 +423,7 @@ function lfExeInsertSQL($objQuery, $csv){
 		$sql = $base_sql . " ($data);\n";
 		$ret = $objQuery->query($sql);
 		
-		sfprintr($base_sql . $ret);
+		sfprintr($ret);
 	}
 	
 	return $ret;
