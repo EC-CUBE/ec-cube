@@ -198,10 +198,6 @@ function lfCreateBkupData($bkup_name){
 
 		//圧縮をおこなう
 		$zip = $tar->create("./" . $bkup_name . "/");
-//		$zip = $tar->create($bkup_dir);
-
-		sfprintr($zip);
-		sfprintr($tar);
 
 		// バックアップデータの削除
 		if ($zip) sfDelFile($bkup_dir);
@@ -273,26 +269,23 @@ function lfGetBkupData($where = "", $data = array()){
 
 // バックアップファイルをリストアする
 function lfRestore($bkup_name){
+	global $objPage;
+	$objQuery = new SC_Query();
+	$csv_data = "";
+	$err = true;
+	
+	$bkup_dir = $objPage->bkup_dir;
 	
 	//fileフォルダに移動する
-	chdir("file");
-	
-	//変数$keyに前画面で指定されたファイル名を格納する
-	$key = $HTTP_POST_VARS["compck"];
-	
-	//解凍先のフォルダ名を$fnameに格納する
-	//フォルダ名は「ファイル名.tar.tz」より「.tar.tz」を取り除く
-	//substr(文字列,開始位置,文字数）は文字列の開始位置から文字数分を取り出す関数
-	//strlen(文字列）は文字列の長さを返す関数
-	$fname = substr($key,0,strlen($key) - 7);
+	chdir($bkup_dir);
 	
 	//オブジェクトを作成する
 	//new Archive_Tar(ファイル名,圧縮フラグ);
 	//圧縮フラグTRUEはgzip解凍をおこなう
-	$tar = new Archive_Tar($key, TRUE);
+	$tar = new Archive_Tar($bkup_name, TRUE);
 	
 	//指定されたフォルダ内に解凍する
-	$tar->extract("./" . $fname);
+	$tar->extract("./");
 }
 
 
