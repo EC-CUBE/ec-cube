@@ -157,8 +157,6 @@ function lfCreateBkupData($bkup_name){
 			// 自動採番型の構成を取得する
 			$csv_autoinc .= lfGetAutoIncrement($val);
 			
-			//sfprintr($csv_autoinc);
-			
 			// 全データを取得
 			$arrData = $objQuery->getAll("SELECT * FROM $val");
 	
@@ -299,9 +297,11 @@ function lfGetColumnList($table_name){
 								   left join pg_description e on (a.attrelid=e.objoid and a.attnum=e.objsubid)
 				WHERE (c.relname=?) AND (c.oid=a.attrelid) AND (a.atttypid=t.oid) AND a.attnum > 0
 				ORDER BY fldnum";
-		$arrRet = $objQuery->getAll($sql, array($table_name));
+	}else if(DB_TYPE == "mysql"){
+		$sql = "SHOW COLUMNS FROM ?";
 	}
 	
+	$arrRet = $objQuery->getAll($sql, array($table_name));
 	return sfSwapArray($arrRet);
 }
 
