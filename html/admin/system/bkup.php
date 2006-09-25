@@ -341,11 +341,12 @@ function lfRestore($bkup_name){
 	
 	// 無事解凍できれば、リストアを行う
 	if ($err) {
-		
 		// INSERT文作成
-		lfCreateInsertSQL($bkup_dir . $bkup_name . "/bkup_data.csv");
-		
+		$ins_sql = lfCreateInsertSQL($bkup_dir . $bkup_name . "/bkup_data.csv");
 	}
+	
+	sfprintr(split($ins_sql,";"));
+	
 }
 
 // CSVファイルからインサート文作成
@@ -385,6 +386,8 @@ function lfCreateInsertSQL($csv){
 		// インサートする値をセット
 		$sql .= $base_sql . " ($data);";
 	}
+	
+	return $sql;
 }
 
 
