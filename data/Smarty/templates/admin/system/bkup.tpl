@@ -127,7 +127,7 @@
 								<!--{/if}-->							
 
 								
-								<!--{if $update_mess != ""}-->
+								<!--{if $restore_msg != ""}-->
 								<table width="678" border="0" cellspacing="0" cellpadding="0" summary=" ">								
 									<tr>
 										<td colspan="3"><img src="/img/contents/main_bar.jpg" width="678" height="10" alt=""></td>
@@ -138,7 +138,7 @@
 									<tr bgcolor="#ffffff" class="fs12">
 										<td>
 											▼実行結果<br>
-											<!--{$update_mess}-->
+											<!--{$restore_msg}-->
 										</td>
 									</tr>								
 								</table>

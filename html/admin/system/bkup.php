@@ -349,11 +349,12 @@ function lfRestore($bkup_name){
 	if ($err) {
 		
 		$objQuery->begin();
+		
 		// DBをクリア
-		lfDeleteAll($objQuery);
+		$err = lfDeleteAll($objQuery);
 		
 		// INSERT実行
-		lfExeInsertSQL($objQuery, $bkup_dir . "bkup_data.csv");
+		if ($err) $err = lfExeInsertSQL($objQuery, $bkup_dir . "bkup_data.csv");
 
 		// 画像のコピー
 		$image_dir = $bkup_dir . "save_image/";
@@ -363,7 +364,12 @@ function lfRestore($bkup_name){
 		// バックアップデータの削除
 		sfDelFile($bkup_dir);
 		
-		$objQuery->commit();
+		// リストア成功ならコミット失敗ならロールバック
+		if ($err) {
+			$objQuery->commit();
+		}else{
+			$objQuery->rollback();
+		}
 	}
 }
 
@@ -377,9 +383,16 @@ function lfExeInsertSQL($objQuery, $csv){
 	$base_sql = "";
 	$tbl_flg = false;
 	$col_flg = false;
+	$ret = true;
 	
 	foreach($arrCsvData as $key => $val){
 		$data = trim($val);
+		
+		// エラーがあれば終了
+		if (!$ret){
+			return $ret;
+		}
+		
 		//空白行のときはテーブル変更
 		if ($data == "") {
 			$base_sql = "";
@@ -404,14 +417,15 @@ function lfExeInsertSQL($objQuery, $csv){
 		
 		// インサートする値をセット
 		$sql = $base_sql . " ($data);\n";
-		$objQuery->query($sql);
+		$ret = $objQuery->query($sql);
 	}
 	
-	return $sql;
+	return $ret;
 }
 
 // DBを全てクリアする
 function lfDeleteAll($objQuery){
+	$ret = true;
 
 	$arrTableList = lfGetTableList();
 	
@@ -419,9 +433,13 @@ function lfDeleteAll($objQuery){
 		// バックアップテーブルは削除しない
 		if ($val != "dtb_bkup") {
 			$trun_sql = "DELETE FROM $val;";
-			$objQuery->query($trun_sql);
+			$ret = $objQuery->query($trun_sql);
+			
+			if (!$ret) return $ret;
 		}
 	}
+	
+	return $ret;
 }
 
 // バックアップテーブルを作成する
