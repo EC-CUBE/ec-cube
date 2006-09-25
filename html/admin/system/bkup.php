@@ -198,6 +198,8 @@ function lfCreateBkupData($bkup_name){
 		//圧縮をおこなう
 		$zip = $tar->create("./" . $bkup_name);
 		
+		sfprintr($zip);
+		
 		// バックアップデータの削除
 		if (!$zip) sfDelFile($bkup_dir);
 	}
