@@ -289,6 +289,7 @@ function lfRestore($bkup_name){
 	if ($err) {
 		$data = file($bkup_dir . $bkup_name . "/bkup_data.csv");
 	}
+	sfprintr($data);
 }
 
 
