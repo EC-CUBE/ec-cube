@@ -374,10 +374,11 @@ class SC_Query {
 		if (DB_TYPE == "pgsql") {
 			$seqtable = $table . "_" . $colname . "_seq";
 			$sql = "SELECT SETVAL('$seqtable', $data)";
+			$ret = $this->conn->getOne($sql);
 		}else if (DB_TYPE == "mysql") {
 			$sql = "ALTER TABLE $table AUTO_INCREMENT=$data";
+			$ret = $this->conn->query($sql);
 		}
-		$ret = $this->conn->getOne($sql);
 		
 		return $ret;
 	}		
