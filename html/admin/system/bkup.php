@@ -33,9 +33,6 @@ sfIsSuccess($objSess);
 // バックアップテーブルがなければ作成する
 lfCreateBkupTable();
 
-
-sfprintr($_POST);
-
 switch($_POST['mode']) {
 // バックアップを作成する
 case 'bkup':
@@ -90,8 +87,6 @@ $arrBkupList = lfGetBkupData("ORDER BY create_date DESC");
 $objPage->arrErr = $arrErr;
 $objPage->arrForm = $arrForm;
 $objPage->arrBkupList = $arrBkupList;
-
-sfprintr($objPage->arrForm);
 
 $objView->assignobj($objPage);		//変数をテンプレートにアサインする
 $objView->display(MAIN_FRAME);		//テンプレートの出力
