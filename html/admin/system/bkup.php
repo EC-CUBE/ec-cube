@@ -245,6 +245,8 @@ function lfCreateBkupData($bkup_name){
 		if (!is_dir(dirname($css_dir))) $err = mkdir(dirname($css_dir));		
 		$copy_mess = "";
 		$copy_mess = sfCopyDir("../../user_date/css/",$css_dir, $copy_mess);
+		
+		sfprintr($copy_mess);
 
 		//圧縮フラグTRUEはgzip圧縮をおこなう
 		$tar = new Archive_Tar($objPage->bkup_dir . $bkup_name.".tar.gz", TRUE);
