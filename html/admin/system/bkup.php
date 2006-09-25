@@ -279,9 +279,9 @@ function lfGetAutoIncrement($table_name){
 	$ret = "";
 	
 	if(DB_TYPE == "pgsql"){
-		$match = "auto_incr";
-	}else if(DB_TYPE == "mysql"){
 		$match = 'nextval(\'';
+	}else if(DB_TYPE == "mysql"){
+		$match = "auto_incr";
 	}
 
 	foreach($arrColList['col_def'] as $key => $val){
