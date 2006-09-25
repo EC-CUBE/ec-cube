@@ -349,6 +349,8 @@ function lfRestore($bkup_name){
 		
 		// INSERT実行
 		lfExeInsertSQL($bkup_dir . $bkup_name . "/bkup_data.csv");
+		
+		// 画像ファイルをコピー
 	}
 }
 
