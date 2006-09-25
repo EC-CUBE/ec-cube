@@ -347,11 +347,13 @@ function lfRestore($bkup_name){
 	
 	// 無事解凍できれば、リストアを行う
 	if ($err) {
+		
+		$objQuery->begin();
 		// DBをクリア
-		lfDeleteAll();
+		lfDeleteAll($objQuery);
 		
 		// INSERT実行
-		lfExeInsertSQL($bkup_dir . "bkup_data.csv");
+		lfExeInsertSQL($objQuery, $bkup_dir . "bkup_data.csv");
 
 		// 画像のコピー
 		$image_dir = $bkup_dir . "save_image/";
@@ -360,12 +362,12 @@ function lfRestore($bkup_name){
 
 		// バックアップデータの削除
 		sfDelFile($bkup_dir);
+		$objQuery->rollback();
 	}
 }
 
 // CSVファイルからインサート実行
-function lfExeInsertSQL($csv){
-	$objQuery = new SC_Query();
+function lfExeInsertSQL($objQuery, $csv){
 		
 	// csvファイルからデータの取得
 	$arrCsvData = file($csv);
@@ -408,8 +410,7 @@ function lfExeInsertSQL($csv){
 }
 
 // DBを全てクリアする
-function lfDeleteAll(){
-	$objQuery = new SC_Query();
+function lfDeleteAll($objQuery){
 
 	$arrTableList = lfGetTableList();
 	
