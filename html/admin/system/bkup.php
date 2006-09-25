@@ -403,8 +403,11 @@ function lfTruncateAll(){
 	$arrTableList = lfGetTableList();
 	
 	foreach($arrTableList as $key => $val){
-		$trun_sql = "TRUNCATE TABLE $val;";
-		$objQuery->query($trun_sql);
+		// バックアップテーブルは削除しない
+		if ($val != "dtb_bkup") {
+			$trun_sql = "TRUNCATE TABLE $val;";
+			$objQuery->query($trun_sql);
+		}
 	}
 }
 
