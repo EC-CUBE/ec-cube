@@ -405,5 +405,30 @@ function lfTruncateAll(){
 	}
 }
 
+// バックアップテーブルを作成する
+function lfCreateTable(){
+	$objQuery = new SC_Query();
+	
+	// テーブルの存在チェック
+	$arrTableList = lfGetTableList();
+	
+	if(array_key_exists("dtb_bkup", $arrTableList)){
+		// 存在していなければ作成
+		$cre_sql = "
+			create table dtb_bkup
+			(
+				bkup_name	text,
+				bkup_memo	text,
+				create_date	timestamp
+			);
+		";
+		
+		$objQuery->query($cre_sql);
+	}
+	
+	
+	
+}
+
 
 ?>
