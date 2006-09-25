@@ -263,6 +263,8 @@ function lfGetTableList(){
 	}else if(DB_TYPE == "mysql"){
 		$sql = "SHOW TABLES;";
 		$arrRet = $objQuery->getAll($sql);
+		$arrRet = sfSwapArray($arrRet);
+		$arrRet = $arrRet['Tables_in_eccube_db'];
 	}
 	
 	return $arrRet;
