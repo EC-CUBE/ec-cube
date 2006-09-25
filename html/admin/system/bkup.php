@@ -324,8 +324,6 @@ function lfCreateInsertSQL($csv){
 	
 	foreach($arrCsvData as $key => $val){
 		$data = trim($val);
-		$sql = "";
-		
 		//空白行のときはテーブル変更
 		if ($data == "") {
 			$base_sql = "";
