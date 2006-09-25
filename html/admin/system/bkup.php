@@ -306,6 +306,8 @@ function lfCreateInsertSQL($csv){
 	
 	foreach($arrCsvData as $key => $val){
 		$data = trim($val);
+		
+		//空白行のときはテーブル変更
 		if ($data == "") {
 			sfprintr($sql);
 			$sql = "";
@@ -314,17 +316,22 @@ function lfCreateInsertSQL($csv){
 			continue;
 		}
 		
+		// テーブルフラグがたっていない場合にはテーブル名セット
 		if (!$tbl_flg) {
 			$sql = "INSERT INTO $data ";
 			$tbl_flg = true;
 			continue;
 		}
 		
+		// カラムフラグがたっていない場合にはカラムセット
 		if (!$col_flg) {
-			$sql .= "($data)";
+			$sql .= " ($data) VALUES ";
 			$col_flg = true;
 			continue;
 		}
+		
+		// インサートする値をセット
+		$sql .= " ($data);";
 	}
 		
 }
