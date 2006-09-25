@@ -78,7 +78,7 @@ function fnTargetSelf(){
 										<!--{ foreach key=key item=item from=$arrSqlList }-->
 										<tr class="fs12n" height=20>
 											<td align="center" width=600 bgcolor="<!--{if $item.sql_id == $sql_id}--><!--{$smarty.const.SELECT_RGB}--><!--{else}-->#ffffff<!--{/if}-->">
-												<a href="<!--{$smarty.server.PHP_SELF}-->?sql_id=<!--{$item.sql_id}-->" ><!--{$item.name}--></a>
+												<a href="<!--{$smarty.server.PHP_SELF}-->?sql_id=<!--{$item.sql_id}-->" ><!--{$item.csv_name}--></a>
 											</td>
 											<td align="center" width=78 bgcolor="<!--{if $item.sql_id == $sql_id}--><!--{$smarty.const.SELECT_RGB}--><!--{else}-->#ffffff<!--{/if}-->">
 												<input type='button' value='CSV½ÐÎÏ' name='csv' onclick="fnTargetSelf(); fnFormModeSubmit('form1','csv_output','csv_output_id',<!--{$item.sql_id}-->);"  />
