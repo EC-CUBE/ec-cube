@@ -210,6 +210,23 @@ function lfCreateBkupData($bkup_name){
 	return $arrErr;
 }
 
+/* 配列の要素をCSVフォーマットで出力する。*/
+function lfGetCSVList($array) {
+	if (count($array) > 0) {
+		foreach($array as $key => $val) {
+			if ($val = "") {
+				$line .= "".null.",";
+			}else{
+				$line .= "'".$val."',";
+			}
+		}
+		$line = ereg_replace(",$", "\n", $line);
+		return $line;
+	}else{
+		return false;
+	}
+}
+
 // 全テーブルリストを取得する
 function lfGetTableList(){
 	$objQuery = new SC_Query();
@@ -335,7 +352,6 @@ function lfCreateInsertSQL($csv){
 		$sql = $base_sql . " ($data);";
 		sfprintr($sql);
 	}
-		
 }
 
 
