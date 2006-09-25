@@ -163,8 +163,12 @@ function lfCreateBkupData($bkup_name){
 			$csv_autoinc .= lfGetAutoIncrement($val);
 			
 			// 全データを取得
-			$arrData = $objQuery->getAll("SELECT * FROM $val");
-	
+			if ($val == "dtb_pagelayout"){
+				$arrData = $objQuery->getAll("SELECT * FROM $val ORDER BY page_id");
+			}else{
+				$arrData = $objQuery->getAll("SELECT * FROM $val");
+			}
+			
 			// CSVデータ生成
 			if (count($arrData) > 0) {
 				
@@ -435,6 +439,7 @@ function lfExeInsertSQL($objQuery, $csv){
 	$tbl_flg = false;
 	$col_flg = false;
 	$ret = true;
+	$pagelayout_flg = false;
 	$mode = $objPage->mode;
 		
 	foreach($arrCsvData as $key => $val){
@@ -452,6 +457,11 @@ function lfExeInsertSQL($objQuery, $csv){
 		if (!$tbl_flg) {
 			$base_sql = "INSERT INTO $data ";
 			$tbl_flg = true;
+			
+			if($data == "dtb_pagelayout"){
+				$pagelayout_flg = true;
+			}
+			
 			continue;
 		}
 		
@@ -472,6 +482,14 @@ function lfExeInsertSQL($objQuery, $csv){
 		if ($err->message != ""){
 			return false;
 		}
+		
+		if ($pagelayout_flg) {
+			// dtb_pagelayoutの場合には最初のデータはpage_id = 0にする
+			$sql = "UPDATE dtb_pagelayout SET page_id = 0";
+			$objQuery->query($sql);
+			$pagelayout_flg = false;
+		}
+		
 	}
 	return $ret;
 }
@@ -527,6 +545,5 @@ function lfCreateBkupTable(){
 		$objQuery->query($cre_sql);
 	}
 }
-
 
 ?>
