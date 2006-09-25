@@ -348,7 +348,7 @@ function lfRestore($bkup_name){
 	// 無事解凍できれば、リストアを行う
 	if ($err) {
 		// DBをクリア
-		lfTruncateAll();
+		lfDeleteAll();
 		
 		// INSERT実行
 		lfExeInsertSQL($bkup_dir . "bkup_data.csv");
@@ -357,7 +357,7 @@ function lfRestore($bkup_name){
 		$image_dir = $bkup_dir . "save_image/";
 		$copy_mess = "";
 		$copy_mess = sfCopyDir($image_dir, "../../upload/save_image/", $copy_mess);		
-		
+
 		// バックアップデータの削除
 		sfDelFile($bkup_dir);
 	}
@@ -408,7 +408,7 @@ function lfExeInsertSQL($csv){
 }
 
 // DBを全てクリアする
-function lfTruncateAll(){
+function lfDeleteAll(){
 	$objQuery = new SC_Query();
 
 	$arrTableList = lfGetTableList();
@@ -416,7 +416,7 @@ function lfTruncateAll(){
 	foreach($arrTableList as $key => $val){
 		// バックアップテーブルは削除しない
 		if ($val != "dtb_bkup") {
-			$trun_sql = "TRUNCATE TABLE $val;";
+			$trun_sql = "DELETE FROM $val;";
 			$objQuery->query($trun_sql);
 		}
 	}
