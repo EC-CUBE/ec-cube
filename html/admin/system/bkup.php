@@ -351,8 +351,7 @@ function lfRestore($bkup_name){
 		lfExeInsertSQL($bkup_dir . $bkup_name . "/bkup_data.csv");
 
 		// バックアップデータの削除
-		sfDelFile($bkup_dir);
-
+		sfDelFile($bkup_dir . $bkup_name . "/");
 	}
 }
 
