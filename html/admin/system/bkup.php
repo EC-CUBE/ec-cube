@@ -198,7 +198,7 @@ function lfCreateBkupData($bkup_name){
 		//圧縮をおこなう
 //		$zip = $tar->create("./" . $bkup_name . "/");
 		$zip = $tar->create($bkup_dir);
-		
+
 		sfprintr($zip);
 		sfprintr($tar);
 
