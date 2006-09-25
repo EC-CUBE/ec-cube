@@ -261,7 +261,8 @@ function lfGetTableList(){
 		$arrRet = sfSwapArray($arrRet);
 		$arrRet = $arrRet['tablename'];
 	}else if(DB_TYPE == "mysql"){
-		
+		$sql = "SHOW TABLES;";
+		$arrRet = $objQuery->getAll($sql);
 	}
 	
 	return $arrRet;
