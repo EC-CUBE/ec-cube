@@ -446,7 +446,7 @@ function lfSetAutoInc($objQuery, $csv){
 	$arrCsvData = file($csv);
 	
 	foreach($arrCsvData as $key => $val){
-		$arrData = split(";", trim($val));
+		$arrData = split(",", trim($val));
 		sfprintr($arrData);
 	}
 }

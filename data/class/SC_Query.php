@@ -369,6 +369,19 @@ class SC_Query {
 		return $ret;
 	}	
 	
+	function setval($table, $colname, $data) {
+		$sql = "";
+		if (DB_TYPE == "pgsql") {
+			$seqtable = $table . "_" . $colname . "_seq";
+			$sql = "SELECT SETTVAL('$seqtable', $data)";
+		}else if (DB_TYPE == "mysql") {
+			$sql = "ALTER TABLE $table AUTO_INCREMENT=$data";
+		}
+		$ret = $this->conn->getOne($sql);
+		
+		return $ret;
+	}		
+	
 	function query($n ,$arr = "", $ignore_err = false){
 		$result = $this->conn->query($n, $arr, $ignore_err);
 		return $result;
