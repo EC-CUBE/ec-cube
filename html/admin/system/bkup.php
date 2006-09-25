@@ -363,7 +363,7 @@ function lfRestore($bkup_name){
 		if ($err) $err = lfExeInsertSQL($objQuery, $bkup_dir . "bkup_data.csv");
 
 		// 自動採番の値をセット
-		if ($err) $err = lfSetAutoInc($objQuery, $bkup_dir . "autoinc_data.csv");
+		if ($err) lfSetAutoInc($objQuery, $bkup_dir . "autoinc_data.csv");
 
 		if ($err) {
 			// 画像のコピー
@@ -448,8 +448,6 @@ function lfSetAutoInc($objQuery, $csv){
 	
 	foreach($arrCsvData as $key => $val){
 		$arrData = split(",", trim($val));
-		sfprintr($arrData);
-		
 		$objQuery->setval($arrData[0], $arrData[1], $arrData[2]);
 	}
 }
