@@ -370,11 +370,11 @@ function lfRestore($bkup_name){
 		if ($err) {
 			$objQuery->commit();
 			$objPage->restore_msg = "リストア終了しました。";
-			$objPage->restore_err = "false";
+			$objPage->restore_err = false;
 		}else{
 			$objQuery->rollback();
 			$objPage->restore_msg = "リストアに失敗しました。";
-			$objPage->restore_err = "true";
+			$objPage->restore_err = true;
 		}
 	}
 }
