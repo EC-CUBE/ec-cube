@@ -380,6 +380,7 @@ function lfRestore($bkup_name){
 		}else{
 			$objQuery->rollback();
 			$objPage->restore_msg = "リストアに失敗しました。";
+			$objPage->restore_name = $bkup_name;
 			$objPage->restore_err = false;
 		}
 	}
