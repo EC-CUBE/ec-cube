@@ -194,8 +194,8 @@ function lfCreateBkupData($bkup_name){
 		$tar = new Archive_Tar($objPage->bkup_dir . $bkup_name.".tar.gz", TRUE);
 
 		//bkupフォルダに移動する
-		chdir($bkup_dir);
-		
+		chdir($objPage->bkup_dir);
+
 		//圧縮をおこなう
 		$zip = $tar->create("./" . $bkup_name . "/");
 //		$zip = $tar->create($bkup_dir);
