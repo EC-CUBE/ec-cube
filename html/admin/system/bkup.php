@@ -341,13 +341,16 @@ function lfRestore($bkup_name){
 	
 	// 無事解凍できれば、リストアを行う
 	if ($err) {
-		// INSERT文作成
-		$ins_sql = lfCreateInsertSQL($bkup_dir . $bkup_name . "/bkup_data.csv");
+		// DBをクリア
+		lfTruncateAll();
+		
+		// INSERT実行
+		lfExeInsertSQL($bkup_dir . $bkup_name . "/bkup_data.csv");
 	}
 }
 
-// CSVファイルからインサート文作成
-function lfCreateInsertSQL($csv){
+// CSVファイルからインサート実行
+function lfExeInsertSQL($csv){
 	$objQuery = new SC_Query();
 		
 	// csvファイルからデータの取得
@@ -390,6 +393,13 @@ function lfCreateInsertSQL($csv){
 	return $sql;
 }
 
+// DBを全てクリアする
+function lfTruncateAll(){
+	$arrTableList = lfGetTableList();
+	
+	sfprintr($arrTableList);
+	
+}
 
 
 ?>
