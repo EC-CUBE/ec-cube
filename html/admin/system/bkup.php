@@ -62,6 +62,10 @@ case 'bkup':
 // リストア
 case 'restore':
 case 'restore_config':
+	if ($_POST['mode'] == 'restore_config') {
+		$objPage->mode = "restore_config";
+	}
+
 	lfRestore($_POST['list_name']);
 
 	break;
@@ -383,7 +387,7 @@ function lfRestore($bkup_name){
 
 // CSVファイルからインサート実行
 function lfExeInsertSQL($objQuery, $csv){
-		
+	global $objPage;
 	// csvファイルからデータの取得
 	$arrCsvData = file($csv);
 
@@ -392,7 +396,8 @@ function lfExeInsertSQL($objQuery, $csv){
 	$tbl_flg = false;
 	$col_flg = false;
 	$ret = true;
-	
+	$mode = $objPage->mode;
+		
 	foreach($arrCsvData as $key => $val){
 		$data = trim($val);
 		
@@ -412,14 +417,14 @@ function lfExeInsertSQL($objQuery, $csv){
 		}
 		
 		// カラムフラグがたっていない場合にはカラムセット
-		if (!$col_flg) {
-			$base_sql .= " ($data) VALUES ";
+		if (!$col_flg and $mode != "restore_config") {
+			$base_sql .= " ($data) ";
 			$col_flg = true;
 			continue;
 		}
 		
 		// インサートする値をセット
-		$sql = $base_sql . " ($data);\n";
+		$sql = $base_sql . "VALUES ($data);\n";
 		$err = $objQuery->query($sql);
 		
 		// エラーがあれば終了
