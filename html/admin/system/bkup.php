@@ -279,16 +279,16 @@ function lfRestore($bkup_name){
 	//fileフォルダに移動する
 	chdir($bkup_dir);
 	
-	//オブジェクトを作成する
-	//new Archive_Tar(ファイル名,圧縮フラグ);
 	//圧縮フラグTRUEはgzip解凍をおこなう
 	$tar = new Archive_Tar($bkup_name . ".tar.gz", TRUE);
 	
 	//指定されたフォルダ内に解凍する
-	$tar->extract("./");
+	$err = $tar->extract("./");
 	
-	
-	sfprintr($tar);
+	// 無事解凍できれば、リストアを行う
+	if ($err) {
+		$data = file($bkup_dir . $bkup_name . "/bkup_data.csv");
+	}
 }
 
 
