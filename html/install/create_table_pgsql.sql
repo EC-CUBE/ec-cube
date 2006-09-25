@@ -872,5 +872,5 @@ create table dtb_bkup
 (
 	bkup_name	text,
 	bkup_memo	text,
-	create_date	datetime
+	create_date	timestamp
 );
