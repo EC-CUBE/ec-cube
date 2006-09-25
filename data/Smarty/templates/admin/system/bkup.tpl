@@ -138,7 +138,7 @@
 									<tr bgcolor="#ffffff" class="fs12">
 										<td>
 											▼実行結果<br>
-											<!--{if !$restore_err}-->▼実行結果<br><!--{/if}-->
+											<!--{if $restore_err == false}-->▼実行結果<br><!--{/if}-->
 											<!--{$restore_msg}-->
 										</td>
 									</tr>								

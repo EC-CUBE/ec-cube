@@ -422,7 +422,6 @@ function lfExeInsertSQL($objQuery, $csv){
 		if (count($err) > 0){
 			return false;
 		}
-		
 	}
 	return $ret;
 }
