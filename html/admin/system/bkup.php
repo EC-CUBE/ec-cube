@@ -215,7 +215,7 @@ function lfGetCSVList($array) {
 	if (count($array) > 0) {
 		foreach($array as $key => $val) {
 			if ($val == "") {
-				$line .= "".null.",";
+				$line .= "NULL,";
 			}else{
 				$line .= "'".$val."',";
 			}
