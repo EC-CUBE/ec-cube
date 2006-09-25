@@ -401,7 +401,7 @@ function lfRestore($bkup_name){
 	
 	$bkup_dir = $objPage->bkup_dir . $bkup_name . "/";
 	
-	//fileフォルダに移動する
+	//バックアップフォルダに移動する
 	chdir($objPage->bkup_dir);
 	
 	//圧縮フラグTRUEはgzip解凍をおこなう
@@ -430,22 +430,22 @@ function lfRestore($bkup_name){
 			// 画像のコピー
 			$image_dir = $bkup_dir . "save_image/";
 			$copy_mess = "";
-			$copy_mess = sfCopyDir($image_dir, "../../upload/save_image/", $copy_mess);		
+			$copy_mess = sfCopyDir($image_dir, "../upload/save_image/", $copy_mess);		
 	
 			// テンプレートのコピー
 			$tmp_dir = $bkup_dir . "templates";
 			$copy_mess = "";
-			$copy_mess = sfCopyDir($tmp_dir, "../../user_data/templates/", $copy_mess);		
+			$copy_mess = sfCopyDir($tmp_dir, "../templates/", $copy_mess);		
 			
 			// インクルードファイルのコピー
 			$inc_dir = $bkup_dir . "include/";
 			$copy_mess = "";
-			$copy_mess = sfCopyDir($inc_dir, "../../user_data/include/", $copy_mess);		
+			$copy_mess = sfCopyDir($inc_dir, "../include/", $copy_mess);		
 			
 			// CSSのコピー
 			$css_dir = $bkup_dir . "css/";
 			$copy_mess = "";
-			$copy_mess = sfCopyDir($css_dir, "../../user_data/css/", $copy_mess);		
+			$copy_mess = sfCopyDir($css_dir, "../css/", $copy_mess);		
 
 			// バックアップデータの削除
 			sfDelFile($bkup_dir);
