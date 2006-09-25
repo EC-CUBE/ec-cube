@@ -201,7 +201,7 @@ function lfCreateBkupData($bkup_name){
 		sfprintr($zip);
 		
 		// バックアップデータの削除
-		if (!$zip) sfDelFile($bkup_dir);
+		if ($zip) sfDelFile($bkup_dir);
 	}
 
 	if (!$err) {
