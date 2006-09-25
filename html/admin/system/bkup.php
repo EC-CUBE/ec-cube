@@ -349,9 +349,10 @@ function lfCreateInsertSQL($csv){
 		}
 		
 		// インサートする値をセット
-		$sql = $base_sql . " ($data);";
-		sfprintr($sql);
+		$sql .= $base_sql . " ($data);";
 	}
+	
+	sfprintr($sql);
 }
 
 
