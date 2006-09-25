@@ -300,9 +300,29 @@ function lfCreateInsertSQL($csv){
 	// csvファイルからデータの取得
 	$data = file($csv);
 	
+	$sql = "";
+	$tbl_flg = false;
+	$col_flg = false;
+	
 	foreach($data as $key => $val){
 		if ($val == "\n") {
-			sfprintr($key);
+			sfprintr($sql);
+			$sql = "";
+			$tbl_flg = false;
+			$col_flg = false;
+			continue;
+		}
+		
+		if (!$tbl_flg) {
+			$sql = "INSERT INTO $val ";
+			$tbl_flg = true;
+			continue;
+		}
+		
+		if (!$col_flg) {
+			$sql .= "($val)";
+			$col_flg = true;
+			continue;
 		}
 	}
 		
