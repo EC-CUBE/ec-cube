@@ -289,11 +289,7 @@ function lfRestore($bkup_name){
 	if ($err) {
 		
 		// INSERT ∏∫Ó¿Æ
-		lfCreateInsertSQL($bkup_dir . $bkup_name . "/bkup_data.csv")
-		
-
-		
-		
+		lfCreateInsertSQL($bkup_dir . $bkup_name . "/bkup_data.csv");
 		
 	}
 	sfprintr($data);
