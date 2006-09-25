@@ -316,7 +316,7 @@ function lfGetColumnList($table_name){
 	}
 	
 	
-	return sfSwapArray($arrRet);
+	return $arrRet;
 }
 
 // 自動採番型の値を取得する
