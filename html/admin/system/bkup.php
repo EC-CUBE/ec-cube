@@ -30,6 +30,9 @@ $objSess = new SC_Session();
 // 認証可否の判定
 sfIsSuccess($objSess);
 
+// バックアップテーブルがなければ作成する
+lfCreateBkupTable();
+
 switch($_POST['mode']) {
 // バックアップを作成する
 case 'bkup':
@@ -406,7 +409,7 @@ function lfTruncateAll(){
 }
 
 // バックアップテーブルを作成する
-function lfCreateTable(){
+function lfCreateBkupTable(){
 	$objQuery = new SC_Query();
 	
 	// テーブルの存在チェック
@@ -425,8 +428,6 @@ function lfCreateTable(){
 		
 		$objQuery->query($cre_sql);
 	}
-	
-	
 	
 }
 
