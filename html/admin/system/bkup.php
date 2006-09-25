@@ -309,8 +309,9 @@ function lfGetColumnList($table_name){
 		$arrRet = sfSwapArray($arrRet);
 		
 		sfprintr($arrRet);
-		
+		$arrRet['col_def'] = array();
 		$arrRet['col_def'] = $arrColList['Field'];
+		$arrRet['col_name'] = array();
 		$arrRet['col_name'] = $arrColList['Extra'];
 	}
 	
