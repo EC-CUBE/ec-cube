@@ -258,7 +258,7 @@ function lfGetAutoIncrement($table_name){
 		}
 	}
 	
-	//sfprintr($ret);
+	sfprintr($ret);
 	return $ret;
 }
 
@@ -283,28 +283,12 @@ function lfGetColumnList($table_name){
 }
 
 // 自動採番型の値を取得する
-function lfGetAutoIncrementVal($table_name , $seqtable = ""){
+function lfGetAutoIncrementVal($table_name , $colname = ""){
 	$objQuery = new SC_Query();
 	$ret = "";
 
 	if(DB_TYPE == "pgsql"){
-		$sql = "SELECT
-				    ci.relname,
-				    i.indkey
-				FROM
-				    pg_index i,
-				    pg_class c,
-				    pg_class ci
-				WHERE
-				    i.indrelid = c.oid AND
-				    i.indexrelid = ci.oid AND
-				    c.relname = ? AND
-			        ci.relname = ?
-				";
-		$arrRet = $objQuery->getAll($sql, array($table_name, $seqtable));
-		$ret = $arrRet[0]['indkey'];
-		$objQuery->getlastquery();
-		sfprintr($arrRet);
+		$ret = $objQuery->nextval($table_name, $colname);
 	}
 	return $ret;
 }
