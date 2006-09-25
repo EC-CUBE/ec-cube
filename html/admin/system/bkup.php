@@ -198,8 +198,8 @@ function lfCreateBkupData($bkup_name){
 		// 自動採番をCSV出力
 		$fp = fopen($csv_autoinc_file,"w");
 		if($fp) {
+			sfprintr($csv_autoinc);
 			$err = fwrite($fp, $csv_autoinc);
-			sfprintr($err);
 			fclose($fp);
 		}
 	}
