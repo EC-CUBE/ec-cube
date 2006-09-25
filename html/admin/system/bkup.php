@@ -433,7 +433,7 @@ function lfRestore($bkup_name){
 			$copy_mess = sfCopyDir($image_dir, "../../upload/save_image/", $copy_mess);		
 	
 			// テンプレートのコピー
-			$tmp_dir = $bkup_dir . "templates";
+			$tmp_dir = $bkup_dir . "templates/";
 			$copy_mess = "";
 			$copy_mess = sfCopyDir($tmp_dir, "../templates/", $copy_mess);		
 			
