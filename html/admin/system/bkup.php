@@ -439,7 +439,7 @@ function lfDeleteAll($objQuery){
 			$trun_sql = "DELETE FROM $val;";
 			$ret = $objQuery->query($trun_sql);
 			
-			sfprintr($ret);
+			sfprintr($val . $ret);
 			
 			if (!$ret) return $ret;
 		}
