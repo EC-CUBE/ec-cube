@@ -61,7 +61,7 @@ case 'bkup':
 	
 // リストア
 case 'restore':
-case 'config_restore':
+case 'restore_config':
 	lfRestore($_POST['list_name']);
 
 	break;
