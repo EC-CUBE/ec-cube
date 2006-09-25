@@ -145,9 +145,9 @@ function lfCreateBkupData($bkup_name){
 		
 		if ($val != "dtb_bkup") {
 			// テーブル構成を取得
-			$arrColumnList = lfGetColumnList($val);
+			$arrAutoInc = lfGetAutoIncrement($val);
 			
-			sfprintr($arrColumnList);
+			sfprintr($arrAutoInc);
 			
 			// 全データを取得
 			$arrData = $objQuery->getAll("SELECT * FROM $val");
@@ -245,24 +245,27 @@ function lfGetTableList(){
 	return $arrRet;
 }
 
-// テーブル構成を取得する
-function lfGetColumnList($table_name){
+// 自動採番型値を取得する
+function lfGetAutoIncrement($table_name){
 	$objQuery = new SC_Query();
 
 	if(DB_TYPE == "pgsql"){
-		$sql = "SELECT 
-					a.attname, t.typname, a.attnotnull, d.adsrc as defval, a.atttypmod,	a.attnum as fldnum,	e.description 
-				FROM 
-					pg_class c,
-					pg_type t,
-					pg_attribute a left join pg_attrdef d on (a.attrelid=d.adrelid and a.attnum=d.adnum)
-								   left join pg_description e on (a.attrelid=e.objoid and a.attnum=e.objsubid)
-				WHERE (c.relname=?) AND (c.oid=a.attrelid) AND (a.atttypid=t.oid) AND a.attnum > 0
-				ORDER BY fldnum";
+		$sql = "SELECT
+				    ci.relname,
+				    i.indkey
+				FROM
+				    pg_index i,
+				    pg_class c,
+				    pg_class ci
+				WHERE
+				    i.indrelid = c.oid AND
+				    i.indexrelid = ci.oid AND
+				    c.relname = ?
+				";
 		$arrRet = $objQuery->getAll($sql, array($table_name));
 	}
 	
-	return sfswaparray($arrRet);
+	return $arrRet;
 
 }
 
