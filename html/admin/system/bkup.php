@@ -214,7 +214,7 @@ function lfCreateBkupData($bkup_name){
 function lfGetCSVList($array) {
 	if (count($array) > 0) {
 		foreach($array as $key => $val) {
-			if ($val = "") {
+			if ($val == "") {
 				$line .= "".null.",";
 			}else{
 				$line .= "'".$val."',";
