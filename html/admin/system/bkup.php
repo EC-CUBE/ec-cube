@@ -321,8 +321,8 @@ function lfGetColumnList($table_name){
 		$arrColList = $objQuery->getAll($sql);
 		$arrColList = sfSwapArray($arrColList);
 		
-		$arrRet['col_def'] = $arrColList['Field'];
-		$arrRet['col_name'] = $arrColList['Extra'];
+		$arrRet['col_def'] = $arrColList['Extra'];
+		$arrRet['col_name'] = $arrColList['Field'];
 	}
 	return $arrRet;
 }
