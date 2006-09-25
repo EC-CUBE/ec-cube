@@ -305,7 +305,7 @@ function lfCreateInsertSQL($csv){
 	$col_flg = false;
 	
 	foreach($data as $key => $val){
-		if ($val == "\n") {
+		if (trim($val) == "") {
 			sfprintr($sql);
 			$sql = "";
 			$tbl_flg = false;
