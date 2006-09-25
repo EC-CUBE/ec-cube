@@ -16,7 +16,8 @@ class LC_Page {
 		$this->tpl_subtitle = 'バックアップ管理';
 		
 //		$this->bkup_dir = ROOT_DIR . USER_DIR . "bkup/";
-		$this->bkup_dir = "../../test/bkup/";
+		$this->bkup_dir = ROOT_DIR . "test/" . "bkup/";
+//		$this->bkup_dir = "../../test/bkup/";
 	}
 }
 
