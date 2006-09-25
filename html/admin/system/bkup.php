@@ -285,6 +285,7 @@ function lfGetColumnList($table_name){
 // 自動採番型の値を取得する
 function lfGetAutoIncrementVal($table_name , $seqtable = ""){
 	$objQuery = new SC_Query();
+	$ret = "";
 
 	if(DB_TYPE == "pgsql"){
 		$sql = "SELECT
@@ -301,8 +302,9 @@ function lfGetAutoIncrementVal($table_name , $seqtable = ""){
 			        ci.relname = ?
 				";
 		$arrRet = $objQuery->getAll($sql, array($table_name, $seqtable));
+		$ret = $arrRet[0]['indkey'];
 	}
-	return $arrRet;
+	return $ret;
 }
 
 // バックアップテーブルにデータを更新する
