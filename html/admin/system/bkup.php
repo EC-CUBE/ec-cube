@@ -493,7 +493,6 @@ function lfCreateBkupTable(){
 		";
 		
 		$objQuery->query($cre_sql);
-		$objQuery->getlastquery();
 	}
 }
 
