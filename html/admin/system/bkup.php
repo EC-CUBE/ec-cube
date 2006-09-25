@@ -345,7 +345,7 @@ function lfRestore($bkup_name){
 		$ins_sql = lfCreateInsertSQL($bkup_dir . $bkup_name . "/bkup_data.csv");
 	}
 	
-	sfprintr($ins_sql);
+	sfprintr(split(";", $ins_sql));
 	
 }
 
