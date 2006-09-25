@@ -356,19 +356,23 @@ function lfRestore($bkup_name){
 		// INSERT実行
 		if ($err) $err = lfExeInsertSQL($objQuery, $bkup_dir . "bkup_data.csv");
 
-		// 画像のコピー
-		$image_dir = $bkup_dir . "save_image/";
-		$copy_mess = "";
-		$copy_mess = sfCopyDir($image_dir, "../../upload/save_image/", $copy_mess);		
-
-		// バックアップデータの削除
-		sfDelFile($bkup_dir);
+		if ($err) {
+			// 画像のコピー
+			$image_dir = $bkup_dir . "save_image/";
+			$copy_mess = "";
+			$copy_mess = sfCopyDir($image_dir, "../../upload/save_image/", $copy_mess);		
+	
+			// バックアップデータの削除
+			sfDelFile($bkup_dir);
+		}
 		
 		// リストア成功ならコミット失敗ならロールバック
 		if ($err) {
 			$objQuery->commit();
+			$objPage->restore_msg = "リストア終了しました。";
 		}else{
 			$objQuery->rollback();
+			$objPage->restore_msg = "リストアに失敗しました。";
 		}
 	}
 }
