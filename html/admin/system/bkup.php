@@ -278,8 +278,14 @@ function lfGetAutoIncrement($table_name){
 	$arrColList = lfGetColumnList($table_name);
 	$ret = "";
 	
+	if(DB_TYPE == "pgsql"){
+		$match = "auto_increment";
+	}else if(DB_TYPE == "mysql"){
+		$match = 'nextval(\'';
+	}
+
 	foreach($arrColList['col_def'] as $key => $val){
-		if (substr($val,0,9) == 'nextval(\'') {
+		if (substr($val,0,9) == $match) {
 			$col = $arrColList['col_name'][$key];
 			$autoVal = lfGetAutoIncrementVal($table_name, $col);
 			$ret .= "$table_name,$col,$autoVal\n";
@@ -331,8 +337,6 @@ function lfGetAutoIncrementVal($table_name , $colname = ""){
 		$arrData = $objQuery->query($sql, $table_name);
 		$ret = $arrData['Auto_increment'];
 	}
-	
-	sfprintr($ret);
 	return $ret;
 }
 
