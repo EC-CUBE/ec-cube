@@ -331,6 +331,8 @@ function lfGetAutoIncrementVal($table_name , $colname = ""){
 		$arrData = $objQuery->query($sql, $table_name);
 		$ret = $arrData['Auto_increment'];
 	}
+	
+	sfprintr($ret);
 	return $ret;
 }
 
