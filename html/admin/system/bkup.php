@@ -422,6 +422,8 @@ function lfExeInsertSQL($objQuery, $csv){
 		// インサートする値をセット
 		$sql = $base_sql . " ($data);\n";
 		$ret = $objQuery->query($sql);
+		
+		sfprintr($base_sql . $ret);
 	}
 	
 	return $ret;
@@ -438,8 +440,6 @@ function lfDeleteAll($objQuery){
 		if ($val != "dtb_bkup") {
 			$trun_sql = "DELETE FROM $val;";
 			$ret = $objQuery->query($trun_sql);
-			
-			sfprintr($val . $ret);
 			
 			if (!$ret) return $ret;
 		}
