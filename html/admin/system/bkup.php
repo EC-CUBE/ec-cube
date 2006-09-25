@@ -171,7 +171,6 @@ function lfCreateBkupData($bkup_name){
 				foreach($arrData as $data_key => $data_val){
 					$data .= lfGetCSVList($arrData[$data_key]);
 				}
-				
 				// CSV出力データ生成
 				$csv_data .= $val . "\n";
 				$csv_data .= $arrKyes . "\n";
@@ -200,6 +199,7 @@ function lfCreateBkupData($bkup_name){
 		$fp = fopen($csv_autoinc_file,"w");
 		if($fp) {
 			$err = fwrite($fp, $csv_autoinc);
+			sfprintr($err);
 			fclose($fp);
 		}
 	}
@@ -227,6 +227,8 @@ function lfCreateBkupData($bkup_name){
 
 	if (!$err) {
 		$arrErr['bkup_name'] = "バックアップに失敗しました。";
+		// バックアップデータの削除
+		sfDelFile($bkup_dir);
 	}
 	
 	return $arrErr;
