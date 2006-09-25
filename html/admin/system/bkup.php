@@ -393,8 +393,8 @@ function lfExeInsertSQL($objQuery, $csv){
 		$data = trim($val);
 		
 		// エラーがあれば終了
-		if (!$ret){
-			return $ret;
+		if (count($err) > 0){
+			return false;
 		}
 		
 		//空白行のときはテーブル変更
@@ -421,11 +421,8 @@ function lfExeInsertSQL($objQuery, $csv){
 		
 		// インサートする値をセット
 		$sql = $base_sql . " ($data);\n";
-		$ret = $objQuery->query($sql);
-		
-	
+		$err = $objQuery->query($sql);
 	}
-	sfprintr($ret);
 	return $ret;
 }
 
