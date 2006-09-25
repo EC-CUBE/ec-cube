@@ -203,8 +203,11 @@ function lfCreateBkupData($bkup_name){
 
 	// 商品画像ファイルをコピー
 	if ($err) {
+		// ディレクトリが存在していなければ作成する		
+		$image_dir = $bkup_dir . "save_image/";
+		if (!is_dir(dirname($image_dir))) $err = mkdir(dirname($image_dir));		
 		$copy_mess = "";
-		$copy_mess = sfCopyDir("../../upload/save_image/", $bkup_dir, $copy_mess);
+		$copy_mess = sfCopyDir("../../upload/save_image/",$image_dir, $copy_mess);
 
 		//圧縮フラグTRUEはgzip圧縮をおこなう
 		$tar = new Archive_Tar($objPage->bkup_dir . $bkup_name.".tar.gz", TRUE);
@@ -350,6 +353,7 @@ function lfRestore($bkup_name){
 		// INSERT実行
 		lfExeInsertSQL($bkup_dir . "bkup_data.csv");
 
+		// 画像のコピー
 		$copy_mess = "";
 		$copy_mess = sfCopyDir($bkup_dir, "../../upload/save_image/", $copy_mess);		
 		
