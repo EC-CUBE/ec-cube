@@ -350,7 +350,9 @@ function lfRestore($bkup_name){
 		// INSERT実行
 		lfExeInsertSQL($bkup_dir . $bkup_name . "/bkup_data.csv");
 		
-		// 画像ファイルをコピー
+		// 商品画像ファイルをコピー
+		$copy_mess = "";
+		$copy_mess = sfCopyDir($bkup_dir, "../../upload/save_image/", $copy_mess);
 	}
 }
 
