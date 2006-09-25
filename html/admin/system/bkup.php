@@ -343,17 +343,16 @@ function lfRestore($bkup_name){
 	if ($err) {
 		// INSERT文作成
 		$ins_sql = lfCreateInsertSQL($bkup_dir . $bkup_name . "/bkup_data.csv");
-		$objDB = DB::connect(DEFAULT_DSN);
-		$objDB->query($ins_sql);
 	}
-	
 }
 
 // CSVファイルからインサート文作成
 function lfCreateInsertSQL($csv){
+	$objQuery = new SC_Query();
+		
 	// csvファイルからデータの取得
 	$arrCsvData = file($csv);
-	
+
 	$sql = "";
 	$base_sql = "";
 	$tbl_flg = false;
@@ -384,7 +383,8 @@ function lfCreateInsertSQL($csv){
 		}
 		
 		// インサートする値をセット
-		$sql .= $base_sql . " ($data);\n";
+		$sql = $base_sql . " ($data);\n";
+		$objQuery->query($sql);
 	}
 	
 	return $sql;
