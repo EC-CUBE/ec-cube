@@ -191,7 +191,9 @@ function lfCreateBkupData($bkup_name){
 		// data§ÚCSVΩ–Œœ
 		$fp = fopen($csv_file,"w");
 		if($fp) {
-			$err = fwrite($fp, $csv_data);
+			if($csv_data != ""){
+				$err = fwrite($fp, $csv_data);
+			}
 			fclose($fp);
 		}
 		
