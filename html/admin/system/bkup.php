@@ -274,7 +274,7 @@ function lfGetAutoIncrement($table_name){
 	foreach($arrColList['defval'] as $key => $val){
 		if (substr($val,0,9) == 'nextval(\'') {
 			$autoVal = lfGetAutoIncrementVal($table_name, $arrColList['attname'][$key]);
-			$ret .= "$table_name,$autoVal\n";
+			$ret .= "$table_name,$arrColList['attname'][$key],$autoVal\n";
 		}
 	}
 	
@@ -448,6 +448,8 @@ function lfSetAutoInc($objQuery, $csv){
 	foreach($arrCsvData as $key => $val){
 		$arrData = split(",", trim($val));
 		sfprintr($arrData);
+		
+		$objQuery->setval($arrData[0], $arrData[1], $arrData[2]);
 	}
 }
 
