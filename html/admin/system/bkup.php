@@ -354,8 +354,9 @@ function lfRestore($bkup_name){
 		lfExeInsertSQL($bkup_dir . "bkup_data.csv");
 
 		// 画像のコピー
+		$image_dir = $bkup_dir . "save_image/";
 		$copy_mess = "";
-		$copy_mess = sfCopyDir($bkup_dir, "../../upload/save_image/", $copy_mess);		
+		$copy_mess = sfCopyDir($image_dir, "../../upload/save_image/", $copy_mess);		
 		
 		// バックアップデータの削除
 		sfDelFile($bkup_dir);
