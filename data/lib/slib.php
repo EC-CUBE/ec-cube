@@ -2486,10 +2486,6 @@ function sfDelFile($dir){
 	
 }
 
-function sfSetDblQut($data){
-	strtr
-}
-
 
 /* デバッグ用 ------------------------------------------------------------------------------------------------*/
 function sfPrintR($obj) {
