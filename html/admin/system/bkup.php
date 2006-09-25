@@ -435,17 +435,17 @@ function lfRestore($bkup_name){
 			// テンプレートのコピー
 			$tmp_dir = $bkup_dir . "templates/";
 			$copy_mess = "";
-			$copy_mess = sfCopyDir($tmp_dir, "../templates/", $copy_mess);		
+			$copy_mess = sfCopyDir($tmp_dir, "../../user_data/templates/", $copy_mess);		
 			
 			// インクルードファイルのコピー
 			$inc_dir = $bkup_dir . "include/";
 			$copy_mess = "";
-			$copy_mess = sfCopyDir($inc_dir, "../include/", $copy_mess);		
+			$copy_mess = sfCopyDir($inc_dir, "../../user_data/include/", $copy_mess);		
 			
 			// CSSのコピー
 			$css_dir = $bkup_dir . "css/";
 			$copy_mess = "";
-			$copy_mess = sfCopyDir($css_dir, "../css/", $copy_mess);		
+			$copy_mess = sfCopyDir($css_dir, "../../user_data/css/", $copy_mess);		
 
 			// バックアップデータの削除
 			sfDelFile($bkup_dir);
