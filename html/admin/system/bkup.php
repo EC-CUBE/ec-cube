@@ -429,6 +429,8 @@ function lfExeInsertSQL($objQuery, $csv){
 		$sql = $base_sql . "VALUES ($data);\n";
 		$err = $objQuery->query($sql);
 		
+		sfprintr($err);
+		
 		// エラーがあれば終了
 		if ($err != true){
 			return false;
