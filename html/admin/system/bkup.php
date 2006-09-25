@@ -174,19 +174,26 @@ function lfCreateBkupData($bkup_name){
 			}	
 		}
 	}
-	
-	sfprintr($csv_autoinc);
 
 	$csv_file = $bkup_dir . "bkup_data.csv";
+	$csv_autoinc_file = $bkup_dir . "autoinc_data.csv";
 	// CSV出力
 	// ディレクトリが存在していなければ作成する		
 	if (!is_dir(dirname($csv_file))) {
 		$err = mkdir(dirname($csv_file));
 	}
 	if ($err) {
+		// dataをCSV出力
 		$fp = fopen($csv_file,"w");
 		if($fp) {
 			$err = fwrite($fp, $csv_data);
+			fclose($fp);
+		}
+		
+		// 自動採番をCSV出力
+		$fp = fopen($csv_autoinc_file,"w");
+		if($fp) {
+			$err = fwrite($fp, $csv_autoinc);
 			fclose($fp);
 		}
 	}
