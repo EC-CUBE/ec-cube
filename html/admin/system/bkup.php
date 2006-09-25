@@ -392,11 +392,6 @@ function lfExeInsertSQL($objQuery, $csv){
 	foreach($arrCsvData as $key => $val){
 		$data = trim($val);
 		
-		// エラーがあれば終了
-		if (count($err) > 0){
-			return false;
-		}
-		
 		//空白行のときはテーブル変更
 		if ($data == "") {
 			$base_sql = "";
@@ -422,6 +417,12 @@ function lfExeInsertSQL($objQuery, $csv){
 		// インサートする値をセット
 		$sql = $base_sql . " ($data);\n";
 		$err = $objQuery->query($sql);
+		
+		// エラーがあれば終了
+		if (count($err) > 0){
+			return false;
+		}
+		
 	}
 	return $ret;
 }
