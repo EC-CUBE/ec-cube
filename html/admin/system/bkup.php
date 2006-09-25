@@ -515,7 +515,7 @@ function lfExeInsertSQL($objQuery, $csv){
 		// インサートする値をセット
 		$sql = $base_sql . "VALUES ( ?";
 		$arrInsdata = split(",",$data);
-		for($i = 0; $i < count($arrInsdata); $i++){
+		for($i = 1; $i < count($arrInsdata); $i++){
 			$sql .= ",?";
 		}
 		$sql .= ");\n";

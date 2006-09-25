@@ -2486,6 +2486,11 @@ function sfDelFile($dir){
 	
 }
 
+function sfSetDblQut($data){
+	strtr
+}
+
+
 /* デバッグ用 ------------------------------------------------------------------------------------------------*/
 function sfPrintR($obj) {
 	print("<div style='font-size: 12px'>\n");
