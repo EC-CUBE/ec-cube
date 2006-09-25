@@ -432,7 +432,7 @@ function lfExeInsertSQL($objQuery, $csv){
 		sfprintr($err->message);
 		
 		// エラーがあれば終了
-		if ($err->message == ""){
+		if ($err->message != ""){
 			return false;
 		}
 	}
