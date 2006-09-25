@@ -287,9 +287,29 @@ function lfRestore($bkup_name){
 	
 	// 無事解凍できれば、リストアを行う
 	if ($err) {
-		$data = file($bkup_dir . $bkup_name . "/bkup_data.csv");
+		
+		// INSERT文作成
+		lfCreateInsertSQL($bkup_dir . $bkup_name . "/bkup_data.csv")
+		
+
+		
+		
+		
 	}
 	sfprintr($data);
+}
+
+// CSVファイルからインサート文作成
+function lfCreateInsertSQL($csv){
+	// csvファイルからデータの取得
+	$data = file($csv);
+	
+	foreach($data as $key => $val){
+		if ($val == "\n") {
+			sfprintr($key);
+		}
+	}
+		
 }
 
 
