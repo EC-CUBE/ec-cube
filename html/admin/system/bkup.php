@@ -299,16 +299,15 @@ function lfGetColumnList($table_name){
 				WHERE (c.relname=?) AND (c.oid=a.attrelid) AND (a.atttypid=t.oid) AND a.attnum > 0
 				ORDER BY fldnum";
 		$arrColList = $objQuery->getAll($sql, array($table_name));
-		$arrColList = sfSwapArray($arrRet);
+		$arrColList = sfSwapArray($arrColList);
 		
 		$arrRet['col_def'] = $arrColList['defval'];
 		$arrRet['col_name'] = $arrColList['attname'];
 	}else if(DB_TYPE == "mysql"){
 		$sql = "SHOW COLUMNS FROM $table_name";
 		$arrColList = $objQuery->getAll($sql);
-		$arrColList = sfSwapArray($arrRet);
+		$arrColList = sfSwapArray($arrColList);
 		
-		$arrRet['col_def'] = array();
 		$arrRet['col_def'] = $arrColList['Field'];
 		$arrRet['col_name'] = $arrColList['Extra'];
 	}
