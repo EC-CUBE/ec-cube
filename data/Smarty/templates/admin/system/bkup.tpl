@@ -70,7 +70,7 @@
 										<td bgcolor="#e9e7de" align="center">
 										<table border="0" cellspacing="0" cellpadding="0" summary=" ">
 											<tr>
-												<td><input type="button" name="cre_bkup" value="バックアップデータを作成する" onClick="form1.mode.value='bkup'; submit();" /></td>
+												<td><input type="button" name="cre_bkup" value="バックアップデータを作成する" onClick="document.body.style.cursor = 'wait'; form1.mode.value='bkup'; submit();" /></td>
 											</tr>
 										</table>
 										</td>
@@ -117,7 +117,7 @@
 										<td ><!--{$arrBkupList[cnt].bkup_name}--></td>
 										<td ><!--{$arrBkupList[cnt].bkup_memo}--></td>			
 										<td align="center"><!--{$arrBkupList[cnt].create_date|sfCutString:19:true:false}--></td>
-										<td align="center"><a href="#" onclick="fnModeSubmit('restore','list_name','<!--{$arrBkupList[cnt].bkup_name}-->');">restore</a></td>
+										<td align="center"><a href="#" onclick="document.body.style.cursor = 'wait'; fnModeSubmit('restore','list_name','<!--{$arrBkupList[cnt].bkup_name}-->');">restore</a></td>
 										<td align="center">
 											<a href="#" onclick="fnModeSubmit('del','list_name','<!--{$arrBkupList[cnt].bkup_name}-->');">delete</a>
 										</td>	
@@ -138,7 +138,7 @@
 									<tr bgcolor="#ffffff" class="fs12">
 										<td>
 											▼実行結果<br>
-											<!--{if $restore_err == false}--><input type="button" name="restore_config" value="テーブル構成を無視してリストアする" onClick="form1.mode.value='restore_config'; form1.list_name.value='<!--{$restore_name}-->'; submit();" /><br><!--{/if}-->
+											<!--{if $restore_err == false}--><input type="button" name="restore_config" value="テーブル構成を無視してリストアする" onClick="document.body.style.cursor = 'wait'; form1.mode.value='restore_config'; form1.list_name.value='<!--{$restore_name}-->'; submit();" /><br><!--{/if}-->
 											<!--{$restore_msg}-->
 										</td>
 									</tr>								
