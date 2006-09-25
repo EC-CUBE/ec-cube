@@ -286,7 +286,6 @@ function lfGetAutoIncrement($table_name){
 
 	foreach($arrColList['col_def'] as $key => $val){
 		
-		sfprintr(substr($val,0,9));
 		if (substr($val,0,9) == $match) {
 			$col = $arrColList['col_name'][$key];
 			$autoVal = lfGetAutoIncrementVal($table_name, $col);
@@ -338,6 +337,8 @@ function lfGetAutoIncrementVal($table_name , $colname = ""){
 		$sql = "SHOW TABLE STATUS LIKE ?";
 		$arrData = $objQuery->query($sql, $table_name);
 		$ret = $arrData['Auto_increment'];
+		
+		sfprintr($ret);
 	}
 	return $ret;
 }
