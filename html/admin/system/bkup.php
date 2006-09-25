@@ -272,9 +272,10 @@ function lfGetTableList(){
 function lfGetAutoIncrement($table_name){
 	$arrColList = lfGetColumnList($table_name);
 	$ret = "";
-	foreach($arrColList['defval'] as $key => $val){
+	
+	foreach($arrColList['col_def'] as $key => $val){
 		if (substr($val,0,9) == 'nextval(\'') {
-			$col = $arrColList['attname'][$key];
+			$col = $arrColList['col_name'][$key];
 			$autoVal = lfGetAutoIncrementVal($table_name, $col);
 			$ret .= "$table_name,$col,$autoVal\n";
 		}
@@ -298,10 +299,16 @@ function lfGetColumnList($table_name){
 				WHERE (c.relname=?) AND (c.oid=a.attrelid) AND (a.atttypid=t.oid) AND a.attnum > 0
 				ORDER BY fldnum";
 		$arrRet = $objQuery->getAll($sql, array($table_name));
+		$arrRet['col_def'] = $arrColList['defval'];
+		$arrRet['col_name'] = $arrColList['attname'];
 	}else if(DB_TYPE == "mysql"){
 		$sql = "SHOW COLUMNS FROM $table_name";
 		$arrRet = $objQuery->getAll($sql);
+		$arrRet['col_def'] = $arrColList['Field'];
+		$arrRet['col_name'] = $arrColList['Extra'];
 	}
+	
+	$arrRet = sfSwapArray($arrRet);
 	
 	return sfSwapArray($arrRet);
 }
