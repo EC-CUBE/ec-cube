@@ -57,7 +57,7 @@ case 'bkup':
 			$arrForm = $arrData;
 		}
 		
-		$objPage->tpl_onload = "alert('バックアップ完了しました');"
+		$objPage->tpl_onload = "alert('バックアップ完了しました');";
 	}else{
 		$arrForm = $arrData;
 	}
