@@ -417,8 +417,10 @@ function lfExeInsertSQL($objQuery, $csv){
 		}
 		
 		// カラムフラグがたっていない場合にはカラムセット
-		if (!$col_flg and $mode != "restore_config") {
-			$base_sql .= " ($data) ";
+		if (!$col_flg) {
+			if ($mode != "restore_config"){
+				$base_sql .= " ($data) ";
+			}
 			$col_flg = true;
 			continue;
 		}
