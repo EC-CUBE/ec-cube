@@ -21,7 +21,6 @@ class LC_Page {
 		
 //		$this->bkup_dir = ROOT_DIR . USER_DIR . "bkup/";
 		$this->bkup_dir = ROOT_DIR . "html/test/" . "bkup/";
-//		$this->bkup_dir = "../../test/bkup/";
 	}
 }
 
