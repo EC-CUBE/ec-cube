@@ -303,6 +303,7 @@ function lfGetAutoIncrementVal($table_name , $seqtable = ""){
 				";
 		$arrRet = $objQuery->getAll($sql, array($table_name, $seqtable));
 		$ret = $arrRet[0]['indkey'];
+		sfprintr($arrRet);
 	}
 	return $ret;
 }
