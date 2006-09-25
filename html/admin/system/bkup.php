@@ -422,13 +422,14 @@ function lfExeInsertSQL($objQuery, $csv){
 			$col_flg = true;
 			continue;
 		}
-		
+
 		// インサートする値をセット
 		$sql = $base_sql . "VALUES ($data);\n";
 		$err = $objQuery->query($sql);
 		
 		// エラーがあれば終了
 		if (count($err) > 0){
+			sfprintr($err);
 			return false;
 		}
 	}
