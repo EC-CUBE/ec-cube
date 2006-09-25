@@ -513,7 +513,7 @@ function lfExeInsertSQL($objQuery, $csv){
 		}
 
 		// インサートする値をセット
-		$data = strtr($data, "'", "''");
+		$data = strtr($data, "'", "\'");
 		$sql = $base_sql . "VALUES ($data);\n";
 		$err = $objQuery->query($sql);
 		
