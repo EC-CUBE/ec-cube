@@ -249,13 +249,17 @@ function lfGetTableList(){
 // 自動採番型をCSV出力形式に変換する
 function lfGetAutoIncrement($table_name){
 	$arrColList = lfGetColumnList($table_name);
+	$ret = "";
 	
 	foreach($arrColList['defval'] as $key => $val){
 		if (substr($val,0,9) == 'nextval(\'') {
-			sfprintr($val);
-		}		
+			$autoVal = lfGetAutoIncrementVal($table_name, $val);
+			$ret .= "$table_name,$autoVal";
+		}
 	}
 	
+	sfprintr($ret);
+	return $ret;
 }
 
 // テーブル構成を取得する
@@ -279,7 +283,7 @@ function lfGetColumnList($table_name){
 }
 
 // 自動採番型の値を取得する
-function lfGetAutoIncrementVal($table_name){
+function lfGetAutoIncrementVal($table_name , $seqtable = ""){
 	$objQuery = new SC_Query();
 
 	if(DB_TYPE == "pgsql"){
@@ -293,9 +297,10 @@ function lfGetAutoIncrementVal($table_name){
 				WHERE
 				    i.indrelid = c.oid AND
 				    i.indexrelid = ci.oid AND
-				    c.relname = ?
+				    c.relname = ? AND
+			        ci.relname = ?
 				";
-		$arrRet = $objQuery->getAll($sql, array($table_name));
+		$arrRet = $objQuery->getAll($sql, array($table_name, $seqtable));
 	}
 	return $arrRet;
 }
