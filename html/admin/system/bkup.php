@@ -361,6 +361,9 @@ function lfRestore($bkup_name){
 		// INSERT実行
 		if ($err) $err = lfExeInsertSQL($objQuery, $bkup_dir . "bkup_data.csv");
 
+		// 自動採番の値をセット
+		if ($err) $err = lfSetAutoInc($objQuery, $bkup_dir . "autoinc_data.csv");
+
 		if ($err) {
 			// 画像のコピー
 			$image_dir = $bkup_dir . "save_image/";
@@ -437,6 +440,17 @@ function lfExeInsertSQL($objQuery, $csv){
 	return $ret;
 }
 
+// 自動採番をセット
+function lfSetAutoInc($objQuery, $csv){
+	// csvファイルからデータの取得
+	$arrCsvData = file($csv);
+	
+	foreach($arrCsvData as $key => $val){
+		$arrData = split(";", trim($val));
+		sfprintr($arrData);
+	}
+}
+
 // DBを全てクリアする
 function lfDeleteAll($objQuery){
 	$ret = true;
@@ -476,7 +490,6 @@ function lfCreateBkupTable(){
 		
 		$objQuery->query($cre_sql);
 	}
-	
 }
 
 
