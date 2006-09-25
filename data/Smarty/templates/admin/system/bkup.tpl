@@ -138,7 +138,7 @@
 									<tr bgcolor="#ffffff" class="fs12">
 										<td>
 											▼実行結果<br>
-											<!--{if $restore_err == false}--><input type="button" name="restore_config" value="テーブル構成を無視してリストアする" onClick="form1.mode.value='restore_config'; submit();" /><br><!--{/if}-->
+											<!--{if $restore_err == false}--><input type="button" name="restore_config" value="テーブル構成を無視してリストアする" onClick="form1.mode.value='restore_config'; form1.list_name.value=<!--{$restore_name}--> submit();" /><br><!--{/if}-->
 											<!--{$restore_msg}-->
 										</td>
 									</tr>								
