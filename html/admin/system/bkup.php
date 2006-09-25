@@ -298,23 +298,20 @@ function lfGetColumnList($table_name){
 								   left join pg_description e on (a.attrelid=e.objoid and a.attnum=e.objsubid)
 				WHERE (c.relname=?) AND (c.oid=a.attrelid) AND (a.atttypid=t.oid) AND a.attnum > 0
 				ORDER BY fldnum";
-		$arrRet = $objQuery->getAll($sql, array($table_name));
-		$arrRet = sfSwapArray($arrRet);
+		$arrColList = $objQuery->getAll($sql, array($table_name));
+		$arrColList = sfSwapArray($arrRet);
 		
 		$arrRet['col_def'] = $arrColList['defval'];
 		$arrRet['col_name'] = $arrColList['attname'];
 	}else if(DB_TYPE == "mysql"){
 		$sql = "SHOW COLUMNS FROM $table_name";
-		$arrRet = $objQuery->getAll($sql);
-		$arrRet = sfSwapArray($arrRet);
+		$arrColList = $objQuery->getAll($sql);
+		$arrColList = sfSwapArray($arrRet);
 		
 		sfprintr($arrRet);
-		$arrRet['col_def'] = array();
-		$arrRet['col_def'] = $arrRet['Field'];
-		$arrRet['col_name'] = array();
-		$arrRet['col_name'] = $arrRet['Extra'];
+		$arrRet['col_def'] = $arrColList['Field'];
+		$arrRet['col_name'] = $arrColList['Extra'];
 	}
-	
 	
 	return $arrRet;
 }
