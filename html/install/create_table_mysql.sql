@@ -867,3 +867,10 @@ table_name	text,
 column_name	text,
 description	text
 );
+
+create table dtb_bkup
+(
+	bkup_name	text,
+	bkup_memo	text,
+	create_date	datetime
+);
