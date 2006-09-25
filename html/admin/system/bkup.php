@@ -362,7 +362,8 @@ function lfRestore($bkup_name){
 
 		// バックアップデータの削除
 		sfDelFile($bkup_dir);
-		$objQuery->rollback();
+		
+		$objQuery->commit();
 	}
 }
 
