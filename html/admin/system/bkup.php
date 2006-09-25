@@ -425,12 +425,28 @@ function lfRestore($bkup_name){
 		// 自動採番の値をセット
 		if ($err) lfSetAutoInc($objQuery, $bkup_dir . "autoinc_data.csv");
 
+		// 各種ファイルのコピー
 		if ($err) {
 			// 画像のコピー
 			$image_dir = $bkup_dir . "save_image/";
 			$copy_mess = "";
 			$copy_mess = sfCopyDir($image_dir, "../../upload/save_image/", $copy_mess);		
 	
+			// テンプレートのコピー
+			$tmp_dir = $bkup_dir . "templates";
+			$copy_mess = "";
+			$copy_mess = sfCopyDir($tmp_dir, "../../user_data/templates/", $copy_mess);		
+			
+			// インクルードファイルのコピー
+			$inc_dir = $bkup_dir . "include/";
+			$copy_mess = "";
+			$copy_mess = sfCopyDir($inc_dir, "../../user_data/include/", $copy_mess);		
+			
+			// CSSのコピー
+			$css_dir = $bkup_dir . "css/";
+			$copy_mess = "";
+			$copy_mess = sfCopyDir($css_dir, "../../user_data/css/", $copy_mess);		
+
 			// バックアップデータの削除
 			sfDelFile($bkup_dir);
 		}
