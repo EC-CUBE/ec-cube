@@ -608,6 +608,7 @@ class Archive_Tar extends PEAR
         if ($this->_file == 0) {
             $this->_error('Unable to open in write mode \''
 			              .$this->_tarname.'\'');
+			print("error");
             return false;
         }
 
