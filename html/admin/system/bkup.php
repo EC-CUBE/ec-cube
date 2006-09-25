@@ -343,9 +343,8 @@ function lfRestore($bkup_name){
 	if ($err) {
 		// INSERTÊ¸ºîÀ®
 		$ins_sql = lfCreateInsertSQL($bkup_dir . $bkup_name . "/bkup_data.csv");
+		$objQuery->query($ins_sql);
 	}
-	
-	sfprintr(split(";", $ins_sql));
 	
 }
 
