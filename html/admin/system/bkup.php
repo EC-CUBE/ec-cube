@@ -382,23 +382,17 @@ function lfRestore($bkup_name){
 	// 無事解凍できれば、リストアを行う
 	if ($err) {
 		
-		sfprintr("1111111111");
-		
 		// トランザクション開始
 		$objQuery->begin();
-		sfprintr("1111111111");
 		
 		// DBをクリア
 		$err = lfDeleteAll($objQuery);
-		sfprintr("1111111111");
 		
 		// INSERT実行
 		if ($err) $err = lfExeInsertSQL($objQuery, $bkup_dir . "bkup_data.csv");
-		sfprintr("1111111111");
 
 		// 自動採番の値をセット
 		if ($err) lfSetAutoInc($objQuery, $bkup_dir . "autoinc_data.csv");
-		sfprintr("1111111111");
 
 		if ($err) {
 			// 画像のコピー
@@ -409,7 +403,6 @@ function lfRestore($bkup_name){
 			// バックアップデータの削除
 			sfDelFile($bkup_dir);
 		}
-		sfprintr("1111111111");
 
 		// リストア成功ならコミット失敗ならロールバック
 		if ($err) {
@@ -422,7 +415,6 @@ function lfRestore($bkup_name){
 			$objPage->restore_name = $bkup_name;
 			$objPage->restore_err = false;
 		}
-		sfprintr("1111111111");
 
 	}
 }
