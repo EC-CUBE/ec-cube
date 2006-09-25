@@ -383,7 +383,7 @@ function lfCreateInsertSQL($csv){
 		}
 		
 		// インサートする値をセット
-		$sql .= $base_sql . " ($data);";
+		$sql .= $base_sql . " ($data);\n";
 	}
 	
 	return $sql;
