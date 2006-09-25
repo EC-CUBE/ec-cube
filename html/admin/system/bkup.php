@@ -282,7 +282,7 @@ function lfRestore($bkup_name){
 	//オブジェクトを作成する
 	//new Archive_Tar(ファイル名,圧縮フラグ);
 	//圧縮フラグTRUEはgzip解凍をおこなう
-	$tar = new Archive_Tar($bkup_name, TRUE);
+	$tar = new Archive_Tar($bkup_name . ".tar.gz", TRUE);
 	
 	//指定されたフォルダ内に解凍する
 	$tar->extract("./");
