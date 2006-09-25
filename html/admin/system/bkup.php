@@ -311,7 +311,7 @@ function lfGetColumnList($table_name){
 		$arrRet['col_def'] = $arrColList['Field'];
 		$arrRet['col_name'] = $arrColList['Extra'];
 	}
-		sfprintr( $arrColList);
+		sfprintr( $arrRet);
 	
 	return $arrRet;
 }
