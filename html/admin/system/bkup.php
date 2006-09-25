@@ -279,7 +279,7 @@ function lfGetAutoIncrement($table_name){
 	$ret = "";
 	
 	if(DB_TYPE == "pgsql"){
-		$match = "auto_increment";
+		$match = "auto_incr";
 	}else if(DB_TYPE == "mysql"){
 		$match = 'nextval(\'';
 	}
