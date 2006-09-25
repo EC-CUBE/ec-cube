@@ -481,7 +481,7 @@ function lfCreateBkupTable(){
 	// テーブルの存在チェック
 	$arrTableList = lfGetTableList();
 	
-	if(array_key_exists("dtb_bkup", $arrTableList)){
+	if(in_array("dtb_bkup", $arrTableList)){
 		// 存在していなければ作成
 		$cre_sql = "
 			create table dtb_bkup
