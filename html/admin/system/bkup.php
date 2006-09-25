@@ -132,6 +132,7 @@ function lfCreateBkupData($bkup_name){
 	global $objPage;
 	$objQuery = new SC_Query();
 	$csv_data = "";
+	$csv_autoinc = "";
 	$err = true;
 	
 	$bkup_dir = $objPage->bkup_dir;
@@ -146,7 +147,7 @@ function lfCreateBkupData($bkup_name){
 		if ($val != "dtb_bkup") {
 			
 			// 自動採番型の構成を取得する
-			$csv_autoinc = lfGetAutoIncrement($val);
+			$csv_autoinc .= lfGetAutoIncrement($val);
 			
 			//sfprintr($csv_autoinc);
 			
@@ -173,6 +174,8 @@ function lfCreateBkupData($bkup_name){
 			}	
 		}
 	}
+	
+	sfprintr($csv_autoinc);
 
 	$csv_file = $bkup_dir . "bkup_data.csv";
 	// CSV出力
@@ -257,7 +260,6 @@ function lfGetAutoIncrement($table_name){
 		}
 	}
 	
-	sfprintr($ret);
 	return $ret;
 }
 
