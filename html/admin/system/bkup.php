@@ -330,7 +330,7 @@ function lfGetBkupData($where = "", $data = array()){
 // バックアップファイルをリストアする
 function lfRestore($bkup_name){
 	global $objPage;
-	$objQuery = new SC_Query();
+	$objQuery = new SC_Query("", false);
 	$csv_data = "";
 	$err = true;
 	
@@ -351,7 +351,7 @@ function lfRestore($bkup_name){
 		$objQuery->begin();
 		
 		// DBをクリア
-		$err = lfDeleteAll($objQuery, false);
+		$err = lfDeleteAll($objQuery);
 		
 		// INSERT実行
 		if ($err) $err = lfExeInsertSQL($objQuery, $bkup_dir . "bkup_data.csv");
