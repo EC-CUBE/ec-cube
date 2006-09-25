@@ -331,7 +331,7 @@ function lfRestore($bkup_name){
 	$csv_data = "";
 	$err = true;
 	
-	$bkup_dir = $objPage->bkup_dir;
+	$bkup_dir = $objPage->bkup_dir . $bkup_name . "/";
 	
 	//fileフォルダに移動する
 	chdir($bkup_dir);
@@ -348,13 +348,13 @@ function lfRestore($bkup_name){
 		lfTruncateAll();
 		
 		// INSERT実行
-		lfExeInsertSQL($bkup_dir . $bkup_name . "/bkup_data.csv");
+		lfExeInsertSQL($bkup_dir . "bkup_data.csv");
 
 		$copy_mess = "";
 		$copy_mess = sfCopyDir($bkup_dir, "../../upload/save_image/", $copy_mess);		
 		
 		// バックアップデータの削除
-		sfDelFile($bkup_dir . $bkup_name . "/");
+		sfDelFile($bkup_dir);
 	}
 }
 
