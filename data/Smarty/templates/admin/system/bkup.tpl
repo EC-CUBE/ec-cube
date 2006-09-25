@@ -138,7 +138,7 @@
 									<tr bgcolor="#ffffff" class="fs12">
 										<td>
 											▼実行結果<br>
-											<!--{if $restore_err == false}--><input type="button" name="cre_bkup" value="バックアップデータを作成する" onClick="form1.mode.value='bkup'; submit();" /><br><!--{/if}-->
+											<!--{if $restore_err == false}--><input type="button" name="cre_bkup" value="テーブル構成を無視してリストアする" onClick="form1.mode.value='bkup'; submit();" /><br><!--{/if}-->
 											<!--{$restore_msg}-->
 										</td>
 									</tr>								
