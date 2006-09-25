@@ -335,8 +335,8 @@ function lfGetAutoIncrementVal($table_name , $colname = ""){
 		$ret = $objQuery->nextval($table_name, $colname);
 	}else if(DB_TYPE == "mysql"){
 		$sql = "SHOW TABLE STATUS LIKE ?";
-		$arrData = $objQuery->getRow($sql, array($table_name));
-		$ret = $arrData['Auto_increment'];
+		$arrData = $objQuery->getAll($sql, array($table_name));
+		$ret = $arrData[0]['Auto_increment'];
 		
 		sfprintr($arrData);
 	}
