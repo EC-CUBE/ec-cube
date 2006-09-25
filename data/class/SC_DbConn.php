@@ -164,7 +164,7 @@ class SC_DbConn{
 		ob_end_clean();	
 		*/
 		//mb_send_mail($this->error_mail_to, $this->error_mail_title, "${errmsg}\n".date("Y/m/d H:i:s"));		
-		exit();
+		//exit();
 	}
 }
 
