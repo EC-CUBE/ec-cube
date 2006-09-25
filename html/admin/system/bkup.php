@@ -159,7 +159,7 @@ function lfCreateBkupData($bkup_name){
 				// データをCSV形式に整える
 				$data = "";
 				foreach($arrData as $data_key => $data_val){
-					$data .= sfGetCSVList($arrData[$data_key]);
+					$data .= lfGetCSVList($arrData[$data_key]);
 				}
 				
 				// CSV出力データ生成
