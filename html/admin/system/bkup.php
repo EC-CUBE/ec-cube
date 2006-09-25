@@ -326,6 +326,10 @@ function lfGetAutoIncrementVal($table_name , $colname = ""){
 
 	if(DB_TYPE == "pgsql"){
 		$ret = $objQuery->nextval($table_name, $colname);
+	}else if(DB_TYPE == "mysql"){
+		$sql = "SHOW TABLE STATUS LIKE ?";
+		$arrData = $objQuery->query($sql, $table_name);
+		$ret = $arrData['Auto_increment'];
 	}
 	return $ret;
 }
