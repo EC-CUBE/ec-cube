@@ -382,7 +382,8 @@ function lfRestore($bkup_name){
 	// 無事解凍できれば、リストアを行う
 	if ($err) {
 		
-		$objQuery->begin();
+		// トランザクション開始
+		//$objQuery->begin();
 		
 		// DBをクリア
 		$err = lfDeleteAll($objQuery);
@@ -405,11 +406,11 @@ function lfRestore($bkup_name){
 		
 		// リストア成功ならコミット失敗ならロールバック
 		if ($err) {
-			$objQuery->commit();
+			//$objQuery->commit();
 			$objPage->restore_msg = "リストア終了しました。";
 			$objPage->restore_err = true;
 		}else{
-			$objQuery->rollback();
+			//$objQuery->rollback();
 			$objPage->restore_msg = "リストアに失敗しました。";
 			$objPage->restore_name = $bkup_name;
 			$objPage->restore_err = false;
