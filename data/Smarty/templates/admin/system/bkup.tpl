@@ -124,7 +124,7 @@
 									</tr>
 									<!--{/section}-->
 								</table>
-								<!--{/if}-->							
+								<!--{/if}-->
 
 								
 								<!--{if $restore_msg != ""}-->
@@ -138,7 +138,7 @@
 									<tr bgcolor="#ffffff" class="fs12">
 										<td>
 											▼実行結果<br>
-											<!--{if $restore_err == false}-->▼実行結果<br><!--{/if}-->
+											<!--{if $restore_err == false}--><input type="button" name="cre_bkup" value="バックアップデータを作成する" onClick="form1.mode.value='bkup'; submit();" /><br><!--{/if}-->
 											<!--{$restore_msg}-->
 										</td>
 									</tr>								
