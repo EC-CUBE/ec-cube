@@ -147,6 +147,8 @@ function lfCreateBkupData($bkup_name){
 			// テーブル構成を取得
 			$arrColumnList = lfGetColumnList($val);
 			
+			sfprintr($arrColumnList);
+			
 			// 全データを取得
 			$arrData = $objQuery->getAll("SELECT * FROM $val");
 	
@@ -309,7 +311,6 @@ function lfRestore($bkup_name){
 		lfCreateInsertSQL($bkup_dir . $bkup_name . "/bkup_data.csv");
 		
 	}
-	sfprintr($data);
 }
 
 // CSVファイルからインサート文作成
@@ -349,8 +350,6 @@ function lfCreateInsertSQL($csv){
 		// インサートする値をセット
 		$sql .= $base_sql . " ($data);";
 	}
-	
-	sfprintr($sql);
 }
 
 
