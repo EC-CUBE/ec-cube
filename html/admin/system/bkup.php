@@ -234,17 +234,17 @@ function lfCreateBkupData($bkup_name){
 		
 		// インクルードファイルをコピー
 		// ディレクトリが存在していなければ作成する		
-		$bloc_dir = $bkup_dir . "include/";
-		if (!is_dir(dirname($bloc_dir))) $err = mkdir(dirname($bloc_dir));		
+		$inc_dir = $bkup_dir . "include/";
+		if (!is_dir(dirname($inc_dir))) $err = mkdir(dirname($inc_dir));		
 		$copy_mess = "";
-		$copy_mess = sfCopyDir("../../user_data/include/",$bloc_dir, $copy_mess);
+		$copy_mess = sfCopyDir("../../user_data/include/",$inc_dir, $copy_mess);
 	
 		// CSSファイルをコピー
 		// ディレクトリが存在していなければ作成する		
-		$bloc_dir = $bkup_dir . "css/";
-		if (!is_dir(dirname($bloc_dir))) $err = mkdir(dirname($bloc_dir));		
+		$css_dir = $bkup_dir . "css/";
+		if (!is_dir(dirname($css_dir))) $err = mkdir(dirname($css_dir));		
 		$copy_mess = "";
-		$copy_mess = sfCopyDir("../../user_date/css/",$bloc_dir, $copy_mess);
+		$copy_mess = sfCopyDir("../../user_date/css/",$css_dir, $copy_mess);
 
 		//圧縮フラグTRUEはgzip圧縮をおこなう
 		$tar = new Archive_Tar($objPage->bkup_dir . $bkup_name.".tar.gz", TRUE);
