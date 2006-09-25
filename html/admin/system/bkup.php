@@ -301,16 +301,17 @@ function lfCreateInsertSQL($csv){
 	$arrCsvData = file($csv);
 	
 	$sql = "";
+	$base_sql = "";
 	$tbl_flg = false;
 	$col_flg = false;
 	
 	foreach($arrCsvData as $key => $val){
 		$data = trim($val);
+		$sql = "";
 		
 		//空白行のときはテーブル変更
 		if ($data == "") {
-			sfprintr($sql);
-			$sql = "";
+			$base_sql = "";
 			$tbl_flg = false;
 			$col_flg = false;
 			continue;
@@ -318,20 +319,21 @@ function lfCreateInsertSQL($csv){
 		
 		// テーブルフラグがたっていない場合にはテーブル名セット
 		if (!$tbl_flg) {
-			$sql = "INSERT INTO $data ";
+			$base_sql = "INSERT INTO $data ";
 			$tbl_flg = true;
 			continue;
 		}
 		
 		// カラムフラグがたっていない場合にはカラムセット
 		if (!$col_flg) {
-			$sql .= " ($data) VALUES ";
+			$base_sql .= " ($data) VALUES ";
 			$col_flg = true;
 			continue;
 		}
 		
 		// インサートする値をセット
-		$sql .= " ($data);";
+		$sql = $base_sql . " ($data);";
+		sfprintr($sql);
 	}
 		
 }
