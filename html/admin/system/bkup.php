@@ -348,28 +348,22 @@ function lfRestore($bkup_name){
 	// 無事解凍できれば、リストアを行う
 	if ($err) {
 		
-		$objDB = DB::connect(DELAULT_DSN);
-		$objDB->query("BEGIN");
-//		$objQuery->begin();
-		// 接続エラー
-		if(!PEAR::isError($objDB)) {
-//			$ret = $objDB->query($val);
+		$objQuery->begin();
 		
-			// DBをクリア
-			$err = lfDeleteAll($objDB);
-			
-			// INSERT実行
-			if ($err) $err = lfExeInsertSQL($objDB, $bkup_dir . "bkup_data.csv");
+		// DBをクリア
+		$err = lfDeleteAll($objQuery);
+		
+		// INSERT実行
+		if ($err) $err = lfExeInsertSQL($objQuery, $bkup_dir . "bkup_data.csv");
+
+		if ($err) {
+			// 画像のコピー
+			$image_dir = $bkup_dir . "save_image/";
+			$copy_mess = "";
+			$copy_mess = sfCopyDir($image_dir, "../../upload/save_image/", $copy_mess);		
 	
-			if ($err) {
-				// 画像のコピー
-				$image_dir = $bkup_dir . "save_image/";
-				$copy_mess = "";
-				$copy_mess = sfCopyDir($image_dir, "../../upload/save_image/", $copy_mess);		
-		
-				// バックアップデータの削除
-				sfDelFile($bkup_dir);
-			}
+			// バックアップデータの削除
+			sfDelFile($bkup_dir);
 		}
 		
 		// リストア成功ならコミット失敗ならロールバック
