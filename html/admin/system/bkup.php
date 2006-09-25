@@ -334,7 +334,7 @@ function lfRestore($bkup_name){
 	$bkup_dir = $objPage->bkup_dir . $bkup_name . "/";
 	
 	//fileフォルダに移動する
-	chdir($bkup_dir);
+	chdir($objPage->bkup_dir);
 	
 	//圧縮フラグTRUEはgzip解凍をおこなう
 	$tar = new Archive_Tar($bkup_name . ".tar.gz", TRUE);
