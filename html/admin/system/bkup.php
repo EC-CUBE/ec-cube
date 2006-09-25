@@ -286,6 +286,9 @@ function lfRestore($bkup_name){
 	
 	//指定されたフォルダ内に解凍する
 	$tar->extract("./");
+	
+	
+	sfprintr($tar);
 }
 
 
