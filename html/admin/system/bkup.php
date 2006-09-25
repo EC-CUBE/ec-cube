@@ -298,14 +298,15 @@ function lfRestore($bkup_name){
 // CSVファイルからインサート文作成
 function lfCreateInsertSQL($csv){
 	// csvファイルからデータの取得
-	$data = file($csv);
+	$arrCsvData = file($csv);
 	
 	$sql = "";
 	$tbl_flg = false;
 	$col_flg = false;
 	
-	foreach($data as $key => $val){
-		if (trim($val) == "") {
+	foreach($arrCsvData as $key => $val){
+		$data = trim($val);
+		if ($data == "") {
 			sfprintr($sql);
 			$sql = "";
 			$tbl_flg = false;
@@ -314,13 +315,13 @@ function lfCreateInsertSQL($csv){
 		}
 		
 		if (!$tbl_flg) {
-			$sql = "INSERT INTO $val ";
+			$sql = "INSERT INTO $data ";
 			$tbl_flg = true;
 			continue;
 		}
 		
 		if (!$col_flg) {
-			$sql .= "($val)";
+			$sql .= "($data)";
 			$col_flg = true;
 			continue;
 		}
