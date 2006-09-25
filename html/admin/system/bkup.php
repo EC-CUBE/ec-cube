@@ -144,10 +144,11 @@ function lfCreateBkupData($bkup_name){
 	foreach($arrTableList as $key => $val){
 		
 		if ($val != "dtb_bkup") {
-			// テーブル構成を取得
-			$arrAutoInc = lfGetAutoIncrement($val);
 			
-			sfprintr($arrAutoInc);
+			// 自動採番型の構成を取得する
+			$csv_autoinc = lfGetAutoIncrement($val);
+			
+			//sfprintr($csv_autoinc);
 			
 			// 全データを取得
 			$arrData = $objQuery->getAll("SELECT * FROM $val");
@@ -245,8 +246,36 @@ function lfGetTableList(){
 	return $arrRet;
 }
 
-// 自動採番型値を取得する
+// 自動採番型をCSV出力形式に変換する
 function lfGetAutoIncrement($table_name){
+	$arrColList = lfGetColumnList($table_name);
+	
+	sfprintr($arrColList);
+	
+}
+
+// テーブル構成を取得する
+function lfGetColumnList($table_name){
+	$objQuery = new SC_Query();
+
+	if(DB_TYPE == "pgsql"){
+		$sql = "SELECT 
+					a.attname, t.typname, a.attnotnull, d.adsrc as defval, a.atttypmod,	a.attnum as fldnum,	e.description 
+				FROM 
+					pg_class c,
+					pg_type t,
+					pg_attribute a left join pg_attrdef d on (a.attrelid=d.adrelid and a.attnum=d.adnum)
+								   left join pg_description e on (a.attrelid=e.objoid and a.attnum=e.objsubid)
+				WHERE (c.relname=?) AND (c.oid=a.attrelid) AND (a.atttypid=t.oid) AND a.attnum > 0
+				ORDER BY fldnum";
+		$arrRet = $objQuery->getAll($sql, array($table_name));
+	}
+	
+	return sfSwapArray($arrRet);
+}
+
+// 自動採番型の値を取得する
+function lfGetAutoIncrementVal($table_name){
 	$objQuery = new SC_Query();
 
 	if(DB_TYPE == "pgsql"){
@@ -264,9 +293,7 @@ function lfGetAutoIncrement($table_name){
 				";
 		$arrRet = $objQuery->getAll($sql, array($table_name));
 	}
-	
 	return $arrRet;
-
 }
 
 // バックアップテーブルにデータを更新する
