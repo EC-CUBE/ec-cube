@@ -297,11 +297,12 @@ function lfGetColumnList($table_name){
 								   left join pg_description e on (a.attrelid=e.objoid and a.attnum=e.objsubid)
 				WHERE (c.relname=?) AND (c.oid=a.attrelid) AND (a.atttypid=t.oid) AND a.attnum > 0
 				ORDER BY fldnum";
+		$arrRet = $objQuery->getAll($sql, array($table_name));
 	}else if(DB_TYPE == "mysql"){
-		$sql = "SHOW COLUMNS FROM ?";
+		$sql = "SHOW COLUMNS FROM $table_name";
+		$arrRet = $objQuery->getAll($sql);
 	}
 	
-	$arrRet = $objQuery->getAll($sql, array($table_name));
 	return sfSwapArray($arrRet);
 }
 
