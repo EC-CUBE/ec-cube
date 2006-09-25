@@ -250,10 +250,9 @@ function lfGetTableList(){
 function lfGetAutoIncrement($table_name){
 	$arrColList = lfGetColumnList($table_name);
 	$ret = "";
-	sfprintr($arrColList);
 	foreach($arrColList['defval'] as $key => $val){
 		if (substr($val,0,9) == 'nextval(\'') {
-			$autoVal = lfGetAutoIncrementVal($table_name, $val);
+			$autoVal = lfGetAutoIncrementVal($table_name, $arrColList[$key]['attname']);
 			$ret .= "$table_name,$autoVal";
 		}
 	}
