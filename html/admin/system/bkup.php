@@ -256,7 +256,7 @@ function lfCreateBkupData($bkup_name){
 		$zip = $tar->create("./" . $bkup_name . "/");
 
 		// バックアップデータの削除
-		if ($zip) sfDelFile($bkup_dir);
+		//if ($zip) sfDelFile($bkup_dir);
 	}
 
 	if (!$err) {
