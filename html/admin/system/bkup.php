@@ -273,6 +273,8 @@ function lfGetAutoIncrement($table_name){
 	$arrColList = lfGetColumnList($table_name);
 	$ret = "";
 	
+	sfprintr($arrColList);
+	
 	foreach($arrColList['col_def'] as $key => $val){
 		if (substr($val,0,9) == 'nextval(\'') {
 			$col = $arrColList['col_name'][$key];
