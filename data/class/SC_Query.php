@@ -5,8 +5,8 @@ class SC_Query {
 	var $conn;
 	
 	// コンストラクタ
-	function SC_Query($dsn = "") {
-		$this->conn = new SC_DBconn($dsn);
+	function SC_Query($dsn = "", $err_disp = true) {
+		$this->conn = new SC_DBconn($dsn, $err_disp);
 		$this->where = "";
 		return $this->conn;
 	}

@@ -12,9 +12,11 @@ class SC_DbConn{
 	var $error_mail_to;
 	var $error_mail_title;
 	var $dsn;
+	var $err_disp = true;
+
 	
 	// コンストラクタ
-	function SC_DbConn($dsn = ""){
+	function SC_DbConn($dsn = "", $err_disp = true){
 		global $objDbConn;
 		// 既に接続されている場合には接続しない
 		if(!isset($objDbConn->connection)) {
@@ -29,6 +31,7 @@ class SC_DbConn{
 		$this->conn = $objDbConn;
 		$this->error_mail_to = DB_ERROR_MAIL_TO;
 		$this->error_mail_title = DB_ERROR_MAIL_SUBJECT;
+		$this->err_disp = $err_disp;
 	}
 	
 	// クエリの実行
@@ -146,25 +149,27 @@ class SC_DbConn{
 
 	function send_err_mail( $result, $sql ){
 		
-		if ($_SERVER['HTTPS'] == "on") {
-			$url = "https://";
-		} else {
-			$url = "http://";
+		if ($this->err_disp) {
+			if ($_SERVER['HTTPS'] == "on") {
+				$url = "https://";
+			} else {
+				$url = "http://";
+			}
+			$url.= $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'];
+			
+			$errmsg = $url."\n\n";
+			$errmsg.= $sql . "\n";
+			$errmsg.= $result->message . "\n\n";
+			$errmsg.= $result->userinfo . "\n\n";
+			print_r($errmsg);
+			/*
+			ob_start();
+			$errmsg .= ob_get_contents();
+			ob_end_clean();	
+			*/
+			//mb_send_mail($this->error_mail_to, $this->error_mail_title, "${errmsg}\n".date("Y/m/d H:i:s"));		
+			exit();
 		}
-		$url.= $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'];
-		
-		$errmsg = $url."\n\n";
-		$errmsg.= $sql . "\n";
-		$errmsg.= $result->message . "\n\n";
-		$errmsg.= $result->userinfo . "\n\n";
-		print_r($errmsg);
-		/*
-		ob_start();
-		$errmsg .= ob_get_contents();
-		ob_end_clean();	
-		*/
-		//mb_send_mail($this->error_mail_to, $this->error_mail_title, "${errmsg}\n".date("Y/m/d H:i:s"));		
-		exit();
 	}
 }
 

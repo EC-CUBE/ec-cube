@@ -351,7 +351,7 @@ function lfRestore($bkup_name){
 		$objQuery->begin();
 		
 		// DBをクリア
-		$err = lfDeleteAll($objQuery);
+		$err = lfDeleteAll($objQuery, false);
 		
 		// INSERT実行
 		if ($err) $err = lfExeInsertSQL($objQuery, $bkup_dir . "bkup_data.csv");
