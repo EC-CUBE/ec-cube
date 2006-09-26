@@ -520,6 +520,8 @@ function lfExeInsertSQL($objQuery, $csv){
 		}
 		$sql .= ");\n";
 		$objQuery->query($sql, $arrInsdata);
+		
+		sfprintr($arrInsdata);
 				
 		// エラーがあれば終了
 		if ($err->message != ""){
