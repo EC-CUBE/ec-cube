@@ -178,7 +178,7 @@ function lfCreateBkupData($bkup_name){
 				// データをCSV形式に整える
 				$data = "";
 				foreach($arrData as $data_key => $data_val){
-					$data .= lfGetCSVList($arrData[$data_key]);
+					$data .= sfGetCSVList($arrData[$data_key]);
 				}
 				// CSV出力データ生成
 				$csv_data .= $val . "\n";
@@ -513,11 +513,13 @@ function lfExeInsertSQL($objQuery, $csv){
 		}
 
 		// インサートする値をセット
-		$data = strtr($data, "'", "'\'");
-		$sql = $base_sql . "VALUES ($data);\n";
-		$err = $objQuery->query($sql);
-		
-		
+		$sql = $base_sql . "VALUES ( ?";
+		$arrInsdata = split(",",$data);
+		for($i = 0; $i < count($arrInsdata); $i++){
+			$sql .= ",?";
+		}
+		$sql .= ");\n";
+				
 		// エラーがあれば終了
 		if ($err->message != ""){
 		$objQuery->getlastquery();
