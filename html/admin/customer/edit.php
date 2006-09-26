@@ -201,8 +201,8 @@ function lfRegisDatat($array, $arrRegistColumn) {
 		unset($arrRegist['password']);
 	}
 
-	$arrRegist["create_date"] = date( "Y/m/d (D) H:i:s", time());
-	$arrRegist["update_date"] = date( "Y/m/d (D) H:i:s", time());
+	$arrRegist["create_date"] = date( "Y/m/d H:i:s", time());
+	$arrRegist["update_date"] = date( "Y/m/d H:i:s", time());
 	$arrRegistMail["mail_flag"] = $array["mail_flag"];
 	$arrRegistMail['email'] = $array['email'];
 	//-- ÊÔ½¸ÅĞÏ¿¼Â¹Ô
