@@ -275,7 +275,7 @@ function lfGetCSVList($array) {
 			if ($val == "") {
 				$line .= "NULL,";
 			}else{
-				$data = strtr($val, "'", "''");
+				$data = strtr($val, "'", "\\'");
 				$line .= "'".$data."',";
 			}
 		}
