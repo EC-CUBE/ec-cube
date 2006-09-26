@@ -522,12 +522,12 @@ function lfExeInsertSQL($objQuery, $csv){
 		}
 
 		// インサートする値をセット
-		$sql = $base_sql . "VALUES ( $data[0] ";
+		$sql = $base_sql . "VALUES ( ? ";
 		for($i = 1; $i < count($data); $i++){
-			$sql .= "," . $data[$i];
+			$sql .= ", ?";
 		}
 		$sql .= " );";
-		$err = $objQuery->query($sql);
+		$err = $objQuery->query($sql, $data);
 
 		// エラーがあれば終了
 		if ($err->message != ""){
