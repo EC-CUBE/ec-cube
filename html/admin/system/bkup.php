@@ -519,10 +519,11 @@ function lfExeInsertSQL($objQuery, $csv){
 			$sql .= ",?";
 		}
 		$sql .= ");\n";
+		$objQuery->query($sql, $arrInsdata);
 				
 		// エラーがあれば終了
 		if ($err->message != ""){
-		$objQuery->getlastquery();
+			$objQuery->getlastquery();
 			return false;
 		}
 		
