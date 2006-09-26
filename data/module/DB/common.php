@@ -1000,7 +1000,12 @@ class DB_common extends PEAR
         $i = 0;
         foreach ($data as $value) {
             if ($this->prepare_types[$stmt][$i] == DB_PARAM_SCALAR) {
-                $realquery .= $this->quoteSmart($value);
+				if ($value != "") {
+					$realquery .= $this->quoteSmart($value);
+				}else{
+					$realquery .= NULL;
+				}
+				print("DB_PARAM_SCALAR");
             } elseif ($this->prepare_types[$stmt][$i] == DB_PARAM_OPAQUE) {
                 $fp = @fopen($value, 'rb');
                 if (!$fp) {
