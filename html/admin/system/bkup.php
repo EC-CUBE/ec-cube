@@ -483,7 +483,9 @@ function lfExeInsertSQL($objQuery, $csv){
 	// csvファイルからデータの取得
 //	$arrCsvData = file($csv);
 	$fp = fopen($csv, "r");
-	while ($data = fgetcsv($fp, 1000000)) {
+	while (!feof($fp)) {
+		$data = fgetcsv($fp, 1000000);
+		
 		//空白行のときはテーブル変更
 		if (count($data) <= 0 ) {
 			$base_sql = "";
@@ -539,6 +541,7 @@ function lfExeInsertSQL($objQuery, $csv){
 		}
 		
 	}
+	fclose($fp);
 	return $ret;
 }
 
