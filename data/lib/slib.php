@@ -1219,7 +1219,7 @@ function sfTotalCart($objPage, $objCartSess, $arrInfo) {
 	for ($i = 0; $i < $max; $i++) {
 		// 商品規格情報の取得	
 		$arrData = sfGetProductsClass($arrCart[$i]['id']);
-				
+		$limit = "";
 		// DBに存在する商品
 		if (count($arrData) > 0) {
 			
