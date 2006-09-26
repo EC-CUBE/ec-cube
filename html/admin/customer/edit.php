@@ -183,7 +183,7 @@ $objView->display(MAIN_FRAME);
 function lfRegisDatat($array, $arrRegistColumn) {
 	global $objConn;
 	global $objQuery;
-	
+	exit();
 	foreach ($arrRegistColumn as $data) {
 		if($array[$data["column"]] != "") {
 			$arrRegist[$data["column"]] = $array[$data["column"]];
@@ -213,7 +213,7 @@ function lfRegisDatat($array, $arrRegistColumn) {
 	//-- ¥á¥ë¥Þ¥¬ÅÐÏ¿
 	$mailmaga = $objQuery->getAll("SELECT * FROM dtb_customer_mail WHERE email = ?", $array["edit_email"]);
 	
-	sfprintr($mailmaga);exit();
+	sfprintr($mailmaga);
 	if(count($mailmaga) > 0 ){
 		$objQuery->Update("dtb_customer_mail", $arrRegistMail, "email = '" .addslashes($array["edit_email"]). "'");
 	}else{
