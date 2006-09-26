@@ -38,14 +38,18 @@ class SC_Query {
 	}
 
 	function commit() {
+		$this->conn->query("SET AUTOCOMMIT=1;");
 		$this->conn->query("COMMIT");
 	}
 	
 	function begin() {
-		$this->conn->query("BEGIN");
+//		$this->conn->query("BEGIN");
+		$this->conn->query("SET AUTOCOMMIT=0;");
+		$this->conn->query("START TRANSACTION;");
 	}
 	
 	function rollback() {
+		$this->conn->query("SET AUTOCOMMIT=1;");
 		$this->conn->query("ROLLBACK");
 	}
 	
