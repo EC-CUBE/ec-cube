@@ -273,9 +273,10 @@ function lfGetCSVList($array) {
 	if (count($array) > 0) {
 		foreach($array as $key => $val) {
 			if ($val == "") {
-				$line .= ",";
+				$line .= "NULL,";
 			}else{
-				$line .= "".$val.",";
+				$data = strtr($val, "'", "\'");
+				$line .= "'".$data."',";
 			}
 		}
 		$line = ereg_replace(",$", "\n", $line);
@@ -512,6 +513,7 @@ function lfExeInsertSQL($objQuery, $csv){
 			continue;
 		}
 
+		/*
 		// インサートする値をセット
 		$sql = $base_sql . "VALUES ( ?";
 		$arrInsdata = split(",",$data);
@@ -520,6 +522,10 @@ function lfExeInsertSQL($objQuery, $csv){
 		}
 		$sql .= ");";
 		$err = $objQuery->query($sql, $arrInsdata);
+		*/
+		// インサートする値をセット
+		$sql = $base_sql . "VALUES ($data);\n";
+		$err = $objQuery->query($sql);
 
 		// エラーがあれば終了
 		if ($err->message != ""){
