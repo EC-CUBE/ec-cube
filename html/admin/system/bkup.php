@@ -483,8 +483,7 @@ function lfExeInsertSQL($objQuery, $csv){
 	// csvファイルからデータの取得
 //	$arrCsvData = file($csv);
 	$fp = fopen($csv, "r");
-
-
+sfprintr($fp);
 	while ($data = fgetcsv($fp, 1000000)) {
 //	foreach($arrCsvData as $key => $val){
 		
