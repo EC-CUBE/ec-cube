@@ -76,7 +76,7 @@ case 'restore_config':
 	break;
 	
 // 削除
-case 'del':
+case 'delete':
 	// ファイルの削除
 	unlink($objPage->bkup_dir.$_POST['list_name'] . ".tar.gz");
 

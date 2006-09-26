@@ -1,4 +1,4 @@
-<!--↙↙丟奶件戊件氾件汁↙↙-->
+F<!--↙↙丟奶件戊件氾件汁↙↙-->
 <table width="878" border="0" cellspacing="0" cellpadding="0" summary=" ">
 <form name="form1" id="form1" method="post" action="">
 <input type="hidden" name="mode" value="edit">
@@ -119,7 +119,7 @@
 										<td align="center"><!--{$arrBkupList[cnt].create_date|sfCutString:19:true:false}--></td>
 										<td align="center"><a href="#" onclick="document.body.style.cursor = 'wait'; fnModeSubmit('restore','list_name','<!--{$arrBkupList[cnt].bkup_name}-->');">restore</a></td>
 										<td align="center">
-											<a href="#" onclick="fnModeSubmit('del','list_name','<!--{$arrBkupList[cnt].bkup_name}-->');">delete</a>
+											<a href="#" onclick="fnModeSubmit('delete','list_name','<!--{$arrBkupList[cnt].bkup_name}-->');">delete</a>
 										</td>	
 									</tr>
 									<!--{/section}-->
