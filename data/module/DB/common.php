@@ -955,6 +955,7 @@ class DB_common extends PEAR
         if (DB::isError($realquery)) {
             return $realquery;
         }
+		print_r($realquery);
         $result = $this->simpleQuery($realquery);
 
         if ($result === DB_OK || DB::isError($result)) {
