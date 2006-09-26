@@ -39,7 +39,7 @@ class SC_Query {
 
 	function commit() {
 		$this->conn->query("COMMIT");
-		$this->conn->query("SET AUTOCOMMIT=1;");
+//		$this->conn->query("SET AUTOCOMMIT=1;");
 	}
 	
 	function begin() {
@@ -50,7 +50,7 @@ class SC_Query {
 	
 	function rollback() {
 		$this->conn->query("ROLLBACK");
-		$this->conn->query("SET AUTOCOMMIT=1;");
+//		$this->conn->query("SET AUTOCOMMIT=1;");
 	}
 	
 	function exec($str, $arrval = array()) {
