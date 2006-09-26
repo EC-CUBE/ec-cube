@@ -275,7 +275,7 @@ function lfGetCSVList($array) {
 			if ($val == "") {
 				$line .= "'',";
 			}else{
-				$line .= "'".$val."',";
+				$line .= "".$val.",";
 			}
 		}
 		$line = ereg_replace(",$", "\n", $line);
