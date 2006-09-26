@@ -494,7 +494,7 @@ function lfExeInsertSQL($objQuery, $csv){
 		
 		// テーブルフラグがたっていない場合にはテーブル名セット
 		if (!$tbl_flg) {
-			$base_sql = "INSERT INTO $data[0];";
+			$base_sql = "INSERT INTO $data[0]";
 			$tbl_flg = true;
 			
 			if($data == "dtb_pagelayout"){
