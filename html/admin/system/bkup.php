@@ -485,6 +485,7 @@ function lfExeInsertSQL($objQuery, $csv){
 	$fp = fopen($csv, "r");
 	while (!feof($fp)) {
 		$data = fgetcsv($fp, 1000000);
+		sfprintr($data);
 		
 		//空白行のときはテーブル変更
 		if (count($data) <= 0 ) {
