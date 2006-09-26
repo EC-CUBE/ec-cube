@@ -1,3 +1,10 @@
+<!--{*
+/*
+ * Copyright © 2000-2006 LOCKON CO.,LTD. All Rights Reserved.
+ *
+ * http://www.lockon.co.jp/
+ */
+*}-->
 FTPの接続が成功しました。<br/>
 以下のフォルダに、インストールファイルを一時的に格納します。</br>
 <!--{$local_save_dir}--><br/>

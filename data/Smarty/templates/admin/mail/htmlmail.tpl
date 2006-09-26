@@ -1,3 +1,10 @@
+<!--{*
+/*
+ * Copyright ¢í 2000-2006 LOCKON CO.,LTD. All Rights Reserved.
+ *
+ * http://www.lockon.co.jp/
+ */
+*}-->
 <script language="JavaScript">
 <!--
 function lfc_del_product( pname ){

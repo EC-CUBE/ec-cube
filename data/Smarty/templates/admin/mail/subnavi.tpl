@@ -1,3 +1,10 @@
+<!--{*
+/*
+ * Copyright © 2000-2006 LOCKON CO.,LTD. All Rights Reserved.
+ *
+ * http://www.lockon.co.jp/
+ */
+*}-->
 <table width="141" border="0" cellspacing="0" cellpadding="0" summary=" " id="menu_navi">
 	<!--ナビ-->
 	<tr><td class=<!--{if $tpl_subno != 'index'}-->"navi"<!--{else}-->"navi-on"<!--{/if}-->><a href="./index.php" onMouseOver="naviStyleChange('index', '#a5a5a5')" <!--{if $tpl_subno != 'index'}-->onMouseOut="naviStyleChange('index', '#636469')"<!--{/if}--> id="index"><img src="/img/contents/icon.jpg" width="15" height="9" alt="" border="0"><span class="navi_text">配信内容設定</span></a></td></tr>

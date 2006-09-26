@@ -1,3 +1,10 @@
+<!--{*
+/*
+ * Copyright © 2000-2006 LOCKON CO.,LTD. All Rights Reserved.
+ *
+ * http://www.lockon.co.jp/
+ */
+*}-->
 <!--★★メインコンテンツ★★-->
 <table width="878" border="0" cellspacing="0" cellpadding="0" summary=" ">
 <form name="form1" id="form1" method="post" action="<!--{$smarty.post.PHP_SELF}-->" onSubmit="return window.confirm('登録しても宜しいですか');">

@@ -1,3 +1,10 @@
+<!--{*
+/*
+ * Copyright © 2000-2006 LOCKON CO.,LTD. All Rights Reserved.
+ *
+ * http://www.lockon.co.jp/
+ */
+*}-->
 <!--{if $arrForm.page.value == "term" || $arrForm.page.value == ""}-->
 	<td class="fs12n">
 	<strong>期間別集計</strong>&nbsp;（

@@ -1,3 +1,10 @@
+<!--{*
+/*
+ * Copyright © 2000-2006 LOCKON CO.,LTD. All Rights Reserved.
+ *
+ * http://www.lockon.co.jp/
+ */
+*}-->
 <table width="141" border="0" cellspacing="0" cellpadding="0" summary=" " id="menu_navi">
 	<!--ナビ-->
 	<tr><td class=<!--{if !($arrForm.page.value == 'term' || $arrForm.page.value == '')}-->"navi"<!--{else}-->"navi-on"<!--{/if}-->><a href="./index.php?page=term" onMouseOver="naviStyleChange('term', '#a5a5a5')" <!--{if !($arrForm.page.value == 'term' || $arrForm.page.value == '')}-->onMouseOut="naviStyleChange('term', '#636469')"<!--{/if}--> id="term"><img src="/img/contents/icon.jpg" width="15" height="9" alt="" border="0"><span class="navi_text">期間別集計</span></a></td></tr>

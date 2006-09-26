@@ -1,3 +1,10 @@
+<!--{*
+/*
+ * Copyright è¢Ì 2000-2006 LOCKON CO.,LTD. All Rights Reserved.
+ *
+ * http://www.lockon.co.jp/
+ */
+*}-->
 <table width="840" border="0" cellspacing="1" cellpadding="5" summary=" ">
 	<tr bgcolor="#636469" align="center" class="fs12n">
 		<td width="185"><span class="white">∂Ë ¨</span></td>
