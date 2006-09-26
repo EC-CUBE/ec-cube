@@ -1785,7 +1785,7 @@ function sfManualEscape($data) {
 		if (DB_TYPE == "pgsql") {
 			$ret = pg_escape_string($val);
 		}else if(DB_TYPE == "mysql"){
-			$ret = mysql_real_escape_string($data);
+			$ret = mysql_real_escape_string($val);
 		}
 
 		$ret = ereg_replace("%", "\\%", $ret);
