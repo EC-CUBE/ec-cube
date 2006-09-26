@@ -51,6 +51,7 @@ class SC_Query {
 	function rollback() {
 		$this->conn->query("ROLLBACK");
 		$this->conn->query("SET AUTOCOMMIT=1;");
+		sfprintr("roll back");
 	}
 	
 	function exec($str, $arrval = array()) {
