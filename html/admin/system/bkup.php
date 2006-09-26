@@ -178,7 +178,7 @@ function lfCreateBkupData($bkup_name){
 				// データをCSV形式に整える
 				$data = "";
 				foreach($arrData as $data_key => $data_val){
-					$data .= lfGetCSVList($arrData[$data_key]);
+					$data .= sfGetCSVList($arrData[$data_key]);
 				}
 				// CSV出力データ生成
 				$csv_data .= $val . "\n";
@@ -191,6 +191,7 @@ function lfCreateBkupData($bkup_name){
 
 	$csv_file = $bkup_dir . "bkup_data.csv";
 	$csv_autoinc_file = $bkup_dir . "autoinc_data.csv";
+	mb_internal_encoding('EUC-JP');
 	// CSV出力
 	// ディレクトリが存在していなければ作成する		
 	if (!is_dir(dirname($csv_file))) {
@@ -470,8 +471,6 @@ function lfRestore($bkup_name){
 // CSVファイルからインサート実行
 function lfExeInsertSQL($objQuery, $csv){
 	global $objPage;
-	// csvファイルからデータの取得
-	$arrCsvData = file($csv);
 
 	$sql = "";
 	$base_sql = "";
@@ -480,12 +479,17 @@ function lfExeInsertSQL($objQuery, $csv){
 	$ret = true;
 	$pagelayout_flg = false;
 	$mode = $objPage->mode;
-		
-	foreach($arrCsvData as $key => $val){
-		$data = trim($val);
+	
+	// csvファイルからデータの取得
+//	$arrCsvData = file($csv);
+	$fp = fopen($csv, "r");
+
+
+	while ($data = fgetcsv($fp, 1000000)) {
+//	foreach($arrCsvData as $key => $val){
 		
 		//空白行のときはテーブル変更
-		if ($data == "") {
+		if (count($data) <= 0 == "") {
 			$base_sql = "";
 			$tbl_flg = false;
 			$col_flg = false;
@@ -494,7 +498,7 @@ function lfExeInsertSQL($objQuery, $csv){
 		
 		// テーブルフラグがたっていない場合にはテーブル名セット
 		if (!$tbl_flg) {
-			$base_sql = "INSERT INTO $data ";
+			$base_sql = "INSERT INTO $data[0];";
 			$tbl_flg = true;
 			
 			if($data == "dtb_pagelayout"){
@@ -507,14 +511,22 @@ function lfExeInsertSQL($objQuery, $csv){
 		// カラムフラグがたっていない場合にはカラムセット
 		if (!$col_flg) {
 			if ($mode != "restore_config"){
-				$base_sql .= " ($data) ";
+				$base_sql .= " ( $data[0] ";
+				for($i = 1; $i < count($data); $i++){
+					$base_sql .= "," . $data[$i];
+				}
+				$base_sql .= " ) ";
 			}
 			$col_flg = true;
 			continue;
 		}
 
 		// インサートする値をセット
-		$sql = $base_sql . "VALUES ($data);\n";
+		$sql = $base_sql . "VALUES ( $data[0] ";
+		for($i = 1; $i < count($data); $i++){
+			$sql .= "," . $data[$i];
+		}
+		$sql .= " );";
 		$err = $objQuery->query($sql);
 
 		// エラーがあれば終了
