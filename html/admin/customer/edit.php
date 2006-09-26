@@ -183,7 +183,6 @@ $objView->display(MAIN_FRAME);
 function lfRegisDatat($array, $arrRegistColumn) {
 	global $objConn;
 	global $objQuery;
-	exit();
 	foreach ($arrRegistColumn as $data) {
 		if($array[$data["column"]] != "") {
 			$arrRegist[$data["column"]] = $array[$data["column"]];
