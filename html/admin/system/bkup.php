@@ -518,9 +518,9 @@ function lfExeInsertSQL($objQuery, $csv){
 		for($i = 1; $i < count($arrInsdata); $i++){
 			$sql .= ",?";
 		}
-		$sql .= ")";
-		$objQuery->query($sql, $arrInsdata);
-$objQuery->getlastquery();
+		$sql .= ");";
+		$err = $objQuery->query($sql, $arrInsdata);
+
 		// エラーがあれば終了
 		if ($err->message != ""){
 			$objQuery->getlastquery();
