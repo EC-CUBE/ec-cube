@@ -213,7 +213,7 @@ function lfRegisDatat($array, $arrRegistColumn) {
 	//-- ¥á¥ë¥Þ¥¬ÅÐÏ¿
 	$mailmaga = $objQuery->getAll("SELECT * FROM dtb_customer_mail WHERE email = ?", $array["edit_email"]);
 	
-	sfprintr($mailmaga);
+	sfprintr($mailmaga);exit();
 	if(count($mailmaga) > 0 ){
 		$objQuery->Update("dtb_customer_mail", $arrRegistMail, "email = '" .addslashes($array["edit_email"]). "'");
 	}else{
