@@ -4,7 +4,6 @@
  *
  * http://www.lockon.co.jp/
  */
- 
 require_once("../require.php");
 require_once("../../../data/module/Tar.php");
 
@@ -94,11 +93,12 @@ default:
 
 // バックアップリストを取得する
 $arrBkupList = lfGetBkupData("ORDER BY create_date DESC");
-
 // テンプレートファイルに渡すデータをセット
 $objPage->arrErr = $arrErr;
 $objPage->arrForm = $arrForm;
 $objPage->arrBkupList = $arrBkupList;
+
+sfprintr($objPage);
 
 $objView->assignobj($objPage);		//変数をテンプレートにアサインする
 $objView->display(MAIN_FRAME);		//テンプレートの出力
