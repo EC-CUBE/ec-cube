@@ -520,9 +520,7 @@ function lfExeInsertSQL($objQuery, $csv){
 		}
 		$sql .= ");\n";
 		$objQuery->query($sql, $arrInsdata);
-		
-		sfprintr($arrInsdata);
-				
+		$objQuery->getlastquery();
 		// エラーがあれば終了
 		if ($err->message != ""){
 			$objQuery->getlastquery();
