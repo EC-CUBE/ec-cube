@@ -1005,7 +1005,6 @@ class DB_common extends PEAR
 				}else{
 					$realquery .= NULL;
 				}
-				print("DB_PARAM_SCALAR");
             } elseif ($this->prepare_types[$stmt][$i] == DB_PARAM_OPAQUE) {
                 $fp = @fopen($value, 'rb');
                 if (!$fp) {
