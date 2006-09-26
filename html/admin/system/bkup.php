@@ -8,6 +8,9 @@
 require_once("../require.php");
 require_once("../../../data/module/Tar.php");
 
+
+define("DB_TYPE", "pgsql");	
+
 //ページ管理クラス
 class LC_Page {
 	//コンストラクタ
@@ -580,7 +583,7 @@ function lfCreateBkupTable(){
 	
 	// テーブルの存在チェック
 	$arrTableList = lfGetTableList();
-	
+
 	if(!in_array("dtb_bkup", $arrTableList)){
 		// 存在していなければ作成
 		$cre_sql = "
