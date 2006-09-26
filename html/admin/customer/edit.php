@@ -182,6 +182,7 @@ $objView->display(MAIN_FRAME);
 // ÊÔ½¸ÅÐÏ¿
 function lfRegisDatat($array, $arrRegistColumn) {
 	global $objConn;
+	global $objQuery;
 	
 	foreach ($arrRegistColumn as $data) {
 		if($array[$data["column"]] != "") {
@@ -201,15 +202,24 @@ function lfRegisDatat($array, $arrRegistColumn) {
 		unset($arrRegist['password']);
 	}
 
-	$arrRegist["create_date"] = date( "Y/m/d H:i:s", time());
-	$arrRegist["update_date"] = date( "Y/m/d H:i:s", time());
+	$arrRegist["update_date"] = "Now()";
+	$arrRegistMail["update_date"] = "Now()";
 	$arrRegistMail["mail_flag"] = $array["mail_flag"];
 	$arrRegistMail['email'] = $array['email'];
 	//-- ÊÔ½¸ÅÐÏ¿¼Â¹Ô
 	$objConn->query("BEGIN");
-	$objConn->autoExecute("dtb_customer", $arrRegist, "customer_id = '" .addslashes($array["customer_id"]). "'");
+	$objQuery->Insert("dtb_customer", $arrRegist, "customer_id = '" .addslashes($array["customer_id"]). "'");
+	
 	//-- ¥á¥ë¥Þ¥¬ÅÐÏ¿
-	$objConn->autoExecute("dtb_customer_mail", $arrRegistMail, "email = '" .addslashes($array["edit_email"]). "'");
+	$mailmaga = $objQuery->getAll("SELECT * FROM dtb_customer_mail WHERE email = ?", $array["edit_email"]);
+	
+	if(count($mailmaga) > 0 ){
+		$objQuery->Update("dtb_customer_mail", $arrRegistMail, "email = '" .addslashes($array["edit_email"]). "'");
+	}else{
+		$arrRegistMail["create_date"] = "Now()";
+		//$arrRegist["create_date"] = date( "Y/m/d H:i:s", time());
+		$objQuery->Insert("dtb_customer_mail", $arrRegistMail);
+	}
 	$objConn->query("COMMIT");
 }
 
