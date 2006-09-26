@@ -1769,8 +1769,12 @@ function sfGetBestProducts( $conn, $category_id = 0){
 // 特殊制御文字の手動エスケープ
 function sfManualEscape($data) {
 	// 配列でない場合
-	if(!is_array($data)) {			
-		$ret = pg_escape_string($data);
+	if(!is_array($data)) {
+		if (DB_TYPE == "pgsql") {
+			$ret = pg_escape_string($data);
+		}else if(DB_TYPE == "mysql"){
+			$ret = mysql_real_escape_string($data);
+		}
 		$ret = ereg_replace("%", "\\%", $ret);
 		$ret = ereg_replace("_", "\\_", $ret);
 		return $ret;
@@ -1778,11 +1782,17 @@ function sfManualEscape($data) {
 	
 	// 配列の場合
 	foreach($data as $val) {
-		$ret = pg_escape_string($val);
+		if (DB_TYPE == "pgsql") {
+			$ret = pg_escape_string($val);
+		}else if(DB_TYPE == "mysql"){
+			$ret = mysql_real_escape_string($data);
+		}
+
 		$ret = ereg_replace("%", "\\%", $ret);
 		$ret = ereg_replace("_", "\\_", $ret);
 		$arrRet[] = $ret;
 	}
+
 	return $arrRet;
 }
 
