@@ -1,4 +1,9 @@
-<!--¢§CONTENTS-->
+<!--{*
+ * Copyright ¢í 2000-2006 LOCKON CO.,LTD. All Rights Reserved.
+ *
+ * http://www.lockon.co.jp/
+ *}-->
+ <!--¢§CONTENTS-->
 <table width=760 border="0" cellspacing="0" cellpadding="0" summary=" ">
 	<tr valign="top">
 		<td align="center" bgcolor="#ffffff">

@@ -1,4 +1,9 @@
 <?xml version="1.0" encoding="<!--{$encode}-->"?>
+<!--{*
+ * Copyright ¢í 2000-2006 LOCKON CO.,LTD. All Rights Reserved.
+ *
+ * http://www.lockon.co.jp/
+ *}-->
 <rss version="2.0">
 
 <!--{* channelÍ×ÁÇ *}-->

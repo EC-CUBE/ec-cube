@@ -1,3 +1,8 @@
+<!--{*
+ * Copyright ¢í 2000-2006 LOCKON CO.,LTD. All Rights Reserved.
+ *
+ * http://www.lockon.co.jp/
+ *}-->
 <div id="pan">
 <span class="fs12n">
 

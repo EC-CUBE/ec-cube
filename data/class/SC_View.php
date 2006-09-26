@@ -1,4 +1,10 @@
 <?php
+/*
+ * Copyright ¢í 2000-2006 LOCKON CO.,LTD. All Rights Reserved.
+ *
+ * http://www.lockon.co.jp/
+ */
+
 $SC_VIEW_PHP_DIR = realpath(dirname(__FILE__));
 require_once($SC_VIEW_PHP_DIR . "/../module/Smarty/libs/Smarty.class.php");
 

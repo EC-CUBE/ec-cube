@@ -1,4 +1,9 @@
 <?php
+/*
+ * Copyright ¢í 2000-2006 LOCKON CO.,LTD. All Rights Reserved.
+ *
+ * http://www.lockon.co.jp/
+ */
 class LC_LoginPage {
 	var $tpl_login_email;
 	function LC_LoginPage() {

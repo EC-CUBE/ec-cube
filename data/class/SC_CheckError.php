@@ -1,4 +1,10 @@
 <?php
+/*
+ * Copyright © 2000-2006 LOCKON CO.,LTD. All Rights Reserved.
+ *
+ * http://www.lockon.co.jp/
+ */
+
 /*----------------------------------------------------------------------
  * [名称] SC_CheckError
  * [概要] エラーチェッククラス

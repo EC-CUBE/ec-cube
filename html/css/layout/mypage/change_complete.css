@@ -1,10 +1,15 @@
-/***************MYƒy[ƒW“o˜^“à—e•ÏXiŠ®—¹j***************/
+/*
+ * Copyright ¢í 2000-2006 LOCKON CO.,LTD. All Rights Reserved.
+ *
+ * http://www.lockon.co.jp/
+ */
+/***************MY?????????????***************/
 
 @charset "euc-jp";
 
 
 
-/***‰EƒRƒ“ƒeƒ“ƒc***/
+/***??????***/
 #container #right #maintitle{
 border: 0;
 margin: 0;
@@ -17,7 +22,7 @@ border: 0;
 margin: 0 0 15px 0;
 }
 
-/***MYƒy[ƒWƒiƒr***/
+/***MY?????***/
 
 #container #right #navi{
 border: 0;
@@ -29,7 +34,7 @@ border-color: #c9ddf1;
 width: 570px;
 }
 
-/*ƒTƒuƒ^ƒCƒgƒ‹*/
+/*??????*/
 #container #right #subtitle{
 border-width: 0 0 1px 0;
 border-style: dashed;
@@ -56,7 +61,7 @@ height: 210px;
 text-align: center;
 }
 
-/*ƒ{ƒ^ƒ“*/
+/*???*/
 #container #right #button{
 border: 0;
 margin: 30px 0 15px 0;

@@ -1,7 +1,10 @@
 <?php
-
 /*
-	共通 
+ * Copyright © 2000-2006 LOCKON CO.,LTD. All Rights Reserved.
+ *
+ * http://www.lockon.co.jp/
+ *
+ *	共通 
 */
 // TTFフォントファイル
 define("FONT_PATH", ROOT_DIR . "/data/fonts/wlmaru20044.ttf");

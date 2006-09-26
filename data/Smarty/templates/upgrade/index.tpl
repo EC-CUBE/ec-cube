@@ -1,3 +1,8 @@
+<!--{*
+ * Copyright © 2000-2006 LOCKON CO.,LTD. All Rights Reserved.
+ *
+ * http://www.lockon.co.jp/
+ *}-->
 <p>アップデート可能なファイル一覧です。</p>
 
 <table>

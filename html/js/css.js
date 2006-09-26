@@ -1,4 +1,9 @@
-gCssUA = navigator.userAgent.toUpperCase();
+/*
+ * Copyright è¢Ì 2000-2006 LOCKON CO.,LTD. All Rights Reserved.
+ *
+ * http://www.lockon.co.jp/
+ */
+ gCssUA = navigator.userAgent.toUpperCase();
 gCssBrw = navigator.appName.toUpperCase();
 
 with (document) {

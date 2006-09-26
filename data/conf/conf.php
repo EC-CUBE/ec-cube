@@ -1,4 +1,9 @@
 <?php
+/*
+ * Copyright ¢í 2000-2006 LOCKON CO.,LTD. All Rights Reserved.
+ *
+ * http://www.lockon.co.jp/
+ */
 
 $CONF_PHP_PATH = realpath( dirname( __FILE__) );
 require_once($CONF_PHP_PATH ."/../install.inc");

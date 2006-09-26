@@ -1,4 +1,8 @@
-				<table cellspacing="0" cellpadding="0" summary=" " id="search">
+<!--{*
+ * Copyright ¢í 2000-2006 LOCKON CO.,LTD. All Rights Reserved.
+ *
+ * http://www.lockon.co.jp/
+ *}-->				<table cellspacing="0" cellpadding="0" summary=" " id="search">
 					<tr>
 						<td bgcolor="#0e3192" height="3" colspan="3"></td>
 					</tr>

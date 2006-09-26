@@ -1,3 +1,8 @@
+/*
+ * Copyright è¢Ì 2000-2006 LOCKON CO.,LTD. All Rights Reserved.
+ *
+ * http://www.lockon.co.jp/
+ */
 	var preLoadFlag = "false";
 
 	function preLoadImg(){

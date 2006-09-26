@@ -1,5 +1,10 @@
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <html lang="ja">
+<!--{*
+ * Copyright © 2000-2006 LOCKON CO.,LTD. All Rights Reserved.
+ *
+ * http://www.lockon.co.jp/
+ *}-->
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=EUC-JP">
 <meta http-equiv="content-script-type" content="text/javascript">

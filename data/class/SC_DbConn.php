@@ -1,4 +1,10 @@
 <?php
+/*
+ * Copyright ¢í 2000-2006 LOCKON CO.,LTD. All Rights Reserved.
+ *
+ * http://www.lockon.co.jp/
+ */
+
 $current_dir = realpath(dirname(__FILE__));
 require_once($current_dir . "/../module/DB.php");
 

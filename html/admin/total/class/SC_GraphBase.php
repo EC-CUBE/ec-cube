@@ -1,5 +1,10 @@
 <?php
 /*
+ * Copyright ¢í 2000-2006 LOCKON CO.,LTD. All Rights Reserved.
+ *
+ * http://www.lockon.co.jp/
+ */
+/*
 $SC_GRAPHPIE_DIR = realpath(dirname( __FILE__));
 require_once($SC_GRAPHPIE_DIR . "/config.php");
 require_once($SC_GRAPHPIE_DIR . "/lib.php");	

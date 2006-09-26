@@ -1,5 +1,9 @@
 <?php
-
+/*
+ * Copyright ¢í 2000-2006 LOCKON CO.,LTD. All Rights Reserved.
+ *
+ * http://www.lockon.co.jp/
+ */
 $daily_php_dir = realpath(dirname( __FILE__));
 require_once($daily_php_dir . "/../require.php");
 

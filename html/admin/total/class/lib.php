@@ -1,5 +1,9 @@
 <?php
-
+/*
+ * Copyright © 2000-2006 LOCKON CO.,LTD. All Rights Reserved.
+ *
+ * http://www.lockon.co.jp/
+ */
 // 円の中心点と直径から弧の終端座標を算出する。
 /*
 	$cx	: 中心点X座標

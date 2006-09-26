@@ -1,4 +1,9 @@
-<!--¸¡º÷³ºÅö0¤Î»þ-->
+<!--{*
+ * Copyright ¢í 2000-2006 LOCKON CO.,LTD. All Rights Reserved.
+ *
+ * http://www.lockon.co.jp/
+ *}-->
+ <!--¸¡º÷³ºÅö0¤Î»þ-->
 <table width="570" cellspacing="0" cellpadding="0" summary=" ">
 	<tr><td height="15"></td></tr>
 	<tr>

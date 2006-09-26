@@ -1,4 +1,9 @@
 <?
+/*
+ * Copyright ¢í 2000-2006 LOCKON CO.,LTD. All Rights Reserved.
+ *
+ * http://www.lockon.co.jp/
+ */
 $SC_GRAPHBAR_DIR = realpath(dirname( __FILE__));
 require_once($SC_GRAPHBAR_DIR . "/SC_GraphLine.php");	
 

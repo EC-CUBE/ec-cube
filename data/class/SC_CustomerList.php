@@ -1,4 +1,9 @@
 <?php
+/*
+ * Copyright ¢í 2000-2006 LOCKON CO.,LTD. All Rights Reserved.
+ *
+ * http://www.lockon.co.jp/
+ */
 
 /*  [Ì¾¾Î] SC_CustomerList
  *  [³µÍ×] ²ñ°÷¸¡º÷ÍÑ¥¯¥é¥¹

@@ -1,4 +1,8 @@
-
+<!--{*
+ * Copyright ¢í 2000-2006 LOCKON CO.,LTD. All Rights Reserved.
+ *
+ * http://www.lockon.co.jp/
+ *}-->
 <!--{section name=question loop=$QUESTION.question}-->
 	<!--{if $QUESTION.question[question].kind }-->
 		<tr>

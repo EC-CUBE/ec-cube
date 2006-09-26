@@ -1,5 +1,9 @@
 <?php
-/**
+/*
+ * Copyright © 2000-2006 LOCKON CO.,LTD. All Rights Reserved.
+ *
+ * http://www.lockon.co.jp/
+ *
  * CSV配信機能実装のため、共通部分を外部ファイル化しました。<br>
  * @author hirokazu_fukuda
  * @version 2005/12/27

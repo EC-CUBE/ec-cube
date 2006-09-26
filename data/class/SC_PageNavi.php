@@ -1,4 +1,10 @@
 <?php
+/*
+ * Copyright © 2000-2006 LOCKON CO.,LTD. All Rights Reserved.
+ *
+ * http://www.lockon.co.jp/
+ */
+
 /* ※使用条件※
 	・formタグに以下を追加する。
 		<input type="hidden" name="pageno" value="<!--{$tpl_pageno}-->">

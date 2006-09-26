@@ -1,4 +1,9 @@
 <?php
+/*
+ * Copyright © 2000-2006 LOCKON CO.,LTD. All Rights Reserved.
+ *
+ * http://www.lockon.co.jp/
+ */
 /* 商品の新規追加 */
 function lfRegistProduct($objQuery) {
 	global $objFormParam;

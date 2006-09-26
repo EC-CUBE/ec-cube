@@ -1,3 +1,8 @@
+<!--{*
+ * Copyright © 2000-2006 LOCKON CO.,LTD. All Rights Reserved.
+ *
+ * http://www.lockon.co.jp/
+ *}-->
 <!--▼ログインここから-->
 <!--{if $smarty.post.url == ""}-->
 	<!--{assign var=url value="`$smarty.server.REQUEST_URI`"}-->

@@ -1,3 +1,8 @@
+<!--{*
+ * Copyright ¢í 2000-2006 LOCKON CO.,LTD. All Rights Reserved.
+ *
+ * http://www.lockon.co.jp/
+ *}-->
 <script type="text/javascript">
 function lfnChangeDisabled(db_type) {
 

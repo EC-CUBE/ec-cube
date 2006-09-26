@@ -1,3 +1,8 @@
+<!--{*
+ * Copyright ¢í 2000-2006 LOCKON CO.,LTD. All Rights Reserved.
+ *
+ * http://www.lockon.co.jp/
+ *}-->
 <table width="502" border="0" cellspacing="1" cellpadding="0" summary=" ">
 
 <table width="502" border="0" cellspacing="1" cellpadding="0" summary=" ">

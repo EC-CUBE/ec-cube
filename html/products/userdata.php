@@ -1,4 +1,9 @@
 <?php
+/*
+ * Copyright © 2000-2006 LOCKON CO.,LTD. All Rights Reserved.
+ *
+ * http://www.lockon.co.jp/
+ */
 
 /*　商品詳細ページのHTML開放部分テンプレート表示用ファイル */
 

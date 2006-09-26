@@ -1,4 +1,10 @@
 <?php
+/*
+ * Copyright © 2000-2006 LOCKON CO.,LTD. All Rights Reserved.
+ *
+ * http://www.lockon.co.jp/
+ */
+
 /* セッション管理クラス */
 class SC_SiteInfo {
 	

@@ -1,3 +1,8 @@
+<!--{*
+ * Copyright © 2000-2006 LOCKON CO.,LTD. All Rights Reserved.
+ *
+ * http://www.lockon.co.jp/
+ *}-->
 　※本メールは自動配信メールです。
 　等幅フォント(MSゴシック12ポイント、Osaka-等幅など)で
 　最適にご覧になれます。

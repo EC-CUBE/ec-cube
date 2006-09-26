@@ -1,4 +1,10 @@
 <?php
+/*
+ * Copyright ¢í 2000-2006 LOCKON CO.,LTD. All Rights Reserved.
+ *
+ * http://www.lockon.co.jp/
+ */
+
 $DETAIL_PHP_DIR = realpath(dirname( __FILE__));
 require_once($DETAIL_PHP_DIR  . "/../../data/lib/slib.php");
 require_once($DETAIL_PHP_DIR  . "/../../data/class/SC_View.php");

@@ -1,4 +1,8 @@
-
+<!--{*
+ * Copyright ¢í 2000-2006 LOCKON CO.,LTD. All Rights Reserved.
+ *
+ * http://www.lockon.co.jp/
+ *}-->
 <!--{if $smarty.post.url == ""}-->
 	<!--{assign var=url value="`$smarty.server.REQUEST_URI`"}-->
 <!--{else}-->

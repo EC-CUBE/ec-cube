@@ -1,4 +1,9 @@
 <?php
+/*
+ * Copyright © 2000-2006 LOCKON CO.,LTD. All Rights Reserved.
+ *
+ * http://www.lockon.co.jp/
+ */
 
 //---このファイルのパスを指定
 $INC_PATH = realpath( dirname( __FILE__) );

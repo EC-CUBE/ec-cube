@@ -1,4 +1,9 @@
-<script type="text/javascript">
+<!--{*
+ * Copyright © 2000-2006 LOCKON CO.,LTD. All Rights Reserved.
+ *
+ * http://www.lockon.co.jp/
+ *}-->
+ <script type="text/javascript">
 <!--
 // セレクトボックスに項目を割り当てる。
 function lnSetSelect(name1, name2, id, val) {

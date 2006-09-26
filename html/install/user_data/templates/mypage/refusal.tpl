@@ -1,3 +1,8 @@
+<!--{*
+ * Copyright ¢í 2000-2006 LOCKON CO.,LTD. All Rights Reserved.
+ *
+ * http://www.lockon.co.jp/
+ *}-->
 <!--¢§CONTENTS-->
 <table width="100" border="0" cellspacing="0" cellpadding="0" summary=" ">
 <form name="form1" method="post" action="<!--{$smarty.server.PHP_SELF}-->">

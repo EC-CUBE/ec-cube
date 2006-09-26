@@ -1,4 +1,9 @@
 <?php
+/*
+ * Copyright ¢í 2000-2006 LOCKON CO.,LTD. All Rights Reserved.
+ *
+ * http://www.lockon.co.jp/
+ */
 require_once("./class/SC_GraphPie.php");
 require_once("./class/SC_GraphLine.php");
 

@@ -1,3 +1,8 @@
+<!--{*
+ * Copyright ¢í 2000-2006 LOCKON CO.,LTD. All Rights Reserved.
+ *
+ * http://www.lockon.co.jp/
+ *}-->
 <SCRIPT LANGUAGE="JavaScript">
 <!-- Overture Services Inc. 07/15/2003
 var cc_tagVersion = "1.0";

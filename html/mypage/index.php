@@ -1,4 +1,10 @@
 <?php
+/*
+ * Copyright © 2000-2006 LOCKON CO.,LTD. All Rights Reserved.
+ *
+ * http://www.lockon.co.jp/
+ */
+
 //データベースから商品検索を実行する。（ECキット動作試験用の開発）
 require_once("../require.php");
 

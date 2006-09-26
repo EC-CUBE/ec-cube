@@ -1,5 +1,9 @@
 <?php
 /*
+ * Copyright ¢í 2000-2006 LOCKON CO.,LTD. All Rights Reserved.
+ *
+ * http://www.lockon.co.jp/
+ *
  *		check.php ²ÔÆ¯¡¦Èó²ÔÆ¯¤ÎÀÚÂØ
  */
 require_once("../require.php");

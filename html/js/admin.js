@@ -1,4 +1,8 @@
-
+/*
+ * Copyright © 2000-2006 LOCKON CO.,LTD. All Rights Reserved.
+ *
+ * http://www.lockon.co.jp/
+ */
 // 管理者メンバーを追加する。
 function fnRegistMember() {
 	// 必須項目の名前、ログインID、パスワード、権限

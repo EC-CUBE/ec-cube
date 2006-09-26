@@ -1,3 +1,8 @@
+<!--{*
+ * Copyright © 2000-2006 LOCKON CO.,LTD. All Rights Reserved.
+ *
+ * http://www.lockon.co.jp/
+ *}-->
 <!--{if $smarty.const.ROOT_CATEGORY_7 == $tpl_root_id}-->
 <td><a href="<!--{$smarty.const.LIST_C_HTML}--><!--{$smarty.const.ROOT_CATEGORY_7}-->.html"><img src="/img/other/tv_on.gif" width="109" height="39" alt="TVショッピング"/></a></td>
 <!--{else}-->

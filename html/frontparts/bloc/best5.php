@@ -1,5 +1,9 @@
 <?php
-
+/*
+ * Copyright © 2000-2006 LOCKON CO.,LTD. All Rights Reserved.
+ *
+ * http://www.lockon.co.jp/
+ */
 class LC_Best5Page {
 	function LC_Best5Page() {
 		/** 必ず変更する **/

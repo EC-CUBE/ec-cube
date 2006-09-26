@@ -1,3 +1,8 @@
+<!--{*
+ * Copyright © 2000-2006 LOCKON CO.,LTD. All Rights Reserved.
+ *
+ * http://www.lockon.co.jp/
+ *}-->
 <!--▼弊社制作のタイトルバナー-->
 <img src="/img/right_product/relate.jpg" width="570" height="33">
 <!--▲弊社制作のタイトルバナー-->

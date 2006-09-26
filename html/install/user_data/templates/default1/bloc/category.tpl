@@ -1,3 +1,8 @@
+<!--{*
+ * Copyright © 2000-2006 LOCKON CO.,LTD. All Rights Reserved.
+ *
+ * http://www.lockon.co.jp/
+ *}-->
 <!--▼商品カテゴリーここから-->
 <table width="166" border="0" cellspacing="0" cellpadding="0" summary=" ">
 	<tr>
