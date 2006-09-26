@@ -39,24 +39,20 @@ class SC_Query {
 
 	function commit() {
 		$this->conn->query("COMMIT");
-//		$this->conn->query("SET AUTOCOMMIT=1;");
 	}
 	
 	function begin() {
-//		$this->conn->query("BEGIN");
-//		$this->conn->query("SET AUTOCOMMIT=0;");
-		$this->conn->query("START TRANSACTION;");
+		$this->conn->query("BEGIN");
 	}
 	
 	function rollback() {
 		$this->conn->query("ROLLBACK");
-//		$this->conn->query("SET AUTOCOMMIT=1;");
 	}
 	
 	function exec($str, $arrval = array()) {
 		$this->conn->query($str, $arrval);
 	}
-	
+
 	function autoselect($col, $table, $arrwhere = array(), $arrcon = array()) {
 		$strw = "";			
 		$find = false;
