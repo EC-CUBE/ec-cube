@@ -384,7 +384,6 @@ class SC_Query {
 	}		
 	
 	function query($n ,$arr = "", $ignore_err = false){
-		sfprintr($arr);
 		$result = $this->conn->query($n, $arr, $ignore_err);
 		return $result;
 	}
