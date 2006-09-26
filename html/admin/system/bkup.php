@@ -484,10 +484,8 @@ function lfExeInsertSQL($objQuery, $csv){
 //	$arrCsvData = file($csv);
 	$fp = fopen($csv, "r");
 	while ($data = fgetcsv($fp, 1000000)) {
-//	foreach($arrCsvData as $key => $val){
-		sfprintr($data);
 		//空白行のときはテーブル変更
-		if (count($data) <= 0 == "") {
+		if (count($data) <= 0 ) {
 			$base_sql = "";
 			$tbl_flg = false;
 			$col_flg = false;
