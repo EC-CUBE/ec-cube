@@ -488,7 +488,6 @@ function lfExeInsertSQL($objQuery, $csv){
 		
 		//空白行のときはテーブル変更
 		if (count($data) <= 1 and $data[0] == "") {
-//		if (!isset($data)) {
 			$base_sql = "";
 			$tbl_flg = false;
 			$col_flg = false;

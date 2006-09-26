@@ -516,7 +516,7 @@ function lfMakeConfigFile() {
 	global $objDBParam;
 	global $port;
 	
-	$filepath = $objWebParam->getValue('install_dir') . "/html/install.inc";
+	$filepath = $objWebParam->getValue('install_dir') . "/data/install.inc";
 	$domain = $objWebParam->getValue('domain');
 	if(!ereg("^\.", $domain)) {
 		$domain = "." . $domain;
