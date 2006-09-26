@@ -98,8 +98,6 @@ $objPage->arrErr = $arrErr;
 $objPage->arrForm = $arrForm;
 $objPage->arrBkupList = $arrBkupList;
 
-sfprintr($objPage);
-
 $objView->assignobj($objPage);		//変数をテンプレートにアサインする
 $objView->display(MAIN_FRAME);		//テンプレートの出力
 
