@@ -518,11 +518,12 @@ function lfExeInsertSQL($objQuery, $csv){
 		for($i = 0; $i < count($arrInsdata); $i++){
 			$sql .= ",?";
 		}
-		$sql .= ");";
+		$sql .= ")";
 		$objQuery->query($sql, $arrInsdata);
-		$objQuery->getlastquery();
 		
+		$objQuery->getlastquery();
 		sfprintr($arrInsdata);
+		
 		// エラーがあれば終了
 		if ($err->message != ""){
 			$objQuery->getlastquery();
