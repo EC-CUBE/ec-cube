@@ -518,7 +518,7 @@ function lfExeInsertSQL($objQuery, $csv){
 		for($i = 0; $i < count($arrInsdata); $i++){
 			$sql .= ",?";
 		}
-		$sql .= ");\n";
+		$sql .= ");";
 		$objQuery->query($sql, $arrInsdata);
 		$objQuery->getlastquery();
 		
