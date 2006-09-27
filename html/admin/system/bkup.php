@@ -79,8 +79,11 @@ case 'restore_config':
 	
 // 削除
 case 'delete':
+	$del_file = $objPage->bkup_dir.$_POST['list_name'] . ".tar.gz";
 	// ファイルの削除
-	unlink($objPage->bkup_dir.$_POST['list_name'] . ".tar.gz");
+	if(is_file($del_file)){
+		unlink($del_file);
+	}
 
 	// DBから削除
 	$delsql = "DELETE FROM dtb_bkup WHERE bkup_name = ?";
@@ -150,6 +153,7 @@ function lfCreateBkupData($bkup_name){
 	$err = true;
 	
 	$bkup_dir = $objPage->bkup_dir;
+	if (!is_dir(dirname($bkup_dir))) $err = mkdir(dirname($bkup_dir));		
 	$bkup_dir = $bkup_dir . $bkup_name . "/";
 
 	// 全テーブル取得
