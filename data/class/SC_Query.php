@@ -366,7 +366,7 @@ class SC_Query {
 		$sql = "";
 		if (DB_TYPE == "pgsql") {
 			$seqtable = $table . "_" . $colname . "_seq";
-			$sql = "SELECT CURVAL('$seqtable')";
+			$sql = "SELECT CURRVAL('$seqtable')";
 		}else if (DB_TYPE == "mysql") {
 			$sql = "SELECT last_insert_id();";
 		}
