@@ -147,8 +147,8 @@ define("SMALL_IMAGE_WIDTH",  130);						// 一覧画像横
 define("SMALL_IMAGE_HEIGHT", 130);						// 一覧画像縦
 define("NORMAL_IMAGE_WIDTH",  260);						// 通常画像横
 define("NORMAL_IMAGE_HEIGHT", 260);						// 通常画像縦
-define("NORMAL_SUBIMAGE_WIDTH", 130);					// 通常サブ画像横
-define("NORMAL_SUBIMAGE_HEIGHT", 130);					// 通常サブ画像縦
+define("NORMAL_SUBIMAGE_WIDTH", 200);					// 通常サブ画像横
+define("NORMAL_SUBIMAGE_HEIGHT", 200);					// 通常サブ画像縦
 define("LARGE_SUBIMAGE_WIDTH", 500);					// 拡大サブ画像横
 define("LARGE_SUBIMAGE_HEIGHT", 500);					// 拡大サブ画像縦
 define("DISP_IMAGE_WIDTH",  65);						// 一覧表示画像横
