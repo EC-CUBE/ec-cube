@@ -370,7 +370,7 @@ function lfGetAutoIncrementVal($table_name , $colname = ""){
 	$ret = "";
 
 	if(DB_TYPE == "pgsql"){
-		$ret = $objQuery->currval($table_name, $colname);
+		$ret = $objQuery->nextval($table_name, $colname) - 1;
 	}else if(DB_TYPE == "mysql"){
 		$sql = "SHOW TABLE STATUS LIKE ?";
 		$arrData = $objQuery->getAll($sql, array($table_name));

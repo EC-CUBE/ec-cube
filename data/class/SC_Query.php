@@ -362,7 +362,7 @@ class SC_Query {
 		return $ret;
 	}
 	
-	function curval($table, $colname) {
+	function currval($table, $colname) {
 		$sql = "";
 		if (DB_TYPE == "pgsql") {
 			$seqtable = $table . "_" . $colname . "_seq";
