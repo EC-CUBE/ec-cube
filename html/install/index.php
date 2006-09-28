@@ -11,7 +11,7 @@ class LC_Page {
 	function LC_Page() {
 		$this->arrDB_TYPE = array(
 			'pgsql' => 'PostgreSQL',
-			'mysql' => 'mySQL'	
+			'mysql' => 'MySQL'	
 		);
 	}
 }
