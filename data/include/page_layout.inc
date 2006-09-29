@@ -23,7 +23,7 @@ function sfGetPageLayout($objPage, $preview = false, $url = ""){
 		// URLを元にページデザインを取得
 		$arrPageData = lfgetPageData(" url = ? " , array($url));
 	}else{
-		$arrPageData = lfgetPageData(" page_id = ? " , array(0));
+		$arrPageData = lfgetPageData(" page_id = ? " , array("0"));
 	}
 
 	// メインテンプレートファイルを設定
