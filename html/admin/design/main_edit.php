@@ -92,7 +92,10 @@ if ($_POST['mode'] == 'preview') {
 	sfprintr($del_tpl);
 	if (file_exists($del_tpl)){
 		unlink($del_tpl);	
+		sfprintr("test");
 	}
+	
+	exit();
 	
 	// DBへデータを更新する
 	lfEntryPageData($_POST);
