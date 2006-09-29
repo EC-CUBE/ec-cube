@@ -78,8 +78,8 @@ if ($_POST['mode'] == 'confirm' or $_POST['mode'] == 'preview') {
 	$arrPageData = array();
 	if ($_POST['mode'] == 'preview') {
 		$arrPageData = lfgetPageData(" page_id = ? " , array($page_id));
-		$page_id = 0;
-		$_POST['page_id'] = 0;
+		$page_id = "0";
+		$_POST['page_id'] = "0";
 	}
 	
 	// 更新用にデータを整える
