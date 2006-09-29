@@ -376,11 +376,10 @@ function lfSetPreData($arrPageData){
 	$arrUpdData = array();			// 更新データ生成用
 	$filename = uniqid("");
 
-	$arrPreData = lfgetPageData(" page_id = ? " , array(0));
+	$arrPreData = lfgetPageData(" page_id = ? " , array("0"));
 
 	// tplファイルの削除
 	$del_tpl = ROOT_DIR . USER_DIR . "templates/" . $arrPreData[0]['filename'] . '.tpl';
-	sfprintr($del_tpl);
 	if (file_exists($del_tpl)){
 		unlink($del_tpl);	
 		sfprintr("test");
