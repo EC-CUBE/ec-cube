@@ -58,6 +58,8 @@ if ( sfCheckNumLength($_GET['send_id']) && ($_GET['mode']=='delete') ){
 	$order = "start_date DESC, send_id DESC";
 	$objQuery->setorder($order);
 	
+	$objQuery->getlastquery();
+	
 	// 検索結果の取得
 	$objPage->arrDataList = $objQuery->select($col, $from, $where, $arrval);
 	
