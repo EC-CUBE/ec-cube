@@ -395,6 +395,8 @@ function lfRegistData($arrData){
 	$dtb_send_history["create_date"] = "now()";
 	$objQuery->insert("dtb_send_history", $dtb_send_history );	
 	
+	$objQuery->getlastquery();
+	
 	if ( is_array( $search_data ) ){
 		foreach( $search_data as $line ){
 			$dtb_send_customer = array();
