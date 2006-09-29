@@ -60,8 +60,6 @@ if ( sfCheckNumLength($_GET['send_id']) && ($_GET['mode']=='delete') ){
 	
 	// 検索結果の取得
 	$objPage->arrDataList = $objQuery->select($col, $from, $where, $arrval);
-		$objQuery->getlastquery();
-
 	
 //----　ページ表示
 $objView->assignobj($objPage);
