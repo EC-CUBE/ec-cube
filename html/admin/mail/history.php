@@ -39,7 +39,7 @@ if ( sfCheckNumLength($_GET['send_id']) && ($_GET['mode']=='delete') ){
 	$from = "dtb_send_history";
 	
 	$where .= " del_flg = ?";
-	$arrval[] = 0;
+	$arrval[] = "0";
 	
 	$objQuery = new SC_Query();
 	// 行数の取得
