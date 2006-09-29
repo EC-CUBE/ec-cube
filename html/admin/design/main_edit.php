@@ -89,13 +89,9 @@ if ($_POST['mode'] == 'preview') {
 
 	// tplファイルの削除
 	$del_tpl = ROOT_DIR . USER_DIR . "templates/" . $arrPreData[0]['filename'] . '.tpl';
-	sfprintr($del_tpl);
 	if (file_exists($del_tpl)){
 		unlink($del_tpl);	
-		sfprintr("test");
 	}
-	
-	exit();
 	
 	// DBへデータを更新する
 	lfEntryPageData($_POST);

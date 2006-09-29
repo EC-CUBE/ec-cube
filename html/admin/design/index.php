@@ -380,9 +380,12 @@ function lfSetPreData($arrPageData){
 
 	// tplファイルの削除
 	$del_tpl = ROOT_DIR . USER_DIR . "templates/" . $arrPreData[0]['filename'] . '.tpl';
+	sfprintr($del_tpl);
 	if (file_exists($del_tpl)){
 		unlink($del_tpl);	
+		sfprintr("test");
 	}
+	exit;
 
 	// tplファイルのコピー
 	copy(ROOT_DIR . $arrPageData[0]['tpl_dir'].$arrPageData[0]['filename'].".tpl", ROOT_DIR . USER_DIR."templates/".$filename.".tpl");
