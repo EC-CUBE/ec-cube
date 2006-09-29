@@ -79,7 +79,7 @@ if (is_numeric($page_id) and $page_id != '') {
 if ($_POST['mode'] == 'preview') {
 	
 	$page_id_old = $page_id;
-	$page_id = 0;
+	$page_id = "0";
 	$url = uniqid("");
 
 	$_POST['page_id'] = $page_id;
