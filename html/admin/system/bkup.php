@@ -562,14 +562,9 @@ function lfSetAutoInc($objQuery, $csv){
 	foreach($arrCsvData as $key => $val){
 		$arrData = split(",", trim($val));
 		
-		if ($arrData[2] == 0) {
-			$arrData[2] = 1;
-		}
+		if ($arrData[2] == 0)	$arrData[2] = 1;
 		$objQuery->setval($arrData[0], $arrData[1], $arrData[2]);
-		
-		$objQuery->getlastquery();
 	}
-	exit();
 }
 
 // DBを全てクリアする
