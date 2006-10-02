@@ -430,7 +430,6 @@ function lfRestore($bkup_name){
 		$err = lfDeleteAll($objQuery);
 		
 		// INSERT実行
-		sfprintr($bkup_dir);
 		if ($err) $err = lfExeInsertSQL($objQuery, $bkup_dir . "bkup_data.csv");
 
 		// 自動採番の値をセット
@@ -490,8 +489,6 @@ function lfExeInsertSQL($objQuery, $csv){
 	$mode = $objPage->mode;
 	
 	// csvファイルからデータの取得
-	
-	sfprintr($csv);
 	$fp = fopen($csv, "r");
 	while (!feof($fp)) {
 		$data = fgetcsv($fp, 1000000);
@@ -555,7 +552,6 @@ function lfExeInsertSQL($objQuery, $csv){
 		sfFlush();
 	}
 	fclose($fp);
-	exit();
 	return $ret;
 }
 
