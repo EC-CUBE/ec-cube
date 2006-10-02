@@ -546,6 +546,8 @@ function lfExeInsertSQL($objQuery, $csv){
 			$pagelayout_flg = false;
 		}
 		
+		$objQuery->getlastquery();
+		
 		// タイムアウトを防ぐ
 //		sfFlush();
 	}
