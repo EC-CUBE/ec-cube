@@ -428,7 +428,7 @@ function lfRestore($bkup_name){
 		
 		// DBをクリア
 		$err = lfDeleteAll($objQuery);
-		
+		$objQuery->commit();
 		exit();
 		
 		// INSERT実行
