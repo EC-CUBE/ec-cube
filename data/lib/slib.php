@@ -2525,6 +2525,10 @@ function sfFlush($output = " ", $second = 3600, $sleep =30){
 		 echo $output;
 		// 出力をフラッシュする
 		flush();
+		
+		ob_end_flush();
+		ob_start();	
+		
 		// 時間のかかる処理
 		sleep($sleep);
 	}
