@@ -546,8 +546,6 @@ function lfExeInsertSQL($objQuery, $csv){
 			$pagelayout_flg = false;
 		}
 		
-		$objQuery->getlastquery();
-		
 		// タイムアウトを防ぐ
 //		sfFlush();
 	}
@@ -578,6 +576,8 @@ function lfDeleteAll($objQuery){
 		if ($val != "dtb_bkup") {
 			$trun_sql = "DELETE FROM $val;";
 			$ret = $objQuery->query($trun_sql);
+			
+			$objQuery->getlastquery();
 			
 			if (!$ret) return $ret;
 		}
