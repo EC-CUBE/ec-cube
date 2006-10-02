@@ -431,8 +431,6 @@ function lfRestore($bkup_name){
 		
 		// INSERT実行
 		if ($err) $err = lfExeInsertSQL($objQuery, $bkup_dir . "bkup_data.csv");
-		$objQuery->commit();
-		exit();
 
 		// 自動採番の値をセット
 		if ($err) lfSetAutoInc($objQuery, $bkup_dir . "autoinc_data.csv");
