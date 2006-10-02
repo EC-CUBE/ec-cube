@@ -488,7 +488,7 @@ function lfExeInsertSQL($objQuery, $csv){
 	$pagelayout_flg = false;
 	$mode = $objPage->mode;
 	
-	sfprintr($csv);
+	sfprintr("test --> " . $csv);
 	
 	// csvファイルからデータの取得
 	$fp = fopen($csv, "r");
