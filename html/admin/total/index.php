@@ -758,8 +758,8 @@ function lfGetOrderTerm($type, $sdate, $edate, $objPage, $graph = true) {
 			if ($where != "") {
 				$where.= " AND ";
 			}
-			$edate = date("Y/m/d",strtotime("1 day" ,strtotime($edate)));
-			$where.= " order_date < date('" . $edate ."')";
+			$edate_next = date("Y/m/d",strtotime("1 day" ,strtotime($edate)));
+			$where.= " order_date < date('" . $edate_next ."')";
 		}
 		
 		// 検索結果の取得
