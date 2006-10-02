@@ -2511,27 +2511,25 @@ function sfDelFile($dir){
 	
 }
 
-function sfFlush($output = " ", $second = 3600, $sleep = 0){
+function sfFlush($output = " ", $sleep = 0){
 	// 実行時間を制限しない
 	set_time_limit(0);
 	// 出力をバッファリングしない(==日本語自動変換もしない)
 	ob_end_clean();
+	
 	// IEのために256バイト空文字出力
 	echo str_pad('',256);
-	// 指定時間ループ
-	for ($time=time(); time()<$time+$second; ) {
-		// ブラウザをあきらめさせないためちびちび結果出力
-		// 出力はブランクだけでもいいと思う
-		 echo $output;
-		// 出力をフラッシュする
-		flush();
-		
-		ob_end_flush();
-		ob_start();	
-		
-		// 時間のかかる処理
-		sleep($sleep);
-	}
+	
+	// 出力はブランクだけでもいいと思う
+	echo $output;
+	// 出力をフラッシュする
+	flush();
+	
+	ob_end_flush();
+	ob_start();	
+	
+	// 時間のかかる処理
+	sleep($sleep);
 }
 
 /* デバッグ用 ------------------------------------------------------------------------------------------------*/

@@ -191,6 +191,9 @@ function lfCreateBkupData($bkup_name){
 				$csv_data .= $data;
 				$csv_data .= "\n";
 			}	
+			
+			// タイムアウトを防ぐ
+			sfFlush();
 		}
 	}
 
