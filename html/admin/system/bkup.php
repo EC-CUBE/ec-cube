@@ -541,7 +541,7 @@ function lfExeInsertSQL($objQuery, $csv){
 		
 		if ($pagelayout_flg) {
 			// dtb_pagelayoutの場合には最初のデータはpage_id = 0にする
-			$sql = "UPDATE dtb_pagelayout SET page_id = 0";
+			$sql = "UPDATE dtb_pagelayout SET page_id = '0'";
 			$objQuery->query($sql);
 			$pagelayout_flg = false;
 		}
