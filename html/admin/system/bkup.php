@@ -489,6 +489,8 @@ function lfExeInsertSQL($objQuery, $csv){
 	$mode = $objPage->mode;
 	
 	// csvファイルからデータの取得
+	
+	sfprintr($csv);
 	$fp = fopen($csv, "r");
 	while (!feof($fp)) {
 		$data = fgetcsv($fp, 1000000);
