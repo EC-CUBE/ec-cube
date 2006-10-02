@@ -429,6 +429,8 @@ function lfRestore($bkup_name){
 		// DBをクリア
 		$err = lfDeleteAll($objQuery);
 		
+		exit();
+		
 		// INSERT実行
 		if ($err) $err = lfExeInsertSQL($objQuery, $bkup_dir . "bkup_data.csv");
 
@@ -576,8 +578,6 @@ function lfDeleteAll($objQuery){
 		if ($val != "dtb_bkup") {
 			$trun_sql = "DELETE FROM $val;";
 			$ret = $objQuery->query($trun_sql);
-			
-			$objQuery->getlastquery();
 			
 			if (!$ret) return $ret;
 		}
