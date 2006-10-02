@@ -552,6 +552,8 @@ function lfExeInsertSQL($objQuery, $csv){
 		sfFlush();
 	}
 	fclose($fp);
+	
+	exit();
 	return $ret;
 }
 
