@@ -191,9 +191,6 @@ function lfCreateBkupData($bkup_name){
 				$csv_data .= $data;
 				$csv_data .= "\n";
 			}	
-			
-			// タイムアウトを防ぐ
-			sfFlush();
 		}
 	}
 
@@ -489,7 +486,6 @@ function lfExeInsertSQL($objQuery, $csv){
 	$mode = $objPage->mode;
 	
 	// csvファイルからデータの取得
-//	$arrCsvData = file($csv);
 	$fp = fopen($csv, "r");
 	while (!feof($fp)) {
 		$data = fgetcsv($fp, 1000000);
@@ -549,7 +545,6 @@ function lfExeInsertSQL($objQuery, $csv){
 		
 		// タイムアウトを防ぐ
 		sfFlush();
-		
 	}
 	fclose($fp);
 	return $ret;
