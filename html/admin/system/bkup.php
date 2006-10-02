@@ -191,6 +191,9 @@ function lfCreateBkupData($bkup_name){
 				$csv_data .= $data;
 				$csv_data .= "\n";
 			}	
+			
+			// タイムアウトを防ぐ
+			sfFlush();
 		}
 	}
 
@@ -542,6 +545,8 @@ function lfExeInsertSQL($objQuery, $csv){
 			$objQuery->query($sql);
 			$pagelayout_flg = false;
 		}
+		
+		$objQuery->getlastquery();
 		
 		// タイムアウトを防ぐ
 		sfFlush();
