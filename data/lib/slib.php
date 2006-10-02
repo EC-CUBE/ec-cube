@@ -2511,7 +2511,7 @@ function sfDelFile($dir){
 	
 }
 
-function sfFlush($output = " ", $second = 3600, $sleep =30){
+function sfFlush($output = " ", $second = 3600, $sleep = 0){
 	// 実行時間を制限しない
 	set_time_limit(0);
 	// 出力をバッファリングしない(==日本語自動変換もしない)
