@@ -208,7 +208,7 @@ function errCheck() {
 	}
 
 	//　お電話番号
-	if( strlen( $_POST["tel01"] ) > 0 ||  strlen( $_POST["tel03"] ) > 0 ||  strlen( $_POST["tel03"] ) > 0 ) {
+	if( strlen( $_POST["tel01"] ) > 0 ||  strlen( $_POST["tel02"] ) > 0 ||  strlen( $_POST["tel03"] ) > 0 ) {
 
 		$_POST["tel01"] = mb_convert_kana( trim($_POST["tel01"] ), "n" );
 		$_POST["tel02"] = mb_convert_kana( trim($_POST["tel02"] ), "n" );

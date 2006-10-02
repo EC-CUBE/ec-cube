@@ -64,6 +64,9 @@ function lfStartDailyTotal($term, $start, $command = false) {
 		lfBatOrderDaily($tmp_time);
 		lfBatOrderDailyHour($tmp_time);
 		lfBatOrderAge($tmp_time);
+		
+		// タイムアウトを防ぐ
+		sfFlush();
 	}
 }
 
