@@ -3,6 +3,20 @@
  *
  * http://www.lockon.co.jp/
  *}-->
+<script type="text/javascript">
+function lfnChangePort(db_type) {
+
+	type = db_type.value;
+	
+	if (type == 'pgsql') {
+		form1.db_port.value = <!--{$arrDB_PORT[0]}-->;
+	}
+	
+	if (type == 'mysql') {
+		form1.db_port.value = <!--{$arrDB_PORT[1]}-->;
+	}
+}
+</script>
 <table width="502" border="0" cellspacing="1" cellpadding="0" summary=" ">
 <form name="form1" id="form1" method="post" action="<!--{$smarty.server.PHP_SELF}-->">
 <input type="hidden" name="mode" value="<!--{$tpl_mode}-->">
@@ -23,7 +37,7 @@
 			<td bgcolor="#ffffff" width="332" class="fs12">
 			<!--{assign var=key value="db_type"}-->
 			<span class="red"><!--{$arrErr[$key]}--></span>
-			<select name="<!--{$key}-->" style="<!--{$arrErr[$key]|sfGetErrorColor}-->" onChange="lfnChangeDisabled(this)">
+			<select name="<!--{$key}-->" style="<!--{$arrErr[$key]|sfGetErrorColor}-->" onChange="lfnChangePort(this)">
 			<!--{html_options options=$arrDB_TYPE selected=$arrForm[$key].value}-->
 			</select>
 			</td>
@@ -41,7 +55,7 @@
 			<td bgcolor="#ffffff" width="332" class="fs12">
 			<!--{assign var=key value="db_port"}-->
 			<span class="red"><!--{$arrErr[$key]}--></span>
-			<input type="text" name="<!--{$key}-->" value="<!--{$arrForm[$key].value|escape}-->" maxlength="<!--{$arrForm[$key].length}-->" style="<!--{$arrErr[$key]|sfGetErrorColor}-->" size="6" class="box6" />
+			<input type="text" name="<!--{$key}-->" value="<!--{$arrForm[$key].value|escape}-->" maxlength="<!--{$arrForm[$key].length}-->" style="<!--{$arrErr[$key]|sfGetErrorColor}-->" <!--{if $arrForm.db_type.value eq 'pgsql' or $arrForm.db_type.value eq ''}-->disabled=true<!--{/if}--> size="6" class="box6" />
 			</td>
 		</tr>
 		<tr>

@@ -13,6 +13,10 @@ class LC_Page {
 			'pgsql' => 'PostgreSQL',
 			'mysql' => 'MySQL'	
 		);
+		$this->arrDB_PORT = array(
+			'pgsql' => '5432',
+			'mysql' => '3306'	
+		);
 	}
 }
 
