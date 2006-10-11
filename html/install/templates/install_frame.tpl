@@ -85,7 +85,7 @@
 <!--¢§FOOTER-->
 <table width="912" border="0" cellspacing="0" cellpadding="0" summary=" ">
 	<tr valign="top">
-		<td background="/img/common/left_bg.jpg"><img src="../img/common/_.gif" width="17" height="1" alt=""></td>
+		<td background="../img/common/left_bg.jpg"><img src="../img/common/_.gif" width="17" height="1" alt=""></td>
 		<td bgcolor="#636469">
 		<table width="878" border="0" cellspacing="0" cellpadding="0" summary=" ">
 			<tr>
@@ -104,7 +104,7 @@
 			</tr>
 		</table>
 		</td>
-		<td background="/img/common/right_bg.jpg"><img src="../img/common/_.gif" width="17" height="1" alt=""></td>
+		<td background="../img/common/right_bg.jpg"><img src="../img/common/_.gif" width="17" height="1" alt=""></td>
 	</tr>
 	<tr>
 		<td colspan="3"><img src="../img/common/fotter.jpg" width="912" height="19" alt=""></td>
