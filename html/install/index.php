@@ -405,7 +405,7 @@ function lfInitWebParam($objWebParam) {
 	if(defined('ROOT_DIR')) {
 		$install_dir = ROOT_DIR;
 	} else {
-		$install_dir = realpath(dirname( __FILE__) . "/../../") . "/";
+		$install_dir = realpath(dirname( __FILE__) . "/../") . "/";
 	}
 	
 	if(defined('SITE_URL')) {
