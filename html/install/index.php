@@ -40,12 +40,6 @@ $objDBParam = new SC_FormParam();
 $objWebParam = lfInitWebParam($objWebParam);
 $objDBParam = lfInitDBParam($objDBParam);
 
-if ($_POST['db_type'] == 'pgsql') {
-	$port = "";
-}else{
-	$port = ":".$_POST['db_port'];
-}
-
 //フォーム配列の取得
 $objWebParam->setParam($_POST);
 $objDBParam->setParam($_POST);

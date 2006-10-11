@@ -852,7 +852,7 @@ CREATE TABLE dtb_user_regist (
     update_date datetime NOT NULL 
 ) TYPE=InnoDB ;
 
-create table dtb_templates 
+CREATE TABLE dtb_templates 
 (
 	template_code		varchar(50) NOT NULL UNIQUE	,
 	template_name		text			,
@@ -860,10 +860,10 @@ create table dtb_templates
 	update_date		datetime		NOT NULL	
 ) TYPE=InnoDB ;
 
-create table dtb_table_comment
+CREATE TABLE dtb_table_comment
 (
-id	int auto_increment primary key,
-table_name	text,
-column_name	text,
-description	text
+	id	int auto_increment primary key,
+	table_name	text,
+	column_name	text,
+	description	text
 ) TYPE=InnoDB ;
