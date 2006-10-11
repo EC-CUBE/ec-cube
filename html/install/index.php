@@ -411,7 +411,9 @@ function lfInitWebParam($objWebParam) {
 	if(defined('SITE_URL')) {
 		$normal_url = SITE_URL;
 	} else {
-		$normal_url = "http://" . $_SERVER['HTTP_HOST'] . "/";
+		
+		
+		$normal_url = ereg_replace("/install/.*$", "", $_SERVER['URL_REQUEST']);
 	}
 	
 	if(defined('SSL_URL')) {
