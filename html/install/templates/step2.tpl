@@ -23,7 +23,7 @@
 			<td bgcolor="#ffffff" width="332" class="fs12">
 			<!--{assign var=key value="db_type"}-->
 			<span class="red"><!--{$arrErr[$key]}--></span>
-			<select name="<!--{$key}-->" style="<!--{$arrErr[$key]|sfGetErrorColor}-->">
+			<select name="<!--{$key}-->" style="<!--{$arrErr[$key]|sfGetErrorColor}-->" onChange="lfnChangeDisabled(this)">
 			<!--{html_options options=$arrDB_TYPE selected=$arrForm[$key].value}-->
 			</select>
 			</td>
