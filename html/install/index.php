@@ -523,9 +523,6 @@ function lfMakeConfigFile() {
 	
 	$filepath = $objWebParam->getValue('install_dir') . "/data/install.inc";
 	$domain = $objWebParam->getValue('domain');
-	if(!ereg("^\.", $domain)) {
-		$domain = "." . $domain;
-	}
 	
 	$root_dir = $objWebParam->getValue('install_dir');
 	if (!ereg("/$", $root_dir)) {
