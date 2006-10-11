@@ -55,7 +55,7 @@ function sfInitInstall() {
 	// インストール済みが定義されていない。
 	if(!defined('ECCUBE_INSTALL')) {
 		if(!ereg("^/install/", $_SERVER['PHP_SELF'])) {
-			header("Location: /install/");
+			header("Location: ./install/");
 		}	
 	} else {
 		$path = ROOT_DIR . "html/install/index.php";
