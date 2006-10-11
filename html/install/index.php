@@ -413,7 +413,7 @@ function lfInitWebParam($objWebParam) {
 	} else {
 		
 		
-		$normal_url = ereg_replace("/install/.*$", "", $_SERVER['REQUEST_URI']);
+		$normal_url = ereg_replace("install/.*$", "", $_SERVER['REQUEST_URI']);
 	}
 	
 	if(defined('SSL_URL')) {
