@@ -67,9 +67,7 @@ function sfInitInstall() {
 		$path = ROOT_DIR . "html/install.inc";
 		if(file_exists($path)) {
 			sfErrorHeader(">> /install.incはセキュリティーホールとなります。削除してください。");
-		}
-		
-		
+		}		
 	}
 }
 
