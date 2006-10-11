@@ -402,19 +402,19 @@ function lfDispComplete($objPage) {
 // WEBパラメータ情報の初期化
 function lfInitWebParam($objWebParam) {
 	
-	if(defined(ROOT_DIR)) {
+	if(defined('ROOT_DIR')) {
 		$install_dir = ROOT_DIR;
 	} else {
 		$install_dir = realpath(dirname( __FILE__) . "/../../") . "/";
 	}
 	
-	if(defined(SITE_URL)) {
+	if(defined('SITE_URL')) {
 		$normal_url = SITE_URL;
 	} else {
 		$normal_url = "http://" . $_SERVER['HTTP_HOST'] . "/";
 	}
 	
-	if(defined(SSL_URL)) {
+	if(defined('SSL_URL')) {
 		$normal_url = SSL_URL;
 	} else {
 		$secure_url = "http://" . $_SERVER['HTTP_HOST'] . "/";
