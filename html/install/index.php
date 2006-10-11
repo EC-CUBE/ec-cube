@@ -404,9 +404,23 @@ function lfDispComplete($objPage) {
 // WEBパラメータ情報の初期化
 function lfInitWebParam($objWebParam) {
 	
-	$install_dir = realpath(dirname( __FILE__) . "/../../") . "/";
-	$normal_url = "http://" . $_SERVER['HTTP_HOST'] . "/";
-	$secure_url = "http://" . $_SERVER['HTTP_HOST'] . "/";
+	if(defined(ROOT_DIR)) {
+		$install_dir = ROOT_DIR;
+	} else {
+		$install_dir = realpath(dirname( __FILE__) . "/../../") . "/";
+	}
+	
+	if(defined(SITE_URL)) {
+		$normal_url = SITE_URL;
+	} else {
+		$normal_url = "http://" . $_SERVER['HTTP_HOST'] . "/";
+	}
+	
+	if(defined(SSL_URL)) {
+		$normal_url = SSL_URL;
+	} else {
+		$secure_url = "http://" . $_SERVER['HTTP_HOST'] . "/";
+	}
 
 	$objWebParam->addParam("店名", "shop_name", MTEXT_LEN, "", array("EXIST_CHECK","MAX_LENGTH_CHECK"));
 	$objWebParam->addParam("管理者メールアドレス", "admin_mail", MTEXT_LEN, "", array("EXIST_CHECK","EMAIL_CHECK","EMAIL_CHAR_CHECK","MAX_LENGTH_CHECK"));
