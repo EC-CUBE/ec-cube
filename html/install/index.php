@@ -444,7 +444,7 @@ function lfInitDBParam($objDBParam) {
 	if(defined('DB_PORT')) {
 		$db_port = DB_PORT;
 	} else {
-		$db_port = "";
+		$db_port = "5432";
 	}
 		
 	if(defined('DB_NAME')) {
