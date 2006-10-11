@@ -499,7 +499,7 @@ function lfExecuteSQL($filepath, $db_user, $db_password, $db_server, $db_name, $
 			fclose($fp);
 		}
 
-		$dsn = $db_type."://".$db_user.":".$db_password."@".$db_server.$port."/".$db_name;
+		$dsn = $db_type."://".$db_user.":".$db_password."@".$db_server.$db_port."/".$db_name;
 		
 		$objDB = DB::connect($dsn);
 		// 接続エラー
