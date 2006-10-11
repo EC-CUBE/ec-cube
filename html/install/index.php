@@ -416,9 +416,10 @@ function lfInitWebParam($objWebParam) {
 	}
 	
 	if(defined('SSL_URL')) {
-		$normal_url = SSL_URL;
+		$secure_url = SSL_URL;
 	} else {
-		$secure_url = "http://" . $_SERVER['HTTP_HOST'] . "/";
+		$dir = ereg_replace("install/.*$", "", $_SERVER['REQUEST_URI']);
+		$secure_url = "http://" . $_SERVER['HTTP_HOST'] . $dir;
 	}
 
 	$objWebParam->addParam("Ź̾", "shop_name", MTEXT_LEN, "", array("EXIST_CHECK","MAX_LENGTH_CHECK"));
