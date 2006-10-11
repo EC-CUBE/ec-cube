@@ -576,7 +576,7 @@ function lfMakeConfigFile() {
 	"    define ('DB_PASSWORD', '" . $objDBParam->getValue('db_password') . "');\n" .
 	"    define ('DB_SERVER', '" . $objDBParam->getValue('db_server') . "');\n" .
 	"    define ('DB_NAME', '" . $objDBParam->getValue('db_name') . "');\n" .
-	"    define ('DB_PORT', '" . $port . "');\n" .
+	"    define ('DB_PORT', '" . $objDBParam->getValue('db_port') .  "');\n" .
 	"?>";
 	
 	if($fp = fopen($filepath,"w")) {

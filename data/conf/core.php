@@ -33,7 +33,7 @@ define ("DB_ERROR_MAIL_TO", "error-ml@lockon.co.jp");
 define ("DB_ERROR_MAIL_SUBJECT", "OS_TEST_ERROR");
 
 // サイト用DB
-define ("DEFAULT_DSN", DB_TYPE . "://" . DB_USER . ":" . DB_PASSWORD . "@" . DB_SERVER . DB_PORT . "/" . DB_NAME);
+define ("DEFAULT_DSN", DB_TYPE . "://" . DB_USER . ":" . DB_PASSWORD . "@" . DB_SERVER . ":" .DB_PORT . "/" . DB_NAME);
 
 // 郵便番号専用DB
 define ("ZIP_DSN", DEFAULT_DSN);
