@@ -69,11 +69,11 @@
 		</tr>
 		<tr>
 			<td bgcolor="#f2f1ec" width="150" class="fs12n">共通ドメイン</td>
-			<td bgcolor="#ffffff" width="332" class="fs12">
+			<td bgcolor="#ffffff" width="332" class="fs12">	
 			<!--{assign var=key value="domain"}-->
 			<span class="red"><!--{$arrErr[$key]}--></span>
 			<input type="text" name="<!--{$key}-->" value="<!--{$arrForm[$key].value|escape}-->" maxlength="<!--{$arrForm[$key].length}-->" style="<!--{$arrErr[$key]|sfGetErrorColor}-->" size="50" class="box50" />
-			<br><span class="fs10">※通常URLとセキュアURLでサブドメインが異なる場合に設定してください。</span>
+			<br><span>※通常URLとセキュアURLでサブドメインが異なる場合に設定してください。</span>
 			</td>
 		</tr>
 	</table>
