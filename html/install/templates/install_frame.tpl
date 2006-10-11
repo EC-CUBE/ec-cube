@@ -27,7 +27,7 @@
 	<tr valign="top">
 		<td><img src="../img/header/header_left.jpg" width="17" height="50" alt=""></td>
 		<td>
-		<table width="878" border="0" cellspacing="0" cellpadding="0" summary=" " background="/img/header/header_bg2.jpg">
+		<table width="878" border="0" cellspacing="0" cellpadding="0" summary=" " background="../img/header/header_bg2.jpg">
 			<tr valign="top">
 				<td><img src="../img/admin/header/logo.jpg" width="230" height="50" alt="EC CUBE" border="0"></td>
 				<td width="648" align="right"></td>
@@ -42,7 +42,7 @@
 <!--▼CONTENTS-->
 <table width="912" border="0" cellspacing="0" cellpadding="0" summary=" ">
 	<tr valign="top">
-		<td background="/img/common/left_bg.jpg"><img src="../img/common/left.jpg" width="17" height="443" alt=""></td>
+		<td background="../img/common/left_bg.jpg"><img src="../img/common/left.jpg" width="17" height="443" alt=""></td>
 		<td>
 		<!--★★メインコンテンツ★★-->
 		<table width="878" border="0" cellspacing="0" cellpadding="0" summary=" ">
@@ -54,7 +54,7 @@
 						<td colspan="3"><img src="../img/contents/error_top.jpg" width="562" height="14" alt=""></td>
 					</tr>
 					<tr>
-						<td background="/img/contents/main_left.jpg"><img src="../img/common/_.gif" width="14" height="1" alt=""></td>
+						<td background="../img/contents/main_left.jpg"><img src="../img/common/_.gif" width="14" height="1" alt=""></td>
 						<td bgcolor="#cccccc">
 						<!--検索条件設定テーブルここから-->
 						<table width="534" border="0" cellspacing="0" cellpadding="0" summary=" ">
@@ -66,7 +66,7 @@
 						</table>
 						<!--検索条件設定テーブルここまで-->
 						</td>
-						<td background="/img/contents/main_right.jpg"><img src="../img/common/_.gif" width="14" height="1" alt=""></td>
+						<td background="../img/contents/main_right.jpg"><img src="../img/common/_.gif" width="14" height="1" alt=""></td>
 					</tr>
 					<tr>
 						<td colspan="3"><img src="../img/contents/error_bottom.jpg" width="562" height="14" alt=""></td>
@@ -77,7 +77,7 @@
 		</table>
 		<!--★★メインコンテンツ★★-->		
 		</td>
-		<td background="/img/common/right_bg.jpg"><div align="justify"><img src="../img/common/right.jpg" width="17" height="443" alt=""></div></td>
+		<td background="../img/common/right_bg.jpg"><div align="justify"><img src="../img/common/right.jpg" width="17" height="443" alt=""></div></td>
 	</tr>
 </table>
 <!--▲CONTENTS-->
