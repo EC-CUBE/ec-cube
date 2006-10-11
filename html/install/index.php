@@ -451,6 +451,8 @@ function lfInitDBParam($objDBParam) {
 		$db_name = "eccube_db";
 	}
 	
+	print(DB_USER);
+	
 	if(defined(DB_USER)) {
 		$db_user = DB_USER;
 	} else {
