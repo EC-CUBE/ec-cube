@@ -29,7 +29,7 @@
 		<td>
 		<table width="878" border="0" cellspacing="0" cellpadding="0" summary=" " background="/img/header/header_bg2.jpg">
 			<tr valign="top">
-				<td><img src="/img/admin/header/logo.jpg" width="230" height="50" alt="EC CUBE" border="0"></td>
+				<td><img src="../../img/admin/header/logo.jpg" width="230" height="50" alt="EC CUBE" border="0"></td>
 				<td width="648" align="right"></td>
 			</tr>
 		</table>
