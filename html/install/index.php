@@ -450,9 +450,7 @@ function lfInitDBParam($objDBParam) {
 	} else {
 		$db_name = "eccube_db";
 	}
-	
-	print(DB_USER);
-	
+		
 	if(defined(DB_USER)) {
 		$db_user = DB_USER;
 	} else {
@@ -460,9 +458,9 @@ function lfInitDBParam($objDBParam) {
 	}
 	
 	if(defined(DB_PASSWORD)) {
-		$db_user = DB_PASSWORD;
+		$db_password = DB_PASSWORD;
 	} else {
-		$db_user = "";				
+		$db_password = "";				
 	}
 	
 	$objDBParam->addParam("DB§ŒºÔŒ‡", "db_type", INT_LEN, "", array("EXIST_CHECK","MAX_LENGTH_CHECK"));
