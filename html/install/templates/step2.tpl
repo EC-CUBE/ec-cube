@@ -9,11 +9,11 @@ function lfnChangePort(db_type) {
 	type = db_type.value;
 	
 	if (type == 'pgsql') {
-		form1.db_port.value = <!--{$arrDB_PORT[0]}-->;
+		form1.db_port.value = '<!--{$arrDB_PORT.0}-->';
 	}
 	
 	if (type == 'mysql') {
-		form1.db_port.value = <!--{$arrDB_PORT[1]}-->;
+		form1.db_port.value = '<!--{$arrDB_PORT.1}-->';
 	}
 }
 </script>
