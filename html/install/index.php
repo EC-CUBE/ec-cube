@@ -463,8 +463,8 @@ function lfInitDBParam($objDBParam) {
 		$db_password = "";				
 	}
 
-	print($db_password);
-	print($db_port);
+	print(DB_PASSWORD);
+	print(DB_PORT);
 			
 	$objDBParam->addParam("DBの種類", "db_type", INT_LEN, "", array("EXIST_CHECK","MAX_LENGTH_CHECK"));
 	$objDBParam->addParam("DBサーバ", "db_server", MTEXT_LEN, "", array("EXIST_CHECK","MAX_LENGTH_CHECK"), $db_server);
