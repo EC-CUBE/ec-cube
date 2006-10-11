@@ -489,7 +489,7 @@ function lfCheckDBError($objFormParam) {
 	
 	if(count($objErr->arrErr) == 0) {
 		// 接続確認
-		$dsn = $arrRet['db_type']."://".$arrRet['db_user'].":".$arrRet['db_password']."@".$arrRet['db_server'].$port."/".$arrRet['db_name'];
+		$dsn = $arrRet['db_type']."://".$arrRet['db_user'].":".$arrRet['db_password']."@".$arrRet['db_server'].":".$arrRet['db_port']."/".$arrRet['db_name'];
 		// Debugモード指定
 		$options['debug'] = 3;
 		$objDB = DB::connect($dsn, $options);
@@ -518,7 +518,7 @@ function lfExecuteSQL($filepath, $db_user, $db_password, $db_server, $db_name, $
 			fclose($fp);
 		}
 
-		$dsn = $db_type."://".$db_user.":".$db_password."@".$db_server.$db_port."/".$db_name;
+		$dsn = $db_type."://".$db_user.":".$db_password."@".$db_server.":".$db_port."/".$db_name;
 		
 		$objDB = DB::connect($dsn);
 		// 接続エラー
