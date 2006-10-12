@@ -31,7 +31,7 @@ MyFlush();
 if(!$fp) {
 	sfErrorHeader(">> " . $path . "の取得に失敗しました。");
 } else {
-	print("<img src='/img/install/main_w.jpg'><br>");
+	print("<img src='".URL_DIR."img/install/main_w.jpg'><br>");
 	MyFlush();
 	
 	// CSVの件数を数える
@@ -41,7 +41,7 @@ if(!$fp) {
 		$line++;
 	}
 	
-	print("<img src='/img/install/space_w.gif'>");
+	print("<img src='".URL_DIR."img/install/space_w.gif'>");
 	MyFlush();
 		
 	// ファイルポインタを戻す
