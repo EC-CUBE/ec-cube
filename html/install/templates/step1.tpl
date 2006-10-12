@@ -73,7 +73,7 @@
 			<!--{assign var=key value="domain"}-->
 			<span class="red"><span class="fs12n"><!--{$arrErr[$key]}--></span></span>
 			<input type="text" name="<!--{$key}-->" value="<!--{$arrForm[$key].value|escape}-->" maxlength="<!--{$arrForm[$key].length}-->" style="<!--{$arrErr[$key]|sfGetErrorColor}-->" size="50" class="box50" />
-			<br><span class="fs10">※通常URLとセキュアURLでサブドメインが異なる場合</span>
+			<br><span class="fs10">※通常URLとセキュアURLでサブドメインが異なる場合に指定します。</span>
 			</td>
 		</tr>
 	</table>
