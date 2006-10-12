@@ -272,16 +272,16 @@ function lfDispStep0($objPage) {
 			$real_path = realpath($val);
 						
 			// ディレクトリの場合
-			if(is_dir($path)) {
+			if(is_dir($val)) {
 				if($mode == "777") {
-					$mess.= ">> ○：$real_path($mode) <br>問題ありません。<br>";					
+					$mess.= ">> ○：$real_path($mode) <br>";					
 				} else {
 					$mess.= ">> ×：$real_path($mode) <br>ユーザ書込み権限(777)を付与して下さい。<br>";
 					$err_file = true;										
 				}
 			} else {
 				if($mode == "666") {
-					$mess.= ">> ○：$real_path($mode) <br>問題ありません。<br>";					
+					$mess.= ">> ○：$real_path($mode) <br>";					
 				} else {
 					$mess.= ">> ×：$real_path($mode) <br>ユーザ書込み権限(666)を付与して下さい。<br>";
 					$err_file = true;							
