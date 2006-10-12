@@ -253,25 +253,25 @@ function lfChangeTemplate(){
 	switch($objPage->tpl_subno_template) {
 		// TOP
 		case $objPage->arrSubnavi['title'][1]:
-			$tpl_element = "TopTemplate";			// イメージの配列要素名格納用
+			$tpl_element = "img/TopTemplate";			// イメージの配列要素名格納用
 			$tpl_name = "top.tpl";
 			break;
 			
 		// 商品一覧
 		case $objPage->arrSubnavi['title'][2]:
-			$tpl_element = "ProdTemplate";			// イメージの配列要素名格納用
+			$tpl_element = "img/ProdTemplate";			// イメージの配列要素名格納用
 			$tpl_name = "list.tpl";
 			break;
 			
 		// 商品詳細
 		case $objPage->arrSubnavi['title'][3]:
-			$tpl_element = "DetailTemplate";			// イメージの配列要素名格納用
+			$tpl_element = "img/DetailTemplate";			// イメージの配列要素名格納用
 			$tpl_name = "detail.tpl";
 			break;
 			
 		// MYページ
 		case $objPage->arrSubnavi['title'][4]:
-			$tpl_element = "MypageTemplate";			//イメージの配列要素名格納用
+			$tpl_element = "img/MypageTemplate";			//イメージの配列要素名格納用
 			$tpl_name = "mypage.tpl";
 			break;
 
