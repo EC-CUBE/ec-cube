@@ -19,10 +19,10 @@ sfInitInstall();
 sfLoadUpdateModule();
 
 /* テーブルの存在チェック */
-function sfTabaleExists($table_name) {
+function sfTabaleExists($table_name, $db_type=DB_TYPE) {
 	$objQuery = new SC_Query();	
 	// postgresqlとmysqlとで処理を分ける
-	if (DB_TYPE == "pgsql") {
+	if ($db_type == "pgsql") {
 		$sql = "SELECT
 					relname
 				FROM
@@ -38,7 +38,7 @@ function sfTabaleExists($table_name) {
 		} else {
 			$flg = false;
 		}	
-	}else if (DB_TYPE == "mysql") {	
+	}else if ($db_type == "mysql") {	
 		$sql = "SHOW TABLE STATUS LIKE ?";
 		$arrRet = $objQuery->getAll($sql, array($table_name));
 		if(count($arrRet) > 0) {
