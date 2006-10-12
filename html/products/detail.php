@@ -122,7 +122,7 @@ case 'cart':
 		}
 
 		$objCartSess->addProduct(array($_POST['product_id'], $classcategory_id1, $classcategory_id2), $objFormParam->getValue('quantity'));
-		header("Location: /cart/index.php");
+		header("Location: " . URL_CART_TOP);
 
 		exit;
 	}

@@ -281,11 +281,11 @@ define ("SEPA_CATNAVI", " > ");	// カテゴリ区切り文字
 define ("SEPA_CATLIST", " | ");	// カテゴリ区切り文字
 
 /* URL */
+define ("URL_SHOP_TOP", URL_DIR . "shopping/index.php");			// 会員情報入力
 define ("URL_SITE_TOP", URL_DIR . "index.php");					// サイトトップ
 define ("URL_CART_TOP", URL_DIR . "cart/index.php");				// カートトップ
 define ("URL_SHOP_CONFIRM", URL_DIR . "shopping/confirm.php");	// 購入確認ページ
 define ("URL_SHOP_PAYMENT", URL_DIR . "shopping/payment.php");	// お支払い方法選択ページ
-define ("URL_SHOP_TOP", URL_DIR . "shopping/index.php");			// 会員情報入力
 define ("URL_SHOP_COMPLETE", URL_DIR . "shopping/complete.php");	// 購入完了画面
 define ("URL_SHOP_CREDIT", URL_DIR . "shopping/card.php");		// カード決済画面
 define ("URL_SHOP_LOAN", URL_DIR . "shopping/loan.php");			// ローン決済画面
