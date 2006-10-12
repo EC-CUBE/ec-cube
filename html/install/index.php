@@ -396,7 +396,13 @@ function lfDispComplete($objPage) {
 	$objPage->arrHidden['db_skip'] = $_POST['db_skip'];
 	$objPage->tpl_mainpage = 'complete.tpl';
 	$objPage->tpl_mode = 'complete';
-	$objPage->tpl_sslurl = $objWebParam->getValue('secure_url');	
+	
+	$secure_url = $objWebParam->getValue('secure_url');
+	// 語尾に'/'をつける
+	if (!ereg("/$", $secure_url)) {
+		$secure_url = $secure_url . "/";
+	}
+	$objPage->tpl_sslurl = $secure_url;		
 	return $objPage;
 }
 
