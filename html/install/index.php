@@ -609,7 +609,8 @@ function lfMakeConfigFile() {
 	$config_data = 
 	"<?php\n".
 	"    define ('ECCUBE_INSTALL', 'ON');\n" .
-	"    define ('ROOT_DIR', '" . $root_dir . "');\n" . 
+	"    define ('ROOT_DIR', '" . $root_dir . "');\n" .
+	"    define ('HTML_PATH', '" . $root_dir . "');\n" .	 
 	"    define ('SITE_URL', '" . $normal_url . "');\n" .
 	"    define ('SSL_URL', '" . $secure_url . "');\n" .
 	"    define ('URL_DIR', '" . $url_dir . "');\n" .	
