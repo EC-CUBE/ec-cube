@@ -274,14 +274,14 @@ function lfDispStep0($objPage) {
 			// ディレクトリの場合
 			if(is_dir($val)) {
 				if($mode == "777") {
-					$mess.= ">> ○：$real_path($mode) <br>ファイル権限は正常です。<br>";					
+					$mess.= ">> ○：$real_path($mode) <br>アクセス権限は正常です。<br>";					
 				} else {
 					$mess.= ">> ×：$real_path($mode) <br>ユーザ書込み権限(777)を付与して下さい。<br>";
 					$err_file = true;										
 				}
 			} else {
 				if($mode == "666") {
-					$mess.= ">> ○：$real_path($mode) ファイル権限は正常です。<br>";					
+					$mess.= ">> ○：$real_path($mode) <br>アクセス権限は正常です。<br>";					
 				} else {
 					$mess.= ">> ×：$real_path($mode) <br>ユーザ書込み権限(666)を付与して下さい。<br>";
 					$err_file = true;							
