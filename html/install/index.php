@@ -489,6 +489,11 @@ function lfCheckWebError($objFormParam) {
 	$arrRet =  $objFormParam->getHashArray();
 	$objErr = new SC_CheckError($arrRet);
 	$objErr->arrErr = $objFormParam->checkError();
+	
+	// ディレクトリの比較
+	$normal_dir = ereg_replace("http://.*", "", $arrRet['normal_url']);
+	$objErr->arrErr['normal_dir'] = $normal_dir;
+	
 	return $objErr->arrErr;
 }
 
