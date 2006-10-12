@@ -54,7 +54,7 @@ function lfnChangePort(db_type) {
 			<td bgcolor="#f2f1ec" width="150" class="fs12n">ポート</td>
 			<td bgcolor="#ffffff" width="332">
 			<!--{assign var=key value="db_port"}-->
-			<span class="red"><!--{$arrErr[$key]}--></span>
+			<span class="red"><span class="fs12n"><!--{$arrErr[$key]}--></span></span>
 			<input type="text" name="<!--{$key}-->" value="<!--{$arrForm[$key].value|escape}-->" maxlength="<!--{$arrForm[$key].length}-->" style="<!--{$arrErr[$key]|sfGetErrorColor}-->" size="6" class="box6" />
 			<br><span class="fs10">※空欄の場合はデフォルトポートを使用します。</span>
 			</td>
