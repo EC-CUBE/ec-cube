@@ -53,7 +53,7 @@
 							</tr>
 							<!--{if $arrBlocData.tpl_path != '' and $preview == on}-->
 							<tr class="fs12n">
-								<td bgcolor="#eeeeee" align="center"><strong>プレビュー</strong></td>
+								<td bgcolor="#eeeeee" align="center"><strong>▼プレビュー▼</strong></td>
 							</tr>
 							<tr class="fs12n">
 								<td bgcolor="#ffffff" align="center">
