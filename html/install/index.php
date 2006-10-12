@@ -495,7 +495,7 @@ function lfCheckWebError($objFormParam) {
 	
 	print($normal_dir);
 	
-	$objErr->arrErr['normal_dir'] = $normal_dir;
+	$objErr->arrErr['normal_url'] = $normal_dir;
 	
 	return $objErr->arrErr;
 }
