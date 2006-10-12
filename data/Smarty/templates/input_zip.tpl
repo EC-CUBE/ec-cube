@@ -28,7 +28,7 @@
 <!--¢§CONTENTS-->
 <table width="500" border="0" cellspacing="0" cellpadding="0" summary=" ">
 	<tr><td height="15"></td></tr>
-	<tr><td bgcolor="#ffa85c"><img src="/misc/_.gif" width="1" height="5" alt=""></td></tr>
+	<tr><td bgcolor="#ffa85c"><img src="<!--{$smarty.const.URL_DIR}-->misc/_.gif" width="1" height="5" alt=""></td></tr>
 	<tr>
 		<td bgcolor="#ffffff" align="center">
 		<!--¢§MAIN ONTENTS-->
@@ -63,7 +63,7 @@
 		<!--¢¥MAIN ONTENTS-->
 		</td>
 	</tr>
-	<tr><td bgcolor="#ffa85c"><img src="/misc/_.gif" width="1" height="5" alt=""></td></tr>
+	<tr><td bgcolor="#ffa85c"><img src="<!--{$smarty.const.URL_DIR}-->misc/_.gif" width="1" height="5" alt=""></td></tr>
 </table>
 <!--¢¥CONTENTS-->
 </div>

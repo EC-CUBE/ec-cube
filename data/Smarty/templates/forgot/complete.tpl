@@ -28,7 +28,7 @@
 <table width="550" border="0" cellspacing="0" cellpadding="0" summary=" ">
 	<form name="form1" id="form1" method="post" action="./confirm.php">
 	<tr><td height="15"></td></tr>
-	<tr><td bgcolor="#ffa85c"><img src="/misc/_.gif" width="1" height="5" alt=""></td></tr>
+	<tr><td bgcolor="#ffa85c"><img src="<!--{$smarty.const.URL_DIR}-->misc/_.gif" width="1" height="5" alt=""></td></tr>
 	<tr>
 		<td align="center" bgcolor="#ffffff">
 		<table width="500" border="0" cellspacing="0" cellpadding="0" summary=" ">
@@ -62,7 +62,7 @@
 		</td>
 	</tr>
 
-	<tr><td bgcolor="#ffa85c"><img src="/misc/_.gif" width="1" height="5" alt=""></td></tr>
+	<tr><td bgcolor="#ffa85c"><img src="<!--{$smarty.const.URL_DIR}-->misc/_.gif" width="1" height="5" alt=""></td></tr>
 	<tr><td height="20"></td></tr>
 </form>	
 </table>
