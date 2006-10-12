@@ -185,10 +185,10 @@ define ("COMPILE_FTP_DIR", ROOT_DIR . "../data/Smarty/templates_c/user_data/");	
 
 define ("IMAGE_TEMP_DIR", ROOT_DIR . "upload/temp_image/");				// 画像一時保存
 define ("IMAGE_SAVE_DIR", ROOT_DIR . "upload/save_image/");				// 画像保存先
-define ("IMAGE_TEMP_URL", "/upload/temp_image/");								// 画像一時保存URL
-define ("IMAGE_SAVE_URL", "/upload/save_image/");								// 画像保存先URL
+define ("IMAGE_TEMP_URL", URL_DIR . "upload/temp_image/");								// 画像一時保存URL
+define ("IMAGE_SAVE_URL", URL_DIR . "upload/save_image/");								// 画像保存先URL
 define ("CSV_TEMP_DIR", ROOT_DIR. "../upload/csv/");							// エンコードCSVの一時保存先
-define ("NO_IMAGE_URL", "/misc/blank.gif");										// 画像がない場合に表示
+define ("NO_IMAGE_URL", URL_DIR . "misc/blank.gif");										// 画像がない場合に表示
 
 /* URLパス */
 define ("URL_SYSTEM_TOP", "/admin/system/index.php");		// システム管理トップ

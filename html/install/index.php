@@ -600,6 +600,9 @@ function lfMakeConfigFile() {
 	if (!ereg("/$", $secure_url)) {
 		$secure_url = $secure_url . "/";
 	}
+	
+	// ディレクトリの取得
+	$url_dir = ereg_replace("^https?://[a-zA-Z0-9_~=&\?\.\-]+", "", $normal_url);
 			
 	$filepath = $root_dir . "../data/install.inc";
 	
@@ -609,6 +612,7 @@ function lfMakeConfigFile() {
 	"    define ('ROOT_DIR', '" . $root_dir . "');\n" . 
 	"    define ('SITE_URL', '" . $normal_url . "');\n" .
 	"    define ('SSL_URL', '" . $secure_url . "');\n" .
+	"    define ('URL_DIR', '" . $url_dir . "');\n" .	
 	"    define ('DOMAIN_NAME', '" . $objWebParam->getValue('domain') . "');\n" .
 	"    define ('DB_TYPE', '" . $objDBParam->getValue('db_type') . "');\n" .
 	"    define ('DB_USER', '" . $objDBParam->getValue('db_user') . "');\n" . 
