@@ -495,8 +495,8 @@ function lfCheckWebError($objFormParam) {
 	$secure_dir = ereg_replace("^https?://[a-zA-Z0-9_~=&\?\.\-]+", "", $arrRet['secure_url']);
 	
 	if($normal_dir != $secure_dir) {
-		$objErr->arrErr['normal_url'] = "URLに異なるディレクトリ名は指定できません。";
-		$objErr->arrErr['secure_url'] = "URLに異なるディレクトリ名は指定できません。";		
+		$objErr->arrErr['normal_url'] = "URLに異なる階層を指定することはできません。";
+		$objErr->arrErr['secure_url'] = "URLに異なる階層を指定することはできません。";		
 	}
 	
 	return $objErr->arrErr;
