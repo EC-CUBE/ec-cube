@@ -3,10 +3,11 @@
  *
  * http://www.lockon.co.jp/
  */
+<style type="text/css">
 @charset "euc-jp";
 
 body {
-	background: #fff url(/img/common/bg.jpg);
+	background: #fff url(<!--{$smarty.const.URL_DIR}-->img/common/bg.jpg);
 	background-repeat: repeat-x;
 	font-family:"£Í£Ó £Ð¥´¥·¥Ã¥¯","Hiragino Maru Gothic Pro","¥Ò¥é¥®¥Î´Ý¥´ Pro W4",Osaka,sans-serif;
 }
@@ -91,12 +92,12 @@ a:hover { color: #f9a406; text-decoration: underline; }
 }
 
 .mainbg {
-	background: #fff url(/img/contents/main_bg.jpg);
+	background: #fff url(<!--{$smarty.const.URL_DIR}-->img/contents/main_bg.jpg);
 	background-repeat: repeat-x;
 }
 
 .infobg {
-	background: #fff url(/img/contents/home_bg.jpg);
+	background: #fff url(<!--{$smarty.const.URL_DIR}-->img/contents/home_bg.jpg);
 	background-repeat: no-repeat;
 	background-color: #e3e3e3;
 }
@@ -108,7 +109,7 @@ a:hover { color: #f9a406; text-decoration: underline; }
 }
 
 .navi a{
-	background: url(/img/contents/navi_bar.gif);
+	background: url(<!--{$smarty.const.URL_DIR}-->img/contents/navi_bar.gif);
 	background-repeat: repeat-y;
 	background-color: #636469;
 	width:140px;
@@ -135,7 +136,7 @@ a:hover { color: #f9a406; text-decoration: underline; }
 }
 
 .navi-on a{
-	background: url(/img/contents/navi_bar.gif);
+	background: url(<!--{$smarty.const.URL_DIR}-->img/contents/navi_bar.gif);
 	background-repeat: repeat-y;
 	background-color: #a5a5a5;
 	width:140px;
@@ -207,31 +208,31 @@ a:hover { color: #f9a406; text-decoration: underline; }
 
 /*icon*/
 .icon_edit{
-	background: url(/img/contents/icon_edit.jpg);
+	background: url(<!--{$smarty.const.URL_DIR}-->img/contents/icon_edit.jpg);
 	background-repeat: no-repeat;
 	padding: 0 0 0 15px;
 }
 
 .icon_mail {
-	background: url(/img/contents/icon_mail.jpg);
+	background: url(<!--{$smarty.const.URL_DIR}-->img/contents/icon_mail.jpg);
 	background-repeat: no-repeat;
 	padding: 0 0 0 15px;
 }
 
 .icon_delete {
-	background: url(/img/contents/icon_delete.jpg);
+	background: url(<!--{$smarty.const.URL_DIR}-->img/contents/icon_delete.jpg);
 	background-repeat: no-repeat;
 	padding: 0 0 0 15px;
 }
 
 .icon_class {
-	background: url(/img/contents/icon_class.jpg);
+	background: url(<!--{$smarty.const.URL_DIR}-->img/contents/icon_class.jpg);
 	background-repeat: no-repeat;
 	padding: 0 0 0 15px;
 }
 
 .icon_confirm {
-	background: url(/img/contents/icon_confirm.jpg);
+	background: url(<!--{$smarty.const.URL_DIR}-->img/contents/icon_confirm.jpg);
 	background-repeat: no-repeat;
 	padding: 0 0 0 15px;
 }
@@ -240,7 +241,7 @@ a:hover { color: #f9a406; text-decoration: underline; }
 /*send-page*/
 
 .number a{
-	background: url(/img/contents/number_bg.jpg);
+	background: url(<!--{$smarty.const.URL_DIR}-->img/contents/number_bg.jpg);
 	background-repeat: repeat-x;
 	background-color: #505468;
 	padding-top: 3px;
@@ -261,7 +262,7 @@ a:hover { color: #f9a406; text-decoration: underline; }
 }
 
 .number a:hover{
-	background: url(/img/contents/number_bg_on.jpg);
+	background: url(<!--{$smarty.const.URL_DIR}-->img/contents/number_bg_on.jpg);
 	background-repeat: repeat-x;
 	background-color: #f7c600;
 	padding-top: 3px;
@@ -280,7 +281,7 @@ a:hover { color: #f9a406; text-decoration: underline; }
 	padding-bottom: 5px;
 	padding-left: 8px;
 	padding-right: 8px;
-	background: url(/img/contents/number_bg_on.jpg);
+	background: url(<!--{$smarty.const.URL_DIR}-->img/contents/number_bg_on.jpg);
 	background-repeat: repeat-x;
 	background-color: #f7c600;
 	color:#ffffff;
@@ -297,7 +298,7 @@ a:hover { color: #f9a406; text-decoration: underline; }
 }
 
 .number-on a:hover{
-	background: url(/img/contents/number_bg_on.jpg);
+	background: url(<!--{$smarty.const.URL_DIR}-->img/contents/number_bg_on.jpg);
 	background-repeat: repeat-x;
 	background-color: #f7c600;
 	padding-top: 3px;
@@ -315,3 +316,4 @@ a:hover { color: #f9a406; text-decoration: underline; }
 img {
 	border: 0;
 }
+</style>
