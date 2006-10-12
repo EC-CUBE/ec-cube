@@ -44,7 +44,7 @@
 	<td bgcolor="#cccccc">
 	<table width="500" border="0" cellspacing="1" cellpadding="8" summary=" ">		
 		<tr>
-			<td bgcolor="#f2f1ec" width="150" class="fs12n">HTMLパス</td>
+			<td bgcolor="#f2f1ec" width="150" class="fs12n">HTMLパス<span class="red">※</span></td>
 			<td bgcolor="#ffffff" width="332" class="fs12">
 			<!--{assign var=key value="install_dir"}-->
 			<span class="red"><!--{$arrErr[$key]}--></span>
