@@ -623,7 +623,7 @@ function lfMakeConfigFile() {
 	"    define ('DB_SERVER', '" . $objDBParam->getValue('db_server') . "');\n" .
 	"    define ('DB_NAME', '" . $objDBParam->getValue('db_name') . "');\n" .
 	"    define ('DB_PORT', '" . $objDBParam->getValue('db_port') .  "');\n" .
-	"    define('DATA_PATH', ".$data_path.");\n" .
+	"    define('DATA_PATH', '".$data_path."');\n" .
 	"?>";
 	
 	if($fp = fopen($filepath,"w")) {

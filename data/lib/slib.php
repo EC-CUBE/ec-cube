@@ -84,7 +84,7 @@ function sfLoadUpdateModule() {
 		$arrRet = $objConn->getAll("SELECT extern_php FROM dtb_update WHERE main_php = ? OR main_php = '*'",array($_SERVER['PHP_SELF']));
 		foreach($arrRet as $array) {
 			if($array['extern_php'] != "") {
-				$path = ROOT_DIR . $array['extern_php'];
+				$path = DATA_PATH . $array['extern_php'];
 				if(file_exists($path)) {
 					require_once($path);
 				}

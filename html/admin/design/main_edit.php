@@ -361,7 +361,7 @@ function lfCreatePHPFile($path){
 	}
 	
 	// require.phpの場所を書き換える
-	$php_data = str_replace("###require###", ROOT_DIR . "html/require.php", $php_data);
+	$php_data = str_replace("###require###", HTML_PATH . "require.php", $php_data);
 	
 	// phpファイルの作成
 	$fp = fopen($path,"w");
