@@ -24,7 +24,7 @@
 		<!--▼MAIN ONTENTS-->
 		<table width="100%" border="0" cellspacing="0" cellpadding="0" summary=" ">
 			<tr>
-				<td><img src="/img/mypage/title.jpg" width="700" height="40" alt="MYページ"></td>
+				<td><img src="<!--{$smarty.const.URL_DIR}-->img/mypage/title.jpg" width="700" height="40" alt="MYページ"></td>
 			</tr>
 			<tr><td height="15"></td></tr>
 		</table>
@@ -44,7 +44,7 @@
 				<table width="515" border="0" cellspacing="0" cellpadding="0" summary=" ">
 					<tr>
 						<!--{if $tpl_linemax < $smarty.const.DELIV_ADDR_MAX}-->
-						<td><!--★タイトル--><img src="/img/mypage/subtitle03.gif" width="515" height="32" alt="お届け先追加・変更"></td>
+						<td><!--★タイトル--><img src="<!--{$smarty.const.URL_DIR}-->img/mypage/subtitle03.gif" width="515" height="32" alt="お届け先追加・変更"></td>
 						<!--{/if}-->
 					</tr>
 					<tr><td height="15"></td></tr>
@@ -52,13 +52,13 @@
 						<td align="center" bgcolor="#fff5e8">
 						<table width="495" border="0" cellspacing="0" cellpadding="0" summary=" ">
 							<tr>
-								<td height="10"><img src="/img/common/_.gif" width="305" height="1" alt=""></td>
-								<td><img src="/img/common/_.gif" width="190" height="1" alt=""></td>
+								<td height="10"><img src="<!--{$smarty.const.URL_DIR}-->img/common/_.gif" width="305" height="1" alt=""></td>
+								<td><img src="<!--{$smarty.const.URL_DIR}-->img/common/_.gif" width="190" height="1" alt=""></td>
 							</tr>
 							<tr>
 								<td><span class="fs12">登録住所以外へのご住所へ送付される場合等にご利用いただくことができます。</span><br>
 								<span class="fs10">※最大<!--{$smarty.const.DELIV_ADDR_MAX}-->件まで登録できます。</span></td>
-								<td align="right"><!--{if $tpl_linemax < 20}--><a href="/mypage/delivery_addr.php" onclick="opWin('/mypage/delivery_addr.php','delivadd','600','640'); return false;" onmouseover="chgImg('/img/common/newadress_on.gif','newadress');" onmouseout="chgImg('/img/common/newadress.gif','newadress');" target="_blank"><img src="/img/common/newadress.gif" width="160" height="22" alt="新しいお届け先を追加" border="0" name="newadress"></a><!--{/if}--></td>
+								<td align="right"><!--{if $tpl_linemax < 20}--><a href="/mypage/delivery_addr.php" onclick="opWin('/mypage/delivery_addr.php','delivadd','600','640'); return false;" onmouseover="chgImg('<!--{$smarty.const.URL_DIR}-->img/common/newadress_on.gif','newadress');" onmouseout="chgImg('<!--{$smarty.const.URL_DIR}-->img/common/newadress.gif','newadress');" target="_blank"><img src="<!--{$smarty.const.URL_DIR}-->img/common/newadress.gif" width="160" height="22" alt="新しいお届け先を追加" border="0" name="newadress"></a><!--{/if}--></td>
 							</tr>
 							<tr><td height="10"></td></tr>
 						</table>

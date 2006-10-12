@@ -12,7 +12,7 @@
 		<!--▼MAIN ONTENTS-->
 		<table width="100%" border="0" cellspacing="0" cellpadding="0" summary=" ">
 			<tr>
-				<td><img src="/img/mypage/title.jpg" width="700" height="40" alt="MYページ"></td>
+				<td><img src="<!--{$smarty.const.URL_DIR}-->img/mypage/title.jpg" width="700" height="40" alt="MYページ"></td>
 			</tr>
 			<tr><td height="15"></td></tr>
 		</table>
@@ -26,7 +26,7 @@
 				<td align="right">
 				<table width="515" border="0" cellspacing="0" cellpadding="0" summary=" ">
 					<tr>
-						<td><!--★タイトル--><img src="/img/mypage/subtitle04.gif" width="515" height="32" alt="退会手続き"></td>
+						<td><!--★タイトル--><img src="<!--{$smarty.const.URL_DIR}-->img/mypage/subtitle04.gif" width="515" height="32" alt="退会手続き"></td>
 					</tr>
 					<tr><td height="15"></td></tr>
 					<tr>
@@ -44,8 +44,8 @@
 									<tr><td height="55"></td></tr>
 									<tr>
 										<td align="center">
-											<a href="./refusal.php" onmouseover="chgImg('/img/mypage/b_no_on.gif','refusal_no');" onmouseout="chgImg('/img/mypage/b_no.gif','refusal_no');"><img src="/img/mypage/b_no.gif" width="180" height="30" alt="いいえ、退会しません" name="refusal_no" id="refusal_no" /></a>　
-											<input type="image" onmouseover="chgImgImageSubmit('/img/mypage/b_yes_on.gif',this);" onmouseout="chgImgImageSubmit('/img/mypage/b_yes.gif',this);" src="/img/mypage/b_yes.gif" width="180" height="30" alt="はい、はい、退会します" name="refusal_yes" id="refusal_yes" />
+											<a href="./refusal.php" onmouseover="chgImg('<!--{$smarty.const.URL_DIR}-->img/mypage/b_no_on.gif','refusal_no');" onmouseout="chgImg('<!--{$smarty.const.URL_DIR}-->img/mypage/b_no.gif','refusal_no');"><img src="<!--{$smarty.const.URL_DIR}-->img/mypage/b_no.gif" width="180" height="30" alt="いいえ、退会しません" name="refusal_no" id="refusal_no" /></a>　
+											<input type="image" onmouseover="chgImgImageSubmit('<!--{$smarty.const.URL_DIR}-->img/mypage/b_yes_on.gif',this);" onmouseout="chgImgImageSubmit('<!--{$smarty.const.URL_DIR}-->img/mypage/b_yes.gif',this);" src="<!--{$smarty.const.URL_DIR}-->img/mypage/b_yes.gif" width="180" height="30" alt="はい、はい、退会します" name="refusal_yes" id="refusal_yes" />
 										</td>
 									</tr>
 									<tr><td height="10"></td></tr>

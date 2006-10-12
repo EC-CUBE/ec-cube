@@ -50,9 +50,9 @@ function lnSetSelect(name1, name2, id, val) {
 				<td id="right">
 				<!--タイトルここから-->
 				<table width="" border="0" cellspacing="0" cellpadding="0" summary=" ">
-					<tr><td colspan="3"><img src="../img/products/title_top.gif" width="580" height="8" alt=""></td></tr>
+					<tr><td colspan="3"><img src="<!--{$smarty.const.URL_DIR}-->img/products/title_top.gif" width="580" height="8" alt=""></td></tr>
 					<tr bgcolor="#ffebca">
-						<td><img src="../img/products/title_icon.gif" width="29" height="24" alt=""></td>
+						<td><img src="<!--{$smarty.const.URL_DIR}-->img/products/title_icon.gif" width="29" height="24" alt=""></td>
 						<td>
 						<table width="546" border="0" cellspacing="0" cellpadding="0" summary=" ">
 							<tr valign="top">
@@ -60,9 +60,9 @@ function lnSetSelect(name1, name2, id, val) {
 							</tr>
 						</table>
 						</td>
-						<td><img src="../img/products/title_left.gif" width="5" height="24" alt=""></td>
+						<td><img src="<!--{$smarty.const.URL_DIR}-->img/products/title_left.gif" width="5" height="24" alt=""></td>
 					</tr>
-					<tr><td colspan="3"><img src="../img/products/title_under.gif" width="580" height="8" alt=""></td></tr>
+					<tr><td colspan="3"><img src="<!--{$smarty.const.URL_DIR}-->img/products/title_under.gif" width="580" height="8" alt=""></td></tr>
 					<tr><td height="10"></td></tr>
 				</table>
 				<!--タイトルここまで-->
@@ -70,14 +70,14 @@ function lnSetSelect(name1, name2, id, val) {
 				<!--検索条件ここから-->
 				<!--{if $tpl_subtitle == "検索結果"}-->
 				<table width="" border="0" cellspacing="0" cellpadding="0" summary=" ">
-					<tr><td><img src="/img/products/flame_top.gif" width="580" height="8" alt=""></td></tr>
+					<tr><td><img src="<!--{$smarty.const.URL_DIR}-->img/products/flame_top.gif" width="580" height="8" alt=""></td></tr>
 					<tr>
 						<td align="center" bgcolor="#f3f3f3">
 						<table width="" border="0" cellspacing="0" cellpadding="0" summary=" ">
 							<tr bgcolor="#9e9e9e">
-								<td rowspan="3"><img src="/img/common/_.gif" width="1" height="10" alt=""></td>
-								<td bgcolor="#9e9e9e"><img src="/img/common/_.gif" width="558" height="1" alt=""></td>
-								<td rowspan="3"><img src="/img/common/_.gif" width="1" height="10" alt=""></td>
+								<td rowspan="3"><img src="<!--{$smarty.const.URL_DIR}-->img/common/_.gif" width="1" height="10" alt=""></td>
+								<td bgcolor="#9e9e9e"><img src="<!--{$smarty.const.URL_DIR}-->img/common/_.gif" width="558" height="1" alt=""></td>
+								<td rowspan="3"><img src="<!--{$smarty.const.URL_DIR}-->img/common/_.gif" width="1" height="10" alt=""></td>
 							</tr>
 							<tr>
 								<td align="center" bgcolor="#ffffff">
@@ -91,11 +91,11 @@ function lnSetSelect(name1, name2, id, val) {
 								</table>
 								</td>
 							</tr>
-							<tr><td bgcolor="#9e9e9e"><img src="/img/common/_.gif" width="558" height="1" alt=""></td></tr>
+							<tr><td bgcolor="#9e9e9e"><img src="<!--{$smarty.const.URL_DIR}-->img/common/_.gif" width="558" height="1" alt=""></td></tr>
 						</table>
 						</td>
 					</tr>
-					<tr><td><img src="/img/products/flame_top.gif" width="580" height="8" alt=""></td></tr>
+					<tr><td><img src="<!--{$smarty.const.URL_DIR}-->img/products/flame_top.gif" width="580" height="8" alt=""></td></tr>
 					<tr><td height="15"></td></tr>
 				</table>
 				<!--{/if}-->
@@ -104,7 +104,7 @@ function lnSetSelect(name1, name2, id, val) {
 				<!--件数ここから-->
 				<!--{if $tpl_linemax > 0}-->
 				<table width="" border="0" cellspacing="0" cellpadding="0" summary=" ">
-					<tr><td><img src="../img/products/flame_top.gif" width="580" height="8" alt=""></td></tr>
+					<tr><td><img src="<!--{$smarty.const.URL_DIR}-->img/products/flame_top.gif" width="580" height="8" alt=""></td></tr>
 					<tr>
 						<td align="center" bgcolor="#f3f3f3">
 						<table width="560" border="0" cellspacing="0" cellpadding="0" summary=" ">
@@ -115,7 +115,7 @@ function lnSetSelect(name1, name2, id, val) {
 						</table>
 						</td>
 					</tr>
-					<tr><td><img src="../img/products/flame_top.gif" width="580" height="8" alt=""></td></tr>
+					<tr><td><img src="<!--{$smarty.const.URL_DIR}-->img/products/flame_top.gif" width="580" height="8" alt=""></td></tr>
 					<tr><td height="15"></td></tr>
 				</table>
 				<!--件数ここまで-->
@@ -161,7 +161,7 @@ function lnSetSelect(name1, name2, id, val) {
 								</table>
 								</td>
 							</tr>
-							<tr><td colspan="2" bgcolor="#ebebd6"><img src="../img/common/_.gif" width="1" height="2" alt=""></td></tr>
+							<tr><td colspan="2" bgcolor="#ebebd6"><img src="<!--{$smarty.const.URL_DIR}-->img/common/_.gif" width="1" height="2" alt=""></td></tr>
 							<tr><td height="8"></td></tr>
 							<tr>
 								<td colspan="2" class="fs12"><!--★コメント★--><!--{$arrProducts[cnt].main_list_comment|escape|nl2br}--></td>
@@ -178,7 +178,7 @@ function lnSetSelect(name1, name2, id, val) {
 									円</span></span>
 								</td>
 								<!--{assign var=name value="detail`$smarty.section.cnt.iteration`"}-->
-								<td align="right"><a href="<!--{$smarty.const.DETAIL_P_HTML}--><!--{$arrProducts[cnt].product_id}-->" onmouseover="chgImg('/img/products/b_detail_on.gif','<!--{$name}-->');" onmouseout="chgImg('/img/products/b_detail.gif','<!--{$name}-->');"><img src="/img/products/b_detail.gif" width="115" height="25" alt="詳しくはこちら" name="<!--{$name}-->" id="<!--{$name}-->" /></a></td>
+								<td align="right"><a href="<!--{$smarty.const.DETAIL_P_HTML}--><!--{$arrProducts[cnt].product_id}-->" onmouseover="chgImg('<!--{$smarty.const.URL_DIR}-->img/products/b_detail_on.gif','<!--{$name}-->');" onmouseout="chgImg('<!--{$smarty.const.URL_DIR}-->img/products/b_detail.gif','<!--{$name}-->');"><img src="<!--{$smarty.const.URL_DIR}-->img/products/b_detail.gif" width="115" height="25" alt="詳しくはこちら" name="<!--{$name}-->" id="<!--{$name}-->" /></a></td>
 							</tr>
 							<!--{if $arrProducts[cnt].stock_max == 0 && $arrProducts[cnt].stock_unlimited_max != 1}-->
 								<tr>
@@ -226,7 +226,7 @@ function lnSetSelect(name1, name2, id, val) {
 															<input type="text" name="<!--{$quantity}-->" size="3" class="box3" value="<!--{$arrForm[$quantity]|default:1}-->" maxlength=<!--{$smarty.const.INT_LEN}--> style="<!--{$arrErr[$quantity]|sfGetErrorColor}-->" >
 														</td>
 														<td width="170" align="center">
-															<a href="" onclick="fnChangeAction('<!--{$smarty.server.REQUEST_URI}-->#product<!--{$id}-->'); fnModeSubmit('cart','product_id','<!--{$id}-->'); return false;" onmouseover="chgImg('/img/products/b_cartin_on.gif','cart<!--{$id}-->');" onmouseout="chgImg('/img/products/b_cartin.gif','cart<!--{$id}-->');"><img src="/img/products/b_cartin.gif" width="115" height="25" alt="カゴに入れる" name="cart<!--{$id}-->" id="cart<!--{$id}-->" /></a>
+															<a href="" onclick="fnChangeAction('<!--{$smarty.server.REQUEST_URI}-->#product<!--{$id}-->'); fnModeSubmit('cart','product_id','<!--{$id}-->'); return false;" onmouseover="chgImg('<!--{$smarty.const.URL_DIR}-->img/products/b_cartin_on.gif','cart<!--{$id}-->');" onmouseout="chgImg('<!--{$smarty.const.URL_DIR}-->img/products/b_cartin.gif','cart<!--{$id}-->');"><img src="<!--{$smarty.const.URL_DIR}-->img/products/b_cartin.gif" width="115" height="25" alt="カゴに入れる" name="cart<!--{$id}-->" id="cart<!--{$id}-->" /></a>
 														</td>
 													</tr>
 													<tr><td height="10"></td></tr>
@@ -241,14 +241,14 @@ function lnSetSelect(name1, name2, id, val) {
 						</table>
 					</td>
 				</tr>
-				<tr><td colspan=3 height="40"><img src="../img/common/line_580.gif" width="580" height="1" alt=""></td></tr>
+				<tr><td colspan=3 height="40"><img src="<!--{$smarty.const.URL_DIR}-->img/common/line_580.gif" width="580" height="1" alt=""></td></tr>
 				<!--{/section}-->
 				</table>
 
 				<!--件数ここから-->
 				<!--{if $tpl_linemax > 0}-->
 				<table width="580" border="0" cellspacing="0" cellpadding="0" summary=" ">
-					<tr><td><img src="../img/products/flame_top.gif" width="580" height="8" alt=""></td></tr>
+					<tr><td><img src="<!--{$smarty.const.URL_DIR}-->img/products/flame_top.gif" width="580" height="8" alt=""></td></tr>
 					<tr>
 						<td align="center" bgcolor="#f3f3f3">
 						<table width="560" border="0" cellspacing="0" cellpadding="0" summary=" ">
@@ -259,7 +259,7 @@ function lnSetSelect(name1, name2, id, val) {
 						</table>
 						</td>
 					</tr>
-					<tr><td><img src="../img/products/flame_top.gif" width="580" height="8" alt=""></td></tr>
+					<tr><td><img src="<!--{$smarty.const.URL_DIR}-->img/products/flame_top.gif" width="580" height="8" alt=""></td></tr>
 					<tr><td height="15"></td></tr>
 				</table>
 				<!--件数ここまで-->
