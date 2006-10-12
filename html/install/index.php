@@ -531,8 +531,10 @@ function lfCheckDBError($objFormParam) {
 			$objErr->arrErr['all'].= $arrKey[0] . "<br>";
 			gfPrintLog($objDB->userinfo, "./temp/install.log");
 		} else {
-			$arrRet = $objDB->query("SHOW VARIABLES");
-			sfPrintR($arrRet);
+			if($arrRet['db_type'] == 'mysql') {
+				$arrRet = $objDB->query("SHOW VARIABLES");
+				sfPrintR($arrRet);
+			}
 		}
 	}
 	return $objErr->arrErr;
