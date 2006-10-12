@@ -534,7 +534,6 @@ function lfCheckDBError($objFormParam) {
 			if($arrRet['db_type'] == 'mysql') {
 				$arrRet = $objDB->getAll("SHOW VARIABLES");
 				sfPrintR($arrRet);
-				exit;
 			}
 		}
 	}
