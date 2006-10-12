@@ -21,8 +21,7 @@ class LC_Page {
 		$this->tpl_subno = 'bkup';
 		$this->tpl_subtitle = 'バックアップ管理';
 		
-		$this->bkup_dir = ROOT_DIR . USER_DIR . "bkup/";
-//		$this->bkup_dir = ROOT_DIR . "html/test/" . "bkup/";
+		$this->bkup_dir = USER_PATH . "bkup/";
 	}
 }
 

@@ -27,7 +27,7 @@ $objView = new SC_AdminView();
 $objSess = new SC_Session();
 sfIsSuccess($objSess);
 
-$css_path = ROOT_DIR . USER_DIR . "css/contents.css";
+$css_path = USER_PATH . "css/contents.css";
 
 // データ更新処理
 if ($_POST['mode'] == 'confirm'){

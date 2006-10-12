@@ -236,9 +236,9 @@ function lfUpdData(){
  **************************************************************************************************************/
 function lfChangeTemplate(){
 	global $objPage;
-	$tpl_path = USER_DIR . "templates/";
-	$inc_path = ROOT_DIR . USER_DIR . "include/";
-	$css_path = ROOT_DIR . USER_DIR . "css/";
+	$tpl_path = USER_PATH . "templates/";
+	$inc_path = USER_PATH . "include/";
+	$css_path = USER_PATH . "css/";
 	
 	$tpl_name = "";
 	$tpl_element = "";
@@ -279,8 +279,8 @@ function lfChangeTemplate(){
 			break;
 	}
 	
-	$taget_tpl_path = ROOT_DIR . $tpl_path . $arrTemplate[0]['template_code'] . "/";
-	$save_tpl_path = ROOT_DIR . $tpl_path;
+	$taget_tpl_path = $tpl_path . $arrTemplate[0]['template_code'] . "/";
+	$save_tpl_path = $tpl_path;
 	
 	// TOPを変更した場合には全画面変更
 	if ($objPage->tpl_subno_template == $objPage->arrSubnavi['title'][1]){

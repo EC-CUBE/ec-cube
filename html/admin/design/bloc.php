@@ -60,7 +60,7 @@ if ($_GET['msg'] == "on") {
 // プレビュー表示
 if ($_POST['mode'] == "preview") {
 	// プレビューファイル作成
-	$prev_path = ROOT_DIR . INCLUDE_DIR. 'preview/bloc_preview.tpl';
+	$prev_path = INCLUDE_PATH. 'preview/bloc_preview.tpl';
 	$fp = fopen($prev_path,"w");
 	fwrite($fp, $_POST['bloc_html']);
 	fclose($fp);

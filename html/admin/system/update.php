@@ -64,7 +64,7 @@ function lfCopyUpdateFile($file) {
 	global $objPage;
 	
 	$src_path = sfRmDupSlash(UPDATE_HTTP . $file . ".txt");
-	$dst_path = sfRmDupSlash(ROOT_DIR . $file);
+	$dst_path = sfRmDupSlash(DATA_PATH . $file);
 	$flg_ok = true;	// 処理の成功判定
 	
 	$src_fp = @fopen($src_path, "rb");
