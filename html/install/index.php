@@ -14,8 +14,8 @@ class LC_Page {
 			'mysql' => 'MySQL'	
 		);
 		$this->arrDB_PORT = array(
-			'pgsql' => '5432',
-			'mysql' => '3306'	
+			'pgsql' => '',
+			'mysql' => ''	
 		);
 	}
 }
@@ -452,7 +452,7 @@ function lfInitDBParam($objDBParam) {
 	if(defined('DB_PORT')) {
 		$db_port = DB_PORT;
 	} else {
-		$db_port = "5432";
+		$db_port = "";
 	}
 		
 	if(defined('DB_NAME')) {
