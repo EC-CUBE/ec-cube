@@ -28,6 +28,9 @@
 /**
  * Obtain the DB_common class so it can be extended from
  */
+
+ print("kita");
+ 
 require_once DB_PHP_DIR . '/DB/common.php';
 
 /**
