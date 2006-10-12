@@ -14,13 +14,16 @@
 // DATAディレクトリパス(HTMLディレクトリパスからの相対パス)
 define("DATA_PATH", HTML_PATH . "../data");
 
-// テンプレートファイル保存先
+// ユーザファイル保存先
+define("USER_PATH", HTML_PATH . "user_data/");
 define("USER_DIR", "html/user_data/");
 
-// テンプレートファイル保存先
+// ユーザインクルードファイル保存先
+define("USER_INC_PATH", USER_PATH, "include/");
 define("INCLUDE_DIR", USER_DIR."include/");
 
 // ブロックファイル保存先
+define("BLOC_PATH", HTML_PATH . "user_data/include/bloc/");
 define("BLOC_DIR", "html/user_data/include/bloc/");
 
 // ユーザー作成画面のデフォルトPHPファイル
