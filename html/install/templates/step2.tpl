@@ -52,7 +52,7 @@ function lfnChangePort(db_type) {
 		</tr>
 		<tr>
 			<td bgcolor="#f2f1ec" width="150" class="fs12n">ポート</td>
-			<td bgcolor="#ffffff" width="332" class="fs12">
+			<td bgcolor="#ffffff" width="332">
 			<!--{assign var=key value="db_port"}-->
 			<span class="red"><!--{$arrErr[$key]}--></span>
 			<input type="text" name="<!--{$key}-->" value="<!--{$arrForm[$key].value|escape}-->" maxlength="<!--{$arrForm[$key].length}-->" style="<!--{$arrErr[$key]|sfGetErrorColor}-->" size="6" class="box6" />
@@ -61,7 +61,7 @@ function lfnChangePort(db_type) {
 		</tr>
 		<tr>
 			<td bgcolor="#f2f1ec" width="150" class="fs12n">DB名<span class="red">※</span></td>
-			<td bgcolor="#ffffff" width="332">
+			<td bgcolor="#ffffff" width="332" class="fs12">
 			<!--{assign var=key value="db_name"}-->
 			<span class="red"><span class="fs12n"><!--{$arrErr[$key]}--></span></span>
 			<input type="text" name="<!--{$key}-->" value="<!--{$arrForm[$key].value|escape}-->" maxlength="<!--{$arrForm[$key].length}-->" style="<!--{$arrErr[$key]|sfGetErrorColor}-->" size="50" class="box50" />
