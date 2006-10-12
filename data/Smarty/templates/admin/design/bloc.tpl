@@ -53,12 +53,13 @@
 							</tr>
 							<!--{if $arrBlocData.tpl_path != '' and $preview == on}-->
 							<tr class="fs12n">
+								<td bgcolor="#eeeeee" align="center"><strong>プレビュー</strong></td>
+							</tr>
+							<tr class="fs12n">
 								<td bgcolor="#ffffff" align="center">
-								▼プレビュー表示
 									<br/>
 										<!--{include file=$arrBlocData.tpl_path}-->
 									<br/>
-								▲プレビュー表示
 								</td>
 							</tr>
 							<!--{/if}-->
