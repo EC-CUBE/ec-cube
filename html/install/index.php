@@ -568,6 +568,7 @@ function lfMakeConfigFile() {
 	$domain = $objWebParam->getValue('domain');
 	
 	$root_dir = $objWebParam->getValue('install_dir');
+	// 語尾に'/'をつける
 	if (!ereg("/$", $root_dir)) {
 		$root_dir = $root_dir . "/";
 	}
