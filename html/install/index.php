@@ -492,10 +492,12 @@ function lfCheckWebError($objFormParam) {
 	
 	// ディレクトリ名のみ取得する
 	$normal_dir = ereg_replace("^https?://[a-zA-Z0-9_~=&\?\.\-]+", "", $arrRet['normal_url']);
+	$secure_dir = ereg_replace("^https?://[a-zA-Z0-9_~=&\?\.\-]+", "", $arrRet['secure_url']);
 	
-	print($normal_dir);
-	
-	$objErr->arrErr['normal_url'] = $normal_dir;
+	if($normal_dir != $secure_dir) {
+		$objErr->arrErr['normal_url'] = "異なるディレクトリ名は指定できません。";
+		$objErr->arrErr['secure_url'] = "異なるディレクトリ名は指定できません。";		
+	}
 	
 	return $objErr->arrErr;
 }
