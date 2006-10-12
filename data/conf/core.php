@@ -12,7 +12,7 @@
 ///////////////////////////////////////////////////////////
 
 // DATAディレクトリパス(HTMLディレクトリパスからの相対パス)
-define("DATA_PATH", HTML_PATH . "../data");
+define("DATA_PATH", HTML_PATH . "../data/");
 
 // ユーザファイル保存先
 define("USER_PATH", HTML_PATH . "user_data/");
