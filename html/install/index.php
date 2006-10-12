@@ -184,7 +184,7 @@ case 'complete':
 	// ショップマスタ情報の書き込み
 	$arrRet =  $objDBParam->getHashArray();
 	
-	$dsn = $arrRet['db_type']."://".$arrRet['db_user'].":".$arrRet['db_password']."@".$arrRet['db_server'].$port."/".$arrRet['db_name'];
+	$dsn = $arrRet['db_type']."://".$arrRet['db_user'].":".$arrRet['db_password']."@".$arrRet['db_server'].":".$arrRet['db_port']."/".$arrRet['db_name'];
 	$sqlval['shop_name'] = $objWebParam->getValue('shop_name');
 	$sqlval['email01'] = $objWebParam->getValue('admin_mail');
 	$sqlval['email02'] = $objWebParam->getValue('admin_mail');
@@ -421,6 +421,8 @@ function lfInitWebParam($objWebParam) {
 		$dir = ereg_replace("install/.*$", "", $_SERVER['REQUEST_URI']);
 		$secure_url = "http://" . $_SERVER['HTTP_HOST'] . $dir;
 	}
+	
+	print(DEFAULT_DSN);
 
 	$objWebParam->addParam("店名", "shop_name", MTEXT_LEN, "", array("EXIST_CHECK","MAX_LENGTH_CHECK"));
 	$objWebParam->addParam("管理者メールアドレス", "admin_mail", MTEXT_LEN, "", array("EXIST_CHECK","EMAIL_CHECK","EMAIL_CHAR_CHECK","MAX_LENGTH_CHECK"));
