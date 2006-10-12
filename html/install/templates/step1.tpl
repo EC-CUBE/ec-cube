@@ -18,7 +18,7 @@
 	<td bgcolor="#cccccc">
 	<table width="500" border="0" cellspacing="1" cellpadding="8" summary=" ">
 		<tr>
-			<td bgcolor="#f2f1ec" width="150" class="fs12n">店名</td>
+			<td bgcolor="#f2f1ec" width="150" class="fs12n">店名<span class="red">※</span></td>
 			<td bgcolor="#ffffff" width="332">
 			<!--{assign var=key value="shop_name"}-->
 			<span class="red"><span class="fs12n"><!--{$arrErr[$key]}--></span></span>
@@ -27,7 +27,7 @@
 			</td>
 		</tr>
 		<tr>
-			<td bgcolor="#f2f1ec" width="150" class="fs12n">管理者メールアドレス</td>
+			<td bgcolor="#f2f1ec" width="150" class="fs12n">管理者メールアドレス<span class="red">※</span></td>
 			<td bgcolor="#ffffff" width="332">
 			<!--{assign var=key value="admin_mail"}-->
 			<span class="red"><span class="fs12n"><!--{$arrErr[$key]}--></span></span>
@@ -52,7 +52,7 @@
 			</td>
 		</tr>
 		<tr>
-			<td bgcolor="#f2f1ec" width="150" class="fs12n">URL(通常)</td>
+			<td bgcolor="#f2f1ec" width="150" class="fs12n">URL(通常)<span class="red">※</span></td>
 			<td bgcolor="#ffffff" width="332" class="fs12">
 			<!--{assign var=key value="normal_url"}-->
 			<span class="red"><!--{$arrErr[$key]}--></span>
@@ -60,7 +60,7 @@
 			</td>
 		</tr>
 		<tr>
-			<td bgcolor="#f2f1ec" width="150" class="fs12n">URL(セキュア)</td>
+			<td bgcolor="#f2f1ec" width="150" class="fs12n">URL(セキュア)<span class="red">※</span></td>
 			<td bgcolor="#ffffff" width="332" class="fs12">
 			<!--{assign var=key value="secure_url"}-->
 			<span class="red"><!--{$arrErr[$key]}--></span>

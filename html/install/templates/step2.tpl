@@ -33,7 +33,7 @@ function lfnChangePort(db_type) {
 	<td bgcolor="#cccccc">
 	<table width="500" border="0" cellspacing="1" cellpadding="8" summary=" ">
 		<tr>
-			<td bgcolor="#f2f1ec" width="150" class="fs12n">DBの種類</td>
+			<td bgcolor="#f2f1ec" width="150" class="fs12n">DBの種類<span class="red">※</span></td>
 			<td bgcolor="#ffffff" width="332" class="fs12">
 			<!--{assign var=key value="db_type"}-->
 			<span class="red"><!--{$arrErr[$key]}--></span>
@@ -43,7 +43,7 @@ function lfnChangePort(db_type) {
 			</td>
 		</tr>
 		<tr>
-			<td bgcolor="#f2f1ec" width="150" class="fs12n">DBサーバ</td>
+			<td bgcolor="#f2f1ec" width="150" class="fs12n">DBサーバ<span class="red">※</span></td>
 			<td bgcolor="#ffffff" width="332" class="fs12">
 			<!--{assign var=key value="db_server"}-->
 			<span class="red"><!--{$arrErr[$key]}--></span>
@@ -59,7 +59,7 @@ function lfnChangePort(db_type) {
 			</td>
 		</tr>
 		<tr>
-			<td bgcolor="#f2f1ec" width="150" class="fs12n">DB名</td>
+			<td bgcolor="#f2f1ec" width="150" class="fs12n">DB名<span class="red">※</span></td>
 			<td bgcolor="#ffffff" width="332" class="fs12">
 			<!--{assign var=key value="db_name"}-->
 			<span class="red"><!--{$arrErr[$key]}--></span>
@@ -67,7 +67,7 @@ function lfnChangePort(db_type) {
 			</td>
 		</tr>
 		<tr>
-			<td bgcolor="#f2f1ec" width="150" class="fs12n">DBユーザ</td>
+			<td bgcolor="#f2f1ec" width="150" class="fs12n">DBユーザ<span class="red">※</span></td>
 			<td bgcolor="#ffffff" width="332" class="fs12">
 			<!--{assign var=key value="db_user"}-->
 			<span class="red"><!--{$arrErr[$key]}--></span>
@@ -75,7 +75,7 @@ function lfnChangePort(db_type) {
 			</td>
 		</tr>
 		<tr>
-			<td bgcolor="#f2f1ec" width="150" class="fs12n">DBパスワード</td>
+			<td bgcolor="#f2f1ec" width="150" class="fs12n">DBパスワード<span class="red">※</span></td>
 			<td bgcolor="#ffffff" width="332" class="fs12">
 			<!--{assign var=key value="db_password"}-->
 			<span class="red"><!--{$arrErr[$key]}--></span>
