@@ -44,6 +44,7 @@
 			        	<!--{if $LeftNaviItem.php_path != ""}-->
 							<!--{include_php file=$LeftNaviItem.php_path}-->
 						<!--{else}-->
+							<!--{$LeftNaviItem.tpl_path}-->
 							<!--{include file=$LeftNaviItem.tpl_path}-->
 						<!--{/if}-->
 				        <!-- ▲<!--{$LeftNaviItem.bloc_name}--> ここまで-->
