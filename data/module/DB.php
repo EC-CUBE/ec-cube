@@ -27,12 +27,13 @@
 /**
  * Obtain the PEAR class so it can be extended from
  */
-require_once 'PEAR.php';
 
 if(!defined('DB_PHP_DIR')) {
 	$DB_PHP_DIR = realpath(dirname( __FILE__));
 	define("DB_PHP_DIR", $DB_PHP_DIR);	
 }
+
+require_once DB_PHP_DIR . '/pear.php';
 
 // {{{ constants
 // {{{ error codes

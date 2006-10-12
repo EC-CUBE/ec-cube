@@ -18,7 +18,12 @@
 //
 // $Id$
 
-require_once 'PEAR.php';
+if(!defined('TAR_PHP_DIR')) {
+	$TAR_PHP_DIR = realpath(dirname( __FILE__));
+	define("TAR_PHP_DIR", $TAR_PHP_DIR);	
+}
+
+require_once TAR_PHP_DIR . '/pear.php';
 
 
 define ('ARCHIVE_TAR_ATT_SEPARATOR', 90001);
