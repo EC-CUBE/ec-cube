@@ -36,9 +36,9 @@
 							<!--{section name=n loop=`$level-1`}-->&nbsp;&nbsp;<!--{/section}--><!--{if $level == 1}--><img src="<!--{$smarty.const.URL_DIR}-->img/common/arrow_blue.gif" width="11" height="14" alt=""><!--{/if}-->
 						<!--{/if}-->
 						<!--{if $tpl_category_id == $arrTree[cnt].category_id }-->
-							<a href="/products/list.php?category_id=<!--{$arrTree[cnt].category_id}-->"><span class="redst"><!--{$disp_name|sfCutString:20|escape}-->(<!--{$arrTree[cnt].product_count|default:0}-->)</span></a>						
+							<a href="<!--{$smarty.const.URL_DIR}-->products/list.php?category_id=<!--{$arrTree[cnt].category_id}-->"><span class="redst"><!--{$disp_name|sfCutString:20|escape}-->(<!--{$arrTree[cnt].product_count|default:0}-->)</span></a>						
 						<!--{else}-->							
-							<a href="/products/list.php?category_id=<!--{$arrTree[cnt].category_id}-->"><!--{$disp_name|sfCutString:20|escape}-->(<!--{$arrTree[cnt].product_count|default:0}-->)</a>
+							<a href="<!--{$smarty.const.URL_DIR}-->products/list.php?category_id=<!--{$arrTree[cnt].category_id}-->"><!--{$disp_name|sfCutString:20|escape}-->(<!--{$arrTree[cnt].product_count|default:0}-->)</a>
 						<!--{/if}-->
 					</td>
 				</tr>
