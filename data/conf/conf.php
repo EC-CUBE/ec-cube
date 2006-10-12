@@ -121,7 +121,7 @@ define ("CF_LABOR", "0");													// 役務有無区分(0:無、1:有)
 define ("CF_RESULT", "1");													// 結果応答(1:結果あり、2:結果なし)
 
 /* クレジットカード(ベリトランス) */
-define ("CGI_DIR", ROOT_DIR . "cgi-bin/");									// モジュール格納ディレクトリ
+define ("CGI_DIR", HTML_PATH . "../cgi-bin/");									// モジュール格納ディレクトリ
 define ("CGI_FILE", "mauthonly.cgi");										// コアCGI
 
 // ルートカテゴリID
