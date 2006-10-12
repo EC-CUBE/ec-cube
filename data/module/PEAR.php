@@ -109,7 +109,7 @@ class PEAR
      * @var     bool
      * @access  private
      */
-    var $_debug = false;
+    var $_debug = true;
 
     /**
      * Default error mode for this object.

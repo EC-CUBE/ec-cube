@@ -33,7 +33,7 @@ if(!defined('DB_PHP_DIR')) {
 	define("DB_PHP_DIR", $DB_PHP_DIR);	
 }
 
-require_once DB_PHP_DIR . '/pear.php';
+require_once DB_PHP_DIR . '/PEAR.php';
 
 // {{{ constants
 // {{{ error codes

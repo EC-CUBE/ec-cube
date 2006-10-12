@@ -23,7 +23,7 @@ if(!defined('TAR_PHP_DIR')) {
 	define("TAR_PHP_DIR", $TAR_PHP_DIR);	
 }
 
-require_once TAR_PHP_DIR . '/pear.php';
+require_once TAR_PHP_DIR . '/PEAR.php';
 
 
 define ('ARCHIVE_TAR_ATT_SEPARATOR', 90001);
