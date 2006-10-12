@@ -69,7 +69,7 @@ function init () {
 
 </script>
 
-<script type="text/javascript" src="/js/layout_design.js"></script>
+<script type="text/javascript" src="<!--{$smarty.const.URL_DIR}-->js/layout_design.js"></script>
 
 <!--¡ú¡ú¥á¥¤¥ó¥³¥ó¥Æ¥ó¥Ä¡ú¡ú-->
 <table width="878" border="0" cellspacing="0" cellpadding="0" summary=" ">
