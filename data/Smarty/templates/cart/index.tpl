@@ -147,8 +147,8 @@
 
 			<tr>
 				<td align="center">
-					<a href="javascript:history.back()" onmouseOver="chgImg('/img/cart/b_pageback_on.gif','back');" onmouseOut="chgImg('/img/cart/b_pageback.gif','back');"><img src="../img/cart/b_pageback.gif" width="150" height="30" alt="前のページへ戻る" name="back" id="back" /></a>　
-					<input type="image" onMouseover="chgImgImageSubmit('/img/cart/b_buystep_on.gif',this)" onMouseout="chgImgImageSubmit('/img/cart/b_buystep.gif',this)" src="<!--{$smarty.const.URL_DIR}-->img/cart/b_buystep.gif" width="150" height="30" alt="購入手続きへ" name="confirm" />
+					<a href="javascript:history.back()" onmouseOver="chgImg('<!--{$smarty.const.URL_DIR}-->img/cart/b_pageback_on.gif','back');" onmouseOut="chgImg('<!--{$smarty.const.URL_DIR}-->img/cart/b_pageback.gif','back');"><img src="../img/cart/b_pageback.gif" width="150" height="30" alt="前のページへ戻る" name="back" id="back" /></a>　
+					<input type="image" onMouseover="chgImgImageSubmit('<!--{$smarty.const.URL_DIR}-->img/cart/b_buystep_on.gif',this)" onMouseout="chgImgImageSubmit('<!--{$smarty.const.URL_DIR}-->img/cart/b_buystep.gif',this)" src="<!--{$smarty.const.URL_DIR}-->img/cart/b_buystep.gif" width="150" height="30" alt="購入手続きへ" name="confirm" />
 				</td>
 			</tr>
 			</form>

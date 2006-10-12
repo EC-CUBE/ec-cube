@@ -102,9 +102,9 @@
 										<td bgcolor="#e9e7de" align="center">
 										<table border="0" cellspacing="0" cellpadding="0" summary=" ">
 											<tr>
-												<td><a href="#" onmouseover="chgImg('/img/install/back_on.jpg','return')" onmouseout="chgImg('/img/install/back.jpg','return')" onclick="fnModeSubmit('confirm_return','',''); return false" /><img  width="105" src="<!--{$smarty.const.URL_DIR}-->img/install/back.jpg"  height="24" alt="前へ戻る" border="0" name="return"></a>
+												<td><a href="#" onmouseover="chgImg('<!--{$smarty.const.URL_DIR}-->img/install/back_on.jpg','return')" onmouseout="chgImg('<!--{$smarty.const.URL_DIR}-->img/install/back.jpg','return')" onclick="fnModeSubmit('confirm_return','',''); return false" /><img  width="105" src="<!--{$smarty.const.URL_DIR}-->img/install/back.jpg"  height="24" alt="前へ戻る" border="0" name="return"></a>
 												<!--{if $tpl_check > 0}-->
-												<input type="image" onMouseover="chgImgImageSubmit('/img/contents/btn_regist_on.jpg',this)" onMouseout="chgImgImageSubmit('/img/contents/btn_regist.jpg',this)" src="<!--{$smarty.const.URL_DIR}-->img/contents/btn_regist.jpg" width="123" height="24" alt="この内容で登録する" border="0" name="subm" >
+												<input type="image" onMouseover="chgImgImageSubmit('<!--{$smarty.const.URL_DIR}-->img/contents/btn_regist_on.jpg',this)" onMouseout="chgImgImageSubmit('<!--{$smarty.const.URL_DIR}-->img/contents/btn_regist.jpg',this)" src="<!--{$smarty.const.URL_DIR}-->img/contents/btn_regist.jpg" width="123" height="24" alt="この内容で登録する" border="0" name="subm" >
 												<!--{/if}-->
 												</td>
 											</tr>

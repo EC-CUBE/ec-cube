@@ -68,7 +68,7 @@
 							<tr><td height="20"></td></tr>
 							<tr>
 								<td align="center">
-									<input type="image" onmouseover="chgImgImageSubmit('/img/login/b_login_on.gif',this)" onmouseout="chgImgImageSubmit('/img/login/b_login.gif',this)" src="<!--{$smarty.const.URL_DIR}-->img/login/b_login.gif" width="140" height="30" alt="ログイン" name="log" id="log" /></a>
+									<input type="image" onmouseover="chgImgImageSubmit('<!--{$smarty.const.URL_DIR}-->img/login/b_login_on.gif',this)" onmouseout="chgImgImageSubmit('<!--{$smarty.const.URL_DIR}-->img/login/b_login.gif',this)" src="<!--{$smarty.const.URL_DIR}-->img/login/b_login.gif" width="140" height="30" alt="ログイン" name="log" id="log" /></a>
 								</td>
 							</tr>
 							<tr><td height="15"></td></tr>
@@ -117,7 +117,7 @@
 									<tr><td height="20"></td></tr>
 									<tr>
 										<td align="center">
-											<a href="/entry/kiyaku.php" onmouseover="chgImg('/img/login/b_gotoentry_on.gif','b_gotoentry');" onmouseout="chgImg('/img/login/b_gotoentry.gif','b_gotoentry');"><img src="<!--{$smarty.const.URL_DIR}-->img/login/b_gotoentry.gif" width="130" height="30" alt="会員登録をする" border="0" name="b_gotoentry"></a>　
+											<a href="/entry/kiyaku.php" onmouseover="chgImg('<!--{$smarty.const.URL_DIR}-->img/login/b_gotoentry_on.gif','b_gotoentry');" onmouseout="chgImg('<!--{$smarty.const.URL_DIR}-->img/login/b_gotoentry.gif','b_gotoentry');"><img src="<!--{$smarty.const.URL_DIR}-->img/login/b_gotoentry.gif" width="130" height="30" alt="会員登録をする" border="0" name="b_gotoentry"></a>　
 										</td>
 									</tr>
 									<tr><td height="20"></td></tr>

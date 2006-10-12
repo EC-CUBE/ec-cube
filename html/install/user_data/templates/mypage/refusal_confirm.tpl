@@ -44,8 +44,8 @@
 									<tr><td height="55"></td></tr>
 									<tr>
 										<td align="center">
-											<a href="./refusal.php" onmouseover="chgImg('/img/mypage/b_no_on.gif','refusal_no');" onmouseout="chgImg('/img/mypage/b_no.gif','refusal_no');"><img src="<!--{$smarty.const.URL_DIR}-->img/mypage/b_no.gif" width="180" height="30" alt="いいえ、退会しません" name="refusal_no" id="refusal_no" /></a>　
-											<input type="image" onmouseover="chgImgImageSubmit('/img/mypage/b_yes_on.gif',this);" onmouseout="chgImgImageSubmit('/img/mypage/b_yes.gif',this);" src="<!--{$smarty.const.URL_DIR}-->img/mypage/b_yes.gif" width="180" height="30" alt="はい、はい、退会します" name="refusal_yes" id="refusal_yes" />
+											<a href="./refusal.php" onmouseover="chgImg('<!--{$smarty.const.URL_DIR}-->img/mypage/b_no_on.gif','refusal_no');" onmouseout="chgImg('<!--{$smarty.const.URL_DIR}-->img/mypage/b_no.gif','refusal_no');"><img src="<!--{$smarty.const.URL_DIR}-->img/mypage/b_no.gif" width="180" height="30" alt="いいえ、退会しません" name="refusal_no" id="refusal_no" /></a>　
+											<input type="image" onmouseover="chgImgImageSubmit('<!--{$smarty.const.URL_DIR}-->img/mypage/b_yes_on.gif',this);" onmouseout="chgImgImageSubmit('<!--{$smarty.const.URL_DIR}-->img/mypage/b_yes.gif',this);" src="<!--{$smarty.const.URL_DIR}-->img/mypage/b_yes.gif" width="180" height="30" alt="はい、はい、退会します" name="refusal_yes" id="refusal_yes" />
 										</td>
 									</tr>
 									<tr><td height="10"></td></tr>

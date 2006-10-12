@@ -124,8 +124,8 @@
 													<input type="hidden" name="mode" value="template">
 													<input type="hidden" name="mail_method" value="<!--{$list_data.mail_method}-->">
 
-													<input type="image" onMouseover="chgImgImageSubmit('/img/contents/btn_search_back_on.jpg',this)" onMouseout="chgImgImageSubmit('/img/contents/btn_search_back.jpg',this)" src="<!--{$smarty.const.URL_DIR}-->img/contents/btn_search_back.jpg" width="123" height="24" alt="検索画面に戻る" border="0" name="subm02" onClick="return fnInsertValAndSubmit( document.form1, 'mode', 'back', '' )">
-													<input type="image" onMouseover="chgImgImageSubmit('/img/contents/btn_confirm_on.jpg',this)" onMouseout="chgImgImageSubmit('/img/contents/btn_confirm.jpg',this)" src="<!--{$smarty.const.URL_DIR}-->img/contents/btn_confirm.jpg" width="123" height="24" alt="確認ページへ" border="0" name="subm03" onClick="return fnInsertValAndSubmit( document.form1, 'mode', 'regist_confirm', '' )" >
+													<input type="image" onMouseover="chgImgImageSubmit('<!--{$smarty.const.URL_DIR}-->img/contents/btn_search_back_on.jpg',this)" onMouseout="chgImgImageSubmit('<!--{$smarty.const.URL_DIR}-->img/contents/btn_search_back.jpg',this)" src="<!--{$smarty.const.URL_DIR}-->img/contents/btn_search_back.jpg" width="123" height="24" alt="検索画面に戻る" border="0" name="subm02" onClick="return fnInsertValAndSubmit( document.form1, 'mode', 'back', '' )">
+													<input type="image" onMouseover="chgImgImageSubmit('<!--{$smarty.const.URL_DIR}-->img/contents/btn_confirm_on.jpg',this)" onMouseout="chgImgImageSubmit('<!--{$smarty.const.URL_DIR}-->img/contents/btn_confirm.jpg',this)" src="<!--{$smarty.const.URL_DIR}-->img/contents/btn_confirm.jpg" width="123" height="24" alt="確認ページへ" border="0" name="subm03" onClick="return fnInsertValAndSubmit( document.form1, 'mode', 'regist_confirm', '' )" >
 												</td>
 											</tr>
 										</table>

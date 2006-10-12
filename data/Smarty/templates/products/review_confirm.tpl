@@ -78,8 +78,8 @@
 			<tr><td height="15"></td></tr>
 			<tr>
 				<td align="center">
-					<input type="image" onclick=" mode.value='return';" onmouseover="chgImgImageSubmit('/img/common/b_back_on.gif',this)" onmouseout="chgImgImageSubmit('/img/common/b_back.gif',this)" src="<!--{$smarty.const.URL_DIR}-->img/common/b_back.gif" width="150" height="30" alt="戻る"  name="back" id="back" />
-					<input type="image" onmouseover="chgImgImageSubmit('/img/common/b_send_on.gif',this)" onmouseout="chgImgImageSubmit('/img/common/b_send.gif',this)" src="<!--{$smarty.const.URL_DIR}-->img/common/b_send.gif" width="150" height="30" alt="送信"  name="send" id="send" />
+					<input type="image" onclick=" mode.value='return';" onmouseover="chgImgImageSubmit('<!--{$smarty.const.URL_DIR}-->img/common/b_back_on.gif',this)" onmouseout="chgImgImageSubmit('<!--{$smarty.const.URL_DIR}-->img/common/b_back.gif',this)" src="<!--{$smarty.const.URL_DIR}-->img/common/b_back.gif" width="150" height="30" alt="戻る"  name="back" id="back" />
+					<input type="image" onmouseover="chgImgImageSubmit('<!--{$smarty.const.URL_DIR}-->img/common/b_send_on.gif',this)" onmouseout="chgImgImageSubmit('<!--{$smarty.const.URL_DIR}-->img/common/b_send.gif',this)" src="<!--{$smarty.const.URL_DIR}-->img/common/b_send.gif" width="150" height="30" alt="送信"  name="send" id="send" />
 				</td>
 			</tr>
 			<tr><td height="30"></td></tr>

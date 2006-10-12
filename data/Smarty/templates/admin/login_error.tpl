@@ -26,7 +26,7 @@
 					</tr>
 					<tr><td height="20"></td></tr>
 					<tr>
-						<td align="center"><input type="image" onMouseover="chgImgImageSubmit('/img/contents/btn_back_on.jpg',this)" onMouseout="chgImgImageSubmit('/img/contents/btn_back.jpg',this)" src="<!--{$smarty.const.URL_DIR}-->img/contents/btn_back.jpg" width="123" height="24" alt="ログインページにページに戻る" border="0" name="back" onclick="location.href='<!--{$smarty.const.URL_LOGIN}-->';"></td>
+						<td align="center"><input type="image" onMouseover="chgImgImageSubmit('<!--{$smarty.const.URL_DIR}-->img/contents/btn_back_on.jpg',this)" onMouseout="chgImgImageSubmit('<!--{$smarty.const.URL_DIR}-->img/contents/btn_back.jpg',this)" src="<!--{$smarty.const.URL_DIR}-->img/contents/btn_back.jpg" width="123" height="24" alt="ログインページにページに戻る" border="0" name="back" onclick="location.href='<!--{$smarty.const.URL_LOGIN}-->';"></td>
 					</tr>
 					<tr><td height="60"></td></tr>
 				</table>

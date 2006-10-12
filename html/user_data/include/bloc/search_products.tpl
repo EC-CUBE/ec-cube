@@ -34,7 +34,7 @@
 			<tr><td height="10"></td></tr>
 			<tr>
 				<td align="center">
-					<input type="image" onMouseover="chgImgImageSubmit('/img/side/button_search_on.gif',this)" onMouseout="chgImgImageSubmit('/img/side/button_search.gif',this)" src="<!--{$smarty.const.URL_DIR}-->img/side/button_search.gif" width="51" height="22" alt="¸¡º÷" border="0" name="search">
+					<input type="image" onMouseover="chgImgImageSubmit('<!--{$smarty.const.URL_DIR}-->img/side/button_search_on.gif',this)" onMouseout="chgImgImageSubmit('<!--{$smarty.const.URL_DIR}-->img/side/button_search.gif',this)" src="<!--{$smarty.const.URL_DIR}-->img/side/button_search.gif" width="51" height="22" alt="¸¡º÷" border="0" name="search">
 				</td>
 			</tr>
 		</form>

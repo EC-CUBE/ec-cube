@@ -31,7 +31,7 @@
 			<tr><td height="10"></td></tr>
 			<!--{/if}-->
 			<tr>
-				<td align="center"><a href="/cart/index.php" onmouseover="chgImg('/img/side/button_cartin_on.gif','button_cartin');" onmouseout="chgImg('/img/side/button_cartin.gif','button_cartin');"><img src="<!--{$smarty.const.URL_DIR}-->img/side/button_cartin.gif" width="87" height="22" alt="カゴの中を見る" border="0" name="button_cartin"></a></td>
+				<td align="center"><a href="/cart/index.php" onmouseover="chgImg('<!--{$smarty.const.URL_DIR}-->img/side/button_cartin_on.gif','button_cartin');" onmouseout="chgImg('<!--{$smarty.const.URL_DIR}-->img/side/button_cartin.gif','button_cartin');"><img src="<!--{$smarty.const.URL_DIR}-->img/side/button_cartin.gif" width="87" height="22" alt="カゴの中を見る" border="0" name="button_cartin"></a></td>
 			</tr>
 		</table>
 		</td>

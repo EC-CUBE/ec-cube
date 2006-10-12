@@ -45,7 +45,7 @@
 									<tr><td height="30"></td></tr>
 									<tr>
 										<td align="center">
-											<input type="image" onmouseover="chgImgImageSubmit('/img/mypage/b_refuse_on.gif',this);" onmouseout="chgImgImageSubmit('/img/mypage/b_refuse.gif',this);" src="<!--{$smarty.const.URL_DIR}-->img/mypage/b_refuse.gif" width="180" height="30" alt="会員退会を行う" name="refusal" id="refusal" />
+											<input type="image" onmouseover="chgImgImageSubmit('<!--{$smarty.const.URL_DIR}-->img/mypage/b_refuse_on.gif',this);" onmouseout="chgImgImageSubmit('<!--{$smarty.const.URL_DIR}-->img/mypage/b_refuse.gif',this);" src="<!--{$smarty.const.URL_DIR}-->img/mypage/b_refuse.gif" width="180" height="30" alt="会員退会を行う" name="refusal" id="refusal" />
 										</td>
 									</tr>
 									<tr><td height="10"></td></tr>

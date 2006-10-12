@@ -52,7 +52,7 @@
 				<tr><td height="10"></td></tr>
 				<tr>
 					<td width="50"><input type="checkbox" name="login_memory" value="1" <!--{$tpl_login_memory|sfGetChecked:1}-->/><img src="<!--{$smarty.const.URL_DIR}-->img/header/memory.gif" width="18" height="9" alt="記憶" /></td>
-					<td align="center"><input type="image" onMouseover="chgImgImageSubmit('/img/side/button_login_on.gif',this)" onMouseout="chgImgImageSubmit('/img/side/button_login.gif',this)" src="<!--{$smarty.const.URL_DIR}-->img/side/button_login.gif" width="51" height="22" alt="ログイン" border="0" name="subm"></td>
+					<td align="center"><input type="image" onMouseover="chgImgImageSubmit('<!--{$smarty.const.URL_DIR}-->img/side/button_login_on.gif',this)" onMouseout="chgImgImageSubmit('<!--{$smarty.const.URL_DIR}-->img/side/button_login.gif',this)" src="<!--{$smarty.const.URL_DIR}-->img/side/button_login.gif" width="51" height="22" alt="ログイン" border="0" name="subm"></td>
 				</tr>
 			<!--{/if}-->
 		</table>

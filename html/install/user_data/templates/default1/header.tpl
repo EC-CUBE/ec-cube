@@ -27,9 +27,9 @@
 						<!--BUTTON-->
 						<table width="300" border="0" cellspacing="0" cellpadding="0" summary=" ">
 							<tr>
-								<td><a href="/mypage/login.php" onmouseover="chgImg('/img/header/mypage_on.gif','mypage');" onmouseout="chgImg('/img/header/mypage.gif','mypage');"><img src="<!--{$smarty.const.URL_DIR}-->img/header/mypage.gif" width="95" height="20" alt="ログイン情報変更" border="0" name="mypage"></a></td>
-								<td align="center"><a href="/entry/kiyaku.php" onmouseover="chgImg('/img/header/member_on.gif','member');" onmouseout="chgImg('/img/header/member.gif','member');"><img src="<!--{$smarty.const.URL_DIR}-->img/header/member.gif" width="95" height="20" alt="会員登録" border="0" name="member"></a></td>
-								<td align="right"><a href="/cart/index.php" onmouseover="chgImg('/img/header/cartin_on.gif','cartin');" onmouseout="chgImg('/img/header/cartin.gif','cartin');"><img src="<!--{$smarty.const.URL_DIR}-->img/header/cartin.gif" width="95" height="20" alt="カゴの中を見る" border="0" name="cartin"></a></td>
+								<td><a href="/mypage/login.php" onmouseover="chgImg('<!--{$smarty.const.URL_DIR}-->img/header/mypage_on.gif','mypage');" onmouseout="chgImg('<!--{$smarty.const.URL_DIR}-->img/header/mypage.gif','mypage');"><img src="<!--{$smarty.const.URL_DIR}-->img/header/mypage.gif" width="95" height="20" alt="ログイン情報変更" border="0" name="mypage"></a></td>
+								<td align="center"><a href="/entry/kiyaku.php" onmouseover="chgImg('<!--{$smarty.const.URL_DIR}-->img/header/member_on.gif','member');" onmouseout="chgImg('<!--{$smarty.const.URL_DIR}-->img/header/member.gif','member');"><img src="<!--{$smarty.const.URL_DIR}-->img/header/member.gif" width="95" height="20" alt="会員登録" border="0" name="member"></a></td>
+								<td align="right"><a href="/cart/index.php" onmouseover="chgImg('<!--{$smarty.const.URL_DIR}-->img/header/cartin_on.gif','cartin');" onmouseout="chgImg('<!--{$smarty.const.URL_DIR}-->img/header/cartin.gif','cartin');"><img src="<!--{$smarty.const.URL_DIR}-->img/header/cartin.gif" width="95" height="20" alt="カゴの中を見る" border="0" name="cartin"></a></td>
 							</tr>
 						</table>
 						<!--BUTTON-->

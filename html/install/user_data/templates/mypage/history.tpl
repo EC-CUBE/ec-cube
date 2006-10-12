@@ -167,7 +167,7 @@
 					<tr><td height="20"></td></tr>
 					<tr>
 						<td align="center">
-							<a href="./index.php" onmouseover="chgImg('/img/common/b_back_on.gif','change');" onmouseout="chgImg('/img/common/b_back.gif','change');"><img src="<!--{$smarty.const.URL_DIR}-->img/common/b_back.gif" width="150" height="30" alt="╠сды" name="change" id="change" /></a>
+							<a href="./index.php" onmouseover="chgImg('<!--{$smarty.const.URL_DIR}-->img/common/b_back_on.gif','change');" onmouseout="chgImg('<!--{$smarty.const.URL_DIR}-->img/common/b_back.gif','change');"><img src="<!--{$smarty.const.URL_DIR}-->img/common/b_back.gif" width="150" height="30" alt="╠сды" name="change" id="change" /></a>
 						</td>
 					</tr>
 				</form>
