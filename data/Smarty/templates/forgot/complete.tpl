@@ -55,7 +55,7 @@
 			</tr>
 			<tr><td height="15"></td></tr>
 			<tr>
-				<td align="center"><a href="javascript:window.close()" onmouseOver="chgImg('/img/common/b_close_on.gif','close');" onmouseOut="chgImg('/img/common/b_close.gif','close');"><img src="/img/common/b_close.gif" width="150" height="30" alt="岉元月" name="close" id="close" /></a></td>
+				<td align="center"><a href="javascript:window.close()" onmouseOver="chgImg('/img/common/b_close_on.gif','close');" onmouseOut="chgImg('/img/common/b_close.gif','close');"><img src="<!--{$smarty.const.URL_DIR}-->img/common/b_close.gif" width="150" height="30" alt="岉元月" name="close" id="close" /></a></td>
 			</tr>
 			<tr><td height="30"></td></tr>
 		</table>			

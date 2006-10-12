@@ -10,7 +10,7 @@
 		<!--▼MAIN ONTENTS-->
 		<table width="700" border="0" cellspacing="0" cellpadding="0" summary=" ">
 			<tr>
-				<td><img src="/img/mypage/title.jpg" width="700" height="40" alt="MYページ"></td>
+				<td><img src="<!--{$smarty.const.URL_DIR}-->img/mypage/title.jpg" width="700" height="40" alt="MYページ"></td>
 			</tr>
 			<tr><td height="15"></td></tr>
 		</table>
@@ -25,7 +25,7 @@
 				<input type="hidden" name="mode" value="confirm">
 				<input type="hidden" name="customer_id" value="<!--{$arrForm.customer_id|escape}-->">
 					<tr>
-						<td><!--★タイトル--><img src="/img/mypage/subtitle02.gif" width="515" height="32" alt="会員登録内容変更"></td>
+						<td><!--★タイトル--><img src="<!--{$smarty.const.URL_DIR}-->img/mypage/subtitle02.gif" width="515" height="32" alt="会員登録内容変更"></td>
 					</tr>
 					<tr><td height="15"></td></tr>
 					<tr>
@@ -221,7 +221,7 @@
 					<tr><td height="20"></td></tr>
 					<tr>
 						<td align="center">
-							<input type="image" onmouseover="chgImgImageSubmit('/img/common/b_confirm_on.gif',this)" onmouseout="chgImgImageSubmit('/img/common/b_confirm.gif',this)" src="/img/common/b_confirm.gif" width="150" height="30" alt="確認ページへ" name="refusal" id="refusal" />
+							<input type="image" onmouseover="chgImgImageSubmit('/img/common/b_confirm_on.gif',this)" onmouseout="chgImgImageSubmit('/img/common/b_confirm.gif',this)" src="<!--{$smarty.const.URL_DIR}-->img/common/b_confirm.gif" width="150" height="30" alt="確認ページへ" name="refusal" id="refusal" />
 						</td>
 					</tr>
 				</form>

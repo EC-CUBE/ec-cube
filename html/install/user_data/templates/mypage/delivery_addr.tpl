@@ -42,7 +42,7 @@
 
 			<tr><td height="15"></td></tr>
 			<tr>
-				<td><img src="/img/shopping/delivadd_title.jpg" width="500" height="40" alt="新しいお届け先の追加・変更"></td>
+				<td><img src="<!--{$smarty.const.URL_DIR}-->img/shopping/delivadd_title.jpg" width="500" height="40" alt="新しいお届け先の追加・変更"></td>
 			</tr>
 			<tr><td height="15"></td></tr>
 			<tr>
@@ -137,7 +137,7 @@
 			<tr><td height="15"></td></tr>
 			<tr>
 				<td align="center">
-					<input type="image" onmouseover="chgImgImageSubmit('/img/common/b_entry_on.gif',this);" onmouseout="chgImgImageSubmit('/img/common/b_entry.gif',this);" src="/img/common/b_entry.gif" width="150" height="30" alt="登録する" name="register" id="register" />
+					<input type="image" onmouseover="chgImgImageSubmit('/img/common/b_entry_on.gif',this);" onmouseout="chgImgImageSubmit('/img/common/b_entry.gif',this);" src="<!--{$smarty.const.URL_DIR}-->img/common/b_entry.gif" width="150" height="30" alt="登録する" name="register" id="register" />
 				</td>
 			</tr>
 			<tr><td height="30"></td></tr>

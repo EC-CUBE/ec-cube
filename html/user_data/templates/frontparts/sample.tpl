@@ -1,5 +1,5 @@
 <!--▼弊社制作のタイトルバナー-->
-<img src="/img/right_product/relate.jpg" width="570" height="33">
+<img src="<!--{$smarty.const.URL_DIR}-->img/right_product/relate.jpg" width="570" height="33">
 <!--▲弊社制作のタイトルバナー-->
 
 <!--▼本文-->

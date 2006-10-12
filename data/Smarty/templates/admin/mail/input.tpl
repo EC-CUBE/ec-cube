@@ -26,25 +26,25 @@
 						<table width="706" border="0" cellspacing="0" cellpadding="0" summary=" ">
 							<tr><td height="14"></td></tr>
 							<tr>
-								<td colspan="3"><img src="/img/contents/main_top.jpg" width="706" height="14" alt=""></td>
+								<td colspan="3"><img src="<!--{$smarty.const.URL_DIR}-->img/contents/main_top.jpg" width="706" height="14" alt=""></td>
 							</tr>
 							<tr>
-								<td background="/img/contents/main_left.jpg"><img src="/img/common/_.gif" width="14" height="1" alt=""></td>
+								<td background="/img/contents/main_left.jpg"><img src="<!--{$smarty.const.URL_DIR}-->img/common/_.gif" width="14" height="1" alt=""></td>
 								<td bgcolor="#cccccc">
 								<table width="678" border="0" cellspacing="0" cellpadding="0" summary=" ">
 									<tr>
-										<td colspan="3"><img src="/img/contents/contents_title_top.gif" width="678" height="7" alt=""></td>
+										<td colspan="3"><img src="<!--{$smarty.const.URL_DIR}-->img/contents/contents_title_top.gif" width="678" height="7" alt=""></td>
 									</tr>
 									<tr>
-										<td background="/img/contents/contents_title_left_bg.gif"><img src="/img/contents/contents_title_left.gif" width="22" height="12" alt=""></td>
+										<td background="/img/contents/contents_title_left_bg.gif"><img src="<!--{$smarty.const.URL_DIR}-->img/contents/contents_title_left.gif" width="22" height="12" alt=""></td>
 										<td bgcolor="#636469" width="638" class="fs14n"><span class="white"><!--コンテンツタイトル-->配信設定：配信内容設定</span></td>
-										<td background="/img/contents/contents_title_right_bg.gif"><img src="/img/common/_.gif" width="18" height="1" alt=""></td>
+										<td background="/img/contents/contents_title_right_bg.gif"><img src="<!--{$smarty.const.URL_DIR}-->img/common/_.gif" width="18" height="1" alt=""></td>
 									</tr>
 									<tr>
-										<td colspan="3"><img src="/img/contents/contents_title_bottom.gif" width="678" height="7" alt=""></td>
+										<td colspan="3"><img src="<!--{$smarty.const.URL_DIR}-->img/contents/contents_title_bottom.gif" width="678" height="7" alt=""></td>
 									</tr>
 									<tr>
-										<td colspan="3"><img src="/img/contents/main_bar.jpg" width="678" height="10" alt=""></td>
+										<td colspan="3"><img src="<!--{$smarty.const.URL_DIR}-->img/contents/main_bar.jpg" width="678" height="10" alt=""></td>
 									</tr>
 								</table>
 
@@ -85,7 +85,7 @@
 
 								<!--{if $list_data.template_id}-->
 									<table width="678" border="0" cellspacing="0" cellpadding="0" summary=" ">
-										<tr><td colspan="3"><img src="/img/contents/main_bar.jpg" width="678" height="10" alt=""></td></tr>
+										<tr><td colspan="3"><img src="<!--{$smarty.const.URL_DIR}-->img/contents/main_bar.jpg" width="678" height="10" alt=""></td></tr>
 									</table>
 	
 	
@@ -111,12 +111,12 @@
 
 								<table width="678" border="0" cellspacing="0" cellpadding="0" summary=" ">
 									<tr>
-										<td bgcolor="#cccccc"><img src="/img/common/_.gif" width="1" height="5" alt=""></td>
-										<td><img src="/img/contents/tbl_top.gif" width="676" height="7" alt=""></td>
-										<td bgcolor="#cccccc"><img src="/img/common/_.gif" width="1" height="5" alt=""></td>
+										<td bgcolor="#cccccc"><img src="<!--{$smarty.const.URL_DIR}-->img/common/_.gif" width="1" height="5" alt=""></td>
+										<td><img src="<!--{$smarty.const.URL_DIR}-->img/contents/tbl_top.gif" width="676" height="7" alt=""></td>
+										<td bgcolor="#cccccc"><img src="<!--{$smarty.const.URL_DIR}-->img/common/_.gif" width="1" height="5" alt=""></td>
 									</tr>
 									<tr>
-										<td bgcolor="#cccccc"><img src="/img/common/_.gif" width="1" height="10" alt=""></td>
+										<td bgcolor="#cccccc"><img src="<!--{$smarty.const.URL_DIR}-->img/common/_.gif" width="1" height="10" alt=""></td>
 										<td bgcolor="#e9e7de" align="center">
 										<table border="0" cellspacing="0" cellpadding="0" summary=" ">
 											<tr>
@@ -124,23 +124,23 @@
 													<input type="hidden" name="mode" value="template">
 													<input type="hidden" name="mail_method" value="<!--{$list_data.mail_method}-->">
 
-													<input type="image" onMouseover="chgImgImageSubmit('/img/contents/btn_search_back_on.jpg',this)" onMouseout="chgImgImageSubmit('/img/contents/btn_search_back.jpg',this)" src="/img/contents/btn_search_back.jpg" width="123" height="24" alt="検索画面に戻る" border="0" name="subm02" onClick="return fnInsertValAndSubmit( document.form1, 'mode', 'back', '' )">
-													<input type="image" onMouseover="chgImgImageSubmit('/img/contents/btn_confirm_on.jpg',this)" onMouseout="chgImgImageSubmit('/img/contents/btn_confirm.jpg',this)" src="/img/contents/btn_confirm.jpg" width="123" height="24" alt="確認ページへ" border="0" name="subm03" onClick="return fnInsertValAndSubmit( document.form1, 'mode', 'regist_confirm', '' )" >
+													<input type="image" onMouseover="chgImgImageSubmit('/img/contents/btn_search_back_on.jpg',this)" onMouseout="chgImgImageSubmit('/img/contents/btn_search_back.jpg',this)" src="<!--{$smarty.const.URL_DIR}-->img/contents/btn_search_back.jpg" width="123" height="24" alt="検索画面に戻る" border="0" name="subm02" onClick="return fnInsertValAndSubmit( document.form1, 'mode', 'back', '' )">
+													<input type="image" onMouseover="chgImgImageSubmit('/img/contents/btn_confirm_on.jpg',this)" onMouseout="chgImgImageSubmit('/img/contents/btn_confirm.jpg',this)" src="<!--{$smarty.const.URL_DIR}-->img/contents/btn_confirm.jpg" width="123" height="24" alt="確認ページへ" border="0" name="subm03" onClick="return fnInsertValAndSubmit( document.form1, 'mode', 'regist_confirm', '' )" >
 												</td>
 											</tr>
 										</table>
 										</td>
-										<td bgcolor="#cccccc"><img src="/img/common/_.gif" width="1" height="10" alt=""></td>
+										<td bgcolor="#cccccc"><img src="<!--{$smarty.const.URL_DIR}-->img/common/_.gif" width="1" height="10" alt=""></td>
 									</tr>
 									<tr>
-										<td colspan="3"><img src="/img/contents/tbl_bottom.gif" width="678" height="8" alt=""></td>
+										<td colspan="3"><img src="<!--{$smarty.const.URL_DIR}-->img/contents/tbl_bottom.gif" width="678" height="8" alt=""></td>
 									</tr>
 								</table>
 								</td>
-								<td background="/img/contents/main_right.jpg"><img src="/img/common/_.gif" width="14" height="1" alt=""></td>
+								<td background="/img/contents/main_right.jpg"><img src="<!--{$smarty.const.URL_DIR}-->img/common/_.gif" width="14" height="1" alt=""></td>
 							</tr>
 							<tr>
-								<td colspan="3"><img src="/img/contents/main_bottom.jpg" width="706" height="14" alt=""></td>
+								<td colspan="3"><img src="<!--{$smarty.const.URL_DIR}-->img/contents/main_bottom.jpg" width="706" height="14" alt=""></td>
 							</tr>
 							<tr><td height="30"></td></tr>
 						</table>

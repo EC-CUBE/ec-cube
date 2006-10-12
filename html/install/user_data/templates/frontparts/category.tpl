@@ -40,9 +40,9 @@
 								<!--{/if}-->
 								<tr>
 									<!--{if $arrCategory[cnt].category_id == $tpl_category_id || $arrCategory[cnt].category_id == $tpl_parent_category_id}-->
-									<td><a href="<!--{$smarty.const.LIST_C_HTML}--><!--{$arrCategory[cnt].category_id}-->.html" class="link01"><img src="/img/left/category_icon_down.gif" width="14" height="11" alt="" /></a></td>
+									<td><a href="<!--{$smarty.const.LIST_C_HTML}--><!--{$arrCategory[cnt].category_id}-->.html" class="link01"><img src="<!--{$smarty.const.URL_DIR}-->img/left/category_icon_down.gif" width="14" height="11" alt="" /></a></td>
 									<!--{else}-->
-									<td><a href="<!--{$smarty.const.LIST_C_HTML}--><!--{$arrCategory[cnt].category_id}-->.html" class="link01"><img src="/img/left/category_icon.gif" width="14" height="11" alt="" /></a></td>
+									<td><a href="<!--{$smarty.const.LIST_C_HTML}--><!--{$arrCategory[cnt].category_id}-->.html" class="link01"><img src="<!--{$smarty.const.URL_DIR}-->img/left/category_icon.gif" width="14" height="11" alt="" /></a></td>
 									<!--{/if}-->									
 									<!--{if $arrCategory[cnt].category_id != $tpl_category_id}-->
 									<td class="fs12st"><a href="<!--{$smarty.const.LIST_C_HTML}--><!--{$arrCategory[cnt].category_id}-->.html" class="link01"><!--{$arrCategory[cnt].category_name|escape}-->(<!--{$arrCategory[cnt].product_count|default:0}-->)</a></td>
