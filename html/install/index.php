@@ -396,6 +396,7 @@ function lfDispComplete($objPage) {
 	$objPage->arrHidden['db_skip'] = $_POST['db_skip'];
 	$objPage->tpl_mainpage = 'complete.tpl';
 	$objPage->tpl_mode = 'complete';
+	$objPage->tpl_siteurl = $objWebParam->getValue('normal_url');	
 	return $objPage;
 }
 
@@ -582,6 +583,18 @@ function lfMakeConfigFile() {
 		$root_dir = $root_dir . "/";
 	}
 	
+	$normal_url = $objWebParam->getValue('normal_url');
+	// 語尾に'/'をつける
+	if (!ereg("/$", $normal_url)) {
+		$normal_url = $normal_url . "/";
+	}
+	
+	$secure_url = $objWebParam->getValue('secure_url');
+	// 語尾に'/'をつける
+	if (!ereg("/$", $secure_url)) {
+		$secure_url = $secure_url . "/";
+	}
+			
 	$filepath = $objWebParam->getValue('install_dir') . "../data/install.inc";
 	
 	$config_data = 

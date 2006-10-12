@@ -16,7 +16,7 @@
 	<td align="center" class="fs12">
 		<strong>EC CUBE インストールが完了しました。</strong><br>
 		<br>
-		<a href="/admin/">管理画面</a>にログインできます。<br>
+		<a href="<!--{$tpl_sslurl}-->admin/">管理画面</a>にログインできます。<br>
 		ID:admin PASSWORD:password
 		
 	</td>
