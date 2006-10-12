@@ -72,7 +72,7 @@ $count = $objQuery->count("dtb_best_products", "category_id = ?", array($categor
 if(($count >= BEST_MIN) && lfIsRootCategory($category_id) && ($_GET['mode'] != 'search') ) {
 	// 商品TOPの表示処理
 	/** 必ず指定する **/
-	$objPage->tpl_mainpage = HTML_PATH . "user_data/templates/list.tpl';		// メインテンプレート	
+	$objPage->tpl_mainpage = HTML_PATH . "user_data/templates/list.tpl";		// メインテンプレート	
 	
 	$objPage->arrBestItems = sfGetBestProducts($conn, $category_id);
 	$objPage->BEST_ROOP_MAX = ceil((BEST_MAX-1)/2);
@@ -164,7 +164,7 @@ function lfDispProductsList($category_id, $name, $disp_num, $orderby) {
 	$objPage->tpl_pageno = $_POST['pageno'];
 
 	//表示件数でテンプレートを切り替える
-	$objPage->tpl_mainpage = ROOT_DIR . 'html/user_data/templates/list.tpl';		// メインテンプレート		
+	$objPage->tpl_mainpage = HTML_PATH . "user_data/templates/list.tpl";		// メインテンプレート		
 
 	//表示順序
 	switch($orderby) {
