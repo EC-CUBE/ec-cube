@@ -422,7 +422,7 @@ function lfInitWebParam($objWebParam) {
 		$secure_url = "http://" . $_SERVER['HTTP_HOST'] . $dir;
 	}
 	
-	if(define('DEFAULT_DSN')) {
+	if(defined('DEFAULT_DSN')) {
 		print(DEFAULT_DSN);
 	}	
 
