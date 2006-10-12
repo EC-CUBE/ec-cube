@@ -8,8 +8,6 @@
 $current_dir = realpath(dirname(__FILE__));
 require_once($current_dir . "/../module/DB.php");
 
-print("ok");
-
 $objDbConn = "";
 
 class SC_DbConn{
