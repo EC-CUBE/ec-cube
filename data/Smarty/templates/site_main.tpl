@@ -140,7 +140,7 @@
 
 <!--¢§FOTTER-->
 <!--{if $arrPageLayout.footer_chk != 2}--> 
-<!--{include file="`$smarty.const.ROOT_DIR`html/user_data/include/footer.tpl"}-->
+<!--{include file="`$smarty.const.HTML_PATH`user_data/include/footer.tpl"}-->
 <!--{/if}-->
 <!--¢¥FOTTER-->
 </div>

@@ -173,39 +173,39 @@ define ("CATEGORY_HEAD", ">");							// 親カテゴリ表示文字
 define ("START_BIRTH_YEAR", 1901);						// 生年月日選択開始年
 
 /* システムパス */
-define ("LOG_PATH", ROOT_DIR . "../data/logs/site.log");							// ログファイル
-define ("CUSTOMER_LOG_PATH", ROOT_DIR . "../data/logs/customer.log");				// 会員ログイン ログファイル
-define ("TEMPLATE_ADMIN_DIR", ROOT_DIR . "../data/Smarty/templates/admin");		// SMARTYテンプレート
-define ("TEMPLATE_DIR", ROOT_DIR . "../data/Smarty/templates");					// SMARTYテンプレート
-define ("COMPILE_ADMIN_DIR", ROOT_DIR . "../data/Smarty/templates_c/admin");		// SMARTYコンパイル
-define ("COMPILE_DIR", ROOT_DIR . "../data/Smarty/templates_c");					// SMARTYコンパイル
+define ("LOG_PATH", DATA_PATH . "logs/site.log");							// ログファイル
+define ("CUSTOMER_LOG_PATH", DATA_PATH . "logs/customer.log");				// 会員ログイン ログファイル
+define ("TEMPLATE_ADMIN_DIR", DATA_PATH . "Smarty/templates/admin");		// SMARTYテンプレート
+define ("TEMPLATE_DIR", DATA_PATH . "Smarty/templates");					// SMARTYテンプレート
+define ("COMPILE_ADMIN_DIR", DATA_PATH . "Smarty/templates_c/admin");		// SMARTYコンパイル
+define ("COMPILE_DIR", DATA_PATH . "Smarty/templates_c");					// SMARTYコンパイル
 
-define ("TEMPLATE_FTP_DIR", ROOT_DIR . "user_data/templates/");			// SMARTYテンプレート(FTP許可)
-define ("COMPILE_FTP_DIR", ROOT_DIR . "../data/Smarty/templates_c/user_data/");	// SMARTYコンパイル
+define ("TEMPLATE_FTP_DIR", USER_PATH . "templates/");			// SMARTYテンプレート(FTP許可)
+define ("COMPILE_FTP_DIR", DATA_PATH . "Smarty/templates_c/user_data/");	// SMARTYコンパイル
 
-define ("IMAGE_TEMP_DIR", ROOT_DIR . "upload/temp_image/");				// 画像一時保存
-define ("IMAGE_SAVE_DIR", ROOT_DIR . "upload/save_image/");				// 画像保存先
-define ("IMAGE_TEMP_URL", URL_DIR . "upload/temp_image/");								// 画像一時保存URL
-define ("IMAGE_SAVE_URL", URL_DIR . "upload/save_image/");								// 画像保存先URL
-define ("CSV_TEMP_DIR", ROOT_DIR. "../upload/csv/");							// エンコードCSVの一時保存先
-define ("NO_IMAGE_URL", URL_DIR . "misc/blank.gif");										// 画像がない場合に表示
+define ("IMAGE_TEMP_DIR", HTML_PATH . "upload/temp_image/");				// 画像一時保存
+define ("IMAGE_SAVE_DIR", HTML_PATH . "upload/save_image/");				// 画像保存先
+define ("IMAGE_TEMP_URL", URL_DIR . "upload/temp_image/");					// 画像一時保存URL
+define ("IMAGE_SAVE_URL", URL_DIR . "upload/save_image/");					// 画像保存先URL
+define ("CSV_TEMP_DIR", HTML_PATH . "upload/csv/");							// エンコードCSVの一時保存先
+define ("NO_IMAGE_URL", URL_DIR . "misc/blank.gif");						// 画像がない場合に表示
 
 /* URLパス */
-define ("URL_SYSTEM_TOP", URL_DIR . "admin/system/index.php");		// システム管理トップ
-define ("URL_CLASS_REGIST", URL_DIR . "admin/products/class.php");	// 規格登録
+define ("URL_SYSTEM_TOP", URL_DIR . "admin/system/index.php");			// システム管理トップ
+define ("URL_CLASS_REGIST", URL_DIR . "admin/products/class.php");		// 規格登録
 define ("URL_INPUT_ZIP", URL_DIR . "input_zip.php");					// 郵便番号入力
-define ("URL_DELIVERY_TOP", URL_DIR . "admin/basis/delivery.php");	// 配送業者登録
+define ("URL_DELIVERY_TOP", URL_DIR . "admin/basis/delivery.php");		// 配送業者登録
 define ("URL_PAYMENT_TOP", URL_DIR . "admin/basis/payment.php");		// 支払い方法登録
 define ("URL_HOME", URL_DIR . "admin/home.php");						// ホーム
-define ("URL_LOGIN", URL_DIR . "admin/index.php");					// ログインページ
+define ("URL_LOGIN", URL_DIR . "admin/index.php");						// ログインページ
 define ("URL_SEARCH_TOP", URL_DIR . "admin/products/index.php");		// 商品検索ページ
 define ("URL_ORDER_EDIT", URL_DIR . "admin/order/edit.php");			// 注文編集ページ
-define ("URL_SEARCH_ORDER", URL_DIR . "admin/order/index.php");		// 注文編集ページ
+define ("URL_SEARCH_ORDER", URL_DIR . "admin/order/index.php");			// 注文編集ページ
 define ("URL_ORDER_MAIL", URL_DIR . "admin/order/mail.php");			// 注文編集ページ
 define ("URL_LOGOUT", URL_DIR . "admin/logout.php");					// ログアウトページ
-define ("URL_SYSTEM_CSV", URL_DIR . "admin/system/member_csv.php");	// システム管理CSV出力ページ
-define ("URL_SYSTEM_TOP", URL_DIR . "admin/system/index.php");		// システム管理TOPページ
-define ("URL_ADMIN_CSS", URL_DIR . "admin/css/");					// 管理ページ用CSS保管ディレクトリ
+define ("URL_SYSTEM_CSV", URL_DIR . "admin/system/member_csv.php");		// システム管理CSV出力ページ
+define ("URL_SYSTEM_TOP", URL_DIR . "admin/system/index.php");			// システム管理TOPページ
+define ("URL_ADMIN_CSS", URL_DIR . "admin/css/");						// 管理ページ用CSS保管ディレクトリ
 
 /* 認証エラー */
 define ("SUCCESS", 0);			// アクセス成功

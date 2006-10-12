@@ -88,7 +88,7 @@ if ($_POST['mode'] == 'preview') {
 	$arrPreData = lfgetPageData(" page_id = ? " , array($page_id));
 
 	// tplファイルの削除
-	$del_tpl = ROOT_DIR . USER_DIR . "templates/" . $arrPreData[0]['filename'] . '.tpl';
+	$del_tpl = USER_PATH . "templates/" . $arrPreData[0]['filename'] . '.tpl';
 	if (file_exists($del_tpl)){
 		unlink($del_tpl);	
 	}
@@ -97,7 +97,7 @@ if ($_POST['mode'] == 'preview') {
 	lfEntryPageData($_POST);
 
 	// TPLファイル作成
-	$cre_tpl = ROOT_DIR . USER_DIR . "templates/" . $url . '.tpl';
+	$cre_tpl = USER_PATH . "templates/" . $url . '.tpl';
 	lfCreateFile($cre_tpl);
 	
 	// blocposition を削除
@@ -146,12 +146,12 @@ if ($_POST['mode'] == 'confirm') {
 			lfDelFile($arrPageData[0]);
 			
 			// PHPファイル作成
-			$cre_php = ROOT_DIR . USER_DIR . $_POST['url'] . ".php";
+			$cre_php = USER_PATH . $_POST['url'] . ".php";
 			lfCreatePHPFile($cre_php);
 		}
 
 		// TPLファイル作成
-		$cre_tpl = dirname( ROOT_DIR . USER_DIR . "templates/" . $_POST['url']) . "/" . basename($_POST['url']) . '.tpl';
+		$cre_tpl = dirname(USER_PATH . "templates/" . $_POST['url']) . "/" . basename($_POST['url']) . '.tpl';
 
 		lfCreateFile($cre_tpl);
 

@@ -120,7 +120,7 @@
 									<tr class="fs12n">
 										<td bgcolor="#ffffff" align="center">
 											<!--{if $browser_type == 1 }-->
-												<div style="zoom:0.8"><!--{include file="`$smarty.const.ROOT_DIR`html/user_data/include/preview/footer.tpl"}--></div>
+												<div style="zoom:0.8"><!--{include file="`$smarty.const.HTML_PATH`/user_data/include/preview/footer.tpl"}--></div>
 											<!--{ else }-->
 												<span class="red12"><b>プレビューはIEでのみ表示されます。</b></span>
 											<!--{ /if }-->

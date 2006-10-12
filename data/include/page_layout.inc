@@ -149,11 +149,11 @@ function lfGetNavi($arrNavi, $target_id){
 		// 指定された箇所と同じデータだけを取得する
 		if ($target_id == $val['target_id']){
 			if ($val['php_path'] != '') {
-				$arrNavi[$key]['php_path'] = ROOT_DIR . $val['php_path'];
+				$arrNavi[$key]['php_path'] = HTML_PATH . $val['php_path'];
 				$arrNavi[$key]['include'] = "<!--{include file='".$val['php_path']."'}-->";
 			}else{
-				$arrNavi[$key]['tpl_path'] = ROOT_DIR . $val['tpl_path'];
-				$arrNavi[$key]['include'] = "<!--{include file='". ROOT_DIR . $val['tpl_path'] ."'}-->";
+				$arrNavi[$key]['tpl_path'] = HTML_PATH . $val['tpl_path'];
+				$arrNavi[$key]['include'] = "<!--{include file='". HTML_PATH . $val['tpl_path'] ."'}-->";
 			}
 			
 			$arrRet[] = $arrNavi[$key];
@@ -195,8 +195,8 @@ function lfDelPageData($page_id){
  **************************************************************************************************************/
 function lfDelFile($arrData){
 	// ファイルディレクトリ取得
-	$del_php = ROOT_DIR . $arrData['php_dir'] . $arrData['filename'] . ".php";
-	$del_tpl = ROOT_DIR . $arrData['tpl_dir'] . $arrData['filename'] . ".tpl";
+	$del_php = HTML_PATH . $arrData['php_dir'] . $arrData['filename'] . ".php";
+	$del_tpl = HTML_PATH . $arrData['tpl_dir'] . $arrData['filename'] . ".tpl";
 
 	// phpファイルの削除
 	if (file_exists($del_php)){

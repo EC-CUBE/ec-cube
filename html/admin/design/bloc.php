@@ -90,13 +90,13 @@ if ($_POST['mode'] == 'confirm') {
 		lfEntryBlocData($_POST);
 		
 		// ファイルの削除
-		$del_file=ROOT_DIR . BLOC_DIR . $arrBlocData[0]['filename']. '.tpl';
+		$del_file=BLOC_PATH . $arrBlocData[0]['filename']. '.tpl';
 		if (file_exists($del_file)) {
 			unlink($del_file);
 		}
 		
 		// ファイル作成
-		$fp = fopen(ROOT_DIR . BLOC_DIR . $_POST['filename'] . '.tpl',"w");
+		$fp = fopen(BLOC_PATH . $_POST['filename'] . '.tpl',"w");
 		fwrite($fp, $_POST['bloc_html']);
 		fclose($fp);
 		
@@ -135,7 +135,7 @@ if ($_POST['mode'] == 'delete') {
 		$ret = $objDBConn->query($sql,array($_POST['bloc_id']));
 	
 		// ファイルの削除
-		$del_file = ROOT_DIR . BLOC_DIR . $arrBlocData[0]['filename']. '.tpl';
+		$del_file = BLOC_PATH . $arrBlocData[0]['filename']. '.tpl';
 		if(file_exists($del_file)){
 			unlink($del_file);
 		}

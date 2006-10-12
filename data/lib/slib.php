@@ -59,13 +59,13 @@ function sfInitInstall() {
 			header("Location: ./install/");
 		}	
 	} else {
-		$path = ROOT_DIR . "html/install/index.php";
+		$path = HTML_PATH . "install/index.php";
 		if(file_exists($path)) {
 			sfErrorHeader(">> /install/index.phpは、インストール完了後にファイルを削除してください。");
 		}
 		
-		// install.incのチェック
-		$path = ROOT_DIR . "html/install.inc";
+		// 旧バージョンのinstall.incのチェック
+		$path = HTML_PATH . "install.inc";
 		if(file_exists($path)) {
 			sfErrorHeader(">> /install.incはセキュリティーホールとなります。削除してください。");
 		}		
