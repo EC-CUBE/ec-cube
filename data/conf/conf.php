@@ -173,21 +173,21 @@ define ("CATEGORY_HEAD", ">");							// 親カテゴリ表示文字
 define ("START_BIRTH_YEAR", 1901);						// 生年月日選択開始年
 
 /* システムパス */
-define ("LOG_PATH", ROOT_DIR . "data/logs/site.log");							// ログファイル
-define ("CUSTOMER_LOG_PATH", ROOT_DIR . "data/logs/customer.log");				// 会員ログイン ログファイル
-define ("TEMPLATE_ADMIN_DIR", ROOT_DIR . "data/Smarty/templates/admin");		// SMARTYテンプレート
-define ("TEMPLATE_DIR", ROOT_DIR . "data/Smarty/templates");					// SMARTYテンプレート
-define ("COMPILE_ADMIN_DIR", ROOT_DIR . "data/Smarty/templates_c/admin");		// SMARTYコンパイル
-define ("COMPILE_DIR", ROOT_DIR . "data/Smarty/templates_c");					// SMARTYコンパイル
+define ("LOG_PATH", ROOT_DIR . "../data/logs/site.log");							// ログファイル
+define ("CUSTOMER_LOG_PATH", ROOT_DIR . "../data/logs/customer.log");				// 会員ログイン ログファイル
+define ("TEMPLATE_ADMIN_DIR", ROOT_DIR . "../data/Smarty/templates/admin");		// SMARTYテンプレート
+define ("TEMPLATE_DIR", ROOT_DIR . "../data/Smarty/templates");					// SMARTYテンプレート
+define ("COMPILE_ADMIN_DIR", ROOT_DIR . "../data/Smarty/templates_c/admin");		// SMARTYコンパイル
+define ("COMPILE_DIR", ROOT_DIR . "../data/Smarty/templates_c");					// SMARTYコンパイル
 
-define ("TEMPLATE_FTP_DIR", ROOT_DIR . "html/user_data/templates/");			// SMARTYテンプレート(FTP許可)
-define ("COMPILE_FTP_DIR", ROOT_DIR . "data/Smarty/templates_c/user_data/");	// SMARTYコンパイル
+define ("TEMPLATE_FTP_DIR", ROOT_DIR . "user_data/templates/");			// SMARTYテンプレート(FTP許可)
+define ("COMPILE_FTP_DIR", ROOT_DIR . "../data/Smarty/templates_c/user_data/");	// SMARTYコンパイル
 
-define ("IMAGE_TEMP_DIR", ROOT_DIR . "html/upload/temp_image/");				// 画像一時保存
-define ("IMAGE_SAVE_DIR", ROOT_DIR . "html/upload/save_image/");				// 画像保存先
+define ("IMAGE_TEMP_DIR", ROOT_DIR . "upload/temp_image/");				// 画像一時保存
+define ("IMAGE_SAVE_DIR", ROOT_DIR . "upload/save_image/");				// 画像保存先
 define ("IMAGE_TEMP_URL", "/upload/temp_image/");								// 画像一時保存URL
 define ("IMAGE_SAVE_URL", "/upload/save_image/");								// 画像保存先URL
-define ("CSV_TEMP_DIR", ROOT_DIR. "html/upload/csv/");							// エンコードCSVの一時保存先
+define ("CSV_TEMP_DIR", ROOT_DIR. "../upload/csv/");							// エンコードCSVの一時保存先
 define ("NO_IMAGE_URL", "/misc/blank.gif");										// 画像がない場合に表示
 
 /* URLパス */
