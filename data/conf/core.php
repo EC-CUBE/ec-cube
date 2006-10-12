@@ -14,8 +14,8 @@
 // DATAディレクトリパス
 define("DATA_PATH", ROOT_DIR . "../data/");
 
-// テンプレートファイル保存先
-define("USER_DIR", "html/user_data/");
+// ユーザテンプレートファイル保存先
+define("USER_DIR", ROOT_DIR . "user_data/");
 
 // テンプレートファイル保存先
 define("INCLUDE_DIR", USER_DIR."include/");
@@ -24,7 +24,7 @@ define("INCLUDE_DIR", USER_DIR."include/");
 define("BLOC_DIR", "html/user_data/include/bloc/");
 
 // ユーザー作成画面のデフォルトPHPファイル
-define("USER_DEF_PHP", ROOT_DIR."html/__default.php");
+define("USER_DEF_PHP", ROOT_DIR . "__default.php");
 
 // その他画面のデフォルトページレイアウト
 define("DEF_LAYOUT", "products/list.php");
