@@ -2452,7 +2452,9 @@ function sfCopyDir($src, $des, $mess, $override = false){
 	
 	// ディレクトリがなければ作成する
 	if(!file_exists($des)) {
-		mkdir($des, $mod[2]);
+		if(!mkdir($des, $mod[2])) {
+			print($des);
+		}
 	}
 	
 	$fileArray=glob( $src."*" );

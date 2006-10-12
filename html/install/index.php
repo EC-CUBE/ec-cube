@@ -520,12 +520,12 @@ function lfCheckDBError($objFormParam) {
 	if(count($objErr->arrErr) == 0) {
 		// 接続確認
 		$dsn = $arrRet['db_type']."://".$arrRet['db_user'].":".$arrRet['db_password']."@".$arrRet['db_server'].":".$arrRet['db_port']."/".$arrRet['db_name'];
-		
-		print($dsn);
-		
 		// Debugモード指定
 		$options['debug'] = 9;
 		$objDB = DB::connect($dsn, $options);
+		
+		sfPrintR($objDB);
+		
 		// 接続エラー
 		if(PEAR::isError($objDB)) {
 			$objErr->arrErr['all'] = ">> " . $objDB->message . "<br>";
