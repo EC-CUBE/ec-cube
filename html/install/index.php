@@ -396,7 +396,7 @@ function lfDispComplete($objPage) {
 	$objPage->arrHidden['db_skip'] = $_POST['db_skip'];
 	$objPage->tpl_mainpage = 'complete.tpl';
 	$objPage->tpl_mode = 'complete';
-	$objPage->tpl_siteurl = $objWebParam->getValue('normal_url');	
+	$objPage->tpl_sslurl = $objWebParam->getValue('secure_url');	
 	return $objPage;
 }
 
