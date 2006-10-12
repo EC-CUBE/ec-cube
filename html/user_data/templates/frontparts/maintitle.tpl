@@ -1,3 +1,4 @@
+使用されている？
 <!--{if $smarty.const.ROOT_CATEGORY_1 == $tpl_root_id}-->
 <div id="maintitle"><img src="<!--{$smarty.const.URL_DIR}-->img/right_product/title_fashion.jpg" width="570" height="40" alt="ファッション" /></div>
 <!--{/if}-->

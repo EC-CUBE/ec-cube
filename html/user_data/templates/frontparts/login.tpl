@@ -1,4 +1,4 @@
-
+使用されている？
 <!--{if $smarty.post.url == ""}-->
 	<!--{assign var=url value="`$smarty.server.REQUEST_URI`"}-->
 <!--{else}-->

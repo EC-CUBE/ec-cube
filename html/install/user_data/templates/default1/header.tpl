@@ -14,7 +14,7 @@
 		</table>
 		<table width="762" border="0" cellspacing="0" cellpadding="0" summary=" ">
 			<tr>
-				<td><a href="/index.php"><img src="<!--{$smarty.const.URL_DIR}-->img/header/logo.gif" width="302" height="81" alt="おふとんのインターネットショッピング ふとん屋サン" border="0"></a></td>
+				<td><a href="<!--{$smarty.const.SITE_URL}-->index.php"><img src="<!--{$smarty.const.URL_DIR}-->img/header/logo.gif" width="302" height="81" alt="おふとんのインターネットショッピング ふとん屋サン" border="0"></a></td>
 				<td>
 				<table width="460" border="0" cellspacing="0" cellpadding="0" summary=" ">
 					<tr><td height="9"></td></tr>

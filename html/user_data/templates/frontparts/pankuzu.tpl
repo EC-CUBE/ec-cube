@@ -1,3 +1,4 @@
+使用されている？
 <div id="pan">
 <span class="fs12n">
 

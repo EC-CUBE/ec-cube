@@ -357,11 +357,11 @@ $arrSTATUS[4] = "オススメ";
 $arrSTATUS[5] = "限定品";
 
 // 商品登録-ステータス画像
-$arrSTATUS_IMAGE[1] = "/img/right_product/icon01.gif";
-$arrSTATUS_IMAGE[2] = "/img/right_product/icon02.gif";
-$arrSTATUS_IMAGE[3] = "/img/right_product/icon03.gif";
-$arrSTATUS_IMAGE[4] = "/img/right_product/icon04.gif";
-$arrSTATUS_IMAGE[5] = "/img/right_product/icon05.gif";
+$arrSTATUS_IMAGE[1] = URL_DIR . "/img/right_product/icon01.gif";
+$arrSTATUS_IMAGE[2] = URL_DIR . "/img/right_product/icon02.gif";
+$arrSTATUS_IMAGE[3] = URL_DIR . "/img/right_product/icon03.gif";
+$arrSTATUS_IMAGE[4] = URL_DIR . "/img/right_product/icon04.gif";
+$arrSTATUS_IMAGE[5] = URL_DIR . "/img/right_product/icon05.gif";
 
 // 入力許可するタグ
 $arrAllowedTag = array(

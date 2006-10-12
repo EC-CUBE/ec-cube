@@ -27,7 +27,7 @@
 		<td bgcolor="#ffffff" align="left" width=100%> 
 
 		<!--{*パンクズ-->
-		<div id="pan"><span class="fs12n"><a href="../index.php">トップページ</a> ＞ <span class="redst">お問い合わせ</span></span></div>
+		<div id="pan"><span class="fs12n"><a href="<!--{$smarty.const.SITE_URL}-->index.php">トップページ</a> ＞ <span class="redst">お問い合わせ</span></span></div>
 		<!--パンクズ*}-->
 
 		<table width="100%" border="0" cellspacing="0" cellpadding="0" summary=" ">

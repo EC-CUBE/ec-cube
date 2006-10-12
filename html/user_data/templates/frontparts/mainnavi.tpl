@@ -1,3 +1,4 @@
+使用されている？
 <!--{if $smarty.const.ROOT_CATEGORY_7 == $tpl_root_id}-->
 <td><a href="<!--{$smarty.const.LIST_C_HTML}--><!--{$smarty.const.ROOT_CATEGORY_7}-->.html"><img src="<!--{$smarty.const.URL_DIR}-->img/other/tv_on.gif" width="109" height="39" alt="TVショッピング"/></a></td>
 <!--{else}-->

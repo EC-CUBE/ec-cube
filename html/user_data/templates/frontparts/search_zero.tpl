@@ -1,3 +1,4 @@
+使用されている？
 <!--検索該当0の時-->
 <table width="570" cellspacing="0" cellpadding="0" summary=" ">
 	<tr><td height="15"></td></tr>

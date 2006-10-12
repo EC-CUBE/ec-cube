@@ -1,3 +1,4 @@
+使用されている？
 				<table cellspacing="0" cellpadding="0" summary=" " id="search">
 					<tr>
 						<td bgcolor="#0e3192" height="3" colspan="3"></td>
