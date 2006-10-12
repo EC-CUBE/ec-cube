@@ -58,7 +58,7 @@
 							<tr>
 								<td><span class="fs12">登録住所以外へのご住所へ送付される場合等にご利用いただくことができます。</span><br>
 								<span class="fs10">※最大<!--{$smarty.const.DELIV_ADDR_MAX}-->件まで登録できます。</span></td>
-								<td align="right"><!--{if $tpl_linemax < 20}--><a href="<!--{$smarty.const.URL_DIR}-->mypage/delivery_addr.php" onclick="win01('/mypage/delivery_addr.php','delivadd','600','640'); return false;" onmouseover="chgImg('<!--{$smarty.const.URL_DIR}-->img/common/newadress_on.gif','newadress');" onmouseout="chgImg('<!--{$smarty.const.URL_DIR}-->img/common/newadress.gif','newadress');" target="_blank"><img src="<!--{$smarty.const.URL_DIR}-->img/common/newadress.gif" width="160" height="22" alt="新しいお届け先を追加" border="0" name="newadress"></a><!--{/if}--></td>
+								<td align="right"><!--{if $tpl_linemax < 20}--><a href="<!--{$smarty.const.URL_DIR}-->mypage/delivery_addr.php" onclick="win01('./delivery_addr.php','delivadd','600','640'); return false;" onmouseover="chgImg('<!--{$smarty.const.URL_DIR}-->img/common/newadress_on.gif','newadress');" onmouseout="chgImg('<!--{$smarty.const.URL_DIR}-->img/common/newadress.gif','newadress');" target="_blank"><img src="<!--{$smarty.const.URL_DIR}-->img/common/newadress.gif" width="160" height="22" alt="新しいお届け先を追加" border="0" name="newadress"></a><!--{/if}--></td>
 							</tr>
 							<tr><td height="10"></td></tr>
 						</table>
