@@ -385,7 +385,7 @@ function lfSetPreData($arrPageData){
 	}
 
 	// プレビュー用tplファイルのコピー
-	copy(HTML_DIR . $arrPageData[0]['tpl_dir'] . $arrPageData[0]['filename'] . ".tpl", USER_PATH . "templates/" . $filename . ".tpl");
+	copy(HTML_PATH . $arrPageData[0]['tpl_dir'] . $arrPageData[0]['filename'] . ".tpl", USER_PATH . "templates/" . $filename . ".tpl");
 	
 	// 更新データの取得
 	$sql = "select page_name, header_chk, footer_chk from dtb_pagelayout where page_id = ?";
