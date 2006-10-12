@@ -11,6 +11,9 @@ require_once($include_dir . "/../data/conf/conf.php");
 print("ok0");
 
 require_once($include_dir . "/../data/lib/glib.php");
+
+print("ok0");
+
 require_once($include_dir . "/../data/lib/slib.php");
 
 print("ok0");
