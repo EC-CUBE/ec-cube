@@ -270,6 +270,10 @@ function lfDispStep0($objPage) {
 		if(file_exists($val)) {
 			$mode = lfGetFileMode($val);
 			
+			$real_path = realpath($val);
+			
+			print($real_path);
+			
 			// ディレクトリの場合
 			if(is_dir($path)) {
 				if($mode == "777") {
