@@ -564,7 +564,7 @@ function lfMakeConfigFile() {
 	global $objDBParam;
 	global $port;
 	
-	$filepath = $objWebParam->getValue('install_dir') . "/data/install.inc";
+	$filepath = $objWebParam->getValue('install_dir') . "../data/install.inc";
 	$domain = $objWebParam->getValue('domain');
 	
 	$root_dir = $objWebParam->getValue('install_dir');
