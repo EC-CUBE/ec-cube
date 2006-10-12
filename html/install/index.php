@@ -422,7 +422,9 @@ function lfInitWebParam($objWebParam) {
 		$secure_url = "http://" . $_SERVER['HTTP_HOST'] . $dir;
 	}
 	
-	print(DEFAULT_DSN);
+	if(define('DEFAULT_DSN')) {
+		print(DEFAULT_DSN);
+	}	
 
 	$objWebParam->addParam("店名", "shop_name", MTEXT_LEN, "", array("EXIST_CHECK","MAX_LENGTH_CHECK"));
 	$objWebParam->addParam("管理者メールアドレス", "admin_mail", MTEXT_LEN, "", array("EXIST_CHECK","EMAIL_CHECK","EMAIL_CHAR_CHECK","MAX_LENGTH_CHECK"));
