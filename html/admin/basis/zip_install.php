@@ -80,7 +80,7 @@ if(!$fp) {
 		$cnt++;
 		// $disp_line件ごとに進捗表示する
 		if($cnt % $disp_line == 0 && $img_cnt < IMAGE_MAX) {
-			print("<img src='/img/install/graph_1_w.gif'>");
+			print("<img src='".URL_DIR."/img/install/graph_1_w.gif'>");
 			MyFlush();
 			$img_cnt++;
 		}
