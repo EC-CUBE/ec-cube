@@ -84,8 +84,6 @@ if ($_POST['mode'] == 'confirm') {
 
 	// エラーがなければ更新処理を行う	
 	if (count($objPage->arrErr) == 0) {
-	
-		
 		// DBへデータを更新する
 		lfEntryBlocData($_POST);
 		

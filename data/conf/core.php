@@ -19,8 +19,8 @@ define("USER_PATH", HTML_PATH . USER_DIR);
 define("USER_INC_PATH", USER_PATH . "include/");
 
 // ブロックファイル保存先
-define("BLOC_DIR", "user_data/include/bloc/");
-define("BLOC_PATH", HTML_PATH . BLOC_DIR);
+define("BLOC_DIR", "include/bloc/");
+define("BLOC_PATH", USER_PATH . BLOC_DIR);
 
 // ユーザー作成画面のデフォルトPHPファイル
 define("USER_DEF_PHP", HTML_PATH . "__default.php");
