@@ -154,7 +154,7 @@ function lfGetNavi($arrNavi, $target_id){
 			}else{
 				//$arrNavi[$key]['tpl_path'] = HTML_PATH . $val['tpl_path'];
 				$arrNavi[$key]['tpl_path'] = HTML_PATH . USER_DIR . $val['tpl_path'];
-				$arrNavi[$key]['include'] = "<!--{include file='". HTML_PATH . $val['tpl_path'] ."'}-->";
+				$arrNavi[$key]['include'] = "<!--{include file='". HTML_PATH . USER_DIR . $val['tpl_path'] ."'}-->";
 			}
 			
 			$arrRet[] = $arrNavi[$key];
