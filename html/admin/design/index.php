@@ -151,7 +151,7 @@ if ($_POST['mode'] == 'confirm' or $_POST['mode'] == 'preview') {
 		lfSetPreData($arrPageData);
 		
 		$_SESSION['preview'] = "ON";
-		//header("location: ". URL_DIR . "preview/index.php");
+		header("location: ". URL_DIR . "preview/index.php");
 	}else{
 		header("location: ./index.php?page_id=$page_id&msg=on");
 	}
