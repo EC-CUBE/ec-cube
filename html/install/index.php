@@ -336,8 +336,8 @@ function lfDispStep0_1($objPage) {
 	$objPage->tpl_mainpage = 'step0_1.tpl';
 	$objPage->tpl_mode = 'step0_1';
 	// ファイルコピー
-	$objPage->copy_mess = sfCopyDir("./user_data/", "../../html/user_data/", $objPage->copy_mess);
-	$objPage->copy_mess = sfCopyDir("./save_image/", "../../html/upload/save_image/", $objPage->copy_mess);	
+	$objPage->copy_mess = sfCopyDir("./user_data/", "../user_data/", $objPage->copy_mess);
+	$objPage->copy_mess = sfCopyDir("./save_image/", "../upload/save_image/", $objPage->copy_mess);	
 	return $objPage;
 }
 
