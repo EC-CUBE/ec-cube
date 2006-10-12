@@ -12,6 +12,9 @@ print("ok0");
 
 require_once($include_dir . "/../data/lib/glib.php");
 require_once($include_dir . "/../data/lib/slib.php");
+
+print("ok0");
+
 require_once($include_dir . "/../data/class/SC_View.php");
 print("ok1");
 
