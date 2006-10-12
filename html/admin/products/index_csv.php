@@ -4,7 +4,8 @@
  *
  * http://www.lockon.co.jp/
  */
-require_once(ROOT_DIR."data/include/csv_output.inc");
+require_once(ROOT_DIR . "../data/include/csv_output.inc");
+
 $arrREVIEW_CVSCOL = array( 
 						'B.name',
 						'A.status',

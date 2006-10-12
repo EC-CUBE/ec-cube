@@ -38,7 +38,7 @@
 			</tr>
 		</table>
 		</td>
-		<td background="./contents/main_right.jpg"><img src="<!--{$smarty.const.URL_DIR}-->img/login/right.jpg" width="46" height="172" alt=""></td>
+		<td background="<!--{$smarty.const.URL_DIR}-->img/contents/main_right.jpg"><img src="<!--{$smarty.const.URL_DIR}-->img/login/right.jpg" width="46" height="172" alt=""></td>
 	</tr>
 	<tr>
 		<td colspan="3"><img src="<!--{$smarty.const.URL_DIR}-->img/login/bottom.jpg" width="556" height="42" alt=""></td>

@@ -96,7 +96,7 @@
 			<!--¡ú¡ú¥¿¥¤¥È¥ë¡ú¡ú-->
 			<table width="878" border="0" cellspacing="0" cellpadding="0" summary=" ">
 				<tr>
-					<!--{assign var=title_image value="<!--{$smarty.const.URL_DIR}-->img/title/title_`$tpl_mainno`.jpg"}-->
+					<!--{assign var=title_image value="`$smarty.const.URL_DIR`img/title/title_`$tpl_mainno`.jpg"}-->
 					<td bgcolor="#525363"><!--¥¿¥¤¥È¥ë²èÁü--><img src="<!--{$title_image}-->" width="141" height="33" ></td>
 					<td background="<!--{$smarty.const.URL_DIR}-->img/title/subtitle_bg.gif">
 					<table width="737" border="0" cellspacing="0" cellpadding="0" summary=" ">

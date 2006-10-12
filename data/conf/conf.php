@@ -191,21 +191,21 @@ define ("CSV_TEMP_DIR", ROOT_DIR. "../upload/csv/");							// ¥¨¥ó¥³¡¼¥ÉCSV¤Î°ì»
 define ("NO_IMAGE_URL", URL_DIR . "misc/blank.gif");										// ²èÁü¤¬¤Ê¤¤¾ì¹ç¤ËÉ½¼¨
 
 /* URL¥Ñ¥¹ */
-define ("URL_SYSTEM_TOP", "/admin/system/index.php");		// ¥·¥¹¥Æ¥à´ÉÍý¥È¥Ã¥×
-define ("URL_CLASS_REGIST", "/admin/products/class.php");	// µ¬³ÊÅÐÏ¿
-define ("URL_INPUT_ZIP", "/input_zip.php");					// Í¹ÊØÈÖ¹æÆþÎÏ
-define ("URL_DELIVERY_TOP", "/admin/basis/delivery.php");	// ÇÛÁ÷¶È¼ÔÅÐÏ¿
-define ("URL_PAYMENT_TOP", "/admin/basis/payment.php");		// »ÙÊ§¤¤ÊýË¡ÅÐÏ¿
-define ("URL_HOME", "/admin/home.php");						// ¥Û¡¼¥à
-define ("URL_LOGIN", "/admin/index.php");					// ¥í¥°¥¤¥ó¥Ú¡¼¥¸
-define ("URL_SEARCH_TOP", "/admin/products/index.php");		// ¾¦ÉÊ¸¡º÷¥Ú¡¼¥¸
-define ("URL_ORDER_EDIT", "/admin/order/edit.php");			// ÃíÊ¸ÊÔ½¸¥Ú¡¼¥¸
-define ("URL_SEARCH_ORDER", "/admin/order/index.php");		// ÃíÊ¸ÊÔ½¸¥Ú¡¼¥¸
-define ("URL_ORDER_MAIL", "/admin/order/mail.php");			// ÃíÊ¸ÊÔ½¸¥Ú¡¼¥¸
-define ("URL_LOGOUT", "/admin/logout.php");					// ¥í¥°¥¢¥¦¥È¥Ú¡¼¥¸
-define ("URL_SYSTEM_CSV", "/admin/system/member_csv.php");	// ¥·¥¹¥Æ¥à´ÉÍýCSV½ÐÎÏ¥Ú¡¼¥¸
-define ("URL_SYSTEM_TOP", "/admin/system/index.php");		// ¥·¥¹¥Æ¥à´ÉÍýTOP¥Ú¡¼¥¸
-define ("URL_ADMIN_CSS", "/admin/css/");					// ´ÉÍý¥Ú¡¼¥¸ÍÑCSSÊÝ´É¥Ç¥£¥ì¥¯¥È¥ê
+define ("URL_SYSTEM_TOP", URL_DIR . "admin/system/index.php");		// ¥·¥¹¥Æ¥à´ÉÍý¥È¥Ã¥×
+define ("URL_CLASS_REGIST", URL_DIR . "admin/products/class.php");	// µ¬³ÊÅÐÏ¿
+define ("URL_INPUT_ZIP", URL_DIR . "input_zip.php");					// Í¹ÊØÈÖ¹æÆþÎÏ
+define ("URL_DELIVERY_TOP", URL_DIR . "admin/basis/delivery.php");	// ÇÛÁ÷¶È¼ÔÅÐÏ¿
+define ("URL_PAYMENT_TOP", URL_DIR . "admin/basis/payment.php");		// »ÙÊ§¤¤ÊýË¡ÅÐÏ¿
+define ("URL_HOME", URL_DIR . "admin/home.php");						// ¥Û¡¼¥à
+define ("URL_LOGIN", URL_DIR . "admin/index.php");					// ¥í¥°¥¤¥ó¥Ú¡¼¥¸
+define ("URL_SEARCH_TOP", URL_DIR . "admin/products/index.php");		// ¾¦ÉÊ¸¡º÷¥Ú¡¼¥¸
+define ("URL_ORDER_EDIT", URL_DIR . "admin/order/edit.php");			// ÃíÊ¸ÊÔ½¸¥Ú¡¼¥¸
+define ("URL_SEARCH_ORDER", URL_DIR . "admin/order/index.php");		// ÃíÊ¸ÊÔ½¸¥Ú¡¼¥¸
+define ("URL_ORDER_MAIL", URL_DIR . "admin/order/mail.php");			// ÃíÊ¸ÊÔ½¸¥Ú¡¼¥¸
+define ("URL_LOGOUT", URL_DIR . "admin/logout.php");					// ¥í¥°¥¢¥¦¥È¥Ú¡¼¥¸
+define ("URL_SYSTEM_CSV", URL_DIR . "admin/system/member_csv.php");	// ¥·¥¹¥Æ¥à´ÉÍýCSV½ÐÎÏ¥Ú¡¼¥¸
+define ("URL_SYSTEM_TOP", URL_DIR . "admin/system/index.php");		// ¥·¥¹¥Æ¥à´ÉÍýTOP¥Ú¡¼¥¸
+define ("URL_ADMIN_CSS", URL_DIR . "admin/css/");					// ´ÉÍý¥Ú¡¼¥¸ÍÑCSSÊÝ´É¥Ç¥£¥ì¥¯¥È¥ê
 
 /* Ç§¾Ú¥¨¥é¡¼ */
 define ("SUCCESS", 0);			// ¥¢¥¯¥»¥¹À®¸ù
