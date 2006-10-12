@@ -603,8 +603,10 @@ function lfMakeConfigFile() {
 	
 	// ディレクトリの取得
 	$url_dir = ereg_replace("^https?://[a-zA-Z0-9_~=&\?\.\-]+", "", $normal_url);
+	
+	$data_path = $root_dir . "../data/";
 			
-	$filepath = $root_dir . "../data/install.inc";
+	$filepath = $data_path . "install.inc";
 	
 	$config_data = 
 	"<?php\n".
@@ -621,9 +623,9 @@ function lfMakeConfigFile() {
 	"    define ('DB_SERVER', '" . $objDBParam->getValue('db_server') . "');\n" .
 	"    define ('DB_NAME', '" . $objDBParam->getValue('db_name') . "');\n" .
 	"    define ('DB_PORT', '" . $objDBParam->getValue('db_port') .  "');\n" .
-	"    define('DATA_PATH', HTML_PATH . '../data/');\n" .
+	"    define('DATA_PATH', ".$data_path.");\n" .
 	"?>";
-		
+	
 	if($fp = fopen($filepath,"w")) {
 		fwrite($fp, $config_data);
 		fclose($fp);
