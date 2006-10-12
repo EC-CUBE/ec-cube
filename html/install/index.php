@@ -491,7 +491,7 @@ function lfCheckWebError($objFormParam) {
 	$objErr->arrErr = $objFormParam->checkError();
 	
 	// ディレクトリ名のみ取得する
-	$normal_dir = ereg_replace("^https?://+([a-zA-Z0-9_~=&\?\.\-])+", "", $arrRet['normal_url']);
+	$normal_dir = ereg_replace("^https?://([a-zA-Z0-9_~=&\?\.\-])+", "", $arrRet['normal_url']);
 	
 	print($normal_dir);
 	
