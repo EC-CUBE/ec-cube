@@ -383,7 +383,9 @@ function lfSetPreData($arrPageData){
 	if (file_exists($del_tpl)){
 		unlink($del_tpl);	
 	}
-
+	
+	print(HTML_PATH . $arrPageData[0]['tpl_dir'] . $arrPageData[0]['filename'] . ".tpl");
+		
 	// プレビュー用tplファイルのコピー
 	copy(HTML_PATH . $arrPageData[0]['tpl_dir'] . $arrPageData[0]['filename'] . ".tpl", USER_PATH . "templates/" . $filename . ".tpl");
 	
