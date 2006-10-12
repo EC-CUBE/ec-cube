@@ -10,13 +10,14 @@ $INC_PATH = realpath( dirname( __FILE__) );
 require_once( $INC_PATH ."/../conf/conf.php" );
 require_once( $INC_PATH ."/../class/SC_DbConn.php" );
 
-print("start");
-
 // 全ページ共通エラー
 $GLOBAL_ERR = "";
 
 // インストール初期処理
 sfInitInstall();
+
+print("start");
+
 // アップデートで生成されたPHPを読み出す
 sfLoadUpdateModule();
 
