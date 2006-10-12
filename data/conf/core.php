@@ -16,7 +16,7 @@ define("USER_DIR", "user_data/");
 define("USER_PATH", HTML_PATH . USER_DIR);
 
 // ユーザインクルードファイル保存先
-define("USER_INC_PATH", USER_PATH, "include/");
+define("USER_INC_PATH", USER_PATH . "include/");
 
 // ブロックファイル保存先
 define("BLOC_DIR", "user_data/include/bloc/");
