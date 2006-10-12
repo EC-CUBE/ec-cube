@@ -56,6 +56,9 @@ function sfTabaleExists($table_name) {
 
 // インストール初期処理
 function sfInitInstall() {
+	
+	print("ok0");
+	
 	// インストール済みが定義されていない。
 	if(!defined('ECCUBE_INSTALL')) {
 		
