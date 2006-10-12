@@ -544,7 +544,6 @@ function lfCheckDBError($objFormParam) {
 			if($arrRet['db_type'] == 'pgsql') {
 				$arrRet = $objDB->getAll("select version()");
 				sfPrintR($arrRet);
-				exit;
 			}
 		}
 	}
