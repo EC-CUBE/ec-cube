@@ -5,8 +5,7 @@
  * http://www.lockon.co.jp/
  */
 require_once("../require.php");
-require_once("../../../data/module/Tar.php");
-
+require_once(DATA_PATH. "module/Tar.php");
 
 define("DB_TYPE", "pgsql");	
 

@@ -27,4 +27,5 @@ require_once($include_dir . "/../../data/class/SC_Customer.php");
 require_once($include_dir . "/../../data/class/SC_Pdf.php");
 
 //fnSetErrorHandler();
+
 ?>

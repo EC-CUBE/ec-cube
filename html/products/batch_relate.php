@@ -6,12 +6,10 @@
  */
 
 /*　この商品を買った人はこんな商品も買っています。集計ファイル  */
-
-$BATCH_DIR = realpath(dirname( __FILE__));
-require_once($BATCH_DIR  . "/../../data/lib/slib.php");
-require_once($BATCH_DIR  . "/../../data/lib/glib.php");
-require_once($BATCH_DIR  . "/../../data/class/SC_Query.php");
-require_once($BATCH_DIR  . "/../../data/class/SC_DbConn.php");
+require_once(DATA_PATH . "lib/slib.php");
+require_once(DATA_PATH . "lib/glib.php");
+require_once(DATA_PATH . "class/SC_Query.php");
+require_once(DATA_PATH . "class/SC_DbConn.php");
 		
 $objQuery = new SC_Query();
 
