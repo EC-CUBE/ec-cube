@@ -13,12 +13,12 @@
 <meta http-equiv="content-type" content="application/xhtml+xml; charset=EUC-JP" />
 <meta http-equiv="content-script-type" content="text/javascript" />
 <meta http-equiv="content-style-type" content="text/css" />
-<script type="text/javascript" src="/js/css.js"></script>
-<script type="text/javascript" src="/js/navi.js"></script>
-<script type="text/javascript" src="/js/win_op.js"></script>
-<script type="text/javascript" src="/js/site.js"></script>
-<script type="text/javascript" src="/js/admin.js"></script>
-<script type="text/javascript" src="/js/css.js"></script>
+<script type="text/javascript" src="<!--{$smarty.const.URL_DIR}-->js/css.js"></script>
+<script type="text/javascript" src="<!--{$smarty.const.URL_DIR}-->js/navi.js"></script>
+<script type="text/javascript" src="<!--{$smarty.const.URL_DIR}-->js/win_op.js"></script>
+<script type="text/javascript" src="<!--{$smarty.const.URL_DIR}-->js/site.js"></script>
+<script type="text/javascript" src="<!--{$smarty.const.URL_DIR}-->js/admin.js"></script>
+<script type="text/javascript" src="<!--{$smarty.const.URL_DIR}-->js/css.js"></script>
 <script type="text/javascript">
 <!--
 self.moveTo(20,20);self.focus();

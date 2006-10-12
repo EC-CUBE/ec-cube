@@ -9,7 +9,7 @@
 <input type="hidden" name="mode" value="login">
 <input type="hidden" name="url" value="<!--{$url|escape}-->">
 <tr>
-	<td background="/img/header/login_left.gif"><img src="<!--{$smarty.const.URL_DIR}-->img/_.gif" width="8" height="1" alt="" /></td>
+	<td background="<!--{$smarty.const.URL_DIR}-->img/header/login_left.gif"><img src="<!--{$smarty.const.URL_DIR}-->img/_.gif" width="8" height="1" alt="" /></td>
 	<td bgcolor="#eeeeee">
 	<table width="268" cellspacing="0" cellpadding="0" summary=" ">
 		<!--{if $tpl_login}-->
@@ -37,6 +37,6 @@
 		<!--{/if}-->
 	</table>
 	</td>
-	<td background="/img/header/login_right.gif"><img src="<!--{$smarty.const.URL_DIR}-->img/_.gif" width="8" height="1" alt="" /></td>
+	<td background="<!--{$smarty.const.URL_DIR}-->img/header/login_right.gif"><img src="<!--{$smarty.const.URL_DIR}-->img/_.gif" width="8" height="1" alt="" /></td>
 </tr>
 </form>

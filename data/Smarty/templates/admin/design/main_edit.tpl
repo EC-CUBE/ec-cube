@@ -37,7 +37,7 @@ else if(navigator.userAgent.indexOf("Mozilla") >= 0){
 <input type="hidden" name="mode" value="">
 <input type="hidden" name="page_id" value="<!--{$page_id}-->">
 	<tr valign="top">
-		<td background="/img/contents/navi_bg.gif" height="402">
+		<td background="<!--{$smarty.const.URL_DIR}-->img/contents/navi_bg.gif" height="402">
 			<!--▼SUB NAVI-->
 			<!--{include file=$tpl_subnavi}-->
 			<!--▲SUB NAVI-->
@@ -54,7 +54,7 @@ else if(navigator.userAgent.indexOf("Mozilla") >= 0){
 						<td colspan="3"><img src="<!--{$smarty.const.URL_DIR}-->img/contents/main_top.jpg" width="706" height="14" alt=""></td>
 					</tr>
 					<tr>
-						<td background="/img/contents/main_left.jpg"><img src="<!--{$smarty.const.URL_DIR}-->img/common/_.gif" width="14" height="1" alt=""></td>
+						<td background="<!--{$smarty.const.URL_DIR}-->img/contents/main_left.jpg"><img src="<!--{$smarty.const.URL_DIR}-->img/common/_.gif" width="14" height="1" alt=""></td>
 						<td bgcolor="#cccccc">
 						
 						<!--登録テーブルここから-->
@@ -63,9 +63,9 @@ else if(navigator.userAgent.indexOf("Mozilla") >= 0){
 								<td colspan="3"><img src="<!--{$smarty.const.URL_DIR}-->img/contents/contents_title_top.gif" width="678" height="7" alt=""></td>
 							</tr>
 							<tr>
-								<td background="/img/contents/contents_title_left_bg.gif"><img src="<!--{$smarty.const.URL_DIR}-->img/contents/contents_title_left.gif" width="22" height="12" alt=""></td>
+								<td background="<!--{$smarty.const.URL_DIR}-->img/contents/contents_title_left_bg.gif"><img src="<!--{$smarty.const.URL_DIR}-->img/contents/contents_title_left.gif" width="22" height="12" alt=""></td>
 								<td bgcolor="#636469" width="638" class="fs14n"><span class="white"><!--コンテンツタイトル-->ページ詳細設定</span></td>
-								<td background="/img/contents/contents_title_right_bg.gif"><img src="<!--{$smarty.const.URL_DIR}-->img/common/_.gif" width="18" height="1" alt=""></td>
+								<td background="<!--{$smarty.const.URL_DIR}-->img/contents/contents_title_right_bg.gif"><img src="<!--{$smarty.const.URL_DIR}-->img/common/_.gif" width="18" height="1" alt=""></td>
 							</tr>
 							<tr>
 								<td colspan="3"><img src="<!--{$smarty.const.URL_DIR}-->img/contents/contents_title_bottom.gif" width="678" height="7" alt=""></td>
@@ -178,7 +178,7 @@ else if(navigator.userAgent.indexOf("Mozilla") >= 0){
 
 						<!--登録テーブルここまで-->
 						</td>
-						<td background="/img/contents/main_right.jpg"><img src="<!--{$smarty.const.URL_DIR}-->img/common/_.gif" width="14" height="1" alt=""></td>
+						<td background="<!--{$smarty.const.URL_DIR}-->img/contents/main_right.jpg"><img src="<!--{$smarty.const.URL_DIR}-->img/common/_.gif" width="14" height="1" alt=""></td>
 					</tr>
 					<tr>
 						<td colspan="3"><img src="<!--{$smarty.const.URL_DIR}-->img/contents/main_bottom.jpg" width="706" height="14" alt=""></td>

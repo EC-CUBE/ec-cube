@@ -12,10 +12,10 @@
 <link rel="stylesheet" href="/user_data/css/contents.css" type="text/css" media="all" />
 <link rel="stylesheet" href="/css/common.css" type="text/css" media="all" />
 <link rel="stylesheet" href="<!--{$tpl_css}-->" type="text/css" media="all" />
-<script type="text/javascript" src="/js/css.js"></script>
-<script type="text/javascript" src="/js/navi.js"></script>
-<script type="text/javascript" src="/js/win_op.js"></script>
-<script type="text/javascript" src="/js/site.js"></script>
+<script type="text/javascript" src="<!--{$smarty.const.URL_DIR}-->js/css.js"></script>
+<script type="text/javascript" src="<!--{$smarty.const.URL_DIR}-->js/navi.js"></script>
+<script type="text/javascript" src="<!--{$smarty.const.URL_DIR}-->js/win_op.js"></script>
+<script type="text/javascript" src="<!--{$smarty.const.URL_DIR}-->js/site.js"></script>
 <title><!--{$arrSiteInfo.shop_name}-->/お客様の声書き込み（確認ページ）</title>
 </head>
 

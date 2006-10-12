@@ -8,10 +8,10 @@
 <head>
 <link rel="stylesheet" href="/css/contents.css" type="text/css">
 <link rel="stylesheet" href="/css/common.css" type="text/css">
-<script type="text/javascript" src="/js/css.js"></script>
-<script type="text/javascript" src="/js/navi.js"></script>
-<script type="text/javascript" src="/js/site.js"></script>
-<script type="text/javascript" src="/js/win_op.js"></script>
+<script type="text/javascript" src="<!--{$smarty.const.URL_DIR}-->js/css.js"></script>
+<script type="text/javascript" src="<!--{$smarty.const.URL_DIR}-->js/navi.js"></script>
+<script type="text/javascript" src="<!--{$smarty.const.URL_DIR}-->js/site.js"></script>
+<script type="text/javascript" src="<!--{$smarty.const.URL_DIR}-->js/win_op.js"></script>
 <title><!--{$arrSiteInfo.shop_name}-->/アンケート　<!--{$QUESTION.title|escape}--></title>
 </head>
 <body bgcolor="#ffffff" text="#555555" link="#0099cc" vlink="#CC0000" alink="#993399" leftmargin="0" topmargin="0" marginwidth="0" marginheight="0">

@@ -20,7 +20,7 @@
 						<td colspan="3"><img src="<!--{$smarty.const.URL_DIR}-->img/contents/home_top.jpg" width="562" height="14" alt=""></td>
 					</tr>
 					<tr>
-						<td background="/img/contents/main_left.jpg"><img src="<!--{$smarty.const.URL_DIR}-->img/common/_.gif" width="14" height="1" alt=""></td>
+						<td background="<!--{$smarty.const.URL_DIR}-->img/contents/main_left.jpg"><img src="<!--{$smarty.const.URL_DIR}-->img/common/_.gif" width="14" height="1" alt=""></td>
 						<td bgcolor="#cccccc">
 						<table width="534" border="0" cellspacing="0" cellpadding="0" summary=" ">
 							<tr>
@@ -100,7 +100,7 @@
 						</table>
 						<!--新規受付一覧ここまで-->
 						</td>
-						<td background="/img/contents/main_right.jpg"><img src="<!--{$smarty.const.URL_DIR}-->img/common/_.gif" width="14" height="1" alt=""></td>
+						<td background="<!--{$smarty.const.URL_DIR}-->img/contents/main_right.jpg"><img src="<!--{$smarty.const.URL_DIR}-->img/common/_.gif" width="14" height="1" alt=""></td>
 					</tr>
 					<tr>
 						<td colspan="3"><img src="<!--{$smarty.const.URL_DIR}-->img/contents/home_bottom.jpg" width="562" height="14" alt=""></td>
@@ -128,15 +128,15 @@
 						<td><img src="<!--{$smarty.const.URL_DIR}-->img/contents/infottl_top_right.jpg" width="5" height="5" alt="" border="0"></td>
 					</tr>
 					<tr>
-						<td background="/img/contents/infottl_day_left.jpg"><img src="<!--{$smarty.const.URL_DIR}-->img/contents/infottl_day_left.jpg" width="12" height="10" alt="" border="0"></td>
-						<td background="/img/contents/infottl_bg01.jpg"><img src="<!--{$smarty.const.URL_DIR}-->img/contents/icon.jpg" width="15" height="9" alt=""><span class="infodate"><!--{$arrInfo[i][0]}--></span></td>
-						<td background="/img/contents/infottl_day_right.jpg"><img src="<!--{$smarty.const.URL_DIR}-->img/contents/infottl_day_right.jpg" width="5" height="10" alt="" border="0"></td>
+						<td background="<!--{$smarty.const.URL_DIR}-->img/contents/infottl_day_left.jpg"><img src="<!--{$smarty.const.URL_DIR}-->img/contents/infottl_day_left.jpg" width="12" height="10" alt="" border="0"></td>
+						<td background="<!--{$smarty.const.URL_DIR}-->img/contents/infottl_bg01.jpg"><img src="<!--{$smarty.const.URL_DIR}-->img/contents/icon.jpg" width="15" height="9" alt=""><span class="infodate"><!--{$arrInfo[i][0]}--></span></td>
+						<td background="<!--{$smarty.const.URL_DIR}-->img/contents/infottl_day_right.jpg"><img src="<!--{$smarty.const.URL_DIR}-->img/contents/infottl_day_right.jpg" width="5" height="10" alt="" border="0"></td>
 					</tr>
 					<tr><td colspan="3"><img src="<!--{$smarty.const.URL_DIR}-->img/contents/infottl_middle.jpg" width="266" height="8" alt="" border="0"></td></tr>
 					<tr>
-						<td background="/img/contents/infottl_bottom_left.jpg"><img src="<!--{$smarty.const.URL_DIR}-->img/common/_.gif" width="12" height="1" alt=""></td>
-						<td background="/img/contents/infottl_bg02.jpg" class="infottl"><!--{$arrInfo[i][1]}--></td>
-						<td background="/img/contents/infottl_bottom_right.jpg"><img src="<!--{$smarty.const.URL_DIR}-->img/common/_.gif" width="5" height="1" alt=""></td>
+						<td background="<!--{$smarty.const.URL_DIR}-->img/contents/infottl_bottom_left.jpg"><img src="<!--{$smarty.const.URL_DIR}-->img/common/_.gif" width="12" height="1" alt=""></td>
+						<td background="<!--{$smarty.const.URL_DIR}-->img/contents/infottl_bg02.jpg" class="infottl"><!--{$arrInfo[i][1]}--></td>
+						<td background="<!--{$smarty.const.URL_DIR}-->img/contents/infottl_bottom_right.jpg"><img src="<!--{$smarty.const.URL_DIR}-->img/common/_.gif" width="5" height="1" alt=""></td>
 					</tr>
 					<tr><td colspan="3"><img src="<!--{$smarty.const.URL_DIR}-->img/contents/infottl_bottom.jpg" width="266" height="7" alt="" border="0"></td></tr>
 					<tr><td height="5"></td></tr>

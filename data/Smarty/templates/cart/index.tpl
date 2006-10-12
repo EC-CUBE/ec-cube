@@ -17,7 +17,7 @@
 				<td><img src="<!--{$smarty.const.URL_DIR}-->img/cart/flame_top.gif" width="700" height="15" alt=""></td>
 			</tr>
 			<tr>
-				<td align="center" background="/img/cart/flame_bg.gif">
+				<td align="center" background="<!--{$smarty.const.URL_DIR}-->img/cart/flame_bg.gif">
 				<table width="680" border="0" cellspacing="0" cellpadding="0" summary=" ">
 					<tr>
 						<td align="center" class="fs14">

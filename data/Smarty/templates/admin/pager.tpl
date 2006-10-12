@@ -12,11 +12,11 @@
 		<table border="0" cellspacing="0" cellpadding="0" summary=" ">
 			<tr>
 				<td><img src="<!--{$smarty.const.URL_DIR}-->img/contents/arrow_left_top.jpg" width="36" height="2" alt=""></td>
-				<td background="/img/contents/number_top_bg.jpg"><img src="<!--{$smarty.const.URL_DIR}-->img/common/_.gif" width="1" height="2" alt=""></td>
+				<td background="<!--{$smarty.const.URL_DIR}-->img/contents/number_top_bg.jpg"><img src="<!--{$smarty.const.URL_DIR}-->img/common/_.gif" width="1" height="2" alt=""></td>
 				<td><img src="<!--{$smarty.const.URL_DIR}-->img/contents/arrow_right_top.jpg" width="37" height="2" alt=""></td>
 			</tr>
 			<tr>
-				<td background="/img/contents/arrow_left_bg.jpg"><a href=<!--{$smarty.server.PHP_SELF}--> onclick="fnNaviSearchPage(<!--{$arrPagenavi.before}-->, '<!--{$arrPagenavi.mode}-->'); return false;" onmouseover="chgImg('/img/contents/arrow_left_on.jpg','arrow_left');" onmouseout="chgImg('/img/contents/arrow_left.jpg','arrow_left');"><img src="<!--{$smarty.const.URL_DIR}-->img/contents/arrow_left.jpg" width="36" height="17" alt="" border="0" name="arrow_left" id="arrow_left"></a></td>
+				<td background="<!--{$smarty.const.URL_DIR}-->img/contents/arrow_left_bg.jpg"><a href=<!--{$smarty.server.PHP_SELF}--> onclick="fnNaviSearchPage(<!--{$arrPagenavi.before}-->, '<!--{$arrPagenavi.mode}-->'); return false;" onmouseover="chgImg('/img/contents/arrow_left_on.jpg','arrow_left');" onmouseout="chgImg('/img/contents/arrow_left.jpg','arrow_left');"><img src="<!--{$smarty.const.URL_DIR}-->img/contents/arrow_left.jpg" width="36" height="17" alt="" border="0" name="arrow_left" id="arrow_left"></a></td>
 				<td bgcolor="#393a48">
 				<table border="0" cellspacing="0" cellpadding="0" summary=" ">
 					<tr>
@@ -28,11 +28,11 @@
 					</tr>
 				</table>
 				</td>
-				<td background="/img/contents/arrow_right_bg.jpg"><a href=<!--{$smarty.server.PHP_SELF}--> onclick="fnNaviSearchPage(<!--{$arrPagenavi.next}-->, '<!--{$arrPagenavi.mode}-->'); return false;" onmouseover="chgImg('/img/contents/arrow_right_on.jpg','arrow_right');" onmouseout="chgImg('/img/contents/arrow_right.jpg','arrow_right');"><img src="<!--{$smarty.const.URL_DIR}-->img/contents/arrow_right.jpg" width="37" height="17" alt="" border="0" name="arrow_right" id="arrow_right"></a></td>
+				<td background="<!--{$smarty.const.URL_DIR}-->img/contents/arrow_right_bg.jpg"><a href=<!--{$smarty.server.PHP_SELF}--> onclick="fnNaviSearchPage(<!--{$arrPagenavi.next}-->, '<!--{$arrPagenavi.mode}-->'); return false;" onmouseover="chgImg('/img/contents/arrow_right_on.jpg','arrow_right');" onmouseout="chgImg('/img/contents/arrow_right.jpg','arrow_right');"><img src="<!--{$smarty.const.URL_DIR}-->img/contents/arrow_right.jpg" width="37" height="17" alt="" border="0" name="arrow_right" id="arrow_right"></a></td>
 			</tr>
 			<tr>
 				<td><img src="<!--{$smarty.const.URL_DIR}-->img/contents/arrow_left_bottom.jpg" width="36" height="3" alt=""></td>
-				<td background="/img/contents/number_bottom_bg.jpg"><img src="<!--{$smarty.const.URL_DIR}-->img/common/_.gif" width="1" height="3" alt=""></td>
+				<td background="<!--{$smarty.const.URL_DIR}-->img/contents/number_bottom_bg.jpg"><img src="<!--{$smarty.const.URL_DIR}-->img/common/_.gif" width="1" height="3" alt=""></td>
 				<td><img src="<!--{$smarty.const.URL_DIR}-->img/contents/arrow_right_bottom.jpg" width="37" height="3" alt=""></td>
 			</tr>
 		</table>
