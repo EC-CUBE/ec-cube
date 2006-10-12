@@ -530,6 +530,9 @@ function lfCheckDBError($objFormParam) {
 			ereg("\[(.*)\]", $objDB->userinfo, $arrKey);
 			$objErr->arrErr['all'].= $arrKey[0] . "<br>";
 			gfPrintLog($objDB->userinfo, "./temp/install.log");
+		} else {
+			$arrRet = $objDB->query("SHOW VARIABLES");
+			sfPrintR($arrRet);
 		}
 	}
 	return $objErr->arrErr;
