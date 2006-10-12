@@ -17,7 +17,7 @@
 <script type="text/javascript" src="<!--{$smarty.const.URL_DIR}-->js/navi.js"></script>
 <style type="text/css">
 body {
-	background: #fff url(/img/login/bg.jpg);
+	background: #fff url(<!--{$smarty.const.URL_DIR}-->img/login/bg.jpg);
 	background-repeat: repeat-x;
 }
 </style>
