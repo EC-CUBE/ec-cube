@@ -11,8 +11,8 @@
 */
 ///////////////////////////////////////////////////////////
 
-// DATAディレクトリパス(HTMLディレクトリからの相対パス)
-define("DATA_PATH", ROOT_DIR . "../data");
+// DATAディレクトリパス(HTMLディレクトリパスからの相対パス)
+define("DATA_PATH", HTML_PATH . "../data");
 
 // テンプレートファイル保存先
 define("USER_DIR", "html/user_data/");
