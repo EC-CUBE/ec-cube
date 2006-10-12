@@ -56,8 +56,8 @@ function sfInitInstall() {
 	if(!defined('ECCUBE_INSTALL')) {
 			print("ok0");
 		if(!ereg("/install/", $_SERVER['PHP_SELF'])) {
-			//header("Location: ./install/");
-		}	
+			header("Location: ./install/");
+		}
 	} else {
 		$path = HTML_PATH . "install/index.php";
 		if(file_exists($path)) {

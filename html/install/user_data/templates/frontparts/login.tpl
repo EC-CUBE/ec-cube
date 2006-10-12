@@ -9,7 +9,7 @@
 	<!--{assign var=url value="`$smarty.post.url`"}-->
 <!--{/if}-->
 
-<form name="login_form" id="login_form" method="post" action="/frontparts/login_check.php" onsubmit="return fnCheckLogin('login_form')">
+<form name="login_form" id="login_form" method="post" action="<!--{$smarty.const.URL_DIR}-->frontparts/login_check.php" onsubmit="return fnCheckLogin('login_form')">
 <input type="hidden" name="mode" value="login">
 <input type="hidden" name="url" value="<!--{$url|escape}-->">
 <tr>

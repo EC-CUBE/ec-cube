@@ -282,17 +282,18 @@ define ("SEPA_CATLIST", " | ");	// カテゴリ区切り文字
 
 /* URL */
 define ("URL_SHOP_TOP", SSL_URL . "shopping/index.php");			// 会員情報入力
-define ("URL_SITE_TOP", URL_DIR . "index.php");					// サイトトップ
+define ("URL_SITE_TOP", URL_DIR . "index.php");						// サイトトップ
 define ("URL_CART_TOP", URL_DIR . "cart/index.php");				// カートトップ
-define ("URL_SHOP_CONFIRM", URL_DIR . "shopping/confirm.php");	// 購入確認ページ
-define ("URL_SHOP_PAYMENT", URL_DIR . "shopping/payment.php");	// お支払い方法選択ページ
+define ("URL_MYPAGE_TOP", SSL_URL . "mypage/login.php");			// Myページトップ
+define ("URL_SHOP_CONFIRM", URL_DIR . "shopping/confirm.php");		// 購入確認ページ
+define ("URL_SHOP_PAYMENT", URL_DIR . "shopping/payment.php");		// お支払い方法選択ページ
 define ("URL_SHOP_COMPLETE", URL_DIR . "shopping/complete.php");	// 購入完了画面
-define ("URL_SHOP_CREDIT", URL_DIR . "shopping/card.php");		// カード決済画面
+define ("URL_SHOP_CREDIT", URL_DIR . "shopping/card.php");			// カード決済画面
 define ("URL_SHOP_LOAN", URL_DIR . "shopping/loan.php");			// ローン決済画面
 define ("URL_SHOP_CONVENIENCE", URL_DIR . "shopping/convenience.php");	// コンビニ決済画面
-define ("URL_PRODUCTS_TOP", URL_DIR . "products/top.php");		// 商品トップ
-define ("LIST_P_HTML", URL_DIR . "products/list-p");				// 商品一覧(HTML出力)
-define ("LIST_C_HTML", URL_DIR . "products/list.php?mode=search&category_id=");				// 商品一覧(HTML出力)
+define ("URL_PRODUCTS_TOP", URL_DIR . "products/top.php");				// 商品トップ
+define ("LIST_P_HTML", URL_DIR . "products/list-p");					// 商品一覧(HTML出力)
+define ("LIST_C_HTML", URL_DIR . "products/list.php?mode=search&category_id=");	// 商品一覧(HTML出力)
 define ("DETAIL_P_HTML", URL_DIR . "products/detail.php?product_id=");			// 商品詳細(HTML出力)
 
 /*

@@ -127,7 +127,7 @@ for( $i = 0; $i < count( $time_data ); $i++ ) {
 				 );
 	
 	if ($_GET['mode'] = "now") {
-		header("Location: /admin/mail/history.php");
+		header("Location: " . URL_DIR . "admin/mail/history.php");
 	}
 	echo "complete\n";
 
