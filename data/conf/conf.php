@@ -193,7 +193,7 @@ define ("NO_IMAGE_URL", "/misc/blank.gif");										// 画像がない場合に表示
 /* URLパス */
 define ("URL_SYSTEM_TOP", "/admin/system/index.php");		// システム管理トップ
 define ("URL_CLASS_REGIST", "/admin/products/class.php");	// 規格登録
-define ("URL_INPUT_ZIP", "/input_zip.php");			// 郵便番号入力
+define ("URL_INPUT_ZIP", "/input_zip.php");					// 郵便番号入力
 define ("URL_DELIVERY_TOP", "/admin/basis/delivery.php");	// 配送業者登録
 define ("URL_PAYMENT_TOP", "/admin/basis/payment.php");		// 支払い方法登録
 define ("URL_HOME", "/admin/home.php");						// ホーム
