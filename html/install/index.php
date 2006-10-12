@@ -523,9 +523,6 @@ function lfCheckDBError($objFormParam) {
 		// Debugモード指定
 		$options['debug'] = 9;
 		$objDB = DB::connect($dsn, $options);
-		
-		sfPrintR($objDB);
-		
 		// 接続エラー
 		if(PEAR::isError($objDB)) {
 			$objErr->arrErr['all'] = ">> " . $objDB->message . "<br>";
