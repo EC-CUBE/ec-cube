@@ -256,20 +256,19 @@ function lfDispStep0($objPage) {
 	
 	// プログラムで書込みされるファイル・ディレクトリ
 	$arrWriteFile = array(
-		"data/install.inc",
+		"../../data/install.inc",
 		"../user_data",
 		"../upload",
-		"data/Smarty/templates_c",		
-		"data/update",
-		"data/logs",
+		"../../data/Smarty/templates_c",		
+		"../../data/update",
+		"../../data/logs",
 	);
 	
 	$mess = "";
 	$err_file = false;
 	foreach($arrWriteFile as $val) {
-		$path = "../../" . $val;		
-		if(file_exists($path)) {
-			$mode = lfGetFileMode("../../" . $val);
+		if(file_exists($val)) {
+			$mode = lfGetFileMode($val);
 			
 			// ディレクトリの場合
 			if(is_dir($path)) {
