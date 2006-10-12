@@ -99,7 +99,7 @@
 							<tr bgcolor="<!--{if $tpl_class_id != $arrClass[cnt].class_id}-->#ffffff<!--{else}--><!--{$smarty.const.SELECT_RGB}--><!--{/if}-->" class="fs12">
 								<!--{assign var=class_id value=$arrClass[cnt].class_id}-->
 								<td><!--{* µ¨≥ Ãæ *}--><!--{$arrClass[cnt].name|escape}--> (<!--{$arrClassCatCount[$class_id]|default:0}-->)</td>
-								<td align="center"><a href="/" onclick="fnClassCatPage(<!--{$arrClass[cnt].class_id}-->); return false;"> ¨Œ‡≈–œø</a></td>
+								<td align="center"><a href="<!--{$smarty.const.URL_DIR}-->" onclick="fnClassCatPage(<!--{$arrClass[cnt].class_id}-->); return false;"> ¨Œ‡≈–œø</a></td>
 								<td align="center">
 								<!--{if $tpl_class_id != $arrClass[cnt].class_id}-->
 								<a href="<!--{$smarty.server.PHP_SELF}-->" onclick="fnModeSubmit('pre_edit', 'class_id', <!--{$arrClass[cnt].class_id}-->); return false;"> ‘Ω∏</a>

@@ -73,8 +73,8 @@
 							</tr>
 							<tr><td height="15"></td></tr>
 							<tr>
-								<td class="fs10">パスワードを忘れた方は<a href="/forget/index.php" onclick="win01('/forgot/index.php','forget','600','400'); return false;" target="_blank">こちら</a>からパスワードの再発行を行ってください。<br>
-								メールアドレスを忘れた方は、お手数ですが、<a href="/contact/index.php">お問い合わせページ</a>からお問い合わせください。</td>
+								<td class="fs10">パスワードを忘れた方は<a href="<!--{$smarty.const.URL_DIR}-->forget/index.php" onclick="win01('/forgot/index.php','forget','600','400'); return false;" target="_blank">こちら</a>からパスワードの再発行を行ってください。<br>
+								メールアドレスを忘れた方は、お手数ですが、<a href="<!--{$smarty.const.URL_DIR}-->contact/index.php">お問い合わせページ</a>からお問い合わせください。</td>
 							</tr>
 							<tr><td height="20"></td></tr>
 						</form>

@@ -47,7 +47,7 @@
 							</tr>
 							<tr><td height="5"></td></tr>
 							<tr>
-								<td><a href="/address/index.php" onclick="fnCallAddress('<!--{$smarty.const.URL_INPUT_ZIP}-->', 'zip01', 'zip02', 'pref', 'addr01'); return false;" target="_blank"><img src="<!--{$smarty.const.URL_DIR}-->img/common/address.gif" width="86" height="20" alt="住所自動入力" /></a></td>
+								<td><a href="<!--{$smarty.const.URL_DIR}-->address/index.php" onclick="fnCallAddress('<!--{$smarty.const.URL_INPUT_ZIP}-->', 'zip01', 'zip02', 'pref', 'addr01'); return false;" target="_blank"><img src="<!--{$smarty.const.URL_DIR}-->img/common/address.gif" width="86" height="20" alt="住所自動入力" /></a></td>
 								<td class="fs10n">&nbsp;郵便番号を入力後、クリックしてください。</td>
 							</tr>
 						</table>

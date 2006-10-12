@@ -9,7 +9,7 @@
 		<td bgcolor="#ffffff" align="left"> 
 		<!--▼MAIN CONTENTS-->
 		<!--パンクズ-->
-		<div id="pan"><span class="fs12n"><a href="/index.php">トップページ</a>＞<span class="redst">お気に入り商品</span></span></div>
+		<div id="pan"><span class="fs12n"><a href="<!--{$smarty.const.URL_DIR}-->index.php">トップページ</a>＞<span class="redst">お気に入り商品</span></span></div>
 		<!--パンクズ-->
 		<table cellspacing="0" cellpadding="0" summary=" " id="container">
 			<tr><td height="10"></td></tr>

@@ -72,8 +72,8 @@
 							</tr>
 							<tr><td height="15"></td></tr>
 							<tr>
-								<td class="fs10">パスワードを忘れた方は<a href="/forget/index.php" onclick="win01('/forgot/index.php','forget','600','400'); return false;" target="_blank">こちら</a>からパスワードの再発行を行ってください。<br>
-								メールアドレスを忘れた方は、お手数ですが、<a href="/contact/index.php">お問い合わせページ</a>からお問い合わせください。</td>
+								<td class="fs10">パスワードを忘れた方は<a href="<!--{$smarty.const.URL_DIR}-->forget/index.php" onclick="win01('/forgot/index.php','forget','600','400'); return false;" target="_blank">こちら</a>からパスワードの再発行を行ってください。<br>
+								メールアドレスを忘れた方は、お手数ですが、<a href="<!--{$smarty.const.URL_DIR}-->contact/index.php">お問い合わせページ</a>からお問い合わせください。</td>
 							</tr>
 							<tr><td height="20"></td></tr>
 						</form>
@@ -118,7 +118,7 @@
 									<tr><td height="20"></td></tr>
 									<tr>
 										<td align="center">
-											<a href="/entry/kiyaku.php" onmouseover="chgImg('<!--{$smarty.const.URL_DIR}-->img/login/b_gotoentry_on.gif','b_gotoentry');" onmouseout="chgImg('<!--{$smarty.const.URL_DIR}-->img/login/b_gotoentry.gif','b_gotoentry');"><img src="<!--{$smarty.const.URL_DIR}-->img/login/b_gotoentry.gif" width="130" height="30" alt="会員登録をする" border="0" name="b_gotoentry"></a>　
+											<a href="<!--{$smarty.const.URL_DIR}-->entry/kiyaku.php" onmouseover="chgImg('<!--{$smarty.const.URL_DIR}-->img/login/b_gotoentry_on.gif','b_gotoentry');" onmouseout="chgImg('<!--{$smarty.const.URL_DIR}-->img/login/b_gotoentry.gif','b_gotoentry');"><img src="<!--{$smarty.const.URL_DIR}-->img/login/b_gotoentry.gif" width="130" height="30" alt="会員登録をする" border="0" name="b_gotoentry"></a>　
 											<input type="image" onmouseover="chgImgImageSubmit('<!--{$smarty.const.URL_DIR}-->img/login/b_buystep_on.gif',this)" onmouseout="chgImgImageSubmit('<!--{$smarty.const.URL_DIR}-->img/login/b_buystep.gif',this)" src="<!--{$smarty.const.URL_DIR}-->img/login/b_buystep.gif" width="130" height="30" alt="購入手続きへ" name="buystep" id="buystep" />
 										</td>
 									</tr>

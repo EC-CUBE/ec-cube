@@ -8,7 +8,7 @@
 		<td colspan="3"><img src="<!--{$smarty.const.URL_DIR}-->img/top/news.jpg" width="400" height="29" alt="新着情報"></td>
 	</tr>
 	<tr>
-		<td colspan="3"><span class="fs10">☆★☆ 新着情報は<a href="/rss/index.php" target="_blank">RSS</a>で配信しています。★☆★ </span></td>
+		<td colspan="3"><span class="fs10">☆★☆ 新着情報は<a href="<!--{$smarty.const.URL_DIR}-->rss/index.php" target="_blank">RSS</a>で配信しています。★☆★ </span></td>
 	</tr>
 	<tr>
 		<td height="10"><img src="<!--{$smarty.const.URL_DIR}-->img/common/_.gif" width="16" height="1" alt=""></td>

@@ -34,9 +34,9 @@
                 <td align="right" colspan="5" height="38"><img src="/user_data/topimg/header/info.gif" width="300" height="50" /> </td>
               </tr>
               <tr align="right">
-                <td><a href="/entry/kiyaku.php" onmouseover="chgImg('/user_data/topimg/header/entry_on.gif','entry');" onmouseout="chgImg('/user_data/topimg/header/entry.gif','entry');"><img src="/user_data/topimg/header/entry.gif" width="95" height="20" alt="会員登録" border="0" name="entry" id="entry" /></a>
-                <a href="/contact/index.php" onmouseover="chgImg('/user_data/topimg/header/contact_on.gif','contact');" onmouseout="chgImg('/user_data/topimg/header/contact.gif','contact');"><img src="/user_data/topimg/header/contact.gif" width="95" height="20" alt="お問い合わせ" border="0" name="contact" id="contact" /></a>
-                <a href="/cart/index.php" onmouseover="chgImg('/user_data/topimg/header/cartin_on.gif','cartin');" onmouseout="chgImg('/user_data/topimg/header/cartin.gif','cartin');"><img src="/user_data/topimg/header/cartin.gif" width="95" height="20" alt="カゴの中を見る" border="0" name="cartin" id="cartin" /></a></td>
+                <td><a href="<!--{$smarty.const.URL_DIR}-->entry/kiyaku.php" onmouseover="chgImg('/user_data/topimg/header/entry_on.gif','entry');" onmouseout="chgImg('/user_data/topimg/header/entry.gif','entry');"><img src="/user_data/topimg/header/entry.gif" width="95" height="20" alt="会員登録" border="0" name="entry" id="entry" /></a>
+                <a href="<!--{$smarty.const.URL_DIR}-->contact/index.php" onmouseover="chgImg('/user_data/topimg/header/contact_on.gif','contact');" onmouseout="chgImg('/user_data/topimg/header/contact.gif','contact');"><img src="/user_data/topimg/header/contact.gif" width="95" height="20" alt="お問い合わせ" border="0" name="contact" id="contact" /></a>
+                <a href="<!--{$smarty.const.URL_DIR}-->cart/index.php" onmouseover="chgImg('/user_data/topimg/header/cartin_on.gif','cartin');" onmouseout="chgImg('/user_data/topimg/header/cartin.gif','cartin');"><img src="/user_data/topimg/header/cartin.gif" width="95" height="20" alt="カゴの中を見る" border="0" name="cartin" id="cartin" /></a></td>
               </tr>
             </table>
           </td>

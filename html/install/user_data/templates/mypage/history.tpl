@@ -65,7 +65,7 @@
 							<!--{section name=cnt loop=$arrDisp.quantity}-->
 							<tr bgcolor="#ffffff">
 								<td class="fs12"><!--{$arrDisp.product_code[cnt]|escape}--></td>
-								<td class="fs12"><a href="/products/detail.php?product_id=<!--{$arrDisp.product_id[cnt]}-->"><!--{$arrDisp.product_name[cnt]|escape}--><a></td>
+								<td class="fs12"><a href="<!--{$smarty.const.URL_DIR}-->products/detail.php?product_id=<!--{$arrDisp.product_id[cnt]}-->"><!--{$arrDisp.product_name[cnt]|escape}--><a></td>
 								<!--{assign var=price value=`$arrDisp.price[cnt]`}-->
 								<!--{assign var=quantity value=`$arrDisp.quantity[cnt]`}-->
 								<td align="right" class="fs12"><!--{$price|escape|number_format}-->±ß</td>
