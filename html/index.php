@@ -12,7 +12,7 @@ class LC_Page {
 		/** 必ず変更する **/
 		$this->tpl_css = '/css/layout/index.css';						// メインCSSパス
 		/** 必ず変更する **/
-		$this->tpl_mainpage = ROOT_DIR . 'html/user_data/templates/top.tpl';		// メインテンプレート
+		$this->tpl_mainpage = HTML_PATH . "user_data/templates/top.tpl";		// メインテンプレート
 	}
 }
 
