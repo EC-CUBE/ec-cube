@@ -422,8 +422,10 @@ function lfInitWebParam($objWebParam) {
 		$secure_url = "http://" . $_SERVER['HTTP_HOST'] . $dir;
 	}
 	
+	// 店名、管理者メールアドレスを取得する。(再インストール時)
 	if(defined('DEFAULT_DSN')) {
-		print(DEFAULT_DSN);
+		$arrRet = $objQuery->select("shop_name, email01", "dtb_baseinfo");
+		print_r($arrRet);
 	}	
 
 	$objWebParam->addParam("店名", "shop_name", MTEXT_LEN, "", array("EXIST_CHECK","MAX_LENGTH_CHECK"));
