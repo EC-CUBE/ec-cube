@@ -26,9 +26,11 @@ define("BLOC_PATH", HTML_PATH . "user_data/include/bloc/");
 // ユーザー作成画面のデフォルトPHPファイル
 define("USER_DEF_PHP", HTML_PATH . "__default.php");
 
+/** 以下破棄予定 **/
 define("USER_DIR", "html/user_data/");
 define("INCLUDE_DIR", USER_DIR."include/");
 define("BLOC_DIR", "html/user_data/include/bloc/");
+/** ここまで **/
 
 // その他画面のデフォルトページレイアウト
 define("DEF_LAYOUT", "products/list.php");
