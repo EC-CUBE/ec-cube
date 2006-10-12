@@ -20,6 +20,8 @@ sfInitInstall();
 // アップデートで生成されたPHPを読み出す
 sfLoadUpdateModule();
 
+print("ok0");
+
 /* テーブルの存在チェックチェック */
 function sfTabaleExists($table_name) {
 	$objQuery = new SC_Query();	

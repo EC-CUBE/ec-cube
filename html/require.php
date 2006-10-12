@@ -7,24 +7,10 @@
 
 $include_dir = realpath(dirname( __FILE__));
 require_once($include_dir . "/../data/conf/conf.php");	
-
-print("ok0");
-
 require_once($include_dir . "/../data/lib/glib.php");
-
-print("ok0");
-
 require_once($include_dir . "/../data/lib/slib.php");
-
-print("ok0");
-
 require_once($include_dir . "/../data/class/SC_View.php");
-print("ok1");
-
 require_once($include_dir . "/../data/class/SC_DbConn.php");
-
-print("ok2");
-
 require_once($include_dir . "/../data/class/SC_Session.php");
 require_once($include_dir . "/../data/class/SC_Query.php");
 require_once($include_dir . "/../data/class/SC_SelectSql.php");
