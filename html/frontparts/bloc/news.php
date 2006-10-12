@@ -7,7 +7,7 @@
 class LC_NewsPage {
 	function LC_NewsPage() {
 		/** 必ず変更する **/
-		$this->tpl_mainpage = ROOT_DIR . BLOC_DIR.'news.tpl';	// メイン
+		$this->tpl_mainpage = BLOC_PATH . 'news.tpl';	// メイン
 	}
 }
 

@@ -60,11 +60,11 @@ $objView->assignobj($objPage);		//変数をテンプレートにアサインする
 $objView->display(MAIN_FRAME);		//テンプレートの出力
 //-------------------------------------------------------------------------------------------------------
 // 更新ファイルの取得
-function lfCopyUpdateFile($val) {
+function lfCopyUpdateFile($file) {
 	global $objPage;
 	
-	$src_path = sfRmDupSlash(UPDATE_HTTP . $val . ".txt");
-	$dst_path = sfRmDupSlash(ROOT_DIR . $val);
+	$src_path = sfRmDupSlash(UPDATE_HTTP . $file . ".txt");
+	$dst_path = sfRmDupSlash(ROOT_DIR . $file);
 	$flg_ok = true;	// 処理の成功判定
 	
 	$src_fp = @fopen($src_path, "rb");

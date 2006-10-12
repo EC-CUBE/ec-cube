@@ -7,7 +7,7 @@
 class LC_CatPage {
 	function LC_CatPage() {
 		/** 必ず変更する **/
-		$this->tpl_mainpage = ROOT_DIR . BLOC_DIR.'category.tpl';	// メイン
+		$this->tpl_mainpage = BLOC_PATH . 'category.tpl';	// メイン
 	}
 }
 

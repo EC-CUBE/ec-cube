@@ -23,7 +23,7 @@
 					<!--{if $tpl_navi != ""}-->
 						<!--{include file=$tpl_navi}-->
 					<!--{else}-->
-						<!--{include file=`$smarty.const.ROOT_DIR`data/Smarty/templates/mypage/navi.tpl}-->
+						<!--{include file=`$smarty.const.DATA_PATH`Smarty/templates/mypage/navi.tpl}-->
 					<!--{/if}-->
 				</td>
 				<td align="right">

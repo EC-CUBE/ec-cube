@@ -7,7 +7,7 @@
 class LC_CartPage {
 	function LC_CartPage() {
 		/** 必ず変更する **/
-		$this->tpl_mainpage = ROOT_DIR . BLOC_DIR.'cart.tpl';	// メイン
+		$this->tpl_mainpage = BLOC_PATH . 'cart.tpl';	// メイン
 	}
 }
 

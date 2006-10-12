@@ -4,18 +4,16 @@
  *
  * http://www.lockon.co.jp/
  */
-
-$LIST_PHP_DIR = realpath(dirname( __FILE__));
-require_once($LIST_PHP_DIR  . "/../../data/lib/slib.php");
-require_once($LIST_PHP_DIR  . "/../../data/class/SC_View.php");
-require_once($LIST_PHP_DIR  . "/../../data/class/SC_Query.php");
-require_once($LIST_PHP_DIR  . "/../../data/class/SC_Customer.php");
-require_once($LIST_PHP_DIR  . "/../../data/class/SC_Cookie.php");
-require_once($LIST_PHP_DIR  . "/../../data/class/SC_SiteInfo.php");
-require_once($LIST_PHP_DIR  . "/../../data/class/SC_PageNavi.php");
-require_once($LIST_PHP_DIR  . "/../../data/class/SC_CheckError.php");
-require_once($LIST_PHP_DIR  . "/../../data/class/SC_CartSession.php");
-require_once(ROOT_DIR."data/include/page_layout.inc");
+require_once(DATA_PATH . "lib/slib.php");
+require_once(DATA_PATH . "class/SC_View.php");
+require_once(DATA_PATH . "class/SC_Query.php");
+require_once(DATA_PATH . "data/class/SC_Customer.php");
+require_once(DATA_PATH . "data/class/SC_Cookie.php");
+require_once(DATA_PATH . "data/class/SC_SiteInfo.php");
+require_once(DATA_PATH . "data/class/SC_PageNavi.php");
+require_once(DATA_PATH . "data/class/SC_CheckError.php");
+require_once(DATA_PATH . "data/class/SC_CartSession.php");
+require_once(DATA_PATH . "include/page_layout.inc");
 
 class LC_Page {
 	function LC_Page() {

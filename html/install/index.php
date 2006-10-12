@@ -409,8 +409,8 @@ function lfDispComplete($objPage) {
 // WEBパラメータ情報の初期化
 function lfInitWebParam($objWebParam) {
 	
-	if(defined('ROOT_DIR')) {
-		$install_dir = ROOT_DIR;
+	if(defined('HTML_PATH')) {
+		$install_dir = HTML_PATH;
 	} else {
 		$install_dir = realpath(dirname( __FILE__) . "/../") . "/";
 	}

@@ -7,7 +7,7 @@
 class LC_SearchProductsPage {
 	function LC_SearchProductsPage() {
 		/** 必ず変更する **/
-		$this->tpl_mainpage = ROOT_DIR . BLOC_DIR.'search_products.tpl';	// メイン
+		$this->tpl_mainpage = BLOC_PATH . 'search_products.tpl';	// メイン
 	}
 }
 

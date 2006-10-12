@@ -51,15 +51,15 @@ case 'complete':
 		// マーチャント情報設定ファイルをインクルード
 		//require("merchant.ini");
 		// 決済処理パッケージをインクルード
-		require_once(ROOT_DIR . "data/vtcvsmdk/mdk/lib/BSCVS/Transaction.php");
-		require_once(ROOT_DIR . "data/vtcvsmdk/mdk/lib/BSCVS/Config.php");
-		require_once(ROOT_DIR . "data/vtcvsmdk/mdk/lib/BSCVS/Log.php");
+		require_once(DATA_PATH . "vtcvsmdk/mdk/lib/BSCVS/Transaction.php");
+		require_once(DATA_PATH . "vtcvsmdk/mdk/lib/BSCVS/Config.php");
+		require_once(DATA_PATH . "vtcvsmdk/mdk/lib/BSCVS/Log.php");
 	
 		// トランザクションインスタンスを作成
 		$objTran = new Transaction;
 		
 		// 設定ファイル cvsgwlib.conf によりインスタンスを初期化
-		$objTran->setServer(ROOT_DIR . "data/vtcvsmdk/mdk/conf/cvsgwlib.conf");
+		$objTran->setServer(DATA_PATH . "vtcvsmdk/mdk/conf/cvsgwlib.conf");
 		
 		// カート集計処理
 		$objPage = sfTotalCart($objPage, $objCartSess, $arrInfo);

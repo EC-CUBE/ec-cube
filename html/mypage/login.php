@@ -9,7 +9,7 @@ require_once("../require.php");
 
 class LC_Page{
 	function LC_Page() {
-		$this->tpl_mainpage = ROOT_DIR . USER_DIR . 'templates/mypage/login.tpl';
+		$this->tpl_mainpage = USER_PATH . 'templates/mypage/login.tpl';
 		$this->tpl_title = 'MYページ(ログイン)';
 	}
 }

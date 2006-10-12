@@ -7,7 +7,7 @@
 class LC_Best5Page {
 	function LC_Best5Page() {
 		/** 必ず変更する **/
-		$this->tpl_mainpage = ROOT_DIR . BLOC_DIR.'best5.tpl';	// メイン
+		$this->tpl_mainpage = BLOC_PATH . 'best5.tpl';	// メイン
 	}
 }
 

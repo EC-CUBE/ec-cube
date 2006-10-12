@@ -8,7 +8,7 @@ class LC_LoginPage {
 	var $tpl_login_email;
 	function LC_LoginPage() {
 		/** 必ず変更する **/
-		$this->tpl_mainpage = ROOT_DIR . BLOC_DIR.'login.tpl';	// メイン
+		$this->tpl_mainpage = BLOC_PATH . 'login.tpl';	// メイン
 		$this->tpl_login = false;
 		$this->tpl_disable_logout = false;
 	}

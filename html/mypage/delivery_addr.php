@@ -10,7 +10,7 @@ session_start();
 
 class LC_Page{
 	function LC_Page(){
-		$this->tpl_mainpage = ROOT_DIR . USER_DIR . 'templates/mypage/delivery_addr.tpl';
+		$this->tpl_mainpage = USER_PATH . 'templates/mypage/delivery_addr.tpl';
 		$this->tpl_title = "新しいお届け先の追加･変更";
 		global $arrPref;
 		$this->arrPref = $arrPref;

@@ -8,9 +8,9 @@ require_once("../require.php");
 
 class LC_Page{
 	function LC_Page(){
-		$this->tpl_mainpage = ROOT_DIR . USER_DIR . 'templates/mypage/refusal.tpl';
+		$this->tpl_mainpage = USER_PATH . 'templates/mypage/refusal.tpl';
 		$this->tpl_title = "MYページ/退会手続き(入力ページ)";
-		$this->tpl_navi = ROOT_DIR . USER_DIR . 'templates/mypage/navi.tpl';
+		$this->tpl_navi = USER_PATH . 'templates/mypage/navi.tpl';
 		$this->tpl_mainno = 'mypage';
 		$this->tpl_mypageno = 'refusal';
 		//session_cache_limiter('private-no-expire');
