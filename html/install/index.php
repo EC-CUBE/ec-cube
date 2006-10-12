@@ -563,15 +563,14 @@ function lfMakeConfigFile() {
 	global $objWebParam;
 	global $objDBParam;
 	global $port;
-	
-	$filepath = $objWebParam->getValue('install_dir') . "../data/install.inc";
-	$domain = $objWebParam->getValue('domain');
-	
+		
 	$root_dir = $objWebParam->getValue('install_dir');
 	// 語尾に'/'をつける
 	if (!ereg("/$", $root_dir)) {
 		$root_dir = $root_dir . "/";
 	}
+	
+	$filepath = $objWebParam->getValue('install_dir') . "../data/install.inc";
 	
 	$config_data = 
 	"<?php\n".
@@ -579,7 +578,7 @@ function lfMakeConfigFile() {
 	"    define ('ROOT_DIR', '" . $root_dir . "');\n" . 
 	"    define ('SITE_URL', '" . $objWebParam->getValue('normal_url') . "');\n" .
 	"    define ('SSL_URL', '" . $objWebParam->getValue('secure_url') . "');\n" .
-	"    define ('DOMAIN_NAME', '" . $domain . "');\n" .
+	"    define ('DOMAIN_NAME', '" . $objWebParam->getValue('domain') . "');\n" .
 	"    define ('DB_TYPE', '" . $objDBParam->getValue('db_type') . "');\n" .
 	"    define ('DB_USER', '" . $objDBParam->getValue('db_user') . "');\n" . 
 	"    define ('DB_PASSWORD', '" . $objDBParam->getValue('db_password') . "');\n" .
