@@ -257,8 +257,8 @@ function lfDispStep0($objPage) {
 	// プログラムで書込みされるファイル・ディレクトリ
 	$arrWriteFile = array(
 		"data/install.inc",
-		"html/user_data",
-		"html/upload",
+		"../user_data",
+		"../upload",
 		"data/Smarty/templates_c",		
 		"data/update",
 		"data/logs",

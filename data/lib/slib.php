@@ -54,7 +54,6 @@ function sfTabaleExists($table_name, $db_type=DB_TYPE) {
 function sfInitInstall() {
 	// インストール済みが定義されていない。
 	if(!defined('ECCUBE_INSTALL')) {
-			print("ok0");
 		if(!ereg("/install/", $_SERVER['PHP_SELF'])) {
 			header("Location: ./install/");
 		}
