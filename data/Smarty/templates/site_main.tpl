@@ -22,8 +22,8 @@
 <div id="base">
 <table width="780" border="0" cellspacing="0" cellpadding="0" summary=" ">
 	<tr>
-		<td bgcolor="#cccccc" width="1"><img src="../img/_.gif" width="1" height="10" alt="" /></td>
-		<td bgcolor="#ffffff" width="1"><img src="../img/_.gif" width="5" height="1" alt="" /></td>
+		<td bgcolor="#cccccc" width="1"><img src="<!--{$smarty.const.URL_DIR}-->img/_.gif" width="1" height="10" alt="" /></td>
+		<td bgcolor="#ffffff" width="1"><img src="<!--{$smarty.const.URL_DIR}-->img/_.gif" width="5" height="1" alt="" /></td>
 		<td bgcolor="#ffffff" align="left" width=100%> 
 
 		<!--{*パンクズ-->
@@ -51,7 +51,7 @@
 				    <!--{/foreach}-->
 					</table>
 					</td>
-					<td bgcolor="#ffffff" width="5"><img src="../img/_.gif" width="5" height="1" alt="" /></td>
+					<td bgcolor="#ffffff" width="5"><img src="<!--{$smarty.const.URL_DIR}-->img/_.gif" width="5" height="1" alt="" /></td>
 				<!--{/if}-->
 				<!--▲左ナビ-->
 			
