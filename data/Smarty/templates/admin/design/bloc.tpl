@@ -56,10 +56,8 @@
 								<td bgcolor="#eeeeee" align="left"><strong>プレビュー：</strong></td>
 							</tr>
 							<tr class="fs12n">
-								<td bgcolor="#ffffff" align="center">
-									<br/>
+								<td bgcolor="#ffffff" align="center" valign="middle">
 										<!--{include file=$arrBlocData.tpl_path}-->
-									<br/>
 								</td>
 							</tr>
 							<!--{/if}-->
