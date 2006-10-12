@@ -89,7 +89,7 @@
 			<tr><td height="15"></td></tr>
 			<tr>
 				<td align="center">
-				<input type="image" onMouseover="chgImgImageSubmit('/img/common/b_confirm_on.gif',this)" onMouseout="chgImgImageSubmit('/img/common/b_confirm.gif',this)" src="<!--{$smarty.const.URL_DIR}-->img/common/b_confirm.gif" width="150" height="30" alt="確認ページへ" name="conf" id="conf">
+				<input type="image" onMouseover="chgImgImageSubmit('<!--{$smarty.const.URL_DIR}-->img/common/b_confirm_on.gif',this)" onMouseout="chgImgImageSubmit('<!--{$smarty.const.URL_DIR}-->img/common/b_confirm.gif',this)" src="<!--{$smarty.const.URL_DIR}-->img/common/b_confirm.gif" width="150" height="30" alt="確認ページへ" name="conf" id="conf">
 				</td>
 			</tr>
 			<tr><td height="30"></td></tr>
