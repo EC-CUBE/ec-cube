@@ -236,7 +236,7 @@ function lfUninstallModule() {
 		}
 		$arrFiles[] = $arrRet[0]['extern_php'];
 		foreach($arrFiles as $val) {
-			$path = ROOT_DIR . $val;
+			$path = DATA_PATH . $val;
 			if(file_exists($path)) {
 				// ファイルを削除する
 				if(unlink($path)) {
