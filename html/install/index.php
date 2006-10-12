@@ -537,7 +537,7 @@ function lfCheckDBError($objFormParam) {
 				$arrRet = $objDB->getAll("SHOW VARIABLES");
 				foreach($arrRet as $array) {
 					if($array[0] == 'version') {
-						$objPage->tpl_db_version = "MySQL" . $array[1];
+						$objPage->tpl_db_version = "MySQL " . $array[1];
 					}
 				}
 			}
