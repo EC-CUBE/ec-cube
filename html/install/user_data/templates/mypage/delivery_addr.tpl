@@ -9,8 +9,8 @@
 <meta http-equiv="Content-Type" content="text/html; charset=EUC-JP">
 <meta http-equiv="content-script-type" content="text/javascript">
 <meta http-equiv="content-style-type" content="text/css">
-<link rel="stylesheet" href="/user_data/css/contents.css" type="text/css" media="all" />
-<link rel="stylesheet" href="/css/common.css" type="text/css" media="all" />
+<link rel="stylesheet" href="<!--{$smarty.const.URL_DIR}-->user_data/css/contents.css" type="text/css" media="all" />
+<link rel="stylesheet" href="<!--{$smarty.const.URL_DIR}-->css/common.css" type="text/css" media="all" />
 <link rel="stylesheet" href="<!--{$tpl_css}-->" type="text/css" media="all" />
 <script type="text/javascript" src="<!--{$smarty.const.URL_DIR}-->js/css.js"></script>
 <script type="text/javascript" src="<!--{$smarty.const.URL_DIR}-->js/navi.js"></script>
@@ -21,7 +21,7 @@
 
 <body bgcolor="#ffe9e6" text="#555555" link="#3a75af" vlink="#3a75af" alink="#3a75af" leftmargin="0" topmargin="0" marginwidth="0" marginheight="0" onLoad="preLoadImg(); <!--{$tpl_onload}-->">
 <noscript>
-<link rel="stylesheet" href="/css/common.css" type="text/css">
+<link rel="stylesheet" href="<!--{$smarty.const.URL_DIR}-->css/common.css" type="text/css">
 </noscript>
 <div align="center">
 <a name="top" id="top"></a>

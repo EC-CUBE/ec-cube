@@ -74,9 +74,9 @@
 										<!--{assign var=disp_name value="`$arrTree[cnt].category_id`.`$arrTree[cnt].category_name`"}-->
 										<a href="<!--{$smarty.server.PHP_SELF}-->" onclick="fnModeSubmit('tree', 'parent_category_id', <!--{$arrTree[cnt].category_id}-->); return false">
 										<!--{if $arrForm.parent_category_id == $arrTree[cnt].category_id}-->
-											<img src="/misc/openf.gif" border="0">
+											<img src="<!--{$smarty.const.URL_DIR}-->misc/openf.gif" border="0">
 										<!--{else}-->
-											<img src="/misc/closef.gif" border="0">
+											<img src="<!--{$smarty.const.URL_DIR}-->misc/closef.gif" border="0">
 										<!--{/if}-->
 										<!--{$disp_name|sfCutString:20|escape}-->(<!--{$arrTree[cnt].product_count|default:0}-->)</a>
 									<br>					

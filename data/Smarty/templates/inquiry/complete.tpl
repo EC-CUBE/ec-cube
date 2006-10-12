@@ -6,8 +6,8 @@
  * http://www.lockon.co.jp/
  *}-->
 <head>
-<link rel="stylesheet" href="/css/contents.css" type="text/css">
-<link rel="stylesheet" href="/css/common.css" type="text/css">
+<link rel="stylesheet" href="<!--{$smarty.const.URL_DIR}-->css/contents.css" type="text/css">
+<link rel="stylesheet" href="<!--{$smarty.const.URL_DIR}-->css/common.css" type="text/css">
 <script type="text/javascript" src="<!--{$smarty.const.URL_DIR}-->js/css.js"></script>
 <script type="text/javascript" src="<!--{$smarty.const.URL_DIR}-->js/navi.js"></script>
 <script type="text/javascript" src="<!--{$smarty.const.URL_DIR}-->js/site.js"></script>
