@@ -24,10 +24,10 @@
 
 					<tr><td height="14"></td></tr>
 					<tr>
-						<td colspan="3"><img src="/img/contents/main_top.jpg" width="706" height="14" alt=""></td>
+						<td colspan="3"><img src="<!--{$smarty.const.URL_DIR}-->img/contents/main_top.jpg" width="706" height="14" alt=""></td>
 					</tr>
 					<tr>
-						<td background="/img/contents/main_left.jpg"><img src="/img/common/_.gif" width="14" height="1" alt=""></td>
+						<td background="/img/contents/main_left.jpg"><img src="<!--{$smarty.const.URL_DIR}-->img/common/_.gif" width="14" height="1" alt=""></td>
 						<td bgcolor="#f2f1ec">
 						<!--完了メッセージテーブルここから-->
 						<table width="678" border="0" cellspacing="1" cellpadding="8" summary=" " height="402">
@@ -38,10 +38,10 @@
 						</table>
 						<!--完了メッセージテーブルここまで-->
 						</td>
-						<td background="/img/contents/main_right.jpg"><img src="/img/common/_.gif" width="14" height="1" alt=""></td>
+						<td background="/img/contents/main_right.jpg"><img src="<!--{$smarty.const.URL_DIR}-->img/common/_.gif" width="14" height="1" alt=""></td>
 					</tr>
 					<tr>
-						<td colspan="3"><img src="/img/contents/main_bottom.jpg" width="706" height="14" alt=""></td>
+						<td colspan="3"><img src="<!--{$smarty.const.URL_DIR}-->img/contents/main_bottom.jpg" width="706" height="14" alt=""></td>
 					</tr>
 					<tr><td height="30"></td></tr>
 

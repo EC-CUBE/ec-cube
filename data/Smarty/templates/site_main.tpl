@@ -107,7 +107,7 @@
 
 				<!--¢§±¦¥Ê¥Ó-->
 				<!--{if $arrPageLayout.RightNavi|count > 0}-->
-					<td bgcolor="#ffffff" width="5"><img src="/img/_.gif" width="5" height="1" alt="" /></td>
+					<td bgcolor="#ffffff" width="5"><img src="<!--{$smarty.const.URL_DIR}-->img/_.gif" width="5" height="1" alt="" /></td>
 					<td align="right" bgcolor="#ffffff">
 				        <table border="0" cellspacing="0" cellpadding="0" summary=" ">
 				        	<tr><td height=7><td></tr>

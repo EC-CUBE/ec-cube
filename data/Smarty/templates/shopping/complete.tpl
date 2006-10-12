@@ -11,7 +11,7 @@
 		<!--購入手続きの流れ-->
 		<table width="700" border="0" cellspacing="0" cellpadding="0" summary=" ">
 			<tr>
-				<td><img src="/img/shopping/flow04.gif" width="700" height="36" alt="購入手続きの流れ"></td>
+				<td><img src="<!--{$smarty.const.URL_DIR}-->img/shopping/flow04.gif" width="700" height="36" alt="購入手続きの流れ"></td>
 			</tr>
 			<tr><td height="15"></td></tr>
 		</table>
@@ -19,7 +19,7 @@
 			
 		<table width="700" border="0" cellspacing="0" cellpadding="0" summary=" ">
 			<tr>
-				<td><img src="/img/shopping/complete_title.jpg" width="700" height="40" alt="ご注文完了"></td>
+				<td><img src="<!--{$smarty.const.URL_DIR}-->img/shopping/complete_title.jpg" width="700" height="40" alt="ご注文完了"></td>
 			</tr>
 			<tr><td height="15"></td></tr>
 		</table>
@@ -95,7 +95,7 @@
 			</tr>
 			<tr><td height="20"></td></tr>
 			<tr align="center">
-				<td><a href="/index.php" onmouseover="chgImg('/img/common/b_toppage_on.gif','b_toppage');" onmouseout="chgImg('/img/common/b_toppage.gif','b_toppage');"><img src="/img/common/b_toppage.gif" width="150" height="30" alt="トップページへ" border="0" name="b_toppage"></a></td>
+				<td><a href="/index.php" onmouseover="chgImg('/img/common/b_toppage_on.gif','b_toppage');" onmouseout="chgImg('/img/common/b_toppage.gif','b_toppage');"><img src="<!--{$smarty.const.URL_DIR}-->img/common/b_toppage.gif" width="150" height="30" alt="トップページへ" border="0" name="b_toppage"></a></td>
 			</tr>
 		</table>
 		<!--▲MAIN ONTENTS-->

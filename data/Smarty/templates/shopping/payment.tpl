@@ -11,7 +11,7 @@
 		<!--購入手続きの流れ-->
 		<table width="700" border="0" cellspacing="0" cellpadding="0" summary=" ">
 			<tr>
-				<td><img src="/img/shopping/flow02.gif" width="700" height="36" alt="購入手続きの流れ"></td>
+				<td><img src="<!--{$smarty.const.URL_DIR}-->img/shopping/flow02.gif" width="700" height="36" alt="購入手続きの流れ"></td>
 			</tr>
 			<tr><td height="15"></td></tr>
 		</table>
@@ -19,13 +19,13 @@
 
 		<table width="700" border="0" cellspacing="0" cellpadding="0" summary=" ">
 			<tr>
-				<td><img src="/img/shopping/payment_title.jpg" width="700" height="40" alt="お支払い方法、お届け時間等の指定"></td>
+				<td><img src="<!--{$smarty.const.URL_DIR}-->img/shopping/payment_title.jpg" width="700" height="40" alt="お支払い方法、お届け時間等の指定"></td>
 			</tr>
 			<tr><td height="25"></td></tr>
 		</table>
 		<table width="670" border="0" cellspacing="0" cellpadding="0" summary=" ">
 			<tr>
-				<td><img src="/img/shopping/subtitle01.gif" width="670" height="33" alt="お支払方法の指定"></td>
+				<td><img src="<!--{$smarty.const.URL_DIR}-->img/shopping/subtitle01.gif" width="670" height="33" alt="お支払方法の指定"></td>
 			</tr>
 			<tr><td height="10"></td></tr>
 			<tr>
@@ -64,7 +64,7 @@
 			</tr>
 			<tr><td height="40"></td></tr>
 			<tr>
-				<td><img src="/img/shopping/subtitle02.gif" width="670" height="33" alt="お届け時間の指定"></td>
+				<td><img src="<!--{$smarty.const.URL_DIR}-->img/shopping/subtitle02.gif" width="670" height="33" alt="お届け時間の指定"></td>
 			</tr>
 			<tr><td height="10"></td></tr>
 			<tr>
@@ -97,7 +97,7 @@
 		
 			<tr><td height="40"></td></tr>
 			<tr>
-				<td><img src="/img/shopping/subtitle03.gif" width="670" height="33" alt="その他お問い合わせ"></td>
+				<td><img src="<!--{$smarty.const.URL_DIR}-->img/shopping/subtitle03.gif" width="670" height="33" alt="その他お問い合わせ"></td>
 			</tr>
 			<tr><td height="10"></td></tr>
 			<tr>
@@ -117,7 +117,7 @@
 			<!-- ▼ポイント使用 ここから -->
 			<!--{if $tpl_login == 1}-->
 			<tr>
-				<td><img src="/img/shopping/subtitle_point.jpg" width="670" height="32" alt="ポイント使用の指定" /></td>
+				<td><img src="<!--{$smarty.const.URL_DIR}-->img/shopping/subtitle_point.jpg" width="670" height="32" alt="ポイント使用の指定" /></td>
 			</tr>
 			<tr><td height="10"></td></tr>
 			<tr>
@@ -176,8 +176,8 @@
 			
 			<tr>
 				<td align="center">
-					<a href="<!--{$smarty.server.PHP_SELF}-->" onmouseover="chgImg('/img/common/b_back_on.gif','back03')" onmouseout="chgImg('/img/common/b_back.gif','back03')" onclick="history.back(); return false;" /><img src="/img/common/b_back.gif" width="150" height="30" alt="戻る" border="0" name="back03" id="back03" ></a><img src="../img/_.gif" width="20" height="" alt="" />
-					<input type="image" onmouseover="chgImgImageSubmit('/img/common/b_next_on.gif',this)" onmouseout="chgImgImageSubmit('/img/common/b_next.gif',this)" src="/img/common/b_next.gif" width="150" height="30" alt="次へ" border="0" name="next" id="next" />
+					<a href="<!--{$smarty.server.PHP_SELF}-->" onmouseover="chgImg('/img/common/b_back_on.gif','back03')" onmouseout="chgImg('/img/common/b_back.gif','back03')" onclick="history.back(); return false;" /><img src="<!--{$smarty.const.URL_DIR}-->img/common/b_back.gif" width="150" height="30" alt="戻る" border="0" name="back03" id="back03" ></a><img src="../img/_.gif" width="20" height="" alt="" />
+					<input type="image" onmouseover="chgImgImageSubmit('/img/common/b_next_on.gif',this)" onmouseout="chgImgImageSubmit('/img/common/b_next.gif',this)" src="<!--{$smarty.const.URL_DIR}-->img/common/b_next.gif" width="150" height="30" alt="次へ" border="0" name="next" id="next" />
 				</td>
 			</tr>
 			</form>

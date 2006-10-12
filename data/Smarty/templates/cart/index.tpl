@@ -10,11 +10,11 @@
 		<!--▼MAIN ONTENTS-->
 		<table width="700" border="0" cellspacing="0" cellpadding="0" summary=" ">
 			<tr>
-				<td><img src="/img/cart/title.jpg" width="700" height="40" alt="現在のカゴの中"></td>
+				<td><img src="<!--{$smarty.const.URL_DIR}-->img/cart/title.jpg" width="700" height="40" alt="現在のカゴの中"></td>
 			</tr>
 			<tr><td height="15"></td></tr>
 			<tr>
-				<td><img src="/img/cart/flame_top.gif" width="700" height="15" alt=""></td>
+				<td><img src="<!--{$smarty.const.URL_DIR}-->img/cart/flame_top.gif" width="700" height="15" alt=""></td>
 			</tr>
 			<tr>
 				<td align="center" background="/img/cart/flame_bg.gif">
@@ -45,7 +45,7 @@
 				</td>
 			</tr>
 			<tr>
-				<td><img src="/img/cart/flame_bottom.gif" width="700" height="15" alt=""></td>
+				<td><img src="<!--{$smarty.const.URL_DIR}-->img/cart/flame_bottom.gif" width="700" height="15" alt=""></td>
 			</tr>
 			<tr><td height="15"></td></tr>
 			<tr>
@@ -148,7 +148,7 @@
 			<tr>
 				<td align="center">
 					<a href="javascript:history.back()" onmouseOver="chgImg('/img/cart/b_pageback_on.gif','back');" onmouseOut="chgImg('/img/cart/b_pageback.gif','back');"><img src="../img/cart/b_pageback.gif" width="150" height="30" alt="前のページへ戻る" name="back" id="back" /></a>　
-					<input type="image" onMouseover="chgImgImageSubmit('/img/cart/b_buystep_on.gif',this)" onMouseout="chgImgImageSubmit('/img/cart/b_buystep.gif',this)" src="/img/cart/b_buystep.gif" width="150" height="30" alt="購入手続きへ" name="confirm" />
+					<input type="image" onMouseover="chgImgImageSubmit('/img/cart/b_buystep_on.gif',this)" onMouseout="chgImgImageSubmit('/img/cart/b_buystep.gif',this)" src="<!--{$smarty.const.URL_DIR}-->img/cart/b_buystep.gif" width="150" height="30" alt="購入手続きへ" name="confirm" />
 				</td>
 			</tr>
 			</form>

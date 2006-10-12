@@ -35,7 +35,7 @@
 		<table width="460" border="0" cellspacing="0" cellpadding="0" summary=" ">
 			<tr><td height="15"></td></tr>
 			<tr>
-				<td><img src="/img/common/zip_title.jpg" width="460" height="40" alt="½»½ê¸¡º÷"></td>
+				<td><img src="<!--{$smarty.const.URL_DIR}-->img/common/zip_title.jpg" width="460" height="40" alt="½»½ê¸¡º÷"></td>
 			</tr>
 			<tr><td height="20"></td></tr>
 			<tr>
@@ -56,7 +56,7 @@
 			</tr>
 			<tr><td height="20"></td></tr>
 			<tr>
-				<td align="center"><a href="javascript:window.close()" onmouseover="chgImg('/img/common/b_close_on.gif','b_close');" onmouseout="chgImg('/img/common/b_close.gif','b_close');"><img src="/img/common/b_close.gif" width="140" height="30" alt="ÊÄ¤¸¤ë" border="0" name="b_close"></a></td>
+				<td align="center"><a href="javascript:window.close()" onmouseover="chgImg('/img/common/b_close_on.gif','b_close');" onmouseout="chgImg('/img/common/b_close.gif','b_close');"><img src="<!--{$smarty.const.URL_DIR}-->img/common/b_close.gif" width="140" height="30" alt="ÊÄ¤¸¤ë" border="0" name="b_close"></a></td>
 			</tr>
 			<tr><td height="30"></td></tr>
 		</table>

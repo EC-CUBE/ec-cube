@@ -222,9 +222,9 @@
 
 			<tr>
 				<td align="center">
-					<a href="<!--{$smarty.server.PHP_SELF}-->" onmouseover="chgImgImageSubmit('/img/common/b_back_on.gif',back03)" onmouseout="chgImgImageSubmit('/img/common/b_back.gif',back03)" onclick="fnModeSubmit('return', '', ''); return false;"><img src="/img/common/b_back.gif" width="150" height="30" alt="戻る" border="0" name="back03" id="back03"/></a>
-					<img src="/img/_.gif" width="20" height="" alt="" />
-					<input type="image" onmouseover="chgImgImageSubmit('/img/shopping/b_ordercomp_on.gif',this)" onmouseout="chgImgImageSubmit('/img/shopping/b_ordercomp.gif',this)" src="/img/shopping/b_ordercomp.gif" width="150" height="30" alt="ご注文完了ページへ" border="0" name="next" id="next" />
+					<a href="<!--{$smarty.server.PHP_SELF}-->" onmouseover="chgImgImageSubmit('/img/common/b_back_on.gif',back03)" onmouseout="chgImgImageSubmit('/img/common/b_back.gif',back03)" onclick="fnModeSubmit('return', '', ''); return false;"><img src="<!--{$smarty.const.URL_DIR}-->img/common/b_back.gif" width="150" height="30" alt="戻る" border="0" name="back03" id="back03"/></a>
+					<img src="<!--{$smarty.const.URL_DIR}-->img/_.gif" width="20" height="" alt="" />
+					<input type="image" onmouseover="chgImgImageSubmit('/img/shopping/b_ordercomp_on.gif',this)" onmouseout="chgImgImageSubmit('/img/shopping/b_ordercomp.gif',this)" src="<!--{$smarty.const.URL_DIR}-->img/shopping/b_ordercomp.gif" width="150" height="30" alt="ご注文完了ページへ" border="0" name="next" id="next" />
 				</td>
 			</tr>
 			</form>
