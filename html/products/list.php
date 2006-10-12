@@ -120,7 +120,7 @@ if($_POST['mode'] == "cart" && $_POST['product_id'] != "") {
 				$classcategory_id2 = '0';
 			}
 			$objCartSess->addProduct(array($_POST['product_id'], $classcategory_id1, $classcategory_id2), $_POST[$quantity]);
-			header("Location: /cart/index.php");
+			header("Location: " . URL_CART_TOP);
 			exit;
 		}
 	}

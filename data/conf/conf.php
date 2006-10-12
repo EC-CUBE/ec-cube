@@ -281,7 +281,7 @@ define ("SEPA_CATNAVI", " > ");	// カテゴリ区切り文字
 define ("SEPA_CATLIST", " | ");	// カテゴリ区切り文字
 
 /* URL */
-define ("URL_SHOP_TOP", URL_DIR . "shopping/index.php");			// 会員情報入力
+define ("URL_SHOP_TOP", SSL_URL . "shopping/index.php");			// 会員情報入力
 define ("URL_SITE_TOP", URL_DIR . "index.php");					// サイトトップ
 define ("URL_CART_TOP", URL_DIR . "cart/index.php");				// カートトップ
 define ("URL_SHOP_CONFIRM", URL_DIR . "shopping/confirm.php");	// 購入確認ページ

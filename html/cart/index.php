@@ -80,10 +80,7 @@ case 'confirm':
 		// カートを購入モードに設定
 		$objCartSess->saveCurrentCart($uniqid);
 		// 購入ページへ
-		
-		print(sfTrimURL(SSL_URL) . URL_SHOP_TOP);exit;
-				
-		header("Location: " . sfTrimURL(SSL_URL) . URL_SHOP_TOP);		
+		header("Location: " . URL_SHOP_TOP);		
 	}
 	break;
 default:
