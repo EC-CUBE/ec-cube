@@ -24,13 +24,16 @@ class SC_DbConn{
 	// コンストラクタ
 	function SC_DbConn($dsn = "", $err_disp = true){
 		global $objDbConn;
+		
+		$options['debug'] = 9;
+		
 		// 既に接続されている場合には接続しない
 		if(!isset($objDbConn->connection)) {
 			if($dsn != "") {
-				$objDbConn = DB::connect($dsn);
+				$objDbConn = DB::connect($dsn, $options);
 				$this->dsn = $dsn;
 			} else {
-				$objDbConn = DB::connect(DEFAULT_DSN);
+				$objDbConn = DB::connect(DEFAULT_DSN, $options);
 				$this->dsn = DEFAULT_DSN;
 			}
 		}
