@@ -8,7 +8,7 @@
 		<td align="center" bgcolor="#ffffff">
 		<!--検索フォーム-->
 		<table width="146" border="0" cellspacing="0" cellpadding="0" summary=" ">
-		<form name="search_form" id="search_form" method="get" action="/products/list.php">
+		<form name="search_form" id="search_form" method="get" action="<!--{$smarty.const.URL_DIR}-->products/list.php">
 		<input type="hidden" name="mode" value="search">
 			<tr><td height="10"></td></tr>
 			<tr>

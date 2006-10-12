@@ -18,13 +18,13 @@
 		
 		<table width="190" border="0" cellspacing="0" cellpadding="0" summary=" ">
 			<tr valign="top">
-				<td><a href="./products/detail.php?product_id=<!--{$arrBestProducts[cnt].product_id}-->"><img src="<!--{$image_path|sfRmDupSlash}-->" width="48" height="48" alt="<!--{$arrBestProducts[cnt].name|escape}-->" /></a></td>
+				<td><a href="<!--{$smarty.const.URL_DIR}-->products/detail.php?product_id=<!--{$arrBestProducts[cnt].product_id}-->"><img src="<!--{$image_path|sfRmDupSlash}-->" width="48" height="48" alt="<!--{$arrBestProducts[cnt].name|escape}-->" /></a></td>
 				<td align="right">
 				<table width="132" border="0" cellspacing="0" cellpadding="0" summary=" ">
 					<tr>
 						<!--{assign var=price01 value=`$arrBestProducts[cnt].price01_min`}-->
 						<!--{assign var=price02 value=`$arrBestProducts[cnt].price02_min`}-->
-						<td><span class="fs12"><a href="./products/detail.php?product_id=<!--{$arrBestProducts[cnt].product_id}-->"><!--{$arrBestProducts[cnt].name|escape}--></a></span><br>
+						<td><span class="fs12"><a href="<!--{$smarty.const.URL_DIR}-->products/detail.php?product_id=<!--{$arrBestProducts[cnt].product_id}-->"><!--{$arrBestProducts[cnt].name|escape}--></a></span><br>
 						<span class="red"><span class="fs12">²Á³Ê</span><span class="fs10">(ÀÇ¹þ)</span></span><span class="redst"><span class="fs12">¡§
 						<!--{if $price02 == ""}-->
 						<!--{$price01|sfPreTax:$arrInfo.tax:$arrInfo.tax_rule|number_format}-->
