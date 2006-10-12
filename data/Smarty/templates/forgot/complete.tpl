@@ -34,7 +34,7 @@
 		<table width="500" border="0" cellspacing="0" cellpadding="0" summary=" ">
 			<tr><td height="15"></td></tr>
 			<tr>
-				<td><img src="../img/forget/title.jpg" width="500" height="40" alt="パスワードを忘れた方"></td>
+				<td><img src="<!--{$smarty.const.URL_DIR}-->img/forget/title.jpg" width="500" height="40" alt="パスワードを忘れた方"></td>
 			</tr>
 			<tr><td height="15"></td></tr>
 			<tr>

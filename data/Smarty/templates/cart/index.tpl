@@ -100,9 +100,9 @@
 								</tr>
 								<tr><td height="5"></td></tr>
 								<tr>
-									<td><a href="<!--{$smarty.server.PHP_SELF}-->" onclick="fnChangeAction('<!--{$smarty.server.PHP_SELF}-->'); fnModeSubmit('up','cart_no','<!--{$arrProductsClass[cnt].cart_no}-->'); return false"><img src="../img/button/plus.gif" width="16" height="16" alt="＋" /></a></td>
-									<td><img src="../img/_.gif" width="10" height="1" alt="" /></td>
-									<td><a href="<!--{$smarty.server.PHP_SELF}-->" onclick="fnChangeAction('<!--{$smarty.server.PHP_SELF}-->'); fnModeSubmit('down','cart_no','<!--{$arrProductsClass[cnt].cart_no}-->'); return false"><img src="../img/button/minus.gif" width="16" height="16" alt="-" /></a></td>
+									<td><a href="<!--{$smarty.server.PHP_SELF}-->" onclick="fnChangeAction('<!--{$smarty.server.PHP_SELF}-->'); fnModeSubmit('up','cart_no','<!--{$arrProductsClass[cnt].cart_no}-->'); return false"><img src="<!--{$smarty.const.URL_DIR}-->img/button/plus.gif" width="16" height="16" alt="＋" /></a></td>
+									<td><img src="<!--{$smarty.const.URL_DIR}-->img/_.gif" width="10" height="1" alt="" /></td>
+									<td><a href="<!--{$smarty.server.PHP_SELF}-->" onclick="fnChangeAction('<!--{$smarty.server.PHP_SELF}-->'); fnModeSubmit('down','cart_no','<!--{$arrProductsClass[cnt].cart_no}-->'); return false"><img src="<!--{$smarty.const.URL_DIR}-->img/button/minus.gif" width="16" height="16" alt="-" /></a></td>
 								</tr>
 							</table>
 							</td>
@@ -141,13 +141,13 @@
 			</tr>
 			<tr><td height="30"></td></tr>
 			<tr>
-				<td align="center"><img src="../img/cart/text.gif" width="390" height="13" alt="上記内容でよろしければ「レジへ行く」ボタンをクリックしてください。"></td>
+				<td align="center"><img src="<!--{$smarty.const.URL_DIR}-->img/cart/text.gif" width="390" height="13" alt="上記内容でよろしければ「レジへ行く」ボタンをクリックしてください。"></td>
 			</tr>
 			<tr><td height="20"></td></tr>
 
 			<tr>
 				<td align="center">
-					<a href="javascript:history.back()" onmouseOver="chgImg('<!--{$smarty.const.URL_DIR}-->img/cart/b_pageback_on.gif','back');" onmouseOut="chgImg('<!--{$smarty.const.URL_DIR}-->img/cart/b_pageback.gif','back');"><img src="../img/cart/b_pageback.gif" width="150" height="30" alt="前のページへ戻る" name="back" id="back" /></a>　
+					<a href="javascript:history.back()" onmouseOver="chgImg('<!--{$smarty.const.URL_DIR}-->img/cart/b_pageback_on.gif','back');" onmouseOut="chgImg('<!--{$smarty.const.URL_DIR}-->img/cart/b_pageback.gif','back');"><img src="<!--{$smarty.const.URL_DIR}-->img/cart/b_pageback.gif" width="150" height="30" alt="前のページへ戻る" name="back" id="back" /></a>　
 					<input type="image" onMouseover="chgImgImageSubmit('<!--{$smarty.const.URL_DIR}-->img/cart/b_buystep_on.gif',this)" onMouseout="chgImgImageSubmit('<!--{$smarty.const.URL_DIR}-->img/cart/b_buystep.gif',this)" src="<!--{$smarty.const.URL_DIR}-->img/cart/b_buystep.gif" width="150" height="30" alt="購入手続きへ" name="confirm" />
 				</td>
 			</tr>

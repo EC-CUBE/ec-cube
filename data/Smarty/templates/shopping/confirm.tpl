@@ -11,7 +11,7 @@
 		<!--購入手続きの流れ-->
 		<table width="700" border="0" cellspacing="0" cellpadding="0" summary=" ">
 			<tr>
-				<td><img src="../img/shopping/flow03.gif" width="700" height="36" alt="購入手続きの流れ"></td>
+				<td><img src="<!--{$smarty.const.URL_DIR}-->img/shopping/flow03.gif" width="700" height="36" alt="購入手続きの流れ"></td>
 			</tr>
 			<tr><td height="15"></td></tr>
 		</table>
@@ -19,7 +19,7 @@
 		
 		<table width="700" border="0" cellspacing="0" cellpadding="0" summary=" ">
 			<tr>
-				<td><img src="../img/shopping/confirm_title.jpg" width="700" height="40" alt="ご入力内容のご確認"></td>
+				<td><img src="<!--{$smarty.const.URL_DIR}-->img/shopping/confirm_title.jpg" width="700" height="40" alt="ご入力内容のご確認"></td>
 			</tr>
 			<tr><td height="15"></td></tr>
 			<tr>

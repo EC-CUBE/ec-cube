@@ -155,7 +155,7 @@
 										今回のお買い物で、<input type="text" name="<!--{$key}-->" value="<!--{$arrForm[$key].value|default:$tpl_user_point}-->" maxlength="<!--{$arrForm[$key].length}-->" style="<!--{$arrErr[$key]|sfGetErrorColor}-->" size="6" class="box6" />&nbsp;ポイントを使用する。</span></td>
 									</tr>
 									<tr>
-										<td height="12"><img src="../img/shopping/line02.gif" width="514" height="1" alt="" /></td>
+										<td height="12"><img src="<!--{$smarty.const.URL_DIR}-->img/shopping/line02.gif" width="514" height="1" alt="" /></td>
 									</tr>
 									<tr>
 										<td class="fs12"><input type="radio" id="point_off" name="point_check" value="2" <!--{$arrForm.point_check.value|sfGetChecked:2}--> onclick="fnCheckInputPoint();" /><label for="point_off">ポイントを使用しない</label></td>
@@ -176,7 +176,7 @@
 			
 			<tr>
 				<td align="center">
-					<a href="<!--{$smarty.server.PHP_SELF}-->" onmouseover="chgImg('<!--{$smarty.const.URL_DIR}-->img/common/b_back_on.gif','back03')" onmouseout="chgImg('<!--{$smarty.const.URL_DIR}-->img/common/b_back.gif','back03')" onclick="history.back(); return false;" /><img src="<!--{$smarty.const.URL_DIR}-->img/common/b_back.gif" width="150" height="30" alt="戻る" border="0" name="back03" id="back03" ></a><img src="../img/_.gif" width="20" height="" alt="" />
+					<a href="<!--{$smarty.server.PHP_SELF}-->" onmouseover="chgImg('<!--{$smarty.const.URL_DIR}-->img/common/b_back_on.gif','back03')" onmouseout="chgImg('<!--{$smarty.const.URL_DIR}-->img/common/b_back.gif','back03')" onclick="history.back(); return false;" /><img src="<!--{$smarty.const.URL_DIR}-->img/common/b_back.gif" width="150" height="30" alt="戻る" border="0" name="back03" id="back03" ></a><img src="<!--{$smarty.const.URL_DIR}-->img/_.gif" width="20" height="" alt="" />
 					<input type="image" onmouseover="chgImgImageSubmit('<!--{$smarty.const.URL_DIR}-->img/common/b_next_on.gif',this)" onmouseout="chgImgImageSubmit('<!--{$smarty.const.URL_DIR}-->img/common/b_next.gif',this)" src="<!--{$smarty.const.URL_DIR}-->img/common/b_next.gif" width="150" height="30" alt="次へ" border="0" name="next" id="next" />
 				</td>
 			</tr>

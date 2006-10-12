@@ -12,7 +12,7 @@
 		<table width="700" border="0" cellspacing="0" cellpadding="0" summary=" ">
 			<tr><td height="15"></td></tr>
 			<tr>
-				<td><img src="../img/shopping/flow01.gif" width="700" height="36" alt="購入手続きの流れ"></td>
+				<td><img src="<!--{$smarty.const.URL_DIR}-->img/shopping/flow01.gif" width="700" height="36" alt="購入手続きの流れ"></td>
 			</tr>
 			<tr><td height="15"></td></tr>
 		</table>
@@ -25,7 +25,7 @@
 		<input type="hidden" name="uniqid" value="<!--{$tpl_uniqid}-->">
 		<input type="hidden" name="other_deliv_id" value="">
 			<tr>
-				<td><img src="../img/shopping/deliv_title.jpg" width="700" height="40" alt="お届け先の指定"></td>
+				<td><img src="<!--{$smarty.const.URL_DIR}-->img/shopping/deliv_title.jpg" width="700" height="40" alt="お届け先の指定"></td>
 			</tr>
 			<tr><td height="15"></td></tr>
 			<tr>

@@ -19,7 +19,7 @@
 <!--{if $smarty.const.ROOT_CATEGORY_1 == $tpl_root_id}-->
 <td><a href="<!--{$smarty.const.LIST_C_HTML}--><!--{$smarty.const.ROOT_CATEGORY_1}-->.html"><img src="<!--{$smarty.const.URL_DIR}-->img/other/fashion_on.gif" width="109" height="39" alt="ファッション" /></a></td>
 <!--{else}-->
-<td><a href="<!--{$smarty.const.LIST_C_HTML}--><!--{$smarty.const.ROOT_CATEGORY_1}-->.html" onmouseover="chgImg('../img/other/fashion_on.gif','fashion');" onmouseout="chgImg('../img/other/fashion.gif','fashion');"><img src="../img/other/fashion.gif" width="109" height="39" alt="ファッション" name="fashion" id="fashion" /></a></td>
+<td><a href="<!--{$smarty.const.LIST_C_HTML}--><!--{$smarty.const.ROOT_CATEGORY_1}-->.html" onmouseover="chgImg('../img/other/fashion_on.gif','fashion');" onmouseout="chgImg('../img/other/fashion.gif','fashion');"><img src="<!--{$smarty.const.URL_DIR}-->img/other/fashion.gif" width="109" height="39" alt="ファッション" name="fashion" id="fashion" /></a></td>
 <!--{/if}-->
 
 <!--{if $smarty.const.ROOT_CATEGORY_5 == $tpl_root_id}-->

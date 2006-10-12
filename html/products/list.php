@@ -5,17 +5,7 @@
  * http://www.lockon.co.jp/
  */
 
-$include_dir = realpath(dirname( __FILE__));
-require_once($include_dir . "/../../data/conf/conf.php");	
-require_once(DATA_PATH . "lib/slib.php");
-require_once(DATA_PATH . "class/SC_View.php");
-require_once(DATA_PATH . "class/SC_Query.php");
-require_once(DATA_PATH . "data/class/SC_Customer.php");
-require_once(DATA_PATH . "data/class/SC_Cookie.php");
-require_once(DATA_PATH . "data/class/SC_SiteInfo.php");
-require_once(DATA_PATH . "data/class/SC_PageNavi.php");
-require_once(DATA_PATH . "data/class/SC_CheckError.php");
-require_once(DATA_PATH . "data/class/SC_CartSession.php");
+require_once("../require.php");
 require_once(DATA_PATH . "include/page_layout.inc");
 
 class LC_Page {

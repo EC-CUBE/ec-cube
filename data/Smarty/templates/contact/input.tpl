@@ -6,8 +6,8 @@
 <!--▼CONTENTS-->
 <table width="780" cellspacing="0" cellpadding="0" summary=" ">
 	<tr>
-		<td bgcolor="#cccccc" width="1"><img src="../img/_.gif" width="1" height="10" alt="" /></td>
-		<td bgcolor="#ffffff" width="9"><img src="../img/_.gif" width="9" height="1" alt="" /></td>
+		<td bgcolor="#cccccc" width="1"><img src="<!--{$smarty.const.URL_DIR}-->img/_.gif" width="1" height="10" alt="" /></td>
+		<td bgcolor="#ffffff" width="9"><img src="<!--{$smarty.const.URL_DIR}-->img/_.gif" width="9" height="1" alt="" /></td>
 		<td bgcolor="#ffffff" align="left"> 
 		<!--▼MAIN CONTENTS-->
 		<!--パンクズ-->
@@ -33,7 +33,7 @@
 				
 				<!--▼RIGHT CONTENTS-->
 				<td id="right">
-				<div id="maintitle"><img src="../img/right_contact/title.jpg" width="570" height="40" alt="お問い合わせ" /></div>
+				<div id="maintitle"><img src="<!--{$smarty.const.URL_DIR}-->img/right_contact/title.jpg" width="570" height="40" alt="お問い合わせ" /></div>
 				<div id="comment" class="fs12">下記項目にご入力ください。「<span class="asterisk">※</span>」印は入力必須項目です。<br />
 				入力後、一番下の「確認ページへ」ボタンをクリックしてください。<br />　<br />
 				<!--{$name|escape}-->様</span></div>
@@ -146,7 +146,7 @@
 					</tr>
 				</table>
 				<div id="button">
-				<input type="image" onmouseover="chgImgImageSubmit('../img/button/confirm_on.gif',this)" onmouseout="chgImgImageSubmit('../img/button/confirm.gif',this)" src="../img/button/confirm.gif" width="150" height="30" alt="確認ページへ" border="0" name="confirm" id="confirm" /></div>
+				<input type="image" onmouseover="chgImgImageSubmit('../img/button/confirm_on.gif',this)" onmouseout="chgImgImageSubmit('../img/button/confirm.gif',this)" src="<!--{$smarty.const.URL_DIR}-->img/button/confirm.gif" width="150" height="30" alt="確認ページへ" border="0" name="confirm" id="confirm" /></div>
 				</form>
 				</td>
 				<!--▲RIGHT CONTENTS-->
@@ -155,8 +155,8 @@
 		</table>
 		<!--▲MAIN CONTENTS-->
 		</td>
-		<td bgcolor="#ffffff" width="10"><img src="../img/_.gif" width="9" height="1" alt="" /></td>
-		<td bgcolor="#cccccc" width="1"><img src="../img/_.gif" width="1" height="10" alt="" /></td>
+		<td bgcolor="#ffffff" width="10"><img src="<!--{$smarty.const.URL_DIR}-->img/_.gif" width="9" height="1" alt="" /></td>
+		<td bgcolor="#cccccc" width="1"><img src="<!--{$smarty.const.URL_DIR}-->img/_.gif" width="1" height="10" alt="" /></td>
 	</tr>
 </table>
 <!--▲CONTENTS-->

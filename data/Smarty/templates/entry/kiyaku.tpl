@@ -7,7 +7,7 @@
 		<table width="580" border="0" cellspacing="0" cellpadding="0" summary=" ">
 			<form name="form1" method="post" action="./payment.php">
 			<tr>
-				<td><img src="../img/entry/agree_title.jpg" width="580" height="40" alt="¤´ÍøÍÑµ¬Ìó"></td>
+				<td><img src="<!--{$smarty.const.URL_DIR}-->img/entry/agree_title.jpg" width="580" height="40" alt="¤´ÍøÍÑµ¬Ìó"></td>
 			</tr>
 			<tr><td height="15"></td></tr>
 			<tr>
@@ -24,8 +24,8 @@
 			</tr>
 			<tr><td height="25"></td></tr>
 			<tr align="center">
-				<td><a href="/index.php" onmouseover="chgImg('../img/entry/b_noagree_on.gif','b_noagree');" onmouseout="chgImg('../img/entry/b_noagree.gif','b_noagree');"><img src="../img/entry/b_noagree.gif" width="180" height="30" alt="Æ±°Õ¤·¤Ê¤¤" border="0" name="b_noagree"></a>¡¡ 
-                <a href="./index.php" onmouseover="chgImg('../img/entry/b_agree_on.gif','b_agree');" onmouseout="chgImg('../img/entry/b_agree.gif','b_agree');"><img src="../img/entry/b_agree.gif" width="180" height="30" alt="µ¬Ìó¤ËÆ±°Õ¤·¤Æ²ñ°÷ÅÐÏ¿" border="0" name="b_agree"></a></td>
+				<td><a href="/index.php" onmouseover="chgImg('../img/entry/b_noagree_on.gif','b_noagree');" onmouseout="chgImg('../img/entry/b_noagree.gif','b_noagree');"><img src="<!--{$smarty.const.URL_DIR}-->img/entry/b_noagree.gif" width="180" height="30" alt="Æ±°Õ¤·¤Ê¤¤" border="0" name="b_noagree"></a>¡¡ 
+                <a href="./index.php" onmouseover="chgImg('../img/entry/b_agree_on.gif','b_agree');" onmouseout="chgImg('../img/entry/b_agree.gif','b_agree');"><img src="<!--{$smarty.const.URL_DIR}-->img/entry/b_agree.gif" width="180" height="30" alt="µ¬Ìó¤ËÆ±°Õ¤·¤Æ²ñ°÷ÅÐÏ¿" border="0" name="b_agree"></a></td>
 			</tr>
 		</form>
 		</table>

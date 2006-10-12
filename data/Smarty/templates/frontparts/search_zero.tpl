@@ -18,13 +18,13 @@
 <!--{*
 <table width="570" cellspacing="0" cellpadding="0" summary=" ">
 	<tr>
-		<td colspan="3" align="center"><img src="../img/right_search/subtitle.gif" width="520" height="30" alt="ただいま開催中の特集はこちら" /></td>
+		<td colspan="3" align="center"><img src="<!--{$smarty.const.URL_DIR}-->img/right_search/subtitle.gif" width="520" height="30" alt="ただいま開催中の特集はこちら" /></td>
 	</tr>
 	<tr><td height="15"></td></tr>
 	<tr>
-		<td align="right"><a href="../campaign/nabe.php"><img src="../img/right_search/b_01.jpg" width="218" height="117" alt="お鍋特集" border="0" /></a></td>
-		<td><img src="../img/_.gif" width="20" height="1" alt="" /></td>
-		<td><a href="../campaign/christmas.php"><img src="../img/right_search/b_02.jpg" width="218" height="117" alt="クリスマス特集" border="0" /></a></td>
+		<td align="right"><a href="../campaign/nabe.php"><img src="<!--{$smarty.const.URL_DIR}-->img/right_search/b_01.jpg" width="218" height="117" alt="お鍋特集" border="0" /></a></td>
+		<td><img src="<!--{$smarty.const.URL_DIR}-->img/_.gif" width="20" height="1" alt="" /></td>
+		<td><a href="../campaign/christmas.php"><img src="<!--{$smarty.const.URL_DIR}-->img/right_search/b_02.jpg" width="218" height="117" alt="クリスマス特集" border="0" /></a></td>
 	</tr>
 </table>
 *}-->

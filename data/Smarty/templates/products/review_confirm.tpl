@@ -38,7 +38,7 @@
 		<!--{/foreach}-->
 			<tr><td height="15"></td></tr>
 			<tr>
-				<td><img src="../img/products/review_title.jpg" width="500" height="40" alt="お客様の声書き込み"></td>
+				<td><img src="<!--{$smarty.const.URL_DIR}-->img/products/review_title.jpg" width="500" height="40" alt="お客様の声書き込み"></td>
 			</tr>
 			<tr><td height="15"></td></tr>
 			<tr>

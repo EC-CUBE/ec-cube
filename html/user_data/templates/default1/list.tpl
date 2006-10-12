@@ -45,9 +45,9 @@ function lnSetSelect(name1, name2, id, val) {
 				<td id="right">
 				<!--タイトルここから-->
 				<table width="" border="0" cellspacing="0" cellpadding="0" summary=" ">
-					<tr><td colspan="3"><img src="../img/products/title_top.gif" width="580" height="8" alt=""></td></tr>
+					<tr><td colspan="3"><img src="<!--{$smarty.const.URL_DIR}-->img/products/title_top.gif" width="580" height="8" alt=""></td></tr>
 					<tr bgcolor="#ffebca">
-						<td><img src="../img/products/title_icon.gif" width="29" height="24" alt=""></td>
+						<td><img src="<!--{$smarty.const.URL_DIR}-->img/products/title_icon.gif" width="29" height="24" alt=""></td>
 						<td>
 						<table width="546" border="0" cellspacing="0" cellpadding="0" summary=" ">
 							<tr valign="top">
@@ -55,9 +55,9 @@ function lnSetSelect(name1, name2, id, val) {
 							</tr>
 						</table>
 						</td>
-						<td><img src="../img/products/title_left.gif" width="5" height="24" alt=""></td>
+						<td><img src="<!--{$smarty.const.URL_DIR}-->img/products/title_left.gif" width="5" height="24" alt=""></td>
 					</tr>
-					<tr><td colspan="3"><img src="../img/products/title_under.gif" width="580" height="8" alt=""></td></tr>
+					<tr><td colspan="3"><img src="<!--{$smarty.const.URL_DIR}-->img/products/title_under.gif" width="580" height="8" alt=""></td></tr>
 					<tr><td height="10"></td></tr>
 				</table>
 				<!--タイトルここまで-->
@@ -99,7 +99,7 @@ function lnSetSelect(name1, name2, id, val) {
 				<!--件数ここから-->
 				<!--{if $tpl_linemax > 0}-->
 				<table width="" border="0" cellspacing="0" cellpadding="0" summary=" ">
-					<tr><td><img src="../img/products/flame_top.gif" width="580" height="8" alt=""></td></tr>
+					<tr><td><img src="<!--{$smarty.const.URL_DIR}-->img/products/flame_top.gif" width="580" height="8" alt=""></td></tr>
 					<tr>
 						<td align="center" bgcolor="#f3f3f3">
 						<table width="560" border="0" cellspacing="0" cellpadding="0" summary=" ">
@@ -110,7 +110,7 @@ function lnSetSelect(name1, name2, id, val) {
 						</table>
 						</td>
 					</tr>
-					<tr><td><img src="../img/products/flame_top.gif" width="580" height="8" alt=""></td></tr>
+					<tr><td><img src="<!--{$smarty.const.URL_DIR}-->img/products/flame_top.gif" width="580" height="8" alt=""></td></tr>
 					<tr><td height="15"></td></tr>
 				</table>
 				<!--件数ここまで-->
@@ -156,7 +156,7 @@ function lnSetSelect(name1, name2, id, val) {
 								</table>
 								</td>
 							</tr>
-							<tr><td colspan="2" bgcolor="#ebebd6"><img src="../img/common/_.gif" width="1" height="2" alt=""></td></tr>
+							<tr><td colspan="2" bgcolor="#ebebd6"><img src="<!--{$smarty.const.URL_DIR}-->img/common/_.gif" width="1" height="2" alt=""></td></tr>
 							<tr><td height="8"></td></tr>
 							<tr>
 								<td colspan="2" class="fs12"><!--★コメント★--><!--{$arrProducts[cnt].main_list_comment|escape|nl2br}--></td>
@@ -236,14 +236,14 @@ function lnSetSelect(name1, name2, id, val) {
 						</table>
 					</td>
 				</tr>
-				<tr><td colspan=3 height="40"><img src="../img/common/line_580.gif" width="580" height="1" alt=""></td></tr>
+				<tr><td colspan=3 height="40"><img src="<!--{$smarty.const.URL_DIR}-->img/common/line_580.gif" width="580" height="1" alt=""></td></tr>
 				<!--{/section}-->
 				</table>
 
 				<!--件数ここから-->
 				<!--{if $tpl_linemax > 0}-->
 				<table width="580" border="0" cellspacing="0" cellpadding="0" summary=" ">
-					<tr><td><img src="../img/products/flame_top.gif" width="580" height="8" alt=""></td></tr>
+					<tr><td><img src="<!--{$smarty.const.URL_DIR}-->img/products/flame_top.gif" width="580" height="8" alt=""></td></tr>
 					<tr>
 						<td align="center" bgcolor="#f3f3f3">
 						<table width="560" border="0" cellspacing="0" cellpadding="0" summary=" ">
@@ -254,7 +254,7 @@ function lnSetSelect(name1, name2, id, val) {
 						</table>
 						</td>
 					</tr>
-					<tr><td><img src="../img/products/flame_top.gif" width="580" height="8" alt=""></td></tr>
+					<tr><td><img src="<!--{$smarty.const.URL_DIR}-->img/products/flame_top.gif" width="580" height="8" alt=""></td></tr>
 					<tr><td height="15"></td></tr>
 				</table>
 				<!--件数ここまで-->

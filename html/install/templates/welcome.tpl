@@ -23,7 +23,7 @@
 	<tr><td height="30"></td></tr>
 	<tr>
 		<td align="center">
-		<input type="image" onMouseover="chgImgImageSubmit('../img/install/next_on.jpg',this)" onMouseout="chgImgImageSubmit('../img/install/next.jpg',this)" src="../img/install/next.jpg" width="105" height="24" alt="次へ進む" border="0" name="next">
+		<input type="image" onMouseover="chgImgImageSubmit('../img/install/next_on.jpg',this)" onMouseout="chgImgImageSubmit('../img/install/next.jpg',this)" src="<!--{$smarty.const.URL_DIR}-->img/install/next.jpg" width="105" height="24" alt="次へ進む" border="0" name="next">
 		</td>
 	</tr>
 	<tr><td height="30"></td></tr>

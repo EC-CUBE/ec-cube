@@ -9,33 +9,33 @@
 						<td bgcolor="#cc0000" height="3" colspan="3"></td>
 					</tr>
 					<tr>
-						<td bgcolor="#cccccc"><img src="../img/_.gif" width="1" height="10" alt="" /></td>
+						<td bgcolor="#cccccc"><img src="<!--{$smarty.const.URL_DIR}-->img/_.gif" width="1" height="10" alt="" /></td>
 						<td>
 						<table width="168" cellspacing="0" cellpadding="0" summary=" ">
 							<tr>
-								<td><img src="../img/left/category_title.jpg" width="168" height="32" alt="市氾打伉" /></td>
+								<td><img src="<!--{$smarty.const.URL_DIR}-->img/left/category_title.jpg" width="168" height="32" alt="市氾打伉" /></td>
 							</tr>
 						</table>
 						</td>
-						<td bgcolor="#cccccc"><img src="../img/_.gif" width="1" height="10" alt="" /></td>
+						<td bgcolor="#cccccc"><img src="<!--{$smarty.const.URL_DIR}-->img/_.gif" width="1" height="10" alt="" /></td>
 					</tr>
 				</table>
 				<table width="170" cellspacing="0" cellpadding="0" summary=" ">
 					<tr>
-						<td bgcolor="#cccccc"><img src="../img/_.gif" width="1" height="10" alt="" /></td>
-						<td bgcolor="#ecf5ff"><img src="../img/_.gif" width="9" height="1" alt="" /></td>
+						<td bgcolor="#cccccc"><img src="<!--{$smarty.const.URL_DIR}-->img/_.gif" width="1" height="10" alt="" /></td>
+						<td bgcolor="#ecf5ff"><img src="<!--{$smarty.const.URL_DIR}-->img/_.gif" width="9" height="1" alt="" /></td>
 						<td bgcolor="#ecf5ff">
 						<table width="150" cellspacing="0" cellpadding="0" summary=" ">
 							<tr>
-								<td height="10"><img src="../img/_.gif" width="20" height="1" alt="" /></td>
-								<td><img src="../img/_.gif" width="130" height="1" alt="" /></td>
+								<td height="10"><img src="<!--{$smarty.const.URL_DIR}-->img/_.gif" width="20" height="1" alt="" /></td>
+								<td><img src="<!--{$smarty.const.URL_DIR}-->img/_.gif" width="130" height="1" alt="" /></td>
 							</tr>
 							<!--{section name=cnt loop=$arrCategory}-->
 							<!--{* 閉遽2 *}-->
 							<!--{if $arrCategory[cnt].level == 2}-->
 								<!--{if $smarty.section.cnt.index != 0}-->
 								<tr>
-									<td colspan="2" height="15"><img src="../img/left/category_line.gif" width="150" height="1" alt="" /></td>
+									<td colspan="2" height="15"><img src="<!--{$smarty.const.URL_DIR}-->img/left/category_line.gif" width="150" height="1" alt="" /></td>
 								</tr>
 								<!--{/if}-->
 								<tr>
@@ -64,10 +64,10 @@
 							<!--{/section}-->
 						</table>
 						</td>
-						<td bgcolor="#ecf5ff"><img src="../img/_.gif" width="9" height="1" alt="" /></td>
-						<td bgcolor="#cccccc"><img src="../img/_.gif" width="1" height="10" alt="" /></td>
+						<td bgcolor="#ecf5ff"><img src="<!--{$smarty.const.URL_DIR}-->img/_.gif" width="9" height="1" alt="" /></td>
+						<td bgcolor="#cccccc"><img src="<!--{$smarty.const.URL_DIR}-->img/_.gif" width="1" height="10" alt="" /></td>
 					</tr>
 					<tr>
-						<td colspan="5"><img src="../img/left/category_bottom.gif" width="170" height="10" alt="" /></td>
+						<td colspan="5"><img src="<!--{$smarty.const.URL_DIR}-->img/left/category_bottom.gif" width="170" height="10" alt="" /></td>
 					</tr>
 				</table>

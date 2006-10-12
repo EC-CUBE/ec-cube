@@ -8,7 +8,7 @@
 						
 						<table width="168" cellspacing="0" cellpadding="0" summary=" ">
 							<tr>
-								<td><img src="../img/left/search_title.jpg" width="168" height="32" alt="¾¦ÉÊ¸¡º÷" /></td>
+								<td><img src="<!--{$smarty.const.URL_DIR}-->img/left/search_title.jpg" width="168" height="32" alt="¾¦ÉÊ¸¡º÷" /></td>
 							</tr>
 						</table>
 						
@@ -31,7 +31,7 @@
 							</tr>
 							<tr><td height="5"></td></tr>
 							<tr>
-								<td align="center"><a href="#" onclick="document.search_form.submit();return false;"><img src="../img/left/search_button.gif" width="51" height="22" alt="¸¡º÷" /></a></td>
+								<td align="center"><a href="#" onclick="document.search_form.submit();return false;"><img src="<!--{$smarty.const.URL_DIR}-->img/left/search_button.gif" width="51" height="22" alt="¸¡º÷" /></a></td>
 							</tr>
 							</form>
 							<!--¾¦ÉÊ¸¡º÷¥Õ¥©¡¼¥à-->
@@ -40,6 +40,6 @@
 						<td bgcolor="#cccccc" width="1"></td>
 					</tr>
 					<tr>
-						<td colspan="3"><img src="../img/left/search_bottom.gif" width="170" height="10" alt="" /></td>
+						<td colspan="3"><img src="<!--{$smarty.const.URL_DIR}-->img/left/search_bottom.gif" width="170" height="10" alt="" /></td>
 					</tr>
 				</table>
