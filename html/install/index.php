@@ -301,19 +301,19 @@ function lfDispStep0($objPage) {
 		if(!file_exists($path)) {
 			mkdir($path);
 		}
-		$path = "./upload/save_image";
+		$path = "../upload/save_image";
 		if(!file_exists($path)) {
 			mkdir($path);
 		}
-		$path = "./upload/temp_image";
+		$path = "../upload/temp_image";
 		if(!file_exists($path)) {
 			mkdir($path);
 		}
-		$path = "./upload/graph_image";
+		$path = "../upload/graph_image";
 		if(!file_exists($path)) {
 			mkdir($path);
 		}
-		$path = "./upload/csv";
+		$path = "../upload/csv";
 		if(!file_exists($path)) {
 			mkdir($path);
 		}
