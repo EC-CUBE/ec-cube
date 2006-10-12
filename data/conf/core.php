@@ -16,18 +16,19 @@ define("DATA_PATH", HTML_PATH . "../data");
 
 // ユーザファイル保存先
 define("USER_PATH", HTML_PATH . "user_data/");
-define("USER_DIR", "html/user_data/");
 
 // ユーザインクルードファイル保存先
 define("USER_INC_PATH", USER_PATH, "include/");
-define("INCLUDE_DIR", USER_DIR."include/");
 
 // ブロックファイル保存先
 define("BLOC_PATH", HTML_PATH . "user_data/include/bloc/");
-define("BLOC_DIR", "html/user_data/include/bloc/");
 
 // ユーザー作成画面のデフォルトPHPファイル
-define("USER_DEF_PHP", ROOT_DIR."html/__default.php");
+define("USER_DEF_PHP", HTML_PATH . "__default.php");
+
+define("USER_DIR", "html/user_data/");
+define("INCLUDE_DIR", USER_DIR."include/");
+define("BLOC_DIR", "html/user_data/include/bloc/");
 
 // その他画面のデフォルトページレイアウト
 define("DEF_LAYOUT", "products/list.php");
