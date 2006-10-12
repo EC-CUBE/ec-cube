@@ -511,6 +511,8 @@ function lfCheckWebError($objFormParam) {
 
 // 入力内容のチェック
 function lfCheckDBError($objFormParam) {
+	global $objPage;
+	
 	// 入力データを渡す。
 	$arrRet =  $objFormParam->getHashArray();
 	
@@ -533,7 +535,11 @@ function lfCheckDBError($objFormParam) {
 		} else {
 			if($arrRet['db_type'] == 'mysql') {
 				$arrRet = $objDB->getAll("SHOW VARIABLES");
-				sfPrintR($arrRet);
+				foreach($arrRet as $array) {
+					if($array[0] == 'version') {
+						$objPage->tpl_db_version = "MySQL" . $array[1];
+					}
+				}
 			}
 		}
 	}

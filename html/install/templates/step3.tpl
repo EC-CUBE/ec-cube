@@ -32,7 +32,7 @@
 <!--{/foreach}-->
 
 <tr><td height="30"></td></tr>
-<tr><td align="left" class="fs12st">■データベースの初期化</td></tr>
+<tr><td align="left" class="fs12st">■データベースの初期化<!--{if $db_version != ""}--><!--{$db_version}--><!--{/if}--></td></tr>
 <tr><td align="left" class="fs12">データベースの初期化を開始します</td></tr>
 <tr><td align="left" class="fs12">※すでにテーブル等が作成されている場合は中断されます</td></tr>
 <!--{if $tpl_mode != 'complete'}-->
