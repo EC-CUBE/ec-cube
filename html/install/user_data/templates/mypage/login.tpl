@@ -117,7 +117,7 @@
 									<tr><td height="20"></td></tr>
 									<tr>
 										<td align="center">
-											<a href="/entry/kiyaku.php" onmouseover="chgImg('<!--{$smarty.const.URL_DIR}-->img/login/b_gotoentry_on.gif','b_gotoentry');" onmouseout="chgImg('<!--{$smarty.const.URL_DIR}-->img/login/b_gotoentry.gif','b_gotoentry');"><img src="<!--{$smarty.const.URL_DIR}-->img/login/b_gotoentry.gif" width="130" height="30" alt="²ñ°÷ÅÐÏ¿¤ò¤¹¤ë" border="0" name="b_gotoentry"></a>¡¡
+											<a href="<!--{$smarty.const.URL_DIR}-->entry/kiyaku.php" onmouseover="chgImg('<!--{$smarty.const.URL_DIR}-->img/login/b_gotoentry_on.gif','b_gotoentry');" onmouseout="chgImg('<!--{$smarty.const.URL_DIR}-->img/login/b_gotoentry.gif','b_gotoentry');"><img src="<!--{$smarty.const.URL_DIR}-->img/login/b_gotoentry.gif" width="130" height="30" alt="²ñ°÷ÅÐÏ¿¤ò¤¹¤ë" border="0" name="b_gotoentry"></a>¡¡
 										</td>
 									</tr>
 									<tr><td height="20"></td></tr>
