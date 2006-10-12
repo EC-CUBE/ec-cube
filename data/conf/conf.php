@@ -70,8 +70,6 @@ define("TV_PRODUCTS_MAX",10);		//TV連動商品最大登録数
 define("DEFAULT_PASSWORD", "UAhgGR3L");
 //別のお届け先最大登録数
 define("DELIV_ADDR_MAX", 20);
-//マイページお届け先URL
-define("MYPAGE_DELIVADDR_URL", "/mypage/delivery.php");
 //閲覧履歴保存数
 define("CUSTOMER_READING_MAX",30);
 //SSLURL判定
@@ -295,6 +293,7 @@ define ("URL_PRODUCTS_TOP", URL_DIR . "products/top.php");				// 商品トップ
 define ("LIST_P_HTML", URL_DIR . "products/list-p");					// 商品一覧(HTML出力)
 define ("LIST_C_HTML", URL_DIR . "products/list.php?mode=search&category_id=");	// 商品一覧(HTML出力)
 define ("DETAIL_P_HTML", URL_DIR . "products/detail.php?product_id=");			// 商品詳細(HTML出力)
+define("MYPAGE_DELIVADDR_URL", URL_DIR . "mypage/delivery.php");					// マイページお届け先URL
 
 /*
  * サイト定義変数
