@@ -4,6 +4,9 @@
  *
  * http://www.lockon.co.jp/
  */
+
+$include_dir = realpath(dirname( __FILE__));
+require_once($include_dir . "/../data/conf/conf.php");	
 require_once(DATA_PATH . "lib/slib.php");
 require_once(DATA_PATH . "class/SC_View.php");
 require_once(DATA_PATH . "class/SC_Query.php");

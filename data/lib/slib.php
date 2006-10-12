@@ -79,6 +79,7 @@ function sfLoadUpdateModule() {
 	}		
 	//DBから設定情報を取得
 	if(defined('DB_USER') && defined('DB_PASSWORD') && defined('DB_SERVER') && defined('DB_NAME')) {
+		/*
 		$objConn = new SC_DbConn(DEFAULT_DSN);
 		// 最初に実行するPHPソースを検索する
 		$arrRet = $objConn->getAll("SELECT extern_php FROM dtb_update WHERE main_php = ? OR main_php = '*'",array($_SERVER['PHP_SELF']));
@@ -90,6 +91,7 @@ function sfLoadUpdateModule() {
 				}
 			}
 		}
+		*/
 	}
 }
 
