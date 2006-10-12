@@ -269,28 +269,24 @@ function lfDispStep0($objPage) {
 	foreach($arrWriteFile as $val) {
 		if(file_exists($val)) {
 			$mode = lfGetFileMode($val);
-			
 			$real_path = realpath($val);
-			
-			print($real_path);
-			
+						
 			// ディレクトリの場合
 			if(is_dir($path)) {
 				if($mode == "777") {
-					$mess.= ">> ○：$val($mode) は問題ありません。<br>";					
+					$mess.= ">> ○：$real_path($mode) <br>問題ありません。<br>";					
 				} else {
-					$mess.= ">> ×：$val($mode) にユーザ書込み権限(777)を付与して下さい。<br>";
+					$mess.= ">> ×：$real_path($mode) <br>ユーザ書込み権限(777)を付与して下さい。<br>";
 					$err_file = true;										
 				}
 			} else {
 				if($mode == "666") {
-					$mess.= ">> ○：$val($mode) は問題ありません。<br>";					
+					$mess.= ">> ○：$real_path($mode) <br>問題ありません。<br>";					
 				} else {
-					$mess.= ">> ×：$val($mode) にユーザ書込み権限(666)を付与して下さい。<br>";
+					$mess.= ">> ×：$real_path($mode) <br>ユーザ書込み権限(666)を付与して下さい。<br>";
 					$err_file = true;							
 				}
-			}	
-			
+			}			
 		} else {
 			$mess.= ">> ×：$val が見つかりません。<br>";
 			$err_file = true;
