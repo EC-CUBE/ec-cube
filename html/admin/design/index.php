@@ -384,7 +384,7 @@ function lfSetPreData($arrPageData){
 		unlink($del_tpl);	
 	}
 
-	// tplファイルのコピー
+	// プレビュー用tplファイルのコピー
 	copy(HTML_DIR . $arrPageData[0]['tpl_dir'] . $arrPageData[0]['filename'] . ".tpl", USER_PATH . "templates/" . $filename . ".tpl");
 	
 	// 更新データの取得

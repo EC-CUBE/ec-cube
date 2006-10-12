@@ -25,7 +25,7 @@ if($con != false && $res != false) {
 	//ファイルのダウンロード
 	if($_POST['filename'] != "") {
 		
-		$download_file = ROOT_DIR . "data/module/upload/" . $_POST['filename'];
+		$download_file = DATA_PATH . "module/upload/" . $_POST['filename'];
 		
 		if(ftp_get($con, $download_file, $_POST['filename'], FTP_BINARY)) {
 			ftp_quit($con);

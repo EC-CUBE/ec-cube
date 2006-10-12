@@ -4,7 +4,7 @@
  *
  * http://www.lockon.co.jp/
  */
-require_once(ROOT_DIR."data/include/csv_output.inc");
+require_once(DATA_PATH . "include/csv_output.inc");
 /*------  /admin/contents/inpuiry.php からも呼び出します。(11/18 fukuda) ---*/
 
 // CSV出力データを作成する。

@@ -7,7 +7,7 @@
  *	共通 
 */
 // TTFフォントファイル
-define("FONT_PATH", ROOT_DIR . "/data/fonts/wlmaru20044.ttf");
+define("FONT_PATH", DATA_PATH . 'fonts/wlmaru20044.ttf");
 define("FONT_SIZE", 8);			// フォントサイズ
 define("TITLE_FONT_SIZE", 11);	// タイトルフォントサイズ
 define("BG_WIDTH", 720);		// 背景幅

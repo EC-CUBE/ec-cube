@@ -13,7 +13,7 @@ class LC_Page {
 		$this->tpl_subnavi = 'order/subnavi.tpl';
 		$this->tpl_mainno = 'order';		
 		$this->tpl_subno = 'index';
-		$this->tpl_pager = ROOT_DIR . 'data/Smarty/templates/admin/pager.tpl';
+		$this->tpl_pager = DATA_PATH . 'Smarty/templates/admin/pager.tpl';
 		$this->tpl_subtitle = '¼õÃí´ÉÍý';
 		global $arrORDERSTATUS;
 		$this->arrORDERSTATUS = $arrORDERSTATUS;

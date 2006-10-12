@@ -16,7 +16,7 @@ class LC_Page {
 		$this->tpl_mainno = 'mail';
 		$this->tpl_subnavi = 'mail/subnavi.tpl';
 		$this->tpl_subno = "index";
-		$this->tpl_pager = ROOT_DIR . 'data/Smarty/templates/admin/pager.tpl';
+		$this->tpl_pager = DATA_PATH . 'Smarty/templates/admin/pager.tpl';
 		$this->tpl_subtitle = '配信内容設定';
 		
 		global $arrPref;

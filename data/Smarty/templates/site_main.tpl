@@ -13,7 +13,7 @@
 
 <!--¢§HEADER-->
 <!--{if $arrPageLayout.header_chk != 2}--> 
-<!--{assign var=header_dir value="`$smarty.const.ROOT_DIR`html/user_data/include/header.tpl"}-->
+<!--{assign var=header_dir value="`$smarty.const.HTML_PATH`user_data/include/header.tpl"}-->
 <!--{include file= $header_dir}-->
 <!--{/if}-->
 <!--¢¥HEADER-->

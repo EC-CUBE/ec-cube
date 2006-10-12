@@ -44,7 +44,7 @@ $objPage->bloc_id = $bloc_id;
 // bloc_id が指定されている場合にはブロックデータの取得
 if ($bloc_id != '') {
 	$arrBlocData = lfgetBlocData(" bloc_id = ? " , array($bloc_id));
-	$arrBlocData[0]['tpl_path'] = ROOT_DIR . $arrBlocData[0]['tpl_path'];
+	$arrBlocData[0]['tpl_path'] = HTML_DIR . $arrBlocData[0]['tpl_path'];
 
 	// テンプレートファイルの読み込み
 	$arrBlocData[0]['tpl_data'] = file_get_contents($arrBlocData[0]['tpl_path']);

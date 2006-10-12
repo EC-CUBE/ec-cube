@@ -30,8 +30,7 @@ $objSess = new SC_Session();
 sfIsSuccess($objSess);
 
 $division = $_POST['division'];
-$tpl_DIR = ROOT_DIR . INCLUDE_DIR;
-$pre_DIR = ROOT_DIR . INCLUDE_DIR. 'preview/';
+$pre_DIR = USER_INC_PATH . 'preview/';
 
 // データ更新処理
 if ($division != ''){
@@ -42,7 +41,7 @@ if ($division != ''){
 
 	// 登録時はプレビュー用テンプレートをコピーする
 	if ($_POST['mode'] == 'confirm'){
-		copy($pre_DIR.$division.".tpl", $tpl_DIR.$division.".tpl");
+		copy($pre_DIR.$division.".tpl", USER_INC_PATH . $division . ".tpl");
 		// 完了メッセージ（プレビュー時は表示しない）
 		$objPage->tpl_onload="alert('登録が完了しました。');";
 		
@@ -64,13 +63,13 @@ if ($division != ''){
 	if (!is_dir($pre_DIR)) {
 		mkdir($pre_DIR);
 	}
-	copy($tpl_DIR . "header.tpl", $pre_DIR . "header.tpl");
-	copy($tpl_DIR . "footer.tpl", $pre_DIR . "footer.tpl");
+	copy(USER_INC_PATH . "header.tpl", $pre_DIR . "header.tpl");
+	copy(USER_INC_PATH . "footer.tpl", $pre_DIR . "footer.tpl");
 	
 	// ヘッダーファイルの読み込み
-	$header_data = file_get_contents($tpl_DIR . "header.tpl");
+	$header_data = file_get_contents(USER_INC_PATH . "header.tpl");
 	// フッターファイルの読み込み
-	$footer_data = file_get_contents($tpl_DIR . "footer.tpl");
+	$footer_data = file_get_contents(USER_INC_PATH . "footer.tpl");
 
 }
 

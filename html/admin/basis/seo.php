@@ -5,7 +5,7 @@
  * http://www.lockon.co.jp/
  */
 require_once("../../require.php");
-require_once(ROOT_DIR."data/include/page_layout.inc");
+require_once(DATA_PATH . "include/page_layout.inc");
 
 class LC_Page {
 	var $arrSession;

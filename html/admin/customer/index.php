@@ -5,7 +5,7 @@
  * http://www.lockon.co.jp/
  */
 require_once("../require.php");
-require_once(ROOT_DIR."data/include/csv_output.inc");
+require_once(DATA_PATH . "include/csv_output.inc");
 
 //---- ページ表示用クラス
 class LC_Page {
@@ -32,7 +32,7 @@ class LC_Page {
 		$this->tpl_mainno = 'customer';
 		$this->tpl_subnavi = 'customer/subnavi.tpl';
 		$this->tpl_subno = 'index';
-		$this->tpl_pager = ROOT_DIR . 'data/Smarty/templates/admin/pager.tpl';
+		$this->tpl_pager = DATA_PATH . 'Smarty/templates/admin/pager.tpl';
 		$this->tpl_subtitle = '顧客マスタ';
 		
 		global $arrPref;

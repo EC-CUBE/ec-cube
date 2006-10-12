@@ -28,7 +28,7 @@ function sfGetPageLayout($objPage, $preview = false, $url = ""){
 
 	// メインテンプレートファイルを設定
 	if (!isset($objPage->tpl_mainpage)) {
-		$objPage->tpl_mainpage = ROOT_DIR . $arrPageData[0]['tpl_dir'] . $arrPageData[0]['filename'] . ".tpl";
+		$objPage->tpl_mainpage = HTML_PATH . $arrPageData[0]['tpl_dir'] . $arrPageData[0]['filename'] . ".tpl";
 	}
 	
 	// ページタイトルを設定
