@@ -18,7 +18,7 @@ sfInitInstall();
 // アップデートで生成されたPHPを読み出す
 sfLoadUpdateModule();
 
-/* テーブルの存在チェックチェック */
+/* テーブルの存在チェック */
 function sfTabaleExists($table_name) {
 	$objQuery = new SC_Query();	
 	// postgresqlとmysqlとで処理を分ける
