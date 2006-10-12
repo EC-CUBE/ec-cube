@@ -379,13 +379,13 @@ function lfSetPreData($arrPageData){
 	$arrPreData = lfgetPageData(" page_id = ? " , array("0"));
 
 	// tplファイルの削除
-	$del_tpl = ROOT_DIR . USER_DIR . "templates/" . $arrPreData[0]['filename'] . '.tpl';
+	$del_tpl = USER_PATH . "templates/" . $arrPreData[0]['filename'] . '.tpl';
 	if (file_exists($del_tpl)){
 		unlink($del_tpl);	
 	}
 
 	// tplファイルのコピー
-	copy(ROOT_DIR . $arrPageData[0]['tpl_dir'].$arrPageData[0]['filename'].".tpl", ROOT_DIR . USER_DIR."templates/".$filename.".tpl");
+	copy(HTML_DIR . $arrPageData[0]['tpl_dir'] . $arrPageData[0]['filename'] . ".tpl", USER_PATH . "templates/" . $filename . ".tpl");
 	
 	// 更新データの取得
 	$sql = "select page_name, header_chk, footer_chk from dtb_pagelayout where page_id = ?";
