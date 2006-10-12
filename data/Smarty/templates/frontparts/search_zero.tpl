@@ -8,7 +8,7 @@
 	<tr><td height="15"></td></tr>
 	<tr>
 		<!--{if $smarty.get.mode == "search"}-->
-		<td height="150" align="center" class="fs12">該当件数<strong><span class="red">0a件</span></strong>です。<br />
+		<td height="150" align="center" class="fs12">該当件数<strong><span class="red">0件</span></strong>です。<br />
 		他の検索キーワードより再度検索をしてください。</td>
 		<!--{else}-->
 		<td height="150" align="center" class="fs12">現在、商品はございません。</td>
