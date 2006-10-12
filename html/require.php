@@ -10,7 +10,12 @@ require_once($include_dir . "/../data/conf/conf.php");
 require_once($include_dir . "/../data/lib/glib.php");
 require_once($include_dir . "/../data/lib/slib.php");
 require_once($include_dir . "/../data/class/SC_View.php");
+print("ok1");
+
 require_once($include_dir . "/../data/class/SC_DbConn.php");
+
+print("ok2");
+
 require_once($include_dir . "/../data/class/SC_Session.php");
 require_once($include_dir . "/../data/class/SC_Query.php");
 require_once($include_dir . "/../data/class/SC_SelectSql.php");

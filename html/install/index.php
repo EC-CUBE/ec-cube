@@ -4,6 +4,9 @@
  *
  * http://www.lockon.co.jp/
  */
+
+ print("ok"); 
+
 require_once("../require.php");
 $INSTALL_DIR = realpath(dirname( __FILE__));
 
