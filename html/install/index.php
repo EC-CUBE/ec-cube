@@ -543,7 +543,8 @@ function lfCheckDBError($objFormParam) {
 			}
 			if($arrRet['db_type'] == 'pgsql') {
 				$arrRet = $objDB->getAll("select version()");
-				sfPrintR($arrRet);
+				$arrLine = split(" " , $arrRet[0]);
+				$objPage->tpl_db_version = $arrLine[0] . " " . $arrLine[1];
 			}
 		}
 	}
