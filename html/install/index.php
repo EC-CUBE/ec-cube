@@ -601,7 +601,7 @@ function lfMakeConfigFile() {
 		$secure_url = $secure_url . "/";
 	}
 			
-	$filepath = $objWebParam->getValue('install_dir') . "../data/install.inc";
+	$filepath = $root_dir . "../data/install.inc";
 	
 	$config_data = 
 	"<?php\n".
