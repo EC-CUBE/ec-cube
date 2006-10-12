@@ -9,7 +9,6 @@
 <meta http-equiv="Content-Type" content="text/html; charset=EUC-JP">
 <meta http-equiv="content-script-type" content="text/javascript">
 <meta http-equiv="content-style-type" content="text/css">
-<link rel="stylesheet" href="../css/contents.css" type="text/css">
 <script type="text/javascript" src="../js/css.js"></script>
 <script type="text/javascript" src="../js/navi.js"></script>
 <title>EC CUBE インストール画面</title>

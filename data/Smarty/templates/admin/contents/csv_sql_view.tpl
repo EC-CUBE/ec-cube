@@ -12,9 +12,9 @@
 <meta http-equiv="Content-Type" content="text/html; charset=EUC-JP">
 <meta http-equiv="content-script-type" content="text/javascript">
 <meta http-equiv="content-style-type" content="text/css">
-<link rel="stylesheet" href="<!--{$smarty.const.URL_ADMIN_CSS}-->contents.css" type="text/css" />
 <script type="text/javascript" src="<!--{$smarty.const.URL_DIR}-->js/css.js"></script>
 <script type="text/javascript" src="<!--{$smarty.const.URL_DIR}-->js/navi.js"></script>
+<!--{include file='css/contents.tpl'}-->
 <style type="text/css">
 body {
 	background: #fff url(<!--{$smarty.const.URL_DIR}-->img/login/bg.jpg);

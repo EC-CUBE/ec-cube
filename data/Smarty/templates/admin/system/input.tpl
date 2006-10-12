@@ -13,12 +13,12 @@
 <meta http-equiv="content-type" content="application/xhtml+xml; charset=EUC-JP" />
 <meta http-equiv="content-script-type" content="text/javascript" />
 <meta http-equiv="content-style-type" content="text/css" />
-<link rel="stylesheet" href="<!--{$smarty.const.URL_ADMIN_CSS}-->contents.css" type="text/css" />
 <script type="text/javascript" src="<!--{$smarty.const.URL_DIR}-->js/css.js"></script>
 <script type="text/javascript" src="<!--{$smarty.const.URL_DIR}-->js/navi.js"></script>
 <script type="text/javascript" src="<!--{$smarty.const.URL_DIR}-->js/win_op.js"></script>
 <script type="text/javascript" src="<!--{$smarty.const.URL_DIR}-->js/site.js"></script>
 <script type="text/javascript" src="<!--{$smarty.const.URL_DIR}-->js/admin.js"></script>
+<!--{include file='css/contents.tpl'}-->
 <title>メンバー登録・編集</title>
 <script type="text/javascript">
 <!--
