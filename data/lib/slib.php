@@ -66,6 +66,8 @@ function sfInitInstall() {
 			//header("Location: ./install/");
 		}	
 	} else {
+		
+		print("ok0");
 		$path = HTML_PATH . "install/index.php";
 		if(file_exists($path)) {
 			sfErrorHeader(">> /install/index.phpは、インストール完了後にファイルを削除してください。");
