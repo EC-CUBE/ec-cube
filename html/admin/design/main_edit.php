@@ -60,7 +60,7 @@ if (is_numeric($page_id) and $page_id != '') {
 	}
 	
 	// テンプレートファイルが存在していれば読み込む
-	$tpl_file = HTML_DIR . $arrPageData[0]['tpl_dir'] . $arrPageData[0]['filename'] . ".tpl";
+	$tpl_file = HTML_HTML . $arrPageData[0]['tpl_dir'] . $arrPageData[0]['filename'] . ".tpl";
 	if (file_exists($tpl_file)){
 		$arrPageData[0]['tpl_data'] = file_get_contents($tpl_file);		
 	}
