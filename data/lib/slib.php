@@ -10,7 +10,7 @@ $INC_PATH = realpath( dirname( __FILE__) );
 require_once( $INC_PATH ."/../conf/conf.php" );
 require_once( $INC_PATH ."/../class/SC_DbConn.php" );
 
-print("ok0");
+print("start");
 
 // 全ページ共通エラー
 $GLOBAL_ERR = "";
@@ -20,7 +20,7 @@ sfInitInstall();
 // アップデートで生成されたPHPを読み出す
 sfLoadUpdateModule();
 
-print("ok0");
+print("end");
 
 /* テーブルの存在チェックチェック */
 function sfTabaleExists($table_name) {
