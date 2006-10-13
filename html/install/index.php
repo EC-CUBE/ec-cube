@@ -578,7 +578,7 @@ function lfExecuteSQL($filepath, $dsn, $disp_err = true) {
 			foreach($sql_split as $key => $val){
 				if (trim($val) != "") {
 					$ret = $objDB->query($val);
-					if(PEAR::isError($ret) and $disp_err) {
+					if(PEAR::isError($ret) && $disp_err) {
 						$arrErr['all'] = ">> " . $ret->message . "<br>";
 						// エラー文を取得する
 						ereg("\[(.*)\]", $ret->userinfo, $arrKey);
