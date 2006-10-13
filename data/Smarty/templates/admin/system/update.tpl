@@ -49,22 +49,18 @@
 								
 								<!--{* 一覧が存在する場合のみ表示する *}-->
 								<!--{if count($arrUpdate) > 0 }-->
-								<table width="678" border="0" cellspacing="1" cellpadding="8" summary=" ">
+								<table width="678" border="0" cellspacing="1" cellpadding="4" summary=" ">
 									<tr bgcolor="#f2f1ec" align="center" class="fs12n">
 										<td width="80" align="center">機能名</td>
-										<td width="240">機能説明</td>
-										<td width="40">現在Ver</td>
-										<td width="40">最新Ver</td>										
+										<td width="240">説明</td>
 										<td width="80" align="center">リリース日</td>
-										<td width="50">install</td>
+										<td width="50">update</td>
 										<td width="50">uninstall</td>									
 									</tr>
 									<!--{section name=cnt loop=$arrUpdate}-->
 									<tr bgcolor="#ffffff" class="fs12">
 										<td ><!--{$arrUpdate[cnt].module_name}--></td>
 										<td ><!--{$arrUpdate[cnt].module_explain}--></td>			
-										<td align="center"><!--{$arrUpdate[cnt].now_version|default:'-'}--></td>
-										<td align="center"><!--{$arrUpdate[cnt].latest_version}--></td>
 										<td align="center"><!--{$arrUpdate[cnt].release_date|sfDispDBDate:false}--></td>
 										<td align="center">
 										<!--{if $arrUpdate[cnt].now_version != $arrUpdate[cnt].latest_version}-->
