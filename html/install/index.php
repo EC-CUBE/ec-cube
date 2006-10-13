@@ -574,7 +574,7 @@ function lfExecuteSQL($filepath, $dsn, $disp_err = true) {
 			fclose($fp);
 		}
 		
-		gfPrintLog("nn", "./temp/install.log");
+		gfPrintLog($dsn, "./temp/install.log");
 		// Debugモード指定
 		$options['debug'] = DB_DEBUG;
 		$objDB = DB::connect($dsn, $options);
