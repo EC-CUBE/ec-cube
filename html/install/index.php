@@ -80,14 +80,13 @@ case 'step2':
 case 'step3':
 	// 入力データを渡す。
 	$arrRet =  $objDBParam->getHashArray();
+	$dsn = $arrRet['db_type']."://".$arrRet['db_user'].":".$arrRet['db_password']."@".$arrRet['db_server'].":".$arrRet['db_port']."/".$arrRet['db_name'];
 	
 	/*
 		バージョンアップ等で追加テーブルが発生した際は記載する
 		（ＤＢ構成の下位互換のためスキップ時も強制）
 	*/
-	if(count($objPage->arrErr) == 0) {
-		
-	}
+	
 	
 	if(count($objPage->arrErr) == 0) {
 		// スキップする場合には完了画面へ遷移
@@ -101,7 +100,7 @@ case 'step3':
 	}
 	
 	// テーブルの作成
-	$objPage->arrErr = lfExecuteSQL("./sql/create_table_".$arrRet['db_type'].".sql", $arrRet['db_user'], $arrRet['db_password'], $arrRet['db_server'], $arrRet['db_name'], $arrRet['db_type'], $arrRet['db_port']); 
+	$objPage->arrErr = lfExecuteSQL("./sql/create_table_".$arrRet['db_type'].".sql", $dsn); 
 	if(count($objPage->arrErr) == 0) {
 		$objPage->tpl_message.="○：テーブルの作成に成功しました。<br>";
 	} else {
@@ -111,7 +110,7 @@ case 'step3':
 	// ビューの作成
 	if(count($objPage->arrErr) == 0 and $arrRet['db_type'] == 'pgsql') {
 		// ビューの作成
-		$objPage->arrErr = lfExecuteSQL("./sql/create_view.sql", $arrRet['db_user'], $arrRet['db_password'], $arrRet['db_server'], $arrRet['db_name'], $arrRet['db_type'], $arrRet['db_port']); 
+		$objPage->arrErr = lfExecuteSQL("./sql/create_view.sql", $dsn); 
 		if(count($objPage->arrErr) == 0) {
 			$objPage->tpl_message.="○：ビューの作成に成功しました。<br>";
 		} else {
@@ -121,7 +120,7 @@ case 'step3':
 	
 	// 初期データの作成
 	if(count($objPage->arrErr) == 0) {
-		$objPage->arrErr = lfExecuteSQL("./sql/insert_data.sql", $arrRet['db_user'], $arrRet['db_password'], $arrRet['db_server'], $arrRet['db_name'], $arrRet['db_type'], $arrRet['db_port']); 
+		$objPage->arrErr = lfExecuteSQL("./sql/insert_data.sql", $dsn); 
 		if(count($objPage->arrErr) == 0) {
 			$objPage->tpl_message.="○：初期データの作成に成功しました。<br>";
 		} else {
@@ -131,7 +130,7 @@ case 'step3':
 	
 	// カラムコメントの書込み
 	if(count($objPage->arrErr) == 0) {
-		$objPage->arrErr = lfExecuteSQL("./sql/column_comment.sql", $arrRet['db_user'], $arrRet['db_password'], $arrRet['db_server'], $arrRet['db_name'], $arrRet['db_type'], $arrRet['db_port']); 
+		$objPage->arrErr = lfExecuteSQL("./sql/column_comment.sql", $dsn); 
 		if(count($objPage->arrErr) == 0) {
 			$objPage->tpl_message.="○：カラムコメントの書込みに成功しました。<br>";
 		} else {
@@ -141,7 +140,7 @@ case 'step3':
 	
 	// テーブルコメントの書込み
 	if(count($objPage->arrErr) == 0) {
-		$objPage->arrErr = lfExecuteSQL("./sql/table_comment.sql", $arrRet['db_user'], $arrRet['db_password'], $arrRet['db_server'], $arrRet['db_name'], $arrRet['db_type'], $arrRet['db_port']); 
+		$objPage->arrErr = lfExecuteSQL("./sql/table_comment.sql", $dsn); 
 		if(count($objPage->arrErr) == 0) {
 			$objPage->tpl_message.="○：テーブルコメントの書込みに成功しました。<br>";
 		} else {
@@ -165,7 +164,7 @@ case 'drop':
 	
 	if ($arrRet['db_type'] == 'pgsql'){
 		// ビューの削除
-		$objPage->arrErr = lfExecuteSQL("./sql/drop_view.sql", $arrRet['db_user'], $arrRet['db_password'], $arrRet['db_server'], $arrRet['db_name'], $arrRet['db_type'], $arrRet['db_port'], false); 
+		$objPage->arrErr = lfExecuteSQL("./sql/drop_view.sql", $dsn, false); 
 		if(count($objPage->arrErr) == 0) {
 			$objPage->tpl_message.="○：ビューの削除に成功しました。<br>";
 		} else {
@@ -176,7 +175,7 @@ case 'drop':
 
 	// テーブルの削除
 	if(count($objPage->arrErr) == 0) {
-		$objPage->arrErr = lfExecuteSQL("./sql/drop_table.sql", $arrRet['db_user'], $arrRet['db_password'], $arrRet['db_server'], $arrRet['db_name'], $arrRet['db_type'], $arrRet['db_port'], false); 
+		$objPage->arrErr = lfExecuteSQL("./sql/drop_table.sql", $dsn, false); 
 		if(count($objPage->arrErr) == 0) {
 			$objPage->tpl_message.="○：テーブルの削除に成功しました。<br>";
 		} else {
@@ -555,7 +554,7 @@ function lfCheckDBError($objFormParam) {
 }
 
 // SQL文の実行
-function lfExecuteSQL($filepath, $db_user, $db_password, $db_server, $db_name, $db_type, $db_port, $disp_err = true) {
+function lfExecuteSQL($filepath, $dsn, $disp_err = true) {
 	$arrErr = array();
 
 	if(!file_exists($filepath)) {
@@ -565,8 +564,6 @@ function lfExecuteSQL($filepath, $db_user, $db_password, $db_server, $db_name, $
 			$sql = fread($fp, filesize($filepath));
 			fclose($fp);
 		}
-
-		$dsn = $db_type."://".$db_user.":".$db_password."@".$db_server.":".$db_port."/".$db_name;
 		
 		$objDB = DB::connect($dsn);
 		// 接続エラー
