@@ -234,7 +234,7 @@ function init () {
 									<!--{if $item.tpl_dir != ""}-->
 										<input type='button' value='メイン編集' name='page_edit' onclick="location.href='./main_edit.php?page_id=<!--{$item.page_id}-->'"  />
 									<!--{else}-->
-										-
+										固定
 									<!--{/if}-->
 								</td>
 								<td align="center" width=78 bgcolor="<!--{if $item.page_id == $page_id}--><!--{$smarty.const.SELECT_RGB}--><!--{else}-->#ffffff<!--{/if}-->">
