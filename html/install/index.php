@@ -436,11 +436,12 @@ function lfInitWebParam($objWebParam) {
 		} else {
 			print("nas");
 		}
-		
-		$objQuery = new SC_Query();
-		$arrRet = $objQuery->select("shop_name, email01", "dtb_baseinfo");
-		$shop_name = $arrRet[0]['shop_name'];
-		$admin_mail = $arrRet[0]['email01'];
+		if($ret) {
+			$objQuery = new SC_Query();
+			$arrRet = $objQuery->select("shop_name, email01", "dtb_baseinfo");
+			$shop_name = $arrRet[0]['shop_name'];
+			$admin_mail = $arrRet[0]['email01'];
+		}
 	}
 
 	$objWebParam->addParam("Ź̾", "shop_name", MTEXT_LEN, "", array("EXIST_CHECK","MAX_LENGTH_CHECK"), $shop_name);
