@@ -139,6 +139,8 @@ $objPage->arrTree = sfGetCatTree($objPage->arrForm['parent_category_id']);
 $objView->assignobj($objPage);
 $objView->display(MAIN_FRAME);
 
+exit;
+
 //-----------------------------------------------------------------------------------------------------------------------------------
 
 ?>
