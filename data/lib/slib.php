@@ -9,6 +9,7 @@
 $INC_PATH = realpath( dirname( __FILE__) );
 require_once( $INC_PATH ."/../conf/conf.php" );
 require_once( $INC_PATH ."/../class/SC_DbConn.php" );
+require_once( $INC_PATH ."/../class/SC_Query.php" );
 
 // 全ページ共通エラー
 $GLOBAL_ERR = "";
