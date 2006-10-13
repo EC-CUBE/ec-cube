@@ -6,6 +6,8 @@
  */
 $include_dir = realpath(dirname( __FILE__));
 
+print("test");
+
 require_once($include_dir . "/../../data/conf/conf.php");	
 require_once($include_dir . "/../../data/lib/glib.php");
 require_once($include_dir . "/../../data/lib/slib.php");
@@ -25,7 +27,4 @@ require_once($include_dir . "/../../data/class/SC_FormParam.php");
 require_once($include_dir . "/../../data/class/SC_CustomerList.php");
 require_once($include_dir . "/../../data/class/SC_Customer.php");
 require_once($include_dir . "/../../data/class/SC_Pdf.php");
-
-//fnSetErrorHandler();
-
 ?>
