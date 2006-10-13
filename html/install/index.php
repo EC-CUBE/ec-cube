@@ -6,6 +6,9 @@
  */
 require_once("../require.php");
 $INSTALL_DIR = realpath(dirname( __FILE__));
+
+define('DB_DEBUG', 12);
+
 class LC_Page {
 	function LC_Page() {
 		$this->arrDB_TYPE = array(
@@ -529,7 +532,7 @@ function lfCheckDBError($objFormParam) {
 		// 接続確認
 		$dsn = $arrRet['db_type']."://".$arrRet['db_user'].":".$arrRet['db_password']."@".$arrRet['db_server'].":".$arrRet['db_port']."/".$arrRet['db_name'];
 		// Debugモード指定
-		$options['debug'] = 9;
+		$options['debug'] = DB_DEBUG;
 		$objDB = DB::connect($dsn, $options);
 		// 接続エラー
 		if(PEAR::isError($objDB)) {
@@ -572,8 +575,9 @@ function lfExecuteSQL($filepath, $dsn, $disp_err = true) {
 		}
 		
 		gfPrintLog("nn", "./temp/install.log");
-		
-		$objDB = DB::connect($dsn);
+		// Debugモード指定
+		$options['debug'] = DB_DEBUG;
+		$objDB = DB::connect($dsn, $options);
 		
 			gfPrintLog("nn", "./temp/install.log");
 		
