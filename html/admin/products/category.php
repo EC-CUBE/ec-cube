@@ -195,6 +195,11 @@ function lfUpdateCat($category_id) {
 // カテゴリの取得
 function lfGetCat($parent_category_id) {
 	$objQuery = new SC_Query();
+	
+	if($parent_category_id == "") {
+		$parent_category_id = '0';
+	}
+	
 	$col = "category_id, category_name, level, rank";
 	$where = "del_flg = 0 AND parent_category_id = ?";
 	$objQuery->setoption("ORDER BY rank DESC");
