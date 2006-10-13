@@ -112,6 +112,10 @@ function sfLoadUpdateModule() {
 		}
 	}
 	*/
+	
+	// URL設定ディレクトリを削除
+	$main_php = ereg_replace(URL_DIR, "", $_SERVER['PHP_SELF']);
+	print($main_php);
 }
 
 function sf_getBasisData() {
