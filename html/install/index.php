@@ -92,7 +92,7 @@ case 'step3':
 	}
 	
 	// テーブルの作成
-	$objPage->arrErr = lfExecuteSQL("./create_table_".$arrRet['db_type'].".sql", $arrRet['db_user'], $arrRet['db_password'], $arrRet['db_server'], $arrRet['db_name'], $arrRet['db_type'], $arrRet['db_port']); 
+	$objPage->arrErr = lfExecuteSQL("./sql/create_table_".$arrRet['db_type'].".sql", $arrRet['db_user'], $arrRet['db_password'], $arrRet['db_server'], $arrRet['db_name'], $arrRet['db_type'], $arrRet['db_port']); 
 	if(count($objPage->arrErr) == 0) {
 		$objPage->tpl_message.="○：テーブルの作成に成功しました。<br>";
 	} else {
@@ -102,7 +102,7 @@ case 'step3':
 	// ビューの作成
 	if(count($objPage->arrErr) == 0 and $arrRet['db_type'] == 'pgsql') {
 		// ビューの作成
-		$objPage->arrErr = lfExecuteSQL("./create_view.sql", $arrRet['db_user'], $arrRet['db_password'], $arrRet['db_server'], $arrRet['db_name'], $arrRet['db_type'], $arrRet['db_port']); 
+		$objPage->arrErr = lfExecuteSQL("./sql/create_view.sql", $arrRet['db_user'], $arrRet['db_password'], $arrRet['db_server'], $arrRet['db_name'], $arrRet['db_type'], $arrRet['db_port']); 
 		if(count($objPage->arrErr) == 0) {
 			$objPage->tpl_message.="○：ビューの作成に成功しました。<br>";
 		} else {
@@ -112,7 +112,7 @@ case 'step3':
 	
 	// 初期データの作成
 	if(count($objPage->arrErr) == 0) {
-		$objPage->arrErr = lfExecuteSQL("./insert_data.sql", $arrRet['db_user'], $arrRet['db_password'], $arrRet['db_server'], $arrRet['db_name'], $arrRet['db_type'], $arrRet['db_port']); 
+		$objPage->arrErr = lfExecuteSQL("./sql/insert_data.sql", $arrRet['db_user'], $arrRet['db_password'], $arrRet['db_server'], $arrRet['db_name'], $arrRet['db_type'], $arrRet['db_port']); 
 		if(count($objPage->arrErr) == 0) {
 			$objPage->tpl_message.="○：初期データの作成に成功しました。<br>";
 		} else {
@@ -122,7 +122,7 @@ case 'step3':
 	
 	// カラムコメントの書込み
 	if(count($objPage->arrErr) == 0) {
-		$objPage->arrErr = lfExecuteSQL("./column_comment.sql", $arrRet['db_user'], $arrRet['db_password'], $arrRet['db_server'], $arrRet['db_name'], $arrRet['db_type'], $arrRet['db_port']); 
+		$objPage->arrErr = lfExecuteSQL("./sql/column_comment.sql", $arrRet['db_user'], $arrRet['db_password'], $arrRet['db_server'], $arrRet['db_name'], $arrRet['db_type'], $arrRet['db_port']); 
 		if(count($objPage->arrErr) == 0) {
 			$objPage->tpl_message.="○：カラムコメントの書込みに成功しました。<br>";
 		} else {
@@ -132,7 +132,7 @@ case 'step3':
 	
 	// テーブルコメントの書込み
 	if(count($objPage->arrErr) == 0) {
-		$objPage->arrErr = lfExecuteSQL("./table_comment.sql", $arrRet['db_user'], $arrRet['db_password'], $arrRet['db_server'], $arrRet['db_name'], $arrRet['db_type'], $arrRet['db_port']); 
+		$objPage->arrErr = lfExecuteSQL("./sql/table_comment.sql", $arrRet['db_user'], $arrRet['db_password'], $arrRet['db_server'], $arrRet['db_name'], $arrRet['db_type'], $arrRet['db_port']); 
 		if(count($objPage->arrErr) == 0) {
 			$objPage->tpl_message.="○：テーブルコメントの書込みに成功しました。<br>";
 		} else {
@@ -156,7 +156,7 @@ case 'drop':
 	
 	if ($arrRet['db_type'] == 'pgsql'){
 		// ビューの削除
-		$objPage->arrErr = lfExecuteSQL("./drop_view.sql", $arrRet['db_user'], $arrRet['db_password'], $arrRet['db_server'], $arrRet['db_name'], $arrRet['db_type'], $arrRet['db_port'], false); 
+		$objPage->arrErr = lfExecuteSQL("./sql/drop_view.sql", $arrRet['db_user'], $arrRet['db_password'], $arrRet['db_server'], $arrRet['db_name'], $arrRet['db_type'], $arrRet['db_port'], false); 
 		if(count($objPage->arrErr) == 0) {
 			$objPage->tpl_message.="○：ビューの削除に成功しました。<br>";
 		} else {
@@ -167,7 +167,7 @@ case 'drop':
 
 	// テーブルの削除
 	if(count($objPage->arrErr) == 0) {
-		$objPage->arrErr = lfExecuteSQL("./drop_table.sql", $arrRet['db_user'], $arrRet['db_password'], $arrRet['db_server'], $arrRet['db_name'], $arrRet['db_type'], $arrRet['db_port'], false); 
+		$objPage->arrErr = lfExecuteSQL("./sql/drop_table.sql", $arrRet['db_user'], $arrRet['db_password'], $arrRet['db_server'], $arrRet['db_name'], $arrRet['db_type'], $arrRet['db_port'], false); 
 		if(count($objPage->arrErr) == 0) {
 			$objPage->tpl_message.="○：テーブルの削除に成功しました。<br>";
 		} else {
