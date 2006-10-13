@@ -33,6 +33,7 @@
 
 <tr><td height="30"></td></tr>
 <tr><td align="left" class="fs12st">■データベースの初期化</td></tr>
+<tr><td align="left" class="fs12"><!--{if $tpl_db_version != ""}-->接続成功：<!--{$tpl_db_version}--><!--{/if}--></td></tr>
 <tr><td align="left" class="fs12">データベース<!--{if $tpl_db_version != ""}-->(<!--{$tpl_db_version}-->)<!--{/if}-->の初期化を開始します</td></tr>
 <tr><td align="left" class="fs12">※すでにテーブル等が作成されている場合は中断されます</td></tr>
 <!--{if $tpl_mode != 'complete'}-->
