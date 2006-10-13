@@ -387,7 +387,13 @@ function lfSetPreData($arrPageData){
 	print(HTML_PATH . $arrPageData[0]['tpl_dir'] . $arrPageData[0]['filename'] . ".tpl");
 		
 	// プレビュー用tplファイルのコピー
-	copy(HTML_PATH . $arrPageData[0]['tpl_dir'] . $arrPageData[0]['filename'] . ".tpl", USER_PATH . "templates/" . $filename . ".tpl");
+	$tplfile = $arrPageData[0]['tpl_dir'] . $arrPageData[0]['filename'];
+	
+	if($tplfile == ""){
+		// tplファイルが空の場合にはMYページと判断
+		$tplfile = "user_data/templates/mypage/index";
+	}
+	copy(HTML_PATH . $tplfile . ".tpl", USER_PATH . "templates/" . $filename . ".tpl");
 	
 	// 更新データの取得
 	$sql = "select page_name, header_chk, footer_chk from dtb_pagelayout where page_id = ?";
