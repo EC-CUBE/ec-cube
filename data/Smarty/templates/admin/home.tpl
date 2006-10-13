@@ -28,12 +28,20 @@
 							</tr>
 							<tr><td><img src="<!--{$smarty.const.URL_DIR}-->img/contents/home_bar.jpg" width="534" height="10" alt=""></td></tr>
 						</table>
-						<!--ショップの状況ここから-->
+						<!--システム情報ここから-->
 						<table width="534" border="0" cellspacing="1" cellpadding="8" summary=" ">
 							<tr>
-								<td bgcolor="#f2f1ec" class="fs12">システム情報</td>
-								<td bgcolor="#ffffff" class="fs12st" align="right"><!--{$system}--></td>
+								<td bgcolor="#f2f1ec" class="fs12">EC-CUBEバージョン</td>
+								<td bgcolor="#ffffff" class="fs12st" align="right"><!--{$smarty.const.ECCUBE_VERSION}--></td>
 							</tr>
+							<tr>
+								<td bgcolor="#f2f1ec" class="fs12">PHPバージョン</td>
+								<td bgcolor="#ffffff" class="fs12st" align="right"><!--{$php_version}--></td>
+							</tr>
+							<tr>
+								<td bgcolor="#f2f1ec" class="fs12">DBバージョン</td>
+								<td bgcolor="#ffffff" class="fs12st" align="right"><!--{$db_version}--></td>
+							</tr>							
 						</table>
 						<table width="534" border="0" cellspacing="0" cellpadding="0" summary=" ">
 							<tr>
