@@ -134,11 +134,8 @@ default:
 $objPage->arrList = lfGetCat($objPage->arrForm['parent_category_id']);
 $objPage->arrTree = sfGetCatTree($objPage->arrForm['parent_category_id']);
 
-sfPrintR($objPage->arrList);
-
 $objView->assignobj($objPage);
 $objView->display(MAIN_FRAME);
-
 //-----------------------------------------------------------------------------------------------------------------------------------
 
 // カテゴリの新規追加
