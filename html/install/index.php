@@ -168,7 +168,8 @@ case 'step3':
 case 'drop':
 	// 入力データを渡す。
 	$arrRet =  $objDBParam->getHashArray();
-	
+	$dsn = $arrRet['db_type']."://".$arrRet['db_user'].":".$arrRet['db_password']."@".$arrRet['db_server'].":".$arrRet['db_port']."/".$arrRet['db_name'];
+		
 	if ($arrRet['db_type'] == 'pgsql'){
 		// ビューの削除
 		$objPage->arrErr = lfExecuteSQL("./sql/drop_view.sql", $dsn, false); 
@@ -564,8 +565,6 @@ function lfCheckDBError($objFormParam) {
 function lfExecuteSQL($filepath, $dsn, $disp_err = true) {
 	$arrErr = array();
 	
-					gfPrintLog("nn", "./temp/install.log");
-					
 	if(!file_exists($filepath)) {
 		$arrErr['all'] = ">> スクリプトファイルが見つかりません";
 	} else {
@@ -573,14 +572,9 @@ function lfExecuteSQL($filepath, $dsn, $disp_err = true) {
 			$sql = fread($fp, filesize($filepath));
 			fclose($fp);
 		}
-		
-		gfPrintLog($dsn, "./temp/install.log");
 		// Debugモード指定
 		$options['debug'] = DB_DEBUG;
 		$objDB = DB::connect($dsn, $options);
-		
-			gfPrintLog("nn", "./temp/install.log");
-		
 		// 接続エラー
 		if(!PEAR::isError($objDB)) {
 			// 改行、タブを1スペースに変換
