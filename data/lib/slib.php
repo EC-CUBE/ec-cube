@@ -33,7 +33,7 @@ function sfGetDBVersion($dsn = DEFAULT_DSN) {
 			}
 		}
 	}
-	if($arrRet['db_type'] == 'pgsql') {
+	if($db_type == 'pgsql') {
 		$arrRet = $objQuery->getAll("select version()");
 		$arrLine = split(" " , $arrRet[0][0]);
 		$version = $arrLine[0] . " " . $arrLine[1];
