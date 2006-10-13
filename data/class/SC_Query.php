@@ -13,7 +13,7 @@ class SC_Query {
 	// コンストラクタ
 	/*
 		$err_disp:エラー表示を行うか
-		$new：再接続を行うか
+		$new：新規に接続を行うか
 	 */
 	function SC_Query($dsn = "", $err_disp = true, $new = false) {
 		$this->conn = new SC_DBconn($dsn, $err_disp, $new);
