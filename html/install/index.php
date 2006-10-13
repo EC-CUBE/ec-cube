@@ -81,8 +81,13 @@ case 'step3':
 	// 入力データを渡す。
 	$arrRet =  $objDBParam->getHashArray();
 	
+	// バージョンアップ等で追加テーブルが発生した際は記載する（スキップ時も強制）
+	if(count($objPage->arrErr) == 0) {
+		
+	}
+		
 	$skip = $_POST["db_skip"];
-
+		
 	// スキップする場合には完了画面へ遷移
 	if ($skip == "on") {
 		// 設定ファイルの生成
@@ -138,11 +143,6 @@ case 'step3':
 		} else {
 			$objPage->tpl_message.="×：テーブルコメントの書込みに失敗しました。<br>";		
 		}
-	}
-	
-	// バージョンアップ等で追加テーブルが発生した際は記載する。
-	if(count($objPage->arrErr) == 0) {
-				
 	}
 
 	if(count($objPage->arrErr) == 0) {
