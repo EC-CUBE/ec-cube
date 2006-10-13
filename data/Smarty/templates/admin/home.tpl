@@ -36,12 +36,12 @@
 								<td bgcolor="#ffffff" width="329" class="fs12" align="right"><!--{$eccube_version}--></td>
 							</tr>
 							<tr>
-								<td bgcolor="#f2f1ec" class="fs12">PHPバージョン</td>
-								<td bgcolor="#ffffff" class="fs12" align="right"><!--{$php_version}--></td>
+								<td bgcolor="#f2f1ec" width="170" class="fs12">PHPバージョン</td>
+								<td bgcolor="#ffffff" width="329" class="fs12" align="right"><!--{$php_version}--></td>
 							</tr>
 							<tr>
-								<td bgcolor="#f2f1ec" class="fs12">DBバージョン</td>
-								<td bgcolor="#ffffff" class="fs12" align="right"><!--{$db_version}--></td>
+								<td bgcolor="#f2f1ec" width="170" class="fs12">DBバージョン</td>
+								<td bgcolor="#ffffff" width="329" class="fs12" align="right"><!--{$db_version}--></td>
 							</tr>							
 						</table>
 						<table width="534" border="0" cellspacing="0" cellpadding="0" summary=" ">
