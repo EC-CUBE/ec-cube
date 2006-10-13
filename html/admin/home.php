@@ -21,6 +21,8 @@ $objSess = new SC_Session();
 // 認証可否の判定
 sfIsSuccess($objSess);
 
+$objPage->eccube_version = ECCUBE_VERSION;
+
 // DBバージョンの取得
 $objPage->db_version = sfGetDBVersion();
 
