@@ -434,7 +434,7 @@ function lfInitWebParam($objWebParam) {
 		if($ret) {
 			print("ari");
 		} else {
-			print("nasi");
+			print("nas");
 		}
 		
 		$objQuery = new SC_Query();
