@@ -21,6 +21,9 @@ sfLoadUpdateModule();
 /* テーブルの存在チェック */
 function sfTabaleExists($table_name, $dsn = DEFAULT_DSN) {
 	$objQuery = new SC_Query($dsn);
+	
+	sfPrintR($objQuery);
+	
 	$flg = false;
 	
 	list($db_type) = split(":", $dsn);

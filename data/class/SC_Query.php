@@ -17,6 +17,14 @@ class SC_Query {
 		return $this->conn;
 	}
 	
+	// エラー判定
+	function isError() {
+		if(PEAR::isError($this->conn->conn)) {
+			return true;
+		}
+		return false;
+	}
+	
 	// COUNT文の実行
 	function count($table, $where = "", $arrval = array()) {
 		if(strlen($where) <= 0) {
