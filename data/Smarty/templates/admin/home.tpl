@@ -28,6 +28,7 @@
 							</tr>
 							<tr><td><img src="<!--{$smarty.const.URL_DIR}-->img/contents/home_bar.jpg" width="534" height="10" alt=""></td></tr>
 						</table>
+						
 						<!--システム情報ここから-->
 						<table width="534" border="0" cellspacing="1" cellpadding="8" summary=" ">
 							<tr>
@@ -44,11 +45,13 @@
 							</tr>							
 						</table>
 						<table width="534" border="0" cellspacing="0" cellpadding="0" summary=" ">
+							<tr><td><img src="<!--{$smarty.const.URL_DIR}-->img/contents/home_bar02.jpg" width="534" height="20" alt=""></td></tr>
 							<tr>
 								<td><img src="<!--{$smarty.const.URL_DIR}-->img/contents/homettl_shop.gif" width="534" height="26" alt="ショップの状況"></td>
 							</tr>
 							<tr><td><img src="<!--{$smarty.const.URL_DIR}-->img/contents/home_bar.jpg" width="534" height="10" alt=""></td></tr>
 						</table>
+						
 						<!--ショップの状況ここから-->
 						<table width="534" border="0" cellspacing="1" cellpadding="8" summary=" ">
 							<tr>
