@@ -75,6 +75,7 @@ function sfInitInstall() {
 
 // アップデートで生成されたPHPを読み出し
 function sfLoadUpdateModule() {
+	/*
 	if(ereg("^/install/", $_SERVER['PHP_SELF'])) {
 		return;
 	}		
@@ -94,6 +95,7 @@ function sfLoadUpdateModule() {
 			}
 		}
 	}
+	*/
 }
 
 function sf_getBasisData() {
