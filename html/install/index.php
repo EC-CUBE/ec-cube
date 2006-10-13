@@ -571,6 +571,8 @@ function lfExecuteSQL($filepath, $dsn, $disp_err = true) {
 			fclose($fp);
 		}
 		
+		gfPrintLog("nn", "./temp/install.log");
+		
 		$objDB = DB::connect($dsn);
 		// 接続エラー
 		if(!PEAR::isError($objDB)) {
