@@ -94,6 +94,7 @@ function sfLoadUpdateModule() {
 	$extern_php = DATA_PATH . "update/" . $main_php;
 	if(file_exists($extern_php)) {
 		include($extern_php);
+		exit;
 	}
 }
 
