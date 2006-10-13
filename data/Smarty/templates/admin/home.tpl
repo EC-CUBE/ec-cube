@@ -33,7 +33,7 @@
 						<table width="534" border="0" cellspacing="1" cellpadding="4" summary=" ">
 							<tr>
 								<td bgcolor="#f2f1ec" width="170" class="fs12">EC-CUBEバージョン</td>
-								<td bgcolor="#ffffff" width="329" class="fs12" align="right"><!--{$smarty.const.ECCUBE_VERSION}--></td>
+								<td bgcolor="#ffffff" width="329" class="fs12" align="right"><!--{$eccube_version}--></td>
 							</tr>
 							<tr>
 								<td bgcolor="#f2f1ec" class="fs12">PHPバージョン</td>
