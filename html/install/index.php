@@ -560,7 +560,9 @@ function lfCheckDBError($objFormParam) {
 // SQL文の実行
 function lfExecuteSQL($filepath, $dsn, $disp_err = true) {
 	$arrErr = array();
-
+	
+					gfPrintLog("nn", "./temp/install.log");
+					
 	if(!file_exists($filepath)) {
 		$arrErr['all'] = ">> スクリプトファイルが見つかりません";
 	} else {
@@ -577,13 +579,7 @@ function lfExecuteSQL($filepath, $dsn, $disp_err = true) {
 			$sql_split = split(";",$sql);
 			foreach($sql_split as $key => $val){
 				if (trim($val) != "") {
-					
-					gfPrintLog("nn", "./temp/install.log");
-					
 					$ret = $objDB->query($val);
-					
-					gfPrintLog("nn", "./temp/install.log");
-					
 					if(PEAR::isError($ret) && $disp_err) {
 						$arrErr['all'] = ">> " . $ret->message . "<br>";
 						// エラー文を取得する
