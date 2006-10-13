@@ -51,7 +51,7 @@
 								<!--{if count($arrUpdate) > 0 }-->
 								<table width="678" border="0" cellspacing="1" cellpadding="4" summary=" ">
 									<tr bgcolor="#f2f1ec" align="center" class="fs12n">
-										<td width="80" align="center">機能名</td>
+										<td width="100" align="center">機能名</td>
 										<td width="240">説明</td>
 										<td width="80" align="center">リリース日</td>
 										<td width="50">update</td>
