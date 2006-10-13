@@ -16,6 +16,8 @@ class UC_Page {
 	}
 }
 
+lfCategoryPHP();
+exit;
 
 function lfCategoryPHP() {
 	$conn = new SC_DBConn();

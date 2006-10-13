@@ -203,6 +203,9 @@ function lfGetCat($parent_category_id) {
 /* パラメータ情報の初期化 */
 function lfInitParam() {
 	global $objFormParam;
+	
+	sfPrintR($objFormParam);
+	
 	$objFormParam->addParam("カテゴリ名", "category_name", STEXT_LEN, "KVa", array("EXIST_CHECK","SPTAB_CHECK","MAX_LENGTH_CHECK"));
 }
 
