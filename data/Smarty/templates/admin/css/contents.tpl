@@ -99,12 +99,6 @@ body {
 	text-decoration:none;
 }
 
-
-.number a:visited {
-	color:#ffffff;
-	text-decoration:none;
-}
-
 .number a:hover{
 	background: url(<!--{$smarty.const.URL_DIR}-->img/contents/number_bg_on.jpg);
 	background-repeat: repeat-x;
@@ -134,11 +128,6 @@ body {
 	font-weight: bold;
 	text-decoration:none;
 	
-}
-
-.number-on a:visited {
-	color:#ffffff;
-	text-decoration:none;
 }
 
 .number-on a:hover{
