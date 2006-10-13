@@ -18,6 +18,9 @@ define("UPDATE_CSV_LINE_MAX", 4096);
 define("UPDATE_CSV_COL_MAX", 13);
 //--------------------------------------------------------------------------------------------------------
 
+// EC-CUBEバージョン情報
+define("ECCUBE_VERSION", "EC-CUBE 1.0.0");
+
 // PEAR::DBのデバッグモード
 define('PEAR_DB_DEBUG', 9);
 
