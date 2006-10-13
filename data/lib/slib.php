@@ -22,6 +22,9 @@ sfLoadUpdateModule();
 
 /* テーブルの存在チェック */
 function sfTabaleExists($table_name, $dsn = DEFAULT_DSN) {
+	global $objDbConn;
+	unset($objDbConn);
+	
 	$objQuery = new SC_Query($dsn);
 	// 正常に接続されている場合
 	if(!$objQuery->isError()) {

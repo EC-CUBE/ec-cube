@@ -82,15 +82,16 @@ case 'step3':
 	$arrRet =  $objDBParam->getHashArray();
 	$dsn = $arrRet['db_type']."://".$arrRet['db_user'].":".$arrRet['db_password']."@".$arrRet['db_server'].":".$arrRet['db_port']."/".$arrRet['db_name'];
 	
+	global $objDbConn;
+	unset($objDbConn);
+	
 	/*
 		バージョンアップ等で追加テーブルが発生した際は記載する
 		（ＤＢ構成の下位互換のためスキップ時も強制）
 	*/
 	// テーブルが存在しない場合に追加する。
 	$objPage->arrErr = lfAddTable("dtb_session", $dsn);	// セッション管理テーブル
-	
-	sfPrintR($objPage->arrErr);
-	
+		
 	if(count($objPage->arrErr) == 0) {
 		// スキップする場合には完了画面へ遷移
 		$skip = $_POST["db_skip"];
