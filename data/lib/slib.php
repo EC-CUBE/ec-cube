@@ -25,17 +25,10 @@ function sfGetDBVersion($dsn = DEFAULT_DSN) {
 	$objQuery = new SC_Query($dsn, true, true);
 	list($db_type) = split(":", $dsn);
 	if($db_type == 'mysql') {
-		$arrRet = $objQuery->getOne("select version()");
-		
-		sfPrintR($arrRet);
-		
-		foreach($arrRet as $array) {
-			if($array[0] == 'version') {
-				$version = "MySQL " . $array[1];
-				break;
-			}
-		}
+		$val = $objQuery->getOne("select version()");
+		$version = "MySQL " . $val;
 	}
+	
 	if($db_type == 'pgsql') {
 		$arrRet = $objQuery->getAll("select version()");
 		
