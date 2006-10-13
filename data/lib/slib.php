@@ -91,32 +91,9 @@ function sfInitInstall() {
 
 // アップデートで生成されたPHPを読み出し
 function sfLoadUpdateModule() {
-	/*
-	if(ereg("^/install/", $_SERVER['PHP_SELF'])) {
-		return;
-	}		
-	//DBから設定情報を取得
-	if(defined('DEFAULT_DSN')) {
-		if(sfTabaleExists('dtb_update')) {
-			$objConn = new SC_DbConn();
-			// 最初に実行するPHPソースを検索する
-			$arrRet = $objConn->getAll("SELECT extern_php FROM dtb_update WHERE main_php = ? OR main_php = '*'",array($_SERVER['PHP_SELF']));
-			foreach($arrRet as $array) {
-				if($array['extern_php'] != "") {
-					$path = DATA_PATH . $array['extern_php'];
-					if(file_exists($path)) {
-						require_once($path);
-					}
-				}
-			}
-		}
-	}
-	*/
-	
 	// URL設定ディレクトリを削除
 	$main_php = ereg_replace(URL_DIR, "", $_SERVER['PHP_SELF']);
 	$extern_php = DATA_PATH . "update/" . $main_php;
-
 	if(file_exists($extern_php)) {
 		require_once($extern_php);
 	}
