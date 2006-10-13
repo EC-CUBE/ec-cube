@@ -22,7 +22,10 @@ $objSess = new SC_Session();
 sfIsSuccess($objSess);
 
 // DBバージョンの取得
-$objPage->system = "PHP " . phpversion(). "/" . sfGetDBVersion();
+$objPage->db_version = sfGetDBVersion();
+
+// PHPバージョンの取得
+$objPage->php_version = "PHP " . phpversion();
 
 // 現在の会員数
 $objPage->customer_cnt = lfGetCustomerCnt($conn);

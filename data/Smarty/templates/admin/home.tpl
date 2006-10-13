@@ -32,8 +32,8 @@
 						<!--システム情報ここから-->
 						<table width="534" border="0" cellspacing="1" cellpadding="4" summary=" ">
 							<tr>
-								<td bgcolor="#f2f1ec" class="fs12">EC-CUBEバージョン</td>
-								<td bgcolor="#ffffff" class="fs12st" align="right"><!--{$smarty.const.ECCUBE_VERSION}--></td>
+								<td bgcolor="#f2f1ec" width="170" class="fs12">EC-CUBEバージョン</td>
+								<td bgcolor="#ffffff" width="329" class="fs12st" align="right"><!--{$smarty.const.ECCUBE_VERSION}--></td>
 							</tr>
 							<tr>
 								<td bgcolor="#f2f1ec" class="fs12">PHPバージョン</td>
