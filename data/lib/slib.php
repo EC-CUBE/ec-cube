@@ -26,6 +26,9 @@ function sfGetDBVersion($dsn = DEFAULT_DSN) {
 	list($db_type) = split(":", $dsn);
 	if($db_type == 'mysql') {
 		$arrRet = $objQuery->getAll("SHOW VARIABLES");
+		
+		sfPrintR($arrRet);
+		
 		foreach($arrRet as $array) {
 			if($array[0] == 'version') {
 				$version = "MySQL " . $array[1];
