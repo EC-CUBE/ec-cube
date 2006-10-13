@@ -207,28 +207,29 @@ function fnCheckInputPoint() {
 
 // 別のお届け先入力制限
 function fnCheckInputDeliv() {
-	if(document.form1) {
-		if(document.form1['deliv_check']) {
-			list = new Array(
-							'deliv_name01',
-							'deliv_name02',
-							'deliv_kana01',
-							'deliv_kana02',
-							'deliv_pref',
-							'deliv_zip01',
-							'deliv_zip02',
-							'deliv_addr01',
-							'deliv_addr02',
-							'deliv_tel01',
-							'deliv_tel02',
-							'deliv_tel03'
-							);
-		
-			if(!document.form1['deliv_check'].checked) {
-				fnChangeDisabled(list, '#dddddd');
-			} else {
-				fnChangeDisabled(list, '');
-			}
+	if(!document.form1) {
+		return;
+	}
+	if(document.form1['deliv_check']) {
+		list = new Array(
+						'deliv_name01',
+						'deliv_name02',
+						'deliv_kana01',
+						'deliv_kana02',
+						'deliv_pref',
+						'deliv_zip01',
+						'deliv_zip02',
+						'deliv_addr01',
+						'deliv_addr02',
+						'deliv_tel01',
+						'deliv_tel02',
+						'deliv_tel03'
+						);
+	
+		if(!document.form1['deliv_check'].checked) {
+			fnChangeDisabled(list, '#dddddd');
+		} else {
+			fnChangeDisabled(list, '');
 		}
 	}
 }
