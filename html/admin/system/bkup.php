@@ -504,7 +504,7 @@ function lfExeInsertSQL($objQuery, $csv){
 			$base_sql = "INSERT INTO $data[0]";
 			$tbl_flg = true;
 			
-			if($data == "dtb_pagelayout"){
+			if($data[0] == "dtb_pagelayout"){
 				$pagelayout_flg = true;
 			}
 			
@@ -543,7 +543,7 @@ function lfExeInsertSQL($objQuery, $csv){
 			$objQuery->query($sql);
 			$pagelayout_flg = false;
 		}
-		
+
 		// タイムアウトを防ぐ
 		sfFlush();
 	}
