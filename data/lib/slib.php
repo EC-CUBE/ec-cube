@@ -45,6 +45,8 @@ function sfTabaleExists($table_name, $dsn = DEFAULT_DSN) {
 				return true;
 			}
 		}
+	} else {
+		print("接続されません");
 	}
 	return false;
 }

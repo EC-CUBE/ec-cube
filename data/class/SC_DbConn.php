@@ -26,9 +26,6 @@ class SC_DbConn{
 		global $objDbConn;
 		
 		$options['debug'] = 9;
-		
-		print("kita");
-		
 		// 既に接続されている場合には接続しない
 		if(!isset($objDbConn->connection)) {
 			if($dsn != "") {
