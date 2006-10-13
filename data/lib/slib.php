@@ -19,8 +19,10 @@ sfInitInstall();
 sfLoadUpdateModule();
 
 /* テーブルの存在チェック */
-function sfTabaleExists($table_name, $db_type=DB_TYPE) {
-	$objQuery = new SC_Query();	
+function sfTabaleExists($table_name, $dsn = DEFAULT_DSN) {
+	$objQuery = new SC_Query($dsn);
+	list($db_type) = split(":", $dsn);
+			
 	// postgresqlとmysqlとで処理を分ける
 	if ($db_type == "pgsql") {
 		$sql = "SELECT

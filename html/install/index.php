@@ -426,16 +426,22 @@ function lfInitWebParam($objWebParam) {
 		$dir = ereg_replace("install/.*$", "", $_SERVER['REQUEST_URI']);
 		$secure_url = "http://" . $_SERVER['HTTP_HOST'] . $dir;
 	}
-	
-	/*
+
 	// 店名、管理者メールアドレスを取得する。(再インストール時)
 	if(defined('DEFAULT_DSN')) {
+		$ret = sfTabaleExists("dtb_baseinfo", DEFAULT_DSN);
+		
+		if($ret) {
+			print("ari");
+		} else {
+			print("nasi");
+		}
+		
 		$objQuery = new SC_Query();
 		$arrRet = $objQuery->select("shop_name, email01", "dtb_baseinfo");
 		$shop_name = $arrRet[0]['shop_name'];
 		$admin_mail = $arrRet[0]['email01'];
 	}
-	*/
 
 	$objWebParam->addParam("店名", "shop_name", MTEXT_LEN, "", array("EXIST_CHECK","MAX_LENGTH_CHECK"), $shop_name);
 	$objWebParam->addParam("管理者メールアドレス", "admin_mail", MTEXT_LEN, "", array("EXIST_CHECK","EMAIL_CHECK","EMAIL_CHAR_CHECK","MAX_LENGTH_CHECK"), $admin_mail);
