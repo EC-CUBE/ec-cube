@@ -17,8 +17,6 @@ $GLOBAL_ERR = "";
 
 // インストール初期処理
 sfInitInstall();
-// アップデートで取得したPHPを読み出す
-sfLoadUpdateModule();
 
 /* データベースのバージョン所得 */
 function sfGetDBVersion($dsn = DEFAULT_DSN) {
