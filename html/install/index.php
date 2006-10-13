@@ -89,6 +89,8 @@ case 'step3':
 	// テーブルが存在しない場合に追加する。
 	$objPage->arrErr = lfAddTable("dtb_session", $dsn);	// セッション管理テーブル
 	
+	sfPrintR($objPage->arrErr);
+	
 	if(count($objPage->arrErr) == 0) {
 		// スキップする場合には完了画面へ遷移
 		$skip = $_POST["db_skip"];
