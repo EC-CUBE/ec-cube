@@ -304,5 +304,4 @@ function lfDownRankChilds($objQuery, $table, $pid_name, $id_name, $id, $count) {
 	$ret = $objQuery->exec($sql);
 	return $ret;
 }
-exit;
 ?>
