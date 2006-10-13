@@ -34,7 +34,7 @@ CREATE TABLE dtb_bat_order_daily_age (
     start_age smallint,
     end_age smallint,
     member smallint,
-    order_date datetime ,
+    order_date datetime,
     create_date datetime NOT NULL 
 ) TYPE=InnoDB ;
 

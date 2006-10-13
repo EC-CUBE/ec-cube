@@ -646,8 +646,8 @@ function lfMakeConfigFile() {
 }
 
 // テーブルの追加
-function lfAddTable($table_name) {
-	if(!sfTabaleExists($table_name)) {
+function lfAddTable($table_name, $dsn) {
+	if(!sfTabaleExists($table_name, $dsn)) {
 		
 	}
 }
