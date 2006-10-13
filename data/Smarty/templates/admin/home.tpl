@@ -30,7 +30,7 @@
 						</table>
 						
 						<!--システム情報ここから-->
-						<table width="534" border="0" cellspacing="1" cellpadding="8" summary=" ">
+						<table width="534" border="0" cellspacing="1" cellpadding="4" summary=" ">
 							<tr>
 								<td bgcolor="#f2f1ec" class="fs12">EC-CUBEバージョン</td>
 								<td bgcolor="#ffffff" class="fs12st" align="right"><!--{$smarty.const.ECCUBE_VERSION}--></td>
@@ -53,7 +53,7 @@
 						</table>
 						
 						<!--ショップの状況ここから-->
-						<table width="534" border="0" cellspacing="1" cellpadding="8" summary=" ">
+						<table width="534" border="0" cellspacing="1" cellpadding="4" summary=" ">
 							<tr>
 								<td bgcolor="#f2f1ec" class="fs12">システム情報</td>
 								<td bgcolor="#ffffff" class="fs12st" align="right"><!--{$system}--></td>
