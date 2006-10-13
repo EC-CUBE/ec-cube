@@ -181,7 +181,7 @@ function lfInstallModule() {
 		if($arrRet[0]['other_files'] != "") {
 			$arrFiles = split("\|", $arrRet[0]['other_files']);
 		}
-		$arrFiles[] = $arrRet[0]['extern_php'];
+		//$arrFiles[] = $arrRet[0]['extern_php'];
 		foreach($arrFiles as $val) {
 			// 更新ファイルの取得
 			$ret=lfCopyUpdateFile($val);
