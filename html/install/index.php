@@ -88,15 +88,16 @@ case 'step3':
 	if(count($objPage->arrErr) == 0) {
 		
 	}
-		
-	$skip = $_POST["db_skip"];
-		
-	// スキップする場合には完了画面へ遷移
-	if ($skip == "on") {
-		// 設定ファイルの生成
-		lfMakeConfigFile();
-		$objPage = lfDispComplete($objPage);
-		break;
+	
+	if(count($objPage->arrErr) == 0) {
+		// スキップする場合には完了画面へ遷移
+		$skip = $_POST["db_skip"];
+		if ($skip == "on") {
+			// 設定ファイルの生成
+			lfMakeConfigFile();
+			$objPage = lfDispComplete($objPage);
+			break;
+		}
 	}
 	
 	// テーブルの作成
@@ -644,6 +645,13 @@ function lfMakeConfigFile() {
 	if($fp = fopen($filepath,"w")) {
 		fwrite($fp, $config_data);
 		fclose($fp);
+	}
+}
+
+// テーブルの追加
+function lfAddTable($table_name) {
+	if(!sfTabaleExists($table_name)) {
+		
 	}
 }
 
