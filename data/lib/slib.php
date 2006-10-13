@@ -41,9 +41,15 @@ function sfTabaleExists($table_name, $dsn = DEFAULT_DSN) {
 			if(count($arrRet) > 0) {
 				return true;
 			}
-		}else if ($db_type == "mysql") {	
-			$sql = "SHOW TABLE STATUS LIKE ?";
-			$arrRet = $objQuery->getAll($sql, array($table_name));
+		}else if ($db_type == "mysql") {
+			
+			print(DEFAULT_DSN);
+			
+			//$sql = "SHOW TABLE STATUS LIKE ?";
+			//$arrRet = $objQuery->getAll($sql, array($table_name));
+			
+			$arrRet = $objQuery->getAll("select * from dtb_session");
+			
 			if(count($arrRet) > 0) {
 				return true;
 			}
