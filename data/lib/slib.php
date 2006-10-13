@@ -20,6 +20,27 @@ sfInitInstall();
 // アップデートで生成されたPHPを読み出す
 sfLoadUpdateModule();
 
+/* データベースのバージョン所得 */
+function sfGetDBVersion($dsn = DEFAULT_DSN) {
+	$objQuery = new SC_Query($dsn);
+	list($db_type) = split(":", $dsn);
+	if($db_type == 'mysql') {
+		$arrRet = $objQuery->getAll("SHOW VARIABLES");
+		foreach($arrRet as $array) {
+			if($array[0] == 'version') {
+				$version = "MySQL " . $array[1];
+				break;
+			}
+		}
+	}
+	if($arrRet['db_type'] == 'pgsql') {
+		$arrRet = $objQuery->getAll("select version()");
+		$arrLine = split(" " , $arrRet[0][0]);
+		$version = $arrLine[0] . " " . $arrLine[1];
+	}
+	return $version;
+}
+
 /* テーブルの存在チェック */
 function sfTabaleExists($table_name, $dsn = DEFAULT_DSN) {
 	$objQuery = new SC_Query($dsn);

@@ -19,7 +19,6 @@ class SC_DbConn{
 	var $error_mail_title;
 	var $dsn;
 	var $err_disp = true;
-
 	
 	// コンストラクタ
 	function SC_DbConn($dsn = "", $err_disp = true){

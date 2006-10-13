@@ -532,27 +532,16 @@ function lfCheckDBError($objFormParam) {
 		// Debugモード指定
 		$options['debug'] = PEAR_DB_DEBUG;
 		$objDB = DB::connect($dsn, $options);
-		// 接続エラー
-		if(PEAR::isError($objDB)) {
+		// 接続成功
+		if(!PEAR::isError($objDB)) {
+			// データベースバージョン情報の取得
+			$objPage->tpl_db_version = sfGetDBVersion($dsn);			
+		} else {
 			$objErr->arrErr['all'] = ">> " . $objDB->message . "<br>";
 			// エラー文を取得する
 			ereg("\[(.*)\]", $objDB->userinfo, $arrKey);
 			$objErr->arrErr['all'].= $arrKey[0] . "<br>";
 			gfPrintLog($objDB->userinfo, "./temp/install.log");
-		} else {
-			if($arrRet['db_type'] == 'mysql') {
-				$arrRet = $objDB->getAll("SHOW VARIABLES");
-				foreach($arrRet as $array) {
-					if($array[0] == 'version') {
-						$objPage->tpl_db_version = "MySQL " . $array[1];
-					}
-				}
-			}
-			if($arrRet['db_type'] == 'pgsql') {
-				$arrRet = $objDB->getAll("select version()");
-				$arrLine = split(" " , $arrRet[0][0]);
-				$objPage->tpl_db_version = $arrLine[0] . " " . $arrLine[1];
-			}
 		}
 	}
 	return $objErr->arrErr;
