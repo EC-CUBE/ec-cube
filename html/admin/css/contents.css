@@ -170,6 +170,16 @@ a:hover { color: #f9a406; text-decoration: underline; }
 	text-decoration:none;
 }
 
+.number-on a:visited {
+	color:#ffffff;
+	text-decoration:none;
+}
+
+.number a:visited {
+	color:#ffffff;
+	text-decoration:none;
+}
+
 /*IMG*/
 img {
 	border: 0;

@@ -22,14 +22,13 @@
 					<tr>
 						<td background="<!--{$smarty.const.URL_DIR}-->img/contents/main_left.jpg"><img src="<!--{$smarty.const.URL_DIR}-->img/common/_.gif" width="14" height="1" alt=""></td>
 						<td bgcolor="#cccccc">
+						<!--システム情報ここから-->
 						<table width="534" border="0" cellspacing="0" cellpadding="0" summary=" ">
 							<tr>
-								<td><img src="<!--{$smarty.const.URL_DIR}-->img/contents/homettl_shop.gif" width="534" height="26" alt="ショップの状況"></td>
+								<td><img src="<!--{$smarty.const.URL_DIR}-->img/contents/homettl_system.gif" width="534" height="26" alt="システム情報"></td>
 							</tr>
 							<tr><td><img src="<!--{$smarty.const.URL_DIR}-->img/contents/home_bar.jpg" width="534" height="10" alt=""></td></tr>
 						</table>
-						
-						<!--システム情報ここから-->
 						<table width="534" border="0" cellspacing="1" cellpadding="4" summary=" ">
 							<tr>
 								<td bgcolor="#f2f1ec" width="178" class="fs12">EC-CUBEバージョン</td>
@@ -44,6 +43,8 @@
 								<td bgcolor="#ffffff" class="fs12" align="right"><!--{$db_version}--></td>
 							</tr>							
 						</table>
+						
+						<!--ショップの状況ここから-->
 						<table width="534" border="0" cellspacing="0" cellpadding="0" summary=" ">
 							<tr><td><img src="<!--{$smarty.const.URL_DIR}-->img/contents/home_bar02.jpg" width="534" height="20" alt=""></td></tr>
 							<tr>
@@ -51,8 +52,6 @@
 							</tr>
 							<tr><td><img src="<!--{$smarty.const.URL_DIR}-->img/contents/home_bar.jpg" width="534" height="10" alt=""></td></tr>
 						</table>
-						
-						<!--ショップの状況ここから-->
 						<table width="534" border="0" cellspacing="1" cellpadding="4" summary=" ">
 							<tr>
 								<td bgcolor="#f2f1ec" width="178" class="fs12">現在の会員数</td>
