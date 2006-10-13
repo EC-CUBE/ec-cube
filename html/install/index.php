@@ -142,8 +142,7 @@ case 'step3':
 	
 	// バージョンアップ等で追加テーブルが発生した際は記載する。
 	if(count($objPage->arrErr) == 0) {
-		
-		
+				
 	}
 
 	if(count($objPage->arrErr) == 0) {
