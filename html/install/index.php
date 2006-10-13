@@ -86,7 +86,8 @@ case 'step3':
 		バージョンアップ等で追加テーブルが発生した際は記載する
 		（ＤＢ構成の下位互換のためスキップ時も強制）
 	*/
-	
+	// テーブルが存在しない場合に追加する。
+	$objPage->arrErr = lfAddTable("dtb_session", $dsn);	// セッション管理テーブル
 	
 	if(count($objPage->arrErr) == 0) {
 		// スキップする場合には完了画面へ遷移
@@ -583,8 +584,7 @@ function lfExecuteSQL($filepath, $dsn, $disp_err = true) {
 						gfPrintLog($ret->userinfo, "./temp/install.log");
 					}
 				}
-			}
-			
+			}			
 		} else {
 			$arrErr['all'] = ">> " . $objDB->message;
 			gfPrintLog($objDB->userinfo, "./temp/install.log");
@@ -645,11 +645,14 @@ function lfMakeConfigFile() {
 	}
 }
 
-// テーブルの追加
+// テーブルの追加（既にテーブルが存在する場合は作成しない）
 function lfAddTable($table_name, $dsn) {
+	$arrErr = array();
 	if(!sfTabaleExists($table_name, $dsn)) {
-		
+		list($db_type) = split(":", $dsn);
+		$sql_path = "./sql/add/". $table_name . "_" .$db_type .".sql";
+		$arrErr = lfExecuteSQL($sql_path, $dsn);
 	}
+	return $arrErr;
 }
-
 ?>
