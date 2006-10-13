@@ -140,7 +140,6 @@ case 'step3':
 		}
 	}
 
-
 	if(count($objPage->arrErr) == 0) {
 		// 設定ファイルの生成
 		lfMakeConfigFile();
