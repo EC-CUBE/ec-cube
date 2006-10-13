@@ -26,6 +26,9 @@ sfIsSuccess($objSess);
 
 // パラメータ管理クラス
 $objFormParam = new SC_FormParam();
+
+sfPrintR($objFormParam);
+
 // パラメータ情報の初期化
 lfInitParam();
 // POST値の取得
