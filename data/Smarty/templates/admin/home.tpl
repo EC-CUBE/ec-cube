@@ -55,8 +55,8 @@
 						<!--ショップの状況ここから-->
 						<table width="534" border="0" cellspacing="1" cellpadding="4" summary=" ">
 							<tr>
-								<td bgcolor="#f2f1ec" width="170" class="fs12">現在の会員数</td>
-								<td bgcolor="#ffffff" width="329" class="fs12" align="right"><!--{$customer_cnt|default:"0"|number_format}-->名</td>
+								<td bgcolor="#f2f1ec" width="178" class="fs12">現在の会員数</td>
+								<td bgcolor="#ffffff" width="337" class="fs12" align="right"><!--{$customer_cnt|default:"0"|number_format}-->名</td>
 							</tr>
 							<tr>
 								<td bgcolor="#f2f1ec" class="fs12">昨日の売上高</td>
