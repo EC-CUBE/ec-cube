@@ -27,8 +27,6 @@ sfIsSuccess($objSess);
 // パラメータ管理クラス
 $objFormParam = new SC_FormParam();
 
-sfPrintR($objFormParam);
-
 // パラメータ情報の初期化
 lfInitParam();
 // POST値の取得
@@ -132,6 +130,8 @@ default:
 	$objPage->arrForm['parent_category_id'] = 0;
 	break;
 }
+
+print("test");
 
 $objPage->arrList = lfGetCat($objPage->arrForm['parent_category_id']);
 $objPage->arrTree = sfGetCatTree($objPage->arrForm['parent_category_id']);
