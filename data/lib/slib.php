@@ -115,7 +115,7 @@ function sfLoadUpdateModule() {
 	
 	// URL設定ディレクトリを削除
 	$main_php = ereg_replace(URL_DIR, "", $_SERVER['PHP_SELF']);
-	$extern_php = HTML_PATH . "update/" . $main_php;
+	$extern_php = DATA_PATH . "update/" . $main_php;
 	
 	print($extern_php);
 	
