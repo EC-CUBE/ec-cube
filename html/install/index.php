@@ -180,7 +180,6 @@ case 'drop':
 		}
 	}
 
-
 	// テーブルの削除
 	if(count($objPage->arrErr) == 0) {
 		$objPage->arrErr = lfExecuteSQL("./sql/drop_table.sql", $dsn, false); 

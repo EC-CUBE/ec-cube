@@ -25,7 +25,8 @@ class SC_DbConn{
 	function SC_DbConn($dsn = "", $err_disp = true){
 		global $objDbConn;
 		
-		$options['debug'] = 9;
+		// Debugモード指定
+		$options['debug'] = PEAR_DB_DEBUG;
 		// 既に接続されている場合には接続しない
 		if(!isset($objDbConn->connection)) {
 			if($dsn != "") {
