@@ -19,7 +19,15 @@ $GLOBAL_ERR = "";
 sfInitInstall();
 
 /* データベースのバージョン所得 */
-function sfGetDBVersion($dsn = DEFAULT_DSN) {
+function sfGetDBVersion($dsn = "") {
+	if($dsn == "") {
+		if(defined('DEFAULT_DSN')) {
+			$dsn = DEFAULT_DSN;
+		} else {
+			return;
+		}
+	}
+	
 	$objQuery = new SC_Query($dsn, true, true);
 	list($db_type) = split(":", $dsn);
 	if($db_type == 'mysql') {
@@ -35,7 +43,15 @@ function sfGetDBVersion($dsn = DEFAULT_DSN) {
 }
 
 /* テーブルの存在チェック */
-function sfTabaleExists($table_name, $dsn = DEFAULT_DSN) {
+function sfTabaleExists($table_name, $dsn = "") {
+	if($dsn == "") {
+		if(defined('DEFAULT_DSN')) {
+			$dsn = DEFAULT_DSN;
+		} else {
+			return;
+		}
+	}
+	
 	$objQuery = new SC_Query($dsn, true, true);
 	// 正常に接続されている場合
 	if(!$objQuery->isError()) {

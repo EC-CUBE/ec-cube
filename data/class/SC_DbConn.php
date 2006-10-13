@@ -32,8 +32,12 @@ class SC_DbConn{
 				$objDbConn = DB::connect($dsn, $options);
 				$this->dsn = $dsn;
 			} else {
-				$objDbConn = DB::connect(DEFAULT_DSN, $options);
-				$this->dsn = DEFAULT_DSN;
+				if(defined('DEFAULT_DSN')) {
+					$objDbConn = DB::connect(DEFAULT_DSN, $options);
+					$this->dsn = DEFAULT_DSN;
+				} else {
+					return;
+				}
 			}
 		}
 		$this->conn = $objDbConn;
