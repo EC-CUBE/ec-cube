@@ -82,11 +82,12 @@ case 'step3':
 	// 入力データを渡す。
 	$arrRet =  $objDBParam->getHashArray();
 	$dsn = $arrRet['db_type']."://".$arrRet['db_user'].":".$arrRet['db_password']."@".$arrRet['db_server'].":".$arrRet['db_port']."/".$arrRet['db_name'];
+	
 	/*
-		バージョンアップ等で追加テーブルが発生した際は記載する
+		lfAddTableは、バージョンアップ等で追加テーブルが発生した場合に実行する。
 		（ＤＢ構成の下位互換のためスキップ時も強制）
 	*/
-	// テーブルが存在しない場合に追加する。
+	// テーブルが存在しない場合に追加される。
 	$objPage->arrErr = lfAddTable("dtb_session", $dsn);	// セッション管理テーブル
 		
 	if(count($objPage->arrErr) == 0) {

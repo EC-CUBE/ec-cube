@@ -38,7 +38,7 @@ function sfGetDBVersion($dsn = DEFAULT_DSN) {
 
 /* テーブルの存在チェック */
 function sfTabaleExists($table_name, $dsn = DEFAULT_DSN) {
-	$objQuery = new SC_Query($dsn);
+	$objQuery = new SC_Query($dsn, true, true);
 	// 正常に接続されている場合
 	if(!$objQuery->isError()) {
 		list($db_type) = split(":", $dsn);
