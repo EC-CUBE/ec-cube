@@ -34,6 +34,19 @@
 								<td bgcolor="#f2f1ec" class="fs12">システム情報</td>
 								<td bgcolor="#ffffff" class="fs12st" align="right"><!--{$system}--></td>
 							</tr>
+						</table>
+						<table width="534" border="0" cellspacing="0" cellpadding="0" summary=" ">
+							<tr>
+								<td><img src="<!--{$smarty.const.URL_DIR}-->img/contents/homettl_shop.gif" width="534" height="26" alt="ショップの状況"></td>
+							</tr>
+							<tr><td><img src="<!--{$smarty.const.URL_DIR}-->img/contents/home_bar.jpg" width="534" height="10" alt=""></td></tr>
+						</table>
+						<!--ショップの状況ここから-->
+						<table width="534" border="0" cellspacing="1" cellpadding="8" summary=" ">
+							<tr>
+								<td bgcolor="#f2f1ec" class="fs12">システム情報</td>
+								<td bgcolor="#ffffff" class="fs12st" align="right"><!--{$system}--></td>
+							</tr>
 							<tr>
 								<td bgcolor="#f2f1ec" width="170" class="fs12">現在の会員数</td>
 								<td bgcolor="#ffffff" width="329" class="fs12" align="right"><!--{$customer_cnt|default:"0"|number_format}-->名</td>
