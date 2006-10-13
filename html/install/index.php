@@ -574,6 +574,9 @@ function lfExecuteSQL($filepath, $dsn, $disp_err = true) {
 		gfPrintLog("nn", "./temp/install.log");
 		
 		$objDB = DB::connect($dsn);
+		
+			gfPrintLog("nn", "./temp/install.log");
+		
 		// 接続エラー
 		if(!PEAR::isError($objDB)) {
 			// 改行、タブを1スペースに変換
