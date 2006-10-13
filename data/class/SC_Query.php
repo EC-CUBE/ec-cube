@@ -11,8 +11,12 @@ class SC_Query {
 	var $conn;
 	
 	// コンストラクタ
-	function SC_Query($dsn = "", $err_disp = true) {
-		$this->conn = new SC_DBconn($dsn, $err_disp);
+	/*
+		$err_disp:エラー表示を行うか
+		$new：再接続を行うか
+	 */
+	function SC_Query($dsn = "", $err_disp = true, $new = false) {
+		$this->conn = new SC_DBconn($dsn, $err_disp, $new);
 		$this->where = "";
 		return $this->conn;
 	}

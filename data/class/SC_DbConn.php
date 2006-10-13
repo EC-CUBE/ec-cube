@@ -21,13 +21,13 @@ class SC_DbConn{
 	var $err_disp = true;
 	
 	// コンストラクタ
-	function SC_DbConn($dsn = "", $err_disp = true){
+	function SC_DbConn($dsn = "", $err_disp = true, $new = false){
 		global $objDbConn;
 		
 		// Debugモード指定
 		$options['debug'] = PEAR_DB_DEBUG;
-		// 既に接続されている場合には接続しない
-		if(!isset($objDbConn->connection)) {
+		// 既に接続されている場合と再接続なしの場合は接続しない
+		if(!isset($objDbConn->connection) && !$new) {
 			if($dsn != "") {
 				$objDbConn = DB::connect($dsn, $options);
 				$this->dsn = $dsn;

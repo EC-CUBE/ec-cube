@@ -25,7 +25,7 @@ function sfGetDBVersion($dsn = DEFAULT_DSN) {
 	$objQuery = new SC_Query($dsn);
 	list($db_type) = split(":", $dsn);
 	if($db_type == 'mysql') {
-		$arrRet = $objQuery->getAll("SHOW VARIABLES");
+		$arrRet = $objQuery->getAll("select version()");
 		
 		sfPrintR($arrRet);
 		

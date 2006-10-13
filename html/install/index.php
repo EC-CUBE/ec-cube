@@ -82,10 +82,6 @@ case 'step3':
 	// 入力データを渡す。
 	$arrRet =  $objDBParam->getHashArray();
 	$dsn = $arrRet['db_type']."://".$arrRet['db_user'].":".$arrRet['db_password']."@".$arrRet['db_server'].":".$arrRet['db_port']."/".$arrRet['db_name'];
-	
-	global $objDbConn;
-	unset($objDbConn);
-	
 	/*
 		バージョンアップ等で追加テーブルが発生した際は記載する
 		（ＤＢ構成の下位互換のためスキップ時も強制）
