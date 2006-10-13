@@ -131,6 +131,8 @@ default:
 	break;
 }
 
+sfPrintR($objPage->arrList);
+
 $objPage->arrList = lfGetCat($objPage->arrForm['parent_category_id']);
 $objPage->arrTree = sfGetCatTree($objPage->arrForm['parent_category_id']);
 
