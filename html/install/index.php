@@ -139,6 +139,12 @@ case 'step3':
 			$objPage->tpl_message.="×：テーブルコメントの書込みに失敗しました。<br>";		
 		}
 	}
+	
+	// バージョンアップ等で追加テーブルが発生した際は記載する。
+	if(count($objPage->arrErr) == 0) {
+		
+		
+	}
 
 	if(count($objPage->arrErr) == 0) {
 		// 設定ファイルの生成
