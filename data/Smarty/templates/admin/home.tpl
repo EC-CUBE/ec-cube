@@ -31,6 +31,10 @@
 						<!--ショップの状況ここから-->
 						<table width="534" border="0" cellspacing="1" cellpadding="8" summary=" ">
 							<tr>
+								<td bgcolor="#f2f1ec" class="fs12">データベース情報</td>
+								<td bgcolor="#ffffff" class="fs12"><!--{$db_version}--></td>
+							</tr>
+							<tr>
 								<td bgcolor="#f2f1ec" width="170" class="fs12">現在の会員数</td>
 								<td bgcolor="#ffffff" width="329" class="fs12" align="right"><!--{$customer_cnt|default:"0"|number_format}-->名</td>
 							</tr>

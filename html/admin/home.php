@@ -21,6 +21,9 @@ $objSess = new SC_Session();
 // 認証可否の判定
 sfIsSuccess($objSess);
 
+// DBバージョンの取得
+$objPage->db_version = sfGetDBVersion();
+
 // 現在の会員数
 $objPage->customer_cnt = lfGetCustomerCnt($conn);
 
