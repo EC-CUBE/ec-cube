@@ -592,7 +592,6 @@ function lfExecuteSQL($filepath, $db_user, $db_password, $db_server, $db_name, $
 function lfMakeConfigFile() {
 	global $objWebParam;
 	global $objDBParam;
-	global $port;
 		
 	$root_dir = $objWebParam->getValue('install_dir');
 	// 語尾に'/'をつける
