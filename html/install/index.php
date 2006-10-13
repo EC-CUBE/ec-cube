@@ -458,11 +458,17 @@ function lfInitWebParam($objWebParam) {
 
 // DBパラメータ情報の初期化
 function lfInitDBParam($objDBParam) {
-	
+		
 	if(defined('DB_SERVER')) {
 		$db_server = DB_SERVER;
 	} else {
 		$db_server = "127.0.0.1";
+	}
+	
+	if(defined('DB_TYPE')) {
+		$db_type = DB_TYPE;
+	} else {
+		$db_type = "";
 	}
 	
 	if(defined('DB_PORT')) {
@@ -483,7 +489,7 @@ function lfInitDBParam($objDBParam) {
 		$db_user = "eccube_db_user";				
 	}
 			
-	$objDBParam->addParam("DBの種類", "db_type", INT_LEN, "", array("EXIST_CHECK","MAX_LENGTH_CHECK"));
+	$objDBParam->addParam("DBの種類", "db_type", INT_LEN, "", array("EXIST_CHECK","MAX_LENGTH_CHECK"), $db_type);
 	$objDBParam->addParam("DBサーバ", "db_server", MTEXT_LEN, "", array("EXIST_CHECK","MAX_LENGTH_CHECK"), $db_server);
 	$objDBParam->addParam("DBポート", "db_port", INT_LEN, "", array("MAX_LENGTH_CHECK"), $db_port);
 	$objDBParam->addParam("DB名", "db_name", MTEXT_LEN, "", array("EXIST_CHECK","MAX_LENGTH_CHECK"), $db_name);
