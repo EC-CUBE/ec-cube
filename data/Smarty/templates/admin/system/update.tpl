@@ -55,7 +55,6 @@
 										<td width="240">説明</td>
 										<td width="80" align="center">リリース日</td>
 										<td width="50">update</td>
-										<td width="50">uninstall</td>									
 									</tr>
 									<!--{section name=cnt loop=$arrUpdate}-->
 									<tr bgcolor="#ffffff" class="fs12">
@@ -64,16 +63,10 @@
 										<td align="center"><!--{$arrUpdate[cnt].release_date|sfDispDBDate:false}--></td>
 										<td align="center">
 										<!--{if $arrUpdate[cnt].now_version != $arrUpdate[cnt].latest_version}-->
-											<a href="#" onclick="fnModeSubmit('install','module_id','<!--{$arrUpdate[cnt].module_id}-->');">install</a></td>
+											<a href="#" onclick="fnModeSubmit('install','module_id','<!--{$arrUpdate[cnt].module_id}-->');">適用</a>
 										<!--{else}-->
-											-
-										<!--{/if}-->										
-										<td align="center">
-										<!--{if $arrUpdate[cnt].now_version != ""}-->
-											<a href="#" onclick="fnModeSubmit('uninstall','module_id','<!--{$arrUpdate[cnt].module_id}-->');">uninstall</a>
-										<!--{else}-->
-											-
-										<!--{/if}-->										
+											<a href="#" onclick="fnModeSubmit('uninstall','module_id','<!--{$arrUpdate[cnt].module_id}-->');">削除</a>
+										<!--{/if}-->									
 										</td>	
 									</tr>
 									<!--{/section}-->
