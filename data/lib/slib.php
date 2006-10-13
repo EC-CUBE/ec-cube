@@ -21,39 +21,32 @@ sfLoadUpdateModule();
 /* テーブルの存在チェック */
 function sfTabaleExists($table_name, $dsn = DEFAULT_DSN) {
 	$objQuery = new SC_Query($dsn);
-	
-	sfPrintR($objQuery);
-	
-	$flg = false;
-	
-	list($db_type) = split(":", $dsn);
-	// postgresqlとmysqlとで処理を分ける
-	if ($db_type == "pgsql") {
-		$sql = "SELECT
-					relname
-				FROM
-				    pg_class
-				WHERE
-					(relkind = 'r' OR relkind = 'v') AND 
-				    relname = ? 
-				GROUP BY
-					relname";
-		$arrRet = $objQuery->getAll($sql, array($table_name));
-		if(count($arrRet) > 0) {
-			$flg = true;
-		} else {
-			$flg = false;
-		}	
-	}else if ($db_type == "mysql") {	
-		$sql = "SHOW TABLE STATUS LIKE ?";
-		$arrRet = $objQuery->getAll($sql, array($table_name));
-		if(count($arrRet) > 0) {
-			$flg = true;
-		} else {
-			$flg = false;
+	if(!$objQuery->isError()) {
+		list($db_type) = split(":", $dsn);
+		// postgresqlとmysqlとで処理を分ける
+		if ($db_type == "pgsql") {
+			$sql = "SELECT
+						relname
+					FROM
+					    pg_class
+					WHERE
+						(relkind = 'r' OR relkind = 'v') AND 
+					    relname = ? 
+					GROUP BY
+						relname";
+			$arrRet = $objQuery->getAll($sql, array($table_name));
+			if(count($arrRet) > 0) {
+				return true;
+			}
+		}else if ($db_type == "mysql") {	
+			$sql = "SHOW TABLE STATUS LIKE ?";
+			$arrRet = $objQuery->getAll($sql, array($table_name));
+			if(count($arrRet) > 0) {
+				return true;
+			}
 		}
 	}
-	return $flg;
+	return false;
 }
 
 // インストール初期処理
