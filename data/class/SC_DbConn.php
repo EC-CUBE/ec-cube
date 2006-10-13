@@ -42,9 +42,6 @@ class SC_DbConn{
 		$this->conn = $objDbConn;
 		$this->error_mail_to = DB_ERROR_MAIL_TO;
 		$this->error_mail_title = DB_ERROR_MAIL_SUBJECT;
-		
-		print($err_disp);
-		
 		$this->err_disp = $err_disp;
 	}
 	
