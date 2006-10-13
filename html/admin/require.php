@@ -5,9 +5,6 @@
  * http://www.lockon.co.jp/
  */
 $include_dir = realpath(dirname( __FILE__));
-
-print("test");
-
 require_once($include_dir . "/../../data/conf/conf.php");	
 require_once($include_dir . "/../../data/lib/glib.php");
 require_once($include_dir . "/../../data/lib/slib.php");
