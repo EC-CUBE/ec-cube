@@ -54,7 +54,7 @@
 										<td width="170">機能名</td>
 										<td width="390">説明</td>
 										<td width="80">リリース日</td>
-										<td width="50">update</td>
+										<td width="50">更新</td>
 									</tr>
 									<!--{section name=cnt loop=$arrUpdate}-->
 									<tr bgcolor="#ffffff" class="fs12">

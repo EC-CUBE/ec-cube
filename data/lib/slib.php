@@ -17,7 +17,7 @@ $GLOBAL_ERR = "";
 
 // インストール初期処理
 sfInitInstall();
-// アップデートで生成されたPHPを読み出す
+// アップデートで取得したPHPを読み出す
 sfLoadUpdateModule();
 
 /* データベースのバージョン所得 */
