@@ -26,8 +26,8 @@ class SC_DbConn{
 		
 		// Debugモード指定
 		$options['debug'] = PEAR_DB_DEBUG;
-		// 既に接続されている場合または、再接続なしの場合は接続しない
-		if(!isset($objDbConn->connection) || !$new) {
+		// 既に接続されていないか、再接続要望の場合は接続する。
+		if(!isset($objDbConn->connection) || $new) {
 			if($dsn != "") {
 				$objDbConn = DB::connect($dsn, $options);
 				$this->dsn = $dsn;
