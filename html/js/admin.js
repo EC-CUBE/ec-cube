@@ -124,6 +124,13 @@ function fnNaviSearchPage(pageno, mode) {
 	document.form1.submit();
 }
 
+// ページナビで使用する(mode = search専用)
+function fnNaviSearchOnlyPage(pageno) {
+	document.form1['search_pageno'].value = pageno;
+	document.form1['mode'].value = 'search';
+	document.form1.submit();
+}
+
 // ページナビで使用する(form2)
 function fnNaviSearchPage2(pageno) {
 	document.form2['search_pageno'].value = pageno;
