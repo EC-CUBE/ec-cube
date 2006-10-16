@@ -127,7 +127,7 @@
 									ÌµÀ©¸Â
 									<!--{else}-->
 									<!--{$arrForm.sale_limit|escape}-->
-									<!--{/if}-->
+									¸Ä<!--{/if}-->
 									</td>
 								</tr>
 								<tr>
