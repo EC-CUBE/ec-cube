@@ -14,7 +14,7 @@ class LC_CartPage {
 $objSubPage = new LC_CartPage();
 $objSubView = new SC_SiteView();
 $objCart = new SC_CartSession();
-$objSiteInfo = $objView->objSiteInfo;
+$objSiteInfo = new SC_SiteInfo;
 
 if (count($_SESSION[$objCart->key]) > 0){
 	// カート情報を取得
@@ -55,7 +55,6 @@ if (count($_SESSION[$objCart->key]) > 0){
 	$arrCartList[0]['ProductsTotal'] = $ProductsTotal;
 	$arrCartList[0]['TotalQuantity'] = $TotalQuantity;
 	$arrCartList[0]['deliv_free'] = $deliv_free;
-	
 	
 	$objSubPage->arrCartList = $arrCartList;
 }
