@@ -259,14 +259,14 @@ function lfGetSqlList($where = "" , $arrData = array()){
  **************************************************************************************************************/
 function lfCheckError($data){
 	$objErr = new SC_CheckError();
-	$objErr->doFunc( array("名称", "name"), array("EXIST_CHECK") );
-	$objErr->doFunc( array("SQL文", "sql", "30000"), array("EXIST_CHECK", "MAX_LENGTH_CHECK") );
+	$objErr->doFunc( array("名称", "sql_name"), array("EXIST_CHECK") );
+	$objErr->doFunc( array("SQL文", "csv_sql", "30000"), array("EXIST_CHECK", "MAX_LENGTH_CHECK") );
 	
 	// SQLの妥当性チェック
 	if ($objErr->arrErr['sql'] == "") {
 		$objsqlErr = lfCheckSQL($data);
 		if ($objsqlErr != "") {
-			$objErr->arrErr["sql"] = "SQL文が不正です。SQL文を見直してください";
+			$objErr->arrErr["csv_sql"] = "SQL文が不正です。SQL文を見直してください";
 		}
 	}
 	
@@ -283,7 +283,7 @@ function lfCheckError($data){
 function lfCheckSQL($data){
 	$err = "";
 	$objDbConn = new SC_DbConn();
-	$sql = "SELECT " . $data['sql'] . " ";
+	$sql = "SELECT " . $data['csv_sql'] . " ";
 	$ret = $objDbConn->conn->query($sql);
 	if ($objDbConn->conn->isError($ret)){
 		$err = $ret;
@@ -316,18 +316,18 @@ function lfUpdData($sql_id = "", $arrData = array()){
 		if (count($arrSqlData) > 0) {
 			// データ更新
 			$sql = "UPDATE dtb_csv_sql SET sql_name = ?, csv_sql = ?, update_date = now() WHERE sql_id = ? ";
-			$arrVal= array($arrData['name'], $arrData['sql'], $sql_id);
+			$arrVal= array($arrData['sql_name'], $arrData['csv_sql'], $sql_id);
 		}else{
 			// データの新規作成
 			$sql_id = "";
 			$sql = "INSERT INTO dtb_csv_sql (sql_name, csv_sql, create_date, update_date) values (?, ?, now(), now()) ";
-			$arrVal= array($arrData['name'], $arrData['sql']);
+			$arrVal= array($arrData['sql_name'], $arrData['csv_sql']);
 			
 		}
 	}else{
 		// データの新規作成
 		$sql = "INSERT INTO dtb_csv_sql (sql_name, csv_sql, create_date, update_date) values (?, ?, now(), now()) ";
-		$arrVal= array($arrData['name'], $arrData['sql']);
+		$arrVal= array($arrData['sql_name'], $arrData['csv_sql']);
 	}
 	// SQL実行	
 	$arrRet = $objQuery->query($sql,$arrVal);
