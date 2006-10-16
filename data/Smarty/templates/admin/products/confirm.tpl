@@ -94,8 +94,8 @@
 								<tr>
 									<td bgcolor="#f2f1ec" width="160" class="fs12n">¾¦ÉÊ²Á³Ê</td>
 									<td bgcolor="#ffffff" width="557" class="fs12n">
-									<!--{$arrForm.price02|escape}-->±ß
-									</td>
+									<!--{$arrForm.price02|escape}-->
+									±ß</td>
 								</tr>
 								<tr>
 									<td bgcolor="#f2f1ec" width="160" class="fs12n">ºß¸Ë¿ô</td>
@@ -103,8 +103,8 @@
 									<!--{if $arrForm.stock_unlimited == 1}-->
 									ÌµÀ©¸Â
 									<!--{else}-->
-									<!--{$arrForm.stock|escape}-->¸Ä
-									<!--{/if}-->
+									<!--{$arrForm.stock|escape}-->
+									¸Ä<!--{/if}-->
 									</td>
 								</tr>
 								<!--{/if}-->
