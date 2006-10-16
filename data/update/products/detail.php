@@ -32,6 +32,7 @@ function ufDetailPHP() {
 	global $objCustomer;
 	global $objQuery;
 	global $objUpFile;
+	global $objFormParam;
 	
 	$objPage = new UC_Page();
 	$objView = new SC_SiteView();
