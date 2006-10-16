@@ -168,6 +168,8 @@ if (count($_POST) > 0) {
 	$arrSqlData[0]['sql_name'] = $_POST['name'];
 	$arrSqlData[0]['csv_sql'] = $_POST['sql'];
 }
+
+sfprintr($arrSqlData);
 $objPage->arrSqlData = $arrSqlData[0];															// 選択されているSQLデータ
 
 // 画面の表示
