@@ -74,7 +74,7 @@
 								<!--{else}-->
 								<table width="678" border="0" cellspacing="1" cellpadding="4" summary=" ">
 									<tr bgcolor="#ffffff" align="center" class="fs12n">
-										<td>現在、アップデート情報はございません。</td>
+										<td>現在アップデート情報はございません。</td>
 									</tr>
 								</table>
 								<table width="678" border="0" cellspacing="0" cellpadding="0" summary=" ">	
