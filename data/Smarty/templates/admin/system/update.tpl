@@ -76,7 +76,11 @@
 									<tr bgcolor="#f2f1ec" align="center" class="fs12n">
 										<td>現在、アップデート情報はございません。</td>
 									</tr>
-									<tr bgcolor="#ffffff" ><td height="20"></td></tr>
+								</table>
+								<table width="678" border="0" cellspacing="0" cellpadding="0" summary=" ">	
+									<tr>
+										<td colspan="3"><img src="<!--{$smarty.const.URL_DIR}-->img/contents/main_bar.jpg" width="678" height="10" alt=""></td>
+									</tr>
 								</table>
 								<!--{/if}-->							
 							
