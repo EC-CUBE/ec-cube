@@ -95,8 +95,6 @@ switch($_POST['mode']) {
 		
 		$objQuery = new SC_Query();
 		
-		sfprintr($arrCsvData);
-		
 		$arrCsvOutputData = $objQuery->getall("SELECT " . $arrCsvData[0]['csv_sql']);
 		
 		if (count($arrCsvOutputData) > 0) {
