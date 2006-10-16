@@ -94,7 +94,7 @@
 								<tr>
 									<td bgcolor="#f2f1ec" width="160" class="fs12n">æ¶… ≤¡≥ </td>
 									<td bgcolor="#ffffff" width="557" class="fs12n">
-									<!--{$arrForm.price02|escape}-->
+									<!--{$arrForm.price02|escape}-->±ﬂ
 									</td>
 								</tr>
 								<tr>
