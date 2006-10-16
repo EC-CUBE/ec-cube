@@ -149,16 +149,16 @@ function fnTargetSelf(){
 										<tr class="fs12n">
 											<td bgcolor="#f2f1ec" align="center" width="100">名称<span class="red"> *</span></td>
 											<td bgcolor="#ffffff" align="left">
-												<span class="red12"><!--{$arrErr.name}--></span>
-												<input type="text" name="name" value="<!--{$arrSqlData.name|escape}-->" maxlength="<!--{$smarty.const.STEXT_LEN}-->" style="<!--{if $arrErr.name != ""}-->background-color: <!--{$smarty.const.ERR_COLOR}--><!--{/if}-->" size="60" class="box60" /><span class="red"> （上限<!--{$smarty.const.STEXT_LEN}-->文字）</span>
+												<span class="red12"><!--{$arrErr.sql_name}--></span>
+												<input type="text" name="name" value="<!--{$arrSqlData.sql_name|escape}-->" maxlength="<!--{$smarty.const.STEXT_LEN}-->" style="<!--{if $arrErr.name != ""}-->background-color: <!--{$smarty.const.ERR_COLOR}--><!--{/if}-->" size="60" class="box60" /><span class="red"> （上限<!--{$smarty.const.STEXT_LEN}-->文字）</span>
 											</td>
 										</tr>
 										<tr class="fs12n">
 											<td bgcolor="#f2f1ec" align="center" width="100">SQL文<br>（SELECTは記述しないでください。）<span class="red"> *</span></td>
 											<td bgcolor="#ffffff" align="left">
-												<span class="red12"><!--{$arrErr.sql}--></span>
+												<span class="red12"><!--{$arrErr.csv_sql}--></span>
 												<div>
-												<textarea name="sql" cols=75 rows=30 align="left" wrap=off style="<!--{if $arrErr.sql != ""}-->background-color: <!--{$smarty.const.ERR_COLOR}-->;<!--{/if}--> width: 547px;"><!--{$arrSqlData.sql}--></textarea>
+												<textarea name="sql" cols=75 rows=30 align="left" wrap=off style="<!--{if $arrErr.csv_sql != ""}-->background-color: <!--{$smarty.const.ERR_COLOR}-->;<!--{/if}--> width: 547px;"><!--{$arrSqlData.csv_sql}--></textarea>
 												</div>
 											</td>
 										</tr>
