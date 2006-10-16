@@ -59,7 +59,7 @@ switch($_POST['mode']) {
 	// 確認画面
 	case "preview":
 		// SQL文表示
-		$sql = "SELECT \n" . $_POST['sql'];
+		$sql = "SELECT \n" . $_POST['csv_sql'];
 		$objPage->sql = $sql;
 		
 		// エラー表示
