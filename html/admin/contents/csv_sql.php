@@ -94,6 +94,9 @@ switch($_POST['mode']) {
 		$arrCsvData = lfGetSqlList(" WHERE sql_id = ?", array($_POST['csv_output_id']));
 		
 		$objQuery = new SC_Query();
+		
+		sfprintr($arrCsvData);
+		
 		$arrCsvOutputData = $objQuery->getall("SELECT " . $arrCsvData[0]['sql']);
 		
 		if (count($arrCsvOutputData) > 0) {
