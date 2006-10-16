@@ -48,6 +48,8 @@ switch($_POST['mode']) {
 		// エラーチェック
 		$objPage->arrErr = lfCheckError($_POST);
 		
+		sfprintr($_POST);
+		
 		if (count($objPage->arrErr) <= 0){
 			// データの更新
 			$sql_id = lfUpdData($sql_id, $_POST);
