@@ -113,7 +113,7 @@ function lfStatusDisp($status,$pageno){
 	$page_max = ORDER_STATUS_MAX;
 	
 	// ページ送りの取得
-	$objNavi = new SC_PageNavi($pageno, $linemax, $page_max, "fnNaviSearchPage2", NAVI_PMAX);
+	$objNavi = new SC_PageNavi($pageno, $linemax, $page_max, "fnNaviSearchOnlyPage", NAVI_PMAX);
 	$objPage->tpl_strnavi = $objNavi->strnavi;		// 表示文字列
 	$startno = $objNavi->start_row;
 	
