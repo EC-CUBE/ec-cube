@@ -44,7 +44,6 @@ sfprintr($_POST);
 switch ($_POST['mode']){
 	
 	case 'search':
-	case 'undefined':
 		switch($_POST['change_status']){
 				
 				default:
