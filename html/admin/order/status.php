@@ -39,6 +39,8 @@ $objPage->arrForm = $_POST;
 //支払方法の取得
 $objPage->arrPayment = sfGetIDValueList("dtb_payment", "payment_id", "payment_method");
 
+sfprintr($_POST);
+
 switch ($_POST['mode']){
 	
 	case 'search':
