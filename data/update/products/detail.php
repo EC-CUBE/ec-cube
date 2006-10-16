@@ -18,8 +18,17 @@ function ufDetailPHP() {
 	global $objQuery;
 	global $objUpFile;
 	global $objFormParam;
-	
+		
 	$objPage = new LC_Page();
+	
+	/* ¥Ð¥°½¤Àµ */
+	// ¾¦ÉÊÅÐÏ¿-¥¹¥Æ¡¼¥¿¥¹²èÁü
+	$objPage->arrSTATUS_IMAGE[1] = URL_DIR . "img/right_product/icon01.gif";
+	$objPage->arrSTATUS_IMAGE[2] = URL_DIR . "img/right_product/icon02.gif";
+	$objPage->arrSTATUS_IMAGE[3] = URL_DIR . "img/right_product/icon03.gif";
+	$objPage->arrSTATUS_IMAGE[4] = URL_DIR . "img/right_product/icon04.gif";
+	$objPage->arrSTATUS_IMAGE[5] = URL_DIR . "img/right_product/icon05.gif";
+	
 	$objView = new SC_SiteView();
 	$objCustomer = new SC_Customer();
 	$objQuery = new SC_Query();
