@@ -55,7 +55,7 @@ class SC_PageNavi {
 
 			//「前へ」「次へ」の設定
 			if ($this->now_page > 1) {
-				$before="<a href=\"". $_SERVER['PHP_SELF']. "\" onclick=\"$func_name('" . (($this->now_page) - 1) . "," . $this->arrPagenavi['mode'] . "'); return false;\"><<前へ</a> ";
+				$before="<a href=\"". $_SERVER['PHP_SELF']. "\" onclick=\"$func_name('" . (($this->now_page) - 1) . "'," . $this->arrPagenavi['mode'] . "); return false;\"><<前へ</a> ";
 				$this->arrPagenavi['before'] = ($this->now_page) - 1;
 			}else{
 				$this->arrPagenavi['before'] = $this->now_page;
