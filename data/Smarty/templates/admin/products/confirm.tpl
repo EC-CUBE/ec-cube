@@ -86,13 +86,13 @@
 									</td>
 								</tr>
 								<tr>
-									<td bgcolor="#f2f1ec" width="160" class="fs12n">商品価格</td>
+									<td bgcolor="#f2f1ec" width="160" class="fs12n">参考市場価格</td>
 									<td bgcolor="#ffffff" width="557" class="fs12n">
 									<!--{$arrForm.price01|escape}-->
 									円</td>
 								</tr>
 								<tr>
-									<td bgcolor="#f2f1ec" width="160" class="fs12n">キャンペーン価格</td>
+									<td bgcolor="#f2f1ec" width="160" class="fs12n">商品価格</td>
 									<td bgcolor="#ffffff" width="557" class="fs12n">
 									<!--{$arrForm.price02|escape}-->
 									</td>
@@ -103,19 +103,11 @@
 									<!--{if $arrForm.stock_unlimited == 1}-->
 									無制限
 									<!--{else}-->
-									<!--{$arrForm.stock|escape}-->
+									<!--{$arrForm.stock|escape}-->個
 									<!--{/if}-->
 									</td>
 								</tr>
 								<!--{/if}-->
-								
-								<tr>
-									<td bgcolor="#f2f1ec" width="160" class="fs12n">商品送料</td>
-									<td bgcolor="#ffffff" width="557" class="fs12n">
-									<!--{$arrForm.deliv_fee|escape}-->
-									円</td>
-								</tr>	
-								
 								<tr>
 									<td bgcolor="#f2f1ec" width="160" class="fs12n">ポイント付与率</td>
 									<td bgcolor="#ffffff" width="557" class="fs12n">
@@ -197,23 +189,6 @@
 									<!--{/if}-->
 									</td>
 								</tr>
-								<tr>
-									<td bgcolor="#f2f1ec" width="160" class="fs12n">カラー比較画像</td>
-									<td bgcolor="#ffffff" width="557" class="fs12n">
-									<!--{assign var=key value="file1"}-->
-									<!--{if $arrFile[$key].filepath != ""}-->
-									<img src="<!--{$arrFile[$key].filepath}-->" alt="<!--{$arrForm.name|escape}-->" width="<!--{$arrFile[$key].width}-->" height="<!--{$arrFile[$key].height}-->" /><br />
-									<!--{/if}-->
-								</tr>
-								<tr>
-									<td bgcolor="#f2f1ec" width="160" class="fs12n">商品詳細ファイル</td>
-									<td bgcolor="#ffffff" width="557" class="fs12n">
-									<!--{assign var=key value="file2"}-->
-									<!--{if $arrFile[$key].filepath != ""}-->
-									<input type="button" name="pdf" value="ファイル確認" onclick="fnOpenNoMenu('<!--{$arrFile[$key].filepath}-->')"/>
-									<!--{/if}-->
-									</td>
-								</tr>			
 								<!--{section name=cnt loop=$smarty.const.PRODUCTSUB_MAX}-->
 								<!--▼商品<!--{$smarty.section.cnt.iteration}-->-->
 								<tr>
