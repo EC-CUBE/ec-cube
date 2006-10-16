@@ -8,21 +8,6 @@
 require_once("../require.php");
 require_once(DATA_PATH . "include/page_layout.inc");
 
-class UC_Page {
-	function UC_Page() {
-		/** 必ず指定する **/
-		global $arrSTATUS;
-		$this->arrSTATUS = $arrSTATUS;
-		global $arrSTATUS_IMAGE;
-		$this->arrSTATUS_IMAGE = $arrSTATUS_IMAGE;
-		global $arrDELIVERYDATE;
-		$this->arrDELIVERYDATE = $arrDELIVERYDATE;
-		global $arrRECOMMEND;
-		$this->arrRECOMMEND = $arrRECOMMEND;
-		session_cache_limiter('private-no-expire');
-	}
-}
-
 ufDetailPHP();
 exit;
 
@@ -34,7 +19,7 @@ function ufDetailPHP() {
 	global $objUpFile;
 	global $objFormParam;
 	
-	$objPage = new UC_Page();
+	$objPage = new LC_Page();
 	$objView = new SC_SiteView();
 	$objCustomer = new SC_Customer();
 	$objQuery = new SC_Query();
