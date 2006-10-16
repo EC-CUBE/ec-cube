@@ -24,6 +24,7 @@ class UC_Page {
 }
 
 ufDetailPHP();
+exit;
 
 function ufDetailPHP() {
 	global $objPage;
