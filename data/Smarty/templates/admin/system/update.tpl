@@ -76,6 +76,7 @@
 									<tr bgcolor="#f2f1ec" align="center" class="fs12n">
 										<td>現在、アップデート情報はございません。</td>
 									</tr>
+									<tr><td height="20"></td></tr>
 								</table>
 								<!--{/if}-->							
 							
