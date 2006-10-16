@@ -263,7 +263,7 @@ function lfCheckError($data){
 	$objErr->doFunc( array("SQL文", "csv_sql", "30000"), array("EXIST_CHECK", "MAX_LENGTH_CHECK") );
 	
 	// SQLの妥当性チェック
-	if ($objErr->arrErr['sql'] == "") {
+	if ($objErr->arrErr['csv_sql'] == "") {
 		$objsqlErr = lfCheckSQL($data);
 		if ($objsqlErr != "") {
 			$objErr->arrErr["csv_sql"] = "SQL文が不正です。SQL文を見直してください";
