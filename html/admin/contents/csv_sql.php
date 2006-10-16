@@ -165,8 +165,8 @@ $objPage->sql_id = $sql_id;																		// 選択されているSQL
 
 // POSTされたデータをセットする
 if (count($_POST) > 0) {
-	$arrSqlData[0]['name'] = $_POST['sql_name'];
-	$arrSqlData[0]['sql'] = $_POST['csv_sql'];
+	$arrSqlData[0]['sql_name'] = $_POST['name'];
+	$arrSqlData[0]['csv_sql'] = $_POST['sql'];
 }
 $objPage->arrSqlData = $arrSqlData[0];															// 選択されているSQLデータ
 
