@@ -8,8 +8,10 @@
 require_once("../require.php");
 require_once(DATA_PATH . "include/page_layout.inc");
 
+/*
 ufDetailPHP();
 exit;
+*/
 
 function ufDetailPHP() {
 	global $objPage;
