@@ -55,6 +55,7 @@
 										<td width="390">説明</td>
 										<td width="80">リリース日</td>
 										<td width="50">更新</td>
+										<td width="50">Link</td>
 									</tr>
 									<!--{section name=cnt loop=$arrUpdate}-->
 									<tr bgcolor="#ffffff" class="fs12">
@@ -67,7 +68,8 @@
 										<!--{else}-->
 											<a href="#" onclick="fnModeSubmit('uninstall','module_id','<!--{$arrUpdate[cnt].module_id}-->');">削除</a>
 										<!--{/if}-->									
-										</td>	
+										</td>
+										<td><a href="">実行</a></td>
 									</tr>
 									<!--{/section}-->
 								</table>
