@@ -266,7 +266,7 @@ case 'regist_complete':
 				header("Location: " . URL_DIR . "admin/mail/sendmail.php?mode=now");
 				exit;
 			} else {
-				sfErrorHeader(">> メルマガ配信は抑制されています。");
+				sfErrorHeader(">> メルマガ配信は行えません。");
 			}		
 		}
 	}
