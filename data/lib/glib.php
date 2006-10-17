@@ -187,6 +187,5 @@ function gfMailHeaderAddr($str) {
         }
     }
     return implode(", ", $mailaddrs); //複数アドレスはカンマ区切りにする
-} 
-
+}
 ?>
