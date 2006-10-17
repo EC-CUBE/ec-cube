@@ -52,7 +52,7 @@ default:
 	break;
 }
 
-$col = "module_id, module_name, now_version, latest_version, module_explain, create_date, release_date";
+$col = "module_id, main_php, module_name, now_version, latest_version, module_explain, create_date, release_date";
 $objQuery->setorder("module_id");
 $objPage->arrUpdate = $objQuery->select($col, "dtb_update");
 
@@ -175,7 +175,7 @@ function lfInstallModule() {
 	global $objPage;
 	
 	$objQuery = new SC_Query();
-	$arrRet = $objQuery->select("module_id, main_php, extern_php, other_files, install_sql, latest_version", "dtb_update", "module_id = ?", array($_POST['module_id']));
+	$arrRet = $objQuery->select("module_id, extern_php, other_files, install_sql, latest_version", "dtb_update", "module_id = ?", array($_POST['module_id']));
 	$flg_ok = true;	// 処理の成功判定
 	
 	if(count($arrRet) > 0) {

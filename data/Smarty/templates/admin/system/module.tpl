@@ -69,7 +69,7 @@
 											<a href="#" onclick="fnModeSubmit('uninstall','module_id','<!--{$arrUpdate[cnt].module_id}-->');">削除</a>
 										<!--{/if}-->									
 										</td>
-										<td><a href="<!--{$smarty.const.URL_DIR}-->admin/downloads/module/<!--{$arrUpdate[cnt].main_php}-->">実行</a></td>
+										<td align="center"><a href="<!--{$smarty.const.URL_DIR}-->admin/downloads/module/<!--{$arrUpdate[cnt].main_php}-->">実行</a></td>
 									</tr>
 									<!--{/section}-->
 								</table>
