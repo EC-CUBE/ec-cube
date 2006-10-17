@@ -67,7 +67,7 @@ while (!feof($src_fp)) {
 }
 fclose($src_fp);
 
-print($contents);
+sfPrintR($contents);
 
 $objView->assignobj($objPage);		//変数をテンプレートにアサインする
 $objView->display(MAIN_FRAME);		//テンプレートの出力
