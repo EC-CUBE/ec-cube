@@ -175,7 +175,7 @@ function lfInstallModule() {
 	global $objPage;
 	
 	$objQuery = new SC_Query();
-	$arrRet = $objQuery->select("module_id, extern_php, other_files, install_sql, latest_version", "dtb_update", "module_id = ?", array($_POST['module_id']));
+	$arrRet = $objQuery->select("module_id, main_php, extern_php, other_files, install_sql, latest_version", "dtb_update", "module_id = ?", array($_POST['module_id']));
 	$flg_ok = true;	// 処理の成功判定
 	
 	if(count($arrRet) > 0) {
