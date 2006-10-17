@@ -162,6 +162,8 @@ function lfLoadUpdateList() {
 					$sqlval['create_date'] = "now()";
 					$objQuery->insert("dtb_update", $sqlval);
 				}
+			} else {
+				sfErrorHeader(">> カラム数が一致しません。：".count($arrCSV));
 			}
 		}
 		fclose($fp);
