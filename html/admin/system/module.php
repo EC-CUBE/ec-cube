@@ -63,11 +63,12 @@ print($path);
 
 $src_fp = fopen($path, "rb");
 while (!feof($src_fp)) {
-	$contents .= fread($src_fp, 1024);
+	$line = fread($src_fp, 1024);
+	if(ereg("@version", $line)) {
+		print($line);
+	}	
 }
 fclose($src_fp);
-
-sfPrintR($contents);
 
 $objView->assignobj($objPage);		//変数をテンプレートにアサインする
 $objView->display(MAIN_FRAME);		//テンプレートの出力
