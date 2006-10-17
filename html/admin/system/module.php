@@ -56,6 +56,17 @@ $col = "module_id, main_php, module_name, now_version, latest_version, module_ex
 $objQuery->setorder("module_id");
 $objPage->arrUpdate = $objQuery->select($col, "dtb_update");
 
+// 拡張ファイルのバージョン確認
+$path = HTML_PATH . "admin/downloads/module/" . $objPage->arrUpdate[0]['main_php'];
+
+$src_fp = @fopen($path, "rb");
+while (!feof($src_fp)) {
+	$contents .= fread($src_fp, 1024);
+}
+fclose($src_fp);
+
+print($contents);
+
 $objView->assignobj($objPage);		//変数をテンプレートにアサインする
 $objView->display(MAIN_FRAME);		//テンプレートの出力
 //-------------------------------------------------------------------------------------------------------
