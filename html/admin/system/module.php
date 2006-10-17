@@ -61,7 +61,7 @@ $path = HTML_PATH . "admin/downloads/module/" . $objPage->arrUpdate[0]['main_php
 
 $src_fp = fopen($path, "rb");
 while (!feof($src_fp)) {
-	$line = fread($src_fp, 1024);
+	$line = fgets($src_fp);
 	if(ereg("@version", $line)) {
 		print($line);
 	}
