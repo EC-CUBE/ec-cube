@@ -11,7 +11,7 @@ class LC_Page {
 	//コンストラクタ
 	function LC_Page() {
 		//メインテンプレートの指定
-		$this->tpl_mainpage = DATA_PATH . 'downloads/module/module.tpl';
+		$this->tpl_mainpage = HTML_PATH . 'admin/downloads/module/module.tpl';
 		$this->tpl_subnavi = 'system/subnavi.tpl';
 		$this->tpl_mainno = 'system';		
 		$this->tpl_subno = 'module';
