@@ -1,6 +1,12 @@
 <?php
-
-/* @version    CVS: $Id$ */
+/*
+ * Copyright(c) 2000-2006 LOCKON CO.,LTD. All Rights Reserved.
+ *
+ * http://www.lockon.co.jp/
+ *
+ * @version    CVS: $Id$
+ *
+ */
 
 require_once("../../require.php");
 
