@@ -63,7 +63,8 @@ $src_fp = fopen($path, "rb");
 while (!feof($src_fp)) {
 	$line = fgets($src_fp);
 	if(ereg("@version", $line)) {
-		print($line);
+		$arrLine = split(" ", $line);
+		sfPrintR($arrLine);
 	}
 }
 fclose($src_fp);
