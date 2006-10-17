@@ -59,14 +59,12 @@ $objPage->arrUpdate = $objQuery->select($col, "dtb_update");
 // 拡張ファイルのバージョン確認
 $path = HTML_PATH . "admin/downloads/module/" . $objPage->arrUpdate[0]['main_php'];
 
-print($path);
-
 $src_fp = fopen($path, "rb");
 while (!feof($src_fp)) {
 	$line = fread($src_fp, 1024);
 	if(ereg("@version", $line)) {
 		print($line);
-	}	
+	}
 }
 fclose($src_fp);
 
