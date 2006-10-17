@@ -131,9 +131,7 @@ function lfLoadUpdateList() {
 	$objQuery = new SC_Query();
 	$path = UPDATE_HTTP . "update.txt";
 	$fp = @fopen($path, "rb");
-	
-	
-	
+		
 	if(!$fp) {
 		sfErrorHeader(">> " . $path . "の取得に失敗しました。");
 	} else {
