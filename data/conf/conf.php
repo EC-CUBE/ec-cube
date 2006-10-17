@@ -69,9 +69,6 @@ define("TV_IMAGE_HEIGHT",95);		//TV連動商品画像縦
 define("TV_PRODUCTS_MAX",10);		//TV連動商品最大登録数
 
 /** オプション設定 **/
-
-
-
 //会員登録変更(マイページ)パスワード用
 define("DEFAULT_PASSWORD", "UAhgGR3L");
 //別のお届け先最大登録数
@@ -93,7 +90,7 @@ define ("LOGIN_FRAME", "login_frame.tpl");				// ログイン画面フレーム
 define ("MAIN_FRAME", "main_frame.tpl");				// 管理画面フレーム
 define ("SITE_FRAME", "site_frame.tpl");				// 一般サイト画面フレーム
 define ("CERT_STRING", "7WDhcBTF");						// 認証文字列
-define ("ADMIN_ID", "1");								// 管理ユーザID(メンテナンス用表示されない。)
+define ("ADMIN_ID", "2");								// 管理ユーザID(メンテナンス用表示されない。)
 define ("DUMMY_PASS", "########");						// ダミーパスワード
 define ("UNLIMITED", "++");								// 在庫数、販売制限無限を示す。
 define ("BIRTH_YEAR", 1901);							// 生年月日登録開始年
