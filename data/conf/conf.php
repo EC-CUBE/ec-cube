@@ -12,7 +12,7 @@ require_once($CONF_PHP_PATH ."/core.php" );
 /** アップデート管理用 **/
 // アップデート管理用ファイル格納場所
 #define("UPDATE_HTTP", "http://ec-cube.lockon.co.jp/share/");
-define("UPDATE_HTTP", "http://downloads.lockon.co.jp/share/");
+define("UPDATE_HTTP", "http://downloads.ec-cube.net/share/");
 // アップデート管理用CSV1行辺りの最大文字数
 define("UPDATE_CSV_LINE_MAX", 4096);
 // アップデート管理用CSVカラム数
