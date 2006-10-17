@@ -1,5 +1,5 @@
 <?php
-/* @version */
+/* @version  CVS: $Id$ */
 
 /**
  * Database independent query interface
