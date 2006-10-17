@@ -8,8 +8,6 @@
  * @version    CVS: $Id$
  *
  */
- 
- 
 
 require_once("../../require.php");
 
