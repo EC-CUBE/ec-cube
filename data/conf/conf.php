@@ -86,12 +86,12 @@ define("REVIEW_REGIST_MAX", 5);
  * サイト定義定数
  */
 /* システム関連 */
+define ("ADMIN_ID", "1");								// 管理ユーザID(メンテナンス用表示されない。)
+define ("MELMAGA_SEND", true);							// メルマガ配信抑制(false:OFF、true:ON)
 define ("LOGIN_FRAME", "login_frame.tpl");				// ログイン画面フレーム
 define ("MAIN_FRAME", "main_frame.tpl");				// 管理画面フレーム
 define ("SITE_FRAME", "site_frame.tpl");				// 一般サイト画面フレーム
 define ("CERT_STRING", "7WDhcBTF");						// 認証文字列
-define ("ADMIN_ID", "2");								// 管理ユーザID(メンテナンス用表示されない。)
-define ("MELMAGA_SEND", true);							// メルマガ配信抑制(false:OFF、true:ON)
 define ("DUMMY_PASS", "########");						// ダミーパスワード
 define ("UNLIMITED", "++");								// 在庫数、販売制限無限を示す。
 define ("BIRTH_YEAR", 1901);							// 生年月日登録開始年
