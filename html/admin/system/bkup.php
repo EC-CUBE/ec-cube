@@ -311,6 +311,9 @@ function lfGetTableList(){
 		$arrKey = array_keys($arrRet);
 		
 		$arrRet = $arrRet[$arrKey[0]];
+		sfprintr($arrKey);
+		sfprintr($arrRet);
+		exit();
 	}
 	return $arrRet;
 }
