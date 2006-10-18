@@ -309,6 +309,7 @@ function lfGetTableList(){
 		
 		// キーを取得
 		$arrKey = array_keys($arrRet);
+		
 		$arrRet = $arrRet[$arrKey[0]];
 	}
 	return $arrRet;
