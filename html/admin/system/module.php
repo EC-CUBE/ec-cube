@@ -57,18 +57,21 @@ $objQuery->setorder("module_id");
 $objPage->arrUpdate = $objQuery->select($col, "dtb_update");
 
 // 拡張ファイルのバージョン確認
-$path = HTML_PATH . "admin/downloads/module/";// . $objPage->arrUpdate[0]['main_php'];
-$src_fp = fopen($path, "rb");
-if($src_fp) {
-	while (!feof($src_fp)) {
-		$line = fgets($src_fp);
-		if(ereg("@version", $line)) {
-			$arrLine = split(" ", $line);
-			sfPrintR($arrLine);
+$path = HTML_PATH . "admin/downloads/module/" . $objPage->arrUpdate[0]['main_php'];
+
+if(file_exists($path)) {
+	$src_fp = fopen($path, "rb");
+	if($src_fp) {
+		while (!feof($src_fp)) {
+			$line = fgets($src_fp);
+			if(ereg("@version", $line)) {
+				$arrLine = split(" ", $line);
+				sfPrintR($arrLine);
+			}
 		}
-	}
-	fclose($src_fp);
-}	
+		fclose($src_fp);
+	}	
+}
 
 $objView->assignobj($objPage);		//変数をテンプレートにアサインする
 $objView->display(MAIN_FRAME);		//テンプレートの出力
