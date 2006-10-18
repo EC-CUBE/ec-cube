@@ -306,7 +306,10 @@ function lfGetTableList(){
 		$sql = "SHOW TABLES;";
 		$arrRet = $objQuery->getAll($sql);
 		$arrRet = sfSwapArray($arrRet);
-		$arrRet = $arrRet['Tables_in_eccube_db'];
+		
+		// キーを取得
+		$arrKey = array_keys($arrRet);
+		$arrRet = $arrRet[$arrKey[0]];
 	}
 	
 	return $arrRet;
@@ -470,7 +473,6 @@ function lfRestore($bkup_name){
 			$objPage->restore_name = $bkup_name;
 			$objPage->restore_err = false;
 		}
-
 	}
 }
 
