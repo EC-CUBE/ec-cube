@@ -46,10 +46,6 @@ if($product_id != "" and (is_numeric($product_id) or $product_id == "ALL")){
 	//商品一覧を取得
 	$arrProduct = $objQuery->getall("SELECT product_id, name AS product_name FROM dtb_products");
 }
-
-sfprintr($arrProduct);
-exit();
-
 //店舗情報をセット
 $objPage->arrSiteInfo = $objSiteInfo->data;
 
