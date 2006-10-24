@@ -30,7 +30,6 @@ if($product_id != ""){
 	
 	// 値のセットし直し
 	foreach($arrProductTmp as $key => $val){
-		
 		switch ($key){
 			case "main_list_image":
 			case "main_image":
@@ -40,6 +39,8 @@ if($product_id != ""){
 		}
 	}
 	$arrProduct = $arrProductTmp;
+	
+	sfprintr($arrProduct);exit();
 }else{
 	//商品一覧を取得
 	$arrProduct = $objQuery->getall("SELECT product_id, name AS product_name FROM dtb_products");
