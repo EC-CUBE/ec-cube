@@ -40,10 +40,10 @@ header("Content-type: application/xml");
 $objPage->arrProduct = $arrProduct;
 
 //店名をセット
-$objPage->site_title = $arrSiteInfo['shop_name'];
+$objPage->site_title = $arrSiteInfo['shop_name'] . "(" . $arrSiteInfo['shop_kana'] . ")";
 
 //代表Emailアドレスをセット
-$objPage->email = $arrProduct[0]['email'];
+$objPage->email = $arrSiteInfo['email02'];
 
 //セットしたデータをテンプレートファイルに出力
 $objView->assignobj($objPage);
