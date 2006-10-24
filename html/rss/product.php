@@ -78,12 +78,16 @@ function lfGetProductsDetail($objQuery, $product_id){
 				,cls.classcategory_id2
 				,(SELECT name FROM dtb_classcategory AS clscat WHERE clscat.classcategory_id = cls.classcategory_id1) AS classcategory_name1
 				,(SELECT name FROM dtb_classcategory AS clscat WHERE clscat.classcategory_id = cls.classcategory_id2) AS classcategory_name2
-				,(SELECT category_name FROM dtb_category AS cat WHERE cat.category_id = prod.category_id) AS category_name
-			FROM dtb_products AS prod, dtb_products_class AS cls
-			WHERE prod.product_id = cls.product_id AND prod.del_flg = 0 AND prod.status = 1 AND prod.product_id = ?
-			ORDER BY prod.product_id, cls.classcategory_id1, cls.classcategory_id2
-			";
-	$arrProduct = $objQuery->getall($sql, array($product_id));
+				,(SELECT category_name FROM dtb_category AS cat WHERE cat.category_id = prod.category_id) AS category_name";
+	$sql .= " FROM dtb_products AS prod, dtb_products_class AS cls";
+	$sql .= " WHERE prod.product_id = cls.product_id AND prod.del_flg = 0 AND prod.status = 1";
+	
+	if($product_id != "ALL"){
+		$sql .= " AND prod.product_id = ?";
+		$arrval = array($product_id);
+	}
+	$sql .= " ORDER BY prod.product_id, cls.classcategory_id1, cls.classcategory_id2";
+	$arrProduct = $objQuery->getall($sql, $arrval);
 	return $arrProduct;
 }
 
