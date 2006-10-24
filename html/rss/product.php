@@ -87,7 +87,6 @@ function lfGetProductsDetail($objQuery, $product_id){
 	$sql = "";
 	$sql .= "SELECT ";
 	$sql .= "	prod.product_id ";
-	$sql .= "	,prod.product_code ";
 	$sql .= "	,prod.name AS product_name ";
 	$sql .= "	,prod.category_id ";
 	$sql .= "	,prod.point_rate ";
@@ -97,6 +96,7 @@ function lfGetProductsDetail($objQuery, $product_id){
 	$sql .= "	,prod.main_comment ";
 	$sql .= "	,prod.main_image ";
 	$sql .= "	,prod.main_large_image ";
+	$sql .= "	,cls.product_code ";
 	$sql .= "	,cls.price01 ";
 	$sql .= "	,cls.price02 ";
 	$sql .= "	,cls.classcategory_id1 ";
