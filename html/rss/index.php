@@ -32,6 +32,8 @@ header("Content-type: application/xml");
 //新着情報をセット
 $objPage->arrNews = $arrNews;
 
+sfprintr($arrNews);
+
 //店名をセット
 $objPage->site_title = $arrNews[0]['shop_name'];
 
