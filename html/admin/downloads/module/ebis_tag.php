@@ -17,6 +17,9 @@ class LC_Page {
 		$this->tpl_mainpage = MODULE_PATH . 'module.tpl';
 	}
 }
+$objPage = new LC_Page();
+$objView = new SC_AdminView();
+
 $objView->assignobj($objPage);		//変数をテンプレートにアサインする
 $objView->display(MAIN_FRAME);		//テンプレートの出力
 //-------------------------------------------------------------------------------------------------------
