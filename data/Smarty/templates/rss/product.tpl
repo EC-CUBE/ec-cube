@@ -12,8 +12,6 @@
 <shop_name><!--{$arrSiteInfo.shop_name|sf_mb_convert_encoding:$encode}--></shop_name>
 <shop_kana><!--{$arrSiteInfo.shop_kana|sf_mb_convert_encoding:$encode}--></shop_kana>
 <site_url><!--{$smarty.const.SITE_URL}--></site_url>
-<language>ja</language>
-<docs>http://backend.userland.com/rss</docs>
 	<!--{section name=cnt loop=$arrProduct}-->
 		<!--{* １つのitem要素を出力する *}-->
 		<item>
