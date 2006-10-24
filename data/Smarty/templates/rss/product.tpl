@@ -21,7 +21,7 @@
 		<item>
 			<link> <!--{$smarty.const.SITE_URL}-->rss/product.php?product_id=<!--{$arrProduct[cnt].product_id}--></link>
 			<title> <!--{ $arrProduct[cnt].product_name|sf_mb_convert_encoding:$encode }--> </title>
-			<description><!--{$arrProduct[cnt].news_comment|truncate:256|sf_mb_convert_encoding:$encode}--></description>
+			<description><!--{$arrProduct[cnt].product_id|truncate:256|sf_mb_convert_encoding:$encode}--></description>
 			<pubDate><!--{"r"|sf_mktime:$arrProduct[cnt].hour:$arrProduct[cnt].minute:$arrProduct[cnt].second:$arrProduct[cnt].month:$arrProduct[cnt].day:$arrProduct[cnt].year}--></pubDate>
 		</item>
 	<!--{/section}-->
