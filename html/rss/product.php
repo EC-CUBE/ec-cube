@@ -33,11 +33,11 @@ if($product_id != ""){
 		
 		// 画像ファイルのURLセット
 		(file_exists(IMAGE_SAVE_DIR . $arrProduct[$key]["main_list_image"])) ? $dir = IMAGE_SAVE_URL_RSS : $dir = IMAGE_TEMP_URL_RSS;
-		$arrProduct[$key]["main_list_image"] = $dir . $arrProduct[$key]["main_list_image"];
+		$arrProduct[$key]["main_list_image_url"] = $dir . $arrProduct[$key]["main_list_image"];
 		(file_exists(IMAGE_SAVE_DIR . $arrProduct[$key]["main_image"])) ? $dir = IMAGE_SAVE_URL_RSS : $dir = IMAGE_TEMP_URL_RSS;
-		$arrProduct[$key]["main_image"] = $dir . $arrProduct[$key]["main_image"];
+		$arrProduct[$key]["main_image_url"] = $dir . $arrProduct[$key]["main_image"];
 		(file_exists(IMAGE_SAVE_DIR . $arrProduct[$key]["main_large_image"])) ? $dir = IMAGE_SAVE_URL_RSS : $dir = IMAGE_TEMP_URL_RSS;
-		$arrProduct[$key]["main_large_image"] = $dir . $arrProduct[$key]["main_large_image"];
+		$arrProduct[$key]["main_large_image_url"] = $dir . $arrProduct[$key]["main_large_image"];
 	}
 	
 	sfprintr($arrProduct);exit();
