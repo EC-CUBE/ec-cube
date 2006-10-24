@@ -21,6 +21,7 @@
 		<link> <!--{$smarty.const.SITE_URL}-->rss/product.php?product_id=<!--{$arrProduct[cnt].product_id}--></link>
 		<product_id><!--{$arrProduct[cnt].product_id|sf_mb_convert_encoding:$encode}--></product_id>
 		<product_name><!--{ $arrProduct[cnt].product_name|sf_mb_convert_encoding:$encode }--></product_name>
+		<classcategory_name1><!--{ $arrProduct[cnt].classcategory_name1|sf_mb_convert_encoding:$encode }--></classcategory_name1>
 	</item>
 <!--{/section}-->
 </channel>
