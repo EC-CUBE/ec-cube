@@ -14,7 +14,7 @@ class LC_Page {
 	//コンストラクタ
 	function LC_Page() {
 		//メインテンプレートの指定
-		$this->tpl_mainpage = MODULE_PATH . 'module.tpl';
+		$this->tpl_mainpage = MODULE_PATH . 'ebis_tag.tpl';
 	}
 }
 $objPage = new LC_Page();
