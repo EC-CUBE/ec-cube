@@ -41,10 +41,7 @@ if($product_id != ""){
 		
 		// ポイント計算
 		$arrProduct[$key]["point"] = sfPrePoint($arrProduct[$key]["price02"], $arrProduct[$key]["point_rate"], POINT_RULE, $arrProduct[$key]["product_id"]);
-
 	}
-	
-	sfprintr($arrProduct);exit();
 }else{
 	//商品一覧を取得
 	$arrProduct = $objQuery->getall("SELECT product_id, name AS product_name FROM dtb_products");
