@@ -24,7 +24,7 @@ $objSiteInfo = new SC_SiteInfo();
 //商品IDを取得
 $product_id = $_GET['product_id'];
 
-if($product_id != ""){
+if($product_id != "" and (is_numeric($product_id) or $product_id == "ALL")){
 	//商品詳細を取得
 	$arrProduct = lfGetProductsDetail($objQuery, $product_id);
 	
@@ -46,6 +46,9 @@ if($product_id != ""){
 	//商品一覧を取得
 	$arrProduct = $objQuery->getall("SELECT product_id, name AS product_name FROM dtb_products");
 }
+
+sfprintr($arrProduct);
+exit();
 
 //店舗情報をセット
 $objPage->arrSiteInfo = $objSiteInfo->data;
