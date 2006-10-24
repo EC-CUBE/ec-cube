@@ -37,6 +37,8 @@ if($product_id != "" and (is_numeric($product_id) or $product_id == "ALL")){
 		//商品価格を税込みに編集
 		$arrProduct[$key]["price02"] = sfPreTax($arrProduct[$key]["price02"], $arrInfo["tax"], $arrSiteInfo["tax_rule"]);
 		
+		sfprintr($arrProduct[$key]["price02"]);
+		
 		// 画像ファイルのURLセット
 		(file_exists(IMAGE_SAVE_DIR . $arrProduct[$key]["main_list_image"])) ? $dir = IMAGE_SAVE_URL_RSS : $dir = IMAGE_TEMP_URL_RSS;
 		$arrProduct[$key]["main_list_image"] = $dir . $arrProduct[$key]["main_list_image"];
@@ -52,6 +54,8 @@ if($product_id != "" and (is_numeric($product_id) or $product_id == "ALL")){
 	//商品一覧を取得
 	$arrProduct = $objQuery->getall("SELECT product_id, name AS product_name FROM dtb_products");
 }
+exit;
+
 
 //商品情報をセット
 $objPage->arrProduct = $arrProduct;
