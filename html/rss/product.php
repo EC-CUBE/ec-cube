@@ -27,9 +27,6 @@ $arrProduct = lfGetProductsDetail($objQuery, 1);
 //店舗情報
 $arrSiteInfo = $objSiteInfo->data;
 
-sfprintr($arrSiteInfo);
-exit();
-
 //キャッシュしない(念のため)
 header("Paragrama: no-cache");
 
