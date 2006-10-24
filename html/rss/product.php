@@ -24,6 +24,12 @@ $objSiteInfo = new SC_SiteInfo();
 //新着情報を取得
 $arrProduct = lfGetProductsDetail($objQuery, 1);
 
+//店舗情報
+$arrSiteInfo = $objSiteInfo->data;
+
+sfprintr($arrSiteInfo);
+exit();
+
 //キャッシュしない(念のため)
 header("Paragrama: no-cache");
 
@@ -34,7 +40,7 @@ header("Content-type: application/xml");
 $objPage->arrProduct = $arrProduct;
 
 //店名をセット
-$objPage->site_title = $arrProduct[0]['shop_name'];
+$objPage->site_title = $arrSiteInfo['shop_name'];
 
 //代表Emailアドレスをセット
 $objPage->email = $arrProduct[0]['email'];
