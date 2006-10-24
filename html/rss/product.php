@@ -38,6 +38,10 @@ if($product_id != ""){
 		$arrProduct[$key]["main_image"] = $dir . $arrProduct[$key]["main_image"];
 		(file_exists(IMAGE_SAVE_DIR . $arrProduct[$key]["main_large_image"])) ? $dir = IMAGE_SAVE_URL_RSS : $dir = IMAGE_TEMP_URL_RSS;
 		$arrProduct[$key]["main_large_image"] = $dir . $arrProduct[$key]["main_large_image"];
+		
+		// ポイント計算
+		$arrProduct[$key]["point"] = sfPrePoint($arrProduct[$key]["price02"], $arrProduct[$key]["point_rate"], POINT_RULE, $arrProduct[$key]["product_id"]);
+
 	}
 	
 	sfprintr($arrProduct);exit();
