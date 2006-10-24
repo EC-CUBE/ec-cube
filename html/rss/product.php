@@ -31,9 +31,12 @@ if($product_id != ""){
 	// 値のセットし直し
 	foreach($arrProduct as $key => $val){
 		
-		//
-		$arrProduct[$key]["main_list_image"] = IMAGE_SAVE_URL . $arrProduct[$key]["main_list_image"];
+		// 画像ファイルのURLセット
+		(file_exists(IMAGE_SAVE_URL . $arrProduct[$key]["main_list_image"])) ? $dir = IMAGE_SAVE_URL : $dir = IMAGE_TEMP_URL;
+		$arrProduct[$key]["main_list_image"] = $dir . $arrProduct[$key]["main_list_image"];
+		(file_exists(IMAGE_SAVE_URL . $arrProduct[$key]["main_image"])) ? $dir = IMAGE_SAVE_URL : $dir = IMAGE_TEMP_URL;
 		$arrProduct[$key]["main_image"] = IMAGE_SAVE_URL . $arrProduct[$key]["main_image"];
+		(file_exists(IMAGE_SAVE_URL . $arrProduct[$key]["main_large_image"])) ? $dir = IMAGE_SAVE_URL : $dir = IMAGE_TEMP_URL;
 		$arrProduct[$key]["main_large_image"] = IMAGE_SAVE_URL . $arrProduct[$key]["main_large_image"];
 	}
 	
