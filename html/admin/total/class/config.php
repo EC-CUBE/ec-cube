@@ -80,13 +80,13 @@ $ARR_GRAPH_RGB = array(
 // 影の色
 $ARR_SHADE_COLOR = array(100,100,100);
 // 縁の色
-$ARR_FLAME_COLOR = array(100, 100, 140);
+$ARR_FLAME_COLOR = array(0, 0, 0);
 // 文字色
 $ARR_TEXT_COLOR = array(0, 0, 0);
 // 背景カラー
 $ARR_BG_COLOR = array(255,255,255);	
 // タイトル文字色
-$ARR_TITLE_COLOR = array(100, 100, 100);
+$ARR_TITLE_COLOR = array(0, 0, 0);
 // グリッド線色
 $ARR_GRID_COLOR = array(200, 200, 200);
 // マークの色
