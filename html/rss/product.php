@@ -12,7 +12,6 @@ class LC_Page{
 	function LC_Page(){
 		$this->tpl_mainpage = "rss/product.tpl";
 		$this->encode = "UTF-8";
-		
 		($_GET['product_id'] == "") ? $this->description = "商品一覧情報" : $this->description = "商品詳細情報";
 	}
 }
@@ -25,17 +24,11 @@ $objSiteInfo = new SC_SiteInfo();
 //新着情報を取得
 $arrProduct = lfGetProductsDetail($objQuery, 1);
 
-//店舗情報
-$arrSiteInfo = $objSiteInfo->data;
+//店舗情報をセット
+$objPage->arrSiteInfo = $objSiteInfo->data;
 
 //商品情報をセット
 $objPage->arrProduct = $arrProduct;
-
-//店名をセット
-$objPage->site_title = $arrSiteInfo['shop_name'] . "(" . $arrSiteInfo['shop_kana'] . ")";
-
-//代表Emailアドレスをセット
-$objPage->email = $arrSiteInfo['email02'];
 
 //セットしたデータをテンプレートファイルに出力
 $objView->assignobj($objPage);
