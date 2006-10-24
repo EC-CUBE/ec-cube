@@ -21,9 +21,6 @@ $objPage = new LC_Page();
 $objView = new SC_SiteView();
 $objSiteInfo = new SC_SiteInfo();
 
-sfprintr($objSiteInfo);
-exit();
-
 //新着情報を取得
 $arrProduct = lfGetProductsDetail($objQuery, 1);
 
@@ -34,7 +31,7 @@ header("Paragrama: no-cache");
 header("Content-type: application/xml");
 
 //商品情報をセット
-$objPage->$arrProduct = $arrProduct;
+$objPage->arrProduct = $arrProduct;
 
 //店名をセット
 $objPage->site_title = $arrProduct[0]['shop_name'];
@@ -55,7 +52,7 @@ $objView->display($objPage->tpl_mainpage, true);
  * 引数１:$objQuery		DB操作クラス
  * 引数２:$product_id	商品ID
  * 戻り値:$arrProduct	取得結果を配列で返す
- ***************************************************************************************************************/
+ **************************************************************************************************************/
 function lfGetProductsDetail($objQuery, $product_id){
 	$sql = "";
 	$sql .= "SELECT 
@@ -81,35 +78,5 @@ function lfGetProductsDetail($objQuery, $product_id){
 	$arrProduct = $objQuery->getall($sql, array($product_id));
 	return $arrProduct;
 }
-
-/***************************************************************************************************************
- * 関数名:lfGetNews
- * 説明　:新着情報を取得する
- * 引数１:$objQuery		DB操作クラス
- * 戻り値:$arrNews		取得結果を配列で返す
- ***************************************************************************************************************/
-function lfGetShopData($objQuery){
-	$col = "";
-	$col .= "     news_id ";								//新着情報ID
-	$col .= "     ,news_title ";							//新着情報タイトル
-	$col .= "     ,news_comment ";							//新着情報本文
-	$col .= "     ,to_char(news_date, 'YYYY') AS YEAR ";	//日付(年)
-	$col .= "     ,to_char(news_date, 'MM') AS MONTH ";		//日付(月)
-	$col .= "     ,to_char(news_date, 'DD') AS DAY ";		//日付(日)
-	$col .= "     ,to_char(news_date, 'HH24') AS HOUR ";	//日付(時間)
-	$col .= "     ,to_char(news_date, 'MI') AS MINUTE ";	//日付(分)
-	$col .= "     ,to_char(news_date, 'SS') AS SECOND ";	//日付(秒)
-	$col .= "     ,news_url ";								//新着情報URL
-	$col .= "     ,news_select ";							//新着情報の区分(1:URL、2:本文)
-	$col .= "     ,(SELECT shop_name FROM dtb_baseinfo limit 1) AS shop_name  ";	//店名
-	$col .= "     ,(SELECT email04 FROM dtb_baseinfo limit 1) AS email ";			//代表Emailアドレス
-	$from = "dtb_news";
-	$where = "del_flg = '0'";
-	$order = "rank DESC";
-	$objQuery->setorder($order);
-	$arrNews = $objQuery->select($col,$from,$where);
-	return $arrNews;
-}
-
 
 ?>
