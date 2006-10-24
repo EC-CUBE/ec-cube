@@ -39,7 +39,7 @@ if($product_id != ""){
 				break;
 		}
 	}
-	
+	$arrProduct = $arrProductTmp;
 }else{
 	//商品一覧を取得
 	$arrProduct = $objQuery->getall("SELECT product_id, name AS product_name FROM dtb_products");
