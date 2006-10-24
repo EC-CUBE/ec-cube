@@ -12,7 +12,7 @@ class LC_Page{
 	function LC_Page(){
 		$this->tpl_mainpage = "rss/product.tpl";
 		$this->encode = "UTF-8";
-		$this->description = "新着情報";
+		$this->description = "商品情報";
 	}
 }
 
