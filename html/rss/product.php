@@ -31,13 +31,9 @@ if($product_id != ""){
 	
 	// 値のセットし直し
 	foreach($arrProductTmp as $key => $val){
-		switch ($key){
-			case "main_list_image":
-			case "main_image":
-			case "main_large_image":
-				$arrProduct[$key] = IMAGE_SAVE_URL . $arrProductTmp[$key];
-				break;
-		}
+		$arrProduct[$key]["main_list_image"] = IMAGE_SAVE_URL . $arrProductTmp[$key]["main_list_image"];
+		$arrProduct[$key]["main_image"] = IMAGE_SAVE_URL . $arrProductTmp[$key]["main_image"];
+		$arrProduct[$key]["main_large_image"] = IMAGE_SAVE_URL . $arrProductTmp[$key]["main_large_image"];
 	}
 	
 	sfprintr($arrProduct);exit();
