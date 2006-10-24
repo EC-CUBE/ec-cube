@@ -60,7 +60,7 @@ function lfGetProductsDetail($objQuery, $product_id){
 	$sql = "";
 	$sql .= "SELECT 
 				prod.product_id
-				,prod.name
+				,prod.name AS product_name
 				,prod.category_id
 				,prod.point_rate
 				,prod.comment3
