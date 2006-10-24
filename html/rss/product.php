@@ -37,9 +37,7 @@ $objPage->arrSiteInfo = $objSiteInfo->data;
 
 //商品情報をセット
 $objPage->arrProduct = $arrProduct;
-
-sfprintr(array_keys(sfswaparray($arrProduct)));
-exit();
+$objPage->arrProductKeys = array_keys(sfswaparray($arrProduct));
 
 //セットしたデータをテンプレートファイルに出力
 $objView->assignobj($objPage);
