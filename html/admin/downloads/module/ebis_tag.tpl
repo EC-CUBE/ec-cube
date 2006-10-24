@@ -89,7 +89,7 @@ self.moveTo(20,20);self.focus();
 											<td bgcolor="#e9e7de" align="center">
 											<table border="0" cellspacing="0" cellpadding="0" summary=" ">
 												<tr>
-													<td><input type="image" onMouseover="chgImgImageSubmit('/ec-cube/img/contents/btn_regist_on.jpg',this)" onMouseout="chgImgImageSubmit('/ec-cube/img/contents/btn_regist.jpg',this)" src="/ec-cube/img/contents/btn_regist.jpg" width="123" height="24" alt="この内容で登録する" border="0" name="subm" ></td>
+													<td><input type="image" onMouseover="chgImgImageSubmit('/ec-cube/img/contents/btn_regist_on.jpg',this)" onMouseout="chgImgImageSubmit('/ec-cube/img/contents/btn_regist.jpg',this)" src="/ec-cube/img/contents/btn_regist.jpg" width="123" height="24" alt="この内容で登録する" border="0" name="submi" ></td>
 												</tr>
 											</table>
 											</td>
