@@ -8,7 +8,7 @@
 
 <!--{* channelÍ×ÁÇ *}-->
 <channel>
-<site_name> <!--{$arrSiteInfo.site_name|sf_mb_convert_encoding:$encode}--> </title>
+<site_name> <!--{$arrSiteInfo.site_name|sf_mb_convert_encoding:$encode}--> </site_name>
 <link> <!--{$smarty.const.SITE_URL}--> </link>
 <description> <!--{$description|sf_mb_convert_encoding:$encode}--> </description>
 <language>ja</language>
