@@ -21,6 +21,9 @@ $objPage = new LC_Page();
 $objView = new SC_SiteView();
 $objSiteInfo = new SC_SiteInfo();
 
+//店舗情報をセット
+$arrSiteInfo = $objSiteInfo->data;
+
 //商品IDを取得
 $product_id = $_GET['product_id'];
 
@@ -30,6 +33,9 @@ if($product_id != "" and (is_numeric($product_id) or $product_id == "ALL")){
 	
 	// 値のセットし直し
 	foreach($arrProduct as $key => $val){
+		
+		//商品価格を税込みに編集
+		$arrProduct[$key]["price02"] = sfPreTax($arrProduct[$key]["price02"], $arrInfo["tax"], $arrSiteInfo["tax_rule"]);
 		
 		// 画像ファイルのURLセット
 		(file_exists(IMAGE_SAVE_DIR . $arrProduct[$key]["main_list_image"])) ? $dir = IMAGE_SAVE_URL_RSS : $dir = IMAGE_TEMP_URL_RSS;
@@ -46,14 +52,15 @@ if($product_id != "" and (is_numeric($product_id) or $product_id == "ALL")){
 	//商品一覧を取得
 	$arrProduct = $objQuery->getall("SELECT product_id, name AS product_name FROM dtb_products");
 }
-//店舗情報をセット
-$objPage->arrSiteInfo = $objSiteInfo->data;
 
 //商品情報をセット
 $objPage->arrProduct = $arrProduct;
 if(is_array(sfswaparray($arrProduct))){
 	$objPage->arrProductKeys = array_keys(sfswaparray($arrProduct));
 }
+
+//店舗情報をセット
+$objPage->arrSiteInfo = $arrSiteInfo;
 
 //セットしたデータをテンプレートファイルに出力
 $objView->assignobj($objPage);
