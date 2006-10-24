@@ -26,14 +26,15 @@ $product_id = $_GET['product_id'];
 
 if($product_id != ""){
 	//商品詳細を取得
-	$arrProductTmp = lfGetProductsDetail($objQuery, $product_id);
-	$arrProduct = $arrProductTmp;
+	$arrProduct = lfGetProductsDetail($objQuery, $product_id);
 	
 	// 値のセットし直し
-	foreach($arrProductTmp as $key => $val){
-		$arrProduct[$key]["main_list_image"] = IMAGE_SAVE_URL . $arrProductTmp[$key]["main_list_image"];
-		$arrProduct[$key]["main_image"] = IMAGE_SAVE_URL . $arrProductTmp[$key]["main_image"];
-		$arrProduct[$key]["main_large_image"] = IMAGE_SAVE_URL . $arrProductTmp[$key]["main_large_image"];
+	foreach($arrProduct as $key => $val){
+		
+		//
+		$arrProduct[$key]["main_list_image"] = IMAGE_SAVE_URL . $arrProduct[$key]["main_list_image"];
+		$arrProduct[$key]["main_image"] = IMAGE_SAVE_URL . $arrProduct[$key]["main_image"];
+		$arrProduct[$key]["main_large_image"] = IMAGE_SAVE_URL . $arrProduct[$key]["main_large_image"];
 	}
 	
 	sfprintr($arrProduct);exit();
