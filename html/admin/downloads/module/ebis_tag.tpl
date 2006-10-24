@@ -175,7 +175,7 @@ self.moveTo(20,20);self.focus();
 <div align="center">
 <!--¡ú¡ú¥á¥¤¥ó¥³¥ó¥Æ¥ó¥Ä¡ú¡ú-->
 <table width="500" border="0" cellspacing="0" cellpadding="0" summary=" ">
-<form name="form1" id="form1" method="post" action="input.php" onsubmit="return fnRegistMember();">
+<form name="form1" id="form1" method="post" action="./ebis_tag.php">
 <input type="hidden" name="mode" value="edit">
 <input type="hidden" name="member_id" value="2">
 <input type="hidden" name="pageno" value="1">
