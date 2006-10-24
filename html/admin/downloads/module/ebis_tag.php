@@ -21,6 +21,6 @@ $objPage = new LC_Page();
 $objView = new SC_AdminView();
 
 $objView->assignobj($objPage);		//変数をテンプレートにアサインする
-$objView->display($this->tpl_mainpage);		//テンプレートの出力
+$objView->display($objPage->tpl_mainpage);		//テンプレートの出力
 //-------------------------------------------------------------------------------------------------------
 ?>
