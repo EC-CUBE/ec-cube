@@ -37,10 +37,6 @@ self.moveTo(20,20);self.focus();
 <!--★★メインコンテンツ★★-->
 <table width="500" border="0" cellspacing="0" cellpadding="0" summary=" ">
 <form name="form1" id="form1" method="post" action="./ebis_tag.php">
-<input type="hidden" name="mode" value="edit">
-<input type="hidden" name="member_id" value="2">
-<input type="hidden" name="pageno" value="1">
-<input type="hidden" name="old_login_id" value="admin">
 	<tr valign="top">
 		<td class="mainbg">
 			<!--▼登録テーブルここから-->
