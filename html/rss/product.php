@@ -65,6 +65,8 @@ function lfGetProductsDetail($objQuery, $product_id){
 				,prod.main_large_image
 				,cls.price01
 				,cls.price02
+				,cls.classcategory_id1
+				,cls.classcategory_id2
 				,(SELECT name FROM dtb_classcategory AS clscat WHERE clscat.classcategory_id = cls.classcategory_id1) AS classcategory_name1
 				,(SELECT name FROM dtb_classcategory AS clscat WHERE clscat.classcategory_id = cls.classcategory_id2) AS classcategory_name2
 				,(SELECT category_name FROM dtb_category AS cat WHERE cat.category_id = prod.category_id) AS category_name
