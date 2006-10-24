@@ -15,7 +15,7 @@
 <managingEditor><!--{$email}--></managingEditor>
 <webMaster><!--{$email}--></webMaster>
 <generator>web shoppings v1.0</generator>
-<copyright>(c) COPYRIGHT <!--{$email}--></copyright>
+<copyright>(c) COPYRIGHT <!--{$arrNews.0.company_name}--></copyright>
 <category>WEB SHOPPING</category>
 <docs>http://backend.userland.com/rss</docs>
 

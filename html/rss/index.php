@@ -72,7 +72,6 @@ function lfGetNews($objQuery){
 	$col .= "     ,news_select ";							//新着情報の区分(1:URL、2:本文)
 	$col .= "     ,(SELECT shop_name FROM dtb_baseinfo limit 1) AS shop_name  ";	//店名
 	$col .= "     ,(SELECT email04 FROM dtb_baseinfo limit 1) AS email ";			//代表Emailアドレス
-	$col .= "     ,(SELECT company_name FROM dtb_baseinfo limit 1) AS company_name ";		//会社名
 	$from = "dtb_news";
 	$where = "del_flg = '0'";
 	$order = "rank DESC";
