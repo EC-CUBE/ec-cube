@@ -50,7 +50,7 @@ if($product_id != "" and (is_numeric($product_id) or $product_id == "ALL")){
 $objPage->arrSiteInfo = $objSiteInfo->data;
 
 //商品情報をセット
-if(is_array($arrProduct)){
+if(is_array(sfswaparray($arrProduct))){
 $objPage->arrProduct = $arrProduct;
 $objPage->arrProductKeys = array_keys(sfswaparray($arrProduct));
 }
