@@ -24,7 +24,7 @@
 		<!--{* １つのitem要素を出力する *}-->
 		<item>
 			<!--{if $arrNews[cnt].news_url == '' }-->
-				<link> http://<!--{$smarty.server.HTTP_HOST}--> </link>
+				<link> <!--{$smarty.const.SITE_URL}--> </link>
 			<!--{else}-->
 				<link> <!--{$arrNews[cnt].news_url|escape}--></link>
 			<!--{/if}-->
