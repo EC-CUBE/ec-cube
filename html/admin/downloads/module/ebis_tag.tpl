@@ -20,7 +20,7 @@
 <script type="text/javascript" src="/ec-cube/js/site.js"></script>
 <script type="text/javascript" src="/ec-cube/js/admin.js"></script>
 <!--{include file='css/contents.tpl'}-->
-<title>メンバー登録・編集</title>
+<title><!--{$tpl_subtitle}--></title>
 <script type="text/javascript">
 <!--
 self.moveTo(20,20);self.focus();
@@ -79,30 +79,7 @@ self.moveTo(20,20);self.focus();
 											<td width="90" bgcolor="#f3f3f3">名前</td>
 											<td width="337" bgcolor="#ffffff"><input type="text" name="name" size="30" class="box30" value="admin" maxlength="50"/>　<span class="red">※必須入力</span>
 											</td>
-										</tr>
-										<tr class="fs12n">
-											<td width="90" bgcolor="#f3f3f3">所属</td>
-											<td width="337" bgcolor="#ffffff"><input type="text" name="department" size="30" class="box30" value="" maxlength="50"/>
-											</td>
-										</tr>
-										<tr class="fs12">
-											<td width="90" bgcolor="#f3f3f3">ログインＩＤ</td>
-											<td width="337" bgcolor="#ffffff"><input type="text" name="login_id" size="20" class="box20"  value="admin" maxlength="50"/>　<span class="red">※必須入力</span><br />
-											※半角英数字・15文字以内</td>
-										</tr>
-										<tr class="fs12">
-											<td width="90" bgcolor="#f3f3f3">パスワード</td>
-											<td width="337" bgcolor="#ffffff"><input type="password" name="password" size="20" class="box20" value="########" onfocus="fnClearText(this.name);" maxlength="50"/>　<span class="red">※必須入力</span><br />
-											※半角英数字・15文字以内</td>
-										</tr>
-										<tr class="fs12n">
-											<td width="90" bgcolor="#f3f3f3">管理権限</td>
-											<td width="337" bgcolor="#ffffff"><select name="authority">
-											<option value="" >選択してください</option>
-											<option label="管理者" value="0" selected="selected">管理者</option>
-
-											</select>　<span class="red">※必須入力</span></td>
-										</tr>
+										</tr>										
 									</table>
 
 									<table width="440" border="0" cellspacing="0" cellpadding="0" summary=" ">
