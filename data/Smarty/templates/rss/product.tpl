@@ -23,7 +23,6 @@
 			<product_id><!--{$arrProduct[cnt].product_id|sf_mb_convert_encoding:$encode}--></product_id>
 			<product_name> <!--{ $arrProduct[cnt].product_name|sf_mb_convert_encoding:$encode }--> </product_name>
 			<description><!--{$arrProduct[cnt].product_id|truncate:256|sf_mb_convert_encoding:$encode}--></description>
-			<pubDate><!--{"r"|sf_mktime:$arrProduct[cnt].hour:$arrProduct[cnt].minute:$arrProduct[cnt].second:$arrProduct[cnt].month:$arrProduct[cnt].day:$arrProduct[cnt].year}--></pubDate>
 		</item>
 	<!--{/section}-->
 </channel>
