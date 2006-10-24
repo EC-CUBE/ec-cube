@@ -32,11 +32,11 @@ if($product_id != ""){
 	foreach($arrProduct as $key => $val){
 		
 		// 画像ファイルのURLセット
-		(file_exists(IMAGE_SAVE_URL . $arrProduct[$key]["main_list_image"])) ? $dir = IMAGE_TEMP_DIR : $dir = IMAGE_TEMP_URL;
+		(file_exists(IMAGE_SAVE_URL . $arrProduct[$key]["main_list_image"])) ? $dir = IMAGE_TEMP_URL_RSS : $dir = IMAGE_TEMP_URL;
 		$arrProduct[$key]["main_list_image"] = $dir . $arrProduct[$key]["main_list_image"];
-		(file_exists(IMAGE_SAVE_URL . $arrProduct[$key]["main_image"])) ? $dir = IMAGE_SAVE_URL : $dir = IMAGE_TEMP_URL;
+		(file_exists(IMAGE_SAVE_URL . $arrProduct[$key]["main_image"])) ? $dir = IMAGE_TEMP_URL_RSS : $dir = IMAGE_TEMP_URL;
 		$arrProduct[$key]["main_image"] = IMAGE_SAVE_URL . $arrProduct[$key]["main_image"];
-		(file_exists(IMAGE_SAVE_URL . $arrProduct[$key]["main_large_image"])) ? $dir = IMAGE_SAVE_URL : $dir = IMAGE_TEMP_URL;
+		(file_exists(IMAGE_SAVE_URL . $arrProduct[$key]["main_large_image"])) ? $dir = IMAGE_TEMP_URL_RSS : $dir = IMAGE_TEMP_URL;
 		$arrProduct[$key]["main_large_image"] = IMAGE_SAVE_URL . $arrProduct[$key]["main_large_image"];
 	}
 	
