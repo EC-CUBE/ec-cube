@@ -82,7 +82,7 @@ $ARR_SHADE_COLOR = array(100,100,100);
 // 縁の色
 $ARR_FLAME_COLOR = array(100, 100, 140);
 // 文字色
-$ARR_TEXT_COLOR = array(55, 55, 55);
+$ARR_TEXT_COLOR = array(0, 0, 0);
 // 背景カラー
 $ARR_BG_COLOR = array(255,255,255);	
 // タイトル文字色
