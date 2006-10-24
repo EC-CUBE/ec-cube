@@ -2555,7 +2555,7 @@ function sfFlush($output = " ", $sleep = 0){
 
 /* デバッグ用 ------------------------------------------------------------------------------------------------*/
 function sfPrintR($obj) {
-	print("<div style='font-size: 12px;color: #ffffff;'>\n");
+	print("<div style='font-size: 12px;color: #0000ff;'>\n");
 	print("<strong>**デバッグ中**</strong><br />\n");
 	print("<pre>\n");
 	print_r($obj);
