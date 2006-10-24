@@ -9,7 +9,7 @@
 <!--{* channelÍ×ÁÇ *}-->
 <channel>
 <title> <!--{$site_title|sf_mb_convert_encoding:$encode}--> </title>
-<link> http://<!--{$smarty.server.HTTP_HOST}--> </link>
+<link> <!--{$smarty.const.SITE_URL}--> </link>
 <description> <!--{$description|sf_mb_convert_encoding:$encode}--> </description>
 <language>ja</language>
 <managingEditor><!--{$email}--></managingEditor>

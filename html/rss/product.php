@@ -27,7 +27,7 @@ $arrProduct = lfGetProductsDetail($objQuery, 1);
 //店舗情報
 $arrSiteInfo = $objSiteInfo->data;
 
-sfprintr(ROOT_DIR);
+sfprintr(SITE_URL);
 exit();
 
 //商品情報をセット
