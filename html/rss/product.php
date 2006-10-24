@@ -29,7 +29,7 @@ if($product_id != ""){
 	$arrProduct = lfGetProductsDetail($objQuery, $product_id);
 }else{
 	//商品一覧を取得
-	$arrProduct = $objQuery->getall("SELECT * FROM dtb_product");
+	$arrProduct = $objQuery->getall("SELECT * FROM dtb_products");
 }
 
 //店舗情報をセット
