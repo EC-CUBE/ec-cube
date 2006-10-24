@@ -32,9 +32,6 @@ if($product_id != ""){
 	$arrProduct = $objQuery->getall("SELECT * FROM dtb_products");
 }
 
-sfprintr($arrProduct);
-exit();
-
 //店舗情報をセット
 $objPage->arrSiteInfo = $objSiteInfo->data;
 
