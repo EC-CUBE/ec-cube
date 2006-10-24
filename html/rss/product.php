@@ -21,8 +21,13 @@ $objPage = new LC_Page();
 $objView = new SC_SiteView();
 $objSiteInfo = new SC_SiteInfo();
 
-//新着情報を取得
-$arrProduct = lfGetProductsDetail($objQuery, 1);
+//商品IDを取得
+$product_id = $_GET['product_id'];
+
+if($product_id != ""){
+	//新着情報を取得
+	$arrProduct = lfGetProductsDetail($objQuery, $product_id);
+}
 
 //店舗情報をセット
 $objPage->arrSiteInfo = $objSiteInfo->data;
