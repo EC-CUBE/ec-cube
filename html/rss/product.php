@@ -35,7 +35,7 @@ if($product_id != "" and (is_numeric($product_id) or $product_id == "ALL")){
 	foreach($arrProduct as $key => $val){
 		
 		//æ¶… ≤¡≥ §Ú¿«π˛§ﬂ§À ‘Ω∏
-		$arrProduct[$key]["price02"] = sfPreTax($arrProduct[$key]["price02"], $arrInfo["tax"], $arrSiteInfo["tax_rule"]);
+		$arrProduct[$key]["price02"] = sfPreTax($arrProduct[$key]["price02"], $arrSiteInfo["tax"], $arrSiteInfo["tax_rule"]);
 		
 		sfprintr($arrProduct[$key]["price02"]);
 		
