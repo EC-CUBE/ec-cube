@@ -27,12 +27,6 @@ $arrProduct = lfGetProductsDetail($objQuery, 1);
 //店舗情報
 $arrSiteInfo = $objSiteInfo->data;
 
-//キャッシュしない(念のため)
-header("Paragrama: no-cache");
-
-//XMLテキスト(これがないと正常にRSSとして認識してくれないツールがあるため)
-header("Content-type: application/xml");
-
 //商品情報をセット
 $objPage->arrProduct = $arrProduct;
 
@@ -44,6 +38,12 @@ $objPage->email = $arrSiteInfo['email02'];
 
 //セットしたデータをテンプレートファイルに出力
 $objView->assignobj($objPage);
+
+//キャッシュしない(念のため)
+header("Paragrama: no-cache");
+
+//XMLテキスト(これがないと正常にRSSとして認識してくれないツールがあるため)
+header("Content-type: application/xml");
 
 //画面表示
 $objView->display($objPage->tpl_mainpage, true);
