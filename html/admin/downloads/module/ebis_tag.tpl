@@ -1,11 +1,10 @@
-<meta http-equiv='Content-Type' content='text/html; charset=EUC-JP'>
-<table width='100%' border='0' cellspacing='0' cellpadding='0' summary=' '>
-<tr>
-<td bgcolor='#ffeebb' height='25' colspan='2' align='center'>
-<SPAN style='color:red; font-size:12px'><strong>>> /install/index.phpは、インストール完了後にファイルを削除してください。</strong></span>
-</td>
-	</tr>
-</table>
+<!--{*
+/*
+ * Copyright(c) 2000-2006 LOCKON CO.,LTD. All Rights Reserved.
+ *
+ * http://www.lockon.co.jp/
+ */
+*}-->
 <!--　-->
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="ja" lang="ja">
