@@ -18,7 +18,7 @@
 <!--{section name=cnt loop=$arrProduct}-->
 	<!--{* １つのitem要素を出力する *}-->
 	<item>
-		<link> <!--{$smarty.const.SITE_URL}-->rss/product.php?product_id=<!--{$arrProduct[cnt].product_id}--></link>
+		<link><!--{$smarty.const.SITE_URL}-->rss/product.php?product_id=<!--{$arrProduct[cnt].product_id}--></link>
 		<!--{foreach key=key item=item from=$arrProductKeys}-->
 			<<!--{$item}-->><!--{$arrProduct[cnt][$item]|sf_mb_convert_encoding:$encode}--></<!--{$item}-->>
 		<!--{/foreach}-->
