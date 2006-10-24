@@ -6,18 +6,7 @@
  */
 require_once("../require.php");
 
-//ページ管理クラス
-class LC_Page {
-	//コンストラクタ
-	function LC_Page() {
-		//メインテンプレートの指定
-		$this->tpl_mainpage = 'system/module.tpl';
-		$this->tpl_subnavi = 'system/subnavi.tpl';
-		$this->tpl_mainno = 'system';		
-		$this->tpl_subno = 'module';
-		$this->tpl_subtitle = 'モジュール管理';
-	}
-}
+c
 
 $objPage = new LC_Page();
 $objView = new SC_AdminView();

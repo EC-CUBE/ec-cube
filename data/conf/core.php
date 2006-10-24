@@ -11,23 +11,6 @@
 */
 ///////////////////////////////////////////////////////////
 
-// ユーザファイル保存先
-define("USER_DIR", "user_data/");
-define("USER_PATH", HTML_PATH . USER_DIR);
-
-// ユーザインクルードファイル保存先
-define("USER_INC_PATH", USER_PATH . "include/");
-
-// ブロックファイル保存先
-define("BLOC_DIR", "include/bloc/");
-define("BLOC_PATH", USER_PATH . BLOC_DIR);
-
-// ユーザー作成画面のデフォルトPHPファイル
-define("USER_DEF_PHP", HTML_PATH . "__default.php");
-
-// その他画面のデフォルトページレイアウト
-define("DEF_LAYOUT", "products/list.php");
-
 // DBエラーメール送信先
 define ("DB_ERROR_MAIL_TO", "error-ml@lockon.co.jp");
 

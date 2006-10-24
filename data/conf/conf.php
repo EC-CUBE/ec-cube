@@ -10,6 +10,31 @@
 $CONF_PHP_PATH = realpath( dirname( __FILE__) );
 require_once($CONF_PHP_PATH ."/../install.inc");
 require_once($CONF_PHP_PATH ."/core.php" );
+
+//--------------------------------------------------------------------------------------------------------
+/** パス関連 **/
+// ユーザファイル保存先
+define("USER_DIR", "user_data/");
+define("USER_PATH", HTML_PATH . USER_DIR);
+
+// ユーザインクルードファイル保存先
+define("USER_INC_PATH", USER_PATH . "include/");
+
+// ブロックファイル保存先
+define("BLOC_DIR", "include/bloc/");
+define("BLOC_PATH", USER_PATH . BLOC_DIR);
+
+// ユーザー作成画面のデフォルトPHPファイル
+define("USER_DEF_PHP", HTML_PATH . "__default.php");
+
+// その他画面のデフォルトページレイアウト
+define("DEF_LAYOUT", "products/list.php");
+
+// ダウンロードモジュール保存ディレクトリ
+define("MODULE_DIR", "admin/downloads/module/");
+define("MODULE_PATH", HTML_PATH . MODULE_DIR);
+//--------------------------------------------------------------------------------------------------------
+
 //--------------------------------------------------------------------------------------------------------
 /** アップデート管理用 **/
 // アップデート管理用ファイル格納場所
