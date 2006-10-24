@@ -21,7 +21,10 @@
 		<link> <!--{$smarty.const.SITE_URL}-->rss/product.php?product_id=<!--{$arrProduct[cnt].product_id}--></link>
 		<product_id><!--{$arrProduct[cnt].product_id|sf_mb_convert_encoding:$encode}--></product_id>
 		<product_name><!--{ $arrProduct[cnt].product_name|sf_mb_convert_encoding:$encode }--></product_name>
+		<classcategory_id1><!--{ $arrProduct[cnt].classcategory_id1|sf_mb_convert_encoding:$encode }--></classcategory_id1>
+		<classcategory_id2><!--{ $arrProduct[cnt].classcategory_id2|sf_mb_convert_encoding:$encode }--></classcategory_id2>
 		<classcategory_name1><!--{ $arrProduct[cnt].classcategory_name1|sf_mb_convert_encoding:$encode }--></classcategory_name1>
+		<classcategory_name2><!--{ $arrProduct[cnt].classcategory_name2|sf_mb_convert_encoding:$encode }--></classcategory_name2>
 	</item>
 <!--{/section}-->
 </channel>
