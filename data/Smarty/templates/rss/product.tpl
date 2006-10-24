@@ -19,18 +19,18 @@
 <category>WEB SHOPPING</category>
 <docs>http://backend.userland.com/rss</docs>
 
-	<!--{section name=cnt loop=$arrNews}-->
+	<!--{section name=cnt loop=$arrProduct}-->
 		
 		<!--{* １つのitem要素を出力する *}-->
 		<item>
-			<!--{if $arrNews[cnt].news_url == '' }-->
+			<!--{if $arrProduct[cnt].news_url == '' }-->
 				<link> http://<!--{$smarty.server.HTTP_HOST}--> </link>
 			<!--{else}-->
-				<link> <!--{$arrNews[cnt].news_url|escape}--></link>
+				<link> <!--{$arrProduct[cnt].news_url|escape}--></link>
 			<!--{/if}-->
-			<title> <!--{ $arrNews[cnt].news_title|sf_mb_convert_encoding:$encode }--> </title>
-			<description><!--{$arrNews[cnt].news_comment|truncate:256|sf_mb_convert_encoding:$encode}--></description>
-			<pubDate><!--{"r"|sf_mktime:$arrNews[cnt].hour:$arrNews[cnt].minute:$arrNews[cnt].second:$arrNews[cnt].month:$arrNews[cnt].day:$arrNews[cnt].year}--></pubDate>
+			<title> <!--{ $arrProduct[cnt].news_title|sf_mb_convert_encoding:$encode }--> </title>
+			<description><!--{$arrProduct[cnt].news_comment|truncate:256|sf_mb_convert_encoding:$encode}--></description>
+			<pubDate><!--{"r"|sf_mktime:$arrProduct[cnt].hour:$arrProduct[cnt].minute:$arrProduct[cnt].second:$arrProduct[cnt].month:$arrProduct[cnt].day:$arrProduct[cnt].year}--></pubDate>
 		</item>
 	<!--{/section}-->
 
