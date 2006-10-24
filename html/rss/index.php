@@ -34,6 +34,7 @@ $objPage->arrNews = $arrNews;
 
 sfprintr($arrNews);
 exit();
+
 //店名をセット
 $objPage->site_title = $arrNews[0]['shop_name'];
 
