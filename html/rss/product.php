@@ -12,7 +12,7 @@ class LC_Page{
 	function LC_Page(){
 		$this->tpl_mainpage = "rss/product.tpl";
 		$this->encode = "UTF-8";
-		($_GET['product_id'] == "") ? $this->title = "商品一覧情報" : $this->title = "商品詳細情報";
+		($_GET['mode'] == "all") ? $this->title = "商品一覧情報" : $this->title = "商品詳細情報";
 	}
 }
 
@@ -31,7 +31,7 @@ $mode = $_GET['mode'];
 if($product_id != "" and (is_numeric($product_id) or $mode == "all")){
 	//商品詳細を取得
 	$arrProduct = lfGetProductsDetail($objQuery, $product_id);
-	
+	sfprintr("et");
 	// 値のセットし直し
 	foreach($arrProduct as $key => $val){
 		
