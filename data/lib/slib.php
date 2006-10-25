@@ -2572,6 +2572,7 @@ function sfGetFileVersion($path) {
 	return $version;
 }
 
+// エビスタグの発行
 function sfPrintEbisTag($pid = "") {
 	// 「/」が重複しているものへの対応
 	$php_self = ereg_replace("[/]+", "/", $_SERVER['PHP_SELF']);
