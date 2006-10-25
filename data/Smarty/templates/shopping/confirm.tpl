@@ -60,13 +60,7 @@
 							<!--{$arrProductsClass[cnt].price01|sfPreTax:$arrInfo.tax:$arrInfo.tax_rule|number_format}-->±ß
 							<!--{/if}-->
 						</td>
-						<td align="center" class="fs12">
-							<!--{if $arrProductsClass[cnt].price02 != ""}-->
-							<!--{$arrProductsClass[cnt].price02|sfPreTax:$arrInfo.tax:$arrInfo.tax_rule|number_format}-->±ß
-							<!--{else}-->
-							<!--{$arrProductsClass[cnt].price01|sfPreTax:$arrInfo.tax:$arrInfo.tax_rule|number_format}-->±ß
-							<!--{/if}-->
-						</td>
+						<td align="center" class="fs12"><!--{$arrProductsClass[cnt].quantity}--></td>
 						<td align="right" class="fs12"><!--{$arrProductsClass[cnt].total_pretax|number_format}-->±ß</td>
 					</tr>
 					<!--{/section}-->
