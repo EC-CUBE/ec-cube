@@ -53,7 +53,7 @@ default:
 
 $col = "module_id, main_php, module_name, now_version, latest_version, module_explain, create_date, release_date";
 $objQuery->setorder("module_id");
-$objPage->arrUpdate = $objQuery->select($col, "dtb_update");
+$objPage->arrUpdate = $objQuery->select($col, "dtb_module");
 
 // 拡張ファイルのバージョン確認
 $path = MODULE_PATH . $objPage->arrUpdate[0]['main_php'];
@@ -169,14 +169,14 @@ function lfLoadUpdateList() {
 				$sqlval['update_date'] = "now()";
 				$sqlval['release_date'] = $arrCSV[12];
 				// 既存レコードのチェック
-				$cnt = $objQuery->count("dtb_update", "module_id = ?", array($sqlval['module_id']));
+				$cnt = $objQuery->count("dtb_module", "module_id = ?", array($sqlval['module_id']));
 				if($cnt > 0) {
 					// すでに取得されている場合は更新する。	
-					$objQuery->update("dtb_update", $sqlval, "module_id = ?", array($sqlval['module_id']));
+					$objQuery->update("dtb_module", $sqlval, "module_id = ?", array($sqlval['module_id']));
 				} else {
 					// 新規レコードの追加
 					$sqlval['create_date'] = "now()";
-					$objQuery->insert("dtb_update", $sqlval);
+					$objQuery->insert("dtb_module", $sqlval);
 				}
 			} else {
 				sfErrorHeader(">> カラム数が一致しません。：".count($arrCSV));
@@ -191,7 +191,7 @@ function lfInstallModule() {
 	global $objPage;
 	
 	$objQuery = new SC_Query();
-	$arrRet = $objQuery->select("module_id, extern_php, other_files, install_sql, latest_version", "dtb_update", "module_id = ?", array($_POST['module_id']));
+	$arrRet = $objQuery->select("module_id, extern_php, other_files, install_sql, latest_version", "dtb_module", "module_id = ?", array($_POST['module_id']));
 	$flg_ok = true;	// 処理の成功判定
 	
 	if(count($arrRet) > 0) {
@@ -235,7 +235,7 @@ function lfInstallModule() {
 	if($flg_ok) {
 		$sqlval['now_version'] = $arrRet[0]['latest_version'];
 		$sqlval['update_date'] = "now()";
-		$objQuery->update("dtb_update", $sqlval, "module_id = ?", array($arrRet[0]['module_id']));
+		$objQuery->update("dtb_module", $sqlval, "module_id = ?", array($arrRet[0]['module_id']));
 	}
 }
 
@@ -244,7 +244,7 @@ function lfUninstallModule() {
 	global $objPage;
 	
 	$objQuery = new SC_Query();
-	$arrRet = $objQuery->select("module_id, extern_php, other_files, install_sql, uninstall_sql, latest_version", "dtb_update", "module_id = ?", array($_POST['module_id']));
+	$arrRet = $objQuery->select("module_id, extern_php, other_files, install_sql, uninstall_sql, latest_version", "dtb_module", "module_id = ?", array($_POST['module_id']));
 	$flg_ok = true;	// 処理の成功判定
 	
 	if(count($arrRet) > 0) {
@@ -287,7 +287,7 @@ function lfUninstallModule() {
 		// バージョン情報を削除する。
 		$sqlval['now_version'] = "";
 		$sqlval['update_date'] = "now()";
-		$objQuery->update("dtb_update", $sqlval, "module_id = ?", array($arrRet[0]['module_id']));
+		$objQuery->update("dtb_module", $sqlval, "module_id = ?", array($arrRet[0]['module_id']));
 	}
 }
 
