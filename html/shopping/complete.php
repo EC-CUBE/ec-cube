@@ -135,6 +135,8 @@ function lfDoComplete($objQuery, $uniqid) {
 	// 一時受注テーブルの読込
 	$arrData = sfGetOrderTemp($uniqid);
 	
+	exit();
+	
 	// 会員情報登録処理
 	if ($objCustomer->isLoginSuccess()) {
 		// 新お届け先の登録
@@ -164,10 +166,6 @@ function lfDoComplete($objQuery, $uniqid) {
 		}
 		
 	}
-	
-	$objQuery->rollback();
-	exit();
-
 	// 一時テーブルを受注テーブルに格納する
 	$order_id = lfRegistOrder($objQuery, $arrData);
 	// カート商品を受注詳細テーブルに格納する
