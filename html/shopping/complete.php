@@ -452,7 +452,7 @@ function lfSetCustomerPurchase($customer_id, $arrData) {
 	// ポイントが不足している場合
 	if($sqlval['point'] < 0) {
 		$objQuery->rollback();
-		sfprirntr($sqlval);
+		sfprintr($sqlval);
 		exit();
 		//sfDispSiteError(LACK_POINT);
 	}
