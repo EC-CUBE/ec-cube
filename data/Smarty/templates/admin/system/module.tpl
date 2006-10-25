@@ -57,7 +57,7 @@
 										<td width="50">最新Ver</td>										
 										<td width="80">リリース日</td>
 										<td width="50">更新</td>
-										<td width="50">Link</td>
+										<td width="50">実行</td>
 									</tr>
 									<!--{section name=cnt loop=$arrUpdate}-->
 									<tr bgcolor="#ffffff" class="fs12">
