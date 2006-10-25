@@ -69,7 +69,7 @@
 											<a href="#" onclick="fnModeSubmit('uninstall','module_id','<!--{$arrUpdate[cnt].module_id}-->');">削除</a>
 										<!--{/if}-->									
 										</td>
-										<td align="center"><a href="#" onclick="win01('<!--{$smarty.const.URL_DIR}--><!--{$smarty.const.MODULE_DIR}--><!--{$arrUpdate[cnt].main_php}-->','module',500,420); return false;">実行</a></td>
+										<td align="center"><a href="#" onclick="win01('./load_module.php?module_id=<!--{$arrUpdate[cnt].module_id}-->','module',500,420); return false;">実行</a></td>
 									</tr>
 									<!--{/section}-->
 								</table>

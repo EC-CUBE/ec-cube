@@ -6,7 +6,7 @@
  */
 require_once("../require.php");
 
-
+sfPrintR($_GET);
 
 
 ?>
