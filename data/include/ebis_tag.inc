@@ -35,7 +35,7 @@ function sfPrintEbisTag($pid = "") {
 	}
 	
 	// 商品一覧ページは、特殊IDを発行
-	if(ereg("^/products/list.php\?category_id=[0-9]+", $_SERVER["REQUEST_URI"])) {
+	if(ereg("/products/list.php\?category_id=[0-9]+$", $_SERVER["REQUEST_URI"])) {
 		$filename = basename($_SERVER["REQUEST_URI"]);
 		$arrEbis['pid'] = ereg_replace("list.php\?category_id=", "list-c", $filename);
 	}
@@ -47,7 +47,7 @@ function sfPrintEbisTag($pid = "") {
 	}
 	
 	// 商品詳細ページは、特殊IDを発行
-	if(ereg("^/products/detail.php\?product_id=[0-9]+", $_SERVER["REQUEST_URI"])) {
+	if(ereg("/products/detail.php\?product_id=[0-9]+$", $_SERVER["REQUEST_URI"])) {
 		$filename = basename($_SERVER["REQUEST_URI"]);
 		$arrEbis['pid'] = ereg_replace("detail.php\?product_id=", "detail-p", $filename);
 	}
