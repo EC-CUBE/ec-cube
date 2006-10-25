@@ -107,7 +107,7 @@ function sfInitInstall() {
 function sfLoadUpdateModule() {
 	// URL設定ディレクトリを削除
 	$main_php = ereg_replace(URL_DIR, "", $_SERVER['PHP_SELF']);
-	$extern_php = DATA_PATH . "update/" . $main_php;
+	$extern_php = UPDATE_PATH . $main_php;
 	if(file_exists($extern_php)) {
 		include($extern_php);
 	}

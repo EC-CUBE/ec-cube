@@ -56,7 +56,7 @@ $objQuery->setorder("module_id");
 $objPage->arrUpdate = $objQuery->select($col, "dtb_update");
 
 // 拡張ファイルのバージョン確認
-$path = HTML_PATH . "admin/downloads/module/" . $objPage->arrUpdate[0]['main_php'];
+$path = MODULE_PATH . $objPage->arrUpdate[0]['main_php'];
 
 if(file_exists($path)) {
 	$src_fp = fopen($path, "rb");
