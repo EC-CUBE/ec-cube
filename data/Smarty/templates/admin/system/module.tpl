@@ -73,7 +73,11 @@
 											<span class="icon_delete"><a href="#" onclick="fnModeSubmit('uninstall','module_id','<!--{$arrUpdate[cnt].module_id}-->');">削除</a></span>
 										<!--{/if}-->									
 										</td>
-										<td align="center"><span class="icon_confirm"><a href="#" onclick="win01('./load_module.php?module_id=<!--{$arrUpdate[cnt].module_id}-->','module','<!--{$arrUpdate[cnt].module_x}-->','<!--{$arrUpdate[cnt].module_y}-->'); return false;">実行</a></span></td>
+										<td align="center">
+										<!--{if $arrUpdate[cnt].now_version != ""}-->
+											<span class="icon_confirm"><a href="#" onclick="win01('./load_module.php?module_id=<!--{$arrUpdate[cnt].module_id}-->','module','<!--{$arrUpdate[cnt].module_x}-->','<!--{$arrUpdate[cnt].module_y}-->'); return false;">実行</a></span>
+										<!--{/if}-->
+										</td>
 									</tr>
 									<!--{/section}-->
 								</table>
