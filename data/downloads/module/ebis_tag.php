@@ -21,9 +21,21 @@ class LC_Page {
 $objPage = new LC_Page();
 $objView = new SC_AdminView();
 
-sfPrintR($_POST);
+// パラメータ管理クラス
+$objFormParam = new SC_FormParam();
+$objFormParam = lfInitParam($objFormParam);
+
+$objPage->arrErr = $objFormParam->checkError();
+sfPrintR($objPage->arrErr);
+
 
 $objView->assignobj($objPage);		//変数をテンプレートにアサインする
 $objView->display($objPage->tpl_mainpage);		//テンプレートの出力
 //-------------------------------------------------------------------------------------------------------
+/* パラメータ情報の初期化 */
+function lfInitParam($objFormParam) {
+	$objFormParam->addParam("ユーザID", "user", STEXT_LEN, "KVa", array("EXIST_CHECK", "MAX_LENGTH_CHECK"));
+	$objFormParam->addParam("パスワード", "pass", STEXT_LEN, "KVa", array("EXIST_CHECK", "MAX_LENGTH_CHECK"));
+	$objFormParam->addParam("タグ識別ID", "cid", STEXT_LEN, "KVa", array("EXIST_CHECK", "MAX_LENGTH_CHECK"));
+}
 ?>
