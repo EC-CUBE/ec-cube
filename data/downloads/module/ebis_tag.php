@@ -28,7 +28,6 @@ $objFormParam = lfInitParam($objFormParam);
 switch($_POST['mode']) {
 case 'edit':
 	$objPage->arrErr = $objFormParam->checkError();
-	sfPrintR($objPage->arrErr);
 	break;
 default:
 	break;

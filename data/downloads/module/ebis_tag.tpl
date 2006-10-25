@@ -73,10 +73,24 @@ self.moveTo(20,20);self.focus();
 									
 									<table width="440" border="0" cellspacing="1" cellpadding="8" summary=" ">
 										<tr class="fs12n">
-											<td width="90" bgcolor="#f3f3f3">タグ識別ID</td>
+											<td width="90" bgcolor="#f3f3f3">ユーザID<span class="red">※</span></td>
+											<td width="337" bgcolor="#ffffff">
+											<span class="red"><!--{$arrErr.user}--></span>
+											<input type="text" name="user" size="30" class="box30" maxlength="50"/>
+											</td>
+										</tr>	
+										<tr class="fs12n">
+											<td width="90" bgcolor="#f3f3f3">パスワード<span class="red">※</span></td>
+											<td width="337" bgcolor="#ffffff">
+											<span class="red"><!--{$arrErr.pass}--></span>
+											<input type="text" name="pass" size="30" class="box30" maxlength="50"/>
+											</td>
+										</tr>	
+										<tr class="fs12n">
+											<td width="90" bgcolor="#f3f3f3">タグ識別ID<span class="red">※</span></td>
 											<td width="337" bgcolor="#ffffff">
 											<span class="red"><!--{$arrErr.cid}--></span>
-											<input type="text" name="cid" size="30" class="box30" maxlength="50"/>　<span class="red">※必須入力</span>
+											<input type="text" name="cid" size="30" class="box30" maxlength="50"/>
 											</td>
 										</tr>										
 									</table>
