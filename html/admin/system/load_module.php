@@ -6,7 +6,13 @@
  */
 require_once("../require.php");
 
-sfPrintR($_GET);
+// Ç§¾Ú³ÎÇ§
+$objSess = new SC_Session();
+sfIsSuccess($objSess);
 
+if(is_numeric($_GET['module_id'])) {
+	$objQuery = new SC_Query();
+	$arrRet = $objQuery->select("*", "dtb_module", "module_id = ?", array($_GET['module_id']));
+}
 
 ?>
