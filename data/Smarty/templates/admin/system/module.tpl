@@ -53,10 +53,10 @@
 									<tr bgcolor="#f2f1ec" align="center" class="fs12n">
 										<td width="170">機能名</td>
 										<td width="390">説明</td>
-										<td width="50">適用Ver</td>										
-										<td width="50">最新Ver</td>										
+										<td width="50">適用</td>										
+										<td width="50">最新</td>										
 										<td width="80">リリース日</td>
-										<td width="50">更新</td>
+										<td width="50">操作</td>
 										<td width="50">実行</td>
 									</tr>
 									<!--{section name=cnt loop=$arrUpdate}-->
