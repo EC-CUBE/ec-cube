@@ -28,7 +28,7 @@ function sfPrintEbisTag($pid = "") {
 			// テンプレートのパスが与えられている場合
 			
 			print($pid);
-			
+			print(HTML_PATH);
 			$temp_id = ereg_replace(HTML_PATH,"",$pid);			
 			$temp_id = ereg_replace("^[/]+","",$pid);
 			$temp_id = ereg_replace(".tpl$","",$temp_id);
