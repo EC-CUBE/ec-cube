@@ -48,8 +48,7 @@ if(($product_id != "" and is_numeric($product_id)) or $mode == "all"){
 		// ポイント計算
 		$arrProduct[$key]["point"] = sfPrePoint($arrProduct[$key]["price02"], $arrProduct[$key]["point_rate"], POINT_RULE, $arrProduct[$key]["product_id"]);
 	}
-}
-if($mode == "list"){
+}elseif($mode == "list"){
 	//商品一覧を取得
 	$arrProduct = $objQuery->getall("SELECT product_id, name AS product_name FROM dtb_products");
 }else{
@@ -83,8 +82,6 @@ if(is_array(sfswaparray($arrProduct))){
 	$objPage->arrProductKeys = array_keys(sfswaparray($arrProduct));
 }
 
-sfprintr($arrProduct);
-exit();
 //店舗情報をセット
 $objPage->arrSiteInfo = $arrSiteInfo;
 
