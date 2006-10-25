@@ -173,7 +173,7 @@ function lfLoadUpdateList() {
 						$objQuery->insert("dtb_module", $sqlval);
 					}
 				} else {
-					$objQuery->delete("dtb_module", $sqlval, "module_id = ?", array($arrCSV[0]));
+					$objQuery->delete("dtb_module", "module_id = ?", array($arrCSV[0]));
 				}
 			} else {
 				sfErrorHeader(">> カラム数が一致しません。：".count($arrCSV));
