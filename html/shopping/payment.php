@@ -63,9 +63,9 @@ case 'confirm':
 	if(count($objPage->arrErr) == 0) {
 		// DBへのデータ登録
 		lfRegistData($uniqid);
-		exit();
 		// 正常に登録されたことを記録しておく
 		$objSiteSess->setRegistFlag();
+		exit();
 		// 確認ページへ移動
 		header("Location: " . URL_SHOP_CONFIRM);
 		exit;
