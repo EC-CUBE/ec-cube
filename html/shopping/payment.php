@@ -56,7 +56,7 @@ $objPage->arrData = sfTotalConfirm($arrData, $objPage, $objCartSess, $arrInfo);
 
 sfprintr($objCartSess->getCartList());
 foreach($objCartSess->getCartList() as $key => $val){
-	if($val['quantity'] === 0){
+	if($val['quantity'] == 0){
 		sfprintr("error");
 	}
 }
