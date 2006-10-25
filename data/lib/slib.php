@@ -2557,16 +2557,17 @@ function sfFlush($output = " ", $sleep = 0){
 
 function sfGetFileVersion($path) {
 	if(file_exists($path)) {
-	$src_fp = fopen($path, "rb");
-	if($src_fp) {
-		while (!feof($src_fp)) {
-			$line = fgets($src_fp);
-			if(ereg("@version", $line)) {
-				$arrLine = split(" ", $line);
-				$version = $arrLine[5];
+		$src_fp = fopen($path, "rb");
+		if($src_fp) {
+			while (!feof($src_fp)) {
+				$line = fgets($src_fp);
+				if(ereg("@version", $line)) {
+					$arrLine = split(" ", $line);
+					$version = $arrLine[5];
+				}
 			}
+			fclose($src_fp);
 		}
-		fclose($src_fp);
 	}
 	return $version;
 }
