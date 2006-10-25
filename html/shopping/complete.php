@@ -483,7 +483,7 @@ function lfReduceStock($objQuery, $arrID, $quantity) {
 	// 売り切れエラー
 	if(($arrRet[0]['stock_unlimited'] != '1' && $arrRet[0]['stock'] < $quantity) || $quantity == 0) {
 		$objQuery->rollback();
-		sfDispSiteError(SOLD_OUT);
+		sfDispSiteError(SOLD_OUT, "", true);
 	// 無制限の場合、在庫はNULL
 	} elseif($arrRet[0]['stock_unlimited'] == '1') {
 		$sqlval['stock'] = null;

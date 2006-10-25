@@ -182,7 +182,7 @@ function sfDispError($type) {
 }
 
 /* サイトエラーページの表示 */
-function sfDispSiteError($type, $objSiteSess = "") {
+function sfDispSiteError($type, $objSiteSess = "", $return_top = false) {
 	
 	if ($objSiteSess != "") {
 		$objSiteSess->setNowPage('error');
@@ -267,6 +267,8 @@ function sfDispSiteError($type, $objSiteSess = "") {
 	    	$objPage->tpl_error="エラーが発生しました。";
 			break;
 	}
+	
+	$objPage->return_top = $return_top;
 	
 	$objView->assignobj($objPage);
 	$objView->display(SITE_FRAME);
