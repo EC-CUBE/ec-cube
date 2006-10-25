@@ -57,7 +57,7 @@ $arrUpdate = $objQuery->select("*", "dtb_module");
 $max = count($arrUpdate);
 for($i = 0; $i < $max; $i++) {
 	// 拡張ファイルのバージョン確認
-	$path = MODULE_PATH . $arrUpdate[$i]['main_php'];
+	$path = MODULE_PATH . $arrUpdate[$i]['extern_php'];
 	$arrUpdate[$i]['file_version'] = sfGetFileVersion($path);
 }
 
@@ -231,7 +231,9 @@ function lfInstallModule() {
 	}
 	
 	if($flg_ok) {
-		$sqlval['now_version'] = $arrRet[0]['latest_version'];
+		
+		$path = MODULE_PATH . $arrUpdate[0]['extern_php'];
+		$sqlval['now_version'] = sfGetFileVersion($path);
 		$sqlval['update_date'] = "now()";
 		$objQuery->update("dtb_module", $sqlval, "module_id = ?", array($arrRet[0]['module_id']));
 	}
