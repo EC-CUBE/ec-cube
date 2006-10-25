@@ -137,9 +137,10 @@ function lfGetProductsDetail($objQuery, $product_id = "all"){
 	}
 	$sql .= " ORDER BY prod.product_id, cls.classcategory_id1, cls.classcategory_id2";
 	$arrProduct = $objQuery->getall($sql, $arrval);
-	$objQuery->getlastquery();
+//	$objQuery->getlastquery();
 	sfprintr($arrProduct);
 	exit();
+	
 	return $arrProduct;
 }
 
