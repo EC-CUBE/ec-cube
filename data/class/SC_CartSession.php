@@ -52,6 +52,8 @@ class SC_CartSession {
 				break;
 			}
 		}
+		sfprintr($this->key);
+		sfprintr($this->key_tmp);
 		sfprintr($_SESSION[$this->key]);
 		sfprintr($_SESSION[$this->key_tmp]);
 		if ($change) {
