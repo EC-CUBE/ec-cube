@@ -72,8 +72,8 @@ self.moveTo(20,20);self.focus();
 									
 									<table width="440" border="0" cellspacing="1" cellpadding="8" summary=" ">
 										<tr class="fs12n">
-											<td width="90" bgcolor="#f3f3f3">名前</td>
-											<td width="337" bgcolor="#ffffff"><input type="text" name="name" size="30" class="box30" value="admin" maxlength="50"/>　<span class="red">※必須入力</span>
+											<td width="90" bgcolor="#f3f3f3">タグ識別ID</td>
+											<td width="337" bgcolor="#ffffff"><input type="text" name="tag_id" size="30" class="box30" value="admin" maxlength="50"/>　<span class="red">※必須入力</span>
 											</td>
 										</tr>										
 									</table>

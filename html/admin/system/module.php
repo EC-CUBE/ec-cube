@@ -146,6 +146,7 @@ function lfLoadUpdateList() {
 			$arrCSV = fgetcsv($fp, UPDATE_CSV_LINE_MAX);
 			// カラム数が正常であった場合のみ
 			if(count($arrCSV) == UPDATE_CSV_COL_MAX) {
+				
 				// 取得したアップデート情報をDBに書き込む
 				$sqlval['module_id'] = $arrCSV[0];
 				$sqlval['module_name'] = $arrCSV[1];
@@ -169,6 +170,7 @@ function lfLoadUpdateList() {
 					$sqlval['create_date'] = "now()";
 					$objQuery->insert("dtb_module", $sqlval);
 				}
+				
 			} else {
 				sfErrorHeader(">> カラム数が一致しません。：".count($arrCSV));
 			}

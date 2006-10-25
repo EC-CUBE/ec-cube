@@ -58,7 +58,7 @@ define("EBIS_TAG_MID", 1);
 //--------------------------------------------------------------------------------------------------------
 
 // EC-CUBEバージョン情報
-define("ECCUBE_VERSION", "EC-CUBE 1.0.0");
+define("ECCUBE_VERSION", "1.0.0");
 
 // PEAR::DBのデバッグモード
 define('PEAR_DB_DEBUG', 9);
