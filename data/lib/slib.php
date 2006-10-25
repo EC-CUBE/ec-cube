@@ -2573,14 +2573,10 @@ function sfGetFileVersion($path) {
 }
 
 function sfPrintEbisTag($pid = "") {
-	global $arrEbisPID;
-	
 	// 「/」が重複しているものへの対応
 	$php_self = ereg_replace("[/]+", "/", $_SERVER['PHP_SELF']);
 	// PHPファイルの後ろに「/」がついてしまっているものへの対応
 	$php_self = ereg_replace(".php[/]+$", ".php", $php_self);
-	
-	$arrEbis['pid'] = $arrEbisPID[$php_self];
 	
 	if(!is_array($pid) && $pid != "") {
 		if(!ereg(".tpl$", $pid)) {
@@ -2626,15 +2622,7 @@ function sfPrintEbisTag($pid = "") {
 		$temp_id = ereg_replace("[\./]","_",$temp_id);
 		$arrEbis['pid'] = $temp_id;
 	}
-		
-	// 注文IDが指定されている場合（付加情報を生成する）
-	if($_SESSION['ebis']['order_id'] != "") {
-		// エビスタグ引渡し用データを生成する
-		$arrRet = lfGetEbisData($_SESSION['ebis']['order_id']);
-		$arrEbis = array_merge($arrRet, $arrEbis);
-		unset($_SESSION['ebis']);
-	}
-	
+			
 	// ページIDが登録されている場合のみタグを出力する。
 	if($arrEbis['pid'] != "") {
 		$objSubPage = new LC_EbisPage();
