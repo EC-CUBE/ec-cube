@@ -25,8 +25,14 @@ $objView = new SC_AdminView();
 $objFormParam = new SC_FormParam();
 $objFormParam = lfInitParam($objFormParam);
 
-$objPage->arrErr = $objFormParam->checkError();
-sfPrintR($objPage->arrErr);
+switch($_POST['mode']) {
+case 'edit':
+	$objPage->arrErr = $objFormParam->checkError();
+	sfPrintR($objPage->arrErr);
+	break;
+default:
+	break;
+}
 
 $objView->assignobj($objPage);		//変数をテンプレートにアサインする
 $objView->display($objPage->tpl_mainpage);		//テンプレートの出力
