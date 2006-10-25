@@ -28,10 +28,9 @@ $arrSiteInfo = $objSiteInfo->data;
 $product_id = $_GET['product_id'];
 $mode = $_GET['mode'];
 
-if($product_id != "" and (is_numeric($product_id) or $mode == "all")){
+if(($product_id != "" and is_numeric($product_id)) or $mode == "all"){
 	//商品詳細を取得
 	$arrProduct = lfGetProductsDetail($objQuery, $product_id);
-	sfprintr("et");
 	// 値のセットし直し
 	foreach($arrProduct as $key => $val){
 		
