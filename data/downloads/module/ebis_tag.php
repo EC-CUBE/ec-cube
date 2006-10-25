@@ -39,6 +39,9 @@ case 'edit':
 	}
 	break;
 default:
+	$arrRet = $objQuery->select("sub_data", "dtb_module", "module_id = ?", array(EBIS_TAG_MID));
+	$arrSubData = unserialize($arrRet[0]['sub_data']);
+	$objFormParam->setParam($arrSubData);
 	break;
 }
 
