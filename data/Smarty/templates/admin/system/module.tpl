@@ -61,7 +61,7 @@
 									</tr>
 									<!--{section name=cnt loop=$arrUpdate}-->
 									<tr bgcolor="#ffffff" class="fs12">
-										<td ><!--{$arrUpdate[cnt].module_name}--><br>(<!--{$arrUpdate[cnt].eccube_version}-->以降に対応)</td>
+										<td ><!--{$arrUpdate[cnt].module_name}--><br>※<!--{$arrUpdate[cnt].eccube_version}-->以降に対応</td>
 										<td ><!--{$arrUpdate[cnt].module_explain}--></td>
 										<td align="center"><!--{$arrUpdate[cnt].now_version|default:"-"}--></td>		
 										<td align="center"><!--{$arrUpdate[cnt].latest_version}--></td>		
