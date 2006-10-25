@@ -141,6 +141,7 @@ function lfDoComplete($objQuery, $uniqid) {
 		lfSetNewAddr($uniqid, $objCustomer->getValue('customer_id'));
 		// ¹ØÆþ½¸·×¤ò¸ÜµÒ¥Æ¡¼¥Ö¥ë¤ËÈ¿±Ç
 		lfSetCustomerPurchase($objCustomer->getValue('customer_id'), $arrData, $objQuery);
+		$objQuery->rollback();
 	} else {
 		//¹ØÆþ»þ¶¯À©²ñ°÷ÅÐÏ¿
 		switch(PURCHASE_CUSTOMER_REGIST) {
@@ -149,9 +150,9 @@ function lfDoComplete($objQuery, $uniqid) {
 			// ¹ØÆþ»þ²ñ°÷ÅÐÏ¿
 			if($arrData['member_check'] == '1') {
 				// ²¾²ñ°÷ÅÐÏ¿
-				$customer_id = lfRegistPreCustomer($arrData, $arrInfo, $objQuery);
+				$customer_id = lfRegistPreCustomer($arrData, $arrInfo);
 				// ¹ØÆþ½¸·×¤ò¸ÜµÒ¥Æ¡¼¥Ö¥ë¤ËÈ¿±Ç
-				lfSetCustomerPurchase($customer_id, $arrData);
+				lfSetCustomerPurchase($customer_id, $arrData, $objQuery);
 			}
 			break;
 		//Í­¸ú
