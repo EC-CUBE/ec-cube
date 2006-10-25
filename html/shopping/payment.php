@@ -65,7 +65,6 @@ case 'confirm':
 		lfRegistData($uniqid);
 		// 正常に登録されたことを記録しておく
 		$objSiteSess->setRegistFlag();
-		exit();
 		// 確認ページへ移動
 		header("Location: " . URL_SHOP_CONFIRM);
 		exit;
