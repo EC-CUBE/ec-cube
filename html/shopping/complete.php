@@ -164,6 +164,9 @@ function lfDoComplete($objQuery, $uniqid) {
 		}
 		
 	}
+	
+	$objQuery->rollback();
+	exit();
 
 	// 一時テーブルを受注テーブルに格納する
 	$order_id = lfRegistOrder($objQuery, $arrData);
