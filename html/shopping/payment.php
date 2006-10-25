@@ -59,13 +59,13 @@ case 'confirm':
 	// 入力値の変換
 	$objFormParam->convParam();
 	$objPage->arrErr = lfCheckError($objPage->arrData );
-	exit();
 	// 入力エラーなし
 	if(count($objPage->arrErr) == 0) {
 		// DBへのデータ登録
 		lfRegistData($uniqid);
 		// 正常に登録されたことを記録しておく
 		$objSiteSess->setRegistFlag();
+		exit();
 		// 確認ページへ移動
 		header("Location: " . URL_SHOP_CONFIRM);
 		exit;
