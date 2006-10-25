@@ -79,9 +79,9 @@ define ("RECOMMEND_PRODUCT_MAX", 4);
 define("LIB_DIR", DATA_PATH . "lib/");						// ライブラリのパス
 define("TTF_DIR", DATA_PATH . "fonts/");					// フォントのパス
 define("GRAPH_DIR", HTML_PATH . "upload/graph_image/");		// グラフ格納ディレクトリ
-define("GRAPH_URL", URL_DIR . "upload/graph_image/");					// グラフURL
-define("GRAPH_PIE_MAX", 10);									// 円グラフ最大表示数
-define("GRAPH_LABEL_MAX", 40);									// グラフのラベルの文字数
+define("GRAPH_URL", URL_DIR . "upload/graph_image/");		// グラフURL
+define("GRAPH_PIE_MAX", 10);								// 円グラフ最大表示数
+define("GRAPH_LABEL_MAX", 40);								// グラフのラベルの文字数
 
 /** パス関連 **/
 
