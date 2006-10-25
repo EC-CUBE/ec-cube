@@ -146,31 +146,33 @@ function lfLoadUpdateList() {
 			$arrCSV = fgetcsv($fp, UPDATE_CSV_LINE_MAX);
 			// カラム数が正常であった場合のみ
 			if(count($arrCSV) == UPDATE_CSV_COL_MAX) {
-				
-				// 取得したアップデート情報をDBに書き込む
-				$sqlval['module_id'] = $arrCSV[0];
-				$sqlval['module_name'] = $arrCSV[1];
-				$sqlval['latest_version'] = $arrCSV[3];
-				$sqlval['module_explain'] = $arrCSV[4];
-				$sqlval['main_php'] = $arrCSV[5];
-				$sqlval['extern_php'] = $arrCSV[6];
-				$sqlval['install_sql'] = $arrCSV[7];
-				$sqlval['uninstall_sql'] = $arrCSV[8];				
-				$sqlval['other_files'] = $arrCSV[9];
-				$sqlval['del_flg'] = $arrCSV[10];
-				$sqlval['update_date'] = "now()";
-				$sqlval['release_date'] = $arrCSV[12];
-				// 既存レコードのチェック
-				$cnt = $objQuery->count("dtb_module", "module_id = ?", array($sqlval['module_id']));
-				if($cnt > 0) {
-					// すでに取得されている場合は更新する。	
-					$objQuery->update("dtb_module", $sqlval, "module_id = ?", array($sqlval['module_id']));
-				} else {
-					// 新規レコードの追加
-					$sqlval['create_date'] = "now()";
-					$objQuery->insert("dtb_module", $sqlval);
+				// モジュールが対応している本体のバージョン
+				$version = $arrCSV[13];
+				if(is_numeric(ECCUBE_VERSION) && is_numeric($version) && ECCUBE_VERSION > $version) {								
+					// 取得したアップデート情報をDBに書き込む
+					$sqlval['module_id'] = $arrCSV[0];
+					$sqlval['module_name'] = $arrCSV[1];
+					$sqlval['latest_version'] = $arrCSV[3];
+					$sqlval['module_explain'] = $arrCSV[4];
+					$sqlval['main_php'] = $arrCSV[5];
+					$sqlval['extern_php'] = $arrCSV[6];
+					$sqlval['install_sql'] = $arrCSV[7];
+					$sqlval['uninstall_sql'] = $arrCSV[8];				
+					$sqlval['other_files'] = $arrCSV[9];
+					$sqlval['del_flg'] = $arrCSV[10];
+					$sqlval['update_date'] = "now()";
+					$sqlval['release_date'] = $arrCSV[12];
+					// 既存レコードのチェック
+					$cnt = $objQuery->count("dtb_module", "module_id = ?", array($sqlval['module_id']));
+					if($cnt > 0) {
+						// すでに取得されている場合は更新する。	
+						$objQuery->update("dtb_module", $sqlval, "module_id = ?", array($sqlval['module_id']));
+					} else {
+						// 新規レコードの追加
+						$sqlval['create_date'] = "now()";
+						$objQuery->insert("dtb_module", $sqlval);
+					}
 				}
-				
 			} else {
 				sfErrorHeader(">> カラム数が一致しません。：".count($arrCSV));
 			}
