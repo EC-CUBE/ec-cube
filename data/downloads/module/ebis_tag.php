@@ -34,7 +34,7 @@ case 'edit':
 	if(count($objPage->arrErr) == 0) {
 		$arrRet = $objFormParam->getHashArray();
 		$sqlval['sub_data'] = serialize($arrRet);
-		$objQuery = SC_Query();
+		$objQuery = new SC_Query();
 		$objQuery->update("dtb_module", $sqlval, "module_id = ?", array(EBIS_TAG_MID));
 	}
 	break;
