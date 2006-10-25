@@ -54,6 +54,7 @@ class SC_CartSession {
 		}
 		sfprintr($_SESSION[$this->key][$i]);
 		sfprintr($_SESSION[$this->key_tmp][$i]);
+		exit();
 		if ($change) {
 			// 一時カートのクリア
 			unset($_SESSION[$this->key_tmp]);
