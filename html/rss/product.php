@@ -131,7 +131,7 @@ function lfGetProductsDetail($objQuery, $product_id = ""){
 	$sql .= " FROM dtb_products AS prod, dtb_products_class AS cls";
 	$sql .= " WHERE prod.product_id = cls.product_id AND prod.del_flg = 0 AND prod.status = 1";
 	
-	if($product_id != "all" and $product_id != ""){
+	if($product_id != "all"){
 		$sql .= " AND prod.product_id = ?";
 		$arrval = array($product_id);
 	}
