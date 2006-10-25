@@ -31,11 +31,11 @@ define("USER_DEF_PHP", HTML_PATH . "__default.php");
 define("DEF_LAYOUT", "products/list.php");
 
 // ダウンロードモジュール保存ディレクトリ
-define("MODULE_DIR", "admin/downloads/module/");
+define("MODULE_DIR", "downloads/module/");
 define("MODULE_PATH", DATA_PATH . MODULE_DIR);
 
 // HotFix保存ディレクトリ
-define("UPDATE_DIR", "admin/downloads/update/");
+define("UPDATE_DIR", "downloads/update/");
 define("UPDATE_PATH", DATA_PATH . UPDATE_DIR);
 //--------------------------------------------------------------------------------------------------------
 
