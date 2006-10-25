@@ -314,7 +314,7 @@ function sfCheckNormalAccess($objSiteSess, $objCartSess) {
 	$ret = $objCartSess->checkChangeCart();
 	if($ret == true || !($quantity > 0)) {
 		// カート情報表示に強制移動する
-		header("Location: ".URL_CART_TOP);
+		//header("Location: ".URL_CART_TOP);
 		exit;
 	}
 	return $uniqid;
