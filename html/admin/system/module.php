@@ -245,14 +245,12 @@ function lfUninstallModule() {
 		}
 		$arrFiles[] = $arrRet[0]['extern_php'];
 		foreach($arrFiles as $val) {
-			$path = DATA_PATH . $val;
-			if(file_exists($path)) {
-				// ファイルを猴近する
-				if(unlink($path)) {
-					$objPage->update_mess.= ">> " . $path . "¨猴近喇根<br>";
-				} else {
-					$objPage->update_mess.= ">> " . $path . "¨猴近己窃<br>";
-				}
+			$path = MODULE_PATH . $val;
+			// ファイルを猴近する
+			if(file_exists($path) && unlink($path)) {
+				$objPage->update_mess.= ">> " . $path . "¨猴近喇根<br>";
+			} else {
+				$objPage->update_mess.= ">> " . $path . "¨猴近己窃<br>";
 			}
 		}
 		
