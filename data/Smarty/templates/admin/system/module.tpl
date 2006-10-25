@@ -63,12 +63,16 @@
 									<tr bgcolor="#ffffff" class="fs12">
 										<td ><!--{$arrUpdate[cnt].module_name}--><br>(<!--{$arrUpdate[cnt].eccube_version}-->以降に対応)</td>
 										<td ><!--{$arrUpdate[cnt].module_explain}--></td>
-										<td align="center"><!--{$arrUpdate[cnt].now_version|default:"-"}--></td>		
+										<td align="center"><!--{$arrUpdate[cnt].now_version|default:"-"}--></td>
 										<td align="center"><!--{$arrUpdate[cnt].latest_version}--></td>		
 										<td align="center"><!--{$arrUpdate[cnt].release_date|sfDispDBDate:false}--></td>
 										<td align="center">
 										<!--{if $arrUpdate[cnt].now_version == "" || $arrUpdate[cnt].now_version < $arrUpdate[cnt].latest_version}-->
+											<!--{if $arrUpdate[cnt].eccube_version < $smarty.const.ECCUBE_VERSION}-->
 											<span class="icon_edit"><a href="#" onclick="fnModeSubmit('install','module_id','<!--{$arrUpdate[cnt].module_id}-->');">適用</a></span>
+											<!--{else}-->
+											-
+											<!--{/if}-->
 										<!--{else}-->
 											<span class="icon_delete"><a href="#" onclick="fnModeSubmit('uninstall','module_id','<!--{$arrUpdate[cnt].module_id}-->');">削除</a></span>
 										<!--{/if}-->									
