@@ -26,8 +26,9 @@ $arrSiteInfo = $objSiteInfo->data;
 
 //商品IDを取得
 $product_id = $_GET['product_id'];
+$mode = $_GET['mode'];
 
-if($product_id != "" and (is_numeric($product_id) or $product_id == "ALL")){
+if($product_id != "" and (is_numeric($product_id) or $mode == "all")){
 	//商品詳細を取得
 	$arrProduct = lfGetProductsDetail($objQuery, $product_id);
 	
@@ -48,7 +49,7 @@ if($product_id != "" and (is_numeric($product_id) or $product_id == "ALL")){
 		// ポイント計算
 		$arrProduct[$key]["point"] = sfPrePoint($arrProduct[$key]["price02"], $arrProduct[$key]["point_rate"], POINT_RULE, $arrProduct[$key]["product_id"]);
 	}
-}else{
+}elseif($mode == "list"){
 	//商品一覧を取得
 	$arrProduct = $objQuery->getall("SELECT product_id, name AS product_name FROM dtb_products");
 }
