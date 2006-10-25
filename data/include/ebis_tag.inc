@@ -9,7 +9,7 @@ $arrEbisPID = array(
 
 class LC_EbisPage {
 	function LC_EbisPage() {
-		$this->tpl_mainpage = 'ebis_tag.tpl';
+		$this->tpl_mainpage = MODULE_PATH . "ebis_tag_text.tpl";
 	}
 }
 
