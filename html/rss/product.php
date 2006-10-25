@@ -30,10 +30,7 @@ $mode = $_GET['mode'];
 
 if(($product_id != "" and is_numeric($product_id)) or $mode == "all"){
 	//商品詳細を取得
-	($mode == "all") ? $arrProduct = lfGetProductsDetail($objQuery, $mode):$arrProduct = lfGetProductsDetail($objQuery, $product_id);
-	
-	sfprintr($mode);
-	exit();
+	($mode == "all") ? $arrProduct = lfGetProductsDetail($objQuery, $mode) : $arrProduct = lfGetProductsDetail($objQuery, $product_id);
 	
 	// 値のセットし直し
 	foreach($arrProduct as $key => $val){
@@ -140,6 +137,9 @@ function lfGetProductsDetail($objQuery, $product_id = "all"){
 	}
 	$sql .= " ORDER BY prod.product_id, cls.classcategory_id1, cls.classcategory_id2";
 	$arrProduct = $objQuery->getall($sql, $arrval);
+	$objQuery->getlastquery();
+	sfprintr($arrProduct);
+	exit();
 	return $arrProduct;
 }
 
