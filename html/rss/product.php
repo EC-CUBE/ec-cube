@@ -32,6 +32,8 @@ if(($product_id != "" and is_numeric($product_id)) or $mode == "all"){
 	//商品詳細を取得
 	($mode == "all") ? $arrProduct = lfGetProductsDetail($objQuery, $product_id):$arrProduct = lfGetProductsDetail($objQuery);
 	
+	sfprintr("test");
+	
 	// 値のセットし直し
 	foreach($arrProduct as $key => $val){
 		
