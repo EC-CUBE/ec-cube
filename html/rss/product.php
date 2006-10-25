@@ -31,9 +31,7 @@ $mode = $_GET['mode'];
 if(($product_id != "" and is_numeric($product_id)) or $mode == "all"){
 	//商品詳細を取得
 	($mode == "all") ? $arrProduct = lfGetProductsDetail($objQuery, $mode) : $arrProduct = lfGetProductsDetail($objQuery, $product_id);
-	
-	sfprintr($arrProduct);
-	exit();
+
 	// 値のセットし直し
 	foreach($arrProduct as $key => $val){
 		//商品価格を税込みに編集
@@ -85,6 +83,8 @@ if(is_array(sfswaparray($arrProduct))){
 	$objPage->arrProductKeys = array_keys(sfswaparray($arrProduct));
 }
 
+sfprintr($arrProduct);
+exit();
 //店舗情報をセット
 $objPage->arrSiteInfo = $arrSiteInfo;
 
