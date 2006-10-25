@@ -107,7 +107,7 @@ $objView->display($objPage->tpl_mainpage, true);
  * 引数２:$product_id	商品ID
  * 戻り値:$arrProduct	取得結果を配列で返す
  **************************************************************************************************************/
-function lfGetProductsDetail($objQuery, $product_id = ""){
+function lfGetProductsDetail($objQuery, $product_id = "all"){
 	$sql = "";
 	$sql .= "SELECT ";
 	$sql .= "	prod.product_id ";
