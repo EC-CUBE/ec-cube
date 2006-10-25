@@ -149,9 +149,7 @@ function lfLoadUpdateList() {
 				// モジュールが対応している本体のバージョン
 				$version = $arrCSV[13];
 				
-				print(is_numeric(1));
-				
-				if(is_numeric(ECCUBE_VERSION) && is_numeric($version) && ECCUBE_VERSION >= $version) {								
+				if(ereg("[0-9\.]+", ECCUBE_VERSION) && ereg("[0-9\.]+", $version) && ECCUBE_VERSION >= $version) {								
 					// 取得したアップデート情報をDBに書き込む
 					$sqlval['module_id'] = $arrCSV[0];
 					$sqlval['module_name'] = $arrCSV[1];
