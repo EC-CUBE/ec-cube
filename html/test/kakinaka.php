@@ -14,8 +14,8 @@ $objQuery->begin();
 $objQuery->insert("test",array("test"=>"test"));
 //$objQuery->query("insert into test values('test')");
 
-//$objQuery->rollback();
-$objQuery->commit();
+$objQuery->rollback();
+//$objQuery->commit();
 
 //-------------------------------------------------------------------------------------------------------
 
