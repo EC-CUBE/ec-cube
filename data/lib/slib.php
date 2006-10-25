@@ -2572,6 +2572,19 @@ function sfGetFileVersion($path) {
 	return $version;
 }
 
+/*	EBISタグ用パラメータ */
+define("EBIS_CID", "aaaaaaa");
+
+/* ページIDリスト */
+$arrEbisPID = array(
+);
+
+class LC_EbisPage {
+	function LC_EbisPage() {
+		$this->tpl_mainpage = 'ebis_tag.tpl';
+	}
+}
+
 // エビスタグの発行
 function sfPrintEbisTag($pid = "") {
 	// 「/」が重複しているものへの対応
