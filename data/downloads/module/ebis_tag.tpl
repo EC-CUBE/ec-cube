@@ -37,6 +37,7 @@ self.moveTo(20,20);self.focus();
 <!--★★メインコンテンツ★★-->
 <table width="500" border="0" cellspacing="0" cellpadding="0" summary=" ">
 <form name="form1" id="form1" method="post" action="<!--{$smarty.server.REQUEST_URI}-->">
+<input type="hidden" name="mode" value="edit">
 	<tr valign="top">
 		<td class="mainbg">
 			<!--▼登録テーブルここから-->
