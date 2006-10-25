@@ -1274,7 +1274,6 @@ function sfTotalCart($objPage, $objCartSess, $arrInfo) {
 			}
 						
 			if($limit != "" && $limit < $arrCart[$i]['quantity']) {
-				
 				// カート内商品数を制限に合わせる
 				$objCartSess->setProductValue($arrCart[$i]['id'], 'quantity', $limit);
 				$quantity = $limit;
