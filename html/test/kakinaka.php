@@ -11,8 +11,8 @@ $objQuery = new SC_Query();
 //$objQuery->begin();
 //$objQuery->query("START TRANSACTION");
 
-//$objQuery->insert("test",array("test"=>"test"));
-$objQuery->query("insert into test values('test')");
+$objQuery->insert("test",array("test"=>"test"));
+//$objQuery->query("insert into test values('test')");
 
 //$objQuery->rollback();
 //$objQuery->commit();
