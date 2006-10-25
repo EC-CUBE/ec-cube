@@ -15,7 +15,7 @@ $objQuery->begin();
 $objQuery->query("insert into test values('test')");
 
 //$objQuery->rollback();
-$objQuery->query("ROLLBACK");
+$objQuery->commit();
 
 //-------------------------------------------------------------------------------------------------------
 
