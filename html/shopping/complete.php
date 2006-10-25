@@ -135,8 +135,6 @@ function lfDoComplete($objQuery, $uniqid) {
 	// 一時受注テーブルの読込
 	$arrData = sfGetOrderTemp($uniqid);
 	
-	exit();
-	
 	// 会員情報登録処理
 	if ($objCustomer->isLoginSuccess()) {
 		// 新お届け先の登録
@@ -457,6 +455,7 @@ function lfSetCustomerPurchase($customer_id, $arrData) {
 	}
 	
 	$objQuery->update("dtb_customer", $sqlval, $where, array($customer_id));
+	$objQuery->rollback();
 }
 
 /* 非会員のメルマガテーブルへの登録 */
