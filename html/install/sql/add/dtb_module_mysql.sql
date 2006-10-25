@@ -13,5 +13,7 @@ CREATE TABLE dtb_module (
     create_date datetime NOT NULL ,
     update_date datetime,
     release_date datetime NOT NULL,
-    sub_data text
+    sub_data text,
+    module_x int,
+    module_y int    
 ) TYPE=InnoDB;

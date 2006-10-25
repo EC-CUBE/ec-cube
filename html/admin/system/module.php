@@ -51,9 +51,8 @@ default:
 	break;
 }
 
-$col = "module_id, main_php, module_name, now_version, latest_version, module_explain, create_date, release_date";
 $objQuery->setorder("module_id");
-$arrUpdate = $objQuery->select($col, "dtb_module");
+$arrUpdate = $objQuery->select("*", "dtb_module");
 
 $max = count($arrUpdate);
 for($i = 0; $i < $max; $i++) {
@@ -162,6 +161,8 @@ function lfLoadUpdateList() {
 					$sqlval['del_flg'] = $arrCSV[10];
 					$sqlval['update_date'] = "now()";
 					$sqlval['release_date'] = $arrCSV[12];
+					$sqlval['module_x'] = $arrCSV[14];
+					$sqlval['module_y'] = $arrCSV[15];					
 					// 既存レコードのチェック
 					$cnt = $objQuery->count("dtb_module", "module_id = ?", array($sqlval['module_id']));
 					if($cnt > 0) {
