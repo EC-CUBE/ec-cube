@@ -68,7 +68,7 @@
 										<td align="center"><!--{$arrUpdate[cnt].release_date|sfDispDBDate:false}--></td>
 										<td align="center">
 										<!--{if $arrUpdate[cnt].now_version == "" || $arrUpdate[cnt].now_version < $arrUpdate[cnt].latest_version}-->
-											<!--{if $arrUpdate[cnt].eccube_version < $smarty.const.ECCUBE_VERSION}-->
+											<!--{if $arrUpdate[cnt].eccube_version <= $smarty.const.ECCUBE_VERSION}-->
 											<span class="icon_edit"><a href="#" onclick="fnModeSubmit('install','module_id','<!--{$arrUpdate[cnt].module_id}-->');">ลฌอั</a></span>
 											<!--{else}-->
 											-
