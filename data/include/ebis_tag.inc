@@ -1,12 +1,6 @@
 <?php
 
-/*	EBISタグ用パラメータ */
-define("EBIS_CID", "aaaaaaa");
-
-/* ページIDリスト */
-$arrEbisPID = array(
-);
-
+// タグ出力用クラス
 class LC_EbisPage {
 	function LC_EbisPage() {
 		$this->tpl_mainpage = MODULE_PATH . "ebis_tag_text.tpl";
