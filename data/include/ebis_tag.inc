@@ -9,6 +9,10 @@ class LC_EbisPage {
 
 // エビスタグの発行
 function sfPrintEbisTag($pid = "") {
+	$objQuery = new SC_Query();
+	$arrRet = $objQuery->select("sub_data", "dtb_module", "module_id = ?", array(EBIS_TAG_MID));
+		
+	
 	// 「/」が重複しているものへの対応
 	$php_self = ereg_replace("[/]+", "/", $_SERVER['PHP_SELF']);
 	// PHPファイルの後ろに「/」がついてしまっているものへの対応
