@@ -13,6 +13,10 @@ sfIsSuccess($objSess);
 if(is_numeric($_GET['module_id'])) {
 	$objQuery = new SC_Query();
 	$arrRet = $objQuery->select("*", "dtb_module", "module_id = ?", array($_GET['module_id']));
+	
+	
+	sfPrintR($arrRet);
+	
 }
 
 ?>
