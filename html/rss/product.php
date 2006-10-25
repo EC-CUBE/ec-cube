@@ -30,7 +30,7 @@ $mode = $_GET['mode'];
 
 if(($product_id != "" and is_numeric($product_id)) or $mode == "all"){
 	//商品詳細を取得
-	($mode == "all") ? $arrProduct = lfGetProductsDetail($objQuery):$arrProduct = lfGetProductsDetail($objQuery, $product_id);
+	($mode == "all") ? $arrProduct = lfGetProductsDetail($objQuery, $mode):$arrProduct = lfGetProductsDetail($objQuery, $product_id);
 	
 	// 値のセットし直し
 	foreach($arrProduct as $key => $val){
