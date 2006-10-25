@@ -40,9 +40,6 @@ lfInitParam();
 $objFormParam->setParam($_POST);
 
 // ユーザユニークIDの取得と購入状態の正当性をチェック
-
-sfprintr($_SESSION);
-exit();
 $uniqid = sfCheckNormalAccess($objSiteSess, $objCartSess);
 // ユニークIDを引き継ぐ
 $objPage->tpl_uniqid = $uniqid;
