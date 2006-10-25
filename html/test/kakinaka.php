@@ -11,7 +11,8 @@ $objQuery = new SC_Query();
 
 $objQuery->begin();
 
-$objQuery->insert("test",array("test"=>"test"));
+//$objQuery->insert("test",array("test"=>"test"));
+$objQuery->query("insert into test values('test')");
 
 $objQuery->rollback();
 
