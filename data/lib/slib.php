@@ -2555,6 +2555,22 @@ function sfFlush($output = " ", $sleep = 0){
 	sleep($sleep);
 }
 
+function sfGetFileVersion($path) {
+	if(file_exists($path)) {
+	$src_fp = fopen($path, "rb");
+	if($src_fp) {
+		while (!feof($src_fp)) {
+			$line = fgets($src_fp);
+			if(ereg("@version", $line)) {
+				$arrLine = split(" ", $line);
+				$version = $arrLine[5];
+			}
+		}
+		fclose($src_fp);
+	}
+	return $version;
+}
+
 /* デバッグ用 ------------------------------------------------------------------------------------------------*/
 function sfPrintR($obj) {
 	print("<div style='font-size: 12px;color: #00FF00;'>\n");
