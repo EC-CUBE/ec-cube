@@ -53,7 +53,7 @@
 									<tr bgcolor="#f2f1ec" align="center" class="fs12n">
 										<td width="170">機能名</td>
 										<td width="390">説明</td>
-										<td width="50">適用</td>										
+										<td width="50">現状</td>										
 										<td width="50">最新</td>										
 										<td width="80">リリース日</td>
 										<td width="50">設定</td>
