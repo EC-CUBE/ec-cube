@@ -34,7 +34,6 @@ if(($product_id != "" and is_numeric($product_id)) or $mode == "all"){
 	
 	// 値のセットし直し
 	foreach($arrProduct as $key => $val){
-		
 		//商品価格を税込みに編集
 		$arrProduct[$key]["price02"] = sfPreTax($arrProduct[$key]["price02"], $arrSiteInfo["tax"], $arrSiteInfo["tax_rule"]);
 		
@@ -49,9 +48,33 @@ if(($product_id != "" and is_numeric($product_id)) or $mode == "all"){
 		// ポイント計算
 		$arrProduct[$key]["point"] = sfPrePoint($arrProduct[$key]["price02"], $arrProduct[$key]["point_rate"], POINT_RULE, $arrProduct[$key]["product_id"]);
 	}
-}elseif($mode == "list"){
+}
+if($mode == "list"){
 	//商品一覧を取得
 	$arrProduct = $objQuery->getall("SELECT product_id, name AS product_name FROM dtb_products");
+}else{
+	$arrProduct = lfGetProductsAllclass($objQuery);
+	
+	// 値のセットし直し
+	foreach($arrProduct as $key => $val){
+		//商品価格を税込みに編集
+		$arrProduct[$key]["price01_max"] = sfPreTax($arrProduct[$key]["price01_max"], $arrSiteInfo["tax"], $arrSiteInfo["tax_rule"]);
+		$arrProduct[$key]["price01_min"] = sfPreTax($arrProduct[$key]["price01_min"], $arrSiteInfo["tax"], $arrSiteInfo["tax_rule"]);
+		$arrProduct[$key]["price02_max"] = sfPreTax($arrProduct[$key]["price02_max"], $arrSiteInfo["tax"], $arrSiteInfo["tax_rule"]);
+		$arrProduct[$key]["price02_min"] = sfPreTax($arrProduct[$key]["price02_min"], $arrSiteInfo["tax"], $arrSiteInfo["tax_rule"]);
+		
+		// 画像ファイルのURLセット
+		(file_exists(IMAGE_SAVE_DIR . $arrProduct[$key]["main_list_image"])) ? $dir = IMAGE_SAVE_URL_RSS : $dir = IMAGE_TEMP_URL_RSS;
+		$arrProduct[$key]["main_list_image"] = $dir . $arrProduct[$key]["main_list_image"];
+		(file_exists(IMAGE_SAVE_DIR . $arrProduct[$key]["main_image"])) ? $dir = IMAGE_SAVE_URL_RSS : $dir = IMAGE_TEMP_URL_RSS;
+		$arrProduct[$key]["main_image"] = $dir . $arrProduct[$key]["main_image"];
+		(file_exists(IMAGE_SAVE_DIR . $arrProduct[$key]["main_large_image"])) ? $dir = IMAGE_SAVE_URL_RSS : $dir = IMAGE_TEMP_URL_RSS;
+		$arrProduct[$key]["main_large_image"] = $dir . $arrProduct[$key]["main_large_image"];
+		
+		// ポイント計算
+		$arrProduct[$key]["point_max"] = sfPrePoint($arrProduct[$key]["price02_max"], $arrProduct[$key]["point_rate"], POINT_RULE, $arrProduct[$key]["product_id"]);
+		$arrProduct[$key]["point_min"] = sfPrePoint($arrProduct[$key]["price02_min"], $arrProduct[$key]["point_rate"], POINT_RULE, $arrProduct[$key]["product_id"]);
+	}
 }
 
 //商品情報をセット
@@ -84,7 +107,7 @@ $objView->display($objPage->tpl_mainpage, true);
  * 引数２:$product_id	商品ID
  * 戻り値:$arrProduct	取得結果を配列で返す
  **************************************************************************************************************/
-function lfGetProductsDetail($objQuery, $product_id = "all"){
+function lfGetProductsDetail($objQuery, $product_id = ""){
 	$sql = "";
 	$sql .= "SELECT ";
 	$sql .= "	prod.product_id ";
@@ -108,7 +131,7 @@ function lfGetProductsDetail($objQuery, $product_id = "all"){
 	$sql .= " FROM dtb_products AS prod, dtb_products_class AS cls";
 	$sql .= " WHERE prod.product_id = cls.product_id AND prod.del_flg = 0 AND prod.status = 1";
 	
-	if($product_id != "all"){
+	if($product_id != "all" and $product_id != ""){
 		$sql .= " AND prod.product_id = ?";
 		$arrval = array($product_id);
 	}
@@ -116,5 +139,37 @@ function lfGetProductsDetail($objQuery, $product_id = "all"){
 	$arrProduct = $objQuery->getall($sql, $arrval);
 	return $arrProduct;
 }
+
+/**************************************************************************************************************
+ * 関数名:lfGetProductsAllclass
+ * 説明　:商品情報を取得する(vw_products_allclass使用)
+ * 引数１:$objQuery		DB操作クラス
+ * 戻り値:$arrProduct	取得結果を配列で返す
+ **************************************************************************************************************/
+function lfGetProductsAllclass($objQuery){
+	$sql = "";
+	$sql .= "SELECT  
+				product_id
+				,name as product_name
+				,category_id
+				,point_rate
+				,comment3
+				,main_list_comment
+				,main_image
+				,main_list_image
+				,product_code_min
+				,product_code_max
+				,price01_min
+				,price01_max
+				,price02_min
+				,price02_max
+				,(SELECT category_name FROM dtb_category AS cat WHERE cat.category_id = allcls.category_id) AS category_name
+			FROM  vw_products_allclass as allcls
+			WHERE allcls.del_flg = 0 AND allcls.status = 1";
+	$sql .= " ORDER BY allcls.product_id";
+	$arrProduct = $objQuery->getall($sql);
+	return $arrProduct;
+}
+
 
 ?>
