@@ -54,13 +54,6 @@ default:
 $objQuery->setorder("module_id");
 $arrUpdate = $objQuery->select("*", "dtb_module");
 
-$max = count($arrUpdate);
-for($i = 0; $i < $max; $i++) {
-	// 拡張ファイルのバージョン確認
-	$path = MODULE_PATH . $arrUpdate[$i]['extern_php'];
-	$arrUpdate[$i]['file_version'] = sfGetFileVersion($path);
-}
-
 $objPage->arrUpdate = $arrUpdate;
 $objView->assignobj($objPage);		//変数をテンプレートにアサインする
 $objView->display(MAIN_FRAME);		//テンプレートの出力
