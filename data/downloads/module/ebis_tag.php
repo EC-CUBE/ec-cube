@@ -24,6 +24,8 @@ $objView = new SC_AdminView();
 // パラメータ管理クラス
 $objFormParam = new SC_FormParam();
 $objFormParam = lfInitParam($objFormParam);
+// POST値の取得
+$objFormParam->setParam($_POST);
 
 switch($_POST['mode']) {
 case 'edit':
@@ -33,6 +35,7 @@ default:
 	break;
 }
 
+$objPage->arrForm = $objFormParam->getFormParamList();
 $objView->assignobj($objPage);		//変数をテンプレートにアサインする
 $objView->display($objPage->tpl_mainpage);		//テンプレートの出力
 //-------------------------------------------------------------------------------------------------------
