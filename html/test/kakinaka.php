@@ -7,9 +7,13 @@
 require_once("../require.php");
 require_once(DATA_PATH. "module/Tar.php");
 
-define("DB_TYPE", "pgsql");	
-
 $objQuery = new SC_Query();
+
+$objQuery->begin();
+
+$objQuery->insert("test",array("test"=>"test"));
+
+$objQuery->rollback();
 
 
 //-------------------------------------------------------------------------------------------------------
