@@ -63,7 +63,7 @@
 									<tr bgcolor="#ffffff" class="fs12">
 										<td ><!--{$arrUpdate[cnt].module_name}--></td>
 										<td ><!--{$arrUpdate[cnt].module_explain}--></td>
-										<td align="center"><!--{$arrUpdate[cnt].now_version}--></td>		
+										<td align="center"><!--{$arrUpdate[cnt].file_version}--></td>		
 										<td align="center"><!--{$arrUpdate[cnt].latest_version}--></td>		
 										<td align="center"><!--{$arrUpdate[cnt].release_date|sfDispDBDate:false}--></td>
 										<td align="center">
