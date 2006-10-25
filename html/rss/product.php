@@ -32,6 +32,8 @@ if(($product_id != "" and is_numeric($product_id)) or $mode == "all"){
 	//商品詳細を取得
 	($mode == "all") ? $arrProduct = lfGetProductsDetail($objQuery, $mode) : $arrProduct = lfGetProductsDetail($objQuery, $product_id);
 	
+	sfprintr($arrProduct);
+	
 	// 値のセットし直し
 	foreach($arrProduct as $key => $val){
 		//商品価格を税込みに編集
