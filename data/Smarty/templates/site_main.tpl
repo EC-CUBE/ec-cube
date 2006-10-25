@@ -144,5 +144,5 @@
 <!--{/if}-->
 <!--¢¥FOTTER-->
 </div>
-
+<!--{$tpl_mainpage|sfPrintEbisTag}-->
 </body>
