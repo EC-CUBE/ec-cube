@@ -7,8 +7,6 @@
 require_once("../require.php");
 require_once(DATA_PATH. "module/Tar.php");
 
-define("DB_TYPE", "pgsql");	
-
 //ページ管理クラス
 class LC_Page {
 	//コンストラクタ
