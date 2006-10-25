@@ -29,21 +29,9 @@ function sfPrintEbisTag($pid = "") {
 	}	
 	
 	// 商品一覧ページは、特殊IDを発行
-	if(ereg("^/products/list-c[0-9]+.html", $_SERVER["REQUEST_URI"])) {
-		$filename = basename($_SERVER["REQUEST_URI"]);
-		$arrEbis['pid'] = ereg_replace(".html$", "", $filename);
-	}
-	
-	// 商品一覧ページは、特殊IDを発行
 	if(ereg("/products/list.php\?category_id=[0-9]+$", $_SERVER["REQUEST_URI"])) {
 		$filename = basename($_SERVER["REQUEST_URI"]);
 		$arrEbis['pid'] = ereg_replace("list.php\?category_id=", "list-c", $filename);
-	}
-	
-	// 商品詳細ページは、特殊IDを発行
-	if(ereg("^/products/detail-p[0-9]+.html", $_SERVER["REQUEST_URI"])) {
-		$filename = basename($_SERVER["REQUEST_URI"]);
-		$arrEbis['pid'] = ereg_replace(".html$", "", $filename);
 	}
 	
 	// 商品詳細ページは、特殊IDを発行
