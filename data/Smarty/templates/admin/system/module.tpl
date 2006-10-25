@@ -53,6 +53,7 @@
 									<tr bgcolor="#f2f1ec" align="center" class="fs12n">
 										<td width="170">機能名</td>
 										<td width="390">説明</td>
+										<td width="50">最新</td>										
 										<td width="80">リリース日</td>
 										<td width="50">更新</td>
 										<td width="50">Link</td>
@@ -60,7 +61,8 @@
 									<!--{section name=cnt loop=$arrUpdate}-->
 									<tr bgcolor="#ffffff" class="fs12">
 										<td ><!--{$arrUpdate[cnt].module_name}--></td>
-										<td ><!--{$arrUpdate[cnt].module_explain}--></td>			
+										<td ><!--{$arrUpdate[cnt].module_explain}--></td>
+										<td ><!--{$arrUpdate[cnt].latest_version}--></td>		
 										<td align="center"><!--{$arrUpdate[cnt].release_date|sfDispDBDate:false}--></td>
 										<td align="center">
 										<!--{if $arrUpdate[cnt].now_version != $arrUpdate[cnt].latest_version}-->

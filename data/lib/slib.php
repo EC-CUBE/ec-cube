@@ -2555,6 +2555,7 @@ function sfFlush($output = " ", $sleep = 0){
 	sleep($sleep);
 }
 
+// @versionの記載があるファイルからバージョンを取得する。
 function sfGetFileVersion($path) {
 	if(file_exists($path)) {
 		$src_fp = fopen($path, "rb");
