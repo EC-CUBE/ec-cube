@@ -164,6 +164,7 @@ function lfGetProductsAllclass($objQuery){
 				,price02_min
 				,price02_max
 				,(SELECT category_name FROM dtb_category AS cat WHERE cat.category_id = allcls.category_id) AS category_name
+				,(SELECT main_large_image FROM dtb_products AS prod WHERE prod.product_id = allcls.product_id) AS main_large_image
 			FROM  vw_products_allclass as allcls
 			WHERE allcls.del_flg = 0 AND allcls.status = 1";
 	$sql .= " ORDER BY allcls.product_id";
