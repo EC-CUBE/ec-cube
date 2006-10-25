@@ -71,7 +71,7 @@
 											<span class="icon_delete"><a href="#" onclick="fnModeSubmit('uninstall','module_id','<!--{$arrUpdate[cnt].module_id}-->');">削除</a></span>
 										<!--{/if}-->									
 										</td>
-										<td align="center"><a href="#" onclick="win01('./load_module.php?module_id=<!--{$arrUpdate[cnt].module_id}-->','module',500,420); return false;">実行</a></td>
+										<td align="center"><span class="icon_confirm"><a href="#" onclick="win01('./load_module.php?module_id=<!--{$arrUpdate[cnt].module_id}-->','module',500,420); return false;">実行</a></span></td>
 									</tr>
 									<!--{/section}-->
 								</table>
