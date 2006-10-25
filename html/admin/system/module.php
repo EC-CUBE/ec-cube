@@ -232,7 +232,7 @@ function lfInstallModule() {
 	
 	if($flg_ok) {
 		
-		$path = MODULE_PATH . $arrUpdate[0]['extern_php'];
+		$path = MODULE_PATH . $arrRet[0]['extern_php'];
 		$sqlval['now_version'] = sfGetFileVersion($path);
 		$sqlval['update_date'] = "now()";
 		$objQuery->update("dtb_module", $sqlval, "module_id = ?", array($arrRet[0]['module_id']));
