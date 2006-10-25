@@ -68,7 +68,7 @@
 										<td align="center"><!--{$arrUpdate[cnt].release_date|sfDispDBDate:false}--></td>
 										<td align="center">
 										<!--{if $arrUpdate[cnt].now_version == "" || $arrUpdate[cnt].now_version < $arrUpdate[cnt].latest_version}-->
-											<span class="icon_edit"><a href="#" onclick="fnModeSubmit('install','module_id','<!--{$arrUpdate[cnt].module_id}-->');">е╛мя</a></span>
+											<span class="icon_edit"><a href="#" onclick="fnModeSubmit('install','module_id','<!--{$arrUpdate[cnt].module_id}-->');">епо©</a></span>
 										<!--{else}-->
 											<span class="icon_delete"><a href="#" onclick="fnModeSubmit('uninstall','module_id','<!--{$arrUpdate[cnt].module_id}-->');">╨О╫Э</a></span>
 										<!--{/if}-->									
