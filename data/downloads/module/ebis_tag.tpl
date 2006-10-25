@@ -83,7 +83,7 @@ self.moveTo(20,20);self.focus();
 											<td width="90" bgcolor="#f3f3f3">パスワード<span class="red">※</span></td>
 											<td width="337" bgcolor="#ffffff">
 											<span class="red"><!--{$arrErr.pass}--></span>
-											<input type="text" name="pass" size="30" value="<!--{$arrForm.pass.value}-->" class="box30" maxlength="50"/>
+											<input type="password" name="pass" size="30" value="<!--{$arrForm.pass.value}-->" class="box30" maxlength="50"/>
 											</td>
 										</tr>	
 										<tr class="fs12n">
