@@ -63,7 +63,7 @@
 									<tr bgcolor="#ffffff" class="fs12">
 										<td ><!--{$arrUpdate[cnt].module_name}--></td>
 										<td ><!--{$arrUpdate[cnt].module_explain}--></td>
-										<td align="center"><!--{$arrUpdate[cnt].now_version}--></td>		
+										<td align="center"><!--{$arrUpdate[cnt].now_version|default:"-"}--></td>		
 										<td align="center"><!--{$arrUpdate[cnt].latest_version}--></td>		
 										<td align="center"><!--{$arrUpdate[cnt].release_date|sfDispDBDate:false}--></td>
 										<td align="center">
@@ -76,6 +76,8 @@
 										<td align="center">
 										<!--{if $arrUpdate[cnt].now_version != ""}-->
 											<span class="icon_confirm"><a href="#" onclick="win01('./load_module.php?module_id=<!--{$arrUpdate[cnt].module_id}-->','module','<!--{$arrUpdate[cnt].module_x}-->','<!--{$arrUpdate[cnt].module_y}-->'); return false;">ผยนิ</a></span>
+										<!--{else}-->
+											-
 										<!--{/if}-->
 										</td>
 									</tr>
