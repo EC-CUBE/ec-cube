@@ -22,7 +22,6 @@ $objPage = new LC_Page();
 $objView = new SC_AdminView();
 
 sfPrintR($_POST);
-sfPrintR($_SERVER);
 
 $objView->assignobj($objPage);		//変数をテンプレートにアサインする
 $objView->display($objPage->tpl_mainpage);		//テンプレートの出力
