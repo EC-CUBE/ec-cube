@@ -140,7 +140,7 @@ function lfDoComplete($objQuery, $uniqid) {
 		// 新お届け先の登録
 		lfSetNewAddr($uniqid, $objCustomer->getValue('customer_id'));
 		// 購入集計を顧客テーブルに反映
-		lfSetCustomerPurchase($objCustomer->getValue('customer_id'), $arrData);
+		lfSetCustomerPurchase($objCustomer->getValue('customer_id'), $arrData, $objQuery);
 	} else {
 		//購入時強制会員登録
 		switch(PURCHASE_CUSTOMER_REGIST) {
@@ -149,7 +149,7 @@ function lfDoComplete($objQuery, $uniqid) {
 			// 購入時会員登録
 			if($arrData['member_check'] == '1') {
 				// 仮会員登録
-				$customer_id = lfRegistPreCustomer($arrData, $arrInfo);
+				$customer_id = lfRegistPreCustomer($arrData, $arrInfo, $objQuery);
 				// 購入集計を顧客テーブルに反映
 				lfSetCustomerPurchase($customer_id, $arrData);
 			}
@@ -159,7 +159,7 @@ function lfDoComplete($objQuery, $uniqid) {
 			// 仮会員登録
 			$customer_id = lfRegistPreCustomer($arrData, $arrInfo);
 			// 購入集計を顧客テーブルに反映
-			lfSetCustomerPurchase($customer_id, $arrData);
+			lfSetCustomerPurchase($customer_id, $arrData, $objQuery);
 			break;
 		}
 		
@@ -433,8 +433,7 @@ function lfSetNewAddr($uniqid, $customer_id) {
 }
 
 /* 購入情報を会員テーブルに登録する */
-function lfSetCustomerPurchase($customer_id, $arrData) {
-	$objQuery = new SC_Query();
+function lfSetCustomerPurchase($customer_id, $arrData, $objQuery) {
 	$col = "first_buy_date, last_buy_date, buy_times, buy_total, point";
 	$where = "customer_id = ?";
 	$arrRet = $objQuery->select($col, "dtb_customer", $where, array($customer_id));
@@ -455,7 +454,6 @@ function lfSetCustomerPurchase($customer_id, $arrData) {
 	}
 	
 	$objQuery->update("dtb_customer", $sqlval, $where, array($customer_id));
-	$objQuery->rollback();
 }
 
 /* 非会員のメルマガテーブルへの登録 */
