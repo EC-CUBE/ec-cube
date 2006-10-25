@@ -281,7 +281,18 @@ class SC_CartSession {
 			$total+= ($deliv_fee * $quantity);
 		}
 		return $total;
-	}	
+	}
+	
+	// カートの中の売り切れチェック
+	function chkSoldOut($arrCartList){
+		foreach($arrCartList as $key => $val){
+			if($val['quantity'] == 0){
+				// 売り切れ商品をカートから削除する
+				$objCartSess->delProduct($val['cart_no']);
+				sfDispSiteError(SOLD_OUT, "", true);
+			}
+		}
+	}
 	
 }
 ?>

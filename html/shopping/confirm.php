@@ -55,6 +55,9 @@ $arrData = sfGetOrderTemp($uniqid);
 // カート集計を元に最終計算
 $arrData = sfTotalConfirm($arrData, $objPage, $objCartSess, $arrInfo, $objCustomer);
 
+// カー都内の商品の売り切れチェック
+$objCartSess->chkSoldOut($objCartSess->getCartList());
+
 // 会員ログインチェック
 if($objCustomer->isLoginSuccess()) {
 	$objPage->tpl_login = '1';

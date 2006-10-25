@@ -54,14 +54,8 @@ if($objCustomer->isLoginSuccess()) {
 $objPage = sfTotalCart($objPage, $objCartSess, $arrInfo);
 $objPage->arrData = sfTotalConfirm($arrData, $objPage, $objCartSess, $arrInfo);
 
-sfprintr($objCartSess->getCartList());
-foreach($objCartSess->getCartList() as $key => $val){
-	if($val['quantity'] == 0){
-		// 売り切れ商品をカートから削除する
-		$objCartSess->delProduct($val['cart_no']);
-		sfDispSiteError(SOLD_OUT, "", true);
-	}
-}
+// カー都内の商品の売り切れチェック
+$objCartSess->chkSoldOut($objCartSess->getCartList());
 
 switch($_POST['mode']) {
 case 'confirm':
