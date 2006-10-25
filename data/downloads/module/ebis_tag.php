@@ -9,7 +9,7 @@
 
 require_once("../../require.php");
 
-print("~");
+print("\~");
 
 //ページ管理クラス
 class LC_Page {
