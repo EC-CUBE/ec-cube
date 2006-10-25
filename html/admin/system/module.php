@@ -145,7 +145,7 @@ function lfLoadUpdateList() {
 		while (!feof($fp)) {
 			$arrCSV = fgetcsv($fp, UPDATE_CSV_LINE_MAX);
 			// カラム数が正常であった場合のみ
-			if(count($arrCSV) == UPDATE_CSV_COL_MAX) {
+			if(count($arrCSV) == MODULE_CSV_COL_MAX) {
 				// モジュールが対応している本体のバージョン
 				$version = $arrCSV[13];
 				if(is_numeric(ECCUBE_VERSION) && is_numeric($version) && ECCUBE_VERSION > $version) {								
