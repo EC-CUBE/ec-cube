@@ -1,6 +1,10 @@
 <?php
-	session_start();
-	print("<pre>");
-	print_r($_SESSION);
-	print("</pre>");
+
+require_once("../require.php");
+
+$objSiteSess = new SC_SiteSession();
+$objCartSess = new SC_CartSession();
+
+sfprintr($_SESSION);
+
 ?>
