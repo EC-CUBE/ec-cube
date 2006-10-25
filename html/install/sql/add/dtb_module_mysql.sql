@@ -15,5 +15,6 @@ CREATE TABLE dtb_module (
     release_date datetime NOT NULL,
     sub_data text,
     module_x int,
-    module_y int    
+    module_y int,
+    eccube_version text
 ) TYPE=InnoDB;
