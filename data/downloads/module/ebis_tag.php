@@ -9,6 +9,8 @@
 
 require_once("../../require.php");
 
+print("~");
+
 //ページ管理クラス
 class LC_Page {
 	//コンストラクタ
