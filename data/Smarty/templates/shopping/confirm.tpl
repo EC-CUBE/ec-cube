@@ -60,7 +60,7 @@
 							<!--{$arrProductsClass[cnt].price01|sfPreTax:$arrInfo.tax:$arrInfo.tax_rule|number_format}-->±ß
 							<!--{/if}-->
 						</td>
-						<td align="right" class="fs12"><!--{$arrProductsClass[cnt].quantity}-->¸Ä</td>
+						<td align="right" class="fs12"><!--{$arrProductsClass[cnt].quantity|number_format}-->¸Ä</td>
 						<td align="right" class="fs12"><!--{$arrProductsClass[cnt].total_pretax|number_format}-->±ß</td>
 					</tr>
 					<!--{/section}-->
