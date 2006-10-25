@@ -29,7 +29,14 @@ $objFormParam->setParam($_POST);
 
 switch($_POST['mode']) {
 case 'edit':
+	// 入力エラー判定
 	$objPage->arrErr = $objFormParam->checkError();
+	if(count($objPage->arrErr) == 0) {
+		$arrRet = $objFormParam->getHashArray();
+		$sqlval['sub_data'] = serialize($arrRet);
+		$objQuery = SC_Query();
+		$objQuery->update("dtb_module", $sqlval, "module_id = ?", array(EBIS_TAG_MID));
+	}
 	break;
 default:
 	break;
