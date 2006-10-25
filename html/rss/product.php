@@ -30,7 +30,8 @@ $mode = $_GET['mode'];
 
 if(($product_id != "" and is_numeric($product_id)) or $mode == "all"){
 	//商品詳細を取得
-	$arrProduct = lfGetProductsDetail($objQuery, $product_id);
+	($mode == "all") ? $arrProduct = lfGetProductsDetail($objQuery, $product_id):$arrProduct = lfGetProductsDetail($objQuery);
+	
 	// 値のセットし直し
 	foreach($arrProduct as $key => $val){
 		
@@ -83,7 +84,7 @@ $objView->display($objPage->tpl_mainpage, true);
  * 引数２:$product_id	商品ID
  * 戻り値:$arrProduct	取得結果を配列で返す
  **************************************************************************************************************/
-function lfGetProductsDetail($objQuery, $product_id){
+function lfGetProductsDetail($objQuery, $product_id = "all"){
 	$sql = "";
 	$sql .= "SELECT ";
 	$sql .= "	prod.product_id ";
@@ -107,7 +108,7 @@ function lfGetProductsDetail($objQuery, $product_id){
 	$sql .= " FROM dtb_products AS prod, dtb_products_class AS cls";
 	$sql .= " WHERE prod.product_id = cls.product_id AND prod.del_flg = 0 AND prod.status = 1";
 	
-	if($product_id != "ALL"){
+	if($product_id != "all"){
 		$sql .= " AND prod.product_id = ?";
 		$arrval = array($product_id);
 	}
