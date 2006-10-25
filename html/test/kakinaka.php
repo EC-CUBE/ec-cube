@@ -14,8 +14,8 @@ $objQuery->begin();
 //$objQuery->insert("test",array("test"=>"test"));
 $objQuery->query("insert into dtb_order(customer_id,create_date,del_flg) values (1,now(),1)");
 
-//$objQuery->rollback();
-$objQuery->commit();
+$objQuery->rollback();
+//$objQuery->commit();
 
 //-------------------------------------------------------------------------------------------------------
 
