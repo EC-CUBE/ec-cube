@@ -56,7 +56,7 @@
 										<td width="50">適用</td>										
 										<td width="50">最新</td>										
 										<td width="80">リリース日</td>
-										<td width="50">操作</td>
+										<td width="50">設定</td>
 										<td width="50">実行</td>
 									</tr>
 									<!--{section name=cnt loop=$arrUpdate}-->
