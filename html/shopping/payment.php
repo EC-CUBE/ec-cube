@@ -59,6 +59,7 @@ case 'confirm':
 	// 入力値の変換
 	$objFormParam->convParam();
 	$objPage->arrErr = lfCheckError($objPage->arrData );
+	exit();
 	// 入力エラーなし
 	if(count($objPage->arrErr) == 0) {
 		// DBへのデータ登録
