@@ -70,13 +70,19 @@ function sfPrintEbisTag($pid = "") {
 }
 
 // コンバージョンタグの発行
-function sfPrintAffTag($conv_page) {
+function sfPrintAffTag($conv_page, $option) {
 	if(is_numeric($conv_page)) {
 		// sub_dataよりタグ情報を読み込む
 		$objQuery = new SC_Query();
 		$arrRet = $objQuery->select("sub_data", "dtb_module", "module_id = ?", array(AFF_TAG_MID));
 		$arrSubData = unserialize($arrRet[0]['sub_data']);
 		$aff_tag = $arrSubData[$conv_page];
+		$array = split("|", $option);
+		// 特定文字の置き換え
+		foreach($array as $each) {
+			list($key, $value) = split("=", $each);
+			$aff_tag = ereg_replace($key, $value, $aff_tag);
+		}
 		print($aff_tag);		
 	}
 }
