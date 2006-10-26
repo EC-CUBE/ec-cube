@@ -43,4 +43,9 @@
 // echo $a->getResponseBody();
 //
 
+if(!defined('REQUEST_PHP_DIR')) {
+	$REQUEST_PHP_DIR = realpath(dirname( __FILE__));
+	define("REQUEST_PHP_DIR", $REQUEST_PHP_DIR);	
+}
+
 ?>
