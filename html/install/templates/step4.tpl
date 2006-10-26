@@ -32,6 +32,7 @@
 	</td>
 </tr>
 <tr><td align="left" class="fs12"><input type="radio" id="ok" name="ok" checked value="ok"><label for="ok">反中(蹂儔)</label></td></tr>
+<tr><td align="left" class="fs12"><input type="radio" id="ok" name="ng" checked value="ng"><label for="ng">中中尹</label></td></tr>
 </table>
 
 <table width="500" border="0" cellspacing="1" cellpadding="8" summary=" ">
