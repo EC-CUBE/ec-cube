@@ -222,7 +222,7 @@ case 'complete':
 	
 	sfprintr($_POST);
 	// サイト情報を送信しても良い場合には送る
-	if($_POST['send_info'] == true){
+	if($_POST['send_info'] == "true"){
 $req = new HTTP_Request("http://www.ec-cube.net/mall/use_site.php");
 $req->setMethod(HTTP_REQUEST_METHOD_POST);
 $req->addPostData("Foo", "bar");
