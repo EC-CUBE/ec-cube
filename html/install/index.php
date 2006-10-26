@@ -231,11 +231,14 @@ case 'complete':
 		$req->addPostData("php_ver", $_POST["tpl_php_ver"]);
 		$req->addPostData("db_ver", $_POST["tpl_db_ver"]);
 		
+		$arrSendData = array();
 		foreach($_POST as $key => $val){
-			if (ereg("^tpl_*", $key)){
-				sfprintr($key);
+			if (ereg("^send_*", $key)){
+				$arrSendDataTmp = array($key => $val);
+				array_merge($arrSendData, $arrSendDataTmp);
 			}
 		}
+				sfprintr($arrSendData);
 		
 		
 		if (!PEAR::isError($req->sendRequest())) {
