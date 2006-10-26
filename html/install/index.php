@@ -234,7 +234,7 @@ case 'complete':
 		$arrSendData = array();
 		foreach($_POST as $key => $val){
 			if (ereg("^senddata_*", $key)){
-				$arrSendDataTmp = array(trim($key, "senddata") => $val);
+				$arrSendDataTmp = array(trim($key, "senddata_") => $val);
 				$arrSendData = array_merge($arrSendData, $arrSendDataTmp);
 			}
 		}
