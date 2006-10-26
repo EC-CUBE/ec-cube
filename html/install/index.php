@@ -155,7 +155,7 @@ case 'step3':
 		// 設定ファイルの生成
 		lfMakeConfigFile();
 		$objPage = lfDispStep3($objPage);
-		$objPage->tpl_mode = 'complete';
+		$objPage->tpl_mode = 'step4';
 	} else {
 		$objPage = lfDispStep3($objPage);
 	}
