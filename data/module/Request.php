@@ -49,12 +49,8 @@ if(!defined('REQUEST_PHP_DIR')) {
 }
 
 require_once REQUEST_PHP_DIR . '/PEAR.php';
-//require_once REQUEST_PHP_DIR . '/Net/Socket.php';
-//require_once REQUEST_PHP_DIR . '/Net/URL.php';
-
-//require_once 'PEAR.php';
-require_once 'Net/Socket.php';
-require_once 'Net/URL.php';
+require_once REQUEST_PHP_DIR . '/Net/Socket.php';
+require_once REQUEST_PHP_DIR . '/Net/URL.php';
 
 define('HTTP_REQUEST_METHOD_GET',     'GET',     true);
 define('HTTP_REQUEST_METHOD_HEAD',    'HEAD',    true);
