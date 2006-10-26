@@ -363,7 +363,7 @@ $arrPERMISSION["/admin/entry/delete.php"] = 1;
 $arrPERMISSION["/admin/entry/inputzip.php"] = 1;
 $arrPERMISSION["/admin/search/delete_note.php"] = 1;
 
-$arrPERMISSION["admin/basis/index.php"] = 0;
+$arrPERMISSION["/admin/basis/index.php"] = 0;
 
 // ログアウト不可ページ
 $arrDISABLE_LOGOUT = array(
