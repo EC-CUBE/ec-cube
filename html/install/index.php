@@ -411,7 +411,7 @@ function lfDispStep4($objPage) {
 	$objPage->tpl_php_ver = phpversion();
 	$objPage->tpl_db_ver = "";//sfGetDBVersion($dsn);
 	
-	sfprintr( $objDbParam->getHashArray());
+	sfprintr( $objDBParam->getHashArray());
 	
 	$objPage->tpl_mainpage = 'step4.tpl';
 	$objPage->tpl_mode = 'step4';
