@@ -60,7 +60,7 @@ case 'select':
 		
 		print($aff_tag);
 		
-		$objFormParam->setValue('aff_tag', $aff_tag);		
+		$objFormParam->setValue('aff_tag', "");		
 	}
 	break;
 default:
