@@ -8,7 +8,11 @@
 <input type="hidden" name="mode" value="<!--{$tpl_mode}-->">
 <input type="hidden" name="step" value="0">
 <input type="hidden" name="db_skip" value=<!--{$tpl_db_skip}-->>
-
+<input type="hidden" name="tpl_site_url" value=<!--{$tpl_site_url}-->>
+<input type="hidden" name="tpl_shop_name" value=<!--{$tpl_shop_name}-->>
+<input type="hidden" name="tpl_cube_ver" value=<!--{$tpl_cube_ver}-->>
+<input type="hidden" name="tpl_php_ver" value=<!--{$tpl_php_ver}-->>
+<input type="hidden" name="tpl_db_ver" value=<!--{$tpl_db_ver}-->>
 <!--{foreach key=key item=item from=$arrHidden}-->
 <input type="hidden" name="<!--{$key}-->" value="<!--{$item|escape}-->">
 <!--{/foreach}-->
