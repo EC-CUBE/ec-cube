@@ -19,6 +19,7 @@ class LC_Page {
 $objPage = new LC_Page();
 $conn = new SC_DBConn();
 $objCookie = new SC_Cookie(COOKIE_EXPIRE);
+$objCookie->setCookie('login_email', '');
 
 sfprintr($objCookie);
 sfprintr($_COOKIE);
