@@ -88,7 +88,7 @@ self.moveTo(20,20);self.focus();
 											<td width="337" bgcolor="#ffffff">
 											<!--{assign var=key value="aff_tag"}-->
 											<span class="red12"><!--{$arrErr[$key]}--></span>
-											受注番号：[[order_id]]、購入合計:[[total]]
+											動的データの埋め込みが可能です（受注番号：[[order_id]]、購入合計:[[total]]）
 											<textarea name="<!--{$key}-->" maxlength="<!--{$arrForm[$key].length}-->" cols="40" rows="8" class="area40" style="<!--{$arrErr[$key]|sfGetErrorColor}-->"><!--{$arrForm[$key].value|escape}--></textarea>
 											</br><span class="red"> （上限<!--{$arrForm[$key].length}-->文字）</span>
 											</td>
