@@ -228,6 +228,9 @@ case 'return_step1':
 case 'return_step2':
 	$objPage = lfDispStep2($objPage);
 	break;
+case 'return_step3':
+	$objPage = lfDispStep3($objPage);
+	break;
 case 'return_welcome':
 default:
 	$objPage = lfDispWelcome($objPage);
