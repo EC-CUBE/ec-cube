@@ -404,7 +404,7 @@ function lfDispStep4($objPage) {
 	
 	$objPage->tpl_site_url = $objWebParam->getValue('normal_url');;
 	$objPage->tpl_shop_name = $objWebParam->getValue('shop_name');;
-	$objPage->tpl_cube_ver = $_POST['db_skip'];
+	$objPage->tpl_cube_ver = ECCUBE_VERSION;
 	$objPage->tpl_php_ver = phpversion();;
 	$objPage->tpl_db_ver = "";//sfGetDBVersion($dsn);
 	
