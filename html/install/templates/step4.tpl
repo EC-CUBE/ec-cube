@@ -31,7 +31,7 @@
 	</table>
 	</td>
 </tr>
-<tr><td align="left" class="fs12"><input type="radio" id="ok" name="test" checked value="ok"><label for="ok">はい(推奨)</label>　<input type="radio" id="ng" name="test" value="ng"><label for="ng">いいえ</label></td></tr>
+<tr><td align="left" class="fs12"><input type="radio" id="ok" name="info_send" checked value="ok"><label for="ok">はい(推奨)</label>　<input type="radio" id="ng" name="info_send" value="ng"><label for="ng">いいえ</label></td></tr>
 </table>
 
 <table width="500" border="0" cellspacing="1" cellpadding="8" summary=" ">

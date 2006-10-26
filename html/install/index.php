@@ -194,6 +194,8 @@ case 'drop':
 // 完了画面
 case 'complete':
 
+sfprintr($_POST);
+
 	// ショップマスタ情報の書き込み
 	$arrRet =  $objDBParam->getHashArray();
 	
