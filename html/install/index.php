@@ -231,6 +231,13 @@ case 'complete':
 		$req->addPostData("php_ver", $_POST["tpl_php_ver"]);
 		$req->addPostData("db_ver", $_POST["tpl_db_ver"]);
 		
+		foreach($_POST as $key => $val){
+			if (!ereg("^tpl_*", $key)){
+				sfprintr($key);
+			}
+		}
+		
+		
 		if (!PEAR::isError($req->sendRequest())) {
 			$response1 = $req->getResponseBody();
 		} else {
