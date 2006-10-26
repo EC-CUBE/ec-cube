@@ -363,7 +363,7 @@ $arrPERMISSION["/admin/entry/delete.php"] = 1;
 $arrPERMISSION["/admin/entry/inputzip.php"] = 1;
 $arrPERMISSION["/admin/search/delete_note.php"] = 1;
 
-$arrPERMISSION["/admin/basis/index.php"] = 1;
+$arrPERMISSION["/admin/basis/"] = 0;
 
 
 
