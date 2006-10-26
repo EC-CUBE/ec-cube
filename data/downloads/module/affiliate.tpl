@@ -93,7 +93,7 @@ self.moveTo(20,20);self.focus();
 											</td>
 										</tr>
 										<tr class="fs12n">
-											<td colspan="2">以下の置き換え文字で動的データの表示が可能です。<br>受注番号：[[order_id]]<br>購入合計:[[total]]</br></td>
+											<td colspan="2">以下の置き換え文字で動的データの表示が可能です。<br>[[order_id]]：受注番号<br>[[total]]：購入合計</br></td>
 										</tr>																			
 									</table>
 
