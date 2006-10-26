@@ -238,8 +238,8 @@ case 'complete':
 				$arrSendData = array_merge($arrSendData, $arrSendDataTmp);
 			}
 		}
-		sfprintr($arrSendData);
 		
+		$req->addPostData("Foo", "bar");
 		
 		if (!PEAR::isError($req->sendRequest())) {
 			$response1 = $req->getResponseBody();
