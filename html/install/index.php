@@ -225,13 +225,14 @@ $req = new HTTP_Request("http://www.ec-cube.net/mall/use_site.php");
 $req->setMethod(HTTP_REQUEST_METHOD_POST);
 $req->addPostData("Foo", "bar");
 if (!PEAR::isError($req->sendRequest())) {
-     $response1 = $req->getResponseBody();
+	$response1 = $req->getResponseBody();
 } else {
-     $response1 = "";
+	$response1 = "";
 }
 
 sfprintr(!PEAR::isError($req->sendRequest()));
 
+$response1 = $req->getResponseBody();
 	}
 	
 	break;
