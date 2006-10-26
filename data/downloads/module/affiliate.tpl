@@ -77,7 +77,7 @@ self.moveTo(20,20);self.focus();
 											<td width="337" bgcolor="#ffffff">
 											<!--{assign var=key value="conv_page"}-->
 											<span class="red12"><!--{$arrErr[$key]}--></span>
-											<select name="<!--{$key}-->" style="<!--{$arrErr[$key]|sfGetErrorColor}-->">
+											<select name="<!--{$key}-->" style="<!--{$arrErr[$key]|sfGetErrorColor}-->" onclick="">
 											<option value="">選択してください</option>
 											<!--{html_options options=$arrConversionPage selected=$arrForm[$key].value}-->
 											</select>
@@ -88,7 +88,7 @@ self.moveTo(20,20);self.focus();
 											<td width="337" bgcolor="#ffffff">
 											<!--{assign var=key value="aff_tag"}-->
 											<span class="red12"><!--{$arrErr[$key]}--></span>
-											<textarea name="<!--{$key}-->" maxlength="<!--{$arrForm[$key].length}-->" cols="40" rows="8" class="area40" style="" ><!--{$arrForm[$key].value|escape}--></textarea>
+											<textarea name="<!--{$key}-->" maxlength="<!--{$arrForm[$key].length}-->" cols="40" rows="8" class="area40" style="<!--{$arrErr[$key]|sfGetErrorColor}-->"><!--{$arrForm[$key].value|escape}--></textarea>
 											</br><span class="red"> （上限<!--{$arrForm[$key].length}-->文字）</span>
 											</td>
 										</tr>										

@@ -76,21 +76,21 @@ self.moveTo(20,20);self.focus();
 											<td width="90" bgcolor="#f3f3f3">ユーザID<span class="red">※</span></td>
 											<td width="337" bgcolor="#ffffff">
 											<span class="red"><!--{$arrErr.user}--></span>
-											<input type="text" name="user" size="30" value="<!--{$arrForm.user.value}-->" class="box30" maxlength="50"/>
+											<input type="text" name="user" size="30" style="<!--{$arrErr.user|sfGetErrorColor}-->" value="<!--{$arrForm.user.value}-->" class="box30" maxlength="50"/>
 											</td>
 										</tr>	
 										<tr class="fs12n">
 											<td width="90" bgcolor="#f3f3f3">パスワード<span class="red">※</span></td>
 											<td width="337" bgcolor="#ffffff">
 											<span class="red"><!--{$arrErr.pass}--></span>
-											<input type="password" name="pass" size="30" value="<!--{$arrForm.pass.value}-->" class="box30" maxlength="50"/>
+											<input type="password" name="pass" size="30" style="<!--{$arrErr.pass|sfGetErrorColor}-->" value="<!--{$arrForm.pass.value}-->" class="box30" maxlength="50"/>
 											</td>
 										</tr>	
 										<tr class="fs12n">
 											<td width="90" bgcolor="#f3f3f3">タグ識別ID<span class="red">※</span></td>
 											<td width="337" bgcolor="#ffffff">
 											<span class="red"><!--{$arrErr.cid}--></span>
-											<input type="text" name="cid" size="30" value="<!--{$arrForm.cid.value}-->" class="box30" maxlength="50"/>
+											<input type="text" name="cid" size="30" style="<!--{$arrErr.cid|sfGetErrorColor}-->" value="<!--{$arrForm.cid.value}-->" class="box30" maxlength="50"/>
 											</td>
 										</tr>										
 									</table>

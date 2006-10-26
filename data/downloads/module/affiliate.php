@@ -40,12 +40,17 @@ case 'edit':
 	$objPage->arrErr = $objFormParam->checkError();
 	if(count($objPage->arrErr) == 0) {
 		$arrRet = $objFormParam->getHashArray();
+		/*
 		$sqlval['sub_data'] = serialize($arrRet);
 		$objQuery = new SC_Query();
 		$objQuery->update("dtb_module", $sqlval, "module_id = ?", array(EBIS_TAG_MID));
 		// javascript実行
 		//$objPage->tpl_onload = "window.close();";
+		*/
 	}
+	break;
+case 'load':
+	
 	break;
 default:
 	$arrRet = $objQuery->select("sub_data", "dtb_module", "module_id = ?", array(EBIS_TAG_MID));
@@ -55,7 +60,7 @@ default:
 }
 
 $objPage->arrForm = $objFormParam->getFormParamList();
-$objView->assignobj($objPage);		//変数をテンプレートにアサインする
+$objView->assignobj($objPage);					//変数をテンプレートにアサインする
 $objView->display($objPage->tpl_mainpage);		//テンプレートの出力
 //-------------------------------------------------------------------------------------------------------
 /* パラメータ情報の初期化 */
