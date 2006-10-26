@@ -393,7 +393,7 @@ function lfDispStep3($objPage) {
 }
 
 // STEP3画面の表示
-function lfDispStep3($objPage) {
+function lfDispStep4($objPage) {
 	global $objWebParam;
 	global $objDBParam;
 	// hiddenに入力値を保持
