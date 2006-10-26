@@ -18,13 +18,6 @@ class LC_Page {
 
 $objPage = new LC_Page();
 $conn = new SC_DBConn();
-$objCookie = new SC_Cookie(COOKIE_EXPIRE);
-$objCookie->setCookie('login_email', '');
-
-define(DOMAIN_NAM, "eccube.net");
-sfprintr(DOMAIN_NAM);
-sfprintr($objCookie);
-sfprintr($_COOKIE);
 
 // レイアウトデザインを取得
 $objPage = sfGetPageLayout($objPage, false, "index.php");
