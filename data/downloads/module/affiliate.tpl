@@ -75,7 +75,7 @@ self.moveTo(20,20);self.focus();
 										<tr class="fs12n">
 											<td width="90" bgcolor="#f3f3f3">コンバージョンページ<span class="red">※</span></td>
 											<td width="337" bgcolor="#ffffff">
-											<!--{assign var=key value="status"}-->
+											<!--{assign var=key value="conv_page"}-->
 											<span class="red12"><!--{$arrErr[$key]}--></span>
 											<select name="<!--{$key}-->" style="<!--{$arrErr[$key]|sfGetErrorColor}-->">
 											<option value="">選択してください</option>
@@ -84,17 +84,12 @@ self.moveTo(20,20);self.focus();
 											</td>
 										</tr>	
 										<tr class="fs12n">
-											<td width="90" bgcolor="#f3f3f3">パスワード<span class="red">※</span></td>
+											<td width="90" bgcolor="#f3f3f3">アフィリエイトタグ<span class="red">※</span></td>
 											<td width="337" bgcolor="#ffffff">
-											<span class="red"><!--{$arrErr.pass}--></span>
-											<input type="password" name="pass" size="30" value="<!--{$arrForm.pass.value}-->" class="box30" maxlength="50"/>
-											</td>
-										</tr>	
-										<tr class="fs12n">
-											<td width="90" bgcolor="#f3f3f3">タグ識別ID<span class="red">※</span></td>
-											<td width="337" bgcolor="#ffffff">
-											<span class="red"><!--{$arrErr.cid}--></span>
-											<input type="text" name="cid" size="30" value="<!--{$arrForm.cid.value}-->" class="box30" maxlength="50"/>
+											<!--{assign var=key value="aff_tag"}-->
+											<span class="red12"><!--{$arrErr[$key]}--></span>
+											<textarea name="<!--{$key}-->" maxlength="<!--{$arrForm[$key].length}-->" cols="60" rows="8" class="area60" style="" ><!--{$arrForm[$key].value|escape}--></textarea>
+											<span class="red"> （上限<!--{$arrForm[$key].length}-->文字）</span>
 											</td>
 										</tr>										
 									</table>
