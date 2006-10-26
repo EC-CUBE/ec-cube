@@ -71,7 +71,7 @@ if ($uniqid != "") {
 	//合計価格の取得
 	$total = $objQuery->get("dtb_order", "total", "order_id = ? ", array($order_id));
 	if($total != "") {
-		$objPage->tpl_aff_option = "total=$total";
+		$objPage->tpl_aff_option.= "|total=$total";
 	}
 }
 
