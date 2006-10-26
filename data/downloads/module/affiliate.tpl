@@ -88,7 +88,7 @@ self.moveTo(20,20);self.focus();
 											<td width="337" bgcolor="#ffffff">
 											<!--{assign var=key value="aff_tag"}-->
 											<span class="red12"><!--{$arrErr[$key]}--></span>
-											<textarea name="<!--{$key}-->" maxlength="<!--{$arrForm[$key].length}-->" cols="60" rows="8" class="area60" style="" ><!--{$arrForm[$key].value|escape}--></textarea>
+											<textarea name="<!--{$key}-->" maxlength="<!--{$arrForm[$key].length}-->" cols="50" rows="8" class="area50" style="" ><!--{$arrForm[$key].value|escape}--></textarea>
 											</br><span class="red"> （上限<!--{$arrForm[$key].length}-->文字）</span>
 											</td>
 										</tr>										
