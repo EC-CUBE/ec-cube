@@ -68,6 +68,11 @@ if ($uniqid != "") {
 	// コンバージョンページの設定
 	$objPage->tpl_conv_page = AFF_SHOPPING_COMPLETE;
 	$objPage->tpl_aff_option = "order_id=$order_id";
+	//合計価格の取得
+	$total = $objQuery->get("dtb_order", "total", "order_id = ? ", array($order_id));
+	if($total != "") {
+		$objPage->tpl_aff_option = "total=$total";
+	}
 }
 
 $objPage->arrInfo = $arrInfo;

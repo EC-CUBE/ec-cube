@@ -78,11 +78,7 @@ function sfPrintAffTag($conv_page, $option) {
 		$arrSubData = unserialize($arrRet[0]['sub_data']);
 		$aff_tag = $arrSubData[$conv_page];
 		
-		if(ereg("|", $option)) {
-			$array = split("|", $option);
-		} else {
-			$array[] = $option;
-		}
+		$array = split("\|", $option);
 		
 		// 特定文字の置き換え
 		foreach($array as $each) {
