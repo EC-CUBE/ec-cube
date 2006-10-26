@@ -21,6 +21,7 @@ $conn = new SC_DBConn();
 $objCookie = new SC_Cookie(COOKIE_EXPIRE);
 
 sfprintr($objCookie);
+sfprintr($_COOKIE);
 
 // レイアウトデザインを取得
 $objPage = sfGetPageLayout($objPage, false, "index.php");
