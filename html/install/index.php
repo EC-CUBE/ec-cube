@@ -401,13 +401,17 @@ function lfDispStep4($objPage) {
 	// hiddenに入力値を保持
 	$objPage->arrHidden = array_merge($objPage->arrHidden, $objDBParam->getHashArray());
 	
+	$normal_url = $objWebParam->getValue('normal_url');
+	// 語尾に'/'をつける
+	if (!ereg("/$", $normal_url)) $normal_url = $normal_url . "/";
 	
-	$objPage->tpl_site_url = $objWebParam->getValue('normal_url');;
-	$objPage->tpl_shop_name = $objWebParam->getValue('shop_name');;
+	$objPage->tpl_site_url = $normal_url;
+	$objPage->tpl_shop_name = $objWebParam->getValue('shop_name');
 	$objPage->tpl_cube_ver = ECCUBE_VERSION;
-	$objPage->tpl_php_ver = phpversion();;
+	$objPage->tpl_php_ver = phpversion();
 	$objPage->tpl_db_ver = "";//sfGetDBVersion($dsn);
 	
+	sfprintr( $objWebParam->getHashArray());
 	
 	$objPage->tpl_mainpage = 'step4.tpl';
 	$objPage->tpl_mode = 'step4';
