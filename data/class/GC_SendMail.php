@@ -77,19 +77,11 @@ class GC_SendMail {
 
 	//	メール送信を実行する
 	function sendMail() {
-		
-		
-		print($this->body);
-		//Mb_language( "Japanese" );
-		$this->body = mb_convert_encoding($this->body, 'Shift-JIS');
-		print($this->body);
-		
-		exit;
-		
-		mb_language("uni");
 
+		Mb_language( "Japanese" );
+		
 		//　メール送信
-		if(mb_send_mail($this->to, $this->subject, $this->body, $this->header)) {
+		if( mb_send_mail( $this->to, $this->subject, $this->body, $this->header, "-f" . $this->return_path ) ) {
 			return true;
 		}
 		return false;
