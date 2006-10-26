@@ -43,9 +43,6 @@ case 'edit':
 		$arrSubData = unserialize($arrRet[0]['sub_data']);
 		$arrRet = $objFormParam->getHashArray();		
 		$arrSubData[$arrRet['conv_page']] = $arrRet['aff_tag'];
-		
-		sfPrintR($arrSubData);
-		
 		$sqlval['sub_data'] = serialize($arrSubData);
 		$objQuery = new SC_Query();
 		$objQuery->update("dtb_module", $sqlval, "module_id = ?", array(AFF_TAG_MID));
@@ -60,7 +57,7 @@ case 'select':
 		$arrSubData = unserialize($arrRet[0]['sub_data']);
 		$arrData['conv_page'] = $conv_page;
 		$arrData['aff_tag'] = $arrSubData[$conv_page];
-		$objFormParam->setParam($arrSubData);
+		$objFormParam->setParam($arrData);
 	}
 	break;
 default:
