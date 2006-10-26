@@ -220,7 +220,7 @@ case 'complete':
 	
 	// サイト情報を送信しても良い場合には送る
 	if($_POST['send_info']){
-
+		require_once(DATA_PATH. "module/Request.php");
 	}
 	
 	break;
