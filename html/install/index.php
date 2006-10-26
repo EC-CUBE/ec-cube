@@ -193,9 +193,6 @@ case 'drop':
 	break;
 // 完了画面
 case 'complete':
-
-sfprintr($_POST);
-
 	// ショップマスタ情報の書き込み
 	$arrRet =  $objDBParam->getHashArray();
 	
@@ -220,6 +217,21 @@ sfprintr($_POST);
 	global $GLOBAL_ERR;
 	$GLOBAL_ERR = "";
 	$objPage = lfDispComplete($objPage);
+	
+	// サイト情報を送信しても良い場合には送る
+	if($_POST['send_info']){
+		require_once "HTTP/Request.php";
+		
+		$req =& new HTTP_Request("http://www.ec-cube.net/mall/use_site.php");
+		$req->setMethod(HTTP_REQUEST_METHOD_POST);
+		$req->addPostData("Foo", "bar");
+		if (!PEAR::isError($req->sendRequest())) {
+		     $response1 = $req->getResponseBody();
+		} else {
+		     $response1 = "";
+		}
+	}
+	
 	break;
 case 'return_step0':
 	$objPage = lfDispStep0($objPage);
