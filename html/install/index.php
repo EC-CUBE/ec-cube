@@ -408,6 +408,8 @@ function lfDispStep4($objPage) {
 	// hiddenに入力値を保持
 	$objPage->arrHidden = array_merge($objPage->arrHidden, $objDBParam->getHashArray());
 	
+	sfprintr($objPage->arrHidden);
+	
 	$normal_url = $objWebParam->getValue('normal_url');
 	// 語尾に'/'をつける
 	if (!ereg("/$", $normal_url)) $normal_url = $normal_url . "/";
