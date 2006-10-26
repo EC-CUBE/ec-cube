@@ -408,8 +408,6 @@ function lfDispStep4($objPage) {
 	$objPage->arrHidden = array_merge($objPage->arrHidden, $objDBParam->getHashArray());
 	// hiddenに入力値を保持
 	
-	sfprintr($_POST);
-	
 	$normal_url = $objWebParam->getValue('normal_url');
 	// 語尾に'/'をつける
 	if (!ereg("/$", $normal_url)) $normal_url = $normal_url . "/";
@@ -422,7 +420,7 @@ function lfDispStep4($objPage) {
 	$objPage->tpl_cube_ver = ECCUBE_VERSION;
 	$objPage->tpl_php_ver = phpversion();
 	$objPage->tpl_db_ver = sfGetDBVersion($dsn);
-
+	$objPage->tpl_db_skip = $_POST['db_skip'];
 	$objPage->tpl_mainpage = 'step4.tpl';
 	$objPage->tpl_mode = 'complete';
 	return $objPage;
