@@ -32,8 +32,6 @@ if($objCustomer->isLoginSuccess()) {
 		$objSubPage->tpl_login_memory = "1";
 	}
 	
-	sfprintr($objCookie->getCookie('login_email'));
-	
 	// POSTされてきたIDがある場合は優先する。
 	if($_POST['login_email'] != "") {
 		$objSubPage->tpl_login_email = $_POST['login_email'];
