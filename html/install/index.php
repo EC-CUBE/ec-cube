@@ -235,10 +235,10 @@ case 'complete':
 		foreach($_POST as $key => $val){
 			if (ereg("^send_*", $key)){
 				$arrSendDataTmp = array($key => $val);
-				array_merge($arrSendData, $arrSendDataTmp);
+				$arrSendData = array_merge($arrSendData, $arrSendDataTmp);
 			}
 		}
-				sfprintr($arrSendData);
+		sfprintr($arrSendData);
 		
 		
 		if (!PEAR::isError($req->sendRequest())) {

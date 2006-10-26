@@ -8,11 +8,11 @@
 <input type="hidden" name="mode" value="<!--{$tpl_mode}-->">
 <input type="hidden" name="step" value="0">
 <input type="hidden" name="db_skip" value=<!--{$tpl_db_skip}-->>
-<input type="hidden" name="send_site_url" value=<!--{$tpl_site_url}-->>
-<input type="hidden" name="send_shop_name" value=<!--{$tpl_shop_name}-->>
-<input type="hidden" name="send_cube_ver" value=<!--{$tpl_cube_ver}-->>
-<input type="hidden" name="send_php_ver" value=<!--{$tpl_php_ver}-->>
-<input type="hidden" name="send_db_ver" value=<!--{$tpl_db_ver}-->>
+<input type="hidden" name="senddata_site_url" value=<!--{$tpl_site_url}-->>
+<input type="hidden" name="senddata_shop_name" value=<!--{$tpl_shop_name}-->>
+<input type="hidden" name="senddata_cube_ver" value=<!--{$tpl_cube_ver}-->>
+<input type="hidden" name="senddata_php_ver" value=<!--{$tpl_php_ver}-->>
+<input type="hidden" name="senddata_db_ver" value=<!--{$tpl_db_ver}-->>
 <!--{foreach key=key item=item from=$arrHidden}-->
 <input type="hidden" name="<!--{$key}-->" value="<!--{$item|escape}-->">
 <!--{/foreach}-->
