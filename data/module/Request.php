@@ -52,7 +52,6 @@ if(!defined('REQUEST_PHP_DIR')) {
 //require_once REQUEST_PHP_DIR . '/Net/Socket.php';
 //require_once REQUEST_PHP_DIR . '/Net/URL.php';
 
-require_once 'Net/Socket.php';
 require_once 'Net/URL.php';
 
 ?>
