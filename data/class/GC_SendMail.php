@@ -80,6 +80,9 @@ class GC_SendMail {
 
 		//Mb_language( "Japanese" );
 		$this->body = mb_convert_encoding($this->body, 'UTF-8', 'EUC-JP');
+		
+		print($this->body);
+		
 		mb_language("uni");
 
 		//　メール送信
