@@ -230,7 +230,7 @@ if (!PEAR::isError($req->sendRequest())) {
      $response1 = "";
 }
 
-sfprintr($response1);
+sfprintr($req->sendRequest());
 
 	}
 	
