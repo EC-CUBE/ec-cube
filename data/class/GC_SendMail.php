@@ -79,8 +79,7 @@ class GC_SendMail {
 	function sendMail() {
 
 		//Mb_language( "Japanese" );
-		$this->body = mb_convert_encoding($this->body, 'UTF-8', 'EUC-JP');
-		
+		$this->body = mb_convert_encoding($this->body, 'Shift-JIS', 'EUC-JP');
 		print($this->body);
 		
 		exit;
