@@ -21,7 +21,10 @@
 	<table width="500" border="0" cellspacing="1" cellpadding="8" summary=" ">
 		<tr>
 			<td bgcolor="#ffffff" class="fs12" height="50">
-				接続情報：<!--{$tpl_db_version}-->
+				接続情報：<!--{$tpl_db_version}--><br/>
+				接続情報：<!--{$tpl_db_version}--><br/>
+				接続情報：<!--{$tpl_db_version}--><br/>
+				接続情報：<!--{$tpl_db_version}--><br/>
 		
 			</td>
 		</tr>
