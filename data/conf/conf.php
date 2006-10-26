@@ -374,7 +374,7 @@ $arrDISABLE_LOGOUT = array(
 
 // メンバー管理-権限
 $arrAUTHORITY[0] = "管理者";
-// $arrAUTHORITY[1] = "一般";
+$arrAUTHORITY[1] = "一般";
 // $arrAUTHORITY[2] = "閲覧";
 
 // メンバー管理-稼働状況
