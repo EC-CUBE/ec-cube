@@ -43,17 +43,4 @@
 // echo $a->getResponseBody();
 //
 
-if(!defined('REQUEST_PHP_DIR')) {
-	$REQUEST_PHP_DIR = realpath(dirname( __FILE__));
-	define("REQUEST_PHP_DIR", $REQUEST_PHP_DIR);	
-}
-
-//require_once REQUEST_PHP_DIR . '/PEAR.php';
-//require_once REQUEST_PHP_DIR . '/Net/Socket.php';
-//require_once REQUEST_PHP_DIR . '/Net/URL.php';
-
-require_once 'PEAR.php';
-require_once 'Net/Socket.php';
-require_once 'Net/URL.php';
-
 ?>
