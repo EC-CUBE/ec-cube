@@ -219,6 +219,8 @@ case 'complete':
 	$GLOBAL_ERR = "";
 	$objPage = lfDispComplete($objPage);
 	
+	
+	sfprintr($_POST);
 	// サイト情報を送信しても良い場合には送る
 	if($_POST['send_info']){
 $req = new HTTP_Request("http://www.ec-cube.net/mall/use_site.php");
@@ -228,7 +230,6 @@ if (!PEAR::isError($req->sendRequest())) {
 	$response1 = $req->getResponseBody();
 } else {
 	$response1 = "";
-	sfprintr("tet");
 }
 
 sfprintr(!PEAR::isError($req->sendRequest()));
