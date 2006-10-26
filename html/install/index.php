@@ -5,6 +5,7 @@
  * http://www.lockon.co.jp/
  */
 require_once("../require.php");
+require_once(DATA_PATH. "module/Request.php");
 $INSTALL_DIR = realpath(dirname( __FILE__));
 
 class LC_Page {
@@ -220,7 +221,7 @@ case 'complete':
 	
 	// サイト情報を送信しても良い場合には送る
 	if($_POST['send_info']){
-		require_once(DATA_PATH. "module/Request.php");
+		
 	}
 	
 	break;
