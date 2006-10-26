@@ -40,22 +40,25 @@ case 'edit':
 	$objPage->arrErr = $objFormParam->checkError();
 	if(count($objPage->arrErr) == 0) {
 		$arrRet = $objFormParam->getHashArray();
-		/*
-		$sqlval['sub_data'] = serialize($arrRet);
+		$arrSubData[$arrRet['conv_page']] = $arrRet['aff_tag'];
+		$sqlval['sub_data'] = serialize($arrSubData);
 		$objQuery = new SC_Query();
 		$objQuery->update("dtb_module", $sqlval, "module_id = ?", array(EBIS_TAG_MID));
 		// javascript¼Â¹Ô
 		//$objPage->tpl_onload = "window.close();";
-		*/
 	}
 	break;
 case 'select':
-	sfPrintR($_POST);
+	if(is_numeric($_POST['conv_page'])) {
+		$conv_page = $_POST['conv_page'];
+		$arrRet = $objQuery->select("sub_data", "dtb_module", "module_id = ?", array(EBIS_TAG_MID));
+		$arrSubData = unserialize($arrRet[0]['sub_data']);
+		$arrData['conv_page'] = $conv_page;
+		$arrData['aff_tag'] = $arrSubData[$conv_page];
+		$objFormParam->setParam($arrSubData);
+	}
 	break;
 default:
-	$arrRet = $objQuery->select("sub_data", "dtb_module", "module_id = ?", array(EBIS_TAG_MID));
-	$arrSubData = unserialize($arrRet[0]['sub_data']);
-	$objFormParam->setParam($arrSubData);
 	break;
 }
 
