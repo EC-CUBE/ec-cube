@@ -160,6 +160,10 @@ case 'step3':
 		$objPage = lfDispStep3($objPage);
 	}
 	break;
+case 'step4':
+	$objPage = lfDispStep4($objPage);
+	break;
+	
 // テーブル類削除
 case 'drop':
 	// 入力データを渡す。
@@ -415,7 +419,7 @@ function lfDispStep4($objPage) {
 	$objPage->tpl_db_ver = sfGetDBVersion($dsn);
 
 	$objPage->tpl_mainpage = 'step4.tpl';
-	$objPage->tpl_mode = 'step4';
+	$objPage->tpl_mode = 'complate';
 	return $objPage;
 }
 
