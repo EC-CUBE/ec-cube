@@ -5,8 +5,8 @@
  * http://www.lockon.co.jp/
  */
 require_once("../require.php");
-require_once(DATA_PATH. "module/Request.php");
 $INSTALL_DIR = realpath(dirname( __FILE__));
+require_once(DATA_PATH. "module/Request.php");
 
 class LC_Page {
 	function LC_Page() {
