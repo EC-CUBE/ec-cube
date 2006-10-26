@@ -1,7 +1,7 @@
 <?php
 
 $to = "naka@lockon.co.jp";
-$body = "¥Ά¥¤¥¦¥ν¥¨??????Ότ??";
+$body = "γ‚Άγ‚¤γ‚¦γƒ­γ‚¨β‘ β…±γ±β„΅ι«™ο¨ε½…ο¨‘εΎ·";
 
 //$body = mb_convert_encoding($body, 'UTF-8', mb_internal_encoding());
 
