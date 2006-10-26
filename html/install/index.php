@@ -405,10 +405,10 @@ function lfDispStep4($objPage) {
 	global $objDBParam;
 	// hiddenに入力値を保持
 	$objPage->arrHidden = $objWebParam->getHashArray();
-	// hiddenに入力値を保持
 	$objPage->arrHidden = array_merge($objPage->arrHidden, $objDBParam->getHashArray());
+	// hiddenに入力値を保持
 	
-	sfprintr($objPage->arrHidden);
+	sfprintr($_POST);
 	
 	$normal_url = $objWebParam->getValue('normal_url');
 	// 語尾に'/'をつける
