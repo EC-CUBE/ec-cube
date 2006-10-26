@@ -66,7 +66,8 @@ if ($uniqid != "") {
 	}
 	
 	// コンバージョンページの設定
-	$objPage->tpl_conv_page = AFF_SHOPPING_COMPLETE;		
+	$objPage->tpl_conv_page = AFF_SHOPPING_COMPLETE;
+	$objPage->tpl_eff_option = "order_id=$order_id";
 }
 
 $objPage->arrInfo = $arrInfo;

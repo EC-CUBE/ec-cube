@@ -81,7 +81,7 @@ function sfPrintAffTag($conv_page, $option) {
 		// 特定文字の置き換え
 		foreach($array as $each) {
 			list($key, $value) = split("=", $each);
-			$aff_tag = ereg_replace($key, $value, $aff_tag);
+			$aff_tag = ereg_replace("\[\[" . $key . "\]\]", $value, $aff_tag);
 		}
 		print($aff_tag);		
 	}
