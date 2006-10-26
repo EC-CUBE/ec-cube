@@ -220,7 +220,7 @@ case 'complete':
 	
 	// サイト情報を送信しても良い場合には送る
 	if($_POST['send_info']){
-		require_once "HTTP/Request.php";
+		require_once(DATA_PATH. "module/Request.php");
 		
 		$req =& new HTTP_Request("http://www.ec-cube.net/mall/use_site.php");
 		$req->setMethod(HTTP_REQUEST_METHOD_POST);
