@@ -233,6 +233,8 @@ if (!PEAR::isError($req->sendRequest())) {
 sfprintr(!PEAR::isError($req->sendRequest()));
 
 $response1 = $req->getResponseBody();
+
+sfprintr($response1);
 	}
 	
 	break;
