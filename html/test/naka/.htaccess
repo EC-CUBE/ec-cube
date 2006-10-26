@@ -1,0 +1,4 @@
+php_value mbstring.http_input UTF-8
+php_value mbstring.http_output UTF-8
+php_value default_charset UTF-8
+php_value mbstring.internal_encoding UTF-8
