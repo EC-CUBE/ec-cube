@@ -92,7 +92,10 @@ self.moveTo(20,20);self.focus();
 											<textarea name="<!--{$key}-->" maxlength="<!--{$arrForm[$key].length}-->" cols="40" rows="8" class="area40" style="<!--{$arrErr[$key]|sfGetErrorColor}-->"><!--{$arrForm[$key].value|escape}--></textarea>
 											</br><span class="red"> （上限<!--{$arrForm[$key].length}-->文字）</span>
 											</td>
-										</tr>										
+										</tr>
+										<tr class="fs12n">
+											<td colspan="2"></td>
+										</tr>																			
 									</table>
 
 									<table width="440" border="0" cellspacing="0" cellpadding="0" summary=" ">
