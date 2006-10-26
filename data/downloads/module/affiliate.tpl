@@ -89,7 +89,7 @@ self.moveTo(20,20);self.focus();
 											<!--{assign var=key value="aff_tag"}-->
 											<span class="red12"><!--{$arrErr[$key]}--></span>
 											<textarea name="<!--{$key}-->" maxlength="<!--{$arrForm[$key].length}-->" cols="30" rows="8" class="area30" style="" ><!--{$arrForm[$key].value|escape}--></textarea>
-											<span class="red"> （上限<!--{$arrForm[$key].length}-->文字）</span>
+											</br><span class="red"> （上限<!--{$arrForm[$key].length}-->文字）</span>
 											</td>
 										</tr>										
 									</table>
