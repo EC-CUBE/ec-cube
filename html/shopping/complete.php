@@ -65,7 +65,7 @@ if ($uniqid != "") {
 		$objPage->arrConv = unserialize($conveni_data);
 	}
 	
-	// コンバージョンページの設定
+	// アフィリエイト用コンバージョンタグの設定
 	$objPage->tpl_conv_page = AFF_SHOPPING_COMPLETE;
 	$objPage->tpl_aff_option = "order_id=$order_id";
 	//合計価格の取得
