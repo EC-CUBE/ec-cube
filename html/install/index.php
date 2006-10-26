@@ -221,7 +221,15 @@ case 'complete':
 	
 	// サイト情報を送信しても良い場合には送る
 	if($_POST['send_info']){
-		
+$req =& new HTTP_Request("http://www.php.net");
+$req->setMethod(HTTP_REQUEST_METHOD_POST);
+$req->addPostData("Foo", "bar");
+if (!PEAR::isError($req->sendRequest())) {
+     $response1 = $req->getResponseBody();
+} else {
+     $response1 = "";
+}
+
 	}
 	
 	break;
