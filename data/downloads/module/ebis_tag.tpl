@@ -28,7 +28,7 @@ self.moveTo(20,20);self.focus();
 </script>
 </head>
 
-<body bgcolor="#ffffff" text="#666666" link="#007bb7" vlink="#007bb7" alink="#cc0000" leftmargin="0" topmargin="0" marginwidth="0" marginheight="0" onload="">
+<body bgcolor="#ffffff" text="#666666" link="#007bb7" vlink="#007bb7" alink="#cc0000" leftmargin="0" topmargin="0" marginwidth="0" marginheight="0" onload="<!--{$tpl_onload}-->">
 <noscript>
 <link rel="stylesheet" href="/ec-cube/admin/css/common.css" type="text/css" />
 </noscript>
