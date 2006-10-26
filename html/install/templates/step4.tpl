@@ -32,7 +32,7 @@
 	</td>
 </tr>
 </table>
-<tr><td align="left" class="fs12"><input type="radio" id="ok" name="ok" checked values="データベースの初期化処理を行わない"></td></tr>
+<tr><td align="left" class="fs12"><input type="radio" id="ok" name="ok" checked ></td></tr>
 
 <table width="500" border="0" cellspacing="1" cellpadding="8" summary=" ">
 	<tr><td height="20"></td></tr>
