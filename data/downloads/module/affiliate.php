@@ -49,8 +49,8 @@ case 'edit':
 		*/
 	}
 	break;
-case 'load':
-	
+case 'select':
+	sfPrintR($_POST);
 	break;
 default:
 	$arrRet = $objQuery->select("sub_data", "dtb_module", "module_id = ?", array(EBIS_TAG_MID));

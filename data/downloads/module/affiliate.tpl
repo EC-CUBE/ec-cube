@@ -77,7 +77,7 @@ self.moveTo(20,20);self.focus();
 											<td width="337" bgcolor="#ffffff">
 											<!--{assign var=key value="conv_page"}-->
 											<span class="red12"><!--{$arrErr[$key]}--></span>
-											<select name="<!--{$key}-->" style="<!--{$arrErr[$key]|sfGetErrorColor}-->" onclick="">
+											<select name="<!--{$key}-->" style="<!--{$arrErr[$key]|sfGetErrorColor}-->" onchange="document.form1['mode'].value = 'select'; document.form1.submit();">
 											<option value="">選択してください</option>
 											<!--{html_options options=$arrConversionPage selected=$arrForm[$key].value}-->
 											</select>
