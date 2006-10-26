@@ -71,6 +71,8 @@ function sfPrintEbisTag($pid = "") {
 
 // コンバージョンタグの発行
 function sfPrintAffTag($conv_page, $option) {
+	print($option);
+	
 	if(is_numeric($conv_page)) {
 		// sub_dataよりタグ情報を読み込む
 		$objQuery = new SC_Query();
