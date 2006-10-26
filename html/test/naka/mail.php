@@ -1,9 +1,11 @@
 <?php
 
 $to = "naka@lockon.co.jp";
-$body = "こんにちわ";
+$body = "アイウロエ??????彅??";
 
-mb_language( "Japanese" );
+mb_convert_encoding($value, 'UTF-8', mb_internal_encoding());
+
+mb_language("uni");
 mb_send_mail($to, "test", $body) 
 
 ?>
