@@ -19,6 +19,10 @@
 //
 // $Id$
 
+if(!defined('SOCKET_PHP_DIR')) {
+	$SOCKET_PHP_DIR = realpath(dirname( __FILE__));
+	define("SOCKET_PHP_DIR", $SOCKET_PHP_DIR);	
+}
 require_once '../PEAR.php';
 
 define('NET_SOCKET_READ',  1);
