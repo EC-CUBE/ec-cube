@@ -219,8 +219,6 @@ case 'complete':
 	$GLOBAL_ERR = "";
 	$objPage = lfDispComplete($objPage);
 	
-	
-	sfprintr($_POST);
 	// サイト情報を送信しても良い場合には送る
 	if($_POST['send_info'] == "true"){
 		$req = new HTTP_Request("http://www.ec-cube.net/mall/use_site.php");
