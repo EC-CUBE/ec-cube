@@ -55,9 +55,9 @@ case 'select':
 		$conv_page = $_POST['conv_page'];
 		$arrRet = $objQuery->select("sub_data", "dtb_module", "module_id = ?", array(AFF_TAG_MID));
 		$arrSubData = unserialize($arrRet[0]['sub_data']);
-		$arrData['conv_page'] = $conv_page;
-		$arrData['aff_tag'] = $arrSubData[$conv_page];
-		$objFormParam->setParam($arrData);
+		$aff_tag = $arrSubData[$conv_page];
+		$objFormParam->setValue('conv_page', $conv_page);
+		$objFormParam->setValue('aff_tag', $aff_tag);		
 	}
 	break;
 default:
