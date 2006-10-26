@@ -14,8 +14,8 @@ class LC_Page {
 	//コンストラクタ
 	function LC_Page() {
 		//メインテンプレートの指定
-		$this->tpl_mainpage = MODULE_PATH . 'ebis_tag.tpl';
-		$this->tpl_subtitle = 'EBiSタグ埋め機能';
+		$this->tpl_mainpage = MODULE_PATH . 'affiliate.tpl';
+		$this->tpl_subtitle = 'アフィリエイトタグ埋め込み';
 	}
 }
 $objPage = new LC_Page();

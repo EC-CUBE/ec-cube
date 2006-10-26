@@ -15,7 +15,7 @@ class LC_Page {
 	function LC_Page() {
 		//メインテンプレートの指定
 		$this->tpl_mainpage = MODULE_PATH . 'ebis_tag.tpl';
-		$this->tpl_subtitle = 'EBiSタグ埋め機能';
+		$this->tpl_subtitle = 'EBiSタグ埋め込み機能';
 	}
 }
 $objPage = new LC_Page();
