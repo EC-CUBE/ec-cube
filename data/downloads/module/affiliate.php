@@ -47,7 +47,7 @@ case 'edit':
 		$objQuery = new SC_Query();
 		$objQuery->update("dtb_module", $sqlval, "module_id = ?", array(AFF_TAG_MID));
 		// javascript実行
-		//$objPage->tpl_onload = "window.close();";
+		$objPage->tpl_onload = "window.close();";
 	}
 	break;
 // コンバージョンページの選択

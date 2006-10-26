@@ -59,6 +59,10 @@ define("MODULE_CSV_COL_MAX", 16);
 define("EBIS_TAG_MID", 1);
 // アフィリエイトタグ機能のモジュールID
 define("AFF_TAG_MID", 2);
+// 商品購入完了
+define("AFF_SHOPPING_COMPLETE", 1);
+// ユーザ登録完了
+define("AFF_ENTRY_COMPLETE", 2);
 //--------------------------------------------------------------------------------------------------------
 
 // EC-CUBEバージョン情報
