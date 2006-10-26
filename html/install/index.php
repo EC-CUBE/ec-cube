@@ -232,7 +232,7 @@ case 'complete':
 		$req->addPostData("db_ver", $_POST["tpl_db_ver"]);
 		
 		foreach($_POST as $key => $val){
-			if (!ereg("^tpl_*", $key)){
+			if (ereg("^tpl_*", $key)){
 				sfprintr($key);
 			}
 		}
