@@ -6,7 +6,7 @@
  */
 require_once("../require.php");
 $INSTALL_DIR = realpath(dirname( __FILE__));
-//quire_once(DATA_PATH. "module/Request.php");
+require_once(DATA_PATH. "module/Request.php");
 
 class LC_Page {
 	function LC_Page() {
