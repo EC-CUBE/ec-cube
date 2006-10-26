@@ -43,6 +43,9 @@ case 'edit':
 		$arrSubData = unserialize($arrRet[0]['sub_data']);
 		$arrRet = $objFormParam->getHashArray();		
 		$arrSubData[$arrRet['conv_page']] = $arrRet['aff_tag'];
+		
+		sfPrintR($arrSubData);
+		
 		$sqlval['sub_data'] = serialize($arrSubData);
 		$objQuery = new SC_Query();
 		$objQuery->update("dtb_module", $sqlval, "module_id = ?", array(AFF_TAG_MID));
