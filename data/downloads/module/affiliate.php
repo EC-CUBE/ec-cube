@@ -57,15 +57,14 @@ case 'select':
 		$arrSubData = unserialize($arrRet[0]['sub_data']);
 		$aff_tag = $arrSubData[$conv_page];
 		$objFormParam->setValue('conv_page', $conv_page);
-		
-		print($aff_tag);
-		
-		$objFormParam->setValue('aff_tag', "");		
+		$objFormParam->setValue('aff_tag', $aff_tag);		
 	}
 	break;
 default:
 	break;
 }
+
+sfPrintR($objFormParam);
 
 $objPage->arrForm = $objFormParam->getFormParamList();
 $objView->assignobj($objPage);					//変数をテンプレートにアサインする
