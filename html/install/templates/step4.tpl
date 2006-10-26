@@ -16,13 +16,13 @@
 <tr><td align="left" class="fs12st">■サイト情報について</td></tr>
 <tr><td align="left" class="fs12">EC-CUBEのシステム向上及び、デバッグのため以下の情報のご提供をお願いいたします。</td></tr>
 <tr><td align="left" class="fs12"><input type="checkbox" id="skip" name="db_skip" <!--{if $tpl_db_skip == "on"}-->checked<!--{/if}-->> <label for="skip">データベースの初期化処理を行わない</label></td></tr>
-<tr><td bgcolor="#ffffff" class="fs12" height="50"><!--{if $tpl_db_version != ""}-->接続情報：<!--{$tpl_db_version}--><!--{/if}--></td></tr>
 <tr>
 	<td bgcolor="#cccccc" class="fs12">
 	<table width="500" border="0" cellspacing="1" cellpadding="8" summary=" ">
-		<tr>
-			<td bgcolor="#ffffff" class="fs12" height="50">接続情報：<!--{$tpl_db_version}--></td>
-		</tr>
+		<tr><td bgcolor="#ffffff" class="fs12" height="50">接続情報：<!--{$tpl_db_version}--></td></tr>
+		<tr><td bgcolor="#ffffff" class="fs12" height="50">接続情報：<!--{$tpl_db_version}--></td></tr>
+		<tr><td bgcolor="#ffffff" class="fs12" height="50">接続情報：<!--{$tpl_db_version}--></td></tr>
+		<tr><td bgcolor="#ffffff" class="fs12" height="50">接続情報：<!--{$tpl_db_version}--></td></tr>
 	</table>
 	</td>
 </tr>
