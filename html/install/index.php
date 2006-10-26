@@ -419,7 +419,7 @@ function lfDispStep4($objPage) {
 	$objPage->tpl_db_ver = sfGetDBVersion($dsn);
 
 	$objPage->tpl_mainpage = 'step4.tpl';
-	$objPage->tpl_mode = 'complate';
+	$objPage->tpl_mode = 'complete';
 	return $objPage;
 }
 
