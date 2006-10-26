@@ -12,8 +12,6 @@ class LC_Page {
 		$this->tpl_mainpage = 'shopping/complete.tpl';
 		$this->tpl_css = '/css/layout/shopping/complete.css';
 		$this->tpl_title = "ご注文完了";
-		// コンバージョンタグの表示
-		$this->conversion_tag = true;
 		global $arrCONVENIENCE;
 		$this->arrCONVENIENCE = $arrCONVENIENCE;
 		global $arrCONVENIMESSAGE;
@@ -41,36 +39,34 @@ $objSiteInfo = $objView->objSiteInfo;
 $arrInfo = $objSiteInfo->data;
 $objCustomer = new SC_Customer();
 
-if($_GET['mode'] != 'reload') {
-	// 前のページで正しく登録手続きが行われたか判定
-	sfIsPrePage($objSiteSess);
-	// ユーザユニークIDの取得と購入状態の正当性をチェック
-	$uniqid = sfCheckNormalAccess($objSiteSess, $objCartSess);
-	if ($uniqid != "") {
+// 前のページで正しく登録手続きが行われたか判定
+sfIsPrePage($objSiteSess);
+// ユーザユニークIDの取得と購入状態の正当性をチェック
+$uniqid = sfCheckNormalAccess($objSiteSess, $objCartSess);
+if ($uniqid != "") {
 
-		// 完了処理
-		$objQuery = new SC_Query();
-		$objQuery->begin();
-		$order_id = lfDoComplete($objQuery, $uniqid);
-		$objQuery->commit();
-		
-		// セッションに保管されている情報を更新する
-		$objCustomer->updateSession();
+	// 完了処理
+	$objQuery = new SC_Query();
+	$objQuery->begin();
+	$order_id = lfDoComplete($objQuery, $uniqid);
+	$objQuery->commit();
+	
+	// セッションに保管されている情報を更新する
+	$objCustomer->updateSession();
 
-		// 完了メール送信
-		if($order_id != "") {
-			sfSendOrderMail($order_id, '1');
-		}
-
-		//コンビニ決済情報の取得
-		$conveni_data = $objQuery->get("dtb_order", "conveni_data", "order_id = ? ", array($order_id));
-		if($conveni_data != "") {
-			$objPage->arrConv = unserialize($conveni_data);
-		}
-		
-		// リロードによる二重登録防止
-		sfReload("mode=reload"); 
+	// 完了メール送信
+	if($order_id != "") {
+		sfSendOrderMail($order_id, '1');
 	}
+
+	//コンビニ決済情報の取得
+	$conveni_data = $objQuery->get("dtb_order", "conveni_data", "order_id = ? ", array($order_id));
+	if($conveni_data != "") {
+		$objPage->arrConv = unserialize($conveni_data);
+	}
+	
+	// コンバージョンページの設定
+	$objPage->tpl_conv_page = AFF_SHOPPING_COMPLETE;		
 }
 
 $objPage->arrInfo = $arrInfo;
