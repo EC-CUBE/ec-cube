@@ -83,7 +83,7 @@ class GC_SendMail {
 		mb_language("uni");
 
 		//　メール送信
-		if( mb_send_mail( $this->to, $this->subject, $this->body, $this->header, "-f" . $this->return_path ) ) {
+		if(mb_send_mail($this->to, $this->subject, $this->body, $this->header)) {
 			return true;
 		}
 		return false;
