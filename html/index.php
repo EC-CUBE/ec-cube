@@ -21,6 +21,8 @@ $conn = new SC_DBConn();
 $objCookie = new SC_Cookie(COOKIE_EXPIRE);
 $objCookie->setCookie('login_email', '');
 
+define("DOMAIN_NAME", "eccube.net");
+
 sfprintr(DOMAIN_NAME);
 sfprintr($objCookie);
 sfprintr($_COOKIE);
