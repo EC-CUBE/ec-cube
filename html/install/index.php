@@ -392,7 +392,7 @@ function lfDispStep3($objPage) {
 	return $objPage;
 }
 
-// STEP3画面の表示
+// STEP4画面の表示
 function lfDispStep4($objPage) {
 	global $objWebParam;
 	global $objDBParam;

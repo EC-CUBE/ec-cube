@@ -21,11 +21,11 @@
 	<table width="500" border="0" cellspacing="1" cellpadding="8" summary=" ">
 		<tr>
 			<td bgcolor="#ffffff" class="fs12" height="50">
-				サイトURL：<!--{$tpl_db_version}--><br/>
-				店舗名：<!--{$tpl_db_version}--><br/>
-				EC-CUBEバージョン：<!--{$tpl_db_version}--><br/>
-				PHP情報：<!--{$tpl_db_version}--><br/>
-				DB情報：<!--{$tpl_db_version}--><br/>
+				サイトURL：<!--{$tpl_site_url}--><br/>
+				店舗名：<!--{$tpl_shop_name}--><br/>
+				EC-CUBEバージョン：<!--{$tpl_cube_ver}--><br/>
+				PHP情報：<!--{$tpl_php_ver}--><br/>
+				DB情報：<!--{$tpl_db_ver}--><br/>
 		
 			</td>
 		</tr>
