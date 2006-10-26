@@ -3,7 +3,7 @@
 $to = "naka@lockon.co.jp";
 $body = "アイウロエ??????彅??";
 
-mb_convert_encoding($value, 'UTF-8', mb_internal_encoding());
+$body = mb_convert_encoding($body, 'UTF-8', mb_internal_encoding());
 
 mb_language("uni");
 
