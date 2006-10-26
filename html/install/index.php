@@ -400,6 +400,15 @@ function lfDispStep4($objPage) {
 	$objPage->arrHidden = $objWebParam->getHashArray();
 	// hiddenに入力値を保持
 	$objPage->arrHidden = array_merge($objPage->arrHidden, $objDBParam->getHashArray());
+	
+	
+	$objPage->tpl_site_url = $objWebParam->getValue('normal_url');;
+	$objPage->tpl_shop_name = $objWebParam->getValue('shop_name');;
+	$objPage->tpl_cube_ver = $_POST['db_skip'];
+	$objPage->tpl_php_ver = phpversion();;
+	$objPage->tpl_db_ver = "";//sfGetDBVersion($dsn);
+	
+	
 	$objPage->tpl_mainpage = 'step4.tpl';
 	$objPage->tpl_mode = 'step4';
 	return $objPage;
