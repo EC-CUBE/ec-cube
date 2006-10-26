@@ -1,5 +1,4 @@
 <?php
-
 // タグ出力用クラス
 class LC_EbisPage {
 	function LC_EbisPage() {
@@ -67,5 +66,10 @@ function sfPrintEbisTag($pid = "") {
 		$objSubView->assignobj($objSubPage);
 		$objSubView->display($objSubPage->tpl_mainpage);
 	}
+}
+
+// エビスタグの発行
+function sfPrintAffTag() {
+	
 }
 ?>

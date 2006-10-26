@@ -75,8 +75,12 @@ self.moveTo(20,20);self.focus();
 										<tr class="fs12n">
 											<td width="90" bgcolor="#f3f3f3">ユーザID<span class="red">※</span></td>
 											<td width="337" bgcolor="#ffffff">
-											<span class="red"><!--{$arrErr.user}--></span>
-											<input type="text" name="user" size="30" value="<!--{$arrForm.user.value}-->" class="box30" maxlength="50"/>
+											<!--{assign var=key value="status"}-->
+											<span class="red12"><!--{$arrErr[$key]}--></span>
+											<select name="<!--{$key}-->" style="<!--{$arrErr[$key]|sfGetErrorColor}-->">
+											<option value="">選択してください</option>
+											<!--{html_options options=$arrConversionPage selected=$arrForm[$key].value}-->
+											</select>
 											</td>
 										</tr>	
 										<tr class="fs12n">

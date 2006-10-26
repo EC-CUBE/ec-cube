@@ -9,6 +9,11 @@
 
 require_once("../../require.php");
 
+$arrConversionPage = array(
+	1 => '商品購入完了',
+	2 => '会員登録完了'
+);
+
 //ページ管理クラス
 class LC_Page {
 	//コンストラクタ
@@ -16,6 +21,8 @@ class LC_Page {
 		//メインテンプレートの指定
 		$this->tpl_mainpage = MODULE_PATH . 'affiliate.tpl';
 		$this->tpl_subtitle = 'アフィリエイトタグ埋め込み';
+		global $arrConversionPage;
+		$this->arrConversionPage = $arrConversionPage;
 	}
 }
 $objPage = new LC_Page();
