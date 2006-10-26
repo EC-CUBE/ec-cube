@@ -73,7 +73,7 @@ self.moveTo(20,20);self.focus();
 									
 									<table width="440" border="0" cellspacing="1" cellpadding="8" summary=" ">
 										<tr class="fs12n">
-											<td width="90" bgcolor="#f3f3f3">コンバージョンページ<span class="red">※</span></td>
+											<td width="" bgcolor="#f3f3f3">コンバージョンページ<span class="red">※</span></td>
 											<td width="337" bgcolor="#ffffff">
 											<!--{assign var=key value="conv_page"}-->
 											<span class="red12"><!--{$arrErr[$key]}--></span>
@@ -88,7 +88,7 @@ self.moveTo(20,20);self.focus();
 											<td width="337" bgcolor="#ffffff">
 											<!--{assign var=key value="aff_tag"}-->
 											<span class="red12"><!--{$arrErr[$key]}--></span>
-											<textarea name="<!--{$key}-->" maxlength="<!--{$arrForm[$key].length}-->" cols="60" rows="8" class="area60" style="" ><!--{$arrForm[$key].value|escape}--></textarea>
+											<textarea name="<!--{$key}-->" maxlength="<!--{$arrForm[$key].length}-->" cols="30" rows="8" class="area30" style="" ><!--{$arrForm[$key].value|escape}--></textarea>
 											<span class="red"> （上限<!--{$arrForm[$key].length}-->文字）</span>
 											</td>
 										</tr>										
