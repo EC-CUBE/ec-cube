@@ -83,6 +83,8 @@ class GC_SendMail {
 		
 		print($this->body);
 		
+		exit;
+		
 		mb_language("uni");
 
 		//　メール送信
