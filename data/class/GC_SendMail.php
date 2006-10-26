@@ -78,10 +78,10 @@ class GC_SendMail {
 	//	メール送信を実行する
 	function sendMail() {
 
-		Mb_language( "Japanese" );
+		//Mb_language( "Japanese" );
+		mb_language("uni");
 		
-		
-		$this->body = mb_convert_encoding($this->body, 'iso-2022-jp', mb_internal_encoding());
+		$this->body = mb_convert_encoding($this->body, 'UTF-8', mb_internal_encoding());
 		
 		//　メール送信
 		if( mb_send_mail( $this->to, $this->subject, $this->body, $this->header, "-f" . $this->return_path ) ) {
