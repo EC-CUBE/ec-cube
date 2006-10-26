@@ -79,7 +79,7 @@
 										</td>
 										<td align="center">
 										<!--{if $arrUpdate[cnt].now_version != ""}-->
-											<span class="icon_confirm"><a href="#" onclick="win03('./load_module.php?module_id=<!--{$arrUpdate[cnt].module_id}-->','module','<!--{$arrUpdate[cnt].module_x}-->','<!--{$arrUpdate[cnt].module_y}-->'); return false;">実行</a></span>
+											<span class="icon_confirm"><a href="#" onclick="win01('./load_module.php?module_id=<!--{$arrUpdate[cnt].module_id}-->','module','<!--{$arrUpdate[cnt].module_x}-->','<!--{$arrUpdate[cnt].module_y}-->'); return false;">実行</a></span>
 										<!--{else}-->
 											-
 										<!--{/if}-->
