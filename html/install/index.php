@@ -7,6 +7,7 @@
 require_once("../require.php");
 $INSTALL_DIR = realpath(dirname( __FILE__));
 //require_once(DATA_PATH. "module/Request.php");
+require_once("../../data/module/Request.php");
 
 sfprintr($INSTALL_DIR);
 
