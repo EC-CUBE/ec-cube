@@ -37,7 +37,7 @@ case 'edit':
 		$objQuery = new SC_Query();
 		$objQuery->update("dtb_module", $sqlval, "module_id = ?", array(EBIS_TAG_MID));
 		// javascript¼Â¹Ô
-		//$objPage->tpl_onload = "window.close();";
+		$objPage->tpl_onload = "window.close();";
 	}
 	break;
 default:
