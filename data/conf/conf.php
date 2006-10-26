@@ -363,8 +363,6 @@ $arrPERMISSION["/admin/entry/delete.php"] = 1;
 $arrPERMISSION["/admin/entry/inputzip.php"] = 1;
 $arrPERMISSION["/admin/search/delete_note.php"] = 1;
 
-$arrPERMISSION["/admin/basis/index.php"] = 0;
-
 // ログアウト不可ページ
 $arrDISABLE_LOGOUT = array(
 	1 => "/shopping/deliv.php",
@@ -376,7 +374,7 @@ $arrDISABLE_LOGOUT = array(
 
 // メンバー管理-権限
 $arrAUTHORITY[0] = "管理者";
-$arrAUTHORITY[1] = "一般";
+//$arrAUTHORITY[1] = "一般";
 // $arrAUTHORITY[2] = "閲覧";
 
 // メンバー管理-稼働状況
