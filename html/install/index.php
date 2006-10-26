@@ -405,14 +405,15 @@ function lfDispStep4($objPage) {
 	// 語尾に'/'をつける
 	if (!ereg("/$", $normal_url)) $normal_url = $normal_url . "/";
 	
+	$arrDbParam = $objDBParam->getHashArray();
+	$dsn = $arrDbParam['db_type']."://".$arrDbParam['db_user'].":".$arrDbParam['db_password']."@".$arrDbParam['db_server'].":".$arrDbParam['db_port']."/".$arrDbParam['db_name'];
+	
 	$objPage->tpl_site_url = $normal_url;
 	$objPage->tpl_shop_name = $objWebParam->getValue('shop_name');
 	$objPage->tpl_cube_ver = ECCUBE_VERSION;
 	$objPage->tpl_php_ver = phpversion();
-	$objPage->tpl_db_ver = "";//sfGetDBVersion($dsn);
-	
-	sfprintr( $objDBParam->getHashArray());
-	
+	$objPage->tpl_db_ver = sfGetDBVersion($dsn);
+
 	$objPage->tpl_mainpage = 'step4.tpl';
 	$objPage->tpl_mode = 'step4';
 	return $objPage;
