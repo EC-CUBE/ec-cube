@@ -144,5 +144,8 @@
 <!--{/if}-->
 <!--▲FOTTER-->
 </div>
+<!--{* EBiSタグ表示用 *}-->
 <!--{$tpl_mainpage|sfPrintEbisTag}-->
+<!--{* アフィリエイトタグ表示用 *}-->
+<!--{$tpl_conv_page|sfPrintAffTag}-->
 </body>

@@ -73,12 +73,10 @@ function sfPrintEbisTag($pid = "") {
 function sfPrintAffTag($conv_page) {
 	if(is_numeric($conv_page)) {
 		// sub_dataよりタグ情報を読み込む
-		$conv_page = $_POST['conv_page'];
 		$arrRet = $objQuery->select("sub_data", "dtb_module", "module_id = ?", array(AFF_TAG_MID));
 		$arrSubData = unserialize($arrRet[0]['sub_data']);
 		$aff_tag = $arrSubData[$conv_page];
-		$objFormParam->setValue('conv_page', $conv_page);
-		$objFormParam->setValue('aff_tag', $aff_tag);		
+		print($aff_tag);		
 	}
 }
 ?>
