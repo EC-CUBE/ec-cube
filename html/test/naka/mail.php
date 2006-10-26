@@ -6,6 +6,8 @@ $body = "アイウロエ??????彅??";
 mb_convert_encoding($value, 'UTF-8', mb_internal_encoding());
 
 mb_language("uni");
-mb_send_mail($to, "test", $body) 
+if(mb_send_mail($to, "test", $body)){
+	print("ok");
+}
 
 ?>
