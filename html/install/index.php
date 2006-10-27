@@ -8,6 +8,8 @@ require_once("../require.php");
 $INSTALL_DIR = realpath(dirname( __FILE__));
 require_once("../../data/module/Request.php");
 
+define("INSTALL_LOG", "./temp/install.log");
+
 class LC_Page {
 	function LC_Page() {
 		$this->arrDB_TYPE = array(
@@ -618,7 +620,7 @@ function lfCheckDBError($objFormParam) {
 			// エラー文を取得する
 			ereg("\[(.*)\]", $objDB->userinfo, $arrKey);
 			$objErr->arrErr['all'].= $arrKey[0] . "<br>";
-			gfPrintLog($objDB->userinfo, "./temp/install.log");
+			gfPrintLog($objDB->userinfo, INSTALL_LOG);
 		}
 	}
 	return $objErr->arrErr;
@@ -652,13 +654,13 @@ function lfExecuteSQL($filepath, $dsn, $disp_err = true) {
 						ereg("\[(.*)\]", $ret->userinfo, $arrKey);
 						$arrErr['all'].= $arrKey[0] . "<br>";
 						$objPage->update_mess.=">> テーブル構成の変更に失敗しました。<br>";
-						gfPrintLog($ret->userinfo, "./temp/install.log");
+						gfPrintLog($ret->userinfo, INSTALL_LOG);
 					}
 				}
 			}			
 		} else {
 			$arrErr['all'] = ">> " . $objDB->message;
-			gfPrintLog($objDB->userinfo, "./temp/install.log");
+			gfPrintLog($objDB->userinfo, INSTALL_LOG);
 		}
 	}
 	return $arrErr;
@@ -726,4 +728,26 @@ function lfAddTable($table_name, $dsn) {
 	}
 	return $arrErr;
 }
+
+// テーブルの削除（既にテーブルが存在する場合のみ削除する）
+function lfDropTable($table_name, $dsn) {
+	$arrErr = array();
+	if(sfTabaleExists($table_name, $dsn)) {
+		// Debugモード指定
+		$options['debug'] = PEAR_DB_DEBUG;
+		$objDB = DB::connect($dsn, $options);
+		// 接続成功
+		if(!PEAR::isError($objDB)) {
+			$objDB->query("DROP TABLE " . $table_name);
+		} else {
+			$arrErr['all'] = ">> " . $objDB->message . "<br>";
+			// エラー文を取得する
+			ereg("\[(.*)\]", $objDB->userinfo, $arrKey);
+			$arrErr['all'].= $arrKey[0] . "<br>";
+			gfPrintLog($objDB->userinfo, INSTALL_LOG);
+		}
+	}
+	return $arrErr;
+}
+
 ?>
