@@ -307,7 +307,7 @@ function lfDispStep0($objPage) {
 		"../upload",
 		"../../data/Smarty/templates_c",		
 		"../../data/downloads",
-		"../../data/logs",
+		"../../data/logs"
 	);
 	
 	$mess = "";
