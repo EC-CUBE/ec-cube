@@ -57,7 +57,7 @@ define("MODULE_CSV_COL_MAX", 16);
 // エビスタグ機能のモジュールID
 define("EBIS_TAG_MID", 1);
 // アフィリエイトタグ機能のモジュールID
-define("AFF_TAG_MID", 2);
+define("AFF_TAG_MID", 3);
 // 商品購入完了
 define("AFF_SHOPPING_COMPLETE", 1);
 // ユーザ登録完了
