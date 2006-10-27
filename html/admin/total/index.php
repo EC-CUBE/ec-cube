@@ -32,6 +32,9 @@ class LC_Page {
 		$this->arrTitle['age'] = "年代別集計";
 		$this->arrTitle['job'] = "職業別集計";
 		$this->arrTitle['member'] = "会員別集計";
+		
+		// キャッシュ回避のために日付を渡す
+		$this->cashtime = time();
 	}
 }
 
@@ -43,8 +46,6 @@ sfIsSuccess($objSess);
 
 // 入力期間をセッションに記録する
 lfSaveDateSession();
-
-sfprintr(time());
 
 // パラメータ管理クラス
 $objFormParam = new SC_FormParam();
