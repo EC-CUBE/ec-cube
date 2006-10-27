@@ -307,13 +307,12 @@ function lfBatOrderAgeSub($sql, $start, $end, $start_age, $end_age, $member) {
 // 文字列にSingleQuotationを付与する
 function lfSingleQuot($value){
 	$ret = "";
-	if (DB_TYPE == "MySQL") {
+	if (DB_TYPE == "mysql") {
 		$ret = $value;
 	}else{
 		$ret = "'" . $value . "'";
 	} 
 	
-	sfprintr(DB_TYPE);
 	return $ret;
 }
 
