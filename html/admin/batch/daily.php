@@ -312,6 +312,8 @@ function lfSingleQuot($value){
 	}else{
 		$ret = "'" . $value . "'";
 	} 
+	
+	sfprintr(DB_TYPE);
 	return $ret;
 }
 
