@@ -136,6 +136,11 @@ function lfLoadUpdateList() {
 	} else {
 		while (!feof($fp)) {
 			$arrCSV = fgetcsv($fp, UPDATE_CSV_LINE_MAX);
+			
+			if(ereg("^#", $arrCSV[0])) {
+				break;
+			}
+			
 			// カラム数が正常であった場合のみ
 			if(count($arrCSV) == MODULE_CSV_COL_MAX) {
 					// 取得したアップデート情報をDBに書き込む
