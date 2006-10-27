@@ -177,7 +177,7 @@ case 'drop':
 	
 	// 追加テーブルがあれば削除する。
 	lfDropTable("dtb_module", $dsn);
-	lfDropTable("dtb_updatae", $dsn);
+	lfDropTable("dtb_session", $dsn);
 		
 	if ($arrRet['db_type'] == 'pgsql'){
 		// ビューの削除
