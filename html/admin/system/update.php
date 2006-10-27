@@ -139,7 +139,7 @@ function lfLoadUpdateList() {
 			$arrCSV = fgetcsv($fp, UPDATE_CSV_LINE_MAX);
 			
 			if(ereg("^#", $arrCSV[0])) {
-				break;
+				continue;
 			}
 						
 			// カラム数が正常であった場合のみ
