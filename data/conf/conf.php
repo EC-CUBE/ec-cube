@@ -65,7 +65,7 @@ define("AFF_ENTRY_COMPLETE", 2);
 //--------------------------------------------------------------------------------------------------------
 
 // EC-CUBEバージョン情報
-define("ECCUBE_VERSION", "1.0.0");
+define("ECCUBE_VERSION", "1.0.1beta");
 
 // PEAR::DBのデバッグモード
 define('PEAR_DB_DEBUG', 9);
