@@ -334,6 +334,8 @@ function lfBatOrderAgeSub($sql, $start, $end, $start_age, $end_age, $member) {
 	$sqlval['member'] = "$member";
 
 	$objQuery->insert("dtb_bat_order_daily_age", $sqlval);
+	
+	$objQuery->getlastquery();
 }
 
 /*
