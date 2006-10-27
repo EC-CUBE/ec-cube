@@ -13,12 +13,12 @@
 <meta http-equiv="content-type" content="application/xhtml+xml; charset=EUC-JP" />
 <meta http-equiv="content-script-type" content="text/javascript" />
 <meta http-equiv="content-style-type" content="text/css" />
-<link rel="stylesheet" href="/ec-cube/admin/css/contents.css" type="text/css" media="all" />
-<script type="text/javascript" src="/ec-cube/js/css.js"></script>
-<script type="text/javascript" src="/ec-cube/js/navi.js"></script>
-<script type="text/javascript" src="/ec-cube/js/win_op.js"></script>
-<script type="text/javascript" src="/ec-cube/js/site.js"></script>
-<script type="text/javascript" src="/ec-cube/js/admin.js"></script>
+<link rel="stylesheet" href="<!--{$smarty.const.URL_DIR}-->admin/css/contents.css" type="text/css" media="all" />
+<script type="text/javascript" src="<!--{$smarty.const.URL_DIR}-->js/css.js"></script>
+<script type="text/javascript" src="<!--{$smarty.const.URL_DIR}-->js/navi.js"></script>
+<script type="text/javascript" src="<!--{$smarty.const.URL_DIR}-->js/win_op.js"></script>
+<script type="text/javascript" src="<!--{$smarty.const.URL_DIR}-->js/site.js"></script>
+<script type="text/javascript" src="<!--{$smarty.const.URL_DIR}-->js/admin.js"></script>
 <!--{include file='css/contents.tpl'}-->
 <title><!--{$tpl_subtitle}--></title>
 <script type="text/javascript">
@@ -30,7 +30,7 @@ self.moveTo(20,20);self.focus();
 
 <body bgcolor="#ffffff" text="#666666" link="#007bb7" vlink="#007bb7" alink="#cc0000" leftmargin="0" topmargin="0" marginwidth="0" marginheight="0" onload="<!--{$tpl_onload}-->">
 <noscript>
-<link rel="stylesheet" href="/ec-cube/admin/css/common.css" type="text/css" />
+<link rel="stylesheet" href="<!--{$smarty.const.URL_DIR}-->admin/css/common.css" type="text/css" />
 </noscript>
 
 <div align="center">
@@ -48,26 +48,26 @@ self.moveTo(20,20);self.focus();
 						<table width="470" border="0" cellspacing="0" cellpadding="0" summary=" ">
 							<tr><td height="14"></td></tr>
 							<tr>
-								<td colspan="3"><img src="/ec-cube/img/contents/main_top.jpg" width="470" height="14" alt=""></td>
+								<td colspan="3"><img src="<!--{$smarty.const.URL_DIR}-->img/contents/main_top.jpg" width="470" height="14" alt=""></td>
 							</tr>
 							<tr>
-								<td background="/ec-cube/img/contents/main_left.jpg"><img src="/ec-cube/img/common/_.gif" width="14" height="1" alt=""></td>
+								<td background="<!--{$smarty.const.URL_DIR}-->img/contents/main_left.jpg"><img src="<!--{$smarty.const.URL_DIR}-->img/common/_.gif" width="14" height="1" alt=""></td>
 								<td bgcolor="#cccccc">
 									
 									<table width="440" border="0" cellspacing="0" cellpadding="0" summary=" ">
 										<tr>
-											<td colspan="3"><img src="/ec-cube/img/contents/contents_title_top.gif" width="440" height="7" alt=""></td>
+											<td colspan="3"><img src="<!--{$smarty.const.URL_DIR}-->img/contents/contents_title_top.gif" width="440" height="7" alt=""></td>
 										</tr>
 										<tr>
-											<td background="/ec-cube/img/contents/contents_title_left_bg.gif"><img src="/ec-cube/img/contents/contents_title_left.gif" width="22" height="12" alt=""></td>
+											<td background="<!--{$smarty.const.URL_DIR}-->img/contents/contents_title_left_bg.gif"><img src="<!--{$smarty.const.URL_DIR}-->img/contents/contents_title_left.gif" width="22" height="12" alt=""></td>
 											<td bgcolor="#636469" width="400" class="fs14n"><span class="white"><!--コンテンツタイトル--><!--{$tpl_subtitle}--></span></td>
-											<td background="/ec-cube/img/contents/contents_title_right_bg.gif"><img src="/ec-cube/img/common/_.gif" width="18" height="1" alt=""></td>
+											<td background="<!--{$smarty.const.URL_DIR}-->img/contents/contents_title_right_bg.gif"><img src="<!--{$smarty.const.URL_DIR}-->img/common/_.gif" width="18" height="1" alt=""></td>
 										</tr>
 										<tr>
-											<td colspan="3"><img src="/ec-cube/img/contents/contents_title_bottom.gif" width="440" height="7" alt=""></td>
+											<td colspan="3"><img src="<!--{$smarty.const.URL_DIR}-->img/contents/contents_title_bottom.gif" width="440" height="7" alt=""></td>
 										</tr>
 										<tr>
-											<td colspan="3"><img src="/ec-cube/img/contents/main_bar.jpg" width="440" height="10" alt=""></td>
+											<td colspan="3"><img src="<!--{$smarty.const.URL_DIR}-->img/contents/main_bar.jpg" width="440" height="10" alt=""></td>
 										</tr>
 									</table>
 									
@@ -99,30 +99,30 @@ self.moveTo(20,20);self.focus();
 
 									<table width="440" border="0" cellspacing="0" cellpadding="0" summary=" ">
 										<tr>
-											<td bgcolor="#cccccc"><img src="/ec-cube/img/common/_.gif" width="1" height="5" alt=""></td>
-											<td><img src="/ec-cube/img/contents/tbl_top.gif" width="438" height="7" alt=""></td>
-											<td bgcolor="#cccccc"><img src="/ec-cube/img/common/_.gif" width="1" height="5" alt=""></td>
+											<td bgcolor="#cccccc"><img src="<!--{$smarty.const.URL_DIR}-->img/common/_.gif" width="1" height="5" alt=""></td>
+											<td><img src="<!--{$smarty.const.URL_DIR}-->img/contents/tbl_top.gif" width="438" height="7" alt=""></td>
+											<td bgcolor="#cccccc"><img src="<!--{$smarty.const.URL_DIR}-->img/common/_.gif" width="1" height="5" alt=""></td>
 										</tr>
 										<tr>
-											<td bgcolor="#cccccc"><img src="/ec-cube/img/common/_.gif" width="1" height="10" alt=""></td>
+											<td bgcolor="#cccccc"><img src="<!--{$smarty.const.URL_DIR}-->img/common/_.gif" width="1" height="10" alt=""></td>
 											<td bgcolor="#e9e7de" align="center">
 											<table border="0" cellspacing="0" cellpadding="0" summary=" ">
 												<tr>
-													<td><input type="image" onMouseover="chgImgImageSubmit('/ec-cube/img/contents/btn_regist_on.jpg',this)" onMouseout="chgImgImageSubmit('/ec-cube/img/contents/btn_regist.jpg',this)" src="/ec-cube/img/contents/btn_regist.jpg" width="123" height="24" alt="この内容で登録する" border="0" name="subm" ></td>
+													<td><input type="image" onMouseover="chgImgImageSubmit('<!--{$smarty.const.URL_DIR}-->img/contents/btn_regist_on.jpg',this)" onMouseout="chgImgImageSubmit('<!--{$smarty.const.URL_DIR}-->img/contents/btn_regist.jpg',this)" src="<!--{$smarty.const.URL_DIR}-->img/contents/btn_regist.jpg" width="123" height="24" alt="この内容で登録する" border="0" name="subm" ></td>
 												</tr>
 											</table>
 											</td>
-											<td bgcolor="#cccccc"><img src="/ec-cube/img/common/_.gif" width="1" height="10" alt=""></td>
+											<td bgcolor="#cccccc"><img src="<!--{$smarty.const.URL_DIR}-->img/common/_.gif" width="1" height="10" alt=""></td>
 										</tr>
 										<tr>
-											<td colspan="3"><img src="/ec-cube/img/contents/tbl_bottom.gif" width="440" height="8" alt=""></td>
+											<td colspan="3"><img src="<!--{$smarty.const.URL_DIR}-->img/contents/tbl_bottom.gif" width="440" height="8" alt=""></td>
 										</tr>
 									</table>
 								</td>
-								<td background="/ec-cube/img/contents/main_right.jpg"><img src="/ec-cube/img/common/_.gif" width="14" height="1" alt=""></td>
+								<td background="<!--{$smarty.const.URL_DIR}-->img/contents/main_right.jpg"><img src="<!--{$smarty.const.URL_DIR}-->img/common/_.gif" width="14" height="1" alt=""></td>
 							</tr>
 							<tr>
-								<td colspan="3"><img src="/ec-cube/img/contents/main_bottom.jpg" width="470" height="14" alt=""></td>
+								<td colspan="3"><img src="<!--{$smarty.const.URL_DIR}-->img/contents/main_bottom.jpg" width="470" height="14" alt=""></td>
 							</tr>
 							<tr><td height="30"></td></tr>
 						</table>
