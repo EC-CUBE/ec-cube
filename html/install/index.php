@@ -306,6 +306,7 @@ function lfDispStep0($objPage) {
 		"../user_data",
 		"../upload",
 		"../../data/Smarty/templates_c",		
+		"../../data/downloads",
 		"../../data/logs",
 	);
 	
@@ -360,6 +361,14 @@ function lfDispStep0($objPage) {
 		if(!file_exists($path)) {
 			mkdir($path);
 		}
+		$path = "../../data/downloads/module";
+		if(!file_exists($path)) {
+			mkdir($path);
+		}
+		$path = "../../data/downloads/update";
+		if(!file_exists($path)) {
+			mkdir($path);
+		}		
 	}
 	
 	$objPage->mess = $mess;
