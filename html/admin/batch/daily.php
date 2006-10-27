@@ -255,12 +255,12 @@ function lfBatOrderAge($time) {
 	*/
 	for($i = 0; $i <= $age_loop; $i++) {
 	    $start_age = $i * 10;
-	    $where = $base_where . " AND order_birth >= cast('$start_date' as date) -interval '$start_age' year";
+	    $where = $base_where . " AND order_birth >= cast('$start_date' as date) -interval " . lfSingleQuot("$start_age year");
 	    if($i < $age_loop) {
 	        $end_age = $start_age+9;
-	        $where = $where . " AND order_birth < cast('$end_date' as date) -interval '$start_age' year";
+	        $where = $where . " AND order_birth < cast('$end_date' as date) -interval " . lfSingleQuot("$start_age year");
 	    }else{
-	        $where = $base_where . " AND order_birth < cast('$end_date' as date) -interval '$start_age' year";
+	        $where = $base_where . " AND order_birth < cast('$end_date' as date) -interval " . lfSingleQuot("$start_age year");
 	        $end_age = 999;
 	    }
 	    lfBatOrderAgeSub($sql . $where, $start, $end, $start_age, $end_age, 1);
@@ -297,12 +297,12 @@ function lfBatOrderAge($time) {
 	*/
 	for($i = 0; $i <= $age_loop; $i++) {
 	    $start_age = $i * 10;
-	    $where = $base_where . " AND order_birth >= cast('$start_date' as date) -interval '$start_age' year";
+	    $where = $base_where . " AND order_birth >= cast('$start_date' as date) -interval " . lfSingleQuot("$start_age year");
 	    if($i < $age_loop) {
 	        $end_age = $start_age+9;
-	        $where = $where . " AND order_birth < cast('$end_date' as date) -interval '$start_age' year";
+	        $where = $where . " AND order_birth < cast('$end_date' as date) -interval " . lfSingleQuot("$start_age year");
 	    }else{
-	        $where = $base_where . " AND order_birth < cast('$end_date' as date) -interval '$start_age' year";
+	        $where = $base_where . " AND order_birth < cast('$end_date' as date) -interval " . lfSingleQuot("$start_age year");
 	        $end_age = 999;
 	    }
 	    lfBatOrderAgeSub($sql . $where, $start, $end, $start_age, $end_age, 1);
@@ -336,6 +336,17 @@ function lfBatOrderAgeSub($sql, $start, $end, $start_age, $end_age, $member) {
 	$sqlval['member'] = "$member";
 
 	$objQuery->insert("dtb_bat_order_daily_age", $sqlval);
+}
+
+// 文字列にSingleQuotationを付与する
+function lfSingleQuot($value){
+	$ret = "";
+	if (DB_TYPE == "MySQL") {
+		$ret = $value;
+	}else{
+		$ret = "'" . $value . "'";
+	} 
+	return $ret;
 }
 
 ?>

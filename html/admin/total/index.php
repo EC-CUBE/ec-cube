@@ -681,8 +681,6 @@ function lfGetOrderAge($type, $sdate, $edate, $objPage, $graph = true) {
 		$objPage->tpl_image = lfGetGraphBar($objPage->arrResults, "age_name", $image_key, $xtitle, $ytitle, $sdate, $edate);
 	}
 	
-	sfprintr($objPage->arrResults );
-	
 	return $objPage;
 }
 
