@@ -42,7 +42,6 @@ define("UPDATE_PATH", DATA_PATH . UPDATE_DIR);
 //--------------------------------------------------------------------------------------------------------
 /** アップデート管理用 **/
 // アップデート管理用ファイル格納場所
-//define("UPDATE_HTTP", "http://ec-cube.lockon.co.jp/share/");
 define("UPDATE_HTTP", "http://downloads.ec-cube.net/share/");
 
 // アップデート管理用CSV1行辺りの最大文字数
