@@ -237,6 +237,7 @@ function lfBatOrderAge($time) {
 	$start_date = date("Y/m/d",strtotime("-10 year" ,strtotime($end_date)));
 	$end_date = date("Y/m/d",strtotime("1 day" ,strtotime($end_date)));
 	// 年齢毎に集計する。
+	/*
 	for($i = 0; $i <= $age_loop; $i++) {
 		$where = $base_where . " AND order_birth >= cast('$start_date' as date)";
 		$start_age = $i * 10;
@@ -250,6 +251,19 @@ function lfBatOrderAge($time) {
 		lfBatOrderAgeSub($sql . $where, $start, $end, $start_age, $end_age, 1);
 		$end_date = date("Y/m/d",strtotime("1 day" ,strtotime($start_date)));
 		$start_date = date("Y/m/d",strtotime("-10 year",strtotime($start_date)));
+	}
+	*/
+	for($i = 0; $i <= $age_loop; $i++) {
+	    $start_age = $i * 10;
+	    $where = $base_where . " AND order_birth >= cast('$start_date' as date) -interval '$start_age year'";
+	    if($i < $age_loop) {
+	        $end_age = $start_age+9;
+	        $where = $where . " AND order_birth < cast('$end_date' as date) -interval '$start_age year'";
+	    }else{
+	        $where = $base_where . " AND order_birth < cast('$end_date' as date) -interval '$start_age year'";
+	        $end_age = 999;
+	    }
+	    lfBatOrderAgeSub($sql . $where, $start, $end, $start_age, $end_age, 1);
 	}
 
 	// 誕生日入力なし
@@ -265,6 +279,7 @@ function lfBatOrderAge($time) {
 	$start_date = date("Y/m/d",strtotime("-10 year" ,strtotime($end_date)));
 	$end_date = date("Y/m/d",strtotime("1 day" ,strtotime($end_date)));
 	// 年齢毎に集計する。
+	/*
 	for($i = 0; $i <= $age_loop; $i++) {
 		$where = $base_where . " AND order_birth >= cast('$start_date' as date)";
 		$start_age = $i * 10;
@@ -279,6 +294,20 @@ function lfBatOrderAge($time) {
 		$end_date = date("Y/m/d",strtotime("1 day" ,strtotime($start_date)));
 		$start_date = date("Y/m/d",strtotime("-10 year",strtotime($start_date)));
 	}
+	*/
+	for($i = 0; $i <= $age_loop; $i++) {
+	    $start_age = $i * 10;
+	    $where = $base_where . " AND order_birth >= cast('$start_date' as date) -interval '$start_age year'";
+	    if($i < $age_loop) {
+	        $end_age = $start_age+9;
+	        $where = $where . " AND order_birth < cast('$end_date' as date) -interval '$start_age year'";
+	    }else{
+	        $where = $base_where . " AND order_birth < cast('$end_date' as date) -interval '$start_age year'";
+	        $end_age = 999;
+	    }
+	    lfBatOrderAgeSub($sql . $where, $start, $end, $start_age, $end_age, 1);
+	}
+
 	// 誕生日入力なし
 	$where = $base_where . " AND order_birth IS NULL AND del_flg = 0";
 	lfBatOrderAgeSub($sql . $where, $start, $end, NULL, NULL, 0);	
