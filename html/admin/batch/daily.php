@@ -320,6 +320,8 @@ function lfBatOrderAgeSub($sql, $start, $end, $start_age, $end_age, $member) {
 	$arrRet = $objQuery->getall($sql, array($start, $end));
 	$sqlval = $arrRet[0];
 	
+	$objQuery->getlastquery();
+	
 	// 空文字を"0"に変換
 	foreach($sqlval as $key => $val) {
 		if ($val == "") {
@@ -334,8 +336,6 @@ function lfBatOrderAgeSub($sql, $start, $end, $start_age, $end_age, $member) {
 	$sqlval['member'] = "$member";
 
 	$objQuery->insert("dtb_bat_order_daily_age", $sqlval);
-	
-	$objQuery->getlastquery();
 }
 
 /*
