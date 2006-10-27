@@ -44,6 +44,8 @@ sfIsSuccess($objSess);
 // 入力期間をセッションに記録する
 lfSaveDateSession();
 
+sfprintr(time());
+
 // パラメータ管理クラス
 $objFormParam = new SC_FormParam();
 // パラメータ情報の初期化
