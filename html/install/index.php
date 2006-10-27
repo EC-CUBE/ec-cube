@@ -90,6 +90,8 @@ case 'step3':
 	*/
 	// テーブルが存在しない場合に追加される。
 	$objPage->arrErr = lfAddTable("dtb_session", $dsn);	// セッション管理テーブル
+	// テーブルが存在しない場合に追加される。
+	$objPage->arrErr = lfAddTable("dtb_module", $dsn);	// セッション管理テーブル
 		
 	if(count($objPage->arrErr) == 0) {
 		// スキップする場合には次画面へ遷移
