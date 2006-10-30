@@ -86,6 +86,8 @@ $objPage->arrForm = $_POST;
 $tpl_arrTemplate = array();
 $objPage->arrTemplate = lfgetTemplate();
 
+sfprintr($objPage->arrTemplate);
+
 // デフォルトチェック取得
 $objPage->MainImage = $objPage->arrTemplate['check'];
 $objPage->arrTemplate['check'] = array($objPage->arrTemplate['check']=>"check");
@@ -150,8 +152,6 @@ function lfgetTemplate(){
 		$arrTemplateImage['image'][$val['template_code']] = $filepath . $val['template_code'] . "/" . $Image;
 		$arrTemplateImage['code'][$key] = $val['template_code'];
 	}
-	
-	
 	
 	// 初期チェック
 	if (isset($arrDefcheck[$disp])){
