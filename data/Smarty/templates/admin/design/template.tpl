@@ -148,8 +148,8 @@
 <script type="text/javascript">
 function ChangeImage(strUrl)
 {
-	alert("/" + strUrl);
-	document.main_img.src="/" + strUrl;
+	alert(<!--{$smarty.const.html_dir}--> + "/" + strUrl);
+	document.main_img.src=<!--{$smarty.const.html_dir}--> + "/" + strUrl;
 }
 
 // モードとキーを指定してSUBMITを行う。
