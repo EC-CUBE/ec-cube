@@ -148,7 +148,7 @@
 <script type="text/javascript">
 function ChangeImage(strUrl)
 {
-	alert(strUrl);
+	alert("/" + strUrl);
 	document.main_img.src="/" + strUrl;
 }
 
