@@ -149,7 +149,7 @@
 function ChangeImage(strUrl)
 {
 	alert(strUrl);
-	document.main_img.src=strUrl;
+	document.main_img.src="/" + strUrl;
 }
 
 // モードとキーを指定してSUBMITを行う。
