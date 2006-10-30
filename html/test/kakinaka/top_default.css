@@ -410,7 +410,7 @@ div#main-column div.box03 h2 {
 div#main-column div.box03 div {
 	height: 120px;
 	width: 600px;
-
+	overflow: auto;
 	padding: 0;
 	margin: 0;
 	border: 1px #cccccc solid;
