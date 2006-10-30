@@ -148,7 +148,7 @@
 <script type="text/javascript">
 function ChangeImage(strUrl)
 {
-	alert("<!--{$smarty.const.html_dir}-->" + "/" + strUrl);
+	alert("<!--{$smarty.const.HTML_PATH}-->" + "/" + strUrl);
 	document.main_img.src=<!--{$smarty.const.html_dir}--> + "/" + strUrl;
 }
 
