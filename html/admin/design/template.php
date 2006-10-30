@@ -119,8 +119,6 @@ function lfgetTemplate(){
 	$sql = "SELECT template_code,template_name FROM dtb_templates ORDER BY create_date DESC";
 	$arrTemplate = $objQuery->getall($sql);
 	
-	sfprintr($arrTemplate);
-	
 	switch($objPage->tpl_subno_template) {
 		// TOP
 		case $objPage->arrSubnavi['title'][1]:
