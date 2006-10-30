@@ -82,7 +82,7 @@
 								<tr>
 									<td class="fs12"><!--{$arrInfo.company_name|escape}--><br>
 									TEL：<!--{$arrInfo.tel01}-->-<!--{$arrInfo.tel02}-->-<!--{$arrInfo.tel03}--> <!--{if $arrInfo.business_hour != ""}-->（受付時間/<!--{$arrInfo.business_hour}-->）<!--{/if}--><br>
-									E-mal：<a href="mailto:<!--{$arrInfo.email02|escape}-->"><!--{$arrInfo.email02|escape}--></a></td>
+									E-mail：<a href="mailto:<!--{$arrInfo.email02|escape}-->"><!--{$arrInfo.email02|escape}--></a></td>
 								</tr>
 								<tr><td height="25"></td></tr>
 							</table>
