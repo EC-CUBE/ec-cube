@@ -1,33 +1,33 @@
 /* ===================================================================================
 
-共通要素
+????
 
-トップページレイアウト
+???????????
 
-トップページヘッダー
+??????????
 
-トップページ左袖
+????????
 
-	検索欄
+	???
 
-	ログインフォーム
+	????????
 	
-	ログインフォーム ログイン後
+	???????? ?????
 	
-	左袖各コーナー
+	???????
 	
-トップページメイン
+?????????
 	
-	メインカテゴリ別メニュー
+	????????????
 	
-	メイン各コーナー
+	????????
 	
-フッター
+????
 
 =================================================================================== */
 
 
-/* 共通要素
+/* ????
 ------------------------------------------------------------------------------------*/
 body,
 h1,h2,h3,h4,h5,h6,
@@ -42,7 +42,7 @@ form {
 	list-style-type: none;
 	border: none;
 	/*font-size: 12px;*/
-	/*font-family: "ヒラギノ角ゴ Pro W3", "ＭＳ Ｐゴシック", Osaka;*/
+	/*font-family: "?????? Pro W3", "?? ?????", Osaka;*/
 	color: #333333;}
 
 p {
@@ -80,7 +80,7 @@ img {
 	font-size: 0;}
 
 
-/* トップページレイアウト
+/* ???????????
 ------------------------------------------------------------------------------------*/
 div#wraper,
 div#wraper div#header,
@@ -99,7 +99,7 @@ div#wraper div#container div#main-column {
 	float: left;}
 
 
-/* トップページヘッダー
+/* ??????????
 ------------------------------------------------------------------------------------*/
 div#header {
 	padding: 6px 0 10px 0;
@@ -120,7 +120,7 @@ div#header ul li {
 	display: inline;}
 
 
-/* トップページ左袖
+/* ????????
 ------------------------------------------------------------------------------------*/
 div#left-column div#left-container {
 	padding: 0 10px 0 0;}
@@ -130,7 +130,7 @@ div#left-column div#left-container li {
 	font-size: 11px;}
 
 
-/* 検索欄
+/* ???
 ---------------------------------------- */
 div#left-column div#left-container div#search-box {
 	height: 63px;
@@ -148,7 +148,7 @@ div#left-column div#left-container div#search-box ul li.txt-area {
 	text-align: center;}
 
 
-/* ログインフォーム
+/* ????????
 ---------------------------------------- */
 div#left-column div#left-container div#my-menu {
 	padding: 0px 0 0 0;
@@ -200,7 +200,7 @@ div#left-column div#left-container div#my-menu p#my-btn {
 	background: url(../../img/renewal/left_column_my_bg.gif) left bottom no-repeat;} 
 
 
-/* ログインフォーム ログイン後
+/* ???????? ?????
 ---------------------------------------- */
 
 div#left-column div#left-container div#my-menu p#member-name {
@@ -232,7 +232,7 @@ div#left-column div#left-container div#my-menu ul#member-point li#top-bar {
 
 
 
-/* 左袖各コーナー
+/* ???????
 ---------------------------------------- */
 div#left-column div#left-container div.box01,
 div#left-column div#left-container div.box02,
@@ -289,7 +289,7 @@ div#left-column div#left-container div.box04 {
 	clear: both;}
 
 
-/* トップページメイン
+/* ?????????
 ------------------------------------------------------------------------------------*/
 div#main-column {
 	width: 600px;}
@@ -300,7 +300,7 @@ div#main-column h2#top-banner {
 
 
 
-/* メインカテゴリ別メニュー
+/* ????????????
 ---------------------------------------- */
 div#main-column div#box-nav {
 	padding: 10px 0 0 0;}
@@ -341,7 +341,7 @@ div#main-column div#nav-right {
 }
 
 
-/* メイン各コーナー
+/* ????????
 ---------------------------------------- */
 div#main-column div.box01 {
 	width: 600px;}
@@ -407,14 +407,6 @@ div#main-column div.box03 h2 {
 	padding: 5px 0 7px 0;
 	clear: both;}
 
-div#main-column div.box03 div {
-	height: 120px;
-	width: 600px;
-	overflow: auto;
-	padding: 0;
-	margin: 0;
-	border: 1px #cccccc solid;
-	border-width: 1px 0 1px 0;}
 
 div#main-column div.box03 div ul {
 	padding: 0;
@@ -441,7 +433,7 @@ div#main-column div.box03 div ul li span.topic-txt {
 div#main-column div.box03 div ul li p {}
 
 
-/* フッター
+/* ????
 ------------------------------------------------------------------------------------*/
 div#footer {}
 
