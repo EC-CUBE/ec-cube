@@ -75,18 +75,20 @@
 										<!--{assign var=cnt value=$smarty.section.template.iteration-1}-->
 										<!--{assign var=key value=$cnt*$smarty.section.template.step}-->
 										<!--{assign var=code value=$arrTemplate.code[$key]}-->
+										<!--{assign var=name value=$arrTemplate.name[$key]}-->
 										<!--{assign var=image value=$arrTemplate.image[$code]}-->
 										<td bgcolor="#ffffff" align="center"><!--{$arrTemplate[template]}-->
-											<label for="radio<!--{$key}-->"><img height=200 width=160 src="<!--{$smarty.const.URL_DIR}--><!--{$image}-->" name="1"></label><br>
+											<label for="radio<!--{$key}-->"><img height=200 width=160 src="<!--{$smarty.const.URL_DIR}--><!--{$image}-->" name="1" alt="<!--{$name}-->"></label><br>
 											<label for="radio<!--{$key}-->"><input type="radio" name="check_template" value="<!--{$code}-->" id="radio<!--{$key}-->" onClick="ChangeImage('<!--{$smarty.const.URL_DIR}--><!--{$image}-->');" <!--{if $arrTemplate.check[$code] != ""}-->checked<!--{/if}-->>ÁªÂò</label>
 										</td>
 										<!--{assign var=cnt value=$smarty.section.template.iteration-1}-->
 										<!--{assign var=key value=$cnt*$smarty.section.template.step+1}-->
 										<!--{assign var=code value=$arrTemplate.code[$key]}-->
+										<!--{assign var=name value=$arrTemplate.name[$key]}-->
 										<!--{assign var=image value=$arrTemplate.image[$code]}-->
 										<!--{if $image != ""}-->
 										<td bgcolor="#ffffff" align="center"><!--{$arrTemplate[template]}-->
-											<label for="radio<!--{$key}-->"><img height=200 weight=200 src="<!--{$smarty.const.URL_DIR}--><!--{$image}-->" name="1"></label><br>
+											<label for="radio<!--{$key}-->"><img height=200 weight=200 src="<!--{$smarty.const.URL_DIR}--><!--{$image}-->" name="1" alt="<!--{$name}-->"></label><br>
 											<label for="radio<!--{$key}-->"><input type="radio" name="check_template" value="<!--{$code}-->" id="radio<!--{$key}-->" onClick="ChangeImage('<!--{$smarty.const.URL_DIR}--><!--{$image}-->');" <!--{if $arrTemplate.check[$code] != ""}-->checked<!--{/if}-->>ÁªÂò</label>
 										</td>
 										<!--{/if}-->
