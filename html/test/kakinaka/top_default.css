@@ -407,6 +407,14 @@ div#main-column div.box03 h2 {
 	padding: 5px 0 7px 0;
 	clear: both;}
 
+div#main-column div.box03 div {
+	height: 120px;
+	width: 600px;
+
+	padding: 0;
+	margin: 0;
+	border: 1px #cccccc solid;
+	border-width: 1px 0 1px 0;}
 
 div#main-column div.box03 div ul {
 	padding: 0;
