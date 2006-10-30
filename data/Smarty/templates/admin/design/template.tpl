@@ -78,7 +78,7 @@
 										<!--{assign var=image value=$arrTemplate.image[$code]}-->
 										<td bgcolor="#ffffff" align="center"><!--{$arrTemplate[template]}-->
 											<label for="radio<!--{$key}-->"><img height=200 width=160 src="<!--{$smarty.const.URL_DIR}--><!--{$image}-->" name="1"></label><br>
-											<label for="radio<!--{$key}-->"><input type="radio" name="check_template" value="<!--{$code}-->" id="radio<!--{$key}-->" onClick="ChangeImage('<!--{$image}-->');" <!--{if $arrTemplate.check[$code] != ""}-->checked<!--{/if}-->>選択</label>
+											<label for="radio<!--{$key}-->"><input type="radio" name="check_template" value="<!--{$code}-->" id="radio<!--{$key}-->" onClick="ChangeImage('<!--{$smarty.const.URL_DIR}--><!--{$image}-->');" <!--{if $arrTemplate.check[$code] != ""}-->checked<!--{/if}-->>選択</label>
 										</td>
 										<!--{assign var=cnt value=$smarty.section.template.iteration-1}-->
 										<!--{assign var=key value=$cnt*$smarty.section.template.step+1}-->
@@ -148,8 +148,7 @@
 <script type="text/javascript">
 function ChangeImage(strUrl)
 {
-	alert("<!--{$smarty.const.HTML_PATH}-->" + "/" + strUrl);
-	document.main_img.src="<!--{$smarty.const.HTML_PATH}-->" + "/" + strUrl;
+	document.main_img.src=strUrl;
 }
 
 // モードとキーを指定してSUBMITを行う。
