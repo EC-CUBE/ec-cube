@@ -86,8 +86,6 @@ $objPage->arrForm = $_POST;
 $tpl_arrTemplate = array();
 $objPage->arrTemplate = lfgetTemplate();
 
-sfprintr($objPage->arrTemplate);
-
 // デフォルトチェック取得
 $objPage->MainImage = $objPage->arrTemplate['check'];
 $objPage->arrTemplate['check'] = array($objPage->arrTemplate['check']=>"check");
@@ -120,6 +118,8 @@ function lfgetTemplate(){
 	$objQuery = new SC_Query();
 	$sql = "SELECT template_code,template_name FROM dtb_templates ORDER BY create_date DESC";
 	$arrTemplate = $objQuery->getall($sql);
+	
+	sfprintr($arrTemplate);
 	
 	switch($objPage->tpl_subno_template) {
 		// TOP
