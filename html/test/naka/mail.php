@@ -5,6 +5,7 @@ $body = "テストです。アイウロエ??????彅??";
 
 $body = mb_convert_encoding($body, 'UTF-8', 'EUC-JP');
 
+print("<meta http-equiv='Content-Type' content='text/html; charset=EUC-JP'>\n");
 print($body);
 
 /*
