@@ -22,11 +22,7 @@ function initialize_link()
 		if(link.href.indexOf(parent.location.href)<0)	continue;
 		
 		alert(link.name);
-		link.onclick = function()
-		{
-			alert("test");
-			parent.location.hash = this.hash;
-			return false;
+		link..location.hash = link.hash;
 		};
 	}
 
