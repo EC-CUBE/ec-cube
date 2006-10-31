@@ -34,7 +34,7 @@ sfPrintR($req);
 if (!PEAR::isError($req->sendRequest())) {
 	$response = $req->getResponseBody();
 } else {
-	$response = "err";
+	$response = "";
 }
 
 sfPrintR($response);
