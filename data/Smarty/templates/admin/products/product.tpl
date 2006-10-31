@@ -17,13 +17,13 @@ function initialize_link()
 	var link;
 	for(var i=0; i<links.length; i++)
 	{
-		alert("test");
 		link = links[i];
 		if(link.target != "_parent")
 			continue;
 		if(link.href.indexOf(parent.location.href)>0)
 			continue;
 		link.onclick = function()
+		alert("test");
 		{
 			parent.location.hash = this.hash;
 			return false;
