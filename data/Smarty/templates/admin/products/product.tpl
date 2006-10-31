@@ -19,10 +19,9 @@ function initialize_link()
 	{
 		link = links[i];
 		if(link.target != "_parent")	continue;
-		alert("aa");
+		alert(link.name);
 		link.onclick = function()
 		{
-			alert("aa");
 			parent.location.hash = this.hash;
 			return false;
 		};
