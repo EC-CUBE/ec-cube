@@ -22,6 +22,7 @@ function initialize_link()
 		
 		link.onclick = function()
 		{
+		alert("test");
 			parent.location.hash = this.hash;
 			return false;
 		};
