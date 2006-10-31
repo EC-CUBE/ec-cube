@@ -23,12 +23,13 @@ function initialize_link()
 		if(link.href.indexOf(parent.location.href)>0)
 			continue;
 		link.onclick = lfnSetAnchor()
-		alert("test");
 		{
 			parent.location.hash = this.hash;
 			return false;
 		};
 	}
+			alert("test");
+	
 }
 
 //-->
