@@ -34,7 +34,7 @@ if($mode != '777') {
 	exit;
 }
 
-$objView = new SC_SiteView($INSTALL_DIR . '/templates', $INSTALL_DIR . '/temp');
+$objView = new SC_InstallView($INSTALL_DIR . '/templates', $INSTALL_DIR . '/temp');
 
 // パラメータ管理クラス
 $objWebParam = new SC_FormParam();
