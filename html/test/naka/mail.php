@@ -1,5 +1,5 @@
 <?php
-
+mb_language("uni");
 $to = "naka@lockon.co.jp";
 //$body = "テストです。アイウロエ??????彅??";
 $body = "ああ";
