@@ -1,5 +1,7 @@
 <?php
-mb_language("uni");
+
+ini_set("mbstring.http_output", "UTF-8");
+
 $to = "naka@lockon.co.jp";
 //$body = "テストです。アイウロエ??????彅??";
 $body = "ああ";
