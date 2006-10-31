@@ -38,7 +38,7 @@ if (!PEAR::isError($req->sendRequest())) {
 }
 
 $response = urldecode($response);
-
+$response = mb_convert_encoding($response, 'EUC-JP', 'UTF-8');
 
 print($response);
 
