@@ -45,12 +45,10 @@ print($response);
 
 $parser = xml_parser_create();
 xml_parser_set_option($parser,XML_OPTION_SKIP_WHITE,1);
-xml_parse_into_struct($parser,$response,$values,$idx);
+xml_parse_into_struct($parser,$response,$arrVal,$idx);
 xml_parser_free($parser);
 
-sfPrintR($values);
-
-sfPrintR($idx);
+print($arrVal[3]['attributes']['ERR_DETAIL']);
 
 
 
