@@ -40,7 +40,7 @@ if (!PEAR::isError($req->sendRequest())) {
 //$res = urldecode($response);
 $response = mb_convert_encoding($response, 'EUC-JP', 'ISO-8859-1');
 
-print($res);
+print($response);
 
 $req->clearPostData();
 
