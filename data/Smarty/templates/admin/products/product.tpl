@@ -23,11 +23,12 @@ function initialize_link()
 		
 		link.onclick = function()
 		{
-			alert(this.hash);
 			parent.location.hash = this.hash;
 			return false;
 		};
 	}
+	alert("test");
+	
 }
 
 //-->
