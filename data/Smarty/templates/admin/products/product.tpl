@@ -13,7 +13,7 @@ function lfnSetAnchor(value) {
 }
 //-->
 </script>
-<input type="button" value="test" onclick="form1.list_main.onclick=function();">
+<input type="button" value="test" onclick="list_main.onclick=function();">
 <!--¡ú¡ú¥á¥¤¥ó¥³¥ó¥Æ¥ó¥Ä¡ú¡ú-->
 <table width="878" border="0" cellspacing="0" cellpadding="0" summary=" ">
 	<tr valign="top">
