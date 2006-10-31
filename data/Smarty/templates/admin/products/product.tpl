@@ -184,7 +184,7 @@ function lfnSetAnchor(value) {
 										<textarea name="main_list_comment" maxlength="<!--{$smarty.const.MTEXT_LEN}-->" style="<!--{if $arrErr.main_list_comment != ""}-->background-color: <!--{$smarty.const.ERR_COLOR}--><!--{/if}-->" cols="60" rows="8" class="area60"><!--{$arrForm.main_list_comment|escape}--></textarea><br /><span class="red"> （上限<!--{$smarty.const.MTEXT_LEN}-->文字）</span></td>
 									</tr>
 									<tr>
-										<a name="list_main" href="./product.php#list_main">a</a>
+										<a name="list_main" href="./product.php#list_main" target="_parent"></a>
 										<td bgcolor="#f2f1ec" width="160" class="fs12n">一覧-メイン画像<span class="red"> *</span><br />[130×130]</td>
 										<td bgcolor="#ffffff" width="557" class="fs12n">
 										<!--{assign var=key value="main_list_image"}-->
