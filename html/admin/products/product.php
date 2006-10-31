@@ -254,7 +254,7 @@ function lfProductPage() {
 	// Form用配列を渡す。
 	$objPage->arrFile = $objUpFile->getFormFileList(IMAGE_TEMP_URL, IMAGE_SAVE_URL);
 	
-	$objPage->tpl_onload = "fnCheckSaleLimit('" . DISABLED_RGB . "'); fnCheckStockLimit('" . DISABLED_RGB . "'); alert('aaa');";// form1.list_main.onclick=function();";
+	$objPage->tpl_onload = "fnCheckSaleLimit('" . DISABLED_RGB . "'); fnCheckStockLimit('" . DISABLED_RGB . "'); form1.list_main.onclick";
 }
 
 /* ファイル情報の初期化 */
