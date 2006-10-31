@@ -1,8 +1,7 @@
 <?php
 
-ini_set("mbstring.http_input", "EUC-JP");
 ini_set("mbstring.http_output", "UTF-8");
-//ini_set("mbstring.internal_encoding", "UTF-8");
+ini_set("mbstring.internal_encoding", "UTF-8");
 
 $to = "naka@lockon.co.jp";
 $body = "テストです。アイウロエ??????彅??";
