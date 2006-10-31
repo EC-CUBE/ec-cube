@@ -205,6 +205,8 @@ function initialize_link()
 									</tr>
 									<tr>
 										<a name="list_main" href="./product.php#list_main" target="_parent"></a>
+										<a href="index.html#test" target="_parent">TEST1</a>
+										
 										<td bgcolor="#f2f1ec" width="160" class="fs12n">一覧-メイン画像<span class="red"> *</span><br />[130×130]</td>
 										<td bgcolor="#ffffff" width="557" class="fs12n">
 										<!--{assign var=key value="main_list_image"}-->
