@@ -31,7 +31,7 @@ $req->addPostDataArray($arrData);
 if (!PEAR::isError($req->sendRequest())) {
 	$response = $req->getResponseBody();
 } else {
-	$response = "";
+	$response = "err";
 }
 
 sfPrintR($response);
