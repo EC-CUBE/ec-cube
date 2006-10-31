@@ -37,7 +37,7 @@ if (!PEAR::isError($req->sendRequest())) {
 	$response = "";
 }
 
-sfPrintR($response);
+echo urldecode($response);
 
 $req->clearPostData();
 
