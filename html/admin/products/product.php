@@ -48,6 +48,8 @@ $objQuery = new SC_Query();
 $objSess = new SC_Session();
 sfIsSuccess($objSess);
 
+sfprintr($_POST);
+
 // ファイル管理クラス
 $objUpFile = new SC_UploadFile(IMAGE_TEMP_DIR, IMAGE_SAVE_DIR);
 

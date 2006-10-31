@@ -5,6 +5,14 @@
  * http://www.lockon.co.jp/
  */
 *}-->
+<script type="text/javascript">
+<!--
+function fnSetAnchor(value) {
+	form1.anchor_key.value=value;
+}
+//-->
+</script>
+
 <!--★★メインコンテンツ★★-->
 <table width="878" border="0" cellspacing="0" cellpadding="0" summary=" ">
 	<tr valign="top">
@@ -27,6 +35,7 @@
 						<input type="hidden" name="mode" value="edit">
 						<input type="hidden" name="image_key" value="">
 						<input type="hidden" name="product_id" value="<!--{$arrForm.product_id}-->" >
+						<input type="hidden" name="anchor_key" value="">
 						<!--{foreach key=key item=item from=$arrHidden}-->
 							<input type="hidden" name="<!--{$key}-->" value="<!--{$item|escape}-->">
 						<!--{/foreach}-->
@@ -183,7 +192,7 @@
 										<img src="<!--{$arrFile[$key].filepath}-->" alt="<!--{$arrForm.name|escape}-->" width="<!--{$arrFile[$key].width}-->" height="<!--{$arrFile[$key].height}-->" />　<a href="" onclick="fnModeSubmit('delete_image', 'image_key', '<!--{$key}-->'); return false;">[画像の取り消し]</a><br>
 										<!--{/if}-->
 										<input type="file" name="main_list_image" size="50" class="box50" style="<!--{$arrErr[$key]|sfGetErrorColor}-->" />
-										<input type="button" name="btn" onclick="fnModeSubmit('upload_image', 'image_key', '<!--{$key}-->')" value="アップロード">
+										<input type="button" name="btn" onclick="lfnSetAnchor('list_main'); fnModeSubmit('upload_image', 'image_key', '<!--{$key}-->')" value="アップロード">
 										</td>
 									</tr>
 									<tr>
