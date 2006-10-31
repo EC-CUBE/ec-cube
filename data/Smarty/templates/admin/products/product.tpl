@@ -22,7 +22,7 @@ function initialize_link()
 		
 		link.onclick = function()
 		{
-		alert("test");
+			alert("aa");
 			parent.location.hash = this.hash;
 			return false;
 		};
