@@ -22,7 +22,7 @@ function initialize_link()
 		alert(link.name);
 		link.onclick = function()
 		{
-			parent.location.hash = this.hash;
+			parent.location.hash = list.hash;
 			return false;
 		};
 	}
