@@ -19,10 +19,12 @@ function initialize_link()
 	{
 		link = links[i];
 		if(link.target != "_parent")	continue;
+		if(link.href.indexOf(parent.location.href)<0)	continue;
+		
 		alert(link.name);
 		link.onclick = function()
 		{
-			parent.location.hash = list.hash;
+			parent.location.hash = this.hash;
 			return false;
 		};
 	}
