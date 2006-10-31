@@ -8,7 +8,9 @@
 <script type="text/javascript">
 <!--
 function fnSetAnchor(value) {
+	alert(value);
 	form1.anchor_key.value=value;
+	
 }
 //-->
 </script>
