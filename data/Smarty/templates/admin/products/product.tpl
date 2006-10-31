@@ -18,18 +18,15 @@ function initialize_link()
 	for(var i=0; i<links.length; i++)
 	{
 		link = links[i];
-		if(link.target != "_parent")
-			continue;
-		if(link.href.indexOf(parent.location.href)>0)
-			continue;
-		link.onclick = lfnSetAnchor()
+		if(link.target != "_parent")	continue;
+		if(link.href.indexOf(parent.location.href)>0)	continue;
+		
+		link.onclick = function()
 		{
 			parent.location.hash = this.hash;
 			return false;
 		};
 	}
-			alert("test");
-	
 }
 
 //-->
