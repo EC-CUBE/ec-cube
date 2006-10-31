@@ -28,20 +28,30 @@ $req->setMethod(HTTP_REQUEST_METHOD_POST);
 $arrSendData = array();
 $req->addPostDataArray($arrData);
 
-sfPrintR($req);
-
-
 if (!PEAR::isError($req->sendRequest())) {
 	$response = $req->getResponseBody();
 } else {
 	$response = "";
 }
 
+$req->clearPostData();
+
+/*
 $response = urldecode($response);
 $response = mb_convert_encoding($response, 'EUC-JP', 'UTF-8');
 
 print($response);
+*/
 
-$req->clearPostData();
+$parser = xml_parser_create();
+xml_parser_set_option($parser,XML_OPTION_SKIP_WHITE,1);
+xml_parse_into_struct($parser,$response,$values,$idx);
+xml_parser_free($parser);
+
+sfPrintR($values);
+
+sfPrintR($idx);
+
+
 
 ?>
