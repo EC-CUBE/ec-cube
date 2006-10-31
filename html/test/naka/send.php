@@ -48,6 +48,8 @@ xml_parser_set_option($parser,XML_OPTION_SKIP_WHITE,1);
 xml_parse_into_struct($parser,$response,$arrVal,$idx);
 xml_parser_free($parser);
 
+sfPrintR($arrVal);
+
 $decode = urldecode($arrVal[3]['attributes']['ERR_DETAIL']);
 
 print(mb_convert_encoding($decode, 'EUC-JP', 'Shift_JIS'));
