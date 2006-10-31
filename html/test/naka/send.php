@@ -54,5 +54,8 @@ $decode = urldecode($arrVal[3]['attributes']['ERR_DETAIL']);
 
 print(mb_convert_encoding($decode, 'EUC-JP', 'Shift_JIS'));
 
+$decode = urldecode($arrVal[5]['attributes']['MEMO1']);
+
+print(mb_convert_encoding($decode, 'EUC-JP', 'Shift_JIS'));
 
 ?>
