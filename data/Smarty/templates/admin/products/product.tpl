@@ -22,7 +22,7 @@ function initialize_link()
 		if(link.href.indexOf(parent.location.href)<0)	continue;
 		
 		alert(link.name);
-		link..location.hash = link.hash;
+		link.location.hash = link.hash;
 		};
 	}
 
