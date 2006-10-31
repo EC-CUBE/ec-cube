@@ -22,7 +22,7 @@ function initialize_link()
 			continue;
 		if(link.href.indexOf(parent.location.href)>0)
 			continue;
-		link.onclick = function()
+		link.onclick = lfnSetAnchor()
 		alert("test");
 		{
 			parent.location.hash = this.hash;
@@ -205,8 +205,6 @@ function initialize_link()
 									</tr>
 									<tr>
 										<a name="list_main" href="./product.php#list_main" target="_parent"></a>
-										<a href="product.php#list_main" target="_parent">TEST1</a>
-										
 										<td bgcolor="#f2f1ec" width="160" class="fs12n">一覧-メイン画像<span class="red"> *</span><br />[130×130]</td>
 										<td bgcolor="#ffffff" width="557" class="fs12n">
 										<!--{assign var=key value="main_list_image"}-->
