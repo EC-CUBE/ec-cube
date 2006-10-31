@@ -3,6 +3,8 @@
 ini_set("mbstring.http_input", "UTF-8");
 ini_set("mbstring.http_output", "UTF-8");
 
+phpinfo();
+
 $to = "naka@lockon.co.jp";
 //$body = "テストです。アイウロエ??????彅??";
 $body = "ああ";
@@ -21,5 +23,7 @@ if(mb_send_mail($to, "test", $body)){
 	print("ok");
 }
 */
+
+
 
 ?>
