@@ -231,11 +231,6 @@ case 'complete':
 	if($_POST['send_info'] == "true"){
 		$req = new HTTP_Request("http://www.ec-cube.net/mall/use_site.php");
 		$req->setMethod(HTTP_REQUEST_METHOD_POST);
-		$req->addPostData("site_url", $_POST["tpl_site_url"]);
-		$req->addPostData("shop_name", $_POST["tpl_shop_name"]);
-		$req->addPostData("cube_ver", $_POST["tpl_cube_ver"]);
-		$req->addPostData("php_ver", $_POST["tpl_php_ver"]);
-		$req->addPostData("db_ver", $_POST["tpl_db_ver"]);
 		
 		$arrSendData = array();
 		foreach($_POST as $key => $val){
