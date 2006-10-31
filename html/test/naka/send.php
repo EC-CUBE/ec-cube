@@ -1,7 +1,7 @@
 <?php
 
 require_once("../../require.php");
-require_once("../../data/module/Request.php");
+require_once(DATA_PATH . "module/Request.php");
 
 $order_url = "http://beta.epsilon.jp/cgi-bin/order/receive_order3.cgi";
 
