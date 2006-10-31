@@ -9,11 +9,30 @@
 <!--
 function lfnSetAnchor(value) {
 	form1.anchor_key.value=value;
-	
 }
+
+function initialize_link()
+{
+	var links = document.links;
+	var link;
+	for(var i=0; i<links.length; i++)
+	{
+		link = links[i];
+		if(link.target != "_parent")
+			continue;
+		if(link.href.indexOf(parent.location.href)>0)
+			continue;
+		link.onclick = function()
+		{
+			parent.location.hash = this.hash;
+			return false;
+		};
+	}
+}
+
 //-->
 </script>
-<input type="button" value="test" onclick="document.form1.list_main.onclick=function();">
+<input type="button" value="test" onclick="initialize_link();">
 <!--¡ú¡ú¥á¥¤¥ó¥³¥ó¥Æ¥ó¥Ä¡ú¡ú-->
 <table width="878" border="0" cellspacing="0" cellpadding="0" summary=" ">
 	<tr valign="top">
