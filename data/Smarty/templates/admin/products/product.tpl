@@ -7,7 +7,7 @@
 *}-->
 <script type="text/javascript">
 <!--
-function fnSetAnchor(value) {
+function lfnSetAnchor(value) {
 	alert(value);
 	form1.anchor_key.value=value;
 	
