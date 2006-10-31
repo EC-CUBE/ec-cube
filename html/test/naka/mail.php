@@ -1,7 +1,9 @@
 <?php
 
 $to = "naka@lockon.co.jp";
-$body = "テストです。アイウロエ??????彅??";
+//$body = "テストです。アイウロエ??????彅??";
+$body = "テストです。";
+
 
 $body = mb_convert_encoding($body, 'UTF-8', 'EUC-JP');
 
