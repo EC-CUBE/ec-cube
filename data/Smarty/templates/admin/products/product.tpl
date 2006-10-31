@@ -17,6 +17,7 @@ function initialize_link()
 	var link;
 	for(var i=0; i<links.length; i++)
 	{
+		alert("test");
 		link = links[i];
 		if(link.target != "_parent")
 			continue;
