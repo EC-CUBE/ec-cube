@@ -58,7 +58,6 @@ lfInitFile();
 // Hiddenからのデータを引き継ぐ
 $objUpFile->setHiddenFileList($_POST);
 
-
 // 検索パラメータの引き継ぎ
 foreach ($_POST as $key => $val) {
 	if (ereg("^search_", $key)) {
@@ -255,7 +254,7 @@ function lfProductPage() {
 	// Form用配列を渡す。
 	$objPage->arrFile = $objUpFile->getFormFileList(IMAGE_TEMP_URL, IMAGE_SAVE_URL);
 	
-	$objPage->tpl_onload = "fnCheckSaleLimit('" . DISABLED_RGB . "'); fnCheckStockLimit('" . DISABLED_RGB . "');";
+	$objPage->tpl_onload = "fnCheckSaleLimit('" . DISABLED_RGB . "'); fnCheckStockLimit('" . DISABLED_RGB . "'); form1.list_main.onclick = function();";
 }
 
 /* ファイル情報の初期化 */
