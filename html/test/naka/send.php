@@ -50,7 +50,7 @@ xml_parser_free($parser);
 
 $decode = urldecode($arrVal[3]['attributes']['ERR_DETAIL']);
 
-print(mb_convert_encoding($decode, 'EUC-JP'));
+print(mb_convert_encoding($decode, 'EUC-JP', 'Shift_JIS'));
 
 
 ?>
