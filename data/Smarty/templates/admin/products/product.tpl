@@ -19,7 +19,7 @@ function initialize_link()
 	{
 		link = links[i];
 		if(link.target != "_parent")	continue;
-		
+		alert("aa");
 		link.onclick = function()
 		{
 			alert("aa");
