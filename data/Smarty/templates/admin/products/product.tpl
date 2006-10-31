@@ -13,18 +13,7 @@ function lfnSetAnchor(value) {
 
 function initialize_link()
 {
-	var links = document.links;
-	var link;
-	for(var i=0; i<links.length; i++)
-	{
-		link = links[i];
-		if(link.target != "_parent")	continue;
-		if(link.href.indexOf(parent.location.href)<0)	continue;
-		
-		alert(link.name);
-		link.location.hash = link.hash;
-		};
-	}
+location.hash = "#list_main";
 
 }
 
