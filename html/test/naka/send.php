@@ -28,6 +28,9 @@ $req->setMethod(HTTP_REQUEST_METHOD_POST);
 $arrSendData = array();
 $req->addPostDataArray($arrData);
 
+sfPrintR($req);
+
+
 if (!PEAR::isError($req->sendRequest())) {
 	$response = $req->getResponseBody();
 } else {
