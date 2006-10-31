@@ -1,14 +1,18 @@
 <?php
 
 $to = "naka@lockon.co.jp";
-$body = "ã‚¢ã‚¤ã‚¦ãƒ­ã‚¨â‘ â…±ãˆ±â„¡é«™ï¨å½…ï¨‘å¾·";
+$body = "¥Æ¥¹¥È¤Ç¤¹¡£¥¢¥¤¥¦¥í¥¨??????¼ô??";
 
-//$body = mb_convert_encoding($body, 'UTF-8', mb_internal_encoding());
+$body = mb_convert_encoding($body, 'UTF-8', 'EUC-JP');
 
+print($body);
+
+/*
 mb_language("uni");
 
 if(mb_send_mail($to, "test", $body)){
 	print("ok");
 }
+*/
 
 ?>
