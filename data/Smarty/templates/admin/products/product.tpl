@@ -24,12 +24,12 @@ function initialize_link()
 		alert(link.name);
 		link.onclick = function()
 		{
+			alert("test");
 			parent.location.hash = this.hash;
 			return false;
 		};
 	}
-	alert("test");
-	
+
 }
 
 //-->
