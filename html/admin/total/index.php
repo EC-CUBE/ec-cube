@@ -77,10 +77,6 @@ case 'search':
 	$objPage->arrErr = lfCheckError($arrRet);
 	$arrRet = $objFormParam->getHashArray();
 	
-sfprintr($objFormParam->getHashArray());
-sfprintr($objPage);
-exit();
-	
 	// 入力エラーなし
 	if (count($objPage->arrErr) == 0) {
 		foreach ($arrRet as $key => $val) {
@@ -89,13 +85,13 @@ exit();
 			}
 			switch ($key) {
 			case 'search_startyear':
-				$sdate = $_POST['search_startyear'] . "/" . $_POST['search_startmonth'] . "/" . $_POST['search_startday'];
+				$sdate = $objFormParam->getValue('search_startyear') . "/" . $objFormParam->getValue('search_startmonth') . "/" . $objFormParam->getValue('search_startday');
 				break;
 			case 'search_endyear':
-				$edate = $_POST['search_endyear'] . "/" . $_POST['search_endmonth'] . "/" . $_POST['search_endday'];
+				$edate = $objFormParam->getValue('search_endyear') . "/" . $objFormParam->getValue('search_endmonth') . "/" . $objFormParam->getValue('search_endday');
 				break;
 			case 'search_startyear_m':
-				list($sdate, $edate) = sfTermMonth($_POST['search_startyear_m'], $_POST['search_startmonth_m'], CLOSE_DAY);
+				list($sdate, $edate) = sfTermMonth($objFormParam->getValue('search_startyear_m'), $objFormParam->getValue('search_startmonth_m'), CLOSE_DAY);
 				break;
 			default:
 				break;
@@ -117,7 +113,7 @@ exit();
 			// 未集計データの集計を行う
 			lfRealTimeDailyTotal($sdate, $edate);
 			// 検索結果の取得
-			$objPage = lfGetOrderProducts($type, $sdate, $edate, $objPage);
+			$objPage = lfGetOrderProducts($type, $sdate, $edate, $objPage, true, $mode);
 			break;
 		// 職業別集計
 		case 'job':
@@ -167,7 +163,7 @@ exit();
 			break;
 		}
 
-		if($_POST['mode'] == 'csv') {
+		if($mode == 'csv') {
 			// CSV出力タイトル行の取得
 			list($arrTitleCol, $arrDataCol) = lfGetCSVColum($page, $objPage->keyname);
 			$head = sfGetCSVList($arrTitleCol);
@@ -177,15 +173,15 @@ exit();
 			exit;
 		}
 		
-		if($_POST['mode'] == 'pdf') {
+		if($mode == 'pdf') {
 			// CSV出力タイトル行の取得
 			list($arrTitleCol, $arrDataCol, $arrColSize, $arrAlign, $title) = lfGetPDFColum($page, $type, $objPage->keyname);
 			$head = sfGetPDFList($arrTitleCol);
 			$data = lfGetDataColPDF($objPage->arrResults, $arrDataCol, 40);
 			// PDF出力用
 			$graph_name = basename($objPage->tpl_image);
-			lfPDFDownload($graph_name, $head . $data, $arrColSize, $arrAlign, $sdate, $edate, $title);
-			exit;	
+			lfPDFDownload($graph_name, $head . $data, $arrColSize, $arrAlign, $sdate, $edate, $title, $page);
+			exit;
 		}	
 	}
 	break;
@@ -217,7 +213,7 @@ $objView->display(MAIN_FRAME);
 
 //---------------------------------------------------------------------------------------------------------------------------
 /* PDF出力 */
-function lfPDFDownload($image, $table, $arrColSize, $arrAlign, $sdate, $edate, $title) {
+function lfPDFDownload($image, $table, $arrColSize, $arrAlign, $sdate, $edate, $title, $page = "") {
 	
 	$objPdf = new SC_Pdf();
 	$objPdf->setTableColor("CCCCCC", "F0F0F0", "D1DEFE");
@@ -252,7 +248,7 @@ function lfPDFDownload($image, $table, $arrColSize, $arrAlign, $sdate, $edate, $
 		// ブロック値の入力
 		$objPdf->writeBlock();
 		// 最終ページのみ、商品別集計は合計がないので最終行の色を変更しない。
-		if($page == $page_max && $_POST['page'] != 'products') {
+		if($page == $page_max && $page != 'products') {
 			$last_color_flg = true;
 		} else {
 			$last_color_flg = false;
@@ -601,7 +597,7 @@ function lfGetOrderMember($type, $sdate, $edate, $objPage, $graph = true) {
 }
 
 /** 商品別集計 **/
-function lfGetOrderProducts($type, $sdate, $edate, $objPage, $graph = true) {
+function lfGetOrderProducts($type, $sdate, $edate, $objPage, $graph = true, $mode = "") {
 	list($where, $arrval) = lfGetWhereMember('create_date', $sdate, $edate, $type);
 	
 	$sql = "SELECT T1.product_id, T1.product_code, T2.name, T1.products_count, T1.order_count, T1.price, T1.total ";
@@ -615,7 +611,7 @@ function lfGetOrderProducts($type, $sdate, $edate, $objPage, $graph = true) {
 	$sql.= ") ";
 	$sql.= "AS T1 LEFT JOIN dtb_products AS T2 USING (product_id) WHERE T2.name IS NOT NULL AND status = 1 ORDER BY T1.total DESC ";
 	
-	if($_POST['mode'] != "csv") {
+	if($mode != "csv") {
 		$sql.= "LIMIT " . PRODUCTS_TOTAL_MAX;
 	}
 	
