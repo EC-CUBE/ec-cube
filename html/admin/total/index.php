@@ -78,6 +78,7 @@ case 'search':
 	$arrRet = $objFormParam->getHashArray();
 	
 sfprintr($objFormParam->getHashArray());
+sfprintr($objPage);
 exit();
 	
 	// 入力エラーなし
