@@ -33,12 +33,7 @@ if (!PEAR::isError($req->sendRequest())) {
 } else {
 	$response = "";
 }
-
 $req->clearPostData();
-
-
-$response = urldecode($response);
-$response = mb_convert_encoding($response, 'EUC-JP', 'Shift_JIS');
 
 print($response);
 
