@@ -173,36 +173,10 @@
 										<textarea name="comment3" cols="60" rows="8" class="area60" maxlength="<!--{$smarty.const.LLTEXT_LEN}-->" style="<!--{$arrErr.comment3|sfGetErrorColor}-->"><!--{$arrForm.comment3|escape}--></textarea><br /><span class="red"> （上限<!--{$smarty.const.LLTEXT_LEN}-->文字）</span></td>
 									</tr>
 									<tr>
-										<!--{assign var=key value="main_large_image"}-->
-										<td bgcolor="#f2f1ec" width="160" class="fs12n">詳細-メイン拡大画像<br />[500×500]</td>
-										<td bgcolor="#ffffff" width="557" class="fs12n">
-										<a name="<!--{$key}-->"></a>
-										<span class="red12"><!--{$arrErr[$key]}--></span>
-										<!--{if $arrFile[$key].filepath != ""}-->
-										<img src="<!--{$arrFile[$key].filepath}-->" alt="<!--{$arrForm.name|escape}-->" width="<!--{$arrFile[$key].width}-->" height="<!--{$arrFile[$key].height}-->" />　<a href="" onclick="fnModeSubmit('delete_image', 'image_key', '<!--{$key}-->'); return false;">[画像の取り消し]</a><br>
-										<!--{/if}-->
-										<input type="file" name="<!--{$key}-->" size="50" class="box50" style="<!--{$arrErr[$key]|sfGetErrorColor}-->" />
-										<input type="button" name="btn" onclick="fnModeSubmit('upload_image', 'image_key', '<!--{$key}-->')" value="アップロード">
-										</td>
-									</tr>
-									<tr>
-										<!--{assign var=key value="main_image"}-->
-										<td bgcolor="#f2f1ec" width="160" class="fs12n">詳細-メイン画像<span class="red"> *</span><br />[260×260]</td>
-										<td bgcolor="#ffffff" width="557" class="fs12n">
-										<a name="<!--{$key}-->"></a>
-										<span class="red12"><!--{$arrErr[$key]}--></span>
-										<!--{if $arrFile[$key].filepath != ""}-->
-										<img src="<!--{$arrFile[$key].filepath}-->" alt="<!--{$arrForm.name|escape}-->" width="<!--{$arrFile[$key].width}-->" height="<!--{$arrFile[$key].height}-->" />　<a href="" onclick="fnModeSubmit('delete_image', 'image_key', '<!--{$key}-->'); return false;">[画像の取り消し]</a><br>
-										<!--{/if}-->
-										<input type="file" name="main_image" size="50" class="box50" style="<!--{$arrErr[$key]|sfGetErrorColor}-->" />
-										<input type="button" name="btn" onclick="fnModeSubmit('upload_image', 'image_key', '<!--{$key}-->')" value="アップロード">
-										</td>
-									</tr>
-									<tr>
-										<td bgcolor="#f2f1ec" width="160" class="fs12n">詳細-メインコメント<span class="red">(タグ許可)*</span></td>
+										<td bgcolor="#f2f1ec" width="160" class="fs12n">一覧-メインコメント<span class="red"> *</span></td>
 										<td bgcolor="#ffffff" width="557" class="fs10n">
-										<span class="red12"><!--{$arrErr.main_comment}--></span>
-										<textarea name="main_comment" value="<!--{$arrForm.main_comment|escape}-->" maxlength="<!--{$smarty.const.LLTEXT_LEN}-->" style="<!--{if $arrErr.main_comment != ""}-->background-color: <!--{$smarty.const.ERR_COLOR}--><!--{/if}-->"  cols="60" rows="8" class="area60"><!--{$arrForm.main_comment|escape}--></textarea><br /><span class="red"> （上限<!--{$smarty.const.LLTEXT_LEN}-->文字）</span></td>
+										<span class="red12"><!--{$arrErr.main_list_comment}--></span>
+										<textarea name="main_list_comment" maxlength="<!--{$smarty.const.MTEXT_LEN}-->" style="<!--{if $arrErr.main_list_comment != ""}-->background-color: <!--{$smarty.const.ERR_COLOR}--><!--{/if}-->" cols="60" rows="8" class="area60"><!--{$arrForm.main_list_comment|escape}--></textarea><br /><span class="red"> （上限<!--{$smarty.const.MTEXT_LEN}-->文字）</span></td>
 									</tr>
 									<tr>
 										<!--{assign var=key value="main_list_image"}-->
@@ -218,10 +192,36 @@
 										</td>
 									</tr>
 									<tr>
-										<td bgcolor="#f2f1ec" width="160" class="fs12n">一覧-メインコメント<span class="red"> *</span></td>
+										<td bgcolor="#f2f1ec" width="160" class="fs12n">詳細-メインコメント<span class="red">(タグ許可)*</span></td>
 										<td bgcolor="#ffffff" width="557" class="fs10n">
-										<span class="red12"><!--{$arrErr.main_list_comment}--></span>
-										<textarea name="main_list_comment" maxlength="<!--{$smarty.const.MTEXT_LEN}-->" style="<!--{if $arrErr.main_list_comment != ""}-->background-color: <!--{$smarty.const.ERR_COLOR}--><!--{/if}-->" cols="60" rows="8" class="area60"><!--{$arrForm.main_list_comment|escape}--></textarea><br /><span class="red"> （上限<!--{$smarty.const.MTEXT_LEN}-->文字）</span></td>
+										<span class="red12"><!--{$arrErr.main_comment}--></span>
+										<textarea name="main_comment" value="<!--{$arrForm.main_comment|escape}-->" maxlength="<!--{$smarty.const.LLTEXT_LEN}-->" style="<!--{if $arrErr.main_comment != ""}-->background-color: <!--{$smarty.const.ERR_COLOR}--><!--{/if}-->"  cols="60" rows="8" class="area60"><!--{$arrForm.main_comment|escape}--></textarea><br /><span class="red"> （上限<!--{$smarty.const.LLTEXT_LEN}-->文字）</span></td>
+									</tr>
+									<tr>
+										<!--{assign var=key value="main_image"}-->
+										<td bgcolor="#f2f1ec" width="160" class="fs12n">詳細-メイン画像<span class="red"> *</span><br />[260×260]</td>
+										<td bgcolor="#ffffff" width="557" class="fs12n">
+										<a name="<!--{$key}-->"></a>
+										<span class="red12"><!--{$arrErr[$key]}--></span>
+										<!--{if $arrFile[$key].filepath != ""}-->
+										<img src="<!--{$arrFile[$key].filepath}-->" alt="<!--{$arrForm.name|escape}-->" width="<!--{$arrFile[$key].width}-->" height="<!--{$arrFile[$key].height}-->" />　<a href="" onclick="fnModeSubmit('delete_image', 'image_key', '<!--{$key}-->'); return false;">[画像の取り消し]</a><br>
+										<!--{/if}-->
+										<input type="file" name="main_image" size="50" class="box50" style="<!--{$arrErr[$key]|sfGetErrorColor}-->" />
+										<input type="button" name="btn" onclick="fnModeSubmit('upload_image', 'image_key', '<!--{$key}-->')" value="アップロード">
+										</td>
+									</tr>
+									<tr>
+										<!--{assign var=key value="main_large_image"}-->
+										<td bgcolor="#f2f1ec" width="160" class="fs12n">詳細-メイン拡大画像<br />[500×500]</td>
+										<td bgcolor="#ffffff" width="557" class="fs12n">
+										<a name="<!--{$key}-->"></a>
+										<span class="red12"><!--{$arrErr[$key]}--></span>
+										<!--{if $arrFile[$key].filepath != ""}-->
+										<img src="<!--{$arrFile[$key].filepath}-->" alt="<!--{$arrForm.name|escape}-->" width="<!--{$arrFile[$key].width}-->" height="<!--{$arrFile[$key].height}-->" />　<a href="" onclick="fnModeSubmit('delete_image', 'image_key', '<!--{$key}-->'); return false;">[画像の取り消し]</a><br>
+										<!--{/if}-->
+										<input type="file" name="<!--{$key}-->" size="50" class="box50" style="<!--{$arrErr[$key]|sfGetErrorColor}-->" />
+										<input type="button" name="btn" onclick="fnModeSubmit('upload_image', 'image_key', '<!--{$key}-->')" value="アップロード">
+										</td>
 									</tr>
 									<!--{*　カラー比較画像、商品詳細ファイルは非対応 
 									<tr>
@@ -268,8 +268,8 @@
 										<textarea name="sub_comment<!--{$smarty.section.cnt.iteration}-->" cols="60" rows="8" class="area60" maxlength="<!--{$smarty.const.LLTEXT_LEN}-->" style="<!--{$arrErr[$key]|sfGetErrorColor}-->"><!--{$arrForm[$key]|escape}--></textarea><br /><span class="red10"> （上限<!--{$smarty.const.LLTEXT_LEN}-->文字）</span></td>
 									</tr>
 									<tr>
-										<!--{assign var=key value="sub_large_image`$smarty.section.cnt.iteration`"}-->
-										<td bgcolor="#f2f1ec" width="160" class="fs12n">詳細-サブ拡大画像（<!--{$smarty.section.cnt.iteration}-->）<br />[500×500]</td>
+										<!--{assign var=key value="sub_image`$smarty.section.cnt.iteration`"}-->
+										<td bgcolor="#f2f1ec" width="160" class="fs12n">詳細-サブ画像（<!--{$smarty.section.cnt.iteration}-->）<br />[200×200]</td>
 										<td bgcolor="#ffffff" width="557" class="fs12n">
 										<a name="<!--{$key}-->"></a>
 										<span class="red12"><!--{$arrErr[$key]}--></span>
@@ -281,8 +281,8 @@
 										</td>
 									</tr>
 									<tr>
-										<!--{assign var=key value="sub_image`$smarty.section.cnt.iteration`"}-->
-										<td bgcolor="#f2f1ec" width="160" class="fs12n">詳細-サブ画像（<!--{$smarty.section.cnt.iteration}-->）<br />[200×200]</td>
+										<!--{assign var=key value="sub_large_image`$smarty.section.cnt.iteration`"}-->
+										<td bgcolor="#f2f1ec" width="160" class="fs12n">詳細-サブ拡大画像（<!--{$smarty.section.cnt.iteration}-->）<br />[500×500]</td>
 										<td bgcolor="#ffffff" width="557" class="fs12n">
 										<a name="<!--{$key}-->"></a>
 										<span class="red12"><!--{$arrErr[$key]}--></span>
