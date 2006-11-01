@@ -11,7 +11,7 @@ $arrData = array(
 	'memo1' => '試験用オーダー情報',
 	'user_mail_add' => 'naka@lockon.co.jp',
 	'item_name' => 'プリンタ',
-	'contract_code' => '1309480x',
+	'contract_code' => '13094800',
 	'user_name' => 'naka',
 	'process_code' => '2',
 	'mission_code' => '1',
@@ -36,12 +36,12 @@ if (!PEAR::isError($req->sendRequest())) {
 
 $req->clearPostData();
 
-/*
+
 $response = urldecode($response);
-$response = mb_convert_encoding($response, 'EUC-JP', 'UTF-8');
+$response = mb_convert_encoding($response, 'EUC-JP', 'Shift_JIS');
 
 print($response);
-*/
+
 
 $parser = xml_parser_create();
 xml_parser_set_option($parser,XML_OPTION_SKIP_WHITE,1);
