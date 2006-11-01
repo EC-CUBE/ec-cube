@@ -172,7 +172,8 @@
 									<tr>
 										<td align="center">
 											<!--{* <img src="<!--{$tpl_image}-->?<!--{$cashtime}-->" alt="グラフ"> *}-->
-											<img src="<!--{$smarty.server.PHP_SELF}-->?draw_image=true" alt="グラフ">
+											<img src="<!--{$smarty.server.PHP_SELF}-->?draw_image=true&mode=search&page=age&search_startyear_m=2006&search_startmonth_m=11" alt="グラフ">
+											
 										</td>
 									</tr>
 									<tr><td height="15"></td></tr>
