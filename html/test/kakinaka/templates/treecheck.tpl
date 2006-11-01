@@ -116,7 +116,7 @@
 <script type="text/javascript" src="js/TaskNode.js"></script>
 
   <div id="content">
-    <form name="mainForm" action="javscript:;">
+    <form name="mainForm" action="javascript:;">
 	<div class="newsItem">
 	  <h3>Task List</h3>
 	  <div id="expandcontractdiv">
