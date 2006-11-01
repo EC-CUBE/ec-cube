@@ -53,6 +53,8 @@ if($_GET['draw_image'] != ""){
 	define(DRAW_IMAGE , false);
 }
 
+sfprintr($_POST);
+
 // パラメータ管理クラス
 $objFormParam = new SC_FormParam();
 // パラメータ情報の初期化

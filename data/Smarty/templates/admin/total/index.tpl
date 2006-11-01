@@ -172,7 +172,7 @@
 									<tr>
 										<td align="center">
 											<!--{* <img src="<!--{$tpl_image}-->?<!--{$cashtime}-->" alt="グラフ"> *}-->
-											<img src="<!--{$smarty.server.PHP_SELF}-->?graph_print=true" alt="グラフ">
+											<img src="<!--{$smarty.server.PHP_SELF}-->?draw_image=true" alt="グラフ">
 										</td>
 									</tr>
 									<tr><td height="15"></td></tr>
