@@ -47,6 +47,8 @@ sfIsSuccess($objSess);
 // 入力期間をセッションに記録する
 lfSaveDateSession();
 
+define(SAVE_FILE , $_GET['save_file']);
+
 // パラメータ管理クラス
 $objFormParam = new SC_FormParam();
 // パラメータ情報の初期化
@@ -478,11 +480,14 @@ function lfGetGraphBar($arrResults, $keyname, $type, $xtitle, $ytitle, $sdate, $
 		$objGraphBar->drawTitle("集計期間：" . $start_date . " - " . $end_date);
 		
 		$objGraphBar->drawGraph();
-		//$objGraphBar->outputGraph(false,$path);
 		
-		$objGraphBar->outputGraph();
-		exit();
-
+		if(SAVE_FILE){
+			$objGraphBar->outputGraph(false,$path);
+		}else{
+			$objGraphBar->outputGraph();
+			exit();
+		}
+		
 		// ファイルパスを返す
 		$ret_path = GRAPH_URL . $pngname;
 	}
