@@ -181,7 +181,8 @@
 									<tr>
 										<!--{assign var=key value="main_list_image"}-->
 										<td bgcolor="#f2f1ec" width="160" class="fs12n">一覧-メイン画像<span class="red"> *</span><br />[130×130]</td>
-										<td bgcolor="#ffffff" width="557" class="fs12n"><a name="<!--{$key}-->"></a>
+										<td bgcolor="#ffffff" width="557" class="fs12n">
+										<a name="<!--{$key}-->"></a>
 										<span class="red12"><!--{$arrErr[$key]}--></span>
 										<!--{if $arrFile[$key].filepath != ""}-->
 										<img src="<!--{$arrFile[$key].filepath}-->" alt="<!--{$arrForm.name|escape}-->" width="<!--{$arrFile[$key].width}-->" height="<!--{$arrFile[$key].height}-->" />　<a href="" onclick="fnModeSubmit('delete_image', 'image_key', '<!--{$key}-->'); return false;">[画像の取り消し]</a><br>
@@ -198,9 +199,9 @@
 									</tr>
 									<tr>
 										<!--{assign var=key value="main_image"}-->
-										<a name="<!--{$key}-->"></a>
 										<td bgcolor="#f2f1ec" width="160" class="fs12n">詳細-メイン画像<span class="red"> *</span><br />[260×260]</td>
 										<td bgcolor="#ffffff" width="557" class="fs12n">
+										<a name="<!--{$key}-->"></a>
 										<span class="red12"><!--{$arrErr[$key]}--></span>
 										<!--{if $arrFile[$key].filepath != ""}-->
 										<img src="<!--{$arrFile[$key].filepath}-->" alt="<!--{$arrForm.name|escape}-->" width="<!--{$arrFile[$key].width}-->" height="<!--{$arrFile[$key].height}-->" />　<a href="" onclick="fnModeSubmit('delete_image', 'image_key', '<!--{$key}-->'); return false;">[画像の取り消し]</a><br>
@@ -268,9 +269,9 @@
 									</tr>
 									<tr>
 										<!--{assign var=key value="sub_image`$smarty.section.cnt.iteration`"}-->
-										<a name="<!--{$key}-->"></a>
 										<td bgcolor="#f2f1ec" width="160" class="fs12n">詳細-サブ画像（<!--{$smarty.section.cnt.iteration}-->）<br />[200×200]</td>
 										<td bgcolor="#ffffff" width="557" class="fs12n">
+										<a name="<!--{$key}-->"></a>
 										<span class="red12"><!--{$arrErr[$key]}--></span>
 										<!--{if $arrFile[$key].filepath != ""}-->
 										<img src="<!--{$arrFile[$key].filepath}-->" alt="<!--{$arrForm.name|escape}-->" width="<!--{$arrFile[$key].width}-->" height="<!--{$arrFile[$key].height}-->" />　<a href="" onclick="fnModeSubmit('delete_image', 'image_key', '<!--{$key}-->'); return false;">[画像の取り消し]</a><br>
@@ -281,9 +282,9 @@
 									</tr>
 									<tr>
 										<!--{assign var=key value="sub_large_image`$smarty.section.cnt.iteration`"}-->
-										<a name="<!--{$key}-->"></a>
 										<td bgcolor="#f2f1ec" width="160" class="fs12n">詳細-サブ拡大画像（<!--{$smarty.section.cnt.iteration}-->）<br />[500×500]</td>
 										<td bgcolor="#ffffff" width="557" class="fs12n">
+										<a name="<!--{$key}-->"></a>
 										<span class="red12"><!--{$arrErr[$key]}--></span>
 										<!--{if $arrFile[$key].filepath != ""}-->
 										<img src="<!--{$arrFile[$key].filepath}-->" alt="<!--{$arrForm.name|escape}-->" width="<!--{$arrFile[$key].width}-->" height="<!--{$arrFile[$key].height}-->" />　<a href="" onclick="fnModeSubmit('delete_image', 'image_key', '<!--{$key}-->'); return false;">[画像の取り消し]</a><br>
