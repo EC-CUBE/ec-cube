@@ -140,7 +140,7 @@
   </div>
 </div>
 
-<input type="submit" id="showButton" value="submit"/>
+<input type="submit" id="showButton" value="subm"/>
 
 <script type="text/javascript">
 
