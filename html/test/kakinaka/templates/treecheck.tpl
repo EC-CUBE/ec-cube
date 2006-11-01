@@ -151,8 +151,8 @@
 	var nodeIndex;
 	
 	function treeInit() {
-		alert("test");
 		buildRandomTextNodeTree();
+		alert("test");
 	}
 	
 	function buildRandomTextNodeTree() {
