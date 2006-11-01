@@ -259,10 +259,7 @@ function lfProductPage() {
 	}elseif($_POST['anchor_key'] != ""){
 		$anchor_hash = "location.hash='#" . $_POST['anchor_key'] . "'";
 	}
-	
-	sfprintr($_POST);
-	sfprintr($anchor_hash);
-	
+		
 	$objPage->tpl_onload = "fnCheckSaleLimit('" . DISABLED_RGB . "'); fnCheckStockLimit('" . DISABLED_RGB . "'); " . $anchor_hash;
 }
 
