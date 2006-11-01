@@ -69,8 +69,6 @@ foreach ($_POST as $key => $val) {
 
 
 $mode = $objFormParam->getValue('mode');
-
-sfprintr($mode);
 switch($mode) {
 case 'pdf':
 case 'csv':
@@ -145,8 +143,6 @@ case 'search':
 			if($type == "") {
 				$type = 'all';
 			}
-			
-			sfprintr($_GET);
 			
 			$objPage->tpl_page_type = "total/page_age.tpl";
 			// 未集計データの集計を行う
