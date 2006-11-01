@@ -27,6 +27,7 @@ function func_submit( id ){
 	var fm = window.opener.document.form1;
 	fm.recommend_id<!--{$smarty.get.no}-->.value = id;
 	fm.mode.value = 'recommend_select';
+	fm.anchor_key = '2';
 	fm.submit();
 	window.close();
 	return false;
