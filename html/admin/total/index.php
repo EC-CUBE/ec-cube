@@ -412,31 +412,33 @@ function lfGetGraphPie($arrResults, $keyname, $type, $title = "", $sdate = "", $
 		$pngname = lfGetGraphPng($type);
 		$path = GRAPH_DIR . $pngname;
 		
-			$objGraphPie = new SC_GraphPie();
-			
-			/* デバッグ表示用 by naka
-			foreach($arrList as $key => $val) {
-				$objGraphPie->debugPrint("key:$key val:$val");
-			}
-			*/
-			
-			// データをセットする
-			$objGraphPie->setData($arrList);
-			// 凡例をセットする
-			$objGraphPie->setLegend(array_keys($arrList));
-									
-			// メインタイトル作成
-			list($sy, $sm, $sd) = split("[/ ]" , $sdate);
-			list($ey, $em, $ed) = split("[/ ]" , $edate);
-			$start_date = $sy . "年" . $sm . "月" . $sd . "日";
-			$end_date = $ey . "年" . $em . "月" . $ed . "日";
-			$objGraphPie->drawTitle("集計期間：" . $start_date . " - " . $end_date);
-					
-			// 円グラフ描画
-			$objGraphPie->drawGraph();
-			
-			// グラフの出力
-			$objGraphPie->outputGraph(false, $path);			
+		$objGraphPie = new SC_GraphPie();
+		
+		/* デバッグ表示用 by naka
+		foreach($arrList as $key => $val) {
+			$objGraphPie->debugPrint("key:$key val:$val");
+		}
+		*/
+		
+		// データをセットする
+		$objGraphPie->setData($arrList);
+		// 凡例をセットする
+		$objGraphPie->setLegend(array_keys($arrList));
+								
+		// メインタイトル作成
+		list($sy, $sm, $sd) = split("[/ ]" , $sdate);
+		list($ey, $em, $ed) = split("[/ ]" , $edate);
+		$start_date = $sy . "年" . $sm . "月" . $sd . "日";
+		$end_date = $ey . "年" . $em . "月" . $ed . "日";
+		$objGraphPie->drawTitle("集計期間：" . $start_date . " - " . $end_date);
+				
+		// 円グラフ描画
+		$objGraphPie->drawGraph();
+		
+		// グラフの出力
+		$objGraphPie->outputGraph(false, $path);
+		
+		sfprintr($objGraphPie->outputGraph(true));
 
 		// ファイルパスを返す
 		$ret_path = GRAPH_URL . $pngname;
