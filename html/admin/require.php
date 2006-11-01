@@ -5,7 +5,8 @@
  * http://www.lockon.co.jp/
  */
 $include_dir = realpath(dirname( __FILE__));
-require_once($include_dir . "/../../data/conf/conf.php");	
+require_once($include_dir . "/../../data/conf/conf.php");
+require_once($include_dir . "/../../data/include/module.inc");
 require_once($include_dir . "/../../data/lib/glib.php");
 require_once($include_dir . "/../../data/lib/slib.php");
 require_once($include_dir . "/../../data/class/SC_View.php");
@@ -24,7 +25,6 @@ require_once($include_dir . "/../../data/class/SC_FormParam.php");
 require_once($include_dir . "/../../data/class/SC_CustomerList.php");
 require_once($include_dir . "/../../data/class/SC_Customer.php");
 require_once($include_dir . "/../../data/class/SC_Pdf.php");
-
 // アップデートで取得したPHPを読み出す
 sfLoadUpdateModule();
 
