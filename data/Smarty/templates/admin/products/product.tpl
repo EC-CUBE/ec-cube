@@ -268,8 +268,8 @@
 										<textarea name="sub_comment<!--{$smarty.section.cnt.iteration}-->" cols="60" rows="8" class="area60" maxlength="<!--{$smarty.const.LLTEXT_LEN}-->" style="<!--{$arrErr[$key]|sfGetErrorColor}-->"><!--{$arrForm[$key]|escape}--></textarea><br /><span class="red10"> （上限<!--{$smarty.const.LLTEXT_LEN}-->文字）</span></td>
 									</tr>
 									<tr>
-										<!--{assign var=key value="sub_image`$smarty.section.cnt.iteration`"}-->
-										<td bgcolor="#f2f1ec" width="160" class="fs12n">詳細-サブ画像（<!--{$smarty.section.cnt.iteration}-->）<br />[200×200]</td>
+										<!--{assign var=key value="sub_large_image`$smarty.section.cnt.iteration`"}-->
+										<td bgcolor="#f2f1ec" width="160" class="fs12n">詳細-サブ拡大画像（<!--{$smarty.section.cnt.iteration}-->）<br />[500×500]</td>
 										<td bgcolor="#ffffff" width="557" class="fs12n">
 										<a name="<!--{$key}-->"></a>
 										<span class="red12"><!--{$arrErr[$key]}--></span>
@@ -281,8 +281,8 @@
 										</td>
 									</tr>
 									<tr>
-										<!--{assign var=key value="sub_large_image`$smarty.section.cnt.iteration`"}-->
-										<td bgcolor="#f2f1ec" width="160" class="fs12n">詳細-サブ拡大画像（<!--{$smarty.section.cnt.iteration}-->）<br />[500×500]</td>
+										<!--{assign var=key value="sub_image`$smarty.section.cnt.iteration`"}-->
+										<td bgcolor="#f2f1ec" width="160" class="fs12n">詳細-サブ画像（<!--{$smarty.section.cnt.iteration}-->）<br />[200×200]</td>
 										<td bgcolor="#ffffff" width="557" class="fs12n">
 										<a name="<!--{$key}-->"></a>
 										<span class="red12"><!--{$arrErr[$key]}--></span>
