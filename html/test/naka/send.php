@@ -76,7 +76,9 @@ function lfGetXMLValue($arrVal, $tag, $att) {
 			}			
 		}		
 	}
-	return mb_convert_encoding(urldecode($ret), 'EUC-JP', 'auto');
+	$dec = urldecode($ret);
+	$enc = mb_convert_encoding($dec, 'EUC-JP', 'auto');
+	return $enc;
 }
 
 ?>
