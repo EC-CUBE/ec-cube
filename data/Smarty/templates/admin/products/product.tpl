@@ -7,19 +7,8 @@
 *}-->
 <script type="text/javascript">
 <!--
-function lfnSetAnchor(value) {
-	form1.anchor_key.value=value;
-}
-
-function initialize_link()
-{
-location.hash = "#list_main";
-
-}
-
 //-->
 </script>
-<input type="button" value="test" onclick="initialize_link();">
 <!--¡ú¡ú¥á¥¤¥ó¥³¥ó¥Æ¥ó¥Ä¡ú¡ú-->
 <table width="878" border="0" cellspacing="0" cellpadding="0" summary=" ">
 	<tr valign="top">
