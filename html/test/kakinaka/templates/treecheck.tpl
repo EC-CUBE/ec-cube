@@ -107,11 +107,9 @@
 
     <div id="logDiv"></div>
 
-    
 </div>
 
 </div>
-
 
 <script type="text/javascript" src="js/TaskNode.js"></script>
 
@@ -129,7 +127,6 @@
 	  <div id="treeDiv2"></div>
 	</div>
   </div>
-	
       <div id="footerContainer">
         <div id="footer">
           <p>&nbsp;</p>
@@ -219,7 +216,7 @@
     }
 
     //YAHOO.util.Event.on("showButton", "click", showTreeState);
-    // YAHOO.util.Event.on("showButton", "click", showJSON);
+    //YAHOO.util.Event.on("showButton", "click", showJSON);
 
 </script>
 
