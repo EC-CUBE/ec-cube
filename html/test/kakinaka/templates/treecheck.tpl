@@ -116,7 +116,7 @@
 <script type="text/javascript" src="js/TaskNode.js"></script>
 
   <div id="content">
-    <form name="mainForm" action="javascript:;">
+    <form name="mainForm" action="<!--{$smarty.server.PHP_SELF}-->" method="post" >
 	<div class="newsItem">
 	  <h3>Task List</h3>
 	  <div id="expandcontractdiv">
@@ -140,9 +140,7 @@
   </div>
 </div>
 
-<!--
-<input type="button" id="showButton" />
--->
+<input type="submit" id="showButton" value="submit"/>
 
 <script type="text/javascript">
 
