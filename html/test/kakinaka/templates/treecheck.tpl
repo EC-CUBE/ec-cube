@@ -115,8 +115,8 @@
 
 <script type="text/javascript" src="js/TaskNode.js"></script>
 
+<form name="mainForm" action="<!--{$smarty.server.PHP_SELF}-->" method="post" >
   <div id="content">
-    <form name="mainForm" action="<!--{$smarty.server.PHP_SELF}-->" method="post" >
 	<div class="newsItem">
 	  <h3>Task List</h3>
 	  <div id="expandcontractdiv">
@@ -128,7 +128,6 @@
 	  <div id="treeDiv1"></div>
 	  <div id="treeDiv2"></div>
 	</div>
-	</form>
   </div>
 	
       <div id="footerContainer">
@@ -142,6 +141,7 @@
 
 <input type="submit" id="showButton" value="subm"/>
 
+</form>
 <script type="text/javascript">
 
 	var tree;
