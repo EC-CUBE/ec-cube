@@ -256,8 +256,8 @@ function lfProductPage() {
 	// アンカーを設定
 	if($_POST['image_key'] != ""){
 		$anchor_hash = "location.hash='#" . $_POST['image_key'] . "'";
-	}elseif($_GET['no'] != ""){
-		$anchor_hash = "location.hash='#recommend_id" . $_GET['no'] . "'";
+	}elseif($_POST['anchor_key'] != ""){
+		$anchor_hash = "location.hash='#recommend_id" . $_POST['anchor_key'] . "'";
 	}
 	
 	sfprintr($_POST);
