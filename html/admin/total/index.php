@@ -331,6 +331,8 @@ function lfInitParam() {
 	// hiddenデータの取得用
 	$objFormParam->addParam("", "page");
 	$objFormParam->addParam("", "type");
+	$objFormParam->addParam("", "mode");
+
 }
 
 /* 入力内容のチェック */
