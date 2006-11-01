@@ -170,7 +170,10 @@
 								<table width="740" border="0" cellspacing="0" cellpadding="0" summary=" ">
 									<tr><td height="15"></td></tr>
 									<tr>
-										<td align="center"><img src="<!--{$tpl_image}-->?<!--{$cashtime}-->" alt="グラフ"></td>
+										<td align="center">
+											<!--{* <img src="<!--{$tpl_image}-->?<!--{$cashtime}-->" alt="グラフ"> *}-->
+											<img src="<!--{$smarty.server.PHP_SELF}-->?graph_print=true" alt="グラフ">
+										</td>
 									</tr>
 									<tr><td height="15"></td></tr>
 								</table>

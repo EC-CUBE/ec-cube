@@ -47,9 +47,10 @@ sfIsSuccess($objSess);
 // 入力期間をセッションに記録する
 lfSaveDateSession();
 
-define(SAVE_FILE , true);
-if($_GET['print_graph']){
-	define(SAVE_FILE , false);
+if($_GET['draw_image'] != ""){
+	define(DRAW_IMAGE , true);
+}else{
+	define(DRAW_IMAGE , false);
 }
 
 // パラメータ管理クラス
@@ -484,11 +485,11 @@ function lfGetGraphBar($arrResults, $keyname, $type, $xtitle, $ytitle, $sdate, $
 		
 		$objGraphBar->drawGraph();
 		
-		if(SAVE_FILE){
-			$objGraphBar->outputGraph(false,$path);
-		}else{
+		if(DRAW_IMAGE){
 			$objGraphBar->outputGraph();
 			exit();
+		}else{
+			$objGraphBar->outputGraph(false,$path);
 		}
 		
 		// ファイルパスを返す
