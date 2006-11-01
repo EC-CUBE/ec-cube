@@ -53,8 +53,6 @@ if($_GET['draw_image'] != ""){
 	define(DRAW_IMAGE , false);
 }
 
-sfprintr($_GET);
-
 // パラメータ管理クラス
 $objFormParam = new SC_FormParam();
 // パラメータ情報の初期化
@@ -143,6 +141,9 @@ case 'search':
 			if($type == "") {
 				$type = 'all';
 			}
+			
+			sfprintr($_GET);
+			
 			$objPage->tpl_page_type = "total/page_age.tpl";
 			// 未集計データの集計を行う
 			lfRealTimeDailyTotal($sdate, $edate);
