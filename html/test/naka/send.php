@@ -52,4 +52,13 @@ $decode = urldecode($arrVal[4]['attributes']['MEMO1']);
 print(mb_convert_encoding($decode, 'EUC-JP', 'Shift_JIS'));
 */
 
+function getXMLValue($arrVal, $tag, $attributes) {
+	foreach($arrVal as $array) {
+		$tag = $array['tag'];
+		// 先頭の要素を取り出す
+		$att_first = array_slice($array['attributes'],1,1);
+		print($att_first);
+	}
+}
+
 ?>
