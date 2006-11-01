@@ -163,15 +163,8 @@
 			var tmpNode = new YAHOO.widget.TaskNode("kakinaka-" + i, tree.getRoot(), false);
             tmpNode.onCheckClick = onCheckClick;
 			buildRandomTextBranch(tmpNode);
-			
-			var tmpNode2 = new YAHOO.widget.TaskNode("kakinaka2-" + i, tree2.getRoot(), false);
-            tmpNode2.onCheckClick = onCheckClick;
-			buildRandomTextBranch(tmpNode2);
-			
-			alert("test");
 		}
 		tree.draw();
-		tree2.draw();
         // tree.checkClickEvent.subscribe(onCheckClick);
 	}
 
