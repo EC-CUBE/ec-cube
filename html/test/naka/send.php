@@ -40,7 +40,7 @@ xml_parser_set_option($parser,XML_OPTION_SKIP_WHITE,1);
 xml_parse_into_struct($parser,$response,$arrVal,$idx);
 xml_parser_free($parser);
 
-$url = getXMLValue($arrVal,'RESULT','REDIRECT');
+$url = lfGetXMLValue($arrVal,'RESULT','REDIRECT');
 
 print($url);
 
@@ -55,7 +55,7 @@ print(mb_convert_encoding($decode, 'EUC-JP', 'Shift_JIS'));
 */
 
 
-function getXMLAttValue($arrVal, $tag, $att) {
+function lfGetXMLValue($arrVal, $tag, $att) {
 	$ret = "";
 	foreach($arrVal as $array) {
 		if($tag == $array['tag']) {
