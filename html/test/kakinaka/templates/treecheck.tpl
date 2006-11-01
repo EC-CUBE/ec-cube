@@ -180,8 +180,6 @@
 		    // tmpNode = new YAHOO.widget.TaskNode(node.label + "-" + i, node, false, true);
         }
 	}
-
-
     // function onCheckClick(eventType, args, tree) {
     //var node = args[0];
     function onCheckClick(eventType, args, tree) {
