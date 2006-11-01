@@ -47,7 +47,10 @@ sfIsSuccess($objSess);
 // 入力期間をセッションに記録する
 lfSaveDateSession();
 
-define(SAVE_FILE , $_GET['save_file']);
+define(SAVE_FILE , true);
+if($_GET['print_graph']){
+	define(SAVE_FILE , false);
+}
 
 // パラメータ管理クラス
 $objFormParam = new SC_FormParam();
