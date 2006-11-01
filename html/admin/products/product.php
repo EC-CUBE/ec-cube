@@ -261,6 +261,7 @@ function lfProductPage() {
 	}
 	
 	sfprintr($_POST);
+	sfprintr($anchor_hash);
 	
 	$objPage->tpl_onload = "fnCheckSaleLimit('" . DISABLED_RGB . "'); fnCheckStockLimit('" . DISABLED_RGB . "'); " . $anchor_hash;
 }
