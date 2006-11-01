@@ -37,7 +37,7 @@ $req->clearPostData();
 
 print($response);
 
-
+/*
 $parser = xml_parser_create();
 xml_parser_set_option($parser,XML_OPTION_SKIP_WHITE,1);
 xml_parse_into_struct($parser,$response,$arrVal,$idx);
@@ -50,6 +50,6 @@ print(mb_convert_encoding($decode, 'EUC-JP', 'Shift_JIS'));
 $decode = urldecode($arrVal[4]['attributes']['MEMO1']);
 
 print(mb_convert_encoding($decode, 'EUC-JP', 'Shift_JIS'));
-
+*/
 
 ?>
