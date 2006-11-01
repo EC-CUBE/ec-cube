@@ -40,15 +40,15 @@ xml_parser_set_option($parser,XML_OPTION_SKIP_WHITE,1);
 xml_parse_into_struct($parser,$response,$arrVal,$idx);
 xml_parser_free($parser);
 
-sfPrintR($arrVal);
+$err_code = lfGetXMLValue($arrVal,'RESULT','ERR_CODE');
 
-$url = lfGetXMLValue($arrVal,'RESULT','REDIRECT');
-
-print($url);
-
-$err_detail = lfGetXMLValue($arrVal,'RESULT','ERR_DETAIL');
-
-print($err_detail);
+if($err_code != "") {
+	$err_detail = lfGetXMLValue($arrVal,'RESULT','ERR_DETAIL');
+	print($err_detail);
+} else {
+	$url = lfGetXMLValue($arrVal,'RESULT','REDIRECT');
+	header("Location: " . $url);	
+}
 
 
 function lfGetXMLValue($arrVal, $tag, $att) {
