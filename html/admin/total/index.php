@@ -437,8 +437,6 @@ function lfGetGraphPie($arrResults, $keyname, $type, $title = "", $sdate = "", $
 		
 		// グラフの出力
 		$objGraphPie->outputGraph(false, $path);
-		
-		sfprintr($objGraphPie->outputGraph(true));
 
 		// ファイルパスを返す
 		$ret_path = GRAPH_URL . $pngname;
@@ -459,28 +457,31 @@ function lfGetGraphBar($arrResults, $keyname, $type, $xtitle, $ytitle, $sdate, $
 		$pngname = lfGetGraphPng($type);
 		$path = GRAPH_DIR . $pngname;
 		
-			$objGraphBar = new SC_GraphBar();
-			
-			foreach(array_keys($arrList) as $val) {
-				$arrKey[] = ereg_replace("〜", "-", $val);
-			}
-			
-			// グラフ描画
-			$objGraphBar->setXLabel($arrKey);
-			$objGraphBar->setXTitle($xtitle);
-			$objGraphBar->setYTitle($ytitle);
-			$objGraphBar->setData($arrList);
-			
-			// メインタイトル作成
-			$arrKey = array_keys($arrList);
-			list($sy, $sm, $sd) = split("[/ ]" , $sdate);
-			list($ey, $em, $ed) = split("[/ ]" , $edate);
-			$start_date = $sy . "年" . $sm . "月" . $sd . "日";
-			$end_date = $ey . "年" . $em . "月" . $ed . "日";
-			$objGraphBar->drawTitle("集計期間：" . $start_date . " - " . $end_date);
-			
-			$objGraphBar->drawGraph();
-			$objGraphBar->outputGraph(false,$path);
+		$objGraphBar = new SC_GraphBar();
+		
+		foreach(array_keys($arrList) as $val) {
+			$arrKey[] = ereg_replace("〜", "-", $val);
+		}
+		
+		// グラフ描画
+		$objGraphBar->setXLabel($arrKey);
+		$objGraphBar->setXTitle($xtitle);
+		$objGraphBar->setYTitle($ytitle);
+		$objGraphBar->setData($arrList);
+		
+		// メインタイトル作成
+		$arrKey = array_keys($arrList);
+		list($sy, $sm, $sd) = split("[/ ]" , $sdate);
+		list($ey, $em, $ed) = split("[/ ]" , $edate);
+		$start_date = $sy . "年" . $sm . "月" . $sd . "日";
+		$end_date = $ey . "年" . $em . "月" . $ed . "日";
+		$objGraphBar->drawTitle("集計期間：" . $start_date . " - " . $end_date);
+		
+		$objGraphBar->drawGraph();
+		//$objGraphBar->outputGraph(false,$path);
+		
+		sfprintr($objGraphBar->outputGraph());
+		exit();
 
 		// ファイルパスを返す
 		$ret_path = GRAPH_URL . $pngname;
