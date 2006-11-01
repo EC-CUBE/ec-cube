@@ -480,6 +480,8 @@ function lfGetGraphBar($arrResults, $keyname, $type, $xtitle, $ytitle, $sdate, $
 		$objGraphBar->drawGraph();
 		//$objGraphBar->outputGraph(false,$path);
 		
+		sfprintr($path);
+		
 		$objGraphBar->outputGraph();
 		exit();
 
