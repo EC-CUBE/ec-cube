@@ -480,7 +480,7 @@ function lfGetGraphBar($arrResults, $keyname, $type, $xtitle, $ytitle, $sdate, $
 		$objGraphBar->drawGraph();
 		//$objGraphBar->outputGraph(false,$path);
 		
-		sfprintr($objGraphBar->outputGraph());
+		$objGraphBar->outputGraph();
 		exit();
 
 		// ファイルパスを返す
