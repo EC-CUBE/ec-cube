@@ -212,9 +212,9 @@
 									</tr>
 									<tr>
 										<!--{assign var=key value="main_large_image"}-->
-										<a name="<!--{$key}-->"></a>
 										<td bgcolor="#f2f1ec" width="160" class="fs12n">詳細-メイン拡大画像<br />[500×500]</td>
 										<td bgcolor="#ffffff" width="557" class="fs12n">
+										<a name="<!--{$key}-->"></a>
 										<span class="red12"><!--{$arrErr[$key]}--></span>
 										<!--{if $arrFile[$key].filepath != ""}-->
 										<img src="<!--{$arrFile[$key].filepath}-->" alt="<!--{$arrForm.name|escape}-->" width="<!--{$arrFile[$key].width}-->" height="<!--{$arrFile[$key].height}-->" />　<a href="" onclick="fnModeSubmit('delete_image', 'image_key', '<!--{$key}-->'); return false;">[画像の取り消し]</a><br>
