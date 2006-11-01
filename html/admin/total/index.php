@@ -44,8 +44,6 @@ $objSess = new SC_Session();
 // 認証可否の判定
 sfIsSuccess($objSess);
 
-sfprintr($_POST);
-
 // 入力期間をセッションに記録する
 lfSaveDateSession();
 
