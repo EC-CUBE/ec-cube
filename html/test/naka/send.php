@@ -72,7 +72,7 @@ function lfGetXMLValue($arrVal, $tag, $att) {
 			}			
 		}		
 	}
-	return $ret;
+	return urldecode($ret);
 }
 
 ?>
