@@ -152,12 +152,13 @@
 	
 	function treeInit() {
 		buildRandomTextNodeTree();
-		alert("test");
 	}
 	
 	function buildRandomTextNodeTree() {
 		tree = new YAHOO.widget.TreeView("treeDiv1");
 		tree2 = new YAHOO.widget.TreeView("treeDiv2");
+		
+		alert("test");
 		
 		for (var i = 0; i < Math.floor((Math.random()*4) + 3); i++) {
 			var tmpNode = new YAHOO.widget.TaskNode("kakinaka-" + i, tree.getRoot(), false);
