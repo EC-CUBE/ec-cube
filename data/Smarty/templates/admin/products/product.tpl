@@ -180,8 +180,8 @@
 									</tr>
 									<tr>
 										<!--{assign var=key value="main_list_image"}-->
-										<a name="<!--{$key}-->"></a>
-										<td bgcolor="#f2f1ec" width="160" class="fs12n">一覧-メイン画像<span class="red"> *</span><br />[130×130]</td>
+										<td bgcolor="#f2f1ec" width="160" class="fs12n"><a name="<!--{$key}-->"></a>
+											一覧-メイン画像<span class="red"> *</span><br />[130×130]</td>
 										<td bgcolor="#ffffff" width="557" class="fs12n">
 										<span class="red12"><!--{$arrErr[$key]}--></span>
 										<!--{if $arrFile[$key].filepath != ""}-->
