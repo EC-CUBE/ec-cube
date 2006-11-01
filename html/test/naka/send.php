@@ -40,7 +40,9 @@ xml_parser_set_option($parser,XML_OPTION_SKIP_WHITE,1);
 xml_parse_into_struct($parser,$response,$arrVal,$idx);
 xml_parser_free($parser);
 
-getXMLValue($arrVal,'RESULT','REDIRECT');
+$url = getXMLValue($arrVal,'RESULT','REDIRECT');
+
+print($url);
 
 /*
 $decode = urldecode($arrVal[3]['attributes']['ERR_DETAIL']);
