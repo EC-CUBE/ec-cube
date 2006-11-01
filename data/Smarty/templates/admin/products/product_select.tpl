@@ -26,6 +26,7 @@ self.moveTo(20,20);self.focus();
 function func_submit( id ){
 	var fm = window.opener.document.form1;
 	fm.recommend_id<!--{$smarty.get.no}-->.value = id;
+	fm.recommend_id.value = <!--{$smarty.get.no}-->;
 	fm.mode.value = 'recommend_select';
 	fm.submit();
 	window.close();
@@ -48,6 +49,7 @@ function func_submit( id ){
 <!--▼検索フォーム-->
 <form name="form1" id="form1" method="post" action="<!--{$smarty.server.REQUEST_URI}-->">
 <input name="mode" type="hidden" value="search">
+<input name="recommend_id" type="hidden" value="">
 <input name="search_pageno" type="hidden" value="">
 <table bgcolor="#cccccc" width="420" border="0" cellspacing="1" cellpadding="5" summary=" ">
 	<tr class="fs12n">
