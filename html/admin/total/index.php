@@ -182,7 +182,7 @@ case 'search':
 			$graph_name = basename($objPage->tpl_image);
 			lfPDFDownload($graph_name, $head . $data, $arrColSize, $arrAlign, $sdate, $edate, $title, $page);
 			exit;
-		}	
+		}
 	}
 	break;
 default:
@@ -492,8 +492,6 @@ function lfGetGraphBar($arrResults, $keyname, $type, $xtitle, $ytitle, $sdate, $
 		if(DRAW_IMAGE){
 			$objGraphBar->outputGraph();
 			exit();
-		}else{
-			$objGraphBar->outputGraph(false,$path);
 		}
 		
 		// ファイルパスを返す
