@@ -46,6 +46,10 @@ $url = lfGetXMLValue($arrVal,'RESULT','REDIRECT');
 
 print($url);
 
+$err_detail = lfGetXMLValue($arrVal,'RESULT','ERR_DETAIL');
+
+print($err_detail);
+
 /*
 $decode = urldecode($arrVal[3]['attributes']['ERR_DETAIL']);
 
