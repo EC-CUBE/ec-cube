@@ -68,9 +68,6 @@ foreach ($_POST as $key => $val) {
 }
 
 $mode = $objFormParam->getValue('mode');
-
-sfprintr($objFormParam->getHashArray());
-exit();
 switch($mode) {
 case 'pdf':
 case 'csv':
@@ -79,6 +76,9 @@ case 'search':
 	$objFormParam->convParam();
 	$objPage->arrErr = lfCheckError($arrRet);
 	$arrRet = $objFormParam->getHashArray();
+	
+sfprintr($objFormParam->getHashArray());
+exit();
 	
 	// 入力エラーなし
 	if (count($objPage->arrErr) == 0) {
