@@ -10,7 +10,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="ja" lang="ja">
 
 <head>
-<meta http-equiv="content-type" content="application/xhtml+xml; charset=EUC-JP" />
+<meta http-equiv="content-type" content="application/xhtml+xml; charset=<!--{$smarty.const.CHAR_CODE}-->" />
 <meta http-equiv="content-script-type" content="text/javascript" />
 <meta http-equiv="content-style-type" content="text/css" />
 <link rel="stylesheet" href="/ec-cube/admin/css/contents.css" type="text/css" media="all" />

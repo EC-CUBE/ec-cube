@@ -3,7 +3,7 @@
  *
  * http://www.lockon.co.jp/
  */
-@charset "euc-jp";
+@charset "<!--{$smarty.const.CHAR_CODE}-->";
 /***新しいお届け先の登録(入力)***/
 
 /***全体***/

@@ -6,7 +6,7 @@
  * http://www.lockon.co.jp/
  *}-->
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=EUC-JP">
+<meta http-equiv="Content-Type" content="text/html; charset=<!--{$smarty.const.CHAR_CODE}-->">
 <meta http-equiv="content-script-type" content="text/javascript">
 <meta http-equiv="content-style-type" content="text/css">
 <link rel="stylesheet" href="../css/contents.css" type="text/css" >

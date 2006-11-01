@@ -7,7 +7,7 @@
 *}-->
 
 <style type="text/css">
-@charset "euc-jp";
+@charset "<!--{$smarty.const.CHAR_CODE}-->";
 
 body {
 	background: #fff url(<!--{$smarty.const.URL_DIR}-->img/common/bg.jpg);

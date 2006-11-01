@@ -3,7 +3,7 @@
  *
  * http://www.lockon.co.jp/
  */
-@charset "euc-jp";
+@charset "<!--{$smarty.const.CHAR_CODE}-->";
 .fs10 {font-size: 62.5%; line-height: 150%;}
 .fs12 {font-size: 75%; line-height: 150%;}
 .fs14 {font-size: 87.5%; line-height: 150%;}

@@ -4,7 +4,7 @@
  * http://www.lockon.co.jp/
  */
 
-@charset "euc-jp";
+@charset "<!--{$smarty.const.CHAR_CODE}-->";
 
 /***Çã¤¤Êª¤«¤´£Ã£Ó£Ó***/
 

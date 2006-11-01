@@ -5,7 +5,7 @@
  */
 /***************MY?????????????***************/
 
-@charset "euc-jp";
+@charset "<!--{$smarty.const.CHAR_CODE}-->";
 
 
 
