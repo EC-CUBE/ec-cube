@@ -26,6 +26,7 @@ $objSess = new SC_Session();
 // 認証可否の判定
 sfIsSuccess($objSess);
 
+sfprintr($_POST);
 
 if ($_POST['mode'] == "search") {
 	
