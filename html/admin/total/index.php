@@ -400,9 +400,10 @@ function lfGetGraphLine($arrResults, $keyname, $type, $xtitle, $ytitle, $sdate, 
 		
 		// グラフ描画
 		$objGraphLine->drawGraph();
+		
 		// グラフの出力
 		if(DRAW_IMAGE){
-			$objGraphBar->outputGraph();
+			$objGraphLine->outputGraph();
 			exit();
 		}
 
@@ -451,7 +452,7 @@ function lfGetGraphPie($arrResults, $keyname, $type, $title = "", $sdate = "", $
 		
 		// グラフの出力
 		if(DRAW_IMAGE){
-			$objGraphBar->outputGraph();
+			$objGraphPie->outputGraph();
 			exit();
 		}
 
@@ -495,12 +496,12 @@ function lfGetGraphBar($arrResults, $keyname, $type, $xtitle, $ytitle, $sdate, $
 		$objGraphBar->drawTitle("集計期間：" . $start_date . " - " . $end_date);
 		
 		$objGraphBar->drawGraph();
-
+		
 		if(DRAW_IMAGE){
 			$objGraphBar->outputGraph();
 			exit();
 		}
-
+		
 		// ファイルパスを返す
 		$ret_path = GRAPH_URL . $pngname;
 	}
