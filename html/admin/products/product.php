@@ -260,6 +260,8 @@ function lfProductPage() {
 		$anchor_hash = "location.hash='#recommend_id" . $_GET['no'] . "'";
 	}
 	
+	sfprintr($_GET);
+	
 	$objPage->tpl_onload = "fnCheckSaleLimit('" . DISABLED_RGB . "'); fnCheckStockLimit('" . DISABLED_RGB . "'); " . $anchor_hash;
 }
 
