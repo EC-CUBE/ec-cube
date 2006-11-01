@@ -14,15 +14,15 @@
 	<h3>Tree Control</h3>
 </div>
 
-<script type="text/javascript" src="../../build/yahoo/yahoo.js" ></script>
+<script type="text/javascript" src="js/yahoo/yahoo.js" ></script>
 
 <!-- The following are required for the logger -->
-<script type="text/javascript" src="../../build/event/event.js"></script>
-<script type="text/javascript" src="../../build/dom/dom.js"></script>
-<script type="text/javascript" src="../../build/logger/logger.js"></script>
+<script type="text/javascript" src="js/event/event.js"></script>
+<script type="text/javascript" src="js/dom/dom.js"></script>
+<script type="text/javascript" src="js/logger/logger.js"></script>
 <!-- End logger reqs -->
 
-<script type="text/javascript" src="../../build/treeview/treeview-debug.js" ></script>
+<script type="text/javascript" src="js/treeview/treeview-debug.js" ></script>
 
 <style type="text/css">
 
