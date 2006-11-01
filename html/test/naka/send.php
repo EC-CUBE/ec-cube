@@ -40,7 +40,7 @@ xml_parser_set_option($parser,XML_OPTION_SKIP_WHITE,1);
 xml_parse_into_struct($parser,$response,$arrVal,$idx);
 xml_parser_free($parser);
 
-getXMLValue($arrVal,"","");
+getXMLValue($arrVal,'RESULT','REDIRECT');
 
 /*
 $decode = urldecode($arrVal[3]['attributes']['ERR_DETAIL']);
@@ -52,12 +52,23 @@ $decode = urldecode($arrVal[4]['attributes']['MEMO1']);
 print(mb_convert_encoding($decode, 'EUC-JP', 'Shift_JIS'));
 */
 
-function getXMLValue($arrVal, $tag, $attributes) {
-	foreach($arrVal as $array) {
-		$tag = $array['tag'];
 
-		print_r($array['attributes']);
+function getXMLAttValue($arrVal, $tag, $att) {
+	$ret = "";
+	foreach($arrVal as $array) {
+		if($tag == $array['tag']) {
+			if(!is_array($array['attributes'])) {
+				continue;
+			}
+			foreach($array['attributes'] as $key => $val) {
+				if($key == $att) {
+					$ret = $val;
+					break;
+				}
+			}			
+		}		
 	}
+	return $ret;
 }
 
 ?>
