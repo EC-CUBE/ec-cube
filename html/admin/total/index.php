@@ -67,8 +67,10 @@ foreach ($_POST as $key => $val) {
 	}
 }
 
-
 $mode = $objFormParam->getValue('mode');
+
+sfprintr($objFormParam->getHashArray());
+exit();
 switch($mode) {
 case 'pdf':
 case 'csv':
