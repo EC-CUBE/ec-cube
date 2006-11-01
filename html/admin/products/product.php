@@ -252,8 +252,15 @@ function lfProductPage() {
 	// Form用配列を渡す。
 	$objPage->arrFile = $objUpFile->getFormFileList(IMAGE_TEMP_URL, IMAGE_SAVE_URL);
 	
-	//$objPage->tpl_onload = "fnCheckSaleLimit('" . DISABLED_RGB . "'); fnCheckStockLimit('" . DISABLED_RGB . "'); location.hash='" . $_POST['image_key'] . "'";
-	$objPage->tpl_onload = "fnCheckSaleLimit('" . DISABLED_RGB . "'); fnCheckStockLimit('" . DISABLED_RGB . "'); location.hash='#" . $_POST['image_key'] . "'";
+	
+	// アンカーを設定
+	if($_POST['image_key'] != ""){
+		$anchor_hash = "location.hash='#" . $_POST['image_key'] . "'";
+	}elseif($_GET['no'] != ""){
+		$anchor_hash = "location.hash='#recommend_id" . $_GET['no'] . "'";
+	}
+	
+	$objPage->tpl_onload = "fnCheckSaleLimit('" . DISABLED_RGB . "'); fnCheckStockLimit('" . DISABLED_RGB . "'); " . $anchor_hash;
 }
 
 /* ファイル情報の初期化 */
