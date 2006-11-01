@@ -26,8 +26,6 @@ $objSess = new SC_Session();
 // ロ據第�搕恛衝�
 sfIsSuccess($objSess);
 
-sfprintr($_GET);
-
 if ($_POST['mode'] == "search") {
 	
 	// POST襖及婁五煤亢
