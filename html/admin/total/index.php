@@ -67,7 +67,10 @@ foreach ($_POST as $key => $val) {
 	}
 }
 
-switch($_POST['mode']) {
+
+$mode = $objFormParam->getValue('mode');
+
+switch($mode) {
 case 'pdf':
 case 'csv':
 case 'search':
