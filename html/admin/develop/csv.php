@@ -25,7 +25,7 @@ if(!file_exists($filepath)) {
 }
 
 // エンコード
-$enc_filepath = sfEncodeFile($filepath, "CHAR_CODE", CSV_TEMP_DIR);
+$enc_filepath = sfEncodeFile($filepath, CHAR_CODE, CSV_TEMP_DIR);
 
 $total = 0;
 

@@ -195,7 +195,7 @@ function lfCreateBkupData($bkup_name){
 
 	$csv_file = $bkup_dir . "bkup_data.csv";
 	$csv_autoinc_file = $bkup_dir . "autoinc_data.csv";
-	mb_internal_encoding('CHAR_CODE');
+	mb_internal_encoding(CHAR_CODE);
 	// CSV出力
 	// ディレクトリが存在していなければ作成する		
 	if (!is_dir(dirname($csv_file))) {

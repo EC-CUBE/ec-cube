@@ -129,7 +129,7 @@ function sf_getBasisData() {
 function sfErrorHeader($mess, $print = false) {
 	global $GLOBAL_ERR;
 	if($GLOBAL_ERR == "") {
-		$GLOBAL_ERR = "<meta http-equiv='Content-Type' content='text/html; charset=CHAR_CODE'>\n";
+		$GLOBAL_ERR = "<meta http-equiv='Content-Type' content='text/html; charset=" . CHAR_CODE . "'>\n";
 	}
 	$GLOBAL_ERR.= "<table width='100%' border='0' cellspacing='0' cellpadding='0' summary=' '>\n";
 	$GLOBAL_ERR.= "<tr>\n";
@@ -359,12 +359,12 @@ function sfCSVDownload($data, $prefix = ""){
 	Header("Pragma: ");
 	
 	/* i18n~ だと正常に動作しないため、mb~ に変更
-	if (i18n_discover_encoding($data) == 'CHAR_CODE'){
-		$data = i18n_convert($data,'SJIS','CHAR_CODE');
+	if (i18n_discover_encoding($data) == CHAR_CODE){
+		$data = i18n_convert($data,'SJIS',CHAR_CODE);
 	}
 	*/
-	if (mb_internal_encoding() == 'CHAR_CODE'){
-		$data = mb_convert_encoding($data,'SJIS','CHAR_CODE');
+	if (mb_internal_encoding() == CHAR_CODE){
+		$data = mb_convert_encoding($data,'SJIS',CHAR_CODE);
 	}
 	
 	/* データを出力 */
