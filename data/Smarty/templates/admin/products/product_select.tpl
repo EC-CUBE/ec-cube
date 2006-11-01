@@ -48,6 +48,7 @@ function func_submit( id ){
 <!--▼検索フォーム-->
 <form name="form1" id="form1" method="post" action="<!--{$smarty.server.REQUEST_URI}-->">
 <input name="mode" type="hidden" value="search">
+<input name="recommend_no" type="hidden" value="<!--{$smarty.get.no}-->">
 <input name="search_pageno" type="hidden" value="">
 <table bgcolor="#cccccc" width="420" border="0" cellspacing="1" cellpadding="5" summary=" ">
 	<tr class="fs12n">

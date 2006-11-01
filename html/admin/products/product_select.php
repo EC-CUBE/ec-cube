@@ -26,7 +26,7 @@ $objSess = new SC_Session();
 // Ç§¾Ú²ÄÈÝ¤ÎÈ½Äê
 sfIsSuccess($objSess);
 
-sfprintr($_POST);
+sfprintr($_GET);
 
 if ($_POST['mode'] == "search") {
 	
