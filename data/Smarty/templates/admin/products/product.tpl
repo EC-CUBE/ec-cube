@@ -311,7 +311,8 @@
 										<!--{/if}-->
 										<img src="<!--{$image_path|sfRmDupSlash}-->" width="65" height="65" alt="<!--{$arrRecommend[$recommend_no].name|escape}-->" />
 										</td>
-										<td bgcolor="#ffffff" width="557" class="fs12"><a name="<!--{$anckey}-->"></a>
+										<td bgcolor="#ffffff" width="557" class="fs12">
+										<a name="<!--{$anckey}-->"></a>
 										<input type="hidden" name="<!--{$key}-->" value="<!--{$arrRecommend[$recommend_no].product_id|escape}-->">
 										<input type="button" name="change" value="สันน" onclick="win03('./product_select.php?no=<!--{$smarty.section.cnt.iteration}-->', 'search', '500', '500'); " >
 										<!--{assign var=key value="recommend_delete`$smarty.section.cnt.iteration`"}-->

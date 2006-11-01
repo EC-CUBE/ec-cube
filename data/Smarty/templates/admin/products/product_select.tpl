@@ -29,7 +29,9 @@ function func_submit( id ){
 	fm.mode.value = 'recommend_select';
 	fm.anchor_key.value = 'recommend_no<!--{$smarty.get.no}-->';
 	fm.submit();
+	alert("bbb");
 	window.close();
+	alert("aaa");
 	return false;
 }
 //-->
