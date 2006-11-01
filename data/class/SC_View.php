@@ -88,8 +88,6 @@ class SC_View {
 			}
 		}
 		
-		sfprintr(ini_get("mbstring.http_input"));
-		
 		$this->_smarty->display($template);
 		if(ADMIN_MODE == '1') {
 			$time_end = time();
