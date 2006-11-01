@@ -7,7 +7,7 @@
 
 $SC_VIEW_PHP_DIR = realpath(dirname(__FILE__));
 require_once($SC_VIEW_PHP_DIR . "/../module/Smarty/libs/Smarty.class.php");
-require_once($SC_VIEW_PHP_DIR . "/../data/include/php_ini.inc");
+require_once($SC_VIEW_PHP_DIR . "/../include/php_ini.inc");
 
 class SC_View {
 	
