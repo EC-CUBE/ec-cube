@@ -31,7 +31,7 @@ require_once($include_dir . "/../data/class/SC_Page.php");
 require_once($include_dir . "/../data/class/SC_Pdf.php");
 require_once($include_dir . "/../data/include/page_layout.inc");
 
-require_once($include_dir . "/../data/include/php_ini.inc");
+//require_once($include_dir . "/../data/include/php_ini.inc");
 
 // アップデートで取得したPHPを読み出す
 sfLoadUpdateModule();
