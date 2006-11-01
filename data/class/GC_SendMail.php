@@ -63,7 +63,7 @@ class GC_SendMail {
 			
 		$this->to			 = $to;
 		$this->subject		 = Mb_encode_mimeheader($subject);
-		$this->body			 = mb_convert_encoding( $body, "iso-2022-jp", "EUC-JP");
+		$this->body			 = mb_convert_encoding( $body, "iso-2022-jp", "CHAR_CODE");
 		$this->header		 = "Mime-Version: 1.0\n";
 		$this->header		.= "Content-Type: text/html; charset=iso-2022-jp\n";
 		$this->header		.= "Content-Transfer-Encoding: 7bit\n";

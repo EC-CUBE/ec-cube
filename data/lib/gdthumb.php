@@ -39,7 +39,7 @@ aki@mx3.adam.ne.jp
 $objg = new gdthumb();
 list($Ck, $Msg) = $objg->Main($_GET["path"], $_GET["mw"], $_GET["mh"]);
 if(!$Ck) { // エラーの場合
-	header("Content-Type: text/html; charset=euc-jp");
+	header("Content-Type: text/html; charset=CHAR_CODE");
 	print $Msg;
 }
 */

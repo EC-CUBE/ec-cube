@@ -22,8 +22,8 @@ function gfDownloadCsv($header, $contents){
 	Header("Content-type: application/octet-stream; name=${fiest_name}");
 	
 	$return = $header.$contents;
-	if (mb_detect_encoding($return) == 'EUC-JP'){						//文字コード変換
-		$return = mb_convert_encoding($return,'SJIS','EUC-JP');
+	if (mb_detect_encoding($return) == 'CHAR_CODE'){						//文字コード変換
+		$return = mb_convert_encoding($return,'SJIS','CHAR_CODE');
 		$return = str_replace( array( "\r\n", "\r" ), "\n", $return);	// 改行方法の統一
 	}
 	echo $return;

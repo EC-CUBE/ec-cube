@@ -55,7 +55,7 @@ case 'csv_upload':
 		// 一時ファイル名の取得
 		$filepath = $objUpFile->getTempFilePath('csv_file');
 		// エンコード
-		$enc_filepath = sfEncodeFile($filepath, "EUC-JP", CSV_TEMP_DIR);
+		$enc_filepath = sfEncodeFile($filepath, "CHAR_CODE", CSV_TEMP_DIR);
 		$fp = fopen($enc_filepath, "r");
 		$line = 0;		// 行数
 		$regist = 0;	// 登録数

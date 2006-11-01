@@ -7,7 +7,7 @@
  * http://www.lockon.co.jp/
  *}-->
 <head>
-<meta http-equiv="content-type" content="application/xhtml+xml; charset=EUC-JP" />
+<meta http-equiv="content-type" content="application/xhtml+xml; charset=CHAR_CODE" />
 <meta http-equiv="content-script-type" content="text/javascript" />
 <meta http-equiv="content-style-type" content="text/css" />
 <link rel="stylesheet" href="/admin/css/contents.css" type="text/css" />

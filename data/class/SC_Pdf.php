@@ -27,7 +27,7 @@ class SC_Pdf {
 			
 	function SC_Pdf($width = 595, $height = 842, $fontsize = 10) {
 		$this->license_key = "B600602-010400-714251-5851C1";
-		$this->src_code = "EUC-JP";
+		$this->src_code = "CHAR_CODE";
 		// UTF-8でないとブロック内で改行できない。
 		$this->dst_code = "UTF-8";
 		// PDF BLOCKのプロパティ
@@ -409,7 +409,7 @@ class SC_Pdf {
 		if($end_y < 0) {
 			$end_y = 0;
 		}
-		$enc_table = mb_convert_encoding($line, "utf-8", "euc-jp");
+		$enc_table = mb_convert_encoding($line, "utf-8", "CHAR_CODE");
 				
 		$tf = PDF_create_textflow($this->pdf, $enc_table, $option);
 

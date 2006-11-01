@@ -127,7 +127,7 @@ class SC_GraphBase {
 			$text_width = $this->getTextWidth($text, $font_size);
 			imagefilledrectangle($this->image, $left - 2, $top - 2, $left + $text_width + 2, $top + $font_size + 2, $this->labelbg_color);
 		}
-		//$text = mb_convert_encoding($text, "UTF-8", "EUC-JP");
+		//$text = mb_convert_encoding($text, "UTF-8", "CHAR_CODE");
 		$text = mb_convert_encoding($text, "SHIFT-JIS");
 		if($color != NULL) {
 			ImageTTFText($this->image, $font_size, $angle, $left, $top + $font_size, $color, FONT_PATH, $text);
@@ -147,7 +147,7 @@ class SC_GraphBase {
 	
 	// ログを出力する
 	function debugPrint($text) {
-		$text = mb_convert_encoding($text, "UTF-8", "EUC-JP");
+		$text = mb_convert_encoding($text, "UTF-8", "CHAR_CODE");
 		if(!isset($this->text_top)) {
 			$this->text_top = FONT_SIZE + LINE_PAD;
 		}		

@@ -64,6 +64,9 @@ define("AFF_SHOPPING_COMPLETE", 1);
 define("AFF_ENTRY_COMPLETE", 2);
 //--------------------------------------------------------------------------------------------------------
 
+// 文字コード
+define("CHAR_CODE", "EUC-JP");
+
 // EC-CUBEバージョン情報
 define("ECCUBE_VERSION", "1.0.1beta");
 

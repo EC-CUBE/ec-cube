@@ -26,7 +26,7 @@ function lfGetArcPos($cx, $cy, $cw, $ch, $e) {
 /* 画像にテキストを描画する */
 function lfImageText($dst_image, $text, $font_size, $left, $top, $font, $arrRGB) {
 	$color = ImageColorAllocate($dst_image, $arrRGB[0], $arrRGB[1], $arrRGB[2]);
-	$text = mb_convert_encoding($text, "UTF-8", "EUC-JP");
+	$text = mb_convert_encoding($text, "UTF-8", "CHAR_CODE");
 	// 表示角度	
 	$angle = 0;
 	// テキスト描画
