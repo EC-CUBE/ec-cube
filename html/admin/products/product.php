@@ -257,7 +257,7 @@ function lfProductPage() {
 	if($_POST['image_key'] != ""){
 		$anchor_hash = "location.hash='#" . $_POST['image_key'] . "'";
 	}elseif($_POST['anchor_key'] != ""){
-		$anchor_hash = "location.hash='#recommend_id" . $_POST['anchor_key'] . "'";
+		$anchor_hash = "location.hash='#" . $_POST['anchor_key'] . "'";
 	}
 	
 	sfprintr($_POST);

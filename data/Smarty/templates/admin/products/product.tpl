@@ -303,7 +303,7 @@
 									<tr>
 										<!--{assign var=key value="recommend_id`$smarty.section.cnt.iteration`"}-->
 										<!--{assign var=anckey value="recommend_no`$smarty.section.cnt.iteration`"}-->
-										<td bgcolor="#f2f1ec" width="160" class="fs12n"><a name="<!--{$anckey}-->"></a>関連商品(<!--{$smarty.section.cnt.iteration}-->)<br>
+										<td bgcolor="#f2f1ec" width="160" class="fs12n">関連商品(<!--{$smarty.section.cnt.iteration}-->)<br>
 										<!--{if $arrRecommend[$recommend_no].main_list_image != ""}-->
 											<!--{assign var=image_path value="`$smarty.const.IMAGE_SAVE_URL`/`$arrRecommend[$recommend_no].main_list_image`"}-->
 										<!--{else}-->
@@ -311,7 +311,7 @@
 										<!--{/if}-->
 										<img src="<!--{$image_path|sfRmDupSlash}-->" width="65" height="65" alt="<!--{$arrRecommend[$recommend_no].name|escape}-->" />
 										</td>
-										<td bgcolor="#ffffff" width="557" class="fs12">
+										<td bgcolor="#ffffff" width="557" class="fs12"><a name="<!--{$anckey}-->"></a>
 										<input type="hidden" name="<!--{$key}-->" value="<!--{$arrRecommend[$recommend_no].product_id|escape}-->">
 										<input type="button" name="change" value="変更" onclick="win03('./product_select.php?no=<!--{$smarty.section.cnt.iteration}-->', 'search', '500', '500'); " >
 										<!--{assign var=key value="recommend_delete`$smarty.section.cnt.iteration`"}-->
