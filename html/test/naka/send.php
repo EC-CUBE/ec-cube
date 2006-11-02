@@ -35,16 +35,10 @@ if (!PEAR::isError($req->sendRequest())) {
 }
 $req->clearPostData();
 
-/*
 $parser = xml_parser_create();
 xml_parser_set_option($parser,XML_OPTION_SKIP_WHITE,1);
 xml_parse_into_struct($parser,$response,$arrVal,$idx);
 xml_parser_free($parser);
-*/
-
-$arrVal = $_GET;
-
-sfprintr($arrVal);
 
 $err_code = lfGetXMLValue($arrVal,'RESULT','ERR_CODE');
 
