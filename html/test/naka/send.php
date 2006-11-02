@@ -19,7 +19,7 @@ $arrData = array(
 	'xml' => '1',		
 	'item_code' => 'abc12345',
 	'memo2' => '',
-	'user_id' => ''
+	'user_id' => rand()
 );
 
 $req = new HTTP_Request($order_url);
