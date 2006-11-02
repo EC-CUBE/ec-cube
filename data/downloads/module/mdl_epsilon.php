@@ -22,7 +22,7 @@ class LC_Page {
 	function LC_Page() {
 		//メインテンプレートの指定
 		$this->tpl_mainpage = MODULE_PATH . 'mdl_epsilon.tpl';
-		$this->tpl_subtitle = 'アフィリエイトタグ埋め込み';
+		$this->tpl_subtitle = 'イプシロン決済モジュール';
 		global $arrConversionPage;
 		$this->arrConversionPage = $arrConversionPage;
 	}
