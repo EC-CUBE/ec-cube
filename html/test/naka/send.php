@@ -16,7 +16,7 @@ $arrData = array(
 	'process_code' => '1',
 	'mission_code' => '1',
 	'item_price' => '34800',
-	'xml' => '1',		
+	'xml' => '0',		
 	'item_code' => 'abc12345',
 	'memo2' => '',
 	'user_id' => 'ktest'
@@ -45,7 +45,7 @@ xml_parser_free($parser);
 $arrVal = $_GET;
 
 sfprintr($arrVal);
-exit();
+
 $err_code = lfGetXMLValue($arrVal,'RESULT','ERR_CODE');
 
 if($err_code != "") {
