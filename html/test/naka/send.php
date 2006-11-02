@@ -44,6 +44,8 @@ xml_parser_free($parser);
 
 $arrVal = $_GET;
 
+sfprintr($arrVal);
+
 $err_code = lfGetXMLValue($arrVal,'RESULT','ERR_CODE');
 
 if($err_code != "") {
@@ -68,7 +70,7 @@ function lfGetXMLValue($arrVal, $tag, $att) {
 					break;
 				}
 			}			
-		}		
+		}
 	}
 	$dec = urldecode($ret);
 	$enc = mb_convert_encoding($dec, 'EUC-JP', 'auto');
