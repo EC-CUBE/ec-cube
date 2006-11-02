@@ -27,12 +27,10 @@ $arrNews = lfGetNews($objQuery);
 header("Paragrama: no-cache");
 
 //XMLテキスト(これがないと正常にRSSとして認識してくれないツールがあるため)
-//header("Content-type: application/xml");
+header("Content-type: application/xml");
 
 //新着情報をセット
 $objPage->arrNews = $arrNews;
-
-sfprintr($arrNews);
 $objPage->timestamp = sf_mktime("r", $arrNews[0]['HOUR'], $arrNews[0]['MINUTE'], $arrNews[0]['SECOND'], $arrNews[0]['MONTH'], $arrNews[0]['DAY'], $arrNews[0]['YEAR']);
 
 //店名をセット
