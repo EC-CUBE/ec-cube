@@ -33,8 +33,7 @@ header("Paragrama: no-cache");
 $objPage->arrNews = $arrNews;
 
 sfprintr($arrNews);
-$timestamp = sf_mktime("r", $arrNews[0]['HOUR'], $arrNews[0]['MINUTE'], $arrNews[0]['SECOND'], $arrNews[0]['MONTH'], $arrNews[0]['DAY'], $arrNews[0]['YEAR']);
-sfprintr($timestamp);
+$objPage->timestamp = sf_mktime("r", $arrNews[0]['HOUR'], $arrNews[0]['MINUTE'], $arrNews[0]['SECOND'], $arrNews[0]['MONTH'], $arrNews[0]['DAY'], $arrNews[0]['YEAR']);
 
 //店名をセット
 $objPage->site_title = $arrNews[0]['shop_name'];
