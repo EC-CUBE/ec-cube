@@ -45,7 +45,7 @@ xml_parser_free($parser);
 $arrVal = $_GET;
 
 sfprintr($arrVal);
-
+exit();
 $err_code = lfGetXMLValue($arrVal,'RESULT','ERR_CODE');
 
 if($err_code != "") {
