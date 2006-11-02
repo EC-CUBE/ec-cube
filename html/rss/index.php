@@ -56,12 +56,22 @@ function lfGetNews($objQuery){
 	$col .= "     news_id ";								//新着情報ID
 	$col .= "     ,news_title ";							//新着情報タイトル
 	$col .= "     ,news_comment ";							//新着情報本文
-	$col .= "     ,to_char(news_date, 'YYYY') AS YEAR ";	//日付(年)
-	$col .= "     ,to_char(news_date, 'MM') AS MONTH ";		//日付(月)
-	$col .= "     ,to_char(news_date, 'DD') AS DAY ";		//日付(日)
-	$col .= "     ,to_char(news_date, 'HH24') AS HOUR ";	//日付(時間)
-	$col .= "     ,to_char(news_date, 'MI') AS MINUTE ";	//日付(分)
-	$col .= "     ,to_char(news_date, 'SS') AS SECOND ";	//日付(秒)
+	
+	if (DB_TYPE == "pgsql") {
+		$col .= "     ,to_char(news_date, 'YYYY') AS YEAR ";	//日付(年)
+		$col .= "     ,to_char(news_date, 'MM') AS MONTH ";		//日付(月)
+		$col .= "     ,to_char(news_date, 'DD') AS DAY ";		//日付(日)
+		$col .= "     ,to_char(news_date, 'HH24') AS HOUR ";	//日付(時間)
+		$col .= "     ,to_char(news_date, 'MI') AS MINUTE ";	//日付(分)
+		$col .= "     ,to_char(news_date, 'SS') AS SECOND ";	//日付(秒)
+	}else if (DB_TYPE == "mysql") {
+		$col .= "     ,DATE_FORMAT(news_date, '%Y') AS YEAR ";		//日付(年)
+		$col .= "     ,DATE_FORMAT(news_date, '%m') AS MONTH ";		//日付(月)
+		$col .= "     ,DATE_FORMAT(news_date, '%d') AS DAY ";		//日付(日)
+		$col .= "     ,DATE_FORMAT(news_date, '%H') AS HOUR ";		//日付(時間)
+		$col .= "     ,DATE_FORMAT(news_date, '%i') AS MINUTE ";	//日付(分)
+		$col .= "     ,DATE_FORMAT(news_date, '%s') AS SECOND ";	//日付(秒)
+	}
 	$col .= "     ,news_url ";								//新着情報URL
 	$col .= "     ,news_select ";							//新着情報の区分(1:URL、2:本文)
 	$col .= "     ,(SELECT shop_name FROM dtb_baseinfo limit 1) AS shop_name  ";	//店名
