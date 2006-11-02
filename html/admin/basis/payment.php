@@ -45,7 +45,6 @@ case 'down':
 }
 
 $objPage->arrDelivList = sfGetIDValueList("dtb_deliv", "deliv_id", "service_name");
-$objPage->arrPaymentListFix = lfGetPaymentList(1);
 $objPage->arrPaymentListFree = lfGetPaymentList(2);
 
 $objView->assignobj($objPage);
