@@ -21,7 +21,7 @@ class LC_Page {
 	//コンストラクタ
 	function LC_Page() {
 		//メインテンプレートの指定
-		$this->tpl_mainpage = MODULE_PATH . 'mdl_payment.tpl';
+		$this->tpl_mainpage = MODULE_PATH . 'mdl_epsilon.tpl';
 		$this->tpl_subtitle = 'アフィリエイトタグ埋め込み';
 		global $arrConversionPage;
 		$this->arrConversionPage = $arrConversionPage;
