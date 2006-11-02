@@ -32,6 +32,8 @@ header("Content-type: application/xml");
 //新着情報をセット
 $objPage->arrNews = $arrNews;
 
+sfprintr($arrNews);
+
 //店名をセット
 $objPage->site_title = $arrNews[0]['shop_name'];
 
@@ -68,7 +70,7 @@ function lfGetNews($objQuery){
 		$col .= "     ,DATE_FORMAT(news_date, '%Y') AS YEAR ";		//日付(年)
 		$col .= "     ,DATE_FORMAT(news_date, '%m') AS MONTH ";		//日付(月)
 		$col .= "     ,DATE_FORMAT(news_date, '%d') AS DAY ";		//日付(日)
-		$col .= "     ,DATE_FORMAT(news_date, '%k') AS HOUR ";		//日付(時間)
+		$col .= "     ,DATE_FORMAT(news_date, '%H') AS HOUR ";		//日付(時間)
 		$col .= "     ,DATE_FORMAT(news_date, '%i') AS MINUTE ";	//日付(分)
 		$col .= "     ,DATE_FORMAT(news_date, '%s') AS SECOND ";	//日付(秒)
 	}
