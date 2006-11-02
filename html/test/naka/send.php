@@ -19,7 +19,7 @@ $arrData = array(
 	'xml' => '1',		
 	'item_code' => 'abc12345',
 	'memo2' => '',
-	'user_id' => 'test'
+	'user_id' => 'test2'
 );
 
 $req = new HTTP_Request($order_url);
