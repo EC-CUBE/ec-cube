@@ -30,7 +30,8 @@
 			<!--{/if}-->
 			<title> <!--{ $arrNews[cnt].news_title|sf_mb_convert_encoding:$encode }--> </title>
 			<description><!--{$arrNews[cnt].news_comment|truncate:256|sf_mb_convert_encoding:$encode}--></description>
-			<pubDate><!--{"r"|sf_mktime:$arrNews[cnt].hour:$arrNews[cnt].minute:$arrNews[cnt].second:$arrNews[cnt].month:$arrNews[cnt].day:$arrNews[cnt].year}--></pubDate>
+			<!--{* <pubDate><!--{"r"|sf_mktime:$arrNews[cnt].hour:$arrNews[cnt].minute:$arrNews[cnt].second:$arrNews[cnt].month:$arrNews[cnt].day:$arrNews[cnt].year}--></pubDate> *}-->
+			<pubDate><!--{$timestamp}--></pubDate>
 		</item>
 	<!--{/section}-->
 
