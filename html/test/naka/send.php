@@ -7,7 +7,7 @@ $order_url = "http://beta.epsilon.jp/cgi-bin/order/receive_order3.cgi";
 
 $arrData = array(
 	'order_number' => '93963928111111',
-	'st_code' => '00100-0000-00000',
+	'st_code' => '11100-0000-00000',
 	'memo1' => '試験用オーダー情報',
 	'user_mail_add' => 'naka@lockon.co.jp',
 	'item_name' => 'プリンタ',
