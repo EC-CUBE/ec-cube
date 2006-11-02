@@ -60,7 +60,8 @@ function lfGetPaymentList($fix = 1) {
 //	$where .= " AND fix = ?";
 	$table = "dtb_payment";
 	$objQuery->setorder("rank DESC");
-	$arrRet = $objQuery->select($col, $table, $where, array($fix));
+//	$arrRet = $objQuery->select($col, $table, $where, array($fix));
+	$arrRet = $objQuery->select($col, $table, $where);
 	return $arrRet;
 }
 
