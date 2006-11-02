@@ -27,7 +27,7 @@ $arrNews = lfGetNews($objQuery);
 header("Paragrama: no-cache");
 
 //XMLテキスト(これがないと正常にRSSとして認識してくれないツールがあるため)
-header("Content-type: application/xml");
+//header("Content-type: application/xml");
 
 //新着情報をセット
 $objPage->arrNews = $arrNews;
