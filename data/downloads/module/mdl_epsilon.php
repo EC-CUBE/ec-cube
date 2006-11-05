@@ -60,9 +60,9 @@ case 'edit':
 	
 	if(count($objPage->arrErr) == 0) {
 		
-		$convenience = "";
+		$convenience = $_POST["convenience"][0];
 		foreach($_POST["convenience"] as $key => $val){
-			$convenience .= $val . ",";
+			$convenience .= "," . $val;
 		}
 		
 		sfprintr($convenience);
