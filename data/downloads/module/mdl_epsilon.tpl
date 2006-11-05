@@ -30,7 +30,28 @@ function lfnCheckPayment(){
 	var payment = fm.payment;
 	var val = 0;
 
-	//alert(payment.value);
+	alert(payment.length);
+	/*
+	len = payment.length;
+	for(i = 0; i < len; i++) {
+		if(document.form1[list[i]]) {
+			// ラジオボタン、チェックボックス等の配列に対応
+			max = document.form1[list[i]].length
+			if(max > 1) {
+				for(j = 0; j < max; j++) {
+					if(g_savecolor[list[i]] != null) {
+						document.form1[list[i]][j].style.backgroundColor = g_savecolor[list[i]];
+					}
+				}
+			} else {
+				if(g_savecolor[list[i]] != null) {
+					document.form1[list[i]].style.backgroundColor = g_savecolor[list[i]];
+				}
+			}
+		}
+	}	
+	
+	
 /*	
 	if(check.value == 1){
 		list = new Array('credit');
