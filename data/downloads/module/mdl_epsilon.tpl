@@ -39,13 +39,15 @@ function lfnCheckPayment(check){
 		}else{
 			fnChangeDisabled(list);
 		}
-		alert("tete");
+
 		list = new Array('convenience[]');
 		if(fm[payment[i]][1].checked){
 			fnChangeDisabled(list, false);
 		}else{
 			fnChangeDisabled(list);
 		}
+		
+				alert("tete");
 	}
 }
 
