@@ -26,7 +26,21 @@
 self.moveTo(20,20);self.focus();
 
 function lfnCheckPayment(check){
-	alert(check.value);
+	var fm = document.form1;
+	var val = 0;
+
+	if(check.value == 1){
+		list = new Array('credit');
+	}elseif(check.value == 2){
+		list = new Array('convenience');
+	}else{
+		return false;
+	}
+
+	fnInitColor(list);
+	fnChangeDisabled(list);
+	fm.option_se_pocket.disabled = true;
+	fm.option_se_pocket.style.backgroundColor = "#dddddd";
 }
 
 //-->
