@@ -32,7 +32,7 @@ function lfnCheckPayment(check){
 	if(check.value == 1){
 		list = new Array('credit[]');
 	}else if(check.value == 2){
-		list = new Array('convenience');
+		list = new Array('convenience[]');
 	}else{
 		return false;
 	}
