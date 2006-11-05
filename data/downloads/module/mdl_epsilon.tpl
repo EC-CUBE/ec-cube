@@ -47,12 +47,10 @@ function lfnCheckPayment(check){
 
 }
 
-function fnChangeDisabled(list, disable, color) {
+function fnChangeDisabled(list, disable) {
 	len = list.length;
 
 	if(disable == null) { disable = true; }
-	
-	if(color == null) { color = '#dddddd'; }
 	
 	for(i = 0; i < len; i++) {
 		if(document.form1[list[i]]) {
@@ -60,14 +58,12 @@ function fnChangeDisabled(list, disable, color) {
 			max = document.form1[list[i]].length
 			if(max > 1) {
 				for(j = 0; j < max; j++) {
-					// 無効にする
+					// 有効、無効の切り替え
 					document.form1[list[i]][j].disabled = disable;
-					//document.form1[list[i]][j].style.backgroundColor = color;
 				}
 			} else {
-				// 無効にする
+				// 有効、無効の切り替え
 				document.form1[list[i]].disabled = disable;
-				document.form1[list[i]].style.backgroundColor = color;
 			}
 		}
 	}
