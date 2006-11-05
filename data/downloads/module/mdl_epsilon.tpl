@@ -30,9 +30,17 @@ function lfnCheckPayment(check){
 	var val = 0;
 
 	alert("ttt");
-
-
 	
+	list = new Array('credit');
+	/*
+	if(check.value == 1){
+		list = new Array('credit');
+	}elseif(check.value == 2){
+		list = new Array('convenience');
+	}else{
+		return false;
+	}
+	*/
 	alert("ttt");
 
 	//fnInitColor(list);
