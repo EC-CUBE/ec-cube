@@ -27,10 +27,10 @@ self.moveTo(20,20);self.focus();
 
 function lfnCheckPayment(){
 	var fm = document.form1;
-	var payment = document.form1.payment;
+	var payment = document.form1.payment[0];
 	var val = 0;
 
-	alert(payment[0].value);
+	alert(payment.value);
 	/*
 	len = payment.length;
 	for(i = 0; i < len; i++) {
