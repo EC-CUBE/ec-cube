@@ -49,6 +49,7 @@ function fnInitColor(list) {
 		if(document.form1[list[i]]) {
 			// ラジオボタン、チェックボックス等の配列に対応
 			max = document.form1[list[i]].length
+			alert(list);
 			if(max > 1) {
 				for(j = 0; j < max; j++) {
 					document.form1[list[i]][j].style.backgroundColor = "#dddddd";
