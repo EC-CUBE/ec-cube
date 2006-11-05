@@ -32,6 +32,7 @@ function lfnCheckPayment(check){
 	payment = new Array('payment[]');
 
 	for(i = 0; i < payment.length; i++) {
+		alert(fm[payment[i]][1].checked);
 	
 		list = new Array('credit[]');
 		if(fm[payment[i]][0].checked){
@@ -41,7 +42,6 @@ function lfnCheckPayment(check){
 		}
 
 		list2 = new Array('convenience[]');
-		alert(fm[payment[i]][1].checked);
 
 /*
 		list = new Array('convenience[]');
