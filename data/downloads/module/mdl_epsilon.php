@@ -60,15 +60,20 @@ case 'edit':
 	
 	if(count($objPage->arrErr) == 0) {
 		
+		$convenience = "";
+		foreach($_POST["convenience"] as $key => $val){
+			$convenience .= $val;
+		}
+		
+		sfprintr($convenience);
+		
 		// javascript¼Â¹Ô
-		$objPage->tpl_onload = "window.close();";
+		//$objPage->tpl_onload = "window.close();";
 	}
 	break;
 default:
 	break;
 }
-
-sfprintr($objFormParam->splitParamCheckBoxes("convenience"));
 
 $objPage->arrForm = $objFormParam->getFormParamList();
 
