@@ -32,9 +32,9 @@ function lfnCheckPayment(check){
 	payment = new Array('payment[]');
 
 	for(i = 0; i < payment.length; i++) {
-		if(document.form1[list[i]]) {
-			alert(document.form1[payment[i]]);
-		}
+		//if(document.form1[list[i]]) {
+			alert(document.form1[payment[i]].checked);
+		//}
 	}
 	
 
