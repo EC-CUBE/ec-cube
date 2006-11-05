@@ -54,9 +54,6 @@ $objFormParam = lfInitParam($objFormParam);
 // POST値の取得
 $objFormParam->setParam($_POST);
 
-
-sfprintr($_POST);
-
 switch($_POST['mode']) {
 case 'edit':
 	// 入力エラー判定
@@ -90,6 +87,9 @@ default:
 }
 
 $objPage->arrForm = $objFormParam->getFormParamList();
+
+sfprintr($objPage->arrForm);
+
 $objView->assignobj($objPage);					//変数をテンプレートにアサインする
 $objView->display($objPage->tpl_mainpage);		//テンプレートの出力
 //-------------------------------------------------------------------------------------------------------
