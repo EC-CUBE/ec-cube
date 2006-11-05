@@ -104,8 +104,8 @@ function lfCheckError(){
 		}
 		
 		// 利用コンビニ
-		if($val == 2 and count($_POST["conbenience"]) <= 0){
-			$arrErr["conbenience"] = "利用コンビニが選択されていません。<br />";
+		if($val == 2 and count($_POST["convenience"]) <= 0){
+			$arrErr["convenience"] = "利用コンビニが選択されていません。<br />";
 		}	}
 
 	return $arrErr;
