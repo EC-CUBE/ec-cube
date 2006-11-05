@@ -40,17 +40,12 @@ function lfnCheckPayment(check){
 			fnChangeDisabled(list);
 		}
 
-		list2 = new Array('convenience[]');
-		alert(fm[payment[pi]][1].checked);
-
-/*
 		list = new Array('convenience[]');
-		if(fm[payment[i]][1].checked){
+		if(fm[payment[pi]][1].checked){
 			fnChangeDisabled(list, false);
 		}else{
 			fnChangeDisabled(list);
 		}
-*/
 	}
 }
 
