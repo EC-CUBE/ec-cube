@@ -33,6 +33,7 @@ function lfnCheckPayment(check){
 	
 	list = new Array('credit');
 	/*
+
 	if(check.value == 1){
 		list = new Array('credit');
 	}elseif(check.value == 2){
@@ -40,11 +41,11 @@ function lfnCheckPayment(check){
 	}else{
 		return false;
 	}
-	*/
+*/	
 	alert("ttt");
 
-	//fnInitColor(list);
-	//fnChangeDisabled(list);
+	fnInitColor(list);
+	fnChangeDisabled(list);
 }
 
 //-->
