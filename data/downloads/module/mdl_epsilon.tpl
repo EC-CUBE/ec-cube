@@ -41,10 +41,7 @@ function lfnCheckPayment(check){
 		}
 
 		list2 = new Array('convenience[]');
-		if(fm[payment[i]][1].checked){
-			alert("terte");
-		}
-
+		alert(fm[payment[i]][1].checked);
 
 /*
 		list = new Array('convenience[]');
