@@ -88,9 +88,6 @@ default:
 
 $objPage->arrForm = $objFormParam->getFormParamList();
 
-sfprintr($_POST);
-sfprintr($objPage->arrForm);
-
 $objView->assignobj($objPage);					//変数をテンプレートにアサインする
 $objView->display($objPage->tpl_mainpage);		//テンプレートの出力
 //-------------------------------------------------------------------------------------------------------
