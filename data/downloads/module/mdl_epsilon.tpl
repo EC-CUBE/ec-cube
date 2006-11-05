@@ -89,7 +89,7 @@ self.moveTo(20,20);self.focus();
 											</td>
 										</tr>
 										<tr class="fs12n">
-											<td width="90" bgcolor="#f3f3f3">利用クレジット<span class="red">※</span></td>
+											<td width="90" bgcolor="#f3f3f3">利用クレジット</td>
 											<td width="337" bgcolor="#ffffff">
 											<!--{assign var=key value="credit"}-->
 											<span class="red12"><!--{$arrErr[$key]}--></span>
@@ -97,7 +97,7 @@ self.moveTo(20,20);self.focus();
 											</td>
 										</tr>
 										<tr class="fs12n">
-											<td width="90" bgcolor="#f3f3f3">利用コンビニ<span class="red">※</span></td>
+											<td width="90" bgcolor="#f3f3f3">利用コンビニ</td>
 											<td width="337" bgcolor="#ffffff">
 											<!--{assign var=key value="convenience"}-->
 											<span class="red12"><!--{$arrErr[$key]}--></span>
