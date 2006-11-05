@@ -39,13 +39,14 @@ function lfnCheckPayment(){
 	
 	fnInitColor(list);
 	
-	alert("ttt");
+
 }
 
 
 // ページが表示された時に設定されていた色に戻す。
 function fnInitColor(list) {
 	len = list.length;
+		alert("ttt");
 	for(i = 0; i < len; i++) {
 		if(document.form1[list[i]]) {
 			// ラジオボタン、チェックボックス等の配列に対応
