@@ -30,8 +30,13 @@ function lfnCheckPayment(check){
 	var val = 0;
 	
 	payment = new Array('payment[]');
+
+	for(i = 0; i < payment.length; i++) {
+		//if(document.form1[list[i]]) {
+			alert(document.form1[payment[i]]);
+		//}
+	}
 	
-	alert(payment.length);
 
 	if(check.value == 1){
 		list = new Array('credit[]');
