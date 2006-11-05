@@ -29,7 +29,6 @@ $arrConvenience = array(
 	,34 => 'デイリーヤマザキ'
 );
 
-
 //ページ管理クラス
 class LC_Page {
 	//コンストラクタ
@@ -60,13 +59,7 @@ case 'edit':
 	$objPage->arrErr = lfCheckError();
 	
 	if(count($objPage->arrErr) == 0) {
-		$arrRet = $objQuery->select("sub_data", "dtb_module", "module_id = ?", array(AFF_TAG_MID));
-		$arrSubData = unserialize($arrRet[0]['sub_data']);
-		$arrRet = $objFormParam->getHashArray();		
-		$arrSubData[$arrRet['conv_page']] = $arrRet['aff_tag'];
-		$sqlval['sub_data'] = serialize($arrSubData);
-		$objQuery = new SC_Query();
-		$objQuery->update("dtb_module", $sqlval, "module_id = ?", array(AFF_TAG_MID));
+		
 		// javascript実行
 		$objPage->tpl_onload = "window.close();";
 	}
@@ -74,6 +67,8 @@ case 'edit':
 default:
 	break;
 }
+
+sfprintr($objFormParam->splitParamCheckBoxes("convenience"));
 
 $objPage->arrForm = $objFormParam->getFormParamList();
 
@@ -110,6 +105,5 @@ function lfCheckError(){
 
 	return $arrErr;
 }
-
 
 ?>

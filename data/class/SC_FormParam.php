@@ -343,6 +343,6 @@ class SC_FormParam {
 			}
 			$cnt++;
 		}
-	}	
+	}
 }
 ?>
