@@ -36,10 +36,8 @@ function lfnCheckPayment(check){
 	}else{
 		return false;
 	}
-	alert("ttt");
-	
+
 	fnInitColor(list);
-	
 
 }
 
@@ -54,6 +52,7 @@ function fnInitColor(list) {
 			if(max > 1) {
 				for(j = 0; j < max; j++) {
 					document.form1[list[i]][j].style.backgroundColor = "#dddddd";
+					alert(j);
 				}
 			} else {
 				document.form1[list[i]].style.backgroundColor = "#dddddd";
