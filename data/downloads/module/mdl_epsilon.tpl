@@ -39,8 +39,6 @@ function lfnCheckPayment(check){
 
 	fnInitColor(list);
 	fnChangeDisabled(list);
-	fm.option_se_pocket.disabled = true;
-	fm.option_se_pocket.style.backgroundColor = "#dddddd";
 }
 
 //-->
