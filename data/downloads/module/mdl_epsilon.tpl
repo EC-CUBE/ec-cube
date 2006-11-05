@@ -34,7 +34,6 @@ function lfnCheckPayment(check){
 	for(i = 0; i < payment.length; i++) {
 	
 		list = new Array('credit[]');
-
 		if(fm[payment[i]][0].checked){
 			fnChangeDisabled(list, false);
 		}else{
@@ -42,13 +41,19 @@ function lfnCheckPayment(check){
 		}
 
 		list2 = new Array('convenience[]');
-		
 		if(fm[payment[i]][1].checked){
-			fnChangeDisabled(list2, false);
-		}else{
-			fnChangeDisabled(list2);
+			alert("terte");
 		}
 
+
+/*
+		list = new Array('convenience[]');
+		if(fm[payment[i]][1].checked){
+			fnChangeDisabled(list, false);
+		}else{
+			fnChangeDisabled(list);
+		}
+*/
 	}
 }
 
