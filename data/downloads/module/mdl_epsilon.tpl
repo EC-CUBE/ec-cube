@@ -85,7 +85,7 @@ self.moveTo(20,20);self.focus();
 											<td width="337" bgcolor="#ffffff">
 											<!--{assign var=key value="payment"}-->
 											<span class="red12"><!--{$arrErr[$key]}--></span>
-											<!--{html_checkboxes_ex name="$key" options=$arrPayment selected=$arrForm[$key].value style="<!--{$arrErr[$key]|sfGetErrorColor}-->"}-->
+											<!--{html_checkboxes_ex name="$key" options=$arrPayment selected=$arrForm[$key].value style="$arrErr[$key]|sfGetErrorColor"}-->
 											</td>
 										</tr>
 										<tr class="fs12n">
