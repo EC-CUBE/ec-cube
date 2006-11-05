@@ -32,13 +32,6 @@ function lfnCheckPayment(check){
 	alert("ttt");
 
 
-	if(check.value == 1){
-		list = new Array('credit');
-	}elseif(check.value == 2){
-		list = new Array('convenience');
-	}else{
-		return false;
-	}
 	
 	alert("ttt");
 
