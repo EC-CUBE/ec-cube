@@ -60,9 +60,12 @@ case 'edit':
 	
 	if(count($objPage->arrErr) == 0) {
 		
-		$convenience = $_POST["convenience"][0];
-		foreach($_POST["convenience"] as $key => $val){
-			$convenience .= "," . $val;
+		// 利用コンビニにチェックが入っている場合には、カンマ区切りに編集する
+		if(count($_POST["convenience"]) > 0){
+			$convenience = $_POST["convenience"][0];
+			foreach($_POST["convenience"] as $key => $val){
+				$convenience .= "," . $val;
+			}
 		}
 		
 		sfprintr($convenience);
