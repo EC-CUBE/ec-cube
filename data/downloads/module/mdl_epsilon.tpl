@@ -29,8 +29,10 @@ function lfnCheckPayment(check){
 	var fm = document.form1;
 	var val = 0;
 	
-	alert(document.form1.payment[].value);
+	payment = new Array('payment[]');
 	
+	alert(payment.len);
+
 	if(check.value == 1){
 		list = new Array('credit[]');
 	}else if(check.value == 2){
