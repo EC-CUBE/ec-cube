@@ -100,7 +100,7 @@ function lfCheckError(){
 	foreach($arrChkPay as $key => $val){
 		// 利用クレジット
 		if($val == 1 and count($_POST["credit"]) <= 0){
-			$arrErr["credit"] = "利用クレジットが選択されていません。";
+			$arrErr["credit"] = "利用クレジットが選択されていません。<br />";
 		}
 	}
 
