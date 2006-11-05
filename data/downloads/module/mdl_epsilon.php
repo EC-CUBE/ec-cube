@@ -12,9 +12,23 @@ require_once("../../require.php");
 
 $arrPayment = array(
 	1 => 'クレジット',
-	2 => 'コンビニ',
-	3 => '全て'
+	2 => 'コンビニ'
 );
+
+$arrCredit = array(
+	1 => 'VISA, MASTER',
+	2 => 'JCB, AMEX'
+);
+
+$arrConvenience = array(
+	11 => 'セブンイレブン'
+	,21 => 'ファミリーマート'
+	,31 => 'LAWSON'
+	,32 => 'セイコーマート'
+	,33 => 'ミニストップ'
+	,34 => 'デイリーヤマザキ'
+);
+
 
 //ページ管理クラス
 class LC_Page {

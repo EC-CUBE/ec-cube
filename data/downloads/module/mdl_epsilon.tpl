@@ -73,28 +73,27 @@ self.moveTo(20,20);self.focus();
 									
 									<table width="440" border="0" cellspacing="1" cellpadding="8" summary=" ">
 										<tr class="fs12n">
-											<td width="" bgcolor="#f3f3f3">ページ<span class="red">※</span></td>
+											<td width="" bgcolor="#f3f3f3">契約コード<span class="red">※</span></td>
 											<td width="337" bgcolor="#ffffff">
-											<!--{assign var=key value="conv_page"}-->
+											<!--{assign var=key value="code"}-->
 											<span class="red12"><!--{$arrErr[$key]}--></span>
-											<select name="<!--{$key}-->" style="<!--{$arrErr[$key]|sfGetErrorColor}-->" onchange="document.form1['mode'].value = 'select'; document.form1.submit();">
-											<option value="">選択してください</option>
-											<!--{html_options options=$arrConversionPage selected=$arrForm[$key].value}-->
-											</select>
+											<input type="text" name="<!--{$key}-->" style="<!--{$arrErr[$key]|sfGetErrorColor}-->" value="<!--{$arrForm[$key].value}-->">
 											</td>
 										</tr>	
 										<tr class="fs12n">
-											<td width="90" bgcolor="#f3f3f3">タグ<span class="red">※</span></td>
+											<td width="90" bgcolor="#f3f3f3">利用決済<span class="red">※</span></td>
 											<td width="337" bgcolor="#ffffff">
-											<!--{assign var=key value="aff_tag"}-->
+											<!--{assign var=key value="payment"}-->
 											<span class="red12"><!--{$arrErr[$key]}--></span>
 											<textarea name="<!--{$key}-->" maxlength="<!--{$arrForm[$key].length}-->" cols="40" rows="8" class="area40" style="<!--{$arrErr[$key]|sfGetErrorColor}-->"><!--{$arrForm[$key].value|escape}--></textarea>
 											</br><span class="red"> （上限<!--{$arrForm[$key].length}-->文字）</span>
+											
+											<!--{html_checkboxes_ex name="payment" options=$arrPayment selected=$arrForm[$key].value}-->
 											</td>
 										</tr>
 										<tr class="fs12n">
 											<td colspan="2">以下の置き換え文字で動的データの表示が可能です。<br>受注番号：[[order_id]]<br>購入合計：[[total]]</br></td>
-										</tr>																			
+										</tr>
 									</table>
 
 									<table width="440" border="0" cellspacing="0" cellpadding="0" summary=" ">
