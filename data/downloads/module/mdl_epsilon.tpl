@@ -33,13 +33,13 @@ function lfnCheckPayment(check){
 
 	for(i = 0; i < payment.length; i++) {
 		list = new Array('credit[]');
-		alert("tete");
+
 		if(fm[payment[i]][0].checked){
 			fnChangeDisabled(list, false);
 		}else{
 			fnChangeDisabled(list);
 		}
-		
+		alert("tete");
 		list = new Array('convenience[]');
 		if(fm[payment[i]][1].checked){
 			fnChangeDisabled(list, false);
