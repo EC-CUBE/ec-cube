@@ -37,8 +37,8 @@ class LC_Page {
 		//メインテンプレートの指定
 		$this->tpl_mainpage = MODULE_PATH . 'mdl_epsilon.tpl';
 		$this->tpl_subtitle = 'イプシロン決済モジュール';
-		global $arrConversionPage;
-		$this->arrConversionPage = $arrConversionPage;
+		global $arrPayment;
+		$this->arrPayment = $arrPayment;
 	}
 }
 $objPage = new LC_Page();
