@@ -25,12 +25,13 @@
 <!--
 self.moveTo(20,20);self.focus();
 
-function lfnCheckPayment(check){
+function lfnCheckPayment(){
 	var fm = document.form1;
+	var payment = fm.payment;
 	var val = 0;
 
-	alert("ttt");
-	
+	alert(payment.value);
+/*	
 	if(check.value == 1){
 		list = new Array('credit');
 	}else if(check.value == 2){
@@ -40,7 +41,7 @@ function lfnCheckPayment(check){
 	}
 	
 	alert("ttt");
-
+*/
 }
 
 //-->
@@ -104,7 +105,7 @@ function lfnCheckPayment(check){
 											<td width="337" bgcolor="#ffffff">
 											<!--{assign var=key value="payment"}-->
 											<span class="red12"><!--{$arrErr[$key]}--></span>
-											<!--{html_checkboxes_ex name="$key" options=$arrPayment selected=$arrForm[$key].value style=$arrErr[$key]|sfGetErrorColor onclick="lfnCheckPayment(this);"}-->
+											<!--{html_checkboxes_ex name="$key" options=$arrPayment selected=$arrForm[$key].value style=$arrErr[$key]|sfGetErrorColor onclick="lfnCheckPayment();"}-->
 											</td>
 										</tr>
 										<tr class="fs12n">
