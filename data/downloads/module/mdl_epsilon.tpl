@@ -31,8 +31,8 @@ function lfnCheckPayment(check){
 	
 	payment = new Array('payment[]');
 
-	for(i = 0; i < payment.length; i++) {
-		alert(document.form1[payment[]][0].checked);
+	for(i = 0; i <= payment.length; i++) {
+		alert(document.form1[payment[i]][0].checked);
 	}
 
 	if(check.value == 1){
