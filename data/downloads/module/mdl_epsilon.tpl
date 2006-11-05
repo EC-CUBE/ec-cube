@@ -30,7 +30,7 @@ function lfnCheckPayment(check){
 	var val = 0;
 
 	if(check.value == 1){
-		list = new Array('credit');
+		list = new Array('credit[]');
 	}else if(check.value == 2){
 		list = new Array('convenience');
 	}else{
