@@ -39,6 +39,10 @@ class LC_Page {
 		$this->tpl_subtitle = 'イプシロン決済モジュール';
 		global $arrPayment;
 		$this->arrPayment = $arrPayment;
+		global $arrCredit;
+		$this->arrCredit = $arrCredit;
+		global $arrConvenience;
+		$this->arrConvenience = $arrConvenience;
 	}
 }
 $objPage = new LC_Page();

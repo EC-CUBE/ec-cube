@@ -85,9 +85,26 @@ self.moveTo(20,20);self.focus();
 											<td width="337" bgcolor="#ffffff">
 											<!--{assign var=key value="payment"}-->
 											<span class="red12"><!--{$arrErr[$key]}--></span>
-											<!--{html_checkboxes_ex name="payment" options=$arrPayment selected=$arrForm[$key].value}-->
+											<!--{html_checkboxes_ex name="<!--{$key}-->" options=$arrPayment selected=$arrForm[$key].value}-->
 											</td>
 										</tr>
+										<tr class="fs12n">
+											<td width="90" bgcolor="#f3f3f3">利用クレジット<span class="red">※</span></td>
+											<td width="337" bgcolor="#ffffff">
+											<!--{assign var=key value="credit"}-->
+											<span class="red12"><!--{$arrErr[$key]}--></span>
+											<!--{html_checkboxes_ex name="<!--{$key}-->" options=$arrCredit selected=$arrForm[$key].value}-->
+											</td>
+										</tr>
+										<tr class="fs12n">
+											<td width="90" bgcolor="#f3f3f3">利用コンビニ<span class="red">※</span></td>
+											<td width="337" bgcolor="#ffffff">
+											<!--{assign var=key value="convenience"}-->
+											<span class="red12"><!--{$arrErr[$key]}--></span>
+											<!--{html_checkboxes_ex name="<!--{$key}-->" options=$arrConvenience selected=$arrForm[$key].value}-->
+											</td>
+										</tr>
+										
 										<tr class="fs12n">
 											<td colspan="2">以下の置き換え文字で動的データの表示が可能です。<br>受注番号：[[order_id]]<br>購入合計：[[total]]</br></td>
 										</tr>
