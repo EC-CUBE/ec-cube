@@ -33,7 +33,7 @@ function lfnCheckPayment(check){
 
 	for(i = 0; i < payment.length; i++) {
 		//if(document.form1[list[i]]) {
-			alert(document.form1[payment[i]].checked);
+			alert(document.form1[payment[i]].value);
 		//}
 	}
 	
