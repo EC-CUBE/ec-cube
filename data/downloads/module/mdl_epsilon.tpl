@@ -46,14 +46,12 @@ function lfnCheckPayment(check){
 function fnInitColor(list) {
 	len = list.length;
 	for(i = 0; i < len; i++) {
-		alert(document.form1[list[i]]);
 		if(document.form1[list[i]]) {
 			// ラジオボタン、チェックボックス等の配列に対応
 			max = document.form1[list[i]].length
 			if(max > 1) {
 				for(j = 0; j < max; j++) {
 					document.form1[list[i]][j].style.backgroundColor = "#dddddd";
-					alert(j);
 				}
 			} else {
 				document.form1[list[i]].style.backgroundColor = "#dddddd";
