@@ -38,9 +38,9 @@ function lfnCheckPayment(check){
 	}
 	
 	if(check.checked){
-		fnChangeDisabled(list);
+		fnChangeDisabled(list, false);
 	}else{
-		fnChangeDisabled(list, false , "#ffffff");
+		fnChangeDisabled(list);
 	}
 
 
