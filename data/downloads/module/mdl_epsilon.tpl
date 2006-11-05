@@ -27,12 +27,25 @@ self.moveTo(20,20);self.focus();
 
 function lfnCheckPayment(){
 	var fm = document.form1;
-	var payment = document.form1.payment[0];
 	var val = 0;
 
-	alert(payment.value);
-	/*
-	len = payment.length;
+	if(check.value == 1){
+		list = new Array('credit');
+	}else if(check.value == 2){
+		list = new Array('convenience');
+	}else{
+		return false;
+	}
+	
+	fnInitColor(list);
+	
+	alert("ttt");
+}
+
+
+// ページが表示された時に設定されていた色に戻す。
+function fnInitColor(list) {
+	len = list.length;
 	for(i = 0; i < len; i++) {
 		if(document.form1[list[i]]) {
 			// ラジオボタン、チェックボックス等の配列に対応
@@ -49,21 +62,9 @@ function lfnCheckPayment(){
 				}
 			}
 		}
-	}	
-	
-	
-/*	
-	if(check.value == 1){
-		list = new Array('credit');
-	}else if(check.value == 2){
-		list = new Array('convenience');
-	}else{
-		return false;
 	}
-	
-	alert("ttt");
-*/
 }
+
 
 //-->
 </script>
