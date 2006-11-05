@@ -52,14 +52,10 @@ function fnInitColor(list) {
 			max = document.form1[list[i]].length
 			if(max > 1) {
 				for(j = 0; j < max; j++) {
-					if(g_savecolor[list[i]] != null) {
-						document.form1[list[i]][j].style.backgroundColor = "#ffffff";
-					}
+					document.form1[list[i]][j].style.backgroundColor = "#ffffff";
 				}
 			} else {
-				if(g_savecolor[list[i]] != null) {
-					document.form1[list[i]].style.backgroundColor = "#ffffff";
-				}
+				document.form1[list[i]].style.backgroundColor = "#ffffff";
 			}
 		}
 	}
