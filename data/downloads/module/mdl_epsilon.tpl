@@ -77,7 +77,7 @@ self.moveTo(20,20);self.focus();
 											<td width="337" bgcolor="#ffffff">
 											<!--{assign var=key value="code"}-->
 											<span class="red12"><!--{$arrErr[$key]}--></span>
-											<input type="text" name="<!--{$key}-->" style="<!--{$arrErr[$key]|sfGetErrorColor}-->" value="<!--{$arrForm[$key].value}-->" class="box10">
+											<input type="text" name="<!--{$key}-->" style="<!--{$arrErr[$key]|sfGetErrorColor}-->" value="<!--{$arrForm[$key].value}-->" class="box10" maxlength="<!--{$smarty.const.INT_LEN}-->">
 											</td>
 										</tr>	
 										<tr class="fs12n">
