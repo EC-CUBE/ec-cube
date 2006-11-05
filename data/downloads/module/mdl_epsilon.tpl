@@ -61,8 +61,8 @@ function fnChangeDisabled(list, disable, color) {
 			if(max > 1) {
 				for(j = 0; j < max; j++) {
 					// 無効にする
-					//document.form1[list[i]][j].disabled = disable;
-					document.form1[list[i]][j].style.backgroundColor = color;
+					document.form1[list[i]][j].disabled = disable;
+					//document.form1[list[i]][j].style.backgroundColor = color;
 				}
 			} else {
 				// 無効にする
