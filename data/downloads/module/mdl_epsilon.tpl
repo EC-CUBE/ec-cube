@@ -25,7 +25,7 @@
 <!--
 self.moveTo(20,20);self.focus();
 
-function lfnCheckPayment(){
+function lfnCheckPayment(check){
 	var fm = document.form1;
 	var val = 0;
 
@@ -125,7 +125,7 @@ function fnInitColor(list) {
 											<td width="337" bgcolor="#ffffff">
 											<!--{assign var=key value="payment"}-->
 											<span class="red12"><!--{$arrErr[$key]}--></span>
-											<!--{html_checkboxes_ex name="$key" options=$arrPayment selected=$arrForm[$key].value style=$arrErr[$key]|sfGetErrorColor onclick="lfnCheckPayment();"}-->
+											<!--{html_checkboxes_ex name="$key" options=$arrPayment selected=$arrForm[$key].value style=$arrErr[$key]|sfGetErrorColor onclick="lfnCheckPayment(this);"}-->
 											</td>
 										</tr>
 										<tr class="fs12n">
