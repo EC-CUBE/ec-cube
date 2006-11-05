@@ -96,8 +96,13 @@ function lfCheckError(){
 	$arrErr = $objFormParam->checkError();
 	
 	// 利用クレジット、利用コンビニのエラーチェック
-	$payment = $objFormParam->getValue("payment");
-	sfprintr($payment);
+	$arrChkPay = $_POST["payment"];
+	foreach($arrChkPay as $key => $val){
+		// 利用クレジット
+		if($val == 1 and count($_POST["credit"]) <= 0){
+			$arrErr["credit"] = "利用クレジットが選択されていません。";
+		}
+	}
 
 	return $arrErr;
 }

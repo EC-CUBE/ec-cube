@@ -131,7 +131,7 @@ function fnChangeDisabled(list, disable) {
 											<td width="90" bgcolor="#f3f3f3">利用決済<span class="red">※</span></td>
 											<td width="337" bgcolor="#ffffff">
 											<!--{assign var=key value="payment"}-->
-											<span class="red12"><!--{$arrErr[$key]}--></span>
+											<span class="red12"><!--{$arrErr[$key]}--></span><br/>
 											<!--{html_checkboxes_ex name="$key" options=$arrPayment selected=$arrForm[$key].value style=$arrErr[$key]|sfGetErrorColor onclick="lfnCheckPayment();"}-->
 											</td>
 										</tr>
@@ -139,7 +139,7 @@ function fnChangeDisabled(list, disable) {
 											<td width="90" bgcolor="#f3f3f3">利用クレジット</td>
 											<td width="337" bgcolor="#ffffff">
 											<!--{assign var=key value="credit"}-->
-											<span class="red12"><!--{$arrErr[$key]}--></span>
+											<span class="red12"><!--{$arrErr[$key]}--></span><br/>
 											<!--{html_checkboxes_ex name="$key" options=$arrCredit selected=$arrForm[$key].value style=$arrErr[$key]|sfGetErrorColor}-->
 											</td>
 										</tr>
