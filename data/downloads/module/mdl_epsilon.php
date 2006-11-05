@@ -54,6 +54,9 @@ $objFormParam = lfInitParam($objFormParam);
 // POST値の取得
 $objFormParam->setParam($_POST);
 
+
+sfprintr($_POST);
+
 switch($_POST['mode']) {
 case 'edit':
 	// 入力エラー判定

@@ -104,10 +104,6 @@ self.moveTo(20,20);self.focus();
 											<!--{html_checkboxes_ex name="$key" options=$arrConvenience selected=$arrForm[$key].value}-->
 											</td>
 										</tr>
-										
-										<tr class="fs12n">
-											<td colspan="2">以下の置き換え文字で動的データの表示が可能です。<br>受注番号：[[order_id]]<br>購入合計：[[total]]</br></td>
-										</tr>
 									</table>
 
 									<table width="440" border="0" cellspacing="0" cellpadding="0" summary=" ">
