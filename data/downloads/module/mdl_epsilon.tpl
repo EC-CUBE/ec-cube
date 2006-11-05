@@ -31,17 +31,17 @@ function lfnCheckPayment(check){
 	
 	payment = new Array('payment[]');
 
-	for(i = 0; i < payment.length; i++) {
-		alert(fm[payment[i]][1].checked);
+	for(pi = 0; pi < payment.length; pi++) {
 	
 		list = new Array('credit[]');
-		if(fm[payment[i]][0].checked){
+		if(fm[payment[pi]][0].checked){
 			fnChangeDisabled(list, false);
 		}else{
 			fnChangeDisabled(list);
 		}
 
 		list2 = new Array('convenience[]');
+		alert(fm[payment[pi]][1].checked);
 
 /*
 		list = new Array('convenience[]');
