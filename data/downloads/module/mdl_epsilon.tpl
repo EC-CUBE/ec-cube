@@ -33,7 +33,7 @@ function lfnCheckPayment(check){
 
 	for(i = 0; i < payment.length; i++) {
 	
-		alert(fm[payment[i]][1].id);
+		alert(fm[payment[i]][1].checked);
 		
 		list = new Array('credit[]');
 
