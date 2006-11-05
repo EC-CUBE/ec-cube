@@ -57,7 +57,8 @@ $objFormParam->setParam($_POST);
 switch($_POST['mode']) {
 case 'edit':
 	// 入力エラー判定
-	$objPage->arrErr = $objFormParam->checkError();
+	$objPage->arrErr = lfCheckError();
+	
 	if(count($objPage->arrErr) == 0) {
 		$arrRet = $objQuery->select("sub_data", "dtb_module", "module_id = ?", array(AFF_TAG_MID));
 		$arrSubData = unserialize($arrRet[0]['sub_data']);
@@ -68,18 +69,6 @@ case 'edit':
 		$objQuery->update("dtb_module", $sqlval, "module_id = ?", array(AFF_TAG_MID));
 		// javascript実行
 		$objPage->tpl_onload = "window.close();";
-	}
-	break;
-// コンバージョンページの選択
-case 'select':
-	if(is_numeric($_POST['conv_page'])) {
-		// sub_dataよりタグ情報を読み込む
-		$conv_page = $_POST['conv_page'];
-		$arrRet = $objQuery->select("sub_data", "dtb_module", "module_id = ?", array(AFF_TAG_MID));
-		$arrSubData = unserialize($arrRet[0]['sub_data']);
-		$aff_tag = $arrSubData[$conv_page];
-		$objFormParam->setValue('conv_page', $conv_page);
-		$objFormParam->setValue('aff_tag', $aff_tag);		
 	}
 	break;
 default:
@@ -99,4 +88,19 @@ function lfInitParam($objFormParam) {
 	$objFormParam->addParam("利用コンビニ", "convenience");	
 	return $objFormParam;
 }
+
+// エラーチェックを行う
+function lfCheckError(){
+	global $objFormParam;
+	
+	$arrErr = $objFormParam->checkError();
+	
+	// 利用クレジット、利用コンビニのエラーチェック
+	$payment = $objFormParam->getValue("payment");
+	sfprintr($payment);
+
+	return $arrErr;
+}
+
+
 ?>
