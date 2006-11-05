@@ -45,11 +45,11 @@ function lfnCheckPayment(check){
 // ページが表示された時に設定されていた色に戻す。
 function fnInitColor(list) {
 	len = list.length;
+	alert(len);
 	for(i = 0; i < len; i++) {
 		if(document.form1[list[i]]) {
 			// ラジオボタン、チェックボックス等の配列に対応
 			max = document.form1[list[i]].length
-			alert(list);
 			if(max > 1) {
 				for(j = 0; j < max; j++) {
 					document.form1[list[i]][j].style.backgroundColor = "#dddddd";
