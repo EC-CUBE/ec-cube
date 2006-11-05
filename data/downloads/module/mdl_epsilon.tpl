@@ -36,6 +36,8 @@ function lfnCheckPayment(check){
 	}else{
 		return false;
 	}
+	
+	alert(check.checked);
 
 	fnChangeDisabled(list);
 
