@@ -29,6 +29,8 @@ function lfnCheckPayment(check){
 	var fm = document.form1;
 	var val = 0;
 	
+	alert(document.form1.payment[].value);
+	
 	if(check.value == 1){
 		list = new Array('credit[]');
 	}else if(check.value == 2){
@@ -42,8 +44,6 @@ function lfnCheckPayment(check){
 	}else{
 		fnChangeDisabled(list);
 	}
-
-
 
 }
 
