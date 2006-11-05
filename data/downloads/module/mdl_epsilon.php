@@ -62,7 +62,7 @@ case 'edit':
 		
 		$convenience = "";
 		foreach($_POST["convenience"] as $key => $val){
-			$convenience .= $val;
+			$convenience .= $val . ",";
 		}
 		
 		sfprintr($convenience);
