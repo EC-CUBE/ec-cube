@@ -51,6 +51,8 @@ function lfnCheckPayment(check){
 
 function fnChangeDisabled(list, disable) {
 	len = list.length;
+	
+	alert(len);
 
 	if(disable == null) { disable = true; }
 	
