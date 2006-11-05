@@ -30,7 +30,7 @@ function lfnCheckPayment(){
 	var payment = fm.payment;
 	var val = 0;
 
-	alert(payment.value);
+	//alert(payment.value);
 /*	
 	if(check.value == 1){
 		list = new Array('credit');
