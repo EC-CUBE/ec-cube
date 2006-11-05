@@ -33,6 +33,7 @@ function lfnCheckPayment(check){
 
 	for(i = 0; i < payment.length; i++) {
 		list = new Array('credit[]');
+		alert("tete");
 		if(fm[payment[i]][0].checked){
 			fnChangeDisabled(list, false);
 		}else{
@@ -45,7 +46,6 @@ function lfnCheckPayment(check){
 		}else{
 			fnChangeDisabled(list);
 		}
-		
 	}
 }
 
