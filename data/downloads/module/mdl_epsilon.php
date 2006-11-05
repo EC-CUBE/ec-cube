@@ -102,7 +102,11 @@ function lfCheckError(){
 		if($val == 1 and count($_POST["credit"]) <= 0){
 			$arrErr["credit"] = "利用クレジットが選択されていません。<br />";
 		}
-	}
+		
+		// 利用コンビニ
+		if($val == 2 and count($_POST["conbenience"]) <= 0){
+			$arrErr["conbenience"] = "利用コンビニが選択されていません。<br />";
+		}	}
 
 	return $arrErr;
 }
