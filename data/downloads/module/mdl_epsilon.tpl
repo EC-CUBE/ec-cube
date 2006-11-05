@@ -31,7 +31,7 @@ function lfnCheckPayment(check){
 	
 	payment = new Array('payment[]');
 	
-	alert(payment.len);
+	alert(payment.length);
 
 	if(check.value == 1){
 		list = new Array('credit[]');
@@ -51,8 +51,6 @@ function lfnCheckPayment(check){
 
 function fnChangeDisabled(list, disable) {
 	len = list.length;
-	
-	alert(len);
 
 	if(disable == null) { disable = true; }
 	
