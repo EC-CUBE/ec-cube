@@ -31,21 +31,16 @@ function lfnCheckPayment(check){
 
 	alert("ttt");
 	
-	list = new Array('credit');
-	/*
-
 	if(check.value == 1){
 		list = new Array('credit');
-	}elseif(check.value == 2){
+	}else if(check.value == 2){
 		list = new Array('convenience');
 	}else{
 		return false;
 	}
-*/	
+	
 	alert("ttt");
 
-	fnInitColor(list);
-	fnChangeDisabled(list);
 }
 
 //-->
