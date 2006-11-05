@@ -30,7 +30,7 @@ function lfnCheckPayment(){
 	var payment = document.form1.payment;
 	var val = 0;
 
-	alert(payment.length);
+	alert(payment.value);
 	/*
 	len = payment.length;
 	for(i = 0; i < len; i++) {
