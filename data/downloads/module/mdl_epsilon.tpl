@@ -36,8 +36,9 @@ function lfnCheckPayment(){
 	}else{
 		return false;
 	}
-			alert("ttt");
-	fnInitColor(list);
+	alert("ttt");
+	
+	//fnInitColor(list);
 	
 
 }
