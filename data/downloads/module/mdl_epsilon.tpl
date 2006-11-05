@@ -27,7 +27,6 @@ self.moveTo(20,20);self.focus();
 
 function lfnCheckPayment(check){
 	var fm = document.form1;
-	var payment = document.form1.payment[];
 	var val = 0;
 	
 	if(check.value == 1){
@@ -38,24 +37,32 @@ function lfnCheckPayment(check){
 		return false;
 	}
 
-	//fnInitColor(list);
+	fnChangeDisabled(list);
 
 }
 
 
-// ページが表示された時に設定されていた色に戻す。
-function fnInitColor(list) {
+function fnChangeDisabled(list, color) {
 	len = list.length;
 	for(i = 0; i < len; i++) {
+		if(color == null) {
+			color = '#dddddd';
+		}		
 		if(document.form1[list[i]]) {
 			// ラジオボタン、チェックボックス等の配列に対応
 			max = document.form1[list[i]].length
 			if(max > 1) {
 				for(j = 0; j < max; j++) {
-					document.form1[list[i]][j].style.backgroundColor = "#dddddd";
+					// 無効にする
+					document.form1[list[i]][j].disabled = true;
+					g_savecolor[list[i]] = document.form1[list[i]][j].style.backgroundColor;
+					document.form1[list[i]][j].style.backgroundColor = color;
 				}
 			} else {
-				document.form1[list[i]].style.backgroundColor = "#dddddd";
+				// 無効にする
+				document.form1[list[i]].disabled = true;
+				g_savecolor[list[i]] = document.form1[list[i]].style.backgroundColor;
+				document.form1[list[i]].style.backgroundColor = color;
 			}
 		}
 	}
