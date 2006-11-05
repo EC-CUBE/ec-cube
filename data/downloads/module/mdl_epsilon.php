@@ -95,8 +95,10 @@ $objView->display($objPage->tpl_mainpage);		//テンプレートの出力
 //-------------------------------------------------------------------------------------------------------
 /* パラメータ情報の初期化 */
 function lfInitParam($objFormParam) {
-	$objFormParam->addParam("コンバージョンページ", "conv_page", STEXT_LEN, "KVa", array("EXIST_CHECK", "MAX_LENGTH_CHECK"));
-	$objFormParam->addParam("アフィリエイトタグ", "aff_tag", MTEXT_LEN, "KVa", array("EXIST_CHECK", "MAX_LENGTH_CHECK"));	
+	$objFormParam->addParam("契約コード", "code", STEXT_LEN, "KVa", array("EXIST_CHECK", "MAX_LENGTH_CHECK"));
+	$objFormParam->addParam("利用決済", "payment");	
+	$objFormParam->addParam("利用クレジット", "credit");	
+	$objFormParam->addParam("利用コンビニ", "convenience");	
 	return $objFormParam;
 }
 ?>
