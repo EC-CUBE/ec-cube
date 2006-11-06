@@ -18,18 +18,19 @@ if(is_numeric($_GET['module_id'])) {
 	if(file_exists($path)) {
 		
 		if($_GET['mode'] == "module_del"){
-			// モジュール側に削除情報を送信する
-			$req = new HTTP_Request($path);
+/*			// モジュール側に削除情報を送信する
+			$req = new HTTP_Request(SITE_URL . );
 			$req->setMethod(HTTP_REQUEST_METHOD_POST);
 			$req->addPostData("mode", "module_del");
 			$req->sendRequest();
 			
 			sfprintr($req);
 			$req->clearPostData();
-			
-		}else{
-			require_once($path);
+*/
+			$_POST["mode"] = "module_del";
 		}
+			
+		require_once($path);
 		exit;
 	} else {
 		print("モジュールの取得に失敗しました。:".$path);
