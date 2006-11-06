@@ -220,6 +220,10 @@ function lfLoadData(){
 	$arrCredit["credit"][] = substr($credit, 0, 1);
 	$arrCredit["credit"][] = substr($credit, 2, 1);
 	$objFormParam->setParam($arrCredit);
+	
+	sfprintr($arrCredit);
+	
+	
 }
 
 ?>
