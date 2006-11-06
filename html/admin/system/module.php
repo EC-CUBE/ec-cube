@@ -241,8 +241,17 @@ function lfUninstallModule() {
 	$arrRet = $objQuery->select("module_id, extern_php, other_files, install_sql, uninstall_sql, latest_version", "dtb_module", "module_id = ?", array($_POST['module_id']));
 	$flg_ok = true;	// 処理の成功判定
 	
-	/*
 	if(count($arrRet) > 0) {
+		
+		// モジュール側に削除情報を送信する
+		$req = new HTTP_Request("http://test.ec-cube.net/ec-cube/admin/system/load_module.php");
+		$req->addCookie("PHPSESSID", $_COOKIE["PHPSESSID"]);
+		$req->setMethod(HTTP_REQUEST_METHOD_POST);
+		$req->addPostData("module_id", $arrRet[0]['module_id']);
+		$req->addPostData("mode", "module_del");
+		$req->sendRequest();
+		$req->clearPostData();
+		
 		$arrFiles = array();
 		if($arrRet[0]['other_files'] != "") {
 			$arrFiles = split("\|", $arrRet[0]['other_files']);
@@ -276,25 +285,13 @@ function lfUninstallModule() {
 	} else {
 		sfErrorHeader(">> 対象の機能は、配布を終了しております。");
 	}
-	*/
-	
-	// モジュール側に削除情報を送信する
-	$req = new HTTP_Request("http://test.ec-cube.net/ec-cube/admin/system/load_module.php");
-	$req->addCookie("PHPSESSID", $_COOKIE["PHPSESSID"]);
-	$req->setMethod(HTTP_REQUEST_METHOD_POST);
-	$req->addPostData("module_id", $arrRet[0]['module_id']);
-	$req->addPostData("mode", "module_del");
-	$req->sendRequest();
-	$req->clearPostData();
 
-	/*
 	if($flg_ok) {
 		// バージョン情報を削除する。
 		$sqlval['now_version'] = "";
 		$sqlval['update_date'] = "now()";
 		$objQuery->update("dtb_module", $sqlval, "module_id = ?", array($arrRet[0]['module_id']));
 	}
-	*/
 }
 
 ?>
