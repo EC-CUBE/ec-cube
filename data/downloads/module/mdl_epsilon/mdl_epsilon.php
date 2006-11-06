@@ -36,7 +36,7 @@ class LC_Page {
 	function LC_Page() {
 		//メインテンプレートの指定
 		$this->tpl_mainpage = MODULE_PATH . 'mdl_epsilon/mdl_epsilon.tpl';
-		$this->tpl_subtitle = 'イプシロン決済モジュール';
+		$this->tpl_subtitle = 'イプシロン決済モジュールa';
 		global $arrPayment;
 		$this->arrPayment = $arrPayment;
 		global $arrCredit;
