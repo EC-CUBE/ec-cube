@@ -144,7 +144,6 @@ case 'module_del':
 	if(!sfColumnExists("dtb_payment", "memo01")){
 		// データの削除
 		$objQuery->query("DELETE FROM dtb_payment WHERE memo01 = ?", array(MDL_EPSILON_ID));
-		test
 	}
 	break;
 default:
