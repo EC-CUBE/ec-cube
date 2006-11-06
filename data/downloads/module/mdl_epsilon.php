@@ -216,7 +216,7 @@ function lfLoadData(){
 	
 	sfprintr($arrRet);
 	sfprintr($arrDisp);
-	$objFormParam->setParam($arrDisp);
+	$objFormParam->setParam($arrRet[1]);
 	$objFormParam->splitParamCheckBoxes("convenience");
 }
 
