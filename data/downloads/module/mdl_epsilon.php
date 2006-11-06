@@ -208,7 +208,7 @@ function lfLoadData(){
 		$arrDisp["payment"][$key] = $val["payment"];
 	}
 	
-	sfprintr($arrRet);
+	sfprintr($arrDisp);
 	$objFormParam->setParam($arrRet[0]);
 }
 
