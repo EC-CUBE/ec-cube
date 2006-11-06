@@ -132,7 +132,7 @@ function fnChangeDisabled(list, disable) {
 											<td width="337" bgcolor="#ffffff">
 											<!--{assign var=key value="url"}-->
 											<span class="red12"><!--{$arrErr[$key]}--></span>
-											<input type="text" name="<!--{$key}-->" style="<!--{$arrErr[$key]|sfGetErrorColor}-->" value="<!--{$arrForm[$key].value}-->" class="box30" maxlength="<!--{$smarty.const.INT_LEN}-->">
+											<input type="text" name="<!--{$key}-->" style="<!--{$arrErr[$key]|sfGetErrorColor}-->" value="<!--{$arrForm[$key].value}-->" class="box40" maxlength="<!--{$smarty.const.INT_LEN}-->">
 											</td>
 										</tr>
 										<tr class="fs12n">
