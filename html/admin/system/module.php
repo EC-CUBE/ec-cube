@@ -285,6 +285,8 @@ function lfUninstallModule() {
 	//$req->setURL("http://test.ec-cube.net/ec-cube/admin/system/load_module.php");
 	$req->sendRequest();
 	$req->clearPostData();
+	
+	sfprintr($req);
 	exit();
 
 	/*
