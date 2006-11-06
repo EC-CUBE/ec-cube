@@ -99,15 +99,29 @@ case 'edit':
 					,"memo02" => $val
 					,"memo03" => $_POST["code"]
 					,"memo04" => "10000-0000-00000"
-					,"memo05" => $convenience
 				);
-				$objQuery->insert("dtb_payment", $arrData);
 			}
-		
+
 			// コンビニにチェックが入っていればコンビニを登録する
 			if($val == 2){
-				
+				$arrData = array(			
+					"payment_method" => "コンビニ(イプシロン)"
+					,"rule" => "0"
+					,"deliv_id" =>0
+					,"fix" => 3
+					,"creator_id" => $objSess->member_id
+					,"create_date" => "now()"
+					,"update_date" => "now()"
+					,"upper_rule" => 500000
+					,"memo01" => EPSILON_ID
+					,"memo02" => $val
+					,"memo03" => $_POST["code"]
+					,"memo04" => "00100-0000-00000"
+					,"memo05" => $convenience
+				);
 			}
+			
+			$objQuery->insert("dtb_payment", $arrData);
 			
 		}
 		

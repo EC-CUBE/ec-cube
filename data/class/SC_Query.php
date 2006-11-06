@@ -176,19 +176,22 @@ class SC_Query {
 		$strcol = '';
 		$strval = '';
 		$find = false;
+		
+		if(count($sqlval) <= 0 ) return false;
+		
 		foreach ($sqlval as $key => $val) {
-				$strcol .= $key . ',';
-				if(eregi("^Now\(\)$", $val)) {
-					$strval .= 'Now(),';
+			$strcol .= $key . ',';
+			if(eregi("^Now\(\)$", $val)) {
+				$strval .= 'Now(),';
+			} else {
+				$strval .= '?,';
+				if($val != ""){
+					$arrval[] = $val;
 				} else {
-					$strval .= '?,';
-					if($val != ""){
-						$arrval[] = $val;
-					} else {
-						$arrval[] = NULL;
-					}
+					$arrval[] = NULL;
 				}
-				$find = true;
+			}
+			$find = true;
 		}
 		if(!$find) {
 			return false;
