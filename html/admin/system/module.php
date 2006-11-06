@@ -286,6 +286,9 @@ function lfUninstallModule() {
 	$req->sendRequest();
 	$req->clearPostData();
 	
+	
+	sfprintr($_COOKIE);
+	
 	sfprintr($req);
 	exit();
 
