@@ -139,7 +139,7 @@ case 'edit':
 	break;
 	
 case 'module_del':
-	$objQuery->query("UPDATE dtb_module SET uninstall_sql = 'DELETE FROM dtb_payment WHERE memo01 = " . MDL_EPSILON_ID . "' WHERE module_id = ? ", array(MDL_EPSILON_ID));
+	$objQuery->query("DELETE FROM dtb_payment WHERE memo01 = ?", array(MDL_EPSILON_ID));
 	break;
 	
 default:
