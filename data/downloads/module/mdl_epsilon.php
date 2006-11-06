@@ -201,19 +201,18 @@ function lfLoadData(){
 			FROM dtb_payment WHERE memo01 = ?";
 	$arrRet = $objQuery->getall($sql, array(MDL_EPSILON_ID));
 	
+	$objFormParam->setParam($arrRet[1]);
+	$objFormParam->splitParamCheckBoxes("convenience");
+
 	// 画面表示用にデータを変換
-	//$arrDisp = $arrRet[0];
 	$arrDisp = array();
 	foreach($arrRet as $key => $val){
 		// 利用決済を表示用に変換
 		$arrDisp["payment"][$key] = $val["payment"];
 	}
-	
-	sfprintr($arrRet);
-	sfprintr($arrDisp);
-	$objFormParam->setParam($arrRet[1]);
 	$objFormParam->setParam($arrDisp);
-	$objFormParam->splitParamCheckBoxes("convenience");
+	
+	
 }
 
 ?>
