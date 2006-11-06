@@ -195,11 +195,18 @@ function lfLoadData(){
 				memo01, 
 				memo02 as code, 
 				memo03 as url, 
-				memo04,
-				memo05 as credit, 
+				memo04 as payment,
+				memo05 as payment_code, 
 				memo06 as conbenience
 			FROM dtb_payment WHERE memo01 = ?";
 	$arrRet = $objQuery->getall($sql, array(MDL_EPSILON_ID));
+	
+	// 画面表示用にデータを変換
+	$arrDisp = $arrRet[0];
+	foreach($arrRet as $key => $val){
+		// 利用決済を表示用に変換
+		$arrDisp["payment"][$key] = $val["payment"];
+	}
 	
 	sfprintr($arrRet);
 	$objFormParam->setParam($arrRet[0]);
