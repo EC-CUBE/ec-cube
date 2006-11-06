@@ -5,6 +5,7 @@
  * http://www.lockon.co.jp/
  */
 require_once("../require.php");
+require_once(DATA_PATH . "module/Request.php");
 
 // Ç§¾Ú³ÎÇ§
 $objSess = new SC_Session();
