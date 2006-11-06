@@ -201,8 +201,7 @@ function lfLoadData(){
 			FROM dtb_payment WHERE memo01 = ?";
 	$arrRet = $objQuery->getall($sql, array(MDL_EPSILON_ID));
 	
-	sfprintr($arrRet[0]);	
-	
+	sfprintr($arrRet);
 	$objFormParam->setParam($arrRet[0]);
 }
 
