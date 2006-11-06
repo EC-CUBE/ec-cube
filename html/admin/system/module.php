@@ -185,7 +185,7 @@ function lfInstallModule() {
 	$objQuery = new SC_Query();
 	$arrRet = $objQuery->select("module_id, extern_php, other_files, install_sql, latest_version", "dtb_module", "module_id = ?", array($_POST['module_id']));
 	$flg_ok = true;	// 処理の成功判定
-	
+	/*
 	if(count($arrRet) > 0) {
 		$arrFiles = array();
 		if($arrRet[0]['other_files'] != "") {
@@ -203,7 +203,8 @@ function lfInstallModule() {
 		sfErrorHeader(">> 対象の機能は、配布を終了しております。");
 		$flg_ok = false;
 	}
-	
+	*/
+	$objQuery->getlastquery();
 	// 必要なSQL文の実行
 	if($arrRet[0]['install_sql'] != "") {
 		// SQL文実行、パラーメータなし、エラー無視
@@ -223,13 +224,14 @@ function lfInstallModule() {
 			$objPage->update_mess.=">> テーブル構成の変更を行いました。<br>";
 		}
 	}
-	
+	/*
 	if($flg_ok) {		
 		$path = MODULE_PATH . $arrRet[0]['extern_php'];
 		$sqlval['now_version'] = sfGetFileVersion($path);
 		$sqlval['update_date'] = "now()";
 		$objQuery->update("dtb_module", $sqlval, "module_id = ?", array($arrRet[0]['module_id']));
 	}
+	*/
 }
 
 // アンインストール処理

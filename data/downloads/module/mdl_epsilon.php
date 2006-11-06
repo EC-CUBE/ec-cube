@@ -65,8 +65,6 @@ if($ret == ""){
 	$objQuery->query("UPDATE dtb_module SET uninstall_sql = 'DELETE FROM dtb_payment WHERE memo01 = " . MDL_EPSILON_ID . "' WHERE module_id = ? ", array(MDL_EPSILON_ID));
 }
 
-a
-
 switch($_POST['mode']) {
 case 'edit':
 	// 入力エラー判定
