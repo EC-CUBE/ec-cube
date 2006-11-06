@@ -148,7 +148,6 @@ case 'module_del':
 default:
 	break;
 }
-a
 
 $objPage->arrForm = $objFormParam->getFormParamList();
 
