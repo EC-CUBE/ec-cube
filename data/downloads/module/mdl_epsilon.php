@@ -60,16 +60,15 @@ $objFormParam->setParam($_POST);
 
 $objQuery = new SC_Query();
 
+// 汎用項目を追加
+sfAlterMemo();
+
 switch($_POST['mode']) {
 case 'edit':
 	// 入力エラー判定
 	$objPage->arrErr = lfCheckError();
 	
 	if(count($objPage->arrErr) == 0) {
-		
-		// 汎用項目を追加
-		sfAlterMemo();
-		
 		// 利用コンビニにチェックが入っている場合には、ハイフン区切りに編集する
 		$convCnt = count($_POST["convenience"]);
 		if($convCnt > 0){
@@ -137,7 +136,6 @@ case 'edit':
 		$objPage->tpl_onload = 'alert("登録完了しました。\n基本情報＞支払方法設定より詳細設定をしてください。"); window.close();';
 	}
 	break;
-	
 case 'module_del':
 	// 汎用項目の存在チェック
 	if(!sfColumnExists("dtb_payment", "memo01")){
@@ -146,6 +144,8 @@ case 'module_del':
 	}
 	break;
 default:
+	// データのロード
+	lfLoadData();	
 	break;
 }
 
@@ -184,6 +184,15 @@ function lfCheckError(){
 		}	}
 
 	return $arrErr;
+}
+
+// 登録データを読み込む
+function lfLoadData(){
+	global $objQuery;
+	
+	$arrRet = $objQuery->getall("SELECT memo01, memo02, memo03, memo04, memo05 FROM dtb_payment WHERE memo01 = ?", array(MDL_EPSILON_ID));
+	
+	sfprintr($arrRet);	
 }
 
 ?>
