@@ -205,7 +205,7 @@ function lfLoadData(){
 	$arrDisp = $arrRet[0];
 	foreach($arrRet as $key => $val){
 		// 利用決済を表示用に変換
-		$arrDisp["payment"][$key] .= $val["payment"] . "-";
+		$arrDisp["payment"][$key] .= $val["payment"];
 	}
 	
 	sfprintr($arrDisp);
