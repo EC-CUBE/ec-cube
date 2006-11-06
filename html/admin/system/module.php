@@ -246,6 +246,7 @@ function lfUninstallModule() {
 			$arrFiles = split("\|", $arrRet[0]['other_files']);
 		}
 		$arrFiles[] = $arrRet[0]['extern_php'];
+		/*
 		foreach($arrFiles as $val) {
 			$path = MODULE_PATH . $val;
 			// ファイルを削除する
@@ -255,7 +256,7 @@ function lfUninstallModule() {
 				$objPage->update_mess.= ">> " . $path . "：削除失敗<br>";
 			}
 		}
-		
+		*/
 		// 必要なSQL文の実行
 		if($arrRet[0]['uninstall_sql'] != "") {
 			// SQL文実行、パラーメータなし、エラー無視
