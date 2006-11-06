@@ -141,7 +141,6 @@ case 'edit':
 case 'module_del':
 	$objQuery->query("DELETE FROM dtb_payment WHERE memo01 = ?", array(MDL_EPSILON_ID));
 	break;
-	
 default:
 	break;
 }
