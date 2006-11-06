@@ -79,9 +79,13 @@ case 'confirm':
 	$objSiteSess->setRegistFlag();
 	
 	// 決済区分を取得する
+	if(sfColumnExists("dtb_payment", "memo01")){
+		$sql = "SELECT memo01, memo02, memo03, memo04, memo05, memo06, memo07, memo08, memo09, memo10 FROM dtb_payment WHERE payment_id = ?";
+		$arrPayment = $objQuery->getall($sql, array($arrData['payment_id']));
+	}
 	
 	// 決済方法により画面切替
-	switch($arrData['payment_id']) {
+	switch($arrPayment[0]["memo04"]) {
 	case PAYMENT_CREDIT_ID:
 		header("Location: " . URL_SHOP_CREDIT);
 		break;

@@ -60,7 +60,7 @@ $objFormParam->setParam($_POST);
 
 $objQuery = new SC_Query();
 
-// 汎用項目を追加
+// 汎用項目を追加(必須！！)
 sfAlterMemo();
 
 switch($_POST['mode']) {
