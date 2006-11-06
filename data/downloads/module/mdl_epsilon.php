@@ -205,7 +205,6 @@ function lfLoadData(){
 	$arrRet = $objQuery->getall($sql, array(MDL_EPSILON_ID));
 	
 	$objFormParam->setParam($arrRet[0]);
-	$objFormParam->splitParamCheckBoxes("convenience");
 
 	// 画面表示用にデータを変換
 	$arrDisp = array();
@@ -215,8 +214,12 @@ function lfLoadData(){
 		
 		// クレジットの決済区分を取得
 		if($val["payment"] == 1) $credit = $val["payment_code"];
+		
+		// コンビニ
+		if($val["payment"] == 2) $arrDisp["convenience"] = $val["convenience"];
 	}
 	$objFormParam->setParam($arrDisp);
+	$objFormParam->splitParamCheckBoxes("convenience");
 	
 	// クレジット
 	if(substr($credit, 0, 1)) $arrCredit["credit"][] = 1;
