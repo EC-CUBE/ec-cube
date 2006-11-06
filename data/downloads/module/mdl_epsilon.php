@@ -134,7 +134,7 @@ case 'edit':
 		}
 	
 		// javascript¼Â¹Ô
-		//$objPage->tpl_onload = "window.close();";
+		$objPage->tpl_onload = "window.close();";
 	}
 	break;
 	

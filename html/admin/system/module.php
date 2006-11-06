@@ -241,6 +241,7 @@ function lfUninstallModule() {
 	$arrRet = $objQuery->select("module_id, extern_php, other_files, install_sql, uninstall_sql, latest_version", "dtb_module", "module_id = ?", array($_POST['module_id']));
 	$flg_ok = true;	// 処理の成功判定
 	
+	/*
 	if(count($arrRet) > 0) {
 		$arrFiles = array();
 		if($arrRet[0]['other_files'] != "") {
@@ -275,6 +276,7 @@ function lfUninstallModule() {
 	} else {
 		sfErrorHeader(">> 対象の機能は、配布を終了しております。");
 	}
+	*/
 	
 	// モジュール側に削除情報を送信する
 	$req = new HTTP_Request("http://test.ec-cube.net/ec-cube/admin/system/load_module.php");
@@ -285,12 +287,14 @@ function lfUninstallModule() {
 	$req->sendRequest();
 	$req->clearPostData();
 
+	/*
 	if($flg_ok) {
 		// バージョン情報を削除する。
 		$sqlval['now_version'] = "";
 		$sqlval['update_date'] = "now()";
 		$objQuery->update("dtb_module", $sqlval, "module_id = ?", array($arrRet[0]['module_id']));
 	}
+	*/
 }
 
 ?>
