@@ -87,6 +87,7 @@ case 'edit':
 					,"rule" => 0
 					,"deliv_id" =>0
 					,"fix" => 3
+					,"creator_id" => 1
 					,"create_date" => "now()"
 					,"update_date" => "now()"
 					,"upper_rule" => 500000
