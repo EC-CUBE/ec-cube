@@ -281,6 +281,7 @@ function lfUninstallModule() {
 	$req->setMethod(HTTP_REQUEST_METHOD_POST);
 	$req->addPostData("mode", "mdl_del");
 	$req->clearPostData();
+	exit();
 
 	/*
 	if($flg_ok) {
