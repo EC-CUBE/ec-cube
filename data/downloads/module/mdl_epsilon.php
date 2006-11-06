@@ -130,7 +130,6 @@ case 'edit':
 			$objQuery->insert("dtb_payment", $arrData);
 			
 		}
-		
 	
 		// javascript¼Â¹Ô
 		//$objPage->tpl_onload = "window.close();";

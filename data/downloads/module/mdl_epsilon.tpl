@@ -126,7 +126,15 @@ function fnChangeDisabled(list, disable) {
 											<span class="red12"><!--{$arrErr[$key]}--></span>
 											<input type="text" name="<!--{$key}-->" style="<!--{$arrErr[$key]|sfGetErrorColor}-->" value="<!--{$arrForm[$key].value}-->" class="box10" maxlength="<!--{$smarty.const.INT_LEN}-->">
 											</td>
-										</tr>	
+										</tr>
+										<tr class="fs12n">
+											<td width="" bgcolor="#f3f3f3">接続先URL<span class="red">※</span></td>
+											<td width="337" bgcolor="#ffffff">
+											<!--{assign var=key value="url"}-->
+											<span class="red12"><!--{$arrErr[$key]}--></span>
+											<input type="text" name="<!--{$key}-->" style="<!--{$arrErr[$key]|sfGetErrorColor}-->" value="<!--{$arrForm[$key].value}-->" class="box10" maxlength="<!--{$smarty.const.INT_LEN}-->">
+											</td>
+										</tr>
 										<tr class="fs12n">
 											<td width="90" bgcolor="#f3f3f3">利用決済<span class="red">※</span></td>
 											<td width="337" bgcolor="#ffffff">
