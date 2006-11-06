@@ -97,9 +97,10 @@ function sfAlterMemo(){
 	if(!sfColumnExists("dtb_payment", "memo01")){
 		
 		// 汎用項目を10個追加
-		for($i=1; $i<=10; $i++){
+		for($i=1; $i<=9; $i++){
 			$objQuery->query("alter table dtb_payment add memo0".$i." text;");
 		}
+		$objQuery->query("alter table dtb_payment add memo10 text;");
 		
 	}
 }
