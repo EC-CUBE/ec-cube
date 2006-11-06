@@ -52,8 +52,6 @@ $objView = new SC_AdminView();
 $objSess = new SC_Session();
 sfIsSuccess($objSess);
 
-sfprintr($objSess);
-
 // パラメータ管理クラス
 $objFormParam = new SC_FormParam();
 $objFormParam = lfInitParam($objFormParam);
@@ -93,7 +91,7 @@ case 'edit':
 					,"rule" => 0
 					,"deliv_id" =>0
 					,"fix" => 3
-					,"creator_id" => 1
+					,"creator_id" => $objSess->member_id
 					,"create_date" => "now()"
 					,"update_date" => "now()"
 					,"upper_rule" => 500000
