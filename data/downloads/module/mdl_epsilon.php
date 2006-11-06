@@ -209,10 +209,17 @@ function lfLoadData(){
 	foreach($arrRet as $key => $val){
 		// 利用決済を表示用に変換
 		$arrDisp["payment"][$key] = $val["payment"];
+		
+		if($val["payment"] == 1){
+			$credit = $val["payment_code"];
+		}
 	}
 	$objFormParam->setParam($arrDisp);
 	
-	
+	// クレジット
+	$arrCredit["credit"][] = substr($credit, 0, 1);
+	$arrCredit["credit"][] = substr($credit, 2, 1);
+	$objFormParam->setParam($arrCredit);
 }
 
 ?>
