@@ -221,9 +221,6 @@ function lfLoadData(){
 	if(substr($credit, 1, 1)) $arrCredit["credit"][] = 2;
 	$objFormParam->setParam($arrCredit);
 	
-	sfprintr($arrCredit);
-	
-	
 }
 
 ?>
