@@ -185,12 +185,12 @@ define ("ROOT_CATEGORY_6", 7);
 define ("ROOT_CATEGORY_7", 8);
 
 // お支払い方法特殊ID
-define ("PAYMENT_DAIBIKI_ID",1);		// 代金引換
-define ("PAYMENT_GINFURI_ID", 2);		// 銀行振込
-define ("PAYMENT_KAKITOME_ID", 3);		// 現金書留
-define ("PAYMENT_CREDIT_ID",4);			// クレジットカード
-define ("PAYMENT_LOAN_ID", 5);			// ショッピングローン
-define ("PAYMENT_CONVENIENCE_ID", 6);	// コンビニ決済
+//define ("PAYMENT_DAIBIKI_ID",1);		// 代金引換
+//define ("PAYMENT_GINFURI_ID", 2);		// 銀行振込
+//define ("PAYMENT_KAKITOME_ID", 3);		// 現金書留
+//define ("PAYMENT_LOAN_ID", 5);			// ショッピングローン
+define ("PAYMENT_CREDIT_ID",1);			// クレジットカード
+define ("PAYMENT_CONVENIENCE_ID", 2);	// コンビニ決済
 
 define("LARGE_IMAGE_WIDTH",  500);						// 拡大画像横
 define("LARGE_IMAGE_HEIGHT", 500);						// 拡大画像縦

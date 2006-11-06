@@ -78,17 +78,19 @@ case 'confirm':
 	// 正常に登録されたことを記録しておく
 	$objSiteSess->setRegistFlag();
 	
+	sfprintr($arrData);
+	
 	// 決済方法により画面切替
 	switch($arrData['payment_id']) {
-/* クレジット、ローン、コンビニ決済は次期開発
 	case PAYMENT_CREDIT_ID:
 		header("Location: " . URL_SHOP_CREDIT);
 		break;
-	case PAYMENT_LOAN_ID:
-		header("Location: " . URL_SHOP_LOAN);
-		break;
 	case PAYMENT_CONVENIENCE_ID:
 		header("Location: " . URL_SHOP_CONVENIENCE);
+		break;
+/*
+	case PAYMENT_LOAN_ID:
+		header("Location: " . URL_SHOP_LOAN);
 		break;
 */
 	default:
