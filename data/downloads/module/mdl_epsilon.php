@@ -135,7 +135,7 @@ case 'edit':
 	
 		// javascript実行
 		//$objPage->tpl_onload = 'alert("登録完了しました。基本情報＞支払方法設定より詳細設定をしてください。"); window.close();';
-		$objPage->tpl_onload = "alert('登録完了しました。\n基本情報＞支払方法設定より詳細設定をしてください。');";
+		$objPage->tpl_onload = "alert('test\ntest');";
 	}
 	break;
 	
