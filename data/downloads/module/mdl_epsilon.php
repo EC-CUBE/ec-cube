@@ -189,10 +189,13 @@ function lfCheckError(){
 // 登録データを読み込む
 function lfLoadData(){
 	global $objQuery;
+	global $objFormParam;
 	
 	$arrRet = $objQuery->getall("SELECT memo01, memo02, memo03, memo04, memo05 FROM dtb_payment WHERE memo01 = ?", array(MDL_EPSILON_ID));
 	
 	sfprintr($arrRet);	
+	
+	$objFormParam->setParam($arrRet);
 }
 
 ?>
