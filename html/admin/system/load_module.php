@@ -23,8 +23,10 @@ if(is_numeric($_GET['module_id'])) {
 			$req->setMethod(HTTP_REQUEST_METHOD_POST);
 			$req->addPostData("mode", "module_del");
 			$req->sendRequest();
+			
+			sfprintr($req);
 			$req->clearPostData();
-			sfprintr("tet");
+			
 		}else{
 			require_once($path);
 		}
