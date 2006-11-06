@@ -24,6 +24,7 @@ if(is_numeric($_GET['module_id'])) {
 			$req->addPostData("mode", "module_del");
 			$req->sendRequest();
 			$req->clearPostData();
+			sfprintr("tet");
 		}else{
 			require_once($path);
 		}
