@@ -78,8 +78,7 @@ case 'confirm':
 	// 正常に登録されたことを記録しておく
 	$objSiteSess->setRegistFlag();
 	
-	sfprintr($arrData);
-	exit();
+	// 決済区分を取得する
 	
 	// 決済方法により画面切替
 	switch($arrData['payment_id']) {

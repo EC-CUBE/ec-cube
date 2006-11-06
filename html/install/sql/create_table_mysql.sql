@@ -158,6 +158,16 @@ CREATE TABLE dtb_payment (
     update_date datetime,
     payment_image text,
     upper_rule numeric
+    memo01 text,
+    memo02 text,
+    memo03 text,
+    memo04 text,
+    memo05 text,
+    memo06 text,
+    memo07 text,
+    memo08 text,
+    memo09 text,
+    memo10 text
 ) TYPE=InnoDB ;
 
 CREATE TABLE dtb_mailtemplate (

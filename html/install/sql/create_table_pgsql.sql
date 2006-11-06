@@ -157,7 +157,17 @@ CREATE TABLE dtb_payment (
     create_date timestamp NOT NULL DEFAULT now(),
     update_date timestamp,
     payment_image text,
-    upper_rule numeric
+    upper_rule numeric,
+    memo01 text,
+    memo02 text,
+    memo03 text,
+    memo04 text,
+    memo05 text,
+    memo06 text,
+    memo07 text,
+    memo08 text,
+    memo09 text,
+    memo10 text
 );
 
 CREATE TABLE dtb_mailtemplate (
