@@ -177,7 +177,7 @@ class SC_Query {
 		$strval = '';
 		$find = false;
 		
-		if(count($sqlval) <= 0 ) return false;
+		if(count($sqlval) <= 0 )
 		
 		foreach ($sqlval as $key => $val) {
 			$strcol .= $key . ',';
