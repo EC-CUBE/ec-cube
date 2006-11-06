@@ -282,9 +282,6 @@ function lfUninstallModule() {
 	$req->addPostData("mode", "mdl_del");
 	$req->clearPostData();
 	if (!PEAR::isError($req->sendRequest())) {
-		$response = $req->getResponseBody();
-	} else {
-		$response = "";
 	}
 	exit();
 
