@@ -60,11 +60,6 @@ $objFormParam->setParam($_POST);
 
 $objQuery = new SC_Query();
 
-$ret = $objQuery->getone("SELECT uninstall_sql FROM dtb_module WHERE module_id = ?", array(MDL_EPSILON_ID));
-if($ret == ""){
-	$objQuery->query("UPDATE dtb_module SET uninstall_sql = 'DELETE FROM dtb_payment WHERE memo01 = " . MDL_EPSILON_ID . "' WHERE module_id = ? ", array(MDL_EPSILON_ID));
-}
-
 switch($_POST['mode']) {
 case 'edit':
 	// 入力エラー判定
@@ -142,6 +137,14 @@ case 'edit':
 		//$objPage->tpl_onload = "window.close();";
 	}
 	break;
+	
+case 'mdl_del':
+	$ret = $objQuery->getone("SELECT uninstall_sql FROM dtb_module WHERE module_id = ?", array(MDL_EPSILON_ID));
+	if($ret == ""){
+		$objQuery->query("UPDATE dtb_module SET uninstall_sql = 'DELETE FROM dtb_payment WHERE memo01 = " . MDL_EPSILON_ID . "' WHERE module_id = ? ", array(MDL_EPSILON_ID));
+	}
+	break;
+	
 default:
 	break;
 }

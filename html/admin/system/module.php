@@ -5,6 +5,7 @@
  * http://www.lockon.co.jp/
  */
 require_once("../require.php");
+require_once(DATA_PATH . "module/Request.php");
 
 //ページ管理クラス
 class LC_Page {
@@ -273,10 +274,16 @@ function lfUninstallModule() {
 				$objPage->update_mess.=">> テーブル構成の変更を行いました。<br>";
 			}
 		}
-		sfprintr($arrRet);
 	} else {
 		sfErrorHeader(">> 対象の機能は、配布を終了しております。");
 	}
+	
+	// モジュール側に削除情報を送信する
+	$req = new HTTP_Request("http://test.ec-cube.net/ec-cube/admin/system/load_module.php?module_id=" . $_POST['module_id']);
+	$req->setMethod(HTTP_REQUEST_METHOD_POST);
+	$req->addPostData("mode", "mdl_del");
+	$req->clearPostData();
+	
 
 	/*
 	if($flg_ok) {
