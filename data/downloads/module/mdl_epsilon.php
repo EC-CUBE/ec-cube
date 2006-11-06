@@ -204,6 +204,7 @@ function lfLoadData(){
 	sfprintr($arrRet);	
 	
 	$objFormParam->setParam($arrRet);
+	sfprintr($objFormParam->getFormParamList());
 }
 
 ?>
