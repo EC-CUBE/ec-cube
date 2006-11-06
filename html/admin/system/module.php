@@ -282,7 +282,7 @@ function lfUninstallModule() {
 	$req->addPostData("module_id", $arrRet[0]['module_id']);
 	$req->addPostData("mode", "module_del");
 	$req->clearPostData();
-	exit
+
 
 	/*
 	if($flg_ok) {
