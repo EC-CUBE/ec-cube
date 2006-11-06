@@ -207,16 +207,12 @@ function lfLoadData(){
 	foreach($arrRet as $key => $val){
 		// 利用決済を表示用に変換
 		$arrDisp["payment"][$key] = $val["payment"];
-		
-		// コンビニ
-		if($val["payment"] != ""){
-			
-		}
 	}
 	
 	sfprintr($arrRet);
 	sfprintr($arrDisp);
 	$objFormParam->setParam($arrRet[1]);
+	$objFormParam->setParam($arrDisp);
 	$objFormParam->splitParamCheckBoxes("convenience");
 }
 
