@@ -79,6 +79,7 @@ case 'confirm':
 	$objSiteSess->setRegistFlag();
 	
 	sfprintr($arrData);
+	exit();
 	
 	// 決済方法により画面切替
 	switch($arrData['payment_id']) {
