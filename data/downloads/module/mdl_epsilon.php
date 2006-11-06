@@ -199,7 +199,7 @@ function lfLoadData(){
 				memo05 as credit, 
 				memo06 as conbenience
 			FROM dtb_payment WHERE memo01 = ?";
-	$arrRet = $objQuery->getall(, array(MDL_EPSILON_ID));
+	$arrRet = $objQuery->getall($sql, array(MDL_EPSILON_ID));
 	
 	sfprintr($arrRet);	
 	
