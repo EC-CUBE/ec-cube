@@ -88,7 +88,7 @@ case 'edit':
 			if($val == 1){
 				$arrData = array(			
 					"payment_method" => "クレジット(イプシロン)"
-					,"rule" => 0
+					,"rule" => "0"
 					,"deliv_id" =>0
 					,"fix" => 3
 					,"creator_id" => $objSess->member_id
