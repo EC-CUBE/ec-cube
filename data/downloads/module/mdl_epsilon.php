@@ -60,7 +60,7 @@ $objFormParam->setParam($_POST);
 
 $objQuery = new SC_Query();
 
-a
+
 $ret = $objQuery->getone("SELECT uninstall_sql FROM dtb_module WHERE module_id = ?", array(MDL_EPSILON_ID));
 if($ret == ""){
 	$objQuery->query("UPDATE dtb_module SET uninstall_sql = 'DELETE FROM dtb_payment WHERE memo01 = " . MDL_EPSILON_ID . "' WHERE module_id = ? ", array(MDL_EPSILON_ID));
