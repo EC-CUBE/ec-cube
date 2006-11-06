@@ -9,7 +9,7 @@
  
 require_once("../../require.php");
 
-define("EPSILON_ID", 4);
+define("MDL_EPSILON_ID", 4);
 
 $arrPayment = array(
 	1 => 'クレジット',
@@ -81,7 +81,7 @@ case 'edit':
 		
 		// DEL/INSで登録する。
 		$delsql = "DELETE FROM dtb_payment WHERE memo01 = ?";
-		$objQuery->query($delsql, array(EPSILON_ID));
+		$objQuery->query($delsql, array(MDL_EPSILON_ID));
 		
 		foreach($_POST["payment"] as $key => $val){
 			
@@ -100,10 +100,11 @@ case 'edit':
 					,"create_date" => "now()"
 					,"update_date" => "now()"
 					,"upper_rule" => 500000
-					,"memo01" => EPSILON_ID
-					,"memo02" => $val
-					,"memo03" => $_POST["code"]
-					,"memo04" => "10000-0000-00000"
+					,"memo01" => MDL_EPSILON_ID
+					,"memo02" => $_POST["code"]
+					,"memo03" => $_POST["url"]
+					,"memo04" => $val
+					,"memo05" => "10000-0000-00000"
 				);
 			}
 
@@ -119,11 +120,12 @@ case 'edit':
 					,"create_date" => "now()"
 					,"update_date" => "now()"
 					,"upper_rule" => 500000
-					,"memo01" => EPSILON_ID
-					,"memo02" => $val
-					,"memo03" => $_POST["code"]
-					,"memo04" => "00100-0000-00000"
-					,"memo05" => $convenience
+					,"memo01" => MDL_EPSILON_ID
+					,"memo02" => $_POST["code"]
+					,"memo03" => $_POST["url"]
+					,"memo04" => $val
+					,"memo05" => "00100-0000-00000"
+					,"memo06" => $convenience
 				);
 			}
 			
