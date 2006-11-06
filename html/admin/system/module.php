@@ -241,8 +241,6 @@ function lfUninstallModule() {
 	$arrRet = $objQuery->select("module_id, extern_php, other_files, install_sql, uninstall_sql, latest_version", "dtb_module", "module_id = ?", array($_POST['module_id']));
 	$flg_ok = true;	// 処理の成功判定
 	
-	$objQuery->getLastQuery();
-	
 	if(count($arrRet) > 0) {
 		$arrFiles = array();
 		if($arrRet[0]['other_files'] != "") {
@@ -283,7 +281,6 @@ function lfUninstallModule() {
 	$req->setMethod(HTTP_REQUEST_METHOD_POST);
 	$req->addPostData("mode", "mdl_del");
 	$req->clearPostData();
-	
 
 	/*
 	if($flg_ok) {
