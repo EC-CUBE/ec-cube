@@ -151,7 +151,7 @@ default:
 
 $objPage->arrForm = $objFormParam->getFormParamList();
 
-$objView->assignobj($objPage);					//変数をテンプレートにアサインするaa
+$objView->assignobj($objPage);					//変数をテンプレートにアサインするaaaaa
 $objView->display($objPage->tpl_mainpage);		//テンプレートの出力
 //-------------------------------------------------------------------------------------------------------
 /* パラメータ情報の初期化 */
