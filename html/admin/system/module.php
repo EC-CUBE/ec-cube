@@ -247,7 +247,7 @@ function lfUninstallModule() {
 			$arrFiles = split("\|", $arrRet[0]['other_files']);
 		}
 		$arrFiles[] = $arrRet[0]['extern_php'];
-		/*
+
 		foreach($arrFiles as $val) {
 			$path = MODULE_PATH . $val;
 			// ファイルを削除する
@@ -257,7 +257,7 @@ function lfUninstallModule() {
 				$objPage->update_mess.= ">> " . $path . "：削除失敗<br>";
 			}
 		}
-		*/
+
 		// 必要なSQL文の実行
 		if($arrRet[0]['uninstall_sql'] != "") {
 			// SQL文実行、パラーメータなし、エラー無視
@@ -278,31 +278,19 @@ function lfUninstallModule() {
 	
 	// モジュール側に削除情報を送信する
 	$req = new HTTP_Request("http://test.ec-cube.net/ec-cube/admin/system/load_module.php");
-
 	$req->addCookie("PHPSESSID", $_COOKIE["PHPSESSID"]);
-
 	$req->setMethod(HTTP_REQUEST_METHOD_POST);
 	$req->addPostData("module_id", $arrRet[0]['module_id']);
 	$req->addPostData("mode", "module_del");
-	//$req->setURL("http://test.ec-cube.net/ec-cube/admin/system/load_module.php?module_id=" .  $arrRet[0]['module_id'] . "&mode=module_del");
-	//$req->setURL("http://test.ec-cube.net/ec-cube/admin/system/load_module.php");
 	$req->sendRequest();
 	$req->clearPostData();
-	
-	
-	sfprintr($_COOKIE);
-	
-	sfprintr($req);
-	exit();
 
-	/*
 	if($flg_ok) {
 		// バージョン情報を削除する。
 		$sqlval['now_version'] = "";
 		$sqlval['update_date'] = "now()";
 		$objQuery->update("dtb_module", $sqlval, "module_id = ?", array($arrRet[0]['module_id']));
 	}
-	*/
 }
 
 ?>
