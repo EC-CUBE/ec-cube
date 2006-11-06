@@ -89,6 +89,12 @@ case 'edit':
 			
 			// クレジットにチェックが入っていればクレジットを登録する
 			if($val == 1){
+				foreach($_POST["credit"] as $ckey => $cval){
+					if($cval == 1) $visa = "1";
+					if($cval == 2) $jcb = "1";
+				}
+				
+				
 				$arrData = array(			
 					"payment_method" => "クレジット(イプシロン)"
 					,"rule" => "0"
@@ -103,7 +109,7 @@ case 'edit':
 					,"memo02" => $_POST["code"]
 					,"memo03" => $_POST["url"]
 					,"memo04" => $val
-					,"memo05" => "10000-0000-00000"
+					,"memo05" => $visa . $jcb . "000-0000-00000"
 				);
 			}
 
