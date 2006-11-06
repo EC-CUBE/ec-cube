@@ -6,9 +6,10 @@
  * @link		http://www.lockon.co.jp/
  *
  */
-
  
 require_once("../../require.php");
+
+define("EPSILON_ID", 4);
 
 $arrPayment = array(
 	1 => 'クレジット',
@@ -53,6 +54,8 @@ $objFormParam = lfInitParam($objFormParam);
 // POST値の取得
 $objFormParam->setParam($_POST);
 
+$objQuery = new SC_Query();
+
 switch($_POST['mode']) {
 case 'edit':
 	// 入力エラー判定
@@ -73,7 +76,35 @@ case 'edit':
 		}
 		
 		// DEL/INSで登録する。
-		$delsql = "DELETE FROM dtb_payment";
+		$delsql = "DELETE FROM dtb_payment WHERE memo01 = ?";
+		$objQuery->query($delsql, array(EPSILON_ID));
+		
+		foreach($_POST["payment"] as $key => $val){
+			// クレジットにチェックが入っていればクレジットを登録する
+			if($val == 1){
+				$arrData = array(			
+					"payment_method" => "クレジット(イプシロン)"
+					,"rule" => 0
+					,"deliv_id" =>0
+					,"fix" => 3
+					,"create_date" => "now()"
+					,"update_date" => "now()"
+					,"upper_rule" => 500000
+					,"memo01" => EPSILON_ID
+					,"memo02" => $val
+					,"memo03" => $_POST["code"]
+					,"memo04" => "10000-0000-00000"
+					,"memo05" => $convenience
+				);
+				$objQuery->insert("dtb_payment", $arrData);
+			}
+		
+			// コンビニにチェックが入っていればコンビニを登録する
+			if($val == 2){
+				
+			}
+			
+		}
 		
 	
 		// javascript実行
