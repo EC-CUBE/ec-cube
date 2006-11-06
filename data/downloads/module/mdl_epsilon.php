@@ -197,7 +197,7 @@ function lfLoadData(){
 				memo03 as url, 
 				memo04 as payment,
 				memo05 as payment_code, 
-				memo06 as conbenience
+				memo06 as convenience
 			FROM dtb_payment WHERE memo01 = ?";
 	$arrRet = $objQuery->getall($sql, array(MDL_EPSILON_ID));
 	
@@ -207,11 +207,17 @@ function lfLoadData(){
 	foreach($arrRet as $key => $val){
 		// 利用決済を表示用に変換
 		$arrDisp["payment"][$key] = $val["payment"];
+		
+		// コンビニ
+		if($val["payment"] != ""){
+			
+		}
 	}
 	
 	sfprintr($arrRet);
 	sfprintr($arrDisp);
 	$objFormParam->setParam($arrDisp);
+	$objFormParam->splitParamCheckBoxes("convenience");
 }
 
 ?>
