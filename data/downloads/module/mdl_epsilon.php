@@ -217,8 +217,8 @@ function lfLoadData(){
 	$objFormParam->setParam($arrDisp);
 	
 	// クレジット
-	$arrCredit["credit"][] = substr($credit, 0, 1);
-	$arrCredit["credit"][] = substr($credit, 1, 1);
+	if(substr($credit, 0, 1)) $arrCredit["credit"][] = 1;
+	if(substr($credit, 1, 1)) $arrCredit["credit"][] = 2;
 	$objFormParam->setParam($arrCredit);
 	
 	sfprintr($arrCredit);
