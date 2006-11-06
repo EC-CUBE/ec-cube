@@ -84,13 +84,17 @@ case 'edit':
 		$objQuery->query($delsql, array(EPSILON_ID));
 		
 		foreach($_POST["payment"] as $key => $val){
+			
+			// ランクの最大値を取得する
+			$max_rank = $objQuery->getone("SELECT max(rank) FROM dtb_payment");
+			
 			// クレジットにチェックが入っていればクレジットを登録する
 			if($val == 1){
 				$arrData = array(			
 					"payment_method" => "クレジット(イプシロン)"
 					,"rule" => "0"
 					,"deliv_id" =>0
-					,"rank" => "select max(rank) from dtb_payment"
+					,"rank" => $max_rank + 1
 					,"fix" => 3
 					,"creator_id" => $objSess->member_id
 					,"create_date" => "now()"
@@ -109,6 +113,7 @@ case 'edit':
 					"payment_method" => "コンビニ(イプシロン)"
 					,"rule" => "0"
 					,"deliv_id" =>0
+					,"rank" => $max_rank + 1
 					,"fix" => 3
 					,"creator_id" => $objSess->member_id
 					,"create_date" => "now()"
