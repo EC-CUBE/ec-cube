@@ -201,7 +201,7 @@ function lfLoadData(){
 			FROM dtb_payment WHERE memo01 = ?";
 	$arrRet = $objQuery->getall($sql, array(MDL_EPSILON_ID));
 	
-	$objFormParam->setParam($arrRet[1]);
+	$objFormParam->setParam($arrRet[0]);
 	$objFormParam->splitParamCheckBoxes("convenience");
 
 	// 画面表示用にデータを変換
@@ -210,9 +210,8 @@ function lfLoadData(){
 		// 利用決済を表示用に変換
 		$arrDisp["payment"][$key] = $val["payment"];
 		
-		if($val["payment"] == 1){
-			$credit = $val["payment_code"];
-		}
+		// クレジットの決済区分を取得
+		if($val["payment"] == 1) $credit = $val["payment_code"];
 	}
 	$objFormParam->setParam($arrDisp);
 	
