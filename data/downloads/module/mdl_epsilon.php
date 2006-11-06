@@ -202,7 +202,8 @@ function lfLoadData(){
 	$arrRet = $objQuery->getall($sql, array(MDL_EPSILON_ID));
 	
 	// 画面表示用にデータを変換
-	$arrDisp = $arrRet[0];
+	//$arrDisp = $arrRet[0];
+	$arrDisp = array();
 	foreach($arrRet as $key => $val){
 		// 利用決済を表示用に変換
 		$arrDisp["payment"][$key] = $val["payment"];
