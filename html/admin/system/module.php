@@ -277,13 +277,12 @@ function lfUninstallModule() {
 	}
 	
 	// モジュール側に削除情報を送信する
-	$req = new HTTP_Request("http://test.ec-cube.net/ec-cube/admin/system/load_module.php?module_id=" . $_POST['module_id']);
-	$req->setMethod(HTTP_REQUEST_METHOD_POST);
-	$req->addPostData("mode", "mdl_del");
+	$req = new HTTP_Request("http://test.ec-cube.net/ec-cube/admin/system/load_module.php");
+	$req->setMethod(HTTP_REQUEST_METHOD_GET);
+	$req->addPostData("module_id", $arrRet[0]['module_id']);
+	$req->addPostData("mode", "module_del");
 	$req->clearPostData();
-	if (!PEAR::isError($req->sendRequest())) {
-	}
-	exit();
+	exit
 
 	/*
 	if($flg_ok) {
