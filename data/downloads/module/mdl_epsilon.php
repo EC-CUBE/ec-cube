@@ -139,7 +139,10 @@ case 'edit':
 	break;
 	
 case 'module_del':
-	$objQuery->query("DELETE FROM dtb_payment WHERE memo01 = ?", array(MDL_EPSILON_ID));
+	// 汎用項目の存在チェック
+	if(!sfColumnExists("dtb_payment", "memo01")){
+		$objQuery->query("DELETE FROM dtb_payment WHERE memo01 = ?", array(MDL_EPSILON_ID));
+	}
 	break;
 default:
 	break;
