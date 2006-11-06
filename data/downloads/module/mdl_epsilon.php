@@ -60,6 +60,9 @@ case 'edit':
 	
 	if(count($objPage->arrErr) == 0) {
 		
+		// 汎用項目を追加
+		sfAlterMemo();
+		
 		// 利用コンビニにチェックが入っている場合には、ハイフン区切りに編集する
 		$convCnt = count($_POST["convenience"]);
 		if($convCnt > 0){
@@ -69,8 +72,10 @@ case 'edit':
 			}
 		}
 		
-		sfprintr($convenience);
+		// DEL/INSで登録する。
+		$delsql = "DELETE FROM dtb_payment";
 		
+	
 		// javascript実行
 		//$objPage->tpl_onload = "window.close();";
 	}

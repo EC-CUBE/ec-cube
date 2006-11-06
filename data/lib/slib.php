@@ -82,6 +82,48 @@ function sfTabaleExists($table_name, $dsn = "") {
 	return false;
 }
 
+// カラムの存在チェック
+function sfColumnExists($table_name, $col_name, $dsn = "") {
+	if($dsn == "") {
+		if(defined('DEFAULT_DSN')) {
+			$dsn = DEFAULT_DSN;
+		} else {
+			return;
+		}
+	}
+	
+	$objQuery = new SC_Query($dsn, true, true);
+	// 正常に接続されている場合
+	if(!$objQuery->isError()) {
+		list($db_type) = split(":", $dsn);
+		// postgresqlとmysqlとで処理を分ける
+		if ($db_type == "pgsql") {
+			$sql = "SELECT
+					    a.attname
+					FROM
+					    pg_class c, pg_attribute a
+					WHERE
+					    c.relname=? AND
+					    a.attname=? AND
+					    c.oid=a.attrelid AND
+					    a.attnum > 0
+					ORDER BY
+					    a.attnum";
+			$arrRet = $objQuery->getAll($sql, array($table_name, $col_name));
+			if(count($arrRet) > 0) {
+				return true;
+			}
+		}else if ($db_type == "mysql") {
+			$sql = "SHOW TABLE STATUS LIKE ?";
+			$arrRet = $objQuery->getAll($sql, array($table_name));
+			if(count($arrRet) > 0) {
+				return true;
+			}
+		}
+	}
+	return false;
+}
+
 // インストール初期処理
 function sfInitInstall() {
 	// インストール済みが定義されていない。

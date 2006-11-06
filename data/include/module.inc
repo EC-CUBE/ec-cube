@@ -88,4 +88,20 @@ function sfPrintAffTag($conv_page, $option) {
 		print($aff_tag);		
 	}
 }
+
+// dtb_paymentに汎用項目が存在していなければ追加する
+function sfAlterMemo(){
+	$objQuery = new SC_Query();
+	
+	// 汎用項目の存在チェック
+	if(!sfColumnExists("dtb_payment", "memo01")){
+		
+		// 汎用項目を10個追加
+		for($i=1; $i<=10; $i++){
+			$objQuery->query("alter table dtb_payment add memo0".$i." text;");
+		}
+		
+	}
+}
+
 ?>
