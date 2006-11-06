@@ -269,7 +269,8 @@ function lfUninstallModule() {
 			} else {
 				$objPage->update_mess.=">> テーブル構成の変更を行いました。<br>";
 			}
-		}		
+		}
+		sfprintr($arrRet);
 	} else {
 		sfErrorHeader(">> 対象の機能は、配布を終了しております。");
 	}
