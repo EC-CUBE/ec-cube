@@ -144,6 +144,7 @@ case 'module_del':
 	if(!sfColumnExists("dtb_payment", "memo01")){
 		// データの削除
 		$objQuery->query("DELETE FROM dtb_payment WHERE memo01 = ?", array(MDL_EPSILON_ID));
+		test
 	}
 	break;
 default:
@@ -225,7 +226,6 @@ function lfLoadData(){
 	if(substr($credit, 0, 1)) $arrCredit["credit"][] = 1;
 	if(substr($credit, 1, 1)) $arrCredit["credit"][] = 2;
 	$objFormParam->setParam($arrCredit);
-	
 }
 
 ?>
