@@ -90,6 +90,7 @@ case 'edit':
 					"payment_method" => "クレジット(イプシロン)"
 					,"rule" => "0"
 					,"deliv_id" =>0
+					,"rank" => "select max(rank) from dtb_payment"
 					,"fix" => 3
 					,"creator_id" => $objSess->member_id
 					,"create_date" => "now()"
