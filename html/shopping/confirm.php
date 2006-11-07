@@ -76,15 +76,17 @@ case 'return':
 case 'confirm':
 
 	// この時点でオーダーIDを確保しておく（クレジット、コンビニ決済で必要なため）
-	// postgresqlとmysqlとで処理を分ける
-	if (DB_TYPE == "pgsql") {
-		$order_id = $objQuery->nextval("dtb_order","order_id");
-		$objQuery->query("INSERT INTO dtb_order (order_id, customer_id, create_date, del_flg) VALUES (?, ?, now(), 1)", array($order_id, $arrData["customer_id"]));
-	}elseif (DB_TYPE == "mysql") {
-		$objQuery->query("INSERT INTO dtb_order (customer_id, create_date, del_flg) VALUES (?, now(), 1)", array($arrData["customer_id"]));
-		$order_id = $objQuery->nextval("dtb_order","order_id");
+	if($arrData["order_id"] == ""){
+		// postgresqlとmysqlとで処理を分ける
+		if (DB_TYPE == "pgsql") {
+			$order_id = $objQuery->nextval("dtb_order","order_id");
+			$objQuery->query("INSERT INTO dtb_order (order_id, customer_id, create_date, del_flg) VALUES (?, ?, now(), 1)", array($order_id, $arrData["customer_id"]));
+		}elseif (DB_TYPE == "mysql") {
+			$objQuery->query("INSERT INTO dtb_order (customer_id, create_date, del_flg) VALUES (?, now(), 1)", array($arrData["customer_id"]));
+			$order_id = $objQuery->nextval("dtb_order","order_id");
+		}
+		$arrData["order_id"] = $order_id;
 	}
-	$arrData["order_id"] = $order_id;
 
 	// 集計結果を受注一時テーブルに反映
 	sfRegistTempOrder($uniqid, $arrData);
