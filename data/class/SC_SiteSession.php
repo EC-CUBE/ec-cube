@@ -11,7 +11,6 @@ class SC_SiteSession {
 	function SC_SiteSession() {
 		sfDomainSessionStart();
 		// 前ページでの登録成功判定を引き継ぐ
-		sfprintr($_SESSION['site']);
 		$_SESSION['site']['pre_regist_success'] = $_SESSION['site']['regist_success'];
 		$_SESSION['site']['regist_success'] = false;
 		$_SESSION['site']['pre_page'] = $_SESSION['site']['now_page'];
