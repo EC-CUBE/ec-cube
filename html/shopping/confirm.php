@@ -88,7 +88,8 @@ case 'confirm':
 	// 決済方法により画面切替
 	switch($arrPayment[0]["memo04"]) {
 	case PAYMENT_CREDIT_ID:
-		header("Location: " . URL_SHOP_CREDIT);
+		//header("Location: " . URL_SHOP_CREDIT);
+		header("Location: " . URL_SHOP_MODULE);		
 		break;
 	case PAYMENT_CONVENIENCE_ID:
 		header("Location: " . URL_SHOP_CONVENIENCE);

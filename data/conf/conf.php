@@ -344,6 +344,7 @@ define ("URL_SHOP_COMPLETE", URL_DIR . "shopping/complete.php");	// 購入完了画面
 define ("URL_SHOP_CREDIT", URL_DIR . "shopping/card.php");			// カード決済画面
 define ("URL_SHOP_LOAN", URL_DIR . "shopping/loan.php");			// ローン決済画面
 define ("URL_SHOP_CONVENIENCE", URL_DIR . "shopping/convenience.php");	// コンビニ決済画面
+define ("URL_SHOP_MODULE", URL_DIR . "shopping/load_payment_module.php");	// モジュール追加用画面
 define ("URL_PRODUCTS_TOP", URL_DIR . "products/top.php");				// 商品トップ
 define ("LIST_P_HTML", URL_DIR . "products/list-p");					// 商品一覧(HTML出力)
 define ("LIST_C_HTML", URL_DIR . "products/list.php?mode=search&category_id=");	// 商品一覧(HTML出力)
