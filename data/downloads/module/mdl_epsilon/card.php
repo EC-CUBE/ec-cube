@@ -28,6 +28,9 @@ $objCartSess = new SC_CartSession();
 $objSiteInfo = $objView->objSiteInfo;
 $arrInfo = $objSiteInfo->data;
 
+// 前のページで正しく登録手続きが行われた記録があるか判定
+sfIsPrePage($objSiteSess);
+
 // アクセスの正当性の判定
 $uniqid = sfCheckNormalAccess($objSiteSess, $objCartSess);
 
