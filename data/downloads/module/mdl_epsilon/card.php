@@ -50,7 +50,7 @@ $arrPayment =
 sfprintr($arrData);
 sfprintr($objPage);
 
-$order_url = "http://beta.epsilon.jp/cgi-bin/order/receive_order3.cgi";
+$order_url = "http://beta.epsilon.jp/cgi-bin/order/receive_order3.cgi11";
 
 // 送信データ生成
 $arrData = array(
