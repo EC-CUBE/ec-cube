@@ -33,11 +33,12 @@ $arrInfo = $objSiteInfo->data;
 if($_SESSION['site']['regist_success']){
 	if($_GET["trans_code"] != ""){
 		sfprintr($_GET);
+		sfprintr($_SESSION);
 		exit();
+	}else{
+		$_SESSION['site']['now_page'] = "";
+		sfDispSiteError(FREE_ERROR_MSG, "", true, "購入処理中にエラーが発生しました。<br>この手続きは無効となりました。");
 	}
-}else{
-	$_SESSION['site']['now_page'] ="";
-	sfDispSiteError(FREE_ERROR_MSG, "", true, "購入処理中にエラーが発生しました。<br>この手続きは無効となりました。");
 }
 
 
