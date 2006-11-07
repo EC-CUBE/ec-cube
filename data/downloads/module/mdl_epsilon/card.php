@@ -119,7 +119,7 @@ if($err_code != "") {
  * 戻り値	：取得結果
  **************************************************************************************************************/
 function lfGetXMLValue($arrVal, $tag, $att) {
-	$ret = "";
+	$ret = array();
 	foreach($arrVal as $array) {
 		if($tag == $array['tag']) {
 			if(!is_array($array['attributes'])) {
