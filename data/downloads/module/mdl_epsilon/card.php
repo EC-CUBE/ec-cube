@@ -101,18 +101,8 @@ xml_parser_free($parser);
 $err_code = lfGetXMLValue($arrVal,'RESULT','ERR_CODE');
 
 if($err_code != "") {
-	$arrErrDetail = lfGetXMLValue($arrVal,'RESULT','ERR_DETAIL');
-	
-	$err_msg = "・" . $arrErrDetail[0];
-	if(count($arrErrDetail) > 1){
-		for($i = 1; $i < count($arrErrDetail); $i++){
-			$err_msg .= "<br>・" . $arrErrDetail[$i];
-		}
-	}
-	
-	sfprintr($arrVal);
-	sfprintr($arrErrDetail);
-	sfDispSiteError(FREE_ERROR_MSG, "", true, "クレジットカード決済処理中に以下のエラーが発生しました。<br /><br /><br />" . $err_msg . "<br /><br /><br />この手続きは無効となりました。");
+	$err_detail = lfGetXMLValue($arrVal,'RESULT','ERR_DETAIL');
+	sfDispSiteError(FREE_ERROR_MSG, "", true, "クレジットカード決済処理中に以下のエラーが発生しました。<br /><br /><br />" . $err_detail . "<br /><br /><br />この手続きは無効となりました。");
 } else {
 	$url = lfGetXMLValue($arrVal,'RESULT','REDIRECT');
 	header("Location: " . $url);	
@@ -129,7 +119,7 @@ if($err_code != "") {
  * 戻り値	：取得結果
  **************************************************************************************************************/
 function lfGetXMLValue($arrVal, $tag, $att) {
-	$ret = array();
+	$ret = "";
 	foreach($arrVal as $array) {
 		if($tag == $array['tag']) {
 			if(!is_array($array['attributes'])) {
@@ -137,12 +127,14 @@ function lfGetXMLValue($arrVal, $tag, $att) {
 			}
 			foreach($array['attributes'] as $key => $val) {
 				if($key == $att) {
-					$arrRet[] = mb_convert_encoding(urldecode($val), 'EUC-JP', 'auto');
+					$ret = mb_convert_encoding(urldecode($val), 'EUC-JP', 'auto');
+					break;
 				}
 			}			
 		}
 	}
-	return $arrRet;
+	
+	return $ret;
 }
 
 ?>
