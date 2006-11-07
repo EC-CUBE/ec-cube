@@ -65,6 +65,9 @@ $arrData = array(
 	'memo2' => ''														// 予備02
 );
 
+
+sfPostPaymentData($order_url, $arrData);
+/*
 // 送信インスタンス生成
 $req = new HTTP_Request($order_url);
 $req->setMethod(HTTP_REQUEST_METHOD_POST);
@@ -83,6 +86,7 @@ if (!PEAR::isError($req->sendRequest())) {
 
 // POSTデータクリア
 $req->clearPostData();
+
 
 // XMLパーサを生成する。
 $parser = xml_parser_create();
@@ -109,6 +113,8 @@ if($err_code != "") {
 	$url = lfGetXMLValue($arrVal,'RESULT','REDIRECT');
 	header("Location: " . $url);	
 }
+
+*/
 
 //---------------------------------------------------------------------------------------------------------------------------------------------------------
 
@@ -143,26 +149,16 @@ function lfGetXMLValue($arrVal, $tag, $att) {
 
 
 function sfPostPaymentData($order_url, $arrData){
-	// 送信インスタンス生成
-	$req = new HTTP_Request($order_url);
-	$req->setMethod(HTTP_REQUEST_METHOD_POST);
 	
-	sfSendPostData();
+	// POSTデータを送信し、応答情報を取得する
+	$response = sfSendPostData($order_url, $arrData);
 	
-	// POSTデータ送信
-	$req->addPostDataArray($arrData);
-	
-	// エラーが無ければ、応答情報を取得する
-	if (!PEAR::isError($req->sendRequest())) {
-		$response = $req->getResponseBody();
-	} else {
+	// なにも返ってこなれば、エラー
+	if ($response == "") {
 		// エラー画面を表示する。
 		$_SESSION['site']['now_page'] ="";
 		sfDispSiteError(FREE_ERROR_MSG, "", true, "購入処理中にエラーが発生しました。<br>この手続きは無効となりました。");
 	}
-	
-	// POSTデータクリア
-	$req->clearPostData();
 	
 	// XMLパーサを生成する。
 	$parser = xml_parser_create();
