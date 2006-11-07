@@ -10,6 +10,10 @@ $objSiteSess = new SC_SiteSession();
 $objCartSess = new SC_CartSession();
 $objQuery = new SC_Query();
 
+
+// 前のページで正しく登録手続きが行われた記録があるか判定
+sfIsPrePage($objSiteSess);
+
 // アクセスの正当性の判定
 $uniqid = sfCheckNormalAccess($objSiteSess, $objCartSess);
 
