@@ -51,8 +51,6 @@ if($_SESSION['site']['pre_regist_success']){
 }
 
 
-
-
 // カート集計処理
 $objPage = sfTotalCart($objPage, $objCartSess, $arrInfo);
 
