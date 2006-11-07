@@ -78,7 +78,7 @@ function sfPostPaymentData($order_url, $arrData){
 	*/
 	$arrVal = array();
 	$idx = array();
-	sfGetXMLData($response,$arrVal,$idx);
+	sfGetXMLData($response);
 	
 	sfprintr($arrVal);
 	exit();
