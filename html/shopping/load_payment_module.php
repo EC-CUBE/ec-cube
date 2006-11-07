@@ -5,7 +5,6 @@
  * http://www.lockon.co.jp/
  */
 require_once("../require.php");
-sfprintr($_SESSION);
 
 $objSiteSess = new SC_SiteSession();
 $objCartSess = new SC_CartSession();

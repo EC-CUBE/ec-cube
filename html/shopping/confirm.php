@@ -42,6 +42,9 @@ $objCustomer = new SC_Customer();
 $arrInfo = $objSiteInfo->data;
 $objQuery = new SC_Query();
 
+	sfprintr($_SESSION);
+
+
 // 前のページで正しく登録手続きが行われた記録があるか判定
 sfIsPrePage($objSiteSess);
 
@@ -86,9 +89,7 @@ case 'confirm':
 		}
 		$arrData["order_id"] = $order_id;
 	}
-	sfprintr($_SESSION);
-
-
+	
 	// 集計結果を受注一時テーブルに反映
 	sfRegistTempOrder($uniqid, $arrData);
 	// 正常に登録されたことを記録しておく

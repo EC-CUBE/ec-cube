@@ -29,6 +29,10 @@ $objCartSess = new SC_CartSession();
 $objSiteInfo = $objView->objSiteInfo;
 $arrInfo = $objSiteInfo->data;
 
+	sfprintr($_SESSION);
+	exit();
+
+
 // trans_codeに値があり且つ、正常終了のときはオーダー確認を行う。
 if($_SESSION['site']['pre_regist_success']){
 	if($_GET["trans_code"] != ""){
