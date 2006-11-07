@@ -110,7 +110,8 @@ if($err_code != "") {
 		}
 	}
 	
-	sfprintr($err_detail);
+	sfprintr($arrVal);
+	sfprintr($arrErrDetail);
 	sfDispSiteError(FREE_ERROR_MSG, "", true, "クレジットカード決済処理中に以下のエラーが発生しました。<br /><br /><br />" . $err_msg . "<br /><br /><br />この手続きは無効となりました。");
 } else {
 	$url = lfGetXMLValue($arrVal,'RESULT','REDIRECT');
