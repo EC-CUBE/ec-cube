@@ -29,10 +29,6 @@ $objCartSess = new SC_CartSession();
 $objSiteInfo = $objView->objSiteInfo;
 $arrInfo = $objSiteInfo->data;
 
-	sfprintr($_SESSION);
-	exit();
-
-
 // trans_codeに値があり且つ、正常終了のときはオーダー確認を行う。
 if($_SESSION['site']['pre_regist_success']){
 	if($_GET["trans_code"] != ""){
@@ -45,8 +41,6 @@ if($_SESSION['site']['pre_regist_success']){
 		sfprintr($_GET);
 		sfprintr($_SESSION);
 		
-		
-		
 		exit();
 	}else{
 		$_SESSION['site']['now_page'] = "";
@@ -57,8 +51,10 @@ if($_SESSION['site']['pre_regist_success']){
 
 // カート集計処理
 $objPage = sfTotalCart($objPage, $objCartSess, $arrInfo);
+
 // 一時受注テーブルの読込
 $arrData = sfGetOrderTemp($uniqid);
+
 // カート集計を元に最終計算
 $arrData = sfTotalConfirm($arrData, $objPage, $objCartSess, $arrInfo);
 
@@ -88,6 +84,8 @@ $arrData = array(
 	'memo1' => ECCUBE_PAYMENT,											// 予備01
 	'memo2' => ''														// 予備02
 );
+	sfprintr($_SESSION);
+	exit();
 
 // データ送信
 sfPostPaymentData($order_url, $arrData);

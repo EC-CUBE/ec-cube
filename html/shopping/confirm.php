@@ -42,9 +42,6 @@ $objCustomer = new SC_Customer();
 $arrInfo = $objSiteInfo->data;
 $objQuery = new SC_Query();
 
-	sfprintr($_SESSION);
-
-
 // 前のページで正しく登録手続きが行われた記録があるか判定
 sfIsPrePage($objSiteSess);
 
