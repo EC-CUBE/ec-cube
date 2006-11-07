@@ -8,6 +8,41 @@
 require_once("../require.php");
 require_once(DATA_PATH . "module/Request.php");
 
+class LC_Page {
+	function LC_Page() {
+		/** 必ず指定する **/
+		$this->tpl_mainpage = 'mdl_epsilon/card.tpl';			// メインテンプレート
+		/*
+		 session_start時のno-cacheヘッダーを抑制することで
+		 「戻る」ボタン使用時の有効期限切れ表示を抑制する。
+		 private-no-expire:クライアントのキャッシュを許可する。
+		*/
+		session_cache_limiter('private-no-expire');		
+	}
+}
+
+$objPage = new LC_Page();
+$objView = new SC_SiteView();
+$objSiteSess = new SC_SiteSession();
+$objCartSess = new SC_CartSession();
+$objSiteInfo = $objView->objSiteInfo;
+$arrInfo = $objSiteInfo->data;
+
+// アクセスの正当性の判定
+$uniqid = sfCheckNormalAccess($objSiteSess, $objCartSess);
+
+// カート集計処理
+$objPage = sfTotalCart($objPage, $objCartSess, $arrInfo);
+// 一時受注テーブルの読込
+$arrData = sfGetOrderTemp($uniqid);
+// カート集計を元に最終計算
+$arrData = sfTotalConfirm($arrData, $objPage, $objCartSess, $arrInfo);
+
+sfprintr($arrData);
+
+
+/*
+
 $order_url = "http://beta.epsilon.jp/cgi-bin/order/receive_order3.cgi";
 
 $arrData = array(
@@ -76,5 +111,5 @@ function lfGetXMLValue($arrVal, $tag, $att) {
 	return $enc;
 }
 
-
+*/
 ?>
