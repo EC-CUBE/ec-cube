@@ -13,8 +13,6 @@ function sfGetXMLData($response){
 	// 配列にXMLのデータを格納する
 	xml_parse_into_struct($parser,$response,$arrVal,$idx);
 	
-	sfprintr($arrVal);exit();
-	
 	// 開放する
 	xml_parser_free($parser);
 }
