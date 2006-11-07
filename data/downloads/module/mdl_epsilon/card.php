@@ -136,13 +136,12 @@ function lfGetXMLValue($arrVal, $tag, $att) {
 			}
 			foreach($array['attributes'] as $key => $val) {
 				if($key == $att) {
-					$ret[] = mb_convert_encoding(urldecode($val), 'EUC-JP', 'auto');
-					break;
+					$arrRet[] = mb_convert_encoding(urldecode($val), 'EUC-JP', 'auto');
 				}
 			}			
 		}
 	}
-	return $ret;
+	return $arrRet;
 }
 
 ?>
