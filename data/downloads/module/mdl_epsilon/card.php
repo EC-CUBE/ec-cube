@@ -104,12 +104,13 @@ if($err_code != "") {
 	$err_detail = lfGetXMLValue($arrVal,'RESULT','ERR_DETAIL');
 	
 	$err_msg = "・" . $err_detail[0];
-	
 	if(count($err_detail) > 1){
 		for($i = 1; $i < count($err_detail); $i++){
 			$err_msg .= "<br>・" . $err_detail[$i];
 		}
 	}
+	
+	sfprintr($err_detail);
 	sfDispSiteError(FREE_ERROR_MSG, "", true, "クレジットカード決済処理中に以下のエラーが発生しました。<br /><br /><br />・" . $err_msg . "<br /><br /><br />この手続きは無効となりました。");
 } else {
 	$url = lfGetXMLValue($arrVal,'RESULT','REDIRECT');
