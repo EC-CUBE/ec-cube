@@ -83,7 +83,7 @@ function sfTabaleExists($table_name, $dsn = "") {
 }
 
 // カラムの存在チェック
-function sfColumnExists($table_name, $col_name, $dsn = "") {
+function sfColumnExists($table_name, $col_name, $col_type = "", $dsn = "", $add = false) {
 	if($dsn == "") {
 		if(defined('DEFAULT_DSN')) {
 			$dsn = DEFAULT_DSN;
@@ -121,6 +121,12 @@ function sfColumnExists($table_name, $col_name, $dsn = "") {
 			}
 		}
 	}
+	
+	// カラムを追加する
+	if($add){
+		$objQuery->query("ALTER TABLE $table_name ADD $col_name $col_type ");
+	}
+	
 	return false;
 }
 
