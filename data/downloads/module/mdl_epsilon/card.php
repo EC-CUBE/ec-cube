@@ -39,7 +39,8 @@ if($_SESSION['site']['regist_success']){
 		exit();
 	}
 }else{
-	
+	$_SESSION['site']['now_page'] ="";
+	sfDispSiteError(FREE_ERROR_MSG, "", true, "購入処理中にエラーが発生しました。<br>この手続きは無効となりました。");
 }
 
 

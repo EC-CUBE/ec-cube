@@ -34,6 +34,7 @@ function sfGetXMLValue($arrVal, $tag, $att) {
  * 引数2	：$arrData		･･･ POSTデータ
  **************************************************************************************************************/
 function sfPostPaymentData($order_url, $arrData){
+	global $objSiteSess;
 	
 	// POSTデータを送信し、応答情報を取得する
 	$response = sfSendPostData($order_url, $arrData);
@@ -65,8 +66,9 @@ function sfPostPaymentData($order_url, $arrData){
 		$_SESSION['site']['now_page'] ="";
 		sfDispSiteError(FREE_ERROR_MSG, "", true, "購入処理中に以下のエラーが発生しました。<br /><br /><br />・" . $err_detail . "<br /><br /><br />この手続きは無効となりました。");
 	} else {
-		// 正しく処理が終わったことを記録しておく
-		$_SESSION['site']['regist_success'] = true;
+		// 正常な推移であることを記録しておく
+		$objSiteSess->setRegistFlag();
+		
 		$url = sfGetXMLValue($arrVal,'RESULT','REDIRECT');
 		header("Location: " . $url);	
 	}
