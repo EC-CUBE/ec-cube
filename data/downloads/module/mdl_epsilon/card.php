@@ -32,11 +32,9 @@ if($_GET["result"] == "1"){
 	
 	// 正常な推移であることを記録しておく
 	$objSiteSess->setRegistFlag();
-	
-	sfprintr($_SESSION);
-	
+
 	// 完了画面へ
-	//header("Location: " . URL_SHOP_COMPLETE);
+	header("Location: " . URL_SHOP_COMPLETE);
 	
 }elseif($_GET["result"] == "0"){
 //	$_SESSION['site']['now_page'] = "";
