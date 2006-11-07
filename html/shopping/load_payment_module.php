@@ -7,7 +7,7 @@
 require_once("../require.php");
 require_once(DATA_PATH . "module/Request.php");
 
-$objPage = new LC_Page();
+//$objPage = new LC_Page();
 $objView = new SC_SiteView();
 $objSiteSess = new SC_SiteSession();
 $objCartSess = new SC_CartSession();
