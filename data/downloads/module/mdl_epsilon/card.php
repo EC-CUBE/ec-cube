@@ -31,6 +31,7 @@ $arrInfo = $objSiteInfo->data;
 // アクセスの正当性の判定
 $uniqid = sfCheckNormalAccess($objSiteSess, $objCartSess);
 
+// イプシロンページから戻ってきた場合にエラーを回避するため、now_page に確認画面をセットする
 $_SESSION['site']['now_page'] = URL_DIR . "shopping/confirm.php";
 
 // カート集計処理
@@ -48,7 +49,8 @@ $arrPayment =
 
 sfprintr($arrData);
 sfprintr($objPage);
-
+?>
+/*
 $order_url = "http://beta.epsilon.jp/cgi-bin/order/receive_order3.cgi";
 
 $arrData = array(
