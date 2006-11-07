@@ -28,25 +28,22 @@ $objSiteInfo = $objView->objSiteInfo;
 $arrInfo = $objSiteInfo->data;
 
 // trans_codeに値があり且つ、正常終了のときはオーダー確認を行う。
-if($_SESSION['site']['pre_regist_success']){
-	if($_GET["result"] == "1"){
-		
-		sfprintr($_GET);
-		sfprintr($_SESSION);
-		
-		// 正常な推移であることを記録しておく
-		$objSiteSess->setRegistFlag();
-		
-		// 完了画面へ
-		header("Location: " . URL_SHOP_COMPLETE);
-		
-	}elseif($_GET["result"] == "0"){
-		$_SESSION['site']['now_page'] = "";
-		$objSiteSess->unsetUniqId();
-		sfDispSiteError(FREE_ERROR_MSG, "", true, "購入処理中にエラーが発生しました。<br>この手続きは無効となりました。");
-	}
+if($_GET["result"] == "1"){
+	
+	sfprintr($_GET);
+	sfprintr($_SESSION);
+	
+	// 正常な推移であることを記録しておく
+	$objSiteSess->setRegistFlag();
+	
+	// 完了画面へ
+	header("Location: " . URL_SHOP_COMPLETE);
+	
+}elseif($_GET["result"] == "0"){
+	$_SESSION['site']['now_page'] = "";
+	$objSiteSess->unsetUniqId();
+	sfDispSiteError(FREE_ERROR_MSG, "", true, "購入処理中にエラーが発生しました。<br>この手続きは無効となりました。");
 }
-
 
 // カート集計処理
 $objPage = sfTotalCart($objPage, $objCartSess, $arrInfo);
