@@ -33,7 +33,7 @@ function sfGetXMLValue($arrVal, $tag, $att) {
  * 引数2	：$arrData		･･･ POSTデータ
  **************************************************************************************************************/
 function sfPostPaymentData($order_url, $arrData){
-	global $objSiteSess;
+	$objSiteSess = new SC_SiteSess;
 	
 	// POSTデータを送信し、応答情報を取得する
 	$response = sfSendPostData($order_url, $arrData);
@@ -68,7 +68,6 @@ function sfPostPaymentData($order_url, $arrData){
 	} else {
 		// 正常な推移であることを記録しておく
 		$objSiteSess->setRegistFlag();
-		
 		$url = sfGetXMLValue($arrVal,'RESULT','REDIRECT');
 		header("Location: " . $url);	
 	}
