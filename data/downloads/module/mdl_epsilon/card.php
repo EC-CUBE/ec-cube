@@ -37,7 +37,7 @@ if($_GET["result"] == "1"){
 	header("Location: " . URL_SHOP_COMPLETE);
 	
 }elseif($_GET["result"] == "0"){
-	$_SESSION['site']['now_page'] = "";
+//	$_SESSION['site']['now_page'] = "";
 	$objSiteSess->unsetUniqId();
 	sfDispSiteError(FREE_ERROR_MSG, "", true, "購入処理中にエラーが発生しました。<br>この手続きは無効となりました。");
 }
