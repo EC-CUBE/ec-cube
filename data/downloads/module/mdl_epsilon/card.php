@@ -49,7 +49,6 @@ $arrPayment =
 
 sfprintr($arrData);
 sfprintr($objPage);
-?>
 /*
 $order_url = "http://beta.epsilon.jp/cgi-bin/order/receive_order3.cgi";
 
@@ -118,5 +117,5 @@ function lfGetXMLValue($arrVal, $tag, $att) {
 	$enc = mb_convert_encoding($dec, 'EUC-JP', 'auto');
 	return $enc;
 }
-
+*/
 ?>
