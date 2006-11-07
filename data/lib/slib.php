@@ -2623,6 +2623,31 @@ function sfGetFileVersion($path) {
 	return $version;
 }
 
+// 指定したURLに対してPOSTでデータを送信する
+function sfSendPostData($url, $arrData){
+	require_once(DATA_PATH . "module/Request.php");
+	
+	// 送信インスタンス生成
+	$req = new HTTP_Request($url);
+	$req->setMethod(HTTP_REQUEST_METHOD_POST);
+	
+	// POSTデータ送信
+	$req->addPostDataArray($arrData);
+	
+	// エラーが無ければ、応答情報を取得する
+	if (!PEAR::isError($req->sendRequest())) {
+		$response = $req->getResponseBody();
+	} else {
+		$response = "";
+	}
+	
+	// POSTデータクリア
+	$req->clearPostData();	
+	
+	return $response;
+}
+
+
 /* デバッグ用 ------------------------------------------------------------------------------------------------*/
 function sfPrintR($obj) {
 	print("<div style='font-size: 12px;color: #00FF00;'>\n");
