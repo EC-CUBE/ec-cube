@@ -34,6 +34,7 @@ $uniqid = sfCheckNormalAccess($objSiteSess, $objCartSess);
 $_SESSION['site']['now_page'] = $_SESSION['site']['pre_page'];
 
 sfprintr($_SESSION["site"]);
+exit();
 
 // カート集計処理
 $objPage = sfTotalCart($objPage, $objCartSess, $arrInfo);
