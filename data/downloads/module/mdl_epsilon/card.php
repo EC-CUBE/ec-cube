@@ -29,6 +29,12 @@ $objCartSess = new SC_CartSession();
 $objSiteInfo = $objView->objSiteInfo;
 $arrInfo = $objSiteInfo->data;
 
+
+if($_GET["trans_code"] != ""){
+	sfprintr($_GET);
+	exit();
+}
+
 // イプシロンページから戻ってきた場合にエラーを回避するため、now_page に確認画面をセットする
 $_SESSION['site']['now_page'] = URL_DIR . "shopping/confirm.php";
 
