@@ -81,12 +81,12 @@ case 'confirm':
 	
 	// 決済区分を取得する
 	if(sfColumnExists("dtb_payment", "memo01")){
-		$sql = "SELECT memo04 FROM dtb_payment WHERE payment_id = ?";
+		$sql = "SELECT memo03 FROM dtb_payment WHERE payment_id = ?";
 		$arrPayment = $objQuery->getall($sql, array($arrData['payment_id']));
 	}
 	
 	// 決済方法により画面切替
-	switch($arrPayment[0]["memo04"]) {
+	switch($arrPayment[0]["memo03"]) {
 	case PAYMENT_CREDIT_ID:
 	case PAYMENT_CONVENIENCE_ID:
 		//header("Location: " . URL_SHOP_CREDIT);
