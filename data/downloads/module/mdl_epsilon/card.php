@@ -30,17 +30,11 @@ $arrInfo = $objSiteInfo->data;
 // trans_codeに値があり且つ、正常終了のときはオーダー確認を行う。
 if($_GET["result"] == "1"){
 	
-	sfprintr($_GET);
-	sfprintr($_SESSION);
-	
 	// 正常な推移であることを記録しておく
 	$objSiteSess->setRegistFlag();
 	
-	sfprintr($_SESSION["site"]);
-	exit();
-	
 	// 完了画面へ
-	//header("Location: " . URL_SHOP_COMPLETE);
+	header("Location: " . URL_SHOP_COMPLETE);
 	
 }elseif($_GET["result"] == "0"){
 	$_SESSION['site']['now_page'] = "";

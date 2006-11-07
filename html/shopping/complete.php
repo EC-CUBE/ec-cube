@@ -30,6 +30,9 @@ class LC_Page {
 	}
 }
 
+sfprintr($_SESSION["site"]);
+
+
 $conn = new SC_DBConn();
 $objPage = new LC_Page();
 $objView = new SC_SiteView();
