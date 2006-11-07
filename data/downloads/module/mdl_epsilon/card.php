@@ -104,7 +104,7 @@ if($err_code != "") {
 	$arrErrDetail = lfGetXMLValue($arrVal,'RESULT','ERR_DETAIL');
 	
 	$err_msg = "¡¦" . $arrErrDetail[0];
-	if(count($err_detail) > 1){
+	if(count($arrErrDetail) > 1){
 		for($i = 1; $i < count($arrErrDetail); $i++){
 			$err_msg .= "<br>¡¦" . $arrErrDetail[$i];
 		}
