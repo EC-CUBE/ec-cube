@@ -31,7 +31,7 @@ $arrInfo = $objSiteInfo->data;
 // アクセスの正当性の判定
 $uniqid = sfCheckNormalAccess($objSiteSess, $objCartSess);
 
-$_SESSION['site']['now_page'] = $_SESSION['site']['pre_page'];
+$_SESSION['site']['now_page'] = SITE_URL . "shopping/confirm.php";
 
 sfprintr($_SESSION["site"]);
 exit();
