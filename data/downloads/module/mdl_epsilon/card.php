@@ -63,9 +63,9 @@ $arrData = array(
 	'item_name' => $arrMainProduct["name"],								// ¾¦ÉÊÌ¾(ÂåÉ½)
 	'item_price' => $arrData["payment_total"],							// ¾¦ÉÊ²Á³Ê(ÀÇ¹þ¤ßÁí³Û)
 	'st_code' => $arrPayment[0]["memo04"],								// ·èºÑ¶èÊ¬
-	'mission_code' => '1',												// ²Ý¶â¶èÊ¬(¸ÇÄê)
+	'mission_code' => 'ss1',												// ²Ý¶â¶èÊ¬(¸ÇÄê)
 	'process_code' => '1',												// ½èÍý¶èÊ¬(¸ÇÄê)
-	'xml' => '1a',														// ±þÅú·Á¼°(¸ÇÄê)
+	'xml' => '1',														// ±þÅú·Á¼°(¸ÇÄê)
 	'memo1' => ECCUBE_PAYMENT,											// Í½È÷01
 	'memo2' => ''														// Í½È÷02
 );
