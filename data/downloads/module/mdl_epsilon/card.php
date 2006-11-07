@@ -28,14 +28,6 @@ $objCartSess = new SC_CartSession();
 $objSiteInfo = $objView->objSiteInfo;
 $arrInfo = $objSiteInfo->data;
 
-// 前のページで正しく登録手続きが行われた記録があるか判定
-sfprintr($_SESSION["site"]);
-exit();
-sfIsPrePage($objSiteSess);
-
-// アクセスの正当性の判定
-$uniqid = sfCheckNormalAccess($objSiteSess, $objCartSess);
-
 // イプシロンページから戻ってきた場合にエラーを回避するため、now_page に確認画面をセットする
 $_SESSION['site']['now_page'] = URL_DIR . "shopping/confirm.php";
 

@@ -10,7 +10,6 @@ $objSiteSess = new SC_SiteSession();
 $objCartSess = new SC_CartSession();
 $objQuery = new SC_Query();
 
-
 // 前のページで正しく登録手続きが行われた記録があるか判定
 sfIsPrePage($objSiteSess);
 
@@ -18,6 +17,10 @@ sfIsPrePage($objSiteSess);
 $uniqid = sfCheckNormalAccess($objSiteSess, $objCartSess);
 
 $payment_id = $_SESSION["payment_id"];
+
+if($payment == ""){
+	sfDispSiteError(PAGE_ERROR, "", true);
+}
 
 // 決済情報を取得する
 if(sfColumnExists("dtb_payment", "memo01")){
