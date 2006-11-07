@@ -84,7 +84,7 @@ if (!PEAR::isError($req->sendRequest())) {
 }
 $req->clearPostData();
 
-/*
+
 $parser = xml_parser_create();
 xml_parser_set_option($parser,XML_OPTION_SKIP_WHITE,1);
 xml_parse_into_struct($parser,$response,$arrVal,$idx);
@@ -97,12 +97,13 @@ if($err_code != "") {
 	print($err_detail);
 } else {
 	$url = lfGetXMLValue($arrVal,'RESULT','REDIRECT');
-	header("Location: " . $url);	
+	//header("Location: " . $url);	
 }
 
 
 function lfGetXMLValue($arrVal, $tag, $att) {
 	$ret = "";
+	sfprintr($arrVal);
 	foreach($arrVal as $array) {
 		if($tag == $array['tag']) {
 			if(!is_array($array['attributes'])) {
@@ -120,5 +121,5 @@ function lfGetXMLValue($arrVal, $tag, $att) {
 	$enc = mb_convert_encoding($dec, 'EUC-JP', 'auto');
 	return $enc;
 }
-*/
+
 ?>
