@@ -28,12 +28,10 @@ function sfGetXMLValue($arrVal, $tag, $att) {
 }
 
 /**************************************************************************************************************
- * 関数名	：lfGetXMLValue
- * 処理内容	：XMLタグの内容を取得する
- * 引数1	：$arrVal	･･･ Valueデータ
- * 引数2	：$tag		･･･ Tagデータ
- * 引数3	：$att		･･･ 対象タグ名
- * 戻り値	：取得結果
+ * 関数名	：sfPostPaymentData
+ * 処理内容	：イプシロンへデータを送信する。
+ * 引数1	：$order_url	･･･ 送信先URL
+ * 引数2	：$arrData		･･･ POSTデータ
  **************************************************************************************************************/
 function sfPostPaymentData($order_url, $arrData){
 	
@@ -67,7 +65,7 @@ function sfPostPaymentData($order_url, $arrData){
 		$_SESSION['site']['now_page'] ="";
 		sfDispSiteError(FREE_ERROR_MSG, "", true, "購入処理中に以下のエラーが発生しました。<br /><br /><br />・" . $err_detail . "<br /><br /><br />この手続きは無効となりました。");
 	} else {
-		// 正しくクレジット処理が終わったことを記録しておく
+		// 正しく処理が終わったことを記録しておく
 		
 		$url = sfGetXMLValue($arrVal,'RESULT','REDIRECT');
 		header("Location: " . $url);	
