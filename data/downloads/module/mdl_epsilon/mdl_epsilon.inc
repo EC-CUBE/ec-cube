@@ -11,7 +11,7 @@ function sfGetXMLData($response){
 	xml_parser_set_option($parser,XML_OPTION_SKIP_WHITE,1);
 	
 	// 配列にXMLのデータを格納する
-	xml_parse_into_struct($parser,$response,$GLOBALS["arrVal"],$GLOBALS["idx"]);
+	xml_parse_into_struct($parser,$response,$arrVal,$idx);
 	
 	// 開放する
 	xml_parser_free($parser);
