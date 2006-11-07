@@ -203,7 +203,7 @@ function lfLoadData(){
 				memo03 as payment,
 				memo04 as payment_code, 
 				memo05 as convenience
-			FROM dtb_payment WHERE memo01 = ?";
+			FROM dtb_payment WHERE module_id = ?";
 	$arrRet = $objQuery->getall($sql, array(MDL_EPSILON_ID));
 	
 	$objFormParam->setParam($arrRet[0]);
