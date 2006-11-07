@@ -77,6 +77,7 @@ if (!PEAR::isError($req->sendRequest())) {
 	$response = $req->getResponseBody();
 } else {
 	// エラー画面を表示する。
+	$_SESSION['site']['now_page'] ="";
 	sfDispSiteError(FREE_ERROR_MSG, "", true, "クレジットカード決済処理中にエラーが発生しました。<br>この手続きは無効となりました。");
 }
 
@@ -100,6 +101,7 @@ $err_code = lfGetXMLValue($arrVal,'RESULT','ERR_CODE');
 
 if($err_code != "") {
 	$err_detail = lfGetXMLValue($arrVal,'RESULT','ERR_DETAIL');
+	$_SESSION['site']['now_page'] ="";
 	sfDispSiteError(FREE_ERROR_MSG, "", true, "クレジットカード決済処理中に以下のエラーが発生しました。<br /><br /><br />・" . $err_detail . "<br /><br /><br />この手続きは無効となりました。");
 } else {
 	$url = lfGetXMLValue($arrVal,'RESULT','REDIRECT');

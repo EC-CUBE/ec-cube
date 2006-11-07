@@ -35,7 +35,7 @@ if(count($arrPayment) > 0) {
 		require_once($path);
 		exit;
 	} else {
-		print("モジュールの取得に失敗しました。:".$path);
+		sfDispSiteError(FREE_ERROR_MSG, "", true, "モジュールファイルの取得に失敗しました。<br />この手続きは無効となりました。");
 	}
 }
 
