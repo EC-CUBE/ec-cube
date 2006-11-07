@@ -43,24 +43,24 @@ $arrPayment =
 
 sfprintr($arrData);
 sfprintr($objPage);
-
+/*
 $order_url = "http://beta.epsilon.jp/cgi-bin/order/receive_order3.cgi";
 
 $arrData = array(
 	'contract_code' => '13094800',				// 契約コード
+	'user_id' => 'ktest',						// ユーザID
+	'user_name' => 'naka',						// ユーザ名
+	'user_mail_add' => $arrData["order_email"],	// メールアドレス
 	'order_number' => $arrData["order_id"],		// オーダー番号
+	'item_code' => 'abc12345',					// 商品コード(代表)
+	'item_name' => 'プリンタ',					// 商品名(代表)
+	'item_price' => '34800',					// 商品価格
 	'st_code' => '10000-0000-00000',			// 決済区分
-	'memo1' => ECCUBE_PAYMENT,
-	'user_mail_add' => $arrData["order_email"],
-	'item_name' => 'プリンタ',
-	'user_name' => 'naka',
-	'process_code' => '1',
-	'mission_code' => '1',
-	'item_price' => '34800',
-	'xml' => '1',		
-	'item_code' => 'abc12345',
-	'memo2' => '',
-	'user_id' => 'ktest'
+	'mission_code' => '1',						// 課金区分
+	'process_code' => '1',						// 処理区分
+	'xml' => '1',								// 応答形式
+	'memo1' => ECCUBE_PAYMENT,					// 予備1
+	'memo2' => ''								// 予備02
 );
 
 $req = new HTTP_Request($order_url);
@@ -111,5 +111,5 @@ function lfGetXMLValue($arrVal, $tag, $att) {
 	$enc = mb_convert_encoding($dec, 'EUC-JP', 'auto');
 	return $enc;
 }
-
+*/
 ?>
