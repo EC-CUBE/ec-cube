@@ -73,12 +73,4 @@ function sfPostPaymentData($order_url, $arrData){
 	}
 }
 
-
-function sfGetEpsilonOrder($order_url, $arrData){
-	global $objSiteSess;
-	
-	// POSTデータを送信し、応答情報を取得する
-	$response = sfSendPostData($order_url, $arrData);
-}
-
 ?>

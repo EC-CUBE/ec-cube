@@ -2624,12 +2624,15 @@ function sfGetFileVersion($path) {
 }
 
 // 指定したURLに対してPOSTでデータを送信する
-function sfSendPostData($url, $arrData){
+function sfSendPostData($url, $arrData, $basic_id = "", $basic_pass = ""){
 	require_once(DATA_PATH . "module/Request.php");
 	
 	// 送信インスタンス生成
 	$req = new HTTP_Request($url);
 	$req->setMethod(HTTP_REQUEST_METHOD_POST);
+	
+	// basic認証
+	$req->setBasicAuth($basic_id, $basic_pass);
 	
 	// POSTデータ送信
 	$req->addPostDataArray($arrData);
