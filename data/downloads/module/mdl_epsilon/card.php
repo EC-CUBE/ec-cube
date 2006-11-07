@@ -49,30 +49,32 @@ $arrPayment =
 
 sfprintr($arrData);
 sfprintr($objPage);
-/*
+
 $order_url = "http://beta.epsilon.jp/cgi-bin/order/receive_order3.cgi";
 
+// 送信データ生成
 $arrData = array(
-	'contract_code' => '13094800',											// 契約コード
-	'user_id' => $arrData["customer_id"],									// ユーザID
-	'user_name' => $arrData["order_name01"].$arrData["order_name02"],		// ユーザ名
-	'user_mail_add' => $arrData["order_email"],								// メールアドレス
-	'order_number' => $arrData["order_id"],									// オーダー番号
-	'item_code' => $arrMainProduct["product_code"],							// 商品コード(代表)
-	'item_name' => $arrMainProduct["name"],									// 商品名(代表)
-	'item_price' => $objPage->tpl_total_pretax + $objPage->tpl_total_tax,	// 商品価格(税込み総額)
-	'st_code' => '10000-0000-00000',			// 決済区分
-	'mission_code' => '1',						// 課金区分
-	'process_code' => '1',						// 処理区分
-	'xml' => '1',								// 応答形式
-	'memo1' => ECCUBE_PAYMENT,					// 予備01
-	'memo2' => ''								// 予備02
+	'contract_code' => '13094800',										// 契約コード
+	'user_id' => $arrData["customer_id"],								// ユーザID
+	'user_name' => $arrData["order_name01"].$arrData["order_name02"],	// ユーザ名
+	'user_mail_add' => $arrData["order_email"],							// メールアドレス
+	'order_number' => $arrData["order_id"],								// オーダー番号
+	'item_code' => $arrMainProduct["product_code"],						// 商品コード(代表)
+	'item_name' => $arrMainProduct["name"],								// 商品名(代表)
+	'item_price' => $arrData["payment_total"],							// 商品価格(税込み総額)
+	'st_code' => '10000-0000-00000',									// 決済区分
+	'mission_code' => '1',												// 課金区分(固定)
+	'process_code' => '1',												// 処理区分(固定)
+	'xml' => '1',														// 応答形式(固定)
+	'memo1' => ECCUBE_PAYMENT,											// 予備01
+	'memo2' => ''														// 予備02
 );
 
+// 送信インスタンス生成
 $req = new HTTP_Request($order_url);
 $req->setMethod(HTTP_REQUEST_METHOD_POST);
-		
-$arrSendData = array();
+
+// 送信
 $req->addPostDataArray($arrData);
 
 if (!PEAR::isError($req->sendRequest())) {
@@ -82,6 +84,7 @@ if (!PEAR::isError($req->sendRequest())) {
 }
 $req->clearPostData();
 
+/*
 $parser = xml_parser_create();
 xml_parser_set_option($parser,XML_OPTION_SKIP_WHITE,1);
 xml_parse_into_struct($parser,$response,$arrVal,$idx);
