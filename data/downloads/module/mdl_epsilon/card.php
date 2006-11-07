@@ -7,6 +7,7 @@
 
 require_once("../require.php");
 require_once(DATA_PATH . "module/Request.php");
+require_once(MODULE_PATH . "mdl_epsilon/mdl_epsilon.inc");
 
 class LC_Page {
 	function LC_Page() {
@@ -65,56 +66,8 @@ $arrData = array(
 	'memo2' => ''														// 予備02
 );
 
-
+// データ送信
 sfPostPaymentData($order_url, $arrData);
-/*
-// 送信インスタンス生成
-$req = new HTTP_Request($order_url);
-$req->setMethod(HTTP_REQUEST_METHOD_POST);
-
-// POSTデータ送信
-$req->addPostDataArray($arrData);
-
-// エラーが無ければ、応答情報を取得する
-if (!PEAR::isError($req->sendRequest())) {
-	$response = $req->getResponseBody();
-} else {
-	// エラー画面を表示する。
-	$_SESSION['site']['now_page'] ="";
-	sfDispSiteError(FREE_ERROR_MSG, "", true, "購入処理中にエラーが発生しました。<br>この手続きは無効となりました。");
-}
-
-// POSTデータクリア
-$req->clearPostData();
-
-
-// XMLパーサを生成する。
-$parser = xml_parser_create();
-
-// 空白文字は読み飛ばしてXMLを読み取る
-xml_parser_set_option($parser,XML_OPTION_SKIP_WHITE,1);
-
-// 配列にXMLのデータを格納する
-xml_parse_into_struct($parser,$response,$arrVal,$idx);
-
-// 開放する
-xml_parser_free($parser);
-
-// エラーがあるかチェックする
-$err_code = lfGetXMLValue($arrVal,'RESULT','ERR_CODE');
-
-if($err_code != "") {
-	$err_detail = lfGetXMLValue($arrVal,'RESULT','ERR_DETAIL');
-	$_SESSION['site']['now_page'] ="";
-	sfDispSiteError(FREE_ERROR_MSG, "", true, "購入処理中に以下のエラーが発生しました。<br /><br /><br />・" . $err_detail . "<br /><br /><br />この手続きは無効となりました。");
-} else {
-	// 正しくクレジット処理が終わったことを記録しておく
-	
-	$url = lfGetXMLValue($arrVal,'RESULT','REDIRECT');
-	header("Location: " . $url);	
-}
-
-*/
 
 //---------------------------------------------------------------------------------------------------------------------------------------------------------
 
