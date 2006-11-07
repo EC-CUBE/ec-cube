@@ -86,6 +86,8 @@ case 'confirm':
 		}
 		$arrData["order_id"] = $order_id;
 	}
+	sfprintr($_SESSION);
+
 
 	// 集計結果を受注一時テーブルに反映
 	sfRegistTempOrder($uniqid, $arrData);

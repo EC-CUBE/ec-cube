@@ -5,6 +5,7 @@
  * http://www.lockon.co.jp/
  */
 require_once("../require.php");
+sfprintr($_SESSION);
 
 $objSiteSess = new SC_SiteSession();
 $objCartSess = new SC_CartSession();
@@ -17,8 +18,6 @@ sfIsPrePage($objSiteSess);
 $uniqid = sfCheckNormalAccess($objSiteSess, $objCartSess);
 
 $payment_id = $_SESSION["payment_id"];
-
-sfprintr($_SESSION);
 
 // 支払いIDが無い場合にはエラー
 if($payment_id == ""){
