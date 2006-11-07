@@ -41,6 +41,9 @@ $arrData = sfGetOrderTemp($uniqid);
 // カート集計を元に最終計算
 $arrData = sfTotalConfirm($arrData, $objPage, $objCartSess, $arrInfo);
 
+	sfprintr("error");
+	exit();
+
 // 代表商品情報
 $arrMainProduct = $objPage->arrProductsClass[0];
 

@@ -12,6 +12,7 @@ $objQuery = new SC_Query();
 
 // アクセスの正当性の判定
 //$uniqid = sfCheckNormalAccess($objSiteSess, $objCartSess);
+exit();
 
 $payment_id = $_SESSION["payment_id"];
 
