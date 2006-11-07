@@ -75,7 +75,11 @@ function sfPostPaymentData($order_url, $arrData){
 	// 開放する
 	xml_parser_free($parser);
 	*/
+	$arrVal = array();
+	$idx = array();
 	sfGetXMLData($response,$arrVal,$idx);
+	
+	sfprintr($arrVal);
 	
 	// エラーがあるかチェックする
 	$err_code = sfGetXMLValue($arrVal,'RESULT','ERR_CODE');

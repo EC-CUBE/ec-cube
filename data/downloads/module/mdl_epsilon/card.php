@@ -84,8 +84,6 @@ $arrData = array(
 	'memo1' => ECCUBE_PAYMENT,											// Í½È÷01
 	'memo2' => ''														// Í½È÷02
 );
-	sfprintr($_SESSION);
-	exit();
 
 // ¥Ç¡¼¥¿Á÷¿®
 sfPostPaymentData($order_url, $arrData);
