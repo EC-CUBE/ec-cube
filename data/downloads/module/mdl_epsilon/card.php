@@ -6,131 +6,75 @@
  */
 
 require_once("../require.php");
+require_once(DATA_PATH . "module/Request.php");
 
-class LC_Page {
-	function LC_Page() {
-		/** 必ず指定する **/
-		$this->tpl_mainpage = MODULE_PATH . 'shopping/card.tpl';	// メインテンプレート
-		/*
-		 session_start時のno-cacheヘッダーを抑制することで
-		 「戻る」ボタン使用時の有効期限切れ表示を抑制する。
-		 private-no-expire:クライアントのキャッシュを許可する。
-		*/
-		session_cache_limiter('private-no-expire');		
-	}
+$order_url = "http://beta.epsilon.jp/cgi-bin/order/receive_order3.cgi";
+
+$arrData = array(
+	'order_number' => '93963928111111111',
+	'st_code' => '10000-0000-00000',
+	'memo1' => '試験用オーダー情報',
+	'user_mail_add' => 'naka@lockon.co.jp',
+	'item_name' => 'プリンタ',
+	'contract_code' => '13094800',
+	'user_name' => 'naka',
+	'process_code' => '1',
+	'mission_code' => '1',
+	'item_price' => '34800',
+	'xml' => '1',		
+	'item_code' => 'abc12345',
+	'memo2' => '',
+	'user_id' => 'ktest'
+);
+
+$req = new HTTP_Request($order_url);
+$req->setMethod(HTTP_REQUEST_METHOD_POST);
+		
+$arrSendData = array();
+$req->addPostDataArray($arrData);
+
+if (!PEAR::isError($req->sendRequest())) {
+	$response = $req->getResponseBody();
+} else {
+	$response = "";
+}
+$req->clearPostData();
+
+$parser = xml_parser_create();
+xml_parser_set_option($parser,XML_OPTION_SKIP_WHITE,1);
+xml_parse_into_struct($parser,$response,$arrVal,$idx);
+xml_parser_free($parser);
+
+$err_code = lfGetXMLValue($arrVal,'RESULT','ERR_CODE');
+
+if($err_code != "") {
+	$err_detail = lfGetXMLValue($arrVal,'RESULT','ERR_DETAIL');
+	print($err_detail);
+} else {
+	$url = lfGetXMLValue($arrVal,'RESULT','REDIRECT');
+	header("Location: " . $url);	
 }
 
-$objPage = new LC_Page();
-$objView = new SC_SiteView();
-$objSiteSess = new SC_SiteSession();
-$objCartSess = new SC_CartSession();
-$objSiteInfo = $objView->objSiteInfo;
-$arrInfo = $objSiteInfo->data;
 
-// パラメータ管理クラス
-$objFormParam = new SC_FormParam();
-// パラメータ情報の初期化
-lfInitParam();
-// POST値の取得
-$objFormParam->setParam($_POST);
-
-// アクセスの正当性の判定
-$uniqid = sfCheckNormalAccess($objSiteSess, $objCartSess);
-
-switch($_POST['mode']) {
-// 登録
-case 'regist':
-	// 入力値の変換
-	$objFormParam->convParam();
-	$objPage->arrErr = lfCheckError($arrRet);
-	// 入力エラーなしの場合
-	if(count($objPage->arrErr) == 0) {
-		// カート集計処理
-		$objPage = sfTotalCart($objPage, $objCartSess, $arrInfo);
-		// 一時受注テーブルの読込
-		$arrData = sfGetOrderTemp($uniqid);
-		// カート集計を元に最終計算
-		$arrData = sfTotalConfirm($arrData, $objPage, $objCartSess, $arrInfo);
-
-		// カードの認証を行う
-		$arrVal = $objFormParam->getHashArray();
-		$card_no = $arrVal['card_no01'].$arrVal['card_no02'].$arrVal['card_no03'].$arrVal['card_no04'];
-		$card_exp = $arrVal['card_month']. "/" . $arrVal['card_year']; // MM/DD
-		$result = sfGetAuthonlyResult(CGI_DIR, CGI_FILE, $arrVal['name01'], $arrVal['name02'], $card_no, $card_exp, $arrData['payment_total'], $uniqid, $arrVal['jpo_info']);
-
-		// 応答内容の記録
-		$sqlval['credit_result'] = $result['action-code'];
-		$sqlval['credit_msg'] = $result['aux-msg'].$result['MErrMsg'];
-		$objQuery = new SC_Query();
-		$objQuery->update("dtb_order_temp", $sqlval, "order_temp_id = ?", array($uniqid));
-				
-		// 与信処理成功の場合
-		if($result['action-code'] == '000') {
-			// 正常に登録されたことを記録しておく
-			$objSiteSess->setRegistFlag();
-			// 処理完了ページへ
-			header("Location: " . URL_SHOP_COMPLETE);
-		} else {
-			switch($result['action-code']) {
-			case '115':
-				$objPage->tpl_error = "※ カードの有効期限が切れています。";
-				break;
-			case '212':
-				$objPage->tpl_error = "※ カード番号に誤りがあります。";
-				break;
-			case '100':
-				$objPage->tpl_error = "※ カード会社でお取引が承認されませんでした。";
-				break;
-			default:
-				$objPage->tpl_error = "※ クレジットカードの照合に失敗しました。";
-				break;
+function lfGetXMLValue($arrVal, $tag, $att) {
+	$ret = "";
+	foreach($arrVal as $array) {
+		if($tag == $array['tag']) {
+			if(!is_array($array['attributes'])) {
+				continue;
 			}
+			foreach($array['attributes'] as $key => $val) {
+				if($key == $att) {
+					$ret = $val;
+					break;
+				}
+			}			
 		}
 	}
-	break;
-// 前のページに戻る
-case 'return':
-	// 正常に登録されたことを記録しておく
-	$objSiteSess->setRegistFlag();
-	// 確認ページへ移動
-	header("Location: " . URL_SHOP_CONFIRM);
-	exit;
-	break;
+	$dec = urldecode($ret);
+	$enc = mb_convert_encoding($dec, 'EUC-JP', 'auto');
+	return $enc;
 }
 
-$objDate = new SC_Date();
-$objDate->setStartYear(RELEASE_YEAR);
-$objDate->setEndYear(RELEASE_YEAR + CREDIT_ADD_YEAR);
-$objPage->arrYear = $objDate->getZeroYear();
-$objPage->arrMonth = $objDate->getZeroMonth();
-
-$objPage->arrForm = $objFormParam->getFormParamList();
-$objView->assignobj($objPage);
-$objView->display(SITE_FRAME);
-//-----------------------------------------------------------------------------------------------------------------------------------
-/* パラメータ情報の初期化 */
-function lfInitParam() {
-	global $objFormParam;
-	$objFormParam->addParam("カード番号1", "card_no01", CREDIT_NO_LEN, "n", array("EXIST_CHECK", "MAX_LENGTH_CHECK", "NUM_CHECK"));
-	$objFormParam->addParam("カード番号2", "card_no02", CREDIT_NO_LEN, "n", array("EXIST_CHECK", "MAX_LENGTH_CHECK", "NUM_CHECK"));
-	$objFormParam->addParam("カード番号3", "card_no03", CREDIT_NO_LEN, "n", array("EXIST_CHECK", "MAX_LENGTH_CHECK", "NUM_CHECK"));
-	$objFormParam->addParam("カード番号4", "card_no04", CREDIT_NO_LEN, "n", array("EXIST_CHECK", "MAX_LENGTH_CHECK", "NUM_CHECK"));
-	$objFormParam->addParam("カード期限年", "card_year", 2, "n", array("EXIST_CHECK", "NUM_COUNT_CHECK", "NUM_CHECK"));
-	$objFormParam->addParam("カード期限月", "card_month", 2, "n", array("EXIST_CHECK", "NUM_COUNT_CHECK", "NUM_CHECK"));
-	$objFormParam->addParam("姓", "card_name01", STEXT_LEN, "KVa", array("EXIST_CHECK", "MAX_LENGTH_CHECK", "ALPHA_CHECK"));
-	$objFormParam->addParam("名", "card_name02", STEXT_LEN, "KVa", array("EXIST_CHECK", "MAX_LENGTH_CHECK", "ALPHA_CHECK"));
-	$objFormParam->addParam("お支払い方法", "jpo_info", STEXT_LEN, "KVa", array("EXIST_CHECK", "MAX_LENGTH_CHECK", "ALNUM_CHECK"));
-}
-
-/* 入力内容のチェック */
-function lfCheckError() {
-	global $objFormParam;
-	// 入力データを渡す。
-	$arrRet =  $objFormParam->getHashArray();
-	$objErr = new SC_CheckError($arrRet);
-	$objErr->arrErr = $objFormParam->checkError();
-	
-	return $objErr->arrErr;
-}
 
 ?>
