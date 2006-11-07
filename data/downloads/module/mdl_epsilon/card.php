@@ -47,9 +47,6 @@ $arrMainProduct = $objPage->arrProductsClass[0];
 // 支払い情報を取得
 $arrPayment = 
 
-sfprintr($arrData);
-sfprintr($objPage);
-
 $order_url = "http://beta.epsilon.jp/cgi-bin/order/receive_order3.cgi";
 
 // 送信データ生成
