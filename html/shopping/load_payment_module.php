@@ -25,6 +25,6 @@ if(is_numeric($module_id)) {
 	}
 }
 
-sfprintr($_SESSION);
+sfprintr($_POST);
 
 ?>
