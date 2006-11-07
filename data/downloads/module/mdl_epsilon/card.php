@@ -126,7 +126,7 @@ if($err_code != "") {
  * 引数3	：$att		･･･ 対象タグ名
  * 戻り値	：取得結果
  **************************************************************************************************************/
-function lfGetXMLValue($arrVal, $tag, $att) {
+function sfGetXMLValue($arrVal, $tag, $att) {
 	$ret = "";
 	foreach($arrVal as $array) {
 		if($tag == $array['tag']) {
@@ -173,16 +173,16 @@ function sfPostPaymentData($order_url, $arrData){
 	xml_parser_free($parser);
 	
 	// エラーがあるかチェックする
-	$err_code = lfGetXMLValue($arrVal,'RESULT','ERR_CODE');
+	$err_code = sfGetXMLValue($arrVal,'RESULT','ERR_CODE');
 	
 	if($err_code != "") {
-		$err_detail = lfGetXMLValue($arrVal,'RESULT','ERR_DETAIL');
+		$err_detail = sfGetXMLValue($arrVal,'RESULT','ERR_DETAIL');
 		$_SESSION['site']['now_page'] ="";
 		sfDispSiteError(FREE_ERROR_MSG, "", true, "購入処理中に以下のエラーが発生しました。<br /><br /><br />・" . $err_detail . "<br /><br /><br />この手続きは無効となりました。");
 	} else {
 		// 正しくクレジット処理が終わったことを記録しておく
 		
-		$url = lfGetXMLValue($arrVal,'RESULT','REDIRECT');
+		$url = sfGetXMLValue($arrVal,'RESULT','REDIRECT');
 		header("Location: " . $url);	
 	}
 }
