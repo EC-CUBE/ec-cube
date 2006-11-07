@@ -18,6 +18,7 @@ $uniqid = sfCheckNormalAccess($objSiteSess, $objCartSess);
 
 $payment_id = $_SESSION["payment_id"];
 
+// 支払いIDが無い場合にはエラー
 if($payment_id == ""){
 	sfDispSiteError(PAGE_ERROR, "", true);
 }
