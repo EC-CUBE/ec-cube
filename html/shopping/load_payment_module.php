@@ -18,7 +18,7 @@ $uniqid = sfCheckNormalAccess($objSiteSess, $objCartSess);
 
 $payment_id = $_SESSION["payment_id"];
 
-if($payment == ""){
+if($payment_id == ""){
 	sfDispSiteError(PAGE_ERROR, "", true);
 }
 
