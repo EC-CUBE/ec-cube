@@ -672,7 +672,8 @@ CREATE TABLE dtb_order_temp (
     conveni_data text,
     cell01 text,
     cell02 text,
-    cell03 text
+    cell03 text,
+	order_id int4
 ) TYPE=InnoDB ;
 
 CREATE TABLE dtb_other_deliv (
