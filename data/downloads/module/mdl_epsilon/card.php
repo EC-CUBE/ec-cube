@@ -38,20 +38,21 @@ $arrData = sfGetOrderTemp($uniqid);
 // カート集計を元に最終計算
 $arrData = sfTotalConfirm($arrData, $objPage, $objCartSess, $arrInfo);
 
+// 支払い情報を取得
+$arrPayment = 
+
 sfprintr($arrData);
 sfprintr($objPage);
-
-/*
 
 $order_url = "http://beta.epsilon.jp/cgi-bin/order/receive_order3.cgi";
 
 $arrData = array(
-	'order_number' => '93963928111111111',
-	'st_code' => '10000-0000-00000',
-	'memo1' => '試験用オーダー情報',
-	'user_mail_add' => 'naka@lockon.co.jp',
+	'contract_code' => '13094800',				// 契約コード
+	'order_number' => $arrData["order_id"],		// オーダー番号
+	'st_code' => '10000-0000-00000',			// 決済区分
+	'memo1' => ECCUBE_PAYMENT,
+	'user_mail_add' => $arrData["order_email"],
 	'item_name' => 'プリンタ',
-	'contract_code' => '13094800',
 	'user_name' => 'naka',
 	'process_code' => '1',
 	'mission_code' => '1',
@@ -111,5 +112,4 @@ function lfGetXMLValue($arrVal, $tag, $att) {
 	return $enc;
 }
 
-*/
 ?>

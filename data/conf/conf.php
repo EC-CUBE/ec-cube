@@ -70,6 +70,9 @@ define("CHAR_CODE", "EUC-JP");
 // EC-CUBEバージョン情報
 define("ECCUBE_VERSION", "1.0.1beta");
 
+// 決済モジュール付与文言
+define("ECCUBE_PAYMENT", "EC-CUBE");
+
 // PEAR::DBのデバッグモード
 define('PEAR_DB_DEBUG', 9);
 
