@@ -82,10 +82,8 @@ if (!PEAR::isError($req->sendRequest())) {
 	$response = $req->getResponseBody();
 } else {
 	// エラー画面を表示する。
-	sfDispSiteError(FREE_ERROR_MSG, "", false, "クレジットカード決済処理中にエラーが発生しました。<br>この手続きは無効となりました。");
+	sfDispSiteError(FREE_ERROR_MSG, "", true, "クレジットカード決済処理中にエラーが発生しました。<br>この手続きは無効となりました。");
 }
-
-sfDispSiteError(FREE_ERROR_MSG, "", true, "クレジットカード決済処理中にエラーが発生しました。<br>この手続きは無効となりました。");
 
 // POSTデータクリア
 $req->clearPostData();
@@ -107,6 +105,7 @@ $err_code = lfGetXMLValue($arrVal,'RESULT','ERR_CODE');
 
 if($err_code != "") {
 	$err_detail = lfGetXMLValue($arrVal,'RESULT','ERR_DETAIL');
+	sfDispSiteError(FREE_ERROR_MSG, "", true, $err_detail);
 	print($err_detail);
 } else {
 	$url = lfGetXMLValue($arrVal,'RESULT','REDIRECT');
