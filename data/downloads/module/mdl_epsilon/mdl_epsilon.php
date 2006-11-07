@@ -103,7 +103,7 @@ case 'edit':
 					,"update_date" => "now()"
 					,"upper_rule" => 500000
 					,"module_id" => MDL_EPSILON_ID
-					,"module_path" => MODULE_PATH . "epsilon/card.php"
+					,"module_path" => MODULE_PATH . "mdl_epsilon/card.php"
 					,"memo01" => $_POST["code"]
 					,"memo02" => $_POST["url"]
 					,"memo03" => $val
@@ -124,7 +124,7 @@ case 'edit':
 					,"update_date" => "now()"
 					,"upper_rule" => 500000
 					,"module_id" => MDL_EPSILON_ID
-					,"module_path" => MODULE_PATH . "epsilon/convenience.php"
+					,"module_path" => MODULE_PATH . "mdl_epsilon/convenience.php"
 					,"memo01" => $_POST["code"]
 					,"memo02" => $_POST["url"]
 					,"memo03" => $val
