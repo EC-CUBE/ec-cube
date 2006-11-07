@@ -39,6 +39,7 @@ $arrData = sfGetOrderTemp($uniqid);
 $arrData = sfTotalConfirm($arrData, $objPage, $objCartSess, $arrInfo);
 
 sfprintr($arrData);
+sfprintr($objPage);
 
 /*
 
