@@ -74,7 +74,6 @@ case 'return':
 	exit;
 	break;
 case 'confirm':
-
 	// この時点でオーダーIDを確保しておく（クレジット、コンビニ決済で必要なため）
 	if($arrData["order_id"] == ""){
 		// postgresqlとmysqlとで処理を分ける
