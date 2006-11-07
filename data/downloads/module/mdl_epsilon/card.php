@@ -29,14 +29,19 @@ $objCartSess = new SC_CartSession();
 $objSiteInfo = $objView->objSiteInfo;
 $arrInfo = $objSiteInfo->data;
 
+// イプシロンページから戻ってきた場合にエラーを回避するため、now_page に確認画面をセットする
+//$_SESSION['site']['now_page'] = URL_DIR . "shopping/confirm.php";
 
-if($_GET["trans_code"] != ""){
-	sfprintr($_GET);
-	exit();
+// trans_codeに値があり且つ、正常終了のときはオーダー確認を行う。
+if($_SESSION['site']['regist_success']){
+	if($_GET["trans_code"] != ""){
+		sfprintr($_GET);
+		exit();
+	}
+}else{
+	
 }
 
-// イプシロンページから戻ってきた場合にエラーを回避するため、now_page に確認画面をセットする
-$_SESSION['site']['now_page'] = URL_DIR . "shopping/confirm.php";
 
 // カート集計処理
 $objPage = sfTotalCart($objPage, $objCartSess, $arrInfo);
