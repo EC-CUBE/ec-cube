@@ -1,6 +1,8 @@
 <?php
 
-function sfGetXMLData($response,$arrVal,$idx){
+function sfGetXMLData($response){
+	global $arrVal;
+	global $idx;
 	
 	// XMLパーサを生成する。
 	$parser = xml_parser_create();
@@ -13,7 +15,6 @@ function sfGetXMLData($response,$arrVal,$idx){
 	
 	// 開放する
 	xml_parser_free($parser);
-
 }
 
 
