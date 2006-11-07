@@ -40,7 +40,6 @@ $arrData = sfTotalConfirm($arrData, $objPage, $objCartSess, $arrInfo);
 
 sfprintr($arrData);
 
-
 /*
 
 $order_url = "http://beta.epsilon.jp/cgi-bin/order/receive_order3.cgi";
