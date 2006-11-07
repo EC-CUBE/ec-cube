@@ -62,7 +62,7 @@ $arrData = array(
 	'item_code' => $arrMainProduct["product_code"],						// 商品コード(代表)
 	'item_name' => $arrMainProduct["name"],								// 商品名(代表)
 	'item_price' => $arrData["payment_total"],							// 商品価格(税込み総額)
-	'st_code' => '11000-0000-00000',									// 決済区分
+	'st_code' => '10000-0000-00000',									// 決済区分
 	'mission_code' => '1',												// 課金区分(固定)
 	'process_code' => '1',												// 処理区分(固定)
 	'xml' => '1',														// 応答形式(固定)
@@ -105,8 +105,7 @@ $err_code = lfGetXMLValue($arrVal,'RESULT','ERR_CODE');
 
 if($err_code != "") {
 	$err_detail = lfGetXMLValue($arrVal,'RESULT','ERR_DETAIL');
-	sfDispSiteError(FREE_ERROR_MSG, "", true, $err_detail);
-	print($err_detail);
+	sfDispSiteError(FREE_ERROR_MSG, "", true, "クレジットカード決済処理中に以下のエラーが発生しました。<br>" . $err_detail . "<br>この手続きは無効となりました。");
 } else {
 	$url = lfGetXMLValue($arrVal,'RESULT','REDIRECT');
 	header("Location: " . $url);	
