@@ -82,7 +82,7 @@ if (!PEAR::isError($req->sendRequest())) {
 	$response = $req->getResponseBody();
 } else {
 	// エラー画面を表示する。
-	sfDispSiteError(FREE_ERROR_MSG, "", true, "クレジットカード決済処理中にエラーが発生しました。<br>この手続きは無効となりました。");
+	sfDispSiteError(FREE_ERROR_MSG, "", false, "クレジットカード決済処理中にエラーが発生しました。<br>この手続きは無効となりました。");
 }
 // POSTデータクリア
 $req->clearPostData();
