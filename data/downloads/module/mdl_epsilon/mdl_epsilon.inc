@@ -62,7 +62,7 @@ function sfPostPaymentData($order_url, $arrData){
 	
 	if($err_code != "") {
 		$err_detail = sfGetXMLValue($arrVal,'RESULT','ERR_DETAIL');
-		$_SESSION['site']['now_page'] ="";
+		//$_SESSION['site']['now_page'] ="";
 		sfprintr($_SESSION["site"]);
 		sfDispSiteError(FREE_ERROR_MSG, "", true, "購入処理中に以下のエラーが発生しました。<br /><br /><br />・" . $err_detail . "<br /><br /><br />この手続きは無効となりました。");
 	} else {
