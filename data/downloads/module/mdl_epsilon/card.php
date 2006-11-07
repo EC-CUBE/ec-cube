@@ -74,22 +74,32 @@ $arrData = array(
 $req = new HTTP_Request($order_url);
 $req->setMethod(HTTP_REQUEST_METHOD_POST);
 
-// 送信
+// POSTデータ送信
 $req->addPostDataArray($arrData);
 
+// エラーが無ければ、応答情報を取得する
 if (!PEAR::isError($req->sendRequest())) {
 	$response = $req->getResponseBody();
 } else {
-	$response = "";
+	// エラー画面を表示する。
+	sfDispSiteError(FREE_ERROR_MSG, "", true, "クレジットカード決済処理中にエラーが発生しました。<br>この手続きは無効となりました。");
 }
+// POSTデータクリア
 $req->clearPostData();
 
-
+// XMLパーサを生成する。
 $parser = xml_parser_create();
+
+// 空白文字は読み飛ばしてXMLを読み取る
 xml_parser_set_option($parser,XML_OPTION_SKIP_WHITE,1);
+
+// 配列にXMLのデータを格納する
 xml_parse_into_struct($parser,$response,$arrVal,$idx);
+
+// 開放する
 xml_parser_free($parser);
 
+// エラーがあるかチェックする
 $err_code = lfGetXMLValue($arrVal,'RESULT','ERR_CODE');
 
 if($err_code != "") {
@@ -97,13 +107,12 @@ if($err_code != "") {
 	print($err_detail);
 } else {
 	$url = lfGetXMLValue($arrVal,'RESULT','REDIRECT');
-	//header("Location: " . $url);	
+	header("Location: " . $url);	
 }
 
 
 function lfGetXMLValue($arrVal, $tag, $att) {
 	$ret = "";
-	sfprintr($arrVal);
 	foreach($arrVal as $array) {
 		if($tag == $array['tag']) {
 			if(!is_array($array['attributes'])) {

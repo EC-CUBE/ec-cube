@@ -230,7 +230,7 @@ function sfDispError($type) {
 }
 
 /* サイトエラーページの表示 */
-function sfDispSiteError($type, $objSiteSess = "", $return_top = false) {
+function sfDispSiteError($type, $objSiteSess = "", $return_top = false, $err_msg = "") {
 	
 	if ($objSiteSess != "") {
 		$objSiteSess->setNowPage('error');
@@ -310,6 +310,9 @@ function sfDispSiteError($type, $objSiteSess = "", $return_top = false) {
 			break;
 		case WRITE_FILE_ERROR:
 			$objPage->tpl_error="設定ファイルに書き込めません。\n設定ファイルに書き込み権限を与えてください。";
+			break;
+		case FREE_ERROR_MSG:
+			$objPage->tpl_error=$err_msg;
 			break;
  		default:
 	    	$objPage->tpl_error="エラーが発生しました。";

@@ -331,6 +331,7 @@ define ("CREATE_DB_ERROR", 18);		//DB作成エラー
 define ("DB_IMPORT_ERROR", 19);		//DBインポートエラー
 define ("FILE_NOT_FOUND", 20);		//設定ファイル存在エラー
 define ("WRITE_FILE_ERROR", 21);	//書き込みエラー
+define ("FREE_ERROR_MSG", 999);		//フリーメッセージ
 
 /* 表示関連 */
 define ("SEPA_CATNAVI", " > ");	// カテゴリ区切り文字
