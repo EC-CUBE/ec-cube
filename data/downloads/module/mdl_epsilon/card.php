@@ -45,13 +45,16 @@ $arrData = sfTotalConfirm($arrData, $objPage, $objCartSess, $arrInfo);
 $arrMainProduct = $objPage->arrProductsClass[0];
 
 // 支払い情報を取得
-$arrPayment = 
+$arrPayment = $objQuery->getall("SELECT memo01, memo02, memo03, memo04, memo05, memo06, memo07, memo08, memo09, memo10 FROM dtb_payment WHERE payment_id = ? ", array($arrData["payment_id"]));
 
+sfprintr($arrPayment);
+
+// データ送信先CGI
 $order_url = "http://beta.epsilon.jp/cgi-bin/order/receive_order3.cgi";
 
 // 送信データ生成
 $arrData = array(
-	'contract_code' => '130948001',										// 契約コード
+	'contract_code' => '13094800',										// 契約コード
 	'user_id' => $arrData["customer_id"],								// ユーザID
 	'user_name' => $arrData["order_name01"].$arrData["order_name02"],	// ユーザ名
 	'user_mail_add' => $arrData["order_email"],							// メールアドレス
