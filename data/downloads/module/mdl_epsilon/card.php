@@ -30,7 +30,7 @@ $objSiteInfo = $objView->objSiteInfo;
 $arrInfo = $objSiteInfo->data;
 
 // trans_codeに値があり且つ、正常終了のときはオーダー確認を行う。
-if($_SESSION['site']['regist_success']){
+//if($_SESSION['site']['regist_success']){
 	if($_GET["trans_code"] != ""){
 		sfprintr($_GET);
 		sfprintr($_SESSION);
@@ -39,8 +39,7 @@ if($_SESSION['site']['regist_success']){
 		$_SESSION['site']['now_page'] = "";
 		sfDispSiteError(FREE_ERROR_MSG, "", true, "購入処理中にエラーが発生しました。<br>この手続きは無効となりました。");
 	}
-}
-
+//}
 
 // カート集計処理
 $objPage = sfTotalCart($objPage, $objCartSess, $arrInfo);
