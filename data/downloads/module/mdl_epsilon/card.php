@@ -40,7 +40,7 @@ if($_SESSION['site']['pre_regist_success']){
 		// 完了画面へ
 		header("Location: " . URL_SHOP_COMPLETE);
 		
-	}elseif($_GET["result"] == "2"){
+	}elseif($_GET["result"] == "0"){
 		$_SESSION['site']['now_page'] = "";
 		$objSiteSess->unsetUniqId();
 		sfDispSiteError(FREE_ERROR_MSG, "", true, "購入処理中にエラーが発生しました。<br>この手続きは無効となりました。");
