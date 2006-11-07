@@ -535,6 +535,7 @@ function lfExeInsertSQL($objQuery, $csv){
 		// エラーがあれば終了
 		if ($err->message != ""){
 			return false;
+			$objQuery->getlastquery();
 		}
 		
 		if ($pagelayout_flg) {
@@ -545,7 +546,7 @@ function lfExeInsertSQL($objQuery, $csv){
 		}
 
 		// タイムアウトを防ぐ
-		sfFlush($objQuery->getlastquery());
+		sfFlush();
 	}
 	fclose($fp);
 	
