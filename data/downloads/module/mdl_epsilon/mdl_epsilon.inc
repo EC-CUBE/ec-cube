@@ -80,6 +80,7 @@ function sfPostPaymentData($order_url, $arrData){
 	sfGetXMLData($response,$arrVal,$idx);
 	
 	sfprintr($arrVal);
+	exit();
 	
 	// エラーがあるかチェックする
 	$err_code = sfGetXMLValue($arrVal,'RESULT','ERR_CODE');
