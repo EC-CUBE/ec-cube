@@ -31,6 +31,8 @@ $arrInfo = $objSiteInfo->data;
 // アクセスの正当性の判定
 $uniqid = sfCheckNormalAccess($objSiteSess, $objCartSess);
 
+$_SESSION['site']['pre_page'] = $_SERVER['PHP_SELF'];
+
 // カート集計処理
 $objPage = sfTotalCart($objPage, $objCartSess, $arrInfo);
 // 一時受注テーブルの読込
