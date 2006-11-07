@@ -33,7 +33,7 @@ function sfGetXMLValue($arrVal, $tag, $att) {
  * 引数2	：$arrData		･･･ POSTデータ
  **************************************************************************************************************/
 function sfPostPaymentData($order_url, $arrData){
-	$objSiteSess = new SC_SiteSess;
+	$objSiteSess = new SC_SiteSess();
 	
 	// POSTデータを送信し、応答情報を取得する
 	$response = sfSendPostData($order_url, $arrData);
