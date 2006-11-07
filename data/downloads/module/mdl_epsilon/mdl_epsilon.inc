@@ -66,7 +66,7 @@ function sfPostPaymentData($order_url, $arrData){
 		sfDispSiteError(FREE_ERROR_MSG, "", true, "購入処理中に以下のエラーが発生しました。<br /><br /><br />・" . $err_detail . "<br /><br /><br />この手続きは無効となりました。");
 	} else {
 		// 正しく処理が終わったことを記録しておく
-		
+		$_SESSION['site']['pre_regist_success'] = true;
 		$url = sfGetXMLValue($arrVal,'RESULT','REDIRECT');
 		header("Location: " . $url);	
 	}
