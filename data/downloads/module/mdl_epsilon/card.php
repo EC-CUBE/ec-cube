@@ -29,6 +29,7 @@ $objSiteInfo = $objView->objSiteInfo;
 $arrInfo = $objSiteInfo->data;
 
 // 前のページで正しく登録手続きが行われた記録があるか判定
+sfprintr($_SESSION["site"]);
 sfIsPrePage($objSiteSess);
 
 // アクセスの正当性の判定
@@ -66,7 +67,7 @@ $arrData = array(
 	'item_name' => $arrMainProduct["name"],								// 商品名(代表)
 	'item_price' => $arrData["payment_total"],							// 商品価格(税込み総額)
 	'st_code' => $arrPayment[0]["memo04"],								// 決済区分
-	'mission_code' => '1',												// 課金区分(固定)
+	'mission_code' => 'aa1',												// 課金区分(固定)
 	'process_code' => '1',												// 処理区分(固定)
 	'xml' => '1',														// 応答形式(固定)
 	'memo1' => ECCUBE_PAYMENT,											// 予備01
