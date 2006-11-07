@@ -38,28 +38,31 @@ $arrData = sfGetOrderTemp($uniqid);
 // カート集計を元に最終計算
 $arrData = sfTotalConfirm($arrData, $objPage, $objCartSess, $arrInfo);
 
+// 代表商品情報
+$arrMainProduct = $objPage->arrProductsClass[0];
+
 // 支払い情報を取得
 $arrPayment = 
 
 sfprintr($arrData);
 sfprintr($objPage);
-/*
+
 $order_url = "http://beta.epsilon.jp/cgi-bin/order/receive_order3.cgi";
 
 $arrData = array(
-	'contract_code' => '13094800',				// 契約コード
-	'user_id' => 'ktest',						// ユーザID
-	'user_name' => 'naka',						// ユーザ名
-	'user_mail_add' => $arrData["order_email"],	// メールアドレス
-	'order_number' => $arrData["order_id"],		// オーダー番号
-	'item_code' => 'abc12345',					// 商品コード(代表)
-	'item_name' => 'プリンタ',					// 商品名(代表)
-	'item_price' => '34800',					// 商品価格
+	'contract_code' => '13094800',											// 契約コード
+	'user_id' => $arrData["customer_id"],									// ユーザID
+	'user_name' => $arrData["order_name01"].$arrData["order_name02"],		// ユーザ名
+	'user_mail_add' => $arrData["order_email"],								// メールアドレス
+	'order_number' => $arrData["order_id"],									// オーダー番号
+	'item_code' => $arrMainProduct["product_code"],							// 商品コード(代表)
+	'item_name' => $arrMainProduct["name"],									// 商品名(代表)
+	'item_price' => $objPage->tpl_total_pretax + $objPage->tpl_total_tax,	// 商品価格(税込み総額)
 	'st_code' => '10000-0000-00000',			// 決済区分
 	'mission_code' => '1',						// 課金区分
 	'process_code' => '1',						// 処理区分
 	'xml' => '1',								// 応答形式
-	'memo1' => ECCUBE_PAYMENT,					// 予備1
+	'memo1' => ECCUBE_PAYMENT,					// 予備01
 	'memo2' => ''								// 予備02
 );
 
@@ -111,5 +114,5 @@ function lfGetXMLValue($arrVal, $tag, $att) {
 	$enc = mb_convert_encoding($dec, 'EUC-JP', 'auto');
 	return $enc;
 }
-*/
+
 ?>

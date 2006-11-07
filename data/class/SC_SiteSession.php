@@ -24,6 +24,8 @@ class SC_SiteSession {
 				return true;
 			}
 		}
+		sfprintr($_SESSION);
+		exit();
 		return false;
 	}
 	
