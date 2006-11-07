@@ -51,7 +51,7 @@ $order_url = "http://beta.epsilon.jp/cgi-bin/order/receive_order3.cgi";
 
 // 送信データ生成
 $arrData = array(
-	'contract_code' => '13094800',										// 契約コード
+	'contract_code' => '130948001',										// 契約コード
 	'user_id' => $arrData["customer_id"],								// ユーザID
 	'user_name' => $arrData["order_name01"].$arrData["order_name02"],	// ユーザ名
 	'user_mail_add' => $arrData["order_email"],							// メールアドレス
@@ -97,8 +97,6 @@ xml_parse_into_struct($parser,$response,$arrVal,$idx);
 // 開放する
 xml_parser_free($parser);
 
-sfprintr($arrVal);
-exit();
 // エラーがあるかチェックする
 $err_code = lfGetXMLValue($arrVal,'RESULT','ERR_CODE');
 
@@ -107,16 +105,18 @@ if($err_code != "") {
 	sfDispSiteError(FREE_ERROR_MSG, "", true, "クレジットカード決済処理中に以下のエラーが発生しました。<br /><br /><br />・" . $err_detail . "<br /><br /><br />この手続きは無効となりました。");
 } else {
 	$url = lfGetXMLValue($arrVal,'RESULT','REDIRECT');
-	//header("Location: " . $url);	
+	header("Location: " . $url);	
 }
+
+//---------------------------------------------------------------------------------------------------------------------------------------------------------
 
 /**************************************************************************************************************
  * 関数名	：lfGetXMLValue
  * 処理内容	：XMLタグの内容を取得する
  * 引数1	：$arrVal	･･･ Valueデータ
  * 引数2	：$tag		･･･ Tagデータ
- * 引数3	：$att		･･･ Where句の絞込条件値
- * 戻り値	：ブロック情報
+ * 引数3	：$att		･･･ 対象タグ名
+ * 戻り値	：取得結果
  **************************************************************************************************************/
 function lfGetXMLValue($arrVal, $tag, $att) {
 	$ret = "";
