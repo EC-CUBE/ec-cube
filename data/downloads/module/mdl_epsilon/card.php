@@ -43,7 +43,7 @@ if($_SESSION['site']['pre_regist_success']){
 	}else{
 		$_SESSION['site']['now_page'] = "";
 		$objSiteSess->unsetUniqId();
-		sfDispSiteError(FREE_ERROR_MSG, "", true, "購入処理中にエラーが発生しました。<br>この手続きは無効となりました。");
+		sfDispSiteError(FREE_ERROR_MSG, "", true, "購入処理中にエラーが発生しましたs。<br>この手続きは無効となりました。");
 	}
 }
 
