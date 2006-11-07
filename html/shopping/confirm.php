@@ -89,6 +89,7 @@ case 'confirm':
 	switch($arrPayment[0]["memo04"]) {
 	case PAYMENT_CREDIT_ID:
 		//header("Location: " . URL_SHOP_CREDIT);
+		$_SESSION[""]
 		header("Location: " . URL_SHOP_MODULE);		
 		break;
 	case PAYMENT_CONVENIENCE_ID:
