@@ -29,7 +29,7 @@ $arrInfo = $objSiteInfo->data;
 
 // trans_codeに値があり且つ、正常終了のときはオーダー確認を行う。
 if($_SESSION['site']['pre_regist_success']){
-	if($_GET["trans_code"] != ""){
+	if($_GET["result"] == "1"){
 		
 		sfprintr($_GET);
 		sfprintr($_SESSION);
@@ -40,10 +40,10 @@ if($_SESSION['site']['pre_regist_success']){
 		// 完了画面へ
 		header("Location: " . URL_SHOP_COMPLETE);
 		
-	}else{
+	}elseif($_GET["result"] == "2"){
 		$_SESSION['site']['now_page'] = "";
 		$objSiteSess->unsetUniqId();
-		sfDispSiteError(FREE_ERROR_MSG, "", true, "購入処理中にエラーが発生しましたs。<br>この手続きは無効となりました。");
+		sfDispSiteError(FREE_ERROR_MSG, "", true, "購入処理中にエラーが発生しました。<br>この手続きは無効となりました。");
 	}
 }
 
