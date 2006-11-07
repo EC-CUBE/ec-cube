@@ -32,8 +32,17 @@ $arrInfo = $objSiteInfo->data;
 // trans_codeに値があり且つ、正常終了のときはオーダー確認を行う。
 if($_SESSION['site']['pre_regist_success']){
 	if($_GET["trans_code"] != ""){
+		
+		// オーダー情報確認
+		$order_url = "https://beta.epsilon.jp/client/getsales.cgi";
+		$arrData = array("trans_code" => $_GET["trans_code"], "order_number" => $_GET["order_number"]);
+		sfGetEpsilonOrder($order_url, $arrData);
+		
 		sfprintr($_GET);
 		sfprintr($_SESSION);
+		
+		
+		
 		exit();
 	}else{
 		$_SESSION['site']['now_page'] = "";
@@ -80,7 +89,5 @@ $arrData = array(
 sfPostPaymentData($order_url, $arrData);
 
 //---------------------------------------------------------------------------------------------------------------------------------------------------------
-
-
 
 ?>

@@ -20,8 +20,8 @@ $payment_id = $_SESSION["payment_id"];
 
 // 支払いIDが無い場合にはエラー
 if($payment_id == ""){
-	sfDispSiteError(PAGE_ERROR, "", true);
 	$_SESSION['site']['now_page'] ="";
+	sfDispSiteError(PAGE_ERROR, "", true);
 }
 
 // 決済情報を取得する

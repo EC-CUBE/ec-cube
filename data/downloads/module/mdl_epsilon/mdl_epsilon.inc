@@ -1,5 +1,22 @@
 <?php
 
+function sfGetXMLData($response,$arrVal,$idx){
+	
+	// XMLパーサを生成する。
+	$parser = xml_parser_create();
+	
+	// 空白文字は読み飛ばしてXMLを読み取る
+	xml_parser_set_option($parser,XML_OPTION_SKIP_WHITE,1);
+	
+	// 配列にXMLのデータを格納する
+	xml_parse_into_struct($parser,$response,$arrVal,$idx);
+	
+	// 開放する
+	xml_parser_free($parser);
+
+}
+
+
 /**************************************************************************************************************
  * 関数名	：sfGetXMLValue
  * 処理内容	：XMLタグの内容を取得する
@@ -45,7 +62,7 @@ function sfPostPaymentData($order_url, $arrData){
 		$_SESSION['site']['now_page'] ="";
 		sfDispSiteError(FREE_ERROR_MSG, "", true, "購入処理中にエラーが発生しました。<br>この手続きは無効となりました。");
 	}
-	
+	/*
 	// XMLパーサを生成する。
 	$parser = xml_parser_create();
 	
@@ -57,6 +74,8 @@ function sfPostPaymentData($order_url, $arrData){
 	
 	// 開放する
 	xml_parser_free($parser);
+	*/
+	sfGetXMLData($response,$arrVal,$idx);
 	
 	// エラーがあるかチェックする
 	$err_code = sfGetXMLValue($arrVal,'RESULT','ERR_CODE');
@@ -72,6 +91,14 @@ function sfPostPaymentData($order_url, $arrData){
 		$url = sfGetXMLValue($arrVal,'RESULT','REDIRECT');
 		header("Location: " . $url);	
 	}
+}
+
+
+function sfGetEpsilonOrder($order_url, $arrData){
+	global $objSiteSess;
+	
+	// POSTデータを送信し、応答情報を取得する
+	$response = sfSendPostData($order_url, $arrData);
 }
 
 ?>
