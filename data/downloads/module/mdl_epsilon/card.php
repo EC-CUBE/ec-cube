@@ -41,9 +41,6 @@ $arrData = sfGetOrderTemp($uniqid);
 // カート集計を元に最終計算
 $arrData = sfTotalConfirm($arrData, $objPage, $objCartSess, $arrInfo);
 
-	sfprintr("error");
-	exit();
-
 // 代表商品情報
 $arrMainProduct = $objPage->arrProductsClass[0];
 
@@ -89,6 +86,11 @@ if (!PEAR::isError($req->sendRequest())) {
 	exit();
 	//sfDispSiteError(FREE_ERROR_MSG, "", false, "クレジットカード決済処理中にエラーが発生しました。<br>この手続きは無効となりました。");
 }
+
+	sfprintr("error1");
+	exit();
+
+
 // POSTデータクリア
 $req->clearPostData();
 

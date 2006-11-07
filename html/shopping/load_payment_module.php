@@ -11,8 +11,7 @@ $objCartSess = new SC_CartSession();
 $objQuery = new SC_Query();
 
 // アクセスの正当性の判定
-//$uniqid = sfCheckNormalAccess($objSiteSess, $objCartSess);
-exit();
+$uniqid = sfCheckNormalAccess($objSiteSess, $objCartSess);
 
 $payment_id = $_SESSION["payment_id"];
 
