@@ -27,7 +27,6 @@ $objView = new SC_SiteView();
 $objSiteInfo = $objView->objSiteInfo;
 $arrInfo = $objSiteInfo->data;
 
-
 // trans_codeに値があり且つ、正常終了のときはオーダー確認を行う。
 if($_SESSION['site']['pre_regist_success']){
 	if($_GET["trans_code"] != ""){
