@@ -145,7 +145,7 @@ case 'module_del':
 	// 汎用項目の存在チェック
 	if(sfColumnExists("dtb_payment", "memo01")){
 		// データの削除
-		$objQuery->query("DELETE FROM dtb_payment WHERE memo01 = ?", array(MDL_EPSILON_ID));
+		$objQuery->query("DELETE FROM dtb_payment WHERE module_id = ?", array(MDL_EPSILON_ID));
 	}
 	break;
 default:
@@ -197,12 +197,12 @@ function lfLoadData(){
 	global $objFormParam;
 	
 	$sql = "SELECT 
-				memo01, 
-				memo02 as code, 
-				memo03 as url, 
-				memo04 as payment,
-				memo05 as payment_code, 
-				memo06 as convenience
+				module_id, 
+				memo01 as code, 
+				memo02 as url, 
+				memo03 as payment,
+				memo04 as payment_code, 
+				memo05 as convenience
 			FROM dtb_payment WHERE memo01 = ?";
 	$arrRet = $objQuery->getall($sql, array(MDL_EPSILON_ID));
 	
