@@ -102,11 +102,12 @@ case 'edit':
 					,"create_date" => "now()"
 					,"update_date" => "now()"
 					,"upper_rule" => 500000
-					,"memo01" => MDL_EPSILON_ID
-					,"memo02" => $_POST["code"]
-					,"memo03" => $_POST["url"]
-					,"memo04" => $val
-					,"memo05" => $visa . $jcb . "000-0000-00000"
+					,"module_id" => MDL_EPSILON_ID
+					,"module_path" => "epsilon/card.php"
+					,"memo01" => $_POST["code"]
+					,"memo02" => $_POST["url"]
+					,"memo03" => $val
+					,"memo04" => $visa . $jcb . "000-0000-00000"
 				);
 			}
 
@@ -122,12 +123,13 @@ case 'edit':
 					,"create_date" => "now()"
 					,"update_date" => "now()"
 					,"upper_rule" => 500000
-					,"memo01" => MDL_EPSILON_ID
-					,"memo02" => $_POST["code"]
-					,"memo03" => $_POST["url"]
-					,"memo04" => $val
-					,"memo05" => "00100-0000-00000"
-					,"memo06" => $convenience
+					,"module_id" => MDL_EPSILON_ID
+					,"module_path" => "epsilon/convenience.php"
+					,"memo01" => $_POST["code"]
+					,"memo02" => $_POST["url"]
+					,"memo03" => $val
+					,"memo04" => "00100-0000-00000"
+					,"memo05" => $convenience
 				);
 			}
 			

@@ -21,7 +21,6 @@ if(sfColumnExists("dtb_payment", "memo01")){
 	$arrPayment = $objQuery->getall($sql, array($payment_id));
 }
 
-
 if(is_numeric($module_id)) {
 	$objQuery = new SC_Query();
 	$arrRet = $objQuery->select("main_php", "dtb_module", "module_id = ?", array($module_id));

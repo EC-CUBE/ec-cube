@@ -96,16 +96,17 @@ function sfAlterMemo(){
 	// 汎用項目の存在チェック
 	if(!sfColumnExists("dtb_payment", "memo01")){
 		
+		// モジュールIDを追加
+		$objQuery->query("alter table dtb_payment add module_id int4;");
+		
+		// モジュールパスを追加
+		$objQuery->query("alter table dtb_payment add module_path text;");
+		
 		// 汎用項目を10個追加
 		for($i=1; $i<=9; $i++){
 			$objQuery->query("alter table dtb_payment add memo0".$i." text;");
 		}
 		$objQuery->query("alter table dtb_payment add memo10 text;");
-		
-		// 汎用モジュールパスを5個追加
-		for($i=1; $i<=5; $i++){
-			$objQuery->query("alter table dtb_payment add mdl_path0".$i." text;");
-		}
 	}
 }
 

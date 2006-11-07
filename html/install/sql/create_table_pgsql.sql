@@ -158,6 +158,8 @@ CREATE TABLE dtb_payment (
     update_date timestamp,
     payment_image text,
     upper_rule numeric,
+    module_id int4,
+    module_path text,
     memo01 text,
     memo02 text,
     memo03 text,
