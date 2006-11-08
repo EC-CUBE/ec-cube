@@ -324,22 +324,12 @@ function lfRegistOrder($objQuery, $arrData) {
 		$sqlval['deliv_tel03'] = $arrData['order_tel03'];
 	}
 	
-	$order_id = $arrData['order_id'];
-/*
-	if (DB_TYPE == "pgsql") {
-		$order_id = $objQuery->nextval("dtb_order", "order_id");
-		$sqlval['order_id'] = $order_id;
-	}
-*/
-	$sqlval['create_date'] = 'now()';			// 受注日
+	$order_id = $arrData['order_id'];		// オーダーID
+	$sqlval['create_date'] = 'now()';		// 受注日
 	
 	// INSERTの実行
 	$objQuery->insert("dtb_order", $sqlval);
-/*
-	if (DB_TYPE == "mysql") {
-		$order_id = $objQuery->nextval("dtb_order", "order_id");
-	}
-*/
+	
 	// メルマガ配信希望情報の登録
 	lfRegistNonCustomer($arrData['order_email'], $arrData['mail_flag'], $objQuery);
 	
