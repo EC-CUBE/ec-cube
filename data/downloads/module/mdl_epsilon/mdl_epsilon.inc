@@ -132,7 +132,8 @@ function sfPostPaymentData($order_url, $arrData, $err_msg = "<br /><br /><br />¤
 			//»ÙÊ§´ü¸Â
 			$arrRet['cv_payment_limit'] = $payment_limit;
 			//¥³¥ó¥Ó¥Ë·èºÑ¾ðÊó¤ò³ÊÇ¼
-			$sqlval['conveni_data'] = serialize($arrRet);			
+			$sqlval['conveni_data'] = serialize($arrRet);
+			$sqlval['memo02'] = serialize($arrRet);
 			
 			$url = URL_SHOP_COMPLETE;
 
