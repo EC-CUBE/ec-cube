@@ -95,7 +95,7 @@ switch($_POST["mode"]){
 			'xml' => '1',														// 応答形式(固定)
 			
 			'conveni_code' => $_POST["convenience"],							// コンビニコード
-			'user_tel' => $arrData["order_tel01"]."-".$arrData["order_tel02"]."-".$arrData["order_tel03"],						// コンビニコード
+			'user_tel' => $arrData["order_tel01"].$arrData["order_tel02"].$arrData["order_tel03"],						// コンビニコード
 			'user_name_kana' => $arrData["order_kana01"].$arrData["order_kana02"],							// コンビニコード
 			'haraikomi_mail' => 0,												// 払込メール(送信しない)
 			

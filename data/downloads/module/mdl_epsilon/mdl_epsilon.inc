@@ -81,7 +81,9 @@ function sfPostPaymentData($order_url, $arrData){
 		// 正常な推移であることを記録しておく
 		$objSiteSess->setRegistFlag();
 		$url = sfGetXMLValue($arrVal,'RESULT','REDIRECT');
-		header("Location: " . $url);	
+		
+		sfprintr($arrVal);
+		//header("Location: " . $url);	
 	}
 }
 
