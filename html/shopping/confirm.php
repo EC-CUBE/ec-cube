@@ -86,15 +86,13 @@ case 'return':
 	break;
 case 'confirm':
 	// この時点でオーダーIDを確保しておく（クレジット、コンビニ決済で必要なため）
-	if($arrData["order_id"] == ""){
-		// postgresqlとmysqlとで処理を分ける
-		if (DB_TYPE == "pgsql") {
-			$order_id = $objQuery->nextval("dtb_order","order_id");
-		}elseif (DB_TYPE == "mysql") {
-			$order_id = $objQuery->get_auto_increment("dtb_order");
-		}
-		$arrData["order_id"] = $order_id;
+	// postgresqlとmysqlとで処理を分ける
+	if (DB_TYPE == "pgsql") {
+		$order_id = $objQuery->nextval("dtb_order","order_id");
+	}elseif (DB_TYPE == "mysql") {
+		$order_id = $objQuery->get_auto_increment("dtb_order");
 	}
+	$arrData["order_id"] = $order_id;
 	
 	// 集計結果を受注一時テーブルに反映
 	sfRegistTempOrder($uniqid, $arrData);
