@@ -131,6 +131,9 @@ switch($_POST["mode"]){
 			$arrConv[$val] = $arrConvenience[$val];
 		}
 		$objPage->arrConv = $arrConv;
+		
+		sfprintr($objFormParam->getHashArray());
+		
 		sfprintr($arrConv);
 		sfprintr($arrPayment);
 		break;
