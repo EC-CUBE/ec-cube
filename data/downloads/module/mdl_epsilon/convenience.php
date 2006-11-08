@@ -70,6 +70,11 @@ if($_GET["result"] == "1"){
 	header("Location: " .  URL_SHOP_COMPLETE);
 }
 
+if(count($_GET) > 0){
+	sfprintr($_GET);
+	exit();
+}
+
 // 送信データ生成
 $arrData = array(
 	'contract_code' => $arrPayment[0]["memo01"],						// 契約コード
