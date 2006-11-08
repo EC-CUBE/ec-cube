@@ -33,7 +33,7 @@
 			<tr>
 				<td bgcolor="#cccccc">
 				<!--お支払方法・お届け時間の指定・その他お問い合わせここから-->		
-				<table cellspacing="1" cellpadding="8" summary=" " id="frame">
+				<table cellspacing="1" cellpadding="8" summary=" ">
 					<tr class="fs12n">
 						<td id="select">選択</td>
 						<td id="payment">コンビニの種類</td>
