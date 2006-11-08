@@ -37,7 +37,8 @@ TenantNo=>TenantNo
 
 */
 
-$order_url = "http://mod-i.ccsware.net/ohayou/EntryTran.php";
+$entry_url = "http://mod-i.ccsware.net/ohayou/EntryTran.php";
+$exec_url = "https://mod-i.ccsware.net/ohayou/ExecTran.php";
 $order_id = sfGetUniqRandomId();
 
 // 店舗情報の送信
@@ -54,7 +55,7 @@ $arrData = array(
 	'TenantNo' => '111111111',	// cgi-4で作成した店舗IDを送信する。
 );
 
-$req = new HTTP_Request($order_url);
+$req = new HTTP_Request($entry_url);
 $req->setMethod(HTTP_REQUEST_METHOD_POST);
 		
 $req->addPostDataArray($arrData);
@@ -119,7 +120,7 @@ $arrData = array(
 
 sfPrintR($arrData);
 
-$req = new HTTP_Request($order_url);
+$req = new HTTP_Request($exec_url);
 $req->setMethod(HTTP_REQUEST_METHOD_POST);
 
 $req->addPostDataArray($arrData);
