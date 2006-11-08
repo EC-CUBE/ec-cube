@@ -49,7 +49,7 @@ $arrPayment = $objQuery->getall("SELECT module_id, memo01, memo02, memo03, memo0
 $order_url = $arrPayment[0]["memo02"];
 
 // trans_codeに値があり且つ、正常終了のときはオーダー確認を行う。
-if($_GET["result"] == "1"){
+if($_GET["trans_code"] != ""){
 	
 	// 正常な推移であることを記録しておく
 	$objSiteSess->setRegistFlag();
@@ -68,11 +68,6 @@ if($_GET["result"] == "1"){
 
 	// 完了画面へ
 	header("Location: " .  URL_SHOP_COMPLETE);
-}
-
-if(count($_GET) > 0){
-	sfprintr($_GET);
-	exit();
 }
 
 // 送信データ生成
