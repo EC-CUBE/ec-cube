@@ -35,13 +35,15 @@
 				<!--お支払方法・お届け時間の指定・その他お問い合わせここから-->		
 				<table width="700" border="0" cellspacing="1" cellpadding="10" summary=" ">
 					<tr>
-						<td width="30" bgcolor="#f0f0f0" class="fs12">選択</td>
+						<td width="30" align="center" bgcolor="#f0f0f0" class="fs12">選択</td>
 						<td width="507" bgcolor="#f0f0f0" class="fs12">コンビニの種類</td>
 					</tr>
 					<!--{foreach key=key item=item from=$arrConv}-->
 					<tr bgcolor="#ffffff" class="fs12n">
-						<label for="<!--{$key}-->"><td id="select_c"><input type="radio" name="convenience" id="<!--{$key}-->" value="<!--{$key}-->" style="<!--{$arrErr.convenience|sfGetErrorColor}-->"></td>
-						<td class="fs12n" id="payment_c"><!--{$item|escape}--></td></label>
+						<label for="<!--{$key}-->">
+							<td align="center"><input type="radio" name="convenience" id="<!--{$key}-->" value="<!--{$key}-->" style="<!--{$arrErr.convenience|sfGetErrorColor}-->"></td>
+							<td class="fs12n" id="payment_c"><!--{$item|escape}--></td>
+						</label>
 					</tr>
 					<!--{/foreach}-->
 				</table>
