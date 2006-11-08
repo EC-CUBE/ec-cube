@@ -293,6 +293,18 @@
 								<!--{assign var=payment_id value="`$arrForm.payment_id.value`"}-->
 								<!--{$arrPayment[$payment_id]|escape}--></td>
 							</tr>
+							<!--{if $arrDisp.payment_info|count > 0}-->
+							<tr class="fs12n">
+								<td bgcolor="#f2f1ec" colspan="6">▼<!--{$arrDisp.payment_type}-->情報</td>
+							</tr>
+							<tr class="fs12n">
+								<td bgcolor="#ffffff" colspan="6">
+									<!--{foreach key=key item=item from=$arrDisp.payment_info}-->
+									<!--{$item.name}-->：<!--{$item.value}--><br/>
+									<!--{/foreach}-->
+								</td>
+							</tr>
+							<!--{/if}-->
 							<tr class="fs12n">
 								<td bgcolor="#f0f0f0" colspan="5">▼時間指定</td>
 							</tr>

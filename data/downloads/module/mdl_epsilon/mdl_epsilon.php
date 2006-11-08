@@ -93,7 +93,7 @@ case 'edit':
 				(in_array(2, $_POST["credit"])) ? $jcb = "1" : $jcb = "0";
 				
 				$arrData = array(			
-					"payment_method" => "クレジット(イプシロン)"
+					"payment_method" => "Epsilonクレジット"
 					,"rule" => "0"
 					,"deliv_id" =>0
 					,"rank" => $max_rank + 1
@@ -114,7 +114,7 @@ case 'edit':
 			// コンビニにチェックが入っていればコンビニを登録する
 			if($val == 2){
 				$arrData = array(			
-					"payment_method" => "コンビニ(イプシロン)"
+					"payment_method" => "Epsilonコンビニ"
 					,"rule" => "0"
 					,"deliv_id" =>0
 					,"rank" => $max_rank + 1
