@@ -140,8 +140,6 @@ $objPage->arrConv = $arrConv;
 
 $objPage->arrForm =$objFormParam->getHashArray();
 
-sfprintr($objPage->arrForm);
-
 $objView->assignobj($objPage);
 $objView->display(SITE_FRAME);
 
