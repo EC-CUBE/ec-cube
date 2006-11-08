@@ -142,7 +142,7 @@ if($response != "") {
 }
 */
 print("<!--");
-//sfPrintR($response);
+sfPrintR($response);
 print("-->");
 
 ?>
