@@ -58,12 +58,12 @@
 				<!--お支払方法・お届け時間の指定・その他お問い合わせここから-->		
 				<table width="700" border="0" cellspacing="1" cellpadding="10" summary=" ">
 					<tr>
-						<td width="10%" align="center" bgcolor="#f0f0f0" class="fs12">お名前</td>
-						<td width="90%" bgcolor="#f0f0f0" class="fs12"></td>
+						<td width="20%" align="center" bgcolor="#f0f0f0" class="fs12">お名前</td>
+						<td width="80%" bgcolor="#f0f0f0" class="fs12"></td>
 					</tr>
 					<tr>
-						<td width="10%" align="center" bgcolor="#f0f0f0" class="fs12">電話番号</td>
-						<td width="90%" bgcolor="#f0f0f0" class="fs12"></td>
+						<td width="20%" align="center" bgcolor="#f0f0f0" class="fs12">電話番号</td>
+						<td width="80%" bgcolor="#f0f0f0" class="fs12"></td>
 					</tr>
 				</table>
 				<!--お支払方法・お届け時間の指定・その他お問い合わせここまで-->
