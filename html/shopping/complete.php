@@ -324,6 +324,7 @@ function lfRegistOrder($objQuery, $arrData) {
 		$sqlval['deliv_tel03'] = $arrData['order_tel03'];
 	}
 	
+	$order_id = $arrData['order_id'];
 /*
 	if (DB_TYPE == "pgsql") {
 		$order_id = $objQuery->nextval("dtb_order", "order_id");
