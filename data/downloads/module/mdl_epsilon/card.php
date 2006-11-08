@@ -34,7 +34,7 @@ if($_GET["result"] == "1"){
 	$objSiteSess->setRegistFlag();
 	
 	// GETデータを完了画面へPOST送信する
-	sfSendPostData(SITE_URL . "shopping/complete.php", $_GET);
+	//sfSendPostData(SITE_URL . "shopping/complete.php", $_GET);
 	
 	$str_get = "?result = " . $_GET["result"];
 	foreach($_GET as $key => $val){
