@@ -81,53 +81,59 @@ function sfPostPaymentData($order_url, $arrData, $err_msg = "<br /><br /><br />§
 		
 		// ªŸ ß§§∂Ë ¨§À§Ë§ÍΩËÕ˝§Ú§Ô§±§Î
 		if($payment_kbn == PAYMENT_CONVENIENCE_ID){
+			
+			$conveni_code = sfGetXMLValue($arrVal,'RESULT','CONVENI_CODE');	// •≥•Û•”•À•≥°º•…
+			$receipt_no   = sfGetXMLValue($arrVal,'RESULT','RECEIPT_NO');	//  ßπ˛…º»÷πÊ
+			$payment_url = sfGetXMLValue($arrVal,'RESULT','HARAIKOMI_URL');	//  ßπ˛…ºURL(PC)
+			$company_code = sfGetXMLValue($arrVal,'RESULT','KIGYOU_CODE');	// ¥Î∂»•≥°º•…
+			$order_no = sfGetXMLValue($arrVal,'RESULT','ORDER_NUMBER');		// ºı…’»÷πÊ
+			$tel = $_POST["order_tel01"]."-".$_POST["order_tel02"]."-".$_POST["order_tel03"];	// ≈≈œ√»÷πÊ
+			$payment_limit = sfGetXMLValue($arrVal,'RESULT','CONVENI_LIMIT');	// ªŸ ß¥¸∆¸
+			
 			//•≥•Û•”•À§ŒºÔŒ‡
-			/*
-			switch($_POST['convenience']) {
+			switch($conveni_code) {
 			//•ª•÷•Û•§•Ï•÷•Û
 			case '11':
-				$arrRet['cv_type'] = '1';										//•≥•Û•”•À§ŒºÔŒ‡
-				$arrRet['cv_payment_url'] = $arrResult[RES_HARAIKOMI_URL];		// ßπ˛…ºURL(PC)
-				$arrRet['cv_receipt_no'] = $arrResult[RES_RECEIPT_NO];			// ßπ˛…º»÷πÊ
+				$arrRet['cv_type'] = $conveni_code;									//•≥•Û•”•À§ŒºÔŒ‡
+				$arrRet['cv_payment_url'] = $payment_url;						// ßπ˛…ºURL(PC)
+				$arrRet['cv_receipt_no'] = $receipt_no;		// ßπ˛…º»÷πÊ
 				break;
 			//•’•°•ﬂ•Í°º•ﬁ°º•»
 			case '21':
-				$company_code = substr($arrResult[RES_RECEIPT_NO], 0, 5);
-				$order_no = substr($arrResult[RES_RECEIPT_NO], 6, 12);
-				$arrRet['cv_type'] = '2';						//•≥•Û•”•À§ŒºÔŒ‡
-				$arrRet['cv_company_code'] = $company_code;	//¥Î∂»•≥°º•…
-				$arrRet['cv_order_no'] = $order_no;			//ºı…’»÷πÊ
+				$arrRet['cv_type'] = $conveni_code;							//•≥•Û•”•À§ŒºÔŒ‡
+				$arrRet['cv_company_code'] = $company_code;					//¥Î∂»•≥°º•…
+				$arrRet['cv_order_no'] = $receipt_no;							//ºı…’»÷πÊ
 				break;
 			//•Ì°º•Ω•Û
 			case '31':
-				$arrRet['cv_type'] = '4';									//•≥•Û•”•À§ŒºÔŒ‡
-				$arrRet['cv_receipt_no'] = $arrResult[RES_RECEIPT_NO];		// ßπ˛…º»÷πÊ
+				$arrRet['cv_type'] = $conveni_code;				//•≥•Û•”•À§ŒºÔŒ‡
+				$arrRet['cv_receipt_no'] = $receipt_no;			// ßπ˛…º»÷πÊ
+				$arrRet['cv_tel'] = $tel;			//≈≈œ√»÷πÊ
 				break;
 			//•ª•§•≥°º•ﬁ°º•»
 			case '32':
-				$arrRet['cv_type'] = '4';									//•≥•Û•”•À§ŒºÔŒ‡
-				$arrRet['cv_receipt_no'] = $arrResult[RES_RECEIPT_NO];		// ßπ˛…º»÷πÊ
+				$arrRet['cv_type'] = $conveni_code;									//•≥•Û•”•À§ŒºÔŒ‡
+				$arrRet['cv_receipt_no'] = $receipt_no;		// ßπ˛…º»÷πÊ
+				$arrRet['cv_tel'] = $tel;			//≈≈œ√»÷πÊ
 				break;
 			//•ﬂ•À•π•»•√•◊
 			case '33':
-				$mobile_url = preg_replace("/https:\/\/.+?\/JLPcon/","https://w2.kessai.info/JLM/JLMcon", $arrResult[RES_HARAIKOMI_URL]);
-				$arrRet['cv_type'] = '3';										//•≥•Û•”•À§ŒºÔŒ‡
-				$arrRet['cv_payment_url'] = $arrResult[RES_HARAIKOMI_URL];		// ßπ˛…ºURL
-				$arrRet['cv_payment_mobile_url'] = $mobile_url;					// ßπ˛…ºURL(•‚•–•§•Î)
+				$arrRet['cv_type'] = $conveni_code;										//•≥•Û•”•À§ŒºÔŒ‡
+				$arrRet['cv_payment_url'] = $payment_url;		// ßπ˛…ºURL
 				break;
 			//•«•§•Í°º•‰•ﬁ•∂•≠
 			case '34':
-				$arrRet['cv_type'] = '5';										//•≥•Û•”•À§ŒºÔŒ‡
-				$arrRet['cv_payment_url'] = $arrResult[RES_HARAIKOMI_URL];		// ßπ˛…ºURL(PC)
+				$arrRet['cv_type'] = $conveni_code;										//•≥•Û•”•À§ŒºÔŒ‡
+				$arrRet['cv_payment_url'] = $payment_url;		// ßπ˛…ºURL
 				break;
 			}
 			
 			//ªŸ ß¥¸∏¬
-			$arrRet['cv_payment_limit'] = lfGetPayLimit();
+			$arrRet['cv_payment_limit'] = $payment_limit;
 			//•≥•Û•”•À∑Ë∫—æ Û§Ú≥ «º
 			$sqlval['conveni_data'] = serialize($arrRet);			
-			*/
-			sfprintr($arrVal);
+			
+			sfprintr($arrRet);
 			$url = URL_SHOP_COMPLETE;
 
 			// ºı√Ì∞Ïª˛•∆°º•÷•Î§Àππø∑
