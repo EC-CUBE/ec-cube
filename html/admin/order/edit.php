@@ -180,7 +180,7 @@ function lfGetOrderData($order_id) {
 		$objFormParam->setParam($arrRet);
 		
 		// その他支払い情報を表示
-		$objPage->arrDisp["payment_info"] = unserialize($objPage->arrDisp["memo02"]);
+		if(count($objPage->arrDisp["memo02"]) > 0) $objPage->arrDisp["payment_info"] = unserialize($objPage->arrDisp["memo02"]);
 		if($objPage->arrDisp["memo01"] == 1){
 			$objPage->arrDisp["payment_type"] = "クレジット決済";
 		}elseif($objPage->arrDisp["memo01"] == 2){
