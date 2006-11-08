@@ -109,7 +109,7 @@ switch($_POST["mode"]){
 		foreach($arrUseConv as $key => $val){
 			$arrConv[$val] = $arrConvenience[$val];
 		}
-		
+		$objPage->arrConv = $arrConv;
 		sfprintr($arrConv);
 		sfprintr($arrPayment);
 		break;
