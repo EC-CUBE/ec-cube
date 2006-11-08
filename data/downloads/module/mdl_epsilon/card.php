@@ -30,28 +30,6 @@ $arrInfo = $objSiteInfo->data;
 // ユーザユニークIDの取得と購入状態の正当性をチェック
 $uniqid = sfCheckNormalAccess($objSiteSess, $objCartSess);
 
-// trans_codeに値があり且つ、正常終了のときはオーダー確認を行う。
-if($_GET["result"] == "1"){
-	
-	// 正常な推移であることを記録しておく
-	$objSiteSess->setRegistFlag();
-	
-	// GETデータを完了画面へ送信する
-	$arrVal["credit_result"] = $_GET["result"];
-	$arrVal["memo01"] = 1;
-	$arrVal["memo03"] = $_GET["trans_code"];
-	
-	// トランザクションコード
-	$arrMemo["trans_code"] = array("name"=>"トランザクションコード", "value" => $_GET["trans_code"]);
-	$arrVal["memo02"] = serialize($arrMemo);
-	
-	// 受注一時テーブルに更新
-	sfRegistTempOrder($uniqid, $arrVal);
-
-	// 完了画面へ
-	header("Location: " . SITE_URL . "shopping/complete.php");
-}
-
 // カート集計処理
 $objPage = sfTotalCart($objPage, $objCartSess, $arrInfo);
 
@@ -65,10 +43,32 @@ $arrData = sfTotalConfirm($arrData, $objPage, $objCartSess, $arrInfo);
 $arrMainProduct = $objPage->arrProductsClass[0];
 
 // 支払い情報を取得
-$arrPayment = $objQuery->getall("SELECT memo01, memo02, memo03, memo04, memo05, memo06, memo07, memo08, memo09, memo10 FROM dtb_payment WHERE payment_id = ? ", array($arrData["payment_id"]));
+$arrPayment = $objQuery->getall("SELECT module_id memo01, memo02, memo03, memo04, memo05, memo06, memo07, memo08, memo09, memo10 FROM dtb_payment WHERE payment_id = ? ", array($arrData["payment_id"]));
 
 // データ送信先CGI
 $order_url = $arrPayment[0]["memo02"];
+
+// trans_codeに値があり且つ、正常終了のときはオーダー確認を行う。
+if($_GET["result"] == "1"){
+	
+	// 正常な推移であることを記録しておく
+	$objSiteSess->setRegistFlag();
+	
+	// GETデータを保存
+	$arrVal["credit_result"] = $_GET["result"];
+	$arrVal["memo01"] = 1;
+	$arrVal["memo03"] = $arrPayment[0]["module_id"];
+	
+	// トランザクションコード
+	$arrMemo["trans_code"] = array("name"=>"トランザクションコード", "value" => $_GET["trans_code"]);
+	$arrVal["memo02"] = serialize($arrMemo);
+	
+	// 受注一時テーブルに更新
+	sfRegistTempOrder($uniqid, $arrVal);
+
+	// 完了画面へ
+	header("Location: " . SITE_URL . "shopping/complete.php");
+}
 
 // 送信データ生成
 $arrData = array(
