@@ -137,7 +137,7 @@ function sfPostPaymentData($order_url, $arrData, $err_msg = "<br /><br /><br />¤
 			$url = URL_SHOP_COMPLETE;
 
 			// ¼õÃí°ì»þ¥Æ¡¼¥Ö¥ë¤Ë¹¹¿·
-			sfRegistTempOrder($uniqid, $arrVal);
+			sfRegistTempOrder($uniqid, $sqlval);
 			
 		}else{
 			$url = sfGetXMLValue($arrVal,'RESULT','REDIRECT');
