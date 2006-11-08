@@ -20,6 +20,7 @@ $arrData = array(
 	'item_code' => 'abc12345',
 	'memo2' => '',
 	'user_id' => 'ktest'
+	,'conveni_code' => '11'
 );
 
 $req = new HTTP_Request($order_url);
@@ -47,7 +48,9 @@ if($err_code != "") {
 	print($err_detail);
 } else {
 	$url = lfGetXMLValue($arrVal,'RESULT','REDIRECT');
-	header("Location: " . $url);	
+	
+	sfprintr($arrVal);
+	//header("Location: " . $url);	
 }
 
 
