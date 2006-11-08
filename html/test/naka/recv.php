@@ -1,4 +1,8 @@
 <?php
-	print_r($_GET);
-	print_r($_POST);	
+require_once("../../require.php");
+require_once(DATA_PATH . "module/Request.php");
+
+gfDebugLog($_GET);
+gfDebugLog($_POST);
+
 ?>
