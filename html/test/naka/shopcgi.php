@@ -108,8 +108,8 @@ if($response != "") {
     [ClientField3] => f3
 */
 $arrData = array(
-	'AccessId' => $arrRet['ACCESS_ID'],
-	'AccessPass' => $arrRet['ACCESS_PASS'],
+	'AccessId' => trim($arrRet['ACCESS_ID'],'\n'),
+	'AccessPass' => trim($arrRet['ACCESS_PASS'],'\n'),
 	'OrderId' => $order_id,
 	'RetURL' => 'http://test.ec-cube.net/ec-cube/naka/recv.php',
 	'CardType' => 'VISA,     11111, 111111111111111111111111111111111111, 1111111111',
