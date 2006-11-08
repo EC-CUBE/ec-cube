@@ -99,7 +99,16 @@ switch($_POST["mode"]){
 		// データ送信
 		sfPostPaymentData($order_url, $arrData);
 		break;
-	
+		
+	//戻る
+	case 'return':
+		// 正常に登録されたことを記録しておく
+		$objSiteSess->setRegistFlag();
+		// 確認ページへ移動
+		header("Location: " . URL_SHOP_CONFIRM);
+		exit;
+		break;
+		
 	default:
 		// 利用可能コンビニ
 		$objFormParam->setValue("convenience", $arrPayment[0]["memo05"]);
