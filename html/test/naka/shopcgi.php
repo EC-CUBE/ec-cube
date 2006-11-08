@@ -41,7 +41,7 @@ $order_url = "http://mod-i.ccsware.net/ohayou/EntryTran.php";
 
 // 店舗情報の送信
 $arrData = array(
-	'OrderId' => sfGetUniqRandomId(),
+	'OrderId' => sfGetUniqRandomId(),	// 店舗ごとに一意な注文IDを送信する。
 	'TdTenantName' => '',
 	'TdFlag' => '',
 	'ShopId' => 'test',
@@ -50,7 +50,7 @@ $arrData = array(
 	'Currency' => 'JPN',
 	'Tax' => '5',
 	'JobCd' => 'CHECK',
-	'TenantNo' => 'TenantNo',
+	'TenantNo' => '111111111',			// cgi-4で作成した店舗IDを送信する。
 );
 
 $req = new HTTP_Request($order_url);
