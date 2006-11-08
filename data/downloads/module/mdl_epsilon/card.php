@@ -36,7 +36,7 @@ if($_GET["result"] == "1"){
 	// GETデータを完了画面へ送信する
 	$str_get = "?credit_result=" . $_GET["result"];
 	$str_get .= "&memo01=" . 1;
-	$str_get .= "&memo02=" . $_GET["truns_code"];
+	$str_get .= "&memo02=" . $_GET["trans_code"];
 
 	// 完了画面へ
 	header("Location: " . SITE_URL . "shopping/complete.php" . $str_get);

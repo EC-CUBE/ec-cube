@@ -497,15 +497,14 @@ function lfReduceStock($objQuery, $arrID, $quantity) {
 }
 
 // GETの値をインサート用に整える
-function lfGetInsParam(){
-	$arrRet = array();
+function lfGetInsParam($sqlVal){
 	
 	foreach($_GET as $key => $val){
 		// カラムの存在チェック
-		if(sfColumnExists("dtb_order", $key)) $arrRet[$key] = $val;
+		if(sfColumnExists("dtb_order", $key)) $sqlVal[$key] = $val;
 	}
 	
-	return $arrRet;
+	return $sqlVal;
 }
 
 ?>
