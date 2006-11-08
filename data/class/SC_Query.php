@@ -408,5 +408,10 @@ class SC_Query {
 		$result = $this->conn->query($n, $arr, $ignore_err);
 		return $result;
 	}
+	
+	// 自動採番マスタより、値を取得する
+	function getautono(){
+		
+	}
 }
 ?>

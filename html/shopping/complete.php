@@ -44,6 +44,8 @@ sfIsPrePage($objSiteSess);
 // ユーザユニークIDの取得と購入状態の正当性をチェック
 $uniqid = sfCheckNormalAccess($objSiteSess, $objCartSess);
 if ($uniqid != "") {
+	
+	sfprintr($_POST);
 
 	// 完了処理
 	$objQuery = new SC_Query();

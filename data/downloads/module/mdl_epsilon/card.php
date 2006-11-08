@@ -32,14 +32,12 @@ if($_GET["result"] == "1"){
 	
 	// 正常な推移であることを記録しておく
 	$objSiteSess->setRegistFlag();
+	
+	// GETデータを完了画面へPOST送信する
+	sfSendPostData(SITE_URL . "shopping/complete.php", $_GET);
 
 	// 完了画面へ
 	header("Location: " . URL_SHOP_COMPLETE);
-	
-}elseif($_GET["result"] == "0"){
-//	$_SESSION['site']['now_page'] = "";
-	$objSiteSess->unsetUniqId();
-	sfDispSiteError(FREE_ERROR_MSG, "", true, "購入処理中にエラーが発生しました。<br>この手続きは無効となりました。");
 }
 
 // カート集計処理
