@@ -38,7 +38,7 @@ TenantNo=>TenantNo
 */
 
 $entry_url = "http://mod-i.ccsware.net/ohayou/EntryTran.php";
-$exec_url = "https://mod-i.ccsware.net/ohayou/ExecTran.php";
+$exec_url = "http://mod-i.ccsware.net/ohayou/ExecTran.php";
 $order_id = sfGetUniqRandomId();
 
 // 店舗情報の送信
