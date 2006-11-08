@@ -332,6 +332,10 @@ function lfRegistOrder($objQuery, $arrData) {
 	
 	array_merge($sqlval, $arrGet);
 	
+	sfprintr($arrGet);
+	sfprintr($sqlval);
+	exit();
+	
 	// INSERT¤Î¼Â¹Ô
 	$objQuery->insert("dtb_order", $sqlval);
 	
