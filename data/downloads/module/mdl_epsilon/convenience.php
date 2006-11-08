@@ -121,16 +121,11 @@ switch($_POST["mode"]){
 			
 			// データ送信
 			sfPostPaymentData($order_url, $arrSendData);
-			break;
 		}
+		break;
 		
 	default:
 		$objFormParam->setParam($arrData);
-		
-		// 利用可能コンビニ
-		$objFormParam->setValue("convenience", $arrPayment[0]["memo05"]);
-		$objFormParam->splitParamCheckBoxes("convenience");
-		$arrUseConv = $objFormParam->getValue("convenience");
 		
 		foreach($arrUseConv as $key => $val){
 			$arrConv[$val] = $arrConvenience[$val];
@@ -139,6 +134,10 @@ switch($_POST["mode"]){
 		
 		break;
 }
+// 利用可能コンビニ
+$objFormParam->setValue("convenience", $arrPayment[0]["memo05"]);
+$objFormParam->splitParamCheckBoxes("convenience");
+$arrUseConv = $objFormParam->getValue("convenience");
 
 $objPage->arrForm =$objFormParam->getHashArray();
 
