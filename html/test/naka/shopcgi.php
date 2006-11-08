@@ -11,14 +11,14 @@ $order_id = sfGetUniqRandomId();
 // 店舗情報の送信
 $arrData = array(
 	'OrderId' => $order_id,		// 店舗ごとに一意な注文IDを送信する。
-	'TdTenantName' => '',
-	'TdFlag' => '',
-	'ShopId' => 'test000003087',
-	'Amount' => '1000',
-	'ShopPass' => 'lockon',
-	'Currency' => 'JPN',
-	'Tax' => '50',
-	'JobCd' => 'CHECK',
+	'TdTenantName' => '',		// 3D認証時表示用店舗名
+	'TdFlag' => '',				// 3Dフラグ
+	'ShopId' => 'test000003087',// ショップID
+	'ShopPass' => 'lockon',		// ショップパスワード
+	'Currency' => 'JPN',		// 通貨コード
+	'Amount' => '1000',			// 金額
+	'Tax' => '50',				// 消費税
+	'JobCd' => 'CHECK',			// 処理区分
 	'TenantNo' => '111111111',	// cgi-4で作成した店舗IDを送信する。
 );
 
@@ -34,6 +34,8 @@ if (!PEAR::isError($req->sendRequest())) {
 }
 $req->clearPostData();
 $arrRet = lfGetPostArray($response);
+
+sfPrintR($arrRet);
 
 // 決済情報の送信
 $arrData = array(
