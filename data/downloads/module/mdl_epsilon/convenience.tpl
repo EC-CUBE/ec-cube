@@ -42,7 +42,7 @@
 					<!--{foreach key=key item=item from=$arrConv}-->
 					<tr>
 						<label for="<!--{$key}-->">
-							<td align="center" bgcolor="#ffffff" class="fs12"><input type="radio" name="convenience" id="<!--{$key}-->" value="<!--{$key}-->" style="<!--{$arrErr.convenience|sfGetErrorColor}-->"></td>
+							<td align="center" bgcolor="#ffffff" class="fs12"><input type="radio" name="convenience" id="<!--{$key}-->" value="<!--{$key}-->" style="<!--{$arrErr.convenience|sfGetErrorColor}-->" <!--{if $arrForm.convenience == $key}-->checked<!--{/if}-->></td>
 							<td bgcolor="#ffffff" class="fs12"><!--{$item|escape}--></td>
 						</label>
 					</tr>
