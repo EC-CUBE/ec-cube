@@ -81,12 +81,62 @@ function sfPostPaymentData($order_url, $arrData, $err_msg = "<br /><br /><br />§
 		
 		// ªŸ ß§§∂Ë ¨§À§Ë§ÍΩËÕ˝§Ú§Ô§±§Î
 		if($payment_kbn == PAYMENT_CONVENIENCE_ID){
-			//$url = URL_SHOP_COMPLETE;
-			$url = SITE_URL . "shopping/complete.php";
+			//•≥•Û•”•À§ŒºÔŒ‡
+			/*
+			switch($_POST['convenience']) {
+			//•ª•÷•Û•§•Ï•÷•Û
+			case '11':
+				$arrRet['cv_type'] = '1';										//•≥•Û•”•À§ŒºÔŒ‡
+				$arrRet['cv_payment_url'] = $arrResult[RES_HARAIKOMI_URL];		// ßπ˛…ºURL(PC)
+				$arrRet['cv_receipt_no'] = $arrResult[RES_RECEIPT_NO];			// ßπ˛…º»÷πÊ
+				break;
+			//•’•°•ﬂ•Í°º•ﬁ°º•»
+			case '21':
+				$company_code = substr($arrResult[RES_RECEIPT_NO], 0, 5);
+				$order_no = substr($arrResult[RES_RECEIPT_NO], 6, 12);
+				$arrRet['cv_type'] = '2';						//•≥•Û•”•À§ŒºÔŒ‡
+				$arrRet['cv_company_code'] = $company_code;	//¥Î∂»•≥°º•…
+				$arrRet['cv_order_no'] = $order_no;			//ºı…’»÷πÊ
+				break;
+			//•Ì°º•Ω•Û
+			case '31':
+				$arrRet['cv_type'] = '4';									//•≥•Û•”•À§ŒºÔŒ‡
+				$arrRet['cv_receipt_no'] = $arrResult[RES_RECEIPT_NO];		// ßπ˛…º»÷πÊ
+				break;
+			//•ª•§•≥°º•ﬁ°º•»
+			case '32':
+				$arrRet['cv_type'] = '4';									//•≥•Û•”•À§ŒºÔŒ‡
+				$arrRet['cv_receipt_no'] = $arrResult[RES_RECEIPT_NO];		// ßπ˛…º»÷πÊ
+				break;
+			//•ﬂ•À•π•»•√•◊
+			case '33':
+				$mobile_url = preg_replace("/https:\/\/.+?\/JLPcon/","https://w2.kessai.info/JLM/JLMcon", $arrResult[RES_HARAIKOMI_URL]);
+				$arrRet['cv_type'] = '3';										//•≥•Û•”•À§ŒºÔŒ‡
+				$arrRet['cv_payment_url'] = $arrResult[RES_HARAIKOMI_URL];		// ßπ˛…ºURL
+				$arrRet['cv_payment_mobile_url'] = $mobile_url;					// ßπ˛…ºURL(•‚•–•§•Î)
+				break;
+			//•«•§•Í°º•‰•ﬁ•∂•≠
+			case '34':
+				$arrRet['cv_type'] = '5';										//•≥•Û•”•À§ŒºÔŒ‡
+				$arrRet['cv_payment_url'] = $arrResult[RES_HARAIKOMI_URL];		// ßπ˛…ºURL(PC)
+				break;
+			}
+			
+			//ªŸ ß¥¸∏¬
+			$arrRet['cv_payment_limit'] = lfGetPayLimit();
+			//•≥•Û•”•À∑Ë∫—æ Û§Ú≥ «º
+			$sqlval['conveni_data'] = serialize($arrRet);			
+			*/
+			sfprintr($arrVal);
+			$url = URL_SHOP_COMPLETE;
+
+			// ºı√Ì∞Ïª˛•∆°º•÷•Î§Àππø∑
+			sfRegistTempOrder($uniqid, $arrVal);
+			
 		}else{
 			$url = sfGetXMLValue($arrVal,'RESULT','REDIRECT');
 		}
-		header("Location: " . $url);
+		//header("Location: " . $url);
 	}
 }
 
