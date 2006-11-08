@@ -120,7 +120,7 @@ switch($_POST["mode"]){
 			);
 			
 			// データ送信
-			sfPostPaymentData($order_url, $arrSendData);
+			sfPostPaymentData($order_url, $arrSendData, "", false, PAYMENT_CONVENIENCE_ID);
 		}
 		break;
 		
