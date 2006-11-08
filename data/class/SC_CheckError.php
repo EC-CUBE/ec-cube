@@ -377,7 +377,7 @@ class SC_CheckError {
 		if(isset($this->arrErr[$value[1]])) {
 			return;
 		}
-		if(strlen($this->arrParam[$value[1]]) > 0 && ! ereg("^(\xA5[\xA1-\xF6]|\xA1\xBC|\xA1\xA6|\xA1\xA1|\x20)+$", $this->arrParam[$value[1]] ) ) { 
+		if(strlen($this->arrParam[$value[1]]) > 0 && ! mb_ereg("^([ァ-ヶ]|[ー])+$", $this->arrParam[$value[1]] ) )
 			$this->arrErr[$value[1]] = "※ " . $value[0] . "はカタカナで入力してください。<br />";	
 		}
 	}
