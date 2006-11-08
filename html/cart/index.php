@@ -104,6 +104,9 @@ if($objCustomer->isLoginSuccess()) {
 $tpl_deliv_free = $objPage->arrInfo['free_rule'] - $objPage->tpl_total_pretax;
 $objPage->tpl_deliv_free = $tpl_deliv_free;
 
+// 前頁のURLを取得
+$objPage->tpl_prev_url = $objCartSess->getPrevURL();
+
 $objView->assignobj($objPage);
 $objView->display(SITE_FRAME);
 //--------------------------------------------------------------------------------------------------------------------------
