@@ -120,7 +120,8 @@ case 'cart':
 		if(!$objPage->tpl_classcat_find2) {
 			$classcategory_id2 = '0';
 		}
-
+		
+		$objCartSess->setPrevURL($_SERVER['REQUEST_URI']);
 		$objCartSess->addProduct(array($_POST['product_id'], $classcategory_id1, $classcategory_id2), $objFormParam->getValue('quantity'));
 		header("Location: " . URL_CART_TOP);
 

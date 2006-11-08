@@ -190,6 +190,11 @@ class SC_CartSession {
 		}
 	}
 	
+	// 前頁のURLを記録しておく
+	function setPrevURL($url) {
+		$_SESSION[$this->key]['prev_url'] = $url;
+	}
+	
 	// キーが一致した商品の削除
 	function delProductKey($keyname, $val) {
 		$max = count($_SESSION[$this->key]);
