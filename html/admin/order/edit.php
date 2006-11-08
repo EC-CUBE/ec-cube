@@ -99,6 +99,9 @@ $objPage->arrDelivTime = sfArrKeyValue($arrRet, 'time_id', 'deliv_time');
 $objPage->arrForm = $objFormParam->getFormParamList();
 
 $objPage->arrInfo = $arrInfo;
+
+$objPage->arrDisp["payment_info"] = array("test"=>array("name"=>"test","value"=>"val"));
+
 $objView->assignobj($objPage);
 // 表示モード判定
 if(!$objPage->disp_mode) {

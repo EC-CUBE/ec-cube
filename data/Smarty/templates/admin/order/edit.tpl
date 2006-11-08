@@ -362,8 +362,9 @@
 							</tr>
 							<tr class="fs12n">
 								<td bgcolor="#ffffff" colspan="6">
-									<!--{assign var=key value="payment_id"}-->
-									<!--{$arrDisp.payment_info|escape|nl2br}-->
+									<!--{foreach key=key item=item from=$arrDisp.payment_info}-->
+									<!--{$item.name}-->¡§<!--{$item.value}--><br/>
+									<!--{/foreach}-->
 								</td>
 							</tr>
 							
