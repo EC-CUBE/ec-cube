@@ -39,7 +39,7 @@ $arrRet = lfGetPostArray($response);
 $arrData = array(
 	'AccessId' => $arrRet['ACCESS_ID'],
 	'AccessPass' => $arrRet['ACCESS_PASS'],
-	'OrderId' => sfGetUniqRandomId(),
+	'OrderId' => $order_id,
 	'RetURL' => 'http://test.ec-cube.net/ec-cube/test/naka/recv.php',
 	// プロパーカードを扱わない場合はVISA固定でOK
 	'CardType' => 'VISA, 11111, 111111111111111111111111111111111111, 1111111111',
