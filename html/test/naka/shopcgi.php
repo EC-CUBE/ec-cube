@@ -45,7 +45,16 @@ $arrData = array(
 	'RetURL' => 'http://test.ec-cube.net/ec-cube/test/naka/recv.php',
 	// プロパーカードを扱わない場合はVISA固定でOK
 	'CardType' => 'VISA, 11111, 111111111111111111111111111111111111, 1111111111',
+	// 支払い方法
+	/*
+		1:一括
+		2:分割
+		3:ボーナス一括
+		4:ボーナス分割
+		5:リボ払い
+	 */
 	'Method' => '2',
+	// 支払回数
 	'PayTimes' => '4',
 	'CardNo1' => '4444',
 	'CardNo2' => '4444',
@@ -53,11 +62,13 @@ $arrData = array(
 	'CardNo4' => '5780',
     'ExpireMM' => '06',
     'ExpireYY' => '07',
+	// 加盟店自由項目返却フラグ
     'ClientFieldFlag' => '1',
     'ClientField1' => 'f1',
     'ClientField2' => 'f2',
     'ClientField3' => 'f3',
-	'ModiFlag' => '1',	// リダイレクトページでの応答を受け取らない。
+	// リダイレクトページでの応答を受け取らない
+	'ModiFlag' => '1',	
 );
 
 $req = new HTTP_Request($exec_url);
