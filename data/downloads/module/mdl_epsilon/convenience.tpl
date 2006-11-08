@@ -1,21 +1,23 @@
+<!--{*
+ * Copyright(c) 2000-2006 LOCKON CO.,LTD. All Rights Reserved.
+ *
+ * http://www.lockon.co.jp/
+ *}-->
 <!--▼CONTENTS-->
-<table width="780" cellspacing="0" cellpadding="0" summary=" ">
+<table width="760" border="0" cellspacing="0" cellpadding="0" summary=" ">
 	<tr>
-		<td bgcolor="#cccccc"><img src="../img/_.gif" width="1" height="18" alt="" /></td>
-		<td bgcolor="#ffffff" colspan="3"><img src="../img/_.gif" width="778" height="1" alt="" /></td>
-
-		<td bgcolor="#cccccc"><img src="../img/_.gif" width="1" height="18" alt="" /></td>		
-	</tr>
-	<tr>
-		<td bgcolor="#cccccc"><img src="../img/_.gif" width="1" height="10" alt="" /></td>
-		<td bgcolor="#ffffff"><img src="../img/_.gif" width="10" height="1" alt="" /></td>
-		<td><img src="../img/shopping/flow06.gif" width="758" height="78" alt="お買い物の流れ" /></td>
-		<td bgcolor="#ffffff"><img src="../img/_.gif" width="10" height="1" alt="" /></td>
-		<td bgcolor="#cccccc"><img src="../img/_.gif" width="1" height="10" alt="" /></td>		
-	</tr>
-</table>
-
-<table width="780" cellspacing="0" cellpadding="0" summary=" ">
+		<td align="center" bgcolor="#ffffff">
+		<!--▼MAIN ONTENTS-->
+		<!--購入手続きの流れ-->
+		<table width="700" border="0" cellspacing="0" cellpadding="0" summary=" ">
+			<tr>
+				<td><img src="<!--{$smarty.const.URL_DIR}-->img/shopping/flow03.gif" width="700" height="36" alt="購入手続きの流れ"></td>
+			</tr>
+			<tr><td height="15"></td></tr>
+		</table>
+		<!--購入手続きの流れ-->
+		
+		<table width="700" border="0" cellspacing="0" cellpadding="0" summary=" ">
 	<tr>
 		<td bgcolor="#cccccc" width="1"><img src="../img/_.gif" width="1" height="10" alt="" /></td>
 		<td bgcolor="#ffffff" width="9"><img src="../img/_.gif" width="39" height="1" alt="" /></td>
@@ -69,19 +71,22 @@
 		</td>
 		<td bgcolor="#ffffff" width="10"><img src="../img/_.gif" width="39" height="1" alt="" /></td>
 		<td bgcolor="#cccccc" width="1"><img src="../img/_.gif" width="1" height="10" alt="" />
-<!-- EBiS start -->
-<script type="text/javascript">
-if ( location.protocol == 'http:' ){ 
-	strServerName = 'http://daikoku.ebis.ne.jp'; 
-} else { 
-	strServerName = 'https://secure2.ebis.ne.jp/ver3';
-}
-cid = 'tqYg3k6U'; pid = 'shopping_card'; m1id=''; a1id=''; o1id=''; o2id=''; o3id=''; o4id=''; o5id='';
-document.write("<scr" + "ipt type=\"text\/javascript\" src=\"" + strServerName + "\/ebis_tag.php?cid=" + cid + "&pid=" + pid + "&m1id=" + m1id + "&a1id=" + a1id + "&o1id=" + o1id + "&o2id=" + o2id + "&o3id=" + o3id + "&o4id=" + o4id + "&o5id=" + o5id + "\"><\/scr" + "ipt>");
-</script>
-<!-- EBiS end -->
-		</td>
 
+			<tr>
+				<td align="center">
+					<a href="<!--{$smarty.server.PHP_SELF}-->" onmouseover="chgImgImageSubmit('<!--{$smarty.const.URL_DIR}-->img/common/b_back_on.gif',back03)" onmouseout="chgImgImageSubmit('<!--{$smarty.const.URL_DIR}-->img/common/b_back.gif',back03)" onclick="fnModeSubmit('return', '', ''); return false;"><img src="<!--{$smarty.const.URL_DIR}-->img/common/b_back.gif" width="150" height="30" alt="戻る" border="0" name="back03" id="back03"/></a>
+					<img src="<!--{$smarty.const.URL_DIR}-->img/_.gif" width="20" height="" alt="" />
+					<!--{if $payment_type != ""}-->
+						<input type="image" onmouseover="chgImgImageSubmit('<!--{$smarty.const.URL_DIR}-->img/common/b_next_on.gif',this)" onmouseout="chgImgImageSubmit('<!--{$smarty.const.URL_DIR}-->img/common/b_next.gif',this)" src="<!--{$smarty.const.URL_DIR}-->img/common/b_next.gif" width="150" height="30" alt="次へ" border="0" name="next" id="next" />
+					<!--{else}-->
+						<input type="image" onmouseover="chgImgImageSubmit('<!--{$smarty.const.URL_DIR}-->img/shopping/b_ordercomp_on.gif',this)" onmouseout="chgImgImageSubmit('<!--{$smarty.const.URL_DIR}-->img/shopping/b_ordercomp.gif',this)" src="<!--{$smarty.const.URL_DIR}-->img/shopping/b_ordercomp.gif" width="150" height="30" alt="ご注文完了ページへ" border="0" name="next" id="next" />
+					<!--{/if}-->
+				</td>
+			</tr>
+			</form>
+		</table>
+		<!--▲MAIN ONTENTS-->
+		</td>
 	</tr>
 </table>
 <!--▲CONTENTS-->
