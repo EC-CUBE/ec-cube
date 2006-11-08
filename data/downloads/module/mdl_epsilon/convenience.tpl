@@ -34,9 +34,9 @@
 				<td bgcolor="#cccccc">
 				<!--お支払方法・お届け時間の指定・その他お問い合わせここから-->		
 				<table width="700" border="0" cellspacing="1" cellpadding="10" summary=" ">
-					<tr class="fs12n">
-						<td id="select">選択</td>
-						<td id="payment">コンビニの種類</td>
+					<tr>
+						<td width="150" bgcolor="#f0f0f0" class="fs12">選択</td>
+						<td width="507" bgcolor="#f0f0f0" class="fs12">コンビニの種類</td>
 					</tr>
 					<!--{foreach key=key item=item from=$arrConv}-->
 					<tr bgcolor="#ffffff" class="fs12n">
