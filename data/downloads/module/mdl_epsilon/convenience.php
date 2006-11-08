@@ -80,7 +80,7 @@ if($_GET["trans_code"] != ""){
 switch($_POST["mode"]){
 	case "send":
 		// 送信データ生成
-		$arrData = array(
+		$arrSendData = array(
 			'contract_code' => $arrPayment[0]["memo01"],						// 契約コード
 			'user_id' => $arrData["customer_id"],								// ユーザID
 			'user_name' => $arrData["order_name01"].$arrData["order_name02"],	// ユーザ名
@@ -104,10 +104,10 @@ switch($_POST["mode"]){
 			
 		);
 		
-		sfprintr($arrData);
+		sfprintr($arrSendData);
 		
 		// データ送信
-		//sfPostPaymentData($order_url, $arrData);
+		//sfPostPaymentData($order_url, $arrSendData);
 		break;
 		
 	//戻る
