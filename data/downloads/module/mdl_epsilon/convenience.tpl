@@ -32,7 +32,8 @@
 			<input type="hidden" name="uniqid" value="<!--{$tpl_uniqid}-->">
 			<tr>
 				<td bgcolor="#cccccc">
-				<!--お支払方法・お届け時間の指定・その他お問い合わせここから-->		
+				<!--お支払方法・お届け時間の指定・その他お問い合わせここから-->
+				<span class="red"><!--{$arrErr.convenience}--></span>
 				<table width="700" border="0" cellspacing="1" cellpadding="10" summary=" ">
 					<tr>
 						<td width="10%" align="center" bgcolor="#f0f0f0" class="fs12">選択</td>
