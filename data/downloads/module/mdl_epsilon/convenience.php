@@ -105,7 +105,7 @@ switch($_POST["mode"]){
 	break;
 	
 	default:
-	$objFormParam->setParam($arrData);
+	$objFormParam->setParam($arrPayment);
 	$objFormParam->splitParamCheckBoxes("convenience");
 	sfprintr($objFormParam->getHashArray());
 //	sfprintr($arrData);
