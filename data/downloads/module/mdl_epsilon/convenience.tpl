@@ -40,8 +40,8 @@
 					</tr>
 					<!--{foreach key=key item=item from=$arrConv}-->
 					<tr bgcolor="#ffffff" class="fs12n">
-						<td id="select_c"><input type="radio" name="convenience" id="<!--{$key}-->" value="<!--{$key}-->" style="<!--{$arrErr.convenience|sfGetErrorColor}-->"></td>
-						<label for="<!--{$key}-->"><td class="fs12n" id="payment_c"><!--{$item|escape}--></td></label>
+						<label for="<!--{$key}-->"><td id="select_c"><input type="radio" name="convenience" id="<!--{$key}-->" value="<!--{$key}-->" style="<!--{$arrErr.convenience|sfGetErrorColor}-->"></td>
+						<td class="fs12n" id="payment_c"><!--{$item|escape}--></td></label>
 					</tr>
 					<!--{/foreach}-->
 				</table>
