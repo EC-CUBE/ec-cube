@@ -62,7 +62,7 @@ if($_GET["result"] == "1"){
 	// トランザクションコード
 	$arrMemo["trans_code"] = array("name"=>"Epsilonトランザクションコード", "value" => $_GET["trans_code"]);
 	$arrVal["memo02"] = serialize($arrMemo);
-	
+
 	// 受注一時テーブルに更新
 	sfRegistTempOrder($uniqid, $arrVal);
 

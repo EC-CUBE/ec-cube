@@ -358,7 +358,7 @@
 								</select></td>
 							</tr>
 							<tr class="fs12n">
-								<td bgcolor="#f2f1ec" colspan="6">▼お支払情報</td>
+								<td bgcolor="#f2f1ec" colspan="6">▼<!--{$arrDisp.payment_type}-->情報</td>
 							</tr>
 							<tr class="fs12n">
 								<td bgcolor="#ffffff" colspan="6">
