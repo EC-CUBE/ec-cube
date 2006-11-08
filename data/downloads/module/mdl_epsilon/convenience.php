@@ -120,6 +120,8 @@ switch($_POST["mode"]){
 		break;
 		
 	default:
+		$objFormParam->setParam($arrData);
+		
 		// 利用可能コンビニ
 		$objFormParam->setValue("convenience", $arrPayment[0]["memo05"]);
 		$objFormParam->splitParamCheckBoxes("convenience");
