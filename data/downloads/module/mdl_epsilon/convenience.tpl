@@ -58,17 +58,13 @@
 				<!--お支払方法・お届け時間の指定・その他お問い合わせここから-->		
 				<table width="700" border="0" cellspacing="1" cellpadding="10" summary=" ">
 					<tr>
-						<td width="10%" align="center" bgcolor="#f0f0f0" class="fs12">選択</td>
-						<td width="90%" bgcolor="#f0f0f0" class="fs12">コンビニの種類</td>
+						<td width="10%" align="center" bgcolor="#f0f0f0" class="fs12">お名前</td>
+						<td width="90%" bgcolor="#f0f0f0" class="fs12"></td>
 					</tr>
-					<!--{foreach key=key item=item from=$arrConv}-->
 					<tr>
-						<label for="<!--{$key}-->">
-							<td align="center" bgcolor="#ffffff" class="fs12"><input type="radio" name="convenience" id="<!--{$key}-->" value="<!--{$key}-->" style="<!--{$arrErr.convenience|sfGetErrorColor}-->"></td>
-							<td bgcolor="#ffffff" class="fs12"><!--{$item|escape}--></td>
-						</label>
+						<td width="10%" align="center" bgcolor="#f0f0f0" class="fs12">電話番号</td>
+						<td width="90%" bgcolor="#f0f0f0" class="fs12"></td>
 					</tr>
-					<!--{/foreach}-->
 				</table>
 				<!--お支払方法・お届け時間の指定・その他お問い合わせここまで-->
 				</td>
