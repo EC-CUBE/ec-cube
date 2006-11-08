@@ -21,6 +21,13 @@ class SC_FormParam {
 	// コンストラクタ
 	function SC_FormParam() {
 		$this->check_dir = IMAGE_SAVE_DIR;
+		$this->disp_name = array();
+		$this->keyname = array();
+		$this->length = array();
+		$this->convert = array();
+		$this->arrCheck = array();
+		$this->default = array();
+		$this->input_db = array();
 	}
 	
 	// パラメータの追加
