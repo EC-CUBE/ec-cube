@@ -6,13 +6,13 @@ $strmask = "/home/web/test.ec-cube.net/cgi-bin/ShopCGI/common/strmask/FreeBSD/st
 $cmd = $strmask . " -d " . $_GET['SendData'];
 
 $tmpResult = popen($cmd, "r");
-	
+
 // 結果取得
 while( ! FEOF ( $tmpResult ) ) {
 	$result .= FGETS($tmpResult);
 }
 pclose($tmpResult);				// 	パイプを閉じる
 
-gfDebugLog($result);
+gfDebugLog($cmd);
 
 ?>
