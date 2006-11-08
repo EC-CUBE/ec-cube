@@ -74,7 +74,7 @@ function sfPostPaymentData($order_url, $arrData, $err_msg = "<br /><br /><br />¤
 	
 	if($err_code != "") {
 		$err_detail = sfGetXMLValue($arrVal,'RESULT','ERR_DETAIL');
-		sfDispSiteError(FREE_ERROR_MSG, "", true, "¹ØÆþ½èÍýÃæ¤Ë°Ê²¼¤Î¥¨¥é¡¼¤¬È¯À¸¤·¤Þ¤·¤¿¡£<br /><br /><br />¡¦" . $err_detail . $err_msg);
+		sfDispSiteError(FREE_ERROR_MSG, "", $return_top, "¹ØÆþ½èÍýÃæ¤Ë°Ê²¼¤Î¥¨¥é¡¼¤¬È¯À¸¤·¤Þ¤·¤¿¡£<br /><br /><br />¡¦" . $err_detail . $err_msg);
 	} else {
 		// Àµ¾ï¤Ê¿ä°Ü¤Ç¤¢¤ë¤³¤È¤òµ­Ï¿¤·¤Æ¤ª¤¯
 		$objSiteSess->setRegistFlag();
