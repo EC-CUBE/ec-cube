@@ -30,8 +30,7 @@
 			<form name="form1" id="form1" method="post" action="<!--{$smarty.server.PHP_SELF}-->">
 			<input type="hidden" name="mode" value="send">
 			<input type="hidden" name="uniqid" value="<!--{$tpl_uniqid}-->">
-			<tr><td>				<span class="red"><!--{$arrErr.convenience}--></span>
-			</td></tr>
+			<tr><td class="fs12n"><span class="red"><!--{$arrErr.convenience}--></span></td></tr>
 			<tr>
 				<td bgcolor="#cccccc">
 				<!--お支払方法・お届け時間の指定・その他お問い合わせここから-->
