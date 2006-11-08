@@ -132,15 +132,6 @@ if (!PEAR::isError($req->sendRequest())) {
 }
 $req->clearPostData();
 
-/*
-if($response != "") {
-	$arrTemp = split("&", $response);
-	foreach($arrTemp as $ret) {
-		list($key, $val) = split("=", $ret);
-		$arrRet[$key] = $val;
-	}
-}
-*/
 print("<!--");
 sfPrintR($response);
 print("-->");
