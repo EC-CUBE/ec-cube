@@ -41,7 +41,7 @@ $order_url = "http://mod-i.ccsware.net/ohayou/EntryTran.php";
 
 // Å¹ÊŞ¾ğÊó¤ÎÁ÷¿®
 $arrData = array(
-	'OrderId' => sfGetUniqRandomId(),
+	'OrderId' => "a",//sfGetUniqRandomId(),
 	'TdTenantName' => '',
 	'TdFlag' => '',
 	'ShopId' => 'test',
