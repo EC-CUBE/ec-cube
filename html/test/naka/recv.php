@@ -13,6 +13,19 @@ while( ! FEOF ( $tmpResult ) ) {
 }
 pclose($tmpResult);				// 	パイプを閉じる
 
-gfDebugLog($result);
+$arrRet = lfGetPostArray($result);
+gfDebugLog($arrRet);
 
+//---------------------------------------------------------------------------------------------------------------------------------
+function lfGetPostArray($text) {
+	if($text != "") {
+		$text = ereg_replace("[\n\r]", "", $text);
+		$arrTemp = split("&", $text);
+		foreach($arrTemp as $ret) {
+			list($key, $val) = split("=", $ret);
+			$arrRet[$key] = $val;
+		}
+	}
+	return $arrRet;
+}
 ?>
