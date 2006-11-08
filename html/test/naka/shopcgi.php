@@ -66,7 +66,15 @@ if (!PEAR::isError($req->sendRequest())) {
 }
 $req->clearPostData();
 
-print($response);
+if($response != "") {
+	$arrTemp = split("&", $response);
+	foreach($arrTemp as $ret) {
+		list($key, $val) = split("=", $ret);
+		$arrRet[$key] = $val;
+	}
+}
+
+sfPrintR($arrRet);
 
 // 決済情報の送信
 
