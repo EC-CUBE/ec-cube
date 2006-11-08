@@ -36,7 +36,7 @@ if($_GET["result"] == "1"){
 	// GETデータを完了画面へPOST送信する
 	//sfSendPostData(SITE_URL . "shopping/complete.php", $_GET);
 	
-	$str_get = "?result = " . $_GET["result"];
+	$str_get = "?result=" . $_GET["result"];
 	foreach($_GET as $key => $val){
 		if($key != "result") $str_get .= "&" . $key . "=" . $val;
 	}
