@@ -98,19 +98,18 @@ switch($_POST["mode"]){
 			'memo1' => ECCUBE_PAYMENT,											// 予備01
 			'memo2' => ''														// 予備02
 		);
-		
 		// データ送信
 		sfPostPaymentData($order_url, $arrData);
-	
-	break;
+		break;
 	
 	default:
-	$objFormParam->setValue("convenience", $arrPayment[0]["memo05"]);
-	$objFormParam->splitParamCheckBoxes("convenience");
-	sfprintr($objFormParam->getHashArray());
-//	sfprintr($arrData);
-	sfprintr($arrPayment);
-	break;
+		// 利用可能コンビニ
+		$objFormParam->setValue("convenience", $arrPayment[0]["memo05"]);
+		$objFormParam->splitParamCheckBoxes("convenience");
+		$arrConv = $objFormParam->getValue("convenience");
+		sfprintr($arrConv);
+		sfprintr($arrPayment);
+		break;
 }
 
 $objView->assignobj($objPage);
