@@ -100,8 +100,6 @@ $objPage->arrForm = $objFormParam->getFormParamList();
 
 $objPage->arrInfo = $arrInfo;
 
-$objPage->arrDisp["payment_info"] = array("test"=>array("name"=>"test","value"=>"val"), "test2"=>array("name"=>"test2","value"=>"val2"));
-
 $objView->assignobj($objPage);
 // 表示モード判定
 if(!$objPage->disp_mode) {
@@ -180,6 +178,10 @@ function lfGetOrderData($order_id) {
 		$arrRet = sfSwapArray($arrRet);
 		$objPage->arrDisp = array_merge($objPage->arrDisp, $arrRet);
 		$objFormParam->setParam($arrRet);
+		
+		// その他支払い情報を表示
+		$objPage->arrDisp["payment_info"] = array("test"=>array("name"=>"test","value"=>"val"), "test2"=>array("name"=>"test2","value"=>"val2"));
+		
 	}
 }
 
