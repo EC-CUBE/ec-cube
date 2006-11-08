@@ -33,9 +33,7 @@ if($_GET["result"] == "1"){
 	// 正常な推移であることを記録しておく
 	$objSiteSess->setRegistFlag();
 	
-	// GETデータを完了画面へPOST送信する
-	//sfSendPostData(SITE_URL . "shopping/complete.php", $_GET);
-	
+	// GETデータを完了画面へ送信する
 	$str_get = "?result=" . $_GET["result"];
 	foreach($_GET as $key => $val){
 		if($key != "result") $str_get .= "&" . $key . "=" . $val;
