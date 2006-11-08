@@ -119,6 +119,7 @@ if($_POST['mode'] == "cart" && $_POST['product_id'] != "") {
 			if(!$objPage->tpl_classcat_find2[$_POST['product_id']]) {
 				$classcategory_id2 = '0';
 			}
+			$objCartSess->setPrevURL($_SERVER['REQUEST_URI']);
 			$objCartSess->addProduct(array($_POST['product_id'], $classcategory_id1, $classcategory_id2), $_POST[$quantity]);
 			header("Location: " . URL_CART_TOP);
 			exit;
