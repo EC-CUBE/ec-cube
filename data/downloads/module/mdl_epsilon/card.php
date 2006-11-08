@@ -67,7 +67,7 @@ if($_GET["result"] == "1"){
 	sfRegistTempOrder($uniqid, $arrVal);
 
 	// 完了画面へ
-	header("Location: " . SITE_URL . "shopping/complete.php");
+	header("Location: " .  URL_SHOP_COMPLETE);
 }
 
 // 送信データ生成
