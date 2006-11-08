@@ -34,7 +34,7 @@ if($_GET["result"] == "1"){
 	$objSiteSess->setRegistFlag();
 	
 	// GETデータを完了画面へ送信する
-	$str_get = "?result=" . $_GET["result"];
+	$str_get = "?payment_type=" . 1;
 	foreach($_GET as $key => $val){
 		if($key != "result") $str_get .= "&" . $key . "=" . $val;
 	}
