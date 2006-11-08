@@ -327,6 +327,10 @@ function lfRegistOrder($objQuery, $arrData) {
 	$order_id = $arrData['order_id'];		// オーダーID
 	$sqlval['create_date'] = 'now()';		// 受注日
 	
+	if($_GET
+		
+	}
+	
 	// INSERTの実行
 	$objQuery->insert("dtb_order", $sqlval);
 	
