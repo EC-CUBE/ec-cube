@@ -39,6 +39,7 @@ TenantNo=>TenantNo
 
 $order_url = "http://mod-i.ccsware.net/ohayou/EntryTran.php";
 
+// 店舗情報の送信
 $arrData = array(
 	'OrderId' => '2006-11-08-12-55-26-190',
 	'TdTenantName' => '',
@@ -66,6 +67,8 @@ if (!PEAR::isError($req->sendRequest())) {
 $req->clearPostData();
 
 print($response);
+
+// 決済情報の送信
 
 
 ?>
