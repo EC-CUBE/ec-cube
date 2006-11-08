@@ -41,7 +41,11 @@
 					</tr>
 					<!--{foreach key=key item=item from=$arrCONVENIENCE}-->
 					<tr>
-						<td id="select_c"><input type="radio" name="convenience" value="<!--{$key}-->" style="<!--{$arrErr.convenience|sfGetErrorColor}-->"></td>
+						<td id="select_c">
+						<!--{assign var=key value="convenience"}-->
+						<span class="red12"><!--{$arrErr[$key]}--></span>
+						<!--{html_checkboxes_ex name="$key" options=$arrConv selected=$arrForm[$key].value style=$arrErr[$key]|sfGetErrorColor}-->
+						</td>
 						<td class="fs12n" id="payment_c"><!--{$item|escape}--></td>
 					</tr>
 					<!--{/foreach}-->

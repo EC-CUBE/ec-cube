@@ -12,8 +12,6 @@ require_once(MODULE_PATH . "mdl_epsilon/mdl_epsilon.inc");
 class LC_Page {
 	function LC_Page() {
 		$this->tpl_mainpage = "shopping/convenience.tpl";
-		global $arrCONVENIENCE;
-		$this->arrCONVENIENCE = $arrCONVENIENCE;
 		/*
 		 session_start時のno-cacheヘッダーを抑制することで
 		 「戻る」ボタン使用時の有効期限切れ表示を抑制する。
@@ -23,7 +21,7 @@ class LC_Page {
 	}
 }
 
-
+global $arrConvenience;
 $objPage = new LC_Page();
 $objView = new SC_SiteView();
 $objSiteInfo = $objView->objSiteInfo;
@@ -106,7 +104,12 @@ switch($_POST["mode"]){
 		// 利用可能コンビニ
 		$objFormParam->setValue("convenience", $arrPayment[0]["memo05"]);
 		$objFormParam->splitParamCheckBoxes("convenience");
-		$arrConv = $objFormParam->getValue("convenience");
+		$arrUseConv = $objFormParam->getValue("convenience");
+		
+		foreach($arrUseConv as $key => $val){
+			$arrConv[$val] = $arrConvenience[$val];
+		}
+		
 		sfprintr($arrConv);
 		sfprintr($arrPayment);
 		break;
