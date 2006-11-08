@@ -90,7 +90,7 @@ switch($_POST["mode"]){
 	case "send":
 		$arrErr = array();
 		$arrErr = $objFormParam->checkError();
-		$objErr = $arrErr;
+		$objPage->arrErr = $arrErr;
 		sfprintr($arrErr);
 	
 		if(count($arrErr) <= 0){
