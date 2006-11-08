@@ -65,6 +65,17 @@ if($objCustomer->isLoginSuccess()) {
 	$objPage->tpl_user_point = $objCustomer->getValue('point');
 }
 
+// 決済区分を取得する
+$payment_type = "";
+if(sfColumnExists("dtb_payment", "memo01")){
+	// MEMO03に値が入っている場合には、モジュール追加されたものとみなす
+	$sql = "SELECT memo03 FROM dtb_payment WHERE payment_id = ?";
+	$arrPayment = $objQuery->getall($sql, array($arrData['payment_id']));
+	$payment_type = $arrPayment[0]["memo03"];
+}
+$objPage->payment_type = $payment_type;
+
+
 switch($_POST['mode']) {
 // 前のページに戻る
 case 'return':
@@ -90,34 +101,18 @@ case 'confirm':
 	// 正常に登録されたことを記録しておく
 	$objSiteSess->setRegistFlag();
 	
-	// 決済区分を取得する
-	if(sfColumnExists("dtb_payment", "memo01")){
-		$sql = "SELECT memo03 FROM dtb_payment WHERE payment_id = ?";
-		$arrPayment = $objQuery->getall($sql, array($arrData['payment_id']));
-	}
-	
 	// 決済方法により画面切替
-	switch($arrPayment[0]["memo03"]) {
-	case PAYMENT_CREDIT_ID:
-	case PAYMENT_CONVENIENCE_ID:
-		//header("Location: " . URL_SHOP_CREDIT);
-		//header("Location: " . URL_SHOP_CONVENIENCE);
+	if($payment_type != "") {
 		$_SESSION["payment_id"] = $arrData['payment_id'];
 		header("Location: " . URL_SHOP_MODULE);
-		break;
-/*
-	case PAYMENT_LOAN_ID:
-		header("Location: " . URL_SHOP_LOAN);
-		break;
-*/
-	default:
+	}else{
 		header("Location: " . URL_SHOP_COMPLETE);
-		break;
 	}
 	break;
 default:
 	break;
 }
+
 
 $objPage->arrData = $arrData;
 $objPage->arrInfo = $arrInfo;
