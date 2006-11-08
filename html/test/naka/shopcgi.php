@@ -76,17 +76,7 @@ if($response != "") {
 	}
 }
 
-// 応答パターン
-/*
-	Array
-	(
-	    [ERR_CODE] => 0
-	    [ERR_INFO] => OK
-	    [ACCESS_ID] => dfc9c975e1791cb2d79a2bbe4684f3df
-	    [ACCESS_PASS] => fbab58b057608871808800f5ff6a0d23
-	
-	)
-*/
+sfPrintR($arrRet);
 
 // 決済情報の送信
 /*
