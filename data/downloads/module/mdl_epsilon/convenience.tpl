@@ -33,34 +33,17 @@
 			<tr>
 				<td bgcolor="#cccccc">
 				<!--お支払方法・お届け時間の指定・その他お問い合わせここから-->		
-				<table width="700" border="0" cellspacing="1" cellpadding="10" summary=" ">
-					<tr>
-						<td colspan="2" bgcolor="#f0f0f0" class="fs12n"><strong>▼お支払方法・お届け時間の指定・その他お問い合わせ</strong></td>
+				<table cellspacing="1" cellpadding="8" summary=" " id="frame">
+					<tr class="fs12n">
+						<td id="select">選択</td>
+						<td id="payment">コンビニの種類</td>
 					</tr>
+					<!--{foreach key=key item=item from=$arrConv}-->
 					<tr>
-						<td width="150" bgcolor="#f0f0f0" class="fs12">お支払方法</td>
-						<td width="507" bgcolor="#ffffff" class="fs12"><!--{$arrData.payment_method|escape}--></td>
+						<td id="select_c"><input type="radio" name="convenience" id="<!--{$key}-->" value="<!--{$key}-->" style="<!--{$arrErr.convenience|sfGetErrorColor}-->"></td>
+						<label for="<!--{$key}-->"><td class="fs12n" id="payment_c"><!--{$item|escape}--></td></label>
 					</tr>
-					<tr>
-						<td width="150" bgcolor="#f0f0f0" class="fs12">お届け日</td>
-						<td width="507" bgcolor="#ffffff" class="fs12"><!--{$arrData.deliv_date|escape|default:"指定なし"}--></td>
-					</tr>
-					<tr>
-						<td width="150" bgcolor="#f0f0f0" class="fs12">お届け時間</td>
-						<td width="507" bgcolor="#ffffff" class="fs12"><!--{$arrData.deliv_time|escape|default:"指定なし"}--></td>
-					</tr>
-					<tr>
-						<td width="150" bgcolor="#f0f0f0" class="fs12">その他お問い合わせ</td>
-						<td width="507" bgcolor="#ffffff" class="fs12"><!--{$arrData.message|escape|nl2br}--></td>
-					</tr>
-					
-					<!--{if $tpl_login == 1}-->
-					<tr>
-						<td width="150" bgcolor="#f0f0f0" class="fs12">ポイント使用</td>
-						<td width="507" bgcolor="#ffffff" class="fs12"><!--{$arrData.use_point|default:0}-->Pt</td>
-					</tr>
-					<!--{/if}-->
-					
+					<!--{/foreach}-->
 				</table>
 				<!--お支払方法・お届け時間の指定・その他お問い合わせここまで-->
 				</td>
