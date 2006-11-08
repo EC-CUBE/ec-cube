@@ -115,7 +115,8 @@ $arrData = array(
     'ClientFieldFlag' => '1',
     'ClientField1' => 'f1',
     'ClientField2' => 'f2',
-    'ClientField3' => 'f3'
+    'ClientField3' => 'f3',
+	'ModiFlag' => '1',	// リダイレクトページでの応答を受け取らない。
 );
 
 sfPrintR($arrData);
