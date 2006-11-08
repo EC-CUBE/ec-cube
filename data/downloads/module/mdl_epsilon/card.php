@@ -38,7 +38,7 @@ if($_GET["result"] == "1"){
 	
 	$str_get = "?result = " . $_GET["result"];
 	foreach($_GET as $key => $val){
-		if($key != "result") $str_get = "&" . $key . "=" . $val;
+		if($key != "result") $str_get .= "&" . $key . "=" . $val;
 	}
 
 	// ´°Î»²èÌÌ¤Ø
