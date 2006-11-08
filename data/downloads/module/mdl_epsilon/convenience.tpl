@@ -44,7 +44,7 @@
 						<!--{assign var=key value="convenience"}-->
 						<span class="red12"><!--{$arrErr[$key]}--></span>
 						<!--{html_checkboxes_ex name="$key" options=$arrConv selected=$arrForm[$key].value style=$arrErr[$key]|sfGetErrorColor}-->
-						</td>
+						aaa</td>
 						<td class="fs12n" id="payment_c"><!--{$item|escape}--></td>
 					</tr>
 				</table>
