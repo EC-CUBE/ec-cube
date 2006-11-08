@@ -18,12 +18,6 @@
 		<!--購入手続きの流れ-->
 		
 		<table width="700" border="0" cellspacing="0" cellpadding="0" summary=" ">
-	<tr>
-		<td bgcolor="#cccccc" width="1"><img src="../img/_.gif" width="1" height="10" alt="" /></td>
-		<td bgcolor="#ffffff" width="9"><img src="../img/_.gif" width="39" height="1" alt="" /></td>
-		<td bgcolor="#ffffff" align="left"> 
-		<!--▼MAIN CONTENTS-->
-		<table cellspacing="0" cellpadding="0" summary=" " id="containerfull">
 			<tr><td height="20"></td></tr>
 			<tr valign="top">
 				<!--▼CONTENTS-->
