@@ -74,10 +74,19 @@ if($response != "") {
 	}
 }
 
-sfPrintR($arrRet);
+// 応答パターン
+/*
+	Array
+	(
+	    [ERR_CODE] => 0
+	    [ERR_INFO] => OK
+	    [ACCESS_ID] => dfc9c975e1791cb2d79a2bbe4684f3df
+	    [ACCESS_PASS] => fbab58b057608871808800f5ff6a0d23
+	
+	)
+*/
 
 // 決済情報の送信
-
 /*
     [AccessId] => 60f511479544541eb1ec9dc6f700b8c1
     [AccessPass] => 925a413ce991e7b9230fbc575b9dc430
@@ -97,7 +106,20 @@ sfPrintR($arrRet);
     [ClientField2] => f2
     [ClientField3] => f3
 */
-
+$arrData = array(
+	'AccessId' => $arrRet['ACCESS_ID'],		// 店舗ごとに一意な注文IDを送信する。
+	'AccessPass' => $arrRet['ACCESS_PASS'],	// 店舗ごとに一意な注文IDを送信する。
+	
+	'TdTenantName' => '',
+	'TdFlag' => '',
+	'ShopId' => 'test',
+	'Amount' => '100',
+	'ShopPass' => 'test',
+	'Currency' => 'JPN',
+	'Tax' => '5',
+	'JobCd' => 'CHECK',
+	'TenantNo' => '111111111',			// cgi-4で作成した店舗IDを送信する。
+);
 
 
 ?>
