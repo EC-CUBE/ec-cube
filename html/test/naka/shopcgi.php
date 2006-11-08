@@ -140,6 +140,7 @@ if (!PEAR::isError($req->sendRequest())) {
 }
 $req->clearPostData();
 
+/*
 if($response != "") {
 	$arrTemp = split("&", $response);
 	foreach($arrTemp as $ret) {
@@ -147,5 +148,6 @@ if($response != "") {
 		$arrRet[$key] = $val;
 	}
 }
-
+*/
+sfPrintR($response);
 ?>
