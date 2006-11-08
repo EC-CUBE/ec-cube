@@ -68,6 +68,7 @@ if (!PEAR::isError($req->sendRequest())) {
 $req->clearPostData();
 
 if($response != "") {
+	$response = ereg_replace("[\n\r]", "", $response);
 	$arrTemp = split("&", $response);
 	foreach($arrTemp as $ret) {
 		list($key, $val) = split("=", $ret);
@@ -108,8 +109,8 @@ if($response != "") {
     [ClientField3] => f3
 */
 $arrData = array(
-	'AccessId' => trim($arrRet['ACCESS_ID'],'\n'),
-	'AccessPass' => trim($arrRet['ACCESS_PASS'],'\n'),
+	'AccessId' => $arrRet['ACCESS_ID'],
+	'AccessPass' => $arrRet['ACCESS_PASS'],
 	'OrderId' => $order_id,
 	'RetURL' => 'http://test.ec-cube.net/ec-cube/naka/recv.php',
 	'CardType' => 'VISA,     11111, 111111111111111111111111111111111111, 1111111111',
