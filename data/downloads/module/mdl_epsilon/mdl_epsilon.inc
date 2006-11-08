@@ -44,7 +44,7 @@ function sfGetXMLValue($arrVal, $tag, $att) {
  * 引数1	：$order_url	･･･ 送信先URL
  * 引数2	：$arrData		･･･ POSTデータ
  **************************************************************************************************************/
-function sfPostPaymentData($order_url, $arrData, $payment_kbn = PAYMENT_CREDIT_ID){
+function sfPostPaymentData($order_url, $arrData, $err_msg = "<br /><br /><br />この手続きは無効となりました。", $return_top = true, $payment_kbn = PAYMENT_CREDIT_ID){
 	global $objSiteSess;
 	
 	// POSTデータを送信し、応答情報を取得する
@@ -74,7 +74,7 @@ function sfPostPaymentData($order_url, $arrData, $payment_kbn = PAYMENT_CREDIT_I
 	
 	if($err_code != "") {
 		$err_detail = sfGetXMLValue($arrVal,'RESULT','ERR_DETAIL');
-		sfDispSiteError(FREE_ERROR_MSG, "", true, "購入処理中に以下のエラーが発生しました。<br /><br /><br />・" . $err_detail . "<br /><br /><br />この手続きは無効となりました。");
+		sfDispSiteError(FREE_ERROR_MSG, "", true, "購入処理中に以下のエラーが発生しました。<br /><br /><br />・" . $err_detail . $err_msg);
 	} else {
 		// 正常な推移であることを記録しておく
 		$objSiteSess->setRegistFlag();
