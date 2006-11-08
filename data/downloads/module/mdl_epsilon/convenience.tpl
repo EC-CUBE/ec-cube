@@ -37,16 +37,14 @@
 				<table cellspacing="1" cellpadding="8" summary=" " id="frame">
 					<tr class="fs12n">
 						<td id="select">選択</td>
-						<td id="payment">コンビニの種類aa</td>
+						<td id="payment">コンビニの種類</td>
 					</tr>
+					<!--{foreach key=key item=item from=$arrConv}-->
 					<tr>
-						<td id="select_c">
-						<!--{assign var=key value="convenience"}-->
-						<span class="red12"><!--{$arrErr[$key]}--></span>
-						<!--{html_checkboxes_ex name="$key" options=$arrConv selected=$arrForm[$key].value style=$arrErr[$key]|sfGetErrorColor}-->
-						aaa</td>
+						<td id="select_c"><input type="radio" name="convenience" value="<!--{$key}-->" style="<!--{$arrErr.convenience|sfGetErrorColor}-->"></td>
 						<td class="fs12n" id="payment_c"><!--{$item|escape}--></td>
 					</tr>
+					<!--{/foreach}-->
 				</table>
 				<div class="red12" id="comment02">※「ご注文完了ページへ」をクリック後、完了ページが表示されるまでお待ちください。</div>
 				<div id="button">
