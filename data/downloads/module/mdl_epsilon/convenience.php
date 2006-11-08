@@ -121,6 +121,7 @@ switch($_POST["mode"]){
 		
 	default:
 		$objFormParam->setParam($arrData);
+		sfprintr($arrData);
 		
 		// 利用可能コンビニ
 		$objFormParam->setValue("convenience", $arrPayment[0]["memo05"]);
