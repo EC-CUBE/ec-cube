@@ -141,5 +141,8 @@ if($response != "") {
 	}
 }
 */
+print("<!--");
 sfPrintR($response);
+print("-->");
+
 ?>
