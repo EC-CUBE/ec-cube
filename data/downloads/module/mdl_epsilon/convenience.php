@@ -98,6 +98,8 @@ switch($_POST["mode"]){
 	break;
 	
 	default:
+	sfprintr($arrData);
+	sfprintr($arrPayment);
 	break;
 }
 
