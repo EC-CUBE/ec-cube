@@ -110,8 +110,8 @@ switch($_POST["mode"]){
 				'xml' => '1',														// 応答形式(固定)
 				
 				'conveni_code' => $_POST["convenience"],							// コンビニコード
-				'user_tel' => $_POST["order_tel01"].$_POST["order_tel02"].$_POST["order_tel03"],						// コンビニコード
-				'user_name_kana' => $_POST["order_kana01"].$_POST["order_kana02"],							// コンビニコード
+				'user_tel' => $_POST["order_tel01"].$_POST["order_tel02"].$_POST["order_tel03"],	// 電話番号
+				'user_name_kana' => $_POST["order_kana01"].$_POST["order_kana02"],					// 氏名(カナ)
 				'haraikomi_mail' => 0,												// 払込メール(送信しない)
 				
 				'memo1' => ECCUBE_PAYMENT,											// 予備01
