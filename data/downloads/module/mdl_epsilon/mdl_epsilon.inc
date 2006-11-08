@@ -142,7 +142,7 @@ function sfPostPaymentData($order_url, $arrData, $err_msg = "<br /><br /><br />¤
 		}else{
 			$url = sfGetXMLValue($arrVal,'RESULT','REDIRECT');
 		}
-		//header("Location: " . $url);
+		header("Location: " . $url);
 	}
 }
 
