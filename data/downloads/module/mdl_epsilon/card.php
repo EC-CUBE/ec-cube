@@ -35,9 +35,14 @@ if($_GET["result"] == "1"){
 	
 	// GETデータを完了画面へPOST送信する
 	sfSendPostData(SITE_URL . "shopping/complete.php", $_GET);
+	
+	$str_get = "?result = " . $_GET["result"];
+	foreach($_GET as $key => $val){
+		if($key != "result") $str_get = "&" . $key . "=" . $val;
+	}
 
 	// 完了画面へ
-	//header("Location: " . SITE_URL . "shopping/complete.php");
+	header("Location: " . SITE_URL . "shopping/complete.php" . $str_get);
 }
 
 // カート集計処理
