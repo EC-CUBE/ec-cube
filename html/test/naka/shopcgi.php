@@ -40,14 +40,14 @@ TenantNo=>TenantNo
 $order_url = "http://mod-i.ccsware.net/ohayou/EntryTran.php";
 
 $arrData = array(
-	'OrderId' => '2006-11-08-12-43-21-936',
+	'OrderId' => '2006-11-08-12-55-26-185',
 	'TdTenantName' => '',
 	'TdFlag' => '',
 	'ShopId' => 'test',
-	'Amount' => '0',
+	'Amount' => '100',
 	'ShopPass' => 'test',
-	'Currency' => '',
-	'Tax' => '0',
+	'Currency' => 'JPN',
+	'Tax' => '5',
 	'JobCd' => 'CHECK',
 	'TenantNo' => 'TenantNo',
 );
