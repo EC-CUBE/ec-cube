@@ -37,7 +37,7 @@ if($_GET["result"] == "1"){
 	sfSendPostData(SITE_URL . "shopping/complete.php", $_GET);
 
 	// 完了画面へ
-	header("Location: " . URL_SHOP_COMPLETE);
+	header("Location: " . SITE_URL . "shopping/complete.php");
 }
 
 // カート集計処理
