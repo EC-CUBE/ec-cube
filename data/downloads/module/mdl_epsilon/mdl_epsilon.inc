@@ -83,6 +83,7 @@ function sfPostPaymentData($order_url, $arrData){
 		$url = sfGetXMLValue($arrVal,'RESULT','REDIRECT');
 		
 		sfprintr($arrVal);
+		
 		//header("Location: " . $url);	
 	}
 }
