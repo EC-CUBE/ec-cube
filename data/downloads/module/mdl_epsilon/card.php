@@ -27,6 +27,9 @@ $objView = new SC_SiteView();
 $objSiteInfo = $objView->objSiteInfo;
 $arrInfo = $objSiteInfo->data;
 
+// ユーザユニークIDの取得と購入状態の正当性をチェック
+$uniqid = sfCheckNormalAccess($objSiteSess, $objCartSess);
+
 // trans_codeに値があり且つ、正常終了のときはオーダー確認を行う。
 if($_GET["result"] == "1"){
 	
@@ -34,12 +37,19 @@ if($_GET["result"] == "1"){
 	$objSiteSess->setRegistFlag();
 	
 	// GETデータを完了画面へ送信する
-	$str_get = "?credit_result=" . $_GET["result"];
-	$str_get .= "&memo01=" . 1;
-	$str_get .= "&memo02=" . $_GET["trans_code"];
+	$arrVal["credit_result"] = $_GET["result"];
+	$arrVal["memo01"] = 1;
+	$arrVal["memo03"] = $_GET["trans_code"];
+	
+	// トランザクションコード
+	$arrMemo["trans_code"] = array("name"=>"トランザクションコード", "value" => $_GET["trans_code"]);
+	$arrVal["memo02"] = serialize($arrMemo);
+	
+	// 受注一時テーブルに更新
+	sfRegistTempOrder($uniqid, $arrVal);
 
 	// 完了画面へ
-	header("Location: " . SITE_URL . "shopping/complete.php" . $str_get);
+	header("Location: " . SITE_URL . "shopping/complete.php");
 }
 
 // カート集計処理
