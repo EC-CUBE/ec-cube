@@ -92,7 +92,7 @@ switch($_POST["mode"]){
 		$arrErr = $objFormParam->checkError();
 		sfprintr($arrErr);
 	
-		if(count($arrErr) > 0){
+		if(count($arrErr) <= 0){
 			// 送信データ生成
 			$arrSendData = array(
 				'contract_code' => $arrPayment[0]["memo01"],						// 契約コード
