@@ -91,7 +91,7 @@ case 'confirm':
 		if (DB_TYPE == "pgsql") {
 			$order_id = $objQuery->nextval("dtb_order","order_id");
 		}elseif (DB_TYPE == "mysql") {
-			$order_id = $objQuery->nextval("dtb_order","order_id");
+			$order_id = $objQuery->auto_increment("dtb_order","order_id");
 		}
 		$arrData["order_id"] = $order_id;
 	}

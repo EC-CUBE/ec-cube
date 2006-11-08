@@ -409,9 +409,15 @@ class SC_Query {
 		return $result;
 	}
 	
-	// 自動採番マスタより、値を取得する
-	function getautono(){
+	function get_auto_increment($table_name){
+		$arrRet = $this->conn->query("SHOW TABLE STATUS LIKE $table_name");
 		
+		$auto_inc_no = $arrRet["Auto_increment"];
+		
+		$this->conn->query("ALTER TABLE $table_name AUTO_INCREMENT=?" , $auto_inc_no + 1);
+		
+		return $auto_inc_no;
 	}
+
 }
 ?>
