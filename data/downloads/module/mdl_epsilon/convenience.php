@@ -29,6 +29,13 @@ $objView = new SC_SiteView();
 $objSiteInfo = $objView->objSiteInfo;
 $arrInfo = $objSiteInfo->data;
 
+// パラメータ管理クラス
+$objFormParam = new SC_FormParam();
+// パラメータ情報の初期化
+lfInitParam();
+// POST値の取得
+$objFormParam->setParam($_POST);
+
 // ユーザユニークIDの取得と購入状態の正当性をチェック
 $uniqid = sfCheckNormalAccess($objSiteSess, $objCartSess);
 
@@ -98,6 +105,9 @@ switch($_POST["mode"]){
 	break;
 	
 	default:
+	$objFormParam->setParam($arrDisp);
+	$objFormParam->splitParamCheckBoxes("convenience");
+	
 	sfprintr($arrData);
 	sfprintr($arrPayment);
 	break;
@@ -107,5 +117,11 @@ $objView->assignobj($objPage);
 $objView->display(SITE_FRAME);
 
 //---------------------------------------------------------------------------------------------------------------------------------------------------------
+//パラメータの初期化
+function lfInitParam() {
+	global $objFormParam;
+	$objFormParam->addParam("コンビニの種類", "convenience", INT_LEN, "n", array("EXIST_CHECK", "MAX_LENGTH_CHECK", "NUM_CHECK"));
+}
+	
 
 ?>
