@@ -20,7 +20,6 @@ $arrData = array(
 	'item_code' => 'abc12345',
 	'memo2' => '',
 	'user_id' => 'ktest'
-	,'conveni_code' => "11"
 );
 
 $req = new HTTP_Request($order_url);
