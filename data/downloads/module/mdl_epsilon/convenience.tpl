@@ -23,8 +23,8 @@
 			</tr>
 			<tr><td height="15"></td></tr>
 			<tr>
-				<td class="fs12">下記ご注文内容で送信してもよろしいでしょうか？<br>
-				よろしければ、一番下の「<!--{if $payment_type != ""}-->次へ<!--{else}-->ご注文完了ページへ<!--{/if}-->」ボタンをクリックしてください。</td>
+				<td class="fs12">下記から、お支払いするコンビニをご選択ください。<br />
+				選択後、一番下の「ご注文完了ページへ」ボタンをクリックしてください。</td>
 			</tr>
 			<tr><td height="20"></td></tr>
 			<form name="form1" id="form1" method="post" action="<!--{$smarty.server.PHP_SELF}-->">
