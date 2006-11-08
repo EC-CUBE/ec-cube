@@ -39,7 +39,7 @@
 						<td width="507" bgcolor="#f0f0f0" class="fs12">コンビニの種類</td>
 					</tr>
 					<!--{foreach key=key item=item from=$arrConv}-->
-					<tr bgcolor="#ffffff" class="fs12n">
+					<tr>
 						<label for="<!--{$key}-->">
 							<td align="center" bgcolor="#ffffff" class="fs12"><input type="radio" name="convenience" id="<!--{$key}-->" value="<!--{$key}-->" style="<!--{$arrErr.convenience|sfGetErrorColor}-->"></td>
 							<td bgcolor="#ffffff" class="fs12"><!--{$item|escape}--></td>
