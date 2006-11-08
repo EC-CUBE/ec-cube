@@ -91,7 +91,6 @@ switch($_POST["mode"]){
 		$arrErr = array();
 		$arrErr = $objFormParam->checkError();
 		$objPage->arrErr = $arrErr;
-		sfprintr($arrErr);
 	
 		if(count($arrErr) <= 0){
 			// 送信データ生成

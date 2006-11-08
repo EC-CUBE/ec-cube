@@ -81,12 +81,12 @@ function sfPostPaymentData($order_url, $arrData, $err_msg = "<br /><br /><br />¤
 		
 		// »ÙÊ§¤¤¶èÊ¬¤Ë¤è¤ê½èÍý¤ò¤ï¤±¤ë
 		if($payment_kbn == PAYMENT_CONVENIENCE_ID){
-			$url = URL_SHOP_COMPLETE;
+			//$url = URL_SHOP_COMPLETE;
+			$url = SITE_URL . "shopping/complete.php";
 		}else{
 			$url = sfGetXMLValue($arrVal,'RESULT','REDIRECT');
 		}
 		header("Location: " . $url);
-		
 	}
 }
 
