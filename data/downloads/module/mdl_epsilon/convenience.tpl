@@ -39,7 +39,6 @@
 						<td id="select">選択</td>
 						<td id="payment">コンビニの種類</td>
 					</tr>
-					<!--{foreach key=key item=item from=$arrCONVENIENCE}-->
 					<tr>
 						<td id="select_c">
 						<!--{assign var=key value="convenience"}-->
@@ -48,7 +47,6 @@
 						</td>
 						<td class="fs12n" id="payment_c"><!--{$item|escape}--></td>
 					</tr>
-					<!--{/foreach}-->
 				</table>
 				<div class="red12" id="comment02">※「ご注文完了ページへ」をクリック後、完了ページが表示されるまでお待ちください。</div>
 				<div id="button">

@@ -115,6 +115,7 @@ switch($_POST["mode"]){
 		break;
 }
 
+sfprintr($objPage);
 $objView->assignobj($objPage);
 $objView->display(SITE_FRAME);
 
