@@ -37,7 +37,7 @@
 				<table cellspacing="1" cellpadding="8" summary=" " id="frame">
 					<tr class="fs12n">
 						<td id="select">選択</td>
-						<td id="payment">コンビニの種類</td>
+						<td id="payment">コンビニの種類aa</td>
 					</tr>
 					<tr>
 						<td id="select_c">

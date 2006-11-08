@@ -11,7 +11,7 @@ require_once(MODULE_PATH . "mdl_epsilon/mdl_epsilon.inc");
 
 class LC_Page {
 	function LC_Page() {
-		$this->tpl_mainpage = "shopping/convenience.tpl";
+		$this->tpl_mainpage = MODULE_PATH . "mdl_epsilon/convenience.tpl";
 		/*
 		 session_start時のno-cacheヘッダーを抑制することで
 		 「戻る」ボタン使用時の有効期限切れ表示を抑制する。
