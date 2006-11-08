@@ -20,6 +20,22 @@ Array
 
 */
 
+/*
+
+センタへの送信データ
+
+OrderId=>2006-11-08-12-43-21-935
+TdTenantName=>
+TdFlag=>
+ShopId=>test
+Amount=>0
+ShopPass=>test
+Currency=>
+Tax=>0
+JobCd=>CHECK
+TenantNo=>TenantNo
+
+*/
 
 
 ?>
