@@ -60,7 +60,7 @@ if($_GET["result"] == "1"){
 	$arrVal["memo03"] = $arrPayment[0]["module_id"];
 	
 	// トランザクションコード
-	$arrMemo["trans_code"] = array("name"=>"トランザクションコード", "value" => $_GET["trans_code"]);
+	$arrMemo["trans_code"] = array("name"=>"Epsilonトランザクションコード", "value" => $_GET["trans_code"]);
 	$arrVal["memo02"] = serialize($arrMemo);
 	
 	// 受注一時テーブルに更新

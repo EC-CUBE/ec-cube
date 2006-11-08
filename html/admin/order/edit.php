@@ -181,8 +181,7 @@ function lfGetOrderData($order_id) {
 		
 		// その他支払い情報を表示
 		$objPage->arrDisp["payment_info"] = unserialize($objPage->arrDisp["memo02"]);
-		sfprintr($objPage->arrDisp);
-		
+
 	}
 }
 
