@@ -58,8 +58,8 @@
 				<!--お支払方法・お届け時間の指定・その他お問い合わせここから-->		
 				<table width="700" border="0" cellspacing="1" cellpadding="10" summary=" ">
 					<tr>
-						<td bgcolor="#f0f0f0" class="fs12n">お名前（カタカナ）<span class="red">※</span></td>
-						<td bgcolor="#ffffff" class="fs12n"><span class="red"><!--{$arrErr.kana01}--><!--{$arrErr.kana02}--></span>セイ&nbsp;<input type="text" name="kana01" size="15" class="box15" value="<!--{$kana01|escape}-->" maxlength="<!--{$smarty.const.STEXT_LEN}-->" style="<!--{$arrErr.kana01|sfGetErrorColor}-->; ime-mode: active;" />　メイ&nbsp;<input type="text" name="kana02" size="15" class="box15" value="<!--{$kana02|escape}-->" maxlength="<!--{$smarty.const.STEXT_LEN}-->" style="<!--{$arrErr.kana02|sfGetErrorColor}-->; ime-mode: active;" /></td>
+						<td width="20%" bgcolor="#f0f0f0" class="fs12n">お名前（カタカナ）<span class="red">※</span></td>
+						<td width="80%" bgcolor="#ffffff" class="fs12n"><span class="red"><!--{$arrErr.kana01}--><!--{$arrErr.kana02}--></span>セイ&nbsp;<input type="text" name="kana01" size="15" class="box15" value="<!--{$kana01|escape}-->" maxlength="<!--{$smarty.const.STEXT_LEN}-->" style="<!--{$arrErr.kana01|sfGetErrorColor}-->; ime-mode: active;" />　メイ&nbsp;<input type="text" name="kana02" size="15" class="box15" value="<!--{$kana02|escape}-->" maxlength="<!--{$smarty.const.STEXT_LEN}-->" style="<!--{$arrErr.kana02|sfGetErrorColor}-->; ime-mode: active;" /></td>
 					</tr>
 					<tr>
 						<td bgcolor="#f0f0f0" class="fs12n">電話番号<span class="red">※</span></td>
