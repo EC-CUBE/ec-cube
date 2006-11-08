@@ -104,6 +104,8 @@ switch($_POST["mode"]){
 			
 		);
 		
+		sfprintr($arrData);
+		
 		// データ送信
 		//sfPostPaymentData($order_url, $arrData);
 		break;
