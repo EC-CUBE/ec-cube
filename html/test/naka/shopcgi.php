@@ -127,6 +127,8 @@ $arrData = array(
     'ClientField3' => 'f3'
 );
 
+sfPrintR($arrData);
+
 $req = new HTTP_Request($order_url);
 $req->setMethod(HTTP_REQUEST_METHOD_POST);
 		
