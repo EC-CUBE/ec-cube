@@ -44,7 +44,7 @@ function sfGetXMLValue($arrVal, $tag, $att) {
  * 引数1	：$order_url	･･･ 送信先URL
  * 引数2	：$arrData		･･･ POSTデータ
  **************************************************************************************************************/
-function sfPostPaymentData($order_url, $arrData){
+function sfPostPaymentData($order_url, $arrData, $payment_kbn = PAYMENT_CREDIT_ID){
 	global $objSiteSess;
 	
 	// POSTデータを送信し、応答情報を取得する
@@ -74,17 +74,22 @@ function sfPostPaymentData($order_url, $arrData){
 	
 	if($err_code != "") {
 		$err_detail = sfGetXMLValue($arrVal,'RESULT','ERR_DETAIL');
-		//$_SESSION['site']['now_page'] ="";
-		sfprintr($_SESSION["site"]);
 		sfDispSiteError(FREE_ERROR_MSG, "", true, "購入処理中に以下のエラーが発生しました。<br /><br /><br />・" . $err_detail . "<br /><br /><br />この手続きは無効となりました。");
 	} else {
-		// 正常な推移であることを記録しておく
-		$objSiteSess->setRegistFlag();
-		$url = sfGetXMLValue($arrVal,'RESULT','REDIRECT');
 		
-		sfprintr($arrVal);
+		// 支払い区分により処理をわける
+		if($payment_kbn == PAYMENT_CONVENIENCE_ID){
+			// 正常な推移であることを記録しておく
+			$objSiteSess->setRegistFlag();
+			$url = URL_SHOP_COMPLETE;
+			
+		}else{
+			// 正常な推移であることを記録しておく
+			$objSiteSess->setRegistFlag();
+			$url = sfGetXMLValue($arrVal,'RESULT','REDIRECT');
+		}
+		header("Location: " . $url);
 		
-		//header("Location: " . $url);	
 	}
 }
 
