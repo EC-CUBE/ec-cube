@@ -40,6 +40,10 @@ class SC_SiteSession {
 	
 	/* ユニークIDの取得 */
 	function getUniqId() {
+		// ユニークIDがセットされていない場合はセットする。
+		if(!isset($_SESSION['site']['uniqid']) || $_SESSION['site']['uniqid'] == "") {
+			$this->setUniqId();
+		}
 		return $_SESSION['site']['uniqid'];
 	}
 	
