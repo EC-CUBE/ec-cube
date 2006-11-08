@@ -46,6 +46,7 @@ function sfGetXMLValue($arrVal, $tag, $att) {
  **************************************************************************************************************/
 function sfPostPaymentData($order_url, $arrData, $err_msg = "<br /><br /><br />¤³¤Î¼êÂ³¤­¤ÏÌµ¸ú¤È¤Ê¤ê¤Þ¤·¤¿¡£", $return_top = true, $payment_kbn = PAYMENT_CREDIT_ID){
 	global $objSiteSess;
+	global $uniqid;
 	
 	// POST¥Ç¡¼¥¿¤òÁ÷¿®¤·¡¢±þÅú¾ðÊó¤ò¼èÆÀ¤¹¤ë
 	$response = sfSendPostData($order_url, $arrData);
@@ -133,11 +134,10 @@ function sfPostPaymentData($order_url, $arrData, $err_msg = "<br /><br /><br />¤
 			//¥³¥ó¥Ó¥Ë·èºÑ¾ðÊó¤ò³ÊÇ¼
 			$sqlval['conveni_data'] = serialize($arrRet);			
 			
-			sfprintr($arrRet);
 			$url = URL_SHOP_COMPLETE;
 
 			// ¼õÃí°ì»þ¥Æ¡¼¥Ö¥ë¤Ë¹¹¿·
-			//sfRegistTempOrder($uniqid, $arrVal);
+			sfRegistTempOrder($uniqid, $arrVal);
 			
 		}else{
 			$url = sfGetXMLValue($arrVal,'RESULT','REDIRECT');
