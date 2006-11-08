@@ -121,7 +121,6 @@ switch($_POST["mode"]){
 		
 	default:
 		$objFormParam->setParam($arrData);
-		sfprintr($arrData);
 		
 		// 利用可能コンビニ
 		$objFormParam->setValue("convenience", $arrPayment[0]["memo05"]);
@@ -133,7 +132,7 @@ switch($_POST["mode"]){
 		}
 		$objPage->arrConv = $arrConv;
 		
-		sfprintr($objFormParam->getHashArray());
+		$objPage->arrForm =$objFormParam->getHashArray();
 		
 		sfprintr($arrConv);
 		sfprintr($arrPayment);
