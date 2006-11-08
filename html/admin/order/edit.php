@@ -100,7 +100,7 @@ $objPage->arrForm = $objFormParam->getFormParamList();
 
 $objPage->arrInfo = $arrInfo;
 
-$objPage->arrDisp["payment_info"] = array("test"=>array("name"=>"test","value"=>"val"));
+$objPage->arrDisp["payment_info"] = array("test"=>array("name"=>"test","value"=>"val"), "test2"=>array("name"=>"test2","value"=>"val2"));
 
 $objView->assignobj($objPage);
 // 表示モード判定
