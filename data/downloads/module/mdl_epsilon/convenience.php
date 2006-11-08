@@ -79,6 +79,9 @@ if($_GET["trans_code"] != ""){
 
 switch($_POST["mode"]){
 	case "send":
+		$arrErr = $objFormParam->checkError();
+		sfprintr($arrErr);
+	
 		// 送信データ生成
 		$arrSendData = array(
 			'contract_code' => $arrPayment[0]["memo01"],						// 契約コード
