@@ -55,8 +55,8 @@ if($_GET["trans_code"] != ""){
 	$objSiteSess->setRegistFlag();
 	
 	// GETデータを保存
-	$arrVal["credit_result"] = $_GET["result"];
-	$arrVal["memo01"] = 1;
+	//$arrVal["credit_result"] = $_GET["result"];
+	$arrVal["memo01"] = PAYMENT_CONVENIENCE_ID;
 	$arrVal["memo03"] = $arrPayment[0]["module_id"];
 	
 	// トランザクションコード

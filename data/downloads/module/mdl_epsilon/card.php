@@ -56,7 +56,7 @@ if($_GET["result"] == "1"){
 	
 	// GETデータを保存
 	$arrVal["credit_result"] = $_GET["result"];
-	$arrVal["memo01"] = 1;
+	$arrVal["memo01"] = PAYMENT_CREDIT_ID;
 	$arrVal["memo03"] = $arrPayment[0]["module_id"];
 	
 	// トランザクションコード
