@@ -57,7 +57,6 @@ $arrData = array(
 $req = new HTTP_Request($order_url);
 $req->setMethod(HTTP_REQUEST_METHOD_POST);
 		
-$arrSendData = array();
 $req->addPostDataArray($arrData);
 
 if (!PEAR::isError($req->sendRequest())) {
@@ -122,8 +121,7 @@ sfPrintR($arrData);
 
 $req = new HTTP_Request($order_url);
 $req->setMethod(HTTP_REQUEST_METHOD_POST);
-		
-$arrSendData = array();
+
 $req->addPostDataArray($arrData);
 
 if (!PEAR::isError($req->sendRequest())) {
