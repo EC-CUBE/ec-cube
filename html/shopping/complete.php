@@ -327,9 +327,9 @@ function lfRegistOrder($objQuery, $arrData) {
 	$order_id = $arrData['order_id'];		// オーダーID
 	$sqlval['create_date'] = 'now()';		// 受注日
 	
-	if($_GET
-		
-	}
+	
+	// ゲットの値をインサート
+	$sqlval = lfGetInsParam();
 	
 	// INSERTの実行
 	$objQuery->insert("dtb_order", $sqlval);
@@ -496,4 +496,15 @@ function lfReduceStock($objQuery, $arrID, $quantity) {
 		$objQuery->update("dtb_products_class", $sqlval, $where, $arrID);
 	}
 }
+
+// GETの値をインサートする
+function lfGetInsParam(){
+	
+	foreach($_GET as $key => $val){
+		
+	}
+	
+	
+}
+
 ?>

@@ -37,7 +37,6 @@ if($_GET["result"] == "1"){
 	$str_get = "?credit_result=" . $_GET["result"];
 	$str_get .= "&memo01=" . 1;
 	$str_get .= "&memo02=" . $_GET["truns_code"];
-	
 
 	// ´°Î»²èÌÌ¤Ø
 	header("Location: " . SITE_URL . "shopping/complete.php" . $str_get);
