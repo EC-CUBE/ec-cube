@@ -357,7 +357,9 @@
 								<!--{html_options options=$arrPayment selected=$arrForm[$key].value}-->
 								</select></td>
 							</tr>
-							
+							<tr class="fs12n">
+								<td bgcolor="#f2f1ec" colspan="6">вздк╗┘╩з╛Ё╩є</td>
+							</tr>
 							<tr class="fs12n">
 								<td bgcolor="#ffffff" colspan="6"><!--{assign var=key value="payment_id"}--></td>
 							</tr>
