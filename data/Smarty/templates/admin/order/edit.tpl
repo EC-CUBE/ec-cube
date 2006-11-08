@@ -357,6 +357,8 @@
 								<!--{html_options options=$arrPayment selected=$arrForm[$key].value}-->
 								</select></td>
 							</tr>
+							
+							<!--{if $arrDisp.payment_info|count > 0}-->
 							<tr class="fs12n">
 								<td bgcolor="#f2f1ec" colspan="6">▼<!--{$arrDisp.payment_type}-->情報</td>
 							</tr>
@@ -367,6 +369,7 @@
 									<!--{/foreach}-->
 								</td>
 							</tr>
+							<!--{/if}-->
 							
 							<tr class="fs12n">
 								<td bgcolor="#f2f1ec" colspan="6">▼時間指定</td>
