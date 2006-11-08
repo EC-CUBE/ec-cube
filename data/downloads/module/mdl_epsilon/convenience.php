@@ -107,7 +107,7 @@ switch($_POST["mode"]){
 		sfprintr($arrSendData);
 		sfprintr($arrData);
 		// データ送信
-		//sfPostPaymentData($order_url, $arrSendData);
+		sfPostPaymentData($order_url, $arrSendData);
 		break;
 		
 	//戻る
