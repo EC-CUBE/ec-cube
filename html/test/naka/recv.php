@@ -13,6 +13,6 @@ while( ! FEOF ( $tmpResult ) ) {
 }
 pclose($tmpResult);				// 	パイプを閉じる
 
-gfDebugLog($cmd);
+gfDebugLog($result);
 
 ?>
