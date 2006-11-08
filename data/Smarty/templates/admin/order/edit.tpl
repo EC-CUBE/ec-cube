@@ -361,7 +361,10 @@
 								<td bgcolor="#f2f1ec" colspan="6">вздк╗┘╩з╛Ё╩є</td>
 							</tr>
 							<tr class="fs12n">
-								<td bgcolor="#ffffff" colspan="6"><!--{assign var=key value="payment_id"}--></td>
+								<td bgcolor="#ffffff" colspan="6">
+									<!--{assign var=key value="payment_id"}-->
+									<!--{$arrDisp.payment_info|escape|nl2br}-->
+								</td>
 							</tr>
 							
 							<tr class="fs12n">
