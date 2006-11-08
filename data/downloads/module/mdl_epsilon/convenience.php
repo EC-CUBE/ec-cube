@@ -93,11 +93,17 @@ switch($_POST["mode"]){
 			'mission_code' => '1',												// 課金区分(固定)
 			'process_code' => '1',												// 処理区分(固定)
 			'xml' => '1',														// 応答形式(固定)
+			
+			'conveni_code' => $_POST["convenience"],							// コンビニコード
+			'user_tel' => $arrData["tel01"].$arrData["tel02"].$arrData["tel03"],						// コンビニコード
+			'user_name_kana' => $arrData["order_kana01"].$arrData["order_kana02"],							// コンビニコード
+			'haraikomi_mail' => 0,												// 払込メール(送信しない)
+			
 			'memo1' => ECCUBE_PAYMENT,											// 予備01
 			'memo2' => ''														// 予備02
+			
 		);
 		
-		sfprintr($_POST);
 		// データ送信
 		//sfPostPaymentData($order_url, $arrData);
 		break;
