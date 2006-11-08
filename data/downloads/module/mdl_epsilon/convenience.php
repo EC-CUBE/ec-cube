@@ -96,8 +96,10 @@ switch($_POST["mode"]){
 			'memo1' => ECCUBE_PAYMENT,											// Í½È÷01
 			'memo2' => ''														// Í½È÷02
 		);
+		
+		sfprintr($_POST);
 		// ¥Ç¡¼¥¿Á÷¿®
-		sfPostPaymentData($order_url, $arrData);
+		//sfPostPaymentData($order_url, $arrData);
 		break;
 		
 	//Ìá¤ë
