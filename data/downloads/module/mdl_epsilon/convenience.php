@@ -11,8 +11,9 @@ require_once(MODULE_PATH . "mdl_epsilon/mdl_epsilon.inc");
 
 class LC_Page {
 	function LC_Page() {
-		/** 必ず指定する **/
-		$this->tpl_mainpage = 'mdl_epsilon/card.tpl';			// メインテンプレート
+		$this->tpl_mainpage = "shopping/convenience.tpl";
+		global $arrCONVENIENCE;
+		$this->arrCONVENIENCE = $arrCONVENIENCE;
 		/*
 		 session_start時のno-cacheヘッダーを抑制することで
 		 「戻る」ボタン使用時の有効期限切れ表示を抑制する。
@@ -21,6 +22,7 @@ class LC_Page {
 		session_cache_limiter('private-no-expire');		
 	}
 }
+
 
 $objPage = new LC_Page();
 $objView = new SC_SiteView();
@@ -70,26 +72,37 @@ if($_GET["trans_code"] != ""){
 	header("Location: " .  URL_SHOP_COMPLETE);
 }
 
-// 送信データ生成
-$arrData = array(
-	'contract_code' => $arrPayment[0]["memo01"],						// 契約コード
-	'user_id' => $arrData["customer_id"],								// ユーザID
-	'user_name' => $arrData["order_name01"].$arrData["order_name02"],	// ユーザ名
-	'user_mail_add' => $arrData["order_email"],							// メールアドレス
-	'order_number' => $arrData["order_id"],								// オーダー番号
-	'item_code' => $arrMainProduct["product_code"],						// 商品コード(代表)
-	'item_name' => $arrMainProduct["name"],								// 商品名(代表)
-	'item_price' => $arrData["payment_total"],							// 商品価格(税込み総額)
-	'st_code' => $arrPayment[0]["memo04"],								// 決済区分
-	'mission_code' => '1',												// 課金区分(固定)
-	'process_code' => '1',												// 処理区分(固定)
-	'xml' => '1',														// 応答形式(固定)
-	'memo1' => ECCUBE_PAYMENT,											// 予備01
-	'memo2' => ''														// 予備02
-);
+switch($_POST["mode"]){
+	case "send":
+		// 送信データ生成
+		$arrData = array(
+			'contract_code' => $arrPayment[0]["memo01"],						// 契約コード
+			'user_id' => $arrData["customer_id"],								// ユーザID
+			'user_name' => $arrData["order_name01"].$arrData["order_name02"],	// ユーザ名
+			'user_mail_add' => $arrData["order_email"],							// メールアドレス
+			'order_number' => $arrData["order_id"],								// オーダー番号
+			'item_code' => $arrMainProduct["product_code"],						// 商品コード(代表)
+			'item_name' => $arrMainProduct["name"],								// 商品名(代表)
+			'item_price' => $arrData["payment_total"],							// 商品価格(税込み総額)
+			'st_code' => $arrPayment[0]["memo04"],								// 決済区分
+			'mission_code' => '1',												// 課金区分(固定)
+			'process_code' => '1',												// 処理区分(固定)
+			'xml' => '1',														// 応答形式(固定)
+			'memo1' => ECCUBE_PAYMENT,											// 予備01
+			'memo2' => ''														// 予備02
+		);
+		
+		// データ送信
+		sfPostPaymentData($order_url, $arrData);
+	
+	break;
+	
+	default:
+	break;
+}
 
-// データ送信
-sfPostPaymentData($order_url, $arrData);
+$objView->assignobj($objPage);
+$objView->display(SITE_FRAME);
 
 //---------------------------------------------------------------------------------------------------------------------------------------------------------
 
