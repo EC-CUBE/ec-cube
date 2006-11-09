@@ -118,7 +118,7 @@ case 'edit':
 				);
 			}
 			
-			$arrPaymentData = lfGetPaymentDB();
+			$arrPaymentData = lfGetPaymentDB("AND memo03 = ?", array($val));
 			if(count($arrPaymentData) > 0){
 				$objQuery->update("dtb_payment", $arrData, " module_id = " . MDL_EPSILON_ID);
 			}else{
@@ -186,7 +186,7 @@ function lfLoadData(){
 	global $objFormParam;
 	
 	//データを取得
-	$arrRet = lfGetPaymentDB("and memo03=?",array(1));
+	$arrRet = lfGetPaymentDB();
 	
 	// 値をセット
 	$objFormParam->setParam($arrRet[0]);
@@ -229,9 +229,7 @@ function lfGetPaymentDB($where = "", $arrWhereVal = array()){
 				memo05 as convenience
 			FROM dtb_payment WHERE module_id = ? " . $where;
 	$arrRet = $objQuery->getall($sql, $arrVal);
-	
-	$objQuery->getlastquery();
-	
+		
 	return $arrRet;
 }
 
