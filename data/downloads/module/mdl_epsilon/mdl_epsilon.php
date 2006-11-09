@@ -123,7 +123,7 @@ case 'edit':
 			
 			$arrPaymentData = lfGetPaymentDB("AND memo03 = ?", array($val));
 			if(count($arrPaymentData) > 0){
-				$objQuery->update("dtb_payment", $arrData, " module_id = " . MDL_EPSILON_ID);
+				$objQuery->update("dtb_payment", $arrData, " module_id = " . MDL_EPSILON_ID . "AND memo03 = " . $val);
 			}else{
 				$objQuery->insert("dtb_payment", $arrData);
 			}
