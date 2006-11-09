@@ -205,6 +205,8 @@ Famiポート／ファミネットにて以下の「企業コード」と「注文番号」を入力し、
 				//支払期限
 				$arrRet['br2'] = lfSetConvMSG("","\n\n");
 				$arrRet['cv_payment_limit'] = $payment_limit;
+				$arrRet['br3'] = lfSetConvMSG("","\n\n");
+				
 				//コンビニ決済情報を格納
 				$sqlval['conveni_data'] = serialize($arrRet);
 				$sqlval['memo02'] = serialize($arrRet);
