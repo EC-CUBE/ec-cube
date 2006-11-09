@@ -213,11 +213,11 @@ function lfChkConnect(){
 	// データ送信
 	$arrXML = sfPostPaymentData($_POST["url"], $arrSendData, false);
 	
-	if($arrXML == "") return sfGetXMLValue($arrXML,'RESULT','ERR_DETAIL');;
+	if($arrXML == "") return("ERROR");
 	
 	// エラーがあるかチェックする
 	$err_code = sfGetXMLValue($arrXML,'RESULT','ERR_CODE');
-	if($err_code != "") return $err_code;
+	if($err_code != "") return sfGetXMLValue($arrXML,'RESULT','ERR_DETAIL');;
 	
 	// コンビニ指定があればコンビニ分ループし、チェックを行う
 	if(count($_POST["convenience"]) > 0){
