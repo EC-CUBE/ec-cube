@@ -101,11 +101,6 @@ if($err_code != "") {
 	// 正常な推移であることを記録しておく
 	$objSiteSess->setRegistFlag();
 	
-	sfprintr($arrXML);
-	sfprintr($_SESSION);
-	exit();
-
-	
 	$url = sfGetXMLValue($arrXML,'RESULT','REDIRECT');
 	header("Location: " . $url);
 }
