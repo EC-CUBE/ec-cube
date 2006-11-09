@@ -600,7 +600,17 @@ CREATE TABLE dtb_order (
     conveni_data text,
     cell01 text,
     cell02 text,
-    cell03 text
+    cell03 text,
+    memo01 text,
+    memo02 text,
+    memo03 text,
+    memo04 text,
+    memo05 text,
+    memo06 text,
+    memo07 text,
+    memo08 text,
+    memo09 text,
+    memo10 text
 );
 
 CREATE TABLE dtb_order_temp (
@@ -673,7 +683,17 @@ CREATE TABLE dtb_order_temp (
     cell01 text,
     cell02 text,
     cell03 text,
-    order_id int4
+    order_id int4,
+    memo01 text,
+    memo02 text,
+    memo03 text,
+    memo04 text,
+    memo05 text,
+    memo06 text,
+    memo07 text,
+    memo08 text,
+    memo09 text,
+    memo10 text
 );
 
 CREATE TABLE dtb_other_deliv (
