@@ -424,6 +424,7 @@ class SC_Query {
 		// 解除する
 		$this->COMMIT();
 		
+		sfprintr($arrRet);
 		sfprintr($auto_inc_no);
 		exit();
 		
