@@ -181,7 +181,6 @@ function lfCheckError(){
 	// 接続チェックを行う
 	$arrErr = lfChkConnect();
 
-	
 	sfprintr($arrErr);
 	return $arrErr;
 }
@@ -214,7 +213,10 @@ function lfChkConnect(){
 	
 	// データ送信
 	$arrXML = sfPostPaymentData($_POST["url"], $arrSendData, false);
-	if($arrXML == "") return $arrRet["url"] = "接続できませんでした。";
+	if($arrXML == "") {
+		$arrRet["url"] = "接続できませんでした。";
+		return $arrRet;	
+	}
 	
 	// エラーがあるかチェックする
 	$err_code = sfGetXMLValue($arrXML,'RESULT','ERR_CODE');
@@ -222,11 +224,12 @@ function lfChkConnect(){
 		case "":
 			break;
 		case "607":
-			return $arrRet["code"] = sfGetXMLValue($arrXML,'RESULT','ERR_DETAIL');
+			$arrRet["code"] = "契約コードが違います。";
+			return $arrRet;
 		default :
-			return $arrRet["service"] = sfGetXMLValue($arrXML,'RESULT','ERR_DETAIL');
+			$arrRet["service"] = sfGetXMLValue($arrXML,'RESULT','ERR_DETAIL');
+			return $arrRet;
 	}
-	
 	
 	// コンビニ指定があればコンビニ分ループし、チェックを行う
 	if(count($_POST["convenience"]) > 0){
@@ -239,11 +242,17 @@ function lfChkConnect(){
 			
 			// データ送信
 			$arrXML = sfPostPaymentData($_POST["url"], $arrSendData, false);
-			if($arrXML == "") return $arrRet["url"] = "接続できませんでした。";
+			if($arrXML == "") {
+				$arrRet["url"] = "接続できませんでした。";
+				return $arrRet;	
+			}
 			
 			// エラーがあるかチェックする
 			$err_code = sfGetXMLValue($arrXML,'RESULT','ERR_CODE');
-			if($err_code != "") return $arrRet["service"] = sfGetXMLValue($arrXML,'RESULT','ERR_DETAIL');
+			if($err_code != ""){
+				$arrRet["service"] = sfGetXMLValue($arrXML,'RESULT','ERR_DETAIL');
+				return $arrRet;
+			}
 		}
 	}
 	
