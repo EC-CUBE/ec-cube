@@ -32,16 +32,16 @@
 					<tr>
 						<td align="center" bgcolor="#ffffff">
 						
-							<!-- ▼コンビに決済の場合には表示 -->
-							<!--{if count($arrConv) > 0}-->
+							<!-- ▼その他決済情報を表示する場合は表示 -->
+							<!--{if ($arrOther.title.value) }-->
 							<table  width="590" cellspacing="0" cellpadding="0" summary=" ">
 								<tr>
 									<td>
 									<table cellspacing="0" cellpadding="0" summary=" " id="comp">
 										<tr><td height="20"></td></tr>
 										<tr>
-											<td class="fs12">■コンビニ決済情報<br />
-											<!--{foreach key=key item=item from=$arrConv}-->
+											<td class="fs12">■<!--{$arrOther.title.name}-->情報<br />
+											<!--{foreach key=key item=item from=$arrOther}-->
 											<!--{if $item.name != ""}--><!--{$item.name|escape}-->：<!--{/if}--><!--{$item.value|escape|nl2br}--><br/>
 											<!--{/foreach}-->
 										</tr>

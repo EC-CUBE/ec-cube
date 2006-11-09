@@ -119,7 +119,6 @@ switch($_POST["mode"]){
 				$tel = lfSetConvMSG("電話番号",$_POST["order_tel01"]."-".$_POST["order_tel02"]."-".$_POST["order_tel03"]);	// 電話番号
 				$payment_limit = lfSetConvMSG("支払期日",sfGetXMLValue($arrXML,'RESULT','CONVENI_LIMIT'));	// 支払期日
 				
-				
 				//コンビニの種類
 				switch($conveni_code) {
 				//セブンイレブン
