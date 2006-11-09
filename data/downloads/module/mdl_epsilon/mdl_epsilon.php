@@ -179,7 +179,7 @@ function lfCheckError(){
 	}
 	
 	// 接続チェックを行う
-	$arrErr["connect"] = lfChkConnect();
+	$arrErr = lfChkConnect();
 
 	
 	sfprintr($arrErr);
@@ -189,6 +189,9 @@ function lfCheckError(){
 // 接続チェックを行う
 function lfChkConnect(){
 	global $objQuery;
+	global $objPage;
+	
+	$arrRet = array();
 	
 	// メールアドレス取得
 	$email = $objQuery->getone("SELECT email03 FROM dtb_baseinfo");
@@ -197,7 +200,6 @@ function lfChkConnect(){
 	(in_array(1, (array)$_POST["payment"])) ? $cre = "1" : $cre = "0";
 	(in_array(2, (array)$_POST["payment"])) ? $con = "1" : $con = "0";
 	$st_code = $cre . "0" . $con . "00-0000-00000";
-
 	
 	// 送信データ生成
 	$arrSendData = array(
@@ -212,12 +214,12 @@ function lfChkConnect(){
 	
 	// データ送信
 	$arrXML = sfPostPaymentData($_POST["url"], $arrSendData, false);
-	
-	if($arrXML == "") return("接続できませんでした。");
+	if($arrXML == "") return $arrRet["url"] = "接続できませんでした。";
 	
 	// エラーがあるかチェックする
 	$err_code = sfGetXMLValue($arrXML,'RESULT','ERR_CODE');
-	if($err_code != "") return sfGetXMLValue($arrXML,'RESULT','ERR_DETAIL');
+	sfprintr($err_code);
+	if($err_code != "") return $arrRet["service"] = sfGetXMLValue($arrXML,'RESULT','ERR_DETAIL');
 	
 	// コンビニ指定があればコンビニ分ループし、チェックを行う
 	if(count($_POST["convenience"]) > 0){
@@ -230,16 +232,15 @@ function lfChkConnect(){
 			
 			// データ送信
 			$arrXML = sfPostPaymentData($_POST["url"], $arrSendData, false);
-
-			if($arrXML == "") return("接続できませんでした。");
+			if($arrXML == "") return $arrRet["url"] = "接続できませんでした。";
 			
 			// エラーがあるかチェックする
 			$err_code = sfGetXMLValue($arrXML,'RESULT','ERR_CODE');
-			if($err_code != "") return sfGetXMLValue($arrXML,'RESULT','ERR_DETAIL');
+			if($err_code != "") return $arrRet["service"] = sfGetXMLValue($arrXML,'RESULT','ERR_DETAIL');
 		}
 	}
 	
-	return "";	
+	return $arrRet;	
 }
 
 // 登録データを読み込む
