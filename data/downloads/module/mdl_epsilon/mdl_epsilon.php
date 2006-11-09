@@ -211,7 +211,7 @@ function lfChkConnect(){
 	);
 	
 	// データ送信
-	//$arrXML = sfPostPaymentData($order_url, $arrSendData, false);
+	$arrXML = sfPostPaymentData($order_url, $arrSendData, false);
 	
 	if($arrXML == "") return("ERROR");
 	
