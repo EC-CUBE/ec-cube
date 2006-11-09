@@ -1542,6 +1542,13 @@ function sfSendOrderMail($order_id, $template_id, $subject = "", $header = "", $
 	//その他決済情報
 	if($arrOrder['memo02'] != "") {
 		$arrOther = unserialize($arrOrder['memo02']);
+		
+		foreach($arrOther as $other_key => $other_val){
+			if(sfTrim($other_val["value"]) == ""){
+				$arrOther[$other_key]["value"] = "";
+			}
+		}
+		
 		$objPage->arrOther = $arrOther;
 	}
 
