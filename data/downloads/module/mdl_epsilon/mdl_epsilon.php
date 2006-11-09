@@ -182,7 +182,6 @@ function lfCheckError(){
 
 // 登録データを読み込む
 function lfLoadData(){
-	global $objQuery;
 	global $objFormParam;
 	
 	//データを取得
