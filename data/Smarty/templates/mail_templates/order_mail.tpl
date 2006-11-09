@@ -35,7 +35,7 @@
 <!--{if $arrConv.cv_company_code != ""}-->企業コード：<!--{$arrConv.cv_company_code}--><!--{"\n"}--><!--{/if}-->
 <!--{if $arrConv.cv_order_no != ""}-->受付番号：<!--{$arrConv.cv_order_no}--><!--{"\n"}--><!--{/if}-->
 支払期限:<!--{$arrConv.cv_payment_limit}--><!--{"\n"}-->
-<!--{$arrConv.cv_message|escape]}-->
+<!--{$arrConv.cv_message|escape}-->
 <!--{/if}-->
 
 ******************************************************************

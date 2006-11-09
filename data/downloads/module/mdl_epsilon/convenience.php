@@ -159,7 +159,7 @@ switch($_POST["mode"]){
 					$arrRet['cv_type'] = $arrConvenience[$conveni_code];			//コンビニの種類
 					$arrRet['cv_receipt_no'] = $receipt_no;		//払込票番号
 					$arrRet['cv_tel'] = $tel;					//電話番号
-					$arrRet['cv_message'] = "<お支払い方法>
+					$arrRet['cv_message'] = "お支払い方法
 1. ローソンの店内に設置してあるLoppiのトップ画面の中から、
   「インターネット受付」をお選びください。
 
