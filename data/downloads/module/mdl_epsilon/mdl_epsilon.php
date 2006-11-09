@@ -186,7 +186,7 @@ function lfLoadData(){
 	global $objFormParam;
 	
 	//データを取得
-	$arrRet = lfGetPaymentDB("AND memo03 = 1");
+	$arrRet = lfGetPaymentDB();
 	
 	// 値をセット
 	$objFormParam->setParam($arrRet[0]);
