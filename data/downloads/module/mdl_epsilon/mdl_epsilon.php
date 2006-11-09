@@ -204,8 +204,6 @@ function lfLoadData(){
 	//データを取得
 	$arrRet = lfGetPaymentDB(" AND del_flg = '0'");
 	
-	sfprintr($arrRet);
-	
 	// 値をセット
 	$objFormParam->setParam($arrRet[0]);
 
