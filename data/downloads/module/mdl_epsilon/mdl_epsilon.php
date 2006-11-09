@@ -86,8 +86,6 @@ case 'edit':
 				
 				$arrData = array(			
 					"payment_method" => "Epsilonクレジット"
-					,"rule" => "0"
-					,"deliv_id" =>0
 					,"rank" => $max_rank + 1
 					,"fix" => 3
 					,"creator_id" => $objSess->member_id
@@ -108,8 +106,6 @@ case 'edit':
 			if($val == 2){
 				$arrData = array(			
 					"payment_method" => "Epsilonコンビニ"
-					,"rule" => "0"
-					,"deliv_id" =>0
 					,"rank" => $max_rank + 1
 					,"fix" => 3
 					,"creator_id" => $objSess->member_id
