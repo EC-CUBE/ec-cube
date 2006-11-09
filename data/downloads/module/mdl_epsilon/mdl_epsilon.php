@@ -212,28 +212,32 @@ function lfChkConnect(){
 	
 	// データ送信
 	$arrXML = sfPostPaymentData($_POST["url"], $arrSendData, false);
-	
-	if($arrXML == "") return("ERROR");
+	if($arrXML == "") return("接続できませんでした。");
 	
 	// エラーがあるかチェックする
 	$err_code = sfGetXMLValue($arrXML,'RESULT','ERR_CODE');
-	if($err_code != "") return sfGetXMLValue($arrXML,'RESULT','ERR_DETAIL');;
+	if($err_code != "") return sfGetXMLValue($arrXML,'RESULT','ERR_DETAIL');
 	
 	// コンビニ指定があればコンビニ分ループし、チェックを行う
 	if(count($_POST["convenience"]) > 0){
 		foreach($_POST["convenience"] as $key => $val){
 			// 送信データ生成
-			$arrSendData = array(
-				'conveni_code' => $val,				// コンビニコード
-				'user_tel' => "0300000000",			// 電話番号
-				'user_name_kana' => "送信テスト",	// 氏名(カナ)
-				'haraikomi_mail' => 0,				// 払込メール(送信しない)
-			);
+			$arrSendData['conveni_code'] = $val;			// コンビニコード
+			$arrSendData['user_tel'] = "0300000000";		// 電話番号
+			$arrSendData['user_name_kana'] = "送信テスト";	// 氏名(カナ)
+			$arrSendData['haraikomi_mail'] = 0;				// 払込メール(送信しない)
+			
+			// データ送信
+			$arrXML = sfPostPaymentData($order_url, $arrSendData, false);
+
+			if($arrXML == "") return("接続できませんでした。");
+			
+			// エラーがあるかチェックする
+			$err_code = sfGetXMLValue($arrXML,'RESULT','ERR_CODE');
+			if($err_code != "") return sfGetXMLValue($arrXML,'RESULT','ERR_DETAIL');
 		}
 	}
 	
-	// データ送信
-	//$arrXML = sfPostPaymentData($order_url, $arrSendData);
 	
 }
 
