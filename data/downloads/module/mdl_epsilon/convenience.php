@@ -123,14 +123,17 @@ switch($_POST["mode"]){
 					$arrRet['cv_type'] = $arrConvenience[$conveni_code];			//コンビニの種類
 					$arrRet['cv_payment_url'] = $payment_url;	//払込票URL(PC)
 					$arrRet['cv_receipt_no'] = $receipt_no;		//払込票番号
-					$arrRet['cv_message'] = "上記のページをプリントアウトされるか払込票番号をメモして、お支払い期限までに、最寄りのセブンイレブンにて代金をお支払いください。";
+					$arrRet['cv_message'] = "上記のページをプリントアウトされるか払込票番号をメモして、
+お支払い期限までに、最寄りのセブンイレブンにて代金をお支払いください。";
 					break;
 				//ファミリーマート
 				case '21':
 					$arrRet['cv_type'] = $arrConvenience[$conveni_code];			//コンビニの種類
 					$arrRet['cv_company_code'] = $company_code;	//企業コード
 					$arrRet['cv_order_no'] = $receipt_no;		//受付番号
-					$arrRet['cv_message'] = "ファミリーマート店頭にございます Famiポート／ファミネットにて以下の「企業コード」と「注文番号」を入力し、申込券を印字後、お支払い期限までに代金をお支払い下さい。";
+					$arrRet['cv_message'] = "ファミリーマート店頭にございます
+Famiポート／ファミネットにて以下の「企業コード」と「注文番号」を入力し、
+申込券を印字後、お支払い期限までに代金をお支払い下さい。";
 					break;
 				//ローソン
 				case '31':

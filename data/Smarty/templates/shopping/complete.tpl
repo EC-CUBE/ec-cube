@@ -41,14 +41,14 @@
 										<tr><td height="20"></td></tr>
 										<tr>
 											<td class="fs12">■コンビニ決済情報<br />
-											コンビニの種類：<!--{$arrCONVENIENCE[$arrConv.cv_type]|escape}--><br />
+											コンビニの種類：<!--{$arrConv.cv_type|escape}--><br />
 											<!--{if $arrConv.cv_payment_url != ""}-->振込票URL(PC)：<!--{$arrConv.cv_payment_url}--><br /><!--{/if}-->
 											<!--{if $arrConv.cv_payment_mobile_url != ""}-->振込票URL(モバイル)：<!--{$arrConv.cv_payment_mobile_url}--><br /><!--{/if}-->
 											<!--{if $arrConv.cv_receipt_no != ""}-->振込票番号：<!--{$arrConv.cv_receipt_no}--><br /><!--{/if}-->
 											<!--{if $arrConv.cv_company_code != ""}-->企業コード：<!--{$arrConv.cv_company_code}--><br /><!--{/if}-->
 											<!--{if $arrConv.cv_order_no != ""}-->受付番号：<!--{$arrConv.cv_order_no}--><br /><!--{/if}-->
 											支払期限:<!--{$arrConv.cv_payment_limit}--><br />
-											<!--{$arrCONVENIMESSAGE[$arrConv.cv_type]}-->
+											<!--{$arrConv.cv_message}-->
 										</tr>
 										<tr><td height="20"></td></tr>
 									</table>
