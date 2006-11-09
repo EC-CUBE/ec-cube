@@ -211,7 +211,9 @@ function lfChkConnect(){
 	);
 	
 	// データ送信
-	$arrXML = sfPostPaymentData($order_url, $arrSendData);
+	$arrXML = sfPostPaymentData($order_url, $arrSendData, false);
+	
+	if($arrXML == "") return("ERROR");
 	
 	// エラーがあるかチェックする
 	$err_code = sfGetXMLValue($arrXML,'RESULT','ERR_CODE');
