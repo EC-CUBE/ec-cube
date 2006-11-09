@@ -214,7 +214,7 @@ function lfChkConnect(){
 	// データ送信
 	$arrXML = sfPostPaymentData($_POST["url"], $arrSendData, false);
 	if($arrXML == "") {
-		$arrRet["url"] = "接続できませんでした。";
+		$arrRet["url"] = "接続できませんでした。<br>";
 		return $arrRet;	
 	}
 	
@@ -224,7 +224,7 @@ function lfChkConnect(){
 		case "":
 			break;
 		case "607":
-			$arrRet["code"] = "契約コードが違います。";
+			$arrRet["code"] = "契約コードが違います。<br>";
 			return $arrRet;
 		default :
 			$arrRet["service"] = sfGetXMLValue($arrXML,'RESULT','ERR_DETAIL');
@@ -243,7 +243,7 @@ function lfChkConnect(){
 			// データ送信
 			$arrXML = sfPostPaymentData($_POST["url"], $arrSendData, false);
 			if($arrXML == "") {
-				$arrRet["url"] = "接続できませんでした。";
+				$arrRet["url"] = "接続できませんでした。<br>";
 				return $arrRet;	
 			}
 			

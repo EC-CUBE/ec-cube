@@ -151,6 +151,12 @@ function fnChangeDisabled(list, disable) {
 											<!--{html_checkboxes_ex name="$key" options=$arrConvenience selected=$arrForm[$key].value style=$arrErr[$key]|sfGetErrorColor}-->
 											</td>
 										</tr>
+										<tr class="fs12n">
+											<td bgcolor="#ffffff">
+											<!--{assign var=key value="service"}-->
+											<span class="red12"><!--{$arrErr[$key]}--></span>
+											</td>
+										</tr>
 									</table>
 
 									<table width="440" border="0" cellspacing="0" cellpadding="0" summary=" ">
