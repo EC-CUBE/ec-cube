@@ -39,6 +39,7 @@ class LC_Page {
 }
 $objPage = new LC_Page();
 $objView = new SC_AdminView();
+$objQuery = new SC_Query();
 
 // 認証確認
 $objSess = new SC_Session();
@@ -53,7 +54,6 @@ $objFormParam = lfInitParam($objFormParam);
 // POST値の取得
 $objFormParam->setParam($_POST);
 
-$objQuery = new SC_Query();
 
 // 汎用項目を追加(必須！！)
 sfAlterMemo();
@@ -187,22 +187,54 @@ function lfCheckError(){
 
 // 接続チェックを行う
 function lfChkConnect(){
+	global $objQuery;
+	
+	// メールアドレス取得
+	$email = $objQuery->getone("SELECT email03 FROM dtb_baseinfo");
+
+	// 契約コード	
+	(in_array(1, $_POST["payment"])) ? $cre = "1" : $cre = "0";
+	(in_array(2, $_POST["payment"])) ? $con = "1" : $con = "0";
+	$st_code = $cre . "0" . $con . "00-0000-00000";
+
+	
 	// 送信データ生成
 	$arrSendData = array(
-		'contract_code' => $_POST["code"],						// 契約コード
-		'user_id' => "connect_test",								// ユーザID
-		'user_name' => "接続テスト",	// ユーザ名
-		'user_mail_add' => "",							// メールアドレス
-		'st_code' => $arrPayment[0]["memo04"],								// 決済区分
-		'process_code' => '3',												// 処理区分(固定)
-		'xml' => '1',														// 応答形式(固定)
-		
-		'conveni_code' => $_POST["convenience"],							// コンビニコード
-		'user_tel' => $_POST["order_tel01"].$_POST["order_tel02"].$_POST["order_tel03"],	// 電話番号
-		'user_name_kana' => $_POST["order_kana01"].$_POST["order_kana02"],					// 氏名(カナ)
-		'haraikomi_mail' => 1,												// 払込メール(送信しない)
-		
+		'contract_code' => $_POST["code"],		// 契約コード
+		'user_id' => "connect_test",			// ユーザID
+		'user_name' => "接続テスト",			// ユーザ名
+		'user_mail_add' => $email,				// メールアドレス
+		'st_code' => $st_code,					// 決済区分
+		'process_code' => '3',					// 処理区分(固定)
+		'xml' => '1',							// 応答形式(固定)
 	);
+	
+	// データ送信
+	$arrXML = sfPostPaymentData($order_url, $arrSendData);
+	
+	// エラーがあるかチェックする
+	$err_code = sfGetXMLValue($arrXML,'RESULT','ERR_CODE');
+	if($err_code != "") return $err_code;
+	
+	// コンビニ指定があればコンビニ分ループし、チェックを行う
+	if(count($_POST["convenience"]) > 0){
+		// 送信データ生成
+		$arrSendData = array(
+			'contract_code' => $_POST["code"],		// 契約コード
+			'user_id' => "connect_test",			// ユーザID
+			'user_name' => "接続テスト",			// ユーザ名
+			'user_mail_add' => $email,				// メールアドレス
+			'st_code' => $st_code,					// 決済区分
+			'process_code' => '3',					// 処理区分(固定)
+			'xml' => '1',							// 応答形式(固定)
+	
+			'conveni_code' => $_POST["convenience"],							// コンビニコード
+			'user_tel' => $_POST["order_tel01"].$_POST["order_tel02"].$_POST["order_tel03"],	// 電話番号
+			'user_name_kana' => $_POST["order_kana01"].$_POST["order_kana02"],					// 氏名(カナ)
+			'haraikomi_mail' => 0,												// 払込メール(送信しない)
+		);
+		
+	}
 	
 	// データ送信
 	$arrXML = sfPostPaymentData($order_url, $arrSendData);
