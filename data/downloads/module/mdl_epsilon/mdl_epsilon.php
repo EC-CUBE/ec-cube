@@ -228,8 +228,6 @@ function lfGetPaymentDB(){
 	
 	$objQuery->getlastquery();
 	
-	sfprintr($arrRet);
-	
 	return $arrRet;
 }
 
