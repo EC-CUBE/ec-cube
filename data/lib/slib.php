@@ -1543,8 +1543,6 @@ function sfSendOrderMail($order_id, $template_id, $subject = "", $header = "", $
 	if($arrOrder['memo02'] != "") {
 		$arrOther = unserialize($arrOrder['memo02']);
 		$objPage->arrOther = $arrOther;
-		
-		sfprintr($arrOther);
 	}
 
 	// ≈‘∆ª…‹∏© —¥π
