@@ -73,6 +73,7 @@ case 'edit':
 		// del_flgを削除にしておく
 		$del_sql = "UPDATE dtb_payment SET del_flg = 1, memo03='', memo04='' WHERE module_id = ? ";
 		$arrDel = array(MDL_EPSILON_ID);
+/*
 		if(count($_POST["payment"]) > 0){
 			$del_sql .= " AND memo03 NOT IN ( ?";
 			$arrDel = array_merge($arrDel, array($_POST["payment"][0]));
@@ -82,6 +83,7 @@ case 'edit':
 			}
 			$del_sql .= " ) ";
 		}
+*/
 		$objQuery->query($del_sql, $arrDel);
 		
 		foreach($_POST["payment"] as $key => $val){
