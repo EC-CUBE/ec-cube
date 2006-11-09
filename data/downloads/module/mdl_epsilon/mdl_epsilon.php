@@ -218,8 +218,15 @@ function lfChkConnect(){
 	
 	// エラーがあるかチェックする
 	$err_code = sfGetXMLValue($arrXML,'RESULT','ERR_CODE');
-	sfprintr($err_code);
-	if($err_code != "") return $arrRet["service"] = sfGetXMLValue($arrXML,'RESULT','ERR_DETAIL');
+	switch ($err_code) {
+		case "":
+			break;
+		case "607":
+			return $arrRet["code"] = sfGetXMLValue($arrXML,'RESULT','ERR_DETAIL');
+		default :
+			return $arrRet["service"] = sfGetXMLValue($arrXML,'RESULT','ERR_DETAIL');
+	}
+	
 	
 	// コンビニ指定があればコンビニ分ループし、チェックを行う
 	if(count($_POST["convenience"]) > 0){
