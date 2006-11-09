@@ -71,16 +71,19 @@ case 'edit':
 		}
 		
 		// del_flgを削除にしておく
-		$del_sql = "UPDATE dtb_payment SET del_flg = 1, memo03='', memo04='' WHERE module_id = ? AND memo03 NOT IN (";
-		
+		$del_sql = "UPDATE dtb_payment SET del_flg = 1, memo03='', memo04='' WHERE module_id = ? ";
+		$arrDel = array(MDL_EPSILON_ID);
 		if(count($_POST["payment"]) > 0){
-			
-		}
-		for($i = 1; $i < count($_POST["payment"]); $i++){
-			
+			$del_sql .= " AND memo03 NOT IN ( ?";
+			$arrDel = array_merge($arrDel, array($_POST["payment"][0]));
+			for($i = 1; $i < count($_POST["payment"]); $i++){
+				$del_sql .= " ,?";
+				$arrDel = array_merge($arrDel, array($_POST["payment"][$i]));
+			}
+			$del_sql .= " ) ";
 		}
 		
-		//$objQuery->query($del_sql, array(MDL_EPSILON_ID));
+		$objQuery->query($del_sql, $arrDel);
 		
 		foreach($_POST["payment"] as $key => $val){
 			// ランクの最大値を取得する
@@ -138,12 +141,6 @@ case 'edit':
 				$objQuery->insert("dtb_payment", $arrData);
 			}
 		}
-		
-		$sql = "";
-		for($i = 0; $i<100; $i++){
-			$sql .= "INSERT INTO test VALUES(1,1,1);";
-		}
-		$objQuery->query($sql);
 		
 		// javascript実行
 		//$objPage->tpl_onload = 'alert("登録完了しました。\n基本情報＞支払方法設定より詳細設定をしてください。"); window.close();';
