@@ -23,7 +23,7 @@
 　ご住所　：<!--{$arrOrder.deliv_pref}--><!--{$arrOrder.deliv_addr01}--><!--{$arrOrder.deliv_addr02}-->
 　電話番号：<!--{$arrOrder.deliv_tel01}-->-<!--{$arrOrder.deliv_tel02}-->-<!--{$arrOrder.deliv_tel03}-->
 
-<!--{if $arrOther.title.valu }-->
+<!--{if $arrOther.title.value }-->
 ******************************************************************
 　<!--{$arrOther.title.name}-->情報
 ******************************************************************
