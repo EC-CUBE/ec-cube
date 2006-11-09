@@ -186,7 +186,7 @@ function lfLoadData(){
 	global $objFormParam;
 	
 	//データを取得
-	$arrRet = lfGetPaymentDB();
+	$arrRet = lfGetPaymentDB("and memo03=1");
 	
 	// 値をセット
 	$objFormParam->setParam($arrRet[0]);
@@ -229,6 +229,8 @@ function lfGetPaymentDB($where = "", $arrWhereVal = array()){
 				memo05 as convenience
 			FROM dtb_payment WHERE module_id = ? " . $where;
 	$arrRet = $objQuery->getall($sql, $arrVal);
+	
+	$objQuery->getlastquery();
 	
 	return $arrRet;
 }
