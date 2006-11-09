@@ -82,7 +82,6 @@ case 'edit':
 			}
 			$del_sql .= " ) ";
 		}
-		
 		$objQuery->query($del_sql, $arrDel);
 		
 		foreach($_POST["payment"] as $key => $val){
