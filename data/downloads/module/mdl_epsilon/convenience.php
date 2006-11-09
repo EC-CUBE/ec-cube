@@ -115,7 +115,7 @@ switch($_POST["mode"]){
 				$company_code = lfSetConvMSG("企業コード",sfGetXMLValue($arrXML,'RESULT','KIGYOU_CODE'));	// 企業コード
 				$order_no = lfSetConvMSG("受付番号",sfGetXMLValue($arrXML,'RESULT','ORDER_NUMBER'));		// 受付番号
 				$tel = lfSetConvMSG("電話番号",$_POST["order_tel01"]."-".$_POST["order_tel02"]."-".$_POST["order_tel03"]);	// 電話番号
-				$payment_limit = lfSetConvMSG("支払期日","\n\n" . sfGetXMLValue($arrXML,'RESULT','CONVENI_LIMIT'));	// 支払期日
+				$payment_limit = lfSetConvMSG("<br>支払期日",sfGetXMLValue($arrXML,'RESULT','CONVENI_LIMIT'));	// 支払期日
 				
 				
 				//コンビニの種類
