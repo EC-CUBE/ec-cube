@@ -213,7 +213,7 @@ function lfChkConnect(){
 	// データ送信
 	$arrXML = sfPostPaymentData($_POST["url"], $arrSendData, false);
 	
-	if($arrXML == "") return("ERROR");
+	if($arrXML == "") return sfGetXMLValue($arrXML,'RESULT','ERR_DETAIL');;
 	
 	// エラーがあるかチェックする
 	$err_code = sfGetXMLValue($arrXML,'RESULT','ERR_CODE');
