@@ -226,6 +226,8 @@ function lfGetPaymentDB(){
 			FROM dtb_payment WHERE module_id = ?";
 	$arrRet = $objQuery->getall($sql, array(MDL_EPSILON_ID));
 	
+	$objQuery->getlastquery();
+	
 	sfprintr($arrRet);
 	
 	return $arrRet;
