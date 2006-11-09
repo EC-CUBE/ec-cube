@@ -109,20 +109,22 @@ switch($_POST["mode"]){
 				$objSiteSess->setRegistFlag();
 				
 				$conveni_code = sfGetXMLValue($arrXML,'RESULT','CONVENI_CODE');	// コンビニコード
-				$receipt_no   = sfGetXMLValue($arrXML,'RESULT','RECEIPT_NO');	// 払込票番号
-				$payment_url = sfGetXMLValue($arrXML,'RESULT','HARAIKOMI_URL');	// 払込票URL(PC)
-				$company_code = sfGetXMLValue($arrXML,'RESULT','KIGYOU_CODE');	// 企業コード
-				$order_no = sfGetXMLValue($arrXML,'RESULT','ORDER_NUMBER');		// 受付番号
-				$tel = $_POST["order_tel01"]."-".$_POST["order_tel02"]."-".$_POST["order_tel03"];	// 電話番号
-				$payment_limit = sfGetXMLValue($arrXML,'RESULT','CONVENI_LIMIT');	// 支払期日
+				$conveni_type = lfSetConvMSG("コンビニの種類",$arrConvenience[$conveni_code]);	// コンビニの種類
+				$receipt_no   = lfSetConvMSG("払込票番号",sfGetXMLValue($arrXML,'RESULT','RECEIPT_NO'));	// 払込票番号
+				$payment_url = lfSetConvMSG("払込票URL",sfGetXMLValue($arrXML,'RESULT','HARAIKOMI_URL'));	// 払込票URL
+				$company_code = lfSetConvMSG("企業コード",sfGetXMLValue($arrXML,'RESULT','KIGYOU_CODE'));	// 企業コード
+				$order_no = lfSetConvMSG("受付番号",sfGetXMLValue($arrXML,'RESULT','ORDER_NUMBER'));		// 受付番号
+				$tel = lfSetConvMSG("電話番号",$_POST["order_tel01"]."-".$_POST["order_tel02"]."-".$_POST["order_tel03"]);	// 電話番号
+				$payment_limit = lfSetConvMSG("支払期日",sfGetXMLValue($arrXML,'RESULT','CONVENI_LIMIT'));	// 支払期日
+				
 				
 				//コンビニの種類
 				switch($conveni_code) {
 				//セブンイレブン
 				case '11':
-					$arrRet['cv_type'] = lfSetConvMSG("コンビニの種類",$arrConvenience[$conveni_code]);			//コンビニの種類
-					$arrRet['cv_payment_url'] = lfSetConvMSG("払込票URL",$payment_url);	//払込票URL(PC)
-					$arrRet['cv_receipt_no'] = lfSetConvMSG("払込票番号",$receipt_no);		//払込票番号
+					$arrRet['cv_type'] = $conveni_type;			//コンビニの種類
+					$arrRet['cv_payment_url'] = $payment_url;	//払込票URL(PC)
+					$arrRet['cv_receipt_no'] = $receipt_no;		//払込票番号
 					$arrRet['cv_message'] = lfSetConvMSG("","上記のページをプリントアウトされるか払込票番号をメモして、
 お支払い期限までに、最寄りのセブンイレブンにて代金をお支払いください。");
 
@@ -130,7 +132,7 @@ switch($_POST["mode"]){
 					break;
 				//ファミリーマート
 				case '21':
-					$arrRet['cv_type'] = $arrConvenience[$conveni_code];			//コンビニの種類
+					$arrRet['cv_type'] = $conveni_type;			//コンビニの種類
 					$arrRet['cv_company_code'] = $company_code;	//企業コード
 					$arrRet['cv_order_no'] = $receipt_no;		//受付番号
 					$arrRet['cv_message'] = "ファミリーマート店頭にございます
@@ -139,7 +141,7 @@ Famiポート／ファミネットにて以下の「企業コード」と「注文番号」を入力し、
 					break;
 				//ローソン
 				case '31':
-					$arrRet['cv_type'] = $arrConvenience[$conveni_code];			//コンビニの種類
+					$arrRet['cv_type'] = $conveni_type;			//コンビニの種類
 					$arrRet['cv_receipt_no'] = $receipt_no;		//払込票番号
 					$arrRet['cv_tel'] = $tel;					//電話番号
 					$arrRet['cv_message'] = "＜お支払い方法＞
@@ -160,7 +162,7 @@ Famiポート／ファミネットにて以下の「企業コード」と「注文番号」を入力し、
 					break;
 				//セイコーマート
 				case '32':
-					$arrRet['cv_type'] = $arrConvenience[$conveni_code];			//コンビニの種類
+					$arrRet['cv_type'] =$conveni_type;			//コンビニの種類
 					$arrRet['cv_receipt_no'] = $receipt_no;		//払込票番号
 					$arrRet['cv_tel'] = $tel;					//電話番号
 					$arrRet['cv_message'] = "＜お支払い方法＞
@@ -177,7 +179,7 @@ Famiポート／ファミネットにて以下の「企業コード」と「注文番号」を入力し、
 					break;
 				//ミニストップ
 				case '33':
-					$arrRet['cv_type'] = $arrConvenience[$conveni_code];			//コンビニの種類
+					$arrRet['cv_type'] = $conveni_type;			//コンビニの種類
 					$arrRet['cv_payment_url'] = $payment_url;	//払込票URL
 					$arrRet['cv_message'] = "お支払い期限までにミニストップにて代金をお支払い下さい。
 お支払いの際には「払込取扱票」が必要となりますので、上記URLで表示
@@ -185,7 +187,7 @@ Famiポート／ファミネットにて以下の「企業コード」と「注文番号」を入力し、
 					break;
 				//デイリーヤマザキ
 				case '34':
-					$arrRet['cv_type'] = $arrConvenience[$conveni_code];			//コンビニの種類
+					$arrRet['cv_type'] = $conveni_type;			//コンビニの種類
 					$arrRet['cv_payment_url'] = $payment_url;	//払込票URL
 					$arrRet['cv_message'] = "お支払い期限までにデイリーヤマザキ／ヤマザキデイリーストア
 にて代金をお支払い下さい。
@@ -195,7 +197,7 @@ Famiポート／ファミネットにて以下の「企業コード」と「注文番号」を入力し、
 				}
 				
 				//支払期限
-				$arrRet['cv_payment_limit'] = lfSetConvMSG("\n支払期限", $payment_limit);
+				$arrRet['cv_payment_limit'] = $payment_limit;
 				//コンビニ決済情報を格納
 				$sqlval['conveni_data'] = serialize($arrRet);
 				$sqlval['memo02'] = serialize($arrRet);

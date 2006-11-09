@@ -34,7 +34,7 @@
 						
 							<!-- ▼コンビに決済の場合には表示 -->
 							<!--{if count($arrConv) > 0}-->
-							<table cellspacing="0" cellpadding="0" summary=" " id="ichi">
+							<table  width="590" cellspacing="0" cellpadding="0" summary=" " id="ichi">
 								<tr>
 									<td>
 									<table cellspacing="0" cellpadding="0" summary=" " id="comp">
