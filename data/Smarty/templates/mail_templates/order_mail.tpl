@@ -23,12 +23,12 @@
 　ご住所　：<!--{$arrOrder.deliv_pref}--><!--{$arrOrder.deliv_addr01}--><!--{$arrOrder.deliv_addr02}-->
 　電話番号：<!--{$arrOrder.deliv_tel01}-->-<!--{$arrOrder.deliv_tel02}-->-<!--{$arrOrder.deliv_tel03}-->
 
-<!--{if $arrConv.cv_type != ""}-->
+<!--{if $arrOther.title.valu }-->
 ******************************************************************
-　コンビニ決済情報
+　<!--{$arrOther.title.name}-->情報
 ******************************************************************
 
-<!--{foreach key=key item=item from=$arrConv}-->
+<!--{foreach key=key item=item from=$arrOther}-->
 <!--{if $item.name != ""}--><!--{$item.name|escape}-->：<!--{/if}--><!--{$item.value|escape|nl2br}--><br/>
 <!--{/foreach}-->
 <!--{/if}-->
