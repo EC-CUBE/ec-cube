@@ -118,7 +118,75 @@ switch($_POST["mode"]){
 			);
 			
 			// データ送信
-			sfPostPaymentData($order_url, $arrSendData, "", false, PAYMENT_CONVENIENCE_ID);
+			$arrXML = sfPostPaymentData($order_url, $arrSendData);
+			
+			// エラーがあるかチェックする
+			$err_code = sfGetXMLValue($arrVal,'RESULT','ERR_CODE');
+			
+			if($err_code != "") {
+				$err_detail = sfGetXMLValue($arrVal,'RESULT','ERR_DETAIL');
+				sfDispSiteError(FREE_ERROR_MSG, "", false, "購入処理中に以下のエラーが発生しました。<br /><br /><br />・" . $err_detail);
+			} else {
+				// 正常な推移であることを記録しておく
+				$objSiteSess->setRegistFlag();
+				
+				$conveni_code = sfGetXMLValue($arrVal,'RESULT','CONVENI_CODE');	// コンビニコード
+				$receipt_no   = sfGetXMLValue($arrVal,'RESULT','RECEIPT_NO');	// 払込票番号
+				$payment_url = sfGetXMLValue($arrVal,'RESULT','HARAIKOMI_URL');	// 払込票URL(PC)
+				$company_code = sfGetXMLValue($arrVal,'RESULT','KIGYOU_CODE');	// 企業コード
+				$order_no = sfGetXMLValue($arrVal,'RESULT','ORDER_NUMBER');		// 受付番号
+				$tel = $_POST["order_tel01"]."-".$_POST["order_tel02"]."-".$_POST["order_tel03"];	// 電話番号
+				$payment_limit = sfGetXMLValue($arrVal,'RESULT','CONVENI_LIMIT');	// 支払期日
+				
+				//コンビニの種類
+				switch($conveni_code) {
+				//セブンイレブン
+				case '11':
+					$arrRet['cv_type'] = $conveni_code;			//コンビニの種類
+					$arrRet['cv_payment_url'] = $payment_url;	//払込票URL(PC)
+					$arrRet['cv_receipt_no'] = $receipt_no;		//払込票番号
+					break;
+				//ファミリーマート
+				case '21':
+					$arrRet['cv_type'] = $conveni_code;			//コンビニの種類
+					$arrRet['cv_company_code'] = $company_code;	//企業コード
+					$arrRet['cv_order_no'] = $receipt_no;		//受付番号
+					break;
+				//ローソン
+				case '31':
+					$arrRet['cv_type'] = $conveni_code;			//コンビニの種類
+					$arrRet['cv_receipt_no'] = $receipt_no;		//払込票番号
+					$arrRet['cv_tel'] = $tel;					//電話番号
+					break;
+				//セイコーマート
+				case '32':
+					$arrRet['cv_type'] = $conveni_code;			//コンビニの種類
+					$arrRet['cv_receipt_no'] = $receipt_no;		//払込票番号
+					$arrRet['cv_tel'] = $tel;					//電話番号
+					break;
+				//ミニストップ
+				case '33':
+					$arrRet['cv_type'] = $conveni_code;			//コンビニの種類
+					$arrRet['cv_payment_url'] = $payment_url;	//払込票URL
+					break;
+				//デイリーヤマザキ
+				case '34':
+					$arrRet['cv_type'] = $conveni_code;			//コンビニの種類
+					$arrRet['cv_payment_url'] = $payment_url;	//払込票URL
+					break;
+				}
+				
+				//支払期限
+				$arrRet['cv_payment_limit'] = $payment_limit;
+				//コンビニ決済情報を格納
+				$sqlval['conveni_data'] = serialize($arrRet);
+				$sqlval['memo02'] = serialize($arrRet);
+	
+				// 受注一時テーブルに更新
+				sfRegistTempOrder($uniqid, $sqlval);
+					
+				header("Location: " . URL_SHOP_COMPLETE);
+			}
 		}
 		break;
 		

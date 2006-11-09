@@ -48,6 +48,8 @@ function sfPostPaymentData($order_url, $arrData, $err_msg = "<br /><br /><br />§
 	global $objSiteSess;
 	global $uniqid;
 	
+	$arrVal = array();
+	
 	// POST•«°º•ø§Ú¡˜øÆ§∑°¢±˛≈˙æ Û§ÚºË∆¿§π§Î
 	$response = sfSendPostData($order_url, $arrData);
 	
@@ -69,6 +71,8 @@ function sfPostPaymentData($order_url, $arrData, $err_msg = "<br /><br /><br />§
 	
 	// ≥´ ¸§π§Î
 	xml_parser_free($parser);
+	
+	return $arrVal;
 	
 	// •®•È°º§¨§¢§Î§´•¡•ß•√•Ø§π§Î
 	$err_code = sfGetXMLValue($arrVal,'RESULT','ERR_CODE');
@@ -95,37 +99,37 @@ function sfPostPaymentData($order_url, $arrData, $err_msg = "<br /><br /><br />§
 			switch($conveni_code) {
 			//•ª•÷•Û•§•Ï•÷•Û
 			case '11':
-				$arrRet['cv_type'] = $conveni_code;									//•≥•Û•”•À§ŒºÔŒ‡
-				$arrRet['cv_payment_url'] = $payment_url;						// ßπ˛…ºURL(PC)
+				$arrRet['cv_type'] = $conveni_code;			//•≥•Û•”•À§ŒºÔŒ‡
+				$arrRet['cv_payment_url'] = $payment_url;	// ßπ˛…ºURL(PC)
 				$arrRet['cv_receipt_no'] = $receipt_no;		// ßπ˛…º»÷πÊ
 				break;
 			//•’•°•ﬂ•Í°º•ﬁ°º•»
 			case '21':
-				$arrRet['cv_type'] = $conveni_code;							//•≥•Û•”•À§ŒºÔŒ‡
-				$arrRet['cv_company_code'] = $company_code;					//¥Î∂»•≥°º•…
-				$arrRet['cv_order_no'] = $receipt_no;							//ºı…’»÷πÊ
+				$arrRet['cv_type'] = $conveni_code;			//•≥•Û•”•À§ŒºÔŒ‡
+				$arrRet['cv_company_code'] = $company_code;	//¥Î∂»•≥°º•…
+				$arrRet['cv_order_no'] = $receipt_no;		//ºı…’»÷πÊ
 				break;
 			//•Ì°º•Ω•Û
 			case '31':
-				$arrRet['cv_type'] = $conveni_code;				//•≥•Û•”•À§ŒºÔŒ‡
-				$arrRet['cv_receipt_no'] = $receipt_no;			// ßπ˛…º»÷πÊ
-				$arrRet['cv_tel'] = $tel;			//≈≈œ√»÷πÊ
+				$arrRet['cv_type'] = $conveni_code;			//•≥•Û•”•À§ŒºÔŒ‡
+				$arrRet['cv_receipt_no'] = $receipt_no;		// ßπ˛…º»÷πÊ
+				$arrRet['cv_tel'] = $tel;					//≈≈œ√»÷πÊ
 				break;
 			//•ª•§•≥°º•ﬁ°º•»
 			case '32':
-				$arrRet['cv_type'] = $conveni_code;									//•≥•Û•”•À§ŒºÔŒ‡
+				$arrRet['cv_type'] = $conveni_code;			//•≥•Û•”•À§ŒºÔŒ‡
 				$arrRet['cv_receipt_no'] = $receipt_no;		// ßπ˛…º»÷πÊ
-				$arrRet['cv_tel'] = $tel;			//≈≈œ√»÷πÊ
+				$arrRet['cv_tel'] = $tel;					//≈≈œ√»÷πÊ
 				break;
 			//•ﬂ•À•π•»•√•◊
 			case '33':
-				$arrRet['cv_type'] = $conveni_code;										//•≥•Û•”•À§ŒºÔŒ‡
-				$arrRet['cv_payment_url'] = $payment_url;		// ßπ˛…ºURL
+				$arrRet['cv_type'] = $conveni_code;			//•≥•Û•”•À§ŒºÔŒ‡
+				$arrRet['cv_payment_url'] = $payment_url;	// ßπ˛…ºURL
 				break;
 			//•«•§•Í°º•‰•ﬁ•∂•≠
 			case '34':
-				$arrRet['cv_type'] = $conveni_code;										//•≥•Û•”•À§ŒºÔŒ‡
-				$arrRet['cv_payment_url'] = $payment_url;		// ßπ˛…ºURL
+				$arrRet['cv_type'] = $conveni_code;			//•≥•Û•”•À§ŒºÔŒ‡
+				$arrRet['cv_payment_url'] = $payment_url;	// ßπ˛…ºURL
 				break;
 			}
 			
@@ -134,7 +138,7 @@ function sfPostPaymentData($order_url, $arrData, $err_msg = "<br /><br /><br />§
 			//•≥•Û•”•À∑Ë∫—æ Û§Ú≥ «º
 			$sqlval['conveni_data'] = serialize($arrRet);
 			$sqlval['memo02'] = serialize($arrRet);
-			
+
 			$url = URL_SHOP_COMPLETE;
 
 			// ºı√Ì∞Ïª˛•∆°º•÷•Î§Àππø∑
