@@ -45,9 +45,6 @@ function sfGetXMLValue($arrVal, $tag, $att) {
  * 引数2	：$arrData		･･･ POSTデータ
  **************************************************************************************************************/
 function sfPostPaymentData($order_url, $arrData){
-	global $objSiteSess;
-	global $uniqid;
-	
 	$arrVal = array();
 	
 	// POSTデータを送信し、応答情報を取得する
@@ -73,8 +70,6 @@ function sfPostPaymentData($order_url, $arrData){
 	xml_parser_free($parser);
 	
 	return $arrVal;
-	
-
 }
 
 ?>

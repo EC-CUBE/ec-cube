@@ -121,22 +121,22 @@ switch($_POST["mode"]){
 			$arrXML = sfPostPaymentData($order_url, $arrSendData);
 			
 			// エラーがあるかチェックする
-			$err_code = sfGetXMLValue($arrVal,'RESULT','ERR_CODE');
+			$err_code = sfGetXMLValue($arrXML,'RESULT','ERR_CODE');
 			
 			if($err_code != "") {
-				$err_detail = sfGetXMLValue($arrVal,'RESULT','ERR_DETAIL');
+				$err_detail = sfGetXMLValue($arrXML,'RESULT','ERR_DETAIL');
 				sfDispSiteError(FREE_ERROR_MSG, "", false, "購入処理中に以下のエラーが発生しました。<br /><br /><br />・" . $err_detail);
 			} else {
 				// 正常な推移であることを記録しておく
 				$objSiteSess->setRegistFlag();
 				
-				$conveni_code = sfGetXMLValue($arrVal,'RESULT','CONVENI_CODE');	// コンビニコード
-				$receipt_no   = sfGetXMLValue($arrVal,'RESULT','RECEIPT_NO');	// 払込票番号
-				$payment_url = sfGetXMLValue($arrVal,'RESULT','HARAIKOMI_URL');	// 払込票URL(PC)
-				$company_code = sfGetXMLValue($arrVal,'RESULT','KIGYOU_CODE');	// 企業コード
-				$order_no = sfGetXMLValue($arrVal,'RESULT','ORDER_NUMBER');		// 受付番号
+				$conveni_code = sfGetXMLValue($arrXML,'RESULT','CONVENI_CODE');	// コンビニコード
+				$receipt_no   = sfGetXMLValue($arrXML,'RESULT','RECEIPT_NO');	// 払込票番号
+				$payment_url = sfGetXMLValue($arrXML,'RESULT','HARAIKOMI_URL');	// 払込票URL(PC)
+				$company_code = sfGetXMLValue($arrXML,'RESULT','KIGYOU_CODE');	// 企業コード
+				$order_no = sfGetXMLValue($arrXML,'RESULT','ORDER_NUMBER');		// 受付番号
 				$tel = $_POST["order_tel01"]."-".$_POST["order_tel02"]."-".$_POST["order_tel03"];	// 電話番号
-				$payment_limit = sfGetXMLValue($arrVal,'RESULT','CONVENI_LIMIT');	// 支払期日
+				$payment_limit = sfGetXMLValue($arrXML,'RESULT','CONVENI_LIMIT');	// 支払期日
 				
 				//コンビニの種類
 				switch($conveni_code) {

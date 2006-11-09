@@ -8,6 +8,7 @@
  */
  
 require_once("../../require.php");
+require_once(MODULE_PATH . "mdl_epsilon/mdl_epsilon.inc");
 
 define("MDL_EPSILON_ID", 4);
 
