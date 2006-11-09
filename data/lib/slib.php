@@ -2647,6 +2647,9 @@ function sfSendPostData($url, $arrData, $basic_id = "", $basic_pass = ""){
 		$response = "";
 	}
 	
+	sfprintr($response);
+	exit();
+	
 	// POSTデータクリア
 	$req->clearPostData();	
 	
