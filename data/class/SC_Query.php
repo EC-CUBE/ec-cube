@@ -426,6 +426,6 @@ class SC_Query {
 		
 		return $auto_inc_no;
 	}
-
 }
+
 ?>
