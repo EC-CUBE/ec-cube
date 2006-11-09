@@ -183,6 +183,8 @@ function lfCheckError(){
 	// 接続チェックを行う
 	$arrErr["connect"] = lfChkConnect();
 
+	
+	sfprintr($arrErr);
 	return $arrErr;
 }
 
