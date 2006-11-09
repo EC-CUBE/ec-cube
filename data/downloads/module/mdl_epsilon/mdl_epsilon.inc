@@ -90,8 +90,6 @@ function sfPostPaymentData($order_url, $arrData, $err_page = true){
 	$response = sfSendPostData($order_url, $arrData);
 	
 	// なにも返ってこなれば、エラー
-	sfprintr($err_page);
-	exit();
 	if ($err_page) {
 		// エラー画面を表示する。
 		$_SESSION['site']['now_page'] ="";
