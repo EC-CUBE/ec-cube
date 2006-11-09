@@ -48,6 +48,7 @@ $arrPayment = $objQuery->getall("SELECT module_id, memo01, memo02, memo03, memo0
 // データ送信先CGI
 $order_url = $arrPayment[0]["memo02"];
 
+sfprintr("test");
 sfprintr($_SESSION);
 exit();
 
