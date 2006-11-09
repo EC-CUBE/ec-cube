@@ -118,15 +118,13 @@ case 'edit':
 				);
 			}
 			
-			$arrData = lfGetPaymentDB();
-			if(count($arrData) > 0){
+			$arrPaymentData = lfGetPaymentDB();
+			if(count($arrPaymentData) > 0){
 				$objQuery->update("dtb_payment", $arrData, " module_id = " . MDL_EPSILON_ID);
 			}else{
 				$objQuery->insert("dtb_payment", $arrData);
-			sfprintr($objQuery->getlastquery());
 			}
 			
-			sfprintr($arrData);
 		}
 	
 		// javascript¼Â¹Ô
