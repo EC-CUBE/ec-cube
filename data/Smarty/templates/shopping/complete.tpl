@@ -51,7 +51,7 @@
 							</table>
 						</td>
 					</tr>
-					<tr><td height="5"><!--{$arrOther.title.value}--></td></tr>
+					<tr><td height="5"></td></tr>
 					<tr>
 						<td align="center" bgcolor="#ffffff">
 							<!--{/if}-->						
@@ -59,7 +59,7 @@
 						
 							<!--ご注文完了の文章ここから-->
 							<table width="590" border="0" cellspacing="0" cellpadding="0" summary=" ">
-								<tr><td height="25"></td></tr>
+								<tr><td height="25"><!--{$arrOther.title.value}--></td></tr>
 								<tr>
 									<td class="fs12"><span class="redst"><!--{$arrInfo.company_name|escape}-->の商品をご購入いただき、ありがとうございました。</span></td>
 								</tr>
