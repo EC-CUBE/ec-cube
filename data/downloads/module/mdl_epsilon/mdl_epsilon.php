@@ -179,9 +179,8 @@ function lfCheckError(){
 	}
 	
 	// 接続チェックを行う
-	$arrErr = lfChkConnect();
+	if(count($arrErr) = 0) $arrErr = lfChkConnect();
 
-	sfprintr($arrErr);
 	return $arrErr;
 }
 
