@@ -2627,7 +2627,7 @@ function sfGetFileVersion($path) {
 }
 
 // 指定したURLに対してPOSTでデータを送信する
-function sfSendPostData($url, $arrData){
+function sfSendPostData($url, $arrData, $arrErrCode = array()){
 	require_once(DATA_PATH . "module/Request.php");
 	
 	// 送信インスタンス生成
@@ -2640,15 +2640,17 @@ function sfSendPostData($url, $arrData){
 	// エラーが無ければ、応答情報を取得する
 	if (!PEAR::isError($req->sendRequest())) {
 		
-		sfprintr($req->getResponseCode());
+		// レスポンスコードがエラー判定なら、空を返す
+		$res_code = $req->getResponseCode();
+		if(in_array($res_code, $arrErrCode)){
+			$response = "";
+		}else{
+			$response = $req->getResponseBody();
+		}
 		
-		$response = $req->getResponseBody();
 	} else {
 		$response = "";
 	}
-	
-	sfprintr($response);
-	exit();
 	
 	// POSTデータクリア
 	$req->clearPostData();	

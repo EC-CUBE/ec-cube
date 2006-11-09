@@ -87,7 +87,7 @@ function sfPostPaymentData($order_url, $arrData, $err_page = true){
 	$arrVal = array();
 	
 	// POSTデータを送信し、応答情報を取得する
-	$response = sfSendPostData($order_url, $arrData);
+	$response = sfSendPostData($order_url, $arrData, array(200));
 	
 	// なにも返ってこなれば、エラー
 	if ($response == "") {
