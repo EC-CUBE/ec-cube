@@ -51,9 +51,8 @@
 											<!--{$arrConv.cv_message|nl2br}-->
 											
 											<!--{foreach key=key item=item from=$arrConv}-->
-											<!--{$item.name}-->¡§<!--{$item.value}--><br/>
+											<!--{if $item.name != ""}--><!--{$item.name}-->¡§<!--{/if}--><!--{$item.value}--><br/>
 											<!--{/foreach}-->
-											
 										</tr>
 									</table>
 									</td>
