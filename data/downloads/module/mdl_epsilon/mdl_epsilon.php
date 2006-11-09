@@ -212,9 +212,7 @@ function lfChkConnect(){
 	
 	// データ送信
 	$arrXML = sfPostPaymentData($_POST["url"], $arrSendData, false);
-	
-	sfprintr($arrXML);
-	if($arrXML == "") return("接続できませんでした。");
+	if(count($arrXML) == 0) return("接続できませんでした。");
 	
 	// エラーがあるかチェックする
 	$err_code = sfGetXMLValue($arrXML,'RESULT','ERR_CODE');
@@ -231,8 +229,7 @@ function lfChkConnect(){
 			
 			// データ送信
 			$arrXML = sfPostPaymentData($order_url, $arrSendData, false);
-
-			if($arrXML == "") return("接続できませんでした。");
+			if(count($arrXML) == 0) return("接続できませんでした。");
 			
 			// エラーがあるかチェックする
 			$err_code = sfGetXMLValue($arrXML,'RESULT','ERR_CODE');
