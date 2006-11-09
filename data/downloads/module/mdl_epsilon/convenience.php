@@ -99,7 +99,7 @@ switch($_POST["mode"]){
 				'user_id' => $arrData["customer_id"],								// ユーザID
 				'user_name' => $arrData["order_name01"].$arrData["order_name02"],	// ユーザ名
 				'user_mail_add' => $arrData["order_email"],							// メールアドレス
-				'order_number' => "EC-CUBE-".$arrData["order_id"],								// オーダー番号
+				'order_number' => $arrData["order_id"],								// オーダー番号
 				'item_code' => $arrMainProduct["product_code"],						// 商品コード(代表)
 				'item_name' => $arrMainProduct["name"],								// 商品名(代表)
 				'item_price' => $arrData["payment_total"],							// 商品価格(税込み総額)
@@ -120,6 +120,7 @@ switch($_POST["mode"]){
 			// データ送信
 			$arrXML = sfPostPaymentData($order_url, $arrSendData);
 			
+			sfprintr($order_url);
 			sfprintr($arrSendData);
 			sfprintr($arrXML);
 			
