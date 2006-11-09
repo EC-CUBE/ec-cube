@@ -49,6 +49,11 @@
 											<!--{if $arrConv.cv_order_no != ""}-->受付番号：<!--{$arrConv.cv_order_no}--><br /><!--{/if}-->
 											支払期限:<!--{$arrConv.cv_payment_limit}--><br />
 											<!--{$arrConv.cv_message|nl2br}-->
+											
+											<!--{foreach key=key item=item from=$arrConv}-->
+											<!--{$item.name}-->：<!--{$item.value}--><br/>
+											<!--{/foreach}-->
+											
 										</tr>
 									</table>
 									</td>

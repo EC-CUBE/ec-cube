@@ -125,6 +125,14 @@ switch($_POST["mode"]){
 					$arrRet['cv_receipt_no'] = $receipt_no;		//払込票番号
 					$arrRet['cv_message'] = "上記のページをプリントアウトされるか払込票番号をメモして、
 お支払い期限までに、最寄りのセブンイレブンにて代金をお支払いください。";
+
+					$arrRet['cv_type'] = lfSetConvMSG("コンビニの種類",$arrConvenience[$conveni_code]);			//コンビニの種類
+					$arrRet['cv_payment_url'] = lfSetConvMSG("払込票URL",$payment_url);	//払込票URL(PC)
+					$arrRet['cv_receipt_no'] = lfSetConvMSG("払込票番号",$receipt_no);		//払込票番号
+					$arrRet['cv_message'] = lfSetConvMSG("","上記のページをプリントアウトされるか払込票番号をメモして、
+お支払い期限までに、最寄りのセブンイレブンにて代金をお支払いください。");
+
+
 					break;
 				//ファミリーマート
 				case '21':
@@ -140,7 +148,7 @@ Famiポート／ファミネットにて以下の「企業コード」と「注文番号」を入力し、
 					$arrRet['cv_type'] = $arrConvenience[$conveni_code];			//コンビニの種類
 					$arrRet['cv_receipt_no'] = $receipt_no;		//払込票番号
 					$arrRet['cv_tel'] = $tel;					//電話番号
-					$arrRet['cv_message'] = "<お支払い方法>
+					$arrRet['cv_message'] = "＜お支払い方法＞
 1. ローソンの店内に設置してあるLoppiのトップ画面の中から、
   「インターネット受付」をお選びください。
 
@@ -161,7 +169,7 @@ Famiポート／ファミネットにて以下の「企業コード」と「注文番号」を入力し、
 					$arrRet['cv_type'] = $arrConvenience[$conveni_code];			//コンビニの種類
 					$arrRet['cv_receipt_no'] = $receipt_no;		//払込票番号
 					$arrRet['cv_tel'] = $tel;					//電話番号
-					$arrRet['cv_message'] = "<お支払い方法>
+					$arrRet['cv_message'] = "＜お支払い方法＞
 1.　セイコーマートの店内に設置してあるセイコーマートクラブステーション
    （情報端末）のトップ画面の中から、「インターネット受付」をお選び下さい。
 
@@ -236,6 +244,10 @@ function lfInitParam() {
 	$objFormParam->addParam("お電話番号2", "order_tel02", TEL_ITEM_LEN, "n", array("EXIST_CHECK", "MAX_LENGTH_CHECK" ,"NUM_CHECK"));
 	$objFormParam->addParam("お電話番号3", "order_tel03", TEL_ITEM_LEN, "n", array("EXIST_CHECK", "MAX_LENGTH_CHECK" ,"NUM_CHECK"));
 }
-	
+
+
+function lfSetConvMSG($name, $value){
+	return array("name" => $name, "value" => $value);
+}
 
 ?>
