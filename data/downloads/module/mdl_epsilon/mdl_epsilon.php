@@ -125,7 +125,7 @@ case 'edit':
 				);
 			}
 			
-			$objQuery->insert("dtb_payment", $arrData);
+			$objQuery->update("dtb_payment", $arrData, "WHERE module_id = " . MDL_EPSILON_ID);
 		}
 	
 		// javascript¼Â¹Ô
