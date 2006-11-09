@@ -412,7 +412,7 @@ class SC_Query {
 	// auto_incrementを取得する
 	function get_auto_increment($table_name){
 		// ロックする
-		$this->BEGIN();
+	//	$this->BEGIN();
 		
 		// 次のIncrementを取得
 		//$arrRet = $this->query("SHOW TABLE STATUS LIKE ?", array($table_name));
@@ -424,7 +424,7 @@ class SC_Query {
 		$this->conn->query("ALTER TABLE $table_name AUTO_INCREMENT=?" , $auto_inc_no + 1);
 		
 		// 解除する
-		$this->COMMIT();
+	//	$this->COMMIT();
 		
 		sfprintr($auto_inc_no);
 		exit();
