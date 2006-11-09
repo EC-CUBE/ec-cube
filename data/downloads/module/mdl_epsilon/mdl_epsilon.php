@@ -229,8 +229,7 @@ function lfChkConnect(){
 			$arrSendData['haraikomi_mail'] = 0;				// 払込メール(送信しない)
 			
 			// データ送信
-			$arrXML = sfPostPaymentData($order_url, $arrSendData, false);
-	sfprintr($arrXML);
+			$arrXML = sfPostPaymentData($_POST["url"], $arrSendData, false);
 
 			if($arrXML == "") return("接続できませんでした。");
 			
