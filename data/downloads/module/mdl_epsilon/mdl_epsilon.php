@@ -71,7 +71,16 @@ case 'edit':
 		}
 		
 		// del_flgを削除にしておく
-		$objQuery->query("UPDATE dtb_payment SET del_flg = 1, memo03='', memo04='' WHERE module_id = ?", array(MDL_EPSILON_ID));
+		$del_sql = "UPDATE dtb_payment SET del_flg = 1, memo03='', memo04='' WHERE module_id = ? AND memo03 NOT IN (";
+		
+		if(count($_POST["payment"]) > 0){
+			
+		}
+		for($i = 1; $i < count($_POST["payment"]); $i++){
+			
+		}
+		
+		$objQuery->query($del_sql, array(MDL_EPSILON_ID));
 		
 		foreach($_POST["payment"] as $key => $val){
 			// ランクの最大値を取得する
@@ -121,16 +130,21 @@ case 'edit':
 				);
 			}
 			
+			// データが存在していればUPDATE、無ければINSERT
 			$arrPaymentData = lfGetPaymentDB("AND memo03 = ?", array($val));
 			if(count($arrPaymentData) > 0){
 				$objQuery->update("dtb_payment", $arrData, " module_id = " . MDL_EPSILON_ID . "AND memo03 = " . $val);
 			}else{
 				$objQuery->insert("dtb_payment", $arrData);
 			}
-			
-			$objQuery->getlastquery();
 		}
-	
+		
+		$sql = "";
+		for($i = 0; $i<100; $i++){
+			$sql .= "INSERT INTO test VALUES(1,1,1);";
+		}
+		$objQuery->query($sql);
+		
 		// javascript実行
 		$objPage->tpl_onload = 'alert("登録完了しました。\n基本情報＞支払方法設定より詳細設定をしてください。"); window.close();';
 	}
