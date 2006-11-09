@@ -50,7 +50,6 @@
 											»ÙÊ§´ü¸Â:<!--{$arrConv.cv_payment_limit}--><br />
 											<!--{$arrConv.cv_message}-->
 										</tr>
-										<tr><td height="20"></td></tr>
 									</table>
 									</td>
 								</tr>
