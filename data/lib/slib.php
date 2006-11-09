@@ -114,8 +114,8 @@ function sfColumnExists($table_name, $col_name, $col_type = "", $dsn = "", $add 
 				return true;
 			}
 		}else if ($db_type == "mysql") {
-			$sql = "SHOW TABLE STATUS LIKE ?";
-			$arrRet = $objQuery->getAll($sql, array($table_name));
+			$sql = "SHOW COLUMNS FROM ? WHERE Field = ?";
+			$arrRet = $objQuery->getAll($sql, array($table_name, $col_name));
 			if(count($arrRet) > 0) {
 				return true;
 			}
