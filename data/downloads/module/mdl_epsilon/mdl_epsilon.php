@@ -71,8 +71,8 @@ case 'edit':
 		}
 		
 		// DEL/INS¤ÇÅÐÏ¿¤¹¤ë¡£
-		$delsql = "DELETE FROM dtb_payment WHERE module_id = ?";
-		$objQuery->query($delsql, array(MDL_EPSILON_ID));
+		//$delsql = "DELETE FROM dtb_payment WHERE module_id = ?";
+		//$objQuery->query($delsql, array(MDL_EPSILON_ID));
 		
 		foreach($_POST["payment"] as $key => $val){
 			
