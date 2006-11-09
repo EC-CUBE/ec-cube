@@ -127,6 +127,8 @@ case 'edit':
 			}else{
 				$objQuery->insert("dtb_payment", $arrData);
 			}
+			
+			$objQuery->getlastquery();
 		}
 	
 		// javascript¼Â¹Ô
