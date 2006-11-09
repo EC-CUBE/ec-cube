@@ -145,34 +145,69 @@ switch($_POST["mode"]){
 					$arrRet['cv_type'] = $arrConvenience[$conveni_code];			//コンビニの種類
 					$arrRet['cv_payment_url'] = $payment_url;	//払込票URL(PC)
 					$arrRet['cv_receipt_no'] = $receipt_no;		//払込票番号
+					$arrRet['cv_message'] = "上記のページをプリントアウトされるか払込票番号をメモして、お支払い期限までに、最寄りのセブンイレブンにて代金をお支払いください。";
 					break;
 				//ファミリーマート
 				case '21':
 					$arrRet['cv_type'] = $arrConvenience[$conveni_code];			//コンビニの種類
 					$arrRet['cv_company_code'] = $company_code;	//企業コード
 					$arrRet['cv_order_no'] = $receipt_no;		//受付番号
+					$arrRet['cv_message'] = "ファミリーマート店頭にございます Famiポート／ファミネットにて以下の「企業コード」と「注文番号」を入力し、申込券を印字後、お支払い期限までに代金をお支払い下さい。";
 					break;
 				//ローソン
 				case '31':
 					$arrRet['cv_type'] = $arrConvenience[$conveni_code];			//コンビニの種類
 					$arrRet['cv_receipt_no'] = $receipt_no;		//払込票番号
 					$arrRet['cv_tel'] = $tel;					//電話番号
+					$arrRet['cv_message'] = "<お支払い方法>
+1. ローソンの店内に設置してあるLoppiのトップ画面の中から、
+  「インターネット受付」をお選びください。
+
+2. 次画面のジャンルの中から「インターネット受付」をお選びください。
+
+3. 画面に従って「お支払い受付番号」と、ご注文いただいた際の
+  「電話番号」をご入力下さい。→Loppiより「申込券」が発券されます。 
+    ※申込券の有効時間は30分間です。お早めにレジへお持ち下さい。
+
+4. 申込券に現金またはクレジットカードを添えてレジにて代金を
+   お支払い下さい。
+
+5. 代金と引換に「領収書」をお渡しいたします。領収書は大切に保管
+   してください。代金払込の証書となります。";
 					break;
 				//セイコーマート
 				case '32':
 					$arrRet['cv_type'] = $arrConvenience[$conveni_code];			//コンビニの種類
 					$arrRet['cv_receipt_no'] = $receipt_no;		//払込票番号
 					$arrRet['cv_tel'] = $tel;					//電話番号
+					$arrRet['cv_message'] = "<お支払い方法>
+1.　セイコーマートの店内に設置してあるセイコーマートクラブステーション
+   （情報端末）のトップ画面の中から、「インターネット受付」をお選び下さい。
+
+2.  画面に従って「お支払い受付番号」と、お申し込み時の「電話番号」を
+　　ご入力いただくとセイコーマートクラブステーションより「決済サービス
+　　払込取扱票・払込票兼受領証・領収書（計3枚）」が発券されます。
+
+3.  発券された「決済サービス払込取扱票・払込票兼受領証・領収書（計3枚）」
+　　をお持ちの上、レジにて代金をお支払い下さい。 
+";
 					break;
 				//ミニストップ
 				case '33':
 					$arrRet['cv_type'] = $arrConvenience[$conveni_code];			//コンビニの種類
 					$arrRet['cv_payment_url'] = $payment_url;	//払込票URL
+					$arrRet['cv_message'] = "お支払い期限までにミニストップにて代金をお支払い下さい。
+お支払いの際には「払込取扱票」が必要となりますので、以下URLで表示
+されるページを印刷してレジまでお持ち下さい。";
 					break;
 				//デイリーヤマザキ
 				case '34':
 					$arrRet['cv_type'] = $arrConvenience[$conveni_code];			//コンビニの種類
 					$arrRet['cv_payment_url'] = $payment_url;	//払込票URL
+					$arrRet['cv_message'] = "お支払い期限までにデイリーヤマザキ／ヤマザキデイリーストア
+にて代金をお支払い下さい。
+お支払いの際には「払込取扱票」が必要となりますので、以下URLで表示
+されるページを印刷してレジまでお持ち下さい。";
 					break;
 				}
 				
