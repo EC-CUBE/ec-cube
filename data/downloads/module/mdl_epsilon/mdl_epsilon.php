@@ -171,7 +171,7 @@ function lfCheckError(){
 	
 	// 利用クレジット、利用コンビニのエラーチェック
 	$arrChkPay = $_POST["payment"];
-	foreach($arrChkPay as $key => $val){
+	foreach((array)$arrChkPay as $key => $val){
 		// 利用コンビニ
 		if($val == 2 and count($_POST["convenience"]) <= 0){
 			$arrErr["convenience"] = "利用コンビニが選択されていません。<br />";
@@ -194,8 +194,8 @@ function lfChkConnect(){
 	$email = $objQuery->getone("SELECT email03 FROM dtb_baseinfo");
 
 	// 契約コード	
-	(in_array(1, $_POST["payment"])) ? $cre = "1" : $cre = "0";
-	(in_array(2, $_POST["payment"])) ? $con = "1" : $con = "0";
+	(in_array(1, (array)$_POST["payment"])) ? $cre = "1" : $cre = "0";
+	(in_array(2, (array)$_POST["payment"])) ? $con = "1" : $con = "0";
 	$st_code = $cre . "0" . $con . "00-0000-00000";
 
 	
