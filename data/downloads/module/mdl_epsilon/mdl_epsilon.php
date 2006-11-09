@@ -70,6 +70,9 @@ case 'edit':
 			}
 		}
 		
+		// del_flgを削除にしておく
+		$objQuery->query("UPDATE dtb_payment SET del_flg = 1 WHERE module_id = ?", array(MDL_EPSILON_ID));
+		
 		foreach($_POST["payment"] as $key => $val){
 			// ランクの最大値を取得する
 			$max_rank = $objQuery->getone("SELECT max(rank) FROM dtb_payment");
@@ -124,7 +127,6 @@ case 'edit':
 			}else{
 				$objQuery->insert("dtb_payment", $arrData);
 			}
-			
 		}
 	
 		// javascript実行
