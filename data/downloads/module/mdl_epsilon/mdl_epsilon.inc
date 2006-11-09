@@ -93,8 +93,11 @@ function sfPostPaymentData($order_url, $arrData, $err_page = true){
 	if ($response == "") {
 		// エラー画面を表示する。
 		$_SESSION['site']['now_page'] ="";
-		($err_page) ? sfDispSiteError(FREE_ERROR_MSG, "", true, "購入処理中にエラーが発生しました。<br>この手続きは無効となりました。") : return "";
-	}
+		if ($err_page) {
+			sfDispSiteError(FREE_ERROR_MSG, "", true, "購入処理中にエラーが発生しました。<br>この手続きは無効となりました。");
+		}else{
+			return "" ;
+		}
 	
 	// XMLパーサを生成する。
 	$parser = xml_parser_create();
