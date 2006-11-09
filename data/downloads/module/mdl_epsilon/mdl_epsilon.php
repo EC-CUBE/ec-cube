@@ -123,10 +123,10 @@ case 'edit':
 				$objQuery->update("dtb_payment", $arrData, " module_id = " . MDL_EPSILON_ID);
 			}else{
 				$objQuery->insert("dtb_payment", $arrData);
+			sfprintr($objQuery->getlastquery());
 			}
 			
 			sfprintr($arrData);
-			sfprintr($objQuery->getlastquery());
 		}
 	
 		// javascript¼Â¹Ô
