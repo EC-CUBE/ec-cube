@@ -238,7 +238,7 @@ function lfChkConnect(){
 		}
 	}
 	
-	
+	return "";	
 }
 
 // 登録データを読み込む
