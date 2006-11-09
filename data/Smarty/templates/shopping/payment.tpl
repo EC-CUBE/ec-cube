@@ -49,13 +49,15 @@
 					</tr>
 					<!--{section name=cnt loop=$arrPayment}-->
 					<tr bgcolor="#ffffff">
+					<label for="pay_<!--{$smarty.section.cnt.iteration}-->">
 						<td halign="center" align="center"><input type="radio" id="pay_<!--{$smarty.section.cnt.iteration}-->" name="<!--{$key}-->" onclick="fnModeSubmit('payment', '', '');" value="<!--{$arrPayment[cnt].payment_id}-->" style="<!--{$arrErr[$key]|sfGetErrorColor}-->" <!--{$arrPayment[cnt].payment_id|sfGetChecked:$arrForm[$key].value}--> /></td>
-						<td class="fs12n" width="90"><label for="pay_<!--{$smarty.section.cnt.iteration}-->"><!--{$arrPayment[cnt].payment_method|escape}--><!--{if $arrPayment[cnt].note != ""}--><!--{/if}--></label></td>
+						<td class="fs12n" width="90"><!--{$arrPayment[cnt].payment_method|escape}--><!--{if $arrPayment[cnt].note != ""}--><!--{/if}--></td>
 						<td width="500">
 						<!--{if $arrPayment[cnt].payment_image != ""}-->
 						<img src="<!--{$smarty.const.IMAGE_SAVE_URL}--><!--{$arrPayment[cnt].payment_image}-->">
 						<!--{/if}-->
 						</td>
+					</label>
 					</tr>
 					<!--{/section}-->	
 				</table>

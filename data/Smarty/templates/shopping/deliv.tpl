@@ -66,6 +66,7 @@
 
 					<!--{section name=cnt loop=$arrAddr}-->		
 						<tr class="fs12" bgcolor="#ffffff">
+						<label for="chk_id_<!--{$smarty.section.cnt.iteration}-->">
 							<td align="center">
 								<!--{if $smarty.section.cnt.first}-->
 								<input type="radio" name="deli" id="chk_id_<!--{$smarty.section.cnt.iteration}-->" value="<!--{$smarty.section.cnt.iteration}-->" onclick="mode.value='customer_addr';">
@@ -74,8 +75,9 @@
 								<!--{/if}-->
 							</td>
 							<td>
-								<label for="chk_id_<!--{$smarty.section.cnt.iteration}-->"><!--{if $smarty.section.cnt.first}-->╡Я╟Вепо©╫╩╫Й<!--{else}-->ди╡цепо©╫╩╫Й<!--{/if}--></label>
+								<!--{if $smarty.section.cnt.first}-->╡Я╟Вепо©╫╩╫Й<!--{else}-->ди╡цепо©╫╩╫Й<!--{/if}-->
 							</td>
+							</label>
 							<td>
 								<!--{assign var=key value=$arrAddr[cnt].pref}--><!--{$arrPref[$key]}--><!--{$arrAddr[cnt].addr01|escape}--><!--{$arrAddr[cnt].addr02|escape}--><br/>
 								<!--{$arrAddr[cnt].name01|escape}--> <!--{$arrAddr[cnt].name02|escape}-->
