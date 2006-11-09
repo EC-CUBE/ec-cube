@@ -29,7 +29,7 @@
 ******************************************************************
 
 <!--{foreach key=key item=item from=$arrOther}-->
-<!--{$key != title}--><!--{if $item.name != ""}--><!--{$item.name}-->¡§<!--{/if}--><!--{$item.value|escape|nl2br}--><br/><!--{/if}-->
+<!--{if $key != title}--><!--{if $item.name != ""}--><!--{$item.name}-->¡§<!--{/if}--><!--{$item.value|escape|nl2br}--><br/><!--{/if}-->
 <!--{/foreach}-->
 <!--{/if}-->
 
