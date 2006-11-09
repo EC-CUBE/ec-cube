@@ -195,11 +195,11 @@ Famiポート／ファミネットにて以下の「企業コード」と「注文番号」を入力し、
 				}
 				
 				//支払期限
-				$arrRet['cv_payment_limit'] = $payment_limit;
+				$arrRet['cv_payment_limit'] = lfSetConvMSG("\n支払期限", $payment_limit);
 				//コンビニ決済情報を格納
 				$sqlval['conveni_data'] = serialize($arrRet);
 				$sqlval['memo02'] = serialize($arrRet);
-	
+
 				// 受注一時テーブルに更新
 				sfRegistTempOrder($uniqid, $sqlval);
 					
