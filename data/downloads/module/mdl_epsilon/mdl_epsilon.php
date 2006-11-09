@@ -197,7 +197,7 @@ function lfChkConnect(){
 	// 契約コード	
 	(in_array(1, (array)$_POST["payment"])) ? $cre = "1" : $cre = "0";
 	(in_array(2, (array)$_POST["payment"])) ? $con = "1" : $con = "0";
-	$st_code = $cre . "0" . $con . "00-0000-00000";
+	$st_code = $cre . "1" . $con . "00-0000-00000";
 	
 	// 送信データ生成
 	$arrSendData = array(
