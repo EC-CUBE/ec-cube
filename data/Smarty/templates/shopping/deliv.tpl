@@ -66,7 +66,7 @@
 
 					<!--{section name=cnt loop=$arrAddr}-->		
 						<tr class="fs12" bgcolor="#ffffff">
-							<td align="center">
+							<td align="center" for="chk_id_<!--{$smarty.section.cnt.iteration}-->">
 								<!--{if $smarty.section.cnt.first}-->
 								<input type="radio" name="deli" id="chk_id_<!--{$smarty.section.cnt.iteration}-->" value="<!--{$smarty.section.cnt.iteration}-->" onclick="mode.value='customer_addr';">
 								<!--{else}-->
