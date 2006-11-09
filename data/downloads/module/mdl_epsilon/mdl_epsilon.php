@@ -42,9 +42,10 @@ $objView = new SC_AdminView();
 
 // 認証確認
 $objSess = new SC_Session();
+
 sfIsSuccess($objSess);
 
-sfprintr($_SESSION);
+sfprintr($objPage);
 
 // パラメータ管理クラス
 $objFormParam = new SC_FormParam();
