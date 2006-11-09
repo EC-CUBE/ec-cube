@@ -55,6 +55,8 @@ $arrPayment = $objQuery->getall("SELECT module_id, memo01, memo02, memo03, memo0
 // データ送信先CGI
 $order_url = $arrPayment[0]["memo02"];
 
+sfprintr($arrData);
+
 // trans_codeに値があり且つ、正常終了のときはオーダー確認を行う。
 if($_GET["trans_code"] != ""){
 	
