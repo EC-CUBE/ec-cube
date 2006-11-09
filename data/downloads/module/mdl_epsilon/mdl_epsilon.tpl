@@ -151,13 +151,14 @@ function fnChangeDisabled(list, disable) {
 											<!--{html_checkboxes_ex name="$key" options=$arrConvenience selected=$arrForm[$key].value style=$arrErr[$key]|sfGetErrorColor}-->
 											</td>
 										</tr>
+										<!--{assign var=key value="service"}-->
+										<!--{if $arrErr[$key] != ""}-->
 										<tr class="fs12n">
-											<td width="90" bgcolor="#f3f3f3">契約内容エラー</td>
-											<td width="337" bgcolor="#ffffff">
-											<!--{assign var=key value="service"}-->
-											<span class="red12"><!--{$arrErr[$key]}--></span>
+											<td bgcolor="#ffffff" colspan=2>
+											<span class="red12">イプシロン契約内容をご確認ください。</span>
 											</td>
 										</tr>
+										<!--{/if}-->
 									</table>
 
 									<table width="440" border="0" cellspacing="0" cellpadding="0" summary=" ">
