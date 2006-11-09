@@ -86,7 +86,6 @@ case 'edit':
 				
 				$arrData = array(			
 					"payment_method" => "Epsilonクレジット"
-					,"rank" => $max_rank + 1
 					,"fix" => 3
 					,"creator_id" => $objSess->member_id
 					,"create_date" => "now()"
@@ -106,7 +105,6 @@ case 'edit':
 			if($val == 2){
 				$arrData = array(			
 					"payment_method" => "Epsilonコンビニ"
-					,"rank" => $max_rank + 1
 					,"fix" => 3
 					,"creator_id" => $objSess->member_id
 					,"create_date" => "now()"
@@ -128,6 +126,7 @@ case 'edit':
 			if(count($arrPaymentData) > 0){
 				$objQuery->update("dtb_payment", $arrData, " module_id = '" . MDL_EPSILON_ID . "' AND memo03 = '" . $val ."'");
 			}else{
+				$arrData["rank"] = $max_rank + 1;
 				$objQuery->insert("dtb_payment", $arrData);
 			}
 		}
