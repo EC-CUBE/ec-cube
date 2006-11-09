@@ -30,7 +30,7 @@
 
 <!--{foreach key=key item=item from=$arrOther}-->
 <!--{if $key != title}-->
-<!--{if $item.name != ""}--><!--{$item.name}-->¡§<!--{/if}--><!--{$item.value|escape|nl2br}-->
+<!--{if $item.name != ""}--><!--{$item.name}-->¡§<!--{/if}--><!--{$item.value}-->
 <!--{/if}-->
 <!--{/foreach}-->
 <!--{/if}-->
