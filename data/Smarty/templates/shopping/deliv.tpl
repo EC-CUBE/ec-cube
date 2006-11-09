@@ -73,7 +73,7 @@
 								<input type="radio" name="deli" id="chk_id_<!--{$smarty.section.cnt.iteration}-->" value="<!--{$smarty.section.cnt.iteration}-->" onclick="mode.value='other_addr'; other_deliv_id.value=<!--{$arrAddr[cnt].other_deliv_id}-->;">
 								<!--{/if}-->
 							</td>
-							<td onclick="alert('test')">
+							<td>
 								<label for="chk_id_<!--{$smarty.section.cnt.iteration}-->"><!--{if $smarty.section.cnt.first}-->╡Я╟Вепо©╫╩╫Й<!--{else}-->ди╡цепо©╫╩╫Й<!--{/if}--></label>
 							</td>
 							<td>
