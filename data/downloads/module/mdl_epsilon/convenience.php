@@ -55,28 +55,6 @@ $arrPayment = $objQuery->getall("SELECT module_id, memo01, memo02, memo03, memo0
 // データ送信先CGI
 $order_url = $arrPayment[0]["memo02"];
 
-// trans_codeに値があり且つ、正常終了のときはオーダー確認を行う。
-if($_GET["trans_code"] != ""){
-	
-	// 正常な推移であることを記録しておく
-	$objSiteSess->setRegistFlag();
-	
-	// GETデータを保存
-	//$arrVal["credit_result"] = $_GET["result"];
-	$arrVal["memo01"] = PAYMENT_CONVENIENCE_ID;
-	$arrVal["memo03"] = $arrPayment[0]["module_id"];
-	
-	// トランザクションコード
-	$arrMemo["trans_code"] = array("name"=>"Epsilonトランザクションコード", "value" => $_GET["trans_code"]);
-	$arrVal["memo02"] = serialize($arrMemo);
-
-	// 受注一時テーブルに更新
-	sfRegistTempOrder($uniqid, $arrVal);
-
-	// 完了画面へ
-	header("Location: " .  URL_SHOP_COMPLETE);
-}
-
 switch($_POST["mode"]){
 	//戻る
 	case 'return':
@@ -118,7 +96,7 @@ switch($_POST["mode"]){
 			);
 			
 			// データ送信
-			//$arrXML = sfPostPaymentData($order_url, $arrSendData);
+			$arrXML = sfPostPaymentData($order_url, $arrSendData);
 			
 			// エラーがあるかチェックする
 			$err_code = sfGetXMLValue($arrXML,'RESULT','ERR_CODE');
