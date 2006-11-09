@@ -412,19 +412,17 @@ class SC_Query {
 	// auto_incrementを取得する
 	function get_auto_increment($table_name){
 		// ロックする
-	//	$this->BEGIN();
+		$this->BEGIN();
 		
 		// 次のIncrementを取得
-		//$arrRet = $this->query("SHOW TABLE STATUS LIKE ?", array($table_name));
-		$arrRet = $this->getAll("SELECT * FROM dtb_payment");
-		sfprintr($arrRet);
+		$arrRet = $this->getAll("SHOW TABLE STATUS LIKE ?", array($table_name));
 		$auto_inc_no = $arrRet["Auto_increment"];
 		
 		// 値をカウントアップしておく
 		$this->conn->query("ALTER TABLE $table_name AUTO_INCREMENT=?" , $auto_inc_no + 1);
 		
 		// 解除する
-	//	$this->COMMIT();
+		$this->COMMIT();
 		
 		sfprintr($auto_inc_no);
 		exit();
