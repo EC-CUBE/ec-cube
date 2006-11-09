@@ -177,6 +177,7 @@ switch($_POST["mode"]){
 				
 				//コンビニ決済情報を格納
 				$sqlval['conveni_data'] = serialize($arrRet);
+				$sqlval['memo01'] = PAYMENT_CONVENIENCE_ID;
 				$sqlval['memo02'] = serialize($arrRet);
 				
 				// 受注一時テーブルに更新
