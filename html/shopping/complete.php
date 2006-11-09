@@ -59,10 +59,10 @@ if ($uniqid != "") {
 		sfSendOrderMail($order_id, '1');
 	}
 
-	//コンビニ決済情報の取得
-	$conveni_data = $objQuery->get("dtb_order", "conveni_data", "order_id = ? ", array($order_id));
-	if($conveni_data != "") {
-		$objPage->arrConv = unserialize($conveni_data);
+	//その他情報の取得
+	$other_data = $objQuery->get("dtb_order", "memo02", "order_id = ? ", array($order_id));
+	if($other_data != "") {
+		$objPage->arrOther = unserialize($other_data);
 	}
 	
 	// アフィリエイト用コンバージョンタグの設定

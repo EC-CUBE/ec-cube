@@ -42,7 +42,7 @@
 										<tr>
 											<td class="fs12">■<!--{$arrOther.title.name}-->情報<br />
 											<!--{foreach key=key item=item from=$arrOther}-->
-											<!--{if $item.name != ""}--><!--{$item.name|escape}-->：<!--{/if}--><!--{$item.value|escape|nl2br}--><br/>
+											<!--{if $key != title}--><!--{if $item.name != ""}--><!--{$item.name}-->：<!--{/if}--><!--{$item.value|escape|nl2br}--><br/><!--{/if}-->
 											<!--{/foreach}-->
 										</tr>
 									</table>
