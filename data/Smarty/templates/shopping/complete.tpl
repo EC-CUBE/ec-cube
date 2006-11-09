@@ -33,7 +33,7 @@
 						<td align="center" bgcolor="#ffffff">
 						
 							<!-- ▼その他決済情報を表示する場合は表示 -->
-							<!--{if ($arrOther.title.value) }-->
+							<!--{if $arrOther.title.value == true }-->
 							<table  width="590" cellspacing="0" cellpadding="0" summary=" ">
 								<tr>
 									<td>

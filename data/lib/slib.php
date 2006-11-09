@@ -1539,16 +1539,12 @@ function sfSendOrderMail($order_id, $template_id, $subject = "", $header = "", $
 	$objPage->arrCustomer = $arrCustomer;
 	$objPage->arrOrder = $arrOrder;
 
-	//コンビニ決済情報
-	if($arrOrder['conveni_data'] != "") {
-		global $arrCONVENIENCE;
-		global $arrCONVENIMESSAGE;
-		$objPage->arrCONVENIENCE = $arrCONVENIENCE;
-		$objPage->arrCONVENIMESSAGE = $arrCONVENIMESSAGE;
-		$arrConv = unserialize($arrOrder['conveni_data']);
-		$objPage->arrConv = $arrConv;
+	//その他決済情報
+	if($arrOrder['memo02'] != "") {
+		$arrOther = unserialize($arrOrder['memo02']);
+		$objPage->arrOther = $arrOther;
 		
-		sfprintr($arrConv);
+		sfprintr($arrOther);
 	}
 
 	// 都道府県変換

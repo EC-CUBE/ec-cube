@@ -174,6 +174,9 @@ switch($_POST["mode"]){
 				$arrRet['cv_payment_limit'] = $payment_limit;
 				$arrRet['br3'] = lfSetConvMSG("","\n\n");
 				
+				// タイトル
+				$arrRet['title'] = lfSetConvMSG("コンビニ決済", true);
+				
 				//コンビニ決済情報を格納
 				$sqlval['conveni_data'] = serialize($arrRet);
 				$sqlval['memo01'] = PAYMENT_CONVENIENCE_ID;
