@@ -151,7 +151,7 @@ case 'module_del':
 	// 汎用項目の存在チェック
 	if(sfColumnExists("dtb_payment", "memo01")){
 		// データの削除フラグをたてる
-		$objQuery->query("UPDATE dtb_payment SET del_flg = 2 WHERE module_id = ?", array(MDL_EPSILON_ID));
+		$objQuery->query("UPDATE dtb_payment SET del_flg = 1 WHERE module_id = ?", array(MDL_EPSILON_ID));
 	}
 	break;
 default:
