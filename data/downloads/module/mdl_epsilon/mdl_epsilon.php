@@ -100,6 +100,7 @@ case 'edit':
 					,"memo02" => $_POST["url"]
 					,"memo03" => $val
 					,"memo04" => $visa . $jcb . "000-0000-00000"
+					,"del_flg" => 1
 				);
 			}
 
@@ -122,6 +123,7 @@ case 'edit':
 					,"memo03" => $val
 					,"memo04" => "00100-0000-00000"
 					,"memo05" => $convenience
+					,"del_flg" => 1
 				);
 			}
 			
