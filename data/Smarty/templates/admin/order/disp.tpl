@@ -300,7 +300,7 @@
 							<tr class="fs12n">
 								<td bgcolor="#ffffff" colspan="6">
 									<!--{foreach key=key item=item from=$arrDisp.payment_info}-->
-									<!--{if $item.name != ""}--><!--{$item.name}-->¡§<!--{/if}--><!--{$item.value}--><br/>
+									<!--{if $key != "title"}--><!--{if $item.name != ""}--><!--{$item.name}-->¡§<!--{/if}--><!--{$item.value}--><br/><!--{/if}-->
 									<!--{/foreach}-->
 								</td>
 							</tr>
