@@ -46,8 +46,6 @@ $objSess = new SC_Session();
 
 sfIsSuccess($objSess);
 
-sfprintr($objPage);
-
 // パラメータ管理クラス
 $objFormParam = new SC_FormParam();
 $objFormParam = lfInitParam($objFormParam);
