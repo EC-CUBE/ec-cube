@@ -128,7 +128,7 @@ switch($_POST["mode"]){
 			
 			if($err_code != "") {
 				$err_detail = sfGetXMLValue($arrXML,'RESULT','ERR_DETAIL');
-				//sfDispSiteError(FREE_ERROR_MSG, "", false, "購入処理中に以下のエラーが発生しました。<br /><br /><br />・" . $err_detail);
+				sfDispSiteError(FREE_ERROR_MSG, "", false, "購入処理中に以下のエラーが発生しました。<br /><br /><br />・" . $err_detail);
 			} else {
 				// 正常な推移であることを記録しておく
 				$objSiteSess->setRegistFlag();
