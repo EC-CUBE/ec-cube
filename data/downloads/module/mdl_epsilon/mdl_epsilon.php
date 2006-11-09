@@ -71,7 +71,7 @@ case 'edit':
 		}
 		
 		// del_flgを削除にしておく
-		$objQuery->query("UPDATE dtb_payment SET del_flg = 1 WHERE module_id = ?", array(MDL_EPSILON_ID));
+		$objQuery->query("UPDATE dtb_payment SET del_flg = 1, memo03='', memo04='' WHERE module_id = ?", array(MDL_EPSILON_ID));
 		
 		foreach($_POST["payment"] as $key => $val){
 			// ランクの最大値を取得する
