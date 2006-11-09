@@ -217,6 +217,10 @@ function lfChkConnect(){
 		return $arrRet;	
 	}
 	
+	$arrRet[] ="a";
+	
+	sfprintr($arrXML);
+	
 	// エラーがあるかチェックする
 	$err_code = sfGetXMLValue($arrXML,'RESULT','ERR_CODE');
 	switch ($err_code) {
