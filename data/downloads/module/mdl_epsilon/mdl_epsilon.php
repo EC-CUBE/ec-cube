@@ -70,12 +70,7 @@ case 'edit':
 			}
 		}
 		
-		// DEL/INSで登録する。
-		//$delsql = "DELETE FROM dtb_payment WHERE module_id = ?";
-		//$objQuery->query($delsql, array(MDL_EPSILON_ID));
-		
 		foreach($_POST["payment"] as $key => $val){
-			
 			// ランクの最大値を取得する
 			$max_rank = $objQuery->getone("SELECT max(rank) FROM dtb_payment");
 			
@@ -123,7 +118,12 @@ case 'edit':
 				);
 			}
 			
-			$objQuery->update("dtb_payment", $arrData, " module_id = " . MDL_EPSILON_ID);
+			$arrData = lfGetPaymentDB();
+			if(count($arrData) > 0){
+				$objQuery->update("dtb_payment", $arrData, " module_id = " . MDL_EPSILON_ID);
+			}else{
+				$objQuery->insert("dtb_payment", $arrData);
+			}
 		}
 	
 		// javascript実行
@@ -185,16 +185,10 @@ function lfLoadData(){
 	global $objQuery;
 	global $objFormParam;
 	
-	$sql = "SELECT 
-				module_id, 
-				memo01 as code, 
-				memo02 as url, 
-				memo03 as payment,
-				memo04 as payment_code, 
-				memo05 as convenience
-			FROM dtb_payment WHERE module_id = ?";
-	$arrRet = $objQuery->getall($sql, array(MDL_EPSILON_ID));
+	//データを取得
+	$arrRet = lfGetPaymentDB();
 	
+	// 値をセット
 	$objFormParam->setParam($arrRet[0]);
 
 	// 画面表示用にデータを変換
@@ -216,6 +210,24 @@ function lfLoadData(){
 	if(substr($credit, 0, 1)) $arrCredit["credit"][] = 1;
 	if(substr($credit, 1, 1)) $arrCredit["credit"][] = 2;
 	$objFormParam->setParam($arrCredit);
+}
+
+// DBからデータを取得する
+function lfGetPaymentDB(){
+	global $objQuery;
+	
+	$arrRet = array();
+	$sql = "SELECT 
+				module_id, 
+				memo01 as code, 
+				memo02 as url, 
+				memo03 as payment,
+				memo04 as payment_code, 
+				memo05 as convenience
+			FROM dtb_payment WHERE module_id = ?";
+	$arrRet = $objQuery->getall($sql, array(MDL_EPSILON_ID));
+	
+	return $arrRet;
 }
 
 ?>
