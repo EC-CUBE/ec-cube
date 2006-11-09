@@ -2652,6 +2652,8 @@ function sfSendPostData($url, $arrData, $arrOkCode = array()){
 		$response = "";
 	}
 	
+	sfprintr($response);
+	
 	// POSTデータクリア
 	$req->clearPostData();	
 	
