@@ -68,10 +68,10 @@
 						</td>
 						<td background="../img/contents/main_right.jpg"><img src="../img/common/_.gif" width="14" height="1" alt=""></td>
 					</tr>
-					<tr><td height="40"></td></tr>
 					<tr>
 						<td colspan="3"><img src="../img/contents/error_bottom.jpg" width="562" height="14" alt=""></td>
 					</tr>
+					<tr><td height="40"></td></tr>
 				</table>
 				</td>
 			</tr>
