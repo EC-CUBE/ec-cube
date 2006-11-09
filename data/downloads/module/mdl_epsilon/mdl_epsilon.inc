@@ -98,6 +98,7 @@ function sfPostPaymentData($order_url, $arrData, $err_page = true){
 		}else{
 			return "" ;
 		}
+	}
 	
 	// XMLパーサを生成する。
 	$parser = xml_parser_create();
