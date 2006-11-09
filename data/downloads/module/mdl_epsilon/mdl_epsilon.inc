@@ -44,7 +44,7 @@ function sfGetXMLValue($arrVal, $tag, $att) {
  * °ú¿ô1	¡§$order_url	Ž¥Ž¥Ž¥ Á÷¿®ÀèURL
  * °ú¿ô2	¡§$arrData		Ž¥Ž¥Ž¥ POST¥Ç¡¼¥¿
  **************************************************************************************************************/
-function sfPostPaymentData($order_url, $arrData, $err_msg = "<br /><br /><br />¤³¤Î¼êÂ³¤­¤ÏÌµ¸ú¤È¤Ê¤ê¤Þ¤·¤¿¡£", $return_top = true, $payment_kbn = PAYMENT_CREDIT_ID){
+function sfPostPaymentData($order_url, $arrData){
 	global $objSiteSess;
 	global $uniqid;
 	
@@ -74,81 +74,7 @@ function sfPostPaymentData($order_url, $arrData, $err_msg = "<br /><br /><br />¤
 	
 	return $arrVal;
 	
-	// ¥¨¥é¡¼¤¬¤¢¤ë¤«¥Á¥§¥Ã¥¯¤¹¤ë
-	$err_code = sfGetXMLValue($arrVal,'RESULT','ERR_CODE');
-	
-	if($err_code != "") {
-		$err_detail = sfGetXMLValue($arrVal,'RESULT','ERR_DETAIL');
-		sfDispSiteError(FREE_ERROR_MSG, "", $return_top, "¹ØÆþ½èÍýÃæ¤Ë°Ê²¼¤Î¥¨¥é¡¼¤¬È¯À¸¤·¤Þ¤·¤¿¡£<br /><br /><br />¡¦" . $err_detail . $err_msg);
-	} else {
-		// Àµ¾ï¤Ê¿ä°Ü¤Ç¤¢¤ë¤³¤È¤òµ­Ï¿¤·¤Æ¤ª¤¯
-		$objSiteSess->setRegistFlag();
-		
-		// »ÙÊ§¤¤¶èÊ¬¤Ë¤è¤ê½èÍý¤ò¤ï¤±¤ë
-		if($payment_kbn == PAYMENT_CONVENIENCE_ID){
-			
-			$conveni_code = sfGetXMLValue($arrVal,'RESULT','CONVENI_CODE');	// ¥³¥ó¥Ó¥Ë¥³¡¼¥É
-			$receipt_no   = sfGetXMLValue($arrVal,'RESULT','RECEIPT_NO');	// Ê§¹þÉ¼ÈÖ¹æ
-			$payment_url = sfGetXMLValue($arrVal,'RESULT','HARAIKOMI_URL');	// Ê§¹þÉ¼URL(PC)
-			$company_code = sfGetXMLValue($arrVal,'RESULT','KIGYOU_CODE');	// ´ë¶È¥³¡¼¥É
-			$order_no = sfGetXMLValue($arrVal,'RESULT','ORDER_NUMBER');		// ¼õÉÕÈÖ¹æ
-			$tel = $_POST["order_tel01"]."-".$_POST["order_tel02"]."-".$_POST["order_tel03"];	// ÅÅÏÃÈÖ¹æ
-			$payment_limit = sfGetXMLValue($arrVal,'RESULT','CONVENI_LIMIT');	// »ÙÊ§´üÆü
-			
-			//¥³¥ó¥Ó¥Ë¤Î¼ïÎà
-			switch($conveni_code) {
-			//¥»¥Ö¥ó¥¤¥ì¥Ö¥ó
-			case '11':
-				$arrRet['cv_type'] = $conveni_code;			//¥³¥ó¥Ó¥Ë¤Î¼ïÎà
-				$arrRet['cv_payment_url'] = $payment_url;	//Ê§¹þÉ¼URL(PC)
-				$arrRet['cv_receipt_no'] = $receipt_no;		//Ê§¹þÉ¼ÈÖ¹æ
-				break;
-			//¥Õ¥¡¥ß¥ê¡¼¥Þ¡¼¥È
-			case '21':
-				$arrRet['cv_type'] = $conveni_code;			//¥³¥ó¥Ó¥Ë¤Î¼ïÎà
-				$arrRet['cv_company_code'] = $company_code;	//´ë¶È¥³¡¼¥É
-				$arrRet['cv_order_no'] = $receipt_no;		//¼õÉÕÈÖ¹æ
-				break;
-			//¥í¡¼¥½¥ó
-			case '31':
-				$arrRet['cv_type'] = $conveni_code;			//¥³¥ó¥Ó¥Ë¤Î¼ïÎà
-				$arrRet['cv_receipt_no'] = $receipt_no;		//Ê§¹þÉ¼ÈÖ¹æ
-				$arrRet['cv_tel'] = $tel;					//ÅÅÏÃÈÖ¹æ
-				break;
-			//¥»¥¤¥³¡¼¥Þ¡¼¥È
-			case '32':
-				$arrRet['cv_type'] = $conveni_code;			//¥³¥ó¥Ó¥Ë¤Î¼ïÎà
-				$arrRet['cv_receipt_no'] = $receipt_no;		//Ê§¹þÉ¼ÈÖ¹æ
-				$arrRet['cv_tel'] = $tel;					//ÅÅÏÃÈÖ¹æ
-				break;
-			//¥ß¥Ë¥¹¥È¥Ã¥×
-			case '33':
-				$arrRet['cv_type'] = $conveni_code;			//¥³¥ó¥Ó¥Ë¤Î¼ïÎà
-				$arrRet['cv_payment_url'] = $payment_url;	//Ê§¹þÉ¼URL
-				break;
-			//¥Ç¥¤¥ê¡¼¥ä¥Þ¥¶¥­
-			case '34':
-				$arrRet['cv_type'] = $conveni_code;			//¥³¥ó¥Ó¥Ë¤Î¼ïÎà
-				$arrRet['cv_payment_url'] = $payment_url;	//Ê§¹þÉ¼URL
-				break;
-			}
-			
-			//»ÙÊ§´ü¸Â
-			$arrRet['cv_payment_limit'] = $payment_limit;
-			//¥³¥ó¥Ó¥Ë·èºÑ¾ðÊó¤ò³ÊÇ¼
-			$sqlval['conveni_data'] = serialize($arrRet);
-			$sqlval['memo02'] = serialize($arrRet);
 
-			$url = URL_SHOP_COMPLETE;
-
-			// ¼õÃí°ì»þ¥Æ¡¼¥Ö¥ë¤Ë¹¹¿·
-			sfRegistTempOrder($uniqid, $sqlval);
-			
-		}else{
-			$url = sfGetXMLValue($arrVal,'RESULT','REDIRECT');
-		}
-		header("Location: " . $url);
-	}
 }
 
 ?>

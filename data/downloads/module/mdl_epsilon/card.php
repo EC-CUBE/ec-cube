@@ -91,7 +91,6 @@ $arrData = array(
 // データ送信
 $arrXML = sfPostPaymentData($order_url, $arrData);
 
-
 // エラーがあるかチェックする
 $err_code = sfGetXMLValue($arrXML,'RESULT','ERR_CODE');
 
@@ -105,7 +104,6 @@ if($err_code != "") {
 	$url = sfGetXMLValue($arrXML,'RESULT','REDIRECT');
 	header("Location: " . $url);
 }
-
 
 //---------------------------------------------------------------------------------------------------------------------------------------------------------
 
