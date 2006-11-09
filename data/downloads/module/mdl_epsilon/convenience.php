@@ -120,7 +120,6 @@ switch($_POST["mode"]){
 			// データ送信
 			$arrXML = sfPostPaymentData($order_url, $arrSendData);
 			
-			sfprintr($order_url);
 			sfprintr($arrSendData);
 			sfprintr($arrXML);
 			
