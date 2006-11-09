@@ -28,14 +28,14 @@
 　コンビニ決済情報
 ******************************************************************
 
-コンビニの種類：<!--{$arrCONVENIENCE[$arrConv.cv_type]|escape}-->
+コンビニの種類：<!--{$arrConv.cv_type|escape}-->
 <!--{if $arrConv.cv_payment_url != ""}-->振込票URL(PC)：<!--{$arrConv.cv_payment_url}--><!--{"\n"}--><!--{/if}-->
 <!--{if $arrConv.cv_payment_mobile_url != ""}-->振込票URL(モバイル)：<!--{$arrConv.cv_payment_mobile_url}--><!--{"\n"}--><!--{/if}-->
 <!--{if $arrConv.cv_receipt_no != ""}-->振込票番号：<!--{$arrConv.cv_receipt_no}--><!--{"\n"}--><!--{/if}-->
 <!--{if $arrConv.cv_company_code != ""}-->企業コード：<!--{$arrConv.cv_company_code}--><!--{"\n"}--><!--{/if}-->
 <!--{if $arrConv.cv_order_no != ""}-->受付番号：<!--{$arrConv.cv_order_no}--><!--{"\n"}--><!--{/if}-->
 支払期限:<!--{$arrConv.cv_payment_limit}--><!--{"\n"}-->
-<!--{$arrCONVENIMESSAGE[$arrConv.cv_type]}-->
+<!--{$arrConv.cv_message|escape]}-->
 <!--{/if}-->
 
 ******************************************************************

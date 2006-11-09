@@ -142,36 +142,36 @@ switch($_POST["mode"]){
 				switch($conveni_code) {
 				//セブンイレブン
 				case '11':
-					$arrRet['cv_type'] = $conveni_code;			//コンビニの種類
+					$arrRet['cv_type'] = $arrConvenience[$conveni_code];			//コンビニの種類
 					$arrRet['cv_payment_url'] = $payment_url;	//払込票URL(PC)
 					$arrRet['cv_receipt_no'] = $receipt_no;		//払込票番号
 					break;
 				//ファミリーマート
 				case '21':
-					$arrRet['cv_type'] = $conveni_code;			//コンビニの種類
+					$arrRet['cv_type'] = $arrConvenience[$conveni_code];			//コンビニの種類
 					$arrRet['cv_company_code'] = $company_code;	//企業コード
 					$arrRet['cv_order_no'] = $receipt_no;		//受付番号
 					break;
 				//ローソン
 				case '31':
-					$arrRet['cv_type'] = $conveni_code;			//コンビニの種類
+					$arrRet['cv_type'] = $arrConvenience[$conveni_code];			//コンビニの種類
 					$arrRet['cv_receipt_no'] = $receipt_no;		//払込票番号
 					$arrRet['cv_tel'] = $tel;					//電話番号
 					break;
 				//セイコーマート
 				case '32':
-					$arrRet['cv_type'] = $conveni_code;			//コンビニの種類
+					$arrRet['cv_type'] = $arrConvenience[$conveni_code];			//コンビニの種類
 					$arrRet['cv_receipt_no'] = $receipt_no;		//払込票番号
 					$arrRet['cv_tel'] = $tel;					//電話番号
 					break;
 				//ミニストップ
 				case '33':
-					$arrRet['cv_type'] = $conveni_code;			//コンビニの種類
+					$arrRet['cv_type'] = $arrConvenience[$conveni_code];			//コンビニの種類
 					$arrRet['cv_payment_url'] = $payment_url;	//払込票URL
 					break;
 				//デイリーヤマザキ
 				case '34':
-					$arrRet['cv_type'] = $conveni_code;			//コンビニの種類
+					$arrRet['cv_type'] = $arrConvenience[$conveni_code];			//コンビニの種類
 					$arrRet['cv_payment_url'] = $payment_url;	//払込票URL
 					break;
 				}
