@@ -125,6 +125,7 @@ case 'edit':
 				$objQuery->insert("dtb_payment", $arrData);
 			}
 			
+			sfprintr($arrData);
 			sfprintr($objQuery->getlastquery());
 		}
 	
