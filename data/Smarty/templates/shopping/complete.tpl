@@ -56,7 +56,6 @@
 							</table>
 						</td>
 					</tr>
-					<tr><td height="20"></td></tr>
 					<tr>
 						<td align="center" bgcolor="#ffffff">
 							<!--{/if}-->						
