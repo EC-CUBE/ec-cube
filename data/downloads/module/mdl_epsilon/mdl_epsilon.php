@@ -44,6 +44,8 @@ $objView = new SC_AdminView();
 $objSess = new SC_Session();
 sfIsSuccess($objSess);
 
+sfprintr($_SESSION);
+
 // パラメータ管理クラス
 $objFormParam = new SC_FormParam();
 $objFormParam = lfInitParam($objFormParam);
@@ -75,14 +77,13 @@ case 'edit':
 		$arrDel = array(MDL_EPSILON_ID);
 		$objQuery->query($del_sql, $arrDel);
 		
+		// データ登録
 		foreach($_POST["payment"] as $key => $val){
 			// ランクの最大値を取得する
 			$max_rank = $objQuery->getone("SELECT max(rank) FROM dtb_payment");
 			
 			// クレジットにチェックが入っていればクレジットを登録する
 			if($val == 1){
-				//(in_array(1, $_POST["credit"])) ? $visa = "1" : $visa = "0";
-				//(in_array(2, $_POST["credit"])) ? $jcb = "1" : $jcb = "0";
 				$visa = "1";
 				$jcb = "0";
 				$arrData = array(			
@@ -175,9 +176,36 @@ function lfCheckError(){
 		// 利用コンビニ
 		if($val == 2 and count($_POST["convenience"]) <= 0){
 			$arrErr["convenience"] = "利用コンビニが選択されていません。<br />";
-		}	}
+		}
+	}
+	
+	// 接続チェックを行う
 
 	return $arrErr;
+}
+
+// 接続チェックを行う
+function lfChkConnect(){
+	// 送信データ生成
+	$arrSendData = array(
+		'contract_code' => $_POST["code"],						// 契約コード
+		'user_id' => "connect_test",								// ユーザID
+		'user_name' => "接続テスト",	// ユーザ名
+		'user_mail_add' => "",							// メールアドレス
+		'st_code' => $arrPayment[0]["memo04"],								// 決済区分
+		'process_code' => '3',												// 処理区分(固定)
+		'xml' => '1',														// 応答形式(固定)
+		
+		'conveni_code' => $_POST["convenience"],							// コンビニコード
+		'user_tel' => $_POST["order_tel01"].$_POST["order_tel02"].$_POST["order_tel03"],	// 電話番号
+		'user_name_kana' => $_POST["order_kana01"].$_POST["order_kana02"],					// 氏名(カナ)
+		'haraikomi_mail' => 1,												// 払込メール(送信しない)
+		
+	);
+	
+	// データ送信
+	$arrXML = sfPostPaymentData($order_url, $arrSendData);
+	
 }
 
 // 登録データを読み込む
