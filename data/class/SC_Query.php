@@ -416,6 +416,7 @@ class SC_Query {
 		
 		// 次のIncrementを取得
 		$arrRet = $this->query("SHOW TABLE STATUS LIKE ?", array($table_name));
+		sfprintr($arrRet);
 		$auto_inc_no = $arrRet["Auto_increment"];
 		
 		// 値をカウントアップしておく
@@ -424,7 +425,6 @@ class SC_Query {
 		// 解除する
 		$this->COMMIT();
 		
-		sfprintr($arrRet);
 		sfprintr($auto_inc_no);
 		exit();
 		
