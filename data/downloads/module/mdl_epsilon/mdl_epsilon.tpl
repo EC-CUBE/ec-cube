@@ -152,7 +152,8 @@ function fnChangeDisabled(list, disable) {
 											</td>
 										</tr>
 										<tr class="fs12n">
-											<td colspan=2>
+											<td width="90" bgcolor="#f3f3f3">契約内容エラー</td>
+											<td width="337" bgcolor="#ffffff">
 											<!--{assign var=key value="service"}-->
 											<span class="red12"><!--{$arrErr[$key]}--></span>
 											</td>
