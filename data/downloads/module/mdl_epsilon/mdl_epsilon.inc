@@ -90,7 +90,7 @@ function sfPostPaymentData($order_url, $arrData, $err_page = true){
 	$response = sfSendPostData($order_url, $arrData);
 	
 	// なにも返ってこなれば、エラー
-	if ($err_page) {
+	if ($err_page == true) {
 		// エラー画面を表示する。
 		$_SESSION['site']['now_page'] ="";
 		sfDispSiteError(FREE_ERROR_MSG, "", true, "購入処理中にエラーが発生しました。<br>この手続きは無効となりました。");

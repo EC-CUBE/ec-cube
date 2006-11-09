@@ -233,7 +233,7 @@ function lfChkConnect(){
 	}
 	
 	// データ送信
-	$arrXML = sfPostPaymentData($order_url, $arrSendData);
+	//$arrXML = sfPostPaymentData($order_url, $arrSendData);
 	
 }
 
