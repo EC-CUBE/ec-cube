@@ -213,7 +213,7 @@ function lfLoadData(){
 }
 
 // DBからデータを取得する
-function lfGetPaymentDB($where, $arrWhereVal){
+function lfGetPaymentDB($where = "", $arrWhereVal = array()){
 	global $objQuery;
 	
 	$arrVal = array(MDL_EPSILON_ID);
