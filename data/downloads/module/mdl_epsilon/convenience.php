@@ -120,12 +120,6 @@ switch($_POST["mode"]){
 				switch($conveni_code) {
 				//セブンイレブン
 				case '11':
-					$arrRet['cv_type'] = $arrConvenience[$conveni_code];			//コンビニの種類
-					$arrRet['cv_payment_url'] = $payment_url;	//払込票URL(PC)
-					$arrRet['cv_receipt_no'] = $receipt_no;		//払込票番号
-					$arrRet['cv_message'] = "上記のページをプリントアウトされるか払込票番号をメモして、
-お支払い期限までに、最寄りのセブンイレブンにて代金をお支払いください。";
-
 					$arrRet['cv_type'] = lfSetConvMSG("コンビニの種類",$arrConvenience[$conveni_code]);			//コンビニの種類
 					$arrRet['cv_payment_url'] = lfSetConvMSG("払込票URL",$payment_url);	//払込票URL(PC)
 					$arrRet['cv_receipt_no'] = lfSetConvMSG("払込票番号",$receipt_no);		//払込票番号
