@@ -21,7 +21,7 @@ $arrConvenience = array(
  **************************************************************************************************************/
 function sfGetXMLValue($arrVal, $tag, $att) {
 	$ret = "";
-	foreach($arrVal as $array) {
+	foreach((array)$arrVal as $array) {
 		if($tag == $array['tag']) {
 			if(!is_array($array['attributes'])) {
 				continue;

@@ -118,10 +118,7 @@ switch($_POST["mode"]){
 			);
 			
 			// データ送信
-			$arrXML = sfPostPaymentData($order_url, $arrSendData);
-			
-			sfprintr($arrSendData);
-			sfprintr($arrXML);
+			//$arrXML = sfPostPaymentData($order_url, $arrSendData);
 			
 			// エラーがあるかチェックする
 			$err_code = sfGetXMLValue($arrXML,'RESULT','ERR_CODE');
