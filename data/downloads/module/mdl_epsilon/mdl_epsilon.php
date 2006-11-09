@@ -135,7 +135,7 @@ case 'edit':
 			// データが存在していればUPDATE、無ければINSERT
 			$arrPaymentData = lfGetPaymentDB("AND memo03 = ?", array($val));
 			if(count($arrPaymentData) > 0){
-				$objQuery->update("dtb_payment", $arrData, " module_id = " . MDL_EPSILON_ID . "AND memo03 = '" . $val ."'");
+				$objQuery->update("dtb_payment", $arrData, " module_id = '" . MDL_EPSILON_ID . "' AND memo03 = '" . $val ."'");
 			}else{
 				$objQuery->insert("dtb_payment", $arrData);
 			}
