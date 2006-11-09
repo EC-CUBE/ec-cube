@@ -83,14 +83,14 @@ function sfGetXMLValue($arrVal, $tag, $att) {
  * 引数1	：$order_url	･･･ 送信先URL
  * 引数2	：$arrData		･･･ POSTデータ
  **************************************************************************************************************/
-function sfPostPaymentData($order_url, $arrData){
+function sfPostPaymentData($order_url, $arrData, $err_page = true){
 	$arrVal = array();
 	
 	// POSTデータを送信し、応答情報を取得する
 	$response = sfSendPostData($order_url, $arrData);
 	
 	// なにも返ってこなれば、エラー
-	if ($response == "") {
+	if ($response == "" and $err_page) {
 		// エラー画面を表示する。
 		$_SESSION['site']['now_page'] ="";
 		sfDispSiteError(FREE_ERROR_MSG, "", true, "購入処理中にエラーが発生しました。<br>この手続きは無効となりました。");

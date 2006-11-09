@@ -181,6 +181,7 @@ function lfCheckError(){
 	}
 	
 	// 接続チェックを行う
+	$arrErr["connect"] = lfChkConnect();
 
 	return $arrErr;
 }
@@ -218,22 +219,15 @@ function lfChkConnect(){
 	
 	// コンビニ指定があればコンビニ分ループし、チェックを行う
 	if(count($_POST["convenience"]) > 0){
-		// 送信データ生成
-		$arrSendData = array(
-			'contract_code' => $_POST["code"],		// 契約コード
-			'user_id' => "connect_test",			// ユーザID
-			'user_name' => "接続テスト",			// ユーザ名
-			'user_mail_add' => $email,				// メールアドレス
-			'st_code' => $st_code,					// 決済区分
-			'process_code' => '3',					// 処理区分(固定)
-			'xml' => '1',							// 応答形式(固定)
-	
-			'conveni_code' => $_POST["convenience"],							// コンビニコード
-			'user_tel' => $_POST["order_tel01"].$_POST["order_tel02"].$_POST["order_tel03"],	// 電話番号
-			'user_name_kana' => $_POST["order_kana01"].$_POST["order_kana02"],					// 氏名(カナ)
-			'haraikomi_mail' => 0,												// 払込メール(送信しない)
-		);
-		
+		foreach($_POST["convenience"] as $key => $val){
+			// 送信データ生成
+			$arrSendData = array(
+				'conveni_code' => $val,				// コンビニコード
+				'user_tel' => "0300000000",			// 電話番号
+				'user_name_kana' => "送信テスト",	// 氏名(カナ)
+				'haraikomi_mail' => 0,				// 払込メール(送信しない)
+			);
+		}
 	}
 	
 	// データ送信
