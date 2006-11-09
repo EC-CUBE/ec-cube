@@ -186,7 +186,7 @@ function lfLoadData(){
 	global $objFormParam;
 	
 	//データを取得
-	$arrRet = lfGetPaymentDB();
+	$arrRet = lfGetPaymentDB("AND memo03 = ?", array(1));
 	
 	// 値をセット
 	$objFormParam->setParam($arrRet[0]);
@@ -213,8 +213,11 @@ function lfLoadData(){
 }
 
 // DBからデータを取得する
-function lfGetPaymentDB(){
+function lfGetPaymentDB($where, $arrWhereVal){
 	global $objQuery;
+	
+	$arrVal = array(MDL_EPSILON_ID);
+	$arrVal = array_merge($arrVal, $arrWhereVal);
 	
 	$arrRet = array();
 	$sql = "SELECT 
@@ -224,8 +227,8 @@ function lfGetPaymentDB(){
 				memo03 as payment,
 				memo04 as payment_code, 
 				memo05 as convenience
-			FROM dtb_payment WHERE module_id = ?";
-	$arrRet = $objQuery->getall($sql, array(MDL_EPSILON_ID));
+			FROM dtb_payment WHERE module_id = ? " . $where;
+	$arrRet = $objQuery->getall($sql, $arrVal);
 	
 	return $arrRet;
 }
