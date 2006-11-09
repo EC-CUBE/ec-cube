@@ -179,6 +179,7 @@ switch($_POST["mode"]){
 				$sqlval['conveni_data'] = serialize($arrRet);
 				$sqlval['memo01'] = PAYMENT_CONVENIENCE_ID;
 				$sqlval['memo02'] = serialize($arrRet);
+				$sqlval["memo03"] = $arrPayment[0]["module_id"];
 				
 				// 受注一時テーブルに更新
 				sfRegistTempOrder($uniqid, $sqlval);
