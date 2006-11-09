@@ -80,7 +80,7 @@ case 'edit':
 			
 		}
 		
-		$objQuery->query($del_sql, array(MDL_EPSILON_ID));
+		//$objQuery->query($del_sql, array(MDL_EPSILON_ID));
 		
 		foreach($_POST["payment"] as $key => $val){
 			// ランクの最大値を取得する
