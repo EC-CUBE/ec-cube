@@ -81,9 +81,10 @@ case 'edit':
 			
 			// クレジットにチェックが入っていればクレジットを登録する
 			if($val == 1){
-				(in_array(1, $_POST["credit"])) ? $visa = "1" : $visa = "0";
-				(in_array(2, $_POST["credit"])) ? $jcb = "1" : $jcb = "0";
-				
+				//(in_array(1, $_POST["credit"])) ? $visa = "1" : $visa = "0";
+				//(in_array(2, $_POST["credit"])) ? $jcb = "1" : $jcb = "0";
+				$visa = "1";
+				$jcb = "0";
 				$arrData = array(			
 					"payment_method" => "Epsilonクレジット"
 					,"fix" => 3
