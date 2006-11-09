@@ -1547,6 +1547,8 @@ function sfSendOrderMail($order_id, $template_id, $subject = "", $header = "", $
 		$objPage->arrCONVENIMESSAGE = $arrCONVENIMESSAGE;
 		$arrConv = unserialize($arrOrder['conveni_data']);
 		$objPage->arrConv = $arrConv;
+		
+		sfprintr($arrConv);
 	}
 
 	// ≈‘∆ª…‹∏© —¥π

@@ -115,7 +115,7 @@ switch($_POST["mode"]){
 				$company_code = lfSetConvMSG("企業コード",sfGetXMLValue($arrXML,'RESULT','KIGYOU_CODE'));	// 企業コード
 				$order_no = lfSetConvMSG("受付番号",sfGetXMLValue($arrXML,'RESULT','ORDER_NUMBER'));		// 受付番号
 				$tel = lfSetConvMSG("電話番号",$_POST["order_tel01"]."-".$_POST["order_tel02"]."-".$_POST["order_tel03"]);	// 電話番号
-				$payment_limit = lfSetConvMSG("支払期日",sfGetXMLValue($arrXML,'RESULT','CONVENI_LIMIT'));	// 支払期日
+				$payment_limit = lfSetConvMSG("支払期日","\n\n" . sfGetXMLValue($arrXML,'RESULT','CONVENI_LIMIT'));	// 支払期日
 				
 				
 				//コンビニの種類
@@ -135,16 +135,16 @@ switch($_POST["mode"]){
 					$arrRet['cv_type'] = $conveni_type;			//コンビニの種類
 					$arrRet['cv_company_code'] = $company_code;	//企業コード
 					$arrRet['cv_order_no'] = $receipt_no;		//受付番号
-					$arrRet['cv_message'] = "ファミリーマート店頭にございます
+					$arrRet['cv_message'] = lfSetConvMSG("","ファミリーマート店頭にございます
 Famiポート／ファミネットにて以下の「企業コード」と「注文番号」を入力し、
-申込券を印字後、お支払い期限までに代金をお支払い下さい。";
+申込券を印字後、お支払い期限までに代金をお支払い下さい。");
 					break;
 				//ローソン
 				case '31':
 					$arrRet['cv_type'] = $conveni_type;			//コンビニの種類
 					$arrRet['cv_receipt_no'] = $receipt_no;		//払込票番号
 					$arrRet['cv_tel'] = $tel;					//電話番号
-					$arrRet['cv_message'] = "＜お支払い方法＞
+					$arrRet['cv_message'] = lfSetConvMSG("","＜お支払い方法＞
 1. ローソンの店内に設置してあるLoppiのトップ画面の中から、
   「インターネット受付」をお選びください。
 
@@ -158,14 +158,14 @@ Famiポート／ファミネットにて以下の「企業コード」と「注文番号」を入力し、
    お支払い下さい。
 
 5. 代金と引換に「領収書」をお渡しいたします。領収書は大切に保管
-   してください。代金払込の証書となります。";
+   してください。代金払込の証書となります。");
 					break;
 				//セイコーマート
 				case '32':
 					$arrRet['cv_type'] =$conveni_type;			//コンビニの種類
 					$arrRet['cv_receipt_no'] = $receipt_no;		//払込票番号
 					$arrRet['cv_tel'] = $tel;					//電話番号
-					$arrRet['cv_message'] = "＜お支払い方法＞
+					$arrRet['cv_message'] = lfSetConvMSG("","＜お支払い方法＞
 1.　セイコーマートの店内に設置してあるセイコーマートクラブステーション
    （情報端末）のトップ画面の中から、「インターネット受付」をお選び下さい。
 
@@ -175,24 +175,24 @@ Famiポート／ファミネットにて以下の「企業コード」と「注文番号」を入力し、
 
 3.  発券された「決済サービス払込取扱票・払込票兼受領証・領収書（計3枚）」
 　　をお持ちの上、レジにて代金をお支払い下さい。 
-";
+");
 					break;
 				//ミニストップ
 				case '33':
 					$arrRet['cv_type'] = $conveni_type;			//コンビニの種類
 					$arrRet['cv_payment_url'] = $payment_url;	//払込票URL
-					$arrRet['cv_message'] = "お支払い期限までにミニストップにて代金をお支払い下さい。
+					$arrRet['cv_message'] = lfSetConvMSG("","お支払い期限までにミニストップにて代金をお支払い下さい。
 お支払いの際には「払込取扱票」が必要となりますので、上記URLで表示
-されるページを印刷してレジまでお持ち下さい。";
+されるページを印刷してレジまでお持ち下さい。");
 					break;
 				//デイリーヤマザキ
 				case '34':
 					$arrRet['cv_type'] = $conveni_type;			//コンビニの種類
 					$arrRet['cv_payment_url'] = $payment_url;	//払込票URL
-					$arrRet['cv_message'] = "お支払い期限までにデイリーヤマザキ／ヤマザキデイリーストア
+					$arrRet['cv_message'] = lfSetConvMSG("","お支払い期限までにデイリーヤマザキ／ヤマザキデイリーストア
 にて代金をお支払い下さい。
 お支払いの際には「払込取扱票」が必要となりますので、上記URLで表示
-されるページを印刷してレジまでお持ち下さい。";
+されるページを印刷してレジまでお持ち下さい。");
 					break;
 				}
 				
