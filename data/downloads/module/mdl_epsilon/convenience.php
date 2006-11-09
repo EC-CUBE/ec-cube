@@ -115,7 +115,7 @@ switch($_POST["mode"]){
 				$company_code = lfSetConvMSG("企業コード",sfGetXMLValue($arrXML,'RESULT','KIGYOU_CODE'));	// 企業コード
 				$order_no = lfSetConvMSG("受付番号",sfGetXMLValue($arrXML,'RESULT','ORDER_NUMBER'));		// 受付番号
 				$tel = lfSetConvMSG("電話番号",$_POST["order_tel01"]."-".$_POST["order_tel02"]."-".$_POST["order_tel03"]);	// 電話番号
-				$payment_limit = lfSetConvMSG("<br>支払期日",sfGetXMLValue($arrXML,'RESULT','CONVENI_LIMIT'));	// 支払期日
+				$payment_limit = lfSetConvMSG("支払期日",sfGetXMLValue($arrXML,'RESULT','CONVENI_LIMIT'));	// 支払期日
 				
 				
 				//コンビニの種類
@@ -197,6 +197,7 @@ Famiポート／ファミネットにて以下の「企業コード」と「注文番号」を入力し、
 				}
 				
 				//支払期限
+				$arrRet['br'] = lfSetConvMSG("","\n\n");
 				$arrRet['cv_payment_limit'] = $payment_limit;
 				//コンビニ決済情報を格納
 				$sqlval['conveni_data'] = serialize($arrRet);
