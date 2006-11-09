@@ -27,7 +27,7 @@ class SC_View {
 		$this->_smarty->register_modifier("sfGetVal", "sfGetVal");
 		$this->_smarty->register_function("sfSetErrorStyle","sfSetErrorStyle");
 		$this->_smarty->register_function("sfGetErrorColor","sfGetErrorColor");
-		$this->_smarty->register_function("srTrim", "sfTrim");
+		$this->_smarty->register_function("sfTrim", "sfTrim");
 		$this->_smarty->register_function("sfPreTax", "sfPreTax");
 		$this->_smarty->register_function("sfPrePoint", "sfPrePoint");
 		$this->_smarty->register_function("sfGetChecked", "sfGetChecked");
