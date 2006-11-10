@@ -113,52 +113,7 @@ function fnChangeDisabled(list, disable) {
 											</td>
 										</tr>
 									</table>
-
-									
-									<table width="440" border="0" cellspacing="1" cellpadding="8" summary=" ">
-										<tr class="fs12n">
-											<td width="" bgcolor="#f3f3f3">契約コード<span class="red">※</span></td>
-											<td width="337" bgcolor="#ffffff">
-											<!--{assign var=key value="code"}-->
-											<span class="red12"><!--{$arrErr[$key]}--></span>
-											<input type="text" name="<!--{$key}-->" style="ime-mode:disabled; <!--{$arrErr[$key]|sfGetErrorColor}-->" value="<!--{$arrForm[$key].value}-->" class="box10" maxlength="<!--{$smarty.const.INT_LEN}-->">
-											</td>
-										</tr>
-										<tr class="fs12n">
-											<td width="" bgcolor="#f3f3f3">接続先URL<span class="red">※</span></td>
-											<td width="337" bgcolor="#ffffff">
-											<!--{assign var=key value="url"}-->
-											<span class="red12"><!--{$arrErr[$key]}--></span>
-											<input type="text" name="<!--{$key}-->" style="ime-mode:disabled; <!--{$arrErr[$key]|sfGetErrorColor}-->" value="<!--{$arrForm[$key].value}-->" class="box40" maxlength="<!--{$smarty.const.URL_LEN}-->">
-											</td>
-										</tr>
-										<tr class="fs12n">
-											<td width="90" bgcolor="#f3f3f3">利用決済<span class="red">※</span></td>
-											<td width="337" bgcolor="#ffffff">
-											<!--{assign var=key value="payment"}-->
-											<span class="red12"><!--{$arrErr[$key]}--></span>
-											<!--{html_checkboxes_ex name="$key" options=$arrPayment selected=$arrForm[$key].value style=$arrErr[$key]|sfGetErrorColor onclick="lfnCheckPayment();"}-->
-											</td>
-										</tr>
-										<tr class="fs12n">
-											<td width="90" bgcolor="#f3f3f3">利用コンビニ</td>
-											<td width="337" bgcolor="#ffffff">
-											<!--{assign var=key value="convenience"}-->
-											<span class="red12"><!--{$arrErr[$key]}--></span>
-											<!--{html_checkboxes_ex name="$key" options=$arrConvenience selected=$arrForm[$key].value style=$arrErr[$key]|sfGetErrorColor}-->
-											</td>
-										</tr>
-										<!--{assign var=key value="service"}-->
-										<!--{if $arrErr[$key] != ""}-->
-										<tr class="fs12n">
-											<td bgcolor="#ffffff" colspan=2>
-											<span class="red12">登録内容に誤りがあります。イプシロン契約内容をご確認ください。</span>
-											</td>
-										</tr>
-										<!--{/if}-->
-									</table>
-
-																</td>
+								</td>
 								<td background="<!--{$smarty.const.URL_DIR}-->img/contents/main_right.jpg"><img src="<!--{$smarty.const.URL_DIR}-->img/common/_.gif" width="14" height="1" alt=""></td>
 							</tr>
 							<tr>
