@@ -92,7 +92,7 @@ function fnChangeDisabled(list, disable) {
 				<!--メインエリア-->
 				<tr>
 					<td align="center">
-						<table width="" border="0" cellspacing="0" cellpadding="0" summary=" ">
+						<table width="470" border="0" cellspacing="0" cellpadding="0" summary=" ">
 							<tr><td height="14"></td></tr>
 							<tr>
 								<td colspan="3"><img src="<!--{$smarty.const.URL_DIR}-->img/contents/main_top.jpg" width="100%" height="14" alt=""></td>
@@ -100,6 +100,7 @@ function fnChangeDisabled(list, disable) {
 							<tr>
 								<td background="<!--{$smarty.const.URL_DIR}-->img/contents/main_left.jpg"><img src="<!--{$smarty.const.URL_DIR}-->img/common/_.gif" width="14" height="1" alt=""></td>
 								<td bgcolor="#cccccc">
+
 									<table width="440" border="0" cellspacing="1" cellpadding="8" summary=" ">
 										<tr class="fs12n">
 											<td bgcolor="#ffffff">
@@ -111,11 +112,79 @@ function fnChangeDisabled(list, disable) {
 											</td>
 										</tr>
 									</table>
+									<table width="440" border="0" cellspacing="0" cellpadding="0" summary=" ">
+										<tr><td><img src="<!--{$smarty.const.URL_DIR}-->img/contents/main_bar.jpg" width="440" height="10" alt=""></td></tr>
+									</table>
+									
+									<table width="440" border="0" cellspacing="1" cellpadding="8" summary=" ">
+										<tr class="fs12n">
+											<td width="" bgcolor="#f3f3f3">契約コード<span class="red">※</span></td>
+											<td width="337" bgcolor="#ffffff">
+											<!--{assign var=key value="code"}-->
+											<span class="red12"><!--{$arrErr[$key]}--></span>
+											<input type="text" name="<!--{$key}-->" style="ime-mode:disabled; <!--{$arrErr[$key]|sfGetErrorColor}-->" value="<!--{$arrForm[$key].value}-->" class="box10" maxlength="<!--{$smarty.const.INT_LEN}-->">
+											</td>
+										</tr>
+										<tr class="fs12n">
+											<td width="" bgcolor="#f3f3f3">接続先URL<span class="red">※</span></td>
+											<td width="337" bgcolor="#ffffff">
+											<!--{assign var=key value="url"}-->
+											<span class="red12"><!--{$arrErr[$key]}--></span>
+											<input type="text" name="<!--{$key}-->" style="ime-mode:disabled; <!--{$arrErr[$key]|sfGetErrorColor}-->" value="<!--{$arrForm[$key].value}-->" class="box40" maxlength="<!--{$smarty.const.URL_LEN}-->">
+											</td>
+										</tr>
+										<tr class="fs12n">
+											<td width="90" bgcolor="#f3f3f3">利用決済<span class="red">※</span></td>
+											<td width="337" bgcolor="#ffffff">
+											<!--{assign var=key value="payment"}-->
+											<span class="red12"><!--{$arrErr[$key]}--></span>
+											<!--{html_checkboxes_ex name="$key" options=$arrPayment selected=$arrForm[$key].value style=$arrErr[$key]|sfGetErrorColor onclick="lfnCheckPayment();"}-->
+											</td>
+										</tr>
+										<tr class="fs12n">
+											<td width="90" bgcolor="#f3f3f3">利用コンビニ</td>
+											<td width="337" bgcolor="#ffffff">
+											<!--{assign var=key value="convenience"}-->
+											<span class="red12"><!--{$arrErr[$key]}--></span>
+											<!--{html_checkboxes_ex name="$key" options=$arrConvenience selected=$arrForm[$key].value style=$arrErr[$key]|sfGetErrorColor}-->
+											</td>
+										</tr>
+										<!--{assign var=key value="service"}-->
+										<!--{if $arrErr[$key] != ""}-->
+										<tr class="fs12n">
+											<td bgcolor="#ffffff" colspan=2>
+											<span class="red12">登録内容に誤りがあります。イプシロン契約内容をご確認ください。</span>
+											</td>
+										</tr>
+										<!--{/if}-->
+									</table>
+
+									<table width="440" border="0" cellspacing="0" cellpadding="0" summary=" ">
+										<tr>
+											<td bgcolor="#cccccc"><img src="<!--{$smarty.const.URL_DIR}-->img/common/_.gif" width="1" height="5" alt=""></td>
+											<td><img src="<!--{$smarty.const.URL_DIR}-->img/contents/tbl_top.gif" width="438" height="7" alt=""></td>
+											<td bgcolor="#cccccc"><img src="<!--{$smarty.const.URL_DIR}-->img/common/_.gif" width="1" height="5" alt=""></td>
+										</tr>
+										<tr>
+											<td bgcolor="#cccccc"><img src="<!--{$smarty.const.URL_DIR}-->img/common/_.gif" width="1" height="10" alt=""></td>
+											<td bgcolor="#e9e7de" align="center">
+											<table border="0" cellspacing="0" cellpadding="0" summary=" ">
+												<tr>
+													<td><input type="image" onMouseover="chgImgImageSubmit('<!--{$smarty.const.URL_DIR}-->img/contents/btn_regist_on.jpg',this)" onMouseout="chgImgImageSubmit('<!--{$smarty.const.URL_DIR}-->img/contents/btn_regist.jpg',this)" src="<!--{$smarty.const.URL_DIR}-->img/contents/btn_regist.jpg" width="123" height="24" alt="この内容で登録する" border="0" name="subm" onClick="document.body.style.cursor = 'wait';"></td>
+												</tr>
+											</table>
+											</td>
+											<td bgcolor="#cccccc"><img src="<!--{$smarty.const.URL_DIR}-->img/common/_.gif" width="1" height="10" alt=""></td>
+										</tr>
+										<tr>
+											<td colspan="3"><img src="<!--{$smarty.const.URL_DIR}-->img/contents/tbl_bottom.gif" width="440" height="8" alt=""></td>
+										</tr>
+									</table>
 								</td>
 								<td background="<!--{$smarty.const.URL_DIR}-->img/contents/main_right.jpg"><img src="<!--{$smarty.const.URL_DIR}-->img/common/_.gif" width="14" height="1" alt=""></td>
 							</tr>
 							<tr>
-								<td colspan="3"><img src="<!--{$smarty.const.URL_DIR}-->img/contents/main_bottom.jpg" width="460" height="14" alt=""></td>
+								<td colspan="3"><img src="<!--{$smarty.const.URL_DIR}-->img/contents/main_bottom.jpg" width="100%" height="14" alt=""></td>
 							</tr>
 							<tr><td height="30"></td></tr>
 						</table>
