@@ -110,6 +110,8 @@ function lfSendCredit(){
 		sfprintr($err_code . ":" . $err_detail);
 		if($err_code == "909"){
 			$arrPayment[0]["memo04"] = "10000-0000-00000";
+			sfprintr($arrData);
+			sfprintr($arrPayment[0]);
 			lfSendCredit();
 		}
 		sfDispSiteError(FREE_ERROR_MSG, "", true, "購入処理中に以下のエラーが発生しました。<br /><br /><br />・" . $err_detail . "<br /><br /><br />この手続きは無効となりました。");
