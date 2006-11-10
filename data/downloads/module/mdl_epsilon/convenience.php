@@ -93,7 +93,7 @@ switch($_POST["mode"]){
 				'user_name_kana' => $_POST["order_kana01"].$_POST["order_kana02"],					// »áÌ¾(¥«¥Ê)
 				'haraikomi_mail' => 1,												// Ê§¹þ¥á¡¼¥ë(Á÷¿®¤·¤Ê¤¤)
 				
-				'memo1' => ECCUBE_PAYMENT . "_" . date("YmdHms"),											// Í½È÷01
+				'memo1' => ECCUBE_PAYMENT . "_" . date("YmdHmis"),											// Í½È÷01
 				'memo2' => ''														// Í½È÷02
 			);
 			
