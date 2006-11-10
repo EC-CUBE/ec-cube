@@ -95,9 +95,6 @@ function fnChangeDisabled(list, disable) {
 						<table width="470" border="0" cellspacing="0" cellpadding="0" summary=" ">
 							<tr><td height="14"></td></tr>
 							<tr>
-								<td colspan="3"><img src="<!--{$smarty.const.URL_DIR}-->img/contents/main_top.jpg" width="470" height="14" alt=""></td>
-							</tr>
-							<tr>
 								<td background="<!--{$smarty.const.URL_DIR}-->img/contents/main_left.jpg"><img src="<!--{$smarty.const.URL_DIR}-->img/common/_.gif" width="14" height="1" alt=""></td>
 								<td bgcolor="#cccccc">
 									
@@ -199,9 +196,6 @@ function fnChangeDisabled(list, disable) {
 									</table>
 								</td>
 								<td background="<!--{$smarty.const.URL_DIR}-->img/contents/main_right.jpg"><img src="<!--{$smarty.const.URL_DIR}-->img/common/_.gif" width="14" height="1" alt=""></td>
-							</tr>
-							<tr>
-								<td colspan="3"><img src="<!--{$smarty.const.URL_DIR}-->img/contents/main_bottom.jpg" width="470" height="14" alt=""></td>
 							</tr>
 							<tr><td height="30"></td></tr>
 						</table>
