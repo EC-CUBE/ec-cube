@@ -96,7 +96,7 @@ case 'step3':
 	$objPage->arrErr = lfAddTable("dtb_module", $dsn);	// セッション管理テーブル
 	
 	// カラムを追加
-	lfAddColumn($dsn)
+	lfAddColumn($dsn);
 		
 	if(count($objPage->arrErr) == 0) {
 		// スキップする場合には次画面へ遷移
