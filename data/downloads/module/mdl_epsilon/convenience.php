@@ -103,8 +103,6 @@ switch($_POST["mode"]){
 			// エラーがあるかチェックする
 			$err_code = sfGetXMLValue($arrXML,'RESULT','ERR_CODE');
 			
-			sfprintr($arrData);
-			
 			if($err_code != "") {
 				$err_detail = sfGetXMLValue($arrXML,'RESULT','ERR_DETAIL');
 				sfDispSiteError(FREE_ERROR_MSG, "", false, "購入処理中に以下のエラーが発生しました。<br /><br /><br />・" . $err_detail);
