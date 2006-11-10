@@ -754,8 +754,6 @@ function lfDropTable($table_name, $dsn) {
 
 // カラムの追加（既にカラムが存在する場合は作成しない）
 function lfAddColumn($dsn) {
-	$arrErr = array();
-
 	// 受注テーブル	
 	sfColumnExists("dtb_order", "memo01", "text", $dsn, true);	
 	sfColumnExists("dtb_order", "memo02", "text", $dsn, true);
@@ -793,9 +791,6 @@ function lfAddColumn($dsn) {
 	sfColumnExists("dtb_payment", "memo08", "text", $dsn, true);
 	sfColumnExists("dtb_payment", "memo09", "text", $dsn, true);
 	sfColumnExists("dtb_payment", "memo10", "text", $dsn, true);
-
-	return $arrErr;
 }
-
 
 ?>
