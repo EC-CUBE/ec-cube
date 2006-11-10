@@ -108,9 +108,9 @@ function lfSendCredit(){
 	if($err_code != "") {
 		$err_detail = sfGetXMLValue($arrXML,'RESULT','ERR_DETAIL');
 		sfprintr($err_code . ":" . $err_detail);
-		if($err_code == "909"){
 			sfprintr($arrData);
 			sfprintr($arrPayment[0]);
+		if($err_code == "909"){
 			$arrPayment[0]["memo04"] = "10000-0000-00000";
 			lfSendCredit();
 		}
