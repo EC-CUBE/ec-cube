@@ -88,11 +88,11 @@ function fnChangeDisabled(list, disable) {
 	<tr valign="top">
 		<td class="mainbg">
 			<!--▼登録テーブルここから-->
-			<table width="500" border="0" cellspacing="0" cellpadding="0" summary=" ">
+			<table width="480" border="0" cellspacing="0" cellpadding="0" summary=" ">
 				<!--メインエリア-->
 				<tr>
 					<td align="center">
-						<table width="460" border="0" cellspacing="0" cellpadding="0" summary=" ">
+						<table width="470" border="0" cellspacing="0" cellpadding="0" summary=" ">
 							<tr><td height="14"></td></tr>
 							<tr>
 								<td colspan="3"><img src="<!--{$smarty.const.URL_DIR}-->img/contents/main_top.jpg" width="470" height="14" alt=""></td>
