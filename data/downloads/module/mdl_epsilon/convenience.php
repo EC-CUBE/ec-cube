@@ -103,7 +103,7 @@ switch($_POST["mode"]){
 			// エラーがあるかチェックする
 			$err_code = sfGetXMLValue($arrXML,'RESULT','ERR_CODE');
 			
-			sfprintr($arrXML);
+			sfprintr($arrData);
 			
 			if($err_code != "") {
 				$err_detail = sfGetXMLValue($arrXML,'RESULT','ERR_DETAIL');
