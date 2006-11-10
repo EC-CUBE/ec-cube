@@ -68,21 +68,17 @@ if($_GET["result"] == "1"){
 }
 
 // データ送信
-lfSendCredit();
+lfSendCredit($arrData, $arrPayment, $arrMainProduct);
 
 //---------------------------------------------------------------------------------------------------------------------------------------------------------
 
 // データ送信処理
-function lfSendCredit(){
-	global $arrPayment;
-	global $arrData;
-	global $arrMainProduct;
-	
+function lfSendCredit($arrData, $arrPayment, $arrMainProduct){
 	// データ送信先CGI
 	$order_url = $arrPayment[0]["memo02"];
 	
 	// 送信データ生成
-	$arrData = array(
+	$arrSendData = array(
 		'contract_code' => $arrPayment[0]["memo01"],						// 契約コード
 		'user_id' => $arrData["customer_id"],								// ユーザID
 		'user_name' => $arrData["order_name01"].$arrData["order_name02"],	// ユーザ名
@@ -100,7 +96,7 @@ function lfSendCredit(){
 	);
 	
 	// データ送信
-	$arrXML = sfPostPaymentData($order_url, $arrData);
+	$arrXML = sfPostPaymentData($order_url, $arrSendData);
 	
 	// エラーがあるかチェックする
 	$err_code = sfGetXMLValue($arrXML,'RESULT','ERR_CODE');
@@ -112,7 +108,7 @@ function lfSendCredit(){
 			sfprintr($arrPayment[0]);
 		if($err_code == "909"){
 			$arrPayment[0]["memo04"] = "10000-0000-00000";
-			lfSendCredit();
+			lfSendCredit($arrData, $arrPayment, $arrMainProduct);
 		}
 		sfDispSiteError(FREE_ERROR_MSG, "", true, "購入処理中に以下のエラーが発生しました。<br /><br /><br />・" . $err_detail . "<br /><br /><br />この手続きは無効となりました。");
 	} else {
