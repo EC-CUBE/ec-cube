@@ -121,7 +121,10 @@ function fnChangeDisabled(list, disable) {
 									<table width="440" border="0" cellspacing="1" cellpadding="8" summary=" ">
 										<tr class="fs12n">
 											<td bgcolor="#ffffff">
-											aa
+イプシロン決済モジュールをご利用頂く為には、ユーザ様ご自身で
+イプシロン株式会社様とご契約を行っていただく必要があります。 
+お申し込みにつきましては、こちら(http://www.rapidsite.jp/product/support/shop/epsilon.html)ページの左上にある「< お問合せ・お申込はこちら >」から、お申し込みをを行って下さい。
+
 											</td>
 										</tr>
 									</table>
