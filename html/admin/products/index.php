@@ -133,6 +133,7 @@ if ($_POST['mode'] == "search" || $_POST['mode'] == "csv"  || $_POST['mode'] == 
 				continue;
 			}
 			
+			$arrval = array();
 			switch ($key) {
 				case 'search_product_id':	// æ¶… ID
 					$where .= " AND product_id = ?";

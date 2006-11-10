@@ -108,7 +108,7 @@ function lfSendCredit($arrData, $arrPayment, $arrMainProduct, $again = true){
 		
 		// 決済区分エラーの場合には VISA,MASTER のみで再送信を試みる
 		if($err_code == "909" and $again){
-			$arrPayment[0]["memo04"] = "11000-0000-00000";
+			$arrPayment[0]["memo04"] = "10000-0000-00000";
 			lfSendCredit($arrData, $arrPayment, $arrMainProduct, false);
 		}
 		sfDispSiteError(FREE_ERROR_MSG, "", true, "購入処理中に以下のエラーが発生しました。<br /><br /><br />・" . $err_detail . "<br /><br /><br />この手続きは無効となりました。");
