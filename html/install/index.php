@@ -756,16 +756,16 @@ function lfDropTable($table_name, $dsn) {
 function lfAddColumn($dsn) {
 	$arrErr = array();
 	
-	sfColumnExists("memo01", "dtb_order", "text", $dsn, true);
-	sfColumnExists("memo02", "dtb_order", "text", $dsn, true);
-	sfColumnExists("memo03", "dtb_order", "text", $dsn, true);
-	sfColumnExists("memo04", "dtb_order", "text", $dsn, true);
-	sfColumnExists("memo05", "dtb_order", "text", $dsn, true);
-	sfColumnExists("memo06", "dtb_order", "text", $dsn, true);
-	sfColumnExists("memo07", "dtb_order", "text", $dsn, true);
-	sfColumnExists("memo08", "dtb_order", "text", $dsn, true);
-	sfColumnExists("memo09", "dtb_order", "text", $dsn, true);
-	sfColumnExists("memo10", "dtb_order", "text", $dsn, true);
+	sfColumnExists("dtb_order", "memo01", "text", $dsn, true);
+	sfColumnExists("dtb_order", "memo02", "text", $dsn, true);
+	sfColumnExists("dtb_order", "memo03", "text", $dsn, true);
+	sfColumnExists("dtb_order", "memo04", "text", $dsn, true);
+	sfColumnExists("dtb_order", "memo05", "text", $dsn, true);
+	sfColumnExists("dtb_order", "memo06", "text", $dsn, true);
+	sfColumnExists("dtb_order", "memo07", "text", $dsn, true);
+	sfColumnExists("dtb_order", "memo08", "text", $dsn, true);
+	sfColumnExists("dtb_order", "memo09", "text", $dsn, true);
+	sfColumnExists("dtb_order", "memo10", "text", $dsn, true);
 	
 	return $arrErr;
 }
