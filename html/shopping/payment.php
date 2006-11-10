@@ -152,6 +152,8 @@ function lfGetPayment($total_pretax) {
 			$arrPayment[] = $data;
 		}	
 	}
+	
+	$objQuery->getlastquery();
 	return $arrPayment;	
 }
 
