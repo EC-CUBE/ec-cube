@@ -84,7 +84,7 @@ $arrData = array(
 	'mission_code' => '1',												// 課金区分(固定)
 	'process_code' => '1',												// 処理区分(固定)
 	'xml' => '1',														// 応答形式(固定)
-	'memo1' => ECCUBE_PAYMENT . "_" . date("YmdHis"),											// 予備01
+	'memo1' => ECCUBE_PAYMENT . "_" . date("YmdHis"),					// 予備01
 	'memo2' => ''														// 予備02
 );
 
@@ -96,6 +96,7 @@ $err_code = sfGetXMLValue($arrXML,'RESULT','ERR_CODE');
 
 if($err_code != "") {
 	$err_detail = sfGetXMLValue($arrXML,'RESULT','ERR_DETAIL');
+	sfprintr($err_code . ":" . $err_detail);
 	sfDispSiteError(FREE_ERROR_MSG, "", true, "購入処理中に以下のエラーが発生しました。<br /><br /><br />・" . $err_detail . "<br /><br /><br />この手続きは無効となりました。");
 } else {
 	// 正常な推移であることを記録しておく
