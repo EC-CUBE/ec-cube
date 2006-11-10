@@ -781,7 +781,7 @@ function lfAddColumn($dsn) {
 	sfColumnExists("dtb_order_temp", "memo10", "text", $dsn, true);
 
 	// 支払情報テーブル
-	sfColumnExists("dtb_payment", "module_id", "text", $dsn, true);	
+	sfColumnExists("dtb_payment", "module_id", "int4", $dsn, true);	
 	sfColumnExists("dtb_payment", "module_path", "text", $dsn, true);
 	sfColumnExists("dtb_payment", "memo01", "text", $dsn, true);	
 	sfColumnExists("dtb_payment", "memo02", "text", $dsn, true);
