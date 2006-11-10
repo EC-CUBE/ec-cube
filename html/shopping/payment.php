@@ -127,7 +127,7 @@ function lfInitParam() {
 
 function lfGetPayment($total_pretax) {
 	$objQuery = new SC_Query();
-	$objQuery->setorder("fix,rank DESC");
+	$objQuery->setorder("rank DESC");
 	//削除されていない支払方法を取得
 	$arrRet = $objQuery->select("payment_id, payment_method, rule, upper_rule, note, payment_image", "dtb_payment", "del_flg = 0 AND deliv_id IN (SELECT deliv_id FROM dtb_deliv WHERE del_flg = 0) ");
 	//利用条件から支払可能方法を判定
