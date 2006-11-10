@@ -123,7 +123,7 @@ function fnChangeDisabled(list, disable) {
 											<td bgcolor="#ffffff">
 イプシロン決済モジュールをご利用頂く為には、ユーザ様ご自身で
 イプシロン株式会社様とご契約を行っていただく必要があります。 
-お申し込みにつきましては、下記のページの左上にある「< お問合せ・お申込はこちら >」から、お申し込みをを行って下さい。<br/><br/>
+お申し込みにつきましては、下記のページの左上にある「< お問合せ・お申込はこちら >」から、お申し込みをを行って下さい。<br/><br/><br/>
 <a href="http://www.rapidsite.jp/product/support/shop/epsilon.html">＞＞ イプシロン決済システムについて</a>
 
 											</td>
