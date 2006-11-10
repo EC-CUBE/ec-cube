@@ -118,7 +118,7 @@ function fnChangeDisabled(list, disable) {
 										</tr>
 									</table>
 
-									<table width="440" border="0" cellspacing="1" cellpadding="8" summary=" ">
+									<table width="445" border="0" cellspacing="1" cellpadding="8" summary=" ">
 										<tr class="fs12n">
 											<td bgcolor="#ffffff">
 											aa
