@@ -114,7 +114,7 @@ function fnChangeDisabled(list, disable) {
 											<td colspan="3"><img src="<!--{$smarty.const.URL_DIR}-->img/contents/contents_title_bottom.gif" width="440" height="7" alt=""></td>
 										</tr>
 										<tr>
-											<td colspan="3"><img src="<!--{$smarty.const.URL_DIR}-->img/contents/main_bar.jpg" width="440" height="10" alt=""></td>
+											<td colspan="3"><img src="<!--{$smarty.const.URL_DIR}-->img/contents/main_bar.jpg" width="430" height="10" alt=""></td>
 										</tr>
 									</table>
 
