@@ -45,9 +45,6 @@ $arrMainProduct = $objPage->arrProductsClass[0];
 // 支払い情報を取得
 $arrPayment = $objQuery->getall("SELECT module_id, memo01, memo02, memo03, memo04, memo05, memo06, memo07, memo08, memo09, memo10 FROM dtb_payment WHERE payment_id = ? ", array($arrData["payment_id"]));
 
-// データ送信先CGI
-$order_url = $arrPayment[0]["memo02"];
-
 // trans_codeに値があり且つ、正常終了のときはオーダー確認を行う。
 if($_GET["result"] == "1"){
 	
@@ -70,42 +67,59 @@ if($_GET["result"] == "1"){
 	header("Location: " .  URL_SHOP_COMPLETE);
 }
 
-// 送信データ生成
-$arrData = array(
-	'contract_code' => $arrPayment[0]["memo01"],						// 契約コード
-	'user_id' => $arrData["customer_id"],								// ユーザID
-	'user_name' => $arrData["order_name01"].$arrData["order_name02"],	// ユーザ名
-	'user_mail_add' => $arrData["order_email"],							// メールアドレス
-	'order_number' => $arrData["order_id"],								// オーダー番号
-	'item_code' => $arrMainProduct["product_code"],						// 商品コード(代表)
-	'item_name' => $arrMainProduct["name"],								// 商品名(代表)
-	'item_price' => $arrData["payment_total"],							// 商品価格(税込み総額)
-	'st_code' => $arrPayment[0]["memo04"],								// 決済区分
-	'mission_code' => '1',												// 課金区分(固定)
-	'process_code' => '1',												// 処理区分(固定)
-	'xml' => '1',														// 応答形式(固定)
-	'memo1' => ECCUBE_PAYMENT . "_" . date("YmdHis"),					// 予備01
-	'memo2' => ''														// 予備02
-);
-
 // データ送信
-$arrXML = sfPostPaymentData($order_url, $arrData);
-
-// エラーがあるかチェックする
-$err_code = sfGetXMLValue($arrXML,'RESULT','ERR_CODE');
-
-if($err_code != "") {
-	$err_detail = sfGetXMLValue($arrXML,'RESULT','ERR_DETAIL');
-	sfprintr($err_code . ":" . $err_detail);
-	sfDispSiteError(FREE_ERROR_MSG, "", true, "購入処理中に以下のエラーが発生しました。<br /><br /><br />・" . $err_detail . "<br /><br /><br />この手続きは無効となりました。");
-} else {
-	// 正常な推移であることを記録しておく
-	$objSiteSess->setRegistFlag();
-	
-	$url = sfGetXMLValue($arrXML,'RESULT','REDIRECT');
-	header("Location: " . $url);
-}
+lfSendCredit();
 
 //---------------------------------------------------------------------------------------------------------------------------------------------------------
+
+// データ送信処理
+function lfSendCredit(){
+	global $arrPayment;
+	global $arrData;
+	global $arrMainProduct;
+	
+	// データ送信先CGI
+	$order_url = $arrPayment[0]["memo02"];
+	
+	// 送信データ生成
+	$arrData = array(
+		'contract_code' => $arrPayment[0]["memo01"],						// 契約コード
+		'user_id' => $arrData["customer_id"],								// ユーザID
+		'user_name' => $arrData["order_name01"].$arrData["order_name02"],	// ユーザ名
+		'user_mail_add' => $arrData["order_email"],							// メールアドレス
+		'order_number' => $arrData["order_id"],								// オーダー番号
+		'item_code' => $arrMainProduct["product_code"],						// 商品コード(代表)
+		'item_name' => $arrMainProduct["name"],								// 商品名(代表)
+		'item_price' => $arrData["payment_total"],							// 商品価格(税込み総額)
+		'st_code' => $arrPayment[0]["memo04"],								// 決済区分
+		'mission_code' => '1',												// 課金区分(固定)
+		'process_code' => '1',												// 処理区分(固定)
+		'xml' => '1',														// 応答形式(固定)
+		'memo1' => ECCUBE_PAYMENT . "_" . date("YmdHis"),					// 予備01
+		'memo2' => ''														// 予備02
+	);
+	
+	// データ送信
+	$arrXML = sfPostPaymentData($order_url, $arrData);
+	
+	// エラーがあるかチェックする
+	$err_code = sfGetXMLValue($arrXML,'RESULT','ERR_CODE');
+	
+	if($err_code != "") {
+		$err_detail = sfGetXMLValue($arrXML,'RESULT','ERR_DETAIL');
+		sfprintr($err_code . ":" . $err_detail);
+		if($err_code == "909"){
+			$arrPayment[0]["memo04"] = "10000-0000-00000";
+			lfSendCredit();
+		}
+		sfDispSiteError(FREE_ERROR_MSG, "", true, "購入処理中に以下のエラーが発生しました。<br /><br /><br />・" . $err_detail . "<br /><br /><br />この手続きは無効となりました。");
+	} else {
+		// 正常な推移であることを記録しておく
+		$objSiteSess->setRegistFlag();
+		
+		$url = sfGetXMLValue($arrXML,'RESULT','REDIRECT');
+		header("Location: " . $url);
+	}
+}
 
 ?>
