@@ -101,7 +101,7 @@ function fnChangeDisabled(list, disable) {
 								<td background="<!--{$smarty.const.URL_DIR}-->img/contents/main_left.jpg"><img src="<!--{$smarty.const.URL_DIR}-->img/common/_.gif" width="14" height="1" alt=""></td>
 								<td bgcolor="#cccccc">
 									
-									<table width="100%" border="0" cellspacing="0" cellpadding="0" summary=" ">
+									<table width="440" border="0" cellspacing="0" cellpadding="0" summary=" ">
 										<tr>
 											<td colspan="3"><img src="<!--{$smarty.const.URL_DIR}-->img/contents/contents_title_top.gif" width="440" height="7" alt=""></td>
 										</tr>
@@ -118,7 +118,7 @@ function fnChangeDisabled(list, disable) {
 										</tr>
 									</table>
 
-									<table width="100%" border="0" cellspacing="1" cellpadding="8" summary=" ">
+									<table width="440" border="0" cellspacing="1" cellpadding="8" summary=" ">
 										<tr class="fs12n">
 											<td bgcolor="#ffffff">
 												イプシロン決済モジュールをご利用頂く為には、ユーザ様ご自身で
@@ -129,11 +129,11 @@ function fnChangeDisabled(list, disable) {
 											</td>
 										</tr>
 									</table>
-									<table width="100%" border="0" cellspacing="0" cellpadding="0" summary=" ">
+									<table width="440" border="0" cellspacing="0" cellpadding="0" summary=" ">
 										<tr><td><img src="<!--{$smarty.const.URL_DIR}-->img/contents/main_bar.jpg" width="440" height="10" alt=""></td></tr>
 									</table>
 									
-									<table width="100%" border="0" cellspacing="1" cellpadding="8" summary=" ">
+									<table width="440" border="0" cellspacing="1" cellpadding="8" summary=" ">
 										<tr class="fs12n">
 											<td width="" bgcolor="#f3f3f3">契約コード<span class="red">※</span></td>
 											<td width="337" bgcolor="#ffffff">
@@ -176,10 +176,10 @@ function fnChangeDisabled(list, disable) {
 										<!--{/if}-->
 									</table>
 
-									<table width="100%" border="0" cellspacing="0" cellpadding="0" summary=" ">
+									<table width="440" border="0" cellspacing="0" cellpadding="0" summary=" ">
 										<tr>
 											<td bgcolor="#cccccc"><img src="<!--{$smarty.const.URL_DIR}-->img/common/_.gif" width="1" height="5" alt=""></td>
-											<td><img src="<!--{$smarty.const.URL_DIR}-->img/contents/tbl_top.gif" width="" height="7" alt=""></td>
+											<td><img src="<!--{$smarty.const.URL_DIR}-->img/contents/tbl_top.gif" width="438" height="7" alt=""></td>
 											<td bgcolor="#cccccc"><img src="<!--{$smarty.const.URL_DIR}-->img/common/_.gif" width="1" height="5" alt=""></td>
 										</tr>
 										<tr>
@@ -194,7 +194,7 @@ function fnChangeDisabled(list, disable) {
 											<td bgcolor="#cccccc"><img src="<!--{$smarty.const.URL_DIR}-->img/common/_.gif" width="1" height="10" alt=""></td>
 										</tr>
 										<tr>
-											<td colspan="3"><img src="<!--{$smarty.const.URL_DIR}-->img/contents/tbl_bottom.gif" width="100%" height="8" alt=""></td>
+											<td colspan="3"><img src="<!--{$smarty.const.URL_DIR}-->img/contents/tbl_bottom.gif" width="440" height="8" alt=""></td>
 										</tr>
 									</table>
 								</td>
