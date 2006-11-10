@@ -125,6 +125,7 @@ function sfColumnExists($table_name, $col_name, $col_type = "", $dsn = "", $add 
 	// カラムを追加する
 	if($add){
 		$objQuery->query("ALTER TABLE $table_name ADD $col_name $col_type ");
+		return true;
 	}
 	
 	return false;
