@@ -311,7 +311,7 @@ function lfGetPaymentDB($where = "", $arrWhereVal = array()){
 				memo05 as convenience
 			FROM dtb_payment WHERE module_id = ? " . $where;
 	$arrRet = $objQuery->getall($sql, $arrVal);
-		
+
 	return $arrRet;
 }
 
