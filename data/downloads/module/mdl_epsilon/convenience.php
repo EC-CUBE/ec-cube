@@ -74,6 +74,7 @@ switch($_POST["mode"]){
 	
 		if(count($arrErr) <= 0){
 			// 送信データ生成
+			$item_name = $arrMainProduct["name"] . "×" . $arrMainProduct["quantity"] . "個 (代表)";
 			$arrSendData = array(
 				'contract_code' => $arrPayment[0]["memo01"],						// 契約コード
 				'user_id' => $arrData["customer_id"],								// ユーザID
@@ -81,18 +82,16 @@ switch($_POST["mode"]){
 				'user_mail_add' => $arrData["order_email"],							// メールアドレス
 				'order_number' => $arrData["order_id"],								// オーダー番号
 				'item_code' => $arrMainProduct["product_code"],						// 商品コード(代表)
-				'item_name' => $arrMainProduct["name"] . "×" . $arrMainProduct["quantity"] . "個 (代表)",								// 商品名(代表)
+				'item_name' => $item_name,											// 商品名(代表)
 				'item_price' => $arrData["payment_total"],							// 商品価格(税込み総額)
 				'st_code' => $arrPayment[0]["memo04"],								// 決済区分
 				'mission_code' => '1',												// 課金区分(固定)
 				'process_code' => '1',												// 処理区分(固定)
 				'xml' => '1',														// 応答形式(固定)
-				
 				'conveni_code' => $_POST["convenience"],							// コンビニコード
 				'user_tel' => $_POST["order_tel01"].$_POST["order_tel02"].$_POST["order_tel03"],	// 電話番号
 				'user_name_kana' => $_POST["order_kana01"].$_POST["order_kana02"],					// 氏名(カナ)
 				'haraikomi_mail' => 0,												// 払込メール(送信しない)
-				
 				'memo1' => ECCUBE_PAYMENT . "_" . date("YmdHis"),					// 予備01
 				'memo2' => ''														// 予備02
 			);

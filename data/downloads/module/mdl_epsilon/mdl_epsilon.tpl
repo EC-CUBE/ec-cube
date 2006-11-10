@@ -157,6 +157,14 @@ function fnChangeDisabled(list, disable) {
 											</td>
 										</tr>
 										<tr class="fs12n">
+											<td width="90" bgcolor="#f3f3f3">利用クレジット</td>
+											<td width="337" bgcolor="#ffffff">
+											<!--{assign var=key value="credit"}-->
+											<span class="red12"><!--{$arrErr[$key]}--></span>
+											<!--{html_checkboxes_ex name="$key" options=$arrCredit selected=$arrForm[$key].value style=$arrErr[$key]|sfGetErrorColor}-->
+											</td>
+										</tr>
+										<tr class="fs12n">
 											<td width="90" bgcolor="#f3f3f3">利用コンビニ</td>
 											<td width="337" bgcolor="#ffffff">
 											<!--{assign var=key value="convenience"}-->

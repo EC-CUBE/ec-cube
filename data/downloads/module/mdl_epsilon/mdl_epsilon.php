@@ -83,8 +83,8 @@ case 'edit':
 			
 			// クレジットにチェックが入っていればクレジットを登録する
 			if($val == 1){
-				$visa = "1";
-				$jcb = "0";
+				(in_array(1, $_POST["credit"])) ? $visa = "1" : $visa = "0";
+				(in_array(2, $_POST["credit"])) ? $jcb = "1" : $jcb = "0";
 				$arrData = array(			
 					"payment_method" => "Epsilonクレジット"
 					,"fix" => 3
@@ -159,6 +159,7 @@ function lfInitParam($objFormParam) {
 	$objFormParam->addParam("契約コード", "code", INT_LEN, "KVa", array("EXIST_CHECK", "MAX_LENGTH_CHECK", "NUM_CHECK"));
 	$objFormParam->addParam("接続先URL", "url", URL_LEN, "KVa", array("EXIST_CHECK", "MAX_LENGTH_CHECK", "URL_CHECK"));
 	$objFormParam->addParam("利用決済", "payment", "", "", array("EXIST_CHECK"));
+	$objFormParam->addParam("利用クレジット", "credit");	
 	$objFormParam->addParam("利用コンビニ", "convenience");	
 	return $objFormParam;
 }
@@ -172,6 +173,10 @@ function lfCheckError(){
 	// 利用クレジット、利用コンビニのエラーチェック
 	$arrChkPay = $_POST["payment"];
 	foreach((array)$arrChkPay as $key => $val){
+		// 利用クレジット
+		if($val == 1 and count($_POST["credit"]) <= 0){
+			$arrErr["credit"] = "利用クレジットが選択されていません。<br />";
+		}
 		// 利用コンビニ
 		if($val == 2 and count($_POST["convenience"]) <= 0){
 			$arrErr["convenience"] = "利用コンビニが選択されていません。<br />";
@@ -229,7 +234,7 @@ function lfChkConnect(){
 			$arrRet["service"] = sfGetXMLValue($arrXML,'RESULT','ERR_DETAIL');
 			return $arrRet;
 	}
-	
+
 	// コンビニ指定があればコンビニ分ループし、チェックを行う
 	if(count($_POST["convenience"]) > 0){
 		foreach($_POST["convenience"] as $key => $val){
