@@ -117,7 +117,7 @@ function fnChangeDisabled(list, disable) {
 											<td colspan="3"><img src="<!--{$smarty.const.URL_DIR}-->img/contents/main_bar.jpg" width="440" height="10" alt=""></td>
 										</tr>
 									</table>
-									<table width="440" border="0" cellspacing="0" cellpadding="0" summary=" ">
+									<table width="440" border="0" cellspacing="1" cellpadding="8" summary=" ">
 										<tr class="fs12n">
 											<td width="" bgcolor="#f3f3f3">契約コード<span class="red">※</span></td>
 											<td width="337" bgcolor="#ffffff">
