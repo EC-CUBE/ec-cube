@@ -179,7 +179,7 @@ function fnChangeDisabled(list, disable) {
 									<table width="100%" border="0" cellspacing="0" cellpadding="0" summary=" ">
 										<tr>
 											<td bgcolor="#cccccc"><img src="<!--{$smarty.const.URL_DIR}-->img/common/_.gif" width="1" height="5" alt=""></td>
-											<td><img src="<!--{$smarty.const.URL_DIR}-->img/contents/tbl_top.gif" width="100%" height="7" alt=""></td>
+											<td><img src="<!--{$smarty.const.URL_DIR}-->img/contents/tbl_top.gif" width="438" height="7" alt=""></td>
 											<td bgcolor="#cccccc"><img src="<!--{$smarty.const.URL_DIR}-->img/common/_.gif" width="1" height="5" alt=""></td>
 										</tr>
 										<tr>
