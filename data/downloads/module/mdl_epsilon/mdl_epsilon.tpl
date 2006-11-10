@@ -97,10 +97,9 @@ function fnChangeDisabled(list, disable) {
 							<tr>
 								<td colspan="3"><img src="<!--{$smarty.const.URL_DIR}-->img/contents/main_top.jpg" width="470" height="14" alt=""></td>
 							</tr>
-							<tr width="430">
+							<tr>
 								<td background="<!--{$smarty.const.URL_DIR}-->img/contents/main_left.jpg"><img src="<!--{$smarty.const.URL_DIR}-->img/common/_.gif" width="14" height="1" alt=""></td>
-								<td bgcolor="#cccccc">
-									
+								<td bgcolor="#cccccc" width="440">
 									<table width="440" border="0" cellspacing="0" cellpadding="0" summary=" ">
 										<tr>
 											<td colspan="3"><img src="<!--{$smarty.const.URL_DIR}-->img/contents/contents_title_top.gif" width="440" height="7" alt=""></td>
