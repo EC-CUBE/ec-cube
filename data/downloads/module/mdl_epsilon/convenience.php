@@ -81,7 +81,7 @@ switch($_POST["mode"]){
 				'user_mail_add' => $arrData["order_email"],							// メールアドレス
 				'order_number' => $arrData["order_id"],								// オーダー番号
 				'item_code' => $arrMainProduct["product_code"],						// 商品コード(代表)
-				'item_name' => $arrMainProduct["name"] . "(" . $arrMainProduct["quien"] . ")個",								// 商品名(代表)
+				'item_name' => $arrMainProduct["name"] . "(" . $arrMainProduct["quantity"] . ")個",								// 商品名(代表)
 				'item_price' => $arrData["payment_total"],							// 商品価格(税込み総額)
 				'st_code' => $arrPayment[0]["memo04"],								// 決済区分
 				'mission_code' => '1',												// 課金区分(固定)
