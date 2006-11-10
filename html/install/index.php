@@ -780,6 +780,20 @@ function lfAddColumn($dsn) {
 	sfColumnExists("dtb_order_temp", "memo09", "text", $dsn, true);
 	sfColumnExists("dtb_order_temp", "memo10", "text", $dsn, true);
 
+	// 支払情報テーブル
+	sfColumnExists("dtb_payment", "module_id", "text", $dsn, true);	
+	sfColumnExists("dtb_payment", "module_path", "text", $dsn, true);
+	sfColumnExists("dtb_payment", "memo01", "text", $dsn, true);	
+	sfColumnExists("dtb_payment", "memo02", "text", $dsn, true);
+	sfColumnExists("dtb_payment", "memo03", "text", $dsn, true);
+	sfColumnExists("dtb_payment", "memo04", "text", $dsn, true);
+	sfColumnExists("dtb_payment", "memo05", "text", $dsn, true);
+	sfColumnExists("dtb_payment", "memo06", "text", $dsn, true);
+	sfColumnExists("dtb_payment", "memo07", "text", $dsn, true);
+	sfColumnExists("dtb_payment", "memo08", "text", $dsn, true);
+	sfColumnExists("dtb_payment", "memo09", "text", $dsn, true);
+	sfColumnExists("dtb_payment", "memo10", "text", $dsn, true);
+
 	return $arrErr;
 }
 
