@@ -755,8 +755,9 @@ function lfDropTable($table_name, $dsn) {
 // カラムの追加（既にカラムが存在する場合は作成しない）
 function lfAddColumn($dsn) {
 	$arrErr = array();
-	
-	sfColumnExists("dtb_order", "memo01", "text", $dsn, true);
+
+	// 受注テーブル	
+	sfColumnExists("dtb_order", "memo01", "text", $dsn, true);	
 	sfColumnExists("dtb_order", "memo02", "text", $dsn, true);
 	sfColumnExists("dtb_order", "memo03", "text", $dsn, true);
 	sfColumnExists("dtb_order", "memo04", "text", $dsn, true);
@@ -766,7 +767,19 @@ function lfAddColumn($dsn) {
 	sfColumnExists("dtb_order", "memo08", "text", $dsn, true);
 	sfColumnExists("dtb_order", "memo09", "text", $dsn, true);
 	sfColumnExists("dtb_order", "memo10", "text", $dsn, true);
-	
+
+	// 受注一時テーブル	
+	sfColumnExists("dtb_order_temp", "memo01", "text", $dsn, true);	
+	sfColumnExists("dtb_order_temp", "memo02", "text", $dsn, true);
+	sfColumnExists("dtb_order_temp", "memo03", "text", $dsn, true);
+	sfColumnExists("dtb_order_temp", "memo04", "text", $dsn, true);
+	sfColumnExists("dtb_order_temp", "memo05", "text", $dsn, true);
+	sfColumnExists("dtb_order_temp", "memo06", "text", $dsn, true);
+	sfColumnExists("dtb_order_temp", "memo07", "text", $dsn, true);
+	sfColumnExists("dtb_order_temp", "memo08", "text", $dsn, true);
+	sfColumnExists("dtb_order_temp", "memo09", "text", $dsn, true);
+	sfColumnExists("dtb_order_temp", "memo10", "text", $dsn, true);
+
 	return $arrErr;
 }
 
