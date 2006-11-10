@@ -101,7 +101,7 @@ function fnChangeDisabled(list, disable) {
 								<td background="<!--{$smarty.const.URL_DIR}-->img/contents/main_left.jpg"><img src="<!--{$smarty.const.URL_DIR}-->img/common/_.gif" width="14" height="1" alt=""></td>
 								<td bgcolor="#cccccc">
 									
-									<table width="440" border="0" cellspacing="0" cellpadding="0" summary=" ">
+									<table width="450" border="0" cellspacing="0" cellpadding="0" summary=" ">
 										<tr>
 											<td colspan="3"><img src="<!--{$smarty.const.URL_DIR}-->img/contents/contents_title_top.gif" width="440" height="7" alt=""></td>
 										</tr>
@@ -125,11 +125,11 @@ function fnChangeDisabled(list, disable) {
 											</td>
 										</tr>
 									</table>
-									<table width="440" border="0" cellspacing="0" cellpadding="0" summary=" ">
+									<table width="450" border="0" cellspacing="0" cellpadding="0" summary=" ">
 										<tr><td><img src="<!--{$smarty.const.URL_DIR}-->img/contents/main_bar.jpg" width="440" height="10" alt=""></td></tr>
 									</table>
 									
-									<table width="440" border="0" cellspacing="1" cellpadding="8" summary=" ">
+									<table width="450" border="0" cellspacing="1" cellpadding="8" summary=" ">
 										<tr class="fs12n">
 											<td width="" bgcolor="#f3f3f3">∑¿ÃÛ•≥°º•…<span class="red">¢®</span></td>
 											<td width="337" bgcolor="#ffffff">
