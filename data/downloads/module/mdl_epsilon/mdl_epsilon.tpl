@@ -127,7 +127,9 @@ function fnChangeDisabled(list, disable) {
 											<input type="text" name="<!--{$key}-->" style="ime-mode:disabled; <!--{$arrErr[$key]|sfGetErrorColor}-->" value="<!--{$arrForm[$key].value}-->" class="box10" maxlength="<!--{$smarty.const.INT_LEN}-->">
 											</td>
 										</tr>
-										<tr><td height="30"></td></tr>
+										<tr>
+											<td colspan="3"><img src="<!--{$smarty.const.URL_DIR}-->img/contents/main_bar.jpg" width="440" height="10" alt=""></td>
+										</tr>
 									</table>
 									
 									<table width="440" border="0" cellspacing="1" cellpadding="8" summary=" ">
