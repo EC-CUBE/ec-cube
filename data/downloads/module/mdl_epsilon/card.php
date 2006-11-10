@@ -74,6 +74,8 @@ lfSendCredit($arrData, $arrPayment, $arrMainProduct);
 
 // データ送信処理
 function lfSendCredit($arrData, $arrPayment, $arrMainProduct){
+	global $objSiteSess;
+	
 	// データ送信先CGI
 	$order_url = $arrPayment[0]["memo02"];
 	
@@ -103,9 +105,6 @@ function lfSendCredit($arrData, $arrPayment, $arrMainProduct){
 	
 	if($err_code != "") {
 		$err_detail = sfGetXMLValue($arrXML,'RESULT','ERR_DETAIL');
-		sfprintr($err_code . ":" . $err_detail);
-			sfprintr($arrData);
-			sfprintr($arrPayment[0]);
 		if($err_code == "909"){
 			$arrPayment[0]["memo04"] = "10000-0000-00000";
 			lfSendCredit($arrData, $arrPayment, $arrMainProduct);
