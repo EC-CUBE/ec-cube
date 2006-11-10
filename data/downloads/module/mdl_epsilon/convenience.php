@@ -81,7 +81,7 @@ switch($_POST["mode"]){
 				'user_mail_add' => $arrData["order_email"],							// ¥á¡¼¥ë¥¢¥É¥ì¥¹
 				'order_number' => $arrData["order_id"],								// ¥ª¡¼¥À¡¼ÈÖ¹æ
 				'item_code' => $arrMainProduct["product_code"],						// ¾¦ÉÊ¥³¡¼¥É(ÂåÉ½)
-				'item_name' => $arrMainProduct["name"] . "(" . $arrMainProduct["quantity"] . ")¸Ä",								// ¾¦ÉÊÌ¾(ÂåÉ½)
+				'item_name' => $arrMainProduct["name"] . "(" . $arrMainProduct["quantity"] . "¸Ä)",								// ¾¦ÉÊÌ¾(ÂåÉ½)
 				'item_price' => $arrData["payment_total"],							// ¾¦ÉÊ²Á³Ê(ÀÇ¹þ¤ßÁí³Û)
 				'st_code' => $arrPayment[0]["memo04"],								// ·èºÑ¶èÊ¬
 				'mission_code' => '1',												// ²Ý¶â¶èÊ¬(¸ÇÄê)
@@ -96,9 +96,6 @@ switch($_POST["mode"]){
 				'memo1' => ECCUBE_PAYMENT . "_" . date("YmdHis"),					// Í½È÷01
 				'memo2' => ''														// Í½È÷02
 			);
-			
-			sfprintr($arrMainProduct);
-			exit();
 			
 			// ¥Ç¡¼¥¿Á÷¿®
 			$arrXML = sfPostPaymentData($order_url, $arrSendData);
