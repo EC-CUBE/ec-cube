@@ -96,10 +96,10 @@ function fnChangeDisabled(list, disable) {
 							<tr><td height="14"></td></tr>
 							<tr>
 								<td background="<!--{$smarty.const.URL_DIR}-->img/contents/main_left.jpg"><img src="<!--{$smarty.const.URL_DIR}-->img/common/_.gif" width="14" height="1" alt=""></td>
-								<td bgcolor="#cccccc" = 100%>
+								<td bgcolor="#cccccc">
 									
 
-									<table width="440" border="0" cellspacing="1" cellpadding="8" summary=" ">
+									<table width="100%" border="0" cellspacing="1" cellpadding="8" summary=" ">
 										<tr class="fs12n">
 											<td bgcolor="#ffffff">
 												イプシロン決済モジュールをご利用頂く為には、ユーザ様ご自身で
