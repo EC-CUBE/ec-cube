@@ -73,7 +73,7 @@ lfSendCredit($arrData, $arrPayment, $arrMainProduct);
 //---------------------------------------------------------------------------------------------------------------------------------------------------------
 
 // データ送信処理
-function lfSendCredit($arrData, $arrPayment, $arrMainProduct){
+function lfSendCredit($arrData, $arrPayment, $arrMainProduct, $again = true){
 	global $objSiteSess;
 	
 	// データ送信先CGI
@@ -105,9 +105,11 @@ function lfSendCredit($arrData, $arrPayment, $arrMainProduct){
 	
 	if($err_code != "") {
 		$err_detail = sfGetXMLValue($arrXML,'RESULT','ERR_DETAIL');
-		if($err_code == "909"){
+		
+		// 決済区分エラーの場合には VISA,MASTER のみで再送信を試みる
+		if($err_code == "909" and $again){
 			$arrPayment[0]["memo04"] = "10000-0000-00000";
-			lfSendCredit($arrData, $arrPayment, $arrMainProduct);
+			lfSendCredit($arrData, $arrPayment, $arrMainProduct, false);
 		}
 		sfDispSiteError(FREE_ERROR_MSG, "", true, "購入処理中に以下のエラーが発生しました。<br /><br /><br />・" . $err_detail . "<br /><br /><br />この手続きは無効となりました。");
 	} else {
