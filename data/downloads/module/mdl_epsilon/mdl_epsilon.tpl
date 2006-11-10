@@ -125,7 +125,7 @@ function fnChangeDisabled(list, disable) {
 												イプシロン株式会社様とご契約を行っていただく必要があります。 <br/>
 												お申し込みにつきましては、下記のページの左上にある<br/>
 												< お問合せ・お申込はこちら > から、お申し込みを行って下さい。<br/><br/>
-												<a href="" onClick="win01('http://www.rapidsite.jp/product/support/shop/epsilon.html')" > ＞＞ イプシロン決済システムについて</a>
+												<a href="#" onClick="win01('http://www.rapidsite.jp/product/support/shop/epsilon.html'); return false;" > ＞＞ イプシロン決済システムについて</a>
 											</td>
 										</tr>
 									</table>
