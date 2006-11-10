@@ -749,4 +749,23 @@ function lfDropTable($table_name, $dsn) {
 	return $arrErr;
 }
 
+// カラムの追加（既にカラムが存在する場合は作成しない）
+function lfAddColumn($dsn) {
+	$arrErr = array();
+	
+	sfColumnExists("memo01", "dtb_order", "text", $dsn, true);
+	sfColumnExists("memo02", "dtb_order", "text", $dsn, true);
+	sfColumnExists("memo03", "dtb_order", "text", $dsn, true);
+	sfColumnExists("memo04", "dtb_order", "text", $dsn, true);
+	sfColumnExists("memo05", "dtb_order", "text", $dsn, true);
+	sfColumnExists("memo06", "dtb_order", "text", $dsn, true);
+	sfColumnExists("memo07", "dtb_order", "text", $dsn, true);
+	sfColumnExists("memo08", "dtb_order", "text", $dsn, true);
+	sfColumnExists("memo09", "dtb_order", "text", $dsn, true);
+	sfColumnExists("memo10", "dtb_order", "text", $dsn, true);
+	
+	return $arrErr;
+}
+
+
 ?>
