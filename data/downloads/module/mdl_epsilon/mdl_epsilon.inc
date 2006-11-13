@@ -88,7 +88,8 @@ function sfPostPaymentData($order_url, $arrData, $err_page = true){
 	
 	// POSTデータを送信し、応答情報を取得する
 	$response = sfSendPostData($order_url, $arrData, array(200));
-	
+		sfprintr($response);
+
 	// なにも返ってこなれば、エラー
 	if ($response == "") {
 		if ($err_page) {
@@ -103,18 +104,20 @@ function sfPostPaymentData($order_url, $arrData, $err_page = true){
 
 	// XMLパーサを生成する。
 	$parser = xml_parser_create();
+
+	sfprintr(xml_error_string(xml_get_error_code($parser)));
 	
 	// 空白文字は読み飛ばしてXMLを読み取る
 	xml_parser_set_option($parser,XML_OPTION_SKIP_WHITE,1);
+	
+	sfprintr(xml_error_string(xml_get_error_code($parser)));
 	
 	// 配列にXMLのデータを格納する
 	$err = xml_parse_into_struct($parser,$response,$arrVal,$idx);
 
 	sfprintr(xml_error_string(xml_get_error_code($parser)));
-	sfprintr($response);
-	sfprintr($err);
 	exit();
-
+	
 	// 開放する
 	xml_parser_free($parser);
 	
