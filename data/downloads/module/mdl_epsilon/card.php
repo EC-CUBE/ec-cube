@@ -30,6 +30,10 @@ $arrInfo = $objSiteInfo->data;
 // ユーザユニークIDの取得と購入状態の正当性をチェック
 $uniqid = sfCheckNormalAccess($objSiteSess, $objCartSess);
 
+sfprintr($_SESSION);
+exit();
+
+
 // カート集計処理
 $objPage = sfTotalCart($objPage, $objCartSess, $arrInfo);
 
@@ -67,6 +71,7 @@ if($_GET["result"] == "1"){
 	header("Location: " .  URL_SHOP_COMPLETE);
 }
 
+
 // データ送信
 lfSendCredit($arrData, $arrPayment, $arrMainProduct);
 
@@ -99,9 +104,6 @@ function lfSendCredit($arrData, $arrPayment, $arrMainProduct, $again = true){
 	
 	// データ送信
 	$arrXML = sfPostPaymentData($order_url, $arrSendData);
-	
-	sfprintr($arrSendData);
-	exit();
 	
 	// エラーがあるかチェックする
 	$err_code = sfGetXMLValue($arrXML,'RESULT','ERR_CODE');
