@@ -106,14 +106,14 @@ function sfPostPaymentData($order_url, $arrData, $err_page = true){
 	// 空白文字は読み飛ばしてXMLを読み取る
 	xml_parser_set_option($parser,XML_OPTION_SKIP_WHITE,1);
 	
+	sfprintr($parser);
+	exit();
+	
 	// 配列にXMLのデータを格納する
 	xml_parse_into_struct($parser,$response,$arrVal,$idx);
 	
 	// 開放する
 	xml_parser_free($parser);
-	
-	sfprintr($parser);
-	exit();
 	
 	return $arrVal;
 }
