@@ -88,8 +88,7 @@ function sfPostPaymentData($order_url, $arrData, $err_page = true){
 	
 	// POSTデータを送信し、応答情報を取得する
 	$response = sfSendPostData($order_url, $arrData, array(200));
-		sfprintr($response);
-
+	
 	// なにも返ってこなれば、エラー
 	if ($response == "") {
 		if ($err_page) {
@@ -101,13 +100,20 @@ function sfPostPaymentData($order_url, $arrData, $err_page = true){
 		}
 	}
 	
+sfprintr(mb_detect_encoding($response));
+
+	$response = mb_convert_encoding($response, mb_detect_encoding($response), "UTF-8");
 	// XMLパーサを生成する。
-//	$parser = xml_parser_create("Shift_JIS");
-	$parser = xml_parser_create_ns('utf-8');
+	$parser = xml_parser_create('utf-8');
+//	$parser = xml_parser_create_ns('utf-8');
 	
+
+    xml_parser_set_option($parser,XML_OPTION_CASE_FOLDING,0);
+
 	// 空白文字は読み飛ばしてXMLを読み取る
 	xml_parser_set_option($parser,XML_OPTION_SKIP_WHITE,1);
 	
+	sfprintr('utf-8');
 	sfprintr(xml_error_string(xml_get_error_code($parser)));
 	
 	// 配列にXMLのデータを格納する
