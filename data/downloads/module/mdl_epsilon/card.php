@@ -27,12 +27,12 @@ $objView = new SC_SiteView();
 $objSiteInfo = $objView->objSiteInfo;
 $arrInfo = $objSiteInfo->data;
 
+// ユーザユニークIDの取得と購入状態の正当性をチェック
+$uniqid = sfCheckNormalAccess($objSiteSess, $objCartSess);
+
 sfprintr($_SESSION["site"]);
 exit();
 
-
-// ユーザユニークIDの取得と購入状態の正当性をチェック
-$uniqid = sfCheckNormalAccess($objSiteSess, $objCartSess);
 
 // カート集計処理
 $objPage = sfTotalCart($objPage, $objCartSess, $arrInfo);
