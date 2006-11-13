@@ -110,6 +110,7 @@ function sfPostPaymentData($order_url, $arrData, $err_page = true){
 	$err = xml_parse_into_struct($parser,$response,$arrVal,$idx);
 	
 	sfprintr($err);
+	exit();
 	
 	// ³«Êü¤¹¤ë
 	xml_parser_free($parser);
