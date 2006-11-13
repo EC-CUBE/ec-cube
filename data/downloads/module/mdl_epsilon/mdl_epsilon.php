@@ -184,12 +184,12 @@ function lfCheckError(){
 	}
 	
 		
-	sfprintr(ereg( "^https?://", $_POST["url"] ));
+	sfprintr(ereg( "^https://", $_POST["url"] ));
 	$arrErr["test"] = "test";
 
 	
 	// ssl対応判定
-	if(!extension_loaded('openssl') and !ereg( "^https://", $_POST["url"] )){
+	if(!extension_loaded('openssl') and !ereg( "^https?://", $_POST["url"] )){
 		$arrErr["url"] = "このサーバーはSSLに対応していません。<br>httpで接続してください。";
 	}
 
