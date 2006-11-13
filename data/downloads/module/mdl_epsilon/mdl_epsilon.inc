@@ -100,9 +100,6 @@ function sfPostPaymentData($order_url, $arrData, $err_page = true){
 		}
 	}
 	
-	sfprintr($response);
-	exit();
-	
 	// XMLパーサを生成する。
 	$parser = xml_parser_create();
 	
@@ -114,6 +111,9 @@ function sfPostPaymentData($order_url, $arrData, $err_page = true){
 	
 	// 開放する
 	xml_parser_free($parser);
+	
+	sfprintr($arrVal);
+	exit();
 	
 	return $arrVal;
 }
