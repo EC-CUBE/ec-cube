@@ -103,7 +103,7 @@ function sfPostPaymentData($order_url, $arrData, $err_page = true){
 	
 
 	// XMLパーサを生成する。
-	$parser = xml_parser_create("SHIFT-JIS");
+	$parser = xml_parser_create("EUC");
 	
 	// 空白文字は読み飛ばしてXMLを読み取る
 	xml_parser_set_option($parser,XML_OPTION_SKIP_WHITE,1);
