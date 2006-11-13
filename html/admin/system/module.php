@@ -144,7 +144,7 @@ function lfLoadUpdateList() {
 			
 			// エスケープ処理の置換
 			foreach($arrCSV as $key => $val){
-				$arrCSV[$key] = ereg_replace('\"', '"', $val);
+				$arrCSV[$key] = str_replace('\"', '"', $val);
 			}
 			
 			if(ereg("^#", $arrCSV[0])) {
