@@ -100,11 +100,6 @@ function lfSendCredit($arrData, $arrPayment, $arrMainProduct, $again = true){
 	// データ送信
 	$arrXML = sfPostPaymentData($order_url, $arrSendData);
 	
-	sfprintr($order_url);
-	sfprintr($arrXML);
-	exit();
-
-	
 	// エラーがあるかチェックする
 	$err_code = sfGetXMLValue($arrXML,'RESULT','ERR_CODE');
 	
