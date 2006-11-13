@@ -100,6 +100,7 @@ function sfPostPaymentData($order_url, $arrData, $err_page = true){
 		}
 	}
 	
+
 	// XMLパーサを生成する。
 	$parser = xml_parser_create();
 	
@@ -109,7 +110,28 @@ function sfPostPaymentData($order_url, $arrData, $err_page = true){
 	// 配列にXMLのデータを格納する
 	$err = xml_parse_into_struct($parser,$response,$arrVal,$idx);
 	
-	
+sfprintr(XML_ERROR_NONE );
+sfprintr(XML_ERROR_NO_MEMORY );
+sfprintr(XML_ERROR_SYNTAX );
+sfprintr(XML_ERROR_NO_ELEMENTS );
+sfprintr(XML_ERROR_INVALID_TOKEN );
+sfprintr(XML_ERROR_UNCLOSED_TOKEN );
+sfprintr(XML_ERROR_PARTIAL_CHAR );
+sfprintr(XML_ERROR_TAG_MISMATCH );
+sfprintr(XML_ERROR_DUPLICATE_ATTRIBUTE );
+sfprintr(XML_ERROR_JUNK_AFTER_DOC_ELEMENT );
+sfprintr(XML_ERROR_PARAM_ENTITY_REF );
+sfprintr(XML_ERROR_UNDEFINED_ENTITY );
+sfprintr(XML_ERROR_RECURSIVE_ENTITY_REF );
+sfprintr(XML_ERROR_ASYNC_ENTITY );
+sfprintr(XML_ERROR_BAD_CHAR_REF );
+sfprintr(XML_ERROR_BINARY_ENTITY_REF );
+sfprintr(XML_ERROR_ATTRIBUTE_EXTERNAL_ENTITY_REF );
+sfprintr(XML_ERROR_MISPLACED_XML_PI );
+sfprintr(XML_ERROR_UNKNOWN_ENCODING );
+sfprintr(XML_ERROR_INCORRECT_ENCODING );
+sfprintr(XML_ERROR_UNCLOSED_CDATA_SECTION );
+sfprintr(XML_ERROR_EXTERNAL_ENTITY_HANDLING );
 	sfprintr(xml_get_error_code($parser));
 	sfprintr($err);
 	exit();
