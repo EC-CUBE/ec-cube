@@ -135,6 +135,9 @@ function lfLoadUpdateList() {
 	if(!$fp) {
 		sfErrorHeader(">> " . $path . "の取得に失敗しました。");
 	} else {
+		
+		$objQuery->query("DELETE FROM dtb_module");
+		
 		while (!feof($fp)) {
 			$arrCSV = fgetcsv($fp, UPDATE_CSV_LINE_MAX);
 			
