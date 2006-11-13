@@ -112,7 +112,7 @@ function sfPostPaymentData($order_url, $arrData, $err_page = true){
 	// ³«Êü¤¹¤ë
 	xml_parser_free($parser);
 	
-	sfprintr(sfGetXMLValue($arrVal,'RESULT','ERR_DETAIL'););
+	sfprintr(sfGetXMLValue($arrVal,'RESULT','ERR_DETAIL'));
 	
 	return $arrVal;
 }
