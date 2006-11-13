@@ -671,11 +671,11 @@ class HTTP_Request {
         } else {
             $this->_notify('connect');
             $this->_sock =& new Net_Socket();
+					sfprintr($this->_sock);
+
             $err = $this->_sock->connect($host, $port, null, $this->_timeout, $this->_socketOptions);
         }
         PEAR::isError($err) or $err = $this->_sock->write($this->_buildRequest());
-		sfprintr($err);
-		sfprintr($this->_sock);
 
         if (!PEAR::isError($err)) {
             if (!empty($this->_readTimeout)) {
