@@ -682,6 +682,7 @@ class HTTP_Request {
 
             // Read the response
             $this->_response = &new HTTP_Response($this->_sock, $this->_listeners);
+			sfprintr($this->_response);
             $err = $this->_response->process(
                 $this->_saveBody && $saveBody,
                 HTTP_REQUEST_METHOD_HEAD != $this->_method
@@ -1117,7 +1118,6 @@ class HTTP_Response
     {
         do {
             $line = $this->_sock->readLine();
-			sfprintr($line);
             if (sscanf($line, 'HTTP/%s %s', $http_version, $returncode) != 2) {
                 return PEAR::raiseError('Malformed response.');
             } else {
