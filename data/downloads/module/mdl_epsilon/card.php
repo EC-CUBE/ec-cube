@@ -68,7 +68,7 @@ if($_GET["result"] == "1"){
 }
 
 sfprintr($arrData);
-
+exit();
 
 // データ送信
 lfSendCredit($arrData, $arrPayment, $arrMainProduct);
