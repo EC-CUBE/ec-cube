@@ -192,7 +192,7 @@ function lfLoadUpdateList() {
 			$del_sql = "DELETE FROM dtb_module WHERE module_id NOT IN (?";
 			
 			for($i = 1; $i < count($arrInsID); $i++){
-				$del_sql = "?,";
+				$del_sql = ",?";
 			}
 			$del_sql = ")";
 			
