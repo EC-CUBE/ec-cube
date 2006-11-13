@@ -100,6 +100,8 @@ function sfPostPaymentData($order_url, $arrData, $err_page = true){
 		}
 	}
 	
+	sfprintr(ereg( "^https?://", $_POST["url"] ));
+	
 	// XMLパーサを生成する。
 	$parser = xml_parser_create();
 	
