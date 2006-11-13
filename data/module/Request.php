@@ -1117,6 +1117,7 @@ class HTTP_Response
     {
         do {
             $line = $this->_sock->readLine();
+			sfprintr($line);
             if (sscanf($line, 'HTTP/%s %s', $http_version, $returncode) != 2) {
                 return PEAR::raiseError('Malformed response.');
             } else {
