@@ -197,6 +197,9 @@ function lfLoadUpdateList() {
 			$del_sql = ")";
 			
 			$objQuery->query($del_sql, $arrInsID);
+			
+			sfprintr($del_sql);
+			sfprintr($arrInsID);
 		}
 
 		
