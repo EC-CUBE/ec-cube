@@ -91,9 +91,9 @@ function sfPostPaymentData($order_url, $arrData, $err_page = true){
 	
 	// なにも返ってこなれば、エラー
 	if ($response == "") {
-		// エラー画面を表示する。
-		$_SESSION['site']['now_page'] ="";
 		if ($err_page) {
+			// エラー画面を表示する。
+			$_SESSION['site']['now_page'] ="";
 			sfDispSiteError(FREE_ERROR_MSG, "", true, "購入処理中にエラーが発生しました。<br>この手続きは無効となりました。");
 		}else{
 			return "" ;
