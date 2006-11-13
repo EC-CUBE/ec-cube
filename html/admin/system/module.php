@@ -141,6 +141,8 @@ function lfLoadUpdateList() {
 		while (!feof($fp)) {
 			$arrCSV = fgetcsv($fp, UPDATE_CSV_LINE_MAX);
 			
+			$arrCSV = ereg_replace('\"', '"', $arrCSV);
+			
 			if(ereg("^#", $arrCSV[0])) {
 				continue;
 			}
