@@ -136,16 +136,16 @@ function lfLoadUpdateList() {
 		sfErrorHeader(">> " . $path . "の取得に失敗しました。");
 	} else {
 		
+		// データ削除
 		$objQuery->query("DELETE FROM dtb_module");
 		
 		while (!feof($fp)) {
 			$arrCSV = fgetcsv($fp, UPDATE_CSV_LINE_MAX);
 			
+			// エスケープ処理の置換
 			foreach($arrCSV as $key => $val){
 				$arrCSV[$key] = ereg_replace('\"', '"', $val);
-				sfprintr(str_replace('\"', '"', $val));
 			}
-			
 			
 			if(ereg("^#", $arrCSV[0])) {
 				continue;
