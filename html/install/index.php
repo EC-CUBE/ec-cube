@@ -767,6 +767,7 @@ function lfAddColumn($dsn) {
 	sfColumnExists("dtb_order", "memo10", "text", $dsn, true);
 
 	// 受注一時テーブル	
+	sfColumnExists("dtb_order_temp", "order_id", "text", $dsn, true);	
 	sfColumnExists("dtb_order_temp", "memo01", "text", $dsn, true);	
 	sfColumnExists("dtb_order_temp", "memo02", "text", $dsn, true);
 	sfColumnExists("dtb_order_temp", "memo03", "text", $dsn, true);
