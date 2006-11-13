@@ -6,7 +6,7 @@ require_once(DATA_PATH . "module/Request.php");
 $order_url = "https://beta.epsilon.jp/cgi-bin/order/receive_order3.cgi";
 
 $arrData = array(
-	'order_number' => '93963928111111111112',
+	'order_number' => '93963928111111111113',
 	'st_code' => '00100-0000-00000',
 	'memo1' => '試験用オーダー情報',
 	'user_mail_add' => 'naka@lockon.co.jp',
