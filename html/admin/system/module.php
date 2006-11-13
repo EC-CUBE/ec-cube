@@ -131,13 +131,12 @@ function lfLoadUpdateList() {
 	$objQuery = new SC_Query();
 	$path = UPDATE_HTTP . "module.txt";
 	$fp = @fopen($path, "rb");
+	
+	$arrInsID = array();
 		
 	if(!$fp) {
 		sfErrorHeader(">> " . $path . "の取得に失敗しました。");
 	} else {
-		
-		// データ削除
-		// $objQuery->query("DELETE FROM dtb_module");
 		
 		while (!feof($fp)) {
 			$arrCSV = fgetcsv($fp, UPDATE_CSV_LINE_MAX);
@@ -153,6 +152,9 @@ function lfLoadUpdateList() {
 			
 			// カラム数が正常であった場合のみ
 			if(count($arrCSV) == MODULE_CSV_COL_MAX) {
+					// insertするmodule_idを配列に格納
+					$arrInsID[] = $arrCSV[0];
+				
 					// 取得したアップデート情報をDBに書き込む
 					$sqlval['module_id'] = $arrCSV[0];
 					$sqlval['module_name'] = $arrCSV[1];
@@ -184,6 +186,20 @@ function lfLoadUpdateList() {
 				sfErrorHeader(">> カラム数が一致しません。：".count($arrCSV));
 			}
 		}
+		
+		// 不要なデータを削除
+		if(count($arrInsID) > 0){
+			$del_sql = "DELETE FROM dtb_module WHERE module_id NOT IN (?";
+			
+			for($i = 1; $i < count($arrInsID); $i++){
+				$del_sql = "?,";
+			}
+			$del_sql = ")";
+			
+			$objQuery->query($del_sql, $arrInsID);
+		}
+
+		
 		fclose($fp);
 	}
 }
