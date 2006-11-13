@@ -34,7 +34,6 @@ class LC_Page {
 		 private-no-expire:クライアントのキャッシュを許可する。
 		*/
 		session_cache_limiter('private-no-expire');		
-
 	}
 }
 
@@ -125,15 +124,14 @@ if ($_POST['mode'] == "search" || $_POST['mode'] == "csv"  || $_POST['mode'] == 
 	// 入力エラーなし
 	if (count($objPage->arrErr) == 0) {
 
+		$arrval = array();
 		foreach ($objPage->arrForm as $key => $val) {
-				
 			$val = sfManualEscape($val);
 			
 			if($val == "") {
 				continue;
 			}
 			
-			$arrval = array();
 			switch ($key) {
 				case 'search_product_id':	// 商品ID
 					$where .= " AND product_id = ?";
