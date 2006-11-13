@@ -671,7 +671,6 @@ class HTTP_Request {
         } else {
             $this->_notify('connect');
             $this->_sock =& new Net_Socket();
-					sfprintr($this->_sock);
 
             $err = $this->_sock->connect($host, $port, null, $this->_timeout, $this->_socketOptions);
         }
