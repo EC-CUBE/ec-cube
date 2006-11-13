@@ -109,6 +109,8 @@ function sfPostPaymentData($order_url, $arrData, $err_page = true){
 	// 配列にXMLのデータを格納する
 	$err = xml_parse_into_struct($parser,$response,$arrVal,$idx);
 	
+	
+	sfprintr(xml_get_error_code($parser));
 	sfprintr($err);
 	exit();
 	
