@@ -185,6 +185,7 @@ function lfCheckError(){
 	
 		
 	sfprintr(ereg( "^https?://", $_POST["url"] ));
+	$arrErr["test"] = "test";
 
 	
 	// sslÂĞ±şÈ½Äê
