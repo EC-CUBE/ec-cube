@@ -30,10 +30,6 @@ $arrInfo = $objSiteInfo->data;
 // ユーザユニークIDの取得と購入状態の正当性をチェック
 $uniqid = sfCheckNormalAccess($objSiteSess, $objCartSess);
 
-sfprintr($_SESSION["site"]);
-exit();
-
-
 // カート集計処理
 $objPage = sfTotalCart($objPage, $objCartSess, $arrInfo);
 
@@ -70,6 +66,9 @@ if($_GET["result"] == "1"){
 	// 完了画面へ
 	header("Location: " .  URL_SHOP_COMPLETE);
 }
+
+sfprintr($_SESSION["site"]);
+exit();
 
 // データ送信
 lfSendCredit($arrData, $arrPayment, $arrMainProduct);
