@@ -3,7 +3,7 @@
 require_once("../../require.php");
 require_once(DATA_PATH . "module/Request.php");
 
-$order_url = "http://beta.epsilon.jp/cgi-bin/order/receive_order3.cgi";
+$order_url = "https://beta.epsilon.jp/cgi-bin/order/receive_order3.cgi";
 
 $arrData = array(
 	'order_number' => '93963928111111111111',
