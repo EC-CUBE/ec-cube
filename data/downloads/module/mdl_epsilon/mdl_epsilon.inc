@@ -102,7 +102,8 @@ function sfPostPaymentData($order_url, $arrData, $err_page = true){
 	}
 	
 	// XMLパーサを生成する。
-	$parser = xml_parser_create("UTF-8");
+//	$parser = xml_parser_create("Shift_JIS");
+	$parser = xml_parser_create_ns();
 	
 	// 空白文字は読み飛ばしてXMLを読み取る
 	xml_parser_set_option($parser,XML_OPTION_SKIP_WHITE,1);
