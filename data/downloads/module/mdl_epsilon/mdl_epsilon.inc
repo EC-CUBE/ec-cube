@@ -132,7 +132,7 @@ sfprintr(XML_ERROR_UNKNOWN_ENCODING );
 sfprintr(XML_ERROR_INCORRECT_ENCODING );
 sfprintr(XML_ERROR_UNCLOSED_CDATA_SECTION );
 sfprintr(XML_ERROR_EXTERNAL_ENTITY_HANDLING );
-	sfprintr(xml_get_error_code($parser));
+	sfprintr(xml_error_string(xml_get_error_code($parser)));
 	sfprintr($err);
 	exit();
 	
