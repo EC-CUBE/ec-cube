@@ -183,6 +183,12 @@ function lfCheckError(){
 		}
 	}
 	
+	// ssl対応判定
+	if(!extension_loaded('openssl')){
+		$arrErr["url"] = "このサーバーはSSLに対応していません。httpで接続してください。";
+	}
+
+	
 	// 接続チェックを行う
 	if(count($arrErr) == 0) $arrErr = lfChkConnect();
 

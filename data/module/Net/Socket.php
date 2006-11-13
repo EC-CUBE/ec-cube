@@ -448,24 +448,13 @@ class Net_Socket extends PEAR {
         $line = '';
         $timeout = time() + $this->timeout;
 		
-		
-		$fp = $this->fp;
-        while (($c =@fgets($fp, $this->lineLength))!==false && (!$this->timeout || time() < $timeout)) {
-            $line .= $c;
-            if (substr($line, -1) == "\n") {
-				
-                return rtrim($line, "\r\n");
-            }
-        }
-		
-		/*
         while (!feof($this->fp) && (!$this->timeout || time() < $timeout)) {
             $line .= @fgets($this->fp, $this->lineLength);
             if (substr($line, -1) == "\n") {
                 return rtrim($line, "\r\n");
             }
         }
-        */
+
         return $line;
     }
 	
