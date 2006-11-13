@@ -145,6 +145,8 @@ function lfLoadUpdateList() {
 				$arrCSV[$key] = ereg_replace('\"', '"', $val);
 			}
 			
+			sfprintr($arrCSV);
+			
 			if(ereg("^#", $arrCSV[0])) {
 				continue;
 			}
