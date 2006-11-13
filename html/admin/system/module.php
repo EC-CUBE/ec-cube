@@ -137,7 +137,7 @@ function lfLoadUpdateList() {
 	} else {
 		
 		// データ削除
-		//$objQuery->query("DELETE FROM dtb_module");
+		$objQuery->query("DELETE FROM dtb_module");
 		
 		while (!feof($fp)) {
 			$arrCSV = fgetcsv($fp, UPDATE_CSV_LINE_MAX);
