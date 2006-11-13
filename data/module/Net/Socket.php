@@ -105,7 +105,6 @@ class Net_Socket extends PEAR {
             $this->fp = null;
         }
 
-		sfprintr($addr);
         if (!$addr) {
             return $this->raiseError('$addr cannot be empty');
         } elseif (strspn($addr, '.0123456789') == strlen($addr) ||

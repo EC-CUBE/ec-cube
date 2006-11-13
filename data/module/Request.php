@@ -675,6 +675,8 @@ class HTTP_Request {
             $err = $this->_sock->connect($host, $port, null, $this->_timeout, $this->_socketOptions);
         }
         PEAR::isError($err) or $err = $this->_sock->write($this->_buildRequest());
+		
+		sfprintr($host);
 
         if (!PEAR::isError($err)) {
             if (!empty($this->_readTimeout)) {
