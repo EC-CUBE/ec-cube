@@ -142,7 +142,7 @@ function lfLoadUpdateList() {
 			$arrCSV = fgetcsv($fp, UPDATE_CSV_LINE_MAX);
 			
 			foreach($arrCSV as $key => $val){
-				$arrCSV[$key] = ereg_replace('\"', '"', $val);
+				$arrCSV[$key] = ereg_replace('\\"', '"', $val);
 			}
 			
 			sfprintr($arrCSV);
