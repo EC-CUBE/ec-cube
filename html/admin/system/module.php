@@ -143,7 +143,7 @@ function lfLoadUpdateList() {
 			
 			foreach($arrCSV as $key => $val){
 				$arrCSV[$key] = ereg_replace('\"', '"', $val);
-				sfprintr(ereg_replace('\"', '"', $val));
+				sfprintr(str_replace('\"', '"', $val));
 			}
 			
 			
