@@ -660,8 +660,6 @@ class HTTP_Request {
         $sockKey   = $host . ':' . $port;
         unset($this->_sock);
 
-		
-		sfprintr("socket");
         // There is a connected socket in the "static" property?
         if ($keepAlive && !empty($sockets[$sockKey]) &&
             !empty($sockets[$sockKey]->fp)) 
@@ -671,12 +669,9 @@ class HTTP_Request {
         } else {
             $this->_notify('connect');
             $this->_sock =& new Net_Socket();
-
             $err = $this->_sock->connect($host, $port, null, $this->_timeout, $this->_socketOptions);
         }
         PEAR::isError($err) or $err = $this->_sock->write($this->_buildRequest());
-		
-		sfprintr($host);
 
         if (!PEAR::isError($err)) {
             if (!empty($this->_readTimeout)) {
@@ -687,7 +682,6 @@ class HTTP_Request {
 
             // Read the response
             $this->_response = &new HTTP_Response($this->_sock, $this->_listeners);
-			sfprintr($this->_response);
             $err = $this->_response->process(
                 $this->_saveBody && $saveBody,
                 HTTP_REQUEST_METHOD_HEAD != $this->_method

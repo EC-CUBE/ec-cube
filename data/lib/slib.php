@@ -2644,7 +2644,6 @@ function sfSendPostData($url, $arrData, $arrOkCode = array()){
 		// レスポンスコードがエラー判定なら、空を返す
 		$res_code = $req->getResponseCode();
 		
-		sfprintr($res_code);
 		if(!in_array($res_code, $arrOkCode)){
 			$response = "";
 		}else{
@@ -2652,8 +2651,6 @@ function sfSendPostData($url, $arrData, $arrOkCode = array()){
 		}
 		
 	} else {
-		sfprintr($req->sendRequest());
-		sfprintr($ret);
 		$response = "";
 	}
 	
@@ -2662,7 +2659,6 @@ function sfSendPostData($url, $arrData, $arrOkCode = array()){
 	
 	return $response;
 }
-
 
 /* デバッグ用 ------------------------------------------------------------------------------------------------*/
 function sfPrintR($obj) {
