@@ -87,7 +87,7 @@ function sfPostPaymentData($order_url, $arrData, $err_page = true){
 	$arrVal = array();
 	
 	// POSTデータを送信し、応答情報を取得する
-	/*$response = sfSendPostData($order_url, $arrData, array(200));
+	$response = sfSendPostData($order_url, $arrData, array(200));
 	
 	// なにも返ってこなれば、エラー
 	if ($response == "") {
@@ -100,25 +100,22 @@ function sfPostPaymentData($order_url, $arrData, $err_page = true){
 		}
 	}
 
-
 	//$response = mb_convert_encoding($response, "UTF-8");
+/*	
 	$response = ' <Epsilon_result>
   <result result="1" />
   <result redirect="https%3A%2F%2Fbeta.epsilon.jp%2Fcgi-bin%2Forder%2Fcard3.cgi%3Ftrans_code%3D62550" />
   </Epsilon_result>';
-*/  
-  $response = "test";
-	$response = mb_convert_encoding($response, "UTF-8");
+  */
 	
 	sfprintr(mb_detect_encoding($response));
-//	sfprintr(mb_convert_encoding($response, "UTF-8"));
 
 	// XMLパーサを生成する。
 	$parser = xml_parser_create('utf-8');
-//	$parser = xml_parser_create_ns('utf-8');
 	
 	// 空白文字は読み飛ばしてXMLを読み取る
-	xml_parser_set_option($parser,XML_OPTION_SKIP_WHITE,1);
+	//xml_parser_set_option($parser,XML_OPTION_SKIP_WHITE,1);
+	xml_parser_set_option($parser,XML_TARGET_ENCODEING,"UTF-8");
 	
 	sfprintr('utf-8');
 	sfprintr(xml_error_string(xml_get_error_code($parser)));
