@@ -101,23 +101,44 @@ function sfPostPaymentData($order_url, $arrData, $err_page = true){
 	}
 
 	//$response = mb_convert_encoding($response, "UTF-8");
-/*	
+	/*	
 	$response = ' <Epsilon_result>
-  <result result="1" />
-  <result redirect="https%3A%2F%2Fbeta.epsilon.jp%2Fcgi-bin%2Forder%2Fcard3.cgi%3Ftrans_code%3D62550" />
-  </Epsilon_result>';
-  */
+	<result result="1" />
+	<result redirect="https%3A%2F%2Fbeta.epsilon.jp%2Fcgi-bin%2Forder%2Fcard3.cgi%3Ftrans_code%3D62550" />
+	</Epsilon_result>';
+	*/
+/*	
+	// get xml
+	$xmlStr = $response;
+	// parse xml
+	$encode = "UTF-8";
+	$xmlStr = mb_convert_encoding( $xmlStr, $encode, 'auto' );
+	$xmlObjs = @simplexml_load_string( $xmlStr, " SimpleXMLIterator" );
+	print_r( $xmlObjs );  
+*/
+	sfprintr('utf-8');
+	sfprintr($response);
+	$response = mb_convert_encoding($response, "SJIS", "auto");	//一度sjisにする
+	$response = mb_convert_encoding($response, "UTF-8", "SJIS");	//またutf8に戻す
+	$response = mb_convert_encoding($response, "UTF-8", "UTF-8");
+	sfprintr($response);
 	
+	$xml = simplexml_load_string($response);
+	sfprintr($xml);
+	
+	//$xml = simplexml_load_string($response);
+
+
 	sfprintr(mb_detect_encoding($response));
 
 	// XMLパーサを生成する。
 	$parser = xml_parser_create('utf-8');
 	
 	// 空白文字は読み飛ばしてXMLを読み取る
-	//xml_parser_set_option($parser,XML_OPTION_SKIP_WHITE,1);
-	xml_parser_set_option($parser,XML_TARGET_ENCODEING,"UTF-8");
+	xml_parser_set_option($parser,XML_OPTION_TARGET_ENCODING,"UTF-8");
+	xml_parser_set_option($parser,XML_OPTION_SKIP_WHITE,1);
 	
-	sfprintr('utf-8');
+
 	sfprintr(xml_error_string(xml_get_error_code($parser)));
 	
 	// 配列にXMLのデータを格納する
