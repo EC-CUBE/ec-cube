@@ -85,7 +85,8 @@ function sfGetXMLValue($arrVal, $tag, $att) {
  **************************************************************************************************************/
 function sfPostPaymentData($order_url, $arrData, $err_page = true){
 	$arrVal = array();
-	
+	$response = "";
+
 	// POSTデータを送信し、応答情報を取得する
 	$response = sfSendPostData($order_url, $arrData, array(200));
 	
@@ -100,36 +101,10 @@ function sfPostPaymentData($order_url, $arrData, $err_page = true){
 		}
 	}
 
-	//$response = mb_convert_encoding($response, "UTF-8");
-	/*	
-	$response = ' <Epsilon_result>
-	<result result="1" />
-	<result redirect="https%3A%2F%2Fbeta.epsilon.jp%2Fcgi-bin%2Forder%2Fcard3.cgi%3Ftrans_code%3D62550" />
-	</Epsilon_result>';
-	*/
-/*	
-	// get xml
-	$xmlStr = $response;
-	// parse xml
-	$encode = "UTF-8";
-	$xmlStr = mb_convert_encoding( $xmlStr, $encode, 'auto' );
-	$xmlObjs = @simplexml_load_string( $xmlStr, " SimpleXMLIterator" );
-	print_r( $xmlObjs );  
-*/
-	sfprintr('utf-8');
-	sfprintr($response);
-	$response = mb_convert_encoding($response, "SJIS", "auto");	//一度sjisにする
-	$response = mb_convert_encoding($response, "UTF-8", "SJIS");	//またutf8に戻す
+	// Shift-JISをUNICODEに変換する
+	$response = str_replace("x-sjis-cp932", "UTF-8", $response);
+	// XML内のエンコードもUNICODEに変換
 	$response = mb_convert_encoding($response, "UTF-8", "UTF-8");
-	sfprintr($response);
-	
-	$xml = simplexml_load_string($response);
-	sfprintr($xml);
-	
-	//$xml = simplexml_load_string($response);
-
-
-	sfprintr(mb_detect_encoding($response));
 
 	// XMLパーサを生成する。
 	$parser = xml_parser_create('utf-8');
@@ -138,15 +113,9 @@ function sfPostPaymentData($order_url, $arrData, $err_page = true){
 	xml_parser_set_option($parser,XML_OPTION_TARGET_ENCODING,"UTF-8");
 	xml_parser_set_option($parser,XML_OPTION_SKIP_WHITE,1);
 	
-
-	sfprintr(xml_error_string(xml_get_error_code($parser)));
-	
 	// 配列にXMLのデータを格納する
 	$err = xml_parse_into_struct($parser,$response,$arrVal,$idx);
 
-	sfprintr(xml_error_string(xml_get_error_code($parser)));
-	exit();
-	
 	// 開放する
 	xml_parser_free($parser);
 	
