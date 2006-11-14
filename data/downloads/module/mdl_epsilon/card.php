@@ -94,8 +94,8 @@ function lfSendCredit($arrData, $arrPayment, $arrMainProduct, $again = true){
 		'mission_code' => '1',												// ²Ý¶â¶èÊ¬(¸ÇÄê)
 		'process_code' => '1',												// ½èÍý¶èÊ¬(¸ÇÄê)
 		'xml' => '1',														// ±þÅú·Á¼°(¸ÇÄê)
-		'memo1' => ECCUBE_PAYMENT . "_" . date("YmdHis"),					// Í½È÷01
-		'memo2' => ''														// Í½È÷02
+		'memo1' => "",														// Í½È÷01
+		'memo2' => ECCUBE_PAYMENT . "_" . date("YmdHis"),					// Í½È÷02
 	);
 	
 	// ¥Ç¡¼¥¿Á÷¿®
