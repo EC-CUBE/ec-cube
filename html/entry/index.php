@@ -118,7 +118,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 			$objPage->tpl_css = '/css/layout/entry/complete.css';
 			$objPage->tpl_mainpage = 'entry/complete.tpl';
 			$objPage->tpl_title = '²ñ°÷ÅÐÏ¿(´°Î»¥Ú¡¼¥¸)';
-			
+
 			//¡¡²¾ÅÐÏ¿´°Î»¥á¡¼¥ëÁ÷¿®
 			$objPage->CONF = $CONF;
 			$objPage->to_name01 = $_POST['name01'];
@@ -141,9 +141,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 																);
 			// °¸Àè¤ÎÀßÄê
 			$name = $_POST["name01"] . $_POST["name02"] ." ÍÍ";
-			$objMail->setTo($_POST["email"], $name);			
+			$objMail->setTo($_POST["email"], $name);
 			$objMail->sendMail();
-			
+
 			// ´°Î»¥Ú¡¼¥¸¤Ë°ÜÆ°¤µ¤»¤ë¡£
 			header("Location: ./complete.php");
 			exit;

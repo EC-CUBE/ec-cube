@@ -3,7 +3,7 @@
  *
  * http://www.lockon.co.jp/
  *}-->
-<!--¢§CONTENTS-->
+ <!--¢§CONTENTS-->
 <table width="" border="0" cellspacing="0" cellpadding="0" summary=" ">
 	<tr valign="top">
 		<td align="right" bgcolor="#ffffff">
