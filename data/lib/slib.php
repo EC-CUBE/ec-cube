@@ -2430,7 +2430,7 @@ function sfGetCatTree($parent_category_id, $count_check = false) {
 			}
 		}
 	}
-	
+sfprintr($arrRet);	
 	return $arrRet;
 }
 
