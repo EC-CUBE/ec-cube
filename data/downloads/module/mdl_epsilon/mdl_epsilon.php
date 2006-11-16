@@ -110,7 +110,7 @@ case 'edit':
 			if($val == 2){
 				
 				// セブンイレブンのみの場合には利用上限を30万にする。
-				(count($_POST["conbeniense"]) == 1 and $_POST["convenience"][0] == 11) ? $upper_rule_max = "300000" : $upper_rule_max = "500000";
+				(count($_POST["convenience"]) == 1 and $_POST["convenience"][0] == 11) ? $upper_rule_max = "300000" : $upper_rule_max = "500000";
 				
 				$arrData = array(
 					"payment_method" => "Epsilonコンビニ"
