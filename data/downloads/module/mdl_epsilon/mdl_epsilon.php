@@ -99,6 +99,10 @@ case 'edit':
 					,"memo03" => $val
 					,"memo04" => $visa . $jcb . "000-0000-00000"
 					,"del_flg" => "0"
+					,"charge_flg" => "2"
+					,"rule_min" => "0"
+					,"upper_rule_max" => "500000"
+					
 				);
 			}
 
@@ -119,6 +123,9 @@ case 'edit':
 					,"memo04" => "00100-0000-00000"
 					,"memo05" => $convenience
 					,"del_flg" => "0"
+					,"charge_flg" => "2"
+					,"rule_min" => "0"
+					,"upper_rule_max" => "500000"
 				);
 			}
 			
