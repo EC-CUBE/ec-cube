@@ -54,7 +54,7 @@ $objView->display(MAIN_FRAME);
 function lfGetPaymentList($fix = 1) {
 	$objQuery = new SC_Query();
 	// 配送業者一覧の取得
-	$col = "payment_id, payment_method, charge, rule, upper_rule, note, deliv_id, fix";
+	$col = "payment_id, payment_method, charge, rule, upper_rule, note, deliv_id, fix, charge_flg";
 	$where = "del_flg = 0";
 //	$where .= " AND fix = ?";
 	$table = "dtb_payment";
