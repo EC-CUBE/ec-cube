@@ -4,6 +4,7 @@
 <body onload="">
 
 <!--{$smarty.server.PHP_SELF}-->
+<!--{$smarty.server.REQUEST_URI}-->
 
 </body>
 </html>
