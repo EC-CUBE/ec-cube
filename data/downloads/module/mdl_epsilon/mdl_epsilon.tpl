@@ -71,6 +71,11 @@ function fnChangeDisabled(list, disable) {
 	}
 }
 
+function win_open(URL){
+	var WIN;
+	WIN = window.open(URL);
+	WIN.focus();
+}
 //-->
 </script>
 </head>
@@ -123,7 +128,7 @@ function fnChangeDisabled(list, disable) {
 												イプシロン決済モジュールをご利用頂く為には、ユーザ様ご自身で
 												イプシロン株式会社様とご契約を行っていただく必要があります。 <br/>
 												お申し込みにつきましては、下記のページから、お申し込みを行って下さい。<br/><br/>
-												<a href="#" onClick="win01('http://www.rapidsite.jp/product/support/shop/epsilon.html')" > ＞＞ イプシロン決済システムについて</a>
+												<a href="#" onClick="win_open('http://www.rapidsite.jp/product/support/shop/epsilon.html')" > ＞＞ イプシロン決済システムについて</a>
 											</td>
 										</tr>
 									</table>
