@@ -120,7 +120,6 @@ function lnSetSelect(name1, name2, id, val) {
 				</table>
 				<!--件数ここまで-->
 				<!--{else}-->
-				<!--{include file="frontparts/search_zero.tpl"}-->
 				<!--{/if}-->
 
 				<table width="580" cellspacing="0" cellpadding="0" summary=" " id="contents">
