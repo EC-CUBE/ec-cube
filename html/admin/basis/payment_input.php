@@ -170,15 +170,14 @@ function lfCheckError() {
 	$objErr = new SC_CheckError($arrRet);
 	$objErr->arrErr = $objFormParam->checkError();
 	
-	// 利用条件(上限)チェック
-	if($arrRet["rule"] < $arrPaymentData["rule_max"]){
-		$objErr->arrErr["rule"] = "利用条件(上限)は" . $arrPaymentData["rule_max"] ."円以下にしてください";
-	}
-	$objErr->arrErr["rule"] = "利用条件(上限)は" . $arrPaymentData["rule_max"] ."円以下にしてください";
-	
 	// 利用条件(下限)チェック
-	if($arrRet["upper_rule"] < $arrPaymentData["upper_rule_min"]){
-		$objErr->arrErr["upper_rule"] = "利用条件(下限)は" . $arrPaymentData["upper_rule_min"] ."円以以上にしてください";
+	if($arrRet["rule"] < $arrPaymentData["rule_min"]){
+		$objErr->arrErr["rule"] = "利用条件(下限)は" . $arrPaymentData["rule_min"] ."円以上にしてください";
+	}
+	
+	// 利用条件(上限)チェック
+	if($arrRet["upper_rule"] > $arrPaymentData["upper_rule_max"]){
+		$objErr->arrErr["upper_rule"] = "利用条件(上限)は" . $arrPaymentData["upper_rule_max"] ."円以下にしてください";
 	}
 	
 	
