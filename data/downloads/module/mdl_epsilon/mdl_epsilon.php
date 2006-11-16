@@ -80,6 +80,9 @@ case 'edit':
 		foreach($_POST["payment"] as $key => $val){
 			// ランクの最大値を取得する
 			$max_rank = $objQuery->getone("SELECT max(rank) FROM dtb_payment");
+
+			// 支払方法データを取得			
+			$arrPaymentData = lfGetPaymentDB("AND memo03 = ?", array($val));
 			
 			// クレジットにチェックが入っていればクレジットを登録する
 			if($val == 1){
@@ -109,12 +112,15 @@ case 'edit':
 			// コンビニにチェックが入っていればコンビニを登録する
 			if($val == 2){
 				
-				// セブンイレブンのみの場合には利用上限を30万にする。
-				(count($_POST["convenience"]) == 1 and $_POST["convenience"][0] == 11) ? $upper_rule_max = "300000" : $upper_rule_max = "500000";
+				// セブンイレブンのみ選択した場合には利用上限を30万にする。
+				if(count($_POST["convenience"]) == 1 and $_POST["convenience"][0] == 11) {
+					$upper_rule_max = "300000";
+					
+					($arrPaymentData["upper_rule"] > $upper_rule_max) ? $upper_rule = $upper_rule_max : $upper_rule = $arrPaymentData["upper_rule"];
+				}else{
+					$upper_rule_max = "500000";
+				}
 				
-				sfprintr(count($_POST["convenience"]));
-				sfprintr($_POST["convenience"]);
-				sfprintr($upper_rule_max);
 				
 				$arrData = array(
 					"payment_method" => "Epsilonコンビニ"
@@ -122,7 +128,7 @@ case 'edit':
 					,"creator_id" => $objSess->member_id
 					,"create_date" => "now()"
 					,"update_date" => "now()"
-					,"upper_rule" => 500000
+					,"upper_rule" => $upper_rule
 					,"module_id" => MDL_EPSILON_ID
 					,"module_path" => MODULE_PATH . "mdl_epsilon/convenience.php"
 					,"memo01" => $_POST["code"]
@@ -138,7 +144,6 @@ case 'edit':
 			}
 			
 			// データが存在していればUPDATE、無ければINSERT
-			$arrPaymentData = lfGetPaymentDB("AND memo03 = ?", array($val));
 			if(count($arrPaymentData) > 0){
 				$objQuery->update("dtb_payment", $arrData, " module_id = '" . MDL_EPSILON_ID . "' AND memo03 = '" . $val ."'");
 			}else{
