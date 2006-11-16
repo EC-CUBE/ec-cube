@@ -89,8 +89,6 @@ if($_POST['mode'] == "") {
 $objPage->arrDelivList = sfGetIDValueList("dtb_deliv", "deliv_id", "service_name");
 $objPage->arrForm = $objFormParam->getFormParamList();
 
-sfprintr($objPage->arrForm);
-
 // FORM表示用配列を渡す。
 $objPage->arrFile = $objUpFile->getFormFileList(IMAGE_TEMP_URL, IMAGE_SAVE_URL);
 // HIDDEN用に配列を渡す。
@@ -114,6 +112,8 @@ function lfInitParam() {
 	$objFormParam->addParam("利用条件(〜円以下)", "upper_rule", PRICE_LEN, "n", array("NUM_CHECK", "MAX_LENGTH_CHECK"));
 	$objFormParam->addParam("配送サービス", "deliv_id", INT_LEN, "n", array("EXIST_CHECK", "NUM_CHECK", "MAX_LENGTH_CHECK"));
 	$objFormParam->addParam("固定", "fix");
+	$objFormParam->addParam("手数料フラグ", "charge_flg");
+
 }
 
 /* DBからデータを読み込む */
