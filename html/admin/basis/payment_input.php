@@ -89,6 +89,8 @@ if($_POST['mode'] == "") {
 $objPage->arrDelivList = sfGetIDValueList("dtb_deliv", "deliv_id", "service_name");
 $objPage->arrForm = $objFormParam->getFormParamList();
 
+sfprintr($objPage->arrForm);
+
 // FORM表示用配列を渡す。
 $objPage->arrFile = $objUpFile->getFormFileList(IMAGE_TEMP_URL, IMAGE_SAVE_URL);
 // HIDDEN用に配列を渡す。
@@ -162,8 +164,6 @@ function lfCheckError() {
 	
 	// 手数料を設定できない場合には、手数料を0にする
 	if($arrPaymentData["charge_flg"] == 2) $objFormParam->setValue("charge", "0");
-	
-	sfprintr($arrPaymentData);
 	
 	// 入力データを渡す。
 	$arrRet =  $objFormParam->getHashArray();
