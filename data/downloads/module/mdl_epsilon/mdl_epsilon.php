@@ -119,6 +119,7 @@ case 'edit':
 					($arrPaymentData["upper_rule"] > $upper_rule_max) ? $upper_rule = $upper_rule_max : $upper_rule = $arrPaymentData["upper_rule"];
 				}else{
 					$upper_rule_max = "500000";
+					$upper_rule = $upper_rule_max;
 				}
 				
 				
