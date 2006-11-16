@@ -41,6 +41,13 @@ switch($_POST['mode']) {
 case 'edit':
 	// 入力値の変換
 	$objFormParam->convParam();
+
+	// DBのデータを取得
+	$arrRet = lfGetData($_POST['payment_id']);
+	
+	// 手数料を設定できない場合には、手数料を0にする
+	if($arrRet["charge_flg"] == 2) $_POST["charge"] = 0;
+	
 	// エラーチェック
 	$objPage->arrErr = lfCheckError();
 	if(count($objPage->arrErr) == 0) {
