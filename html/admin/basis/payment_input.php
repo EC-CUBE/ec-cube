@@ -46,7 +46,7 @@ case 'edit':
 	$arrRet = lfGetData($_POST['payment_id']);
 	
 	// 手数料を設定できない場合には、手数料を0にする
-	if($arrRet["charge_flg"] == 2) $_POST["charge"] = "0";
+	if($arrRet["charge_flg"] == 2) $objFormParam->setValue("charge", "0");
 	
 	// エラーチェック
 	$objPage->arrErr = lfCheckError();
