@@ -52,8 +52,6 @@ case 'edit':
 		$objPage->tpl_onload="fnUpdateParent('".URL_PAYMENT_TOP."'); window.close();";
 	}
 	
-	sfprintr($objPage->arrErr);
-	
 	break;
 // 画像のアップロード
 case 'upload_image':
@@ -164,6 +162,8 @@ function lfCheckError() {
 	
 	// 手数料を設定できない場合には、手数料を0にする
 	if($arrPaymentData["charge_flg"] == 2) $objFormParam->setValue("charge", "0");
+	
+	sfprintr($arrPaymentData);
 	
 	// 入力データを渡す。
 	$arrRet =  $objFormParam->getHashArray();
