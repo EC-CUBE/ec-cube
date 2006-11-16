@@ -7,8 +7,8 @@
  *
  */
 
-define("CHARGE_MAX", 500000);
-define("SEVEN_CHARGE_MAX", 300000);
+define ("CHARGE_MAX", 500000);
+define ("SEVEN_CHARGE_MAX", 300000);
 
 //コンビニの種類
 $arrConvenience = array(

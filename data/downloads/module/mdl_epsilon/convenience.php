@@ -204,11 +204,10 @@ foreach($arrUseConv as $key => $val){
 }
 
 // 購入金額が30万より大きければセブンイレブンは利用不可
-/*
 if($arrData["payment_total"] > SEVEN_CHARGE_MAX){
 	unset($arrConv[11]);
 }
-*/
+
 
 $objPage->arrConv = $arrConv;
 
