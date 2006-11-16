@@ -47,8 +47,8 @@ if ( $_POST['mode'] == 'regist' ){
 	$objPage->arrErr[$objPage->arrForm['rank']] = lfErrorCheck();
 	if ( ! $objPage->arrErr[$objPage->arrForm['rank']]) {
 		// ¸Å¤¤¤Î¤ò¾Ã¤¹
-		$sql = "DELETE FROM dtb_best_products WHERE category_id = ? AND rank = ?";
-		$conn->query($sql, array($objPage->arrForm['category_id'] ,$objPage->arrForm['rank']));
+		$sql = "DELETE FROM dtb_best_products WHERE product_id = ?";
+		$conn->query($sql, array($objPage->arrForm['product_id']));
 	
 		// £Ä£ÂÅÐÏ¿
 		$objPage->arrForm['creator_id'] = $_SESSION['member_id'];
@@ -61,8 +61,8 @@ if ( $_POST['mode'] == 'regist' ){
 } elseif ( $_POST['mode'] == 'delete' ){
 // ºï½ü»þ
 
-	$sql = "DELETE FROM dtb_best_products WHERE category_id = ? AND rank = ?";
-	$conn->query($sql, array($_POST['category_id'] ,$_POST['rank']));
+	$sql = "DELETE FROM dtb_best_products WHERE product_id = ?";
+	$conn->query($sql, array($_POST['product_id']));
 	
 }
 
