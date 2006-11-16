@@ -48,6 +48,8 @@ case 'edit':
 	// 手数料を設定できない場合には、手数料を0にする
 	if($arrRet["charge_flg"] == 2) $objFormParam->setValue("charge", "1");
 	
+	sfprintr($arrRet);
+	
 	// エラーチェック
 	$objPage->arrErr = lfCheckError();
 	if(count($objPage->arrErr) == 0) {
