@@ -34,6 +34,8 @@ function lfGetRanking(){
 	$where = "status = 1";
 	$order = "rank";
 	
+	sfprintr($arrBestProducts);
+	
 	$arrBestProducts = $objQuery->select($col, $from, $where);
 	return $arrBestProducts;
 }
