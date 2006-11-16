@@ -18,7 +18,7 @@ $arrPayment = array(
 );
 
 $arrCredit = array(
-	1 => 'VISA, MASTER',
+	1 => 'VISA, MASTER, Diners',
 	2 => 'JCB, AMEX'
 );
 
