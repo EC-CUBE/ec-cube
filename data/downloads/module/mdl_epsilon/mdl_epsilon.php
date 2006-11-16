@@ -121,6 +121,7 @@ case 'edit':
 					$upper_rule = $upper_rule_max;
 				}
 				
+				sfprintr($arrPaymentData["upper_rule"]);
 				
 				$arrData = array(
 					"payment_method" => "Epsilonコンビニ"
