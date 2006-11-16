@@ -32,6 +32,7 @@ $objCustomer = new SC_Customer();
 $arrInfo = $objSiteInfo->data;
 
 sfprintr($_SESSION["site"]);
+sfprintr($objCartSess->getPrevURL(););
 
 // 商品購入中にカート内容が変更された。
 if($objCartSess->getCancelPurchase()) {
