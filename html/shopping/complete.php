@@ -62,7 +62,18 @@ if ($uniqid != "") {
 	//その他情報の取得
 	$other_data = $objQuery->get("dtb_order", "memo02", "order_id = ? ", array($order_id));
 	if($other_data != "") {
+		$arrOther = unserialize($other_data);
+		
+		// データを編集
+		foreach($arrOther as $key => $val){
+			// URLの場合にはリンクつきで表示させる
+			if (preg_match('/^(https?|ftp)(:\/\/[-_.!~*\'()a-zA-Z0-9;\/?:\@&=+\$,%#]+)$/', $val)) {
+				$arrOther[$key] = "<a href='$val'>" . $val ."</a>";
+			}
+		}
+		
 		$objPage->arrOther = unserialize($other_data);
+		
 	}
 	
 	// アフィリエイト用コンバージョンタグの設定

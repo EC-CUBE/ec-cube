@@ -112,7 +112,7 @@ switch($_POST["mode"]){
 				$conveni_code = sfGetXMLValue($arrXML,'RESULT','CONVENI_CODE');	// コンビニコード
 				$conveni_type = lfSetConvMSG("コンビニの種類",$arrConvenience[$conveni_code]);	// コンビニの種類
 				$receipt_no   = lfSetConvMSG("払込票番号",sfGetXMLValue($arrXML,'RESULT','RECEIPT_NO'));	// 払込票番号
-//				$payment_url = lfSetConvMSG("払込票URL","<a href=''>" . sfGetXMLValue($arrXML,'RESULT','HARAIKOMI_URL') . "</a>");	// 払込票URL
+				$payment_url = lfSetConvMSG("払込票URL","<a href=''>" . sfGetXMLValue($arrXML,'RESULT','HARAIKOMI_URL') . "</a>");	// 払込票URL
 				$company_code = lfSetConvMSG("企業コード",sfGetXMLValue($arrXML,'RESULT','KIGYOU_CODE'));	// 企業コード
 				$order_no = lfSetConvMSG("受付番号",sfGetXMLValue($arrXML,'RESULT','ORDER_NUMBER'));		// 受付番号
 				$tel = lfSetConvMSG("電話番号",$_POST["order_tel01"]."-".$_POST["order_tel02"]."-".$_POST["order_tel03"]);	// 電話番号
