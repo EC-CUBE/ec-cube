@@ -115,7 +115,6 @@ case 'edit':
 				// セブンイレブンのみ選択した場合には利用上限を30万にする。
 				if(count($_POST["convenience"]) == 1 and $_POST["convenience"][0] == 11) {
 					$upper_rule_max = "300000";
-					
 					($arrPaymentData["upper_rule"] > $upper_rule_max) ? $upper_rule = $upper_rule_max : $upper_rule = $arrPaymentData["upper_rule"];
 				}else{
 					$upper_rule_max = "500000";
