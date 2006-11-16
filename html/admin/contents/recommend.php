@@ -132,7 +132,7 @@ function lfGetRecommentdProduct() {
 	// 既に登録されている内容を取得する
 	$sql = "SELECT B.name, B.main_list_image, A.* FROM dtb_best_products as A INNER JOIN dtb_products as B USING (product_id)
 			 WHERE A.del_flg = 0 ORDER BY rank";
-	$arrItems = $objQuery->getAll($sql, array($objPage->category_id));
+	$arrItems = $objQuery->getAll($sql);
 	foreach( $arrItems as $data ){
 		$objPage->arrItems[$data['rank']] = $data;
 	}
