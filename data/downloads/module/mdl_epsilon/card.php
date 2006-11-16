@@ -78,7 +78,7 @@ function lfSendCredit($arrData, $arrPayment, $arrMainProduct, $again = true){
 	
 	// データ送信先CGI
 	$order_url = $arrPayment[0]["memo02"];
-	
+
 	// 送信データ生成
 	$item_name = $arrMainProduct["name"] . "×" . $arrMainProduct["quantity"] . "個 (代表)";
 	$arrSendData = array(
@@ -97,7 +97,7 @@ function lfSendCredit($arrData, $arrPayment, $arrMainProduct, $again = true){
 		'memo1' => "",														// 予備01
 		'memo2' => ECCUBE_PAYMENT . "_" . date("YmdHis"),					// 予備02
 	);
-	
+
 	// データ送信
 	$arrXML = sfPostPaymentData($order_url, $arrSendData);
 	

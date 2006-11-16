@@ -108,16 +108,16 @@ switch($_POST["mode"]){
 			} else {
 				// 正常な推移であることを記録しておく
 				$objSiteSess->setRegistFlag();
-				
+
 				$conveni_code = sfGetXMLValue($arrXML,'RESULT','CONVENI_CODE');	// コンビニコード
 				$conveni_type = lfSetConvMSG("コンビニの種類",$arrConvenience[$conveni_code]);	// コンビニの種類
 				$receipt_no   = lfSetConvMSG("払込票番号",sfGetXMLValue($arrXML,'RESULT','RECEIPT_NO'));	// 払込票番号
-				$payment_url = lfSetConvMSG("払込票URL",sfGetXMLValue($arrXML,'RESULT','HARAIKOMI_URL'));	// 払込票URL
+				$payment_url = lfSetConvMSG("払込票URL","<a href=''>" . sfGetXMLValue($arrXML,'RESULT','HARAIKOMI_URL') . "</a>");	// 払込票URL
 				$company_code = lfSetConvMSG("企業コード",sfGetXMLValue($arrXML,'RESULT','KIGYOU_CODE'));	// 企業コード
 				$order_no = lfSetConvMSG("受付番号",sfGetXMLValue($arrXML,'RESULT','ORDER_NUMBER'));		// 受付番号
 				$tel = lfSetConvMSG("電話番号",$_POST["order_tel01"]."-".$_POST["order_tel02"]."-".$_POST["order_tel03"]);	// 電話番号
 				$payment_limit = lfSetConvMSG("支払期日",sfGetXMLValue($arrXML,'RESULT','CONVENI_LIMIT'));	// 支払期日
-				
+
 				//コンビニの種類
 				switch($conveni_code) {
 				//セブンイレブン
@@ -167,21 +167,21 @@ switch($_POST["mode"]){
 					$arrRet['cv_message'] = lfSetConvMSG("",$arrConveni_message[$conveni_code]);
 					break;
 				}
-				
+
 				//支払期限
 				$arrRet['br2'] = lfSetConvMSG("","\n\n");
 				$arrRet['cv_payment_limit'] = $payment_limit;
 				$arrRet['br3'] = lfSetConvMSG("","\n\n");
-				
+
 				// タイトル
 				$arrRet['title'] = lfSetConvMSG("コンビニ決済", true);
-				
+
 				//コンビニ決済情報を格納
 				$sqlval['conveni_data'] = serialize($arrRet);
 				$sqlval['memo01'] = PAYMENT_CONVENIENCE_ID;
 				$sqlval['memo02'] = serialize($arrRet);
 				$sqlval["memo03"] = $arrPayment[0]["module_id"];
-				
+
 				// 受注一時テーブルに更新
 				sfRegistTempOrder($uniqid, $sqlval);
 
