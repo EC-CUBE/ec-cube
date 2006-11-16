@@ -72,7 +72,7 @@ if ($uniqid != "") {
 			}
 		}
 		
-		$objPage->arrOther = unserialize($other_data);
+		$objPage->arrOther = $arrOther;
 		
 	}
 	
