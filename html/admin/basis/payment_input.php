@@ -89,6 +89,8 @@ if($_POST['mode'] == "") {
 $objPage->arrDelivList = sfGetIDValueList("dtb_deliv", "deliv_id", "service_name");
 $objPage->arrForm = $objFormParam->getFormParamList();
 
+sfprintr($objPage->arrForm);
+
 // FORM表示用配列を渡す。
 $objPage->arrFile = $objUpFile->getFormFileList(IMAGE_TEMP_URL, IMAGE_SAVE_URL);
 // HIDDEN用に配列を渡す。
