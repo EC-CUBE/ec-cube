@@ -42,14 +42,6 @@ case 'edit':
 	// 入力値の変換
 	$objFormParam->convParam();
 
-	// DBのデータを取得
-	$arrRet = lfGetData($_POST['payment_id']);
-	
-	// 手数料を設定できない場合には、手数料を0にする
-	if($arrRet["charge_flg"] == 2) $objFormParam->setValue("charge", "0");
-	
-	sfprintr($arrRet);
-	
 	// エラーチェック
 	$objPage->arrErr = lfCheckError();
 	if(count($objPage->arrErr) == 0) {
@@ -166,10 +158,29 @@ function lfRegistData($payment_id = "") {
 /* 入力内容のチェック */
 function lfCheckError() {
 	global $objFormParam;
+	
+	// DBのデータを取得
+	$arrPaymentData = lfGetData($_POST['payment_id']);
+	
+	// 手数料を設定できない場合には、手数料を0にする
+	if($arrPaymentData["charge_flg"] == 2) $objFormParam->setValue("charge", "0");
+	
 	// 入力データを渡す。
 	$arrRet =  $objFormParam->getHashArray();
 	$objErr = new SC_CheckError($arrRet);
 	$objErr->arrErr = $objFormParam->checkError();
+	
+	// 利用条件(上限)チェック
+	if($arrRet["rule"] < $arrPaymentData["rule_max"]){
+		$objErr->arrErr["rule"] = "利用条件(上限)は" . $arrPaymentData["rule_max"] ."円以下にしてください";
+	}
+	$objErr->arrErr["rule"] = "利用条件(上限)は" . $arrPaymentData["rule_max"] ."円以下にしてください";
+	
+	// 利用条件(下限)チェック
+	if($arrRet["upper_rule"] < $arrPaymentData["upper_rule_min"]){
+		$objErr->arrErr["upper_rule"] = "利用条件(下限)は" . $arrPaymentData["upper_rule_min"] ."円以以上にしてください";
+	}
+	
 	
 	// 利用条件チェック
 	$objErr->doFunc(array("利用条件(〜円以上)", "利用条件(〜円以下)", "rule", "upper_rule"), array("GREATER_CHECK"));
