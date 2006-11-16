@@ -18,7 +18,8 @@ class LC_Page {
 
 $objPage = new LC_Page();
 $conn = new SC_DBConn();
-$objSiteSess = new SC_SiteSession();
+$objCartSess = new SC_CartSession();
+$objCartSess->setPrevURL($_SERVER['REQUEST_URI']);
 
 // レイアウトデザインを取得
 $objPage = sfGetPageLayout($objPage, false, "index.php");
