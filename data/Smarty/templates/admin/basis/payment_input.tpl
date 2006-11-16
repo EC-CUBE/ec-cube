@@ -86,16 +86,19 @@ self.moveTo(20,20);self.focus();
 											<input type="text" name="<!--{$arrForm[$key].keyname}-->" value="<!--{$arrForm[$key].value|escape}-->" size="30" class="box30" maxlength="<!--{$arrForm[$key].length}-->" style="<!--{$arrErr[$key]|sfGetErrorColor}-->" />
 											</td>
 										</tr>
-										<!--{if $arrForm.charge_flg == 1}-->
 										<tr class="fs12n">
 											<td width="100" bgcolor="#f0f0f0">手数料<span class="red"> *</span></td>
 											<td width="340" bgcolor="#ffffff">
+											<!--{if $arrForm.charge_flg == 1}-->
 											<!--{assign var=key value="charge"}-->
 											<span class="red12"><!--{$arrErr[$key]}--></span>
 											<input type="text" name="<!--{$arrForm[$key].keyname}-->" value="<!--{$arrForm[$key].value|escape}-->" size="10" class="box10" maxlength="<!--{$arrForm[$key].length}-->" style="<!--{$arrErr[$key]|sfGetErrorColor}-->" />
-											 円</td>
+											 円
+											<!--{else}-->
+											設定できません
+											<!--{/if}-->
+											</td>
 										</tr>
-										<!--{/if}-->
 										<tr class="fs12n">
 											<td width="100" bgcolor="#f0f0f0">利用条件(円)</td>
 											<td width="340" bgcolor="#ffffff">
