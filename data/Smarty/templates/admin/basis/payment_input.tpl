@@ -89,7 +89,7 @@ self.moveTo(20,20);self.focus();
 										<tr class="fs12n">
 											<td width="100" bgcolor="#f0f0f0">¼ê¿ôÎÁ<span class="red"> *</span></td>
 											<td width="340" bgcolor="#ffffff">
-											<!--{if $arrForm.charge_flg == 1}-->
+											<!--{if $arrForm.charge_flg.value == 1}-->
 											<!--{assign var=key value="charge"}-->
 											<span class="red12"><!--{$arrErr[$key]}--></span>
 											<input type="text" name="<!--{$arrForm[$key].keyname}-->" value="<!--{$arrForm[$key].value|escape}-->" size="10" class="box10" maxlength="<!--{$arrForm[$key].length}-->" style="<!--{$arrErr[$key]|sfGetErrorColor}-->" />

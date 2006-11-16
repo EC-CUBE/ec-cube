@@ -73,6 +73,8 @@ if($_POST['mode'] == "") {
 	case 'pre_edit':
 		if(sfIsInt($_GET['payment_id'])) {
 			$arrRet = lfGetData($_GET['payment_id']);
+			
+			sfprintr($arrRet);
 			$objFormParam->setParam($arrRet);
 			// DBデータから画像ファイル名の読込
 			$objUpFile->setDBFileList($arrRet);
