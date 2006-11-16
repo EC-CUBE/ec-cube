@@ -6,6 +6,10 @@
 <!--{$smarty.server.PHP_SELF}--><br/>
 <!--{$smarty.server.REQUEST_URI|escape}-->
 
+<form action="<!--{$smarty.server.REQUEST_URI|escape}-->">
+
+</form>
+
 </body>
 </html>
  
