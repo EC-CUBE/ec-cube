@@ -40,7 +40,7 @@
 <!--{/foreach}-->
 </form>
 
-<form name="form1" id="form1" method="post" action="<!--{$smarty.server.PHP_SELF}-->">
+<form name="form1" id="form1" method="post" action="<!--{$smarty.server.PHP_SELF|escape}-->">
 <input type="hidden" name="mode" value="confirm">
 <input type="hidden" name="edit_email" value="<!--{$tpl_edit_email}-->">
 <input type="hidden" name="customer_id" value="<!--{$list_data.customer_id|escape}-->">

@@ -5,7 +5,7 @@
  *}-->
 <!--¢§CONTENTS-->
 <table width="100" border="0" cellspacing="0" cellpadding="0" summary=" ">
-<form name="form1" method="post" action="<!--{$smarty.server.PHP_SELF}-->">
+<form name="form1" method="post" action="<!--{$smarty.server.PHP_SELF|escape}-->">
 <input type="hidden" name="mode" value="confirm">
 	<tr>
 		<td align="center" bgcolor="#ffffff">

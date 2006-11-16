@@ -92,7 +92,7 @@ function lfnCheckSetItem( rank ){
 						<!--{section name=cnt loop=$tpl_disp_max}-->
 						<!--▼おすすめ<!--{$smarty.section.cnt.iteration}-->-->
 						<table width="678" border="0" cellspacing="1" cellpadding="8" summary=" ">
-						<form name="form<!--{$smarty.section.cnt.iteration}-->" id="form<!--{$smarty.section.cnt.iteration}-->" method="post" action="<!--{$smarty.server.PHP_SELF}-->">
+						<form name="form<!--{$smarty.section.cnt.iteration}-->" id="form<!--{$smarty.section.cnt.iteration}-->" method="post" action="<!--{$smarty.server.PHP_SELF|escape}-->">
 						<input type="hidden" name="mode" value="regist">
 						<input type="hidden" name="product_id" value="<!--{$arrItems[$smarty.section.cnt.iteration].product_id|escape}-->">
 						<input type="hidden" name="category_id" value="<!--{$category_id|escape}-->">

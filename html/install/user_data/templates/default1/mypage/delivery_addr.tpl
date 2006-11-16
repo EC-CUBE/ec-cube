@@ -35,7 +35,7 @@
 
 		<!--▼入力フォームここから-->
 		<table width="500" border="0" cellspacing="0" cellpadding="0" summary=" ">
-		<form name="form1" id="form1" method="post" action="<!--{$smarty.server.PHP_SELF}-->">
+		<form name="form1" id="form1" method="post" action="<!--{$smarty.server.PHP_SELF|escape}-->">
 		<input type="hidden" name="mode" value="edit">
 		<input type="hidden" name="other_deliv_id" value="<!--{$smarty.session.other_deliv_id}-->" >
 		<input type="hidden" name="ParentPage" value="<!--{$ParentPage}-->" >

@@ -26,7 +26,7 @@
 
 <div align="center">
 <table width="550" border="0" cellspacing="0" cellpadding="0" summary=" ">
-<form action="<!--{$smarty.server.PHP_SELF}-->" method="post" name="form1">
+<form action="<!--{$smarty.server.PHP_SELF|escape}-->" method="post" name="form1">
 <input type="hidden" name="mode" value="secret_check">
 	<tr><td height="15"></td></tr>
 	<tr><td bgcolor="#ffa85c"><img src="<!--{$smarty.const.URL_DIR}-->misc/_.gif" width="1" height="5" alt=""></td></tr>

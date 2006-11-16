@@ -24,7 +24,7 @@
 <link rel="stylesheet" href="<!--{$smarty.const.URL_DIR}-->css/common.css" type="text/css">
 </noscript>
 <div align="center">
-	<form action="<!--{$smarty.server.PHP_SELF}-->" method="post" name="form1" />
+	<form action="<!--{$smarty.server.PHP_SELF|escape}-->" method="post" name="form1" />
 	<input type="hidden" name="mode" value="mail_check" />
 	
 	<table width="550" border="0" cellspacing="0" cellpadding="0" summary=" ">

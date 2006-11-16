@@ -7,7 +7,7 @@
 *}-->
 <!--★★メインコンテンツ★★-->
 <table width="878" border="0" cellspacing="0" cellpadding="0" summary=" ">
-<form name="form1" id="form1" method="post" action="<!--{$smarty.server.PHP_SELF}-->">
+<form name="form1" id="form1" method="post" action="<!--{$smarty.server.PHP_SELF|escape}-->">
 <input type="hidden" name="mode" value="edit">
 <input type="hidden" name="deliv_id" value="">
 	<tr valign="top">
@@ -60,13 +60,13 @@
 											<td><!--{$arrDelivList[cnt].name|escape}--></td>
 											<td><!--{$arrDelivList[cnt].service_name|escape}--></td>
 											<td align="center"><a href="<!--{$smarty.const.URL_DIR}-->" onclick="fnChangeAction('./delivery_input.php'); fnModeSubmit('pre_edit', 'deliv_id', <!--{$arrDelivList[cnt].deliv_id}-->); return false;">編集</a></td>
-											<td align="center"><a href="<!--{$smarty.server.PHP_SELF}-->" onclick="fnModeSubmit('delete', 'deliv_id', <!--{$arrDelivList[cnt].deliv_id}-->); return false;">削除</a></td>
+											<td align="center"><a href="<!--{$smarty.server.PHP_SELF|escape}-->" onclick="fnModeSubmit('delete', 'deliv_id', <!--{$arrDelivList[cnt].deliv_id}-->); return false;">削除</a></td>
 											<td align="center">
 											<!--{if $smarty.section.cnt.iteration != 1}-->
-											<a href="<!--{$smarty.server.PHP_SELF}-->" onclick="fnModeSubmit('up','deliv_id', '<!--{$arrDelivList[cnt].deliv_id}-->'); return false;">上へ</a>
+											<a href="<!--{$smarty.server.PHP_SELF|escape}-->" onclick="fnModeSubmit('up','deliv_id', '<!--{$arrDelivList[cnt].deliv_id}-->'); return false;">上へ</a>
 											<!--{/if}-->
 											<!--{if $smarty.section.cnt.iteration != $smarty.section.cnt.last}-->
-											<a href="<!--{$smarty.server.PHP_SELF}-->" onclick="fnModeSubmit('down','deliv_id', '<!--{$arrDelivList[cnt].deliv_id}-->'); return false;">下へ</a>
+											<a href="<!--{$smarty.server.PHP_SELF|escape}-->" onclick="fnModeSubmit('down','deliv_id', '<!--{$arrDelivList[cnt].deliv_id}-->'); return false;">下へ</a>
 											<!--{/if}-->
 											</td>
 										</tr>

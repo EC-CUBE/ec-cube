@@ -7,7 +7,7 @@
 *}-->
 <!--¡ú¡ú¥á¥¤¥ó¥³¥ó¥Æ¥ó¥Ä¡ú¡ú-->
 <table width="878" border="0" cellspacing="0" cellpadding="0" summary=" ">
-<form name="form1" id="form1" method="post" action="<!--{$smarty.server.PHP_SELF}-->">
+<form name="form1" id="form1" method="post" action="<!--{$smarty.server.PHP_SELF|escape}-->">
 <input type="hidden" name="mode" value="confirm">
 <input type="hidden" name="order_id" value="<!--{$tpl_order_id}-->">
 <!--{foreach key=key item=item from=$arrSearchHidden}-->
@@ -63,7 +63,7 @@
 								<td bgcolor="#ffffff" width="140" class="fs12n"><!--{$arrMailHistory[cnt].send_date|sfDispDBDate|escape}--></td>
 								<!--{assign var=key value="`$arrMailHistory[cnt].template_id`"}-->
 								<td bgcolor="#ffffff" width="300" class="fs12n"><!--{$arrMAILTEMPLATE[$key]|escape}--></td>
-								<td bgcolor="#ffffff" width="300" class="fs12n"><a href="<!--{$smarty.server.PHP_SELF}-->" onclick="win01('./mail_view.php?send_id=<!--{$arrMailHistory[cnt].send_id}-->','mail_view','650','800'); return false;"><!--{$arrMailHistory[cnt].subject|escape}--></a></td>
+								<td bgcolor="#ffffff" width="300" class="fs12n"><a href="<!--{$smarty.server.PHP_SELF|escape}-->" onclick="win01('./mail_view.php?send_id=<!--{$arrMailHistory[cnt].send_id}-->','mail_view','650','800'); return false;"><!--{$arrMailHistory[cnt].subject|escape}--></a></td>
 							</tr>
 							<!--{/section}-->
 						</table>

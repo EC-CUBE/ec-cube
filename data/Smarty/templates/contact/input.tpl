@@ -38,7 +38,7 @@
 				入力後、一番下の「確認ページへ」ボタンをクリックしてください。<br />　<br />
 				<!--{$name|escape}-->様</span></div>
 				
-				<form action="<!--{$smarty.server.PHP_SELF}-->" method="post" name="form1">
+				<form action="<!--{$smarty.server.PHP_SELF|escape}-->" method="post" name="form1">
 				<input type="hidden" name="mode" value="confirm">
 				<input type="hidden" name="name" value="<!--{$name|escape}-->">
 				<input type="hidden" name="kana" value="<!--{$kana|escape}-->">

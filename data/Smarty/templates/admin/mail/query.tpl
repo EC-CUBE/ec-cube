@@ -36,7 +36,7 @@ self.moveTo(20,20);self.focus();
 <div align="center">
 <!--¡ú¡ú¥á¥¤¥ó¥³¥ó¥Æ¥ó¥Ä¡ú¡ú-->
 <table width="700" border="0" cellspacing="0" cellpadding="0" summary=" ">
-<form name="form1" id="form1" method="post" action="<!--{$smarty.server.PHP_SELF}-->">
+<form name="form1" id="form1" method="post" action="<!--{$smarty.server.PHP_SELF|escape}-->">
 <input type="hidden" name="mode" value="search">
 	<tr valign="top">
 		<td class="mainbg">

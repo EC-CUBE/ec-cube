@@ -7,7 +7,7 @@
 *}-->
 <!--¡ú¡ú¥á¥¤¥ó¥³¥ó¥Æ¥ó¥Ä¡ú¡ú-->
 <table width="878" border="0" cellspacing="0" cellpadding="0" summary=" ">
-<form name="form1" id="form1" method="post" action="<!--{$smarty.server.PHP_SELF}-->">
+<form name="form1" id="form1" method="post" action="<!--{$smarty.server.PHP_SELF|escape}-->">
 <input type="hidden" name="mode" value="complete">
 <!--{foreach from=$arrForm key=key item=item}-->
 	<!--{if $key ne "mode" && $key ne "subm"}-->

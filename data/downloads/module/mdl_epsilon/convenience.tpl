@@ -27,7 +27,7 @@
 				入力後、一番下の「ご注文完了ページへ」ボタンをクリックしてください。</td>
 			</tr>
 			<tr><td height="20"></td></tr>
-			<form name="form1" id="form1" method="post" action="<!--{$smarty.server.PHP_SELF}-->">
+			<form name="form1" id="form1" method="post" action="<!--{$smarty.server.PHP_SELF|escape}-->">
 			<input type="hidden" name="mode" value="send">
 			<input type="hidden" name="uniqid" value="<!--{$tpl_uniqid}-->">
 			<tr><td class="fs12n"><span class="red"><!--{$arrErr.convenience}--></span></td></tr>
@@ -72,7 +72,7 @@
 			<tr><td height="20"></td></tr>
 			<tr>
 				<td align="center">
-					<a href="<!--{$smarty.server.PHP_SELF}-->" onmouseover="chgImgImageSubmit('<!--{$smarty.const.URL_DIR}-->img/common/b_back_on.gif',back03)" onmouseout="chgImgImageSubmit('<!--{$smarty.const.URL_DIR}-->img/common/b_back.gif',back03)" onclick="fnModeSubmit('return', '', ''); return false;"><img src="<!--{$smarty.const.URL_DIR}-->img/common/b_back.gif" width="150" height="30" alt="戻る" border="0" name="back03" id="back03"/></a>
+					<a href="<!--{$smarty.server.PHP_SELF|escape}-->" onmouseover="chgImgImageSubmit('<!--{$smarty.const.URL_DIR}-->img/common/b_back_on.gif',back03)" onmouseout="chgImgImageSubmit('<!--{$smarty.const.URL_DIR}-->img/common/b_back.gif',back03)" onclick="fnModeSubmit('return', '', ''); return false;"><img src="<!--{$smarty.const.URL_DIR}-->img/common/b_back.gif" width="150" height="30" alt="戻る" border="0" name="back03" id="back03"/></a>
 					<img src="<!--{$smarty.const.URL_DIR}-->img/_.gif" width="20" height="" alt="" />
 					<input type="image" onmouseover="chgImgImageSubmit('<!--{$smarty.const.URL_DIR}-->img/shopping/b_ordercomp_on.gif',this)" onmouseout="chgImgImageSubmit('<!--{$smarty.const.URL_DIR}-->img/shopping/b_ordercomp.gif',this)" src="<!--{$smarty.const.URL_DIR}-->img/shopping/b_ordercomp.gif" width="150" height="30" alt="ご注文完了ページへ" border="0" name="next" id="next" />
 				</td>

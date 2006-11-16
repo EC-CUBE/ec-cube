@@ -7,7 +7,7 @@
 *}-->
 <!--¡ú¡ú¥á¥¤¥ó¥³¥ó¥Æ¥ó¥Ä¡ú¡ú-->
 <table width="878" border="0" cellspacing="0" cellpadding="0" summary=" ">
-<form name="search_form" id="search_form" method="post" action="<!--{$smarty.server.PHP_SELF}-->">
+<form name="search_form" id="search_form" method="post" action="<!--{$smarty.server.PHP_SELF|escape}-->">
 <input type="hidden" name="mode" value="search">
 <!--{foreach key=key item=item from=$arrHidden}-->
 <!--{if $key == 'campaign_id' || $key == 'search_mode'}-->
@@ -166,7 +166,7 @@
 
 <!--¡ú¡ú¸¡º÷·ë²Ì°ìÍ÷¡ú¡ú-->
 <table width="878" border="0" cellspacing="0" cellpadding="0" summary=" ">
-<form name="form1" id="form1" method="post" action="<!--{$smarty.server.PHP_SELF}-->">
+<form name="form1" id="form1" method="post" action="<!--{$smarty.server.PHP_SELF|escape}-->">
 <input type="hidden" name="mode" value="search">
 <input type="hidden" name="product_id" value="">
 <input type="hidden" name="category_id" value="">

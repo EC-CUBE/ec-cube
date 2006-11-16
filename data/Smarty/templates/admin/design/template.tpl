@@ -7,7 +7,7 @@
 *}-->
 <!--¡ú¡ú¥á¥¤¥ó¥³¥ó¥Æ¥ó¥Ä¡ú¡ú-->
 <table width="878" border="0" cellspacing="0" cellpadding="0" summary=" ">
-<form name="form1" id="form1" method="post" action="<!--{$smarty.server.PHP_SELF}-->" onsubmit="return lfnModeSubmit('confirm')">
+<form name="form1" id="form1" method="post" action="<!--{$smarty.server.PHP_SELF|escape}-->" onsubmit="return lfnModeSubmit('confirm')">
 <!--{foreach from=$smarty.post key="key" item="item"}-->
 <!--{if $key ne "mode"}--><input type="hidden" name="<!--{$key|escape}-->" value="<!--{$item|escape}-->">
 <!--{/if}-->

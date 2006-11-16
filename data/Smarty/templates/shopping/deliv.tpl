@@ -20,7 +20,7 @@
 
 		<!--▼MAIN ONTENTS-->
 		<table width="700" border="0" cellspacing="0" cellpadding="0" summary=" ">
-		<form name="form1" id="form1" method="post" action="<!--{$smarty.server.PHP_SELF}-->">
+		<form name="form1" id="form1" method="post" action="<!--{$smarty.server.PHP_SELF|escape}-->">
 		<input type="hidden" name="mode" value="customer_addr">
 		<input type="hidden" name="uniqid" value="<!--{$tpl_uniqid}-->">
 		<input type="hidden" name="other_deliv_id" value="">
@@ -36,7 +36,7 @@
 			<tr><td height="15"></td></tr>
 			<tr>
 				<td>
-					<a href="../mypage/delivery_addr.php" onclick="win02('../mypage/delivery_addr.php?page=<!--{$smarty.server.PHP_SELF}-->','new_deiv','600','640'); return false;" onmouseover="chgImg('<!--{$smarty.const.URL_DIR}-->img/common/newadress_on.gif','addition');" onmouseout="chgImg('<!--{$smarty.const.URL_DIR}-->img/common/newadress.gif','addition');"><img src="<!--{$smarty.const.URL_DIR}-->img/common/newadress.gif" width="160" height="22" alt="新しいお届け先を追加する" name="addition" id="addition" /></a>
+					<a href="../mypage/delivery_addr.php" onclick="win02('../mypage/delivery_addr.php?page=<!--{$smarty.server.PHP_SELF|escape}-->','new_deiv','600','640'); return false;" onmouseover="chgImg('<!--{$smarty.const.URL_DIR}-->img/common/newadress_on.gif','addition');" onmouseout="chgImg('<!--{$smarty.const.URL_DIR}-->img/common/newadress.gif','addition');"><img src="<!--{$smarty.const.URL_DIR}-->img/common/newadress.gif" width="160" height="22" alt="新しいお届け先を追加する" name="addition" id="addition" /></a>
 				</td>
 			</tr>
 			<tr><td height="20"></td></tr>
@@ -81,10 +81,10 @@
 								<!--{$arrAddr[cnt].name01|escape}--> <!--{$arrAddr[cnt].name02|escape}-->
 							</td>
 							<td align="center">
-								<!--{if !$smarty.section.cnt.first}--><a href="<!--{$smarty.const.URL_DIR}-->mypage/delivery_addr.php" onclick="win02('/mypage/delivery_addr.php?page=<!--{$smarty.server.PHP_SELF}-->&other_deliv_id=<!--{$arrAddr[cnt].other_deliv_id}-->','new_deiv','600','640'); return false;">変更</a><!--{/if}-->
+								<!--{if !$smarty.section.cnt.first}--><a href="<!--{$smarty.const.URL_DIR}-->mypage/delivery_addr.php" onclick="win02('/mypage/delivery_addr.php?page=<!--{$smarty.server.PHP_SELF|escape}-->&other_deliv_id=<!--{$arrAddr[cnt].other_deliv_id}-->','new_deiv','600','640'); return false;">変更</a><!--{/if}-->
 							</td>
 							<td align="center">
-								<!--{if !$smarty.section.cnt.first}--><a href="<!--{$smarty.server.PHP_SELF}-->" onclick="fnModeSubmit('delete', 'other_deliv_id', '<!--{$arrAddr[cnt].other_deliv_id}-->'); return false">削除</a><!--{/if}-->
+								<!--{if !$smarty.section.cnt.first}--><a href="<!--{$smarty.server.PHP_SELF|escape}-->" onclick="fnModeSubmit('delete', 'other_deliv_id', '<!--{$arrAddr[cnt].other_deliv_id}-->'); return false">削除</a><!--{/if}-->
 							</td>
 						</tr>
 					<!--{/section}-->

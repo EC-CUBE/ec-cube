@@ -34,7 +34,7 @@
 							<tr class="fs12" >
 								<td height="150" bgcolor="#ffffff" class="fs18n" align="center">登録が完了致しました。<br /> <br /> <br />
 								<a href="./product.php">→続けて登録を行う</a><br /> <br /> <br />
-								<a href="<!--{$smarty.server.PHP_SELF}-->" onclick="fnModeSubmit('pre_edit', 'product_id', '<!--{$tpl_product_id}-->'); return false;">→この商品の規格を登録する</a></td>
+								<a href="<!--{$smarty.server.PHP_SELF|escape}-->" onclick="fnModeSubmit('pre_edit', 'product_id', '<!--{$tpl_product_id}-->'); return false;">→この商品の規格を登録する</a></td>
 							</tr>
 						</table>
 						<!--完了メッセージテーブルここまで-->

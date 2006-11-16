@@ -18,7 +18,7 @@
 </script>
 <!--★★メインコンテンツ★★-->
 <table width="878" border="0" cellspacing="0" cellpadding="0" summary=" ">
-<form name="form1" id="form1" method="post" action="<!--{$smarty.server.PHP_SELF}-->">
+<form name="form1" id="form1" method="post" action="<!--{$smarty.server.PHP_SELF|escape}-->">
 <input type="hidden" name="mode" value="edit">
 <input type="hidden" name="order_id" value="<!--{$tpl_order_id}-->">
 <input type="hidden" name="edit_customer_id" value="<!--{$tpl_order_id}-->">
@@ -328,7 +328,7 @@
 							</tr>
 							<tr bgcolor="#ffffff" class="fs12n">
 								<!--{if $arrDisp.customer_id > 0}-->
-								<td colspan="5" align="right">現在ポイント（ポイントの修正は<a href="<!--{$smarty.server.PHP_SELF}-->" onclick="return fnEdit('<!--{$arrDisp.customer_id}-->');">顧客編集</a>から手動にてお願い致します。）</td>
+								<td colspan="5" align="right">現在ポイント（ポイントの修正は<a href="<!--{$smarty.server.PHP_SELF|escape}-->" onclick="return fnEdit('<!--{$arrDisp.customer_id}-->');">顧客編集</a>から手動にてお願い致します。）</td>
 								<td align="right">
 								<!--{$arrForm.point.value|number_format}-->
 								 pt</td>
@@ -338,7 +338,7 @@
 							</tr>
 							<!--{*
 							<tr bgcolor="#ffffff" class="fs12n">
-								<td colspan="5" align="right">反映後ポイント（ポイントの変更は<a href="<!--{$smarty.server.PHP_SELF}-->" onclick="return fnEdit('<!--{$arrDisp.customer_id}-->');">顧客編集</a>から手動にてお願い致します。）</td>
+								<td colspan="5" align="right">反映後ポイント（ポイントの変更は<a href="<!--{$smarty.server.PHP_SELF|escape}-->" onclick="return fnEdit('<!--{$arrDisp.customer_id}-->');">顧客編集</a>から手動にてお願い致します。）</td>
 								<td align="right">
 								<span class="red12"><!--{$arrErr.total_point}--></span>
 								<!--{$arrForm.total_point.value}-->

@@ -9,7 +9,7 @@
 		<td align="right" bgcolor="#ffffff">
 		<!--¢§MAIN ONTENTS-->
 		<table width="580" border="0" cellspacing="0" cellpadding="0" summary=" ">
-			<form name="form1" id="form1" method="post" action="<!--{$smarty.server.PHP_SELF}-->">
+			<form name="form1" id="form1" method="post" action="<!--{$smarty.server.PHP_SELF|escape}-->">
 			<input type="hidden" name="mode" value="confirm">
 			<tr>
 				<td><img src="<!--{$smarty.const.URL_DIR}-->img/entry/title.jpg" width="580" height="40" alt="²ñ°÷ÅÐÏ¿"></td>

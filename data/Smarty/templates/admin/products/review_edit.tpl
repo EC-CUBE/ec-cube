@@ -7,7 +7,7 @@
 *}-->
 <!--¡ú¡ú¥á¥¤¥ó¥³¥ó¥Æ¥ó¥Ä¡ú¡ú-->
 <table width="878" border="0" cellspacing="0" cellpadding="0" summary=" ">
-<form name="form1" id="form1" method="post" action="<!--{$smarty.server.PHP_SELF}-->" >
+<form name="form1" id="form1" method="post" action="<!--{$smarty.server.PHP_SELF|escape}-->" >
 <input type="hidden" name="mode" value="complete">
 <input type="hidden" name="review_id" value="<!--{$tpl_review_id}-->" >
 <input type="hidden" name="pre_status" value="<!--{$tpl_pre_status}-->">

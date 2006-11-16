@@ -208,7 +208,6 @@ if($arrData["payment_total"] > SEVEN_CHARGE_MAX){
 	unset($arrConv[11]);
 }
 
-
 $objPage->arrConv = $arrConv;
 
 $objPage->arrForm =$objFormParam->getHashArray();

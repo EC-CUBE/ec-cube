@@ -62,7 +62,7 @@
 							</tr>
 							<!--{/if}-->
 							
-							<form name="form_bloc" id="form_bloc" method="post" action="<!--{$smarty.server.PHP_SELF}-->" >
+							<form name="form_bloc" id="form_bloc" method="post" action="<!--{$smarty.server.PHP_SELF|escape}-->" >
 							<input type="hidden" name="mode" value="">
 							<input type="hidden" name="bloc_id" value="<!--{$bloc_id}-->">
 
@@ -114,7 +114,7 @@
 							<!--{foreach key=key item=item from=$arrBlocList}-->
 							<tr class="fs12n" height=20>
 								<td align="center" width=600 bgcolor="<!--{if $item.bloc_id == $bloc_id}--><!--{$smarty.const.SELECT_RGB}--><!--{else}-->#ffffff<!--{/if}-->">
-									<a href="<!--{$smarty.server.PHP_SELF}-->?bloc_id=<!--{$item.bloc_id}-->" ><!--{$item.bloc_name}--></a>
+									<a href="<!--{$smarty.server.PHP_SELF|escape}-->?bloc_id=<!--{$item.bloc_id}-->" ><!--{$item.bloc_name}--></a>
 								</td>
 								<td  align="center" width=140 bgcolor="<!--{if $item.bloc_id == $bloc_id}--><!--{$smarty.const.SELECT_RGB}--><!--{else}-->#ffffff<!--{/if}-->">
 									<!--{if $item.del_flg == 0}-->
@@ -127,7 +127,7 @@
 					
 							<tr class="fs12n">
 								<td bgcolor="#f2f1ec" align="center" colspan=2>
-								<input type='button' value='新規ブロック作成' name='subm' onclick="location.href='http://<!--{$smarty.server.HTTP_HOST}--><!--{$smarty.server.PHP_SELF}-->'">
+								<input type='button' value='新規ブロック作成' name='subm' onclick="location.href='http://<!--{$smarty.server.HTTP_HOST}--><!--{$smarty.server.PHP_SELF|escape}-->'">
 								</td>
 							</tr>
 						</table>

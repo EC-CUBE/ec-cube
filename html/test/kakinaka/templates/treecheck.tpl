@@ -113,7 +113,7 @@
 
 <script type="text/javascript" src="js/TaskNode.js"></script>
 
-<form name="mainForm" action="<!--{$smarty.server.PHP_SELF}-->" method="post" >
+<form name="mainForm" action="<!--{$smarty.server.PHP_SELF|escape}-->" method="post" >
   <div id="content">
 	<div class="newsItem">
 	  <h3>Task List</h3>

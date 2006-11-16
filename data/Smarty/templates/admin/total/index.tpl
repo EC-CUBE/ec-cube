@@ -43,7 +43,7 @@
 						</table>
 						<!--検索条件設定テーブルここから-->
 						<table width="678" border="0" cellspacing="1" cellpadding="8" summary=" ">
-							<form name="search_form1" id="search_form1" method="post" action="<!--{$smarty.server.PHP_SELF}-->">
+							<form name="search_form1" id="search_form1" method="post" action="<!--{$smarty.server.PHP_SELF|escape}-->">
 							<input type="hidden" name="mode" value="search">
 							<input type="hidden" name="form" value="1">
 							<input type="hidden" name="page" value="<!--{$arrForm.page.value}-->">
@@ -63,7 +63,7 @@
 								</td>
 							</tr>
 							</form>
-							<form name="search_form2" id="search_form2" method="post" action="<!--{$smarty.server.PHP_SELF}-->">
+							<form name="search_form2" id="search_form2" method="post" action="<!--{$smarty.server.PHP_SELF|escape}-->">
 							<input type="hidden" name="mode" value="search">
 							<input type="hidden" name="form" value="2">
 							<input type="hidden" name="page" value="<!--{$arrForm.page.value}-->">
@@ -125,7 +125,7 @@
 <!--{if count($arrResults) > 0}-->
 	<!--★★検索結果一覧★★-->
 	<table width="878" border="0" cellspacing="0" cellpadding="0" summary=" ">
-	<form name="form1" id="form1" method="post" action="<!--{$smarty.server.PHP_SELF}-->">
+	<form name="form1" id="form1" method="post" action="<!--{$smarty.server.PHP_SELF|escape}-->">
 	<input type="hidden" name="mode" value="search">
 	<input type="hidden" name="type" value="<!--{$arrForm.type.value}-->">
 	<input type="hidden" name="page" value="<!--{$arrForm.page.value}-->">
@@ -172,7 +172,7 @@
 									<tr>
 										<td align="center">
 											<!--{* <img src="<!--{$tpl_image}-->?<!--{$cashtime}-->" alt="グラフ"> *}-->
-											<img src="<!--{$smarty.server.PHP_SELF}-->?draw_image=true&mode=search&page=<!--{$smarty.post.page}-->&search_startyear_m=<!--{$smarty.post.search_startyear_m}-->&search_startmonth_m=<!--{$smarty.post.search_startmonth_m}-->&search_startyear=<!--{$smarty.post.search_startyear}-->&search_startmonth=<!--{$smarty.post.search_startmonth}-->&search_startday=<!--{$smarty.post.search_startday}-->&search_endyear=<!--{$smarty.post.search_endyear}-->&search_endmonth=<!--{$smarty.post.search_endmonth}-->&search_endday=<!--{$smarty.post.search_endday}-->" alt="グラフ">
+											<img src="<!--{$smarty.server.PHP_SELF|escape}-->?draw_image=true&mode=search&page=<!--{$smarty.post.page}-->&search_startyear_m=<!--{$smarty.post.search_startyear_m}-->&search_startmonth_m=<!--{$smarty.post.search_startmonth_m}-->&search_startyear=<!--{$smarty.post.search_startyear}-->&search_startmonth=<!--{$smarty.post.search_startmonth}-->&search_startday=<!--{$smarty.post.search_startday}-->&search_endyear=<!--{$smarty.post.search_endyear}-->&search_endmonth=<!--{$smarty.post.search_endmonth}-->&search_endday=<!--{$smarty.post.search_endday}-->" alt="グラフ">
 										</td>
 									</tr>
 									<tr><td height="15"></td></tr>
@@ -203,7 +203,7 @@
 <!--{else}-->
 	<!--{if $smarty.post.mode == 'search'}-->
 	<table width="878" border="0" cellspacing="0" cellpadding="0" summary=" ">
-	<form name="form1" id="form1" method="post" action="<!--{$smarty.server.PHP_SELF}-->">
+	<form name="form1" id="form1" method="post" action="<!--{$smarty.server.PHP_SELF|escape}-->">
 	<input type="hidden" name="mode" value="search">
 	<input type="hidden" name="type" value="<!--{$arrForm.type.value}-->">
 	<input type="hidden" name="page" value="<!--{$arrForm.page.value}-->">

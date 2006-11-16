@@ -6,7 +6,7 @@
 <p>アップデート可能なファイル一覧です。</p>
 
 <table>
-<form name="form1" method="post" action="<!--{$smarty.server.PHP_SELF}-->">
+<form name="form1" method="post" action="<!--{$smarty.server.PHP_SELF|escape}-->">
 <input type="hidden" name="filename" value="">
 <input type="hidden" name="mode" value="">
 <tr>

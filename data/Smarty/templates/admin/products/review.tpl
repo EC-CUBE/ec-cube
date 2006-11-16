@@ -7,7 +7,7 @@
 *}-->
 <!--¡ú¡ú¥á¥¤¥ó¥³¥ó¥Æ¥ó¥Ä¡ú¡ú-->
 <table width="878" border="0" cellspacing="0" cellpadding="0" summary=" ">
-<form name="search_form" method="post" action="<!--{$smarty.server.PHP_SELF}-->" >
+<form name="search_form" method="post" action="<!--{$smarty.server.PHP_SELF|escape}-->" >
 <input type="hidden" name="mode" value="search">
 	<tr valign="top">
 		<td background="<!--{$smarty.const.URL_DIR}-->img/contents/navi_bg.gif" height="402">
@@ -155,7 +155,7 @@
 
 	<!--¡ú¡ú¸¡º÷·ë²Ì°ìÍ÷¡ú¡ú-->
 	<table width="878" border="0" cellspacing="0" cellpadding="0" summary=" ">
-	<form name="form1" id="form1" method="post" action="<!--{$smarty.server.PHP_SELF}-->">
+	<form name="form1" id="form1" method="post" action="<!--{$smarty.server.PHP_SELF|escape}-->">
 	<input type="hidden" name="mode" value="search">
 	<input type="hidden" name="review_id" value="">
 	<input type="hidden" name="search_pageno" value="<!--{$tpl_pageno}-->">

@@ -7,7 +7,7 @@
 *}-->
 <!--★★メインコンテンツ★★-->
 <table width="878" border="0" cellspacing="0" cellpadding="0" summary=" ">
-<form name="form1" id="form1" method="post" action="<!--{$smarty.server.PHP_SELF}-->" enctype="multipart/form-data">
+<form name="form1" id="form1" method="post" action="<!--{$smarty.server.PHP_SELF|escape}-->" enctype="multipart/form-data">
 <input type="hidden" name="mode" value="edit">
 <input type="hidden" name="parent_category_id" value="<!--{$arrForm.parent_category_id}-->">
 <input type="hidden" name="category_id" value="<!--{$arrForm.category_id}-->">
@@ -54,7 +54,7 @@
 								<tr bgcolor="#ffffff">
 									<!--▼画面左-->
 									<td width="250" valign="top" class="fs12">
-									<a href="<!--{$smarty.server.PHP_SELF}-->">▼ホーム</a><br>
+									<a href="<!--{$smarty.server.PHP_SELF|escape}-->">▼ホーム</a><br>
 									<!--{section name=cnt loop=$arrTree}-->
 										<!--{assign var=level value="`$arrTree[cnt].level`}-->
 
@@ -70,7 +70,7 @@
 										<!--{* カテゴリ名表示 *}-->
 										<!--{assign var=disp_name value="`$arrTree[cnt].category_id`.`$arrTree[cnt].category_name`"}-->
 										<!--{if $arrTree[cnt].level != $smarty.const.LEVEL_MAX}-->
-											<a href="<!--{$smarty.server.PHP_SELF}-->" onclick="fnModeSubmit('tree', 'parent_category_id', <!--{$arrTree[cnt].category_id}-->); return false;">
+											<a href="<!--{$smarty.server.PHP_SELF|escape}-->" onclick="fnModeSubmit('tree', 'parent_category_id', <!--{$arrTree[cnt].category_id}-->); return false;">
 											<!--{if $arrForm.parent_category_id == $arrTree[cnt].category_id}-->
 												<img src="<!--{$smarty.const.URL_DIR}-->misc/openf.gif" border="0">
 											<!--{else}-->
@@ -117,27 +117,27 @@
 											<td><!--{$arrList[cnt].category_id}--></td>
 											<td>
 											<!--{if $arrList[cnt].level != $smarty.const.LEVEL_MAX}-->
-												<a href="<!--{$smarty.server.PHP_SELF}-->" onclick="fnModeSubmit('tree', 'parent_category_id', <!--{$arrList[cnt].category_id}-->); return false"><!--{$arrList[cnt].category_name|escape}--></td>
+												<a href="<!--{$smarty.server.PHP_SELF|escape}-->" onclick="fnModeSubmit('tree', 'parent_category_id', <!--{$arrList[cnt].category_id}-->); return false"><!--{$arrList[cnt].category_name|escape}--></td>
 											<!--{else}-->
 												<!--{$arrList[cnt].category_name|escape}-->
 											<!--{/if}-->
 											<td align="center">
 												<!--{if $arrForm.category_id != $arrList[cnt].category_id}-->
-												<a href="<!--{$smarty.server.PHP_SELF}-->" onclick="fnModeSubmit('pre_edit', 'category_id', <!--{$arrList[cnt].category_id}-->); return false;" />編集</a>
+												<a href="<!--{$smarty.server.PHP_SELF|escape}-->" onclick="fnModeSubmit('pre_edit', 'category_id', <!--{$arrList[cnt].category_id}-->); return false;" />編集</a>
 												<!--{else}-->
 												編集中
 												<!--{/if}-->
 											</td>
 											<td align="center">
-												<a href="<!--{$smarty.server.PHP_SELF}-->" onclick="fnModeSubmit('delete', 'category_id', <!--{$arrList[cnt].category_id}-->); return false;" />削除</a>
+												<a href="<!--{$smarty.server.PHP_SELF|escape}-->" onclick="fnModeSubmit('delete', 'category_id', <!--{$arrList[cnt].category_id}-->); return false;" />削除</a>
 											</td>
 											<td align="center">
 											<!--{* 移動 *}-->
 											<!--{if $smarty.section.cnt.iteration != 1}-->
-											<a href="<!--{$smarty.server.PHP_SELF}-->" onclick="fnModeSubmit('up','category_id', <!--{$arrList[cnt].category_id}-->); return false;">上へ</a>
+											<a href="<!--{$smarty.server.PHP_SELF|escape}-->" onclick="fnModeSubmit('up','category_id', <!--{$arrList[cnt].category_id}-->); return false;">上へ</a>
 											<!--{/if}-->
 											<!--{if $smarty.section.cnt.iteration != $smarty.section.cnt.last}-->
-											<a href="<!--{$smarty.server.PHP_SELF}-->" onclick="fnModeSubmit('down','category_id', <!--{$arrList[cnt].category_id}-->); return false;">下へ</a>
+											<a href="<!--{$smarty.server.PHP_SELF|escape}-->" onclick="fnModeSubmit('down','category_id', <!--{$arrList[cnt].category_id}-->); return false;">下へ</a>
 											<!--{/if}-->
 											</td>
 										</tr>

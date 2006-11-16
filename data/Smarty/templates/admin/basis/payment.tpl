@@ -7,7 +7,7 @@
 *}-->
 <!--¡ú¡ú¥á¥¤¥ó¥³¥ó¥Æ¥ó¥Ä¡ú¡ú-->
 <table width="878" border="0" cellspacing="0" cellpadding="0" summary=" ">
-<form name="form1" id="form1" method="post" action="<!--{$smarty.server.PHP_SELF}-->">
+<form name="form1" id="form1" method="post" action="<!--{$smarty.server.PHP_SELF|escape}-->">
 <input type="hidden" name="mode" value="edit">
 <input type="hidden" name="payment_id" value="<!--{$tpl_payment_id}-->">
 	<tr valign="top">
@@ -74,14 +74,14 @@
 												</tr>
 											</table>
 										<td><!--{assign var=key value="`$arrPaymentListFree[cnt].deliv_id`"}--><!--{$arrDelivList[$key]|default:"Ì¤ÅÐÏ¿"}--></td>
-										<td align="center"><!--{if $arrPaymentListFree[cnt].fix != 1}--><a href="<!--{$smarty.server.PHP_SELF}-->" onclick="win03('./payment_input.php?mode=pre_edit&payment_id=<!--{$arrPaymentListFree[cnt].payment_id}-->','payment_input','530','400'); return false;">ÊÔ½¸</a><!--{else}-->-<!--{/if}--></td>
-										<td align="center"><!--{if $arrPaymentListFree[cnt].fix != 1}--><a href="<!--{$smarty.server.PHP_SELF}-->" onclick="fnModeSubmit('delete', 'payment_id', <!--{$arrPaymentListFree[cnt].payment_id}-->); return false;">ºï½ü</a><!--{else}-->-<!--{/if}--></td>
+										<td align="center"><!--{if $arrPaymentListFree[cnt].fix != 1}--><a href="<!--{$smarty.server.PHP_SELF|escape}-->" onclick="win03('./payment_input.php?mode=pre_edit&payment_id=<!--{$arrPaymentListFree[cnt].payment_id}-->','payment_input','530','400'); return false;">ÊÔ½¸</a><!--{else}-->-<!--{/if}--></td>
+										<td align="center"><!--{if $arrPaymentListFree[cnt].fix != 1}--><a href="<!--{$smarty.server.PHP_SELF|escape}-->" onclick="fnModeSubmit('delete', 'payment_id', <!--{$arrPaymentListFree[cnt].payment_id}-->); return false;">ºï½ü</a><!--{else}-->-<!--{/if}--></td>
 										<td align="center">
 										<!--{if $smarty.section.cnt.iteration != 1}-->
-										<a href="<!--{$smarty.server.PHP_SELF}-->" onclick="fnModeSubmit('up','payment_id', <!--{$arrPaymentListFree[cnt].payment_id}-->); return false;">¾å¤Ø</a>
+										<a href="<!--{$smarty.server.PHP_SELF|escape}-->" onclick="fnModeSubmit('up','payment_id', <!--{$arrPaymentListFree[cnt].payment_id}-->); return false;">¾å¤Ø</a>
 										<!--{/if}-->
 										<!--{if $smarty.section.cnt.iteration != $smarty.section.cnt.last}-->
-										<a href="<!--{$smarty.server.PHP_SELF}-->" onclick="fnModeSubmit('down','payment_id', <!--{$arrPaymentListFree[cnt].payment_id}-->); return false;">²¼¤Ø</a>
+										<a href="<!--{$smarty.server.PHP_SELF|escape}-->" onclick="fnModeSubmit('down','payment_id', <!--{$arrPaymentListFree[cnt].payment_id}-->); return false;">²¼¤Ø</a>
 										<!--{/if}-->
 										</td>
 									</tr>

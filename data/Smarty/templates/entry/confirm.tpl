@@ -9,7 +9,7 @@
 		<td align="right" bgcolor="#ffffff">
 		<!--¢§MAIN ONTENTS-->
 		<table width="580" border="0" cellspacing="0" cellpadding="0" summary=" ">
-			<form name="form1" id="form1" method="post" action="<!--{$smarty.server.PHP_SELF}-->">
+			<form name="form1" id="form1" method="post" action="<!--{$smarty.server.PHP_SELF|escape}-->">
 				<input type="hidden" name="mode" value="complete">
 			<!--{foreach from=$list_data key=key item=item}-->
 				<input type="hidden" name="<!--{$key|escape}-->" value="<!--{$item|escape}-->">
@@ -98,7 +98,7 @@
 			<tr><td height="25"></td></tr>
 			<tr align="center">
 				<td>
-					<a href="<!--{$smarty.server.PHP_SELF}-->" onclick="fnModeSubmit('return', '', ''); return false;" onmouseover="chgImg('<!--{$smarty.const.URL_DIR}-->img/common/b_back_on.gif','back')" onmouseout="chgImg('<!--{$smarty.const.URL_DIR}-->img/common/b_back.gif','back')"><img src="<!--{$smarty.const.URL_DIR}-->img/common/b_back.gif" width="150" height="30" alt="Ìá¤ë" border="0" name="back" id="back" /></a>
+					<a href="<!--{$smarty.server.PHP_SELF|escape}-->" onclick="fnModeSubmit('return', '', ''); return false;" onmouseover="chgImg('<!--{$smarty.const.URL_DIR}-->img/common/b_back_on.gif','back')" onmouseout="chgImg('<!--{$smarty.const.URL_DIR}-->img/common/b_back.gif','back')"><img src="<!--{$smarty.const.URL_DIR}-->img/common/b_back.gif" width="150" height="30" alt="Ìá¤ë" border="0" name="back" id="back" /></a>
 					<img src="<!--{$smarty.const.URL_DIR}-->img/_.gif" width="20" height="" alt="" />
 					<input type="image" onmouseover="chgImgImageSubmit('<!--{$smarty.const.URL_DIR}-->img/entry/b_entrycomp_on.gif',this)" onmouseout="chgImgImageSubmit('<!--{$smarty.const.URL_DIR}-->img/entry/b_entrycomp.gif',this)" src="<!--{$smarty.const.URL_DIR}-->img/entry/b_entrycomp.gif" width="150" height="30" alt="Á÷¿®" border="0" name="send" id="send" />
 				</td>

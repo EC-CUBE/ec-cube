@@ -92,7 +92,7 @@ function moving(news_id,rank, max_rank) {
 
 <!--★★メインコンテンツ★★-->
 <table width="878" border="0" cellspacing="0" cellpadding="0" summary=" ">
-<form name="form1" id="form1" method="post" action="<!--{$smarty.server.PHP_SELF}-->">
+<form name="form1" id="form1" method="post" action="<!--{$smarty.server.PHP_SELF|escape}-->">
 <input type="hidden" name="mode" value="">
 <input type="hidden" name="news_id" value="<!--{$news_id|escape}-->">
 <input type="hidden" name="term" value="">
@@ -226,7 +226,7 @@ function moving(news_id,rank, max_rank) {
 
 								<!--▼一覧表示エリアここから-->
 								<table width="678" border="0" cellspacing="1" cellpadding="8" summary=" ">
-								<form name="move" id="move" method="post" action="<!--{$smarty.server.PHP_SELF}-->">
+								<form name="move" id="move" method="post" action="<!--{$smarty.server.PHP_SELF|escape}-->">
 								<input type="hidden" name="mode" value="moveRankSet">
 								<input type="hidden" name="term" value="setposition">
 								<input type="hidden" name="news_id" value="">
@@ -260,7 +260,7 @@ function moving(news_id,rank, max_rank) {
 										<td width="" align="center"><a href="#" onclick="return func_del('<!--{$list_data[data].news_id|escape}-->');">削除</a></td>
 										<td width="" align="center">
 										<!--{if count($list_data) != 1}-->
-										<input type="text" name="pos-<!--{$list_data[data].news_id}-->" size="3" class="box3" />番目へ<a href="<!--{$smarty.server.PHP_SELF}-->" onclick="fnFormModeSubmit('move', 'moveRankSet','news_id', '<!--{$list_data[data].news_id}-->'); return false;">移動</a><br />
+										<input type="text" name="pos-<!--{$list_data[data].news_id}-->" size="3" class="box3" />番目へ<a href="<!--{$smarty.server.PHP_SELF|escape}-->" onclick="fnFormModeSubmit('move', 'moveRankSet','news_id', '<!--{$list_data[data].news_id}-->'); return false;">移動</a><br />
 										<!--{/if}-->
 										<!--{if $list_data[data].rank ne $max_rank}--><a href="#" onclick="return func_rankMove('up', '<!--{$list_data[data].news_id|escape}-->', '<!--{$max_rank|escape}-->');">上へ</a><!--{/if}-->　<!--{if $list_data[data].rank ne 1}--><a href="#" onclick="return func_rankMove('down', '<!--{$list_data[data].news_id|escape}-->', '<!--{$max_rank|escape}-->');">下へ</a><!--{/if}-->
 										</td>

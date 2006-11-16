@@ -72,7 +72,7 @@ function lnSetSelect(form, name1, name2, val) {
 						<table width="290" border="0" cellspacing="0" cellpadding="0" summary=" ">	
 							<tr>
 								<!--{if $arrProduct.main_large_image != ""}-->
-									<div id="picture"><a href="<!--{$smarty.server.PHP_SELF}-->" onclick="win01('./detail_image.php?product_id=<!--{$arrProduct.product_id}-->&image=main_large_image<!--{if $smarty.get.admin == 'on'}-->&admin=on<!--{/if}-->','detail_image','560','580'); return false;" target="_blank"><!--メイン画像--><!--{assign var=key value="main_image"}--><img src="<!--{$arrFile[$key].filepath}-->" width="<!--{$arrFile[$key].width}-->" height="<!--{$arrFile[$key].height}-->" alt="<!--{$arrProduct.name|escape}-->" /></a></div>						
+									<div id="picture"><a href="<!--{$smarty.server.PHP_SELF|escape}-->" onclick="win01('./detail_image.php?product_id=<!--{$arrProduct.product_id}-->&image=main_large_image<!--{if $smarty.get.admin == 'on'}-->&admin=on<!--{/if}-->','detail_image','560','580'); return false;" target="_blank"><!--メイン画像--><!--{assign var=key value="main_image"}--><img src="<!--{$arrFile[$key].filepath}-->" width="<!--{$arrFile[$key].width}-->" height="<!--{$arrFile[$key].height}-->" alt="<!--{$arrProduct.name|escape}-->" /></a></div>						
 								<!--{else}-->
 									<div id="picture"><!--メイン画像--><!--{assign var=key value="main_image"}--><img src="<!--{$arrFile[$key].filepath}-->" width="<!--{$arrFile[$key].width}-->" height="<!--{$arrFile[$key].height}-->" alt="<!--{$arrProduct.name|escape}-->" /></div>
 								<!--{/if}-->
@@ -81,7 +81,7 @@ function lnSetSelect(form, name1, name2, val) {
 							<tr>
 								<td>
 								<!--{if $arrProduct.main_large_image != ""}-->
-									<!--★拡大する★--><a href="<!--{$smarty.server.PHP_SELF}-->" onclick="win01('./detail_image.php?product_id=<!--{$arrProduct.product_id}-->&image=main_large_image<!--{if $smarty.get.admin == 'on'}-->&admin=on<!--{/if}-->','detail_image', '560', '580'); return false;" target="_blank"><img src="<!--{$smarty.const.URL_DIR}-->img/products/b_expansion.gif" width="85" height="13" alt="画像を拡大する" /></a>
+									<!--★拡大する★--><a href="<!--{$smarty.server.PHP_SELF|escape}-->" onclick="win01('./detail_image.php?product_id=<!--{$arrProduct.product_id}-->&image=main_large_image<!--{if $smarty.get.admin == 'on'}-->&admin=on<!--{/if}-->','detail_image', '560', '580'); return false;" target="_blank"><img src="<!--{$smarty.const.URL_DIR}-->img/products/b_expansion.gif" width="85" height="13" alt="画像を拡大する" /></a>
 								<!--{/if}-->
 								</td>
 							</tr>
@@ -188,7 +188,7 @@ function lnSetSelect(form, name1, name2, val) {
 							<tr>
 								<td align="center">
 									<!--{if $tpl_stock_find}-->
-										<!--★カゴに入れる★--><a href="<!--{$smarty.server.PHP_SELF}-->" onclick="document.form1.submit(); return false;" onmouseover="chgImg('<!--{$smarty.const.URL_DIR}-->img/products/b_cartin_on.gif','cart');" onmouseout="chgImg('<!--{$smarty.const.URL_DIR}-->img/products/b_cartin.gif','cart');"><img src="<!--{$smarty.const.URL_DIR}-->img/products/b_cartin.gif" width="115" height="25" alt="カゴに入れる" name="cart" id="cart" /></a>
+										<!--★カゴに入れる★--><a href="<!--{$smarty.server.PHP_SELF|escape}-->" onclick="document.form1.submit(); return false;" onmouseover="chgImg('<!--{$smarty.const.URL_DIR}-->img/products/b_cartin_on.gif','cart');" onmouseout="chgImg('<!--{$smarty.const.URL_DIR}-->img/products/b_cartin.gif','cart');"><img src="<!--{$smarty.const.URL_DIR}-->img/products/b_cartin.gif" width="115" height="25" alt="カゴに入れる" name="cart" id="cart" /></a>
 									<!--{else}-->
 										<table width="285" cellspacing="0" cellpadding="0" summary=" ">
 										<tr><td height="10"></td></tr>
@@ -233,7 +233,7 @@ function lnSetSelect(form, name1, name2, val) {
 							<table width="215" border="0" cellspacing="0" cellpadding="0" summary=" ">	
 								<tr>
 									<!--{if $arrFile[$lkey].filepath != ""}-->
-										<td align="right"><div id="picture"><a href="<!--{$smarty.server.PHP_SELF}-->" onclick="win01('./detail_image.php?product_id=<!--{$arrProduct.product_id}-->&image=<!--{$lkey}--><!--{if $smarty.get.admin == 'on'}-->&admin=on<!--{/if}-->','detail_image','560','580'); return false;" target="_blank"><!--サブ画像--><img src="<!--{$arrFile[$key].filepath}-->" width="200" height="200" alt="<!--{$arrProduct.name|escape}-->" /></a></div>
+										<td align="right"><div id="picture"><a href="<!--{$smarty.server.PHP_SELF|escape}-->" onclick="win01('./detail_image.php?product_id=<!--{$arrProduct.product_id}-->&image=<!--{$lkey}--><!--{if $smarty.get.admin == 'on'}-->&admin=on<!--{/if}-->','detail_image','560','580'); return false;" target="_blank"><!--サブ画像--><img src="<!--{$arrFile[$key].filepath}-->" width="200" height="200" alt="<!--{$arrProduct.name|escape}-->" /></a></div>
 									<!--{else}-->
 										<td align="right"><img src="<!--{$arrFile[$key].filepath}-->" width="200" height="200" alt="<!--{$arrProduct.name|escape}-->" /></td>
 									<!--{/if}-->
@@ -241,7 +241,7 @@ function lnSetSelect(form, name1, name2, val) {
 								<tr><td height="8"></td></tr>
 								<tr>
 									<!--{if $arrFile[$lkey].filepath != ""}-->
-										<td align="right"><div id="more"><a href="<!--{$smarty.server.PHP_SELF}-->" onclick="win01('./detail_image.php?product_id=<!--{$arrProduct.product_id}-->&image=<!--{$lkey}--><!--{if $smarty.get.admin == 'on'}-->&admin=on<!--{/if}-->','detail_image','560','580'); return false;" onmouseover="chgImg('../img/products/b_expansion_on.gif','expansion02');" onmouseout="chgImg('../img/products/b_expansion.gif','expansion02');" target="_blank"><img src="<!--{$smarty.const.URL_DIR}-->img/products/b_expansion.gif" width="85" height="13" alt="画像を拡大する" /></a></div></td>
+										<td align="right"><div id="more"><a href="<!--{$smarty.server.PHP_SELF|escape}-->" onclick="win01('./detail_image.php?product_id=<!--{$arrProduct.product_id}-->&image=<!--{$lkey}--><!--{if $smarty.get.admin == 'on'}-->&admin=on<!--{/if}-->','detail_image','560','580'); return false;" onmouseover="chgImg('../img/products/b_expansion_on.gif','expansion02');" onmouseout="chgImg('../img/products/b_expansion.gif','expansion02');" target="_blank"><img src="<!--{$smarty.const.URL_DIR}-->img/products/b_expansion.gif" width="85" height="13" alt="画像を拡大する" /></a></div></td>
 									<!--{/if}-->
 								</tr>
 							</table>

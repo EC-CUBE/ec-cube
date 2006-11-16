@@ -67,7 +67,7 @@
 										<td align="center" rowspan="2"><a href="./preview.php?send_id=<!--{$arrDataList[cnt].send_id|escape}-->" target="_blank">確認</a></td>
 										<td align="center" rowspan="2"><a href="#" onclick="win03('./index.php?mode=query&send_id=<!--{$arrDataList[cnt].send_id|escape}-->','query','720','420'); return false;">確認</a></td>
 										<td align="center"><!--{$arrDataList[cnt].send_count|escape}--></td>
-										<td align="center" rowspan="2"><a href="<!--{$smarty.server.PHP_SELF}-->?mode=delete&send_id=<!--{$arrDataList[cnt].send_id|escape}-->" onclick="return window.confirm('配信履歴を削除しても宜しいでしょうか');">削除</a></td>
+										<td align="center" rowspan="2"><a href="<!--{$smarty.server.PHP_SELF|escape}-->?mode=delete&send_id=<!--{$arrDataList[cnt].send_id|escape}-->" onclick="return window.confirm('配信履歴を削除しても宜しいでしょうか');">削除</a></td>
 									</tr>
 									<tr bgcolor="#ffffff" class="fs12n">
 										<td align="center"><!--{$arrDataList[cnt].end_date|sfDispDBDate|escape}--></td>

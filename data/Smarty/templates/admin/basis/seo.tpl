@@ -7,7 +7,7 @@
 *}-->
 <!--★★メインコンテンツ★★-->
 <table width="878" border="0" cellspacing="0" cellpadding="0" summary=" ">
-<form name="form1" id="form1" method="post" action="<!--{$smarty.post.PHP_SELF}-->" onSubmit="return window.confirm('登録しても宜しいですか');">
+<form name="form1" id="form1" method="post" action="<!--{$smarty.post.PHP_SELF|escape}-->" onSubmit="return window.confirm('登録しても宜しいですか');">
 <input type="hidden" name="mode" value="confirm">
 <input type="hidden" name="page_id" value="">
 	<tr valign="top">

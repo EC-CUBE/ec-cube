@@ -7,7 +7,7 @@
 *}-->
 <!--¡ú¡ú¥á¥¤¥ó¥³¥ó¥Æ¥ó¥Ä¡ú¡ú-->
 <table width="878" border="0" cellspacing="0" cellpadding="0" summary=" ">
-<form name="form1" id="form1" method="POST" action="<!--{$smarty.server.PHP_SELF}-->" >
+<form name="form1" id="form1" method="POST" action="<!--{$smarty.server.PHP_SELF|escape}-->" >
 <input type="hidden" name="mode" value="">
 <input type="hidden" name="status" value="<!--{if $arrForm.status == ""}-->1<!--{else}--><!--{$arrForm.status}--><!--{/if}-->" >
 <input type="hidden" name="search_pageno" value="<!--{$tpl_pageno}-->" >
@@ -100,7 +100,7 @@
 									<!--{section name=cnt loop=$arrStatus}-->
 									<!--{assign var=status value="`$arrStatus[cnt].status`"}-->
 									<tr bgcolor="<!--{$arrORDERSTATUS_COLOR[$status]}-->" class="fs12">
-									<td align="center"><a href ="<!--{$smarty.server.PHP_SELF}-->" onclick="fnOpenWindow('./edit.php?order_id=<!--{$arrStatus[cnt].order_id}-->','order_disp','800','900'); return false;" ><!--{$arrStatus[cnt].order_id}--></td>
+									<td align="center"><a href ="<!--{$smarty.server.PHP_SELF|escape}-->" onclick="fnOpenWindow('./edit.php?order_id=<!--{$arrStatus[cnt].order_id}-->','order_disp','800','900'); return false;" ><!--{$arrStatus[cnt].order_id}--></td>
 									<td align="center"><!--{$arrStatus[cnt].create_date|sfDispDBDate:false}--></td>
 									<td><!--{$arrStatus[cnt].order_name01|escape}--><!--{$arrStatus[cnt].order_name02|escape}--></td>
 									<!--{assign var=payment_id value=`$arrStatus[cnt].payment_id`}-->

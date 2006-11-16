@@ -22,7 +22,7 @@
 </table>
 
 <table width="500" border="0" cellspacing="1" cellpadding="8" summary=" ">
-<form name="form1" id="form1" method="post" action="<!--{$smarty.server.PHP_SELF}-->">
+<form name="form1" id="form1" method="post" action="<!--{$smarty.server.PHP_SELF|escape}-->">
 <input type="hidden" name="mode" value="<!--{$tpl_mode}-->">
 <input type="hidden" name="step" value="0">
 

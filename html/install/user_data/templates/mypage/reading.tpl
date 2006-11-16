@@ -30,7 +30,7 @@
 				<!--{if $arrForm}-->
 				<div id="comment"><span class="fs12">ワンクリックで閲覧商品のページに行く事ができます。<br />
 				<span class="asterisk">※</span>最大<!--{$smarty.const.CUSTOMER_READING_MAX}-->件まで表示します。</span></div>
-				<form name="form1" method="post" action="<!--{$smarty.server.PHP_SELF}-->" >
+				<form name="form1" method="post" action="<!--{$smarty.server.PHP_SELF|escape}-->" >
 				<input type="hidden" name="product_id" value="">
 				<input type="hidden" name="mode" value="">
 				<input type="hidden" name="pageno" value="<!--{$tpl_pageno}-->">

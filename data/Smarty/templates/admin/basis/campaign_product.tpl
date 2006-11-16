@@ -27,7 +27,7 @@
 			<tr><td height="10"></td></tr>
 		</table>
 		
-<form name="search_form" id="search_form" method="post" action="<!--{$smarty.server.PHP_SELF}-->">
+<form name="search_form" id="search_form" method="post" action="<!--{$smarty.server.PHP_SELF|escape}-->">
 <input type="hidden" name="mode" value="search">
 		<!--▼検索テーブルここから-->
 		<table width="740" border="0" cellspacing="1" cellpadding="5" summary=" " bgcolor="#cccccc">
@@ -110,7 +110,7 @@
 		<input type="button" name="back" value="戻る" onclick="location.href='./point.php';">　<input type="submit" name="subm" value="この内容で検索する" />
 		</form>
 		
-		<form name="form1" id="form1" method="post" action="<!--{$smarty.server.PHP_SELF}-->">
+		<form name="form1" id="form1" method="post" action="<!--{$smarty.server.PHP_SELF|escape}-->">
 		<input type="hidden" name="mode" value="search">
 		<input type="hidden" name="product_id" value="">
 		<input type="hidden" name="category_id" value="">

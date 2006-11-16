@@ -27,7 +27,7 @@
 			<tr><td height="10"></td></tr>
 		</table>
 		
-		<form name="form1" id="form1" method="post" action="<!--{$smarty.server.PHP_SELF}-->">
+		<form name="form1" id="form1" method="post" action="<!--{$smarty.server.PHP_SELF|escape}-->">
 		<input type="hidden" name="mode" value="campaign_regist">
 		<input type="hidden" name="campaign_id" value="<!--{$smarty.post.campaign_id}-->">
 		<!--{foreach key=key item=item from=$arrSearchHidden}-->

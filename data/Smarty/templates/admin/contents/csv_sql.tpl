@@ -33,7 +33,7 @@ function fnTargetSelf(){
 
 <!--↙↙丟奶件戊件氾件汁↙↙-->
 <table width="878" border="0" cellspacing="0" cellpadding="0" summary=" ">
-<form name="form1" id="form1" method="post" action="<!--{$smarty.server.PHP_SELF}-->">
+<form name="form1" id="form1" method="post" action="<!--{$smarty.server.PHP_SELF|escape}-->">
 <input type="hidden" name="mode" value="confirm">
 <input type="hidden" name="sql_id" value="<!--{$sql_id}-->">
 <input type="hidden" name="csv_output_id" value="">
@@ -85,7 +85,7 @@ function fnTargetSelf(){
 										<!--{ foreach key=key item=item from=$arrSqlList }-->
 										<tr class="fs12n" height=20>
 											<td align="center" width=600 bgcolor="<!--{if $item.sql_id == $sql_id}--><!--{$smarty.const.SELECT_RGB}--><!--{else}-->#ffffff<!--{/if}-->">
-												<a href="<!--{$smarty.server.PHP_SELF}-->?sql_id=<!--{$item.sql_id}-->" ><!--{$item.sql_name}--></a>
+												<a href="<!--{$smarty.server.PHP_SELF|escape}-->?sql_id=<!--{$item.sql_id}-->" ><!--{$item.sql_name}--></a>
 											</td>
 											<td align="center" width=78 bgcolor="<!--{if $item.sql_id == $sql_id}--><!--{$smarty.const.SELECT_RGB}--><!--{else}-->#ffffff<!--{/if}-->">
 												<input type='button' value='CSV請恘' name='csv' onclick="fnTargetSelf(); fnFormModeSubmit('form1','csv_output','csv_output_id',<!--{$item.sql_id}-->);"  />

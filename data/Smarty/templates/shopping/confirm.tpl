@@ -27,7 +27,7 @@
 				よろしければ、一番下の「<!--{if $payment_type != ""}-->次へ<!--{else}-->ご注文完了ページへ<!--{/if}-->」ボタンをクリックしてください。</td>
 			</tr>
 			<tr><td height="20"></td></tr>
-			<form name="form1" id="form1" method="post" action="<!--{$smarty.server.PHP_SELF}-->">
+			<form name="form1" id="form1" method="post" action="<!--{$smarty.server.PHP_SELF|escape}-->">
 			<input type="hidden" name="mode" value="confirm">
 			<input type="hidden" name="uniqid" value="<!--{$tpl_uniqid}-->">
 			<tr>
@@ -43,7 +43,7 @@
 					</tr>
 					<!--{section name=cnt loop=$arrProductsClass}-->
 					<tr bgcolor="#ffffff">
-						<td align="center"><a href="<!--{$smarty.server.PHP_SELF}-->" onclick="win01('../products/detail_image.php?product_id=<!--{$arrProductsClass[cnt].product_id}-->&image=main_image&width=260&height=260','detail_image','350','350'); return false;" target="_blank"><img src="<!--{$smarty.const.IMAGE_SAVE_URL}-->/<!--{$arrProductsClass[cnt].main_list_image}-->" width="65" height="65" alt="" /></a></td>
+						<td align="center"><a href="<!--{$smarty.server.PHP_SELF|escape}-->" onclick="win01('../products/detail_image.php?product_id=<!--{$arrProductsClass[cnt].product_id}-->&image=main_image&width=260&height=260','detail_image','350','350'); return false;" target="_blank"><img src="<!--{$smarty.const.IMAGE_SAVE_URL}-->/<!--{$arrProductsClass[cnt].main_list_image}-->" width="65" height="65" alt="" /></a></td>
 						<td class="fs12">
 							<strong><!--{$arrProductsClass[cnt].name}--></strong><br>
 							<!--{if $arrProductsClass[cnt].classcategory_name1 != ""}-->
@@ -216,7 +216,7 @@
 
 			<tr>
 				<td align="center">
-					<a href="<!--{$smarty.server.PHP_SELF}-->" onmouseover="chgImgImageSubmit('<!--{$smarty.const.URL_DIR}-->img/common/b_back_on.gif',back03)" onmouseout="chgImgImageSubmit('<!--{$smarty.const.URL_DIR}-->img/common/b_back.gif',back03)" onclick="fnModeSubmit('return', '', ''); return false;"><img src="<!--{$smarty.const.URL_DIR}-->img/common/b_back.gif" width="150" height="30" alt="戻る" border="0" name="back03" id="back03"/></a>
+					<a href="<!--{$smarty.server.PHP_SELF|escape}-->" onmouseover="chgImgImageSubmit('<!--{$smarty.const.URL_DIR}-->img/common/b_back_on.gif',back03)" onmouseout="chgImgImageSubmit('<!--{$smarty.const.URL_DIR}-->img/common/b_back.gif',back03)" onclick="fnModeSubmit('return', '', ''); return false;"><img src="<!--{$smarty.const.URL_DIR}-->img/common/b_back.gif" width="150" height="30" alt="戻る" border="0" name="back03" id="back03"/></a>
 					<img src="<!--{$smarty.const.URL_DIR}-->img/_.gif" width="20" height="" alt="" />
 					<!--{if $payment_type != ""}-->
 						<input type="image" onmouseover="chgImgImageSubmit('<!--{$smarty.const.URL_DIR}-->img/common/b_next_on.gif',this)" onmouseout="chgImgImageSubmit('<!--{$smarty.const.URL_DIR}-->img/common/b_next.gif',this)" src="<!--{$smarty.const.URL_DIR}-->img/common/b_next.gif" width="150" height="30" alt="次へ" border="0" name="next" id="next" />

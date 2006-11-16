@@ -46,7 +46,7 @@
 				
 		<!--▼登録テーブルここから-->
 		<table width="740" border="0" cellspacing="1" cellpadding="5" summary=" " bgcolor="#cccccc">
-		<form name="form1" id="form1" method="post" action="<!--{$smarty.server.PHP_SELF}-->" enctype="multipart/form-data">
+		<form name="form1" id="form1" method="post" action="<!--{$smarty.server.PHP_SELF|escape}-->" enctype="multipart/form-data">
 		<input type="hidden" name="mode" value="csv_upload">
 			<tr class="fs12n">
 				<td bgcolor="#f0f0f0" width="110">CSVファイル</td>

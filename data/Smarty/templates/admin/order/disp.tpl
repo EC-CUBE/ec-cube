@@ -278,7 +278,7 @@
 							</tr>
 							<!--{*
 							<tr bgcolor="#ffffff" class="fs12n">
-								<td colspan="5" align="right">反映後ポイント（ポイントの変更は<a href="<!--{$smarty.server.PHP_SELF}-->" onclick="return fnEdit('<!--{$arrDisp.customer_id}-->');">顧客編集</a>から手動にてお願い致します。）</td>
+								<td colspan="5" align="right">反映後ポイント（ポイントの変更は<a href="<!--{$smarty.server.PHP_SELF|escape}-->" onclick="return fnEdit('<!--{$arrDisp.customer_id}-->');">顧客編集</a>から手動にてお願い致します。）</td>
 								<td align="right">
 								<span class="red12"><!--{$arrErr.total_point}--></span>
 								<!--{$arrForm.total_point.value}-->

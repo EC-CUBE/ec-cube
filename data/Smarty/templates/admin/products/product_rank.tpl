@@ -7,7 +7,7 @@
 *}-->
 <!--★★メインコンテンツ★★-->
 <table width="878" border="0" cellspacing="0" cellpadding="0" summary=" ">
-<form name="form1" id="form1" method="post" action="<!--{$smarty.server.PHP_SELF}-->" enctype="multipart/form-data">
+<form name="form1" id="form1" method="post" action="<!--{$smarty.server.PHP_SELF|escape}-->" enctype="multipart/form-data">
 <input type="hidden" name="mode" value="edit">
 <input type="hidden" name="parent_category_id" value="<!--{$arrForm.parent_category_id}-->">
 <input type="hidden" name="category_id" value="<!--{$arrForm.category_id}-->">
@@ -57,7 +57,7 @@
 								<tr bgcolor="#ffffff">
 									<!--▼画面左-->
 									<td width="250" valign="top" class="fs12">
-									<a href="<!--{$smarty.server.PHP_SELF}-->">▼ホーム</a><br>
+									<a href="<!--{$smarty.server.PHP_SELF|escape}-->">▼ホーム</a><br>
 									<!--{section name=cnt loop=$arrTree}-->
 										<!--{assign var=level value="`$arrTree[cnt].level`}-->
 										
@@ -72,7 +72,7 @@
 										
 										<!--{* カテゴリ名表示 *}-->
 										<!--{assign var=disp_name value="`$arrTree[cnt].category_id`.`$arrTree[cnt].category_name`"}-->
-										<a href="<!--{$smarty.server.PHP_SELF}-->" onclick="fnModeSubmit('tree', 'parent_category_id', <!--{$arrTree[cnt].category_id}-->); return false">
+										<a href="<!--{$smarty.server.PHP_SELF|escape}-->" onclick="fnModeSubmit('tree', 'parent_category_id', <!--{$arrTree[cnt].category_id}-->); return false">
 										<!--{if $arrForm.parent_category_id == $arrTree[cnt].category_id}-->
 											<img src="<!--{$smarty.const.URL_DIR}-->misc/openf.gif" border="0">
 										<!--{else}-->
@@ -137,13 +137,13 @@
 											<td width="120" align="center">
 											<!--{* 移動 *}-->
 											<!--{if !(count($arrProductsList) == 1 && $rank == 1)}-->
-											<input type="text" name="pos-<!--{$arrProductsList[cnt].product_id}-->" size="3" class="box3" />番目へ<a href="<!--{$smarty.server.PHP_SELF}-->" onclick="fnModeSubmit('move','product_id', '<!--{$arrProductsList[cnt].product_id}-->'); return false;">移動</a><br />
+											<input type="text" name="pos-<!--{$arrProductsList[cnt].product_id}-->" size="3" class="box3" />番目へ<a href="<!--{$smarty.server.PHP_SELF|escape}-->" onclick="fnModeSubmit('move','product_id', '<!--{$arrProductsList[cnt].product_id}-->'); return false;">移動</a><br />
 											<!--{/if}-->
 											<!--{if !($smarty.section.cnt.first && $tpl_disppage eq 1) }-->
-											<a href="<!--{$smarty.server.PHP_SELF}-->" onclick="fnModeSubmit('up','product_id', '<!--{$arrProductsList[cnt].product_id}-->'); return false;">上へ</a>
+											<a href="<!--{$smarty.server.PHP_SELF|escape}-->" onclick="fnModeSubmit('up','product_id', '<!--{$arrProductsList[cnt].product_id}-->'); return false;">上へ</a>
 											<!--{/if}-->
 											<!--{if !($smarty.section.cnt.last && $tpl_disppage eq $tpl_pagemax) }-->
-											<a href="<!--{$smarty.server.PHP_SELF}-->" onclick="fnModeSubmit('down','product_id', '<!--{$arrProductsList[cnt].product_id}-->'); return false;">下へ</a>
+											<a href="<!--{$smarty.server.PHP_SELF|escape}-->" onclick="fnModeSubmit('down','product_id', '<!--{$arrProductsList[cnt].product_id}-->'); return false;">下へ</a>
 											<!--{/if}-->
 											</td>
 										</tr>

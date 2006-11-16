@@ -32,7 +32,7 @@
 				</tr>
 				<!--{if !$tpl_disable_logout}-->
 				<tr>
-					<td colspan="3" align="center"><a href="<!--{$smarty.server.PHP_SELF}-->" onclick="fnFormModeSubmit('login_form', 'logout', '', ''); return false;"><img src="<!--{$smarty.const.URL_DIR}-->img/header/logout.gif" width="44" height="21" alt="ログアウト" /></a></td>
+					<td colspan="3" align="center"><a href="<!--{$smarty.server.PHP_SELF|escape}-->" onclick="fnFormModeSubmit('login_form', 'logout', '', ''); return false;"><img src="<!--{$smarty.const.URL_DIR}-->img/header/logout.gif" width="44" height="21" alt="ログアウト" /></a></td>
 				</tr>
 				<!--{/if}-->
 			<!--{else}-->

@@ -97,7 +97,7 @@
 						
 						<!--¢§FORM-->
 						<table width="678" border="0" cellspacing="1" cellpadding="8" summary=" ">
-						<form name="form1" method="post" action="<!--{$smarty.server.PHP_SELF}-->?mode=regist" onSubmit="return func_check(); false;">
+						<form name="form1" method="post" action="<!--{$smarty.server.PHP_SELF|escape}-->?mode=regist" onSubmit="return func_check(); false;">
 						<input type="hidden" name="question_id" value="<!--{$QUESTION_ID}-->">
 							
 							<!--{if $MESSAGE != ""}-->
@@ -210,7 +210,7 @@
 
 						<!--¢§FORM-->
 						<table width="678" border="0" cellspacing="1" cellpadding="8" summary=" ">
-						<form name="form2" method="post" action="<!--{$smaryt.server.PHP_SELF}-->">
+						<form name="form2" method="post" action="<!--{$smaryt.server.PHP_SELF|escape}-->">
 							<tr class="fs12n" bgcolor="#f2f1ec" align="center">
 								<td width="42">ÊÔ½¸</td>
 								<td width="80">ÅÐÏ¿Æü</td>
@@ -221,12 +221,12 @@
 							</tr>
 							<!--{section name=data loop=$list_data}-->
 							<tr bgcolor="#FFFFFF" class="fs12" <!--{if $list_data[data].question_id eq $smarty.request.question_id}--><!--{sfSetErrorStyle}--><!--{/if}-->>
-								<td align="center" class="main"><a href="<!--{$smarty.server.PHP_SELF}-->?question_id=<!--{$list_data[data].question_id}-->">ÊÔ½¸</a></td>
+								<td align="center" class="main"><a href="<!--{$smarty.server.PHP_SELF|escape}-->?question_id=<!--{$list_data[data].question_id}-->">ÊÔ½¸</a></td>
 								<td align="center"><!--{$list_data[data].disp_date}--></td>
 								<td><!--{$list_data[data].question_name|escape}--></td>
 								<td align="center"><a href="<!--{$smarty.const.SITE_URL}-->inquiry/index.php?question_id=<!--{$list_data[data].question_id}-->" target="_blank">»²¾È</a></td>
-								<td align="center"><a href="<!--{$smarty.server.PHP_SELF}-->?mode=csv&question_id=<!--{$list_data[data].question_id}-->">download</a></td>
-								<td align="center"><a href="<!--{$smarty.server.PHP_SELF}-->?mode=delete&question_id=<!--{$list_data[data].question_id}-->" onClick="return delete_check()">ºï½ü</a></td>
+								<td align="center"><a href="<!--{$smarty.server.PHP_SELF|escape}-->?mode=csv&question_id=<!--{$list_data[data].question_id}-->">download</a></td>
+								<td align="center"><a href="<!--{$smarty.server.PHP_SELF|escape}-->?mode=delete&question_id=<!--{$list_data[data].question_id}-->" onClick="return delete_check()">ºï½ü</a></td>
 							</tr>
 							<!--{/section}-->
 						</form>

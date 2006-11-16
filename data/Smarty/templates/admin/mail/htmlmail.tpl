@@ -20,7 +20,7 @@ function lfc_del_product( pname ){
 
 <!--¡ú¡ú¥á¥¤¥ó¥³¥ó¥Æ¥ó¥Ä¡ú¡ú-->
 <table width="878" border="0" cellspacing="0" cellpadding="0" summary=" ">
-<form name="form1" id="form1" method="post" action="<!--{$smarty.server.PHP_SELF}-->" enctype="multipart/form-data">
+<form name="form1" id="form1" method="post" action="<!--{$smarty.server.PHP_SELF|escape}-->" enctype="multipart/form-data">
 <input type="hidden" name="template_id" value="<!--{$arrForm.template_id|escape}-->">
 <input type="hidden" name="mail_method" value="3">
 <input type="hidden" name="image_key" value="">

@@ -7,7 +7,7 @@
 *}-->
 <!--¡ú¡ú¥á¥¤¥ó¥³¥ó¥Æ¥ó¥Ä¡ú¡ú-->
 <table width="878" border="0" cellspacing="0" cellpadding="0" summary=" ">
-<form name="form_css" method="post" action="<!--{$smarty.server.PHP_SELF}-->" >
+<form name="form_css" method="post" action="<!--{$smarty.server.PHP_SELF|escape}-->" >
 <input type="hidden" name="mode" value="">
 <input type="hidden" name="area_row" value=<!--{$area_row}-->>
 	<tr valign="top">

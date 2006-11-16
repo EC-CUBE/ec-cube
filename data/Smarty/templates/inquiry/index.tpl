@@ -37,7 +37,7 @@
 	<tr>
 		<td align="center" valign="top">
 		<table width="600" border="0" cellspacing="0" cellpadding="0" summary=" ">
-			<form name="form1" id="form1" method="post" action="<!--{$smarty.server.PHP_SELF}-->">
+			<form name="form1" id="form1" method="post" action="<!--{$smarty.server.PHP_SELF|escape}-->">
 			<input type="hidden" name="question_id" value="<!--{$question_id}-->">
 			<tr>
 				<td class="fs12"><!--{$QUESTION.contents|escape|nl2br}-->

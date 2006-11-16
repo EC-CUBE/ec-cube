@@ -100,7 +100,7 @@ function func_return(){
 				<td class="fs12n"><span class="red">※</span>印は入力必須項目です。</td>
 			</tr>
 			<tr><td height="5"></td></tr>
-			<form name="form1" method="post" action="<!--{$smarty.server.PHP_SELF}-->">
+			<form name="form1" method="post" action="<!--{$smarty.server.PHP_SELF|escape}-->">
 			<input type="hidden" name="mode" value="regist">
 			<!--{foreach key=key item=item from=$arrHidden}-->
 			<input type="hidden" name="<!--{$key}-->" value="<!--{$item|escape}-->" >

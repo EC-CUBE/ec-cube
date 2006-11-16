@@ -22,7 +22,7 @@
 				
 		
 		<!--▼絞り込み設定ここから-->
-		<form name="form1" id="form1" method="post" action="<!--{$smarty.server.PHP_SELF}-->">
+		<form name="form1" id="form1" method="post" action="<!--{$smarty.server.PHP_SELF|escape}-->">
 		<!--{foreach key=key item=val from=$arrHidden}-->	
 			<input type="hidden" name="<!--{$key}-->" value="<!--{$val|escape}-->">
 		<!--{/foreach}-->

@@ -73,7 +73,7 @@ function init () {
 
 <!--¡ú¡ú¥á¥¤¥ó¥³¥ó¥Æ¥ó¥Ä¡ú¡ú-->
 <table width="878" border="0" cellspacing="0" cellpadding="0" summary=" ">
-<form name="form1" id="form1" method="post" action="<!--{$smarty.server.PHP_SELF}-->" >
+<form name="form1" id="form1" method="post" action="<!--{$smarty.server.PHP_SELF|escape}-->" >
 <input type="hidden" name="mode" value="">
 <input type="hidden" name="page_id" value="<!--{$page_id}-->">
 <input type="hidden" name="bloc_cnt" value="<!--{$bloc_cnt}-->">
@@ -228,7 +228,7 @@ function init () {
 							<!--{foreach key=key item=item from=$arrEditPage}-->
 							<tr class="fs12n" height=20>
 								<td align="center" width=600 bgcolor="<!--{if $item.page_id == $page_id}--><!--{$smarty.const.SELECT_RGB}--><!--{else}-->#ffffff<!--{/if}-->">
-									<a href="<!--{$smarty.server.PHP_SELF}-->?page_id=<!--{$item.page_id}-->" ><!--{$item.page_name}--></a>
+									<a href="<!--{$smarty.server.PHP_SELF|escape}-->?page_id=<!--{$item.page_id}-->" ><!--{$item.page_name}--></a>
 								</td>
 								<td align="center" width=78 bgcolor="<!--{if $item.page_id == $page_id}--><!--{$smarty.const.SELECT_RGB}--><!--{else}-->#ffffff<!--{/if}-->">
 									<!--{if $item.tpl_dir != ""}-->

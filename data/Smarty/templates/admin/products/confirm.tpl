@@ -22,7 +22,7 @@
 					<!--¢§MAIN CONTENTS-->
 						<table width="706" border="0" cellspacing="0" cellpadding="0" summary=" ">
 						<!--¢§ÅÐÏ¿¥Æ¡¼¥Ö¥ë¤³¤³¤«¤é-->
-						<form name="form1" id="form1" method="post" action="<!--{$smarty.server.PHP_SELF}-->" enctype="multipart/form-data">
+						<form name="form1" id="form1" method="post" action="<!--{$smarty.server.PHP_SELF|escape}-->" enctype="multipart/form-data">
 						<!--{foreach key=key item=item from=$arrForm}-->
 						<input type="hidden" name="<!--{$key}-->" value="<!--{$item|escape}-->">
 						<!--{/foreach}-->

@@ -7,7 +7,7 @@
 *}-->
 <!--¡ú¡ú¥á¥¤¥ó¥³¥ó¥Æ¥ó¥Ä¡ú¡ú-->
 <table width="878" border="0" cellspacing="0" cellpadding="0" summary=" ">
-<form name="search_form" id="search_form" method="post" action="<!--{$smarty.server.PHP_SELF}-->">
+<form name="search_form" id="search_form" method="post" action="<!--{$smarty.server.PHP_SELF|escape}-->">
 <input type="hidden" name="mode" value="search">
 	<tr valign="top">
 		<td background="<!--{$smarty.const.URL_DIR}-->img/contents/navi_bg.gif" height="402">
@@ -239,7 +239,7 @@
 
 <!--¡ú¡ú¸¡º÷·ë²Ì°ìÍ÷¡ú¡ú-->
 <table width="878" border="0" cellspacing="0" cellpadding="0" summary=" ">
-<form name="form1" id="form1" method="post" action="<!--{$smarty.server.PHP_SELF}-->">
+<form name="form1" id="form1" method="post" action="<!--{$smarty.server.PHP_SELF|escape}-->">
 <input type="hidden" name="mode" value="search">
 <input type="hidden" name="order_id" value="">		
 <!--{foreach key=key item=item from=$arrHidden}-->
@@ -326,9 +326,9 @@
 							<td align="right"><!--{$arrResults[cnt].total|number_format}--></td>
 							<td align="center"><!--{$arrResults[cnt].commit_date|sfDispDBDate|default:"Ì¤È¯Á÷"}--></td>
 							<td align="center"><!--{$arrORDERSTATUS[$status]}--></td>
-							<td align="center"><a href="<!--{$smarty.server.PHP_SELF}-->" onclick="fnChangeAction('<!--{$smarty.const.URL_ORDER_EDIT}-->'); fnModeSubmit('pre_edit', 'order_id', '<!--{$arrResults[cnt].order_id}-->'); return false;"><span class="icon_edit">ÊÔ½¸</span></a></td>
-							<td align="center"><a href="<!--{$smarty.server.PHP_SELF}-->" onclick="fnChangeAction('<!--{$smarty.const.URL_ORDER_MAIL}-->'); fnModeSubmit('pre_edit', 'order_id', '<!--{$arrResults[cnt].order_id}-->'); return false;"><span class="icon_mail">ÄÌÃÎ</span></a></td>
-							<td align="center"><a href="<!--{$smarty.server.PHP_SELF}-->" onclick="fnModeSubmit('delete', 'order_id', <!--{$arrResults[cnt].order_id}-->); return false;"><span class="icon_delete">ºï½ü</span></a></td>
+							<td align="center"><a href="<!--{$smarty.server.PHP_SELF|escape}-->" onclick="fnChangeAction('<!--{$smarty.const.URL_ORDER_EDIT}-->'); fnModeSubmit('pre_edit', 'order_id', '<!--{$arrResults[cnt].order_id}-->'); return false;"><span class="icon_edit">ÊÔ½¸</span></a></td>
+							<td align="center"><a href="<!--{$smarty.server.PHP_SELF|escape}-->" onclick="fnChangeAction('<!--{$smarty.const.URL_ORDER_MAIL}-->'); fnModeSubmit('pre_edit', 'order_id', '<!--{$arrResults[cnt].order_id}-->'); return false;"><span class="icon_mail">ÄÌÃÎ</span></a></td>
+							<td align="center"><a href="<!--{$smarty.server.PHP_SELF|escape}-->" onclick="fnModeSubmit('delete', 'order_id', <!--{$arrResults[cnt].order_id}-->); return false;"><span class="icon_delete">ºï½ü</span></a></td>
 						</tr>
 						<!--{/section}-->
 
