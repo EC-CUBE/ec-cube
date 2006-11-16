@@ -108,7 +108,11 @@ case 'edit':
 
 			// コンビニにチェックが入っていればコンビニを登録する
 			if($val == 2){
-				$arrData = array(			
+				
+				// セブンイレブンのみの場合には利用上限を30万にする。
+				(count($_POST["conbeniense"]) == 1 and $_POST["convenience"][0] == 11) ? $upper_rule_max = "300000" : $upper_rule_max = "500000";
+				
+				$arrData = array(
 					"payment_method" => "Epsilonコンビニ"
 					,"fix" => 3
 					,"creator_id" => $objSess->member_id
@@ -123,9 +127,9 @@ case 'edit':
 					,"memo04" => "00100-0000-00000"
 					,"memo05" => $convenience
 					,"del_flg" => "0"
-					,"charge_flg" => "2"
+					,"charge_flg" => "1"
 					,"rule_min" => "0"
-					,"upper_rule_max" => "500000"
+					,"upper_rule_max" => $upper_rule_max
 				);
 			}
 			

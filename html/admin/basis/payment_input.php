@@ -52,8 +52,6 @@ case 'edit':
 		$objPage->tpl_onload="fnUpdateParent('".URL_PAYMENT_TOP."'); window.close();";
 	}
 	
-	sfprintr($objPage->arrErr);
-	
 	break;
 // 画像のアップロード
 case 'upload_image':
@@ -179,7 +177,6 @@ function lfCheckError() {
 	if($arrRet["upper_rule"] > $arrPaymentData["upper_rule_max"] and $arrPaymentData["upper_rule_max"] != ""){
 		$objErr->arrErr["upper_rule"] = "利用条件(上限)は" . $arrPaymentData["upper_rule_max"] ."円以下にしてください。<br>";
 	}
-	
 	
 	// 利用条件チェック
 	$objErr->doFunc(array("利用条件(〜円以上)", "利用条件(〜円以下)", "rule", "upper_rule"), array("GREATER_CHECK"));
