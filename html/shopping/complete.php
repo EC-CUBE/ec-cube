@@ -68,7 +68,7 @@ if ($uniqid != "") {
 		foreach($arrOther as $key => $val){
 			// URLの場合にはリンクつきで表示させる
 			if (preg_match('/^(https?|ftp)(:\/\/[-_.!~*\'()a-zA-Z0-9;\/?:\@&=+\$,%#]+)$/', $val["value"])) {
-				$arrOther[$key]["value"] = "<a href='#' onClick=\"window.open('". $val . "'); \" >" . $val ."</a>";
+				$arrOther[$key]["value"] = "<a href='#' onClick=\"window.open('". $val["value"] . "'); \" >" . $val["value"] ."</a>";
 			}
 		}
 				
