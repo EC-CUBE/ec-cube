@@ -104,7 +104,7 @@ case 'edit':
 					,"del_flg" => "0"
 					,"charge_flg" => "2"
 					,"rule_min" => "0"
-					,"upper_rule_max" => "500000"
+					,"upper_rule_max" => CHARGE_MAX
 					
 				);
 			}
@@ -114,10 +114,10 @@ case 'edit':
 				
 				// セブンイレブンのみ選択した場合には利用上限を30万にする。
 				if(count($_POST["convenience"]) == 1 and $_POST["convenience"][0] == 11) {
-					$upper_rule_max = "300000";
+					$upper_rule_max = SEVEN_CHARGE_MAX;
 					($arrPaymentData["upper_rule"] > $upper_rule_max or $arrPaymentData["upper_rule"] == "") ? $upper_rule = $upper_rule_max : $upper_rule = $arrPaymentData["upper_rule"];
 				}else{
-					$upper_rule_max = "500000";
+					$upper_rule_max = CHARGE_MAX;
 					$upper_rule = $upper_rule_max;
 				}
 				

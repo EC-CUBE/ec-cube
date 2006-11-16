@@ -202,6 +202,12 @@ $arrUseConv = $objFormParam->getValue("convenience");
 foreach($arrUseConv as $key => $val){
 	$arrConv[$val] = $arrConvenience[$val];
 }
+
+// 購入金額が30万より大きければセブンイレブンは利用不可
+if($arrData["payment_total"] > SEVEN_CHARGE_MAX){
+	unset($arrConv[11]);
+}
+
 $objPage->arrConv = $arrConv;
 
 $objPage->arrForm =$objFormParam->getHashArray();
@@ -220,7 +226,6 @@ function lfInitParam() {
 	$objFormParam->addParam("お電話番号2", "order_tel02", TEL_ITEM_LEN, "n", array("EXIST_CHECK", "MAX_LENGTH_CHECK" ,"NUM_CHECK"));
 	$objFormParam->addParam("お電話番号3", "order_tel03", TEL_ITEM_LEN, "n", array("EXIST_CHECK", "MAX_LENGTH_CHECK" ,"NUM_CHECK"));
 }
-
 
 function lfSetConvMSG($name, $value){
 	return array("name" => $name, "value" => $value);
