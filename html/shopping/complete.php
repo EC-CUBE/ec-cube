@@ -69,6 +69,7 @@ if ($uniqid != "") {
 			// URLの場合にはリンクつきで表示させる
 			if (preg_match('/^(https?|ftp)(:\/\/[-_.!~*\'()a-zA-Z0-9;\/?:\@&=+\$,%#]+)$/', $val["value"])) {
 				$arrOther[$key]["value"] = "<a href='#' onClick=\"window.open('". $val . "'); \" >" . $val ."</a>";
+				sfprintr($arrOther);
 			}
 		}
 		
