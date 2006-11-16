@@ -131,6 +131,7 @@ function lfConvertParam($array, $arrRegistColumn) {
 
 /* 入力エラーチェック */
 function lfErrorCheck() {
+	$objQuery = new SC_Query;
 	$objErr = new SC_CheckError();
 	
 	$objErr->doFunc(array("見出しコメント", "title", STEXT_LEN), array("MAX_LENGTH_CHECK"));
