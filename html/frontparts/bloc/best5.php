@@ -33,11 +33,10 @@ function lfGetRanking(){
 	$from = "dtb_best_products AS A INNER JOIN vw_products_allclass AS allcls using(product_id)";
 	$where = "status = 1";
 	$order = "rank";
+	$objQuery->setorder($order);
 	
 	$arrBestProducts = $objQuery->select($col, $from, $where);
 		
-	sfprintr($arrBestProducts);
-
 	return $arrBestProducts;
 }
 
