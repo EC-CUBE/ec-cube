@@ -18,6 +18,7 @@ class LC_Page {
 
 $objPage = new LC_Page();
 $conn = new SC_DBConn();
+$objSiteSess = new SC_SiteSession();
 
 // レイアウトデザインを取得
 $objPage = sfGetPageLayout($objPage, false, "index.php");

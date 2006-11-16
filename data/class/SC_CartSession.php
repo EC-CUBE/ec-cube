@@ -199,7 +199,7 @@ class SC_CartSession {
 	function getPrevURL() {
 		return $_SESSION[$this->key]['prev_url'];
 	}
-		
+
 	// キーが一致した商品の削除
 	function delProductKey($keyname, $val) {
 		$max = count($_SESSION[$this->key]);
