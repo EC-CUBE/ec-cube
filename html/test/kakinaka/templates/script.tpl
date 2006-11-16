@@ -3,7 +3,7 @@
   
 <body onload="">
 
-<!--{$smarty.server.PHP_SELF}-->
+<!--{$smarty.server.PHP_SELF}--><br/>
 <!--{$smarty.server.REQUEST_URI}-->
 
 </body>
