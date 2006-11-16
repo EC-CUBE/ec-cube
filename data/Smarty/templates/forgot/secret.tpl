@@ -40,7 +40,7 @@
 				<tr><td height="15"></td></tr>
 				<tr>
 					<td class="fs12">ご登録時に入力した下記質問の答えを入力して「次へ」ボタンをクリックしてください。<br>
-					※下記質問の答えをお忘れになられた場合は、<a href="mailto:info@lockon.com">info@lockon.com</a>までご連絡ください。</td>
+					※下記質問の答えをお忘れになられた場合は、<a href="<!--{$arrSiteInfo.email02|escape}-->"><!--{$arrSiteInfo.email02|escape}--></a>までご連絡ください。</td>
 				</tr>
 				<tr><td height="15"></td></tr>
 				<tr>
