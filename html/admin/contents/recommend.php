@@ -18,6 +18,7 @@ class LC_Page {
 }
 
 $conn = new SC_DBConn();
+$objQuery = new SC_Query();
 $objPage = new LC_Page();
 $objView = new SC_AdminView();
 $objSess = new SC_Session();
@@ -54,9 +55,7 @@ if ( $_POST['mode'] == 'regist' ){
 		$objPage->arrForm['update_date'] = "NOW()";
 		$objPage->arrForm['create_date'] = "NOW()";
 		
-		$objQuery = new SC_Query();
 		$objQuery->insert("dtb_best_products", $objPage->arrForm );
-//		$conn->autoExecute("dtb_best_products", $objPage->arrForm );
 	}	
 
 } elseif ( $_POST['mode'] == 'delete' ){
@@ -65,21 +64,6 @@ if ( $_POST['mode'] == 'regist' ){
 	$sql = "DELETE FROM dtb_best_products WHERE category_id = ? AND rank = ?";
 	$conn->query($sql, array($_POST['category_id'] ,$_POST['rank']));
 	
-}
-
-// カテゴリID取得 無いときはトップページ
-if ( sfCheckNumLength($_POST['category_id']) ){
-	$objPage->category_id = $_POST['category_id'];
-} else {
-	$objPage->category_id = 0;
-}
-
-// 既に登録されている内容を取得する
-$sql = "SELECT B.name, B.main_list_image, A.* FROM dtb_best_products as A INNER JOIN dtb_products as B USING (product_id)
-		 WHERE A.category_id = ? AND A.del_flg = 0 ORDER BY rank";
-$arrItems = $conn->getAll($sql, array($objPage->category_id));
-foreach( $arrItems as $data ){
-	$objPage->arrItems[$data['rank']] = $data;
 }
 
 // 商品変更時は、選択された商品に一時的に置き換える
@@ -96,13 +80,13 @@ if ( $_POST['mode'] == 'set_item'){
 	$objPage->checkRank = $_POST['rank'];
 }
 
+// オススメ商品取得
+lfGetRecommentdProduct();
+
 //各ページ共通
 $objPage->cnt_question = 6;
 $objPage->arrActive = $arrActive;
 $objPage->arrQuestion = $arrQuestion;
-
-// カテゴリ取得
-$objPage->arrCatList = sfGetCategoryList("level = 1");
 
 //----　ページ表示
 $objView->assignobj($objPage);
@@ -139,4 +123,18 @@ function lfErrorCheck() {
 	return $objErr->arrErr;
 }
 
+/* 商品の一覧を取得 */
+function lfGetRecommentdProduct() {
+	
+	global $objQuery;
+	global $objPage;
+	
+	// 既に登録されている内容を取得する
+	$sql = "SELECT B.name, B.main_list_image, A.* FROM dtb_best_products as A INNER JOIN dtb_products as B USING (product_id)
+			 WHERE A.del_flg = 0 ORDER BY rank";
+	$arrItems = $objQuery->getAll($sql, array($objPage->category_id));
+	foreach( $arrItems as $data ){
+		$objPage->arrItems[$data['rank']] = $data;
+	}
+}
 ?>
