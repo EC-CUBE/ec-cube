@@ -12,6 +12,4 @@ ini_set("mbstring.detect_order", "auto");
 ini_set("mbstring.substitute_character", "none");
 ini_set("magic_quotes_gpc", "off");
 
-print("INI_SET");
-
 ?>
