@@ -41,7 +41,7 @@ function lnSetSelect(name1, name2, id, val) {
 		<!--▼MAIN CONTENTS-->
 		<table cellspacing="0" cellpadding="0" summary=" " id="container">
 			<tr valign="top">
-				<form name="form1" id="form1" method="post" action="<!--{$smarty.server.REQUEST_URI}-->">
+				<form name="form1" id="form1" method="post" action="<!--{$smarty.server.REQUEST_URI|escape}-->">
 				<input type="hidden" name="pageno" value="<!--{$tpl_pageno}-->">
 				<input type="hidden" name="mode" value="">
 				<input type="hidden" name="orderby" value="<!--{$orderby}-->">
@@ -226,7 +226,7 @@ function lnSetSelect(name1, name2, id, val) {
 															<input type="text" name="<!--{$quantity}-->" size="3" class="box3" value="<!--{$arrForm[$quantity]|default:1}-->" maxlength=<!--{$smarty.const.INT_LEN}--> style="<!--{$arrErr[$quantity]|sfGetErrorColor}-->" >
 														</td>
 														<td width="170" align="center">
-															<a href="" onclick="fnChangeAction('<!--{$smarty.server.REQUEST_URI}-->#product<!--{$id}-->'); fnModeSubmit('cart','product_id','<!--{$id}-->'); return false;" onmouseover="chgImg('<!--{$smarty.const.URL_DIR}-->img/products/b_cartin_on.gif','cart<!--{$id}-->');" onmouseout="chgImg('<!--{$smarty.const.URL_DIR}-->img/products/b_cartin.gif','cart<!--{$id}-->');"><img src="<!--{$smarty.const.URL_DIR}-->img/products/b_cartin.gif" width="115" height="25" alt="カゴに入れる" name="cart<!--{$id}-->" id="cart<!--{$id}-->" /></a>
+															<a href="" onclick="fnChangeAction('<!--{$smarty.server.REQUEST_URI|escape}-->#product<!--{$id}-->'); fnModeSubmit('cart','product_id','<!--{$id}-->'); return false;" onmouseover="chgImg('<!--{$smarty.const.URL_DIR}-->img/products/b_cartin_on.gif','cart<!--{$id}-->');" onmouseout="chgImg('<!--{$smarty.const.URL_DIR}-->img/products/b_cartin.gif','cart<!--{$id}-->');"><img src="<!--{$smarty.const.URL_DIR}-->img/products/b_cartin.gif" width="115" height="25" alt="カゴに入れる" name="cart<!--{$id}-->" id="cart<!--{$id}-->" /></a>
 														</td>
 													</tr>
 													<tr><td height="10"></td></tr>

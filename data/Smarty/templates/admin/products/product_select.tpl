@@ -47,7 +47,7 @@ function func_submit( id ){
 <div align="center">
 　
 <!--▼検索フォーム-->
-<form name="form1" id="form1" method="post" action="<!--{$smarty.server.REQUEST_URI}-->">
+<form name="form1" id="form1" method="post" action="<!--{$smarty.server.REQUEST_URI|escape}-->">
 <input name="mode" type="hidden" value="search">
 <input name="anchor_key" type="hidden" value="">
 <input name="search_pageno" type="hidden" value="">

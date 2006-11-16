@@ -88,7 +88,7 @@ function win_open(URL){
 <div align="center">
 <!--¡ú¡ú¥á¥¤¥ó¥³¥ó¥Æ¥ó¥Ä¡ú¡ú-->
 <table width="500" border="0" cellspacing="0" cellpadding="0" summary=" ">
-<form name="form1" id="form1" method="post" action="<!--{$smarty.server.REQUEST_URI}-->">
+<form name="form1" id="form1" method="post" action="<!--{$smarty.server.REQUEST_URI|escape}-->">
 <input type="hidden" name="mode" value="edit">
 	<tr valign="top">
 		<td class="mainbg">

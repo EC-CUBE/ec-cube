@@ -5,7 +5,7 @@
  *}-->
 <!--▼ログインここから-->
 <!--{if $smarty.post.url == ""}-->
-	<!--{assign var=url value="`$smarty.server.REQUEST_URI`"}-->
+	<!--{assign var=url value="`$smarty.server.REQUEST_URI|escape`"}-->
 <!--{else}-->
 	<!--{assign var=url value="`$smarty.post.url`"}-->
 <!--{/if}-->
