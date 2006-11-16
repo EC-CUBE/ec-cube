@@ -8,9 +8,10 @@ ini_set("mbstring.internal_encoding", CHAR_CODE);
 ini_set("mbstring.detect_order", "auto");
 ini_set("mbstring.substitute_character", "none");
 
-ini_set("mbstring.language", "Japanese");
-ini_set("output_handler", "mb_output_handler");
-ini_set("mbstring.encoding_translation", 1);
-ini_set("magic_quotes_gpc", 0);
+// 移行はINI_SETで変更可能かどうかが微妙なので .htaccess で変更する
+// ini_set("mbstring.language", "Japanese");
+// ini_set("output_handler", "mb_output_handler");
+// ini_set("mbstring.encoding_translation", 1);
+// ini_set("magic_quotes_gpc", 0);
 
 ?>
