@@ -10,6 +10,6 @@ ini_set("mbstring.internal_encoding", CHAR_CODE);
 ini_set("mbstring.encoding_translation", "on");
 ini_set("mbstring.detect_order", "auto");
 ini_set("mbstring.substitute_character", "none");
-ini_set("magic_quotes_gpc", 0);
+ini_set("magic_quotes_gpc", 1);
 
 ?>
