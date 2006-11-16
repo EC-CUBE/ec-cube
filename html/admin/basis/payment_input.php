@@ -57,6 +57,9 @@ case 'edit':
 		// 親ウィンドウを更新するようにセットする。
 		$objPage->tpl_onload="fnUpdateParent('".URL_PAYMENT_TOP."'); window.close();";
 	}
+	
+	sfprintr($objPage->arrErr);
+	
 	break;
 // 画像のアップロード
 case 'upload_image':
