@@ -139,7 +139,7 @@ define("REVIEW_REGIST_MAX", 5);
  */
 /* システム関連 */
 define ("ADMIN_ID", "1");								// 管理ユーザID(メンテナンス用表示されない。)
-define ("MELMAGA_SEND", true);							// メルマガ配信抑制(false:OFF、true:ON)
+define ("MELMAGA_SEND", false);							// メルマガ配信抑制(false:OFF、true:ON)
 define ("LOGIN_FRAME", "login_frame.tpl");				// ログイン画面フレーム
 define ("MAIN_FRAME", "main_frame.tpl");				// 管理画面フレーム
 define ("SITE_FRAME", "site_frame.tpl");				// 一般サイト画面フレーム
