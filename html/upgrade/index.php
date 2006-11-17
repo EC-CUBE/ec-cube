@@ -32,7 +32,7 @@ if($con != false && $res != false) {
 			//ファイル所有者変更
 			echo "ファイルのダウンロードに成功しました。";
 			sfPrintR(exec("tar zxvf " . $download_file . " ./", $arrRes));
-		} else
+		} else {
 			echo 'ファイルのダウンロードに失敗しました。';
 		}
 	}
