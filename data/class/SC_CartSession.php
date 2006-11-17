@@ -11,9 +11,15 @@ class SC_CartSession {
 	var $key_tmp;	// ユニークIDを指定する。
 	
 	/* コンストラクタ */
-	function SC_CartSession($key = 'cart') {
+	function SC_CartSession($key = 'cart', $url = true) {
 		sfDomainSessionStart();
+		
+		if($key == "") $key = "cart";
 		$this->key = $key;
+		
+		if($url){
+			$this->setPrevURL($_SERVER['REQUEST_URI']);
+		}
 	}
 	
 	// 商品購入処理中のロック
