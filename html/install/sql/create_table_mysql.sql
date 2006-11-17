@@ -158,7 +158,7 @@ CREATE TABLE dtb_payment (
     update_date datetime,
     payment_image text,
     upper_rule numeric,
-	charge_flg int2,
+	charge_flg int2 DEFAULT 1,
 	rule_min numeric,
 	upper_rule_max numeric,
     module_id int4,
