@@ -92,6 +92,9 @@ function sfColumnExists($table_name, $col_name, $col_type = "", $dsn = "", $add 
 		}
 	}
 	
+	// テーブルが無ければエラー
+	if(!sfTabaleExists($table_name, $dsn)) return false;
+	
 	$objQuery = new SC_Query($dsn, true, true);
 	// 正常に接続されている場合
 	if(!$objQuery->isError()) {

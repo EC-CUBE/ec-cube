@@ -97,7 +97,7 @@ case 'step3':
 	
 	// カラムを追加
 	lfAddColumn($dsn);
-		
+
 	if(count($objPage->arrErr) == 0) {
 		// スキップする場合には次画面へ遷移
 		$skip = $_POST["db_skip"];
