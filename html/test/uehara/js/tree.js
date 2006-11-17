@@ -86,14 +86,6 @@ function fnTreeDrow(id) {
 }
 
 // 階層ツリーメニュー表示・非表示処理
-flag = false;
-/*
-function treeMenu(tName) {
-  tMenu = document.all[tName].style;
-  if(tMenu.display == 'none') tMenu.display = "block";
-  else tMenu.display = "none";
-}
-*/
 function fnTreeMenu(tName, type, imgName) {
 
 	tMenu = document.all[tName].style;
