@@ -18,7 +18,7 @@ $objQuery = new SC_Query();
 
 
 $objView->assignobj($objPage);
-$objView->display(MAIN_FRAME);
+$objView->display($this->tpl_mainpage);
 
 //-----------------------------------------------------------------------------------------------------------------------------------
 
