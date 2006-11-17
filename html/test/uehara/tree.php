@@ -10,7 +10,7 @@ $objView = new SC_UserView("./templates/");
 $objQuery = new SC_Query();
 
 //$objView->assignobj($objPage);
-$objView->display("treecheck.tpl")
+$objView->display("tree.tpl")
 
 //-----------------------------------------------------------------------------------------------------------------------------------
 
