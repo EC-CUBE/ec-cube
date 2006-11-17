@@ -151,7 +151,6 @@ class SC_SiteView extends SC_View{
 			$objCartSess = new SC_CartSession();
 			$objCartSess->setPrevURL($_SERVER['REQUEST_URI']);
 		}
-		
 	}
 }
 
