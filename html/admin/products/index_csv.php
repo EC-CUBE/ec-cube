@@ -138,5 +138,4 @@ function lfMakeReviewCSV($list) {
 	return $line;
 }
 
-
 ?>
