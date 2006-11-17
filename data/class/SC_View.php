@@ -136,15 +136,19 @@ class SC_AdminView extends SC_View{
 }
 
 class SC_SiteView extends SC_View{
-    function SC_SiteView() {
+    function SC_SiteView($cart = false) {
     	parent::SC_View();
 		$this->_smarty->template_dir = TEMPLATE_DIR;
 		$this->_smarty->compile_dir = COMPILE_DIR;
 		$this->initpath();
 		
 		// PHP5ではsessionをスタートする前にヘッダー情報を送信していると警告が出るため、先にセッションをスタートするように変更
-		$objCartSess = new SC_CartSession();
-		$objCartSess->setPrevURL($_SERVER['REQUEST_URI']);
+		sfDomainSessionStart();
+		
+		if(!$cart){
+			$objCartSess = new SC_CartSession();
+			$objCartSess->setPrevURL($_SERVER['REQUEST_URI']);
+		}
 		
 	}
 }
