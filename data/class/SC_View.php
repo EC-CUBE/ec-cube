@@ -146,6 +146,7 @@ class SC_SiteView extends SC_View{
 		sfDomainSessionStart();
 		
 		if($cart){
+			require_once("./SC_CartSession.php");
 			$objCartSess = new SC_CartSession();
 			$objCartSess->setPrevURL($_SERVER['REQUEST_URI']);
 		}
