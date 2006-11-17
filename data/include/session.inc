@@ -7,6 +7,9 @@ require_once($SESSION_HANDLER_PHP_PATH ."/../lib/glib.php" );
 // セッションの有効期限(秒)
 define("MAX_LIFETIME", 7200);
 
+$objCartSess = new SC_CartSession();
+$objCartSess->setPrevURL($_SERVER['REQUEST_URI']);
+
 function sfSessOpen($save_path, $session_name) 
 {
   return true;
