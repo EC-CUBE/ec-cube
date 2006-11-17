@@ -34,7 +34,7 @@ function getDir(&$arrTree, $dir) {
 	        while (($file = readdir($dh)) !== false) { 
 				// ./ と ../を除くディレクトリのみを取得
 				if(filetype($dir . $file) == 'dir' && $file != "." && $file != "..") {
-					$arrTree[] = dir.file;
+					$arrTree[] = $dir.$file;
 				} 
 	        } 
 	        closedir($dh); 
