@@ -143,10 +143,8 @@ class SC_SiteView extends SC_View{
 		$this->initpath();
 		
 		// PHP5ではsessionをスタートする前にヘッダー情報を送信していると警告が出るため、先にセッションをスタートするように変更
-		sfDomainSessionStart();
 		$objCartSess = new SC_CartSession();
 		$objCartSess->setPrevURL($_SERVER['REQUEST_URI']);
-
 		
 	}
 }
