@@ -6,19 +6,11 @@
  */
 require_once("../../require.php");
 
-class LC_Page {
-	function LC_Page() {
-		$this->tpl_mainpage = 'tree.tpl';
-	}
-}
-
-$objPage = new LC_Page();
-$objView = new SC_UserView(HTML_PATH."test/ueahra/");
+$objView = new SC_UserView("./templates/");
 $objQuery = new SC_Query();
 
-
-$objView->assignobj($objPage);
-$objView->display($objPage->tpl_mainpage);
+//$objView->assignobj($objPage);
+$objView->display("treecheck.tpl")
 
 //-----------------------------------------------------------------------------------------------------------------------------------
 

@@ -3,7 +3,7 @@
 <html>
 <head>
 <title>Untitled</title>
-<script type="text/javascript" src="./js/tree.js"></script>
+<script type="text/javascript" src="../js/tree.js"></script>
 <script type="text/javascript">
 </script>
 </head>
