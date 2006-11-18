@@ -20,6 +20,7 @@
 <form name="form1" method="post" action="<!--{$smarty.server.PHP_SELF|escape}-->">
 	<input type="text" id="test1" name="test1" value="" onclick="test()" size="300">
 	<input type="hidden" name="mode" value="">
+	<!--{*html_options values=$arrFileList output=$arrFileList*}-->
 	<select name=select_file size="5">
 	<table>
 	<tr>
@@ -35,7 +36,6 @@
 	</option>
 	</tr>
 	</table>
-	<!--{*html_options values=$arrFileList output=$arrFileList*}-->
 	</select><br/>
 	<input type="button" onclick="fnModeSubmit('view','','');" value="表示">
 	<input type="button" onclick="fnModeSubmit('download','','');" value="ダウンロード">

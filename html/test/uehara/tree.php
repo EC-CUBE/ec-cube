@@ -22,6 +22,7 @@ switch($_POST['mode']) {
 case 'view':
 case 'download':	
 case 'delete':
+	// 初期表示以外は現在選択中のディレクトリを取得
 	$now_dir = $_POST['select_file'];
 	
 case 'view':
@@ -34,11 +35,12 @@ case 'delete':
 	break;
 	
 default :
+	// 初期表示はルートディレクトリ(user_data/upload/)を表示
 	$now_dir = $top_dir;
 	break;
 }
 // 現在のディレクトリ配下のファイル一覧を取得
-$objPage->arrFileList = getFileList($now_dir);
+$objPage->arrFileList = lfGetFileList($now_dir);
 
 sfprintr($now_dir);
 sfprintr($arrFileList);
@@ -49,12 +51,12 @@ $objView->display("tree.tpl");
 //-----------------------------------------------------------------------------------------------------------------------------------
 
 /* 
- * 関数名：getFileList()
+ * 関数名：lfGetFileList()
  * 説明　：指定パス配下のディレクトリ取得
  * 引数1 ：ツリーを格納配列
  * 引数2 ：取得するディレクトリパス
  */
-function getFileList($dir) {
+function lfGetFileList($dir) {
 	$arrFileList = array();
 	if (is_dir($dir)) { 
 	    if ($dh = opendir($dir)) { 
@@ -62,7 +64,9 @@ function getFileList($dir) {
 				// ./ と ../を除くディレクトリのみを取得
 				//if(filetype($dir . $file) == 'dir' && $file != "." && $file != "..") {
 				if($file != "." && $file != "..") {
-					$arrFileList[] = $dir.$file;
+					//$arrFileList[]['file_name'] = $file;
+					//$arrFileList[]['file_path'] = $dir.$file;
+					//$arrFileList[]['file_size'] = filesize($dir.$file);
 				}
 	        } 
 	        closedir($dh); 
@@ -71,5 +75,4 @@ function getFileList($dir) {
 	
 	return $arrFileList;
 }
-
 ?>
