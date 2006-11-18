@@ -117,7 +117,8 @@ switch($_POST["mode"]){
 				$order_no = lfSetConvMSG("受付番号",sfGetXMLValue($arrXML,'RESULT','ORDER_NUMBER'));		// 受付番号
 				$tel = lfSetConvMSG("電話番号",$_POST["order_tel01"]."-".$_POST["order_tel02"]."-".$_POST["order_tel03"]);	// 電話番号
 				$payment_limit = lfSetConvMSG("支払期日",sfGetXMLValue($arrXML,'RESULT','CONVENI_LIMIT'));	// 支払期日
-
+				$trans_code =  sfGetXMLValue($arrXML,'RESULT','TRANS_CODE');	// トランザクションコード
+				
 				//コンビニの種類
 				switch($conveni_code) {
 				//セブンイレブン
@@ -181,7 +182,7 @@ switch($_POST["mode"]){
 				$sqlval['memo01'] = PAYMENT_CONVENIENCE_ID;
 				$sqlval['memo02'] = serialize($arrRet);
 				$sqlval["memo03"] = $arrPayment[0]["module_id"];
-				$sqlval["memo04"] = sfGetXMLValue($arrXML,'RESULT','TRANS_CODE');
+				$sqlval["memo04"] = $trans_code;
 
 				// 受注一時テーブルに更新
 				sfRegistTempOrder($uniqid, $sqlval);
