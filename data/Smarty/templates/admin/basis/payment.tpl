@@ -60,10 +60,10 @@
 									<!--{section name=cnt loop=$arrPaymentListFree}-->
 									<tr bgcolor="#ffffff" class="fs12n">
 										<td><!--{$arrPaymentListFree[cnt].payment_method|escape}--></td>
-										<!--{if $arrPaymentListFree[cnt].charge_flg == 1}-->
-											<td align="right"><!--{$arrPaymentListFree[cnt].charge|escape|number_format}--></td>
-										<!--{else}-->
+										<!--{if $arrPaymentListFree[cnt].charge_flg == 2}-->
 											<td align="center">-</td>
+										<!--{else}-->
+											<td align="right"><!--{$arrPaymentListFree[cnt].charge|escape|number_format}--></td>
 										<!--{/if}-->
 										<td align="center">
 											<table border="0" cellspacing="0" cellpadding="0" summary=" ">
