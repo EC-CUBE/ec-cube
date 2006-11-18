@@ -21,12 +21,14 @@
 	<input type="text" id="test1" name="test1" value="" onclick="test()" size="300">
 	<input type="hidden" name="mode" value="">
 	<select name=select_file size="5">
+	<option>
 		<table>
 			<tr>
-				<td><option>aaaa</option><td>
+				<td>aaaa<td>
 				<td>byte</td>
 			</tr>
 		</table>
+		</option>
 		<!--{*html_options values=$arrFileList output=$arrFileList*}-->
 	</select><br/>
 	<input type="button" onclick="fnModeSubmit('view','','');" value="É½¼¨">
