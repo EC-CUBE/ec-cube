@@ -1,9 +1,6 @@
 <?php
-print("test");
 require_once("../../require.php");
 require_once(MODULE_PATH . "mdl_epsilon/mdl_epsilon.inc");
-
-sfprintr("test");
 
 $objQuery = new SC_Query();
 
@@ -17,6 +14,4 @@ $objQuery = new SC_Query();
 //}
 
 $objQuery->getlastquery();
-
-sfprintr("test");
 ?>

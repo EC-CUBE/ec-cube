@@ -17,5 +17,10 @@ $req->setMethod(HTTP_REQUEST_METHOD_POST);
 $arrSendData = array();
 $req->addPostDataArray($arrData);
 
+sfprintr($req);
+
+$req->clearPostData();
+
+
 
 ?>
