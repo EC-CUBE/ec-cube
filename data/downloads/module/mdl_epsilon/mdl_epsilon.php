@@ -60,94 +60,11 @@ switch($_POST['mode']) {
 case 'edit':
 	// 入力エラー判定
 	$objPage->arrErr = lfCheckError();
-	
+
+	// エラーなしの場合にはデータを更新	
 	if(count($objPage->arrErr) == 0) {
-		// 利用コンビニにチェックが入っている場合には、ハイフン区切りに編集する
-		$convCnt = count($_POST["convenience"]);
-		if($convCnt > 0){
-			$convenience = $_POST["convenience"][0];
-			for($i = 1 ; $i < $convCnt ; $i++){
-				$convenience .= "-" . $_POST["convenience"][$i];
-			}
-		}
-		
-		// del_flgを削除にしておく
-		$del_sql = "UPDATE dtb_payment SET del_flg = 1 WHERE module_id = ? ";
-		$arrDel = array(MDL_EPSILON_ID);
-		$objQuery->query($del_sql, $arrDel);
-		
-		// データ登録
-		foreach($_POST["payment"] as $key => $val){
-			// ランクの最大値を取得する
-			$max_rank = $objQuery->getone("SELECT max(rank) FROM dtb_payment");
-
-			// 支払方法データを取得			
-			$arrPaymentData = lfGetPaymentDB("AND memo03 = ?", array($val));
-			
-			// クレジットにチェックが入っていればクレジットを登録する
-			if($val == 1){
-				(in_array(1, $_POST["credit"])) ? $visa = "1" : $visa = "0";
-				(in_array(2, $_POST["credit"])) ? $jcb = "1" : $jcb = "0";
-				$arrData = array(			
-					"payment_method" => "Epsilonクレジット"
-					,"fix" => 3
-					,"creator_id" => $objSess->member_id
-					,"create_date" => "now()"
-					,"update_date" => "now()"
-					,"upper_rule" => 500000
-					,"module_id" => MDL_EPSILON_ID
-					,"module_path" => MODULE_PATH . "mdl_epsilon/card.php"
-					,"memo01" => $_POST["code"]
-					,"memo02" => $_POST["url"]
-					,"memo03" => $val
-					,"memo04" => $visa . $jcb . "000-0000-00000"
-					,"del_flg" => "0"
-					,"charge_flg" => "2"
-					,"upper_rule_max" => CHARGE_MAX
-					
-				);
-			}
-
-			// コンビニにチェックが入っていればコンビニを登録する
-			if($val == 2){
-				
-				// セブンイレブンのみ選択した場合には利用上限を30万にする。
-				if(count($_POST["convenience"]) == 1 and $_POST["convenience"][0] == 11) {
-					$upper_rule_max = SEVEN_CHARGE_MAX;
-					($arrPaymentData["upper_rule"] > $upper_rule_max or $arrPaymentData["upper_rule"] == "") ? $upper_rule = $upper_rule_max : $upper_rule = $arrPaymentData["upper_rule"];
-				}else{
-					$upper_rule_max = CHARGE_MAX;
-					$upper_rule = $upper_rule_max;
-				}
-				
-				$arrData = array(
-					"payment_method" => "Epsilonコンビニ"
-					,"fix" => 3
-					,"creator_id" => $objSess->member_id
-					,"create_date" => "now()"
-					,"update_date" => "now()"
-					,"upper_rule" => $upper_rule
-					,"module_id" => MDL_EPSILON_ID
-					,"module_path" => MODULE_PATH . "mdl_epsilon/convenience.php"
-					,"memo01" => $_POST["code"]
-					,"memo02" => $_POST["url"]
-					,"memo03" => $val
-					,"memo04" => "00100-0000-00000"
-					,"memo05" => $convenience
-					,"del_flg" => "0"
-					,"charge_flg" => "1"
-					,"upper_rule_max" => $upper_rule_max
-				);
-			}
-			
-			// データが存在していればUPDATE、無ければINSERT
-			if(count($arrPaymentData) > 0){
-				$objQuery->update("dtb_payment", $arrData, " module_id = '" . MDL_EPSILON_ID . "' AND memo03 = '" . $val ."'");
-			}else{
-				$arrData["rank"] = $max_rank + 1;
-				$objQuery->insert("dtb_payment", $arrData);
-			}
-		}
+		// データ更新
+		lfUpdPaymentDB();
 		
 		// javascript実行
 		$objPage->tpl_onload = 'alert("登録完了しました。\n基本情報＞支払方法設定より詳細設定をしてください。"); window.close();';
@@ -335,6 +252,99 @@ function lfGetPaymentDB($where = "", $arrWhereVal = array()){
 	$arrRet = $objQuery->getall($sql, $arrVal);
 
 	return $arrRet;
+}
+
+
+// データの更新処理
+function lfUpdPaymentDB(){
+	global $objQuery;
+	
+// 利用コンビニにチェックが入っている場合には、ハイフン区切りに編集する
+	$convCnt = count($_POST["convenience"]);
+	if($convCnt > 0){
+		$convenience = $_POST["convenience"][0];
+		for($i = 1 ; $i < $convCnt ; $i++){
+			$convenience .= "-" . $_POST["convenience"][$i];
+		}
+	}
+	
+	// del_flgを削除にしておく
+	$del_sql = "UPDATE dtb_payment SET del_flg = 1 WHERE module_id = ? ";
+	$arrDel = array(MDL_EPSILON_ID);
+	$objQuery->query($del_sql, $arrDel);
+	
+	// データ登録
+	foreach($_POST["payment"] as $key => $val){
+		// ランクの最大値を取得する
+		$max_rank = $objQuery->getone("SELECT max(rank) FROM dtb_payment");
+
+		// 支払方法データを取得			
+		$arrPaymentData = lfGetPaymentDB("AND memo03 = ?", array($val));
+		
+		// クレジットにチェックが入っていればクレジットを登録する
+		if($val == 1){
+			(in_array(1, $_POST["credit"])) ? $visa = "1" : $visa = "0";
+			(in_array(2, $_POST["credit"])) ? $jcb = "1" : $jcb = "0";
+			$arrData = array(			
+				"payment_method" => "Epsilonクレジット"
+				,"fix" => 3
+				,"creator_id" => $objSess->member_id
+				,"create_date" => "now()"
+				,"update_date" => "now()"
+				,"upper_rule" => 500000
+				,"module_id" => MDL_EPSILON_ID
+				,"module_path" => MODULE_PATH . "mdl_epsilon/card.php"
+				,"memo01" => $_POST["code"]
+				,"memo02" => $_POST["url"]
+				,"memo03" => $val
+				,"memo04" => $visa . $jcb . "000-0000-00000"
+				,"del_flg" => "0"
+				,"charge_flg" => "2"
+				,"upper_rule_max" => CHARGE_MAX
+				
+			);
+		}
+
+		// コンビニにチェックが入っていればコンビニを登録する
+		if($val == 2){
+			
+			// セブンイレブンのみ選択した場合には利用上限を30万にする。
+			if(count($_POST["convenience"]) == 1 and $_POST["convenience"][0] == 11) {
+				$upper_rule_max = SEVEN_CHARGE_MAX;
+				($arrPaymentData["upper_rule"] > $upper_rule_max or $arrPaymentData["upper_rule"] == "") ? $upper_rule = $upper_rule_max : $upper_rule = $arrPaymentData["upper_rule"];
+			}else{
+				$upper_rule_max = CHARGE_MAX;
+				$upper_rule = $upper_rule_max;
+			}
+			
+			$arrData = array(
+				"payment_method" => "Epsilonコンビニ"
+				,"fix" => 3
+				,"creator_id" => $objSess->member_id
+				,"create_date" => "now()"
+				,"update_date" => "now()"
+				,"upper_rule" => $upper_rule
+				,"module_id" => MDL_EPSILON_ID
+				,"module_path" => MODULE_PATH . "mdl_epsilon/convenience.php"
+				,"memo01" => $_POST["code"]
+				,"memo02" => $_POST["url"]
+				,"memo03" => $val
+				,"memo04" => "00100-0000-00000"
+				,"memo05" => $convenience
+				,"del_flg" => "0"
+				,"charge_flg" => "1"
+				,"upper_rule_max" => $upper_rule_max
+			);
+		}
+
+		// データが存在していればUPDATE、無ければINSERT
+		if(count($arrPaymentData) > 0){
+			$objQuery->update("dtb_payment", $arrData, " module_id = '" . MDL_EPSILON_ID . "' AND memo03 = '" . $val ."'");
+		}else{
+			$arrData["rank"] = $max_rank + 1;
+			$objQuery->insert("dtb_payment", $arrData);
+		}
+	}
 }
 
 ?>
