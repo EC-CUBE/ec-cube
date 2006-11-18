@@ -83,6 +83,7 @@ default:
 	break;
 }
 
+
 $objPage->arrForm = $objFormParam->getFormParamList();
 
 $objView->assignobj($objPage);					//変数をテンプレートにアサインする
