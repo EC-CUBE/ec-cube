@@ -21,7 +21,9 @@
 	<input type="text" id="test1" name="test1" value="" onclick="test()" size="300">
 	<input type="hidden" name="mode" value="">
 	<select name=select_file size="5">
-	<!--{*html_options values=$arrFileList output=$arrFileList*}-->
+	<!--{section name=cnt loop=$arrFileList}-->
+	<option value="<!--{$arrFileList[cnt].file_path}-->"><!--{$arrFileList[cnt].file_name}--><!--{$arrFileList[cnt].file_size}--></option>
+	<!--{/section}-->
 	</select><br/>
 	<input type="button" onclick="fnModeSubmit('view','','');" value="表示">
 	<input type="button" onclick="fnModeSubmit('download','','');" value="ダウンロード">

@@ -42,6 +42,8 @@ default :
 // 現在のディレクトリ配下のファイル一覧を取得
 $objPage->arrFileList = lfGetFileList($now_dir);
 
+sfprintr($objPage->arrFileList);
+
 sfprintr($now_dir);
 sfprintr($arrFileList);
 
