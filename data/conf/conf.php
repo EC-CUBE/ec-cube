@@ -653,7 +653,7 @@ $arrPRODUCTSTATUS_COLOR = array(
 
 $arrORDERSTATUS_COLOR = array(
 //	1 => "#FFFFFF",
-	1 => "#88449B",
+	1 => "#88AA9B",
 	2 => "#FFDE9B",
 	3 => "#C9C9C9",
 	4 => "#FFD9D9",
