@@ -74,6 +74,7 @@ if($_POST['mode'] == "") {
 		if(sfIsInt($_GET['payment_id'])) {
 			$arrRet = lfGetData($_GET['payment_id']);
 			$objFormParam->setParam($arrRet);
+			$objPage->charge_flg = $arrRet["charge_flg"];
 			// DBデータから画像ファイル名の読込
 			$objUpFile->setDBFileList($arrRet);
 			$objPage->tpl_payment_id = $_GET['payment_id'];
@@ -112,8 +113,6 @@ function lfInitParam() {
 	$objFormParam->addParam("利用条件(〜円以下)", "upper_rule", PRICE_LEN, "n", array("NUM_CHECK", "MAX_LENGTH_CHECK"));
 	$objFormParam->addParam("配送サービス", "deliv_id", INT_LEN, "n", array("EXIST_CHECK", "NUM_CHECK", "MAX_LENGTH_CHECK"));
 	$objFormParam->addParam("固定", "fix");
-	$objFormParam->addParam("手数料フラグ", "charge_flg");
-
 }
 
 /* DBからデータを読み込む */
@@ -151,9 +150,6 @@ function lfRegistData($payment_id = "") {
 		$where = "payment_id = ?";
 		$objQuery->update("dtb_payment", $sqlval, $where, array($payment_id));
 	}
-	
-	sfprintr($sqlval);
-	exit();
 }
 
 /*　利用条件の数値チェック */

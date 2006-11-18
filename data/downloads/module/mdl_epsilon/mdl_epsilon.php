@@ -103,7 +103,6 @@ case 'edit':
 					,"memo04" => $visa . $jcb . "000-0000-00000"
 					,"del_flg" => "0"
 					,"charge_flg" => "2"
-					,"rule_min" => "0"
 					,"upper_rule_max" => CHARGE_MAX
 					
 				);
@@ -137,7 +136,6 @@ case 'edit':
 					,"memo05" => $convenience
 					,"del_flg" => "0"
 					,"charge_flg" => "1"
-					,"rule_min" => "0"
 					,"upper_rule_max" => $upper_rule_max
 				);
 			}

@@ -89,7 +89,7 @@ self.moveTo(20,20);self.focus();
 										<tr class="fs12n">
 											<td width="100" bgcolor="#f0f0f0">手数料<span class="red"> *</span></td>
 											<td width="340" bgcolor="#ffffff">
-											<!--{if $arrForm.charge_flg.value == 2}-->
+											<!--{if $charge_flg.value == 2}-->
 											設定できません
 											<!--{else}-->
 											<!--{assign var=key value="charge"}-->
