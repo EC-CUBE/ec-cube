@@ -14,8 +14,9 @@
 <body onload="fnTreeDrow('tree')">
 <div id="tree"></div>
 
-<form name="form1" id="form1" method="post" action="<!--{$smarty.server.PHP_SELF|escape}-->">
+<form name="form1" method="post" action="<!--{$smarty.server.PHP_SELF|escape}-->">
 	<input type="text" id="test1" name="test1" value="" onclick="test()" size="300">
+	<input type="hidden" name="mode" value="">
 	<select name=select_file size="5">
 		<!--{html_options options=$arrFileList}-->
 	</select><br/>
