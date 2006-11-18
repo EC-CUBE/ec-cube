@@ -11,4 +11,7 @@ if($_POST["trans_code"] != "" and $_POST["paid"] == 1){
 	$objQuery->query($sql, array($_POST["order_number"]));
 }
 
+
+gfPrintLog("epsilon test");
+
 ?>
