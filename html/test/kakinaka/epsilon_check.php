@@ -3,6 +3,8 @@
 require_once("../../require.php");
 require_once(MODULE_PATH . "mdl_epsilon/mdl_epsilon.inc");
 
+sfprintr("test");
+
 $objQuery = new SC_Query();
 
 // trans_code を指定されていて且つ、入金済みの場合
