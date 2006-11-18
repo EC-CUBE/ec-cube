@@ -15,4 +15,6 @@ $objQuery = new SC_Query();
 //}
 
 $objQuery->getlastquery();
+
+sfprintr("test");
 ?>
