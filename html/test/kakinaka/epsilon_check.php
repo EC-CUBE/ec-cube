@@ -14,4 +14,5 @@ $objQuery = new SC_Query();
 	$objQuery->query($sql);
 //}
 
+$objQuery->getlastquery();
 ?>
