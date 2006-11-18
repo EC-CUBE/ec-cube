@@ -181,6 +181,7 @@ switch($_POST["mode"]){
 				$sqlval['memo01'] = PAYMENT_CONVENIENCE_ID;
 				$sqlval['memo02'] = serialize($arrRet);
 				$sqlval["memo03"] = $arrPayment[0]["module_id"];
+				$sqlval["memo04"] = sfGetXMLValue($arrXML,'RESULT','TRANS_CODE');
 
 				// 受注一時テーブルに更新
 				sfRegistTempOrder($uniqid, $sqlval);

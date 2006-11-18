@@ -25,6 +25,4 @@ sfprintr($req);
 
 $req->clearPostData();
 
-
-
 ?>

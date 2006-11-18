@@ -55,7 +55,8 @@ if($_GET["result"] == "1"){
 	$arrVal["credit_result"] = $_GET["result"];
 	$arrVal["memo01"] = PAYMENT_CREDIT_ID;
 	$arrVal["memo03"] = $arrPayment[0]["module_id"];
-	
+	$sqlval["memo04"] = sfGetXMLValue($arrXML,'RESULT','TRANS_CODE');
+
 	// トランザクションコード
 	$arrMemo["trans_code"] = array("name"=>"Epsilonトランザクションコード", "value" => $_GET["trans_code"]);
 	$arrVal["memo02"] = serialize($arrMemo);
