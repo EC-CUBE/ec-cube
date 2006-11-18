@@ -17,7 +17,7 @@
 	<input type="text" id="test1" name="test1" value="" onclick="test()" size="300">
 	<select name=select_file size="5">
 		<!--{html_options options=$arrFileList}-->
-	</select>
+	</select><br/>
 	<input type="button" onclick="fnModeSubmit('view','','');" value="表示">
 	<input type="button" onclick="fnModeSubmit('download','','');" value="ダウンロード">
 	<input type="button" onclick="fnModeSubmit('delete','','');" value="削除">
