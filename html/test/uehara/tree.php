@@ -70,8 +70,8 @@ function lfGetFileList($dir) {
 					$arrFileList[$cnt]['file_name'] = $file;
 					$arrFileList[$cnt]['file_path'] = $dir.$file;
 					$arrFileList[$cnt]['file_size'] = filesize($dir.$file);
+					$cnt++;
 				}
-				$cnt++;
 	        } 
 	        closedir($dh); 
 	    }
