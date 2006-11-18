@@ -153,6 +153,7 @@ function lfRegistData($payment_id = "") {
 	}
 	
 	sfprintr($sqlval);
+	exit();
 }
 
 /*　利用条件の数値チェック */
