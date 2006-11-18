@@ -6,9 +6,14 @@
  */
 require_once("../../require.php");
 
+class LC_Page{
+	function LC_Page() {
+	}
+}
 
 $top_dir = USER_PATH;
 
+$objPage = new LC_Page();
 $objView = new SC_UserView("./templates/");
 $objQuery = new SC_Query();
 
@@ -17,7 +22,7 @@ switch($_POST['mode']) {
 case 'view':
 case 'download':	
 case 'delete':
-	$now_dir = $_POST['view_dir'];
+	$now_dir = $_POST['select_file'];
 	
 case 'view':
 	break;
@@ -33,12 +38,12 @@ default :
 	break;
 }
 // 現在のディレクトリ配下のファイル一覧を取得
-$arrFileList = getFileList($now_dir);
+$objPage->arrFileList = getFileList($now_dir);
 
 sfprintr($now_dir);
 sfprintr($arrFileList);
 
-//$objView->assignobj($objPage);
+$objView->assignobj($objPage);
 $objView->display("tree.tpl");
 
 //-----------------------------------------------------------------------------------------------------------------------------------

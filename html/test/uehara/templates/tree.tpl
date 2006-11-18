@@ -14,7 +14,15 @@
 <div id="tree"></div>
 
 <form name="form1">
-<input type="text" id="test1" name="test1" value="" onclick="test()" size="300">
+	<input type="text" id="test1" name="test1" value="" onclick="test()" size="300">
+	<select name=select_file>
+		{html_options options=$arrFileList}
+	</select>
 </form>
+
+arrFileList
+
+
+
 </body>
 </html>
