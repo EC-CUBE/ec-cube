@@ -199,7 +199,6 @@ function lfLoadUpdateList() {
 			$objQuery->query($del_sql, $arrInsID);
 		}
 
-		
 		fclose($fp);
 	}
 }

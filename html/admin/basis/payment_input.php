@@ -151,6 +151,8 @@ function lfRegistData($payment_id = "") {
 		$where = "payment_id = ?";
 		$objQuery->update("dtb_payment", $sqlval, $where, array($payment_id));
 	}
+	
+	sfprintr($sqlval);
 }
 
 /*　利用条件の数値チェック */
