@@ -62,14 +62,16 @@ function lfGetFileList($dir) {
 	$arrFileList = array();
 	if (is_dir($dir)) { 
 	    if ($dh = opendir($dir)) { 
+			$cnt = 0;
 	        while (($file = readdir($dh)) !== false) { 
 				// ./ と ../を除くディレクトリのみを取得
 				//if(filetype($dir . $file) == 'dir' && $file != "." && $file != "..") {
 				if($file != "." && $file != "..") {
-					$arrFileList[]['file_name'] = $file;
-					$arrFileList[]['file_path'] = $dir.$file;
-					$arrFileList[]['file_size'] = filesize($dir.$file);
+					$arrFileList[$cnt]['file_name'] = $file;
+					$arrFileList[$cnt]['file_path'] = $dir.$file;
+					$arrFileList[$cnt]['file_size'] = filesize($dir.$file);
 				}
+				$cnt++;
 	        } 
 	        closedir($dh); 
 	    }
