@@ -68,7 +68,7 @@ define("AFF_ENTRY_COMPLETE", 2);
 define("CHAR_CODE", "EUC-JP");
 
 // EC-CUBEバージョン情報
-define("ECCUBE_VERSION", "1.0.1a-beta");
+define("ECCUBE_VERSION", "1.0.2-beta");
 
 // 決済モジュール付与文言
 define("ECCUBE_PAYMENT", "EC-CUBE");
