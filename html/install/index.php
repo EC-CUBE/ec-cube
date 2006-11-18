@@ -22,7 +22,7 @@ class LC_Page {
 		);
 	}
 }
-
+d
 $objPage = new LC_Page();
 
 // テンプレートコンパイルディレクトリの書込み権限チェック

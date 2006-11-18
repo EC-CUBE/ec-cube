@@ -46,12 +46,15 @@ $objSess = new SC_Session();
 
 sfIsSuccess($objSess);
 
+
+
+
+
 // パラメータ管理クラス
 $objFormParam = new SC_FormParam();
 $objFormParam = lfInitParam($objFormParam);
 // POST値の取得
 $objFormParam->setParam($_POST);
-
 
 // 汎用項目を追加(必須！！)
 sfAlterMemo();
@@ -82,7 +85,6 @@ default:
 	lfLoadData();	
 	break;
 }
-
 
 $objPage->arrForm = $objFormParam->getFormParamList();
 
