@@ -77,7 +77,6 @@ switch ($_POST['mode']){
 					lfStatusMove(6,$_POST['move']);
 				break;
 				
-				
 				//ºï½ü
 				case 'delete':
 					lfStatusMove("delete",$_POST['move']);

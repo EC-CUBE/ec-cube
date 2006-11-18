@@ -657,7 +657,7 @@ $arrORDERSTATUS_COLOR = array(
 	3 => "#C9C9C9",
 	4 => "#FFD9D9",
 	5 => "#BFDFFF",
-	6 => "#FFFF7B"
+	6 => "#FFFFAB"
 );
 
 // ÍËÆü
