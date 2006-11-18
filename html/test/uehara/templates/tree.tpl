@@ -15,7 +15,7 @@
 
 <form name="form1">
 	<input type="text" id="test1" name="test1" value="" onclick="test()" size="300">
-	<select name=select_file size="10">
+	<select name=select_file size="5">
 		<!--{html_options options=$arrFileList}-->
 	</select>
 </form>
