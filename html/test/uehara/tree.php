@@ -57,7 +57,7 @@ function getFileList($dir) {
 				// ./ と ../を除くディレクトリのみを取得
 				//if(filetype($dir . $file) == 'dir' && $file != "." && $file != "..") {
 				if($file != "." && $file != "..") {
-					$arrAllFile[] = $dir.$file;
+					$arrFileList[] = $dir.$file;
 				}
 	        } 
 	        closedir($dh); 
