@@ -27,6 +27,10 @@
 				<td>aaaa<td>
 				<td>byte</td>
 			</tr>
+			<tr>
+				<td>aaaa<td>
+				<td>11111111111111111111</td>
+			</tr>			
 		</table>
 		</option>
 		<!--{*html_options values=$arrFileList output=$arrFileList*}-->
