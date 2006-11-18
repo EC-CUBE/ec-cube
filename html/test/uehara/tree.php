@@ -35,6 +35,7 @@ default :
 // 現在のディレクトリ配下のファイル一覧を取得
 $arrFileList = getFileList($now_dir);
 
+sfprintr($now_dir);
 sfprintr($arrFileList);
 
 //$objView->assignobj($objPage);
