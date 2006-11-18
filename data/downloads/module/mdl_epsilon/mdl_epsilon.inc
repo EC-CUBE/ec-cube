@@ -7,6 +7,8 @@
  *
  */
 
+define("MDL_EPSILON_ID", 4);
+
 define ("CHARGE_MAX", 500000);
 define ("SEVEN_CHARGE_MAX", 300000);
 
