@@ -12,7 +12,7 @@ if($_POST["trans_code"] != "" and $_POST["paid"] == 1 and $_POST["order_number"]
 	gfPrintLog("epsilon OK");
 }
 
-gfPrintLog("epsilon test", data_path . "logs/epsilon.log");
+gfPrintLog("epsilon test", DATA_PATH . "logs/epsilon.log");
 //gfPrintLog("epsilon test");
 
 ?>
