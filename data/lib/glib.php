@@ -112,12 +112,12 @@ function gfPrintLog($mess, $path = '') {
 	if ($path == "") {
 		$path = LOG_PATH;
 	}
-	
+
 	// エスケープされている文字をもとに戻す
 	$trans_tbl = get_html_translation_table (HTML_ENTITIES);
     $trans_tbl = array_flip ($trans_tbl);
     $mess = strtr($mess, $trans_tbl);
-	
+
 	$fp = fopen($path, "a+");
 	if($fp) {
 		fwrite( $fp, $today." [".$_SERVER['PHP_SELF']."] ".$mess." from ". $_SERVER['REMOTE_ADDR']. "\n" );
