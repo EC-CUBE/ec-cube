@@ -21,19 +21,15 @@
 	<input type="text" id="test1" name="test1" value="" onclick="test()" size="300">
 	<input type="hidden" name="mode" value="">
 	<select name=select_file size="5">
+	<table>
+	<tr>
 	<option>
-		<table>
-			<tr>
-				<td>aaaa<td>
-				<td>byte</td>
-			</tr>
-			<tr>
-				<td>aaaa<td>
-				<td>11111111111111111111</td>
-			</tr>			
-		</table>
-		</option>
-		<!--{*html_options values=$arrFileList output=$arrFileList*}-->
+		<td>aaaa<td>
+		<td>byte</td>
+	</option>
+	</tr>
+	</table>
+	<!--{*html_options values=$arrFileList output=$arrFileList*}-->
 	</select><br/>
 	<input type="button" onclick="fnModeSubmit('view','','');" value="表示">
 	<input type="button" onclick="fnModeSubmit('download','','');" value="ダウンロード">
