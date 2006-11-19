@@ -55,6 +55,7 @@ default :
 }
 // 現在のディレクトリ配下のファイル一覧を取得
 $objPage->arrFileList = lfGetFileList($now_dir);
+$objPage->tpl_now_file = $now_dir;
 
 sfprintr($objPage->arrFileList);
 
