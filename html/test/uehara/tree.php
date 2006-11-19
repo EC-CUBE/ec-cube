@@ -52,6 +52,8 @@ case 'download':
 			Header("Content-type: application/octet-stream; name=".basename($_POST['select_file']));
 			Header("Cache-Control: ");
 			Header("Pragma: ");
+			echo (lfReadFile($_POST['select_file']));
+			
 			exit;			
 		}
 	}
