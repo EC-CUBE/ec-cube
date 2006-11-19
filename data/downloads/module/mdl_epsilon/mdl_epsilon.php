@@ -44,7 +44,7 @@ lfEpsilonCheck();
 $objSess = new SC_Session();
 sfIsSuccess($objSess);
 
-sfprintr($_SESSION);
+sfprintr($objSess->member_id);
 
 // パラメータ管理クラス
 $objFormParam = new SC_FormParam();
