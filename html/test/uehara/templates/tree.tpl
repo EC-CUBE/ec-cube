@@ -9,16 +9,13 @@
 <script type="text/javascript" src="/html/js/win_op.js"></script>
 <script type="text/javascript" src="/html/test/uehara/js/tree.js"></script>
 <title>Untitled</title>
-<script type="text/javascript"></script>
-</head>
-<body onload="fnTreeDrow('tree')">
-
 <script language="JavaScript">
 <!--
 <!--{$tpl_javascript}-->
 //-->
 </script>
-
+</head>
+<body onload="fnTreeDrow('tree')">
 ¢£tree
 <div id="tree"></div>
 

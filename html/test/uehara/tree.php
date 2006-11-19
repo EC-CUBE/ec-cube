@@ -17,15 +17,12 @@ $objPage = new LC_Page();
 $objView = new SC_UserView("./templates");
 $objQuery = new SC_Query();
 
+// 現在の階層を取得
+if($_POST['mode'] != "") {
+	$now_dir = $_POST['now_file'];
+}
 
 switch($_POST['mode']) {
-
-case 'view':
-case 'download':	
-case 'delete':
-	// 現在の階層を取得
-	$now_dir = $_POST['now_file'];
-	//break;
 
 case 'view':
 	// エラーチェック
