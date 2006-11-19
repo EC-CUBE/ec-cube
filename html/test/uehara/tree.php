@@ -34,7 +34,7 @@ case 'view':
 		} else {
 			// javascriptで別窓表示(テンプレート側に渡す)
 			//$file_url = ereg_replace(USER_PATH, USER_URL, $_POST['select_file']);
-			$objPage->tpl_javascript = "win02('./file_view.php?". $_POST['select_file'] ."', 'user_data', '600', '400');";
+			$objPage->tpl_javascript = "win02('./file_view.php?file=". $_POST['select_file'] ."', 'user_data', '600', '400');";
 		}
 	}
 	break;
