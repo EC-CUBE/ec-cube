@@ -31,7 +31,8 @@ case 'view':
 		$now_dir = $_POST['select_file'];
 	} else {
 		// javascriptで別窓表示(テンプレート側に渡す)
-		$objPage->tpl_javascript = "win02('". $_POST['select_file'] ."', 'user_data', '600', '400');";
+		$file_url = ereg_replace(USER_PATH, USER_URL, $_POST['select_file']);
+		$objPage->tpl_javascript = "win02('". $file_url ."', 'user_data', '600', '400');";
 	}
 	break;
 
@@ -58,7 +59,6 @@ $objPage->arrFileList = lfGetFileList($now_dir);
 $objPage->tpl_now_file = $now_dir;
 
 sfprintr($objPage->arrFileList);
-
 sfprintr($now_dir);
 sfprintr($arrFileList);
 
