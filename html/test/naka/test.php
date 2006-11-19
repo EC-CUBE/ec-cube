@@ -16,6 +16,8 @@
 </table>
 
 <?php
+require_once("../../require.php");
+
     if(isset($_POST['string'])) {
         print("string is " . $_POST['string']);
     }
