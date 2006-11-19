@@ -302,6 +302,7 @@ function lfUpdPaymentDB(){
 			);
 		}
 		
+		sfprintr($objSess);
 		sfprintr($_SESSION);
 
 		// コンビニにチェックが入っていればコンビニを登録する
