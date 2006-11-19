@@ -48,10 +48,16 @@ case 'download':
 			$objPage->tpl_javascript = "alert('※　ディレクトリをダウンロードすることは出来ません。');";
 		} else {
 			// ファイルの場合はダウンロードさせる
-			Header("Content-disposition: attachment; filename=".basename($_POST['select_file']));
+			/*Header("Content-disposition: attachment; filename=".basename($_POST['select_file']));
 			Header("Content-type: application/octet-stream; name=".basename($_POST['select_file']));
 			Header("Cache-Control: ");
 			Header("Pragma: ");
+			*/
+			header("Accept-Ranges: none");
+			header("Content-Disposition: attachment; filename=".$_POST['select_file']);
+			header("Content-Transfer-Encoding: binary");
+			header("Content-Length: ". strlen($_POST['select_file']) );
+			header("Content-Type: text/octet-stream");
 		}
 	}
 	break;

@@ -7,6 +7,11 @@
 
 require_once("../../require.php");
 
+			Header("Content-disposition: attachment; filename=".basename($_POST['select_file']));
+			Header("Content-type: application/octet-stream; name=".basename($_POST['select_file']));
+			Header("Cache-Control: ");
+			Header("Pragma: ");
+
 // ファイル内容表示
 print("<pre>\n");
 print(lfReadFile(USER_PATH.$_GET['file']));
