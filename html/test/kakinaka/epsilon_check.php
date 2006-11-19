@@ -10,12 +10,14 @@ if($_POST["trans_code"] != "" and $_POST["paid"] == 1 and $_POST["order_number"]
 	$sql = "UPDATE dtb_order SET status = 6, update_date = now() WHERE order_id = ? AND memo04 = ? ";
 	$objQuery->query($sql, array($_POST["order_number"], $_POST["trans_code"]));
 	
+	$log_path = DATA_PATH . "logs/epsilon.log";
+	
 	// POSTの内容を全てログ保存
-	gfPrintLog("epsilon conveni start---------------------------------------------------------", DATA_PATH . "logs/epsilon.log");
+	gfPrintLog("epsilon conveni start---------------------------------------------------------", $log_path);
 	foreach($_POST as $key => $val){
-		gfPrintLog( $key . " => " . $val, DATA_PATH . "logs/epsilon.log");
+		gfPrintLog( $key . " => " . $val, $log_path);
 	}
-	gfPrintLog("epsilon conveni end-----------------------------------------------------------", DATA_PATH . "logs/epsilon.log");
+	gfPrintLog("epsilon conveni end-----------------------------------------------------------", $log_path);
 }
 
 ?>

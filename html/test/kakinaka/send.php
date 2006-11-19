@@ -7,7 +7,7 @@ $order_url = "http://test.ec-cube.net/ec-cube/test/kakinaka/epsilon_check.php";
 
 $arrData = array(
 	'order_number' => '1',
-	'trans_code' => '00100-0000-00000',
+	'trans_code' => '1',
 	'paid' => 1	
 );
 
@@ -21,7 +21,6 @@ if (!PEAR::isError($req->sendRequest())) {
 } else {
 	$response = "";
 }
-sfprintr($req);
 
 $req->clearPostData();
 
