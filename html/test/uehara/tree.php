@@ -14,7 +14,7 @@ class LC_Page{
 $top_dir = USER_PATH;
 
 $objPage = new LC_Page();
-$objView = new SC_UserView("./templates/upload");
+$objView = new SC_UserView("./templates");
 $objQuery = new SC_Query();
 
 switch($_POST['mode']) {
