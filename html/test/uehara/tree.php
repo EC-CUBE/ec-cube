@@ -25,7 +25,7 @@ case 'delete':
 	// 現在の階層を取得
 	$now_dir = $_POST['now_file'];
 	// エラーチェック
-	if(is_array(lfErrorCheck()) break;
+	if(is_array(lfErrorCheck())) break;
 
 case 'view':
 	// 選択されたファイルがディレクトリなら移動
