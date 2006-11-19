@@ -44,8 +44,6 @@ lfEpsilonCheck();
 $objSess = new SC_Session();
 sfIsSuccess($objSess);
 
-sfprintr($objSess);
-
 // パラメータ管理クラス
 $objFormParam = new SC_FormParam();
 $objFormParam = lfInitParam($objFormParam);
@@ -62,6 +60,8 @@ case 'edit':
 
 	// エラーなしの場合にはデータを更新	
 	if(count($objPage->arrErr) == 0) {
+		sfprintr($objSess);
+
 		// データ更新
 		lfUpdPaymentDB();
 		
