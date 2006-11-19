@@ -39,6 +39,8 @@ case 'view':
 	break;
 
 case 'download':
+
+sfprintr("test");
 	if(is_dir($_POST['select_file'])) {
 		// ディレクトリの場合はjavascriptエラー
 		$objPage->tpl_javascript = "alert('※　ディレクトリをダウンロードすることは出来ません。');";
