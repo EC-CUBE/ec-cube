@@ -8,10 +8,15 @@
 <script type="text/javascript" src="/html/js/site.js"></script>
 <script type="text/javascript" src="/html/test/uehara/js/tree.js"></script>
 <title>Untitled</title>
-<script type="text/javascript">
-</script>
+<script type="text/javascript"></script>
 </head>
 <body onload="fnTreeDrow('tree')">
+
+<script language="JavaScript">
+<!--
+<!--{$tpl_javascript}-->
+//-->
+</script>
 
 ¢£tree
 <div id="tree"></div>
@@ -20,6 +25,7 @@
 <form name="form1" method="post" action="<!--{$smarty.server.PHP_SELF|escape}-->">
 	<input type="text" id="test1" name="test1" value="" onclick="test()" size="300">
 	<input type="hidden" name="mode" value="">
+	<input type="hidden" name="now_file" value="">
 	<select name=select_file size="5">
 	<!--{section name=cnt loop=$arrFileList}-->
 	<option value="<!--{$arrFileList[cnt].file_path}-->"><!--{$arrFileList[cnt].file_name}-->¡¡<!--{$arrFileList[cnt].file_size}-->¡¡<!--{$arrFileList[cnt].file_time}--></option>

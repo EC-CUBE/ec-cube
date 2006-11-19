@@ -22,13 +22,28 @@ switch($_POST['mode']) {
 case 'view':
 case 'download':	
 case 'delete':
-	// 初期表示以外は現在選択中のディレクトリを取得
-	$now_dir = $_POST['select_file'];
-	
+	// 現在のフォルダを表示
+	$now_dir = $_POST['now_file'];
+
 case 'view':
+	// 選択されたファイルがディレクトリなら移動
+	if(is_dir($_POST['select_file'])) {
+		$now_dir = $_POST['select_file'];
+	} else {
+		// javascriptで別窓表示(テンプレート側に渡す)
+		$objPage->tpl_javascript = "win02('". $_POST['select_file'] ."', 'user_data', '600', '400');";
+		exit;
+	}
 	break;
 
 case 'download':
+	if(is_dir($_POST['select_file'])) {
+		// ディレクトリの場合はjavascriptエラー
+		$objPage->tpl_javascript = "alert('※　ディレクトリをダウンロードすることは出来ません。');";
+	} else {
+		// ファイルの場合はダウンロードさせる
+		header('Content-Disposition: attachment; filename="'. basename($_POST['select_file']) .'"');
+	}
 	break;
 	
 case 'delete':
@@ -66,7 +81,7 @@ function lfGetFileList($dir) {
 			while (($file = readdir($dh)) !== false) { 
 				// ./ と ../を除くファイルのみを取得
 				if($file != "." && $file != "..") {
-sfprintr($file);	// 行末の/を取り除く
+					// 行末の/を取り除く
 					$dir = ereg_replace("\/$", "", $dir);
 					$path = $dir."/".$file;
 					$arrFileList[$cnt]['file_name'] = $file;
@@ -93,11 +108,12 @@ function getDirSize($dir) {
 		// ディレクトリの場合下層ファイルの総量を取得
 		if (is_dir($dir)) {
 		    $handle = opendir($dir); 
-		    while ($file = readdir($handle)) { 
-		        if ($file != '..' && $file != '.' && !is_dir($dir.'/'.$file)) { 
-		            $bytes += filesize($dir.'/'.$file); 
-		        } else if (is_dir($dir.'/'.$file) && $file != '..' && $file != '.') { 
-		            $bytes += getDirSize($dir.'/'.$file); 
+		    while ($file = readdir($handle)) {
+				$path = $dir."/".$file;
+		        if ($file != '..' && $file != '.' && !is_dir($path)) { 
+		            $bytes += filesize($path); 
+		        } else if (is_dir($path) && $file != '..' && $file != '.') { 
+		            $bytes += getDirSize($path); 
 		        } 
 		    } 
 		} else {

@@ -129,7 +129,6 @@ function fnModeSubmit(mode, keyname, keyid) {
 		document.form1[keyname].value = keyid;
 	}
 	document.form1.submit();
-
 }
 
 function fnFormModeSubmit(form, mode, keyname, keyid) {
@@ -333,9 +332,9 @@ function fnKeySubmit(keyname, keyid) {
 }
 
 //文字数をカウントする。
-//引数?：フォーム名称
-//引数?：文字数カウント対象
-//引数?：カウント結果格納対象
+//引数1：フォーム名称
+//引数2：文字数カウント対象
+//引数3：カウント結果格納対象
 function fnCharCount(form,sch,cnt) {
 	document.forms[form][cnt].value= document.forms[form][sch].value.length;
 }
