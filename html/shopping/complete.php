@@ -317,7 +317,9 @@ function lfRegistOrder($objQuery, $arrData) {
 	unset($sqlval['reminder']);			// リマインダー質問
 	unset($sqlval['reminder_answer']);	// リマインダー答え
 
-	$sqlval['status'] = '1';			// 注文ステータス:新規受付に設定
+	if($sqlval["status"] == ""){
+		$sqlval['status'] = '1';			// 注文ステータス:新規受付に設定
+	}
 	
 	// 別のお届け先を指定していない場合、配送先に登録住所をコピーする。
 	if($arrData["deliv_check"] != "1") {
