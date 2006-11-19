@@ -7,12 +7,15 @@ $objQuery = new SC_Query();
 // trans_code を指定されていて且つ、入金済みの場合
 if($_POST["trans_code"] != "" and $_POST["paid"] == 1 and $_POST["order_number"] != ""){
 	// ステータスを入金済みに変更する
-	$sql = "UPDATE dtb_order SET status = 6 WHERE order_id = ? AND memo04 = ? ";
+	$sql = "UPDATE dtb_order SET status = 6, update_date = now() WHERE order_id = ? AND memo04 = ? ";
 	$objQuery->query($sql, array($_POST["order_number"], $_POST["trans_code"]));
-	gfPrintLog("epsilon OK");
+	
+	// POSTの内容を全てログ保存
+	gfPrintLog("epsilon conveni start---------------------------------------------------------", DATA_PATH . "logs/epsilon.log");
+	foreach($_POST as $key => $val){
+		gfPrintLog( $key . " => " . $val, DATA_PATH . "logs/epsilon.log");
+	}
+	gfPrintLog("epsilon conveni end-----------------------------------------------------------", DATA_PATH . "logs/epsilon.log");
 }
-
-gfPrintLog("epsilon test", DATA_PATH . "logs/epsilon.log");
-//gfPrintLog("epsilon test");
 
 ?>
