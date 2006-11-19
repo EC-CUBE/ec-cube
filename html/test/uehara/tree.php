@@ -17,6 +17,9 @@ $objPage = new LC_Page();
 $objView = new SC_UserView("./templates");
 $objQuery = new SC_Query();
 
+
+sfprintr($_POST['mode']);
+
 switch($_POST['mode']) {
 
 case 'view':
@@ -62,9 +65,7 @@ default :
 $objPage->arrFileList = lfGetFileList($now_dir);
 $objPage->tpl_now_file = $now_dir;
 
-sfprintr($objPage->arrFileList);
 sfprintr($now_dir);
-sfprintr($arrFileList);
 
 $objView->assignobj($objPage);
 $objView->display("tree.tpl");
