@@ -268,14 +268,14 @@ function lfUninstallModule() {
 	if(count($arrRet) > 0) {
 		
 		// モジュール側に削除情報を送信する
-		$req = new HTTP_Request("http://test.ec-cube.net/ec-cube/admin/system/load_module.php");
+		$req = new HTTP_Request("http://test.ec-cube.net/ec-cube/load_module.php");
 		$req->addCookie("PHPSESSID", $_COOKIE["PHPSESSID"]);
 		$req->setMethod(HTTP_REQUEST_METHOD_POST);
 		$req->addPostData("module_id", $arrRet[0]['module_id']);
 		$req->addPostData("mode", "module_del");
 		$req->sendRequest();
 		$req->clearPostData();
-		
+
 		$arrFiles = array();
 		if($arrRet[0]['other_files'] != "") {
 			$arrFiles = split("\|", $arrRet[0]['other_files']);
