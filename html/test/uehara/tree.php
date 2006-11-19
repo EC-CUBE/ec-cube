@@ -108,6 +108,9 @@ function getDirSize($dir) {
 		// ディレクトリが存在しない場合は0byteを返す
 		$bytes = 0;
 	}
+	
+	if($bytes == "") $bytes = 0;
+	
     return $bytes; 
 } 
 
