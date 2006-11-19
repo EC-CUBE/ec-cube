@@ -68,9 +68,9 @@ function lfGetFileList($dir) {
 				//if(filetype($dir . $file) == 'dir' && $file != "." && $file != "..") {
 				if($file != "." && $file != "..") {
 					$arrFileList[$cnt]['file_name'] = $file;
-					$arrFileList[$cnt]['file_path'] = $dir."/".$file;
-					$arrFileList[$cnt]['file_size'] = filesize($dir."/".$file);
-					$arrFileList[$cnt]['file_time'] = date("Y/m/d", filemtime($dir."/".$file)); 
+					$arrFileList[$cnt]['file_path'] = $dir.$file;
+					$arrFileList[$cnt]['file_size'] = filesize($dir.$file);
+					$arrFileList[$cnt]['file_time'] = date("Y/m/d", filemtime($dir.$file)); 
 					$cnt++;
 				}
 	        }

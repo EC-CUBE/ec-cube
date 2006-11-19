@@ -22,7 +22,7 @@
 	<input type="hidden" name="mode" value="">
 	<select name=select_file size="5">
 	<!--{section name=cnt loop=$arrFileList}-->
-	<option value="<!--{$arrFileList[cnt].file_path}-->"><!--{$arrFileList[cnt].file_name}--><!--{$arrFileList[cnt].file_size}--><!--{$arrFileList[cnt].file_time}--></option>
+	<option value="<!--{$arrFileList[cnt].file_path}-->"><!--{$arrFileList[cnt].file_name}-->　<!--{$arrFileList[cnt].file_size}-->　<!--{$arrFileList[cnt].file_time}--></option>
 	<!--{/section}-->
 	</select><br/>
 	<input type="button" onclick="fnModeSubmit('view','','');" value="表示">
