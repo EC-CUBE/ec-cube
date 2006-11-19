@@ -7,7 +7,6 @@
 require_once("./require.php");
 require_once(DATA_PATH . "module/Request.php");
 
-
 if($_GET['module_id'] != ""){
 	$module_id = $_GET['module_id'];
 }elseif($_POST['module_id'] != ""){
