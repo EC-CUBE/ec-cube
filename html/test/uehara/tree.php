@@ -68,10 +68,11 @@ function lfGetFileList($dir) {
 				if($file != "." && $file != "..") {
 sfprintr($file);	// 行末の/を取り除く
 					$dir = ereg_replace("\/$", "", $dir);
+					$path = $dir."/".$file;
 					$arrFileList[$cnt]['file_name'] = $file;
-					$arrFileList[$cnt]['file_path'] = $dir."/".$file;
-					$arrFileList[$cnt]['file_size'] = getDirSize($dir."/".$file);
-					$arrFileList[$cnt]['file_time'] = date("Y/m/d", filemtime($dir."/".$file)); 
+					$arrFileList[$cnt]['file_path'] = $path;
+					$arrFileList[$cnt]['file_size'] = getDirSize($path);
+					$arrFileList[$cnt]['file_time'] = date("Y/m/d", filemtime($path)); 
 					$cnt++;
 				}
 	        }
@@ -85,17 +86,21 @@ sfprintr($file);	// 行末の/を取り除く
 /* 
  * 関数名：getDirSize()
  * 説明　：指定したディレクトリのバイト数を取得
- * 引数1 ：ディレクトリパス格納配列
+ * 引数1 ：ファイル格納配列
  */
 function getDirSize($dir) { 
-    $handle = opendir($dir); 
-    while ($file = readdir($handle)) { 
-        if ($file != '..' && $file != '.' && !is_dir($dir.'/'.$file)) { 
-            $bytes += filesize($dir.'/'.$file); 
-        } else if (is_dir($dir.'/'.$file) && $file != '..' && $file != '.') { 
-            $bytes += getDirSize($dir.'/'.$file); 
-        } 
-    } 
+	if (is_dir($dir)) {
+	    $handle = opendir($dir); 
+	    while ($file = readdir($handle)) { 
+	        if ($file != '..' && $file != '.' && !is_dir($dir.'/'.$file)) { 
+	            $bytes += filesize($dir.'/'.$file); 
+	        } else if (is_dir($dir.'/'.$file) && $file != '..' && $file != '.') { 
+	            $bytes += getDirSize($dir.'/'.$file); 
+	        } 
+	    } 
+	} else {
+		$bytes = filesize($dir);
+	}
     return $bytes; 
 } 
 
