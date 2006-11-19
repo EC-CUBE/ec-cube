@@ -136,7 +136,7 @@ function getDirSize($dir) {
  * 関数名：lfErrorCheck()
  * 説明　：エラーチェック
  */
-function lfErrorCheck($array) {
+function lfErrorCheck() {
 
 	if($_POST['select_file']) {
 		$arrErr['select_file'] = "※　ファイルが選択されていません。";
