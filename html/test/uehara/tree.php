@@ -25,29 +25,34 @@ case 'download':
 case 'delete':
 	// 現在の階層を取得
 	$now_dir = $_POST['now_file'];
-	// エラーチェック
 	break;
 
 case 'view':
-	// 選択されたファイルがディレクトリなら移動
-	if(is_dir($_POST['select_file'])) {
-		$now_dir = $_POST['select_file'];
-	} else {
-		// javascriptで別窓表示(テンプレート側に渡す)
-		$file_url = ereg_replace(USER_PATH, USER_URL, $_POST['select_file']);
-		$objPage->tpl_javascript = "win02('". $file_url ."', 'user_data', '600', '400');";
+	// エラーチェック
+	if(!is_array(lfErrorCheck())) {
+	
+		// 選択されたファイルがディレクトリなら移動
+		if(is_dir($_POST['select_file'])) {
+			$now_dir = $_POST['select_file'];
+		} else {
+			// javascriptで別窓表示(テンプレート側に渡す)
+			$file_url = ereg_replace(USER_PATH, USER_URL, $_POST['select_file']);
+			$objPage->tpl_javascript = "win02('". $file_url ."', 'user_data', '600', '400');";
+		}
 	}
 	break;
 
 case 'download':
 
-sfprintr("test");
-	if(is_dir($_POST['select_file'])) {
-		// ディレクトリの場合はjavascriptエラー
-		$objPage->tpl_javascript = "alert('※　ディレクトリをダウンロードすることは出来ません。');";
-	} else {
-		// ファイルの場合はダウンロードさせる
-		header('Content-Disposition: attachment; filename="'. basename($_POST['select_file']) .'"');
+	// エラーチェック
+	if(!is_array(lfErrorCheck())) {
+		if(is_dir($_POST['select_file'])) {
+			// ディレクトリの場合はjavascriptエラー
+			$objPage->tpl_javascript = "alert('※　ディレクトリをダウンロードすることは出来ません。');";
+		} else {
+			// ファイルの場合はダウンロードさせる
+			header('Content-Disposition: attachment; filename="'. basename($_POST['select_file']) .'"');
+		}
 	}
 	break;
 	
