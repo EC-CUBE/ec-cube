@@ -176,8 +176,8 @@ function lfChkConnect(){
 		foreach($_POST["convenience"] as $key => $val){
 			// 送信データ生成
 			$arrSendData['conveni_code'] = $val;			// コンビニコード
-			$arrSendData['user_tel'] = "0300000000";		// 電話番号
-			$arrSendData['user_name_kana'] = "送信テスト";	// 氏名(カナ)
+			$arrSendData['user_tel'] = "0300000000";		// ダミー電話番号
+			$arrSendData['user_name_kana'] = "送信テスト";	// ダミー氏名(カナ)
 			$arrSendData['haraikomi_mail'] = 0;				// 払込メール(送信しない)
 			
 			// データ送信
@@ -301,6 +301,8 @@ function lfUpdPaymentDB(){
 				
 			);
 		}
+		
+		sfprintr($objSess->member_id);
 
 		// コンビニにチェックが入っていればコンビニを登録する
 		if($val == 2){
