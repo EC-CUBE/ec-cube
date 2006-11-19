@@ -180,7 +180,7 @@ switch($_POST["mode"]){
 				
 				// ステータスは未入金にする
 				$sqlval['status'] = 2;
-				
+
 				//コンビニ決済情報を格納
 				$sqlval['conveni_data'] = serialize($arrRet);
 				$sqlval['memo01'] = PAYMENT_CONVENIENCE_ID;
