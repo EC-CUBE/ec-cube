@@ -1706,6 +1706,7 @@ function sfRegistTempOrder($uniqid, $sqlval) {
 		}
 		
 		sfprintr($sqlval);
+		exit();
 	}
 }
 
