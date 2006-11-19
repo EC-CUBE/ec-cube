@@ -6,7 +6,9 @@
  */
  
 // ファイル内容表示
-echo lfReadFile($_GET['file']);
+print("<pre>\n");
+print(lfReadFile($_GET['file']));
+print("</pre>\n");
 
 /* 
  * 関数名：lfReadFile()
