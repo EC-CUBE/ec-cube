@@ -7,7 +7,7 @@
  
 // ファイル内容表示
 print("<pre>\n");
-print(lfReadFile($_GET['file']));
+lfReadFile($_GET['file']);
 print("</pre>\n");
 
 /* 
@@ -19,7 +19,5 @@ function lfReadFile($file) {
 	$fp = fopen($file, "r");
 	$read_file = fpassthru($fp); 
 	fclose($fp); 
-	
-	return $read_file;
 }
 ?>
