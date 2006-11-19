@@ -34,7 +34,8 @@ case 'view':
 		} else {
 			// javascriptで別窓表示(テンプレート側に渡す)
 			$file_url = ereg_replace(USER_PATH, USER_URL, $_POST['select_file']);
-			$objPage->tpl_javascript = "win02('". $file_url ."', 'user_data', '600', '400');";
+			echo lfReadFile($_POST['select_file']);
+			//$objPage->tpl_javascript = "win02('". $file_url ."', 'user_data', '600', '400');";
 		}
 	}
 	break;
@@ -145,5 +146,18 @@ function lfErrorCheck() {
 		$arrErr['select_file'] = "※　ファイルが選択されていません。";
 	}
 	return $arrErr;
+}
+
+/* 
+ * 関数名：lfReadFile()
+ * 引数1 ：ファイルパス
+ * 説明　：ファイル読込
+ */
+function lfReadFile($file) {
+	$fp = fopen($file, "r");
+	$read_file = fpassthru($fp); 
+	fclose($fp); 
+	
+	return read_file;
 }
 ?>
