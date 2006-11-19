@@ -4,10 +4,12 @@
  *
  * http://www.lockon.co.jp/
  */
- 
+
+require_once("../../require.php");
+
 // ファイル内容表示
 print("<pre>\n");
-lfReadFile($_GET['file']);
+lfReadFile(USER_PATH.$_GET['file']);
 print("</pre>\n");
 
 /* 
