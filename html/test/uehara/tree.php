@@ -31,6 +31,7 @@ case 'view':
 		$now_dir = $_POST['select_file'];
 	} else {
 		// javascriptで別窓表示(テンプレート側に渡す)
+sfprintr("err!?");
 		$objPage->tpl_javascript = "win02('". $_POST['select_file'] ."', 'user_data', '600', '400');";
 		exit;
 	}

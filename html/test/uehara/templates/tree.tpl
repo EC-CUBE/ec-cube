@@ -12,11 +12,7 @@
 </head>
 <body onload="fnTreeDrow('tree')">
 
-<script language="JavaScript">
-<!--
-<!--{$tpl_javascript}-->
-//-->
-</script>
+
 
 ¢£tree
 <div id="tree"></div>
