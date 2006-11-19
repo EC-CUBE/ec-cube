@@ -167,8 +167,6 @@ function lfReadFile($filename) {
         $str = @fread($fp, filesize($filename)+1); 
     } 
     @fclose($fp); 
-    // 改行コードの前に<br />を挿入 
-    $str = nl2br($str); 
     return $str; 
 } 
 ?>
