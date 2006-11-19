@@ -50,8 +50,8 @@ case 'download':
 			// ファイルの場合はダウンロードさせる
 			Header("Content-disposition: attachment; filename=".basename($_POST['select_file']));
 			Header("Content-type: application/octet-stream; name=".basename($_POST['select_file']));
-			Header("Cache-Control: ");
-			Header("Pragma: ");
+			//Header("Cache-Control: ");
+			//Header("Pragma: ");
 		}
 	}
 	break;
