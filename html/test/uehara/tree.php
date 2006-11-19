@@ -67,6 +67,7 @@ function lfGetFileList($dir) {
 				// ./ と ../を除くディレクトリのみを取得
 				//if(filetype($dir . $file) == 'dir' && $file != "." && $file != "..") {
 				if($file != "." && $file != "..") {
+sfprintr($file);
 					$arrFileList[$cnt]['file_name'] = $file;
 					$arrFileList[$cnt]['file_path'] = $dir.$file;
 					$arrFileList[$cnt]['file_size'] = filesize($dir.$file);
