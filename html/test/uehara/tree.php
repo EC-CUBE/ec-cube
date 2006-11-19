@@ -48,8 +48,9 @@ case 'download':
 			$objPage->tpl_javascript = "alert('※　ディレクトリをダウンロードすることは出来ません。');";
 		} else {
 			// ファイルの場合はダウンロードさせる
+			Header("Content-type: text/plain name=".basename($_POST['select_file'])); 
 			Header("Content-disposition: attachment; filename=".basename($_POST['select_file']));
-			Header("Content-type: application/octet-stream; name=".basename($_POST['select_file']));
+			//Header("Content-type: application/octet-stream; name=".basename($_POST['select_file']));
 			//Header("Cache-Control: ");
 			//Header("Pragma: ");
 		}
