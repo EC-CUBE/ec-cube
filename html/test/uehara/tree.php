@@ -22,8 +22,10 @@ switch($_POST['mode']) {
 case 'view':
 case 'download':	
 case 'delete':
-	// 現在のフォルダを表示
+	// 現在の階層を取得
 	$now_dir = $_POST['now_file'];
+	// エラーチェック
+	if(is_array(lfErrorCheck()) break;
 
 case 'view':
 	// 選択されたファイルがディレクトリなら移動
@@ -32,7 +34,6 @@ case 'view':
 	} else {
 		// javascriptで別窓表示(テンプレート側に渡す)
 		$file_url = ereg_replace(USER_PATH, USER_URL, $_POST['select_file']);
-sfprintr($file_url);
 		$objPage->tpl_javascript = "win02('". $file_url ."', 'user_data', '600', '400');";
 	}
 	break;
@@ -137,6 +138,9 @@ function getDirSize($dir) {
  */
 function lfErrorCheck($array) {
 
+	if($_POST['select_file']) {
+		$arrErr['select_file'] = "※　ファイルが選択されていません。";
+	}
 	
 	return $arrErr;
 }
