@@ -26,13 +26,11 @@ case 'delete':
 	// 現在の階層を取得
 	$now_dir = $_POST['now_file'];
 	// エラーチェック
-	if(is_array(lfErrorCheck())) break;
+	break;
 
 case 'view':
 	// 選択されたファイルがディレクトリなら移動
 	if(is_dir($_POST['select_file'])) {
-		
-sfprintr("test");
 		$now_dir = $_POST['select_file'];
 	} else {
 		// javascriptで別窓表示(テンプレート側に渡す)
