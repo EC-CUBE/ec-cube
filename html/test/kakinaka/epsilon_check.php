@@ -15,7 +15,7 @@ if($_POST["trans_code"] != "" and $_POST["paid"] == 1 and $_POST["order_number"]
 	// POSTの内容を全てログ保存
 	gfPrintLog("epsilon conveni start---------------------------------------------------------", $log_path);
 	foreach($_POST as $key => $val){
-		gfPrintLog( $key . " => " . $val, $log_path);
+		gfPrintLog( "\t" . $key . " => " . $val, $log_path);
 	}
 	gfPrintLog("epsilon conveni end-----------------------------------------------------------", $log_path);
 }
