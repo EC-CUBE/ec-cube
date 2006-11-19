@@ -17,13 +17,6 @@ print("</pre>\n");
  * 引数1 ：ファイルパス
  * 説明　：ファイル読込
  */
- /*
-function lfReadFile($file) {
-	$fp = fopen($file, "r");
-	$read_file = fpassthru($fp); 
-	fclose($fp); 
-}
-*/
 function lfReadFile($filename) { 
     $str = ""; 
     // バイナリモードでオープン 
