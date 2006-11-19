@@ -53,11 +53,6 @@ case 'download':
 			Header("Cache-Control: ");
 			Header("Pragma: ");
 			*/
-			header("Accept-Ranges: none");
-			header("Content-Disposition: attachment; filename=".$_POST['select_file']);
-			header("Content-Transfer-Encoding: binary");
-			header("Content-Length: ". strlen($_POST['select_file']) );
-			header("Content-Type: text/octet-stream");
 		}
 	}
 	break;
