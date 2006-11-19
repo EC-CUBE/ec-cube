@@ -64,12 +64,12 @@ function lfGetFileList($dir) {
 		if ($dh = opendir($dir)) { 
 			$cnt = 0;
 			while (($file = readdir($dh)) !== false) { 
-				// ./ と ../を除くディレクトリのみを取得
-				//if(filetype($dir . $file) == 'dir' && $file != "." && $file != "..") {
+				// ./ と ../を除くファイルのみを取得
 				if($file != "." && $file != "..") {
-sfprintr($file);
+sfprintr($file);	// 行末の/を取り除く
+					$dir = ereg_replace("\/$", "", $dir);
 					$arrFileList[$cnt]['file_name'] = $file;
-					$arrFileList[$cnt]['file_path'] = $dir.$file;
+					$arrFileList[$cnt]['file_path'] = $dir."/".$file;
 					$arrFileList[$cnt]['file_size'] = filesize($dir."/".$file);
 					$arrFileList[$cnt]['file_time'] = date("Y/m/d", filemtime($dir."/".$file)); 
 					$cnt++;
