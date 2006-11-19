@@ -15,7 +15,7 @@ $arrPayment = array(
 
 $arrCredit = array(
 	1 => 'VISA, MASTER, Diners',
-	2 => 'JCB, AMEXd'
+	2 => 'JCB, AMEX'
 );
 
 //ページ管理クラス
