@@ -37,6 +37,10 @@ $objPage = new LC_Page();
 $objView = new SC_AdminView();
 $objQuery = new SC_Query();
 
+// 認証確認
+$objSess = new SC_Session();
+sfIsSuccess($objSess);
+
 // パラメータ管理クラス
 $objFormParam = new SC_FormParam();
 $objFormParam = lfInitParam($objFormParam);
