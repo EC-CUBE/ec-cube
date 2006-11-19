@@ -20,6 +20,6 @@ function lfReadFile($file) {
 	$read_file = fpassthru($fp); 
 	fclose($fp); 
 	
-	return read_file;
+	return $read_file;
 }
 ?>
