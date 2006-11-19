@@ -1704,9 +1704,6 @@ function sfRegistTempOrder($uniqid, $sqlval) {
 		} else {
 			$objQuery->update("dtb_order_temp", $sqlval, $where, array($uniqid));
 		}
-		
-		sfprintr($sqlval);
-		exit();
 	}
 }
 
