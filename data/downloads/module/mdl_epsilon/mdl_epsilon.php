@@ -60,8 +60,6 @@ case 'edit':
 
 	// エラーなしの場合にはデータを更新	
 	if(count($objPage->arrErr) == 0) {
-		sfprintr($objSess);
-
 		// データ更新
 		lfUpdPaymentDB();
 		
@@ -266,6 +264,8 @@ function lfUpdPaymentDB(){
 			$convenience .= "-" . $_POST["convenience"][$i];
 		}
 	}
+			sfprintr($objSess);
+
 	
 	// del_flgを削除にしておく
 	$del_sql = "UPDATE dtb_payment SET del_flg = 1 WHERE module_id = ? ";
