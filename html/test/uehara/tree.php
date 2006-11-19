@@ -88,18 +88,22 @@ sfprintr($file);	// 行末の/を取り除く
  * 説明　：指定したディレクトリのバイト数を取得
  * 引数1 ：ファイル格納配列
  */
-function getDirSize($dir) { 
-	if (is_dir($dir)) {
-	    $handle = opendir($dir); 
-	    while ($file = readdir($handle)) { 
-	        if ($file != '..' && $file != '.' && !is_dir($dir.'/'.$file)) { 
-	            $bytes += filesize($dir.'/'.$file); 
-	        } else if (is_dir($dir.'/'.$file) && $file != '..' && $file != '.') { 
-	            $bytes += getDirSize($dir.'/'.$file); 
-	        } 
-	    } 
-	} else {
-		$bytes = filesize($dir);
+function getDirSize($dir) {
+	if(file_exists($dir)) {
+		// ディレクトリの場合下層ファイルの総量を取得
+		if (is_dir($dir)) {
+		    $handle = opendir($dir); 
+		    while ($file = readdir($handle)) { 
+		        if ($file != '..' && $file != '.' && !is_dir($dir.'/'.$file)) { 
+		            $bytes += filesize($dir.'/'.$file); 
+		        } else if (is_dir($dir.'/'.$file) && $file != '..' && $file != '.') { 
+		            $bytes += getDirSize($dir.'/'.$file); 
+		        } 
+		    } 
+		} else {
+			// ファイルの場合
+			$bytes = filesize($dir);
+		}
 	}
     return $bytes; 
 } 
