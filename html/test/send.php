@@ -17,9 +17,9 @@ $req->setMethod(HTTP_REQUEST_METHOD_POST);
 $arrSendData = array();
 $req->addPostDataArray($arrData);
 if (!PEAR::isError($req->sendRequest())) {
-	$response = $req->getResponseBody();
+	echo("流慨窗位");
 } else {
-	$response = "";
+	echo("流慨己窃");
 }
 
 $req->clearPostData();
