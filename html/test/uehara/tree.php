@@ -48,11 +48,12 @@ case 'download':
 			$objPage->tpl_javascript = "alert('※　ディレクトリをダウンロードすることは出来ません。');";
 		} else {
 			// ファイルの場合はダウンロードさせる
-			/*Header("Content-disposition: attachment; filename=".basename($_POST['select_file']));
+			Header("Content-disposition: attachment; filename=".basename($_POST['select_file']));
 			Header("Content-type: application/octet-stream; name=".basename($_POST['select_file']));
 			Header("Cache-Control: ");
 			Header("Pragma: ");
-			*/
+			
+			echo lfReadFile($_POST['select_file']);
 		}
 	}
 	break;
@@ -150,4 +151,23 @@ function lfErrorCheck() {
 	}
 	return $arrErr;
 }
+
+/* 
+ * 関数名：lfReadFile()
+ * 引数1 ：ファイルパス
+ * 説明　：ファイル読込
+ */
+function lfReadFile($filename) { 
+    $str = ""; 
+    // バイナリモードでオープン 
+    $fp = @fopen($filename, "rb" ); 
+    //ファイル内容を全て変数に読み込む 
+    if($fp) { 
+        $str = @fread($fp, filesize($filename)+1); 
+    } 
+    @fclose($fp); 
+    // 改行コードの前に<br />を挿入 
+    $str = nl2br($str); 
+    return $str; 
+} 
 ?>
