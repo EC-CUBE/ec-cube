@@ -70,6 +70,7 @@ function lfGetFileList($dir) {
 					$arrFileList[$cnt]['file_name'] = $file;
 					$arrFileList[$cnt]['file_path'] = $dir."/".$file;
 					$arrFileList[$cnt]['file_size'] = filesize($dir."/".$file);
+					$arrFileList[$cnt]['file_time'] = date("Y年m月d日", filemtime($dir."/".$file)); 
 					$cnt++;
 				}
 	        }
@@ -78,5 +79,15 @@ function lfGetFileList($dir) {
 	} 
 	
 	return $arrFileList;
+}
+
+/* 
+ * 関数名：lfErrorCheck()
+ * 説明　：エラーチェック
+ */
+function lfErrorCheck($array) {
+
+	
+	return $arrErr;
 }
 ?>
