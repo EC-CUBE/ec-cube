@@ -1,5 +1,6 @@
 <?php
 
+ini_set("mbstring.language", "Japanese");
 ini_set("mbstring.http_input", CHAR_CODE);
 ini_set("mbstring.http_output", CHAR_CODE);
 ini_set("auto_detect_line_endings", 1);
