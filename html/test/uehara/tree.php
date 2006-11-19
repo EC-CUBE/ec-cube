@@ -18,8 +18,6 @@ $objView = new SC_UserView("./templates");
 $objQuery = new SC_Query();
 
 
-sfprintr($_POST['mode']);
-
 switch($_POST['mode']) {
 
 case 'view':
@@ -33,6 +31,8 @@ case 'delete':
 case 'view':
 	// 選択されたファイルがディレクトリなら移動
 	if(is_dir($_POST['select_file'])) {
+		
+sfprintr("test");
 		$now_dir = $_POST['select_file'];
 	} else {
 		// javascriptで別窓表示(テンプレート側に渡す)
