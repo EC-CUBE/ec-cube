@@ -44,6 +44,8 @@ lfEpsilonCheck();
 $objSess = new SC_Session();
 sfIsSuccess($objSess);
 
+sfprintr($objSess);
+
 // パラメータ管理クラス
 $objFormParam = new SC_FormParam();
 $objFormParam = lfInitParam($objFormParam);
@@ -256,7 +258,7 @@ function lfGetPaymentDB($where = "", $arrWhereVal = array()){
 function lfUpdPaymentDB(){
 	global $objQuery;
 	
-// 利用コンビニにチェックが入っている場合には、ハイフン区切りに編集する
+	// 利用コンビニにチェックが入っている場合には、ハイフン区切りに編集する
 	$convCnt = count($_POST["convenience"]);
 	if($convCnt > 0){
 		$convenience = $_POST["convenience"][0];
