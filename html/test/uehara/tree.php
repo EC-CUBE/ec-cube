@@ -25,7 +25,7 @@ case 'download':
 case 'delete':
 	// 現在の階層を取得
 	$now_dir = $_POST['now_file'];
-	break;
+	//break;
 
 case 'view':
 	// エラーチェック
@@ -147,7 +147,6 @@ function lfErrorCheck() {
 	if($_POST['select_file'] == '') {
 		$arrErr['select_file'] = "※　ファイルが選択されていません。";
 	}
-sfprintr($arrErr);	
 	return $arrErr;
 }
 ?>
