@@ -255,6 +255,7 @@ function lfGetPaymentDB($where = "", $arrWhereVal = array()){
 // データの更新処理
 function lfUpdPaymentDB(){
 	global $objQuery;
+	global $objSess;
 	
 	// 利用コンビニにチェックが入っている場合には、ハイフン区切りに編集する
 	$convCnt = count($_POST["convenience"]);
@@ -264,9 +265,7 @@ function lfUpdPaymentDB(){
 			$convenience .= "-" . $_POST["convenience"][$i];
 		}
 	}
-			sfprintr($objSess);
-
-	
+		
 	// del_flgを削除にしておく
 	$del_sql = "UPDATE dtb_payment SET del_flg = 1 WHERE module_id = ? ";
 	$arrDel = array(MDL_EPSILON_ID);
