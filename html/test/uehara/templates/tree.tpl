@@ -46,6 +46,7 @@
 
 <!--{section name=err loop=$arrErr}-->
 	<!--{$arrErr.err}--><br/>
+	<!--{$arrErr[0]}--><br/>
 <!--{/section}-->
 
 </body>
