@@ -21,7 +21,7 @@ if($_POST["trans_code"] != "" and $_POST["paid"] == 1 and $_POST["order_number"]
 */
 
     // URIから各情報を取得
-    $info = parse_url( $_SERVER);
+    $info = parse_url( $_SERVER["REQUEST_URI"] );
     $scheme = $info['scheme'];
     $host = $info['host'];
     $port = $info['port'];

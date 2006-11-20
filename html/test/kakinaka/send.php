@@ -3,7 +3,8 @@
 require_once("../../require.php");
 require_once(DATA_PATH . "module/Request.php");
 
-$order_url = "http://test.ec-cube.net/ec-cube/load_module.php?module_id=4";
+//$order_url = "http://test.ec-cube.net/ec-cube/load_module.php?module_id=4";
+$order_url = "http://test.ec-cube.net/ec-cube/test/kakinaka/epsilon_check.php";
 
 $arrData = array(
 	'order_number' => '1',
