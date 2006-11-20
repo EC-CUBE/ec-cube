@@ -1,9 +1,10 @@
 <?php
 require_once("../../require.php");
 require_once(MODULE_PATH . "mdl_epsilon/mdl_epsilon.inc");
+require_once(DATA_PATH . "module/Request.php");
 
 $objQuery = new SC_Query();
-
+/*
 // trans_code を指定されていて且つ、入金済みの場合
 if($_POST["trans_code"] != "" and $_POST["paid"] == 1 and $_POST["order_number"] != ""){
 	// ステータスを入金済みに変更する
@@ -17,6 +18,33 @@ if($_POST["trans_code"] != "" and $_POST["paid"] == 1 and $_POST["order_number"]
 		gfPrintLog( "\t" . $key . " => " . $val, $log_path);
 	}
 	gfPrintLog("epsilon conveni end-----------------------------------------------------------", $log_path);
-}
+*/
+
+    // URIから各情報を取得
+    $info = parse_url( $_SERVER["REQUEST_URI"] );
+    $scheme = $info['scheme'];
+    $host = $info['host'];
+    $port = $info['port'];
+    $path = $info['path'];
+
+	$req =& new HTTP_Request($_SERVER["REQUEST_URI"]);
+	$req->addHeader("Content-Type", "text/plan");
+	
+$body = "Content-Type: text/plain
+
+1";
+
+	$req->setBody($body);
+	
+	sfprintr($req->getResponseBody());
+	
+	$req->clearPostData();
+	
+	if (PEAR::isError($req)) {
+	    echo $req->getMessage();
+	} else {
+	    echo $req->getResponseBody();
+	}
+//}
 
 ?>

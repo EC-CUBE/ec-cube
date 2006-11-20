@@ -22,6 +22,8 @@ if (!PEAR::isError($req->sendRequest())) {
 	echo("Á÷¿®¼ºÇÔ");
 }
 
-$req->clearPostData();
+$body = "Content-Type: text/plain
+
+1";
 
 ?>
