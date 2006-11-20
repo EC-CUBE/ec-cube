@@ -9,7 +9,7 @@ require_once("../../require.php");
 
 
 // ファイル内容表示
-print("Content-type: text/plain\n\n");
+header("Content-type: text/plain\n\n");
 print(nl2br(lfReadFile(USER_PATH.$_GET['file'])));
 
 ?>
