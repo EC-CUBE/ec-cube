@@ -23,6 +23,8 @@ if (!PEAR::isError($req->sendRequest())) {
 	echo("Á÷¿®¼ºÇÔ");
 }
 
+sfprintr($req->getResponseBody());
+
 $body = "Content-Type: text/plain
 
 1";
