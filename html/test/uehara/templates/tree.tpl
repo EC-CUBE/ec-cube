@@ -18,12 +18,12 @@
 <body onload="fnTreeDrow('tree')">
 
 
-¢£tree
-<div id="tree"></div>
-
 <!--{section name=cnt loop=$arrErr}-->
 	<!--{$arrErr[cnt]}-->
 <!--{/section}-->
+
+¢£tree
+<div id="tree"></div>
 
 ¢£¥Õ¥¡¥¤¥ë
 <form name="form1" method="post" action="<!--{$smarty.server.PHP_SELF|escape}-->">
