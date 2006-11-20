@@ -17,10 +17,6 @@
 </head>
 <body onload="fnTreeDrow('tree')">
 
-<!--{section name=err loop=$arrErr}-->
-	<!--{$arrErr.err}--><br/>
-<!--{/section}-->
-
 ¢£tree
 <div id="tree"></div><br/>
 
@@ -48,3 +44,7 @@
 </form>
 </body>
 </html>
+
+<!--{section name=err loop=$arrErr}-->
+	<!--{$arrErr.err}--><br/>
+<!--{/section}-->
