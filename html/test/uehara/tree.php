@@ -30,7 +30,8 @@ switch($_POST['mode']) {
 // ファイル表示
 case 'view':
 	// エラーチェック
-	if(!is_array(lfErrorCheck())) {
+	$arrErr = lfErrorCheck();
+	if(!is_array($arrErr)) {
 	
 		// 選択されたファイルがディレクトリなら移動
 		if(is_dir($_POST['select_file'])) {
@@ -46,7 +47,8 @@ case 'view':
 case 'download':
 
 	// エラーチェック
-	if(!is_array(lfErrorCheck())) {
+	$arrErr = lfErrorCheck();
+	if(!is_array($arrErr)) {
 		if(is_dir($_POST['select_file'])) {
 			// ディレクトリの場合はjavascriptエラー
 			$arrErr['download'] = "※　ディレクトリをダウンロードすることは出来ません。";
@@ -60,7 +62,8 @@ case 'download':
 // ファイル削除
 case 'delete':
 	// エラーチェック
-	if(!is_array(lfErrorCheck())) {
+	$arrErr = lfErrorCheck();
+	if(!is_array($arrErr)) {
 		sfDeleteDir($_POST['select_file']);
 	}
 	break;

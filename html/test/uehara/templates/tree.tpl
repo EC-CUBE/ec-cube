@@ -18,7 +18,7 @@
 <body onload="fnTreeDrow('tree')">
 
 <!--{foreach key=key item=item from=$arrErr}-->
-	エラー：<!--{$item}--><br/>
+	<!--{$key}-->：<!--{$item}--><br/>
 <!--{/foreach}-->
 
 ■tree
