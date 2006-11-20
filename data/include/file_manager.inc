@@ -98,7 +98,7 @@ function lfReadFile($filename) {
         $str = @fread($fp, filesize($filename)+1); 
     } 
     @fclose($fp);
-sfprintr($str);
+
     return $str; 
 }
 ?>
