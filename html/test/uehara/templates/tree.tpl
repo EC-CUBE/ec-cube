@@ -43,9 +43,8 @@
 	<input type="button" onclick="fnFormModeSubmit('form2', 'create','',''); return false;" value="ºîÀ®">
 </form>
 
-<!--{section name=err loop=$arrErr}-->
-	<!--{$arrErr.err}--><br/>
-	<!--{$arrErr[err]}--><br/>
+<!--{section name=count loop=$arrErr}-->
+	<!--{$arrErr[count]}--><br/>
 <!--{/section}-->
 
 </body>
