@@ -80,6 +80,7 @@ default :
 // 現在のディレクトリ配下のファイル一覧を取得
 $objPage->arrFileList = sfGetFileList($now_dir);
 $objPage->tpl_now_file = $now_dir;
+$objPage->arrErr = $arrErr;
 
 sfprintr($now_dir);
 
