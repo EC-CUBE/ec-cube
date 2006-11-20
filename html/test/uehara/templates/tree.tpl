@@ -22,7 +22,7 @@
 <!--{/section}-->
 
 ¢£tree
-<div id="tree"></div>
+<div id="tree"></div><br/>
 
 ¢£¥Õ¥¡¥¤¥ë
 <form name="form1" method="post" action="<!--{$smarty.server.PHP_SELF|escape}-->">
