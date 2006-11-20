@@ -49,7 +49,7 @@ case 'download':
 	if(!is_array(lfErrorCheck())) {
 		if(is_dir($_POST['select_file'])) {
 			// ディレクトリの場合はjavascriptエラー
-			$objPage->tpl_javascript = "alert('※　ディレクトリをダウンロードすることは出来ません。');";
+			$arrErr['download'] = "※　ディレクトリをダウンロードすることは出来ません。";
 		} else {
 			// ファイルダウンロード
 			sfDownloadFile($_POST['select_file']);
