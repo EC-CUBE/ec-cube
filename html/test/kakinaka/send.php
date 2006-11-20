@@ -24,6 +24,8 @@ if (!PEAR::isError($req->sendRequest())) {
 }
 
 sfprintr($req->getResponseBody());
+sfprintr($req->getResponseHeader());
+
 
 $body = "Content-Type: text/plain
 
