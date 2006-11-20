@@ -73,7 +73,7 @@ switch($_POST["mode"]){
 		$objPage->arrErr = $arrErr;
 		
 		// 非会員のときは user_id に not_memberと送る
-		($arrData["customer_id"] == "") ? $user_id = "not_member" : $user_id = $arrData["customer_id"];
+		($arrData["customer_id"] == 0) ? $user_id = "not_member" : $user_id = $arrData["customer_id"];
 		
 		sfprintr($user_id);
 	
