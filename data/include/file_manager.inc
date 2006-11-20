@@ -97,8 +97,8 @@ function sfDeleteDir($dir) {
 			$arrResult[$cnt]['file_name'] = "$dir/$item";
 		} else {
 			// ファイル削除
-			$arrResult[$cnt]['result'] = @unlink("$dir");
-			$arrResult[$cnt]['file_name'] = "$dir";			
+			$arrResult[0]['result'] = @unlink("$dir");
+			$arrResult[0]['file_name'] = "$dir";			
 		}
 	}
 
