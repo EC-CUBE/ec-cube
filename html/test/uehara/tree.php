@@ -67,7 +67,7 @@ case 'delete':
 // ファイル作成
 case 'create':
 	$create_dir = ereg_replace("\/$", "", $now_dir);	
-	if(!mkdir($create_dir."/".$_POST['create_file'], 0755)) echo "error!!"; 
+	if(!@mkdir($create_dir."/".$_POST['create_file'], 0755)) echo "error!!"; 
 	break;
 // 初期表示
 default :
