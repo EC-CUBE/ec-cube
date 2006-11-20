@@ -75,8 +75,6 @@ switch($_POST["mode"]){
 		// 非会員のときは user_id に not_memberと送る
 		($arrData["customer_id"] == 0) ? $user_id = "not_member" : $user_id = $arrData["customer_id"];
 		
-		sfprintr($user_id);
-	
 		if(count($arrErr) <= 0){
 			// 送信データ生成
 			$item_name = $arrMainProduct["name"] . "×" . $arrMainProduct["quantity"] . "個 (代表)";
