@@ -38,10 +38,6 @@ function fnCheckPassword($conn) {
 	// ユーザ入力パスワードの判定
 	$ret = sha1($_POST['password'] . ":" . AUTH_MAGIC);
 	
-	sfprintr($ret);
-	sfprintr($password);
-	
-	
 	if ($ret == $password) {
    		// セッション登録
 		fnSetLoginSession($data_list[0]['member_id'], $data_list[0]['authority'], $data_list[0]['login_date'], $data_list[0]['name']);
