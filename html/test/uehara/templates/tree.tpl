@@ -18,7 +18,7 @@
 <body onload="fnTreeDrow('tree')">
 
 <!--{section name=cnt loop=$arrErr}-->
-	エラー：<!--{$smarty.section.cnt.index}--><!--{$arrErr[cnt]}--><br/>
+	エラー：<!--{$smarty.section.cnt.index}--><!--{$arrErr.create}--><br/>
 <!--{/section}-->
 
 ■tree

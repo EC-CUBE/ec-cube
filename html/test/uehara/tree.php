@@ -78,7 +78,6 @@ default :
 	break;
 }
 
-$arrErr[] = "test";
 
 // 現在のディレクトリ配下のファイル一覧を取得
 $objPage->arrFileList = sfGetFileList($now_dir);
