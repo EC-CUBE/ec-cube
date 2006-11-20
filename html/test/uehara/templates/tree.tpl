@@ -17,6 +17,10 @@
 </head>
 <body onload="fnTreeDrow('tree')">
 
+<!--{section name=cnt loop=$arrErr}-->
+	エラー：<!--{$arrErr[cnt]}--><br/>
+<!--{/section}-->
+
 ■tree
 <div id="tree"></div><br/>
 
@@ -42,10 +46,6 @@
 	<input type="text" name="create_file" value="">
 	<input type="button" onclick="fnFormModeSubmit('form2', 'create','',''); return false;" value="作成">
 </form>
-
-<!--{section name=cnt loop=$arrErr}-->
-	<!--{$arrErr[cnt]}--><br/>
-<!--{/section}-->
 
 </body>
 </html>
