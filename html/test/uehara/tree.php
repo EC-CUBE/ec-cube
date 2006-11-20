@@ -20,6 +20,9 @@ $objQuery = new SC_Query();
 // 現在の階層を取得
 if($_POST['mode'] != "") {
 	$now_dir = $_POST['now_file'];
+} else {
+	// 初期表示はルートディレクトリ(user_data/upload/)を表示
+	$now_dir = $top_dir;
 }
 
 switch($_POST['mode']) {
@@ -61,10 +64,12 @@ case 'delete':
 		sfDeleteDir($_POST['select_file']);
 	}
 	break;
-	
+// ファイル削除
+case 'create':
+	$create_dir = ereg_replace("\/$", "", $now_dir);	
+	mkdir ($create_dir.$_POST['create_file'], 0755); 
+	break;
 default :
-	// 初期表示はルートディレクトリ(user_data/upload/)を表示
-	$now_dir = $top_dir;
 	break;
 }
 // 現在のディレクトリ配下のファイル一覧を取得

@@ -97,11 +97,10 @@ function sfDeleteDir($dir) {
 	return $arrResult;
 }
 
- 
 /* 
  * 関数名：sfDownloadFile()
-  * 引数1 ：ファイルパス
-  * 説明　：エラーチェック
+ * 引数1 ：ファイルパス
+ * 説明　：エラーチェック
  */
 function sfDownloadFile($file) {
  	// ファイルの場合はダウンロードさせる
@@ -110,6 +109,24 @@ function sfDownloadFile($file) {
 	Header("Cache-Control: ");
 	Header("Pragma: ");
 	echo (sfReadFile($file));
+}
+
+/* 
+ * 関数名：sfCreateFile()
+ * 引数1 ：ファイルパス
+ * 引数2 ：パーミッション
+ * 説明　：ファイル作成
+ */
+function sfCreateFile($file, $mode = "") {
+	// 行末の/を取り除く
+	$dir = ereg_replace("\/$", "", $file);	
+	if($mode != "") {
+		$ret = mkdir($file, $mode);
+	} else {
+		$ret = mkdir($file);
+	}
+	
+	return $ret;
 }
 
 /* 

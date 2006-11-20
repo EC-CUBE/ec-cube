@@ -32,7 +32,13 @@
 	<input type="button" onclick="fnModeSubmit('view','','');" value="表示">
 	<input type="button" onclick="fnModeSubmit('download','','');" value="ダウンロード">
 	<input type="button" onclick="fnModeSubmit('delete','','');" value="削除">
-</form>
+</form><br/>
 
+<form name="form2" method="post" action="<!--{$smarty.server.PHP_SELF|escape}-->">
+	<input type="hidden" name="mode" value="">
+	<input type="hidden" name="now_file" value="<!--{$tpl_now_file}-->">
+	<input type="text" name="create_file" value="">
+	<input type="button" onclick="fnFormModeSubmit('form2', 'create','','');" value="作成">
+</form>
 </body>
 </html>
