@@ -58,7 +58,7 @@ case 'download':
 case 'delete':
 	// エラーチェック
 	if(!is_array(lfErrorCheck())) {
-		
+		deleteDir($_POST['select_file']);
 	}
 	break;
 	

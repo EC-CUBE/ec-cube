@@ -6,12 +6,12 @@
  */
  
 /* 
- * 関数名：lfGetFileList()
+ * 関数名：getFileList()
  * 説明　：指定パス配下のディレクトリ取得
  * 引数1 ：ツリーを格納配列
  * 引数2 ：取得するディレクトリパス
  */
-function lfGetFileList($dir) {
+function getFileList($dir) {
 	$arrFileList = array();
 	if (is_dir($dir)) {
 		if ($dh = opendir($dir)) { 
@@ -39,7 +39,7 @@ function lfGetFileList($dir) {
 /* 
  * 関数名：getDirSize()
  * 説明　：指定したディレクトリのバイト数を取得
- * 引数1 ：ファイル格納配列
+ * 引数1 ：ディレクトリ
  */
 function getDirSize($dir) {
 	if(file_exists($dir)) {
@@ -61,21 +61,49 @@ function getDirSize($dir) {
 			// ファイルの場合
 			$bytes = filesize($dir);
 		}
-	} else {
-		// ディレクトリが存在しない場合は0byteを返す
-		$bytes = 0;
 	}
-	
+	// ディレクトリ(ファイル)が存在しない場合は0byteを返す
 	if($bytes == "") $bytes = 0;
 	
     return $bytes;
 }
+
+/* 
+ * 関数名：deleteDir()
+ * 説明　：指定したディレクトリを削除
+ * 引数1 ：削除ファイル
+ */
+function deleteDir($dir) {
+	$arrResult = array();
+	if(file_exists($dir)) {
+		if ($handle = opendir("$dir")) {
+			$cnt = 0;
+			while (false !== ($item = readdir($handle))) {
+				if ($item != "." && $item != "..") {
+					if (is_dir("$dir/$item")) {
+						deleteDir("$dir/$item");
+					} else {
+						$arrResult[$cnt]['result'] = unlink("$dir/$item");
+						$arrResult[$cnt]['file_name'] = "$dir/$item";
+					}
+				}
+				$cnt++;
+			}
+		}
+		closedir($handle);
+		rmdir($dir);
+	}
+	
+	return $arrResult;
+}
+
+ 
 /* 
  * 関数名：lfDownloadFile()
   * 引数1 ：ファイルパス
   * 説明　：エラーチェック
  */
-function lfDownloadFile($file) {
+function downloadFile($file) {
  	// ファイルの場合はダウンロードさせる
 	Header("Content-disposition: attachment; filename=".basename($file));
 	Header("Content-type: application/octet-stream; name=".basename($file));
