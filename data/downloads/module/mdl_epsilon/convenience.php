@@ -74,6 +74,8 @@ switch($_POST["mode"]){
 		
 		// 非会員のときは user_id に not_memberと送る
 		($arrData["customer_id"] == "") ? $user_id = "not_member" : $user_id = $arrData["customer_id"];
+		
+		sfprintr($user_id);
 	
 		if(count($arrErr) <= 0){
 			// 送信データ生成
