@@ -51,7 +51,7 @@ for(i = 0; i < arrTest.length; i++) {
 		defalt_img = IMG_FOLDER_CLOSE;
 	}
 	
-	tree += '<a href="javascript:fnTreeMenu(\'tree'+ i +'\',\''+ arrTest[i][1] +'\',\'tree_img'+   i+'\')"><img src="'+ defalt_img +'" border="0" name="tree_img'+ i +'" ></a><br/>';
+	tree += '<a href="javascript:fnTreeMenu(\'tree'+ i +'\',\''+ arrTest[i][1] +'\',\'tree_img'+   i+'\')"><img src="'+ defalt_img +'" border="0" name="tree_img'+ i +'" ></a>'+ arrTest[i][2] +'<br/>';
 	tree += '<div id="tree'+ i +'" style="display:none">';
 
 }
