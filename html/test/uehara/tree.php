@@ -24,6 +24,7 @@ if($_POST['mode'] != "") {
 
 switch($_POST['mode']) {
 
+// ファイル表示
 case 'view':
 	// エラーチェック
 	if(!is_array(lfErrorCheck())) {
@@ -38,7 +39,7 @@ case 'view':
 		}
 	}
 	break;
-
+// ファイルダウンロード
 case 'download':
 
 	// エラーチェック
@@ -53,8 +54,12 @@ case 'download':
 		}
 	}
 	break;
-	
+// ファイル削除
 case 'delete':
+	// エラーチェック
+	if(!is_array(lfErrorCheck())) {
+		
+	}
 	break;
 	
 default :

@@ -172,7 +172,7 @@ function lnSetSelect(name1, name2, id, val) {
 									<!--{if $arrProducts[cnt].price02_min == $arrProducts[cnt].price02_max}-->
 										<!--{$arrProducts[cnt].price02_min|sfPreTax:$arrSiteInfo.tax:$arrSiteInfo.tax_rule|number_format}-->
 									<!--{else}-->
-										<!--{$arrProducts[cnt].price02_min|sfPreTax:$arrSiteInfo.tax:$arrSiteInfo.tax_rule|number_format}-->è¢∑<!--{$arrProducts[cnt].price02_max|sfPreTax:$arrSiteInfo.tax:$arrSiteInfo.tax_rule|number_format}-->
+										<!--{$arrProducts[cnt].price02_min|sfPreTax:$arrSiteInfo.tax:$arrSiteInfo.tax_rule|number_format}-->°¡<!--{$arrProducts[cnt].price02_max|sfPreTax:$arrSiteInfo.tax:$arrSiteInfo.tax_rule|number_format}-->
 									<!--{/if}-->
 									±ﬂ</span></span>
 								</td>

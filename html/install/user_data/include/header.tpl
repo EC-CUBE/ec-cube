@@ -22,7 +22,7 @@
 						<td colspan="2"><img src="<!--{$smarty.const.URL_DIR}-->img/header/tell.gif" width="460" height="34" alt="お電話でのご注文は0120-000-000 FAXでのご注文は0120-00-0000"></td>
 					</tr>
 					<tr>
-						<td><img src="<!--{$smarty.const.URL_DIR}-->img/header/time.gif" width="160" height="38" alt="受付時間：朝9:00~夜7:00 土曜日午後6時迄"></td>
+						<td><img src="<!--{$smarty.const.URL_DIR}-->img/header/time.gif" width="160" height="38" alt="受付時間：朝9:00〜夜7:00 土曜日午後6時迄"></td>
 						<td>
 						<!--BUTTON-->
 						<table width="300" border="0" cellspacing="0" cellpadding="0" summary=" ">
