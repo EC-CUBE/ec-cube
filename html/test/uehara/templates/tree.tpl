@@ -42,9 +42,11 @@
 	<input type="text" name="create_file" value="">
 	<input type="button" onclick="fnFormModeSubmit('form2', 'create','',''); return false;" value="ºîÀ®">
 </form>
-</body>
-</html>
+
 
 <!--{section name=err loop=$arrErr}-->
 	<!--{$arrErr.err}--><br/>
 <!--{/section}-->
+
+</body>
+</html>
