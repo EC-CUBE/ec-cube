@@ -66,8 +66,12 @@ case 'delete':
 	break;
 // ファイル作成
 case 'create':
-	$create_dir = ereg_replace("\/$", "", $now_dir);	
-	if(!@mkdir($create_dir."/".$_POST['create_file'], 0755)) echo "error!!"; 
+	$create_dir = ereg_replace("\/$", "", $now_dir);
+	// ファイル作成
+	if(!sfCreateFile($create_dir."/".$_POST['create_file'], 0755)) {
+		// 作成エラー
+		$arrErr['create'] = "※　".$_POST['create_file']."の作成に失敗しました。";
+	}
 	break;
 // 初期表示
 default :

@@ -83,7 +83,7 @@ function sfDeleteDir($dir) {
 					if (is_dir("$dir/$item")) {
 						sfDeleteDir("$dir/$item");
 					} else {
-						$arrResult[$cnt]['result'] = unlink("$dir/$item");
+						$arrResult[$cnt]['result'] = @unlink("$dir/$item");
 						$arrResult[$cnt]['file_name'] = "$dir/$item";
 					}
 				}
@@ -91,9 +91,11 @@ function sfDeleteDir($dir) {
 			}
 		}
 		closedir($handle);
-		rmdir($dir);
+		$arrResult[$cnt]['result'] = @rmdir($dir);
+		$arrResult[$cnt]['file_name'] = "$dir/$item";
 	}
-	
+
+sfprintr($arrResult);
 	return $arrResult;
 }
 
@@ -119,11 +121,10 @@ function sfDownloadFile($file) {
  */
 function sfCreateFile($file, $mode = "") {
 	// 行末の/を取り除く
-	$dir = ereg_replace("\/$", "", $file);	
 	if($mode != "") {
-		$ret = mkdir($file, $mode);
+		$ret = @mkdir($file, $mode);
 	} else {
-		$ret = mkdir($file);
+		$ret = @mkdir($file);
 	}
 	
 	return $ret;
