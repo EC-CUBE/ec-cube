@@ -364,9 +364,7 @@ function lfEpsilonCheck(){
 		gfPrintLog("epsilon conveni end-----------------------------------------------------------", $log_path);
 		
 		//応答結果を表示
-		echo "Content-Type: text/plain
-
-1";
+		echo "1";
 	}
 }
 
