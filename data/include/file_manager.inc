@@ -20,7 +20,7 @@ function sfGetFileList($dir) {
 				// ./ と ../を除くファイルのみを取得
 				if($file != "." && $file != "..") {
 					// 行末の/を取り除く
-					$dir = ereg_replace("\/$", "", $dir);
+					$dir = ereg_replace("/$", "", $dir);
 					$path = $dir."/".$file;
 					$arrFileList[$cnt]['file_name'] = $file;
 					$arrFileList[$cnt]['file_path'] = $path;
@@ -48,7 +48,7 @@ function sfGetDirSize($dir) {
 		    $handle = opendir($dir); 
 		    while ($file = readdir($handle)) {
 				// 行末の/を取り除く
-				$dir = ereg_replace("\/$", "", $dir);
+				$dir = ereg_replace("/$", "", $dir);
 				$path = $dir."/".$file;
 		        if ($file != '..' && $file != '.' && !is_dir($path)) { 
 		            $bytes += filesize($path); 

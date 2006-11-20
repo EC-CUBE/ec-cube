@@ -76,6 +76,9 @@ case 'create':
 		$arrErr['create'] = "※　".$_POST['create_file']."の作成に失敗しました。";
 	}
 	break;
+// ファイルアップロード
+case 'upload':
+	break;
 // 初期表示
 default :
 	break;
@@ -86,6 +89,7 @@ default :
 $objPage->arrFileList = sfGetFileList($now_dir);
 $objPage->tpl_now_file = $now_dir;
 $objPage->arrErr = $arrErr;
+$objPage->arrParam = $_POST;
 
 sfprintr($objPage->arrErr);
 
@@ -106,4 +110,9 @@ function lfErrorCheck() {
 	return $arrErr;
 }
 
+/* ファイル情報の初期化 */
+function lfInitFile() {
+	global $objUpFile;
+	$objUpFile->addFile("ファイル", 'upload_file', array('csv'), CSV_SIZE, true, 0, 0, false);
+}
 ?>
