@@ -17,8 +17,8 @@
 </head>
 <body onload="fnTreeDrow('tree')">
 
-<!--{section name=cnt loop=$arrErr}-->
-	<!--{$arrErr[$cnt]}--><br/>
+<!--{section name=err loop=$arrErr}-->
+	<!--{$arrErr[err]}--><br/>
 <!--{/section}-->
 
 ¢£tree
