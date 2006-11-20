@@ -47,10 +47,13 @@ function getDirSize($dir) {
 		if (is_dir($dir)) {
 		    $handle = opendir($dir); 
 		    while ($file = readdir($handle)) {
+				// 行末の/を取り除く
+				$dir = ereg_replace("\/$", "", $dir);
 				$path = $dir."/".$file;
 		        if ($file != '..' && $file != '.' && !is_dir($path)) { 
 		            $bytes += filesize($path); 
-		        } else if (is_dir($path) && $file != '..' && $file != '.') { 
+		        } else if (is_dir($path) && $file != '..' && $file != '.') {
+					// 下層ファイルのバイト数を取得する為、再帰的に呼び出す。
 		            $bytes += getDirSize($path); 
 		        } 
 		    } 
