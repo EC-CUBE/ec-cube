@@ -83,6 +83,7 @@ $objPage->tpl_now_file = $now_dir;
 $objPage->arrErr = $arrErr;
 
 sfprintr($now_dir);
+sfprintr($objPage->arrErr);
 
 $objView->assignobj($objPage);
 $objView->display("tree.tpl");
