@@ -6,12 +6,12 @@
  */
  
 /* 
- * 関数名：getFileList()
+ * 関数名：sfGetFileList()
  * 説明　：指定パス配下のディレクトリ取得
  * 引数1 ：ツリーを格納配列
  * 引数2 ：取得するディレクトリパス
  */
-function getFileList($dir) {
+function sfGetFileList($dir) {
 	$arrFileList = array();
 	if (is_dir($dir)) {
 		if ($dh = opendir($dir)) { 
@@ -37,11 +37,11 @@ function getFileList($dir) {
 }
 
 /* 
- * 関数名：getDirSize()
+ * 関数名：sfGetDirSize()
  * 説明　：指定したディレクトリのバイト数を取得
  * 引数1 ：ディレクトリ
  */
-function getDirSize($dir) {
+function sfGetDirSize($dir) {
 	if(file_exists($dir)) {
 		// ディレクトリの場合下層ファイルの総量を取得
 		if (is_dir($dir)) {
@@ -69,11 +69,11 @@ function getDirSize($dir) {
 }
 
 /* 
- * 関数名：deleteDir()
+ * 関数名：sfDeleteDir()
  * 説明　：指定したディレクトリを削除
  * 引数1 ：削除ファイル
  */
-function deleteDir($dir) {
+function sfDeleteDir($dir) {
 	$arrResult = array();
 	if(file_exists($dir)) {
 		if ($handle = opendir("$dir")) {
@@ -99,11 +99,11 @@ function deleteDir($dir) {
 
  
 /* 
- * 関数名：lfDownloadFile()
+ * 関数名：sfDownloadFile()
   * 引数1 ：ファイルパス
   * 説明　：エラーチェック
  */
-function downloadFile($file) {
+function sfDownloadFile($file) {
  	// ファイルの場合はダウンロードさせる
 	Header("Content-disposition: attachment; filename=".basename($file));
 	Header("Content-type: application/octet-stream; name=".basename($file));
@@ -113,11 +113,11 @@ function downloadFile($file) {
 }
 
 /* 
- * 関数名：lfReadFile()
+ * 関数名：sfReadFile()
  * 引数1 ：ファイルパス
  * 説明　：ファイル読込
  */
-function lfReadFile($filename) { 
+function sfReadFile($filename) { 
     $str = ""; 
     // バイナリモードでオープン 
     $fp = @fopen($filename, "rb" ); 

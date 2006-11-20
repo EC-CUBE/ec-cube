@@ -49,7 +49,7 @@ case 'download':
 			$objPage->tpl_javascript = "alert('※　ディレクトリをダウンロードすることは出来ません。');";
 		} else {
 			// ファイルダウンロード
-			lfDownloadFile($_POST['select_file']);
+			sfDownloadFile($_POST['select_file']);
 			exit;			
 		}
 	}
@@ -58,7 +58,7 @@ case 'download':
 case 'delete':
 	// エラーチェック
 	if(!is_array(lfErrorCheck())) {
-		deleteDir($_POST['select_file']);
+		sfDeleteDir($_POST['select_file']);
 	}
 	break;
 	
@@ -68,7 +68,7 @@ default :
 	break;
 }
 // 現在のディレクトリ配下のファイル一覧を取得
-$objPage->arrFileList = lfGetFileList($now_dir);
+$objPage->arrFileList = sfGetFileList($now_dir);
 $objPage->tpl_now_file = $now_dir;
 
 sfprintr($now_dir);
