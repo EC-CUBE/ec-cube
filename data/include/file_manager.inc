@@ -24,7 +24,7 @@ function sfGetFileList($dir) {
 					$path = $dir."/".$file;
 					$arrFileList[$cnt]['file_name'] = $file;
 					$arrFileList[$cnt]['file_path'] = $path;
-					$arrFileList[$cnt]['file_size'] = getDirSize($path);
+					$arrFileList[$cnt]['file_size'] = sfGetDirSize($path);
 					$arrFileList[$cnt]['file_time'] = date("Y/m/d", filemtime($path)); 
 					$cnt++;
 				}
@@ -54,7 +54,7 @@ function sfGetDirSize($dir) {
 		            $bytes += filesize($path); 
 		        } else if (is_dir($path) && $file != '..' && $file != '.') {
 					// 下層ファイルのバイト数を取得する為、再帰的に呼び出す。
-		            $bytes += getDirSize($path); 
+		            $bytes += sfGetDirSize($path); 
 		        } 
 		    } 
 		} else {
@@ -81,7 +81,7 @@ function sfDeleteDir($dir) {
 			while (false !== ($item = readdir($handle))) {
 				if ($item != "." && $item != "..") {
 					if (is_dir("$dir/$item")) {
-						deleteDir("$dir/$item");
+						sfDeleteDir("$dir/$item");
 					} else {
 						$arrResult[$cnt]['result'] = unlink("$dir/$item");
 						$arrResult[$cnt]['file_name'] = "$dir/$item";
@@ -109,7 +109,7 @@ function sfDownloadFile($file) {
 	Header("Content-type: application/octet-stream; name=".basename($file));
 	Header("Cache-Control: ");
 	Header("Pragma: ");
-	echo (lfReadFile($file));
+	echo (sfReadFile($file));
 }
 
 /* 
