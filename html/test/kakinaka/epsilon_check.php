@@ -36,7 +36,7 @@ $body = "Content-Type: text/plain
 
 	$req->setBody($body);
 	
-	sfprintr($req->getResponseBody());
+	sfprintr($info);
 	
 	$req->clearPostData();
 	
