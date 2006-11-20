@@ -83,6 +83,10 @@ function lfSendCredit($arrData, $arrPayment, $arrMainProduct, $again = true){
 	// 非会員のときは user_id に not_memberと送る
 	($arrData["customer_id"] == "") ? $user_id = "not_member" : $user_id = $arrData["customer_id"];	
 	
+	
+	sfprintr($user_id);
+	exit();
+	
 	// 送信データ生成
 	$item_name = $arrMainProduct["name"] . "×" . $arrMainProduct["quantity"] . "個 (代表)";
 	$arrSendData = array(
