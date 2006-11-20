@@ -76,23 +76,30 @@ function sfGetDirSize($dir) {
 function sfDeleteDir($dir) {
 	$arrResult = array();
 	if(file_exists($dir)) {
-		if ($handle = opendir("$dir")) {
-			$cnt = 0;
-			while (false !== ($item = readdir($handle))) {
-				if ($item != "." && $item != "..") {
-					if (is_dir("$dir/$item")) {
-						sfDeleteDir("$dir/$item");
-					} else {
-						$arrResult[$cnt]['result'] = @unlink("$dir/$item");
-						$arrResult[$cnt]['file_name'] = "$dir/$item";
+		// ディレクトリかチェック
+		if (is_dir($dir)) {
+			if ($handle = opendir("$dir")) {
+				$cnt = 0;
+				while (false !== ($item = readdir($handle))) {
+					if ($item != "." && $item != "..") {
+						if (is_dir("$dir/$item")) {
+							sfDeleteDir("$dir/$item");
+						} else {
+							$arrResult[$cnt]['result'] = @unlink("$dir/$item");
+							$arrResult[$cnt]['file_name'] = "$dir/$item";
+						}
 					}
+					$cnt++;
 				}
-				$cnt++;
 			}
+			closedir($handle);
+			$arrResult[$cnt]['result'] = @rmdir($dir);
+			$arrResult[$cnt]['file_name'] = "$dir/$item";
+		} else {
+			// ファイル削除
+			$arrResult[$cnt]['result'] = @unlink("$dir");
+			$arrResult[$cnt]['file_name'] = "$dir";			
 		}
-		closedir($handle);
-		$arrResult[$cnt]['result'] = @rmdir($dir);
-		$arrResult[$cnt]['file_name'] = "$dir/$item";
 	}
 
 sfprintr($arrResult);
