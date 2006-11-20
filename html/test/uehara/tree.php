@@ -69,7 +69,7 @@ case 'delete':
 	break;
 // ファイル作成
 case 'create':
-	$create_dir = ereg_replace("\/$", "", $now_dir);
+	$create_dir = ereg_replace("/$", "", $now_dir);
 	// ファイル作成
 	if(!sfCreateFile($create_dir."/".$_POST['create_file'], 0755)) {
 		// 作成エラー
