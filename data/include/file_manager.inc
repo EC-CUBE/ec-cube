@@ -95,7 +95,7 @@ function lfReadFile($filename) {
     $fp = @fopen($filename, "rb" ); 
     //ファイル内容を全て変数に読み込む 
     if($fp) { 
-        $str = @fread($fp, filesize($filename)+100); 
+        $str = @fread($fp, filesize($filename)+1); 
     } 
     @fclose($fp);
 sfprintr($str);
