@@ -30,12 +30,11 @@ if($_POST["trans_code"] != "" and $_POST["paid"] == 1 and $_POST["order_number"]
 	$req =& new HTTP_Request($_SERVER["REQUEST_URI"]);
 	$req->addHeader("Content-Type", "text/plan");
 	
-$body = "Content-Type: text/plain
+echo "Content-Type: text/plain
 
 1";
 
-	$req->setBody($body);
-	
+//	$req->setBody($body);
 //	sfprintr($info);
 	
 	$req->clearPostData();

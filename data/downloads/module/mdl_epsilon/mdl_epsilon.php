@@ -362,6 +362,11 @@ function lfEpsilonCheck(){
 			gfPrintLog( "\t" . $key . " => " . $val, $log_path);
 		}
 		gfPrintLog("epsilon conveni end-----------------------------------------------------------", $log_path);
+		
+		//応答結果を表示
+		echo "Content-Type: text/plain
+
+1";
 	}
 }
 
