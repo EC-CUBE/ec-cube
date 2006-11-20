@@ -9,7 +9,7 @@ require_once("../../require.php");
 
 
 // ファイル内容表示
-header("Content-type: application/octet-stream \n\n");
+header("Content-type: application/octet-stream\n\n");
 print(nl2br(lfReadFile(USER_PATH.$_GET['file'])));
 
 ?>
