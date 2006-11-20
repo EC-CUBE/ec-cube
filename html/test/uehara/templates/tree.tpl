@@ -44,7 +44,7 @@
 </form>
 
 <!--{section name=count loop=$arrErr}-->
-	<!--{$arrErr[count]}--><br/>
+	<!--{$arrErr[$count]}--><br/>
 <!--{/section}-->
 
 </body>
