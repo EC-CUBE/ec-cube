@@ -64,11 +64,12 @@ case 'delete':
 		sfDeleteDir($_POST['select_file']);
 	}
 	break;
-// ファイル削除
+// ファイル作成
 case 'create':
 	$create_dir = ereg_replace("\/$", "", $now_dir);	
-	mkdir ($create_dir."/".$_POST['create_file'], 0755); 
+	if(!mkdir($create_dir."/".$_POST['create_file'], 0755)) echo "error!!"; 
 	break;
+// 初期表示
 default :
 	break;
 }
