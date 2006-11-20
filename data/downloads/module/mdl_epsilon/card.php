@@ -80,11 +80,14 @@ function lfSendCredit($arrData, $arrPayment, $arrMainProduct, $again = true){
 	// データ送信先CGI
 	$order_url = $arrPayment[0]["memo02"];
 
+	// 非会員のときは user_id に not_memberと送る
+	($arrData["customer_id"] == "") ? $user_id = "not_member": $user_id = $arrData["customer_id"];	
+	
 	// 送信データ生成
 	$item_name = $arrMainProduct["name"] . "×" . $arrMainProduct["quantity"] . "個 (代表)";
 	$arrSendData = array(
 		'contract_code' => $arrPayment[0]["memo01"],						// 契約コード
-		'user_id' => $arrData["customer_id"],								// ユーザID
+		'user_id' => $user_id ,												// ユーザID
 		'user_name' => $arrData["order_name01"].$arrData["order_name02"],	// ユーザ名
 		'user_mail_add' => $arrData["order_email"],							// メールアドレス
 		'order_number' => $arrData["order_id"],								// オーダー番号
