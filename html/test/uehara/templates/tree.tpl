@@ -17,9 +17,9 @@
 </head>
 <body onload="fnTreeDrow('tree')">
 
-<!--{section name=cnt loop=$arrErr}-->
-	エラー：<!--{$smarty.section.cnt.index}--><!--{$arrErr.create}--><br/>
-<!--{/section}-->
+<!--{foreach key=key item=item from=$arrErr}-->
+	エラー：<!--{$item}--><br/>
+<!--{/foreach}-->
 
 ■tree
 <div id="tree"></div><br/>
