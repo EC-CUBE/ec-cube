@@ -43,7 +43,7 @@ function sfGetFileTreeSub($dir, $default_rank, &$cnt, &$arrTree) {
 						$rank = $rank - $default_rank;
 						
 						// javascriptのツリー生成用の配列を作成
-						$arrTree[$cnt] = array($cnt, $file_type, $path, $rank);
+						$arrTree[] = array($cnt, $file_type, $path, $rank);
 						$cnt++;
 						// 下層ディレクトリ取得の為、再帰的に呼び出す
 						sfGetFileTreeSub($path, $default_rank, $cnt, $arrTree);
