@@ -106,10 +106,6 @@ $objPage->arrErr = $arrErr;
 $objPage->arrParam = $_POST;
 $objPage->arrTree = sfGetFileTree($top_dir);
 
-
-sfprintr($objPage->arrTree);
-
-
 $objView->assignobj($objPage);
 $objView->display("tree.tpl");
 

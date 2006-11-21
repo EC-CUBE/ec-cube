@@ -12,6 +12,12 @@
 <script language="JavaScript">
 <!--
 <!--{$tpl_javascript}-->
+
+arrTree = new Array();
+<!--{section name=cnt loop=$arrTree}-->
+	arrTree[0] = new Array("<!--{$arrTree[cnt].count}-->", "<!--{$arrTree[cnt].type}-->", "<!--{$arrTree[cnt].path}-->", <!--{$arrTree[cnt].rank}-->);
+<!--{/section}-->
+
 //-->
 </script>
 </head>
