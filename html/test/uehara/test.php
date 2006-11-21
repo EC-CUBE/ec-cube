@@ -36,10 +36,11 @@ function sfGetFileTree($dir) {
 			$cnt = 0;
 			while (false !== ($item = readdir($handle))) {
 				if ($item != "." && $item != "..") {
-					// ディレクトリかチェック
+					// 文末の/を取り除く
 					$dir = ereg_replace("/$", "", $dir);
+					// ディレクトリのみ取得
 					if (is_dir("$dir/$item")) {
-						$arrTree[]['file_name'] = "$dir/$item<br/>";
+						$arrTree[]['file_name'] = "$dir/$item";
 						// 下層ディレクトリ取得の為、再帰的に呼び出す
 						sfGetFileTree("$dir/$item");
 					}
