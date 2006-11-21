@@ -88,7 +88,8 @@ case 'create':
 case 'upload':
 sfprintr($_FILES);
 	// 画像保存処理
-	$arrErr['upload_file'] = $objUpFile->makeTempFile('upload_file');
+	$ret = $objUpFile->makeTempFile('upload_file');
+	if($ret !="") $arrErr['upload_file'] = $ret; 
 sfprintr($arrErr);
 	break;
 // 初期表示
