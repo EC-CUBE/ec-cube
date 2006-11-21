@@ -25,6 +25,6 @@ if(in_array($ext, $arrViewFile)) {
 	header("Content-type: text/plain\n\n");
 	print(sfReadFile(USER_PATH.$_GET['file']));
 } else {
-	header("Location :".USER_URL.$_GET['file']);
+	header("Location: ".USER_URL.$_GET['file']);
 }
 ?>
