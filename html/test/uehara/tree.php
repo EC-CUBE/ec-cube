@@ -26,7 +26,7 @@ if($_POST['mode'] != "") {
 }
 
 // ファイル管理クラス
-$objUpFile = new SC_UploadFile(IMAGE_TEMP_DIR, $now_dir);
+$objUpFile = new SC_UploadFile($now_dir, $now_dir);
 // ファイル情報の初期化
 lfInitFile();
 
