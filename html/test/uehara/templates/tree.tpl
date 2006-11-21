@@ -13,11 +13,11 @@
 <!--
 <!--{$tpl_javascript}-->
 arrTest[0] = new Array("0", "_parent", "", 0);
-
+fnTreeView('tree', arrTest);
 //-->
 </script>
 </head>
-<body onload="fnTreeView('tree', arrTest);<!--{$tpl_onload}-->">
+<body onload="<!--{$tpl_onload}-->">
 
 <!--{foreach key=key item=item from=$arrErr}-->
 	<!--{$key}-->¡§<!--{$item}--><br/>
