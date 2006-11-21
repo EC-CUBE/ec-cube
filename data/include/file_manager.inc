@@ -107,7 +107,6 @@ function sfDeleteDir($dir) {
 		}
 	}
 
-sfprintr($arrResult);
 	return $arrResult;
 }
 
