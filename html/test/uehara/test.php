@@ -26,7 +26,7 @@ function sfGetFileTree($dir) {
 				if ($item != "." && $item != "..") {
 					// 文末の/を取り除く
 					$dir = ereg_replace("/$", "", $dir);
-					$path = $dir/$item;
+					$path = $dir."/".$item;
 					// ディレクトリのみ取得
 					if (is_dir($path)) {
 						$path;
