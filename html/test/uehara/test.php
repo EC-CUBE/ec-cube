@@ -19,7 +19,7 @@ function sfGetFileTree($dir) {
 			}
 		}
 		closedir($handle);
-		$arrResult[$cnt]['file_name'] = "$dir/$item";
+		//$arrResult[$cnt]['file_name'] = "$dir/$item";
 	}
 
 	return $arrResult;
