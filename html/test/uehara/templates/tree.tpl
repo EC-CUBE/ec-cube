@@ -12,12 +12,10 @@
 <script language="JavaScript">
 <!--
 <!--{$tpl_javascript}-->
-arrTest = new Array();
-arrTest[0] = new Array("0", "_parent", "", 0);
 //-->
 </script>
 </head>
-<body onload="fnTreeView('tree', arrTest);<!--{$tpl_onload}-->">
+<body onload="fnTreeView('tree', arrTree);<!--{$tpl_onload}-->">
 
 <!--{foreach key=key item=item from=$arrErr}-->
 	<!--{$key}-->¡§<!--{$item}--><br/>
