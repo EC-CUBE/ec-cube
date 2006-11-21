@@ -37,6 +37,7 @@ function sfGetFileTree($dir) {
 			while (false !== ($item = readdir($handle))) {
 				if ($item != "." && $item != "..") {
 					// ディレクトリかチェック
+					$dir = ereg_replace("/$", "", $dir);
 					if (is_dir("$dir/$item")) {
 						$arrTree[]['file_name'] = "$dir/$item<br/>";
 						// 下層ディレクトリ取得の為、再帰的に呼び出す
