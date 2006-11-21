@@ -43,9 +43,9 @@ function sfGetFileTree($dir) {
 						
 						// javascriptのツリー生成用の配列を作成
 						$arrTree[$cnt] = array($cnt, $file_type, $path, $rank);
+						$cnt++;
 						// 下層ディレクトリ取得の為、再帰的に呼び出す
 						sfGetFileTree($path);
-						$cnt++;
 					}
 				}
 			}
