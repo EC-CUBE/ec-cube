@@ -6,7 +6,7 @@ var IMG_FOLDER_OPEN_M  = "./img/folder_open_m.gif";				// フォルダオープン時画像
 var tree = "";
 var parent = "";
 
-function fnTreeView(id, arrTest) {
+function fnTreeView(view_id, arrTest) {
 	for(i = 0; i < arrTest.length; i++) {
 		
 		id = arrTest[i][0];
@@ -47,7 +47,7 @@ function fnTreeView(id, arrTest) {
 		tree += '<div id="tree'+ i +'" style="display:none">';
 	
 	}
-	fnDrow(id);
+	fnDrow(view_id);
 }
 
 function test() {
