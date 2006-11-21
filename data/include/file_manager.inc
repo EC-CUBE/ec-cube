@@ -137,7 +137,7 @@ function sfGetFileTreeSub($dir, $default_rank, &$cnt, &$arrTree) {
 	
 	if(file_exists($dir)) {
 		if ($handle = opendir("$dir")) {
-			while (false !== ($arrDir[] = readdir($handle)));
+			while (false !== ($item = readdir($handle))) $arrDir[] = $item; 
 			sort($arrDir);
 			foreach($arrDir as $item) {
 				if ($item != "." && $item != "..") {
