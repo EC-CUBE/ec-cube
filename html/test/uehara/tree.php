@@ -56,7 +56,7 @@ case 'download':
 	if(!is_array($arrErr)) {
 		if(is_dir($_POST['select_file'])) {
 			// ディレクトリの場合はjavascriptエラー
-			$arrErr['download'] = "※　ディレクトリをダウンロードすることは出来ません。";
+			$arrErr['download'] = "※ ディレクトリをダウンロードすることは出来ません。";
 		} else {
 			// ファイルダウンロード
 			sfDownloadFile($_POST['select_file']);
@@ -78,7 +78,7 @@ case 'create':
 	// ファイル作成
 	if(!sfCreateFile($create_dir."/".$_POST['create_file'], 0755)) {
 		// 作成エラー
-		$arrErr['create'] = "※　".$_POST['create_file']."の作成に失敗しました。";
+		$arrErr['create'] = "※ ".$_POST['create_file']."の作成に失敗しました。";
 	}
 	break;
 // ファイルアップロード
@@ -113,7 +113,7 @@ $objView->display("tree.tpl");
 function lfErrorCheck() {
 
 	if($_POST['select_file'] == '') {
-		$arrErr['select_file'] = "※　ファイルが選択されていません。";
+		$arrErr['select_file'] = "※ ファイルが選択されていません。";
 	}
 	return $arrErr;
 }
