@@ -7,17 +7,17 @@ var tree = "";
 var parent = "";
 
 function fnTreeView(view_id, arrTree) {
-	for(i = 0; i < attTree.length; i++) {
+	for(i = 0; i < arrTree.length; i++) {
 		
-		id = attTree[i][0];
-		level = attTree[i][3];
+		id = arrTree[i][0];
+		level = arrTree[i][3];
 		
 		if(i == 0) {
 			old_id = "0";
 			old_level = 0;
 		} else {
-			old_id = attTree[i-1][0];
-			old_level = attTree[i-1][3];
+			old_id = arrTree[i-1][0];
+			old_level = arrTree[i-1][3];
 		}
 	
 		// 階層上へ戻る
@@ -32,18 +32,18 @@ function fnTreeView(view_id, arrTree) {
 		if(id != old_id && level == old_level) tree += '</div>';
 	
 		// 階層の分だけスペースを入れる
-		for(space_cnt = 0; space_cnt < attTree[i][3]; space_cnt++) {
+		for(space_cnt = 0; space_cnt < arrTree[i][3]; space_cnt++) {
 			tree += "　";
 		}
 		
 		// 初期表示の画像を選択
-		if(attTree[i][1] == '_parent') {
+		if(arrTree[i][1] == '_parent') {
 			defalt_img = IMG_FOLDER_CLOSE_P;
 		} else {
 			defalt_img = IMG_FOLDER_CLOSE;
 		}
 		
-		tree += '<a href="javascript:fnTreeMenu(\'tree'+ i +'\',\''+ attTree[i][1] +'\',\'tree_img'+   i+'\')"><img src="'+ defalt_img +'" border="0" name="tree_img'+ i +'" ></a>'+ attTree[i][2] +'<br/>';
+		tree += '<a href="javascript:fnTreeMenu(\'tree'+ i +'\',\''+ arrTree[i][1] +'\',\'tree_img'+   i+'\')"><img src="'+ defalt_img +'" border="0" name="tree_img'+ i +'" ></a>'+ arrTree[i][2] +'<br/>';
 		tree += '<div id="tree'+ i +'" style="display:none">';
 	
 	}
