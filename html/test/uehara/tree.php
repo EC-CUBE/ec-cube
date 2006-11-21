@@ -109,10 +109,8 @@ $objView->display("tree.tpl");
  * 説明　：エラーチェック
  */
 function lfErrorCheck() {
-
-	if($_POST['select_file'] == '') {
-		$arrErr['select_file'] = "※ ファイルが選択されていません。";
-	}
+	$objErr = new SC_CheckError($array);
+	$objErr->doFunc(array("ファイル", "select_file"), array("SELECT_CHECK"));
 	return $arrErr;
 }
 
