@@ -24,7 +24,7 @@ if($_POST['mode'] != "") {
 	// 初期表示はルートディレクトリ(user_data/upload/)を表示
 	$now_dir = $top_dir;
 }
-sfprintr($_POST);
+sfprintr($_FILE);
 // ファイル管理クラス
 $objUpFile = new SC_UploadFile(IMAGE_TEMP_DIR, $now_dir);
 
