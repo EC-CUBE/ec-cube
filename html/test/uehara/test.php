@@ -14,7 +14,8 @@ function sfGetFileTree($dir) {
 	
 	$cnt = 0;
 	$arrTree = array();
-	$default_rank = count(split('/', $dir));
+	$arrCnt = split('/', $dir);
+	$default_rank = count($arrCnt);
 	
 	sfGetFileTreeSub($dir, $default_rank, $cnt, $arrTree);
 }
