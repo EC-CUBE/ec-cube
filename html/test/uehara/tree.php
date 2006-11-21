@@ -88,8 +88,10 @@ case 'create':
 case 'upload':
 	// ファイル存在チェック
 	$arrErr = (array)$objUpFile->checkEXISTS($_POST['upload_file']);
+sfprintr($arrErr);
 	// 画像保存処理
 	$arrErr[$_POST['upload_file']] = $objUpFile->makeTempFile($_POST['upload_file']);
+sfprintr($arrErr);
 	break;
 // 初期表示
 default :
