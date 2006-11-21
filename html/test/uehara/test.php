@@ -2,8 +2,7 @@
 
 
 $default_dir = "/home/web/test.ec-cube.net/html/user_data/";
-sfGetFileTree($default_dir);
-print_r($arrTree);
+print_r(sfGetFileTree($default_dir));
 
 /* 
  * 関数名：sfGetFileTree()
@@ -15,11 +14,12 @@ function sfGetFileTree($dir) {
 	$cnt = 0;
 	$arrTree = array();
 	$default_rank = count(split('/', $dir));
-	
 	sfGetFileTreeSub($dir, $default_rank, $cnt, $arrTree);
+	
+	return $arrTree;
 }
 
-function sfGetFileTreeSub($dir, $default_rank, $cnt, &$arrTree) {
+function sfGetFileTreeSub($dir, $default_rank, &$cnt, &$arrTree) {
 	
 	if(file_exists($dir)) {
 		if ($handle = opendir("$dir")) {
@@ -43,7 +43,7 @@ function sfGetFileTreeSub($dir, $default_rank, $cnt, &$arrTree) {
 						$rank = $rank - $default_rank;
 						
 						// javascriptのツリー生成用の配列を作成
-						$arrTree[] = array($cnt, $file_type, $path, $rank);
+						$arrTree[$cnt] = array($cnt, $file_type, $path, $rank);
 						$cnt++;
 						// 下層ディレクトリ取得の為、再帰的に呼び出す
 						sfGetFileTreeSub($path, $default_rank, $cnt, $arrTree);
