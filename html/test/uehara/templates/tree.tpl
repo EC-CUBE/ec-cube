@@ -12,6 +12,7 @@
 <script language="JavaScript">
 <!--
 <!--{$tpl_javascript}-->
+arrTest = new Array();
 arrTest[0] = new Array("0", "_parent", "", 0);
 fnTreeView('tree', arrTest);
 //-->
