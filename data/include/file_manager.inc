@@ -137,7 +137,9 @@ function sfGetFileTreeSub($dir, $default_rank, &$cnt, &$arrTree) {
 	
 	if(file_exists($dir)) {
 		if ($handle = opendir("$dir")) {
-			while (false !== ($item = readdir($handle))) {
+			while (false !== ($arrDir = readdir($handle)));
+			sort($arrDir);
+			foreach($arrDir as $item) {
 				if ($item != "." && $item != "..") {
 					// 文末の/を取り除く
 					$dir = ereg_replace("/$", "", $dir);
