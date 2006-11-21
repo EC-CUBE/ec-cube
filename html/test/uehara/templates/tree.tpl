@@ -13,6 +13,7 @@
 <!--
 <!--{$tpl_javascript}-->
 
+arrTree = new Array();
 <!--{section name=cnt loop=$arrTree}-->
 	arrTree[<!--{$arrTree[cnt].count}-->] = new Array("<!--{$arrTree[cnt].count}-->", "<!--{$arrTree[cnt].type}-->", "<!--{$arrTree[cnt].path}-->", <!--{$arrTree[cnt].rank}-->);
 <!--{/section}-->
