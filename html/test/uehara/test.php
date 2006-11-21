@@ -40,14 +40,14 @@ function sfGetFileTree($dir) {
 						if (is_dir("$dir/$item")) {
 							sfGetFileTree("$dir/$item");
 						} else {
-							$arrTree[$cnt]['file_name'] = "$dir/$item";
+							echo $arrTree[$cnt]['file_name'] = "$dir/$item<br/>";
 						}
 					}
 					$cnt++;
 				}
 			}
 			closedir($handle);
-			$arrResult[$cnt]['file_name'] = "$dir/$item";
+			echo $arrResult[$cnt]['file_name'] = "$dir/$item<br/>";
 		}
 	}
 }
