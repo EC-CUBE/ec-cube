@@ -13,6 +13,8 @@ $arrViewFile = array(
 					 'htm',
 					 'tpl',
 					 'php',
+					 'css',
+					 'js',
 );
 
 // 拡張子取得
