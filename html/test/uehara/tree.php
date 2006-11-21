@@ -104,6 +104,7 @@ $objPage->arrFileList = sfGetFileList($now_dir);
 $objPage->tpl_now_file = $now_dir;
 $objPage->arrErr = $arrErr;
 $objPage->arrParam = $_POST;
+$objPage->arrTree = sfGetFileTree($top_dir);
 
 $objView->assignobj($objPage);
 $objView->display("tree.tpl");

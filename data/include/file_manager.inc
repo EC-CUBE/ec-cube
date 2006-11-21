@@ -122,6 +122,8 @@ function sfGetFileTree($dir) {
 	$default_rank = count(split('/', $dir));
 	
 	sfGetFileTreeSub($dir, $default_rank, $cnt, $arrTree);
+	
+	return $arrTree;
 }
 
 /* 

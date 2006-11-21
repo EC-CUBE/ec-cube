@@ -5,55 +5,49 @@ var IMG_FOLDER_OPEN_M  = "./img/folder_open_m.gif";				// フォルダオープン時画像
 
 var tree = "";
 var parent = "";
-var arrTest = new Array();
-arrTest[0] = new Array("0", "_parent", "", 0);
-arrTest[1] = new Array("1", "_child", "0", 1);
-arrTest[2] = new Array("2", "_parent", "0", 1);
-arrTest[3] = new Array("3", "_parent", "2", 2);
-arrTest[4] = new Array("4", "_child", "3", 3);
-arrTest[5] = new Array("5", "_parent", "", 0);
-arrTest[6] = new Array("6", "_child", "5", 1);
-arrTest[7] = new Array("7", "_child", "6", 1);
 
-for(i = 0; i < arrTest.length; i++) {
-	
-	id = arrTest[i][0];
-	level = arrTest[i][3];
-	
-	if(i == 0) {
-		old_id = "0";
-		old_level = 0;
-	} else {
-		old_id = arrTest[i-1][0];
-		old_level = arrTest[i-1][3];
-	}
-
-	// 階層上へ戻る
-	if(level <= (old_level - 1)) {
-		tmp_level = old_level - level;
-		for(up_roop = 0; up_roop <= tmp_level; up_roop++) {
-			tree += '</div>';
+function fnTreeView(id, arrTest) {
+	for(i = 0; i < arrTest.length; i++) {
+		
+		id = arrTest[i][0];
+		level = arrTest[i][3];
+		
+		if(i == 0) {
+			old_id = "0";
+			old_level = 0;
+		} else {
+			old_id = arrTest[i-1][0];
+			old_level = arrTest[i-1][3];
 		}
-	}
 	
-	// 同一階層で次のフォルダへ
-	if(id != old_id && level == old_level) tree += '</div>';
-
-	// 階層の分だけスペースを入れる
-	for(space_cnt = 0; space_cnt < arrTest[i][3]; space_cnt++) {
-		tree += "　";
-	}
+		// 階層上へ戻る
+		if(level <= (old_level - 1)) {
+			tmp_level = old_level - level;
+			for(up_roop = 0; up_roop <= tmp_level; up_roop++) {
+				tree += '</div>';
+			}
+		}
+		
+		// 同一階層で次のフォルダへ
+		if(id != old_id && level == old_level) tree += '</div>';
 	
-	// 初期表示の画像を選択
-	if(arrTest[i][1] == '_parent') {
-		defalt_img = IMG_FOLDER_CLOSE_P;
-	} else {
-		defalt_img = IMG_FOLDER_CLOSE;
-	}
+		// 階層の分だけスペースを入れる
+		for(space_cnt = 0; space_cnt < arrTest[i][3]; space_cnt++) {
+			tree += "　";
+		}
+		
+		// 初期表示の画像を選択
+		if(arrTest[i][1] == '_parent') {
+			defalt_img = IMG_FOLDER_CLOSE_P;
+		} else {
+			defalt_img = IMG_FOLDER_CLOSE;
+		}
+		
+		tree += '<a href="javascript:fnTreeMenu(\'tree'+ i +'\',\''+ arrTest[i][1] +'\',\'tree_img'+   i+'\')"><img src="'+ defalt_img +'" border="0" name="tree_img'+ i +'" ></a>'+ arrTest[i][2] +'<br/>';
+		tree += '<div id="tree'+ i +'" style="display:none">';
 	
-	tree += '<a href="javascript:fnTreeMenu(\'tree'+ i +'\',\''+ arrTest[i][1] +'\',\'tree_img'+   i+'\')"><img src="'+ defalt_img +'" border="0" name="tree_img'+ i +'" ></a>'+ arrTest[i][2] +'<br/>';
-	tree += '<div id="tree'+ i +'" style="display:none">';
-
+	}
+	fnDrow(id);
 }
 
 function test() {
@@ -62,7 +56,7 @@ function test() {
 
 
 // ツリー描画
-function fnTreeDrow(id) {
+function fnDrow(id) {
 	// ブラウザ取得
 	MyBR = fnGetMyBrowser();
 	// ブラウザ事に処理を切り分け
