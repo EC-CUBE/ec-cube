@@ -108,10 +108,11 @@ $objView->display("tree.tpl");
  * 関数名：lfErrorCheck()
  * 説明　：エラーチェック
  */
-function lfErrorCheck() {
-	$objErr = new SC_CheckError($array);
+function lfErrorCheck($_POST) {
+	$objErr = new SC_CheckError($_POST);
 	$objErr->doFunc(array("ファイル", "select_file"), array("SELECT_CHECK"));
-	return $arrErr;
+	
+	return $objErr->arrErr;
 }
 
 /* 
