@@ -2,7 +2,7 @@
 
 $arrTree = array();
 $cnt = 0;
-sfprintr(sfGetFileTree("/home/web/test.ec-cube.net/html/user_data/"));
+print_r(sfGetFileTree("/home/web/test.ec-cube.net/html/user_data/"));
 
 function sfGetFileTree($dir) {
 	global $arrTree;
