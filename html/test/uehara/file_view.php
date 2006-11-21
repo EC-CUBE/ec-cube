@@ -15,10 +15,9 @@ $arrViewFile = array(
 					 'php',
 );
 
+// 拡張子取得
 $arrResult = split('\.', $_GET['file']);
 $ext = $arrResult[count($arrResult)-1];
-
-sfprintr(USER_URL.$_GET['file']);
 
 // ファイル内容表示
 if(in_array($ext, $arrViewFile)) {
