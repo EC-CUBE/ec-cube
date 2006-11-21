@@ -38,8 +38,8 @@ function sfGetFileTree($dir) {
 				while (false !== ($item = readdir($handle))) {
 					if ($item != "." && $item != "..") {
 						if (is_dir("$dir/$item")) {
-							sfGetFileTree("$dir/$item");
 							echo $arrTree[$cnt]['file_name'] = "$dir/$item<br/>";
+							sfGetFileTree("$dir/$item");
 						}
 					}
 					$cnt++;
