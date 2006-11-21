@@ -111,6 +111,30 @@ function sfDeleteDir($dir) {
 }
 
 /* 
+ * 関数名：sfDirChildExists()
+ * 説明　：指定したディレクトリ配下にファイルがあるか
+ * 引数1 ：ディレクトリ
+ */
+function sfDirChildExists($dir) {
+	if(file_exists($dir)) {
+		// ディレクトリの場合下層ファイルの総量を取得
+		if (is_dir($dir)) {
+		    $handle = opendir($dir); 
+		    while ($file = readdir($handle)) {
+				// 行末の/を取り除く
+				$dir = ereg_replace("/$", "", $dir);
+				$path = $dir."/".$file;
+		        if ($file != '..' && $file != '.') { 
+					return true;
+		        } 
+		    } 
+		}
+	}
+    
+	return false;
+}
+
+/* 
  * 関数名：sfDownloadFile()
  * 引数1 ：ファイルパス
  * 説明　：エラーチェック
