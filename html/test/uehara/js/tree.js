@@ -3,10 +3,8 @@ var IMG_FOLDER_CLOSE_P = "./img/folder_close_p.gif";			// フォルダクローズ時画像
 var IMG_FOLDER_OPEN    = "./img/folder_open.gif";				// フォルダオープン時画像パス
 var IMG_FOLDER_OPEN_M  = "./img/folder_open_m.gif";				// フォルダオープン時画像パス(子有り)
 
-var tree = "";
-var parent = "";
-
 function fnTreeView(view_id, arrTree) {
+	tree = "";
 	for(i = 0; i < arrTree.length; i++) {
 		
 		id = arrTree[i][0];
@@ -47,7 +45,7 @@ function fnTreeView(view_id, arrTree) {
 		tree += '<div id="tree'+ i +'" style="display:none">';
 	
 	}
-	fnDrow(view_id);
+	fnDrow(view_id, tree);
 }
 
 function test() {
@@ -56,25 +54,25 @@ function test() {
 
 
 // ツリー描画
-function fnDrow(id) {
+function fnDrow(id, tree) {
 	// ブラウザ取得
 	MyBR = fnGetMyBrowser();
 	// ブラウザ事に処理を切り分け
 	switch(myBR) {
 		// IE4の時の表示
 		case 'I4':
-			document.all(id).innerHTML = this.tree;
+			document.all(id).innerHTML = tree;
 			break;
 		// NN4の時の表示
 		case 'N4':
 			document.layers[id].document.open();
 			document.layers[id].document.write("<div>");
-			document.layers[id].document.write(this.tree);
+			document.layers[id].document.write(tree);
 			document.layers[id].document.write("</div>");
 			document.layers[id].document.close();
 			break;
 		default:
-			document.getElementById(id).innerHTML=this.tree;
+			document.getElementById(id).innerHTML=tree;
 			break;
 	}
 }
