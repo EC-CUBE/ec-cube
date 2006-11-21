@@ -12,7 +12,7 @@ function sfGetFileTree($dir) {
 			while (false !== ($item = readdir($handle))) {
 				if ($item != "." && $item != "..") {
 					if (is_dir("$dir/$item")) {
-						sfDeleteDir("$dir/$item");
+						sfGetFileTree("$dir/$item");
 					}
 				}
 				$cnt++;
