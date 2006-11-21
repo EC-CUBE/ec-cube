@@ -31,7 +31,7 @@
 	<input type="hidden" name="now_file" value="<!--{$tpl_now_file}-->">
 	<select name=select_file size="5">
 	<!--{section name=cnt loop=$arrFileList}-->
-	<option value="<!--{$arrFileList[cnt].file_path}-->" <!--{if $arrFileList[cnt].file_path eq $arrParam.select_file}-->selected<!--{/if}-->><!--{$arrFileList[cnt].file_name|escape}-->　<!--{$arrFileList[cnt].file_size|escape}-->　<!--{$arrFileList[cnt].file_time|escape}--></option>
+	<option value="<!--{$arrFileList[cnt].file_path|escape}-->" <!--{if $arrFileList[cnt].file_path eq $arrParam.select_file}-->selected<!--{/if}-->><!--{$arrFileList[cnt].file_name|escape}-->　<!--{$arrFileList[cnt].file_size|escape}-->　<!--{$arrFileList[cnt].file_time|escape}--></option>
 	<!--{/section}-->
 	</select><br/>
 	<input type="button" onclick="fnModeSubmit('view','',''); return false;" value="表示">
