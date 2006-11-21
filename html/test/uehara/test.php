@@ -29,7 +29,7 @@ function sfGetFileTree($dir) {
 */
 
 function sfGetFileTree($dir) {
-	$arrResult = array();
+	global $arrTree;
 	if(file_exists($dir)) {
 		// ディレクトリかチェック
 		if (is_dir($dir)) {
@@ -40,7 +40,7 @@ function sfGetFileTree($dir) {
 						if (is_dir("$dir/$item")) {
 							sfGetFileTree("$dir/$item");
 						} else {
-							$arrResult[$cnt]['file_name'] = "$dir/$item";
+							$arrTree[$cnt]['file_name'] = "$dir/$item";
 						}
 					}
 					$cnt++;
@@ -50,8 +50,6 @@ function sfGetFileTree($dir) {
 			$arrResult[$cnt]['file_name'] = "$dir/$item";
 		}
 	}
-
-	return $arrResult;
 }
 
 
