@@ -47,7 +47,7 @@ function sfGetFileTree($dir) {
 				}
 			}
 			closedir($handle);
-			echo $arrResult[$cnt]['file_name'] = "$dir/$item<br/>";
+			//echo $arrResult[$cnt]['file_name'] = "$dir/$item<br/>";
 		}
 	}
 }
