@@ -27,11 +27,8 @@ if($_POST['mode'] != "") {
 
 // ファイル管理クラス
 $objUpFile = new SC_UploadFile(IMAGE_TEMP_DIR, $now_dir);
-
 // ファイル情報の初期化
 lfInitFile();
-// Hiddenからのデータを引き継ぐ
-$objUpFile->setHiddenFileList($_POST);
 
 switch($_POST['mode']) {
 
@@ -89,7 +86,7 @@ case 'upload':
 sfprintr($_FILES);
 	// 画像保存処理
 	$ret = $objUpFile->makeTempFile('upload_file');
-	if($ret !="") $arrErr['upload_file'] = $ret; 
+	if($ret != "") $arrErr['upload_file'] = $ret; 
 sfprintr($arrErr);
 	break;
 // 初期表示
@@ -121,7 +118,10 @@ function lfErrorCheck() {
 	return $arrErr;
 }
 
-/* ファイル情報の初期化 */
+/* 
+ * 関数名：lfInitFile()
+ * 説明　：ファイル情報の初期化
+ */
 function lfInitFile() {
 	global $objUpFile;
 	$objUpFile->addFile("ファイル", 'upload_file', array(), FILE_SIZE, true, 0, 0, false);
