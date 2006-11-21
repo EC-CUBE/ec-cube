@@ -42,12 +42,12 @@ function sfGetFileTree($dir) {
 						$rank = $rank - $default_rank;
 						
 						// javascriptのツリー生成用の配列を作成
-						$arrTree[] = array($cnt, $file_type, $path, $rank);
+						$arrTree[$cnt] = array($cnt, $file_type, $path, $rank);
 						// 下層ディレクトリ取得の為、再帰的に呼び出す
 						sfGetFileTree($path);
+						$cnt++;
 					}
 				}
-				$cnt++;
 			}
 		}
 		closedir($handle);
