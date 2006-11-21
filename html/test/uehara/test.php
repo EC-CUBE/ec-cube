@@ -3,7 +3,7 @@
 $arrTree = array();
 $cnt = 0;
 print_r(sfGetFileTree("/home/web/test.ec-cube.net/html/user_data/"));
-
+/*
 function sfGetFileTree($dir) {
 	global $arrTree;
 
@@ -26,5 +26,33 @@ function sfGetFileTree($dir) {
 
 	return $arrResult;
 }
+*/
+
+function sfGetFileTree($dir) {
+	$arrResult = array();
+	if(file_exists($dir)) {
+		// ディレクトリかチェック
+		if (is_dir($dir)) {
+			if ($handle = opendir("$dir")) {
+				$cnt = 0;
+				while (false !== ($item = readdir($handle))) {
+					if ($item != "." && $item != "..") {
+						if (is_dir("$dir/$item")) {
+							sfGetFileTree("$dir/$item");
+						} else {
+							$arrResult[$cnt]['file_name'] = "$dir/$item";
+						}
+					}
+					$cnt++;
+				}
+			}
+			closedir($handle);
+			$arrResult[$cnt]['file_name'] = "$dir/$item";
+		}
+	}
+
+	return $arrResult;
+}
+
 
 ?>
