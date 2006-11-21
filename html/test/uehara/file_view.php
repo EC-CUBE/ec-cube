@@ -7,6 +7,18 @@
 
 require_once("../../require.php");
 
+// 直接表示しないファイルを定義
+$arrViewFile = array(
+ 'html',
+ 'htm',
+ 'tpl',
+ 'php',
+);
+
+$arrResult = split('/', $_GET['file']);
+$ext = $arrResult[count($arrResult)];
+
+sfprintr($ext);
 
 // ファイル内容表示
 header("Content-type: text/plain\n\n");
