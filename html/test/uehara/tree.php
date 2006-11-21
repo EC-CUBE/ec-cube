@@ -86,6 +86,7 @@ case 'create':
 	break;
 // ファイルアップロード
 case 'upload':
+sfprintr($_POST);
 	// ファイル存在チェック
 	$arrErr = (array)$objUpFile->checkEXISTS($_POST['upload_file']);
 sfprintr($arrErr);
@@ -104,8 +105,6 @@ $objPage->arrFileList = sfGetFileList($now_dir);
 $objPage->tpl_now_file = $now_dir;
 $objPage->arrErr = $arrErr;
 $objPage->arrParam = $_POST;
-
-sfprintr($objPage->arrErr);
 
 $objView->assignobj($objPage);
 $objView->display("tree.tpl");
