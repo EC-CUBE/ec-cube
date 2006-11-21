@@ -3,6 +3,7 @@ var IMG_FOLDER_CLOSE_P = "./img/folder_close_p.gif";			// フォルダクローズ時画像
 var IMG_FOLDER_OPEN    = "./img/folder_open.gif";				// フォルダオープン時画像パス
 var IMG_FOLDER_OPEN_M  = "./img/folder_open_m.gif";				// フォルダオープン時画像パス(子有り)
 
+// ツリー表示
 function fnTreeView(view_id, arrTree) {
 	tree = "";
 	for(i = 0; i < arrTree.length; i++) {
