@@ -61,7 +61,7 @@ class SC_UploadFile {
 	}
 		
 	// アップロードされたファイルを保存する。
-	function makeTempFile($keyname) {
+	function makeTempFile($keyname, $rename = true) {
 		$objErr = new SC_CheckError();
 		$cnt = 0;
 		if(!($_FILES[$keyname]['size'] > 0)) {
@@ -82,8 +82,12 @@ class SC_UploadFile {
 						// 画像ファイル以外の場合
 						} else {
 							// 一意なファイル名を作成する。
-							$uniqname = date("mdHi") . "_" . uniqid("").".";
-							$this->temp_file[$cnt] = ereg_replace("^.*\.",$uniqname, $_FILES[$keyname]['name']);
+							if($rename) {
+								$uniqname = date("mdHi") . "_" . uniqid("").".";
+								$this->temp_file[$cnt] = ereg_replace("^.*\.",$uniqname, $_FILES[$keyname]['name']);
+							} else {
+								$this->temp_file[$cnt] = $_FILES[$keyname]['name'];	
+							}
 							$result  = copy($_FILES[$keyname]['tmp_name'], $this->temp_dir. "/". $this->temp_file[$cnt]);
 							gfPrintLog($_FILES[$keyname]['name']." -> ".$this->temp_dir. "/". $this->temp_file[$cnt]);
 						}
