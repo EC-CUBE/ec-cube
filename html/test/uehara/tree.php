@@ -80,7 +80,7 @@ case 'create':
 		// 作成エラー
 		$arrErr['create'] = "※ ".$_POST['create_file']."の作成に失敗しました。";
 	} else {
-		$objPage->tpl_javascript = "alert('ファイルをアップロードしました。');";
+		$objPage->tpl_javascript = "alert('フォルダを作成しました。');";
 	}
 	break;
 // ファイルアップロード
