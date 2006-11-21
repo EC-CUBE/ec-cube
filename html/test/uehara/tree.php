@@ -24,7 +24,7 @@ if($_POST['mode'] != "") {
 	// 初期表示はルートディレクトリ(user_data/upload/)を表示
 	$now_dir = $top_dir;
 }
-
+sfprintr($_POST);
 // ファイル管理クラス
 $objUpFile = new SC_UploadFile(IMAGE_TEMP_DIR, $now_dir);
 
@@ -86,7 +86,7 @@ case 'create':
 	break;
 // ファイルアップロード
 case 'upload':
-sfprintr($_POST);
+
 	// ファイル存在チェック
 	$arrErr = (array)$objUpFile->checkEXISTS($_POST['upload_file']);
 sfprintr($arrErr);
