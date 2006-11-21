@@ -2,7 +2,8 @@
 
 $arrTree = array();
 $cnt = 0;
-print_r(sfGetFileTree("/home/web/test.ec-cube.net/html/user_data/"));
+sfGetFileTree("/home/web/test.ec-cube.net/html/user_data/");
+print_r($arrTree);
 /*
 function sfGetFileTree($dir) {
 	global $arrTree;
@@ -38,7 +39,7 @@ function sfGetFileTree($dir) {
 				while (false !== ($item = readdir($handle))) {
 					if ($item != "." && $item != "..") {
 						if (is_dir("$dir/$item")) {
-							echo $arrTree[$cnt]['file_name'] = "$dir/$item<br/>";
+							$arrTree[$cnt]['file_name'] = "$dir/$item<br/>";
 							sfGetFileTree("$dir/$item");
 						}
 					}
@@ -46,7 +47,6 @@ function sfGetFileTree($dir) {
 				}
 			}
 			closedir($handle);
-			//echo $arrResult[$cnt]['file_name'] = "$dir/$item<br/>";
 		}
 	}
 }
