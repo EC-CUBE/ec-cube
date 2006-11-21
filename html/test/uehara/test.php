@@ -19,7 +19,7 @@ function sfGetFileTree($dir) {
 	sfGetFileTreeSub($dir, $default_rank, $cnt, $arrTree);
 }
 
-function sfGetFileTreeSub($dir, $default_rank, &$cnt, &$arrTree) {
+function sfGetFileTreeSub($dir, $default_rank, $cnt, &$arrTree) {
 	
 	if(file_exists($dir)) {
 		if ($handle = opendir("$dir")) {
