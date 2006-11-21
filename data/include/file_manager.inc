@@ -26,6 +26,11 @@ function sfGetFileList($dir) {
 					$arrFileList[$cnt]['file_path'] = $path;
 					$arrFileList[$cnt]['file_size'] = sfGetDirSize($path);
 					$arrFileList[$cnt]['file_time'] = date("Y/m/d", filemtime($path)); 
+					if(is_dir($path)) {
+						$arrFileList[$cnt]['is_dir'] = true;
+					} else {
+						$arrFileList[$cnt]['is_dir'] = false;
+					}
 					$cnt++;
 				}
 	        }
