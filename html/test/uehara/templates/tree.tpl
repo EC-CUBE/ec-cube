@@ -15,7 +15,7 @@
 //-->
 </script>
 </head>
-<body onload="fnTreeDrow('tree')">
+<body onload="fnTreeDrow('tree');<!--{$tpl_onload}-->">
 
 <!--{foreach key=key item=item from=$arrErr}-->
 	<!--{$key}-->¡§<!--{$item}--><br/>
