@@ -53,6 +53,7 @@ function sfGetFileTree($dir) {
 			closedir($handle);
 		}
 	}
+	sfGetFileTreeSub($default_dir);
 }
 
 /* 
