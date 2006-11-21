@@ -1,12 +1,7 @@
 <?php
 
+
 $default_dir = "/home/web/test.ec-cube.net/html/user_data/";
-$arrCnt = split('/', $default_dir);
-$default_rank = count($arrCnt);
-
-$arrTree = array();
-$cnt = 0;
-
 sfGetFileTree($default_dir);
 print_r($arrTree);
 
@@ -16,10 +11,20 @@ print_r($arrTree);
  * 引数1 ：ディレクトリ
  */
 function sfGetFileTree($dir) {
-	global $arrTree;
-	global $cnt;
-	global $default_rank;
+	$default_dir = $dir;
+	$arrCnt = split('/', $default_dir);
+	$default_rank = count($arrCnt);
+	
+	$arrTree = array();
+	$cnt = 0;
 
+	sfGetFileTreeSub($default_dir, $default_rank, $cnt, $arrTree);
+	
+print_r($arrTree);
+}
+
+function sfGetFileTreeSub($dir, $default_rank, $cnt, &$arrTree) {
+	
 	if(file_exists($dir)) {
 		if ($handle = opendir("$dir")) {
 			while (false !== ($item = readdir($handle))) {
@@ -45,7 +50,7 @@ function sfGetFileTree($dir) {
 						$arrTree[$cnt] = array($cnt, $file_type, $path, $rank);
 						$cnt++;
 						// 下層ディレクトリ取得の為、再帰的に呼び出す
-						sfGetFileTree($path);
+						sfGetFileTreeSub($path, $default_rank, $cnt, $arrTree);
 					}
 				}
 			}
