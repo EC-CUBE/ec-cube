@@ -1,11 +1,6 @@
 <?php
 
-$default_dir = "/home/web/test.ec-cube.net/html/user_data/";
-$arrCnt = split('/', $default_dir);
-$default_rank = count($arrCnt);
 
-$arrTree = array();
-$cnt = 0;
 
 sfGetFileTree($default_dir);
 print_r($arrTree);
@@ -16,41 +11,47 @@ print_r($arrTree);
  * 引数1 ：ディレクトリ
  */
 function sfGetFileTree($dir) {
-	global $arrTree;
-	global $cnt;
-	global $default_rank;
+	$default_dir = "/home/web/test.ec-cube.net/html/user_data/";
+	$arrCnt = split('/', $default_dir);
+	$default_rank = count($arrCnt);
+	
+	$arrTree = array();
+	$cnt = 0;
 
-	if(file_exists($dir)) {
-		if ($handle = opendir("$dir")) {
-			while (false !== ($item = readdir($handle))) {
-				if ($item != "." && $item != "..") {
-					// 文末の/を取り除く
-					$dir = ereg_replace("/$", "", $dir);
-					$path = $dir."/".$item;
-					// ディレクトリのみ取得
-					if (is_dir($path)) {
-						$path;
-						if(sfDirChildExists($path)) {
-							$file_type = "_parent";
-						} else {
-							$file_type = "_child";	
+	function sfGetFileTreeSub($dir) {
+	
+		if(file_exists($dir)) {
+			if ($handle = opendir("$dir")) {
+				while (false !== ($item = readdir($handle))) {
+					if ($item != "." && $item != "..") {
+						// 文末の/を取り除く
+						$dir = ereg_replace("/$", "", $dir);
+						$path = $dir."/".$item;
+						// ディレクトリのみ取得
+						if (is_dir($path)) {
+							$path;
+							if(sfDirChildExists($path)) {
+								$file_type = "_parent";
+							} else {
+								$file_type = "_child";	
+							}
+							
+							// 階層を割り出す
+							$arrCnt = split('/', $path);
+							$rank = count($arrCnt);
+							$rank = $rank - $default_rank;
+							
+							// javascriptのツリー生成用の配列を作成
+							$arrTree[$cnt] = array($cnt, $file_type, $path, $rank);
+							$cnt++;
+							// 下層ディレクトリ取得の為、再帰的に呼び出す
+							sfGetFileTreeSub($path);
 						}
-						
-						// 階層を割り出す
-						$arrCnt = split('/', $path);
-						$rank = count($arrCnt);
-						$rank = $rank - $default_rank;
-						
-						// javascriptのツリー生成用の配列を作成
-						$arrTree[$cnt] = array($cnt, $file_type, $path, $rank);
-						$cnt++;
-						// 下層ディレクトリ取得の為、再帰的に呼び出す
-						sfGetFileTree($path);
 					}
 				}
 			}
+			closedir($handle);
 		}
-		closedir($handle);
 	}
 }
 
