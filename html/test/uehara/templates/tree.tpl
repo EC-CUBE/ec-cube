@@ -26,7 +26,7 @@ arrTree = new Array();
 ■エラー
 <!--{foreach key=key item=item from=$arrErr}-->
 	<!--{$key}-->：<!--{$item}--><br/>
-<!--{/foreach}-->
+<!--{/foreach}--><br/>
 
 ■ツリー
 <div id="tree"></div><br/>
