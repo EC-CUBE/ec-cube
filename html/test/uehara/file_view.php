@@ -19,7 +19,7 @@ $arrResult = split('\.', $_GET['file']);
 $ext = $arrResult[count($arrResult)-1];
 
 // ファイル内容表示
-if(in_array($arrViewFile($ext))) {
+if(in_array($ext, $arrViewFile)) {
 	header("Content-type: text/plain\n\n");
 	print(sfReadFile(USER_PATH.$_GET['file']));
 } else {
