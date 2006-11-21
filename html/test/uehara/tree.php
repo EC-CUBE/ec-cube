@@ -24,7 +24,7 @@ if($_POST['mode'] != "") {
 	// 初期表示はルートディレクトリ(user_data/upload/)を表示
 	$now_dir = $top_dir;
 }
-sfprintr($_FILES);
+
 // ファイル管理クラス
 $objUpFile = new SC_UploadFile(IMAGE_TEMP_DIR, $now_dir);
 
@@ -86,12 +86,9 @@ case 'create':
 	break;
 // ファイルアップロード
 case 'upload':
-
-	// ファイル存在チェック
-	$arrErr = (array)$objUpFile->checkEXISTS($_POST['upload_file']);
-sfprintr($arrErr);
+sfprintr($_FILES);
 	// 画像保存処理
-	$arrErr[$_POST['upload_file']] = $objUpFile->makeTempFile($_POST['upload_file']);
+	$arrErr['upload_file'] = $objUpFile->makeTempFile('upload_file');
 sfprintr($arrErr);
 	break;
 // 初期表示
