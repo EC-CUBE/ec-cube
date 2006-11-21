@@ -23,16 +23,16 @@ arrTree = new Array();
 </head>
 <body onload="fnTreeView('tree', arrTree);<!--{$tpl_onload}-->">
 
+■エラー
 <!--{foreach key=key item=item from=$arrErr}-->
 	<!--{$key}-->：<!--{$item}--><br/>
 <!--{/foreach}-->
 
-■tree
+■ツリー
 <div id="tree"></div><br/>
 
 ■ファイル
 <form name="form1" method="post" action="<!--{$smarty.server.PHP_SELF|escape}-->">
-	<input type="text" id="test1" name="test1" value="" onclick="test()" size="300">
 	<input type="hidden" name="mode" value="">
 	<input type="hidden" name="now_file" value="<!--{$tpl_now_file}-->">
 	<select name=select_file size="5">

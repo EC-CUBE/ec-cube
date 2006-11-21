@@ -1,3 +1,9 @@
+/*
+ * Copyright(c) 2000-2006 LOCKON CO.,LTD. All Rights Reserved.
+ *
+ * http://www.lockon.co.jp/
+ */
+
 var IMG_FOLDER_CLOSE   = "./img/folder_close.gif";				// フォルダクローズ時画像パス
 var IMG_FOLDER_CLOSE_P = "./img/folder_close_p.gif";			// フォルダクローズ時画像パス(子有り)
 var IMG_FOLDER_OPEN    = "./img/folder_open.gif";				// フォルダオープン時画像パス
@@ -42,17 +48,12 @@ function fnTreeView(view_id, arrTree) {
 			defalt_img = IMG_FOLDER_CLOSE;
 		}
 		
-		tree += '<a href="javascript:fnTreeMenu(\'tree'+ i +'\',\''+ arrTree[i][1] +'\',\'tree_img'+   i+'\')"><img src="'+ defalt_img +'" border="0" name="tree_img'+ i +'" ></a>'+ arrTree[i][2] +'<br/>';
+		tree += '<a href="javascript:fnTreeMenu(\'tree'+ i +'\',\''+ arrTree[i][1] +'\',\'tree_img'+ i +'\')"><img src="'+ defalt_img +'" border="0" name="tree_img'+ i +'" ></a>'+ arrTree[i][2] +'<br/>';
 		tree += '<div id="tree'+ i +'" style="display:none">';
 	
 	}
 	fnDrow(view_id, tree);
 }
-
-function test() {
-	document.form1['test1'].value = tree;
-}
-
 
 // ツリー描画
 function fnDrow(id, tree) {
