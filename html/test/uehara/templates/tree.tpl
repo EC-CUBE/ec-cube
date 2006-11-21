@@ -15,7 +15,7 @@
 
 arrTree = new Array();
 <!--{section name=cnt loop=$arrTree}-->
-	arrTree[<!--{$cnt}-->] = new Array("<!--{$arrTree[cnt].count}-->", "<!--{$arrTree[cnt].type}-->", "<!--{$arrTree[cnt].path}-->", <!--{$arrTree[cnt].rank}-->);
+	arrTree[<!--{$arrTree[cnt].count}-->] = new Array("<!--{$arrTree[cnt].count}-->", "<!--{$arrTree[cnt].type}-->", "<!--{$arrTree[cnt].path}-->", <!--{$arrTree[cnt].rank}-->);
 <!--{/section}-->
 
 //-->
