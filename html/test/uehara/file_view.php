@@ -21,6 +21,8 @@ $arrViewFile = array(
 $arrResult = split('\.', $_GET['file']);
 $ext = $arrResult[count($arrResult)-1];
 
+sfprintr($_GET['file']);
+
 // ファイル内容表示
 if(in_array($ext, $arrViewFile)) {
 	header("Content-type: text/plain\n\n");
