@@ -215,6 +215,7 @@ define("HTMLMAIL_IMAGE_HEIGHT", 120);					//  HTMLメールテンプレートメール担当画
 define("IMAGE_SIZE", 1000);								// 画像サイズ制限(KB)
 define("CSV_SIZE", 2000);								// CSVサイズ制限(KB)
 define("PDF_SIZE", 5000);								// PDFサイズ制限(KB):商品詳細ファイル等
+define("FILE_SIZE", 10000);								// ファイル管理画面アップ制限(KB)
 define("LEVEL_MAX", 5);									// カテゴリの最大階層
 define("CATEGORY_MAX", 1000);							// 最大カテゴリ登録数
 
@@ -241,8 +242,8 @@ define ("IMAGE_TEMP_DIR", HTML_PATH . "upload/temp_image/");				// 画像一時保存
 define ("IMAGE_SAVE_DIR", HTML_PATH . "upload/save_image/");				// 画像保存先
 define ("IMAGE_TEMP_URL", URL_DIR . "upload/temp_image/");					// 画像一時保存URL
 define ("IMAGE_SAVE_URL", URL_DIR . "upload/save_image/");					// 画像保存先URL
-define ("IMAGE_TEMP_URL_RSS", SITE_URL . "upload/temp_image/");					// RSS用画像一時保存URL
-define ("IMAGE_SAVE_URL_RSS", SITE_URL . "upload/save_image/");					// RSS用画像保存先URL
+define ("IMAGE_TEMP_URL_RSS", SITE_URL . "upload/temp_image/");				// RSS用画像一時保存URL
+define ("IMAGE_SAVE_URL_RSS", SITE_URL . "upload/save_image/");				// RSS用画像保存先URL
 define ("CSV_TEMP_DIR", HTML_PATH . "upload/csv/");							// エンコードCSVの一時保存先
 define ("NO_IMAGE_URL", URL_DIR . "misc/blank.gif");						// 画像がない場合に表示
 

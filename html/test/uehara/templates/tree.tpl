@@ -43,7 +43,7 @@
 <form name="form2" method="post" action="<!--{$smarty.server.PHP_SELF|escape}-->" enctype="multipart/form-data">
 	<input type="hidden" name="mode" value="">
 	<input type="hidden" name="now_file" value="<!--{$tpl_now_file}-->">
-	<input type="file" name="upload_file" value=""><input type="button" onclick="fnFormModeSubmit('form2', 'upload','',''); return false;" value="アップロード">
+	<input type="file" name="upload_file" value=""><input type="button" onclick="fnFormModeSubmit('form2', 'upload','',''); return false;" value="アップロード"><br/>
 	<input type="text" name="create_file" value=""><input type="button" onclick="fnFormModeSubmit('form2', 'create','',''); return false;" value="作成">
 </form>
 

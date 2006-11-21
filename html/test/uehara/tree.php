@@ -25,6 +25,14 @@ if($_POST['mode'] != "") {
 	$now_dir = $top_dir;
 }
 
+// ファイル管理クラス
+$objUpFile = new SC_UploadFile(IMAGE_TEMP_DIR, $now_dir);
+
+// ファイル情報の初期化
+lfInitFile();
+// Hiddenからのデータを引き継ぐ
+$objUpFile->setHiddenFileList($_POST);
+
 switch($_POST['mode']) {
 
 // ファイル表示
@@ -78,6 +86,10 @@ case 'create':
 	break;
 // ファイルアップロード
 case 'upload':
+	// ファイル存在チェック
+	$arrErr = (array)$objUpFile->checkEXISTS($_POST['upload_file']);
+	// 画像保存処理
+	$arrErr[$_POST['upload_file']] = $objUpFile->makeTempFile($_POST['upload_file']);
 	break;
 // 初期表示
 default :
@@ -113,6 +125,6 @@ function lfErrorCheck() {
 /* ファイル情報の初期化 */
 function lfInitFile() {
 	global $objUpFile;
-	$objUpFile->addFile("ファイル", 'upload_file', array('csv'), CSV_SIZE, true, 0, 0, false);
+	$objUpFile->addFile("ファイル", 'upload_file', array(), FILE_SIZE, true, 0, 0, false);
 }
 ?>
