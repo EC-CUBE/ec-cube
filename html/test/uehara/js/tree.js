@@ -1,17 +1,12 @@
-/*
- * Copyright(c) 2000-2006 LOCKON CO.,LTD. All Rights Reserved.
- *
- * http://www.lockon.co.jp/
- */
-
 var IMG_FOLDER_CLOSE   = "./img/folder_close.gif";				// フォルダクローズ時画像パス
 var IMG_FOLDER_CLOSE_P = "./img/folder_close_p.gif";			// フォルダクローズ時画像パス(子有り)
 var IMG_FOLDER_OPEN    = "./img/folder_open.gif";				// フォルダオープン時画像パス
 var IMG_FOLDER_OPEN_M  = "./img/folder_open_m.gif";				// フォルダオープン時画像パス(子有り)
 
+var tree = "";
 // ツリー表示
 function fnTreeView(view_id, arrTree) {
-	var tree = "";
+
 	for(i = 0; i < arrTree.length; i++) {
 		
 		id = arrTree[i][0];
@@ -54,6 +49,11 @@ function fnTreeView(view_id, arrTree) {
 	}
 	fnDrow(view_id, tree);
 }
+
+function test() {
+	document.form1['test1'].value = tree;
+}
+
 
 // ツリー描画
 function fnDrow(id, tree) {
