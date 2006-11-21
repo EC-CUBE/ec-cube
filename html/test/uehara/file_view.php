@@ -21,10 +21,9 @@ $arrViewFile = array(
 $arrResult = split('\.', $_GET['file']);
 $ext = $arrResult[count($arrResult)-1];
 
-sfprintr($_GET['file']);
-
 // ファイル内容表示
 if(in_array($ext, $arrViewFile)) {
+	// ファイルを読み込んで表示
 	header("Content-type: text/plain\n\n");
 	print(sfReadFile(USER_PATH.$_GET['file']));
 } else {
