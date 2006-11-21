@@ -108,7 +108,7 @@ $objView->display("tree.tpl");
  * 関数名：lfErrorCheck()
  * 説明　：エラーチェック
  */
-function lfErrorCheck($_POST) {
+function lfErrorCheck() {
 	$objErr = new SC_CheckError($_POST);
 	$objErr->doFunc(array("ファイル", "select_file"), array("SELECT_CHECK"));
 	
