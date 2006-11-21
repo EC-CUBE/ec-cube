@@ -111,15 +111,28 @@ function sfDeleteDir($dir) {
 }
 
 /* 
- * 関数名：sfGetFileTreeSub()
- * 説明　：ツリー生成用配列取得
+ * 関数名：sfGetFileTree()
+ * 説明　：ツリー生成用配列取得(javascriptに渡す用)
  * 引数1 ：ディレクトリ
  */
-function sfGetFileTreeSub($dir) {
-	global $arrTree;
-	global $cnt;
-	global $default_rank;
+function sfGetFileTree($dir) {
+	
+	$cnt = 0;
+	$arrTree = array();
+	$default_rank = count(split('/', $dir));
+	
+	sfGetFileTreeSub($dir, $default_rank, $cnt, $arrTree);
+}
 
+/* 
+ * 関数名：sfGetFileTree()
+ * 説明　：ツリー生成用配列取得(javascriptに渡す用)
+ * 引数1 ：ディレクトリ
+ * 引数2 ：デフォルトの階層(/区切りで　0,1,2・・・とカウント)
+ * 引数3 ：連番
+ */
+function sfGetFileTreeSub($dir, $default_rank, &$cnt, &$arrTree) {
+	
 	if(file_exists($dir)) {
 		if ($handle = opendir("$dir")) {
 			while (false !== ($item = readdir($handle))) {
@@ -145,7 +158,7 @@ function sfGetFileTreeSub($dir) {
 						$arrTree[$cnt] = array($cnt, $file_type, $path, $rank);
 						$cnt++;
 						// 下層ディレクトリ取得の為、再帰的に呼び出す
-						sfGetFileTree($path);
+						sfGetFileTreeSub($path, $default_rank, $cnt, $arrTree);
 					}
 				}
 			}

@@ -11,12 +11,12 @@ print_r($arrTree);
  * 引数1 ：ディレクトリ
  */
 function sfGetFileTree($dir) {
-	$default_dir = $dir;
-	$default_rank = count(split('/', $default_dir));
 	
 	$cnt = 0;
-
-	sfGetFileTreeSub($default_dir, $default_rank, $cnt, $arrTree);
+	$arrTree = array();
+	$default_rank = count(split('/', $dir));
+	
+	sfGetFileTreeSub($dir, $default_rank, $cnt, $arrTree);
 	
 print_r($arrTree);
 }
