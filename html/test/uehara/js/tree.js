@@ -4,6 +4,9 @@ var IMG_FOLDER_OPEN    = "./img/folder_open.gif";				// フォルダオープン時画像パ
 var IMG_FOLDER_OPEN_M  = "./img/folder_open_m.gif";				// フォルダオープン時画像パス(子有り)
 
 var tree = "";
+var count = 0;
+var arrTreeStatus = new Array();
+
 // ツリー表示
 function fnTreeView(view_id, arrTree) {
 
@@ -51,9 +54,8 @@ function fnTreeView(view_id, arrTree) {
 }
 
 function test() {
-	document.form1['test1'].value = tree;
+	document.form1['test1'].value = arrTreeStatus[count];
 }
-
 
 // ツリー描画
 function fnDrow(id, tree) {
@@ -80,7 +82,7 @@ function fnDrow(id, tree) {
 }
 
 // 階層ツリーメニュー表示・非表示処理
-function fnTreeMenu(tName, type, imgName) {
+function fnTreeMenu(tName, type, imgName, path) {
 
 	tMenu = document.all[tName].style;
 	if(tMenu.display == 'none') {
@@ -96,7 +98,9 @@ function fnTreeMenu(tName, type, imgName) {
 		} else {
 			fnChgImg(IMG_FOLDER_CLOSE, imgName);
 		}
-		
+		// 状態を保持
+		arrTreeStatus[count] = path;
+		count++;
 		tMenu.display = "none";
 	}
 }
