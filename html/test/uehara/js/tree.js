@@ -5,7 +5,7 @@ var IMG_FOLDER_OPEN_M  = "./img/folder_open_m.gif";				// フォルダオープン時画像
 
 // ツリー表示
 function fnTreeView(view_id, arrTree) {
-	tree = "";
+	var tree = "";
 	for(i = 0; i < arrTree.length; i++) {
 		
 		id = arrTree[i][0];
