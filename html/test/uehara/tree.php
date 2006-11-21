@@ -93,6 +93,9 @@ case 'upload':
 		$objPage->tpl_javascript = "alert('ファイルをアップロードしました。');";
 	}
 	break;
+// フォルダ移動
+case '':
+	break;
 // 初期表示
 default :
 	break;
