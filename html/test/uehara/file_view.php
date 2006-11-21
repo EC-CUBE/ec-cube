@@ -15,7 +15,7 @@ $arrViewFile = array(
  'php',
 );
 
-$arrResult = split('/', $_GET['file']);
+$arrResult = split('.', $_GET['file']);
 $ext = $arrResult[count($arrResult)-1];
 
 sfprintr($ext);
