@@ -85,7 +85,11 @@ case 'create':
 case 'upload':
 	// 画像保存処理
 	$ret = $objUpFile->makeTempFile('upload_file', false);
-	if($ret != "") $arrErr['upload_file'] = $ret;
+	if($ret != "") {
+		$arrErr['upload_file'] = $ret;
+	} else {
+		$objPage->tpl_javascript = "alert('ファイルをアップロードしました。');";
+	}
 	break;
 // 初期表示
 default :
