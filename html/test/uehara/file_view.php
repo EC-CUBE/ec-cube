@@ -7,7 +7,7 @@
 
 require_once("../../require.php");
 
-// 直接表示しないファイルを定義
+// 読み込んで表示するファイルを定義(直接実行しないファイル)
 $arrViewFile = array(
 					 'html',
 					 'htm',
