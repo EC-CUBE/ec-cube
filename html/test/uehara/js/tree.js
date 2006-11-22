@@ -55,9 +55,9 @@ function fnTreeView(view_id, arrTree) {
 		}
 
 		if(arrTree[i][3]) {
-			display = 'none';
-		} else {
 			display = 'block';
+		} else {
+			display = 'none';
 		}
 		tree += '<a href="javascript:fnTreeMenu(\'tree'+ i +'\',\''+ arrTree[i][1] +'\',\'tree_img'+ i +'\',\''+ arrTree[i][2] +'\')"><img src="'+ defalt_img +'" border="0" name="tree_img'+ i +'" ></a>'+ arrTree[i][2] +'<br/>';
 		tree += '<div id="tree'+ i +'" style="display:'+ display +'">';
