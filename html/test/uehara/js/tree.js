@@ -135,11 +135,11 @@ function fnTreeMenu(tName, type, imgName, path) {
 		fnDelTreeStatus(path);
 	}
 	// クリックしたフォルダ情報を保持
-	document.form1['select_file'].value = path;
+	document.form1['tree_select_file'].value = path;
 	// treeの状態をセット
 	setTreeStatus('tree_status');
 	// submit
-	fnModeSubmit('view','','');
+	fnModeSubmit('move','','');
 }
 
 // 閲覧ブラウザ取得

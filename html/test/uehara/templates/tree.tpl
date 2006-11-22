@@ -36,6 +36,7 @@ arrTree = new Array();
 	<input type="text" id="test1" name="test1" value="" onclick="setTreeStatus('tree_status')('test1')" size="300">
 	<input type="hidden" name="mode" value="">
 	<input type="hidden" name="now_file" value="<!--{$tpl_now_file}-->">
+	<input type="hidden" name="tree_select_file" value="">
 	<input type="hidden" name="tree_status" value="">
 	<select name=select_file size="5">
 	<!--{section name=cnt loop=$arrFileList}-->

@@ -98,7 +98,8 @@ case 'upload':
 	}
 	break;
 // フォルダ移動
-case '':
+case 'move':
+	$now_dir = $_POST['tree_select_file'];
 	break;
 // 初期表示
 default :
