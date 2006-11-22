@@ -128,6 +128,6 @@ function fnGetMyBrowser() {
 }
 
 // imgタグの画像変更
-function fnChgImg(fileName,imgName){
+function fnChgImg(fileName,imgName) {
 	document.images[imgName].src = fileName;
 }
