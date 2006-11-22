@@ -32,7 +32,7 @@ arrTree = new Array();
 <div id="tree"></div><br/>
 
 ■ファイル
-<form name="form1" method="post" action="<!--{$smarty.server.PHP_SELF|escape}-->">
+<form name="form1" method="post" action="<!--{$smarty.server.PHP_SELF|escape}-->"  enctype="multipart/form-data">
 	<input type="text" id="test1" name="test1" value="" onclick="setTreeStatus('tree_status')('test1')" size="300">
 	<input type="hidden" name="mode" value="">
 	<input type="hidden" name="now_file" value="<!--{$tpl_now_file}-->">
@@ -46,15 +46,12 @@ arrTree = new Array();
 	<input type="button" onclick="setTreeStatus('tree_status');fnModeSubmit('view','',''); return false;" value="表示">
 	<input type="button" onclick="setTreeStatus('tree_status');fnModeSubmit('download','',''); return false;" value="ダウンロード">
 	<input type="button" onclick="setTreeStatus('tree_status');fnModeSubmit('delete','',''); return false;" value="削除">
-</form><br/>
+	<br/>
 
 ■フォルダ作成
-<form name="form2" method="post" action="<!--{$smarty.server.PHP_SELF|escape}-->" enctype="multipart/form-data">
-	<input type="hidden" name="mode" value="">
-	<input type="hidden" name="now_file" value="<!--{$tpl_now_file}-->">
-	<input type="hidden" name="tree_status" value="">
-	<input type="file" name="upload_file"><input type="button" onclick="setTreeStatus('tree_status');fnFormModeSubmit('form2', 'upload','',''); return false;" value="アップロード"><br/>
-	<input type="text" name="create_file" value=""><input type="button" onclick="setTreeStatus('tree_status');fnFormModeSubmit('form2', 'create','',''); return false;" value="作成">
+
+	<input type="file" name="upload_file"><input type="button" onclick="setTreeStatus('tree_status');fnFormModeSubmit('form1', 'upload','',''); return false;" value="アップロード"><br/>
+	<input type="text" name="create_file" value=""><input type="button" onclick="setTreeStatus('tree_status');fnFormModeSubmit('form1', 'create','',''); return false;" value="作成">
 </form>
 
 </body>
