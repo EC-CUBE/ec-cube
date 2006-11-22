@@ -55,6 +55,8 @@ function fnTreeView(view_id, arrTree) {
 		}
 
 		if(arrTree[i][4]) {
+			// 開き状態を保持
+			arrTreeStatus.push();
 			display = 'block';
 		} else {
 			display = 'none';
@@ -76,7 +78,7 @@ function setTreeStatus(name) {
 	document.form1[name].value = tree_status;
 }
 
-// Tree状態から閉じるを入れる
+// Tree状態を削除する(閉じる状態へ)
 function fnDelTreeStatus(path) {
 	for(i=0; i < arrTreeStatus.length ;i++) {
 		if(arrTreeStatus[i] == path) {
@@ -119,7 +121,7 @@ function fnTreeMenu(tName, type, imgName, path) {
 			fnChgImg(IMG_FOLDER_OPEN, imgName);
 		}
 		tMenu.display = "block";
-		// 状態を保持
+		// オープンファイル状態を保持
 		arrTreeStatus[count] = path;
 		count++;
 
