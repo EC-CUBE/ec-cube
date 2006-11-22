@@ -136,7 +136,7 @@ function fnTreeMenu(tName, type, imgName, path) {
 		fnDelTreeStatus(path);
 	}
 	// submit
-	fnModeSubmit(\'view\',\'\',\'\');
+	fnModeSubmit('view','','');
 }
 
 // 閲覧ブラウザ取得
