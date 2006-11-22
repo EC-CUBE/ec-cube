@@ -179,7 +179,7 @@ function sfGetFileTreeSub($dir, $default_rank, &$cnt, &$arrTree, $tree_status) {
  * 説明　：指定したディレクトリ配下にファイルがあるか
  * 引数1 ：ディレクトリ
  */
-function sfDirChildExists($dir, $tree_status) {
+function sfDirChildExists($dir) {
 	if(file_exists($dir)) {
 		// ディレクトリの場合下層ファイルの総量を取得
 		if (is_dir($dir)) {

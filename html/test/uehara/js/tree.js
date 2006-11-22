@@ -42,7 +42,7 @@ function fnTreeView(view_id, arrTree) {
 		// 初期表示の画像を選択
 		if(arrTree[i][1] == '_parent') {
 			if(arrTree[i][3]) {
-				defalt_img = IMG_FOLDER_OPEN_P;
+				defalt_img = IMG_FOLDER_OPEN_M;
 			} else {
 				defalt_img = IMG_FOLDER_CLOSE_P;
 			}
