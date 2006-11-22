@@ -41,13 +41,26 @@ function fnTreeView(view_id, arrTree) {
 		
 		// 初期表示の画像を選択
 		if(arrTree[i][1] == '_parent') {
-			defalt_img = IMG_FOLDER_CLOSE_P;
+			if(arrTree[i][3]) {
+				defalt_img = IMG_FOLDER_OPEN_P;
+			} else {
+				defalt_img = IMG_FOLDER_CLOSE_P;
+			}
 		} else {
-			defalt_img = IMG_FOLDER_CLOSE;
+			if(arrTree[i][3]) {
+				defalt_img = IMG_FOLDER_OPEN;
+			} else {
+				defalt_img = IMG_FOLDER_CLOSE;
+			}
 		}
-		
+
+		if(arrTree[i][3]) {
+			display = 'none';
+		} else {
+			display = 'block';
+		}
 		tree += '<a href="javascript:fnTreeMenu(\'tree'+ i +'\',\''+ arrTree[i][1] +'\',\'tree_img'+ i +'\',\''+ arrTree[i][2] +'\')"><img src="'+ defalt_img +'" border="0" name="tree_img'+ i +'" ></a>'+ arrTree[i][2] +'<br/>';
-		tree += '<div id="tree'+ i +'" style="display:none">';
+		tree += '<div id="tree'+ i +'" style="display:'+ display +'">';
 	
 	}
 	fnDrow(view_id, tree);
@@ -61,8 +74,6 @@ function setTreeStatus(name) {
 		tree_status += arrTreeStatus[i];
 	}
 	document.form1[name].value = tree_status;
-alert(tree_status);
-alert(name);
 }
 
 // Tree状態から閉じるを入れる

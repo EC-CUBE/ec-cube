@@ -114,14 +114,15 @@ function sfDeleteDir($dir) {
  * 関数名：sfGetFileTree()
  * 説明　：ツリー生成用配列取得(javascriptに渡す用)
  * 引数1 ：ディレクトリ
+ * 引数2 ：現在のツリーの状態開いているフォルダのパスが | 区切りで格納
  */
-function sfGetFileTree($dir) {
+function sfGetFileTree($dir, $tree_status) {
 	
 	$cnt = 0;
 	$arrTree = array();
 	$default_rank = count(split('/', $dir));
 	
-	sfGetFileTreeSub($dir, $default_rank, $cnt, $arrTree);
+	sfGetFileTreeSub($dir, $default_rank, $cnt, $arrTree, $tree_status);
 	
 	return $arrTree;
 }
@@ -132,8 +133,9 @@ function sfGetFileTree($dir) {
  * 引数1 ：ディレクトリ
  * 引数2 ：デフォルトの階層(/区切りで　0,1,2・・・とカウント)
  * 引数3 ：連番
+ * 引数4 ：現在のツリーの状態開いているフォルダのパスが | 区切りで格納
  */
-function sfGetFileTreeSub($dir, $default_rank, &$cnt, &$arrTree) {
+function sfGetFileTreeSub($dir, $default_rank, &$cnt, &$arrTree, $tree_status) {
 	
 	if(file_exists($dir)) {
 		if ($handle = opendir("$dir")) {
@@ -158,10 +160,12 @@ function sfGetFileTreeSub($dir, $default_rank, &$cnt, &$arrTree) {
 						$arrCnt = split('/', $path);
 						$rank = count($arrCnt);
 						$arrTree[$cnt]['rank'] = $rank - $default_rank;
-						$arrTree[$cnt]['count'] = $cnt;			
+						$arrTree[$cnt]['count'] = $cnt;
+						// フォルダが開いているか
+						$arrTree[$cnt]['open'] = lfIsFileOpen($path, $tree_status);
 						$cnt++;
 						// 下層ディレクトリ取得の為、再帰的に呼び出す
-						sfGetFileTreeSub($path, $default_rank, $cnt, $arrTree);
+						sfGetFileTreeSub($path, $default_rank, $cnt, $arrTree, $tree_status);
 					}
 				}
 			}
@@ -175,7 +179,7 @@ function sfGetFileTreeSub($dir, $default_rank, &$cnt, &$arrTree) {
  * 説明　：指定したディレクトリ配下にファイルがあるか
  * 引数1 ：ディレクトリ
  */
-function sfDirChildExists($dir) {
+function sfDirChildExists($dir, $tree_status) {
 	if(file_exists($dir)) {
 		// ディレクトリの場合下層ファイルの総量を取得
 		if (is_dir($dir)) {
@@ -191,6 +195,21 @@ function sfDirChildExists($dir) {
 		}
 	}
     
+	return false;
+}
+
+/* 
+ * 関数名：lfIsFileOpen()
+ * 説明　：指定したファイルが前回開かれた状態にあったかチェック
+ * 引数1 ：ディレクトリ
+ * 引数2 ：現在のツリーの状態開いているフォルダのパスが | 区切りで格納
+ */
+function lfIsFileOpen($dir, $tree_status) {
+	$arrTreeStatus = split('/', $tree_status);
+	if(in_array($dir, $arrTreeStatus)) {
+		return true;
+	}
+	
 	return false;
 }
 
