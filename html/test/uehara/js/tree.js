@@ -61,7 +61,7 @@ function setTreeStatus(name) {
 		tree_status += arrTreeStatus[i];
 	}
 	
-	document.form1[name].value = this.arrTreeStatus[count-1];
+	document.form1[name].value = tree_status;
 }
 
 // ツリー描画
