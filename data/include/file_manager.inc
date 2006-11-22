@@ -205,7 +205,7 @@ function sfDirChildExists($dir) {
  * 引数2 ：現在のツリーの状態開いているフォルダのパスが | 区切りで格納
  */
 function lfIsFileOpen($dir, $tree_status) {
-	$arrTreeStatus = split('/', $tree_status);
+	$arrTreeStatus = split('|', $tree_status);
 sfprintr($arrTreeStatus);
 	if(in_array($dir, $arrTreeStatus)) {
 		return true;

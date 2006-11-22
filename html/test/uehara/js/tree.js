@@ -53,7 +53,7 @@ function fnTreeView(view_id, arrTree) {
 				defalt_img = IMG_FOLDER_CLOSE;
 			}
 		}
-alert(arrTree[i][4]);
+
 		if(arrTree[i][4]) {
 			display = 'block';
 		} else {
