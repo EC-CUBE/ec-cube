@@ -3,8 +3,8 @@ var IMG_FOLDER_CLOSE_P = "./img/folder_close_p.gif";			// フォルダクローズ時画像
 var IMG_FOLDER_OPEN    = "./img/folder_open.gif";				// フォルダオープン時画像パス
 var IMG_FOLDER_OPEN_M  = "./img/folder_open_m.gif";				// フォルダオープン時画像パス(子有り)
 
-var tree = "";
 var count = 0;
+var tree = "";
 var arrTreeStatus = new Array();
 
 // ツリー表示
@@ -92,15 +92,16 @@ function fnTreeMenu(tName, type, imgName, path) {
 			fnChgImg(IMG_FOLDER_OPEN, imgName);
 		}
 		tMenu.display = "block";
+		// 状態を保持
+		arrTreeStatus[count] = path;
+		count++;
+
 	} else {
 		if(type == '_parent') {
 			fnChgImg(IMG_FOLDER_CLOSE_P, imgName);
 		} else {
 			fnChgImg(IMG_FOLDER_CLOSE, imgName);
 		}
-		// 状態を保持
-		arrTreeStatus[count] = path;
-		count++;
 		tMenu.display = "none";
 	}
 }
