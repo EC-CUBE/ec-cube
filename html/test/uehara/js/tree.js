@@ -73,7 +73,6 @@ function setTreeStatus(name) {
 	var tree_status = "";
 	for(i=0; i < arrTreeStatus.length ;i++) {
 		if(i != 0) tree_status += '|';
-alert(arrTreeStatus[i]);		
 		tree_status += arrTreeStatus[i];
 	}
 	document.form1[name].value = tree_status;
@@ -123,8 +122,7 @@ function fnTreeMenu(tName, type, imgName, path) {
 		}
 		tMenu.display = "block";
 		// オープンファイル状態を保持
-		arrTreeStatus[count] = path;
-		count++;
+		arrTreeStatus.push(path);
 
 	} else {
 		if(type == '_parent') {
