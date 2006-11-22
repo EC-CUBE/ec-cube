@@ -56,6 +56,7 @@ function fnTreeView(view_id, arrTree) {
 
 		if(arrTree[i][3]) {
 			display = 'block';
+alert(display);
 		} else {
 			display = 'none';
 		}
