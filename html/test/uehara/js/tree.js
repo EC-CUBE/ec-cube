@@ -61,6 +61,8 @@ function setTreeStatus(name) {
 		tree_status += arrTreeStatus[i];
 	}
 	document.form1[name].value = tree_status;
+alert(tree_status);
+alert(name);
 }
 
 // Tree状態から閉じるを入れる
