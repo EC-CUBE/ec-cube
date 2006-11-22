@@ -56,7 +56,7 @@ function fnTreeView(view_id, arrTree) {
 
 		if(arrTree[i][4]) {
 			// 開き状態を保持
-			arrTreeStatus.push();
+			arrTreeStatus.push(arrTree[i][2]);
 			display = 'block';
 		} else {
 			display = 'none';
