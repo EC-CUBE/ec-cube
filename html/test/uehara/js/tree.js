@@ -135,6 +135,8 @@ function fnTreeMenu(tName, type, imgName, path) {
 		// 閉じ状態を保持
 		fnDelTreeStatus(path);
 	}
+	// treeの状態をセット
+	setTreeStatus('tree_status');
 	// submit
 	fnModeSubmit('view','','');
 }
