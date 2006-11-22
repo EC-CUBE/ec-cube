@@ -56,7 +56,6 @@ function fnTreeView(view_id, arrTree) {
 
 		if(arrTree[i][4]) {
 			// 開き状態を保持
-alert(arrTree[i][2]);
 			arrTreeStatus.push(arrTree[i][2]);
 			display = 'block';
 		} else {
@@ -74,6 +73,7 @@ function setTreeStatus(name) {
 	var tree_status = "";
 	for(i=0; i < arrTreeStatus.length ;i++) {
 		if(i != 0) tree_status += '|';
+alert(arrTreeStatus[i]);		
 		tree_status += arrTreeStatus[i];
 	}
 	document.form1[name].value = tree_status;
