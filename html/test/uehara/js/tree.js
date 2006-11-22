@@ -134,6 +134,8 @@ function fnTreeMenu(tName, type, imgName, path) {
 		// 閉じ状態を保持
 		fnDelTreeStatus(path);
 	}
+	// クリックしたフォルダ情報を保持
+	document.form1['select_file'].value = path;
 	// treeの状態をセット
 	setTreeStatus('tree_status');
 	// submit
