@@ -54,6 +54,7 @@ function fnTreeView(view_id, arrTree) {
 }
 
 function test() {
+	alert(this.arrTreeStatus[this.count]);
 	document.form1['test1'].value = this.arrTreeStatus[this.count];
 }
 
