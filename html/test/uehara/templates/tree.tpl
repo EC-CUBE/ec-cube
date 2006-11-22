@@ -33,7 +33,7 @@ arrTree = new Array();
 
 ■ファイル
 <form name="form1" method="post" action="<!--{$smarty.server.PHP_SELF|escape}-->">
-	<input type="text" id="test1" name="test1" value="" onclick="debug()" size="300">
+	<input type="text" id="test1" name="test1" value="" onclick="setTreeStatus('test1')" size="300">
 	<input type="hidden" name="mode" value="">
 	<input type="hidden" name="now_file" value="<!--{$tpl_now_file}-->">
 	<select name=select_file size="5">

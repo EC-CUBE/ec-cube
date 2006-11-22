@@ -3,8 +3,8 @@ var IMG_FOLDER_CLOSE_P = "./img/folder_close_p.gif";			// フォルダクローズ時画像
 var IMG_FOLDER_OPEN    = "./img/folder_open.gif";				// フォルダオープン時画像パス
 var IMG_FOLDER_OPEN_M  = "./img/folder_open_m.gif";				// フォルダオープン時画像パス(子有り)
 
-var count = 0;
 var tree = "";
+var count = 0;
 var arrTreeStatus = new Array();
 
 // ツリー表示
@@ -53,9 +53,15 @@ function fnTreeView(view_id, arrTree) {
 	fnDrow(view_id, tree);
 }
 
-// debug
-function debug() {
-	document.form1['test1'].value = this.arrTreeStatus[count-1];
+// Tree状態を保持
+function setTreeStatus(name) {
+	var tree_status;
+	for(i=0; i < arrTreeStatus.length ;i++) {
+		if(i != 0) tree_status += '|';
+		tree_status += arrTreeStatus[i];
+	}
+	
+	document.form1[name].value = this.arrTreeStatus[count-1];
 }
 
 // ツリー描画
