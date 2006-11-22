@@ -61,7 +61,7 @@ function fnTreeView(view_id, arrTree) {
 		} else {
 			display = 'none';
 		}
-		tree += '<a href="javascript:fnTreeMenu(\'tree'+ i +'\',\''+ arrTree[i][1] +'\',\'tree_img'+ i +'\',\''+ arrTree[i][2] +'\');fnModeSubmit(\'view\',\'\',\'\');"><img src="'+ defalt_img +'" border="0" name="tree_img'+ i +'" ></a>'+ arrTree[i][2] +'<br/>';
+		tree += '<a href="javascript:fnTreeMenu(\'tree'+ i +'\',\''+ arrTree[i][1] +'\',\'tree_img'+ i +'\',\''+ arrTree[i][2] +'\')"><img src="'+ defalt_img +'" border="0" name="tree_img'+ i +'" ></a>'+ arrTree[i][2] +'<br/>';
 		tree += '<div id="tree'+ i +'" style="display:'+ display +'">';
 	
 	}
@@ -135,6 +135,8 @@ function fnTreeMenu(tName, type, imgName, path) {
 		// 閉じ状態を保持
 		fnDelTreeStatus(path);
 	}
+	// submit
+	fnModeSubmit(\'view\',\'\',\'\');
 }
 
 // 閲覧ブラウザ取得
