@@ -55,7 +55,7 @@ function fnTreeView(view_id, arrTree) {
 
 function test() {
 	alert(count);
-	document.form1['test1'].value = this.arrTreeStatus[this.count];
+	document.form1['test1'].value = this.arrTreeStatus[2];
 }
 
 // ツリー描画
