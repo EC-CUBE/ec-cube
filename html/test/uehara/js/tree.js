@@ -41,22 +41,21 @@ function fnTreeView(view_id, arrTree) {
 		
 		// 初期表示の画像を選択
 		if(arrTree[i][1] == '_parent') {
-			if(arrTree[i][3]) {
+			if(arrTree[i][4]) {
 				defalt_img = IMG_FOLDER_OPEN_M;
 			} else {
 				defalt_img = IMG_FOLDER_CLOSE_P;
 			}
 		} else {
-			if(arrTree[i][3]) {
+			if(arrTree[i][4]) {
 				defalt_img = IMG_FOLDER_OPEN;
 			} else {
 				defalt_img = IMG_FOLDER_CLOSE;
 			}
 		}
 
-		if(arrTree[i][3]) {
+		if(arrTree[i][4]) {
 			display = 'block';
-alert(arrTree[i][3]);
 		} else {
 			display = 'none';
 		}
