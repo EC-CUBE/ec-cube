@@ -206,6 +206,7 @@ function sfDirChildExists($dir) {
  */
 function lfIsFileOpen($dir, $tree_status) {
 	$arrTreeStatus = split('/', $tree_status);
+sfprintr($arrTreeStatus);
 	if(in_array($dir, $arrTreeStatus)) {
 		return true;
 	}
