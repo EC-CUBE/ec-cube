@@ -59,6 +59,7 @@ function setTreeStatus(name) {
 	for(i=0; i < arrTreeStatus.length ;i++) {
 		if(i != 0) tree_status += '|';
 		tree_status += arrTreeStatus[i];
+		alert(tree_status);
 	}
 	
 	document.form1[name].value = tree_status;
