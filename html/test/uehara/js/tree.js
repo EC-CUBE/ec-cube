@@ -53,7 +53,7 @@ function fnTreeView(view_id, arrTree) {
 	fnDrow(view_id, tree);
 }
 
-// Tree状態を保持
+// Tree状態をhiddenにセット
 function setTreeStatus(name) {
 	var tree_status = "";
 	for(i=0; i < arrTreeStatus.length ;i++) {
@@ -63,6 +63,14 @@ function setTreeStatus(name) {
 	document.form1[name].value = tree_status;
 }
 
+// Tree状態から閉じるを入れる
+function fnDelTreeStatus(path) {
+	for(i=0; i < arrTreeStatus.length ;i++) {
+		if(arrTreeStatus[i] == path) {
+			arrTreeStatus[i] = "";
+		}
+	}
+}
 // ツリー描画
 function fnDrow(id, tree) {
 	// ブラウザ取得
@@ -109,6 +117,8 @@ function fnTreeMenu(tName, type, imgName, path) {
 			fnChgImg(IMG_FOLDER_CLOSE, imgName);
 		}
 		tMenu.display = "none";
+		// 閉じ状態を保持
+		fnDelTreeStatus(path);
 	}
 }
 
@@ -128,6 +138,6 @@ function fnGetMyBrowser() {
 }
 
 // imgタグの画像変更
-function fnChgImg(fileName,imgName) {
+function fnChgImg(fileName,imgName){
 	document.images[imgName].src = fileName;
 }

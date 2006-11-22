@@ -11,6 +11,10 @@ class LC_Page{
 	}
 }
 
+sfprintr($_POST);
+
+
+
 $top_dir = USER_PATH;
 
 $objPage = new LC_Page();

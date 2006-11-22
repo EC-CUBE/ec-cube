@@ -36,6 +36,7 @@ arrTree = new Array();
 	<input type="text" id="test1" name="test1" value="" onclick="setTreeStatus('test1')" size="300">
 	<input type="hidden" name="mode" value="">
 	<input type="hidden" name="now_file" value="<!--{$tpl_now_file}-->">
+	<input type="hidden" name="tree_status" value="">
 	<select name=select_file size="5">
 	<!--{section name=cnt loop=$arrFileList}-->
 	<option value="<!--{$arrFileList[cnt].file_path|escape}-->" <!--{if $arrFileList[cnt].file_path eq $arrParam.select_file}-->selected<!--{/if}-->><!--{$arrFileList[cnt].file_name|escape}-->　<!--{$arrFileList[cnt].file_size|escape}-->　<!--{$arrFileList[cnt].file_time|escape}--></option>
@@ -50,6 +51,7 @@ arrTree = new Array();
 <form name="form2" method="post" action="<!--{$smarty.server.PHP_SELF|escape}-->" enctype="multipart/form-data">
 	<input type="hidden" name="mode" value="">
 	<input type="hidden" name="now_file" value="<!--{$tpl_now_file}-->">
+	<input type="hidden" name="tree_status" value="">
 	<input type="file" name="upload_file"><input type="button" onclick="fnFormModeSubmit('form2', 'upload','',''); return false;" value="アップロード"><br/>
 	<input type="text" name="create_file" value=""><input type="button" onclick="fnFormModeSubmit('form2', 'create','',''); return false;" value="作成">
 </form>
