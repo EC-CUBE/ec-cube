@@ -60,7 +60,8 @@ function setTreeStatus(name) {
 		if(i != 0) tree_status += '|';
 		tree_status += arrTreeStatus[i];
 	}
-	
+alert(arrTreeStatus[0]);	
+alert(arrTreeStatus[1]);
 	document.form1[name].value = tree_status;
 }
 
@@ -101,7 +102,6 @@ function fnTreeMenu(tName, type, imgName, path) {
 		tMenu.display = "block";
 		// 状態を保持
 		arrTreeStatus[count] = path;
-alert(arrTreeStatus[count]);
 		count++;
 
 	} else {
