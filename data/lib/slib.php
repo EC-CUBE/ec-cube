@@ -117,10 +117,13 @@ function sfColumnExists($table_name, $col_name, $col_type = "", $dsn = "", $add 
 				return true;
 			}
 		}else if ($db_type == "mysql") {
-			$sql = "SHOW COLUMNS FROM $table_name WHERE Field = ?";
-			$arrRet = $objQuery->getAll($sql, array($col_name));
+			//$sql = "SHOW COLUMNS FROM $table_name WHERE Field = ?";
+			$sql = "SHOW COLUMNS FROM $table_name";
+			$arrRet = $objQuery->getAll($sql);
 			if(count($arrRet) > 0) {
-				return true;
+				if(in_array($col_name, $arrRet)){
+					return true;
+				}
 			}
 		}
 	}

@@ -4,4 +4,3 @@ php_value output_handler mb_output_handler
 php_flag mbstring.encoding_translation 1
 php_flag magic_quotes_gpc 0
 
-Options -Indexes
