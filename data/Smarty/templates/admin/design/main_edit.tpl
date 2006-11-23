@@ -101,7 +101,7 @@ else if(navigator.userAgent.indexOf("Mozilla") >= 0){
 								<td bgcolor="#ffffff" align="left" colspan=2>
 									<!--{ if $arrErr.url != "" }--> <div align="center"> <span class="red12"><!--{$arrErr.url}--></span></div> <!--{/if}-->
 									URL：<!--{if $arrPageData.edit_flg == 2}-->
-											<!--{$user_URL}--><!--{$arrPageData.url|escape}-->
+											<!--{$smarty.const.SITE_URL}--><!--{$arrPageData.url|escape}-->
 											<input type="hidden" name="url" value="<!--{$arrPageData.filename|escape}-->" maxlength="<!--{$smarty.const.STEXT_LEN}-->" />
 										<!--{else}-->
 											<!--{$user_URL}--><input type="text" name="url" value="<!--{$arrPageData.directory|escape}--><!--{$arrPageData.filename|escape}-->" maxlength="<!--{$smarty.const.STEXT_LEN}-->" style="<!--{if $arrErr.url != ""}-->background-color: <!--{$smarty.const.ERR_COLOR}-->;<!--{/if}--> ime-mode: disabled;" size="60" class="box60" />.php<span class="red"> （上限<!--{$smarty.const.STEXT_LEN}-->文字）</span>

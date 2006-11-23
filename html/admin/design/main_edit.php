@@ -72,8 +72,6 @@ if (is_numeric($page_id) and $page_id != '') {
 	// ディレクトリを画面表示用に編集
 	$arrPageData[0]['directory'] = str_replace( USER_DIR,'', $arrPageData[0]['php_dir']);
 	
-	sfprintr($arrPageData);
-	
 	$objPage->arrPageData = $arrPageData[0];
 }
 
