@@ -58,13 +58,13 @@ if (is_numeric($page_id) and $page_id != '') {
 		$objView->display(MAIN_FRAME);
 		exit;
 	}
-	
+
 	// テンプレートファイルが存在していれば読み込む
 	$tpl_file = HTML_PATH . $arrPageData[0]['tpl_dir'] . $arrPageData[0]['filename'] . ".tpl";
 	if (file_exists($tpl_file)){
 		$arrPageData[0]['tpl_data'] = file_get_contents($tpl_file);		
 	}
-	
+
 	// チェックボックスの値変更
 	$arrPageData[0]['header_chk'] = sfChangeCheckBox($arrPageData[0]['header_chk'], true);
 	$arrPageData[0]['footer_chk'] = sfChangeCheckBox($arrPageData[0]['footer_chk'], true);
