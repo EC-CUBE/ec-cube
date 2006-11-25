@@ -799,7 +799,7 @@ function sfGetCommaList($array, $space=true) {
 function sfGetCSVList($array) {
 	if (count($array) > 0) {
 		foreach($array as $key => $val) {
-			//$line .= "\"".$val."\",";
+			$line .= "\"".$val."\",";
 		}
 		$line = ereg_replace(",$", "\n", $line);
 		return $line;
