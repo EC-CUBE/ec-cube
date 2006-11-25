@@ -115,6 +115,7 @@
 										<td width="348">バックアップメモ</td>
 										<td width="180">作成日</td>
 										<td width="50">リストア</td>
+										<td width="50">ダウンロード</td>
 										<td width="50" align="center">削除</td>
 									</tr>
 									<!--{section name=cnt loop=$arrBkupList}-->
@@ -123,6 +124,7 @@
 										<td ><!--{$arrBkupList[cnt].bkup_memo}--></td>			
 										<td align="center"><!--{$arrBkupList[cnt].create_date|sfCutString:19:true:false}--></td>
 										<td align="center"><a href="#" onclick="document.body.style.cursor = 'wait'; fnModeSubmit('restore','list_name','<!--{$arrBkupList[cnt].bkup_name}-->');">restore</a></td>
+										<td align="center"><a href="#" onclick="document.body.style.cursor = 'wait'; fnModeSubmit('download','list_name','<!--{$arrBkupList[cnt].bkup_name}-->');">download</a></td>
 										<td align="center">
 											<a href="#" onclick="fnModeSubmit('delete','list_name','<!--{$arrBkupList[cnt].bkup_name}-->');">delete</a>
 										</td>	

@@ -86,6 +86,22 @@ case 'delete':
 	$objQuery->query($delsql, array($_POST['list_name']));
 
 	break;
+	
+// ダウンロード
+case 'download' :
+	$file = $objPage->bkup_dir."test.tar.gz";
+	
+	// ダウンロード 
+	//mb_http_output("pass"); 
+	
+	header("Content-Disposition: attachment;filename=" .$file. "\""); 
+	header("Content-Length: " .filesize($file .".gz")); 
+	header("Content-Type: application/octet-stream; name=" .$file. "\""); 
+	readfile ($file);
+	
+	
+	break;
+  
 default:
 	break;
 }
