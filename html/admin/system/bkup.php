@@ -178,6 +178,7 @@ function lfCreateBkupData($bkup_name){
 				
 				if ($val == "dtb_order"){
 					sfprintr($arrData);
+					exit();
 				}
 				
 				// データをCSV形式に整える
