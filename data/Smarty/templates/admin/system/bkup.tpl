@@ -112,8 +112,8 @@
 								<table width="678" border="0" cellspacing="1" cellpadding="8" summary=" ">
 									<tr bgcolor="#f2f1ec" align="center" class="fs12n">
 										<td width="150" align="center">バックアップ名</td>
-										<td >バックアップメモ</td>
-										<td width="90">作成日</td>
+										<td width="338">バックアップメモ</td>
+										<td width="170">作成日</td>
 										<td width="50">リストア</td>
 										<td width="90">ダウンロード</td>
 										<td width="50" align="center">削除</td>
