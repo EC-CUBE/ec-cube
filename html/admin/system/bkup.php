@@ -78,7 +78,8 @@ case 'delete':
 	$del_file = $objPage->bkup_dir.$_POST['list_name'] . ".tar.gz";
 	// ファイルの削除
 	if(is_file($del_file)){
-		unlink($del_file);
+		$ret = unlink($del_file);
+		sfprintr($ret);
 	}
 
 	// DBから削除
