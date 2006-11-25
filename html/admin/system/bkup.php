@@ -94,13 +94,14 @@ case 'download' :
 	// ダウンロード 
 	//mb_http_output("pass"); 
 	
-	header("Content-Disposition: attachment;filename=" .$file. "\""); 
-	header("Content-Length: " .filesize($file .".gz")); 
-	header("Content-Type: application/octet-stream; name=" .$file. "\""); 
-	readfile ($file);
+	//header("Content-Disposition: attachment;filename=" .$file. "\""); 
+	//header("Content-Length: " .filesize($file .".gz")); 
+	//header("Content-Type: application/octet-stream; name=" .$file. "\""); 
+	//readfile ($file);
+	
+	sfprintr($file);
 	exit();
-	
-	
+
 	break;
   
 default:
