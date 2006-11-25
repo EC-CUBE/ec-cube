@@ -115,7 +115,7 @@
 										<td width="338">バックアップメモ</td>
 										<td width="170">作成日</td>
 										<td width="50">リストア</td>
-										<td width="70">ダウンロード</td>
+										<td width="90">ダウンロード</td>
 										<td width="50" align="center">削除</td>
 									</tr>
 									<!--{section name=cnt loop=$arrBkupList}-->
