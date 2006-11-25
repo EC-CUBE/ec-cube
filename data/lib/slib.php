@@ -797,13 +797,11 @@ function sfGetCommaList($array, $space=true) {
 
 /* 配列の要素をCSVフォーマットで出力する。*/
 function sfGetCSVList($array) {
-	sfprintr($array);
 	if (count($array) > 0) {
 		foreach($array as $key => $val) {
-			$line = ereg_replace("\n", "\\n", $line);
+			mb_convert_encoding($val, 'EUC-JP', "EUC-JP");
 			$line .= "\"".$val."\",";
 		}
-		$line = ereg_replace("\\n", "\n", $line);
 		$line = ereg_replace(",$", "\n", $line);
 	}else{
 		return false;
