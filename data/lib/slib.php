@@ -800,6 +800,7 @@ function sfGetCSVList($array) {
 	sfprintr($array);
 	if (count($array) > 0) {
 		foreach($array as $key => $val) {
+			$line = ereg_replace("\n", ",$", $line);
 			$line .= "\"".$val."\",";
 		}
 		$line = ereg_replace(",$", "\n", $line);
