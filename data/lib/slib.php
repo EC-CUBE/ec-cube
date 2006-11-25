@@ -803,6 +803,7 @@ function sfGetCSVList($array) {
 			$line = ereg_replace("\n", "\\n", $line);
 			$line .= "\"".$val."\",";
 		}
+		$line = ereg_replace("\\n", "\n", $line);
 		$line = ereg_replace(",$", "\n", $line);
 	}else{
 		return false;
