@@ -176,6 +176,10 @@ function lfCreateBkupData($bkup_name){
 				// カラムをCSV形式に整える
 				$arrKyes = sfGetCommaList(array_keys($arrData[0]), false);
 				
+				if ($val == "dtb_pagelayout"){
+					sfprintr($arrData);
+				}
+				
 				// データをCSV形式に整える
 				$data = "";
 				foreach($arrData as $data_key => $data_val){
