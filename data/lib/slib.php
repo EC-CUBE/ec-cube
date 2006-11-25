@@ -801,7 +801,7 @@ function sfGetCSVList($array) {
 		foreach($array as $key => $val) {
 			$line .= "\"".$val."\",";
 		}
-		$line = ereg_replace(",$", "\n", $line);
+		//$line = ereg_replace(",$", "\n", $line);
 		return $line;
 	}else{
 		return false;

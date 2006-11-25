@@ -177,7 +177,7 @@ function lfCreateBkupData($bkup_name){
 				$arrKyes = sfGetCommaList(array_keys($arrData[0]), false);
 				
 				if ($val == "dtb_order"){
-					sfprintr(sfGetCSVList($arrData[0]["conveni_data"]));
+					sfprintr(sfGetCSVList($arrData[0]));
 					exit();
 				}
 				
