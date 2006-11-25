@@ -89,14 +89,15 @@ case 'delete':
 	
 // ダウンロード
 case 'download' :
-	$file = $objPage->bkup_dir."test.tar.gz";
+	$filename = "test.tar.gz";
+	$file = $objPage->bkup_dir.$filename;
 	
 	// ダウンロード 
 	//mb_http_output("pass"); 
 	
-	header("Content-Disposition: attachment;filename=" .$file. "\""); 
-	header("Content-Length: " .filesize($file .".gz")); 
-	header("Content-Type: application/octet-stream; name=" .$file. "\""); 
+	header("Content-Disposition: attachment;filename=" .$filename. "\""); 
+	header("Content-Length: " .filesize($file)); 
+	header("Content-Type: application/octet-stream; name=" .$filename. "\""); 
 	readfile ($file);
 	exit();
 
