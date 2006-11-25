@@ -797,6 +797,7 @@ function sfGetCommaList($array, $space=true) {
 
 /* 配列の要素をCSVフォーマットで出力する。*/
 function sfGetCSVList($array) {
+	sfprintr($array);
 	if (count($array) > 0) {
 		foreach($array as $key => $val) {
 			$line .= "\"".$val."\",";
@@ -805,8 +806,7 @@ function sfGetCSVList($array) {
 	}else{
 		return false;
 	}
-		return $line;
-
+	return $line;
 }
 
 /* 配列の要素をPDFフォーマットで出力する。*/
