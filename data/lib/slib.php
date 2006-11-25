@@ -802,10 +802,11 @@ function sfGetCSVList($array) {
 			$line .= "\"".$val."\",";
 		}
 		$line = ereg_replace(",$", "\n", $line);
-		return $line;
 	}else{
 		return false;
 	}
+		return $line;
+
 }
 
 /* 配列の要素をPDFフォーマットで出力する。*/
