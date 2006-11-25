@@ -79,7 +79,6 @@ case 'delete':
 	// ファイルの削除
 	if(is_file($del_file)){
 		$ret = unlink($del_file);
-		sfprintr($ret);
 	}
 
 	// DBから削除
