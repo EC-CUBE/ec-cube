@@ -98,6 +98,7 @@ case 'download' :
 	header("Content-Length: " .filesize($file .".gz")); 
 	header("Content-Type: application/octet-stream; name=" .$file. "\""); 
 	readfile ($file);
+	exit();
 	
 	
 	break;
