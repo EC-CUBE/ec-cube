@@ -92,9 +92,9 @@ case 'download' :
 	$filename = $_POST['list_name'] . ".tar.gz";
 	$dl_file = $objPage->bkup_dir.$_POST['list_name'];
 	
-	header("Content-Disposition: attachment;filename=" .$_POST['list_name']. "\""); 
+	header("Content-Disposition: attachment;filename=" .$filename. "\""); 
 	header("Content-Length: " .filesize($dl_file)); 
-	header("Content-Type: application/octet-stream; name=" .$filename. "\""); 
+	header("Content-Type: application/octet-stream; name=" . $_POST['list_name']. "\""); 
 	readfile ($dl_file);
 	exit();
 
