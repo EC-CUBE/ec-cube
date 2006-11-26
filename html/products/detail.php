@@ -137,7 +137,7 @@ $objQuery = new SC_Query();
 // DBから商品情報を取得する。
 $arrRet = $objQuery->select("*", "vw_products_allclass_detail AS alldtl", "product_id = ?", array($tmp_id));
 $objPage->arrProduct = $arrRet[0];
-/*
+
 // 商品コードの取得
 $code_sql = "SELECT product_code FROM dtb_products_class AS prdcls WHERE prdcls.product_id = 1 GROUP BY product_code ORDER BY product_code";
 $arrProcuctCode = $objQuery->getall($code_sql);
@@ -146,10 +146,10 @@ $arrProcuctCode = sfswaparray($arrProcuctCode);
 (count($arrProcuctCode) > 1) ? $ProcuctCode = $arrProcuctCode[0] . "~" . $arrProcuctCode[count($arrProcuctCode) - 1] : $ProcuctCode = $arrProcuctCode[0];
 
 $objPage->ProcuctCode = $ProcuctCode;
-*/
-//sfprintr($arrProcuctCode);
 
-//sfprintr($ProcuctCode);
+sfprintr($arrProcuctCode);
+
+sfprintr($ProcuctCode);
 
 // 購入制限数を取得
 if($objPage->arrProduct['sale_unlimited'] == 1 || $objPage->arrProduct['sale_limit'] > SALE_LIMIT_MAX) {
