@@ -141,7 +141,8 @@ $objPage->arrProduct = $arrRet[0];
 // 商品コードの取得
 $code_sql = "SELECT product_code FROM dtb_products_class AS prdcls WHERE prdcls.product_id = 1 GROUP BY product_code ORDER BY product_code";
 $arrProcuctCode = $objQuery->getall($code_sql);
-$arrProcuctCode = sfswaparray($arrProcuctCode["product_code"]);
+$arrProcuctCode = sfswaparray($arrProcuctCode);
+$arrProcuctCode = $arrProcuctCode["product_code"];
 
 (count($arrProcuctCode) > 1) ? $ProcuctCode = $arrProcuctCode[0] . "~" . $arrProcuctCode[count($arrProcuctCode) - 1] : $ProcuctCode = $arrProcuctCode[0];
 
