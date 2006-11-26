@@ -187,9 +187,7 @@ function sfDirChildExists($dir) {
 				// 行末の/を取り除く
 				$dir = ereg_replace("/$", "", $dir);
 				$path = $dir."/".$file;
-				
-if($file == 'bbb') echo $file;
-		        if ($file != '..' && $file != '.' && is_dir($file)) { 
+				if ($file != '..' && $file != '.' && is_dir($path)) { 
 					return true;
 		        } 
 		    } 
