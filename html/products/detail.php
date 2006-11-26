@@ -140,11 +140,11 @@ $objPage->arrProduct = $arrRet[0];
 
 // 商品コードの取得
 $code_sql = "SELECT product_code FROM dtb_products_class AS prdcls WHERE prdcls.product_id = 1 GROUP BY product_code ORDER BY product_code";
-$arrProcuctCode = $objQuery->getall($code_sql);
-$arrProcuctCode = sfswaparray($arrProcuctCode);
-$objPage->arrProcuctCode = $arrProcuctCode["product_code"];
+$arrProductCode = $objQuery->getall($code_sql);
+$arrProductCode = sfswaparray($arrProductCode);
+$objPage->arrProductCode = $arrProductCode["product_code"];
 
-sfprintr($objPage->arrProcuctCode);
+sfprintr($objPage->arrProductCode);
 
 // 2件以上あれば、~ を用いて、最初と最後だけ表示
 $product_code = "";
