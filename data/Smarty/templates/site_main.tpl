@@ -77,7 +77,7 @@
 					<!--{/if}-->
 					<!--▲メイン上部-->
 					
-					<tr><td><!--{include file=$tpl_mainpage}--></td></tr>
+					<tr><td align="center"><!--{include file=$tpl_mainpage}--></td></tr>
 					
 					<!--▼メイン下部-->
 					<tr><td align="center">

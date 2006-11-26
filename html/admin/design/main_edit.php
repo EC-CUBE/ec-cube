@@ -120,6 +120,7 @@ if ($_POST['mode'] == 'preview') {
 			$sql .= "     bloc_row";
 			$sql .= "     )values(?, ?, ?, ?)";
 			
+			// 取得件数文INSERT実行
 			foreach($ret as $key => $val){
 				$ret = $objDBConn->query($sql,$val);
 			}
