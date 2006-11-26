@@ -33,7 +33,7 @@ arrTree = new Array();
 	<tr>
 		<td>
 		¢£¥Ä¥ê¡¼
-		<div id="tree"></div><br/>
+		<div id="tree"></div>
 		</td>
 	</tr>
 	<tr>
