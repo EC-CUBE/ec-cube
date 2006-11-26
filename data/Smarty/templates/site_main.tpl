@@ -36,7 +36,6 @@
 				<!--{if $arrPageLayout.LeftNavi|count > 0}-->
 			        <td align="left">
 			        <table border="0" cellspacing="0" cellpadding="0" summary=" ">
-			        	
 			        	<!--{foreach key=LeftNaviKey item=LeftNaviItem from=$arrPageLayout.LeftNavi}-->
 			        	<tr><td height=3><td></tr>
 				        <tr><td align="center">
