@@ -1,6 +1,5 @@
 #tree{
 	height: 500px;
 	width: 400px;
-	overflow: auto;
-	overflow-x: auto;
+	overflow: scroll;
 }
