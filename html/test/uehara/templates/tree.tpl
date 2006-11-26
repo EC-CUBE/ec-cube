@@ -31,11 +31,11 @@ arrTree = new Array();
 
 <table>
 	<tr>
-		<td>
+		<td valign="top">
 		■ツリー
 		<div id="tree"></div>
 		</td>
-		<td>
+		<td valign="top">
 		■ファイル
 		<form name="form1" method="post" action="<!--{$smarty.server.PHP_SELF|escape}-->"  enctype="multipart/form-data">
 			<input type="text" id="test1" name="test1" value="" onclick="test('test1')" size="300">

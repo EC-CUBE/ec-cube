@@ -3,3 +3,9 @@
 	width: 400px;
 	overflow: scroll;
 }
+
+#file_view{
+	height: 500px;
+	width: 400px;
+	overflow: auto;
+}
