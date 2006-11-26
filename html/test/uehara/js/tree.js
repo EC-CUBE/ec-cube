@@ -162,5 +162,5 @@ function fnGetMyBrowser() {
 
 // imgタグの画像変更
 function fnChgImg(fileName,imgName){
-	document.images[imgName].src = fileName;
+	document.tree_form.imgName.src = fileName;
 }
