@@ -62,7 +62,7 @@ function fnTreeView(view_id, arrTree) {
 		} else {
 			display = 'none';
 		}
-		tree += '<button onclick="fnTreeMenu(\'tree'+ i +'\',\''+ arrTree[i][1] +'\',\'tree_img'+ i +'\',\''+ arrTree[i][2] +'\')"><img src="'+ defalt_img +'" border="0" name="tree_img'+ i +'">'+ arrTree[i][2] +'</button><br/>';
+		tree += '<input type="image" src="'+ defalt_img +'" border="0" id="tree_img'+ i +'" onclick="fnTreeMenu(\'tree'+ i +'\',\''+ arrTree[i][1] +'\',\'tree_img'+ i +'\',\''+ arrTree[i][2] +'\')">'+ arrTree[i][2] +'<br/>';
 		tree += '<div id="tree'+ i +'" style="display:'+ display +'">';
 	
 	}
@@ -162,7 +162,7 @@ function fnGetMyBrowser() {
 
 // imgタグの画像変更
 function fnChgImg(fileName,imgName){
-	document.images[imgName].src  = fileName;
+	document.getElementById(imgName).src = fileName;
 }
 
 //test
