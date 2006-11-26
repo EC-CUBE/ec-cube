@@ -22,7 +22,7 @@ arrTree = new Array();
 //-->
 </script>
 </head>
-<body onload="fnTreeView('tree', arrTree);<!--{$tpl_onload}-->">
+<body onload="fnTreeView('tree', arrTree);document.form1.view.focus();<!--{$tpl_onload}-->">
 
 ■エラー
 <!--{foreach key=key item=item from=$arrErr}-->
@@ -44,7 +44,7 @@ arrTree = new Array();
 	<option value="<!--{$arrFileList[cnt].file_path|escape}-->" <!--{if $arrFileList[cnt].file_path eq $arrParam.select_file}-->selected<!--{/if}-->><!--{$arrFileList[cnt].file_name|escape}-->　<!--{$arrFileList[cnt].file_size|escape}-->　<!--{$arrFileList[cnt].file_time|escape}--></option>
 	<!--{/section}-->
 	</select><br/>
-	<input type="button" onclick="setTreeStatus('tree_status');fnModeSubmit('view','',''); return false;" value="表示">
+	<input type="button" name="view" onclick="setTreeStatus('tree_status');fnModeSubmit('view','',''); return false;" value="表示">
 	<input type="button" onclick="setTreeStatus('tree_status');fnModeSubmit('download','',''); return false;" value="ダウンロード">
 	<input type="button" onclick="setTreeStatus('tree_status');fnModeSubmit('delete','',''); return false;" value="削除">
 	<br/>
