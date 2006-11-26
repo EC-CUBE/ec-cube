@@ -129,7 +129,7 @@ if ($_POST['mode'] == 'preview') {
 	
 	$_SESSION['preview'] = "ON";
 	
-	//header("location: " . URL_DIR . "preview/index.php");
+	header("location: " . URL_DIR . "preview/index.php");
 }
 
 // データ登録処理
