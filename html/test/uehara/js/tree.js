@@ -10,7 +10,7 @@ var arrTreeStatus = new Array();
 // ツリー表示
 function fnTreeView(view_id, arrTree) {
 
-	tree += '<form name="tree_form">';
+	tree += '<form name="tree_form" />';
 	for(i = 0; i < arrTree.length; i++) {
 		
 		id = arrTree[i][0];
