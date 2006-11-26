@@ -81,7 +81,7 @@
 					
 					<!--▼メイン下部-->
 					<tr><td align="center">
-					<!--{if $arrPageLayout.MainFoot|count > 0}-->
+					<!--{if $arrPageLayout.MainFoot|@count > 0}-->
 			        <table border="0" cellspacing="0" cellpadding="0" summary=" ">
 				        <!--{foreach key=MainFootKey item=MainFootItem from=$arrPageLayout.MainFoot}-->
 					        <tr><td height=3><td></tr>
@@ -104,7 +104,7 @@
 				</td>
 
 				<!--▼右ナビ-->
-				<!--{if $arrPageLayout.RightNavi|count > 0}-->
+				<!--{if $arrPageLayout.RightNavi|@count > 0}-->
 					<td bgcolor="#ffffff" width="5"><img src="<!--{$smarty.const.URL_DIR}-->img/_.gif" width="5" height="1" alt="" /></td>
 					<td align="right" bgcolor="#ffffff">
 				        <table border="0" cellspacing="0" cellpadding="0" summary=" ">
