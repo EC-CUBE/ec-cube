@@ -6,7 +6,7 @@
  */
 *}-->
 <!--★★メインコンテンツ★★-->
-<!--{assign var="test" value="$smarty.const.URL_DIR index.php"}-->
+<!--{assign var="test" value="$smarty.const.URL_DIRです"}-->
 <!--{$test}-->
 <table width="878" border="0" cellspacing="0" cellpadding="0" summary=" ">
 	<tr valign="top">
