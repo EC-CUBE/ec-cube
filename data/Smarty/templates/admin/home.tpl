@@ -6,7 +6,7 @@
  */
 *}-->
 <!--★★メインコンテンツ★★-->
-<!--{assign var="test" value=$smarty.const.URL_DIR"です"}-->
+<!--{assign var=test value=$smarty.const.URL_DIR"です"}-->
 <!--{$test}-->
 <table width="878" border="0" cellspacing="0" cellpadding="0" summary=" ">
 	<tr valign="top">
