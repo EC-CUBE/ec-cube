@@ -144,13 +144,11 @@ $arrProcuctCode = $objQuery->getall($code_sql);
 $arrProcuctCode = sfswaparray($arrProcuctCode);
 $arrProcuctCode = $arrProcuctCode["product_code"];
 
-(count($arrProcuctCode) > 1) ? $ProcuctCode = $arrProcuctCode[0] . "~" . $arrProcuctCode[count($arrProcuctCode) - 1] : $ProcuctCode = $arrProcuctCode[0];
+// 2件以上あれば、~ を用いて、最初と最後だけ表示
+$product_code = "";
+(count($arrProcuctCode) > 1) ? $product_code = $arrProcuctCode[0] . "~" . $arrProcuctCode[count($arrProcuctCode) - 1] : $product_code = $arrProcuctCode[0];
 
-$objPage->ProcuctCode = $ProcuctCode;
-
-sfprintr($arrProcuctCode);
-
-sfprintr($ProcuctCode);
+$objPage->product_code = $product_code;
 
 // 購入制限数を取得
 if($objPage->arrProduct['sale_unlimited'] == 1 || $objPage->arrProduct['sale_limit'] > SALE_LIMIT_MAX) {
