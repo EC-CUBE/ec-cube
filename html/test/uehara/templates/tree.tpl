@@ -54,58 +54,6 @@ arrTree = new Array();
 	<input type="file" name="upload_file"><input type="button" onclick="setTreeStatus('tree_status');fnFormModeSubmit('form1', 'upload','',''); return false;" value="アップロード"><br/>
 	<input type="text" name="create_file" value=""><input type="button" onclick="setTreeStatus('tree_status');fnFormModeSubmit('form1', 'create','',''); return false;" value="作成">
 </form>
-
-
-
-
-<!--★★メインコンテンツ★★-->
-<table width="878" border="0" cellspacing="0" cellpadding="0" summary=" ">
-<form name="form1" id="form1" method="post" action="<!--{$smarty.server.PHP_SELF|escape}-->">
-<input type="hidden" name="mode" value="">
-<input type="hidden" name="news_id" value="<!--{$news_id|escape}-->">
-<input type="hidden" name="term" value="">
-
-	<tr valign="top">
-		<td background="<!--{$smarty.const.URL_DIR}-->img/contents/navi_bg.gif" height="402">
-			<!--▼SUB NAVI-->
-			<!--{include file=$tpl_subnavi}-->
-			<!--▲SUB NAVI-->
-		</td>
-		<td class="mainbg">
-			<!--▼登録テーブルここから-->
-			<table width="737" border="0" cellspacing="0" cellpadding="0" summary=" ">
-				<!--メインエリア-->
-				<tr>
-					<td align="center">
-						<table width="706" border="0" cellspacing="0" cellpadding="0" summary=" ">
-						
-							<tr><td height="14"></td></tr>
-							<tr>
-								<td colspan="3"><img src="<!--{$smarty.const.URL_DIR}-->img/contents/main_top.jpg" width="706" height="14" alt=""></td>
-							</tr>
-							<tr>
-								<td background="<!--{$smarty.const.URL_DIR}-->img/contents/main_left.jpg"><img src="<!--{$smarty.const.URL_DIR}-->img/common/_.gif" width="14" height="1" alt=""></td>
-								<td bgcolor="#cccccc">
-		
-								</td>
-								<td background="<!--{$smarty.const.URL_DIR}-->img/contents/main_right.jpg"><img src="<!--{$smarty.const.URL_DIR}-->img/common/_.gif" width="14" height="1" alt=""></td>
-							</tr>
-							<tr>
-								<td colspan="3"><img src="<!--{$smarty.const.URL_DIR}-->img/contents/main_bottom.jpg" width="706" height="14" alt=""></td>
-							</tr>
-							<tr><td height="30"></td></tr>
-						</table>
-					</td>
-				</tr>
-				<!--メインエリア-->
-			</table>
-			<!--▲登録テーブルここまで-->
-		</td>
-	</tr>
-</table>
-
-
-
 </body>
 </html>
 
