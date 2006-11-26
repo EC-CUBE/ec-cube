@@ -128,11 +128,14 @@ function sfGetFileTree($dir, $tree_status) {
 	} else {
 		$file_type = "_child";	
 	}
-	$arrTree[$cnt] = array($cnt, $file_type, $dir, 0);
+	$arrTree[$cnt]['path'] = $dir;
+	$arrTree[$cnt]['rank'] = 0;
+	$arrTree[$cnt]['count'] = $cnt;
+	$arrTree[$cnt]['open'] = lfIsFileOpen($path, $tree_status);
 	$cnt++;	
-sfprintr($arrTree);
+
 	sfGetFileTreeSub($dir, $default_rank, $cnt, $arrTree, $tree_status);
-sfprintr($arrTree);
+
 	return $arrTree;
 }
 
