@@ -62,15 +62,13 @@ function fnTreeView(view_id, arrTree) {
 		} else {
 			display = 'none';
 		}
-		//tree += '<input type="button" name="tree_img'+ i +'" onclick="fnTreeMenu(\'tree'+ i +'\',\''+ arrTree[i][1] +'\',\'tree_img'+ i +'\',\''+ arrTree[i][2] +'\')">'+ arrTree[i][2] +'<br/>';
-		
-		tree += '<input type="image" src="'+ defalt_img +'" border="0" id="tree_img'+ i +'" name="tree_img'+ i +'" onclick="fnTreeMenu(\'tree'+ i +'\',\''+ arrTree[i][1] +'\',\'tree_img'+ i +'\',\''+ arrTree[i][2] +'\')">'+ arrTree[i][2] +'<br/>';
+		tree += '<button onclick="fnTreeMenu(\'tree'+ i +'\',\''+ arrTree[i][1] +'\',\'tree_img'+ i +'\',\''+ arrTree[i][2] +'\')"><img src="'+ defalt_img +'" border="0" name="tree_img'+ i +'">'+ arrTree[i][2] +'</button><br/>';
 		tree += '<div id="tree'+ i +'" style="display:'+ display +'">';
 	
 	}
 	tree += '</form>';
 	fnDrow(view_id, tree);
-	document.tree_form.tree_img1.focus();	
+	//document.tree_form.tree_img10.focus();	
 }
 
 // Tree状態をhiddenにセット
@@ -164,7 +162,7 @@ function fnGetMyBrowser() {
 
 // imgタグの画像変更
 function fnChgImg(fileName,imgName){
-	document.getElementById(imgName).src = fileName;
+	document.images[imgName].src  = fileName;
 }
 
 //test
