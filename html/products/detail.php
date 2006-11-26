@@ -146,8 +146,6 @@ $arrProductCode = $objQuery->getall($code_sql, array($tmp_id));
 $arrProductCode = sfswaparray($arrProductCode);
 $objPage->arrProductCode = $arrProductCode["product_code"];
 
-sfprintr($objPage->arrProductCode);
-
 // 購入制限数を取得
 if($objPage->arrProduct['sale_unlimited'] == 1 || $objPage->arrProduct['sale_limit'] > SALE_LIMIT_MAX) {
   $objPage->tpl_sale_limit = SALE_LIMIT_MAX;
