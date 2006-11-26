@@ -147,6 +147,7 @@ $arrProcuctCode = sfswaparray($arrProcuctCode);
 
 $objPage->ProcuctCode = $ProcuctCode;
 
+sfprintr($ProcuctCode);
 
 // 購入制限数を取得
 if($objPage->arrProduct['sale_unlimited'] == 1 || $objPage->arrProduct['sale_limit'] > SALE_LIMIT_MAX) {
