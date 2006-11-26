@@ -6,7 +6,7 @@
  */
 *}-->
 <!--¡ú¡ú¥á¥¤¥ó¥³¥ó¥Æ¥ó¥Ä¡ú¡ú-->
-<!--{assign var=test value=$smarty.const.URL_DIR -}-->
+<!--{assign var=test value=$smarty.const.URL_DIR +}-->
 <!--{$test}-->
 
 
