@@ -44,7 +44,7 @@ arrTree = new Array();
 		</td>
 		<td valign="top">
 		■ファイル
-		<div id="file_view">
+		<div>
 			<select name=select_file size="5" id="file_view">
 			<!--{section name=cnt loop=$arrFileList}-->
 			<option value="<!--{$arrFileList[cnt].file_path|escape}-->" <!--{if $arrFileList[cnt].file_path eq $arrParam.select_file}-->selected<!--{/if}-->><!--{$arrFileList[cnt].file_name|escape}-->　<!--{$arrFileList[cnt].file_size|escape}-->　<!--{$arrFileList[cnt].file_time|escape}--></option>
