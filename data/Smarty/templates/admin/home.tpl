@@ -6,7 +6,7 @@
  */
 *}-->
 <!--¡ú¡ú¥á¥¤¥ó¥³¥ó¥Æ¥ó¥Ä¡ú¡ú-->
-<!--{$smarty.const.URL_DIR + `aaa`}-->
+<!--{$smarty.const.URL_DIR + `index.php`}-->
 <table width="878" border="0" cellspacing="0" cellpadding="0" summary=" ">
 	<tr valign="top">
 		<td class="mainbg">
