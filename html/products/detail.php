@@ -139,18 +139,12 @@ $arrRet = $objQuery->select("*", "vw_products_allclass_detail AS alldtl", "produ
 $objPage->arrProduct = $arrRet[0];
 
 // 商品コードの取得
-$code_sql = "SELECT product_code FROM dtb_products_class AS prdcls WHERE prdcls.product_id = 1 GROUP BY product_code ORDER BY product_code";
-$arrProductCode = $objQuery->getall($code_sql);
+$code_sql = "SELECT product_code FROM dtb_products_class AS prdcls WHERE prdcls.product_id = ? GROUP BY product_code ORDER BY product_code";
+$arrProductCode = $objQuery->getall($code_sql, array($tmp_id));
 $arrProductCode = sfswaparray($arrProductCode);
 $objPage->arrProductCode = $arrProductCode["product_code"];
 
 sfprintr($objPage->arrProductCode);
-
-// 2件以上あれば、~ を用いて、最初と最後だけ表示
-$product_code = "";
-(count($arrProcuctCode) > 1) ? $product_code = $arrProcuctCode[0] . "~" . $arrProcuctCode[count($arrProcuctCode) - 1] : $product_code = $arrProcuctCode[0];
-
-$objPage->product_code = $product_code;
 
 // 購入制限数を取得
 if($objPage->arrProduct['sale_unlimited'] == 1 || $objPage->arrProduct['sale_limit'] > SALE_LIMIT_MAX) {
