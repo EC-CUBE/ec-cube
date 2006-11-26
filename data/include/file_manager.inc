@@ -181,13 +181,14 @@ function sfGetFileTreeSub($dir, $default_rank, &$cnt, &$arrTree, $tree_status) {
  */
 function sfDirChildExists($dir) {
 	if(file_exists($dir)) {
-		// ディレクトリの場合下層ファイルの総量を取得
 		if (is_dir($dir)) {
 		    $handle = opendir($dir); 
 		    while ($file = readdir($handle)) {
 				// 行末の/を取り除く
 				$dir = ereg_replace("/$", "", $dir);
 				$path = $dir."/".$file;
+				
+if($file == 'bbb') echo $file;
 		        if ($file != '..' && $file != '.' && is_dir($file)) { 
 					return true;
 		        } 
