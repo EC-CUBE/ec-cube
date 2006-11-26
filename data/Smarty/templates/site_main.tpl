@@ -55,9 +55,10 @@
 			
 				<td align="center" width=100%>
 			        <table border="0" cellspacing="0" cellpadding="0" summary=" ">
+			        
 					<!--▼メイン上部-->
-					<tr><td align="center">
 					<!--{if $arrPageLayout.MainHead|count > 0}-->
+					<tr><td align="center">
 				        <table border="0" cellspacing="0" cellpadding="0" summary=" ">
 				        <!--{foreach key=MainHeadKey item=MainHeadItem from=$arrPageLayout.MainHead}-->
 					        <tr><td height=3><td></tr>
@@ -72,8 +73,8 @@
 					        </td></tr>
 						<!--{/foreach}-->
 						</table>
-					<!--{/if}-->
 					</td><tr>
+					<!--{/if}-->
 					<!--▲メイン上部-->
 					
 					<tr><td><!--{include file=$tpl_mainpage}--></td></tr>
