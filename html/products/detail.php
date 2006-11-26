@@ -85,8 +85,10 @@ if($objCustomer->isLoginSuccess()) {
 		lfRegistReadingData($tmp_id, $objCustomer->getValue('customer_id'));
 	} else {
 		//閲覧履歴の中で一番古いものを削除して新規追加
-		$where = "customer_id = ? AND update_date = (SELECT MIN(update_date) FROM ".$table." WHERE customer_id = ? ) ";
-		$arrval = array($objCustomer->getValue("customer_id"), $objCustomer->getValue("customer_id"));
+		$oldsql = "SELECT MIN(update_date) FROM ".$table." WHERE customer_id = ?";
+		$old = $objQuery->getone($oldsql, array($objCustomer->getValue("customer_id")));
+		$where = "customer_id = ? AND update_date = ? ";
+		$arrval = array($objCustomer->getValue("customer_id"), $old);
 		//削除
 		$objQuery->delete($table, $where, $arrval);
 		//追加

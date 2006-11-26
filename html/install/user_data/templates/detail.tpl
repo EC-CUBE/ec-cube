@@ -114,7 +114,7 @@ function lnSetSelect(form, name1, name2, val) {
 									<span class="fs12">商品コード</span><span class="fs10"></span></span><span class="redst"><span class="fs12">：
 									<!--{assign var=codecnt value=$arrProductCode|@count}-->
 									<!--{assign var=codemax value=`$codecnt-1`}-->
-									<!--{if $codecnt > 0}-->
+									<!--{if $codecnt > 1}-->
 										<!--{$arrProductCode.0}-->~<!--{$arrProductCode[$codemax]}-->
 									<!--{else}-->
 										<!--{$arrProductCode.0}-->
