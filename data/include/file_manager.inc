@@ -121,7 +121,16 @@ function sfGetFileTree($dir, $tree_status) {
 	$cnt = 0;
 	$arrTree = array();
 	$default_rank = count(split('/', $dir));
-	
+
+	// ∫«æÂ∞Ã¡ÿ§Ú≥ «º(user_data/)
+	if(sfDirChildExists($dir)) {
+		$file_type = "_parent";
+	} else {
+		$file_type = "_child";	
+	}
+	$arrTree[$cnt] = array($cnt, $file_type, $dir, 0);
+	$cnt++;	
+		
 	sfGetFileTreeSub($dir, $default_rank, $cnt, $arrTree, $tree_status);
 	
 	return $arrTree;
