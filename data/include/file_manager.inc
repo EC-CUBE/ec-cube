@@ -133,7 +133,12 @@ function sfGetFileTree($dir, $tree_status) {
 	$arrTree[$cnt]['path'] = $dir;
 	$arrTree[$cnt]['rank'] = 0;
 	$arrTree[$cnt]['count'] = $cnt;
-	$arrTree[$cnt]['open'] = lfIsFileOpen($dir, $tree_status);
+	// 初期表示はオープン
+	if($_POST['mode'] != '') {
+		$arrTree[$cnt]['open'] = lfIsFileOpen($dir, $tree_status);
+	} else {
+		$arrTree[$cnt]['open'] = true;
+	}
 	$cnt++;	
 
 	sfGetFileTreeSub($dir, $default_rank, $cnt, $arrTree, $tree_status);
