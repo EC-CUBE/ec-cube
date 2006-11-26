@@ -103,14 +103,14 @@ if ($_POST['mode'] == 'preview') {
 	// blocposition を削除
 	$objDBConn = new SC_DbConn;		// DB操作オブジェクト
 	$sql = 'delete from dtb_blocposition where page_id = 0';
-	
-	sfprintr($page_id_old);
 	$ret = $objDBConn->query($sql);
 	
 	if ($page_id_old != "") {
 		// 登録データを取得
 		$sql = "SELECT 0, target_id, bloc_id, bloc_row FROM dtb_blocposition WHERE page_id = ?";
 		$ret = $objDBConn->getAll($sql,array($page_id_old));
+		
+		sfprintr($ret);
 		
 		if (count($ret) > 0) {
 			// blocposition を複製
