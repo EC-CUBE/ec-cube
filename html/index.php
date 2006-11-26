@@ -22,9 +22,6 @@ $conn = new SC_DBConn();
 // レイアウトデザインを取得
 $objPage = sfGetPageLayout($objPage, false, "index.php");
 
-sfprintr(URL_DIR . "index.php");
-sfprintr($_SERVER);
-
 $objView = new SC_SiteView();
 $objView->assignobj($objPage);
 $objView->display(SITE_FRAME);
