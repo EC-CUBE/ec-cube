@@ -64,7 +64,7 @@ function fnTreeView(view_id, arrTree) {
 		}
 		tree += '<input type="button" name="tree_img'+ i +'" onclick="fnTreeMenu(\'tree'+ i +'\',\''+ arrTree[i][1] +'\',\'tree_img'+ i +'\',\''+ arrTree[i][2] +'\')">'+ arrTree[i][2] +'<br/>';
 		
-		tree += '<input type="image" src="'+ defalt_img +'" border="0" id="tree_img'+ i +'" name="tree_img'+ i +'" onclick="fnTreeMenu(\'tree'+ i +'\',\''+ arrTree[i][1] +'\',\'tree_img'+ i +'\',\''+ arrTree[i][2] +'\')">'+ arrTree[i][2] +'<br/>';
+		//tree += '<input type="image" src="'+ defalt_img +'" border="0" id="tree_img'+ i +'" name="tree_img'+ i +'" onclick="fnTreeMenu(\'tree'+ i +'\',\''+ arrTree[i][1] +'\',\'tree_img'+ i +'\',\''+ arrTree[i][2] +'\')">'+ arrTree[i][2] +'<br/>';
 		tree += '<div id="tree'+ i +'" style="display:'+ display +'">';
 	
 	}
