@@ -5,6 +5,7 @@
 <meta http-equiv="Content-Type" content="text/html; charset=<!--{$smarty.const.CHAR_CODE}-->">
 <meta http-equiv="content-script-type" content="text/javascript">
 <meta http-equiv="content-style-type" content="text/css">
+<link rel="stylesheet" href="/html/test/uehara/css/tree.css" type="text/css" media="all" />
 <script type="text/javascript" src="/html/js/site.js"></script>
 <script type="text/javascript" src="/html/js/win_op.js"></script>
 <script type="text/javascript" src="/html/test/uehara/js/tree.js"></script>
