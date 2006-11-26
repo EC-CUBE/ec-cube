@@ -57,7 +57,7 @@
 			        <table border="0" cellspacing="0" cellpadding="0" summary=" ">
 			        
 					<!--▼メイン上部-->
-					<!--{if $arrPageLayout.MainHead|count > 0}-->
+					<!--{if $arrPageLayout.MainHead|@count > 0}-->
 					<tr><td align="center">
 				        <table border="0" cellspacing="0" cellpadding="0" summary=" ">
 				        <!--{foreach key=MainHeadKey item=MainHeadItem from=$arrPageLayout.MainHead}-->
