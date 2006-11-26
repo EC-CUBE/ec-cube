@@ -5,7 +5,7 @@
 }
 
 #file_view{
-	/*height: 50%;*/
+	height: 480px;
 	width: 400px;
 	overflow: scroll;
 }
