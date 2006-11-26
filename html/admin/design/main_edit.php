@@ -92,7 +92,7 @@ if ($_POST['mode'] == 'preview') {
 	if (file_exists($del_tpl)){
 		unlink($del_tpl);	
 	}
-	
+
 	// DBへデータを更新する
 	lfEntryPageData($_POST);
 
@@ -103,6 +103,8 @@ if ($_POST['mode'] == 'preview') {
 	// blocposition を削除
 	$objDBConn = new SC_DbConn;		// DB操作オブジェクト
 	$sql = 'delete from dtb_blocposition where page_id = 0';
+	
+	sfprintr($page_id_old);
 	$ret = $objDBConn->query($sql);
 	
 	if ($page_id_old != "") {
