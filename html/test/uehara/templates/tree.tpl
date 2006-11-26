@@ -12,6 +12,7 @@
 <title>Untitled</title>
 <script language="JavaScript">
 <!--
+<!--{$tpl_javascript}-->
 
 arrTree = new Array();
 <!--{section name=cnt loop=$arrTree}-->
@@ -28,11 +29,7 @@ arrTree = new Array();
 	<!--{$key}-->：<!--{$item}--><br/>
 <!--{/foreach}--><br/><br/>
 
-<script language="JavaScript">
-<!--
-<!--{$tpl_javascript}-->
-//-->
-</script>
+
 <table>
 	<tr>
 		<td valign="top">
@@ -60,7 +57,7 @@ arrTree = new Array();
 		</td>
 	</tr>
 </table>
-■フォルダ作成<br/>
+■フォルダ作成<br />
 
 	<input type="file" name="upload_file"><input type="button" onclick="setTreeStatus('tree_status');fnFormModeSubmit('form1', 'upload','',''); return false;" value="アップロード"><br/>
 	<input type="text" name="create_file" value=""><input type="button" onclick="setTreeStatus('tree_status');fnFormModeSubmit('form1', 'create','',''); return false;" value="作成">
