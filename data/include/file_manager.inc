@@ -122,14 +122,14 @@ function sfGetFileTree($dir, $tree_status) {
 	$arrTree = array();
 	$default_rank = count(split('/', $dir));
 
+	// 文末の/を取り除く
+	$dir = ereg_replace("/$", "", $dir);	
 	// 最上位層を格納(user_data/)
 	if(sfDirChildExists($dir)) {
 		$file_type = "_parent";
 	} else {
 		$file_type = "_child";	
 	}
-	// 文末の/を取り除く
-	$dir = ereg_replace("/$", "", $dir);	
 	$arrTree[$cnt]['path'] = $dir;
 	$arrTree[$cnt]['rank'] = 0;
 	$arrTree[$cnt]['count'] = $cnt;

@@ -37,7 +37,7 @@ function fnTreeView(view_id, arrTree) {
 	
 		// 階層の分だけスペースを入れる
 		for(space_cnt = 0; space_cnt < arrTree[i][3]; space_cnt++) {
-			tree += "&nbsp;";
+			tree += "&nbsp;&nbsp;";
 		}
 		
 		// 初期表示の画像を選択
