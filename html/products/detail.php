@@ -144,6 +144,8 @@ $arrProcuctCode = $objQuery->getall($code_sql);
 $arrProcuctCode = sfswaparray($arrProcuctCode);
 $objPage->arrProcuctCode = $arrProcuctCode["product_code"];
 
+sfprintr($objPage->arrProcuctCode);
+
 // 2件以上あれば、~ を用いて、最初と最後だけ表示
 $product_code = "";
 (count($arrProcuctCode) > 1) ? $product_code = $arrProcuctCode[0] . "~" . $arrProcuctCode[count($arrProcuctCode) - 1] : $product_code = $arrProcuctCode[0];
