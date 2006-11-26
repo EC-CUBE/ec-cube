@@ -33,7 +33,7 @@
 		<table width="100%" border="0" cellspacing="0" cellpadding="0" summary=" ">
 			<tr valign="top">
 				<!--¢§º¸¥Ê¥Ó-->
-				<!--{if $arrPageLayout.LeftNavi|count > 0}-->
+				<!--{if $arrPageLayout.LeftNavi|@count > 0}-->
 			        <td align="left">
 			        <table border="0" cellspacing="0" cellpadding="0" summary=" ">
 			        	<!--{foreach key=LeftNaviKey item=LeftNaviItem from=$arrPageLayout.LeftNavi}-->

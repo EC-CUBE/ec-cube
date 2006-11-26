@@ -358,7 +358,7 @@
 								</select></td>
 							</tr>
 							
-							<!--{if $arrDisp.payment_info|count > 0}-->
+							<!--{if $arrDisp.payment_info|@count > 0}-->
 							<tr class="fs12n">
 								<td bgcolor="#f2f1ec" colspan="6">¢§<!--{$arrDisp.payment_type}-->¾ðÊó</td>
 							</tr>

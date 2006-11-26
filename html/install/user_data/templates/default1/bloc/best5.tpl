@@ -46,7 +46,7 @@
 		<td align="right">
 		
 		<!--{assign var=cnt2 value=`$smarty.section.cnt.iteration*$smarty.section.cnt.step-1` }-->
-		<!--{if $arrBestProducts[$cnt2]|count > 0}-->
+		<!--{if $arrBestProducts[$cnt2]|@count > 0}-->
 			<!--{if $arrBestProducts[$cnt2].main_list_image != ""}--><!--{assign var=image_path value="`$smarty.const.IMAGE_SAVE_URL`/`$arrBestProducts[$cnt2].main_list_image`"}--><!--{else}--><!--{assign var=image_path value="`$smarty.const.NO_IMAGE_URL`"}--><!--{/if}-->
 			<table width="190" border="0" cellspacing="0" cellpadding="0" summary=" ">
 				<tr valign="top">
