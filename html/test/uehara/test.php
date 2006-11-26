@@ -14,6 +14,16 @@ function sfGetFileTree($dir) {
 	$cnt = 0;
 	$arrTree = array();
 	$default_rank = count(split('/', $dir));
+	
+	// 最上位層
+	if(sfDirChildExists($dir)) {
+		$file_type = "_parent";
+	} else {
+		$file_type = "_child";	
+	}
+	$arrTree[$cnt] = array($cnt, $file_type, $dir, 0);
+	$cnt++;
+	
 	sfGetFileTreeSub($dir, $default_rank, $cnt, $arrTree);
 	
 	return $arrTree;
@@ -40,7 +50,7 @@ function sfGetFileTreeSub($dir, $default_rank, &$cnt, &$arrTree) {
 						// 階層を割り出す
 						$arrCnt = split('/', $path);
 						$rank = count($arrCnt);
-						$rank = $rank - $default_rank;
+						$rank = $rank - $default_rank + 1;
 						
 						// javascriptのツリー生成用の配列を作成
 						$arrTree[$cnt] = array($cnt, $file_type, $path, $rank);
