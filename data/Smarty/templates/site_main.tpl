@@ -56,26 +56,7 @@
 				<td align="center" width=100%>
 			        <table border="0" cellspacing="0" cellpadding="0" summary=" ">
 			        
-					<!--▼メイン上部-->
-					<!--{if $arrPageLayout.MainHead|count > 0}-->
-					<tr><td align="center">
-				        <table border="0" cellspacing="0" cellpadding="0" summary=" ">
-				        <!--{foreach key=MainHeadKey item=MainHeadItem from=$arrPageLayout.MainHead}-->
-					        <tr><td height=3><td></tr>
-					        <tr><td align="center">
-					        <!-- ▼<!--{$MainHeadItem.bloc_name}--> ここから-->
-				        	<!--{if $MainHeadItem.php_path != ""}-->
-								<!--{include_php file=$MainHeadItem.php_path}-->
-							<!--{else}-->
-								<!--{include file=$MainHeadItem.tpl_path}-->
-							<!--{/if}-->
-					        <!-- ▲<!--{$MainHeadItem.bloc_name}--> ここまで-->
-					        </td></tr>
-						<!--{/foreach}-->
-						</table>
-					</td><tr>
-					<!--{/if}-->
-					<!--▲メイン上部-->
+
 					
 					<tr><td><!--{include file=$tpl_mainpage}--></td></tr>
 					
