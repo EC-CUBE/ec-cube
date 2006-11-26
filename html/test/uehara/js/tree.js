@@ -65,15 +65,13 @@ function fnTreeView(view_id, arrTree) {
 		arrFileSplit = arrTree[i][2].split("/");
 		file_name = arrFileSplit[arrFileSplit.length-1];
 
-		tree += '<input type="text" name="tree_test'+ i +'">';
-
 		tree += '<input type="image" src="'+ defalt_img +'" border="0" name="tree_img'+ i +'" id="tree_img'+ i +'" onclick="fnTreeMenu(\'tree'+ i +'\',\''+ arrTree[i][1] +'\',\'tree_img'+ i +'\',\''+ arrTree[i][2] +'\')">'+ file_name +'<br/>';
 		tree += '<div id="tree'+ i +'" style="display:'+ display +'">';
 	
 	}
 	tree += '</form>';
 	fnDrow(view_id, tree);
-	document.tree_form.tree_test2.focus();	
+	//document.tree_form.tree_test2.focus();	
 }
 
 // Tree状態をhiddenにセット
