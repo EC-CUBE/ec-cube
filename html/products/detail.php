@@ -147,7 +147,7 @@ $arrProcuctCode = sfswaparray($arrProcuctCode);
 
 $objPage->ProcuctCode = $ProcuctCode;
 
-sfprintr($arrProcuctCode);
+//sfprintr($arrProcuctCode);
 
 sfprintr($ProcuctCode);
 
