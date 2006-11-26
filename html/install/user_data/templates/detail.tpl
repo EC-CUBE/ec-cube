@@ -112,7 +112,11 @@ function lnSetSelect(form, name1, name2, val) {
 								<td><span class="red">
 								<!--°˙æ¶… •≥°º•…°˙-->
 									<span class="fs12">æ¶… •≥°º•…</span><span class="fs10"></span></span><span class="redst"><span class="fs12">°ß
-									<!--{$product_code}--></span></span><br/>
+									<!--{assin var=codecnt value=$arrProductCode|count}-->
+									<!--{if codecnt > 1}-->
+										<!--{$arrProductCode.0}-->è¢∑<!--{$arrProductCode[codecnt]}-->
+									<!--{/if}-->
+									</span></span><br/>
 								<!--°˙≤¡≥ °˙-->
 									<span class="red"><span class="fs12">≤¡≥ </span><span class="fs10">(¿«π˛)</span></span><span class="redst"><span class="fs12">°ß
 									<!--{if $arrProduct.price02_min == $arrProduct.price02_max}-->				
