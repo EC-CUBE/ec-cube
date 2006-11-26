@@ -128,10 +128,12 @@ function sfGetFileTree($dir, $tree_status) {
 	} else {
 		$file_type = "_child";	
 	}
+	// 文末の/を取り除く
+	$dir = ereg_replace("/$", "", $dir);	
 	$arrTree[$cnt]['path'] = $dir;
 	$arrTree[$cnt]['rank'] = 0;
 	$arrTree[$cnt]['count'] = $cnt;
-	$arrTree[$cnt]['open'] = lfIsFileOpen($path, $tree_status);
+	$arrTree[$cnt]['open'] = lfIsFileOpen($dir, $tree_status);
 	$cnt++;	
 
 	sfGetFileTreeSub($dir, $default_rank, $cnt, $arrTree, $tree_status);
