@@ -35,7 +35,7 @@
 				<!--▼左ナビ-->
 				<!--{if $arrPageLayout.LeftNavi|count > 0}-->
 			        <td align="left">
-			        <table border="0" cellspacing="0" cellpadding="0" summary=" ">
+			        <table border="0" cellspacing="0" cellpadding="1" summary=" ">
 			        	<tr><td height=7><td></tr>
 			        	<!--{foreach key=LeftNaviKey item=LeftNaviItem from=$arrPageLayout.LeftNavi}-->
 			        	<tr><td height=3><td></tr>
@@ -56,7 +56,7 @@
 				<!--▲左ナビ-->
 			
 				<td align="center" width=100%>
-			        <table border="0" cellspacing="0" cellpadding="0" summary=" ">
+			        <table border="0" cellspacing="0" cellpadding="1" summary=" ">
 		        	<tr><td height=7><td></tr>
 					<!--▼メイン上部-->
 					<tr><td align="center">
@@ -84,7 +84,7 @@
 					<!--▼メイン下部-->
 					<tr><td align="center">
 					<!--{if $arrPageLayout.MainFoot|count > 0}-->
-			        <table border="0" cellspacing="0" cellpadding="0" summary=" ">
+			        <table border="0" cellspacing="0" cellpadding="1" summary=" ">
 				        <!--{foreach key=MainFootKey item=MainFootItem from=$arrPageLayout.MainFoot}-->
 					        <tr><td height=3><td></tr>
 					        <tr><td align="center">
