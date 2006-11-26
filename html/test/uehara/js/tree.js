@@ -64,7 +64,6 @@ function fnTreeView(view_id, arrTree) {
 		}
 		arrFileSplit = arrTree[i][2].split("/");
 		file_name = arrFileSplit[arrFileSplit.length-1];
-		style="display:'+ display +'";
 		tree += '<div style="display:none">';
 		tree += '<input type="button" name="tree_test"'+ i +'">';
 		tree += '</div>';
