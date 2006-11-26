@@ -1,11 +1,11 @@
 #tree{
 	height: 500px;
 	width: 400px;
-	overflow: scroll;
+	overflow: auto;
 }
 
 #file_view{
 	height: 480px;
 	width: 400px;
-	overflow: scroll;
+	overflow: auto;
 }
