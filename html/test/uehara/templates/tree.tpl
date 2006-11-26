@@ -30,12 +30,6 @@ arrTree = new Array();
 <!--{/foreach}--><br/><br/>
 
 
-<form name="form1" method="post" action="<!--{$smarty.server.PHP_SELF|escape}-->"  enctype="multipart/form-data">
-<input type="text" id="test1" name="test1" value="" onclick="test('test1')" size="300">
-<input type="hidden" name="mode" value="">
-<input type="hidden" name="now_file" value="<!--{$tpl_now_file}-->">
-<input type="hidden" name="tree_select_file" value="">
-<input type="hidden" name="tree_status" value="">
 <table>
 	<tr>
 		<td valign="top">
@@ -43,6 +37,12 @@ arrTree = new Array();
 		<div id="tree"></div>
 		</td>
 		<td valign="top">
+		<form name="form1" method="post" action="<!--{$smarty.server.PHP_SELF|escape}-->"  enctype="multipart/form-data">
+		<input type="text" id="test1" name="test1" value="" onclick="test('test1')" size="300">
+		<input type="hidden" name="mode" value="">
+		<input type="hidden" name="now_file" value="<!--{$tpl_now_file}-->">
+		<input type="hidden" name="tree_select_file" value="">
+		<input type="hidden" name="tree_status" value="">		
 		■ファイル
 		<div>
 			<select name=select_file size="5" id="file_view">
