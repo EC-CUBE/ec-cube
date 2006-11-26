@@ -1,5 +1,5 @@
 <!--{*
- * Copyright (c) 2000-2006 LOCKON CO.,LTD. All Rights Reserved.
+ * Copyright(c) 2000-2006 LOCKON CO.,LTD. All Rights Reserved.
  *
  * http://www.lockon.co.jp/
  *}-->
@@ -109,12 +109,23 @@ function lnSetSelect(form, name1, name2, val) {
 							</tr>
 							<tr><td height="3"></td></tr>
 							<tr>
-								<td><span class="red"><span class="fs12">≤¡≥ </span><span class="fs10">(¿«π˛)</span></span><span class="redst"><span class="fs12">°ß
+								<td><span class="red">
+								<!--°˙æ¶… •≥°º•…°˙-->
+									<span class="fs12">æ¶… •≥°º•…</span><span class="fs10"></span></span><span class="redst"><span class="fs12">°ß
+									<!--{assign var=codecnt value=$arrProductCode|@count}-->
+									<!--{assign var=codemax value=`$codecnt-1`}-->
+									<!--{if $codecnt > 1}-->
+										<!--{$arrProductCode.0}-->è¢∑<!--{$arrProductCode[$codemax]}-->
+									<!--{else}-->
+										<!--{$arrProductCode.0}-->
+									<!--{/if}-->
+									</span></span><br/>
 								<!--°˙≤¡≥ °˙-->
+									<span class="red"><span class="fs12">≤¡≥ </span><span class="fs10">(¿«π˛)</span></span><span class="redst"><span class="fs12">°ß
 									<!--{if $arrProduct.price02_min == $arrProduct.price02_max}-->				
 										<!--{$arrProduct.price02_min|sfPreTax:$arrSiteInfo.tax:$arrSiteInfo.tax_rule|number_format}-->
 									<!--{else}-->
-										<!--{$arrProduct.price02_min|sfPreTax:$arrSiteInfo.tax:$arrSiteInfo.tax_rule|number_format}-->&#12316;<!--{$arrProduct.price02_max|sfPreTax:$arrSiteInfo.tax:$arrSiteInfo.tax_rule|number_format}-->
+										<!--{$arrProduct.price02_min|sfPreTax:$arrSiteInfo.tax:$arrSiteInfo.tax_rule|number_format}-->è¢∑<!--{$arrProduct.price02_max|sfPreTax:$arrSiteInfo.tax:$arrSiteInfo.tax_rule|number_format}-->
 									<!--{/if}-->
 									±ﬂ</span></span><br/>
 									
@@ -123,7 +134,7 @@ function lnSetSelect(form, name1, name2, val) {
 										<!--{if $arrProduct.price01_min == $arrProduct.price01_max}-->				
 											<!--{$arrProduct.price01_min|number_format}-->
 										<!--{else}-->
-											<!--{$arrProduct.price01_min|number_format}-->&#12316;<!--{$arrProduct.price01_max|number_format}-->
+											<!--{$arrProduct.price01_min|number_format}-->è¢∑<!--{$arrProduct.price01_max|number_format}-->
 										<!--{/if}-->
 										±ﬂ
 										</span></span><br/>
@@ -136,7 +147,7 @@ function lnSetSelect(form, name1, name2, val) {
 									<!--{if $arrProduct.price02_min|sfPrePoint:$arrProduct.point_rate:$smarty.const.POINT_RULE:$arrProduct.product_id == $arrProduct.price02_max|sfPrePoint:$arrProduct.point_rate:$smarty.const.POINT_RULE:$arrProduct.product_id}-->
 										<!--{$arrProduct.price02_min|sfPrePoint:$arrProduct.point_rate:$smarty.const.POINT_RULE:$arrProduct.product_id}-->
 									<!--{else}-->
-										<!--{$arrProduct.price02_min|sfPrePoint:$arrProduct.point_rate:$smarty.const.POINT_RULE:$arrProduct.product_id}-->&#12316;<!--{$arrProduct.price02_max|sfPrePoint:$arrProduct.point_rate:$smarty.const.POINT_RULE:$arrProduct.product_id}-->
+										<!--{$arrProduct.price02_min|sfPrePoint:$arrProduct.point_rate:$smarty.const.POINT_RULE:$arrProduct.product_id}-->è¢∑<!--{$arrProduct.price02_max|sfPrePoint:$arrProduct.point_rate:$smarty.const.POINT_RULE:$arrProduct.product_id}-->
 									<!--{/if}-->
 								<!--{/if}-->
 								Pt</span></span>
