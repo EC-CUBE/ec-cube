@@ -29,31 +29,40 @@ arrTree = new Array();
 	<!--{$key}-->：<!--{$item}--><br/>
 <!--{/foreach}--><br/><br/>
 
-■ツリー
-<div id="tree"></div><br/>
-
-■ファイル
-<form name="form1" method="post" action="<!--{$smarty.server.PHP_SELF|escape}-->"  enctype="multipart/form-data">
-	<input type="text" id="test1" name="test1" value="" onclick="test('test1')" size="300">
-	<input type="hidden" name="mode" value="">
-	<input type="hidden" name="now_file" value="<!--{$tpl_now_file}-->">
-	<input type="hidden" name="tree_select_file" value="">
-	<input type="hidden" name="tree_status" value="">
-	<select name=select_file size="5">
-	<!--{section name=cnt loop=$arrFileList}-->
-	<option value="<!--{$arrFileList[cnt].file_path|escape}-->" <!--{if $arrFileList[cnt].file_path eq $arrParam.select_file}-->selected<!--{/if}-->><!--{$arrFileList[cnt].file_name|escape}-->　<!--{$arrFileList[cnt].file_size|escape}-->　<!--{$arrFileList[cnt].file_time|escape}--></option>
-	<!--{/section}-->
-	</select><br/>
-	<input type="button" onclick="setTreeStatus('tree_status');fnModeSubmit('view','',''); return false;" value="表示">
-	<input type="button" onclick="setTreeStatus('tree_status');fnModeSubmit('download','',''); return false;" value="ダウンロード">
-	<input type="button" onclick="setTreeStatus('tree_status');fnModeSubmit('delete','',''); return false;" value="削除">
-	<br/>
-
+<table>
+	<tr>
+		<td>
+		■ツリー
+		<div id="tree"></div><br/>
+		</td>
+	</tr>
+	<tr>
+		<td>
+		■ファイル
+		<form name="form1" method="post" action="<!--{$smarty.server.PHP_SELF|escape}-->"  enctype="multipart/form-data">
+			<input type="text" id="test1" name="test1" value="" onclick="test('test1')" size="300">
+			<input type="hidden" name="mode" value="">
+			<input type="hidden" name="now_file" value="<!--{$tpl_now_file}-->">
+			<input type="hidden" name="tree_select_file" value="">
+			<input type="hidden" name="tree_status" value="">
+			<select name=select_file size="5">
+			<!--{section name=cnt loop=$arrFileList}-->
+			<option value="<!--{$arrFileList[cnt].file_path|escape}-->" <!--{if $arrFileList[cnt].file_path eq $arrParam.select_file}-->selected<!--{/if}-->><!--{$arrFileList[cnt].file_name|escape}-->　<!--{$arrFileList[cnt].file_size|escape}-->　<!--{$arrFileList[cnt].file_time|escape}--></option>
+			<!--{/section}-->
+			</select><br/>
+			<input type="button" onclick="setTreeStatus('tree_status');fnModeSubmit('view','',''); return false;" value="表示">
+			<input type="button" onclick="setTreeStatus('tree_status');fnModeSubmit('download','',''); return false;" value="ダウンロード">
+			<input type="button" onclick="setTreeStatus('tree_status');fnModeSubmit('delete','',''); return false;" value="削除">
+		</td>
+	</tr>
+</table>
 ■フォルダ作成
 
 	<input type="file" name="upload_file"><input type="button" onclick="setTreeStatus('tree_status');fnFormModeSubmit('form1', 'upload','',''); return false;" value="アップロード"><br/>
 	<input type="text" name="create_file" value=""><input type="button" onclick="setTreeStatus('tree_status');fnFormModeSubmit('form1', 'create','',''); return false;" value="作成">
 </form>
+
+
 </body>
 </html>
 
