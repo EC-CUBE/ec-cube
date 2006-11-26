@@ -147,6 +147,8 @@ $arrProcuctCode = sfswaparray($arrProcuctCode);
 
 $objPage->ProcuctCode = $ProcuctCode;
 
+sfprintr($arrProcuctCode);
+
 sfprintr($ProcuctCode);
 
 // 購入制限数を取得
