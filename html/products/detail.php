@@ -142,10 +142,7 @@ $objPage->arrProduct = $arrRet[0];
 $code_sql = "SELECT product_code FROM dtb_products_class AS prdcls WHERE prdcls.product_id = 1 GROUP BY product_code ORDER BY product_code";
 $arrProcuctCode = $objQuery->getall($code_sql);
 $arrProcuctCode = sfswaparray($arrProcuctCode);
-$arrProcuctCode = $arrProcuctCode["product_code"];
 $objPage->arrProcuctCode = $arrProcuctCode["product_code"];
-
-sfprintr($objPage->arrProcuctCode);
 
 // 2件以上あれば、~ を用いて、最初と最後だけ表示
 $product_code = "";

@@ -116,7 +116,7 @@ function lnSetSelect(form, name1, name2, val) {
 									<!--{if $codecnt > 1}-->
 										<!--{$arrProductCode.0}-->è¢∑<!--{$arrProductCode[$codecnt]}-->
 									<!--{/if}-->
-									<!--{$arrProcuctCode|count}-->
+									<!--{$arrProductCode.0}-->
 									</span></span><br/>
 								<!--°˙≤¡≥ °˙-->
 									<span class="red"><span class="fs12">≤¡≥ </span><span class="fs10">(¿«π˛)</span></span><span class="redst"><span class="fs12">°ß
