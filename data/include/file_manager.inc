@@ -130,7 +130,7 @@ function sfGetFileTree($dir, $tree_status) {
 	}
 	$arrTree[$cnt] = array($cnt, $file_type, $dir, 0);
 	$cnt++;	
-		
+sfprintr($arrTree);
 	sfGetFileTreeSub($dir, $default_rank, $cnt, $arrTree, $tree_status);
 	
 	return $arrTree;
