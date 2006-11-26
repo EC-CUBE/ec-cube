@@ -142,7 +142,7 @@ $objPage->arrProduct = $arrRet[0];
 $code_sql = "SELECT product_code FROM dtb_products_class AS prdcls WHERE prdcls.product_id = 1 GROUP BY product_code ORDER BY product_code";
 $arrCode = $objQuery->getall($code_sql);
 		
-sfprintr($arrCode);
+sfprintr(sfswaparray($arrCode));
 
 // 購入制限数を取得
 if($objPage->arrProduct['sale_unlimited'] == 1 || $objPage->arrProduct['sale_limit'] > SALE_LIMIT_MAX) {
