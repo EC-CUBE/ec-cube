@@ -35,8 +35,6 @@ arrTree = new Array();
 		■ツリー
 		<div id="tree"></div>
 		</td>
-	</tr>
-	<tr>
 		<td>
 		■ファイル
 		<form name="form1" method="post" action="<!--{$smarty.server.PHP_SELF|escape}-->"  enctype="multipart/form-data">
