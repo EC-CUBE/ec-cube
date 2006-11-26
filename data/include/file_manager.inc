@@ -168,7 +168,7 @@ function sfGetFileTreeSub($dir, $default_rank, &$cnt, &$arrTree, $tree_status) {
 						// 階層を割り出す
 						$arrCnt = split('/', $path);
 						$rank = count($arrCnt);
-						$arrTree[$cnt]['rank'] = $rank - $default_rank;
+						$arrTree[$cnt]['rank'] = $rank - $default_rank + 1;
 						$arrTree[$cnt]['count'] = $cnt;
 						// フォルダが開いているか
 						$arrTree[$cnt]['open'] = lfIsFileOpen($path, $tree_status);
