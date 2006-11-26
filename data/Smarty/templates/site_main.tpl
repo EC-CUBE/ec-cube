@@ -37,7 +37,6 @@
 			        <td align="left">
 			        <table border="0" cellspacing="0" cellpadding="0" summary=" ">
 			        	<!--{foreach key=LeftNaviKey item=LeftNaviItem from=$arrPageLayout.LeftNavi}-->
-			        	<tr><td height=3><td></tr>
 				        <tr><td align="center">
 				        <!-- ▼<!--{$LeftNaviItem.bloc_name}--> ここから-->
 			        	<!--{if $LeftNaviItem.php_path != ""}-->
