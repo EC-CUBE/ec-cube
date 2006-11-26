@@ -143,6 +143,7 @@ $code_sql = "SELECT product_code FROM dtb_products_class AS prdcls WHERE prdcls.
 $arrProcuctCode = $objQuery->getall($code_sql);
 $arrProcuctCode = sfswaparray($arrProcuctCode);
 $arrProcuctCode = $arrProcuctCode["product_code"];
+$objPage->arrProcuctCode = $arrProcuctCode["product_code"];
 
 // 2件以上あれば、~ を用いて、最初と最後だけ表示
 $product_code = "";
