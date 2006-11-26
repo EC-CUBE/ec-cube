@@ -164,3 +164,8 @@ function fnGetMyBrowser() {
 function fnChgImg(fileName,imgName){
 	document.getElementById(imgName).src = fileName;
 }
+
+//test
+function test(id) {
+document.getElementById(id).value=tree
+}
