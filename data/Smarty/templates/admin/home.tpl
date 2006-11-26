@@ -8,6 +8,9 @@
 <!--¡ú¡ú¥á¥¤¥ó¥³¥ó¥Æ¥ó¥Ä¡ú¡ú-->
 <!--{assign var=test value=$smarty.const.URL_DIR}-->
 <!--{$test}-->
+
+
+<!--{* if $smarty.server.PHP_SELF == $smarty.const.URL_DIR *}-->
 <table width="878" border="0" cellspacing="0" cellpadding="0" summary=" ">
 	<tr valign="top">
 		<td class="mainbg">
