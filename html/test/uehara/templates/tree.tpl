@@ -12,7 +12,6 @@
 <title>Untitled</title>
 <script language="JavaScript">
 <!--
-<!--{$tpl_javascript}-->
 
 arrTree = new Array();
 <!--{section name=cnt loop=$arrTree}-->
@@ -29,7 +28,11 @@ arrTree = new Array();
 	<!--{$key}-->¡§<!--{$item}--><br/>
 <!--{/foreach}--><br/><br/>
 
-
+<script language="JavaScript">
+<!--
+<!--{$tpl_javascript}-->
+//-->
+</script>
 <table>
 	<tr>
 		<td valign="top">
