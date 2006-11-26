@@ -67,9 +67,8 @@ function fnTreeView(view_id, arrTree) {
 	
 	}
 	tree += '</form>';
-	document.tree_form.tree_a10.focus();
 	fnDrow(view_id, tree);
-	
+	document.tree_form.tree_a10.focus();	
 }
 
 // Tree状態をhiddenにセット
