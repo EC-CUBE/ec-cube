@@ -126,9 +126,9 @@ function sfGetFileTree($dir, $tree_status) {
 	$dir = ereg_replace("/$", "", $dir);	
 	// ∫«æÂ∞Ã¡ÿ§Ú≥ «º(user_data/)
 	if(sfDirChildExists($dir)) {
-		$file_type = "_parent";
+		$arrTree[$cnt]['type'] = "_parent";
 	} else {
-		$file_type = "_child";	
+		$arrTree[$cnt]['type'] = "_child";	
 	}
 	$arrTree[$cnt]['path'] = $dir;
 	$arrTree[$cnt]['rank'] = 0;
