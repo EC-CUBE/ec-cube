@@ -52,16 +52,23 @@ class SC_Image {
 	}
 
 	// 拡大率を指定して画像保存
-	function saveResizeImage($file, $zip_scale = 1, $header = false) {
+	function saveResizeImage($file, $to_w = 1, $to_h = 1, $header = false) {
 		// ディレクトリ取得
 		$dir = dirname($file);
 		
 		// 元画像サイズを取得
-		list($src_w, $src_h) = getimagesize($file);
-	
+		list($from_w, $from_h) = getimagesize($file);
+		
+		// 幅の縮小率
+		($to_w < $from_w) ? $wscale = $to_w / $from_w :	$wscale = 1;
+		// 高さの縮小率
+		($to_h < $from_h) ? $hscale = $to_h / $from_h :	$hscale = 1;
+		// 縮小率は小さいほうにあわせる
+		($wscale < $hscale) ? $scale = $wscale : $scale = $hscale;
+
 		// 圧縮率指定
-		$zip_width = $src_w * $zip_scale;
-		$zip_height = $src_h * $zip_scale;
+		$zip_width = $from_w * $scale;
+		$zip_height = $from_h * $scale;
 		
 		// ファイルの拡張子取得	
 		$arrFileInfo = pathinfo($file);
@@ -84,7 +91,7 @@ class SC_Image {
 					
 					// 圧縮先画像
 					$dst_im = imagecreatetruecolor($zip_width, $zip_height);	
-					imagecopyresampled($dst_im, $src_im, 0, 0, 0,0, $zip_width, $zip_height, $src_w, $src_h);
+					imagecopyresampled($dst_im, $src_im, 0, 0, 0,0, $zip_width, $zip_height, $from_w, $from_h);
 					
 					// 画像出力
 					if($header){
@@ -101,7 +108,7 @@ class SC_Image {
 					
 					// 圧縮先画像
 					$dst_im = imagecreatetruecolor($zip_width, $zip_height);	
-					imagecopyresampled($dst_im, $src_im, 0, 0, 0,0, $zip_width, $zip_height, $src_w, $src_h);
+					imagecopyresampled($dst_im, $src_im, 0, 0, 0,0, $zip_width, $zip_height, $from_w, $from_h);
 					
 					// 画像出力
 					if($header) header("Content-Type: image/gif");
@@ -114,7 +121,7 @@ class SC_Image {
 					
 					// 圧縮先画像
 					$dst_im = imagecreatetruecolor($zip_width, $zip_height);	
-					imagecopyresampled($dst_im, $src_im, 0, 0, 0,0, $zip_width, $zip_height, $src_w, $src_h);
+					imagecopyresampled($dst_im, $src_im, 0, 0, 0,0, $zip_width, $zip_height, $from_w, $from_h);
 
 					// 画像出力
 					if($header) header("Content-Type: image/png");
