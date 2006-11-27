@@ -128,7 +128,7 @@ case 'upload_image':
 	sfprintr($arrImageKey[$_POST['image_key']]);
 	sfprintr($_POST['image_key']);
 	
-	sfpritr($objUpFile);
+	sfprintr($objUpFile);
 	
 	lfProductPage(); // ¾¦ÉÊÅÐÏ¿¥Ú¡¼¥¸
 	break;
