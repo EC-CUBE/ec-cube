@@ -78,7 +78,7 @@ class SC_Image {
 		// 一意なIDを取得する。
 		$uniqname = date("mdHi") . "_" . uniqid("");
 		$filename = $uniqname . ".gif";
-		$path = $dir . $filename;
+		$path = $dir . "/" . $filename;
 		if(is_dir($dir)) {
 			ImageGIF($dst_im, $path);
 			return $path;
