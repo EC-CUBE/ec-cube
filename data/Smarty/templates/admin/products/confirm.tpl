@@ -233,11 +233,11 @@
 								<tr>
 									<td bgcolor="#f2f1ec" width="160" class="fs12n">¥ÿœ¢æ¶… (<!--{$smarty.section.cnt.iteration}-->)<br>
 									<!--{if $arrRecommend[$recommend_no].main_list_image != ""}-->
-										<!--{assign var=image_path value="`$smarty.const.IMAGE_SAVE_URL`/`$arrRecommend[$recommend_no].main_list_image`"}-->
+										<!--{assign var=image_path value="`$smarty.const.IMAGE_SAVE_DIR`/`$arrRecommend[$recommend_no].main_list_image`"}-->
 									<!--{else}-->
-										<!--{assign var=image_path value="`$smarty.const.NO_IMAGE_URL`"}-->
+										<!--{assign var=image_path value="`$smarty.const.NO_IMAGE_DIR`"}-->
 									<!--{/if}-->
-									<img src="<!--{$image_path|sfRmDupSlash}-->" width="65" height="65" alt="<!--{$arrRecommend[$recommend_no].name|escape}-->" />
+									<img src="<!--{$smarty.const.SITE_URL}-->resize_image.php?image=<!--{$image_path|sfRmDupSlash}-->&width=65&height=65" alt="<!--{$arrRecommend[$recommend_no].name|escape}-->">
 									</td>
 									<td bgcolor="#ffffff" width="557" class="fs12n">
 									<!--{if $arrRecommend[$recommend_no].name != ""}-->

@@ -16,6 +16,7 @@ class LC_Page {
 
 $objPage = new LC_Page();
 $objView = new SC_SiteView();
+$objCartSess = new SC_CartSession("", false);
 
 // 管理ページからの確認の場合は、非公開の商品も表示する。
 if($_GET['admin'] == 'on') {

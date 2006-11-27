@@ -329,7 +329,7 @@ function lnSetSelect(form, name1, name2, val) {
 							<!-- º¸Îó -->
 							<table width="220" border="0" cellspacing="0" cellpadding="0" summary=" ">
 								<tr valign="top">
-									<td><a href="<!--{$smarty.const.DETAIL_P_HTML}--><!--{$arrRecommend[cnt].product_id}-->">
+									<td align="center" valign="middle"><a href="<!--{$smarty.const.DETAIL_P_HTML}--><!--{$arrRecommend[cnt].product_id}-->">
 									<!--{if $arrRecommend[cnt].main_list_image != ""}-->
 										<!--{assign var=image_path value="`$smarty.const.IMAGE_SAVE_DIR`/`$arrRecommend[cnt].main_list_image`"}-->
 									<!--{else}-->
@@ -370,7 +370,7 @@ function lnSetSelect(form, name1, name2, val) {
 							<!-- ±¦Îó -->
 							<table width="220" border="0" cellspacing="0" cellpadding="0" summary=" ">
 								<tr valign="top">
-									<td><a href="<!--{$smarty.const.DETAIL_P_HTML}--><!--{$arrRecommend[$nextCnt].product_id}-->">
+									<td align="center" valign="middle"><a href="<!--{$smarty.const.DETAIL_P_HTML}--><!--{$arrRecommend[$nextCnt].product_id}-->">
 									<!--{if $arrRecommend[$nextCnt].main_list_image != ""}-->
 										<!--{assign var=image_path value="`$smarty.const.IMAGE_SAVE_DIR`/`$arrRecommend[$nextCnt].main_list_image`"}-->
 									<!--{else}-->
