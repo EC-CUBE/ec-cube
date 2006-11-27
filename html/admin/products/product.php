@@ -125,11 +125,6 @@ case 'upload_image':
 
 	// 中、小画像生成
 	lfSetScaleImage();
-	
-	sfprintr($_POST['image_key']);
-
-
-	sfprintr($path);
 
 	lfProductPage(); // 商品登録ページ
 	break;
