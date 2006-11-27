@@ -8,7 +8,7 @@
 <table width="" cellspacing="0" cellpadding="0" summary=" ">
 	<tr>
 		<td bgcolor="#ffffff" align="left">
-			<img src="./resize_image.php?image=<!--{$smarty.const.TEMP_IMAGE_DIR}-->kaki.jpg" alt="グラフ">
+			<img src="../../resize_image.php?image=<!--{$smarty.const.TEMP_IMAGE_DIR}-->kaki.jpg" alt="グラフ">
 		</td>
 	</tr>
 </table>
