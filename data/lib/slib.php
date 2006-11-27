@@ -1349,7 +1349,7 @@ function sfTotalCart($objPage, $objCartSess, $arrInfo) {
 			$objPage->arrProductsClass[$cnt]['classcategory_name2'] = $arrClassCatName[$arrData['classcategory_id2']];
 			
 			// 画像サイズ
-			list($image_width, $image_height) = getimagesize(IMAGE_SAVE_DIR . basename($objPage->arrProductsClass[$cnt]["main_list_image"]));
+			list($image_width, $image_height) = getimagesize(IMAGE_SAVE_DIR . basename($objPage->arrProductsClass[$cnt]["main_image"]));
 			$objPage->arrProductsClass[$cnt]["tpl_image_width"] = $image_width + 60;
 			$objPage->arrProductsClass[$cnt]["tpl_image_height"] = $image_height + 80;
 			
@@ -1373,9 +1373,6 @@ function sfTotalCart($objPage, $objCartSess, $arrInfo) {
 			$objCartSess->delProductKey('id', $arrCart[$i]['id']);
 		}
 	}
-	
-				sfprintr($objPage->arrProductsClass);
-
 	
 	// 全商品合計金額(税込み)
 	$objPage->tpl_total_pretax = $objCartSess->getAllProductsTotal($arrInfo);
