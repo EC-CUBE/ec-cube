@@ -55,7 +55,7 @@ class SC_Image {
 	function saveResizeImage($file, $to_w = 0, $to_h = 0, $header = false) {
 		// ディレクトリ取得
 		$dir = dirname($file);
-		
+				sfprintr($file);
 		// 元画像サイズを取得
 		list($from_w, $from_h) = getimagesize($file);
 		
@@ -70,7 +70,7 @@ class SC_Image {
 			$scale = 1;
 		}
 		
-		sfprintr($scale);
+
 
 		// 圧縮率指定
 		$zip_width = $from_w * $scale;
