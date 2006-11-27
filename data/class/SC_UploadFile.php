@@ -281,7 +281,7 @@ class SC_UploadFile {
 	}
 		
 	// 拡大率を指定して画像保存
-	function saveResizeImage($keyname, $to_w = 1, $to_h = 1) {
+	function saveResizeImage($keyname, $to_w, $to_h) {
 		$path = "";
 		
 		// keynameの添付ファイルを取得

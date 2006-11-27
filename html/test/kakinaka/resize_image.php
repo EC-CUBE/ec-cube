@@ -1,16 +1,12 @@
 <?php
 
-require_once("../../require.php");
+$include_dir = realpath(dirname( __FILE__));
+require_once($include_dir . "/../data/class/SC_Image.php");
 
-$objView = new SC_UserView("./templates/");
 $objImage = new SC_Image(IMAGE_TEMP_DIR);
 
+$file = $_GET["image"];
 
-$file = IMAGE_TEMP_DIR . "kaki.jpg";
-
-//sfprintr(pathinfo($file));
-$path = $objImage->saveResizeImage($file, 100, 100, true);
-
-//sfprintr($path);
+$objImage->saveResizeImage($file, 100, 100, true);
 
 ?>
