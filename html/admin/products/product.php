@@ -500,17 +500,15 @@ function lfSetScaleImage(){
 	
 	$src_w = 0;
 	$src_h = 0;
-	
-	sfprintr($objUpFile);
-	
+
 	switch ($_POST['image_key']){
 		case "main_large_image":
 		
 			// 元画像サイズを取得
-			$src_path = $objUpFile->temp_dir . $objUpFile->temp_file[$arrImageKey["main_list_image"]];
+			$src_path = $objUpFile->temp_dir . $objUpFile->temp_file[$arrImageKey["main_large_image"]];
 			list($src_w, $src_h) = getimagesize($src_path);
 			
-			sfprintr($arrImageKey);
+			sfprintr($arrImageKey["main_large_image"]);
 			sfprintr($src_path);
 			sfprintr($src_w);
 		
