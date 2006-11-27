@@ -11,7 +11,7 @@ if(file_exists($file)){
 }else{
 	header("Content-Type: image/gif");
 	$image = imagecreatefromgif(NO_IMAGE_URL);
-	Imagejpeg($image);
+	Imagegif($image);
 	ImageDestroy($image);
 }
 
