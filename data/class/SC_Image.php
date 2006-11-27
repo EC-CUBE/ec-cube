@@ -50,5 +50,39 @@ class SC_Image {
 			unlink($dir."/".$filename);
 		}
 	}
+
+	// 拡大率を指定して画像保存
+	function saveResizeImage($file, $zip_scale = 1) {
+		// ディレクトリ取得
+		$dir = dirname($file);
+		
+		// 元画像サイズを取得
+		list($src_w, $src_h) = getimagesize($file);
+	
+		// 圧縮率指定
+		$zip_width = $src_w * $zip_scale;
+		$zip_height = $src_h * $zip_scale;
+		
+		// 圧縮先画像
+		$dst_im = imagecreatetruecolor($zip_width, $zip_height);	
+		imagecopyresampled($dst_im, $file, 0, 0, 0,0, $zip_width, $zip_height, $src_w, $src_h);
+
+		// 画像出力
+//		header("Content-Type: image/gif");
+//		ImageGIF($dst_im);
+//		ImageDestroy($dst_im);
+		
+		// 一意なIDを取得する。
+		$uniqname = date("mdHi") . "_" . uniqid("");
+		$filename = $uniqname . ".gif";
+		$path = $dir . $filename;
+		if(is_dir($dir)) {
+			ImageGIF($dst_im, $path);
+			return $path;
+		}
+		
+		print("画像の保存に失敗しました。");
+		return "";
+	}
 }
 ?>
