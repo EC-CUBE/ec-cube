@@ -506,7 +506,6 @@ function lfSetScaleImage(){
 		case "main_image":
 			// 一覧メイン画像
 			lfMakeScaleImage($_POST['image_key'], "main_list_image");
-			
 		case "main_large_image":
 			// 詳細メイン画像
 			lfMakeScaleImage($_POST['image_key'], "main_image");
