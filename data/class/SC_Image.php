@@ -63,24 +63,24 @@ class SC_Image {
 		$zip_width = $src_w * $zip_scale;
 		$zip_height = $src_h * $zip_scale;
 		
-		
-		$src_im = ImageCreateFromJPEG($file);//元画像
+		//元画像
+		$src_im = ImageCreateFromJPEG($file);
 		
 		// 圧縮先画像
 		$dst_im = imagecreatetruecolor($zip_width, $zip_height);	
 		imagecopyresampled($dst_im, $src_im, 0, 0, 0,0, $zip_width, $zip_height, $src_w, $src_h);
 
+		// ファイルの拡張子取得	
+		$arrFileInfo = pathinfo($file);
+		$extension = $arrFileInfo["extension"];
+
 		// 一意なIDを取得する。
 		$uniqname = date("mdHi") . "_" . uniqid("");
 
-		// ファイルの拡張子取得		
-		$arrFileInfo = pathinfo($file);
-		$extension = $arrFileInfo["extension"];
-		
 		// ファイル名、保存先設定
 		$filename = $uniqname . "." . $extension;
 		$path = $dir . "/" . $filename;
-		
+
 		// ファイルの拡張子によって処理を分ける
 		if(is_dir($dir)) {
 			switch ($extension)	{
