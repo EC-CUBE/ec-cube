@@ -124,19 +124,7 @@ case 'upload_image':
 	$objPage->arrErr[$_POST['image_key']] = $objUpFile->makeTempFile($_POST['image_key']);
 
 	// 中、小画像生成
-	$arrImageKey = array_flip($objUpFile->keyname);
-	
-	// 縮小率設定
-	if($_POST['image_key'] == "main_large_image"){
-		(LARGE_IMAGE_WIDTH > LARGE_IMAGE_HEIGHT) ? $scale = SMALL_IMAGE_WIDTH / LARGE_IMAGE_WIDTH : $scale = SMALL_IMAGE_HEIGHT / LARGE_IMAGE_HEIGHT;
-		$path = $objUpFile->saveResizeImage($_POST['image_key'], $scale);
-		$objUpFile->temp_file[$arrImageKey["main_list_image"]] = $path;
-		
-		(LARGE_IMAGE_WIDTH > LARGE_IMAGE_HEIGHT) ? $scale = NORMAL_IMAGE_WIDTH / LARGE_IMAGE_WIDTH : $scale = NORMAL_IMAGE_HEIGHT / LARGE_IMAGE_HEIGHT;
-		$path = $objUpFile->saveResizeImage($_POST['image_key'], $scale);
-		$objUpFile->temp_file[$arrImageKey["main_image"]] = $path;
-		
-	}
+	lfSetScaleImage();
 	
 	sfprintr($_POST['image_key']);
 
@@ -503,6 +491,23 @@ function lfCheckNonClass($product_id) {
 		}
 	}
 	return true;
+}
+
+// 縮小した画像をセットする
+lfSetScaleImage(){
+	$arrImageKey = array_flip($objUpFile->keyname);
+	
+	if($_POST['image_key'] == "main_large_image"){
+		// 縮小率設定
+		(LARGE_IMAGE_WIDTH > LARGE_IMAGE_HEIGHT) ? $scale = SMALL_IMAGE_WIDTH / LARGE_IMAGE_WIDTH : $scale = SMALL_IMAGE_HEIGHT / LARGE_IMAGE_HEIGHT;
+		$path = $objUpFile->saveResizeImage($_POST['image_key'], $scale);
+		$objUpFile->temp_file[$arrImageKey["main_list_image"]] = $path;
+		
+		// 縮小率設定
+		(LARGE_IMAGE_WIDTH > LARGE_IMAGE_HEIGHT) ? $scale = NORMAL_IMAGE_WIDTH / LARGE_IMAGE_WIDTH : $scale = NORMAL_IMAGE_HEIGHT / LARGE_IMAGE_HEIGHT;
+		$path = $objUpFile->saveResizeImage($_POST['image_key'], $scale);
+		$objUpFile->temp_file[$arrImageKey["main_image"]] = $path;
+	}
 }
 
 ?>
