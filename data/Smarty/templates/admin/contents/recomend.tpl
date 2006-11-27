@@ -106,7 +106,7 @@ function lfnCheckSetItem( rank ){
 								<!--{else}-->
 									<!--{assign var=image_path value="`$smarty.const.NO_IMAGE_URL`"}-->
 								<!--{/if}-->
-								<img src="<!--{$image_path}-->" width="<!--{$smarty.const.SMALL_IMAGE_WIDTH}-->" height="<!--{$smarty.const.SMALL_IMAGE_HEIGHT}-->" alt="" />
+								<img src="<!--{$image_path}-->" alt="" />
 								</td>
 								<td bgcolor="#ffffff" width="55" align="center">
 									<!--{if $arrItems[$smarty.section.cnt.iteration].product_id}-->
