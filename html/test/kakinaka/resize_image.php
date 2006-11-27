@@ -8,7 +8,7 @@ $objImage = new SC_Image(IMAGE_TEMP_DIR);
 
 $file = IMAGE_TEMP_DIR . "kaki.bmp";
 
-sfprintr(pathinfo($file));
+//sfprintr(pathinfo($file));
 $path = $objImage->saveResizeImage($file, 0.5, true);
 
 //sfprintr($path);
