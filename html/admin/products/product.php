@@ -500,6 +500,8 @@ function lfSetScaleImage(){
 	
 	$src_w = 0;
 	$src_h = 0;
+	
+	sfprintr($objUpFile);
 
 	switch ($_POST['image_key']){
 		case "main_large_image":
@@ -536,6 +538,27 @@ function lfSetScaleImage(){
 		
 		default:
 			break;
+	}
+}
+
+// 縮小画像生成
+function lfMakeScaleImage($from_key, $to_key){
+	global $objUpFile;
+	global $arrImageKey;
+
+	// 元画像サイズを取得
+	$src_path = $objUpFile->temp_dir . $objUpFile->temp_file[$arrImageKey[$from_key]];
+	list($src_w, $src_h) = getimagesize($src_path);	
+	
+	if($objUpFile->temp_file[$arrImageKey[$to_key] == ""){
+		// 元画像のほうが大きい場合には縮小率設定
+		if(NORMAL_IMAGE_WIDTH < $src_w and NORMAL_IMAGE_HEIGHT < $src_h){
+			($src_w > $src_h) ? $scale = NORMAL_IMAGE_WIDTH / $src_w : $scale = NORMAL_IMAGE_HEIGHT / $src_h;
+		}else{
+			$scale = 1;
+		}
+		$path = $objUpFile->saveResizeImage($_POST['image_key'], $scale);
+		$objUpFile->temp_file[$arrImageKey[$to_key] = $path;
 	}
 }
 
