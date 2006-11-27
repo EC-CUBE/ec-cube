@@ -282,7 +282,7 @@
 									</tr>
 									<tr>
 										<!--{assign var=key value="sub_large_image`$smarty.section.cnt.iteration`"}-->
-										<td bgcolor="#f2f1ec" width="160" class="fs12n">詳細-サブ拡大画像（<!--{$smarty.section.cnt.iteration}-->）<br />[<!--{$smarty.const.LARGE_HEIGHT}-->×<!--{$smarty.const.LARGE_WIDTH}-->]</td>
+										<td bgcolor="#f2f1ec" width="160" class="fs12n">詳細-サブ拡大画像（<!--{$smarty.section.cnt.iteration}-->）<br />[<!--{$smarty.const.LARGE_SUBIMAGE_HEIGHT}-->×<!--{$smarty.const.LARGE_SUBIMAGE_WIDTH}-->]</td>
 										<td bgcolor="#ffffff" width="557" class="fs12n">
 										<a name="<!--{$key}-->"></a>
 										<span class="red12"><!--{$arrErr[$key]}--></span>
