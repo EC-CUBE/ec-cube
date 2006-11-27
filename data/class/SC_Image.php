@@ -94,6 +94,9 @@ class SC_Image {
 				case "png":
 					ImagePNG($dst_im, $path);
 					break;
+				case "bmp":
+					ImageBMP($dst_im, $path);
+					break;
 				case "default":
 					print("拡張子が不正です。");
 					return "";
