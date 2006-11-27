@@ -186,7 +186,7 @@
 									</tr>
 									<tr>
 										<!--{assign var=key value="main_list_image"}-->
-										<td bgcolor="#f2f1ec" width="160" class="fs12n">一覧-メイン画像<span class="red"> *</span><br />[130×130]</td>
+										<td bgcolor="#f2f1ec" width="160" class="fs12n">一覧-メイン画像<span class="red"> *</span><br />[<!--{$smarty.const.SMALL_IMAGE_HEIGHT}-->×<!--{$smarty.const.SMALL_IMAGE_WIDTH}-->]</td>
 										<td bgcolor="#ffffff" width="557" class="fs12n">
 										<a name="<!--{$key}-->"></a>
 										<span class="red12"><!--{$arrErr[$key]}--></span>
@@ -199,7 +199,7 @@
 									</tr>
 									<tr>
 										<!--{assign var=key value="main_image"}-->
-										<td bgcolor="#f2f1ec" width="160" class="fs12n">詳細-メイン画像<span class="red"> *</span><br />[260×260]</td>
+										<td bgcolor="#f2f1ec" width="160" class="fs12n">詳細-メイン画像<span class="red"> *</span><br />[<!--{$smarty.const.NORMAL_IMAGE_HEIGHT}-->×<!--{$smarty.const.NORMAL_IMAGE_WIDTH}-->]</td>
 										<td bgcolor="#ffffff" width="557" class="fs12n">
 										<a name="<!--{$key}-->"></a>
 										<span class="red12"><!--{$arrErr[$key]}--></span>
@@ -212,7 +212,7 @@
 									</tr>
 									<tr>
 										<!--{assign var=key value="main_large_image"}-->
-										<td bgcolor="#f2f1ec" width="160" class="fs12n">詳細-メイン拡大画像<br />[500×500]</td>
+										<td bgcolor="#f2f1ec" width="160" class="fs12n">詳細-メイン拡大画像<br />[<!--{$smarty.const.LARGE_IMAGE_HEIGHT}-->×<!--{$smarty.const.LARGE_IMAGE_WIDTH}-->]</td>
 										<td bgcolor="#ffffff" width="557" class="fs12n">
 										<a name="<!--{$key}-->"></a>
 										<span class="red12"><!--{$arrErr[$key]}--></span>
@@ -269,7 +269,7 @@
 									</tr>
 									<tr>
 										<!--{assign var=key value="sub_image`$smarty.section.cnt.iteration`"}-->
-										<td bgcolor="#f2f1ec" width="160" class="fs12n">詳細-サブ画像（<!--{$smarty.section.cnt.iteration}-->）<br />[200×200]</td>
+										<td bgcolor="#f2f1ec" width="160" class="fs12n">詳細-サブ画像（<!--{$smarty.section.cnt.iteration}-->）<br />[<!--{$smarty.const.NORMAL_SUBIMAGE_HEIGHT}-->×<!--{$smarty.const.NORMAL_SUBIMAGE_WIDTH}-->]</td>
 										<td bgcolor="#ffffff" width="557" class="fs12n">
 										<a name="<!--{$key}-->"></a>
 										<span class="red12"><!--{$arrErr[$key]}--></span>

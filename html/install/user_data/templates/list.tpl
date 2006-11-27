@@ -129,7 +129,7 @@ function lnSetSelect(name1, name2, id, val) {
 				<!--¢§¾¦ÉÊ¤³¤³¤«¤é-->
 				<tr valign="top">
 					<td><a name="product<!--{$id}-->" id="product<!--{$id}-->"></a></td>
-					<td><!--¡ú²èÁü¡ú--><div id="picture"><a href="<!--{$smarty.const.DETAIL_P_HTML}--><!--{$arrProducts[cnt].product_id}-->"><!--¾¦ÉÊ¼Ì¿¿--><img src="<!--{$smarty.const.IMAGE_SAVE_URL|sfTrimURL}-->/<!--{$arrProducts[cnt].main_list_image}-->" alt="<!--{$arrProducts[cnt].name|escape}-->" /></a></div></td>
+					<td align="center" valign="middle"><!--¡ú²èÁü¡ú--><div id="picture"><a href="<!--{$smarty.const.DETAIL_P_HTML}--><!--{$arrProducts[cnt].product_id}-->"><!--¾¦ÉÊ¼Ì¿¿--><img src="<!--{$smarty.const.IMAGE_SAVE_URL|sfTrimURL}-->/<!--{$arrProducts[cnt].main_list_image}-->" alt="<!--{$arrProducts[cnt].name|escape}-->" /></a></div></td>
 					<td align="right">
 						<table width="420" border="0" cellspacing="0" cellpadding="0" summary=" ">
 							<!--¥¢¥¤¥³¥ó-->
