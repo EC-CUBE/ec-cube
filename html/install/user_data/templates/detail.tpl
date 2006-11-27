@@ -71,11 +71,13 @@ function lnSetSelect(form, name1, name2, val) {
 						<td>
 						<table width="290" border="0" cellspacing="0" cellpadding="0" summary=" ">	
 							<tr>
+								<td align="center" valign="middle">
 								<!--{if $arrProduct.main_large_image != ""}-->
-									<div id="picture"><a href="<!--{$smarty.server.PHP_SELF|escape}-->" onclick="win01('./detail_image.php?product_id=<!--{$arrProduct.product_id}-->&image=main_large_image<!--{if $smarty.get.admin == 'on'}-->&admin=on<!--{/if}-->','detail_image','560','580'); return false;" target="_blank"><!--メイン画像--><!--{assign var=key value="main_image"}--><img src="<!--{$arrFile[$key].filepath}-->" width="<!--{$arrFile[$key].width}-->" height="<!--{$arrFile[$key].height}-->" alt="<!--{$arrProduct.name|escape}-->" /></a></div>						
+									<div id="picture"><a href="<!--{$smarty.server.PHP_SELF|escape}-->" onclick="win01('./detail_image.php?product_id=<!--{$arrProduct.product_id}-->&image=main_large_image<!--{if $smarty.get.admin == 'on'}-->&admin=on<!--{/if}-->','detail_image','560','580'); return false;" target="_blank"><!--メイン画像--><!--{assign var=key value="main_image"}--><img src="<!--{$arrFile[$key].filepath}-->" alt="<!--{$arrProduct.name|escape}-->" /></a></div>
 								<!--{else}-->
-									<div id="picture"><!--メイン画像--><!--{assign var=key value="main_image"}--><img src="<!--{$arrFile[$key].filepath}-->" width="<!--{$arrFile[$key].width}-->" height="<!--{$arrFile[$key].height}-->" alt="<!--{$arrProduct.name|escape}-->" /></div>
+									<div id="picture"><!--メイン画像--><!--{assign var=key value="main_image"}--><img src="<!--{$arrFile[$key].filepath}-->" " alt="<!--{$arrProduct.name|escape}-->" /></div>
 								<!--{/if}-->
+								</td>
 							</tr>
 							<tr><td height="8"></td></tr>
 							<tr>
