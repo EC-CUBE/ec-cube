@@ -521,7 +521,6 @@ function lfMakeScaleImage($from_key, $to_key){
 	global $objUpFile;
 	$arrImageKey = array_flip($objUpFile->keyname);
 
-
 	// 元画像サイズを取得
 	$from_path = $objUpFile->temp_dir . $objUpFile->temp_file[$arrImageKey[$from_key]];
 	list($from_w, $from_h) = getimagesize($from_path);
@@ -539,7 +538,6 @@ function lfMakeScaleImage($from_key, $to_key){
 		}
 		$path = $objUpFile->saveResizeImage($_POST['image_key'], $scale);
 		$objUpFile->temp_file[$arrImageKey[$to_key]] = $path;
-		sfprintr($arrImageKey);
 	}
 }
 
