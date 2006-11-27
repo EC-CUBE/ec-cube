@@ -128,6 +128,8 @@ case 'upload_image':
 	sfprintr($arrImageKey[$_POST['image_key']]);
 	sfprintr($_POST['image_key']);
 	
+	sfpritr($objUpFile);
+	
 	lfProductPage(); // 商品登録ページ
 	break;
 // 画像の削除
