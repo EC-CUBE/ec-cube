@@ -127,10 +127,13 @@ case 'upload_image':
 	$arrImageKey = array_flip($objUpFile->keyname);
 	
 	// ½Ì¾®Î¨ÀßÄê
-	(LARGE_IMAGE_WIDTH > LARGE_IMAGE_HEIGHT) ? $scale = SMALL_IMAGE_WIDTH / LARGE_IMAGE_WIDTH : $scale = SMALL_IMAGE_HEIGHT / LARGE_IMAGE_HEIGHT;
-	$path = $objUpFile->saveResizeImage($_POST['image_key'], $scale);
-	
-	$objUpFile->temp_file[$arrImageKey["main_list_image"]] = $path;
+	if($_POST['image_key'] == "main_large_image"){
+		(LARGE_IMAGE_WIDTH > LARGE_IMAGE_HEIGHT) ? $scale = SMALL_IMAGE_WIDTH / LARGE_IMAGE_WIDTH : $scale = SMALL_IMAGE_HEIGHT / LARGE_IMAGE_HEIGHT;
+		$path = $objUpFile->saveResizeImage($_POST['image_key'], $scale);
+		
+		$objUpFile->temp_file[$arrImageKey["main_list_image"]] = $path;
+		
+	}
 	
 	sfprintr($_POST['image_key']);
 

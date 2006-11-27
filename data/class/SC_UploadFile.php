@@ -293,6 +293,7 @@ class SC_UploadFile {
 		
 		$path = $objImage->saveResizeImage($filepath, $zip_scale);
 		
+		// ファイル名だけ返す
 		return basename($path);
 	}
 }
