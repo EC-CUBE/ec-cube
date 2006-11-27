@@ -100,7 +100,7 @@ function lfnCheckSetItem( rank ){
 
 							<tr class="fs12n">
 								<td bgcolor="#f2f1ec" width="15" align="center"><!--{$smarty.section.cnt.iteration}--></td>
-								<td bgcolor="#ffffff" width="110" align="center">
+								<td bgcolor="#ffffff" width="130" align="center">
 								<!--{if $arrItems[$smarty.section.cnt.iteration].main_list_image != ""}-->
 									<!--{assign var=image_path value="`$smarty.const.IMAGE_SAVE_URL`/`$arrItems[$smarty.section.cnt.iteration].main_list_image`"}-->
 								<!--{else}-->
