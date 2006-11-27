@@ -496,7 +496,6 @@ function lfCheckNonClass($product_id) {
 // 縮小した画像をセットする
 function lfSetScaleImage(){
 	global $objUpFile;
-	$arrImageKey = array_flip($objUpFile->keyname);
 	
 	$src_w = 0;
 	$src_h = 0;
@@ -520,7 +519,8 @@ function lfSetScaleImage(){
 // 縮小画像生成
 function lfMakeScaleImage($from_key, $to_key){
 	global $objUpFile;
-	global $arrImageKey;
+	$arrImageKey = array_flip($objUpFile->keyname);
+
 
 	// 元画像サイズを取得
 	$from_path = $objUpFile->temp_dir . $objUpFile->temp_file[$arrImageKey[$from_key]];
