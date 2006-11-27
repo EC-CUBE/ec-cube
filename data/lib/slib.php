@@ -1348,6 +1348,11 @@ function sfTotalCart($objPage, $objCartSess, $arrInfo) {
 			$objPage->arrProductsClass[$cnt]['classcategory_name1'] = $arrClassCatName[$arrData['classcategory_id1']];
 			$objPage->arrProductsClass[$cnt]['classcategory_name2'] = $arrClassCatName[$arrData['classcategory_id2']];
 			
+			// ²èÁü¥µ¥¤¥º
+			list($image_width, $image_height) = getimagesize(IMAGE_SAVE_DIR . basename($objPage->arrProductsClass[$cnt]["main_list_image"]));
+			$objPage->arrProductsClass[$cnt]["tpl_image_width"] = $image_width + 60;
+			$objPage->arrProductsClass[$cnt]["tpl_image_height"] = $image_height + 80;
+			
 			// ²Á³Ê¤ÎÅÐÏ¿
 			if ($arrData['price02'] != "") {
 				$objCartSess->setProductValue($arrCart[$i]['id'], 'price', $arrData['price02']);
@@ -1368,6 +1373,9 @@ function sfTotalCart($objPage, $objCartSess, $arrInfo) {
 			$objCartSess->delProductKey('id', $arrCart[$i]['id']);
 		}
 	}
+	
+				sfprintr($objPage->arrProductsClass);
+
 	
 	// Á´¾¦ÉÊ¹ç·×¶â³Û(ÀÇ¹þ¤ß)
 	$objPage->tpl_total_pretax = $objCartSess->getAllProductsTotal($arrInfo);
