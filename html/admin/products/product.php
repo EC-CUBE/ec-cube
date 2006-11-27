@@ -523,14 +523,14 @@ function lfMakeScaleImage($from_key, $to_key){
 	$to_h = $objUpFile->height[$arrImageKey[$to_key]];
 	
 	if($objUpFile->temp_file[$arrImageKey[$to_key]] == ""){
-		// 元画像のほうが大きい場合には縮小率設定
-		if($to_w < $from_w and $to_h < $from_h){
-			($from_w > $from_h) ? $scale = $to_w / $from_w : $scale = $to_h / $from_h;
-		}else{
-			$scale = 1;
-		}
+		// 幅の縮小率
+		($to_w < $from_w) ? $wscale = $to_w / $from_w :	$wscale = 1;
 		
-		sfprintr($scale);
+		// 高さの縮小率
+		($to_h < $from_h) ? $hscale = $to_h / $from_h :	$hscale = 1;
+		
+		// 縮小率は小さいほうにあわせる
+		($wscale < $hscale) ? $scale = $wscale : $scale = $hscale;
 		
 		$path = $objUpFile->saveResizeImage($_POST['image_key'], $scale);
 		$objUpFile->temp_file[$arrImageKey[$to_key]] = $path;
