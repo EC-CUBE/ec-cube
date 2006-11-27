@@ -495,6 +495,9 @@ function lfCheckNonClass($product_id) {
 
 // 縮小した画像をセットする
 function lfSetScaleImage(){
+	
+	$subno = strrchr($_POST['image_key'], "sub_large_image");
+	sfprintr($subno);
 	switch ($_POST['image_key']){
 		case "main_large_image":
 			// 詳細メイン画像
@@ -502,6 +505,8 @@ function lfSetScaleImage(){
 		case "main_image":
 			// 一覧メイン画像
 			lfMakeScaleImage($_POST['image_key'], "main_list_image");
+			break;
+		case "sub_large_image":
 			break;
 		default:
 			break;
