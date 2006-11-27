@@ -111,9 +111,12 @@ class SC_Image {
 					imagecopyresampled($dst_im, $src_im, 0, 0, 0,0, $zip_width, $zip_height, $from_w, $from_h);
 					
 					// 画像出力
-					if($header) header("Content-Type: image/gif");
-					
-					ImageGIF($dst_im, $path);
+					if($header){
+						header("Content-Type: image/gif");
+						ImageGIF($dst_im);
+					}else{
+						ImageGIF($dst_im, $path);
+					}
 					break;
 				case "png":
 					//元画像
@@ -124,9 +127,13 @@ class SC_Image {
 					imagecopyresampled($dst_im, $src_im, 0, 0, 0,0, $zip_width, $zip_height, $from_w, $from_h);
 
 					// 画像出力
-					if($header) header("Content-Type: image/png");
+					if($header){
+						header("Content-Type: image/png");
+						ImagePNG($dst_im);
+					}else{
+						ImagePNG($dst_im, $path);
+					}
 					
-					ImagePNG($dst_im, $path);
 					break;
 				default:
 					print("拡張子が不正です。");

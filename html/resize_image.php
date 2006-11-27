@@ -8,7 +8,11 @@ $objImage = new SC_Image(IMAGE_TEMP_DIR);
 $file = $_GET["image"];
 if(file_exists($file)){
 	$objImage->saveResizeImage($file, $_GET["width"], $_GET["height"], true);
+}else{
+	header("Content-Type: image/gif");
+		$image = imagecreatefromjpeg(NO_IMAGE_URL);
+		Imagejpeg($image);
+		ImageDestroy($image);
 }
-
 
 ?>
