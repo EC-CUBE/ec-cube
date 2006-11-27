@@ -547,13 +547,17 @@ function lfMakeScaleImage($from_key, $to_key){
 	global $arrImageKey;
 
 	// 元画像サイズを取得
-	$src_path = $objUpFile->temp_dir . $objUpFile->temp_file[$arrImageKey[$from_key]];
-	list($src_w, $src_h) = getimagesize($src_path);	
+	$from_path = $objUpFile->temp_dir . $objUpFile->temp_file[$arrImageKey[$from_key]];
+	list($from_w, $from_h) = getimagesize($from_path);
+	
+	// 生成先の画像サイズを取得
+	$to_w = $objUpFile->width[$arrImageKey[$to_key]];
+	$to_h = $objUpFile->height[$arrImageKey[$to_key]];
 	
 	if($objUpFile->temp_file[$arrImageKey[$to_key]] == ""){
 		// 元画像のほうが大きい場合には縮小率設定
-		if(NORMAL_IMAGE_WIDTH < $src_w and NORMAL_IMAGE_HEIGHT < $src_h){
-			($src_w > $src_h) ? $scale = NORMAL_IMAGE_WIDTH / $src_w : $scale = NORMAL_IMAGE_HEIGHT / $src_h;
+		if($to_w < $from_w and $to_h < $from_h){
+			($from_w > $from_h) ? $scale = $to_w / $from_w : $scale = $to_h / $from_h;
 		}else{
 			$scale = 1;
 		}
