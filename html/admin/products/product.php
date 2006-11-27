@@ -494,7 +494,7 @@ function lfCheckNonClass($product_id) {
 }
 
 // 縮小した画像をセットする
-lfSetScaleImage(){
+function lfSetScaleImage(){
 	global $objUpFile;
 	$arrImageKey = array_flip($objUpFile->keyname);
 	
