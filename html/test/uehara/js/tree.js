@@ -146,7 +146,7 @@ function fnFolderOpen(tName, imgName, path) {
 	tMenu = document.all[tName].style;
 
 	// フォルダをオープン状態へ
-	fnChgImg(IMG_FOLDER_OPEN, imgName);
+	//fnChgImg(IMG_FOLDER_OPEN, imgName);
 	// オープンファイル状態を保持
 	arrTreeStatus.push(path);
 
