@@ -1,7 +1,7 @@
-var IMG_FOLDER_CLOSE   = "./img/folder_close.gif";				// フォルダクローズ時画像パス
-var IMG_FOLDER_CLOSE_P = "./img/folder_close_p.gif";			// フォルダクローズ時画像パス(子有り)
-var IMG_FOLDER_OPEN    = "./img/folder_open.gif";				// フォルダオープン時画像パス
-var IMG_FOLDER_OPEN_M  = "./img/folder_open_m.gif";				// フォルダオープン時画像パス(子有り)
+var IMG_FOLDER_CLOSE   = "./img/folder_close.gif";				// フォルダクローズ時画像
+var IMG_FOLDER_OPEN    = "./img/folder_open.gif";				// フォルダオープン時画像
+var IMG_PLUS           = "./img/plus.gif";						// プラスボタン
+var IMG_MINUS          = "./img/folder_open_m.gif";				// マイナスボタン
 
 var tree = "";
 var count = 0;
@@ -39,32 +39,30 @@ function fnTreeView(view_id, arrTree) {
 		for(space_cnt = 0; space_cnt < arrTree[i][3]; space_cnt++) {
 			tree += "&nbsp;&nbsp;&nbsp;";
 		}
-		
-		// 初期表示の画像を選択
-		if(arrTree[i][1] == '_parent') {
-			if(arrTree[i][4]) {
-				defalt_img = IMG_FOLDER_OPEN_M;
-			} else {
-				defalt_img = IMG_FOLDER_CLOSE_P;
-			}
-		} else {
-			if(arrTree[i][4]) {
-				defalt_img = IMG_FOLDER_OPEN;
-			} else {
-				defalt_img = IMG_FOLDER_CLOSE;
-			}
-		}
 
+		// フォルダの画像を選択
 		if(arrTree[i][4]) {
+			folder_img = IMG_FOLDER_OPEN;
 			// 開き状態を保持
 			arrTreeStatus.push(arrTree[i][2]);
 			display = 'block';
+
 		} else {
+			folder_img = IMG_FOLDER_CLOSE;
 			display = 'none';
 		}
+		
+		// 初期表示の画像を選択
+		if(arrTree[i][1] == '_parent') {
+			rank_img = IMG_PLUS;
+		} else {
+			rank_img = IMG_MINUS;
+		}
+
 		arrFileSplit = arrTree[i][2].split("/");
 		file_name = arrFileSplit[arrFileSplit.length-1];
 
+		tree += '<input type="image" src="'+ rank_img +'" border="0" name="tree_img'+ i +'" id="tree_img'+ i +'" onclick="fnTreeMenu(\'tree'+ i +'\',\''+ arrTree[i][1] +'\',\'tree_img'+ i +'\',\''+ arrTree[i][2] +'\')">';
 		tree += '<input type="image" src="'+ defalt_img +'" border="0" name="tree_img'+ i +'" id="tree_img'+ i +'" onclick="fnTreeMenu(\'tree'+ i +'\',\''+ arrTree[i][1] +'\',\'tree_img'+ i +'\',\''+ arrTree[i][2] +'\')">'+ file_name +'<br/>';
 		tree += '<div id="tree'+ i +'" style="display:'+ display +'">';
 	
