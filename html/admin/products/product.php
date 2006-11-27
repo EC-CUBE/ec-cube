@@ -495,11 +495,6 @@ function lfCheckNonClass($product_id) {
 
 // 縮小した画像をセットする
 function lfSetScaleImage(){
-	global $objUpFile;
-	
-	$src_w = 0;
-	$src_h = 0;
-
 	switch ($_POST['image_key']){
 		case "main_large_image":
 			// 詳細メイン画像
