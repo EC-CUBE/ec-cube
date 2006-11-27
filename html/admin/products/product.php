@@ -498,16 +498,28 @@ function lfSetScaleImage(){
 	global $objUpFile;
 	$arrImageKey = array_flip($objUpFile->keyname);
 	
-	if($_POST['image_key'] == "main_large_image"){
-		// 縮小率設定
-		(LARGE_IMAGE_WIDTH > LARGE_IMAGE_HEIGHT) ? $scale = SMALL_IMAGE_WIDTH / LARGE_IMAGE_WIDTH : $scale = SMALL_IMAGE_HEIGHT / LARGE_IMAGE_HEIGHT;
-		$path = $objUpFile->saveResizeImage($_POST['image_key'], $scale);
-		$objUpFile->temp_file[$arrImageKey["main_list_image"]] = $path;
+	$src_w = 0;
+	$src_h = 0;
+	
+	switch ($_POST['image_key']){
+		case "main_large_image":
 		
-		// 縮小率設定
-		(LARGE_IMAGE_WIDTH > LARGE_IMAGE_HEIGHT) ? $scale = NORMAL_IMAGE_WIDTH / LARGE_IMAGE_WIDTH : $scale = NORMAL_IMAGE_HEIGHT / LARGE_IMAGE_HEIGHT;
-		$path = $objUpFile->saveResizeImage($_POST['image_key'], $scale);
-		$objUpFile->temp_file[$arrImageKey["main_image"]] = $path;
+			// 元画像サイズを取得
+			list($src_w, $src_h) = getimagesize($objUpFile->temp_file[$arrImageKey["main_list_image"]]);
+		
+			// 縮小率設定
+			($src_w > $src_h) ? $scale = SMALL_IMAGE_WIDTH / $src_w : $scale = SMALL_IMAGE_HEIGHT / $src_h;
+			$path = $objUpFile->saveResizeImage($_POST['image_key'], $scale);
+			$objUpFile->temp_file[$arrImageKey["main_list_image"]] = $path;
+			
+			// 縮小率設定
+			(LARGE_IMAGE_WIDTH > LARGE_IMAGE_HEIGHT) ? $scale = NORMAL_IMAGE_WIDTH / LARGE_IMAGE_WIDTH : $scale = NORMAL_IMAGE_HEIGHT / LARGE_IMAGE_HEIGHT;
+			$path = $objUpFile->saveResizeImage($_POST['image_key'], $scale);
+			$objUpFile->temp_file[$arrImageKey["main_image"]] = $path;
+			break;
+		
+		default:
+			break;
 	}
 }
 
