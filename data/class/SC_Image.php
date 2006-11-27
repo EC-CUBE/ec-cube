@@ -87,9 +87,13 @@ class SC_Image {
 					imagecopyresampled($dst_im, $src_im, 0, 0, 0,0, $zip_width, $zip_height, $src_w, $src_h);
 					
 					// 画像出力
-					if($header) header("Content-Type: image/jpeg");
+					if($header){
+						header("Content-Type: image/jpeg");	
+						ImageJPEG($dst_im);
+					}else{
+						ImageJPEG($dst_im, $path);
+					}
 
-					ImageJPEG($dst_im, $path);
 					break;
 				case "gif":
 					//元画像
