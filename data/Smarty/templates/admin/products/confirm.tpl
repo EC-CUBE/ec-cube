@@ -167,7 +167,7 @@
 									<td bgcolor="#ffffff" width="557">
 									<!--{assign var=key value="main_list_image"}-->
 									<!--{if $arrFile[$key].filepath != ""}-->
-									<img src="<!--{$arrFile[$key].filepath}-->" alt="<!--{$arrForm.name|escape}-->" width="<!--{$arrFile[$key].width}-->" height="<!--{$arrFile[$key].height}-->" /><br />
+									<img src="<!--{$arrFile[$key].filepath}-->" alt="<!--{$arrForm.name|escape}-->" /><br />
 									<!--{/if}-->
 									</td>
 								</tr>
@@ -176,7 +176,7 @@
 									<td bgcolor="#ffffff" width="557">
 									<!--{assign var=key value="main_image"}-->
 									<!--{if $arrFile[$key].filepath != ""}-->
-									<img src="<!--{$arrFile[$key].filepath}-->" alt="<!--{$arrForm.name|escape}-->" width="<!--{$arrFile[$key].width}-->" height="<!--{$arrFile[$key].height}-->" /><br />
+									<img src="<!--{$arrFile[$key].filepath}-->" alt="<!--{$arrForm.name|escape}-->" /><br />
 									<!--{/if}-->
 									</td>
 								</tr>
@@ -185,7 +185,7 @@
 									<td bgcolor="#ffffff" width="557">
 									<!--{assign var=key value="main_large_image"}-->
 									<!--{if $arrFile[$key].filepath != ""}-->
-									<img src="<!--{$arrFile[$key].filepath}-->" alt="<!--{$arrForm.name|escape}-->" width="<!--{$arrFile[$key].width}-->" height="<!--{$arrFile[$key].height}-->" /><br />
+									<img src="<!--{$arrFile[$key].filepath}-->" alt="<!--{$arrForm.name|escape}-->" /><br />
 									<!--{/if}-->
 									</td>
 								</tr>
@@ -210,7 +210,7 @@
 									<td bgcolor="#ffffff" width="557" class="fs12n">
 									<!--{assign var=key value="sub_image`$smarty.section.cnt.iteration`"}-->
 									<!--{if $arrFile[$key].filepath != ""}-->
-									<img src="<!--{$arrFile[$key].filepath}-->" alt="<!--{$arrForm.name|escape}-->" width="<!--{$arrFile[$key].width}-->" height="<!--{$arrFile[$key].height}-->" /><br />
+									<img src="<!--{$arrFile[$key].filepath}-->" alt="<!--{$arrForm.name|escape}-->" /><br />
 									<!--{/if}-->
 									</td>
 								</tr>
@@ -219,7 +219,7 @@
 									<td bgcolor="#ffffff" width="557" class="fs12n">
 									<!--{assign var=key value="sub_large_image`$smarty.section.cnt.iteration`"}-->
 									<!--{if $arrFile[$key].filepath != ""}-->
-									<img src="<!--{$arrFile[$key].filepath}-->" alt="<!--{$arrForm.name|escape}-->" width="<!--{$arrFile[$key].width}-->" height="<!--{$arrFile[$key].height}-->" /><br />
+									<img src="<!--{$arrFile[$key].filepath}-->" alt="<!--{$arrForm.name|escape}-->" /><br />
 									<!--{/if}-->
 									</td>
 								</tr>
