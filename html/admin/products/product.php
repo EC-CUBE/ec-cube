@@ -510,6 +510,7 @@ function lfSetScaleImage(){
 			$src_path = $objUpFile->temp_dir . $objUpFile->temp_file[$arrImageKey["main_list_image"]];
 			list($src_w, $src_h) = getimagesize($src_path);
 			
+			sfprintr($arrImageKey["main_list_image"]);
 			sfprintr($src_path);
 			sfprintr($src_w);
 		
