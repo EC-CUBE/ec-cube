@@ -52,7 +52,7 @@ class SC_Image {
 	}
 
 	// 拡大率を指定して画像保存
-	function saveResizeImage($file, $zip_scale = 1) {
+	function saveResizeImage($file, $zip_scale = 1, $header = false) {
 		// ディレクトリ取得
 		$dir = dirname($file);
 		
@@ -85,6 +85,10 @@ class SC_Image {
 					// 圧縮先画像
 					$dst_im = imagecreatetruecolor($zip_width, $zip_height);	
 					imagecopyresampled($dst_im, $src_im, 0, 0, 0,0, $zip_width, $zip_height, $src_w, $src_h);
+					
+					// 画像出力
+					if($header) header("Content-Type: image/jpeg");
+
 					ImageJPEG($dst_im, $path);
 					break;
 				case "gif":
@@ -94,6 +98,10 @@ class SC_Image {
 					// 圧縮先画像
 					$dst_im = imagecreatetruecolor($zip_width, $zip_height);	
 					imagecopyresampled($dst_im, $src_im, 0, 0, 0,0, $zip_width, $zip_height, $src_w, $src_h);
+					
+					// 画像出力
+					if($header) header("Content-Type: image/gif");
+					
 					ImageGIF($dst_im, $path);
 					break;
 				case "png":
@@ -103,6 +111,10 @@ class SC_Image {
 					// 圧縮先画像
 					$dst_im = imagecreatetruecolor($zip_width, $zip_height);	
 					imagecopyresampled($dst_im, $src_im, 0, 0, 0,0, $zip_width, $zip_height, $src_w, $src_h);
+
+					// 画像出力
+					if($header) header("Content-Type: image/png");
+					
 					ImagePNG($dst_im, $path);
 					break;
 				default:
@@ -112,7 +124,12 @@ class SC_Image {
 			}
 			ImageDestroy($src_im);
 			ImageDestroy($dst_im);
-			return $path;
+
+			if(!$header){
+				return $path;
+			}else{
+				return "";
+			}
 		}
 		
 		print("画像の保存に失敗しました。");
