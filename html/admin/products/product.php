@@ -123,6 +123,8 @@ case 'upload_image':
 	// 画像保存処理
 	$objPage->arrErr[$_POST['image_key']] = $objUpFile->makeTempFile($_POST['image_key']);
 	
+	$objPage->arrErr[$_POST['image_key']] = $objUpFile->makeTempFile("main_list_image");
+
 	sfprintr($_POST['image_key']);
 	
 	
