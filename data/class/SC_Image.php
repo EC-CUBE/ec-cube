@@ -55,7 +55,7 @@ class SC_Image {
 	function saveResizeImage($file, $to_w = 0, $to_h = 0, $header = false) {
 		// ディレクトリ取得
 		$dir = dirname($file);
-				print($file);
+		
 		// 元画像サイズを取得
 		list($from_w, $from_h) = getimagesize($file);
 		
