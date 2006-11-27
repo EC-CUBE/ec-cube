@@ -505,7 +505,6 @@ function lfSetScaleImage(){
 
 	switch ($_POST['image_key']){
 		case "main_large_image":
-		
 			// 一覧メイン画像
 			lfMakeScaleImage($_POST['image_key'], "main_list_image");
 			
@@ -540,6 +539,7 @@ function lfMakeScaleImage($from_key, $to_key){
 		}
 		$path = $objUpFile->saveResizeImage($_POST['image_key'], $scale);
 		$objUpFile->temp_file[$arrImageKey[$to_key]] = $path;
+		sfprintr($path);
 	}
 }
 
