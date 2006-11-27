@@ -539,7 +539,7 @@ function lfMakeScaleImage($from_key, $to_key){
 		}
 		$path = $objUpFile->saveResizeImage($_POST['image_key'], $scale);
 		$objUpFile->temp_file[$arrImageKey[$to_key]] = $path;
-		sfprintr($path);
+		sfprintr($arrImageKey);
 	}
 }
 
