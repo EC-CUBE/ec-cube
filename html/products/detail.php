@@ -176,7 +176,7 @@ $objPage->arrRecommend = lfPreGetRecommendProducts($tmp_id);
 $objPage->arrRelateProducts = lfGetRelateProducts($tmp_id);
 
 // 拡大画像のウィンドウサイズをセット
-list($image_width, $image_height) = getimagesize($arrFile["main_image"]["filepath"]);
+list($image_width, $image_height) = getimagesize($objPage->arrFile["main_image"]["filepath"]);
 $objPage->tpl_image_width = $image_width;
 $objPage->tpl_image_height = $image_height;
 
