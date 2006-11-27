@@ -70,17 +70,34 @@ class SC_Image {
 		$dst_im = imagecreatetruecolor($zip_width, $zip_height);	
 		imagecopyresampled($dst_im, $src_im, 0, 0, 0,0, $zip_width, $zip_height, $src_w, $src_h);
 
-		// 画像出力
-//		header("Content-Type: image/gif");
-//		ImageGIF($dst_im);
-//		ImageDestroy($dst_im);
-		
 		// 一意なIDを取得する。
 		$uniqname = date("mdHi") . "_" . uniqid("");
-		$filename = $uniqname . ".gif";
+
+		// ファイルの拡張子取得		
+		$arrFileInfo = pathinfo($file);
+		$extension = $arrFileInfo["extension"];
+		
+		// ファイル名、保存先設定
+		$filename = $uniqname . $extension;
 		$path = $dir . "/" . $filename;
+		
+		// ファイルの拡張子によって処理を分ける
 		if(is_dir($dir)) {
-			ImageGIF($dst_im, $path);
+			switch ($extension)	{
+				case "jpg":
+				case "jpeg":
+					ImageJPEG($dst_im, $path);
+					break;
+				case "gif":
+					ImageGIF($dst_im, $path);
+					break;
+				case "png":
+					ImagePNG($dst_im, $path);
+					break;
+				case "default":
+					print("拡張子が不正です。");
+					return "";
+			}
 			return $path;
 		}
 		
