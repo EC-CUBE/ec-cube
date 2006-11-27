@@ -63,20 +63,13 @@ class SC_Image {
 		$zip_width = $src_w * $zip_scale;
 		$zip_height = $src_h * $zip_scale;
 		
-		//元画像
-		$src_im = ImageCreateFromJPEG($file);
-		
-		// 圧縮先画像
-		$dst_im = imagecreatetruecolor($zip_width, $zip_height);	
-		imagecopyresampled($dst_im, $src_im, 0, 0, 0,0, $zip_width, $zip_height, $src_w, $src_h);
-
 		// ファイルの拡張子取得	
 		$arrFileInfo = pathinfo($file);
 		$extension = $arrFileInfo["extension"];
 
 		// 一意なIDを取得する。
 		$uniqname = date("mdHi") . "_" . uniqid("");
-
+		
 		// ファイル名、保存先設定
 		$filename = $uniqname . "." . $extension;
 		$path = $dir . "/" . $filename;
@@ -86,12 +79,33 @@ class SC_Image {
 			switch ($extension)	{
 				case "jpg":
 				case "jpeg":
+					//元画像
+					$src_im = ImageCreateFromJPEG($file);
+					
+					// 圧縮先画像
+					$dst_im = imagecreatetruecolor($zip_width, $zip_height);	
+					imagecopyresampled($dst_im, $src_im, 0, 0, 0,0, $zip_width, $zip_height, $src_w, $src_h);
+					
 					ImageJPEG($dst_im, $path);
 					break;
 				case "gif":
+					//元画像
+					$src_im = ImageCreateFromGIF($file);
+					
+					// 圧縮先画像
+					$dst_im = imagecreatetruecolor($zip_width, $zip_height);	
+					imagecopyresampled($dst_im, $src_im, 0, 0, 0,0, $zip_width, $zip_height, $src_w, $src_h);
+					
 					ImageGIF($dst_im, $path);
 					break;
 				case "png":
+					//元画像
+					$src_im = ImageCreateFromPNG($file);
+					
+					// 圧縮先画像
+					$dst_im = imagecreatetruecolor($zip_width, $zip_height);	
+					imagecopyresampled($dst_im, $src_im, 0, 0, 0,0, $zip_width, $zip_height, $src_w, $src_h);
+					
 					ImagePNG($dst_im, $path);
 					break;
 				default:

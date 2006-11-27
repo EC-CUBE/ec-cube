@@ -508,17 +508,13 @@ function lfSetScaleImage(){
 			$src_path = $objUpFile->temp_dir . $objUpFile->temp_file[$arrImageKey["main_large_image"]];
 			list($src_w, $src_h) = getimagesize($src_path);
 			
-			sfprintr($arrImageKey["main_large_image"]);
-			sfprintr($src_path);
-			sfprintr($src_w);
-		
 			// 教井唯肋年
 			($src_w > $src_h) ? $scale = SMALL_IMAGE_WIDTH / $src_w : $scale = SMALL_IMAGE_HEIGHT / $src_h;
 			$path = $objUpFile->saveResizeImage($_POST['image_key'], $scale);
 			$objUpFile->temp_file[$arrImageKey["main_list_image"]] = $path;
 			
 			// 教井唯肋年
-			(LARGE_IMAGE_WIDTH > LARGE_IMAGE_HEIGHT) ? $scale = NORMAL_IMAGE_WIDTH / LARGE_IMAGE_WIDTH : $scale = NORMAL_IMAGE_HEIGHT / LARGE_IMAGE_HEIGHT;
+			($src_w > $src_h) ? $scale = NORMAL_IMAGE_WIDTH / $src_w : $scale = NORMAL_IMAGE_WIDTH / $src_h;
 			$path = $objUpFile->saveResizeImage($_POST['image_key'], $scale);
 			$objUpFile->temp_file[$arrImageKey["main_image"]] = $path;
 			break;
