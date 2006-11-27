@@ -63,7 +63,7 @@ function fnTreeView(view_id, arrTree) {
 		file_name = arrFileSplit[arrFileSplit.length-1];
 
 		tree += '<input type="image" src="'+ rank_img +'" border="0" name="tree_img'+ i +'" id="tree_img'+ i +'" onclick="fnTreeMenu(\'tree'+ i +'\',\''+ arrTree[i][1] +'\',\'tree_img'+ i +'\',\''+ arrTree[i][2] +'\')">';
-		tree += '<input type="image" src="'+ folder_img +'" border="0" name="tree_img'+ i +'" id="tree_img'+ i +'" onclick="fnTreeMenu(\'tree'+ i +'\',\''+ arrTree[i][1] +'\',\'tree_img'+ i +'\',\''+ arrTree[i][2] +'\')">'+ file_name +'<br/>';
+		tree += '<input type="image" src="'+ folder_img +'" border="0" name="tree_img'+ i +'" id="tree_img'+ i +'" onclick="fnTreeMenu(\'tree'+ i +'\',\''+ arrTree[i][1] +'\',\'tree_img'+ i +'\',\''+ arrTree[i][2] +'\')">&nbsp;'+ file_name +'<br/>';
 		tree += '<div id="tree'+ i +'" style="display:'+ display +'">';
 	
 	}
