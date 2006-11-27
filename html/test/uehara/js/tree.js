@@ -118,13 +118,20 @@ function fnDrow(id, tree) {
 function fnTreeMenu(tName, type, imgName, path) {
 
 	tMenu = document.all[tName].style;
-	if(tMenu.display == 'none') {
+
+	// フォルダをオープン状態へ
+	fnChgImg(IMG_FOLDER_OPEN, imgName);
+	// オープンファイル状態を保持
+	arrTreeStatus.push(path);
+
+/*	if(tMenu.display == 'none') {
 		if(type == '_parent') {
 			fnChgImg(IMG_FOLDER_OPEN_M, imgName);
 		} else {
 			fnChgImg(IMG_FOLDER_OPEN, imgName);
 		}
-		tMenu.display = "block";
+
+		//tMenu.display = "block";
 		// オープンファイル状態を保持
 		arrTreeStatus.push(path);
 
@@ -138,6 +145,7 @@ function fnTreeMenu(tName, type, imgName, path) {
 		// 閉じ状態を保持
 		fnDelTreeStatus(path);
 	}
+*/
 	// クリックしたフォルダ情報を保持
 	document.form1['tree_select_file'].value = path;
 	// treeの状態をセット
