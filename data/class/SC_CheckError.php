@@ -243,9 +243,9 @@ class SC_CheckError {
 					
 		for($i = 1; $i <= 3; $i++) {
 			if(strlen($this->arrParam[$value[$i]]) > 0 && strlen($this->arrParam[$value[$i]]) > $value[4]) {
-				$this->arrErr[$value[1]] .= "※ " . $value[0] . $i . "は" . $value[4] . "字以内で入力してください。<br />";
+				$this->arrErr[$value[$i]] .= "※ " . $value[0] . $i . "は" . $value[4] . "字以内で入力してください。<br />";
 			} else if (strlen($this->arrParam[$value[$i]]) > 0 && !EregI("^[[:digit:]]+$", $this->arrParam[$value[$i]])) {
-				$this->arrErr[$value[1]] .= "※ " . $value[0] . $i . "は数字で入力してください。<br />";
+				$this->arrErr[$value[$i]] .= "※ " . $value[0] . $i . "は数字で入力してください。<br />";
 			}
 		}
 	}
