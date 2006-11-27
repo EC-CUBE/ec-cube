@@ -52,19 +52,23 @@ class SC_Image {
 	}
 
 	// 拡大率を指定して画像保存
-	function saveResizeImage($file, $to_w = 1, $to_h = 1, $header = false) {
+	function saveResizeImage($file, $to_w = 0, $to_h = 0, $header = false) {
 		// ディレクトリ取得
 		$dir = dirname($file);
 		
 		// 元画像サイズを取得
 		list($from_w, $from_h) = getimagesize($file);
 		
-		// 幅の縮小率
-		($to_w < $from_w) ? $wscale = $to_w / $from_w :	$wscale = 1;
-		// 高さの縮小率
-		($to_h < $from_h) ? $hscale = $to_h / $from_h :	$hscale = 1;
-		// 縮小率は小さいほうにあわせる
-		($wscale < $hscale) ? $scale = $wscale : $scale = $hscale;
+		if($to_w == 0 or $to_h == 0){
+			$scale = 1;
+		}else{
+			// 幅の縮小率
+			($to_w < $from_w) ? $wscale = $to_w / $from_w :	$wscale = 1;
+			// 高さの縮小率
+			($to_h < $from_h) ? $hscale = $to_h / $from_h :	$hscale = 1;
+			// 縮小率は小さいほうにあわせる
+			($wscale < $hscale) ? $scale = $wscale : $scale = $hscale;
+		}
 
 		// 圧縮率指定
 		$zip_width = $from_w * $scale;
