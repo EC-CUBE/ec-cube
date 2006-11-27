@@ -48,6 +48,9 @@ class SC_UploadFile {
 		
 		$dst_file = $this->temp_dir . $uniqname;
 		
+		sfprintr($width);
+		sfprintr($height);
+		
 		$objThumb = new gdthumb();
 		$ret = $objThumb->Main($src_file, $width, $height, $dst_file);
 		
