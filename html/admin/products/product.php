@@ -122,6 +122,10 @@ case 'upload_image':
 	$objPage->arrErr = array_merge((array)$objPage->arrErr, (array)$objUpFile->checkEXISTS($_POST['image_key']));
 	// 画像保存処理
 	$objPage->arrErr[$_POST['image_key']] = $objUpFile->makeTempFile($_POST['image_key']);
+	
+	sfprintr($_POST['image_key']);
+	
+	
 	lfProductPage(); // 商品登録ページ
 	break;
 // 画像の削除
