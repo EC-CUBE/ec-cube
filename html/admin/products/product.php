@@ -505,7 +505,7 @@ function lfSetScaleImage(){
 		case "main_large_image":
 		
 			// 元画像サイズを取得
-			list($src_w, $src_h) = getimagesize($objUpFile->temp_file[$arrImageKey["main_list_image"]]);
+			list($src_w, $src_h) = getimagesize($objUpFile->temp_dir . $objUpFile->temp_file[$arrImageKey["main_list_image"]]);
 		
 			// 縮小率設定
 			($src_w > $src_h) ? $scale = SMALL_IMAGE_WIDTH / $src_w : $scale = SMALL_IMAGE_HEIGHT / $src_h;
