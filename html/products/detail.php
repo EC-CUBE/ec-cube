@@ -177,8 +177,8 @@ $objPage->arrRelateProducts = lfGetRelateProducts($tmp_id);
 
 // 拡大画像のウィンドウサイズをセット
 list($image_width, $image_height) = getimagesize(IMAGE_SAVE_DIR . basename($objPage->arrFile["main_image"]["filepath"]));
-$objPage->tpl_image_width = $image_width;
-$objPage->tpl_image_height = $image_height;
+$objPage->tpl_image_width = $image_width + 60;
+$objPage->tpl_image_height = $image_height + 80;
 
 $objView->assignobj($objPage);
 $objView->display(SITE_FRAME);
