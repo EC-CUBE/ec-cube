@@ -9,7 +9,7 @@ $file = $_GET["image"];
 if(file_exists($file)){
 	$objImage->saveResizeImage($file, $_GET["width"], $_GET["height"], true);
 }else{
-	$objImage->saveResizeImage(NO_IMAGE_URL, $_GET["width"], $_GET["height"], true);
+	$objImage->saveResizeImage(NO_IMAGE_DIR, $_GET["width"], $_GET["height"], true);
 }
 
 ?>

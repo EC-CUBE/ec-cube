@@ -59,15 +59,15 @@ class SC_Image {
 		// 元画像サイズを取得
 		list($from_w, $from_h) = getimagesize($file);
 		
-		if($to_w == 0 or $to_h == 0){
-			$scale = 1;
-		}else{
+		if($to_w > 0 or $to_h > 0){
 			// 幅の縮小率
 			($to_w < $from_w) ? $wscale = $to_w / $from_w :	$wscale = 1;
 			// 高さの縮小率
 			($to_h < $from_h) ? $hscale = $to_h / $from_h :	$hscale = 1;
 			// 縮小率は小さいほうにあわせる
 			($wscale < $hscale) ? $scale = $wscale : $scale = $hscale;
+		}else{
+			$scale = 1;
 		}
 
 		// 圧縮率指定
