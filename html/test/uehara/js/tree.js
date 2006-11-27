@@ -62,7 +62,7 @@ function fnTreeView(view_id, arrTree) {
 		arrFileSplit = arrTree[i][2].split("/");
 		file_name = arrFileSplit[arrFileSplit.length-1];
 
-		tree += '<input type="image" src="'+ rank_img +'" border="0" name="tree_img'+ i +'" id="tree_img'+ i +'" onclick="fnTreeMenu(\'tree'+ i +'\',\''+ arrTree[i][1] +'\',\'tree_img'+ i +'\',\''+ arrTree[i][2] +'\')">';
+		tree += '<input type="image" src="'+ rank_img +'" border="0" name="rank_img'+ i +'" id="rank_img'+ i +'" onclick="fnTreeMenu(\'tree'+ i +'\',\''+ arrTree[i][1] +'\',\'tree_img'+ i +'\',\''+ arrTree[i][2] +'\')">';
 		tree += '<input type="image" src="'+ folder_img +'" border="0" name="tree_img'+ i +'" id="tree_img'+ i +'" onclick="fnFolderOpen(\'tree'+ i +'\',\''+ arrTree[i][1] +'\',\''+ arrTree[i][2] +'\')">&nbsp;'+ file_name +'<br/>';
 		tree += '<div id="tree'+ i +'" style="display:'+ display +'">';
 	
@@ -119,33 +119,19 @@ function fnTreeMenu(tName, type, imgName, path) {
 
 	tMenu = document.all[tName].style;
 
-	// フォルダをオープン状態へ
-	fnChgImg(IMG_FOLDER_OPEN, imgName);
-	// オープンファイル状態を保持
-	arrTreeStatus.push(path);
-
-/*	if(tMenu.display == 'none') {
-		if(type == '_parent') {
-			fnChgImg(IMG_FOLDER_OPEN_M, imgName);
-		} else {
-			fnChgImg(IMG_FOLDER_OPEN, imgName);
-		}
-
-		//tMenu.display = "block";
+	if(tMenu.display == 'none') {
+		fnChgImg(IMG_MINUS, imgName);
+		tMenu.display = "block";
 		// オープンファイル状態を保持
 		arrTreeStatus.push(path);
 
 	} else {
-		if(type == '_parent') {
-			fnChgImg(IMG_FOLDER_CLOSE_P, imgName);
-		} else {
-			fnChgImg(IMG_FOLDER_CLOSE, imgName);
-		}
+		fnChgImg(IMG_PLUS, imgName);
 		tMenu.display = "none";
 		// 閉じ状態を保持
 		fnDelTreeStatus(path);
 	}
-*/
+	
 	// クリックしたフォルダ情報を保持
 	document.form1['tree_select_file'].value = path;
 	// treeの状態をセット
