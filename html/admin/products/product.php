@@ -503,14 +503,14 @@ function lfSetScaleImage(){
 	sfprintr($objUpFile);
 
 	switch ($_POST['image_key']){
-		case "main_large_image":
+		case "main_image":
 			// 一覧メイン画像
 			lfMakeScaleImage($_POST['image_key'], "main_list_image");
 			
+		case "main_large_image":
 			// 詳細メイン画像
 			lfMakeScaleImage($_POST['image_key'], "main_image");
 			break;
-		
 		default:
 			break;
 	}
