@@ -255,9 +255,9 @@
 							<td rowspan="2" align="center"><!--{$arrProducts[cnt].product_id}--></td>
 							<td rowspan="2" align="center">
 							<!--{if $arrProducts[cnt].main_list_image != ""}-->
-								<!--{assign var=image_path value="`$smarty.const.IMAGE_SAVE_URL`/`$arrProducts[cnt].main_list_image`"}-->
+								<!--{assign var=image_path value="`$smarty.const.IMAGE_SAVE_DIR`/`$arrProducts[cnt].main_list_image`"}-->
 							<!--{else}-->
-								<!--{assign var=image_path value="`$smarty.const.NO_IMAGE_URL`"}-->
+								<!--{assign var=image_path value="`$smarty.const.NO_IMAGE_DIR`"}-->
 							<!--{/if}-->
 							<img src="<!--{$smarty.const.SITE_URL}-->resize_image.php?image=<!--{$image_path|sfRmDupSlash}-->&width=65&height=65" alt="<!--{$arrProducts[cnt].name|escape}-->">
 							</td>

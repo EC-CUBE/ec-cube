@@ -99,11 +99,12 @@ function func_submit( id ){
 		<tr bgcolor="#FFFFFF" class="fs12n">
 			<td width="90" align="center">
 			<!--{if $arrProducts[cnt].main_list_image != ""}-->
-				<!--{assign var=image_path value="`$smarty.const.IMAGE_SAVE_URL`/`$arrProducts[cnt].main_list_image`"}-->
+				<!--{assign var=image_path value="`$smarty.const.IMAGE_SAVE_DIR`/`$arrProducts[cnt].main_list_image`"}-->
 			<!--{else}-->
-				<!--{assign var=image_path value="`$smarty.const.NO_IMAGE_URL`"}-->
+				<!--{assign var=image_path value="`$smarty.const.NO_IMAGE_DIR`"}-->
 			<!--{/if}-->
 			<img src="<!--{$image_path}-->" width="65" height="65" alt="" />
+			<img src="<!--{$smarty.const.SITE_URL}-->resize_image.php?image=<!--{$image_path}-->&width=65&height=65" alt="<!--{$arrRecommend[$recommend_no].name|escape}-->">
 			</td>	
 			<td><!--{$arrProducts[cnt].product_code|escape|default:"-"}--></td>
 			<td><!--{$arrProducts[cnt].name|escape}--></td>
