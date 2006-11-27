@@ -122,14 +122,21 @@ case 'upload_image':
 	$objPage->arrErr = array_merge((array)$objPage->arrErr, (array)$objUpFile->checkEXISTS($_POST['image_key']));
 	// 画像保存処理
 	$objPage->arrErr[$_POST['image_key']] = $objUpFile->makeTempFile($_POST['image_key']);
-	
+
 	// 中、小画像生成
+	$arrImageKey = array_flip($objUpFile->keyname);
+	
+	// 縮小率設定
+	(LARGE_IMAGE_WIDTH > LARGE_IMAGE_HEIGHT) ? $scale = SMALL_IMAGE_WIDTH / LARGE_IMAGE_WIDTH : $scale = SMALL_IMAGE_HEIGHT / LARGE_IMAGE_HEIGHT;
+	$path = $objUpFile->saveResizeImage($_POST['image_key'], $scale);
+	
+	$objUpFile->temp_file[$arrImageKey["main_list_image"]] = $path;
+	
 	sfprintr($_POST['image_key']);
-	
-	$path = $objUpFile->saveResizeImage($_POST['image_key'],0.5);
-	
+
+
 	sfprintr($path);
-	
+
 	lfProductPage(); // 商品登録ページ
 	break;
 // 画像の削除
