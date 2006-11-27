@@ -501,7 +501,8 @@ function lfSetScaleImage(){
 			lfMakeScaleImage($_POST['image_key'], "main_list_image");
 			break;
 		case "sub_large_image" . $subno:
-			sfprintr("test");
+			// サブメイン画像
+			lfMakeScaleImage($_POST['image_key'], "sub_image" . $subno);
 			break;
 		default:
 			break;

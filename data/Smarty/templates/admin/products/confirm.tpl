@@ -157,18 +157,18 @@
 									</td>
 								</tr>
 								<tr>
+									<td bgcolor="#f2f1ec" width="160" class="fs12n">詳細-メインコメント</td>
+									<td bgcolor="#ffffff" width="557" class="fs12n">
+									<!--{$arrForm.main_comment|nl2br}-->
+									</td>
+								</tr>
+								<tr>
 									<td bgcolor="#f2f1ec" width="160" class="fs12n">一覧-メイン画像</td>
 									<td bgcolor="#ffffff" width="557">
 									<!--{assign var=key value="main_list_image"}-->
 									<!--{if $arrFile[$key].filepath != ""}-->
 									<img src="<!--{$arrFile[$key].filepath}-->" alt="<!--{$arrForm.name|escape}-->" width="<!--{$arrFile[$key].width}-->" height="<!--{$arrFile[$key].height}-->" /><br />
 									<!--{/if}-->
-									</td>
-								</tr>
-								<tr>
-									<td bgcolor="#f2f1ec" width="160" class="fs12n">詳細-メインコメント</td>
-									<td bgcolor="#ffffff" width="557" class="fs12n">
-									<!--{$arrForm.main_comment|nl2br}-->
 									</td>
 								</tr>
 								<tr>
