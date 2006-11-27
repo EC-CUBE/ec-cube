@@ -98,6 +98,7 @@ class SC_Image {
 					print("拡張子が不正です。");
 					return "";
 			}
+			sfprintr($extension);
 			return $path;
 		}
 		
