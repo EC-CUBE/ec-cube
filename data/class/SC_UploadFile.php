@@ -98,7 +98,7 @@ class SC_UploadFile {
 		}
 		return $objErr->arrErr[$keyname];
 	}
-		
+
 	// 画像を削除する。
 	function deleteFile($keyname) {
 		$objImage = new SC_Image($this->temp_dir);
@@ -278,6 +278,22 @@ class SC_UploadFile {
 			$cnt++;
 		}
 		return $arrRet;
+	}
+		
+	// 拡大率を指定して画像保存
+	function saveResizeImage($keyname, $zip_scale = 1) {
+		$path = "";
+		
+		// keynameの添付ファイルを取得
+		$arrImageKey = array_flip($this->keyname);
+		$file = $this->temp_file[$arrImageKey[$keyname]];
+		$filepath = $this->temp_dir . $file;
+		
+		$objImage = new SC_Image($filepath);
+		
+		$path = $objImage->saveResizeImage($filepath, $zip_scale);
+		
+		return $path;
 	}
 }
 ?>

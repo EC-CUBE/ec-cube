@@ -124,12 +124,11 @@ case 'upload_image':
 	$objPage->arrErr[$_POST['image_key']] = $objUpFile->makeTempFile($_POST['image_key']);
 	
 	// 中、小画像生成
-	$arrImageKey = array_flip($objUpFile->keyname);
-	sfprintr($arrImageKey[$_POST['image_key']]);
 	sfprintr($_POST['image_key']);
 	
-	sfprintr($objUpFile);
-	$objUpFile->temp_file[3] = $objUpFile->temp_file[4];
+	$path = $objUpFile->saveResizeImage($_POST['image_key'],0.5);
+	
+	sfprintr($path);
 	
 	lfProductPage(); // 商品登録ページ
 	break;
