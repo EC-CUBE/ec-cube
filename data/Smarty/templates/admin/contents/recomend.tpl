@@ -129,7 +129,7 @@ function lfnCheckSetItem( rank ){
 									<tr>
 										<td colspan="2" class="fs12n">
 										<span class="red"><!--{$arrErr[$smarty.section.cnt.iteration].comment}--></span>
-										<textarea name="comment" cols="45" rows="4" class="area50" <!--{$arrItems[$smarty.section.cnt.iteration].product_id|sfGetEnabled}-->><!--{$arrItems[$smarty.section.cnt.iteration].comment}--></textarea>
+										<textarea name="comment" cols="45" rows="4" class="area45" <!--{$arrItems[$smarty.section.cnt.iteration].product_id|sfGetEnabled}-->><!--{$arrItems[$smarty.section.cnt.iteration].comment}--></textarea>
 										</td>
 									</tr>
 									<!--{if $arrItems[$smarty.section.cnt.iteration].product_id}-->
