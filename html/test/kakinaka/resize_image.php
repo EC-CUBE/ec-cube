@@ -7,7 +7,7 @@ $objImage = new SC_Image(IMAGE_TEMP_DIR);
 
 
 $file = IMAGE_TEMP_DIR . "kaki.jpg";
-$path = $objImage->saveResizeImage($file, 2);
+$path = $objImage->saveResizeImage($file, 0.5);
 
 sfprintr($path);
 
