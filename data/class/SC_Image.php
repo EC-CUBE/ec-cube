@@ -69,6 +69,8 @@ class SC_Image {
 		}else{
 			$scale = 1;
 		}
+		
+		sfprintr($scale);
 
 		// °µ½ÌÎ¨»ØÄê
 		$zip_width = $from_w * $scale;
