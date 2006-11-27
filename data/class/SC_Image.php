@@ -96,8 +96,10 @@ class SC_Image {
 					break;
 				default:
 					print("拡張子が不正です。");
-					return "";
+					break;
 			}
+			ImageDestroy($src_im);
+			ImageDestroy($dst_im);
 			return $path;
 		}
 		
