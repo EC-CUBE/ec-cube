@@ -103,7 +103,6 @@ function func_submit( id ){
 			<!--{else}-->
 				<!--{assign var=image_path value="`$smarty.const.NO_IMAGE_DIR`"}-->
 			<!--{/if}-->
-			<img src="<!--{$image_path}-->" width="65" height="65" alt="" />
 			<img src="<!--{$smarty.const.SITE_URL}-->resize_image.php?image=<!--{$image_path}-->&width=65&height=65" alt="<!--{$arrRecommend[$recommend_no].name|escape}-->">
 			</td>	
 			<td><!--{$arrProducts[cnt].product_code|escape|default:"-"}--></td>
