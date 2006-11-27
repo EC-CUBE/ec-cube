@@ -133,11 +133,11 @@ function fnTreeMenu(tName, type, imgName, path) {
 	}
 	
 	// クリックしたフォルダ情報を保持
-	document.form1['tree_select_file'].value = path;
+	//document.form1['tree_select_file'].value = path;
 	// treeの状態をセット
-	setTreeStatus('tree_status');
+	//setTreeStatus('tree_status');
 	// submit
-	fnModeSubmit('move','','');
+	//fnModeSubmit('move','','');
 }
 
 // フォルダオープン処理
@@ -148,7 +148,7 @@ function fnFolderOpen(tName, imgName, path) {
 	// フォルダをオープン状態へ
 	//fnChgImg(IMG_FOLDER_OPEN, imgName);
 	// オープンファイル状態を保持
-	arrTreeStatus.push(path);
+	//arrTreeStatus.push(path);
 
 	// クリックしたフォルダ情報を保持
 	document.form1['tree_select_file'].value = path;
