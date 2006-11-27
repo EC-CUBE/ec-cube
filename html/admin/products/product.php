@@ -132,6 +132,7 @@ case 'upload_image':
 		$path = $objUpFile->saveResizeImage($_POST['image_key'], $scale);
 		
 		$objUpFile->temp_file[$arrImageKey["main_list_image"]] = $path;
+		$objUpFile->temp_file[$arrImageKey["main_image"]] = $path;
 		
 	}
 	
