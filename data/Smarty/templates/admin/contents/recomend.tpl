@@ -108,12 +108,12 @@ function lfnCheckSetItem( rank ){
 								<!--{/if}-->
 								<img src="<!--{$image_path}-->" alt="" />
 								</td>
-								<td bgcolor="#ffffff" width="55" align="center">
+								<td bgcolor="#ffffff" width="40" align="center">
 									<!--{if $arrItems[$smarty.section.cnt.iteration].product_id}-->
 									<a href="#" onClick="return fnInsertValAndSubmit( document.form<!--{$smarty.section.cnt.iteration}-->, 'mode', 'delete', '削除します。宜しいですか' )">削除</a>
 									<!--{/if}-->
 								</td>
-								<td bgcolor="#ffffff" width="55" align="center">
+								<td bgcolor="#ffffff" width="40" align="center">
 									<a href="#" onclick="lfnCheckSetItem('<!--{$smarty.section.cnt.iteration}-->'); return false;" target="_blank">
 									<!--{if $arrItems[$smarty.section.cnt.iteration].product_id}-->商品<br/>変更<!--{else}-->商品<br/>選択<!--{/if}-->
 									</a></td>
