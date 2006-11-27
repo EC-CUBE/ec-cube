@@ -246,6 +246,7 @@ define ("IMAGE_TEMP_URL_RSS", SITE_URL . "upload/temp_image/");				// RSSÍÑ²èÁü°
 define ("IMAGE_SAVE_URL_RSS", SITE_URL . "upload/save_image/");				// RSSÍÑ²èÁüÊİÂ¸ÀèURL
 define ("CSV_TEMP_DIR", HTML_PATH . "upload/csv/");							// ¥¨¥ó¥³¡¼¥ÉCSV¤Î°ì»şÊİÂ¸Àè
 define ("NO_IMAGE_URL", URL_DIR . "misc/blank.gif");						// ²èÁü¤¬¤Ê¤¤¾ì¹ç¤ËÉ½¼¨
+define ("NO_IMAGE_DIR", HTML_PATH . "misc/blank.gif");						// ²èÁü¤¬¤Ê¤¤¾ì¹ç¤ËÉ½¼¨
 
 /* URL¥Ñ¥¹ */
 define ("URL_SYSTEM_TOP", URL_DIR . "admin/system/index.php");			// ¥·¥¹¥Æ¥à´ÉÍı¥È¥Ã¥×
