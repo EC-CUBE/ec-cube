@@ -177,7 +177,7 @@ $objPage->arrRelateProducts = lfGetRelateProducts($tmp_id);
 
 // 拡大画像のウィンドウサイズをセット
 
-sfprintr(basename()$objPage->arrFile["main_image"]["filepath"]));
+sfprintr(basename($objPage->arrFile["main_image"]["filepath"]));
 list($image_width, $image_height) = getimagesize($objPage->arrFile["main_image"]["filepath"]);
 $objPage->tpl_image_width = $image_width;
 $objPage->tpl_image_height = $image_height;
