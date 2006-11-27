@@ -85,7 +85,6 @@ class SC_Image {
 					// ∞µΩÃ¿Ë≤Ë¡¸
 					$dst_im = imagecreatetruecolor($zip_width, $zip_height);	
 					imagecopyresampled($dst_im, $src_im, 0, 0, 0,0, $zip_width, $zip_height, $src_w, $src_h);
-					
 					ImageJPEG($dst_im, $path);
 					break;
 				case "gif":
@@ -95,7 +94,6 @@ class SC_Image {
 					// ∞µΩÃ¿Ë≤Ë¡¸
 					$dst_im = imagecreatetruecolor($zip_width, $zip_height);	
 					imagecopyresampled($dst_im, $src_im, 0, 0, 0,0, $zip_width, $zip_height, $src_w, $src_h);
-					
 					ImageGIF($dst_im, $path);
 					break;
 				case "png":
@@ -105,7 +103,6 @@ class SC_Image {
 					// ∞µΩÃ¿Ë≤Ë¡¸
 					$dst_im = imagecreatetruecolor($zip_width, $zip_height);	
 					imagecopyresampled($dst_im, $src_im, 0, 0, 0,0, $zip_width, $zip_height, $src_w, $src_h);
-					
 					ImagePNG($dst_im, $path);
 					break;
 				default:
