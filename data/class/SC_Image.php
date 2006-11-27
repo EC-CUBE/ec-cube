@@ -94,12 +94,10 @@ class SC_Image {
 				case "png":
 					ImagePNG($dst_im, $path);
 					break;
-				case "default":
+				default:
 					print("拡張子が不正です。");
 					return "";
-					break;
 			}
-			sfprintr($extension);
 			return $path;
 		}
 		
