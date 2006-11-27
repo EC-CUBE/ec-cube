@@ -97,6 +97,7 @@ class SC_Image {
 				case "default":
 					print("拡張子が不正です。");
 					return "";
+					break;
 			}
 			sfprintr($extension);
 			return $path;
