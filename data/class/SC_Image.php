@@ -78,7 +78,7 @@ class SC_Image {
 		$extension = $arrFileInfo["extension"];
 		
 		// ファイル名、保存先設定
-		$filename = $uniqname . $extension;
+		$filename = $uniqname . "." . $extension;
 		$path = $dir . "/" . $filename;
 		
 		// ファイルの拡張子によって処理を分ける
