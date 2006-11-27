@@ -37,19 +37,9 @@ $objQuery = new SC_Query();
 $col = "name, $image_key";
 $arrRet = $objQuery->select($col, "dtb_products", "product_id = ?", array($_GET['product_id']));
 
-if (sfIsInt($_GET['width']) && sfIsInt($_GET['height'])) {
-/*	
-	$objPage->tpl_width = $_GET['width'];
-	$objPage->tpl_height = $_GET['height']; 	
-*/
-	list($width, $height) = getimagesize(IMAGE_SAVE_DIR . $arrRet[0][$image_key]);
-	$objPage->tpl_width = $width;
-	$objPage->tpl_height = $height;
-} else {
-	list($width, $height) = getimagesize(IMAGE_SAVE_DIR . $arrRet[0][$image_key]);
-	$objPage->tpl_width = $width;
-	$objPage->tpl_height = $height;
-}
+list($width, $height) = getimagesize(IMAGE_SAVE_DIR . $arrRet[0][$image_key]);
+$objPage->tpl_width = $width;
+$objPage->tpl_height = $height;
 
 $objPage->tpl_table_width = $objPage->tpl_width + 20;
 $objPage->tpl_table_height = $objPage->tpl_height + 20;
