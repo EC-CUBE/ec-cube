@@ -63,9 +63,12 @@ class SC_Image {
 		$zip_width = $src_w * $zip_scale;
 		$zip_height = $src_h * $zip_scale;
 		
+		
+		$src_im = ImageCreateFromJPEG($file);//¸µ²èÁü
+		
 		// °µ½ÌÀè²èÁü
 		$dst_im = imagecreatetruecolor($zip_width, $zip_height);	
-		imagecopyresampled($dst_im, $file, 0, 0, 0,0, $zip_width, $zip_height, $src_w, $src_h);
+		imagecopyresampled($dst_im, $src_im, 0, 0, 0,0, $zip_width, $zip_height, $src_w, $src_h);
 
 		// ²èÁü½ĞÎÏ
 //		header("Content-Type: image/gif");
