@@ -125,6 +125,7 @@ case 'upload_image':
 	
 	// 中、小画像生成
 
+	sfprintr($objUpFile);
 	sfprintr($_POST['image_key']);
 	
 	
