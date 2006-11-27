@@ -63,7 +63,7 @@ function fnTreeView(view_id, arrTree) {
 		file_name = arrFileSplit[arrFileSplit.length-1];
 
 		tree += '<input type="image" src="'+ rank_img +'" border="0" name="tree_img'+ i +'" id="tree_img'+ i +'" onclick="fnTreeMenu(\'tree'+ i +'\',\''+ arrTree[i][1] +'\',\'tree_img'+ i +'\',\''+ arrTree[i][2] +'\')">';
-		tree += '<input type="image" src="'+ folder_img +'" border="0" name="tree_img'+ i +'" id="tree_img'+ i +'" onclick="fnTreeMenu(\'tree'+ i +'\',\''+ arrTree[i][1] +'\',\'tree_img'+ i +'\',\''+ arrTree[i][2] +'\')">&nbsp;'+ file_name +'<br/>';
+		tree += '<input type="image" src="'+ folder_img +'" border="0" name="tree_img'+ i +'" id="tree_img'+ i +'" onclick="fnFolderOpen(\'tree'+ i +'\',\''+ arrTree[i][1] +'\',\''+ arrTree[i][2] +'\')">&nbsp;'+ file_name +'<br/>';
 		tree += '<div id="tree'+ i +'" style="display:'+ display +'">';
 	
 	}
@@ -153,6 +153,25 @@ function fnTreeMenu(tName, type, imgName, path) {
 	// submit
 	fnModeSubmit('move','','');
 }
+
+// フォルダオープン処理
+function fnFolderOpen(tName, imgName, path) {
+
+	tMenu = document.all[tName].style;
+
+	// フォルダをオープン状態へ
+	fnChgImg(IMG_FOLDER_OPEN, imgName);
+	// オープンファイル状態を保持
+	arrTreeStatus.push(path);
+
+	// クリックしたフォルダ情報を保持
+	document.form1['tree_select_file'].value = path;
+	// treeの状態をセット
+	setTreeStatus('tree_status');
+	// submit
+	fnModeSubmit('move','','');
+}
+
 
 // 閲覧ブラウザ取得
 function fnGetMyBrowser() {
