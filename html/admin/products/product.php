@@ -129,6 +129,7 @@ case 'upload_image':
 	sfprintr($_POST['image_key']);
 	
 	sfprintr($objUpFile);
+	$objUpFile->temp_file[3] = $objUpFile->temp_file[4];
 	
 	lfProductPage(); // 商品登録ページ
 	break;
