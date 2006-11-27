@@ -40,8 +40,9 @@ if (sfIsInt($_GET['width']) && sfIsInt($_GET['height'])) {
 	$objPage->tpl_width = $_GET['width'];
 	$objPage->tpl_height = $_GET['height']; 	
 } else {
-	$objPage->tpl_width = LARGE_IMAGE_WIDTH;
-	$objPage->tpl_height = LARGE_IMAGE_HEIGHT;
+	list($width, $height) = getimagesize(IMAGE_SAVE_URL . $arrRet[0][$image_key]);
+	$objPage->tpl_width = $width;
+	$objPage->tpl_height = $height;
 }
 
 $objPage->tpl_table_width = $objPage->tpl_width + 20;

@@ -28,7 +28,7 @@
 	<tr><td height="15"></td></tr>
 	<tr><td bgcolor="#ffa85c"><img src="../misc/_.gif" width="1" height="5" alt=""></td></tr>
 	<tr>
-		<td height="<!--{$tpl_table_height}-->" align="center" bgcolor="#ffffff"><a href="javascript:window.close()");><img src="<!--{$smarty.const.IMAGE_SAVE_URL}--><!--{$tpl_image}-->" alt="<!--{$tpl_name}-->" /></a></td>
+		<td height="<!--{$tpl_table_height}-->" align="center" bgcolor="#ffffff"><a href="javascript:window.close()");><img src="<!--{$smarty.const.IMAGE_SAVE_URL}--><!--{$tpl_image}-->" width="<!--{$tpl_width}-->" height="<!--{$tpl_height}-->" alt="<!--{$tpl_name}-->" /></a></td>
 	</tr>
 	<tr><td bgcolor="#ffa85c"><img src="../misc/_.gif" width="1" height="5" alt=""></td></tr>
 	<tr><td height="30"></td></tr>
