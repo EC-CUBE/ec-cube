@@ -501,6 +501,8 @@ function lfSetScaleImage(){
 	$src_w = 0;
 	$src_h = 0;
 	
+	sfprintr($objUpFile);
+	
 	switch ($_POST['image_key']){
 		case "main_large_image":
 		
