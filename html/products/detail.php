@@ -161,7 +161,7 @@ $objPage->tpl_subtitle = $tpl_subtitle;
 // DBからのデータを引き継ぐ
 $objUpFile->setDBFileList($objPage->arrProduct);
 // ファイル表示用配列を渡す
-$objPage->arrFile = $objUpFile->getFormFileList(IMAGE_TEMP_URL, IMAGE_SAVE_URL);
+$objPage->arrFile = $objUpFile->getFormFileList(IMAGE_TEMP_URL, IMAGE_SAVE_URL, true);
 // 支払方法の取得
 $objPage->arrPayment = lfGetPayment();
 // 入力情報を渡す

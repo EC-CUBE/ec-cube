@@ -181,7 +181,7 @@ class SC_UploadFile {
 	}
 	
 	// フォームに渡す用のファイル情報配列を返す
-	function getFormFileList($temp_url, $save_url) {
+	function getFormFileList($temp_url, $save_url, $real_size = false) {
 		$cnt = 0;
 		foreach($this->keyname as $val) {
 			if($this->temp_file[$cnt] != "") {
@@ -200,10 +200,19 @@ class SC_UploadFile {
 				}
 			}
 			if($arrRet[$val]['filepath'] != "") {
-				// ファイル横幅
-				$arrRet[$val]['width'] = $this->width[$cnt];
-				// ファイル縦幅
-				$arrRet[$val]['height'] = $this->height[$cnt];
+				
+				if($real_size){
+					list($width, $height) = getimagesize($arrRet[$val]['filepath']);
+					// ファイル横幅
+					$arrRet[$val]['width'] = $width;
+					// ファイル縦幅
+					$arrRet[$val]['height'] = $height;
+				}else{
+					// ファイル横幅
+					$arrRet[$val]['width'] = $this->width[$cnt];
+					// ファイル縦幅
+					$arrRet[$val]['height'] = $this->height[$cnt];
+				}
 				// 表示名
 				$arrRet[$val]['disp_name'] = $this->disp_name[$cnt];
 			}
