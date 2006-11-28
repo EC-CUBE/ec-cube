@@ -18,7 +18,7 @@ function sfGetFileList($dir) {
 	if (is_dir($dir)) {
 		if ($dh = opendir($dir)) { 
 			$cnt = 0;
-			while (($file = readdir($dh)) !== false) { 
+			while (($file = natcasesort(readdir($dh))) !== false) { 
 				// ./ と ../を除くファイルのみを取得
 				if($file != "." && $file != "..") {
 					// 行末の/を取り除く
@@ -26,17 +26,17 @@ function sfGetFileList($dir) {
 					$path = $dir."/".$file;
 					// ディレクトリとファイルで格納配列を変える
 					if(is_dir($path)) {
-						$arrDirList[$file]['file_name'] = $file;
-						$arrDirList[$file]['file_path'] = $path;
-						$arrDirList[$file]['file_size'] = sfGetDirSize($path);
-						$arrDirList[$file]['file_time'] = date("Y/m/d", filemtime($path)); 
-						$arrDirList[$file]['is_dir'] = true;
+						$arrDirList[$cnt]['file_name'] = $file;
+						$arrDirList[$cnt]['file_path'] = $path;
+						$arrDirList[$cnt]['file_size'] = sfGetDirSize($path);
+						$arrDirList[$cnt]['file_time'] = date("Y/m/d", filemtime($path)); 
+						$arrDirList[$cnt]['is_dir'] = true;
 					} else {
-						$arrFileList[$file]['file_name'] = $file;
-						$arrFileList[$file]['file_path'] = $path;
-						$arrFileList[$file]['file_size'] = sfGetDirSize($path);
-						$arrFileList[$file]['file_time'] = date("Y/m/d", filemtime($path)); 
-						$arrFileList[$file]['is_dir'] = false;
+						$arrFileList[$cnt]['file_name'] = $file;
+						$arrFileList[$cnt]['file_path'] = $path;
+						$arrFileList[$cnt]['file_size'] = sfGetDirSize($path);
+						$arrFileList[$cnt]['file_time'] = date("Y/m/d", filemtime($path)); 
+						$arrFileList[$cnt]['is_dir'] = false;
 					}
 					$cnt++;
 				}
