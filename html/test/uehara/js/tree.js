@@ -2,6 +2,7 @@ var IMG_FOLDER_CLOSE   = "./img/folder_close.gif";				// フォルダクローズ時画像
 var IMG_FOLDER_OPEN    = "./img/folder_open.gif";				// フォルダオープン時画像
 var IMG_PLUS           = "./img/plus.gif";						// プラスボタン
 var IMG_MINUS          = "./img/minus.gif";						// マイナスボタン
+var IMG_NORMAL         = "./img/normal.gif";					// ノーマルボタン
 
 var tree = "";
 var count = 0;
@@ -56,7 +57,7 @@ function fnTreeView(view_id, arrTree) {
 		if(arrTree[i][1] == '_parent') {
 			rank_img = IMG_PLUS;
 		} else {
-			rank_img = IMG_MINUS;
+			rank_img = IMG_NORMAL;
 		}
 
 		arrFileSplit = arrTree[i][2].split("/");
