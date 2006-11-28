@@ -47,7 +47,9 @@ function sfGetFileList($dir) {
 	// ¥½¡¼¥È
 	natcasesort($arrDirList);
 	natcasesort($arrFileList);
-	
+sfprintr($arrDirList);
+sfprintr($arrFileList);
+
 	return array_merge($arrDirList, $arrFileList);
 }
 
