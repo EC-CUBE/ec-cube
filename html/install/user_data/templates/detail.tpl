@@ -335,7 +335,7 @@ function lnSetSelect(form, name1, name2, val) {
 									<!--{else}-->
 										<!--{assign var=image_path value="`$smarty.const.NO_IMAGE_DIR`"}-->
 									<!--{/if}-->
-									<img src="<!--{$smarty.const.SITE_URL}-->resize_image.php?image=<!--{$image_path|sfRmDupSlash}-->&width=65&height=65" alt="<!--{$arrRecommend[$nextCnt].product_id}-->"></a></td>
+									<img src="<!--{$smarty.const.SITE_URL}-->resize_image.php?image=<!--{$image_path|sfRmDupSlash}-->&width=65&height=65" alt="<!--{$arrRecommend[cnt].name}-->"></a></td>
 									<td align="right">
 									<table width="145" border="0" cellspacing="0" cellpadding="0" summary=" ">
 										<tr>
@@ -376,13 +376,13 @@ function lnSetSelect(form, name1, name2, val) {
 									<!--{else}-->
 										<!--{assign var=image_path value="`$smarty.const.NO_IMAGE_DIR`"}-->
 									<!--{/if}-->
-									<img src="<!--{$smarty.const.SITE_URL}-->resize_image.php?image=<!--{$image_path|sfRmDupSlash}-->&width=65&height=65" alt="<!--{$arrRecommend[$nextCnt].product_id}-->"></a></td>
+									<img src="<!--{$smarty.const.SITE_URL}-->resize_image.php?image=<!--{$image_path|sfRmDupSlash}-->&width=65&height=65" alt="<!--{$arrRecommend[$nextCnt].name}-->"></a></td>
 									<td align="right">
 									<table width="145" border="0" cellspacing="0" cellpadding="0" summary=" ">
 										<tr>
 											<!--{assign var=price02_min value=`$arrRecommend[$nextCnt].price02_min`}-->
 											<!--{assign var=price02_max value=`$arrRecommend[$nextCnt].price02_max`}-->
-											<td><span class="fs12"><a href="<!--{$smarty.const.DETAIL_P_HTML}--><!--{$arrRecommend[cnt].product_id}-->"><!--{$arrRecommend[cnt].name|escape}--></a></span><br>
+											<td><span class="fs12"><a href="<!--{$smarty.const.DETAIL_P_HTML}--><!--{$arrRecommend[$nextCnt].product_id}-->"><!--{$arrRecommend[$nextCnt].name|escape}--></a></span><br>
 											<span class="red"><span class="fs12">²Á³Ê</span><span class="fs10">(ÀÇ¹þ)</span></span><span class="redst"><span class="fs12">¡§
 											<!--{if $price02_min == $price02_max}-->
 												<!--{$price02_min|sfPreTax:$arrSiteInfo.tax:$arrSiteInfo.tax_rule|number_format}-->
