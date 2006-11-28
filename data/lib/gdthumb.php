@@ -123,7 +123,7 @@ class gdthumb {
 			case "1":
 				if(function_exists("imagecreatefromgif")) {
 					$src_im = imagecreatefromgif($path);
-					$dst_im = $imagecreatetruecolor($re_size[0], $re_size[1]);
+					$dst_im = $imagecreate($re_size[0], $re_size[1]);
 					
 					$transparent = imagecolortransparent($src_im);
 					$colorstotal = imagecolorstotal ($src_im);
@@ -170,7 +170,8 @@ class gdthumb {
 			
 				$src_im = imageCreateFromJpeg($path);
 				$dst_im = $imagecreate($re_size[0], $re_size[1]);
-				imagecopyresized( $dst_im, $src_im, 0, 0, 0, 0, $re_size[0], $re_size[1], $size[0], $size[1]);
+				//imagecopyresized( $dst_im, $src_im, 0, 0, 0, 0, $re_size[0], $re_size[1], $size[0], $size[1]);
+				$imageresize( $dst_im, $src_im, 0, 0, 0, 0, $re_size[0], $re_size[1], $size[0], $size[1]);
 				
 				$dst_file = $dst_file . ".jpg";
 				imageJpeg($dst_im, $dst_file);
