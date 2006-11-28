@@ -39,7 +39,7 @@ arrTree = new Array();
 		<td valign="top">
 		<form name="form1" method="post" action="<!--{$smarty.server.PHP_SELF|escape}-->"  enctype="multipart/form-data">
 		<input type="text" id="test1" name="test1" value="" onclick="tree_view_test('test1')" size="300">
-		<input type="hidden" name="mode" value="">
+		<input type="hidden" name="mode" value="defalt">
 		<input type="hidden" name="now_file" value="<!--{$tpl_now_file}-->">
 		<input type="hidden" name="tree_select_file" value="">
 		<input type="hidden" name="tree_status" value="">		
@@ -59,7 +59,7 @@ arrTree = new Array();
 </table>
 ■フォルダ作成<br />
 
-	<input type="file" name="upload_file"><input type="button" onclick="setTreeStatus('tree_status');fnModeSubmit('upload','','');" value="アップロード"><br/>
+	<input type="file" name="upload_file"><input type="button" onclick="setTreeStatus('tree_status');fnModeSubmit('upload','',''); return false;" value="アップロード"><br/>
 	<input type="text" name="create_file" value=""><input type="button" onclick="setTreeStatus('tree_status');fnModeSubmit('create','',''); return false;" value="作成">
 </form>
 
