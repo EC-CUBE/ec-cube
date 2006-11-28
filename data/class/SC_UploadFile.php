@@ -184,7 +184,7 @@ class SC_UploadFile {
 	function getFormFileList($temp_url, $save_url, $real_size = false) {
 		
 		sfprintr(HTML_PATH);
-		sfprintr(USR_DIR);
+		sfprintr(USER_DIR);
 		
 		$cnt = 0;
 		foreach($this->keyname as $val) {
