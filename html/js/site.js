@@ -128,7 +128,7 @@ function fnModeSubmit(mode, keyname, keyid) {
 	if(keyname != "" && keyid != "") {
 		document.form1[keyname].value = keyid;
 	}
-	document.form1.submit();
+	//document.form1.submit();
 }
 
 function fnFormModeSubmit(form, mode, keyname, keyid) {
