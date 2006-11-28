@@ -1,8 +1,7 @@
 #tree{
-	height: 500px;
-	width: 400px;
 	position: absolute;
 	overflow: auto;
+	top: 60px; left: 40px; height: 300px; width: 300px;
 	margin: 0px;
 }
 
