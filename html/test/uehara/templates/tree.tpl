@@ -59,7 +59,7 @@ arrTree = new Array();
 </table>
 ■フォルダ作成<br />
 
-	<input type="file" name="upload_file"><input type="button" onclick="setTreeStatus('tree_status');document.form1.submit(); return false;" value="アップロード"><br/>
+	<input type="file" name="upload_file"><input type="button" onclick="setTreeStatus('tree_status');fnModeSubmit('upload','',''); return false;" value="アップロード"><br/>
 	<input type="text" name="create_file" value=""><input type="button" onclick="setTreeStatus('tree_status');fnModeSubmit('create','',''); return false;" value="作成">
 </form>
 
