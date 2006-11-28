@@ -180,6 +180,9 @@ list($large_width, $large_height) = getimagesize(IMAGE_SAVE_DIR . basename($objP
 $objPage->tpl_large_width = $large_width + 60;
 $objPage->tpl_large_height = $large_height + 80;
 
+
+sfprintr($objPage->arrFile);
+
 $objView->assignobj($objPage);
 $objView->display(SITE_FRAME);
 //-----------------------------------------------------------------------------------------------------------------------------------
