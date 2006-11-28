@@ -1,7 +1,7 @@
 #tree{
 	height: 500px;
 	width: 400px;
-	overflow: hidden;
+	overflow: auto;
 	margin: 0px;
 }
 
