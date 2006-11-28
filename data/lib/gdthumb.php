@@ -123,7 +123,7 @@ class gdthumb {
 			case "1":
 				if(function_exists("imagecreatefromgif")) {
 					$src_im = imagecreatefromgif($path);
-					$dst_im = $imagecreate($re_size[0], $re_size[1]);
+					$dst_im = $imagecreatetruecolor($re_size[0], $re_size[1]);
 					
 					$transparent = imagecolortransparent($src_im);
 					$colorstotal = imagecolorstotal ($src_im);
