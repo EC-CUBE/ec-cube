@@ -74,7 +74,7 @@ function fnTreeView(view_id, arrTree, openFolder) {
 		if(rank_img != IMG_NORMAL) {
 			tree += '<input type="image" src="'+ rank_img +'" border="0" name="rank_img'+ i +'" id="rank_img'+ i +'" onclick="fnTreeMenu(\'tree'+ i +'\',\''+ arrTree[i][1] +'\',\'rank_img'+ i +'\',\''+ arrTree[i][2] +'\')">';
 		} else {
-			tree += '<input type="image" src="'+ rank_img +'" border="0" name="rank_img'+ i +'" id="rank_img'+ i +'">';
+			tree += '<img src="'+ rank_img +'" border="0" name="rank_img'+ i +'" id="rank_img'+ i +'">';
 		}
 		tree += '<input type="image" src="'+ folder_img +'" border="0" name="tree_img'+ i +'" id="tree_img'+ i +'" onclick="fnFolderOpen(\''+ arrTree[i][2] +'\')">&nbsp;'+ file_name +'<br/>';
 		tree += '<div id="tree'+ i +'" style="display:'+ display +'">';
