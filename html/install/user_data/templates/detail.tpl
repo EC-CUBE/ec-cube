@@ -245,6 +245,7 @@ function lnSetSelect(form, name1, name2, val) {
 							<td align="right">
 							<table width="215" border="0" cellspacing="0" cellpadding="0" summary=" ">	
 								<tr>
+									<!--{$arrFile[$lkey].width}-->
 									<!--{if $arrFile[$lkey].filepath != ""}-->
 										<td align="center" valign="middle"><div id="picture"><a href="<!--{$smarty.server.PHP_SELF|escape}-->" onclick="win01('./detail_image.php?product_id=<!--{$arrProduct.product_id}-->&image=<!--{$lkey}--><!--{if $smarty.get.admin == 'on'}-->&admin=on<!--{/if}-->','detail_image','560','580'); return false;" target="_blank"><!--¥µ¥Ö²èÁü--><img src="<!--{$arrFile[$key].filepath}-->" alt="<!--{$arrProduct.name|escape}-->" /></a></div>
 									<!--{else}-->
