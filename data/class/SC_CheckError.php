@@ -551,8 +551,9 @@ class SC_CheckError {
 		}
 	}
 
+	/*　ファイル名の判定(アップロード以外の時)　*/
 	// value[0] = 項目名 value[1] = 判定対象文字列
-	function FILE_NAME_NO_UPLOAD_CHECK( $value ) {			// 入力文字が英数字,"_","-"以外ならエラーを返す
+	function FILE_NAME_CHECK_BY_NOUPLOAD( $value ) {			// 入力文字が英数字,"_","-"以外ならエラーを返す
 		if(isset($this->arrErr[$value[1]])) {
 			return;
 		}
