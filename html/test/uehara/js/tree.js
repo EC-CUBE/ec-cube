@@ -1,8 +1,8 @@
 var IMG_FOLDER_CLOSE   = "./img/folder_close.gif";				// フォルダクローズ時画像
 var IMG_FOLDER_OPEN    = "./img/folder_open.gif";				// フォルダオープン時画像
-var IMG_PLUS           = "./img/plus.gif";						// プラスボタン
-var IMG_MINUS          = "./img/minus.gif";						// マイナスボタン
-var IMG_NORMAL         = "./img/normal.gif";					// ノーマルボタン
+var IMG_PLUS           = "./img/plus.gif";						// プラスライン
+var IMG_MINUS          = "./img/minus.gif";						// マイナスライン
+var IMG_NORMAL         = "./img/normal.gif";					// ノーマルライン
 
 var tree = "";
 var count = 0;
