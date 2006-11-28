@@ -9,7 +9,7 @@ var count = 0;
 var arrTreeStatus = new Array();
 
 // ツリー表示
-function fnTreeView(view_id, arrTree) {
+function fnTreeView(view_id, arrTree, openFolder) {
 
 	//tree += '<form name="tree_form">';
 	for(i = 0; i < arrTree.length; i++) {
@@ -41,27 +41,30 @@ function fnTreeView(view_id, arrTree) {
 			tree += "&nbsp;&nbsp;&nbsp;";
 		}
 
-		// フォルダの画像を選択
+		// 階層画像の表示・非表示処理
 		if(arrTree[i][4]) {
-			folder_img = IMG_FOLDER_OPEN;
+			if(arrTree[i][1] == '_parent') {
+				rank_img = IMG_MINUS;
+			} else {
+				rank_img = IMG_NORMAL;
+			}
 			// 開き状態を保持
 			arrTreeStatus.push(arrTree[i][2]);
 			display = 'block';
-
 		} else {
-			folder_img = IMG_FOLDER_CLOSE;
+			if(arrTree[i][1] == '_parent') {
+				rank_img = IMG_PLUS;
+			} else {
+				rank_img = IMG_NORMAL;
+			}
 			display = 'none';
 		}
 		
-		// 階層ラインの画像を選択
-		if(arrTree[i][1] == '_parent') {
-			if(arrTree[i][4]) {
-				rank_img = IMG_MINUS;
-			} else {
-				rank_img = IMG_PLUS;
-			}
+		// フォルダの画像を選択
+		if(arrTree[i][2] == openFolder) {
+			folder_img = IMG_FOLDER_OPEN;
 		} else {
-			rank_img = IMG_NORMAL;
+			folder_img = IMG_FOLDER_CLOSE;
 		}
 
 		arrFileSplit = arrTree[i][2].split("/");
@@ -127,7 +130,7 @@ function fnTreeMenu(tName, type, imgName, path) {
 	if(tMenu.display == 'none') {
 		fnChgImg(IMG_MINUS, imgName);
 		tMenu.display = "block";
-		// オープンファイル状態を保持
+		// 階層の開いた状態を保持
 		arrTreeStatus.push(path);
 
 	} else {
@@ -136,13 +139,6 @@ function fnTreeMenu(tName, type, imgName, path) {
 		// 閉じ状態を保持
 		fnDelTreeStatus(path);
 	}
-	
-	// クリックしたフォルダ情報を保持
-	//document.form1['tree_select_file'].value = path;
-	// treeの状態をセット
-	//setTreeStatus('tree_status');
-	// submit
-	//fnModeSubmit('move','','');
 }
 
 // フォルダオープン処理

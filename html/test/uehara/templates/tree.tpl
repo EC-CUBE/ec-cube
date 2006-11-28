@@ -22,7 +22,7 @@ arrTree = new Array();
 //-->
 </script>
 </head>
-<body onload="fnTreeView('tree', arrTree);<!--{$tpl_onload}-->">
+<body onload="fnTreeView('tree', arrTree, '<!--{$tpl_now_file}-->');<!--{$tpl_onload}-->">
 
 ¢£¥¨¥é¡¼
 <!--{foreach key=key item=item from=$arrErr}-->
