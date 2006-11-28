@@ -163,8 +163,7 @@ function sfLoadUpdateModule() {
 	$main_php = ereg_replace(URL_DIR, "", $_SERVER['PHP_SELF']);
 	$extern_php = UPDATE_PATH . $main_php;
 	if(file_exists($extern_php)) {
-		include($extern_php);
-		exit();
+		require($extern_php);
 	}
 }
 
