@@ -47,10 +47,8 @@ function sfGetFileList($dir) {
 	        closedir($dh); 
 	    }
 	}
-	// ソート
-sfprintr($arrDirList);
-sfprintr($arrFileList);
 
+	// フォルダを先頭にしてマージ
 	return array_merge($arrDirList, $arrFileList);
 }
 
