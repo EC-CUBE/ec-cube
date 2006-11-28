@@ -137,7 +137,7 @@ function lfErrorCheck() {
  */
 function lfCreateErrorCheck() {
 	$objErr = new SC_CheckError($_POST);
-	$objErr->doFunc(array("作成ファイル", "create_file"), array("FILE_NAME_CHECK"));
+	$objErr->doFunc(array("作成ファイル", "create_file"), array("EXIST_CHECK", "FILE_NAME_CHECK"));
 	
 	return $objErr->arrErr;
 }
