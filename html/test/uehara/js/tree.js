@@ -53,9 +53,13 @@ function fnTreeView(view_id, arrTree) {
 			display = 'none';
 		}
 		
-		// 初期表示の画像を選択
+		// 階層ラインの画像を選択
 		if(arrTree[i][1] == '_parent') {
-			rank_img = IMG_PLUS;
+			if(arrTree[i][4]) {
+				rank_img = IMG_MINUS;
+			} else {
+				rank_img = IMG_PLUS;
+			}
 		} else {
 			rank_img = IMG_NORMAL;
 		}
