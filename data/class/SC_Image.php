@@ -113,8 +113,9 @@ class SC_Image {
 					
 					// °µ½ÌÀè²èÁü
 					$dst_im = imagecreatetruecolor($zip_width, $zip_height);	
-					imagecopyresampled($dst_im, $src_im, 0, 0, 0,0, $zip_width, $zip_height, $from_w, $from_h);
-					
+					//imagecopyresampled($dst_im, $src_im, 0, 0, 0,0, $zip_width, $zip_height, $from_w, $from_h);
+					imagecopyresized($dst_im, $src_im, 0, 0, 0, 0, $zip_width, $zip_height, $from_w, $from_h);
+
 					// ²èÁü½ĞÎÏ
 					if($header){
 						header("Content-Type: image/gif");
