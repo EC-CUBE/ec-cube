@@ -18,7 +18,10 @@ function sfGetFileList($dir) {
 	if (is_dir($dir)) {
 		if ($dh = opendir($dir)) { 
 			$cnt = 0;
-			while (($file = natcasesort(readdir($dh))) !== false) { 
+			while (($file = readdir($dh)) !== false) $arrDir[] = $file; 
+			// アルファベットと数字でソート
+			natcasesort($arrDir);
+			foreach($arrDir as $file) {				
 				// ./ と ../を除くファイルのみを取得
 				if($file != "." && $file != "..") {
 					// 行末の/を取り除く
@@ -45,8 +48,6 @@ function sfGetFileList($dir) {
 	    }
 	}
 	// ソート
-	natcasesort($arrDirList);
-	natcasesort($arrFileList);
 sfprintr($arrDirList);
 sfprintr($arrFileList);
 
