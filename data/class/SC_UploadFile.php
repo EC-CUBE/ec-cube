@@ -303,9 +303,9 @@ class SC_UploadFile {
 		
 		$objImage = new SC_Image($filepath);
 		
-		$path = $this->makeThumb($filepath, $to_w, $to_h);
+		//$path = $this->makeThumb($filepath, $to_w, $to_h);
 		
-		//$path = $objImage->saveResizeImage($filepath, $to_w, $to_h);
+		$path = $objImage->saveResizeImage($filepath, $to_w, $to_h);
 		
 		// ファイル名だけ返す
 		return basename($path);
