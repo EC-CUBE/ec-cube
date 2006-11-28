@@ -80,7 +80,7 @@ class SC_Image {
 
 		// 一意なIDを取得する。
 		$uniqname = date("mdHi") . "_" . uniqid("");
-		
+
 		// ファイル名、保存先設定
 		$filename = $uniqname . "." . $extension;
 		$path = $dir . "/" . $filename;

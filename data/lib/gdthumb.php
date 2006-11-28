@@ -71,7 +71,7 @@ class gdthumb {
 	* integer $width
 	* integer $height
 	*/
-	function Main($path, $width, $height, $dst_file) {
+	function Main($path, $width, $height, $dst_file, $header = false) {
 		
 		if(!isset($path)) {
 			return array(0, "イメージのパスが設定されていません。");
@@ -125,8 +125,8 @@ class gdthumb {
 					$src_im = imagecreatefromgif($path);
 					$dst_im = $imagecreate($re_size[0], $re_size[1]);
 					
-//					$transparent = imagecolortransparent($src_im);
-//					$colorstotal = imagecolorstotal ($src_im);
+					$transparent = imagecolortransparent($src_im);
+					$colorstotal = imagecolorstotal ($src_im);
 					
 					$dst_im = imagecreate($re_size[0], $re_size[1]);
 					if (0 <= $transparent && $transparent < $colorstotal) {
@@ -137,13 +137,29 @@ class gdthumb {
           			$imageresize($dst_im, $src_im, 0, 0, 0, 0, $re_size[0], $re_size[1], $size[0], $size[1]);
 
 					if(function_exists("imagegif")) {
-						$dst_file = $dst_file . ".gif";
-						imagegif($dst_im, $dst_file);
+						
+						// 画像出力
+						if($header){
+							header("Content-Type: image/gif");
+							imagegif($dst_im);
+							return "";
+						}else{
+							$dst_file = $dst_file . ".gif";
+							imagegif($dst_im, $dst_file);
+						}
+						
 						imagedestroy($src_im);
 						imagedestroy($dst_im);
 					} else {
-						$dst_file = $dst_file . ".png";						
-						imagepng($dst_im, $dst_file);
+						// 画像出力
+						if($header){
+							header("Content-Type: image/png");
+							imagepng($dst_im);
+							return "";
+						}else{
+							$dst_file = $dst_file . ".png";						
+							imagepng($dst_im, $dst_file);
+						}
 						imagedestroy($src_im);
 						imagedestroy($dst_im);
 					}
@@ -158,8 +174,16 @@ class gdthumb {
 					
 					imagestring($dst_im, 5, 10, 10, "GIF $size[0]x$size[1]", $red);
 					imageRectangle ($dst_im, 0, 0, ($re_size[0]-1), ($re_size[1]-1), $black);
-					$dst_file = $dst_file . ".png";
-					imagepng($dst_im, $dst_file);
+					
+					// 画像出力
+					if($header){
+						header("Content-Type: image/png");
+						imagepng($dst_im);
+						return "";
+					}else{
+						$dst_file = $dst_file . ".png";
+						imagepng($dst_im, $dst_file);
+					}
 					imagedestroy($src_im);
 					imagedestroy($dst_im);
 				}
@@ -172,8 +196,16 @@ class gdthumb {
 				$dst_im = $imagecreate($re_size[0], $re_size[1]);
 				$imageresize( $dst_im, $src_im, 0, 0, 0, 0, $re_size[0], $re_size[1], $size[0], $size[1]);
 				
-				$dst_file = $dst_file . ".jpg";
-				imageJpeg($dst_im, $dst_file);
+				// 画像出力
+				if($header){
+					header("Content-Type: image/jpeg");
+					imageJpeg($dst_im);
+					return "";
+				}else{
+					$dst_file = $dst_file . ".jpg";
+					imageJpeg($dst_im, $dst_file);
+				}
+				
 				imagedestroy($src_im);
 				imagedestroy($dst_im);
       			
@@ -195,10 +227,17 @@ class gdthumb {
 					$dst_im = $imagecreate($re_size[0], $re_size[1]);
 					imagecopyresized($dst_im,$src_im, 0, 0, 0, 0, $re_size[0], $re_size[1], $size[0], $size[1]);
 					imagetruecolortopalette($dst_im, false, imagecolorstotal($src_im));
-				}				
-			
-				$dst_file = $dst_file . ".png";
-				imagepng($dst_im, $dst_file);
+				}
+				
+				// 画像出力
+				if($header){
+					header("Content-Type: image/png");
+					imagepng($dst_im);
+					return "";
+				}else{
+					$dst_file = $dst_file . ".png";
+					imagepng($dst_im, $dst_file);
+				}
 				imagedestroy($src_im);
 				imagedestroy($dst_im);
 				
