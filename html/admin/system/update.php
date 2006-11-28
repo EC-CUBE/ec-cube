@@ -132,6 +132,8 @@ function lfLoadUpdateList() {
 	$path = UPDATE_HTTP . "update.txt";
 	$fp = @fopen($path, "rb");
 	
+	print("kita");
+	
 	if(!$fp) {
 		sfErrorHeader(">> " . $path . "の取得に失敗しました。");
 	} else {
