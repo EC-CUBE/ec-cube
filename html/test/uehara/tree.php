@@ -41,6 +41,8 @@ case 'view':
 		// 選択されたファイルがディレクトリなら移動
 		if(is_dir($_POST['select_file'])) {
 			$now_dir = $_POST['select_file'];
+			// ツリー遷移用のjavascriptを埋め込む
+			
 		} else {
 			// javascriptで別窓表示(テンプレート側に渡す)
 			$file_url = ereg_replace(USER_PATH, "", $_POST['select_file']);
@@ -76,7 +78,6 @@ case 'delete':
 case 'create':
 	// エラーチェック
 	$arrErr = lfCreateErrorCheck();
-sfprintr($arrErr);
 	if(!is_array($arrErr)) {
 		$create_dir = ereg_replace("/$", "", $now_dir);
 		// ファイル作成
