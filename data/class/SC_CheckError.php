@@ -550,7 +550,17 @@ class SC_CheckError {
 			$this->arrErr[$value[1]] = "※ " . $value[0] . "のファイル名に日本語やスペースは使用しないで下さい。<br />";	
 		}
 	}
-	
+
+	// value[0] = 項目名 value[1] = 判定対象文字列
+	function FILE_NAME_NO_UPLOAD_CHECK( $value ) {			// 入力文字が英数字,"_","-"以外ならエラーを返す
+		if(isset($this->arrErr[$value[1]])) {
+			return;
+		}
+		if( strlen($value[1]) > 0 && ! EregI("^[[:alnum:]_\.-]+$", $value[1]) ) { 
+			$this->arrErr[$value[1]] = "※ " . $value[0] . "のファイル名に日本語やスペースは使用しないで下さい。<br />";	
+		}
+	}
+		
 	//日付チェック
 	// value[0] = 項目名
 	// value[1] = YYYY

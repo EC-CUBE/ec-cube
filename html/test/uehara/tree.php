@@ -137,7 +137,7 @@ function lfErrorCheck() {
  */
 function lfCreateErrorCheck() {
 	$objErr = new SC_CheckError($_POST);
-	$objErr->doFunc(array("作成ファイル", "create_file"), array("EXIST_CHECK", "FILE_NAME_CHECK"));
+	$objErr->doFunc(array("作成ファイル", "create_file"), array("EXIST_CHECK", "FILE_NAME_NO_UPLOAD_CHECK"));
 	
 	return $objErr->arrErr;
 }
@@ -148,6 +148,6 @@ function lfCreateErrorCheck() {
  */
 function lfInitFile() {
 	global $objUpFile;
-	$objUpFile->addFile("ファイル", 'upload_file', array(), FILE_SIZE, true, 0, 0, false);
+	$objUpFile->addFile("アップロードファイル", 'upload_file', array(), FILE_SIZE, true, 0, 0, false);
 }
 ?>
