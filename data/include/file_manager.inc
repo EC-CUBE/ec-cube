@@ -13,6 +13,8 @@
  */
 function sfGetFileList($dir) {
 	$arrFileList = array();
+	$arrDirList = array();
+	
 	if (is_dir($dir)) {
 		if ($dh = opendir($dir)) { 
 			$cnt = 0;
@@ -22,13 +24,18 @@ function sfGetFileList($dir) {
 					// 行末の/を取り除く
 					$dir = ereg_replace("/$", "", $dir);
 					$path = $dir."/".$file;
-					$arrFileList[$cnt]['file_name'] = $file;
-					$arrFileList[$cnt]['file_path'] = $path;
-					$arrFileList[$cnt]['file_size'] = sfGetDirSize($path);
-					$arrFileList[$cnt]['file_time'] = date("Y/m/d", filemtime($path)); 
+					// ディレクトリとファイルで格納配列を変える
 					if(is_dir($path)) {
-						$arrFileList[$cnt]['is_dir'] = true;
+						$arrDirList[$cnt]['file_name'] = $file;
+						$arrDirList[$cnt]['file_path'] = $path;
+						$arrDirList[$cnt]['file_size'] = sfGetDirSize($path);
+						$arrDirList[$cnt]['file_time'] = date("Y/m/d", filemtime($path)); 
+						$arrDirList[$cnt]['is_dir'] = true;
 					} else {
+						$arrFileList[$cnt]['file_name'] = $file;
+						$arrFileList[$cnt]['file_path'] = $path;
+						$arrFileList[$cnt]['file_size'] = sfGetDirSize($path);
+						$arrFileList[$cnt]['file_time'] = date("Y/m/d", filemtime($path)); 
 						$arrFileList[$cnt]['is_dir'] = false;
 					}
 					$cnt++;
@@ -36,9 +43,12 @@ function sfGetFileList($dir) {
 	        }
 	        closedir($dh); 
 	    }
-	} 
+	}
+	// ソート
+	natcasesort($arrDirList);
+	natcasesort($arrFileList);
 	
-	return $arrFileList;
+	return array_merge($arrDirList, $arrFileList);
 }
 
 /* 
@@ -106,7 +116,7 @@ function sfDeleteDir($dir) {
 			$arrResult[0]['file_name'] = "$dir";			
 		}
 	}
-
+	
 	return $arrResult;
 }
 
