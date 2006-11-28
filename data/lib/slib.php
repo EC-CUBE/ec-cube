@@ -159,9 +159,6 @@ function sfInitInstall() {
 
 // アップデートで生成されたPHPを読み出し
 function sfLoadUpdateModule() {
-	
-	print("kita?");
-	
 	// URL設定ディレクトリを削除
 	$main_php = ereg_replace(URL_DIR, "", $_SERVER['PHP_SELF']);
 	$extern_php = UPDATE_PATH . $main_php;
