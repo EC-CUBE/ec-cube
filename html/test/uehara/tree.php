@@ -76,6 +76,7 @@ case 'delete':
 case 'create':
 	// エラーチェック
 	$arrErr = lfCreateErrorCheck();
+sfprintr($arrErr);
 	if(!is_array($arrErr)) {
 		$create_dir = ereg_replace("/$", "", $now_dir);
 		// ファイル作成
