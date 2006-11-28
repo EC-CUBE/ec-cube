@@ -18,7 +18,7 @@ class LC_Page {
 	}
 }
 
-exit();
+//exit();
 
 //---- ページ表示用クラス
 class LC_Page {
