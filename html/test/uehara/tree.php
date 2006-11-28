@@ -74,13 +74,17 @@ case 'delete':
 	break;
 // ファイル作成
 case 'create':
-	$create_dir = ereg_replace("/$", "", $now_dir);
-	// ファイル作成
-	if(!sfCreateFile($create_dir."/".$_POST['create_file'], 0755)) {
-		// 作成エラー
-		$arrErr['create'] = "※ ".$_POST['create_file']."の作成に失敗しました。";
-	} else {
-		$objPage->tpl_javascript = "alert('フォルダを作成しました。');";
+	// エラーチェック
+	$arrErr = lfCreateErrorCheck();
+	if(!is_array($arrErr)) {
+		$create_dir = ereg_replace("/$", "", $now_dir);
+		// ファイル作成
+		if(!sfCreateFile($create_dir."/".$_POST['create_file'], 0755)) {
+			// 作成エラー
+			$arrErr['create'] = "※ ".$_POST['create_file']."の作成に失敗しました。";
+		} else {
+			$objPage->tpl_javascript = "alert('フォルダを作成しました。');";
+		}
 	}
 	break;
 // ファイルアップロード
@@ -122,6 +126,17 @@ $objView->display("tree.tpl");
 function lfErrorCheck() {
 	$objErr = new SC_CheckError($_POST);
 	$objErr->doFunc(array("ファイル", "select_file"), array("SELECT_CHECK"));
+	
+	return $objErr->arrErr;
+}
+
+/* 
+ * 関数名：lfCreateErrorCheck()
+ * 説明　：ファイル作成処理エラーチェック
+ */
+function lfCreateErrorCheck() {
+	$objErr = new SC_CheckError($_POST);
+	$objErr->doFunc(array("作成ファイル", "create_file"), array("FILE_NAME_CHECK"));
 	
 	return $objErr->arrErr;
 }
