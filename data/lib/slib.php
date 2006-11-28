@@ -120,7 +120,7 @@ function sfColumnExists($table_name, $col_name, $col_type = "", $dsn = "", $add 
 			$sql = "SHOW COLUMNS FROM $table_name";
 			$arrRet = $objQuery->getAll($sql);
 			if(count($arrRet) > 0) {
-				if(in_array($col_name, $arrRet)){
+				if(!in_array($col_name, $arrRet)){
 					return true;
 				}
 			}
