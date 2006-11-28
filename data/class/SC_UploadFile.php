@@ -301,8 +301,6 @@ class SC_UploadFile {
 		$file = $this->temp_file[$arrImageKey[$keyname]];
 		$filepath = $this->temp_dir . $file;
 		
-		$objImage = new SC_Image($filepath);
-		
 		$path = $this->makeThumb($filepath, $to_w, $to_h);
 		
 		// ファイル名だけ返す
