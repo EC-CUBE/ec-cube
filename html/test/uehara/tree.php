@@ -138,10 +138,6 @@ function lfErrorCheck() {
 function lfCreateErrorCheck() {
 	$objErr = new SC_CheckError($_POST);
 	$objErr->doFunc(array("作成ファイル", "create_file"), array("EXIST_CHECK", "FILE_NAME_NO_UPLOAD_CHECK"));
-
-	if( strlen($_POST['create_file']) > 0 && ! EregI("^[[:alnum:]_\.-]+$", $_POST['create_file']) ) { 
-		$objErr->arrErr['create_file'] = "※ " . $value[0] . "のファイル名に日本語やスペースは使用しないで下さい。<br />";	
-	}
 	
 	return $objErr->arrErr;
 }
