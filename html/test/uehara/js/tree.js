@@ -72,7 +72,7 @@ function fnTreeView(view_id, arrTree, openFolder) {
 
 		// 階層画像がノーマルの時のみオンクリック処理をつける
 		if(rank_img != IMG_NORMAL) {
-			tree += '<input type="image" src="'+ rank_img +'" border="0" name="rank_img'+ i +'" id="rank_img'+ i +'" onclick="fnTreeMenu(\'tree'+ i +'\',\''+ arrTree[i][1] +'\',\'rank_img'+ i +'\',\''+ arrTree[i][2] +'\')">';
+			tree += '<input type="image" src="'+ rank_img +'" border="0" name="rank_img'+ i +'" id="rank_img'+ i +'" onclick="fnTreeMenu(\'tree'+ i +'\',\'rank_img'+ i +'\',\''+ arrTree[i][2] +'\')">';
 		} else {
 			tree += '<img src="'+ rank_img +'" border="0" name="rank_img'+ i +'" id="rank_img'+ i +'">';
 		}
@@ -128,7 +128,7 @@ function fnDrow(id, tree) {
 }
 
 // 階層ツリーメニュー表示・非表示処理
-function fnTreeMenu(tName, type, imgName, path) {
+function fnTreeMenu(tName, imgName, path) {
 
 	tMenu = document.all[tName].style;
 
