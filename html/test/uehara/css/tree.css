@@ -1,7 +1,8 @@
 #tree{
 	height: 500px;
 	width: 400px;
-	overflow: scroll;
+	position: absolute;
+	overflow: auto;
 	margin: 0px;
 }
 
