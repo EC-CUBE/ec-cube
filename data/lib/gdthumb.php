@@ -125,16 +125,16 @@ class gdthumb {
 					$src_im = imagecreatefromgif($path);
 					$dst_im = $imagecreate($re_size[0], $re_size[1]);
 					
-					$transparent = imagecolortransparent($src_im);
-					$colorstotal = imagecolorstotal ($src_im);
+//					$transparent = imagecolortransparent($src_im);
+//					$colorstotal = imagecolorstotal ($src_im);
 					
 					$dst_im = imagecreate($re_size[0], $re_size[1]);
-/*					if (0 <= $transparent && $transparent < $colorstotal) {
+					if (0 <= $transparent && $transparent < $colorstotal) {
 						imagepalettecopy ($dst_im, $src_im);
 						imagefill ($dst_im, 0, 0, $transparent);
 						imagecolortransparent ($dst_im, $transparent);
 					}
-*/          			$imageresize($dst_im, $src_im, 0, 0, 0, 0, $re_size[0], $re_size[1], $size[0], $size[1]);
+          			$imageresize($dst_im, $src_im, 0, 0, 0, 0, $re_size[0], $re_size[1], $size[0], $size[1]);
 
 					if(function_exists("imagegif")) {
 						$dst_file = $dst_file . ".gif";
