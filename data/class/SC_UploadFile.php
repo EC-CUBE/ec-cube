@@ -182,10 +182,7 @@ class SC_UploadFile {
 	
 	// フォームに渡す用のファイル情報配列を返す
 	function getFormFileList($temp_url, $save_url, $real_size = false) {
-		
-		sfprintr(HTML_PATH);
-		sfprintr(URL_DIR);
-		
+
 		$cnt = 0;
 		foreach($this->keyname as $val) {
 			if($this->temp_file[$cnt] != "") {
