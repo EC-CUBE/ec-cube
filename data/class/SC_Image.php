@@ -113,7 +113,7 @@ class SC_Image {
 					
 					// ∞µΩÃ¿Ë≤Ë¡¸
 					//$dst_im = imagecreatetruecolor($zip_width, $zip_height);	
-					$dst_im = imageCreater($zip_width, $zip_height);	
+					$dst_im = ImageCreate($zip_width, $zip_height);	
 					//imagecopyresampled($dst_im, $src_im, 0, 0, 0,0, $zip_width, $zip_height, $from_w, $from_h);
 					imagecopyresized($dst_im, $src_im, 0, 0, 0, 0, $zip_width, $zip_height, $from_w, $from_h);
 
