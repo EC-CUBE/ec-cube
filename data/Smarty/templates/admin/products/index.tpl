@@ -217,6 +217,7 @@
 	<tr><td bgcolor="cbcbcb" colspan="2"><img src="<!--{$smarty.const.URL_DIR}-->img/common/_.gif" width="1" height="5" alt=""></td></tr>
 </table>
 
+<div style="overflow:auto;width:840px;height:100;">
 
 <table width="878" border="0" cellspacing="0" cellpadding="0" summary=" ">
 	<tr>
@@ -230,7 +231,6 @@
 					<td bgcolor="#cccccc">
 					
 					<!--検索結果表示テーブル-->
-<div style="overflow:auto;width:840px;height:100%;">
 					<table width="1000" border="0" cellspacing="1" cellpadding="5" summary=" ">
 						<tr bgcolor="#636469" align="center" class="fs12n">
 							<td width="50" rowspan="2"><span class="white">商品ID</span></td>
@@ -305,10 +305,10 @@
 						<!--{/section}-->
 					</table>
 					<!--検索結果表示テーブル-->
-</div>
 					</td>
 				</tr>
 			</table>
+</div>
 	
 		<!--{/if}-->
 
