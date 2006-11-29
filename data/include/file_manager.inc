@@ -41,6 +41,7 @@ function sfGetFileList($dir) {
 					$file_name = $space. $file_name;
 					
 					$file_size_len = strlen($file_size);
+					$space = "";
 					for($space_cnt = 0; (FILE_NAME_LEN + 3) > ($file_size_len + $space_cnt); $space_cnt++) {
 						$space .= "&nbsp;&nbsp;";
 					}
