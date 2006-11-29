@@ -93,14 +93,23 @@ case 'download' :
 	$dl_file = $objPage->bkup_dir.$_POST['list_name'];
 	
 	// ダウンロード開始
+	Header("Content-disposition: attachment; filename=${filename}");
+	Header("Content-type: application/octet-stream; name=${filename}");
+	Header("Cache-Control: ");
+	Header("Pragma: ");	
+	
+/*
 	header("Content-Disposition: attachment;filename=" .$filename. "\""); 
 	header("Content-Length: " .filesize($dl_file)); 
 	header("Content-Type: application/octet-stream; name=" .$filename. "\""); 
+*/
 	readfile ($dl_file);
+	
+	
 	exit();
 
 	break;
-  
+
 default:
 	break;
 }
