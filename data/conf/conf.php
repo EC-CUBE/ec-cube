@@ -210,7 +210,7 @@ define("DISP_IMAGE_HEIGHT", 65);						// 一覧表示画像縦
 define("OTHER_IMAGE1_WIDTH", 500);						// その他の画像1
 define("OTHER_IMAGE1_HEIGHT", 500);						// その他の画像1
 define("HTMLMAIL_IMAGE_WIDTH",  110);					// HTMLメールテンプレートメール担当画像横
-define("HTMLMAIL_IMAGE_HEIGHT", 120);					//  HTMLメールテンプレートメール担当画像縦
+define("HTMLMAIL_IMAGE_HEIGHT", 120);					// HTMLメールテンプレートメール担当画像縦
 
 define("IMAGE_SIZE", 1000);								// 画像サイズ制限(KB)
 define("CSV_SIZE", 2000);								// CSVサイズ制限(KB)
@@ -302,6 +302,7 @@ define ("PASSWORD_LEN2", 10);	// パスワード2
 define ("INT_LEN", 8);			// 検査数値用桁数(INT)
 define ("CREDIT_NO_LEN", 4);		// クレジットカードの文字数
 define ("SEARCH_CATEGORY_LEN", 18);	// 検索カテゴリ最大表示文字数(byte)
+define ("FILE_NAME_LEN", 10);		// ファイル名表示文字数
 
 /** フロントページ **/
 
