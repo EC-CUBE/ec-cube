@@ -29,8 +29,8 @@ function sfGetFileList($dir) {
 					$path = $dir."/".$file;
 
 					// SELECT内の見た目を整えるため空白を入れる
-					$file_name = sfCutString($file, FILE_NAME_LEN);						
-					$file_size = sfCutString(sfGetDirSize($path), FILE_NAME_LEN);
+					$file_name = $file, FILE_NAME_LEN;						
+					$file_size = sfGetDirSize($path), FILE_NAME_LEN;
 					$file_time = date("Y/m/d", filemtime($path));
 					
 					$file_name_len = strlen($file_name);
