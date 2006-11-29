@@ -133,7 +133,6 @@ function sfGetColumnList($table_name, $objQuery = "", $db_type = DB_TYPE){
 		$arrColList = sfswaparray($arrColList);
 		$arrRet = $arrColList["Field"];
 	}
-	
 	return $arrRet;
 }
 
