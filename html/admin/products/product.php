@@ -77,7 +77,7 @@ case 'copy' :
 		if($_POST['mode'] == "copy") $arrForm["product_id"] == "";
 		$objPage->arrForm = $arrForm;
 		
-		sfporintr($_POST);
+		sfprintr($_POST);
 		
 		// 商品ステータスの変換
 		$arrRet = sfSplitCBValue($objPage->arrForm['product_flag'], "product_flag");
