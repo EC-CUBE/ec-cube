@@ -163,6 +163,10 @@ function fnChangeAction(url) {
 	document.form1.action = url;
 }
 
+function fnSetFormVal(form, key, val) {
+	document.forms[form][key].value = val;
+}
+
 // ページナビで使用する
 function fnNaviPage(pageno) {
 	document.form1['pageno'].value = pageno;

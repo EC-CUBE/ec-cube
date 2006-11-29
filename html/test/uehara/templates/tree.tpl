@@ -45,12 +45,13 @@ arrTree = new Array();
 		<input type="hidden" name="mode" value="">
 		<input type="hidden" name="now_file" value="<!--{$tpl_now_file}-->">
 		<input type="hidden" name="tree_select_file" value="">
-		<input type="hidden" name="tree_status" value="">		
+		<input type="hidden" name="tree_status" value="">
+		<input type="hidden" name="select_file" value="">		
 		■ファイル
 		<div id="file_view">
 			<table>
 				<!--{section name=cnt loop=$arrFileList}-->
-				<tr onclick="alert('test')">
+				<tr onclick="fnSetFormVal('<!--{$arrFileList[cnt].file_path|escape}-->')">
 					<td><!--{$arrFileList[cnt].file_name|escape}--></td>
 					<td><!--{$arrFileList[cnt].file_size|escape}--></td>
 					<td><!--{$arrFileList[cnt].file_time|escape}--></td>
