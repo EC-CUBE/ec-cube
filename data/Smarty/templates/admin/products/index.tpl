@@ -228,9 +228,9 @@
 				<tr><td height="12"></td></tr>
 				<tr>
 					<td bgcolor="#cccccc">
-					<!--検索結果表示テーブル-->
-					<div style="overflow:auto;width:500px;height:200px;">
 					
+					<!--検索結果表示テーブル-->
+<div style="overflow:auto;width:840px;height:200px;">
 					<table width="840" border="0" cellspacing="1" cellpadding="5" summary=" ">
 						<tr bgcolor="#636469" align="center" class="fs12n">
 							<td width="50" rowspan="2"><span class="white">商品ID</span></td>
@@ -304,8 +304,8 @@
 						<!--▲商品<!--{$smarty.section.cnt.iteration}-->-->
 						<!--{/section}-->
 					</table>
-</div>
 					<!--検索結果表示テーブル-->
+</div>
 					</td>
 				</tr>
 			</table>
