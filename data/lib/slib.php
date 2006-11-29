@@ -130,6 +130,8 @@ function sfGetColumnList($table_name, $objQuery = "", $db_type = DB_TYPE){
 	}else if ($db_type == "mysql") {
 		$sql = "SHOW COLUMNS FROM $table_name";
 		$arrRet = $objQuery->getAll($sql);
+		$arrColList = sfswaparray($arrRet);
+		$arrColList = $arrColList["Field"];
 	}
 	
 	return $arrRet;
