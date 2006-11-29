@@ -34,6 +34,15 @@ function lnSetSelect(form, name1, name2, val) {
 //-->
 </script>
 
+<style type="text/css">
+
+#sample2{
+	_display:block;
+}#sample2 a{
+	display:block;
+}
+</style>
+
 <!--▼CONTENTS-->
 <table width="" cellspacing="0" cellpadding="0" summary=" ">
 	<tr>
@@ -71,9 +80,9 @@ function lnSetSelect(form, name1, name2, val) {
 						<td>
 						<table width="290" border="0" cellspacing="0" cellpadding="0" summary=" ">	
 							<tr>
-								<td align="center" valign="middle" width="<!--{$smarty.const.NORMAL_IMAGE_WIDTH}-->" height="<!--{$smarty.const.NORMAL_IMAGE_HEIGHT}-->" class="product_image" >
+								<td align="center" valign="middle" width="<!--{$smarty.const.NORMAL_IMAGE_WIDTH}-->" height="<!--{$smarty.const.NORMAL_IMAGE_HEIGHT}-->" id="sample2" >
 								<!--{if $arrProduct.main_large_image != ""}-->
-									<div id="picture"><!--メイン画像--><!--{assign var=key value="main_image"}--><a href="<!--{$smarty.server.PHP_SELF|escape}-->" onclick="win01('./detail_image.php?product_id=<!--{$arrProduct.product_id}-->&image=main_large_image<!--{if $smarty.get.admin == 'on'}-->&admin=on<!--{/if}-->','detail_image','<!--{$arrFile.main_large_image.width+60}-->', '<!--{$arrFile.main_large_image.height+80}-->'); return false;" target="_blank"><img src="<!--{$arrFile[$key].filepath}-->" alt="<!--{$arrProduct.name|escape}-->" /></a></div>
+									<!--メイン画像--><!--{assign var=key value="main_image"}--><a href="<!--{$smarty.server.PHP_SELF|escape}-->" onclick="win01('./detail_image.php?product_id=<!--{$arrProduct.product_id}-->&image=main_large_image<!--{if $smarty.get.admin == 'on'}-->&admin=on<!--{/if}-->','detail_image','<!--{$arrFile.main_large_image.width+60}-->', '<!--{$arrFile.main_large_image.height+80}-->'); return false;" target="_blank"><img src="<!--{$arrFile[$key].filepath}-->" alt="<!--{$arrProduct.name|escape}-->" /></a>
 								<!--{else}-->
 									<div id="picture"><!--メイン画像--><!--{assign var=key value="main_image"}--><img src="<!--{$arrFile[$key].filepath}-->" " alt="<!--{$arrProduct.name|escape}-->" /></div>
 								<!--{/if}-->
