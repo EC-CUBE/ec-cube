@@ -47,16 +47,20 @@ arrTree = new Array();
 		<input type="hidden" name="tree_select_file" value="">
 		<input type="hidden" name="tree_status" value="">		
 		■ファイル
-		<div>
-			<select name=select_file size="5" id="file_view">
-			<!--{section name=cnt loop=$arrFileList}-->
-			<option value="<!--{$arrFileList[cnt].file_path|escape}-->" <!--{if $arrFileList[cnt].file_path eq $arrParam.select_file}-->selected<!--{/if}-->><!--{$arrFileList[cnt].file_view}--></option>
-			<!--{/section}-->
-			</select><br/>
-			<input type="button" onclick="setTreeStatus('tree_status');fnModeSubmit('view','',''); return false;" value="表示">
-			<input type="button" onclick="setTreeStatus('tree_status');fnModeSubmit('download','',''); return false;" value="ダウンロード">
-			<input type="button" onclick="setTreeStatus('tree_status');fnModeSubmit('delete','',''); return false;" value="削除">
+		<div id="file_view">
+			<table>
+				<!--{section name=cnt loop=$arrFileList}-->
+				<tr onclick="alert('test')">
+					<td><!--{$arrFileList[cnt].file_name|escape}--></td>
+					<td><!--{$arrFileList[cnt].file_size|escape}--></td>
+					<td><!--{$arrFileList[cnt].file_time|escape}--></td>
+				</tr>
+				<!--{/section}-->
+			</table>
 		</div>
+		<input type="button" onclick="setTreeStatus('tree_status');fnModeSubmit('view','',''); return false;" value="表示">
+		<input type="button" onclick="setTreeStatus('tree_status');fnModeSubmit('download','',''); return false;" value="ダウンロード">
+		<input type="button" onclick="setTreeStatus('tree_status');fnModeSubmit('delete','',''); return false;" value="削除">
 		</td>
 	</tr>
 </table>
