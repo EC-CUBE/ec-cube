@@ -73,7 +73,7 @@ function lnSetSelect(form, name1, name2, val) {
 							<tr>
 								<td align="center" valign="middle" width="<!--{$smarty.const.NORMAL_IMAGE_WIDTH}-->" height="<!--{$smarty.const.NORMAL_IMAGE_HEIGHT}-->">
 								<!--{if $arrProduct.main_large_image != ""}-->
-									<div id="picture"><a href="<!--{$smarty.server.PHP_SELF|escape}-->" onclick="win01('./detail_image.php?product_id=<!--{$arrProduct.product_id}-->&image=main_large_image<!--{if $smarty.get.admin == 'on'}-->&admin=on<!--{/if}-->','detail_image','<!--{$tpl_large_width}-->', '<!--{$tpl_large_height}-->'); return false;" target="_blank"><!--¥á¥¤¥ó²èÁü--><!--{assign var=key value="main_image"}--><img src="<!--{$arrFile[$key].filepath}-->" alt="<!--{$arrProduct.name|escape}-->" /></a></div>
+									<div id="picture"><!--¥á¥¤¥ó²èÁü--><!--{assign var=key value="main_image"}--><a href="<!--{$smarty.server.PHP_SELF|escape}-->" onclick="win01('./detail_image.php?product_id=<!--{$arrProduct.product_id}-->&image=main_large_image<!--{if $smarty.get.admin == 'on'}-->&admin=on<!--{/if}-->','detail_image','<!--{$arrFile.main_large_image.width+60}-->', '<!--{$arrFile.main_large_image.height+80}-->'); return false;" target="_blank"><img src="<!--{$arrFile[$key].filepath}-->" alt="<!--{$arrProduct.name|escape}-->" /></a></div>
 								<!--{else}-->
 									<div id="picture"><!--¥á¥¤¥ó²èÁü--><!--{assign var=key value="main_image"}--><img src="<!--{$arrFile[$key].filepath}-->" " alt="<!--{$arrProduct.name|escape}-->" /></div>
 								<!--{/if}-->
@@ -83,7 +83,7 @@ function lnSetSelect(form, name1, name2, val) {
 							<tr>
 								<td>
 								<!--{if $arrProduct.main_large_image != ""}-->
-									<!--¡ú³ÈÂç¤¹¤ë¡ú--><a href="<!--{$smarty.server.PHP_SELF|escape}-->" onclick="win01('./detail_image.php?product_id=<!--{$arrProduct.product_id}-->&image=main_large_image<!--{if $smarty.get.admin == 'on'}-->&admin=on<!--{/if}-->','detail_image', '<!--{$tpl_large_width}-->', '<!--{$tpl_large_height}-->'); return false;" target="_blank"><img src="<!--{$smarty.const.URL_DIR}-->img/products/b_expansion.gif" width="85" height="13" alt="²èÁü¤ò³ÈÂç¤¹¤ë" /></a>
+									<!--¡ú³ÈÂç¤¹¤ë¡ú--><a href="<!--{$smarty.server.PHP_SELF|escape}-->" onclick="win01('./detail_image.php?product_id=<!--{$arrProduct.product_id}-->&image=main_large_image<!--{if $smarty.get.admin == 'on'}-->&admin=on<!--{/if}-->','detail_image', '<!--{$arrFile[$key].width+60}-->', '<!--{$arrFile[$key].height+60}-->'); return false;" target="_blank"><img src="<!--{$smarty.const.URL_DIR}-->img/products/b_expansion.gif" width="85" height="13" alt="²èÁü¤ò³ÈÂç¤¹¤ë" /></a>
 								<!--{/if}-->
 								</td>
 							</tr>
@@ -246,15 +246,15 @@ function lnSetSelect(form, name1, name2, val) {
 							<table width="215" border="0" cellspacing="0" cellpadding="0" summary=" ">	
 								<tr>
 									<!--{if $arrFile[$lkey].filepath != ""}-->
-										<td align="right"><div id="picture"><a href="<!--{$smarty.server.PHP_SELF|escape}-->" onclick="win01('./detail_image.php?product_id=<!--{$arrProduct.product_id}-->&image=<!--{$lkey}--><!--{if $smarty.get.admin == 'on'}-->&admin=on<!--{/if}-->','detail_image','560','580'); return false;" target="_blank"><!--¥µ¥Ö²èÁü--><img src="<!--{$arrFile[$key].filepath}-->" width="200" height="200" alt="<!--{$arrProduct.name|escape}-->" /></a></div>
+										<td align="center" valign="middle"><div id="picture"><a href="<!--{$smarty.server.PHP_SELF|escape}-->" onclick="win01('./detail_image.php?product_id=<!--{$arrProduct.product_id}-->&image=<!--{$lkey}--><!--{if $smarty.get.admin == 'on'}-->&admin=on<!--{/if}-->','detail_image','<!--{$arrFile[$lkey].width+60}-->','<!--{$arrFile[$lkey].height+80}-->'); return false;" target="_blank"><!--¥µ¥Ö²èÁü--><img src="<!--{$arrFile[$key].filepath}-->" alt="<!--{$arrProduct.name|escape}-->" /></a></div>
 									<!--{else}-->
-										<td align="right"><img src="<!--{$arrFile[$key].filepath}-->" width="200" height="200" alt="<!--{$arrProduct.name|escape}-->" /></td>
+										<td align="center" valign="middle"><img src="<!--{$arrFile[$key].filepath}-->" alt="<!--{$arrProduct.name|escape}-->" /></td>
 									<!--{/if}-->
 								</tr>
 								<tr><td height="8"></td></tr>
 								<tr>
 									<!--{if $arrFile[$lkey].filepath != ""}-->
-										<td align="right"><div id="more"><a href="<!--{$smarty.server.PHP_SELF|escape}-->" onclick="win01('./detail_image.php?product_id=<!--{$arrProduct.product_id}-->&image=<!--{$lkey}--><!--{if $smarty.get.admin == 'on'}-->&admin=on<!--{/if}-->','detail_image','560','580'); return false;" onmouseover="chgImg('../img/products/b_expansion_on.gif','expansion02');" onmouseout="chgImg('../img/products/b_expansion.gif','expansion02');" target="_blank"><img src="<!--{$smarty.const.URL_DIR}-->img/products/b_expansion.gif" width="85" height="13" alt="²èÁü¤ò³ÈÂç¤¹¤ë" /></a></div></td>
+										<td align="center"><div id="more"><a href="<!--{$smarty.server.PHP_SELF|escape}-->" onclick="win01('./detail_image.php?product_id=<!--{$arrProduct.product_id}-->&image=<!--{$lkey}--><!--{if $smarty.get.admin == 'on'}-->&admin=on<!--{/if}-->','detail_image','<!--{$arrFile[$lkey].width+60}-->','<!--{$arrFile[$lkey].height+80}-->'); return false;" onmouseover="chgImg('../img/products/b_expansion_on.gif','expansion02');" onmouseout="chgImg('../img/products/b_expansion.gif','expansion02');" target="_blank"><img src="<!--{$smarty.const.URL_DIR}-->img/products/b_expansion.gif" width="85" height="13" alt="²èÁü¤ò³ÈÂç¤¹¤ë" /></a></div></td>
 									<!--{/if}-->
 								</tr>
 							</table>
@@ -335,7 +335,7 @@ function lnSetSelect(form, name1, name2, val) {
 									<!--{else}-->
 										<!--{assign var=image_path value="`$smarty.const.NO_IMAGE_DIR`"}-->
 									<!--{/if}-->
-									<img src="<!--{$smarty.const.SITE_URL}-->resize_image.php?image=<!--{$image_path|sfRmDupSlash}-->&width=65&height=65" alt="<!--{$arrRecommend[$nextCnt].product_id}-->"></a></td>
+									<img src="<!--{$smarty.const.SITE_URL}-->resize_image.php?image=<!--{$image_path|sfRmDupSlash}-->&width=65&height=65" alt="<!--{$arrRecommend[cnt].name}-->"></a></td>
 									<td align="right">
 									<table width="145" border="0" cellspacing="0" cellpadding="0" summary=" ">
 										<tr>
@@ -376,13 +376,13 @@ function lnSetSelect(form, name1, name2, val) {
 									<!--{else}-->
 										<!--{assign var=image_path value="`$smarty.const.NO_IMAGE_DIR`"}-->
 									<!--{/if}-->
-									<img src="<!--{$smarty.const.SITE_URL}-->resize_image.php?image=<!--{$image_path|sfRmDupSlash}-->&width=65&height=65" alt="<!--{$arrRecommend[$nextCnt].product_id}-->"></a></td>
+									<img src="<!--{$smarty.const.SITE_URL}-->resize_image.php?image=<!--{$image_path|sfRmDupSlash}-->&width=65&height=65" alt="<!--{$arrRecommend[$nextCnt].name}-->"></a></td>
 									<td align="right">
 									<table width="145" border="0" cellspacing="0" cellpadding="0" summary=" ">
 										<tr>
 											<!--{assign var=price02_min value=`$arrRecommend[$nextCnt].price02_min`}-->
 											<!--{assign var=price02_max value=`$arrRecommend[$nextCnt].price02_max`}-->
-											<td><span class="fs12"><a href="<!--{$smarty.const.DETAIL_P_HTML}--><!--{$arrRecommend[cnt].product_id}-->"><!--{$arrRecommend[cnt].name|escape}--></a></span><br>
+											<td><span class="fs12"><a href="<!--{$smarty.const.DETAIL_P_HTML}--><!--{$arrRecommend[$nextCnt].product_id}-->"><!--{$arrRecommend[$nextCnt].name|escape}--></a></span><br>
 											<span class="red"><span class="fs12">²Á³Ê</span><span class="fs10">(ÀÇ¹þ)</span></span><span class="redst"><span class="fs12">¡§
 											<!--{if $price02_min == $price02_max}-->
 												<!--{$price02_min|sfPreTax:$arrSiteInfo.tax:$arrSiteInfo.tax_rule|number_format}-->
