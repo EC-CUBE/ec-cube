@@ -102,7 +102,7 @@ case 'copy' :
 		// DBデータから画像ファイル名の読込
 		$objUpFile->setDBFileList($objPage->arrForm);
 		// 規格登録ありなし判定
-		$objPage->tpl_nonclass = lfCheckNonClass($_POST['product_id']);
+		//$objPage->tpl_nonclass = lfCheckNonClass($_POST['product_id']);
 		lfProductPage();		// 商品登録ページ
 	}
 	break;
