@@ -165,7 +165,7 @@
 <!--{if count($arrErr) == 0 and ($smarty.post.mode == 'search' or $smarty.post.mode == 'delete')}-->
 
 <!--¡ú¡ú¸¡º÷·ë²Ì°ìÍ÷¡ú¡ú-->
-<div style="overflow:auto;width:500px;height:100px;">
+<div style="overflow:auto;width:878px;height:100px;">
 <table width="878" border="0" cellspacing="0" cellpadding="0" summary=" ">
 <form name="form1" id="form1" method="post" action="<!--{$smarty.server.PHP_SELF|escape}-->">
 <input type="hidden" name="mode" value="search">
