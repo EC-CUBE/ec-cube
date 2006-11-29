@@ -230,7 +230,7 @@
 					<td bgcolor="#cccccc">
 					
 					<!--検索結果表示テーブル-->
-<div style="overflow:auto;width:860px;height:200px;">
+<div style="overflow:auto;width:860px;height:240px;">
 					<table width="840" border="0" cellspacing="1" cellpadding="5" summary=" ">
 						<tr bgcolor="#636469" align="center" class="fs12n">
 							<td width="50" rowspan="2"><span class="white">商品ID</span></td>
