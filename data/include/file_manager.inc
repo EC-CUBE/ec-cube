@@ -49,7 +49,7 @@ function sfGetFileList($dir) {
 						$arrDirList[$cnt]['file_path'] = $path;
 						$arrDirList[$cnt]['is_dir'] = true;
 					} else {
-						$arrFileList[$cnt]['file_path'] = $file_view;			
+						$arrFileList[$cnt]['file_view'] = $file_view;			
 						$arrFileList[$cnt]['file_path'] = $path;
 						$arrFileList[$cnt]['is_dir'] = false;
 					}
