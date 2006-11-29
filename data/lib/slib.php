@@ -98,6 +98,14 @@ function sfColumnExists($table_name, $col_name, $col_type = "", $dsn = "", $add 
 	$objQuery = new SC_Query($dsn, true, true);
 	// 正常に接続されている場合
 	if(!$objQuery->isError()) {
+		$arrRet = sfGetColumnList($table_name, $objQuery);
+		if(count($arrRet) > 0) {
+			if(!in_array($col_name, $arrRet)){
+				return true;
+			}
+		}
+
+		/*
 		list($db_type) = split(":", $dsn);
 		// postgresqlとmysqlとで処理を分ける
 		if ($db_type == "pgsql") {
@@ -117,14 +125,14 @@ function sfColumnExists($table_name, $col_name, $col_type = "", $dsn = "", $add 
 				return true;
 			}
 		}else if ($db_type == "mysql") {
-			$sql = "SHOW COLUMNS FROM $table_name";
-			$arrRet = $objQuery->getAll($sql);
+			$arrRet = sfGetColumnList($table_name, $objQuery);
 			if(count($arrRet) > 0) {
 				if(!in_array($col_name, $arrRet)){
 					return true;
 				}
 			}
 		}
+		*/
 	}
 	
 	// カラムを追加する
@@ -134,6 +142,23 @@ function sfColumnExists($table_name, $col_name, $col_type = "", $dsn = "", $add 
 	}
 	
 	return false;
+}
+
+// テーブルのカラム一覧を取得する
+function sfGetColumnList($table_name, $objQuery = ""){
+	if($objQuery == "") $objQuery = new SC_Query();
+	$arrRet = array();
+	
+	// postgresqlとmysqlとで処理を分ける
+	if (DB_TYPE == "pgsql") {
+		$sql = "SELECT a.attname FROM pg_class c, pg_attribute a WHERE c.relname=? AND c.oid=a.attrelid AND a.attnum > 0 ORDER BY a.attnum";
+		$arrRet = $objQuery->getAll($sql, array($table_name));
+	}else if (DB_TYPE == "mysql") {
+		$sql = "SHOW COLUMNS FROM $table_name";
+		$arrRet = $objQuery->getAll($sql);
+	}
+	
+	return $arrRet;
 }
 
 // インストール初期処理

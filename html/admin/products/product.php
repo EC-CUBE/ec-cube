@@ -345,6 +345,13 @@ function lfRegistProduct($arrList) {
 			$product_id = $objQuery->nextval("dtb_products", "product_id");
 			$sqlval['product_id'] = $product_id;
 		}
+		
+		// dtb_products_class のカラムを取得
+		
+		
+		// コピー商品の場合には規格もコピーする
+		"INSERT INTO dtb_pSELECT * FROM dtb_products_class WHERE product_id = ? ORDER BY product_class_id";
+		
 
 	} else {
 		$product_id = $arrList['product_id'];
