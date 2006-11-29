@@ -29,11 +29,11 @@ function sfGetFileList($dir) {
 
 					$path = $dir."/".$file;
 					// SELECT内の見た目を整えるため空白を入れる
-
+/*
 					$file_name = sfCutString($file, FILE_NAME_LEN);						
 					$file_size = sfCutString(sfGetDirSize($path), FILE_NAME_LEN);
 					$file_time = date("Y/m/d", filemtime($path));
-/*					
+					
 					$file_name_len = strlen($file_name);
 					for($cnt = 1; (FILE_NAME_LEN + 3) >= ($file_name_len + $cnt); $cnt++) {
 						if($cnt % 2 == 0 ) $file_name .= "　";
