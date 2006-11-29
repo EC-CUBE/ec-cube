@@ -121,10 +121,10 @@ $objPage->arrFileList = sfGetFileList($now_dir);
 $objPage->tpl_now_file = $now_dir;
 $objPage->arrErr = $arrErr;
 $objPage->arrParam = $_POST;
-$objPage->arrTree = sfGetFileTree($top_dir, $_POST['tree_status']);
 // ツリーを表示する divタグid, ツリー配列変数名, 現在ディレクトリ
 $objPage->$tpl_onload .= "fnTreeView('tree', arrTree, '$now_dir')";
 // ツリー配列作成用 javascript
+$arrTree = sfGetFileTree($top_dir, $_POST['tree_status']);
 $objPage->$tpl_javascript .= "arrTree = new Array();";
 foreach($arrTree as $arrVal) {
 	$objPage->$tpl_javascript .= "arrTree[".$arrVal['count']."] = new Array(".$arrVal['count'].", ".$arrVal['type'].", ".$arrVal['path'].", ".$arrVal['rank'].",";
