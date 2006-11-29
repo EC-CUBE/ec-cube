@@ -217,7 +217,6 @@
 	<tr><td bgcolor="cbcbcb" colspan="2"><img src="<!--{$smarty.const.URL_DIR}-->img/common/_.gif" width="1" height="5" alt=""></td></tr>
 </table>
 
-<div style="overflow:auto;width:878px;height:200px;">
 
 <table width="1000" border="0" cellspacing="0" cellpadding="0" summary=" ">
 	<tr>
@@ -250,7 +249,8 @@
 							<td width="60"><span class="white">ºÔ Ã</span></td>
 							<td width="50"><span class="white"> £¿Ω</span></td>
 						</tr>
-			
+<div style="overflow:auto;width:878px;height:200px;">
+
 						<!--{section name=cnt loop=$arrProducts}-->
 						<!--¢ßæ¶… <!--{$smarty.section.cnt.iteration}-->-->
 						<!--{assign var=status value="`$arrProducts[cnt].status`"}-->
