@@ -245,8 +245,8 @@
 						<tr bgcolor="#636469" align="center" class="fs12n">
 							<td width="90"><span class="white">価格(円)</span></td>
 							<td width="430"><span class="white">カテゴリ</span></td>
-							<td width="50"><span class="white">コピー</span></td>
 							<td width="60"><span class="white">種別</span></td>
+							<td width="50"><span class="white">コピー</span></td>
 						</tr>
 			
 						<!--{section name=cnt loop=$arrProducts}-->
