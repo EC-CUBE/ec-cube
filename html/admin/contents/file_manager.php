@@ -20,7 +20,7 @@ class LC_Page{
 $top_dir = USER_PATH;
 
 $objPage = new LC_Page();
-$objView = new SC_UserView("./templates");
+$objView = new SC_AdminView();
 $objQuery = new SC_Query();
 
 // 現在の階層を取得
@@ -124,8 +124,9 @@ $objPage->arrParam = $_POST;
 $objPage->arrTree = sfGetFileTree($top_dir, $_POST['tree_status']);
 $objPage->$tpl_onload .= "fnTreeView('tree', arrTree, '$now_dir')";
 
+// 画面の表示
 $objView->assignobj($objPage);
-$objView->display("tree.tpl");
+$objView->display(MAIN_FRAME);
 
 //-----------------------------------------------------------------------------------------------------------------------------------
 

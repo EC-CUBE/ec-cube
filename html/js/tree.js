@@ -1,3 +1,8 @@
+/*
+ * Copyright(c) 2000-2006 LOCKON CO.,LTD. All Rights Reserved.
+ *
+ * http://www.lockon.co.jp/
+ */
 var IMG_FOLDER_CLOSE   = "/img/admin/contents/folder_close.gif";		// フォルダクローズ時画像
 var IMG_FOLDER_OPEN    = "/img/admin/contents/folder_open.gif";			// フォルダオープン時画像
 var IMG_PLUS           = "/img/admin/contents/plus.gif";				// プラスライン
