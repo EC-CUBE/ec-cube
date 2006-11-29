@@ -96,7 +96,7 @@ case 'download' :
 	Header("Content-disposition: attachment; filename=${filename}");
 	Header("Content-type: application/octet-stream; name=${filename}");
 	Header("Cache-Control: ");
-	Header("Pragma: ");	
+//	Header("Pragma: ");	
 	header("Content-Length: " .filesize($dl_file)); 
 	
 /*
