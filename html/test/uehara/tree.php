@@ -116,6 +116,7 @@ $objPage->tpl_now_file = $now_dir;
 $objPage->arrErr = $arrErr;
 $objPage->arrParam = $_POST;
 $objPage->arrTree = sfGetFileTree($top_dir, $_POST['tree_status']);
+$objPage->$tpl_onload .= "fnTreeView('tree', arrTree, '$now_dir')";
 
 $objView->assignobj($objPage);
 $objView->display("tree.tpl");

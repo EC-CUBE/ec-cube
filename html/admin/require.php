@@ -25,6 +25,7 @@ require_once($include_dir . "/../../data/class/SC_FormParam.php");
 require_once($include_dir . "/../../data/class/SC_CustomerList.php");
 require_once($include_dir . "/../../data/class/SC_Customer.php");
 require_once($include_dir . "/../../data/class/SC_Pdf.php");
+require_once($include_dir . "/../../data/include/file_manager.inc");
 // アップデートで取得したPHPを読み出す
 sfLoadUpdateModule();
 

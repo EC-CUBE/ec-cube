@@ -1,8 +1,8 @@
-var IMG_FOLDER_CLOSE   = "./img/folder_close.gif";				// フォルダクローズ時画像
-var IMG_FOLDER_OPEN    = "./img/folder_open.gif";				// フォルダオープン時画像
-var IMG_PLUS           = "./img/plus.gif";						// プラスライン
-var IMG_MINUS          = "./img/minus.gif";						// マイナスライン
-var IMG_NORMAL         = "./img/normal.gif";					// ノーマルライン
+var IMG_FOLDER_CLOSE   = "/img/admin/contents/folder_close.gif";		// フォルダクローズ時画像
+var IMG_FOLDER_OPEN    = "/img/admin/contents/folder_open.gif";			// フォルダオープン時画像
+var IMG_PLUS           = "/img/admin/contents/plus.gif";				// プラスライン
+var IMG_MINUS          = "/img/admin/contents/minus.gif";				// マイナスライン
+var IMG_NORMAL         = "/img/admin/contents/normal.gif";				// ノーマルライン
 
 var tree = "";						// 生成HTML格納
 var count = 0;						// ループカウンタ
