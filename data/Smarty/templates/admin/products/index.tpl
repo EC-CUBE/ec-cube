@@ -165,8 +165,7 @@
 <!--{if count($arrErr) == 0 and ($smarty.post.mode == 'search' or $smarty.post.mode == 'delete')}-->
 
 <!--¡ú¡ú¸¡º÷·ë²Ì°ìÍ÷¡ú¡ú-->
-<div style="overflow:auto;width:878px;height:400px;">
-<table width="1000" border="0" cellspacing="0" cellpadding="0" summary=" ">
+<table width="878" border="0" cellspacing="0" cellpadding="0" summary=" ">
 <form name="form1" id="form1" method="post" action="<!--{$smarty.server.PHP_SELF|escape}-->">
 <input type="hidden" name="mode" value="search">
 <input type="hidden" name="product_id" value="">
@@ -217,6 +216,7 @@
 	</tr>
 	<tr><td bgcolor="cbcbcb" colspan="2"><img src="<!--{$smarty.const.URL_DIR}-->img/common/_.gif" width="1" height="5" alt=""></td></tr>
 </table>
+<div style="overflow:auto;width:878px;height:400px;">
 
 <table width="878" border="0" cellspacing="0" cellpadding="0" summary=" ">
 	<tr>
