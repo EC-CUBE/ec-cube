@@ -346,21 +346,18 @@ function lfRegistProduct($arrList) {
 			$sqlval['product_id'] = $product_id;
 		}
 		
-		// dtb_products_class のカラムを取得
-		$arrColList = sfGetColumnList("dtb_products_class", $objQuery);
-		$arrColList_tmp = array_flip($arrColList);
-		
-		// コピーしない列
-		unset($arrColList[$arrColList_tmp["product_class_id"]]);	 //規格ID
-		unset($arrColList[$arrColList_tmp["product_id"]]);			 //商品ID
-		
-		$col = sfGetCommaList($arrColList);
-		
 		// コピー商品の場合には規格もコピーする
-		$objQuery->query("INSERT INTO dtb_products_class (product_id, ". $col .") SELECT ?, " . $col. " FROM dtb_products_class WHERE product_id = ? ORDER BY product_class_id", array($product_id, $_POST["copy_product_id"]));
-		
-		$objQuery->getlastquery();
-		
+		if($_POST["copy_product_id"] != "" and sfIsInt($_POST["copy_product_id"])){
+			// dtb_products_class のカラムを取得
+			$arrColList = sfGetColumnList("dtb_products_class", $objQuery);
+			$arrColList_tmp = array_flip($arrColList);
+			
+			// コピーしない列
+			unset($arrColList[$arrColList_tmp["product_class_id"]]);	 //規格ID
+			unset($arrColList[$arrColList_tmp["product_id"]]);			 //商品ID
+			
+			$col = sfGetCommaList($arrColList);
+		}
 
 	} else {
 		$product_id = $arrList['product_id'];
