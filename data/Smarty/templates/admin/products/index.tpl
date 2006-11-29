@@ -253,9 +253,9 @@
 						<!--{section name=cnt loop=$arrProducts}-->
 						<!--¢§¾¦ÉÊ<!--{$smarty.section.cnt.iteration}-->-->
 						<!--{assign var=status value="`$arrProducts[cnt].status`"}-->
-						<tr bgcolor="<!--{$arrPRODUCTSTATUS_COLOR[$status]}-->" class="fs12n" height=65px>
+						<tr bgcolor="<!--{$arrPRODUCTSTATUS_COLOR[$status]}-->" class="fs12n">
 							<td rowspan="2" align="center"><!--{$arrProducts[cnt].product_id}--></td>
-							<td rowspan="2" align="center">
+							<td rowspan="2" align="center"  height=65px>
 							<!--{if $arrProducts[cnt].main_list_image != ""}-->
 								<!--{assign var=image_path value="`$smarty.const.IMAGE_SAVE_DIR`/`$arrProducts[cnt].main_list_image`"}-->
 							<!--{else}-->
