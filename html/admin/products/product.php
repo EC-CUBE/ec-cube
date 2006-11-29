@@ -349,12 +349,15 @@ function lfRegistProduct($arrList) {
 		// dtb_products_class のカラムを取得
 		$arrColList = sfGetColumnList("dtb_products_class", $objQuery);
 		$arrColList_tmp = array_flip($arrColList);
-		unset($arrColList[$arrColList_tmp["product_class_id"]]);	 //規格IDは登録しない
+		
+		// コピーしない列
+		unset($arrColList[$arrColList_tmp["product_class_id"]]);	 //規格ID
+		unset($arrColList[$arrColList_tmp["product_id"]]);			 //商品ID
 		
 		$col = sfGetCommaList($arrColList);
 		
 		// コピー商品の場合には規格もコピーする
-		$objQuery->query("INSERT INTO dtb_products_class (". $col .") SELECT " . $col. " FROM dtb_products_class WHERE product_id = ? ORDER BY product_class_id", $product_id);
+		$objQuery->query("INSERT INTO dtb_products_class (product_id, ". $col .") SELECT " . $col. " FROM dtb_products_class WHERE product_id = ? ORDER BY product_class_id", array($product_id, $product_id));
 		
 
 	} else {
