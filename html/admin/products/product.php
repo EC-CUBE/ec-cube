@@ -348,7 +348,8 @@ function lfRegistProduct($arrList) {
 		
 		// dtb_products_class のカラムを取得
 		$arrColList = sfGetColumnList("dtb_products_class", $objQuery);
-		unset($arrColList["product_class_id"]);	 //規格IDは登録しない
+		$arrColList_tmp = array_flip($arrColList);
+		unset($arrColList[$arrColList_tmp["product_class_id"]]);	 //規格IDは登録しない
 		
 		sfprintr($arrColList);
 		
