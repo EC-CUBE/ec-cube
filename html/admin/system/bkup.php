@@ -98,15 +98,11 @@ case 'download' :
 //	Header("Cache-Control: ");
 //	Header("Pragma: ");	
 //	header("Content-Length: " .filesize($dl_file)); 
-	
 
 	header("Content-Disposition: attachment;filename=" .$filename. "\""); 
 	header("Content-Length: " .filesize($dl_file)); 
 	header("Content-Type: application/octet-stream; name=" .$filename. "\""); 
-
 	readfile ($dl_file);
-	
-	
 	exit();
 
 	break;
