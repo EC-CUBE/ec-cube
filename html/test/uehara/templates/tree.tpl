@@ -51,7 +51,7 @@ arrTree = new Array();
 		<div id="file_view">
 			<table>
 				<!--{section name=cnt loop=$arrFileList}-->
-				<tr onclick="fnSetFormVal('form1', 'select_file', '<!--{$arrFileList[cnt].file_path|escape}-->');fnChangeBgColor('select_file<!--{$smarty.section.customer.index}-->', '3333FF');" style="" id="select_file<!--{$smarty.section.cnt.index}-->">
+				<tr onclick="fnSetFormVal('form1', 'select_file', '<!--{$arrFileList[cnt].file_path|escape}-->');fnChangeBgColor('select_file<!--{$smarty.section.cnt.index}-->', '3333FF');" style="" id="select_file<!--{$smarty.section.cnt.index}-->">
 					<td><!--{$arrFileList[cnt].file_name|escape}--></td>
 					<td><!--{$arrFileList[cnt].file_size|escape}--></td>
 					<td><!--{$arrFileList[cnt].file_time|escape}--></td>
