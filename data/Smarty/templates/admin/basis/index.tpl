@@ -193,7 +193,7 @@
 										<td bgcolor="#f2f1ec" width="180">有効桁数<span class="red"> *</span></td>
 										<td bgcolor="#ffffff" width="537">
 										<span class="red12"><!--{$arrErr.tax}--></span>
-										少数第<input type="text" name="tax" value="<!--{$arrForm.tax|escape}-->" maxlength="<!--{$smarty.const.PERCENTAGE_LEN}-->" size="6" class="box6" style="<!--{if $arrErr.tax != ""}-->background-color: <!--{$smarty.const.ERR_COLOR}--><!--{/if}-->" /> 位</td>
+										少数第<input type="text" name="tax" value="<!--{$arrForm.tax|escape}-->" maxlength="<!--{$smarty.const.PERCENTAGE_LEN}-->" size="3" class="box3" style="<!--{if $arrErr.tax != ""}-->background-color: <!--{$smarty.const.ERR_COLOR}--><!--{/if}-->" /> 位</td>
 									</tr>
 									<tr class="fs12n">
 										<td bgcolor="#f2f1ec" width="180">送料無料条件</td>
