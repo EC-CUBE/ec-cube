@@ -78,6 +78,8 @@ case 'copy' :
 			$arrForm["product_id"] == "";
 			sfprintr("copy");
 		}
+		
+		sfprintr($arrForm);
 		$objPage->arrForm = $arrForm;
 		
 		sfprintr($_POST);
