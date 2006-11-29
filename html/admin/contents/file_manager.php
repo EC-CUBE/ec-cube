@@ -127,7 +127,7 @@ $objPage->$tpl_onload .= "fnTreeView('tree', arrTree, '$now_dir')";
 $arrTree = sfGetFileTree($top_dir, $_POST['tree_status']);
 $objPage->tpl_javascript .= "arrTree = new Array();";
 foreach($arrTree as $arrVal) {
-	$objPage->tpl_javascript .= "arrTree[".$arrVal['count']."] = new Array(".$arrVal['count'].", ".$arrVal['type'].", ".$arrVal['path'].", ".$arrVal['rank'].",";
+	$objPage->tpl_javascript .= "arrTree[".$arrVal['count']."] = new Array(".$arrVal['count'].", '".$arrVal['type']."', '".$arrVal['path']."', ".$arrVal['rank'].",";
 	if ($arrVal['open']) {
 		$objPage->tpl_javascript .= "true);";
 	} else {
