@@ -4,9 +4,10 @@ var IMG_PLUS           = "./img/plus.gif";						// プラスライン
 var IMG_MINUS          = "./img/minus.gif";						// マイナスライン
 var IMG_NORMAL         = "./img/normal.gif";					// ノーマルライン
 
-var tree = "";
-var count = 0;
-var arrTreeStatus = new Array();
+var tree = "";						// 生成HTML格納
+var count = 0;						// ループカウンタ
+var arrTreeStatus = new Array();	// ツリー状態保持
+var old_select_id = '';				// 前回選択していたファイル
 
 // ツリー表示
 function fnTreeView(view_id, arrTree, openFolder) {
@@ -180,5 +181,7 @@ function fnChgImg(fileName,imgName){
 
 // 背景色を変える
 function fnChangeBgColor(id, val) {
+	if(old_select_id != '') document.getElementById(old_select_id).style.backgroundColor = val;
 	document.getElementById(id).style.backgroundColor = val;
+	old_select_id = id;
 }
