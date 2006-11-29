@@ -34,12 +34,12 @@ function sfGetFileList($dir) {
 					$file_time = date("Y/m/d", filemtime($path));
 					
 					$file_name_len = strlen($file_name);
-					for($cnt = 0; (FILE_NAME_LEN + 3) > ($file_name_len + $cnt); $cnt++) {
-						$file_name .= " ";
+					for($cnt = 1; (FILE_NAME_LEN + 3) >= ($file_name_len + $cnt); $cnt++) {
+						if($cnt / 2 == 0 ) $file_name .= "¡¡";
 					}
 					$file_size_len = strlen($file_size);
-					for($cnt = 0; (FILE_NAME_LEN + 3) > ($file_size_len + $cnt); $cnt++) {
-						$file_size .= " ";
+					for($cnt = 0; (FILE_NAME_LEN + 3) >= ($file_size_len + $cnt); $cnt++) {
+						if($cnt / 2 == 0 ) $file_size .= "¡¡";
 					}
 					$file_view = $file_name. $file_size. $file_time;
 					
