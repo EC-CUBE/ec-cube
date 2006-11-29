@@ -40,8 +40,9 @@ case 'view':
 	
 		// 選択されたファイルがディレクトリなら移動
 		if(is_dir($_POST['select_file'])) {
-			$now_dir = $_POST['select_file'];
+			///$now_dir = $_POST['select_file'];
 			// ツリー遷移用のjavascriptを埋め込む
+			$arrErr['view'] = "※ ディレクトリを表示することは出来ません。";
 			
 		} else {
 			// javascriptで別窓表示(テンプレート側に渡す)

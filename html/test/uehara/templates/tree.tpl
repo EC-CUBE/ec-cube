@@ -5,6 +5,9 @@
 <meta http-equiv="Content-Type" content="text/html; charset=<!--{$smarty.const.CHAR_CODE}-->">
 <meta http-equiv="content-script-type" content="text/javascript">
 <meta http-equiv="content-style-type" content="text/css">
+<link rel="stylesheet" href="<!--{$smarty.const.URL_DIR}-->user_data/css/contents.css" type="text/css" media="all" />
+<link rel="stylesheet" href="<!--{$smarty.const.URL_DIR}-->css/common.css" type="text/css" media="all" />
+<link rel="stylesheet" href="<!--{$tpl_css}-->" type="text/css" media="all" />
 <link rel="stylesheet" href="/html/test/uehara/css/tree.css" type="text/css" media="all" />
 <script type="text/javascript" src="/html/js/site.js"></script>
 <script type="text/javascript" src="/html/js/win_op.js"></script>
