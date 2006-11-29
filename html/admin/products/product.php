@@ -95,8 +95,13 @@ case 'copy' :
 // 商品登録・編集
 case 'edit':
 	// 規格登録ありなし判定
-	$objPage->tpl_nonclass = lfCheckNonClass($_POST['product_id']);
-	$objPage->tpl_nonclass = lfCheckNonClass($_POST['copy_product_id']);
+	$tpl_nonclass = lfCheckNonClass($_POST['product_id']);
+	
+	if(!$tpl_nonclass and sfIsInt($_POST['copy_product_id'])){
+		$tpl_nonclass = lfCheckNonClass($_POST['copy_product_id']);
+	}
+	$objPage->tpl_nonclass = $tpl_nonclass;
+	
 	// 入力値の変換
 	$objPage->arrForm = lfConvertParam($objPage->arrForm);
 	// エラーチェック
