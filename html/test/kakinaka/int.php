@@ -1,6 +1,8 @@
 <?php
 
-$val = is_int("-1");
+$test = "-1"
+
+$val = is_int($test);
 
 
 print($val);
