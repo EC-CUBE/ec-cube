@@ -51,7 +51,7 @@ arrTree = new Array();
 		<div id="file_view">
 			<table>
 				<!--{section name=cnt loop=$arrFileList}-->
-				<tr onclick="fnSetFormVal('<!--{$arrFileList[cnt].file_path|escape}-->')">
+				<tr onclick="fnSetFormVal('form1', 'select_file', '<!--{$arrFileList[cnt].file_path|escape}-->')">
 					<td><!--{$arrFileList[cnt].file_name|escape}--></td>
 					<td><!--{$arrFileList[cnt].file_size|escape}--></td>
 					<td><!--{$arrFileList[cnt].file_time|escape}--></td>
