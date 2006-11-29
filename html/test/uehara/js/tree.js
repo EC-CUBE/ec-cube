@@ -180,5 +180,5 @@ function fnChgImg(fileName,imgName){
 
 // 背景色を変える
 function fnChangeBgColor(id, val) {
-	document.getElementById(id).style = val;
+	document.getElementById(id).style.backgroundColor = val;
 }
