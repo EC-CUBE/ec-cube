@@ -5,15 +5,6 @@
  * http://www.lockon.co.jp/
  */
 *}-->
-<script language="JavaScript">
-<!--
-arrTree = new Array();
-<!--{section name=cnt loop=$arrTree}-->
-	arrTree[<!--{$arrTree[cnt].count}-->] = new Array("<!--{$arrTree[cnt].count}-->", "<!--{$arrTree[cnt].type}-->", "<!--{$arrTree[cnt].path}-->", <!--{$arrTree[cnt].rank}-->, <!--{if $arrTree[cnt].open}-->true<!--{else}-->false<!--{/if}-->);
-<!--{/section}-->
-
-//-->
-</script>
 
 ¢£¥¨¥é¡¼
 <!--{foreach key=key item=item from=$arrErr}-->
