@@ -1113,7 +1113,7 @@ function sfRound($value, $digit = 0){
 		$value = $value * 10 * $digit;
 	}
 	$ret = round($value);
-	return $ret
+	return $ret;
 	
 }
 
