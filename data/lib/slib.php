@@ -103,7 +103,7 @@ function sfColumnExists($table_name, $col_name, $col_type = "", $dsn = "", $add 
 		// カラムリストを取得
 		$arrRet = sfGetColumnList($table_name, $objQuery, $db_type);
 		if(count($arrRet) > 0) {
-			if(!in_array($col_name, $arrRet)){
+			if(in_array($col_name, $arrRet)){
 				return true;
 			}
 		}
