@@ -236,7 +236,6 @@
 							<td width="350"><span class="white">商品名</span></td>
 							<td width="60"><span class="white">在庫</span></td>
 							<td width="50"><span class="white">編集</span></td>
-							<td width="50"><span class="white">コピー</span></td>
 							<td width="50" rowspan="2"><span class="white">確認</span></td>
 							<!--{if $smarty.const.OPTION_CLASS_REGIST == 1}-->
 							<td width="50" rowspan="2"><span class="white">規格</span></td>
@@ -246,6 +245,7 @@
 						<tr bgcolor="#636469" align="center" class="fs12n">
 							<td width="90"><span class="white">価格(円)</span></td>
 							<td width="430"><span class="white">カテゴリ</span></td>
+							<td width="50"><span class="white">コピー</span></td>
 							<td width="60"><span class="white">種別</span></td>
 						</tr>
 			
