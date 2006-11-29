@@ -357,7 +357,7 @@ function lfRegistProduct($arrList) {
 		$col = sfGetCommaList($arrColList);
 		
 		// コピー商品の場合には規格もコピーする
-		$objQuery->query("INSERT INTO dtb_products_class (product_id, ". $col .") SELECT " . $col. " FROM dtb_products_class WHERE product_id = ? ORDER BY product_class_id", array($product_id, $product_id));
+		$objQuery->query("INSERT INTO dtb_products_class (product_id, ". $col .") SELECT ?, " . $col. " FROM dtb_products_class WHERE product_id = ? ORDER BY product_class_id", array($product_id, $product_id));
 		
 
 	} else {
