@@ -46,7 +46,7 @@ function sfGetFileList($dir) {
 						$space .= "&nbsp;";
 					}
 					$file_size = $space. $file_size;
-					$file_view = $file_name. $file_size. $file_time;
+					$file_view = $file_name. $file_size. "&nbsp;&nbsp;&nbsp;&nbsp;". $file_time;
 					
 					// ディレクトリとファイルで格納配列を変える
 					if(is_dir($path)) {
