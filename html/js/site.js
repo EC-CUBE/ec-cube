@@ -159,12 +159,12 @@ function fnSetFormSubmit(form, key, val) {
 	return false;
 }
 
-function fnChangeAction(url) {
-	document.form1.action = url;
-}
-
 function fnSetFormVal(form, key, val) {
 	document.forms[form][key].value = val;
+}
+
+function fnChangeAction(url) {
+	document.form1.action = url;
 }
 
 // ページナビで使用する

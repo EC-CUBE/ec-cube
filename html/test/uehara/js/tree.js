@@ -178,7 +178,7 @@ function fnChgImg(fileName,imgName){
 	document.getElementById(imgName).src = fileName;
 }
 
-// 生成されたツリーのテスト表示
-function tree_view_test(id) {
-	document.getElementById(id).value=tree
+// 背景色を変える
+function fnChangeBgColor(id, val) {
+	document.getElementById(id).style = val;
 }
