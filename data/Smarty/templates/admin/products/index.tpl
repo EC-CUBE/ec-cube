@@ -235,12 +235,12 @@
 							<td width="90"><span class="white">╬╕ий╔Ё║╪╔и</span></td>
 							<td width="350"><span class="white">╬╕ийл╬</span></td>
 							<td width="60"><span class="white">╨ъ╦к</span></td>
-							<td width="50"><span class="white">йт╫╦</span></td>
+							<td width="50" rowspan="2"><span class="white">йт╫╦</span></td>
 							<td width="50" rowspan="2"><span class="white">Ёнг╖</span></td>
 							<!--{if $smarty.const.OPTION_CLASS_REGIST == 1}-->
 							<td width="50" rowspan="2"><span class="white">╣╛Ёй</span></td>
 							<!--{/if}-->
-							<td width="50" rowspan="2"><span class="white">╨О╫Э</span></td>
+							<td width="50"><span class="white">╨О╫Э</span></td>
 						</tr>
 						<tr bgcolor="#636469" align="center" class="fs12n">
 							<td width="90"><span class="white">╡аЁй(╠ъ)</span></td>
