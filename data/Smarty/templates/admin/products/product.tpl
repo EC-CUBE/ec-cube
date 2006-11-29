@@ -31,6 +31,7 @@
 						<input type="hidden" name="mode" value="edit">
 						<input type="hidden" name="image_key" value="">
 						<input type="hidden" name="product_id" value="<!--{$arrForm.product_id}-->" >
+						<input type="hidden" name="copy_product_id" value="<!--{$arrForm.copy_product_id}-->" >
 						<input type="hidden" name="anchor_key" value="">
 						<!--{foreach key=key item=item from=$arrHidden}-->
 							<input type="hidden" name="<!--{$key}-->" value="<!--{$item|escape}-->">

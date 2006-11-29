@@ -74,7 +74,10 @@ case 'copy' :
 	if(sfIsInt($_POST['product_id'])){
 		// DBから商品情報の読込
 		$arrForm = lfGetProduct($_POST['product_id']);
-		if($_POST['mode'] == "copy") $arrForm["product_id"] = "";
+		if($_POST['mode'] == "copy"){
+			$arrForm["copy_product_id"] = $arrForm["product_id"];
+			$arrForm["product_id"] = "";
+		}
 		$objPage->arrForm = $arrForm;
 		
 		// 商品ステータスの変換
