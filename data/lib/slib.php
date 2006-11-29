@@ -1057,7 +1057,7 @@ function sfMoveCatRank($objQuery, $table, $id_name, $cat_name, $old_catid, $new_
 }
 
 /* 税金計算 */
-function sfTax($price, $tax, $tax_rule) {
+function sfTax($price, $tax, $tax_rule, $digit = 1) {
 	$real_tax = $tax / 100;
 	$ret = $price * $real_tax;
 	switch($tax_rule) {
@@ -1082,7 +1082,7 @@ function sfTax($price, $tax, $tax_rule) {
 }
 
 /* 税金付与 */
-function sfPreTax($price, $tax, $tax_rule) {
+function sfPreTax($price, $tax, $tax_rule, $digit = 1) {
 	$real_tax = $tax / 100;
 	$ret = $price * (1 + $real_tax);
 	
@@ -1108,7 +1108,7 @@ function sfPreTax($price, $tax, $tax_rule) {
 }
 
 // 桁数を指定して四捨五入
-function sfRound($value, $digit = 0){
+function sfRound($value, $digit = 1){
 	// 整数且つ0出なければ桁数指定を行う
 	if(sfIsInt($digit) and $digit != 0) $value = $value * 10 * $digit;
 	$ret = round($value);
@@ -1116,7 +1116,7 @@ function sfRound($value, $digit = 0){
 }
 
 // 桁数を指定して切り捨て
-function sfFloor($value, $digit = 0){
+function sfFloor($value, $digit = 1){
 	// 整数且つ0出なければ桁数指定を行う
 	if(sfIsInt($digit) and $digit != 0) $value = $value * 10 * $digit;
 	$ret = floor($value);
@@ -1124,11 +1124,11 @@ function sfFloor($value, $digit = 0){
 }
 
 // 桁数を指定して切り上げ
-function sfCeil($value, $digit = 0){
+function sfCeil($value, $digit = 1){
 	// 整数且つ0出なければ桁数指定を行う
 	if(sfIsInt($digit) and $digit != 0) $value = $value * 10 * $digit;
 	$ret = ceil($value);
-	return $ret;
+	return $ret / 10 * $digit;
 }
 
 /* ポイント付与 */
