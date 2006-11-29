@@ -76,6 +76,7 @@ case 'copy' :
 		$arrForm = lfGetProduct($_POST['product_id']);
 		if($_POST['mode'] == "copy") { 
 			$arrForm["product_id"] == "";
+			sfprintr("copy");
 		}
 		$objPage->arrForm = $arrForm;
 		
