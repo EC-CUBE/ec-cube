@@ -27,18 +27,28 @@ function sfGetFileList($dir) {
 					// 行末の/を取り除く
 					$dir = ereg_replace("/$", "", $dir);
 					$path = $dir."/".$file;
+
+					// SELECT内の見た目を整えるため空白を入れる
+					$file_name = sfCutString($file, FILE_NAME_LEN);						
+					$file_size = sfCutString(sfGetDirSize($path), FILE_NAME_LEN);
+					$file_time = date("Y/m/d", filemtime($path));
+					
+					$file_name_len = strlen($file_name);
+					for($cnt = 0; (FILE_NAME_LEN + 3) > ($file_name_len + $cnt); $cnt++) {
+						$file_name .= "&nbsp;";
+					}
+					$file_size_len = strlen($file_size);
+					for($cnt = 0; (FILE_NAME_LEN + 3) > ($file_size_len + $cnt); $cnt++) {
+						$file_size .= "&nbsp;";
+					}
+					
 					// ディレクトリとファイルで格納配列を変える
 					if(is_dir($path)) {
-						$arrDirList[$cnt]['file_name'] = sfCutString($file, 10);
 						$arrDirList[$cnt]['file_path'] = $path;
-						$arrDirList[$cnt]['file_size'] = sfGetDirSize($path);
-						$arrDirList[$cnt]['file_time'] = date("Y/m/d", filemtime($path)); 
+						$arrDirList[$cnt]['file_path'] = $path;
 						$arrDirList[$cnt]['is_dir'] = true;
 					} else {
-						$arrFileList[$cnt]['file_name'] = sfCutString($file, 10);
 						$arrFileList[$cnt]['file_path'] = $path;
-						$arrFileList[$cnt]['file_size'] = sfGetDirSize($path);
-						$arrFileList[$cnt]['file_time'] = date("Y/m/d", filemtime($path)); 
 						$arrFileList[$cnt]['is_dir'] = false;
 					}
 					$cnt++;
