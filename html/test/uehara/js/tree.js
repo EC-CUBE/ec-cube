@@ -188,5 +188,7 @@ function fnSelectFile(id, val) {
 
 // 背景色を変える
 function fnChangeBgColor(id, val) {
-	document.getElementById(id).style.backgroundColor = val;
+	if (old_select_id != id) {
+		document.getElementById(id).style.backgroundColor = val;
+	}
 }
