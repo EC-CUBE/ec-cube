@@ -41,7 +41,6 @@ arrTree = new Array();
 		</td>
 		<td valign="top">
 		<form name="form1" method="post" action="<!--{$smarty.server.PHP_SELF|escape}-->"  enctype="multipart/form-data">
-		<input type="text" id="test1" name="test1" value="" onclick="tree_view_test('test1')" size="300">
 		<input type="hidden" name="mode" value="">
 		<input type="hidden" name="now_file" value="<!--{$tpl_now_file}-->">
 		<input type="hidden" name="tree_select_file" value="">
@@ -51,7 +50,8 @@ arrTree = new Array();
 		<div id="file_view">
 			<table>
 				<!--{section name=cnt loop=$arrFileList}-->
-				<tr onclick="fnSetFormVal('form1', 'select_file', '<!--{$arrFileList[cnt].file_path|escape}-->');fnChangeBgColor('select_file<!--{$smarty.section.cnt.index}-->', '#3333FF');" style="" id="select_file<!--{$smarty.section.cnt.index}-->">
+				<!--{assign var="id" value="select_file`$smarty.section.cnt.index`"}-->
+				<tr onclick="fnSetFormVal('form1', 'select_file', '<!--{$arrFileList[cnt].file_path|escape}-->');fnChangeBgColor('<!--{$id}-->', '#3333FF');" style="" id="<!--{$id}-->">
 					<td><!--{$arrFileList[cnt].file_name|escape}--></td>
 					<td><!--{$arrFileList[cnt].file_size|escape}--></td>
 					<td><!--{$arrFileList[cnt].file_time|escape}--></td>
