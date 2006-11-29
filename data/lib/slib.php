@@ -100,40 +100,13 @@ function sfColumnExists($table_name, $col_name, $col_type = "", $dsn = "", $add 
 	if(!$objQuery->isError()) {
 		list($db_type) = split(":", $dsn);
 		
+		// カラムリストを取得
 		$arrRet = sfGetColumnList($table_name, $objQuery, $db_type);
 		if(count($arrRet) > 0) {
 			if(!in_array($col_name, $arrRet)){
 				return true;
 			}
 		}
-
-		/*
-		// postgresqlとmysqlとで処理を分ける
-		if ($db_type == "pgsql") {
-			$sql = "SELECT
-					    a.attname
-					FROM
-					    pg_class c, pg_attribute a
-					WHERE
-					    c.relname=? AND
-					    a.attname=? AND
-					    c.oid=a.attrelid AND
-					    a.attnum > 0
-					ORDER BY
-					    a.attnum";
-			$arrRet = $objQuery->getAll($sql, array($table_name, $col_name));
-			if(count($arrRet) > 0) {
-				return true;
-			}
-		}else if ($db_type == "mysql") {
-			$arrRet = sfGetColumnList($table_name, $objQuery);
-			if(count($arrRet) > 0) {
-				if(!in_array($col_name, $arrRet)){
-					return true;
-				}
-			}
-		}
-		*/
 	}
 	
 	// カラムを追加する

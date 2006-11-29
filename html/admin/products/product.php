@@ -347,7 +347,9 @@ function lfRegistProduct($arrList) {
 		}
 		
 		// dtb_products_class のカラムを取得
+		$arrColList = sfGetColumnList("dtb_products_class", $objQuery);
 		
+		sfprintr($arrColList);
 		
 		// コピー商品の場合には規格もコピーする
 		"INSERT INTO dtb_pSELECT * FROM dtb_products_class WHERE product_id = ? ORDER BY product_class_id";
