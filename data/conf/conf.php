@@ -288,20 +288,20 @@ define ("MLTEXT_LEN", 1000);	// 長中文の文字数（問い合わせなど）
 define ("LTEXT_LEN", 3000);		// 長文の文字数
 define ("LLTEXT_LEN", 99999);	// 超長文の文字数（メルマガなど）
 define ("URL_LEN", 300);		// URLの文字長
-define("ID_MAX_LEN", 15);		// ID・パスワードの文字数制限
-define("ID_MIN_LEN", 4);		// ID・パスワードの文字数制限
-define("PRICE_LEN", 8);			// 金額桁数
-define("PERCENTAGE_LEN", 3);	// 率桁数
-define("AMOUNT_LEN", 6);		// 在庫数、販売制限数
-define("ZIP01_LEN", 3);			// 郵便番号1
-define("ZIP02_LEN", 4);			// 郵便番号2
-define("TEL_ITEM_LEN", 6);		// 電話番号各項目制限
-define("TEL_LEN", 12);			// 電話番号総数
-define("PASSWORD_LEN1", 4);		// パスワード1
-define("PASSWORD_LEN2", 10);	// パスワード2
-define("INT_LEN", 8);			// 検査数値用桁数(INT)
-define("CREDIT_NO_LEN", 4);		// クレジットカードの文字数
-define("SEARCH_CATEGORY_LEN", 18);	// 検索カテゴリ最大表示文字数(byte)
+define ("ID_MAX_LEN", 15);		// ID・パスワードの文字数制限
+define ("ID_MIN_LEN", 4);		// ID・パスワードの文字数制限
+define ("PRICE_LEN", 8);		// 金額桁数
+define ("PERCENTAGE_LEN", 3);	// 率桁数
+define ("AMOUNT_LEN", 6);		// 在庫数、販売制限数
+define ("ZIP01_LEN", 3);		// 郵便番号1
+define ("ZIP02_LEN", 4);		// 郵便番号2
+define ("TEL_ITEM_LEN", 6);		// 電話番号各項目制限
+define ("TEL_LEN", 12);			// 電話番号総数
+define ("PASSWORD_LEN1", 4);	// パスワード1
+define ("PASSWORD_LEN2", 10);	// パスワード2
+define ("INT_LEN", 8);			// 検査数値用桁数(INT)
+define ("CREDIT_NO_LEN", 4);		// クレジットカードの文字数
+define ("SEARCH_CATEGORY_LEN", 18);	// 検索カテゴリ最大表示文字数(byte)
 
 /** フロントページ **/
 
@@ -325,15 +325,15 @@ define ("CART_NOT_FOUND", 10);		// カート内商品の読込エラー
 define ("LACK_POINT", 11);			// ポイントの不足
 define ("TEMP_LOGIN_ERROR", 12);	// 仮登録者がログインに失敗
 define ("URL_ERROR", 13);			// URLエラー
-define ("EXTRACT_ERROR", 14);		//ファイル解凍エラー
-define ("FTP_DOWNLOAD_ERROR", 15);	//FTPダウンロードエラー
-define ("FTP_LOGIN_ERROR", 16);		//FTPログインエラー
-define ("FTP_CONNECT_ERROR", 17);	//FTP接続エラー
-define ("CREATE_DB_ERROR", 18);		//DB作成エラー
-define ("DB_IMPORT_ERROR", 19);		//DBインポートエラー
-define ("FILE_NOT_FOUND", 20);		//設定ファイル存在エラー
-define ("WRITE_FILE_ERROR", 21);	//書き込みエラー
-define ("FREE_ERROR_MSG", 999);		//フリーメッセージ
+define ("EXTRACT_ERROR", 14);		// ファイル解凍エラー
+define ("FTP_DOWNLOAD_ERROR", 15);	// FTPダウンロードエラー
+define ("FTP_LOGIN_ERROR", 16);		// FTPログインエラー
+define ("FTP_CONNECT_ERROR", 17);	// FTP接続エラー
+define ("CREATE_DB_ERROR", 18);		// DB作成エラー
+define ("DB_IMPORT_ERROR", 19);		// DBインポートエラー
+define ("FILE_NOT_FOUND", 20);		// 設定ファイル存在エラー
+define ("WRITE_FILE_ERROR", 21);	// 書き込みエラー
+define ("FREE_ERROR_MSG", 999);		// フリーメッセージ
 
 /* 表示関連 */
 define ("SEPA_CATNAVI", " > ");	// カテゴリ区切り文字

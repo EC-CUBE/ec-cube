@@ -29,13 +29,13 @@ function sfGetFileList($dir) {
 					$path = $dir."/".$file;
 					// ディレクトリとファイルで格納配列を変える
 					if(is_dir($path)) {
-						$arrDirList[$cnt]['file_name'] = $file;
+						$arrDirList[$cnt]['file_name'] = sfCutString($file, 10);
 						$arrDirList[$cnt]['file_path'] = $path;
 						$arrDirList[$cnt]['file_size'] = sfGetDirSize($path);
 						$arrDirList[$cnt]['file_time'] = date("Y/m/d", filemtime($path)); 
 						$arrDirList[$cnt]['is_dir'] = true;
 					} else {
-						$arrFileList[$cnt]['file_name'] = $file;
+						$arrFileList[$cnt]['file_name'] = sfCutString($file, 10);
 						$arrFileList[$cnt]['file_path'] = $path;
 						$arrFileList[$cnt]['file_size'] = sfGetDirSize($path);
 						$arrFileList[$cnt]['file_time'] = date("Y/m/d", filemtime($path)); 
