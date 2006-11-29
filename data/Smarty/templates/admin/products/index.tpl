@@ -246,7 +246,7 @@
 							<td width="90"><span class="white">²Á³Ê(±ß)</span></td>
 							<td width="430"><span class="white">¥«¥Æ¥´¥ê</span></td>
 							<td width="60"><span class="white">¼ïÊÌ</span></td>
-							<td width="50"><span class="white">¥³¥Ô¡¼</span></td>
+							<td width="50"><span class="white">Ê£À½</span></td>
 						</tr>
 			
 						<!--{section name=cnt loop=$arrProducts}-->
@@ -296,7 +296,7 @@
 							<!--{* É½¼¨ *}-->
 							<!--{assign var=key value=$arrProducts[cnt].status}-->
 							<td align="center"><!--{$arrDISP[$key]}--></td>
-							<td align="center"><span class="icon_delete"><a href="<!--{$smarty.const.URL_DIR}-->" onclick="fnSetFormValue('category_id', '<!--{$arrProducts[cnt].category_id}-->'); fnModeSubmit('delete', 'product_id', <!--{$arrProducts[cnt].product_id}-->); return false;">ºï½ü</a></span></td>
+							<td align="center"><span class="icon_delete"><a href="<!--{$smarty.const.URL_DIR}-->" onclick="fnSetFormValue('category_id', '<!--{$arrProducts[cnt].category_id}-->'); fnModeSubmit('delete', 'product_id', <!--{$arrProducts[cnt].product_id}-->); return false;">Ê£À½</a></span></td>
 						</tr>
 						<!--¢¥¾¦ÉÊ<!--{$smarty.section.cnt.iteration}-->-->
 						<!--{/section}-->
