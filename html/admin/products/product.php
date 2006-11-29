@@ -97,11 +97,7 @@ case 'edit':
 	// µ¬³ÊÅÐÏ¿¤¢¤ê¤Ê¤·È½Äê
 	$tpl_nonclass = lfCheckNonClass($_POST['product_id']);
 	
-	sfprintr($tpl_nonclass);
-	sfprintr($_POST['copy_product_id']);
-	sfprintr(sfIsInt($_POST['copy_product_id']));
-	
-	if(!$tpl_nonclass and sfIsInt($_POST['copy_product_id'])){
+	if($_POST['product_id'] == "" and sfIsInt($_POST['copy_product_id'])){
 		$tpl_nonclass = lfCheckNonClass($_POST['copy_product_id']);
 	}
 	$objPage->tpl_nonclass = $tpl_nonclass;
