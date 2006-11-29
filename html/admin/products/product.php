@@ -352,7 +352,7 @@ function lfRegistProduct($arrList) {
 		unset($arrColList[$arrColList_tmp["product_class_id"]]);	 //µ¬³ÊID¤ÏÅÐÏ¿¤·¤Ê¤¤
 		
 		sfprintr($arrColList);
-		$collist = sfGetCSVList($arrColList);
+		$collist = sfGetCommaList($arrColList);
 		
 		sfprintr($collist);
 		
