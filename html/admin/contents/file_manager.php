@@ -125,13 +125,13 @@ $objPage->arrParam = $_POST;
 $objPage->$tpl_onload .= "fnTreeView('tree', arrTree, '$now_dir')";
 // ツリー配列作成用 javascript
 $arrTree = sfGetFileTree($top_dir, $_POST['tree_status']);
-$objPage->tpl_javascript .= "arrTree = new Array();";
+$objPage->tpl_javascript .= "arrTree = new Array();\n";
 foreach($arrTree as $arrVal) {
 	$objPage->tpl_javascript .= "arrTree[".$arrVal['count']."] = new Array(".$arrVal['count'].", '".$arrVal['type']."', '".$arrVal['path']."', ".$arrVal['rank'].",";
 	if ($arrVal['open']) {
-		$objPage->tpl_javascript .= "true);";
+		$objPage->tpl_javascript .= "true);\n";
 	} else {
-		$objPage->tpl_javascript .= "false);";
+		$objPage->tpl_javascript .= "false);\n";
 	}
 }
 
