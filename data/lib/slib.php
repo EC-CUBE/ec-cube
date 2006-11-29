@@ -91,7 +91,7 @@ function sfColumnExists($table_name, $col_name, $col_type = "", $dsn = "", $add 
 			return;
 		}
 	}
-	
+
 	// テーブルが無ければエラー
 	if(!sfTabaleExists($table_name, $dsn)) return false;
 	
@@ -163,7 +163,7 @@ function sfLoadUpdateModule() {
 	$main_php = ereg_replace(URL_DIR, "", $_SERVER['PHP_SELF']);
 	$extern_php = UPDATE_PATH . $main_php;
 	if(file_exists($extern_php)) {
-		require($extern_php);
+		require_once($extern_php);
 	}
 }
 
