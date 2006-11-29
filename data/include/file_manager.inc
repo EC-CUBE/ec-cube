@@ -18,6 +18,7 @@ function sfGetFileList($dir) {
 	if (is_dir($dir)) {
 		if ($dh = opendir($dir)) { 
 			$cnt = 0;
+			// 行末の/を取り除く
 			$dir = ereg_replace("/$", "", $dir);
 			while (($file = readdir($dh)) !== false) $arrDir[] = $file; 
 			// アルファベットと数字でソート
@@ -25,7 +26,7 @@ function sfGetFileList($dir) {
 			foreach($arrDir as $file) {				
 				// ./ と ../を除くファイルのみを取得
 				if($file != "." && $file != "..") {
-					// 行末の/を取り除く
+
 					$path = $dir."/".$file;
 
 					// SELECT内の見た目を整えるため空白を入れる
