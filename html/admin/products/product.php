@@ -69,31 +69,14 @@ $objPage->arrForm = $_POST;
 switch($_POST['mode']) {
 // 検索画面からの編集
 case 'pre_edit':
-	// 編集時
-	if(sfIsInt($_POST['product_id'])){
-		// DBから商品情報の読込
-		$objPage->arrForm = lfGetProduct($_POST['product_id']);
-		// 商品ステータスの変換
-		$arrRet = sfSplitCBValue($objPage->arrForm['product_flag'], "product_flag");
-		$objPage->arrForm = array_merge($objPage->arrForm, $arrRet);
-		// DBからおすすめ商品の読み込み
-		$objPage->arrRecommend = lfPreGetRecommendProducts($_POST['product_id']);
-		// DBデータから画像ファイル名の読込
-		$objUpFile->setDBFileList($objPage->arrForm);
-		// 規格登録ありなし判定
-		$objPage->tpl_nonclass = lfCheckNonClass($_POST['product_id']);
-		lfProductPage();		// 商品登録ページ
-	}
-	break;
-// 複製
 case 'copy' :
 	// 編集時
 	if(sfIsInt($_POST['product_id'])){
 		// DBから商品情報の読込
 		$arrForm = lfGetProduct($_POST['product_id']);
-		$arrForm["product_id"] = "";
+		if($_POST['mode'] == "copy") $arrForm["product_id"] == "";
 		$objPage->arrForm = $arrForm;
-
+		
 		// 商品ステータスの変換
 		$arrRet = sfSplitCBValue($objPage->arrForm['product_flag'], "product_flag");
 		$objPage->arrForm = array_merge($objPage->arrForm, $arrRet);
@@ -106,7 +89,6 @@ case 'copy' :
 		lfProductPage();		// 商品登録ページ
 	}
 	break;
-		
 // 商品登録・編集
 case 'edit':
 	// 規格登録ありなし判定
