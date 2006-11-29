@@ -92,6 +92,8 @@ case 'download' :
 	$filename = $_POST['list_name'] . ".tar.gz";
 	$dl_file = $objPage->bkup_dir.$_POST['list_name'];
 	
+	sfprintr($dl_file);
+	
 	// ダウンロード開始
 //	Header("Content-disposition: attachment; filename=${filename}");
 //	Header("Content-type: application/octet-stream; name=${filename}");
@@ -99,12 +101,13 @@ case 'download' :
 //	Header("Pragma: ");	
 //	header("Content-Length: " .filesize($dl_file)); 
 
+/*
 	header("Content-Disposition: attachment;filename=" .$filename. "\"");
 	header("Content-Length: " .filesize($dl_file));
 	header("Content-Type: application/octet-stream; name=" .$filename. "\"");
 	readfile ($dl_file);
 	//exit();
-
+*/
 	break;
 
 default:
