@@ -36,14 +36,14 @@ function sfGetFileList($dir) {
 					$file_name_len = strlen($file_name);
 					$space = "";
 					for($space_cnt = 0; (FILE_NAME_LEN + 3) > ($file_name_len + $space_cnt); $space_cnt++) {
-						$space .= "&nbsp;";
+						$space .= "&#32;";
 					}
 					$file_name = $space. $file_name;
 					
 					$file_size_len = strlen($file_size);
 					$space = "";
 					for($space_cnt = 0; (FILE_NAME_LEN + 3) > ($file_size_len + $space_cnt); $space_cnt++) {
-						$space .= "&nbsp;";
+						$space .= "&#32;";
 					}
 					$file_size = $space. $file_size;
 					$file_view = $file_name. $file_size. "&nbsp;&nbsp;&nbsp;&nbsp;". $file_time;
