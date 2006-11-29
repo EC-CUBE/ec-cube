@@ -352,6 +352,9 @@ function lfRegistProduct($arrList) {
 		unset($arrColList[$arrColList_tmp["product_class_id"]]);	 //規格IDは登録しない
 		
 		sfprintr($arrColList);
+		$collist = sfGetCSVList($arrColList);
+		
+		sfprintr($collist);
 		
 		// コピー商品の場合には規格もコピーする
 		"INSERT INTO dtb_pSELECT * FROM dtb_products_class WHERE product_id = ? ORDER BY product_class_id";
