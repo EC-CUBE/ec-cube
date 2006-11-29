@@ -1,8 +1,9 @@
 <?php
+require_once("../../require.php");
 
 $test = "-1";
 
-$val = is_int($test);
+$val = sfIsInt($test);
 
 
 print($val);
