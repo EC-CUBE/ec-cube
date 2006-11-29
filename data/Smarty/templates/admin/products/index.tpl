@@ -225,10 +225,10 @@
 			<table width="840" border="0" cellspacing="0" cellpadding="0" summary=" ">
 				<tr><td height="12"></td></tr>
 				<tr>
-					<div style="overflow:auto; width:840px; height:100%;">
 					<td bgcolor="#cccccc">
 					
 					<!--検索結果表示テーブル-->
+					<div style="overflow:auto; width:840px; height:100%;">
 					<table width="1000" border="0" cellspacing="1" cellpadding="5" summary=" ">
 						<tr bgcolor="#636469" align="center" class="fs12n">
 							<td width="50" rowspan="2"><span class="white">商品ID</span></td>
@@ -302,9 +302,9 @@
 						<!--▲商品<!--{$smarty.section.cnt.iteration}-->-->
 						<!--{/section}-->
 					</table>
+					</div>
 					<!--検索結果表示テーブル-->
 					</td>
-					</div>
 				</tr>
 			</table>
 		<!--{/if}-->
