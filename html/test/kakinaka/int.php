@@ -1,7 +1,7 @@
 <?php
 require_once("../../require.php");
 
-$test = "a";
+$test = "-1a";
 
 $val = sfIsInt($test);
 
