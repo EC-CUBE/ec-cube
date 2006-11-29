@@ -41,13 +41,15 @@ function sfGetFileList($dir) {
 					for($cnt = 0; (FILE_NAME_LEN + 3) > ($file_size_len + $cnt); $cnt++) {
 						$file_size .= "&nbsp;";
 					}
+					$file_view = $file_name. $file_size. $file_time;
 					
 					// ディレクトリとファイルで格納配列を変える
 					if(is_dir($path)) {
-						$arrDirList[$cnt]['file_path'] = $path;
+						$arrDirList[$cnt]['file_view'] = $file_view;
 						$arrDirList[$cnt]['file_path'] = $path;
 						$arrDirList[$cnt]['is_dir'] = true;
 					} else {
+						$arrFileList[$cnt]['file_path'] = $file_view;			
 						$arrFileList[$cnt]['file_path'] = $path;
 						$arrFileList[$cnt]['is_dir'] = false;
 					}
