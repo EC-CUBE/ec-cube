@@ -152,10 +152,10 @@ function sfGetColumnList($table_name, $objQuery = "", $db_type = DB_TYPE){
 	$arrRet = array();
 	
 	// postgresqlとmysqlとで処理を分ける
-	if (DB_TYPE == "pgsql") {
+	if ($db_type == "pgsql") {
 		$sql = "SELECT a.attname FROM pg_class c, pg_attribute a WHERE c.relname=? AND c.oid=a.attrelid AND a.attnum > 0 ORDER BY a.attnum";
 		$arrRet = $objQuery->getAll($sql, array($table_name));
-	}else if (DB_TYPE == "mysql") {
+	}else if ($db_type == "mysql") {
 		$sql = "SHOW COLUMNS FROM $table_name";
 		$arrRet = $objQuery->getAll($sql);
 	}
