@@ -18,6 +18,7 @@ function sfGetFileList($dir) {
 	if (is_dir($dir)) {
 		if ($dh = opendir($dir)) { 
 			$cnt = 0;
+			$dir = ereg_replace("/$", "", $dir);
 			while (($file = readdir($dh)) !== false) $arrDir[] = $file; 
 			// アルファベットと数字でソート
 			natcasesort($arrDir);
@@ -25,12 +26,11 @@ function sfGetFileList($dir) {
 				// ./ と ../を除くファイルのみを取得
 				if($file != "." && $file != "..") {
 					// 行末の/を取り除く
-					$dir = ereg_replace("/$", "", $dir);
 					$path = $dir."/".$file;
 
 					// SELECT内の見た目を整えるため空白を入れる
-					$file_name = $file;						
-					$file_size = sfGetDirSize($path);
+					$file_name = sfCutString($file, FILE_NAME_LEN);						
+					$file_size = sfCutString(sfGetDirSize($path), FILE_NAME_LEN);
 					$file_time = date("Y/m/d", filemtime($path));
 					
 					$file_name_len = strlen($file_name);
