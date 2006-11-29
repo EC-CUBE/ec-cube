@@ -218,7 +218,7 @@
 </table>
 
 
-<table width="1000" border="0" cellspacing="0" cellpadding="0" summary=" ">
+<table width="878" border="0" cellspacing="0" cellpadding="0" summary=" ">
 	<tr>
 		<td bgcolor="#f0f0f0" align="center">
 
@@ -249,7 +249,7 @@
 							<td width="60"><span class="white">ºÔ Ã</span></td>
 							<td width="50"><span class="white"> £¿Ω</span></td>
 						</tr>
-<div style="overflow:auto;width:878px;height:200px;">
+<div style="overflow:auto;width:500px;height:200px;">
 
 						<!--{section name=cnt loop=$arrProducts}-->
 						<!--¢ßæ¶… <!--{$smarty.section.cnt.iteration}-->-->
