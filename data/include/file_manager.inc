@@ -35,11 +35,11 @@ function sfGetFileList($dir) {
 					
 					$file_name_len = strlen($file_name);
 					for($cnt = 0; (FILE_NAME_LEN + 3) > ($file_name_len + $cnt); $cnt++) {
-						$file_name .= "¡¡";
+						$file_name .= " ";
 					}
 					$file_size_len = strlen($file_size);
 					for($cnt = 0; (FILE_NAME_LEN + 3) > ($file_size_len + $cnt); $cnt++) {
-						$file_size .= "¡¡";
+						$file_size .= " ";
 					}
 					$file_view = $file_name. $file_size. $file_time;
 					
