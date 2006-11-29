@@ -24,13 +24,13 @@ function sfGetFileList($dir) {
 
 			// アルファベットと数字でソート
 			natcasesort($arrDir);
-sfprintr($arrDir);
+
 			foreach($arrDir as $file) {				
 				// ./ と ../を除くファイルのみを取得
 				if($file != "." && $file != "..") {
 
 					$path = $dir."/".$file;
-
+sfprintr($path);
 					// SELECT内の見た目を整えるため空白を入れる
 					$file_name = sfCutString($file, FILE_NAME_LEN);						
 					$file_size = sfCutString(sfGetDirSize($path), FILE_NAME_LEN);
