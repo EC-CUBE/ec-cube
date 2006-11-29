@@ -217,14 +217,12 @@
 	<tr><td bgcolor="cbcbcb" colspan="2"><img src="<!--{$smarty.const.URL_DIR}-->img/common/_.gif" width="1" height="5" alt=""></td></tr>
 </table>
 
-<div style="overflow:auto ;width:878px;height:400;">
-
 <table width="878" border="0" cellspacing="0" cellpadding="0" summary=" ">
 	<tr>
 		<td bgcolor="#f0f0f0" align="center">
 
 		<!--{if count($arrProducts) > 0}-->		
-
+		<div style="overflow:auto ;width:878px;height:400;">
 			<table width="840" border="0" cellspacing="0" cellpadding="0" summary=" ">
 				<tr><td height="12"></td></tr>
 				<tr>
@@ -308,8 +306,7 @@
 					</td>
 				</tr>
 			</table>
-</div>
-	
+					</div>
 		<!--{/if}-->
 
 		</td>
