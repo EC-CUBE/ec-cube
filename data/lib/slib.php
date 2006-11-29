@@ -128,7 +128,7 @@ function sfGetColumnList($table_name, $objQuery = "", $db_type = DB_TYPE){
 		$sql = "SELECT a.attname FROM pg_class c, pg_attribute a WHERE c.relname=? AND c.oid=a.attrelid AND a.attnum > 0 ORDER BY a.attnum";
 		$arrRet = $objQuery->getAll($sql, array($table_name));
 	}else if ($db_type == "mysql") {
-		$sql = "SHOW COLUMNS FROM $table_name";
+		$sql = "SHOW COLUMN FROM $table_name";
 		$arrColList = $objQuery->getAll($sql);
 		sfprintr($arrColList);
 		$arrColList = sfswaparray($arrRet);
