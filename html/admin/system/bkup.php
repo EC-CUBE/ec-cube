@@ -548,7 +548,7 @@ function lfExeInsertSQL($objQuery, $csv){
 
 		// エラーがあれば終了
 		if ($err->message != ""){
-			$objQuery->getlastquery();
+			sfErrorHeader(">> " . $objQuery->getlastquery(false));
 			return false;
 		}
 		
