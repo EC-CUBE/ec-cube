@@ -100,7 +100,6 @@ function sfColumnExists($table_name, $col_name, $col_type = "", $dsn = "", $add 
 	if(!$objQuery->isError()) {
 		list($db_type) = split(":", $dsn);
 		
-		sfprintr($db_type);
 		$arrRet = sfGetColumnList($table_name, $objQuery, $db_type);
 		if(count($arrRet) > 0) {
 			if(!in_array($col_name, $arrRet)){
