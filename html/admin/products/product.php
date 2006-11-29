@@ -90,7 +90,10 @@ case 'copy' :
 	// 編集時
 	if(sfIsInt($_POST['product_id'])){
 		// DBから商品情報の読込
-		$objPage->arrForm = lfGetProduct($_POST['product_id']);
+		$arrForm = lfGetProduct($_POST['product_id']);
+		$arrForm["product_id"] = "";
+		$objPage->arrForm = $arrForm;
+
 		// 商品ステータスの変換
 		$arrRet = sfSplitCBValue($objPage->arrForm['product_flag'], "product_flag");
 		$objPage->arrForm = array_merge($objPage->arrForm, $arrRet);
