@@ -1063,19 +1063,19 @@ function sfTax($price, $tax, $tax_rule) {
 	switch($tax_rule) {
 	// 四捨五入
 	case 1:
-		$ret = round($ret);
+		$ret = sfRound($ret);
 		break;
 	// 切り捨て
 	case 2:
-		$ret = floor($ret);
+		$ret = sfFloor($ret);
 		break;
 	// 切り上げ
 	case 3:
-		$ret = ceil($ret);
+		$ret = sfCeil($ret);
 		break;
 	// デフォルト:切り上げ
 	default:
-		$ret = ceil($ret);
+		$ret = sfCeil($ret);
 		break;
 	}
 	return $ret;
@@ -1085,22 +1085,23 @@ function sfTax($price, $tax, $tax_rule) {
 function sfPreTax($price, $tax, $tax_rule) {
 	$real_tax = $tax / 100;
 	$ret = $price * (1 + $real_tax);
+	
 	switch($tax_rule) {
 	// 四捨五入
 	case 1:
-		$ret = round($ret);
+		$ret = sfRound($ret);
 		break;
 	// 切り捨て
 	case 2:
-		$ret = floor($ret);
+		$ret = sfFloor($ret);
 		break;
 	// 切り上げ
 	case 3:
-		$ret = ceil($ret);
+		$ret = sfCeil($ret);
 		break;
 	// デフォルト:切り上げ
 	default:
-		$ret = ceil($ret);
+		$ret = sfCeil($ret);
 		break;
 	}
 	return $ret;
@@ -1108,23 +1109,26 @@ function sfPreTax($price, $tax, $tax_rule) {
 
 // 桁数を指定して四捨五入
 function sfRound($value, $digit = 0){
-	
-	if(is_int($digit)){
-		$value = $value * 10 * $digit;
-	}
+	// 整数且つ0出なければ桁数指定を行う
+	if(sfIsInt($digit) and $digit != 0) $value = $value * 10 * $digit;
 	$ret = round($value);
 	return $ret;
-	
 }
 
 // 桁数を指定して切り捨て
-function sfFloor($value, $digit){
-	
+function sfFloor($value, $digit = 0){
+	// 整数且つ0出なければ桁数指定を行う
+	if(sfIsInt($digit) and $digit != 0) $value = $value * 10 * $digit;
+	$ret = floor($value);
+	return $ret;
 }
 
 // 桁数を指定して切り上げ
-function sfCeil($value, $digit){
-	
+function sfCeil($value, $digit = 0){
+	// 整数且つ0出なければ桁数指定を行う
+	if(sfIsInt($digit) and $digit != 0) $value = $value * 10 * $digit;
+	$ret = ceil($value);
+	return $ret;
 }
 
 /* ポイント付与 */
