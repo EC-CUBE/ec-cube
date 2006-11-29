@@ -230,7 +230,7 @@
 					<!--検索結果表示テーブル-->
 					<div style="overflow:auto; width:840px; height:360;">
 					<table width="1000" border="0" cellspacing="1" cellpadding="5" summary=" ">
-						<tr bgcolor="#636469" align="center" class="fs12n" height=65>
+						<tr bgcolor="#636469" align="center" class="fs12n">
 							<td width="50" rowspan="2"><span class="white">商品ID</span></td>
 							<td width="90" rowspan="2"><span class="white">商品画像</span></td>
 							<td width="90"><span class="white">商品コード</span></td>
@@ -253,7 +253,7 @@
 						<!--{section name=cnt loop=$arrProducts}-->
 						<!--▼商品<!--{$smarty.section.cnt.iteration}-->-->
 						<!--{assign var=status value="`$arrProducts[cnt].status`"}-->
-						<tr bgcolor="<!--{$arrPRODUCTSTATUS_COLOR[$status]}-->" class="fs12n">
+						<tr bgcolor="<!--{$arrPRODUCTSTATUS_COLOR[$status]}-->" class="fs12n" height=65px>
 							<td rowspan="2" align="center"><!--{$arrProducts[cnt].product_id}--></td>
 							<td rowspan="2" align="center">
 							<!--{if $arrProducts[cnt].main_list_image != ""}-->
