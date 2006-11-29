@@ -229,6 +229,8 @@
 				<tr>
 					<td bgcolor="#cccccc">
 					<!--検索結果表示テーブル-->
+					<div style="overflow:auto;width:500px;height:200px;">
+					
 					<table width="840" border="0" cellspacing="1" cellpadding="5" summary=" ">
 						<tr bgcolor="#636469" align="center" class="fs12n">
 							<td width="50" rowspan="2"><span class="white">商品ID</span></td>
@@ -249,7 +251,6 @@
 							<td width="60"><span class="white">種別</span></td>
 							<td width="50"><span class="white">複製</span></td>
 						</tr>
-<div style="overflow:auto;width:500px;height:200px;">
 
 						<!--{section name=cnt loop=$arrProducts}-->
 						<!--▼商品<!--{$smarty.section.cnt.iteration}-->-->
@@ -302,8 +303,8 @@
 						</tr>
 						<!--▲商品<!--{$smarty.section.cnt.iteration}-->-->
 						<!--{/section}-->
-</div>
 					</table>
+</div>
 					<!--検索結果表示テーブル-->
 					</td>
 				</tr>
