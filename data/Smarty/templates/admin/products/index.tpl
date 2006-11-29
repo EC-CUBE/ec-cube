@@ -217,7 +217,7 @@
 	<tr><td bgcolor="cbcbcb" colspan="2"><img src="<!--{$smarty.const.URL_DIR}-->img/common/_.gif" width="1" height="5" alt=""></td></tr>
 </table>
 
-<div style="overflow:auto;width:878px;height:400px;">
+<div style="overflow:auto;width:878px;height:200px;">
 
 <table width="1000" border="0" cellspacing="0" cellpadding="0" summary=" ">
 	<tr>
