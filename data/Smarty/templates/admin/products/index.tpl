@@ -229,7 +229,7 @@
 					
 					<!--∏°∫˜∑Î≤Ã…Ωº®•∆°º•÷•Î-->
 					<div style="overflow:auto; width:840px; height:100%;">
-					<table width="1000" border="0" cellspacing="1" cellpadding="5" summary=" ">
+					<table width="840" border="0" cellspacing="1" cellpadding="5" summary=" ">
 						<tr bgcolor="#636469" align="center" class="fs12n">
 							<td width="50" rowspan="2"><span class="white">æ¶… ID</span></td>
 							<td width="90" rowspan="2"><span class="white">æ¶… ≤Ë¡¸</span></td>
@@ -303,6 +303,83 @@
 						<!--{/section}-->
 					</table>
 					</div>
+					
+					<!--{*
+					<table width="840" border="0" cellspacing="1" cellpadding="5" summary=" ">
+						<tr bgcolor="#636469" align="center" class="fs12n">
+							<td width="50" rowspan="2"><span class="white">æ¶… ID</span></td>
+							<td width="90" rowspan="2"><span class="white">æ¶… ≤Ë¡¸</span></td>
+							<td width="90"><span class="white">æ¶… •≥°º•…</span></td>
+							<td width="350"><span class="white">æ¶… Ãæ</span></td>
+							<td width="60"><span class="white">∫ﬂ∏À</span></td>
+							<td width="50" rowspan="2"><span class="white"> ‘Ω∏</span></td>
+							<td width="50" rowspan="2"><span class="white">≥Œ«ß</span></td>
+							<!--{if $smarty.const.OPTION_CLASS_REGIST == 1}-->
+							<td width="50" rowspan="2"><span class="white">µ¨≥ </span></td>
+							<!--{/if}-->
+							<td width="50"><span class="white">∫ÔΩ¸</span></td>
+						</tr>
+						<tr bgcolor="#636469" align="center" class="fs12n">
+							<td width="90"><span class="white">≤¡≥ (±ﬂ)</span></td>
+							<td width="430"><span class="white">•´•∆•¥•Í</span></td>
+							<td width="60"><span class="white">ºÔ Ã</span></td>
+							<td width="50"><span class="white"> £¿Ω</span></td>
+						</tr>
+
+						<!--{section name=cnt loop=$arrProducts}-->
+						<!--¢ßæ¶… <!--{$smarty.section.cnt.iteration}-->-->
+						<!--{assign var=status value="`$arrProducts[cnt].status`"}-->
+						<tr bgcolor="<!--{$arrPRODUCTSTATUS_COLOR[$status]}-->" class="fs12n">
+							<td rowspan="2" align="center"><!--{$arrProducts[cnt].product_id}--></td>
+							<td rowspan="2" align="center">
+							<!--{if $arrProducts[cnt].main_list_image != ""}-->
+								<!--{assign var=image_path value="`$smarty.const.IMAGE_SAVE_DIR`/`$arrProducts[cnt].main_list_image`"}-->
+							<!--{else}-->
+								<!--{assign var=image_path value="`$smarty.const.NO_IMAGE_DIR`"}-->
+							<!--{/if}-->
+							<img src="<!--{$smarty.const.SITE_URL}-->resize_image.php?image=<!--{$image_path|sfRmDupSlash}-->&width=65&height=65" alt="<!--{$arrProducts[cnt].name|escape}-->">
+							</td>
+							<td><!--{$arrProducts[cnt].product_code|escape|default:"-"}--></td>
+							<td><!--{$arrProducts[cnt].name|escape}--></td>
+							<td align="center">
+							<!--{* ∫ﬂ∏À *}-->
+							<!--{if $arrProducts[cnt].stock_unlimited == '1'}-->
+							Ãµ¿©∏¬
+							<!--{else}-->
+							<!--{$arrProducts[cnt].stock|escape|default:"-"}-->
+							<!--{/if}-->
+							</td>
+							<td align="center" rowspan="2"><span class="icon_edit"><a href="<!--{$smarty.const.URL_DIR}-->" onclick="fnChangeAction('./product.php'); fnModeSubmit('pre_edit', 'product_id', <!--{$arrProducts[cnt].product_id}-->); return false;" > ‘Ω∏</a></span></td>
+							<td align="center" rowspan="2"><span class="icon_confirm"><a href="<!--{$smarty.const.SITE_URL|sfTrimURL}-->/products/detail.php?product_id=<!--{$arrProducts[cnt].product_id}-->&admin=on" target="_blank">≥Œ«ß</a></td>
+							<!--{if $smarty.const.OPTION_CLASS_REGIST == 1}-->
+							<td align="center" rowspan="2"><span class="icon_class"><a href="<!--{$smarty.const.URL_DIR}-->" onclick="fnChangeAction('./product_class.php'); fnModeSubmit('pre_edit', 'product_id', <!--{$arrProducts[cnt].product_id}-->); return false;" >µ¨≥ </a></td>
+							<!--{/if}-->
+							<td align="center"><span class="icon_delete"><a href="<!--{$smarty.const.URL_DIR}-->" onclick="fnSetFormValue('category_id', '<!--{$arrProducts[cnt].category_id}-->'); fnModeSubmit('delete', 'product_id', <!--{$arrProducts[cnt].product_id}-->); return false;">∫ÔΩ¸</a></span></td>
+						</tr>
+						<tr bgcolor="<!--{$arrPRODUCTSTATUS_COLOR[$status]}-->" class="fs12n">
+							<td align="right">
+							<!--{* ≤¡≥  *}-->
+							<!--{if $arrProducts[cnt].price02 != ""}-->
+							<!--{$arrProducts[cnt].price02|number_format}-->
+							<!--{else}-->
+							-
+							<!--{/if}-->
+							</td>
+							<td>
+							<!--{* •´•∆•¥•ÍÃæ *}-->
+							<!--{assign var=key value=$arrProducts[cnt].category_id}-->
+							<!--{$arrCatList[$key]|sfTrim}-->
+							</td>
+							<!--{* …Ωº® *}-->
+							<!--{assign var=key value=$arrProducts[cnt].status}-->
+							<td align="center"><!--{$arrDISP[$key]}--></td>
+							<td align="center"><span class="icon_edit"><a href="<!--{$smarty.const.URL_DIR}-->" onclick="fnChangeAction('./product.php'); fnModeSubmit('copy', 'product_id', <!--{$arrProducts[cnt].product_id}-->); return false;" > £¿Ω</a></span></td>
+						</tr>
+						<!--¢•æ¶… <!--{$smarty.section.cnt.iteration}-->-->
+						<!--{/section}-->
+					</table>
+					*}-->
+					
 					<!--∏°∫˜∑Î≤Ã…Ωº®•∆°º•÷•Î-->
 					</td>
 				</tr>

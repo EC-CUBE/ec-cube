@@ -1106,6 +1106,27 @@ function sfPreTax($price, $tax, $tax_rule) {
 	return $ret;
 }
 
+// 桁数を指定して四捨五入
+function sfRound($value, $digit = 0){
+	
+	if(is_int($digit)){
+		$value = $value * 10 * $digit;
+	}
+	$ret = round($value);
+	return $ret
+	
+}
+
+// 桁数を指定して切り捨て
+function sfFloor($value, $digit){
+	
+}
+
+// 桁数を指定して切り上げ
+function sfCeil($value, $digit){
+	
+}
+
 /* ポイント付与 */
 function sfPrePoint($price, $point_rate, $rule = POINT_RULE, $product_id = "") {
 	if(sfIsInt($product_id)) {
