@@ -98,7 +98,9 @@ function sfColumnExists($table_name, $col_name, $col_type = "", $dsn = "", $add 
 	$objQuery = new SC_Query($dsn, true, true);
 	// 正常に接続されている場合
 	if(!$objQuery->isError()) {
-		$arrRet = sfGetColumnList($table_name, $objQuery);
+		list($db_type) = split(":", $dsn);
+		
+		$arrRet = sfGetColumnList($table_name, $objQuery, $db_type);
 		if(count($arrRet) > 0) {
 			if(!in_array($col_name, $arrRet)){
 				return true;
@@ -106,7 +108,6 @@ function sfColumnExists($table_name, $col_name, $col_type = "", $dsn = "", $add 
 		}
 
 		/*
-		list($db_type) = split(":", $dsn);
 		// postgresqlとmysqlとで処理を分ける
 		if ($db_type == "pgsql") {
 			$sql = "SELECT
@@ -145,7 +146,7 @@ function sfColumnExists($table_name, $col_name, $col_type = "", $dsn = "", $add 
 }
 
 // テーブルのカラム一覧を取得する
-function sfGetColumnList($table_name, $objQuery = ""){
+function sfGetColumnList($table_name, $objQuery = "", $db_type = DB_TYPE){
 	if($objQuery == "") $objQuery = new SC_Query();
 	$arrRet = array();
 	
