@@ -179,9 +179,14 @@ function fnChgImg(fileName,imgName){
 	document.getElementById(imgName).src = fileName;
 }
 
-// 背景色を変える
-function fnChangeBgColor(id, val) {
+// ファイル選択
+function fnSelectFile(id, val) {
 	if(old_select_id != '') document.getElementById(old_select_id).style.backgroundColor = '';
 	document.getElementById(id).style.backgroundColor = val;
 	old_select_id = id;
+}
+
+// 背景色を変える
+function fnChangeBgColor(id, val) {
+	document.getElementById(id).style.backgroundColor = val;
 }
