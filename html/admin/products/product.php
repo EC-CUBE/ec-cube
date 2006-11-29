@@ -103,6 +103,23 @@ case 'edit':
 		lfProductPage();		// 商品登録ページ
 	}
 	break;
+// 複製
+case 'copy' :
+	// 規格登録ありなし判定
+	$objPage->tpl_nonclass = lfCheckNonClass($_POST['product_id']);
+	// 入力値の変換
+	$objPage->arrForm = lfConvertParam($objPage->arrForm);
+	// エラーチェック
+	$objPage->arrErr = lfErrorCheck($objPage->arrForm);
+	// ファイル存在チェック
+	$objPage->arrErr = array_merge((array)$objPage->arrErr, (array)$objUpFile->checkEXISTS());
+	// エラーなしの場合
+	if(count($objPage->arrErr) == 0) {
+		lfProductConfirmPage(); // 確認ページ
+	} else {
+		lfProductPage();		// 商品登録ページ
+	}
+	break;
 // 確認ページから完了ページへ
 case 'complete':
 	$objPage->tpl_mainpage = 'products/complete.tpl';

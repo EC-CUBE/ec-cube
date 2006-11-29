@@ -296,7 +296,7 @@
 							<!--{* …Ωº® *}-->
 							<!--{assign var=key value=$arrProducts[cnt].status}-->
 							<td align="center"><!--{$arrDISP[$key]}--></td>
-							<td align="center"><span class="icon_delete"><a href="<!--{$smarty.const.URL_DIR}-->" onclick="fnSetFormValue('category_id', '<!--{$arrProducts[cnt].category_id}-->'); fnModeSubmit('delete', 'product_id', <!--{$arrProducts[cnt].product_id}-->); return false;"> £¿Ω</a></span></td>
+							<td align="center"><span class="icon_edit"><a href="<!--{$smarty.const.URL_DIR}-->" onclick="fnChangeAction('./product.php'); fnModeSubmit('copy', 'product_id', <!--{$arrProducts[cnt].product_id}-->); return false;" > ‘Ω∏</a></span></td>
 						</tr>
 						<!--¢•æ¶… <!--{$smarty.section.cnt.iteration}-->-->
 						<!--{/section}-->
