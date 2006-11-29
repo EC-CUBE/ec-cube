@@ -90,7 +90,7 @@ case 'delete':
 // ダウンロード
 case 'download' :
 	$filename = $_POST['list_name'] . ".tar.gz";
-	$dl_file = $objPage->bkup_dir.$_POST['list_name'];
+	$dl_file = $objPage->bkup_dir.$_POST['list_name'] . ".tar.gz";
 	
 	sfprintr($dl_file);
 	
