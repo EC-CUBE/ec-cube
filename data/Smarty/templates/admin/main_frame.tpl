@@ -12,11 +12,13 @@
 <meta http-equiv="content-script-type" content="text/javascript" />
 <meta http-equiv="content-style-type" content="text/css" />
 <link rel="stylesheet" href="<!--{$smarty.const.URL_DIR}-->admin/css/contents.css" type="text/css" media="all" />
+<link rel="stylesheet" href="<!--{$smarty.const.URL_DIR}-->admin/css/file_manager.css" type="text/css" media="all" />
 <script type="text/javascript" src="<!--{$smarty.const.URL_DIR}-->js/css.js"></script>
 <script type="text/javascript" src="<!--{$smarty.const.URL_DIR}-->js/navi.js"></script>
 <script type="text/javascript" src="<!--{$smarty.const.URL_DIR}-->js/win_op.js"></script>
 <script type="text/javascript" src="<!--{$smarty.const.URL_DIR}-->js/site.js"></script>
 <script type="text/javascript" src="<!--{$smarty.const.URL_DIR}-->js/admin.js"></script>
+<script type="text/javascript" src="<!--{$smarty.const.URL_DIR}-->js/file_manager.js"></script>
 
 <!--{include file='css/contents.tpl'}-->
 
