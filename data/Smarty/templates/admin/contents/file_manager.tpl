@@ -55,10 +55,9 @@
 								<input type="hidden" name="now_file" value="<!--{$tpl_now_dir}-->">
 								<input type="hidden" name="tree_select_file" value="">
 								<input type="hidden" name="tree_status" value="">
-								<input type="hidden" name="select_file" value="">	
-								
+								<input type="hidden" name="select_file" value="">
 								<table width="678" border="0" cellspacing="1" cellpadding="8" summary=" ">
-									<tr class="fs12n" bgcolor="#f2f1ec">
+									<tr class="fs12n" bgcolor="#f2f1ec" vallign="top">
 										<td>ディレクトリ</td>
 										<td>
 											<div id="now_dir">
@@ -121,7 +120,6 @@
 								</form>
 								
 								<!--▲ファイル管理テーブルここまで-->
-																
 								<table width="678" border="0" cellspacing="0" cellpadding="0" summary=" ">
 									<tr><td colspan="3"><img src="<!--{$smarty.const.URL_DIR}-->img/contents/main_bar.jpg" width="678" height="10" alt=""></td></tr>
 								</table>
