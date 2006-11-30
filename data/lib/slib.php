@@ -1118,16 +1118,12 @@ function sfRound($value, $pow = 0){
 		
 		sfprintr($adjust);
 		sfprintr($ret);
-		sfRound($ret, $pow - 1);
+		return sfRound($ret, $pow - 1);
 	}else{
 		$ret = round($value);
-		sfprintr($adjust);
-		sfprintr($ret);
-		
-		
 		$ret = floor($ret/$adjust);
 	}
-	
+
 	return $ret;
 }
 
