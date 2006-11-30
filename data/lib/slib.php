@@ -1117,7 +1117,7 @@ function sfRound($value, $pow = 0){
 		sfprintr($adjust);
 		
 		$ret = (round($value * $adjust)/$adjust);
-		sfRound($ret, $digit - 1);
+		sfRound($ret, $pow - 1);
 	}else{
 		$ret = round($value);
 		$ret = floor($ret/$adjust);
