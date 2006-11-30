@@ -233,7 +233,7 @@ function lfnDispChange(){
 	
 	for (i = 0; i <= cnt; i++) {
 //		document.getElementById(disp_id+i).style.display="";
-alert('disp_id');
+alert('disp_id'+i);
 	}
 
 
