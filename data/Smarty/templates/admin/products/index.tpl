@@ -280,7 +280,7 @@ function lfnDispChange(){
 							<td width="90"><span class="white">価格(円)</span></td>
 							<td width="430">
 								<span class="white"  id="switch">
-									カテゴリ <a href="#" onClick="lfnDispChange();"> >> URL表示</a>
+									カテゴリ <a href="#" onClick="lfnDispChange();"> <FONT Color="yellow"> >> URL表示</FONT></a>
 								</span>
 							</td>
 							<td width="60"><span class="white">種別</span></td>
