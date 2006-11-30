@@ -199,6 +199,11 @@ function moving(news_id,rank, max_rank) {
 									</tr>
 									<thead>
 								</table>
+								<table width="678" border="0" cellspacing="0" cellpadding="0" summary=" ">
+									<tr>
+										<td><!--{$now_dir}--></td>
+									</tr>
+								</table>
 								<table>									
 									<tr>
 										<td>					
