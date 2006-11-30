@@ -21,7 +21,7 @@ function lfnDispChange(){
 			disp_id = 'disp_cat'+i;
 			document.getElementById(disp_id).style.display="none";
 			
-			document.getElementById(inner_id).innerHTML = '	URL <a href="#" onClick="lfnDispChange();"> <FONT Color="#33FFFF"> >> カテゴリ表示</FONT></a>';
+			document.getElementById(inner_id).innerHTML = '	URL <a href="#" onClick="lfnDispChange();"> <FONT Color="#FFFF99"> >> カテゴリ表示</FONT></a>';
 		}
 	}else{
 		for (i = 1; i <= cnt; i++) {
@@ -31,7 +31,7 @@ function lfnDispChange(){
 			disp_id = 'disp_cat'+i;
 			document.getElementById(disp_id).style.display="";
 			
-			document.getElementById(inner_id).innerHTML = '	カテゴリ <a href="#" onClick="lfnDispChange();"> <FONT Color="#33FFFF"> >> URL表示</FONT></a>';
+			document.getElementById(inner_id).innerHTML = '	カテゴリ <a href="#" onClick="lfnDispChange();"> <FONT Color="#FFFF99"> >> URL表示</FONT></a>';
 		}
 	}
 
@@ -280,7 +280,7 @@ function lfnDispChange(){
 							<td width="90"><span class="white">価格(円)</span></td>
 							<td width="430">
 								<span class="white"  id="switch">
-									カテゴリ <a href="#" onClick="lfnDispChange();"> <FONT Color="#33FFFF"> >> URL表示</FONT></a>
+									カテゴリ <a href="#" onClick="lfnDispChange();"> <FONT Color="#FFFF99"> >> URL表示</FONT></a>
 								</span>
 							</td>
 							<td width="60"><span class="white">種別</span></td>
