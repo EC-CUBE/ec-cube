@@ -156,7 +156,10 @@ function moving(news_id,rank, max_rank) {
 									<thead>
 									<tr class="fs12n" bgcolor="#f2f1ec">
 										<td>ディレクトリ</td>
-										<td>now_dir</td>
+										<td>
+											<div id="now_dir">
+											</div>
+										</td>
 									</tr>
 									<tr class="fs12n" bgcolor="#ffffff">								
 										<td>
