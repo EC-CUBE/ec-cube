@@ -204,7 +204,7 @@ function fnTargetSelf(){
 												</tr>
 												<tr class="fs12n">
 													<td bgcolor="#ffffff" align="center">
-														<select name="arrTableList[]" size="20" style="width:325px; height:300px;" onChange="mode.value=''; selectTable.value=this.value; submit();" onDblClick="sql.value = this.value; alert(this.value);">
+														<select name="arrTableList[]" size="20" style="width:325px; height:300px;" onChange="mode.value=''; selectTable.value=this.value; submit();" onDblClick="sql.value = '1111'; alert(this.value);">
 														<!--{html_options options=$arrTableList selected=$selectTable}-->
 														</select>
 													</td>
