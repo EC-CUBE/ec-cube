@@ -154,9 +154,6 @@ function moving(news_id,rank, max_rank) {
 								
 								<table width="678" border="0" cellspacing="1" cellpadding="8" summary=" ">
 									<thead>
-									<tr class="fs12n" bgcolor="#f2f1ec">
-										<td>ディレクトリ</td>
-									</tr>
 									<tr class="fs12n" bgcolor="#ffffff">								
 										<td>
 											<div id="tree"></div>
