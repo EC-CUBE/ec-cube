@@ -78,7 +78,7 @@
 															<!--{if $arrFileList[cnt].is_dir}-->
 															<img src="<!--{$smarty.const.URL_DIR}-->img/admin/contents/folder_close.gif" alt="フォルダ">
 															<!--{else}-->
-															<img src="<!--{$smarty.const.URL_DIR}-->img/admin/contents/space.gif">
+															<img src="<!--{$smarty.const.URL_DIR}-->img/admin/contents/file.gif">
 															<!--{/if}-->
 															<!--{$arrFileList[cnt].file_name|escape}-->
 														</td>
