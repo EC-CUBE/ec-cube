@@ -222,15 +222,20 @@
 // URLの表示非表示切り替え
 function lfnDispChange(){
 	inner_id = 'switch';
-	disp_id = 'disp_url';
+	disp_id = 'disp_url[]';
 	disp_flg = 'disp_cat';
 	
 	disp_state = document.getElementById(disp_id).style.display;
 	
 //	document.form1[disp_flg].value="none";
 
-//	document.getElementById(disp_id).style.display="";
-	document.form1[disp_id].style.display="";
+	$arrurl = document.form1[disp_id];
+	
+	alert(count($arrurl));
+	
+	
+
+	document.getElementById(disp_id).style.display="";
 //	document.getElementById(inner_id).innerHTML = "<<表示";
 /*
 	}else{
@@ -329,7 +334,7 @@ function lfnDispChange(){
 							</div>
 
 							<!--{* URL *}-->
-							<div id="disp_url" name="disp_url" style="display:none">
+							<div id="disp_url<!--{$smarty.section.cnt.iteration}-->" name="disp_url[]" style="display:none">
 							<!--{$smarty.const.SITE_URL|sfTrimURL}-->/products/detail.php?product_id=<!--{$arrProducts[cnt].product_id}-->
 							</div>
 							</td>
