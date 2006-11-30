@@ -152,33 +152,36 @@ function moving(news_id,rank, max_rank) {
 								<input type="hidden" name="tree_status" value="">
 								<input type="hidden" name="select_file" value="">	
 								
-								<table width="678" border="0" cellspacing="1" cellpadding="8" summary=" ">	
-										<tr>
-											<td valign="top">
-											■ツリー
-											<div id="tree"></div>
-											</td>
-											<td valign="top">
-											■ファイル
-											<div id="file_view">
-												<table>
-													<!--{section name=cnt loop=$arrFileList}-->
-													<!--{assign var="id" value="select_file`$smarty.section.cnt.index`"}-->
-													<tr id="<!--{$id}-->" onclick="fnSetFormVal('form1', 'select_file', '<!--{$arrFileList[cnt].file_path|escape}-->');fnSelectFile('<!--{$id}-->', '#3333FF');" style="" onMouseOver="fnChangeBgColor('<!--{$id}-->', '#3333FF');" onMouseOut="fnChangeBgColor('<!--{$id}-->', '');">
-														<td><!--{$arrFileList[cnt].file_name|escape}--></td>
-														<td><!--{$arrFileList[cnt].file_size|escape}--></td>
-														<td><!--{$arrFileList[cnt].file_time|escape}--></td>
-													</tr>
-													<!--{/section}-->
-												</table>
-											</div>
-											<input type="button" onclick="setTreeStatus('tree_status');fnModeSubmit('view','',''); return false;" value="表示">
-											<input type="button" onclick="setTreeStatus('tree_status');fnModeSubmit('download','',''); return false;" value="ダウンロード">
-											<input type="button" onclick="setTreeStatus('tree_status');fnModeSubmit('delete','',''); return false;" value="削除">
-											</td>
-										</tr>
+								<table width="678" border="0" cellspacing="1" cellpadding="8" summary=" ">
+									<thead>
+									<tr class="fs12n">								
+										<td valign="top">
+										■ツリー
+										<div id="tree"></div>
+										</td>
+										<td valign="top">
+										■ファイル
+										<div id="file_view">
+											<table>
+												<!--{section name=cnt loop=$arrFileList}-->
+												<!--{assign var="id" value="select_file`$smarty.section.cnt.index`"}-->
+												<tr id="<!--{$id}-->" onclick="fnSetFormVal('form1', 'select_file', '<!--{$arrFileList[cnt].file_path|escape}-->');fnSelectFile('<!--{$id}-->', '#3333FF');" style="" onMouseOver="fnChangeBgColor('<!--{$id}-->', '#3333FF');" onMouseOut="fnChangeBgColor('<!--{$id}-->', '');">
+													<td><!--{$arrFileList[cnt].file_name|escape}--></td>
+													<td><!--{$arrFileList[cnt].file_size|escape}--></td>
+													<td><!--{$arrFileList[cnt].file_time|escape}--></td>
+												</tr>
+												<!--{/section}-->
+											</table>
+										</div>
+										<input type="button" onclick="setTreeStatus('tree_status');fnModeSubmit('view','',''); return false;" value="表示">
+										<input type="button" onclick="setTreeStatus('tree_status');fnModeSubmit('download','',''); return false;" value="ダウンロード">
+										<input type="button" onclick="setTreeStatus('tree_status');fnModeSubmit('delete','',''); return false;" value="削除">
+										</td>
+									</tr>
+									<thead>
 									■フォルダ作成<br />
 								</table>
+							
 								<input type="file" name="upload_file"><input type="button" onclick="setTreeStatus('tree_status');fnModeSubmit('upload','',''); return false;" value="アップロード"><br/>
 								<input type="text" name="create_file" value=""><input type="button" onclick="setTreeStatus('tree_status');fnModeSubmit('create','',''); return false;" value="作成">
 								</form>
