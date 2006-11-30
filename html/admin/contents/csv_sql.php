@@ -209,7 +209,9 @@ function lfGetColumnList($selectTable){
 	
 	$arrColList = array_merge($arrRet, sfGetColumnList($selectTable));
 	
-	return $arrRet;
+	sfprintr($arrColList);
+	
+	return $arrColList;
 	
 }
 
