@@ -229,7 +229,7 @@ class gdthumb {
 					
 					(imagecolorstotal($src_im) == 0) ? $colortotal = 65536 : $colortotal = imagecolorstotal($src_im);
 					
-					imagetruecolortopalette($dst_im, false, $colortotal);
+					imagetruecolortopalette($dst_im, true, $colortotal);
 				}
 				
 				// ²èÁü½ÐÎÏ
