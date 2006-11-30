@@ -195,7 +195,6 @@ class gdthumb {
 				$src_im = imageCreateFromJpeg($path);
 				$dst_im = $imagecreate($re_size[0], $re_size[1]);
 				$imageresize( $dst_im, $src_im, 0, 0, 0, 0, $re_size[0], $re_size[1], $size[0], $size[1]);
-					sfprintr(imagecolorstotal($src_im));
 
 				// 画像出力
 				if($header){
@@ -228,7 +227,9 @@ class gdthumb {
 					$dst_im = $imagecreate($re_size[0], $re_size[1]);
 					imagecopyresized($dst_im,$src_im, 0, 0, 0, 0, $re_size[0], $re_size[1], $size[0], $size[1]);
 					
-					imagetruecolortopalette($dst_im, false, imagecolorstotal($src_im));
+					(imagecolorstotal($src_im) == 0) ? $colortotal = 65536 : $colortotal = imagecolorstotal($src_im);
+					
+					imagetruecolortopalette($dst_im, false, $colortotal);
 				}
 				
 				// 画像出力
