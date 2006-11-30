@@ -96,11 +96,7 @@
 											<table border="0" cellspacing="0" cellpadding="5" summary=" ">
 												<tr>
 													<td><input type="button" onclick="setTreeStatus('tree_status');fnModeSubmit('view','',''); return false;" value="表示"></td>
-												</tr>
-												<tr>
 													<td><input type="button" onclick="setTreeStatus('tree_status');fnModeSubmit('download','',''); return false;" value="ダウンロード"></td>
-												</tr>
-												<tr>
 													<td><input type="button" onclick="setTreeStatus('tree_status');fnModeSubmit('delete','',''); return false;" value="削除"></td>
 												</tr>
 											</table>
