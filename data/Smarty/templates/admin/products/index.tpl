@@ -223,11 +223,12 @@
 function lfnDispChange(){
 	inner_id = 'switch';
 	disp_id = 'disp_url';
+	disp_flg = 'disp_cat';
+	
 	disp_state = document.getElementById(disp_id).style.display;
 	
 		alert(disp_state);
 	
-	disp_flg = 'disp_cat';
 	document.form1[disp_flg].value="none";
 	document.getElementById(disp_id).style.display="none";
 	document.getElementById(inner_id).innerHTML = "<<É½¼¨";
@@ -327,7 +328,7 @@ function lfnDispChange(){
 							</div>
 
 							<!--{* URL *}-->
-							<div id="disp_url" style="display:true">
+							<div id="disp_url" style="display:none">
 							<!--{$smarty.const.SITE_URL|sfTrimURL}-->/products/detail.php?product_id=<!--{$arrProducts[cnt].product_id}-->
 							</div>
 							</td>
