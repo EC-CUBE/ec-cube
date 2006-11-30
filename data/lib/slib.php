@@ -1130,6 +1130,7 @@ function sfFloor($value, $digit = 1){
 	// 整数且つ0出なければ桁数指定を行う
 	if(sfIsInt($digit) and $digit != 0) $value = $value * 10 * $digit;
 	$ret = floor($value);
+	$ret = floor($ret/$adjust);
 	return $ret;
 }
 
@@ -1141,6 +1142,7 @@ function sfCeil($value, $digit = 1){
 	// 整数且つ0出なければ桁数指定を行う
 	if(sfIsInt($digit) and $digit != 0) $value = $value * 10 * $digit;
 	$ret = ceil($value);
+	$ret = floor($ret/$adjust);
 	return $ret / 10 * $digit;
 }
 
