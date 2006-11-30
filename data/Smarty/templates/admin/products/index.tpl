@@ -23,6 +23,8 @@ function lfnDispChange(){
 		document.getElementById(disp_id).style.display="";
 		document.getElementById(inner_id).innerHTML = ">>»Û…Ωº®"; 
 	}
+	
+	alert("aaa");
 }
 </script>
 
