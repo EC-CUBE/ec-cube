@@ -147,7 +147,7 @@ function moving(news_id,rank, max_rank) {
 								<!--▼ファイル管理テーブルここから-->
 								<form name="form1" method="post" action="<!--{$smarty.server.PHP_SELF|escape}-->"  enctype="multipart/form-data">
 								<input type="hidden" name="mode" value="">
-								<input type="hidden" name="now_file" value="<!--{$tpl_now_file}-->">
+								<input type="hidden" name="now_file" value="<!--{$tpl_now_dir}-->">
 								<input type="hidden" name="tree_select_file" value="">
 								<input type="hidden" name="tree_status" value="">
 								<input type="hidden" name="select_file" value="">	
@@ -158,6 +158,7 @@ function moving(news_id,rank, max_rank) {
 										<td>ディレクトリ</td>
 										<td>
 											<div id="now_dir">
+											<img src="<!--{$smarty.const.URL_DIR}-->img/admin/contents/folder_open.gif" alt="フォルダ"><!--{$tpl_now_file}-->
 											</div>
 										</td>
 									</tr>

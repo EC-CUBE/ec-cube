@@ -118,7 +118,8 @@ default :
 
 // 現在のディレクトリ配下のファイル一覧を取得
 $objPage->arrFileList = sfGetFileList($now_dir);
-$objPage->tpl_now_file = $now_dir;
+$objPage->tpl_now_dir = $now_dir;
+$objPage->tpl_now_file = basename($now_dir);
 $objPage->arrErr = $arrErr;
 $objPage->arrParam = $_POST;
 // ツリーを表示する divタグid, ツリー配列変数名, 現在ディレクトリ
