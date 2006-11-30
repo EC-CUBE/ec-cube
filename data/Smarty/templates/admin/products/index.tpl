@@ -244,7 +244,12 @@
 						</tr>
 						<tr bgcolor="#636469" align="center" class="fs12n">
 							<td width="90"><span class="white">価格(円)</span></td>
-							<td width="430"><span class="white">カテゴリ</span></td>
+							<td width="430">
+								<span class="white">
+									カテゴリ
+									<a href="#" style="float:right " onClick="fnDispChange('disp_url', 'switch', 'url_flg');"> >> <!--{if $disp_flg[$item.page_id] == ""}-->非表示<!--{else}-->表示<!--{/if}--></a>
+								</span>
+							</td>
 							<td width="60"><span class="white">種別</span></td>
 							<td width="50"><span class="white">複製</span></td>
 						</tr>
