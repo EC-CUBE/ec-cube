@@ -357,6 +357,8 @@ function lfRegistProduct($arrList) {
 			unset($arrColList[$arrColList_tmp["product_class_id"]]);	 //µ¨≥ ID
 			unset($arrColList[$arrColList_tmp["product_id"]]);			 //æ¶… ID
 			
+			
+			sfprintr($arrColList);
 			$col = sfGetCommaList($arrColList);
 		}
 
