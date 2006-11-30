@@ -15,7 +15,7 @@ var arrTreeStatus = new Array();	// ツリー状態保持
 var old_select_id = '';				// 前回選択していたファイル
 
 // ツリー表示
-function fnTreeView(view_id, openFolder) {
+function fnTreeView(view_id, arrTree, openFolder) {
 
 	for(i = 0; i < arrTree.length; i++) {
 		
@@ -67,7 +67,7 @@ function fnTreeView(view_id, openFolder) {
 
 		arrFileSplit = arrTree[i][2].split("/");
 		file_name = arrFileSplit[arrFileSplit.length-1];
-alert(openFolder);
+
 		// フォルダの画像を選択
 		if(arrTree[i][2] == openFolder) {
 			folder_img = IMG_FOLDER_OPEN;
