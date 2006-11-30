@@ -43,22 +43,15 @@
 			<tr><td bgcolor="#666666"><img src="<!--{$smarty.const.URL_DIR}-->img/common/_.gif" width="778" height="1" alt=""></td></tr>
 			<tr><td bgcolor="#cccccc"><img src="<!--{$smarty.const.URL_DIR}-->img/common/_.gif" width="1" height="4" alt=""></td></tr>
 			<tr><td bgcolor="#ff8a20"><img src="<!--{$smarty.const.URL_DIR}-->img/common/_.gif" width="778" height="1" alt=""></td></tr>
-		</table>		
+		</table>
 		<table width="778" border="0" cellspacing="0" cellpadding="0" summary=" ">
-			<tr><td bgcolor="#666666"><img src="<!--{$smarty.const.URL_DIR}-->img/common/_.gif" width="778" height="1" alt=""></td></tr>
-			<tr><td bgcolor="#cccccc"><img src="<!--{$smarty.const.URL_DIR}-->img/common/_.gif" width="1" height="4" alt=""></td></tr>
-			<tr><td bgcolor="#ff8a20"><img src="<!--{$smarty.const.URL_DIR}-->img/common/_.gif" width="778" height="1" alt=""></td></tr>
+			<tr><td bgcolor="#ffffff"><img src="<!--{$smarty.const.URL_DIR}-->img/common/_.gif" width="778" height="1" alt=""></td></tr>
+			<tr><td bgcolor="#ffffff"><img src="<!--{$smarty.const.URL_DIR}-->img/common/_.gif" width="1" height="4" alt=""></td></tr>
+			<tr><td bgcolor="#ffffff"><img src="<!--{$smarty.const.URL_DIR}-->img/common/_.gif" width="778" height="1" alt=""></td></tr>
 		</table>
 		</td>
 		<td bgcolor="#cccccc"><img src="<!--{$smarty.const.URL_DIR}-->img/common/_.gif" width="1" height="10" alt=""></td>
 	</tr>
-</table>
-<table width="780" border="0" cellspacing="0" cellpadding="0" summary=" ">
-	<tr align="center"><td>
-		<table width="778" border="0" cellspacing="0" cellpadding="0" summary=" ">
-			<tr><td bgcolor="#ffffff"><img src="<!--{$smarty.const.URL_DIR}-->img/common/_.gif" width="1" height="10" alt=""></td></tr>
-		</table>
-	</td></tr>
 </table>
 
 <!--¢¥HEADER-->
