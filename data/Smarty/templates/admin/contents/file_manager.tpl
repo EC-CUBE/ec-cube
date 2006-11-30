@@ -7,9 +7,6 @@
 *}-->
 
 
-<!--{foreach key=key item=item from=$arrErr}-->
-	<!--{$key}-->：<!--{$item}-->
-<!--{/foreach}-->
 <!--★★メインコンテンツ★★-->
 <form name="form1" method="post" action="<!--{$smarty.server.PHP_SELF|escape}-->"  enctype="multipart/form-data">
 <input type="hidden" name="mode" value="">

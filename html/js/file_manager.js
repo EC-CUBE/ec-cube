@@ -64,16 +64,17 @@ function fnTreeView(view_id, arrTree, openFolder) {
 			}
 			display = 'none';
 		}
+
+		arrFileSplit = arrTree[i][2].split("/");
+		file_name = arrFileSplit[arrFileSplit.length-1];
 		
 		// フォルダの画像を選択
 		if(arrTree[i][2] == openFolder) {
 			folder_img = IMG_FOLDER_OPEN;
+			file_name = "<b>". file_name ."</b>";
 		} else {
 			folder_img = IMG_FOLDER_CLOSE;
 		}
-
-		arrFileSplit = arrTree[i][2].split("/");
-		file_name = arrFileSplit[arrFileSplit.length-1];
 
 		// 階層画像がノーマルの時のみオンクリック処理をつける
 		if(rank_img != IMG_NORMAL) {
