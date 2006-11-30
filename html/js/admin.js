@@ -410,7 +410,6 @@ function fnDispChange(disp_id, inner_id, disp_flg){
 		document.getElementById(disp_id).style.display="";
 		document.getElementById(inner_id).innerHTML = ">>»Û…Ωº®"; 
 	}
-	
 }
 
 

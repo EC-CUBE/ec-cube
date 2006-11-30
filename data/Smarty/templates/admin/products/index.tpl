@@ -5,6 +5,28 @@
  * http://www.lockon.co.jp/
  */
 *}-->
+
+<script type="text/javascript">
+// URLの表示非表示切り替え
+function lfnDispChange(){
+	inner_id = 'switch';
+	disp_id = 'disp_url';
+	disp_state = document.getElementById('disp_url').style.display;
+	
+	if (disp_state == "") {
+		disp_flg = 'disp_cat';
+		document.form1[disp_flg].value="none";
+		document.getElementById(disp_id).style.display="none";
+		document.getElementById(inner_id).innerHTML = "<<表示";
+	}else{
+		document.form1[disp_flg].value="";
+		document.getElementById(disp_id).style.display="";
+		document.getElementById(inner_id).innerHTML = ">>非表示"; 
+	}
+}
+</script>
+
+
 <!--★★メインコンテンツ★★-->
 <table width="878" border="0" cellspacing="0" cellpadding="0" summary=" ">
 <form name="search_form" id="search_form" method="post" action="<!--{$smarty.server.PHP_SELF|escape}-->">
@@ -247,7 +269,7 @@
 							<td width="430">
 								<span class="white">
 									カテゴリ
-									<a href="#" onClick="fnDispChange('disp_url', 'switch', 'url_flg');"> >> <!--{if $disp_cat}-->URL表示<!--{else}-->カテゴリ表示<!--{/if}--></a>
+									<a href="#" onClick="fnDispChange();"> >> <!--{if $disp_cat }-->URL表示<!--{else}-->カテゴリ表示<!--{/if}--></a>
 								</span>
 							</td>
 							<td width="60"><span class="white">種別</span></td>
