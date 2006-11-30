@@ -170,6 +170,6 @@ function lfCreateErrorCheck() {
  */
 function lfInitFile() {
 	global $objUpFile;
-	$objUpFile->addFile("アップロードファイル", 'upload_file', array(), FILE_SIZE, true, 0, 0, false);
+	$objUpFile->addFile("ファイル", 'upload_file', array(), FILE_SIZE, true, 0, 0, false);
 }
 ?>
