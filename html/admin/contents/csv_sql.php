@@ -148,6 +148,12 @@ if ($_POST['selectTable'] == ""){
 $arrColList = lfGetColumnList($selectTable);
 $arrColList =  sfSwapArray($arrColList);
 
+$arrColList["column_name"] = array_merge($arrColList["column_name"], sfGetColumnList($selectTable));
+
+sfprintr($arrColList);
+	
+
+
 // 表示させる内容を編集
 foreach ($arrTableList['description'] as $key => $val) {
 	$arrTableList['description'][$key] = $arrTableList['table_name'][$key] . "：" . $arrTableList['description'][$key];
@@ -207,11 +213,7 @@ function lfGetColumnList($selectTable){
 	$sql .= " SELECT column_name, description FROM dtb_table_comment WHERE table_name = ? AND column_name IS NOT NULL";
 	$arrRet = $objQuery->getAll($sql, array($selectTable));	
 	
-	$arrColList = array_merge($arrRet, sfGetColumnList($selectTable));
-	
-	sfprintr($arrColList);
-	
-	return $arrColList;
+	return $arrRet;
 	
 }
 
