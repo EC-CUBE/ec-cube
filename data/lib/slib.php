@@ -1108,12 +1108,11 @@ function sfPreTax($price, $tax, $tax_rule, $digit = 1) {
 }
 
 // 桁数を指定して四捨五入
-function sfRound($value, $digit = 2){
-	$adjust = 1;
+function sfRound($value, $pow = 0){
+	$adjust = pow(10 ,$pow);
 	
 	// 整数且つ0出なければ桁数指定を行う
-	if(sfIsInt($digit) and $digit > 1){
-		$adjust = pow(10 ,(0));
+	if(sfIsInt($adjust) and $pow > 0){
 		
 		sfprintr($adjust);
 		
