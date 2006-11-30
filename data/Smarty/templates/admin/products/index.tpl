@@ -230,7 +230,7 @@ function lfnDispChange(){
 		alert(disp_state);
 	
 	document.form1[disp_flg].value="none";
-	document.getElementById(disp_id).style.display="none";
+	document.getElementById(disp_id).style.display="display";
 	document.getElementById(inner_id).innerHTML = "<<É½¼¨";
 /*
 	}else{
