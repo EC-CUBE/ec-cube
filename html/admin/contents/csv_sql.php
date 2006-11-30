@@ -148,10 +148,6 @@ if ($_POST['selectTable'] == ""){
 $arrColList = lfGetColumnList($selectTable);
 $arrColList =  sfSwapArray($arrColList);
 
-$arrColList["column_name"] = array_merge($arrColList["column_name"], sfGetColumnList($selectTable));
-
-//sfprintr($arrColList);
-	
 // 表示させる内容を編集
 foreach ($arrTableList['description'] as $key => $val) {
 	$arrTableList['description'][$key] = $arrTableList['table_name'][$key] . "：" . $arrTableList['description'][$key];
@@ -160,6 +156,7 @@ foreach ($arrColList['description'] as $key => $val) {
 	$arrColList['description'][$key] = $arrColList['column_name'][$key] . "：" . $arrColList['description'][$key];
 }
 
+$arrColList["description"] = array_merge($arrColList["column_name"], sfGetColumnList($selectTable));
 
 sfprintr($arrColList);
 
