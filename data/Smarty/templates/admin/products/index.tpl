@@ -243,7 +243,7 @@ function lfnDispChange(){
 
 
 //	document.getElementById(disp_id).style.display="";
-	document.getElementById(inner_id).innerHTML = "<<表示";
+	document.getElementById(inner_id).innerHTML = ">> カテゴリ表示";
 /*
 	}else{
 		document.form1[disp_flg].value="";
