@@ -154,11 +154,13 @@ function fnTreeMenu(tName, imgName, path) {
 // ファイルリストダブルクリック処理
 function fnDbClick(arrTree, path, is_dir, now_dir) {
 	if(is_dir) {
-alert(now_dir);
 		for(cnt = 0; cnt < arrTree.length; cnt++) {
 			if(now_dir == arrTree[cnt][2]) {
-				alert(now_dir);
-				fnTreeMenu('tree'+cnt, 'rank_img'+cnt, arrTree[cnt][2]);
+				open_flag = false;
+				for(status_cnt = 0; status_cnt < arrTreeStatus.length; status_cnt++) {
+					if(arrTreeStatus[status_cnt] == arrTree[cnt][2]) open_flag = true;
+				}
+				if(!open_flag) fnTreeMenu('tree'+cnt, 'rank_img'+cnt, arrTree[cnt][2]);
 			}
 		}
 		fnFolderOpen(path);
