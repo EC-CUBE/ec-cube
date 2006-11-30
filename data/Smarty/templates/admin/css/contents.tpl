@@ -69,6 +69,12 @@ body {
 	padding: 0 0 0 15px;
 }
 
+.icon_copy {
+	background: url(<!--{$smarty.const.URL_DIR}-->img/contents/icon_copy.jpg);
+	background-repeat: no-repeat;
+	padding: 0 0 0 15px;
+}
+
 .icon_class {
 	background: url(<!--{$smarty.const.URL_DIR}-->img/contents/icon_class.jpg);
 	background-repeat: no-repeat;

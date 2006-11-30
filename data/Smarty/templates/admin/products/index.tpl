@@ -341,7 +341,7 @@ function lfnDispChange(){
 							<!--{* É½¼¨ *}-->
 							<!--{assign var=key value=$arrProducts[cnt].status}-->
 							<td align="center"><!--{$arrDISP[$key]}--></td>
-							<td align="center"><span class="icon_edit"><a href="<!--{$smarty.const.URL_DIR}-->" onclick="fnChangeAction('./product.php'); fnModeSubmit('copy', 'product_id', <!--{$arrProducts[cnt].product_id}-->); return false;" >Ê£À½</a></span></td>
+							<td align="center"><span class="icon_copy"><a href="<!--{$smarty.const.URL_DIR}-->" onclick="fnChangeAction('./product.php'); fnModeSubmit('copy', 'product_id', <!--{$arrProducts[cnt].product_id}-->); return false;" >Ê£À½</a></span></td>
 						</tr>
 						<!--¢¥¾¦ÉÊ<!--{$smarty.section.cnt.iteration}-->-->
 						<!--{/section}-->
