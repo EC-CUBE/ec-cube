@@ -157,7 +157,7 @@ foreach ($arrColList['description'] as $key => $val) {
 }
 
 //$arrColList["column_name"] = array_merge($arrColList["column_name"], sfGetColumnList($selectTable));
-$arrDiff = array_diff($arrColList["column_name"],sfGetColumnList($selectTable)); 
+$arrDiff = array_diff(sfGetColumnList($selectTable), $arrColList["column_name"]); 
 
 sfprintr($arrDiff);
 
