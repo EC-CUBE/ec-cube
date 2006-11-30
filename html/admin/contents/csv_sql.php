@@ -207,6 +207,8 @@ function lfGetColumnList($selectTable){
 	$sql .= " SELECT column_name, description FROM dtb_table_comment WHERE table_name = ? AND column_name IS NOT NULL";
 	$arrRet = $objQuery->getAll($sql, array($selectTable));	
 	
+	$arrColList = array_marge($arrRet, sfGetColumnList($selectTable));
+	
 	return $arrRet;
 	
 }
