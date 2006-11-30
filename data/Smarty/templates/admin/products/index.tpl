@@ -221,8 +221,6 @@
 <script type="text/javascript">
 // URLの表示非表示切り替え
 function lfnDispChange(){
-	alert("aaa");
-
 	inner_id = 'switch';
 	disp_id = 'disp_url';
 	disp_state = document.getElementById('disp_url').style.display;
@@ -237,6 +235,8 @@ function lfnDispChange(){
 		document.getElementById(disp_id).style.display="";
 		document.getElementById(inner_id).innerHTML = ">>非表示"; 
 	}
+		alert("aaa");
+	
 }
 </script>
 
