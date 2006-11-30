@@ -408,7 +408,7 @@ function fnDispChange(disp_id, inner_id, disp_flg){
 	}else{
 		document.form1[disp_flg].value="";
 		document.getElementById(disp_id).style.display="";
-		document.getElementById(inner_id).innerHTML = ' <FONT Color="#33FFFF"> >> 非表示 </FONT>'; 
+		document.getElementById(inner_id).innerHTML = ' <FONT Color="#FFFFAA"> >> 非表示 </FONT>'; 
 	}
 }
 
