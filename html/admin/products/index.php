@@ -272,6 +272,10 @@ if ($_POST['mode'] == "search" || $_POST['mode'] == "csv"  || $_POST['mode'] == 
 	}
 }
 
+	
+		$objQuery->getlastquery();
+
+
 // カテゴリの読込
 $objPage->arrCatList = sfGetCategoryList();
 $objPage->arrCatIDName = lfGetIDName($objPage->arrCatList);
