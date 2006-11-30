@@ -150,10 +150,8 @@ $arrColList =  sfSwapArray($arrColList);
 
 $arrColList["column_name"] = array_merge($arrColList["column_name"], sfGetColumnList($selectTable));
 
-sfprintr($arrColList);
+//sfprintr($arrColList);
 	
-
-
 // 表示させる内容を編集
 foreach ($arrTableList['description'] as $key => $val) {
 	$arrTableList['description'][$key] = $arrTableList['table_name'][$key] . "：" . $arrTableList['description'][$key];
