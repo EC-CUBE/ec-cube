@@ -1112,15 +1112,18 @@ function sfRound($value, $digit = 2){
 	$adjust = 1;
 	
 	// 整数且つ0出なければ桁数指定を行う
-	if(sfIsInt($digit) and $digit > 1) $adjust = 10 * ($digit - 1);	
-	
-	$value = $value * $adjust;
+	if(sfIsInt($digit) and $digit > 1){
+		$adjust = 10 * ($digit - 1);
+		$value = $value * $adjust;
+		$ret = round($value);
+		sfRorund($value, $digit - 1);
+	}else{
+		sfRorund($value);
+	}
 	
 	sfprintr($value);
 	
-	$ret = round($value);
-	
-	//$ret = floor($ret/$adjust);
+	$ret = floor($ret/$adjust);
 	
 	return $ret;
 }
