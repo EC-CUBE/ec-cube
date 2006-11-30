@@ -53,7 +53,7 @@ case 'view':
 		} else {
 			// javascriptで別窓表示(テンプレート側に渡す)
 			$file_url = ereg_replace(USER_PATH, "", $_POST['select_file']);
-			$objPage->tpl_onload = "win02('./file_view.php?file=". $file_url ."', 'user_data', '600', '400');";
+			$tpl_onload = "win02('./file_view.php?file=". $file_url ."', 'user_data', '600', '400');";
 		}
 	}
 	break;
@@ -122,7 +122,7 @@ $objPage->tpl_now_file = $now_dir;
 $objPage->arrErr = $arrErr;
 $objPage->arrParam = $_POST;
 // ツリーを表示する divタグid, ツリー配列変数名, 現在ディレクトリ
-$objPage->tpl_onload .= "fnTreeView('tree', arrTree, '$now_dir');";
+$objPage->tpl_onload .= "fnTreeView('tree', arrTree, '$now_dir');$tpl_onload";
 // ツリー配列作成用 javascript
 $arrTree = sfGetFileTree($top_dir, $_POST['tree_status']);
 $objPage->tpl_javascript .= "arrTree = new Array();\n";
