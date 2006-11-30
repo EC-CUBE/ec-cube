@@ -123,8 +123,9 @@
 											<td width="100" align="center">
 												<!--{* ¾¦ÉÊ²èÁü *}-->
 												<!--{if $arrProductsList[cnt].main_list_image != ""}-->
+													<!--{assign var=image_path value=`$smarty.const.IMAGE_SAVE_DIR`/`$arrProductsList[cnt].main_list_image`}-->
 												<!--{else}-->
-													<!--{assign var=image_path value=$smarty.const.NO_IMAGE_URL-->
+													<!--{assign var=image_path value=$smarty.const.NO_IMAGE_URL}-->
 												<!--{/if}-->
 												<img src="<!--{$smarty.const.SITE_URL}-->resize_image.php?image=<!--{$image_path|sfRmDupSlash}-->&width=65&height=65" alt="<!--{$arrProducts[cnt].name|escape}-->">
 											</td>
