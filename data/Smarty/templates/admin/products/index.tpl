@@ -6,29 +6,6 @@
  */
 *}-->
 
-<script type="text/javascript">
-// URLの表示非表示切り替え
-function lfnDispChange(){
-	inner_id = 'switch';
-	disp_id = 'disp_url';
-	disp_state = document.getElementById('disp_url').style.display;
-	
-	if (disp_state == "") {
-		disp_flg = 'disp_cat';
-		document.form1[disp_flg].value="none";
-		document.getElementById(disp_id).style.display="none";
-		document.getElementById(inner_id).innerHTML = "<<表示";
-	}else{
-		document.form1[disp_flg].value="";
-		document.getElementById(disp_id).style.display="";
-		document.getElementById(inner_id).innerHTML = ">>非表示"; 
-	}
-	
-	alert("aaa");
-}
-</script>
-
-
 <!--★★メインコンテンツ★★-->
 <table width="878" border="0" cellspacing="0" cellpadding="0" summary=" ">
 <form name="search_form" id="search_form" method="post" action="<!--{$smarty.server.PHP_SELF|escape}-->">
@@ -240,6 +217,28 @@ function lfnDispChange(){
 	</tr>
 	<tr><td bgcolor="cbcbcb" colspan="2"><img src="<!--{$smarty.const.URL_DIR}-->img/common/_.gif" width="1" height="5" alt=""></td></tr>
 </table>
+
+<script type="text/javascript">
+// URLの表示非表示切り替え
+function lfnDispChange(){
+	inner_id = 'switch';
+	disp_id = 'disp_url';
+	disp_state = document.getElementById('disp_url').style.display;
+	
+	if (disp_state == "") {
+		disp_flg = 'disp_cat';
+		document.form1[disp_flg].value="none";
+		document.getElementById(disp_id).style.display="none";
+		document.getElementById(inner_id).innerHTML = "<<表示";
+	}else{
+		document.form1[disp_flg].value="";
+		document.getElementById(disp_id).style.display="";
+		document.getElementById(inner_id).innerHTML = ">>非表示"; 
+	}
+	
+	alert("aaa");
+}
+</script>
 
 <table width="878" border="0" cellspacing="0" cellpadding="0" summary=" ">
 	<tr>
