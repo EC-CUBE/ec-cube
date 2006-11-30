@@ -229,7 +229,8 @@ function lfnDispChange(){
 	
 //	document.form1[disp_flg].value="none";
 
-	document.getElementById(disp_id).style.display="";
+//	document.getElementById(disp_id).style.display="";
+	document.form1[disp_id].style.display="";
 //	document.getElementById(inner_id).innerHTML = "<<É½¼¨";
 /*
 	}else{
@@ -241,6 +242,7 @@ function lfnDispChange(){
 //		alert("aaa");
 	
 }
+
 </script>
 
 <table width="878" border="0" cellspacing="0" cellpadding="0" summary=" ">
@@ -327,7 +329,7 @@ function lfnDispChange(){
 							</div>
 
 							<!--{* URL *}-->
-							<div id="disp_url" style="display:none">
+							<div id="disp_url" name="disp_url" style="display:none">
 							<!--{$smarty.const.SITE_URL|sfTrimURL}-->/products/detail.php?product_id=<!--{$arrProducts[cnt].product_id}-->
 							</div>
 							</td>
