@@ -229,7 +229,7 @@ class gdthumb {
 					
 					sfprintr(imagecolorstotal ($src_im));
 					
-					imagetruecolortopalette($dst_im, true);
+					imagetruecolortopalette($dst_im, true, 256);
 				}
 				
 				// ²èÁü½ĞÎÏ
