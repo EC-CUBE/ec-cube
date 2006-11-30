@@ -6,6 +6,10 @@
  */
 require_once("../require.php");
 
+//---- Ç§¾Ú²ÄÈİ¤ÎÈ½Äê
+$objSess = new SC_Session();
+sfIsSuccess($objSess);
+
 class LC_Page{
 	function LC_Page() {
 		$this->tpl_mainpage = 'contents/file_manager.tpl';
