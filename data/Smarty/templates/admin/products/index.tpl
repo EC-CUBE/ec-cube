@@ -222,19 +222,19 @@
 // URLの表示非表示切り替え
 function lfnDispChange(){
 	inner_id = 'switch';
-	disp_id = 'disp_url[]';
+	disp_id = 'disp_url';
 	disp_flg = 'disp_cat';
 	
 //	disp_state = document.getElementById(disp_id).style.display;
 	
-	document.form1[disp_flg].value="none";
+//	document.form1[disp_flg].value="none";
 
-	$arrurl = new Array();
-	$arrurl = form1.item_cnt.value;
+	cnt = form1.item_cnt.value;
 	
-	alert($arrurl);
-	
-	
+	for (i = 0; i <= cnt; i++) {
+		document.getElementById(disp_id+i).style.display="";
+	}
+
 
 	document.getElementById(disp_id).style.display="";
 //	document.getElementById(inner_id).innerHTML = "<<表示";
