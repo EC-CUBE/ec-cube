@@ -152,7 +152,7 @@ function moving(news_id,rank, max_rank) {
 								<input type="hidden" name="tree_status" value="">
 								<input type="hidden" name="select_file" value="">	
 								
-								<table width="678" border="0" cellspacing="1" cellpadding="8" summary=" ">
+								<table width="678" border="0" cellspacing="1" cellpadding="3" summary=" ">
 									<thead>
 									<tr class="fs12n">								
 										<td>
@@ -160,7 +160,7 @@ function moving(news_id,rank, max_rank) {
 										</td>
 										<td>
 											<div id="file_view">
-												<table border="0" cellspacing="1" cellpadding="1" summary=" ">
+												<table border="0" cellspacing="1" cellpadding="5" summary=" ">
 													<tr class="fs12n" bgcolor="#f2f1ec">
 														<td>ファイル名</td>
 														<td>サイズ</td>
