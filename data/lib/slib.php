@@ -1113,7 +1113,7 @@ function sfRound($value, $digit = 2){
 	
 	// 整数且つ0出なければ桁数指定を行う
 	if(sfIsInt($digit) and $digit > 1){
-		$adjust = pow(10 ,($digit - 1));
+		$adjust = pow(10 ,(0));
 		
 		sfprintr($adjust);
 		
