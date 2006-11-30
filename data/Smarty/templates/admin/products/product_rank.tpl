@@ -122,13 +122,13 @@
 											<td width="110"><!--{$arrProductsList[cnt].product_code|escape|default:"-"}--></td>
 											<td width="100" align="center">
 												<!--{* ¾¦ÉÊ²èÁü *}-->
-												<img src="
 												<!--{if $arrProductsList[cnt].main_list_image != ""}-->
-												<!--{$smarty.const.IMAGE_SAVE_URL}-->/<!--{$arrProductsList[cnt].main_list_image}-->
+													<!--{assign var=image_path value=<!--{$smarty.const.IMAGE_SAVE_DIR}-->/<!--{$arrProductsList[cnt].main_list_image}-->}-->
 												<!--{else}-->
-												<!--{$smarty.const.NO_IMAGE_URL}-->
+													<!--{assign var=image_path value=<!--{$smarty.const.NO_IMAGE_URL}-->}-->
 												<!--{/if}-->
-												" width="65" height="65" alt="" />
+												<img src="<!--{$smarty.const.SITE_URL}-->resize_image.php?image=<!--{$image_path|sfRmDupSlash}-->&width=65&height=65" alt="<!--{$arrProducts[cnt].name|escape}-->">
+												
 											</td>
 											<td width="130" align="center">
 												<!--{$arrProductsList[cnt].name|escape}-->
