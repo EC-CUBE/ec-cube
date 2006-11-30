@@ -232,7 +232,7 @@ function lfnDispChange(){
 	cnt = form1.item_cnt.value;
 	
 	for (i = 1; i <= cnt; i++) {
-		disp_id = 'disp_id'+i;
+		disp_id = 'disp_url'+i;
 		document.getElementById(disp_id).style.display="";
 		alert(disp_id);
 	}
