@@ -1093,15 +1093,15 @@ function sfPreTax($price, $tax, $tax_rule, $digit = 1) {
 		break;
 	// 切り捨て
 	case 2:
-		$ret = sfFloor($ret);
+		$ret = floor($ret);
 		break;
 	// 切り上げ
 	case 3:
-		$ret = sfCeil($ret);
+		$ret = ceil($ret);
 		break;
 	// デフォルト:切り上げ
 	default:
-		$ret = sfCeil($ret);
+		$ret = ceil($ret);
 		break;
 	}
 	return $ret;
@@ -1122,40 +1122,6 @@ function sfRound($value, $pow = 0){
 	}
 
 	return $ret;
-}
-
-// 桁数を指定して切り捨て
-function sfFloor($value, $digit = 1){
-	$adjust = pow(10 ,$pow);
-	
-	// 整数且つ0出なければ桁数指定を行う
-	if(sfIsInt($adjust) and $pow > 0){
-		$ret = (floor($value * $adjust)/$adjust);
-		$ret = sfFloor($ret, $pow - 1);
-		return $ret;
-	}else{
-		$ret = floor($value);
-		$ret = floor($ret/$adjust);
-	}
-	
-	return $ret;
-}
-
-// 桁数を指定して切り上げ
-function sfCeil($value, $digit = 1){
-	$adjust = pow(10 ,$pow);
-	
-	// 整数且つ0出なければ桁数指定を行う
-	if(sfIsInt($adjust) and $pow > 0){
-		$ret = (ceil($value * $adjust)/$adjust);
-		$ret = sfCeil($ret, $pow - 1);
-		return $ret;
-	}else{
-		$ret = ceil($value);
-		$ret = floor($ret/$adjust);
-	}
-
-	return $ret / 10 * $digit;
 }
 
 /* ポイント付与 */
