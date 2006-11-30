@@ -231,7 +231,7 @@ function lfnDispChange(){
 
 	$arrurl = document.form1[disp_id];
 	
-	alert(count($arrurl));
+	alert($arrurl);
 	
 	
 
