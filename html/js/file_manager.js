@@ -11,7 +11,6 @@ var IMG_NORMAL         = "../../img/admin/contents/space.gif";				// スペース
 
 var tree = "";						// 生成HTML格納
 var count = 0;						// ループカウンタ
-var arrTreeBk = new Array();		// ツリー配列保持用
 var arrTreeStatus = new Array();	// ツリー状態保持
 var old_select_id = '';				// 前回選択していたファイル
 
