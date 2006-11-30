@@ -551,19 +551,15 @@ function lfMakeScaleImage($from_key, $to_key, $forced = false){
 	$arrImageKey = array_flip($objUpFile->keyname);
 	
 	if($objUpFile->temp_file[$arrImageKey[$from_key]]){
-		$dir = $objUpFile->temp_dir;
+		$from_path = $objUpFile->temp_dir . $objUpFile->temp_file[$arrImageKey[$from_key]];
 	}elseif($objUpFile->save_file[$arrImageKey[$from_key]]){
-		$dir = $objUpFile->save_dir;
+		$from_path = $objUpFile->save_dir . $objUpFile->save_file[$arrImageKey[$from_key]];
 	}else{
 		return "";
 	}
 
 	// 元画像サイズを取得
-	$from_path = $dir . $objUpFile->temp_file[$arrImageKey[$from_key]];
 	list($from_w, $from_h) = getimagesize($from_path);
-	
-		sfprintr($from_path);
-
 	
 	// 生成先の画像サイズを取得
 	$to_w = $objUpFile->width[$arrImageKey[$to_key]];
