@@ -10,7 +10,7 @@
 	margin: 0px;
 	background-color : #FFFFFF;
 	border-style: solid;
-	border-color: #000000;
+	border-color: #C0C0C0;
 	border-width: 1px
 }
 
@@ -20,7 +20,7 @@
 	overflow: auto;
 	background-color : #FFFFFF;
 	border-style: solid;
-	border-color: #000000;
+	border-color: #C0C0C0;
 	border-width: 1px
 }
 
@@ -31,6 +31,6 @@
 	overflow: hidden;
 	background-color : #FFFFFF;
 	border-style: solid;
-	border-color: #000000;
+	border-color: #C0C0C0;
 	border-width: 1px
 }
