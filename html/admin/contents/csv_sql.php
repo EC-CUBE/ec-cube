@@ -160,6 +160,9 @@ foreach ($arrColList['description'] as $key => $val) {
 	$arrColList['description'][$key] = $arrColList['column_name'][$key] . "：" . $arrColList['description'][$key];
 }
 
+
+sfprintr($arrColList);
+
 // テンプレートに出力するデータをセット
 $objPage->arrSqlList = $arrSqlList;																// SQL一覧
 $objPage->arrTableList = sfarrCombine($arrTableList['table_name'], $arrTableList['description']);	// テーブル一覧
