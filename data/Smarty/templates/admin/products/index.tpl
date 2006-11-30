@@ -227,7 +227,7 @@ function lfnDispChange(){
 	
 //	disp_state = document.getElementById(disp_id).style.display;
 	
-//	document.form1[disp_flg].value="none";
+	document.form1[disp_flg].value="none";
 
 	$arrurl = new Array();
 	$arrurl = form1.item_cnt.value;
