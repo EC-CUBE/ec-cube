@@ -83,7 +83,7 @@ case 'copy' :
 			
 			// 画像ファイルのコピー
 			$arrKey = $objUpFile->keyname;
-			$arrKeyID = sfswaparray($arrKey);
+			$arrKeyID = array_flip($arrKey);
 			
 			sfprintr($arrKeyID);
 			lfMakeScaleImage($_POST['image_key'], "main_list_image");
