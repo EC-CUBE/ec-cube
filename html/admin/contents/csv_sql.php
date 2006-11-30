@@ -161,9 +161,6 @@ $arrDiff = array_diff(sfGetColumnList($selectTable), $arrColList["column_name"])
 //$arrColList["column_name"] = array_merge($arrColList["column_name"], $arrDiff);
 //$arrColList["description"] = array_merge($arrColList["description"], $arrDiff);
 
-
-sfprintr($arrDiff);
-
 // テンプレートに出力するデータをセット
 $objPage->arrSqlList = $arrSqlList;																// SQL一覧
 $objPage->arrTableList = sfarrCombine($arrTableList['table_name'], $arrTableList['description']);	// テーブル一覧
