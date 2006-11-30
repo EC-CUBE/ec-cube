@@ -5,7 +5,7 @@
  * http://www.lockon.co.jp/
  */
 
-require_once("../../require.php");
+require_once("../require.php");
 
 // ソースとして表示するファイルを定義(直接実行しないファイル)
 $arrViewFile = array(
