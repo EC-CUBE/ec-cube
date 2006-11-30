@@ -3,7 +3,7 @@
 require_once("../../require.php");
 
 
-echo "四捨五入：" . sfRound(5.499399,6) . "<br>";
+echo "四捨五入：" . sfRound(5.499499,6) . "<br>";
 
 
 ?>
