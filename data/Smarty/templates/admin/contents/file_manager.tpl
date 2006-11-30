@@ -197,6 +197,9 @@ function moving(news_id,rank, max_rank) {
 											<input type="button" onclick="setTreeStatus('tree_status');fnModeSubmit('delete','',''); return false;" value="削除">
 										</td>
 									</tr>
+									<thead>
+								</table>
+								<table>									
 									<tr>
 										<td>					
 											<input type="file" name="upload_file"><input type="button" onclick="setTreeStatus('tree_status');fnModeSubmit('upload','',''); return false;" value="アップロード"><br/>
