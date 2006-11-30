@@ -152,7 +152,7 @@ if ($_POST['mode'] == "search" || $_POST['mode'] == "csv"  || $_POST['mode'] == 
 					list($tmp_where, $tmp_arrval) = sfGetCatWhere($val);
 					if($tmp_where != "") {
 						$where.= " AND $tmp_where";
-						$arrval = array_merge($arrval, $tmp_arrval);
+						$arrval = array_merge((array)$arrval, (array)$tmp_arrval);
 					}
 					break;
 				case 'search_product_code':	// 商品コード
