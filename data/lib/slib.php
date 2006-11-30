@@ -1109,24 +1109,35 @@ function sfPreTax($price, $tax, $tax_rule, $digit = 1) {
 
 // 桁数を指定して四捨五入
 function sfRound($value, $digit = 1){
+	$adjust = 1;
+	
 	// 整数且つ0出なければ桁数指定を行う
-	if(sfIsInt($digit) and $digit != 0) $value = $value * 10 * ($digit-1);
+	if(sfIsInt($digit) and $digit > 0) $adjust = 10 * ($digit - 1);	
+	
+	$value = $value * $adjust;
+	
 	$ret = round($value);
 	return $ret;
 }
 
 // 桁数を指定して切り捨て
 function sfFloor($value, $digit = 1){
+	
+	$digit = $digit-1;
+	
 	// 整数且つ0出なければ桁数指定を行う
-	if(sfIsInt($digit) and $digit != 0) $value = $value * 10 * ($digit-1);
+	if(sfIsInt($digit) and $digit != 0) $value = $value * 10 * $digit;
 	$ret = floor($value);
 	return $ret;
 }
 
 // 桁数を指定して切り上げ
 function sfCeil($value, $digit = 1){
+	
+	$digit = $digit-1;
+
 	// 整数且つ0出なければ桁数指定を行う
-	if(sfIsInt($digit) and $digit != 0) $value = $value * 10 * ($digit-1);
+	if(sfIsInt($digit) and $digit != 0) $value = $value * 10 * $digit;
 	$ret = ceil($value);
 	return $ret / 10 * $digit;
 }
