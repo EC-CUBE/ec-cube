@@ -6,7 +6,7 @@
  */
 *}-->
 
-■エラー
+
 <!--{foreach key=key item=item from=$arrErr}-->
 	<!--{$key}-->：<!--{$item}--><br/>
 <!--{/foreach}--><br/><br/>
