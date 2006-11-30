@@ -281,7 +281,7 @@ function lfnDispChange(){
 							<td width="430">
 								<span class="white">
 									カテゴリ
-									<a href="#" onClick="lfnDispChange();" id="switch"> >> <!--{if $disp_cat }-->URL表示<!--{else}-->カテゴリ表示<!--{/if}--></a>
+									<a href="#" onClick="lfnDispChange();" id="switch"> >> URL表示</a>
 								</span>
 							</td>
 							<td width="60"><span class="white">種別</span></td>
