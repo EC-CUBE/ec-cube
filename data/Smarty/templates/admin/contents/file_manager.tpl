@@ -210,7 +210,7 @@ function moving(news_id,rank, max_rank) {
 									</tr>
 									<tr class="fs12n">
 										<td bgcolor="#f2f1ec">フォルダ作成</td>
-										<td bgcolor="#ffffff"><input type="text" name="create_file" value="" class="box55"><input type="button" onclick="setTreeStatus('tree_status');fnModeSubmit('create','',''); return false;" value="作成"></td>
+										<td bgcolor="#ffffff"><input type="text" name="create_file" value="" class="box52"><input type="button" onclick="setTreeStatus('tree_status');fnModeSubmit('create','',''); return false;" value="作成"></td>
 									</tr>
 									<thead>
 								</table>
