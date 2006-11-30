@@ -67,7 +67,7 @@ function fnTreeView(view_id, openFolder) {
 
 		arrFileSplit = arrTree[i][2].split("/");
 		file_name = arrFileSplit[arrFileSplit.length-1];
-		
+alert(openFolder);
 		// フォルダの画像を選択
 		if(arrTree[i][2] == openFolder) {
 			folder_img = IMG_FOLDER_OPEN;

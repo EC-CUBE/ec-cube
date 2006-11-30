@@ -31,10 +31,6 @@ if($_POST['mode'] != "") {
 	$now_dir = $top_dir;
 }
 
-
-
-sfprintr($_POST);
-
 // ファイル管理クラス
 $objUpFile = new SC_UploadFile($now_dir, $now_dir);
 // ファイル情報の初期化
