@@ -80,12 +80,12 @@ case 'copy' :
 		if($_POST['mode'] == "copy"){
 			$arrForm["copy_product_id"] = $arrForm["product_id"];
 			$arrForm["product_id"] = "";
-			
 			// 画像ファイルのコピー
 			$arrKey = $objUpFile->keyname;
 			$arrKeyID = array_flip($arrKey);
+			$arrSaveFile = $objUpFile->save_files;
 			
-			foreach($objUpFile->save_files as $key => $val){
+			foreach($arrSaveFile as $key => $val){
 				lfMakeScaleImage($arrKeyID[$val], $arrKeyID[$val], true); 
 			}
 		}
