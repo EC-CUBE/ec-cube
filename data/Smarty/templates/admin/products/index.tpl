@@ -230,7 +230,7 @@ function lfnDispChange(){
 //	document.form1[disp_flg].value="none";
 
 	$arrurl = new Array();
-	$arrurl = form1.disp_url[1].value;
+	$arrurl = form1.item_cnt.value;
 	
 	alert($arrurl);
 	
@@ -335,7 +335,7 @@ function lfnDispChange(){
 							</div>
 
 							<!--{* URL *}-->
-							<div id="disp_url<!--{$smarty.section.cnt.iteration}-->" name="disp_url[<!--{$smarty.section.cnt.iteration}-->"]" style="display:none">
+							<div id="disp_url<!--{$smarty.section.cnt.iteration}-->" style="display:none">
 							<!--{$smarty.const.SITE_URL|sfTrimURL}-->/products/detail.php?product_id=<!--{$arrProducts[cnt].product_id}-->
 							</div>
 							</td>
@@ -346,6 +346,7 @@ function lfnDispChange(){
 						</tr>
 						<!--▲商品<!--{$smarty.section.cnt.iteration}-->-->
 						<!--{/section}-->
+						<input type="hidden" name="item_cnt" value="<!--{$smarty.section.cnt.iteration}-->"
 					</table>
 					<!--検索結果表示テーブル-->
 					</td>
