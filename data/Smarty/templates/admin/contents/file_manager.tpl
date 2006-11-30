@@ -206,10 +206,10 @@ function moving(news_id,rank, max_rank) {
 								</table>
 								<table width="678" border="0" cellspacing="1" cellpadding="8" summary=" ">
 									<tr class="fs12n" bgcolor="#ffffff">
-										<td>					
-											<input type="file" name="upload_file"><input type="button" onclick="setTreeStatus('tree_status');fnModeSubmit('upload','',''); return false;" value="アップロード"><br/>
-											<input type="text" name="create_file" value=""><input type="button" onclick="setTreeStatus('tree_status');fnModeSubmit('create','',''); return false;" value="作成">
-										</td>
+										<td><input type="file" name="upload_file"><input type="button" onclick="setTreeStatus('tree_status');fnModeSubmit('upload','',''); return false;" value="アップロード"></td>
+									</tr>
+									<tr class="fs12n" bgcolor="#ffffff">
+										<td><input type="text" name="create_file" value=""><input type="button" onclick="setTreeStatus('tree_status');fnModeSubmit('create','',''); return false;" value="作成"></td>
 									</tr>
 									<thead>
 								</table>
