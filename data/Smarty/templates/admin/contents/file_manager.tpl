@@ -159,31 +159,29 @@ function moving(news_id,rank, max_rank) {
 									</tr>
 									<tr class="fs12n" bgcolor="#ffffff">								
 										<td>
-										■ツリー
-										<div id="tree"></div>
+											<div id="tree"></div>
 										</td>
 										<td>
-										■ファイル
-										<div id="file_view">
-											<table>
-												<tr class="fs12n" bgcolor="#f2f1ec">
-													<td>ファイル名</td>
-													<td>サイズ</td>
-													<td>更新日付</td>
-												</tr>
-												<!--{section name=cnt loop=$arrFileList}-->
-												<!--{assign var="id" value="select_file`$smarty.section.cnt.index`"}-->
-												<tr class="fs12n" id="<!--{$id}-->" onclick="fnSetFormVal('form1', 'select_file', '<!--{$arrFileList[cnt].file_path|escape}-->');fnSelectFile('<!--{$id}-->', '#3333FF');" style="" onMouseOver="fnChangeBgColor('<!--{$id}-->', '#3333FF');" onMouseOut="fnChangeBgColor('<!--{$id}-->', '');">
-													<td><!--{$arrFileList[cnt].file_name|escape}--></td>
-													<td><!--{$arrFileList[cnt].file_size|escape}--></td>
-													<td><!--{$arrFileList[cnt].file_time|escape}--></td>
-												</tr>
-												<!--{/section}-->
-											</table>
-										</div>
-										<input type="button" onclick="setTreeStatus('tree_status');fnModeSubmit('view','',''); return false;" value="表示">
-										<input type="button" onclick="setTreeStatus('tree_status');fnModeSubmit('download','',''); return false;" value="ダウンロード">
-										<input type="button" onclick="setTreeStatus('tree_status');fnModeSubmit('delete','',''); return false;" value="削除">
+											<div id="file_view">
+												<table>
+													<tr class="fs12n" bgcolor="#f2f1ec">
+														<td>ファイル名</td>
+														<td>サイズ</td>
+														<td>更新日付</td>
+													</tr>
+													<!--{section name=cnt loop=$arrFileList}-->
+													<!--{assign var="id" value="select_file`$smarty.section.cnt.index`"}-->
+													<tr class="fs12n" id="<!--{$id}-->" onclick="fnSetFormVal('form1', 'select_file', '<!--{$arrFileList[cnt].file_path|escape}-->');fnSelectFile('<!--{$id}-->', '#3333FF');" style="" onMouseOver="fnChangeBgColor('<!--{$id}-->', '#3333FF');" onMouseOut="fnChangeBgColor('<!--{$id}-->', '');">
+														<td><!--{$arrFileList[cnt].file_name|escape}--></td>
+														<td><!--{$arrFileList[cnt].file_size|escape}--></td>
+														<td><!--{$arrFileList[cnt].file_time|escape}--></td>
+													</tr>
+													<!--{/section}-->
+												</table>
+											</div>
+											<input type="button" onclick="setTreeStatus('tree_status');fnModeSubmit('view','',''); return false;" value="表示">
+											<input type="button" onclick="setTreeStatus('tree_status');fnModeSubmit('download','',''); return false;" value="ダウンロード">
+											<input type="button" onclick="setTreeStatus('tree_status');fnModeSubmit('delete','',''); return false;" value="削除">
 										</td>
 									</tr>
 									<tr>
