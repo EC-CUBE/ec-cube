@@ -218,7 +218,7 @@ function moving(news_id,rank, max_rank) {
 								</form>
 								<!--▲ファイル管理テーブルここまで-->
 								
-								<table width="678" border="0" cellspacing="0" cellpadding="0" summary=" ">
+								<table width="678" border="0" cellspacing="0" cellpadding="0" summary=" " valign="top">
 									<tr>
 										<td bgcolor="#cccccc"><img src="<!--{$smarty.const.URL_DIR}-->img/common/_.gif" width="1" height="5" alt=""></td>
 										<td><img src="<!--{$smarty.const.URL_DIR}-->img/contents/tbl_top.gif" width="676" height="7" alt=""></td>

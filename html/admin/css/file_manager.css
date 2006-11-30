@@ -11,7 +11,8 @@
 	background-color : #FFFFFF;
 	border-style: solid;
 	border-color: #C0C0C0;
-	border-width: 1px
+	border-width: 1px;
+	vertical-align: top;
 }
 
 #file_view {
@@ -32,5 +33,6 @@
 	background-color : #FFFFFF;
 	border-style: solid;
 	border-color: #C0C0C0;
-	border-width: 1px
+	border-width: 1px;
+	vertical-align: top;
 }
