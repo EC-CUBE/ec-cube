@@ -6,6 +6,39 @@
  */
 *}-->
 
+<script type="text/javascript">
+// URLの表示非表示切り替え
+function lfnDispChange(){
+	inner_id = 'switch';
+
+	cnt = form1.item_cnt.value;
+	
+	if(document.getElementById('disp_url1').style.display == 'none'){
+		for (i = 1; i <= cnt; i++) {
+			disp_id = 'disp_url'+i;
+			document.getElementById(disp_id).style.display="";
+	
+			disp_id = 'disp_cat'+i;
+			document.getElementById(disp_id).style.display="none";
+			
+			document.getElementById(inner_id).innerHTML = '	URL <a href="#" onClick="lfnDispChange();"> <FONT Color="yellow"> >> カテゴリ表示</FONT></a>';
+		}
+	}else{
+		for (i = 1; i <= cnt; i++) {
+			disp_id = 'disp_url'+i;
+			document.getElementById(disp_id).style.display="none";
+	
+			disp_id = 'disp_cat'+i;
+			document.getElementById(disp_id).style.display="";
+			
+			document.getElementById(inner_id).innerHTML = '	カテゴリ <a href="#" onClick="lfnDispChange();"> <FONT Color="yellow"> >> URL表示</FONT></a>';
+		}
+	}
+
+}
+
+</script>
+
 <!--★★メインコンテンツ★★-->
 <table width="878" border="0" cellspacing="0" cellpadding="0" summary=" ">
 <form name="search_form" id="search_form" method="post" action="<!--{$smarty.server.PHP_SELF|escape}-->">
@@ -217,39 +250,6 @@
 	</tr>
 	<tr><td bgcolor="cbcbcb" colspan="2"><img src="<!--{$smarty.const.URL_DIR}-->img/common/_.gif" width="1" height="5" alt=""></td></tr>
 </table>
-
-<script type="text/javascript">
-// URLの表示非表示切り替え
-function lfnDispChange(){
-	inner_id = 'switch';
-
-	cnt = form1.item_cnt.value;
-	
-	if(document.getElementById('disp_url1').style.display == 'none'){
-		for (i = 1; i <= cnt; i++) {
-			disp_id = 'disp_url'+i;
-			document.getElementById(disp_id).style.display="";
-	
-			disp_id = 'disp_cat'+i;
-			document.getElementById(disp_id).style.display="none";
-			
-			document.getElementById(inner_id).innerHTML = '	URL <a href="#" onClick="lfnDispChange();"> <FONT Color="yellow"> >> カテゴリ表示</FONT></a>';
-		}
-	}else{
-		for (i = 1; i <= cnt; i++) {
-			disp_id = 'disp_url'+i;
-			document.getElementById(disp_id).style.display="none";
-	
-			disp_id = 'disp_cat'+i;
-			document.getElementById(disp_id).style.display="";
-			
-			document.getElementById(inner_id).innerHTML = '	カテゴリ <a href="#" onClick="lfnDispChange();"> <FONT Color="yellow"> >> URL表示</FONT></a>';
-		}
-	}
-
-}
-
-</script>
 
 <table width="878" border="0" cellspacing="0" cellpadding="0" summary=" ">
 	<tr>
