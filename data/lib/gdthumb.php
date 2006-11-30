@@ -125,9 +125,6 @@ class gdthumb {
 					$src_im = imagecreatefromgif($path);
 					$dst_im = $imagecreate($re_size[0], $re_size[1]);
 					
-					sfprintr(imagecolorstotal($src_im));
-
-					
 					$transparent = imagecolortransparent($src_im);
 					$colorstotal = imagecolorstotal ($src_im);
 					
@@ -198,7 +195,8 @@ class gdthumb {
 				$src_im = imageCreateFromJpeg($path);
 				$dst_im = $imagecreate($re_size[0], $re_size[1]);
 				$imageresize( $dst_im, $src_im, 0, 0, 0, 0, $re_size[0], $re_size[1], $size[0], $size[1]);
-				
+					sfprintr(imagecolorstotal($src_im));
+
 				// ²èÁü½ÐÎÏ
 				if($header){
 					header("Content-Type: image/jpeg");
