@@ -167,7 +167,7 @@ function moving(news_id,rank, max_rank) {
 												<table>
 													<tr class="fs12n" bgcolor="#f2f1ec">
 														<td>ファイル名</td>
-														<td>サイズ</td>
+														<td align="right">サイズ</td>
 														<td>更新日付</td>
 													</tr>
 													<!--{section name=cnt loop=$arrFileList}-->
@@ -175,7 +175,7 @@ function moving(news_id,rank, max_rank) {
 													<tr class="fs12n" id="<!--{$id}-->" onclick="fnSetFormVal('form1', 'select_file', '<!--{$arrFileList[cnt].file_path|escape}-->');fnSelectFile('<!--{$id}-->', '#3333FF');" style="" onMouseOver="fnChangeBgColor('<!--{$id}-->', '#3333FF');" onMouseOut="fnChangeBgColor('<!--{$id}-->', '');">
 														<td><!--{$arrFileList[cnt].file_name|escape}--></td>
 														<td align="right"><!--{$arrFileList[cnt].file_size|escape}--></td>
-														<td align="right"><!--{$arrFileList[cnt].file_time|escape}--></td>
+														<td><!--{$arrFileList[cnt].file_time|escape}--></td>
 													</tr>
 													<!--{/section}-->
 												</table>
