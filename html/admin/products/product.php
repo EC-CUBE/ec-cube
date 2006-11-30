@@ -85,7 +85,7 @@ case 'copy' :
 			$arrKey = $objUpFile->keyname;
 			$arrKeyID = array_flip($arrKey);
 			
-			sfprintr($arrKeyID);
+			sfprintr($objUpFile);
 			lfMakeScaleImage($_POST['image_key'], "main_list_image");
 		}
 		$objPage->arrForm = $arrForm;
