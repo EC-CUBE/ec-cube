@@ -169,7 +169,7 @@ function moving(news_id,rank, max_rank) {
 										</td>
 										<td>
 											<div id="file_view">
-												<table>
+												<table  border="0" cellspacing="0" cellpadding="0" summary=" ">
 													<tr class="fs12n" bgcolor="#f2f1ec">
 														<td>ファイル名</td>
 														<td align="right">サイズ</td>
