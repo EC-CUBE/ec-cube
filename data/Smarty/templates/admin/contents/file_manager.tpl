@@ -11,6 +11,13 @@
 	<!--{$key}-->：<!--{$item}-->
 <!--{/foreach}-->
 <!--★★メインコンテンツ★★-->
+								<form name="form1" method="post" action="<!--{$smarty.server.PHP_SELF|escape}-->"  enctype="multipart/form-data">
+								<input type="hidden" name="mode" value="">
+								<input type="hidden" name="now_file" value="<!--{$tpl_now_dir}-->">
+								<input type="hidden" name="tree_select_file" value="">
+								<input type="hidden" name="tree_status" value="">
+								<input type="hidden" name="select_file" value="">
+
 <table width="878" border="0" cellspacing="0" cellpadding="0" summary=" ">
 	<tr valign="top">
 		<td background="<!--{$smarty.const.URL_DIR}-->img/contents/navi_bg.gif" height="402">
@@ -28,7 +35,7 @@
 							<tr>
 								<td colspan="3"><img src="<!--{$smarty.const.URL_DIR}-->img/contents/main_top.jpg" width="706" height="14" alt=""></td>
 							</tr>
-							<tr>
+							<tr valign="top">
 								<td background="<!--{$smarty.const.URL_DIR}-->img/contents/main_left.jpg"><img src="<!--{$smarty.const.URL_DIR}-->img/common/_.gif" width="14" height="1" alt=""></td>
 								<td bgcolor="#cccccc">
 								<table width="678" border="0" cellspacing="0" cellpadding="0" summary=" ">
@@ -47,14 +54,7 @@
 										<td colspan="3"><img src="<!--{$smarty.const.URL_DIR}-->img/contents/main_bar.jpg" width="678" height="10" alt=""></td>
 									</tr>
 								</table>
-
 								<!--▼ファイル管理テーブルここから-->
-								<form name="form1" method="post" action="<!--{$smarty.server.PHP_SELF|escape}-->"  enctype="multipart/form-data">
-								<input type="hidden" name="mode" value="">
-								<input type="hidden" name="now_file" value="<!--{$tpl_now_dir}-->">
-								<input type="hidden" name="tree_select_file" value="">
-								<input type="hidden" name="tree_status" value="">
-								<input type="hidden" name="select_file" value="">
 								<table width="678" border="0" cellspacing="1" cellpadding="8" summary=" ">
 									<tr class="fs12n" bgcolor="#f2f1ec">
 										<td>ディレクトリ</td>
