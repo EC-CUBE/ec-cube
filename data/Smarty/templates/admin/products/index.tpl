@@ -233,7 +233,8 @@ function lfnDispChange(){
 	
 	for (i = 1; i <= cnt; i++) {
 		disp_id = 'disp_id'+i;
-		document.getElementById(disp_id+i).style.display="";
+		document.getElementById(disp_id).style.display="";
+		alert(disp_id);
 	}
 
 
