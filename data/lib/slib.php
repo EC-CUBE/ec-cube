@@ -1118,7 +1118,7 @@ function sfRound($value, $digit = 2){
 		$ret = round($value);
 		sfRorund($value, $digit - 1);
 	}else{
-		sfRorund($value);
+		sfRorund($value, 1);
 	}
 	
 	sfprintr($value);
