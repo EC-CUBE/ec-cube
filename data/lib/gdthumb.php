@@ -213,6 +213,7 @@ class gdthumb {
     
 			// png·Á¼°    
 			case "3": 
+					sfprintr(imagecolorstotal(imageCreateFromGIF($path)));
 
 				$src_im = imageCreateFromPNG($path);
 				
@@ -226,8 +227,6 @@ class gdthumb {
 				} else {				
 					$dst_im = $imagecreate($re_size[0], $re_size[1]);
 					imagecopyresized($dst_im,$src_im, 0, 0, 0, 0, $re_size[0], $re_size[1], $size[0], $size[1]);
-					
-					sfprintr(imagecolorstotal($dst_im));
 					
 					imagetruecolortopalette($dst_im, false, imagecolorstotal($src_im));
 				}
