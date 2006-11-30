@@ -152,7 +152,6 @@ function moving(news_id,rank, max_rank) {
 								<input type="hidden" name="select_file" value="">	
 								
 								<table width="678" border="0" cellspacing="1" cellpadding="8" summary=" ">
-									<thead>
 									<tr class="fs12n" bgcolor="#f2f1ec">
 										<td>ディレクトリ</td>
 										<td>
@@ -168,7 +167,7 @@ function moving(news_id,rank, max_rank) {
 										</td>
 										<td>
 											<div id="file_view">
-												<table  border="0" cellspacing="0" cellpadding="5" summary=" ">
+												<table border="0" cellspacing="0" cellpadding="5" summary=" ">
 													<tr class="fs12n" bgcolor="#f2f1ec">
 														<td>ファイル名</td>
 														<td align="right">サイズ</td>
@@ -196,7 +195,6 @@ function moving(news_id,rank, max_rank) {
 											<input type="button" onclick="setTreeStatus('tree_status');fnModeSubmit('delete','',''); return false;" value="削除">
 										</td>
 									</tr>
-									<thead>
 								</table>
 								<table width="678" border="1" cellspacing="1" cellpadding="8" summary=" ">
 									<tr class="fs12n">
