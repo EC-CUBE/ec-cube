@@ -23,3 +23,14 @@
 	border-color: #000000;
 	border-width: 1px
 }
+
+#now_dir {
+	height: 20px;
+	width: 280px;
+	padding: 5px;
+	overflow: hidden;
+	background-color : #FFFFFF;
+	border-style: solid;
+	border-color: #000000;
+	border-width: 1px
+}
