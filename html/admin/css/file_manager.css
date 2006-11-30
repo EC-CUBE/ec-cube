@@ -5,13 +5,13 @@
  */
 #tree{
 	height: 400px;
-	width: 250px;
+	width: 300px;
 	overflow: auto;
 	margin: 0px;
 }
 
 #file_view {
 	height: 380px;
-	width: 250px;
+	width: 300px;
 	overflow: auto;
 }

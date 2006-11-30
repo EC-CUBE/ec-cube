@@ -144,15 +144,14 @@ function moving(news_id,rank, max_rank) {
 									</tr>
 								</table>
 
-								<!--▼登録テーブルここから-->
+								<!--▼ファイル管理テーブルここから-->
+								<form name="form1" method="post" action="<!--{$smarty.server.PHP_SELF|escape}-->"  enctype="multipart/form-data">
+								<input type="hidden" name="mode" value="">
+								<input type="hidden" name="now_file" value="<!--{$tpl_now_file}-->">
+								<input type="hidden" name="tree_select_file" value="">
+								<input type="hidden" name="tree_status" value="">
+								<input type="hidden" name="select_file" value="">	
 								<table width="678" border="0" cellspacing="1" cellpadding="8" summary=" ">	
-									<form name="form1" method="post" action="<!--{$smarty.server.PHP_SELF|escape}-->"  enctype="multipart/form-data">
-									<input type="hidden" name="mode" value="">
-									<input type="hidden" name="now_file" value="<!--{$tpl_now_file}-->">
-									<input type="hidden" name="tree_select_file" value="">
-									<input type="hidden" name="tree_status" value="">
-									<input type="hidden" name="select_file" value="">	
-									<table>
 										<tr>
 											<td valign="top">
 											■ツリー
@@ -177,13 +176,12 @@ function moving(news_id,rank, max_rank) {
 											<input type="button" onclick="setTreeStatus('tree_status');fnModeSubmit('delete','',''); return false;" value="削除">
 											</td>
 										</tr>
-									</table>
 									■フォルダ作成<br />
-									<input type="file" name="upload_file"><input type="button" onclick="setTreeStatus('tree_status');fnModeSubmit('upload','',''); return false;" value="アップロード"><br/>
-									<input type="text" name="create_file" value=""><input type="button" onclick="setTreeStatus('tree_status');fnModeSubmit('create','',''); return false;" value="作成">
-									</form>
 								</table>
-								<!--▲登録テーブルここまで-->
+								<input type="file" name="upload_file"><input type="button" onclick="setTreeStatus('tree_status');fnModeSubmit('upload','',''); return false;" value="アップロード"><br/>
+								<input type="text" name="create_file" value=""><input type="button" onclick="setTreeStatus('tree_status');fnModeSubmit('create','',''); return false;" value="作成">
+								</form>
+								<!--▲ファイル管理テーブルここまで-->
 								
 								<table width="678" border="0" cellspacing="0" cellpadding="0" summary=" ">
 									<tr>
