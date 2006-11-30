@@ -557,8 +557,6 @@ function lfMakeScaleImage($from_key, $to_key, $forced = false){
 	}else{
 		return "";
 	}
-
-	sfprintr($from_path);
 	
 	// 元画像サイズを取得
 	list($from_w, $from_h) = getimagesize($from_path);
@@ -568,8 +566,10 @@ function lfMakeScaleImage($from_key, $to_key, $forced = false){
 	$to_h = $objUpFile->height[$arrImageKey[$to_key]];
 	
 	if(($objUpFile->temp_file[$arrImageKey[$to_key]] == "" and $objUpFile->save_file[$arrImageKey[$to_key]] == "") or $forced){
-		$path = $objUpFile->saveResizeImage($from_key, $to_w, $to_h);
-		$objUpFile->temp_file[$arrImageKey[$to_key]] = $path;
+		
+		$path = $objUpFile->makeThumb($from_path, $to_w, $to_h);
+		
+		$objUpFile->temp_file[$arrImageKey[$to_key]] = basename($path);
 	}
 }
 
