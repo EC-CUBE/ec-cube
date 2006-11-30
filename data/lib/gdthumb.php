@@ -116,7 +116,6 @@ class gdthumb {
 		
 		$imagecreate = function_exists("imagecreatetruecolor") ? "imagecreatetruecolor" : "imagecreate";
 		$imageresize = function_exists("imagecopyresampled") ? "imagecopyresampled" : "imagecopyresized";
-							sfprintr(imagecolorstotal(imagecreatefromgif($path)));
 
 		switch($size[2]) {
 			
@@ -125,6 +124,9 @@ class gdthumb {
 				if(function_exists("imagecreatefromgif")) {
 					$src_im = imagecreatefromgif($path);
 					$dst_im = $imagecreate($re_size[0], $re_size[1]);
+					
+					sfprintr(imagecolorstotal($src_im));
+
 					
 					$transparent = imagecolortransparent($src_im);
 					$colorstotal = imagecolorstotal ($src_im);
