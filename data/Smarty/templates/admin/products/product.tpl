@@ -273,6 +273,8 @@
 										<td bgcolor="#f2f1ec" width="160" class="fs12n">詳細-サブ画像（<!--{$smarty.section.cnt.iteration}-->）<br />[<!--{$smarty.const.NORMAL_SUBIMAGE_HEIGHT}-->×<!--{$smarty.const.NORMAL_SUBIMAGE_WIDTH}-->]</td>
 										<td bgcolor="#ffffff" width="557" class="fs12n">
 										<a name="<!--{$key}-->"></a>
+										<!--{assign var=largekey value="sub_large_image`$smarty.section.cnt.iteration`"}-->
+										<a name="<!--{$largekey}-->"></a>
 										<span class="red12"><!--{$arrErr[$key]}--></span>
 										<!--{if $arrFile[$key].filepath != ""}-->
 										<img src="<!--{$arrFile[$key].filepath}-->" alt="<!--{$arrForm.name|escape}-->" />　<a href="" onclick="fnModeSubmit('delete_image', 'image_key', '<!--{$key}-->'); return false;">[画像の取り消し]</a><br>
@@ -285,7 +287,6 @@
 										<!--{assign var=key value="sub_large_image`$smarty.section.cnt.iteration`"}-->
 										<td bgcolor="#f2f1ec" width="160" class="fs12n">詳細-サブ拡大画像（<!--{$smarty.section.cnt.iteration}-->）<br />[<!--{$smarty.const.LARGE_SUBIMAGE_HEIGHT}-->×<!--{$smarty.const.LARGE_SUBIMAGE_WIDTH}-->]</td>
 										<td bgcolor="#ffffff" width="557" class="fs12n">
-										<a name="<!--{$key}-->"></a>
 										<span class="red12"><!--{$arrErr[$key]}--></span>
 										<!--{if $arrFile[$key].filepath != ""}-->
 										<img src="<!--{$arrFile[$key].filepath}-->" alt="<!--{$arrForm.name|escape}-->" />　<a href="" onclick="fnModeSubmit('delete_image', 'image_key', '<!--{$key}-->'); return false;">[画像の取り消し]</a><br>
