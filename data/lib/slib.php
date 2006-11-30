@@ -1113,7 +1113,7 @@ function sfRound($value, $pow = 0){
 	
 	// 整数且つ0出なければ桁数指定を行う
 	if(sfIsInt($adjust) and $pow > 0){
-		$ret = (foor($value * $adjust)/$adjust);
+		$ret = (floor($value * $adjust)/$adjust);
 		//sfprintr((round($value * $adjust)));
 		$ret = sfRound($ret, $pow - 1);
 		
