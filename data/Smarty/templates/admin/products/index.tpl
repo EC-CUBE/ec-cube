@@ -222,37 +222,31 @@
 // URLの表示非表示切り替え
 function lfnDispChange(){
 	inner_id = 'switch';
-	disp_id = 'disp_url';
-	disp_flg = 'disp_cat';
-	
-//	disp_state = document.getElementById(disp_id).style.display;
-	
-//	document.form1[disp_flg].value="none";
 
 	cnt = form1.item_cnt.value;
 	
-	for (i = 1; i <= cnt; i++) {
-		disp_id = 'disp_url'+i;
-		document.getElementById(disp_id).style.display="";
-		
-		disp_id = 'disp_cat'+i;
-		document.getElementById(disp_id).style.display="none";
-		
-	}
+	if(document.getElementById('disp_url1').style.display == 'none'){
+		for (i = 1; i <= cnt; i++) {
+			disp_id = 'disp_url'+i;
+			document.getElementById(disp_id).style.display="";
 	
-
-
-//	document.getElementById(disp_id).style.display="";
-	document.getElementById(inner_id).innerHTML = ">> カテゴリ表示";
-/*
+			disp_id = 'disp_cat'+i;
+			document.getElementById(disp_id).style.display="none";
+			
+			document.getElementById(inner_id).innerHTML = ">> カテゴリ表示";
+		}
 	}else{
-		document.form1[disp_flg].value="";
-		document.getElementById(disp_id).style.display="";
-		document.getElementById(inner_id).innerHTML = ">>非表示"; 
-	}
-*/
-//		alert("aaa");
+		for (i = 1; i <= cnt; i++) {
+			disp_id = 'disp_url'+i;
+			document.getElementById(disp_id).style.display="none";
 	
+			disp_id = 'disp_cat'+i;
+			document.getElementById(disp_id).style.display="";
+			
+			document.getElementById(inner_id).innerHTML = ">> URL表示";
+		}
+	}
+
 }
 
 </script>
