@@ -335,7 +335,7 @@ function lfnDispChange(){
 							</td>
 							<td>
 							<!--{* カテゴリ名 *}-->
-							<div id="disp_cat" style="display:<!--{$cat_flg}-->">
+							<div id="disp_cat<!--{$smarty.section.cnt.iteration}-->" style="display:<!--{$cat_flg}-->">
 							<!--{assign var=key value=$arrProducts[cnt].category_id}-->
 							<!--{$arrCatList[$key]|sfTrim}-->
 							</div>
