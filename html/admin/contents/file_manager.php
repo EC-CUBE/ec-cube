@@ -92,7 +92,7 @@ case 'create':
 			// 作成エラー
 			$arrErr['create'] = "※ ".$_POST['create_file']."の作成に失敗しました。";
 		} else {
-			$objPage->tpl_javascript = "alert('フォルダを作成しました。');";
+			$tpl_onload .= "alert('フォルダを作成しました。');";
 		}
 	}
 	break;
@@ -103,7 +103,7 @@ case 'upload':
 	if($ret != "") {
 		$arrErr['upload_file'] = $ret;
 	} else {
-		$objPage->tpl_javascript = "alert('ファイルをアップロードしました。');";
+		$tpl_onload .= "alert('ファイルをアップロードしました。');";
 	}
 	break;
 // フォルダ移動
