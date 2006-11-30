@@ -199,7 +199,7 @@ function moving(news_id,rank, max_rank) {
 									</tr>
 									<thead>
 								</table>
-								<table width="678" border="0" cellspacing="1" cellpadding="8" summary=" ">
+								<table width="678" border="1" cellspacing="1" cellpadding="8" summary=" ">
 									<tr class="fs12n">
 										<td width="150">現在のディレクトリ：</td>
 										<td width="528"><!--{$tpl_now_dir}--></td>
