@@ -190,12 +190,6 @@
 										</td>
 									</tr>
 									<tr class="fs12n">
-										<td bgcolor="#f2f1ec" width="180">有効桁数<span class="red"> *</span></td>
-										<td bgcolor="#ffffff" width="537">
-										<span class="red12"><!--{$arrErr.digit}--></span>
-										少数第<input type="text" name="digit" value="<!--{$arrForm.digit|escape}-->" maxlength="<!--{$smarty.const.INT_LEN}-->" size="3" class="box3" style="<!--{if $arrErr.digit != ""}-->background-color: <!--{$smarty.const.ERR_COLOR}--><!--{/if}-->" /> 位</td>
-									</tr>
-									<tr class="fs12n">
 										<td bgcolor="#f2f1ec" width="180">送料無料条件</td>
 										<td bgcolor="#ffffff" width="537">
 										<span class="red12"><!--{$arrErr.free_rule}--></span>

@@ -1057,7 +1057,7 @@ function sfMoveCatRank($objQuery, $table, $id_name, $cat_name, $old_catid, $new_
 }
 
 /* ÀÇ¶â·×»» */
-function sfTax($price, $tax, $tax_rule, $digit = 1) {
+function sfTax($price, $tax, $tax_rule) {
 	$real_tax = $tax / 100;
 	$ret = $price * $real_tax;
 	switch($tax_rule) {
@@ -1082,7 +1082,7 @@ function sfTax($price, $tax, $tax_rule, $digit = 1) {
 }
 
 /* ÀÇ¶âÉÕÍ¿ */
-function sfPreTax($price, $tax, $tax_rule, $digit = 1) {
+function sfPreTax($price, $tax, $tax_rule) {
 	$real_tax = $tax / 100;
 	$ret = $price * (1 + $real_tax);
 	

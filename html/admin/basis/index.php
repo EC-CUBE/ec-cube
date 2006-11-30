@@ -99,7 +99,6 @@ function lfGetCol() {
 		"tax",
 		"tax_rule",
 		"free_rule",
-		"digit",		//Õ≠∏˙∑ÂøÙ
 		"good_traded",
 		"message"
 		
@@ -162,7 +161,6 @@ function lfConvertParam($array) {
 	$arrConvList['email04'] = "a";
 	$arrConvList['tax'] = "n";
 	$arrConvList['free_rule'] = "n";
-	$arrConvList['digit'] = "n";		//Õ≠∏˙∑ÂøÙ
 	$arrConvList['business_hour'] = "KVa";
 	$arrConvList['good_traded'] = "";
 	$arrConvList['message'] = "";
@@ -204,7 +202,6 @@ function lfErrorCheck($array) {
 	// §Ω§Œ¬æ
 	$objErr->doFunc(array("æ√»Ò¿«Œ®", "tax", PERCENTAGE_LEN), array("EXIST_CHECK", "NUM_CHECK", "MAX_LENGTH_CHECK"));
 	$objErr->doFunc(array("¡˜Œ¡ÃµŒ¡æÚ∑Ô", "free_rule", PRICE_LEN), array("NUM_CHECK", "MAX_LENGTH_CHECK"));
-	$objErr->doFunc(array("Õ≠∏˙∑ÂøÙ", "digit", INT_LEN), array("EXIST_CHECK", "NUM_CHECK", "MAX_LENGTH_CHECK"));
 	$objErr->doFunc(array("≈π ﬁ±ƒ∂»ª˛¥÷", "business_hour", STEXT_LEN), array("MAX_LENGTH_CHECK"));
 
 	$objErr->doFunc(array("ºË∞∑æ¶… ", "good_traded", LLTEXT_LEN), array("MAX_LENGTH_CHECK"));
