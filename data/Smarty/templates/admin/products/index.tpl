@@ -225,16 +225,17 @@ function lfnDispChange(){
 	disp_id = 'disp_url';
 	disp_state = document.getElementById('disp_url').style.display;
 	
-	if (disp_state == "") {
-		disp_flg = 'disp_cat';
-		document.form1[disp_flg].value="none";
-		document.getElementById(disp_id).style.display="none";
-		document.getElementById(inner_id).innerHTML = "<<表示";
+	disp_flg = 'disp_cat';
+	document.form1[disp_flg].value="none";
+	document.getElementById(disp_id).style.display="none";
+	document.getElementById(inner_id).innerHTML = "<<表示";
+/*
 	}else{
 		document.form1[disp_flg].value="";
 		document.getElementById(disp_id).style.display="";
 		document.getElementById(inner_id).innerHTML = ">>非表示"; 
 	}
+*/
 		alert("aaa");
 	
 }
