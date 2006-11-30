@@ -227,9 +227,11 @@ function lfnDispChange(){
 	
 	disp_state = document.getElementById(disp_id).style.display;
 	
-		alert(disp_state);
-	
 	document.form1[disp_flg].value="none";
+
+		alert("aaa");
+
+
 	document.getElementById(disp_id).style.display="display";
 	document.getElementById(inner_id).innerHTML = "<<É½¼¨";
 /*
