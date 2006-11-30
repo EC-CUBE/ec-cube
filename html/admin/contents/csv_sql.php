@@ -156,9 +156,10 @@ foreach ($arrColList['description'] as $key => $val) {
 	$arrColList['description'][$key] = $arrColList['column_name'][$key] . "：" . $arrColList['description'][$key];
 }
 
-$arrColList["column_name"] = array_merge($arrColList["column_name"], sfGetColumnList($selectTable));
+//$arrColList["column_name"] = array_merge($arrColList["column_name"], sfGetColumnList($selectTable));
+$arrDiff = array_diff($arrColList["column_name"],sfGetColumnList($selectTable)); 
 
-sfprintr($arrColList);
+sfprintr($arrDiff);
 
 // テンプレートに出力するデータをセット
 $objPage->arrSqlList = $arrSqlList;																// SQL一覧
