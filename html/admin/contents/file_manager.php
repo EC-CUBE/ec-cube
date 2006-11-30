@@ -119,9 +119,11 @@ default :
 // 現在のディレクトリ配下のファイル一覧を取得
 $objPage->arrFileList = sfGetFileList($now_dir);
 $objPage->tpl_now_dir = $now_dir;
+$objPage->tpl_url_dir = ereg_replace(USER_PATH, "", $_POST['select_file']);;
 $objPage->tpl_now_file = basename($now_dir);
 $objPage->arrErr = $arrErr;
 $objPage->arrParam = $_POST;
+
 // ツリーを表示する divタグid, ツリー配列変数名, 現在ディレクトリ
 $objPage->tpl_onload .= "fnTreeView('tree', arrTree, '$now_dir');$tpl_onload";
 // ツリー配列作成用 javascript
