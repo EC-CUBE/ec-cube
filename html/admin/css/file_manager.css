@@ -8,10 +8,12 @@
 	width: 338px;
 	overflow: auto;
 	margin: 0px;
+	background-color : #FFFFFF;
 }
 
 #file_view {
 	height: 380px;
 	width: 300px;
 	overflow: auto;
+	background-color : #FFFFFF;
 }
