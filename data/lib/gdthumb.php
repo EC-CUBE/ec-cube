@@ -116,7 +116,8 @@ class gdthumb {
 		
 		$imagecreate = function_exists("imagecreatetruecolor") ? "imagecreatetruecolor" : "imagecreate";
 		$imageresize = function_exists("imagecopyresampled") ? "imagecopyresampled" : "imagecopyresized";
-		
+							sfprintr(imagecolorstotal(imageCreateFromGIF($path)));
+
 		switch($size[2]) {
 			
 			// gif形式
@@ -213,7 +214,6 @@ class gdthumb {
     
 			// png形式    
 			case "3": 
-					sfprintr(imagecolorstotal(imageCreateFromPNG($path)));
 
 				$src_im = imageCreateFromPNG($path);
 				
