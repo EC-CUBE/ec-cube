@@ -1147,7 +1147,7 @@ function sfCeil($value, $digit = 1){
 	
 	// 整数且つ0出なければ桁数指定を行う
 	if(sfIsInt($adjust) and $pow > 0){
-		$ret = (floor($value * $adjust)/$adjust);
+		$ret = (ceil($value * $adjust)/$adjust);
 		$ret = sfCeil($ret, $pow - 1);
 		return $ret;
 	}else{
