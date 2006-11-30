@@ -82,8 +82,10 @@ case 'copy' :
 			$arrForm["product_id"] = "";
 			
 			// 画像ファイルのコピー
+			$arrKey = $objUpFile->keyname;
+			$arrKeyID = sfswaparray($arrKey);
 			
-			sfprintr($objUpFile);
+			sfprintr($arrKeyID);
 			lfMakeScaleImage($_POST['image_key'], "main_list_image");
 		}
 		$objPage->arrForm = $arrForm;
