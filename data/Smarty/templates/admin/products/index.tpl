@@ -234,10 +234,15 @@ function lfnDispChange(){
 	for (i = 1; i <= cnt; i++) {
 		disp_id = 'disp_url'+i;
 		document.getElementById(disp_id).style.display="";
+		
+		disp_id = 'disp_cat'+i;
+		document.getElementById(disp_id).style.display="none";
+		
 	}
+	
 
 
-	document.getElementById(disp_id).style.display="";
+//	document.getElementById(disp_id).style.display="";
 //	document.getElementById(inner_id).innerHTML = "<<É½¼¨";
 /*
 	}else{
