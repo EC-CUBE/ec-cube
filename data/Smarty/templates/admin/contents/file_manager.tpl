@@ -178,12 +178,14 @@ function moving(news_id,rank, max_rank) {
 										<input type="button" onclick="setTreeStatus('tree_status');fnModeSubmit('delete','',''); return false;" value="削除">
 										</td>
 									</tr>
+									<tr>
+										<td>					
+											<input type="file" name="upload_file"><input type="button" onclick="setTreeStatus('tree_status');fnModeSubmit('upload','',''); return false;" value="アップロード"><br/>
+											<input type="text" name="create_file" value=""><input type="button" onclick="setTreeStatus('tree_status');fnModeSubmit('create','',''); return false;" value="作成">
+										</td>
+									</tr>
 									<thead>
-									■フォルダ作成<br />
 								</table>
-							
-								<input type="file" name="upload_file"><input type="button" onclick="setTreeStatus('tree_status');fnModeSubmit('upload','',''); return false;" value="アップロード"><br/>
-								<input type="text" name="create_file" value=""><input type="button" onclick="setTreeStatus('tree_status');fnModeSubmit('create','',''); return false;" value="作成">
 								</form>
 								<!--▲ファイル管理テーブルここまで-->
 								
