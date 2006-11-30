@@ -199,12 +199,12 @@ function moving(news_id,rank, max_rank) {
 									</tr>
 									<thead>
 								</table>
-								<table width="678" border="0" cellspacing="0" cellpadding="0" summary=" ">
+								<table width="678" border="0" cellspacing="1" cellpadding="8" summary=" ">
 									<tr class="fs12n">
 										<td><!--{$tpl_now_dir}--></td>
 									</tr>
 								</table>
-								<table width="678" border="0" cellspacing="0" cellpadding="0" summary=" ">
+								<table width="678" border="0" cellspacing="1" cellpadding="8" summary=" ">
 									<tr class="fs12n" bgcolor="#ffffff">
 										<td>					
 											<input type="file" name="upload_file"><input type="button" onclick="setTreeStatus('tree_status');fnModeSubmit('upload','',''); return false;" value="アップロード"><br/>
