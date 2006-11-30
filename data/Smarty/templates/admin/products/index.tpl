@@ -327,7 +327,7 @@ function lfnDispChange(){
 							</div>
 
 							<!--{* URL *}-->
-							<div id="disp_url" style="display:false">
+							<div id="disp_url" style="display:true">
 							<!--{$smarty.const.SITE_URL|sfTrimURL}-->/products/detail.php?product_id=<!--{$arrProducts[cnt].product_id}-->
 							</div>
 							</td>
