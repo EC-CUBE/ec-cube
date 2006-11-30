@@ -85,6 +85,8 @@ case 'copy' :
 			$arrKeyID = array_flip($arrKey);
 			$arrSaveFile = $objUpFile->save_file;
 			
+			
+			sfprintr($arrKeyID);
 			foreach($arrSaveFile as $key => $val){
 				sfprintr($key);
 				lfMakeScaleImage($arrKeyID[$key], $arrKeyID[$key], true); 
