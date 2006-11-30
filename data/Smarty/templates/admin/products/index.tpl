@@ -335,7 +335,7 @@ function lfnDispChange(){
 							</div>
 
 							<!--{* URL *}-->
-							<div id="disp_url<!--{$smarty.section.cnt.iteration}-->" name="disp_url[]" style="display:none">
+							<div id="disp_url<!--{$smarty.section.cnt.iteration}-->" name="disp_url[<!--{$smarty.section.cnt.iteration}-->"]" style="display:none">
 							<!--{$smarty.const.SITE_URL|sfTrimURL}-->/products/detail.php?product_id=<!--{$arrProducts[cnt].product_id}-->
 							</div>
 							</td>
