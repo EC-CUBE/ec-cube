@@ -224,6 +224,7 @@ function lfnDispChange(){
 	inner_id = 'switch';
 	disp_id = 'disp_url';
 	disp_state = document.getElementById('disp_url').style.display;
+		alert(disp_state);
 	
 	disp_flg = 'disp_cat';
 	document.form1[disp_flg].value="none";
