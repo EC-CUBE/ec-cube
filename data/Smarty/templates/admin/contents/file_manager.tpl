@@ -24,7 +24,6 @@
 				<tr>
 					<td align="center">
 						<table width="706" border="0" cellspacing="0" cellpadding="0" summary=" ">
-						
 							<tr><td height="14"></td></tr>
 							<tr>
 								<td colspan="3"><img src="<!--{$smarty.const.URL_DIR}-->img/contents/main_top.jpg" width="706" height="14" alt=""></td>
@@ -57,7 +56,7 @@
 								<input type="hidden" name="tree_status" value="">
 								<input type="hidden" name="select_file" value="">
 								<table width="678" border="0" cellspacing="1" cellpadding="8" summary=" ">
-									<tr class="fs12n" bgcolor="#f2f1ec" vallign="top">
+									<tr class="fs12n" bgcolor="#f2f1ec">
 										<td>ディレクトリ</td>
 										<td>
 											<div id="now_dir">
@@ -66,7 +65,7 @@
 											</div>
 										</td>
 									</tr>
-									<tr class="fs12n" bgcolor="#ffffff">								
+									<tr class="fs12n" bgcolor="#ffffff">
 										<td>
 											<div id="tree"></div>
 										</td>
