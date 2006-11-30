@@ -78,7 +78,7 @@ function fnTreeView(view_id, arrTree, openFolder) {
 
 		// 階層画像がノーマルの時のみオンクリック処理をつける
 		if(rank_img != IMG_NORMAL) {
-			tree += '<img src="'+ rank_img +'" border="0" name="rank_img'+ i +'" id="rank_img'+ i +'" onclick="fnTreeMenu(\'tree'+ i +'\',\'rank_img'+ i +'\',\''+ arrTree[i][2] +'\')">';
+			tree += '<a href="" onclick="fnTreeMenu(\'tree'+ i +'\',\'rank_img'+ i +'\',\''+ arrTree[i][2] +'\')"><img src="'+ rank_img +'" border="0" name="rank_img'+ i +'" id="rank_img'+ i +'">';
 		} else {
 			tree += '<img src="'+ rank_img +'" border="0" name="rank_img'+ i +'" id="rank_img'+ i +'">';
 		}
