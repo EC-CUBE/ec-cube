@@ -216,6 +216,10 @@ function moving(news_id,rank, max_rank) {
 									<thead>
 								</table>
 								</form>
+								a<br/>
+								a<br/>
+								a<br/>
+								a<br/>
 								<!--▲ファイル管理テーブルここまで-->
 																
 								<table width="678" border="0" cellspacing="0" cellpadding="0" summary=" ">
