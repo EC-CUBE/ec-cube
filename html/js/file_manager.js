@@ -152,7 +152,6 @@ function fnTreeMenu(tName, imgName, path) {
 }
 
 // ファイルリストダブルクリック処理
-/*
 function fnDbClick(arrTree, path, is_dir) {
 	if(is_dir == 1) {
 		for(cnt = 0; cnt < arrTree.length; cnt++) {
@@ -163,7 +162,7 @@ function fnDbClick(arrTree, path, is_dir) {
 		win02('./file_view.php?file="'+ path +'"', 'user_data', '600', '400');
 	}
 }
-*/
+
 // フォルダオープン処理
 function fnFolderOpen(path) {
 
