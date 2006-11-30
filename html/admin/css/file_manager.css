@@ -9,6 +9,7 @@
 	overflow: auto;
 	margin: 0px;
 	background-color : #FFFFFF;
+	border-style: solid;
 }
 
 #file_view {
