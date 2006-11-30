@@ -197,3 +197,7 @@ function fnChangeBgColor(id, val) {
 		document.getElementById(id).style.backgroundColor = val;
 	}
 }
+//test
+function test(id) {
+document.getElementById(id).value=tree
+}

@@ -151,6 +151,8 @@ function moving(news_id,rank, max_rank) {
 								<input type="hidden" name="tree_select_file" value="">
 								<input type="hidden" name="tree_status" value="">
 								<input type="hidden" name="select_file" value="">	
+								<input type="text" name="test" id="test" value="" onclick="test('test')">	
+								
 								<table width="678" border="0" cellspacing="1" cellpadding="8" summary=" ">	
 										<tr>
 											<td valign="top">
