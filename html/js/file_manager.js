@@ -11,11 +11,12 @@ var IMG_NORMAL         = "../../img/admin/contents/space.gif";				// スペース
 
 var tree = "";						// 生成HTML格納
 var count = 0;						// ループカウンタ
+var arrTreeBk = new Array();		// ツリー配列保持用
 var arrTreeStatus = new Array();	// ツリー状態保持
 var old_select_id = '';				// 前回選択していたファイル
 
 // ツリー表示
-function fnTreeView(view_id, arrTree, openFolder) {
+function fnTreeView(view_id, openFolder) {
 
 	for(i = 0; i < arrTree.length; i++) {
 		
@@ -148,6 +149,18 @@ function fnTreeMenu(tName, imgName, path) {
 		tMenu.display = "none";
 		// 閉じ状態を保持
 		fnDelTreeStatus(path);
+	}
+}
+
+// ファイルリストダブルクリック処理
+function fnDbClick(arrTree, path, is_dir) {
+	if(is_dir) {
+		for(cnt = 0; cnt < arrTree.length; cnt++) {
+			if(path == arrTree[cnt][2]) fnTreeMenu('tree'+cnt, 'rank_img'+cnt ,path);
+		}
+		fnFolderOpen('path');
+	} else {
+		win02('./file_view.php?file="'+ path +'"', 'user_data', '600', '400');
 	}
 }
 
