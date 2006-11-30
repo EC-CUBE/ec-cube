@@ -568,8 +568,7 @@ function lfMakeScaleImage($from_key, $to_key, $forced = false){
 	if(($objUpFile->temp_file[$arrImageKey[$to_key]] == "" and $objUpFile->save_file[$arrImageKey[$to_key]] == "") or $forced){
 		
 		$path = $objUpFile->makeThumb($from_path, $to_w, $to_h);
-		
-		$objUpFile->temp_file[$arrImageKey[$to_key]] = basename($path);
+		$objUpFile->save_file[$arrImageKey[$to_key]] = basename($path);
 	}
 }
 
