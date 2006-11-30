@@ -154,12 +154,12 @@ function moving(news_id,rank, max_rank) {
 								
 								<table width="678" border="0" cellspacing="1" cellpadding="8" summary=" ">
 									<thead>
-									<tr class="fs12n">								
+									<tr class="fs12n" bgcolor="#ffffff">								
 										<td>
 											<div id="tree"></div>
 										</td>
 										<td>
-											<div id="file_view" >
+											<div id="file_view">
 												<table>
 													<tr class="fs12n" bgcolor="#f2f1ec">
 														<td>ファイル名</td>
@@ -168,7 +168,7 @@ function moving(news_id,rank, max_rank) {
 													</tr>
 													<!--{section name=cnt loop=$arrFileList}-->
 													<!--{assign var="id" value="select_file`$smarty.section.cnt.index`"}-->
-													<tr class="fs12n" bgcolor="#ffffff" id="<!--{$id}-->" onclick="fnSetFormVal('form1', 'select_file', '<!--{$arrFileList[cnt].file_path|escape}-->');fnSelectFile('<!--{$id}-->', '#3333FF');" style="" onMouseOver="fnChangeBgColor('<!--{$id}-->', '#3333FF');" onMouseOut="fnChangeBgColor('<!--{$id}-->', '');">
+													<tr class="fs12n" id="<!--{$id}-->" onclick="fnSetFormVal('form1', 'select_file', '<!--{$arrFileList[cnt].file_path|escape}-->');fnSelectFile('<!--{$id}-->', '#3333FF');" style="" onMouseOver="fnChangeBgColor('<!--{$id}-->', '#3333FF');" onMouseOut="fnChangeBgColor('<!--{$id}-->', '');">
 														<td><!--{$arrFileList[cnt].file_name|escape}--></td>
 														<td><!--{$arrFileList[cnt].file_size|escape}--></td>
 														<td><!--{$arrFileList[cnt].file_time|escape}--></td>
