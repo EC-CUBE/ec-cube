@@ -6,7 +6,6 @@
  */
 *}-->
 
-
 <!--¡ú¡ú¥á¥¤¥ó¥³¥ó¥Æ¥ó¥Ä¡ú¡ú-->
 <form name="form1" method="post" action="<!--{$smarty.server.PHP_SELF|escape}-->"  enctype="multipart/form-data">
 <input type="hidden" name="mode" value="">

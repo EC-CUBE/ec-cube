@@ -71,7 +71,7 @@ function fnTreeView(view_id, arrTree, openFolder) {
 		// フォルダの画像を選択
 		if(arrTree[i][2] == openFolder) {
 			folder_img = IMG_FOLDER_OPEN;
-			file_name = "<b>". file_name ."</b>";
+			file_name = "<b>" + file_name + "</b>";
 		} else {
 			folder_img = IMG_FOLDER_CLOSE;
 		}
