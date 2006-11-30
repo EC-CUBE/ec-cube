@@ -229,7 +229,7 @@ function lfnDispChange(){
 	
 //	document.form1[disp_flg].value="none";
 
-	$arrurl = disp_id;
+	$arrurl = document.form1[disp_id];
 	
 	alert($arrurl);
 	
