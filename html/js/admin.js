@@ -404,11 +404,11 @@ function fnDispChange(disp_id, inner_id, disp_flg){
 	if (disp_state == "") {
 		document.form1[disp_flg].value="none";
 		document.getElementById(disp_id).style.display="none";
-		document.getElementById(inner_id).innerHTML = "<<表示";
+		document.getElementById(inner_id).innerHTML = '<FONT Color="#33FFFF"> << 表示 </FONT>';
 	}else{
 		document.form1[disp_flg].value="";
 		document.getElementById(disp_id).style.display="";
-		document.getElementById(inner_id).innerHTML = ">>非表示"; 
+		document.getElementById(inner_id).innerHTML = ' <FONT Color="#33FFFF"> >> 非表示 </FONT>'; 
 	}
 }
 
