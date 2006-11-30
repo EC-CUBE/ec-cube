@@ -175,7 +175,7 @@ function moving(news_id,rank, max_rank) {
 													<tr class="fs12n" id="<!--{$id}-->" onclick="fnSetFormVal('form1', 'select_file', '<!--{$arrFileList[cnt].file_path|escape}-->');fnSelectFile('<!--{$id}-->', '#3333FF');" style="" onMouseOver="fnChangeBgColor('<!--{$id}-->', '#3333FF');" onMouseOut="fnChangeBgColor('<!--{$id}-->', '');">
 														<td>
 															<!--{if $arrFileList[cnt].is_dir}-->
-															<img src="/img/admin/contents/folder_close.gif" alt="フォルダ">
+															<img src="<!--{$smarty.const.URL_DIR}-->img/admin/contents/folder_close.gif" alt="フォルダ">
 															<!--{else}-->
 															&nbsp;&nbsp;
 															<!--{/if}-->
