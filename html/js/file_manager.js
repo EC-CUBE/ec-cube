@@ -17,10 +17,6 @@ var old_select_id = '';				// 前回選択していたファイル
 // ツリー表示
 function fnTreeView(view_id, arrTree, openFolder) {
 
-	tree += '<table>';
-	tree += '<tr class="fs12n" bgcolor="#f2f1ec">';
-	tree += '<td>ディレクトリ</td>';
-	tree += '</tr><tr><td>';
 	for(i = 0; i < arrTree.length; i++) {
 		
 		id = arrTree[i][0];
@@ -89,8 +85,6 @@ function fnTreeView(view_id, arrTree, openFolder) {
 		tree += '<div id="tree'+ i +'" style="display:'+ display +'">';
 	
 	}
-	tree += '</td></tr>'
-	tree += '</table>';
 	fnDrow(view_id, tree);
 	//document.tree_form.tree_test2.focus();	
 }
