@@ -83,7 +83,7 @@ case 'copy' :
 			// 画像ファイルのコピー
 			$arrKey = $objUpFile->keyname;
 			$arrKeyID = array_flip($arrKey);
-			$arrSaveFile = $objUpFile->save_files;
+			$arrSaveFile = $objUpFile->save_file;
 			
 			foreach($arrSaveFile as $key => $val){
 				lfMakeScaleImage($arrKeyID[$val], $arrKeyID[$val], true); 
