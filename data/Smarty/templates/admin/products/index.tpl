@@ -346,7 +346,7 @@ function lfnDispChange(){
 						</tr>
 						<!--▲商品<!--{$smarty.section.cnt.iteration}-->-->
 						<!--{/section}-->
-						<input type="hidden" name="item_cnt" value="<!--{$smarty.section.cnt.iteration}-->"
+						<input type="hidden" name="item_cnt" value="<!--{$arrProducts|@count}-->">
 					</table>
 					<!--検索結果表示テーブル-->
 					</td>
