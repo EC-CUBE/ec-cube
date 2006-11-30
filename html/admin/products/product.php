@@ -558,6 +558,8 @@ function lfMakeScaleImage($from_key, $to_key, $forced = false){
 		return "";
 	}
 
+	sfprintr($from_path);
+	
 	// 元画像サイズを取得
 	list($from_w, $from_h) = getimagesize($from_path);
 	
