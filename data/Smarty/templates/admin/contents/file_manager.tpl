@@ -177,7 +177,7 @@ function moving(news_id,rank, max_rank) {
 															<!--{if $arrFileList[cnt].is_dir}-->
 															<img src="<!--{$smarty.const.URL_DIR}-->img/admin/contents/folder_close.gif" alt="フォルダ">
 															<!--{else}-->
-															&nbsp;&nbsp;
+															&nbsp;&nbsp;&nbsp;
 															<!--{/if}-->
 															<!--{$arrFileList[cnt].file_name|escape}-->
 														</td>
