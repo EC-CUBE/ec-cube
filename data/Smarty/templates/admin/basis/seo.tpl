@@ -41,7 +41,7 @@
 										</tr>
 										<tr>
 											<td background="<!--{$smarty.const.URL_DIR}-->img/contents/contents_title_left_bg.gif"><img src="<!--{$smarty.const.URL_DIR}-->img/contents/contents_title_left.gif" width="22" height="12" alt=""></td>
-											<td bgcolor="#636469" width="638" class="fs14n"><span class="white" style="float:left"><!--コンテンツタイトル--><!--{$item.page_name}--> <!--{$item.url}--></span><a href="#" id="switch<!--{$item.page_id}-->" style="float:right " onClick="fnDispChange('disp<!--{$item.page_id}-->', 'switch<!--{$item.page_id}-->', 'disp_flg<!--{$item.page_id}-->');"><!--{if $disp_flg[$item.page_id] == ""}--><FONT Color="#33FFFF"> >> 非表示</FONT><!--{else}--><FONT Color="#FFFF99"> << 表示</FONT><!--{/if}--></a></td>
+											<td bgcolor="#636469" width="638" class="fs14n"><span class="white" style="float:left"><!--コンテンツタイトル--><!--{$item.page_name}--> <!--{$item.url}--></span><a href="#" id="switch<!--{$item.page_id}-->" style="float:right " onClick="fnDispChange('disp<!--{$item.page_id}-->', 'switch<!--{$item.page_id}-->', 'disp_flg<!--{$item.page_id}-->');"><!--{if $disp_flg[$item.page_id] == ""}--><FONT Color="#FFFF99"> >> 非表示</FONT><!--{else}--><FONT Color="#FFFF99"> << 表示</FONT><!--{/if}--></a></td>
 											<td background="<!--{$smarty.const.URL_DIR}-->img/contents/contents_title_right_bg.gif"><img src="<!--{$smarty.const.URL_DIR}-->img/common/_.gif" width="18" height="1" alt=""></td>
 										</tr>
 										<tr>
