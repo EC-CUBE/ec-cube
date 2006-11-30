@@ -174,8 +174,8 @@ function moving(news_id,rank, max_rank) {
 													<!--{assign var="id" value="select_file`$smarty.section.cnt.index`"}-->
 													<tr class="fs12n" id="<!--{$id}-->" onclick="fnSetFormVal('form1', 'select_file', '<!--{$arrFileList[cnt].file_path|escape}-->');fnSelectFile('<!--{$id}-->', '#3333FF');" style="" onMouseOver="fnChangeBgColor('<!--{$id}-->', '#3333FF');" onMouseOut="fnChangeBgColor('<!--{$id}-->', '');">
 														<td><!--{$arrFileList[cnt].file_name|escape}--></td>
-														<td><!--{$arrFileList[cnt].file_size|escape}--></td>
-														<td><!--{$arrFileList[cnt].file_time|escape}--></td>
+														<td align="right"><!--{$arrFileList[cnt].file_size|escape}--></td>
+														<td align="right"><!--{$arrFileList[cnt].file_time|escape}--></td>
 													</tr>
 													<!--{/section}-->
 												</table>

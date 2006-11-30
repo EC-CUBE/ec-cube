@@ -19,4 +19,7 @@
 	width: 300px;
 	overflow: auto;
 	background-color : #FFFFFF;
+	border-style: solid;
+	border-color: #000000;
+	border-width: 1px
 }
