@@ -225,7 +225,7 @@ function lfnDispChange(){
 	disp_id = 'disp_url[]';
 	disp_flg = 'disp_cat';
 	
-	disp_state = document.getElementById(disp_id).style.display;
+//	disp_state = document.getElementById(disp_id).style.display;
 	
 //	document.form1[disp_flg].value="none";
 
