@@ -1114,9 +1114,7 @@ function sfRound($value, $digit = 2){
 	// 整数且つ0出なければ桁数指定を行う
 	if(sfIsInt($digit) and $digit > 1){
 		$adjust = 10 * ($digit - 1);
-		$value = $value * $adjust;
-		$ret = round($value);
-		$ret = ($ret/$adjust);
+		$ret = (round($value * $adjust)/$adjust);
 		sfRound($ret, $digit - 1);
 	}else{
 		$ret = round($value);
