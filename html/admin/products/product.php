@@ -74,9 +74,17 @@ case 'copy' :
 	if(sfIsInt($_POST['product_id'])){
 		// DBから商品情報の読込
 		$arrForm = lfGetProduct($_POST['product_id']);
+		// DBデータから画像ファイル名の読込
+		$objUpFile->setDBFileList($arrForm);
+		
 		if($_POST['mode'] == "copy"){
 			$arrForm["copy_product_id"] = $arrForm["product_id"];
 			$arrForm["product_id"] = "";
+			
+			// 画像ファイルのコピー
+			
+			sfprintr($objUpFile);
+			lfMakeScaleImage($_POST['image_key'], "main_list_image");
 		}
 		$objPage->arrForm = $arrForm;
 		
@@ -85,8 +93,7 @@ case 'copy' :
 		$objPage->arrForm = array_merge($objPage->arrForm, $arrRet);
 		// DBからおすすめ商品の読み込み
 		$objPage->arrRecommend = lfPreGetRecommendProducts($_POST['product_id']);
-		// DBデータから画像ファイル名の読込
-		$objUpFile->setDBFileList($objPage->arrForm);
+		
 		// 規格登録ありなし判定
 		$objPage->tpl_nonclass = lfCheckNonClass($_POST['product_id']);
 		lfProductPage();		// 商品登録ページ
