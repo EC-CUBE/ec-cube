@@ -5,6 +5,11 @@
  * http://www.lockon.co.jp/
  */
 *}-->
+
+
+<!--{foreach key=key item=item from=$arrErr}-->
+	<!--{$key}-->：<!--{$item}-->
+<!--{/foreach}-->
 <!--★★メインコンテンツ★★-->
 <table width="878" border="0" cellspacing="0" cellpadding="0" summary=" ">
 	<tr valign="top">
@@ -16,7 +21,7 @@
 		<td class="mainbg">
 			<table width="737" border="0" cellspacing="0" cellpadding="0" summary=" ">
 				<!--メインエリア-->
-				<tr>
+				<tr valign="top">
 					<td align="center">
 						<table width="706" border="0" cellspacing="0" cellpadding="0" summary=" ">
 						
@@ -137,5 +142,3 @@
 	</tr>
 </table>
 <!--★★メインコンテンツ★★-->
-
-
