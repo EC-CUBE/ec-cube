@@ -349,7 +349,8 @@ function lfRegistProduct($arrList) {
 		// INSERT¤Î¼Â¹Ô
 		$sqlval['create_date'] = "Now()";
 		$objQuery->insert("dtb_products", $sqlval);
-					$objQuery->getlastquery();
+				
+			$objQuery->getlastquery();
 
 		if (DB_TYPE == "mysql") {
 			$product_id = $objQuery->nextval("dtb_products", "product_id");
@@ -389,6 +390,8 @@ function lfRegistProduct($arrList) {
 	
 	// µ¬³ÊÅĞÏ¿
 	sfInsertProductClass($objQuery, $arrList, $product_id);
+	
+		$objQuery->getlastquery();
 	
 	// ¤ª¤¹¤¹¤á¾¦ÉÊÅĞÏ¿
 	lfInsertRecommendProducts($objQuery, $arrList, $product_id);
