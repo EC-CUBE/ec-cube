@@ -124,7 +124,7 @@ function moving(news_id,rank, max_rank) {
 							<tr>
 								<td colspan="3"><img src="<!--{$smarty.const.URL_DIR}-->img/contents/main_top.jpg" width="706" height="14" alt=""></td>
 							</tr>
-							<tr valign="top">
+							<tr>
 								<td background="<!--{$smarty.const.URL_DIR}-->img/contents/main_left.jpg"><img src="<!--{$smarty.const.URL_DIR}-->img/common/_.gif" width="14" height="1" alt=""></td>
 								<td bgcolor="#cccccc">
 								<table width="678" border="0" cellspacing="0" cellpadding="0" summary=" ">
@@ -177,7 +177,7 @@ function moving(news_id,rank, max_rank) {
 													</tr>
 													<!--{section name=cnt loop=$arrFileList}-->
 													<!--{assign var="id" value="select_file`$smarty.section.cnt.index`"}-->
-													<tr class="fs12n" id="<!--{$id}-->" onclick="fnSetFormVal('form1', 'select_file', '<!--{$arrFileList[cnt].file_path|escape}-->');fnSelectFile('<!--{$id}-->', '#3333FF');" style="" onMouseOver="fnChangeBgColor('<!--{$id}-->', '#3333FF');" onMouseOut="fnChangeBgColor('<!--{$id}-->', '');">
+													<tr class="fs12n" id="<!--{$id}-->" onclick="fnSetFormVal('form1', 'select_file', '<!--{$arrFileList[cnt].file_path|escape}-->');fnSelectFile('<!--{$id}-->', '#808080');" style="" onMouseOver="fnChangeBgColor('<!--{$id}-->', '#808080');" onMouseOut="fnChangeBgColor('<!--{$id}-->', '');">
 														<td>
 															<!--{if $arrFileList[cnt].is_dir}-->
 															<img src="<!--{$smarty.const.URL_DIR}-->img/admin/contents/folder_close.gif" alt="フォルダ">
