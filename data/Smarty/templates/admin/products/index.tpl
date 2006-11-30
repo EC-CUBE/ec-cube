@@ -243,7 +243,7 @@ function lfnDispChange(){
 			disp_id = 'disp_cat'+i;
 			document.getElementById(disp_id).style.display="";
 			
-			document.getElementById(inner_id).innerHTML = '	カテゴリ <a href="#" onClick="lfnDispChange();">  >> URL表示</a>';
+			document.getElementById(inner_id).innerHTML = '	カテゴリ <a href="#" onClick="lfnDispChange();"> <FONT Color="yellow"> >> URL表示</FONT></a>';
 		}
 	}
 
