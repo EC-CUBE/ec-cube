@@ -213,7 +213,7 @@ class gdthumb {
     
 			// png·Á¼°    
 			case "3": 
-					sfprintr(imagecolorstotal(imageCreateFromGIF($path)));
+					sfprintr(imagecolorstotal(imageCreateFromPNG($path)));
 
 				$src_im = imageCreateFromPNG($path);
 				
