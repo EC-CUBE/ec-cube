@@ -5,7 +5,7 @@
  */
 #tree{
 	height: 400px;
-	width: 338px;
+	width: 328px;
 	overflow: auto;
 	margin: 0px;
 	background-color : #FFFFFF;
@@ -16,7 +16,7 @@
 
 #file_view {
 	height: 380px;
-	width: 300px;
+	width: 310px;
 	overflow: auto;
 	background-color : #FFFFFF;
 	border-style: solid;
