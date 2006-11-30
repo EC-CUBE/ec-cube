@@ -155,9 +155,9 @@ function fnTreeMenu(tName, imgName, path) {
 function fnDbClick(arrTree, path, is_dir) {
 	if(is_dir == 1) {
 		for(cnt = 0; cnt < arrTree.length; cnt++) {
-			if(path == arrTree[cnt][2]) fnTreeMenu('tree'+cnt, 'rank_img'+cnt ,path);
+			if(path == arrTree[cnt][2]) fnTreeMenu('tree'+cnt, 'rank_img'+cnt, path);
 		}
-		fnFolderOpen('path');
+		fnFolderOpen(path);
 	} else {
 		win02('./file_view.php?file="'+ path +'"', 'user_data', '600', '400');
 	}
