@@ -159,7 +159,7 @@ function lfErrorCheck() {
  */
 function lfCreateErrorCheck() {
 	$objErr = new SC_CheckError($_POST);
-	$objErr->doFunc(array("作成ファイル", "create_file"), array("EXIST_CHECK", "FILE_NAME_CHECK_BY_NOUPLOAD"));
+	$objErr->doFunc(array("作成ファイル名", "create_file"), array("EXIST_CHECK", "FILE_NAME_CHECK_BY_NOUPLOAD"));
 	
 	return $objErr->arrErr;
 }
