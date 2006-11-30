@@ -156,7 +156,7 @@ foreach ($arrColList['description'] as $key => $val) {
 	$arrColList['description'][$key] = $arrColList['column_name'][$key] . "¡§" . $arrColList['description'][$key];
 }
 
-$arrColList["description"] = array_merge($arrColList["column_name"], sfGetColumnList($selectTable));
+$arrColList["column_name"] = array_merge($arrColList["column_name"], sfGetColumnList($selectTable));
 
 sfprintr($arrColList);
 
