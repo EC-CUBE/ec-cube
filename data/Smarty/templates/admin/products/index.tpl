@@ -292,6 +292,7 @@
 							<!--{* カテゴリ名 *}-->
 							<!--{assign var=key value=$arrProducts[cnt].category_id}-->
 							<!--{$arrCatList[$key]|sfTrim}-->
+							<!--{$smarty.const.SITE_URL|sfTrimURL}-->/products/detail.php?product_id=<!--{$arrProducts[cnt].product_id}-->
 							</td>
 							<!--{* 表示 *}-->
 							<!--{assign var=key value=$arrProducts[cnt].status}-->
