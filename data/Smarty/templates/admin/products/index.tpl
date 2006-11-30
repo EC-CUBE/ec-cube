@@ -222,8 +222,8 @@
 // URLの表示非表示切り替え
 function lfnDispChange(){
 	inner_id = 'switch';
-	disp_id = 'disp_url';
-	disp_state = document.getElementById('disp_url').style.display;
+	disp_id = 'url_flg';
+	disp_state = document.getElementById(disp_id).style.display;
 		alert(disp_state);
 	
 	disp_flg = 'disp_cat';
