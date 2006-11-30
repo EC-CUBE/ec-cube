@@ -154,12 +154,12 @@ function moving(news_id,rank, max_rank) {
 								
 								<table width="678" border="0" cellspacing="1" cellpadding="8" summary=" ">
 									<thead>
-									<tr class="fs12n" bgcolor="#ffffff">								
+									<tr class="fs12n">								
 										<td>
 											<div id="tree"></div>
 										</td>
 										<td>
-											<div id="file_view">
+											<div id="file_view" bgcolor="#ffffff">
 												<table>
 													<tr class="fs12n" bgcolor="#f2f1ec">
 														<td>ファイル名</td>

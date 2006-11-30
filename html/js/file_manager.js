@@ -17,7 +17,7 @@ var old_select_id = '';				// 前回選択していたファイル
 // ツリー表示
 function fnTreeView(view_id, arrTree, openFolder) {
 
-	tree += '<"table">';
+	tree += '<table>';
 	tree += '<tr class="fs12n" bgcolor="#f2f1ec">';
 	tree += '<td>ディレクトリ</td>';
 	tree += '</tr><tr><td>';
