@@ -204,7 +204,7 @@ function moving(news_id,rank, max_rank) {
 								<table width="678" border="0" cellspacing="1" cellpadding="8" summary=" ">
 									<tr class="fs12n">
 										<td bgcolor="#f2f1ec">ファイルのアップロード</td>
-										<td bgcolor="#ffffff"><input type="file" name="upload_file" style="width:379px;" class="box60"><input type="button" onclick="setTreeStatus('tree_status');fnModeSubmit('upload','',''); return false;" value="アップロード"></td>
+										<td bgcolor="#ffffff"><input type="file" name="upload_file" size="379" class="box60"><input type="button" onclick="setTreeStatus('tree_status');fnModeSubmit('upload','',''); return false;" value="アップロード"></td>
 									</tr>
 									<tr class="fs12n">
 										<td bgcolor="#f2f1ec">フォルダ作成</td>
