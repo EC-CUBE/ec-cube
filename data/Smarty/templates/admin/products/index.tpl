@@ -238,7 +238,7 @@ function lfnDispChange(){
 		document.getElementById(inner_id).innerHTML = ">>»Û…Ωº®"; 
 	}
 */
-		alert("aaa");
+//		alert("aaa");
 	
 }
 </script>
