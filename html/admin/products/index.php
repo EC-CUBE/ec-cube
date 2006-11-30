@@ -192,7 +192,7 @@ if ($_POST['mode'] == "search" || $_POST['mode'] == "csv"  || $_POST['mode'] == 
 					}
 					if ($tmp_where != ""){
 						$tmp_where.=")";
-						$where.= "$tmp_where";
+						$where.= " $tmp_where";
 					}
 					break;
 				default:
