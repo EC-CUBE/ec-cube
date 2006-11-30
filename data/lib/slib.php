@@ -1110,7 +1110,7 @@ function sfPreTax($price, $tax, $tax_rule, $digit = 1) {
 // 桁数を指定して四捨五入
 function sfRound($value, $pow = 0){
 	$adjust = pow(10 ,$pow);
-	
+
 	// 整数且つ0出なければ桁数指定を行う
 	if(sfIsInt($adjust) and $pow > 0){
 		$ret = (floor($value * $adjust)/$adjust);
@@ -1126,25 +1126,35 @@ function sfRound($value, $pow = 0){
 
 // 桁数を指定して切り捨て
 function sfFloor($value, $digit = 1){
-	
-	$digit = $digit-1;
+	$adjust = pow(10 ,$pow);
 	
 	// 整数且つ0出なければ桁数指定を行う
-	if(sfIsInt($digit) and $digit != 0) $value = $value * 10 * $digit;
-	$ret = floor($value);
-	$ret = floor($ret/$adjust);
+	if(sfIsInt($adjust) and $pow > 0){
+		$ret = (floor($value * $adjust)/$adjust);
+		$ret = sfFloor($ret, $pow - 1);
+		return $ret;
+	}else{
+		$ret = floor($value);
+		$ret = floor($ret/$adjust);
+	}
+	
 	return $ret;
 }
 
 // 桁数を指定して切り上げ
 function sfCeil($value, $digit = 1){
+	$adjust = pow(10 ,$pow);
 	
-	$digit = $digit-1;
-
 	// 整数且つ0出なければ桁数指定を行う
-	if(sfIsInt($digit) and $digit != 0) $value = $value * 10 * $digit;
-	$ret = ceil($value);
-	$ret = floor($ret/$adjust);
+	if(sfIsInt($adjust) and $pow > 0){
+		$ret = (floor($value * $adjust)/$adjust);
+		$ret = sfCeil($ret, $pow - 1);
+		return $ret;
+	}else{
+		$ret = ceil($value);
+		$ret = floor($ret/$adjust);
+	}
+
 	return $ret / 10 * $digit;
 }
 
