@@ -27,7 +27,7 @@
 #now_dir {
 	height: 20px;
 	width: 300px;
-	/*padding: 5px;*/
+	padding-left: 2px;
 	overflow: hidden;
 	background-color : #FFFFFF;
 	border-style: solid;
