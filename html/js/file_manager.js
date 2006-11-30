@@ -154,7 +154,7 @@ function fnTreeMenu(tName, imgName, path) {
 
 // ファイルリストダブルクリック処理
 function fnDbClick(arrTree, path, is_dir) {
-	if(is_dir) {
+	if(is_dir == 1) {
 		for(cnt = 0; cnt < arrTree.length; cnt++) {
 			if(path == arrTree[cnt][2]) fnTreeMenu('tree'+cnt, 'rank_img'+cnt ,path);
 		}
