@@ -165,7 +165,7 @@ function fnDbClick(arrTree, path, is_dir, now_dir, url_dir) {
 		}
 		fnFolderOpen(path);
 	} else {
-		win02('./file_view.php?file="'+ path +'"', 'user_data', '600', '400');
+		win02('./file_view.php?file="'+ url_dir +'"', 'user_data', '600', '400');
 	}
 }
 
