@@ -204,7 +204,7 @@ function fnTargetSelf(){
 												</tr>
 												<tr class="fs12n">
 													<td bgcolor="#ffffff" align="center">
-														<select name="arrTableList[]" size="20" style="width:325px; height:300px;" onChange="mode.value=''; selectTable.value=this.value; submit();" onDblClick="sql.value = '1111'; alert(this.value);">
+														<select name="arrTableList[]" size="20" style="width:325px; height:300px;" onChange="mode.value=''; selectTable.value=this.value; submit();" onDblClick="csv_sql.value = csv_sql.value +' , ' + this.value;">
 														<!--{html_options options=$arrTableList selected=$selectTable}-->
 														</select>
 													</td>
@@ -218,7 +218,7 @@ function fnTargetSelf(){
 													</tr>
 													<tr class="fs12n">
 														<td bgcolor="#ffffff" align="center">
-															<select name="arrColList[]" size="20" style="width:325px; height:300px;" onDblClick="sql.value = sql.value +' , ' + this.value;">
+															<select name="arrColList[]" size="20" style="width:325px; height:300px;" onDblClick="csv_sql.value = csv_sql.value +' , ' + this.value;">
 															<!--{html_options options=$arrColList}-->
 															</select>
 														</td>
