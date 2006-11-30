@@ -82,11 +82,9 @@ case 'copy' :
 			$arrForm["product_id"] = "";
 			// 画像ファイルのコピー
 			$arrKey = $objUpFile->keyname;
-			$arrKeyID = array_flip($arrKey);
 			$arrSaveFile = $objUpFile->save_file;
 			
 			foreach($arrSaveFile as $key => $val){
-				sfprintr($arrKey[$key]);
 				lfMakeScaleImage($arrKey[$key], $arrKey[$key], true); 
 			}
 		}
@@ -551,9 +549,17 @@ function lfSetScaleImage(){
 function lfMakeScaleImage($from_key, $to_key, $forced = false){
 	global $objUpFile;
 	$arrImageKey = array_flip($objUpFile->keyname);
+	
+	if($objUpFile->temp_file[$arrImageKey[$from_key]]){
+		$dir = $objUpFile->temp_dir;
+	}elseif($objUpFile->save_file[$arrImageKey[$from_key]]){
+		$dir = $objUpFile->save_dir;
+	}else{
+		return "";
+	}
 
 	// 元画像サイズを取得
-	$from_path = $objUpFile->temp_dir . $objUpFile->temp_file[$arrImageKey[$from_key]];
+	$from_path = $dir . $objUpFile->temp_file[$arrImageKey[$from_key]];
 	list($from_w, $from_h) = getimagesize($from_path);
 	
 	// 生成先の画像サイズを取得
