@@ -231,9 +231,9 @@ function lfnDispChange(){
 
 	cnt = form1.item_cnt.value;
 	
-	for (i = 0; i <= cnt; i++) {
-//		document.getElementById(disp_id+i).style.display="";
-alert('disp_id'+i);
+	for (i = 1; i <= cnt; i++) {
+		disp_id = 'disp_id'+i;
+		document.getElementById(disp_id+i).style.display="";
 	}
 
 
