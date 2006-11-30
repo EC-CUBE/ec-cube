@@ -214,7 +214,7 @@ class gdthumb {
 			// png形式    
 			case "3": 
 
-				$src_im = imagecreatefrompng($path);
+				$src_im = imageCreateFromPNG($path);
 				
 				$colortransparent = imagecolortransparent($src_im);
 				if ($colortransparent > -1) {
@@ -229,7 +229,7 @@ class gdthumb {
 					
 					sfprintr(imagecolorstotal ($src_im));
 					
-					imagetruecolortopalette($dst_im, true, 256);
+					imagetruecolortopalette($dst_im, true, imagecolorstotal($src_im));
 				}
 				
 				// 画像出力
