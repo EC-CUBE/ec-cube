@@ -232,7 +232,8 @@ function lfnDispChange(){
 	cnt = form1.item_cnt.value;
 	
 	for (i = 0; i <= cnt; i++) {
-		document.getElementById(disp_id+i).style.display="";
+//		document.getElementById(disp_id+i).style.display="";
+alert('disp_id');
 	}
 
 
