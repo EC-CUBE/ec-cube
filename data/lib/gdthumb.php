@@ -227,7 +227,7 @@ class gdthumb {
 					$dst_im = $imagecreate($re_size[0], $re_size[1]);
 					imagecopyresized($dst_im,$src_im, 0, 0, 0, 0, $re_size[0], $re_size[1], $size[0], $size[1]);
 					
-					sfprintr(imagecolorstotal($src_im));
+					sfprintr(imagecolorsforindex($src_im));
 					
 					imagetruecolortopalette($dst_im, true, imagecolorstotal($src_im));
 				}
