@@ -113,7 +113,6 @@ function moving(news_id,rank, max_rank) {
 			<!--▲SUB NAVI-->
 		</td>
 		<td class="mainbg">
-			<!--▼登録テーブルここから-->
 			<table width="737" border="0" cellspacing="0" cellpadding="0" summary=" ">
 				<!--メインエリア-->
 				<tr>
@@ -235,7 +234,6 @@ function moving(news_id,rank, max_rank) {
 				</tr>
 				<!--メインエリア-->
 			</table>
-			<!--▲登録テーブルここまで-->
 		</td>
 	</tr>
 </table>
