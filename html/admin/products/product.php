@@ -85,8 +85,9 @@ case 'copy' :
 			$arrKey = $objUpFile->keyname;
 			$arrKeyID = array_flip($arrKey);
 			
-			sfprintr($objUpFile);
-			lfMakeScaleImage($_POST['image_key'], "main_list_image");
+			foreach($objUpFile->save_files as $key => $val){
+				lfMakeScaleImage($arrKeyID[$val], $arrKeyID[$val], true); 
+			}
 		}
 		$objPage->arrForm = $arrForm;
 		
@@ -546,7 +547,7 @@ function lfSetScaleImage(){
 }
 
 // ½Ì¾®²èÁüÀ¸À®
-function lfMakeScaleImage($from_key, $to_key){
+function lfMakeScaleImage($from_key, $to_key, $forced = false){
 	global $objUpFile;
 	$arrImageKey = array_flip($objUpFile->keyname);
 
@@ -558,7 +559,7 @@ function lfMakeScaleImage($from_key, $to_key){
 	$to_w = $objUpFile->width[$arrImageKey[$to_key]];
 	$to_h = $objUpFile->height[$arrImageKey[$to_key]];
 	
-	if($objUpFile->temp_file[$arrImageKey[$to_key]] == "" and $objUpFile->save_file[$arrImageKey[$to_key]] == ""){
+	if(($objUpFile->temp_file[$arrImageKey[$to_key]] == "" and $objUpFile->save_file[$arrImageKey[$to_key]] == "") or $forced){
 		$path = $objUpFile->saveResizeImage($from_key, $to_w, $to_h);
 		$objUpFile->temp_file[$arrImageKey[$to_key]] = $path;
 	}
