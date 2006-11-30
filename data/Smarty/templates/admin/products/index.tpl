@@ -233,7 +233,7 @@ function lfnDispChange(){
 			disp_id = 'disp_cat'+i;
 			document.getElementById(disp_id).style.display="none";
 			
-			document.getElementById(inner_id).innerHTML = '	URL <a href="#" onClick="lfnDispChange();"> <FONT Color="yellow" Size=3> >> カテゴリ表示</FONT></a>';
+			document.getElementById(inner_id).innerHTML = '	URL <a href="#" onClick="lfnDispChange();"> <FONT Color="yellow"> >> カテゴリ表示</FONT></a>';
 		}
 	}else{
 		for (i = 1; i <= cnt; i++) {
