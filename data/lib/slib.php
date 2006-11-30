@@ -1117,14 +1117,14 @@ function sfRound($value, $digit = 2){
 		$value = $value * $adjust;
 		$ret = round($value);
 		sfRound($ret, $digit - 1);
-		return"";
 	}else{
 		$ret = round($value);
+		$ret = floor($ret/$adjust);
 	}
 	
 	sfprintr($value);
 	
-	$ret = floor($ret/$adjust);
+	
 	
 	return $ret;
 }
