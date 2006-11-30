@@ -347,6 +347,7 @@ function lfRegistProduct($arrList) {
 		}
 		
 		// コピー商品の場合には規格もコピーする
+		sfprintr($_POST);
 		if($_POST["copy_product_id"] != "" and sfIsInt($_POST["copy_product_id"])){
 			// dtb_products_class のカラムを取得
 			$arrColList = sfGetColumnList("dtb_products_class", $objQuery);
