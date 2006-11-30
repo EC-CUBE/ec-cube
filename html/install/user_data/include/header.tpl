@@ -41,7 +41,7 @@
 		</table>
 		
 		<table width="778" border="0" cellspacing="0" cellpadding="0" summary=" ">
-			<tr><td bgcolor="#cccccc"><img src="<!--{$smarty.const.URL_DIR}-->img/common/_.gif" width="1" height="10" alt=""></td></tr>
+			<tr><td bgcolor="#ffffff"><img src="<!--{$smarty.const.URL_DIR}-->img/common/_.gif" width="1" height="10" alt=""></td></tr>
 		</table>
 
 		<table width="778" border="0" cellspacing="0" cellpadding="0" summary=" ">
