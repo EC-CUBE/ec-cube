@@ -557,6 +557,8 @@ function lfMakeScaleImage($from_key, $to_key, $forced = false){
 	}else{
 		return "";
 	}
+	
+	sfprintr($dir);
 
 	// 元画像サイズを取得
 	$from_path = $dir . $objUpFile->temp_file[$arrImageKey[$from_key]];
