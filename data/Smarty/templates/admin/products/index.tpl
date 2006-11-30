@@ -290,9 +290,15 @@
 							</td>
 							<td>
 							<!--{* カテゴリ名 *}-->
+							<div id="disp_cat" style="display:<!--{$cat_flg}-->">
 							<!--{assign var=key value=$arrProducts[cnt].category_id}-->
 							<!--{$arrCatList[$key]|sfTrim}-->
+							</div>
+
+							<!--{* URL *}-->
+							<div id="disp_url" style="display:<!--{$url_flg}-->">
 							<!--{$smarty.const.SITE_URL|sfTrimURL}-->/products/detail.php?product_id=<!--{$arrProducts[cnt].product_id}-->
+							</div>
 							</td>
 							<!--{* 表示 *}-->
 							<!--{assign var=key value=$arrProducts[cnt].status}-->
