@@ -158,7 +158,8 @@ function moving(news_id,rank, max_rank) {
 										<td>ディレクトリ</td>
 										<td>
 											<div id="now_dir">
-											<img src="<!--{$smarty.const.URL_DIR}-->img/admin/contents/folder_open.gif" alt="フォルダ"><!--{$tpl_now_file}-->
+											<img src="<!--{$smarty.const.URL_DIR}-->img/admin/contents/folder_open.gif" alt="フォルダ">
+											&nbsp;<!--{$tpl_now_file}-->
 											</div>
 										</td>
 									</tr>
