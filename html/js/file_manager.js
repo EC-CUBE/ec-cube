@@ -76,7 +76,7 @@ function fnTreeView(view_id, arrTree, openFolder) {
 			folder_img = IMG_FOLDER_CLOSE;
 		}
 
-		// 階層画像がノーマルの時のみオンクリック処理をつける
+		// 階層画像に子供がいたらオンクリック処理をつける
 		if(rank_img != IMG_NORMAL) {
 			tree += '<a href="#" onclick="fnTreeMenu(\'tree'+ i +'\',\'rank_img'+ i +'\',\''+ arrTree[i][2] +'\')"><img src="'+ rank_img +'" border="0" name="rank_img'+ i +'" id="rank_img'+ i +'">';
 		} else {
@@ -152,7 +152,7 @@ function fnTreeMenu(tName, imgName, path) {
 }
 
 // ファイルリストダブルクリック処理
-function fnDbClick(arrTree, path, is_dir, now_dir, url_dir) {
+function fnDbClick(arrTree, path, is_dir, now_dir) {
 	if(is_dir) {
 		for(cnt = 0; cnt < arrTree.length; cnt++) {
 			if(now_dir == arrTree[cnt][2]) {
@@ -165,7 +165,6 @@ function fnDbClick(arrTree, path, is_dir, now_dir, url_dir) {
 		}
 		fnFolderOpen(path);
 	} else {
-		//win02('./file_view.php?file="'+ url_dir +'"', 'user_data', '600', '400');
 		// Download
 		fnModeSubmit('download','','');
 	}
