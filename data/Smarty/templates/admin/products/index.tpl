@@ -233,7 +233,7 @@ function lfnDispChange(){
 			disp_id = 'disp_cat'+i;
 			document.getElementById(disp_id).style.display="none";
 			
-			document.getElementById(inner_id).innerHTML = '	URL <a href="#" onClick="lfnDispChange();"> >> カテゴリ表示</a>';
+			document.getElementById(inner_id).innerHTML = '	URL <a href="#" onClick="lfnDispChange();">  >> カテゴリ表示</a>';
 		}
 	}else{
 		for (i = 1; i <= cnt; i++) {
@@ -243,7 +243,7 @@ function lfnDispChange(){
 			disp_id = 'disp_cat'+i;
 			document.getElementById(disp_id).style.display="";
 			
-			document.getElementById(inner_id).innerHTML = '	カテゴリ <a href="#" onClick="lfnDispChange();"> >> URL表示</a>';
+			document.getElementById(inner_id).innerHTML = '	カテゴリ <a href="#" onClick="lfnDispChange();">  >> URL表示</a>';
 		}
 	}
 
