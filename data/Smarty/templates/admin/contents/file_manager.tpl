@@ -154,15 +154,23 @@ function moving(news_id,rank, max_rank) {
 								
 								<table width="678" border="0" cellspacing="1" cellpadding="8" summary=" ">
 									<thead>
+									<tr class="fs12n" bgcolor="#f2f1ec">
+										<td>ディレクトリ</td>
+									</tr>
 									<tr class="fs12n" bgcolor="#ffffff">								
-										<td valign="top">
+										<td>
 										■ツリー
 										<div id="tree"></div>
 										</td>
-										<td valign="top">
+										<td>
 										■ファイル
 										<div id="file_view">
 											<table>
+												<tr class="fs12n" bgcolor="#f2f1ec">
+													<td>ファイル名</td>
+													<td>サイズ</td>
+													<td>更新日付</td>
+												</tr>
 												<!--{section name=cnt loop=$arrFileList}-->
 												<!--{assign var="id" value="select_file`$smarty.section.cnt.index`"}-->
 												<tr class="fs12n" id="<!--{$id}-->" onclick="fnSetFormVal('form1', 'select_file', '<!--{$arrFileList[cnt].file_path|escape}-->');fnSelectFile('<!--{$id}-->', '#3333FF');" style="" onMouseOver="fnChangeBgColor('<!--{$id}-->', '#3333FF');" onMouseOut="fnChangeBgColor('<!--{$id}-->', '');">
