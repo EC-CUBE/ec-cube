@@ -116,8 +116,6 @@
 									</tr>
 									<thead>
 								</table>
-								</form>
-								
 								<!--▲ファイル管理テーブルここまで-->
 								<table width="678" border="0" cellspacing="0" cellpadding="0" summary=" ">
 									<tr><td colspan="3"><img src="<!--{$smarty.const.URL_DIR}-->img/contents/main_bar.jpg" width="678" height="10" alt=""></td></tr>
@@ -138,4 +136,5 @@
 		</td>
 	</tr>
 </table>
+</form>
 <!--★★メインコンテンツ★★-->
