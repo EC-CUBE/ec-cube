@@ -119,10 +119,6 @@ default :
 // 現在のディレクトリ配下のファイル一覧を取得
 $objPage->arrFileList = sfGetFileList($now_dir);
 $objPage->tpl_now_dir = $now_dir;
-$objPage->tpl_url_dir = ereg_replace(USER_PATH, "", $_POST['select_file']);
-
-sfprintr($objPage->tpl_url_dir);
-
 $objPage->tpl_now_file = basename($now_dir);
 $objPage->arrErr = $arrErr;
 $objPage->arrParam = $_POST;

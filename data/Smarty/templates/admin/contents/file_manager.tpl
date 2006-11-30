@@ -73,7 +73,7 @@
 													</tr>
 													<!--{section name=cnt loop=$arrFileList}-->
 													<!--{assign var="id" value="select_file`$smarty.section.cnt.index`"}-->
-													<tr class="fs12n" id="<!--{$id}-->" onclick="fnSetFormVal('form1', 'select_file', '<!--{$arrFileList[cnt].file_path|escape}-->');fnSelectFile('<!--{$id}-->', '#808080');" onDblClick="fnDbClick(arrTree, '<!--{$arrFileList[cnt].file_path|escape}-->', <!--{if $arrFileList[cnt].is_dir|escape}-->true<!--{else}-->false<!--{/if}-->, '<!--{$tpl_now_dir|escape}-->', '<!--{$tpl_url_dir}-->')" style="" onMouseOver="fnChangeBgColor('<!--{$id}-->', '#808080');" onMouseOut="fnChangeBgColor('<!--{$id}-->', '');">
+													<tr class="fs12n" id="<!--{$id}-->" onclick="fnSetFormVal('form1', 'select_file', '<!--{$arrFileList[cnt].file_path|escape}-->');fnSelectFile('<!--{$id}-->', '#808080');" onDblClick="fnDbClick(arrTree, '<!--{$arrFileList[cnt].file_path|escape}-->', <!--{if $arrFileList[cnt].is_dir|escape}-->true<!--{else}-->false<!--{/if}-->, '<!--{$tpl_now_dir|escape}-->')" style="" onMouseOver="fnChangeBgColor('<!--{$id}-->', '#808080');" onMouseOut="fnChangeBgColor('<!--{$id}-->', '');">
 														<td>
 															<!--{if $arrFileList[cnt].is_dir}-->
 															<img src="<!--{$smarty.const.URL_DIR}-->img/admin/contents/folder_close.gif" alt="フォルダ">
