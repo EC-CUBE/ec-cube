@@ -86,7 +86,7 @@ case 'copy' :
 			$arrSaveFile = $objUpFile->save_file;
 			
 			foreach($arrSaveFile as $key => $val){
-				sfprintr($arrKeyID[$key]);
+				sfprintr($key);
 				lfMakeScaleImage($arrKeyID[$key], $arrKeyID[$key], true); 
 			}
 		}
