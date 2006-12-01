@@ -1,21 +1,23 @@
 <?php  
 // データベースからの列データの取得と MD5 パスワードを使用した例
+require_once("../../require.php");
 $include_dir = realpath(dirname( __FILE__));
 require_once($include_dir . "/pear/Auth_HTTP.php");
 
+define("DSN", "pgsql://test_db_user:password@test.lockon.co.jp/test_db");
+
 // データベース接続オプションの設定
 $AuthOptions = array(
-'dsn'=>"pgsql://test_db_user:password@test.lockon.co.jp/test_db",
+'dsn'=>DSN,
 'table'=>"dtb_member",                            // テーブル名 
 'usernamecol'=>"login_id",			// ユーザ名のコラム
 'passwordcol'=>"password",			// パスワードのコラム
 'cryptType'=>"none",				// データベース中でのパスワードの暗号化形式
-'cryptType'=>"sha1",				// データベース中でのパスワードの暗号化形式
+//'cryptType'=>"none",				// データベース中でのパスワードの暗号化形式
 'dbFields'=>"*",				// 他のコラムの取得を可能にする
 );
 
 $a = new Auth_HTTP("DB", $AuthOptions);
-
 
 $a->setRealm('yourrealm');			// 領域 (realm) 名
 $a->setCancelText('<h2>Error 401</h2>');        // 認証が失敗した際に表示されるメッセージ
