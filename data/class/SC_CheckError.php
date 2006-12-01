@@ -546,7 +546,7 @@ class SC_CheckError {
 		if(isset($this->arrErr[$value[1]])) {
 			return;
 		}
-		if( strlen($_FILES[$value[1]]['name']) > 0 && ! EregI("^[[:alnum:]_\.-]+$", $_FILES[$value[1]]['name']) ) { 
+		if( strlen($_FILES[$value[1]]['name']) > 0 && ! EregI("^[[:alnum:]_.-]+$", $_FILES[$value[1]]['name']) ) { 
 			$this->arrErr[$value[1]] = "※ " . $value[0] . "のファイル名に日本語やスペースは使用しないで下さい。<br />";	
 		}
 	}
