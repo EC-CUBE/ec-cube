@@ -21,7 +21,7 @@
 //  $Id$ 
 //
 
-require_once "Auth/Auth.php";
+require_once "Auth/Auth/Auth.php";
 
 define('AUTH_HTTP_NONCE_TIME_LEN', 16);
 define('AUTH_HTTP_NONCE_HASH_LEN', 32);
