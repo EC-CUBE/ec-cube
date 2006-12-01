@@ -24,7 +24,7 @@
 /**
 * Requires PEAR.
 */
-require_once 'PEAR.php';
+//require_once 'PEAR.php';
 
 /**
 * Encryption constants.
