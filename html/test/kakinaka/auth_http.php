@@ -16,7 +16,7 @@ $arrDbConn = array(
 
 $objAuthHttp = new Auth_HTTP("DB", $arrDbConn);		// オブジェクト生成
 
-$objAuthHttp->setRealm('User Realm');				// 領域 (realm) 名
+$objAuthHttp->setRealm('user realm');				// 領域 (realm) 名
 $objAuthHttp->setCancelText('接続エラー'); 		   	// 認証失敗時、表示されるメッセージ
 
 $objAuthHttp->start();								// 認証開始
