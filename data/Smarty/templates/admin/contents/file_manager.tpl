@@ -74,7 +74,7 @@
 													<!--{if !$tpl_is_top_dir}-->
 													<tr class="fs12n" id="parent_dir" onclick="fnSetFormVal('form1', 'select_file', '<!--{$tpl_parent_dir|escape}-->');fnSelectFile('parent_dir', '#808080');" onDblClick="fnDbClick(arrTree, '<!--{$tpl_parent_dir|escape}-->', true, '<!--{$tpl_now_dir|escape}-->')" style="" onMouseOver="fnChangeBgColor('parent_dir', '#808080');" onMouseOut="fnChangeBgColor('parent_dir', '');">
 														<td>
-															<img src="<!--{$smarty.const.URL_DIR}-->img/admin/contents/folder_close.gif" alt="フォルダ">
+															<img src="<!--{$smarty.const.URL_DIR}-->img/admin/contents/folder_close.gif" alt="フォルダ">上へ戻る
 														</td>
 														<td align="right"></td>
 														<td></td>
