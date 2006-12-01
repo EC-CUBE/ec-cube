@@ -5,13 +5,13 @@ $include_dir = realpath(dirname( __FILE__));
 require_once($include_dir . "/pear/Auth_HTTP.php");
 
 
-define("DEFAULT_DSN", "pgsql://kakinaka_db_user:password@kakinaka.ec-cube.net/kakinaka_db");
+define("DSN", "pgsql://kakinaka_db_user:password@kakinaka.ec-cube.net/kakinaka_db");
 
 
 // データベース接続オプションの設定
 $AuthOptions = array(
 //'dsn'=>"pgsql://test:test@localhost/testdb",
-'dsn'=>DEFAULT_DSN,
+'dsn'=>DSN,
 'table'=>"dtb_member",                            // テーブル名 
 'usernamecol'=>"login_id",			// ユーザ名のコラム
 'passwordcol'=>"password",			// パスワードのコラム
