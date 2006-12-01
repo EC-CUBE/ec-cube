@@ -7,7 +7,7 @@ require_once($include_dir . "/pear/Auth_HTTP.php");
 define("DSN", "pgsql://kakinaka_db_user:password@kakinaka.ec-cube.net/kakinaka_db");
 
 
-$params = Array($include_dir . "s.htpasswd","authType"=>"basic","cryptType"=>"MD5");
+$params = Array($include_dir . ".htpasswd","authType"=>"basic","cryptType"=>"MD5");
 
 $objAuth = new Auth_HTTP("File",$params);
 
