@@ -1,5 +1,5 @@
 <?php
 $test= '\\';
-if(EregI([\\] ,$test) {
+if(EregI("\\", $test)) {
 	echo "true!!";
 }
