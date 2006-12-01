@@ -28,7 +28,8 @@
 /**
  * Include PEAR File_Passwd package
  */
-require_once "File/Passwd.php";
+$include_dir = realpath(dirname( __FILE__));
+require_once $include_dir . "/../File/Passwd.php";
 /**
  * Include Auth_Container base class
  */
