@@ -91,7 +91,7 @@
 															<!--{/if}-->
 															<!--{$arrFileList[cnt].file_name|escape}-->
 														</td>
-														<td align="right"><!--{$arrFileList[cnt].file_size|escape}--></td>
+														<td align="right"><!--{$arrFileList[cnt].file_size|number_format}--></td>
 														<td><!--{$arrFileList[cnt].file_time|escape}--></td>
 													</tr>
 													<!--{/section}-->
