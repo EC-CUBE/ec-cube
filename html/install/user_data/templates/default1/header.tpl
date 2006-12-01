@@ -1,5 +1,5 @@
 <!--{*
- * Copyright (c) 2000-2006 LOCKON CO.,LTD. All Rights Reserved.
+ * Copyright(c) 2000-2006 LOCKON CO.,LTD. All Rights Reserved.
  *
  * http://www.lockon.co.jp/
  *}-->
@@ -14,7 +14,7 @@
 		</table>
 		<table width="762" border="0" cellspacing="0" cellpadding="0" summary=" ">
 			<tr>
-				<td><a href="<!--{$smarty.const.URL_DIR}-->index.php"><img src="<!--{$smarty.const.URL_DIR}-->img/header/logo.gif" width="302" height="81" alt="おふとんのインターネットショッピング ふとん屋サン" border="0"></a></td>
+				<td><a href="<!--{$smarty.const.SITE_URL}-->index.php"><img src="<!--{$smarty.const.URL_DIR}-->img/header/logo.gif" width="302" height="81" alt="おふとんのインターネットショッピング ふとん屋サン" border="0"></a></td>
 				<td>
 				<table width="460" border="0" cellspacing="0" cellpadding="0" summary=" ">
 					<tr><td height="9"></td></tr>
@@ -39,14 +39,19 @@
 				</td>
 			</tr>
 		</table>
-
 		<table width="778" border="0" cellspacing="0" cellpadding="0" summary=" ">
 			<tr><td bgcolor="#666666"><img src="<!--{$smarty.const.URL_DIR}-->img/common/_.gif" width="778" height="1" alt=""></td></tr>
 			<tr><td bgcolor="#cccccc"><img src="<!--{$smarty.const.URL_DIR}-->img/common/_.gif" width="1" height="4" alt=""></td></tr>
 			<tr><td bgcolor="#ff8a20"><img src="<!--{$smarty.const.URL_DIR}-->img/common/_.gif" width="778" height="1" alt=""></td></tr>
 		</table>
+		<table width="778" border="0" cellspacing="0" cellpadding="0" summary=" ">
+			<tr><td bgcolor="#ffffff"><img src="<!--{$smarty.const.URL_DIR}-->img/common/_.gif" width="778" height="1" alt=""></td></tr>
+			<tr><td bgcolor="#ffffff"><img src="<!--{$smarty.const.URL_DIR}-->img/common/_.gif" width="1" height="4" alt=""></td></tr>
+			<tr><td bgcolor="#ffffff"><img src="<!--{$smarty.const.URL_DIR}-->img/common/_.gif" width="778" height="1" alt=""></td></tr>
+		</table>
 		</td>
 		<td bgcolor="#cccccc"><img src="<!--{$smarty.const.URL_DIR}-->img/common/_.gif" width="1" height="10" alt=""></td>
 	</tr>
 </table>
+
 <!--▲HEADER-->
