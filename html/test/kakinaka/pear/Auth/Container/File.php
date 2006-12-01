@@ -37,7 +37,7 @@ require_once $include_dir . "/../Container.php";
 /**
  * Include PEAR package for error handling
  */
-require_once $include_dir . "/../../PEAR.php";
+//require_once $include_dir . "/../../PEAR.php";
 
 /**
  * Storage driver for fetching login data from an encrypted password file.

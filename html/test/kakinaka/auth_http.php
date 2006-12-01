@@ -11,6 +11,8 @@ $params = Array(".htpasswd","authType"=>"basic","cryptType"=>"MD5");
 
 $objAuth = new Auth_HTTP("File",$params);
 
+sfprintr($objAuth);
+
 // realmÎÎ°èÌ¾
 $objAuth->setRealm('Please Enter Your Password');
 
