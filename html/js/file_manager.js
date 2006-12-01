@@ -170,7 +170,6 @@ function fnDbClick(arrTree, path, is_dir, now_dir, is_parent) {
 				if(!open_flag) fnTreeMenu('tree'+cnt, 'rank_img'+cnt, arrTree[cnt][2]);
 			}
 		}
-alert(path);
 		fnFolderOpen(path);
 	} else {
 		// Download
