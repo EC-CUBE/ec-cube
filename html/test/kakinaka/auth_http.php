@@ -14,7 +14,7 @@ $AuthOptions = array(
 'passwordcol'=>"password",			// パスワードのコラム
 //'cryptType'=>"none",				// データベース中でのパスワードの暗号化形式
 'cryptType'=>"none",				// データベース中でのパスワードの暗号化形式
-'dbFields'=>"*",				// 他のコラムの取得を可能にする
+'dbFields'=>"name",				// 他のコラムの取得を可能にする
 );
 
 $a = new Auth_HTTP("DB", $AuthOptions);
