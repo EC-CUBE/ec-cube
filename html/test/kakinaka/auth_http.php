@@ -32,6 +32,6 @@ if($a->getAuth())				// 認証すべきユーザかどうかの確認
 	echo $a->getAuthData('name');		// およびメールアドレス (email) を取得。
 };
 
-sfprintr($a);
+sfprintr($a->getAuthData('name'));
 
 ?>
