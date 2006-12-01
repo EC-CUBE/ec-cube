@@ -13,10 +13,16 @@ var tree = "";						// 生成HTML格納
 var count = 0;						// ループカウンタ
 var arrTreeStatus = new Array();	// ツリー状態保持
 var old_select_id = '';				// 前回選択していたファイル
+var selectFileHidden = "";			// 選択したファイルのhidden名
+var treeStatusHidden = "";			// ツリー状態保存用のhidden名
+var modeHidden = "";				// modeセットhidden名
 
 // ツリー表示
-function fnTreeView(view_id, arrTree, openFolder) {
-
+function fnTreeView(view_id, arrTree, openFolder, selectHidden, treeHidden, mode) {
+	selectFileHidden = selectHidden;
+	treeStatusHidden = treeHidden;
+	modeHidden = mode;
+	
 	for(i = 0; i < arrTree.length; i++) {
 		
 		id = arrTree[i][0];
@@ -174,11 +180,11 @@ function fnDbClick(arrTree, path, is_dir, now_dir) {
 function fnFolderOpen(path) {
 
 	// クリックしたフォルダ情報を保持
-	document.form1['tree_select_file'].value = path;
+	document.form1[selectFileHidden].value = path;
 	// treeの状態をセット
-	setTreeStatus('tree_status');
+	setTreeStatus(treeStatusHidden);
 	// submit
-	fnModeSubmit('move','','');
+	fnModeSubmit(modeHidden,'','');
 }
 
 

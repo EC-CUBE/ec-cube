@@ -127,8 +127,8 @@ $objPage->tpl_now_file = basename($now_dir);
 $objPage->arrErr = $arrErr;
 $objPage->arrParam = $_POST;
 
-// ツリーを表示する divタグid, ツリー配列変数名, 現在ディレクトリ
-$objPage->tpl_onload .= "fnTreeView('tree', arrTree, '$now_dir');$tpl_onload";
+// ツリーを表示する divタグid, ツリー配列変数名, 現在ディレクトリ, 選択ツリーhidden名, ツリー状態hidden名, mode hidden名
+$objPage->tpl_onload .= "fnTreeView('tree', arrTree, '$now_dir', 'tree_select_file', 'tree_status', 'move');$tpl_onload";
 // ツリー配列作成用 javascript
 $arrTree = sfGetFileTree($top_dir, $_POST['tree_status']);
 $objPage->tpl_javascript .= "arrTree = new Array();\n";
