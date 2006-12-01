@@ -1,5 +1,5 @@
 <?php
-$test= '\\';
+$test= 'aaa\\ ';
 if(EregI("[\\]", $test)) {
 	echo "true!!";
 }
