@@ -123,7 +123,8 @@ $is_top_dir = false;
 if($top_dir == $now_dir) $is_top_dir = true;
 
 // 現在の階層より一つ上の階層を取得
-$arrDir = split('/', $now_dir);
+$dir = ereg_replace("/$", "", $now_dir);
+$arrDir = split('/', $dir);
 array_pop($arrDir);
 foreach($arrDir as $val) {
 	$parent_dir .= "$val/";
