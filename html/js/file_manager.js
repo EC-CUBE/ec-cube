@@ -174,6 +174,7 @@ function fnDbClick(arrTree, path, is_dir, now_dir, is_parent, is_parent) {
 			alert('test');
 		}
 		fnFolderOpen(path);
+		
 	} else {
 		// Download
 		fnModeSubmit('download','','');
