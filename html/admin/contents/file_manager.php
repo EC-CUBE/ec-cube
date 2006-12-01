@@ -123,12 +123,7 @@ $is_top_dir = false;
 if($top_dir == $now_dir) $is_top_dir = true;
 
 // 現在の階層より一つ上の階層を取得
-$dir = ereg_replace("/$", "", $now_dir);
-$arrDir = split('/', $dir);
-array_pop($arrDir);
-foreach($arrDir as $val) {
-	$parent_dir .= "$val/";
-}
+$parent_dir = lfGetParentDir($now_dir);
 
 // 現在のディレクトリ配下のファイル一覧を取得
 $objPage->arrFileList = sfGetFileList($now_dir);
@@ -188,5 +183,21 @@ function lfCreateErrorCheck() {
 function lfInitFile() {
 	global $objUpFile;
 	$objUpFile->addFile("ファイル", 'upload_file', array(), FILE_SIZE, true, 0, 0, false);
+}
+
+/* 
+ * 関数名：lfGetParentDir()
+ * 引数1 ：ディレクトリ
+ * 説明　：親ディレクトリ取得
+ */
+function lfGetParentDir($dir) {
+	$dir = ereg_replace("/$", "", $dir);
+	$arrDir = split('/', $dir);
+	array_pop($arrDir);
+	foreach($arrDir as $val) {
+		$parent_dir .= "$val/";
+	}
+	
+	return $parent_dir;
 }
 ?>
