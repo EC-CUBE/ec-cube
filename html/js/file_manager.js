@@ -161,7 +161,7 @@ function fnTreeMenu(tName, imgName, path) {
 function fnDbClick(arrTree, path, is_dir, now_dir, is_parent, is_parent) {
 
 	if(is_dir) {
-		if(!is_parent) {
+		if(is_parent != true) {
 			for(cnt = 0; cnt < arrTree.length; cnt++) {
 				if(now_dir == arrTree[cnt][2]) {
 					open_flag = false;
