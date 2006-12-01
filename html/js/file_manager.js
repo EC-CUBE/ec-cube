@@ -82,7 +82,7 @@ function fnTreeView(view_id, arrTree, openFolder) {
 		} else {
 			tree += '<img src="'+ rank_img +'" border="0" name="rank_img'+ i +'" id="rank_img'+ i +'">';
 		}
-		tree += '<a href="#" onclick="fnFolderOpen(\''+ arrTree[i][2] +'\')"><img src="'+ folder_img +'" border="0" name="tree_img'+ i +'" id="tree_img'+ i +'">&nbsp;'+ file_name +'</a><br/>';
+		tree += '<a href="javascript:fnFolderOpen(\''+ arrTree[i][2] +'\')"><img src="'+ folder_img +'" border="0" name="tree_img'+ i +'" id="tree_img'+ i +'">&nbsp;'+ file_name +'</a><br/>';
 		tree += '<div id="tree'+ i +'" style="display:'+ display +'">';
 	
 	}
