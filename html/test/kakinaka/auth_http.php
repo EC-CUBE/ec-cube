@@ -1,45 +1,18 @@
 <?php  
 // データベースからの列データの取得と MD5 パスワードを使用した例
-require_once("../../require.php");
 $include_dir = realpath(dirname( __FILE__));
 require_once($include_dir . "/pear/Auth_HTTP.php");
 
-define("DSN", "pgsql://kakinaka_db_user:password@kakinaka.ec-cube.net/kakinaka_db");
-
-
-$params = Array($include_dir . "/.htpasswd","authType"=>"basic","cryptType"=>"MD5");
-
-$objAuth = new Auth_HTTP("File",$params);
-
-sfprintr($objAuth);
-
-// realm領域名
-$objAuth->setRealm('Please Enter Your Password');
-
-// 認証をキャンセルや認証エラーした際に表示されるメッセージ
-$objAuth->setCancelText('<h2>Authorization Required</h2>');
-
-// 認証プロセスの開始
-$objAuth->start();
-
-if($objAuth->getAuth()) {
-    echo $objAuth->username . "の認証に成功!";
-}
-
-
 // データベース接続オプションの設定
 $AuthOptions = array(
-//'dsn'=>"pgsql://test:test@localhost/testdb",
-'dsn'=>DSN,
+'dsn'=>"pgsql://test_db_user:password@test.lockon.co.jp/test_db",
 'table'=>"dtb_member",                            // テーブル名 
 'usernamecol'=>"login_id",			// ユーザ名のコラム
 'passwordcol'=>"password",			// パスワードのコラム
 'cryptType'=>"none",				// データベース中でのパスワードの暗号化形式
-//'cryptType'=>"none",				// データベース中でのパスワードの暗号化形式
+'cryptType'=>"sha1",				// データベース中でのパスワードの暗号化形式
 'dbFields'=>"*",				// 他のコラムの取得を可能にする
 );
-
-sfprintr($AuthOptions);
 
 $a = new Auth_HTTP("DB", $AuthOptions);
 
