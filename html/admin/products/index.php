@@ -269,11 +269,8 @@ if ($_POST['mode'] == "search" || $_POST['mode'] == "csv"  || $_POST['mode'] == 
 			
 			break;
 		}
-		
-				$objQuery->getlastquery();
 	}
 }
-
 	
 // カテゴリの読込
 $objPage->arrCatList = sfGetCategoryList();
