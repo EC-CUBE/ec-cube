@@ -120,6 +120,9 @@ default :
 }
 // トップディレクトリか調査
 $is_top_dir = false;
+sfprintr($top_dir);
+sfprintr($now_dir);
+
 if($top_dir == $now_dir) $is_top_dir = true;
 
 // 現在の階層より一つ上の階層を取得
