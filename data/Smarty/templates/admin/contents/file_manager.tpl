@@ -106,11 +106,11 @@
 								<table width="678" border="0" cellspacing="1" cellpadding="8" summary=" ">
 									<tr class="fs12n">
 										<td bgcolor="#f2f1ec">ファイルのアップロード</td>
-										<td bgcolor="#ffffff"><span class="red"><!--{$arrErr.upload_file}--></span><input type="file" name="upload_file" size="64" class="box54" <!--{if $arrErr.upload_file}-->style="background-color:<!--{$smarty.const.ERR_COLOR|escape}-->"<!--{/if}-->><input type="button" onclick="setTreeStatus('tree_status');fnModeSubmit('upload','',''); return false;" value="アップロード"></td>
+										<td bgcolor="#ffffff"><span class="red"><!--{$arrErr.upload_file}--></span><input type="file" name="upload_file" size="63" class="box54" <!--{if $arrErr.upload_file}-->style="background-color:<!--{$smarty.const.ERR_COLOR|escape}-->"<!--{/if}-->><input type="button" onclick="setTreeStatus('tree_status');fnModeSubmit('upload','',''); return false;" value="アップロード"></td>
 									</tr>
 									<tr class="fs12n">
 										<td bgcolor="#f2f1ec">フォルダ作成</td>
-										<td bgcolor="#ffffff"><span class="red"><!--{$arrErr.create_file}--></span><input type="text" name="create_file" value="" style="width:339px;<!--{if $arrErr.create_file}--> background-color:<!--{$smarty.const.ERR_COLOR|escape}--><!--{/if}-->"><input type="button" onclick="setTreeStatus('tree_status');fnModeSubmit('create','',''); return false;" value="作成"></td>
+										<td bgcolor="#ffffff"><span class="red"><!--{$arrErr.create_file}--></span><input type="text" name="create_file" value="" style="width:336px;<!--{if $arrErr.create_file}--> background-color:<!--{$smarty.const.ERR_COLOR|escape}--><!--{/if}-->"><input type="button" onclick="setTreeStatus('tree_status');fnModeSubmit('create','',''); return false;" value="作成"></td>
 									</tr>
 									<thead>
 								</table>
