@@ -17,7 +17,7 @@ $arrDbConn = array(
 	'db_fields'=>"*",					// 他のカラムの取得を可能にする
 );
 
-$objAuthHttp = new Auth_HTTP("DB", $AuthOptions);
+$objAuthHttp = new Auth_HTTP("DB", $arrDbConn);
 
 $objAuthHttp->setRealm('user realm');				// 領域 (realm) 名
 $objAuthHttp->setCancelText('接続エラー'); 	   	// 認証が失敗した際に表示されるメッセージ
