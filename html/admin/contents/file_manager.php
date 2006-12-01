@@ -52,7 +52,7 @@ case 'view':
 		if(is_dir($_POST['select_file'])) {
 			///$now_dir = $_POST['select_file'];
 			// ツリー遷移用のjavascriptを埋め込む
-			$arrErr['select_file'] = "※ ディレクトリを表示することは出来ません。";
+			$arrErr['select_file'] = "※ ディレクトリを表示することは出来ません。<br/>";
 			
 		} else {
 			// javascriptで別窓表示(テンプレート側に渡す)
@@ -69,7 +69,7 @@ case 'download':
 	if(!is_array($arrErr)) {
 		if(is_dir($_POST['select_file'])) {
 			// ディレクトリの場合はjavascriptエラー
-			$arrErr['select_file'] = "※ ディレクトリをダウンロードすることは出来ません。";
+			$arrErr['select_file'] = "※ ディレクトリをダウンロードすることは出来ません。<br/>";
 		} else {
 			// ファイルダウンロード
 			sfDownloadFile($_POST['select_file']);
@@ -94,7 +94,7 @@ case 'create':
 		// ファイル作成
 		if(!sfCreateFile($create_dir."/".$_POST['create_file'], 0755)) {
 			// 作成エラー
-			$arrErr['create_file'] = "※ ".$_POST['create_file']."の作成に失敗しました。";
+			$arrErr['create_file'] = "※ ".$_POST['create_file']."の作成に失敗しました。<br/>";
 		} else {
 			$tpl_onload .= "alert('フォルダを作成しました。');";
 		}
