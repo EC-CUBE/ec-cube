@@ -120,10 +120,10 @@ default :
 }
 // トップディレクトリか調査
 $is_top_dir = false;
-sfprintr($top_dir);
-sfprintr($now_dir);
-
-if($top_dir == $now_dir) $is_top_dir = true;
+// 末尾の/をとる
+$top_dir_check = ereg_replace("/$", "", $top_dir);
+$now_dir_check = ereg_replace("/$", "", $now_dir);
+if($top_dir_check == $now_dir_check) $is_top_dir = true;
 
 // 現在の階層より一つ上の階層を取得
 $parent_dir = lfGetParentDir($now_dir);

@@ -65,7 +65,7 @@
 										</td>
 										<td><span class="red"><!--{$arrErr.select_file}--></span>
 											<div id="file_view">
-												<table border="0" cellspacing="0" cellpadding="5" summary=" ">
+												<table border="0" cellspacing="0" cellpadding="2" summary=" ">
 													<tr class="fs12n" bgcolor="#f2f1ec">
 														<td>ファイル名</td>
 														<td align="right">サイズ</td>
