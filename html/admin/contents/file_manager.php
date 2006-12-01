@@ -118,13 +118,22 @@ case 'move':
 default :
 	break;
 }
+// トップディレクトリか調査
+$is_top_dir = false;
+if($top_dir == $now_dir) $is_top_dir = true;
 
+// 現在の階層より一つ上の階層を取得
+$arrDir = split('/', $now_dir);
+array_pop($arrDir);
+foreach($arrDir as $val) {
+	$parent_dir .= "$val/";
+}
 
 // 現在のディレクトリ配下のファイル一覧を取得
 $objPage->arrFileList = sfGetFileList($now_dir);
-$objPage->tpl_top_dir = $top_dir;
+$objPage->tpl_is_top_dir = $is_top_dir;
+$objPage->tpl_parent_dir = $parent_dir;
 $objPage->tpl_now_dir = $now_dir;
-sfprintr(dirname($nowdir));
 $objPage->tpl_now_file = basename($now_dir);
 $objPage->arrErr = $arrErr;
 $objPage->arrParam = $_POST;
