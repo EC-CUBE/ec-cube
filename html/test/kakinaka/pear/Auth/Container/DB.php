@@ -25,7 +25,8 @@
 /**
  * Include Auth_Container base class
  */
-require_once '../Container.php';
+$include_dir = realpath(dirname( __FILE__));
+require_once $include_dir . '/../Container.php';
 /**
  * Include PEAR DB
  */

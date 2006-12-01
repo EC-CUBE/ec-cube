@@ -15,8 +15,8 @@ $AuthOptions = array(
 'table'=>"dtb_member",                            // テーブル名 
 'usernamecol'=>"login_id",			// ユーザ名のコラム
 'passwordcol'=>"password",			// パスワードのコラム
-//'cryptType'=>"md5",				// データベース中でのパスワードの暗号化形式
-'cryptType'=>"none",				// データベース中でのパスワードの暗号化形式
+'cryptType'=>"md5",				// データベース中でのパスワードの暗号化形式
+//'cryptType'=>"none",				// データベース中でのパスワードの暗号化形式
 'dbFields'=>"*",				// 他のコラムの取得を可能にする
 );
 
