@@ -13,17 +13,18 @@ $arrDbConn = array(
 	'table'=>"dtb_member",              // テーブル名 
 	'usernamecol'=>"login_id",			// ユーザ名のカラム
 	'passwordcol'=>"password",			// パスワードのカラム
-	'cryptType'=>"none",				// データベース中でのパスワードの暗号化形式
-	'db_fields'=>"*",					// 他のカラムの取得を可能にする
+	'cryptType'=>"none",					// パスワードの暗号化形式(暗号化なしのときはnone)
+	'db_fields'=>"*",					// その他のカラムを取得する場合にはカラムを指定する
 );
 
-$objAuthHttp = new Auth_HTTP("DB", $arrDbConn);
+$objAuthHttp = new Auth_HTTP("DB", $arrDbConn);		// オブジェクト生成
 
 $objAuthHttp->setRealm('user realm');				// 領域 (realm) 名
-$objAuthHttp->setCancelText('接続エラー'); 	   	// 認証が失敗した際に表示されるメッセージ
-$objAuthHttp->start();					// 認証プロセスの開始
+$objAuthHttp->setCancelText('接続エラー'); 		   	// 認証が失敗した際に表示されるメッセージ
+$objAuthHttp->start();								// 認証プロセスの開始
 
-if($objAuthHttp->getAuth())				// 認証すべきユーザかどうかの確認 
+// 認証チェック(成功：TRUE　失敗：FALSE)
+if($objAuthHttp->getAuth())				
 {
 	echo "認証成功";
 	echo $objAuthHttp->getAuthData('name');		// およびメールアドレス (email) を取得。
