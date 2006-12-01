@@ -4,8 +4,8 @@ require_once("../../require.php");
 $include_dir = realpath(dirname( __FILE__));
 require_once($include_dir . "/pear/Auth_HTTP.php");
 
-define("DSN", "pgsql://kakinaka_db_user:password@kakinaka.ec-cube.net/kakinaka_db");
-//define("DSN", "mysql://eccube_db_user:password@210.18.212.165:3308/eccube_db");
+//define("DSN", "pgsql://kakinaka_db_user:password@kakinaka.ec-cube.net/kakinaka_db");
+define("DSN", "mysql://eccube_db_user:password@210.18.212.165:3308/eccube_db");
 
 // データベース接続オプションの設定
 $arrDbConn = array(
