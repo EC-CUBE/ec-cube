@@ -25,11 +25,13 @@ $a->start();					// 認証プロセスの開始
 
 if($a->getAuth())				// 認証すべきユーザかどうかの確認 
 {
-	echo "Hello" . $a->username . "welcome to my secret page <BR>";
+	echo "Hello " . $a->username . " welcome to my secret page <BR>";
 	echo "Your details on file are: <BR>";
 	echo $a->getAuthData('userid');		// データベースから他のデータを取得している。
 	echo $a->getAuthData('telephone');      // この例では、ユーザID (userid)、電話番号 (telephone)
 	echo $a->getAuthData('name');		// およびメールアドレス (email) を取得。
 };
+
+sfprintr($a);
 
 ?>
