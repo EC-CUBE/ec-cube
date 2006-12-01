@@ -19,7 +19,7 @@ $AuthOptions = array(
 
 $a = new Auth_HTTP("DB", $AuthOptions);
 
-$a->setRealm('yourrealm');			// 領域 (realm) 名
+$a->setRealm('user realm');			// 領域 (realm) 名
 $a->setCancelText('<h2>Error 401</h2>');        // 認証が失敗した際に表示されるメッセージ
 $a->start();					// 認証プロセスの開始
 
