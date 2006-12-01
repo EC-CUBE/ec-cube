@@ -37,7 +37,7 @@ require_once "Auth/Container.php";
 /**
  * Include PEAR package for error handling
  */
-require_once "/PEAR.php";
+require_once "/../PEAR.php";
 
 /**
  * Storage driver for fetching login data from an encrypted password file.
