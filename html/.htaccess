@@ -4,14 +4,3 @@ php_value output_handler mb_output_handler
 php_flag mbstring.encoding_translation 1
 php_flag magic_quotes_gpc 0
 
-AuthType Basic
-
-AuthName "Please enter username and password"
-
-AuthUserFile /home/web/kakinaka.kobe-transparent.com/html/.htpasswd
-
-AuthGroupFile /dev/null
-
-Options -Indexes
-
-require valid-user

@@ -4,8 +4,25 @@ require_once("../../require.php");
 $include_dir = realpath(dirname( __FILE__));
 require_once($include_dir . "/pear/Auth_HTTP.php");
 
-
 define("DSN", "pgsql://kakinaka_db_user:password@kakinaka.ec-cube.net/kakinaka_db");
+
+
+$params = Array(".htpasswd","authType"=>"basic","cryptType"=>"MD5");
+
+$objAuth = new Auth_HTTP("File",$params);
+
+// realm領域名
+$objAuth->setRealm('Please Enter Your Password');
+
+// 認証をキャンセルや認証エラーした際に表示されるメッセージ
+$objAuth->setCancelText('<h2>Authorization Required</h2>');
+
+// 認証プロセスの開始
+$objAuth->start();
+
+if($objAuth->getAuth()) {
+    echo $objAuth->username . "の認証に成功!";
+}
 
 
 // データベース接続オプションの設定
@@ -22,9 +39,7 @@ $AuthOptions = array(
 
 sfprintr($AuthOptions);
 
-
 $a = new Auth_HTTP("DB", $AuthOptions);
-
 
 sfprintr($a);
 
