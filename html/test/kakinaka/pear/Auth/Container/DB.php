@@ -25,7 +25,7 @@
 /**
  * Include Auth_Container base class
  */
-require_once 'Auth/Container.php';
+require_once '../Container.php';
 /**
  * Include PEAR DB
  */
