@@ -33,7 +33,7 @@ require_once $include_dir . "/../../File/Passwd.php";
 /**
  * Include Auth_Container base class
  */
-require_once "Auth/Container.php";
+require_once $include_dir . "/../Auth/Container.php";
 /**
  * Include PEAR package for error handling
  */
