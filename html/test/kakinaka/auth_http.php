@@ -4,7 +4,7 @@ require_once("../../require.php");
 $include_dir = realpath(dirname( __FILE__));
 require_once($include_dir . "/pear/Auth_HTTP.php");
 
-define("DSN", "pgsql://test_db_user:password@test.lockon.co.jp/test_db");
+define("DSN", "pgsql://kakinaka_db_user:password@kakinaka.ec-cube.net/kakinaka_db");
 
 // データベース接続オプションの設定
 $AuthOptions = array(
@@ -13,7 +13,7 @@ $AuthOptions = array(
 'usernamecol'=>"login_id",			// ユーザ名のコラム
 'passwordcol'=>"password",			// パスワードのコラム
 //'cryptType'=>"none",				// データベース中でのパスワードの暗号化形式
-'cryptType'=>"none",				// データベース中でのパスワードの暗号化形式
+'cryptType'=>"md5",				// データベース中でのパスワードの暗号化形式
 'dbFields'=>"*",				// 他のコラムの取得を可能にする
 );
 
