@@ -28,11 +28,9 @@ $a = new Auth_HTTP("DB", $AuthOptions);
 
 sfprintr($a);
 
-//$a->setRealm('yourrealm');			// 領域 (realm) 名
-//$a->setCancelText('<h2>Error 401</h2>');        // 認証が失敗した際に表示されるメッセージ
+$a->setRealm('yourrealm');			// 領域 (realm) 名
+$a->setCancelText('<h2>Error 401</h2>');        // 認証が失敗した際に表示されるメッセージ
 $a->start();					// 認証プロセスの開始
-
-/*
 
 if($a->getAuth())				// 認証すべきユーザかどうかの確認 
 {
@@ -42,6 +40,6 @@ if($a->getAuth())				// 認証すべきユーザかどうかの確認
 	echo $a->getAuthData('telephone');      // この例では、ユーザID (userid)、電話番号 (telephone)
 	echo $a->getAuthData('email');		// およびメールアドレス (email) を取得。
 };
-*/
+
 
 ?>
