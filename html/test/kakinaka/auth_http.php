@@ -9,7 +9,7 @@ define("DSN", "mysql://eccube_db_user:password@210.18.212.165:3308/eccube_db");
 
 // データベース接続オプションの設定
 $arrDbConn = array(
-	'dsn'=>DSN,
+	'dsn'=>DEFAULT_DSN,
 	'table'=>"dtb_member",              // テーブル名 
 	'usernamecol'=>"login_id",			// ユーザ名のカラム
 	'passwordcol'=>"password",			// パスワードのカラム
