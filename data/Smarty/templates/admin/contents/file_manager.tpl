@@ -110,7 +110,7 @@
 									</tr>
 									<tr class="fs12n">
 										<td bgcolor="#f2f1ec">フォルダ作成</td>
-										<td bgcolor="#ffffff"><span class="red"><!--{$arrErr.create_file}--></span><input type="text" name="create_file" value="" style="width:430px;<!--{if $arrErr.create_file}--> background-color:<!--{$smarty.const.ERR_COLOR|escape}--><!--{/if}-->"><input type="button" onclick="setTreeStatus('tree_status');fnModeSubmit('create','',''); return false;" value="作成"></td>
+										<td bgcolor="#ffffff"><span class="red"><!--{$arrErr.create_file}--></span><input type="text" name="create_file" value="" style="width:440px;<!--{if $arrErr.create_file}--> background-color:<!--{$smarty.const.ERR_COLOR|escape}--><!--{/if}-->"><input type="button" onclick="setTreeStatus('tree_status');fnModeSubmit('create','',''); return false;" value="作成"></td>
 									</tr>
 									<thead>
 								</table>
