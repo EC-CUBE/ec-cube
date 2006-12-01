@@ -13,7 +13,7 @@ $AuthOptions = array(
 'usernamecol'=>"login_id",			// ユーザ名のコラム
 'passwordcol'=>"password",			// パスワードのコラム
 //'cryptType'=>"none",				// データベース中でのパスワードの暗号化形式
-'cryptType'=>"sha1",				// データベース中でのパスワードの暗号化形式
+'cryptType'=>"md5",				// データベース中でのパスワードの暗号化形式
 'dbFields'=>"*",				// 他のコラムの取得を可能にする
 );
 
