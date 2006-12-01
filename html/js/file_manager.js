@@ -158,10 +158,8 @@ function fnTreeMenu(tName, imgName, path) {
 }
 
 // ファイルリストダブルクリック処理
-function fnDbClick(arrTree, path, is_dir, now_dir, is_parent = false) {
+function fnDbClick(arrTree, path, is_dir, now_dir, is_parent) {
 
-	if(is_parent) {fnFolderOpen(path); return;}
-	
 	if(is_dir) {
 		for(cnt = 0; cnt < arrTree.length; cnt++) {
 			if(now_dir == arrTree[cnt][2]) {
@@ -172,6 +170,7 @@ function fnDbClick(arrTree, path, is_dir, now_dir, is_parent = false) {
 				if(!open_flag) fnTreeMenu('tree'+cnt, 'rank_img'+cnt, arrTree[cnt][2]);
 			}
 		}
+alert(path);
 		fnFolderOpen(path);
 	} else {
 		// Download

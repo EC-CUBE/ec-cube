@@ -197,6 +197,7 @@ function lfGetParentDir($dir) {
 	foreach($arrDir as $val) {
 		$parent_dir .= "$val/";
 	}
+	$parent_dir = ereg_replace("/$", "", $parent_dir);
 	
 	return $parent_dir;
 }
