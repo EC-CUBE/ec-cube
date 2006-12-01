@@ -159,7 +159,6 @@ function fnTreeMenu(tName, imgName, path) {
 
 // ファイルリストダブルクリック処理
 function fnDbClick(arrTree, path, is_dir, now_dir, is_parent) {
-alert(is_parent);
 	if(is_dir) {
 		if(is_parent) {
 			for(cnt = 0; cnt < arrTree.length; cnt++) {
