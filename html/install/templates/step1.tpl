@@ -66,7 +66,7 @@
 			<td bgcolor="#ffffff" width="332" class="fs12">
 			<!--{assign var=key value="install_dir"}-->
 			<span class="red"><!--{$arrErr[$key]}--></span>
-			<input type="text" name="<!--{$key}-->" value="<!--{$arrForm[$key].value|escape}-->" maxlength="<!--{$arrForm[$key].length}-->" style="<!--{$arrErr[$key]|sfGetErrorColor}-->" size="50" class="box50" />
+			<input type="text" name="<!--{$key}-->" value="<!--{$arrForm[$key].value|escape}-->" maxlength="<!--{$arrForm[$key].length}-->" style="<!--{$arrErr[$key]|sfGetErrorColor}-->" size="40" class="box40" />
 			</td>
 		</tr>
 		<tr>
@@ -74,7 +74,7 @@
 			<td bgcolor="#ffffff" width="332" class="fs12">
 			<!--{assign var=key value="normal_url"}-->
 			<span class="red"><!--{$arrErr[$key]}--></span>
-			<input type="text" name="<!--{$key}-->" value="<!--{$arrForm[$key].value|escape}-->" maxlength="<!--{$arrForm[$key].length}-->" style="<!--{$arrErr[$key]|sfGetErrorColor}-->" size="50" class="box50" />
+			<input type="text" name="<!--{$key}-->" value="<!--{$arrForm[$key].value|escape}-->" maxlength="<!--{$arrForm[$key].length}-->" style="<!--{$arrErr[$key]|sfGetErrorColor}-->" size="40" class="box40" />
 			</td>
 		</tr>
 		<tr>
@@ -82,7 +82,7 @@
 			<td bgcolor="#ffffff" width="332" class="fs12">
 			<!--{assign var=key value="secure_url"}-->
 			<span class="red"><!--{$arrErr[$key]}--></span>
-			<input type="text" name="<!--{$key}-->" value="<!--{$arrForm[$key].value|escape}-->" maxlength="<!--{$arrForm[$key].length}-->" style="<!--{$arrErr[$key]|sfGetErrorColor}-->" size="50" class="box50" />
+			<input type="text" name="<!--{$key}-->" value="<!--{$arrForm[$key].value|escape}-->" maxlength="<!--{$arrForm[$key].length}-->" style="<!--{$arrErr[$key]|sfGetErrorColor}-->" size="40" class="box40" />
 			</td>
 		</tr>
 		<tr>
@@ -90,7 +90,7 @@
 			<td bgcolor="#ffffff" width="332">	
 			<!--{assign var=key value="domain"}-->
 			<span class="red"><span class="fs12n"><!--{$arrErr[$key]}--></span></span>
-			<input type="text" name="<!--{$key}-->" value="<!--{$arrForm[$key].value|escape}-->" maxlength="<!--{$arrForm[$key].length}-->" style="<!--{$arrErr[$key]|sfGetErrorColor}-->" size="50" class="box50" />
+			<input type="text" name="<!--{$key}-->" value="<!--{$arrForm[$key].value|escape}-->" maxlength="<!--{$arrForm[$key].length}-->" style="<!--{$arrErr[$key]|sfGetErrorColor}-->" size="40" class="box40" />
 			<br><span class="fs10">※通常URLとセキュアURLでサブドメインが異なる場合に指定します。</span>
 			</td>
 		</tr>
