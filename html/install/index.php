@@ -47,6 +47,8 @@ $objDBParam = lfInitDBParam($objDBParam);
 $objWebParam->setParam($_POST);
 $objDBParam->setParam($_POST);
 
+sfprintr($_POST);
+
 switch($_POST['mode']) {
 // ようこそ
 case 'welcome':
@@ -63,7 +65,6 @@ case 'step0_1':
 // WEBサイトの設定
 case 'step1':
 	//入力値のエラーチェック
-	sfprintr($objWebParam);
 	$objPage->arrErr = lfCheckWEBError($objWebParam);
 	if(count($objPage->arrErr) == 0) {
 		$objPage = lfDispStep2($objPage);
