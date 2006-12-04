@@ -48,6 +48,7 @@ $objWebParam->setParam($_POST);
 $objDBParam->setParam($_POST);
 
 sfprintr($_POST);
+exit();
 
 switch($_POST['mode']) {
 // ようこそ
