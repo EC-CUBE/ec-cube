@@ -802,6 +802,7 @@ function sfGetCSVList($array) {
 	if (count($array) > 0) {
 		foreach($array as $key => $val) {
 			$val = mb_convert_encoding($val, CHAR_CODE, CHAR_CODE);
+			$val = ereg_replace("\"", "\\\"", $val);
 			$line .= "\"".$val."\",";
 		}
 	}else{
