@@ -197,6 +197,7 @@ function lfCreateBkupData($bkup_name){
 					$data .= sfGetCSVList($arrData[$data_key]);
 					
 					sfprintr($arrData[$data_key]);
+					exit();
 					
 				}
 				// CSV出力データ生成
