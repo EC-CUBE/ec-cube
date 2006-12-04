@@ -527,13 +527,13 @@ function lfInitWebParam($objWebParam) {
 
 	$objWebParam->addParam("店名", "shop_name", MTEXT_LEN, "", array("EXIST_CHECK","MAX_LENGTH_CHECK"), $shop_name);
 	$objWebParam->addParam("管理者：メールアドレス", "admin_mail", MTEXT_LEN, "", array("EXIST_CHECK","EMAIL_CHECK","EMAIL_CHAR_CHECK","MAX_LENGTH_CHECK"), $admin_mail);
-	$objWebParam->addParam("管理者：ログインID", "login_id", MTEXT_LEN, "", array("EXIST_CHECK","EXIST_CHECK", "ALNUM_CHECK","MAX_LENGTH_CHECK"), $admin_mail);
-	$objWebParam->addParam("管理者：パスワード", "login_pass", MTEXT_LEN, "", array("EXIST_CHECK","EMAIL_CHECK","EMAIL_CHAR_CHECK","MAX_LENGTH_CHECK"), $admin_mail);
+	$objWebParam->addParam("管理者：ログインID", "login_id", MTEXT_LEN, "", array("EXIST_CHECK","EXIST_CHECK", "ALNUM_CHECK"), $admin_mail);
+	$objWebParam->addParam("管理者：パスワード", "login_pass", MTEXT_LEN, "", array("EXIST_CHECK","EXIST_CHECK", "ALNUM_CHECK"), $admin_mail);
 	$objWebParam->addParam("インストールディレクトリ", "install_dir", MTEXT_LEN, "", array("EXIST_CHECK","MAX_LENGTH_CHECK"), $install_dir);
 	$objWebParam->addParam("URL(通常)", "normal_url", MTEXT_LEN, "", array("EXIST_CHECK","URL_CHECK","MAX_LENGTH_CHECK"), $normal_url);
 	$objWebParam->addParam("URL(セキュア)", "secure_url", MTEXT_LEN, "", array("EXIST_CHECK","URL_CHECK","MAX_LENGTH_CHECK"), $secure_url);
 	$objWebParam->addParam("ドメイン", "domain", MTEXT_LEN, "", array("MAX_LENGTH_CHECK"));	
-
+	
 	return $objWebParam;
 }
 
@@ -597,8 +597,10 @@ function lfCheckWebError($objFormParam) {
 	}
 	
 	// ログインIDチェック
-	//$objErr->doFunc(array("ログインID",'login_id'), array("EXIST_CHECK", "ALNUM_CHECK"));
 	$objErr->doFunc(array("ログインID",'login_id',ID_MIN_LEN , ID_MAX_LEN) ,array("NUM_RANGE_CHECK"));
+	
+	// パスワードのチェック
+	$objErr->doFunc( array("パスワード",'login_pass',4 ,15 ) ,array( "NUM_RANGE_CHECK" ) );	
 	
 	return $objErr->arrErr;
 }
