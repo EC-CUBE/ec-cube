@@ -36,7 +36,7 @@
 			</td>
 		</tr>
 		<tr>
-			<td bgcolor="#f2f1ec" width="150" ><span class="fs12n">管理者：ログインID<span class="red">※</span></span><br/><span class="fs10">半角英数字・15文字以内</span></td>
+			<td bgcolor="#f2f1ec" width="150"><span class="fs12n">管理者：ログインID<span class="red">※</span></span><br/><span class="fs10">半角英数字・15文字以内</span></td>
 			<td bgcolor="#ffffff" width="332">
 			<!--{assign var=key value="login_id"}-->
 			<span class="red"><span class="fs12n"><!--{$arrErr[$key]}--></span></span>
@@ -45,7 +45,7 @@
 			</td>
 		</tr>
 		<tr>
-			<td bgcolor="#f2f1ec" width="150" class="fs12n">管理者：パスワード<span class="red">※</span></td>
+			<td bgcolor="#f2f1ec" width="150"><span class="fs12n">管理者：パスワード<span class="red">※</span></span><br/><span class="fs10">半角英数字・15文字以内</span></td>
 			<td bgcolor="#ffffff" width="332">
 			<!--{assign var=key value="login_pass"}-->
 			<span class="red"><span class="fs12n"><!--{$arrErr[$key]}--></span></span>
