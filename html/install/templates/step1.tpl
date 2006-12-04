@@ -27,7 +27,7 @@
 			</td>
 		</tr>
 		<tr>
-			<td bgcolor="#f2f1ec" width="150" class="fs12n">管理者メールアドレス<span class="red">※</span></td>
+			<td bgcolor="#f2f1ec" width="150" class="fs12n">管理者：メールアドレス<span class="red">※</span></td>
 			<td bgcolor="#ffffff" width="332">
 			<!--{assign var=key value="admin_mail"}-->
 			<span class="red"><span class="fs12n"><!--{$arrErr[$key]}--></span></span>
@@ -36,7 +36,7 @@
 			</td>
 		</tr>
 		<tr>
-			<td bgcolor="#f2f1ec" width="150" class="fs12n">管理者:ログインID<span class="red">※</span></td>
+			<td bgcolor="#f2f1ec" width="150" class="fs12n">管理者：ログインID<span class="red">※</span></td>
 			<td bgcolor="#ffffff" width="332">
 			<!--{assign var=key value="admin_mail"}-->
 			<span class="red"><span class="fs12n"><!--{$arrErr[$key]}--></span></span>
@@ -45,7 +45,7 @@
 			</td>
 		</tr>
 		<tr>
-			<td bgcolor="#f2f1ec" width="150" class="fs12n">管理者:パスワード<span class="red">※</span></td>
+			<td bgcolor="#f2f1ec" width="150" class="fs12n">管理者：パスワード<span class="red">※</span></td>
 			<td bgcolor="#ffffff" width="332">
 			<!--{assign var=key value="admin_mail"}-->
 			<span class="red"><span class="fs12n"><!--{$arrErr[$key]}--></span></span>
