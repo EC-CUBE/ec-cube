@@ -503,7 +503,7 @@ function lfExeInsertSQL($objQuery, $csv){
 	$fp = fopen($csv, "r");
 	while (!feof($fp)) {
 		$data = fgetcsv($fp, 1000000);
-		
+				
 		//空白行のときはテーブル変更
 		if (count($data) <= 1 and $data[0] == "") {
 			$base_sql = "";
@@ -543,6 +543,7 @@ function lfExeInsertSQL($objQuery, $csv){
 			$sql .= ", ?";
 		}
 		$sql .= " );";
+		$val = str_replace("\\\"", "\"", $data);
 		$err = $objQuery->query($sql, $data);
 
 		// エラーがあれば終了
