@@ -194,7 +194,7 @@ function lfCreateBkupData($bkup_name){
 				$data = "";
 				foreach($arrData as $data_key => $data_val){
 					//$val = str_replace("\"", "\\\"", $val);
-					$data .= sfGetCSVList($arrData[$data_key]);
+					$data .= lfGetCSVList($arrData[$data_key]);
 					
 					sfprintr($arrData[$data_key]);
 					exit();
@@ -299,16 +299,15 @@ function lfGetCSVList($array) {
 			if ($val == "") {
 				$line .= "NULL,";
 			}else{
-				$data = str_replace("'", "\'", $val);
-				$line .= "'".$data."',";
+				$data = str_replace("\"", "\\\"", $val);
+				$line .= "\"".$data."\",";
 			}
+			$line = ereg_replace(",$", "\n", $line);
 		}
-		$line = ereg_replace(",$", "\n", $line);
-		return $line;
-	}else{
-		return false;
 	}
+	return $line;
 }
+
 
 // 全テーブルリストを取得する
 function lfGetTableList(){
