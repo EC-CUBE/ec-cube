@@ -195,10 +195,7 @@ function lfCreateBkupData($bkup_name){
 				foreach($arrData as $data_key => $data_val){
 					//$val = str_replace("\"", "\\\"", $val);
 					$data .= lfGetCSVList($arrData[$data_key]);
-					
-					sfprintr($arrData[$data_key]);
-					exit();
-					
+
 				}
 				// CSV出力データ生成
 				$csv_data .= $val . "\n";
