@@ -521,7 +521,7 @@ function lfInitWebParam($objWebParam) {
 			$objQuery = new SC_Query();
 			$arrRet = $objQuery->select("shop_name, email01", "dtb_baseinfo");
 			$shop_name = $arrRet[0]['shop_name'];
-			$ = $arrRet[0]['email01'];
+			$admin_mail = $arrRet[0]['email01'];
 		}
 	}
 

@@ -9,7 +9,7 @@
 
  
  
-require_once("../../require.php");
+require_once("../require.php");
 
 $arrConversionPage = array(
 	1 => '商品購入完了画面',
