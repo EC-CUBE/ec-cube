@@ -195,14 +195,12 @@ function lfCreateBkupData($bkup_name){
 				foreach($arrData as $data_key => $data_val){
 					mb_convert_encoding($arrData[$data_key], CHAR_CODE, CHAR_CODE);
 					$data .= sfGetCSVList($arrData[$data_key]);
-					
-					
-					if($val == "dtb_module"){
+				}
+									if($val == "dtb_module"){
 						sfprintr($data);
 						exit();
 					}
-					
-				}
+
 				// CSV出力データ生成
 				$csv_data .= $val . "\n";
 				$csv_data .= $arrKyes . "\n";
