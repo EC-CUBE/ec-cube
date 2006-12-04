@@ -233,7 +233,7 @@ case 'complete':
 	$login_id = $objWebParam->getValue('login_id');
 	$login_pass = sha1($objWebParam->getValue('login_pass') . ":" . AUTH_MAGIC);
 	
-	$sql = "DELETE FROM dtb_member WHERE member_id = ?";
+	$sql = "DELETE FROM dtb_member WHERE login_id = ?";
 	$objQuery->query($sql, array($login_id));	
 
 	$sql = "INSERT INTO dtb_member (name, login_id, password, creator_id, authority, work, del_flg, rank, create_date, update_date)
