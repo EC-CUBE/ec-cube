@@ -57,6 +57,8 @@ switch($_POST['mode']) {
 case 'edit':
 	// 入力エラー判定
 	$objPage->arrErr = lfCheckError();
+	
+	sfprintr($objPage->arrErr );
 
 	// エラーなしの場合にはデータを更新	
 	if(count($objPage->arrErr) == 0) {
@@ -160,7 +162,6 @@ function lfChkConnect(){
 	
 	// エラーがあるかチェックする
 	$err_code = sfGetXMLValue($arrXML,'RESULT','ERR_CODE');
-	sfprintr($err_code);
 	switch ($err_code) {
 		case "":
 			break;
@@ -169,9 +170,6 @@ function lfChkConnect(){
 			return $arrRet;
 		default :
 			$arrRet["service"] = sfGetXMLValue($arrXML,'RESULT','ERR_DETAIL');
-			
-			sfprintr($email);
-			sfprintr($arrRet["service"]);
 			return $arrRet;
 	}
 
