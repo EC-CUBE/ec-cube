@@ -199,11 +199,10 @@ function lfCreateBkupData($bkup_name){
 					
 					if($val == "dtb_module"){
 						sfprintr($data_val);
+						exit();
 					}
 					
 				}
-				sfprintr($val);
-				exit();
 				// CSV出力データ生成
 				$csv_data .= $val . "\n";
 				$csv_data .= $arrKyes . "\n";
