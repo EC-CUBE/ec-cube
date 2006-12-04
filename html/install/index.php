@@ -227,13 +227,18 @@ case 'complete':
 	} else {		
 		$objQuery->insert("dtb_baseinfo", $sqlval);		
 	}
-	
+
+		
 	// ´ÉÍý¼ÔÅÐÏ¿
+	$login_id = $objWebParam->getValue('login_id');
+	$login_pass = sha1($objWebParam->getValue('login_pass') . ":" . AUTH_MAGIC);
+	
+	$sql = "DELETE FROM dtb_member WHERE member_id = ?";
+	$objQuery->query($sql, array($login_id));	
+
 	$sql = "INSERT INTO dtb_member (name, login_id, password, creator_id, authority, work, del_flg, rank, create_date, update_date)
 			VALUES ('´ÉÍý¼Ô',?,?,0,0,1,0,1, now(), now());";
 	
-	$login_id = $objWebParam->getValue('login_id');
-	$login_pass = sha1($objWebParam->getValue('login_pass') . ":" . AUTH_MAGIC);
 	$objQuery->query($sql, array($login_id, $login_pass));		
 	
 	global $GLOBAL_ERR;
