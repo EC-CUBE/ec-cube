@@ -35,6 +35,24 @@
 			<br><span class="fs10">※受注メールなどの宛先になります。：(例)example@ec-cube.net</span>
 			</td>
 		</tr>
+		<tr>
+			<td bgcolor="#f2f1ec" width="150" class="fs12n">管理者:ログインID<span class="red">※</span></td>
+			<td bgcolor="#ffffff" width="332">
+			<!--{assign var=key value="admin_mail"}-->
+			<span class="red"><span class="fs12n"><!--{$arrErr[$key]}--></span></span>
+			<input type="text" name="<!--{$key}-->" value="<!--{$arrForm[$key].value|escape}-->" maxlength="<!--{$arrForm[$key].length}-->" style="<!--{$arrErr[$key]|sfGetErrorColor}-->" size="50" class="box50" />
+			<br><span class="fs10">※受注メールなどの宛先になります。：(例)example@ec-cube.net</span>
+			</td>
+		</tr>
+		<tr>
+			<td bgcolor="#f2f1ec" width="150" class="fs12n">管理者:パスワード<span class="red">※</span></td>
+			<td bgcolor="#ffffff" width="332">
+			<!--{assign var=key value="admin_mail"}-->
+			<span class="red"><span class="fs12n"><!--{$arrErr[$key]}--></span></span>
+			<input type="text" name="<!--{$key}-->" value="<!--{$arrForm[$key].value|escape}-->" maxlength="<!--{$arrForm[$key].length}-->" style="<!--{$arrErr[$key]|sfGetErrorColor}-->" size="50" class="box50" />
+			<br><span class="fs10">※受注メールなどの宛先になります。：(例)example@ec-cube.net</span>
+			</td>
+		</tr>
 	</table>
 	</td>
 </tr>
