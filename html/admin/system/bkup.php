@@ -293,18 +293,16 @@ function lfCreateBkupData($bkup_name){
 function lfGetCSVList($array) {
 	if (count($array) > 0) {
 		foreach($array as $key => $val) {
-			if ($val == "") {
-				$line .= "NULL,";
-			}else{
-				$data = str_replace("\"", "\\\"", $val);
-				$line .= "\"".$data."\",";
-			}
-			$line = ereg_replace(",$", "\n", $line);
+			$val = mb_convert_encoding($val, CHAR_CODE, CHAR_CODE);
+			$val = str_replace("\"", "\\\"", $val);
+			$line .= "\"".$val."\",";
 		}
+		$line = ereg_replace(",$", "\n", $line);
+	}else{
+		return false;
 	}
 	return $line;
 }
-
 
 // 全テーブルリストを取得する
 function lfGetTableList(){
