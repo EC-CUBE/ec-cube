@@ -181,7 +181,7 @@ function win_open(URL){
 										<!--{if $arrErr[$key] != ""}-->
 										<tr class="fs12n">
 											<td bgcolor="#ffffff" colspan=2>
-											<span class="red12">$arrErr[$key]</span>
+											<span class="red12"><!--{$arrErr[$key]}--></span>
 											</td>
 										</tr>
 										<!--{/if}-->

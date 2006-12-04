@@ -57,8 +57,6 @@ switch($_POST['mode']) {
 case 'edit':
 	// 入力エラー判定
 	$objPage->arrErr = lfCheckError();
-	
-	sfprintr($objPage->arrErr );
 
 	// エラーなしの場合にはデータを更新	
 	if(count($objPage->arrErr) == 0) {
