@@ -22,8 +22,6 @@ $conn = new SC_DBConn();
 // レイアウトデザインを取得
 $objPage = sfGetPageLayout($objPage, false, "index.php");
 
-sfprintr("oooooo");
-
 
 
 
