@@ -126,7 +126,7 @@ function fnErrorCheck($conn) {
 	// ログインIDチェック
 	$objErr->doFunc(array("ログインID",'login_id'), array("EXIST_CHECK", "ALNUM_CHECK"));
 	$objErr->doFunc(array("ログインID",'login_id',ID_MIN_LEN , ID_MAX_LEN) ,array("NUM_RANGE_CHECK"));
-	
+
 	// 新規モードもしくは、編集モードでログインIDが変更されている場合はチェックする。
 	if (!isset($objErr->arrErr['login_id']) && $_POST['mode'] != 'edit' || ($_POST['mode'] == 'edit' && $_POST['login_id'] != $_POST['old_login_id'])) {
 		$sql = "SELECT login_id FROM dtb_member WHERE del_flg <> 1 AND login_id = ?";
