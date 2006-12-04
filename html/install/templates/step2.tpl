@@ -47,7 +47,7 @@ function lfnChangePort(db_type) {
 			<td bgcolor="#ffffff" width="332" class="fs12">
 			<!--{assign var=key value="db_server"}-->
 			<span class="red"><!--{$arrErr[$key]}--></span>
-			<input type="text" name="<!--{$key}-->" value="<!--{$arrForm[$key].value|escape}-->" maxlength="<!--{$arrForm[$key].length}-->" style="<!--{$arrErr[$key]|sfGetErrorColor}-->" size="50" class="box50" />
+			<input type="text" name="<!--{$key}-->" value="<!--{$arrForm[$key].value|escape}-->" maxlength="<!--{$arrForm[$key].length}-->" style="<!--{$arrErr[$key]|sfGetErrorColor}-->" size="40" class="box40" />
 			</td>
 		</tr>
 		<tr>
@@ -63,7 +63,7 @@ function lfnChangePort(db_type) {
 			<td bgcolor="#ffffff" width="332" class="fs12">
 			<!--{assign var=key value="db_name"}-->
 			<span class="red"><span class="fs12n"><!--{$arrErr[$key]}--></span></span>
-			<input type="text" name="<!--{$key}-->" value="<!--{$arrForm[$key].value|escape}-->" maxlength="<!--{$arrForm[$key].length}-->" style="<!--{$arrErr[$key]|sfGetErrorColor}-->" size="50" class="box50" />
+			<input type="text" name="<!--{$key}-->" value="<!--{$arrForm[$key].value|escape}-->" maxlength="<!--{$arrForm[$key].length}-->" style="<!--{$arrErr[$key]|sfGetErrorColor}-->" size="40" class="box40" />
 			</td>
 		</tr>
 		<tr>
@@ -71,7 +71,7 @@ function lfnChangePort(db_type) {
 			<td bgcolor="#ffffff" width="332" class="fs12">
 			<!--{assign var=key value="db_user"}-->
 			<span class="red"><!--{$arrErr[$key]}--></span>
-			<input type="text" name="<!--{$key}-->" value="<!--{$arrForm[$key].value|escape}-->" maxlength="<!--{$arrForm[$key].length}-->" style="<!--{$arrErr[$key]|sfGetErrorColor}-->" size="50" class="box50" />
+			<input type="text" name="<!--{$key}-->" value="<!--{$arrForm[$key].value|escape}-->" maxlength="<!--{$arrForm[$key].length}-->" style="<!--{$arrErr[$key]|sfGetErrorColor}-->" size="40" class="box40" />
 			</td>
 		</tr>
 		<tr>
@@ -79,7 +79,7 @@ function lfnChangePort(db_type) {
 			<td bgcolor="#ffffff" width="332" class="fs12">
 			<!--{assign var=key value="db_password"}-->
 			<span class="red"><!--{$arrErr[$key]}--></span>
-			<input type="password" name="<!--{$key}-->" value="<!--{$arrForm[$key].value|escape}-->" maxlength="<!--{$arrForm[$key].length}-->" style="<!--{$arrErr[$key]|sfGetErrorColor}-->" size="50" class="box50" />
+			<input type="password" name="<!--{$key}-->" value="<!--{$arrForm[$key].value|escape}-->" maxlength="<!--{$arrForm[$key].length}-->" style="<!--{$arrErr[$key]|sfGetErrorColor}-->" size="40" class="box40" />
 			</td>
 		</tr>		
 	</table>
