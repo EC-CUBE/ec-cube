@@ -41,7 +41,7 @@
 			<!--{assign var=key value="admin_mail"}-->
 			<span class="red"><span class="fs12n"><!--{$arrErr[$key]}--></span></span>
 			<input type="text" name="<!--{$key}-->" value="<!--{$arrForm[$key].value|escape}-->" maxlength="<!--{$arrForm[$key].length}-->" style="<!--{$arrErr[$key]|sfGetErrorColor}-->" size="50" class="box50" />
-			<br><span class="fs10">※受注メールなどの宛先になります。：(例)example@ec-cube.net</span>
+			<br><span class="fs10">※管理者画面にログインするためのIDです。</span>
 			</td>
 		</tr>
 		<tr>
@@ -50,7 +50,7 @@
 			<!--{assign var=key value="admin_mail"}-->
 			<span class="red"><span class="fs12n"><!--{$arrErr[$key]}--></span></span>
 			<input type="text" name="<!--{$key}-->" value="<!--{$arrForm[$key].value|escape}-->" maxlength="<!--{$arrForm[$key].length}-->" style="<!--{$arrErr[$key]|sfGetErrorColor}-->" size="50" class="box50" />
-			<br><span class="fs10">※受注メールなどの宛先になります。：(例)example@ec-cube.net</span>
+			<br><span class="fs10">※管理者画面にログインするためのパスワードです。</span>
 			</td>
 		</tr>
 	</table>
