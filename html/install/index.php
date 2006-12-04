@@ -233,7 +233,7 @@ case 'complete':
 			VALUES ('´ÉÍý¼Ô',?,?,0,0,1,0,1, now(), now());";
 	
 	$login_id = $objWebParam->getValue('login_id');
-	$login_pass = sha1($objWebParam->getValue('login_id') . ":" . AUTH_MAGIC);
+	$login_pass = sha1($objWebParam->getValue('login_pass') . ":" . AUTH_MAGIC);
 	$objQuery->query($sql, array($login_id, $login_pass));		
 	
 	global $GLOBAL_ERR;
