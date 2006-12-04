@@ -198,7 +198,7 @@ function lfCreateBkupData($bkup_name){
 					
 					
 					if($val == "dtb_module"){
-						sfprintr($data_val);
+						sfprintr($data);
 						exit();
 					}
 					
