@@ -22,7 +22,7 @@
 			<td bgcolor="#ffffff" width="332">
 			<!--{assign var=key value="shop_name"}-->
 			<span class="red"><span class="fs12n"><!--{$arrErr[$key]}--></span></span>
-			<input type="text" name="<!--{$key}-->" value="<!--{$arrForm[$key].value|escape}-->" maxlength="<!--{$arrForm[$key].length}-->" style="<!--{$arrErr[$key]|sfGetErrorColor}-->" size="50" class="box50" />
+			<input type="text" name="<!--{$key}-->" value="<!--{$arrForm[$key].value|escape}-->" maxlength="<!--{$arrForm[$key].length}-->" style="<!--{$arrErr[$key]|sfGetErrorColor}-->" size="40" class="box40" />
 			<br><span class="fs10">※あなたの店名をご記入ください。</span>
 			</td>
 		</tr>
@@ -31,7 +31,7 @@
 			<td bgcolor="#ffffff" width="332">
 			<!--{assign var=key value="admin_mail"}-->
 			<span class="red"><span class="fs12n"><!--{$arrErr[$key]}--></span></span>
-			<input type="text" name="<!--{$key}-->" value="<!--{$arrForm[$key].value|escape}-->" maxlength="<!--{$arrForm[$key].length}-->" style="<!--{$arrErr[$key]|sfGetErrorColor}-->" size="50" class="box40" />
+			<input type="text" name="<!--{$key}-->" value="<!--{$arrForm[$key].value|escape}-->" maxlength="<!--{$arrForm[$key].length}-->" style="<!--{$arrErr[$key]|sfGetErrorColor}-->" size="40" class="box40" />
 			<br><span class="fs10">※受注メールなどの宛先になります。：(例)example@ec-cube.net</span>
 			</td>
 		</tr>
@@ -40,7 +40,7 @@
 			<td bgcolor="#ffffff" width="332">
 			<!--{assign var=key value="login_id"}-->
 			<span class="red"><span class="fs12n"><!--{$arrErr[$key]}--></span></span>
-			<input type="text" name="<!--{$key}-->" value="<!--{$arrForm[$key].value|escape}-->" maxlength="<!--{$arrForm[$key].length}-->" style="<!--{$arrErr[$key]|sfGetErrorColor}-->" size="50" class="box20" />
+			<input type="text" name="<!--{$key}-->" value="<!--{$arrForm[$key].value|escape}-->" maxlength="<!--{$arrForm[$key].length}-->" style="<!--{$arrErr[$key]|sfGetErrorColor}-->" size="40" class="box40" />
 			<br><span class="fs10">※管理者画面にログインするためのIDです。</span>
 			</td>
 		</tr>
@@ -49,7 +49,7 @@
 			<td bgcolor="#ffffff" width="332">
 			<!--{assign var=key value="login_pass"}-->
 			<span class="red"><span class="fs12n"><!--{$arrErr[$key]}--></span></span>
-			<input type="password" name="<!--{$key}-->" value="<!--{$arrForm[$key].value|escape}-->" maxlength="<!--{$arrForm[$key].length}-->" style="<!--{$arrErr[$key]|sfGetErrorColor}-->;" size="50" class="box20" />
+			<input type="password" name="<!--{$key}-->" value="<!--{$arrForm[$key].value|escape}-->" maxlength="<!--{$arrForm[$key].length}-->" style="<!--{$arrErr[$key]|sfGetErrorColor}-->;" size="40" class="box40" />
 			<br><span class="fs10">※管理者画面にログインするためのパスワードです。</span>
 			</td>
 		</tr>
