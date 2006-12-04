@@ -210,11 +210,11 @@ case 'complete':
 	
 	$dsn = $arrRet['db_type']."://".$arrRet['db_user'].":".$arrRet['db_password']."@".$arrRet['db_server'].":".$arrRet['db_port']."/".$arrRet['db_name'];
 	$sqlval['shop_name'] = $objWebParam->getValue('shop_name');
-	$sqlval['email01'] = $objWebParam->getValue('admin_mail');
-	$sqlval['email02'] = $objWebParam->getValue('admin_mail');
-	$sqlval['email03'] = $objWebParam->getValue('admin_mail');
-	$sqlval['email04'] = $objWebParam->getValue('admin_mail');
-	$sqlval['email05'] = $objWebParam->getValue('admin_mail');
+	$sqlval['email01'] = $objWebParam->getValue('');
+	$sqlval['email02'] = $objWebParam->getValue('');
+	$sqlval['email03'] = $objWebParam->getValue('');
+	$sqlval['email04'] = $objWebParam->getValue('');
+	$sqlval['email05'] = $objWebParam->getValue('');
 	$sqlval['top_tpl'] = "default1";
 	$sqlval['product_tpl'] = "default1";
 	$sqlval['detail_tpl'] = "default1";
@@ -521,12 +521,14 @@ function lfInitWebParam($objWebParam) {
 			$objQuery = new SC_Query();
 			$arrRet = $objQuery->select("shop_name, email01", "dtb_baseinfo");
 			$shop_name = $arrRet[0]['shop_name'];
-			$admin_mail = $arrRet[0]['email01'];
+			$ = $arrRet[0]['email01'];
 		}
 	}
 
 	$objWebParam->addParam("店名", "shop_name", MTEXT_LEN, "", array("EXIST_CHECK","MAX_LENGTH_CHECK"), $shop_name);
-	$objWebParam->addParam("管理者メールアドレス", "admin_mail", MTEXT_LEN, "", array("EXIST_CHECK","EMAIL_CHECK","EMAIL_CHAR_CHECK","MAX_LENGTH_CHECK"), $admin_mail);
+	$objWebParam->addParam("管理者：メールアドレス", "admin_mail", MTEXT_LEN, "", array("EXIST_CHECK","EMAIL_CHECK","EMAIL_CHAR_CHECK","MAX_LENGTH_CHECK"), $admin_mail);
+	$objWebParam->addParam("管理者：ログインID", "login_id", MTEXT_LEN, "", array("EXIST_CHECK","EMAIL_CHECK","EMAIL_CHAR_CHECK","MAX_LENGTH_CHECK"), $admin_mail);
+	$objWebParam->addParam("管理者：パスワード", "login_pass", MTEXT_LEN, "", array("EXIST_CHECK","EMAIL_CHECK","EMAIL_CHAR_CHECK","MAX_LENGTH_CHECK"), $admin_mail);
 	$objWebParam->addParam("インストールディレクトリ", "install_dir", MTEXT_LEN, "", array("EXIST_CHECK","MAX_LENGTH_CHECK"), $install_dir);
 	$objWebParam->addParam("URL(通常)", "normal_url", MTEXT_LEN, "", array("EXIST_CHECK","URL_CHECK","MAX_LENGTH_CHECK"), $normal_url);
 	$objWebParam->addParam("URL(セキュア)", "secure_url", MTEXT_LEN, "", array("EXIST_CHECK","URL_CHECK","MAX_LENGTH_CHECK"), $secure_url);
