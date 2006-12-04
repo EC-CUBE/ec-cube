@@ -203,6 +203,7 @@ function lfCreateBkupData($bkup_name){
 					
 				}
 				sfprintr($val);
+				exit();
 				// CSV出力データ生成
 				$csv_data .= $val . "\n";
 				$csv_data .= $arrKyes . "\n";
