@@ -543,7 +543,6 @@ function lfExeInsertSQL($objQuery, $csv){
 			$sql .= ", ?";
 		}
 		$sql .= " );";
-//		$val = str_replace("\"", "\\\"", $val);
 		$data = str_replace("\\\"", "\"", $data);
 		$err = $objQuery->query($sql, $data);
 
