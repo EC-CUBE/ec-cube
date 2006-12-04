@@ -596,6 +596,10 @@ function lfCheckWebError($objFormParam) {
 		$objErr->arrErr['secure_url'] = "URLに異なる階層を指定することはできません。";		
 	}
 	
+	// ログインIDチェック
+	$objErr->doFunc(array("ログインID",'login_id'), array("EXIST_CHECK", "ALNUM_CHECK"));
+	$objErr->doFunc(array("ログインID",'login_id',ID_MIN_LEN , ID_MAX_LEN) ,array("NUM_RANGE_CHECK"));
+	
 	return $objErr->arrErr;
 }
 
