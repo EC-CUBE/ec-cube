@@ -10,7 +10,6 @@
  
  
 require_once("./require.php");
-dd
 
 $arrConversionPage = array(
 	1 => '商品購入完了画面',
