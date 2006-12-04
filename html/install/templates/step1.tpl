@@ -8,8 +8,6 @@
 <input type="hidden" name="mode" value="<!--{$tpl_mode}-->">
 <input type="hidden" name="step" value="0">
 
-<link rel="stylesheet" href="<!--{$smarty.const.URL_ADMIN_CSS}-->common.css" type="text/css" />
-
 <!--{foreach key=key item=item from=$arrHidden}-->
 <input type="hidden" name="<!--{$key}-->" value="<!--{$item|escape}-->">
 <!--{/foreach}-->
@@ -51,7 +49,7 @@
 			<td bgcolor="#ffffff" width="332">
 			<!--{assign var=key value="login_pass"}-->
 			<span class="red"><span class="fs12n"><!--{$arrErr[$key]}--></span></span>
-			<input type="password" name="<!--{$key}-->" value="<!--{$arrForm[$key].value|escape}-->" maxlength="<!--{$arrForm[$key].length}-->" style="<!--{$arrErr[$key]|sfGetErrorColor}-->" size="20" class="box20" />
+			<input type="password" name="<!--{$key}-->" value="<!--{$arrForm[$key].value|escape}-->" maxlength="<!--{$arrForm[$key].length}-->" style="<!--{$arrErr[$key]|sfGetErrorColor}-->" size="50" class="box20" />
 			<br><span class="fs10">※管理者画面にログインするためのパスワードです。</span>
 			</td>
 		</tr>
