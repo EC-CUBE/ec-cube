@@ -801,10 +801,10 @@ function sfGetCommaList($array, $space=true) {
 function sfGetCSVList($array) {
 	if (count($array) > 0) {
 		foreach($array as $key => $val) {
-			//$val = mb_convert_encoding($val, CHAR_CODE, CHAR_CODE);
+			mb_convert_encoding($val, CHAR_CODE, CHAR_CODE);
 			$line .= "\"".$val."\",";
 		}
-		$line = ereg_replace("\"", "", $line);
+		$line = ereg_replace(",$", "\n", $line);
 	}else{
 		return false;
 	}
