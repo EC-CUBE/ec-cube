@@ -170,7 +170,7 @@ function lfChkConnect(){
 		default :
 			$arrRet["service"] = sfGetXMLValue($arrXML,'RESULT','ERR_DETAIL');
 			
-			
+			sfprintr($email);
 			sfprintr($arrRet["service"]);
 			return $arrRet;
 	}
