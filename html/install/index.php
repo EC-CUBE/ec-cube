@@ -132,6 +132,7 @@ case 'step3':
 	// 初期データの作成
 	if(count($objPage->arrErr) == 0) {
 		$objPage->arrErr = lfExecuteSQL("./sql/insert_data.sql", $dsn); 
+		
 		if(count($objPage->arrErr) == 0) {
 			$objPage->tpl_message.="○：初期データの作成に成功しました。<br>";
 		} else {
@@ -226,6 +227,15 @@ case 'complete':
 	} else {		
 		$objQuery->insert("dtb_baseinfo", $sqlval);		
 	}
+	
+	// 管理者登録
+	$sql = "INSERT INTO dtb_member (name, login_id, password, creator_id, authority, work, del_flg, rank, create_date, update_date)
+			VALUES ('管理者',?,?,0,0,1,0,1, now(), now());";
+	
+	$login_id = $objWebParam->getValue('login_id');
+	$login_pass = sha1($objWebParam->getValue('login_id') . ":" . AUTH_MAGIC);
+	$objQuery->query($sql, array($login_id, $login_pass));		
+	
 	global $GLOBAL_ERR;
 	$GLOBAL_ERR = "";
 	$objPage = lfDispComplete($objPage);
@@ -451,14 +461,14 @@ function lfDispStep4($objPage) {
 	$objPage->arrHidden = $objWebParam->getHashArray();
 	$objPage->arrHidden = array_merge($objPage->arrHidden, $objDBParam->getHashArray());
 	// hiddenに入力値を保持
-	
+
 	$normal_url = $objWebParam->getValue('normal_url');
 	// 語尾に'/'をつける
 	if (!ereg("/$", $normal_url)) $normal_url = $normal_url . "/";
-	
+
 	$arrDbParam = $objDBParam->getHashArray();
 	$dsn = $arrDbParam['db_type']."://".$arrDbParam['db_user'].":".$arrDbParam['db_password']."@".$arrDbParam['db_server'].":".$arrDbParam['db_port']."/".$arrDbParam['db_name'];
-	
+
 	$objPage->tpl_site_url = $normal_url;
 	$objPage->tpl_shop_name = $objWebParam->getValue('shop_name');
 	$objPage->tpl_cube_ver = ECCUBE_VERSION;
@@ -680,7 +690,7 @@ function lfExecuteSQL($filepath, $dsn, $disp_err = true) {
 function lfMakeConfigFile() {
 	global $objWebParam;
 	global $objDBParam;
-		
+	
 	$root_dir = $objWebParam->getValue('install_dir');
 	// 語尾に'/'をつける
 	if (!ereg("/$", $root_dir)) {
