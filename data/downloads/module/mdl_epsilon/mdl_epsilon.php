@@ -160,6 +160,7 @@ function lfChkConnect(){
 	
 	// エラーがあるかチェックする
 	$err_code = sfGetXMLValue($arrXML,'RESULT','ERR_CODE');
+	sfprintr($err_code);
 	switch ($err_code) {
 		case "":
 			break;
