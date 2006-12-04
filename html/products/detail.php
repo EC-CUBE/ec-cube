@@ -72,6 +72,8 @@ if(!sfIsInt($_GET['product_id']) || !sfIsRecord("dtb_products", "product_id", $t
 if($objCustomer->isLoginSuccess()) {
 	//お気に入りボタン表示
 	$objPage->tpl_login = true;
+
+/* 閲覧ログ機能は現在未使用
 	
 	$table = "dtb_customer_reading";
 	$where = "customer_id = ? ";
@@ -94,6 +96,7 @@ if($objCustomer->isLoginSuccess()) {
 		//追加
 		lfRegistReadingData($tmp_id, $objCustomer->getValue('customer_id'));
 	}
+*/
 }
 
 
