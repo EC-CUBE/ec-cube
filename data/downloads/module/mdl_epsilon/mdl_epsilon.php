@@ -169,6 +169,9 @@ function lfChkConnect(){
 			return $arrRet;
 		default :
 			$arrRet["service"] = sfGetXMLValue($arrXML,'RESULT','ERR_DETAIL');
+			
+			
+			sfprintr($arrRet["service"]);
 			return $arrRet;
 	}
 
