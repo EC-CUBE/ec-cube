@@ -24,6 +24,9 @@ $objPage = sfGetPageLayout($objPage, false, "index.php");
 
 sfprintr("oooooo");
 
+
+
+
 $objView = new SC_SiteView();
 $objView->assignobj($objPage);
 $objView->display(SITE_FRAME);
