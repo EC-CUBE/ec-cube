@@ -251,7 +251,7 @@ function lfIsFileOpen($dir, $tree_status) {
 /* 
  * 関数名：sfDownloadFile()
  * 引数1 ：ファイルパス
- * 説明　：エラーチェック
+ * 説明　：ファイルのダウンロード
  */
 function sfDownloadFile($file) {
  	// ファイルの場合はダウンロードさせる
