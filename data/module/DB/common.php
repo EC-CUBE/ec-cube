@@ -1584,7 +1584,6 @@ class DB_common extends PEAR
     function &getAll($query, $params = array(),
                      $fetchmode = DB_FETCHMODE_DEFAULT)
     {
-		sfprintr($this->prepared_queries);			
         // compat check, the params and fetchmode parameters used to
         // have the opposite order
         if (!is_array($params)) {
@@ -1601,6 +1600,7 @@ class DB_common extends PEAR
                 $params = array();
             }
         }
+		sfprintr($this->prepared_queries);
 		
         if (sizeof($params) > 0) {
             $sth = $this->prepare($query);
