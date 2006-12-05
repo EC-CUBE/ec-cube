@@ -18,6 +18,8 @@
 		<br>
 		<a href="<!--{$tpl_sslurl}-->admin/">管理画面</a>にログインできます。
 	</td>
+</tr>
+<tr>
 	<td align="center" class="fs10">
 		先ほど登録したID、パスワードを用いてログインしてください。
 	</td>
