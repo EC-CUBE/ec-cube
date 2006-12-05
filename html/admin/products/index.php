@@ -270,6 +270,8 @@ if ($_POST['mode'] == "search" || $_POST['mode'] == "csv"  || $_POST['mode'] == 
 			//$arrViewWhere["&&noncls_where&&"] = $where;
 			
 			$sth = $objQuery->conn->prepare($where);
+			$realquery = $objQuery->conn->executeEmulateQuery($sth, $arrval);
+			
 			
 			sfprintr($sth);
 			
