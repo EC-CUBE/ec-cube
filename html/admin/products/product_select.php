@@ -89,6 +89,8 @@ if ($_POST['mode'] == "search") {
 		$page_max = SEARCH_PMAX;
 	}
 	
+	sfprintr($_POST);
+	
 	// ページ送りの取得
 	$objNavi = new SC_PageNavi($_POST['search_pageno'], $linemax, $page_max, "fnNaviSearchPage", NAVI_PMAX);
 	$objPage->tpl_strnavi = $objNavi->strnavi;		// 表示文字列
