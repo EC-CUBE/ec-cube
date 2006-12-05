@@ -1600,8 +1600,6 @@ class DB_common extends PEAR
                 $params = array();
             }
         }
-		sfprintr($this->prepared_queries);
-		
         if (sizeof($params) > 0) {
             $sth = $this->prepare($query);
 

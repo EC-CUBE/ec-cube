@@ -266,8 +266,12 @@ if ($_POST['mode'] == "search" || $_POST['mode'] == "csv"  || $_POST['mode'] == 
 			$objQuery->setorder($order);
 			
 			// viewも絞込みをかける(mysql用)
-			global $arrViewWhere;
-			$arrViewWhere["&&noncls_where&&"] = $where;
+			//global $arrViewWhere;
+			//$arrViewWhere["&&noncls_where&&"] = $where;
+			
+			 $sth = $objQuery->prepare($where);
+			 
+			 sfprintr($sth);
 			
 			// 検索結果の取得
 			$objPage->arrProducts = $objQuery->select($col, $from, $where, $arrval);
