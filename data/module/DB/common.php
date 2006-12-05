@@ -991,6 +991,7 @@ class DB_common extends PEAR
         $this->last_parameters = $data;
 
 		sfprintr($stmt);
+		sfprintr($data);
 		
         if (count($this->prepare_types[$stmt]) != count($data)) {
             $this->last_query = $this->prepared_queries[$stmt];
