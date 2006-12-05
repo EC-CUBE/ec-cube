@@ -272,9 +272,12 @@ if ($_POST['mode'] == "search" || $_POST['mode'] == "csv"  || $_POST['mode'] == 
 			sfprintr($arrWhere);
 			
 			$where_tmp = "";
-			foreach($arrWhere as $key => $val){
-				$where_tmp .= $val . sfQuoteSmart($arrval[$key]);
+			
+			$where_tmp = $arrWhere[0];
+			for($i = 1; $i < count($arrWhere); $i++){
+				$where_tmp .= $arrWhere[$i] . sfQuoteSmart($arrval[$key]);
 			}
+			
 			
 			sfprintr($where_tmp);
 			$arrViewWhere["&&noncls_where&&"] = $where_tmp;
