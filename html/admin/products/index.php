@@ -270,6 +270,7 @@ if ($_POST['mode'] == "search" || $_POST['mode'] == "csv"  || $_POST['mode'] == 
 			
 			$arrWhere = split("[?]", $where);
 			sfprintr($arrWhere);
+			sfprintr($arrval);
 			
 			$where_tmp = "";
 			
