@@ -264,6 +264,11 @@ if ($_POST['mode'] == "search" || $_POST['mode'] == "csv"  || $_POST['mode'] == 
 			$objQuery->setlimitoffset($page_max, $startno);
 			// 表示順序
 			$objQuery->setorder($order);
+			
+			// viewも絞込みをかける(mysql用)
+			global $arrViewWhere();
+			$arrViewWhere["&&noncls_where&&"] = $where;
+			
 			// 検索結果の取得
 			$objPage->arrProducts = $objQuery->select($col, $from, $where, $arrval);
 			
