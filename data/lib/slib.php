@@ -2510,7 +2510,7 @@ function sfChangeMySQL($sql){
 	return $sql;
 }
 
-// 配列の中にデータが存在しているかチェックを行う(大文字小文字の区別なし)
+// SQLの中にviewが存在しているかチェックを行う。
 function sfInArray($sql){
 	global $arrView;
 
@@ -2526,8 +2526,17 @@ function sfInArray($sql){
 // view表をインラインビューに変換する
 function sfChangeView($sql){
 	global $arrView;
+	global $arrViewWhere;
+	
+	$arrViewTmp = $arrView;
 
-	$changesql = strtr($sql,$arrView);
+	// viewのwhereを変換
+	foreach($arrViewTmp as $key => $val){
+		$arrViewTmp[$key] = strtr($arrViewTmp[$key], $arrViewWhere);
+	}
+	
+	// viewを変換
+	$changesql = strtr($sql, $arrViewTmp);
 
 	return $changesql;
 }
