@@ -279,7 +279,7 @@ if ($_POST['mode'] == "search" || $_POST['mode'] == "csv"  || $_POST['mode'] == 
 				
 				sfprintr(sfQuoteSmart($arrval[$i - 1]));
 				
-				$where_tmp .= $arrWhere[$i] . sfQuoteSmart($arrval[$i - 1]);
+				$where_tmp .= sfQuoteSmart($arrval[$i - 1]) . $arrWhere[$i];
 			}
 			
 			
