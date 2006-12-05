@@ -42,7 +42,7 @@ define("UPDATE_PATH", DATA_PATH . UPDATE_DIR);
 //--------------------------------------------------------------------------------------------------------
 /** アップデート管理用 **/
 // アップデート管理用ファイル格納場所　
-define("UPDATE_HTTP", "http://www.lockon.co.jp/share/test/");
+define("UPDATE_HTTP", "http://www.lockon.co.jp/share/");
 
 // アップデート管理用CSV1行辺りの最大文字数
 define("UPDATE_CSV_LINE_MAX", 4096);
@@ -68,7 +68,7 @@ define("AFF_ENTRY_COMPLETE", 2);
 define("CHAR_CODE", "EUC-JP");
 
 // EC-CUBEバージョン情報
-define("ECCUBE_VERSION", "1.0.2beta");
+define("ECCUBE_VERSION", "1.0.2a-beta");
 
 // 決済モジュール付与文言
 define("ECCUBE_PAYMENT", "EC-CUBE");
