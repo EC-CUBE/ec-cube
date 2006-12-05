@@ -993,6 +993,8 @@ class DB_common extends PEAR
 		sfprintr($stmt);
 		sfprintr($data);
 		
+		sfprintr($this->prepared_queries);
+		
         if (count($this->prepare_types[$stmt]) != count($data)) {
             $this->last_query = $this->prepared_queries[$stmt];
             return $this->raiseError(DB_ERROR_MISMATCH);
