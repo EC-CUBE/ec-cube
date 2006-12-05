@@ -272,6 +272,13 @@ if ($_POST['mode'] == "search" || $_POST['mode'] == "csv"  || $_POST['mode'] == 
 			$arrWhere = split("[?]", $where);
 			sfprintr($arrWhere);
 			
+			$where_tmp = "";
+			foreach($arrWhere as $key => $val){
+				$where_tmp .= $val . sfQuoteSmart($arrval[$key]);
+			}
+			
+			sfprintr($where_tmp);
+			
 			
 			// 検索結果の取得
 			$objPage->arrProducts = $objQuery->select($col, $from, $where, $arrval);

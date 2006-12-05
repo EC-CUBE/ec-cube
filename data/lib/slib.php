@@ -2523,6 +2523,19 @@ function sfInArray($sql){
 	return false;
 }
 
+
+function sfQuoteSmart($in){
+    if (is_int($in) || is_double($in)) {
+        return $in;
+    } elseif (is_bool($in)) {
+        return $in ? 1 : 0;
+    } elseif (is_null($in)) {
+        return 'NULL';
+    } else {
+        return "'" . str_replace("'", "''", $in) . "'";
+    }
+}
+	
 // view表をインラインビューに変換する
 function sfChangeView($sql){
 	global $arrView;
