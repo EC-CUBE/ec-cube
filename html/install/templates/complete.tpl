@@ -17,7 +17,7 @@
 		<strong>EC CUBE インストールが完了しました。</strong><br>
 		<br>
 		<a href="<!--{$tpl_sslurl}-->admin/">管理画面</a>にログインできます。<br>
-		先ほど登録したID、パスワードを用いてログインしてください。
+		<span class="fs10">先ほど登録したID、パスワードを用いてログインしてください。</span>
 		
 	</td>
 </tr>
