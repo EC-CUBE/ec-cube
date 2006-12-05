@@ -266,8 +266,7 @@ if ($_POST['mode'] == "search" || $_POST['mode'] == "csv"  || $_POST['mode'] == 
 			$objQuery->setorder($order);
 			
 			// viewも絞込みをかける(mysql用)
-			//global $arrViewWhere;
-			//$arrViewWhere["&&noncls_where&&"] = $where;
+			global $arrViewWhere;
 			
 			$arrWhere = split("[?]", $where);
 			sfprintr($arrWhere);
@@ -278,6 +277,7 @@ if ($_POST['mode'] == "search" || $_POST['mode'] == "csv"  || $_POST['mode'] == 
 			}
 			
 			sfprintr($where_tmp);
+			$arrViewWhere["&&noncls_where&&"] = $where_tmp;
 			
 			
 			// 検索結果の取得
