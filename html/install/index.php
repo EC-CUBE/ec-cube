@@ -228,7 +228,6 @@ case 'complete':
 		$objQuery->insert("dtb_baseinfo", $sqlval);		
 	}
 
-		
 	// ´ÉÍý¼ÔÅÐÏ¿
 	$login_id = $objWebParam->getValue('login_id');
 	$login_pass = sha1($objWebParam->getValue('login_pass') . ":" . AUTH_MAGIC);
