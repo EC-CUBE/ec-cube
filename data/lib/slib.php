@@ -2526,8 +2526,6 @@ function sfInArray($sql){
 
 function sfQuoteSmart($in){
 	
-	sfprintr($in);
-	
     if (is_int($in) || is_double($in)) {
         return $in;
     } elseif (is_bool($in)) {
