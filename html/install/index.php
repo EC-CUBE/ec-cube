@@ -211,11 +211,11 @@ case 'complete':
 	
 	$dsn = $arrRet['db_type']."://".$arrRet['db_user'].":".$arrRet['db_password']."@".$arrRet['db_server'].":".$arrRet['db_port']."/".$arrRet['db_name'];
 	$sqlval['shop_name'] = $objWebParam->getValue('shop_name');
-	$sqlval['email01'] = $objWebParam->getValue('');
-	$sqlval['email02'] = $objWebParam->getValue('');
-	$sqlval['email03'] = $objWebParam->getValue('');
-	$sqlval['email04'] = $objWebParam->getValue('');
-	$sqlval['email05'] = $objWebParam->getValue('');
+	$sqlval['email01'] = $objWebParam->getValue('admin_mail');
+	$sqlval['email02'] = $objWebParam->getValue('admin_mail');
+	$sqlval['email03'] = $objWebParam->getValue('admin_mail');
+	$sqlval['email04'] = $objWebParam->getValue('admin_mail');
+	$sqlval['email05'] = $objWebParam->getValue('admin_mail');
 	$sqlval['top_tpl'] = "default1";
 	$sqlval['product_tpl'] = "default1";
 	$sqlval['detail_tpl'] = "default1";
