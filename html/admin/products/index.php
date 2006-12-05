@@ -276,7 +276,7 @@ if ($_POST['mode'] == "search" || $_POST['mode'] == "csv"  || $_POST['mode'] == 
 			
 			$where_tmp = $arrWhere[0];
 			for($i = 1; $i < count($arrWhere); $i++){
-				$where_tmp .= $arrWhere[$i] . sfQuoteSmart($arrval[$i]);
+				$where_tmp .= $arrWhere[$i] . sfQuoteSmart($arrval[$i - 1]);
 			}
 			
 			
