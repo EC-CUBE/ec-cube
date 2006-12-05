@@ -951,6 +951,9 @@ class DB_common extends PEAR
      */
     function &execute($stmt, $data = array())
     {
+
+		sfprintr($this->prepared_queries);		
+		
         $realquery = $this->executeEmulateQuery($stmt, $data);
         if (DB::isError($realquery)) {
             return $realquery;
@@ -989,12 +992,7 @@ class DB_common extends PEAR
         $stmt = (int)$stmt;
         $data = (array)$data;
         $this->last_parameters = $data;
-
-		sfprintr($stmt);
-		sfprintr($data);
-		
-		sfprintr($this->prepared_queries);
-		
+	
         if (count($this->prepare_types[$stmt]) != count($data)) {
             $this->last_query = $this->prepared_queries[$stmt];
             return $this->raiseError(DB_ERROR_MISMATCH);
@@ -1604,8 +1602,6 @@ class DB_common extends PEAR
                 $params = array();
             }
         }
-
-		sfprintr($params);
 		
         if (sizeof($params) > 0) {
             $sth = $this->prepare($query);
