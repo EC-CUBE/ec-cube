@@ -990,6 +990,8 @@ class DB_common extends PEAR
         $data = (array)$data;
         $this->last_parameters = $data;
 
+		sfprintr($stmt);
+		
         if (count($this->prepare_types[$stmt]) != count($data)) {
             $this->last_query = $this->prepared_queries[$stmt];
             return $this->raiseError(DB_ERROR_MISMATCH);
