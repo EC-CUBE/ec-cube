@@ -765,7 +765,7 @@ $arrTarget = array(
 $arrViewWhere = array(
 	"&&crscls_where&&" => "",
 	"&&crsprdcls_where&&" =>"",
-	"&&noncls_where&&" => "",
+	"&&noncls_where&&" => "WHERE del_flg = 0  ORDER BY update_date DESC  LIMIT 10 OFFSET 0",
 	"&&allcls_where&&" => "",
 	"&&allclsdtl_where&&" => "",
 	"&&prdcls_where&&" => "",
