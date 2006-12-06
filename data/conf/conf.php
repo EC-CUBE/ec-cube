@@ -25,7 +25,7 @@ define("BLOC_DIR", "include/bloc/");
 define("BLOC_PATH", USER_PATH . BLOC_DIR);
 
 // テンプレートファイル保存先
-define("USER_TEMPLATE_DIR", "template/");
+define("USER_TEMPLATE_DIR", "templates/");
 define("USER_TEMPLATE_PATH", USER_PATH . USER_TEMPLATE_DIR);
 
 // ユーザー作成画面のデフォルトPHPファイル
