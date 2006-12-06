@@ -169,7 +169,7 @@ if ($_POST['mode'] == "search" || $_POST['mode'] == "csv"  || $_POST['mode'] == 
 					
 					$date = strtotime($date);
 					
-					sfprintr(date('y-m-d', $date - 86400));
+					sfprintr(date('Y-m-d', $date + 86400));
 					
 					$where.= " AND update_date < date('" . $_POST['search_endyear'] . "/" . $_POST['search_endmonth'] . "/" . $_POST['search_endday'] . "')";
 
