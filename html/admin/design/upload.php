@@ -173,6 +173,6 @@ function lfUnpacking($file_name, $unpacking_dir) {
 	
 	//指定されたフォルダ内に解凍する
 	$err = $tar->extract($unpacking_dir);
-sfprintr($err);
+sfprintr($file_name);
 	return $err;
 }
