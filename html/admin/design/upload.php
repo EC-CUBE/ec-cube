@@ -76,7 +76,7 @@ $objView->display(MAIN_FRAME);
 function lfInitFile() {
 	global $objUpFile;
 
-	$objUpFile->addFile("テンプレートファイル", 'template_file', array('tar.gz', 'tgz', 'tar.bz2'), TEMPLATE_SIZE, true, 0, 0, false);
+	$objUpFile->addFile("テンプレートファイル", 'template_file', array(), TEMPLATE_SIZE, true, 0, 0, false);
 }
 
 /* 
@@ -92,6 +92,7 @@ function lfInitParam() {
 
 /* 
  * 関数名：lfErrorCheck()
+ * 引数1 ：パラメータ
  * 説明　：パラメータ情報の初期化
  */
 function lfErrorCheck($arrList) {
@@ -111,11 +112,35 @@ function lfErrorCheck($arrList) {
 		if($ret != "") {
 			$objErr->arrErr['template_code'] = "※ すでに登録されているテンプレートコードです。<br/>";
 		}
+		// ファイルの拡張子チェック(.tar/tar.gzのみ許可)
+		$errFlag = true;
+		$array_ext = explode(".", $_FILES['template_file']['name']);
+		$ext = $array_ext[ count ( $array_ext ) - 1 ];
+		$ext = strtolower($ext);
+		// .tarチェック
+		if ($ext == 'tar') {
+			$errFlag = false;
+		}
+		$ext = $array_ext[ count ( $array_ext ) - 2 ].$ext;
+		$ext = strtolower($ext);
+		// .tar.gzチェック
+		if ($ext== 'tar.gz') {
+			$errFlag = false;
+		}
+		
+		if($errFlag) {
+			$objErr->arrErr['template_file'] = "※ アップロードするテンプレートファイルで許可されている形式は、tar/tar.gzです。<br />";		
+		}
 	}
 	
 	return $objErr->arrErr;
 }
 
+/* 
+ * 関数名：lfErrorCheck()
+ * 引数1 ：パラメータ
+ * 説明　：テンプレートデータ登録
+ */
 function lfRegistTemplate($arrList) {
 	global $objQuery;
 	
