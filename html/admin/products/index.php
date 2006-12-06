@@ -275,7 +275,9 @@ if ($_POST['mode'] == "search" || $_POST['mode'] == "csv"  || $_POST['mode'] == 
 			$arrViewWhere["&&noncls_where&&"] = $where_tmp . " " . $objQuery->order . " " .  $objQuery->setlimitoffset($page_max, $startno, true);
 	*/		
 			// 検索結果の取得
-			$objPage->arrProducts = $objQuery->select($col, $from, $where, $arrval);
+			//$objPage->arrProducts = $objQuery->select($col, $from, $where, $arrval);
+			
+			sfprintr($where);
 			
 			$objQuery->getlastquery();
 
