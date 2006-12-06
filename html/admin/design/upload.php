@@ -173,13 +173,15 @@ function lfUnpacking($dir, $file_name, $unpacking_dir) {
 	$tar = new Archive_Tar("$dir/$file_name", TRUE);
 
 	// 拡張子を切り取る
-	$file_name = ereg_replace("\.tar$", "", $file_name);
-	$file_name = ereg_replace("\.tar\.gz$", "", $file_name);
+	$unpacking_name = ereg_replace("\.tar$", "", $file_name);
+	$unpacking_name = ereg_replace("\.tar\.gz$", "", $file_name);
 
 	// 指定されたフォルダ内に解凍する
-	$err = $tar->extractModify($unpacking_dir, $file_name);
+	$err = $tar->extractModify($unpacking_dir, $unpacking_name);
 
 	// フォルダ削除
+	@sfDelFile("$dir/$unpacking_name");
+	// 圧縮ファイル削除
 	@sfDelFile("$dir/$file_name");
 
 	return $err;
