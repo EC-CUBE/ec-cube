@@ -246,8 +246,8 @@ if ($_POST['mode'] == "search" || $_POST['mode'] == "csv"  || $_POST['mode'] == 
 			$arrViewWhere["&&noncls_where&&"] = $where_tmp;
 
 			
-			$linemax = $objQuery->count($from, $where, $arrval);
-			$objPage->tpl_linemax = $linemax;				// 何件が該当しました。表示用
+//			$linemax = $objQuery->count($from, $where, $arrval);
+//			$objPage->tpl_linemax = $linemax;				// 何件が該当しました。表示用
 
 			// ページ送りの処理
 			if(is_numeric($_POST['search_page_max'])) {	
