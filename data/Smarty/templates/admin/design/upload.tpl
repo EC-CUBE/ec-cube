@@ -53,7 +53,7 @@
 									<!--{assign var=key value="template_code"}-->
 									<tr class="fs12n">
 										<td bgcolor="#f2f1ec">テンプレートコード</td>
-										<td bgcolor="#ffffff"><span class="red">1</span><input type="text" name="<!--{$arrForm[$key].keyname}-->" value="<!--{$arrForm[$key].value|escape}-->" maxlength="<!--{$arrForm[$key].length}-->" style="<!--{$arrErr[$key]|sfGetErrorColor}-->" class="box54"></td>
+										<td bgcolor="#ffffff"><span class="red"><!--{$arrErr[$key]}--></span><input type="text" name="<!--{$arrForm[$key].keyname}-->" value="<!--{$arrForm[$key].value|escape}-->" maxlength="<!--{$arrForm[$key].length}-->" style="<!--{$arrErr[$key]|sfGetErrorColor}-->" class="box54"></td>
 									</tr>
 									<!--{assign var=key value="template_name"}-->
 									<tr class="fs12n">
