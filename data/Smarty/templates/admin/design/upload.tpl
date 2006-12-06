@@ -51,30 +51,26 @@
 									</tr>
 								</table>
 
-								<table width="678" border="0" cellspacing="1" cellpadding="8" summary=" ">
-									<tr class="fs12n">
-										<td bgcolor="#f2f1ec" align="center"><strong>現在のテンプレート</strong></td>
-									</tr>
-									<tr class="fs12n">
-										<td bgcolor="#ffffff" align="center"><img height=500 width=400 src="<!--{$smarty.const.URL_DIR}--><!--{$arrTemplate.image[$MainImage]}-->" name="main_img" ></td>
-									</tr>
-								</table>
-
 								<table width="678" border="0" cellspacing="0" cellpadding="0" summary=" ">
 									<tr><td colspan="3"><img src="<!--{$smarty.const.URL_DIR}-->img/contents/main_bar.jpg" width="678" height="10" alt=""></td></tr>
 								</table>
 								
+								<form name="form1" method="post" action="<!--{$smarty.server.PHP_SELF|escape}-->"  enctype="multipart/form-data">
 								<table width="678" border="0" cellspacing="1" cellpadding="8" summary=" ">
 									<tr class="fs12n">
-										<td bgcolor="#f2f1ec" align="left" colspan="3"><strong>アップロード</strong></td>
+										<td bgcolor="#f2f1ec">テンプレートコード</td>
+										<td bgcolor="#ffffff"><input type="text" name="template_code" value="" class="box47"></td>
 									</tr>
 									<tr class="fs12n">
-										<td bgcolor="#f2f1ec" align="left" colspan="3">アップロード</td>
+										<td bgcolor="#f2f1ec">テンプレート名</td>
+										<td bgcolor="#ffffff"><input type="text" name="template_name" value="" class="box47"></td>
 									</tr>
 									<tr class="fs12n">
-										<td bgcolor="#f2f1ec" align="left" colspan="3"><strong>アップロード</strong></td>
+										<td bgcolor="#f2f1ec">テンプレートファイル</td>
+										<td bgcolor="#ffffff"><input type="file" name="template_file" class="box47"></td>
 									</tr>
 								</table>
+								</form>
 
 								</td>
 								<td background="<!--{$smarty.const.URL_DIR}-->img/contents/main_right.jpg"><img src="<!--{$smarty.const.URL_DIR}-->img/common/_.gif" width="14" height="1" alt=""></td>
