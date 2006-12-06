@@ -6,7 +6,7 @@
  */
 *}-->
 <!--★★メインコンテンツ★★-->
-<form name="form1" method="post" action="<!--{$smarty.server.PHP_SELF|escape}-->"  enctype="multipart/form-data">
+<form name="form1" method="post" action="<!--{$smarty.server.PHP_SELF|escape}-->" enctype="multipart/form-data">
 <table width="878" border="0" cellspacing="0" cellpadding="0" summary=" ">
 	<tr valign="top">
 		<td background="<!--{$smarty.const.URL_DIR}-->img/contents/navi_bg.gif" height="402">
@@ -51,15 +51,15 @@
 								<table width="678" border="0" cellspacing="1" cellpadding="8" summary=" ">
 									<tr class="fs12n">
 										<td bgcolor="#f2f1ec">テンプレートコード</td>
-										<td bgcolor="#ffffff"><input type="text" name="template_code" value="" class="box54"></td>
+										<td bgcolor="#ffffff"><span class="red"><!--{$arrErr.template_code}--></span><input type="text" name="template_code" value="<!--{$arrParam.template_code|escape}-->" class="box54" <!--{if $arrErr.template_code}-->style="background-color:<!--{$smarty.const.ERR_COLOR|escape}-->"<!--{/if}-->></td>
 									</tr>
 									<tr class="fs12n">
 										<td bgcolor="#f2f1ec">テンプレート名</td>
-										<td bgcolor="#ffffff"><input type="text" name="template_name" value="" class="box54"></td>
+										<td bgcolor="#ffffff"><span class="red"><!--{$arrErr.template_name}--></span><input type="text" name="template_name" value="<!--{$arrParam.template_name|escape}-->" class="box54" <!--{if $arrErr.template_name}-->style="background-color:<!--{$smarty.const.ERR_COLOR|escape}-->"<!--{/if}-->></td>
 									</tr>
 									<tr class="fs12n">
 										<td bgcolor="#f2f1ec">テンプレートファイル</td>
-										<td bgcolor="#ffffff"><input type="file" name="template_file" class="box54" size="64"></td>
+										<td bgcolor="#ffffff"><span class="red"><!--{$arrErr.template_file}--></span><input type="file" name="template_file" class="box54" size="64" <!--{if $arrErr.template_file}-->style="background-color:<!--{$smarty.const.ERR_COLOR|escape}-->"<!--{/if}-->></td>
 									</tr>
 								</table>
 								
