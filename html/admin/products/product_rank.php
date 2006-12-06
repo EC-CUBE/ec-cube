@@ -71,7 +71,7 @@ function lfGetProduct($category_id) {
 	$where = "del_flg = 0 AND category_id = ?";
 	
 	// 行数の取得
-	$linemax = $objQuery->count($table, $where, array($category_id));
+	$linemax = $objQuery->count("dtb_products", $where, array($category_id));
 	// 順位、該当件数表示用
 	$objPage->tpl_linemax = $linemax;
 	
