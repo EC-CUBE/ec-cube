@@ -233,7 +233,7 @@ if ($_POST['mode'] == "search" || $_POST['mode'] == "csv"  || $_POST['mode'] == 
 			$from = "vw_products_nonclass AS noncls ";
 
 			// 行数の取得
-			$linemax = $objQuery->count("dtb_products", $where, $arrval);
+			//$linemax = $objQuery->count("dtb_products", $where, $arrval);
 			$objPage->tpl_linemax = $linemax;				// 何件が該当しました。表示用
 
 			// ページ送りの処理
