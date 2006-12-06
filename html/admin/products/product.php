@@ -250,6 +250,9 @@ function lfGetProduct($product_id) {
 	$col = "*";
 	$table = "vw_products_nonclass AS noncls ";
 	$where = "product_id = ?";
+	
+	sfViewWhere("&&noncls_where&&", $where, array($product_id));
+	
 	$arrRet = $objQuery->select($col, $table, $where, array($product_id));
 		
 	return $arrRet[0];
