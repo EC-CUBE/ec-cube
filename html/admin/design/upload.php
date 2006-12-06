@@ -28,7 +28,7 @@ $objSess = new SC_Session();
 sfIsSuccess($objSess);
 
 // ファイル管理クラス
-$objUpFile = new SC_UploadFile(USER_TEMPLATE_PATH, USER_TEMPLATE_PATH);
+$objUpFile = new SC_UploadFile(USER_TEMPLATE_PATH.$_POST['template_code'], USER_TEMPLATE_PATH);
 // ファイル情報の初期化
 lfInitFile();
 // パラメータ管理クラス
@@ -41,6 +41,8 @@ case 'upload':
 	$objFormParam->setParam($_POST);
 	$objPage->arrErr = lfErrorCheck();
 
+	mkdir ("/path/to/my/dir", 0700);
+	
 	// ファイルを保存
 	$ret = $objUpFile->makeTempFile('template_file', false);
 	if($ret != "") {
