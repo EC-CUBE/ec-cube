@@ -167,6 +167,8 @@ if ($_POST['mode'] == "search" || $_POST['mode'] == "csv"  || $_POST['mode'] == 
 				case 'search_endyear':		// 登録更新日（TO）
 					$date = sfGetTimestamp($_POST['search_endyear'], $_POST['search_endmonth'], $_POST['search_endday']);
 					
+					$date = strtotime($date);
+					
 					sfprintr($date);
 					
 					$where.= " AND update_date < date('" . $_POST['search_endyear'] . "/" . $_POST['search_endmonth'] . "/" . $_POST['search_endday'] . "')";
