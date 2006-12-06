@@ -42,7 +42,7 @@ case 'upload':
 	$objFormParam->setParam($_POST);
 	$arrRet = $objFormParam->getHashArray();
 	
-	$objPage->arrErr = lfErrorCheck();
+	$objPage->arrErr = lfErrorCheck($arrRet);
 
 	// ファイルを一時フォルダへ保存
 	$ret = $objUpFile->makeTempFile('template_file', false);
