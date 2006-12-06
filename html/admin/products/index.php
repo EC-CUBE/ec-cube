@@ -120,7 +120,8 @@ if ($_POST['mode'] == "search" || $_POST['mode'] == "csv"  || $_POST['mode'] == 
 	$objPage->arrErr = lfCheckError();
 
 	$where = "del_flg = 0";
-
+	$view_where = "del_flg = 0";
+	
 	// 入力エラーなし
 	if (count($objPage->arrErr) == 0) {
 
@@ -135,44 +136,54 @@ if ($_POST['mode'] == "search" || $_POST['mode'] == "csv"  || $_POST['mode'] == 
 			switch ($key) {
 				case 'search_product_id':	// 商品ID
 					$where .= " AND product_id = ?";
+					$view_where .= " AND product_id = ?";
 					$arrval[] = $val;
 					break;
 				case 'search_product_class_name': //規格名称
 					$where_in = " (SELECT classcategory_id FROM dtb_classcategory WHERE class_id IN (SELECT class_id FROM dtb_class WHERE name LIKE ?)) ";
 					$where .= " AND product_id IN (SELECT product_id FROM dtb_products_class WHERE classcategory_id1 IN " . $where_in;
 					$where .= " OR classcategory_id2 IN" . $where_in . ")";
+					$view_where .= " AND product_id IN (SELECT product_id FROM dtb_products_class WHERE classcategory_id1 IN " . $where_in;
+					$view_where .= " OR classcategory_id2 IN" . $where_in . ")";
 					$arrval[] = "%$val%";
 					$arrval[] = "%$val%";
+					$view_where = $where;
 					break;
 				case 'search_name':			// 商品名
 					$where .= " AND name ILIKE ?";
+					$view_where .= " AND name ILIKE ?";
 					$arrval[] = "%$val%";
 					break;
 				case 'search_category_id':	// カテゴリー
 					list($tmp_where, $tmp_arrval) = sfGetCatWhere($val);
 					if($tmp_where != "") {
 						$where.= " AND $tmp_where";
+						$view_where.= " AND $tmp_where";
 						$arrval = array_merge((array)$arrval, (array)$tmp_arrval);
 					}
 					break;
 				case 'search_product_code':	// 商品コード
 					$where .= " AND product_id IN (SELECT product_id FROM dtb_products_class WHERE product_code ILIKE ? GROUP BY product_id)";
+					$view_where .= " AND EXISTS (SELECT product_id FROM dtb_products_class as cls WHERE cls.product_code ILIKE ? AND prd.product_id = cls.product_id GROUP BY cls.product_id )";
 					$arrval[] = "%$val%";
 					break;
 				case 'search_startyear':	// 登録更新日（FROM）
 					$date = sfGetTimestamp($_POST['search_startyear'], $_POST['search_startmonth'], $_POST['search_startday']);
 					$where.= " AND update_date >= '" . $_POST['search_startyear'] . "/" . $_POST['search_startmonth']. "/" .$_POST['search_startday'] . "'";
+					$view_where.= " AND update_date >= '" . $_POST['search_startyear'] . "/" . $_POST['search_startmonth']. "/" .$_POST['search_startday'] . "'";
 					break;
 				case 'search_endyear':		// 登録更新日（TO）
 					$date = sfGetTimestamp($_POST['search_endyear'], $_POST['search_endmonth'], $_POST['search_endday']);
 					$date = date('Y/m/d', strtotime($date) + 86400);
 					$where.= " AND update_date < date('" . $date . "')";
+					$view_where.= " AND update_date < date('" . $date . "')";
 					break;
 				case 'search_product_flag':	//種別
 					global $arrSTATUS;
 					$search_product_flag = sfSearchCheckBoxes($val);
 					if($search_product_flag != "") {
 						$where.= " AND product_flag LIKE ?";
+						$view_where.= " AND product_flag LIKE ?";
 						$arrval[] = $search_product_flag;					
 					}
 					break;
@@ -191,6 +202,7 @@ if ($_POST['mode'] == "search" || $_POST['mode'] == "csv"  || $_POST['mode'] == 
 					if ($tmp_where != ""){
 						$tmp_where.=")";
 						$where.= " $tmp_where";
+						$view_where.= " $tmp_where";
 					}
 					break;
 				default:
@@ -233,7 +245,7 @@ if ($_POST['mode'] == "search" || $_POST['mode'] == "csv"  || $_POST['mode'] == 
 			$from = "vw_products_nonclass AS noncls ";
 
 			// 行数の取得
-			//$linemax = $objQuery->count("dtb_products", $where, $arrval);
+			$linemax = $objQuery->count("dtb_products as prd", $view_where, $arrval);
 			$objPage->tpl_linemax = $linemax;				// 何件が該当しました。表示用
 
 			// ページ送りの処理
@@ -272,6 +284,7 @@ if ($_POST['mode'] == "search" || $_POST['mode'] == "csv"  || $_POST['mode'] == 
 			for($i = 1; $i < count($arrWhere); $i++){
 				$where_tmp .= sfQuoteSmart($arrval[$i - 1]) . $arrWhere[$i];
 			}
+			$where_tmp .= $view_where;
 			$arrViewWhere["&&noncls_where&&"] = $where_tmp . " " . $objQuery->order . " " .  $objQuery->setlimitoffset($page_max, $startno, true);
 	*/		
 			// 検索結果の取得
