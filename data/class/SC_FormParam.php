@@ -153,6 +153,7 @@ class SC_FormParam {
 				case 'NO_SPTAB':
 				case 'DIR_CHECK':
 				case 'DOMAIN_CHECK':
+				case 'FILE_NAME_CHECK':
 				
 					if(!is_array($this->param[$cnt])) {
 						$objErr->doFunc(array($this->disp_name[$cnt], $val), array($func));
