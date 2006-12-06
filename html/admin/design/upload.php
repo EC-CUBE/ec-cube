@@ -98,14 +98,16 @@ function lfErrorCheck($arrList) {
 	$objErr = new SC_CheckError($arrList);
 	$objErr->arrErr = $objFormParam->checkError();
 	
-	// 同名のフォルダが存在する場合はエラー
-	if(file_exists(USER_TEMPLATE_PATH.$arrList['template_code'])) {
-		$objErr->arrErr['template_code'] = "※ 同名のファイルがすでに存在します。<br/>";
-	}
-	// DBにすでに登録されていないかチェック
-	$ret = $objQuery->get("dtb_templates", "template_code", "template_code = ?", array($arrList['template_code']));
-	if($ret != "") {
-		$objErr->arrErr['template_code'] = "※ すでに登録されているテンプレートコードです。<br/>";
+	if(count($objErr->arrErr) <= 0) {
+		// 同名のフォルダが存在する場合はエラー
+		if(file_exists(USER_TEMPLATE_PATH.$arrList['template_code'])) {
+			$objErr->arrErr['template_code'] = "※ 同名のファイルがすでに存在します。<br/>";
+		}
+		// DBにすでに登録されていないかチェック
+		$ret = $objQuery->get("dtb_templates", "template_code", "template_code = ?", array($arrList['template_code']));
+		if($ret != "") {
+			$objErr->arrErr['template_code'] = "※ すでに登録されているテンプレートコードです。<br/>";
+		}
 	}
 	
 	return $objErr->arrErr;
