@@ -86,7 +86,7 @@ function lfInitFile() {
 function lfInitParam() {
 	global $objFormParam;
 		
-	$objFormParam->addParam("テンプレートコード", "template_code", STEXT_LEN, "KVa", array("EXIST_CHECK","SPTAB_CHECK","MAX_LENGTH_CHECK"));
+	$objFormParam->addParam("テンプレートコード", "template_code", STEXT_LEN, "KVa", array("EXIST_CHECK","SPTAB_CHECK","MAX_LENGTH_CHECK", "FILE_NAME_CHECK"));
 	$objFormParam->addParam("テンプレート名", "template_name", STEXT_LEN, "KVa", array("EXIST_CHECK","SPTAB_CHECK","MAX_LENGTH_CHECK"));
 }
 
@@ -121,14 +121,13 @@ function lfErrorCheck($arrList) {
 		if ($ext == 'tar') {
 			$errFlag = false;
 		}
-sfprintr($ext);
+
 		$ext = $array_ext[ count ( $array_ext ) - 2 ].".".$ext;
 		$ext = strtolower($ext);
 		// .tar.gzチェック
 		if ($ext== 'tar.gz') {
 			$errFlag = false;
 		}
-sfprintr($ext);
 		
 		if($errFlag) {
 			$objErr->arrErr['template_file'] = "※ アップロードするテンプレートファイルで許可されている形式は、tar/tar.gzです。<br />";		
