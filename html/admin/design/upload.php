@@ -172,8 +172,6 @@ function lfUnpacking($file_name, $unpacking_dir) {
 	$tar = new Archive_Tar($file_name, TRUE);
 	// 指定されたフォルダ内に解凍する
 	$err = $tar->extractModify($unpacking_dir, $file_name);
-	// 解凍する際にフォルダが
-	sfCopyDir($image_dir, "../../upload/save_image/", $copy_mess, true);
 
 	return $err;
 }
