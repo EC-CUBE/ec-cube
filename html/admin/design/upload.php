@@ -28,7 +28,7 @@ $objSess = new SC_Session();
 sfIsSuccess($objSess);
 
 // ファイル管理クラス
-$objUpFile = new SC_UploadFile(IMAGE_TEMP_DIR, IMAGE_SAVE_DIR);
+$objUpFile = new SC_UploadFile(USER_TEMPLATE_PATH, USER_TEMPLATE_PATH);
 // ファイル情報の初期化
 lfInitFile();
 // パラメータ管理クラス
@@ -45,11 +45,8 @@ case 'upload':
 	$ret = $objUpFile->makeTempFile('template_file', false);
 	if($ret != "") {
 		$objPage->arrErr['template_file'] = $ret;
-	} else {
+	} else if(count($objPage->arrErr) <= 0) {
 		$objPage->tpl_onload = "alert('テンプレートファイルをアップロードしました。');";
-	}
-	// エラーが無かったら
-	if(count($objPage->arrErr) > 0) {
 	}
 	break;
 default:
