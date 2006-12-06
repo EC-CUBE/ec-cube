@@ -58,7 +58,7 @@ case 'upload':
 		// 一時フォルダから保存ディレクトリへ移動
 		$objUpFile->moveTempFile();
 		// 解凍
-		lfUnpacking($new_file_dir."/".$_FILES['template_file']['name'], $new_file_dir."/");
+		lfUnpacking($new_file_dir, $_FILES['template_file']['name'], $new_file_dir."/");
 		// DBに保存
 		lfRegistTemplate($arrRet);
 		
@@ -162,19 +162,20 @@ function lfRegistTemplate($arrList) {
 
 /* 
  * 関数名：lfUnpacking
- * 引数1 ：ファイルネーム
- * 引数2 ：解凍ディレクトリ
+ * 引数1 ：ディレクトリ
+ * 引数2 ：ファイルネーム
+ * 引数3 ：解凍ディレクトリ
  * 説明　：テンプレートデータ登録
  */
-function lfUnpacking($file_name, $unpacking_dir) {
+function lfUnpacking($dir, $file_name, $unpacking_dir) {
 
 	// 圧縮フラグTRUEはgzip解凍をおこなう
-	$tar = new Archive_Tar($file_name, TRUE);
+	$tar = new Archive_Tar("$dir/$file_name", TRUE);
 
 	// 拡張子を切り取る
 	$file_name = ereg_replace("\.tar$", "", $file_name);
 	$file_name = ereg_replace("\.tar\.gz$", "", $file_name);
-echo $file_name;
+
 	// 指定されたフォルダ内に解凍する
 	$err = $tar->extractModify($unpacking_dir, $file_name);
 
