@@ -164,7 +164,7 @@ if ($_POST['mode'] == "search" || $_POST['mode'] == "csv"  || $_POST['mode'] == 
 					break;
 				case 'search_product_code':	// 商品コード
 					$where .= " AND product_id IN (SELECT product_id FROM dtb_products_class WHERE product_code ILIKE ? GROUP BY product_id)";
-					$view_where .= " AND EXISTS (SELECT product_id FROM dtb_products_class as cls WHERE cls.product_code ILIKE ? AND prd.product_id = cls.product_id GROUP BY cls.product_id )";
+					$view_where .= " AND EXISTS (SELECT product_id FROM dtb_products_class as cls WHERE cls.product_code ILIKE ? AND dtb_products.product_id = cls.product_id GROUP BY cls.product_id )";
 					$arrval[] = "%$val%";
 					break;
 				case 'search_startyear':	// 登録更新日（FROM）
