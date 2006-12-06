@@ -29,8 +29,11 @@ $objQuery = new SC_Query();
 $objSess = new SC_Session();
 sfIsSuccess($objSess);
 
+// アップロードしたファイルをフォルダ
+$new_file_dir = USER_TEMPLATE_PATH.$_POST['template_code'];
+
 // ファイル管理クラス
-$objUpFile = new SC_UploadFile(TEMPLATE_TEMP_DIR, USER_TEMPLATE_PATH.$_POST['template_code']);
+$objUpFile = new SC_UploadFile(TEMPLATE_TEMP_DIR, $new_file_dir);
 // ファイル情報の初期化
 lfInitFile();
 // パラメータ管理クラス
@@ -51,11 +54,11 @@ case 'upload':
 		$objPage->arrErr['template_file'] = $ret;
 	} else if(count($objPage->arrErr) <= 0) {
 		// フォルダ作成
-		$ret = @mkdir(USER_TEMPLATE_PATH.$arrRet['template_code']);
+		$ret = @mkdir($new_file_dir);
 		// 一時フォルダから保存ディレクトリへ移動
 		$objUpFile->moveTempFile();
 		// 解凍
-		lfUnpacking($_FILES['template_file']['name'], "./");
+		lfUnpacking($new_file_dir.$_FILES['template_file']['name'], "./");
 		// DBに保存
 		lfRegistTemplate($arrRet);
 		
