@@ -51,11 +51,11 @@
 								<table width="678" border="0" cellspacing="1" cellpadding="8" summary=" ">
 									<tr class="fs12n">
 										<td bgcolor="#f2f1ec">テンプレートコード</td>
-										<td bgcolor="#ffffff"><span class="red"><!--{$arrErr.template_code}--></span><input type="text" name="template_code" value="<!--{$arrParam.template_code|escape}-->" class="box54" <!--{if $arrErr.template_code}-->style="background-color:<!--{$smarty.const.ERR_COLOR|escape}-->"<!--{/if}-->></td>
+										<td bgcolor="#ffffff"><span class="red"><!--{$arrErr.template_code}--></span><input type="text" name="template_code" value="<!--{arrForm.template_code|escape}-->" class="box54" <!--{if $arrErr.template_code}-->style="background-color:<!--{$smarty.const.ERR_COLOR|escape}-->"<!--{/if}-->></td>
 									</tr>
 									<tr class="fs12n">
 										<td bgcolor="#f2f1ec">テンプレート名</td>
-										<td bgcolor="#ffffff"><span class="red"><!--{$arrErr.template_name}--></span><input type="text" name="template_name" value="<!--{$arrParam.template_name|escape}-->" class="box54" <!--{if $arrErr.template_name}-->style="background-color:<!--{$smarty.const.ERR_COLOR|escape}-->"<!--{/if}-->></td>
+										<td bgcolor="#ffffff"><span class="red"><!--{$arrErr.template_name}--></span><input type="text" name="template_name" value="<!--{arrForm.template_name|escape}-->" class="box54" <!--{if $arrErr.template_name}-->style="background-color:<!--{$smarty.const.ERR_COLOR|escape}-->"<!--{/if}-->></td>
 									</tr>
 									<tr class="fs12n">
 										<td bgcolor="#f2f1ec">テンプレートファイル</td>
