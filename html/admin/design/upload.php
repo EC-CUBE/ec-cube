@@ -5,6 +5,7 @@
  * http://www.lockon.co.jp/
  */
 require_once("../../require.php");
+require_once(DATA_PATH. "module/Tar.php");
 
 class LC_Page {
 
@@ -53,6 +54,8 @@ case 'upload':
 		$ret = @mkdir(USER_TEMPLATE_PATH.$arrRet['template_code']);
 		// 一時フォルダから保存ディレクトリへ移動
 		$objUpFile->moveTempFile();
+		// 解凍
+		lfUnpacking($_FILES['template_file']['name'], "./");
 		// DBに保存
 		lfRegistTemplate($arrRet);
 		
@@ -154,3 +157,19 @@ function lfRegistTemplate($arrList) {
 	$objQuery->insert("dtb_templates", $sqlval);
 }
 
+/* 
+ * 関数名：lfUnpacking
+ * 引数1 ：ファイルネーム
+ * 引数2 ：解凍ディレクトリ
+ * 説明　：テンプレートデータ登録
+ */
+function lfUnpacking($file_name, $unpacking_dir) {
+
+	//圧縮フラグTRUEはgzip解凍をおこなう
+	$tar = new Archive_Tar($file_name, TRUE);
+	
+	//指定されたフォルダ内に解凍する
+	$err = $tar->extract($unpacking_dir);
+	
+	return $err;
+}
