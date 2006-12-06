@@ -95,13 +95,13 @@ if ($_POST['mode'] == "search") {
 	$startno = $objNavi->start_row;
 	
 	// 取得範囲の指定(開始行番号、行数のセット)
-	$objQuery->setlimitoffset($page_max, $startno);
-
-	// viewも絞込みをかける(mysql用)
-	sfViewWhere("&&noncls_where&&", $where, $arrval, $objQuery->order . " " .  $objQuery->setlimitoffset($page_max, $startno, true));
-
+	if(DB_TYPE != "mysql") $objQuery->setlimitoffset($page_max, $startno);
 	// 表示順序
 	$objQuery->setorder($order);
+	
+	// viewも絞込みをかける(mysql用)
+	sfViewWhere("&&noncls_where&&", $where, $arrval, $objQuery->order . " " .  $objQuery->setlimitoffset($page_max, $startno, true));
+	
 	// 検索結果の取得
 	$objPage->arrProducts = $objQuery->select($col, $from, $where, $arrval);
 		

@@ -271,9 +271,7 @@ if ($_POST['mode'] == "search" || $_POST['mode'] == "csv"  || $_POST['mode'] == 
 			}
 
 			// 取得範囲の指定(開始行番号、行数のセット)
-			if(DB_TYPE != "mysql"){
-				$objQuery->setlimitoffset($page_max, $startno);
-			}
+			if(DB_TYPE != "mysql") $objQuery->setlimitoffset($page_max, $startno);
 			// 表示順序
 			$objQuery->setorder($order);
 			
