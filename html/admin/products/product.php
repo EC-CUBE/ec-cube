@@ -559,19 +559,23 @@ function lfMakeScaleImage($from_key, $to_key, $forced = false){
 		return "";
 	}
 	
-	// 元画像サイズを取得
-	list($from_w, $from_h) = getimagesize($from_path);
-	
-	// 生成先の画像サイズを取得
-	$to_w = $objUpFile->width[$arrImageKey[$to_key]];
-	$to_h = $objUpFile->height[$arrImageKey[$to_key]];
-	
-	
-	if($forced) $objUpFile->save_file[$arrImageKey[$to_key]] = "";
-	
-	if(($objUpFile->temp_file[$arrImageKey[$to_key]] == "" and $objUpFile->save_file[$arrImageKey[$to_key]] == "")){
-		$path = $objUpFile->makeThumb($from_path, $to_w, $to_h);
-		$objUpFile->temp_file[$arrImageKey[$to_key]] = basename($path);
+	if(file_exists($from_path)){
+		// 元画像サイズを取得
+		list($from_w, $from_h) = getimagesize($from_path);
+		
+		// 生成先の画像サイズを取得
+		$to_w = $objUpFile->width[$arrImageKey[$to_key]];
+		$to_h = $objUpFile->height[$arrImageKey[$to_key]];
+		
+		
+		if($forced) $objUpFile->save_file[$arrImageKey[$to_key]] = "";
+		
+		if(($objUpFile->temp_file[$arrImageKey[$to_key]] == "" and $objUpFile->save_file[$arrImageKey[$to_key]] == "")){
+			$path = $objUpFile->makeThumb($from_path, $to_w, $to_h);
+			$objUpFile->temp_file[$arrImageKey[$to_key]] = basename($path);
+		}
+	}else{
+		return "";
 	}
 }
 
