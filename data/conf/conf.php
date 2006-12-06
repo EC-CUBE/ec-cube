@@ -216,6 +216,7 @@ define("IMAGE_SIZE", 1000);								// 画像サイズ制限(KB)
 define("CSV_SIZE", 2000);								// CSVサイズ制限(KB)
 define("PDF_SIZE", 5000);								// PDFサイズ制限(KB):商品詳細ファイル等
 define("FILE_SIZE", 10000);								// ファイル管理画面アップ制限(KB)
+define("TEMPLATE_SIZE", 10000);							// アップできるテンプレートファイル制限(KB)
 define("LEVEL_MAX", 5);									// カテゴリの最大階層
 define("CATEGORY_MAX", 1000);							// 最大カテゴリ登録数
 

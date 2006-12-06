@@ -38,11 +38,13 @@ lfInitParam();
 
 switch($_POST['mode']) {
 case 'upload':
+	$objPage->arrErr = lfErrorCheck();
 	break;
 default:
 	break;
 }
 // 画面の表示
+$objPage->arrForm = $objFormParam->getFormParamList();
 $objView->assignobj($objPage);
 $objView->display(MAIN_FRAME);
 
