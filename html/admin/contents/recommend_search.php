@@ -88,17 +88,20 @@ if ($_POST['mode'] == "search") {
 	} else {
 		$page_max = SEARCH_PMAX;
 	}
-	
+
 	// ページ送りの取得
 	$objNavi = new SC_PageNavi($_POST['search_pageno'], $linemax, $page_max, "fnNaviSearchOnlyPage", NAVI_PMAX);
 	$objPage->tpl_strnavi = $objNavi->strnavi;		// 表示文字列
 	$startno = $objNavi->start_row;
-	
-	// 取得範囲の指定(開始行番号、行数のセット)
-	$objQuery->setlimitoffset($page_max, $startno);
 
+	// 取得範囲の指定(開始行番号、行数のセット)
+	if(DB_TYPE != "mysql") $objQuery->setlimitoffset($page_max, $startno);
 	// 表示順序
 	$objQuery->setorder($order);
+
+	// viewも絞込みをかける(mysql用)
+	sfViewWhere("&&noncls_where&&", $where, $arrval, $objQuery->order . " " .  $objQuery->setlimitoffset($page_max, $startno, true));
+
 	// 検索結果の取得
 	$objPage->arrProducts = $objQuery->select($col, $from, $where, $arrval);
 }
