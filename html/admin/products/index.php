@@ -261,7 +261,7 @@ if ($_POST['mode'] == "search" || $_POST['mode'] == "csv"  || $_POST['mode'] == 
 			}
 
 			// 取得範囲の指定(開始行番号、行数のセット)
-			$objQuery->setlimitoffset($page_max, $startno);
+			//$objQuery->setlimitoffset($page_max, $startno);
 			// 表示順序
 			$objQuery->setorder($order);
 			
@@ -274,7 +274,7 @@ if ($_POST['mode'] == "search" || $_POST['mode'] == "csv"  || $_POST['mode'] == 
 			for($i = 1; $i < count($arrWhere); $i++){
 				$where_tmp .= sfQuoteSmart($arrval[$i - 1]) . $arrWhere[$i];
 			}
-			$arrViewWhere["&&noncls_where&&"] = $where_tmp . " " . $objQuery->order . " " .  $objQuery->option;	
+			$arrViewWhere["&&noncls_where&&"] = $where_tmp . " " . $objQuery->order . " " .  $objQuery->setlimitoffset($page_max, $startno, true);
 			
 			sfprintr($objQuery->option);
 			sfprintr($objQuery->order);

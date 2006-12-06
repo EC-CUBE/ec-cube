@@ -120,10 +120,17 @@ class SC_Query {
 		$this->option = $str;
 	}
 	
-	function setlimitoffset($limit, $offset = 0) {
+	function setlimitoffset($limit, $offset = 0, $return = false) {
 		if (is_numeric($limit) && is_numeric($offset)){
-			$this->option.= " LIMIT " . $limit;
-			$this->option.= " OFFSET " . $offset;
+			
+			$option.= " LIMIT " . $limit;
+			$option.= " OFFSET " . $offset;
+			
+			if($return){
+				return $option;
+			}else{
+				$this->option.= $option;
+			}
 		}
 	}
 	
