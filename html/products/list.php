@@ -56,7 +56,7 @@ if($_GET['mode'] == 'search'){
 }
 
 $objQuery = new SC_Query();
-//$count = $objQuery->count("dtb_best_products", "category_id = ?", array($category_id));
+$count = $objQuery->count("dtb_best_products", "category_id = ?", array($category_id));
 
 // 以下の条件でBEST商品を表示する
 // ・BEST最大数の商品が登録されている。
@@ -76,7 +76,7 @@ if(($count >= BEST_MIN) && lfIsRootCategory($category_id) && ($_GET['mode'] != '
 	}
 	
 	// 商品一覧の表示処理
-	$objPage = lfDispProductsList($category_id, $_GET['name'], $objPage->disp_number, $_POST['orderby']);
+//	$objPage = lfDispProductsList($category_id, $_GET['name'], $objPage->disp_number, $_POST['orderby']);
 	
 	// 検索条件を画面に表示
 	// カテゴリー検索条件
