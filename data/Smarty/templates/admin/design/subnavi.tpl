@@ -29,7 +29,7 @@
 		<tr><td><img src="<!--{$smarty.const.URL_DIR}-->img/contents/navi_subline.gif" width="140" height="2" alt=""></td></tr>
 		<tr><td class=<!--{if $tpl_subno_template != 'mypage'}-->"subnavi"<!--{else}-->"subnavi-on"<!--{/if}-->><a href="./template.php?tpl_subno_template=<!--{$arrSubnavi.title.4}-->"	onMouseOver="naviStyleChange('mypage', '#b7b7b7')" <!--{if $tpl_subno_template != 'mypage'}-->onMouseOut="naviStyleChange('mypage', '#818287')"<!--{/if}--> id="mypage"><span class="subnavi_text">MYページ</span></a></td></tr>
 		<tr><td><img src="<!--{$smarty.const.URL_DIR}-->img/contents/navi_subline.gif" width="140" height="2" alt=""></td></tr>
-		<tr><td class=<!--{if $tpl_subno_template != 'upload'}-->"subnavi"<!--{else}-->"subnavi-on"<!--{/if}-->><a href="./template.php?tpl_subno_template=<!--{$arrSubnavi.title.5}-->"	onMouseOver="naviStyleChange('mypage', '#b7b7b7')" <!--{if $tpl_subno_template != 'mypage'}-->onMouseOut="naviStyleChange('mypage', '#818287')"<!--{/if}--> id="mypage"><span class="subnavi_text">MYページ</span></a></td></tr>
+		<tr><td class=<!--{if $tpl_subno_template != 'upload'}-->"subnavi"<!--{else}-->"subnavi-on"<!--{/if}-->><a href="./template.php?tpl_subno_template=<!--{$arrSubnavi.title.5}-->"	onMouseOver="naviStyleChange('mypage', '#b7b7b7')" <!--{if $tpl_subno_template != 'upload'}-->onMouseOut="naviStyleChange('mypage', '#818287')"<!--{/if}--> id="upload"><span class="subnavi_text">アップロード</span></a></td></tr>
 		<tr><td><img src="<!--{$smarty.const.URL_DIR}-->img/contents/navi_subline.gif" width="140" height="2" alt=""></td></tr>
 	<!--{/if}-->
 	
