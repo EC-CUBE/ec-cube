@@ -42,7 +42,7 @@ case 'upload':
 	$objPage->arrErr = lfErrorCheck();
 
 	// ファイルを保存
-	$ret = $objUpFile->makeTempFile('upload_file', false);
+	$ret = $objUpFile->makeTempFile('template_file', false);
 	
 	// エラーが無かったら
 	if(count($objPage->arrErr) > 0) {
