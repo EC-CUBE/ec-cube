@@ -235,7 +235,6 @@ if ($_POST['mode'] == "search" || $_POST['mode'] == "csv"  || $_POST['mode'] == 
 			$from = "vw_products_nonclass AS noncls ";
 
 			// 行数の取得
-			//$linemax = $objQuery->count($from, $where, $arrval);
 			$linemax = $objQuery->count("dtb_products", $where, $arrval);
 			$objPage->tpl_linemax = $linemax;				// 何件が該当しました。表示用
 
@@ -262,7 +261,9 @@ if ($_POST['mode'] == "search" || $_POST['mode'] == "csv"  || $_POST['mode'] == 
 			}
 
 			// 取得範囲の指定(開始行番号、行数のセット)
-			//$objQuery->setlimitoffset($page_max, $startno);
+			if(DB_TYPE != "mysql"){
+				$objQuery->setlimitoffset($page_max, $startno);
+			}
 			// 表示順序
 			$objQuery->setorder($order);
 			
@@ -270,22 +271,15 @@ if ($_POST['mode'] == "search" || $_POST['mode'] == "csv"  || $_POST['mode'] == 
 			// viewも絞込みをかける(mysql用)
 			global $arrViewWhere;
 			$arrWhere = split("[?]", $where);
-			$where_tmp = "";
 			$where_tmp = " WHERE " . $arrWhere[0];
 			for($i = 1; $i < count($arrWhere); $i++){
 				$where_tmp .= sfQuoteSmart($arrval[$i - 1]) . $arrWhere[$i];
 			}
 			$arrViewWhere["&&noncls_where&&"] = $where_tmp . " " . $objQuery->order . " " .  $objQuery->setlimitoffset($page_max, $startno, true);
 			
-			sfprintr($objQuery->option);
-			sfprintr($objQuery->order);
-			
-			
 			// 検索結果の取得
 			$objPage->arrProducts = $objQuery->select($col, $from, $where, $arrval);
-			
-			sfprintr($objQuery->getlastquery(false));
-			
+
 			break;
 		}
 	}
