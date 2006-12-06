@@ -120,8 +120,8 @@ function lfRegistTemplate($arrList) {
 	global $objQuery;
 	
 	// INSERTする値を作成する。
-	$sqlval['name'] = $arrList['template_code'];
-	$sqlval['category_id'] = $arrList['template_name'];
+	$sqlval['template_code'] = $arrList['template_code'];
+	$sqlval['template_name'] = $arrList['template_name'];
 	$sqlval['create_date'] = "now()";
 	$sqlval['update_date'] = "now()";
 
