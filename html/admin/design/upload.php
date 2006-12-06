@@ -83,6 +83,6 @@ function lfErrorCheck() {
 	$arrRet = $objFormParam->getHashArray();
 	$objErr = new SC_CheckError($arrRet);
 	$objErr->arrErr = $objFormParam->checkError();
-
+sfprintr($objErr->arrErr);
 	return $objErr->arrErr;
 }
