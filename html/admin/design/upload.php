@@ -43,7 +43,11 @@ case 'upload':
 
 	// ファイルを保存
 	$ret = $objUpFile->makeTempFile('template_file', false);
-sfprintr($ret);
+	if($ret != "") {
+		$arrErr['upload_file'] = $ret;
+	} else {
+		$objPage->tpl_onload = "alert('テンプレートファイルをアップロードしました。');";
+	}
 	// エラーが無かったら
 	if(count($objPage->arrErr) > 0) {
 	}
