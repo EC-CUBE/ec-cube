@@ -82,9 +82,13 @@ function lfGetProduct($category_id) {
 	$objPage->tpl_disppage = $objNavi->now_page;	// 表示ページ番号（「上へ下へ」表示判定用）
 			
 	// 取得範囲の指定(開始行番号、行数のセット)
-	$objQuery->setlimitoffset(SEARCH_PMAX, $startno);
+	if(DB_TYPE != "mysql") $objQuery->setlimitoffset(SEARCH_PMAX, $startno);
 	
 	$objQuery->setorder("rank DESC");
+	
+	// viewも絞込みをかける(mysql用)
+	sfViewWhere("&&noncls_where&&", $where, array($category_id), $objQuery->order . " " .  $objQuery->setlimitoffset(SEARCH_PMAX, $startno, true));
+	
 	$arrRet = $objQuery->select($col, $table, $where, array($category_id));
 	return $arrRet;
 }
