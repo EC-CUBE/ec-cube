@@ -195,7 +195,7 @@ function lfDispProductsList($category_id, $name, $disp_num, $orderby) {
 	}
 			
 	// 行数の取得
-	//$linemax = $objQuery->count("vw_products_allclass AS allcls", $where, $arrval);
+	$linemax = $objQuery->count("vw_products_allclass AS allcls", $where, $arrval);
 	$objPage->tpl_linemax = $linemax;	// 何件が該当しました。表示用
 	
 	// ページ送りの取得
@@ -219,7 +219,7 @@ function lfDispProductsList($category_id, $name, $disp_num, $orderby) {
 	
 	
 	// 検索結果の取得
-	$objPage->arrProducts = $objQuery->select("*", "vw_products_allclass AS allcls", $where, $arrval);
+	//$objPage->arrProducts = $objQuery->select("*", "vw_products_allclass AS allcls", $where, $arrval);
 	
 	
 	sfprintr($objQuery->getlastquery(false));
