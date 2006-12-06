@@ -76,7 +76,7 @@ if(($count >= BEST_MIN) && lfIsRootCategory($category_id) && ($_GET['mode'] != '
 	}
 	
 	// 商品一覧の表示処理
-//	$objPage = lfDispProductsList($category_id, $_GET['name'], $objPage->disp_number, $_POST['orderby']);
+	$objPage = lfDispProductsList($category_id, $_GET['name'], $objPage->disp_number, $_POST['orderby']);
 	
 	// 検索条件を画面に表示
 	// カテゴリー検索条件
@@ -195,7 +195,7 @@ function lfDispProductsList($category_id, $name, $disp_num, $orderby) {
 	}
 			
 	// 行数の取得
-	$linemax = $objQuery->count("vw_products_allclass AS allcls", $where, $arrval);
+	//$linemax = $objQuery->count("vw_products_allclass AS allcls", $where, $arrval);
 	$objPage->tpl_linemax = $linemax;	// 何件が該当しました。表示用
 	
 	// ページ送りの取得
@@ -219,7 +219,7 @@ function lfDispProductsList($category_id, $name, $disp_num, $orderby) {
 	
 	
 	// 検索結果の取得
-	$objPage->arrProducts = $objQuery->select("*", "vw_products_allclass AS allcls", $where, $arrval);
+	//$objPage->arrProducts = $objQuery->select("*", "vw_products_allclass AS allcls", $where, $arrval);
 	
 	
 	sfprintr($objQuery->getlastquery(false));
