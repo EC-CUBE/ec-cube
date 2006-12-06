@@ -22,13 +22,14 @@ class LC_Page {
 $objPage = new LC_Page();
 $objView = new SC_AdminView();
 $objSess = new SC_Session();
+$objQuery = new SC_Query();
 
 // 認証可否の判定
 $objSess = new SC_Session();
 sfIsSuccess($objSess);
 
 // ファイル管理クラス
-$objUpFile = new SC_UploadFile(USER_TEMPLATE_PATH.$_POST['template_code'], USER_TEMPLATE_PATH);
+$objUpFile = new SC_UploadFile(TEMPLATE_TEMP_DIR, USER_TEMPLATE_PATH.$_POST['template_code']);
 // ファイル情報の初期化
 lfInitFile();
 // パラメータ管理クラス
@@ -39,15 +40,19 @@ lfInitParam();
 switch($_POST['mode']) {
 case 'upload':
 	$objFormParam->setParam($_POST);
+	$arrRet = $objFormParam->getHashArray();
+	
 	$objPage->arrErr = lfErrorCheck();
 
-	mkdir ("/path/to/my/dir", 0700);
-	
-	// ファイルを保存
+	// ファイルを一時フォルダへ保存
 	$ret = $objUpFile->makeTempFile('template_file', false);
 	if($ret != "") {
 		$objPage->arrErr['template_file'] = $ret;
 	} else if(count($objPage->arrErr) <= 0) {
+		// フォルダ作成
+		$ret = @mkdir(USER_TEMPLATE_PATH.$arrRet['template_code']);
+		// 一時フォルダから保存ディレクトリへ移動
+		$objUpFile->moveTempFile();
 		$objPage->tpl_onload = "alert('テンプレートファイルをアップロードしました。');";
 	}
 	break;
@@ -86,14 +91,35 @@ function lfInitParam() {
  * 関数名：lfErrorCheck()
  * 説明　：パラメータ情報の初期化
  */
-function lfErrorCheck() {
-
+function lfErrorCheck($arrList) {
 	global $objQuery;
 	global $objFormParam;
 	
-	$arrRet = $objFormParam->getHashArray();
-	$objErr = new SC_CheckError($arrRet);
+	$objErr = new SC_CheckError($arrList);
 	$objErr->arrErr = $objFormParam->checkError();
-
+	
+	// 同名のフォルダが存在する場合はエラー
+	if(file_exists(USER_TEMPLATE_PATH.$arrList['template_code'])) {
+		$objErr->arrErr = "※ 同名のファイルがすでに存在します。<br/>";
+	}
+	// DBにすでに登録されていないかチェック
+	$ret = $objQuery->get("dtb_templates", "template_code", "template_code = ?", array($arrList['template_code']));
+	if($ret != "") {
+		$objErr->arrErr = "※ すでに登録されているテンプレートコードです。<br/>";
+	}
+	
 	return $objErr->arrErr;
 }
+
+function lfRegistTemplate($arrList) {
+	global $objQuery;
+	
+	// INSERTする値を作成する。
+	$sqlval['name'] = $arrList['template_code'];
+	$sqlval['category_id'] = $arrList['template_name'];
+	$sqlval['create_date'] = "now()";
+	$sqlval['update_date'] = "now()";
+
+	$objQuery->insert("dtb_templates", $sqlval);
+}
+
