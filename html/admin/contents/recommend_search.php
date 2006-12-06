@@ -71,7 +71,7 @@ if ($_POST['mode'] == "search") {
 		}
 	}
 	
-	$order = "update_date DESC";
+	$order = "update_date DESC, prodduct_id DESC";
 	
 	// 読み込む列とテーブルの指定
 	$col = "product_id, name, category_id, main_list_image, status, product_code, price01, stock, stock_unlimited";
