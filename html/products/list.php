@@ -219,7 +219,7 @@ function lfDispProductsList($category_id, $name, $disp_num, $orderby) {
 	
 	
 	// 検索結果の取得
-	//$objPage->arrProducts = $objQuery->select("*", "vw_products_allclass AS allcls", $where, $arrval);
+	$objPage->arrProducts = $objQuery->select("*", "vw_products_allclass AS allcls", $where, $arrval);
 	
 	
 	sfprintr($objQuery->getlastquery(false));
