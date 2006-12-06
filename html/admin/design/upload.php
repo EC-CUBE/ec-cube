@@ -89,8 +89,8 @@ function lfErrorCheck() {
 	global $objFormParam;
 	
 	$arrRet = $objFormParam->getHashArray();
-	$objErr = new SC_CheckError($_POST);
+	$objErr = new SC_CheckError($arrRet);
 	$objErr->arrErr = $objFormParam->checkError();
-sfprintr($_POST);
+
 	return $objErr->arrErr;
 }
