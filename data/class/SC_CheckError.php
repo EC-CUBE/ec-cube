@@ -463,7 +463,7 @@ class SC_CheckError {
 	/*　拡張子の判定　*/
 	// value[0] = 項目名 value[1] = 判定対象 value[2]=array(拡張子)	
 	function FILE_EXT_CHECK( $value ) {			// 受け取りがない場合エラーを返す
-		if(isset($this->arrErr[$value[1]]) && count($this->arrErr[$value[2]]) == 0) {
+		if(isset($this->arrErr[$value[1]]) || count($value[2]) == 0) {
 			return;
 		}
 		
