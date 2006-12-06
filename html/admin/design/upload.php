@@ -18,6 +18,14 @@ class LC_Page {
 	}
 }
 
+$objPage = new LC_Page();
+$objView = new SC_AdminView();
+$objSess = new SC_Session();
+
+// 認証可否の判定
+$objSess = new SC_Session();
+sfIsSuccess($objSess);
+
 // 画面の表示
 $objView->assignobj($objPage);
 $objView->display(MAIN_FRAME);
