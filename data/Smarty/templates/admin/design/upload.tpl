@@ -59,7 +59,7 @@
 									</tr>
 									<tr class="fs12n">
 										<td bgcolor="#f2f1ec">テンプレートファイル</td>
-										<td bgcolor="#ffffff"><input type="file" name="template_file" class="box54"></td>
+										<td bgcolor="#ffffff"><input type="file" name="template_file" class="box54" size="64"></td>
 									</tr>
 								</table>
 								
