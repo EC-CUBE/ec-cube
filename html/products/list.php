@@ -51,12 +51,12 @@ if($_GET['mode'] == 'search'){
 }elseif ($category_id == "" ) {
 	$tpl_subtitle = "全商品";
 }else{
-//	$arrFirstCat = GetFirstCat($category_id);
+	$arrFirstCat = GetFirstCat($category_id);
 	$tpl_subtitle = $arrFirstCat['name'];
 }
 
 $objQuery = new SC_Query();
-$count = $objQuery->count("dtb_best_products", "category_id = ?", array($category_id));
+//$count = $objQuery->count("dtb_best_products", "category_id = ?", array($category_id));
 
 // 以下の条件でBEST商品を表示する
 // ・BEST最大数の商品が登録されている。
