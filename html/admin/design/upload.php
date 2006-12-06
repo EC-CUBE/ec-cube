@@ -40,6 +40,13 @@ switch($_POST['mode']) {
 case 'upload':
 	$objFormParam->setParam($_POST);
 	$objPage->arrErr = lfErrorCheck();
+
+	// ファイルを保存
+	$ret = $objUpFile->makeTempFile('upload_file', false);
+	
+	// エラーが無かったら
+	if(count($objPage->arrErr) > 0) {
+	}
 	break;
 default:
 	break;
