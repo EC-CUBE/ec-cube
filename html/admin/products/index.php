@@ -200,7 +200,7 @@ if ($_POST['mode'] == "search" || $_POST['mode'] == "csv"  || $_POST['mode'] == 
 			}
 		}
 
-		$order = "update_date DESC";
+		$order = "update_date DESC, product_id";
 		$objQuery = new SC_Query();
 		
 		switch($_POST['mode']) {
@@ -266,7 +266,6 @@ if ($_POST['mode'] == "search" || $_POST['mode'] == "csv"  || $_POST['mode'] == 
 			}
 			// 表示順序
 			$objQuery->setorder($order);
-			
 			
 			// viewも絞込みをかける(mysql用)
 			global $arrViewWhere;
