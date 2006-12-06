@@ -200,7 +200,7 @@ if ($_POST['mode'] == "search" || $_POST['mode'] == "csv"  || $_POST['mode'] == 
 			}
 		}
 
-		$order = "update_date DESC, product_id";
+		$order = "update_date DESC, product_id DESC";
 		$objQuery = new SC_Query();
 		
 		switch($_POST['mode']) {
