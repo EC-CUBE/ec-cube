@@ -43,7 +43,7 @@ case 'upload':
 
 	// ファイルを保存
 	$ret = $objUpFile->makeTempFile('template_file', false);
-	
+sfprintr($ret);
 	// エラーが無かったら
 	if(count($objPage->arrErr) > 0) {
 	}
