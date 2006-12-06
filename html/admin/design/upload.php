@@ -38,6 +38,7 @@ lfInitParam();
 
 switch($_POST['mode']) {
 case 'upload':
+	$objFormParam->setParam($_POST);
 	$objPage->arrErr = lfErrorCheck();
 	break;
 default:
