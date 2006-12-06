@@ -7,9 +7,9 @@ $tar = new Archive_Tar(USER_TEMPLATE_PATH."bbb/eccube-1.0.2beta.tar.gz", TRUE);
 //指定されたフォルダ内に解凍する
 $err = $tar->extractModify(USER_TEMPLATE_PATH."bbb/", "eccube-1.0.2beta");
 
-if($err) {
-	"YEA!!";
-} else {
-	"NO!!";
-}
+	// 拡張子を切り取る
+	$file_name = ereg_replace("\.tar$", "", "bbb/eccube-1.0.2beta.tar.gz");
+	$file_name = ereg_replace("\.tar\.gz$", "", $file_name);
+
+echo $file_name;	
 ?>
