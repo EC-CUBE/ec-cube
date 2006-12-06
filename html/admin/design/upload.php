@@ -80,8 +80,9 @@ function lfErrorCheck() {
 	global $objQuery;
 	global $objFormParam;
 	
-	$objErr = new SC_CheckError($_POST);
+	$arrRet = $objFormParam->getHashArray();
+	$objErr = new SC_CheckError($arrRet);
 	$objErr->arrErr = $objFormParam->checkError();
-sfprintr($objErr->arrErr);
+sfprintr($arrRet);
 	return $objErr->arrErr;
 }
