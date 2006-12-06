@@ -7,13 +7,6 @@
 *}-->
 <!--★★メインコンテンツ★★-->
 <table width="878" border="0" cellspacing="0" cellpadding="0" summary=" ">
-<form name="form1" id="form1" method="post" action="<!--{$smarty.server.PHP_SELF|escape}-->" onsubmit="return lfnModeSubmit('confirm')">
-<!--{foreach from=$smarty.post key="key" item="item"}-->
-<!--{if $key ne "mode"}--><input type="hidden" name="<!--{$key|escape}-->" value="<!--{$item|escape}-->">
-<!--{/if}-->
-<!--{/foreach}-->
-<input type="hidden" name="mode" value="">
-<input type="hidden" name="tpl_subno_template" value="<!--{$tpl_subno_template}-->">
 	<tr valign="top">
 		<td background="<!--{$smarty.const.URL_DIR}-->img/contents/navi_bg.gif" height="402">
 			<!--▼SUB NAVI-->
@@ -58,15 +51,15 @@
 								<table width="678" border="0" cellspacing="1" cellpadding="8" summary=" ">
 									<tr class="fs12n">
 										<td bgcolor="#f2f1ec">テンプレートコード</td>
-										<td bgcolor="#ffffff"><input type="text" name="template_code" value="" class="box47"></td>
+										<td bgcolor="#ffffff"><input type="text" name="template_code" value="" class="box54"></td>
 									</tr>
 									<tr class="fs12n">
 										<td bgcolor="#f2f1ec">テンプレート名</td>
-										<td bgcolor="#ffffff"><input type="text" name="template_name" value="" class="box47"></td>
+										<td bgcolor="#ffffff"><input type="text" name="template_name" value="" class="box54"></td>
 									</tr>
 									<tr class="fs12n">
 										<td bgcolor="#f2f1ec">テンプレートファイル</td>
-										<td bgcolor="#ffffff"><input type="file" name="template_file" class="box47"></td>
+										<td bgcolor="#ffffff"><input type="file" name="template_file" class="box54"></td>
 									</tr>
 								</table>
 								</form>
