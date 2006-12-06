@@ -235,17 +235,6 @@ if ($_POST['mode'] == "search" || $_POST['mode'] == "csv"  || $_POST['mode'] == 
 			$from = "vw_products_nonclass AS noncls ";
 
 			// 行数の取得
-			// viewも絞込みをかける(mysql用)
-			global $arrViewWhere;
-			$arrWhere = split("[?]", $where);
-			$where_tmp = "";
-			$where_tmp = " WHERE " . $arrWhere[0];
-			for($i = 1; $i < count($arrWhere); $i++){
-				$where_tmp .= sfQuoteSmart($arrval[$i - 1]) . $arrWhere[$i];
-			}
-			$arrViewWhere["&&noncls_where&&"] = $where_tmp;
-
-			
 //			$linemax = $objQuery->count($from, $where, $arrval);
 //			$objPage->tpl_linemax = $linemax;				// 何件が該当しました。表示用
 
@@ -275,6 +264,21 @@ if ($_POST['mode'] == "search" || $_POST['mode'] == "csv"  || $_POST['mode'] == 
 			$objQuery->setlimitoffset($page_max, $startno);
 			// 表示順序
 			$objQuery->setorder($order);
+			
+			
+			// viewも絞込みをかける(mysql用)
+			global $arrViewWhere;
+			$arrWhere = split("[?]", $where);
+			$where_tmp = "";
+			$where_tmp = " WHERE " . $arrWhere[0];
+			for($i = 1; $i < count($arrWhere); $i++){
+				$where_tmp .= sfQuoteSmart($arrval[$i - 1]) . $arrWhere[$i];
+			}
+			$arrViewWhere["&&noncls_where&&"] = $where_tmp;	
+			
+			sfprintr($objQuery->option);
+			sfprintr($objQuery->order);
+			
 			
 			// 検索結果の取得
 			$objPage->arrProducts = $objQuery->select($col, $from, $where, $arrval);
