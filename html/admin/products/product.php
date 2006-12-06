@@ -251,6 +251,7 @@ function lfGetProduct($product_id) {
 	$table = "vw_products_nonclass AS noncls ";
 	$where = "product_id = ?";
 	
+	// viewも絞込み(mysql対応)
 	sfViewWhere("&&noncls_where&&", $where, array($product_id));
 	
 	$arrRet = $objQuery->select($col, $table, $where, array($product_id));

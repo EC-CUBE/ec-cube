@@ -79,7 +79,7 @@ if ($_POST['mode'] == "search") {
 		
 	$objQuery = new SC_Query();
 	// 行数の取得
-	$linemax = $objQuery->count($from, $where, $arrval);
+	$linemax = $objQuery->count("dtb_products", $where, $arrval);
 	$objPage->tpl_linemax = $linemax;				// 何件が該当しました。表示用
 	
 	// ページ送りの処理
@@ -96,6 +96,9 @@ if ($_POST['mode'] == "search") {
 	
 	// 取得範囲の指定(開始行番号、行数のセット)
 	$objQuery->setlimitoffset($page_max, $startno);
+
+	// viewも絞込みをかける(mysql用)
+	sfViewWhere("&&noncls_where&&", $where, $arrval, $objQuery->order . " " .  $objQuery->setlimitoffset($page_max, $startno, true));
 
 	// 表示順序
 	$objQuery->setorder($order);
