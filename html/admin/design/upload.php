@@ -36,8 +36,12 @@ $objFormParam = new SC_FormParam();
 // パラメータ情報の初期化
 lfInitParam();
 
-
-
+switch($_POST['mode']) {
+case 'upload':
+	break;
+default:
+	break;
+}
 // 画面の表示
 $objView->assignobj($objPage);
 $objView->display(MAIN_FRAME);
@@ -63,4 +67,20 @@ function lfInitParam() {
 		
 	$objFormParam->addParam("テンプレートコード", "template_code", STEXT_LEN, "KVa", array("EXIST_CHECK","SPTAB_CHECK","MAX_LENGTH_CHECK"));
 	$objFormParam->addParam("テンプレート名", "template_name", STEXT_LEN, "KVa", array("EXIST_CHECK","SPTAB_CHECK","MAX_LENGTH_CHECK"));
+}
+
+/* 
+ * 関数名：lfErrorCheck()
+ * 説明　：パラメータ情報の初期化
+ */
+function lfErrorCheck() {
+
+	global $objQuery;
+	global $objFormParam;
+	
+	$arrRet = $objFormParam->getHashArray();
+	$objErr = new SC_CheckError($arrRet);
+	$objErr->arrErr = $objFormParam->checkError();
+
+	return $objErr->arrErr;
 }
