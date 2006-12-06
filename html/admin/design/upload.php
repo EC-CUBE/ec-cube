@@ -15,6 +15,7 @@ class LC_Page {
 		$this->tpl_subno_template = 'upload';
 		$this->tpl_mainno = "design";
 		$this->tpl_subtitle = 'アップロード';
+		$hits->template_name = 'アップロード';
 	}
 }
 
