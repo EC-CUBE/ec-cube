@@ -53,6 +53,9 @@ case 'upload':
 		$ret = @mkdir(USER_TEMPLATE_PATH.$arrRet['template_code']);
 		// 一時フォルダから保存ディレクトリへ移動
 		$objUpFile->moveTempFile();
+		// DBに保存
+		lfRegistTemplate($arrRet);
+		
 		$objPage->tpl_onload = "alert('テンプレートファイルをアップロードしました。');";
 	}
 	break;
