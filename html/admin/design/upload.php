@@ -58,7 +58,7 @@ $objView->display(MAIN_FRAME);
 function lfInitFile() {
 	global $objUpFile;
 
-	$objUpFile->addFile("テンプレートファイル", 'template_file', array(), TEMPLATE_SIZE, true, 0, 0, false);
+	$objUpFile->addFile("テンプレートファイル", 'template_file', array('tar.gz', 'tgz', 'tar.bz2'), TEMPLATE_SIZE, true, 0, 0, false);
 }
 
 /* 
@@ -84,6 +84,6 @@ function lfErrorCheck() {
 	$arrRet = $objFormParam->getHashArray();
 	$objErr = new SC_CheckError($_POST);
 	$objErr->arrErr = $objFormParam->checkError();
-sfprintr($objFormParam->setParam($objErr));
+sfprintr($_POST);
 	return $objErr->arrErr;
 }
