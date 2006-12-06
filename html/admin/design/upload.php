@@ -121,12 +121,14 @@ function lfErrorCheck($arrList) {
 		if ($ext == 'tar') {
 			$errFlag = false;
 		}
+sfprintr($ext);
 		$ext = $array_ext[ count ( $array_ext ) - 2 ].$ext;
 		$ext = strtolower($ext);
 		// .tar.gzチェック
 		if ($ext== 'tar.gz') {
 			$errFlag = false;
 		}
+sfprintr($ext);
 		
 		if($errFlag) {
 			$objErr->arrErr['template_file'] = "※ アップロードするテンプレートファイルで許可されている形式は、tar/tar.gzです。<br />";		
