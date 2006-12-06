@@ -58,7 +58,7 @@ case 'upload':
 		// 一時フォルダから保存ディレクトリへ移動
 		$objUpFile->moveTempFile();
 		// 解凍
-		lfUnpacking($new_file_dir.$_FILES['template_file']['name'], "./");
+		lfUnpacking($new_file_dir."/".$_FILES['template_file']['name'], "./");
 		// DBに保存
 		lfRegistTemplate($arrRet);
 		
