@@ -50,17 +50,20 @@
 								</table>
 								
 								<table width="678" border="0" cellspacing="1" cellpadding="8" summary=" ">
+									<!--{assign var=key value="template_code"}-->
 									<tr class="fs12n">
 										<td bgcolor="#f2f1ec">テンプレートコード</td>
-										<td bgcolor="#ffffff"><span class="red"><!--{$arrErr.template_code}--></span><input type="text" name="template_code" value="<!--{$arrForm.template_code|escape}-->" class="box54" <!--{if $arrErr.template_code}-->style="background-color:<!--{$smarty.const.ERR_COLOR|escape}-->"<!--{/if}-->></td>
+										<td bgcolor="#ffffff"><span class="red"><!--{$arrErr[$key]}--></span><input type="text" name="<!--{$arrForm[$key].keyname}-->" value="<!--{$arrForm[$key].value|escape}-->" maxlength="<!--{$arrForm[$key].length}-->" style="<!--{$arrErr[$key]|sfGetErrorColor}-->" class="box54" <!--{if $arrErr.template_code}-->style="background-color:<!--{$smarty.const.ERR_COLOR|escape}-->"<!--{/if}-->></td>
 									</tr>
+									<!--{assign var=key value="template_name"}-->
 									<tr class="fs12n">
 										<td bgcolor="#f2f1ec">テンプレート名</td>
-										<td bgcolor="#ffffff"><span class="red"><!--{$arrErr.template_name}--></span><input type="text" name="template_name" value="<!--{$arrForm.template_name|escape}-->" class="box54" <!--{if $arrErr.template_name}-->style="background-color:<!--{$smarty.const.ERR_COLOR|escape}-->"<!--{/if}-->></td>
+										<td bgcolor="#ffffff"><span class="red"><!--{$arrErr[$key]}--></span><input type="text" name="<!--{$arrForm[$key].keyname}-->" value="<!--{$arrForm[$key].value|escape}-->" maxlength="<!--{$arrForm[$key].length}-->" style="<!--{$arrErr[$key]|sfGetErrorColor}-->" class="box54" <!--{if $arrErr.template_name}-->style="background-color:<!--{$smarty.const.ERR_COLOR|escape}-->"<!--{/if}-->></td>
 									</tr>
+									<!--{assign var=key value="template_file"}-->
 									<tr class="fs12n">
 										<td bgcolor="#f2f1ec">テンプレートファイル</td>
-										<td bgcolor="#ffffff"><span class="red"><!--{$arrErr.template_file}--></span><input type="file" name="template_file" class="box54" size="64" <!--{if $arrErr.template_file}-->style="background-color:<!--{$smarty.const.ERR_COLOR|escape}-->"<!--{/if}-->></td>
+										<td bgcolor="#ffffff"><span class="red"><!--{$arrErr[$key]}--></span><input type="file" name="<!--{$arrForm[$key].keyname}-->" value="<!--{$arrForm[$key].value|escape}-->" style="<!--{$arrErr[$key]|sfGetErrorColor}-->" class="box54" size="64" <!--{if $arrErr.template_file}-->style="background-color:<!--{$smarty.const.ERR_COLOR|escape}-->"<!--{/if}-->></td>
 									</tr>
 								</table>
 								
