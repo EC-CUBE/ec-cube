@@ -179,5 +179,8 @@ function lfUnpacking($dir, $file_name, $unpacking_dir) {
 	// 指定されたフォルダ内に解凍する
 	$err = $tar->extractModify($unpacking_dir, $file_name);
 
+	// フォルダ削除
+	@sfDelFile("$dir/$file_name");
+
 	return $err;
 }
