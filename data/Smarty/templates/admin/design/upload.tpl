@@ -53,12 +53,12 @@
 									<!--{assign var=key value="template_code"}-->
 									<tr class="fs12n">
 										<td bgcolor="#f2f1ec">テンプレートコード</td>
-										<td bgcolor="#ffffff"><span class="red"><!--{$arrErr[$key]}--></span><input type="text" name="<!--{$arrForm[$key].keyname}-->" value="<!--{$arrForm[$key].value|escape}-->" maxlength="<!--{$arrForm[$key].length}-->" style="<!--{$arrErr[$key]|sfGetErrorColor}-->" class="box54" <!--{if $arrErr.template_code}-->style="background-color:<!--{$smarty.const.ERR_COLOR|escape}-->"<!--{/if}-->></td>
+										<td bgcolor="#ffffff"><span class="red"><!--{$arrErr[$key]}--></span><input type="text" name="<!--{$arrForm[$key].keyname}-->" value="<!--{$arrForm[$key].value|escape}-->" maxlength="<!--{$arrForm[$key].length}-->" style="<!--{$arrErr[$key]|sfGetErrorColor}-->" class="box54"></td>
 									</tr>
 									<!--{assign var=key value="template_name"}-->
 									<tr class="fs12n">
 										<td bgcolor="#f2f1ec">テンプレート名</td>
-										<td bgcolor="#ffffff"><span class="red"><!--{$arrErr[$key]}--></span><input type="text" name="<!--{$arrForm[$key].keyname}-->" value="<!--{$arrForm[$key].value|escape}-->" maxlength="<!--{$arrForm[$key].length}-->" style="<!--{$arrErr[$key]|sfGetErrorColor}-->" class="box54" <!--{if $arrErr.template_name}-->style="background-color:<!--{$smarty.const.ERR_COLOR|escape}-->"<!--{/if}-->></td>
+										<td bgcolor="#ffffff"><span class="red"><!--{$arrErr[$key]}--></span><input type="text" name="<!--{$arrForm[$key].keyname}-->" value="<!--{$arrForm[$key].value|escape}-->" maxlength="<!--{$arrForm[$key].length}-->" style="<!--{$arrErr[$key]|sfGetErrorColor}-->" class="box54"></td>
 									</tr>
 									<!--{assign var=key value="template_file"}-->
 									<tr class="fs12n">
