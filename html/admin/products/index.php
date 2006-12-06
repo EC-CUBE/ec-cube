@@ -278,14 +278,8 @@ if ($_POST['mode'] == "search" || $_POST['mode'] == "csv"  || $_POST['mode'] == 
 			$objQuery->setorder($order);
 			
 			// viewも絞込みをかける(mysql用)
-			global $arrViewWhere;
-			$arrWhere = split("[?]", $view_where);
-			$where_tmp = " WHERE " . $arrWhere[0];
-			for($i = 1; $i < count($arrWhere); $i++){
-				$where_tmp .= sfQuoteSmart($arrval[$i - 1]) . $arrWhere[$i];
-			}
-			$arrViewWhere["&&noncls_where&&"] = $where_tmp . " " . $objQuery->order . " " .  $objQuery->setlimitoffset($page_max, $startno, true);
-		
+			sfViewWhere("&&noncls_where&&", $view_where, $arrval, $objQuery->order . " " .  $objQuery->setlimitoffset($page_max, $startno, true));
+
 			// 検索結果の取得
 			$objPage->arrProducts = $objQuery->select($col, $from, $where, $arrval);
 			

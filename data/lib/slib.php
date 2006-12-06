@@ -2523,7 +2523,7 @@ function sfInArray($sql){
 	return false;
 }
 
-
+// SQLシングルクォート対応
 function sfQuoteSmart($in){
 	
     if (is_int($in) || is_double($in)) {
@@ -2565,6 +2565,17 @@ function sfChangeILIKE($sql){
 function sfChangeRANDOM($sql){
 	$changesql = eregi_replace("( RANDOM)", " RAND", $sql);
 	return $changesql;
+}
+
+// viewのwhereを置換する
+function sfViewWhere($target, $where = "", $arrval = array(), $option = ""){
+	global $arrViewWhere;
+	$arrWhere = split("[?]", $where);
+	$where_tmp = " WHERE " . $arrWhere[0];
+	for($i = 1; $i < count($arrWhere); $i++){
+		$where_tmp .= sfQuoteSmart($arrval[$i - 1]) . $arrWhere[$i];
+	}
+	$arrViewWhere[$target] = $where_tmp . " " . $option;
 }
 
 // ディレクトリ以下のファイルを再帰的にコピー
