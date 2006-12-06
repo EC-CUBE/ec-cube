@@ -168,9 +168,6 @@ if ($_POST['mode'] == "search" || $_POST['mode'] == "csv"  || $_POST['mode'] == 
 					$date = sfGetTimestamp($_POST['search_endyear'], $_POST['search_endmonth'], $_POST['search_endday']);
 					$date = date('Y/m/d', strtotime($date) + 86400);
 					$where.= " AND update_date < date('" . $date . "')";
-					//$where.= " AND update_date < date('" . $_POST['search_endyear'] . "/" . $_POST['search_endmonth'] . "/" . $_POST['search_endday'] . "')";
-
-//					$arrval[] = $date;
 					break;
 				case 'search_product_flag':	//¼ïÊÌ
 					global $arrSTATUS;
