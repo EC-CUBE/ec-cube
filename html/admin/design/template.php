@@ -333,8 +333,10 @@ function lfDownloadTemplate($template_code){
 	// ファイル一覧取得
 	$arrFileHash = sfGetFileList(USER_TEMPLATE_PATH.$template_code);
 	foreach($arrFileHash as $val) {
-		$arrFileList[] = $val['file_path'];
+		$arrFileList[] = $val['file_name'];
 	}
+	// ディレクトリを移動
+	chdir(USER_TEMPLATE_PATH.$template_code);
 	
 	//圧縮をおこなう
 	$zip = $tar->create($arrFileList);
