@@ -8,8 +8,7 @@
 /* 
  * 関数名：sfGetFileList()
  * 説明　：指定パス配下のディレクトリ取得
- * 引数1 ：ツリーを格納配列
- * 引数2 ：取得するディレクトリパス
+ * 引数1 ：取得するディレクトリパス
  */
 function sfGetFileList($dir) {
 	$arrFileList = array();
