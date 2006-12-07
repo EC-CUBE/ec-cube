@@ -333,7 +333,11 @@ function lfDownloadTemplate($template_code){
 	chdir(USER_TEMPLATE_PATH);
 	//圧縮をおこなう
 	$zip = $tar->create("./" . $template_code . "/");
+
+sfprintr($template_code);	
+sfprintr($dl_file);	
 	
+/*	
 	// ダウンロード開始
 	Header("Content-disposition: attachment; filename=${dl_file}");
 	Header("Content-type: application/octet-stream; name=${dl_file}");
@@ -342,6 +346,7 @@ function lfDownloadTemplate($template_code){
 	// 圧縮ファイル削除
 	unlink($dl_file);
 	exit();
+*/
 }
 
 /**************************************************************************************************************
