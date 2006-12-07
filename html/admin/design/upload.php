@@ -64,7 +64,7 @@ case 'upload':
 		// 完了表示javascript
 		$objPage->tpl_onload = "alert('テンプレートファイルをアップロードしました。');";
 		// フォーム値をクリア
-		$objFormParam->setParam(array());
+		$objFormParam->setParam(array('template_code' => "", 'template_name' => ""));
 	}
 	break;
 default:
