@@ -330,10 +330,14 @@ function lfDownloadTemplate($template_code){
 	
 	// ファイルの圧縮
 	$tar = new Archive_Tar($dl_file, TRUE);
-	//bkupフォルダに移動する
-	chdir(USER_TEMPLATE_PATH);
+	// ファイル一覧取得
+	$arrFileHash = sfGetFileList(USER_TEMPLATE_PATH.$template_code);
+	foreach($arrFileHash as $val) {
+		$arrFileList[] = $val['file_path'];
+	}
+	
 	//圧縮をおこなう
-	$zip = $tar->createModify("./" . $template_code . "/", "", $template_code);
+	$zip = $tar->create($arrFileList);
 		
 	// ダウンロード開始
 	Header("Content-disposition: attachment; filename=${filename}");
