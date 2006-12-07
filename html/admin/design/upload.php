@@ -182,7 +182,6 @@ function lfUnpacking($dir, $file_name, $unpacking_dir) {
 	// フォルダ削除
 	@sfDelFile("$dir/$unpacking_name");
 	// 圧縮ファイル削除
-sfprintr("$dir/$file_name");
 	@unlink("$dir/$file_name");
 
 	return $err;
