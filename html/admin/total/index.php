@@ -21,7 +21,7 @@ class LC_Page {
 		$this->tpl_mainpage = 'total/index.tpl';
 		$this->tpl_subnavi = 'total/subnavi.tpl';
 		$this->tpl_graphsubtitle = 'total/subtitle.tpl';
-		$this->tpl_titleimage = '/img/title/title_sale.jpg';
+		$this->tpl_titleimage = URL_DIR.'img/title/title_sale.jpg';
 		$this->tpl_mainno = 'total';
 		global $arrWDAY;
 		$this->arrWDAY = $arrWDAY;
