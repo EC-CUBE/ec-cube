@@ -19,7 +19,7 @@
 <title><!--{$arrSiteInfo.shop_name}-->/パスワードを忘れた方(完了ページ)</title>
 </head>
 
-<body bgcolor="#f0f0f0" text="#555555" link="#3a75af" vlink="#3a75af" alink="#3a75af" leftmargin="0" topmargin="0" marginwidth="0" marginheight="0" onLoad="preLoadImg()">
+<body bgcolor="#f0f0f0" text="#555555" link="#3a75af" vlink="#3a75af" alink="#3a75af" leftmargin="0" topmargin="0" marginwidth="0" marginheight="0" onLoad="preLoadImg(<!--{smarty.const.URL_DIR}-->)">
 <noscript>
 <link rel="stylesheet" href="../css/common.css" type="text/css" />
 </noscript>

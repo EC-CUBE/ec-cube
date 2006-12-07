@@ -19,7 +19,7 @@
 <title><!--{$arrSiteInfo.shop_name}-->/¥¨¥é¡¼</title>
 </head>
 
-<body onload="preLoadImg()">
+<body onload="preLoadImg(<!--{smarty.const.URL_DIR}-->)">
 <noscript>
 <link rel="stylesheet" href="<!--{$smarty.const.URL_DIR}-->css/common.css" type="text/css" />
 </noscript>
