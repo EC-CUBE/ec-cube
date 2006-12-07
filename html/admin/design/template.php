@@ -6,7 +6,7 @@
  */
 require_once("../../require.php");
 require_once(DATA_PATH. "module/Tar.php");
-require_once(DATA_PATH. "include/file_manager.php");
+require_once(DATA_PATH. "include/file_manager.inc");
 
 class LC_Page {
 	var $arrForm;
