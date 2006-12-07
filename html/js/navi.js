@@ -4,6 +4,7 @@
  * http://www.lockon.co.jp/
  */
 	var preLoadFlag = "false";
+alert(window.location.href);
 
 	function preLoadImg(){
 		arrImgList = new Array (
