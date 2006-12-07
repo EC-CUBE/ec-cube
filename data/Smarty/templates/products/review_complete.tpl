@@ -19,7 +19,7 @@
 <title><!--{$arrSiteInfo.shop_name}-->/お客様の声書き込み（完了ページ）</title>
 </head>
 
-<body bgcolor="#ffe9e6" text="#555555" link="#3a75af" vlink="#3a75af" alink="#3a75af" leftmargin="0" topmargin="0" marginwidth="0" marginheight="0" onLoad="preLoadImg(<!--{smarty.const.URL_DIR}-->)">
+<body bgcolor="#ffe9e6" text="#555555" link="#3a75af" vlink="#3a75af" alink="#3a75af" leftmargin="0" topmargin="0" marginwidth="0" marginheight="0" onLoad="preLoadImg(<!--{$smarty.const.URL_DIR}-->)">
 <noscript>
 <link rel="stylesheet" href="<!--{$smarty.const.URL_DIR}-->css/common.css" type="text/css">
 </noscript>
