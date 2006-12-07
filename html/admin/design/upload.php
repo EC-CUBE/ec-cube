@@ -171,11 +171,11 @@ function lfUnpacking($dir, $file_name, $unpacking_dir) {
 
 	// 圧縮フラグTRUEはgzip解凍をおこなう
 	$tar = new Archive_Tar("$dir/$file_name", TRUE);
-sfprintr($file_name);
+
 	// 拡張子を切り取る
 	$unpacking_name = ereg_replace("\.tar$", "", $file_name);
 	$unpacking_name = ereg_replace("\.tar\.gz$", "", $file_name);
-
+sfprintr($unpacking_name);
 	// 指定されたフォルダ内に解凍する
 	$err = $tar->extractModify($unpacking_dir, $unpacking_name);
 
