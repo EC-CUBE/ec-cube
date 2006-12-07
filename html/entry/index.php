@@ -8,7 +8,7 @@ require_once("../require.php");
 
 class LC_Page {
 	function LC_Page() {
-		$this->tpl_css = '/css/layout/entry/index.css';	// メインCSSパス
+		$this->tpl_css = URL_DIR.'css/layout/entry/index.css';	// メインCSSパス
 		$this->tpl_mainpage = 'entry/index.tpl';		// メインテンプレート
 		$this->tpl_title .= '会員登録(入力ページ)';			//　ページタイトル
 	}

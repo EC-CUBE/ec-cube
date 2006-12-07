@@ -10,7 +10,7 @@ require_once("../require.php");
 class LC_Page {
 	function LC_Page() {
 		$this->tpl_mainpage = 'shopping/loan.tpl';
-		$this->tpl_css = '/css/layout/shopping/pay.css';
+		$this->tpl_css = URL_DIR.'css/layout/shopping/pay.css';
 		// ホームアドレス
 		$this->tpl_homeaddr = CF_HOMEADDR;
 		// シュミレーション呼び出し

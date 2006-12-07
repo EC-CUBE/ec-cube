@@ -10,7 +10,7 @@ require_once("../require.php");
 class LC_Page{
 	function LC_Page(){
 		$this->tpl_mainpage = 'regist/complete.tpl';
-		$this->tpl_css = '/css/layout/regist/complete.css';
+		$this->tpl_css = URL_DIR.'css/layout/regist/complete.css';
 		$this->tpl_title = '²ñ°÷ÅÐÏ¿(´°Î»¥Ú¡¼¥¸)';
 	}
 }

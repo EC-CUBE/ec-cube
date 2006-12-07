@@ -15,7 +15,7 @@ class LC_Page {
 	var $tpl_message;
 	function LC_Page() {
 		/** 必ず指定する **/
-		$this->tpl_css = '/css/layout/cartin/index.css';	// メインCSSパス
+		$this->tpl_css = URL_DIR.'css/layout/cartin/index.css';	// メインCSSパス
 		/** 必ず指定する **/
 		$this->tpl_mainpage = 'cart/index.tpl';		// メインテンプレート
 		$this->tpl_title = "カゴの中を見る";

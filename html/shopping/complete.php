@@ -10,7 +10,7 @@ require_once("../require.php");
 class LC_Page {
 	function LC_Page() {
 		$this->tpl_mainpage = 'shopping/complete.tpl';
-		$this->tpl_css = '/css/layout/shopping/complete.css';
+		$this->tpl_css = URL_DIR.'css/layout/shopping/complete.css';
 		$this->tpl_title = "¤´ÃíÊ¸´°Î»";
 		global $arrCONVENIENCE;
 		$this->arrCONVENIENCE = $arrCONVENIENCE;

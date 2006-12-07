@@ -15,7 +15,7 @@ class LC_Page {
 	var $arrPref;
 
 	function LC_Page() {
-		$this->tpl_css = '/css/layout/regist/index.css';	// メインCSSパス
+		$this->tpl_css = URL_DIR.'css/layout/regist/index.css';	// メインCSSパス
 	}
 }
 

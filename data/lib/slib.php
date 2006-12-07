@@ -247,7 +247,7 @@ function sfDispSiteError($type, $objSiteSess = "", $return_top = false, $err_msg
 	class LC_ErrorPage {
 		function LC_ErrorPage() {
 			$this->tpl_mainpage = 'error.tpl';
-			$this->tpl_css = '/css/layout/error.css';
+			$this->tpl_css = URL_DIR.'css/layout/error.css';
 			$this->tpl_title = '¥¨¥é¡¼';
 		}
 	}

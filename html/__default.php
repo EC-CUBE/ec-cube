@@ -4,8 +4,7 @@ require_once("###require###");
 class LC_Page {
 	function LC_Page() {
 		/** 必ず変更する **/
-		$this->tpl_css = '/css/layout/contact/index.css';	// メインCSSパス
-		
+		$this->tpl_css = URL_DIR.'css/layout/contact/index.css';	// メインCSSパス		
 	}
 }
 

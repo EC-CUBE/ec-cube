@@ -10,7 +10,7 @@ require_once("./require.php");
 class LC_Page {
 	function LC_Page() {
 		/** 必ず変更する **/
-		$this->tpl_css = '/css/layout/index.css';						// メインCSSパス
+		$this->tpl_css = URL_DIR.'css/layout/index.css';						// メインCSSパス
 		/** 必ず変更する **/
 		$this->tpl_mainpage = HTML_PATH . "user_data/templates/top.tpl";		// メインテンプレート
 	}

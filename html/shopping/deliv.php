@@ -13,7 +13,7 @@ class LC_Page {
 	var $arrAddr;
 	function LC_Page() {
 		$this->tpl_mainpage = 'shopping/deliv.tpl';
-		$this->tpl_css = '/css/layout/shopping/index.css';
+		$this->tpl_css = URL_DIR.'css/layout/shopping/index.css';
 		global $arrPref;
 		$this->arrPref = $arrPref;
 		$this->tpl_title = "お届け先指定";		// タイトル

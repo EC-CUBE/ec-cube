@@ -132,7 +132,7 @@ $objView->display(SITE_FRAME);
 function lfSetNonMember($objPage) {
 	$objPage->tpl_mainpage = 'shopping/nonmember_input.tpl';
 	$objPage->tpl_css = array();
-	$objPage->tpl_css[] = '/css/layout/login/nonmember.css';
+	$objPage->tpl_css[] = URL_DIR.'css/layout/login/nonmember.css';
 	return $objPage;
 }
 

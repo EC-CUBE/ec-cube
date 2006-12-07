@@ -9,7 +9,7 @@ require_once("../require.php");
 class LC_Page {
 	function LC_Page() {
 		/** 必ず指定する **/
-		$this->tpl_css = '/css/layout/fax/index.css';	// メインCSSパス
+		$this->tpl_css = URL_DIR.'css/layout/fax/index.css';	// メインCSSパス
 		/** 必ず指定する **/
 		$this->tpl_mainpage = 'fax/index.tpl';			// メインテンプレート
 		$this->tpl_page_category = 'fax';				

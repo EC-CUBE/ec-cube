@@ -10,7 +10,7 @@ require_once("../require.php");
 class LC_Page {
 	function LC_Page() {
 		/** 必ず指定する **/
-		$this->tpl_css = '/css/layout/order/index.css';		// メインCSSパス
+		$this->tpl_css = URL_DIR.'css/layout/order/index.css';		// メインCSSパス
 		/** 必ず指定する **/
 		$this->tpl_mainpage = 'order/index.tpl';			// メインテンプレート
 		$this->tpl_page_category = 'order';	

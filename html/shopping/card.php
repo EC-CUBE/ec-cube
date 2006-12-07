@@ -21,7 +21,7 @@ $arrJPO_INFO['61C15'] = "分割15回払い";
 class LC_Page {
 	function LC_Page() {
 		/** 必ず指定する **/
-		$this->tpl_css = '/css/layout/shopping/card.css';	// メインCSSパス
+		$this->tpl_css = URL_DIR.'css/layout/shopping/card.css';	// メインCSSパス
 		/** 必ず指定する **/
 		$this->tpl_mainpage = 'shopping/card.tpl';			// メインテンプレート
 		global $arrJPO_INFO;

@@ -11,7 +11,7 @@ class LC_Page {
 	var $arrSession;
 	var $tpl_mode;
 	function LC_Page() {
-		$this->tpl_css = '/css/layout/shopping/pay.css';
+		$this->tpl_css = URL_DIR.'css/layout/shopping/pay.css';
 		$this->tpl_mainpage = 'shopping/payment.tpl';
 		$this->tpl_onload = 'fnCheckInputPoint();';
 		$this->tpl_title = "お支払方法・お届け時間等の指定";
