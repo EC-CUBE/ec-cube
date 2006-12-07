@@ -336,7 +336,7 @@ function lfDownloadTemplate($template_code){
 		
 	// ダウンロード開始
 	Header("Content-disposition: attachment; filename=${dl_file}");
-	Header("Content-type: application/octet-stream; name=${dl_file}");
+	Header("Content-type: application/octet-stream; name=${filename}");
 	header("Content-Length: " .filesize($dl_file)); 
 	readfile ($dl_file);
 	// 圧縮ファイル削除
