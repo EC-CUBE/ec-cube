@@ -59,10 +59,12 @@ case 'upload':
 		$objUpFile->moveTempFile();
 		// 解凍
 		lfUnpacking($new_file_dir, $_FILES['template_file']['name'], $new_file_dir."/");
-		// DBに保存
+		// DBにテンプレート情報を保存
 		lfRegistTemplate($arrRet);
-		
+		// 完了表示javascript
 		$objPage->tpl_onload = "alert('テンプレートファイルをアップロードしました。');";
+		// フォーム値をクリア
+		$objFormParam->setParam(array());
 	}
 	break;
 default:
