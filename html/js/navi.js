@@ -6,7 +6,7 @@
 	var preLoadFlag = "false";
 
 	function preLoadImg(URL){
-alert(URL);	
+
 		arrImgList = new Array (
 			URL+"img/header/basis_on.jpg",URL+"img/header/product_on.jpg",URL+"img/header/customer_on.jpg",URL+"img/header/order_on.jpg",
 			URL+"img/header/sales_on.jpg",URL+"img/header/mail_on.jpg",URL+"img/header/contents_on.jpg",
