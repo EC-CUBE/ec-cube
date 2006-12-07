@@ -166,7 +166,6 @@ function lfgetTemplate(){
 		$arrTemplateImage['check'] = 1;
 	}
 	
-sfprintr($arrTemplateImage);
 	return $arrTemplateImage;
 }
 
