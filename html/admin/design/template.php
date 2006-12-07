@@ -5,6 +5,7 @@
  * http://www.lockon.co.jp/
  */
 require_once("../../require.php");
+require_once(DATA_PATH. "module/Tar.php");
 
 class LC_Page {
 	var $arrForm;
