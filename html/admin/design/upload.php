@@ -92,7 +92,7 @@ function lfInitFile() {
 function lfInitParam() {
 	global $objFormParam;
 		
-	$objFormParam->addParam("テンプレートコード", "template_code", STEXT_LEN, "KVa", array("EXIST_CHECK","SPTAB_CHECK","MAX_LENGTH_CHECK", "FILE_NAME_CHECK"));
+	$objFormParam->addParam("テンプレートコード", "template_code", STEXT_LEN, "KVa", array("EXIST_CHECK","SPTAB_CHECK","MAX_LENGTH_CHECK", "ALPHA_CHECK"));
 	$objFormParam->addParam("テンプレート名", "template_name", STEXT_LEN, "KVa", array("EXIST_CHECK","SPTAB_CHECK","MAX_LENGTH_CHECK"));
 }
 
