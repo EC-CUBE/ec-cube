@@ -8,7 +8,7 @@ require_once("../require.php");
 
 class LC_Page {
 	function LC_Page() {
-		$this->tpl_css = '/css/layout/contact/index.css';	// メインCSSパス
+		$this->tpl_css = URL_DIR.'css/layout/contact/index.css';	// メインCSSパス
 		$this->tpl_mainpage = 'contact/index.tpl';
 		$this->tpl_title = 'お問い合わせ(入力ページ)';
 		$this->tpl_page_category = 'contact';
