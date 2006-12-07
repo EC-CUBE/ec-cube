@@ -63,7 +63,7 @@
 									<!--{assign var=key value="template_file"}-->
 									<tr class="fs12n">
 										<td bgcolor="#f2f1ec">テンプレートファイル<br/><span class="red">※ファイル系形式は.tar/.tar.gzのみ</span></td>
-										<td bgcolor="#ffffff"><span class="red"><span class="fs12n"><!--{$arrErr[$key]}--></span></span><input type="file" name="<!--{$key}-->" style="<!--{$arrErr[$key]|sfGetErrorColor}-->" class="box54" size="64" <!--{if $arrErr.template_file}-->style="background-color:<!--{$smarty.const.ERR_COLOR|escape}-->"<!--{/if}-->></td>
+										<td bgcolor="#ffffff"><span class="red"><span class="fs10n"><!--{$arrErr[$key]}--></span></span><input type="file" name="<!--{$key}-->" style="<!--{$arrErr[$key]|sfGetErrorColor}-->" class="box54" size="64" <!--{if $arrErr.template_file}-->style="background-color:<!--{$smarty.const.ERR_COLOR|escape}-->"<!--{/if}-->></td>
 									</tr>
 								</table>
 								
