@@ -67,7 +67,8 @@ $key = array_keys($objPage->arrSubnavi['title'], $tpl_subno_template);
 $objPage->template_name = $objPage->arrSubnavi['name'][$key[0]];
 
 // 登録を押されたばあにはDBへデータを更新に行く
-if ($_POST['mode'] == "confirm"){
+switch($_POST['mode']) {
+case 'confirm':
 	// DBへデータ更新
 	lfUpdData();
 	
@@ -76,7 +77,12 @@ if ($_POST['mode'] == "confirm"){
 	
 	// 完了メッセージ
 	$objPage->tpl_onload="alert('登録が完了しました。');";
-
+	break;
+case 'download':
+	lfDownloadTemplate($_POST['check_template']);
+	break;
+default:
+	break;
 }
 
 // POST値の引き継ぎ
@@ -310,7 +316,40 @@ function lfChangeTemplate(){
 	}
 }
 
-// フォルダをコピーする
+/**************************************************************************************************************
+ * 関数名	：lfDownloadTemplate
+ * 処理内容	：テンプレートファイル圧縮してダウンロードする
+ * 引数1	：テンプレートコード
+ * 戻り値	：なし
+ **************************************************************************************************************/
+function lfDownloadTemplate($template_code){
+	$filename = $template_code. ".tar.gz";
+	$dl_file = USER_TEMPLATE_PATH.$filename;
+	
+	// ファイルの圧縮
+	$tar = new Archive_Tar($dl_file.".tar.gz", TRUE);
+	//bkupフォルダに移動する
+	chdir(USER_TEMPLATE_PATH);
+	//圧縮をおこなう
+	$zip = $tar->create("./" . $template_code . "/");
+	
+	// ダウンロード開始
+	Header("Content-disposition: attachment; filename=${dl_file}");
+	Header("Content-type: application/octet-stream; name=${dl_file}");
+	header("Content-Length: " .filesize($dl_file)); 
+	readfile ($dl_file);
+	// 圧縮ファイル削除
+	unlink($dl_file);
+	exit();
+}
+
+/**************************************************************************************************************
+ * 関数名	：lfFolderCopy
+ * 処理内容	：フォルダをコピーする
+ * 引数1	：コピー元パス
+ * 引数2　　：コピー先パス
+ * 戻り値	：なし
+ **************************************************************************************************************/
 function lfFolderCopy($taget_path, $save_path){
 
 	// フォルダ内のファイルを取得する
