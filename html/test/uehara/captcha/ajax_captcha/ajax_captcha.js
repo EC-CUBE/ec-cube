@@ -1,30 +1,18 @@
-/*
-	This is the JavaScript file for the How to Create CAPTCHA Protection using PHP and AJAX Tutorial
-
-	You may use this code in your own projects as long as this 
-	copyright is left in place.  All code is provided AS-IS.
-	This code is distributed in the hope that it will be useful,
- 	but WITHOUT ANY WARRANTY; without even the implied warranty of
- 	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
-	
-	For the rest of the code visit http://www.WebCheatSheet.com
-	
-	Copyright 2006 WebCheatSheet.com	
-
-*/
-//Gets the browser specific XmlHttpRequest Object 
+// ブラウザによってXmlHttpRequestのObjectを振り分ける 
 function getXmlHttpRequestObject() {
  if (window.XMLHttpRequest) {
-    return new XMLHttpRequest(); //Mozilla, Safari ...
+ 	// Mozilla, Safariなど
+    return new XMLHttpRequest();
  } else if (window.ActiveXObject) {
-    return new ActiveXObject("Microsoft.XMLHTTP"); //IE
+ 	// IE
+    return new ActiveXObject("Microsoft.XMLHTTP");
  } else {
-    //Display our error message
-    alert("Your browser doesn't support the XmlHttpRequest object.");
+    // 非対応
+    alert("ブラウザがXmlHttpRequestに対応していません！！");
  }
 }
 
-//Our XmlHttpRequest object
+// オブジェクト生成
 var receiveReq = getXmlHttpRequestObject();
 
 //Initiate the AJAX request
