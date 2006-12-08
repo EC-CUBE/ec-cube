@@ -3,7 +3,7 @@
 session_start();
 
 // ヘッダー情報出力
-header("<meta http-equiv=\"Content-Type\" content=\"text/html; charset=EUC-JP\">");
+echo ("Content-type", "text/html");
 
 // 入力値を受け取る
 $input_data = $_POST["input_data"];
