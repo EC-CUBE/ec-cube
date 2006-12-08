@@ -29,7 +29,7 @@ function makeRequest(url, param) {
 		// サーバーからの応答時の処理を定義（結果のページへの反映）
 		receiveReq.onreadystatechange = updatePage; 
 
-		// ヘッダーセット
+		// ヘッダー定義
 		receiveReq.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
 		receiveReq.setRequestHeader("Content-length", param.length);
 		receiveReq.setRequestHeader("Connection", "close");
