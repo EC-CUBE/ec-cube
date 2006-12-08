@@ -3,7 +3,7 @@
 session_start();
 
 // ヘッダー情報出力
-echo ("Content-type", "text/html");
+header ("\"Content-type\", \"text/html\"");
 
 // 入力値を受け取る
 $input_data = $_POST["input_data"];
