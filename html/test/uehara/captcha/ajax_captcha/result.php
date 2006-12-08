@@ -17,7 +17,7 @@ if ($input_data == "" || $session_data == "") {
 if ($input_data == $session_data) {
 	
 	// ここに認証成功時の処理を書いて下さい。
-	echo "認証成功！！";
+	echo "<font color=\"blue\">認証成功！！</font>";
 
 } else {
 
