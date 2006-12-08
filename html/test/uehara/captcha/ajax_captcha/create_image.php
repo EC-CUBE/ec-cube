@@ -15,10 +15,10 @@ $image = ImageCreate(120, 20);
 
 // 色の定義 
 $white = ImageColorAllocate($image, 255, 255, 255); 
-$black = ImageColorAllocate($image, 0, 0, 0); 
+$grey = ImageColorAllocate($image, 204, 204, 204); 
 
 // 背景色
-ImageFill($image, 0, 0, $black); 
+ImageFill($image, 0, 0, $grey); 
 
 // 生成したコードを表示
 ImageString($image, 5, 30, 3, $code, $white); 
