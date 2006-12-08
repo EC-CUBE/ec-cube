@@ -9,7 +9,7 @@ $session_data = $_SESSION["security_code"];
 
 // 正しくデータが送られてきているか
 if ($input_data == "" || $session_data == "") { 
-	echo "値を入力して下さい。";
+	echo "<font color=\"red\">値を入力して下さい。</font>";
 	exit;
 }
 
