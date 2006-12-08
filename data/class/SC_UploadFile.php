@@ -64,8 +64,10 @@ class SC_UploadFile {
 	function makeTempFile($keyname, $rename = true) {
 		$objErr = new SC_CheckError();
 		$cnt = 0;
+		$arrKeyname = array_flip($this->keyname);
+		
 		if(!($_FILES[$keyname]['size'] > 0)) {
-			$objErr->arrErr[$keyname] = "※ " . $this->disp_name[$cnt] . "がアップロードされていません。<br />";
+			$objErr->arrErr[$keyname] = "※ " . $this->disp_name[$arrKeyname[$keyname]] . "がアップロードされていません。<br />";
 		} else {
 			foreach($this->keyname as $val) {
 				// 一致したキーのファイルに情報を保存する。
