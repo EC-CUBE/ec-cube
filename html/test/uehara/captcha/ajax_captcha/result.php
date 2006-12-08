@@ -2,9 +2,6 @@
 // セッションスタート
 session_start();
 
-// ヘッダー情報出力
-header ("\"Content-type\", \"text/html\"");
-
 // 入力値を受け取る
 $input_data = $_POST["input_data"];
 $session_data = $_SESSION["security_code"];
