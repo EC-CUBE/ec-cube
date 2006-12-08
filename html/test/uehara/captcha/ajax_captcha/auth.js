@@ -53,7 +53,7 @@ function updatePage() {
 }
 
 // 認証処理実行
-function getParam(forms) {
+function auth(forms) {
 	var postData = forms.input_data.name + "=" + encodeURIComponent( forms.input_data.value );
 	// リクエスト実行
 	makeRequest(RESULT_PAGE_PHP, postData);
