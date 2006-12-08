@@ -17,8 +17,8 @@ if ($input_data == "") {
 
 // セッションの値が正しいかチェック
 if (($input_data == $session_data) && ($input_data != "" && $session_data != "")) {
-	echo "認証成功！！";
+	echo "認証成功！！aaa";
 } else {
-	echo "認証失敗！！";
+	echo "認証失敗！！aaa";
 }
 ?>
