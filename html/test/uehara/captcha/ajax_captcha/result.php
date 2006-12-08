@@ -5,7 +5,7 @@ session_start();
 
 // 入力値を受け取る
 $input_data = $_POST["input_data"];
-$session_data = $_SESSION["security_code"];
+$session_data = $_SESSION["code"];
 
 // 正しくデータが送られてきているか
 if ($input_data == "" || $session_data == "") { 
