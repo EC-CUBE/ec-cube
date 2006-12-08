@@ -11,6 +11,7 @@ if ($input_data == "") {
  echo "FORMから入力して下さい。";
  exit;
 }
+
 // セッションの値が正しいかチェック
 if (($input_data == $session_data) && ($input_data != "" && $session_data != "")) {
 	echo "認証成功！！";
