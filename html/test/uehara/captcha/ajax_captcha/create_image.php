@@ -1,34 +1,34 @@
 <?
-// ¥»¥Ã¥·¥ç¥ó¥¹¥¿¡¼¥È
+// ã‚»ãƒƒã‚·ãƒ§ãƒ³ã‚¹ã‚¿ãƒ¼ãƒˆ
 session_start();
-// ²èÁü¥¤¥á¡¼¥¸À¸À® 
+// ç”»åƒã‚¤ãƒ¡ãƒ¼ã‚¸ç”Ÿæˆ 
 create_image();
 exit(); 
 
 function create_image() 
 { 
-    // ¥é¥ó¥À¥à¤ÊÊ¸»úÎó¤òÀ¸À®
+    // ãƒ©ãƒ³ãƒ€ãƒ ãªæ–‡å­—åˆ—ã‚’ç”Ÿæˆ
     $md5_hash = md5(rand(0,999)); 
-    // Ê¸»úÎó¤ò£µ·å¤Ë¤¹¤ë 
+    // æ–‡å­—åˆ—ã‚’ï¼•æ¡ã«ã™ã‚‹ 
     $security_code = substr($md5_hash, 15, 5); 
-    // ¥»¥Ã¥·¥ç¥ó¤ËÀ¸À®¤µ¤ì¤¿¥³¡¼¥É¤òÊÝÂ¸
+    // ã‚»ãƒƒã‚·ãƒ§ãƒ³ã«ç”Ÿæˆã•ã‚ŒãŸã‚³ãƒ¼ãƒ‰ã‚’ä¿å­˜
     $_SESSION["security_code"] = $security_code;
 
-    //¡¡¥¤¥á¡¼¥¸¥µ¥¤¥ºÄêµÁ
+    //ã€€ã‚¤ãƒ¡ãƒ¼ã‚¸ã‚µã‚¤ã‚ºå®šç¾©
     $width = 120; 
     $height = 30;  
 
     $image = ImageCreate($width, $height);  
 
-    // ¿§¤ÎÄêµÁ 
+    // è‰²ã®å®šç¾© 
     $white = ImageColorAllocate($image, 255, 255, 255); 
     $black = ImageColorAllocate($image, 0, 0, 0); 
     $grey = ImageColorAllocate($image, 204, 204, 204); 
 
-    // ÇØ·Ê¿§
+    // èƒŒæ™¯è‰²
     ImageFill($image, 0, 0, $white); 
 
-    // À¸À®¤·¤¿¥³¡¼¥É¤òÉ½¼¨
+    // ç”Ÿæˆã—ãŸã‚³ãƒ¼ãƒ‰ã‚’è¡¨ç¤º
     ImageString($image, 3, 30, 3, $security_code, $black); 
 /*
     //Throw in some lines to make it a little bit harder for any bots to break 
@@ -38,7 +38,7 @@ function create_image()
 */ 
     //Tell the browser what kind of file is come in 
     header("Content-Type: image/jpeg"); 
-    // jpag¤Ç½ÐÎÏ 
+    // jpagã§å‡ºåŠ› 
     ImageJpeg($image); 
     ImageDestroy($image); 
 } 
