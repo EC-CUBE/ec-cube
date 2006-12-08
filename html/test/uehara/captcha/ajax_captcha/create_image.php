@@ -21,7 +21,7 @@ $black = ImageColorAllocate($image, 0, 0, 0);
 ImageFill($image, 0, 0, $black); 
 
 // 生成したコードを表示
-ImageString($image, 5, 30, 5, $code, $white); 
+ImageString($image, 5, 30, 3, $code, $white); 
 
 // jpagで出力 
 header("Content-Type: image/jpeg"); 
