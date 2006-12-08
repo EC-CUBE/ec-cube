@@ -1,0 +1,47 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<!--
+	This is the HTML front-end of the How to Create CAPTCHA Protection using PHP and AJAX Tutorial.
+	
+	You may use this code in your own projects as long as this 
+	copyright is left in place.  All code is provided AS-IS.
+	This code is distributed in the hope that it will be useful,
+ 	but WITHOUT ANY WARRANTY; without even the implied warranty of
+ 	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+	
+	For the rest of the code visit http://www.WebCheatSheet.com
+	
+	Copyright 2006 WebCheatsheet.com	
+-->
+
+<html>
+	<head>
+		<script language="JavaScript" type="text/javascript" src="ajax_captcha.js"></script>
+	</head>
+	<body>
+	<form id="frmCaptcha" name="frmCaptcha">
+		<table> 
+			<tr>
+				<td align="left">
+					<label for="captcha">Captcha</label>
+				</td>
+				<td>
+					<input id="txtCaptcha" type="text" name="txtCaptcha" value="" maxlength="10" size="32" />
+				</td>
+				<td> 
+					<img id="imgCaptcha" src="create_image.php" />
+				</td>
+			</tr>
+			<tr>
+				<td>&nbsp;</td>
+				<td>
+					<input id="btnCaptcha" type="button" value="Captcha Test" name="btnCaptcha" 
+						onclick="getParam(document.frmCaptcha)" />
+				</td>
+			</tr>
+		</table> 
+
+		<div id="result">&nbsp;</div>
+	</form>
+	</body>
+</html>
