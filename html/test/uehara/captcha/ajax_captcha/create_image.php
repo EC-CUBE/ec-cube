@@ -20,7 +20,7 @@ function create_image()
 
     //　イメージサイズ定義
     $width = 120; 
-    $height = 30;  
+    $height = 20;  
 
     $image = ImageCreate($width, $height);  
 
