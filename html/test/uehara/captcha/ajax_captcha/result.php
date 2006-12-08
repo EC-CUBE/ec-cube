@@ -22,7 +22,7 @@ if ($input_data == $session_data) {
 } else {
 
 	// ここに認証失敗時の処理を書いて下さい。
-	echo "認証失敗！！";
+	echo "<font color=\"red\">認証失敗！！</font>";
 
 }
 ?>
