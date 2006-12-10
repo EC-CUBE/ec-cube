@@ -71,7 +71,7 @@
 									
 									<!--{section name=template loop=$arrTemplate.image step=3}-->
 									<!--{*foreach key=key item=item from=$arrTemplate.image*}-->
-										<tr class="fs10n">
+										<tr>
 										<!--{assign var=cnt value=$smarty.section.template.iteration-1}-->
 										<!--{assign var=key value=$cnt*$smarty.section.template.step}-->
 										<!--{assign var=code value=$arrTemplate.code[$key]}-->
