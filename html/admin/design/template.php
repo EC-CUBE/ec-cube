@@ -299,7 +299,9 @@ function lfChangeTemplate(){
 	
 	// phpspot.netという文字列をphpspot.orgに置換する 
 	$path = $tpl_path . $arrTemplate[0]['template_code'] . "/";
-	$fs = new File_SearchReplace('<!--{$smarty.const.URL_DIR}-->img/', '<!--{$smarty.const.URL_DIR}-->img/', "", $path, true); 
+	$img_path = '<!--{$smarty.const.URL_DIR}-->img/';
+	$displace_path = '<!--{$smarty.const.URL_DIR}-->templates/'. $arrTemplate[0]['template_code'] . '/img/';
+	$fs = new File_SearchReplace($img_path, $displace_path, "", $path, true); 
 	$fs->doSearch(); 
 	
 	
