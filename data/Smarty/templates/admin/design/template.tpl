@@ -77,6 +77,7 @@
 										<!--{assign var=code value=$arrTemplate.code[$key]}-->
 										<!--{assign var=image value=$arrTemplate.image[$code]}-->
 										<td bgcolor="#ffffff" align="center"><!--{$arrTemplate[template]}-->
+											¡Ú<!--{$code}-->¡Û<br/>
 											<label for="radio<!--{$key}-->"><img src="<!--{$smarty.const.SITE_URL}-->resize_image.php?image=<!--{$smarty.const.HTML_PATH}--><!--{$image}-->&width=160&height=200" name="<!--{$key}-->" alt="<!--{$code}-->"></label><br>
 											<label for="radio<!--{$key}-->"><input type="radio" name="check_template" value="<!--{$code}-->" id="radio<!--{$key}-->" onClick="ChangeImage('<!--{$smarty.const.URL_DIR}--><!--{$image}-->');" <!--{if $arrTemplate.check[$code] != ""}-->checked<!--{/if}-->>ÁªÂò</label>
 										</td>
