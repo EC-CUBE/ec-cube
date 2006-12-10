@@ -298,7 +298,8 @@ function lfChangeTemplate(){
 	require_once(HTML_PATH . "../data/module/SearchReplace.php");
 	
 	// phpspot.netという文字列をphpspot.orgに置換する 
-	$fs = new File_SearchReplace('<!--{$smarty.const.URL_DIR}-->img/', "phpspot.org", "", "$tpl_path . $arrTemplate[0]['template_code']", true); 
+	$path = $tpl_path . $arrTemplate[0]['template_code'];
+	$fs = new File_SearchReplace('<!--{$smarty.const.URL_DIR}-->img/', "phpspot.org", "", $path, true); 
 	$fs->doSearch(); 
 	
 	
