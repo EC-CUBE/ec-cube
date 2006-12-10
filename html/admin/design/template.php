@@ -289,6 +289,18 @@ function lfChangeTemplate(){
 	$taget_inc_path = $tpl_path . $arrTemplate[0]['template_code'] . "/include/";
 	$taget_css_path = $tpl_path . $arrTemplate[0]['template_code'] . "/css/";
 	$save_tpl_path = $tpl_path;
+
+	// 画像パスを書き換え
+	
+	readfile($save_tpl_path . "top.tpl");
+	
+	'<!--{$smarty.const.URL_DIR}-->img/';
+	require_once(HTML_PATH . "../data/module/SearchReplace.php");
+	
+	// phpspot.netという文字列をphpspot.orgに置換する 
+	$fs = new File_SearchReplace('<!--{$smarty.const.URL_DIR}-->img/', "phpspot.org", "", "$tpl_path . $arrTemplate[0]['template_code']", true); 
+	$fs->doSearch(); 
+	
 	
 	// TOPを変更した場合には全画面変更
 	if ($objPage->tpl_subno_template == $objPage->arrSubnavi['title'][1]){
@@ -302,7 +314,7 @@ function lfChangeTemplate(){
 
 		// ブロックデータのコピー
 		lfFolderCopy($taget_inc_path."bloc/", $inc_path . "bloc/");
-		
+
 		// ヘッダー,フッターコピー
 		copy($taget_inc_path . "header.tpl", $inc_path . "header.tpl");
 		copy($taget_inc_path . "footer.tpl", $inc_path . "footer.tpl");
@@ -332,6 +344,7 @@ function lfDownloadTemplate($template_code){
 	// IMGフォルダをコピー
 	$mess = "";
 	$mess = sfCopyDir(HTML_PATH."img/", USER_TEMPLATE_PATH.$template_code."/img/", $mess);
+	
 	// ファイルの圧縮
 	$tar = new Archive_Tar($dl_file, TRUE);
 	// ファイル一覧取得
