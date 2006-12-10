@@ -285,7 +285,9 @@ function lfChangeTemplate(){
 			break;
 	}
 	
-	$taget_tpl_path = $tpl_path . $arrTemplate[0]['template_code'] . "/";
+	$taget_tpl_path = $tpl_path . $arrTemplate[0]['template_code'] . "/templates/";
+	$taget_inc_path = $tpl_path . $arrTemplate[0]['template_code'] . "/include/";
+	$taget_css_path = $tpl_path . $arrTemplate[0]['template_code'] . "/css/";
 	$save_tpl_path = $tpl_path;
 	
 	// TOPを変更した場合には全画面変更
@@ -299,14 +301,14 @@ function lfChangeTemplate(){
 		lfFolderCopy($taget_tpl_path."mypage/", $save_tpl_path . "mypage/");
 
 		// ブロックデータのコピー
-		lfFolderCopy($taget_tpl_path."bloc/", $inc_path . "bloc/");
+		lfFolderCopy($taget_inc_path."bloc/", $inc_path . "bloc/");
 		
 		// ヘッダー,フッターコピー
-		copy($taget_tpl_path . "header.tpl", $inc_path . "header.tpl");
-		copy($taget_tpl_path . "footer.tpl", $inc_path . "footer.tpl");
+		copy($taget_inc_path . "header.tpl", $inc_path . "header.tpl");
+		copy($taget_inc_path . "footer.tpl", $inc_path . "footer.tpl");
 		
 		// CSSファイルのコピー
-		copy($taget_tpl_path . "contents.css", $css_path . "contents.css");
+		copy($taget_css_path . "contents.css", $css_path . "contents.css");
 
 	// mypageの場合にはフォルダごとコピーする
 	}elseif($objPage->tpl_subno_template == $objPage->arrSubnavi['title'][4]){
