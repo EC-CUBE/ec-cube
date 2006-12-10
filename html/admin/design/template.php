@@ -330,7 +330,7 @@ function lfDownloadTemplate($template_code){
 	// IMGフォルダをコピー
 	//lfFolderCopy(HTML_PATH."img/", USER_TEMPLATE_PATH.$filename);
 	
-	sfprintr(HTML_PATH."img/ >>>> " . USER_TEMPLATE_PATH.$filename);
+	sfprintr(HTML_PATH."img/ >>>> " . USER_TEMPLATE_PATH.$template_code);
 	
 	// ファイルの圧縮
 	$tar = new Archive_Tar($dl_file, TRUE);
