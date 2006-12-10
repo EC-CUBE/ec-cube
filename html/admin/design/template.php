@@ -130,25 +130,25 @@ function lfgetTemplate(){
 	switch($objPage->tpl_subno_template) {
 		// TOP
 		case $objPage->arrSubnavi['title'][1]:
-			$Image = "img/TopImage.jpg";			// イメージの配列要素名格納用
+			$Image = "TopImage.jpg";			// イメージの配列要素名格納用
 			$disp = $objPage->arrSubnavi['title'][1];
 			break;
 			
 		// 商品一覧
 		case $objPage->arrSubnavi['title'][2]:
-			$Image = "img/ProdImage.jpg";			// イメージの配列要素名格納用
+			$Image = "ProdImage.jpg";			// イメージの配列要素名格納用
 			$disp = $objPage->arrSubnavi['title'][2];
 			break;
 			
 		// 商品詳細
 		case $objPage->arrSubnavi['title'][3]:
-			$Image = "img/DetailImage.jpg";			// イメージの配列要素名格納用
+			$Image = "DetailImage.jpg";			// イメージの配列要素名格納用
 			$disp = $objPage->arrSubnavi['title'][3];
 			break;
 			
 		// MYページ
 		case $objPage->arrSubnavi['title'][4]:
-			$Image = "img/MypageImage.jpg";			//イメージの配列要素名格納用
+			$Image = "MypageImage.jpg";			//イメージの配列要素名格納用
 			$disp = $objPage->arrSubnavi['title'][4];
 			break;
 	}
