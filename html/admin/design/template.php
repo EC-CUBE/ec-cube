@@ -327,6 +327,9 @@ function lfDownloadTemplate($template_code){
 	$filename = $template_code. ".tar.gz";
 	$dl_file = USER_TEMPLATE_PATH.$filename;
 	
+	// IMGフォルダをコピー
+	lfFolderCopy(HTML_PATH."img/", USER_TEMPLATE_PATH.$filename);
+	
 	// ファイルの圧縮
 	$tar = new Archive_Tar($dl_file, TRUE);
 	// ファイル一覧取得
