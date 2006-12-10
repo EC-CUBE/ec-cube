@@ -327,8 +327,8 @@ function lfChangeTemplate(){
 	}
 
 	// 画像パスを元に戻す	
-	// $fs = new File_SearchReplace($displace_path, $img_path, "", $path, true); 
-	// $fs->doSearch(); 
+	$fs = new File_SearchReplace($displace_path, $img_path, "", $path, true); 
+	$fs->doSearch(); 
 }
 
 /**************************************************************************************************************
