@@ -5,8 +5,9 @@
  * http://www.lockon.co.jp/
  */
 require_once("../../require.php");
-require_once(DATA_PATH. "module/Tar.php");
-require_once(DATA_PATH. "include/file_manager.inc");
+require_once(DATA_PATH . "module/Tar.php");
+require_once(DATA_PATH . "include/file_manager.inc");
+require_once(DATA_PATH . "module/SearchReplace.php");
 
 class LC_Page {
 	var $arrForm;
@@ -291,19 +292,11 @@ function lfChangeTemplate(){
 	$save_tpl_path = $tpl_path;
 
 	// 画像パスを書き換え
-	
-	readfile($save_tpl_path . "top.tpl");
-	
-	'<!--{$smarty.const.URL_DIR}-->img/';
-	require_once(HTML_PATH . "../data/module/SearchReplace.php");
-	
-	// phpspot.netという文字列をphpspot.orgに置換する 
 	$path = $tpl_path . $arrTemplate[0]['template_code'] . "/";
 	$img_path = '<!--{$smarty.const.URL_DIR}-->img/';
 	$displace_path = '<!--{$smarty.const.URL_DIR}-->'. USER_DIR . 'templates/' . $arrTemplate[0]['template_code'] . '/img/';
 	$fs = new File_SearchReplace($img_path, $displace_path, "", $path, true); 
 	$fs->doSearch(); 
-	
 	
 	// TOPを変更した場合には全画面変更
 	if ($objPage->tpl_subno_template == $objPage->arrSubnavi['title'][1]){
@@ -332,6 +325,10 @@ function lfChangeTemplate(){
 		// テンプレートファイルをコピー
 		copy($taget_tpl_path . $tpl_name, $save_tpl_path . $tpl_name);
 	}
+
+	// 画像パスを元に戻す	
+	$fs = new File_SearchReplace($displace_path, $img_path, "", $path, true); 
+	$fs->doSearch(); 
 }
 
 /**************************************************************************************************************
