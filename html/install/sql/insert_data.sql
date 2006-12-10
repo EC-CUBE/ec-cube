@@ -16,7 +16,7 @@ insert into dtb_bloc ( bloc_name, tpl_path, filename, php_path, del_flg, create_
 
 insert into dtb_pagelayout (page_name,url,php_dir,tpl_dir,filename,edit_flg, create_date, update_date)values('TOPページ','index.php',' ','user_data/templates/','top',2,now(),now());
 insert into dtb_pagelayout (page_name,url,php_dir,tpl_dir,filename,edit_flg, create_date, update_date)values('商品一覧ページ','products/list.php',' ','user_data/templates/','list',2,now(),now());
-insert into dtb_pagelayout (page_name,url,php_dir,tpl_dir,filename,edit_flg, create_date, update_date)values('商品詳細','products/detail.php',' ','user_data/templates/','detail',2,now(),now());
+insert into dtb_pagelayout (page_name,url,php_dir,tpl_dir,filename,edit_flg, create_date, update_date)values('商品詳細ページ','products/detail.php',' ','user_data/templates/','detail',2,now(),now());
 insert into dtb_pagelayout (page_name,url,php_dir,tpl_dir,filename,edit_flg, create_date, update_date)values('MYページ','mypage/index.php',' ','','',2,now(),now());
 
 insert into dtb_pagelayout (page_id,page_name,url, create_date, update_date)values(0, 'プレビューデータ',' ',now(),now());
