@@ -251,18 +251,12 @@ function lfChangeTemplate(){
 	$tpl_element = "";
 	
 	$chk_tpl = $_POST['check_template'];
-	$taget_tpl_path = $tpl_path . $chk_tpl . "/templates/";
-	$taget_inc_path = $tpl_path . $chk_tpl . "/include/";
-	$taget_css_path = $tpl_path . $chk_tpl . "/css/";
+	$path = $tpl_path . $chk_tpl . "/";
+	$taget_tpl_path = $path . "/templates/";
+	$taget_inc_path = $path . "/include/";
+	$taget_css_path = $path . "/css/";
 	$save_tpl_path = $tpl_path;
 	
-	
-	/*
-	// テンプレートデータを取得する
-	$objQuery = new SC_Query();
-	$sql = "SELECT template_code,template_name FROM dtb_templates WHERE template_code = ?";
-	$arrTemplate = $objQuery->getall($sql, array($chk_tpl));	
-	*/
 	switch($objPage->tpl_subno_template) {
 		// TOP
 		case $objPage->arrSubnavi['title'][1]:
@@ -291,15 +285,8 @@ function lfChangeTemplate(){
 		default:
 			break;
 	}
-	/*
-	$taget_tpl_path = $tpl_path . $arrTemplate[0]['template_code'] . "/templates/";
-	$taget_inc_path = $tpl_path . $arrTemplate[0]['template_code'] . "/include/";
-	$taget_css_path = $tpl_path . $arrTemplate[0]['template_code'] . "/css/";
-	*/
-	$save_tpl_path = $tpl_path;
 
 	// 画像パスを書き換え
-	$path = $tpl_path . $chk_tpl . "/";
 	$img_path = '<!--{$smarty.const.URL_DIR}-->img/';
 	$displace_path = '<!--{$smarty.const.URL_DIR}-->'. USER_DIR . 'templates/' . $chk_tpl . '/img/';
 	$fs = new File_SearchReplace($img_path, $displace_path, "", $path, true); 
