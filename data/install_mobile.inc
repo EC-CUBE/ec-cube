@@ -6,7 +6,8 @@
     define ('PC_SITE_URL', 'http://mobile.ec-cube.net/');
     define ('SSL_URL', 'http://mobile.ec-cube.net/mobile/');
     define ('PC_SSL_URL', 'http://mobile.ec-cube.net/');
-    define ('URL_DIR', '/');
+    define ('URL_DIR', '/mobile/');
+    define ('PC_URL_DIR', '/');
     define ('DOMAIN_NAME', '');
     define ('DB_TYPE', 'mysql');
     define ('DB_USER', 'mobile_db_user');
