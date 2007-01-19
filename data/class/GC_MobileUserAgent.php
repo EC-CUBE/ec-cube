@@ -88,7 +88,7 @@ class GC_MobileUserAgent {
 	}
 
 	/**
-	 * EC-CUBE がサポートする携帯端末かどうかを判別する。
+	 * EC-CUBE がサポートする携帯キャリアかどうかを判別する。
 	 *
 	 * @return boolean 携帯端末ではない場合は true、それ以外の場合は false を返す。
 	 */
