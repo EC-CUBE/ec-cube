@@ -520,6 +520,8 @@ CREATE TABLE dtb_customer (
     mobile_phone_id text
 ) TYPE=InnoDB ;
 
+CREATE INDEX dtb_customer_mobile_phone_id_key ON dtb_customer (mobile_phone_id(64));
+
 CREATE TABLE dtb_customer_mail (
     email varchar(50) NOT NULL UNIQUE,
     mail_flag smallint,

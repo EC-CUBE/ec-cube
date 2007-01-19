@@ -2,7 +2,6 @@ CREATE INDEX dtb_products_category_id_key ON dtb_products(category_id);
 CREATE INDEX dtb_products_class_product_id_key ON dtb_products_class(product_id);
 CREATE INDEX dtb_order_detail_product_id_key ON dtb_order_detail(product_id);
 CREATE INDEX dtb_category_category_id_key ON dtb_category(category_id);
-CREATE INDEX dtb_customer_mobile_phone_id_key ON dtb_customer (mobile_phone_id);
 
 INSERT INTO dtb_member (name, login_id, password, creator_id, authority, work, del_flg, create_date, update_date) 
 VALUES ('dummy','dummy',' ',0,0,1,1, now(), now());
