@@ -63,6 +63,71 @@ class SC_Customer {
 		}
 		return false;
 	}
+
+	/**
+	 * 携帯端末IDが一致する会員が存在するかどうかをチェックする。
+	 *
+	 * @return boolean 該当する会員が存在する場合は true、それ以外の場合
+	 *                 は false を返す。
+	 */
+	function checkMobilePhoneId() {
+		if (!isset($_SESSION['mobile']['phone_id'])) {
+			return false;
+		}
+
+		// 携帯端末IDが一致し、本登録された会員を検索する。
+		$sql = 'SELECT count(*) FROM dtb_customer WHERE mobile_phone_id = ? AND del_flg = 0 AND status = 2';
+		$result = $this->conn->getOne($sql, array($_SESSION['mobile']['phone_id']));
+		return $result > 0;
+	}
+
+	/**
+	 * 携帯端末IDを使用して会員を検索し、パスワードの照合を行う。
+	 * パスワードが合っている場合は顧客情報を取得する。
+	 *
+	 * @param string $pass パスワード
+	 * @return boolean 該当する会員が存在し、パスワードが合っている場合は true、
+	 *                 それ以外の場合は false を返す。
+	 */
+	function getCustomerDataFromMobilePhoneIdPass($pass) {
+		if (!isset($_SESSION['mobile']['phone_id'])) {
+			return false;
+		}
+
+		// 携帯端末IDが一致し、本登録された会員を検索する。
+		$sql = 'SELECT * FROM dtb_customer WHERE mobile_phone_id = ? AND del_flg = 0 AND status = 2';
+		@list($data) = $this->conn->getAll($sql, array($_SESSION['mobile']['phone_id']));
+
+		// パスワードが合っている場合は、顧客情報をcustomer_dataに格納してtrueを返す。
+		if (sha1($pass . ':' . AUTH_MAGIC) == @$data['password']) {
+			$this->customer_data = $data;
+			$this->startSession();
+			return true;
+		}
+		return false;
+	}
+
+	/**
+	 * 携帯端末IDを登録する。
+	 *
+	 * @return void
+	 */
+	function updateMobilePhoneId() {
+		if (!isset($_SESSION['mobile']['phone_id'])) {
+			return;
+		}
+
+		if ($this->customer_data['mobile_phone_id'] == $_SESSION['mobile']['phone_id']) {
+			return;
+		}
+
+		$objQuery = new SC_Query;
+		$sqlval = array('mobile_phone_id' => $_SESSION['mobile']['phone_id']);
+		$where = 'customer_id = ? AND del_flg = 0 AND status = 2';
+		$objQuery->update('dtb_customer', $sqlval, $where, array($this->customer_data['customer_id']));
+
+		$this->customer_data['mobile_phone_id'] = $_SESSION['mobile']['phone_id'];
+	}
 	
 	// パスワードを確認せずにログイン
 	function setLogin($email) {

@@ -323,6 +323,7 @@ function lfDispStep0($objPage) {
 	// プログラムで書込みされるファイル・ディレクトリ
 	$arrWriteFile = array(
 		"../../data/install.inc",
+		"../../data/install_mobile.inc",
 		"../user_data",
 		"../upload",
 		"../../data/Smarty/templates_c",		
@@ -726,6 +727,35 @@ function lfMakeConfigFile() {
 	"    define ('SITE_URL', '" . $normal_url . "');\n" .
 	"    define ('SSL_URL', '" . $secure_url . "');\n" .
 	"    define ('URL_DIR', '" . $url_dir . "');\n" .	
+	"    define ('DOMAIN_NAME', '" . $objWebParam->getValue('domain') . "');\n" .
+	"    define ('DB_TYPE', '" . $objDBParam->getValue('db_type') . "');\n" .
+	"    define ('DB_USER', '" . $objDBParam->getValue('db_user') . "');\n" . 
+	"    define ('DB_PASSWORD', '" . $objDBParam->getValue('db_password') . "');\n" .
+	"    define ('DB_SERVER', '" . $objDBParam->getValue('db_server') . "');\n" .
+	"    define ('DB_NAME', '" . $objDBParam->getValue('db_name') . "');\n" .
+	"    define ('DB_PORT', '" . $objDBParam->getValue('db_port') .  "');\n" .
+	"    define ('DATA_PATH', '".$data_path."');\n" .
+	"?>";
+	
+	if($fp = fopen($filepath,"w")) {
+		fwrite($fp, $config_data);
+		fclose($fp);
+	}
+
+	// モバイル版の設定ファイル install_mobile.inc を作成する。
+	$filepath = $data_path . "install_mobile.inc";
+	
+	$config_data = 
+	"<?php\n".
+	"    define ('ECCUBE_INSTALL', 'ON');\n" .
+	"    define ('HTML_PATH', '" . $root_dir . "mobile/');\n" .	 
+	"    define ('PC_HTML_PATH', '" . $root_dir . "');\n" .	 
+	"    define ('SITE_URL', '" . $normal_url . "mobile/');\n" .
+	"    define ('PC_SITE_URL', '" . $normal_url . "');\n" .
+	"    define ('SSL_URL', '" . $secure_url . "mobile/');\n" .
+	"    define ('PC_SSL_URL', '" . $secure_url . "');\n" .
+	"    define ('URL_DIR', '" . $url_dir . "mobile/');\n" .	
+	"    define ('PC_URL_DIR', '" . $url_dir . "');\n" .	
 	"    define ('DOMAIN_NAME', '" . $objWebParam->getValue('domain') . "');\n" .
 	"    define ('DB_TYPE', '" . $objDBParam->getValue('db_type') . "');\n" .
 	"    define ('DB_USER', '" . $objDBParam->getValue('db_user') . "');\n" . 

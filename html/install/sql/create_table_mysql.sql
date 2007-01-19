@@ -516,7 +516,8 @@ CREATE TABLE dtb_customer (
     del_flg  smallint NOT NULL DEFAULT 0,
     cell01 text,
     cell02 text,
-    cell03 text
+    cell03 text,
+    mobile_phone_id text
 ) TYPE=InnoDB ;
 
 CREATE TABLE dtb_customer_mail (

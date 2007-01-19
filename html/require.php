@@ -29,9 +29,19 @@ require_once($include_dir . "/../data/class/SC_Customer.php");
 require_once($include_dir . "/../data/class/SC_Cookie.php");
 require_once($include_dir . "/../data/class/SC_Page.php");
 require_once($include_dir . "/../data/class/SC_Pdf.php");
+require_once($include_dir . "/../data/class/GC_MobileUserAgent.php");
+require_once($include_dir . "/../data/class/GC_MobileEmoji.php");
 require_once($include_dir . "/../data/include/page_layout.inc");
 
 // アップデートで取得したPHPを読み出す
 sfLoadUpdateModule();
 
+// 携帯端末の場合は mobile 以下へリダイレクトする。
+if (GC_MobileUserAgent::isMobile()) {
+	header("Location: " . URL_DIR . "mobile/");
+	exit;
+}
+
+// 絵文字変換 (除去) フィルターを組み込む。
+ob_start(array('GC_MobileEmoji', 'handler'));
 ?>
