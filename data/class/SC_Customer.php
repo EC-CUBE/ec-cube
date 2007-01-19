@@ -71,7 +71,7 @@ class SC_Customer {
 	 *                 は false を返す。
 	 */
 	function checkMobilePhoneId() {
-		if (!isset($_SESSION['mobile']['phone_id'])) {
+		if (!isset($_SESSION['mobile']['phone_id']) || $_SESSION['mobile']['phone_id'] === false) {
 			return false;
 		}
 
@@ -90,7 +90,7 @@ class SC_Customer {
 	 *                 それ以外の場合は false を返す。
 	 */
 	function getCustomerDataFromMobilePhoneIdPass($pass) {
-		if (!isset($_SESSION['mobile']['phone_id'])) {
+		if (!isset($_SESSION['mobile']['phone_id']) || $_SESSION['mobile']['phone_id'] === false) {
 			return false;
 		}
 
@@ -113,7 +113,7 @@ class SC_Customer {
 	 * @return void
 	 */
 	function updateMobilePhoneId() {
-		if (!isset($_SESSION['mobile']['phone_id'])) {
+		if (!isset($_SESSION['mobile']['phone_id']) || $_SESSION['mobile']['phone_id'] === false) {
 			return;
 		}
 
