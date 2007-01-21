@@ -5,7 +5,7 @@
  * http://www.lockon.co.jp/
  */
 
-print("test");
+print("test2");
  
 require_once("./require.php");
 
