@@ -57,7 +57,7 @@
 					<tr>
 						<td><script src=https://seal.verisign.com/getseal?host_name=secure.tokado.jp&size=S&use_flash=YES&use_transparent=NO&lang=ja></script></td>
 						<td><img src="../img/_.gif" width="10" height="1" alt="" /></td>
-						<td class="fs10">トーカ堂インターネットショッピングでは、通信の安全性を確保するセキュリティモードを設定しています。「暗号化(SSL)」を選択すると、送受信するデータが暗号化され、漏洩の危険性が低くなります。また、日本ベリサイン社によって通信サーバが認証されるため、なりすましなどによるID・パスワードの盗用の可能性も低減できます。</td>
+						<td class="fs10">インターネットショッピングでは、通信の安全性を確保するセキュリティモードを設定しています。「暗号化(SSL)」を選択すると、送受信するデータが暗号化され、漏洩の危険性が低くなります。また、日本ベリサイン社によって通信サーバが認証されるため、なりすましなどによるID・パスワードの盗用の可能性も低減できます。</td>
 					</tr>
 
 				</table>
