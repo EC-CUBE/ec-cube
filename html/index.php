@@ -5,6 +5,8 @@
  * http://www.lockon.co.jp/
  */
 
+print("test");
+ 
 require_once("./require.php");
 
 class LC_Page {
@@ -21,8 +23,6 @@ $conn = new SC_DBConn();
 
 // レイアウトデザインを取得
 $objPage = sfGetPageLayout($objPage, false, "index.php");
-
-print("test");
 
 $objView = new SC_SiteView();
 $objView->assignobj($objPage);
