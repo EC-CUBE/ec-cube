@@ -1,0 +1,27 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html>
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+		<script language="JavaScript" type="text/javascript" src="auth.js"></script>
+	</head>
+	<body>
+	<!--認証結果-->
+	<div id="result">&nbsp;</div>
+	<!--認証フォーム-->
+	<form id="form1" name="form1">
+		<table> 
+			<tr>
+				<td colspan="2">■下に表示される値を入力して下さい。</td>
+			</tr>
+			<tr>
+				<td><img id="code" src="create_image.php" /></td>
+			<tr>
+				<td><input id="input_data" type="text" name="input_data" value="" maxlength="10" size="32" /></td>
+			</tr>
+			<tr>
+				<td><input type="button" value="認証実行" onclick="auth(document.form1)" /></td>
+			</tr>
+		</table> 
+	</form>
+	</body>
+</html>
