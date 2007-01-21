@@ -7,6 +7,8 @@
  
 require_once("./require.php");
 
+print("test3");
+
 class LC_Page {
 	function LC_Page() {
 		/** 必ず変更する **/
