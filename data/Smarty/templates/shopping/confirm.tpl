@@ -133,7 +133,8 @@
 					<tr>
 						<td colspan="2" bgcolor="#f0f0f0" class="fs12n"><strong>▼お届け先</strong></td>
 					</tr>
-					<!--{if $arrData.deliv_check == 1}-->
+					<!--{* 別のお届け先が選択されている場合 *}-->
+					<!--{if $arrData.deliv_check >= 1}-->
 						<tr>
 							<td width="150" bgcolor="#f0f0f0" class="fs12">お名前</td>
 							<td width="507" bgcolor="#ffffff" class="fs12"><!--{$arrData.deliv_name01|escape}--> <!--{$arrData.deliv_name02|escape}--></td>

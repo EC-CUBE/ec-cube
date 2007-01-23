@@ -68,9 +68,9 @@
 						<tr class="fs12" bgcolor="#ffffff">
 							<td align="center">
 								<!--{if $smarty.section.cnt.first}-->
-								<input type="radio" name="deli" id="chk_id_<!--{$smarty.section.cnt.iteration}-->" value="<!--{$smarty.section.cnt.iteration}-->" onclick="mode.value='customer_addr';">
+								<input type="radio" name="deliv_check" id="chk_id_<!--{$smarty.section.cnt.iteration}-->" value="-1" <!--{if $arrForm.deliv_check.value == "" || $arrForm.deliv_check.value == -1}-->checked<!--{/if}-->>
 								<!--{else}-->
-								<input type="radio" name="deli" id="chk_id_<!--{$smarty.section.cnt.iteration}-->" value="<!--{$smarty.section.cnt.iteration}-->" onclick="mode.value='other_addr'; other_deliv_id.value=<!--{$arrAddr[cnt].other_deliv_id}-->;">
+								<input type="radio" name="deliv_check" id="chk_id_<!--{$smarty.section.cnt.iteration}-->" value="<!--{$arrAddr[cnt].other_deliv_id}-->" <!--{if $arrForm.deliv_check.value == $arrAddr[cnt].other_deliv_id}-->checked<!--{/if}-->>
 								<!--{/if}-->
 							</td>
 							<td>

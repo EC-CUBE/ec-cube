@@ -100,8 +100,8 @@ case 'delete':
 	break;
 // 会員登録住所に送る
 case 'customer_addr':
-	// お届け先がチェックされている場合には更新処理を行う
-	if ($_POST['deli'] != "") {
+	// 会員登録住所がチェックされている場合
+	if ($_POST['deliv_check'] == '-1') {
 		// 会員情報の住所を受注一時テーブルに書き込む
 		lfRegistDelivData($uniqid, $objCustomer);
 		// 正常に登録されたことを記録しておく
@@ -109,19 +109,11 @@ case 'customer_addr':
 		// お支払い方法選択ページへ移動
 		header("Location: " . URL_SHOP_PAYMENT);
 		exit;
-	}else{
-		// エラーを返す
-		$arrErr['deli'] = '※ お届け先を選択してください。';
-	}
-	break;
-	
-// 登録済みの別のお届け先に送る
-case 'other_addr':
-	// お届け先がチェックされている場合には更新処理を行う
-	if ($_POST['deli'] != "") {
-		if (sfIsInt($_POST['other_deliv_id'])) {
+	// 別のお届け先がチェックされている場合
+	} elseif($_POST['deliv_check'] >= 1) {
+		if (sfIsInt($_POST['deliv_check'])) {
 			// 登録済みの別のお届け先を受注一時テーブルに書き込む
-			lfRegistOtherDelivData($uniqid, $objCustomer, $_POST['other_deliv_id']);
+			lfRegistOtherDelivData($uniqid, $objCustomer, $_POST['deliv_check']);
 			// 正常に登録されたことを記録しておく
 			$objSiteSess->setRegistFlag();
 			// お支払い方法選択ページへ移動
@@ -131,28 +123,8 @@ case 'other_addr':
 	}else{
 		// エラーを返す
 		$arrErr['deli'] = '※ お届け先を選択してください。';
-	}
+	}	
 	break;
-
-/*
-// 別のお届け先を指定
-case 'new_addr':
-	// 入力値の変換
-	$objFormParam->convParam();
-	$objPage->arrErr = lfCheckError($arrRet);
-	// 入力エラーなし
-	if(count($objPage->arrErr) == 0) {
-		// DBへお届け先を登録
-		lfRegistNewAddrData($uniqid, $objCustomer);
-		// 正常に登録されたことを記録しておく
-		$objSiteSess->setRegistFlag();
-		// お支払い方法選択ページへ移動
-		header("Location: " . URL_SHOP_PAYMENT);
-		exit;		
-	}
-	break;
-*/
-
 // 前のページに戻る
 case 'return':
 	// 確認ページへ移動
@@ -188,6 +160,7 @@ foreach($objOtherAddr as $val) {
 // 入力値の取得
 $objPage->arrForm = $objFormParam->getFormParamList();
 $objPage->arrErr = $arrErr;
+
 $objView->assignobj($objPage);
 // フレームを選択(キャンペーンページから遷移なら変更)
 $objCampaignSess->pageView($objView);
@@ -207,6 +180,7 @@ function lfInitParam() {
 	$objFormParam->addParam("電話番号1", "deliv_tel01", TEL_ITEM_LEN, "n", array("EXIST_CHECK", "MAX_LENGTH_CHECK" ,"NUM_CHECK"));
 	$objFormParam->addParam("電話番号2", "deliv_tel02", TEL_ITEM_LEN, "n", array("EXIST_CHECK", "MAX_LENGTH_CHECK" ,"NUM_CHECK"));
 	$objFormParam->addParam("電話番号3", "deliv_tel03", TEL_ITEM_LEN, "n", array("EXIST_CHECK", "MAX_LENGTH_CHECK" ,"NUM_CHECK"));
+	$objFormParam->addParam("", "deliv_check");	
 }
 
 function lfInitLoginFormParam() {
@@ -237,7 +211,7 @@ function lfRegistDelivData($uniqid, $objCustomer) {
 	$sqlval['order_temp_id'] = $uniqid;
 	$sqlval['update_date'] = 'Now()';
 	$sqlval['customer_id'] = $objCustomer->getValue('customer_id');
-    $sqlval['deliv_check'] = '1';
+    $sqlval['deliv_check'] = '-1';
 	$sqlval['deliv_name01'] = $objCustomer->getValue('name01');
     $sqlval['deliv_name02'] = $objCustomer->getValue('name02');
     $sqlval['deliv_kana01'] = $objCustomer->getValue('kana01');
@@ -270,7 +244,7 @@ function lfRegistOtherDelivData($uniqid, $objCustomer, $other_deliv_id) {
 	$where = "other_deliv_id = ?";
 	$arrRet = $objQuery->select("*", "dtb_other_deliv", $where, array($other_deliv_id));
 	
-	$sqlval['deliv_check'] = '1';
+	$sqlval['deliv_check'] = $other_deliv_id;
     $sqlval['deliv_name01'] = $arrRet[0]['name01'];
     $sqlval['deliv_name02'] = $arrRet[0]['name02'];
     $sqlval['deliv_kana01'] = $arrRet[0]['kana01'];

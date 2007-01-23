@@ -336,7 +336,7 @@ function lfRegistOrder($objQuery, $arrData, $objCampaignSess) {
 	}
 	
 	// 別のお届け先を指定していない場合、配送先に登録住所をコピーする。
-	if($arrData["deliv_check"] != "1") {
+	if($arrData["deliv_check"] == "-1") {
 		$sqlval['deliv_name01'] = $arrData['order_name01'];
 		$sqlval['deliv_name02'] = $arrData['order_name02'];
 		$sqlval['deliv_kana01'] = $arrData['order_kana01'];
