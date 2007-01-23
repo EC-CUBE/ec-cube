@@ -1,7 +1,7 @@
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <html lang="ja">
 <!--{*
- * Copyright(c) 2000-2006 LOCKON CO.,LTD. All Rights Reserved.
+ * Copyright(c) 2000-2007 LOCKON CO.,LTD. All Rights Reserved.
  *
  * http://www.lockon.co.jp/
  *}-->
@@ -101,7 +101,7 @@
 		</table>
 		<table width="878" border="0" cellspacing="0" cellpadding="10" summary=" ">
 			<tr>
-				<td class="fs10n"><span class="gray">&nbsp;Copyright &copy; 2000-2006 LOCKON CO.,LTD. All Rights Reserved.</span></td>
+				<td class="fs10n"><span class="gray">&nbsp;Copyright &copy; 2000-2007 LOCKON CO.,LTD. All Rights Reserved.</span></td>
 			</tr>
 		</table>
 		</td>
