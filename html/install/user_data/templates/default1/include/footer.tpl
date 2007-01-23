@@ -1,5 +1,5 @@
 <!--{*
- * Copyright(c) 2000-2006 LOCKON CO.,LTD. All Rights Reserved.
+ * Copyright(c) 2000-2007 LOCKON CO.,LTD. All Rights Reserved.
  *
  * http://www.lockon.co.jp/
  *}-->
@@ -24,7 +24,7 @@
 		<table width="762" border="0" cellspacing="0" cellpadding="0" summary=" ">
 			<tr><td height="15"></td></tr>
 			<tr>
-				<td class="fs10n"><span class="white">Copyright(C)2000-2006 EC-CUBE All rights reserved.</span></td>
+				<td class="fs10n"><span class="white">Copyright(C)2000-2007 EC-CUBE All rights reserved.</span></td>
 			</tr>
 			<tr><td height="15"></td></tr>
 		</table>

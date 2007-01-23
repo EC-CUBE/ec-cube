@@ -1,7 +1,7 @@
 <?php
 /**
  * 
- * @copyright	2000-2006 LOCKON CO.,LTD. All Rights Reserved.
+ * @copyright	2000-2007 LOCKON CO.,LTD. All Rights Reserved.
  * @version	CVS: $Id: mdl_epsilon.php 8833 2006-12-04 06:08:28Z kakinaka $
  * @link		http://www.lockon.co.jp/
  *

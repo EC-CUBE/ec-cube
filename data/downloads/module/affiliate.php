@@ -1,7 +1,7 @@
 <?php
 /**
  * 
- * @copyright	2000-2006 LOCKON CO.,LTD. All Rights Reserved.
+ * @copyright	2000-2007 LOCKON CO.,LTD. All Rights Reserved.
  * @version	CVS: $Id: affiliate.php 8813 2006-12-04 05:24:35Z kakinaka $
  * @link		http://www.lockon.co.jp/
  *
