@@ -100,13 +100,13 @@
 										<input type="text" name="product_code" value="<!--{$arrForm.product_code|escape}-->" maxlength="<!--{$smarty.const.STEXT_LEN}-->" style="<!--{if $arrErr.product_code != ""}-->background-color: <!--{$smarty.const.ERR_COLOR}--><!--{/if}-->" size="60" class="box60" /><span class="red"> （上限<!--{$smarty.const.STEXT_LEN}-->文字）</span></td>
 									</tr>
 									<tr class="fs12n">
-										<td bgcolor="#f2f1ec" width="160">参考市場価格</td>
+										<td bgcolor="#f2f1ec" width="160"><!--{$smarty.const.NORMAL_PRICE_TITLE}--></td>
 										<td bgcolor="#ffffff" width="557">
 										<span class="red12"><!--{$arrErr.price01}--></span>
 										<input type="text" name="price01" value="<!--{$arrForm.price01|escape}-->" size="6" class="box6" maxlength="<!--{$smarty.const.PRICE_LEN}-->" style="<!--{if $arrErr.price01 != ""}-->background-color: <!--{$smarty.const.ERR_COLOR}--><!--{/if}-->"/>円<span class="red10"> （半角数字で入力）</span></td>
 									</tr>
 									<tr class="fs12n">
-										<td bgcolor="#f2f1ec" width="160">商品価格<span class="red"> *</span></td>
+										<td bgcolor="#f2f1ec" width="160"><!--{$smarty.const.SALE_PRICE_TITLE}--><span class="red"> *</span></td>
 										<td bgcolor="#ffffff" width="557">
 										<span class="red12"><!--{$arrErr.price02}--></span>
 										<input type="text" name="price02" value="<!--{$arrForm.price02|escape}-->" size="6" class="box6" maxlength="<!--{$smarty.const.PRICE_LEN}-->" style="<!--{if $arrErr.price02 != ""}-->background-color: <!--{$smarty.const.ERR_COLOR}--><!--{/if}-->"/>円<span class="red10"> （半角数字で入力）</span></td>

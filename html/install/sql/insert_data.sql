@@ -52,8 +52,8 @@ insert into dtb_csv(csv_id,col,disp_name,rank,create_date,update_date)values(1,'
 insert into dtb_csv(csv_id,col,disp_name,rank,create_date,update_date)values(1,'status','¸ø³«¥Õ¥é¥°',6,now(),now());
 insert into dtb_csv(csv_id,col,disp_name,rank,create_date,update_date)values(1,'product_flag','¾¦ÉÊ¥¹¥Æ¡¼¥¿¥¹',7,now(),now());
 insert into dtb_csv(csv_id,col,disp_name,rank,create_date,update_date)values(1,'product_code','¾¦ÉÊ¥³¡¼¥É',8,now(),now());
-insert into dtb_csv(csv_id,col,disp_name,rank,create_date,update_date)values(1,'price01','»²¹Í»Ô¾ì²Á³Ê',9,now(),now());
-insert into dtb_csv(csv_id,col,disp_name,rank,create_date,update_date)values(1,'price02','²Á³Ê',10,now(),now());
+insert into dtb_csv(csv_id,col,disp_name,rank,create_date,update_date)values(1,'price01','ÄÌ¾ï²Á³Ê',9,now(),now());
+insert into dtb_csv(csv_id,col,disp_name,rank,create_date,update_date)values(1,'price02','ÈÎÇä²Á³Ê',10,now(),now());
 insert into dtb_csv(csv_id,col,disp_name,rank,create_date,update_date)values(1,'stock','ºß¸Ë¿ô',11,now(),now());
 insert into dtb_csv(csv_id,col,disp_name,rank,create_date,update_date)values(1,'deliv_fee','Á÷ÎÁ',12,now(),now());
 insert into dtb_csv(csv_id,col,disp_name,rank,create_date,update_date)values(1,'point_rate','¥İ¥¤¥ó¥ÈÉÕÍ¿Î¨',13,now(),now());

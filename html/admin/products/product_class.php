@@ -365,8 +365,8 @@ function lfProductClassError($array) {
 	while($array["classcategory_id1:".$no] != "") {
 		if($array["check:".$no] == 1) {
 			$objErr->doFunc(array("¾¦ÉÊ¥³¡¼¥É", "product_code:".$no, STEXT_LEN), array("MAX_LENGTH_CHECK"));
-			$objErr->doFunc(array("»²¹Í»Ô¾ì²Á³Ê", "price01:".$no, PRICE_LEN), array("ZERO_CHECK", "NUM_CHECK", "MAX_LENGTH_CHECK"));
-			$objErr->doFunc(array("²Á³Ê", "price02:".$no, PRICE_LEN), array("EXIST_CHECK", "ZERO_CHECK", "NUM_CHECK", "MAX_LENGTH_CHECK"));
+			$objErr->doFunc(array(NORMAL_PRICE_TITLE, "price01:".$no, PRICE_LEN), array("ZERO_CHECK", "NUM_CHECK", "MAX_LENGTH_CHECK"));
+			$objErr->doFunc(array(SALE_PRICE_TITLE, "price02:".$no, PRICE_LEN), array("EXIST_CHECK", "ZERO_CHECK", "NUM_CHECK", "MAX_LENGTH_CHECK"));
 
 			if($array["stock_unlimited:".$no] != '1') {
 				$objErr->doFunc(array("ºß¸Ë¿ô", "stock:".$no, AMOUNT_LEN), array("EXIST_CHECK", "NUM_CHECK", "MAX_LENGTH_CHECK"));

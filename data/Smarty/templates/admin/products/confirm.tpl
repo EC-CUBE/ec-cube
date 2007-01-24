@@ -86,13 +86,13 @@
 									</td>
 								</tr>
 								<tr>
-									<td bgcolor="#f2f1ec" width="160" class="fs12n">»²¹Í»Ô¾ì²Á³Ê</td>
+									<td bgcolor="#f2f1ec" width="160" class="fs12n"><!--{$smarty.const.NORMAL_PRICE_TITLE}--></td>
 									<td bgcolor="#ffffff" width="557" class="fs12n">
 									<!--{$arrForm.price01|escape}-->
 									±ß</td>
 								</tr>
 								<tr>
-									<td bgcolor="#f2f1ec" width="160" class="fs12n">¾¦ÉÊ²Á³Ê</td>
+									<td bgcolor="#f2f1ec" width="160" class="fs12n"><!--{$smarty.const.SALE_PRICE_TITLE}--></td>
 									<td bgcolor="#ffffff" width="557" class="fs12n">
 									<!--{$arrForm.price02|escape}-->
 									±ß</td>
