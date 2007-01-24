@@ -98,8 +98,8 @@ case 'search':
 			}
 		}
 
-		if($_POST['type'] != "") {
-			$type = $_POST['type'];
+		if($objFormParam->getValue('type') != "") {
+			$type = $objFormParam->getValue('type');
 		}
 				
 		$page = $objFormParam->getValue('page');
