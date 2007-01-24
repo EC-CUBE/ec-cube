@@ -251,6 +251,11 @@ class SC_GraphLine extends SC_GraphBase{
 	
 	// データをセットする
 	function setData($arrData) {
+		
+		foreach($arrData as $key => $val){
+			gfprintlog("graphdata ================> ".$key.":".$val);
+		}
+		
 		$this->arrDataList[$this->line_max] = array_values((array)$arrData);
 		$this->setMax($this->arrDataList[$this->line_max]);
 		// 値の描画変換率
