@@ -7,7 +7,7 @@
  
 require_once("./require.php");
 
-print("test3");
+print("test4");
 
 class LC_Page {
 	function LC_Page() {
