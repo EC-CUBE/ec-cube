@@ -55,7 +55,8 @@ class GC_SendMail {
 		$this->header		.= "Cc: " . $cc. "\n";
 		$this->header		.= "Bcc: " . $bcc . "\n";
 		$this->header		.= "Errors-To: ". $errors_to ."\n";
-		$this->return_path   = $return_path;
+		// return_pathは、メールヘッダー上に警告が表示されるので利用しない。
+		$return_path = "";
 	}
 
 	
@@ -72,16 +73,17 @@ class GC_SendMail {
 		$this->header		.= "Cc: " . $cc. "\n";
 		$this->header		.= "Bcc: " . $bcc . "\n";
 		$this->header		.= "Errors-To: ". $errors_to ."\n";
-		$this->return_path   = $return_path;
+		// return_pathは、メールヘッダー上に警告が表示されるので利用しない。
+		$return_path = "";
 	}
 
 	//	メール送信を実行する
 	function sendMail() {
 
 		Mb_language( "Japanese" );
-		
+				
 		//　メール送信
-		if( mb_send_mail( $this->to, $this->subject, $this->body, $this->header, "" . $this->return_path ) ) {
+		if( mb_send_mail( $this->to, $this->subject, $this->body, $this->header) ) {
 			return true;
 		}
 		return false;
@@ -92,7 +94,7 @@ class GC_SendMail {
 		Mb_language( "Japanese" );	
 		
 		//　メール送信
-		if( mail( $this->to, $this->subject, $this->body, $this->header, "" . $this->return_path ) ) {
+		if( mail( $this->to, $this->subject, $this->body, $this->header) ) {
 			return true;
 		}
 		return false;
