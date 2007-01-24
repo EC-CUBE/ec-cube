@@ -256,6 +256,9 @@ define ("DISABLED_RGB", "#C9C9C9");						// 入力項目無効時の表示色
 define ("ERR_COLOR", "#ffe8e8");						// エラー時表示色
 define ("CATEGORY_HEAD", ">");							// 親カテゴリ表示文字
 define ("START_BIRTH_YEAR", 1901);						// 生年月日選択開始年
+// 価格名称
+define("NORMAL_PRICE_TITLE","通常価格");
+define("SALE_PRICE_TITLE","販売価格");
 
 /* システムパス */
 define ("LOG_PATH", DATA_PATH . "logs/site.log");							// ログファイル
