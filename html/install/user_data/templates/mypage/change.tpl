@@ -84,14 +84,14 @@
 										<td><input type="text" name="addr01" value="<!--{$arrForm.addr01}-->" size="60" class="box60" style="<!--{$arrErr.addr01|sfGetErrorColor}-->; ime-mode: active;" /></td>
 									</tr>
 									<tr>
-										<td class="fs10n">市区町村名（例：大阪市北区堂島）</td>
+										<td class="fs10n"><!--{$smarty.const.SAMPLE_ADDRESS1}--></td>
 									</tr>
 									<tr><td height="5"></td></tr>
 									<tr>
 										<td><input type="text" name="addr02" value="<!--{$arrForm.addr02}-->" size="60" class="box60" style="<!--{$arrErr.addr02|sfGetErrorColor}-->; ime-mode: active;" /></td>
 									</tr>
 									<tr>
-										<td class="fs10n">番地・ビル名（例：6-1-1）</td>
+										<td class="fs10n"><!--{$smarty.const.SAMPLE_ADDRESS2}--></td>
 									</tr>
 									<tr><td height="5"></td></tr>
 									<tr>

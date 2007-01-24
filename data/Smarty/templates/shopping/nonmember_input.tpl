@@ -100,7 +100,7 @@
 								</td>
 							</tr>
 							<tr>
-								<td class="fs10n">市区町村名（例：大阪市北区堂島）</td>
+								<td class="fs10n"><!--{$smarty.const.SAMPLE_ADDRESS1}--></td>
 							</tr>
 							<tr><td height="5"></td></tr>
 							<tr>
@@ -110,7 +110,7 @@
 								</td>
 							</tr>
 							<tr>
-								<td class="fs10n">番地・ビル名（例：6-1-1）</td>
+								<td class="fs10n"><!--{$smarty.const.SAMPLE_ADDRESS2}--></td>
 							</tr>
 							<tr><td height="5"></td></tr>
 							<tr>

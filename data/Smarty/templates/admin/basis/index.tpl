@@ -101,14 +101,14 @@
 												<td>
 												<span class="red12"><!--{$arrErr.addr01}--></span>
 												<input type="text" name="addr01" value="<!--{$arrForm.addr01|escape}-->" maxlength="<!--{$smarty.const.STEXT_LEN}-->" size="60" class="box60" style="<!--{if $arrErr.addr01 != ""}-->background-color: <!--{$smarty.const.ERR_COLOR}--><!--{/if}-->" /><span class="red"> （上限<!--{$smarty.const.STEXT_LEN}-->文字）</span><br />
-												※市区町村を入力 （例：大阪市北区堂島）</td>
+												<!--{$smarty.const.SAMPLE_ADDRESS1}--></td>
 											</tr>
 											<tr><td height="5"></td></tr>
 											<tr class="fs10n">
 												<td>
 												<span class="red12"><!--{$arrErr.addr02}--></span>
 												<input type="text" name="addr02" value="<!--{$arrForm.addr02|escape}-->"  maxlength="<!--{$smarty.const.STEXT_LEN}-->" size="60" class="box60" style="<!--{if $arrErr.addr02 != ""}-->background-color: <!--{$smarty.const.ERR_COLOR}--><!--{/if}-->" /><span class="red"> （上限<!--{$smarty.const.STEXT_LEN}-->文字）</span><br />
-												※番地、建物、マンション名などを入力 （例：2丁目1-31 ORIX堂島ビル5階）</td>
+												<!--{$smarty.const.SAMPLE_ADDRESS2}--></td>
 											</tr>
 										</table>
 										</td>

@@ -136,12 +136,12 @@
 											<tr><td height="5"></td></tr>
 											<tr class="fs10n">
 												<td><input type="text" name="addr01" value="<!--{$list_data.addr01|escape}-->" size="60" class="box60" <!--{if $arrErr.addr01 != ""}--><!--{sfSetErrorStyle}--><!--{/if}--> /><br />
-												※市区町村を入力 （例：大阪市北区堂島）</td>
+												<!--{$smarty.const.SAMPLE_ADDRESS1}--></td>
 											</tr>
 											<tr><td height="5"></td></tr>
 											<tr class="fs10n">
 												<td><input type="text" name="addr02" value="<!--{$list_data.addr02|escape}-->" size="60" class="box60" <!--{if $arrErr.addr02 != ""}--><!--{sfSetErrorStyle}--><!--{/if}--> /><br />
-												※番地、建物、マンション名などを入力 （例：2丁目1-31 ORIX堂島ビル5階）</td>
+												<!--{$smarty.const.SAMPLE_ADDRESS2}--></td>
 											</tr>
 										</table>
 										</td>
