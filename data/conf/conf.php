@@ -187,7 +187,6 @@ define ("FORGOT_MAIL", 0);								// е╤е╣еяб╝е╔╦║дьд╬│╬╟зесб╝еыдЄ┴ў╔╒д╣дыдл╚▌длб
 define ("HTML_TEMPLATE_SUB_MAX", 12);					// ┼╨╧┐д╟дндые╡е╓╛ж╔╩д╬┐Ї
 define ("LINE_LIMIT_SIZE", 60);							// ╩╕╗·┐Їдм┬┐д╣додыд╚днд╦╢п└й▓■╣╘д╣дые╡еде║(╚╛│╤)
 define ("BIRTH_MONTH_POINT", 0);						// ├┬└╕╞№╖юе▌едеєе╚
-define ("INPUT_DELIV_FEE", true);						// ╟█┴ў╬┴д╬└▀─ъ▓ш╠╠(true:двдъбвfalse:д╩д╖)
 
 /* епеье╕е├е╚еэб╝еє(е╗еєе╚ещеые╒ебеде╩еєе╣) */
 define ("CF_HOMEADDR", "https://cf.ufit.ne.jp/dotcredit");					// е█б╝ереве╔еье╣
@@ -295,7 +294,6 @@ define ("URL_SEARCH_ORDER", URL_DIR . "admin/order/index.php");			// ├э╩╕╩╘╜╕е┌б
 define ("URL_ORDER_MAIL", URL_DIR . "admin/order/mail.php");			// ├э╩╕╩╘╜╕е┌б╝е╕
 define ("URL_LOGOUT", URL_DIR . "admin/logout.php");					// еэе░евеже╚е┌б╝е╕
 define ("URL_SYSTEM_CSV", URL_DIR . "admin/system/member_csv.php");		// е╖е╣е╞ер┤╔═¤CSV╜╨╬╧е┌б╝е╕
-define ("URL_SYSTEM_TOP", URL_DIR . "admin/system/index.php");			// е╖е╣е╞ер┤╔═¤TOPе┌б╝е╕
 define ("URL_ADMIN_CSS", URL_DIR . "admin/css/");						// ┤╔═¤е┌б╝е╕═╤CSS╩▌┤╔е╟егеьепе╚еъ
 define ("URL_CAMPAIGN_TOP", URL_DIR . "admin/contents/campaign.php");	// енеуеєе┌б╝еє┼╨╧┐е┌б╝е╕
 define ("URL_CAMPAIGN_DESIGN", URL_DIR . "admin/contents/campaign_design.php");		// енеуеєе┌б╝еєе╟е╢едеє└▀─ъе┌б╝е╕
@@ -563,9 +561,6 @@ $arrMAILTPLPATH = array(
 	3 => "mail_templates/order_mail.tpl",
 	4 => "mail_templates/contact_mail.tpl",
 );
-
-// ╝ї├эе╣е╞б╝е┐е╣╩╤╣╣д╬║▌д╦е▌едеєе╚┼∙дЄ▓├╗╗д╣дые╣е╞б╝е┐е╣╚╓╣цб╩╚п┴ў║╤д▀б╦
-define("ODERSTATUS_COMMIT", 5);
 
 /* ┼╘╞╗╔▄╕й╟█╬є */
 $arrPref = array(
