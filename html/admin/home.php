@@ -155,14 +155,44 @@ function lfGetSoldOut() {
 // 新規受付一覧
 function lfGetNewOrder() {
 	$objQuery = new SC_Query();
-	$col = "ord.order_id, customer_id, ord.order_name01 AS name01, ord.order_name02 AS name02, ord.total, ";
-	$col.= "(SELECT det.product_name FROM dtb_order_detail AS det WHERE ord.order_id = det.order_id LIMIT 1) AS product_name, ";
-	$col.= "(SELECT pay.payment_method FROM dtb_payment AS pay WHERE ord.payment_id = pay.payment_id) AS payment_method, ";	
-	$col.= "create_date AS create_date";
-	$from = "dtb_order AS ord";
-	$where = "del_flg = 0";
-	$objQuery->setoption("ORDER BY create_date DESC LIMIT 10 OFFSET 0");
-	$arrRet = $objQuery->select($col, $from, $where);
+	$sql = "SELECT 
+			    ord.order_id,
+			    ord.customer_id,
+			    ord.order_name01 AS name01,
+			    ord.order_name02 AS name02,
+			    ord.total,
+			    ord.create_date,
+			    (SELECT
+			        det.product_name
+			    FROM
+			        dtb_order_detail AS det
+			    WHERE
+			        ord.order_id = det.order_id LIMIT 1
+			    ) AS product_name,
+			    (SELECT
+			        pay.payment_method
+			    FROM
+			        dtb_payment AS pay
+			    WHERE
+			        ord.payment_id = pay.payment_id
+			    ) AS payment_method 
+			FROM (
+			    SELECT
+			        order_id,
+			        customer_id,
+			        order_name01,
+			        order_name02,
+			        total,
+			        create_date,
+			        payment_id
+			    FROM
+			        dtb_order AS ord
+			    WHERE
+			        del_flg = 0
+			    ORDER BY
+			        create_date DESC LIMIT 10 OFFSET 0
+			) AS ord";
+	$arrRet = $objQuery->getAll($sql);
 	return $arrRet;
 }
 
