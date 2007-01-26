@@ -197,8 +197,8 @@ case 'search':
 	break;
 default:
 	if(count($_GET) == 0) {
-		// バッチモードOFFの場合実行する
-		if(!DAILY_BATCH_MODE) {
+		// バッチモードの場合のみ実行する
+		if(DAILY_BATCH_MODE) {
 			// 1ヶ月分の集計
 			lfStartDailyTotal(31,0);
 		}
