@@ -200,7 +200,7 @@ default:
 		// バッチモードの場合のみ実行する
 		if(DAILY_BATCH_MODE) {
 			// 1ヶ月分の集計
-			lfStartDailyTotal(31,0);
+			lfStartDailyTotal(3,0);
 		}
 	}
 	break;
