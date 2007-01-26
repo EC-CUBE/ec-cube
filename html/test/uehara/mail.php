@@ -23,7 +23,7 @@ if($success){
 print "trans=".$_REQUEST['val2'];
 */
 
-print "log=1";
+print "trans=1";
 
 
 ?>
