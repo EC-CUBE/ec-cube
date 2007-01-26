@@ -23,7 +23,7 @@ if($success){
 print "trans=".$_REQUEST['val2'];
 */
 
-print "trans=". urlencode("abv");
+print "trans=". $_REQUEST['name'];
 
 
 ?>
