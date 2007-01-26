@@ -327,6 +327,7 @@ function lfDispStep0($objPage) {
 	$arrWriteFile = array(
 		"../../data/install.inc",
 		"../user_data",
+		"../cp",
 		"../upload",
 		"../../data/Smarty/templates_c",		
 		"../../data/downloads",
