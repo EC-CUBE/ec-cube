@@ -336,9 +336,6 @@ function lfCreateTemplate($dir, $file) {
 	copy($default_dir . "/src/application.php", CAMPAIGN_PATH . $file . "/application.php");
 	copy($default_dir . "/src/complete.php", CAMPAIGN_PATH . $file . "/complete.php");
 	copy($default_dir . "/src/entry.php", CAMPAIGN_PATH . $file . "/entry.php");
-sfprintr($default_dir);	
-exit;
-
 
 	// デフォルトテンプレート作成(キャンペーン中)
 	$header = lfGetFileContents($default_active_dir."header.tpl");
