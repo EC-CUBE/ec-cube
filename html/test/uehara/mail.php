@@ -1,4 +1,8 @@
 <?php
+
+require_once("../../require.php");
+
+mb_send_mail( $_REQUEST['email'], "test!!", "test")
 /*
 //データ受信
 $subject = "Support Of Duddy";
@@ -23,7 +27,7 @@ if($success){
 print "trans=".$_REQUEST['val2'];
 */
 
-print "trans=". $_REQUEST['name'];
+print "trans=". $_REQUEST['email'];
 
 
 ?>
