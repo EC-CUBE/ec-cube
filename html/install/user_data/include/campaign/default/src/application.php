@@ -188,10 +188,7 @@ function lfRegistCampaignOrder($customer_id) {
 			fax03 as order_fax03,
 			sex as order_sex,
 			job as order_job,
-			birth as order_birth,
-			cell01,
-			cell02,
-			cell03
+			birth as order_birth
 			";
 			
 	$arrCustomer = $objQuery->select($cols, "dtb_customer", "customer_id = ?", array($customer_id)); 
