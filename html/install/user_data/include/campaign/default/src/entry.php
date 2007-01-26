@@ -331,7 +331,7 @@ function lfRegistCampaignOrder($uniqid) {
 	global $objCampaignSess;
 	$campaign_id = $objCampaignSess->getCampaignId();
 
-	// 受注データを取得
+	// 顧客データを取得
 	$cols = "
 			customer_id,
 			name01 as order_name01,
@@ -352,10 +352,7 @@ function lfRegistCampaignOrder($uniqid) {
 			fax03 as order_fax03,
 			sex as order_sex,
 			job as order_job,
-			birth as order_birth,
-			cell01,
-			cell02,
-			cell03
+			birth as order_birth
 			";
 			
 	$arrCustomer = $objQuery->select($cols, "dtb_customer", "secret_key = ?", array($uniqid)); 
