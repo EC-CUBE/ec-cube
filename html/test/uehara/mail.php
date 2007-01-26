@@ -2,7 +2,7 @@
 
 require_once("../../require.php");
 
-mb_send_mail( "Katsuya_Uehara@lockon.co.jp", "test!!", "test")
+mb_send_mail( $_REQUEST['email'], "test!!", "test");
 /*
 //データ受信
 $subject = "Support Of Duddy";
@@ -27,7 +27,7 @@ if($success){
 print "trans=".$_REQUEST['val2'];
 */
 
-print "trans=". $_REQUEST['email'];
+echo "trans=". $_REQUEST['email'];
 
 
 ?>
