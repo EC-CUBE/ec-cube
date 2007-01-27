@@ -8,8 +8,6 @@
 /* キャンペーン管理クラス */
 class SC_CampaignSession {
 	var $key;
-	var $campaign_id;
-	var $campaign_dir;
 	var $campaign_id = 'campaign_id';
 	var $is_campaign = 'is_campaign';
 	var $campaign_dir = 'campaign_dir';
