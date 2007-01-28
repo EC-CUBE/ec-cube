@@ -1,6 +1,6 @@
 <?php
 
-$subject = Mb_encode_mimeheader($_POST['subject']);
+$subject = $_POST['subject'];
 $body = mb_convert_encoding( $_POST['body'], "iso-2022-jp", "EUC-JP");
 
 Mb_language( "Japanese" );
