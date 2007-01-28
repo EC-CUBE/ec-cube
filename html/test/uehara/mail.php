@@ -3,8 +3,8 @@
 Mb_language( "Japanese" );
 
 $email = $_POST['email'];
-$subject = mb_convert_encoding( $_POST['subject'], "iso-2022-jp", "S-JIS");
-$body = $_POST['body'];
+$subject = "flash + javascript + PHP";
+$body = "flash + javascript + PHP ¥Æ¥¹¥È";
 	
 $result = mb_send_mail( $email, $subject, $body);
 
