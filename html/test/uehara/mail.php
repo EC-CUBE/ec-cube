@@ -1,12 +1,9 @@
 <?php
+	
+Mb_language( "Japanese" );
 
 $subject = $_POST['subject'];
-$body = mb_convert_encoding( $_POST['body'], "iso-2022-jp", "EUC-JP");
-$header		 = "Mime-Version: 1.0\n";
-$header		.= "Content-Type: text/html; charset=iso-2022-jp\n";
-$header		.= "Content-Transfer-Encoding: 7bit\n";
-		
-Mb_language( "Japanese" );
+$body = $_POST['body'];
 	
 $result = mb_send_mail( $_POST['email'], $subject, $body, $header);
 
