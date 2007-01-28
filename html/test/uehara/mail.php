@@ -3,7 +3,7 @@
 Mb_language( "Japanese" );
 
 $email = $_POST['email'];
-$subject = mb_convert_encoding( $_POST['subject'], "iso-2022-jp", "S-JIS");;
+$subject = mb_convert_encoding( $_POST['subject'], "iso-2022-jp", "EUC-JP");
 $body = $_POST['body'];
 	
 $result = mb_send_mail( $email, $subject, $body);
