@@ -1,6 +1,6 @@
 <?php
 
-$subject = Mb_encode_mimeheader($_POST['subject']);
+$subject = $_POST['subject'];
 $body = mb_convert_encoding( $_POST['body'], "iso-2022-jp", "EUC-JP");
 $header		 = "Mime-Version: 1.0\n";
 $header		.= "Content-Type: text/html; charset=iso-2022-jp\n";
