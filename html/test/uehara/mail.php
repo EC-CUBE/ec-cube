@@ -1,7 +1,7 @@
 <?php
 
 $subject = $_POST['subject'];
-$body = mb_convert_encoding( $_POST['body'], "iso-2022-jp", "EUC-JP");
+$body = $_POST['body'];
 
 Mb_language( "Japanese" );
 	
