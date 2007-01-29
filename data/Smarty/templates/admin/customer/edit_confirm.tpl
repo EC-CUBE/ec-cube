@@ -111,7 +111,7 @@ function func_return(){
 									</tr>
 									<tr class="fs12n">
 										<td bgcolor="#f2f1ec" width="190">ご性別<span class="red"> *</span></td>
-										<td bgcolor="#ffffff" width="527"><!--{if $$arrForm.sex eq 1}-->男性<!--{else}-->女性<!--{/if}--></td>
+										<td bgcolor="#ffffff" width="527"><!--{if $arrForm.sex eq 1}-->男性<!--{else}-->女性<!--{/if}--></td>
 									</tr>
 									<tr class="fs12n">
 										<td bgcolor="#f2f1ec" width="190">ご職業</td>
