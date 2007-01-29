@@ -19,6 +19,8 @@ $GLOBAL_ERR = "";
 // インストール初期処理
 sfInitInstall();
 
+sfErrorHeader("ununun");
+
 /* データベースのバージョン所得 */
 function sfGetDBVersion($dsn = "") {
 	if($dsn == "") {
