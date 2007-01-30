@@ -107,9 +107,6 @@ define("CLOSE_DAY", 31);	// 締め日の指定(末日の場合は、31を指定してください。)
 //一般サイトエラー
 define("FAVORITE_ERROR", 13);
 
-//おすすめ商品数
-define ("RECOMMEND_PRODUCT_MAX", 6);
-
 /** グラフ関連 **/
 	
 define("LIB_DIR", DATA_PATH . "lib/");						// ライブラリのパス
@@ -147,7 +144,7 @@ define("TV_PRODUCTS_MAX",10);		//TV連動商品最大登録数
 //会員登録変更(マイページ)パスワード用
 define("DEFAULT_PASSWORD", "UAhgGR3L");
 //おすすめ商品数
-define ("RECOMMEND_PRODUCT_MAX", 4);
+define ("RECOMMEND_PRODUCT_MAX", 5);
 
 //別のお届け先最大登録数
 define("DELIV_ADDR_MAX", 20);
