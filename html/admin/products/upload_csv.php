@@ -249,7 +249,6 @@ function lfRegistProduct($objQuery) {
 		case 'product_code':
 		case 'price01':
 		case 'price02':
-		case 'point_rate':
 		case 'stock':
 		case 'product_class_id':
 		case 'recommend_product_id1':
