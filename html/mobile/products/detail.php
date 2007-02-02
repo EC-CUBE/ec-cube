@@ -106,7 +106,7 @@ case 'select':
 	// 規格1が設定されている場合
 	if($objPage->tpl_classcat_find1) {
 		// templateの変更
-		$objPage->tpl_mainpage = HTML_PATH . "user_data/templates/select_find1.tpl";
+		$objPage->tpl_mainpage = "products/select_find1.tpl";
 		break;
 	}
 
@@ -116,7 +116,7 @@ case 'select2':
 	// 規格1が設定されている場合
 	if($objPage->tpl_classcat_find1 and $objPage->arrErr['classcategory_id1']) {
 		// templateの変更
-		$objPage->tpl_mainpage = HTML_PATH . "user_data/templates/select_find1.tpl";
+		$objPage->tpl_mainpage = "products/select_find1.tpl";
 		break;
 	}
 
@@ -124,7 +124,7 @@ case 'select2':
 	if($objPage->tpl_classcat_find2) {
 		$objPage->arrErr = array();
 
-		$objPage->tpl_mainpage = HTML_PATH . "user_data/templates/select_find2.tpl";
+		$objPage->tpl_mainpage = "products/select_find2.tpl";
 		break;
 	}
 
@@ -134,11 +134,11 @@ case 'selectItem':
 	// 規格1が設定されている場合
 	if($objPage->tpl_classcat_find2 and $objPage->arrErr['classcategory_id2']) {
 		// templateの変更
-		$objPage->tpl_mainpage = HTML_PATH . "user_data/templates/select_find2.tpl";
+		$objPage->tpl_mainpage = "products/select_find2.tpl";
 		break;
 	}
 	// 商品数の選択を行う
-	$objPage->tpl_mainpage = HTML_PATH . "user_data/templates/select_item.tpl";
+	$objPage->tpl_mainpage = "products/select_item.tpl";
 	break;
 
 case 'cart':
