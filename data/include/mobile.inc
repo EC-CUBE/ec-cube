@@ -117,7 +117,6 @@ function lfMobileValidateSession() {
 function lfMobileInitSession() {
 	// セッションIDの受け渡しにクッキーを使用しない。
 	ini_set('session.use_cookies', '0');
-	ini_set('session.use_trans_sid', '1');
 
 	// パラメーターから有効なセッションIDを取得する。
 	$sessionId = lfMobileGetSessionId();
