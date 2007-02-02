@@ -3,6 +3,10 @@
  * モバイルサイト共有関数ファイル
  */
 
+require_once DATA_PATH . 'module/Net/URL.php';
+require_once DATA_PATH . 'class/SC_DbConn.php';
+require_once DATA_PATH . 'class/SC_Query.php';
+
 /**
  * EC-CUBE がサポートする携帯端末かどうかをチェックする。
  * 非対応端末の場合は unsupported/index.php へリダイレクトする。
@@ -131,10 +135,7 @@ function lfMobileInitSession() {
 		// 新しいセッションIDを付加してリダイレクトする。
 		if ($_SERVER['REQUEST_METHOD'] == 'GET') {
 			// GET の場合は同じページにリダイレクトする。
-			require_once(DATA_PATH . 'module/Net/URL.php');
-			$url = new Net_URL();
-			$url->addQueryString(session_name(), session_id());
-			header('Location: ' . $url->getURL());
+			header('Location: ' . gfAddSessionId());
 		} else {
 			// GET 以外の場合はトップページへリダイレクトする。
 			header('Location: ' . URL_SITE_TOP . '?' . SID);
@@ -195,5 +196,140 @@ function sfMobileInit() {
 	}
 
 	lfMobileInitOutput();
+}
+
+/**
+ * Location等でセッションIDを付加する必要があるURLにセッションIDを付加する。
+ *
+ * @return String
+ */
+function gfAddSessionId($url = null) {
+	$objURL = new Net_URL($url);
+	$objURL->addQueryString(session_name(), session_id());
+	return $objURL->getURL();
+}
+
+/**
+ * 空メール用のトークンを生成する。
+ *
+ * @return string 生成したトークンを返す。
+ */
+function lfGenerateKaraMailToken() {
+	$token_chars = '0123456789abcdefghijklmnopqrstuvwxyz';
+	$token_chars_length = strlen($token_chars);
+	$token_length = 10;
+	$token = '';
+
+	while ($token_length > 0) {
+		$token .= $token_chars{mt_rand(0, $token_chars_length - 1)};
+		--$token_length;
+	}
+
+	return $token;
+}
+
+/**
+ * 空メール管理テーブルに新規エントリーを登録し、トークンを返す。
+ *
+ * @param string $next_url 空メール受け付け後に遷移させるページ (モバイルサイトトップからの相対URL)
+ * @param string $session_id セッションID (省略した場合は現在のセッションID)
+ * @return string|false トークンを返す。エラーが発生した場合はfalseを返す。
+ */
+function gfPrepareKaraMail($next_url, $session_id = null) {
+	if (!isset($session_id)) {
+		$session_id = session_id();
+	}
+
+	$objQuery = new SC_Query;
+
+	// GC
+	$time = date('Y-m-d H:i:s', time() - MOBILE_SESSION_LIFETIME);
+	$objQuery->delete('dtb_mobile_kara_mail', 'email IS NULL AND create_date < ?', array($time));
+
+	$objQuery->delete('dtb_mobile_kara_mail', 'session_id = ?', array($session_id));
+
+	$arrValues = array('session_id' => $session_id,
+	                   'next_url'   => $next_url);
+
+	$try = 10;
+
+	while ($try > 0) {
+		$arrValues['token'] = $token = lfGenerateKaraMailToken();
+
+		$objQuery->insert('dtb_mobile_kara_mail', $arrValues);
+		$count = $objQuery->count('dtb_mobile_kara_mail', 'token = ?', array($token));
+
+		if ($count == 1) {
+			break;
+		}
+
+		$objQuery->delete('dtb_mobile_kara_mail', 'session_id = ?', array($session_id));
+		$token = false;
+		--$try;
+	}
+
+	return $token;
+}
+
+/**
+ * 空メールから取得したメールアドレスを空メール管理テーブルに登録する。
+ *
+ * @param string $token トークン
+ * @param string $email メールアドレス
+ * @return boolean 成功した場合はtrue、失敗した場合はfalseを返す。
+ */
+function gfRegisterKaraMail($token, $email) {
+	$objQuery = new SC_Query;
+
+	// GC
+	$time = date('Y-m-d H:i:s', time() - MOBILE_SESSION_LIFETIME);
+	$objQuery->delete('dtb_mobile_kara_mail',
+	                  '(email IS NULL AND create_date < ?) OR (email IS NOT NULL AND receive_date < ?)',
+	                  array($time, $time));
+
+	$kara_mail_id = $objQuery->get('dtb_mobile_kara_mail', 'kara_mail_id', 'token = ?', array($token));
+	if (!isset($kara_mail_id)) {
+		return false;
+	}
+
+	$arrValues = array('email' => $email);
+	$arrRawValues = array('receive_date' => 'now()');
+	$objQuery->update('dtb_mobile_kara_mail', $arrValues, 'kara_mail_id = ?', array($kara_mail_id), $arrRawValues);
+
+	return true;
+}
+
+/**
+ * 空メール管理テーブルからトークンが一致する行を削除し、
+ * 次に遷移させるページのURLを返す。　
+ *
+ * メールアドレスは $_SESSION['mobile']['kara_mail_from'] に登録される。
+ *
+ * @param string $token トークン
+ * @return string|false URLを返す。エラーが発生した場合はfalseを返す。
+ */
+function gfFinishKaraMail($token) {
+	$objQuery = new SC_Query;
+
+	$arrRow = $objQuery->getrow('dtb_mobile_kara_mail', 'session_id, next_url, email',
+	                            'token = ? AND email IS NOT NULL AND receive_date >= ?',
+	                            array($token, date('Y-m-d H:i:s', time() - MOBILE_SESSION_LIFETIME)));
+	if (!isset($arrRow)) {
+		return false;
+	}
+
+	$objQuery->delete('dtb_mobile_kara_mail', 'token = ?', array($token));
+
+	list($session_id, $next_url, $email) = $arrRow;
+	$objURL = new Net_URL(SITE_URL . $next_url);
+	$objURL->addQueryString(session_name(), $session_id);
+	$url = $objURL->getURL();
+
+	session_id($session_id);
+	session_start();
+	$_SESSION['mobile']['kara_mail_from'] = $email;
+	session_write_close();
+
+	return $url;
 }
 ?>

@@ -6,7 +6,7 @@
 
 <!--{foreach from=$arrProducts key=i item=arrProduct}-->
 <!-- ▼商品 ここから -->
-<!--{if $i+1<9}-->[emoji:<!--{$i+125}-->]<!--{else}-->[<!--{$i+1}-->]<!--{/if}-->
+<!--{if $i+1<9}--><!--{$i+1|numeric_emoji}--><!--{else}-->[<!--{$i+1}-->]<!--{/if}-->
 <!-- 商品名 --><!--{$arrProduct.name|escape}--><br>
 
 価格：
@@ -31,10 +31,11 @@
 
 <hr>
 
-<!--XXX--><a href="#" accesskey="9">[emoji:133]かごを見る</a><br>
-<a href="<!--{$smarty.const.URL_SITE_TOP}-->" accesskey="0">[emoji:134]TOPページへ</a><br>
+<a href="<!--{$smarty.const.URL_CART_TOP}-->" accesskey="9"><!--{9|numeric_emoji}-->かごを見る</a><br>
+<a href="<!--{$smarty.const.URL_SITE_TOP}-->" accesskey="0"><!--{0|numeric_emoji}-->TOPページへ</a><br>
+
 <br>
 
 <!-- ▼フッター ここから -->
-<center>LOCKON CO.,LTD.</center>
+<!--{include file='footer.tpl'}-->
 <!-- ▲フッター ここまで -->

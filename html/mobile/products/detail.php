@@ -163,7 +163,7 @@ case 'cart':
 		$objCartSess->setPrevURL($_SERVER['REQUEST_URI']);
 		$objCartSess->addProduct(array($_POST['product_id'], $classcategory_id1, $classcategory_id2), $objFormParam->getValue('quantity'));
 
-		header("Location: " . URL_CART_TOP . "?" . session_name() . "=" . session_id());
+		header("Location: " . gfAddSessionId(URL_CART_TOP));
 
 		exit;
 	}
@@ -287,7 +287,7 @@ function lfMakeSelect($objPage, $product_id) {
 		// 規格2のセレクトボックス用
 		if($arrProductsClass[$i]['classcategory_id1'] == $_POST['classcategory_id1'] and $classcat_id2 != $arrProductsClass[$i]['classcategory_id2']) {
 			$classcat_id2 = $arrProductsClass[$i]['classcategory_id2'];
-			$arrSele2[$list_id] = $arrClassCatName[$classcat_id2];
+			$arrSele2[$classcat_id2] = $arrClassCatName[$classcat_id2];
 		}
 
 		$list_id++;
@@ -479,5 +479,4 @@ function lfGetPayment() {
 	$arrRet = $objQuery->select($col, $from, $where);
 	return $arrRet;
 }
-
 ?>

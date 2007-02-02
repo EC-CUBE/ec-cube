@@ -94,6 +94,8 @@ case 'step3':
 	$objPage->arrErr = lfAddTable("dtb_session", $dsn);	// セッション管理テーブル
 	// テーブルが存在しない場合に追加される。
 	$objPage->arrErr = lfAddTable("dtb_module", $dsn);	// セッション管理テーブル
+	// テーブルが存在しない場合に追加される。
+	$objPage->arrErr = lfAddTable("dtb_mobile_kara_mail", $dsn);	// 空メール管理テーブル
 	
 	// カラムを追加
 	lfAddColumn($dsn);

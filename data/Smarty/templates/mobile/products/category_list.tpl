@@ -9,7 +9,7 @@
 <!--{assign var=path value="`$smarty.const.URL_DIR`products/list.php"}-->
 <!--{/if}-->
 <!--{if $i+1<9}-->
-[emoji:<!--{$i+125}-->]<a href="<!--{$path}-->?category_id=<!--{$arrChild.category_id}-->" accesskey="<!--{$i+1}-->"><!--{$arrChild.category_name|escape}-->(<!--{$arrChild.product_count}-->)</a><br>
+<a href="<!--{$path}-->?category_id=<!--{$arrChild.category_id}-->" accesskey="<!--{$i+1}-->"><!--{$i+1|numeric_emoji}--><!--{$arrChild.category_name|escape}-->(<!--{$arrChild.product_count}-->)</a><br>
 <!--{else}-->
 [<!--{$i+1}-->]<a href="<!--{$path}-->?category_id=<!--{$arrChild.category_id}-->"><!--{$arrChild.category_name|escape}-->(<!--{$arrChild.product_count}-->)</a><br>
 <!--{/if}-->
@@ -18,11 +18,11 @@
 <br>
 <hr>
 
-<!--XXX--><a href="#" accesskey="9">[emoji:133]かごを見る</a><br>
-<a href="<!--{$smarty.const.URL_SITE_TOP}-->" accesskey="0">[emoji:134]TOPページへ</a><br>
+<a href="<!--{$smarty.const.URL_CART_TOP}-->" accesskey="9"><!--{9|numeric_emoji}-->かごを見る</a><br>
+<a href="<!--{$smarty.const.URL_SITE_TOP}-->" accesskey="0"><!--{0|numeric_emoji}-->TOPページへ</a><br>
 
 <br>
 
 <!-- ▼フッター ここから -->
-<center>LOCKON CO.,LTD.</center>
+<!--{include file='footer.tpl'}-->
 <!-- ▲フッター ここまで -->
