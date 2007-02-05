@@ -156,6 +156,8 @@ function lfBatOrderDaily($time) {
 	
 	$objQuery = new SC_Query();
 	$arrRet = $objQuery->getall($sql);	
+	
+	sfprintr($objQuery->getlastquery(false));
 		
 	$sqlval = $arrRet[0];
 	
