@@ -73,7 +73,7 @@ class SC_GraphBase {
 	
 	// リサンプル
 	function resampled() {
-		if(imagecopyresampled($tmp_image, $this->image, 0, 0, $this->bgw, $this->bgh, $this->bgw/2, $this-bgh/2)) {
+		if(imagecopyresampled($tmp_image, $this->image, 0, 0, $this->bgw, $this->bgh, $this->bgw, $this-bgh)) {
 			$this->image = $tmp_image;
 		}
 	}
