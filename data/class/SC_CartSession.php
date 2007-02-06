@@ -196,10 +196,16 @@ class SC_CartSession {
 	function setPrevURL($url) {
 		$arrExclude = array("detail_image.php");
 		
-		print(basename($url));
-		
-		if($url) {		
-		$_SESSION[$this->key]['prev_url'] = $url;
+		$exclude = false;
+		foreach($arrExclude as $val) {
+			if(ereg($val,$url)) {
+				$exclude = true;
+				break;
+			}
+		}		
+			
+		if(!$exclude) {		
+			$_SESSION[$this->key]['prev_url'] = $url;
 		}
 	}
 	
