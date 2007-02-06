@@ -71,6 +71,14 @@ class SC_GraphBase {
 		$this->shade_on = true;
     }
 	
+	// リサンプル
+	function resampled() {
+		if(imagecopyresampled($tmp_image, $this->image, 0, 0, $this->bgw, $this->bgh, $this->bgw/2, $this-bgh/2)) {
+			$this->image = $tmp_image;
+		}
+	}
+	
+	
 	// オブジェクトカラーの設定
 	function setColorList($arrRGB) {
 		$this->arrRGB = $arrRGB;
