@@ -71,7 +71,7 @@ class SC_GraphBase {
 		$this->shade_on = true;
     }
 	
-	// リサンプル
+	// リサンプル(画像を滑らかに縮小する)
 	function resampled() {
 		$new_width = $this->bgw * 0.8;
 		$new_height = $this->bgh * 0.8;		
