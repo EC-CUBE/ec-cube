@@ -22,6 +22,8 @@ class LC_Page {
 	}
 }
 
+sfPrintR($_SESSION);
+
 $objPage = new LC_Page();
 $objView = new SC_SiteView(false);
 $objCartSess = new SC_CartSession("", false);
