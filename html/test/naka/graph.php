@@ -127,7 +127,7 @@ require_once(HTML_PATH . "admin/total/class/SC_GraphBar.php");
 		// ËÞÎã¤ÎÉÁ²è
 		$objGraphPie->drawLegend(count($objGraphPie->arrData));
 		
-		$objGraphPie->resampled();
+		//$objGraphPie->resampled();
 		
 		$objGraphPie->outputGraph();
 		exit();
