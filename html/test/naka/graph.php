@@ -27,7 +27,7 @@ require_once(HTML_PATH . "admin/total/class/SC_GraphBar.php");
 		
 		// 円グラフ描画
 		//$objGraphPie->drawGraph();
-		/*
+		
 		$x = $objGraphPie->cx;
 		$y = $objGraphPie->cy;
 		$z = $objGraphPie->cz;
@@ -47,7 +47,7 @@ require_once(HTML_PATH . "admin/total/class/SC_GraphBar.php");
 		if($objGraphPie->shade_on) {
 			$objGraphPie->drawShade();
 		}
-		
+		/*
 		// 色数の取得
 		$c_max = count($objGraphPie->arrColor);
 		$dc_max = count($objGraphPie->arrDarkColor);
