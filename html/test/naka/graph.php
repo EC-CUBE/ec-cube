@@ -22,11 +22,11 @@ require_once(HTML_PATH . "admin/total/class/SC_GraphBar.php");
 		
 		// データをセットする
 		$objGraphPie->setData($arrList);
-				// 凡例をセットする
+		// 凡例をセットする
 		$objGraphPie->setLegend(array_keys($arrList));
 		
 		// 円グラフ描画
-		$objGraphPie->drawGraph();
+		//$objGraphPie->drawGraph();
 		/*
 		$x = $objGraphPie->cx;
 		$y = $objGraphPie->cy;
