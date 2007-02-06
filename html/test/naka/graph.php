@@ -87,7 +87,7 @@ require_once(HTML_PATH . "admin/total/class/SC_GraphBar.php");
 			}
 			$start = $end;
 		}
-		/*
+		
 		
 		// 上面の縁取り
 		$start = 0;
@@ -121,12 +121,12 @@ require_once(HTML_PATH . "admin/total/class/SC_GraphBar.php");
 			}
 			$start = $end;	
 		}
-				
+			
 		// ラベルの描画
 		//$objGraphPie->drawLabel($arrRad);
 		// 凡例の描画
 		//$objGraphPie->drawLegend(count($objGraphPie->arrData));
-		*/
+		
 
 		
 		$objGraphPie->outputGraph();
