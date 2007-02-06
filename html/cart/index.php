@@ -22,8 +22,6 @@ class LC_Page {
 	}
 }
 
-sfPrintR($_SESSION);
-
 $objPage = new LC_Page();
 $objView = new SC_SiteView(false);
 $objCartSess = new SC_CartSession("", false);
@@ -33,6 +31,9 @@ $objSiteInfo = $objView->objSiteInfo;
 $objCustomer = new SC_Customer();
 // 基本情報の取得
 $arrInfo = $objSiteInfo->data;
+
+
+sfPrintR($_SESSION);
 
 // 商品購入中にカート内容が変更された。
 if($objCartSess->getCancelPurchase()) {
