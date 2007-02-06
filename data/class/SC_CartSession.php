@@ -198,12 +198,16 @@ class SC_CartSession {
 		
 		$exclude = false;
 		foreach($arrExclude as $val) {
-			if(ereg(".*" . $val . ".*", $url)) {
+			
+			if(ereg($val, $url)) {
 				$exclude = true;
+				print("ok");
 				break;
 			}
 		}		
-			
+		
+		
+		
 		if(!$exclude) {		
 			$_SESSION[$this->key]['prev_url'] = $url;
 		}
