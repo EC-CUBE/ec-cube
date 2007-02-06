@@ -32,9 +32,6 @@ $objCustomer = new SC_Customer();
 // 基本情報の取得
 $arrInfo = $objSiteInfo->data;
 
-
-sfPrintR($_SESSION);
-
 // 商品購入中にカート内容が変更された。
 if($objCartSess->getCancelPurchase()) {
 	$objPage->tpl_message = "商品購入中にカート内容が変更されましたので、お手数ですが購入手続きをやり直して下さい。";

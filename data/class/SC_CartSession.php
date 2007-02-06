@@ -194,7 +194,13 @@ class SC_CartSession {
 	
 	// 前頁のURLを記録しておく
 	function setPrevURL($url) {
+		$arrExclude = array("detail_image.php");
+		
+		print(basename($url));
+		
+		if($url) {		
 		$_SESSION[$this->key]['prev_url'] = $url;
+		}
 	}
 	
 	// 前頁のURLを取得する
