@@ -73,8 +73,10 @@ class SC_GraphBase {
 	
 	// リサンプル
 	function resampled() {
-		$tmp_image = imagecreatetruecolor($this->bgw/2, $this->bgh/2);
-		if(imagecopyresampled($tmp_image, $this->image, 0, 0, 0, 0, $this->bgw, $this->bgh, ($this->bgw/2), ($this->bgh/2))) {
+		$new_width = $this->bgw / 2;
+		$new_height = $this->bgh / 2;		
+		$tmp_image = imagecreatetruecolor($new_width, $new_height);
+		if(imagecopyresampled($tmp_image, $this->image, 0, 0, 0, 0, $this->bgw, $this->bgh, $new_width, $new_height)) {
 			$this->image = $tmp_image;
 		}
 	}
