@@ -70,7 +70,7 @@ require_once(HTML_PATH . "admin/total/class/SC_GraphBar.php");
 				}
 			}
 		}
-		/*
+		
 		// 底面の描画
 		imagearc($objGraphPie->image, $x, $y + $z, $w, $h, 0, 180 , $objGraphPie->flame_color);
 		
@@ -88,7 +88,7 @@ require_once(HTML_PATH . "admin/total/class/SC_GraphBar.php");
 			$start = $end;
 		}
 		
-		
+		/*
 		// 上面の縁取り
 		$start = 0;
 		for($i = 0; $i < $rd_max; $i++) {
