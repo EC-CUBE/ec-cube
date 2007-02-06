@@ -123,9 +123,9 @@ require_once(HTML_PATH . "admin/total/class/SC_GraphBar.php");
 		}
 			
 		// ラベルの描画
-		//$objGraphPie->drawLabel($arrRad);
+		$objGraphPie->drawLabel($arrRad);
 		// 凡例の描画
-		//$objGraphPie->drawLegend(count($objGraphPie->arrData));
+		$objGraphPie->drawLegend(count($objGraphPie->arrData));
 		
 		$objGraphPie->resampled();
 		
