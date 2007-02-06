@@ -47,7 +47,7 @@ require_once(HTML_PATH . "admin/total/class/SC_GraphBar.php");
 		if($objGraphPie->shade_on) {
 			$objGraphPie->drawShade();
 		}
-		
+		/*
 		// 色数の取得
 		$c_max = count($objGraphPie->arrColor);
 		$dc_max = count($objGraphPie->arrDarkColor);
@@ -70,7 +70,7 @@ require_once(HTML_PATH . "admin/total/class/SC_GraphBar.php");
 				}
 			}
 		}
-		/*
+		
 		// 底面の描画
 		imagearc($objGraphPie->image, $x, $y + $z, $w, $h, 0, 180 , $objGraphPie->flame_color);
 		
