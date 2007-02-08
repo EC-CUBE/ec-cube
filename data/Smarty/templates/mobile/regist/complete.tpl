@@ -17,6 +17,10 @@ E-mail：<a href="mailto:<!--{$arrSiteInfo.email02|escape}-->"><!--{$arrSiteInfo.
 
 <br>
 
+<!--{if !$tpl_cart_empty}-->
+<a href="<!--{$smarty.const.URL_DIR}-->shopping/deliv.php">ご注文手続きへ進む</a><br>
+<!--{/if}-->
+
 <a href="<!--{$smarty.const.URL_SITE_TOP}-->">TOPページに戻る</a><br>
 
 <br>

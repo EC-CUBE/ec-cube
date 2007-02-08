@@ -18,6 +18,10 @@ class LC_Page{
 $objPage = new LC_Page();
 $objView = new SC_SiteView();
 
+// カートが空かどうかを確認する。
+$objCartSess = new SC_CartSession("", false);
+$objPage->tpl_cart_empty = count($objCartSess->getCartList()) < 1;
+
 // レイアウトデザインを取得
 $objPage = sfGetPageLayout($objPage, false, DEF_LAYOUT);
 
