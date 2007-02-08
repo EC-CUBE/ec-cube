@@ -23,6 +23,9 @@ function fnIsCartOn(){
 <input type="hidden" name="mode" value="">
 <input type="hidden" name="campaign_id" value="<!--{$campaign_id}-->" >
 <input type="hidden" name="is_update" value="<!--{$is_update}-->" >
+<!--{if $is_update}-->
+<input type="hidden" name="cart_flg" value="<!--{$arrForm.cart_flg}-->" >
+<!--{/if}-->
 
 <table width="878" border="0" cellspacing="0" cellpadding="0" summary=" ">
 	<tr valign="top">
