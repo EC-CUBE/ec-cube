@@ -137,7 +137,7 @@ function fnIsCartOn(){
 									</tr>
 									<tr class="fs12n">
 										<td bgcolor="#f2f1ec" width="140">カートに商品を入れる</td>
-										<td bgcolor="#ffffff" width="538"><input type="checkbox" onclick="fnIsCartOn()" name="cart_flg" id="cart_flg" value="1" <!--{if $arrForm.cart_flg eq 1}--> checked <!--{/if}--> <!--{if $is_update}-->disable<!--{/if}-->><label for="cart_flg">カートに商品を入れるようにする</label></td>
+										<td bgcolor="#ffffff" width="538"><input type="checkbox" onclick="fnIsCartOn()" name="cart_flg" id="cart_flg" value="1" <!--{if $arrForm.cart_flg eq 1}--> checked <!--{/if}--> <!--{if $is_update}-->disabled<!--{/if}-->><label for="cart_flg">カートに商品を入れるようにする</label></td>
 									</tr>
 									<tr class="fs12n">
 										<td bgcolor="#f2f1ec" width="140">送料無料設定</td>
