@@ -98,6 +98,7 @@ switch($_POST['mode']) {
 // キャンペーン一覧取得
 $objPage->arrCampaign = lfGetCampaignList();
 $objPage->campaign_id = $campaign_id;
+$objPage->is_update = $_POST['is_update'];
 
 // キャンペーン期間用
 $objDate = new SC_Date();
