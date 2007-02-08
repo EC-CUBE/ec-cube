@@ -22,7 +22,7 @@ function fnIsCartOn(){
 <form name="form1" id="form1" method="post" action="<!--{$smarty.server.PHP_SELF|escape}-->">
 <input type="hidden" name="mode" value="">
 <input type="hidden" name="campaign_id" value="<!--{$campaign_id}-->" >
-<input type="hidden" name="is_update" value="<!--{if $is_update}-->" >
+<input type="hidden" name="is_update" value="<!--{$is_update}-->" >
 
 <table width="878" border="0" cellspacing="0" cellpadding="0" summary=" ">
 	<tr valign="top">
