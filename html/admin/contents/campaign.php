@@ -63,6 +63,7 @@ switch($_POST['mode']) {
 	case 'update':
 		// キャンペーン情報を取得
 		$objPage->arrForm = lfGetCampaign($campaign_id);
+		$objPage->is_update = true;
 		break;
 	// 削除押下時
 	case 'delete':
