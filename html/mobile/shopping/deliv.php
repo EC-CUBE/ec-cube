@@ -71,7 +71,7 @@ case 'login':
 	if(count($objPage->arrErr) == 0) {
 		// ログイン判定
 		if(!$objCustomer->getCustomerDataFromMobilePhoneIdPass($arrForm['login_pass']) &&
-		   !$objCustomer->getCustomerDataFromEmailPass($arrForm['login_pass'], $arrForm['login_email'])) {
+		   !$objCustomer->getCustomerDataFromEmailPass($arrForm['login_pass'], $arrForm['login_email'], true)) {
 			// 仮登録の判定
 			$objQuery = new SC_Query;
 			$where = "email = ? AND status = 1 AND del_flg = 0";

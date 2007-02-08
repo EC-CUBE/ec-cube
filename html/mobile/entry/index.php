@@ -258,6 +258,9 @@ function lfRegistData ($array, $arrRegistColumn, $arrRejectRegistColumn) {
 	$arrRegist["update_date"] = "now()"; 	// 更新日
 	$arrRegist["first_buy_date"] = "";	 	// 最初の購入日
 	
+	// 携帯メールアドレス
+	$arrRegist['email_mobile'] = $arrRegist['email'];
+
 	//-- 仮登録実行
 	$objConn->query("BEGIN");
 
@@ -325,12 +328,12 @@ function lfErrorCheck1($array) {
 	$objErr->doFunc(array("お名前（名）", 'name02', STEXT_LEN), array("EXIST_CHECK", "NO_SPTAB", "SPTAB_CHECK" , "MAX_LENGTH_CHECK"));
 	$objErr->doFunc(array("フリガナ（セイ）", 'kana01', STEXT_LEN), array("EXIST_CHECK", "NO_SPTAB", "SPTAB_CHECK" ,"MAX_LENGTH_CHECK", "KANA_CHECK"));
 	$objErr->doFunc(array("フリガナ（メイ）", 'kana02', STEXT_LEN), array("EXIST_CHECK", "NO_SPTAB", "SPTAB_CHECK" ,"MAX_LENGTH_CHECK", "KANA_CHECK"));
-	$objErr->doFunc(array('メールアドレス', "email", MTEXT_LEN) ,array("NO_SPTAB", "EXIST_CHECK", "EMAIL_CHECK", "SPTAB_CHECK" ,"EMAIL_CHAR_CHECK", "MAX_LENGTH_CHECK"));
+	$objErr->doFunc(array('メールアドレス', "email", MTEXT_LEN) ,array("NO_SPTAB", "EXIST_CHECK", "EMAIL_CHECK", "SPTAB_CHECK" ,"EMAIL_CHAR_CHECK", "MAX_LENGTH_CHECK", "MOBILE_EMAIL_CHECK"));
 
 	//現会員の判定 →　現会員もしくは仮登録中は、メアド一意が前提になってるので同じメアドで登録不可
 	if (strlen($array["email"]) > 0) {
 		$objQuery = new SC_Query();
-		$arrRet = $objQuery->select("email, update_date, del_flg", "dtb_customer","email ILIKE ? ORDER BY del_flg", array($array["email"]));
+		$arrRet = $objQuery->select("email, update_date, del_flg", "dtb_customer","email ILIKE ? OR email_mobile ILIKE ? ORDER BY del_flg", array($array["email"], $array["email"]));
 				
 		if(count($arrRet) > 0) {
 			if($arrRet[0]['del_flg'] != '1') {

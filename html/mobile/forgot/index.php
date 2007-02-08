@@ -36,8 +36,8 @@ if (isset($_SESSION['mobile']['kara_mail_from'])) {
 if ( $_POST['mode'] == 'mail_check' ){
 	//メアド入力時
 	$_POST['email'] = strtolower($_POST['email']);
-	$sql = "SELECT * FROM dtb_customer WHERE email ILIKE ? AND status = 2 AND del_flg = 0";
-	$result = $conn->getAll($sql, array($_POST['email']) );
+	$sql = "SELECT * FROM dtb_customer WHERE (email ILIKE ? OR email_mobile ILIKE ?) AND status = 2 AND del_flg = 0";
+	$result = $conn->getAll($sql, array($_POST['email'], $_POST['email']) );
 	
 	if ( $result[0]['reminder'] ){		// 本会員登録済みの場合
 		// 入力emailが存在する		
@@ -62,8 +62,8 @@ if ( $_POST['mode'] == 'mail_check' ){
 	if ( $_SESSION['forgot']['email'] ) {
 		// ヒミツの答えの回答が正しいかチェック
 		
-		$sql = "SELECT * FROM dtb_customer WHERE email ILIKE ? AND del_flg = 0";
-		$result = $conn->getAll($sql, array($_SESSION['forgot']['email']) );
+		$sql = "SELECT * FROM dtb_customer WHERE (email ILIKE ? OR email_mobile ILIKE ?) AND del_flg = 0";
+		$result = $conn->getAll($sql, array($_SESSION['forgot']['email'], $_SESSION['forgot']['email']) );
 		$data = $result[0];
 		
 		if ( $data['reminder_answer'] === $_POST['input_reminder'] ){

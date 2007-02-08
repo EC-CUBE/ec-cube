@@ -49,10 +49,15 @@ class SC_Customer {
 		}
 	}
 	
-	function getCustomerDataFromEmailPass( $pass, $email ) {
+	function getCustomerDataFromEmailPass( $pass, $email, $mobile = false ) {
+		$sql_mobile = $mobile ? ' OR email_mobile ILIKE ?' : '';
+		$arrValues = array($email);
+		if ($mobile) {
+			$arrValues[] = $email;
+		}
 		// 本登録された会員のみ
-		$sql = "SELECT * FROM dtb_customer WHERE email ILIKE ? AND del_flg = 0 AND status = 2";
-		$result = $this->conn->getAll($sql, array($email));
+		$sql = "SELECT * FROM dtb_customer WHERE (email ILIKE ?" . $sql_mobile . ") AND del_flg = 0 AND status = 2";
+		$result = $this->conn->getAll($sql, $arrValues);
 		$data = $result[0];
 		
 		// パスワードが合っていれば顧客情報をcustomer_dataにセットしてtrueを返す

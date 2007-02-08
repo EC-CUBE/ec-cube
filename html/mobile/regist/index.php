@@ -47,7 +47,7 @@ if ($_GET["mode"] == "regist") {
 		$objQuery = new SC_Query();
 		$email = $objQuery->get("dtb_customer", "email", "secret_key = ?", array($registSecretKey));
 		$objCustomer->setLogin($email);
-		header("Location: ./complete.php");
+		header("Location: " . gfAddSessionId("./complete.php"));
 		exit;
 	}
 
