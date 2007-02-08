@@ -5,12 +5,12 @@
 <hr>
 
 <!--{if $errmsg}-->
-<font color="#ff0000"><!--{$errmsg|escape}--></font><br>
+<font color="#ff0000"><!--{$errmsg}--></font><br>
 <!--{/if}-->
 
 <!--{if @$tpl_kara_mail_to != ''}-->
 ■ご登録時のメールアドレスからメールを送れる方は、次のリンクをクリックして空メールを送信してください。<br>
-<center><a href="mailto:<!--{$tpl_kara_mail_to|escape}-->">メール送信</a></center>
+<center><a href="mailto:<!--{$tpl_kara_mail_to|escape:'url'}-->">メール送信</a></center>
 
 <br>
 

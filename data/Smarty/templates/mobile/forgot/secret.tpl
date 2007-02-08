@@ -3,7 +3,7 @@
 <hr>
 
 <!--{if $errmsg}-->
-<font color="#ff0000"><!--{$errmsg|escape}--></font><br>
+<font color="#ff0000"><!--{$errmsg}--></font><br>
 <!--{/if}-->
 
 ご登録時に入力した下記質問の答えを入力して「次へ」ボタンをクリックしてください。<br>

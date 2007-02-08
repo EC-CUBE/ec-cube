@@ -32,7 +32,7 @@ require_once($include_dir . "/../../data/include/page_layout.inc");
 sfLoadUpdateModule();
 
 // モバイルサイト用の初期処理を実行する。
-if (!defined(SKIP_MOBILE_INIT)) {
+if (!defined('SKIP_MOBILE_INIT')) {
 	sfMobileInit();
 }
 ?>

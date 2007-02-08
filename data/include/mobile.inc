@@ -47,6 +47,33 @@ function lfMobileInitInput() {
 }
 
 /**
+ * dtb_mobile_ext_session_id テーブルを検索してセッションIDを取得する。
+ *
+ * @return string|null 取得したセッションIDを返す。
+ *                     取得できなかった場合は null を返す。
+ */
+function lfMobileGetExtSessionId() {
+	if (!preg_match('|^' . URL_DIR . '(.*)$|', $_SERVER['SCRIPT_NAME'], $matches)) {
+		return null;
+	}
+
+	$url = $matches[1];
+	$time = date('Y-m-d H:i:s', time() - MOBILE_SESSION_LIFETIME);
+	$objQuery = new SC_Query;
+
+	foreach ($_REQUEST as $key => $value) {
+		$session_id = $objQuery->get('dtb_mobile_ext_session_id', 'session_id',
+		                             'param_key = ? AND param_value = ? AND url = ? AND create_date >= ?',
+		                             array($key, $value, $url, $time));
+		if (isset($session_id)) {
+			return $session_id;
+		}
+	}
+
+	return null;
+}
+
+/**
  * パラメーターから有効なセッションIDを取得する。
  *
  * @return string|false 取得した有効なセッションIDを返す。
@@ -57,6 +84,9 @@ function lfMobileGetSessionId() {
 	$sessionId = @$_POST[session_name()];
 	if (!isset($sessionId)) {
 		$sessionId = @$_GET[session_name()];
+	}
+	if (!isset($sessionId)) {
+		$sessionId = lfMobileGetExtSessionId();
 	}
 	if (!isset($sessionId)) {
 		return false;
@@ -330,5 +360,51 @@ function gfFinishKaraMail($token) {
 	session_write_close();
 
 	return $url;
+}
+
+/**
+ * 外部サイト連携用にセッションIDとパラメーターの組み合わせを保存する。
+ *
+ * @param string $param_key パラメーター名
+ * @param string $param_value パラメーター値
+ * @param string $url URL
+ * @return void
+ */
+function sfMobileSetExtSessionId($param_key, $param_value, $url) {
+	$objQuery = new SC_Query;
+
+	// GC
+	$time = date('Y-m-d H:i:s', time() - MOBILE_SESSION_LIFETIME);
+	$objQuery->delete('dtb_mobile_ext_session_id', 'create_date < ?', array($time));
+
+	$arrValues = array('session_id'  => session_id(),
+	                   'param_key'   => $param_key,
+	                   'param_value' => $param_value,
+	                   'url'         => $url);
+
+	$objQuery->insert('dtb_mobile_ext_session_id', $arrValues);
+}
+
+/**
+ * メールアドレスが携帯のものかどうかを判別する。
+ *
+ * @param string $address メールアドレス
+ * @return boolean 携帯のメールアドレスの場合はtrue、それ以外の場合はfalseを返す。
+ */
+function gfIsMobileMailAddress($address) {
+	$arrMobileMailDomains = array('docomo.ne.jp', 'ezweb.ne.jp', 'softbank.ne.jp', 'vodafone.ne.jp');
+
+	if (defined('MOBILE_ADDITIONAL_MAIL_DOMAINS')) {
+		$arrMobileMailDomains = array_merge($arrMobileMailDomains, split('[ ,]+', MOBILE_ADDITIONAL_MAIL_DOMAINS));
+	}
+
+	foreach ($arrMobileMailDomains as $domain) {
+		$domain = str_replace('.', '\\.', $domain);
+		if (preg_match("/@([^@]+\\.)?$domain\$/", $address)) {
+			return true;
+		}
+	}
+
+	return false;
 }
 ?>

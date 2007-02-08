@@ -38,7 +38,12 @@ sfLoadUpdateModule();
 
 // 携帯端末の場合は mobile 以下へリダイレクトする。
 if (GC_MobileUserAgent::isMobile()) {
-	header("Location: " . URL_DIR . "mobile/");
+	if (preg_match('|^' . URL_DIR . '(.*)$|', $_SERVER['REQUEST_URI'], $matches)) {
+		$path = $matches[1];
+	} else {
+		$path = '';
+	}
+	header("Location: " . URL_DIR . "mobile/$path");
 	exit;
 }
 
