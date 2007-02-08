@@ -43,6 +43,9 @@ $objFormParam->setParam($_POST);
 // 編集処理の場合は状態を保持
 $objPage->is_update = $_POST['is_update'];
 
+sfprintr($_POST);
+
+
 // フォームの値をテンプレートへ渡す
 $objPage->arrForm = $objFormParam->getHashArray();
 $campaign_id = $_POST['campaign_id'];
