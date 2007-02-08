@@ -186,6 +186,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 			$objPage->tpl_mainpage = 'entry/complete.tpl';
 			$objPage->tpl_title = '²ñ°÷ÅÐÏ¿(´°Î»¥Ú¡¼¥¸)';
 
+			sfMobileSetExtSessionId('id', $objPage->uniqid, 'regist/index.php');
+
 			//¡¡²¾ÅÐÏ¿´°Î»¥á¡¼¥ëÁ÷¿®
 			$objPage->CONF = $CONF;
 			$objPage->to_name01 = $_POST['name01'];
