@@ -40,7 +40,7 @@ lfInitParam();
 // フォームの値をセット
 $objFormParam->setParam($_POST);
 
-// 編集処理の場合はtrue保持
+// 編集処理の場合は状態を保持
 $objPage->is_update = $_POST['is_update'];
 
 // フォームの値をテンプレートへ渡す
