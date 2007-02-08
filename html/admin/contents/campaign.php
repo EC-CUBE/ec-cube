@@ -40,6 +40,9 @@ lfInitParam();
 // フォームの値をセット
 $objFormParam->setParam($_POST);
 
+// 編集処理の場合はtrue保持
+$objPage->is_update = $_POST['is_update'];
+
 // フォームの値をテンプレートへ渡す
 $objPage->arrForm = $objFormParam->getHashArray();
 $campaign_id = $_POST['campaign_id'];
@@ -98,7 +101,6 @@ switch($_POST['mode']) {
 // キャンペーン一覧取得
 $objPage->arrCampaign = lfGetCampaignList();
 $objPage->campaign_id = $campaign_id;
-$objPage->is_update = $_POST['is_update'];
 
 // キャンペーン期間用
 $objDate = new SC_Date();
