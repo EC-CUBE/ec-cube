@@ -89,7 +89,11 @@ class SC_CustomerList extends SC_SelectSql {
 
 		//　名前（カナ）
 		if ( strlen($this->arrSql['kana']) > 0 ) {
-			$this->setWhere("(kana01 || kana02 LIKE ?)");
+			if(DB_TYPE == "pgsql"){
+				$this->setWhere("(kana01 || kana02 LIKE ?)");
+			}elseif(DB_TYPE == "mysql"){
+				$this->setWhere("concat(kana01,kana02) LIKE ?" );
+			}
 			$searchKana = $this->addSearchStr($this->arrSql['kana']);
 			$this->arrVal[] = mb_ereg_replace("[ 　]+","",$searchKana);
 		}
@@ -102,7 +106,11 @@ class SC_CustomerList extends SC_SelectSql {
 
 		//　電話番号
 		if ( is_numeric( $this->arrSql['tel'] ) ) {
-			$this->setWhere( "(tel01 || tel02 || tel03 LIKE ?)" );
+			if(DB_TYPE == "pgsql"){
+				$this->setWhere( "(tel01 || tel02 || tel03 LIKE ?)" );
+			}elseif(DB_TYPE == "mysql"){
+				$this->setWhere("concat(tel01,tel02,tel03) LIKE ?" );
+			}
 			$searchTel = $this->addSearchStr($this->arrSql['tel']);
 			$this->arrVal[] = ereg_replace("-", "", $searchTel);
 		}
