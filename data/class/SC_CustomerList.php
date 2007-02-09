@@ -77,7 +77,8 @@ class SC_CustomerList extends SC_SelectSql {
 		
 		// Ì¾Á°
 		if ( strlen($this->arrSql['name']) > 0 ) {
-			$this->setWhere("(name01 || name02 LIKE ?)" );
+			//$this->setWhere("(name01 || name02 LIKE ?)" );
+			$this->setWhere("(name01 LIKE ?)" );
 			$searchName = $this->addSearchStr($this->arrSql['name']);
 			$this->arrVal[] = mb_ereg_replace("[ ¡¡]+","",$searchName);
 		}
