@@ -171,7 +171,7 @@ if ($_POST['mode'] == "search" || $_POST['mode'] == "csv"  || $_POST['mode'] == 
 		
 		$objPage->search_data = $objConn->getAll($searchSql, $objSelect->arrVal);
 		
-		sfprintr($objConn->conn->getlastquery());
+		sfprintr($searchSql);
 
 		switch($_POST['mode']) {
 		case 'csv':
