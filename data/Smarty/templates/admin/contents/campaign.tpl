@@ -10,7 +10,7 @@
 <!--
 // カートに商品を入れるにチェックが入っているかチェック
 function fnIsCartOn(){
-    if (document.form1.cart_flg.checked){
+    if (document.form1.cart_flg.checked || document.form1.cart_flg){
 		document.form1.deliv_free_flg.disabled = false;
     } else {
 		document.form1.deliv_free_flg.disabled = true;    
