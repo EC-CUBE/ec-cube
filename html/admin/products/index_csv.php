@@ -95,7 +95,7 @@ function lfMakeProductsCSV($list) {
 				break;
 			}
 	
-			$tmp = ereg_replace("[\",]", " ", $tmp);
+			$tmp = str_replace("\"", "\\\"", $tmp);
 			$line .= "\"".$tmp."\",";
 		}
 		// 文末の","を変換
