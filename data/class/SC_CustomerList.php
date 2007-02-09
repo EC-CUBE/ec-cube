@@ -80,7 +80,7 @@ class SC_CustomerList extends SC_SelectSql {
 			if(DB_TYPE == "pgsql"){
 				$this->setWhere("(name01 || name02 LIKE ?)" );
 			}elseif(DB_TYPE == "mysql"){
-				$this->setWhere("concat(name01,name02) LIKE ?)" );
+				$this->setWhere("concat(name01,name02) LIKE ?" );
 			}
 
 			$searchName = $this->addSearchStr($this->arrSql['name']);
