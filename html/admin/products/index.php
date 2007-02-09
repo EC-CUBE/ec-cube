@@ -281,6 +281,8 @@ if ($_POST['mode'] == "search" || $_POST['mode'] == "csv"  || $_POST['mode'] == 
 			// 検索結果の取得
 			$objPage->arrProducts = $objQuery->select($col, $from, $where, $arrval);
 			
+			sfPrintR($objQuery->getlastquery(false));
+			
 			break;
 		}
 	}
