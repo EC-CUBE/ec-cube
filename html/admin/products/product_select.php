@@ -62,9 +62,7 @@ if ($_POST['mode'] == "search") {
 				break;
 			case 'search_product_code':
 				$where .= " AND product_id IN (SELECT product_id FROM dtb_products_class WHERE product_code ILIKE ? GROUP BY product_id)";
-				$where .= " OR product_code ILIKE ?";
-				$arrval[] = "%$val%";
-				$arrval[] = "%$val%";
+				$arrval[] = "$val%";
 				break;
 			default:
 				break;
