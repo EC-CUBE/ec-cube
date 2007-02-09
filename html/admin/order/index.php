@@ -89,12 +89,20 @@ case 'search':
 			
 			switch ($key) {
 				case 'search_order_name':
-					$where .= " AND order_name01||order_name02 ILIKE ?";
+					if(DB_TYPE == "pgsql"){
+						$where .= " AND order_name01||order_name02 ILIKE ?";
+					}elseif(DB_TYPE == "mysql"){
+						$where .= " AND concat(order_name01,order_name02) ILIKE ?";
+					}
 					$nonsp_val = ereg_replace("[ ¡¡]+","",$val);
 					$arrval[] = "%$nonsp_val%";
 					break;
 				case 'search_order_kana':
-					$where .= " AND order_kana01||order_kana02 ILIKE ?";
+					if(DB_TYPE == "pgsql"){
+						$where .= " AND order_kana01||order_kana02 ILIKE ?";
+					}elseif(DB_TYPE == "mysql"){
+						$where .= " AND concat(order_kana01,order_kana02) ILIKE ?";
+					}
 					$nonsp_val = ereg_replace("[ ¡¡]+","",$val);
 					$arrval[] = "%$nonsp_val%";
 					break;
@@ -125,7 +133,11 @@ case 'search':
 					}					
 					break;
 				case 'search_order_tel':
-					$where .= " AND (order_tel01||order_tel02||order_tel03) ILIKE ?";
+					if(DB_TYPE == "pgsql"){
+						$where .= " AND (order_tel01||order_tel02||order_tel03) ILIKE ?";
+					}elseif(DB_TYPE == "mysql"){
+						$where .= " AND concat(order_tel01,order_tel02,order_tel03) ILIKE ?";
+					}
 					$nonmark_val = ereg_replace("[()-]+","",$val);
 					$arrval[] = "$nonmark_val%";
 					break;
