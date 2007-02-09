@@ -76,22 +76,24 @@ class SC_SelectSql {
 		$date1 = $from_year . "/" . $from_month . "/" . $from_day;
 		
 		// TO
-		$date2 = $to_year . "/" . $to_month . "/" . $to_day;
+		$date2 = mktime (0, 0, 0, $to_month, $to_day,  $to_year);
+		$date2 = $date2 + 86400;
+		$date2 = date('y/m/d', $date2);
 		
 		// 開始期間だけ指定の場合
 		if( ( $from_year != "" ) && ( $from_month != "" ) && ( $from_day != "" ) &&	( $to_year == "" ) && ( $to_month == "" ) && ( $to_day == "" ) ) {
 			$this->setWhere( $column ." >= '" . $date1 . "'");
 		}
 
-		//　開始~終了
+		//　開始〜終了
 		if( ( $from_year != "" ) && ( $from_month != "" ) && ( $from_day != "" ) && 
 			( $to_year != "" ) && ( $to_month != "" ) && ( $to_day != "" ) ) {
-			$this->setWhere( $column ." >= '" . $date1 ."' AND ". $column . " < date('" . $date2 . "')+1" );
+			$this->setWhere( $column ." >= '" . $date1 ."' AND ". $column . " < date('" . $date2 . "')" );
 		}
 
 		// 終了期間だけ指定の場合
 		if( ( $from_year == "" ) && ( $from_month == "" ) && ( $from_day == "" ) && ( $to_year != "" ) && ( $to_month != "" ) && ( $to_day != "" ) ) {
-			$this->setWhere( $column ." < date('" . $date2 . "')+1");
+			$this->setWhere( $column ." < date('" . $date2 . "')");
 		}
 		return $return;
 	}	
