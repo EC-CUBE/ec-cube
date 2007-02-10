@@ -16,9 +16,10 @@
   <br>
 
 	【パスワード】<font color="#FF0000">※</font><br>
-	（半角英数字6文字以上20文字以内）<br>
+	（半角英数字<!--{$smarty.const.PASSWORD_LEN1}-->文字以上<!--{$smarty.const.PASSWORD_LEN2}-->文字以内）<br>
 	<font color="#FF0000"><!--{$arrErr.password}--></font>
-	<input type="text" name="password" value="<!--{$arrForm.password}-->" istyle="3"><br>
+	<!--{assign var="size" value="`$smarty.const.PASSWORD_LEN2+2`"}-->
+	<input type="text" name="password" value="<!--{$arrForm.password}-->" istyle="4" maxlength="<!--{$smarty.const.PASSWORD_LEN2}-->" size="<!--{$size}-->"><br>
 
 	【パスワード確認用の質問】<font color="#FF0000">※</font><br>
 	<font color="#FF0000"><!--{$arrErr.reminder}--></font>
@@ -49,11 +50,14 @@
 	<input type="submit" name="confirm" value="次へ">
 </form>
 
-<a href="<!--{$smarty.const.URL_CART_TOP}-->" accesskey="9"><!--{9|numeric_emoji}-->カゴを見る</a><br>
+<br>
+<hr>
+
+<a href="<!--{$smarty.const.URL_CART_TOP}-->" accesskey="9"><!--{9|numeric_emoji}-->かごを見る</a><br>
 <a href="<!--{$smarty.const.URL_SITE_TOP}-->" accesskey="0"><!--{0|numeric_emoji}-->TOPページへ</a><br>
 
 <br>
 
 <!-- ▼フッター ここから -->
-<center>LOCKON CO.,LTD.</center>
+<!--{include file='footer.tpl'}-->
 <!-- ▲フッター ここまで -->

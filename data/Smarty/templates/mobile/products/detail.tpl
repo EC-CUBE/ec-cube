@@ -2,22 +2,12 @@
 <!--▼MAIN CONTENTS-->
 <!--ﾀｲﾄﾙここから-->
 <!--★商品名★-->
-<div align="center"><font color="#FF8C00"><!--{$arrProduct.name|escape}-->
-&nbsp;
-<!--★商品ｺｰﾄﾞ★-->
-<!--{assign var=codecnt value=$arrProductCode|@count}-->
-<!--{assign var=codemax value=`$codecnt-1`}-->
-<!--{if $codecnt > 1}-->
-	<!--{$arrProductCode.0}-->･<!--{$arrProductCode[$codemax]}-->
-<!--{else}-->
-	<!--{$arrProductCode.0}-->
-<!--{/if}-->
-</font></div>
+<div align="center"><font color="#FF8C00"><!--{$arrProduct.name|escape}--></font></div>
 <hr>
 <!--ﾀｲﾄﾙここまで-->
 <!--詳細ここから-->
 <!--{assign var=key value="main_image"}-->
-<img src="<!--{$arrFile[$key].filepath}-->" /><br>
+<img src="<!--{$arrFile[$key].filepath}-->"><br>
 <!--★詳細ﾒｲﾝｺﾒﾝﾄ★-->
 [emoji:76]<!--{$arrProduct.main_comment|nl2br}--><br>
 <br>
@@ -39,31 +29,21 @@
 <!--{/if}-->
 円</font><br>
 <!--{/if}-->
-<!--★ﾎﾟｲﾝﾄ★-->
-<font color="#FF0000">ﾎﾟｲﾝﾄ:
-<!--{if $arrProduct.price02_min == $arrProduct.price02_max}-->
-	<!--{$arrProduct.price02_min|sfPrePoint:$arrProduct.point_rate:$smarty.const.POINT_RULE:$arrProduct.product_id}-->
-<!--{else}-->
-	<!--{if $arrProduct.price02_min|sfPrePoint:$arrProduct.point_rate:$smarty.const.POINT_RULE:$arrProduct.product_id == $arrProduct.price02_max|sfPrePoint:$arrProduct.point_rate:$smarty.const.POINT_RULE:$arrProduct.product_id}-->
-		<!--{$arrProduct.price02_min|sfPrePoint:$arrProduct.point_rate:$smarty.const.POINT_RULE:$arrProduct.product_id}-->
-	<!--{else}-->
-		<!--{$arrProduct.price02_min|sfPrePoint:$arrProduct.point_rate:$smarty.const.POINT_RULE:$arrProduct.product_id}-->･<!--{$arrProduct.price02_max|sfPrePoint:$arrProduct.point_rate:$smarty.const.POINT_RULE:$arrProduct.product_id}-->
-	<!--{/if}-->
-<!--{/if}-->
-Pt</font><br>
 <form name="form1" method="post" action="<!--{$smarty.server.REQUEST_URI|escape}-->">
 	<input type="hidden" name="mode" value="select">
 	<input type="hidden" name="product_id" value="<!--{$tpl_product_id}-->">
 <!--{if $tpl_stock_find}-->
 	<!--★商品を選ぶ★-->
-	<input type="submit" name="select" id="cart" value="この商品を選ぶ"><br>
+	<center><input type="submit" name="select" id="cart" value="この商品を選ぶ"></center>
 <!--{else}-->
-	<font color="#FF0000">申し訳ございませんが､只今品切れ中です｡</font><br>
+	<font color="#FF0000">申し訳ございませんが､只今品切れ中です｡</font>
 <!--{/if}-->
+</form>
 <!--詳細ここまで-->
 <!--▲CONTENTS-->
 
 <br>
+<hr>
 
 <a href="<!--{$smarty.const.URL_CART_TOP}-->" accesskey="9"><!--{9|numeric_emoji}-->かごを見る</a><br>
 <a href="<!--{$smarty.const.URL_SITE_TOP}-->" accesskey="0"><!--{0|numeric_emoji}-->TOPページへ</a><br>

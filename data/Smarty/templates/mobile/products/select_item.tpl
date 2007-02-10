@@ -10,10 +10,17 @@
 	<input type="hidden" name="classcategory_id1" value="<!--{$arrForm.classcategory_id1.value}-->">
 	<input type="hidden" name="classcategory_id2" value="<!--{$arrForm.classcategory_id2.value}-->">
 	<input type="hidden" name="product_id" value="<!--{$tpl_product_id}-->">
-	<input type="submit" name="submit" value="ｶｺﾞに入れる">
+	<center><input type="submit" name="submit" value="かごに入れる"></center>
 </form>
 
-<!-- ▼フッター ここから -->
+<br>
 <hr>
-<center>LOCKON CO.,LTD.</center>
+
+<a href="<!--{$smarty.const.URL_CART_TOP}-->" accesskey="9"><!--{9|numeric_emoji}-->かごを見る</a><br>
+<a href="<!--{$smarty.const.URL_SITE_TOP}-->" accesskey="0"><!--{0|numeric_emoji}-->TOPページへ</a><br>
+
+<br>
+
+<!-- ▼フッター ここから -->
+<!--{include file='footer.tpl'}-->
 <!-- ▲フッター ここまで -->

@@ -8,8 +8,9 @@
 <a href="<!--{$smarty.const.URL_SITE_TOP}-->" accesskey="3"><!--{3|numeric_emoji}-->同意しない<br>
 
 <br>
+<hr>
 
-<a href="<!--{$smarty.const.URL_CART_TOP}-->" accesskey="9"><!--{9|numeric_emoji}-->カゴを見る</a><br>
+<a href="<!--{$smarty.const.URL_CART_TOP}-->" accesskey="9"><!--{9|numeric_emoji}-->かごを見る</a><br>
 <a href="<!--{$smarty.const.URL_SITE_TOP}-->" accesskey="0"><!--{0|numeric_emoji}-->TOPページへ</a><br>
 
 <br>

@@ -29,6 +29,7 @@
 <!-- ▲商品 ここまで -->
 <!--{/foreach}-->
 
+<br>
 <hr>
 
 <a href="<!--{$smarty.const.URL_CART_TOP}-->" accesskey="9"><!--{9|numeric_emoji}-->かごを見る</a><br>
