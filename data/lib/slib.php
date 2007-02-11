@@ -1706,7 +1706,11 @@ function sfGetCustomerSqlVal($uniqid, $sqlval) {
 	    $sqlval['order_tel01'] = $objCustomer->getValue('tel01');
 	    $sqlval['order_tel02'] = $objCustomer->getValue('tel02');
 		$sqlval['order_tel03'] = $objCustomer->getValue('tel03');
-		$sqlval['order_email'] = $objCustomer->getValue('email');
+		if (defined('MOBILE_SITE')) {
+			$sqlval['order_email'] = $objCustomer->getValue('email_mobile');
+		} else {
+			$sqlval['order_email'] = $objCustomer->getValue('email');
+		}
 		$sqlval['order_job'] = $objCustomer->getValue('job');
 		$sqlval['order_birth'] = $objCustomer->getValue('birth');
 	}
