@@ -170,12 +170,18 @@ class SC_Customer {
 	}
 	
 	// ログインに成功しているか判定する。
-	function isLoginSuccess() {
+	function isLoginSuccess($dont_check_email_mobile = false) {
 		// ログイン時のメールアドレスとDBのメールアドレスが一致している場合
 		if(sfIsInt($_SESSION['customer']['customer_id'])) {
 			$objQuery = new SC_Query();
 			$email = $objQuery->get("dtb_customer", "email", "customer_id = ?", array($_SESSION['customer']['customer_id']));
 			if($email == $_SESSION['customer']['email']) {
+				// モバイルサイトの場合は携帯のメールアドレスが登録されていることもチェックする。
+				// ただし $dont_check_email_mobile が true の場合はチェックしない。
+				if (defined('MOBILE_SITE') && !$dont_check_email_mobile) {
+					$email_mobile = $objQuery->get("dtb_customer", "email_mobile", "customer_id = ?", array($_SESSION['customer']['customer_id']));
+					return isset($email_mobile);
+				}
 				return true;
 			}
 		}
@@ -190,6 +196,11 @@ class SC_Customer {
 	// パラメータのセット
 	function setValue($keyname, $val) {
 		$_SESSION['customer'][$keyname] = $val;
+	}
+
+	// パラメータがNULLかどうかの判定
+	function hasValue($keyname) {
+		return isset($_SESSION['customer'][$keyname]);
 	}
 	
 	// 誕生日月であるかどうかの判定
