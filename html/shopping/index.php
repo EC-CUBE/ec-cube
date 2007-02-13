@@ -190,6 +190,7 @@ function lfRegistData($uniqid) {
 	$sqlval['update_date'] = 'Now()';
 	$sqlval['customer_id'] = '0';
 	
+	sfprintr($_POST);
 	sfprintr($sqlval);
 	exit();
 	
