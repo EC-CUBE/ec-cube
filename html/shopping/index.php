@@ -201,6 +201,9 @@ function lfRegistData($uniqid) {
 	} else {
 		$objQuery->update("dtb_order_temp", $sqlval, $where, array($uniqid));
 	}
+	
+	sfprintr($objQuery->getlastquery(false));
+	exit();
 }
 
 /* 入力内容のチェック */
