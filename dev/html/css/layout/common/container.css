@@ -1,0 +1,32 @@
+/*
+ * Copyright(c) 2000-2007 LOCKON CO.,LTD. All Rights Reserved.
+ *
+ * http://www.lockon.co.jp/
+ */
+ @charset "<!--{$smarty.const.CHAR_CODE}-->"; 
+
+/***全体テーブル***/
+#container{
+border: 0;
+margin: 0;
+padding: 0;
+width: 570px;
+}
+
+#container #left{
+width: 190px;
+text-align: left;
+}
+
+#container #right{
+width: 570px;
+}
+
+/***全体テーブル横ナビなし***/
+#containerfull{
+border: 0;
+margin: 0;
+padding: 0;
+width: 700px;
+height: 550px;
+}

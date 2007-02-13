@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<projectDescription>
+	<name>dev.ec-cube.net</name>
+	<comment></comment>
+	<projects>
+	</projects>
+	<buildSpec>
+		<buildCommand>
+			<name>org.trustudio.oss.core.PHPscriptbuilder</name>
+			<arguments>
+			</arguments>
+		</buildCommand>
+	</buildSpec>
+	<natures>
+		<nature>org.trustudio.oss.core.scriptnature</nature>
+		<nature>org.trustudio.php.core.phpnature</nature>
+	</natures>
+</projectDescription>
