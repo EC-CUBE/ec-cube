@@ -190,6 +190,9 @@ function lfRegistData($uniqid) {
 	$sqlval['update_date'] = 'Now()';
 	$sqlval['customer_id'] = '0';
 	
+	sfprintr($sqlval);
+	exit();
+	
 	// 既存データのチェック
 	$objQuery = new SC_Query();
 	$where = "order_temp_id = ?";
@@ -202,7 +205,6 @@ function lfRegistData($uniqid) {
 		$objQuery->update("dtb_order_temp", $sqlval, $where, array($uniqid));
 	}
 	
-	sfprintr($objQuery->getlastquery(false));
 	exit();
 }
 
