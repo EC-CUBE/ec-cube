@@ -23,7 +23,7 @@
 			<tr><td height="5"></td></tr>
 			
 			<!-- カゴの中に商品がある場合にのみ表示 -->
-			<!--{if $arrCartList.0.TotalQuantity > 0}-->
+			<!--{if $arrCartList.0.TotalQuantity > 0 and $arrCartList.0.free_rule > 0}-->
 			<tr>
 				<td class="fs10">
 				<!--{if $arrCartList.0.deliv_free > 0}-->

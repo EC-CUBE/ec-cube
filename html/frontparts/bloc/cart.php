@@ -57,7 +57,6 @@ if (count($_SESSION[$objCart->key]) > 0){
 		$arrCartList[0]['free_rule'] = $arrInfo['free_rule'];
 		$arrCartList[0]['deliv_free'] = $deliv_free;
 	}else{
-		$arrCartList[0]['deliv_free'] = 0;
 	}
 	
 	$objSubPage->arrCartList = $arrCartList;
