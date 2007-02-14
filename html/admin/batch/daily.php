@@ -131,9 +131,9 @@ function lfGetOrderDailySQL($start, $end) {
 	$sql.= "(SELECT sum(cnt) FROM (SELECT COUNT(*) AS cnt $from $where AND T1.order_sex = 1) AS men ) AS men, ";
 	$sql.= "(SELECT sum(cnt) FROM (SELECT COUNT(*) AS cnt $from $where AND T1.order_sex = 2) AS women ) AS women, ";
 	$sql.= "(SELECT sum(cnt) FROM (SELECT COUNT(*) AS cnt $from $where AND T1.order_sex = 1 AND T2.customer_id <> 0) AS men_member ) AS men_member, ";
-	$sql.= "(SELECT sum(cnt) FROM (SELECT COUNT(*) AS cnt $from $where AND T1.order_sex = 1 AND T2.customer_id = 0) AS men_nonmember ) AS men_nonmember, ";
+	$sql.= "(SELECT sum(cnt) FROM (SELECT COUNT(*) AS cnt $from $where AND T1.order_sex = 1 AND T1.customer_id = 0) AS men_nonmember ) AS men_nonmember, ";
 	$sql.= "(SELECT sum(cnt) FROM (SELECT COUNT(*) AS cnt $from $where AND T1.order_sex = 2 AND T2.customer_id <> 0) AS women_member ) AS women_member, ";
-	$sql.= "(SELECT sum(cnt) FROM (SELECT COUNT(*) AS cnt $from $where AND T1.order_sex = 2 AND T2.customer_id = 0) AS women_nonmember ) AS women_nonmember, ";
+	$sql.= "(SELECT sum(cnt) FROM (SELECT COUNT(*) AS cnt $from $where AND T1.order_sex = 2 AND T1.customer_id = 0) AS women_nonmember ) AS women_nonmember, ";
 	$sql.= "SUM(total) AS total, ";
 	$sql.= "(AVG(total)) AS total_average ";
 	$sql.= $from;
@@ -156,7 +156,7 @@ function lfBatOrderDaily($time) {
 	
 	$objQuery = new SC_Query();
 	$arrRet = $objQuery->getall($sql);	
-		
+	
 	$sqlval = $arrRet[0];
 	
 	// 空文字を"0"に変換

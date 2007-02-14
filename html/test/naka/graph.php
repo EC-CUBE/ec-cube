@@ -22,12 +22,12 @@ require_once(HTML_PATH . "admin/total/class/SC_GraphBar.php");
 		
 		// データをセットする
 		$objGraphPie->setData($arrList);
-				// 凡例をセットする
+		// 凡例をセットする
 		$objGraphPie->setLegend(array_keys($arrList));
 		
 		// 円グラフ描画
-		$objGraphPie->drawGraph();
-		/*
+		//$objGraphPie->drawGraph();
+		
 		$x = $objGraphPie->cx;
 		$y = $objGraphPie->cy;
 		$z = $objGraphPie->cz;
@@ -71,8 +71,7 @@ require_once(HTML_PATH . "admin/total/class/SC_GraphBar.php");
 			}
 		}
 		
-		// 底面の描画
-		imagearc($objGraphPie->image, $x, $y + $z, $w, $h, 0, 180 , $objGraphPie->flame_color);
+
 		
 		// 上面の描画
 		$start = 0;
@@ -87,7 +86,9 @@ require_once(HTML_PATH . "admin/total/class/SC_GraphBar.php");
 			}
 			$start = $end;
 		}
-		
+		/*
+		// 底面の描画
+		imagearc($objGraphPie->image, $x, $y + $z, $w, $h, 0, 180 , $objGraphPie->flame_color);
 		
 		// 上面の縁取り
 		$start = 0;
@@ -121,13 +122,14 @@ require_once(HTML_PATH . "admin/total/class/SC_GraphBar.php");
 			}
 			$start = $end;	
 		}
-				
+		
 		// ラベルの描画
-		//$objGraphPie->drawLabel($arrRad);
+		$objGraphPie->drawLabel($arrRad);
 		// 凡例の描画
-		//$objGraphPie->drawLegend(count($objGraphPie->arrData));
+		$objGraphPie->drawLegend(count($objGraphPie->arrData));
 		*/
-
+		
+		$objGraphPie->resampled();
 		
 		$objGraphPie->outputGraph();
 		exit();

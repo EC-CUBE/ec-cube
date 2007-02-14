@@ -10,7 +10,7 @@
 <!--
 // カートに商品を入れるにチェックが入っているかチェック
 function fnIsCartOn(){
-    if (document.form1.cart_flg.checked){
+    if (document.form1.cart_flg.checked <!--{if $is_update}-->|| <!--{$arrForm.cart_flg}--><!--{/if}-->){
 		document.form1.deliv_free_flg.disabled = false;
     } else {
 		document.form1.deliv_free_flg.disabled = true;    
@@ -22,6 +22,11 @@ function fnIsCartOn(){
 <form name="form1" id="form1" method="post" action="<!--{$smarty.server.PHP_SELF|escape}-->">
 <input type="hidden" name="mode" value="">
 <input type="hidden" name="campaign_id" value="<!--{$campaign_id}-->" >
+<input type="hidden" name="is_update" value="<!--{$is_update}-->" >
+<!--{if $is_update}-->
+<input type="hidden" name="cart_flg" value="<!--{$arrForm.cart_flg}-->" >
+<!--{/if}-->
+
 <table width="878" border="0" cellspacing="0" cellpadding="0" summary=" ">
 	<tr valign="top">
 		<td background="<!--{$smarty.const.URL_DIR}-->img/contents/navi_bg.gif" height="402">
@@ -121,7 +126,9 @@ function fnIsCartOn(){
 									</tr>									
 									<tr>
 										<td bgcolor="#f2f1ec" width="140" class="fs12n">ディレクトリ名<span class="red"> *</span></td>
-										<td bgcolor="#ffffff" width="538" class="fs12n"><span class="red"><!--{$arrErr.directory_name}--></span><input type="text" name="directory_name" size="60" class="box60"  value="<!--{$arrForm.directory_name|escape}-->" <!--{if $arrErr.directory_name}-->style="background-color:<!--{$smarty.const.ERR_COLOR|escape}-->"<!--{/if}--> maxlength="<!--{$smarty.const.STEXT_LEN}-->"/></span>
+										<td bgcolor="#ffffff" width="538">
+											<span class="red12"><!--{$arrErr.directory_name}--></span><input type="text" name="directory_name" size="60" class="box60"  value="<!--{$arrForm.directory_name|escape}-->" <!--{if $arrErr.directory_name}-->style="background-color:<!--{$smarty.const.ERR_COLOR|escape}-->"<!--{/if}--> maxlength="<!--{$smarty.const.STEXT_LEN}-->"/></span><br/>
+											<span class="fs10">※<!--{$smarty.const.SITE_URL|sfTrimURL}--><!--{$smarty.const.URL_DIR|sfTrimURL}--><!--{$smarty.const.CAMPAIGN_URL}-->入力したディレクリ名/ でアクセス出来るようになります。</span>
 										</td>
 									</tr>
 									<tr>
@@ -135,7 +142,7 @@ function fnIsCartOn(){
 									</tr>
 									<tr class="fs12n">
 										<td bgcolor="#f2f1ec" width="140">カートに商品を入れる</td>
-										<td bgcolor="#ffffff" width="538"><input type="checkbox" onclick="fnIsCartOn()" name="cart_flg" id="cart_flg" value="1" <!--{if $arrForm.cart_flg eq 1}--> checked <!--{/if}--> ><label for="cart_flg">カートに商品を入れるようにする</label></td>
+										<td bgcolor="#ffffff" width="538"><input type="checkbox" onclick="fnIsCartOn()" name="cart_flg" id="cart_flg" value="1" <!--{if $arrForm.cart_flg eq 1}--> checked <!--{/if}--> <!--{if $is_update}-->disabled<!--{/if}-->><label for="cart_flg">カートに商品を入れるようにする</label></td>
 									</tr>
 									<tr class="fs12n">
 										<td bgcolor="#f2f1ec" width="140">送料無料設定</td>

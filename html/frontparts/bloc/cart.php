@@ -50,11 +50,13 @@ if (count($_SESSION[$objCart->key]) > 0){
 	$TotalQuantity = $objCart->getTotalQuantity();
 	
 	// Á÷ÎÁÌµÎÁ¤Ş¤Ç¤Î¶â³Û
-	$deliv_free = $arrInfo['free_rule'] - $ProductsTotal;
-	$arrCartList[0]['free_rule'] = $arrInfo['free_rule'];
-	$arrCartList[0]['ProductsTotal'] = $ProductsTotal;
-	$arrCartList[0]['TotalQuantity'] = $TotalQuantity;
-	$arrCartList[0]['deliv_free'] = $deliv_free;
+	if($arrInfo['free_rule'] > 0){
+		$deliv_free = $arrInfo['free_rule'] - $ProductsTotal;
+		$arrCartList[0]['free_rule'] = $arrInfo['free_rule'];
+		$arrCartList[0]['ProductsTotal'] = $ProductsTotal;
+		$arrCartList[0]['TotalQuantity'] = $TotalQuantity;
+		$arrCartList[0]['deliv_free'] = $deliv_free;
+	}
 	
 	$objSubPage->arrCartList = $arrCartList;
 }
