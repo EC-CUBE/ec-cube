@@ -12,6 +12,12 @@ require_once($CONF_PHP_PATH ."/../install.inc");
 require_once($CONF_PHP_PATH ."/core.php" );
 
 //--------------------------------------------------------------------------------------------------------
+/** •’•Ì•Û•»…Ωº®¥ÿœ¢ **/
+define("SAMPLE_ADDRESS1", "ª‘∂ËƒÆ¬ºÃæ° Œ„°ß≈Ïµ˛≈‘¿È¬Â≈ƒ∂Ëø¿≈ƒø¿ ›ƒÆ°À");
+define("SAMPLE_ADDRESS2", "»÷√œ°¶•”•ÎÃæ° Œ„°ß1-3-5°À");
+//--------------------------------------------------------------------------------------------------------
+
+//--------------------------------------------------------------------------------------------------------
 /** •—•π¥ÿœ¢ **/
 // •Ê°º•∂•’•°•§•Î ›¬∏¿Ë
 define("USER_DIR", "user_data/");
@@ -59,7 +65,7 @@ define("UPDATE_PATH", DATA_PATH . UPDATE_DIR);
 //--------------------------------------------------------------------------------------------------------
 /** •¢•√•◊•«°º•»¥…Õ˝Õ— **/
 // •¢•√•◊•«°º•»¥…Õ˝Õ—•’•°•§•Î≥ «ºæÏΩÍ°°
-define("UPDATE_HTTP", "http://www.lockon.co.jp/share/test/");
+define("UPDATE_HTTP", "http://www.lockon.co.jp/share/");
 
 // •¢•√•◊•«°º•»¥…Õ˝Õ—CSV1π‘ ’§Í§Œ∫«¬Á ∏ª˙øÙ
 define("UPDATE_CSV_LINE_MAX", 4096);
@@ -85,7 +91,7 @@ define("AFF_ENTRY_COMPLETE", 2);
 define("CHAR_CODE", "EUC-JP");
 
 // EC-CUBE•–°º•∏•Á•Ûæ Û
-define("ECCUBE_VERSION", "1.0.2a-beta");
+define("ECCUBE_VERSION", "1.1.1");
 
 // ∑Ë∫—•‚•∏•Â°º•Î…’Õø ∏∏¿
 define("ECCUBE_PAYMENT", "EC-CUBE");
@@ -100,9 +106,6 @@ define("CLOSE_DAY", 31);	// ƒ˘§·∆¸§ŒªÿƒÍ(Àˆ∆¸§ŒæÏπÁ§œ°¢31§ÚªÿƒÍ§∑§∆§Ø§¿§µ§§°£)
 
 //∞Ï»Ã•µ•§•»•®•È°º
 define("FAVORITE_ERROR", 13);
-
-//§™§π§π§·æ¶… øÙ
-define ("RECOMMEND_PRODUCT_MAX", 6);
 
 /** •∞•È•’¥ÿœ¢ **/
 	
@@ -141,7 +144,7 @@ define("TV_PRODUCTS_MAX",10);		//TVœ¢∆∞æ¶… ∫«¬Á≈–œøøÙ
 //≤Ò∞˜≈–œø —ππ(•ﬁ•§•⁄°º•∏)•—•π•Ô°º•…Õ—
 define("DEFAULT_PASSWORD", "UAhgGR3L");
 //§™§π§π§·æ¶… øÙ
-define ("RECOMMEND_PRODUCT_MAX", 4);
+define ("RECOMMEND_PRODUCT_MAX", 5);
 
 // Ã§Œ§™∆œ§±¿Ë∫«¬Á≈–œøøÙ
 define("DELIV_ADDR_MAX", 20);
@@ -176,12 +179,13 @@ define ("POINT_RULE", 2);								// •›•§•Û•»§Œ∑◊ªª•Î°º•Î(1:ªÕºŒ∏ﬁ∆˛°¢2:¿⁄§ÍºŒ§∆°
 define ("POINT_VALUE", 1);								// 1•›•§•Û•»≈ˆ§ø§Í§Œ√Õ√ (±ﬂ)
 define ("ADMIN_MODE", 0);								// ¥…Õ˝•‚°º•… 1:Õ≠∏˙°°0:Ãµ∏˙(«º… ª˛)
 define ("DAILY_BATCH_MODE", false);						// «‰æÂΩ∏∑◊•–•√•¡•‚°º•…(true:•–•√•¡§«Ω∏∑◊§π§Î ¢®Õ◊cron¿ﬂƒÍ°¢false:•Í•¢•Î•ø•§•‡§«Ω∏∑◊§π§Î)
+define ("MAX_LOG_QUANTITY", 5);							// •Ì•∞•’•°•§•Î∫«¬ÁøÙ(•Ì•∞•∆°º•∑•Á•Û)
+define ("MAX_LOG_SIZE", "10000");						// 1§ƒ§Œ•Ì•∞•’•°•§•Î§À ›¬∏§π§Î∫«¬ÁÕ∆ŒÃ(byte)
 
 define ("FORGOT_MAIL", 0);								// •—•π•Ô°º•…À∫§Ï§Œ≥Œ«ß•·°º•Î§Ú¡˜…’§π§Î§´»›§´°£(0:¡˜øÆ§∑§ §§°¢1:¡˜øÆ§π§Î)
 define ("HTML_TEMPLATE_SUB_MAX", 12);					// ≈–œø§«§≠§Î•µ•÷æ¶… §ŒøÙ
 define ("LINE_LIMIT_SIZE", 60);							//  ∏ª˙øÙ§¨¬ø§π§Æ§Î§»§≠§À∂Ø¿©≤˛π‘§π§Î•µ•§•∫(»æ≥—)
 define ("BIRTH_MONTH_POINT", 0);						// √¬¿∏∆¸∑Ó•›•§•Û•»
-define ("INPUT_DELIV_FEE", true);						// «€¡˜Œ¡§Œ¿ﬂƒÍ≤ËÃÃ(true:§¢§Í°¢false:§ §∑)
 
 /* •Ø•Ï•∏•√•»•Ì°º•Û(•ª•Û•»•È•Î•’•°•§• •Û•π) */
 define ("CF_HOMEADDR", "https://cf.ufit.ne.jp/dotcredit");					// •€°º•‡•¢•…•Ï•π
@@ -250,6 +254,9 @@ define ("DISABLED_RGB", "#C9C9C9");						// ∆˛Œœπ‡Ã‹Ãµ∏˙ª˛§Œ…Ωº®øß
 define ("ERR_COLOR", "#ffe8e8");						// •®•È°ºª˛…Ωº®øß
 define ("CATEGORY_HEAD", ">");							// ø∆•´•∆•¥•Í…Ωº® ∏ª˙
 define ("START_BIRTH_YEAR", 1901);						// ¿∏«Ø∑Ó∆¸¡™¬Ú≥´ªœ«Ø
+// ≤¡≥ ÃææŒ
+define("NORMAL_PRICE_TITLE","ƒÃæÔ≤¡≥ ");
+define("SALE_PRICE_TITLE","»Œ«‰≤¡≥ ");
 
 /* •∑•π•∆•‡•—•π */
 define ("LOG_PATH", DATA_PATH . "logs/site.log");							// •Ì•∞•’•°•§•Î
@@ -286,7 +293,6 @@ define ("URL_SEARCH_ORDER", URL_DIR . "admin/order/index.php");			// √Ì ∏ ‘Ω∏•⁄°
 define ("URL_ORDER_MAIL", URL_DIR . "admin/order/mail.php");			// √Ì ∏ ‘Ω∏•⁄°º•∏
 define ("URL_LOGOUT", URL_DIR . "admin/logout.php");					// •Ì•∞•¢•¶•»•⁄°º•∏
 define ("URL_SYSTEM_CSV", URL_DIR . "admin/system/member_csv.php");		// •∑•π•∆•‡¥…Õ˝CSVΩ–Œœ•⁄°º•∏
-define ("URL_SYSTEM_TOP", URL_DIR . "admin/system/index.php");			// •∑•π•∆•‡¥…Õ˝TOP•⁄°º•∏
 define ("URL_ADMIN_CSS", URL_DIR . "admin/css/");						// ¥…Õ˝•⁄°º•∏Õ—CSS ›¥…•«•£•Ï•Ø•»•Í
 define ("URL_CAMPAIGN_TOP", URL_DIR . "admin/contents/campaign.php");	// •≠•„•Û•⁄°º•Û≈–œø•⁄°º•∏
 define ("URL_CAMPAIGN_DESIGN", URL_DIR . "admin/contents/campaign_design.php");		// •≠•„•Û•⁄°º•Û•«•∂•§•Û¿ﬂƒÍ•⁄°º•∏
@@ -554,9 +560,6 @@ $arrMAILTPLPATH = array(
 	3 => "mail_templates/order_mail.tpl",
 	4 => "mail_templates/contact_mail.tpl",
 );
-
-// ºı√Ì•π•∆°º•ø•π —ππ§Œ∫›§À•›•§•Û•»≈˘§Ú≤√ªª§π§Î•π•∆°º•ø•π»÷πÊ° »Ø¡˜∫—§ﬂ°À
-define("ODERSTATUS_COMMIT", 5);
 
 /* ≈‘∆ª…‹∏©«€ŒÛ */
 $arrPref = array(
