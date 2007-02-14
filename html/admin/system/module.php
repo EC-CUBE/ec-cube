@@ -266,7 +266,7 @@ function lfUninstallModule() {
 	$flg_ok = true;	// 処理の成功判定
 	
 	if(count($arrRet) > 0) {
-
+		
 		// モジュール側に削除情報を送信する
 		$req = new HTTP_Request(SITE_URL . "load_module.php");
 		$req->addCookie("PHPSESSID", $_COOKIE["PHPSESSID"]);
@@ -276,6 +276,8 @@ function lfUninstallModule() {
 		$req->sendRequest();
 		$req->clearPostData();
 		
+		gfprintlog("mode -------------------------------> ".SITE_URL . "load_module.php");
+
 		$arrFiles = array();
 		if($arrRet[0]['other_files'] != "") {
 			$arrFiles = split("\|", $arrRet[0]['other_files']);
