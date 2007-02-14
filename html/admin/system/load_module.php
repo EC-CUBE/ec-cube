@@ -17,7 +17,7 @@ if($_GET['module_id'] != ""){
 	$module_id = $_POST['module_id'];
 }
 
-gfprintlog($_POST["mode"]);
+gfprintlog("mode -------------------------------> ".$_POST["mode"]);
 
 if(is_numeric($module_id)) {
 	$objQuery = new SC_Query();
