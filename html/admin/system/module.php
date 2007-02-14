@@ -276,6 +276,8 @@ function lfUninstallModule() {
 		$req->sendRequest();
 		$req->clearPostData();
 		
+		sfprintr($req);
+		
 		gfprintlog("mode -------------------------------> ".SITE_URL . "load_module.php");
 
 		$arrFiles = array();
