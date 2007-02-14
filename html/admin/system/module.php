@@ -268,7 +268,8 @@ function lfUninstallModule() {
 	if(count($arrRet) > 0) {
 		
 		// モジュール側に削除情報を送信する
-		$req = new HTTP_Request(SITE_URL . "load_module.php");
+		//$req = new HTTP_Request(SITE_URL . "load_module.php");
+		$req = new HTTP_Request("http://yahoo.co.jp");
 		$req->addCookie("PHPSESSID", $_COOKIE["PHPSESSID"]);
 		$req->setMethod(HTTP_REQUEST_METHOD_POST);
 		$req->addPostData("module_id", $arrRet[0]['module_id']);
