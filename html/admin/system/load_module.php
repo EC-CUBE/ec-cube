@@ -7,6 +7,8 @@
 require_once("../require.php");
 require_once(DATA_PATH . "module/Request.php");
 
+gfprintlog("mode -------------------------------> ".$_POST["mode"]);
+
 // Ç§¾Ú³ÎÇ§
 $objSess = new SC_Session();
 sfIsSuccess($objSess);
