@@ -267,6 +267,10 @@ function lfUninstallModule() {
 	
 	if(count($arrRet) > 0) {
 		
+//		gfprintlog("mode -------------------------------> ".$_POST["mode"]);
+		gfprintlog("mode ------------------------------->test ");
+
+		
 		// モジュール側に削除情報を送信する
 		$req = new HTTP_Request(SITE_URL . "load_module.php");
 		$req->addCookie("PHPSESSID", $_COOKIE["PHPSESSID"]);
