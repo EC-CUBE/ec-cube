@@ -95,6 +95,9 @@ function gfDebugLog($obj){
 		fwrite( $fp, $buffer."\n" );
 		fclose( $fp );
 		gfPrintLog("*** end Debug ***");
+
+		// ログテーション
+		gfLogRotation(MAX_LOG_QUANTITY, MAX_LOG_SIZE, LOG_PATH);
 }
 
 /*----------------------------------------------------------------------
@@ -122,6 +125,63 @@ function gfPrintLog($mess, $path = '') {
 	if($fp) {
 		fwrite( $fp, $today." [".$_SERVER['PHP_SELF']."] ".$mess." from ". $_SERVER['REMOTE_ADDR']. "\n" );
 		fclose( $fp );
+	}
+	
+	// ログテーション
+	gfLogRotation(MAX_LOG_QUANTITY, MAX_LOG_SIZE, $path);
+}
+
+/**			
+ * ログローテーション機能			
+ *			
+ * @param integer $max_log 最大ファイル数
+ * @param integer $max_size 最大サイズ
+ * @param string  $path ファイルパス
+ * @return void なし
+ */			
+function gfLogRotation($max_log, $max_size, $path) {
+	
+	// ディレクトリ名を取得
+	$dirname = dirname($path);
+	// ファイル名を取得
+	$basename = basename($path);
+	
+	// ファイルが最大サイズを超えていないかチェック
+	if(filesize($path) > $max_size) {
+		if ($dh = opendir($dirname)) {
+			while (($file = readdir($dh)) !== false) {
+				// ログローテーションにて作成されたファイルを取得
+				if(ereg("^". $basename . "\." , $file)) {
+					$arrLog[] = $file;
+				}
+			}
+			
+			// ファイルログが最大個数なら以上なら古いファイルから削除する
+			$count = count($arrLog);
+			if($count >= $max_log) {
+				$diff = $count - $max_log;
+				for($i = 0; $diff >= $i ; $i++) {
+					unlink($dirname. "/" .array_pop($arrLog));
+				}	
+			}
+			
+			// ログファイルの添え字をずらす
+			$count = count($arrLog);
+			for($i = $count; 1 <= $i; $i--) {
+				$move_number = $i + 1;
+				
+				if(file_exists("$path.$move_number")) unlink("$path.$move_number");
+				copy("$dirname/" . $arrLog[$i - 1], "$path.$move_number");		
+				
+			}
+			$ret = copy($path, "$path.1");
+			
+			// 新規ログファイルを作成
+			if($ret) {
+				unlink($path);			
+				touch($path);
+			}
+		}
 	}
 }
 
