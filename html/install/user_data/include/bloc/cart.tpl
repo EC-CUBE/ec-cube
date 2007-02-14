@@ -20,7 +20,7 @@
 			<tr>
 				<td class="fs12"><span class="redst">合計：<!--{$arrCartList.0.ProductsTotal|number_format|default:0}-->円</span></td>
 			</tr>
-			<tr><td height="5"></td></tr>
+			<tr><td height="5"><!--{$arrCartList.0.free_rule}--></td></tr>
 			
 			<!-- カゴの中に商品がある場合にのみ表示 -->
 			<!--{if $arrCartList.0.TotalQuantity > 0 and $arrCartList.0.free_rule > 0}-->
