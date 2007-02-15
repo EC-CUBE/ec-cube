@@ -204,6 +204,9 @@ function lfMobileInitOutput() {
 	// 絵文字タグを絵文字コードに変換する。
 	ob_start(array('GC_MobileEmoji', 'handler'));
 
+    // 端末に合わせて画像サイズを変換する。
+	ob_start(array('GC_MobileImage', 'handler'));
+
 	// 全角カタカナを半角カタカナに変換する。
 	ob_start(create_function('$buffer', 'return mb_convert_kana($buffer, "k", "SJIS-win");'));
 

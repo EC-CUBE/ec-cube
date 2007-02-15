@@ -1,11 +1,10 @@
-<div align="center">会員登録・退会</div>
+<div align="center">登録完了</div>
 <hr>
-<a href="entry/new.php" accesskey="1"><!--{1|numeric_emoji}-->新規登録</a><br>
-初めてご登録される方<br>
-<a href="#" accesskey="2"><!--{2|numeric_emoji}-->登録内容変更</a><br>
-<a href="#" accesskey="3"><!--{3|numeric_emoji}-->退会</a><br>
 
+メールマガジンの登録が完了致しました。<br>
+今後ともご愛顧賜りますようよろしくお願い申し上げます。<br>
 <br>
+
 <hr>
 
 <a href="<!--{$smarty.const.URL_CART_TOP}-->" accesskey="9"><!--{9|numeric_emoji}-->かごを見る</a><br>

@@ -2,7 +2,7 @@
 <!--▼MAIN CONTENTS-->
 <!--ﾀｲﾄﾙここから-->
 <!--★商品名★-->
-<div align="center"><font color="#FF8C00"><!--{$arrProduct.name|escape}--></font></div>
+<div align="center"><!--{$arrProduct.name|escape}--></div>
 <hr>
 <!--ﾀｲﾄﾙここまで-->
 <!--詳細ここから-->

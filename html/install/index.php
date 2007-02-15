@@ -330,7 +330,8 @@ function lfDispStep0($objPage) {
 		"../../data/install_mobile.inc",
 		"../user_data",
 		"../upload",
-		"../../data/Smarty/templates_c",		
+        "../mobile/converted_images",
+		"../../data/Smarty/templates_c",
 		"../../data/downloads",
 		"../../data/logs"
 	);

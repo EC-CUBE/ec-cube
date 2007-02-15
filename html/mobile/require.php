@@ -26,6 +26,7 @@ require_once($include_dir . "/../../data/class/SC_Page.php");
 require_once($include_dir . "/../../data/class/SC_Pdf.php");
 require_once($include_dir . "/../../data/class/GC_MobileUserAgent.php");
 require_once($include_dir . "/../../data/class/GC_MobileEmoji.php");
+require_once($include_dir . "/../../data/class/GC_MobileImage.php");
 require_once($include_dir . "/../../data/include/page_layout.inc");
 
 // アップデートで取得したPHPを読み出す

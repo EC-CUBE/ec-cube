@@ -370,6 +370,7 @@ INSERT INTO dtb_table_comment(table_name,column_name,description) values ('dtb_c
 INSERT INTO dtb_table_comment(table_name,column_name,description) values ('dtb_customer','mobile_phone_id','·ÈÂÓÃ¼ËöID');
 INSERT INTO dtb_table_comment(table_name,column_name,description) values ('dtb_customer_mail','email','¥á¡¼¥ë¥¢¥É¥ì¥¹');
 INSERT INTO dtb_table_comment(table_name,column_name,description) values ('dtb_customer_mail','mail_flag','1:HTML 2:TEXT 3:´õË¾¤·¤Ê¤¤ 4:²¾ÅÐÏ¿¡ÊHTML¡Ë 5:²¾ÅÐÏ¿(TEXT) 6:²¾ÅÐÏ¿(´õË¾¤·¤Ê¤¤)');
+INSERT INTO dtb_table_comment(table_name,column_name,description) values ('dtb_customer_mail','secret_key','°Å¹æ²½¸ÜµÒID');
 INSERT INTO dtb_table_comment(table_name,column_name,description) values ('dtb_customer_mail_temp','email','¥á¡¼¥ë¥¢¥É¥ì¥¹');
 INSERT INTO dtb_table_comment(table_name,column_name,description) values ('dtb_customer_mail_temp','mail_flag','1:HTML 2:TEXT 3:´õË¾¤·¤Ê¤¤(Ää»ß)');
 INSERT INTO dtb_table_comment(table_name,column_name,description) values ('dtb_customer_mail_temp','temp_id','°ì»þ£É£Ä');
