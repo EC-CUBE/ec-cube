@@ -24,6 +24,7 @@ class GC_MobileImage {
 		$carrier = GC_MobileUserAgent::getCarrier();
 		$model   = GC_MobileUserAgent::getModel();
 error_reporting(E_ALL);
+ini_set('display_errors', 1);
 trigger_error('ok', E_USER_WARNING);
         // 携帯電話の場合のみ処理を行う
 		if ($carrier !== FALSE) {
