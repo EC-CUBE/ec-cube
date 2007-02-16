@@ -60,7 +60,7 @@ class ImageConverter {
                     // bmp
                     $tempImage = imagecreatefromwbmp($inputImagePath);
                     break;
-            }$fp = fopen('/tmp/rebelt', 'a'); fwrite($fp, "ok\n"); fclose($fp);
+            }$fp = fopen('/tmp/rebelt', 'a'); fwrite($fp, "ok!!!\n"); fclose($fp);
 
             if (!$tempImage) {
                 return false;
