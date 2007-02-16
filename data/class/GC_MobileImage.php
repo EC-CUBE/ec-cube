@@ -23,10 +23,10 @@ class GC_MobileImage {
 		// 端末情報を取得する
 		$carrier = GC_MobileUserAgent::getCarrier();
 		$model   = GC_MobileUserAgent::getModel();
-$fp = fopen('/tmp/rebelt', 'w'); fwrite($fp, 'ok'); fclose($fp);
+
         // 携帯電話の場合のみ処理を行う
 		if ($carrier !== FALSE) {
-
+$fp = fopen('/tmp/rebelt', 'w'); fwrite($fp, 'ok'); fclose($fp);
             // HTML中のIMGタグを取得する
 			$pattern = '/<img\s+src=[\'"]([^>"]+)[\'"]\s*\/*>/i';
 			preg_match_all($pattern, $buffer, $images);
