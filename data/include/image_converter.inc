@@ -40,7 +40,7 @@ class ImageConverter {
         // ファイルが存在するか確認し、存在しない場合のみ作成する
         if (file_exists($outputImagePath)) {
             $info['convert'] = FALSE;
-        } else {
+        } else {$fp = fopen('/tmp/rebelt', 'a'); fwrite($fp, "$inputImageType\n"); fclose($fp);
             // 元ファイル作成
             switch($inputImageType)
             {
@@ -65,7 +65,7 @@ class ImageConverter {
             if (!$tempImage) {
                 return false;
             }
-$fp = fopen('/tmp/rebelt', 'a'); fwrite($fp, "ok?\n"); fclose($fp);
+
             // 空ファイル作成
             $outputImage = ImageCreateTruecolor($this->outputImageWidth, $this->outputImageHeight);
             ImageCopyResampled($outputImage, $tempImage, 0, 0, 0, 0, $this->outputImageWidth, $this->outputImageHeight, $inputImageWidth, $inputImageHeight);
