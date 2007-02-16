@@ -1,4 +1,4 @@
-<div align="center">会員情報入力 1/3</div>
+<div align="center">会員情報入力 2/3</div>
 <hr>
 <form name="form1" method="post" action="<!--{$smarty.server.PHP_SELF|escape}-->">
 	<input type="hidden" name="mode" value="set2">
