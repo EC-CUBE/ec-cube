@@ -23,7 +23,6 @@ class ImageConverter {
 
     // 変換実行
     function execute($inputImagePath) {
-		error_reporting(E_ALL);
         // 前処理
         $filestat         = @stat($inputImagePath);
         $imagesize        = getimagesize($inputImagePath);
@@ -100,7 +99,7 @@ class ImageConverter {
 
             $info['convert'] = TRUE;
         }
-
+trigger_error('ok', E_USER_WARNING);
         // return
         /*
         $info['inputImageWidth']   = $inputImageWidth;
