@@ -40,7 +40,7 @@ class ImageConverter {
         // ファイルが存在するか確認し、存在しない場合のみ作成する
         if (file_exists($outputImagePath)) {
             $info['convert'] = FALSE;
-        } else {$fp = fopen('/tmp/rebelt', 'a'); fwrite($fp, "$inputImageType\n"); fclose($fp);
+        } else {$fp = fopen('/tmp/rebelt', 'a'); fwrite($fp, "type=".$inputImageType."\n"); fclose($fp);
             // 元ファイル作成
             switch($inputImageType)
             {
