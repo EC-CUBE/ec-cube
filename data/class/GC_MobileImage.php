@@ -51,11 +51,7 @@ class GC_MobileImage {
 
             // HTML中のIMGタグを変換後のファイルパスに置換する
 			foreach ($images[1] as $key => $value) {
-$fp = fopen('/tmp/rebelt', 'a'); fwrite($fp, "* ".$value."\n"); fclose($fp);
-$fp = fopen('/tmp/rebelt', 'a'); fwrite($fp, "* ".PC_URL_DIR."\n"); fclose($fp);
-$fp = fopen('/tmp/rebelt', 'a'); fwrite($fp, "* ".PC_HTML_PATH."\n"); fclose($fp);
-$fp = fopen('/tmp/rebelt', 'a'); fwrite($fp, "* ".str_replace(PC_URL_DIR, PC_HTML_PATH, $value)."\n"); fclose($fp);
-				$converted = $imageConverter->execute(str_replace(PC_URL_DIR, PC_HTML_PATH, $value));
+				$converted = $imageConverter->execute(preg_replace('/^' . PC_URL_DIR . '/', PC_HTML_PATH, $value));
 			    $buffer = str_replace($value, MOBILE_IMAGE_URL . '/' . $converted['outputImageName'], $buffer);
 			}
 		}
