@@ -40,7 +40,7 @@ class ImageConverter {
         // ファイルが存在するか確認し、存在しない場合のみ作成する
         if (file_exists($outputImagePath)) {
             $info['convert'] = FALSE;
-        } else {$fp = fopen('/tmp/rebelt', 'a'); fwrite($fp, "ok\n"); fclose($fp);
+        } else {
             // 元ファイル作成
             switch($inputImageType)
             {
@@ -60,7 +60,7 @@ class ImageConverter {
                     // bmp
                     $tempImage = imagecreatefromwbmp($inputImagePath);
                     break;
-            }
+            }$fp = fopen('/tmp/rebelt', 'a'); fwrite($fp, "ok\n"); fclose($fp);
 
             if (!$tempImage) {
                 return false;
