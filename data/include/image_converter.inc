@@ -60,12 +60,12 @@ class ImageConverter {
                     // bmp
                     $tempImage = imagecreatefromwbmp($inputImagePath);
                     break;
-            }$fp = fopen('/tmp/rebelt', 'a'); fwrite($fp, "ok!!!\n"); fclose($fp);
+            }
 
             if (!$tempImage) {
                 return false;
             }
-
+$fp = fopen('/tmp/rebelt', 'a'); fwrite($fp, "ok?\n"); fclose($fp);
             // 空ファイル作成
             $outputImage = ImageCreateTruecolor($this->outputImageWidth, $this->outputImageHeight);
             ImageCopyResampled($outputImage, $tempImage, 0, 0, 0, 0, $this->outputImageWidth, $this->outputImageHeight, $inputImageWidth, $inputImageHeight);
