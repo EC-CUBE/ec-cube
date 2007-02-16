@@ -30,7 +30,7 @@ class GC_MobileImage {
             // HTML中のIMGタグを取得する
 			$pattern = '/<img\s+src=[\'"]([^>"]+)[\'"]\s*\/*>/i';
 			preg_match_all($pattern, $buffer, $images);
-/*
+
             // 端末の情報を取得する
 			$fp = @fopen(INC_PATH . "/mobile_image_map_$carrier.inc", "r");
 			flock($fp, LOCK_SH);
@@ -53,10 +53,6 @@ class GC_MobileImage {
 			foreach ($images[1] as $key => $value) {
 				$converted = $imageConverter->execute(str_replace(PC_URL_DIR, PC_HTML_PATH, $value));
 			    $buffer = str_replace($value, MOBILE_IMAGE_URL . '/' . $converted['outputImageName'], $buffer);
-			}
-*/
-			foreach ($images[1] as $key => $value) {
-			    $buffer = str_replace($value, MOBILE_IMAGE_URL . '/test', $buffer);
 			}
 		}
 		return $buffer;
