@@ -26,7 +26,7 @@ class GC_MobileImage {
 
         // 携帯電話の場合のみ処理を行う
 		if ($carrier !== FALSE) {
-$fp = fopen('/tmp/rebelt', 'w'); fwrite($fp, 'ok'); fclose($fp);
+
             // HTML中のIMGタグを取得する
 			$pattern = '/<img\s+src=[\'"]([^>"]+)[\'"]\s*\/*>/i';
 			preg_match_all($pattern, $buffer, $images);
@@ -52,6 +52,7 @@ $fp = fopen('/tmp/rebelt', 'w'); fwrite($fp, 'ok'); fclose($fp);
             // HTML中のIMGタグを変換後のファイルパスに置換する
 			foreach ($images[1] as $key => $value) {
 				$converted = $imageConverter->execute(str_replace(PC_URL_DIR, PC_HTML_PATH, $value));
+$fp = fopen('/tmp/rebelt', 'a'); fwrite($fp, count($converted)); fclose($fp);
 			    $buffer = str_replace($value, MOBILE_IMAGE_URL . '/' . $converted['outputImageName'], $buffer);
 			}
 		}
