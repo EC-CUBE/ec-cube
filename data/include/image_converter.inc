@@ -23,7 +23,6 @@ class ImageConverter {
 
     // 変換実行
     function execute($inputImagePath) {
-trigger_error('[2]', E_USER_WARNING);
         // 前処理
         $filestat         = @stat($inputImagePath);
         $imagesize        = getimagesize($inputImagePath);
@@ -32,7 +31,6 @@ trigger_error('[2]', E_USER_WARNING);
         $inputImageType   = $imagesize[2];
         $outputImageName  = base64_encode($inputImagePath . '_' . $this->outputImageWidth . '_' . $filestat['mtime']) . '.' . $this->outputImageType;
         $outputImagePath  = $this->outputImageDir . '/' . $outputImageName;
-trigger_error('[3]', E_USER_WARNING);
 
         // 変換後の画像の高さが指定されていない場合、変換後の画像の横幅から求める
         if (is_null($this->outputImageHeight)) {
@@ -101,7 +99,7 @@ trigger_error('[3]', E_USER_WARNING);
 
             $info['convert'] = TRUE;
         }
-trigger_error('[1]', E_USER_WARNING);
+
         // return
         /*
         $info['inputImageWidth']   = $inputImageWidth;
