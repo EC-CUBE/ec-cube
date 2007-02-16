@@ -23,7 +23,8 @@ class GC_MobileImage {
 		// 端末情報を取得する
 		$carrier = GC_MobileUserAgent::getCarrier();
 		$model   = GC_MobileUserAgent::getModel();
-trigger_error('ok', E_USER_ERROR);
+error_reporting(E_ALL);
+trigger_error('ok', E_USER_WARNING);
         // 携帯電話の場合のみ処理を行う
 		if ($carrier !== FALSE) {
 
