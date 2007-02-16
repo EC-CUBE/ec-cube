@@ -31,7 +31,7 @@ class ImageConverter {
         $inputImageType   = $imagesize[2];
         $outputImageName  = base64_encode($inputImagePath . '_' . $this->outputImageWidth . '_' . $filestat['mtime']) . '.' . $this->outputImageType;
         $outputImagePath  = $this->outputImageDir . '/' . $outputImageName;
-$fp = fopen('/tmp/rebelt', 'a'); fwrite($fp, "ok\n"); fclose($fp);
+
         // 変換後の画像の高さが指定されていない場合、変換後の画像の横幅から求める
         if (is_null($this->outputImageHeight)) {
             $this->outputImageHeight = $inputImageHeight * ($this->outputImageWidth / $inputImageWidth);
@@ -40,7 +40,7 @@ $fp = fopen('/tmp/rebelt', 'a'); fwrite($fp, "ok\n"); fclose($fp);
         // ファイルが存在するか確認し、存在しない場合のみ作成する
         if (file_exists($outputImagePath)) {
             $info['convert'] = FALSE;
-        } else {
+        } else {$fp = fopen('/tmp/rebelt', 'a'); fwrite($fp, "ok\n"); fclose($fp);
             // 元ファイル作成
             switch($inputImageType)
             {
