@@ -128,8 +128,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
 			//　完了メール送信
 			$objPage->CONF = $CONF;
-			$objPage->to_name01 = $_POST['name01'];
-			$objPage->to_name02 = $_POST['name02'];
+			$objPage->name01 = $_POST['name01'];
+			$objPage->name02 = $_POST['name02'];
 			$objMailText = new SC_SiteView();
 			$objMailText->assignobj($objPage);
 			
