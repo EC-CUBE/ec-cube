@@ -203,11 +203,21 @@ function lfRegistData ($array, $arrRegistColumn, $arrRejectRegistColumn, $confir
 			$count = $objConn->getOne("SELECT COUNT(*) FROM dtb_customer WHERE secret_key = ?", array($uniqid));
 		}
 		$arrRegist["status"] = "1";				// 仮会員
-		$arrRegist["secret_key"] = $uniqid;		// 会員登録キー
 	} else {
+		// 重複しない会員登録キーを発行する。
+		$count = 1;
+		while ($count != 0) {
+			$uniqid = sfGetUniqRandomId("r");
+			$count = $objConn->getOne("SELECT COUNT(*) FROM dtb_customer WHERE secret_key = ?", array($uniqid));
+		}
 		$arrRegist["status"] = "2";				// 本会員
 	}
 	
+	/*
+	 secret_keyは、テーブルで重複許可されていない場合があるので、
+     本会員登録では利用されないがセットしておく。
+    */
+	$arrRegist["secret_key"] = $uniqid;		// 会員登録キー
 	$arrRegist["create_date"] = "now()"; 	// 作成日
 	$arrRegist["update_date"] = "now()"; 	// 更新日
 	$arrRegist["first_buy_date"] = "";	 	// 最初の購入日
