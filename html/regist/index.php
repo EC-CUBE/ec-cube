@@ -179,7 +179,7 @@ function lfSendRegistMail($registSecretKey) {
 	$objMailText->assign("name01", $data["name01"]);
 	$objMailText->assign("name02", $data["name02"]);
 	$toCustomerMail = $objMailText->fetch("mail_templates/customer_regist_mail.tpl");
-	$subject = sfMakeSubject('ËÜ²ñ°÷ÅÐÏ¿¤¬´°Î»¤·¤Þ¤·¤¿¡£');
+	$subject = sfMakeSubject('²ñ°÷ÅÐÏ¿¤¬´°Î»¤·¤Þ¤·¤¿¡£');
 	$objMail = new GC_SendMail();
 
 	$objMail->setItem(
