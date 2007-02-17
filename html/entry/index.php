@@ -214,8 +214,8 @@ function lfRegistData ($array, $arrRegistColumn, $arrRejectRegistColumn, $confir
 	}
 	
 	/*
-	 secret_keyは、テーブルで重複許可されていない場合があるので、
-     本会員登録では利用されないがセットしておく。
+	  secret_keyは、テーブルで重複許可されていない場合があるので、
+      本会員登録では利用されないがセットしておく。
     */
 	$arrRegist["secret_key"] = $uniqid;		// 会員登録キー
 	$arrRegist["create_date"] = "now()"; 	// 作成日
