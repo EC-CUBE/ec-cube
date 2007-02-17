@@ -202,6 +202,7 @@ function lfRegistData ($array, $arrRegistColumn, $arrRejectRegistColumn, $confir
 			$uniqid = sfGetUniqRandomId("t");
 			$count = $objConn->getOne("SELECT COUNT(*) FROM dtb_customer WHERE secret_key = ?", array($uniqid));
 		}
+		$arrRegist["status"] = "1";				// ²¾²ñ°÷
 		$arrRegist["secret_key"] = $uniqid;		// ²ñ°÷ÅÐÏ¿¥­¡¼
 	} else {
 		$arrRegist["status"] = "2";				// ËÜ²ñ°÷
