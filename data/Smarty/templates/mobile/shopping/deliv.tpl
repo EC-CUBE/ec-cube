@@ -31,8 +31,7 @@
 <br>
 
 ■その他のお届け先を指定<br>
-<!--XXX--><form method="get" action="#../mypage/delivery_addr.php">
-<input type="hidden" name="page" value="<!--{$smarty.server.PHP_SELF|escape}-->">
+<form method="get" action="deliv_addr.php">
 <center><input type="submit" value="新規登録"></center>
 </form>
 <!--▲CONTENTS-->
