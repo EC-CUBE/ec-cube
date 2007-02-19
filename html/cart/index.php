@@ -37,6 +37,9 @@ if($objCartSess->getCancelPurchase()) {
 	$objPage->tpl_message = "商品購入中にカート内容が変更されましたので、お手数ですが購入手続きをやり直して下さい。";
 }
 
+// レイアウトデザインを取得
+$objPage = sfGetPageLayout($objPage, false, DEF_LAYOUT);
+
 switch($_POST['mode']) {
 case 'up':
 	$objCartSess->upQuantity($_POST['cart_no']);
