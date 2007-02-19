@@ -267,9 +267,12 @@ function lfUninstallModule() {
 	
 	if(count($arrRet) > 0) {
 		
+		// モジュールを削除する
+		$objQuery->query("UPDATE dtb_payment SET del_flg = 1 WHERE module_id = ?", array($arrRet[0]['module_id']));
+
 		// モジュール側に削除情報を送信する
-		//$req = new HTTP_Request(SITE_URL . "load_module.php");
-		$req = new HTTP_Request("http://yahoo.co.jp");
+		/*
+		$req = new HTTP_Request(SITE_URL . "load_module.php");
 		$req->addCookie("PHPSESSID", $_COOKIE["PHPSESSID"]);
 		$req->setMethod(HTTP_REQUEST_METHOD_POST);
 		$req->addPostData("module_id", $arrRet[0]['module_id']);
@@ -278,6 +281,7 @@ function lfUninstallModule() {
 		$req->clearPostData();
 		
 		gfprintlog("mode -------------------------------> ".SITE_URL . "load_module.php");
+		*/
 
 		$arrFiles = array();
 		if($arrRet[0]['other_files'] != "") {
