@@ -41,7 +41,7 @@
 										<tr>
 											<td class="fs12">¢£<!--{$arrOther.title.name}-->¾ðÊó<br />
 											<!--{foreach key=key item=item from=$arrOther}-->
-											<!--{if $key != "title"}--><!--{if $item.name != ""}--><!--{$item.name}-->Ž¡Ž§<!--{/if}--><!--{$item.value|nl2br}--><br/><!--{/if}-->
+											<!--{if $key != "title"}--><!--{if $item.name != ""}--><!--{$item.name}-->¡§<!--{/if}--><!--{$item.value|nl2br}--><br/><!--{/if}-->
 											<!--{/foreach}-->
 										</tr>
 									</table>
