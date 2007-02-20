@@ -3,19 +3,19 @@
  *
  * http://www.lockon.co.jp/
  *}-->
-<!--Ž¢Ž§CONTENTS-->
+<!--¢§CONTENTS-->
 <table width="760" border="0" cellspacing="0" cellpadding="0" summary=" ">
 	<tr>
 		<td align="center" bgcolor="#ffffff">
-		<!--Ž¢Ž§MAIN ONTENTS-->
-		<!--Ž¹ŽØŽÆ?Ž¼?Ž³Ž¤Ž­Ž¤ŽÎŽÎŽ®Ž¤?->
+		<!--¢§MAIN ONTENTS-->
+		<!--¹ØÆþ¼êÂ³¤­¤ÎÎ®¤ì-->
 		<table width="700" border="0" cellspacing="0" cellpadding="0" summary=" ">
 			<tr>
 				<td><img src="<!--{$smarty.const.URL_DIR}-->img/shopping/flow04.gif" width="700" height="36" alt="Ž¹ŽØŽÆ?Ž¼?Ž³Ž¤Ž­Ž¤ŽÎŽÎŽ®Ž¤?></td>
 			</tr>
 			<tr><td height="15"></td></tr>
 		</table>
-		<!--Ž¹ŽØŽÆ?Ž¼?Ž³Ž¤Ž­Ž¤ŽÎŽÎŽ®Ž¤?->
+		<!--¹ØÆþ¼êÂ³¤­¤ÎÎ®¤ì-->
 			
 		<table width="700" border="0" cellspacing="0" cellpadding="0" summary=" ">
 			<tr>
@@ -31,7 +31,7 @@
 					<tr><td height="5"></td></tr>
 					<tr>
 						<td align="center" bgcolor="#ffffff">
-							<!-- Ž¢Ž§Ž¤Ž½Ž¤ŽÎŽÂŽ¾Ž·ð¼ŽÑŽ¾öÌü¦úËŽ½Ž¼Ž¨Ž¤Ž¹Ž¤??î¦ŽÏŽÉŽ½Ž¼Ž¨ -->
+							<!-- ¢§¤½¤ÎÂ¾·èºÑ¾ðÊó¤òÉ½¼¨¤¹¤ë¾ì¹ç¤ÏÉ½¼¨ -->
 							<!--{if $arrOther.title.value }-->
 							<table  width="590" cellspacing="0" cellpadding="0" summary=" ">
 								<tr>
@@ -39,7 +39,7 @@
 									<table cellspacing="0" cellpadding="0" summary=" " id="comp">
 										<tr><td height="20"></td></tr>
 										<tr>
-											<td class="fs12">Ž¢Ž£<!--{$arrOther.title.name}-->Ž¾öÌ?br />
+											<td class="fs12">¢£<!--{$arrOther.title.name}-->¾ðÊó<br />
 											<!--{foreach key=key item=item from=$arrOther}-->
 											<!--{if $key != "title"}--><!--{if $item.name != ""}--><!--{$item.name}-->Ž¡Ž§<!--{/if}--><!--{$item.value|nl2br}--><br/><!--{/if}-->
 											<!--{/foreach}-->
@@ -54,32 +54,32 @@
 					<tr>
 						<td align="center" bgcolor="#ffffff">
 							<!--{/if}-->						
-							<!-- Ž¢Ž¥Ž¥Ž³Ž¥ü§ŽÓŽ¤ŽËŽ·ð¼ŽÑŽ¤ŽÎŽ¾?î¦ŽËŽ¤ŽÏŽÉŽ½Ž¼Ž¨ -->
+							<!-- ¢¥¥³¥ó¥Ó¤Ë·èºÑ¤Î¾ì¹ç¤Ë¤ÏÉ½¼¨ -->
 						
-							<!--Ž¤Ž´ŽÃÃØŽ¸Ž´Ž°ŽÎŽ»Ž¤ŽÎŽÊŽ¸Ž¾ŽÏŽ¤Ž³Ž¤Ž³Ž¤Ž«Ž¤?->
+							<!--¤´ÃíÊ¸´°Î»¤ÎÊ¸¾Ï¤³¤³¤«¤é-->
 							<table width="590" border="0" cellspacing="0" cellpadding="0" summary=" ">
 								<tr><td height="25"></td></tr>
 								<tr>
-									<td class="fs12"><span class="redst"><!--{$arrInfo.shop_name|escape}-->Ž¤ŽÎŽ¾Ž¦ŽÉŽÊŽ¤ú¦Ž´Ž¹ŽØŽÆ?Ž¤Ž¤Ž¤Ž¿Ž¤ŽÀŽ¤Ž­Ž¡Ž¢Ž¤Ž¢Ž¤ô¦Ž¬Ž¤ŽÈŽ¤Ž¦Ž¤Ž´Ž¤Ž¶Ž¤Ž¤Ž¤ŽÞŽ¤Ž·Ž¤Ž¿Ž¡Ž£</span></td>
+									<td class="fs12"><span class="redst"><!--{$arrInfo.shop_name|escape}-->¤Î¾¦ÉÊ¤ò¤´¹ØÆþ¤¤¤¿¤À¤­¡¢¤¢¤ê¤¬¤È¤¦¤´¤¶¤¤¤Þ¤·¤¿¡£</span></td>
 								</tr>
 								<tr><td height="20"></td></tr>
 								<tr>
-									<td class="fs12">Ž¤Ž¿Ž¤ŽÀŽ¤Ž¤Ž¤ŽÞŽ¡Ž¢Ž¤Ž´ŽÃÃØŽ¸Ž¤ŽÎŽ³ŽÎŽÇŽ§Ž¥â£Ž¼Ž¥?ú¦ŽªŽÁú¦ô¦ŽµŽ¤Ž»Ž¤ŽÆŽ¤Ž¤Ž¤Ž¿Ž¤ŽÀŽ¤Ž­Ž¤ŽÞŽ¤Ž·Ž¤Ž¿Ž¡Ž£ <br>
-									ŽË??Ž¢Ž¤Ž´Ž³ŽÎŽÇŽ§Ž¥â£Ž¼Ž¥?Ž¬ŽÆŽÏŽ¤Ž«Ž¤ŽÊŽ¤Ž¤Ž¾?î¦ŽÏŽ¡Ž¢Ž¥ŽÈŽ¥ò§ŽÖŽ¥?ŽÎŽ²ŽÄŽÇŽ½ŽÀŽ­Ž¤ä¦Ž¢Ž¤ô¦ŽÞŽ¤Ž¹Ž¤ŽÎŽ¤ŽÇŽÂîÌŽÑŽ¤ŽªŽ¼?þ¦ŽÇŽ¤ŽÏŽ¤Ž´Ž¤Ž¶Ž¤Ž¤Ž¤ŽÞŽ¤Ž¹Ž¤Ž¬Ž¤ä¦Ž¦Ž°?ŽÙŽ¤ŽªŽÌè¦Ž¤Ž¹î¦?Ž»Ž¤Ž¤Ž¤Ž¿Ž¤ŽÀŽ¤Ž¯Ž¤Ž«Ž¡Ž¢Ž¤ŽªŽÅŽÅŽÏŽÃŽ¤ŽËŽ¤ŽÆŽ¤ŽªŽÌè¦Ž¤Ž¹î¦?Ž»Ž¤Ž¯Ž¤ŽÀŽ¤ŽµŽ¤Ž¤Ž¤ŽÞŽ¤Ž»Ž¡Ž£ </td>
+									<td class="fs12">¤¿¤À¤¤¤Þ¡¢¤´ÃíÊ¸¤Î³ÎÇ§¥á¡¼¥ë¤ò¤ªÁ÷¤ê¤µ¤»¤Æ¤¤¤¿¤À¤­¤Þ¤·¤¿¡£ <br>
+									Ëü°ì¡¢¤´³ÎÇ§¥á¡¼¥ë¤¬ÆÏ¤«¤Ê¤¤¾ì¹ç¤Ï¡¢¥È¥é¥Ö¥ë¤Î²ÄÇ½À­¤â¤¢¤ê¤Þ¤¹¤Î¤ÇÂçÊÑ¤ª¼ê¿ô¤Ç¤Ï¤´¤¶¤¤¤Þ¤¹¤¬¤â¤¦°ìÅÙ¤ªÌä¤¤¹ç¤ï¤»¤¤¤¿¤À¤¯¤«¡¢¤ªÅÅÏÃ¤Ë¤Æ¤ªÌä¤¤¹ç¤ï¤»¤¯¤À¤µ¤¤¤Þ¤»¡£ </td>
 								</tr>
 								<tr><td height="15"></td></tr>
 								<tr>
-									<td class="fs12">ŽºŽ£Ž¸ê¦ŽÈŽ¤ä¦Ž´Ž°Ž¦Ž¸ŽÜŽ»ú¦ô¦ŽÞŽ¤Ž¹Ž¤ð¦Ž¦Ž¤ð¦¾¬Ž·Ž¤Ž¯Ž¤ŽªŽ´ô¦Ž¤Ž¿Ž½Ž¤Ž·Ž¾ê¦Ž²Ž¤ŽÞŽ¤Ž¹Ž¡Ž£</td>
+									<td class="fs12">º£¸å¤È¤â¤´°¦¸Ü»ò¤ê¤Þ¤¹¤è¤¦¤è¤í¤·¤¯¤ª´ê¤¤¿½¤·¾å¤²¤Þ¤¹¡£</td>
 								</tr>
 								<tr><td height="20"></td></tr>
 								<tr>
 									<td class="fs12"><!--{$arrInfo.shop_name|escape}--><br>
-									TELŽ¡Ž§<!--{$arrInfo.tel01}-->-<!--{$arrInfo.tel02}-->-<!--{$arrInfo.tel03}--> <!--{if $arrInfo.business_hour != ""}-->Ž¡ŽÊŽ¼öËŽÕŽ»?Ž´ŽÖ/<!--{$arrInfo.business_hour}-->Ž¡ŽË<!--{/if}--><br>
+									TELŽ¡Ž§<!--{$arrInfo.tel01}-->-<!--{$arrInfo.tel02}-->-<!--{$arrInfo.tel03}--> <!--{if $arrInfo.business_hour != ""}-->¼õÉÕ»þ´Ö/<!--{$arrInfo.business_hour}-->¡Ë<!--{/if}--><br>
 									E-mailŽ¡Ž§<a href="mailto:<!--{$arrInfo.email02|escape}-->"><!--{$arrInfo.email02|escape}--></a></td>
 								</tr>
 								<tr><td height="25"></td></tr>
 							</table>
-							<!--Ž¤Ž´ŽÃÃØŽ¸Ž´Ž°ŽÎŽ»Ž¤ŽÎŽÊŽ¸Ž¾ŽÏŽ¤Ž³Ž¤Ž³Ž¤ŽÞŽ¤ŽÇ-->
+							<!--¤´ÃíÊ¸´°Î»¤ÎÊ¸¾Ï¤³¤³¤Þ¤Ç-->
 						</td>
 					</tr>
 					<tr><td height="5"></td></tr>
@@ -90,15 +90,15 @@
 			<tr align="center">
 				<td>
 					<!--{if $is_campaign}-->
-					<a href="<!--{$smarty.const.CAMPAIGN_URL}--><!--{$campaign_dir}-->/index.php" onmouseover="chgImg('<!--{$smarty.const.URL_DIR}-->img/common/b_toppage_on.gif','b_toppage');" onmouseout="chgImg('<!--{$smarty.const.URL_DIR}-->img/common/b_toppage.gif','b_toppage');"><img src="<!--{$smarty.const.URL_DIR}-->img/common/b_toppage.gif" width="150" height="30" alt="Ž¥ŽÈŽ¥ŽÃŽ¥Ž×Ž¥ŽÚŽ¡Ž¼Ž¥Ž¸Ž¤ŽØ" border="0" name="b_toppage"></a>
+					<a href="<!--{$smarty.const.CAMPAIGN_URL}--><!--{$campaign_dir}-->/index.php" onmouseover="chgImg('<!--{$smarty.const.URL_DIR}-->img/common/b_toppage_on.gif','b_toppage');" onmouseout="chgImg('<!--{$smarty.const.URL_DIR}-->img/common/b_toppage.gif','b_toppage');"><img src="<!--{$smarty.const.URL_DIR}-->img/common/b_toppage.gif" width="150" height="30" alt="¥È¥Ã¥×¥Ú¡¼¥¸¤Ø" border="0" name="b_toppage"></a>
 					<!--{else}-->
-					<a href="<!--{$smarty.const.URL_DIR}-->index.php" onmouseover="chgImg('<!--{$smarty.const.URL_DIR}-->img/common/b_toppage_on.gif','b_toppage');" onmouseout="chgImg('<!--{$smarty.const.URL_DIR}-->img/common/b_toppage.gif','b_toppage');"><img src="<!--{$smarty.const.URL_DIR}-->img/common/b_toppage.gif" width="150" height="30" alt="Ž¥ŽÈŽ¥ŽÃŽ¥Ž×Ž¥ŽÚŽ¡Ž¼Ž¥Ž¸Ž¤ŽØ" border="0" name="b_toppage"></a>
+					<a href="<!--{$smarty.const.URL_DIR}-->index.php" onmouseover="chgImg('<!--{$smarty.const.URL_DIR}-->img/common/b_toppage_on.gif','b_toppage');" onmouseout="chgImg('<!--{$smarty.const.URL_DIR}-->img/common/b_toppage.gif','b_toppage');"><img src="<!--{$smarty.const.URL_DIR}-->img/common/b_toppage.gif" width="150" height="30" alt="¥È¥Ã¥×¥Ú¡¼¥¸¤Ø" border="0" name="b_toppage"></a>
 					<!--{/if}-->
 				</td>
 			</tr>
 		</table>
-		<!--Ž¢Ž¥MAIN ONTENTS-->
+		<!--¢¥MAIN ONTENTS-->
 		</td>
 	</tr>
 </table>
-<!--Ž¢Ž¥CONTENTS-->
+<!--¢¥CONTENTS-->
