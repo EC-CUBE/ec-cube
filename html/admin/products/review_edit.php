@@ -16,6 +16,8 @@ class LC_Page {
 		global $arrRECOMMEND;
 		$this->arrRECOMMEND = $arrRECOMMEND;
 		$this->tpl_subtitle = 'レビュー管理';
+		global $arrSex;
+		$this->arrSex = $arrSex;
 	}
 }
 
@@ -38,8 +40,12 @@ $arrRegistColumn = array (
 								array( "column" => "update_date"),
 								array( "column" => "status"),
 								array( "column" => "recommend_level"),		
-								array(	"column" => "title",		"convert" => "KVa"),
-								array(	"column" => "comment",		"convert" => "KVa")	
+								array(	"column" => "title","convert" => "KVa"),
+								array(	"column" => "comment","convert" => "KVa"),
+								array(	"column" => "reviewer_name","convert" => "KVa"),
+								array(	"column" => "reviewer_url","convert" => "KVa"),
+								array(	"column" => "sex","convert" => "n")
+								
 							);
 
 //レビューIDを渡す
@@ -91,9 +97,13 @@ $objView->display(MAIN_FRAME);
 // 入力エラーチェック
 function lfCheckError($array) {
 	$objErr = new SC_CheckError($array);
-		$objErr->doFunc(array("おすすめレベル", "recommend_level"), array("SELECT_CHECK"));
-		$objErr->doFunc(array("タイトル", "title", STEXT_LEN), array("EXIST_CHECK", "SPTAB_CHECK", "MAX_LENGTH_CHECK"));
-		$objErr->doFunc(array("コメント", "comment", LTEXT_LEN), array("EXIST_CHECK", "SPTAB_CHECK", "MAX_LENGTH_CHECK"));
+	$objErr->doFunc(array("おすすめレベル", "recommend_level"), array("SELECT_CHECK"));
+	$objErr->doFunc(array("タイトル", "title", STEXT_LEN), array("EXIST_CHECK", "SPTAB_CHECK", "MAX_LENGTH_CHECK"));
+	$objErr->doFunc(array("コメント", "comment", LTEXT_LEN), array("EXIST_CHECK", "SPTAB_CHECK", "MAX_LENGTH_CHECK"));
+	$objErr->doFunc(array("投稿者名", "reviewer_name", STEXT_LEN), array("EXIST_CHECK", "SPTAB_CHECK", "MAX_LENGTH_CHECK"));
+	$objErr->doFunc(array("ホームページアドレス", "reviewer_url", URL_LEN), array("EXIST_CHECK", "SPTAB_CHECK", "MAX_LENGTH_CHECK"));
+	$objErr->doFunc(array("タイトル", "title", STEXT_LEN), array("EXIST_CHECK", "SPTAB_CHECK", "MAX_LENGTH_CHECK"));
+	$objErr->doFunc(array("性別", "sex", STEXT_LEN), array("EXIST_CHECK", "SPTAB_CHECK", "MAX_LENGTH_CHECK"));
 	return $objErr->arrErr;
 }
 
