@@ -32,7 +32,7 @@ function fnCallAddress(php_url, tagname1, tagname2, input1, input2) {
 
 // 郵便番号から検索した住所を渡す.
 function fnPutAddress(input1, input2) {
-	// 親ウィンドウの存在確認。
+	// 親ウィンドウの存在確認。.
 	if(fnIsopener()) {
 		if(document.form1['state'].value != "") {
 			// 項目に値を入力する.
