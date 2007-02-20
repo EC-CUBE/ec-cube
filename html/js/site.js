@@ -3,7 +3,7 @@
  *
  * http://www.lockon.co.jp/
  */
-// 親ウィンドウの存在確認
+// 親ウィンドウの存在確認.
 function fnIsopener() {
     var ua = navigator.userAgent;
     if( !!window.opener ) {
@@ -17,7 +17,7 @@ function fnIsopener() {
 	}
 }
 
-// 郵便番号入力呼び出し
+// 郵便番号入力呼び出し.
 function fnCallAddress(php_url, tagname1, tagname2, input1, input2) {
 	zip1 = document.form1[tagname1].value;
 	zip2 = document.form1[tagname2].value;
@@ -30,12 +30,12 @@ function fnCallAddress(php_url, tagname1, tagname2, input1, input2) {
 	}
 }
 
-// 郵便番号から検索した住所を渡す。
+// 郵便番号から検索した住所を渡す.
 function fnPutAddress(input1, input2) {
-	// 親ウィンドウの存在確認
+	// 親ウィンドウの存在確認。
 	if(fnIsopener()) {
 		if(document.form1['state'].value != "") {
-			// 項目に値を入力する。
+			// 項目に値を入力する.
 			state_id = document.form1['state'].value;
 			town = document.form1['city'].value + document.form1['town'].value;
 			window.opener.document.form1[input1].selectedIndex = state_id;
@@ -54,14 +54,14 @@ function fnOpenWindow(URL,name,width,height) {
 	window.open(URL,name,"width="+width+",height="+height+",scrollbars=yes,resizable=no,toolbar=no,location=no,directories=no,status=no");
 }
 
-// フォーカスを当てる
+// フォーカスを当てる.
 function fnSetFocus(name) {
 	if(document.form1[name]) {
 		document.form1[name].focus();
 	}
 }
 
-// セレクトボックスに項目を割り当てる。
+// セレクトボックスに項目を割り当てる.
 function fnSetSelect(name1, name2, val) {
 	sele1 = document.form1[name1]; 
 	sele2 = document.form1[name2];
@@ -75,7 +75,7 @@ function fnSetSelect(name1, name2, val) {
 			sele2.options[i]=null;
 		}
 		
-		// セレクトボックスに値を割り当てる
+		// セレクトボックスに値を割り当てる。
 		len = lists[index].length
 		for(i = 0; i < len; i++) {
 			sele2.options[i]=new Option(lists[index][i], vals[index][i]);
@@ -172,7 +172,7 @@ function fnChangeAction(url) {
 	document.form1.action = url;
 }
 
-// ページナビで使用する
+// ページナビで使用する。
 function fnNaviPage(pageno) {
 	document.form1['pageno'].value = pageno;
 	document.form1.submit();
@@ -188,7 +188,7 @@ function fnSearchPageNavi(pageno) {
 	document.form1.submit();
 }
 
-// ポイント入力制限
+// ポイント入力制限。
 function fnCheckInputPoint() {
 	if(document.form1['point_check']) {
 		list = new Array(
@@ -213,7 +213,7 @@ function fnCheckInputPoint() {
 	}
 }
 
-// 別のお届け先入力制限
+// 別のお届け先入力制限。
 function fnCheckInputDeliv() {
 	if(!document.form1) {
 		return;
@@ -243,7 +243,7 @@ function fnCheckInputDeliv() {
 }
 
 
-// 購入時会員登録入力制限
+// 購入時会員登録入力制限。
 function fnCheckInputMember() {
 	if(document.form1['member_check']) {
 		list = new Array(
@@ -261,7 +261,7 @@ function fnCheckInputMember() {
 	}
 }
 
-// 最初に設定されていた色を保存しておく
+// 最初に設定されていた色を保存しておく。
 var g_savecolor = new Array();
 
 function fnChangeDisabled(list, color) {
@@ -270,11 +270,11 @@ function fnChangeDisabled(list, color) {
 	for(i = 0; i < len; i++) {
 		if(document.form1[list[i]]) {
 			if(color == "") {
-				// 有効にする
+				// 有効にする.
 				document.form1[list[i]].disabled = false;
 				document.form1[list[i]].style.backgroundColor = g_savecolor[list[i]];
 			} else {
-				// 無効にする
+				// 無効にする.
 				document.form1[list[i]].disabled = true;
 				g_savecolor[list[i]] = document.form1[list[i]].style.backgroundColor;
 				document.form1[list[i]].style.backgroundColor = color;//"#f0f0f0";	
@@ -314,7 +314,7 @@ function fnCheckLogin(formname) {
 	}
 }
 	
-// 時間の計測
+// 時間の計測.
 function fnPassTime(){
 	end_time = new Date();
 	time = end_time.getTime() - start_time.getTime();
@@ -322,7 +322,7 @@ function fnPassTime(){
 }
 start_time = new Date();
 
-//親ウィンドウのページを変更する。
+//親ウィンドウのページを変更する.
 function fnUpdateParent(url) {
 	// 親ウィンドウの存在確認
 	if(fnIsopener()) {
@@ -332,7 +332,7 @@ function fnUpdateParent(url) {
 	}		
 }
 
-//特定のキーをSUBMITする。
+//特定のキーをSUBMITする.
 function fnKeySubmit(keyname, keyid) {
 	if(keyname != "" && keyid != "") {
 		document.form1[keyname].value = keyid;
@@ -349,7 +349,7 @@ function fnCharCount(form,sch,cnt) {
 }
 
 
-// テキストエリアのサイズを変更する
+// テキストエリアのサイズを変更する.
 function ChangeSize(button, TextArea, Max, Min, row_tmp){
 	
 	if(TextArea.rows <= Min){
