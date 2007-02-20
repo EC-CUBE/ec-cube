@@ -74,8 +74,8 @@
 								<tr><td height="20"></td></tr>
 								<tr>
 									<td class="fs12"><!--{$arrInfo.shop_name|escape}--><br>
-									TEL｡ｧ<!--{$arrInfo.tel01}-->-<!--{$arrInfo.tel02}-->-<!--{$arrInfo.tel03}--> <!--{if $arrInfo.business_hour != ""}-->受付時間/<!--{$arrInfo.business_hour}-->）<!--{/if}--><br>
-									E-mail｡ｧ<a href="mailto:<!--{$arrInfo.email02|escape}-->"><!--{$arrInfo.email02|escape}--></a></td>
+									TEL：<!--{$arrInfo.tel01}-->-<!--{$arrInfo.tel02}-->-<!--{$arrInfo.tel03}--> <!--{if $arrInfo.business_hour != ""}-->（受付時間/<!--{$arrInfo.business_hour}-->）<!--{/if}--><br>
+									E-mail：<a href="mailto:<!--{$arrInfo.email02|escape}-->"><!--{$arrInfo.email02|escape}--></a></td>
 								</tr>
 								<tr><td height="25"></td></tr>
 							</table>
