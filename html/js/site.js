@@ -54,7 +54,6 @@ function fnOpenWindow(URL,name,width,height) {
 	window.open(URL,name,"width="+width+",height="+height+",scrollbars=yes,resizable=no,toolbar=no,location=no,directories=no,status=no");
 }
 
-// フォーカスを当てる.
 function fnSetFocus(name) {
 	if(document.form1[name]) {
 		document.form1[name].focus();
@@ -270,11 +269,11 @@ function fnChangeDisabled(list, color) {
 	for(i = 0; i < len; i++) {
 		if(document.form1[list[i]]) {
 			if(color == "") {
-				// 有効にする.
+				// 有効にする。
 				document.form1[list[i]].disabled = false;
 				document.form1[list[i]].style.backgroundColor = g_savecolor[list[i]];
 			} else {
-				// 無効にする.
+				// 無効にする。
 				document.form1[list[i]].disabled = true;
 				g_savecolor[list[i]] = document.form1[list[i]].style.backgroundColor;
 				document.form1[list[i]].style.backgroundColor = color;//"#f0f0f0";	
