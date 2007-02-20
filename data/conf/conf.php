@@ -182,7 +182,7 @@ define ("POINT_VALUE", 1);								// 1ポイント当たりの値段(円)
 define ("ADMIN_MODE", 0);								// 管理モード 1:有効　0:無効(納品時)
 define ("DAILY_BATCH_MODE", false);						// 売上集計バッチモード(true:バッチで集計する ※要cron設定、false:リアルタイムで集計する)
 define ("MAX_LOG_QUANTITY", 5);							// ログファイル最大数(ログテーション)
-define ("MAX_LOG_SIZE", "10000");						// 1つのログファイルに保存する最大容量(byte)
+define ("MAX_LOG_SIZE", "1000000");						// 1つのログファイルに保存する最大容量(byte)
 
 define ("FORGOT_MAIL", 0);								// パスワード忘れの確認メールを送付するか否か。(0:送信しない、1:送信する)
 define ("HTML_TEMPLATE_SUB_MAX", 12);					// 登録できるサブ商品の数
