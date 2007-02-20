@@ -57,7 +57,7 @@
 					</tr>
 					<tr>
 						<td bgcolor="#f0f0f0" class="fs12n">ホームページアドレス</td>
-						<td bgcolor="#ffffff" class="fs12n"><span class="red"><input type="text" name="reviewer_url" value="<!--{$arrForm.reviewer_url}-->" maxlength="<!--{$smarty.const.MTEXT_LEN}-->" style="<!--{$arrErr.reviewer_url|SfGetErrorColor}-->" size="40" class="box40" /></td>
+						<td bgcolor="#ffffff" class="fs12n"><span class="red"><!--{$arrErr.reviewer_url}--></span><input type="text" name="reviewer_url" value="<!--{$arrForm.reviewer_url}-->" maxlength="<!--{$smarty.const.MTEXT_LEN}-->" style="<!--{$arrErr.reviewer_url|SfGetErrorColor}-->" size="40" class="box40" /></td>
 					</tr>
 					<tr>
 						<td bgcolor="#f0f0f0" class="fs12n">性別</td>
