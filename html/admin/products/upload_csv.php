@@ -119,7 +119,7 @@ case 'csv_upload':
 			}
 			
 			if(!$err) {
-				lfRegistProduct($objQuery);
+				lfRegistProduct($objQuery, $line);
 				$regist++;
 			}
 			$arrParam = $objFormParam->getHashArray();
@@ -239,7 +239,7 @@ function lfInitParam() {
  * 引数1 ：SC_Queryオブジェクト
  * 説明　：商品登録
  */
-function lfRegistProduct($objQuery) {
+function lfRegistProduct($objQuery, $line = "") {
 	global $objFormParam;
 	$arrRet = $objFormParam->getHashArray();
 	
@@ -269,9 +269,11 @@ function lfRegistProduct($objQuery) {
 	}
 	// 登録時間を生成(DBのnow()だとcommitした際、すべて同一の時間になってしまう)
 	$time = date("Y-m-d H:i:s");
-	$m = (float)microtime();
-	list($dummy, $m_time) = split("\.", $m);
-	$time .= ".$m_time";
+	// 秒以下を生成
+	if($line != "") {
+		$microtime = sprintf("%06d", $line);
+		$time .= ".$microtime";
+	}	
 	$sqlval['update_date'] = $time;
 	$sqlval['creator_id'] = $_SESSION['member_id'];
 		
