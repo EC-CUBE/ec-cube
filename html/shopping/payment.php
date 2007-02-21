@@ -49,6 +49,10 @@ $objPage->tpl_uniqid = $uniqid;
 if($objCustomer->isLoginSuccess()) {
 	$objPage->tpl_login = '1';
 	$objPage->tpl_user_point = $objCustomer->getValue('point');
+	//戻り先URL
+	$objPage->tpl_back_url = URL_SHOP_PAYMENT;
+} else {
+	$objPage->tpl_back_url = URL_SHOP_TOP . "?from=nonmember";
 }
 
 // 金額の取得 (購入途中で売り切れた場合にはこの関数内にてその商品の個数が０になる)
