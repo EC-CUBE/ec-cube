@@ -50,7 +50,7 @@ if($objCustomer->isLoginSuccess()) {
 	$objPage->tpl_login = '1';
 	$objPage->tpl_user_point = $objCustomer->getValue('point');
 	//Ìá¤êÀèURL
-	$objPage->tpl_back_url = URL_SHOP_PAYMENT;
+	$objPage->tpl_back_url = URL_DELIV_TOP;
 } else {
 	$objPage->tpl_back_url = URL_SHOP_TOP . "?from=nonmember";
 }

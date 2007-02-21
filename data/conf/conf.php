@@ -379,6 +379,7 @@ define ("URL_SHOP_TOP", SSL_URL . "shopping/index.php");						// 会員情報入力
 define ("URL_ENTRY_TOP", SSL_URL . "entry/index.php");	 						// 会員登録ページTOP
 define ("URL_SITE_TOP", URL_DIR . "index.php");									// サイトトップ
 define ("URL_CART_TOP", URL_DIR . "cart/index.php");							// カートトップ
+define ("URL_DELIV_TOP", URL_DIR . "shopping/deliv.php");						// 配送時間設定 
 define ("URL_MYPAGE_TOP", SSL_URL . "mypage/login.php");						// Myページトップ
 define ("URL_SHOP_CONFIRM", URL_DIR . "shopping/confirm.php");					// 購入確認ページ
 define ("URL_SHOP_PAYMENT", URL_DIR . "shopping/payment.php");					// お支払い方法選択ページ
