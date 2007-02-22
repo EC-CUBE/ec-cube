@@ -87,13 +87,11 @@
 										<td bgcolor="#cccccc"><img src="<!--{$smarty.const.URL_DIR}-->img/common/_.gif" width="1" height="10" alt=""></td>
 										<td bgcolor="#e9e7de" align="center">
 										
-										<!--
 										<table border="0" cellspacing="0" cellpadding="0" summary=" ">
 											<tr>
 												<td><input type="button" name="subm2" value="配送業者<!--{if $smarty.const.INPUT_DELIV_FEE}-->・配送料<!--{/if}-->を追加" onclick="fnChangeAction('./delivery_input.php'); fnModeSubmit('pre_edit','','');" /></td>
 											</tr>
 										</table>
-										-->
 										
 										</td>
 										<td bgcolor="#cccccc"><img src="<!--{$smarty.const.URL_DIR}-->img/common/_.gif" width="1" height="10" alt=""></td>
