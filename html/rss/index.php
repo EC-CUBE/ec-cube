@@ -24,7 +24,7 @@ $objView = new SC_SiteView();
 $arrNews = lfGetNews($objQuery);
 
 //キャッシュしない(念のため)
-header("Paragrama: no-cache");
+header("pragma: no-cache");
 
 //XMLテキスト(これがないと正常にRSSとして認識してくれないツールがあるため)
 header("Content-type: application/xml");
