@@ -63,7 +63,7 @@
 								<td bgcolor="#ffffff" width="557" class="fs10n">
 								<span class="red12"><!--{$arrErr.kiyaku_text}--></span>
 								<textarea name="kiyaku_text" maxlength="<!--{$smarty.const.MTEXT_LEN}-->" cols="60" rows="8" class="area60" style="" ><!--{$arrForm.kiyaku_text|escape}--></textarea>
-								<span class="red"> （上限<!--{$smarty.const.MTEXT_LEN}-->文字）</span>
+								<span class="red"> （上限<!--{$smarty.const.MLTEXT_LEN}-->文字）</span>
 								</td>
 							</tr>
 						</table>
