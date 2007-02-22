@@ -51,6 +51,7 @@
 									<tr align="center" bgcolor="#f2f1ec" class="fs12n">
 										<td width="223">配送業者</td>
 										<td width="222">名称</td>
+										<td width="50">変更</td>
 										<td width="50">削除</td>
 										<td width="130">移動</td>
 										
@@ -59,10 +60,8 @@
 										<tr bgcolor="#ffffff" class="fs12n">
 											<td><!--{$arrDelivList[cnt].name|escape}--></td>
 											<td><!--{$arrDelivList[cnt].service_name|escape}--></td>
-											<td align="center"><a href="<!--{$smarty.const.URL_DIR}-->" onclick="fnChangeAction('./delivery_input.php'); fnModeSubmit('pre_edit', 'deliv_id', <!--{$arrDelivList[cnt].deliv_id}-->); return false;">確認</a></td>
+											<td align="center"><a href="<!--{$smarty.const.URL_DIR}-->" onclick="fnChangeAction('./delivery_input.php'); fnModeSubmit('pre_edit', 'deliv_id', <!--{$arrDelivList[cnt].deliv_id}-->); return false;">変更</a></td>
 											
-											
-											<!--
 											<td align="center"><a href="<!--{$smarty.server.PHP_SELF|escape}-->" onclick="fnModeSubmit('delete', 'deliv_id', <!--{$arrDelivList[cnt].deliv_id}-->); return false;">削除</a></td>
 											<td align="center">
 											<!--{if $smarty.section.cnt.iteration != 1}-->
@@ -72,7 +71,6 @@
 											<a href="<!--{$smarty.server.PHP_SELF|escape}-->" onclick="fnModeSubmit('down','deliv_id', '<!--{$arrDelivList[cnt].deliv_id}-->'); return false;">下へ</a>
 											<!--{/if}-->
 											</td>
-											-->
 											
 											
 										</tr>
