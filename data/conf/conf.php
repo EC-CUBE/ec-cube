@@ -12,6 +12,28 @@ require_once($CONF_PHP_PATH ."/../install.inc");
 require_once($CONF_PHP_PATH ."/core.php" );
 
 //--------------------------------------------------------------------------------------------------------
+// エラーレベル設定
+$arrErrorReport = array(
+	'E_ERROR'             => 1,
+	'E_WARNING'           => 2,
+	'E_PARSE'             => 4,
+	'E_NOTICE'            => 8,
+	'E_CORE_ERROR'        => 16,
+	'E_CORE_WARNING'      => 32,
+	'E_COMPILE_ERROR'     => 64,
+	'E_COMPILE_WARNING'   =>128,
+	'E_USER_ERROR'        => 256,
+	'E_USER_WARNING'      => 512, 
+	'E_USER_NOTICE'       => 1024,
+	'E_ALL'               => 6143,
+	'E_STRICT'            => 2048,
+	'E_RECOVERABLE_ERROR' => 4096  
+);
+error_reporting(E_NOTICE);
+
+//--------------------------------------------------------------------------------------------------------
+
+//--------------------------------------------------------------------------------------------------------
 /** フロント表示関連 **/
 define("SAMPLE_ADDRESS1", "市区町村名（例：東京都千代田区神田神保町）");
 define("SAMPLE_ADDRESS2", "番地・ビル名（例：1-3-5）");
