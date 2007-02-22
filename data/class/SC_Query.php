@@ -9,6 +9,8 @@ class SC_Query {
 	var $option;
 	var $where;
 	var $conn;
+	var $groupby;
+	var $order;
 	
 	// コンストラクタ
 	/*
