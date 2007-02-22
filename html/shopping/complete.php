@@ -62,7 +62,7 @@ if ($uniqid != "") {
 
 	//その他情報の取得
 	//$other_data = $objQuery->get("dtb_order", "memo02", "order_id = ? ", array($order_id));
-	$arrResults = $objQuery->getall("SELECT memo02, memo05 FROM dtb_order order_id = ?", array($order_id));	
+	$arrResults = $objQuery->getall("SELECT memo02, memo05 FROM dtb_order WHERE order_id = ?", array($order_id));	
 	$cnt = count($arrResults);
 	
 	if($cnt != 0) {
