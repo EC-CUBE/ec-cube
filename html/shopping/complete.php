@@ -65,7 +65,7 @@ if ($uniqid != "") {
 	$arrResults = $objQuery->getall("SELECT memo02, memo05 FROM dtb_order WHERE order_id = ?", array($order_id));	
 	$cnt = count($arrResults);
 	
-	if($cnt != 0) {
+	if($cnt > 0) {
 		// 完了画面で表示する決済内容
 		$arrOther = unserialize($arrResults[0]["memo02"]);
 		// 完了画面から送信する決済内容
