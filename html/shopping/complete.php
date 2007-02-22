@@ -61,9 +61,15 @@ if ($uniqid != "") {
 	}
 
 	//その他情報の取得
-	$other_data = $objQuery->get("dtb_order", "memo02", "order_id = ? ", array($order_id));
-	if($other_data != "") {
-		$arrOther = unserialize($other_data);
+	//$other_data = $objQuery->get("dtb_order", "memo02", "order_id = ? ", array($order_id));
+	$arrResults = $objQuery->getall("SELECT memo02, memo05 FROM dtb_order order_id = ?", array($order_id));	
+	$cnt = count($arrResults);
+	
+	if($cnt != 0) {
+		// 完了画面で表示する決済内容
+		$arrOther = unserialize($arrResults[0]["memo02"]);
+		// 完了画面から送信する決済内容
+		$arrModuleParam = unserialize($arrResults[0]["memo05"]);
 		
 		// データを編集
 		foreach($arrOther as $key => $val){
@@ -74,7 +80,7 @@ if ($uniqid != "") {
 		}
 				
 		$objPage->arrOther = $arrOther;
-		
+		$objPage->arrModuleParam = $arrModuleParam;
 	}
 	
 	// アフィリエイト用コンバージョンタグの設定
