@@ -159,7 +159,6 @@ $objPage->arrSendData = $arrSendData;
 
 $objView->assignobj($objPage);
 
-
 // 出力内容をSJISにする(ルミーズ対応)
 mb_http_output(REMISE_SEND_ENCODE);
 $objView->display(MODULE_PATH . "mdl_remise/card.tpl");

@@ -57,30 +57,30 @@ if (isset($_POST['mode'])) {
 }
 
 switch($mode) {
-case 'edit':
-	// 入力エラー判定
-	$objPage->arrErr = lfCheckError();
+	case 'edit':
+		// 入力エラー判定
+		$objPage->arrErr = lfCheckError();
 
-	// エラーなしの場合にはデータを更新	
-	if (count($objPage->arrErr) == 0) {
-		// データ更新
-		lfUpdPaymentDB();
-		
-		// javascript実行
-		$objPage->tpl_onload = 'alert("登録完了しました。\n基本情報＞支払方法設定より詳細設定をしてください。"); window.close();';
-	}
-	break;
-case 'module_del':
-	// 汎用項目の存在チェック
-	if (sfColumnExists("dtb_payment", "memo01")) {
-		// データの削除フラグをたてる
-		$objQuery->query("UPDATE dtb_payment SET del_flg = 1 WHERE module_id = ?", array(MDL_REMISE_ID));
-	}
-	break;
-default:
-	// データのロード
-	lfLoadData();
-	break;
+		// エラーなしの場合にはデータを更新	
+		if (count($objPage->arrErr) == 0) {
+			// データ更新
+			lfUpdPaymentDB();
+			
+			// javascript実行
+			$objPage->tpl_onload = 'alert("登録完了しました。\n基本情報＞支払方法設定より詳細設定をしてください。"); window.close();';
+		}
+		break;
+	case 'module_del':
+		// 汎用項目の存在チェック
+		if (sfColumnExists("dtb_payment", "memo01")) {
+			// データの削除フラグをたてる
+			$objQuery->query("UPDATE dtb_payment SET del_flg = 1 WHERE module_id = ?", array(MDL_REMISE_ID));
+		}
+		break;
+	default:
+		// データのロード
+		lfLoadData();
+		break;
 }
 
 $objPage->arrForm = $objFormParam->getFormParamList();

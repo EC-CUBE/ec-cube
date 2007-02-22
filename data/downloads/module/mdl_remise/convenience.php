@@ -133,7 +133,6 @@ if (isset($_POST["X-R_CODE"])) {
 
 // EC-CUBE側の通知用URL
 $retUrl = SITE_URL . 'shopping/load_payment_module.php?module_id=' . MDL_REMISE_ID;
-//$exitUrl = SITE_URL;
 $exitUrl = SITE_URL . 'shopping/load_payment_module.php';
 $tel = $arrData["order_tel01"].$arrData["order_tel02"].$arrData["order_tel03"];
 
@@ -163,7 +162,6 @@ $objView->assignobj($objPage);
 
 // 出力内容をSJISにする(ルミーズ対応)
 mb_http_output(REMISE_SEND_ENCODE);
-//$objView->display(SITE_FRAME);
 $objView->display(MODULE_PATH . "mdl_remise/convenience.tpl");
 
 //---------------------------------------------------------------------------------------------------------------------------------------------------------
