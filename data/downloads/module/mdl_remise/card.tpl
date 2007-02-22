@@ -111,7 +111,7 @@
 		
 		<table width="700" border="0" cellspacing="0" cellpadding="0" summary=" ">
 			<tr>
-				<td><img src="<!--{$smarty.const.URL_DIR}-->img/shopping/convenience_title.jpg" width="700" height="40" alt="クレジット決済"></td>
+				<td><img src="<!--{$smarty.const.URL_DIR}-->img/shopping/credit_title.jpg" width="700" height="40" alt="クレジット決済"></td>
 			</tr>
 			<tr><td height="15"></td></tr>
 			<tr>
