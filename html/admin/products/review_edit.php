@@ -56,33 +56,21 @@ $objPage->arrReview = lfGetReviewData($_POST['review_id']);
 $objPage->tpl_pre_status = $objPage->arrReview['status'];
 //商品ごとのレビュー表示数取得
 $count = $objQuery->count("dtb_review", "del_flg=0 AND status=1 AND product_id=?", array($objPage->arrReview['product_id']));
-//レビュー表示数が設定値以上の場合
-if ($count >= REVIEW_REGIST_MAX){
-	//表示は選択できない
-	$objPage->tpl_status_change = false;
-}else{
-	//両方選択可能
-	$objPage->tpl_status_change = true;
-}
-					
+//両方選択可能
+$objPage->tpl_status_change = true;
+
 switch($_POST['mode']) {
 //登録
 case 'complete':
 	//フォーム値の変換
 	$arrReview = lfConvertParam($_POST, $arrRegistColumn);
 	$objPage->arrErr = lfCheckError($arrReview);
-	//非表示から表示にステータスを切り替えて、商品ごとの表示レビュー数が設定値を超えているとき
-	if ($arrReview['pre_status'] == '2' && $arrReview['status'] == '1' && $count >= REVIEW_REGIST_MAX){
-		$objPage->arrErr['status'] = '※ レビュー表示数は5件までです。';
+	//エラー無し
+	if (!$objPage->arrErr){
+		//レビュー情報の編集登録
+		lfRegistReviewData($arrReview, $arrRegistColumn);
 		$objPage->arrReview = $arrReview;
-	} else {
-		//エラー無し
-		if (!$objPage->arrErr){
-			//レビュー情報の編集登録
-			lfRegistReviewData($arrReview, $arrRegistColumn);
-			$objPage->arrReview = $arrReview;
-			$objPage->tpl_onload = "confirm('登録が完了しました。');";
-		}
+		$objPage->tpl_onload = "confirm('登録が完了しました。');";
 	}
 	break;
 default:
