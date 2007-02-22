@@ -12,7 +12,7 @@ require_once($CONF_PHP_PATH ."/../install.inc");
 require_once($CONF_PHP_PATH ."/core.php" );
 
 //--------------------------------------------------------------------------------------------------------
-// エラーレベル設定
+/** エラーレベル設定 **/
 $arrErrorReport = array(
 	'E_ERROR'             => 1,
 	'E_WARNING'           => 2,
