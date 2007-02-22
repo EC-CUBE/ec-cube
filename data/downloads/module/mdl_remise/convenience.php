@@ -69,6 +69,8 @@ switch($_POST["mode"]){
 // ルミーズからの返信があった場合
 if (isset($_POST["X-R_CODE"])) {
 
+	$err_detail = "";
+	
 	// 通信時エラー
 	if ($_POST["X-R_CODE"] != $arrRemiseErrorWord["OK"]) {
 		$err_detail = $_POST["X-R_CODE"];

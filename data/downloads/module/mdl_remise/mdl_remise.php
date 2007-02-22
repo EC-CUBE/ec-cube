@@ -51,7 +51,12 @@ $objFormParam->setParam($_POST);
 // 汎用項目を追加(必須！！)
 sfAlterMemo();
 
-switch($_POST['mode']) {
+$mode = "";
+if (isset($_POST['mode'])) {
+	$mode = $_POST['mode'];
+}
+
+switch($mode) {
 case 'edit':
 	// 入力エラー判定
 	$objPage->arrErr = lfCheckError();

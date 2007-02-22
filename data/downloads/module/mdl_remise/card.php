@@ -68,6 +68,8 @@ switch($_POST["mode"]){
 // ルミーズからの返信があった場合
 if (isset($_POST["X-R_CODE"])) {
 	
+	$err_detail = "";
+	
 	// 通信時エラー
 	if ($_POST["X-R_CODE"] != $arrRemiseErrorWord["OK"]) {
 		$err_detail = $_POST["X-R_CODE"];
@@ -117,7 +119,6 @@ if (isset($_POST["X-R_CODE"])) {
 
 // EC-CUBE側の通知用URL
 $retUrl = SITE_URL . 'shopping/load_payment_module.php?module_id=' . MDL_REMISE_ID;
-//$exitUrl = SITE_URL;
 $exitUrl = SITE_URL . 'shopping/load_payment_module.php';
 
 $arrSendData = array(
@@ -162,7 +163,6 @@ $objView->assignobj($objPage);
 
 // 出力内容をSJISにする(ルミーズ対応)
 mb_http_output(REMISE_SEND_ENCODE);
-//$objView->display(SITE_FRAME);
 $objView->display(MODULE_PATH . "mdl_remise/card.tpl");
 
 //---------------------------------------------------------------------------------------------------------------------------------------------------------
