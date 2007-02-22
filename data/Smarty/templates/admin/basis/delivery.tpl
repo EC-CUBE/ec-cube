@@ -49,14 +49,10 @@
 
 								<table width="678" border="0" cellspacing="1" cellpadding="8" summary=" ">
 									<tr align="center" bgcolor="#f2f1ec" class="fs12n">
-										<td width="288">配送業者</td>
-										<td width="287">名称</td>
-										<td width="50">確認</td>
-										
-										<!--
+										<td width="223">配送業者</td>
+										<td width="222">名称</td>
 										<td width="50">削除</td>
 										<td width="130">移動</td>
-										-->
 										
 									</tr>
 									<!--{section name=cnt loop=$arrDelivList}-->
