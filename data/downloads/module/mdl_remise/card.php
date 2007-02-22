@@ -4,7 +4,6 @@
  *
  * http://www.lockon.co.jp/
  */
-
 require_once("../require.php");
 require_once(DATA_PATH . "module/Request.php");
 require_once(MODULE_PATH . "mdl_remise/mdl_remise.inc");
