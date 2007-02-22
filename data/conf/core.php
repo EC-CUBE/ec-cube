@@ -30,4 +30,7 @@ define ("USER_URL", SITE_URL."user_data/"); // ユーザー作成ページ等
 // 認証用 magic
 define ("AUTH_MAGIC", "31eafcbd7a81d7b401a7fdc12bba047c02d1fae6");
 
+// エラーレベル(NOTICE)
+error_reporting(8);
+
 ?>
