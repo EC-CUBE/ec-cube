@@ -126,20 +126,20 @@ function lfGetTotalCustomerPoint() {
 function lfGetReviewYesterday($conn){
 	// postgresql と mysql とでSQLをわける
 	if (DB_TYPE == "pgsql") {
-		$sql = "SELECT COUNT(*) FROM dtb_review 
-				 WHERE del_flg=0 AND to_char(create_date, 'YYYY/MM/DD') = to_char(now() - interval '1 days','YYYY/MM/DD')
-				 AND to_char(create_date,'YYYY/MM/DD') != to_char(now(),'YYYY/MM/DD')";
+		$sql = "SELECT COUNT(*) FROM dtb_review AS A LEFT JOIN dtb_products AS B ON A.product_id = B.product_id  
+				 WHERE A.del_flg=0 AND B.del_flg = 0 AND to_char(A.create_date, 'YYYY/MM/DD') = to_char(now() - interval '1 days','YYYY/MM/DD')
+				 AND to_char(A.create_date,'YYYY/MM/DD') != to_char(now(),'YYYY/MM/DD')";
 	}else if (DB_TYPE == "mysql") {
-		$sql = "SELECT COUNT(*) FROM dtb_review 
-				 WHERE del_flg = 0 AND cast(substring(create_date,1, 10) as date) = DATE_ADD(current_date, interval -1 day)
-				 AND cast(substring(create_date,1, 10) as date) != cast(substring(now(),1, 10) as date)";
+		$sql = "SELECT COUNT(*) FROM dtb_review AS A LEFT JOIN dtb_products AS B ON A.product_id = B.product_id 
+				 WHERE A.del_flg = 0 AND B.del_flg = 0 AND cast(substring(A.create_date,1, 10) as date) = DATE_ADD(current_date, interval -1 day)
+				 AND cast(substring(A.create_date,1, 10) as date) != cast(substring(now(),1, 10) as date)";
 	}
 	$return = $conn->getOne($sql);
 	return $return;
 }
 
 function lfGetReviewNonDisp($conn){
-	$sql = "SELECT COUNT(*) FROM dtb_review WHERE del_flg=0 AND status=2";
+	$sql = "SELECT COUNT(*) FROM dtb_review AS A LEFT JOIN dtb_products AS B ON A.product_id = B.product_id WHERE A.del_flg=0 AND A.status=2 AND B.del_flg=0";
 	$return = $conn->getOne($sql);
 	return $return;
 }
