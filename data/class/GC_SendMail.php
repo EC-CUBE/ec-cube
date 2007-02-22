@@ -53,7 +53,6 @@ class GC_SendMail {
 		$from_name = ereg_replace("<","¡ã", $from_name);
 		$from_name = ereg_replace(">","¡ä", $from_name);
 		$from_name = mb_convert_encoding($from_name,"JIS",CHAR_CODE); 
-
 		$this->header		 = "From: ". Mb_encode_mimeheader( $from_name )."<".$fromaddress.">\n";
 		$this->header		.= "Reply-To: ". $reply_to . "\n";
 		$this->header		.= "Cc: " . $cc. "\n";
