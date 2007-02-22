@@ -811,6 +811,7 @@ function sfArrKeyValues($arrList, $keyname, $valname, $len_max = "", $keysize = 
 // 配列の値をカンマ区切りで返す。
 function sfGetCommaList($array, $space=true) {
 	if (count($array) > 0) {
+		$line = "";
 		foreach($array as $val) {
 			if ($space) {
 				$line .= $val . ", ";
