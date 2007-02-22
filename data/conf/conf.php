@@ -26,8 +26,8 @@ require_once($CONF_PHP_PATH ."/core.php" );
  *	'E_USER_WARNING'      => ユーザーによって発行される警告メッセージ。E_WARNING に似ているがPHPコード上でtrigger_error()関数を 使用した場合に発行される点が違う。 
  *	'E_USER_NOTICE'       => ユーザーによって発行される注意メッセージ。E_NOTICEに に似ているがPHPコード上でtrigger_error()関数を 使用した場合に発行される点が違う。 
  *	'E_ALL'               => サポートされる全てのエラーと警告。PHP < 6 では E_STRICT レベルのエラーは除く。 
- *	'E_STRICT'            => PHP5からサポート
- *	'E_RECOVERABLE_ERROR' => キャッチできる致命的なエラー。危険なエラーが発生したが、 エンジンが不安定な状態になるほどではないことを表す。 ユーザ定義のハンドラでエラーがキャッチされなかった場合 (set_error_handler() も参照ください) は、 E_ERROR として異常終了する。 
+ *	'E_STRICT'            => ※PHP5からサポート 実行時の注意。コードの相互運用性や互換性を維持するために PHP がコードの変更を提案する。
+ *	'E_RECOVERABLE_ERROR' => ※PHP5からサポート キャッチできる致命的なエラー。危険なエラーが発生したが、 エンジンが不安定な状態になるほどではないことを表す。 ユーザ定義のハンドラでエラーがキャッチされなかった場合 (set_error_handler() も参照ください) は、 E_ERROR として異常終了する。 
  */
 error_reporting(E_ALL);
 
