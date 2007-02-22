@@ -60,12 +60,12 @@ if ($uniqid != "") {
 		sfSendOrderMail($order_id, '1');
 	}
 
-	//その他情報の取得
+	// その他情報の取得
 	//$other_data = $objQuery->get("dtb_order", "memo02", "order_id = ? ", array($order_id));
-	$arrResults = $objQuery->getall("SELECT memo02, memo05 FROM dtb_order WHERE order_id = ?", array($order_id));	
-	$cnt = count($arrResults);
+	$arrResults = $objQuery->getall("SELECT memo02, memo05 FROM dtb_order WHERE order_id = ? ", array($order_id));
+	$cntRes = count($arrResults);
 	
-	if($cnt > 0) {
+	if ($cntRes > 0) {
 		// 完了画面で表示する決済内容
 		$arrOther = unserialize($arrResults[0]["memo02"]);
 		// 完了画面から送信する決済内容
