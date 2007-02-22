@@ -65,7 +65,7 @@ class GC_SendMail {
 	function setItemHtml( $to, $subject, $body, $fromaddress, $from_name, $reply_to, $return_path, $errors_to="", $bcc="", $cc ="" ) {
 			
 		$this->to			 = $to;
-		$this->subject		 = $subject;
+		$this->subject		 = mb_encode_mimeheader($subject);
 		$this->body			 = mb_convert_encoding( $body, "JIS", CHAR_CODE);
 		$this->header		 = "Mime-Version: 1.0\n";
 		$this->header		.= "Content-Type: text/html; charset=iso-2022-jp\n";
