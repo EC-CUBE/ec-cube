@@ -270,7 +270,7 @@ function lfUpdPaymentDB(){
 				,"memo07" => $_POST["mobile_convenience_url"]
 				,"del_flg" => "0"
 				,"charge_flg" => "1"
-				,"upper_rule_max" => REMISE_CREDIT_UPPER
+				,"upper_rule_max" => REMISE_CONVENIENCE_UPPER
 			);
 		}
 
@@ -331,23 +331,31 @@ function lfRemiseConveniCheck(){
 	$log_path = DATA_PATH . "logs/remise_cv_charge.log";
 	gfPrintLog("remise conveni result : ".$_POST["JOB_ID"] , $log_path);
 	
-	// JOB_ID を指定されていて且つ、入金済みの場合
-	if($_POST["JOB_ID"] != "" and $_POST["REC_FLG"] == 1 and $_POST["S_TORIHIKI_NO"] != ""){
+	// 必要なデータが送信されている場合
+	if(isset($_POST["JOB_ID"]) && isset($_POST["REC_FLG"]) && 
+		isset($_POST["S_TORIHIKI_NO"]) && isset($_POST["TOTAL"])){
 		
-		// POSTの内容を全てログ保存
-		gfPrintLog("remise conveni charge start----------", $log_path);
-		foreach($_POST as $key => $val){
-			gfPrintLog( "\t" . $key . " => " . $val, $log_path);
+		// 収納済みの場合
+		if ($_POST["REC_FLG"] == REMISE_CONVENIENCE_CHARGE) {
+			// POSTの内容を全てログ保存
+			gfPrintLog("remise conveni charge start----------", $log_path);
+			foreach($_POST as $key => $val){
+				gfPrintLog( "\t" . $key . " => " . $val, $log_path);
+			}
+			gfPrintLog("remise conveni charge end  ----------", $log_path);
+			
+			// JOB_IDと請求番号。入金金額が一致する場合のみ、ステータスを入金済みに変更する
+			$sql = "UPDATE dtb_order SET status = 6, update_date = now() ".
+				"WHERE order_id = ? AND memo04 = ? AND payment_total = ? ";
+			$objQuery->query($sql, array($_POST["S_TORIHIKI_NO"], $_POST["JOB_ID"], $_POST["TOTAL"]));
+			
+			//応答結果を表示
+			print("<SDBKDATA>STATUS=800</SDBKDATA>");
+			exit;
+		} else {
+			print("ERROR");
+			exit;
 		}
-		gfPrintLog("remise conveni charge end  ----------", $log_path);
-		
-		// ステータスを入金済みに変更する
-		$sql = "UPDATE dtb_order SET status = 6, update_date = now() WHERE order_id = ? AND memo04 = ? ";
-		$objQuery->query($sql, array($_POST["S_TORIHIKI_NO"], $_POST["JOB_ID"]));
-		
-		//応答結果を表示
-		print("<SDBKDATA>STATUS=800</SDBKDATA>");
-		exit;
 	}
 }
 

@@ -28,6 +28,9 @@ define("REMISE_PAYMENT_DIVIDE_MAX", 2);
 // ルミーズへのデータ送信用エンコード
 define("REMISE_SEND_ENCODE", 'SJIS-win');
 
+// コンビニ収納
+define("REMISE_CONVENIENCE_CHARGE", 1);
+
 // エラー内容
 $arrRemiseErrorWord = array(
 	'OK' => '0:0000'
