@@ -157,7 +157,7 @@
 					</tr>
 					<tr>
 						<td bgcolor="#f0f0f0" class="fs12n">合計金額</td>
-						<td bgcolor="#ffffff" class="fs12n"><!--{$arrSendData.TOTAL|escape}--></td>
+						<td bgcolor="#ffffff" class="fs12n"><!--{$arrSendData.TOTAL|escape}-->円</td>
 					</tr>
 				</table>
 				<!--お支払方法・お届け時間の指定・その他お問い合わせここまで-->
