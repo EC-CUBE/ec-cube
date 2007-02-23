@@ -294,29 +294,42 @@ function lfRemiseCreditResultCheck(){
 	// TRAN_ID を指定されていて、カード情報がある場合
 	if (isset($_POST["X-TRANID"]) && isset($_POST["X-PARTOFCARD"])) {
 		
+		$errFlg = FALSE;
+		
 		gfPrintLog("remise card result start----------", $log_path);
 		foreach($_POST as $key => $val){
 			gfPrintLog( "\t" . $key . " => " . $val, $log_path);
 		}
 		gfPrintLog("remise credit result end  ----------", $log_path);
 
-		// 請求番号
-		$order_id = $_POST["X-S_TORIHIKI_NO"];
-		$payment_total = $_POST["X-TOTAL"];
+		// 請求番号と金額の取得
+		$order_id = 0;
+		$payment_total = 0;
+		
+		if (isset($_POST["X-S_TORIHIKI_NO"])) {
+			$order_id = $_POST["X-S_TORIHIKI_NO"];
+		}
+		
+		if (isset($_POST["X-TOTAL"])) {
+			$payment_total = $_POST["X-TOTAL"];
+		}
 		
 		gfPrintLog("order_id : ".$order_id, $log_path);
 		gfPrintLog("payment_total : ".$payment_total, $log_path);
 
+		// 注文データ取得
 		$arrTempOrder = $objQuery->getall("SELECT payment_total FROM dtb_order_temp WHERE order_id = ? ", array($order_id));
 
 		// 金額の相違
 		if (count($arrTempOrder) > 0) {
 			gfPrintLog("ORDER payment_total : ".$arrTempOrder[0]['payment_total'], $log_path);
-			if ($arrTempOrder[0]['payment_total'] != $payment_total) {
-				print("ERROR");
-				exit;
+			if ($arrTempOrder[0]['payment_total'] == $payment_total) {
+				$errFlg = TRUE;
 			}
-			print("<SDBKDATA>STATUS=800</SDBKDATA>");
+		}
+		
+		if ($errFlg) {
+			print(REMISE_PAYMENT_CHARGE_OK);
 			exit;
 		}
 		print("ERROR");
@@ -332,9 +345,10 @@ function lfRemiseConveniCheck(){
 	gfPrintLog("remise conveni result : ".$_POST["JOB_ID"] , $log_path);
 	
 	// 必要なデータが送信されている場合
-	if(isset($_POST["JOB_ID"]) && isset($_POST["REC_FLG"]) && 
-		isset($_POST["S_TORIHIKI_NO"]) && isset($_POST["TOTAL"])){
+	if(isset($_POST["JOB_ID"]) && isset($_POST["REC_FLG"])){
 		
+		$errFlg = FALSE;
+			
 		// 収納済みの場合
 		if ($_POST["REC_FLG"] == REMISE_CONVENIENCE_CHARGE) {
 			// POSTの内容を全てログ保存
@@ -343,19 +357,46 @@ function lfRemiseConveniCheck(){
 				gfPrintLog( "\t" . $key . " => " . $val, $log_path);
 			}
 			gfPrintLog("remise conveni charge end  ----------", $log_path);
+
+			// 請求番号と金額の取得
+			$order_id = 0;
+			$payment_total = 0;
+			
+			if (isset($_POST["S_TORIHIKI_NO"])) {
+				$order_id = $_POST["S_TORIHIKI_NO"];
+			}
+			
+			if (isset($_POST["TOTAL"])) {
+				$payment_total = $_POST["TOTAL"];
+			}
+			
+			gfPrintLog("order_id : ".$order_id, $log_path);
+			gfPrintLog("payment_total : ".$payment_total, $log_path);
+			
+			// 注文データ取得
+			$arrTempOrder = $objQuery->getall("SELECT payment_total FROM dtb_order_temp WHERE order_id = ? ", array($order_id));
+
+			// 金額の相違
+			if (count($arrTempOrder) > 0) {
+				gfPrintLog("ORDER payment_total : ".$arrTempOrder[0]['payment_total'], $log_path);
+				if ($arrTempOrder[0]['payment_total'] == $payment_total) {
+					$errFlg = TRUE;
+				}
+			}
 			
 			// JOB_IDと請求番号。入金金額が一致する場合のみ、ステータスを入金済みに変更する
-			$sql = "UPDATE dtb_order SET status = 6, update_date = now() ".
-				"WHERE order_id = ? AND memo04 = ? AND payment_total = ? ";
-			$objQuery->query($sql, array($_POST["S_TORIHIKI_NO"], $_POST["JOB_ID"], $_POST["TOTAL"]));
+			if ($errFlg) {
+				$sql = "UPDATE dtb_order SET status = 6, update_date = now() ".
+					"WHERE order_id = ? AND memo04 = ? ";
+				$objQuery->query($sql, array($_POST["S_TORIHIKI_NO"], $_POST["JOB_ID"]));
 			
-			//応答結果を表示
-			print("<SDBKDATA>STATUS=800</SDBKDATA>");
-			exit;
-		} else {
-			print("ERROR");
-			exit;
+				//応答結果を表示
+				print(REMISE_CONVENIENCE_CHARGE_OK);
+				exit;
+			}
 		}
+		print("ERROR");
+		exit;
 	}
 }
 

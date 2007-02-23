@@ -13,23 +13,29 @@ define("MDL_REMISE_ID", 5);
 // EC-CUBE・ルミーズ共通ID
 define("MDL_REMISE_POST_VALUE", A0000155);
 
-// 決済上限金額
+// ルミーズへのデータ送信用エンコード
+define("REMISE_SEND_ENCODE", 'SJIS-win');
+
+// クレジット決済上限金額
 define("REMISE_CREDIT_UPPER", 500000);
 define("REMISE_CONVENIENCE_UPPER", 100000);
 
-// 支払いコード
+// クレジット支払いコード
 define("REMISE_PAYMENT_METHOD_LUMP", 10);
 define("REMISE_PAYMENT_METHOD_DIVIDE", 61);
 define("REMISE_PAYMENT_METHOD_REVO", 80);
 
-// 最大支払い回数
+// クレジット最大支払い回数
 define("REMISE_PAYMENT_DIVIDE_MAX", 2);
 
-// ルミーズへのデータ送信用エンコード
-define("REMISE_SEND_ENCODE", 'SJIS-win');
+// クレジット結果ステータス
+define("REMISE_PAYMENT_CHARGE_OK", "<SDBKDATA>STATUS=800</SDBKDATA>");
 
-// コンビニ収納
+// コンビニ収納フラグ
 define("REMISE_CONVENIENCE_CHARGE", 1);
+
+// コンビニ結果ステータス
+define("REMISE_CONVENIENCE_CHARGE_OK", "<SDBKDATA>STATUS=800</SDBKDATA>");
 
 // エラー内容
 $arrRemiseErrorWord = array(
