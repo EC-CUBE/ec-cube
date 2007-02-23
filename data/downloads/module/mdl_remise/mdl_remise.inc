@@ -31,7 +31,10 @@ define("REMISE_PAYMENT_DIVIDE_MAX", 2);
 // クレジット結果ステータス
 define("REMISE_PAYMENT_CHARGE_OK", "<SDBKDATA>STATUS=800</SDBKDATA>");
 
-// コンビニ収納フラグ
+// コンビニ収納受信フラグ(0:自動受信しない 1:自動受信する)
+define("REMISE_CONVENIENCE_RECIVE", 1);
+
+// コンビニ収納済フラグ
 define("REMISE_CONVENIENCE_CHARGE", 1);
 
 // コンビニ結果ステータス

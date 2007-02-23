@@ -344,8 +344,8 @@ function lfRemiseConveniCheck(){
 	$log_path = DATA_PATH . "logs/remise_cv_charge.log";
 	gfPrintLog("remise conveni result : ".$_POST["JOB_ID"] , $log_path);
 	
-	// 必要なデータが送信されている場合
-	if(isset($_POST["JOB_ID"]) && isset($_POST["REC_FLG"])){
+	// 必要なデータが送信されていて、収納通知の自動受信を許可している場合
+	if(isset($_POST["JOB_ID"]) && isset($_POST["REC_FLG"]) && REMISE_CONVENIENCE_RECIVE == 1){
 		
 		$errFlg = FALSE;
 			
