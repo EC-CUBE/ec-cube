@@ -62,24 +62,25 @@ if ($uniqid != "") {
 
 	// その他情報の取得
 	$arrResults = $objQuery->getall("SELECT memo02, memo05 FROM dtb_order WHERE order_id = ? ", array($order_id));
-	$cntRes = count($arrResults);
-	
-	if ($cntRes > 0) {
-		// 完了画面で表示する決済内容
-		$arrOther = unserialize($arrResults[0]["memo02"]);
-		// 完了画面から送信する決済内容
-		$arrModuleParam = unserialize($arrResults[0]["memo05"]);
-		
-		// データを編集
-		foreach($arrOther as $key => $val){
-			// URLの場合にはリンクつきで表示させる
-			if (preg_match('/^(https?|ftp)(:\/\/[-_.!~*\'()a-zA-Z0-9;\/?:\@&=+\$,%#]+)$/', $val["value"])) {
-				$arrOther[$key]["value"] = "<a href='#' onClick=\"window.open('". $val["value"] . "'); \" >" . $val["value"] ."</a>";
+
+	if (count($arrResults) > 0) {	
+		if (isset($arrResults[0]["memo02"]) || isset($arrResults[0]["memo05"])) {
+			// 完了画面で表示する決済内容
+			$arrOther = unserialize($arrResults[0]["memo02"]);
+			// 完了画面から送信する決済内容
+			$arrModuleParam = unserialize($arrResults[0]["memo05"]);
+			
+			// データを編集
+			foreach($arrOther as $key => $val){
+				// URLの場合にはリンクつきで表示させる
+				if (preg_match('/^(https?|ftp)(:\/\/[-_.!~*\'()a-zA-Z0-9;\/?:\@&=+\$,%#]+)$/', $val["value"])) {
+					$arrOther[$key]["value"] = "<a href='#' onClick=\"window.open('". $val["value"] . "'); \" >" . $val["value"] ."</a>";
+				}
 			}
+					
+			$objPage->arrOther = $arrOther;
+			$objPage->arrModuleParam = $arrModuleParam;
 		}
-				
-		$objPage->arrOther = $arrOther;
-		$objPage->arrModuleParam = $arrModuleParam;
 	}
 	
 	// アフィリエイト用コンバージョンタグの設定
