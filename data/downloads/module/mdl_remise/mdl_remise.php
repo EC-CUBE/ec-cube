@@ -388,7 +388,7 @@ function lfRemiseConveniCheck(){
 			if ($errFlg) {
 				$sql = "UPDATE dtb_order SET status = 6, update_date = now() ".
 					"WHERE order_id = ? AND memo04 = ? ";
-				$objQuery->query($sql, array($_POST["S_TORIHIKI_NO"], $_POST["JOB_ID"]));
+				$objQuery->query($sql, array($order_id, $_POST["JOB_ID"]));
 			
 				//応答結果を表示
 				print(REMISE_CONVENIENCE_CHARGE_OK);
