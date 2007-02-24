@@ -189,8 +189,9 @@ function lfMobileInitSession() {
  * 1. Smarty
  * 2. 内部エンコーディングから Shift JIS に変換する。
  * 3. 全角カタカナを半角カタカナに変換する。
- * 4. 絵文字タグを絵文字コードに変換する。
- * 5. 出力
+ * 4. 画像用のタグを調整する。
+ * 5. 絵文字タグを絵文字コードに変換する。
+ * 6. 出力
  *
  * @return void
  */
@@ -204,7 +205,7 @@ function lfMobileInitOutput() {
 	// 絵文字タグを絵文字コードに変換する。
 	ob_start(array('GC_MobileEmoji', 'handler'));
 
-    // 端末に合わせて画像サイズを変換する。
+	// 端末に合わせて画像サイズを変換する。
 	ob_start(array('GC_MobileImage', 'handler'));
 
 	// 全角カタカナを半角カタカナに変換する。

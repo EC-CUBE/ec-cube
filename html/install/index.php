@@ -330,7 +330,7 @@ function lfDispStep0($objPage) {
 		"../../data/install_mobile.inc",
 		"../user_data",
 		"../upload",
-        "../mobile/converted_images",
+		"../mobile/converted_images",
 		"../../data/Smarty/templates_c",
 		"../../data/downloads",
 		"../../data/logs"
@@ -811,6 +811,8 @@ function lfDropTable($table_name, $dsn) {
 
 // カラムの追加（既にカラムが存在する場合は作成しない）
 function lfAddColumn($dsn) {
+	global $objDBParam;
+
 	// 受注テーブル	
 	sfColumnExists("dtb_order", "memo01", "text", $dsn, true);	
 	sfColumnExists("dtb_order", "memo02", "text", $dsn, true);
@@ -852,6 +854,24 @@ function lfAddColumn($dsn) {
 	sfColumnExists("dtb_payment", "memo08", "text", $dsn, true);
 	sfColumnExists("dtb_payment", "memo09", "text", $dsn, true);
 	sfColumnExists("dtb_payment", "memo10", "text", $dsn, true);
+
+	// 顧客
+	if (!sfColumnExists("dtb_customer", "mobile_phone_id", "", $dsn)) {
+		sfColumnExists("dtb_customer", "mobile_phone_id", "text", $dsn, true);
+		$objQuery = new SC_Query($dsn);
+		if ($objDBParam->getValue('db_type') == 'mysql') {
+			$objQuery->query("CREATE INDEX dtb_customer_mobile_phone_id_key ON dtb_customer (mobile_phone_id(64))");
+		} else {
+			$objQuery->query("CREATE INDEX dtb_customer_mobile_phone_id_key ON dtb_customer (mobile_phone_id)");
+		}
+	}
+
+	// 顧客メール
+	if ($objDBParam->getValue('db_type') == 'mysql') {
+		sfColumnExists("dtb_customer_mail", "secret_key", "varchar(50) unique", $dsn, true);
+	} else {
+		sfColumnExists("dtb_customer_mail", "secret_key", "text unique", $dsn, true);
+	}
 }
 
 ?>

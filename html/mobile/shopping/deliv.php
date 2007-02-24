@@ -92,6 +92,9 @@ case 'login':
 	// ログインが成功した場合は携帯端末IDを保存する。
 	$objCustomer->updateMobilePhoneId();
 
+	// 携帯のメールアドレスをコピーする。
+	$objCustomer->updateEmailMobile();
+
 	// 携帯のメールアドレスが登録されていない場合
 	if (!$objCustomer->hasValue('email_mobile')) {
 		header('Location: ' . gfAddSessionId('../entry/email_mobile.php'));

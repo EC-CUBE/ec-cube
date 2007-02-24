@@ -133,6 +133,31 @@ class SC_Customer {
 
 		$this->customer_data['mobile_phone_id'] = $_SESSION['mobile']['phone_id'];
 	}
+
+	/**
+	 * email から email_mobile へ携帯のメールアドレスをコピーする。
+	 *
+	 * @return void
+	 */
+	function updateEmailMobile() {
+		// すでに email_mobile に値が入っている場合は何もしない。
+		if ($this->customer_data['email_mobile'] != '') {
+			return;
+		}
+
+		// email が携帯のメールアドレスではない場合は何もしない。
+		if (!gfIsMobileMailAddress($this->customer_data['email'])) {
+			return;
+		}
+
+		// email から email_mobile へコピーする。
+		$objQuery = new SC_Query;
+		$sqlval = array('email_mobile' => $this->customer_data['email']);
+		$where = 'customer_id = ? AND del_flg = 0 AND status = 2';
+		$objQuery->update('dtb_customer', $sqlval, $where, array($this->customer_data['customer_id']));
+
+		$this->customer_data['email_mobile'] = $this->customer_data['email'];
+	}
 	
 	// パスワードを確認せずにログイン
 	function setLogin($email) {
