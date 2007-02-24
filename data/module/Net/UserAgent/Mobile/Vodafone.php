@@ -13,14 +13,16 @@
  * @category   Networking
  * @package    Net_UserAgent_Mobile
  * @author     KUBO Atsuhiro <iteman@users.sourceforge.net>
- * @copyright  2003-2006 KUBO Atsuhiro <iteman@users.sourceforge.net>
+ * @copyright  2003-2007 KUBO Atsuhiro <iteman@users.sourceforge.net>
  * @license    http://www.php.net/license/3_0.txt  PHP License 3.0
- * @version    CVS: $Id: Vodafone.php,v 1.8 2006/11/07 09:25:14 kuboa Exp $
- * @since      File available since Release 0.1
+ * @version    CVS: $Id: Vodafone.php,v 1.12 2007/02/20 15:21:05 kuboa Exp $
+ * @since      File available since Release 0.20.0
  */
 
 require_once dirname(__FILE__) . '/Common.php';
 require_once dirname(__FILE__) . '/Display.php';
+
+// {{{ Net_UserAgent_Mobile_Vodafone
 
 /**
  * Vodafone implementation
@@ -30,7 +32,7 @@ require_once dirname(__FILE__) . '/Display.php';
  *
  * SYNOPSIS:
  * <code>
- * require_once('Net/UserAgent/Mobile.php');
+ * require_once 'Net/UserAgent/Mobile.php';
  *
  * $_SERVER['HTTP_USER_AGENT'] = 'J-PHONE/2.0/J-DN02';
  * $agent = &Net_UserAgent_Mobile::factory();
@@ -57,13 +59,13 @@ require_once dirname(__FILE__) . '/Display.php';
  * @category   Networking
  * @package    Net_UserAgent_Mobile
  * @author     KUBO Atsuhiro <iteman@users.sourceforge.net>
- * @copyright  2003-2006 KUBO Atsuhiro <iteman@users.sourceforge.net>
+ * @copyright  2003-2007 KUBO Atsuhiro <iteman@users.sourceforge.net>
  * @license    http://www.php.net/license/3_0.txt  PHP License 3.0
- * @version    Release: @package_version@
+ * @version    Release: 0.30.0
  * @link       http://developers.vodafone.jp/dp/tool_dl/web/useragent.php
  * @link       http://developers.vodafone.jp/dp/tool_dl/web/position.php
  * @see        Net_UserAgent_Mobile_Common
- * @since      Class available since Release 0.1
+ * @since      Class available since Release 0.20.0
  */
 class Net_UserAgent_Mobile_Vodafone extends Net_UserAgent_Mobile_Common
 {
@@ -443,15 +445,13 @@ class Net_UserAgent_Mobile_Vodafone extends Net_UserAgent_Mobile_Common
         @list($this->name, $this->version, $this->_model, $modelVersion,
               $serialNumber) = explode('/', $agent[0]);
         if ($serialNumber) {
-            if ($serialNumber) {
-                if (!preg_match('!^SN(.+)!', $serialNumber, $matches)) {
-                    return $this->noMatch();
-                }
-                $this->_serialNumber = $matches[1];
+            if (!preg_match('!^SN(.+)!', $serialNumber, $matches)) {
+                return $this->noMatch();
             }
+            $this->_serialNumber = $matches[1];
         }
 
-        if (!preg_match('!^([a-z]+)([a-z]\d{2,3})$!i', $modelVersion, $matches)) {
+        if (!preg_match('!^([a-z]+)((?:[a-z]|\d){4})$!i', $modelVersion, $matches)) {
             return $this->noMatch();
         }
 

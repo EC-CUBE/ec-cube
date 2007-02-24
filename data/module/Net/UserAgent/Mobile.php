@@ -13,9 +13,9 @@
  * @category   Networking
  * @package    Net_UserAgent_Mobile
  * @author     KUBO Atsuhiro <iteman@users.sourceforge.net>
- * @copyright  2003-2006 KUBO Atsuhiro <iteman@users.sourceforge.net>
+ * @copyright  2003-2007 KUBO Atsuhiro <iteman@users.sourceforge.net>
  * @license    http://www.php.net/license/3_0.txt  PHP License 3.0
- * @version    CVS: $Id: Mobile.php,v 1.25 2006/11/07 09:25:14 kuboa Exp $
+ * @version    CVS: $Id: Mobile.php,v 1.27 2007/02/20 15:17:16 kuboa Exp $
  * @since      File available since Release 0.1
  */
 
@@ -58,7 +58,7 @@ $GLOBALS['_NET_USERAGENT_MOBILE_FALLBACK_ON_NOMATCH'] = false;
  *
  * SYNOPSIS:
  * <code>
- * require_once('Net/UserAgent/Mobile.php');
+ * require_once 'Net/UserAgent/Mobile.php';
  *
  * $agent = &Net_UserAgent_Mobile::factory($agent_string);
  * // or $agent = &Net_UserAgent_Mobile::factory(); // to get from $_SERVER
@@ -88,9 +88,9 @@ $GLOBALS['_NET_USERAGENT_MOBILE_FALLBACK_ON_NOMATCH'] = false;
  * @category   Networking
  * @package    Net_UserAgent_Mobile
  * @author     KUBO Atsuhiro <iteman@users.sourceforge.net>
- * @copyright  2003-2006 KUBO Atsuhiro <iteman@users.sourceforge.net>
+ * @copyright  2003-2007 KUBO Atsuhiro <iteman@users.sourceforge.net>
  * @license    http://www.php.net/license/3_0.txt  PHP License 3.0
- * @version    Release: @package_version@
+ * @version    Release: 0.30.0
  * @since      Class available since Release 0.1
  */
 class Net_UserAgent_Mobile
@@ -154,22 +154,14 @@ class Net_UserAgent_Mobile
                  (@$matches[3] ? 'EZweb' : 'AirHPhone'));
         }
         $className = "Net_UserAgent_Mobile_{$sub}";
-        $include    = dirname(__FILE__) . "/Mobile/{$sub}.php";
 
         if (!class_exists($className)) {
-            if (!is_readable($include)) {
+            $file = dirname(__FILE__) . "/Mobile/{$sub}.php";
+            if (!include_once $file) {
                 return PEAR::raiseError(null,
                                         NET_USERAGENT_MOBILE_ERROR_NOT_FOUND,
                                         null, null,
-                                        "Unable to read the $include file",
-                                        'Net_UserAgent_Mobile_Error', true
-                                        );
-            }
-            if (!include_once $include) {
-                return PEAR::raiseError(null,
-                                        NET_USERAGENT_MOBILE_ERROR_NOT_FOUND,
-                                        null, null,
-                                        "Unable to include the $include file",
+                                        "Unable to include the $file file",
                                         'Net_UserAgent_Mobile_Error', true
                                         );
             }
@@ -281,9 +273,9 @@ class Net_UserAgent_Mobile
  * @category   Networking
  * @package    Net_UserAgent_Mobile
  * @author     KUBO Atsuhiro <iteman@users.sourceforge.net>
- * @copyright  2003-2006 KUBO Atsuhiro <iteman@users.sourceforge.net>
+ * @copyright  2003-2007 KUBO Atsuhiro <iteman@users.sourceforge.net>
  * @license    http://www.php.net/license/3_0.txt  PHP License 3.0
- * @version    Release: @package_version@
+ * @version    Release: 0.30.0
  * @since      Class available since Release 0.1
  */
 class Net_UserAgent_Mobile_Error extends PEAR_Error
