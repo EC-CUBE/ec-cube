@@ -7,15 +7,15 @@ class ImageConverter {
 	var $outputImageType;		// 変換後の画像の形式
 	var $outputImageWidth;		// 変換後の画像の横幅
 	var $outputImageHeight;		// 変換後の画像の高さ
-	//var $outputImageFileSize;	// 変換後の画像のファイルサイズ
+	var $outputImageFileSize;	// 変換後の画像のファイルサイズ
 
 	// コンストラクタ
 	function ImageConverter() {
-		$this->outputImageDir      = realpath(realpath(dirname( __FILE__)));
-		$this->outputImageType     = 'jpeg';
-		$this->outputImageWidth    = 100;
-		$this->outputImageHeight   = NULL;
-		//$this->outputImageFileSize = NULL;
+		$this->outputImageDir    = realpath(realpath(dirname(__FILE__)));
+		$this->outputImageType   = 'jpeg';
+		$this->outputImageWidth  = 320;
+		$this->outputImageHeight = NULL;
+		$this->outputFileSize    = 20000;
 	}
 
 	// 変換実行
@@ -26,7 +26,7 @@ class ImageConverter {
 		$inputImageWidth  = $imagesize[0];
 		$inputImageHeight = $imagesize[1];
 		$inputImageType   = $imagesize[2];
-		$outputImageName  = base64_encode($inputImagePath . '_' . $this->outputImageWidth . '_' . $filestat['mtime']) . '.' . $this->outputImageType;
+		$outputImageName  = sha1($inputImagePath . '_' . $this->outputImageWidth . '_' . $this->outputFileSize . '_' . $filestat['mtime']) . '.' . $this->outputImageType;
 		$outputImagePath  = $this->outputImageDir . '/' . $outputImageName;
 
 		// 変換後の画像の高さが指定されていない場合、変換後の画像の横幅から求める
@@ -62,48 +62,60 @@ class ImageConverter {
 				return false;
 			}
 
-			// 空ファイル作成
-			$outputImage = ImageCreateTruecolor($this->outputImageWidth, $this->outputImageHeight);
-			ImageCopyResampled($outputImage, $tempImage, 0, 0, 0, 0, $this->outputImageWidth, $this->outputImageHeight, $inputImageWidth, $inputImageHeight);
+			$scale = 1.0;
+			$outputImagePathTemp = $outputImagePath . '.tmp-' . rand();
+			do {
+				// 空ファイル作成
+				$outputImage = ImageCreateTruecolor($this->outputImageWidth * $scale, $this->outputImageHeight * $scale);
+				ImageCopyResampled($outputImage, $tempImage, 0, 0, 0, 0, $this->outputImageWidth * $scale, $this->outputImageHeight * $scale, $inputImageWidth, $inputImageHeight);
 
-			// ファイル出力
-			switch($this->outputImageType) {
-			case 1:
-			case 'gif':
-				imagegif($outputImage, $outputImagePath);
-				break;
-			default:
-			case 2:
-			case 'jpg':
-			case 'jpeg':
-				imagejpeg($outputImage, $outputImagePath);
-				break;
-			case 3:
-			case 'png':
-				imagepng($outputImage, $outputImagePath);
-				break;
-			case 6:
-			case 'bmp':
-				imagewbmp($outputImage, $outputImagePath);
-				break;
-			}
+				// ファイル出力
+
+				@unlink($outputImagePathTemp);
+
+				switch ($this->outputImageType) {
+				case 1:
+				case 'gif':
+					imagegif($outputImage, $outputImagePathTemp);
+					break;
+				default:
+				case 2:
+				case 'jpg':
+				case 'jpeg':
+					$quality = 75;
+					// 表示可能なファイルサイズ以下になるまで、10%ずつクオリティを調整する
+					do {
+						@unlink($outputImagePathTemp);
+						imagejpeg($outputImage, $outputImagePathTemp, $quality);
+						$quality -= 10;
+						clearstatcache();
+					} while (filesize($outputImagePathTemp) > $this->outputFileSize && $quality > 0);
+					break;
+				case 3:
+				case 'png':
+					imagepng($outputImage, $outputImagePathTemp);
+					break;
+				case 6:
+				case 'bmp':
+					imagewbmp($outputImage, $outputImagePathTemp);
+					break;
+				}
+
+				// メモリ開放
+				imagedestroy($outputImage);
+
+				$scale -= 0.1;
+				clearstatcache();
+			} while (filesize($outputImagePathTemp) > $this->outputFileSize && $scale >= 0.5);
+
+			rename($outputImagePathTemp, $outputImagePath);
 
 			// メモリ開放
 			imagedestroy($tempImage);
-			imagedestroy($outputImage);
 
 			$info['convert'] = TRUE;
 		}
 
-		/*
-		$info['inputImageWidth']   = $inputImageWidth;
-		$info['inputImageHeight']  = $inputImageHeight;
-		$info['inputImageType']    = $inputImageType;
-		$info['inputImagePath']    = $inputImagePath;
-		$info['outputImageWidth']  = $this->outputImageWidth;
-		$info['outputImageHeight'] = $this->outputImageHeight;
-		$info['outputImageType']   = $this->outputImageType;
-		*/
 		$info['outputImagePath']  = $outputImagePath;
 		$info['outputImageName']  = $outputImageName;
 		return $info;
@@ -111,9 +123,10 @@ class ImageConverter {
 	}
 
 	// Setter
-	function setOutputDir($outputDir)   { $this->outputImageDir    = $outputDir;  }
-	function setImageType($imageType)   { $this->outputImageType   = $imageType;  }
-	function setImageWidth($imageWidth) { $this->outputImageWidth  = $imageWidth; }
+	function setOutputDir($outputDir)   { $this->outputImageDir   = $outputDir;  }
+	function setImageType($imageType)   { $this->outputImageType  = $imageType;  }
+	function setImageWidth($imageWidth) { $this->outputImageWidth = $imageWidth; }
+	function setFileSize($fileSize)     { $this->outputFileSize   = $fileSize;   }
 	// function setImageHeight($imageHeight) { $this->outputImageHeight = $imageHeight; }
 
 	// Getter
