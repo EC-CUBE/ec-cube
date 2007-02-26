@@ -33,11 +33,12 @@ class GC_MobileImage {
 			// 端末の情報を取得する
 			$fp = fopen(MOBILE_IMAGE_INC_PATH . "/mobile_image_map_$carrier.csv", "r");
 			while (($data = fgetcsv($fp, 1000, ",")) !== FALSE) {
-				if ($data[1] == $model) {
+				if ($data[1] == $model || $data[1] == '*') {
 					$cacheSize     = $data[2];
 					$imageFileSize = $data[7];
 					$imageType     = $data[6];
 					$imageWidth    = $data[5];
+					break;
 				}
 			}
 			fclose($fp);
