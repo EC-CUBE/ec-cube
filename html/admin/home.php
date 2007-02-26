@@ -84,10 +84,10 @@ function lfGetOrderYesterday($conn, $method){
 		// postgresql と mysql とでSQLをわける
 		if (DB_TYPE == "pgsql") {
 			$sql = "SELECT ".$method."(total) FROM dtb_order
-					 WHERE del_flg = 0 AND to_char(create_date,'YYYY/MM/DD') = to_char(now() - interval '1 days','YYYY/MM/DD')";
+					 WHERE del_flg = 0 AND to_char(create_date,'YYYY/MM/DD') = to_char(now() - interval '1 days','YYYY/MM/DD') AND status <> " . ORDER_CANCEL;
 		}else if (DB_TYPE == "mysql") {
 			$sql = "SELECT ".$method."(total) FROM dtb_order
-					 WHERE del_flg = 0 AND cast(substring(create_date,1, 10) as date) = DATE_ADD(current_date, interval -1 day)";
+					 WHERE del_flg = 0 AND cast(substring(create_date,1, 10) as date) = DATE_ADD(current_date, interval -1 day) AND status <> " . ORDER_CANCEL;
 		}
 		$return = $conn->getOne($sql);
 	}
@@ -103,11 +103,11 @@ function lfGetOrderMonth($conn, $method){
 	if (DB_TYPE == "pgsql") {
 		$sql = "SELECT ".$method."(total) FROM dtb_order
 				 WHERE del_flg = 0 AND to_char(create_date,'YYYY/MM') = ? 
-				 AND to_char(create_date,'YYYY/MM/DD') <> to_char(now(),'YYYY/MM/DD')";
+				 AND to_char(create_date,'YYYY/MM/DD') <> to_char(now(),'YYYY/MM/DD') AND status <> " . ORDER_CANCEL;
 	}else if (DB_TYPE == "mysql") {
 		$sql = "SELECT ".$method."(total) FROM dtb_order
 				 WHERE del_flg = 0 AND date_format(create_date, '%Y/%m') = ? 
-				 AND date_format(create_date, '%Y/%m/%d') <> date_format(now(), '%Y/%m/%d')";
+				 AND date_format(create_date, '%Y/%m/%d') <> date_format(now(), '%Y/%m/%d') AND status <> " . ORDER_CANCEL;
 	}
 		$return = $conn->getOne($sql, array($month));
 	}
@@ -188,7 +188,7 @@ function lfGetNewOrder() {
 			    FROM
 			        dtb_order AS ord
 			    WHERE
-			        del_flg = 0
+			        del_flg = 0 AND status <> " . ORDER_CANCEL . " 
 			    ORDER BY
 			        create_date DESC LIMIT 10 OFFSET 0
 			) AS ord";
