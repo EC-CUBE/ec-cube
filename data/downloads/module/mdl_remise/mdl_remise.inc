@@ -45,6 +45,13 @@ $arrRemiseErrorWord = array(
 	'OK' => '0:0000'
 );
 
+// ルミーズからの通信のIP制御(0:しない 1:する)
+define("REMISE_IP_ADDRESS_DENY", 1);
+
+// ルミーズサーバのIPアドレス
+define("REMISE_IP_ADDRESS_S", "211.0.149.169");
+define("REMISE_IP_ADDRESS_E", "211.0.149.169");
+
 // 決済方法
 $arrPayment = array(
 	1 => 'コンビニ'

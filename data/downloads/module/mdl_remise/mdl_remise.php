@@ -302,6 +302,16 @@ function lfRemiseCreditResultCheck(){
 		}
 		gfPrintLog("remise credit result end  ----------", $log_path);
 
+		// IPアドレス制御する場合
+		if (REMISE_IP_ADDRESS_DENY == 1) {
+			gfPrintLog("remise remoto ip address : ".$_SERVER["REMOTE_ADDR"], $log_path);
+			if (ip2long(REMISE_IP_ADDRESS_S) > ip2long($_SERVER["REMOTE_ADDR"]) || 
+				ip2long(REMISE_IP_ADDRESS_E) < ip2long($_SERVER["REMOTE_ADDR"])) {
+				print("NOT REMISE SERVER");
+				exit;
+			}
+		}
+		
 		// 請求番号と金額の取得
 		$order_id = 0;
 		$payment_total = 0;
@@ -358,6 +368,16 @@ function lfRemiseConveniCheck(){
 			}
 			gfPrintLog("remise conveni charge end  ----------", $log_path);
 
+			// IPアドレス制御する場合
+			if (REMISE_IP_ADDRESS_DENY == 1) {
+				gfPrintLog("remise remoto ip address : ".$_SERVER["REMOTE_ADDR"], $log_path);
+				if (ip2long(REMISE_IP_ADDRESS_S) > ip2long($_SERVER["REMOTE_ADDR"]) || 
+					ip2long(REMISE_IP_ADDRESS_E) < ip2long($_SERVER["REMOTE_ADDR"])) {
+					print("NOT REMISE SERVER");
+					exit;
+				}
+			}
+			
 			// 請求番号と金額の取得
 			$order_id = 0;
 			$payment_total = 0;
