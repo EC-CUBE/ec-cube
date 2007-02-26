@@ -700,11 +700,11 @@ define ("ORDER_DELIV",5);		// 発送済み
 /* 受注ステータス */
 $arrORDERSTATUS = array(
 	ORDER_NEW => "新規受付",
-	2 => "入金待ち",
-	6 => "入金済み",
-	3 => "キャンセル",
-	4 => "取り寄せ中",
-	5 => "発送済み"
+	ORDER_PAY_WAIT => "入金待ち",
+	ORDER_PRE_END => "入金済み",
+	ORDER_CANCEL => "キャンセル",
+	ORDER_BACK_ORDER => "取り寄せ中",
+	ORDER_DELIV => "発送済み"
 );
 
 // 受注ステータス変更の際にポイント等を加算するステータス番号（発送済み）
