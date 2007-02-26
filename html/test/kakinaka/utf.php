@@ -14,7 +14,7 @@ $objPage = new LC_Page();
 $objQuery = new SC_Query();
 
 
-$ret = $objQuery->query("SELECT * FROM dtb_products");
+$ret = $objQuery->select("SELECT * FROM dtb_products");
 
 sfprintr($ret);
 
