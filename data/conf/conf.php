@@ -708,7 +708,7 @@ $arrORDERSTATUS = array(
 );
 
 // 受注ステータス変更の際にポイント等を加算するステータス番号（発送済み）
-define("ODERSTATUS_COMMIT", 5);
+define("ODERSTATUS_COMMIT", ORDER_DELIV);
 
 /* 商品種別の表示色 */
 $arrPRODUCTSTATUS_COLOR = array(
