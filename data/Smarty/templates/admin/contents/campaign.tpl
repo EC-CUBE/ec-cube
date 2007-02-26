@@ -242,6 +242,6 @@ function fnIsCartOn(){
 			<!--▲登録テーブルここまで-->
 		</td>
 	</tr>
-</table>
 </form>
+</table>
 <!--★★メインコンテンツ★★-->
