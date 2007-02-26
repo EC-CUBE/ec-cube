@@ -18,4 +18,7 @@ $ret = $objQuery->query("SELECT * FROM dtb_products");
 
 sfprintr($ret);
 
+$objView->assignobj($objPage);
+$objView->display($objPage->tpl_mainpage);
+
 ?>
