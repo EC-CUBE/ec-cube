@@ -125,8 +125,8 @@
 				<!--¢¥±¦¥Ê¥Ó-->
 			</tr>
 		</table>
-		<td bgcolor="#ffffff"><img src="./img/_.gif" width="9" height="1" alt="" /></td>
-		<td bgcolor="#cccccc"><img src="./img/_.gif" width="1" height="10" alt="" /></td>
+		<td bgcolor="#ffffff"><img src="<!--{$smarty.const.URL_DIR}-->img/_.gif" width="9" height="1" alt="" /></td>
+		<td bgcolor="#cccccc"><img src="<!--{$smarty.const.URL_DIR}-->img/_.gif" width="1" height="10" alt="" /></td>
 		</td>
 	</tr>
 </table>
