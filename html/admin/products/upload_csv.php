@@ -171,7 +171,7 @@ function lfInitParam() {
 	global $objFormParam;
 		
 	$objFormParam->addParam("¾¦ÉÊID", "product_id", INT_LEN, "n", array("MAX_LENGTH_CHECK","NUM_CHECK"));
-	$objFormParam->addParam("µ¬³ÊID", "product_class_id", INT_LEN, "n", array("MAX_LENGTH_CHECK","NUM_CHECK"));
+	$objFormParam->addParam("¾¦ÉÊµ¬³ÊID", "product_class_id", INT_LEN, "n", array("MAX_LENGTH_CHECK","NUM_CHECK"));
 	
 	$objFormParam->addParam("µ¬³ÊÌ¾1", "dummy1");
 	$objFormParam->addParam("µ¬³ÊÌ¾2", "dummy2");
