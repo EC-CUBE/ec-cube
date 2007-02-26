@@ -688,10 +688,18 @@ $arrPageRows = array(
 						90 => 90,
 						100 => 100,
 					);
-		
+
+/* 受注ステータス */
+define ("ORDER_NEW",1);	 		// 新規注文
+define ("ORDER_PAY_WAIT",2);	// 入金待ち
+define ("ORDER_PRE_END",6);		// 入金済み
+define ("ORDER_CANCEL",3);		// キャンセル
+define ("ORDER_BACK_ORDER ",4);	// 取り寄せ中
+define ("ORDER_DELIV",5);		// 発送済み
+
 /* 受注ステータス */
 $arrORDERSTATUS = array(
-	1 => "新規受付",
+	ORDER_NEW => "新規受付",
 	2 => "入金待ち",
 	6 => "入金済み",
 	3 => "キャンセル",
