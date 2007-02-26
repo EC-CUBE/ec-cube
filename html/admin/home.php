@@ -107,7 +107,7 @@ function lfGetOrderMonth($conn, $method){
 	}else if (DB_TYPE == "mysql") {
 		$sql = "SELECT ".$method."(total) FROM dtb_order
 				 WHERE del_flg = 0 AND date_format(create_date, '%Y/%m') = ? 
-				 AND cast(substring(create_date,1, 10) as date) <> cast(substring(now(),1, 10) as date)";
+				 AND date_format(create_date, '%Y/%m/%d') <> date_format(now(), '%Y/%m/%d')";
 	}
 		$return = $conn->getOne($sql, array($month));
 	}
