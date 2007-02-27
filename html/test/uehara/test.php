@@ -1,7 +1,19 @@
 <?php
-require_once("../../require.php");
+function sfCutStringByte($str, $len) {
+	if(strlen($str) > $len) {
+		$ret = $str;
+		for($i = 1; $len >= $i; $i++) {
+			$ret = mb_substr($ret, 0, $len - $i);
+			if(strlen($ret) <= $len) break;
+		}
+	} else {
+		$ret = $str;
+	}
 
-$test= "eee<{assign_product_id}>aaaa";
-$test = ereg_replace("<{assign_product_id}>", "test", $test);
-echo $test;
+	return $ret;
+}
+
+$str = "あああああああああああああああああああああああああああああああああああああああああああああああああ";
+
+echo sfCutStringByte($str, 100);
 ?>
