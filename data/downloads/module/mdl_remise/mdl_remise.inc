@@ -49,6 +49,7 @@ $arrRemiseErrorWord = array(
 define("REMISE_IP_ADDRESS_DENY", 0);
 
 // ルミーズサーバのIPアドレス
+// 実際に使用する場合は最新のIPアドレス帯域を確認して下さい
 define("REMISE_IP_ADDRESS_S", "211.0.149.169");
 define("REMISE_IP_ADDRESS_E", "211.0.149.169");
 
