@@ -42,7 +42,7 @@ define("REMISE_CONVENIENCE_CHARGE_OK", "<SDBKDATA>STATUS=800</SDBKDATA>");
 
 // エラー内容
 $arrRemiseErrorWord = array(
-	'OK' => '0:0000'
+	OK => '0:0000'
 );
 
 // ルミーズからの通信のIP制御(0:しない 1:する)
