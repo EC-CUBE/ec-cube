@@ -258,7 +258,7 @@ function lfBatOrderAge($time) {
 
 	/* 非会員集計 */
 	
-	$base_where = "WHERE (create_date BETWEEN ? AND ?) AND customer_id = 0 AND del_flg = 0";
+	$base_where = "WHERE (create_date BETWEEN ? AND ?) AND customer_id = 0 AND del_flg = 0 AND status <> " . ORDER_CANCEL;
 	$where = $base_where . " AND (to_number(to_char(age(current_timestamp, order_birth), 'YYY'), 999) BETWEEN ? AND ?) ";
 
 	$end_date = date("Y/m/d", time()); 
