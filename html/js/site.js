@@ -361,8 +361,9 @@ function ChangeSize(button, TextArea, Max, Min, row_tmp){
 // ラジオボタンによる表示・非表示
 function fnChangeVisible(check_id, mod_id){
 
-	document.getElementById(mod_id).disabled = true;
-		
+	document.getElementById("next").disabled = true;
+	alert('test');
+	
     if (document.getElementById(check_id).checked){
 		document.getElementById(mod_id).disabled = false;
     } else {
