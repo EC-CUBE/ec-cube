@@ -292,6 +292,10 @@ case 'return_step2':
 case 'return_step3':
 	$objPage = lfDispStep3($objPage);
 	break;
+case 'return_agreement':
+	$objPage = lfDispAgreement($objPage);
+	$objPage->tpl_onload .= "fnChangeVisible('agreement_yes', 'next');";
+	break;
 case 'return_welcome':
 default:
 	$objPage = lfDispWelcome($objPage);
