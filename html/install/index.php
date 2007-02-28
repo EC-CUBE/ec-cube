@@ -50,6 +50,10 @@ $objDBParam->setParam($_POST);
 switch($_POST['mode']) {
 // ようこそ
 case 'welcome':
+	$objPage = lfDispAgreement($objPage);
+	break;
+// 使用許諾契約書の同意
+case 'agreement':
 	$objPage = lfDispStep0($objPage);
 	break;
 // アクセス権限のチェック
@@ -311,6 +315,20 @@ function lfDispWelcome($objPage) {
 	return $objPage;
 }
 
+// 使用許諾契約書の表示
+function lfDispAgreement($objPage) {
+	global $objWebParam;
+	global $objDBParam;
+	// hiddenに入力値を保持
+	$objPage->arrHidden = $objWebParam->getHashArray();
+	// hiddenに入力値を保持
+	$objPage->arrHidden = array_merge($objPage->arrHidden, $objDBParam->getHashArray());
+	$objPage->arrHidden['db_skip'] = $_POST['db_skip'];
+	$objPage->tpl_mainpage = 'agreement.tpl';
+	$objPage->tpl_mode = 'agreement';
+	return $objPage;
+}
+
 // STEP0画面の表示(ファイル権限チェック) 
 function lfDispStep0($objPage) {
 	global $objWebParam;
@@ -406,8 +424,8 @@ function lfDispStep0($objPage) {
 }
 
 
-// STEP0_1画面の表示(ファイルのコピー) 
-function lfDispStep0_1($objPage) {
+// STEP0_2画面の表示(ファイルのコピー) 
+function lfDispStep0_2($objPage) {
 	global $objWebParam;
 	global $objDBParam;
 	// hiddenに入力値を保持
