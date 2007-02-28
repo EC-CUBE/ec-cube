@@ -12,6 +12,7 @@
 <link rel="stylesheet" href="../admin/css/contents.css" type="text/css" >
 <script type="text/javascript" src="../js/css.js"></script>
 <script type="text/javascript" src="../js/navi.js"></script>
+<script type="text/javascript" src="../js/site.js"></script>
 <title>EC CUBE インストール画面</title>
 </head>
 
