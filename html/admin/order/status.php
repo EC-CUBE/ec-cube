@@ -134,7 +134,7 @@ function lfStatusDisp($status,$pageno){
 	return $objPage;
 }
 
-//ステータス情報の更新（移動）
+//ステータス情報の更新（削除）
 function lfStatusMove($status_id,$move){
 	global $objQuery;
 	global $objPage;
@@ -152,7 +152,7 @@ function lfStatusMove($status_id,$move){
 			if ($val != "") {
 				$objQuery->exec($sql, array($val));
 			}
-			$objPage->tpl_onload = "window.alert('選択項目を移動しました。');";
+			$objPage->tpl_onload = "window.alert('選択項目を削除しました。');";
 			}
 		}
 }
