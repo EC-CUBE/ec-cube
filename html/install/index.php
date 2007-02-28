@@ -257,27 +257,25 @@ case 'complete':
 	$objPage = lfDispComplete($objPage);
 	
 	// サイト情報を送信しても良い場合には送る
-	if($_POST['send_info'] == "true"){
-		$req = new HTTP_Request("http://www.ec-cube.net/mall/use_site.php");
-		$req->setMethod(HTTP_REQUEST_METHOD_POST);
-		
-		$arrSendData = array();
-		foreach($_POST as $key => $val){
-			if (ereg("^senddata_*", $key)){
-				$arrSendDataTmp = array(str_replace("senddata_", "", $key) => $val);
-				$arrSendData = array_merge($arrSendData, $arrSendDataTmp);
-			}
+	$req = new HTTP_Request("http://www.ec-cube.net/mall/use_site.php");
+	$req->setMethod(HTTP_REQUEST_METHOD_POST);
+	
+	$arrSendData = array();
+	foreach($_POST as $key => $val){
+		if (ereg("^senddata_*", $key)){
+			$arrSendDataTmp = array(str_replace("senddata_", "", $key) => $val);
+			$arrSendData = array_merge($arrSendData, $arrSendDataTmp);
 		}
-		
-		$req->addPostDataArray($arrSendData);
-		
-		if (!PEAR::isError($req->sendRequest())) {
-			$response1 = $req->getResponseBody();
-		} else {
-			$response1 = "";
-		}
-		$req->clearPostData();
 	}
+	
+	$req->addPostDataArray($arrSendData);
+	
+	if (!PEAR::isError($req->sendRequest())) {
+		$response1 = $req->getResponseBody();
+	} else {
+		$response1 = "";
+	}
+	$req->clearPostData();
 	
 	break;
 case 'return_step0':
@@ -434,6 +432,22 @@ function lfDispStep0($objPage) {
 	return $objPage;
 }
 
+// STEP0_1画面の表示(ファイルのコピー) 
+function lfDispStep0_1($objPage) {
+	global $objWebParam;
+	global $objDBParam;
+	// hiddenに入力値を保持
+	$objPage->arrHidden = $objWebParam->getHashArray();
+	// hiddenに入力値を保持
+	$objPage->arrHidden = array_merge($objPage->arrHidden, $objDBParam->getHashArray());
+	$objPage->arrHidden['db_skip'] = $_POST['db_skip'];
+	$objPage->tpl_mainpage = 'step0_1.tpl';
+	$objPage->tpl_mode = 'step0_1';
+	// ファイルコピー
+	$objPage->copy_mess = sfCopyDir("./user_data/", "../user_data/", $objPage->copy_mess);
+	$objPage->copy_mess = sfCopyDir("./save_image/", "../upload/save_image/", $objPage->copy_mess);	
+	return $objPage;
+}
 
 // STEP0_2画面の表示(ファイルのコピー) 
 function lfDispStep0_2($objPage) {
