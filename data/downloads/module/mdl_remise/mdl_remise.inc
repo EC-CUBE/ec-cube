@@ -46,7 +46,7 @@ $arrRemiseErrorWord = array(
 );
 
 // ルミーズからの通信のIP制御(0:しない 1:する)
-define("REMISE_IP_ADDRESS_DENY", 0);
+define("REMISE_IP_ADDRESS_DENY", 1);
 
 // ルミーズサーバのIPアドレス
 // 実際に使用する場合は最新のIPアドレス帯域を確認して下さい
