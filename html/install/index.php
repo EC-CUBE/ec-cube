@@ -116,8 +116,8 @@ case 'step3':
 		if ($skip == "on") {
 			// 設定ファイルの生成
 			lfMakeConfigFile();
-			//$objPage = lfDispComplete($objPage);
-			$objPage = lfDispStep4($objPage);
+			$objPage = lfDispComplete($objPage);
+			//$objPage = lfDispStep4($objPage);
 			break;
 		}
 	}
@@ -176,7 +176,7 @@ case 'step3':
 		// 設定ファイルの生成
 		lfMakeConfigFile();
 		$objPage = lfDispStep3($objPage);
-		$objPage->tpl_mode = 'complate';
+		$objPage->tpl_mode = 'step4';
 	} else {
 		$objPage = lfDispStep3($objPage);
 	}
