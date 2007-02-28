@@ -10,6 +10,7 @@
 <meta http-equiv="content-script-type" content="text/javascript">
 <meta http-equiv="content-style-type" content="text/css">
 <link rel="stylesheet" href="../admin/css/contents.css" type="text/css" >
+<link rel="stylesheet" href="../admin/css/install.css" type="text/css" >
 <script type="text/javascript" src="../js/css.js"></script>
 <script type="text/javascript" src="../js/navi.js"></script>
 <title>EC CUBE インストール画面</title>
