@@ -305,8 +305,7 @@ function lfRemiseCreditResultCheck(){
 		// IPアドレス制御する場合
 		if (REMISE_IP_ADDRESS_DENY == 1) {
 			gfPrintLog("remise remoto ip address : ".$_SERVER["REMOTE_ADDR"], $log_path);
-			if (ip2long(REMISE_IP_ADDRESS_S) > ip2long($_SERVER["REMOTE_ADDR"]) || 
-				ip2long(REMISE_IP_ADDRESS_E) < ip2long($_SERVER["REMOTE_ADDR"])) {
+			if (!isset($_SERVER["REMOTE_ADDR"]) || !lfIpAddressDenyCheck($_SERVER["REMOTE_ADDR"])) {
 				print("NOT REMISE SERVER");
 				exit;
 			}
@@ -371,8 +370,7 @@ function lfRemiseConveniCheck(){
 			// IPアドレス制御する場合
 			if (REMISE_IP_ADDRESS_DENY == 1) {
 				gfPrintLog("remise remoto ip address : ".$_SERVER["REMOTE_ADDR"], $log_path);
-				if (ip2long(REMISE_IP_ADDRESS_S) > ip2long($_SERVER["REMOTE_ADDR"]) || 
-					ip2long(REMISE_IP_ADDRESS_E) < ip2long($_SERVER["REMOTE_ADDR"])) {
+				if (!isset($_SERVER["REMOTE_ADDR"]) || !lfIpAddressDenyCheck($_SERVER["REMOTE_ADDR"])) {
 					print("NOT REMISE SERVER");
 					exit;
 				}
@@ -418,6 +416,21 @@ function lfRemiseConveniCheck(){
 		print("ERROR");
 		exit;
 	}
+}
+
+/**
+ * IPアドレス帯域チェック
+ * @param $ip IPアドレス
+ * @return boolean
+ */
+function lfIpAddressDenyCheck($ip) {
+	
+	// IPアドレス範囲に入ってない場合
+	if (ip2long(REMISE_IP_ADDRESS_S) > ip2long($ip) || 
+		ip2long(REMISE_IP_ADDRESS_E) < ip2long($ip)) {
+		return FALSE;
+	}
+	return TRUE;
 }
 
 ?>
