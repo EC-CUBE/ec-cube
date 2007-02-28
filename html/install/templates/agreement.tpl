@@ -12,9 +12,7 @@ function fnChangeVisible(check_id, mod_id){
 		document.getElementById(mod_id).disabled = false;
     } else {
 		document.getElementById(mod_id).disabled = true;		
-		document.getElementById(mod_id).src = '../img/install/next.jpg';
-		
-		alert('test');
+		document.getElementById(mod_id).src = '../img/install/next_of.jpg';
     }
 }
 //-->
