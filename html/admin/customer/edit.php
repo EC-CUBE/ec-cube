@@ -127,7 +127,7 @@ if (($_POST["mode"] == "edit" || $_POST["mode"] == "edit_search") && is_numeric(
 }
 
 //----　顧客情報編集
-if ( $_POST["mode"] != "edit" && is_numeric($_POST["customer_id"])) {
+if ( $_POST["mode"] != "edit" && $_POST["mode"] != "edit_search" && is_numeric($_POST["customer_id"])) {
 
 	//-- POSTデータの引き継ぎ
 	$objPage->arrForm = $_POST;
