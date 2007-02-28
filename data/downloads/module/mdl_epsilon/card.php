@@ -66,7 +66,11 @@ if($_GET["result"] == "1"){
 	sfRegistTempOrder($uniqid, $arrVal);
 
 	// 完了画面へ
-	header("Location: " .  URL_SHOP_COMPLETE);
+	if (GC_MobileUserAgent::isMobile()) {
+		header("Location: " .  gfAddSessionId(URL_SHOP_COMPLETE));
+	} else {
+		header("Location: " .  URL_SHOP_COMPLETE);
+	}
 }
 
 // データ送信
@@ -123,6 +127,12 @@ function lfSendCredit($arrData, $arrPayment, $arrMainProduct, $again = true){
 		// 正常な推移であることを記録しておく
 		$objSiteSess->setRegistFlag();
 		
+		// 携帯端末の場合は、セッションID・オーダー番号・戻ってくるURLを保存しておく。
+		if (GC_MobileUserAgent::isMobile()) {
+			sfMobileSetExtSessionId('order_number', $arrData['order_id'], 'shopping/load_payment_module.php');
+			sfMobileSetExtSessionId('order_number', $arrData['order_id'], 'shopping/confirm.php');
+		}
+
 		$url = sfGetXMLValue($arrXML,'RESULT','REDIRECT');
 		header("Location: " . $url);
 	}

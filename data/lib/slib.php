@@ -1740,7 +1740,11 @@ function sfGetCustomerSqlVal($uniqid, $sqlval) {
 	    $sqlval['order_tel01'] = $objCustomer->getValue('tel01');
 	    $sqlval['order_tel02'] = $objCustomer->getValue('tel02');
 		$sqlval['order_tel03'] = $objCustomer->getValue('tel03');
-		$sqlval['order_email'] = $objCustomer->getValue('email');
+		if (defined('MOBILE_SITE')) {
+			$sqlval['order_email'] = $objCustomer->getValue('email_mobile');
+		} else {
+			$sqlval['order_email'] = $objCustomer->getValue('email');
+		}
 		$sqlval['order_job'] = $objCustomer->getValue('job');
 		$sqlval['order_birth'] = $objCustomer->getValue('birth');
 	}
@@ -2046,6 +2050,7 @@ function sfCutString($str, $len, $byte = true, $commadisp = true) {
 	if($byte) {
 		if(strlen($str) > ($len + 2)) {
 			$ret =substr($str, 0, $len);
+			$cut = substr($str, $len);
 		} else {
 			$ret = $str;
 			$commadisp = false;
@@ -2053,11 +2058,35 @@ function sfCutString($str, $len, $byte = true, $commadisp = true) {
 	} else {
 		if(mb_strlen($str) > ($len + 1)) {
 			$ret = mb_substr($str, 0, $len);
+			$cut = mb_substr($str, $len);
 		} else {
 			$ret = $str;
 			$commadisp = false;
 		}
 	}
+
+	// 絵文字タグの途中で分断されないようにする。
+	if (isset($cut)) {
+		// 分割位置より前の最後の [ 以降を取得する。
+		$head = strrchr($ret, '[');
+
+		// 分割位置より後の最初の ] 以前を取得する。
+		$tail_pos = strpos($cut, ']');
+		if ($tail_pos !== false) {
+			$tail = substr($cut, 0, $tail_pos + 1);
+		}
+
+		// 分割位置より前に [、後に ] が見つかった場合は、[ から ] までを
+		// 接続して絵文字タグ1個分になるかどうかをチェックする。
+		if ($head !== false && $tail_pos !== false) {
+			$subject = $head . $tail;
+			if (preg_match('/^\[emoji:e?\d+\]$/', $subject)) {
+				// 絵文字タグが見つかったので削除する。
+				$ret = substr($ret, 0, -strlen($head));
+			}
+		}
+	}
+
 	if($commadisp){
 		$ret = $ret . "...";
 	}

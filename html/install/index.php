@@ -98,6 +98,10 @@ case 'step3':
 	$objPage->arrErr = lfAddTable("dtb_session", $dsn);			// セッション管理テーブル
 	$objPage->arrErr = lfAddTable("dtb_module", $dsn);			// モジュール管理テーブル
 	$objPage->arrErr = lfAddTable("dtb_campaign_order", $dsn);	// キャンペーン受注テーブル
+	// テーブルが存在しない場合に追加される。
+	$objPage->arrErr = lfAddTable("dtb_mobile_kara_mail", $dsn);	// 空メール管理テーブル
+	// テーブルが存在しない場合に追加される。
+	$objPage->arrErr = lfAddTable("dtb_mobile_ext_session_id", $dsn);	// セッションID管理テーブル
 	
 	// カラムを追加
 	lfAddColumn($dsn);
@@ -344,10 +348,12 @@ function lfDispStep0($objPage) {
 	// プログラムで書込みされるファイル・ディレクトリ
 	$arrWriteFile = array(
 		"../../data/install.inc",
+		"../../data/install_mobile.inc",
 		"../user_data",
 		"../cp",
 		"../upload",
-		"../../data/Smarty/templates_c",		
+		"../mobile/converted_images",
+		"../../data/Smarty/templates_c",
 		"../../data/downloads",
 		"../../data/logs"
 	);
@@ -766,6 +772,35 @@ function lfMakeConfigFile() {
 		fwrite($fp, $config_data);
 		fclose($fp);
 	}
+
+	// モバイル版の設定ファイル install_mobile.inc を作成する。
+	$filepath = $data_path . "install_mobile.inc";
+	
+	$config_data = 
+	"<?php\n".
+	"    define ('ECCUBE_INSTALL', 'ON');\n" .
+	"    define ('HTML_PATH', '" . $root_dir . "mobile/');\n" .	 
+	"    define ('PC_HTML_PATH', '" . $root_dir . "');\n" .	 
+	"    define ('SITE_URL', '" . $normal_url . "mobile/');\n" .
+	"    define ('PC_SITE_URL', '" . $normal_url . "');\n" .
+	"    define ('SSL_URL', '" . $secure_url . "mobile/');\n" .
+	"    define ('PC_SSL_URL', '" . $secure_url . "');\n" .
+	"    define ('URL_DIR', '" . $url_dir . "mobile/');\n" .	
+	"    define ('PC_URL_DIR', '" . $url_dir . "');\n" .	
+	"    define ('DOMAIN_NAME', '" . $objWebParam->getValue('domain') . "');\n" .
+	"    define ('DB_TYPE', '" . $objDBParam->getValue('db_type') . "');\n" .
+	"    define ('DB_USER', '" . $objDBParam->getValue('db_user') . "');\n" . 
+	"    define ('DB_PASSWORD', '" . $objDBParam->getValue('db_password') . "');\n" .
+	"    define ('DB_SERVER', '" . $objDBParam->getValue('db_server') . "');\n" .
+	"    define ('DB_NAME', '" . $objDBParam->getValue('db_name') . "');\n" .
+	"    define ('DB_PORT', '" . $objDBParam->getValue('db_port') .  "');\n" .
+	"    define ('DATA_PATH', '".$data_path."');\n" .
+	"?>";
+	
+	if($fp = fopen($filepath,"w")) {
+		fwrite($fp, $config_data);
+		fclose($fp);
+	}
 }
 
 // テーブルの追加（既にテーブルが存在する場合は作成しない）
@@ -802,6 +837,8 @@ function lfDropTable($table_name, $dsn) {
 
 // カラムの追加（既にカラムが存在する場合は作成しない）
 function lfAddColumn($dsn) {
+	global $objDBParam;
+
 	// 受注テーブル	
 	sfColumnExists("dtb_order", "memo01", "text", $dsn, true);	
 	sfColumnExists("dtb_order", "memo02", "text", $dsn, true);
@@ -852,6 +889,24 @@ function lfAddColumn($dsn) {
 	sfColumnExists("dtb_campaign", "orverlapping_flg", "int2 NOT NULL DEFAULT 0", $dsn, true);
 	sfColumnExists("dtb_campaign", "cart_flg", "int2 NOT NULL DEFAULT 0", $dsn, true);
 	sfColumnExists("dtb_campaign", "deliv_free_flg", "int2 NOT NULL DEFAULT 0", $dsn, true);	
+
+	// 顧客
+	if (!sfColumnExists("dtb_customer", "mobile_phone_id", "", $dsn)) {
+		sfColumnExists("dtb_customer", "mobile_phone_id", "text", $dsn, true);
+		$objQuery = new SC_Query($dsn);
+		if ($objDBParam->getValue('db_type') == 'mysql') {
+			$objQuery->query("CREATE INDEX dtb_customer_mobile_phone_id_key ON dtb_customer (mobile_phone_id(64))");
+		} else {
+			$objQuery->query("CREATE INDEX dtb_customer_mobile_phone_id_key ON dtb_customer (mobile_phone_id)");
+		}
+	}
+
+	// 顧客メール
+	if ($objDBParam->getValue('db_type') == 'mysql') {
+		sfColumnExists("dtb_customer_mail", "secret_key", "varchar(50) unique", $dsn, true);
+	} else {
+		sfColumnExists("dtb_customer_mail", "secret_key", "text unique", $dsn, true);
+	}
 }
 
 // データの追加（既にデータが存在する場合は作成しない）

@@ -516,12 +516,16 @@ CREATE TABLE dtb_customer (
     del_flg  smallint NOT NULL DEFAULT 0,
     cell01 text,
     cell02 text,
-    cell03 text
+    cell03 text,
+    mobile_phone_id text
 ) TYPE=InnoDB ;
+
+CREATE INDEX dtb_customer_mobile_phone_id_key ON dtb_customer (mobile_phone_id(64));
 
 CREATE TABLE dtb_customer_mail (
     email varchar(50) NOT NULL UNIQUE,
     mail_flag smallint,
+    secret_key varchar(50) UNIQUE,
     create_date datetime NOT NULL ,
     update_date datetime 
 ) TYPE=InnoDB ;

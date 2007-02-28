@@ -516,12 +516,16 @@ CREATE TABLE dtb_customer (
     del_flg  int2 NOT NULL DEFAULT 0,
     cell01 text,
     cell02 text,
-    cell03 text
+    cell03 text,
+    mobile_phone_id text
 );
+
+CREATE INDEX dtb_customer_mobile_phone_id_key ON dtb_customer (mobile_phone_id);
 
 CREATE TABLE dtb_customer_mail (
     email text NOT NULL UNIQUE,
     mail_flag int2,
+    secret_key text UNIQUE,
     create_date timestamp NOT NULL DEFAULT now(),
     update_date timestamp DEFAULT now()
 );

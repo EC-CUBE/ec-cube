@@ -11,7 +11,11 @@ require_once(MODULE_PATH . "mdl_epsilon/mdl_epsilon.inc");
 
 class LC_Page {
 	function LC_Page() {
-		$this->tpl_mainpage = MODULE_PATH . "mdl_epsilon/convenience.tpl";
+		if (GC_MobileUserAgent::isMobile()) {
+			$this->tpl_mainpage = MODULE_PATH . "mdl_epsilon/convenience_mobile.tpl";
+		} else {
+			$this->tpl_mainpage = MODULE_PATH . "mdl_epsilon/convenience.tpl";
+		}
 		$this->tpl_title = "コンビニ決済";
 		/*
 		 session_start時のno-cacheヘッダーを抑制することで
@@ -65,7 +69,11 @@ switch($_POST["mode"]){
 		// 正常に登録されたことを記録しておく
 		$objSiteSess->setRegistFlag();
 		// 確認ページへ移動
-		header("Location: " . URL_SHOP_CONFIRM);
+		if (GC_MobileUserAgent::isMobile()) {
+			header("Location: " . gfAddSessionId(URL_SHOP_CONFIRM));
+		} else {
+			header("Location: " . URL_SHOP_CONFIRM);
+		}
 		exit;
 		break;
 
@@ -196,7 +204,11 @@ switch($_POST["mode"]){
 				// 受注一時テーブルに更新
 				sfRegistTempOrder($uniqid, $sqlval);
 
-				header("Location: " . URL_SHOP_COMPLETE);
+				if (GC_MobileUserAgent::isMobile()) {
+					header("Location: " . gfAddSessionId(URL_SHOP_COMPLETE));
+				} else {
+					header("Location: " . URL_SHOP_COMPLETE);
+				}
 			}
 		}
 		break;
