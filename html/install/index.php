@@ -51,6 +51,7 @@ switch($_POST['mode']) {
 // ようこそ
 case 'welcome':
 	$objPage = lfDispAgreement($objPage);
+	$objPage->tpl_onload .= "fnChangeVisible('ok', 'next');";
 	break;
 // 使用許諾契約書の同意
 case 'agreement':
