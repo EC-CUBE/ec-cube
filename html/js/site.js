@@ -358,12 +358,3 @@ function ChangeSize(button, TextArea, Max, Min, row_tmp){
 	}
 }
 
-// ラジオボタンによる表示・非表示
-function fnChangeVisible(check_id, mod_id){
-	
-    if (document.getElementById(check_id).checked){
-		document.getElementById(mod_id).disabled = false;
-    } else {
-		document.getElementById(mod_id).disabled = true;
-    }
-}

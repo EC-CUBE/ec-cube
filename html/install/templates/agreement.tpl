@@ -3,6 +3,20 @@
  *
  * http://www.lockon.co.jp/
  *}-->
+<script type="text/javascript">
+<!--
+// ラジオボタンによる表示・非表示
+function fnChangeVisible(check_id, mod_id){
+	
+    if (document.getElementById(check_id).checked){
+		document.getElementById(mod_id).disabled = false;
+    } else {
+		document.getElementById(mod_id).disabled = true;		
+		document.getElementById(mod_id).src = '../img/install/next.jpg';
+    }
+}
+//-->
+ 
 <table width="502" border="0" cellspacing="1" cellpadding="0" summary=" ">
 <form name="form1" id="form1" method="post" action="<!--{$smarty.server.PHP_SELF|escape}-->">
 <input type="hidden" name="mode" value="<!--{$tpl_mode}-->">
