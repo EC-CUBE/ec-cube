@@ -34,17 +34,19 @@ function fnChangeVisible(check_id, mod_id){
 	以下の使用許諾契約書をお読みください。<br/>
 	インストールを続行するにはこの契約書に同意する必要があります。
 </td></tr>
+<tr><td height="10"></td></tr>
 <tr>
 	<td bgcolor="#cccccc" class="fs12">
 	<table width="500" border="0" cellspacing="1" cellpadding="8" summary=" ">
 		<tr>
 			<td bgcolor="#ffffff" class="fs12">
-			<div id="agreement">dummy・・・</div>
+			<div id="agreement">dummy・・・dummy・・・dummy・・・dummy・・・dummy・・・dummy・・・dummy・・・dummy・・・dummy・・・dummy・・・dummy・・・dummy・・・dummy・・・dummy・・・dummy・・・dummy・・・dummy・・・dummy・・・dummy・・・dummy・・・dummy・・・dummy・・・dummy・・・dummy・・・dummy・・・dummy・・・dummy・・・dummy・・・dummy・・・dummy・・・dummy・・・dummy・・・</div>
 			</td>
 		</tr>
 	</table>
 	</td>
 </tr>
+<tr><td height="10"></td></tr>
 <!--{assign var=key value="send_info"}-->
 <tr><td align="left" class="fs12"><input type="radio" id="agreement_yes" name="<!--{$key}-->" value=true onclick="fnChangeVisible('agreement_yes', 'next');" <!--{if $arrForm[$key].value|escape}-->checked<!--{/if}-->><label for="agreement_yes">同意する</label>　<input type="radio" id="agreement_no" name="<!--{$key}-->" value=false onclick="fnChangeVisible('agreement_yes', 'next');" <!--{if !$arrForm[$key].value|escape}-->checked<!--{/if}-->><label for="agreement_no">同意しない</label></td></tr>
 </table>
