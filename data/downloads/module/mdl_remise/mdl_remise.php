@@ -304,7 +304,7 @@ function lfRemiseCreditResultCheck(){
 
 		// IPアドレス制御する場合
 		if (REMISE_IP_ADDRESS_DENY == 1) {
-			gfPrintLog("remise remoto ip address : ".$_SERVER["REMOTE_ADDR"], $log_path);
+			gfPrintLog("remise remoto ip address : ".$_SERVER["REMOTE_HOST"]."-".$_SERVER["REMOTE_ADDR"], $log_path);
 			if (!isset($_SERVER["REMOTE_ADDR"]) || !lfIpAddressDenyCheck($_SERVER["REMOTE_ADDR"])) {
 				print("NOT REMISE SERVER");
 				exit;
@@ -369,7 +369,7 @@ function lfRemiseConveniCheck(){
 
 			// IPアドレス制御する場合
 			if (REMISE_IP_ADDRESS_DENY == 1) {
-				gfPrintLog("remise remoto ip address : ".$_SERVER["REMOTE_ADDR"], $log_path);
+				gfPrintLog("remise remoto ip address : ".$_SERVER["REMOTE_HOST"]."-".$_SERVER["REMOTE_ADDR"], $log_path);
 				if (!isset($_SERVER["REMOTE_ADDR"]) || !lfIpAddressDenyCheck($_SERVER["REMOTE_ADDR"])) {
 					print("NOT REMISE SERVER");
 					exit;
