@@ -10,6 +10,7 @@ function fnChangeVisible(check_id, mod_id){
 	
     if (document.getElementById(check_id).checked){
 		document.getElementById(mod_id).disabled = false;
+		document.getElementById(mod_id).src = '../img/install/next.jpg';		
     } else {
 		document.getElementById(mod_id).disabled = true;		
 		document.getElementById(mod_id).src = '../img/install/next_off.jpg';
