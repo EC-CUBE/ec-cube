@@ -29,7 +29,7 @@
 	</table>
 	</td>
 </tr>
-<tr><td align="left" class="fs12"><input type="radio" id="ok" name="send_info" value=true onclick="fnChangeVisible('ok', 'next');"><label for="ok">同意する</label>　<input type="radio" id="ng" name="send_info" value=false onclick="fnChangeVisible('ok', 'next');"><label for="ng">同意しない</label></td></tr>
+<tr><td align="left" class="fs12"><input type="radio" id="agreement_yes" name="send_info" value=true onclick="fnChangeVisible('agreement_yes', 'next');"><label for="ok">同意する</label>　<input type="radio" id="agreement_no" name="send_info" value=false onclick="fnChangeVisible('agreement_yes', 'next');"><label for="ng">同意しない</label></td></tr>
 </table>
 
 <table width="500" border="0" cellspacing="1" cellpadding="8" summary=" ">
