@@ -38,7 +38,7 @@ function fnChangeVisible(check_id, mod_id){
 	<td bgcolor="#cccccc" class="fs12">
 	<table width="500" border="0" cellspacing="1" cellpadding="8" summary=" ">
 		<tr>
-			<td bgcolor="#ffffff" class="fs12" height="50">
+			<td bgcolor="#ffffff" class="fs12">
 			<div id="agreement">dummy¡¦¡¦¡¦</div>
 			</td>
 		</tr>
