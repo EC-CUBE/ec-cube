@@ -140,13 +140,13 @@ function lfStatusMove($status_id,$move){
 	global $objPage;
 	
 	if ($status_id == 'delete'){
-		$sql="UPDATE dtb_order SET del_flg=1";
+		$sql="UPDATE dtb_order SET del_flg = 1 ";
 	}elseif ($status_id == 5){
-		$sql="UPDATE dtb_order SET status=".$status_id.",commit_date=now() ";
+		$sql="UPDATE dtb_order SET status = ".$status_id.",commit_date = now() ";
 	}else{
-		$sql="UPDATE dtb_order SET status=".$status_id." ";
+		$sql="UPDATE dtb_order SET status = ".$status_id." ";
 	}
-		$sql.="WHERE order_id=?";
+		$sql.="WHERE order_id = ? ";
 		if (isset($move)){
 			foreach ($move as $val){
 			if ($val != "") {
