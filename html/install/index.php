@@ -317,7 +317,7 @@ function lfDispWelcome($objPage) {
 	// hiddenに入力値を保持
 	$objPage->arrHidden = array_merge($objPage->arrHidden, $objDBParam->getHashArray());
 	$objPage->arrHidden['db_skip'] = $_POST['db_skip'];
-	$objPage->arrHidden['send_info'] = $_POST['send_info'];
+	$objPage->arrHidden['agreement'] = $_POST['agreement'];
 	$objPage->tpl_mainpage = 'welcome.tpl';
 	$objPage->tpl_mode = 'welcome';
 	return $objPage;
@@ -332,7 +332,7 @@ function lfDispAgreement($objPage) {
 	// hiddenに入力値を保持
 	$objPage->arrHidden = array_merge($objPage->arrHidden, $objDBParam->getHashArray());
 	$objPage->arrHidden['db_skip'] = $_POST['db_skip'];
-	$objPage->arrHidden['send_info'] = $_POST['send_info'];	
+	$objPage->arrHidden['agreement'] = $_POST['agreement'];	
 	$objPage->tpl_mainpage = 'agreement.tpl';
 	$objPage->tpl_mode = 'agreement';
 	return $objPage;
@@ -347,7 +347,7 @@ function lfDispStep0($objPage) {
 	// hiddenに入力値を保持
 	$objPage->arrHidden = array_merge($objPage->arrHidden, $objDBParam->getHashArray());
 	$objPage->arrHidden['db_skip'] = $_POST['db_skip'];
-	$objPage->arrHidden['send_info'] = $_POST['send_info'];
+	$objPage->arrHidden['agreement'] = $_POST['agreement'];
 	$objPage->tpl_mainpage = 'step0.tpl';
 	$objPage->tpl_mode = 'step0';
 	
@@ -444,7 +444,7 @@ function lfDispStep0_1($objPage) {
 	// hiddenに入力値を保持
 	$objPage->arrHidden = array_merge($objPage->arrHidden, $objDBParam->getHashArray());
 	$objPage->arrHidden['db_skip'] = $_POST['db_skip'];
-	$objPage->arrHidden['send_info'] = $_POST['send_info'];
+	$objPage->arrHidden['agreement'] = $_POST['agreement'];
 	$objPage->tpl_mainpage = 'step0_1.tpl';
 	$objPage->tpl_mode = 'step0_1';
 	// ファイルコピー
@@ -462,7 +462,7 @@ function lfDispStep0_2($objPage) {
 	// hiddenに入力値を保持
 	$objPage->arrHidden = array_merge($objPage->arrHidden, $objDBParam->getHashArray());
 	$objPage->arrHidden['db_skip'] = $_POST['db_skip'];
-	$objPage->arrHidden['send_info'] = $_POST['send_info'];
+	$objPage->arrHidden['agreement'] = $_POST['agreement'];
 	$objPage->tpl_mainpage = 'step0_1.tpl';
 	$objPage->tpl_mode = 'step0_1';
 	// ファイルコピー
@@ -482,7 +482,7 @@ function lfDispStep1($objPage) {
 	// hiddenに入力値を保持
 	$objPage->arrHidden = $objDBParam->getHashArray();
 	$objPage->arrHidden['db_skip'] = $_POST['db_skip'];
-	$objPage->arrHidden['send_info'] = $_POST['send_info'];
+	$objPage->arrHidden['agreement'] = $_POST['agreement'];
 	$objPage->tpl_mainpage = 'step1.tpl';
 	$objPage->tpl_mode = 'step1';
 	return $objPage;
@@ -495,7 +495,7 @@ function lfDispStep2($objPage) {
 	// hiddenに入力値を保持
 	$objPage->arrHidden = $objWebParam->getHashArray();
 	$objPage->arrHidden['db_skip'] = $_POST['db_skip'];
-	$objPage->arrHidden['send_info'] = $_POST['send_info'];
+	$objPage->arrHidden['agreement'] = $_POST['agreement'];
 	$objPage->tpl_mainpage = 'step2.tpl';
 	$objPage->tpl_mode = 'step2';
 	return $objPage;
@@ -509,7 +509,7 @@ function lfDispStep3($objPage) {
 	$objPage->arrHidden = $objWebParam->getHashArray();
 	// hiddenに入力値を保持
 	$objPage->arrHidden = array_merge($objPage->arrHidden, $objDBParam->getHashArray());
-	$objPage->arrHidden['send_info'] = $_POST['send_info'];
+	$objPage->arrHidden['agreement'] = $_POST['agreement'];
 	$objPage->tpl_db_skip = $_POST['db_skip'];
 	$objPage->tpl_mainpage = 'step3.tpl';
 	$objPage->tpl_mode = 'step3';
@@ -524,7 +524,8 @@ function lfDispStep4($objPage) {
 	$objPage->arrHidden = $objWebParam->getHashArray();
 	$objPage->arrHidden = array_merge($objPage->arrHidden, $objDBParam->getHashArray());
 	// hiddenに入力値を保持
-
+	$objPage->arrHidden['agreement'] = $_POST['agreement'];
+	
 	$normal_url = $objWebParam->getValue('normal_url');
 	// 語尾に'/'をつける
 	if (!ereg("/$", $normal_url)) $normal_url = $normal_url . "/";
