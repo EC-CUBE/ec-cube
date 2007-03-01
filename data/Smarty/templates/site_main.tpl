@@ -8,7 +8,7 @@
 <link rel="stylesheet" href="<!--{$smarty.const.URL_DIR}-->css/common.css" type="text/css" />
 </noscript>
 
-<div align="center">aaa
+<div align="center">
 <a name="top" id="top"></a>
 
 <!--¢§HEADER-->
