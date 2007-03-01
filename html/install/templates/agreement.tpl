@@ -70,7 +70,7 @@ function fnChangeVisible(check_id, mod_id){
 </tr>
 <tr><td height="10"></td></tr>
 <!--{assign var=key value="agreement"}-->
-<tr><td align="left" class="fs12"><input type="radio" id="agreement_yes" name="<!--{$key}-->" value=true onclick="fnChangeVisible('agreement_yes', 'next');" <!--{if $arrForm[$key].value|escape}-->checked<!--{/if}-->><label for="agreement_yes">同意する</label>　<input type="radio" id="agreement_no" name="<!--{$key}-->" value=false onclick="fnChangeVisible('agreement_yes', 'next');" <!--{if !$arrForm[$key].value|escape}-->checked<!--{/if}-->><label for="agreement_no">同意しない</label></td></tr>
+<tr><td align="left" class="fs12"><input type="radio" id="agreement_yes" name="<!--{$key}-->" value=true onclick="fnChangeVisible('agreement_yes', 'next');" <!--{if $arrHidden[$key]}-->checked<!--{/if}-->><label for="agreement_yes">同意する</label>　<input type="radio" id="agreement_no" name="<!--{$key}-->" value=false onclick="fnChangeVisible('agreement_yes', 'next');" <!--{if !$arrHidden[$key]|escape}-->checked<!--{/if}-->><label for="agreement_no">同意しない</label></td></tr>
 </table>
 
 <table width="500" border="0" cellspacing="1" cellpadding="8" summary=" ">
