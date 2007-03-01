@@ -11,7 +11,7 @@
 <div align="center">
 <a name="top" id="top"></a>
 
-<!--¢§HEADER-->aaaaa
+<!--¢§HEADER-->
 <!--{if $arrPageLayout.header_chk != 2}--> 
 <!--{assign var=header_dir value="`$smarty.const.HTML_PATH`user_data/include/header.tpl"}-->
 <!--{include file= $header_dir}-->
