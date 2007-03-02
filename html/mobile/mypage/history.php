@@ -50,19 +50,26 @@ $objPage->arrOrder = $objQuery->select($col, $from, $where, $arrval);
 if ($pageNo + HISTORY_NUM < $linemax) {
 	$next = "<a href='history.php?pageno=" . ($pageNo + HISTORY_NUM) . "'>次へ→</a>";
 } else {
-	$next = "次へ→";
+	$next = "";
 }
 
 // previous
 if ($pageNo - HISTORY_NUM > 0) {
-	$previous = "<a href='history.php?pageno=" . ($pageNo - HISTORY_NUM) . "'>←前</a>";
+	$previous = "<a href='history.php?pageno=" . ($pageNo - HISTORY_NUM) . "'>←前へ</a>";
 } elseif ($pageNo == 0) {
-	$previous = "←前";
+	$previous = "";
 } else {
-	$previous = "<a href='history.php?pageno=0'>←前</a>";
+	$previous = "<a href='history.php?pageno=0'>←前へ</a>";
 }
 
-$objPage->tpl_strnavi = $previous . " | " . $next;
+// bar
+if ($next != '' && $previous != '') {
+	$bar = " | ";
+} else {
+	$bar = "";
+}
+
+$objPage->tpl_strnavi = $previous . $bar . $next;
 $objView->assignobj($objPage);				//$objpage内の全てのテンプレート変数をsmartyに格納
 $objView->display(SITE_FRAME);				//パスとテンプレート変数の呼び出し、実行
 ?>

@@ -135,10 +135,12 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 			//パスワード表示
 			$passlen = strlen($objPage->arrForm['password']);
 			$objPage->passlen = lfPassLen($passlen);
-			
-			//メール受け取り
-			if ($objPage->arrForm['mail_flag'] = "ON") {
-				$objPage->arrForm['mail_flag']  = "2";
+
+			// メール受け取り
+			if (strtolower($_POST['mail_flag']) == "on") {
+				$_POST['mail_flag']  = "2";
+			} else {
+				$_POST['mail_flag']  = "3";
 			}
 
 			$objPage->tpl_mainpage = 'mypage/change_confirm.tpl';
@@ -164,9 +166,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 			$objPage->arrErr = lfErrorCheck($objPage->arrForm);
 			$email_flag = true;
 
-			if($objPage->arrForm['email'] != $objCustomer->getValue('email')) {
+			if($objPage->arrForm['email'] != $objCustomer->getValue('email_mobile')) {
 				//メールアドレスの重複チェック
-				$email_cnt = $objQuery->count("dtb_customer","del_flg=0 AND email=?", array($objPage->arrForm['email']));
+				$email_cnt = $objQuery->count("dtb_customer","del_flg=0 AND (email=? OR email_mobile=?)", array($objPage->arrForm['email'], $objPage->arrForm['email']));
 				if ($email_cnt > 0){
 					$email_flag = false;
 				}
@@ -448,9 +450,10 @@ function lfGetCustomerData(){
 	//顧客情報取得
 	$ret = $objQuery->select("*","dtb_customer","customer_id=?", array($objCustomer->getValue('customer_id')));
 	$arrForm = $ret[0];
+	$arrForm['email'] = $arrForm['email_mobile'];
 
 	//メルマガフラグ取得
-	$arrForm['mail_flag'] = $objQuery->get("dtb_customer_mail","mail_flag","email=?", array($objCustomer->getValue('email')));
+	$arrForm['mail_flag'] = $objQuery->get("dtb_customer_mail","mail_flag","email=?", array($objCustomer->getValue('email_mobile')));
 	
 	//誕生日の年月日取得
 	if (isset($arrForm['birth'])){

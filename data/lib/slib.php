@@ -2253,6 +2253,10 @@ function sfEditCustomerData($array, $arrRegistColumn) {
 	$sqlval['email'] = $array['email'];
 	$sqlval['mail_flag'] = $array['mail_flag'];
 	//-- ÊÔ½¸ÅĞÏ¿¼Â¹Ô
+	if (defined('MOBILE_SITE')) {
+		$arrRegist['email_mobile'] = $arrRegist['email'];
+		unset($arrRegist['email']);
+	}
 	$objQuery->begin();
 	$objQuery->update("dtb_customer", $arrRegist, "customer_id = ? ", array($array['customer_id']));
 	$objQuery->delete("dtb_customer_mail", "email = ?", array($array['email']));

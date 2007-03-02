@@ -143,7 +143,6 @@ function lfRegistData ($email) {
 	$objConn->query("BEGIN");
 
 	$objQuery = new SC_Query();
-	$objQuery->insert("dtb_customer_mail", $arrRegist);
 
 	//--　既にメルマガ登録しているかの判定
 	$sql = "SELECT count(*) FROM dtb_customer_mail WHERE email = ?";
@@ -164,7 +163,20 @@ function lfGetSecretKey ($email) {
 	global $objConn;
 
 	$sql = "SELECT secret_key FROM dtb_customer_mail WHERE email = ?";
-	return $objConn->getOne($sql, array($email));
+	$uniqid = $objConn->getOne($sql, array($email));
+
+	if ($uniqid == '') {
+		$count = 1;
+		while ($count != 0) {
+			$uniqid = sfGetUniqRandomId("t");
+			$count = $objConn->getOne("SELECT COUNT(*) FROM dtb_customer_mail WHERE secret_key = ?", array($uniqid));
+		}
+
+		$objQuery = new SC_Query();
+		$objQuery->update("dtb_customer_mail", array('secret_key' => $uniqid), "email = '" .addslashes($email). "'");
+	}
+
+	return $uniqid;
 }
 
 // 既に登録されているかどうか
@@ -175,7 +187,7 @@ function lfIsRegistData ($email) {
 	$mailResult = $objConn->getRow($sql, array($email));
 
 	// NULLも購読とみなす
-	if (count($mailResult) == 0 or ($mailResult[1] != null and $mailResult[1] <= 2 )) {
+	if (count($mailResult) == 0 or ($mailResult[1] != null and $mailResult[1] != 2 )) {
 		return false;
 	} else {
 		return true;
