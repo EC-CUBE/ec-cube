@@ -19,6 +19,7 @@ $CONF = sf_getBasisData();					// 店舗基本情報
 $objConn = new SC_DbConn();
 $objPage = new LC_Page();
 $objView = new SC_SiteView();
+$objCustomer = new SC_Customer();
 $objCampaignSess = new SC_CampaignSession();
 $objDate = new SC_Date(START_BIRTH_YEAR, date("Y",strtotime("now")));
 $objPage->arrPref = $arrPref;
@@ -140,6 +141,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 			} else {
 				$subject = sfMakesubject('会員登録のご完了');
 				$toCustomerMail = $objMailText->fetch("mail_templates/customer_regist_mail.tpl");
+				// ログイン状態にする
+				$objCustomer->setLogin($_POST["email"]);
 			}
 			
 			$objMail = new GC_SendMail();
