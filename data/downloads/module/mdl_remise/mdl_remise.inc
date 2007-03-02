@@ -18,7 +18,7 @@ define("REMISE_SEND_ENCODE", 'SJIS-win');
 
 // クレジット決済上限金額
 define("REMISE_CREDIT_UPPER", 500000);
-define("REMISE_CONVENIENCE_UPPER", 100000);
+define("REMISE_CONVENIENCE_UPPER", 500000);
 
 // クレジット支払いコード
 define("REMISE_PAYMENT_METHOD_LUMP", 10);
