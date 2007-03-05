@@ -16,17 +16,23 @@ define("MDL_REMISE_POST_VALUE", A0000155);
 // ルミーズへのデータ送信用エンコード
 define("REMISE_SEND_ENCODE", 'SJIS-win');
 
-// クレジット決済上限金額
+// クレジット決済・コンビニ決済上限金額
 define("REMISE_CREDIT_UPPER", 500000);
 define("REMISE_CONVENIENCE_UPPER", 500000);
 
-// クレジット支払いコード
+// クレジット支払いコード(10:一括 61:分割 80:リボ)
 define("REMISE_PAYMENT_METHOD_LUMP", 10);
 define("REMISE_PAYMENT_METHOD_DIVIDE", 61);
 define("REMISE_PAYMENT_METHOD_REVO", 80);
 
 // クレジット最大支払い回数
+// ECサイト様の条件に合わせて変更して下さい
 define("REMISE_PAYMENT_DIVIDE_MAX", 2);
+
+// 分割回数
+$arrCreditDivide = array(
+	2 => "2"
+);
 
 // クレジット結果ステータス
 define("REMISE_PAYMENT_CHARGE_OK", "<SDBKDATA>STATUS=800</SDBKDATA>");
@@ -46,7 +52,7 @@ $arrRemiseErrorWord = array(
 );
 
 // ルミーズからの通信のIP制御(0:しない 1:する)
-define("REMISE_IP_ADDRESS_DENY", 1);
+define("REMISE_IP_ADDRESS_DENY", 0);
 
 // ルミーズサーバのIPアドレス
 // 実際に使用する場合は最新のIPアドレス帯域を確認して下さい
@@ -63,11 +69,6 @@ $arrCredit = array(
 	10 => "一括払い",
 	61 => "分割払い",
 	80 => "リボルビング払い"
-);
-
-// 分割回数
-$arrCreditDivide = array(
-	2 => "2"
 );
 
 // コンビニの種類
