@@ -21,7 +21,7 @@
 			<tr>
 				<td><img src="<!--{$smarty.const.URL_DIR}-->img/shopping/complete_title.jpg" width="700" height="40" alt="ご注文完了"></td>
 			</tr>
-			<tr><td height="15">オーダーID:<!--{$arrResults.0.order_id}--></td></tr>
+			<tr><td height="15"></td></tr>
 		</table>
 		
 		<table width="640" border="0" cellspacing="0" cellpadding="0" summary=" ">
