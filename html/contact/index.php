@@ -16,7 +16,7 @@ class LC_Page {
 		$this->arrPref = $arrPref;
 	}
 }
-echo "test";
+
 $conn = new SC_DBConn();
 $objPage = new LC_Page();
 $objView = new SC_SiteView();
