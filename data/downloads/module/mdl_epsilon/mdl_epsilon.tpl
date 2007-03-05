@@ -129,7 +129,7 @@ function win_open(URL){
 												イプシロン株式会社様とご契約を行っていただく必要があります。 <br/>
 												お申し込みにつきましては、下記のページから、お申し込みを行って下さい。<br/><br/>
 												<a href="#" onClick="win_open('http://www.rapidsite.jp/product/support/shop/epsilon.html')" > ＞＞ イプシロン決済システムについて</a><br/>
-												<a href="#" onClick="win_open('http://www.ec-cube.net/download/index.html')" > ＞＞ イプシロン決済モジュール設定マニュアル</a>
+												<a href="#" onClick="win_open('http://wiki.ec-cube.net/')" > ＞＞ イプシロン決済モジュール設定マニュアル</a>
 											</td>
 										</tr>
 									</table>
