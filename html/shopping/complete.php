@@ -64,7 +64,6 @@ if ($uniqid != "") {
 	//$arrResults = $objQuery->getall("SELECT memo02, memo05 FROM dtb_order WHERE order_id = ? ", array($order_id));
 	$arrResults = $objQuery->getall("SELECT * FROM dtb_order WHERE order_id = ? ", array($order_id));
 	$objPage->arrResults = $arrResults;
-	sfprintr($arrResults);
 
 	if (count($arrResults) > 0) {	
 		if (isset($arrResults[0]["memo02"]) || isset($arrResults[0]["memo05"])) {
