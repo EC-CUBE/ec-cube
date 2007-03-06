@@ -54,7 +54,7 @@
 								<table width="678" border="0" cellspacing="1" cellpadding="8" summary=" ">
 									<tr>
 										<td bgcolor="#f2f1ec" width="160" class="fs12n">æ¶… Ãæ</td>
-										<td bgcolor="#ffffff" width="557" class="fs12n"><!--{$arrForm.product_name}--></td>
+										<td bgcolor="#ffffff" width="557" class="fs12n"><!--{$arrForm.product_name|escape}--></td>
 									</tr>
 									<tr>
 										<td bgcolor="#f2f1ec" width="160" class="fs12n">µ¨≥ 1<span class="red">*</span></td>
