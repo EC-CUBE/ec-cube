@@ -120,6 +120,11 @@ class SC_View {
 		$array['tpl_root_id'] = sfGetRootId();
 		$this->assignarray($array);
 	}
+	
+	// デバッグ
+	function debug($var = true){
+		$this->_smarty->debugging($var);
+	}	
 }
 
 class SC_AdminView extends SC_View{
