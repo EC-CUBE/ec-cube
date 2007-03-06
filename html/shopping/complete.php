@@ -98,6 +98,10 @@ $objPage->arrInfo = $arrInfo;
 $objPage->is_campaign = $objCampaignSess->getIsCampaign();
 $objPage->campaign_dir = $objCampaignSess->getCampaignDir();
 
+
+$objView->debug();
+
+
 $objView->assignobj($objPage);
 // フレームを選択(キャンペーンページから遷移なら変更)
 $objCampaignSess->pageView($objView);
