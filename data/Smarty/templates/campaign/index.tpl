@@ -69,7 +69,7 @@ window.onload = init;
 
 //-->
 </script>
-<form name="form1" id="form1" method="post" action="<!--{$smarty.server.PHP_SELF|escape}-->">
+<form name="form1" id="form1" method="post" action="<!--{$smarty.server.REQUEST_URI|escape}-->">
 <input type="hidden" name="mode" value="cart">
 <input type="hidden" name="product_id" value="">
 <input type="hidden" name="cp" value="true">
