@@ -38,18 +38,6 @@ if($objCartSess->getCancelPurchase()) {
 }
 
 switch($_POST['mode']) {
-case 'up':
-	$objCartSess->upQuantity($_POST['cart_no']);
-	sfReload();
-	break;
-case 'down':
-	$objCartSess->downQuantity($_POST['cart_no']);
-	sfReload();
-	break;
-case 'delete':
-	$objCartSess->delProduct($_POST['cart_no']);
-	sfReload();
-	break;
 case 'confirm':
 	// カート内情報の取得
 	$arrRet = $objCartSess->getCartList();
@@ -86,6 +74,21 @@ case 'confirm':
 	}
 	break;
 default:
+	break;
+}
+
+switch($_GET['mode']) {
+case 'up':
+	$objCartSess->upQuantity($_GET['cart_no']);
+	sfReload(session_name() . '=' . session_id());
+	break;
+case 'down':
+	$objCartSess->downQuantity($_GET['cart_no']);
+	sfReload(session_name() . '=' . session_id());
+	break;
+case 'delete':
+	$objCartSess->delProduct($_GET['cart_no']);
+	sfReload(session_name() . '=' . session_id());
 	break;
 }
 
