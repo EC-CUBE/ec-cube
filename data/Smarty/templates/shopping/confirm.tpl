@@ -49,7 +49,7 @@
 							</a>
 						</td>
 						<td class="fs12">
-							<strong><!--{$arrProductsClass[cnt].name}--></strong><br>
+							<strong><!--{$arrProductsClass[cnt].name|escape}--></strong><br>
 							<!--{if $arrProductsClass[cnt].classcategory_name1 != ""}-->
 								<!--{$arrProductsClass[cnt].class_name1}-->¡§<!--{$arrProductsClass[cnt].classcategory_name1}--><br>
 							<!--{/if}-->
