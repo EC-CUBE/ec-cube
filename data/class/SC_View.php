@@ -123,7 +123,7 @@ class SC_View {
 	
 	// デバッグ
 	function debug($var = true){
-		$this->_smarty->debugging($var);
+		$this->_smarty->debugging = $var;
 	}	
 }
 
