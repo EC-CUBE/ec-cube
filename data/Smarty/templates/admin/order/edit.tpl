@@ -123,7 +123,7 @@
 								<td bgcolor="#f2f1ec" width="110">½»½ê</td>
 								<td bgcolor="#ffffff" width="607" colspan="3">¢©<!--{$arrDisp.order_zip01}-->-<!--{$arrDisp.order_zip02}--><br>
 								<!--{assign var=key value=$arrDisp.order_pref}-->
-								<!--{$arrPref[$key]}--><!--{$arrDisp.order_addr01}--><!--{$arrDisp.order_addr02}--></td>
+								<!--{$arrPref[$key]}--><!--{$arrDisp.order_addr01|escape}--><!--{$arrDisp.order_addr02|escape}--></td>
 							</tr>
 							<tr class="fs12n">
 								<td bgcolor="#f2f1ec" width="110">È÷¹Í</td>

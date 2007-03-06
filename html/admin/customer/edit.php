@@ -35,7 +35,7 @@ class LC_Page {
 		$this->tpl_subno = 'index';
 		$this->tpl_pager = DATA_PATH . 'Smarty/templates/admin/pager.tpl';
 		$this->tpl_subtitle = '¸ÜµÒ¥Þ¥¹¥¿';
-		
+
 		global $arrPref;
 		$this->arrPref = $arrPref;
 		global $arrJob;
