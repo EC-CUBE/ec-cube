@@ -67,7 +67,7 @@ class SC_View {
 			}
 		}
 		
-		$this->dedub();
+		$this->debug();
 	}
     
     // テンプレートに値を割り当てる
