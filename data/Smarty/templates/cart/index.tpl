@@ -53,7 +53,7 @@
 					<!--{if $tpl_message != ""}-->
 					<table cellspacing="0" cellpadding="0" summary=" " bgcolor="#ffffff" width=100%>
 						<tr>
-							<td class="fs12"><span class="redst"><!--{$tpl_message}--></span></td>
+							<td class="fs12"><span class="redst"><!--{$tpl_message|escape}--></span></td>
 						</tr>
 					</table>
 					<!--{/if}-->
