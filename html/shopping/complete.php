@@ -99,7 +99,7 @@ $objPage->is_campaign = $objCampaignSess->getIsCampaign();
 $objPage->campaign_dir = $objCampaignSess->getCampaignDir();
 
 
-$objView->debug();
+$objView->debugging = true;
 
 
 $objView->assignobj($objPage);
