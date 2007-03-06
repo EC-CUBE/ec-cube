@@ -328,7 +328,7 @@ function lfPurchaseHistory($customer_id){
 		$order = "order_id DESC";
 		$objQuery->setorder($order);
 		//¹ØÆþÍúÎò¾ðÊó¤Î¼èÆÀ
-		$arrPurchaseHistory = $objQuery->select("*", "dtb_order", "customer_id=?", array($customer_id));
+		$arrPurchaseHistory = $objQuery->select("*", "dtb_order", "customer_id=? AND del_flg = 0 ", array($customer_id));
 		
 		return $arrPurchaseHistory;
 }
