@@ -66,8 +66,6 @@ class SC_View {
 				define('LOAD_SITEINFO', 1);
 			}
 		}
-		
-		$this->debug();
 	}
     
     // テンプレートに値を割り当てる
