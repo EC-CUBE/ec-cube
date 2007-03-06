@@ -313,7 +313,7 @@ function lfPurchaseHistory($customer_id){
 		// ページ送りの処理
 		$page_max = SEARCH_PMAX;
 		//購入履歴の件数取得
-		$objPage->tpl_linemax = $objQuery->count("dtb_order","customer_id=?", array($customer_id));
+		$objPage->tpl_linemax = $objQuery->count("dtb_order","customer_id=? AND del_flg = 0 ", array($customer_id));
 		$linemax = $objPage->tpl_linemax;
 		
 		// ページ送りの取得
