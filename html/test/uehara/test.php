@@ -1,19 +1,16 @@
 <?php
-function sfCutStringByte($str, $len) {
-	if(strlen($str) > $len) {
-		$ret = $str;
-		for($i = 1; $len >= $i; $i++) {
-			$ret = mb_substr($ret, 0, $len - $i);
-			if(strlen($ret) <= $len) break;
-		}
-	} else {
-		$ret = $str;
-	}
+require_once("../../require.php");
 
-	return $ret;
-}
+$objQuery = new SC_Query();
 
-$str = "ああああああああああああああああああああああああああああああああああああああああああああああ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;ああああああああああああああああああああああああああああああああああああああああああ";
+$objQuery->begin();
+$arrCustomerMail = $objQuery->getAll("
+UPDATE dtb_customer
+SET mailmaga_flg = (
+SELECT mail_flag
+FROM dtb_customer_mail
+WHERE dtb_customer.email = dtb_customer_mail.email
+)");
+$objQuery->commit();
 
-echo sfCutStringByte($str, 100);
 ?>
