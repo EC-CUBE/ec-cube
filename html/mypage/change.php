@@ -271,7 +271,7 @@ function lfGetCustomerData(){
 	$arrForm = $ret[0];
 
 	//メルマガフラグ取得
-	$arrForm['mail_flag'] = $objQuery->get("dtb_customer_mail","mail_flag","email=?", array($objCustomer->getValue('email')));
+	//$arrForm['mail_flag'] = $objQuery->get("dtb_customer_mail","mail_flag","email=?", array($objCustomer->getValue('email')));
 	
 	//誕生日の年月日取得
 	if (isset($arrForm['birth'])){
