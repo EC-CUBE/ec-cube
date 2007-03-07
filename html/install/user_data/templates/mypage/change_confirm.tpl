@@ -92,7 +92,7 @@
 							</tr>
 							<tr>
 								<td bgcolor="#f0f0f0" class="fs12n">メールマガジン送付について<span class="red">※</span></td>
-								<td bgcolor="#ffffff" class="fs12n"><!--{$arrMAILMAGATYPE[$arrForm.mail_flag]}--></td>
+								<td bgcolor="#ffffff" class="fs12n"><!--{$arrMAILMAGATYPE[$arrForm.mailmaga_flg]}--></td>
 							</tr>
 						</table>
 						<!--入力フォームここまで-->
