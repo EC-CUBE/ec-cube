@@ -231,18 +231,22 @@ function lfRegistData ($array, $arrRegistColumn, $arrRejectRegistColumn, $confir
 	$objQuery = new SC_Query();
 	$objQuery->insert("dtb_customer", $arrRegist);
 
+
+/* メルマガ会員機能は現在停止中　2007/03/07
+
+
 	//--　非会員でメルマガ登録しているかの判定
 	$sql = "SELECT count(*) FROM dtb_customer_mail WHERE email = ?";
 	$mailResult = $objConn->getOne($sql, array($arrRegist["email"]));
 
 	//--　メルマガ仮登録実行
 	$arrRegistMail["email"] = $arrRegist["email"];	
-	if ($array["mail_flag"] == 1) {
-		$arrRegistMail["mail_flag"] = 4; 
-	} elseif ($array["mail_flag"] == 2) {
-		$arrRegistMail["mail_flag"] = 5; 
+	if ($array["mailmaga_flg"] == 1) {
+		$arrRegistMail["mailmaga_flg"] = 4; 
+	} elseif ($array["mailmaga_flg"] == 2) {
+		$arrRegistMail["mailmaga_flg"] = 5; 
 	} else {
-		$arrRegistMail["mail_flag"] = 6; 
+		$arrRegistMail["mailmaga_flg"] = 6; 
 	}
 	$arrRegistMail["update_date"] = "now()";
 	
@@ -253,6 +257,7 @@ function lfRegistData ($array, $arrRegistColumn, $arrRejectRegistColumn, $confir
 		$arrRegistMail["create_date"] = "now()";
 		$objQuery->insert("dtb_customer_mail", $arrRegistMail);		
 	}
+*/
 	$objConn->query("COMMIT");
 
 	return $uniqid;
@@ -339,10 +344,10 @@ function lfErrorCheck($array) {
 	$objErr->doFunc(array('パスワード', 'パスワード(確認)', "password", "password02") ,array("EQUAL_CHECK"));
 	$objErr->doFunc(array("パスワードを忘れたときのヒント 質問", "reminder") ,array("SELECT_CHECK", "NUM_CHECK")); 
 	$objErr->doFunc(array("パスワードを忘れたときのヒント 答え", "reminder_answer", STEXT_LEN) ,array("EXIST_CHECK","SPTAB_CHECK" , "MAX_LENGTH_CHECK"));
-	$objErr->doFunc(array("メールマガジン", "mail_flag") ,array("SELECT_CHECK", "NUM_CHECK"));
+	$objErr->doFunc(array("メールマガジン", "mailmaga_flg") ,array("SELECT_CHECK", "NUM_CHECK"));
 	
 	$objErr->doFunc(array("生年月日", "year", "month", "day"), array("CHECK_DATE"));
-	$objErr->doFunc(array("メールマガジン", 'mail_flag'), array("SELECT_CHECK"));
+	$objErr->doFunc(array("メールマガジン", 'mailmaga_flg'), array("SELECT_CHECK"));
 	
 	return $objErr->arrErr;
 }
