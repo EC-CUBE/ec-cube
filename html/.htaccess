@@ -4,4 +4,4 @@ php_value output_handler mb_output_handler
 php_flag mbstring.encoding_translation 1
 php_flag magic_quotes_gpc 0
 php_flag session.use_cookies 0
-session.use_trans_sid 1
+php_flag session.use_trans_sid 1
