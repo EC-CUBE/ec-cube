@@ -102,6 +102,10 @@ function func_return(){
 										<td bgcolor="#ffffff" width="527"><!--{$arrForm.email|escape}--></td>
 									</tr>
 									<tr class="fs12n">
+										<td bgcolor="#f2f1ec" width="190">メールアドレス(モバイル)</td>
+										<td bgcolor="#ffffff" width="527"><!--{$arrForm.email|escape}--></td>
+									</tr>
+									<tr class="fs12n">
 										<td bgcolor="#f2f1ec" width="190">お電話番号<span class="red"> *</span></td>
 										<td bgcolor="#ffffff" width="527"><!--{$arrForm.tel01|escape}--> - <!--{$arrForm.tel02|escape}--> - <!--{$arrForm.tel03|escape}--></td>
 									</tr>

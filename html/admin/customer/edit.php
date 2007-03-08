@@ -67,6 +67,7 @@ $arrRegistColumn = array(
 							 array(  "column" => "addr01",		"convert" => "aKV" ),
 							 array(  "column" => "addr02",		"convert" => "aKV" ),
 							 array(  "column" => "email",		"convert" => "a" ),
+							 array(  "column" => "email_mobile",	"convert" => "a" ),
 							 array(  "column" => "tel01",		"convert" => "n" ),
 							 array(  "column" => "tel02",		"convert" => "n" ),
 							 array(  "column" => "tel03",		"convert" => "n" ),
