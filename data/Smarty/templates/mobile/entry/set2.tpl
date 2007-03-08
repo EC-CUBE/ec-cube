@@ -9,7 +9,7 @@
 	║зетф╩иэ╦╘║ш<font color="#FF0000">*</font><br>
 	<font color="#FF0000"><!--{$arrErr.pref}--></font>
 	<select name="pref">
-		<option value="" selected>етф╩иэ╦╘╓Ра╙бР</option>
+		<option value="">етф╩иэ╦╘╓Ра╙бР</option>
 		<!--{html_options options=$arrPref selected=$pref}-->
 	</select><br>
 
