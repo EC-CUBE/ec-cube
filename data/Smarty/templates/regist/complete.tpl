@@ -41,11 +41,7 @@
 									</tr>
 									<tr><td height="20"></td></tr>
 									<tr align="center">
-										<!--{if $dir_name != ""}-->
-										<td><a href="<!--{$smarty.const.CAMPAIGN_URL}--><!--{$dir_name}-->/index.php" onmouseover="chgImg('<!--{$smarty.const.URL_DIR}-->img/common/b_toppage_on.gif','b_toppage');" onmouseout="chgImg('<!--{$smarty.const.URL_DIR}-->img/common/b_toppage.gif','b_toppage');"><img src="<!--{$smarty.const.URL_DIR}-->img/common/b_toppage.gif" width="150" height="30" alt="トップページへ" border="0" name="b_toppage"></a></td>
-										<!--{else}-->
 										<td><a href="<!--{$smarty.const.URL_DIR}-->index.php" onmouseover="chgImg('<!--{$smarty.const.URL_DIR}-->img/common/b_toppage_on.gif','b_toppage');" onmouseout="chgImg('<!--{$smarty.const.URL_DIR}-->img/common/b_toppage.gif','b_toppage');"><img src="<!--{$smarty.const.URL_DIR}-->img/common/b_toppage.gif" width="150" height="30" alt="トップページへ" border="0" name="b_toppage"></a></td>
-										<!--{/if}-->
 									</tr>
 									<tr><td height="25"></td></tr>
 								</table>
