@@ -270,6 +270,17 @@ function lfErrorCheck($array) {
 	}
 	
 	$objErr->doFunc(array('メールアドレス(モバイル)', "email_mobile", MTEXT_LEN) ,array("EMAIL_CHECK", "EMAIL_CHAR_CHECK", "MAX_LENGTH_CHECK"));
+	//現会員の判定 →　現会員もしくは仮登録中は、メアド一意が前提になってるので同じメアドで登録不可
+	if (strlen($array["email_mobile"]) > 0) {
+		$sql = "SELECT customer_id FROM dtb_customer WHERE email_mobile ILIKE ? escape '#' AND (status = 1 OR status = 2) AND del_flg = 0 AND customer_id <> ?";
+		$checkMail = ereg_replace( "_", "#_", $array["email_mobile"]);
+		$result = $objConn->getAll($sql, array($checkMail, $array["customer_id"]));
+		if (count($result) > 0) {
+			$objErr->arrErr["email"] .= "※ すでに登録されているメールアドレス(モバイル)です。";
+		} 
+	}
+	
+	
 	$objErr->doFunc(array("お電話番号1", 'tel01'), array("EXIST_CHECK"));
 	$objErr->doFunc(array("お電話番号2", 'tel02'), array("EXIST_CHECK"));
 	$objErr->doFunc(array("お電話番号3", 'tel03'), array("EXIST_CHECK"));
