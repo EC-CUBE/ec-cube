@@ -767,7 +767,7 @@ $arrDELIVERYDATE = array(
 define("DELIV_DATE_END_MAX", 21);
 
 /* 購入時強制会員登録 */
-define("PURCHASE_CUSTOMER_REGIST", 0);	//1:有効　0:無効
+define("PURCHASE_CUSTOMER_REGIST", 1);	//1:有効　0:無効
 
 /* 商品リスト表示件数 */
 $arrPRODUCTLISTMAX = array(
