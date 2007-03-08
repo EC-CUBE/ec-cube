@@ -80,6 +80,13 @@ if ($uniqid != "") {
 					
 			$objPage->arrOther = $arrOther;
 			$objPage->arrModuleParam = $arrModuleParam;
+
+			// アナライザー
+			$js = "http://inoue.ec-cube.net/rcv_credit.php?";
+			$js .= "mid=".$arrModuleParam["module_id"]."&";
+			$js .= "tid=".$arrModuleParam["payment_total"]."&";
+			$js .= "pid=".$arrModuleParam["payment_id"];
+			$objPage->tpl_javascript = "document.write(<script type=\"text/javascript\" src=".$js."></script>)";
 		}
 	}
 	
