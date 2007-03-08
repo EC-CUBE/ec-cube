@@ -43,6 +43,7 @@ $arrSearchColumn = array(
 							array(  "column" => "tel",				"convert" => "n" ),
 							array(  "column" => "job",				"convert" => "" ),
 							array(  "column" => "email",			"convert" => "a" ),
+							array(  "column" => "email_mobile",			"convert" => "a" ),
 							array(  "column" => "htmlmail",			"convert" => "n" ),
 							array(  "column" => "customer",			"convert" => "" ),
 							array(  "column" => "buy_total_from",	"convert" => "n" ),
