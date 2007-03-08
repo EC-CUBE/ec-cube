@@ -241,6 +241,7 @@ function lfRegistPreCustomer($arrData, $arrInfo) {
 	$sqlval['password'] = $arrData['password'];
 	$sqlval['reminder'] = $arrData['reminder'];
 	$sqlval['reminder_answer'] = $arrData['reminder_answer'];
+	$sqlval['mailmaga_flg'] = $arrData['mailmaga_flg'];	
 	// 会員仮登録
 	$sqlval['status'] = 1;
 	// URL判定用キー
@@ -270,12 +271,6 @@ function lfRegistPreCustomer($arrData, $arrInfo) {
 		$mail_flag = 6;
 		break;
 	}
-
-	$objQuery = new SC_Query();
-	$objQuery->begin();	
-	// メルマガ配信用テーブル登録
-	lfRegistNonCustomer($arrData['order_email'], $mail_flag, $objQuery);
-	$objQuery->commit();
 
 	//　仮登録完了メール送信
 	$objMailPage = new LC_Page();
@@ -352,9 +347,6 @@ function lfRegistOrder($objQuery, $arrData, $objCampaignSess) {
 	
 	// INSERTの実行
 	$objQuery->insert("dtb_order", $sqlval);
-	
-	// メルマガ配信希望情報の登録
-	lfRegistNonCustomer($arrData['order_email'], $arrData['mailmaga_flg'], $objQuery);
 	
 	return $order_id;
 }
@@ -505,20 +497,6 @@ function lfSetCustomerPurchase($customer_id, $arrData, $objQuery) {
 	}
 	
 	$objQuery->update("dtb_customer", $sqlval, $where, array($customer_id));
-}
-
-/* 非会員のメルマガテーブルへの登録 */
-function lfRegistNonCustomer($email, $mail_flag, $objQuery) {
-	// 会員のメールアドレスが登録されていない場合
-	if(!sfCheckCustomerMailMaga($email)) {
-		$where = "email = ?";
-		$objQuery->delete("dtb_customer_mail", $where, array($email));
-		$sqlval['email'] = $email;
-		$sqlval['mailmaga_flg'] = $mail_flag;
-		$sqlval['create_date'] = "now()";
-		$sqlval['update_date'] = "now()";
-		$objQuery->insert("dtb_customer_mail", $sqlval);
-	}
 }
 
 // 在庫を減らす処理
