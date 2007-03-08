@@ -474,15 +474,17 @@ function sfUpDirName() {
 // 現在のサイトを更新（ただしポストは行わない）
 function sfReload($get = "") {
 	if ($_SERVER["SERVER_PORT"] == "443" ){
-		$protocol = "https";
+		$protocol = "https://";
+		$url = SSL_URL;
 	} else {
-		$protocol = "http";
+		$protocol = "http://";
+		$url = SITE_URL;
 	}
-		
+	
 	if($get != "") {
-		header("Location: ".$protocol."://" .$_SERVER["SERVER_NAME"] . $_SERVER['PHP_SELF'] . "?" . $get);
+		header("Location: ". $protocol . $url . $_SERVER['PHP_SELF'] . "?" . $get);
 	} else {
-		header("Location: ".$protocol."://" .$_SERVER["SERVER_NAME"] . $_SERVER['PHP_SELF']);
+		header("Location: ". $protocol . $url . $_SERVER['PHP_SELF']);
 	}
 	exit;
 }
