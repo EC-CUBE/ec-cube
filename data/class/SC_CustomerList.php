@@ -168,27 +168,41 @@ class SC_CustomerList extends SC_SelectSql {
 
 
 			$sql_where = "";
+			
 			foreach($this->arrSql['email'] as $val) {
 				$val = trim($val);
 				//¸¡º÷¾ò·ï¤ò´Þ¤Þ¤Ê¤¤
 				if($this->arrSql['not_emailinc'] == '1') {
 					
-					if($sql_where == "") {
-						$sql_where .= "(dtb_customer.email NOT ILIKE ? OR dtb_customer.email_mobile NOT ILIKE ?) ";
+					if($sql_where != "") {
+						$sql_where .= "AND ";
+					}						
+					
+					if($search_patern == $search_all) {
+						$sql_where .= "(dtb_customer.$search_pc NOT ILIKE ? OR dtb_customer.$search_mobile NOT ILIKE ?) ";
 					} else {
-						$sql_where .= "AND (dtb_customer.email NOT ILIKE ? OR dtb_customer.email_mobile NOT ILIKE ?) ";
+						$sql_where .= "dtb_customer.$search_patern NOT ILIKE ? ";						
 					}
 					
 				} else {				
-					if($sql_where == "") {
-						$sql_where .= "(dtb_customer.email ILIKE ? OR dtb_customer.email_mobile ILIKE ?) ";
+					if($sql_where != "") {
+						$sql_where .= "OR ";
+					}
+						
+					if($search_patern == $search_all) {
+						$sql_where .= "(dtb_customer.$search_pc ILIKE ? OR dtb_customer.$search_mobile ILIKE ?) ";
 					} else {
-						$sql_where .= "OR (dtb_customer.email ILIKE ? OR dtb_customer.email_mobile ILIKE ?)  ";
+						$sql_where .= "dtb_customer.$$search_patern ILIKE ?  ";
 					}
 				}
 				$searchEmail = $this->addSearchStr($val);
-				$this->arrVal[] = $searchEmail;
-				$this->arrVal[] = $searchEmail;
+				
+				if($search_patern == $search_all) {
+					$this->arrVal[] = $searchEmail;
+					$this->arrVal[] = $searchEmail;
+				} else {
+					$this->arrVal[] = $searchEmail;					
+				}
 			}
 			$this->setWhere($sql_where);
 		}
