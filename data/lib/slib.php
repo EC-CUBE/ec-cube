@@ -479,11 +479,6 @@ function sfReload($get = "") {
 		$url = ereg_replace(URL_DIR . "$", "", SITE_URL);
 	}
 	
-	print($url);
-	print($_SERVER['PHP_SELF']);
-	
-	exit;
-	
 	if($get != "") {
 		header("Location: ". $url . $_SERVER['PHP_SELF'] . "?" . $get);
 	} else {
