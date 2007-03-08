@@ -136,6 +136,8 @@ $retUrl = SITE_URL . 'shopping/load_payment_module.php?module_id=' . MDL_REMISE_
 $exitUrl = SITE_URL . 'shopping/load_payment_module.php';
 $tel = $arrData["order_tel01"].$arrData["order_tel02"].$arrData["order_tel03"];
 $pref = $arrPref[$arrData["order_pref"]];
+$address1 = mb_convert_kana($arrData["order_addr01"], "ASKHV");
+$address2 = mb_convert_kana($arrData["order_addr02"], "ASKHV");
 
 $arrSendData = array(
 	'SEND_URL' => $arrPayment[0]["memo05"],		// 接続先URL
@@ -147,8 +149,8 @@ $arrSendData = array(
 	'KANA2' => $arrData["order_kana02"],			// ユーザー名(カナ)2
 	'TEL' => $tel,									// 電話番号
 	'ADD1' => $pref,								// 住所1
-	'ADD2' => $arrData["order_addr01"],				// 住所2
-	'ADD3' => $arrData["order_addr02"],				// 住所3
+	'ADD2' => $address1,							// 住所2
+	'ADD3' => $address2,							// 住所3
 	'MSUM_01' => $arrData["subtotal"],				// 金額
 	'TAX' => $arrData["deliv_fee"],					// 送料 + 税
 	'TOTAL' => $arrData["payment_total"],			// 合計金額
