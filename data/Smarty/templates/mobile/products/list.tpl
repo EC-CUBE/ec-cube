@@ -4,6 +4,19 @@
 
 <hr>
 
+<!--{if isset($tpl_previous_page) || isset($tpl_next_page)}-->
+<!--{if isset($tpl_previous_page)}-->
+<a href="<!--{$tpl_previous_page|escape}-->">前へ</a>
+<!--{/if}-->
+<!--{if isset($tpl_previous_page) && isset($tpl_next_page)}-->
+｜
+<!--{/if}-->
+<!--{if isset($tpl_next_page)}-->
+<a href="<!--{$tpl_next_page|escape}-->">次へ</a>
+<!--{/if}-->
+<br><br>
+<!--{/if}-->
+
 <!--{foreach from=$arrProducts key=i item=arrProduct}-->
 <!-- ▼商品 ここから -->
 <!--{if $i+1<9}--><!--{$i+1|numeric_emoji}--><!--{else}-->[<!--{$i+1}-->]<!--{/if}-->
@@ -27,7 +40,26 @@
 
 <br>
 <!-- ▲商品 ここまで -->
+<!--{foreachelse}-->
+<!--{if $tpl_search_mode}-->
+該当件数0件です。他の検索キーワードより再度検索をしてください。<br>
+<!--{else}-->
+商品がありません。<br>
+<!--{/if}-->
 <!--{/foreach}-->
+
+<!--{if isset($tpl_previous_page) || isset($tpl_next_page)}-->
+<!--{if isset($tpl_previous_page)}-->
+<a href="<!--{$tpl_previous_page|escape}-->">前へ</a>
+<!--{/if}-->
+<!--{if isset($tpl_previous_page) && isset($tpl_next_page)}-->
+｜
+<!--{/if}-->
+<!--{if isset($tpl_next_page)}-->
+<a href="<!--{$tpl_next_page|escape}-->">次へ</a>
+<!--{/if}-->
+<br>
+<!--{/if}-->
 
 <br>
 <hr>

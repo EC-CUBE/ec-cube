@@ -28,23 +28,25 @@ $objPage = new LC_Page();
 $conn = new SC_DBConn();
 
 //表示件数の選択
-if(sfIsInt($_POST['disp_number'])) {
-	$objPage->disp_number = $_POST['disp_number'];
+if(sfIsInt($_REQUEST['disp_number'])) {
+	$objPage->disp_number = $_REQUEST['disp_number'];
 } else {
 	//最小表示件数を選択
 	$objPage->disp_number = current(array_keys($arrPRODUCTLISTMAX));
 }
 
 //表示順序の保存
-$objPage->orderby = $_POST['orderby'];
+$objPage->orderby = $_REQUEST['orderby'];
 
 // GETのカテゴリIDを元に正しいカテゴリIDを取得する。
 $category_id = sfGetCategoryId("", $_GET['category_id']);
 
 // タイトル編集
 $tpl_subtitle = "";
+$tpl_search_mode = false;
 if($_GET['mode'] == 'search'){
 	$tpl_subtitle = "検索結果";
+	$tpl_search_mode = true;
 }elseif ($category_id == "" ) {
 	$tpl_subtitle = "全商品";
 }else{
@@ -73,7 +75,7 @@ if(($count >= BEST_MIN) && lfIsRootCategory($category_id) && ($_GET['mode'] != '
 	}
 	
 	// 商品一覧の表示処理
-	$objPage = lfDispProductsList($category_id, $_GET['name'], $objPage->disp_number, $_POST['orderby']);
+	$objPage = lfDispProductsList($category_id, $_GET['name'], $objPage->disp_number, $_REQUEST['orderby']);
 	
 	// 検索条件を画面に表示
 	// カテゴリー検索条件
@@ -125,7 +127,27 @@ if($_POST['mode'] == "cart" && $_POST['product_id'] != "") {
 }
 
 
+// ページ送り機能用のURLを作成する。
+$objURL = new Net_URL($_SERVER['PHP_SELF']);
+foreach ($_REQUEST as $key => $value) {
+	if ($key == session_name() || $key == 'pageno') {
+		continue;
+	}
+	$objURL->addQueryString($key, mb_convert_encoding($value, 'SJIS', 'EUC-JP'));
+}
+
+if ($objPage->objNavi->now_page > 1) {
+	$objURL->addQueryString('pageno', $objPage->objNavi->now_page - 1);
+	$objPage->tpl_previous_page = $objURL->path . '?' . $objURL->getQueryString();
+}
+if ($objPage->objNavi->now_page < $objPage->objNavi->max_page) {
+	$objURL->addQueryString('pageno', $objPage->objNavi->now_page + 1);
+	$objPage->tpl_next_page = $objURL->path . '?' . $objURL->getQueryString();
+}
+
+
 $objPage->tpl_subtitle = $tpl_subtitle;
+$objPage->tpl_search_mode = $tpl_search_mode;
 
 // 支払方法の取得
 $objPage->arrPayment = lfGetPayment();
@@ -152,7 +174,7 @@ function lfIsRootCategory($category_id) {
 function lfDispProductsList($category_id, $name, $disp_num, $orderby) {
 	global $objPage;
 	$objQuery = new SC_Query();	
-	$objPage->tpl_pageno = $_POST['pageno'];
+	$objPage->tpl_pageno = $_REQUEST['pageno'];
 
 	//表示件数でテンプレートを切り替える
 	$objPage->tpl_mainpage = "products/list.tpl";		// メインテンプレート		
@@ -194,7 +216,7 @@ function lfDispProductsList($category_id, $name, $disp_num, $orderby) {
 	$objPage->tpl_linemax = $linemax;	// 何件が該当しました。表示用
 	
 	// ページ送りの取得
-	$objNavi = new SC_PageNavi($_POST['pageno'], $linemax, $disp_num, "fnNaviPage", NAVI_PMAX);
+	$objNavi = new SC_PageNavi($_REQUEST['pageno'], $linemax, $disp_num, "fnNaviPage", NAVI_PMAX);
 	
 	$strnavi = $objNavi->strnavi;
 	$strnavi = str_replace('onclick="fnNaviPage', 'onclick="form1.mode.value=\''.'\'; fnNaviPage', $strnavi);
@@ -221,6 +243,7 @@ function lfDispProductsList($category_id, $name, $disp_num, $orderby) {
 		}
 	}
 
+	$objPage->objNavi =& $objNavi;
 	return $objPage;
 }
 
