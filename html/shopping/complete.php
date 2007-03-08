@@ -314,7 +314,8 @@ function lfRegistOrder($objQuery, $arrData, $objCampaignSess) {
 	unset($sqlval['password']);			// ログインパスワード
 	unset($sqlval['reminder']);			// リマインダー質問
 	unset($sqlval['reminder_answer']);	// リマインダー答え
-
+	unset($sqlval['mailmaga_flg']);		// リマインダー答え
+	
 	// 注文ステータス:指定が無ければ新規受付に設定
 	if($sqlval["status"] == ""){
 		$sqlval['status'] = '1';			
