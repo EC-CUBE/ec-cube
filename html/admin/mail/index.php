@@ -164,7 +164,7 @@ case 'back':
 			dtb_customer.tel02,
 			dtb_customer.tel03,
 			dtb_customer.pref,
-			dtb_customer.mailmaga_flag";
+			dtb_customer.mailmaga_flg";
 		$objPage->arrResults = $objQuery->select($col, $from, $where, $arrval);
 
 		//現在時刻の取得
