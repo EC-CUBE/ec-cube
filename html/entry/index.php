@@ -67,7 +67,8 @@ $arrRegistColumn = array(
 							 array(  "column" => "reminder", "convert" => "n" ),
 							 array(  "column" => "reminder_answer", "convert" => "aKV"),
 							 array(  "column" => "password", "convert" => "a" ),
-							 array(  "column" => "password02", "convert" => "a" )
+							 array(  "column" => "password02", "convert" => "a" ),
+							 array(  "column" => "mailmaga_flg", "convert" => "n" ),
 						 );
 
 //---- 登録除外用カラム配列
