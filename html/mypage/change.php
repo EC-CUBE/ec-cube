@@ -77,6 +77,7 @@ $arrRegistColumn = array(
 							 array(  "column" => "password",	"convert" => "an" ),
 							 array(  "column" => "reminder",	"convert" => "n" ),
 							 array(  "column" => "reminder_answer", "convert" => "aKV" ),
+							 array(  "column" => "mailmaga_flg", "convert" => "n" )							 
 						);
 
 
