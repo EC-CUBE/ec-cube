@@ -105,8 +105,6 @@ if ($_GET["mode"] == "query" && sfCheckNumLength($_GET["send_id"])) {
 }
 
 if($_POST['mode'] == 'delete') {
-	$objQuery = new SC_Query();
-	$objQuery->delete("dtb_customer_mail", "email = ?", array($_POST['result_email']));
 }
 
 switch($_POST['mode']) {
@@ -139,7 +137,7 @@ case 'back':
 
 		// 検索結果の取得
 		$objQuery = new SC_Query();
-		$from = "dtb_customer_mail LEFT OUTER JOIN dtb_customer USING(email)";
+		$from = "dtb_customer";
 
 		// 行数の取得
 		$linemax = $objQuery->count($from, $where, $arrval);
@@ -166,7 +164,7 @@ case 'back':
 			dtb_customer.tel02,
 			dtb_customer.tel03,
 			dtb_customer.pref,
-			dtb_customer_mail.mail_flag";
+			dtb_customer.mail_flag";
 		$objPage->arrResults = $objQuery->select($col, $from, $where, $arrval);
 
 		//現在時刻の取得

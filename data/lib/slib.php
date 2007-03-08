@@ -2282,15 +2282,9 @@ function sfEditCustomerData($array, $arrRegistColumn) {
 	if ($array["password"] != DEFAULT_PASSWORD) $arrRegist["password"] = sha1($array["password"] . ":" . AUTH_MAGIC); 
 	$arrRegist["update_date"] = "NOW()";
 	
-	$sqlval["create_date"] = "NOW()";
-	$sqlval["update_date"] = "NOW()";
-	$sqlval['email'] = $array['email'];
-	$sqlval['mail_flag'] = $array['mail_flag'];
 	//-- ÊÔ½¸ÅÐÏ¿¼Â¹Ô
 	$objQuery->begin();
 	$objQuery->update("dtb_customer", $arrRegist, "customer_id = ? ", array($array['customer_id']));
-	$objQuery->delete("dtb_customer_mail", "email = ?", array($array['email']));
-	$objQuery->insert("dtb_customer_mail", $sqlval);
 	$objQuery->commit();
 }
 
