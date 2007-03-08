@@ -166,10 +166,10 @@ class SC_CustomerList extends SC_SelectSql {
 		//　HTML-mail
 		if ( $mode == 'magazine' ){
 			if ( strlen($this->arrSql['htmlmail']) > 0 ) {
-				$this->setWhere( " mail_flag = ? ");
+				$this->setWhere( " mailmaga_flg = ? ");
 				$this->arrVal[] = $this->arrSql['htmlmail'];
 			} else {
-				$this->setWhere( " (mail_flag = 1 or mail_flag = 2) ");
+				$this->setWhere( " (mailmaga_flg = 1 or mailmaga_flg = 2) ");
 			}
 		}
 		
@@ -294,9 +294,9 @@ class SC_CustomerList extends SC_SelectSql {
 				dtb_customer.tel02,
 				dtb_customer.tel03,
 				dtb_customer.pref, 
-				dtb_customer_mail.mail_flag 
+				dtb_customer.mailmaga_flg 
 			FROM 
-				dtb_customer_mail LEFT OUTER JOIN dtb_customer USING(email)";
+				dtb_customer";
 		return $this->getSql(0);	
 	}
 	
@@ -306,7 +306,7 @@ class SC_CustomerList extends SC_SelectSql {
 	}
 	//購入商品コード検索用SQL
 	function getBuyList(){
-		$this->select = "SELECT A.customer_id, A.name01, A.name02, A.kana01, A.kana02, A.sex, A.email, A.tel01, A.tel02, A.tel03, A.pref, A.mail_flag, B.order_email, B.order_id, C.product_code 
+		$this->select = "SELECT A.customer_id, A.name01, A.name02, A.kana01, A.kana02, A.sex, A.email, A.tel01, A.tel02, A.tel03, A.pref, A.mailmaga_flg, B.order_email, B.order_id, C.product_code 
 						FROM (dtb_customer LEFT OUTER JOIN dtb_customer_mail USING (email)) AS A LEFT OUTER JOIN dtb_order AS B ON 
 						A.email=B.order_email LEFT OUTER JOIN dtb_order_detail AS C ON B.order_id = C.order_id";
 	}

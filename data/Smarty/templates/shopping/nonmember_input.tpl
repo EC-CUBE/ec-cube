@@ -222,7 +222,7 @@
 					<tr>
 						<td bgcolor="#f0f0f0" class="fs12">メールマガジン送付について<span class="red">※</span></td>
 						<td bgcolor="#ffffff" class="fs12">
-							<!--{assign var=key value="mail_flag"}-->
+							<!--{assign var=key value="mailmaga_flg"}-->
 							<!--{if $arrErr[$key]}-->
 							<!--{assign var=err_mail value="background-color: `$smarty.const.ERR_COLOR`"}-->
 							<!--{/if}-->

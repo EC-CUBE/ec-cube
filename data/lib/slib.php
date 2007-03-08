@@ -1772,9 +1772,9 @@ function sfRegistTempOrder($uniqid, $sqlval) {
 
 /* 会員のメルマガ登録があるかどうかのチェック(仮会員を含まない) */
 function sfCheckCustomerMailMaga($email) {
-	$col = "T1.email, T1.mail_flag, T2.customer_id";
-	$from = "dtb_customer_mail AS T1 LEFT JOIN dtb_customer AS T2 ON T1.email = T2.email";
-	$where = "T1.email = ? AND T2.status = 2";
+	$col = "email, mailmaga_flg, customer_id";
+	$from = "dtb_customer";
+	$where = "email = ? AND status = 2";
 	$objQuery = new SC_Query();
 	$arrRet = $objQuery->select($col, $from, $where, array($email));
 	// 会員のメールアドレスが登録されている

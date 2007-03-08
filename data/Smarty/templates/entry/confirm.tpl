@@ -89,7 +89,7 @@
 					</tr>
 					<tr>
 						<td bgcolor="#f0f0f0" class="fs12">メールマガジン送付について<span class="red">※</span></td>
-						<td bgcolor="#ffffff" class="fs12"><!--{if $list_data.mail_flag eq 1}-->HTMLメール＋テキストメールを受け取る<!--{elseif $list_data.mail_flag eq 2}-->テキストメールを受け取る<!--{else}-->受け取らない<!--{/if}--></td>
+						<td bgcolor="#ffffff" class="fs12"><!--{if $list_data.mailmaga_flg eq 1}-->HTMLメール＋テキストメールを受け取る<!--{elseif $list_data.mailmaga_flg eq 2}-->テキストメールを受け取る<!--{else}-->受け取らない<!--{/if}--></td>
 					</tr>
 				</table>
 				<!--入力フォームここまで-->

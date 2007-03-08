@@ -195,10 +195,10 @@
 					</tr>
 					<tr>
 						<td bgcolor="#f0f0f0" class="fs12">メールマガジン送付について<span class="red">※</span></td>
-						<td bgcolor="#ffffff" class="fs12"><span class="red"><!--{$arrErr.mail_flag}--></span>
-						<input type="radio" name="mail_flag" id="html" value="1" style="<!--{$arrErr.mail_flag|sfGetErrorColor}-->" <!--{if $mail_flag eq 1 || $mail_flag eq ""}-->checked<!--{/if}--> /><label for="html">HTMLメール＋テキストメールを受け取る</label><br>
-						<input type="radio" name="mail_flag" id="text"value="2" style="<!--{$arrErr.mail_flag|sfGetErrorColor}-->" <!--{if $mail_flag eq 2}-->checked<!--{/if}--> /><label for="text">テキストメールを受け取る</label><br>
-						<input type="radio" name="mail_flag" id="no" value="3" style="<!--{$arrErr.mail_flag|sfGetErrorColor}-->" <!--{if $mail_flag eq 3}-->checked<!--{/if}--> /><label for="no">受け取らない</label></td>
+						<td bgcolor="#ffffff" class="fs12"><span class="red"><!--{$arrErr.mailmaga_flg}--></span>
+						<input type="radio" name="mailmaga_flg" id="html" value="1" style="<!--{$arrErr.mailmaga_flg|sfGetErrorColor}-->" <!--{if $mailmaga_flg eq 1 || $mailmaga_flg eq ""}-->checked<!--{/if}--> /><label for="html">HTMLメール＋テキストメールを受け取る</label><br>
+						<input type="radio" name="mailmaga_flg" id="text"value="2" style="<!--{$arrErr.mailmaga_flg|sfGetErrorColor}-->" <!--{if $mailmaga_flg eq 2}-->checked<!--{/if}--> /><label for="text">テキストメールを受け取る</label><br>
+						<input type="radio" name="mailmaga_flg" id="no" value="3" style="<!--{$arrErr.mailmaga_flg|sfGetErrorColor}-->" <!--{if $mailmaga_flg eq 3}-->checked<!--{/if}--> /><label for="no">受け取らない</label></td>
 					</tr>
 				</table>
 				<!--入力フォームここまで-->

@@ -393,7 +393,7 @@
 							
 							<td><!--{$arrResults[i].name01|escape}--> <!--{$arrResults[i].name02|escape}--></td>
 							<td><!--{$arrResults[i].email|escape}--></td>
-							<!--{assign var="key" value="`$arrResults[i].mail_flag`"}-->
+							<!--{assign var="key" value="`$arrResults[i].mailmaga_flg`"}-->
 							<td align="center"><!--{$arrMAILMAGATYPE[$key]}--></td>
 							<td><!--{$arrResults[i].create_date|sfDispDBDate}--></td>
 							<!--{if $arrResults[i].customer_id != ""}-->
