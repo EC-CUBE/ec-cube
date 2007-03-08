@@ -204,9 +204,9 @@ class SC_CustomerList extends SC_SelectSql {
 				}
 			}
 			
+			$this->setWhere($sql_where);
 sfprintr($this->where);
 sfprintr($this->arrVal);
-			$this->setWhere($sql_where);
 		}
 					
 		//¡¡HTML-mail
