@@ -168,7 +168,6 @@ class SC_CustomerList extends SC_SelectSql {
 
 
 			$sql_where = "";
-			
 			foreach($this->arrSql['email'] as $val) {
 				$val = trim($val);
 				//¸¡º÷¾ò·ï¤ò´Þ¤Þ¤Ê¤¤
@@ -204,6 +203,8 @@ class SC_CustomerList extends SC_SelectSql {
 					$this->arrVal[] = $searchEmail;					
 				}
 			}
+			
+sfpinrtr($sql_where);			
 			$this->setWhere($sql_where);
 		}
 					
