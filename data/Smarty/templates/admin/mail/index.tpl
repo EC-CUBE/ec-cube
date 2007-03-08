@@ -263,7 +263,7 @@
 							</tr>
 							<tr class="fs12n">
 								<td bgcolor="#f2f1ec" width="110">キャンペーン</td>
-								<td bgcolor="#ffffff" width="194" colspan="3">
+								<td bgcolor="#ffffff" width="194">
 									<select name="campaign_id" style="<!--{if $arrErr.campaign_id != ""}-->background-color: <!--{$smarty.const.ERR_COLOR}--><!--{/if}-->">
 										<option value="">選択してください</option>
 										<!--{html_options options=$arrCampaignList selected=$list_data.campaign_id}-->
