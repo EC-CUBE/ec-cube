@@ -249,7 +249,7 @@ function lfRegistPreCustomer($arrData, $arrInfo) {
 	$customer_id = $arrRet[0]['customer_id'];
 	
 	// メルマガ配信用フラグの判定
-	switch($arrData['mail_flag']) {
+	switch($arrData['mailmaga_flg']) {
 	case '1':	// HTMLメール
 		$mail_flag = 4;
 		break;
@@ -305,7 +305,7 @@ function lfRegistOrder($objQuery, $arrData, $objCampaignSess) {
 	$sqlval = $arrData;
 
 	// 受注テーブルに書き込まない列を除去
-	unset($sqlval['mail_flag']);		// メルマガチェック
+	unset($sqlval['mailmaga_flg']);		// メルマガチェック
 	unset($sqlval['deliv_check']);		// 別のお届け先チェック
 	unset($sqlval['point_check']);		// ポイント利用チェック
 	unset($sqlval['member_check']);		// 購入時会員チェック
@@ -347,7 +347,7 @@ function lfRegistOrder($objQuery, $arrData, $objCampaignSess) {
 	$objQuery->insert("dtb_order", $sqlval);
 	
 	// メルマガ配信希望情報の登録
-	lfRegistNonCustomer($arrData['order_email'], $arrData['mail_flag'], $objQuery);
+	lfRegistNonCustomer($arrData['order_email'], $arrData['mailmaga_flg'], $objQuery);
 	
 	return $order_id;
 }
@@ -507,7 +507,7 @@ function lfRegistNonCustomer($email, $mail_flag, $objQuery) {
 		$where = "email = ?";
 		$objQuery->delete("dtb_customer_mail", $where, array($email));
 		$sqlval['email'] = $email;
-		$sqlval['mail_flag'] = $mail_flag;
+		$sqlval['mailmaga_flg'] = $mail_flag;
 		$sqlval['create_date'] = "now()";
 		$sqlval['update_date'] = "now()";
 		$objQuery->insert("dtb_customer_mail", $sqlval);
