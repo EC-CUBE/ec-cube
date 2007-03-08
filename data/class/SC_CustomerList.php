@@ -192,7 +192,7 @@ class SC_CustomerList extends SC_SelectSql {
 					if($search_patern == $search_all) {
 						$sql_where .= "(dtb_customer.$search_pc ILIKE ? OR dtb_customer.$search_mobile ILIKE ?) ";
 					} else {
-						$sql_where .= "dtb_customer.$$search_patern ILIKE ?  ";
+						$sql_where .= "dtb_customer.$search_patern ILIKE ?  ";
 					}
 				}
 				$searchEmail = $this->addSearchStr($val);
