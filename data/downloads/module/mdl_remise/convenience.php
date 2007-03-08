@@ -135,6 +135,8 @@ if (isset($_POST["X-R_CODE"])) {
 $retUrl = SITE_URL . 'shopping/load_payment_module.php?module_id=' . MDL_REMISE_ID;
 $exitUrl = SITE_URL . 'shopping/load_payment_module.php';
 $tel = $arrData["order_tel01"].$arrData["order_tel02"].$arrData["order_tel03"];
+
+// ΩªΩÍ¿∞∑¡
 $pref = $arrPref[$arrData["order_pref"]];
 $address1 = mb_convert_kana($arrData["order_addr01"], "ASKHV");
 $address2 = mb_convert_kana($arrData["order_addr02"], "ASKHV");
