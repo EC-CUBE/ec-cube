@@ -135,7 +135,7 @@ if (isset($_POST["X-R_CODE"])) {
 $retUrl = SITE_URL . 'shopping/load_payment_module.php?module_id=' . MDL_REMISE_ID;
 $exitUrl = SITE_URL . 'shopping/load_payment_module.php';
 $tel = $arrData["order_tel01"].$arrData["order_tel02"].$arrData["order_tel03"];
-$pref = $arrPref($arrData["order_pref"]);
+$pref = $arrPref[$arrData["order_pref"]];
 
 $arrSendData = array(
 	'SEND_URL' => $arrPayment[0]["memo05"],		// ÀÜÂ³ÀèURL
