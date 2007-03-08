@@ -71,6 +71,7 @@ $objView->display(SITE_FRAME);
 
 //---- ÅĞÏ¿
 function lfRegistData($array) {
+	global $objQuery;
 	global $objConn;
 	global $arrInfo;
 	
@@ -132,7 +133,7 @@ function lfRegistData($array) {
 		break;
 	}
 
-	$objConn->update("dtb_customer", $arrRegistMail, "email = '" .addslashes($email). "' AND del_flg = 0");
+	$objQuery->update("dtb_customer", $arrRegistMail, "email = '" .addslashes($email). "' AND del_flg = 0");
 	$objConn->query("COMMIT");
 		
 	return $secret;		// ËÜÅĞÏ¿ID¤òÊÖ¤¹
