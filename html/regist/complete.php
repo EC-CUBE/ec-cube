@@ -18,14 +18,15 @@ class LC_Page{
 $objPage = new LC_Page();
 $objView = new SC_SiteView();
 $objQuery = new SC_Query();
+$objCampaignSess = new SC_CampaignSession();
 
 // キャンペーンからの登録の場合の処理
 if($_GET["cp"] != "") {
 	$arrCampaign= $objQuery->select("directory_name", "dtb_campaign", "campaign_id = ?", array($_GET["cp"]));
 	// キャンペーンディレクトリ名を保持
-	$objPage->dir_name = $arrCampaign[0]['directory_name'];
+	$dir_name = $arrCampaign[0]['directory_name'];
 } else {
-	$objPage->dir_name = "";
+	$dir_name = "";
 }
 
 // レイアウトデザインを取得
@@ -34,7 +35,8 @@ $objPage = sfGetPageLayout($objPage, false, DEF_LAYOUT);
 $objView->assignobj($objPage);
 // フレームを選択(キャンペーンページから遷移なら変更)
 if($objPage->dir_name != "") {
-	$objView->display(CAMPAIGN_TEMPLATE_PATH . $objPage->dir_name  . "/active/site_frame.tpl");
+	$objView->display(CAMPAIGN_TEMPLATE_PATH . $dir_name  . "/active/site_frame.tpl");
+	$objCampaignSess->delCampaign();
 } else {
 	$objView->display(SITE_FRAME);	
 }
