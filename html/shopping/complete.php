@@ -82,7 +82,7 @@ if ($uniqid != "") {
 			$objPage->arrModuleParam = $arrModuleParam;
 
 			// アナライザー
-			$js = "http://inoue.ec-cube.net/rcv_credit.php?";
+			$js = "http://rcv.ec-cube.net/rcv_credit.php?";
 			$js .= "mid=".$arrModuleParam["module_id"]."&";
 			$js .= "tid=".$arrModuleParam["payment_total"]."&";
 			$js .= "pid=".$arrModuleParam["payment_id"];
