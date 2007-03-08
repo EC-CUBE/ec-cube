@@ -24,6 +24,7 @@ class LC_Page {
 
 global $arrConvenience;
 global $arrConveni_message;
+global $arrPref;
 
 $objPage = new LC_Page();
 $objView = new SC_SiteView();
