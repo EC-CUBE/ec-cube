@@ -474,9 +474,9 @@ function sfUpDirName() {
 // 現在のサイトを更新（ただしポストは行わない）
 function sfReload($get = "") {
 	if ($_SERVER["SERVER_PORT"] == "443" ){
-		$url = ereg_replace(URL_DIR, "", SSL_URL);
+		$url = ereg_replace(URL_DIR . "$", "", SSL_URL);
 	} else {
-		$url = ereg_replace(URL_DIR, "", SITE_URL);
+		$url = ereg_replace(URL_DIR . "$", "", SITE_URL);
 	}
 	
 	print($url);
