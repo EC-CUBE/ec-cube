@@ -190,6 +190,10 @@ switch($_POST["mode"]){
 				// タイトル
 				$arrRet['title'] = lfSetConvMSG("コンビニ決済", true);
 
+				// 決済送信データ作成
+				$arrModule['module_id'] = MDL_EPSILON_ID;
+				$arrModule['payment_total'] = $arrData["payment_total"];
+				$arrModule['payment_id'] = PAYMENT_CONVENIENCE_ID;
 				
 				// ステータスは未入金にする
 				$sqlval['status'] = 2;
@@ -200,6 +204,7 @@ switch($_POST["mode"]){
 				$sqlval['memo02'] = serialize($arrRet);
 				$sqlval["memo03"] = $arrPayment[0]["module_id"];
 				$sqlval["memo04"] = $trans_code;
+				$sqlval['memo05'] = serialize($arrModule);
 
 				// 受注一時テーブルに更新
 				sfRegistTempOrder($uniqid, $sqlval);

@@ -62,6 +62,12 @@ if($_GET["result"] == "1"){
 	$arrMemo["trans_code"] = array("name"=>"Epsilonトランザクションコード", "value" => $_GET["trans_code"]);
 	$arrVal["memo02"] = serialize($arrMemo);
 
+	// 決済送信データ作成
+	$arrModule['module_id'] = MDL_EPSILON_ID;
+	$arrModule['payment_total'] = $arrPayment[0]["payment_total"];
+	$arrModule['payment_id'] = PAYMENT_CREDIT_ID;
+	$arrVal["memo05"] = serialize($arrModule);
+
 	// 受注一時テーブルに更新
 	sfRegistTempOrder($uniqid, $arrVal);
 
