@@ -24,7 +24,6 @@ class LC_Page {
 
 global $arrConvenience;
 global $arrConveni_message;
-global $arrPref;
 
 $objPage = new LC_Page();
 $objView = new SC_SiteView();
@@ -136,6 +135,7 @@ if (isset($_POST["X-R_CODE"])) {
 $retUrl = SITE_URL . 'shopping/load_payment_module.php?module_id=' . MDL_REMISE_ID;
 $exitUrl = SITE_URL . 'shopping/load_payment_module.php';
 $tel = $arrData["order_tel01"].$arrData["order_tel02"].$arrData["order_tel03"];
+$pref = $arrPref($arrData["order_pref"]);
 
 $arrSendData = array(
 	'SEND_URL' => $arrPayment[0]["memo05"],		// 接続先URL
@@ -146,7 +146,7 @@ $arrSendData = array(
 	'KANA1' => $arrData["order_kana01"],			// ユーザー名(カナ)1
 	'KANA2' => $arrData["order_kana02"],			// ユーザー名(カナ)2
 	'TEL' => $tel,									// 電話番号
-	'ADD1' => $arrPref($arrData["order_pref"]),		// 住所1
+	'ADD1' => $pref,								// 住所1
 	'ADD2' => $arrData["order_addr01"],				// 住所2
 	'ADD3' => $arrData["order_addr02"],				// 住所3
 	'MSUM_01' => $arrData["subtotal"],				// 金額
