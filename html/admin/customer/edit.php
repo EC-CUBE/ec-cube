@@ -79,6 +79,7 @@ $arrRegistColumn = array(
 							 array(  "column" => "password",	"convert" => "a" ),
 							 array(  "column" => "reminder",	"convert" => "n" ),
 							 array(  "column" => "reminder_answer", "convert" => "aKV" ),
+							 array(  "column" => "mailmaga_flg", "convert" => "n" ),						 
 							 array(  "column" => "note",		"convert" => "aKV" ),
 							 array(  "column" => "point",		"convert" => "n" ),
 							 array(  "column" => "status",		"convert" => "n" )
@@ -105,8 +106,7 @@ $objPage->arrSearchData= $arrSearchData;
 if (($_POST["mode"] == "edit" || $_POST["mode"] == "edit_search") && is_numeric($_POST["edit_customer_id"])) {
 
 	//--¡¡¸ÜµÒ¥Ç¡¼¥¿¼èÆÀ
-	$sql = "SELECT A.*, B.mail_flag FROM dtb_customer AS A LEFT OUTER JOIN dtb_customer_mail AS B USING(email)
-			 WHERE A.del_flg = 0 AND A.customer_id = ?";
+	$sql = "SELECT * FROM dtb_customer WHERE del_flg = 0 AND customer_id = ?";
 	$result = $objConn->getAll($sql, array($_POST["edit_customer_id"]));
 	$objPage->list_data = $result[0];
 	
@@ -206,23 +206,11 @@ function lfRegisDatat($array, $arrRegistColumn) {
 	}
 
 	$arrRegist["update_date"] = "Now()";
-	$arrRegistMail["update_date"] = "Now()";
-	$arrRegistMail["mail_flag"] = $array["mail_flag"];
-	$arrRegistMail['email'] = $array['email'];
+
 	//-- ÊÔ½¸ÅÐÏ¿¼Â¹Ô
 	$objConn->query("BEGIN");
 	$objQuery->Insert("dtb_customer", $arrRegist, "customer_id = '" .addslashes($array["customer_id"]). "'");
-	
-	//-- ¥á¥ë¥Þ¥¬ÅÐÏ¿
-	$mailmaga = $objQuery->getAll("SELECT * FROM dtb_customer_mail WHERE email = ?", $array["edit_email"]);
-	
-	if(count($mailmaga) > 0 ){
-		$objQuery->Update("dtb_customer_mail", $arrRegistMail, "email = '" .addslashes($array["edit_email"]). "'");
-	}else{
-		$arrRegistMail["create_date"] = "Now()";
-		//$arrRegist["create_date"] = date( "Y/m/d H:i:s", time());
-		$objQuery->Insert("dtb_customer_mail", $arrRegistMail);
-	}
+
 	$objConn->query("COMMIT");
 }
 
