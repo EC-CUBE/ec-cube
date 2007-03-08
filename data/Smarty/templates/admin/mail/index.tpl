@@ -271,7 +271,7 @@
 								</td>
 								<td bgcolor="#f2f1ec" width="110">メールアドレス種別</td>
 								<td bgcolor="#ffffff" width="195">
-									<!--{html_checkboxes name="mail_type" options=$arrMailType separator="&nbsp;" selected=$list_data.mail_type}-->
+									<!--{html_checkboxes name="mail_type" options=$arrMailType separator="<br />" selected=$list_data.mail_type}-->
 								</td>								
 							</tr>
 						</table>
