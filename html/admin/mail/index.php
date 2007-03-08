@@ -26,6 +26,8 @@ class LC_Page {
 		$this->arrJob = $arrJob;
 		global $arrSex;		
 		$this->arrSex = $arrSex;
+		global $arrMailType;
+		$this->arrMailType = $arrMailType;
 		global $arrPageRows;
 		$this->arrPageRows = $arrPageRows;
 		// ページナビ用
@@ -91,6 +93,15 @@ if ($_GET["mode"] == "query" && sfCheckNumLength($_GET["send_id"])) {
 			$job_disp .= $list_data['job'][$key] . " ";
 		}
 		$list_data['job_disp'] = $job_disp;
+	}
+	
+	// メール種別の変換
+	if (count($list_data['mail_type']) > 0) {
+		foreach($list_data['mail_type'] as $key => $val){
+			$list_data['mail_type'][$key] = $objPage->arrMailType[$val];
+			$mail_type_disp .= $list_data['mail_type'][$key] . " ";
+		}
+		$list_data['mail_type_disp'] = $mail_type_disp;
 	}
 	
 	// カテゴリ変換

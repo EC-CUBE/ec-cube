@@ -679,6 +679,15 @@ $arrSex = array(
 					2 => "女性"
 				);
 
+/*　メールアドレス種別　*/
+define ("MAIL_TYPE_PC",1);
+define ("MAIL_TYPE_MOBILE",1);
+$arrMailType = array(
+					MAIL_TYPE_PC => "パソコン用アドレス",
+					MAIL_TYPE_MOBILE => "携帯用アドレス",
+				);		
+				
+				
 /*　1行数　*/		
 $arrPageRows = array(
 						10 => 10,

@@ -263,12 +263,16 @@
 							</tr>
 							<tr class="fs12n">
 								<td bgcolor="#f2f1ec" width="110">キャンペーン</td>
-								<td bgcolor="#ffffff" width="499" colspan="3">
+								<td bgcolor="#ffffff" width="194" colspan="3">
 									<select name="campaign_id" style="<!--{if $arrErr.campaign_id != ""}-->background-color: <!--{$smarty.const.ERR_COLOR}--><!--{/if}-->">
 										<option value="">選択してください</option>
 										<!--{html_options options=$arrCampaignList selected=$list_data.campaign_id}-->
 									</select>
 								</td>
+								<td bgcolor="#f2f1ec" width="110">メールアドレス種別</td>
+								<td bgcolor="#ffffff" width="195">
+									<!--{html_checkboxes name="mail_type" options=$arrMailType separator="&nbsp;" selected=$list_data.mail_type}-->
+								</td>								
 							</tr>
 						</table>
 						<!--検索条件設定テーブルここまで-->
@@ -379,10 +383,10 @@
 					<table width="840" border="0" cellspacing="1" cellpadding="5" summary=" ">
 						<tr bgcolor="#636469" align="center" class="fs12n">
 							<td width="20"><span class="white">#</span></td>
-							<td width="50"><span class="white">会員番号</span></td>
-							<td width="100"><span class="white">名前</span></td>
-							<td width="170"><span class="white">メールアドレス</span></td>													
-							<td width="170"><span class="white">メールアドレス(携帯用)</span></td>	
+							<td width="80"><span class="white">会員番号</span></td>
+							<td width="80"><span class="white">受注番号</span></td>
+							<td width="140"><span class="white">名前</span></td>	
+							<td width="190"><span class="white">メールアドレス</span></td>	
 							<td width="101"><span class="white">希望配信</span></td>
 							<td width="100"><span class="white">登録日</span></td>
 							<td width="40"><span class="white">削除</span></td>		
