@@ -249,8 +249,8 @@ function lfRegistPreCustomer($arrData, $arrInfo) {
 	default:
 		$mail_flag = 6;
 		break;
-	}	
-
+	}
+	// ¥á¥ë¥Þ¥¬¥Õ¥é¥°
 	$sqlval['mailmaga_flg'] = $mail_flag;
 		
 	// ²ñ°÷²¾ÅÐÏ¿
