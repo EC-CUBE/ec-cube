@@ -204,7 +204,8 @@ class SC_CustomerList extends SC_SelectSql {
 				}
 			}
 			
-sfprintr($sql_where);			
+sfprintr($sql_where);
+sfprintr($this->arrVal);
 			$this->setWhere($sql_where);
 		}
 					
