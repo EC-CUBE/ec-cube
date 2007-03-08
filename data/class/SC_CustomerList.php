@@ -163,6 +163,25 @@ class SC_CustomerList extends SC_SelectSql {
 			}
 			$this->setWhere($sql_where);
 		}
+	
+		//　携帯用メールアドレス
+		if (strlen($this->arrSql['email_mobile']) > 0) {
+			//カンマ区切りで複数の条件指定可能に
+			$this->arrSql['email_mobile'] = explode(",", $this->arrSql['email_mobile']);
+			$sql_where = "";
+			foreach($this->arrSql['email_mobile'] as $val) {
+				$val = trim($val);
+				if($sql_where == "") {
+					$sql_where .= "dtb_customer.email_mobile ILIKE ? ";
+				} else {
+					$sql_where .= "OR dtb_customer.email_mobile ILIKE ? ";
+				}
+				$this->arrVal[] = $this->addSearchStr($val);
+			}
+			$this->setWhere($sql_where);
+		}
+		
+				
 		//　HTML-mail
 		if ( $mode == 'magazine' ){
 			if ( strlen($this->arrSql['htmlmail']) > 0 ) {
