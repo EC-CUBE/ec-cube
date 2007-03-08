@@ -276,7 +276,7 @@ function lfErrorCheck($array) {
 		$checkMail = ereg_replace( "_", "#_", $array["email_mobile"]);
 		$result = $objConn->getAll($sql, array($checkMail, $array["customer_id"]));
 		if (count($result) > 0) {
-			$objErr->arrErr["email"] .= "※ すでに登録されているメールアドレス(モバイル)です。";
+			$objErr->arrErr["email_mobile"] .= "※ すでに登録されているメールアドレス(モバイル)です。";
 		} 
 	}
 	
