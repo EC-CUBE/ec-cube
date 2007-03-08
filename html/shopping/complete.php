@@ -241,7 +241,25 @@ function lfRegistPreCustomer($arrData, $arrInfo) {
 	$sqlval['password'] = $arrData['password'];
 	$sqlval['reminder'] = $arrData['reminder'];
 	$sqlval['reminder_answer'] = $arrData['reminder_answer'];
-	$sqlval['mailmaga_flg'] = $arrData['mailmaga_flg'];	
+	
+	// メルマガ配信用フラグの判定
+	switch($arrData['mail_flag']) {
+	case '1':	// HTMLメール
+		$mail_flag = 4;
+		break;
+	case '2':	// TEXTメール
+		$mail_flag = 5;
+		break;
+	case '3':	// 希望なし
+		$mail_flag = 6;
+		break;
+	default:
+		$mail_flag = 6;
+		break;
+	}	
+
+	$sqlval['mailmaga_flg'] = $mail_flag;
+		
 	// 会員仮登録
 	$sqlval['status'] = 1;
 	// URL判定用キー
@@ -256,22 +274,6 @@ function lfRegistPreCustomer($arrData, $arrInfo) {
 	$arrRet = $objQuery->select("customer_id", "dtb_customer", "secret_key = ?", array($sqlval['secret_key']));
 	$customer_id = $arrRet[0]['customer_id'];
 	
-	// メルマガ配信用フラグの判定
-	switch($arrData['mailmaga_flg']) {
-	case '1':	// HTMLメール
-		$mail_flag = 4;
-		break;
-	case '2':	// TEXTメール
-		$mail_flag = 5;
-		break;
-	case '3':	// 希望なし
-		$mail_flag = 6;
-		break;
-	default:
-		$mail_flag = 6;
-		break;
-	}
-
 	//　仮登録完了メール送信
 	$objMailPage = new LC_Page();
 	$objMailPage->to_name01 = $arrData['order_name01'];
@@ -314,7 +316,7 @@ function lfRegistOrder($objQuery, $arrData, $objCampaignSess) {
 	unset($sqlval['password']);			// ログインパスワード
 	unset($sqlval['reminder']);			// リマインダー質問
 	unset($sqlval['reminder_answer']);	// リマインダー答え
-	unset($sqlval['mail_flag']);			// メールフラグ
+	unset($sqlval['mail_flag']);		// メールフラグ
 	
 	// 注文ステータス:指定が無ければ新規受付に設定
 	if($sqlval["status"] == ""){
