@@ -108,6 +108,10 @@ define("AFF_TAG_MID", 3);
 define("AFF_SHOPPING_COMPLETE", 1);
 // ユーザ登録完了
 define("AFF_ENTRY_COMPLETE", 2);
+// 決済受信用URL
+define("CREDIT_HTTP_DOMAIN", "http://rcv.ec-cube.net/");
+define("CREDIT_HTTP_ANALYZE_PROGRAM", "rcv_credit.php");
+define("CREDIT_HTTP_ANALYZE_URL", CREDIT_HTTP_DOMAIN . CREDIT_HTTP_ANALYZE_PROGRAM);
 //--------------------------------------------------------------------------------------------------------
 
 // 文字コード
