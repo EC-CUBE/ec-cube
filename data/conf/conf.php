@@ -681,7 +681,7 @@ $arrSex = array(
 
 /*　メールアドレス種別　*/
 define ("MAIL_TYPE_PC",1);
-define ("MAIL_TYPE_MOBILE",1);
+define ("MAIL_TYPE_MOBILE",2);
 $arrMailType = array(
 					MAIL_TYPE_PC => "パソコン用アドレス",
 					MAIL_TYPE_MOBILE => "携帯用アドレス",
