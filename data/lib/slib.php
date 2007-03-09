@@ -146,7 +146,7 @@ function sfIndexExists($table_name, $col_name, $index_name, $length = "", $dsn =
 			$arrRet = $objQuery->getAll("SHOW INDEX FROM ? WHERE Key_name = ?", array($table_name, $index_name));			
 			break;
 		default:
-			break;
+			return false;
 		}
 		// すでにインデックスが存在する場合
 		if(count($arrRet) > 0) {
@@ -164,7 +164,7 @@ function sfIndexExists($table_name, $col_name, $index_name, $length = "", $dsn =
 			$objQuery->query("CREATE INDEX ? ON ? (?(?))", array($index_name, $table_name, $col_name, $length));			
 			break;
 		default:
-			break;
+			return false;
 		}
 		return true;
 	}	
