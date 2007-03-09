@@ -215,20 +215,7 @@ function lfRegistPreCustomer($arrData, $arrInfo) {
 	$sqlval['password'] = $arrData['password'];
 	$sqlval['reminder'] = $arrData['reminder'];
 	$sqlval['reminder_answer'] = $arrData['reminder_answer'];
-	// 会員仮登録
-	$sqlval['status'] = 1;
-	// URL判定用キー
-	$sqlval['secret_key'] = sfGetUniqRandomId("t"); 
-	
-	$objQuery = new SC_Query();
-	$sqlval['create_date'] = "now()";
-	$sqlval['update_date'] = "now()";
-	$objQuery->insert("dtb_customer", $sqlval);
-	
-	// 顧客IDの取得
-	$arrRet = $objQuery->select("customer_id", "dtb_customer", "secret_key = ?", array($sqlval['secret_key']));
-	$customer_id = $arrRet[0]['customer_id'];
-	
+
 	// メルマガ配信用フラグの判定
 	switch($arrData['mail_flag']) {
 	case '1':	// HTMLメール
@@ -244,12 +231,21 @@ function lfRegistPreCustomer($arrData, $arrInfo) {
 		$mail_flag = 6;
 		break;
 	}
-
+	$sqlval['mailmaga_flg'] = $mail_flag;
+		
+	// 会員仮登録
+	$sqlval['status'] = 1;
+	// URL判定用キー
+	$sqlval['secret_key'] = sfGetUniqRandomId("t"); 
+	
 	$objQuery = new SC_Query();
-	$objQuery->begin();	
-	// メルマガ配信用テーブル登録
-	lfRegistNonCustomer($arrData['order_email'], $mail_flag, $objQuery);
-	$objQuery->commit();
+	$sqlval['create_date'] = "now()";
+	$sqlval['update_date'] = "now()";
+	$objQuery->insert("dtb_customer", $sqlval);
+	
+	// 顧客IDの取得
+	$arrRet = $objQuery->select("customer_id", "dtb_customer", "secret_key = ?", array($sqlval['secret_key']));
+	$customer_id = $arrRet[0]['customer_id'];
 
 	//　仮登録完了メール送信
 	$objMailPage = new LC_Page();
@@ -346,10 +342,7 @@ function lfRegistOrder($objQuery, $arrData) {
 	
 	// INSERTの実行
 	$objQuery->insert("dtb_order", $sqlval);
-	
-	// メルマガ配信希望情報の登録
-	lfRegistNonCustomer($arrData['order_email'], $arrData['mail_flag'], $objQuery);
-	
+
 	return $order_id;
 }
 
@@ -471,20 +464,6 @@ function lfSetCustomerPurchase($customer_id, $arrData, $objQuery) {
 	}
 	
 	$objQuery->update("dtb_customer", $sqlval, $where, array($customer_id));
-}
-
-/* 非会員のメルマガテーブルへの登録 */
-function lfRegistNonCustomer($email, $mail_flag, $objQuery) {
-	// 会員のメールアドレスが登録されていない場合
-	if(!sfCheckCustomerMailMaga($email)) {
-		$where = "email = ?";
-		$objQuery->delete("dtb_customer_mail", $where, array($email));
-		$sqlval['email'] = $email;
-		$sqlval['mail_flag'] = $mail_flag;
-		$sqlval['create_date'] = "now()";
-		$sqlval['update_date'] = "now()";
-		$objQuery->insert("dtb_customer_mail", $sqlval);
-	}
 }
 
 // 在庫を減らす処理
