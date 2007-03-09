@@ -135,8 +135,11 @@
 			<input type="hidden" name="ADD2" value="<!--{$arrSendData.ADD2|escape}-->">
 			<input type="hidden" name="ADD3" value="<!--{$arrSendData.ADD3|escape}-->">
 			<input type="hidden" name="TOTAL" value="<!--{$arrSendData.TOTAL|escape}-->">
+			<input type="hidden" name="TAX" value="<!--{$arrSendData.TAX|escape}-->">
 			<input type="hidden" name="RETURL" value="<!--{$arrSendData.RETURL|escape}-->">
 			<input type="hidden" name="NG_RETURL" value="<!--{$arrSendData.NG_RETURL|escape}-->">
+			<input type="hidden" name="MNAME_01" value="<!--{$arrSendData.MNAME_01|escape}-->">
+			<input type="hidden" name="MSUM_01" value="<!--{$arrSendData.MSUM_01|escape}-->">
 			<input type="hidden" name="REMARKS3" value="<!--{$arrSendData.REMARKS3|escape}-->">
 			<input type="hidden" name="mode" value="return">
 			

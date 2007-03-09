@@ -141,6 +141,10 @@ $pref = $arrPref[$arrData["order_pref"]];
 $address1 = mb_convert_kana($arrData["order_addr01"], "ASKHV");
 $address2 = mb_convert_kana($arrData["order_addr02"], "ASKHV");
 
+// 商品名整形(最大7個のため、商品代金として全体で出力する)
+$itemName = "商品代金";
+$itemPlace = $arrData["payment_total"] - $arrData["deliv_fee"];
+
 $arrSendData = array(
 	'SEND_URL' => $arrPayment[0]["memo05"],		// 接続先URL
 	'S_TORIHIKI_NO' => $arrData["order_id"],		// 請求番号(EC-CUBE)
@@ -161,6 +165,8 @@ $arrSendData = array(
 	'RETURL' => $retUrl,							// 完了通知URL
 	'NG_RETURL' => $retUrl,						// NG完了通知URL
 	'EXITURL' => $exitUrl,							// 戻り先URL
+	'MNAME_01' => $itemName,						// 商品名
+	'MSUM_01' => $itemPlace,						// 商品代金合計(送料+税以外)
 	'REMARKS3' => MDL_REMISE_POST_VALUE
 );
 
