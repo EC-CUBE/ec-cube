@@ -29,6 +29,9 @@ $objFormParam->setParam($_POST);
 // レイアウトデザインを取得
 $objPage = sfGetPageLayout($objPage, false, "mypage/index.php");
 
+// 携帯端末IDが一致する会員が存在するかどうかをチェックする。
+$objPage->tpl_valid_phone_id = $objCustomer->checkMobilePhoneId();
+
 // ログイン処理
 if($_POST['mode'] == 'login') {
 	$objFormParam->toLower('login_email');
@@ -43,7 +46,8 @@ if($_POST['mode'] == 'login') {
 	}
 
 	if (count($arrErr) == 0){
-		if($objCustomer->getCustomerDataFromEmailPass($arrForm['login_pass'], $arrForm['login_email'])) {
+		if($objCustomer->getCustomerDataFromMobilePhoneIdPass($arrForm['login_pass']) ||
+		   $objCustomer->getCustomerDataFromEmailPass($arrForm['login_pass'], $arrForm['login_email'], true)) {
 			// ログインが成功した場合は携帯端末IDを保存する。
 			$objCustomer->updateMobilePhoneId();
 
@@ -71,7 +75,7 @@ if($_POST['mode'] == 'login') {
 
 
 // ログインチェック
-if(!isset($_SESSION['customer'])) {
+if(!$objCustomer->isLoginSuccess()) {
 	$objPage->tpl_mainpage = 'mypage/login.tpl';
 	$objView->assignArray($objFormParam->getHashArray());
 	$objView->assignArray(array("arrErr" => $arrErr));

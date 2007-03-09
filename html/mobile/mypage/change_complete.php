@@ -22,7 +22,7 @@ $objPage = sfGetPageLayout($objPage, false, "mypage/index.php");
 $objCustomer->updateSession();
 
 //ログイン判定
-if (!$objCustomer->isLoginSuccess()){
+if (!$objCustomer->isLoginSuccess(true)){
 	sfDispSiteError(CUSTOMER_ERROR);
 }else {
 	//マイページトップ顧客情報表示用

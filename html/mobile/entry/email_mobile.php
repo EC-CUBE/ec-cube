@@ -35,7 +35,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 	$objFormParam->convParam();
 	$objPage->arrErr = lfCheckError($objFormParam, $objCustomer);
 
-	if (empty($arrRet)) {
+	if (empty($objPage->arrErr)) {
 		lfRegister($objFormParam, $objCustomer);
 		$objPage->tpl_mainpage = 'entry/email_mobile_complete.tpl';
 		$objPage->tpl_title = '╥хбс╔А║╪╔Кепо©╢╟н╩';
