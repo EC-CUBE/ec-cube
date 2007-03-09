@@ -255,7 +255,15 @@ function lfRegistData ($array, $arrRegistColumn, $arrRejectRegistColumn) {
 		$uniqid = sfGetUniqRandomId("t");
 		$count = $objConn->getOne("SELECT COUNT(*) FROM dtb_customer WHERE secret_key = ?", array($uniqid));
 	}
-	
+
+	if ($arrRegist["mailmaga_flg"] == 1) {
+		$arrRegist["mailmaga_flg"] = 4; 
+	} elseif ($arrRegist["mailmaga_flg"] == 2) {
+		$arrRegist["mailmaga_flg"] = 5; 
+	} else {
+		$arrRegist["mailmaga_flg"] = 6; 
+	}	
+		
 	$arrRegist["secret_key"] = $uniqid;		// 仮登録ID発行
 	$arrRegist["create_date"] = "now()"; 	// 作成日
 	$arrRegist["update_date"] = "now()"; 	// 更新日
