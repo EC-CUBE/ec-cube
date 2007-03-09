@@ -83,7 +83,7 @@ function sfTabaleExists($table_name, $dsn = "") {
 	return false;
 }
 
-// カラムの存在チェック
+// カラムの存在チェックと作成
 function sfColumnExists($table_name, $col_name, $col_type = "", $dsn = "", $add = false) {
 	if($dsn == "") {
 		if(defined('DEFAULT_DSN')) {
