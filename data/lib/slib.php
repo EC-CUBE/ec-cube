@@ -138,9 +138,11 @@ function sfIndexExists($table_name, $col_name, $index_name, $length = "", $dsn =
 		list($db_type) = split(":", $dsn);		
 		switch($db_type) {
 		case 'pgsql':
+			// インデックスの存在確認
 			$arrRet = $objQuery->getAll("SELECT relname FROM pg_class WHERE relname = ?", array($index_name));
 			break;
 		case 'mysql':
+			// インデックスの存在確認
 			$arrRet = $objQuery->getAll("SHOW INDEX FROM ? WHERE Key_name = ?", array($table_name, $index_name));			
 			break;
 		default:
@@ -152,7 +154,7 @@ function sfIndexExists($table_name, $col_name, $index_name, $length = "", $dsn =
 		}
 	}
 	
-	// インデックスを追加する
+	// インデックスを作成する
 	if($add){
 		switch($db_type) {
 		case 'pgsql':
