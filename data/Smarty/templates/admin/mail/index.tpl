@@ -147,7 +147,7 @@
 								<td bgcolor="#f2f1ec" width="110">¿¦¶È</td>
 								<td bgcolor="#ffffff" width="499" colspan="3">
 									<!--{if $arrErr.job}--><span class="red12"><!--{$arrErr.job}--></span><!--{/if}-->
-									<!--{html_checkboxes name="job" options=$arrJob separator="&nbsp;" selected=$list_data.job}-->
+									<!--{html_checkboxes_ex name="job" options=$arrJob separator="&nbsp;" selected=$list_data.job}-->
 								</td>
 							</tr>
 				
