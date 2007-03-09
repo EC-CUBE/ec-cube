@@ -9,10 +9,11 @@
 function fnChangeVisible(check_id, mod_id){
 	
     if (document.getElementById(check_id).checked){
-		document.getElementById('next_link').onclick = false;
+		document.getElementById(mod_id).onclick = false;
 		document.getElementById(mod_id).src = '../img/install/next.jpg';		
     } else {
-		document.getElementById('next_link').onclick = true;		
+		document.getElementById('next_link').onclick = '';    
+		document.getElementById(mod_id).disabled = true;		
 		document.getElementById(mod_id).src = '../img/install/next_off.jpg';
     }
 }
