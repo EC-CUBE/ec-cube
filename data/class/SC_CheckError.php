@@ -184,6 +184,17 @@ class SC_CheckError {
 		}
 	}
 	
+	/*　最小数値制限の判定　*/
+	// value[0] = 項目名 value[1] = 判定対象文字列  value[2] = 最小数
+	function MIN_CHECK( $value ) {		// 入力が最小数未満ならエラーを返す
+		if(isset($this->arrErr[$value[1]])) {
+			return;
+		}
+		if($this->arrParam[$value[1]] < $value[2] ) {
+			$this->arrErr[$value[1]] = "※ " . $value[0] . "は" . $value[2] . "以上で入力してください。<br />";
+		}
+	}
+	
 		
 	/*　数字の判定　*/
 	// value[0] = 項目名 value[1] = 判定対象文字列 
