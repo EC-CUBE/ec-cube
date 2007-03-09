@@ -100,7 +100,13 @@ if (isset($_POST["X-R_CODE"])) {
 		$conveni_type = lfSetConvMSG("支払いコンビニ", $arrConvenience[$_POST["X-PAY_CSV"]]);
 		$payment_total = lfSetConvMSG("合計金額", $_POST["X-TOTAL"]);
 		$receipt_no = lfSetConvMSG("コンビニ払い出し番号", $_POST["X-PAY_NO1"]);
-		$payment_url = lfSetConvMSG("コンビニ払い出しURL", $_POST["X-PAY_NO2"]);
+
+		// ファミリーマートのみURLがない
+		if ($_POST["X-PAY_CSV"] != "D030") {
+			$payment_url = lfSetConvMSG("コンビニ払い出しURL", $_POST["X-PAY_NO2"]);
+		} else {
+			$payment_url = lfSetConvMSG("注文番号", $_POST["X-PAY_NO2"]);
+		}
 		
 		$arrRet['cv_type'] = $conveni_type;				// コンビニの種類
 		$arrRet['cv_payment_url'] = $payment_url;		// 払込票URL(PC)
