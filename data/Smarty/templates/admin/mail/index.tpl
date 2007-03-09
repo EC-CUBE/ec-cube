@@ -135,7 +135,14 @@
 									</span>
 								</td>
 							</tr>
-														
+
+							<tr class="fs12n">
+								<td bgcolor="#f2f1ec" width="110">メールアドレス種別</td>
+								<td bgcolor="#ffffff" colspan="3">
+									<!--{html_checkboxes name="mail_type" options=$arrMailType separator="<br />" selected=$list_data.mail_type}-->
+								</td>
+							</tr>
+																						
 							<tr class="fs12n">
 								<td bgcolor="#f2f1ec" width="110">職業</td>
 								<td bgcolor="#ffffff" width="499" colspan="3">
@@ -253,16 +260,12 @@
 							</tr>
 							<tr class="fs12n">
 								<td bgcolor="#f2f1ec" width="110">キャンペーン</td>
-								<td bgcolor="#ffffff" width="194">
+								<td bgcolor="#ffffff" colspan="3">
 									<select name="campaign_id" style="<!--{if $arrErr.campaign_id != ""}-->background-color: <!--{$smarty.const.ERR_COLOR}--><!--{/if}-->">
 										<option value="">選択してください</option>
 										<!--{html_options options=$arrCampaignList selected=$list_data.campaign_id}-->
 									</select>
-								</td>
-								<td bgcolor="#f2f1ec" width="110">メールアドレス種別</td>
-								<td bgcolor="#ffffff" width="195">
-									<!--{html_checkboxes name="mail_type" options=$arrMailType separator="<br />" selected=$list_data.mail_type}-->
-								</td>								
+								</td>						
 							</tr>
 						</table>
 						<!--検索条件設定テーブルここまで-->
