@@ -16,9 +16,10 @@ define("MDL_REMISE_POST_VALUE", A0000155);
 // ルミーズへのデータ送信用エンコード
 define("REMISE_SEND_ENCODE", 'SJIS-win');
 
-// クレジット決済・コンビニ決済上限金額
+// クレジット決済・コンビニ決済上限・下限金額
 define("REMISE_CREDIT_UPPER", 500000);
 define("REMISE_CONVENIENCE_UPPER", 500000);
+define("REMISE_CONVENIENCE_BOTTOM", 200);
 
 // クレジット支払いコード(10:一括 61:分割 80:リボ)
 define("REMISE_PAYMENT_METHOD_LUMP", 10);

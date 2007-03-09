@@ -163,8 +163,6 @@ function lfLoadData(){
 	
 	// コンビニ
 	$objFormParam->splitParamCheckBoxes("convenience");
-
-	$objFormParam->setParam($arrCredit);
 }
 
 // DBからデータを取得する
@@ -247,7 +245,6 @@ function lfUpdPaymentDB(){
 				,"del_flg" => "0"
 				,"charge_flg" => "2"
 				,"upper_rule_max" => REMISE_CREDIT_UPPER
-				
 			);
 		}
 
@@ -271,6 +268,7 @@ function lfUpdPaymentDB(){
 				,"del_flg" => "0"
 				,"charge_flg" => "1"
 				,"upper_rule_max" => REMISE_CONVENIENCE_UPPER
+				,"rule_min" => REMISE_CONVENIENCE_BOTTOM
 			);
 		}
 
