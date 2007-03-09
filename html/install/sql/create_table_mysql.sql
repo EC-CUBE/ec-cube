@@ -158,9 +158,9 @@ CREATE TABLE dtb_payment (
     update_date datetime,
     payment_image text,
     upper_rule numeric,
-	charge_flg int2 DEFAULT 1,
-	rule_min numeric,
-	upper_rule_max numeric,
+    charge_flg int2 DEFAULT 1,
+    rule_min numeric,
+    upper_rule_max numeric,
     module_id int4,
     module_path text,
     memo01 text,
@@ -517,7 +517,8 @@ CREATE TABLE dtb_customer (
     cell01 text,
     cell02 text,
     cell03 text,
-    mobile_phone_id text
+    mobile_phone_id text,
+    mailmaga_flg smallint
 ) TYPE=InnoDB ;
 
 CREATE INDEX dtb_customer_mobile_phone_id_key ON dtb_customer (mobile_phone_id(64));
@@ -691,7 +692,7 @@ CREATE TABLE dtb_order_temp (
     cell01 text,
     cell02 text,
     cell03 text,
-	order_id int4,
+    order_id int4,
     memo01 text,
     memo02 text,
     memo03 text,
@@ -901,16 +902,17 @@ CREATE TABLE dtb_user_regist (
 
 CREATE TABLE dtb_templates 
 (
-	template_code		varchar(50) NOT NULL UNIQUE	,
-	template_name		text			,
-	create_date		datetime		NOT NULL	,
-	update_date		datetime		NOT NULL	
+    template_code        varchar(50) NOT NULL UNIQUE    ,
+    template_name        text            ,
+    create_date        datetime        NOT NULL    ,
+    update_date        datetime        NOT NULL    
 ) TYPE=InnoDB ;
 
 CREATE TABLE dtb_table_comment
 (
-	id	int auto_increment primary key,
-	table_name	text,
-	column_name	text,
-	description	text
+    id    int auto_increment primary key,
+    table_name    text,
+    column_name    text,
+    description    text
 ) TYPE=InnoDB ;
+
