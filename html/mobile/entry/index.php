@@ -157,8 +157,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 			$objPage->passlen = lfPassLen($passlen);
 			
 			//メール受け取り
-			if ($objPage->arrForm['mail_flag'] = "ON") {
+			if (strtolower($objPage->arrForm['mail_flag']) == "on") {
 				$objPage->arrForm['mail_flag']  = "2";
+			} else {
+				$objPage->arrForm['mail_flag']  = "3";
 			}
 
 			$objPage->tpl_mainpage = 'entry/confirm.tpl';
