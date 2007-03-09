@@ -55,7 +55,7 @@ $arrRegistColumn = array(
 							 array(  "column" => "reminder", "convert" => "n" ),
 							 array(  "column" => "reminder_answer", "convert" => "aKV"),
 							 array(  "column" => "password", "convert" => "a" ),
-							 array(  "column" => "mailmaga_flg", "convert" => "n" )								 
+							 array(  "column" => "mailmaga_flg", "convert" => "n" )			 
 						 );
 
 //---- 登録除外用カラム配列
@@ -236,28 +236,6 @@ function lfRegistData ($array, $arrRegistColumn, $arrRejectRegistColumn) {
 
 	$objQuery = new SC_Query();
 	$objQuery->insert("dtb_customer", $arrRegist);
-
-	//--　非会員でメルマガ登録しているかの判定
-	$sql = "SELECT count(*) FROM dtb_customer_mail WHERE email = ?";
-	$mailResult = $objConn->getOne($sql, array($arrRegist["email"]));
-
-	//--　メルマガ仮登録実行
-	if ($array["mailmaga_flg"] == 1) {
-		$arrRegistMail["mailmaga_flg"] = 4; 
-	} elseif ($array["mailmaga_flg"] == 2) {
-		$arrRegistMail["mailmaga_flg"] = 5; 
-	} else {
-		$arrRegistMail["mailmaga_flg"] = 6; 
-	}
-
-	
-	// 非会員でメルマガ登録している場合
-	if ($mailResult == 1) {		
-		$objQuery->update("dtb_customer_mail", $arrRegistMail, "email = '" .addslashes($arrRegistMail["email"]). "'");			
-	} else {				//　新規登録の場合
-		$arrRegistMail["create_date"] = "now()";
-		$objQuery->insert("dtb_customer_mail", $arrRegistMail);		
-	}
 	$objConn->query("COMMIT");
 
 	return $uniqid;
