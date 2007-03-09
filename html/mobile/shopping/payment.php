@@ -16,7 +16,7 @@ class LC_Page {
 		$this->tpl_css = '/css/layout/shopping/pay.css';
 		$this->tpl_mainpage = 'shopping/payment.tpl';
 		$this->tpl_onload = 'fnCheckInputPoint();';
-		$this->tpl_title = "お支払方法・お届け時間等の指定";
+		$this->tpl_title = "お支払方法の指定";
 		/*
 		 session_start時のno-cacheヘッダーを抑制することで
 		 「戻る」ボタン使用時の有効期限切れ表示を抑制する。
@@ -60,6 +60,23 @@ $objPage->arrData = sfTotalConfirm($arrData, $objPage, $objCartSess, $arrInfo);
 $objCartSess->chkSoldOut($objCartSess->getCartList());
 
 switch($_POST['mode']) {
+// 支払い方法指定 → 配達日時指定
+case 'deliv_date':
+	// 入力値の変換
+	$objFormParam->convParam();
+	$objPage->arrErr = lfCheckError($objPage->arrData);
+	if (!isset($objPage->arrErr['payment_id'])) {
+		// 支払い方法の入力エラーなし
+		$objPage->tpl_mainpage = 'shopping/deliv_date.tpl';
+		$objPage->tpl_title = "配達日時指定";
+		break;
+	} else {
+		// ユーザユニークIDの取得
+		$uniqid = $objSiteSess->getUniqId();
+		// 受注一時テーブルからの情報を格納
+		lfSetOrderTempData($uniqid);
+	}
+	break;
 case 'confirm':
 	// 入力値の変換
 	$objFormParam->convParam();
@@ -78,6 +95,11 @@ case 'confirm':
 		$uniqid = $objSiteSess->getUniqId();
 		// 受注一時テーブルからの情報を格納
 		lfSetOrderTempData($uniqid);
+		if (!isset($objPage->arrErr['payment_id'])) {
+			// 支払い方法の入力エラーなし
+			$objPage->tpl_mainpage = 'shopping/deliv_date.tpl';
+			$objPage->tpl_title = "配達日時指定";
+		}
 	}
 	break;
 // 前のページに戻る

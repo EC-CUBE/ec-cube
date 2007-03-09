@@ -19,14 +19,12 @@
 
 	【生年月日】<font color="#FF0000">*</font><br>
 	<font color="#FF0000"><!--{$arrErr.year}--><!--{$arrErr.month}--><!--{$arrErr.day}--></font>
-	<select name="year">
-		<!--{html_options options=$arrYear selected=$year}-->
-	</select>年<br>
+	<input type="text" name="year" value="<!--{$year|escape}-->" size="4" maxlength="4" istyle="4">年<br>
 	<select name="month">
 		<option value="">--</option>
 		<!--{html_options options=$arrMonth selected=$month}-->
 	</select>月<br>
-	<select value="" name="day">
+	<select name="day">
 		<option value="">--</option>
 		<!--{html_options options=$arrDay selected=$day}-->
 	</select>日<br>
