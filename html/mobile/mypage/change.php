@@ -55,6 +55,7 @@ $arrRegistColumn = array(
 							 array(  "column" => "reminder", "convert" => "n" ),
 							 array(  "column" => "reminder_answer", "convert" => "aKV"),
 							 array(  "column" => "password", "convert" => "a" ),
+							 array(  "column" => "mailmaga_flg", "convert" => "n" )								 
 						 );
 
 //---- 登録除外用カラム配列
@@ -241,15 +242,14 @@ function lfRegistData ($array, $arrRegistColumn, $arrRejectRegistColumn) {
 	$mailResult = $objConn->getOne($sql, array($arrRegist["email"]));
 
 	//--　メルマガ仮登録実行
-	$arrRegistMail["email"] = $arrRegist["email"];	
-	if ($array["mail_flag"] == 1) {
-		$arrRegistMail["mail_flag"] = 4; 
-	} elseif ($array["mail_flag"] == 2) {
-		$arrRegistMail["mail_flag"] = 5; 
+	if ($array["mailmaga_flg"] == 1) {
+		$arrRegistMail["mailmaga_flg"] = 4; 
+	} elseif ($array["mailmaga_flg"] == 2) {
+		$arrRegistMail["mailmaga_flg"] = 5; 
 	} else {
-		$arrRegistMail["mail_flag"] = 6; 
+		$arrRegistMail["mailmaga_flg"] = 6; 
 	}
-	$arrRegistMail["update_date"] = "now()";
+
 	
 	// 非会員でメルマガ登録している場合
 	if ($mailResult == 1) {		
@@ -448,7 +448,7 @@ function lfGetCustomerData(){
 	$arrForm['email'] = $arrForm['email_mobile'];
 
 	//メルマガフラグ取得
-	$arrForm['mail_flag'] = $objQuery->get("dtb_customer_mail","mail_flag","email=?", array($objCustomer->getValue('email_mobile')));
+	$arrForm['mail_flag'] = $objQuery->get("dtb_customer","mailmaga_flg","email=?", array($objCustomer->getValue('email_mobile')));
 	
 	//誕生日の年月日取得
 	if (isset($arrForm['birth'])){
