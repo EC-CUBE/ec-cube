@@ -29,15 +29,14 @@
 <!--{1|numeric_emoji}-->商品カテゴリ<br>
 <!--{include_php file=`$smarty.const.HTML_PATH`frontparts/bloc/category.php}-->
 <a href="products/search.php" accesskey="2"><!--{2|numeric_emoji}-->商品検索</a><br>
-<a href="magazine/index.php" accesskey="3"><!--{3|numeric_emoji}-->メルマガ登録</a><br>
 <!--{if $isLogin eq true}-->
-<a href="mypage/refusal.php" accesskey="4"><!--{4|numeric_emoji}-->会員退会</a><br>
+<a href="mypage/refusal.php" accesskey="3"><!--{3|numeric_emoji}-->会員退会</a><br>
 <!--{else}-->
-<a href="entry/new.php" accesskey="4"><!--{4|numeric_emoji}-->会員登録</a><br>
+<a href="entry/new.php" accesskey="3"><!--{3|numeric_emoji}-->会員登録</a><br>
 <!--{/if}-->
-<a href="guide/index.php" accesskey="5"><!--{5|numeric_emoji}-->ご利用ガイド</a><br>
-<a href="contact/index.php" accesskey="6"><!--{6|numeric_emoji}-->お問い合せ</a><br>
-<a href="mypage/index.php" accesskey="7" utn><!--{7|numeric_emoji}-->MYページ</a><br>
+<a href="guide/index.php" accesskey="4"><!--{4|numeric_emoji}-->ご利用ガイド</a><br>
+<a href="contact/index.php" accesskey="5"><!--{5|numeric_emoji}-->お問い合せ</a><br>
+<a href="mypage/index.php" accesskey="6" utn><!--{6|numeric_emoji}-->MYページ</a><br>
 <!-- ▲メニュー ここまで -->
 
 <br>
