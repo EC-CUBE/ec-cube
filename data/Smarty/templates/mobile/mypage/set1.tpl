@@ -20,7 +20,7 @@
 		<option value="">--</option>
 		<!--{html_options options=$arrMonth selected=$arrForm.month}-->
 	</select>·î<br>
-	<select value="" name="day">
+	<select name="day">
 		<option value="">--</option>
 		<!--{html_options options=$arrDay selected=$arrForm.day}-->
 	</select>Æü<br>
