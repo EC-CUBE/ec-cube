@@ -158,8 +158,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 			$objPage->passlen = lfPassLen($passlen);
 			
 			//メール受け取り
-			if ($objPage->arrForm['mail_flag'] = "ON") {
-				$objPage->arrForm['mail_flag']  = "2";
+			if ($objPage->arrForm['mailmaga_flg'] = "ON") {
+				$objPage->arrForm['mailmaga_flg']  = "2";
 			}
 
 			$objPage->tpl_mainpage = 'entry/confirm.tpl';
@@ -277,12 +277,12 @@ function lfRegistData ($array, $arrRegistColumn, $arrRejectRegistColumn) {
 
 	//--　メルマガ仮登録実行
 	$arrRegistMail["email"] = $arrRegist["email"];	
-	if ($array["mail_flag"] == 1) {
-		$arrRegistMail["mail_flag"] = 4; 
-	} elseif ($array["mail_flag"] == 2) {
-		$arrRegistMail["mail_flag"] = 5; 
+	if ($array["mailmaga_flg"] == 1) {
+		$arrRegistMail["mailmaga_flg"] = 4; 
+	} elseif ($array["mailmaga_flg"] == 2) {
+		$arrRegistMail["mailmaga_flg"] = 5; 
 	} else {
-		$arrRegistMail["mail_flag"] = 6; 
+		$arrRegistMail["mailmaga_flg"] = 6; 
 	}
 	$arrRegistMail["update_date"] = "now()";
 	
