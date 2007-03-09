@@ -158,8 +158,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 			$objPage->passlen = lfPassLen($passlen);
 			
 			//メール受け取り
-			if ($objPage->arrForm['mailmaga_flg'] = "ON") {
-				$objPage->arrForm['mailmaga_flg']  = "2";
+			if (strtolower($objPage->arrForm['mail_flag']) == "on") {
+				$objPage->arrForm['mail_flag']  = "2";
+			} else {
+				$objPage->arrForm['mail_flag']  = "3";
 			}
 
 			$objPage->tpl_mainpage = 'entry/confirm.tpl';
@@ -219,10 +221,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 			exit;
 		}
 	}
-}
-
-if($objPage->year == '') {
-	$objPage->year = '----';
 }
 
 //----　ページ表示
@@ -380,7 +378,7 @@ function lfErrorCheck1($array) {
 //---- 入力エラーチェック
 function lfErrorCheck2($array) {
 
-	global $objConn;
+	global $objConn, $objDate;
 	$objErr = new SC_CheckError($array);
 	
 	$objErr->doFunc(array("郵便番号1", "zip01", ZIP01_LEN ) ,array("EXIST_CHECK", "SPTAB_CHECK" ,"NUM_CHECK", "NUM_COUNT_CHECK"));
@@ -388,7 +386,15 @@ function lfErrorCheck2($array) {
 	$objErr->doFunc(array("郵便番号", "zip01", "zip02"), array("ALL_EXIST_CHECK"));
 
 	$objErr->doFunc(array("性別", "sex") ,array("SELECT_CHECK", "NUM_CHECK")); 
-	$objErr->doFunc(array("生年月日", "year", "month", "day"), array("SELECT_CHECK", "CHECK_DATE"));
+	$objErr->doFunc(array("生年月日 (年)", "year", 4), array("EXIST_CHECK", "SPTAB_CHECK", "NUM_CHECK", "NUM_COUNT_CHECK"));
+	if (!isset($objErr->arrErr['year'])) {
+		$objErr->doFunc(array("生年月日 (年)", "year", $objDate->getStartYear()), array("MIN_CHECK"));
+		$objErr->doFunc(array("生年月日 (年)", "year", $objDate->getEndYear()), array("MAX_CHECK"));
+	}
+	$objErr->doFunc(array("生年月日 (月日)", "month", "day"), array("SELECT_CHECK"));
+	if (!isset($objErr->arrErr['year']) && !isset($objErr->arrErr['month']) && !isset($objErr->arrErr['day'])) {
+		$objErr->doFunc(array("生年月日", "year", "month", "day"), array("CHECK_DATE"));
+	}
 	
 	return $objErr->arrErr;
 }
