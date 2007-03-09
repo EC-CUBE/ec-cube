@@ -158,7 +158,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 			$objPage->passlen = lfPassLen($passlen);
 			
 			//メール受け取り
-			if ($objPage->arrForm['mailmaga_flg'] == "ON") {
+			if ($objPage->arrForm['mailmaga_flg'] == "on") {
 				$objPage->arrForm['mailmaga_flg']  = "2";
 			}
 
