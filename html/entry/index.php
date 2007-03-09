@@ -206,6 +206,18 @@ function lfRegistData ($array, $arrRegistColumn, $arrRejectRegistColumn, $confir
 			$uniqid = sfGetUniqRandomId("t");
 			$count = $objConn->getOne("SELECT COUNT(*) FROM dtb_customer WHERE secret_key = ?", array($uniqid));
 		}
+		switch($array["mailmaga_flg"]) {
+			case 1:
+				$arrRegist["mailmaga_flg"] = 4; 
+				break;
+			case 2:
+				$arrRegist["mailmaga_flg"] = 5; 
+				break;
+			default:
+				$arrRegist["mailmaga_flg"] = 6;
+				break;
+		}
+		
 		$arrRegist["status"] = "1";				// 仮会員
 	} else {
 		// 重複しない会員登録キーを発行する。

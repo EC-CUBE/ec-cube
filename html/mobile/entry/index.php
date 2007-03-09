@@ -256,13 +256,17 @@ function lfRegistData ($array, $arrRegistColumn, $arrRejectRegistColumn) {
 		$count = $objConn->getOne("SELECT COUNT(*) FROM dtb_customer WHERE secret_key = ?", array($uniqid));
 	}
 
-	if ($arrRegist["mailmaga_flg"] == 1) {
-		$arrRegist["mailmaga_flg"] = 4; 
-	} elseif ($arrRegist["mailmaga_flg"] == 2) {
-		$arrRegist["mailmaga_flg"] = 5; 
-	} else {
-		$arrRegist["mailmaga_flg"] = 6; 
-	}	
+	switch($array["mailmaga_flg"]) {
+		case 1:
+			$arrRegist["mailmaga_flg"] = 4; 
+			break;
+		case 2:
+			$arrRegist["mailmaga_flg"] = 5; 
+			break;
+		default:
+			$arrRegist["mailmaga_flg"] = 6;
+			break;
+	}
 		
 	$arrRegist["secret_key"] = $uniqid;		// 仮登録ID発行
 	$arrRegist["create_date"] = "now()"; 	// 作成日
