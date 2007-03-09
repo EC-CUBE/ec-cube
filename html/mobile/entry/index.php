@@ -89,6 +89,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
 	//-- POSTデータの引き継ぎ
 	$objPage->arrForm = $_POST;
+sfprintr(mailmaga_flg);
 	
 	if($objPage->arrForm['year'] == '----') {
 		$objPage->arrForm['year'] = '';
