@@ -927,12 +927,8 @@ function lfAddColumn($dsn) {
 	// 顧客
 	sfColumnExists("dtb_customer", "mailmaga_flg", "int2", $dsn, true);
 	if (!sfColumnExists("dtb_customer", "mobile_phone_id", "", $dsn, true)) {
-		$objQuery = new SC_Query($dsn);
-		if ($objDBParam->getValue('db_type') == 'mysql') {
-			$objQuery->query("CREATE INDEX dtb_customer_mobile_phone_id_key ON dtb_customer (mobile_phone_id(64))");
-		} else {
-			$objQuery->query("CREATE INDEX dtb_customer_mobile_phone_id_key ON dtb_customer (mobile_phone_id)");
-		}
+		// インデックスの追加
+		sfIndexExists("dtb_customer", "mobile_phone_id", "dtb_customer_mobile_phone_id_key", 64, $dsn, true);
 	}
 
 	// 顧客メール
