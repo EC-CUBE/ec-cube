@@ -30,7 +30,7 @@
 	<br>
 	
 	≮幰幇庂幭幎庌幖庌庉庌≯<br>
-	<!--{if $list_data.mail_flag eq 2}-->歹司する<!--{else}-->歹司しない<!--{/if}--><br>
+	<!--{if $list_data.mailmaga_flg eq 2}-->歹司する<!--{else}-->歹司しない<!--{/if}--><br>
 	<br>
 
 	<input type="submit" name="submit" value="恃构">

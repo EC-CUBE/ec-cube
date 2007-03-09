@@ -40,8 +40,6 @@ if (isset($_POST['no'])) {
 
 	$where = "email ILIKE ?";
 	if (DB_TYPE == "mysql")	$where = sfChangeILIKE($where);
-
-	$objQuery->delete("dtb_customer_mail", $where, array($objCustomer->getValue('email')));
 	$objCustomer->EndSession();
 	//´°Î»¥Ú¡¼¥¸¤Ø
 	header("Location: " . gfAddSessionId("refusal_complete.php"));

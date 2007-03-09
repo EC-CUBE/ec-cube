@@ -133,10 +133,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 			$objPage->passlen = lfPassLen($passlen);
 
 			// メール受け取り
-			if (strtolower($_POST['mail_flag']) == "on") {
-				$_POST['mail_flag']  = "2";
+			if (strtolower($_POST['mailmaga_flg']) == "on") {
+				$_POST['mailmaga_flg']  = "2";
 			} else {
-				$_POST['mail_flag']  = "3";
+				$_POST['mailmaga_flg']  = "3";
 			}
 
 			$objPage->tpl_mainpage = 'mypage/change_confirm.tpl';
@@ -448,7 +448,7 @@ function lfGetCustomerData(){
 	$arrForm['email'] = $arrForm['email_mobile'];
 
 	//メルマガフラグ取得
-	$arrForm['mail_flag'] = $objQuery->get("dtb_customer","mailmaga_flg","email=?", array($objCustomer->getValue('email_mobile')));
+	$arrForm['mailmaga_flg'] = $objQuery->get("dtb_customer","mailmaga_flg","email=?", array($objCustomer->getValue('email_mobile')));
 	
 	//誕生日の年月日取得
 	if (isset($arrForm['birth'])){
