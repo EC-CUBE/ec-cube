@@ -77,7 +77,7 @@
 							<tr class="fs12n">
 								<td bgcolor="#f2f1ec" width="110">性別</td>
 								<td bgcolor="#ffffff" width="194">
-									<!--{html_checkboxes name="sex" options=$arrSex separator="&nbsp;" selected=$list_data.sex}-->
+									<!--{html_checkboxes_ex name="sex" options=$arrSex separator="&nbsp;" selected=$list_data.sex}-->
 								</td>
 								<td bgcolor="#f2f1ec" width="110">誕生月</td>
 								<td bgcolor="#ffffff" width="195">
