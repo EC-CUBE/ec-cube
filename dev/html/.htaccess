@@ -1,0 +1,7 @@
+#基本はphp_ini.incで設定するが、ini_setで反映されないものはここで設定する
+php_value mbstring.language Japanese
+php_value output_handler mb_output_handler
+php_flag mbstring.encoding_translation 1
+php_flag magic_quotes_gpc 0
+#php_flag session.use_cookies 0
+#php_flag session.use_trans_sid 1

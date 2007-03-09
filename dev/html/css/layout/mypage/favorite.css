@@ -1,0 +1,110 @@
+/*
+ * Copyright(c) 2000-2007 LOCKON CO.,LTD. All Rights Reserved.
+ *
+ * http://www.lockon.co.jp/
+ */
+/***************MY?????????????***************/
+
+@charset "<!--{$smarty.const.CHAR_CODE}-->";
+
+
+
+/***??????***/
+#container #right #maintitle{
+border: 0;
+margin: 0;
+padding: 0;
+width: 570px;
+}
+
+#container #right #comment{
+border: 0;
+margin: 0 0 15px 0;
+padding: 0;
+width: 570px;
+}
+
+/***MY?????***/
+
+#container #right #navi{
+border: 0;
+margin: 0;
+padding: 0;
+border-width: 0 0 1px 0;
+border-style: solid ;
+border-color: #c9ddf1;
+width: 570px;
+}
+
+/*??????*/
+#container #right #subtitle{
+border-width: 0 0 1px 0;
+border-style: dashed;
+border-color: #b3aa82;
+margin: 25px 0 15px 0;
+padding: 10px;
+text-align: left;
+width: 550px;
+background: #eeece3;
+voice-family: "\"}\""; 
+voice-family: inherit;
+width: 570px;
+}
+
+html>body #container #right #subtitle{
+width:550px;
+}
+
+/*????*/
+#container #right #frame{
+border: 0;
+margin: 0 0 20px 0;
+padding: 0;
+width: 570px;
+background: #ccc;
+text-align: center;
+}
+
+#container #right #frame .left01b{
+background: #ecf5ff;
+width: 40px;
+}
+
+#container #right #frame .left02b{
+background: #ecf5ff;
+width: 100px;
+}
+
+#container #right #frame .left03b{
+background: #ecf5ff;
+width: 255px;
+}
+
+#container #right #frame .left04b{
+background: #ecf5ff;
+width: 90px;
+}
+
+#container #right #frame .left01w{
+background: #fff;
+width: 40px;
+}
+
+#container #right #frame .left02w{
+background: #fff;
+width: 100px;
+}
+
+#container #right #frame .left03w{
+background: #fff;
+width: 255px;
+text-align: left;
+}
+
+#container #right #frame .left04w{
+background: #fff;
+width: 90px;
+text-align: right;
+}
+
+

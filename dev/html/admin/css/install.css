@@ -1,0 +1,15 @@
+/*
+ * Copyright(c) 2000-2007 LOCKON CO.,LTD. All Rights Reserved.
+ *
+ * http://www.lockon.co.jp/
+ */
+#agreement{
+	height: 120px;
+	width: 480px;
+	overflow: auto;
+	margin: 0px;
+	background-color : #FFFFFF;
+	border-style: solid;
+	border-color: #C0C0C0;
+	border-width: 1px
+}
