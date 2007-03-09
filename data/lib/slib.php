@@ -2283,6 +2283,10 @@ function sfEditCustomerData($array, $arrRegistColumn) {
 	$arrRegist["update_date"] = "NOW()";
 	
 	//-- ÊÔ½¸ÅÐÏ¿¼Â¹Ô
+	if (defined('MOBILE_SITE')) {
+		$arrRegist['email_mobile'] = $arrRegist['email'];
+		unset($arrRegist['email']);
+	}
 	$objQuery->begin();
 	$objQuery->update("dtb_customer", $arrRegist, "customer_id = ? ", array($array['customer_id']));
 	$objQuery->commit();

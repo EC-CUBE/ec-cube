@@ -5,8 +5,6 @@
 <form name="login_mypage" id="login_mypage" method="post" action="./index.php">
 	<input type="hidden" name="mode" value="login" >
 <!--{if !$tpl_valid_phone_id}-->
-	■以前にご注文された方<br>
-	(モバイル又はPCでご登録済み)<br>
 	▼メールアドレス<br>
 	<!--{assign var=key value="login_email"}-->
 	<font color="#FF0000"><!--{$arrErr[$key]}--></font>

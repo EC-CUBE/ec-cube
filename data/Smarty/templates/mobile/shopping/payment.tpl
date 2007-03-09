@@ -18,7 +18,7 @@
 <!--{/if}-->
 <!--{if $arrDelivDate}-->
 <select name="<!--{$key}-->">
-<option value="" selected="">指定なし</option>
+<option value="">指定なし</option>
 <!--{html_options options=$arrDelivDate selected=$arrForm[$key].value}-->
 </select>
 <!--{else}-->
@@ -32,7 +32,7 @@
 <font color="red"><!--{$arrErr[$key]}--></font>
 <!--{/if}-->
 <select name="<!--{$key}-->">
-<option value="" selected="">指定なし</option>
+<option value="">指定なし</option>
 <!--{html_options options=$arrDelivTime selected=$arrForm[$key].value}-->
 </select>
 <br>

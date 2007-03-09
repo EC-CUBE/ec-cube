@@ -7,16 +7,18 @@
 	<br>
 
 	【都道府県】<font color="#FF0000">*</font><br>
-	<font color="#FF0000"><!--{$arrErr.pref}--><!--{$arrErr.addr01}--><!--{$arrErr.addr02}--></font>
+	<font color="#FF0000"><!--{$arrErr.pref}--></font>
 	<select name="pref">
-		<option value="" selected>都道府県を選択</option>
+		<option value="">都道府県を選択</option>
 		<!--{html_options options=$arrPref selected=$arrForm.pref}-->
 	</select><br>
 
 	【市区町村】<font color="#FF0000">*</font><br>
+	<font color="#FF0000"><!--{$arrErr.addr01}--></font>
 	<input type="text" name="addr01" value="<!--{$arrForm.addr01|escape}-->" istyle="1"><br>
 
 	【番地】<font color="#FF0000">*</font><br>
+	<font color="#FF0000"><!--{$arrErr.addr02}--></font>
 	<input type="text" name="addr02" value="<!--{$arrForm.addr02|escape}-->" istyle="1"><br>
 
 	【電話番号】<font color="#FF0000">*</font><br>
@@ -33,6 +35,11 @@
 	配信希望<input type="checkbox" name="mailmaga_flg" value="on" <!--{if $arrForm.mailmaga_flg eq '2'}-->checked<!--{/if}--> /><br>
 	（希望されない場合はチェックをはずしてください）<br>
 	<br>
+
+	<input type="hidden" name="fax01" value="<!--{$arrForm.fax01|escape}-->">
+	<input type="hidden" name="fax02" value="<!--{$arrForm.fax02|escape}-->">
+	<input type="hidden" name="fax03" value="<!--{$arrForm.fax03|escape}-->">
+	<input type="hidden" name="job" value="<!--{$arrForm.job|escape}-->">
 
 	<input type="submit" name="confirm" value="次へ">
 

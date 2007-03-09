@@ -7,16 +7,18 @@
 	<br>
 
 	║зетф╩иэ╦╘║ш<font color="#FF0000">*</font><br>
-	<font color="#FF0000"><!--{$arrErr.pref}--><!--{$arrErr.addr01}--><!--{$arrErr.addr02}--></font>
+	<font color="#FF0000"><!--{$arrErr.pref}--></font>
 	<select name="pref">
-		<option value="" selected>етф╩иэ╦╘╓Ра╙бР</option>
+		<option value="">етф╩иэ╦╘╓Ра╙бР</option>
 		<!--{html_options options=$arrPref selected=$arrForm.pref}-->
 	</select><br>
 
 	║з╩т╤Хд╝б╪║ш<font color="#FF0000">*</font><br>
+	<font color="#FF0000"><!--{$arrErr.addr01}--></font>
 	<input type="text" name="addr01" value="<!--{$arrForm.addr01|escape}-->" istyle="1"><br>
 
 	║зхжцо║ш<font color="#FF0000">*</font><br>
+	<font color="#FF0000"><!--{$arrErr.addr02}--></font>
 	<input type="text" name="addr02" value="<!--{$arrForm.addr02|escape}-->" istyle="1"><br>
 
 	║зееоцхж╧Ф║ш<font color="#FF0000">*</font><br>

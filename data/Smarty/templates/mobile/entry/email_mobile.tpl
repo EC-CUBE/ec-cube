@@ -7,12 +7,13 @@
 
 <br>
 
+<!--{assign var=key value='email_mobile'}-->
 <!--{if @$tpl_kara_mail_to != ''}-->
+<font color="#ff0000"><!--{$arrErr[$key]|default:''}--></font>
 次のリンクをクリックして空メールを送信してください。<br>
 <center><a href="mailto:<!--{$tpl_kara_mail_to|escape:'url'}-->">メール送信</a></center>
 <!--{else}-->
 <form method="post" action="<!--{$smarty.server.PHP_SELF|escape}-->">
-<!--{assign var=key value='email_mobile'}-->
 ▼メールアドレス<br>
 <font color="#ff0000"><!--{$arrErr[$key]|default:''}--></font>
 <input type="text" name="email_mobile" value="<!--{$arrForm[$key].value|escape}-->" size="40" maxlength="<!--{$arrForm[$key].length}-->" istyle="3"><br>

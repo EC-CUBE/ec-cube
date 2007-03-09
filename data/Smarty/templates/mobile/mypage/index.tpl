@@ -4,9 +4,9 @@
 <!--{$CustomerName1|escape}--> <!--{$CustomerName2|escape}-->様<br>
 いつもご利用いただきありがとうございます。<br>
 <br>
-<a href="history.php" accesskey="1"><!--{1|numeric_emoji}-->購入履歴<br>
-<a href="change.php" accesskey="2"><!--{2|numeric_emoji}-->登録内容変更<br>
-<a href="refusal.php" accesskey="3"><!--{3|numeric_emoji}-->退会<br>
+<a href="history.php" accesskey="1"><!--{1|numeric_emoji}-->購入履歴</a><br>
+<a href="change.php" accesskey="2"><!--{2|numeric_emoji}-->登録内容変更</a><br>
+<a href="refusal.php" accesskey="3"><!--{3|numeric_emoji}-->退会</a><br>
 
 <hr>
 

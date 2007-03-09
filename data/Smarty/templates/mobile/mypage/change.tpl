@@ -20,7 +20,7 @@
 	【パスワード確認用の質問】<font color="#FF0000">※</font><br>
 	<font color="#FF0000"><!--{$arrErr.reminder}--></font>
 	<select name="reminder">
-		<option value="" selected>選択してください</option>
+		<option value="">選択してください</option>
 		<!--{html_options options=$arrReminder selected=$arrForm.reminder}-->
 	</select><br>
 
