@@ -919,6 +919,7 @@ function lfAddColumn($dsn) {
 	sfColumnExists("dtb_campaign", "deliv_free_flg", "int2 NOT NULL DEFAULT 0", $dsn, true);	
 
 	// ธÜตา
+	sfColumnExists("dtb_customer", "mailmaga_flg", "int2", $dsn, true);
 	if (!sfColumnExists("dtb_customer", "mobile_phone_id", "", $dsn)) {
 		sfColumnExists("dtb_customer", "mobile_phone_id", "text", $dsn, true);
 		$objQuery = new SC_Query($dsn);
