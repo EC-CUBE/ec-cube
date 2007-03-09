@@ -78,7 +78,8 @@ $arrRegistColumn = array(
 							 array(  "column" => "reminder", "convert" => "n" ),
 							 array(  "column" => "reminder_answer", "convert" => "aKV"),
 							 array(  "column" => "password", "convert" => "a" ),
-							 array(  "column" => "password02", "convert" => "a" )
+							 array(  "column" => "password02", "convert" => "a" ),
+							 array(  "column" => "mailmaga_flg", "convert" => "n" ),
 						 );
 
 //---- 登録除外用カラム配列
@@ -269,6 +270,7 @@ function lfRegistData ($array, $arrRegistColumn, $arrRejectRegistColumn) {
 	$objQuery = new SC_Query();
 	$objQuery->insert("dtb_customer", $arrRegist);
 
+/* メルマガ会員機能は現在停止中　2007/03/07
 	//--　非会員でメルマガ登録しているかの判定
 	$sql = "SELECT count(*) FROM dtb_customer_mail WHERE email = ?";
 	$mailResult = $objConn->getOne($sql, array($arrRegist["email"]));
@@ -291,6 +293,7 @@ function lfRegistData ($array, $arrRegistColumn, $arrRejectRegistColumn) {
 		$arrRegistMail["create_date"] = "now()";
 		$objQuery->insert("dtb_customer_mail", $arrRegistMail);		
 	}
+*/
 	$objConn->query("COMMIT");
 
 	return $uniqid;
