@@ -926,7 +926,7 @@ function lfAddColumn($dsn) {
 
 	// 顧客
 	sfColumnExists("dtb_customer", "mailmaga_flg", "int2", $dsn, true);
-	if (!sfColumnExists("dtb_customer", "mobile_phone_id", "", $dsn, true)) {
+	if (!sfColumnExists("dtb_customer", "mobile_phone_id", "text", $dsn, true)) {
 		// インデックスの追加
 		sfIndexExists("dtb_customer", "mobile_phone_id", "dtb_customer_mobile_phone_id_key", 64, $dsn, true);
 	}
