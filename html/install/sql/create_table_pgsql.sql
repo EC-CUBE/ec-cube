@@ -520,6 +520,7 @@ CREATE TABLE dtb_customer (
     mobile_phone_id text
 );
 
+CREATE INDEX dtb_customer_mobile_phone_id_key ON dtb_customer (mobile_phone_id);
 
 CREATE TABLE dtb_customer_mail (
     email text NOT NULL UNIQUE,
