@@ -131,6 +131,8 @@
 			<input type="hidden" name="KANA1" value="<!--{$arrSendData.KANA1|escape}-->">
 			<input type="hidden" name="KANA2" value="<!--{$arrSendData.KANA2|escape}-->">
 			<input type="hidden" name="TEL" value="<!--{$arrSendData.TEL|escape}-->">
+			<input type="hidden" name="YUBIN1" value="<!--{$arrSendData.YUBIN1|escape}-->">
+			<input type="hidden" name="YUBIN2" value="<!--{$arrSendData.YUBIN2|escape}-->">
 			<input type="hidden" name="ADD1" value="<!--{$arrSendData.ADD1|escape}-->">
 			<input type="hidden" name="ADD2" value="<!--{$arrSendData.ADD2|escape}-->">
 			<input type="hidden" name="ADD3" value="<!--{$arrSendData.ADD3|escape}-->">
