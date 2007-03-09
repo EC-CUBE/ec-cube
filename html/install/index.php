@@ -920,16 +920,17 @@ function lfAddColumn($dsn) {
 
 	// ¸ÜµÒ
 	sfColumnExists("dtb_customer", "mailmaga_flg", "int2", $dsn, true);
-		
-	if (sfColumnExists("dtb_customer", "mobile_phone_id", "", $dsn, true)) {
-		$objQuery = new SC_Query($dsn);
-		if ($objDBParam->getValue('db_type') == 'mysql') {
-			$objQuery->query("CREATE INDEX dtb_customer_mobile_phone_id_key ON dtb_customer (mobile_phone_id(64))");
-		} else {
-			$objQuery->query("CREATE INDEX dtb_customer_mobile_phone_id_key ON dtb_customer (mobile_phone_id)");
+
+	if(sfTabaleExists("dtb_customer", $dsn)) {
+		if (sfColumnExists("dtb_customer", "mobile_phone_id", "", $dsn, true)) {
+			$objQuery = new SC_Query($dsn);
+			if ($objDBParam->getValue('db_type') == 'mysql') {
+				$objQuery->query("CREATE INDEX dtb_customer_mobile_phone_id_key ON dtb_customer (mobile_phone_id(64))");
+			} else {
+				$objQuery->query("CREATE INDEX dtb_customer_mobile_phone_id_key ON dtb_customer (mobile_phone_id)");
+			}
 		}
 	}
-
 	// ¸ÜµÒ¥á¡¼¥ë
 	if ($objDBParam->getValue('db_type') == 'mysql') {
 		sfColumnExists("dtb_customer_mail", "secret_key", "varchar(50) unique", $dsn, true);
