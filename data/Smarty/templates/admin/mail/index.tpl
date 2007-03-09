@@ -135,16 +135,6 @@
 									</span>
 								</td>
 							</tr>
-							
-							<tr class="fs12n">
-								<td bgcolor="#f2f1ec" width="110">メールアドレス(携帯用)</td>
-								<td bgcolor="#ffffff" colspan="3">
-									<!--{if $arrErr.email_mobile}--><span class="red12"><!--{$arrErr.email_mobile}--></span><!--{/if}-->
-									<span style="<!--{$arrErr.email_mobile|sfGetErrorColor}-->">
-									<input type="text" name="email_mobile" maxlength="<!--{$smarty.const.STEXT_LEN}-->" value="<!--{$list_data.email_mobile|escape}-->" size="60" class="box60"  style="<!--{$arrErr.email_mobile|sfGetErrorColor}-->"/>
-									</span>
-								</td>
-							</tr>
 														
 							<tr class="fs12n">
 								<td bgcolor="#f2f1ec" width="110">職業</td>
