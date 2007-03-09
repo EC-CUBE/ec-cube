@@ -920,7 +920,6 @@ function lfAddColumn($dsn) {
 
 	// ธÜตา
 	sfColumnExists("dtb_customer", "mailmaga_flg", "int2", $dsn, true);
-	sfColumnExists("dtb_customer", "mobile_phone_id", "text", $dsn, true);
 		
 	if (!sfColumnExists("dtb_customer", "mobile_phone_id", "", $dsn)) {
 		sfColumnExists("dtb_customer", "mobile_phone_id", "text", $dsn, true);
