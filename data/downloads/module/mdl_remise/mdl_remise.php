@@ -21,10 +21,6 @@ class LC_Page {
 		$this->arrCredit = $arrCredit;
 		global $arrCreditDivide;
 		$this->arrCreditDivide = $arrCreditDivide;
-		global $arrConvenience;
-		$this->arrConvenience = $arrConvenience;
-		global $arrMobileConvenience;
-		$this->arrMobileConvenience = $arrMobileConvenience;
 	}
 }
 $objPage = new LC_Page();
@@ -95,7 +91,6 @@ function lfInitParam($objFormParam) {
 	$objFormParam->addParam("クレジット接続先URL(PC)", "credit_url", URL_LEN, "KVa", array("EXIST_CHECK", "MAX_LENGTH_CHECK", "URL_CHECK"));
 	$objFormParam->addParam("クレジット接続先URL(モバイル)", "mobile_credit_url");
 	$objFormParam->addParam("支払い方法", "credit_method");
-	$objFormParam->addParam("分割回数", "credit_divide");
 	$objFormParam->addParam("オプション", "payment");
 	$objFormParam->addParam("コンビニ接続先URL(PC)", "convenience_url");
 	$objFormParam->addParam("コンビニ接続先URL(モバイル)", "mobile_convenience_url");
@@ -144,7 +139,9 @@ function lfLoadData(){
 		// クレジットの決済区分を取得
 		if($val["payment"] == 1) {
 			$credit = $val["payment_code"];
-			$arrDisp["credit_divide"] = $val["credit_divide"];
+			$arrDisp["credit_url"] = $val["credit_url"];
+			$arrDisp["mobile_credit_url"] = $val["mobile_credit_url"];
+			$arrDisp["credit_method"] = $val["credit_method"];
 		}
 
 		// コンビニの決済区分を取得
@@ -157,12 +154,10 @@ function lfLoadData(){
 	}
 
 	$objFormParam->setParam($arrDisp);
-	
-	// クレジット支払い区分
 	$objFormParam->splitParamCheckBoxes("credit_method");
 	
-	// コンビニ
-	$objFormParam->splitParamCheckBoxes("convenience");
+	// クレジット支払い区分
+	//$objFormParam->splitParamCheckBoxes("credit_method");
 }
 
 // DBからデータを取得する
