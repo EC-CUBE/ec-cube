@@ -1,3 +1,10 @@
+<!--{*
+/*
+ * Copyright(c) 2000-2007 LOCKON CO.,LTD. All Rights Reserved.
+ *
+ * http://www.lockon.co.jp/
+ */
+*}-->
 <!--{if count($arrBestProducts) > 0}-->
 <center>
 <!--{foreach from=$arrBestProducts item=arrProduct name=best_products}-->

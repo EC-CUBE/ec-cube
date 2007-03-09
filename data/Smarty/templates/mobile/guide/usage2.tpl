@@ -1,3 +1,10 @@
+<!--{*
+/*
+ * Copyright(c) 2000-2007 LOCKON CO.,LTD. All Rights Reserved.
+ *
+ * http://www.lockon.co.jp/
+ */
+*}-->
 <center>ご注文方法</center>
 
 <hr>

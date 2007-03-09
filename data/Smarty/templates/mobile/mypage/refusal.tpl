@@ -1,3 +1,10 @@
+<!--{*
+/*
+ * Copyright(c) 2000-2007 LOCKON CO.,LTD. All Rights Reserved.
+ *
+ * http://www.lockon.co.jp/
+ */
+*}-->
 <div align="center">退会確認</div>
 <hr>
 <!--{$CustomerName1|escape}--> <!--{$CustomerName2|escape}-->様、会員から退会をされますと、登録されているお届け先の情報など全て削除されますがよろしいでしょうか。<br>

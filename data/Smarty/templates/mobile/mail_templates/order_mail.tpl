@@ -1,3 +1,10 @@
+<!--{*
+/*
+ * Copyright(c) 2000-2007 LOCKON CO.,LTD. All Rights Reserved.
+ *
+ * http://www.lockon.co.jp/
+ */
+*}-->
 <!--{$arrOrder.order_name01}--> <!--{$arrOrder.order_name02}--> 様
 
 ■配送情報とご請求金額

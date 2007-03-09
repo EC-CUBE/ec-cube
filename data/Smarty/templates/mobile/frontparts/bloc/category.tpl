@@ -1,3 +1,10 @@
+<!--{*
+/*
+ * Copyright(c) 2000-2007 LOCKON CO.,LTD. All Rights Reserved.
+ *
+ * http://www.lockon.co.jp/
+ */
+*}-->
 <!--▼商品カテゴリーここから-->
 <!--{section name=cnt loop=$arrCat}-->
 <!--{assign var=disp_name value="`$arrCat[cnt].category_name`"}-->

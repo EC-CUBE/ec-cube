@@ -1,5 +1,11 @@
-<?
-/*
+<?php
+/**
+ * 
+ * Copyright(c) 2000-2007 LOCKON CO.,LTD. All Rights Reserved.
+ *
+ * http://www.lockon.co.jp/
+ * 
+ *
  * 履歴から注文を取得・登録し、カートに遷移する。
  */
 require_once("../require.php");

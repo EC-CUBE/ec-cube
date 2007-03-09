@@ -1,6 +1,10 @@
 <?php
-
 /**
+ * 
+ * Copyright(c) 2000-2007 LOCKON CO.,LTD. All Rights Reserved.
+ *
+ * http://www.lockon.co.jp/
+ * 
  * 空メール受け付けアドレスのコマンド名とトークンの間の区切り文字
  */
 define('MOBILE_KARA_MAIL_EXTENSION_DELIMITER', '_');

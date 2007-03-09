@@ -1,3 +1,10 @@
+<!--{*
+/*
+ * Copyright(c) 2000-2007 LOCKON CO.,LTD. All Rights Reserved.
+ *
+ * http://www.lockon.co.jp/
+ */
+*}-->
 <!-- ▼ロゴ ここから -->
 <center><img src="<!--{$smarty.const.PC_URL_DIR}-->img/header/logo.gif"></center>
 <!-- ▲ロゴ ここまで -->

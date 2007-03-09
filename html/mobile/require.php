@@ -1,4 +1,11 @@
 <?php
+/**
+ * 
+ * Copyright(c) 2000-2007 LOCKON CO.,LTD. All Rights Reserved.
+ *
+ * http://www.lockon.co.jp/
+ * 
+ */
 $include_dir = realpath(dirname( __FILE__));
 require_once($include_dir . "/../../data/conf/mobile.conf");
 require_once($include_dir . "/../../data/include/module.inc");

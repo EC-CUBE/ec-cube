@@ -1,5 +1,12 @@
 <?php
 /**
+ * 
+ * Copyright(c) 2000-2007 LOCKON CO.,LTD. All Rights Reserved.
+ *
+ * http://www.lockon.co.jp/
+ * 
+ *
+ *
  * 端末の画面解像度にあわせて画像を変換する
  */
 

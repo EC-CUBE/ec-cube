@@ -1,3 +1,10 @@
+<!--{*
+/*
+ * Copyright(c) 2000-2007 LOCKON CO.,LTD. All Rights Reserved.
+ *
+ * http://www.lockon.co.jp/
+ */
+*}-->
 <div align="center">メルマガ登録</div>
 <hr>
 ご登録いただいたお客様へは<!--{if $arrSiteInfo.shop_name != ""}--><!--{$arrSiteInfo.shop_name|escape}-->より<!--{/if}-->商品やキャンペーン情報をメールでお届けいたします。<br>
