@@ -922,7 +922,7 @@ function lfAddColumn($dsn) {
 	sfColumnExists("dtb_customer", "mailmaga_flg", "int2", $dsn, true);
 
 	if(sfTabaleExists("dtb_customer", $dsn)) {
-		if (sfColumnExists("dtb_customer", "mobile_phone_id", "text", $dsn, true)) {
+		if (sfColumnExists("dtb_customer", "mobile_phone_id", "", $dsn, true)) {
 			$objQuery = new SC_Query($dsn);
 			if ($objDBParam->getValue('db_type') == 'mysql') {
 				$objQuery->query("CREATE INDEX dtb_customer_mobile_phone_id_key ON dtb_customer (mobile_phone_id(64))");
