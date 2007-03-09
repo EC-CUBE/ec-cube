@@ -50,13 +50,19 @@ $objDBParam->setParam($_POST);
 switch($_POST['mode']) {
 // ようこそ
 case 'welcome':
-	$objPage = lfDispAgreement($objPage);
+	//$objPage = lfDispAgreement($objPage);
+	$objPage = lfDispStep0($objPage);
 	$objPage->tpl_onload .= "fnChangeVisible('agreement_yes', 'next');";
 	break;
+
+/* 現在保留中
+
 // 使用許諾契約書の同意
 case 'agreement':
 	$objPage = lfDispStep0($objPage);
 	break;
+*/	
+	
 // アクセス権限のチェック
 case 'step0':
 	$objPage = lfDispStep0_1($objPage);
