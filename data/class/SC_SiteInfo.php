@@ -5,7 +5,7 @@
  * http://www.lockon.co.jp/
  */
 
-/* ¥»¥Ã¥·¥ç¥ó´ÉÍý¥¯¥é¥¹ */
+/* ã‚»ãƒƒã‚·ãƒ§ãƒ³ç®¡ç†ã‚¯ãƒ©ã‚¹ */
 class SC_SiteInfo {
 	
 	var $conn;
@@ -15,12 +15,12 @@ class SC_SiteInfo {
 		$DB_class_name = "SC_DbConn";
 		if ( is_object($conn)){
 			if ( is_a($conn, $DB_class_name)){
-				// $conn¤¬$DB_class_name¤Î¥¤¥ó¥¹¥¿¥ó¥¹¤Ç¤¢¤ë
+				// $connãŒ$DB_class_nameã®ã‚¤ãƒ³ã‚¹ã‚¿ãƒ³ã‚¹ã§ã‚ã‚‹
 				$this->conn = $conn;
 			}
 		} else {
 			if (class_exists($DB_class_name)){
-				//$DB_class_name¤Î¥¤¥ó¥¹¥¿¥ó¥¹¤òºîÀ®¤¹¤ë
+				//$DB_class_nameã®ã‚¤ãƒ³ã‚¹ã‚¿ãƒ³ã‚¹ã‚’ä½œæˆã™ã‚‹
 				$this->conn = new SC_DbConn();			
 			}
 		}

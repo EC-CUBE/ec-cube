@@ -7,13 +7,13 @@
 require_once("../require.php");
 
 $objCustomer = new SC_Customer();
-// ¥¯¥Ã¥­¡¼´ÉÍý¥¯¥é¥¹
+// ã‚¯ãƒƒã‚­ãƒ¼ç®¡ç†ã‚¯ãƒ©ã‚¹
 $objCookie = new SC_Cookie(COOKIE_EXPIRE);
-// ¥Ñ¥é¥á¡¼¥¿´ÉÍý¥¯¥é¥¹
+// ãƒ‘ãƒ©ãƒ¡ãƒ¼ã‚¿ç®¡ç†ã‚¯ãƒ©ã‚¹
 $objFormParam = new SC_FormParam();
-// ¥Ñ¥é¥á¡¼¥¿¾ðÊó¤Î½é´ü²½
+// ãƒ‘ãƒ©ãƒ¡ãƒ¼ã‚¿æƒ…å ±ã®åˆæœŸåŒ–
 lfInitParam();
-// POSTÃÍ¤Î¼èÆÀ
+// POSTå€¤ã®å–å¾—
 $objFormParam->setParam($_POST);
 
 switch($_POST['mode']) {
@@ -22,7 +22,7 @@ case 'login':
 	$arrErr = $objFormParam->checkError();
 	$arrForm =  $objFormParam->getHashArray();
 	
-	// ¥¯¥Ã¥­¡¼ÊÝÂ¸È½Äê
+	// ã‚¯ãƒƒã‚­ãƒ¼ä¿å­˜åˆ¤å®š
 	if ($arrForm['login_memory'] == "1" && $arrForm['login_email'] != "") {
 		$objCookie->setCookie('login_email', $_POST['login_email']);
 	} else {
@@ -45,16 +45,16 @@ case 'login':
 			}
 		}
 	} else {
-		// ÆþÎÏ¥¨¥é¡¼¤Î¾ì¹ç¡¢¸µ¤Î¥¢¥É¥ì¥¹¤ËÌá¤¹¡£
+		// å…¥åŠ›ã‚¨ãƒ©ãƒ¼ã®å ´åˆã€å…ƒã®ã‚¢ãƒ‰ãƒ¬ã‚¹ã«æˆ»ã™ã€‚
 		header("Location: " . $_POST['url']);
 		exit;
 	}
 	break;
 case 'logout':
-	// ¥í¥°¥¤¥ó¾ðÊó¤Î²òÊü
+	// ãƒ­ã‚°ã‚¤ãƒ³æƒ…å ±ã®è§£æ”¾
 	$objCustomer->EndSession();
 	$mypage_url_search = strpos('.'.$_POST['url'], "mypage");
-	//¥Þ¥¤¥Ú¡¼¥¸¥í¥°¥¤¥óÃæ¤Ï¥í¥°¥¤¥ó²èÌÌ¤Ø°Ü¹Ô
+	//ãƒžã‚¤ãƒšãƒ¼ã‚¸ãƒ­ã‚°ã‚¤ãƒ³ä¸­ã¯ãƒ­ã‚°ã‚¤ãƒ³ç”»é¢ã¸ç§»è¡Œ
 	if ($mypage_url_search == 2){
 	header("Location: /mypage/login.php");
 	}else{
@@ -65,11 +65,11 @@ case 'logout':
 }
 
 //-----------------------------------------------------------------------------------------------------------------------------------
-/* ¥Ñ¥é¥á¡¼¥¿¾ðÊó¤Î½é´ü²½ */
+/* ãƒ‘ãƒ©ãƒ¡ãƒ¼ã‚¿æƒ…å ±ã®åˆæœŸåŒ– */
 function lfInitParam() {
 	global $objFormParam;
-	$objFormParam->addParam("µ­²±¤¹¤ë", "login_memory", INT_LEN, "n", array("MAX_LENGTH_CHECK", "NUM_CHECK"));
-	$objFormParam->addParam("¥á¡¼¥ë¥¢¥É¥ì¥¹", "login_email", STEXT_LEN, "a", array("EXIST_CHECK", "MAX_LENGTH_CHECK"));
-	$objFormParam->addParam("¥Ñ¥¹¥ï¡¼¥É", "login_pass", STEXT_LEN, "", array("EXIST_CHECK", "MAX_LENGTH_CHECK"));
+	$objFormParam->addParam("è¨˜æ†¶ã™ã‚‹", "login_memory", INT_LEN, "n", array("MAX_LENGTH_CHECK", "NUM_CHECK"));
+	$objFormParam->addParam("ãƒ¡ãƒ¼ãƒ«ã‚¢ãƒ‰ãƒ¬ã‚¹", "login_email", STEXT_LEN, "a", array("EXIST_CHECK", "MAX_LENGTH_CHECK"));
+	$objFormParam->addParam("ãƒ‘ã‚¹ãƒ¯ãƒ¼ãƒ‰", "login_pass", STEXT_LEN, "", array("EXIST_CHECK", "MAX_LENGTH_CHECK"));
 }
 ?>

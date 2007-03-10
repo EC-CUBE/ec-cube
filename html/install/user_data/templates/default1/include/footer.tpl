@@ -3,7 +3,7 @@
  *
  * http://www.lockon.co.jp/
  *}-->
-<!--¢§FOTTER-->
+<!--â–¼FOTTER-->
 <table width="780" border="0" cellspacing="0" cellpadding="0" summary=" ">
 	<tr>
 		<td rowspan="3" bgcolor="#cccccc"><img src="<!--{$smarty.const.URL_DIR}-->img/common/_.gif" width="1" height="10" alt=""></td>
@@ -11,7 +11,7 @@
 		<table width="762" border="0" cellspacing="0" cellpadding="0" summary=" ">
 			<tr><td height="30"></td></tr>
 			<tr>
-				<td align="right" class="fs10n"><a href="#top"><img src="<!--{$smarty.const.URL_DIR}-->img/common/pagetop.gif" width="100" height="10" alt="¤³¤Î¥Ú¡¼¥¸¤ÎTOP¤Ø" border="0"></a></td>
+				<td align="right" class="fs10n"><a href="#top"><img src="<!--{$smarty.const.URL_DIR}-->img/common/pagetop.gif" width="100" height="10" alt="ã“ã®ãƒšãƒ¼ã‚¸ã®TOPã¸" border="0"></a></td>
 			</tr>
 			<tr><td height="15"></td></tr>
 		</table>
@@ -31,4 +31,4 @@
 		</td>
 	</tr>
 </table>
-<!--¢¥FOTTER-->
+<!--â–²FOTTER-->

@@ -20,10 +20,10 @@ class LC_Page {
 			4 => 'mypage' 
 		),
 		'name' =>array(
-			1 => 'TOP¥Ú¡¼¥¸',
-			2 => '¾¦ÉÊ°ìÍ÷¥Ú¡¼¥¸',
-			3 => '¾¦ÉÊ¾ÜºÙ¥Ú¡¼¥¸',
-			4 => 'MY¥Ú¡¼¥¸' 
+			1 => 'TOPãƒšãƒ¼ã‚¸',
+			2 => 'å•†å“ä¸€è¦§ãƒšãƒ¼ã‚¸',
+			3 => 'å•†å“è©³ç´°ãƒšãƒ¼ã‚¸',
+			4 => 'MYãƒšãƒ¼ã‚¸' 
 		)
 	);
 
@@ -34,7 +34,7 @@ class LC_Page {
 		$this->tpl_subno_template = $this->arrSubnavi['title'][1];
 		$this->tpl_TemplateName = $this->arrTemplateName['name'][1];
 		$this->tpl_mainno = "design";
-		$this->tpl_subtitle = '¥Æ¥ó¥×¥ì¡¼¥ÈÀßÄê';
+		$this->tpl_subtitle = 'ãƒ†ãƒ³ãƒ—ãƒ¬ãƒ¼ãƒˆè¨­å®š';
 	}
 }
 
@@ -42,23 +42,23 @@ $objPage = new LC_Page();
 $objView = new SC_AdminView();
 $objSess = new SC_Session();
 
-// Ç§¾Ú²ÄÈİ¤ÎÈ½Äê
+// èªè¨¼å¯å¦ã®åˆ¤å®š
 $objSess = new SC_Session();
 sfIsSuccess($objSess);
 
-// GET¤ÎÃÍ¤ò¼õ¤±¼è¤ë
+// GETã®å€¤ã‚’å—ã‘å–ã‚‹
 $get_tpl_subno_template = $_GET['tpl_subno_template'];
 
-// GET¤ÇÃÍ¤¬Á÷¤é¤ì¤Æ¤¤¤ë¾ì¹ç¤Ë¤Ï¤½¤ÎÃÍ¤ò¸µ¤Ë²èÌÌÉ½¼¨¤òÀÚ¤êÂØ¤¨¤ë
+// GETã§å€¤ãŒé€ã‚‰ã‚Œã¦ã„ã‚‹å ´åˆã«ã¯ãã®å€¤ã‚’å…ƒã«ç”»é¢è¡¨ç¤ºã‚’åˆ‡ã‚Šæ›¿ãˆã‚‹
 if ($get_tpl_subno_template != ""){
-	// Á÷¤é¤ì¤Æ¤­¤¿ÃÍ¤¬ÇÛÎó¤ËÅĞÏ¿¤µ¤ì¤Æ¤¤¤Ê¤±¤ì¤ĞTOP¤òÉ½¼¨
+	// é€ã‚‰ã‚Œã¦ããŸå€¤ãŒé…åˆ—ã«ç™»éŒ²ã•ã‚Œã¦ã„ãªã‘ã‚Œã°TOPã‚’è¡¨ç¤º
 	if (in_array($get_tpl_subno_template,$objPage->arrSubnavi['title'])){
 		$tpl_subno_template = $get_tpl_subno_template;
 	}else{
 		$tpl_subno_template = $objPage->arrSubnavi['title'][1];
 	}
 } else {
-	// GET¤ÇÃÍ¤¬¤Ê¤±¤ì¤ĞPOST¤ÎÃÍ¤ò»ÈÍÑ¤¹¤ë
+	// GETã§å€¤ãŒãªã‘ã‚Œã°POSTã®å€¤ã‚’ä½¿ç”¨ã™ã‚‹
 	if ($_POST['tpl_subno_template'] != ""){
 		$tpl_subno_template = $_POST['tpl_subno_template'];
 	}else{
@@ -69,17 +69,17 @@ $objPage->tpl_subno_template = $tpl_subno_template;
 $key = array_keys($objPage->arrSubnavi['title'], $tpl_subno_template);
 $objPage->template_name = $objPage->arrSubnavi['name'][$key[0]];
 
-// ÅĞÏ¿¤ò²¡¤µ¤ì¤¿¤Ğ¤¢¤Ë¤ÏDB¤Ø¥Ç¡¼¥¿¤ò¹¹¿·¤Ë¹Ô¤¯
+// ç™»éŒ²ã‚’æŠ¼ã•ã‚ŒãŸã°ã‚ã«ã¯DBã¸ãƒ‡ãƒ¼ã‚¿ã‚’æ›´æ–°ã«è¡Œã
 switch($_POST['mode']) {
 case 'confirm':
-	// DB¤Ø¥Ç¡¼¥¿¹¹¿·
+	// DBã¸ãƒ‡ãƒ¼ã‚¿æ›´æ–°
 	lfUpdData();
 	
-	// ¥Æ¥ó¥×¥ì¡¼¥È¤Î¾å½ñ¤­
+	// ãƒ†ãƒ³ãƒ—ãƒ¬ãƒ¼ãƒˆã®ä¸Šæ›¸ã
 	lfChangeTemplate();
 	
-	// ´°Î»¥á¥Ã¥»¡¼¥¸
-	$objPage->tpl_onload="alert('ÅĞÏ¿¤¬´°Î»¤·¤Ş¤·¤¿¡£');";
+	// å®Œäº†ãƒ¡ãƒƒã‚»ãƒ¼ã‚¸
+	$objPage->tpl_onload="alert('ç™»éŒ²ãŒå®Œäº†ã—ã¾ã—ãŸã€‚');";
 	break;
 case 'download':
 	lfDownloadTemplate($_POST['check_template']);
@@ -88,42 +88,42 @@ default:
 	break;
 }
 
-// POSTÃÍ¤Î°ú¤­·Ñ¤®
+// POSTå€¤ã®å¼•ãç¶™ã
 $objPage->arrForm = $_POST;
 
-// ²èÁü¼èÆÀ
+// ç”»åƒå–å¾—
 $tpl_arrTemplate = array();
 $objPage->arrTemplate = lfgetTemplate();
 
-// ¥Ç¥Õ¥©¥ë¥È¥Á¥§¥Ã¥¯¼èÆÀ
+// ãƒ‡ãƒ•ã‚©ãƒ«ãƒˆãƒã‚§ãƒƒã‚¯å–å¾—
 $objPage->MainImage = $objPage->arrTemplate['check'];
 $objPage->arrTemplate['check'] = array($objPage->arrTemplate['check']=>"check");
 
-// ²èÌÌ¤ÎÉ½¼¨
+// ç”»é¢ã®è¡¨ç¤º
 $objView->assignobj($objPage);
 $objView->display(MAIN_FRAME);
 
 //---------------------------------------------------------------------------------------------------------------------------------------------------------
 
 /**************************************************************************************************************
- * ´Ø¿ôÌ¾	¡§lfgetTemplate
- * ½èÍıÆâÍÆ	¡§²èÌÌ¤ËÉ½¼¨¤¹¤ë²èÁü¤ò¼èÆÀ¤¹¤ë
- * °ú¿ô		¡§¤Ê¤·
- * Ìá¤êÃÍ	¡§²èÌÌ¤ËÉ½¼¨¤¹¤ë²èÁü(ÇÛÎó)
+ * é–¢æ•°å	ï¼šlfgetTemplate
+ * å‡¦ç†å†…å®¹	ï¼šç”»é¢ã«è¡¨ç¤ºã™ã‚‹ç”»åƒã‚’å–å¾—ã™ã‚‹
+ * å¼•æ•°		ï¼šãªã—
+ * æˆ»ã‚Šå€¤	ï¼šç”»é¢ã«è¡¨ç¤ºã™ã‚‹ç”»åƒ(é…åˆ—)
  **************************************************************************************************************/
 function lfgetTemplate(){
 	global $objPage;
 	$filepath = "user_data/templates/";
 	
-	$arrTemplateImage = array();	// ²èÌÌÉ½¼¨²èÁü³ÊÇ¼ÍÑ
-	$Image = "";					// ¥¤¥á¡¼¥¸¤ÎÇÛÎóÍ×ÁÇÌ¾³ÊÇ¼ÍÑ
+	$arrTemplateImage = array();	// ç”»é¢è¡¨ç¤ºç”»åƒæ ¼ç´ç”¨
+	$Image = "";					// ã‚¤ãƒ¡ãƒ¼ã‚¸ã®é…åˆ—è¦ç´ åæ ¼ç´ç”¨
 	$disp = "";
-	$arrDefcheck = array();			// radio¥Ü¥¿¥ó¤Î¥Ç¥Õ¥©¥ë¥È¥Á¥§¥Ã¥¯³ÊÇ¼ÍÑ
+	$arrDefcheck = array();			// radioãƒœã‚¿ãƒ³ã®ãƒ‡ãƒ•ã‚©ãƒ«ãƒˆãƒã‚§ãƒƒã‚¯æ ¼ç´ç”¨
 	
-	// DB¤«¤é¸½ºßÁªÂò¤µ¤ì¤Æ¤¤¤ë¥Ç¡¼¥¿¼èÆÀ
+	// DBã‹ã‚‰ç¾åœ¨é¸æŠã•ã‚Œã¦ã„ã‚‹ãƒ‡ãƒ¼ã‚¿å–å¾—
 	$arrDefcheck = lfgetTemplaeBaseData();
 	
-	// ¥Æ¥ó¥×¥ì¡¼¥È¥Ç¡¼¥¿¤ò¼èÆÀ¤¹¤ë
+	// ãƒ†ãƒ³ãƒ—ãƒ¬ãƒ¼ãƒˆãƒ‡ãƒ¼ã‚¿ã‚’å–å¾—ã™ã‚‹
 	$objQuery = new SC_Query();
 	$sql = "SELECT template_code,template_name FROM dtb_templates ORDER BY create_date DESC";
 	$arrTemplate = $objQuery->getall($sql);
@@ -131,36 +131,36 @@ function lfgetTemplate(){
 	switch($objPage->tpl_subno_template) {
 		// TOP
 		case $objPage->arrSubnavi['title'][1]:
-			$Image = "TopImage.jpg";			// ¥¤¥á¡¼¥¸¤ÎÇÛÎóÍ×ÁÇÌ¾³ÊÇ¼ÍÑ
+			$Image = "TopImage.jpg";			// ã‚¤ãƒ¡ãƒ¼ã‚¸ã®é…åˆ—è¦ç´ åæ ¼ç´ç”¨
 			$disp = $objPage->arrSubnavi['title'][1];
 			break;
 			
-		// ¾¦ÉÊ°ìÍ÷
+		// å•†å“ä¸€è¦§
 		case $objPage->arrSubnavi['title'][2]:
-			$Image = "ProdImage.jpg";			// ¥¤¥á¡¼¥¸¤ÎÇÛÎóÍ×ÁÇÌ¾³ÊÇ¼ÍÑ
+			$Image = "ProdImage.jpg";			// ã‚¤ãƒ¡ãƒ¼ã‚¸ã®é…åˆ—è¦ç´ åæ ¼ç´ç”¨
 			$disp = $objPage->arrSubnavi['title'][2];
 			break;
 			
-		// ¾¦ÉÊ¾ÜºÙ
+		// å•†å“è©³ç´°
 		case $objPage->arrSubnavi['title'][3]:
-			$Image = "DetailImage.jpg";			// ¥¤¥á¡¼¥¸¤ÎÇÛÎóÍ×ÁÇÌ¾³ÊÇ¼ÍÑ
+			$Image = "DetailImage.jpg";			// ã‚¤ãƒ¡ãƒ¼ã‚¸ã®é…åˆ—è¦ç´ åæ ¼ç´ç”¨
 			$disp = $objPage->arrSubnavi['title'][3];
 			break;
 			
-		// MY¥Ú¡¼¥¸
+		// MYãƒšãƒ¼ã‚¸
 		case $objPage->arrSubnavi['title'][4]:
-			$Image = "MypageImage.jpg";			//¥¤¥á¡¼¥¸¤ÎÇÛÎóÍ×ÁÇÌ¾³ÊÇ¼ÍÑ
+			$Image = "MypageImage.jpg";			//ã‚¤ãƒ¡ãƒ¼ã‚¸ã®é…åˆ—è¦ç´ åæ ¼ç´ç”¨
 			$disp = $objPage->arrSubnavi['title'][4];
 			break;
 	}
 
-	// ²èÁüÉ½¼¨ÇÛÎóºîÀ®
+	// ç”»åƒè¡¨ç¤ºé…åˆ—ä½œæˆ
 	foreach($arrTemplate as $key => $val){
 		$arrTemplateImage['image'][$val['template_code']] = $filepath . $val['template_code'] . "/" . $Image;
 		$arrTemplateImage['code'][$key] = $val['template_code'];
 	}
 	
-	// ½é´ü¥Á¥§¥Ã¥¯
+	// åˆæœŸãƒã‚§ãƒƒã‚¯
 	if (isset($arrDefcheck[$disp])){
 		$arrTemplateImage['check'] = $arrDefcheck[$disp];
 	}else{
@@ -171,15 +171,15 @@ function lfgetTemplate(){
 }
 
 /**************************************************************************************************************
- * ´Ø¿ôÌ¾	¡§lfgetTemplaeBaseData
- * ½èÍıÆâÍÆ	¡§DB¤ËÊİÂ¸¤µ¤ì¤Æ¤¤¤ë¥Æ¥ó¥×¥ì¡¼¥È¥Ç¡¼¥¿¤ò¼èÆÀ¤¹¤ë
- * °ú¿ô		¡§¤Ê¤·
- * Ìá¤êÃÍ	¡§DB¤ËÊİÂ¸¤µ¤ì¤Æ¤¤¤ë¥Æ¥ó¥×¥ì¡¼¥È¥Ç¡¼¥¿(ÇÛÎó)
+ * é–¢æ•°å	ï¼šlfgetTemplaeBaseData
+ * å‡¦ç†å†…å®¹	ï¼šDBã«ä¿å­˜ã•ã‚Œã¦ã„ã‚‹ãƒ†ãƒ³ãƒ—ãƒ¬ãƒ¼ãƒˆãƒ‡ãƒ¼ã‚¿ã‚’å–å¾—ã™ã‚‹
+ * å¼•æ•°		ï¼šãªã—
+ * æˆ»ã‚Šå€¤	ï¼šDBã«ä¿å­˜ã•ã‚Œã¦ã„ã‚‹ãƒ†ãƒ³ãƒ—ãƒ¬ãƒ¼ãƒˆãƒ‡ãƒ¼ã‚¿(é…åˆ—)
  **************************************************************************************************************/
 function lfgetTemplaeBaseData(){
-	$objDBConn = new SC_DbConn;		// DBÁàºî¥ª¥Ö¥¸¥§¥¯¥È
-	$sql = "";						// ¥Ç¡¼¥¿¼èÆÀSQLÀ¸À®ÍÑ
-	$arrRet = array();				// ¥Ç¡¼¥¿¼èÆÀÍÑ
+	$objDBConn = new SC_DbConn;		// DBæ“ä½œã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆ
+	$sql = "";						// ãƒ‡ãƒ¼ã‚¿å–å¾—SQLç”Ÿæˆç”¨
+	$arrRet = array();				// ãƒ‡ãƒ¼ã‚¿å–å¾—ç”¨
 	
 	$sql = "SELECT top_tpl AS top, product_tpl AS product, detail_tpl AS detail, mypage_tpl AS mypage FROM dtb_baseinfo";
 	$arrRet = $objDBConn->getAll($sql);
@@ -188,28 +188,28 @@ function lfgetTemplaeBaseData(){
 }
 
 /**************************************************************************************************************
- * ´Ø¿ôÌ¾	¡§lfUpdData
- * ½èÍıÆâÍÆ	¡§DB¤Ë¥Ç¡¼¥¿¤òÊİÂ¸¤¹¤ë
- * °ú¿ô		¡§¤Ê¤·
- * Ìá¤êÃÍ	¡§À®¸ù TRUE¡¢¥¨¥é¡¼ FALSE
+ * é–¢æ•°å	ï¼šlfUpdData
+ * å‡¦ç†å†…å®¹	ï¼šDBã«ãƒ‡ãƒ¼ã‚¿ã‚’ä¿å­˜ã™ã‚‹
+ * å¼•æ•°		ï¼šãªã—
+ * æˆ»ã‚Šå€¤	ï¼šæˆåŠŸ TRUEã€ã‚¨ãƒ©ãƒ¼ FALSE
  **************************************************************************************************************/
 function lfUpdData(){
 	global $objPage;
-	$objDBConn = new SC_DbConn;		// DBÁàºî¥ª¥Ö¥¸¥§¥¯¥È
-	$sql = "";						// ¥Ç¡¼¥¿¼èÆÀSQLÀ¸À®ÍÑ
-	$arrRet = array();				// ¥Ç¡¼¥¿¼èÆÀÍÑ(¹¹¿·È½Äê)
+	$objDBConn = new SC_DbConn;		// DBæ“ä½œã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆ
+	$sql = "";						// ãƒ‡ãƒ¼ã‚¿å–å¾—SQLç”Ÿæˆç”¨
+	$arrRet = array();				// ãƒ‡ãƒ¼ã‚¿å–å¾—ç”¨(æ›´æ–°åˆ¤å®š)
 
-	// ¥Ç¡¼¥¿¼èÆÀ	
+	// ãƒ‡ãƒ¼ã‚¿å–å¾—	
 	$sql = "SELECT top_tpl AS top, product_tpl AS product, detail_tpl AS detail, mypage_tpl AS mypage FROM dtb_baseinfo";
 	$arrRet = $objDBConn->getAll($sql);
 
 	$chk_tpl = $_POST['check_template'];
-	// ¥Ç¡¼¥¿¤¬¼èÆÀ¤Ç¤­¤Ê¤±¤ì¤ĞINSERT¡¢¤Ç¤­¤ì¤ĞUPDATE
+	// ãƒ‡ãƒ¼ã‚¿ãŒå–å¾—ã§ããªã‘ã‚Œã°INSERTã€ã§ãã‚Œã°UPDATE
 	if (isset($arrRet[0])){
 		// UPDATE
 		$arrVal = $arrRet[0];
 		
-		// TOP¤òÊÑ¹¹¤·¤¿¾ì¹ç¤Ë¤ÏÁ´²èÌÌÊÑ¹¹
+		// TOPã‚’å¤‰æ›´ã—ãŸå ´åˆã«ã¯å…¨ç”»é¢å¤‰æ›´
 		if ($objPage->tpl_subno_template == $objPage->arrSubnavi['title'][1]){
 			$arrVal = array($chk_tpl,$chk_tpl,$chk_tpl,$chk_tpl);
 		}else{
@@ -220,7 +220,7 @@ function lfUpdData(){
 		// INSERT
 		$arrVal = array(null,null,null,null);
 		
-		// TOP¤òÊÑ¹¹¤·¤¿¾ì¹ç¤Ë¤ÏÁ´²èÌÌÊÑ¹¹
+		// TOPã‚’å¤‰æ›´ã—ãŸå ´åˆã«ã¯å…¨ç”»é¢å¤‰æ›´
 		if ($objPage->tpl_subno_template == $objPage->arrSubnavi['title'][1]){
 			$arrVal = array($chk_tpl,$chk_tpl,$chk_tpl,$chk_tpl);
 		}else{
@@ -229,17 +229,17 @@ function lfUpdData(){
 		$sql= "insert into dtb_baseinfo (top_tpl,product_tpl,detail_tpl,mypage_tpl, update_date) values (?,?,?,?,now());";
 	}
 
-	// SQL¼Â¹Ô	
+	// SQLå®Ÿè¡Œ	
 	$arrRet = $objDBConn->query($sql,$arrVal);
 	
 	return $arrRet;
 }
 
 /**************************************************************************************************************
- * ´Ø¿ôÌ¾	¡§lfChangeTemplate
- * ½èÍıÆâÍÆ	¡§¥Æ¥ó¥×¥ì¡¼¥È¥Õ¥¡¥¤¥ë¤ò¾å½ñ¤­¤¹¤ë
- * °ú¿ô		¡§¤Ê¤·
- * Ìá¤êÃÍ	¡§À®¸ù TRUE¡¢¥¨¥é¡¼ FALSE
+ * é–¢æ•°å	ï¼šlfChangeTemplate
+ * å‡¦ç†å†…å®¹	ï¼šãƒ†ãƒ³ãƒ—ãƒ¬ãƒ¼ãƒˆãƒ•ã‚¡ã‚¤ãƒ«ã‚’ä¸Šæ›¸ãã™ã‚‹
+ * å¼•æ•°		ï¼šãªã—
+ * æˆ»ã‚Šå€¤	ï¼šæˆåŠŸ TRUEã€ã‚¨ãƒ©ãƒ¼ FALSE
  **************************************************************************************************************/
 function lfChangeTemplate(){
 	global $objPage;
@@ -260,25 +260,25 @@ function lfChangeTemplate(){
 	switch($objPage->tpl_subno_template) {
 		// TOP
 		case $objPage->arrSubnavi['title'][1]:
-			$tpl_element = "TopTemplate";			// ¥¤¥á¡¼¥¸¤ÎÇÛÎóÍ×ÁÇÌ¾³ÊÇ¼ÍÑ
+			$tpl_element = "TopTemplate";			// ã‚¤ãƒ¡ãƒ¼ã‚¸ã®é…åˆ—è¦ç´ åæ ¼ç´ç”¨
 			$tpl_name = "top.tpl";
 			break;
 			
-		// ¾¦ÉÊ°ìÍ÷
+		// å•†å“ä¸€è¦§
 		case $objPage->arrSubnavi['title'][2]:
-			$tpl_element = "ProdTemplate";			// ¥¤¥á¡¼¥¸¤ÎÇÛÎóÍ×ÁÇÌ¾³ÊÇ¼ÍÑ
+			$tpl_element = "ProdTemplate";			// ã‚¤ãƒ¡ãƒ¼ã‚¸ã®é…åˆ—è¦ç´ åæ ¼ç´ç”¨
 			$tpl_name = "list.tpl";
 			break;
 			
-		// ¾¦ÉÊ¾ÜºÙ
+		// å•†å“è©³ç´°
 		case $objPage->arrSubnavi['title'][3]:
-			$tpl_element = "DetailTemplate";			// ¥¤¥á¡¼¥¸¤ÎÇÛÎóÍ×ÁÇÌ¾³ÊÇ¼ÍÑ
+			$tpl_element = "DetailTemplate";			// ã‚¤ãƒ¡ãƒ¼ã‚¸ã®é…åˆ—è¦ç´ åæ ¼ç´ç”¨
 			$tpl_name = "detail.tpl";
 			break;
 			
-		// MY¥Ú¡¼¥¸
+		// MYãƒšãƒ¼ã‚¸
 		case $objPage->arrSubnavi['title'][4]:
-			$tpl_element = "MypageTemplate";			//¥¤¥á¡¼¥¸¤ÎÇÛÎóÍ×ÁÇÌ¾³ÊÇ¼ÍÑ
+			$tpl_element = "MypageTemplate";			//ã‚¤ãƒ¡ãƒ¼ã‚¸ã®é…åˆ—è¦ç´ åæ ¼ç´ç”¨
 			$tpl_name = "mypage.tpl";
 			break;
 
@@ -286,101 +286,101 @@ function lfChangeTemplate(){
 			break;
 	}
 
-	// ²èÁü¥Ñ¥¹¤ò½ñ¤­´¹¤¨
+	// ç”»åƒãƒ‘ã‚¹ã‚’æ›¸ãæ›ãˆ
 	$img_path = '<!--{$smarty.const.URL_DIR}-->img/';
 	$displace_path = '<!--{$smarty.const.URL_DIR}-->'. USER_DIR . 'templates/' . $chk_tpl . '/img/';
 	$fs = new File_SearchReplace($img_path, $displace_path, "", $path, true); 
 	$fs->doSearch(); 
 	
-	// TOP¤òÊÑ¹¹¤·¤¿¾ì¹ç¤Ë¤ÏÁ´²èÌÌÊÑ¹¹
+	// TOPã‚’å¤‰æ›´ã—ãŸå ´åˆã«ã¯å…¨ç”»é¢å¤‰æ›´
 	if ($objPage->tpl_subno_template == $objPage->arrSubnavi['title'][1]){
-		// ¥Æ¥ó¥×¥ì¡¼¥È¥Õ¥¡¥¤¥ë¤ò¥³¥Ô¡¼
+		// ãƒ†ãƒ³ãƒ—ãƒ¬ãƒ¼ãƒˆãƒ•ã‚¡ã‚¤ãƒ«ã‚’ã‚³ãƒ”ãƒ¼
 		copy($taget_tpl_path . "top.tpl", $save_tpl_path . "top.tpl");
 		copy($taget_tpl_path . "list.tpl", $save_tpl_path . "list.tpl");
 		copy($taget_tpl_path . "detail.tpl", $save_tpl_path . "detail.tpl");
 
-		// mypage¤Ï¥Õ¥©¥ë¥À¤´¤È¥³¥Ô¡¼
+		// mypageã¯ãƒ•ã‚©ãƒ«ãƒ€ã”ã¨ã‚³ãƒ”ãƒ¼
 		lfFolderCopy($taget_tpl_path."mypage/", $save_tpl_path . "mypage/");
 
-		// ¥Ö¥í¥Ã¥¯¥Ç¡¼¥¿¤Î¥³¥Ô¡¼
+		// ãƒ–ãƒ­ãƒƒã‚¯ãƒ‡ãƒ¼ã‚¿ã®ã‚³ãƒ”ãƒ¼
 		lfFolderCopy($taget_inc_path."bloc/", $inc_path . "bloc/");
 
-		// ¥Ø¥Ã¥À¡¼,¥Õ¥Ã¥¿¡¼¥³¥Ô¡¼
+		// ãƒ˜ãƒƒãƒ€ãƒ¼,ãƒ•ãƒƒã‚¿ãƒ¼ã‚³ãƒ”ãƒ¼
 		copy($taget_inc_path . "header.tpl", $inc_path . "header.tpl");
 		copy($taget_inc_path . "footer.tpl", $inc_path . "footer.tpl");
 		
-		// CSS¥Õ¥¡¥¤¥ë¤Î¥³¥Ô¡¼
+		// CSSãƒ•ã‚¡ã‚¤ãƒ«ã®ã‚³ãƒ”ãƒ¼
 		copy($taget_css_path . "contents.css", $css_path . "contents.css");
 
-	// mypage¤Î¾ì¹ç¤Ë¤Ï¥Õ¥©¥ë¥À¤´¤È¥³¥Ô¡¼¤¹¤ë
+	// mypageã®å ´åˆã«ã¯ãƒ•ã‚©ãƒ«ãƒ€ã”ã¨ã‚³ãƒ”ãƒ¼ã™ã‚‹
 	}elseif($objPage->tpl_subno_template == $objPage->arrSubnavi['title'][4]){
 		lfFolderCopy($taget_tpl_path."mypage/", $save_tpl_path."mypage/");
 	}else{
-		// ¥Æ¥ó¥×¥ì¡¼¥È¥Õ¥¡¥¤¥ë¤ò¥³¥Ô¡¼
+		// ãƒ†ãƒ³ãƒ—ãƒ¬ãƒ¼ãƒˆãƒ•ã‚¡ã‚¤ãƒ«ã‚’ã‚³ãƒ”ãƒ¼
 		copy($taget_tpl_path . $tpl_name, $save_tpl_path . $tpl_name);
 	}
 
-	// ²èÁü¥Ñ¥¹¤ò¸µ¤ËÌá¤¹	
+	// ç”»åƒãƒ‘ã‚¹ã‚’å…ƒã«æˆ»ã™	
 	$fs = new File_SearchReplace($displace_path, $img_path, "", $path, true); 
 	$fs->doSearch(); 
 }
 
 /**************************************************************************************************************
- * ´Ø¿ôÌ¾	¡§lfDownloadTemplate
- * ½èÍıÆâÍÆ	¡§¥Æ¥ó¥×¥ì¡¼¥È¥Õ¥¡¥¤¥ë°µ½Ì¤·¤Æ¥À¥¦¥ó¥í¡¼¥É¤¹¤ë
- * °ú¿ô1	¡§¥Æ¥ó¥×¥ì¡¼¥È¥³¡¼¥É
- * Ìá¤êÃÍ	¡§¤Ê¤·
+ * é–¢æ•°å	ï¼šlfDownloadTemplate
+ * å‡¦ç†å†…å®¹	ï¼šãƒ†ãƒ³ãƒ—ãƒ¬ãƒ¼ãƒˆãƒ•ã‚¡ã‚¤ãƒ«åœ§ç¸®ã—ã¦ãƒ€ã‚¦ãƒ³ãƒ­ãƒ¼ãƒ‰ã™ã‚‹
+ * å¼•æ•°1	ï¼šãƒ†ãƒ³ãƒ—ãƒ¬ãƒ¼ãƒˆã‚³ãƒ¼ãƒ‰
+ * æˆ»ã‚Šå€¤	ï¼šãªã—
  **************************************************************************************************************/
 function lfDownloadTemplate($template_code){
 	$filename = $template_code. ".tar.gz";
 	$dl_file = USER_TEMPLATE_PATH.$filename;
 	
-	// IMG¥Õ¥©¥ë¥À¤ò¥³¥Ô¡¼
+	// IMGãƒ•ã‚©ãƒ«ãƒ€ã‚’ã‚³ãƒ”ãƒ¼
 	$mess = "";
 	$mess = sfCopyDir(HTML_PATH."img/", USER_TEMPLATE_PATH.$template_code."/img/", $mess);
 	
-	// ¥Õ¥¡¥¤¥ë¤Î°µ½Ì
+	// ãƒ•ã‚¡ã‚¤ãƒ«ã®åœ§ç¸®
 	$tar = new Archive_Tar($dl_file, TRUE);
-	// ¥Õ¥¡¥¤¥ë°ìÍ÷¼èÆÀ
+	// ãƒ•ã‚¡ã‚¤ãƒ«ä¸€è¦§å–å¾—
 	$arrFileHash = sfGetFileList(USER_TEMPLATE_PATH.$template_code);
 	foreach($arrFileHash as $val) {
 		$arrFileList[] = $val['file_name'];
 	}
-	// ¥Ç¥£¥ì¥¯¥È¥ê¤ò°ÜÆ°
+	// ãƒ‡ã‚£ãƒ¬ã‚¯ãƒˆãƒªã‚’ç§»å‹•
 	chdir(USER_TEMPLATE_PATH.$template_code);
 	
-	//°µ½Ì¤ò¤ª¤³¤Ê¤¦
+	//åœ§ç¸®ã‚’ãŠã“ãªã†
 	$zip = $tar->create($arrFileList);
 		
-	// ¥À¥¦¥ó¥í¡¼¥É³«»Ï
+	// ãƒ€ã‚¦ãƒ³ãƒ­ãƒ¼ãƒ‰é–‹å§‹
 	Header("Content-disposition: attachment; filename=${filename}");
 	Header("Content-type: application/octet-stream; name=${dl_file}");
 	header("Content-Length: " .filesize($dl_file)); 
 	readfile ($dl_file);
-	// °µ½Ì¥Õ¥¡¥¤¥ëºï½ü
+	// åœ§ç¸®ãƒ•ã‚¡ã‚¤ãƒ«å‰Šé™¤
 	unlink($dl_file);
 	
 	exit();
 }
 
 /**************************************************************************************************************
- * ´Ø¿ôÌ¾	¡§lfFolderCopy
- * ½èÍıÆâÍÆ	¡§¥Õ¥©¥ë¥À¤ò¥³¥Ô¡¼¤¹¤ë
- * °ú¿ô1	¡§¥³¥Ô¡¼¸µ¥Ñ¥¹
- * °ú¿ô2¡¡¡¡¡§¥³¥Ô¡¼Àè¥Ñ¥¹
- * Ìá¤êÃÍ	¡§¤Ê¤·
+ * é–¢æ•°å	ï¼šlfFolderCopy
+ * å‡¦ç†å†…å®¹	ï¼šãƒ•ã‚©ãƒ«ãƒ€ã‚’ã‚³ãƒ”ãƒ¼ã™ã‚‹
+ * å¼•æ•°1	ï¼šã‚³ãƒ”ãƒ¼å…ƒãƒ‘ã‚¹
+ * å¼•æ•°2ã€€ã€€ï¼šã‚³ãƒ”ãƒ¼å…ˆãƒ‘ã‚¹
+ * æˆ»ã‚Šå€¤	ï¼šãªã—
  **************************************************************************************************************/
 function lfFolderCopy($taget_path, $save_path){
 
-	// ¥Õ¥©¥ë¥ÀÆâ¤Î¥Õ¥¡¥¤¥ë¤ò¼èÆÀ¤¹¤ë
+	// ãƒ•ã‚©ãƒ«ãƒ€å†…ã®ãƒ•ã‚¡ã‚¤ãƒ«ã‚’å–å¾—ã™ã‚‹
 	$arrMypage=glob($taget_path . "*" );
 	
-	// ¥Õ¥©¥ë¥À¤¬¤Ê¤±¤ì¤ĞºîÀ®¤¹¤ë
+	// ãƒ•ã‚©ãƒ«ãƒ€ãŒãªã‘ã‚Œã°ä½œæˆã™ã‚‹
 	if(!is_dir($save_path)){
 		mkdir($save_path);
 	}
 
-	// ¥Õ¥©¥ë¥ÀÆâ¤òÁ´¤Æ¥³¥Ô¡¼
+	// ãƒ•ã‚©ãƒ«ãƒ€å†…ã‚’å…¨ã¦ã‚³ãƒ”ãƒ¼
 	foreach($arrMypage as $key => $val){
 		$matches = array();
 		mb_ereg("^(.*[\/])(.*)",$val, $matches);

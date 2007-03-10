@@ -32,7 +32,7 @@ require_once($include_dir . "/../data/class/SC_Page.php");
 require_once($include_dir . "/../data/class/SC_Pdf.php");
 require_once($include_dir . "/../data/include/page_layout.inc");
 
-// ¥¢¥Ã¥×¥Ç¡¼¥È¤Ç¼èÆÀ¤·¤¿PHP¤òÆÉ¤ß½Ð¤¹
+// ã‚¢ãƒƒãƒ—ãƒ‡ãƒ¼ãƒˆã§å–å¾—ã—ãŸPHPã‚’èª­ã¿å‡ºã™
 sfLoadUpdateModule();
 
 ?>

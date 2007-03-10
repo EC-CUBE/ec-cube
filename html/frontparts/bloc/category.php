@@ -6,30 +6,30 @@
  */
 class LC_CatPage {
 	function LC_CatPage() {
-		/** É¬¤ºÊÑ¹¹¤¹¤ë **/
-		$this->tpl_mainpage = BLOC_PATH . 'category.tpl';	// ¥á¥¤¥ó
+		/** å¿…ãšå¤‰æ›´ã™ã‚‹ **/
+		$this->tpl_mainpage = BLOC_PATH . 'category.tpl';	// ãƒ¡ã‚¤ãƒ³
 	}
 }
 
 $objSubPage = new LC_CatPage();
 $objSubView = new SC_SiteView();
 
-// ÁªÂòÃæ¤Î¥«¥Æ¥´¥êID¤òÈ½Äê¤¹¤ë
+// é¸æŠžä¸­ã®ã‚«ãƒ†ã‚´ãƒªIDã‚’åˆ¤å®šã™ã‚‹
 $category_id = sfGetCategoryId($_GET['product_id'], $_GET['category_id']);
 
-// ÁªÂòÃæ¤Î¥«¥Æ¥´¥êID
+// é¸æŠžä¸­ã®ã‚«ãƒ†ã‚´ãƒªID
 $objSubPage->tpl_category_id = $category_id;
 $objSubPage = lfGetCatTree($category_id, true, $objSubPage);
 
 $objSubView->assignobj($objSubPage);
 $objSubView->display($objSubPage->tpl_mainpage);
 //-----------------------------------------------------------------------------------------------------------------------------------
-// ¥«¥Æ¥´¥ê¥Ä¥ê¡¼¤Î¼èÆÀ
+// ã‚«ãƒ†ã‚´ãƒªãƒ„ãƒªãƒ¼ã®å–å¾—
 function lfGetCatTree($parent_category_id, $count_check = false, $objSubPage) {
 	$objQuery = new SC_Query();
 	$col = "*";
 	$from = "dtb_category left join dtb_category_total_count using (category_id)";
-	// ÅÐÏ¿¾¦ÉÊ¿ô¤Î¥Á¥§¥Ã¥¯
+	// ç™»éŒ²å•†å“æ•°ã®ãƒã‚§ãƒƒã‚¯
 	if($count_check) {
 		$where = "del_flg = 0 AND product_count > 0";
 	} else {

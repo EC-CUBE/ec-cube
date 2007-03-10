@@ -9,12 +9,12 @@ require_once("../require.php");
 
 class LC_Page {
 	function LC_Page() {
-		/** É¬¤º»ØÄê¤¹¤ë **/
-		$this->tpl_css = URL_DIR.'css/layout/order/index.css';		// ¥á¥¤¥óCSS¥Ñ¥¹
-		/** É¬¤º»ØÄê¤¹¤ë **/
-		$this->tpl_mainpage = 'order/index.tpl';			// ¥á¥¤¥ó¥Æ¥ó¥×¥ì¡¼¥È
+		/** å¿…ãšæŒ‡å®šã™ã‚‹ **/
+		$this->tpl_css = URL_DIR.'css/layout/order/index.css';		// ãƒ¡ã‚¤ãƒ³CSSãƒ‘ã‚¹
+		/** å¿…ãšæŒ‡å®šã™ã‚‹ **/
+		$this->tpl_mainpage = 'order/index.tpl';			// ãƒ¡ã‚¤ãƒ³ãƒ†ãƒ³ãƒ—ãƒ¬ãƒ¼ãƒˆ
 		$this->tpl_page_category = 'order';	
-		$this->tpl_title = 'ÆÃÄê¾¦¼è°úË¡¤Ë´Ø¤¹¤ëË¡Î§';
+		$this->tpl_title = 'ç‰¹å®šå•†å–å¼•æ³•ã«é–¢ã™ã‚‹æ³•å¾‹';
 	}
 }
 
@@ -22,7 +22,7 @@ $objPage = new LC_Page();
 $objView = new SC_SiteView();
 $objQuery = new SC_Query();
 
-// ¥ì¥¤¥¢¥¦¥È¥Ç¥¶¥¤¥ó¤ò¼èÆÀ
+// ãƒ¬ã‚¤ã‚¢ã‚¦ãƒˆãƒ‡ã‚¶ã‚¤ãƒ³ã‚’å–å¾—
 $objPage = sfGetPageLayout($objPage, false, DEF_LAYOUT);
 
 $arrRet = $objQuery->getall("SELECT * FROM dtb_baseinfo",array());

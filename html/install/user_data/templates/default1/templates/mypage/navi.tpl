@@ -3,41 +3,41 @@
  *
  * http://www.lockon.co.jp/
  *}-->
-<!--¢§NAVI-->
+<!--â–¼NAVI-->
 <table width="170" border="0" cellspacing="0" cellpadding="0" summary=" ">
 	<tr>
 		<!--{if $tpl_mypageno == 'index'}-->
-			<td><a href="./index.php"><img src="<!--{$smarty.const.URL_DIR}-->img/mypage/navi01_on.jpg" width="170" height="30" alt="¹ØÆşÍúÎò°ìÍ÷" border="0" name="m_navi01"></a></td>
+			<td><a href="./index.php"><img src="<!--{$smarty.const.URL_DIR}-->img/mypage/navi01_on.jpg" width="170" height="30" alt="è³¼å…¥å±¥æ­´ä¸€è¦§" border="0" name="m_navi01"></a></td>
 		<!--{else}-->
-			<td><a href="./index.php" onmouseover="chgImg('<!--{$smarty.const.URL_DIR}-->img/mypage/navi01_on.jpg','m_navi01');" onmouseout="chgImg('<!--{$smarty.const.URL_DIR}-->img/mypage/navi01.jpg','m_navi01');"><img src="<!--{$smarty.const.URL_DIR}-->img/mypage/navi01.jpg" width="170" height="30" alt="¹ØÆşÍúÎò°ìÍ÷" border="0" name="m_navi01"></a></td>
+			<td><a href="./index.php" onmouseover="chgImg('<!--{$smarty.const.URL_DIR}-->img/mypage/navi01_on.jpg','m_navi01');" onmouseout="chgImg('<!--{$smarty.const.URL_DIR}-->img/mypage/navi01.jpg','m_navi01');"><img src="<!--{$smarty.const.URL_DIR}-->img/mypage/navi01.jpg" width="170" height="30" alt="è³¼å…¥å±¥æ­´ä¸€è¦§" border="0" name="m_navi01"></a></td>
 		<!--{/if}-->
 	</tr>
 	<tr>
 		<!--{if $tpl_mypageno == 'change'}-->
-			<td><a href="./change.php"><img src="<!--{$smarty.const.URL_DIR}-->img/mypage/navi02_on.jpg" width="170" height="30" alt="²ñ°÷ÅĞÏ¿ÆâÍÆÊÑ¹¹" border="0" name="m_navi02"></a></td>
+			<td><a href="./change.php"><img src="<!--{$smarty.const.URL_DIR}-->img/mypage/navi02_on.jpg" width="170" height="30" alt="ä¼šå“¡ç™»éŒ²å†…å®¹å¤‰æ›´" border="0" name="m_navi02"></a></td>
 		<!--{else}-->
-			<td><a href="./change.php" onmouseover="chgImg('<!--{$smarty.const.URL_DIR}-->img/mypage/navi02_on.jpg','m_navi02');" onmouseout="chgImg('<!--{$smarty.const.URL_DIR}-->img/mypage/navi02.jpg','m_navi02');"><img src="<!--{$smarty.const.URL_DIR}-->img/mypage/navi02.jpg" width="170" height="30" alt="²ñ°÷ÅĞÏ¿ÆâÍÆÊÑ¹¹" border="0" name="m_navi02"></a></td>
+			<td><a href="./change.php" onmouseover="chgImg('<!--{$smarty.const.URL_DIR}-->img/mypage/navi02_on.jpg','m_navi02');" onmouseout="chgImg('<!--{$smarty.const.URL_DIR}-->img/mypage/navi02.jpg','m_navi02');"><img src="<!--{$smarty.const.URL_DIR}-->img/mypage/navi02.jpg" width="170" height="30" alt="ä¼šå“¡ç™»éŒ²å†…å®¹å¤‰æ›´" border="0" name="m_navi02"></a></td>
 		<!--{/if}-->
 	</tr>
 	<tr>
 		<!--{if $tpl_mypageno == 'delivery'}-->
-			<td><a href="./delivery.php"><img src="<!--{$smarty.const.URL_DIR}-->img/mypage/navi03_on.jpg" width="170" height="30" alt="¤ªÆÏ¤±ÀèÄÉ²Ã¡¦ÊÑ¹¹" border="0" name="m_navi03"></a></td>
+			<td><a href="./delivery.php"><img src="<!--{$smarty.const.URL_DIR}-->img/mypage/navi03_on.jpg" width="170" height="30" alt="ãŠå±Šã‘å…ˆè¿½åŠ ãƒ»å¤‰æ›´" border="0" name="m_navi03"></a></td>
 		<!--{else}-->
-			<td><a href="./delivery.php" onmouseover="chgImg('<!--{$smarty.const.URL_DIR}-->img/mypage/navi03_on.jpg','m_navi03');" onmouseout="chgImg('<!--{$smarty.const.URL_DIR}-->img/mypage/navi03.jpg','m_navi03');"><img src="<!--{$smarty.const.URL_DIR}-->img/mypage/navi03.jpg" width="170" height="30" alt="¤ªÆÏ¤±ÀèÄÉ²Ã¡¦ÊÑ¹¹" border="0" name="m_navi03"></a></td>
+			<td><a href="./delivery.php" onmouseover="chgImg('<!--{$smarty.const.URL_DIR}-->img/mypage/navi03_on.jpg','m_navi03');" onmouseout="chgImg('<!--{$smarty.const.URL_DIR}-->img/mypage/navi03.jpg','m_navi03');"><img src="<!--{$smarty.const.URL_DIR}-->img/mypage/navi03.jpg" width="170" height="30" alt="ãŠå±Šã‘å…ˆè¿½åŠ ãƒ»å¤‰æ›´" border="0" name="m_navi03"></a></td>
 		<!--{/if}-->
 	</tr>
 	<tr>
 		<!--{if $tpl_mypageno == 'refusal'}-->
-			<td><a href="./refusal.php"><img src="<!--{$smarty.const.URL_DIR}-->img/mypage/navi04_on.jpg" width="170" height="30" alt="Âà²ñ¼êÂ³¤­" border="0" name="m_navi04"></a></td>
+			<td><a href="./refusal.php"><img src="<!--{$smarty.const.URL_DIR}-->img/mypage/navi04_on.jpg" width="170" height="30" alt="é€€ä¼šæ‰‹ç¶šã" border="0" name="m_navi04"></a></td>
 		<!--{else}-->
-			<td><a href="./refusal.php" onmouseover="chgImg('<!--{$smarty.const.URL_DIR}-->img/mypage/navi04_on.jpg','m_navi04');" onmouseout="chgImg('<!--{$smarty.const.URL_DIR}-->img/mypage/navi04.jpg','m_navi04');"><img src="<!--{$smarty.const.URL_DIR}-->img/mypage/navi04.jpg" width="170" height="30" alt="Âà²ñ¼êÂ³¤­" border="0" name="m_navi04"></a></td>
+			<td><a href="./refusal.php" onmouseover="chgImg('<!--{$smarty.const.URL_DIR}-->img/mypage/navi04_on.jpg','m_navi04');" onmouseout="chgImg('<!--{$smarty.const.URL_DIR}-->img/mypage/navi04.jpg','m_navi04');"><img src="<!--{$smarty.const.URL_DIR}-->img/mypage/navi04.jpg" width="170" height="30" alt="é€€ä¼šæ‰‹ç¶šã" border="0" name="m_navi04"></a></td>
 		<!--{/if}-->
 	</tr>
 </table>
 
 <table><tr><td height="15"></td></tr></table>
 
-<!-- ¸½ºß¤Î¥İ¥¤¥ó¥È ¤³¤³¤«¤é -->
+<!-- ç¾åœ¨ã®ãƒã‚¤ãƒ³ãƒˆ ã“ã“ã‹ã‚‰ -->
 <!--{if $point_disp !== false}-->
 <table width="170" border="0" cellspacing="0" cellpadding="0" summary=" ">
 	<tr align="center">
@@ -45,9 +45,9 @@
 		<table width="170" border="0" cellspacing="3" cellpadding="10" summary=" ">
 			<tr align="center">
 				<td class="fs12" bgcolor="#ffffff">
-				¤è¤¦¤³¤½ <br/>
-				<!--{$CustomerName1|escape}--> <!--{$CustomerName2|escape}-->ÍÍ<br>
-				¸½ºß¤Î½ê»ı¥İ¥¤¥ó¥È¤Ï<span class="redst"><!--{$CustomerPoint|number_format|escape|default:"0"}-->pt</span>¤Ç¤¹¡£
+				ã‚ˆã†ã“ã <br/>
+				<!--{$CustomerName1|escape}--> <!--{$CustomerName2|escape}-->æ§˜<br>
+				ç¾åœ¨ã®æ‰€æŒãƒã‚¤ãƒ³ãƒˆã¯<span class="redst"><!--{$CustomerPoint|number_format|escape|default:"0"}-->pt</span>ã§ã™ã€‚
 				</td>
 			</tr>
 		</table>
@@ -55,6 +55,6 @@
 	</tr>
 </table>
 <!--{/if}-->
-<!-- ¸½ºß¤Î¥İ¥¤¥ó¥È ¤³¤³¤Ş¤Ç -->
+<!-- ç¾åœ¨ã®ãƒã‚¤ãƒ³ãƒˆ ã“ã“ã¾ã§ -->
 
-<!--¢¥NAVI-->
+<!--â–²NAVI-->

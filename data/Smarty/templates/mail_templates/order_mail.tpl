@@ -3,61 +3,61 @@
  *
  * http://www.lockon.co.jp/
  *}-->
-<!--{$arrOrder.order_name01}--> <!--{$arrOrder.order_name02}--> ÍÍ
+<!--{$arrOrder.order_name01}--> <!--{$arrOrder.order_name02}--> æ§˜
 
 <!--{$tpl_header}-->
 
 ******************************************************************
-¡¡ÇÛÁ÷¾ðÊó¤È¤´ÀÁµá¶â³Û
+ã€€é…é€æƒ…å ±ã¨ã”è«‹æ±‚é‡‘é¡
 ******************************************************************
 
-¤´ÃíÊ¸ÈÖ¹æ¡§<!--{$arrOrder.order_id}-->
-¤ª»ÙÊ§¹ç·×¡§¡ï <!--{$arrOrder.payment_total|number_format|default:0}-->
-¤´·èºÑÊýË¡¡§<!--{$arrOrder.payment_method}-->
-¡¡¤ªÆÏ¤±Æü¡§<!--{$arrOrder.deliv_date|default:"»ØÄê¤Ê¤·"}-->
-¤ªÆÏ¤±»þ´Ö¡§<!--{$arrOrder.deliv_time|default:"»ØÄê¤Ê¤·"}-->
-¥á¥Ã¥»¡¼¥¸¡§<!--{$Message_tmp}-->
-¡ý¤ªÆÏ¤±Àè
-¡¡¤ªÌ¾Á°¡¡¡§<!--{$arrOrder.deliv_name01}--> <!--{$arrOrder.deliv_name02}-->¡¡ÍÍ
-¡¡Í¹ÊØÈÖ¹æ¡§¢©<!--{$arrOrder.deliv_zip01}-->-<!--{$arrOrder.deliv_zip02}-->
-¡¡¤´½»½ê¡¡¡§<!--{$arrOrder.deliv_pref}--><!--{$arrOrder.deliv_addr01}--><!--{$arrOrder.deliv_addr02}-->
-¡¡ÅÅÏÃÈÖ¹æ¡§<!--{$arrOrder.deliv_tel01}-->-<!--{$arrOrder.deliv_tel02}-->-<!--{$arrOrder.deliv_tel03}-->
+ã”æ³¨æ–‡ç•ªå·ï¼š<!--{$arrOrder.order_id}-->
+ãŠæ”¯æ‰•åˆè¨ˆï¼šï¿¥ <!--{$arrOrder.payment_total|number_format|default:0}-->
+ã”æ±ºæ¸ˆæ–¹æ³•ï¼š<!--{$arrOrder.payment_method}-->
+ã€€ãŠå±Šã‘æ—¥ï¼š<!--{$arrOrder.deliv_date|default:"æŒ‡å®šãªã—"}-->
+ãŠå±Šã‘æ™‚é–“ï¼š<!--{$arrOrder.deliv_time|default:"æŒ‡å®šãªã—"}-->
+ãƒ¡ãƒƒã‚»ãƒ¼ã‚¸ï¼š<!--{$Message_tmp}-->
+â—ŽãŠå±Šã‘å…ˆ
+ã€€ãŠåå‰ã€€ï¼š<!--{$arrOrder.deliv_name01}--> <!--{$arrOrder.deliv_name02}-->ã€€æ§˜
+ã€€éƒµä¾¿ç•ªå·ï¼šã€’<!--{$arrOrder.deliv_zip01}-->-<!--{$arrOrder.deliv_zip02}-->
+ã€€ã”ä½æ‰€ã€€ï¼š<!--{$arrOrder.deliv_pref}--><!--{$arrOrder.deliv_addr01}--><!--{$arrOrder.deliv_addr02}-->
+ã€€é›»è©±ç•ªå·ï¼š<!--{$arrOrder.deliv_tel01}-->-<!--{$arrOrder.deliv_tel02}-->-<!--{$arrOrder.deliv_tel03}-->
 
 <!--{if $arrOther.title.value }-->
 ******************************************************************
-¡¡<!--{$arrOther.title.name}-->¾ðÊó
+ã€€<!--{$arrOther.title.name}-->æƒ…å ±
 ******************************************************************
 
 <!--{foreach key=key item=item from=$arrOther}-->
 <!--{if $key != "title"}-->
-<!--{if $item.name != ""}--><!--{$item.name}-->¡§<!--{/if}--><!--{$item.value}-->
+<!--{if $item.name != ""}--><!--{$item.name}-->ï¼š<!--{/if}--><!--{$item.value}-->
 <!--{/if}-->
 <!--{/foreach}-->
 <!--{/if}-->
 
 ******************************************************************
-¡¡¤´ÃíÊ¸¾¦ÉÊÌÀºÙ
+ã€€ã”æ³¨æ–‡å•†å“æ˜Žç´°
 ******************************************************************
 
 <!--{section name=cnt loop=$arrOrderDetail}-->
-¾¦ÉÊÌ¾: <!--{$arrOrderDetail[cnt].product_name}--> <!--{$arrOrderDetail[cnt].classcategory_name1}--> <!--{$arrOrderDetail[cnt].classcategory_name2}-->
-¾¦ÉÊ¥³¡¼¥É: <!--{$arrOrderDetail[cnt].product_code}-->
-¿ôÎÌ¡§<!--{$arrOrderDetail[cnt].quantity}--> ¸Ä
-¶â³Û¡§¡ï <!--{$arrOrderDetail[cnt].price|sfPreTax:$arrInfo.tax:$arrInfo.tax_rule|number_format}-->
+å•†å“å: <!--{$arrOrderDetail[cnt].product_name}--> <!--{$arrOrderDetail[cnt].classcategory_name1}--> <!--{$arrOrderDetail[cnt].classcategory_name2}-->
+å•†å“ã‚³ãƒ¼ãƒ‰: <!--{$arrOrderDetail[cnt].product_code}-->
+æ•°é‡ï¼š<!--{$arrOrderDetail[cnt].quantity}--> å€‹
+é‡‘é¡ï¼šï¿¥ <!--{$arrOrderDetail[cnt].price|sfPreTax:$arrInfo.tax:$arrInfo.tax_rule|number_format}-->
 
 <!--{/section}-->
 -----------------------------------------------------------
-¾®¡¡·× ¡ï <!--{$arrOrder.subtotal|number_format|default:0}--> (¤¦¤Á¾ÃÈñÀÇ ¡ï<!--{$arrOrder.tax|number_format|default:0}-->¡Ë
-ÃÍ°ú¤­ ¡ï <!--{$arrOrder.use_point+$arrOrder.discount|number_format|default:0}-->
-Á÷¡¡ÎÁ ¡ï <!--{$arrOrder.deliv_fee|number_format|default:0}-->
-¼ê¿ôÎÁ ¡ï <!--{$arrOrder.charge|number_format|default:0}-->
+å°ã€€è¨ˆ ï¿¥ <!--{$arrOrder.subtotal|number_format|default:0}--> (ã†ã¡æ¶ˆè²»ç¨Ž ï¿¥<!--{$arrOrder.tax|number_format|default:0}-->ï¼‰
+å€¤å¼•ã ï¿¥ <!--{$arrOrder.use_point+$arrOrder.discount|number_format|default:0}-->
+é€ã€€æ–™ ï¿¥ <!--{$arrOrder.deliv_fee|number_format|default:0}-->
+æ‰‹æ•°æ–™ ï¿¥ <!--{$arrOrder.charge|number_format|default:0}-->
 ===============================================================
-¹ç¡¡·× ¡ï <!--{$arrOrder.payment_total|number_format|default:0}-->
+åˆã€€è¨ˆ ï¿¥ <!--{$arrOrder.payment_total|number_format|default:0}-->
 ===============================================================
 
-<!--{* ¤´ÃíÊ¸Á°¤Î¥Ý¥¤¥ó¥È {$tpl_user_point} pt *}-->
-¤´»ÈÍÑ¥Ý¥¤¥ó¥È <!--{$arrOrder.use_point|default:0}--> pt
-º£²ó²Ã»»¤µ¤ì¤ë²Ã»»¥Ý¥¤¥ó¥È <!--{$arrOrder.add_point|default:0}--> pt
-ÊÝ»ý¥Ý¥¤¥ó¥È <!--{$arrCustomer.point|default:0}--> pt
+<!--{* ã”æ³¨æ–‡å‰ã®ãƒã‚¤ãƒ³ãƒˆ {$tpl_user_point} pt *}-->
+ã”ä½¿ç”¨ãƒã‚¤ãƒ³ãƒˆ <!--{$arrOrder.use_point|default:0}--> pt
+ä»Šå›žåŠ ç®—ã•ã‚Œã‚‹åŠ ç®—ãƒã‚¤ãƒ³ãƒˆ <!--{$arrOrder.add_point|default:0}--> pt
+ä¿æŒãƒã‚¤ãƒ³ãƒˆ <!--{$arrCustomer.point|default:0}--> pt
 
 <!--{$tpl_footer}-->

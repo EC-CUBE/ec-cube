@@ -3,21 +3,21 @@
  *
  * http://www.lockon.co.jp/
  */
-var IMG_FOLDER_CLOSE   = "../../img/admin/contents/folder_close.gif";		// ¥Õ¥©¥ë¥À¥¯¥í¡¼¥º»ş²èÁü
-var IMG_FOLDER_OPEN    = "../../img/admin/contents/folder_open.gif";		// ¥Õ¥©¥ë¥À¥ª¡¼¥×¥ó»ş²èÁü
-var IMG_PLUS           = "../../img/admin/contents/plus.gif";				// ¥×¥é¥¹¥é¥¤¥ó
-var IMG_MINUS          = "../../img/admin/contents/minus.gif";				// ¥Ş¥¤¥Ê¥¹¥é¥¤¥ó
-var IMG_NORMAL         = "../../img/admin/contents/space.gif";				// ¥¹¥Ú¡¼¥¹
+var IMG_FOLDER_CLOSE   = "../../img/admin/contents/folder_close.gif";		// ƒtƒHƒ‹ƒ_ƒNƒ[ƒY‰æ‘œ
+var IMG_FOLDER_OPEN    = "../../img/admin/contents/folder_open.gif";		// ƒtƒHƒ‹ƒ_ƒI[ƒvƒ“‰æ‘œ
+var IMG_PLUS           = "../../img/admin/contents/plus.gif";				// ƒvƒ‰ƒXƒ‰ƒCƒ“
+var IMG_MINUS          = "../../img/admin/contents/minus.gif";				// ƒ}ƒCƒiƒXƒ‰ƒCƒ“
+var IMG_NORMAL         = "../../img/admin/contents/space.gif";				// ƒXƒy[ƒX
 
-var tree = "";						// À¸À®HTML³ÊÇ¼
-var count = 0;						// ¥ë¡¼¥×¥«¥¦¥ó¥¿
-var arrTreeStatus = new Array();	// ¥Ä¥ê¡¼¾õÂÖÊİ»ı
-var old_select_id = '';				// Á°²óÁªÂò¤·¤Æ¤¤¤¿¥Õ¥¡¥¤¥ë
-var selectFileHidden = "";			// ÁªÂò¤·¤¿¥Õ¥¡¥¤¥ë¤ÎhiddenÌ¾
-var treeStatusHidden = "";			// ¥Ä¥ê¡¼¾õÂÖÊİÂ¸ÍÑ¤ÎhiddenÌ¾
-var modeHidden = "";				// mode¥»¥Ã¥ÈhiddenÌ¾
+var tree = "";						// ¶¬HTMLŠi”[
+var count = 0;						// ƒ‹[ƒvƒJƒEƒ“ƒ^
+var arrTreeStatus = new Array();	// ƒcƒŠ[ó‘Ô•Û
+var old_select_id = '';				// ‘O‰ñ‘I‘ğ‚µ‚Ä‚¢‚½ƒtƒ@ƒCƒ‹
+var selectFileHidden = "";			// ‘I‘ğ‚µ‚½ƒtƒ@ƒCƒ‹‚Ìhidden–¼
+var treeStatusHidden = "";			// ƒcƒŠ[ó‘Ô•Û‘¶—p‚Ìhidden–¼
+var modeHidden = "";				// modeƒZƒbƒghidden–¼
 
-// ¥Ä¥ê¡¼É½¼¨
+// ƒcƒŠ[•\¦
 function fnTreeView(view_id, arrTree, openFolder, selectHidden, treeHidden, mode) {
 	selectFileHidden = selectHidden;
 	treeStatusHidden = treeHidden;
@@ -36,7 +36,7 @@ function fnTreeView(view_id, arrTree, openFolder, selectHidden, treeHidden, mode
 			old_level = arrTree[i-1][3];
 		}
 	
-		// ³¬ÁØ¾å¤ØÌá¤ë
+		// ŠK‘wã‚Ö–ß‚é
 		if(level <= (old_level - 1)) {
 			tmp_level = old_level - level;
 			for(up_roop = 0; up_roop <= tmp_level; up_roop++) {
@@ -44,22 +44,22 @@ function fnTreeView(view_id, arrTree, openFolder, selectHidden, treeHidden, mode
 			}
 		}
 		
-		// Æ±°ì³¬ÁØ¤Ç¼¡¤Î¥Õ¥©¥ë¥À¤Ø
+		// “¯ˆêŠK‘w‚ÅŸ‚ÌƒtƒHƒ‹ƒ_‚Ö
 		if(id != old_id && level == old_level) tree += '</div>';
 	
-		// ³¬ÁØ¤ÎÊ¬¤À¤±¥¹¥Ú¡¼¥¹¤òÆş¤ì¤ë
+		// ŠK‘w‚Ì•ª‚¾‚¯ƒXƒy[ƒX‚ğ“ü‚ê‚é
 		for(space_cnt = 0; space_cnt < arrTree[i][3]; space_cnt++) {
 			tree += "&nbsp;&nbsp;&nbsp;";
 		}
 
-		// ³¬ÁØ²èÁü¤ÎÉ½¼¨¡¦ÈóÉ½¼¨½èÍı
+		// ŠK‘w‰æ‘œ‚Ì•\¦E”ñ•\¦ˆ—
 		if(arrTree[i][4]) {
 			if(arrTree[i][1] == '_parent') {
 				rank_img = IMG_MINUS;
 			} else {
 				rank_img = IMG_NORMAL;
 			}
-			// ³«¤­¾õÂÖ¤òÊİ»ı
+			// ŠJ‚«ó‘Ô‚ğ•Û
 			arrTreeStatus.push(arrTree[i][2]);
 			display = 'block';
 		} else {
@@ -74,7 +74,7 @@ function fnTreeView(view_id, arrTree, openFolder, selectHidden, treeHidden, mode
 		arrFileSplit = arrTree[i][2].split("/");
 		file_name = arrFileSplit[arrFileSplit.length-1];
 
-		// ¥Õ¥©¥ë¥À¤Î²èÁü¤òÁªÂò
+		// ƒtƒHƒ‹ƒ_‚Ì‰æ‘œ‚ğ‘I‘ğ
 		if(arrTree[i][2] == openFolder) {
 			folder_img = IMG_FOLDER_OPEN;
 			file_name = "<b>" + file_name + "</b>";
@@ -82,7 +82,7 @@ function fnTreeView(view_id, arrTree, openFolder, selectHidden, treeHidden, mode
 			folder_img = IMG_FOLDER_CLOSE;
 		}
 
-		// ³¬ÁØ²èÁü¤Ë»Ò¶¡¤¬¤¤¤¿¤é¥ª¥ó¥¯¥ê¥Ã¥¯½èÍı¤ò¤Ä¤±¤ë
+		// ŠK‘w‰æ‘œ‚Éq‹Ÿ‚ª‚¢‚½‚çƒIƒ“ƒNƒŠƒbƒNˆ—‚ğ‚Â‚¯‚é
 		if(rank_img != IMG_NORMAL) {
 			tree += '<a href="javascript:fnTreeMenu(\'tree'+ i +'\',\'rank_img'+ i +'\',\''+ arrTree[i][2] +'\')"><img src="'+ rank_img +'" border="0" name="rank_img'+ i +'" id="rank_img'+ i +'">';
 		} else {
@@ -96,7 +96,7 @@ function fnTreeView(view_id, arrTree, openFolder, selectHidden, treeHidden, mode
 	//document.tree_form.tree_test2.focus();	
 }
 
-// Tree¾õÂÖ¤òhidden¤Ë¥»¥Ã¥È
+// Treeó‘Ô‚ğhidden‚ÉƒZƒbƒg
 function setTreeStatus(name) {
 	var tree_status = "";
 	for(i=0; i < arrTreeStatus.length ;i++) {
@@ -106,7 +106,7 @@ function setTreeStatus(name) {
 	document.form1[name].value = tree_status;
 }
 
-// Tree¾õÂÖ¤òºï½ü¤¹¤ë(ÊÄ¤¸¤ë¾õÂÖ¤Ø)
+// Treeó‘Ô‚ğíœ‚·‚é(•Â‚¶‚éó‘Ô‚Ö)
 function fnDelTreeStatus(path) {
 	for(i=0; i < arrTreeStatus.length ;i++) {
 		if(arrTreeStatus[i] == path) {
@@ -114,17 +114,17 @@ function fnDelTreeStatus(path) {
 		}
 	}
 }
-// ¥Ä¥ê¡¼ÉÁ²è
+// ƒcƒŠ[•`‰æ
 function fnDrow(id, tree) {
-	// ¥Ö¥é¥¦¥¶¼èÆÀ
+	// ƒuƒ‰ƒEƒUæ“¾
 	MyBR = fnGetMyBrowser();
-	// ¥Ö¥é¥¦¥¶»ö¤Ë½èÍı¤òÀÚ¤êÊ¬¤±
+	// ƒuƒ‰ƒEƒU–‚Éˆ—‚ğØ‚è•ª‚¯
 	switch(myBR) {
-		// IE4¤Î»ş¤ÎÉ½¼¨
+		// IE4‚Ì‚Ì•\¦
 		case 'I4':
 			document.all(id).innerHTML = tree;
 			break;
-		// NN4¤Î»ş¤ÎÉ½¼¨
+		// NN4‚Ì‚Ì•\¦
 		case 'N4':
 			document.layers[id].document.open();
 			document.layers[id].document.write("<div>");
@@ -138,7 +138,7 @@ function fnDrow(id, tree) {
 	}
 }
 
-// ³¬ÁØ¥Ä¥ê¡¼¥á¥Ë¥å¡¼É½¼¨¡¦ÈóÉ½¼¨½èÍı
+// ŠK‘wƒcƒŠ[ƒƒjƒ…[•\¦E”ñ•\¦ˆ—
 function fnTreeMenu(tName, imgName, path) {
 
 	tMenu = document.all[tName].style;
@@ -146,18 +146,18 @@ function fnTreeMenu(tName, imgName, path) {
 	if(tMenu.display == 'none') {
 		fnChgImg(IMG_MINUS, imgName);
 		tMenu.display = "block";
-		// ³¬ÁØ¤Î³«¤¤¤¿¾õÂÖ¤òÊİ»ı
+		// ŠK‘w‚ÌŠJ‚¢‚½ó‘Ô‚ğ•Û
 		arrTreeStatus.push(path);
 
 	} else {
 		fnChgImg(IMG_PLUS, imgName);
 		tMenu.display = "none";
-		// ÊÄ¤¸¾õÂÖ¤òÊİ»ı
+		// •Â‚¶ó‘Ô‚ğ•Û
 		fnDelTreeStatus(path);
 	}
 }
 
-// ¥Õ¥¡¥¤¥ë¥ê¥¹¥È¥À¥Ö¥ë¥¯¥ê¥Ã¥¯½èÍı
+// ƒtƒ@ƒCƒ‹ƒŠƒXƒgƒ_ƒuƒ‹ƒNƒŠƒbƒNˆ—
 function fnDbClick(arrTree, path, is_dir, now_dir, is_parent) {
 
 	if(is_dir) {
@@ -179,46 +179,46 @@ function fnDbClick(arrTree, path, is_dir, now_dir, is_parent) {
 	}
 }
 
-// ¥Õ¥©¥ë¥À¥ª¡¼¥×¥ó½èÍı
+// ƒtƒHƒ‹ƒ_ƒI[ƒvƒ“ˆ—
 function fnFolderOpen(path) {
 
-	// ¥¯¥ê¥Ã¥¯¤·¤¿¥Õ¥©¥ë¥À¾ğÊó¤òÊİ»ı
+	// ƒNƒŠƒbƒN‚µ‚½ƒtƒHƒ‹ƒ_î•ñ‚ğ•Û
 	document.form1[selectFileHidden].value = path;
-	// tree¤Î¾õÂÖ¤ò¥»¥Ã¥È
+	// tree‚Ìó‘Ô‚ğƒZƒbƒg
 	setTreeStatus(treeStatusHidden);
 	// submit
 	fnModeSubmit(modeHidden,'','');
 }
 
 
-// ±ÜÍ÷¥Ö¥é¥¦¥¶¼èÆÀ
+// ‰{——ƒuƒ‰ƒEƒUæ“¾
 function fnGetMyBrowser() {
 	myOP = window.opera;            // OP
 	myN6 = document.getElementById; // N6
 	myIE = document.all;            // IE
 	myN4 = document.layers;         // N4
-	if      (myOP) myBR="O6";       // OP6°Ê¾å
-	else if (myIE) myBR="I4";       // IE4°Ê¾å
-	else if (myN6) myBR="N6";       // NS6°Ê¾å
+	if      (myOP) myBR="O6";       // OP6ˆÈã
+	else if (myIE) myBR="I4";       // IE4ˆÈã
+	else if (myN6) myBR="N6";       // NS6ˆÈã
 	else if (myN4) myBR="N4";       // NN4
-	else           myBR="";         // ¤½¤ÎÂ¾
+	else           myBR="";         // ‚»‚Ì‘¼
 		
 	return myBR;
 }
 
-// img¥¿¥°¤Î²èÁüÊÑ¹¹
+// imgƒ^ƒO‚Ì‰æ‘œ•ÏX
 function fnChgImg(fileName,imgName){
 	document.getElementById(imgName).src = fileName;
 }
 
-// ¥Õ¥¡¥¤¥ëÁªÂò
+// ƒtƒ@ƒCƒ‹‘I‘ğ
 function fnSelectFile(id, val) {
 	if(old_select_id != '') document.getElementById(old_select_id).style.backgroundColor = '';
 	document.getElementById(id).style.backgroundColor = val;
 	old_select_id = id;
 }
 
-// ÇØ·Ê¿§¤òÊÑ¤¨¤ë
+// ”wŒiF‚ğ•Ï‚¦‚é
 function fnChangeBgColor(id, val) {
 	if (old_select_id != id) {
 		document.getElementById(id).style.backgroundColor = val;

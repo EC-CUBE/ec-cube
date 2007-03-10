@@ -5,12 +5,12 @@
  * http://www.lockon.co.jp/
  */
 
-/* ¥«¡¼¥È¥»¥Ã¥·¥ç¥ó´ÉÍý¥¯¥é¥¹ */
+/* ã‚«ãƒ¼ãƒˆã‚»ãƒƒã‚·ãƒ§ãƒ³ç®¡ç†ã‚¯ãƒ©ã‚¹ */
 class SC_CartSession {
 	var $key;
-	var $key_tmp;	// ¥æ¥Ë¡¼¥¯ID¤ò»ØÄê¤¹¤ë¡£
+	var $key_tmp;	// ãƒ¦ãƒ‹ãƒ¼ã‚¯IDã‚’æŒ‡å®šã™ã‚‹ã€‚
 	
-	/* ¥³¥ó¥¹¥È¥é¥¯¥¿ */
+	/* ã‚³ãƒ³ã‚¹ãƒˆãƒ©ã‚¯ã‚¿ */
 	function SC_CartSession($key = 'cart') {
 		sfDomainSessionStart();
 		
@@ -18,14 +18,14 @@ class SC_CartSession {
 		$this->key = $key;
 	}
 	
-	// ¾¦ÉÊ¹ØÆþ½èÍýÃæ¤Î¥í¥Ã¥¯
+	// å•†å“è³¼å…¥å‡¦ç†ä¸­ã®ãƒ­ãƒƒã‚¯
 	function saveCurrentCart($key_tmp) {
 		$this->key_tmp = "savecart_" . $key_tmp;
-		// ¤¹¤Ç¤Ë¾ðÊó¤¬¤Ê¤±¤ì¤Ð¸½¾õ¤Î¥«¡¼¥È¾ðÊó¤òµ­Ï¿¤·¤Æ¤ª¤¯
+		// ã™ã§ã«æƒ…å ±ãŒãªã‘ã‚Œã°ç¾çŠ¶ã®ã‚«ãƒ¼ãƒˆæƒ…å ±ã‚’è¨˜éŒ²ã—ã¦ãŠã
 		if(count($_SESSION[$this->key_tmp]) == 0) {
 			$_SESSION[$this->key_tmp] = $_SESSION[$this->key];
 		}
-		// 1À¤Âå¸Å¤¤¥³¥Ô¡¼¾ðÊó¤Ï¡¢ºï½ü¤·¤Æ¤ª¤¯
+		// 1ä¸–ä»£å¤ã„ã‚³ãƒ”ãƒ¼æƒ…å ±ã¯ã€å‰Šé™¤ã—ã¦ãŠã
 		foreach($_SESSION as $key => $val) {
 			if($key != $this->key_tmp && ereg("^savecart_", $key)) {
 				unset($_SESSION[$key]);
@@ -33,14 +33,14 @@ class SC_CartSession {
 		}
 	}
 
-	// ¾¦ÉÊ¹ØÆþÃæ¤ÎÊÑ¹¹¤¬¤¢¤Ã¤¿¤«¤ò¥Á¥§¥Ã¥¯¤¹¤ë¡£
+	// å•†å“è³¼å…¥ä¸­ã®å¤‰æ›´ãŒã‚ã£ãŸã‹ã‚’ãƒã‚§ãƒƒã‚¯ã™ã‚‹ã€‚
 	function getCancelPurchase() {
 		$ret = $_SESSION[$this->key]['cancel_purchase'];
 		$_SESSION[$this->key]['cancel_purchase'] = false;
 		return $ret;
 	}
 	
-	// ¹ØÆþ½èÍýÃæ¤Ë¾¦ÉÊ¤ËÊÑ¹¹¤¬¤Ê¤«¤Ã¤¿¤«¤òÈ½Äê
+	// è³¼å…¥å‡¦ç†ä¸­ã«å•†å“ã«å¤‰æ›´ãŒãªã‹ã£ãŸã‹ã‚’åˆ¤å®š
 	function checkChangeCart() {
 		$change = false;
 		$max = $this->getMax();
@@ -55,7 +55,7 @@ class SC_CartSession {
 			}
 		}
 		if ($change) {
-			// °ì»þ¥«¡¼¥È¤Î¥¯¥ê¥¢
+			// ä¸€æ™‚ã‚«ãƒ¼ãƒˆã®ã‚¯ãƒªã‚¢
 			unset($_SESSION[$this->key_tmp]);
 			$_SESSION[$this->key]['cancel_purchase'] = true;
 		} else {
@@ -64,7 +64,7 @@ class SC_CartSession {
 		return $_SESSION[$this->key]['cancel_purchase'];
 	}
 	
-	// ¼¡¤Ë³ä¤êÅö¤Æ¤ë¥«¡¼¥È¤ÎID¤ò¼èÆÀ¤¹¤ë
+	// æ¬¡ã«å‰²ã‚Šå½“ã¦ã‚‹ã‚«ãƒ¼ãƒˆã®IDã‚’å–å¾—ã™ã‚‹
 	function getNextCartID() {
 		$max = count($_SESSION[$this->key]);
 		for($i = 0; $i < $max; $i++) {
@@ -73,12 +73,12 @@ class SC_CartSession {
 		return (max($arrRet) + 1);		
 	}
 			
-	// ¾¦ÉÊ¤´¤È¤Î¹ç·×²Á³Ê
+	// å•†å“ã”ã¨ã®åˆè¨ˆä¾¡æ ¼
 	function getProductTotal($arrInfo, $id) {
 		$max = $this->getMax();
 		for($i = 0; $i <= $max; $i++) {
 			if($_SESSION[$this->key][$i]['id'] == $id) {
-				// ÀÇ¹þ¤ß¹ç·×
+				// ç¨Žè¾¼ã¿åˆè¨ˆ
 				$price = $_SESSION[$this->key][$i]['price'];
 				$quantity = $_SESSION[$this->key][$i]['quantity'];
 				$pre_tax = sfPreTax($price, $arrInfo['tax'], $arrInfo['tax_rule']);
@@ -89,7 +89,7 @@ class SC_CartSession {
 		return 0;
 	}
 	
-	// ÃÍ¤Î¥»¥Ã¥È
+	// å€¤ã®ã‚»ãƒƒãƒˆ
 	function setProductValue($id, $key, $val) {
 		$max = $this->getMax();
 		for($i = 0; $i <= $max; $i++) {
@@ -99,7 +99,7 @@ class SC_CartSession {
 		}
 	}
 		
-	// ¥«¡¼¥ÈÆâ¾¦ÉÊ¤ÎºÇÂçÍ×ÁÇÈÖ¹æ¤ò¼èÆÀ¤¹¤ë¡£
+	// ã‚«ãƒ¼ãƒˆå†…å•†å“ã®æœ€å¤§è¦ç´ ç•ªå·ã‚’å–å¾—ã™ã‚‹ã€‚
 	function getMax() {
 		$cnt = 0;
 		$pos = 0;
@@ -116,7 +116,7 @@ class SC_CartSession {
 		return ($max);
 	}
 	
-	// ¥«¡¼¥ÈÆâ¾¦ÉÊ¿ô¤Î¹ç·×
+	// ã‚«ãƒ¼ãƒˆå†…å•†å“æ•°ã®åˆè¨ˆ
 	function getTotalQuantity() {
 		$total = 0;
 		$max = $this->getMax();
@@ -127,9 +127,9 @@ class SC_CartSession {
 	}
 	
 
-	// Á´¾¦ÉÊ¤Î¹ç·×²Á³Ê
+	// å…¨å•†å“ã®åˆè¨ˆä¾¡æ ¼
 	function getAllProductsTotal($arrInfo) {
-		// ÀÇ¹þ¤ß¹ç·×
+		// ç¨Žè¾¼ã¿åˆè¨ˆ
 		$total = 0;
 		$max = $this->getMax();
 		for($i = 0; $i <= $max; $i++) {
@@ -141,9 +141,9 @@ class SC_CartSession {
 		return $total;
 	}
 
-	// Á´¾¦ÉÊ¤Î¹ç·×ÀÇ¶â
+	// å…¨å•†å“ã®åˆè¨ˆç¨Žé‡‘
 	function getAllProductsTax($arrInfo) {
-		// ÀÇ¹ç·×
+		// ç¨Žåˆè¨ˆ
 		$total = 0;
 		$max = $this->getMax();
 		for($i = 0; $i <= $max; $i++) {
@@ -155,9 +155,9 @@ class SC_CartSession {
 		return $total;
 	}
 	
-	// Á´¾¦ÉÊ¤Î¹ç·×¥Ý¥¤¥ó¥È
+	// å…¨å•†å“ã®åˆè¨ˆãƒã‚¤ãƒ³ãƒˆ
 	function getAllProductsPoint() {
-		// ¥Ý¥¤¥ó¥È¹ç·×
+		// ãƒã‚¤ãƒ³ãƒˆåˆè¨ˆ
 		$total = 0;
 		$max = $this->getMax();
 		for($i = 0; $i <= $max; $i++) {
@@ -171,7 +171,7 @@ class SC_CartSession {
 		return $total;
 	}
 	
-	// ¥«¡¼¥È¤Ø¤Î¾¦ÉÊÄÉ²Ã
+	// ã‚«ãƒ¼ãƒˆã¸ã®å•†å“è¿½åŠ 
 	function addProduct($id, $quantity) {
 		$find = false;
 		$max = $this->getMax();
@@ -192,30 +192,30 @@ class SC_CartSession {
 		}
 	}
 	
-	// Á°ÊÇ¤ÎURL¤òµ­Ï¿¤·¤Æ¤ª¤¯
+	// å‰é ã®URLã‚’è¨˜éŒ²ã—ã¦ãŠã
 	function setPrevURL($url) {
-		// Á°ÊÇ¤È¤·¤Æµ­Ï¿¤·¤Ê¤¤¥Ú¡¼¥¸¤ò»ØÄê¤¹¤ë¡£
+		// å‰é ã¨ã—ã¦è¨˜éŒ²ã—ãªã„ãƒšãƒ¼ã‚¸ã‚’æŒ‡å®šã™ã‚‹ã€‚
 		$arrExclude = array("detail_image.php");
 		$exclude = false;
-		// ¥Ú¡¼¥¸¥Á¥§¥Ã¥¯¤ò¹Ô¤¦¡£
+		// ãƒšãƒ¼ã‚¸ãƒã‚§ãƒƒã‚¯ã‚’è¡Œã†ã€‚
 		foreach($arrExclude as $val) {
 			if(ereg($val, $url)) {
 				$exclude = true;
 				break;
 			}
 		}
-		// ½ü³°¥Ú¡¼¥¸¤Ç¤Ê¤¤¾ì¹ç¤Ï¡¢Á°ÊÇ¤È¤·¤Æµ­Ï¿¤¹¤ë¡£
+		// é™¤å¤–ãƒšãƒ¼ã‚¸ã§ãªã„å ´åˆã¯ã€å‰é ã¨ã—ã¦è¨˜éŒ²ã™ã‚‹ã€‚
 		if(!$exclude) {		
 			$_SESSION[$this->key]['prev_url'] = $url;
 		}
 	}
 	
-	// Á°ÊÇ¤ÎURL¤ò¼èÆÀ¤¹¤ë
+	// å‰é ã®URLã‚’å–å¾—ã™ã‚‹
 	function getPrevURL() {
 		return $_SESSION[$this->key]['prev_url'];
 	}
 
-	// ¥­¡¼¤¬°ìÃ×¤·¤¿¾¦ÉÊ¤Îºï½ü
+	// ã‚­ãƒ¼ãŒä¸€è‡´ã—ãŸå•†å“ã®å‰Šé™¤
 	function delProductKey($keyname, $val) {
 		$max = count($_SESSION[$this->key]);
 		for($i = 0; $i < $max; $i++) {
@@ -243,7 +243,7 @@ class SC_CartSession {
 		return $arrRet;
 	}
 	
-	// ¥«¡¼¥ÈÆâ¤Ë¤¢¤ë¾¦ÉÊ£É£Ä¤òÁ´¤Æ¼èÆÀ¤¹¤ë
+	// ã‚«ãƒ¼ãƒˆå†…ã«ã‚ã‚‹å•†å“ï¼©ï¼¤ã‚’å…¨ã¦å–å¾—ã™ã‚‹
 	function getAllProductID() {
 		$max = $this->getMax();
 		for($i = 0; $i <= $max; $i++) {
@@ -261,7 +261,7 @@ class SC_CartSession {
 		}
 	}
 	
-	// ¾¦ÉÊ¤Îºï½ü
+	// å•†å“ã®å‰Šé™¤
 	function delProduct($cart_no) {
 		$max = $this->getMax();
 		for($i = 0; $i <= $max; $i++) {
@@ -271,7 +271,7 @@ class SC_CartSession {
 		}
 	}
 	
-	// ¸Ä¿ô¤ÎÁý²Ã
+	// å€‹æ•°ã®å¢—åŠ 
 	function upQuantity($cart_no) {
 		$max = $this->getMax();
 		for($i = 0; $i <= $max; $i++) {
@@ -283,7 +283,7 @@ class SC_CartSession {
 		}
 	}
 	
-	// ¸Ä¿ô¤Î¸º¾¯
+	// å€‹æ•°ã®æ¸›å°‘
 	function downQuantity($cart_no) {
 		$max = $this->getMax();
 		for($i = 0; $i <= $max; $i++) {
@@ -295,9 +295,9 @@ class SC_CartSession {
 		}
 	}
 	
-	// Á´¾¦ÉÊ¤Î¹ç·×Á÷ÎÁ
+	// å…¨å•†å“ã®åˆè¨ˆé€æ–™
 	function getAllProductsDelivFee() {
-		// ¥Ý¥¤¥ó¥È¹ç·×
+		// ãƒã‚¤ãƒ³ãƒˆåˆè¨ˆ
 		$total = 0;
 		$max = $this->getMax();
 		for($i = 0; $i <= $max; $i++) {
@@ -308,11 +308,11 @@ class SC_CartSession {
 		return $total;
 	}
 	
-	// ¥«¡¼¥È¤ÎÃæ¤ÎÇä¤êÀÚ¤ì¥Á¥§¥Ã¥¯
+	// ã‚«ãƒ¼ãƒˆã®ä¸­ã®å£²ã‚Šåˆ‡ã‚Œãƒã‚§ãƒƒã‚¯
 	function chkSoldOut($arrCartList){
 		foreach($arrCartList as $key => $val){
 			if($val['quantity'] == 0){
-				// Çä¤êÀÚ¤ì¾¦ÉÊ¤ò¥«¡¼¥È¤«¤éºï½ü¤¹¤ë
+				// å£²ã‚Šåˆ‡ã‚Œå•†å“ã‚’ã‚«ãƒ¼ãƒˆã‹ã‚‰å‰Šé™¤ã™ã‚‹
 				$this->delProduct($val['cart_no']);
 				sfDispSiteError(SOLD_OUT, "", true);
 			}

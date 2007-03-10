@@ -7,31 +7,31 @@
 *}-->
 <table width="840" border="0" cellspacing="1" cellpadding="5" summary=" ">
 	<tr bgcolor="#636469" align="center" class="fs12n">
-		<td width="100"><span class="white">´ü´Ö</span></td>
-		<td width="80"><span class="white">¹ØÆþ·ï¿ô</span></td>
-		<td width="80"><span class="white">ÃËÀ­</span></td>				
-		<td width="80"><span class="white">½÷À­</span></td>				
-		<td width="80"><span class="white">ÃËÀ­(²ñ°÷)</span></td>
-		<td width="80"><span class="white">ÃËÀ­<br />(Èó²ñ°÷)</span></td>
-		<td width="80"><span class="white">½÷À­(²ñ°÷)</span></td>
-		<td width="80"><span class="white">½÷À­<br />(Èó²ñ°÷)</span></td>
-		<td width="80"><span class="white">¹ØÆþ¹ç·×</span></td>
-		<td width="80"><span class="white">¹ØÆþÊ¿¶Ñ</span></td>
+		<td width="100"><span class="white">æœŸé–“</span></td>
+		<td width="80"><span class="white">è³¼å…¥ä»¶æ•°</span></td>
+		<td width="80"><span class="white">ç”·æ€§</span></td>				
+		<td width="80"><span class="white">å¥³æ€§</span></td>				
+		<td width="80"><span class="white">ç”·æ€§(ä¼šå“¡)</span></td>
+		<td width="80"><span class="white">ç”·æ€§<br />(éžä¼šå“¡)</span></td>
+		<td width="80"><span class="white">å¥³æ€§(ä¼šå“¡)</span></td>
+		<td width="80"><span class="white">å¥³æ€§<br />(éžä¼šå“¡)</span></td>
+		<td width="80"><span class="white">è³¼å…¥åˆè¨ˆ</span></td>
+		<td width="80"><span class="white">è³¼å…¥å¹³å‡</span></td>
 	</tr>
 	
 	<!--{section name=cnt loop=$arrResults}-->
-	<!--{* ¿§Ê¬¤±È½Äê *}-->
+	<!--{* è‰²åˆ†ã‘åˆ¤å®š *}-->
 	<!--{if !$smarty.section.cnt.last}-->
 		<!--{assign var=type value="`$smarty.section.cnt.index%2`"}-->
 		<!--{if $type == 0}-->
-			<!--{* ¶ö¿ô¹Ô *}-->
+			<!--{* å¶æ•°è¡Œ *}-->
 			<!--{assign var=color value="#FFFFFF"}-->
 		<!--{else}-->
-			<!--{* ´ñ¿ô¹Ô *}-->
+			<!--{* å¥‡æ•°è¡Œ *}-->
 			<!--{assign var=color value="#D1DEFE"}-->
 		<!--{/if}-->
 	<!--{else}-->
-		<!--{* ºÇ½ª¹Ô *}-->
+		<!--{* æœ€çµ‚è¡Œ *}-->
 		<!--{assign var=color value="#FFD9EC"}-->
 	<!--{/if}-->
 	
@@ -40,33 +40,33 @@
 		<!--{assign var=wday value="`$arrResults[cnt].wday`"}-->
 		
 		<!--{if !$smarty.section.cnt.last}-->
-			<td align="center"><!--{*´ü´Ö*}--><!--{$arrResults[cnt][$keyname]}--><!--{if $keyname == "key_day"}-->(<!--{$arrWDAY[$wday]}-->)<!--{/if}--><!--{$tpl_tail}--></td>
+			<td align="center"><!--{*æœŸé–“*}--><!--{$arrResults[cnt][$keyname]}--><!--{if $keyname == "key_day"}-->(<!--{$arrWDAY[$wday]}-->)<!--{/if}--><!--{$tpl_tail}--></td>
 		<!--{else}-->
-			<td align="center"><!--{*´ü´Ö*}-->¹ç·×</td>
+			<td align="center"><!--{*æœŸé–“*}-->åˆè¨ˆ</td>
 		<!--{/if}-->
 		
-		<td align="right"><!--{*¹ØÆþ·ï¿ô*}--><!--{$arrResults[cnt].total_order}-->·ï</td>
-		<td align="right"><!--{*ÃËÀ­*}--><!--{$arrResults[cnt].men}--></td>
-		<td align="right"><!--{*½÷À­*}--><!--{$arrResults[cnt].women}--></td>
-		<td align="right"><!--{*ÃËÀ­(²ñ°÷)*}--><!--{$arrResults[cnt].men_member}--></td>
-		<td align="right"><!--{*ÃËÀ­(Èó²ñ°÷)*}--><!--{$arrResults[cnt].men_nonmember}--></td>
-		<td align="right"><!--{*½÷À­(²ñ°÷)*}--><!--{$arrResults[cnt].women_member}--></td>
-		<td align="right"><!--{*½÷À­(Èó²ñ°÷)*}--><!--{$arrResults[cnt].women_nonmember}--></td>
-		<td align="right"><!--{*¹ØÆþ¹ç·×*}--><!--{$arrResults[cnt].total|number_format}-->±ß</td>
-		<td align="right"><!--{*¹ØÆþÊ¿¶Ñ*}--><!--{$arrResults[cnt].total_average|number_format}-->±ß</td>
+		<td align="right"><!--{*è³¼å…¥ä»¶æ•°*}--><!--{$arrResults[cnt].total_order}-->ä»¶</td>
+		<td align="right"><!--{*ç”·æ€§*}--><!--{$arrResults[cnt].men}--></td>
+		<td align="right"><!--{*å¥³æ€§*}--><!--{$arrResults[cnt].women}--></td>
+		<td align="right"><!--{*ç”·æ€§(ä¼šå“¡)*}--><!--{$arrResults[cnt].men_member}--></td>
+		<td align="right"><!--{*ç”·æ€§(éžä¼šå“¡)*}--><!--{$arrResults[cnt].men_nonmember}--></td>
+		<td align="right"><!--{*å¥³æ€§(ä¼šå“¡)*}--><!--{$arrResults[cnt].women_member}--></td>
+		<td align="right"><!--{*å¥³æ€§(éžä¼šå“¡)*}--><!--{$arrResults[cnt].women_nonmember}--></td>
+		<td align="right"><!--{*è³¼å…¥åˆè¨ˆ*}--><!--{$arrResults[cnt].total|number_format}-->å††</td>
+		<td align="right"><!--{*è³¼å…¥å¹³å‡*}--><!--{$arrResults[cnt].total_average|number_format}-->å††</td>
 	</tr>
 	<!--{/section}-->
 	
 	<tr bgcolor="#636469" align="center" class="fs12n">
-		<td width="100"><span class="white">´ü´Ö</span></td>
-		<td width="80"><span class="white">¹ØÆþ·ï¿ô</span></td>
-		<td width="80"><span class="white">ÃËÀ­</span></td>				
-		<td width="80"><span class="white">½÷À­</span></td>				
-		<td width="80"><span class="white">ÃËÀ­(²ñ°÷)</span></td>
-		<td width="80"><span class="white">ÃËÀ­<br />(Èó²ñ°÷)</span></td>
-		<td width="80"><span class="white">½÷À­(²ñ°÷)</span></td>
-		<td width="80"><span class="white">½÷À­<br />(Èó²ñ°÷)</span></td>
-		<td width="80"><span class="white">¹ØÆþ¹ç·×</span></td>
-		<td width="80"><span class="white">¹ØÆþÊ¿¶Ñ</span></td>
+		<td width="100"><span class="white">æœŸé–“</span></td>
+		<td width="80"><span class="white">è³¼å…¥ä»¶æ•°</span></td>
+		<td width="80"><span class="white">ç”·æ€§</span></td>				
+		<td width="80"><span class="white">å¥³æ€§</span></td>				
+		<td width="80"><span class="white">ç”·æ€§(ä¼šå“¡)</span></td>
+		<td width="80"><span class="white">ç”·æ€§<br />(éžä¼šå“¡)</span></td>
+		<td width="80"><span class="white">å¥³æ€§(ä¼šå“¡)</span></td>
+		<td width="80"><span class="white">å¥³æ€§<br />(éžä¼šå“¡)</span></td>
+		<td width="80"><span class="white">è³¼å…¥åˆè¨ˆ</span></td>
+		<td width="80"><span class="white">è³¼å…¥å¹³å‡</span></td>
 	</tr>
 </table>

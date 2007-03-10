@@ -25,11 +25,11 @@ $objView = new SC_SiteView();
 $objSess = new SC_Session();
 
 
-// ÅÔÆ»ÉÜ¸©¥×¥ë¥À¥¦¥óÍÑÇÛÎó
+// éƒ½é“åºœçœŒãƒ—ãƒ«ãƒ€ã‚¦ãƒ³ç”¨é…åˆ—
 $objPage->arrPref = $arrPref;	
 
-// CSVÊİÂ¸¹àÌÜ
-//---- ÅĞÏ¿ÍÑ¥«¥é¥àÇÛÎó ¥ª¥×¥·¥ç¥ó°Ê³°
+// CSVä¿å­˜é …ç›®
+//---- ç™»éŒ²ç”¨ã‚«ãƒ©ãƒ é…åˆ— ã‚ªãƒ—ã‚·ãƒ§ãƒ³ä»¥å¤–
 $arrRegistColumn = array(
 							 array(  "column" => "name01", "convert" => "aKV" ),
 							 array(  "column" => "name02", "convert" => "aKV" ),
@@ -50,11 +50,11 @@ $arrRegistColumn = array(
 		
 		
 if ( ( ! $_POST['mode'] == 'confirm' ) && ( ! is_numeric($_REQUEST['question_id']) ) ){
-	echo "ÉÔÀµ¥¢¥¯¥»¥¹";
+	echo "ä¸æ­£ã‚¢ã‚¯ã‚»ã‚¹";
 	exit;
 }
 
-// ¥Æ¥ó¥×¥ì¡¼¥ÈÅĞÏ¿¹àÌÜ¼èÆÀ
+// ãƒ†ãƒ³ãƒ—ãƒ¬ãƒ¼ãƒˆç™»éŒ²é …ç›®å–å¾—
 $sql = "SELECT question_id, question FROM dtb_question WHERE question_id = ?";
 $result = $conn->getAll( $sql, array($_REQUEST['question_id']) );
 $objPage->QUESTION = lfGetArrInput( unserialize( $result[0]['question'] ) );
@@ -70,7 +70,7 @@ if ( (int)$objPage->QUESTION["delete"] !== 0 ){
 	
 } elseif( $_POST['mode'] == "confirm" ) {
 	
-	//--¡¡ÆşÎÏ¥¨¥é¡¼¥Á¥§¥Ã¥¯
+	//--ã€€å…¥åŠ›ã‚¨ãƒ©ãƒ¼ãƒã‚§ãƒƒã‚¯
 	$objPage->arrForm = $_POST;	
 	$objPage->arrForm = lfConvertParam($objPage->arrForm, $arrRegistColumn);	
 	$objPage->arrErr = lfErrorCheck($objPage->arrForm);
@@ -86,7 +86,7 @@ if ( (int)$objPage->QUESTION["delete"] !== 0 ){
 
 }elseif( $_POST['mode'] == "regist" )  {
 
-	//--¡¡ÆşÎÏÊ¸»ú¡¦ÊÑ´¹¡õ¥¨¥é¡¼¥Á¥§¥Ã¥¯
+	//--ã€€å…¥åŠ›æ–‡å­—ãƒ»å¤‰æ›ï¼†ã‚¨ãƒ©ãƒ¼ãƒã‚§ãƒƒã‚¯
 	$objPage->arrForm = $_POST;
 	$objPage->arrForm = lfConvertParam($objPage->arrForm, $arrRegistColumn);
 	$objPage->arrErr = lfErrorCheck($objPage->arrForm);
@@ -95,13 +95,13 @@ if ( (int)$objPage->QUESTION["delete"] !== 0 ){
 	
 	if( ! $objPage->arrErr ) {
 	
-		//´°Î»²èÌÌ
+		//å®Œäº†ç”»é¢
 		$objPage->tpl_mainpage = "inquiry/complete.tpl";
 
 		
-		//--------- ¢§ SQL ---------//
+		//--------- â–¼ SQL ---------//
 			
-			// ¥Æ¡¼¥Ö¥ë¤ËÆş¤ì¤ë¤è¤¦¤ËÀ°·Á¤¹¤ë
+			// ãƒ†ãƒ¼ãƒ–ãƒ«ã«å…¥ã‚Œã‚‹ã‚ˆã†ã«æ•´å½¢ã™ã‚‹
 			$arrOption = $objPage->arrForm['option'];
 			unset ($objPage->arrForm['email02']);
 			$objPage->arrForm['mail01'] = $objPage->arrForm['email'];
@@ -122,11 +122,11 @@ if ( (int)$objPage->QUESTION["delete"] !== 0 ){
 				}
 			}
 			$objPage->arrForm['create_date'] = "now()";
-			// £Ä£ÂÅĞÏ¿
+			// ï¼¤ï¼¢ç™»éŒ²
 			$objQuery = new SC_Query();
 			$objQuery->insert("dtb_question_result", $objPage->arrForm );
 			
-		//--------- ¢¥ SQL ---------//
+		//--------- â–² SQL ---------//
 
 	}
 }
@@ -136,46 +136,46 @@ $objPage->arrActive = $arrActive;
 $objPage->arrQuestion = $arrQuestion;
 
 
-//----¡¡¥Ú¡¼¥¸É½¼¨
+//----ã€€ãƒšãƒ¼ã‚¸è¡¨ç¤º
 $objView->_smarty->register_function("lfArray_Search_key_Smarty","lfArray_Search_key_Smarty");
 $objView->assignobj($objPage);
 $objView->display($objPage->tpl_mainpage);
 
-// ------------  ¥¨¥é¡¼¥Á¥§¥Ã¥¯½èÍıÉô ------------  
+// ------------  ã‚¨ãƒ©ãƒ¼ãƒã‚§ãƒƒã‚¯å‡¦ç†éƒ¨ ------------  
 function lfErrorCheck($array) {
 
 	$objErr = new SC_CheckError($array);
 
-	$objErr->doFunc(array("¤ªÌ¾Á°¡ÊÀ«¡Ë", 'name01', STEXT_LEN), array("EXIST_CHECK", "SPTAB_CHECK","MAX_LENGTH_CHECK"));
-	$objErr->doFunc(array("¤ªÌ¾Á°¡ÊÌ¾¡Ë", 'name02', STEXT_LEN), array("EXIST_CHECK", "SPTAB_CHECK", "MAX_LENGTH_CHECK"));
-	$objErr->doFunc(array("¥Õ¥ê¥¬¥Ê(¥»¥¤¡Ë", 'kana01', STEXT_LEN), array("EXIST_CHECK", "SPTAB_CHECK", "MAX_LENGTH_CHECK", "KANA_CHECK"));
-	$objErr->doFunc(array("¥Õ¥ê¥¬¥Ê¡Ê¥á¥¤¡Ë", 'kana02', STEXT_LEN), array("EXIST_CHECK", "SPTAB_CHECK", "MAX_LENGTH_CHECK", "KANA_CHECK"));
-	$objErr->doFunc(array("Í¹ÊØÈÖ¹æ1", "zip01", ZIP01_LEN ) ,array("EXIST_CHECK", "NUM_CHECK", "NUM_COUNT_CHECK"));
-	$objErr->doFunc(array("Í¹ÊØÈÖ¹æ2", "zip02", ZIP02_LEN ) ,array("EXIST_CHECK", "NUM_CHECK", "NUM_COUNT_CHECK")); 
-	$objErr->doFunc(array("Í¹ÊØÈÖ¹æ", "zip01", "zip02"), array("ALL_EXIST_CHECK"));
-	$objErr->doFunc(array("ÅÔÆ»ÉÜ¸©", 'pref'), array("SELECT_CHECK","NUM_CHECK"));
-	$objErr->doFunc(array("¤´½»½ê1", "addr01", MTEXT_LEN), array("EXIST_CHECK","SPTAB_CHECK","MAX_LENGTH_CHECK"));
-	$objErr->doFunc(array("¤´½»½ê2", "addr02", MTEXT_LEN), array("SPTAB_CHECK", "MAX_LENGTH_CHECK"));
-	$objErr->doFunc(array("¤ªÅÅÏÃÈÖ¹æ1", 'tel01'), array("EXIST_CHECK", "NUM_CHECK"));
-	$objErr->doFunc(array("¤ªÅÅÏÃÈÖ¹æ2", 'tel02'), array("EXIST_CHECK", "NUM_CHECK"));
-	$objErr->doFunc(array("¤ªÅÅÏÃÈÖ¹æ3", 'tel03'), array("EXIST_CHECK", "NUM_CHECK"));
-	$objErr->doFunc(array('¥á¡¼¥ë¥¢¥É¥ì¥¹', "email", MTEXT_LEN) ,array("EXIST_CHECK", "SPTAB_CHECK", "EMAIL_CHECK", "EMAIL_CHAR_CHECK", "MAX_LENGTH_CHECK"));
-	$objErr->doFunc(array('¥á¡¼¥ë¥¢¥É¥ì¥¹(³ÎÇ§)', "email02", MTEXT_LEN) ,array("EXIST_CHECK", "SPTAB_CHECK", "EMAIL_CHECK", "EMAIL_CHAR_CHECK", "MAX_LENGTH_CHECK"));
-	$objErr->doFunc(array('¥á¡¼¥ë¥¢¥É¥ì¥¹', '¥á¡¼¥ë¥¢¥É¥ì¥¹(³ÎÇ§)', "email", "email02") ,array("EQUAL_CHECK"));
+	$objErr->doFunc(array("ãŠåå‰ï¼ˆå§“ï¼‰", 'name01', STEXT_LEN), array("EXIST_CHECK", "SPTAB_CHECK","MAX_LENGTH_CHECK"));
+	$objErr->doFunc(array("ãŠåå‰ï¼ˆåï¼‰", 'name02', STEXT_LEN), array("EXIST_CHECK", "SPTAB_CHECK", "MAX_LENGTH_CHECK"));
+	$objErr->doFunc(array("ãƒ•ãƒªã‚¬ãƒŠ(ã‚»ã‚¤ï¼‰", 'kana01', STEXT_LEN), array("EXIST_CHECK", "SPTAB_CHECK", "MAX_LENGTH_CHECK", "KANA_CHECK"));
+	$objErr->doFunc(array("ãƒ•ãƒªã‚¬ãƒŠï¼ˆãƒ¡ã‚¤ï¼‰", 'kana02', STEXT_LEN), array("EXIST_CHECK", "SPTAB_CHECK", "MAX_LENGTH_CHECK", "KANA_CHECK"));
+	$objErr->doFunc(array("éƒµä¾¿ç•ªå·1", "zip01", ZIP01_LEN ) ,array("EXIST_CHECK", "NUM_CHECK", "NUM_COUNT_CHECK"));
+	$objErr->doFunc(array("éƒµä¾¿ç•ªå·2", "zip02", ZIP02_LEN ) ,array("EXIST_CHECK", "NUM_CHECK", "NUM_COUNT_CHECK")); 
+	$objErr->doFunc(array("éƒµä¾¿ç•ªå·", "zip01", "zip02"), array("ALL_EXIST_CHECK"));
+	$objErr->doFunc(array("éƒ½é“åºœçœŒ", 'pref'), array("SELECT_CHECK","NUM_CHECK"));
+	$objErr->doFunc(array("ã”ä½æ‰€1", "addr01", MTEXT_LEN), array("EXIST_CHECK","SPTAB_CHECK","MAX_LENGTH_CHECK"));
+	$objErr->doFunc(array("ã”ä½æ‰€2", "addr02", MTEXT_LEN), array("SPTAB_CHECK", "MAX_LENGTH_CHECK"));
+	$objErr->doFunc(array("ãŠé›»è©±ç•ªå·1", 'tel01'), array("EXIST_CHECK", "NUM_CHECK"));
+	$objErr->doFunc(array("ãŠé›»è©±ç•ªå·2", 'tel02'), array("EXIST_CHECK", "NUM_CHECK"));
+	$objErr->doFunc(array("ãŠé›»è©±ç•ªå·3", 'tel03'), array("EXIST_CHECK", "NUM_CHECK"));
+	$objErr->doFunc(array('ãƒ¡ãƒ¼ãƒ«ã‚¢ãƒ‰ãƒ¬ã‚¹', "email", MTEXT_LEN) ,array("EXIST_CHECK", "SPTAB_CHECK", "EMAIL_CHECK", "EMAIL_CHAR_CHECK", "MAX_LENGTH_CHECK"));
+	$objErr->doFunc(array('ãƒ¡ãƒ¼ãƒ«ã‚¢ãƒ‰ãƒ¬ã‚¹(ç¢ºèª)', "email02", MTEXT_LEN) ,array("EXIST_CHECK", "SPTAB_CHECK", "EMAIL_CHECK", "EMAIL_CHAR_CHECK", "MAX_LENGTH_CHECK"));
+	$objErr->doFunc(array('ãƒ¡ãƒ¼ãƒ«ã‚¢ãƒ‰ãƒ¬ã‚¹', 'ãƒ¡ãƒ¼ãƒ«ã‚¢ãƒ‰ãƒ¬ã‚¹(ç¢ºèª)', "email", "email02") ,array("EQUAL_CHECK"));
 	
 	$objErr->arrErr["option"] =  array_map( "lfCheckNull", (array)$_POST['option'] );
 	
 	return $objErr->arrErr;
 }
 
-//----¡¡¼èÆÀÊ¸»úÎó¤ÎÊÑ´¹
+//----ã€€å–å¾—æ–‡å­—åˆ—ã®å¤‰æ›
 function lfConvertParam($array, $arrRegistColumn) {
 
-	// ¥«¥é¥àÌ¾¤È¥³¥ó¥Ğ¡¼¥È¾ğÊó
+	// ã‚«ãƒ©ãƒ åã¨ã‚³ãƒ³ãƒãƒ¼ãƒˆæƒ…å ±
 	foreach ($arrRegistColumn as $data) {
 		$arrConvList[ $data["column"] ] = $data["convert"];
 	}
-	// Ê¸»úÊÑ´¹
+	// æ–‡å­—å¤‰æ›
 	$new_array = array();
 	foreach ($arrConvList as $key => $val) {
 		$new_array[$key] = $array[$key];
@@ -184,7 +184,7 @@ function lfConvertParam($array, $arrRegistColumn) {
 		}
 	}
 	
-	// ¥ª¥×¥·¥ç¥óÇÛÎóÍÑ
+	// ã‚ªãƒ—ã‚·ãƒ§ãƒ³é…åˆ—ç”¨
 	for ($i=0; $i<count($array['option']); $i++){
 		if ( is_array($array['option'][$i]) ){
 			$new_array['option'][$i] = $array['option'][$i];
@@ -199,7 +199,7 @@ function lfConvertParam($array, $arrRegistColumn) {
 }
 
 function lfGetArrInput( $arr ){
-	// ÃÍ¤¬ÆşÎÏ¤µ¤ì¤¿ÇÛÎó¤Î¤ß¤òÊÖ¤¹
+	// å€¤ãŒå…¥åŠ›ã•ã‚ŒãŸé…åˆ—ã®ã¿ã‚’è¿”ã™
 	
 	if ( is_array($arr)	){
 		foreach ( $arr as $key=>$val ) {

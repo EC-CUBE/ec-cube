@@ -10,10 +10,10 @@ class SC_Query {
 	var $where;
 	var $conn;
 	
-	// ¥³¥ó¥¹¥È¥é¥¯¥¿
+	// ã‚³ãƒ³ã‚¹ãƒˆãƒ©ã‚¯ã‚¿
 	/*
-		$err_disp:¥¨¥é¡¼É½¼¨¤ò¹Ô¤¦¤«
-		$new¡§¿·µ¬¤ËÀÜÂ³¤ò¹Ô¤¦¤«
+		$err_disp:ã‚¨ãƒ©ãƒ¼è¡¨ç¤ºã‚’è¡Œã†ã‹
+		$newï¼šæ–°è¦ã«æ¥ç¶šã‚’è¡Œã†ã‹
 	 */
 	function SC_Query($dsn = "", $err_disp = true, $new = false) {
 		$this->conn = new SC_DBconn($dsn, $err_disp, $new);
@@ -21,7 +21,7 @@ class SC_Query {
 		return $this->conn;
 	}
 	
-	// ¥¨¥é¡¼È½Äê
+	// ã‚¨ãƒ©ãƒ¼åˆ¤å®š
 	function isError() {
 		if(PEAR::isError($this->conn->conn)) {
 			return true;
@@ -29,14 +29,14 @@ class SC_Query {
 		return false;
 	}
 	
-	// COUNTÊ¸¤Î¼Â¹Ô
+	// COUNTæ–‡ã®å®Ÿè¡Œ
 	function count($table, $where = "", $arrval = array()) {
 		if(strlen($where) <= 0) {
 			$sqlse = "SELECT COUNT(*) FROM $table";
 		} else {
 			$sqlse = "SELECT COUNT(*) FROM $table WHERE $where";
 		}
-		// ¥«¥¦¥ó¥ÈÊ¸¤Î¼Â¹Ô
+		// ã‚«ã‚¦ãƒ³ãƒˆæ–‡ã®å®Ÿè¡Œ
 		$ret = $this->conn->getOne($sqlse, $arrval);
 		return $ret;
 	}
@@ -104,7 +104,7 @@ class SC_Query {
 
 	function getsql($col, $table, $where) {
 		if($where != "") {
-			// °ú¿ô¤Î$where¤òÍ¥Àè¤·¤Æ¼Â¹Ô¤¹¤ë¡£
+			// å¼•æ•°ã®$whereã‚’å„ªå…ˆã—ã¦å®Ÿè¡Œã™ã‚‹ã€‚
 			$sqlse = "SELECT $col FROM $table WHERE $where " . $this->groupby . " " . $this->order . " " . $this->option;
 		} else {
 			if($this->where != "") {
@@ -176,9 +176,9 @@ class SC_Query {
 	}
 	
 	
-	// INSERTÊ¸¤ÎÀ¸À®¡¦¼Â¹Ô
-	// $table	:¥Æ¡¼¥Ö¥ëÌ¾
-	// $sqlval	:ÎóÌ¾ => ÃÍ¤Î³ÊÇ¼¤µ¤ì¤¿¥Ï¥Ã¥·¥åÇÛÎó
+	// INSERTæ–‡ã®ç”Ÿæˆãƒ»å®Ÿè¡Œ
+	// $table	:ãƒ†ãƒ¼ãƒ–ãƒ«å
+	// $sqlval	:åˆ—å => å€¤ã®æ ¼ç´ã•ã‚ŒãŸãƒãƒƒã‚·ãƒ¥é…åˆ—
 	function insert($table, $sqlval) {
 		$strcol = '';
 		$strval = '';
@@ -203,21 +203,21 @@ class SC_Query {
 		if(!$find) {
 			return false;
 		}
-		// Ê¸Ëö¤Î","¤òºï½ü
+		// æ–‡æœ«ã®","ã‚’å‰Šé™¤
 		$strcol = ereg_replace(",$","",$strcol);
-		// Ê¸Ëö¤Î","¤òºï½ü
+		// æ–‡æœ«ã®","ã‚’å‰Šé™¤
 		$strval = ereg_replace(",$","",$strval);
 		$sqlin = "INSERT INTO $table(" . $strcol. ") VALUES (" . $strval . ")";
 		
-		// INSERTÊ¸¤Î¼Â¹Ô
+		// INSERTæ–‡ã®å®Ÿè¡Œ
 		$ret = $this->conn->query($sqlin, $arrval);
 		
 		return $ret;		
 	}
 	
-		// INSERTÊ¸¤ÎÀ¸À®¡¦¼Â¹Ô
-	// $table	:¥Æ¡¼¥Ö¥ëÌ¾
-	// $sqlval	:ÎóÌ¾ => ÃÍ¤Î³ÊÇ¼¤µ¤ì¤¿¥Ï¥Ã¥·¥åÇÛÎó
+		// INSERTæ–‡ã®ç”Ÿæˆãƒ»å®Ÿè¡Œ
+	// $table	:ãƒ†ãƒ¼ãƒ–ãƒ«å
+	// $sqlval	:åˆ—å => å€¤ã®æ ¼ç´ã•ã‚ŒãŸãƒãƒƒã‚·ãƒ¥é…åˆ—
 	function fast_insert($table, $sqlval) {
 		$strcol = '';
 		$strval = '';
@@ -236,23 +236,23 @@ class SC_Query {
 		if(!$find) {
 			return false;
 		}
-		// Ê¸Ëö¤Î","¤òºï½ü
+		// æ–‡æœ«ã®","ã‚’å‰Šé™¤
 		$strcol = ereg_replace(",$","",$strcol);
-		// Ê¸Ëö¤Î","¤òºï½ü
+		// æ–‡æœ«ã®","ã‚’å‰Šé™¤
 		$strval = ereg_replace(",$","",$strval);
 		$sqlin = "INSERT INTO $table(" . $strcol. ") VALUES (" . $strval . ")";
 		
-		// INSERTÊ¸¤Î¼Â¹Ô
+		// INSERTæ–‡ã®å®Ÿè¡Œ
 		$ret = $this->conn->query($sqlin);
 		
 		return $ret;		
 	}
 	
 	
-	// UPDATEÊ¸¤ÎÀ¸À®¡¦¼Â¹Ô
-	// $table	:¥Æ¡¼¥Ö¥ëÌ¾
-	// $sqlval	:ÎóÌ¾ => ÃÍ¤Î³ÊÇ¼¤µ¤ì¤¿¥Ï¥Ã¥·¥åÇÛÎó
-	// $where	:WHEREÊ¸»úÎó
+	// UPDATEæ–‡ã®ç”Ÿæˆãƒ»å®Ÿè¡Œ
+	// $table	:ãƒ†ãƒ¼ãƒ–ãƒ«å
+	// $sqlval	:åˆ—å => å€¤ã®æ ¼ç´ã•ã‚ŒãŸãƒãƒƒã‚·ãƒ¥é…åˆ—
+	// $where	:WHEREæ–‡å­—åˆ—
 	function update($table, $sqlval, $where = "", $arradd = "", $addcol = "") {
 		$strcol = '';
 		$strval = '';
@@ -280,9 +280,9 @@ class SC_Query {
 			}
 		}
 				
-		// Ê¸Ëö¤Î","¤òºï½ü
+		// æ–‡æœ«ã®","ã‚’å‰Šé™¤
 		$strcol = ereg_replace(",$","",$strcol);
-		// Ê¸Ëö¤Î","¤òºï½ü
+		// æ–‡æœ«ã®","ã‚’å‰Šé™¤
 		$strval = ereg_replace(",$","",$strval);
 		
 		if($where != "") {
@@ -292,74 +292,74 @@ class SC_Query {
 		}
 		
 		if(is_array($arradd)) {
-			// ¥×¥ì¡¼¥¹¥Û¥ë¥À¡¼ÍÑ¤ËÇÛÎó¤òÄÉ²Ã
+			// ãƒ—ãƒ¬ãƒ¼ã‚¹ãƒ›ãƒ«ãƒ€ãƒ¼ç”¨ã«é…åˆ—ã‚’è¿½åŠ 
 			foreach($arradd as $val) {
 				$arrval[] = $val;
 			}
 		}
 		
-		// INSERTÊ¸¤Î¼Â¹Ô
+		// INSERTæ–‡ã®å®Ÿè¡Œ
 		$ret = $this->conn->query($sqlup, $arrval);
 		return $ret;		
 	}
 
-	// MAXÊ¸¤Î¼Â¹Ô
+	// MAXæ–‡ã®å®Ÿè¡Œ
 	function max($table, $col, $where = "", $arrval = array()) {
 		if(strlen($where) <= 0) {
 			$sqlse = "SELECT MAX($col) FROM $table";
 		} else {
 			$sqlse = "SELECT MAX($col) FROM $table WHERE $where";
 		}
-		// MAXÊ¸¤Î¼Â¹Ô
+		// MAXæ–‡ã®å®Ÿè¡Œ
 		$ret = $this->conn->getOne($sqlse, $arrval);
 		return $ret;
 	}
 	
-	// MINÊ¸¤Î¼Â¹Ô
+	// MINæ–‡ã®å®Ÿè¡Œ
 	function min($table, $col, $where = "", $arrval = array()) {
 		if(strlen($where) <= 0) {
 			$sqlse = "SELECT MIN($col) FROM $table";
 		} else {
 			$sqlse = "SELECT MIN($col) FROM $table WHERE $where";
 		}
-		// MINÊ¸¤Î¼Â¹Ô
+		// MINæ–‡ã®å®Ÿè¡Œ
 		$ret = $this->conn->getOne($sqlse, $arrval);
 		return $ret;
 	}
 	
-	// ÆÃÄê¤Î¥«¥é¥à¤ÎÃÍ¤ò¼èÆÀ
+	// ç‰¹å®šã®ã‚«ãƒ©ãƒ ã®å€¤ã‚’å–å¾—
 	function get($table, $col, $where = "", $arrval = array()) {
 		if(strlen($where) <= 0) {
 			$sqlse = "SELECT $col FROM $table";
 		} else {
 			$sqlse = "SELECT $col FROM $table WHERE $where";
 		}
-		// SQLÊ¸¤Î¼Â¹Ô
+		// SQLæ–‡ã®å®Ÿè¡Œ
 		$ret = $this->conn->getOne($sqlse, $arrval);
 		return $ret;
 	}
 	
 	function getone($sql, $arrval = array()) {
-		// SQLÊ¸¤Î¼Â¹Ô
+		// SQLæ–‡ã®å®Ÿè¡Œ
 		$ret = $this->conn->getOne($sql, $arrval);
 		return $ret;
 		
 	}
 		
-	// °ì¹Ô¤ò¼èÆÀ
+	// ä¸€è¡Œã‚’å–å¾—
 	function getrow($table, $col, $where = "", $arrval = array()) {
 		if(strlen($where) <= 0) {
 			$sqlse = "SELECT $col FROM $table";
 		} else {
 			$sqlse = "SELECT $col FROM $table WHERE $where";
 		}
-		// SQLÊ¸¤Î¼Â¹Ô
+		// SQLæ–‡ã®å®Ÿè¡Œ
 		$ret = $this->conn->getRow($sqlse, $arrval);
 		
 		return $ret;
 	}
 		
-	// ¥ì¥³¡¼¥É¤Îºï½ü
+	// ãƒ¬ã‚³ãƒ¼ãƒ‰ã®å‰Šé™¤
 	function delete($table, $where = "", $arrval = array()) {
 		if(strlen($where) <= 0) {
 			$sqlde = "DELETE FROM $table";
@@ -372,7 +372,7 @@ class SC_Query {
 	
 	function nextval($table, $colname) {
 		$sql = "";
-		// postgresql¤Èmysql¤È¤Ç½èÍı¤òÊ¬¤±¤ë
+		// postgresqlã¨mysqlã¨ã§å‡¦ç†ã‚’åˆ†ã‘ã‚‹
 		if (DB_TYPE == "pgsql") {
 			$seqtable = $table . "_" . $colname . "_seq";
 			$sql = "SELECT NEXTVAL('$seqtable')";
@@ -416,19 +416,19 @@ class SC_Query {
 		return $result;
 	}
 	
-	// auto_increment¤ò¼èÆÀ¤¹¤ë
+	// auto_incrementã‚’å–å¾—ã™ã‚‹
 	function get_auto_increment($table_name){
-		// ¥í¥Ã¥¯¤¹¤ë
+		// ãƒ­ãƒƒã‚¯ã™ã‚‹
 		$this->BEGIN();
 		
-		// ¼¡¤ÎIncrement¤ò¼èÆÀ
+		// æ¬¡ã®Incrementã‚’å–å¾—
 		$arrRet = $this->getAll("SHOW TABLE STATUS LIKE ?", array($table_name));
 		$auto_inc_no = $arrRet[0]["Auto_increment"];
 		
-		// ÃÍ¤ò¥«¥¦¥ó¥È¥¢¥Ã¥×¤·¤Æ¤ª¤¯
+		// å€¤ã‚’ã‚«ã‚¦ãƒ³ãƒˆã‚¢ãƒƒãƒ—ã—ã¦ãŠã
 		$this->conn->query("ALTER TABLE $table_name AUTO_INCREMENT=?" , $auto_inc_no + 1);
 		
-		// ²ò½ü¤¹¤ë
+		// è§£é™¤ã™ã‚‹
 		$this->COMMIT();
 		
 		return $auto_inc_no;

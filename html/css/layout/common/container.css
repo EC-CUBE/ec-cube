@@ -5,7 +5,7 @@
  */
  @charset "<!--{$smarty.const.CHAR_CODE}-->"; 
 
-/***���Υơ��֥�***/
+/***全体テーブル***/
 #container{
 border: 0;
 margin: 0;
@@ -22,7 +22,7 @@ text-align: left;
 width: 570px;
 }
 
-/***���Υơ��֥벣�ʥӤʤ�***/
+/***全体テーブル横ナビなし***/
 #containerfull{
 border: 0;
 margin: 0;

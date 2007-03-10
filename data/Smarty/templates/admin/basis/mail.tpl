@@ -14,7 +14,7 @@ function setFlag(){
 }
 function checkFlagAndSubmit(){
 	if ( flag == 1 ){
-		if( confirm('ÆâÍÆ¤¬ÊÑ¹¹¤µ¤ì¤Æ¤¤¤Ş¤¹¡£Â³¹Ô¤¹¤ì¤ĞÊÑ¹¹ÆâÍÆ¤ÏÇË´ş¤µ¤ì¤Ş¤¹¡£\nµ¹¤·¤¤¤Ç¤·¤ç¤¦¤«¡©' )){
+		if( confirm('å†…å®¹ãŒå¤‰æ›´ã•ã‚Œã¦ã„ã¾ã™ã€‚ç¶šè¡Œã™ã‚Œã°å¤‰æ›´å†…å®¹ã¯ç ´æ£„ã•ã‚Œã¾ã™ã€‚\nå®œã—ã„ã§ã—ã‚‡ã†ã‹ï¼Ÿ' )){
 			fnSetvalAndSubmit( 'form1', 'mode', 'id_set' );
 		} else {
 			return false;
@@ -27,20 +27,20 @@ function checkFlagAndSubmit(){
 //-->
 </script>
 
-<!--¡ú¡ú¥á¥¤¥ó¥³¥ó¥Æ¥ó¥Ä¡ú¡ú-->
+<!--â˜…â˜…ãƒ¡ã‚¤ãƒ³ã‚³ãƒ³ãƒ†ãƒ³ãƒ„â˜…â˜…-->
 <table width="878" border="0" cellspacing="0" cellpadding="0" summary=" ">
 <form name="form1" id="form1" method="post" action="<!--{$smarty.server.PHP_SELF|escape}-->">
 <input type="hidden" name="mode" value="regist">
 	<tr valign="top">
 		<td background="<!--{$smarty.const.URL_DIR}-->img/contents/navi_bg.gif" height="402">
-			<!--¢§SUB NAVI-->
+			<!--â–¼SUB NAVI-->
 			<!--{include file=$tpl_subnavi}-->
-			<!--¢¥SUB NAVI-->
+			<!--â–²SUB NAVI-->
 		</td>
 		<td class="mainbg">
-			<!--¢§ÅĞÏ¿¥Æ¡¼¥Ö¥ë¤³¤³¤«¤é-->
+			<!--â–¼ç™»éŒ²ãƒ†ãƒ¼ãƒ–ãƒ«ã“ã“ã‹ã‚‰-->
 			<table width="737" border="0" cellspacing="0" cellpadding="0" summary=" ">
-				<!--¥á¥¤¥ó¥¨¥ê¥¢-->
+				<!--ãƒ¡ã‚¤ãƒ³ã‚¨ãƒªã‚¢-->
 				<tr>
 					<td align="center">
 						<table width="706" border="0" cellspacing="0" cellpadding="0" summary=" ">
@@ -57,7 +57,7 @@ function checkFlagAndSubmit(){
 									</tr>
 									<tr>
 										<td background="<!--{$smarty.const.URL_DIR}-->img/contents/contents_title_left_bg.gif"><img src="<!--{$smarty.const.URL_DIR}-->img/contents/contents_title_left.gif" width="22" height="12" alt=""></td>
-										<td bgcolor="#636469" width="638" class="fs14n"><span class="white"><!--¥³¥ó¥Æ¥ó¥Ä¥¿¥¤¥È¥ë-->¥á¡¼¥ëÀßÄê</span></td>
+										<td bgcolor="#636469" width="638" class="fs14n"><span class="white"><!--ã‚³ãƒ³ãƒ†ãƒ³ãƒ„ã‚¿ã‚¤ãƒˆãƒ«-->ãƒ¡ãƒ¼ãƒ«è¨­å®š</span></td>
 										<td background="<!--{$smarty.const.URL_DIR}-->img/contents/contents_title_right_bg.gif"><img src="<!--{$smarty.const.URL_DIR}-->img/common/_.gif" width="18" height="1" alt=""></td>
 									</tr>
 									<tr>
@@ -70,18 +70,18 @@ function checkFlagAndSubmit(){
 
 								<table width="678" border="0" cellspacing="1" cellpadding="8" summary=" ">
 									<tr>
-										<td bgcolor="#f2f1ec" width="160" class="fs12n">¥Æ¥ó¥×¥ì¡¼¥È<span class="red"> *</span></td>
+										<td bgcolor="#f2f1ec" width="160" class="fs12n">ãƒ†ãƒ³ãƒ—ãƒ¬ãƒ¼ãƒˆ<span class="red"> *</span></td>
 										<td bgcolor="#ffffff" width="557" class="fs10n">
 										<!--{assign var=key value="template_id"}-->
 										<span class="red12"><!--{$arrErr[$key]}--></span>
 										<select name="template_id" onChange="return checkFlagAndSubmit();" style="<!--{$arrErr[$key]|sfGetErrorColor}-->">
-										<option value="" selected="selected">ÁªÂò¤·¤Æ¤¯¤À¤µ¤¤</option>
+										<option value="" selected="selected">é¸æŠã—ã¦ãã ã•ã„</option>
 										<!--{html_options options=$arrMailTEMPLATE selected=$arrForm[$key]}-->
 										</select>
 										</td>
 									</tr>
 									<tr>
-										<td bgcolor="#f2f1ec" width="160" class="fs12n">¥á¡¼¥ë¥¿¥¤¥È¥ë<span class="red"> *</span></td>
+										<td bgcolor="#f2f1ec" width="160" class="fs12n">ãƒ¡ãƒ¼ãƒ«ã‚¿ã‚¤ãƒˆãƒ«<span class="red"> *</span></td>
 										<td bgcolor="#ffffff" width="557" class="fs10n">
 										<!--{assign var=key value="subject"}-->
 										<span class="red12"><!--{$arrErr[$key]}--></span>
@@ -89,39 +89,39 @@ function checkFlagAndSubmit(){
 										</td>
 									</tr>
 									<tr>
-										<td bgcolor="#f2f1ec" width="160" class="fs12">¥Ø¥Ã¥À¡¼</td>
+										<td bgcolor="#f2f1ec" width="160" class="fs12">ãƒ˜ãƒƒãƒ€ãƒ¼</td>
 										<td bgcolor="#ffffff" width="557" class="fs10">
 										<!--{assign var=key value="header"}-->
 										<span class="red12"><!--{$arrErr[$key]}--></span>
 										<textarea name="header" cols="75" rows="12" class="area75" onChange="setFlag();" style="<!--{$arrErr[$key]|sfGetErrorColor}-->"><!--{$arrForm[$key]|escape}--></textarea><br />
-										<span class="red"> ¡Ê¾å¸Â<!--{$smarty.const.LTEXT_LEN}-->Ê¸»ú¡Ë
+										<span class="red"> ï¼ˆä¸Šé™<!--{$smarty.const.LTEXT_LEN}-->æ–‡å­—ï¼‰
 										</span>
 						
 										<div align="right">
-											<input type="button" width="110" height="30" value="Ê¸»ú¿ô¥«¥¦¥ó¥È" onclick="fnCharCount('form1','header','cnt_header');" border="0" name="next" id="next" />
-											<br>º£¤Ş¤Ç¤ËÆşÎÏ¤·¤¿¤Î¤Ï
+											<input type="button" width="110" height="30" value="æ–‡å­—æ•°ã‚«ã‚¦ãƒ³ãƒˆ" onclick="fnCharCount('form1','header','cnt_header');" border="0" name="next" id="next" />
+											<br>ä»Šã¾ã§ã«å…¥åŠ›ã—ãŸã®ã¯
 											<input type="text" name="cnt_header" size="4" class="box4" readonly = true style="text-align:right">
-											Ê¸»ú¤Ç¤¹¡£
+											æ–‡å­—ã§ã™ã€‚
 										</div>
 						
 										</td>
 									</tr>
 						
 									<tr class="fs12n">
-										<td bgcolor="#ffffff" colspan="2" align="center" height="40">Æ°Åª¥Ç¡¼¥¿ÁŞÆşÉôÊ¬</td>
+										<td bgcolor="#ffffff" colspan="2" align="center" height="40">å‹•çš„ãƒ‡ãƒ¼ã‚¿æŒ¿å…¥éƒ¨åˆ†</td>
 									</tr>
 									<tr>
-										<td bgcolor="#f2f1ec" width="160" class="fs12">¥Õ¥Ã¥¿¡¼</td>
+										<td bgcolor="#f2f1ec" width="160" class="fs12">ãƒ•ãƒƒã‚¿ãƒ¼</td>
 										<td bgcolor="#ffffff" width="557" class="fs10">
 										<!--{assign var=key value="footer"}-->
 										<span class="red12"><!--{$arrErr[$key]}--></span>
 										<textarea name="footer" cols="75" rows="12" class="area75" onChange="setFlag();" style="<!--{$arrErr[$key]|sfGetErrorColor}-->"><!--{$arrForm[$key]|escape}--></textarea><br />
-										<span class="red"> ¡Ê¾å¸Â<!--{$smarty.const.LTEXT_LEN}-->Ê¸»ú¡Ë</span>
+										<span class="red"> ï¼ˆä¸Šé™<!--{$smarty.const.LTEXT_LEN}-->æ–‡å­—ï¼‰</span>
 										<div align="right">
-											<input type="button" width="110" height="30" value="Ê¸»ú¿ô¥«¥¦¥ó¥È" onclick="fnCharCount('form1','footer','cnt_footer');" border="0" name="next" id="next" />
-											<br>º£¤Ş¤Ç¤ËÆşÎÏ¤·¤¿¤Î¤Ï
+											<input type="button" width="110" height="30" value="æ–‡å­—æ•°ã‚«ã‚¦ãƒ³ãƒˆ" onclick="fnCharCount('form1','footer','cnt_footer');" border="0" name="next" id="next" />
+											<br>ä»Šã¾ã§ã«å…¥åŠ›ã—ãŸã®ã¯
 											<input type="text" name="cnt_footer" size="4" class="box4" readonly = true style="text-align:right">
-											Ê¸»ú¤Ç¤¹¡£
+											æ–‡å­—ã§ã™ã€‚
 										</div>
 										</td>
 									</tr>
@@ -138,7 +138,7 @@ function checkFlagAndSubmit(){
 										<td bgcolor="#e9e7de" align="center">
 										<table border="0" cellspacing="0" cellpadding="0" summary=" ">
 											<tr>
-												<td><input type="image" onMouseover="chgImgImageSubmit('<!--{$smarty.const.URL_DIR}-->img/contents/btn_regist_on.jpg',this)" onMouseout="chgImgImageSubmit('<!--{$smarty.const.URL_DIR}-->img/contents/btn_regist.jpg',this)" src="<!--{$smarty.const.URL_DIR}-->img/contents/btn_regist.jpg" width="123" height="24" alt="¤³¤ÎÆâÍÆ¤ÇÅĞÏ¿¤¹¤ë" border="0" name="subm" ></td>
+												<td><input type="image" onMouseover="chgImgImageSubmit('<!--{$smarty.const.URL_DIR}-->img/contents/btn_regist_on.jpg',this)" onMouseout="chgImgImageSubmit('<!--{$smarty.const.URL_DIR}-->img/contents/btn_regist.jpg',this)" src="<!--{$smarty.const.URL_DIR}-->img/contents/btn_regist.jpg" width="123" height="24" alt="ã“ã®å†…å®¹ã§ç™»éŒ²ã™ã‚‹" border="0" name="subm" ></td>
 											</tr>
 										</table>
 										</td>
@@ -158,12 +158,12 @@ function checkFlagAndSubmit(){
 						</table>
 					</td>
 				</tr>
-				<!--¥á¥¤¥ó¥¨¥ê¥¢-->
+				<!--ãƒ¡ã‚¤ãƒ³ã‚¨ãƒªã‚¢-->
 			</table>
-			<!--¢¥ÅĞÏ¿¥Æ¡¼¥Ö¥ë¤³¤³¤Ş¤Ç-->
+			<!--â–²ç™»éŒ²ãƒ†ãƒ¼ãƒ–ãƒ«ã“ã“ã¾ã§-->
 		</td>
 	</tr>
 </form>
 </table>
-<!--¡ú¡ú¥á¥¤¥ó¥³¥ó¥Æ¥ó¥Ä¡ú¡ú-->
+<!--â˜…â˜…ãƒ¡ã‚¤ãƒ³ã‚³ãƒ³ãƒ†ãƒ³ãƒ„â˜…â˜…-->
 

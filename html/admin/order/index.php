@@ -14,7 +14,7 @@ class LC_Page {
 		$this->tpl_mainno = 'order';		
 		$this->tpl_subno = 'index';
 		$this->tpl_pager = DATA_PATH . 'Smarty/templates/admin/pager.tpl';
-		$this->tpl_subtitle = '¼õÃí´ÉÍı';
+		$this->tpl_subtitle = 'å—æ³¨ç®¡ç†';
 		global $arrORDERSTATUS;
 		$this->arrORDERSTATUS = $arrORDERSTATUS;
 		global $arrORDERSTATUS_COLOR;
@@ -30,16 +30,16 @@ $conn = new SC_DBConn();
 $objPage = new LC_Page();
 $objView = new SC_AdminView();
 $objSess = new SC_Session();
-// ¥Ñ¥é¥á¡¼¥¿´ÉÍı¥¯¥é¥¹
+// ãƒ‘ãƒ©ãƒ¡ãƒ¼ã‚¿ç®¡ç†ã‚¯ãƒ©ã‚¹
 $objFormParam = new SC_FormParam();
-// ¥Ñ¥é¥á¡¼¥¿¾ğÊó¤Î½é´ü²½
+// ãƒ‘ãƒ©ãƒ¡ãƒ¼ã‚¿æƒ…å ±ã®åˆæœŸåŒ–
 lfInitParam();
 $objFormParam->setParam($_POST);
 
 $objFormParam->splitParamCheckBoxes('search_order_sex');
 $objFormParam->splitParamCheckBoxes('search_payment_id');
 
-// ¸¡º÷¥ï¡¼¥É¤Î°ú¤­·Ñ¤®
+// æ¤œç´¢ãƒ¯ãƒ¼ãƒ‰ã®å¼•ãç¶™ã
 foreach ($_POST as $key => $val) {
 	if (ereg("^search_", $key)) {
 		switch($key) {
@@ -54,10 +54,10 @@ foreach ($_POST as $key => $val) {
 	}
 }
 
-// ¥Ú¡¼¥¸Á÷¤êÍÑ
+// ãƒšãƒ¼ã‚¸é€ã‚Šç”¨
 $objPage->arrHidden['search_pageno'] = $_POST['search_pageno'];
 
-// Ç§¾Ú²ÄÈİ¤ÎÈ½Äê
+// èªè¨¼å¯å¦ã®åˆ¤å®š
 sfIsSuccess($objSess);
 
 if($_POST['mode'] == 'delete') {
@@ -74,11 +74,11 @@ case 'delete':
 case 'csv':
 case 'delete_all':
 case 'search':
-	// ÆşÎÏÃÍ¤ÎÊÑ´¹
+	// å…¥åŠ›å€¤ã®å¤‰æ›
 	$objFormParam->convParam();
 	$objPage->arrErr = lfCheckError($arrRet);
 	$arrRet = $objFormParam->getHashArray();
-	// ÆşÎÏ¤Ê¤·
+	// å…¥åŠ›ãªã—
 	if (count($objPage->arrErr) == 0) {
 		$where = "del_flg = 0";
 		foreach ($arrRet as $key => $val) {
@@ -94,7 +94,7 @@ case 'search':
 					}elseif(DB_TYPE == "mysql"){
 						$where .= " AND concat(order_name01,order_name02) ILIKE ?";
 					}
-					$nonsp_val = ereg_replace("[ ¡¡]+","",$val);
+					$nonsp_val = ereg_replace("[ ã€€]+","",$val);
 					$arrval[] = "%$nonsp_val%";
 					break;
 				case 'search_order_kana':
@@ -103,7 +103,7 @@ case 'search':
 					}elseif(DB_TYPE == "mysql"){
 						$where .= " AND concat(order_kana01,order_kana02) ILIKE ?";
 					}
-					$nonsp_val = ereg_replace("[ ¡¡]+","",$val);
+					$nonsp_val = ereg_replace("[ ã€€]+","",$val);
 					$arrval[] = "%$nonsp_val%";
 					break;
 				case 'search_order_id1':
@@ -204,10 +204,10 @@ case 'search':
 		
 		switch($_POST['mode']) {
 		case 'csv':
-			// ¥ª¥×¥·¥ç¥ó¤Î»ØÄê
+			// ã‚ªãƒ—ã‚·ãƒ§ãƒ³ã®æŒ‡å®š
 			$option = "ORDER BY $order";
 			
-			// CSV½ĞÎÏ¥¿¥¤¥È¥ë¹Ô¤ÎºîÀ®
+			// CSVå‡ºåŠ›ã‚¿ã‚¤ãƒˆãƒ«è¡Œã®ä½œæˆ
 			$arrCsvOutput = sfSwapArray(sfgetCsvOutput(3, " WHERE csv_id = 3 AND status = 1"));
 			
 			if (count($arrCsvOutput) <= 0) break;
@@ -217,43 +217,43 @@ case 'search':
 			$head = sfGetCSVList($arrCsvOutputTitle);
 			$data = lfGetCSV("dtb_order", $where, $option, $arrval, $arrCsvOutputCols);
 			
-			// CSV¤òÁ÷¿®¤¹¤ë¡£
+			// CSVã‚’é€ä¿¡ã™ã‚‹ã€‚
 			sfCSVDownload($head.$data);
 			exit;
 			break;
 		case 'delete_all':
-			// ¸¡º÷·ë²Ì¤ò¤¹¤Ù¤Æºï½ü
+			// æ¤œç´¢çµæœã‚’ã™ã¹ã¦å‰Šé™¤
 			$sqlval['del_flg'] = 1;
 			$objQuery = new SC_Query();
 			$objQuery->update("dtb_order", $sqlval, $where, $arrval);
 			break;
 		default:
-			// ÆÉ¤ß¹ş¤àÎó¤È¥Æ¡¼¥Ö¥ë¤Î»ØÄê
+			// èª­ã¿è¾¼ã‚€åˆ—ã¨ãƒ†ãƒ¼ãƒ–ãƒ«ã®æŒ‡å®š
 			$col = "*";
 			$from = "dtb_order";
 			
 			$objQuery = new SC_Query();
-			// ¹Ô¿ô¤Î¼èÆÀ
+			// è¡Œæ•°ã®å–å¾—
 			$linemax = $objQuery->count($from, $where, $arrval);
-			$objPage->tpl_linemax = $linemax;				// ²¿·ï¤¬³ºÅö¤·¤Ş¤·¤¿¡£É½¼¨ÍÑ
+			$objPage->tpl_linemax = $linemax;				// ä½•ä»¶ãŒè©²å½“ã—ã¾ã—ãŸã€‚è¡¨ç¤ºç”¨
 			
-			// ¥Ú¡¼¥¸Á÷¤ê¤Î½èÍı
+			// ãƒšãƒ¼ã‚¸é€ã‚Šã®å‡¦ç†
 			if(is_numeric($_POST['search_page_max'])) {	
 				$page_max = $_POST['search_page_max'];
 			} else {
 				$page_max = SEARCH_PMAX;
 			}
 			
-			// ¥Ú¡¼¥¸Á÷¤ê¤Î¼èÆÀ
+			// ãƒšãƒ¼ã‚¸é€ã‚Šã®å–å¾—
 			$objNavi = new SC_PageNavi($_POST['search_pageno'], $linemax, $page_max, "fnNaviSearchPage", NAVI_PMAX);
 			$startno = $objNavi->start_row;
 			$objPage->arrPagenavi = $objNavi->arrPagenavi;		
 			
-			// ¼èÆÀÈÏ°Ï¤Î»ØÄê(³«»Ï¹ÔÈÖ¹æ¡¢¹Ô¿ô¤Î¥»¥Ã¥È)
+			// å–å¾—ç¯„å›²ã®æŒ‡å®š(é–‹å§‹è¡Œç•ªå·ã€è¡Œæ•°ã®ã‚»ãƒƒãƒˆ)
 			$objQuery->setlimitoffset($page_max, $startno);
-			// É½¼¨½ç½ø
+			// è¡¨ç¤ºé †åº
 			$objQuery->setorder($order);
-			// ¸¡º÷·ë²Ì¤Î¼èÆÀ
+			// æ¤œç´¢çµæœã®å–å¾—
 			$objPage->arrResults = $objQuery->select($col, $from, $where, $arrval);
 		}
 	}
@@ -264,21 +264,21 @@ default:
 }
 
 $objDate = new SC_Date();
-// ÅĞÏ¿¡¦¹¹¿·Æü¸¡º÷ÍÑ
+// ç™»éŒ²ãƒ»æ›´æ–°æ—¥æ¤œç´¢ç”¨
 $objDate->setStartYear(RELEASE_YEAR);
 $objDate->setEndYear(DATE("Y"));
 $objPage->arrRegistYear = $objDate->getYear();
-// À¸Ç¯·îÆü¸¡º÷ÍÑ
+// ç”Ÿå¹´æœˆæ—¥æ¤œç´¢ç”¨
 $objDate->setStartYear(BIRTH_YEAR);
 $objDate->setEndYear(DATE("Y"));
 $objPage->arrBirthYear = $objDate->getYear();
-// ·îÆü¤ÎÀßÄê
+// æœˆæ—¥ã®è¨­å®š
 $objPage->arrMonth = $objDate->getMonth();
 $objPage->arrDay = $objDate->getDay();
 
-// ÆşÎÏÃÍ¤Î¼èÆÀ
+// å…¥åŠ›å€¤ã®å–å¾—
 $objPage->arrForm = $objFormParam->getFormParamList();
-// »ÙÊ§¤¤ÊıË¡¤Î¼èÆÀ
+// æ”¯æ‰•ã„æ–¹æ³•ã®å–å¾—
 $arrRet = sfGetPayment();
 $objPage->arrPayment = sfArrKeyValue($arrRet, 'payment_id', 'payment_method');
 
@@ -286,56 +286,56 @@ $objView->assignobj($objPage);
 $objView->display(MAIN_FRAME);
 
 //-----------------------------------------------------------------------------------------------------------------------------------
-/* ¥Ñ¥é¥á¡¼¥¿¾ğÊó¤Î½é´ü²½ */
+/* ãƒ‘ãƒ©ãƒ¡ãƒ¼ã‚¿æƒ…å ±ã®åˆæœŸåŒ– */
 function lfInitParam() {
 	global $objFormParam;
-	$objFormParam->addParam("¼õÃíÈÖ¹æ1", "search_order_id1", INT_LEN, "n", array("MAX_LENGTH_CHECK", "NUM_CHECK"));
-	$objFormParam->addParam("¼õÃíÈÖ¹æ2", "search_order_id2", INT_LEN, "n", array("MAX_LENGTH_CHECK", "NUM_CHECK"));
-	$objFormParam->addParam("ÂĞ±ş¾õ¶·", "search_order_status", INT_LEN, "n", array("MAX_LENGTH_CHECK", "NUM_CHECK"));
-	$objFormParam->addParam("¸ÜµÒÌ¾", "search_order_name", STEXT_LEN, "KVa", array("MAX_LENGTH_CHECK"));
-	$objFormParam->addParam("¸ÜµÒÌ¾(¥«¥Ê)", "search_order_kana", STEXT_LEN, "KVCa", array("KANA_CHECK","MAX_LENGTH_CHECK"));
-	$objFormParam->addParam("À­ÊÌ", "search_order_sex", INT_LEN, "n", array("MAX_LENGTH_CHECK"));
-	$objFormParam->addParam("Ç¯Îğ1", "search_age1", INT_LEN, "n", array("MAX_LENGTH_CHECK", "NUM_CHECK"));
-	$objFormParam->addParam("Ç¯Îğ2", "search_age2", INT_LEN, "n", array("MAX_LENGTH_CHECK", "NUM_CHECK"));
-	$objFormParam->addParam("¥á¡¼¥ë¥¢¥É¥ì¥¹", "search_order_email", STEXT_LEN, "KVa", array("MAX_LENGTH_CHECK"));
+	$objFormParam->addParam("å—æ³¨ç•ªå·1", "search_order_id1", INT_LEN, "n", array("MAX_LENGTH_CHECK", "NUM_CHECK"));
+	$objFormParam->addParam("å—æ³¨ç•ªå·2", "search_order_id2", INT_LEN, "n", array("MAX_LENGTH_CHECK", "NUM_CHECK"));
+	$objFormParam->addParam("å¯¾å¿œçŠ¶æ³", "search_order_status", INT_LEN, "n", array("MAX_LENGTH_CHECK", "NUM_CHECK"));
+	$objFormParam->addParam("é¡§å®¢å", "search_order_name", STEXT_LEN, "KVa", array("MAX_LENGTH_CHECK"));
+	$objFormParam->addParam("é¡§å®¢å(ã‚«ãƒŠ)", "search_order_kana", STEXT_LEN, "KVCa", array("KANA_CHECK","MAX_LENGTH_CHECK"));
+	$objFormParam->addParam("æ€§åˆ¥", "search_order_sex", INT_LEN, "n", array("MAX_LENGTH_CHECK"));
+	$objFormParam->addParam("å¹´é½¢1", "search_age1", INT_LEN, "n", array("MAX_LENGTH_CHECK", "NUM_CHECK"));
+	$objFormParam->addParam("å¹´é½¢2", "search_age2", INT_LEN, "n", array("MAX_LENGTH_CHECK", "NUM_CHECK"));
+	$objFormParam->addParam("ãƒ¡ãƒ¼ãƒ«ã‚¢ãƒ‰ãƒ¬ã‚¹", "search_order_email", STEXT_LEN, "KVa", array("MAX_LENGTH_CHECK"));
 	$objFormParam->addParam("TEL", "search_order_tel", STEXT_LEN, "KVa", array("MAX_LENGTH_CHECK"));
-	$objFormParam->addParam("»ÙÊ§¤¤ÊıË¡", "search_payment_id", INT_LEN, "n", array("MAX_LENGTH_CHECK", "NUM_CHECK"));
-	$objFormParam->addParam("¹ØÆş¶â³Û1", "search_total1", INT_LEN, "n", array("MAX_LENGTH_CHECK", "NUM_CHECK"));
-	$objFormParam->addParam("¹ØÆş¶â³Û2", "search_total2", INT_LEN, "n", array("MAX_LENGTH_CHECK", "NUM_CHECK"));
-	$objFormParam->addParam("É½¼¨·ï¿ô", "search_page_max", INT_LEN, "n", array("MAX_LENGTH_CHECK", "NUM_CHECK"));
-	$objFormParam->addParam("³«»ÏÆü", "search_startyear", INT_LEN, "n", array("MAX_LENGTH_CHECK", "NUM_CHECK"));
-	$objFormParam->addParam("³«»ÏÆü", "search_startmonth", INT_LEN, "n", array("MAX_LENGTH_CHECK", "NUM_CHECK"));
-	$objFormParam->addParam("³«»ÏÆü", "search_startday", INT_LEN, "n", array("MAX_LENGTH_CHECK", "NUM_CHECK"));
-	$objFormParam->addParam("½ªÎ»Æü", "search_endyear", INT_LEN, "n", array("MAX_LENGTH_CHECK", "NUM_CHECK"));
-	$objFormParam->addParam("½ªÎ»Æü", "search_endmonth", INT_LEN, "n", array("MAX_LENGTH_CHECK", "NUM_CHECK"));
-	$objFormParam->addParam("½ªÎ»Æü", "search_endday", INT_LEN, "n", array("MAX_LENGTH_CHECK", "NUM_CHECK"));
-	$objFormParam->addParam("³«»ÏÆü", "search_sbirthyear", INT_LEN, "n", array("MAX_LENGTH_CHECK", "NUM_CHECK"));
-	$objFormParam->addParam("³«»ÏÆü", "search_sbirthmonth", INT_LEN, "n", array("MAX_LENGTH_CHECK", "NUM_CHECK"));
-	$objFormParam->addParam("³«»ÏÆü", "search_sbirthday", INT_LEN, "n", array("MAX_LENGTH_CHECK", "NUM_CHECK"));
-	$objFormParam->addParam("½ªÎ»Æü", "search_ebirthyear", INT_LEN, "n", array("MAX_LENGTH_CHECK", "NUM_CHECK"));
-	$objFormParam->addParam("½ªÎ»Æü", "search_ebirthmonth", INT_LEN, "n", array("MAX_LENGTH_CHECK", "NUM_CHECK"));
-	$objFormParam->addParam("½ªÎ»Æü", "search_ebirthday", INT_LEN, "n", array("MAX_LENGTH_CHECK", "NUM_CHECK"));
+	$objFormParam->addParam("æ”¯æ‰•ã„æ–¹æ³•", "search_payment_id", INT_LEN, "n", array("MAX_LENGTH_CHECK", "NUM_CHECK"));
+	$objFormParam->addParam("è³¼å…¥é‡‘é¡1", "search_total1", INT_LEN, "n", array("MAX_LENGTH_CHECK", "NUM_CHECK"));
+	$objFormParam->addParam("è³¼å…¥é‡‘é¡2", "search_total2", INT_LEN, "n", array("MAX_LENGTH_CHECK", "NUM_CHECK"));
+	$objFormParam->addParam("è¡¨ç¤ºä»¶æ•°", "search_page_max", INT_LEN, "n", array("MAX_LENGTH_CHECK", "NUM_CHECK"));
+	$objFormParam->addParam("é–‹å§‹æ—¥", "search_startyear", INT_LEN, "n", array("MAX_LENGTH_CHECK", "NUM_CHECK"));
+	$objFormParam->addParam("é–‹å§‹æ—¥", "search_startmonth", INT_LEN, "n", array("MAX_LENGTH_CHECK", "NUM_CHECK"));
+	$objFormParam->addParam("é–‹å§‹æ—¥", "search_startday", INT_LEN, "n", array("MAX_LENGTH_CHECK", "NUM_CHECK"));
+	$objFormParam->addParam("çµ‚äº†æ—¥", "search_endyear", INT_LEN, "n", array("MAX_LENGTH_CHECK", "NUM_CHECK"));
+	$objFormParam->addParam("çµ‚äº†æ—¥", "search_endmonth", INT_LEN, "n", array("MAX_LENGTH_CHECK", "NUM_CHECK"));
+	$objFormParam->addParam("çµ‚äº†æ—¥", "search_endday", INT_LEN, "n", array("MAX_LENGTH_CHECK", "NUM_CHECK"));
+	$objFormParam->addParam("é–‹å§‹æ—¥", "search_sbirthyear", INT_LEN, "n", array("MAX_LENGTH_CHECK", "NUM_CHECK"));
+	$objFormParam->addParam("é–‹å§‹æ—¥", "search_sbirthmonth", INT_LEN, "n", array("MAX_LENGTH_CHECK", "NUM_CHECK"));
+	$objFormParam->addParam("é–‹å§‹æ—¥", "search_sbirthday", INT_LEN, "n", array("MAX_LENGTH_CHECK", "NUM_CHECK"));
+	$objFormParam->addParam("çµ‚äº†æ—¥", "search_ebirthyear", INT_LEN, "n", array("MAX_LENGTH_CHECK", "NUM_CHECK"));
+	$objFormParam->addParam("çµ‚äº†æ—¥", "search_ebirthmonth", INT_LEN, "n", array("MAX_LENGTH_CHECK", "NUM_CHECK"));
+	$objFormParam->addParam("çµ‚äº†æ—¥", "search_ebirthday", INT_LEN, "n", array("MAX_LENGTH_CHECK", "NUM_CHECK"));
 }
 
-/* ÆşÎÏÆâÍÆ¤Î¥Á¥§¥Ã¥¯ */
+/* å…¥åŠ›å†…å®¹ã®ãƒã‚§ãƒƒã‚¯ */
 function lfCheckError() {
 	global $objFormParam;
-	// ÆşÎÏ¥Ç¡¼¥¿¤òÅÏ¤¹¡£
+	// å…¥åŠ›ãƒ‡ãƒ¼ã‚¿ã‚’æ¸¡ã™ã€‚
 	$arrRet =  $objFormParam->getHashArray();
 	$objErr = new SC_CheckError($arrRet);
 	$objErr->arrErr = $objFormParam->checkError();
 	
-	// ÆÃ¼ì¹àÌÜ¥Á¥§¥Ã¥¯
-	$objErr->doFunc(array("¼õÃíÈÖ¹æ1", "¼õÃíÈÖ¹æ2", "search_order_id1", "search_order_id2"), array("GREATER_CHECK"));
-	$objErr->doFunc(array("Ç¯Îğ1", "Ç¯Îğ2", "search_age1", "search_age2"), array("GREATER_CHECK"));
-	$objErr->doFunc(array("¹ØÆş¶â³Û1", "¹ØÆş¶â³Û2", "search_total1", "search_total2"), array("GREATER_CHECK"));
-	$objErr->doFunc(array("³«»ÏÆü", "search_startyear", "search_startmonth", "search_startday"), array("CHECK_DATE"));
-	$objErr->doFunc(array("½ªÎ»Æü", "search_endyear", "search_endmonth", "search_endday"), array("CHECK_DATE"));
-	$objErr->doFunc(array("³«»ÏÆü", "½ªÎ»Æü", "search_startyear", "search_startmonth", "search_startday", "search_endyear", "search_endmonth", "search_endday"), array("CHECK_SET_TERM"));
+	// ç‰¹æ®Šé …ç›®ãƒã‚§ãƒƒã‚¯
+	$objErr->doFunc(array("å—æ³¨ç•ªå·1", "å—æ³¨ç•ªå·2", "search_order_id1", "search_order_id2"), array("GREATER_CHECK"));
+	$objErr->doFunc(array("å¹´é½¢1", "å¹´é½¢2", "search_age1", "search_age2"), array("GREATER_CHECK"));
+	$objErr->doFunc(array("è³¼å…¥é‡‘é¡1", "è³¼å…¥é‡‘é¡2", "search_total1", "search_total2"), array("GREATER_CHECK"));
+	$objErr->doFunc(array("é–‹å§‹æ—¥", "search_startyear", "search_startmonth", "search_startday"), array("CHECK_DATE"));
+	$objErr->doFunc(array("çµ‚äº†æ—¥", "search_endyear", "search_endmonth", "search_endday"), array("CHECK_DATE"));
+	$objErr->doFunc(array("é–‹å§‹æ—¥", "çµ‚äº†æ—¥", "search_startyear", "search_startmonth", "search_startday", "search_endyear", "search_endmonth", "search_endday"), array("CHECK_SET_TERM"));
 	
-	$objErr->doFunc(array("³«»ÏÆü", "search_sbirthyear", "search_sbirthmonth", "search_sbirthday"), array("CHECK_DATE"));
-	$objErr->doFunc(array("½ªÎ»Æü", "search_ebirthyear", "search_ebirthmonth", "search_ebirthday"), array("CHECK_DATE"));
-	$objErr->doFunc(array("³«»ÏÆü", "½ªÎ»Æü", "search_sbirthyear", "search_sbirthmonth", "search_sbirthday", "search_ebirthyear", "search_ebirthmonth", "search_ebirthday"), array("CHECK_SET_TERM"));
+	$objErr->doFunc(array("é–‹å§‹æ—¥", "search_sbirthyear", "search_sbirthmonth", "search_sbirthday"), array("CHECK_DATE"));
+	$objErr->doFunc(array("çµ‚äº†æ—¥", "search_ebirthyear", "search_ebirthmonth", "search_ebirthday"), array("CHECK_DATE"));
+	$objErr->doFunc(array("é–‹å§‹æ—¥", "çµ‚äº†æ—¥", "search_sbirthyear", "search_sbirthmonth", "search_sbirthday", "search_ebirthyear", "search_ebirthmonth", "search_ebirthday"), array("CHECK_SET_TERM"));
 
 	return $objErr->arrErr;
 }

@@ -7,24 +7,24 @@
 $SC_GRAPHLINE_DIR = realpath(dirname( __FILE__));
 require_once($SC_GRAPHLINE_DIR . "/SC_GraphBase.php");	
 
-// ÀŞ¤ìÀş¥°¥é¥ÕÀ¸À®¥¯¥é¥¹
+// æŠ˜ã‚Œç·šã‚°ãƒ©ãƒ•ç”Ÿæˆã‚¯ãƒ©ã‚¹
 class SC_GraphLine extends SC_GraphBase{
 	var $area_width;
 	var $area_height;
 	var $ygrid_on;
-	var $graph_max;		// ¥°¥é¥Õ¤Î¥¨¥ê¥¢ºÇÂçÃÍ(Y¼´ÄºÅÀ¤ÎÃÍ)
+	var $graph_max;		// ã‚°ãƒ©ãƒ•ã®ã‚¨ãƒªã‚¢æœ€å¤§å€¤(Yè»¸é ‚ç‚¹ã®å€¤)
 	var $arrXLabel;	
-	var $XLabelAngle;	// X¼´¥é¥Ù¥ë³ÑÅÙ	
-	var $XTitle;		// X¼´¥¿¥¤¥È¥ë
-	var $YTitle;		// Y¼´¥¿¥¤¥È¥ë
-	var $arrDataList;	// ¥°¥é¥Õ¥Ç¡¼¥¿¤ò³ÊÇ¼
-	var $arrPointList;	// ÀŞ¤ìÀşºÂÉ¸¤ò³ÊÇ¼
-	var $line_max;		// Ê£¿ô¤ÎÉÁ²è¤Î¾ì¹ç¤Ë²Ã»»¤·¤Æ¤¤¤¯
+	var $XLabelAngle;	// Xè»¸ãƒ©ãƒ™ãƒ«è§’åº¦	
+	var $XTitle;		// Xè»¸ã‚¿ã‚¤ãƒˆãƒ«
+	var $YTitle;		// Yè»¸ã‚¿ã‚¤ãƒˆãƒ«
+	var $arrDataList;	// ã‚°ãƒ©ãƒ•ãƒ‡ãƒ¼ã‚¿ã‚’æ ¼ç´
+	var $arrPointList;	// æŠ˜ã‚Œç·šåº§æ¨™ã‚’æ ¼ç´
+	var $line_max;		// è¤‡æ•°ã®æç”»ã®å ´åˆã«åŠ ç®—ã—ã¦ã„ã
 	
 	var $x_margin;
 	var $y_margin;
 			
-    // ¥³¥ó¥¹¥È¥é¥¯¥¿
+    // ã‚³ãƒ³ã‚¹ãƒˆãƒ©ã‚¯ã‚¿
 	function SC_GraphLine(
 		$bgw = BG_WIDTH, $bgh = BG_HEIGHT, $left = LINE_LEFT, $top = LINE_TOP,
 		$area_width = LINE_AREA_WIDTH, $area_height = LINE_AREA_HEIGHT) {
@@ -39,14 +39,14 @@ class SC_GraphLine extends SC_GraphBase{
 		$this->y_margin = 0;
 	}
 	
-	// X¼´¥é¥Ù¥ë¤Î³ÑÅÙ¥»¥Ã¥È
+	// Xè»¸ãƒ©ãƒ™ãƒ«ã®è§’åº¦ã‚»ãƒƒãƒˆ
 	function setXLabelAngle($Angle) {
 		$this->XLabelAngle = $Angle;
 	}
 	
-	// Y¼´¥¿¥¤¥È¥ë
+	// Yè»¸ã‚¿ã‚¤ãƒˆãƒ«
 	function drawYTitle() {
-		// Y¼´¤Ë¥¿¥¤¥È¥ë¤òÆş¤ì¤ë
+		// Yè»¸ã«ã‚¿ã‚¤ãƒˆãƒ«ã‚’å…¥ã‚Œã‚‹
 		if($this->YTitle != "") {
 			$text_width = $this->getTextWidth($this->YTitle, FONT_SIZE);
 			$x_pos = $this->left - ($text_width / 2);
@@ -55,9 +55,9 @@ class SC_GraphLine extends SC_GraphBase{
 		}
 	}
 	
-	// X¼´¥¿¥¤¥È¥ë
+	// Xè»¸ã‚¿ã‚¤ãƒˆãƒ«
 	function drawXTitle() {
-		// Y¼´¤Ë¥¿¥¤¥È¥ë¤òÆş¤ì¤ë
+		// Yè»¸ã«ã‚¿ã‚¤ãƒˆãƒ«ã‚’å…¥ã‚Œã‚‹
 		if($this->XTitle != "") {
 			$text_width = $this->getTextWidth($this->XTitle, FONT_SIZE);
 			$x_pos = $this->left + $this->area_width - ($text_width / 2) + 30;
@@ -66,15 +66,15 @@ class SC_GraphLine extends SC_GraphBase{
 		}
 	}
 	
-	// Y¼´¤ÎÉÁ²è
+	// Yè»¸ã®æç”»
 	function drawYLine() {
 		imageline($this->image, $this->left, $this->top, $this->left, $this->top + $this->area_height, $this->flame_color);
-		// ÌÜÀ¹¤êÉı¤òµá¤á¤ë(Ãæ´ÖÅÀ¤Ï¼«Æ°)
+		// ç›®ç››ã‚Šå¹…ã‚’æ±‚ã‚ã‚‹(ä¸­é–“ç‚¹ã¯è‡ªå‹•)
 		$size = $this->area_height / (LINE_Y_SCALE * 2);
-		// ¾å¤«¤éÌÜÀ¹¤ê¤òÆş¤ì¤Æ¤¤¤¯
+		// ä¸Šã‹ã‚‰ç›®ç››ã‚Šã‚’å…¥ã‚Œã¦ã„ã
 		$pos = 0;
 		for($i = 0; $i < (LINE_Y_SCALE * 2); $i++) {
-			// ÌÜÀ¹¤êÉı
+			// ç›®ç››ã‚Šå¹…
 			if(($i % 2) == 0) {
 				$sw = LINE_SCALE_SIZE;
 				if($this->ygrid_on) {
@@ -86,32 +86,32 @@ class SC_GraphLine extends SC_GraphBase{
 			imageline($this->image, $this->left, $this->top + $pos, $this->left + $sw, $this->top + $pos, $this->flame_color);
 			$pos += $size;
 		}
-		// Y¼´¤ËÌÜÀ¹¤êÃÍ¤òÆş¤ì¤ë
+		// Yè»¸ã«ç›®ç››ã‚Šå€¤ã‚’å…¥ã‚Œã‚‹
 		$this->setYScale();
 		$this->drawYTitle();	
 	}
 	
-	// X¼´¤ÎÉÁ²è
+	// Xè»¸ã®æç”»
 	function drawXLine($bar = false) {
 		imageline($this->image, $this->left, $this->top + $this->area_height, $this->left + $this->area_width, $this->top + $this->area_height, $this->flame_color);
 		$arrPointList = $this->arrPointList[0];
 		$count = count($arrPointList);
 		
-		// ËÀ¥°¥é¥Õ¤Î¾ì¹ç¤ÏÈ¾ÌÜÀ¹¤ê¤º¤é¤¹
+		// æ£’ã‚°ãƒ©ãƒ•ã®å ´åˆã¯åŠç›®ç››ã‚Šãšã‚‰ã™
 		if($bar) {
 			$half_scale = intval($this->area_width / ($count + 1) / 2);
 		} else {
 			$half_scale = 0;
 		}
 		
-		// ¥é¥Ù¥ë¤ÎÉ½¼¨¥¤¥ó¥¿¡¼¥Ğ¥ë¤ò»»½Ğ
-		$interval = ceil($count / LINE_XLABEL_MAX);	// ÀÚ¤ê¾å¤²				
+		// ãƒ©ãƒ™ãƒ«ã®è¡¨ç¤ºã‚¤ãƒ³ã‚¿ãƒ¼ãƒãƒ«ã‚’ç®—å‡º
+		$interval = ceil($count / LINE_XLABEL_MAX);	// åˆ‡ã‚Šä¸Šã’				
 		for($i = 0; $i < $count; $i++) {
-			// X¼´¤ËÌÜÀ¹¤ê¤òÆş¤ì¤ë
+			// Xè»¸ã«ç›®ç››ã‚Šã‚’å…¥ã‚Œã‚‹
 			$x = $arrPointList[$i][0];
 			$pos = $this->top + $this->area_height;
 			imageline($this->image, $x - $half_scale, $pos, $x - $half_scale, $pos - LINE_SCALE_SIZE,  $this->flame_color);			
-			// ¥é¥Ù¥ë¤òÆş¤ì¤ë
+			// ãƒ©ãƒ™ãƒ«ã‚’å…¥ã‚Œã‚‹
 			if(($i % $interval) == 0) {
 				$text_width = $this->getTextWidth($this->arrXLabel[$i], FONT_SIZE);
 				$x_pos = $x;
@@ -122,7 +122,7 @@ class SC_GraphLine extends SC_GraphBase{
 			}
 		}
 		
-		// ËÀ¥°¥é¥Õ¤Î¾ì¹ç¤ÏºÇ¸å¤ÎÌÜÀ¹¤ê¤ò°ì¤ÄÄÉ²Ã¤¹¤ë
+		// æ£’ã‚°ãƒ©ãƒ•ã®å ´åˆã¯æœ€å¾Œã®ç›®ç››ã‚Šã‚’ä¸€ã¤è¿½åŠ ã™ã‚‹
 		if($bar) {
 			imageline($this->image, $x + $half_scale, $pos, $x + $half_scale, $pos - LINE_SCALE_SIZE,  $this->flame_color);	
 		}
@@ -130,14 +130,14 @@ class SC_GraphLine extends SC_GraphBase{
 		$this->drawXTitle();
 	}
 		
-	// ¥°¥ê¥Ã¥ÉÉ½¼¨
+	// ã‚°ãƒªãƒƒãƒ‰è¡¨ç¤º
 	function setYGridOn($ygrid_on) {
 		$this->ygrid_on = $ygrid_on;
 	}
 	
-	// ¥İ¥¤¥ó¥È¤ÎÉÁ²è
+	// ãƒã‚¤ãƒ³ãƒˆã®æç”»
 	function setMark($line_no, $left, $top, $size = LINE_MARK_SIZE) {
-		// ¶ö¿ô¤ËÊÑ´¹¤·¤Æ¤ª¤¯
+		// å¶æ•°ã«å¤‰æ›ã—ã¦ãŠã
 		$size += $size % 2;
 		$array = array(
 			$left, $top - ($size / 2),
@@ -150,11 +150,11 @@ class SC_GraphLine extends SC_GraphBase{
  		imagesetpixel ($this->image, $left, $top + ($size / 2), $this->flame_color);
 	}	
 	
-	// Y¼´ÌÜÀ¹¤ê¤ËÃÍ¤òÆş¤ì¤ë
+	// Yè»¸ç›®ç››ã‚Šã«å€¤ã‚’å…¥ã‚Œã‚‹
 	function setYScale() {
-		// 1ÌÜÀ¹¤ê¤ÎÃÍ
+		// 1ç›®ç››ã‚Šã®å€¤
 		$number = intval($this->graph_max / LINE_Y_SCALE);				
-		// ÌÜÀ¹¤êÉı¤òµá¤á¤ë
+		// ç›®ç››ã‚Šå¹…ã‚’æ±‚ã‚ã‚‹
 		$size = $this->area_height / LINE_Y_SCALE;
 		$pos = 0;
 		for($i = 0; $i <= LINE_Y_SCALE; $i++) {
@@ -168,46 +168,46 @@ class SC_GraphLine extends SC_GraphBase{
 	
 	// 
 	function setMax($arrData) {
-		// ¥Ç¡¼¥¿¤ÎºÇÂçÃÍ¤ò¼èÆÀ¤¹¤ë¡£
+		// ãƒ‡ãƒ¼ã‚¿ã®æœ€å¤§å€¤ã‚’å–å¾—ã™ã‚‹ã€‚
 		$data_max = max($arrData);
-		// 10¤Î²¿ÇÜ¤«¤ò¼èÆÀ
+		// 10ã®ä½•å€ã‹ã‚’å–å¾—
 		$figure = strlen($data_max) - 1;
-		// ¼¡¤Î·å¤ò·×»»¤¹¤ë
+		// æ¬¡ã®æ¡ã‚’è¨ˆç®—ã™ã‚‹
 		$tenval = pow(10, $figure);
-		// ¥°¥é¥Õ¾å¤Ç¤ÎºÇÂçÃÍ¤òµá¤á¤ë
+		// ã‚°ãƒ©ãƒ•ä¸Šã§ã®æœ€å¤§å€¤ã‚’æ±‚ã‚ã‚‹
 		$this->graph_max = $tenval * (intval($data_max / $tenval) + 1);
-		// ºÇÂçÃÍ¤¬10Ì¤Ëş¤Î¾ì¹ç¤ÎÂĞ±ş
+		// æœ€å¤§å€¤ãŒ10æœªæº€ã®å ´åˆã®å¯¾å¿œ
 		if($this->graph_max < 10) {
 			$this->graph_max = 10;
 		}	
 	}
 	
-	// ¥°¥é¥Õ¤ÎÉÁ²è
+	// ã‚°ãƒ©ãƒ•ã®æç”»
 	function drawGraph() {
-		// ¥°¥é¥ÕÇØ·Ê¤òÉÁ²è
+		// ã‚°ãƒ©ãƒ•èƒŒæ™¯ã‚’æç”»
 		$this->drawYLine();
 		$this->drawXLine();
 		
-		// ÀŞ¤ìÀş¥°¥é¥ÕÉÁ²è
+		// æŠ˜ã‚Œç·šã‚°ãƒ©ãƒ•æç”»
 		for($i = 0; $i < $this->line_max; $i++) {
 			$this->drawLine($i);
 		}
 		
-		// ¥Ş¡¼¥¯¤òÉÁ²è
+		// ãƒãƒ¼ã‚¯ã‚’æç”»
 		for($i = 0; $i < $this->line_max; $i++) {
 			$this->drawMark($i);
 		}
 		
-		// ¥é¥Ù¥ë¤òÉÁ²è
+		// ãƒ©ãƒ™ãƒ«ã‚’æç”»
 		for($i = 0; $i < $this->line_max; $i++) {
 			$this->drawLabel($i);		
 		}
 
-		// ËŞÎã¤ÎÉÁ²è
+		// å‡¡ä¾‹ã®æç”»
 		$this->drawLegend();	
 	}
 	
-	// ¥é¥¤¥ó¤òÉÁ²è¤¹¤ë
+	// ãƒ©ã‚¤ãƒ³ã‚’æç”»ã™ã‚‹
 	function drawLine($line_no) {
 		$arrPointList = $this->arrPointList[$line_no];
 		
@@ -223,7 +223,7 @@ class SC_GraphLine extends SC_GraphBase{
 		}
 	}
 	
-	// ¥Ş¡¼¥¯¤òÉÁ²è¤¹¤ë
+	// ãƒãƒ¼ã‚¯ã‚’æç”»ã™ã‚‹
 	function drawMark($line_no) {
 		$arrPointList = $this->arrPointList[$line_no];
 		$count = count($arrPointList);
@@ -234,7 +234,7 @@ class SC_GraphLine extends SC_GraphBase{
 		}
 	}
 	
-	// ¥é¥Ù¥ë¤òÉÁ²è¤¹¤ë
+	// ãƒ©ãƒ™ãƒ«ã‚’æç”»ã™ã‚‹
 	function drawLabel($line_no) {
 		$arrData = $this->arrDataList[$line_no];
 		$arrPointList = $this->arrPointList[$line_no];
@@ -249,38 +249,38 @@ class SC_GraphLine extends SC_GraphBase{
 		}
 	}
 	
-	// ¥Ç¡¼¥¿¤ò¥»¥Ã¥È¤¹¤ë
+	// ãƒ‡ãƒ¼ã‚¿ã‚’ã‚»ãƒƒãƒˆã™ã‚‹
 	function setData($arrData) {
 		$this->arrDataList[$this->line_max] = array_values((array)$arrData);
 		$this->setMax($this->arrDataList[$this->line_max]);
-		// ÃÍ¤ÎÉÁ²èÊÑ´¹Î¨
+		// å€¤ã®æç”»å¤‰æ›ç‡
 		$rate = $this->area_height / $this->graph_max;
-		// ÉÁ²èÎ¨¤ò·×»»
+		// æç”»ç‡ã‚’è¨ˆç®—
 		$count = count($this->arrDataList[$this->line_max]);
 		$scale_width = $this->area_width / ($count + 1);		
 		$this->arrPointList[$this->line_max] = array();
 		for($i = 0; $i < $count; $i++) {
-			// XºÂÉ¸¤òµá¤á¤ë
+			// Xåº§æ¨™ã‚’æ±‚ã‚ã‚‹
 			$x = intval($this->left + ($scale_width * ($i + 1)));
-			// YºÂÉ¸¤òµá¤á¤ë
+			// Yåº§æ¨™ã‚’æ±‚ã‚ã‚‹
 			$y = intval($this->top + $this->area_height - ($this->arrDataList[$this->line_max][$i] * $rate));
-			// XYºÂÉ¸¤òÊİÂ¸¤¹¤ë
+			// XYåº§æ¨™ã‚’ä¿å­˜ã™ã‚‹
 			$this->arrPointList[$this->line_max][] = array($x, $y);
 		}
 		$this->line_max++;
 	}
 	
-	// X¼´¥é¥Ù¥ë¤ò¥»¥Ã¥È¤¹¤ë
+	// Xè»¸ãƒ©ãƒ™ãƒ«ã‚’ã‚»ãƒƒãƒˆã™ã‚‹
 	function setXLabel($arrXLabel) {
 		$this->arrXLabel = array_values((array)$arrXLabel);
 	}
 	
-	// X¼´¥¿¥¤¥È¥ë¤ò¥»¥Ã¥È¤¹¤ë
+	// Xè»¸ã‚¿ã‚¤ãƒˆãƒ«ã‚’ã‚»ãƒƒãƒˆã™ã‚‹
 	function setXTitle($title) {
 		$this->XTitle = $title;
 	}
 	
-	// Y¼´¥¿¥¤¥È¥ë¤ò¥»¥Ã¥È¤¹¤ë
+	// Yè»¸ã‚¿ã‚¤ãƒˆãƒ«ã‚’ã‚»ãƒƒãƒˆã™ã‚‹
 	function setYTitle($title) {
 		$this->YTitle = $title;
 	}	

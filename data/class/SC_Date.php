@@ -5,14 +5,14 @@
  * http://www.lockon.co.jp/
  */
 
-/*¡¡Æü»şÉ½¼¨ÍÑ¥¯¥é¥¹ */
+/*ã€€æ—¥æ™‚è¡¨ç¤ºç”¨ã‚¯ãƒ©ã‚¹ */
 class SC_Date {
 	var $start_year;
 	var $month;
 	var $day;
 	var $end_year;
 	
-	// ¥³¥ó¥¹¥È¥é¥¯¥¿
+	// ã‚³ãƒ³ã‚¹ãƒˆãƒ©ã‚¯ã‚¿
 	function SC_Date($start_year='', $end_year='') {
 		if ( $start_year ) 	$this->setStartYear($start_year);	
 		if ( $end_year )	$this->setEndYear($end_year);

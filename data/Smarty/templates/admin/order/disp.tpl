@@ -5,7 +5,7 @@
  * http://www.lockon.co.jp/
  */
 *}-->
-<!--¡¡-->
+<!--ã€€-->
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="ja" lang="ja">
 
@@ -34,12 +34,12 @@
 </noscript>
 <div align="center">
 
-<!--¢§CONTENTS-->
+<!--â–¼CONTENTS-->
 <table width="780" border="0" cellspacing="0" cellpadding="0" summary=" ">
 	<tr valign="top">
 		<td class="mainbg" >
 		<table width="737" border="0" cellspacing="0" cellpadding="0" summary=" ">
-			<!--¥á¥¤¥ó¥¨¥ê¥¢-->
+			<!--ãƒ¡ã‚¤ãƒ³ã‚¨ãƒªã‚¢-->
 			<tr>
 				<td align="center">
 				<table width="706" border="0" cellspacing="0" cellpadding="0" summary=" ">
@@ -52,14 +52,14 @@
 						<td background="<!--{$smarty.const.URL_DIR}-->img/contents/main_left.jpg"><img src="<!--{$smarty.const.URL_DIR}-->img/common/_.gif" width="14" height="1" alt=""></td>
 						<td bgcolor="#cccccc">
 						
-						<!--ÅÐÏ¿¥Æ¡¼¥Ö¥ë¤³¤³¤«¤é-->
+						<!--ç™»éŒ²ãƒ†ãƒ¼ãƒ–ãƒ«ã“ã“ã‹ã‚‰-->
 						<table width="678" border="0" cellspacing="0" cellpadding="0" summary=" ">
 							<tr>
 								<td colspan="3"><img src="<!--{$smarty.const.URL_DIR}-->img/contents/contents_title_top.gif" width="678" height="7" alt=""></td>
 							</tr>
 							<tr>
 								<td background="<!--{$smarty.const.URL_DIR}-->img/contents/contents_title_left_bg.gif"><img src="<!--{$smarty.const.URL_DIR}-->img/contents/contents_title_left.gif" width="22" height="12" alt=""></td>
-								<td bgcolor="#636469" width="638" class="fs14n"><span class="white"><!--¥³¥ó¥Æ¥ó¥Ä¥¿¥¤¥È¥ë-->¼õÃí¾ÜºÙ</span></td>
+								<td bgcolor="#636469" width="638" class="fs14n"><span class="white"><!--ã‚³ãƒ³ãƒ†ãƒ³ãƒ„ã‚¿ã‚¤ãƒˆãƒ«-->å—æ³¨è©³ç´°</span></td>
 								<td background="<!--{$smarty.const.URL_DIR}-->img/contents/contents_title_right_bg.gif"><img src="<!--{$smarty.const.URL_DIR}-->img/common/_.gif" width="18" height="1" alt=""></td>
 							</tr>
 							<tr>
@@ -72,9 +72,9 @@
 						
 						<table width="678" border="0" cellspacing="1" cellpadding="8" summary=" ">
 							<tr class="fs12n">
-								<td bgcolor="#f0f0f0" width="110">ÂÐ±þ¾õ¶·</td>
+								<td bgcolor="#f0f0f0" width="110">å¯¾å¿œçŠ¶æ³</td>
 								<td bgcolor="#ffffff">
-									<!--{if $arrDisp.delete == 1}-->ºï½üºÑ¤ß
+									<!--{if $arrDisp.delete == 1}-->å‰Šé™¤æ¸ˆã¿
 									<!--{else}-->
 									<!--{assign var=status value=`$arrForm.status.value`}-->
 									<!--{$arrORDERSTATUS[$status]}-->
@@ -82,8 +82,8 @@
 								</td>
 							</tr>
 							<tr class="fs12n">
-								<td bgcolor="#f0f0f0" width="110">È¯Á÷Æü</td>
-								<td bgcolor="#ffffff"><!--{$arrDisp.commit_date|sfDispDBDate|default:"Ì¤È¯Á÷"}--></td>
+								<td bgcolor="#f0f0f0" width="110">ç™ºé€æ—¥</td>
+								<td bgcolor="#ffffff"><!--{$arrDisp.commit_date|sfDispDBDate|default:"æœªç™ºé€"}--></td>
 							</tr>
 						</table>
 
@@ -93,44 +93,44 @@
 						
 						<table width="678" border="0" cellspacing="1" cellpadding="8" summary=" ">
 							<tr class="fs12n">
-								<td bgcolor="#f0f0f0" colspan="4">¢§¤ªµÒÍÍ¾ðÊó</td>
+								<td bgcolor="#f0f0f0" colspan="4">â–¼ãŠå®¢æ§˜æƒ…å ±</td>
 							</tr>
 							<tr class="fs12n">
-								<td bgcolor="#f0f0f0" width="110">¼õÃíÈÖ¹æ</td>
+								<td bgcolor="#f0f0f0" width="110">å—æ³¨ç•ªå·</td>
 								<td bgcolor="#ffffff" width="248"><!--{$arrDisp.order_id}--></td>
-								<td bgcolor="#f0f0f0" width="110">¸ÜµÒID</td>
+								<td bgcolor="#f0f0f0" width="110">é¡§å®¢ID</td>
 								<td bgcolor="#ffffff" width="249">
 								<!--{if $arrDisp.customer_id > 0}-->
 									<!--{$arrDisp.customer_id}-->
 								<!--{else}-->
-									¡ÊÈó²ñ°÷¡Ë
+									ï¼ˆéžä¼šå“¡ï¼‰
 								<!--{/if}-->
 								</td>
 							</tr>
 							<tr class="fs12n">
-								<td bgcolor="#f0f0f0">¼õÃíÆü</td>
+								<td bgcolor="#f0f0f0">å—æ³¨æ—¥</td>
 								<td bgcolor="#ffffff" colspan="3"><!--{$arrDisp.create_date|sfDispDBDate}--></td>
 							</tr>
 							<tr class="fs12n">
-								<td bgcolor="#f0f0f0" >¸ÜµÒÌ¾</td>
+								<td bgcolor="#f0f0f0" >é¡§å®¢å</td>
 								<td bgcolor="#ffffff" ><!--{$arrDisp.order_name01|escape}--> <!--{$arrDisp.order_name02|escape}--></td>
-								<td bgcolor="#f0f0f0" >¸ÜµÒÌ¾¡Ê¥«¥Ê¡Ë</td>
+								<td bgcolor="#f0f0f0" >é¡§å®¢åï¼ˆã‚«ãƒŠï¼‰</td>
 								<td bgcolor="#ffffff" ><!--{$arrDisp.order_kana01|escape}--> <!--{$arrDisp.order_kana02|escape}--></td>
 							</tr>
 							<tr class="fs12n">
-								<td bgcolor="#f0f0f0" >¥á¡¼¥ë¥¢¥É¥ì¥¹</td>
+								<td bgcolor="#f0f0f0" >ãƒ¡ãƒ¼ãƒ«ã‚¢ãƒ‰ãƒ¬ã‚¹</td>
 								<td bgcolor="#ffffff" ><a href="mailto:<!--{$arrDisp.order_email|escape}-->"><!--{$arrDisp.order_email|escape}--></a></td>
 								<td bgcolor="#f0f0f0" >TEL</td>
 								<td bgcolor="#ffffff" ><!--{$arrDisp.order_tel01}-->-<!--{$arrDisp.order_tel02}-->-<!--{$arrDisp.order_tel03}--></td>
 							</tr>
 							<tr class="fs12n">
-								<td bgcolor="#f0f0f0" >½»½ê</td>
-								<td bgcolor="#ffffff" colspan="3">¢©<!--{$arrDisp.order_zip01}-->-<!--{$arrDisp.order_zip02}--><br>
+								<td bgcolor="#f0f0f0" >ä½æ‰€</td>
+								<td bgcolor="#ffffff" colspan="3">ã€’<!--{$arrDisp.order_zip01}-->-<!--{$arrDisp.order_zip02}--><br>
 								<!--{assign var=key value=$arrDisp.order_pref}-->
 								<!--{$arrPref[$key]}--><!--{$arrDisp.order_addr01}--><!--{$arrDisp.order_addr02}--></td>
 							</tr>
 							<tr class="fs12n">
-								<td bgcolor="#f0f0f0" >È÷¹Í</td>
+								<td bgcolor="#f0f0f0" >å‚™è€ƒ</td>
 								<td bgcolor="#ffffff" colspan="3"><!--{$arrDisp.message|escape|nl2br}--></td>
 							</tr>
 						</table>
@@ -139,20 +139,20 @@
 							<tr><td colspan="3"><img src="<!--{$smarty.const.URL_DIR}-->img/contents/main_bar.jpg" width="678" height="10" alt=""></td></tr>
 						</table>
 						
-						<!--¢§ÇÛÁ÷Àè¾ðÊó¤³¤³¤«¤é-->
+						<!--â–¼é…é€å…ˆæƒ…å ±ã“ã“ã‹ã‚‰-->
 						<table width="678" border="0" cellspacing="1" cellpadding="8" summary=" ">
 							<tr class="fs12n">
-								<td bgcolor="#f2f1ec" width="717" colspan="4">¢§ÇÛÁ÷Àè¾ðÊó</td>
+								<td bgcolor="#f2f1ec" width="717" colspan="4">â–¼é…é€å…ˆæƒ…å ±</td>
 							</tr>
 							<tr class="fs12n">
-								<td bgcolor="#f2f1ec" width="110">¤ªÌ¾Á°</td>
+								<td bgcolor="#f2f1ec" width="110">ãŠåå‰</td>
 								<td bgcolor="#ffffff" width="248">
 								<!--{assign var=key1 value="deliv_name01"}-->
 								<!--{assign var=key2 value="deliv_name02"}-->
 								<!--{$arrForm[$key1].value|escape}-->
 								<!--{$arrForm[$key2].value|escape}-->
 								</td>
-								<td bgcolor="#f2f1ec" width="110">¤ªÌ¾Á°¡Ê¥«¥Ê¡Ë</td>
+								<td bgcolor="#f2f1ec" width="110">ãŠåå‰ï¼ˆã‚«ãƒŠï¼‰</td>
 								<td bgcolor="#ffffff" width="249">
 								<!--{assign var=key1 value="deliv_kana01"}-->
 								<!--{assign var=key2 value="deliv_kana02"}-->
@@ -161,11 +161,11 @@
 								</td>
 							</tr>
 							<tr class="fs12n">
-								<td bgcolor="#f2f1ec" width="110">Í¹ÊØÈÖ¹æ</td>
+								<td bgcolor="#f2f1ec" width="110">éƒµä¾¿ç•ªå·</td>
 								<td bgcolor="#ffffff" width="248">
 								<!--{assign var=key1 value="deliv_zip01"}-->
 								<!--{assign var=key2 value="deliv_zip02"}-->
-								¢©<!--{$arrForm[$key1].value|escape}-->-<!--{$arrForm[$key2].value|escape}-->
+								ã€’<!--{$arrForm[$key1].value|escape}-->-<!--{$arrForm[$key2].value|escape}-->
 								</td>
 								<td bgcolor="#f2f1ec" width="110">TEL</td>
 								<td bgcolor="#ffffff" width="249">
@@ -176,7 +176,7 @@
 								</td>
 							</tr>
 							<tr class="fs12n">
-								<td bgcolor="#f2f1ec" width="110">½»½ê</td>
+								<td bgcolor="#f2f1ec" width="110">ä½æ‰€</td>
 								<td bgcolor="#ffffff" width="607" colspan="3">
 									<!--{assign var=pref value=`$arrForm.deliv_pref.value`}-->
 									<!--{$arrPref[$pref]}-->
@@ -187,7 +187,7 @@
 								</td>
 							</tr>
 						</table>
-						<!--¢¥ÇÛÁ÷Àè¾ðÊó¤³¤³¤Þ¤Ç-->	
+						<!--â–²é…é€å…ˆæƒ…å ±ã“ã“ã¾ã§-->	
 
 						<table width="678" border="0" cellspacing="0" cellpadding="0" summary=" ">
 							<tr><td colspan="3"><img src="<!--{$smarty.const.URL_DIR}-->img/contents/main_bar.jpg" width="678" height="10" alt=""></td></tr>
@@ -195,90 +195,90 @@
 						
 						<table width="678" border="0" cellspacing="1" cellpadding="8" summary=" ">
 							<tr class="fs12n">
-								<td bgcolor="#f0f0f0" width="717" colspan="7">¢§¼õÃí¾¦ÉÊ¾ðÊó</td>
+								<td bgcolor="#f0f0f0" width="717" colspan="7">â–¼å—æ³¨å•†å“æƒ…å ±</td>
 							</tr>
 							<tr bgcolor="#f0f0f0" align="center" class="fs12n">
-								<td width="140">¾¦ÉÊ¥³¡¼¥É</td>
-								<td width="215">¾¦ÉÊÌ¾/µ¬³Ê1/µ¬³Ê2</td>
-								<td width="84">Ã±²Á</td>
-								<td width="45">¿ôÎÌ</td>
-								<td width="94">¾®·×</td>
+								<td width="140">å•†å“ã‚³ãƒ¼ãƒ‰</td>
+								<td width="215">å•†å“å/è¦æ ¼1/è¦æ ¼2</td>
+								<td width="84">å˜ä¾¡</td>
+								<td width="45">æ•°é‡</td>
+								<td width="94">å°è¨ˆ</td>
 							</tr>
 							<!--{section name=cnt loop=$arrForm.quantity.value}-->
 							<!--{assign var=key value="`$smarty.section.cnt.index`"}-->
 							<tr bgcolor="#ffffff" class="fs12">
 								<td width="140"><!--{$arrDisp.product_code[$key]|escape}--></td>
-								<td width="215"><!--{$arrDisp.product_name[$key]|escape}-->/<!--{$arrDisp.classcategory_name1[$key]|escape|default:"(¤Ê¤·)"}-->/<!--{$arrDisp.classcategory_name2[$key]|escape|default:"(¤Ê¤·)"}--></td>
-								<td width="84" align="center"><!--{if $arrForm.price.value[$key] != 0}--><!--{$arrForm.price.value[$key]|escape}-->±ß<!--{else}-->ÌµÎÁ<!--{/if}--></td>
+								<td width="215"><!--{$arrDisp.product_name[$key]|escape}-->/<!--{$arrDisp.classcategory_name1[$key]|escape|default:"(ãªã—)"}-->/<!--{$arrDisp.classcategory_name2[$key]|escape|default:"(ãªã—)"}--></td>
+								<td width="84" align="center"><!--{if $arrForm.price.value[$key] != 0}--><!--{$arrForm.price.value[$key]|escape}-->å††<!--{else}-->ç„¡æ–™<!--{/if}--></td>
 								<td width="45" align="center"><!--{$arrForm.quantity.value[$key]|escape}--></td>
 								<!--{assign var=price value=`$arrForm.price.value[$key]`}-->
 								<!--{assign var=quantity value=`$arrForm.quantity.value[$key]`}-->
-								<td width="94" align="right"><!--{if $price != 0}--><!--{$price|sfPreTax:$arrInfo.tax:$arrInfo.tax_rule|sfMultiply:$quantity|number_format}-->±ß<!--{else}-->ÌµÎÁ<!--{/if}--></td>
+								<td width="94" align="right"><!--{if $price != 0}--><!--{$price|sfPreTax:$arrInfo.tax:$arrInfo.tax_rule|sfMultiply:$quantity|number_format}-->å††<!--{else}-->ç„¡æ–™<!--{/if}--></td>
 							</tr>
 							<!--{/section}-->
 							<tr bgcolor="#ffffff" class="fs12n">
-								<td colspan="4" align="right">¾®·×</td>
-								<td align="right"><!--{$arrForm.subtotal.value|number_format}-->±ß</td>
+								<td colspan="4" align="right">å°è¨ˆ</td>
+								<td align="right"><!--{$arrForm.subtotal.value|number_format}-->å††</td>
 							</tr>
 							<tr bgcolor="#ffffff" class="fs12n">
-								<td colspan="4" align="right">¥Ý¥¤¥ó¥ÈÃÍ°ú¤­</td>
-								<td align="right"><!--{assign var=point_discount value="`$arrForm.use_point.value*$smarty.const.POINT_VALUE`"}--><!--{$point_discount}-->±ß</td>
+								<td colspan="4" align="right">ãƒã‚¤ãƒ³ãƒˆå€¤å¼•ã</td>
+								<td align="right"><!--{assign var=point_discount value="`$arrForm.use_point.value*$smarty.const.POINT_VALUE`"}--><!--{$point_discount}-->å††</td>
 							</tr>
 							<!--{assign var=discount value="`$arrForm.discount.value`"}-->
 							<!--{if $discount != "" && $discount > 0}-->
 				 			<tr bgcolor="#ffffff" class="fs12n">
-								<td colspan="4" align="right">ÃÍ°ú¤­</td>
-								<td align="right"><!--{$discount}-->±ß</td>
+								<td colspan="4" align="right">å€¤å¼•ã</td>
+								<td align="right"><!--{$discount}-->å††</td>
 							</tr>
 							<!--{/if}-->
 							<tr bgcolor="#ffffff" class="fs12n">
-								<td colspan="4" align="right">Á÷ÎÁ</td>
-								<td align="right"><!--{assign var=key value="deliv_fee"}--><!--{$arrForm[$key].value|escape|number_format}--> ±ß</td>
+								<td colspan="4" align="right">é€æ–™</td>
+								<td align="right"><!--{assign var=key value="deliv_fee"}--><!--{$arrForm[$key].value|escape|number_format}--> å††</td>
 							</tr>
 							<tr bgcolor="#ffffff" class="fs12n">
-								<td colspan="4" align="right">¼ê¿ôÎÁ</td>
+								<td colspan="4" align="right">æ‰‹æ•°æ–™</td>
 								<td align="right"><!--{assign var=key value="charge"}-->
-							<span class="red12"><!--{$arrErr[$key]}--></span><!--{$arrForm[$key].value|escape|number_format}--> ±ß</td>
+							<span class="red12"><!--{$arrErr[$key]}--></span><!--{$arrForm[$key].value|escape|number_format}--> å††</td>
 							</tr>
 							<tr bgcolor="#ffffff" class="fs12n">
-								<td colspan="4" align="right">¹ç·×</td>
-								<td align="right"><!--{$arrForm.total.value|number_format}--> ±ß</td>
+								<td colspan="4" align="right">åˆè¨ˆ</td>
+								<td align="right"><!--{$arrForm.total.value|number_format}--> å††</td>
 							</tr>
 							<tr bgcolor="#ffffff" class="fs12n">
-								<td colspan="4" align="right">¤ª»ÙÊ§¤¤¹ç·×</td>
-								<td align="right"><!--{$arrForm.payment_total.value|number_format}--> ±ß</td>
+								<td colspan="4" align="right">ãŠæ”¯æ‰•ã„åˆè¨ˆ</td>
+								<td align="right"><!--{$arrForm.payment_total.value|number_format}--> å††</td>
 							</tr>
 							<tr bgcolor="#ffffff" class="fs12n">
-								<td colspan="4" align="right">»ÈÍÑ¥Ý¥¤¥ó¥È</td>
+								<td colspan="4" align="right">ä½¿ç”¨ãƒã‚¤ãƒ³ãƒˆ</td>
 								<td align="right"><!--{assign var=key value="use_point"}--><!--{if $arrForm[$key].value != ""}--><!--{$arrForm[$key].value}--><!--{else}-->0<!--{/if}--> pt</td>
 							</tr>
 							<!--{if $arrForm.birth_point.value > 0}-->
 							<tr bgcolor="#ffffff" class="fs12n">
-								<td colspan="4" align="right">¤ªÃÂÀ¸Æü¥Ý¥¤¥ó¥È</td>
+								<td colspan="4" align="right">ãŠèª•ç”Ÿæ—¥ãƒã‚¤ãƒ³ãƒˆ</td>
 								<td align="right">
 								<!--{$arrForm.birth_point.value}-->
 								 pt</td>
 							</tr>
 							<!--{/if}-->
 							<tr bgcolor="#ffffff" class="fs12n">
-								<td colspan="4" align="right">²Ã»»¥Ý¥¤¥ó¥È</td>
+								<td colspan="4" align="right">åŠ ç®—ãƒã‚¤ãƒ³ãƒˆ</td>
 								<td align="right">
 								<!--{$arrForm.add_point.value|default:0}-->
 								 pt</td>
 							</tr>
 							<tr bgcolor="#ffffff" class="fs12n">
 								<!--{if $arrDisp.customer_id > 0}-->
-								<td colspan="4" align="right">¸½ºß¥Ý¥¤¥ó¥È</td>
+								<td colspan="4" align="right">ç¾åœ¨ãƒã‚¤ãƒ³ãƒˆ</td>
 								<td align="right">
 								<!--{$arrForm.point.value}-->
 								 pt</td>
 								<!--{else}-->
-								<td colspan="4" align="right">¸½ºß¥Ý¥¤¥ó¥È</td><td align="center">¡Ê¤Ê¤·¡Ë</td>
+								<td colspan="4" align="right">ç¾åœ¨ãƒã‚¤ãƒ³ãƒˆ</td><td align="center">ï¼ˆãªã—ï¼‰</td>
 								<!--{/if}-->
 							</tr>
 							<!--{*
 							<tr bgcolor="#ffffff" class="fs12n">
-								<td colspan="5" align="right">È¿±Ç¸å¥Ý¥¤¥ó¥È¡Ê¥Ý¥¤¥ó¥È¤ÎÊÑ¹¹¤Ï<a href="<!--{$smarty.server.PHP_SELF|escape}-->" onclick="return fnEdit('<!--{$arrDisp.customer_id}-->');">¸ÜµÒÊÔ½¸</a>¤«¤é¼êÆ°¤Ë¤Æ¤ª´ê¤¤Ã×¤·¤Þ¤¹¡£¡Ë</td>
+								<td colspan="5" align="right">åæ˜ å¾Œãƒã‚¤ãƒ³ãƒˆï¼ˆãƒã‚¤ãƒ³ãƒˆã®å¤‰æ›´ã¯<a href="<!--{$smarty.server.PHP_SELF|escape}-->" onclick="return fnEdit('<!--{$arrDisp.customer_id}-->');">é¡§å®¢ç·¨é›†</a>ã‹ã‚‰æ‰‹å‹•ã«ã¦ãŠé¡˜ã„è‡´ã—ã¾ã™ã€‚ï¼‰</td>
 								<td align="right">
 								<span class="red12"><!--{$arrErr.total_point}--></span>
 								<!--{$arrForm.total_point.value}-->
@@ -286,7 +286,7 @@
 							</tr>
 							*}-->
 							<tr class="fs12n">
-								<td bgcolor="#f0f0f0" colspan="5">¢§¤ª»ÙÊ§ÊýË¡</td>
+								<td bgcolor="#f0f0f0" colspan="5">â–¼ãŠæ”¯æ‰•æ–¹æ³•</td>
 							</tr>
 							<tr class="fs12n">
 								<td bgcolor="#ffffff" colspan="5" height="24">
@@ -295,36 +295,36 @@
 							</tr>
 							<!--{if $arrDisp.payment_info|@count > 0}-->
 							<tr class="fs12n">
-								<td bgcolor="#f2f1ec" colspan="6">¢§<!--{$arrDisp.payment_type}-->¾ðÊó</td>
+								<td bgcolor="#f2f1ec" colspan="6">â–¼<!--{$arrDisp.payment_type}-->æƒ…å ±</td>
 							</tr>
 							<tr class="fs12n">
 								<td bgcolor="#ffffff" colspan="6">
 									<!--{foreach key=key item=item from=$arrDisp.payment_info}-->
-									<!--{if $key != "title"}--><!--{if $item.name != ""}--><!--{$item.name}-->¡§<!--{/if}--><!--{$item.value}--><br/><!--{/if}-->
+									<!--{if $key != "title"}--><!--{if $item.name != ""}--><!--{$item.name}-->ï¼š<!--{/if}--><!--{$item.value}--><br/><!--{/if}-->
 									<!--{/foreach}-->
 								</td>
 							</tr>
 							<!--{/if}-->
 							<tr class="fs12n">
-								<td bgcolor="#f0f0f0" colspan="5">¢§»þ´Ö»ØÄê</td>
+								<td bgcolor="#f0f0f0" colspan="5">â–¼æ™‚é–“æŒ‡å®š</td>
 							</tr>
 							<tr class="fs12n">
 								<td bgcolor="#ffffff" colspan="5" height="24">
 								<!--{assign var=deliv_time_id value="`$arrForm.deliv_time_id.value`"}-->
-								<!--{$arrDelivTime[$deliv_time_id]|default:"»ØÄê¤Ê¤·"}--></td>
+								<!--{$arrDelivTime[$deliv_time_id]|default:"æŒ‡å®šãªã—"}--></td>
 							</tr>
 							<tr class="fs12n">
-								<td bgcolor="#f0f0f0" colspan="6">¢§ÇÛÃ£Æü»ØÄê</td>
+								<td bgcolor="#f0f0f0" colspan="6">â–¼é…é”æ—¥æŒ‡å®š</td>
 							</tr>
 							<tr class="fs12n">
 								<td bgcolor="#ffffff" colspan="6">
 								<!--{assign var=key value="deliv_date"}-->
 								<span class="red12"><!--{$arrErr[$key]}--></span>
-								<!--{$arrForm[$key].value|default:"»ØÄê¤Ê¤·"}-->
+								<!--{$arrForm[$key].value|default:"æŒ‡å®šãªã—"}-->
 								</td>
 							</tr>
 							<tr class="fs12n">
-								<td bgcolor="#f2f1ec" colspan="6">¢§¥á¥â</td>
+								<td bgcolor="#f2f1ec" colspan="6">â–¼ãƒ¡ãƒ¢</td>
 							</tr>
 							<tr class="fs12n">
 								<td bgcolor="#ffffff" colspan="6">
@@ -344,13 +344,13 @@
 				</table>
 				</td>
 			</tr>
-			<!--¥á¥¤¥ó¥¨¥ê¥¢-->
+			<!--ãƒ¡ã‚¤ãƒ³ã‚¨ãƒªã‚¢-->
 		</table>
 		</td>
 	</tr>
 </form>
 </table>
-<!--¡ú¡ú¥á¥¤¥ó¥³¥ó¥Æ¥ó¥Ä¡ú¡ú-->		
+<!--â˜…â˜…ãƒ¡ã‚¤ãƒ³ã‚³ãƒ³ãƒ†ãƒ³ãƒ„â˜…â˜…-->		
 </div>
 
 </body>

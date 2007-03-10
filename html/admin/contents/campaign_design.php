@@ -17,7 +17,7 @@ class LC_Page {
 		$this->header_row = 13;
 		$this->contents_row = 13;
 		$this->footer_row = 13;		
-		$this->tpl_subtitle = '¥­¥ã¥ó¥Ú¡¼¥ó¥Ç¥¶¥¤¥óÊÔ½¸';
+		$this->tpl_subtitle = 'ã‚­ãƒ£ãƒ³ãƒšãƒ¼ãƒ³ãƒ‡ã‚¶ã‚¤ãƒ³ç·¨é›†';
 	}
 }
 
@@ -25,18 +25,18 @@ $objPage = new LC_Page();
 $objView = new SC_AdminView();
 $objQuery = new SC_Query();
 
-// Ç§¾Ú²ÄÈİ¤ÎÈ½Äê
+// èªè¨¼å¯å¦ã®åˆ¤å®š
 $objSess = new SC_Session();
 sfIsSuccess($objSess);
 
-// ¥­¥ã¥ó¥Ú¡¼¥ó¥Ç¡¼¥¿¤ò°ú¤­·Ñ¤®
+// ã‚­ãƒ£ãƒ³ãƒšãƒ¼ãƒ³ãƒ‡ãƒ¼ã‚¿ã‚’å¼•ãç¶™ã
 if($_POST['mode'] != "") {
 	$arrForm = $_POST;
 } else {
 	$arrForm = $_GET;
 }
 
-// Àµ¤·¤¯ÃÍ¤¬¼èÆÀ¤Ç¤­¤Ê¤¤¾ì¹ç¤Ï¥­¥ã¥ó¥Ú¡¼¥óTOP¤Ø
+// æ­£ã—ãå€¤ãŒå–å¾—ã§ããªã„å ´åˆã¯ã‚­ãƒ£ãƒ³ãƒšãƒ¼ãƒ³TOPã¸
 if($arrForm['campaign_id'] == "" || $arrForm['status'] == "") {
 	header("location: ".URL_CAMPAIGN_TOP);
 }
@@ -44,28 +44,28 @@ if($arrForm['campaign_id'] == "" || $arrForm['status'] == "") {
 switch($arrForm['status']) {
 	case 'active':
 		$status = CAMPAIGN_TEMPLATE_ACTIVE;
-		$objPage->tpl_campaign_title = "¥­¥ã¥ó¥Ú¡¼¥óÃæ¥Ç¥¶¥¤¥óÊÔ½¸";
+		$objPage->tpl_campaign_title = "ã‚­ãƒ£ãƒ³ãƒšãƒ¼ãƒ³ä¸­ãƒ‡ã‚¶ã‚¤ãƒ³ç·¨é›†";
 		break;
 	case 'end':
 		$status = CAMPAIGN_TEMPLATE_END;
-		$objPage->tpl_campaign_title = "¥­¥ã¥ó¥Ú¡¼¥ó½ªÎ»¥Ç¥¶¥¤¥óÊÔ½¸";
+		$objPage->tpl_campaign_title = "ã‚­ãƒ£ãƒ³ãƒšãƒ¼ãƒ³çµ‚äº†ãƒ‡ã‚¶ã‚¤ãƒ³ç·¨é›†";
 		break;
 	default:
 		break;
 }
 
-// ¥Ç¥£¥ì¥¯¥È¥êÌ¾¤ò¼èÆÀÌ¾		
+// ãƒ‡ã‚£ãƒ¬ã‚¯ãƒˆãƒªåã‚’å–å¾—å		
 $directory_name = $objQuery->get("dtb_campaign", "directory_name", "campaign_id = ?", array($arrForm['campaign_id']));
-// ¥­¥ã¥ó¥Ú¡¼¥ó¥Æ¥ó¥×¥ì¡¼¥È³ÊÇ¼¥Ç¥£¥ì¥¯¥È¥ê
+// ã‚­ãƒ£ãƒ³ãƒšãƒ¼ãƒ³ãƒ†ãƒ³ãƒ—ãƒ¬ãƒ¼ãƒˆæ ¼ç´ãƒ‡ã‚£ãƒ¬ã‚¯ãƒˆãƒª
 $campaign_dir = CAMPAIGN_TEMPLATE_PATH . $directory_name . "/" .$status;
 
 switch($_POST['mode']) {
 case 'regist':
-	// ¥Õ¥¡¥¤¥ë¤ò¹¹¿·
+	// ãƒ•ã‚¡ã‚¤ãƒ«ã‚’æ›´æ–°
 	sfWriteFile($arrForm['header'], $campaign_dir."header.tpl", "w");
 	sfWriteFile($arrForm['contents'], $campaign_dir."contents.tpl", "w");
 	sfWriteFile($arrForm['footer'], $campaign_dir."footer.tpl", "w");
-	// ¥µ¥¤¥È¥Õ¥ì¡¼¥àºîÀ®
+	// ã‚µã‚¤ãƒˆãƒ•ãƒ¬ãƒ¼ãƒ ä½œæˆ
 	$site_frame  = $arrForm['header']."\n";
 	$site_frame .= '<script type="text/javascript" src="<!--{$smarty.const.URL_DIR}-->js/site.js"></script>'."\n";
 	$site_frame .= '<script type="text/javascript" src="<!--{$smarty.const.URL_DIR}-->js/navi.js"></script>'."\n";
@@ -73,11 +73,11 @@ case 'regist':
 	$site_frame .= $arrForm['footer']."\n";
 	sfWriteFile($site_frame, $campaign_dir."site_frame.tpl", "w");
 	
-	// ´°Î»¥á¥Ã¥»¡¼¥¸¡Ê¥×¥ì¥Ó¥å¡¼»ş¤ÏÉ½¼¨¤·¤Ê¤¤¡Ë
-	$objPage->tpl_onload="alert('ÅĞÏ¿¤¬´°Î»¤·¤Ş¤·¤¿¡£');";
+	// å®Œäº†ãƒ¡ãƒƒã‚»ãƒ¼ã‚¸ï¼ˆãƒ—ãƒ¬ãƒ“ãƒ¥ãƒ¼æ™‚ã¯è¡¨ç¤ºã—ãªã„ï¼‰
+	$objPage->tpl_onload="alert('ç™»éŒ²ãŒå®Œäº†ã—ã¾ã—ãŸã€‚');";
 	break;
 case 'preview':
-	// ¥×¥ì¥Ó¥å¡¼¤ò½ñ¤­½Ğ¤·ÊÌÁë¤Ç³«¤¯
+	// ãƒ—ãƒ¬ãƒ“ãƒ¥ãƒ¼ã‚’æ›¸ãå‡ºã—åˆ¥çª“ã§é–‹ã
 	sfWriteFile($arrForm['header'] . $arrForm['contents'] . $arrForm['footer'], $campaign_dir."preview.tpl", "w");
 	$objPage->tpl_onload = "win02('./campaign_preview.php?status=". $arrForm['status'] ."&campaign_id=". $arrForm['campaign_id'] ."', 'preview', '600', '400');";
 	$objPage->header_data = $arrForm['header'];	
@@ -85,7 +85,7 @@ case 'preview':
 	$objPage->footer_data = $arrForm['footer'];	
 	break;
 case 'return':
-	// ÅĞÏ¿¥Ú¡¼¥¸¤ØÌá¤ë
+	// ç™»éŒ²ãƒšãƒ¼ã‚¸ã¸æˆ»ã‚‹
 	header("location: ".URL_CAMPAIGN_TOP);
 	break;
 default:	
@@ -103,18 +103,18 @@ if ($arrForm['footer_row'] != ''){
 }
 
 if($_POST['mode'] != 'preview') {
-	// ¥Ø¥Ã¥À¡¼¥Õ¥¡¥¤¥ë¤ÎÆÉ¤ß¹ş¤ß
+	// ãƒ˜ãƒƒãƒ€ãƒ¼ãƒ•ã‚¡ã‚¤ãƒ«ã®èª­ã¿è¾¼ã¿
 	$objPage->header_data = file_get_contents($campaign_dir . "header.tpl");	
-	// ¥³¥ó¥Æ¥ó¥Ä¥Õ¥¡¥¤¥ë¤ÎÆÉ¤ß¹ş¤ß
+	// ã‚³ãƒ³ãƒ†ãƒ³ãƒ„ãƒ•ã‚¡ã‚¤ãƒ«ã®èª­ã¿è¾¼ã¿
 	$objPage->contents_data = file_get_contents($campaign_dir . "contents.tpl");	
-	// ¥Õ¥Ã¥¿¡¼¥Õ¥¡¥¤¥ë¤ÎÆÉ¤ß¹ş¤ß
+	// ãƒ•ãƒƒã‚¿ãƒ¼ãƒ•ã‚¡ã‚¤ãƒ«ã®èª­ã¿è¾¼ã¿
 	$objPage->footer_data = file_get_contents($campaign_dir . "footer.tpl");
 }
 
-// ¥Õ¥©¡¼¥à¤ÎÃÍ¤ò³ÊÇ¼
+// ãƒ•ã‚©ãƒ¼ãƒ ã®å€¤ã‚’æ ¼ç´
 $objPage->arrForm = $arrForm;
 
-// ²èÌÌ¤ÎÉ½¼¨
+// ç”»é¢ã®è¡¨ç¤º
 $objView->assignobj($objPage);
 $objView->display(MAIN_FRAME);
 

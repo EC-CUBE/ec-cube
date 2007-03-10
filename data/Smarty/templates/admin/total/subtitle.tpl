@@ -7,107 +7,107 @@
 *}-->
 <!--{if $arrForm.page.value == "term" || $arrForm.page.value == ""}-->
 	<td class="fs12n">
-	<strong>´ü´ÖÊÌ½¸·×</strong>&nbsp;¡Ê
+	<strong>æœŸé–“åˆ¥é›†è¨ˆ</strong>&nbsp;ï¼ˆ
 	<!--{if $smarty.post.type == 'day' || $smarty.post.type == ''}-->
-	<span class="over">ÆüÊÌ</span>&nbsp;
+	<span class="over">æ—¥åˆ¥</span>&nbsp;
 	<!--{else}-->
-	<a href="<!--{$smarty.server.PHP_SELF|escape}-->" onclick="document.form1.mode.value='search'; return fnSetFormSubmit('form1', 'type', 'day');">ÆüÊÌ</a>&nbsp;
+	<a href="<!--{$smarty.server.PHP_SELF|escape}-->" onclick="document.form1.mode.value='search'; return fnSetFormSubmit('form1', 'type', 'day');">æ—¥åˆ¥</a>&nbsp;
 	<!--{/if}-->
 	<!--{if $smarty.post.type == 'month'}-->
-	<span class="over">·îÊÌ</span>&nbsp;
+	<span class="over">æœˆåˆ¥</span>&nbsp;
 	<!--{else}-->
-	<a href="<!--{$smarty.server.PHP_SELF|escape}-->" onclick="document.form1.mode.value='search'; return fnSetFormSubmit('form1', 'type', 'month');">·îÊÌ</a>&nbsp;
+	<a href="<!--{$smarty.server.PHP_SELF|escape}-->" onclick="document.form1.mode.value='search'; return fnSetFormSubmit('form1', 'type', 'month');">æœˆåˆ¥</a>&nbsp;
 	<!--{/if}-->
 	<!--{if $smarty.post.type == 'year'}-->
-	<span class="over">Ç¯ÊÌ</span>&nbsp;
+	<span class="over">å¹´åˆ¥</span>&nbsp;
 	<!--{else}-->
-	<a href="<!--{$smarty.server.PHP_SELF|escape}-->" onclick="document.form1.mode.value='search'; return fnSetFormSubmit('form1', 'type', 'year');">Ç¯ÊÌ</a>&nbsp;
+	<a href="<!--{$smarty.server.PHP_SELF|escape}-->" onclick="document.form1.mode.value='search'; return fnSetFormSubmit('form1', 'type', 'year');">å¹´åˆ¥</a>&nbsp;
 	<!--{/if}-->
 	<!--{if $smarty.post.type == 'wday'}-->
-	<span class="over">ÍËÆüÊÌ</span>&nbsp;
+	<span class="over">æ›œæ—¥åˆ¥</span>&nbsp;
 	<!--{else}-->
-	<a href="<!--{$smarty.server.PHP_SELF|escape}-->" onclick="document.form1.mode.value='search'; return fnSetFormSubmit('form1', 'type', 'wday');">ÍËÆüÊÌ</a>&nbsp;
+	<a href="<!--{$smarty.server.PHP_SELF|escape}-->" onclick="document.form1.mode.value='search'; return fnSetFormSubmit('form1', 'type', 'wday');">æ›œæ—¥åˆ¥</a>&nbsp;
 	<!--{/if}-->
 	<!--{if $smarty.post.type == 'hour'}-->
-	<span class="over">»þ´ÖÊÌ</span>&nbsp;
+	<span class="over">æ™‚é–“åˆ¥</span>&nbsp;
 	<!--{else}-->
-	<a href="<!--{$smarty.server.PHP_SELF|escape}-->" onclick="document.form1.mode.value='search'; return fnSetFormSubmit('form1', 'type', 'hour');">»þ´ÖÊÌ</a>&nbsp;
+	<a href="<!--{$smarty.server.PHP_SELF|escape}-->" onclick="document.form1.mode.value='search'; return fnSetFormSubmit('form1', 'type', 'hour');">æ™‚é–“åˆ¥</a>&nbsp;
 	<!--{/if}-->
-	¡Ë
+	ï¼‰
 	</td>
 <!--{/if}-->
 
 <!--{if $arrForm.page.value == "products"}-->
 	<td class="fs12n">
-	<strong>¾¦ÉÊÊÌ½¸·×</strong>&nbsp;¡Ê
+	<strong>å•†å“åˆ¥é›†è¨ˆ</strong>&nbsp;ï¼ˆ
 	<!--{if $smarty.post.type == 'all' || $smarty.post.type == ''}-->
-	<span class="over">Á´ÂÎ</span>&nbsp;
+	<span class="over">å…¨ä½“</span>&nbsp;
 	<!--{else}-->
-	<a href="<!--{$smarty.server.PHP_SELF|escape}-->" onclick="document.form1.mode.value='search'; return fnSetFormSubmit('form1', 'type', 'all');">Á´ÂÎ</a>&nbsp;
+	<a href="<!--{$smarty.server.PHP_SELF|escape}-->" onclick="document.form1.mode.value='search'; return fnSetFormSubmit('form1', 'type', 'all');">å…¨ä½“</a>&nbsp;
 	<!--{/if}-->
 	<!--{if $smarty.post.type == 'member'}-->
-	<span class="over">²ñ°÷</span>&nbsp;
+	<span class="over">ä¼šå“¡</span>&nbsp;
 	<!--{else}-->
-	<a href="<!--{$smarty.server.PHP_SELF|escape}-->" onclick="document.form1.mode.value='search'; return fnSetFormSubmit('form1', 'type', 'member');">²ñ°÷</a>&nbsp;
+	<a href="<!--{$smarty.server.PHP_SELF|escape}-->" onclick="document.form1.mode.value='search'; return fnSetFormSubmit('form1', 'type', 'member');">ä¼šå“¡</a>&nbsp;
 	<!--{/if}-->
 	<!--{if $smarty.post.type == 'nonmember'}-->
-	<span class="over">Èó²ñ°÷</span>&nbsp;
+	<span class="over">éžä¼šå“¡</span>&nbsp;
 	<!--{else}-->
-	<a href="<!--{$smarty.server.PHP_SELF|escape}-->" onclick="document.form1.mode.value='search'; return fnSetFormSubmit('form1', 'type', 'nonmember');">Èó²ñ°÷</a>&nbsp;
+	<a href="<!--{$smarty.server.PHP_SELF|escape}-->" onclick="document.form1.mode.value='search'; return fnSetFormSubmit('form1', 'type', 'nonmember');">éžä¼šå“¡</a>&nbsp;
 	<!--{/if}-->
-	¡Ë
+	ï¼‰
 	</td>
 <!--{/if}-->
 
 <!--{if $arrForm.page.value == "age"}-->
 	<td class="fs12n">
-	<strong>Ç¯ÂåÊÌ½¸·×</strong>&nbsp;¡Ê
+	<strong>å¹´ä»£åˆ¥é›†è¨ˆ</strong>&nbsp;ï¼ˆ
 	<!--{if $smarty.post.type == 'all' || $smarty.post.type == ''}-->
-	<span class="over">Á´ÂÎ</span>&nbsp;
+	<span class="over">å…¨ä½“</span>&nbsp;
 	<!--{else}-->
-	<a href="<!--{$smarty.server.PHP_SELF|escape}-->" onclick="document.form1.mode.value='search'; return fnSetFormSubmit('form1', 'type', 'all');">Á´ÂÎ</a>&nbsp;
+	<a href="<!--{$smarty.server.PHP_SELF|escape}-->" onclick="document.form1.mode.value='search'; return fnSetFormSubmit('form1', 'type', 'all');">å…¨ä½“</a>&nbsp;
 	<!--{/if}-->
 	<!--{if $smarty.post.type == 'member'}-->
-	<span class="over">²ñ°÷</span>&nbsp;
+	<span class="over">ä¼šå“¡</span>&nbsp;
 	<!--{else}-->
-	<a href="<!--{$smarty.server.PHP_SELF|escape}-->" onclick="document.form1.mode.value='search'; return fnSetFormSubmit('form1', 'type', 'member');">²ñ°÷</a>&nbsp;
+	<a href="<!--{$smarty.server.PHP_SELF|escape}-->" onclick="document.form1.mode.value='search'; return fnSetFormSubmit('form1', 'type', 'member');">ä¼šå“¡</a>&nbsp;
 	<!--{/if}-->
 	<!--{if $smarty.post.type == 'nonmember'}-->
-	<span class="over">Èó²ñ°÷</span>&nbsp;
+	<span class="over">éžä¼šå“¡</span>&nbsp;
 	<!--{else}-->
-	<a href="<!--{$smarty.server.PHP_SELF|escape}-->" onclick="document.form1.mode.value='search'; return fnSetFormSubmit('form1', 'type', 'nonmember');">Èó²ñ°÷</a>&nbsp;
+	<a href="<!--{$smarty.server.PHP_SELF|escape}-->" onclick="document.form1.mode.value='search'; return fnSetFormSubmit('form1', 'type', 'nonmember');">éžä¼šå“¡</a>&nbsp;
 	<!--{/if}-->
-	¡Ë
+	ï¼‰
 	</td>
 <!--{/if}-->
 
 <!--{if $arrForm.page.value == "job"}-->
 	<td class="fs12n">
-	<strong>¿¦¶ÈÊÌ½¸·×</strong>&nbsp;¡Ê
-	<span class="over">Á´ÂÎ</span>
-	¡Ë
-	<!--{*¡Ê
+	<strong>è·æ¥­åˆ¥é›†è¨ˆ</strong>&nbsp;ï¼ˆ
+	<span class="over">å…¨ä½“</span>
+	ï¼‰
+	<!--{*ï¼ˆ
 	<!--{if $smarty.post.type == 'all' || $smarty.post.type == ''}-->
-	<span class="over">Á´ÂÎ</span>&nbsp;
+	<span class="over">å…¨ä½“</span>&nbsp;
 	<!--{else}-->
-	<a href="<!--{$smarty.server.PHP_SELF|escape}-->" onclick="document.form1.mode.value='search'; return fnSetFormSubmit('form1', 'type', 'all');">Á´ÂÎ</a>&nbsp;
+	<a href="<!--{$smarty.server.PHP_SELF|escape}-->" onclick="document.form1.mode.value='search'; return fnSetFormSubmit('form1', 'type', 'all');">å…¨ä½“</a>&nbsp;
 	<!--{/if}-->
 	<!--{if $smarty.post.type == 'member'}-->
-	<span class="over">²ñ°÷</span>&nbsp;
+	<span class="over">ä¼šå“¡</span>&nbsp;
 	<!--{else}-->
-	<a href="<!--{$smarty.server.PHP_SELF|escape}-->" onclick="document.form1.mode.value='search'; return fnSetFormSubmit('form1', 'type', 'member');">²ñ°÷</a>&nbsp;
+	<a href="<!--{$smarty.server.PHP_SELF|escape}-->" onclick="document.form1.mode.value='search'; return fnSetFormSubmit('form1', 'type', 'member');">ä¼šå“¡</a>&nbsp;
 	<!--{/if}-->
 	<!--{if $smarty.post.type == 'nonmember'}-->
-	<span class="over">Èó²ñ°÷</span>&nbsp;
+	<span class="over">éžä¼šå“¡</span>&nbsp;
 	<!--{else}-->
-	<a href="<!--{$smarty.server.PHP_SELF|escape}-->" onclick="document.form1.mode.value='search'; return fnSetFormSubmit('form1', 'type', 'nonmember');">Èó²ñ°÷</a>&nbsp;
+	<a href="<!--{$smarty.server.PHP_SELF|escape}-->" onclick="document.form1.mode.value='search'; return fnSetFormSubmit('form1', 'type', 'nonmember');">éžä¼šå“¡</a>&nbsp;
 	<!--{/if}-->
-	¡Ë*}-->
+	ï¼‰*}-->
 	</td>
 <!--{/if}-->
 
 <!--{if $arrForm.page.value == "member"}-->
 	<td class="fs12n">
-	<strong>²ñ°÷ÊÌ½¸·×</strong>
+	<strong>ä¼šå“¡åˆ¥é›†è¨ˆ</strong>
 	</td>
 <!--{/if}-->

@@ -9,38 +9,38 @@
 
 require_once("../../require.php");
 
-//¥Ú¡¼¥¸´ÉÍý¥¯¥é¥¹
+//ãƒšãƒ¼ã‚¸ç®¡ç†ã‚¯ãƒ©ã‚¹
 class LC_Page {
-	//¥³¥ó¥¹¥È¥é¥¯¥¿
+	//ã‚³ãƒ³ã‚¹ãƒˆãƒ©ã‚¯ã‚¿
 	function LC_Page() {
-		//¥á¥¤¥ó¥Æ¥ó¥×¥ì¡¼¥È¤Î»ØÄê
+		//ãƒ¡ã‚¤ãƒ³ãƒ†ãƒ³ãƒ—ãƒ¬ãƒ¼ãƒˆã®æŒ‡å®š
 		$this->tpl_mainpage = MODULE_PATH . 'ebis_tag.tpl';
-		$this->tpl_subtitle = 'EBiS¥¿¥°Ëä¤á¹þ¤ßµ¡Ç½';
+		$this->tpl_subtitle = 'EBiSã‚¿ã‚°åŸ‹ã‚è¾¼ã¿æ©Ÿèƒ½';
 	}
 }
 $objPage = new LC_Page();
 $objView = new SC_AdminView();
 
-// Ç§¾Ú³ÎÇ§
+// èªè¨¼ç¢ºèª
 $objSess = new SC_Session();
 sfIsSuccess($objSess);
 
-// ¥Ñ¥é¥á¡¼¥¿´ÉÍý¥¯¥é¥¹
+// ãƒ‘ãƒ©ãƒ¡ãƒ¼ã‚¿ç®¡ç†ã‚¯ãƒ©ã‚¹
 $objFormParam = new SC_FormParam();
 $objFormParam = lfInitParam($objFormParam);
-// POSTÃÍ¤Î¼èÆÀ
+// POSTå€¤ã®å–å¾—
 $objFormParam->setParam($_POST);
 
 switch($_POST['mode']) {
 case 'edit':
-	// ÆþÎÏ¥¨¥é¡¼È½Äê
+	// å…¥åŠ›ã‚¨ãƒ©ãƒ¼åˆ¤å®š
 	$objPage->arrErr = $objFormParam->checkError();
 	if(count($objPage->arrErr) == 0) {
 		$arrRet = $objFormParam->getHashArray();
 		$sqlval['sub_data'] = serialize($arrRet);
 		$objQuery = new SC_Query();
 		$objQuery->update("dtb_module", $sqlval, "module_id = ?", array(EBIS_TAG_MID));
-		// javascript¼Â¹Ô
+		// javascriptå®Ÿè¡Œ
 		$objPage->tpl_onload = "window.close();";
 	}
 	break;
@@ -52,14 +52,14 @@ default:
 }
 
 $objPage->arrForm = $objFormParam->getFormParamList();
-$objView->assignobj($objPage);		//ÊÑ¿ô¤ò¥Æ¥ó¥×¥ì¡¼¥È¤Ë¥¢¥µ¥¤¥ó¤¹¤ë
-$objView->display($objPage->tpl_mainpage);		//¥Æ¥ó¥×¥ì¡¼¥È¤Î½ÐÎÏ
+$objView->assignobj($objPage);		//å¤‰æ•°ã‚’ãƒ†ãƒ³ãƒ—ãƒ¬ãƒ¼ãƒˆã«ã‚¢ã‚µã‚¤ãƒ³ã™ã‚‹
+$objView->display($objPage->tpl_mainpage);		//ãƒ†ãƒ³ãƒ—ãƒ¬ãƒ¼ãƒˆã®å‡ºåŠ›
 //-------------------------------------------------------------------------------------------------------
-/* ¥Ñ¥é¥á¡¼¥¿¾ðÊó¤Î½é´ü²½ */
+/* ãƒ‘ãƒ©ãƒ¡ãƒ¼ã‚¿æƒ…å ±ã®åˆæœŸåŒ– */
 function lfInitParam($objFormParam) {
-	$objFormParam->addParam("¥æ¡¼¥¶ID", "user", STEXT_LEN, "KVa", array("EXIST_CHECK", "MAX_LENGTH_CHECK"));
-	$objFormParam->addParam("¥Ñ¥¹¥ï¡¼¥É", "pass", STEXT_LEN, "KVa", array("EXIST_CHECK", "MAX_LENGTH_CHECK"));
-	$objFormParam->addParam("¥¿¥°¼±ÊÌID", "cid", STEXT_LEN, "KVa", array("EXIST_CHECK", "MAX_LENGTH_CHECK"));
+	$objFormParam->addParam("ãƒ¦ãƒ¼ã‚¶ID", "user", STEXT_LEN, "KVa", array("EXIST_CHECK", "MAX_LENGTH_CHECK"));
+	$objFormParam->addParam("ãƒ‘ã‚¹ãƒ¯ãƒ¼ãƒ‰", "pass", STEXT_LEN, "KVa", array("EXIST_CHECK", "MAX_LENGTH_CHECK"));
+	$objFormParam->addParam("ã‚¿ã‚°è­˜åˆ¥ID", "cid", STEXT_LEN, "KVa", array("EXIST_CHECK", "MAX_LENGTH_CHECK"));
 	return $objFormParam;
 }
 ?>

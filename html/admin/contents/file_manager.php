@@ -7,7 +7,7 @@
 require_once("../require.php");
 require_once(DATA_PATH . "include/file_manager.inc");
 
-//---- Ç§¾Ú²ÄÈİ¤ÎÈ½Äê
+//---- èªè¨¼å¯å¦ã®åˆ¤å®š
 $objSess = new SC_Session();
 sfIsSuccess($objSess);
 
@@ -17,119 +17,119 @@ class LC_Page{
 		$this->tpl_mainno = 'contents';
 		$this->tpl_subnavi = 'contents/subnavi.tpl';
 		$this->tpl_subno = "file";
-		$this->tpl_subtitle = '¥Õ¥¡¥¤¥ë´ÉÍı';		
+		$this->tpl_subtitle = 'ãƒ•ã‚¡ã‚¤ãƒ«ç®¡ç†';		
 	}
 }
 
-// ¥ë¡¼¥È¥Ç¥£¥ì¥¯¥È¥ê
+// ãƒ«ãƒ¼ãƒˆãƒ‡ã‚£ãƒ¬ã‚¯ãƒˆãƒª
 $top_dir = USER_PATH;
 
 $objPage = new LC_Page();
 $objView = new SC_AdminView();
 $objQuery = new SC_Query();
 
-// ¸½ºß¤Î³¬ÁØ¤ò¼èÆÀ
+// ç¾åœ¨ã®éšå±¤ã‚’å–å¾—
 if($_POST['mode'] != "") {
 	$now_dir = $_POST['now_file'];
 } else {
-	// ½é´üÉ½¼¨¤Ï¥ë¡¼¥È¥Ç¥£¥ì¥¯¥È¥ê(user_data/)¤òÉ½¼¨
+	// åˆæœŸè¡¨ç¤ºã¯ãƒ«ãƒ¼ãƒˆãƒ‡ã‚£ãƒ¬ã‚¯ãƒˆãƒª(user_data/)ã‚’è¡¨ç¤º
 	$now_dir = $top_dir;
 }
 
-// ¥Õ¥¡¥¤¥ë´ÉÍı¥¯¥é¥¹
+// ãƒ•ã‚¡ã‚¤ãƒ«ç®¡ç†ã‚¯ãƒ©ã‚¹
 $objUpFile = new SC_UploadFile($now_dir, $now_dir);
-// ¥Õ¥¡¥¤¥ë¾ğÊó¤Î½é´ü²½
+// ãƒ•ã‚¡ã‚¤ãƒ«æƒ…å ±ã®åˆæœŸåŒ–
 lfInitFile();
 
 switch($_POST['mode']) {
 
-// ¥Õ¥¡¥¤¥ëÉ½¼¨
+// ãƒ•ã‚¡ã‚¤ãƒ«è¡¨ç¤º
 case 'view':
-	// ¥¨¥é¡¼¥Á¥§¥Ã¥¯
+	// ã‚¨ãƒ©ãƒ¼ãƒã‚§ãƒƒã‚¯
 	$arrErr = lfErrorCheck();
 	if(!is_array($arrErr)) {
 	
-		// ÁªÂò¤µ¤ì¤¿¥Õ¥¡¥¤¥ë¤¬¥Ç¥£¥ì¥¯¥È¥ê¤Ê¤é°ÜÆ°
+		// é¸æŠã•ã‚ŒãŸãƒ•ã‚¡ã‚¤ãƒ«ãŒãƒ‡ã‚£ãƒ¬ã‚¯ãƒˆãƒªãªã‚‰ç§»å‹•
 		if(is_dir($_POST['select_file'])) {
 			///$now_dir = $_POST['select_file'];
-			// ¥Ä¥ê¡¼Á«°ÜÍÑ¤Îjavascript¤òËä¤á¹ş¤à
-			$arrErr['select_file'] = "¢¨ ¥Ç¥£¥ì¥¯¥È¥ê¤òÉ½¼¨¤¹¤ë¤³¤È¤Ï½ĞÍè¤Ş¤»¤ó¡£<br/>";
+			// ãƒ„ãƒªãƒ¼é·ç§»ç”¨ã®javascriptã‚’åŸ‹ã‚è¾¼ã‚€
+			$arrErr['select_file'] = "â€» ãƒ‡ã‚£ãƒ¬ã‚¯ãƒˆãƒªã‚’è¡¨ç¤ºã™ã‚‹ã“ã¨ã¯å‡ºæ¥ã¾ã›ã‚“ã€‚<br/>";
 			
 		} else {
-			// javascript¤ÇÊÌÁëÉ½¼¨(¥Æ¥ó¥×¥ì¡¼¥ÈÂ¦¤ËÅÏ¤¹)
+			// javascriptã§åˆ¥çª“è¡¨ç¤º(ãƒ†ãƒ³ãƒ—ãƒ¬ãƒ¼ãƒˆå´ã«æ¸¡ã™)
 			$file_url = ereg_replace(USER_PATH, "", $_POST['select_file']);
 			$tpl_onload = "win02('./file_view.php?file=". $file_url ."', 'user_data', '600', '400');";
 		}
 	}
 	break;
-// ¥Õ¥¡¥¤¥ë¥À¥¦¥ó¥í¡¼¥É
+// ãƒ•ã‚¡ã‚¤ãƒ«ãƒ€ã‚¦ãƒ³ãƒ­ãƒ¼ãƒ‰
 case 'download':
 
-	// ¥¨¥é¡¼¥Á¥§¥Ã¥¯
+	// ã‚¨ãƒ©ãƒ¼ãƒã‚§ãƒƒã‚¯
 	$arrErr = lfErrorCheck();
 	if(!is_array($arrErr)) {
 		if(is_dir($_POST['select_file'])) {
-			// ¥Ç¥£¥ì¥¯¥È¥ê¤Î¾ì¹ç¤Ïjavascript¥¨¥é¡¼
-			$arrErr['select_file'] = "¢¨ ¥Ç¥£¥ì¥¯¥È¥ê¤ò¥À¥¦¥ó¥í¡¼¥É¤¹¤ë¤³¤È¤Ï½ĞÍè¤Ş¤»¤ó¡£<br/>";
+			// ãƒ‡ã‚£ãƒ¬ã‚¯ãƒˆãƒªã®å ´åˆã¯javascriptã‚¨ãƒ©ãƒ¼
+			$arrErr['select_file'] = "â€» ãƒ‡ã‚£ãƒ¬ã‚¯ãƒˆãƒªã‚’ãƒ€ã‚¦ãƒ³ãƒ­ãƒ¼ãƒ‰ã™ã‚‹ã“ã¨ã¯å‡ºæ¥ã¾ã›ã‚“ã€‚<br/>";
 		} else {
-			// ¥Õ¥¡¥¤¥ë¥À¥¦¥ó¥í¡¼¥É
+			// ãƒ•ã‚¡ã‚¤ãƒ«ãƒ€ã‚¦ãƒ³ãƒ­ãƒ¼ãƒ‰
 			sfDownloadFile($_POST['select_file']);
 			exit;			
 		}
 	}
 	break;
-// ¥Õ¥¡¥¤¥ëºï½ü
+// ãƒ•ã‚¡ã‚¤ãƒ«å‰Šé™¤
 case 'delete':
-	// ¥¨¥é¡¼¥Á¥§¥Ã¥¯
+	// ã‚¨ãƒ©ãƒ¼ãƒã‚§ãƒƒã‚¯
 	$arrErr = lfErrorCheck();
 	if(!is_array($arrErr)) {
 		sfDeleteDir($_POST['select_file']);
 	}
 	break;
-// ¥Õ¥¡¥¤¥ëºîÀ®
+// ãƒ•ã‚¡ã‚¤ãƒ«ä½œæˆ
 case 'create':
-	// ¥¨¥é¡¼¥Á¥§¥Ã¥¯
+	// ã‚¨ãƒ©ãƒ¼ãƒã‚§ãƒƒã‚¯
 	$arrErr = lfCreateErrorCheck();
 	if(!is_array($arrErr)) {
 		$create_dir = ereg_replace("/$", "", $now_dir);
-		// ¥Õ¥¡¥¤¥ëºîÀ®
+		// ãƒ•ã‚¡ã‚¤ãƒ«ä½œæˆ
 		if(!sfCreateFile($create_dir."/".$_POST['create_file'], 0755)) {
-			// ºîÀ®¥¨¥é¡¼
-			$arrErr['create_file'] = "¢¨ ".$_POST['create_file']."¤ÎºîÀ®¤Ë¼ºÇÔ¤·¤Ş¤·¤¿¡£<br/>";
+			// ä½œæˆã‚¨ãƒ©ãƒ¼
+			$arrErr['create_file'] = "â€» ".$_POST['create_file']."ã®ä½œæˆã«å¤±æ•—ã—ã¾ã—ãŸã€‚<br/>";
 		} else {
-			$tpl_onload .= "alert('¥Õ¥©¥ë¥À¤òºîÀ®¤·¤Ş¤·¤¿¡£');";
+			$tpl_onload .= "alert('ãƒ•ã‚©ãƒ«ãƒ€ã‚’ä½œæˆã—ã¾ã—ãŸã€‚');";
 		}
 	}
 	break;
-// ¥Õ¥¡¥¤¥ë¥¢¥Ã¥×¥í¡¼¥É
+// ãƒ•ã‚¡ã‚¤ãƒ«ã‚¢ãƒƒãƒ—ãƒ­ãƒ¼ãƒ‰
 case 'upload':
-	// ²èÁüÊİÂ¸½èÍı
+	// ç”»åƒä¿å­˜å‡¦ç†
 	$ret = $objUpFile->makeTempFile('upload_file', false);
 	if($ret != "") {
 		$arrErr['upload_file'] = $ret;
 	} else {
-		$tpl_onload .= "alert('¥Õ¥¡¥¤¥ë¤ò¥¢¥Ã¥×¥í¡¼¥É¤·¤Ş¤·¤¿¡£');";
+		$tpl_onload .= "alert('ãƒ•ã‚¡ã‚¤ãƒ«ã‚’ã‚¢ãƒƒãƒ—ãƒ­ãƒ¼ãƒ‰ã—ã¾ã—ãŸã€‚');";
 	}
 	break;
-// ¥Õ¥©¥ë¥À°ÜÆ°
+// ãƒ•ã‚©ãƒ«ãƒ€ç§»å‹•
 case 'move':
 	$now_dir = $_POST['tree_select_file'];
 	break;
-// ½é´üÉ½¼¨
+// åˆæœŸè¡¨ç¤º
 default :
 	break;
 }
-// ¥È¥Ã¥×¥Ç¥£¥ì¥¯¥È¥ê¤«Ä´ºº
+// ãƒˆãƒƒãƒ—ãƒ‡ã‚£ãƒ¬ã‚¯ãƒˆãƒªã‹èª¿æŸ»
 $is_top_dir = false;
-// ËöÈø¤Î/¤ò¤È¤ë
+// æœ«å°¾ã®/ã‚’ã¨ã‚‹
 $top_dir_check = ereg_replace("/$", "", $top_dir);
 $now_dir_check = ereg_replace("/$", "", $now_dir);
 if($top_dir_check == $now_dir_check) $is_top_dir = true;
 
-// ¸½ºß¤Î³¬ÁØ¤è¤ê°ì¤Ä¾å¤Î³¬ÁØ¤ò¼èÆÀ
+// ç¾åœ¨ã®éšå±¤ã‚ˆã‚Šä¸€ã¤ä¸Šã®éšå±¤ã‚’å–å¾—
 $parent_dir = lfGetParentDir($now_dir);
 
-// ¸½ºß¤Î¥Ç¥£¥ì¥¯¥È¥êÇÛ²¼¤Î¥Õ¥¡¥¤¥ë°ìÍ÷¤ò¼èÆÀ
+// ç¾åœ¨ã®ãƒ‡ã‚£ãƒ¬ã‚¯ãƒˆãƒªé…ä¸‹ã®ãƒ•ã‚¡ã‚¤ãƒ«ä¸€è¦§ã‚’å–å¾—
 $objPage->arrFileList = sfGetFileList($now_dir);
 $objPage->tpl_is_top_dir = $is_top_dir;
 $objPage->tpl_parent_dir = $parent_dir;
@@ -138,9 +138,9 @@ $objPage->tpl_now_file = basename($now_dir);
 $objPage->arrErr = $arrErr;
 $objPage->arrParam = $_POST;
 
-// ¥Ä¥ê¡¼¤òÉ½¼¨¤¹¤ë div¥¿¥°id, ¥Ä¥ê¡¼ÇÛÎóÊÑ¿ôÌ¾, ¸½ºß¥Ç¥£¥ì¥¯¥È¥ê, ÁªÂò¥Ä¥ê¡¼hiddenÌ¾, ¥Ä¥ê¡¼¾õÂÖhiddenÌ¾, mode hiddenÌ¾
+// ãƒ„ãƒªãƒ¼ã‚’è¡¨ç¤ºã™ã‚‹ divã‚¿ã‚°id, ãƒ„ãƒªãƒ¼é…åˆ—å¤‰æ•°å, ç¾åœ¨ãƒ‡ã‚£ãƒ¬ã‚¯ãƒˆãƒª, é¸æŠãƒ„ãƒªãƒ¼hiddenå, ãƒ„ãƒªãƒ¼çŠ¶æ…‹hiddenå, mode hiddenå
 $objPage->tpl_onload .= "fnTreeView('tree', arrTree, '$now_dir', 'tree_select_file', 'tree_status', 'move');$tpl_onload";
-// ¥Ä¥ê¡¼ÇÛÎóºîÀ®ÍÑ javascript
+// ãƒ„ãƒªãƒ¼é…åˆ—ä½œæˆç”¨ javascript
 $arrTree = sfGetFileTree($top_dir, $_POST['tree_status']);
 $objPage->tpl_javascript .= "arrTree = new Array();\n";
 foreach($arrTree as $arrVal) {
@@ -152,47 +152,47 @@ foreach($arrTree as $arrVal) {
 	}
 }
 
-// ²èÌÌ¤ÎÉ½¼¨
+// ç”»é¢ã®è¡¨ç¤º
 $objView->assignobj($objPage);
 $objView->display(MAIN_FRAME);
 
 //-----------------------------------------------------------------------------------------------------------------------------------
 
 /* 
- * ´Ø¿ôÌ¾¡§lfErrorCheck()
- * ÀâÌÀ¡¡¡§¥¨¥é¡¼¥Á¥§¥Ã¥¯
+ * é–¢æ•°åï¼šlfErrorCheck()
+ * èª¬æ˜ã€€ï¼šã‚¨ãƒ©ãƒ¼ãƒã‚§ãƒƒã‚¯
  */
 function lfErrorCheck() {
 	$objErr = new SC_CheckError($_POST);
-	$objErr->doFunc(array("¥Õ¥¡¥¤¥ë", "select_file"), array("SELECT_CHECK"));
+	$objErr->doFunc(array("ãƒ•ã‚¡ã‚¤ãƒ«", "select_file"), array("SELECT_CHECK"));
 	
 	return $objErr->arrErr;
 }
 
 /* 
- * ´Ø¿ôÌ¾¡§lfCreateErrorCheck()
- * ÀâÌÀ¡¡¡§¥Õ¥¡¥¤¥ëºîÀ®½èÍı¥¨¥é¡¼¥Á¥§¥Ã¥¯
+ * é–¢æ•°åï¼šlfCreateErrorCheck()
+ * èª¬æ˜ã€€ï¼šãƒ•ã‚¡ã‚¤ãƒ«ä½œæˆå‡¦ç†ã‚¨ãƒ©ãƒ¼ãƒã‚§ãƒƒã‚¯
  */
 function lfCreateErrorCheck() {
 	$objErr = new SC_CheckError($_POST);
-	$objErr->doFunc(array("ºîÀ®¥Õ¥¡¥¤¥ëÌ¾", "create_file"), array("EXIST_CHECK", "FILE_NAME_CHECK_BY_NOUPLOAD"));
+	$objErr->doFunc(array("ä½œæˆãƒ•ã‚¡ã‚¤ãƒ«å", "create_file"), array("EXIST_CHECK", "FILE_NAME_CHECK_BY_NOUPLOAD"));
 	
 	return $objErr->arrErr;
 }
 
 /* 
- * ´Ø¿ôÌ¾¡§lfInitFile()
- * ÀâÌÀ¡¡¡§¥Õ¥¡¥¤¥ë¾ğÊó¤Î½é´ü²½
+ * é–¢æ•°åï¼šlfInitFile()
+ * èª¬æ˜ã€€ï¼šãƒ•ã‚¡ã‚¤ãƒ«æƒ…å ±ã®åˆæœŸåŒ–
  */
 function lfInitFile() {
 	global $objUpFile;
-	$objUpFile->addFile("¥Õ¥¡¥¤¥ë", 'upload_file', array(), FILE_SIZE, true, 0, 0, false);
+	$objUpFile->addFile("ãƒ•ã‚¡ã‚¤ãƒ«", 'upload_file', array(), FILE_SIZE, true, 0, 0, false);
 }
 
 /* 
- * ´Ø¿ôÌ¾¡§lfGetParentDir()
- * °ú¿ô1 ¡§¥Ç¥£¥ì¥¯¥È¥ê
- * ÀâÌÀ¡¡¡§¿Æ¥Ç¥£¥ì¥¯¥È¥ê¼èÆÀ
+ * é–¢æ•°åï¼šlfGetParentDir()
+ * å¼•æ•°1 ï¼šãƒ‡ã‚£ãƒ¬ã‚¯ãƒˆãƒª
+ * èª¬æ˜ã€€ï¼šè¦ªãƒ‡ã‚£ãƒ¬ã‚¯ãƒˆãƒªå–å¾—
  */
 function lfGetParentDir($dir) {
 	$dir = ereg_replace("/$", "", $dir);

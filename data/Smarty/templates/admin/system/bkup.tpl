@@ -3,21 +3,21 @@
  *
  * http://www.lockon.co.jp/
  *}-->
-<!--�����ᥤ�󥳥�ƥ�ġ���-->
+<!--★★メインコンテンツ★★-->
 <table width="878" border="0" cellspacing="0" cellpadding="0" summary=" ">
 <form name="form1" id="form1" method="post" action="">
 <input type="hidden" name="mode" value="edit">
 <input type="hidden" name="list_name" value="">
 	<tr valign="top">
 		<td background="<!--{$smarty.const.URL_DIR}-->img/contents/navi_bg.gif" height="402">
-			<!--��SUB NAVI-->
+			<!--▼SUB NAVI-->
 			<!--{include file=$tpl_subnavi}-->
-			<!--��SUB NAVI-->
+			<!--▲SUB NAVI-->
 		</td>
 		<td class="mainbg">
-			<!--����Ͽ�ơ��֥뤳������-->
+			<!--▼登録テーブルここから-->
 			<table width="737" border="0" cellspacing="0" cellpadding="0" summary=" ">
-				<!--�ᥤ�󥨥ꥢ-->
+				<!--メインエリア-->
 				<tr>
 					<td align="center">
 						<table width="706" border="0" cellspacing="0" cellpadding="0" summary=" ">
@@ -35,7 +35,7 @@
 									</tr>
 									<tr>
 										<td background="<!--{$smarty.const.URL_DIR}-->img/contents/contents_title_left_bg.gif"><img src="<!--{$smarty.const.URL_DIR}-->img/contents/contents_title_left.gif" width="22" height="12" alt=""></td>
-										<td bgcolor="#636469" width="638" class="fs14n"><span class="white"><!--����ƥ�ĥ����ȥ�-->�Хå����å׺���</span></td>
+										<td bgcolor="#636469" width="638" class="fs14n"><span class="white"><!--コンテンツタイトル-->バックアップ作成</span></td>
 										<td background="<!--{$smarty.const.URL_DIR}-->img/contents/contents_title_right_bg.gif"><img src="<!--{$smarty.const.URL_DIR}-->img/common/_.gif" width="18" height="1" alt=""></td>
 									</tr>
 									<tr>
@@ -48,18 +48,18 @@
 								
 								<table width="678" border="0" cellspacing="1" cellpadding="8" summary=" ">
 									<tr align="center" class="fs12n">
-										<td bgcolor="#f2f1ec" width="130">�Хå����å�̾<span class="red"> *</span></td>
+										<td bgcolor="#f2f1ec" width="130">バックアップ名<span class="red"> *</span></td>
 										<td bgcolor="#ffffff" width="548" align=left>
 											<span class="red12"><!--{$arrErr.bkup_name}--></span>
-											<input type="text" name="bkup_name" value="<!--{$arrForm.bkup_name|escape}-->" maxlength="<!--{$smarty.const.STEXT_LEN}-->" size="60" class="box60" style="<!--{if $arrErr.bkup_name != ""}-->background-color: <!--{$smarty.const.ERR_COLOR}-->;<!--{/if}--> ime-mode: disabled;" /><span class="red"> �ʾ��<!--{$smarty.const.STEXT_LEN}-->ʸ����</span>
+											<input type="text" name="bkup_name" value="<!--{$arrForm.bkup_name|escape}-->" maxlength="<!--{$smarty.const.STEXT_LEN}-->" size="60" class="box60" style="<!--{if $arrErr.bkup_name != ""}-->background-color: <!--{$smarty.const.ERR_COLOR}-->;<!--{/if}--> ime-mode: disabled;" /><span class="red"> （上限<!--{$smarty.const.STEXT_LEN}-->文字）</span>
 										</td>
 									</tr>
 									<tr align="center" class="fs12n">
-										<td bgcolor="#f2f1ec" width="130">�Хå����åץ��</td>
+										<td bgcolor="#f2f1ec" width="130">バックアップメモ</td>
 										<td bgcolor="#ffffff" width="548" align=left>
 											<span class="red12"><!--{$arrErr.bkup_memo}--></span>
 											<textarea name="bkup_memo" maxlength="<!--{$smarty.const.MTEXT_LEN}-->" cols="60" rows="5" class="area60" style="<!--{if $arrErr.bkup_memo != ""}-->background-color: <!--{$smarty.const.ERR_COLOR}--><!--{/if}-->" ><!--{$arrForm.bkup_memo|escape}--></textarea>
-											<span class="red"> �ʾ��<!--{$smarty.const.MTEXT_LEN}-->ʸ����</span>
+											<span class="red"> （上限<!--{$smarty.const.MTEXT_LEN}-->文字）</span>
 										</td>
 									</tr>
 								</table>
@@ -75,7 +75,7 @@
 										<td bgcolor="#e9e7de" align="center">
 										<table border="0" cellspacing="0" cellpadding="0" summary=" ">
 											<tr>
-												<td><input type="button" name="cre_bkup" value="�Хå����åץǡ������������" onClick="document.body.style.cursor = 'wait'; form1.mode.value='bkup'; submit();" /></td>
+												<td><input type="button" name="cre_bkup" value="バックアップデータを作成する" onClick="document.body.style.cursor = 'wait'; form1.mode.value='bkup'; submit();" /></td>
 											</tr>
 										</table>
 										</td>
@@ -96,7 +96,7 @@
 									</tr>
 									<tr>
 										<td background="<!--{$smarty.const.URL_DIR}-->img/contents/contents_title_left_bg.gif"><img src="<!--{$smarty.const.URL_DIR}-->img/contents/contents_title_left.gif" width="22" height="12" alt=""></td>
-										<td bgcolor="#636469" width="638" class="fs14n"><span class="white"><!--����ƥ�ĥ����ȥ�-->�Хå����åװ���</span></td>
+										<td bgcolor="#636469" width="638" class="fs14n"><span class="white"><!--コンテンツタイトル-->バックアップ一覧</span></td>
 										<td background="<!--{$smarty.const.URL_DIR}-->img/contents/contents_title_right_bg.gif"><img src="<!--{$smarty.const.URL_DIR}-->img/common/_.gif" width="18" height="1" alt=""></td>
 									</tr>
 									<tr>
@@ -107,16 +107,16 @@
 									</tr>
 								</table>
 								
-								<!--{* ������¸�ߤ�����Τ�ɽ������ *}-->
+								<!--{* 一覧が存在する場合のみ表示する *}-->
 								<!--{if count($arrBkupList) > 0 }-->
 								<table width="678" border="0" cellspacing="1" cellpadding="8" summary=" ">
 									<tr bgcolor="#f2f1ec" align="center" class="fs12n">
-										<td width="150" align="center">�Хå����å�̾</td>
-										<td width="338">�Хå����åץ��</td>
-										<td width="170">������</td>
-										<td width="50">�ꥹ�ȥ�</td>
-										<td width="90">�����������</td>
-										<td width="50" align="center">���</td>
+										<td width="150" align="center">バックアップ名</td>
+										<td width="338">バックアップメモ</td>
+										<td width="170">作成日</td>
+										<td width="50">リストア</td>
+										<td width="90">ダウンロード</td>
+										<td width="50" align="center">削除</td>
 									</tr>
 									<!--{section name=cnt loop=$arrBkupList}-->
 									<tr bgcolor="#ffffff" class="fs12">
@@ -144,8 +144,8 @@
 								<table width="678" border="0" cellspacing="1" cellpadding="8" summary=" ">
 									<tr bgcolor="#ffffff" class="fs12">
 										<td>
-											���¹Է��<br>
-											<!--{if $restore_err == false}--><input type="button" name="restore_config" value="�ơ��֥빽����̵�뤷�ƥꥹ�ȥ�����" onClick="document.body.style.cursor = 'wait'; form1.mode.value='restore_config'; form1.list_name.value='<!--{$restore_name}-->'; submit();" /><br><!--{/if}-->
+											▼実行結果<br>
+											<!--{if $restore_err == false}--><input type="button" name="restore_config" value="テーブル構成を無視してリストアする" onClick="document.body.style.cursor = 'wait'; form1.mode.value='restore_config'; form1.list_name.value='<!--{$restore_name}-->'; submit();" /><br><!--{/if}-->
 											<!--{$restore_msg}-->
 										</td>
 									</tr>								
@@ -162,11 +162,11 @@
 						</table>
 					</td>
 				</tr>
-				<!--�ᥤ�󥨥ꥢ-->
+				<!--メインエリア-->
 			</table>
-			<!--����Ͽ�ơ��֥뤳���ޤ�-->
+			<!--▲登録テーブルここまで-->
 		</td>
 	</tr>
 </form>
 </table>
-<!--�����ᥤ�󥳥�ƥ�ġ���-->
+<!--★★メインコンテンツ★★-->

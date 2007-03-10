@@ -5,7 +5,7 @@
  * http://www.lockon.co.jp/
  */
 *}-->
-<!--�����ᥤ�󥳥�ƥ�ġ���-->
+<!--★★メインコンテンツ★★-->
 <table width="878" border="0" cellspacing="0" cellpadding="0" summary=" ">
 <form name="form1" id="form1" method="post" action="<!--{$smarty.server.PHP_SELF|escape}-->">
 <input type="hidden" name="mode" value="confirm">
@@ -15,13 +15,13 @@
 <!--{/foreach}-->
 	<tr valign="top">
 		<td background="<!--{$smarty.const.URL_DIR}-->img/contents/navi_bg.gif" height="402">
-			<!--��SUB NAVI-->
+			<!--▼SUB NAVI-->
 			<!--{include file=$tpl_subnavi}-->
-			<!--��SUB NAVI-->
+			<!--▲SUB NAVI-->
 		</td>
 		<td class="mainbg" >
 		<table width="737" border="0" cellspacing="0" cellpadding="0" summary=" ">
-			<!--�ᥤ�󥨥ꥢ-->
+			<!--メインエリア-->
 			<tr>
 				<td align="center">
 				<table width="706" border="0" cellspacing="0" cellpadding="0" summary=" ">
@@ -34,14 +34,14 @@
 						<td background="<!--{$smarty.const.URL_DIR}-->img/contents/main_left.jpg"><img src="<!--{$smarty.const.URL_DIR}-->img/common/_.gif" width="14" height="1" alt=""></td>
 						<td bgcolor="#cccccc">
 						
-						<!--��Ͽ�ơ��֥뤳������-->
+						<!--登録テーブルここから-->
 						<table width="678" border="0" cellspacing="0" cellpadding="0" summary=" ">
 							<tr>
 								<td colspan="3"><img src="<!--{$smarty.const.URL_DIR}-->img/contents/contents_title_top.gif" width="678" height="7" alt=""></td>
 							</tr>
 							<tr>
 								<td background="<!--{$smarty.const.URL_DIR}-->img/contents/contents_title_left_bg.gif"><img src="<!--{$smarty.const.URL_DIR}-->img/contents/contents_title_left.gif" width="22" height="12" alt=""></td>
-								<td bgcolor="#636469" width="638" class="fs14n"><span class="white"><!--����ƥ�ĥ����ȥ�-->�᡼���ۿ�</span></td>
+								<td bgcolor="#636469" width="638" class="fs14n"><span class="white"><!--コンテンツタイトル-->メール配信</span></td>
 								<td background="<!--{$smarty.const.URL_DIR}-->img/contents/contents_title_right_bg.gif"><img src="<!--{$smarty.const.URL_DIR}-->img/common/_.gif" width="18" height="1" alt=""></td>
 							</tr>
 							<tr>
@@ -54,9 +54,9 @@
 						
 						<table width="678" border="0" cellspacing="1" cellpadding="5" summary=" ">
 							<tr align="center">
-								<td bgcolor="#f2f1ec" width="140" class="fs12n">������</td>
-								<td bgcolor="#f2f1ec" width="300" class="fs12n">���Υ᡼��</td>
-								<td bgcolor="#f2f1ec" width="300" class="fs12n">��̾</td>
+								<td bgcolor="#f2f1ec" width="140" class="fs12n">処理日</td>
+								<td bgcolor="#f2f1ec" width="300" class="fs12n">通知メール</td>
+								<td bgcolor="#f2f1ec" width="300" class="fs12n">件名</td>
 							</tr>
 							<!--{section name=cnt loop=$arrMailHistory}-->
 							<tr align="center">
@@ -74,18 +74,18 @@
 
 						<table width="678" border="0" cellspacing="1" cellpadding="8" summary=" ">
 							<tr>
-								<td bgcolor="#f2f1ec" width="160" class="fs12n">�ƥ�ץ졼��<span class="red"> *</span></td>
+								<td bgcolor="#f2f1ec" width="160" class="fs12n">テンプレート<span class="red"> *</span></td>
 								<td bgcolor="#ffffff" width="557" class="fs10n">
 								<!--{assign var=key value="template_id"}-->
 								<span class="red12"><!--{$arrErr[$key]}--></span>
 								<select name="template_id" style="<!--{$arrErr[$key]|sfGetErrorColor}-->" onchange="fnModeSubmit('change', '', '');">
-								<option value="" selected="selected">���򤷤Ƥ�������</option>
+								<option value="" selected="selected">選択してください</option>
 								<!--{html_options options=$arrMAILTEMPLATE selected=$arrForm[$key].value|escape}-->
 								</select>
 								</td>
 							</tr>
 							<tr>
-								<td bgcolor="#f2f1ec" width="160" class="fs12n">�᡼�륿���ȥ�<span class="red"> *</span></td>
+								<td bgcolor="#f2f1ec" width="160" class="fs12n">メールタイトル<span class="red"> *</span></td>
 								<td bgcolor="#ffffff" width="557" class="fs10n">
 								<!--{assign var=key value="subject"}-->
 								<span class="red12"><!--{$arrErr[$key]}--></span>
@@ -93,17 +93,17 @@
 								</td>
 							</tr>
 							<tr>
-								<td bgcolor="#f2f1ec" width="160" class="fs12">�إå���</td>
+								<td bgcolor="#f2f1ec" width="160" class="fs12">ヘッダー</td>
 								<td bgcolor="#ffffff" width="557" class="fs10">
 								<!--{assign var=key value="header"}-->
 								<span class="red12"><!--{$arrErr[$key]}--></span>
 								<textarea  name="<!--{$arrForm[$key].keyname}-->" maxlength="<!--{$arrForm[$key].length}-->" style="<!--{$arrErr[$key]|sfGetErrorColor}-->" cols="75" rows="12" class="area75"><!--{$arrForm[$key].value|escape}--></textarea></td>
 							</tr>
 							<tr class="fs12n">
-								<td bgcolor="#ffffff" colspan="2" align="center" height="40">ưŪ�ǡ���������ʬ</td>
+								<td bgcolor="#ffffff" colspan="2" align="center" height="40">動的データ挿入部分</td>
 							</tr>
 							<tr>
-								<td bgcolor="#f2f1ec" width="160" class="fs12">�եå���</td>
+								<td bgcolor="#f2f1ec" width="160" class="fs12">フッター</td>
 								<td bgcolor="#ffffff" width="557" class="fs10">
 								<!--{assign var=key value="footer"}-->
 								<span class="red12"><!--{$arrErr[$key]}--></span>
@@ -123,8 +123,8 @@
 								<table border="0" cellspacing="0" cellpadding="0" summary=" ">
 									<tr>
 										<td>
-											<input type="button" name="back" value="������̤����" onclick="fnChangeAction('<!--{$smarty.const.URL_SEARCH_ORDER}-->'); fnModeSubmit('search','',''); return false;" />
-											<input type="submit" name="subm" value="�������Ƥ��ǧ"/>
+											<input type="button" name="back" value="検索結果へ戻る" onclick="fnChangeAction('<!--{$smarty.const.URL_SEARCH_ORDER}-->'); fnModeSubmit('search','',''); return false;" />
+											<input type="submit" name="subm" value="送信内容を確認"/>
 										</td>
 									</tr>
 								</table>
@@ -136,7 +136,7 @@
 							</tr>
 						</table>
 
-						<!--��Ͽ�ơ��֥뤳���ޤ�-->
+						<!--登録テーブルここまで-->
 						</td>
 						<td background="<!--{$smarty.const.URL_DIR}-->img/contents/main_right.jpg"><img src="<!--{$smarty.const.URL_DIR}-->img/common/_.gif" width="14" height="1" alt=""></td>
 					</tr>
@@ -148,10 +148,10 @@
 				</table>
 				</td>
 			</tr>
-			<!--�ᥤ�󥨥ꥢ-->
+			<!--メインエリア-->
 		</table>
 		</td>
 	</tr>
 </form>
 </table>
-<!--�����ᥤ�󥳥�ƥ�ġ���-->		
+<!--★★メインコンテンツ★★-->		

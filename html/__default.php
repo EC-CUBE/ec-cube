@@ -3,18 +3,18 @@ require_once("###require###");
 
 class LC_Page {
 	function LC_Page() {
-		/** É¬¤ºÊÑ¹¹¤¹¤ë **/
-		$this->tpl_css = URL_DIR.'css/layout/contact/index.css';	// ¥á¥¤¥óCSS¥Ñ¥¹		
+		/** å¿…ãšå¤‰æ›´ã™ã‚‹ **/
+		$this->tpl_css = URL_DIR.'css/layout/contact/index.css';	// ãƒ¡ã‚¤ãƒ³CSSãƒ‘ã‚¹		
 	}
 }
 
 $objPage = new LC_Page();
 $objView = new SC_SiteView();
 
-// ¥ì¥¤¥¢¥¦¥È¥Ç¥¶¥¤¥ó¤ò¼èÆÀ
+// ãƒ¬ã‚¤ã‚¢ã‚¦ãƒˆãƒ‡ã‚¶ã‚¤ãƒ³ã‚’å–å¾—
 $objPage = sfGetPageLayout($objPage);
 
-// ²èÌÌ¤ÎÉ½¼¨
+// ç”»é¢ã®è¡¨ç¤º
  $objView->assignobj($objPage);
  $objView->display(SITE_FRAME);
 //-----------------------------------------------------------------------------------------------------------------------------------

@@ -3,33 +3,33 @@
  *
  * http://www.lockon.co.jp/
  *}-->
-<!--¢§CONTENTS-->
+<!--â–¼CONTENTS-->
 <table width="" cellspacing="0" cellpadding="0" summary=" ">
 	<tr>
 		<td bgcolor="#ffffff" align="left"> 
-		<!--¢§MAIN CONTENTS-->
-		<!--¥Ñ¥ó¥¯¥º-->
-		<div id="pan"><span class="fs12n"><a href="<!--{$smarty.const.URL_DIR}-->index.php">¥È¥Ã¥×¥Ú¡¼¥¸</a>¡ä<span class="redst">¤ªµ¤¤ËÆþ¤ê¾¦ÉÊ</span></span></div>
-		<!--¥Ñ¥ó¥¯¥º-->
+		<!--â–¼MAIN CONTENTS-->
+		<!--ãƒ‘ãƒ³ã‚¯ã‚º-->
+		<div id="pan"><span class="fs12n"><a href="<!--{$smarty.const.URL_DIR}-->index.php">ãƒˆãƒƒãƒ—ãƒšãƒ¼ã‚¸</a>ï¼ž<span class="redst">ãŠæ°—ã«å…¥ã‚Šå•†å“</span></span></div>
+		<!--ãƒ‘ãƒ³ã‚¯ã‚º-->
 		<table cellspacing="0" cellpadding="0" summary=" " id="container">
 			<tr><td height="10"></td></tr>
 			<tr valign="top">
 			
-				<!--¢§RIGHT CONTENTS-->
+				<!--â–¼RIGHT CONTENTS-->
 				<td id="right">
-				<!--¥¿¥¤¥È¥ë-->
-				<div id="maintitle"><img src="<!--{$smarty.const.URL_DIR}-->img/mypage/title.jpg" width="570" height="40" alt="¥Þ¥¤¥Ú¡¼¥¸" /></div>
-				<!--¥¿¥¤¥È¥ë-->
-				<!--¢§MY¥Ú¡¼¥¸¥Ê¥Ó-->
+				<!--ã‚¿ã‚¤ãƒˆãƒ«-->
+				<div id="maintitle"><img src="<!--{$smarty.const.URL_DIR}-->img/mypage/title.jpg" width="570" height="40" alt="ãƒžã‚¤ãƒšãƒ¼ã‚¸" /></div>
+				<!--ã‚¿ã‚¤ãƒˆãƒ«-->
+				<!--â–¼MYãƒšãƒ¼ã‚¸ãƒŠãƒ“-->
 				<!--{include file=$tpl_navi}-->
-				<!--¢¥MY¥Ú¡¼¥¸¥Ê¥Ó-->
-				<!--¥µ¥Ö¥¿¥¤¥È¥ë-->
-				<div id="subtitle"><img src="<!--{$smarty.const.URL_DIR}-->img/mypage/subtitle07.gif" width="110" height="16" alt="±ÜÍ÷ÍúÎò" /></div>
-				<!--¥µ¥Ö¥¿¥¤¥È¥ë-->
+				<!--â–²MYãƒšãƒ¼ã‚¸ãƒŠãƒ“-->
+				<!--ã‚µãƒ–ã‚¿ã‚¤ãƒˆãƒ«-->
+				<div id="subtitle"><img src="<!--{$smarty.const.URL_DIR}-->img/mypage/subtitle07.gif" width="110" height="16" alt="é–²è¦§å±¥æ­´" /></div>
+				<!--ã‚µãƒ–ã‚¿ã‚¤ãƒˆãƒ«-->
 				
 				<!--{if $arrForm}-->
-				<div id="comment"><span class="fs12">¥ï¥ó¥¯¥ê¥Ã¥¯¤Ç±ÜÍ÷¾¦ÉÊ¤Î¥Ú¡¼¥¸¤Ë¹Ô¤¯»ö¤¬¤Ç¤­¤Þ¤¹¡£<br />
-				<span class="asterisk">¢¨</span>ºÇÂç<!--{$smarty.const.CUSTOMER_READING_MAX}-->·ï¤Þ¤ÇÉ½¼¨¤·¤Þ¤¹¡£</span></div>
+				<div id="comment"><span class="fs12">ãƒ¯ãƒ³ã‚¯ãƒªãƒƒã‚¯ã§é–²è¦§å•†å“ã®ãƒšãƒ¼ã‚¸ã«è¡Œãäº‹ãŒã§ãã¾ã™ã€‚<br />
+				<span class="asterisk">â€»</span>æœ€å¤§<!--{$smarty.const.CUSTOMER_READING_MAX}-->ä»¶ã¾ã§è¡¨ç¤ºã—ã¾ã™ã€‚</span></div>
 				<form name="form1" method="post" action="<!--{$smarty.server.PHP_SELF|escape}-->" >
 				<input type="hidden" name="product_id" value="">
 				<input type="hidden" name="mode" value="">
@@ -40,9 +40,9 @@
 					<tr><td height="5"></td></tr>
 				<tr class="fs12">
 					<td align="center">
-					<!--¢§¥Ú¡¼¥¸¥Ê¥Ó-->
+					<!--â–¼ãƒšãƒ¼ã‚¸ãƒŠãƒ“-->
 					<!--{$tpl_strnavi}-->
-					<!--¢¥¥Ú¡¼¥¸¥Ê¥Ó-->
+					<!--â–²ãƒšãƒ¼ã‚¸ãƒŠãƒ“-->
 					</td>
 				</tr>
 				<tr><td height="10"></td></tr>
@@ -51,14 +51,14 @@
 				<table cellspacing="1" cellpadding="10" summary=" " id="frame">
 
 					<tr class="fs12n">
-						<td class="left01b">ºï½ü</td>
-						<td class="left02b">±ÜÍ÷Æü»þ</td>
-						<td class="left03b">¾¦ÉÊÌ¾</td>
-						<td class="left04b">Ã±²Á</td>
+						<td class="left01b">å‰Šé™¤</td>
+						<td class="left02b">é–²è¦§æ—¥æ™‚</td>
+						<td class="left03b">å•†å“å</td>
+						<td class="left04b">å˜ä¾¡</td>
 					</tr>
 					<!--{section name=cnt loop=$arrForm}-->
 					<tr class="fs12n">
-						<td class="left01w"><a href="#" onclick="fnModeSubmit('delete','product_id','<!--{$arrForm[cnt].reading_product_id}-->');" >ºï½ü</a></td>
+						<td class="left01w"><a href="#" onclick="fnModeSubmit('delete','product_id','<!--{$arrForm[cnt].reading_product_id}-->');" >å‰Šé™¤</a></td>
 						<td class="left02w"><!--{$arrForm[cnt].update_date|sfDispDBDate}--></td>
 						<td class="left03w"><a href="<!--{$smarty.const.DETAIL_P_HTML}--><!--{$arrForm[cnt].reading_product_id}-->"><!--{$arrForm[cnt].name|escape}--></a></td>
 						<!--{assign var=price02_min value=$arrForm[cnt].price02_min}-->
@@ -67,9 +67,9 @@
 						<!--{if $price02_min == $price02_max}-->
 						<!--{$price02_min|sfPreTax:$arrSiteInfo.tax:$arrSiteInfo.tax_rule|number_format}-->
 						<!--{else}-->
-						<!--{$price02_min|sfPreTax:$arrSiteInfo.tax:$arrSiteInfo.tax_rule|number_format}-->¡¡<br/>¡Á<br/><!--{$price02_max|sfPreTax:$arrSiteInfo.tax:$arrSiteInfo.tax_rule|number_format}-->
+						<!--{$price02_min|sfPreTax:$arrSiteInfo.tax:$arrSiteInfo.tax_rule|number_format}-->ã€€<br/>ã€œ<br/><!--{$price02_max|sfPreTax:$arrSiteInfo.tax:$arrSiteInfo.tax_rule|number_format}-->
 						<!--{/if}-->
-						±ß</td>
+						å††</td>
 					</tr>
 					<!--{/section}-->
 					
@@ -79,9 +79,9 @@
 				<tr><td height="5"></td></tr>
 				<tr class="fs12">
 					<td align="center">
-					<!--¢§¥Ú¡¼¥¸¥Ê¥Ó-->
+					<!--â–¼ãƒšãƒ¼ã‚¸ãƒŠãƒ“-->
 					<!--{$tpl_strnavi}-->
-					<!--¢¥¥Ú¡¼¥¸¥Ê¥Ó-->
+					<!--â–²ãƒšãƒ¼ã‚¸ãƒŠãƒ“-->
 					</td>
 				</tr>
 				<tr><td height="10"></td></tr>
@@ -91,19 +91,19 @@
 				<table width="550" border="0" cellspacing="0" cellpadding="0" summary=" ">
 				<tr><td height="5"></td></tr>
 				<tr class="fs12">
-					<td align="center">±ÜÍ÷ÍúÎò¤Ï¤¢¤ê¤Þ¤»¤ó¡£</td>
+					<td align="center">é–²è¦§å±¥æ­´ã¯ã‚ã‚Šã¾ã›ã‚“ã€‚</td>
 				</tr>
 				<tr><td height="10"></td></tr>
 				</table>
 				<!--{/if}-->
 				
 				</td>
-				<!--¢¥RIGHT CONTENTS-->
+				<!--â–²RIGHT CONTENTS-->
 			</tr>
 		</table>
-		<!--¢¥MAIN CONTENTS-->
+		<!--â–²MAIN CONTENTS-->
 		</td>
 
 	</tr>
 </table>
-<!--¢¥CONTENTS-->
+<!--â–²CONTENTS-->

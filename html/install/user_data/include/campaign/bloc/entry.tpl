@@ -3,7 +3,7 @@
  *
  * http://www.lockon.co.jp/
  *}-->
-<!--╒╖╓ч╓ю╡Я╟Вепо©╓╣╓Л╓ф╓╓╓й╓╓╓╙╣рмм-->
+<!--Б√╪Ц│╬Ц│═Д╪ Е⌠║Г≥╩И▄╡Ц│∙Ц┌▄Ц│╕Ц│└Ц│╙Ц│└Ц│┼Е╝╒Ф╖≤-->
 <table width="640" border="0" cellspacing="0" cellpadding="0" summary=" ">
 	<tr>
 		<td align="center" bgcolor="#cccccc">
@@ -14,15 +14,15 @@
 				<table width="604" border="0" cellspacing="0" cellpadding="0" summary=" ">
 					<tr><td height="13"></td></tr>
 					<tr>
-						<td><img src="<!--{$smarty.const.URL_DIR}-->img/login/guest.gif" width="247" height="16" alt="╓ч╓ю╡Я╟Вепо©╓╣╓Л╓ф╓╓╓й╓╓╓╙╣рмм"></td>
+						<td><img src="<!--{$smarty.const.URL_DIR}-->img/login/guest.gif" width="247" height="16" alt="Ц│╬Ц│═Д╪ Е⌠║Г≥╩И▄╡Ц│∙Ц┌▄Ц│╕Ц│└Ц│╙Ц│└Ц│┼Е╝╒Ф╖≤"></td>
 					</tr>
 					<tr><td height="20"></td></tr>
 				</table>
 				
 				<table width="530" border="0" cellspacing="0" cellpadding="0" summary=" ">
 					<tr>
-						<td class="fs12">╓╙©╫╧Ч╓Р╧т╓╕╟ы╓к╓о║╒╡Я╟Вепо©╓╛и╛мв╓г╓╧║ё<br>
-						╡Я╟Вепо©╓Р╓╧╓К╔э╔©╔С╓Р╔╞╔Й╔ц╔╞╓╥╓ф╡Я╟Вепо©╓Р╧т╓ц╓ф╓╞╓ю╓╣╓╓║ё</td>
+						<td class="fs12">Ц│┼Г■ЁХ╬╪Ц┌▓Х║▄Ц│├Г┌╨Ц│╚Ц│╞Ц─│Д╪ Е⌠║Г≥╩И▄╡Ц│▄Е©┘Х╕│Ц│╖Ц│≥Ц─┌<br>
+						Д╪ Е⌠║Г≥╩И▄╡Ц┌▓Ц│≥Ц┌▀Ц┐°Ц┌©Ц┐ЁЦ┌▓Ц┌╞Ц┐╙Ц┐┐Ц┌╞Ц│≈Ц│╕Д╪ Е⌠║Г≥╩И▄╡Ц┌▓Х║▄Ц│ёЦ│╕Ц│▐Ц│═Ц│∙Ц│└Ц─┌</td>
 					</tr>
 					<tr><td height="10"></td></tr>
 					<tr>
@@ -31,7 +31,7 @@
 							<tr><td height="20"></td></tr>
 							<tr>
 								<td align="center">
-									<a href="<!--{$smarty.const.CAMPAIGN_URL}--><!--{$dir_name}-->/entry.php" onmouseover="chgImg('<!--{$smarty.const.URL_DIR}-->img/login/b_gotoentry_on.gif','b_gotoentry');" onmouseout="chgImg('<!--{$smarty.const.URL_DIR}-->img/login/b_gotoentry.gif','b_gotoentry');"><img src="<!--{$smarty.const.URL_DIR}-->img/login/b_gotoentry.gif" width="130" height="30" alt="╡Я╟Вепо©╓Р╓╧╓К" border="0" name="b_gotoentry"></a>║║
+									<a href="<!--{$smarty.const.CAMPAIGN_URL}--><!--{$dir_name}-->/entry.php" onmouseover="chgImg('<!--{$smarty.const.URL_DIR}-->img/login/b_gotoentry_on.gif','b_gotoentry');" onmouseout="chgImg('<!--{$smarty.const.URL_DIR}-->img/login/b_gotoentry.gif','b_gotoentry');"><img src="<!--{$smarty.const.URL_DIR}-->img/login/b_gotoentry.gif" width="130" height="30" alt="Д╪ Е⌠║Г≥╩И▄╡Ц┌▓Ц│≥Ц┌▀" border="0" name="b_gotoentry"></a>Ц──
 								</td>
 							</tr>
 							<tr><td height="20"></td></tr>
@@ -47,4 +47,4 @@
 		</td>
 	</tr>
 </table>
-<!--╒╔╓ч╓ю╡Я╟Вепо©╓╣╓Л╓ф╓╓╓й╓╓╓╙╣рмм-->
+<!--Б√╡Ц│╬Ц│═Д╪ Е⌠║Г≥╩И▄╡Ц│∙Ц┌▄Ц│╕Ц│└Ц│╙Ц│└Ц│┼Е╝╒Ф╖≤-->

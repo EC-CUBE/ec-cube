@@ -9,7 +9,7 @@ require_once("../require.php");
 class LC_Page{
 	function LC_Page(){
 		$this->tpl_mainpage = USER_PATH . 'templates/mypage/delivery.tpl';
-		$this->tpl_title = "MY¥Ú¡¼¥¸/¤ªÆÏ¤±ÀèÄÉ²ÃŽ¥ÊÑ¹¹";
+		$this->tpl_title = "MYãƒšãƒ¼ã‚¸/ãŠå±Šã‘å…ˆè¿½åŠ ï½¥å¤‰æ›´";
 		$this->tpl_navi = USER_PATH . 'templates/mypage/navi.tpl';
 		$this->tpl_mainno = 'mypage';
 		$this->tpl_mypageno = 'delivery';
@@ -25,26 +25,26 @@ $objCustomer = new SC_Customer();
 $objQuery = new SC_Query();
 $objConn = new SC_DBConn();
 
-//¥í¥°¥¤¥óÈ½Äê
+//ãƒ­ã‚°ã‚¤ãƒ³åˆ¤å®š
 if(!$objCustomer->isLoginSuccess()) {
 	sfDispSiteError(CUSTOMER_ERROR);
 }else {
-	//¥Þ¥¤¥Ú¡¼¥¸¥È¥Ã¥×¸ÜµÒ¾ðÊóÉ½¼¨ÍÑ
+	//ãƒžã‚¤ãƒšãƒ¼ã‚¸ãƒˆãƒƒãƒ—é¡§å®¢æƒ…å ±è¡¨ç¤ºç”¨
 	$objPage->CustomerName1 = $objCustomer->getvalue('name01');
 	$objPage->CustomerName2 = $objCustomer->getvalue('name02');
 	$objPage->CustomerPoint = $objCustomer->getvalue('point');
 }
 
 
-// ¥ì¥¤¥¢¥¦¥È¥Ç¥¶¥¤¥ó¤ò¼èÆÀ
+// ãƒ¬ã‚¤ã‚¢ã‚¦ãƒˆãƒ‡ã‚¶ã‚¤ãƒ³ã‚’å–å¾—
 $objPage = sfGetPageLayout($objPage, false, "mypage/index.php");
 
-//ºï½ü
+//å‰Šé™¤
 if($_POST['mode'] == 'delete') {
-	//ÉÔÀµ¥¢¥¯¥»¥¹È½Äê
+	//ä¸æ­£ã‚¢ã‚¯ã‚»ã‚¹åˆ¤å®š
 	$flag = $objQuery->count("dtb_other_deliv", "customer_id=? AND other_deliv_id=?", array($objCustomer->getValue('customer_id'), $_POST['other_deliv_id']));
 	if($flag > 0) {
-		//ºï½ü
+		//å‰Šé™¤
 		$objQuery->delete("dtb_other_deliv", "other_deliv_id=?", array($_POST['other_deliv_id']));
 	} else {
 		sfDispSiteError(CUSTOMER_ERROR);
@@ -58,18 +58,18 @@ $where = "customer_id=?";
 $arrval = array($objCustomer->getValue('customer_id'));
 $order = "other_deliv_id DESC";
 
-//¤ªÆÏ¤±ÀèÅÐÏ¿·ï¿ô¼èÆÀ
+//ãŠå±Šã‘å…ˆç™»éŒ²ä»¶æ•°å–å¾—
 $linemax = $objQuery->count($from, $where, $arrval);
 
 $objPage->tpl_linemax = $linemax;
 
-// É½¼¨½ç½ø
+// è¡¨ç¤ºé †åº
 $objQuery->setorder($order);
 
-//ÊÌ¤Î¤ªÆÏ¤±Àè¾ðÊóÉ½¼¨
+//åˆ¥ã®ãŠå±Šã‘å…ˆæƒ…å ±è¡¨ç¤º
 $objPage->arrOtherDeliv = $objQuery->select("*", $from, $where, $arrval);
 
-//¤ªÆÏ¤±ÀèÅÐÏ¿¿ô¤ò¥Æ¥ó¥×¥ì¡¼¥È¤ËÅÏ¤¹
+//ãŠå±Šã‘å…ˆç™»éŒ²æ•°ã‚’ãƒ†ãƒ³ãƒ—ãƒ¬ãƒ¼ãƒˆã«æ¸¡ã™
 $objPge->deliv_cnt = count($objPage->arrOtherDeliv);
 
 $objView->assignobj($objPage);

@@ -3,14 +3,14 @@
  *
  * http://www.lockon.co.jp/
  *}-->
-<!--¢§CONTENTS-->
+<!--â–¼CONTENTS-->
 <table width="" border="0" cellspacing="0" cellpadding="0" summary=" ">
 	<tr valign="top">
 		<td align="right" bgcolor="#ffffff">
-		<!--¢§MAIN ONTENTS-->
+		<!--â–¼MAIN ONTENTS-->
 		<table width="" border="0" cellspacing="0" cellpadding="0" summary=" ">
 			<tr>
-				<td><img src="<!--{$smarty.const.URL_DIR}-->img/entry/title.jpg" width="580" height="40" alt="²ñ°÷ÅĞÏ¿"></td>
+				<td><img src="<!--{$smarty.const.URL_DIR}-->img/entry/title.jpg" width="580" height="40" alt="ä¼šå“¡ç™»éŒ²"></td>
 			</tr>
 			<tr><td height="20"></td></tr>
 			<tr>
@@ -22,34 +22,34 @@
 							<tr><td height="5"></td></tr>
 							<tr>
 								<td align="center" bgcolor="#ffffff">
-								<!--ÅĞÏ¿´°Î»¤ÎÊ¸¾Ï¤³¤³¤«¤é-->
+								<!--ç™»éŒ²å®Œäº†ã®æ–‡ç« ã“ã“ã‹ã‚‰-->
 								<table width="470" border="0" cellspacing="0" cellpadding="0" summary=" ">
 									<tr><td height="25"></td></tr>
 									<tr>
-										<td class="fs14"><span class="redst">ËÜÅĞÏ¿¤¬´°Î»¤¤¤¿¤·¤Ş¤·¤¿¡£<br>
-										¤½¤ì¤Ç¤Ï¥·¥ç¥Ã¥Ô¥ó¥°¤ò¤ª³Ú¤·¤ß¤¯¤À¤µ¤¤¡£</span></td>
+										<td class="fs14"><span class="redst">æœ¬ç™»éŒ²ãŒå®Œäº†ã„ãŸã—ã¾ã—ãŸã€‚<br>
+										ãã‚Œã§ã¯ã‚·ãƒ§ãƒƒãƒ”ãƒ³ã‚°ã‚’ãŠæ¥½ã—ã¿ãã ã•ã„ã€‚</span></td>
 									</tr>
 									<tr><td height="15"></td></tr>
 									<tr>
-										<td class="fs12">º£¸å¤È¤â¤´°¦¸Ü»ò¤ê¤Ş¤¹¤è¤¦¤è¤í¤·¤¯¤ª´ê¤¤¿½¤·¾å¤²¤Ş¤¹¡£</td>
+										<td class="fs12">ä»Šå¾Œã¨ã‚‚ã”æ„›é¡§è³œã‚Šã¾ã™ã‚ˆã†ã‚ˆã‚ã—ããŠé¡˜ã„ç”³ã—ä¸Šã’ã¾ã™ã€‚</td>
 									</tr>
 									<tr><td height="20"></td></tr>
 									<tr>
 										<td class="fs12"><!--{$arrSiteInfo.company_name|escape}--><br>
-									TEL¡§<!--{$arrSiteInfo.tel01}-->-<!--{$arrSiteInfo.tel02}-->-<!--{$arrSiteInfo.tel03}--> <!--{if $arrSiteInfo.business_hour != ""}-->¡Ê¼õÉÕ»ş´Ö/<!--{$arrSiteInfo.business_hour}-->¡Ë<!--{/if}--><br>
-									E-mail¡§<a href="mailto:<!--{$arrSiteInfo.email02|escape}-->"><!--{$arrSiteInfo.email02|escape}--></a></td>
+									TELï¼š<!--{$arrSiteInfo.tel01}-->-<!--{$arrSiteInfo.tel02}-->-<!--{$arrSiteInfo.tel03}--> <!--{if $arrSiteInfo.business_hour != ""}-->ï¼ˆå—ä»˜æ™‚é–“/<!--{$arrSiteInfo.business_hour}-->ï¼‰<!--{/if}--><br>
+									E-mailï¼š<a href="mailto:<!--{$arrSiteInfo.email02|escape}-->"><!--{$arrSiteInfo.email02|escape}--></a></td>
 									</tr>
 									<tr><td height="20"></td></tr>
 									<tr align="center">
 										<!--{if $dir_name != ""}-->
-										<td><a href="<!--{$smarty.const.CAMPAIGN_URL}--><!--{$dir_name}-->/index.php" onmouseover="chgImg('<!--{$smarty.const.URL_DIR}-->img/common/b_toppage_on.gif','b_toppage');" onmouseout="chgImg('<!--{$smarty.const.URL_DIR}-->img/common/b_toppage.gif','b_toppage');"><img src="<!--{$smarty.const.URL_DIR}-->img/common/b_toppage.gif" width="150" height="30" alt="¥È¥Ã¥×¥Ú¡¼¥¸¤Ø" border="0" name="b_toppage"></a></td>
+										<td><a href="<!--{$smarty.const.CAMPAIGN_URL}--><!--{$dir_name}-->/index.php" onmouseover="chgImg('<!--{$smarty.const.URL_DIR}-->img/common/b_toppage_on.gif','b_toppage');" onmouseout="chgImg('<!--{$smarty.const.URL_DIR}-->img/common/b_toppage.gif','b_toppage');"><img src="<!--{$smarty.const.URL_DIR}-->img/common/b_toppage.gif" width="150" height="30" alt="ãƒˆãƒƒãƒ—ãƒšãƒ¼ã‚¸ã¸" border="0" name="b_toppage"></a></td>
 										<!--{else}-->
-										<td><a href="<!--{$smarty.const.URL_DIR}-->index.php" onmouseover="chgImg('<!--{$smarty.const.URL_DIR}-->img/common/b_toppage_on.gif','b_toppage');" onmouseout="chgImg('<!--{$smarty.const.URL_DIR}-->img/common/b_toppage.gif','b_toppage');"><img src="<!--{$smarty.const.URL_DIR}-->img/common/b_toppage.gif" width="150" height="30" alt="¥È¥Ã¥×¥Ú¡¼¥¸¤Ø" border="0" name="b_toppage"></a></td>
+										<td><a href="<!--{$smarty.const.URL_DIR}-->index.php" onmouseover="chgImg('<!--{$smarty.const.URL_DIR}-->img/common/b_toppage_on.gif','b_toppage');" onmouseout="chgImg('<!--{$smarty.const.URL_DIR}-->img/common/b_toppage.gif','b_toppage');"><img src="<!--{$smarty.const.URL_DIR}-->img/common/b_toppage.gif" width="150" height="30" alt="ãƒˆãƒƒãƒ—ãƒšãƒ¼ã‚¸ã¸" border="0" name="b_toppage"></a></td>
 										<!--{/if}-->
 									</tr>
 									<tr><td height="25"></td></tr>
 								</table>
-								<!--ÅĞÏ¿´°Î»¤ÎÊ¸¾Ï¤³¤³¤Ş¤Ç-->
+								<!--ç™»éŒ²å®Œäº†ã®æ–‡ç« ã“ã“ã¾ã§-->
 								</td>
 							</tr>
 							<tr><td height="5"></td></tr>
@@ -60,8 +60,8 @@
 				</td>
 			</tr>
 		</table>
-		<!--¢¥MAIN ONTENTS-->
+		<!--â–²MAIN ONTENTS-->
 		</td>
 	</tr>
 </table>
-<!--¢¥CONTENTS-->
+<!--â–²CONTENTS-->

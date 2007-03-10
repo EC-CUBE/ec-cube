@@ -23,7 +23,7 @@ class LC_Page {
 		$this->tpl_mainno = 'products';
 		$this->tpl_subno = 'review';
 		$this->tpl_pager = DATA_PATH . 'Smarty/templates/admin/pager.tpl';
-		$this->tpl_subtitle = '¥ì¥Ó¥å¡¼´ÉÍý';
+		$this->tpl_subtitle = 'ãƒ¬ãƒ“ãƒ¥ãƒ¼ç®¡ç†';
 	}
 }
 
@@ -33,28 +33,28 @@ $objSess = new SC_Session();
 $objDate = new SC_Date();
 $objQuery = new SC_Query();
 
-// ÅÐÏ¿¡¦¹¹¿·¸¡º÷³«»ÏÇ¯
+// ç™»éŒ²ãƒ»æ›´æ–°æ¤œç´¢é–‹å§‹å¹´
 $objDate->setStartYear(RELEASE_YEAR);
 $objDate->setEndYear(DATE("Y"));
 $objPage->arrStartYear = $objDate->getYear();
 $objPage->arrStartMonth = $objDate->getMonth();
 $objPage->arrStartDay = $objDate->getDay();
-// ÅÐÏ¿¡¦¹¹¿·¸¡º÷½ªÎ»Ç¯
+// ç™»éŒ²ãƒ»æ›´æ–°æ¤œç´¢çµ‚äº†å¹´
 $objDate->setStartYear(RELEASE_YEAR);
 $objDate->setEndYear(DATE("Y"));
 $objPage->arrEndYear = $objDate->getYear();
 $objPage->arrEndMonth = $objDate->getMonth();
 $objPage->arrEndDay = $objDate->getDay();
 
-// Ç§¾Ú²ÄÈÝ¤ÎÈ½Äê
+// èªè¨¼å¯å¦ã®åˆ¤å®š
 sfIsSuccess($objSess);
 
-//¥ì¥Ó¥å¡¼¾ðÊó¤Î¥«¥é¥à¤Î¼èÆÀ
+//ãƒ¬ãƒ“ãƒ¥ãƒ¼æƒ…å ±ã®ã‚«ãƒ©ãƒ ã®å–å¾—
 $select="review_id, A.product_id, reviewer_name, sex, recommend_level, ";
 $select.="reviewer_url, title, comment, A.status, A.create_date, A.update_date, name";
 $from = "dtb_review AS A LEFT JOIN dtb_products AS B ON A.product_id = B.product_id ";
 
-	// ¸¡º÷¥ï¡¼¥É¤Î°ú¤­·Ñ¤®
+	// æ¤œç´¢ãƒ¯ãƒ¼ãƒ‰ã®å¼•ãç¶™ãŽ
 	foreach ($_POST as $key => $val) {
 		if (ereg("^search_", $key)) {
 			switch ($key){
@@ -73,19 +73,19 @@ $from = "dtb_review AS A LEFT JOIN dtb_products AS B ON A.product_id = B.product
 	}
 
 if ($_POST['mode'] == "delete"){
-	//¥ì¥Ó¥å¡¼¤Îºï½ü
+	//ãƒ¬ãƒ“ãƒ¥ãƒ¼ã®å‰Šé™¤
 	$objQuery->exec("UPDATE dtb_review SET del_flg=1 WHERE review_id=?", array($_POST['review_id']));
 }
 	
 if ($_POST['mode'] == 'search' || $_POST['mode'] == 'csv' || $_POST['mode'] == 'delete'){
 	
-	//ºï½ü¤µ¤ì¤Æ¤¤¤Ê¤¤¾¦ÉÊ¤ò¸¡º÷
+	//å‰Šé™¤ã•ã‚Œã¦ã„ãªã„å•†å“ã‚’æ¤œç´¢
 	$where="A.del_flg = 0 AND B.del_flg = 0";
 	$objPage->arrForm = $_POST;
 	if (!is_array($_POST['search_sex'])){
 		$objPage->arrForm['search_sex'] = split("-", $_POST['search_sex']);
 	}
-	//¥¨¥é¡¼¥Á¥§¥Ã¥¯
+	//ã‚¨ãƒ©ãƒ¼ãƒã‚§ãƒƒã‚¯
 	$objPage->arrErr = lfCheckError();
 
 	if (!$objPage->arrErr){
@@ -100,35 +100,35 @@ if ($_POST['mode'] == 'search' || $_POST['mode'] == 'csv' || $_POST['mode'] == '
 			switch ($key){
 			case 'search_reviewer_name':
 				$val = ereg_replace(" ", "%", $val);
-				$val = ereg_replace("¡¡", "%", $val);
+				$val = ereg_replace("ã€€", "%", $val);
 				$where.= " AND reviewer_name ILIKE ? ";
 				$arrval[] = "%$val%";
 				break;
 				
 			case 'search_reviewer_url':
 				$val = ereg_replace(" ", "%", $val);
-				$val = ereg_replace("¡¡", "%", $val);
+				$val = ereg_replace("ã€€", "%", $val);
 				$where.= " AND reviewer_url ILIKE ? ";
 				$arrval[] = "%$val%";
 				break;
 				
 			case 'search_name':
 				$val = ereg_replace(" ", "%", $val);
-				$val = ereg_replace("¡¡", "%", $val);
+				$val = ereg_replace("ã€€", "%", $val);
 				$where.= " AND name ILIKE ? ";
 				$arrval[] = "%$val%";
 				break;
 				
 			case 'search_product_code':
 				$val = ereg_replace(" ", "%", $val);
-				$val = ereg_replace("¡¡", "%", $val);
+				$val = ereg_replace("ã€€", "%", $val);
 				$where.= " AND A.product_id IN (SELECT product_id FROM dtb_products_class WHERE product_code ILIKE ? )";
 				$arrval[] = "%$val%";
 				break;
 				
 			case 'search_sex':
 				$tmp_where = "";
-				//$val=ÇÛÎó¤ÎÃæ¿È,$element=³Æ¥­¡¼¤ÎÃÍ(1,2)
+				//$val=é…åˆ—ã®ä¸­èº«,$element=å„ã‚­ãƒ¼ã®å€¤(1,2)
 				if (is_array($val)){
 					foreach($val as $element) {
 						if($element != "") {
@@ -178,7 +178,7 @@ if ($_POST['mode'] == 'search' || $_POST['mode'] == 'csv' || $_POST['mode'] == '
 	
 	$order = "A.create_date DESC";
 	
-	// ¥Ú¡¼¥¸Á÷¤ê¤Î½èÍý
+	// ãƒšãƒ¼ã‚¸é€ã‚Šã®å‡¦ç†
 	if(is_numeric($_POST['search_page_max'])) {	
 		$page_max = $_POST['search_page_max'];
 	} else {
@@ -188,30 +188,30 @@ if ($_POST['mode'] == 'search' || $_POST['mode'] == 'csv' || $_POST['mode'] == '
 	$linemax = $objQuery->count($from, $where, $arrval);
 	$objPage->tpl_linemax = $linemax;
 	
-	// ¥Ú¡¼¥¸Á÷¤ê¤Î¼èÆÀ
+	// ãƒšãƒ¼ã‚¸é€ã‚Šã®å–å¾—
 	$objNavi = new SC_PageNavi($_POST['search_pageno'], $linemax, $page_max, "fnNaviSearchPage", NAVI_PMAX);
 	$objPage->arrPagenavi = $objNavi->arrPagenavi;
 	$startno = $objNavi->start_row;
 
 	$objPage->tpl_pageno = $_POST['search_pageno'];
 	
-	// ¼èÆÀÈÏ°Ï¤Î»ØÄê(³«»Ï¹ÔÈÖ¹æ¡¢¹Ô¿ô¤Î¥»¥Ã¥È)
+	// å–å¾—ç¯„å›²ã®æŒ‡å®š(é–‹å§‹è¡Œç•ªå·ã€è¡Œæ•°ã®ã‚»ãƒƒãƒˆ)
 	$objQuery->setlimitoffset($page_max, $startno);
 
-	// É½¼¨½ç½ø
+	// è¡¨ç¤ºé †åº
 	$objQuery->setorder($order);
 	
-	//¸¡º÷·ë²Ì¤Î¼èÆÀ
+	//æ¤œç´¢çµæžœã®å–å¾—
 	$objPage->arrReview = $objQuery->select($select, $from, $where, $arrval);
 	
-	//CSV¥À¥¦¥ó¥í¡¼¥É
+	//CSVãƒ€ã‚¦ãƒ³ãƒ­ãƒ¼ãƒ‰
 	if ($_POST['mode'] == 'csv'){
-		// ¥ª¥×¥·¥ç¥ó¤Î»ØÄê
+		// ã‚ªãƒ—ã‚·ãƒ§ãƒ³ã®æŒ‡å®š
 		$option = "ORDER BY review_id";
-		// CSV½ÐÎÏ¥¿¥¤¥È¥ë¹Ô¤ÎºîÀ®
+		// CSVå‡ºåŠ›ã‚¿ã‚¤ãƒˆãƒ«è¡Œã®ä½œæˆ
 		$head = sfGetCSVList($arrREVIEW_CVSTITLE);
 		$data = lfGetReviewCSV($where, '', $arrval);
-		// CSV¤òÁ÷¿®¤¹¤ë¡£
+		// CSVã‚’é€ä¿¡ã™ã‚‹ã€‚
 		sfCSVDownload($head.$data);
 		exit;
 	}	
@@ -222,21 +222,21 @@ $objView->display(MAIN_FRAME);
 
 //-------------------------------------------------------------------------------------
 
-// ÆþÎÏ¥¨¥é¡¼¥Á¥§¥Ã¥¯
+// å…¥åŠ›ã‚¨ãƒ©ãƒ¼ãƒã‚§ãƒƒã‚¯
 function lfCheckError() {
 	$objErr = new SC_CheckError();
 	switch ($_POST['mode']){
 		case 'search':
-		$objErr->doFunc(array("Åê¹Æ¼Ô", "search_startyear", "search_startmonth", "search_startday"), array("CHECK_DATE"));
-		$objErr->doFunc(array("³«»ÏÆü", "search_startyear", "search_startmonth", "search_startday"), array("CHECK_DATE"));
-		$objErr->doFunc(array("½ªÎ»Æü", "search_endyear", "search_endmonth", "search_endday"), array("CHECK_DATE"));
-		$objErr->doFunc(array("³«»ÏÆü", "½ªÎ»Æü", "search_startyear", "search_startmonth", "search_startday", "search_endyear", "search_endmonth", "search_endday"), array("CHECK_SET_TERM"));
+		$objErr->doFunc(array("æŠ•ç¨¿è€…", "search_startyear", "search_startmonth", "search_startday"), array("CHECK_DATE"));
+		$objErr->doFunc(array("é–‹å§‹æ—¥", "search_startyear", "search_startmonth", "search_startday"), array("CHECK_DATE"));
+		$objErr->doFunc(array("çµ‚äº†æ—¥", "search_endyear", "search_endmonth", "search_endday"), array("CHECK_DATE"));
+		$objErr->doFunc(array("é–‹å§‹æ—¥", "çµ‚äº†æ—¥", "search_startyear", "search_startmonth", "search_startday", "search_endyear", "search_endmonth", "search_endday"), array("CHECK_SET_TERM"));
 		break;
 		
 		case 'complete':
-		$objErr->doFunc(array("¤ª¤¹¤¹¤á¥ì¥Ù¥ë", "recommend_level"), array("SELECT_CHECK"));
-		$objErr->doFunc(array("¥¿¥¤¥È¥ë", "title", STEXT_LEN), array("EXIST_CHECK", "SPTAB_CHECK", "MAX_LENGTH_CHECK"));
-		$objErr->doFunc(array("¥³¥á¥ó¥È", "comment", LTEXT_LEN), array("EXIST_CHECK", "SPTAB_CHECK", "MAX_LENGTH_CHECK"));
+		$objErr->doFunc(array("ãŠã™ã™ã‚ãƒ¬ãƒ™ãƒ«", "recommend_level"), array("SELECT_CHECK"));
+		$objErr->doFunc(array("ã‚¿ã‚¤ãƒˆãƒ«", "title", STEXT_LEN), array("EXIST_CHECK", "SPTAB_CHECK", "MAX_LENGTH_CHECK"));
+		$objErr->doFunc(array("ã‚³ãƒ¡ãƒ³ãƒˆ", "comment", LTEXT_LEN), array("EXIST_CHECK", "SPTAB_CHECK", "MAX_LENGTH_CHECK"));
 		break;
 	}
 	return $objErr->arrErr;

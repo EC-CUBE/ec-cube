@@ -5,7 +5,7 @@
  */
 @charset "<!--{$smarty.const.CHAR_CODE}-->";
 
-/***±¶•≥•Û•∆•Û•ƒ***/
+/***Âè≥„Ç≥„É≥„ÉÜ„É≥„ÉÑ***/
 #container #right #maintitle{
 border: 0;
 margin: 0 0 15px 0;
@@ -20,7 +20,7 @@ padding: 0;
 width: 570px;
 }
 
-/*•∆°º•÷•Î*/
+/*„ÉÜ„Éº„Éñ„É´*/
 #container #right #frame{
 border: 0;
 margin: 0;
@@ -39,7 +39,7 @@ background: #fff;
 width: 357px;
 }
 
-/*•‹•ø•Û*/
+/*„Éú„Çø„É≥*/
 #container #right #button{
 border: 0;
 margin: 30px 0 15px 0;

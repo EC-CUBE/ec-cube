@@ -38,30 +38,30 @@ function fnTargetSelf(){
 	document.form1.target = "_self";
 }
 
-// ΩÈ¥¸ΩËÕ˝
+// ÂàùÊúüÂá¶ÁêÜ
 function init () {
     document.body.ondrag = function () { return false; };
     document.body.onselectstart = function () { return false; };
     
-    // •¶•£•Û•…•¶•µ•§•∫§ÚºË∆¿
+    // „Ç¶„Ç£„É≥„Éâ„Ç¶„Çµ„Ç§„Ç∫„ÇíÂèñÂæó
 	scrX = GetWindowSize("width");
 	scrY = GetWindowSize("height");    
     
-	// •¶•£•Û•…•¶•µ•§•∫ —ππ•§•Ÿ•Û•»§À¥ÿœ¢…’§±
+	// „Ç¶„Ç£„É≥„Éâ„Ç¶„Çµ„Ç§„Ç∫Â§âÊõ¥„Ç§„Éô„É≥„Éà„Å´Èñ¢ÈÄ£‰ªò„Åë
     window.onresize = fnMoveObject;
 
-    // div•ø•∞§ÚºË∆¿
+    // div„Çø„Ç∞„ÇíÂèñÂæó
     all_elms = document.getElementsByTagName ( 'div' );
     
-	// td•ø•∞§ÚºË∆¿
+	// td„Çø„Ç∞„ÇíÂèñÂæó
 	all_td = document.getElementsByTagName ( 'td' );
 
-	// «€ŒÛ∫Ó¿Æ
+	// ÈÖçÂàó‰ΩúÊàê
 	fnCreateArr(0);
 	
 	// alerttest(0);
 	
-    //  ¬§”¬ÿ§®
+    // ‰∏¶„Å≥Êõø„Åà
 	fnMoveObject();
 
 	<!--{$complate_msg}-->
@@ -71,7 +71,7 @@ function init () {
 
 <script type="text/javascript" src="<!--{$smarty.const.URL_DIR}-->js/layout_design.js"></script>
 
-<!--°˙°˙•·•§•Û•≥•Û•∆•Û•ƒ°˙°˙-->
+<!--‚òÖ‚òÖ„É°„Ç§„É≥„Ç≥„É≥„ÉÜ„É≥„ÉÑ‚òÖ‚òÖ-->
 <table width="878" border="0" cellspacing="0" cellpadding="0" summary=" ">
 <form name="form1" id="form1" method="post" action="<!--{$smarty.server.PHP_SELF|escape}-->" >
 <input type="hidden" name="mode" value="">
@@ -79,13 +79,13 @@ function init () {
 <input type="hidden" name="bloc_cnt" value="<!--{$bloc_cnt}-->">
 	<tr valign="top">
 		<td background="<!--{$smarty.const.URL_DIR}-->img/contents/navi_bg.gif" height="402">
-			<!--¢ßSUB NAVI-->
+			<!--‚ñºSUB NAVI-->
 			<!--{include file=$tpl_subnavi}-->
-			<!--¢•SUB NAVI-->
+			<!--‚ñ≤SUB NAVI-->
 		</td>
 		<td class="mainbg" >
 		<table width="737" border="0" cellspacing="0" cellpadding="0" summary=" ">
-			<!--•·•§•Û•®•Í•¢-->
+			<!--„É°„Ç§„É≥„Ç®„É™„Ç¢-->
 			<tr>
 				<td align="center">
 				<table width="706" border="0" cellspacing="0" cellpadding="0" summary=" ">
@@ -98,14 +98,14 @@ function init () {
 						<td background="<!--{$smarty.const.URL_DIR}-->img/contents/main_left.jpg"><img src="<!--{$smarty.const.URL_DIR}-->img/common/_.gif" width="14" height="1" alt=""></td>
 						<td bgcolor="#cccccc">
 
-						<!--≈–œø•∆°º•÷•Î§≥§≥§´§È-->
+						<!--ÁôªÈå≤„ÉÜ„Éº„Éñ„É´„Åì„Åì„Åã„Çâ-->
 						<table width="678" border="0" cellspacing="0" cellpadding="0" summary=" ">
 							<tr>
 								<td colspan="3"><img src="<!--{$smarty.const.URL_DIR}-->img/contents/contents_title_top.gif" width="678" height="7" alt=""></td>
 							</tr>
 							<tr>
 								<td background="<!--{$smarty.const.URL_DIR}-->img/contents/contents_title_left_bg.gif"><img src="<!--{$smarty.const.URL_DIR}-->img/contents/contents_title_left.gif" width="22" height="12" alt=""></td>
-								<td bgcolor="#636469" width="638" class="fs14n"><span class="white"><!--•≥•Û•∆•Û•ƒ•ø•§•»•Î-->•Ï•§•¢•¶•» ‘Ω∏</span></td>
+								<td bgcolor="#636469" width="638" class="fs14n"><span class="white"><!--„Ç≥„É≥„ÉÜ„É≥„ÉÑ„Çø„Ç§„Éà„É´-->„É¨„Ç§„Ç¢„Ç¶„ÉàÁ∑®ÈõÜ</span></td>
 								<td background="<!--{$smarty.const.URL_DIR}-->img/contents/contents_title_right_bg.gif"><img src="<!--{$smarty.const.URL_DIR}-->img/common/_.gif" width="18" height="1" alt=""></td>
 							</tr>
 							<tr>
@@ -116,23 +116,23 @@ function init () {
 							</tr>
 						</table>
 
-						<!--¢ß•Ï•§•¢•¶•» ‘Ω∏°°§≥§≥§´§È-->
+						<!--‚ñº„É¨„Ç§„Ç¢„Ç¶„ÉàÁ∑®ÈõÜ„ÄÄ„Åì„Åì„Åã„Çâ-->
 						<table width="678" border="0" cellspacing="1" cellpadding="8" summary=" ">
 							<tr class="fs12n">
-								<td bgcolor="#f2f1ec" align="center"><strong>•Ï•§•¢•¶•» ‘Ω∏</strong></td>
-								<td bgcolor="#f2f1ec" align="center"><strong>Ã§ª»Õ—•÷•Ì•√•Ø</strong></td>
+								<td bgcolor="#f2f1ec" align="center"><strong>„É¨„Ç§„Ç¢„Ç¶„ÉàÁ∑®ÈõÜ</strong></td>
+								<td bgcolor="#f2f1ec" align="center"><strong>Êú™‰ΩøÁî®„Éñ„É≠„ÉÉ„ÇØ</strong></td>
 							</tr>
 							<tr>
-								<!--¢ß•Ï•§•¢•¶•»°°§≥§≥§´§È-->
+								<!--‚ñº„É¨„Ç§„Ç¢„Ç¶„Éà„ÄÄ„Åì„Åì„Åã„Çâ-->
 								<td bgcolor="#ffffff" align="center" valign = 'top'>
 									<table width="450" border=0 cellspacing="1" cellpadding="" summary=" " bgcolor="ffffff">
 										<tr class="fs12n"><td bgcolor="#ffffff" height=5px colspan=3></td></tr>
 										<tr class="fs12n" height = 50>
-											<td bgcolor="#cccccc" align="center" colspan=3> •ÿ•√•¿°º…Ù </td>
+											<td bgcolor="#cccccc" align="center" colspan=3> „Éò„ÉÉ„ÉÄ„ÉºÈÉ® </td>
 										</tr>
 										<tr class="fs12n"><td bgcolor="#ffffff" height=5px colspan=3></td></tr>
 										<tr>
-											<!-- °˙°˘°˙ ∫∏• •”•∆°º•÷•Î °˘°˙°˘ -->
+											<!-- ‚òÖ‚òÜ‚òÖ Â∑¶„Éä„Éì„ÉÜ„Éº„Éñ„É´ ‚òÜ‚òÖ‚òÜ -->
 											<td bgcolor="#ffffff" align="center" valign = 'top'>
 												<table border="0" height="400" cellspacing="1" cellpadding="" summary=" " bgcolor="#cccccc">
 													<tr class="fs12n">
@@ -142,10 +142,10 @@ function init () {
 													</tr>
 												</table>
 											</td>
-											<!-- °˙°˘°˙ ∫∏• •”•∆°º•÷•Î °˘°˙°˘ -->
+											<!-- ‚òÖ‚òÜ‚òÖ Â∑¶„Éä„Éì„ÉÜ„Éº„Éñ„É´ ‚òÜ‚òÖ‚òÜ -->
 											<td bgcolor="#ffffff" align="center" valign = 'top'>
 												<table border="0" cellspacing="1" cellpadding="" summary=" " bgcolor="#cccccc">
-													<!-- °˙°˘°˙ •·•§•ÛæÂ…Ù•∆°º•÷•Î °˘°˙°˘ -->
+													<!-- ‚òÖ‚òÜ‚òÖ „É°„Ç§„É≥‰∏äÈÉ®„ÉÜ„Éº„Éñ„É´ ‚òÜ‚òÖ‚òÜ -->
 													<thead>
 													<tr class="fs12n">
 														<td bgcolor="#ffffff" valign="top" name='MainHead' height="100" id="layout">
@@ -153,13 +153,13 @@ function init () {
 														</td>
 													</tr>
 													</thead>
-													<!-- °˙°˘°˙ •·•§•ÛæÂ…Ù•∆°º•÷•Î °˘°˙°˘ -->
-													<!-- °˙°˘°˙ •·•§•Û °˘°˙°˘ -->
+													<!-- ‚òÖ‚òÜ‚òÖ „É°„Ç§„É≥‰∏äÈÉ®„ÉÜ„Éº„Éñ„É´ ‚òÜ‚òÖ‚òÜ -->
+													<!-- ‚òÖ‚òÜ‚òÖ „É°„Ç§„É≥ ‚òÜ‚òÖ‚òÜ -->
 													<tr class="fs12n">
-														<td height=198 align="center" name='Main'>•·•§•Û</td>
+														<td height=198 align="center" name='Main'>„É°„Ç§„É≥</td>
 													</tr>
-													<!-- °˙°˘°˙ •·•§•Û °˘°˙°˘ -->
-													<!-- °˙°˘°˙ •·•§•Û≤º…Ù•∆°º•÷•Î °˘°˙°˘ -->
+													<!-- ‚òÖ‚òÜ‚òÖ „É°„Ç§„É≥ ‚òÜ‚òÖ‚òÜ -->
+													<!-- ‚òÖ‚òÜ‚òÖ „É°„Ç§„É≥‰∏ãÈÉ®„ÉÜ„Éº„Éñ„É´ ‚òÜ‚òÖ‚òÜ -->
 													<tfoot>
 													<tr class="fs12n">
 														<td bgcolor="#ffffff" valign="top" name='MainFoot' height="100" id="layout">
@@ -167,10 +167,10 @@ function init () {
 														</td>
 													</tr>
 													</tfoot>
-													<!-- °˙°˘°˙ •·•§•Û≤º…Ù•∆°º•÷•Î °˘°˙°˘ -->
+													<!-- ‚òÖ‚òÜ‚òÖ „É°„Ç§„É≥‰∏ãÈÉ®„ÉÜ„Éº„Éñ„É´ ‚òÜ‚òÖ‚òÜ -->
 												</table>
 											</td>
-											<!-- °˙°˘°˙ ±¶• •”•∆°º•÷•Î °˘°˙°˘ -->
+											<!-- ‚òÖ‚òÜ‚òÖ Âè≥„Éä„Éì„ÉÜ„Éº„Éñ„É´ ‚òÜ‚òÖ‚òÜ -->
 											<td bgcolor="#ffffff" align="center" valign = 'top'>
 												<table border="0" cellspacing="1" cellpadding="" summary=" " bgcolor="#cccccc">
 													<tr class="fs12n">
@@ -180,16 +180,16 @@ function init () {
 													</tr>
 												</table>
 											</td>
-											<!-- °˙°˘°˙ ±¶• •”•∆°º•÷•Î °˘°˙°˘ -->
+											<!-- ‚òÖ‚òÜ‚òÖ Âè≥„Éä„Éì„ÉÜ„Éº„Éñ„É´ ‚òÜ‚òÖ‚òÜ -->
 										</tr>
 										<tr class="fs12n"><td bgcolor="#ffffff" height=5px colspan=3></td></tr>
-										<tr class="fs12n" height=50><td bgcolor="#cccccc" align="center" colspan=3>•’•√•ø°º…Ù</td></tr>
+										<tr class="fs12n" height=50><td bgcolor="#cccccc" align="center" colspan=3>„Éï„ÉÉ„Çø„ÉºÈÉ®</td></tr>
 										<tr class="fs12n"><td bgcolor="#ffffff" height=5px colspan=3></td></tr>
 									</table>
 								</td>
-								<!--¢••Ï•§•¢•¶•»°°§≥§≥§ﬁ§«-->
+								<!--‚ñ≤„É¨„Ç§„Ç¢„Ç¶„Éà„ÄÄ„Åì„Åì„Åæ„Åß-->
 				
-								<!--¢ßÃ§ª»Õ—•÷•Ì•√•Ø°°§≥§≥§´§È-->
+								<!--‚ñºÊú™‰ΩøÁî®„Éñ„É≠„ÉÉ„ÇØ„ÄÄ„Åì„Åì„Åã„Çâ-->
 								<td bgcolor="#ffffff" align="center" valign = 'top'>
 									<table width="140" border="0" cellspacing="" cellpadding="" summary=" " bgcolor="#ffffff">
 										<tr class="fs12n">
@@ -199,30 +199,30 @@ function init () {
 										</tr>
 										<tr class="fs12n">
 											<td bgcolor="#ffffff" align="center" height="30">
-												<input type='button' value='ø∑µ¨•÷•Ì•√•Ø∫Ó¿Æ' name='subm' onclick="fnTargetSelf(); fnFormModeSubmit('form1','new_bloc','','');"  />
+												<input type='button' value='Êñ∞Ë¶è„Éñ„É≠„ÉÉ„ÇØ‰ΩúÊàê' name='subm' onclick="fnTargetSelf(); fnFormModeSubmit('form1','new_bloc','','');"  />
 											</td>
 										</tr>
 									</table>
 								</td>
-								<!--¢•Ã§ª»Õ—•÷•Ì•√•Ø°°§≥§≥§ﬁ§«-->
+								<!--‚ñ≤Êú™‰ΩøÁî®„Éñ„É≠„ÉÉ„ÇØ„ÄÄ„Åì„Åì„Åæ„Åß-->
 							</tr>
 							<tr class="fs12n">
 								<td bgcolor="#f2f1ec" align="center" colspan=2>
-									<input type='button' value=' ›¬∏' name='subm' onclick="fnTargetSelf(); fnFormModeSubmit('form1','confirm','','');"  />
-									<input type='button' value='•◊•Ï•”•Â°º' name='preview' onclick="doPreview();" <!--{if $page_id == "0" or $exists_page == "0" }-->DISABLED<!--{/if}--> />
+									<input type='button' value='‰øùÂ≠ò' name='subm' onclick="fnTargetSelf(); fnFormModeSubmit('form1','confirm','','');"  />
+									<input type='button' value='„Éó„É¨„Éì„É•„Éº' name='preview' onclick="doPreview();" <!--{if $page_id == "0" or $exists_page == "0" }-->DISABLED<!--{/if}--> />
 								</td>
 							</tr>
 						</table>
-						<!--¢••Ï•§•¢•¶•» ‘Ω∏°°§≥§≥§ﬁ§«-->
+						<!--‚ñ≤„É¨„Ç§„Ç¢„Ç¶„ÉàÁ∑®ÈõÜ„ÄÄ„Åì„Åì„Åæ„Åß-->
 						
 						<table width="678" border="0" cellspacing="0" cellpadding="0" summary=" ">
 							<tr><td colspan="3"><img src="<!--{$smarty.const.URL_DIR}-->img/contents/main_bar.jpg" width="678" height="10" alt=""></td></tr>
 						</table>
 
-						<!--¢ß•⁄°º•∏∞ÏÕ˜°°§≥§≥§´§È-->
+						<!--‚ñº„Éö„Éº„Ç∏‰∏ÄË¶ß„ÄÄ„Åì„Åì„Åã„Çâ-->
 						<table width="678" border="0" cellspacing="1" cellpadding="5" summary=" ">
 							<tr class="fs12n">
-								<td bgcolor="#f2f1ec" align="center" colspan=3 ><strong> ‘Ω∏≤ƒ«Ω•⁄°º•∏</strong></td>
+								<td bgcolor="#f2f1ec" align="center" colspan=3 ><strong>Á∑®ÈõÜÂèØËÉΩ„Éö„Éº„Ç∏</strong></td>
 							</tr>
 
 							<!--{foreach key=key item=item from=$arrEditPage}-->
@@ -232,14 +232,14 @@ function init () {
 								</td>
 								<td align="center" width=78 bgcolor="<!--{if $item.page_id == $page_id}--><!--{$smarty.const.SELECT_RGB}--><!--{else}-->#ffffff<!--{/if}-->">
 									<!--{if $item.tpl_dir != ""}-->
-										<input type='button' value='•·•§•Û ‘Ω∏' name='page_edit' onclick="location.href='./main_edit.php?page_id=<!--{$item.page_id}-->'"  />
+										<input type='button' value='„É°„Ç§„É≥Á∑®ÈõÜ' name='page_edit' onclick="location.href='./main_edit.php?page_id=<!--{$item.page_id}-->'"  />
 									<!--{else}-->
-										 ‘Ω∏…‘≤ƒ
+										Á∑®ÈõÜ‰∏çÂèØ
 									<!--{/if}-->
 								</td>
 								<td align="center" width=78 bgcolor="<!--{if $item.page_id == $page_id}--><!--{$smarty.const.SELECT_RGB}--><!--{else}-->#ffffff<!--{/if}-->">
 									<!--{if $item.edit_flg == 1}-->
-									<input type='button' value='∫ÔΩ¸' name='del' onclick="fnTargetSelf(); fnFormModeSubmit('form1','delete','','');"  />
+									<input type='button' value='ÂâäÈô§' name='del' onclick="fnTargetSelf(); fnFormModeSubmit('form1','delete','','');"  />
 									<!--{/if}-->
 								</td>
 							</tr>
@@ -247,11 +247,11 @@ function init () {
 
 							<tr class="fs12n">
 								<td bgcolor="#f2f1ec" align="center" colspan=3>
-									<input type='button' value='ø∑µ¨•⁄°º•∏∫Ó¿Æ' name='subm' onclick="fnTargetSelf(); fnFormModeSubmit('form1','new_page','','');"  />
+									<input type='button' value='Êñ∞Ë¶è„Éö„Éº„Ç∏‰ΩúÊàê' name='subm' onclick="fnTargetSelf(); fnFormModeSubmit('form1','new_page','','');"  />
 								</td>
 							</tr>
 						</table>
-						<!--¢••⁄°º•∏∞ÏÕ˜°°§≥§≥§ﬁ§«-->
+						<!--‚ñ≤„Éö„Éº„Ç∏‰∏ÄË¶ß„ÄÄ„Åì„Åì„Åæ„Åß-->
 
 						</td>
 						<td background="<!--{$smarty.const.URL_DIR}-->img/contents/main_right.jpg"><img src="<!--{$smarty.const.URL_DIR}-->img/common/_.gif" width="14" height="1" alt=""></td>
@@ -264,13 +264,13 @@ function init () {
 				</table>
 				</td>
 			</tr>
-			<!--•·•§•Û•®•Í•¢-->
+			<!--„É°„Ç§„É≥„Ç®„É™„Ç¢-->
 		</table>
 		</td>
 	</tr>
 
 </table>
-<!--°˙°˙•·•§•Û•≥•Û•∆•Û•ƒ°˙°˙-->		
+<!--‚òÖ‚òÖ„É°„Ç§„É≥„Ç≥„É≥„ÉÜ„É≥„ÉÑ‚òÖ‚òÖ-->		
 
 <!--{foreach key=key item=item from=$tpl_arrBloc name="bloc_loop"}-->
 <div align=center target_id="<!--{$item.target_id}-->" did="<!--{$smarty.foreach.bloc_loop.iteration}-->" class="dragged_elm" id="<!--{$item.target_id}-->"

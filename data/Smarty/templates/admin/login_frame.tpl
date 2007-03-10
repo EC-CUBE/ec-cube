@@ -5,7 +5,7 @@
  * http://www.lockon.co.jp/
  */
 *}-->
-<!--║║-->
+<!--Ц──-->
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="ja" lang="ja">
 <head>
@@ -23,7 +23,7 @@ body {
 }
 </style>
 
-<title>EC CUBE ╢имЩ╪т╡Хлл</title>
+<title>EC CUBE Г╝║Г░├Х─┘Г■╩И²╒</title>
 </head>
 
 <body bgcolor="#ffffff" text="#494E5F" link="#006699" vlink="#006699" alink="#006699" leftmargin="0" topmargin="0" marginwidth="0" marginheight="0" onLoad="preLoadImg('<!--{$smarty.const.URL_DIR}-->')">

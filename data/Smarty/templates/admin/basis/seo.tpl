@@ -5,21 +5,21 @@
  * http://www.lockon.co.jp/
  */
 *}-->
-<!--°˙°˙•·•§•Û•≥•Û•∆•Û•ƒ°˙°˙-->
+<!--‚òÖ‚òÖ„É°„Ç§„É≥„Ç≥„É≥„ÉÜ„É≥„ÉÑ‚òÖ‚òÖ-->
 <table width="878" border="0" cellspacing="0" cellpadding="0" summary=" ">
-<form name="form1" id="form1" method="post" action="<!--{$smarty.post.PHP_SELF|escape}-->" onSubmit="return window.confirm('≈–œø§∑§∆§‚µπ§∑§§§«§π§´');">
+<form name="form1" id="form1" method="post" action="<!--{$smarty.post.PHP_SELF|escape}-->" onSubmit="return window.confirm('ÁôªÈå≤„Åó„Å¶„ÇÇÂÆú„Åó„ÅÑ„Åß„Åô„Åã');">
 <input type="hidden" name="mode" value="confirm">
 <input type="hidden" name="page_id" value="">
 	<tr valign="top">
 		<td background="<!--{$smarty.const.URL_DIR}-->img/contents/navi_bg.gif" height="402">
-			<!--¢ßSUB NAVI-->
+			<!--‚ñºSUB NAVI-->
 			<!--{include file=$tpl_subnavi}-->
-			<!--¢•SUB NAVI-->
+			<!--‚ñ≤SUB NAVI-->
 		</td>
 		<td class="mainbg">
-			<!--¢ß≈–œø•∆°º•÷•Î§≥§≥§´§È-->
+			<!--‚ñºÁôªÈå≤„ÉÜ„Éº„Éñ„É´„Åì„Åì„Åã„Çâ-->
 			<table width="737" border="0" cellspacing="0" cellpadding="0" summary=" ">
-				<!--•·•§•Û•®•Í•¢-->
+				<!--„É°„Ç§„É≥„Ç®„É™„Ç¢-->
 				<tr>
 					<td align="center">
 						<table width="706" border="0" cellspacing="0" cellpadding="0" summary=" ">
@@ -34,14 +34,14 @@
 								<!--{if count($arrPageData) > 0 }-->
 									<!--{foreach name=page key=key item=item from=$arrPageData}-->
 									<input type="hidden" name="disp_flg<!--{$item.page_id}-->" value="<!--{$disp_flg[$item.page_id]}-->">
-									<!-- <!--{$item.page_name}--> §≥§≥§´§È -->
+									<!-- <!--{$item.page_name}--> „Åì„Åì„Åã„Çâ -->
 									<table width="678" border="0" cellspacing="0" cellpadding="0" summary=" ">
 										<tr>
 											<td colspan="3"><img src="<!--{$smarty.const.URL_DIR}-->img/contents/contents_title_top.gif" width="678" height="7" alt=""></td>
 										</tr>
 										<tr>
 											<td background="<!--{$smarty.const.URL_DIR}-->img/contents/contents_title_left_bg.gif"><img src="<!--{$smarty.const.URL_DIR}-->img/contents/contents_title_left.gif" width="22" height="12" alt=""></td>
-											<td bgcolor="#636469" width="638" class="fs14n"><span class="white" style="float:left"><!--•≥•Û•∆•Û•ƒ•ø•§•»•Î--><!--{$item.page_name}--> <!--{$item.url}--></span><a href="#" id="switch<!--{$item.page_id}-->" style="float:right " onClick="fnDispChange('disp<!--{$item.page_id}-->', 'switch<!--{$item.page_id}-->', 'disp_flg<!--{$item.page_id}-->');"><!--{if $disp_flg[$item.page_id] == ""}--><FONT Color="#FFFF99"> >> »Û…Ωº®</FONT><!--{else}--><FONT Color="#FFFF99"> << …Ωº®</FONT><!--{/if}--></a></td>
+											<td bgcolor="#636469" width="638" class="fs14n"><span class="white" style="float:left"><!--„Ç≥„É≥„ÉÜ„É≥„ÉÑ„Çø„Ç§„Éà„É´--><!--{$item.page_name}--> <!--{$item.url}--></span><a href="#" id="switch<!--{$item.page_id}-->" style="float:right " onClick="fnDispChange('disp<!--{$item.page_id}-->', 'switch<!--{$item.page_id}-->', 'disp_flg<!--{$item.page_id}-->');"><!--{if $disp_flg[$item.page_id] == ""}--><FONT Color="#FFFF99"> >> ÈùûË°®Á§∫</FONT><!--{else}--><FONT Color="#FFFF99"> << Ë°®Á§∫</FONT><!--{/if}--></a></td>
 											<td background="<!--{$smarty.const.URL_DIR}-->img/contents/contents_title_right_bg.gif"><img src="<!--{$smarty.const.URL_DIR}-->img/common/_.gif" width="18" height="1" alt=""></td>
 										</tr>
 										<tr>
@@ -55,22 +55,22 @@
 									<div id="disp<!--{$item.page_id}-->" style="display:<!--{$disp_flg[$item.page_id]}-->">
 										<table width="678" border="0" cellspacing="1" cellpadding="8" summary=" ">
 											<tr>
-												<td bgcolor="#f2f1ec" width="160" class="fs12n">•·•ø•ø•∞:Author</td>
+												<td bgcolor="#f2f1ec" width="160" class="fs12n">„É°„Çø„Çø„Ç∞:Author</td>
 												<td bgcolor="#ffffff" width="557" class="fs10n">
 												<span class="red12"><!--{$arrErr[$item.page_id].author}--></span>
-												<input type="text" name="meta[<!--{$item.page_id}-->][author]" value="<!--{$item.author|escape}-->" maxlength="<!--{$smarty.const.STEXT_LEN}-->" size="60" class="box60" style='<!--{if $arrErr[$item.page_id].author != ""}-->background-color: <!--{$smarty.const.ERR_COLOR}--><!--{/if}-->' /><span class="red"> ° æÂ∏¬<!--{$smarty.const.STEXT_LEN}--> ∏ª˙°À</span></td>
+												<input type="text" name="meta[<!--{$item.page_id}-->][author]" value="<!--{$item.author|escape}-->" maxlength="<!--{$smarty.const.STEXT_LEN}-->" size="60" class="box60" style='<!--{if $arrErr[$item.page_id].author != ""}-->background-color: <!--{$smarty.const.ERR_COLOR}--><!--{/if}-->' /><span class="red"> Ôºà‰∏äÈôê<!--{$smarty.const.STEXT_LEN}-->ÊñáÂ≠óÔºâ</span></td>
 											</tr>
 											<tr>
-												<td bgcolor="#f2f1ec" width="160" class="fs12n">•·•ø•ø•∞:Description</td>
+												<td bgcolor="#f2f1ec" width="160" class="fs12n">„É°„Çø„Çø„Ç∞:Description</td>
 												<td bgcolor="#ffffff" width="557" class="fs10n">
 												<span class="red12"><!--{$arrErr[$item.page_id].description}--></span>
-												<input type="text" name="meta[<!--{$item.page_id}-->][description]" value="<!--{$item.description|escape}-->" maxlength="<!--{$smarty.const.STEXT_LEN}-->" size="60" class="box60" style='<!--{if $arrErr[$item.page_id].description != ""}-->background-color: <!--{$smarty.const.ERR_COLOR}--><!--{/if}-->' /><span class="red"> ° æÂ∏¬<!--{$smarty.const.STEXT_LEN}--> ∏ª˙°À</span></td>
+												<input type="text" name="meta[<!--{$item.page_id}-->][description]" value="<!--{$item.description|escape}-->" maxlength="<!--{$smarty.const.STEXT_LEN}-->" size="60" class="box60" style='<!--{if $arrErr[$item.page_id].description != ""}-->background-color: <!--{$smarty.const.ERR_COLOR}--><!--{/if}-->' /><span class="red"> Ôºà‰∏äÈôê<!--{$smarty.const.STEXT_LEN}-->ÊñáÂ≠óÔºâ</span></td>
 											</tr>
 											<tr>
-												<td bgcolor="#f2f1ec" width="160" class="fs12n">•·•ø•ø•∞:Keywords</td>
+												<td bgcolor="#f2f1ec" width="160" class="fs12n">„É°„Çø„Çø„Ç∞:Keywords</td>
 												<td bgcolor="#ffffff" width="557" class="fs10n">
 												<span class="red12"><!--{$arrErr[$item.page_id].keyword}--></span>
-												<input type="text" name="meta[<!--{$item.page_id}-->][keyword]" value="<!--{$item.keyword|escape}-->" maxlength="<!--{$smarty.const.STEXT_LEN}-->" size="60" class="box60" style='<!--{if $arrErr[$item.page_id].keyword != ""}-->background-color: <!--{$smarty.const.ERR_COLOR}--><!--{/if}-->' /><span class="red"> ° æÂ∏¬<!--{$smarty.const.STEXT_LEN}--> ∏ª˙°À</span></td>
+												<input type="text" name="meta[<!--{$item.page_id}-->][keyword]" value="<!--{$item.keyword|escape}-->" maxlength="<!--{$smarty.const.STEXT_LEN}-->" size="60" class="box60" style='<!--{if $arrErr[$item.page_id].keyword != ""}-->background-color: <!--{$smarty.const.ERR_COLOR}--><!--{/if}-->' /><span class="red"> Ôºà‰∏äÈôê<!--{$smarty.const.STEXT_LEN}-->ÊñáÂ≠óÔºâ</span></td>
 											</tr>
 										</table>
 		
@@ -85,7 +85,7 @@
 												<td bgcolor="#e9e7de" align="center">
 												<table border="0" cellspacing="0" cellpadding="0" summary=" ">
 													<tr>
-														<td><input type="image" onMouseover="chgImgImageSubmit('<!--{$smarty.const.URL_DIR}-->img/contents/btn_regist_on.jpg',this)" onMouseout="chgImgImageSubmit('<!--{$smarty.const.URL_DIR}-->img/contents/btn_regist.jpg',this)" src="<!--{$smarty.const.URL_DIR}-->img/contents/btn_regist.jpg" width="123" height="24" alt="§≥§Œ∆‚Õ∆§«≈–œø§π§Î" border="0" name="subm" onclick="document.form1.page_id.value = <!--{$item.page_id}-->;"></td>
+														<td><input type="image" onMouseover="chgImgImageSubmit('<!--{$smarty.const.URL_DIR}-->img/contents/btn_regist_on.jpg',this)" onMouseout="chgImgImageSubmit('<!--{$smarty.const.URL_DIR}-->img/contents/btn_regist.jpg',this)" src="<!--{$smarty.const.URL_DIR}-->img/contents/btn_regist.jpg" width="123" height="24" alt="„Åì„ÅÆÂÜÖÂÆπ„ÅßÁôªÈå≤„Åô„Çã" border="0" name="subm" onclick="document.form1.page_id.value = <!--{$item.page_id}-->;"></td>
 													</tr>
 												</table>
 												</td>
@@ -100,13 +100,13 @@
 											<tr><td colspan="3"><img src="<!--{$smarty.const.URL_DIR}-->img/contents/main_bar.jpg" width="678" height="10" alt=""></td></tr>
 										</table>
 									</div>
-									<!-- <!--{$item.page_name}--> §≥§≥§ﬁ§« -->
+									<!-- <!--{$item.page_name}--> „Åì„Åì„Åæ„Åß -->
 									<!--{/foreach}-->
 								<!--{else}-->
 									<table width="678" border="0" cellspacing="1" cellpadding="8" summary=" ">
 										<tr>
 											<td bgcolor="#ffffff" width="" height="300" class="fs12n" align="center">
-												…Ωº®§π§Î•«°º•ø§¨§¢§Í§ﬁ§ª§Û
+												Ë°®Á§∫„Åô„Çã„Éá„Éº„Çø„Åå„ÅÇ„Çä„Åæ„Åõ„Çì
 											</td>
 										</tr>
 									</table>
@@ -122,11 +122,11 @@
 						</table>
 					</td>
 				</tr>
-				<!--•·•§•Û•®•Í•¢-->
+				<!--„É°„Ç§„É≥„Ç®„É™„Ç¢-->
 			</table>
-			<!--¢•≈–œø•∆°º•÷•Î§≥§≥§ﬁ§«-->
+			<!--‚ñ≤ÁôªÈå≤„ÉÜ„Éº„Éñ„É´„Åì„Åì„Åæ„Åß-->
 		</td>
 	</tr>
 </form>
 </table>
-<!--°˙°˙•·•§•Û•≥•Û•∆•Û•ƒ°˙°˙-->
+<!--‚òÖ‚òÖ„É°„Ç§„É≥„Ç≥„É≥„ÉÜ„É≥„ÉÑ‚òÖ‚òÖ-->

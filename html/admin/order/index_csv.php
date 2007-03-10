@@ -5,9 +5,9 @@
  * http://www.lockon.co.jp/
  */
 require_once(DATA_PATH . "include/csv_output.inc");
-/*------  /admin/contents/inpuiry.php ¤«¤é¤â¸Æ¤Ó½Ğ¤·¤Ş¤¹¡£(11/18 fukuda) ---*/
+/*------  /admin/contents/inpuiry.php ã‹ã‚‰ã‚‚å‘¼ã³å‡ºã—ã¾ã™ã€‚(11/18 fukuda) ---*/
 
-// CSV½ĞÎÏ¥Ç¡¼¥¿¤òºîÀ®¤¹¤ë¡£
+// CSVå‡ºåŠ›ãƒ‡ãƒ¼ã‚¿ã‚’ä½œæˆã™ã‚‹ã€‚
 function lfGetCSV($from, $where, $option, $arrval, $arrCsvOutputCols = "") {
 	global $arrCVSCOL;
 
@@ -21,13 +21,13 @@ function lfGetCSV($from, $where, $option, $arrval, $arrCsvOutputCols = "") {
 
 	$max = count($list_data);
 	for($i = 0; $i < $max; $i++) {
-		// ³Æ¹àÌÜ¤òCSV½ĞÎÏÍÑ¤ËÊÑ´¹¤¹¤ë¡£
+		// å„é …ç›®ã‚’CSVå‡ºåŠ›ç”¨ã«å¤‰æ›ã™ã‚‹ã€‚
 		$data .= lfMakeCSV($list_data[$i]);
 	}
 	return $data;
 }
 
-// ³Æ¹àÌÜ¤òCSV½ĞÎÏÍÑ¤ËÊÑ´¹¤¹¤ë¡£
+// å„é …ç›®ã‚’CSVå‡ºåŠ›ç”¨ã«å¤‰æ›ã™ã‚‹ã€‚
 function lfMakeCSV($list) {
 	global $arrPref;
 	global $arrJob;
@@ -55,7 +55,7 @@ function lfMakeCSV($list) {
 		$tmp = ereg_replace("[\",]", " ", $tmp);
 		$line .= "\"".$tmp."\",";
 	}
-	// Ê¸Ëö¤Î","¤òÊÑ´¹
+	// æ–‡æœ«ã®","ã‚’å¤‰æ›
 	$line = ereg_replace(",$", "\n", $line);
 	return $line;
 }

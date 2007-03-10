@@ -7,23 +7,23 @@
 *}-->
 <script type="text/javascript">
 <!--
-// •Í•π•»•‹•√•Ø•π§Œ•µ•§•∫ —ππ
+// „É™„Çπ„Éà„Éú„ÉÉ„ÇØ„Çπ„ÅÆ„Çµ„Ç§„Ç∫Â§âÊõ¥
 function ChangeSize(button, TextArea, Max, Min, row_tmp){
 	if(TextArea.rows <= Min){
-		TextArea.rows=Max; button.value="æÆ§µ§Ø§π§Î"; row_tmp.value=Max;
+		TextArea.rows=Max; button.value="Â∞è„Åï„Åè„Åô„Çã"; row_tmp.value=Max;
 	}else{
-		TextArea.rows =Min; button.value="¬Á§≠§Ø§π§Î"; row_tmp.value=Min;
+		TextArea.rows =Min; button.value="Â§ß„Åç„Åè„Åô„Çã"; row_tmp.value=Min;
 	}
 }
 
-// SQL≥Œ«ß≤ËÃÃµØ∆∞
+// SQLÁ¢∫Ë™çÁîªÈù¢Ëµ∑Âãï
 function doPreview(){
 	document.form1.mode.value="preview"
 	document.form1.target = "_blank";
 	document.form1.submit();
 }
 
-// form§Œ•ø°º•≤•√•»§Úº´ ¨§ÀÃ·§π
+// form„ÅÆ„Çø„Éº„Ç≤„ÉÉ„Éà„ÇíËá™ÂàÜ„Å´Êàª„Åô
 function fnTargetSelf(){
 	document.form1.target = "_self";
 }
@@ -31,7 +31,7 @@ function fnTargetSelf(){
 //-->
 </script>
 
-<!--°˙°˙•·•§•Û•≥•Û•∆•Û•ƒ°˙°˙-->
+<!--‚òÖ‚òÖ„É°„Ç§„É≥„Ç≥„É≥„ÉÜ„É≥„ÉÑ‚òÖ‚òÖ-->
 <table width="878" border="0" cellspacing="0" cellpadding="0" summary=" ">
 <form name="form1" id="form1" method="post" action="<!--{$smarty.server.PHP_SELF|escape}-->">
 <input type="hidden" name="mode" value="confirm">
@@ -40,14 +40,14 @@ function fnTargetSelf(){
 <input type="hidden" name="selectTable" value="">
 	<tr valign="top">
 		<td background="<!--{$smarty.const.URL_DIR}-->img/contents/navi_bg.gif" height="402">
-			<!--¢ßSUB NAVI-->
+			<!--‚ñºSUB NAVI-->
 			<!--{include file=$tpl_subnavi}-->
-			<!--¢•SUB NAVI-->
+			<!--‚ñ≤SUB NAVI-->
 		</td>
 		<td class="mainbg">
-			<!--¢ß≈–œø•∆°º•÷•Î§≥§≥§´§È-->
+			<!--‚ñºÁôªÈå≤„ÉÜ„Éº„Éñ„É´„Åì„Åì„Åã„Çâ-->
 			<table width="737" border="0" cellspacing="0" cellpadding="0" summary=" ">
-				<!--•·•§•Û•®•Í•¢-->
+				<!--„É°„Ç§„É≥„Ç®„É™„Ç¢-->
 				<tr>
 					<td align="center">
 						<table width="706" border="0" cellspacing="0" cellpadding="0" summary=" ">
@@ -59,14 +59,14 @@ function fnTargetSelf(){
 								<td background="<!--{$smarty.const.URL_DIR}-->img/contents/main_left.jpg"><img src="<!--{$smarty.const.URL_DIR}-->img/common/_.gif" width="14" height="1" alt=""></td>
 								<td bgcolor="#cccccc">
 
-									<!-- SQL∞ÏÕ˜ §≥§≥§´§È -->
+									<!-- SQL‰∏ÄË¶ß „Åì„Åì„Åã„Çâ -->
 									<table width="678" border="0" cellspacing="0" cellpadding="0" summary=" ">
 										<tr>
 											<td colspan="3"><img src="<!--{$smarty.const.URL_DIR}-->img/contents/contents_title_top.gif" width="678" height="7" alt=""></td>
 										</tr>
 										<tr>
 											<td background="<!--{$smarty.const.URL_DIR}-->img/contents/contents_title_left_bg.gif"><img src="<!--{$smarty.const.URL_DIR}-->img/contents/contents_title_left.gif" width="22" height="12" alt=""></td>
-											<td bgcolor="#636469" width="638" class="fs14n"><span class="white"><!--•≥•Û•∆•Û•ƒ•ø•§•»•Î-->SQL∞ÏÕ˜</span></td>
+											<td bgcolor="#636469" width="638" class="fs14n"><span class="white"><!--„Ç≥„É≥„ÉÜ„É≥„ÉÑ„Çø„Ç§„Éà„É´-->SQL‰∏ÄË¶ß</span></td>
 											<td background="<!--{$smarty.const.URL_DIR}-->img/contents/contents_title_right_bg.gif"><img src="<!--{$smarty.const.URL_DIR}-->img/common/_.gif" width="18" height="1" alt=""></td>
 										</tr>
 										<tr>
@@ -79,7 +79,7 @@ function fnTargetSelf(){
 
 									<table width="678" border="0" cellspacing="1" cellpadding="5" summary=" ">
 										<tr class="fs12n">
-											<td bgcolor="#f2f1ec" align="center" colspan=3 ><strong>SQL∞ÏÕ˜</strong></td>
+											<td bgcolor="#f2f1ec" align="center" colspan=3 ><strong>SQL‰∏ÄË¶ß</strong></td>
 										</tr>
 
 										<!--{ foreach key=key item=item from=$arrSqlList }-->
@@ -88,10 +88,10 @@ function fnTargetSelf(){
 												<a href="<!--{$smarty.server.PHP_SELF|escape}-->?sql_id=<!--{$item.sql_id}-->" ><!--{$item.sql_name}--></a>
 											</td>
 											<td align="center" width=78 bgcolor="<!--{if $item.sql_id == $sql_id}--><!--{$smarty.const.SELECT_RGB}--><!--{else}-->#ffffff<!--{/if}-->">
-												<input type='button' value='CSVΩ–Œœ' name='csv' onclick="fnTargetSelf(); fnFormModeSubmit('form1','csv_output','csv_output_id',<!--{$item.sql_id}-->);"  />
+												<input type='button' value='CSVÂá∫Âäõ' name='csv' onclick="fnTargetSelf(); fnFormModeSubmit('form1','csv_output','csv_output_id',<!--{$item.sql_id}-->);"  />
 											</td>
 											<td align="center" width=78 bgcolor="<!--{if $item.sql_id == $sql_id}--><!--{$smarty.const.SELECT_RGB}--><!--{else}-->#ffffff<!--{/if}-->">
-												<input type='button' value='∫ÔΩ¸' name='del' onclick="fnTargetSelf(); fnFormModeSubmit('form1','delete','sql_id',<!--{$item.sql_id}-->);"  />
+												<input type='button' value='ÂâäÈô§' name='del' onclick="fnTargetSelf(); fnFormModeSubmit('form1','delete','sql_id',<!--{$item.sql_id}-->);"  />
 											</td>
 										</tr>
 										<!--{ /foreach }-->
@@ -108,7 +108,7 @@ function fnTargetSelf(){
 											<td bgcolor="#e9e7de" align="center">
 											<table border="0" cellspacing="0" cellpadding="0" summary=" ">
 												<tr>
-													<td><input type='button' value='ø∑µ¨SQL∫Ó¿Æ' name='subm' onclick="fnTargetSelf(); fnFormModeSubmit('form1','new_page','','');"  /></td>
+													<td><input type='button' value='Êñ∞Ë¶èSQL‰ΩúÊàê' name='subm' onclick="fnTargetSelf(); fnFormModeSubmit('form1','new_page','','');"  /></td>
 												</tr>
 											</table>
 											</td>
@@ -118,20 +118,20 @@ function fnTargetSelf(){
 											<td colspan="3"><img src="<!--{$smarty.const.URL_DIR}-->img/contents/tbl_bottom.gif" width="678" height="8" alt=""></td>
 										</tr>
 									</table>									
-									<!-- SQL∞ÏÕ˜ §≥§≥§ﬁ§« -->
+									<!-- SQL‰∏ÄË¶ß „Åì„Åì„Åæ„Åß -->
 
 									<table width="678" border="0" cellspacing="0" cellpadding="0" summary=" ">
 										<tr><td colspan="3"><img src="<!--{$smarty.const.URL_DIR}-->img/contents/main_bar.jpg" width="678" height="10" alt=""></td></tr>
 									</table>
 
-									<!-- SQL¿ﬂƒÍ §≥§≥§´§È -->
+									<!-- SQLË®≠ÂÆö „Åì„Åì„Åã„Çâ -->
 									<table width="678" border="0" cellspacing="0" cellpadding="0" summary=" ">
 										<tr>
 											<td colspan="3"><img src="<!--{$smarty.const.URL_DIR}-->img/contents/contents_title_top.gif" width="678" height="7" alt=""></td>
 										</tr>
 										<tr>
 											<td background="<!--{$smarty.const.URL_DIR}-->img/contents/contents_title_left_bg.gif"><img src="<!--{$smarty.const.URL_DIR}-->img/contents/contents_title_left.gif" width="22" height="12" alt=""></td>
-											<td bgcolor="#636469" width="638" class="fs14n"><span class="white"><!--•≥•Û•∆•Û•ƒ•ø•§•»•Î-->CSVΩ–Œœ¿ﬂƒÍ</span></td>
+											<td bgcolor="#636469" width="638" class="fs14n"><span class="white"><!--„Ç≥„É≥„ÉÜ„É≥„ÉÑ„Çø„Ç§„Éà„É´-->CSVÂá∫ÂäõË®≠ÂÆö</span></td>
 											<td background="<!--{$smarty.const.URL_DIR}-->img/contents/contents_title_right_bg.gif"><img src="<!--{$smarty.const.URL_DIR}-->img/common/_.gif" width="18" height="1" alt=""></td>
 										</tr>
 										<tr>
@@ -144,17 +144,17 @@ function fnTargetSelf(){
 
 									<table width="678" border="0" cellspacing="1" cellpadding="5" summary=" ">
 										<tr class="fs12n">
-											<td bgcolor="#f2f1ec" align="center" colspan=2><strong>SQL¿ﬂƒÍ</strong></td>
+											<td bgcolor="#f2f1ec" align="center" colspan=2><strong>SQLË®≠ÂÆö</strong></td>
 										</tr>
 										<tr class="fs12n">
-											<td bgcolor="#f2f1ec" align="center" width="100">ÃææŒ<span class="red"> *</span></td>
+											<td bgcolor="#f2f1ec" align="center" width="100">ÂêçÁß∞<span class="red"> *</span></td>
 											<td bgcolor="#ffffff" align="left">
 												<span class="red12"><!--{$arrErr.sql_name}--></span>
-												<input type="text" name="sql_name" value="<!--{$arrSqlData.sql_name|escape}-->" maxlength="<!--{$smarty.const.STEXT_LEN}-->" style="<!--{if $arrErr.name != ""}-->background-color: <!--{$smarty.const.ERR_COLOR}--><!--{/if}-->" size="60" class="box60" /><span class="red"> ° æÂ∏¬<!--{$smarty.const.STEXT_LEN}--> ∏ª˙°À</span>
+												<input type="text" name="sql_name" value="<!--{$arrSqlData.sql_name|escape}-->" maxlength="<!--{$smarty.const.STEXT_LEN}-->" style="<!--{if $arrErr.name != ""}-->background-color: <!--{$smarty.const.ERR_COLOR}--><!--{/if}-->" size="60" class="box60" /><span class="red"> Ôºà‰∏äÈôê<!--{$smarty.const.STEXT_LEN}-->ÊñáÂ≠óÔºâ</span>
 											</td>
 										</tr>
 										<tr class="fs12n">
-											<td bgcolor="#f2f1ec" align="center" width="100">SQL ∏<br>° SELECT§œµ≠Ω“§∑§ §§§«§Ø§¿§µ§§°£°À<span class="red"> *</span></td>
+											<td bgcolor="#f2f1ec" align="center" width="100">SQLÊñá<br>ÔºàSELECT„ÅØË®òËø∞„Åó„Å™„ÅÑ„Åß„Åè„Å†„Åï„ÅÑ„ÄÇÔºâ<span class="red"> *</span></td>
 											<td bgcolor="#ffffff" align="left">
 												<span class="red12"><!--{$arrErr.csv_sql}--></span>
 												<div>
@@ -176,8 +176,8 @@ function fnTargetSelf(){
 											<table border="0" cellspacing="0" cellpadding="0" summary=" ">
 												<tr>
 													<td>
-														<input type="image" onMouseover="chgImgImageSubmit('<!--{$smarty.const.URL_DIR}-->img/contents/btn_regist_on.jpg',this)" onMouseout="chgImgImageSubmit('<!--{$smarty.const.URL_DIR}-->img/contents/btn_regist.jpg',this)" src="<!--{$smarty.const.URL_DIR}-->img/contents/btn_regist.jpg" width="123" height="24" alt="§≥§Œ∆‚Õ∆§«≈–œø§π§Î" border="0" name="subm" onClick="mode.value='confirm'; fnTargetSelf();">
-														<input type="image" onMouseover="chgImgImageSubmit('<!--{$smarty.const.URL_DIR}-->img/contents/btn_confirm_on.jpg',this)" onMouseout="chgImgImageSubmit('<!--{$smarty.const.URL_DIR}-->img/contents/btn_confirm.jpg',this)" src="<!--{$smarty.const.URL_DIR}-->img/contents/btn_confirm.jpg" width="123" height="24" alt="≥Œ«ß•⁄°º•∏§ÿ" border="0" name="subm" onClick="doPreview(); return false;">
+														<input type="image" onMouseover="chgImgImageSubmit('<!--{$smarty.const.URL_DIR}-->img/contents/btn_regist_on.jpg',this)" onMouseout="chgImgImageSubmit('<!--{$smarty.const.URL_DIR}-->img/contents/btn_regist.jpg',this)" src="<!--{$smarty.const.URL_DIR}-->img/contents/btn_regist.jpg" width="123" height="24" alt="„Åì„ÅÆÂÜÖÂÆπ„ÅßÁôªÈå≤„Åô„Çã" border="0" name="subm" onClick="mode.value='confirm'; fnTargetSelf();">
+														<input type="image" onMouseover="chgImgImageSubmit('<!--{$smarty.const.URL_DIR}-->img/contents/btn_confirm_on.jpg',this)" onMouseout="chgImgImageSubmit('<!--{$smarty.const.URL_DIR}-->img/contents/btn_confirm.jpg',this)" src="<!--{$smarty.const.URL_DIR}-->img/contents/btn_confirm.jpg" width="123" height="24" alt="Á¢∫Ë™ç„Éö„Éº„Ç∏„Å∏" border="0" name="subm" onClick="doPreview(); return false;">
 													</td>
 												</tr>
 											</table>
@@ -188,19 +188,19 @@ function fnTargetSelf(){
 											<td colspan="3"><img src="<!--{$smarty.const.URL_DIR}-->img/contents/tbl_bottom.gif" width="678" height="8" alt=""></td>
 										</tr>
 									</table>
-									<!-- SQL¿ﬂƒÍ §≥§≥§ﬁ§« -->
+									<!-- SQLË®≠ÂÆö „Åì„Åì„Åæ„Åß -->
 
 									<table width="678" border="0" cellspacing="0" cellpadding="0" summary=" ">
 										<tr><td colspan="3"><img src="<!--{$smarty.const.URL_DIR}-->img/contents/main_bar.jpg" width="678" height="10" alt=""></td></tr>
 									</table>
 
-									<!-- DB∞ÏÕ˜ §≥§≥§´§È -->
+									<!-- DB‰∏ÄË¶ß „Åì„Åì„Åã„Çâ -->
 									<table width="678" border="0" cellspacing="0" cellpadding="0" summary=" ">
 										<tr>
 											<td width="50%">
 											<table width="100%" border="0" cellspacing="1" cellpadding="5" summary=" ">
 												<tr class="fs12n">
-													<td bgcolor="#f2f1ec" align="center" colspan=2><strong>•∆°º•÷•Î∞ÏÕ˜</strong></td>
+													<td bgcolor="#f2f1ec" align="center" colspan=2><strong>„ÉÜ„Éº„Éñ„É´‰∏ÄË¶ß</strong></td>
 												</tr>
 												<tr class="fs12n">
 													<td bgcolor="#ffffff" align="center">
@@ -214,7 +214,7 @@ function fnTargetSelf(){
 											<td width="50%">
 												<table width="100%" border="0" cellspacing="1" cellpadding="5" summary=" ">
 													<tr class="fs12n">
-														<td bgcolor="#f2f1ec" align="center" colspan=2><strong>π‡Ã‹∞ÏÕ˜</strong></td>
+														<td bgcolor="#f2f1ec" align="center" colspan=2><strong>È†ÖÁõÆ‰∏ÄË¶ß</strong></td>
 													</tr>
 													<tr class="fs12n">
 														<td bgcolor="#ffffff" align="center">
@@ -227,7 +227,7 @@ function fnTargetSelf(){
 											</td>
 										</tr>
 									</table>
-									<!-- DB∞ÏÕ˜ §≥§≥§ﬁ§« -->
+									<!-- DB‰∏ÄË¶ß „Åì„Åì„Åæ„Åß -->
 								</td>
 								<td background="<!--{$smarty.const.URL_DIR}-->img/contents/main_right.jpg"><img src="<!--{$smarty.const.URL_DIR}-->img/common/_.gif" width="14" height="1" alt=""></td>
 							</tr>
@@ -238,14 +238,14 @@ function fnTargetSelf(){
 						</table>
 					</td>
 				</tr>
-				<!--•·•§•Û•®•Í•¢-->
+				<!--„É°„Ç§„É≥„Ç®„É™„Ç¢-->
 			</table>
-			<!--¢•≈–œø•∆°º•÷•Î§≥§≥§ﬁ§«-->
+			<!--‚ñ≤ÁôªÈå≤„ÉÜ„Éº„Éñ„É´„Åì„Åì„Åæ„Åß-->
 		</td>
 	</tr>
 </form>
 </table>
-<!--°˙°˙•·•§•Û•≥•Û•∆•Û•ƒ°˙°˙-->
+<!--‚òÖ‚òÖ„É°„Ç§„É≥„Ç≥„É≥„ÉÜ„É≥„ÉÑ‚òÖ‚òÖ-->
 
 
 </script>

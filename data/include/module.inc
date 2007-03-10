@@ -1,13 +1,13 @@
 <?php
 
-// ¥¿¥°½ĞÎÏÍÑ¥¯¥é¥¹
+// ã‚¿ã‚°å‡ºåŠ›ç”¨ã‚¯ãƒ©ã‚¹
 class LC_EbisPage {
 	function LC_EbisPage() {
 		$this->tpl_mainpage = MODULE_PATH . "ebis_tag_text.tpl";
 	}
 }
 
-// ¥¨¥Ó¥¹¥¿¥°¤ÎÈ¯¹Ô
+// ã‚¨ãƒ“ã‚¹ã‚¿ã‚°ã®ç™ºè¡Œ
 function sfPrintEbisTag($pid = "") {
 	$objQuery = new SC_Query();
 	$arrRet = $objQuery->select("sub_data", "dtb_module", "module_id = ?", array(EBIS_TAG_MID));
@@ -20,17 +20,17 @@ function sfPrintEbisTag($pid = "") {
 		return;
 	}
 	
-	// ¡Ö/¡×¤¬½ÅÊ£¤·¤Æ¤¤¤ë¤â¤Î¤Ø¤ÎÂĞ±ş
+	// ã€Œ/ã€ãŒé‡è¤‡ã—ã¦ã„ã‚‹ã‚‚ã®ã¸ã®å¯¾å¿œ
 	$php_self = ereg_replace("[/]+", "/", $_SERVER['PHP_SELF']);
-	// PHP¥Õ¥¡¥¤¥ë¤Î¸å¤í¤Ë¡Ö/¡×¤¬¤Ä¤¤¤Æ¤·¤Ş¤Ã¤Æ¤¤¤ë¤â¤Î¤Ø¤ÎÂĞ±ş
+	// PHPãƒ•ã‚¡ã‚¤ãƒ«ã®å¾Œã‚ã«ã€Œ/ã€ãŒã¤ã„ã¦ã—ã¾ã£ã¦ã„ã‚‹ã‚‚ã®ã¸ã®å¯¾å¿œ
 	$php_self = ereg_replace(".php[/]+$", ".php", $php_self);
 	
 	if(!is_array($pid) && $pid != "") {
 		if(!ereg(".tpl$", $pid)) {
-			// ¥Ú¡¼¥¸ID¤ò¾å½ñ¤­¤¹¤ë
+			// ãƒšãƒ¼ã‚¸IDã‚’ä¸Šæ›¸ãã™ã‚‹
 			$arrEbis['pid'] = $pid;
 		} else {
-			// ¥Æ¥ó¥×¥ì¡¼¥È¤Î¥Ñ¥¹¤¬Í¿¤¨¤é¤ì¤Æ¤¤¤ë¾ì¹ç
+			// ãƒ†ãƒ³ãƒ—ãƒ¬ãƒ¼ãƒˆã®ãƒ‘ã‚¹ãŒä¸ãˆã‚‰ã‚Œã¦ã„ã‚‹å ´åˆ
 			$temp_id = ereg_replace(HTML_PATH,"",$pid);			
 			$temp_id = ereg_replace("^[/]+","",$temp_id);
 			$temp_id = ereg_replace(".tpl$","",$temp_id);
@@ -39,19 +39,19 @@ function sfPrintEbisTag($pid = "") {
 		}
 	}	
 	
-	// ¾¦ÉÊ°ìÍ÷¥Ú¡¼¥¸¤Ï¡¢ÆÃ¼ìID¤òÈ¯¹Ô
+	// å•†å“ä¸€è¦§ãƒšãƒ¼ã‚¸ã¯ã€ç‰¹æ®ŠIDã‚’ç™ºè¡Œ
 	if(ereg("/products/list.php\?category_id=[0-9]+$", $_SERVER["REQUEST_URI"])) {
 		$filename = basename($_SERVER["REQUEST_URI"]);
 		$arrEbis['pid'] = ereg_replace("list.php\?category_id=", "list-c", $filename);
 	}
 	
-	// ¾¦ÉÊ¾ÜºÙ¥Ú¡¼¥¸¤Ï¡¢ÆÃ¼ìID¤òÈ¯¹Ô
+	// å•†å“è©³ç´°ãƒšãƒ¼ã‚¸ã¯ã€ç‰¹æ®ŠIDã‚’ç™ºè¡Œ
 	if(ereg("/products/detail.php\?product_id=[0-9]+$", $_SERVER["REQUEST_URI"])) {
 		$filename = basename($_SERVER["REQUEST_URI"]);
 		$arrEbis['pid'] = ereg_replace("detail.php\?product_id=", "detail-p", $filename);
 	}
 	
-	// ID³ä¤êÅö¤Æ¤µ¤ì¤Æ¤¤¤Ê¤¤¥Ú¡¼¥¸¤Ï¡¢¼«Æ°Åª¤ËÀ¸À®¤¹¤ë¡£
+	// IDå‰²ã‚Šå½“ã¦ã•ã‚Œã¦ã„ãªã„ãƒšãƒ¼ã‚¸ã¯ã€è‡ªå‹•çš„ã«ç”Ÿæˆã™ã‚‹ã€‚
 	if($arrEbis['pid'] == "") {				
 		$temp_id = ereg_replace("^[/]+","",$_SERVER['PHP_SELF']);
 		$temp_id = ereg_replace(".php$","",$temp_id);
@@ -59,7 +59,7 @@ function sfPrintEbisTag($pid = "") {
 		$arrEbis['pid'] = $temp_id;
 	}
 			
-	// ¥Ú¡¼¥¸ID¤¬ÅĞÏ¿¤µ¤ì¤Æ¤¤¤ë¾ì¹ç¤Î¤ß¥¿¥°¤ò½ĞÎÏ¤¹¤ë¡£
+	// ãƒšãƒ¼ã‚¸IDãŒç™»éŒ²ã•ã‚Œã¦ã„ã‚‹å ´åˆã®ã¿ã‚¿ã‚°ã‚’å‡ºåŠ›ã™ã‚‹ã€‚
 	if($arrEbis['pid'] != "") {
 		$objSubPage = new LC_EbisPage();
 		$objSubPage->arrEbis = $arrEbis;
@@ -69,10 +69,10 @@ function sfPrintEbisTag($pid = "") {
 	}
 }
 
-// ¥³¥ó¥Ğ¡¼¥¸¥ç¥ó¥¿¥°¤ÎÈ¯¹Ô
+// ã‚³ãƒ³ãƒãƒ¼ã‚¸ãƒ§ãƒ³ã‚¿ã‚°ã®ç™ºè¡Œ
 function sfPrintAffTag($conv_page, $option) {
 	if(is_numeric($conv_page)) {
-		// sub_data¤è¤ê¥¿¥°¾ğÊó¤òÆÉ¤ß¹ş¤à
+		// sub_dataã‚ˆã‚Šã‚¿ã‚°æƒ…å ±ã‚’èª­ã¿è¾¼ã‚€
 		$objQuery = new SC_Query();
 		$arrRet = $objQuery->select("sub_data", "dtb_module", "module_id = ?", array(AFF_TAG_MID));
 		$arrSubData = unserialize($arrRet[0]['sub_data']);
@@ -80,7 +80,7 @@ function sfPrintAffTag($conv_page, $option) {
 		
 		$array = split("\|", $option);
 		
-		// ÆÃÄêÊ¸»ú¤ÎÃÖ¤­´¹¤¨
+		// ç‰¹å®šæ–‡å­—ã®ç½®ãæ›ãˆ
 		foreach($array as $each) {
 			list($key, $value) = split("=", $each);
 			$aff_tag = ereg_replace("\[\[" . $key . "\]\]", $value, $aff_tag);
@@ -89,20 +89,20 @@ function sfPrintAffTag($conv_page, $option) {
 	}
 }
 
-// dtb_payment¤ËÈÆÍÑ¹àÌÜ¤¬Â¸ºß¤·¤Æ¤¤¤Ê¤±¤ì¤ĞÄÉ²Ã¤¹¤ë
+// dtb_paymentã«æ±ç”¨é …ç›®ãŒå­˜åœ¨ã—ã¦ã„ãªã‘ã‚Œã°è¿½åŠ ã™ã‚‹
 function sfAlterMemo(){
 	$objQuery = new SC_Query();
 	
-	// ÈÆÍÑ¹àÌÜ¤ÎÂ¸ºß¥Á¥§¥Ã¥¯
+	// æ±ç”¨é …ç›®ã®å­˜åœ¨ãƒã‚§ãƒƒã‚¯
 	if(!sfColumnExists("dtb_payment", "memo01")){
 		
-		// ¥â¥¸¥å¡¼¥ëID¤òÄÉ²Ã
+		// ãƒ¢ã‚¸ãƒ¥ãƒ¼ãƒ«IDã‚’è¿½åŠ 
 		$objQuery->query("alter table dtb_payment add module_id int4;");
 		
-		// ¥â¥¸¥å¡¼¥ë¥Ñ¥¹¤òÄÉ²Ã
+		// ãƒ¢ã‚¸ãƒ¥ãƒ¼ãƒ«ãƒ‘ã‚¹ã‚’è¿½åŠ 
 		$objQuery->query("alter table dtb_payment add module_path text;");
 		
-		// ÈÆÍÑ¹àÌÜ¤ò10¸ÄÄÉ²Ã
+		// æ±ç”¨é …ç›®ã‚’10å€‹è¿½åŠ 
 		for($i=1; $i<=9; $i++){
 			$objQuery->query("alter table dtb_payment add memo0".$i." text;");
 		}

@@ -5,21 +5,21 @@
  * http://www.lockon.co.jp/
  */
 *}-->
-<!--¡ú¡ú¥á¥¤¥ó¥³¥ó¥Æ¥ó¥Ä¡ú¡ú-->
+<!--â˜…â˜…ãƒ¡ã‚¤ãƒ³ã‚³ãƒ³ãƒ†ãƒ³ãƒ„â˜…â˜…-->
 <table width="878" border="0" cellspacing="0" cellpadding="0" summary=" ">
 <form name="form1" id="form1" method="post" action="<!--{$smarty.server.PHP_SELF|escape}-->">
 <input type="hidden" name="mode" value="edit">
 <input type="hidden" name="payment_id" value="<!--{$tpl_payment_id}-->">
 	<tr valign="top">
 		<td background="<!--{$smarty.const.URL_DIR}-->img/contents/navi_bg.gif" height="402">
-			<!--¢§SUB NAVI-->
+			<!--â–¼SUB NAVI-->
 			<!--{include file=$tpl_subnavi}-->
-			<!--¢¥SUB NAVI-->
+			<!--â–²SUB NAVI-->
 		</td>
 		<td class="mainbg">
-			<!--¢§ÅĞÏ¿¥Æ¡¼¥Ö¥ë¤³¤³¤«¤é-->
+			<!--â–¼ç™»éŒ²ãƒ†ãƒ¼ãƒ–ãƒ«ã“ã“ã‹ã‚‰-->
 			<table width="737" border="0" cellspacing="0" cellpadding="0" summary=" ">
-				<!--¥á¥¤¥ó¥¨¥ê¥¢-->
+				<!--ãƒ¡ã‚¤ãƒ³ã‚¨ãƒªã‚¢-->
 				<tr>
 					<td align="center">
 						<table width="706" border="0" cellspacing="0" cellpadding="0" summary=" ">
@@ -36,7 +36,7 @@
 									</tr>
 									<tr>
 										<td background="<!--{$smarty.const.URL_DIR}-->img/contents/contents_title_left_bg.gif"><img src="<!--{$smarty.const.URL_DIR}-->img/contents/contents_title_left.gif" width="22" height="12" alt=""></td>
-										<td bgcolor="#636469" width="638" class="fs14n"><span class="white"><!--¥³¥ó¥Æ¥ó¥Ä¥¿¥¤¥È¥ë-->»ÙÊ§ÊıË¡ÀßÄê</span></td>
+										<td bgcolor="#636469" width="638" class="fs14n"><span class="white"><!--ã‚³ãƒ³ãƒ†ãƒ³ãƒ„ã‚¿ã‚¤ãƒˆãƒ«-->æ”¯æ‰•æ–¹æ³•è¨­å®š</span></td>
 										<td background="<!--{$smarty.const.URL_DIR}-->img/contents/contents_title_right_bg.gif"><img src="<!--{$smarty.const.URL_DIR}-->img/common/_.gif" width="18" height="1" alt=""></td>
 									</tr>
 									<tr>
@@ -49,13 +49,13 @@
 
 								<table width="678" border="0" cellspacing="1" cellpadding="8" summary=" ">
 									<tr align="center" bgcolor="#f2f1ec" class="fs12n">
-										<td width="134">»ÙÊ§ÊıË¡</td>
-										<td width="69">¼ê¿ôÎÁ¡Ê±ß¡Ë</td>
-										<td width="124">ÍøÍÑ¾ò·ï</td>
-										<td width="84">ÇÛÁ÷¥µ¡¼¥Ó¥¹</td>
-										<td width="44">ÊÔ½¸</td>
-										<td width="44">ºï½ü</td>
-										<td width="69">°ÜÆ°</td>
+										<td width="134">æ”¯æ‰•æ–¹æ³•</td>
+										<td width="69">æ‰‹æ•°æ–™ï¼ˆå††ï¼‰</td>
+										<td width="124">åˆ©ç”¨æ¡ä»¶</td>
+										<td width="84">é…é€ã‚µãƒ¼ãƒ“ã‚¹</td>
+										<td width="44">ç·¨é›†</td>
+										<td width="44">å‰Šé™¤</td>
+										<td width="69">ç§»å‹•</td>
 									</tr>
 									<!--{section name=cnt loop=$arrPaymentListFree}-->
 									<tr bgcolor="#ffffff" class="fs12n">
@@ -68,20 +68,20 @@
 										<td align="center">
 											<table border="0" cellspacing="0" cellpadding="0" summary=" ">
 												<tr class="fs12">
-													<td align="center" width="80"><!--{if $arrPaymentListFree[cnt].rule > 0}--><!--{$arrPaymentListFree[cnt].rule|escape|number_format}--><!--{else}-->0<!--{/if}-->±ß</td>
-													<td align="center"> ¡Á </td>
-													<td align="center" width="80"><!--{if $arrPaymentListFree[cnt].upper_rule > 0}--><!--{$arrPaymentListFree[cnt].upper_rule|escape|number_format}-->±ß<!--{else}-->ÌµÀ©¸Â<!--{/if}--></td>
+													<td align="center" width="80"><!--{if $arrPaymentListFree[cnt].rule > 0}--><!--{$arrPaymentListFree[cnt].rule|escape|number_format}--><!--{else}-->0<!--{/if}-->å††</td>
+													<td align="center"> ã€œ </td>
+													<td align="center" width="80"><!--{if $arrPaymentListFree[cnt].upper_rule > 0}--><!--{$arrPaymentListFree[cnt].upper_rule|escape|number_format}-->å††<!--{else}-->ç„¡åˆ¶é™<!--{/if}--></td>
 												</tr>
 											</table>
-										<td><!--{assign var=key value="`$arrPaymentListFree[cnt].deliv_id`"}--><!--{$arrDelivList[$key]|default:"Ì¤ÅĞÏ¿"}--></td>
-										<td align="center"><!--{if $arrPaymentListFree[cnt].fix != 1}--><a href="<!--{$smarty.server.PHP_SELF|escape}-->" onclick="win03('./payment_input.php?mode=pre_edit&payment_id=<!--{$arrPaymentListFree[cnt].payment_id}-->','payment_input','530','400'); return false;">ÊÔ½¸</a><!--{else}-->-<!--{/if}--></td>
-										<td align="center"><!--{if $arrPaymentListFree[cnt].fix != 1}--><a href="<!--{$smarty.server.PHP_SELF|escape}-->" onclick="fnModeSubmit('delete', 'payment_id', <!--{$arrPaymentListFree[cnt].payment_id}-->); return false;">ºï½ü</a><!--{else}-->-<!--{/if}--></td>
+										<td><!--{assign var=key value="`$arrPaymentListFree[cnt].deliv_id`"}--><!--{$arrDelivList[$key]|default:"æœªç™»éŒ²"}--></td>
+										<td align="center"><!--{if $arrPaymentListFree[cnt].fix != 1}--><a href="<!--{$smarty.server.PHP_SELF|escape}-->" onclick="win03('./payment_input.php?mode=pre_edit&payment_id=<!--{$arrPaymentListFree[cnt].payment_id}-->','payment_input','530','400'); return false;">ç·¨é›†</a><!--{else}-->-<!--{/if}--></td>
+										<td align="center"><!--{if $arrPaymentListFree[cnt].fix != 1}--><a href="<!--{$smarty.server.PHP_SELF|escape}-->" onclick="fnModeSubmit('delete', 'payment_id', <!--{$arrPaymentListFree[cnt].payment_id}-->); return false;">å‰Šé™¤</a><!--{else}-->-<!--{/if}--></td>
 										<td align="center">
 										<!--{if $smarty.section.cnt.iteration != 1}-->
-										<a href="<!--{$smarty.server.PHP_SELF|escape}-->" onclick="fnModeSubmit('up','payment_id', <!--{$arrPaymentListFree[cnt].payment_id}-->); return false;">¾å¤Ø</a>
+										<a href="<!--{$smarty.server.PHP_SELF|escape}-->" onclick="fnModeSubmit('up','payment_id', <!--{$arrPaymentListFree[cnt].payment_id}-->); return false;">ä¸Šã¸</a>
 										<!--{/if}-->
 										<!--{if $smarty.section.cnt.iteration != $smarty.section.cnt.last}-->
-										<a href="<!--{$smarty.server.PHP_SELF|escape}-->" onclick="fnModeSubmit('down','payment_id', <!--{$arrPaymentListFree[cnt].payment_id}-->); return false;">²¼¤Ø</a>
+										<a href="<!--{$smarty.server.PHP_SELF|escape}-->" onclick="fnModeSubmit('down','payment_id', <!--{$arrPaymentListFree[cnt].payment_id}-->); return false;">ä¸‹ã¸</a>
 										<!--{/if}-->
 										</td>
 									</tr>
@@ -99,7 +99,7 @@
 										<td bgcolor="#e9e7de" align="center">
 										<table border="0" cellspacing="0" cellpadding="0" summary=" ">
 											<tr>
-												<td><input type="button" name="subm2" value="»ÙÊ§ÊıË¡¤òÄÉ²Ã" onclick="win03('./payment_input.php','payment_input','550','400');" /></td>
+												<td><input type="button" name="subm2" value="æ”¯æ‰•æ–¹æ³•ã‚’è¿½åŠ " onclick="win03('./payment_input.php','payment_input','550','400');" /></td>
 											</tr>
 										</table>
 										</td>
@@ -119,11 +119,11 @@
 						</table>
 					</td>
 				</tr>
-				<!--¥á¥¤¥ó¥¨¥ê¥¢-->
+				<!--ãƒ¡ã‚¤ãƒ³ã‚¨ãƒªã‚¢-->
 			</table>
-			<!--¢¥ÅĞÏ¿¥Æ¡¼¥Ö¥ë¤³¤³¤Ş¤Ç-->
+			<!--â–²ç™»éŒ²ãƒ†ãƒ¼ãƒ–ãƒ«ã“ã“ã¾ã§-->
 		</td>
 	</tr>
 </form>
 </table>
-<!--¡ú¡ú¥á¥¤¥ó¥³¥ó¥Æ¥ó¥Ä¡ú¡ú-->
+<!--â˜…â˜…ãƒ¡ã‚¤ãƒ³ã‚³ãƒ³ãƒ†ãƒ³ãƒ„â˜…â˜…-->

@@ -7,7 +7,7 @@
 require_once("../require.php");
 require_once(DATA_PATH . "module/Request.php");
 
-// Ç§¾Ú³ÎÇ§
+// èªè¨¼ç¢ºèª
 $objSess = new SC_Session();
 sfIsSuccess($objSess);
 
@@ -25,7 +25,7 @@ if(is_numeric($module_id)) {
 		require_once($path);
 		exit;
 	} else {
-		print("¥â¥¸¥å¡¼¥ë¤Î¼èÆÀ¤Ë¼ºÇÔ¤·¤Ş¤·¤¿¡£:".$path);
+		print("ãƒ¢ã‚¸ãƒ¥ãƒ¼ãƒ«ã®å–å¾—ã«å¤±æ•—ã—ã¾ã—ãŸã€‚:".$path);
 	}
 }
 

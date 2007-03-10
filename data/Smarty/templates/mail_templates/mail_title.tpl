@@ -1,1 +1,1 @@
-¡Ú<!--{$tpl_shopname}-->¡Û <!--{$tpl_mailtitle}-->
+ã€<!--{$tpl_shopname}-->ã€‘ <!--{$tpl_mailtitle}-->

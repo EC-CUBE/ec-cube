@@ -31,20 +31,20 @@ else if(navigator.userAgent.indexOf("Mozilla") >= 0){
 </SCRIPT>
 
 
-<!--¡ú¡ú¥á¥¤¥ó¥³¥ó¥Æ¥ó¥Ä¡ú¡ú-->
+<!--â˜…â˜…ãƒ¡ã‚¤ãƒ³ã‚³ãƒ³ãƒ†ãƒ³ãƒ„â˜…â˜…-->
 <table width="878" border="0" cellspacing="0" cellpadding="0" summary=" ">
 <form name="form_edit" id="form_edit" method="post" action="<!--{$smarty.server.PHP_SELF|escape}-->" >
 <input type="hidden" name="mode" value="">
 <input type="hidden" name="page_id" value="<!--{$page_id}-->">
 	<tr valign="top">
 		<td background="<!--{$smarty.const.URL_DIR}-->img/contents/navi_bg.gif" height="402">
-			<!--¢§SUB NAVI-->
+			<!--â–¼SUB NAVI-->
 			<!--{include file=$tpl_subnavi}-->
-			<!--¢¥SUB NAVI-->
+			<!--â–²SUB NAVI-->
 		</td>
 		<td class="mainbg" >
 		<table width="737" border="0" cellspacing="0" cellpadding="0" summary=" ">
-			<!--¥á¥¤¥ó¥¨¥ê¥¢-->
+			<!--ãƒ¡ã‚¤ãƒ³ã‚¨ãƒªã‚¢-->
 			<tr>
 				<td align="center">
 				<table width="706" border="0" cellspacing="0" cellpadding="0" summary=" ">
@@ -57,14 +57,14 @@ else if(navigator.userAgent.indexOf("Mozilla") >= 0){
 						<td background="<!--{$smarty.const.URL_DIR}-->img/contents/main_left.jpg"><img src="<!--{$smarty.const.URL_DIR}-->img/common/_.gif" width="14" height="1" alt=""></td>
 						<td bgcolor="#cccccc">
 						
-						<!--ÅĞÏ¿¥Æ¡¼¥Ö¥ë¤³¤³¤«¤é-->
+						<!--ç™»éŒ²ãƒ†ãƒ¼ãƒ–ãƒ«ã“ã“ã‹ã‚‰-->
 						<table width="678" border="0" cellspacing="0" cellpadding="0" summary=" ">
 							<tr>
 								<td colspan="3"><img src="<!--{$smarty.const.URL_DIR}-->img/contents/contents_title_top.gif" width="678" height="7" alt=""></td>
 							</tr>
 							<tr>
 								<td background="<!--{$smarty.const.URL_DIR}-->img/contents/contents_title_left_bg.gif"><img src="<!--{$smarty.const.URL_DIR}-->img/contents/contents_title_left.gif" width="22" height="12" alt=""></td>
-								<td bgcolor="#636469" width="638" class="fs14n"><span class="white"><!--¥³¥ó¥Æ¥ó¥Ä¥¿¥¤¥È¥ë-->¥Ú¡¼¥¸¾ÜºÙÀßÄê</span></td>
+								<td bgcolor="#636469" width="638" class="fs14n"><span class="white"><!--ã‚³ãƒ³ãƒ†ãƒ³ãƒ„ã‚¿ã‚¤ãƒˆãƒ«-->ãƒšãƒ¼ã‚¸è©³ç´°è¨­å®š</span></td>
 								<td background="<!--{$smarty.const.URL_DIR}-->img/contents/contents_title_right_bg.gif"><img src="<!--{$smarty.const.URL_DIR}-->img/common/_.gif" width="18" height="1" alt=""></td>
 							</tr>
 							<tr>
@@ -75,7 +75,7 @@ else if(navigator.userAgent.indexOf("Mozilla") >= 0){
 							</tr>
 						</table>
 
-						<!--¢§ÊÔ½¸²èÌÌ¡¡¤³¤³¤«¤é-->
+						<!--â–¼ç·¨é›†ç”»é¢ã€€ã“ã“ã‹ã‚‰-->
 						<!--{if $arrErr.page_id_err != ""}-->
 						<table width="678" border="0" cellspacing="1" cellpadding="5" summary=" ">
 							<tr>
@@ -91,29 +91,29 @@ else if(navigator.userAgent.indexOf("Mozilla") >= 0){
 								<td bgcolor="#ffffff" align="left" colspan=2>
 									<!--{ if $arrErr.page_name != "" }--> <div align="center"> <span class="red12"><!--{$arrErr.page_name}--></span></div> <!--{/if}-->
 									<!--{if $arrPageData.edit_flg == 2}-->
-										Ì¾¾Î¡§<!--{$arrPageData.page_name|escape}--><input type="hidden" name="page_name" value="<!--{$arrPageData.page_name|escape}-->" />
+										åç§°ï¼š<!--{$arrPageData.page_name|escape}--><input type="hidden" name="page_name" value="<!--{$arrPageData.page_name|escape}-->" />
 									<!--{else}-->
-										Ì¾¾Î¡§<input type="text" name="page_name" value="<!--{$arrPageData.page_name|escape}-->" maxlength="<!--{$smarty.const.STEXT_LEN}-->" style="<!--{if $arrErr.page_name != ""}-->background-color: <!--{$smarty.const.ERR_COLOR}--><!--{/if}-->" size="60" class="box60" /><span class="red"> ¡Ê¾å¸Â<!--{$smarty.const.STEXT_LEN}-->Ê¸»ú¡Ë</span>
+										åç§°ï¼š<input type="text" name="page_name" value="<!--{$arrPageData.page_name|escape}-->" maxlength="<!--{$smarty.const.STEXT_LEN}-->" style="<!--{if $arrErr.page_name != ""}-->background-color: <!--{$smarty.const.ERR_COLOR}--><!--{/if}-->" size="60" class="box60" /><span class="red"> ï¼ˆä¸Šé™<!--{$smarty.const.STEXT_LEN}-->æ–‡å­—ï¼‰</span>
 									<!--{/if}-->
 								</td>
 							</tr>
 							<tr class="fs12n">
 								<td bgcolor="#ffffff" align="left" colspan=2>
 									<!--{ if $arrErr.url != "" }--> <div align="center"> <span class="red12"><!--{$arrErr.url}--></span></div> <!--{/if}-->
-									URL¡§<!--{if $arrPageData.edit_flg == 2}-->
+									URLï¼š<!--{if $arrPageData.edit_flg == 2}-->
 											<!--{$smarty.const.SITE_URL}--><!--{$arrPageData.url|escape}-->
 											<input type="hidden" name="url" value="<!--{$arrPageData.filename|escape}-->" maxlength="<!--{$smarty.const.STEXT_LEN}-->" />
 										<!--{else}-->
-											<!--{$user_URL}--><input type="text" name="url" value="<!--{$arrPageData.directory|escape}--><!--{$arrPageData.filename|escape}-->" maxlength="<!--{$smarty.const.STEXT_LEN}-->" style="<!--{if $arrErr.url != ""}-->background-color: <!--{$smarty.const.ERR_COLOR}-->;<!--{/if}--> ime-mode: disabled;" size="60" class="box60" />.php<span class="red"> ¡Ê¾å¸Â<!--{$smarty.const.STEXT_LEN}-->Ê¸»ú¡Ë</span>
+											<!--{$user_URL}--><input type="text" name="url" value="<!--{$arrPageData.directory|escape}--><!--{$arrPageData.filename|escape}-->" maxlength="<!--{$smarty.const.STEXT_LEN}-->" style="<!--{if $arrErr.url != ""}-->background-color: <!--{$smarty.const.ERR_COLOR}-->;<!--{/if}--> ime-mode: disabled;" size="60" class="box60" />.php<span class="red"> ï¼ˆä¸Šé™<!--{$smarty.const.STEXT_LEN}-->æ–‡å­—ï¼‰</span>
 										<!--{/if}-->
 								</td>
 							</tr>
 							<tr class="fs12n">
 								<td bgcolor="#ffffff" align="left">
-									<label for="header"><input type="checkbox" name="header_chk" id="header" <!--{$arrPageData.header_chk}-->>¶¦ÄÌ¤Î¥Ø¥Ã¥À¡¼¤ò»ÈÍÑ¤¹¤ë</label>
+									<label for="header"><input type="checkbox" name="header_chk" id="header" <!--{$arrPageData.header_chk}-->>å…±é€šã®ãƒ˜ãƒƒãƒ€ãƒ¼ã‚’ä½¿ç”¨ã™ã‚‹</label>
 								</td>
 								<td bgcolor="#ffffff" align="left">
-									<label for="footer"><input type="checkbox" name="footer_chk" id="footer" <!--{$arrPageData.footer_chk}-->>¶¦ÄÌ¤Î¥Õ¥Ã¥¿¡¼¤ò»ÈÍÑ¤¹¤ë</label>
+									<label for="footer"><input type="checkbox" name="footer_chk" id="footer" <!--{$arrPageData.footer_chk}-->>å…±é€šã®ãƒ•ãƒƒã‚¿ãƒ¼ã‚’ä½¿ç”¨ã™ã‚‹</label>
 								</td>
 							</tr>
 
@@ -125,28 +125,28 @@ else if(navigator.userAgent.indexOf("Mozilla") >= 0){
 									<input type="hidden" name="html_area_row" value="<!--{$text_row}-->">
 									</div>
 									<div align="right">
-										<input type="button" value="Âç¤­¤¯¤¹¤ë" onClick="ChangeSize(this, tpl_data, 50, 13, html_area_row)">
+										<input type="button" value="å¤§ããã™ã‚‹" onClick="ChangeSize(this, tpl_data, 50, 13, html_area_row)">
 									</div>
 									<br/>
 								</td>
 							</tr>
 							<tr class="fs12n">
 								<td bgcolor="#f2f1ec" align="center" colspan=2>
-									<input type='button' value='ÅĞÏ¿' name='subm' onclick="fnTargetSelf(); fnFormModeSubmit('form_edit','confirm','','');"  />
-									<input type='button' value='¥×¥ì¥Ó¥å¡¼' name='preview' onclick="doPreview(); "  />
+									<input type='button' value='ç™»éŒ²' name='subm' onclick="fnTargetSelf(); fnFormModeSubmit('form_edit','confirm','','');"  />
+									<input type='button' value='ãƒ—ãƒ¬ãƒ“ãƒ¥ãƒ¼' name='preview' onclick="doPreview(); "  />
 								</td>
 							</tr>
 						</table>
-						<!--¢¥ÊÔ½¸²èÌÌ¡¡¤³¤³¤Ş¤Ç-->
+						<!--â–²ç·¨é›†ç”»é¢ã€€ã“ã“ã¾ã§-->
 						
 						<table width="678" border="0" cellspacing="0" cellpadding="0" summary=" ">
 							<tr><td colspan="3"><img src="<!--{$smarty.const.URL_DIR}-->img/contents/main_bar.jpg" width="678" height="10" alt=""></td></tr>
 						</table>
 						
-						<!--¢§°ìÍ÷¡¡¤³¤³¤«¤é-->
+						<!--â–¼ä¸€è¦§ã€€ã“ã“ã‹ã‚‰-->
 						<table width="678" border="0" cellspacing="1" cellpadding="5" summary=" ">
 							<tr class="fs12n">
-								<td bgcolor="#f2f1ec" align="center" colspan=3 ><strong>ÊÔ½¸²ÄÇ½²èÌÌ°ìÍ÷</strong></td>
+								<td bgcolor="#f2f1ec" align="center" colspan=3 ><strong>ç·¨é›†å¯èƒ½ç”»é¢ä¸€è¦§</strong></td>
 							</tr>
 							
 							<!--{foreach key=key item=item from=$arrPageList}-->
@@ -156,12 +156,12 @@ else if(navigator.userAgent.indexOf("Mozilla") >= 0){
 									<a href="<!--{$smarty.server.PHP_SELF|escape}-->?page_id=<!--{$item.page_id}-->" ><!--{$item.page_name}--></a>
 								</td>
 								<td align="center" width=78 bgcolor="<!--{if $item.page_id == $page_id}--><!--{$smarty.const.SELECT_RGB}--><!--{else}-->#ffffff<!--{/if}-->">
-									<input type="button" value="¥ì¥¤¥¢¥¦¥È" name="layout<!--{$item.page_id}-->" onclick="location.href='./index.php?page_id=<!--{$item.page_id}-->';"  />
+									<input type="button" value="ãƒ¬ã‚¤ã‚¢ã‚¦ãƒˆ" name="layout<!--{$item.page_id}-->" onclick="location.href='./index.php?page_id=<!--{$item.page_id}-->';"  />
 									<input type="hidden" value="<!--{$item.page_id}-->" name="del_id<!--{$item.page_id}-->">
 								</td>
 								<td align="center" width=78 bgcolor="<!--{if $item.page_id == $page_id}--><!--{$smarty.const.SELECT_RGB}--><!--{else}-->#ffffff<!--{/if}-->">
 									<!--{if $item.edit_flg == 1}-->
-									<input type="button" value="ºï½ü" name="del<!--{$item.page_id}-->" onclick="fnTargetSelf(); fnFormModeSubmit('form_edit','delete','page_id',this.name.substr(3));"  />
+									<input type="button" value="å‰Šé™¤" name="del<!--{$item.page_id}-->" onclick="fnTargetSelf(); fnFormModeSubmit('form_edit','delete','page_id',this.name.substr(3));"  />
 									<input type="hidden" value="<!--{$item.page_id}-->" name="del_id<!--{$item.page_id}-->">
 									<!--{/if}-->
 								</td>
@@ -170,13 +170,13 @@ else if(navigator.userAgent.indexOf("Mozilla") >= 0){
 							<!--{/foreach}-->
 							<tr class="fs12n">
 								<td bgcolor="#f2f1ec" align="center" colspan=3>
-								<input type='button' value='¿·µ¬¥Ú¡¼¥¸ºîÀ®' name='subm' onclick="location.href='http://<!--{$smarty.server.HTTP_HOST}--><!--{$smarty.server.PHP_SELF|escape}-->'">
+								<input type='button' value='æ–°è¦ãƒšãƒ¼ã‚¸ä½œæˆ' name='subm' onclick="location.href='http://<!--{$smarty.server.HTTP_HOST}--><!--{$smarty.server.PHP_SELF|escape}-->'">
 								</td>
 							</tr>
 						</table>
-						<!--¢¥°ìÍ÷¡¡¤³¤³¤Ş¤Ç-->
+						<!--â–²ä¸€è¦§ã€€ã“ã“ã¾ã§-->
 
-						<!--ÅĞÏ¿¥Æ¡¼¥Ö¥ë¤³¤³¤Ş¤Ç-->
+						<!--ç™»éŒ²ãƒ†ãƒ¼ãƒ–ãƒ«ã“ã“ã¾ã§-->
 						</td>
 						<td background="<!--{$smarty.const.URL_DIR}-->img/contents/main_right.jpg"><img src="<!--{$smarty.const.URL_DIR}-->img/common/_.gif" width="14" height="1" alt=""></td>
 					</tr>
@@ -188,12 +188,12 @@ else if(navigator.userAgent.indexOf("Mozilla") >= 0){
 				</table>
 				</td>
 			</tr>
-			<!--¥á¥¤¥ó¥¨¥ê¥¢-->
+			<!--ãƒ¡ã‚¤ãƒ³ã‚¨ãƒªã‚¢-->
 		</table>
 		</td>
 	</tr>
 </form>
 </table>
-<!--¡ú¡ú¥á¥¤¥ó¥³¥ó¥Æ¥ó¥Ä¡ú¡ú-->		
+<!--â˜…â˜…ãƒ¡ã‚¤ãƒ³ã‚³ãƒ³ãƒ†ãƒ³ãƒ„â˜…â˜…-->		
 
 

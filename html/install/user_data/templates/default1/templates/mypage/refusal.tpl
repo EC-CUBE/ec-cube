@@ -3,30 +3,30 @@
  *
  * http://www.lockon.co.jp/
  *}-->
-<!--¢§CONTENTS-->
+<!--â–¼CONTENTS-->
 <table width="100" border="0" cellspacing="0" cellpadding="0" summary=" ">
 <form name="form1" method="post" action="<!--{$smarty.server.PHP_SELF|escape}-->">
 <input type="hidden" name="mode" value="confirm">
 	<tr>
 		<td align="center" bgcolor="#ffffff">
-		<!--¢§MAIN ONTENTS-->
+		<!--â–¼MAIN ONTENTS-->
 		<table width="100%" border="0" cellspacing="0" cellpadding="0" summary=" ">
 			<tr>
-				<td><img src="<!--{$smarty.const.URL_DIR}-->img/mypage/title.jpg" width="700" height="40" alt="MY¥Ú¡¼¥¸"></td>
+				<td><img src="<!--{$smarty.const.URL_DIR}-->img/mypage/title.jpg" width="700" height="40" alt="MYãƒšãƒ¼ã‚¸"></td>
 			</tr>
 			<tr><td height="15"></td></tr>
 		</table>
 		<table width="100%" border="0" cellspacing="0" cellpadding="0" summary=" ">
 			<tr valign="top">
 				<td>
-				<!--¢§NAVI-->
+				<!--â–¼NAVI-->
 					<!--{include file=$tpl_navi}-->
-				<!--¢¥NAVI-->
+				<!--â–²NAVI-->
 				</td>
 				<td align="right">
 				<table width="515" border="0" cellspacing="0" cellpadding="0" summary=" ">
 					<tr>
-						<td><!--¡ú¥¿¥¤¥È¥ë--><img src="<!--{$smarty.const.URL_DIR}-->img/mypage/subtitle04.gif" width="515" height="32" alt="Âà²ñ¼êÂ³¤­"></td>
+						<td><!--â˜…ã‚¿ã‚¤ãƒˆãƒ«--><img src="<!--{$smarty.const.URL_DIR}-->img/mypage/subtitle04.gif" width="515" height="32" alt="é€€ä¼šæ‰‹ç¶šã"></td>
 					</tr>
 					<tr><td height="15"></td></tr>
 					<tr>
@@ -35,26 +35,26 @@
 							<tr><td height="5"></td></tr>
 							<tr>
 								<td align="center" bgcolor="#ffffff">
-								<!--É½¼¨¤³¤³¤«¤é-->
+								<!--è¡¨ç¤ºã“ã“ã‹ã‚‰-->
 								<table width="465" border="0" cellspacing="0" cellpadding="0" summary=" ">
 									<tr><td height="30"></td></tr>
 									<tr>
 										<td class="fs12">
-										²ñ°÷¤òÂà²ñ¤µ¤ì¤¿¾ì¹ç¤Ë¤Ï¡¢¸½ºßÊÝÂ¸¤µ¤ì¤Æ¤¤¤ë¹ØÆþÍúÎò¤ä¡¢¤ªÆÏ¤±Àè¤Ê¤É¤Î¾ðÊó¤Ï¡¢¤¹¤Ù¤Æºï½ü¤µ¤ì¤Þ¤¹¤¬¤è¤í¤·¤¤¤Ç¤·¤ç¤¦¤«¡©</td>
+										ä¼šå“¡ã‚’é€€ä¼šã•ã‚ŒãŸå ´åˆã«ã¯ã€ç¾åœ¨ä¿å­˜ã•ã‚Œã¦ã„ã‚‹è³¼å…¥å±¥æ­´ã‚„ã€ãŠå±Šã‘å…ˆãªã©ã®æƒ…å ±ã¯ã€ã™ã¹ã¦å‰Šé™¤ã•ã‚Œã¾ã™ãŒã‚ˆã‚ã—ã„ã§ã—ã‚‡ã†ã‹ï¼Ÿ</td>
 									</tr>
 									<tr><td height="30"></td></tr>
 									<tr>
 										<td align="center">
-											<input type="image" onmouseover="chgImgImageSubmit('<!--{$smarty.const.URL_DIR}-->img/mypage/b_refuse_on.gif',this);" onmouseout="chgImgImageSubmit('<!--{$smarty.const.URL_DIR}-->img/mypage/b_refuse.gif',this);" src="<!--{$smarty.const.URL_DIR}-->img/mypage/b_refuse.gif" width="180" height="30" alt="²ñ°÷Âà²ñ¤ò¹Ô¤¦" name="refusal" id="refusal" />
+											<input type="image" onmouseover="chgImgImageSubmit('<!--{$smarty.const.URL_DIR}-->img/mypage/b_refuse_on.gif',this);" onmouseout="chgImgImageSubmit('<!--{$smarty.const.URL_DIR}-->img/mypage/b_refuse.gif',this);" src="<!--{$smarty.const.URL_DIR}-->img/mypage/b_refuse.gif" width="180" height="30" alt="ä¼šå“¡é€€ä¼šã‚’è¡Œã†" name="refusal" id="refusal" />
 										</td>
 									</tr>
 									<tr><td height="10"></td></tr>
 									<tr>
-										<td class="fs10"><span class="red">¢¨Âà²ñ¼êÂ³¤­¤¬´°Î»¤·¤¿»þÅÀ¤Ç¡¢¸½ºßÊÝÂ¸¤µ¤ì¤Æ¤¤¤ë¹ØÆþÍúÎò¤ä¡¢¤ªÆÏ¤±ÀèÅù¤Î¾ðÊó¤Ï¤¹¤Ù¤Æ¤Ê¤¯¤Ê¤ê¤Þ¤¹¤Î¤Ç¤´Ãí°Õ¤¯¤À¤µ¤¤¡£</span></td>
+										<td class="fs10"><span class="red">â€»é€€ä¼šæ‰‹ç¶šããŒå®Œäº†ã—ãŸæ™‚ç‚¹ã§ã€ç¾åœ¨ä¿å­˜ã•ã‚Œã¦ã„ã‚‹è³¼å…¥å±¥æ­´ã‚„ã€ãŠå±Šã‘å…ˆç­‰ã®æƒ…å ±ã¯ã™ã¹ã¦ãªããªã‚Šã¾ã™ã®ã§ã”æ³¨æ„ãã ã•ã„ã€‚</span></td>
 									</tr>
 									<tr><td height="30"></td></tr>
 								</table>
-								<!--É½¼¨¤³¤³¤Þ¤Ç-->
+								<!--è¡¨ç¤ºã“ã“ã¾ã§-->
 								</td>
 							</tr>
 							<tr><td height="5"></td></tr>
@@ -65,10 +65,10 @@
 				</td>
 			</tr>
 		</table>
-		<!--¢¥MAIN ONTENTS-->
+		<!--â–²MAIN ONTENTS-->
 		</td>
 	</tr>
 </form>
 </table>
-<!--¢¥CONTENTS-->
+<!--â–²CONTENTS-->
 

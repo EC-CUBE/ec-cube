@@ -155,7 +155,7 @@ function smarty_function_html_checkboxes_output_ex($name, $value, $output, $sele
 		}
 	}
 	
-	// ÃÍ¤òÁŞÆş
+	// å€¤ã‚’æŒ¿å…¥
 	$_output .= $output;
 	
 	$_output .= $tags[1];

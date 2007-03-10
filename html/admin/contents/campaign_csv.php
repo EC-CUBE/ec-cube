@@ -6,7 +6,7 @@
  */
 require_once(DATA_PATH . "include/csv_output.inc");
 
-// CSV½ĞÎÏ¥Ç¡¼¥¿¤òºîÀ®¤¹¤ë¡£
+// CSVå‡ºåŠ›ãƒ‡ãƒ¼ã‚¿ã‚’ä½œæˆã™ã‚‹ã€‚
 function lfGetCSV($from, $where, $option, $arrval, $arrCsvOutputCols = "") {
 	global $arrCVSCOL;
 
@@ -20,13 +20,13 @@ function lfGetCSV($from, $where, $option, $arrval, $arrCsvOutputCols = "") {
 
 	$max = count($list_data);
 	for($i = 0; $i < $max; $i++) {
-		// ³Æ¹àÌÜ¤òCSV½ĞÎÏÍÑ¤ËÊÑ´¹¤¹¤ë¡£
+		// å„é …ç›®ã‚’CSVå‡ºåŠ›ç”¨ã«å¤‰æ›ã™ã‚‹ã€‚
 		$data .= lfMakeCSV($list_data[$i]);
 	}
 	return $data;
 }
 
-// ³Æ¹àÌÜ¤òCSV½ĞÎÏÍÑ¤ËÊÑ´¹¤¹¤ë¡£
+// å„é …ç›®ã‚’CSVå‡ºåŠ›ç”¨ã«å¤‰æ›ã™ã‚‹ã€‚
 function lfMakeCSV($list) {
 	global $arrPref;
 	
@@ -46,7 +46,7 @@ function lfMakeCSV($list) {
 		$tmp = ereg_replace("[\",]", " ", $tmp);
 		$line .= "\"".$tmp."\",";
 	}
-	// Ê¸Ëö¤Î","¤òÊÑ´¹
+	// æ–‡æœ«ã®","ã‚’å¤‰æ›
 	$line = ereg_replace(",$", "\n", $line);
 	return $line;
 }

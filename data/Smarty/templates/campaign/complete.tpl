@@ -3,11 +3,11 @@
  *
  * http://www.lockon.co.jp/
  *}-->
-<!--¢§CONTENTS-->
+<!--â–¼CONTENTS-->
 <table width="760" border="0" cellspacing="0" cellpadding="0" summary=" ">
 	<tr>
 		<td align="center" bgcolor="#ffffff">
-		<!--¢§MAIN ONTENTS-->		
+		<!--â–¼MAIN ONTENTS-->		
 		
 		<table width="640" border="0" cellspacing="0" cellpadding="0" summary=" ">
 			<tr>
@@ -16,20 +16,20 @@
 					<tr><td height="5"></td></tr>
 					<tr>
 						<td align="center" bgcolor="#ffffff">			
-							<!--¤´ÃíÊ¸´°Î»¤ÎÊ¸¾Ï¤³¤³¤«¤é-->
+							<!--ã”æ³¨æ–‡å®Œäº†ã®æ–‡ç« ã“ã“ã‹ã‚‰-->
 							<table width="590" border="0" cellspacing="0" cellpadding="0" summary=" ">
 								<tr><td height="25"></td></tr>
 								<tr>
-									<td class="fs12"><span class="redst"><!--{$campaign_name|escape}-->¤Ë¤´±þÊç¤¤¤¿¤À¤­¡¢¤¢¤ê¤¬¤È¤¦¤´¤¶¤¤¤Þ¤·¤¿¡£</span></td>
+									<td class="fs12"><span class="redst"><!--{$campaign_name|escape}-->ã«ã”å¿œå‹Ÿã„ãŸã ãã€ã‚ã‚ŠãŒã¨ã†ã”ã–ã„ã¾ã—ãŸã€‚</span></td>
 								</tr>
 								<tr><td height="20"></td></tr>
 								<tr>
-									<td class="fs12">º£¸å¤È¤â¤´°¦¸Ü»ò¤ê¤Þ¤¹¤è¤¦¤è¤í¤·¤¯¤ª´ê¤¤¿½¤·¾å¤²¤Þ¤¹¡£</td>
+									<td class="fs12">ä»Šå¾Œã¨ã‚‚ã”æ„›é¡§è³œã‚Šã¾ã™ã‚ˆã†ã‚ˆã‚ã—ããŠé¡˜ã„ç”³ã—ä¸Šã’ã¾ã™ã€‚</td>
 								</tr>
 								<tr><td height="20"></td></tr>
 								<tr><td height="25"></td></tr>
 							</table>
-							<!--¤´ÃíÊ¸´°Î»¤ÎÊ¸¾Ï¤³¤³¤Þ¤Ç-->
+							<!--ã”æ³¨æ–‡å®Œäº†ã®æ–‡ç« ã“ã“ã¾ã§-->
 						</td>
 					</tr>
 					<tr><td height="5"></td></tr>
@@ -38,8 +38,8 @@
 			</tr>
 			<tr><td height="20"></td></tr>
 		</table>
-		<!--¢¥MAIN ONTENTS-->
+		<!--â–²MAIN ONTENTS-->
 		</td>
 	</tr>
 </table>
-<!--¢¥CONTENTS-->
+<!--â–²CONTENTS-->

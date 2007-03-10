@@ -9,7 +9,7 @@ require_once("../require.php");
 class LC_Page{
 	function LC_Page(){
 		$this->tpl_mainpage = USER_PATH . 'templates/mypage/change_complete.tpl';
-		$this->tpl_title = 'MY¥Ú¡¼¥¸/²ñ°÷ÅÐÏ¿ÆâÍÆÊÑ¹¹(´°Î»¥Ú¡¼¥¸)';
+		$this->tpl_title = 'MYãƒšãƒ¼ã‚¸/ä¼šå“¡ç™»éŒ²å†…å®¹å¤‰æ›´(å®Œäº†ãƒšãƒ¼ã‚¸)';
 		$this->tpl_navi = USER_PATH . 'templates/mypage/navi.tpl';
 		$this->tpl_mypageno = 'change';
 	}
@@ -19,14 +19,14 @@ $objPage = new LC_Page();
 $objView = new SC_SiteView();
 $objCustomer = new SC_Customer();
 
-// ¥ì¥¤¥¢¥¦¥È¥Ç¥¶¥¤¥ó¤ò¼èÆÀ
+// ãƒ¬ã‚¤ã‚¢ã‚¦ãƒˆãƒ‡ã‚¶ã‚¤ãƒ³ã‚’å–å¾—
 $objPage = sfGetPageLayout($objPage, false, "mypage/index.php");
 
-//¥í¥°¥¤¥óÈ½Äê
+//ãƒ­ã‚°ã‚¤ãƒ³åˆ¤å®š
 if (!$objCustomer->isLoginSuccess()){
 	sfDispSiteError(CUSTOMER_ERROR);
 }else {
-	//¥Þ¥¤¥Ú¡¼¥¸¥È¥Ã¥×¸ÜµÒ¾ðÊóÉ½¼¨ÍÑ
+	//ãƒžã‚¤ãƒšãƒ¼ã‚¸ãƒˆãƒƒãƒ—é¡§å®¢æƒ…å ±è¡¨ç¤ºç”¨
 	$objPage->CustomerName1 = $objCustomer->getvalue('name01');
 	$objPage->CustomerName2 = $objCustomer->getvalue('name02');
 	$objPage->CustomerPoint = $objCustomer->getvalue('point');

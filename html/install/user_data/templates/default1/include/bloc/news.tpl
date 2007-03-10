@@ -5,10 +5,10 @@
  *}-->
 <table width="400" border="0" cellspacing="0" cellpadding="0" summary=" ">
 	<tr>
-		<td colspan="3"><img src="<!--{$smarty.const.URL_DIR}-->img/top/news.jpg" width="400" height="29" alt="¿·Ãå¾ðÊó"></td>
+		<td colspan="3"><img src="<!--{$smarty.const.URL_DIR}-->img/top/news.jpg" width="400" height="29" alt="æ–°ç€æƒ…å ±"></td>
 	</tr>
 	<tr>
-		<td colspan="3"><span class="fs10">¡ù¡ú¡ù ¿·Ãå¾ðÊó¤Ï<a href="<!--{$smarty.const.URL_DIR}-->rss/index.php" target="_blank">RSS</a>¤ÇÇÛ¿®¤·¤Æ¤¤¤Þ¤¹¡£¡ú¡ù¡ú </span></td>
+		<td colspan="3"><span class="fs10">â˜†â˜…â˜† æ–°ç€æƒ…å ±ã¯<a href="<!--{$smarty.const.URL_DIR}-->rss/index.php" target="_blank">RSS</a>ã§é…ä¿¡ã—ã¦ã„ã¾ã™ã€‚â˜…â˜†â˜… </span></td>
 	</tr>
 	<tr>
 		<td height="10"><img src="<!--{$smarty.const.URL_DIR}-->img/common/_.gif" width="16" height="1" alt=""></td>

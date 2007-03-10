@@ -5,7 +5,7 @@
  */
 @charset "<!--{$smarty.const.CHAR_CODE}-->";
 
-/***¥³¥ó¥Æ¥ó¥Ä***/
+/***ã‚³ãƒ³ãƒ†ãƒ³ãƒ„***/
 #containerfull #maintitle{
 border: 0;
 margin: 0 0 15px 0;
@@ -41,7 +41,7 @@ padding: 0;
 width: 700px;
 }
 
-/*¥³¥á¥ó¥È*/
+/*ã‚³ãƒ¡ãƒ³ãƒˆ*/
 #containerfull #comment01{
 border: 0;
 margin: 0 0 20px 0;
@@ -49,8 +49,8 @@ padding: 0;
 width: 700px;
 }
 
-/**¥Æ¡¼¥Ö¥ë**/
-/*ÏÈ*/
+/**ãƒ†ãƒ¼ãƒ–ãƒ«**/
+/*æ */
 #containerfull #frame{
 border: 0;
 margin: 0;
@@ -59,7 +59,7 @@ width: 700px;
 background: #ccc;
 }
 
-/*¤´ÃíÊ¸ÆâÍÆ¥¿¥¤¥È¥ë¹Ô*/
+/*ã”æ³¨æ–‡å†…å®¹ã‚¿ã‚¤ãƒˆãƒ«è¡Œ*/
 #containerfull #frame #picture{
 width: 80px;
 background: #ecf5ff;
@@ -84,7 +84,7 @@ background: #ecf5ff;
 text-align: center;
 }
 
-/*¤´ÃíÊ¸ÆâÍÆ¥³¥ó¥Æ¥ó¥Ä¹Ô*/
+/*ã”æ³¨æ–‡å†…å®¹ã‚³ãƒ³ãƒ†ãƒ³ãƒ„è¡Œ*/
 #containerfull #frame #picture_c{
 width: 80px;
 background: #fff;
@@ -108,7 +108,7 @@ background: #fff;
 text-align: right;
 }
 
-/*¤´ÃíÊ¸ÆâÍÆ²¼¹Ô*/
+/*ã”æ³¨æ–‡å†…å®¹ä¸‹è¡Œ*/
 #containerfull #frame #under{
 background: #ecf5ff;
 text-align: right;
@@ -125,7 +125,7 @@ background: #ffecec;
 text-align: right;
 }
 
-/*°Ê²¼¤Î¥³¥ó¥Æ¥ó¥Ä¹Ô*/
+/*ä»¥ä¸‹ã®ã‚³ãƒ³ãƒ†ãƒ³ãƒ„è¡Œ*/
 #containerfull #left{
 background: #ecf5ff;
 width: 170px;
@@ -136,7 +136,7 @@ background: #fff;
 width: 507px;
 }
 
-/*¥Ü¥¿¥ó*/
+/*ãƒœã‚¿ãƒ³*/
 #containerfull #button{
 border: 0;
 margin: 30px 0 15px 0;
@@ -144,7 +144,7 @@ padding: 0;
 text-align: center;
 }
 
-/*¥Ù¥ê¥µ¥¤¥ó*/
+/*ãƒ™ãƒªã‚µã‚¤ãƒ³*/
 #containerfull #verisign{
 border: 0;
 margin: 35px 65px;

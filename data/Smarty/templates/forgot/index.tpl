@@ -16,7 +16,7 @@
 <script type="text/javascript" src="<!--{$smarty.const.URL_DIR}-->js/navi.js"></script>
 <script type="text/javascript" src="<!--{$smarty.const.URL_DIR}-->js/win_op.js"></script>
 <script type="text/javascript" src="<!--{$smarty.const.URL_DIR}-->js/site.js"></script>
-<title><!--{$arrSiteInfo.shop_name}-->/�ѥ���ɤ�˺�줿��(���ϥڡ���)</title>
+<title><!--{$arrSiteInfo.shop_name}-->/パスワードを忘れた方(入力ページ)</title>
 </head>
 
 <body bgcolor="#f0f0f0" text="#555555" link="#3a75af" vlink="#3a75af" alink="#3a75af" leftmargin="0" topmargin="0" marginwidth="0" marginheight="0" onLoad="preLoadImg('<!--{$smarty.const.URL_DIR}-->')">
@@ -35,12 +35,12 @@
 			<table width="500" border="0" cellspacing="0" cellpadding="0" summary=" ">
 				<tr><td height="15"></td></tr>
 				<tr>
-					<td><img src="<!--{$smarty.const.URL_DIR}-->img/forget/title.jpg" width="500" height="40" alt="�ѥ���ɤ�˺�줿��"></td>
+					<td><img src="<!--{$smarty.const.URL_DIR}-->img/forget/title.jpg" width="500" height="40" alt="パスワードを忘れた方"></td>
 				</tr>
 				<tr><td height="15"></td></tr>
 				<tr>
-					<td class="fs12">����Ͽ���Υ᡼�륢�ɥ쥹�����Ϥ��ơּ��ءץܥ���򥯥�å����Ƥ���������<br>
-					<span class="red">���������ѥ���ɤ�ȯ�Ԥ������ޤ��Τǡ���˺��ˤʤä��ѥ���ɤϤ����ѤǤ��ʤ��ʤ�ޤ���</span></td>
+					<td class="fs12">ご登録時のメールアドレスを入力して「次へ」ボタンをクリックしてください。<br>
+					<span class="red">※新しくパスワードを発行いたしますので、お忘れになったパスワードはご利用できなくなります。</span></td>
 				</tr>
 				<tr><td height="15"></td></tr>
 				<tr>
@@ -48,7 +48,7 @@
 					<table width="490" border="0" cellspacing="0" cellpadding="0" summary=" ">
 						<tr><td height="5"></td></tr>
 						<tr>
-							<td align="center" height="120" bgcolor="#ffffff" class="fs12">�᡼�륢�ɥ쥹����&nbsp;<!--���᡼�륢�ɥ쥹���ϡ�--><input type="text" name="email" value="<!--{$tpl_login_email|escape}-->" size="50" size="40" class="box40" style="<!--{$errmsg|sfGetErrorColor}-->; ime-mode: disabled;" /></td>
+							<td align="center" height="120" bgcolor="#ffffff" class="fs12">メールアドレス：　&nbsp;<!--★メールアドレス入力★--><input type="text" name="email" value="<!--{$tpl_login_email|escape}-->" size="50" size="40" class="box40" style="<!--{$errmsg|sfGetErrorColor}-->; ime-mode: disabled;" /></td>
 						</tr>
 						<tr><td height="5"></td></tr>
 					</table>
@@ -61,7 +61,7 @@
 				<!--{/if}-->
 				<tr><td height="15"></td></tr>
 				<tr>
-					<td align="center"><input type="image" onmouseover="chgImgImageSubmit('<!--{$smarty.const.URL_DIR}-->img/common/b_next_on.gif',this)" onmouseout="chgImgImageSubmit('<!--{$smarty.const.URL_DIR}-->img/common/b_next.gif',this)" src="<!--{$smarty.const.URL_DIR}-->img/common/b_next.gif" width="150" height="30" alt="����" border="0" name="next" id="next" /></td>
+					<td align="center"><input type="image" onmouseover="chgImgImageSubmit('<!--{$smarty.const.URL_DIR}-->img/common/b_next_on.gif',this)" onmouseout="chgImgImageSubmit('<!--{$smarty.const.URL_DIR}-->img/common/b_next.gif',this)" src="<!--{$smarty.const.URL_DIR}-->img/common/b_next.gif" width="150" height="30" alt="次へ" border="0" name="next" id="next" /></td>
 				</tr>
 				<tr><td height="30"></td></tr>
 			</table>

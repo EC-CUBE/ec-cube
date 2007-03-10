@@ -8,12 +8,12 @@
 require_once("../lib/thumb.php");
 
 /*----------------------------------------------------------------------
- * [Ì¾¾Î] GC_Thumb
- * [³µÍ×] ¥¢¥Ã¥×¥í¡¼¥É¥Õ¥¡¥¤¥ë²Ã¹©¥¯¥é¥¹(thumb.php¤È¥»¥Ã¥È¤Ç»ÈÍÑ¤¹¤ë)
- * [°ú¿ô] -
- * [ÌáÃÍ] -
- * [°ÍÂ¸] thumb.php
- * [Ãí¼á] -
+ * [åç§°] GC_Thumb
+ * [æ¦‚è¦] ã‚¢ãƒƒãƒ—ãƒ­ãƒ¼ãƒ‰ãƒ•ã‚¡ã‚¤ãƒ«åŠ å·¥ã‚¯ãƒ©ã‚¹(thumb.phpã¨ã‚»ãƒƒãƒˆã§ä½¿ç”¨ã™ã‚‹)
+ * [å¼•æ•°] -
+ * [æˆ»å€¤] -
+ * [ä¾å­˜] thumb.php
+ * [æ³¨é‡ˆ] -
  *----------------------------------------------------------------------*/
 
 Class GC_Thumb {
@@ -24,39 +24,39 @@ Class GC_Thumb {
 		$this->tempPath	 = $_SERVER['DOCUMENT_ROOT'] . $tempFilePath;
 	}
 
-	//--- °ì»þ¥Õ¥¡¥¤¥ëÀ¸À®(¥µ¥à¥Í¥¤¥ë²èÁüÀ¸À®ÍÑ)
+	//--- ä¸€æ™‚ãƒ•ã‚¡ã‚¤ãƒ«ç”Ÿæˆ(ã‚µãƒ ãƒã‚¤ãƒ«ç”»åƒç”Ÿæˆç”¨)
 	function makeImageTempFile($fileName, $phpFileName, $max_width,$max_height) {
-		// °ì°Õ¤ÊID¤ò¼èÆÀ¤¹¤ë¡£
+		// ä¸€æ„ãªIDã‚’å–å¾—ã™ã‚‹ã€‚
 		$mainname = uniqid("").".";
-		// ³ÈÄ¥»Ò°Ê³°¤òÃÖ¤­´¹¤¨¤ë¡£
+		// æ‹¡å¼µå­ä»¥å¤–ã‚’ç½®ãæ›ãˆã‚‹ã€‚
 		$newFileName = ereg_replace("^.*\.",$mainname,$fileName);
 		$result  = MakeThumb( $phpFileName, $this->tempPath, $max_width, $max_height, $newFileName );
 		return $newFileName;
 	}
 
-	//--- °ì»þ¥Õ¥¡¥¤¥ëÀ¸À®
+	//--- ä¸€æ™‚ãƒ•ã‚¡ã‚¤ãƒ«ç”Ÿæˆ
 	function makeTempFile($fileName, $phpFileName) {
-		$newFileNname = str_replace("'", "¡Ç", $fileName );
+		$newFileNname = str_replace("'", "â€™", $fileName );
 		$newFileNname = date("siU") . $newFileNname;
 		copy( $phpFileName, $this->tempPath . $newFileNname );
 		return $newFileNname;	
 	}
 
-	//--- ¥Õ¥¡¥¤¥ë¤ò»ØÄêÊÝÂ¸DIR¤Ø°ÜÆ°
+	//--- ãƒ•ã‚¡ã‚¤ãƒ«ã‚’æŒ‡å®šä¿å­˜DIRã¸ç§»å‹•
 	function fileMove($fileName, $dirName) {
 		if(copy( $this->tempPath . $fileName , $_SERVER['DOCUMENT_ROOT'] . $dirName . $fileName)) {
 			unlink( $this->tempPath . $fileName );
 		}
 	}
 
-	//---- °ì»þDIR¤Î¥Õ¥¡¥¤¥ë¤ò°ì³çºï½ü	
+	//---- ä¸€æ™‚DIRã®ãƒ•ã‚¡ã‚¤ãƒ«ã‚’ä¸€æ‹¬å‰Šé™¤	
 	function execDeleteTempFile() {
 		chdir( $this->tempPath );
 		$delFile = glob( "*.*" );
 		if( is_array($delFile) ) foreach( $delFile as $val ) @unlink( $val );
 	}
 
-	//---- »ØÄê¥Õ¥¡¥¤¥ë¤òºï½ü	
+	//---- æŒ‡å®šãƒ•ã‚¡ã‚¤ãƒ«ã‚’å‰Šé™¤	
 	function fileDelete($fileName, $dirName) {
 		unlink( $_SERVER['DOCUMENT_ROOT'] . $dirName . $fileName );
 	}

@@ -3,17 +3,17 @@
  *
  * http://www.lockon.co.jp/
  *}-->
-<!--¢§CONTENTS-->
+<!--â–¼CONTENTS-->
 <table width="" border="0" cellspacing="0" cellpadding="0" summary=" ">
 <form name="form1" method="post" action="<!--{$smarty.server.PHP_SELF|escape}-->">
 <input type="hidden" name="order_id" value="" >
 <input type="hidden" name="pageno" value="<!--{$tpl_pageno}-->">
 	<tr>
 		<td align="center" bgcolor="#ffffff">
-		<!--¢§MAIN ONTENTS-->
+		<!--â–¼MAIN ONTENTS-->
 		<table width="" border="0" cellspacing="0" cellpadding="0" summary=" ">
 			<tr>
-				<td><img src="<!--{$smarty.const.URL_DIR}-->img/mypage/title.jpg" width="700" height="40" alt="MY¥Ú¡¼¥¸"></td>
+				<td><img src="<!--{$smarty.const.URL_DIR}-->img/mypage/title.jpg" width="700" height="40" alt="MYãƒšãƒ¼ã‚¸"></td>
 			</tr>
 			<tr><td height="15"></td></tr>
 		</table>
@@ -29,33 +29,33 @@
 				<td align="right">
 				<table width="515" border="0" cellspacing="0" cellpadding="0" summary=" ">
 					<tr>
-						<td><!--¡ú¥¿¥¤¥È¥ë--><img src="<!--{$smarty.const.URL_DIR}-->img/mypage/subtitle01.gif" width="515" height="32" alt="¹ØÆþÍúÎò°ìÍ÷"></td>
+						<td><!--â˜…ã‚¿ã‚¤ãƒˆãƒ«--><img src="<!--{$smarty.const.URL_DIR}-->img/mypage/subtitle01.gif" width="515" height="32" alt="è³¼å…¥å±¥æ­´ä¸€è¦§"></td>
 					</tr>
 					<tr><td height="15"></td></tr>
 					
 					<!--{if $tpl_linemax > 0}-->
 					
 					<tr>
-						<td class="fs12n"><!--{$tpl_linemax}-->·ï¤Î¹ØÆþÍúÎò¤¬¤¢¤ê¤Þ¤¹¡£</td>
+						<td class="fs12n"><!--{$tpl_linemax}-->ä»¶ã®è³¼å…¥å±¥æ­´ãŒã‚ã‚Šã¾ã™ã€‚</td>
 					</tr>
 					<tr><td height="10"></td></tr>
 					<tr>
 						<td class="fs12n" align="center">
-							<!--¢§¥Ú¡¼¥¸¥Ê¥Ó-->
+							<!--â–¼ãƒšãƒ¼ã‚¸ãƒŠãƒ“-->
 							<!--{$tpl_strnavi}-->
-							<!--¢¥¥Ú¡¼¥¸¥Ê¥Ó-->
+							<!--â–²ãƒšãƒ¼ã‚¸ãƒŠãƒ“-->
 						</td>
 					</tr>
 					<tr>
 						<td bgcolor="#cccccc" align="center">
-						<!--É½¼¨¥¨¥ê¥¢¤³¤³¤«¤é-->
+						<!--è¡¨ç¤ºã‚¨ãƒªã‚¢ã“ã“ã‹ã‚‰-->
 						<table width="515" border="0" cellspacing="1" cellpadding="10" summary=" ">
 							<tr align="center" bgcolor="#f0f0f0">
-								<td width="140" class="fs12n">¹ØÆþÆü»þ</td>
-								<td width="70" class="fs12n">ÃíÊ¸ÈÖ¹æ</td>
-								<td width="90" class="fs12n">¤ª»ÙÊ§¤¤ÊýË¡</td>
-								<td width="70" class="fs12n">¹ç·×¶â³Û</td>
-								<td width="39" class="fs12n">¾ÜºÙ</td>
+								<td width="140" class="fs12n">è³¼å…¥æ—¥æ™‚</td>
+								<td width="70" class="fs12n">æ³¨æ–‡ç•ªå·</td>
+								<td width="90" class="fs12n">ãŠæ”¯æ‰•ã„æ–¹æ³•</td>
+								<td width="70" class="fs12n">åˆè¨ˆé‡‘é¡</td>
+								<td width="39" class="fs12n">è©³ç´°</td>
 							</tr>
 							<!--{section name=cnt loop=$arrOrder}-->
 							<tr bgcolor="#ffffff">
@@ -63,19 +63,19 @@
 								<td align="center" class="fs12"><!--{$arrOrder[cnt].order_id}--></td>
 								<!--{assign var=payment_id value="`$arrOrder[cnt].payment_id`"}-->
 								<td align="center" class="fs12"><!--{$arrPayment[$payment_id]|escape}--></td>
-								<td align="right" class="fs12"><!--{$arrOrder[cnt].payment_total|number_format}-->±ß</td>
-								<td align="center" class="fs12"><a href="#" onclick="fnChangeAction('./history.php'); fnKeySubmit('order_id','<!--{$arrOrder[cnt].order_id}-->');">¾ÜºÙ</a></td>
+								<td align="right" class="fs12"><!--{$arrOrder[cnt].payment_total|number_format}-->å††</td>
+								<td align="center" class="fs12"><a href="#" onclick="fnChangeAction('./history.php'); fnKeySubmit('order_id','<!--{$arrOrder[cnt].order_id}-->');">è©³ç´°</a></td>
 							</tr>
 							<!--{/section}-->
 						</table>
-						<!--É½¼¨¥¨¥ê¥¢¤³¤³¤Þ¤Ç-->
+						<!--è¡¨ç¤ºã‚¨ãƒªã‚¢ã“ã“ã¾ã§-->
 						</td>
 					</tr>
 					<tr>
 						<td class="fs12n" align="center">
-							<!--¢§¥Ú¡¼¥¸¥Ê¥Ó-->
+							<!--â–¼ãƒšãƒ¼ã‚¸ãƒŠãƒ“-->
 							<!--{$tpl_strnavi}-->
-							<!--¢¥¥Ú¡¼¥¸¥Ê¥Ó-->
+							<!--â–²ãƒšãƒ¼ã‚¸ãƒŠãƒ“-->
 						</td>
 					</tr>
 					<!--{else}-->
@@ -83,7 +83,7 @@
 						<td class="fs12n" align="center">
 					<table border="0" cellspacing="0" cellpadding="0" summary=" ">
 					<tr><td height="5"></td></tr>
-					<tr class="fs12"><td align="center">¹ØÆþÍúÎò¤Ï¤¢¤ê¤Þ¤»¤ó¡£</td></tr>
+					<tr class="fs12"><td align="center">è³¼å…¥å±¥æ­´ã¯ã‚ã‚Šã¾ã›ã‚“ã€‚</td></tr>
 					</table>
 						</td>
 					</tr>
@@ -92,10 +92,10 @@
 				</td>
 			</tr>
 		</table>
-		<!--¢¥MAIN ONTENTS-->
+		<!--â–²MAIN ONTENTS-->
 		</td>
 	</tr>
 </form>
 </table>
-<!--¢¥CONTENTS-->
+<!--â–²CONTENTS-->
 

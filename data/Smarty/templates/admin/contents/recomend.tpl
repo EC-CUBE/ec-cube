@@ -12,18 +12,18 @@ function lfnCheckSubmit( fm ){
 	var err = '';
 	/*
 	if ( ! fm["title"].value ){
-		err += '¸«½Ğ¤·¥³¥á¥ó¥È¤òÆşÎÏ¤·¤Æ²¼¤µ¤¤¡£';
+		err += 'è¦‹å‡ºã—ã‚³ãƒ¡ãƒ³ãƒˆã‚’å…¥åŠ›ã—ã¦ä¸‹ã•ã„ã€‚';
 	}
 	*/
 	if ( ! fm["comment"].value ){
 		if ( err ) err += '\n';
-		err += '¥ª¥¹¥¹¥á¥³¥á¥ó¥È¤òÆşÎÏ¤·¤Æ²¼¤µ¤¤¡£';
+		err += 'ã‚ªã‚¹ã‚¹ãƒ¡ã‚³ãƒ¡ãƒ³ãƒˆã‚’å…¥åŠ›ã—ã¦ä¸‹ã•ã„ã€‚';
 	}
 	if ( err ){
 		alert(err);
 		return false;
 	} else {
-		if(window.confirm('ÆâÍÆ¤òÅĞÏ¿¤·¤Æ¤âµ¹¤·¤¤¤Ç¤¹¤«')){
+		if(window.confirm('å†…å®¹ã‚’ç™»éŒ²ã—ã¦ã‚‚å®œã—ã„ã§ã™ã‹')){
 			return true;
 		}
 	}
@@ -34,7 +34,7 @@ function lfnCheckSetItem( rank ){
 	var checkRank = '<!--{$checkRank}-->';
 	if ( checkRank ){
 		if ( rank != checkRank ){
-			if( ! window.confirm('¤µ¤­¤Û¤ÉÁªÂò¤·¤¿<!--{$checkRank}-->°Ì¤Î¾ğÊó¤ÏÇË´ş¤µ¤ì¤Ş¤¹¡£µ¹¤·¤¤¤Ç¤·¤ç¤¦¤«')){
+			if( ! window.confirm('ã•ãã»ã©é¸æŠã—ãŸ<!--{$checkRank}-->ä½ã®æƒ…å ±ã¯ç ´æ£„ã•ã‚Œã¾ã™ã€‚å®œã—ã„ã§ã—ã‚‡ã†ã‹')){
 				flag = false;
 			}
 		} 
@@ -48,17 +48,17 @@ function lfnCheckSetItem( rank ){
 //-->
 </script>
 
-<!--¡ú¡ú¥á¥¤¥ó¥³¥ó¥Æ¥ó¥Ä¡ú¡ú-->
+<!--â˜…â˜…ãƒ¡ã‚¤ãƒ³ã‚³ãƒ³ãƒ†ãƒ³ãƒ„â˜…â˜…-->
 <table width="878" border="0" cellspacing="0" cellpadding="0" summary=" ">
 	<tr valign="top">
 		<td background="<!--{$smarty.const.URL_DIR}-->img/contents/navi_bg.gif" height="402">
-			<!--¢§SUB NAVI-->
+			<!--â–¼SUB NAVI-->
 			<!--{include file=$tpl_subnavi}-->
-			<!--¢¥SUB NAVI-->
+			<!--â–²SUB NAVI-->
 		</td>
 		<td class="mainbg" >
 		<table width="737" border="0" cellspacing="0" cellpadding="0" summary=" ">
-			<!--¥á¥¤¥ó¥¨¥ê¥¢-->
+			<!--ãƒ¡ã‚¤ãƒ³ã‚¨ãƒªã‚¢-->
 			<tr>
 				<td align="center">
 				<table width="706" border="0" cellspacing="0" cellpadding="0" summary=" ">
@@ -71,14 +71,14 @@ function lfnCheckSetItem( rank ){
 						<td background="<!--{$smarty.const.URL_DIR}-->img/contents/main_left.jpg"><img src="<!--{$smarty.const.URL_DIR}-->img/common/_.gif" width="14" height="1" alt=""></td>
 						<td bgcolor="#cccccc">
 						
-						<!--ÅĞÏ¿¥Æ¡¼¥Ö¥ë¤³¤³¤«¤é-->
+						<!--ç™»éŒ²ãƒ†ãƒ¼ãƒ–ãƒ«ã“ã“ã‹ã‚‰-->
 						<table width="678" border="0" cellspacing="0" cellpadding="0" summary=" ">
 							<tr>
 								<td colspan="3"><img src="<!--{$smarty.const.URL_DIR}-->img/contents/contents_title_top.gif" width="678" height="7" alt=""></td>
 							</tr>
 							<tr>
 								<td background="<!--{$smarty.const.URL_DIR}-->img/contents/contents_title_left_bg.gif"><img src="<!--{$smarty.const.URL_DIR}-->img/contents/contents_title_left.gif" width="22" height="12" alt=""></td>
-								<td bgcolor="#636469" width="638" class="fs14n"><span class="white"><!--¥³¥ó¥Æ¥ó¥Ä¥¿¥¤¥È¥ë-->¥ª¥¹¥¹¥á´ÉÍı</span></td>
+								<td bgcolor="#636469" width="638" class="fs14n"><span class="white"><!--ã‚³ãƒ³ãƒ†ãƒ³ãƒ„ã‚¿ã‚¤ãƒˆãƒ«-->ã‚ªã‚¹ã‚¹ãƒ¡ç®¡ç†</span></td>
 								<td background="<!--{$smarty.const.URL_DIR}-->img/contents/contents_title_right_bg.gif"><img src="<!--{$smarty.const.URL_DIR}-->img/common/_.gif" width="18" height="1" alt=""></td>
 							</tr>
 							<tr>
@@ -90,7 +90,7 @@ function lfnCheckSetItem( rank ){
 						</table>
 
 						<!--{section name=cnt loop=$tpl_disp_max}-->
-						<!--¢§¤ª¤¹¤¹¤á<!--{$smarty.section.cnt.iteration}-->-->
+						<!--â–¼ãŠã™ã™ã‚<!--{$smarty.section.cnt.iteration}-->-->
 						<table width="678" border="0" cellspacing="1" cellpadding="8" summary=" ">
 						<form name="form<!--{$smarty.section.cnt.iteration}-->" id="form<!--{$smarty.section.cnt.iteration}-->" method="post" action="<!--{$smarty.server.PHP_SELF|escape}-->">
 						<input type="hidden" name="mode" value="regist">
@@ -110,21 +110,21 @@ function lfnCheckSetItem( rank ){
 								</td>
 								<td bgcolor="#ffffff" width="40" align="center">
 									<!--{if $arrItems[$smarty.section.cnt.iteration].product_id}-->
-									<a href="#" onClick="return fnInsertValAndSubmit( document.form<!--{$smarty.section.cnt.iteration}-->, 'mode', 'delete', 'ºï½ü¤·¤Ş¤¹¡£µ¹¤·¤¤¤Ç¤¹¤«' )">ºï½ü</a>
+									<a href="#" onClick="return fnInsertValAndSubmit( document.form<!--{$smarty.section.cnt.iteration}-->, 'mode', 'delete', 'å‰Šé™¤ã—ã¾ã™ã€‚å®œã—ã„ã§ã™ã‹' )">å‰Šé™¤</a>
 									<!--{/if}-->
 								</td>
 								<td bgcolor="#ffffff" width="40" align="center">
 									<a href="#" onclick="lfnCheckSetItem('<!--{$smarty.section.cnt.iteration}-->'); return false;" target="_blank">
-									<!--{if $arrItems[$smarty.section.cnt.iteration].product_id}-->¾¦ÉÊ<br/>ÊÑ¹¹<!--{else}-->¾¦ÉÊ<br/>ÁªÂò<!--{/if}-->
+									<!--{if $arrItems[$smarty.section.cnt.iteration].product_id}-->å•†å“<br/>å¤‰æ›´<!--{else}-->å•†å“<br/>é¸æŠ<!--{/if}-->
 									</a></td>
 								<td bgcolor="#ffffff" width="350">
 								<table width="350" border="0" cellspacing="0" cellpadding="0" summary=" ">
 									<tr class="fs12">
-										<td width="70">¾¦ÉÊÌ¾¡§<!--{$arrItems[$smarty.section.cnt.iteration].name|escape}--></td>
+										<td width="70">å•†å“åï¼š<!--{$arrItems[$smarty.section.cnt.iteration].name|escape}--></td>
 									</tr>
 									<tr><td height="5"></td></tr>
 									<tr class="fs12">
-										<td colspan="2">¥ª¥¹¥¹¥á¥³¥á¥ó¥È¡§</td>
+										<td colspan="2">ã‚ªã‚¹ã‚¹ãƒ¡ã‚³ãƒ¡ãƒ³ãƒˆï¼š</td>
 									</tr>
 									<tr>
 										<td colspan="2" class="fs12n">
@@ -133,17 +133,17 @@ function lfnCheckSetItem( rank ){
 										</td>
 									</tr>
 									<!--{if $arrItems[$smarty.section.cnt.iteration].product_id}-->
-									<tr><td colspan=2><input type="submit" name="subm" value="ÅĞÏ¿¤¹¤ë" onclick="return lfnCheckSubmit(document.form<!--{$smarty.section.cnt.iteration}-->);"/></td></tr>
+									<tr><td colspan=2><input type="submit" name="subm" value="ç™»éŒ²ã™ã‚‹" onclick="return lfnCheckSubmit(document.form<!--{$smarty.section.cnt.iteration}-->);"/></td></tr>
 									<!--{/if}-->
 								</table>
 								</td>
 							</tr>
 							</form>
 						</table>
-						<!--¢¥¤ª¤¹¤¹¤á<!--{$smarty.section.cnt.iteration}-->-->
+						<!--â–²ãŠã™ã™ã‚<!--{$smarty.section.cnt.iteration}-->-->
 						<!--{/section}-->
 						
-						<!--ÅĞÏ¿¥Æ¡¼¥Ö¥ë¤³¤³¤Ş¤Ç-->
+						<!--ç™»éŒ²ãƒ†ãƒ¼ãƒ–ãƒ«ã“ã“ã¾ã§-->
 						</td>
 						<td background="<!--{$smarty.const.URL_DIR}-->img/contents/main_right.jpg"><img src="<!--{$smarty.const.URL_DIR}-->img/common/_.gif" width="14" height="1" alt=""></td>
 					</tr>
@@ -155,9 +155,9 @@ function lfnCheckSetItem( rank ){
 				</table>
 				</td>
 			</tr>
-			<!--¥á¥¤¥ó¥¨¥ê¥¢-->
+			<!--ãƒ¡ã‚¤ãƒ³ã‚¨ãƒªã‚¢-->
 		</table>
 		</td>
 	</tr>
 </table>
-<!--¡ú¡ú¥á¥¤¥ó¥³¥ó¥Æ¥ó¥Ä¡ú¡ú-->		
+<!--â˜…â˜…ãƒ¡ã‚¤ãƒ³ã‚³ãƒ³ãƒ†ãƒ³ãƒ„â˜…â˜…-->		

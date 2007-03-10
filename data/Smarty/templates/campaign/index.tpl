@@ -1,4 +1,4 @@
-<!--{*¥Ø¥Ã¥À¡¼ÆÉ¹ş*}-->
+<!--{*ãƒ˜ãƒƒãƒ€ãƒ¼èª­è¾¼*}-->
 <!--{include file=`$tpl_dir_name`/header.tpl}-->
 
 <script type="text/javascript" src="<!--{$smarty.const.URL_DIR}-->js/site.js"></script>
@@ -7,7 +7,7 @@
 <!--
 <!--{$tpl_javascript}-->
 
-// ¥»¥ì¥¯¥È¥Ü¥Ã¥¯¥¹¤Ë¹àÌÜ¤ò³ä¤êÅö¤Æ¤ë¡£
+// ã‚»ãƒ¬ã‚¯ãƒˆãƒœãƒƒã‚¯ã‚¹ã«é …ç›®ã‚’å‰²ã‚Šå½“ã¦ã‚‹ã€‚
 function lnSetSelect(name1, name2, id, val) {
 	sele1 = document.form1[name1];
 	sele2 = document.form1[name2];
@@ -17,13 +17,13 @@ function lnSetSelect(name1, name2, id, val) {
 	if(sele1 && sele2) {
 		index = sele1.selectedIndex;
 		
-		// ¥»¥ì¥¯¥È¥Ü¥Ã¥¯¥¹¤Î¥¯¥ê¥¢
+		// ã‚»ãƒ¬ã‚¯ãƒˆãƒœãƒƒã‚¯ã‚¹ã®ã‚¯ãƒªã‚¢
 		count = sele2.options.length;
 		for(i = count; i >= 0; i--) {
 			sele2.options[i] = null;
 		}
 		
-		// ¥»¥ì¥¯¥È¥Ü¥Ã¥¯¥¹¤ËÃÍ¤ò³ä¤êÅö¤Æ¤ë
+		// ã‚»ãƒ¬ã‚¯ãƒˆãƒœãƒƒã‚¯ã‚¹ã«å€¤ã‚’å‰²ã‚Šå½“ã¦ã‚‹
 		len = lists[index].length;
 		for(i = 0; i < len; i++) {
 			sele2.options[i] = new Option(lists[index][i], vals[index][i]);
@@ -34,7 +34,7 @@ function lnSetSelect(name1, name2, id, val) {
 	}
 }
 
-// Á´¾¦ÉÊID¤ò¼èÆÀ¤¹¤ë
+// å…¨å•†å“IDã‚’å–å¾—ã™ã‚‹
 function fnGetIds() {
 	var change_tag = document.getElementsByTagName("div");
 	var ids = "";
@@ -55,7 +55,7 @@ function fnGetIds() {
 	return ids;
 }
 
-// ÆÉ¹ş¸å¤Ë¼Â¹Ô¤¹¤ë(on_load)
+// èª­è¾¼å¾Œã«å®Ÿè¡Œã™ã‚‹(on_load)
 function init() {
 	if(<!--{$tpl_init}-->) {
 		var ids = fnGetIds();
@@ -74,10 +74,10 @@ window.onload = init;
 <input type="hidden" name="product_id" value="">
 <input type="hidden" name="cp" value="true">
 
-<!--{*¥³¥ó¥Æ¥ó¥ÄÆÉ¹ş*}-->
+<!--{*ã‚³ãƒ³ãƒ†ãƒ³ãƒ„èª­è¾¼*}-->
 <!--{include file=`$tpl_dir_name`/contents.tpl}-->
 
 </form>
 
-<!--{*¥Õ¥Ã¥¿¡¼ÆÉ¹ş*}-->
+<!--{*ãƒ•ãƒƒã‚¿ãƒ¼èª­è¾¼*}-->
 <!--{include file=`$tpl_dir_name`/footer.tpl}-->

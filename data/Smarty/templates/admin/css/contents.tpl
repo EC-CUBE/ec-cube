@@ -12,7 +12,7 @@
 body {
 	background: #fff url(<!--{$smarty.const.URL_DIR}-->img/common/bg.jpg);
 	background-repeat: repeat-x;
-	font-family:"£Í£Ó £Ð¥´¥·¥Ã¥¯","Hiragino Maru Gothic Pro","¥Ò¥é¥®¥Î´Ý¥´ Pro W4",Osaka,sans-serif;
+	font-family:"ï¼­ï¼³ ï¼°ã‚´ã‚·ãƒƒã‚¯","Hiragino Maru Gothic Pro","ãƒ’ãƒ©ã‚®ãƒŽä¸¸ã‚´ Pro W4",Osaka,sans-serif;
 }
 
 

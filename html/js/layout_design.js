@@ -3,47 +3,47 @@
  *
  * http://www.lockon.co.jp/
  */
-// ¥µ¥¤¥º´ÉÍı¥¯¥é¥¹¤ÎÄêµÁ
+// ƒTƒCƒYŠÇ—ƒNƒ‰ƒX‚Ì’è‹`
 function SC_Size() {
 	this.id = '';				// ID
-	this.left = 0;				// ÇÛÃÖ¤¹¤ëY¼´ºÂÉ¸
-	this.top = 0;				// ÇÛÃÖ¤¹¤ëX¼´ºÂÉ¸
-	this.width = 0;				// ¥ª¥Ö¥¸¥§¥¯¥È¤ÎÉı
-	this.height = 0;			// ¥ª¥Ö¥¸¥§¥¯¥È¤Î¹â¤µ
-	this.target_id = '';		// ÇÛÃÖ¾ì½ê¡Êº¸¥Ê¥Ó¤È¤«¡Ë
-	this.margin = 10;			// ¾å¤Î¥ª¥Ö¥¸¥§¥¯¥È¤È¤ÎÉı
+	this.left = 0;				// ”z’u‚·‚éY²À•W
+	this.top = 0;				// ”z’u‚·‚éX²À•W
+	this.width = 0;				// ƒIƒuƒWƒFƒNƒg‚Ì•
+	this.height = 0;			// ƒIƒuƒWƒFƒNƒg‚Ì‚‚³
+	this.target_id = '';		// ”z’uêŠi¶ƒiƒr‚Æ‚©j
+	this.margin = 10;			// ã‚ÌƒIƒuƒWƒFƒNƒg‚Æ‚Ì•
 	this.obj;
 };
 
-// ÊÑ¿ôÀë¸À
-var defUnused = 500;	// Ì¤»ÈÍÑÎÎ°è¤Î¥Ç¥Õ¥©¥ë¥È¤Î¹â¤µ
-var defNavi   = 400;	// º¸±¦¥Ê¥Ó¤Î¥Ç¥Õ¥©¥ë¥È¤Î¹â¤µ
-var defMainNavi  = 100;	// ¥á¥¤¥ó¾å²¼¤Î¥Ç¥Õ¥©¥ë¥È¤Î¹â¤µ
-var defMain   = 200;	// ¥á¥¤¥ó¤Î¥Ç¥Õ¥©¥ë¥È¤Î¹â¤µ
+// •Ï”éŒ¾
+var defUnused = 500;	// –¢g—p—Ìˆæ‚ÌƒfƒtƒHƒ‹ƒg‚Ì‚‚³
+var defNavi   = 400;	// ¶‰Eƒiƒr‚ÌƒfƒtƒHƒ‹ƒg‚Ì‚‚³
+var defMainNavi  = 100;	// ƒƒCƒ“ã‰º‚ÌƒfƒtƒHƒ‹ƒg‚Ì‚‚³
+var defMain   = 200;	// ƒƒCƒ“‚ÌƒfƒtƒHƒ‹ƒg‚Ì‚‚³
 
-var NowMaxHeight = 0;		// ¸½ºß¤ÎºÇÂç¤Î¹â¤µ
+var NowMaxHeight = 0;		// Œ»İ‚ÌÅ‘å‚Ì‚‚³
 var MainHeight = 200;
 
-var marginUnused 	= 688;	// Ì¤»ÈÍÑÎÎ°è¤Îº¸¥Ş¡¼¥¸¥ó
-var marginLeftNavi  = 180;	// º¸¥Ê¥Ó¤Îº¸¥Ş¡¼¥¸¥ó
-var marginRightNavi = 512;	// ±¦¥Ê¥Ó¤Îº¸¥Ş¡¼¥¸¥ó
-var marginMain		= 348;	// ¥á¥¤¥ó¾å²¼¤Îº¸¥Ş¡¼¥¸¥ó
-var marginMainFootTop= 595;	// ¥á¥¤¥ó²¼¤Î¾å¥Ş¡¼¥¸¥ó
+var marginUnused 	= 688;	// –¢g—p—Ìˆæ‚Ì¶ƒ}[ƒWƒ“
+var marginLeftNavi  = 180;	// ¶ƒiƒr‚Ì¶ƒ}[ƒWƒ“
+var marginRightNavi = 512;	// ‰Eƒiƒr‚Ì¶ƒ}[ƒWƒ“
+var marginMain		= 348;	// ƒƒCƒ“ã‰º‚Ì¶ƒ}[ƒWƒ“
+var marginMainFootTop= 595;	// ƒƒCƒ“‰º‚Ìãƒ}[ƒWƒ“
 
-var gDragged = "";			// ¥É¥é¥Ã¥°Ãæ¥ª¥Ö¥¸¥§¥¯¥È
-var gDropTarget = "";		// ¥É¥é¥Ã¥°³«»Ï»ş¤ÎDropTarget
+var gDragged = "";			// ƒhƒ‰ƒbƒO’†ƒIƒuƒWƒFƒNƒg
+var gDropTarget = "";		// ƒhƒ‰ƒbƒOŠJn‚ÌDropTarget
 
-var arrObj = new Object();	// ¥Ö¥í¥Ã¥¯¥ª¥Ö¥¸¥§¥¯¥È³ÊÇ¼ÍÑ
+var arrObj = new Object();	// ƒuƒƒbƒNƒIƒuƒWƒFƒNƒgŠi”[—p
 
 var mouseFlg = false;
 
-var all_elms;				// div¥¿¥°¥ª¥Ö¥¸¥§¥¯¥È³ÊÇ¼ÍÑ
+var all_elms;				// divƒ^ƒOƒIƒuƒWƒFƒNƒgŠi”[—p
 
-// ¥¦¥£¥ó¥É¥¦¥µ¥¤¥º
+// ƒEƒBƒ“ƒhƒEƒTƒCƒY
 var scrX;
 var scrY;
 
-// ¥¤¥Ù¥ó¥È¤Î´ØÏ¢ÉÕ¤±¤ò¹Ô¤¦
+// ƒCƒxƒ“ƒg‚ÌŠÖ˜A•t‚¯‚ğs‚¤
 function addEvent( elm, evtType, fn, useCapture) {
 
     if (elm.addEventListener) {
@@ -65,7 +65,7 @@ function addEvent( elm, evtType, fn, useCapture) {
 }
 
 
-// ¥¤¥Ù¥ó¥È¤Î´ØÏ¢ÉÕ¤±¤ò²ò½ü
+// ƒCƒxƒ“ƒg‚ÌŠÖ˜A•t‚¯‚ğ‰ğœ
 function removeEvent( elm, evtType, fn, useCapture) {
 
     if (elm.removeEventListener) {
@@ -88,12 +88,12 @@ function removeEvent( elm, evtType, fn, useCapture) {
    
 }
 
-// ¥Ş¥¦¥¹¥«¡¼¥½¥ë¤òÊÑ¹¹
+// ƒ}ƒEƒXƒJ[ƒ\ƒ‹‚ğ•ÏX
 function setCursor ( elm, curtype ) {
 	elm.style.cursor = curtype;
 }
 
-// ¥ª¥Ö¥¸¥§¥¯¥È¤ÎÆ©ÌÀÅÙ¤òÊÑ¹¹   
+// ƒIƒuƒWƒFƒNƒg‚Ì“§–¾“x‚ğ•ÏX   
 function setOpacity(node,val) {
 
     if (node.filters) {
@@ -103,13 +103,13 @@ function setOpacity(node,val) {
     }
 }
 
-// Zindex¤òÊÑ¹¹¤¹¤ë¡ÊÁ°ÌÌÉ½¼¨ÀÚÂØ¡Ë
+// Zindex‚ğ•ÏX‚·‚éi‘O–Ê•\¦Ø‘Öj
 function setZindex(node, val) {
 	node.style.zIndex = val;
 //	alert(val);
 }
 
-// ÃÍ¤ò¼èÆÀ
+// ’l‚ğæ“¾
 function getAttrValue ( elm, attrname ) {
 
 	if (typeof(elm.attributes[ attrname ]) != 'undefined') {
@@ -122,7 +122,7 @@ function getAttrValue ( elm, attrname ) {
 		if((typeof ScriptEngineMajorVersion)=='function')
 		{
 			if( Math.floor(ScriptEngineMajorVersion()) == 5 &&
-				navigator.userAgent.indexOf("Win")!=-1) //win-e5ÂĞ±ş
+				navigator.userAgent.indexOf("Win")!=-1) //win-e5‘Î‰
 				{
 				val = elm.attributes.item(attrname)
 				}
@@ -141,45 +141,45 @@ function getAttrValue ( elm, attrname ) {
 */
 }
 
-// ÃÍ¤ò¥»¥Ã¥È
+// ’l‚ğƒZƒbƒg
 function setAttrValue ( elm, attrname, val ) {
     elm.attributes[ attrname ].nodeValue = val;
 }
 
-// ¥ª¥Ö¥¸¥§¥¯¥È¤ÎXºÂÉ¸¤ò¼èÆÀ
+// ƒIƒuƒWƒFƒNƒg‚ÌXÀ•W‚ğæ“¾
 function getX ( elm ) {
 //   return parseInt(elm.style.left);
 	return parseInt(elm.offsetLeft);
 }
 
-// ¥ª¥Ö¥¸¥§¥¯¥È¤ÎYºÂÉ¸¤ò¼èÆÀ
+// ƒIƒuƒWƒFƒNƒg‚ÌYÀ•W‚ğæ“¾
 function getY ( elm ) {
 	return parseInt(elm.offsetTop);
 //    return parseInt(elm.style.top);
 }
 
-// XºÂÉ¸¤ò¼èÆÀ
+// XÀ•W‚ğæ“¾
 function getEventX ( evt ) {
     return evt.clientX ? evt.clientX : evt.pageX;
 }
 
-// YºÂÉ¸¤ò¼èÆÀ
+// YÀ•W‚ğæ“¾
 function getEventY ( evt ) {
     return evt.clientY ? evt.clientY : evt.pageY;
 }
 
-// ¥ª¥Ö¥¸¥§¥¯¥È¤ÎÉı¤ò¼èÆÀ
+// ƒIƒuƒWƒFƒNƒg‚Ì•‚ğæ“¾
 function getWidth ( elm ) {
     return parseInt( elm.style.width );
 }
 
-// ¥ª¥Ö¥¸¥§¥¯¥È¤Î¹â¤µ¤ò¼èÆÀ
+// ƒIƒuƒWƒFƒNƒg‚Ì‚‚³‚ğæ“¾
 function getHeight ( elm ) {
 //    return parseInt( elm.style.height );
     return parseInt( elm.offsetHeight );
 }
 
-// ¥Ú¡¼¥¸¤Î²Ä»ëÎÎ°è¤ÎXºÂÉ¸¤ò¼èÆÀ¤¹¤ë
+// ƒy[ƒW‚Ì‰Â‹—Ìˆæ‚ÌXÀ•W‚ğæ“¾‚·‚é
 function getPageScrollX()
 {
 	var x = 0;
@@ -197,7 +197,7 @@ function getPageScrollX()
 	return x;
 }
 
-// ¥Ú¡¼¥¸¤Î²Ä»ëÎÎ°è¤ÎYºÂÉ¸¤ò¼èÆÀ¤¹¤ë
+// ƒy[ƒW‚Ì‰Â‹—Ìˆæ‚ÌYÀ•W‚ğæ“¾‚·‚é
 function getPageScrollY()
 {
 	var y = 0;
@@ -216,13 +216,13 @@ function getPageScrollY()
 }
 
 
-// ¥ª¥Ö¥¸¥§¥¯¥È¤ÎºÂÉ¸¤ò¥»¥Ã¥È
+// ƒIƒuƒWƒFƒNƒg‚ÌÀ•W‚ğƒZƒbƒg
 function moveElm ( elm, x, y ) {
     elm.style.left = x + 'px';
     elm.style.top = y + 'px';
 }
 
-// ¥Ş¥¦¥¹¥À¥¦¥ó¥¤¥Ù¥ó¥È
+// ƒ}ƒEƒXƒ_ƒEƒ“ƒCƒxƒ“ƒg
 function onMouseDown (evt) {
 
     var target = evt.target ? evt.target : evt.srcElement;
@@ -250,16 +250,16 @@ function onMouseDown (evt) {
 	    // Set
 	    //
 	   
-	    // ¥É¥é¥Ã¥°Ãæ¤ÏÈ¾Æ©ÌÀ
+	    // ƒhƒ‰ƒbƒO’†‚Í”¼“§–¾
 	    setOpacity ( gDragged, 0.6 );
 	
-	    // ¥É¥é¥Ã¥°Ãæ¤ÏºÇÁ°ÌÌÉ½¼¨
+	    // ƒhƒ‰ƒbƒO’†‚ÍÅ‘O–Ê•\¦
 	    setZindex ( gDragged , 2);
 	    
 	    addEvent ( document, 'mousemove', onMouseMove, false );
 	    addEvent ( document, 'mouseup', onMouseUp, false );
 
-	    // ¥É¥é¥Ã¥°¤ò³«»Ï¤·¤¿¤È¤­¤Ï¹â¤µ¤ò°ìÅÙ½é´ü²½¤¹¤ë¡£
+	    // ƒhƒ‰ƒbƒO‚ğŠJn‚µ‚½‚Æ‚«‚Í‚‚³‚ğˆê“x‰Šú‰»‚·‚éB
 	    NowMaxHeight = defNavi;
 	    	    
 	    mouseFlg = true;
@@ -267,50 +267,50 @@ function onMouseDown (evt) {
 }
 
 
-// ¥Ş¥¦¥¹¥à¡¼¥Ö¥¤¥Ù¥ó¥È
+// ƒ}ƒEƒXƒ€[ƒuƒCƒxƒ“ƒg
 function onMouseMove(evt) {
 
-	// ¸½ºß¤ÎºÂÉ¸¤ò¼èÆÀ
-	var x = getEventX ( evt ) + document.body.scrollLeft;					// ¥Ş¥¦¥¹ºÂÉ¸ X
-	var y = getEventY ( evt ) + document.body.scrollTop;					// ¥Ş¥¦¥¹ºÂÉ¸ Y
-    var nowleft = getEventX ( evt ) - gDeltaX;	// ¥ª¥Ö¥¸¥§¥¯¥ÈºÂÉ¸ LEFT
-    var nowtop = getEventY ( evt ) - gDeltaY;	// ¥ª¥Ö¥¸¥§¥¯¥ÈºÂÉ¸ TOP
+	// Œ»İ‚ÌÀ•W‚ğæ“¾
+	var x = getEventX ( evt ) + document.body.scrollLeft;					// ƒ}ƒEƒXÀ•W X
+	var y = getEventY ( evt ) + document.body.scrollTop;					// ƒ}ƒEƒXÀ•W Y
+    var nowleft = getEventX ( evt ) - gDeltaX;	// ƒIƒuƒWƒFƒNƒgÀ•W LEFT
+    var nowtop = getEventY ( evt ) - gDeltaY;	// ƒIƒuƒWƒFƒNƒgÀ•W TOP
 
-    // ¥ª¥Ö¥¸¥§¥¯¥È¤ò°ÜÆ°
+    // ƒIƒuƒWƒFƒNƒg‚ğˆÚ“®
     moveElm ( gDragged, nowleft, nowtop );
 	
     for ( var i = 0; i < all_elms.length; i++ ) {
-    	// drop_target¾å¤Ë¤­¤¿¾ì¹ç¤Ë¤Î¤ß½èÍı¤ò¹Ô¤¦
+    	// drop_targetã‚É‚«‚½ê‡‚É‚Ì‚İˆ—‚ğs‚¤
 	    if ( isEventOnElm ( evt, all_elms[i].id ) ) {	    
             if ( all_elms[i].attributes['tid'] ) {
 	            var tid = getAttrValue ( all_elms[i], 'tid' );
 	            
-	            // ÇØ·Ê¿§¤ÎÊÑ¹¹ Ì¤»ÈÍÑÎÎ°è¤ÏÊÑ¹¹¤·¤Ê¤¤
+	            // ”wŒiF‚Ì•ÏX –¢g—p—Ìˆæ‚Í•ÏX‚µ‚È‚¢
 	            all_elms[i].style.background="#ffffdd";
 	            
-				// target_id ¤Î½ñ¤­´¹¤¨
+				// target_id ‚Ì‘‚«Š·‚¦
 		        setAttrValue ( gDragged, 'target_id', tid );
 
 				//objCheckLine.style.top = parseInt(nowtop) + parseInt(gDragged.style.height) / 2 + 'px';
 				//objCheckLine.style.top = y;
 
-				// ÇÛÎó¤ÎºÆºîÀ®
+				// ”z—ñ‚ÌÄì¬
 				fnCreateArr(1, y, x);
-				// ÇÛÎó¤ÎÊÂ¤ÓÂØ¤¨
+				// ”z—ñ‚Ì•À‚Ñ‘Ö‚¦
 				fnChangeObj(tid);
 		    }
 		}else{
 			if ( all_elms[i].attributes['tid'] && all_elms[i].style.background!="#ffffff") {
-				// ÇØ·Ê¿§¤ÎÊÑ¹¹
+				// ”wŒiF‚Ì•ÏX
 				all_elms[i].style.background="#ffffff";
 			}
 		}
     }
 }
 
-// ¥Ş¥¦¥¹¥¢¥Ã¥×¥¤¥Ù¥ó¥È       
+// ƒ}ƒEƒXƒAƒbƒvƒCƒxƒ“ƒg       
 function onMouseUp(evt) {
-	// ¥¤¥Ù¥ó¥È¤Î´ØÏ¢ÉÕ¤±²ò½ü
+	// ƒCƒxƒ“ƒg‚ÌŠÖ˜A•t‚¯‰ğœ
 	if (mouseFlg == true) {
 	    removeEvent ( document, 'mousemove', onMouseMove, false );
 	    removeEvent ( document, 'mouseup', onMouseUp, false );
@@ -318,38 +318,38 @@ function onMouseUp(evt) {
 	}
 
     if ( !isOnDropTarget (evt) ) {
-		// ¸µ¤Î°ÌÃÖ¤ËÌá¤¹
+		// Œ³‚ÌˆÊ’u‚É–ß‚·
         moveElm ( gDragged, gOrgX, gOrgY );
         setAttrValue ( gDragged, 'target_id', gtarget_id );
 
-		// ÇÛÎó¤ÎºÆºîÀ®
+		// ”z—ñ‚ÌÄì¬
 		fnCreateArr(1, gOrgY, gOrgX);
     }
     
-    // hiddenÍ×ÁÇ¤Î½ñ¤­´¹¤¨
+    // hidden—v‘f‚Ì‘‚«Š·‚¦
 	var did = getAttrValue( gDragged, 'did' );
 	var target_id = "target_id_"+did;
 	document.form1[target_id].value = getAttrValue( gDragged, 'target_id' );
 	
-	// È¾Æ©ÌÀ¡¢¥Ş¥¦¥¹¥İ¥¤¥ó¥¿¡¢ºÇÁ°ÌÌ½èÍı¤òÌá¤¹
+	// ”¼“§–¾Aƒ}ƒEƒXƒ|ƒCƒ“ƒ^AÅ‘O–Êˆ—‚ğ–ß‚·
     setOpacity( gDragged, 1);
     setCursor ( gDragged, 'move' );
     setZindex ( gDragged , 1);
     
-    // ÊÂ¤ÓÂØ¤¨
+    // •À‚Ñ‘Ö‚¦
 	fnSortObj();
 	
-	// ÇØ·Ê¿§¤òÌá¤¹
+	// ”wŒiF‚ğ–ß‚·
 	for ( var i = 0; i < all_elms.length; i++ ) {
-    	// drop_target¾å¤Ë¤­¤¿¾ì¹ç¤Ë¤Î¤ß½èÍı¤ò¹Ô¤¦
+    	// drop_targetã‚É‚«‚½ê‡‚É‚Ì‚İˆ—‚ğs‚¤
 	    if ( isEventOnElm ( evt, all_elms[i].id ) && all_elms[i].attributes['tid']) {
-			// ÇØ·Ê¿§¤ÎÊÑ¹¹
+			// ”wŒiF‚Ì•ÏX
 			all_elms[i].style.background="#ffffff";
 		}
     }
 }
 
-// DropTarget¾å¤Ë¥ª¥Ö¥¸¥§¥¯¥È¤¬Íè¤¿¤«¤òÈ½ÃÇ¤¹¤ë
+// DropTargetã‚ÉƒIƒuƒWƒFƒNƒg‚ª—ˆ‚½‚©‚ğ”»’f‚·‚é
 function isOnDropTarget ( evt ) {
    
     for ( var i=0; i<all_elms.length; i++ ) {
@@ -386,19 +386,19 @@ function isEventOnElm (evt, drop_target_id) {
     return evtX > x && evtY > y && evtX < x + width && evtY < y + height;
 }
 
-// ¥ª¥Ö¥¸¥§¥¯¥È¤ÎÊÂ¤ÓÂØ¤¨¤ò¹Ô¤¦
+// ƒIƒuƒWƒFƒNƒg‚Ì•À‚Ñ‘Ö‚¦‚ğs‚¤
 function fnSortObj(){
 	fnSetTargetHeight();
     for ( var cnt = 0; cnt < all_elms.length; cnt++ ) {
 
-		// class¤¬ drop_target ¤Î¾ì¹ç¤Î¤ß½èÍı¤ò¹Ô¤¦
+		// class‚ª drop_target ‚Ìê‡‚Ì‚İˆ—‚ğs‚¤
         if ( getAttrValue ( all_elms[cnt], 'class' ) == 'drop_target' ) {
         	var tid = getAttrValue ( all_elms[cnt], 'tid' );
 			
-			// ÇÛÎó¤ÎÊÂ¤ÓÂØ¤¨
+			// ”z—ñ‚Ì•À‚Ñ‘Ö‚¦
 			fnChangeObj(tid);
 			
-			// ÇÛÃÖ
+			// ”z’u
 			fnSetObj( tid, cnt );
         }
 	}
@@ -408,7 +408,7 @@ function alerttest(msg, x, y){
  	alert(msg);
 }
 
-// ÇÛÎó¤ÎºîÀ®
+// ”z—ñ‚Ìì¬
 function fnCreateArr( addEvt , top , left ){
 
 	var arrObjtmp = new Object();
@@ -419,10 +419,10 @@ function fnCreateArr( addEvt , top , left ){
 	arrObjtmp['Unused'] = Array();
 
 	for ( var i = 1; i < all_elms.length; i++ ) {
-		// class¤¬ dragged_elm ¤Î¾ì¹ç¤Î¤ß½èÍı¤ò¹Ô¤¦
+		// class‚ª dragged_elm ‚Ìê‡‚Ì‚İˆ—‚ğs‚¤
 		if ( getAttrValue ( all_elms[i], 'class' ) == 'dragged_elm' ) {
         
-			// ¥Ş¥¦¥¹¥À¥¦¥ó¥¤¥Ù¥ó¥È¤È´ØÏ¢ÉÕ¤±¤ò¹Ô¤¦
+			// ƒ}ƒEƒXƒ_ƒEƒ“ƒCƒxƒ“ƒg‚ÆŠÖ˜A•t‚¯‚ğs‚¤
 			if (addEvt == 0) {
 	        	addEvent ( all_elms[i], 'mousedown', onMouseDown, false );
 			}
@@ -437,10 +437,10 @@ function fnCreateArr( addEvt , top , left ){
 			arrObjtmp[target_id][len].width = getWidth( all_elms[i] );
 			arrObjtmp[target_id][len].height = getHeight( all_elms[i] );
 
-			// ¥É¥é¥Ã¥°Ãæ¤Î¥ª¥Ö¥¸¥§¥¯¥È¤¬Â¸ºß¤¹¤ì¤Ğ¡¢¤½¤Î¥ª¥Ö¥¸¥§¥¯¥È¤À¤±¥Ş¥¦¥¹¥İ¥¤¥ó¥¿¤ÎºÂÉ¸¤ò»ØÄê¤¹¤ë¡£
+			// ƒhƒ‰ƒbƒO’†‚ÌƒIƒuƒWƒFƒNƒg‚ª‘¶İ‚·‚ê‚ÎA‚»‚ÌƒIƒuƒWƒFƒNƒg‚¾‚¯ƒ}ƒEƒXƒ|ƒCƒ“ƒ^‚ÌÀ•W‚ğw’è‚·‚éB
 			if (gDragged != "") {
 				if (did != getAttrValue ( gDragged, 'did' )) {
-					// top ¤Ï¾ï¤Ë¥ª¥Ö¥¸¥§¥¯¥È¤ÎÃæ¿´¤ò¼èÆÀ¤¹¤ë¤è¤¦¤Ë¤¹¤ë
+					// top ‚Íí‚ÉƒIƒuƒWƒFƒNƒg‚Ì’†S‚ğæ“¾‚·‚é‚æ‚¤‚É‚·‚é
 					arrObjtmp[target_id][len].top = (parseInt(getY( all_elms[i] )) + arrObjtmp[target_id][len].height / 2 );
 					arrObjtmp[target_id][len].left = getX( all_elms[i] );
 				}else {
@@ -448,7 +448,7 @@ function fnCreateArr( addEvt , top , left ){
 					arrObjtmp[target_id][len].left = left;
 				}
 			} else {
-				// top ¤Ï¾ï¤Ë¥ª¥Ö¥¸¥§¥¯¥È¤ÎÃæ¿´¤ò¼èÆÀ¤¹¤ë¤è¤¦¤Ë¤¹¤ë
+				// top ‚Íí‚ÉƒIƒuƒWƒFƒNƒg‚Ì’†S‚ğæ“¾‚·‚é‚æ‚¤‚É‚·‚é
 				arrObjtmp[target_id][len].top = i;
 				arrObjtmp[target_id][len].left = getX( all_elms[i] );
 			}
@@ -458,7 +458,7 @@ function fnCreateArr( addEvt , top , left ){
     arrObj = arrObjtmp;
 }
 
-// ÇÛÎó¤ÎÊÂ¤ÓÂØ¤¨ (¥Ğ¥Ö¥ë¥½¡¼¥È¤ÇÊÂ¤ÓÂØ¤¨¤ò¹Ô¤¦) 
+// ”z—ñ‚Ì•À‚Ñ‘Ö‚¦ (ƒoƒuƒ‹ƒ\[ƒg‚Å•À‚Ñ‘Ö‚¦‚ğs‚¤) 
 function fnChangeObj( tid ){
 	for ( var i = 0; i < arrObj[tid].length-1; i++ ) {
     	for ( var j = arrObj[tid].length-1; j > i; j-- ) {
@@ -472,7 +472,7 @@ function fnChangeObj( tid ){
 	}
 }
 
-// ÇÛÃÖ
+// ”z’u
 function fnSetObj( tid, cnt ){
 	var target_height = 0;
 	
@@ -480,7 +480,7 @@ function fnSetObj( tid, cnt ){
 	drp_top = getY(all_elms[cnt]); //all_elms[cnt].offsetTop;
 
 	for ( var j = 0; j < arrObj[tid].length; j++ ) {
-		// ÇÛÃÖ¤¹¤ëºÂÉ¸¤Î¼èÆÀ
+		// ”z’u‚·‚éÀ•W‚Ìæ“¾
 	    var left = parseInt(drp_left) + parseInt(all_elms[cnt].style.width) / 2 - parseInt(arrObj[tid][j].width) / 2;
 	    if (j == 0){
 	    	var top = drp_top + arrObj[tid][j].margin;
@@ -488,24 +488,24 @@ function fnSetObj( tid, cnt ){
 	    	var top = arrObj[tid][j-1].top + arrObj[tid][j].margin + arrObj[tid][j-1].height
 	    }
 
-		// ºÂÉ¸¤òÊİ»ı
+		// À•W‚ğ•Û
 		arrObj[tid][j].top = top;
 		arrObj[tid][j].left = left;
 
-		// ÇÛÃÖ¤ò¹Ô¤¦
+		// ”z’u‚ğs‚¤
 		moveElm ( arrObj[tid][j].obj, left ,top);
 
-		// ¹â¤µ·×»»
+		// ‚‚³ŒvZ
 		target_height = target_height + arrObj[tid][j].margin + arrObj[tid][j].height;
 
-		// hidden¤ÎÃÍ¤ò½ñ¤­´¹¤¨
+		// hidden‚Ì’l‚ğ‘‚«Š·‚¦
 		var top_id = "top_" + arrObj[tid][j].id;
 		document.form1[top_id].value = top;
 
 	}
 }
 
-// ¥É¥í¥Ã¥×¥¿¡¼¥²¥Ã¥È¤Î¹â¤µÄ´À°
+// ƒhƒƒbƒvƒ^[ƒQƒbƒg‚Ì‚‚³’²®
 function fnSetTargetHeight(){
 
 	var NaviHeight = defNavi;
@@ -513,11 +513,11 @@ function fnSetTargetHeight(){
 	var MainFootHeight = defMainNavi;
 	var UnusedHeight = defUnused;
 
-	// ¹â¤µ·×»»
+	// ‚‚³ŒvZ
     for ( var cnt = 0; cnt < all_elms.length; cnt++ ) {
 		var target_height = 0;
     
-		// class¤¬ drop_target ¤Î¾ì¹ç¤Î¤ß½èÍı¤ò¹Ô¤¦
+		// class‚ª drop_target ‚Ìê‡‚Ì‚İˆ—‚ğs‚¤
         if ( getAttrValue ( all_elms[cnt], 'class' ) == 'drop_target' ) {
         	var tid = getAttrValue ( all_elms[cnt], 'tid' );
 
@@ -525,24 +525,24 @@ function fnSetTargetHeight(){
 				target_height = target_height + arrObj[tid][j].margin + arrObj[tid][j].height;
 			}
 
-			// ²¼¤ÎÉı
+			// ‰º‚Ì•
 			target_height = target_height + 20;
 
-			// º¸±¦¥Ê¥Ó¡¢Ì¤»ÈÍÑÎÎ°è¤Î¹â¤µ¤òÊİ»ı
+			// ¶‰EƒiƒrA–¢g—p—Ìˆæ‚Ì‚‚³‚ğ•Û
 			if (tid == 'LeftNavi' || tid == 'RightNavi' || tid == 'Unused') {
 				if (NaviHeight < target_height) {
 					NaviHeight = target_height;
 				}
 			}
 
-			// ¥á¥¤¥ó¾åÉôÎÎ°è¤Î¹â¤µ¤òÊİ»ı
+			// ƒƒCƒ“ã•”—Ìˆæ‚Ì‚‚³‚ğ•Û
 			if (tid == 'MainHead') {
 				if (target_height > defMainNavi) {
 					MainHeadHeight = target_height;
 				}
 			}
 
-			// ¥á¥¤¥ó²¼ÉôÎÎ°è¤Î¹â¤µ¤òÊİ»ı
+			// ƒƒCƒ“‰º•”—Ìˆæ‚Ì‚‚³‚ğ•Û
 			if (tid == 'MainFoot') {
 				if (target_height > defMainNavi) {
 					MainFootHeight = target_height;
@@ -551,26 +551,26 @@ function fnSetTargetHeight(){
         }
 	}
 
-	// ¥á¥¤¥óÎÎ°è¤Î¹â¤µ¤òÊİ»ı
+	// ƒƒCƒ“—Ìˆæ‚Ì‚‚³‚ğ•Û
 //	alert(NaviHeight+"/"+MainHeadHeight+"/"+MainFootHeight);
 	MainHeight = NaviHeight - ( MainHeadHeight + MainFootHeight );
 	if (MainHeight < defMain) {
 		MainHeight = defMain;
 	}
 
-	// ¥á¥¤¥óÉôÊ¬¤Î¤Û¤¦¤¬Âç¤­¤¤¾ì¹ç¤Ë¤Ïº¸±¦¥Ê¥Ó¤âÂç¤­¤¯¤¹¤ë
+	// ƒƒCƒ“•”•ª‚Ì‚Ù‚¤‚ª‘å‚«‚¢ê‡‚É‚Í¶‰Eƒiƒr‚à‘å‚«‚­‚·‚é
 	if (NaviHeight < MainHeadHeight + MainFootHeight + MainHeight) {
 		NaviHeight = MainHeadHeight + MainFootHeight + MainHeight;	
 	}
-	// ÊÑ¹¹
+	// •ÏX
     for ( var cnt = 0; cnt < all_elms.length; cnt++ ) {
     	var target_height = 0;
 
-		// class¤¬ drop_target ¤Î¾ì¹ç¤Î¤ß½èÍı¤ò¹Ô¤¦
+		// class‚ª drop_target ‚Ìê‡‚Ì‚İˆ—‚ğs‚¤
         if ( getAttrValue ( all_elms[cnt], 'class' ) == 'drop_target' ) {
         	var tid = getAttrValue ( all_elms[cnt], 'tid' );
         	
-        	// tid¤Ë¤è¤Ã¤Æ½èÍı¤òÊ¬¤±¤ë
+        	// tid‚É‚æ‚Á‚Äˆ—‚ğ•ª‚¯‚é
 			if (tid == 'LeftNavi' || tid == 'RightNavi') {
 				target_height = NaviHeight;
 			}else if (tid == 'MainHead' ) {
@@ -585,7 +585,7 @@ function fnSetTargetHeight(){
 		}
 	}
 	
-	// ¥á¥¤¥ó¥Æ¡¼¥Ö¥ë¤Î¹â¤µ¤âÊÑ¹¹
+	// ƒƒCƒ“ƒe[ƒuƒ‹‚Ì‚‚³‚à•ÏX
     for (var i = 0; i < all_td.length; i++) {
     	name = getAttrValue ( all_td[i], 'name' );
 		if (name == 'Main') {
@@ -594,14 +594,14 @@ function fnSetTargetHeight(){
     }
 }
 
-//¥¦¥¤¥ó¥É¥¦¥µ¥¤¥º¼èÆÀ
+//ƒEƒCƒ“ƒhƒEƒTƒCƒYæ“¾
 function GetWindowSize(type){
-    var ua = navigator.userAgent;       										// ¥æ¡¼¥¶¡¼¥¨¡¼¥¸¥§¥ó¥È
-    var nWidth, nHeight;                  										// ¥µ¥¤¥º
-    var nHit = ua.indexOf("MSIE");     											// ¹çÃ×¤·¤¿ÉôÊ¬¤ÎÀèÆ¬Ê¸»ú¤ÎÅº¤¨»ú
-    var bIE = (nHit >=  0);                										// IE ¤«¤É¤¦¤«
-    var bVer6 = (bIE && ua.substr(nHit+5, 1) == "6");  							// ¥Ğ¡¼¥¸¥ç¥ó¤¬ 6 ¤«¤É¤¦¤«
-    var bStd = (document.compatMode && document.compatMode=="CSS1Compat");		// É¸½à¥â¡¼¥É¤«¤É¤¦¤«
+    var ua = navigator.userAgent;       										// ƒ†[ƒU[ƒG[ƒWƒFƒ“ƒg
+    var nWidth, nHeight;                  										// ƒTƒCƒY
+    var nHit = ua.indexOf("MSIE");     											// ‡’v‚µ‚½•”•ª‚Ìæ“ª•¶š‚Ì“Y‚¦š
+    var bIE = (nHit >=  0);                										// IE ‚©‚Ç‚¤‚©
+    var bVer6 = (bIE && ua.substr(nHit+5, 1) == "6");  							// ƒo[ƒWƒ‡ƒ“‚ª 6 ‚©‚Ç‚¤‚©
+    var bStd = (document.compatMode && document.compatMode=="CSS1Compat");		// •W€ƒ‚[ƒh‚©‚Ç‚¤‚©
 
 	switch(type){
 		case "width":
@@ -637,10 +637,10 @@ function GetWindowSize(type){
 	}
 }
 
-// ¥¦¥£¥ó¥É¥¦¥µ¥¤¥º¤¬ÊÑ¹¹¤Ë¤Ê¤Ã¤¿¤È¤­¤ÏÁ´¤Æ¤Î¥ª¥Ö¥¸¥§¥¯¥È¤â°ÜÆ°¤¹¤ë
+// ƒEƒBƒ“ƒhƒEƒTƒCƒY‚ª•ÏX‚É‚È‚Á‚½‚Æ‚«‚Í‘S‚Ä‚ÌƒIƒuƒWƒFƒNƒg‚àˆÚ“®‚·‚é
 function fnMoveObject() {
 
-    // ¥¦¥£¥ó¥É¥¦¤ÎÉıÊÑ¹¹ÈæÎ¨¤ò¼èÆÀ
+    // ƒEƒBƒ“ƒhƒE‚Ì••ÏX”ä—¦‚ğæ“¾
 	var moveX = GetWindowSize("width") - scrX;
 	var BlankX = ( GetWindowSize("width") - 878 ) / 2
 	
@@ -676,5 +676,5 @@ function fnMoveObject() {
 	
 	fnSortObj();
 }
-// ²èÌÌ¤Î¥í¡¼¥É¥¤¥Ù¥ó¥È¤Ë´ØÏ¢ÉÕ¤±
+// ‰æ–Ê‚Ìƒ[ƒhƒCƒxƒ“ƒg‚ÉŠÖ˜A•t‚¯
 addEvent ( window, 'load', init, false );

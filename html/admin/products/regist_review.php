@@ -14,7 +14,7 @@ class LC_Page {
 		$this->tpl_subnavi = 'products/subnavi.tpl';
 		$this->tpl_mainno = 'products';		
 		$this->tpl_subno = 3;
-		$this->tpl_subtitle = '¥ì¥Ó¥å¡¼´ÉÍý';
+		$this->tpl_subtitle = 'ãƒ¬ãƒ“ãƒ¥ãƒ¼ç®¡ç†';
 	}
 }
 
@@ -23,7 +23,7 @@ $objPage = new LC_Page();
 $objView = new SC_AdminView();
 $objSess = new SC_Session();
 
-// Ç§¾Ú²ÄÈÝ¤ÎÈ½Äê
+// èªè¨¼å¯å¦ã®åˆ¤å®š
 sfIsSuccess($objSess);
 
 $objView->assignobj($objPage);

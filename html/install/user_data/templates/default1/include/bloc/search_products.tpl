@@ -3,34 +3,34 @@
  *
  * http://www.lockon.co.jp/
  *}-->
-<!--¢§¸¡º÷¾ò·ï¤³¤³¤«¤é-->
+<!--â–¼æ¤œç´¢æ¡ä»¶ã“ã“ã‹ã‚‰-->
 <table width="166" border="0" cellspacing="0" cellpadding="0" summary=" ">
 	<tr>
-		<td colspan="3"><img src="<!--{$smarty.const.URL_DIR}-->img/side/title_search.jpg" width="166" height="35" alt="¸¡º÷¾ò·ï"></td>
+		<td colspan="3"><img src="<!--{$smarty.const.URL_DIR}-->img/side/title_search.jpg" width="166" height="35" alt="æ¤œç´¢æ¡ä»¶"></td>
 	</tr>
 	<tr>
 		<td bgcolor="#cccccc"><img src="<!--{$smarty.const.URL_DIR}-->img/common/_.gif" width="1" height="10" alt=""></td>
 		<td align="center" bgcolor="#ffffff">
-		<!--¸¡º÷¥Õ¥©¡¼¥à-->
+		<!--æ¤œç´¢ãƒ•ã‚©ãƒ¼ãƒ -->
 		<table width="146" border="0" cellspacing="0" cellpadding="0" summary=" ">
 		<form name="search_form" id="search_form" method="get" action="<!--{$smarty.const.URL_DIR}-->products/list.php">
 		<input type="hidden" name="mode" value="search">
 			<tr><td height="10"></td></tr>
 			<tr>
-				<td><img src="<!--{$smarty.const.URL_DIR}-->img/side/search_cat.gif" width="104" height="10" alt="¾¦ÉÊ¥«¥Æ¥´¥ê¤«¤éÁª¤Ö"></td>
+				<td><img src="<!--{$smarty.const.URL_DIR}-->img/side/search_cat.gif" width="104" height="10" alt="å•†å“ã‚«ãƒ†ã‚´ãƒªã‹ã‚‰é¸ã¶"></td>
 			</tr>
 			<tr><td height="3"></td></tr>
 			<tr>
 				<td>
 					<select name="category_id">
-					<option label="¤¹¤Ù¤Æ¤Î¾¦ÉÊ" value="">Á´¤Æ¤Î¾¦ÉÊ</option>
+					<option label="ã™ã¹ã¦ã®å•†å“" value="">å…¨ã¦ã®å•†å“</option>
 					<!--{html_options options=$arrCatList selected=$category_id}-->
 					</select>
 				</td>
 			</tr>
 			<tr><td height="10"></td></tr>
 			<tr>
-				<td><img src="<!--{$smarty.const.URL_DIR}-->img/side/search_name.gif" width="66" height="10" alt="¾¦ÉÊÌ¾¤òÆşÎÏ"></td>
+				<td><img src="<!--{$smarty.const.URL_DIR}-->img/side/search_name.gif" width="66" height="10" alt="å•†å“åã‚’å…¥åŠ›"></td>
 			</tr>
 			<tr><td height="3"></td></tr>
 			<tr>
@@ -39,12 +39,12 @@
 			<tr><td height="10"></td></tr>
 			<tr>
 				<td align="center">
-					<input type="image" onMouseover="chgImgImageSubmit('<!--{$smarty.const.URL_DIR}-->img/side/button_search_on.gif',this)" onMouseout="chgImgImageSubmit('<!--{$smarty.const.URL_DIR}-->img/side/button_search.gif',this)" src="<!--{$smarty.const.URL_DIR}-->img/side/button_search.gif" width="51" height="22" alt="¸¡º÷" border="0" name="search">
+					<input type="image" onMouseover="chgImgImageSubmit('<!--{$smarty.const.URL_DIR}-->img/side/button_search_on.gif',this)" onMouseout="chgImgImageSubmit('<!--{$smarty.const.URL_DIR}-->img/side/button_search.gif',this)" src="<!--{$smarty.const.URL_DIR}-->img/side/button_search.gif" width="51" height="22" alt="æ¤œç´¢" border="0" name="search">
 				</td>
 			</tr>
 		</form>
 		</table>
-		<!--¸¡º÷¥Õ¥©¡¼¥à-->
+		<!--æ¤œç´¢ãƒ•ã‚©ãƒ¼ãƒ -->
 		</td>
 		<td bgcolor="#cccccc"><img src="<!--{$smarty.const.URL_DIR}-->img/common/_.gif" width="1" height="10" alt=""></td>
 	</tr>
@@ -53,4 +53,4 @@
 	</tr>
 	<tr><td height="10"></td></tr>
 </table>
-<!--¢¥¸¡º÷¾ò·ï¤³¤³¤Ş¤Ç-->
+<!--â–²æ¤œç´¢æ¡ä»¶ã“ã“ã¾ã§-->

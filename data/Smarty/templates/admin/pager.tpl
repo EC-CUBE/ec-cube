@@ -5,7 +5,7 @@
  * http://www.lockon.co.jp/
  */
 *}-->
-<!-- ¡ú ¥Ú¡¼¥¸¥ã¤³¤³¤«¤é ¡ú-->
+<!-- â˜… ãƒšãƒ¼ã‚¸ãƒ£ã“ã“ã‹ã‚‰ â˜…-->
 <table border="0" cellspacing="0" cellpadding="0" summary=" ">
 	<tr>
 		<td>
@@ -40,4 +40,4 @@
 		<td><img src="<!--{$smarty.const.URL_DIR}-->img/contents/search_right.gif" width="19" height="22" alt=""></td>
 	</tr>
 </table>
-<!-- ¡ú ¥Ú¡¼¥¸¥ã¤³¤³¤Þ¤Ç ¡ú-->
+<!-- â˜… ãƒšãƒ¼ã‚¸ãƒ£ã“ã“ã¾ã§ â˜…-->

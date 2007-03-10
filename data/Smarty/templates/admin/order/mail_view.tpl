@@ -5,7 +5,7 @@
  * http://www.lockon.co.jp/
  */
 *}-->
-<!--¡¡-->
+<!--ã€€-->
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="ja" lang="ja">
 <head>
@@ -23,7 +23,7 @@ body {
 }
 </style>
 
-<title>EC CUBE ´ÉÍý¼Ô²èÌÌ</title>
+<title>EC CUBE ç®¡ç†è€…ç”»é¢</title>
 </head>
 
 <body bgcolor="#ffffff" text="#494E5F" link="#006699" vlink="#006699" alink="#006699" leftmargin="0" topmargin="0" marginwidth="0" marginheight="0" onLoad="preLoadImg('<!--{$smarty.const.URL_DIR}-->')">
@@ -33,7 +33,7 @@ body {
 <div align="center">
 
 
-<!--¢§CONTENTS-->
+<!--â–¼CONTENTS-->
 <table width="556" border="0" cellspacing="0" cellpadding="0" summary=" ">
 	<tr><td height="15"></td></tr>
 	<tr>
@@ -47,11 +47,11 @@ body {
 				<td bgcolor="#cccccc" align="center">
 				<table width="" border="0" cellspacing="1" cellpadding="5" summary=" ">
 					<tr align="center">
-						<td bgcolor="#f0f0f0" width="50" class="fs12n">·ïÌ¾</td>
+						<td bgcolor="#f0f0f0" width="50" class="fs12n">ä»¶å</td>
 						<td bgcolor="#ffffff" width="500" class="fs12n"><!--{$tpl_subject|escape}--></td>
 					</tr>
 					<tr>
-						<td align="center" bgcolor="#f0f0f0" width="50" class="fs12n">ËÜÊ¸</td>
+						<td align="center" bgcolor="#f0f0f0" width="50" class="fs12n">æœ¬æ–‡</td>
 						<td align="left" bgcolor="#ffffff" width="500" class="fs12n"><!--{$tpl_body|escape|nl2br}--></td>
 					</tr>
 				</table>
@@ -66,7 +66,7 @@ body {
 	</tr>
 	<tr><td height="2"></td></tr>
 </table>
-<!--¢¥CONTENTS-->
+<!--â–²CONTENTS-->
 
 </body>
 </html>

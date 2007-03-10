@@ -5,7 +5,7 @@
  * http://www.lockon.co.jp/
  */
 *}-->
-<!--║З║З╔А╔╓╔С╔Ё╔С╔ф╔С╔д║З║З-->
+<!--Б≤┘Б≤┘Ц┐║Ц┌╓Ц┐ЁЦ┌ЁЦ┐ЁЦ┐├Ц┐ЁЦ┐└Б≤┘Б≤┘-->
 <table width="878" border="0" cellspacing="0" cellpadding="0" summary=" ">
 <form name="form1" id="form1" method="post" action="<!--{$smarty.server.PHP_SELF|escape}-->">
 <input type="hidden" name="mode" value="complete">
@@ -16,14 +16,14 @@
 <!--{/foreach}-->
 	<tr valign="top">
 		<td background="<!--{$smarty.const.URL_DIR}-->img/contents/navi_bg.gif" height="402">
-			<!--╒╖SUB NAVI-->
+			<!--Б√╪SUB NAVI-->
 			<!--{include file=$tpl_subnavi}-->
-			<!--╒╔SUB NAVI-->
+			<!--Б√╡SUB NAVI-->
 		</td>
 		<td class="mainbg">
-			<!--╒╖епо©╔ф║╪╔ж╔К╓Ё╓Ё╓╚╓И-->
+			<!--Б√╪Г≥╩И▄╡Ц┐├Ц┐╪Ц┐√Ц┐╚Ц│⌠Ц│⌠Ц│▀Ц┌┴-->
 			<table width="737" border="0" cellspacing="0" cellpadding="0" summary=" ">
-				<!--╔А╔╓╔С╔╗╔Й╔╒-->
+				<!--Ц┐║Ц┌╓Ц┐ЁЦ┌╗Ц┐╙Ц┌╒-->
 				<tr>
 					<td align="center">
 						<table width="706" border="0" cellspacing="0" cellpadding="0" summary=" ">
@@ -40,7 +40,7 @@
 									</tr>
 									<tr>
 										<td background="<!--{$smarty.const.URL_DIR}-->img/contents/contents_title_left_bg.gif"><img src="<!--{$smarty.const.URL_DIR}-->img/contents/contents_title_left.gif" width="22" height="12" alt=""></td>
-										<td bgcolor="#636469" width="638" class="fs14n"><span class="white"><!--╔Ё╔С╔ф╔С╔д╔©╔╓╔х╔К-->╦э╣р╢имЩ</span></td>
+										<td bgcolor="#636469" width="638" class="fs14n"><span class="white"><!--Ц┌ЁЦ┐ЁЦ┐├Ц┐ЁЦ┐└Ц┌©Ц┌╓Ц┐┬Ц┐╚-->И║╖Е╝╒Г╝║Г░├</span></td>
 										<td background="<!--{$smarty.const.URL_DIR}-->img/contents/contents_title_right_bg.gif"><img src="<!--{$smarty.const.URL_DIR}-->img/common/_.gif" width="18" height="1" alt=""></td>
 									</tr>
 									<tr>
@@ -53,7 +53,7 @@
 
 								<table width="678" border="0" cellspacing="1" cellpadding="8" summary=" ">
 									<tr>
-										<td  height="350" bgcolor="#ffffff" class="fs14n" align="center">епо©╓╛╢╟н╩цв╓╥╓ч╓╥╓©║ё</td>
+										<td  height="350" bgcolor="#ffffff" class="fs14n" align="center">Г≥╩И▄╡Ц│▄Е╝▄Д╨├Х┤╢Ц│≈Ц│╬Ц│≈Ц│÷Ц─┌</td>
 									</tr>
 								</table>
 
@@ -67,11 +67,11 @@
 						</table>
 					</td>
 				</tr>
-				<!--╔А╔╓╔С╔╗╔Й╔╒-->
+				<!--Ц┐║Ц┌╓Ц┐ЁЦ┌╗Ц┐╙Ц┌╒-->
 			</table>
-			<!--╒╔епо©╔ф║╪╔ж╔К╓Ё╓Ё╓ч╓г-->
+			<!--Б√╡Г≥╩И▄╡Ц┐├Ц┐╪Ц┐√Ц┐╚Ц│⌠Ц│⌠Ц│╬Ц│╖-->
 		</td>
 	</tr>
 </form>
 </table>
-<!--║З║З╔А╔╓╔С╔Ё╔С╔ф╔С╔д║З║З-->
+<!--Б≤┘Б≤┘Ц┐║Ц┌╓Ц┐ЁЦ┌ЁЦ┐ЁЦ┐├Ц┐ЁЦ┐└Б≤┘Б≤┘-->

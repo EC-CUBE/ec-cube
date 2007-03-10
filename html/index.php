@@ -11,17 +11,17 @@ print("test4");
 
 class LC_Page {
 	function LC_Page() {
-		/** É¬¤ºÊÑ¹¹¤¹¤ë **/
-		$this->tpl_css = URL_DIR.'css/layout/index.css';						// ¥á¥¤¥óCSS¥Ñ¥¹
-		/** É¬¤ºÊÑ¹¹¤¹¤ë **/
-		$this->tpl_mainpage = HTML_PATH . "user_data/templates/top.tpl";		// ¥á¥¤¥ó¥Æ¥ó¥×¥ì¡¼¥È
+		/** å¿…ãšå¤‰æ›´ã™ã‚‹ **/
+		$this->tpl_css = URL_DIR.'css/layout/index.css';						// ãƒ¡ã‚¤ãƒ³CSSãƒ‘ã‚¹
+		/** å¿…ãšå¤‰æ›´ã™ã‚‹ **/
+		$this->tpl_mainpage = HTML_PATH . "user_data/templates/top.tpl";		// ãƒ¡ã‚¤ãƒ³ãƒ†ãƒ³ãƒ—ãƒ¬ãƒ¼ãƒˆ
 	}
 }
 
 $objPage = new LC_Page();
 $conn = new SC_DBConn();
 
-// ¥ì¥¤¥¢¥¦¥È¥Ç¥¶¥¤¥ó¤ò¼èÆÀ
+// ãƒ¬ã‚¤ã‚¢ã‚¦ãƒˆãƒ‡ã‚¶ã‚¤ãƒ³ã‚’å–å¾—
 $objPage = sfGetPageLayout($objPage, false, "index.php");
 
 $objView = new SC_SiteView();

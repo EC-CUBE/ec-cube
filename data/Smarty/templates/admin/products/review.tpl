@@ -5,18 +5,18 @@
  * http://www.lockon.co.jp/
  */
 *}-->
-<!--¡ú¡ú¥á¥¤¥ó¥³¥ó¥Æ¥ó¥Ä¡ú¡ú-->
+<!--â˜…â˜…ãƒ¡ã‚¤ãƒ³ã‚³ãƒ³ãƒ†ãƒ³ãƒ„â˜…â˜…-->
 <table width="878" border="0" cellspacing="0" cellpadding="0" summary=" ">
 <form name="search_form" method="post" action="<!--{$smarty.server.PHP_SELF|escape}-->" >
 <input type="hidden" name="mode" value="search">
 	<tr valign="top">
 		<td background="<!--{$smarty.const.URL_DIR}-->img/contents/navi_bg.gif" height="402">
-			<!-- ¥µ¥Ö¥Ê¥Ó -->
+			<!-- ã‚µãƒ–ãƒŠãƒ“ -->
 			<!--{include file=$tpl_subnavi}-->
 		</td>
 		<td class="mainbg">
 		<table width="737" border="0" cellspacing="0" cellpadding="0" summary=" ">
-			<!--¥á¥¤¥ó¥¨¥ê¥¢-->
+			<!--ãƒ¡ã‚¤ãƒ³ã‚¨ãƒªã‚¢-->
 			<tr>
 				<td align="center">
 				<table width="706" border="0" cellspacing="0" cellpadding="0" summary=" ">
@@ -33,7 +33,7 @@
 							</tr>
 							<tr>
 								<td background="<!--{$smarty.const.URL_DIR}-->img/contents/contents_title_left_bg.gif"><img src="<!--{$smarty.const.URL_DIR}-->img/contents/contents_title_left.gif" width="22" height="12" alt=""></td>
-								<td bgcolor="#636469" width="638" class="fs14n"><span class="white"><!--¥³¥ó¥Æ¥ó¥Ä¥¿¥¤¥È¥ë-->¸¡º÷¾ò·ïÀßÄê</span></td>
+								<td bgcolor="#636469" width="638" class="fs14n"><span class="white"><!--ã‚³ãƒ³ãƒ†ãƒ³ãƒ„ã‚¿ã‚¤ãƒˆãƒ«-->æ¤œç´¢æ¡ä»¶è¨­å®š</span></td>
 								<td background="<!--{$smarty.const.URL_DIR}-->img/contents/contents_title_right_bg.gif"><img src="<!--{$smarty.const.URL_DIR}-->img/common/_.gif" width="18" height="1" alt=""></td>
 							</tr>
 							<tr>
@@ -44,61 +44,61 @@
 							</tr>
 						</table>
 
-						<!--¸¡º÷¾ò·ïÀßÄê¥Æ¡¼¥Ö¥ë¤³¤³¤«¤é-->
+						<!--æ¤œç´¢æ¡ä»¶è¨­å®šãƒ†ãƒ¼ãƒ–ãƒ«ã“ã“ã‹ã‚‰-->
 						<table width="678" border="0" cellspacing="1" cellpadding="8" summary=" ">
 							<tr class="fs12n">
-								<td bgcolor="#f2f1ec" width="110">Åê¹Æ¼ÔÌ¾</td>
+								<td bgcolor="#f2f1ec" width="110">æŠ•ç¨¿è€…å</td>
 								<td bgcolor="#ffffff" width="248"><input type="text" name="search_reviewer_name" value="<!--{$arrForm.search_reviewer_name|escape}-->" size="30" class="box30" /></td>
-								<td bgcolor="#f2f1ec" width="110">¥Û¡¼¥à¥Ú¡¼¥¸¥¢¥É¥ì¥¹</td>
+								<td bgcolor="#f2f1ec" width="110">ãƒ›ãƒ¼ãƒ ãƒšãƒ¼ã‚¸ã‚¢ãƒ‰ãƒ¬ã‚¹</td>
 								<td bgcolor="#ffffff" width="249"><input type="text" name="search_reviewer_url" value="<!--{$arrForm.search_reviewer_url}-->" size="30" class="box30" /></td>
 							</tr>
 							<tr class="fs12n">
-								<td bgcolor="#f2f1ec" width="110">¾¦ÉÊÌ¾</td>
+								<td bgcolor="#f2f1ec" width="110">å•†å“å</td>
 								<td bgcolor="#ffffff" width="248"><input type="text" name="search_name" value="<!--{$arrForm.search_name|escape}-->" size="30" class="box30" /></td>
-								<td bgcolor="#f2f1ec" width="110">¾¦ÉÊ¥³¡¼¥É</td>
+								<td bgcolor="#f2f1ec" width="110">å•†å“ã‚³ãƒ¼ãƒ‰</td>
 								<td bgcolor="#ffffff" width="249"><input type="text" name="search_product_code" value="<!--{$arrForm.search_product_code|escape}-->" size="30" class="box30" /></td>
 							</tr>
 							<tr class="fs12n">
-								<td bgcolor="#f2f1ec" width="110">À­ÊÌ</td>
+								<td bgcolor="#f2f1ec" width="110">æ€§åˆ¥</td>
 								<!--{assign var=key value=search_sex}-->
 								<td bgcolor="#ffffff" width="248"><!--{html_checkboxes name="$key" options=$arrSex selected=$arrForm[$key]}--></td>
-								<td bgcolor="#f2f1ec" width="110">¤ª¤¹¤¹¤á¥ì¥Ù¥ë</td>
+								<td bgcolor="#f2f1ec" width="110">ãŠã™ã™ã‚ãƒ¬ãƒ™ãƒ«</td>
 								<td bgcolor="#ffffff" width="249">
 								<!--{assign var=key value=search_recommend_level}-->
 								<select name="<!--{$key}-->">
-								<option value="" selected="selected">ÁªÂò¤·¤Æ¤¯¤À¤µ¤¤</option>
+								<option value="" selected="selected">é¸æŠžã—ã¦ãã ã•ã„</option>
 								<!--{html_options options=$arrRECOMMEND selected=$arrForm[$key].value}-->
 								</select></td>
 							</tr>
 							<tr class="fs12n">
-								<td bgcolor="#f2f1ec" width="110">Åê¹ÆÆü</td>
+								<td bgcolor="#f2f1ec" width="110">æŠ•ç¨¿æ—¥</td>
 								<td bgcolor="#ffffff" width="607" colspan="3">
 								<span class="red"><!--{$arrErr.search_startyear}--></span>
 								<span class="red"><!--{$arrErr.search_endyear}--></span>		
 								<select name="search_startyear" style="<!--{$arrErr.search_startyear|sfGetErrorColor}-->">
 								<option value="">----</option>
 								<!--{html_options options=$arrStartYear selected=$arrForm.search_startyear}-->
-								</select>Ç¯
+								</select>å¹´
 								<select name="search_startmonth" style="<!--{$arrErr.search_startyear|sfGetErrorColor}-->">
 								<option value="">--</option>
 								<!--{html_options options=$arrStartMonth selected=$arrForm.search_startmonth}-->
-								</select>·î
+								</select>æœˆ
 								<select name="search_startday" style="<!--{$arrErr.search_startyear|sfGetErrorColor}-->">
 								<option value="">--</option>
 								<!--{html_options options=$arrStartDay selected=$arrForm.search_startday}-->
-								</select>Æü¡Á
+								</select>æ—¥ã€œ
 								<select name="search_endyear" style="<!--{$arrErr.search_endyear|sfGetErrorColor}-->">
 								<option value="">----</option>
 								<!--{html_options options=$arrEndYear selected=$arrForm.search_endyear}-->
-								</select>Ç¯
+								</select>å¹´
 								<select name="search_endmonth" style="<!--{$arrErr.search_endyear|sfGetErrorColor}-->">
 								<option value="">--</option>
 								<!--{html_options options=$arrEndMonth selected=$arrForm.search_endmonth}-->
-								</select>·î
+								</select>æœˆ
 								<select name="search_endday" style="<!--{$arrErr.search_endyear|sfGetErrorColor}-->">
 								<option value="">--</option>
 								<!--{html_options options=$arrEndDay selected=$arrForm.search_endday}-->
-								</select>Æü
+								</select>æ—¥
 								</td>
 							</tr>
 						</table>
@@ -114,15 +114,15 @@
 								<td bgcolor="#e9e7de" align="center">
 								<table border="0" cellspacing="0" cellpadding="0" summary=" ">
 									<tr>
-										<td class="fs12n">¸¡º÷·ë²ÌÉ½¼¨·ï¿ô
+										<td class="fs12n">æ¤œç´¢çµæžœè¡¨ç¤ºä»¶æ•°
 											<!--{assign var=key value="search_page_max"}-->
 											<span class="red12"><!--{$arrErr[$key]}--></span>
 											<select name="<!--{$key}-->" style="<!--{$arrErr[$key]|sfGetErrorColor}-->">
 											<!--{html_options options=$arrPageMax selected=$arrForm.search_page_max}-->
-											</select> ·ï
+											</select> ä»¶
 										</td>
 										<td><img src="<!--{$smarty.const.URL_DIR}-->img/common/_.gif" width="10" height="1" alt=""></td>
-										<td><input type="image" name="subm" onMouseover="chgImgImageSubmit('<!--{$smarty.const.URL_DIR}-->img/contents/btn_search_on.jpg',this)" onMouseout="chgImgImageSubmit('<!--{$smarty.const.URL_DIR}-->img/contents/btn_search.jpg',this)" src="<!--{$smarty.const.URL_DIR}-->img/contents/btn_search.jpg" width="123" height="24" alt="¤³¤Î¾ò·ï¤Ç¸¡º÷¤¹¤ë" border="0" ></td>
+										<td><input type="image" name="subm" onMouseover="chgImgImageSubmit('<!--{$smarty.const.URL_DIR}-->img/contents/btn_search_on.jpg',this)" onMouseout="chgImgImageSubmit('<!--{$smarty.const.URL_DIR}-->img/contents/btn_search.jpg',this)" src="<!--{$smarty.const.URL_DIR}-->img/contents/btn_search.jpg" width="123" height="24" alt="ã“ã®æ¡ä»¶ã§æ¤œç´¢ã™ã‚‹" border="0" ></td>
 									</tr>
 								</table>
 								</td>
@@ -132,7 +132,7 @@
 								<td colspan="3"><img src="<!--{$smarty.const.URL_DIR}-->img/contents/tbl_bottom.gif" width="678" height="8" alt=""></td>
 							</tr>
 						</table>
-						<!--¸¡º÷¾ò·ïÀßÄê¥Æ¡¼¥Ö¥ë¤³¤³¤Þ¤Ç-->
+						<!--æ¤œç´¢æ¡ä»¶è¨­å®šãƒ†ãƒ¼ãƒ–ãƒ«ã“ã“ã¾ã§-->
 						</td>
 						<td background="<!--{$smarty.const.URL_DIR}-->img/contents/main_right.jpg"><img src="<!--{$smarty.const.URL_DIR}-->img/common/_.gif" width="14" height="1" alt=""></td>
 					</tr>
@@ -143,17 +143,17 @@
 				</table>
 				</td>
 			</tr>
-			<!--¥á¥¤¥ó¥¨¥ê¥¢-->
+			<!--ãƒ¡ã‚¤ãƒ³ã‚¨ãƒªã‚¢-->
 		</table>
 		</td>
 	</tr>
 </form>	
 </table>
-<!--¡ú¡ú¥á¥¤¥ó¥³¥ó¥Æ¥ó¥Ä¡ú¡ú-->
+<!--â˜…â˜…ãƒ¡ã‚¤ãƒ³ã‚³ãƒ³ãƒ†ãƒ³ãƒ„â˜…â˜…-->
 
 <!--{if $smarty.post.mode == 'search'}-->
 
-	<!--¡ú¡ú¸¡º÷·ë²Ì°ìÍ÷¡ú¡ú-->
+	<!--â˜…â˜…æ¤œç´¢çµæžœä¸€è¦§â˜…â˜…-->
 	<table width="878" border="0" cellspacing="0" cellpadding="0" summary=" ">
 	<form name="form1" id="form1" method="post" action="<!--{$smarty.server.PHP_SELF|escape}-->">
 	<input type="hidden" name="mode" value="search">
@@ -171,7 +171,7 @@
 				<tr>
 					<td><img src="<!--{$smarty.const.URL_DIR}-->img/contents/search_left.gif" width="19" height="22" alt=""></td>
 					<td>
-					<!--¸¡º÷·ë²Ì-->
+					<!--æ¤œç´¢çµæžœ-->
 					<table border="0" cellspacing="0" cellpadding="0" summary=" ">
 						<tr>
 							<td><img src="<!--{$smarty.const.URL_DIR}-->img/contents/reselt_left_top.gif" width="22" height="5" alt=""></td>
@@ -180,7 +180,7 @@
 						</tr>
 						<tr>
 							<td background="<!--{$smarty.const.URL_DIR}-->img/contents/reselt_left_bg.gif"><img src="<!--{$smarty.const.URL_DIR}-->img/contents/reselt_left_middle.gif" width="22" height="12" alt=""></td>
-							<td bgcolor="#393a48" class="white10">¸¡º÷·ë²Ì°ìÍ÷¡¡<span class="reselt"><!--¸¡º÷·ë²Ì¿ô--><!--{$tpl_linemax}-->·ï</span>&nbsp;¤¬³ºÅö¤·¤Þ¤·¤¿¡£</td>
+							<td bgcolor="#393a48" class="white10">æ¤œç´¢çµæžœä¸€è¦§ã€€<span class="reselt"><!--æ¤œç´¢çµæžœæ•°--><!--{$tpl_linemax}-->ä»¶</span>&nbsp;ãŒè©²å½“ã—ã¾ã—ãŸã€‚</td>
 							<td background="<!--{$smarty.const.URL_DIR}-->img/contents/reselt_right_bg.gif"><img src="<!--{$smarty.const.URL_DIR}-->img/common/_.gif" width="22" height="8" alt=""></td>
 						</tr>
 						<tr>
@@ -189,9 +189,9 @@
 							<td><img src="<!--{$smarty.const.URL_DIR}-->img/contents/reselt_right_bottom.gif" width="22" height="5" alt=""></td>
 						</tr>
 					</table>
-					<!--¸¡º÷·ë²Ì-->
+					<!--æ¤œç´¢çµæžœ-->
 					<!--{if $smarty.const.ADMIN_MODE == '1'}-->
-					<input type="button" name="subm" value="¸¡º÷·ë²Ì¤ò¤¹¤Ù¤Æºï½ü" onclick="fnModeSubmit('delete_all','','');" />
+					<input type="button" name="subm" value="æ¤œç´¢çµæžœã‚’ã™ã¹ã¦å‰Šé™¤" onclick="fnModeSubmit('delete_all','','');" />
 					<!--{/if}-->
 					</td>
 					<td><img src="<!--{$smarty.const.URL_DIR}-->img/common/_.gif" width="8" height="1" alt=""></td>
@@ -215,16 +215,16 @@
 					<tr>
 						<td bgcolor="#cccccc">
 						
-						<!--¸¡º÷·ë²ÌÉ½¼¨¥Æ¡¼¥Ö¥ë-->
+						<!--æ¤œç´¢çµæžœè¡¨ç¤ºãƒ†ãƒ¼ãƒ–ãƒ«-->
 						<table width="840" border="0" cellspacing="1" cellpadding="5" summary=" ">
 							<tr bgcolor="#636469" align="center" class="fs12">
-								<td width="130"><span class="white">Åê¹ÆÆü</span></td>
-								<td width="100"><span class="white">Åê¹Æ¼ÔÌ¾</span></td>
-								<td width="252"><span class="white">¾¦ÉÊÌ¾</span></td>
-								<td width="100"><span class="white">¤ª¤¹¤¹¤á¥ì¥Ù¥ë</span></td>
-								<td width="80"><span class="white">É½¼¨¡¦ÈóÉ½¼¨</span></td>
-								<td width="50"><span class="white">ÊÔ½¸</span></td>
-								<td width="50"><span class="white">ºï½ü</span></td>
+								<td width="130"><span class="white">æŠ•ç¨¿æ—¥</span></td>
+								<td width="100"><span class="white">æŠ•ç¨¿è€…å</span></td>
+								<td width="252"><span class="white">å•†å“å</span></td>
+								<td width="100"><span class="white">ãŠã™ã™ã‚ãƒ¬ãƒ™ãƒ«</span></td>
+								<td width="80"><span class="white">è¡¨ç¤ºãƒ»éžè¡¨ç¤º</span></td>
+								<td width="50"><span class="white">ç·¨é›†</span></td>
+								<td width="50"><span class="white">å‰Šé™¤</span></td>
 							</tr>
 		
 							<!--{section name=cnt loop=$arrReview}-->
@@ -234,13 +234,13 @@
 								<td><!--{$arrReview[cnt].name|escape}--></td>
 								<!--{assign var=key value="`$arrReview[cnt].recommend_level`"}-->
 								<td align="center"><!--{$arrRECOMMEND[$key]}--></td>
-								<td align="center"><!--{if $arrReview[cnt].status eq 1}-->É½¼¨<!--{elseif $arrReview[cnt].status eq 2}-->ÈóÉ½¼¨<!--{/if}--></td>
-								<td align="center"><a href="#" onclick="fnChangeAction('./review_edit.php'); fnModeSubmit('','review_id','<!--{$arrReview[cnt].review_id}-->');">ÊÔ½¸</a></td>
-								<td align="center"><a href="#" onclick="fnModeSubmit('delete','review_id','<!--{$arrReview[cnt].review_id}-->'); return false;">ºï½ü</a></td>
+								<td align="center"><!--{if $arrReview[cnt].status eq 1}-->è¡¨ç¤º<!--{elseif $arrReview[cnt].status eq 2}-->éžè¡¨ç¤º<!--{/if}--></td>
+								<td align="center"><a href="#" onclick="fnChangeAction('./review_edit.php'); fnModeSubmit('','review_id','<!--{$arrReview[cnt].review_id}-->');">ç·¨é›†</a></td>
+								<td align="center"><a href="#" onclick="fnModeSubmit('delete','review_id','<!--{$arrReview[cnt].review_id}-->'); return false;">å‰Šé™¤</a></td>
 							</tr>
 							<!--{/section}-->
 						</table>
-						<!--¸¡º÷·ë²ÌÉ½¼¨¥Æ¡¼¥Ö¥ë-->
+						<!--æ¤œç´¢çµæžœè¡¨ç¤ºãƒ†ãƒ¼ãƒ–ãƒ«-->
 						</td>
 					</tr>
 				</table>
@@ -250,4 +250,4 @@
 		</table>
 	<!--{ /if }-->
 <!--{ /if }-->
-<!--¡ú¡ú¸¡º÷·ë²Ì°ìÍ÷¡ú¡ú-->		
+<!--â˜…â˜…æ¤œç´¢çµæžœä¸€è¦§â˜…â˜…-->		

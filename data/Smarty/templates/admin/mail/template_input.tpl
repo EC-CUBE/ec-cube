@@ -13,17 +13,17 @@ function lfnCheckSubmit(){
 	var err = '';
 	
 	if ( ! fm["subject"].value ){
-		err += 'Subject¤òÆşÎÏ¤·¤Æ²¼¤µ¤¤¡£';
+		err += 'Subjectã‚’å…¥åŠ›ã—ã¦ä¸‹ã•ã„ã€‚';
 	}
 	if ( ! fm["body"].value ){
 		if ( err ) err += '\n';
-		err += 'ËÜÊ¸¤òÆşÎÏ¤·¤Æ²¼¤µ¤¤¡£';
+		err += 'æœ¬æ–‡ã‚’å…¥åŠ›ã—ã¦ä¸‹ã•ã„ã€‚';
 	}
 	if ( err ){
 		alert(err);
 		return false;
 	} else {
-		if(window.confirm('ÆâÍÆ¤òÅĞÏ¿¤·¤Æ¤âµ¹¤·¤¤¤Ç¤¹¤«')){
+		if(window.confirm('å†…å®¹ã‚’ç™»éŒ²ã—ã¦ã‚‚å®œã—ã„ã§ã™ã‹')){
 			return true;
 		}else{
 			return false;
@@ -33,21 +33,21 @@ function lfnCheckSubmit(){
 //-->
 </script>
 
-<!--¡ú¡ú¥á¥¤¥ó¥³¥ó¥Æ¥ó¥Ä¡ú¡ú-->
+<!--â˜…â˜…ãƒ¡ã‚¤ãƒ³ã‚³ãƒ³ãƒ†ãƒ³ãƒ„â˜…â˜…-->
 <table width="878" border="0" cellspacing="0" cellpadding="0" summary=" ">
 <form name="form1" id="form1" method="post" action="<!--{$smarty.server.PHP_SELF|escape}-->" onSubmit="return lfnCheckSubmit();">
 <input type="hidden" name="mode" value="<!--{$mode}-->">
 <input type="hidden" name="template_id" value="<!--{$arrForm.template_id}-->">
 	<tr valign="top">
 		<td background="<!--{$smarty.const.URL_DIR}-->img/contents/navi_bg.gif" height="402">
-			<!--¢§SUB NAVI-->
+			<!--â–¼SUB NAVI-->
 			<!--{include file=$tpl_subnavi}-->
-			<!--¢¥SUB NAVI-->
+			<!--â–²SUB NAVI-->
 		</td>
 		<td class="mainbg">
-			<!--¢§ÅĞÏ¿¥Æ¡¼¥Ö¥ë¤³¤³¤«¤é-->
+			<!--â–¼ç™»éŒ²ãƒ†ãƒ¼ãƒ–ãƒ«ã“ã“ã‹ã‚‰-->
 			<table width="737" border="0" cellspacing="0" cellpadding="0" summary=" ">
-				<!--¥á¥¤¥ó¥¨¥ê¥¢-->
+				<!--ãƒ¡ã‚¤ãƒ³ã‚¨ãƒªã‚¢-->
 				<tr>
 					<td align="center">
 						<table width="706" border="0" cellspacing="0" cellpadding="0" summary=" ">
@@ -64,7 +64,7 @@ function lfnCheckSubmit(){
 									</tr>
 									<tr>
 										<td background="<!--{$smarty.const.URL_DIR}-->img/contents/contents_title_left_bg.gif"><img src="<!--{$smarty.const.URL_DIR}-->img/contents/contents_title_left.gif" width="22" height="12" alt=""></td>
-										<td bgcolor="#636469" width="638" class="fs14n"><span class="white"><!--¥³¥ó¥Æ¥ó¥Ä¥¿¥¤¥È¥ë-->ÇÛ¿®ÆâÍÆÀßÄê¡§<!--{$title}--></span></td>
+										<td bgcolor="#636469" width="638" class="fs14n"><span class="white"><!--ã‚³ãƒ³ãƒ†ãƒ³ãƒ„ã‚¿ã‚¤ãƒˆãƒ«-->é…ä¿¡å†…å®¹è¨­å®šï¼š<!--{$title}--></span></td>
 										<td background="<!--{$smarty.const.URL_DIR}-->img/contents/contents_title_right_bg.gif"><img src="<!--{$smarty.const.URL_DIR}-->img/common/_.gif" width="18" height="1" alt=""></td>
 									</tr>
 									<tr>
@@ -77,7 +77,7 @@ function lfnCheckSubmit(){
 
 								<table width="678" border="0" cellspacing="1" cellpadding="8" summary=" ">
 									<tr class="fs12n">
-										<td bgcolor="#f2f1ec">¥á¡¼¥ë·Á¼°<span class="red"> *</span></td>
+										<td bgcolor="#f2f1ec">ãƒ¡ãƒ¼ãƒ«å½¢å¼<span class="red"> *</span></td>
 										<td bgcolor="#ffffff"><span <!--{if $arrErr.mail_method}--><!--{sfSetErrorStyle}--><!--{/if}-->><!--{html_radios name="mail_method" options=$arrMagazineType separator="&nbsp;" selected=$arrForm.mail_method}--></span>
 										<!--{if $arrErr.mail_method}--><br><span class="red12"><!--{$arrErr.mail_method}--></span><!--{/if}-->
 										</td>
@@ -90,7 +90,7 @@ function lfnCheckSubmit(){
 										</td>
 									</tr>
 									<tr>
-										<td bgcolor="#f2f1ec" colspan="2" class="fs12n">ËÜÊ¸<span class="red"> *</span>¡ÊÌ¾Á°º¹¤·¹ş¤ß»ş¤Ï {name} ¤È¤¤¤ì¤Æ¤¯¤À¤µ¤¤¡Ë</td>
+										<td bgcolor="#f2f1ec" colspan="2" class="fs12n">æœ¬æ–‡<span class="red"> *</span>ï¼ˆåå‰å·®ã—è¾¼ã¿æ™‚ã¯ {name} ã¨ã„ã‚Œã¦ãã ã•ã„ï¼‰</td>
 									</tr>
 									<tr>
 										<td bgcolor="#ffffff" colspan="2">
@@ -112,9 +112,9 @@ function lfnCheckSubmit(){
 										<table border="0" cellspacing="0" cellpadding="0" summary=" ">
 											<tr>
 												<td width="30%"></td>
-												<td width="40%" align = "center" valign="upper"><input type="image" onMouseover="chgImgImageSubmit('<!--{$smarty.const.URL_DIR}-->img/contents/btn_regist_on.jpg',this)" onMouseout="chgImgImageSubmit('<!--{$smarty.const.URL_DIR}-->img/contents/btn_regist.jpg',this)" src="<!--{$smarty.const.URL_DIR}-->img/contents/btn_regist.jpg" width="123" height="24" alt="¤³¤ÎÆâÍÆ¤ÇÅĞÏ¿¤¹¤ë" border="0" name="subm"></td>
-												<td width="30%" align = "right" valign="upper"><input type="button" width="110" height="30" value="Ê¸»ú¿ô¥«¥¦¥ó¥È" onclick="fnCharCount('form1','body','cnt_footer');" border="0" name="next" id="next" />
-												<br><span class="fs10n">º£¤Ş¤Ç¤ËÆşÎÏ¤·¤¿¤Î¤Ï<input type="text" name="cnt_footer" size="4" class="box4" readonly = true style="text-align:right">Ê¸»ú¤Ç¤¹¡£</span></td>
+												<td width="40%" align = "center" valign="upper"><input type="image" onMouseover="chgImgImageSubmit('<!--{$smarty.const.URL_DIR}-->img/contents/btn_regist_on.jpg',this)" onMouseout="chgImgImageSubmit('<!--{$smarty.const.URL_DIR}-->img/contents/btn_regist.jpg',this)" src="<!--{$smarty.const.URL_DIR}-->img/contents/btn_regist.jpg" width="123" height="24" alt="ã“ã®å†…å®¹ã§ç™»éŒ²ã™ã‚‹" border="0" name="subm"></td>
+												<td width="30%" align = "right" valign="upper"><input type="button" width="110" height="30" value="æ–‡å­—æ•°ã‚«ã‚¦ãƒ³ãƒˆ" onclick="fnCharCount('form1','body','cnt_footer');" border="0" name="next" id="next" />
+												<br><span class="fs10n">ä»Šã¾ã§ã«å…¥åŠ›ã—ãŸã®ã¯<input type="text" name="cnt_footer" size="4" class="box4" readonly = true style="text-align:right">æ–‡å­—ã§ã™ã€‚</span></td>
 											</tr>
 										</table>
 										</td>
@@ -134,10 +134,10 @@ function lfnCheckSubmit(){
 						</table>
 					</td>
 				</tr>
-				<!--¥á¥¤¥ó¥¨¥ê¥¢-->
+				<!--ãƒ¡ã‚¤ãƒ³ã‚¨ãƒªã‚¢-->
 			</table>
-			<!--¢¥ÅĞÏ¿¥Æ¡¼¥Ö¥ë¤³¤³¤Ş¤Ç-->
+			<!--â–²ç™»éŒ²ãƒ†ãƒ¼ãƒ–ãƒ«ã“ã“ã¾ã§-->
 		</td>
 	</tr>
 </table>
-<!--¡ú¡ú¥á¥¤¥ó¥³¥ó¥Æ¥ó¥Ä¡ú¡ú-->
+<!--â˜…â˜…ãƒ¡ã‚¤ãƒ³ã‚³ãƒ³ãƒ†ãƒ³ãƒ„â˜…â˜…-->

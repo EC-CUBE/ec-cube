@@ -12,13 +12,13 @@
 <script type="text/javascript" src="<!--{$smarty.const.URL_DIR}-->js/navi.js"></script>
 <script type="text/javascript" src="<!--{$smarty.const.URL_DIR}-->js/site.js"></script>
 <script type="text/javascript" src="<!--{$smarty.const.URL_DIR}-->js/win_op.js"></script>
-<title><!--{$arrSiteInfo.shop_name}-->/╔╒╔С╔╠║╪╔х║й╢╟н╩╔з║╪╔╦║к</title>
+<title><!--{$arrSiteInfo.shop_name}-->/Ц┌╒Ц┐ЁЦ┌╠Ц┐╪Ц┐┬О╪┬Е╝▄Д╨├Ц┐ Ц┐╪Ц┌╦О╪┴</title>
 </head>
 
 <body bgcolor="#ffffff" text="#555555" link="#0099cc" vlink="#CC0000" alink="#993399" leftmargin="0" topmargin="0" marginwidth="0" marginheight="0">
 
 
-<!--╒╔TITLE-->
+<!--Б√╡TITLE-->
 <table width="760" border="0" cellspacing="0" cellpadding="0" summary=" ">
 	<tr>
 		<td height="40" bgcolor="#f6f6f6" align="center">
@@ -27,7 +27,7 @@
 				<td height="30" bgcolor="ff0000"><img src="../misc/_.gif" width="7" height="1" alt=""></td>
 				<td height="30"><img src="../misc/_.gif" width="8" height="1" alt=""></td>
 
-				<td height="30"width="695" class="red"><strong><span class="fs18n">╔╒╔С╔╠║╪╔х╔©╔╓╔х╔К</span></strong></td>
+				<td height="30"width="695" class="red"><strong><span class="fs18n">Ц┌╒Ц┐ЁЦ┌╠Ц┐╪Ц┐┬Ц┌©Ц┌╓Ц┐┬Ц┐╚</span></strong></td>
 			</tr>
 		</table>
 		</td>
@@ -42,10 +42,10 @@
 		<table width="500" border="0" cellspacing="1" cellpadding="" summary=" " bgcolor="#cccccc">
 		<form name="form1" id="form1" method="post" action="">
 			<tr>
-				<td bgcolor="#ffffff" height="250" align="center" class="fs12">╔╒╔С╔╠║╪╔х╓наВ©╝╓╛╢╟н╩╓╓╓©╓╥╓ч╓╥╓©║ё<br>
-				╓╢╤╗но╓╒╓Й╓╛╓х╓╕╓╢╓╤╓╓╓ч╓╥╓©║ё<br><br><br>
+				<td bgcolor="#ffffff" height="250" align="center" class="fs12">Ц┌╒Ц┐ЁЦ┌╠Ц┐╪Ц┐┬Ц│╝И─│Д©║Ц│▄Е╝▄Д╨├Ц│└Ц│÷Ц│≈Ц│╬Ц│≈Ц│÷Ц─┌<br>
+				Ц│■Е█■Е┼⌡Ц│┌Ц┌┼Ц│▄Ц│╗Ц│├Ц│■Ц│√Ц│└Ц│╬Ц│≈Ц│÷Ц─┌<br><br><br>
 
-				<input type="submit" name="subm1" value="йд╓╦╓К" onClick="window.close()"></td>
+				<input type="submit" name="subm1" value="И√┴Ц│≤Ц┌▀" onClick="window.close()"></td>
 			</tr>
 		</form>
 		</table>

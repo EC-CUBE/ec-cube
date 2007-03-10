@@ -10,7 +10,7 @@ require_once("../require.php");
 class LC_Page{
 	function LC_Page(){
 		$this->tpl_mainpage = USER_PATH . 'templates/mypage/refusal_complete.tpl';
-		$this->tpl_title = "MY¥Ú¡¼¥¸/Âà²ñ¼êÂ³¤­(´°Î»¥Ú¡¼¥¸)";
+		$this->tpl_title = "MYãƒšãƒ¼ã‚¸/é€€ä¼šæ‰‹ç¶šã(å®Œäº†ãƒšãƒ¼ã‚¸)";
 		$this->tpl_navi = USER_PATH . 'templates/mypage/navi.tpl';
 		$this->tpl_mypageno = 'refusal';
 		$this->point_disp = false;
@@ -21,12 +21,12 @@ $objPage = new LC_Page();
 $objView = new SC_SiteView();
 
 $objCustomer = new SC_Customer();
-//¥Þ¥¤¥Ú¡¼¥¸¥È¥Ã¥×¸ÜµÒ¾ðÊóÉ½¼¨ÍÑ
+//ãƒžã‚¤ãƒšãƒ¼ã‚¸ãƒˆãƒƒãƒ—é¡§å®¢æƒ…å ±è¡¨ç¤ºç”¨
 $objPage->CustomerName1 = $objCustomer->getvalue('name01');
 $objPage->CustomerName2 = $objCustomer->getvalue('name02');
 $objPage->CustomerPoint = $objCustomer->getvalue('point');
 
-// ¥ì¥¤¥¢¥¦¥È¥Ç¥¶¥¤¥ó¤ò¼èÆÀ
+// ãƒ¬ã‚¤ã‚¢ã‚¦ãƒˆãƒ‡ã‚¶ã‚¤ãƒ³ã‚’å–å¾—
 $objPage = sfGetPageLayout($objPage, false, "mypage/index.php");
 
 $objView->assignobj($objPage);

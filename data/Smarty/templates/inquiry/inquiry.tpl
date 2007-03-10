@@ -6,20 +6,20 @@
 <!--{section name=question loop=$QUESTION.question}-->
 	<!--{if $QUESTION.question[question].kind }-->
 		<tr>
-			<td colspan="2" bgcolor="#edf6ff" class="fs12n">¼ÁÌä<!--{$smarty.section.question.iteration}-->¡§<!--{$QUESTION.question[question].name|escape}--></td>
+			<td colspan="2" bgcolor="#edf6ff" class="fs12n">è³ªå•<!--{$smarty.section.question.iteration}-->ï¼š<!--{$QUESTION.question[question].name|escape}--></td>
 		</tr>
 		<!--{if $QUESTION.question[question].kind eq 1}-->
 		<tr>
 			<td colspan="2" bgcolor="ffffff" class="fs12n">
 			<textarea name="option[<!--{$smarty.section.question.index}-->]" cols="55" rows="8" class="area55" wrap="physical" <!--{if $arrErr.option[$smarty.section.question.index]}--><!--{sfSetErrorStyle}--><!--{/if}-->><!--{$arrForm.option[$smarty.section.question.index]|escape}--></textarea>
-			<!--{if $arrErr.option[$smarty.section.question.index]}--><br><span class="red">¼ÁÌä<!--{$smarty.section.question.iteration}-->¤òÆþÎÏ¤·¤Æ²¼¤µ¤¤</sapn><!--{/if}-->
+			<!--{if $arrErr.option[$smarty.section.question.index]}--><br><span class="red">è³ªå•<!--{$smarty.section.question.iteration}-->ã‚’å…¥åŠ›ã—ã¦ä¸‹ã•ã„</sapn><!--{/if}-->
 			</td>
 		</tr>
 		<!--{elseif $QUESTION.question[question].kind eq 2}-->
 		<tr>
 			<td colspan="2" bgcolor="ffffff" class="fs12n">
 			<input type="text" name="option[<!--{$smarty.section.question.index}-->]" size="55" class="box50" value="<!--{$arrForm.option[$smarty.section.question.index]|escape}-->" <!--{if $arrErr.option[$smarty.section.question.index]}--><!--{sfSetErrorStyle}--><!--{/if}-->>
-			<!--{if $arrErr.option[$smarty.section.question.index]}--><br><span class="red">¼ÁÌä<!--{$smarty.section.question.iteration}-->¤òÆþÎÏ¤·¤Æ²¼¤µ¤¤</sapn><!--{/if}-->
+			<!--{if $arrErr.option[$smarty.section.question.index]}--><br><span class="red">è³ªå•<!--{$smarty.section.question.iteration}-->ã‚’å…¥åŠ›ã—ã¦ä¸‹ã•ã„</sapn><!--{/if}-->
 			</td>
 			</tr>
 		<!--{elseif $QUESTION.question[question].kind eq 3}-->
@@ -33,7 +33,7 @@
 					</span>
 					</td>
 				</tr>
-				<!--{if $arrErr.option[$smarty.section.question.index]}--><tr><td class="fs12n"><span class="red">¼ÁÌä<!--{$smarty.section.question.iteration}-->¤òÆþÎÏ¤·¤Æ²¼¤µ¤¤</sapn></td></tr><!--{/if}-->
+				<!--{if $arrErr.option[$smarty.section.question.index]}--><tr><td class="fs12n"><span class="red">è³ªå•<!--{$smarty.section.question.iteration}-->ã‚’å…¥åŠ›ã—ã¦ä¸‹ã•ã„</sapn></td></tr><!--{/if}-->
 				</table>
 			</td>
 		</tr>
@@ -54,7 +54,7 @@
 					</td>
 					<!--{if $smarty.section.sub.index is odd}--></tr><!--{/if}-->
 				<!--{/section}-->
-				<!--{if $arrErr.option[$smarty.section.question.index]}--><tr><td class="fs12n"><span class="red">¼ÁÌä<!--{$smarty.section.question.iteration}-->¤òÆþÎÏ¤·¤Æ²¼¤µ¤¤</sapn></tr><!--{/if}-->
+				<!--{if $arrErr.option[$smarty.section.question.index]}--><tr><td class="fs12n"><span class="red">è³ªå•<!--{$smarty.section.question.iteration}-->ã‚’å…¥åŠ›ã—ã¦ä¸‹ã•ã„</sapn></tr><!--{/if}-->
 			</table>
 			</td>
 		</tr>

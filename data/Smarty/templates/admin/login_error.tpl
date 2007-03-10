@@ -5,7 +5,7 @@
  * http://www.lockon.co.jp/
  */
 *}-->
-<!--¢§CONTENTS-->
+<!--â–¼CONTENTS-->
 <table width="556" border="0" cellspacing="0" cellpadding="0" summary=" ">
 	<tr><td height="182"></td></tr>
 	<tr>
@@ -26,7 +26,7 @@
 					</tr>
 					<tr><td height="20"></td></tr>
 					<tr>
-						<td align="center"><input type="image" onMouseover="chgImgImageSubmit('<!--{$smarty.const.URL_DIR}-->img/contents/btn_back_on.jpg',this)" onMouseout="chgImgImageSubmit('<!--{$smarty.const.URL_DIR}-->img/contents/btn_back.jpg',this)" src="<!--{$smarty.const.URL_DIR}-->img/contents/btn_back.jpg" width="123" height="24" alt="¥í¥°¥¤¥ó¥Ú¡¼¥¸¤Ë¥Ú¡¼¥¸¤ËÌá¤ë" border="0" name="back" onclick="location.href='<!--{$smarty.const.URL_LOGIN}-->';"></td>
+						<td align="center"><input type="image" onMouseover="chgImgImageSubmit('<!--{$smarty.const.URL_DIR}-->img/contents/btn_back_on.jpg',this)" onMouseout="chgImgImageSubmit('<!--{$smarty.const.URL_DIR}-->img/contents/btn_back.jpg',this)" src="<!--{$smarty.const.URL_DIR}-->img/contents/btn_back.jpg" width="123" height="24" alt="ãƒ­ã‚°ã‚¤ãƒ³ãƒšãƒ¼ã‚¸ã«ãƒšãƒ¼ã‚¸ã«æˆ»ã‚‹" border="0" name="back" onclick="location.href='<!--{$smarty.const.URL_LOGIN}-->';"></td>
 					</tr>
 					<tr><td height="60"></td></tr>
 				</table>
@@ -41,4 +41,4 @@
 	</tr>
 	<tr><td height="2"></td></tr>
 </table>
-<!--¢¥CONTENTS-->
+<!--â–²CONTENTS-->

@@ -21,20 +21,20 @@ $objPage = new LC_Page();
 $objView = new SC_AdminView();
 $objSess = new SC_Session();
 
-// Ç§¾Ú²ÄÈÝ¤ÎÈ½Äê
+// èªè¨¼å¯å¦ã®åˆ¤å®š
 sfIsSuccess($objSess);
 
 if ($_POST['mode'] == "search") {
 	
-	// POSTÃÍ¤Î°ú¤­·Ñ¤®
+	// POSTå€¤ã®å¼•ãç¶™ãŽ
 	$objPage->arrForm = $_POST;
-	// ÆþÎÏÊ¸»ú¤Î¶¯À©ÊÑ´¹
+	// å…¥åŠ›æ–‡å­—ã®å¼·åˆ¶å¤‰æ›
 	lfConvertParam();
 	
-	// ºï½ü¤µ¤ì¤Æ¤¤¤Ê¤¤¡£¸ø³«¾¦ÉÊ¤Ç¤¢¤ë¡£
+	// å‰Šé™¤ã•ã‚Œã¦ã„ãªã„ã€‚å…¬é–‹å•†å“ã§ã‚ã‚‹ã€‚
 	$where = "del_flg = 0 AND status = 1";
 	
-	/* ÆþÎÏ¥¨¥é¡¼¤Ê¤· */
+	/* å…¥åŠ›ã‚¨ãƒ©ãƒ¼ãªã— */
 	foreach ($objPage->arrForm as $key => $val) {
 		if($val == "") {
 			continue;
@@ -46,7 +46,7 @@ if ($_POST['mode'] == "search") {
 				$arrval[] = "%$val%";
 				break;
 			case 'search_category_id':
-				// »Ò¥«¥Æ¥´¥êID¤Î¼èÆÀ
+				// å­ã‚«ãƒ†ã‚´ãƒªIDã®å–å¾—
 				$arrRet = sfGetChildsID("dtb_category", "parent_category_id", "category_id", $val);
 				$tmp_where = "";
 				foreach ($arrRet as $val) {
@@ -72,33 +72,33 @@ if ($_POST['mode'] == "search") {
 	
 	$order = "update_date DESC";
 	
-	// ÆÉ¤ß¹þ¤àÎó¤È¥Æ¡¼¥Ö¥ë¤Î»ØÄê
+	// èª­ã¿è¾¼ã‚€åˆ—ã¨ãƒ†ãƒ¼ãƒ–ãƒ«ã®æŒ‡å®š
 	$col = "product_id, name, category_id, main_list_image, status, product_code, price01, stock, stock_unlimited";
 	$from = "vw_products_nonclass AS noncls ";
 		
 	$objQuery = new SC_Query();
-	// ¹Ô¿ô¤Î¼èÆÀ
+	// è¡Œæ•°ã®å–å¾—
 	$linemax = $objQuery->count($from, $where, $arrval);
-	$objPage->tpl_linemax = $linemax;				// ²¿·ï¤¬³ºÅö¤·¤Þ¤·¤¿¡£É½¼¨ÍÑ
+	$objPage->tpl_linemax = $linemax;				// ä½•ä»¶ãŒè©²å½“ã—ã¾ã—ãŸã€‚è¡¨ç¤ºç”¨
 	
-	// ¥Ú¡¼¥¸Á÷¤ê¤Î½èÍý
+	// ãƒšãƒ¼ã‚¸é€ã‚Šã®å‡¦ç†
 	if(is_numeric($_POST['search_page_max'])) {	
 		$page_max = $_POST['search_page_max'];
 	} else {
 		$page_max = SEARCH_PMAX;
 	}
 	
-	// ¥Ú¡¼¥¸Á÷¤ê¤Î¼èÆÀ
+	// ãƒšãƒ¼ã‚¸é€ã‚Šã®å–å¾—
 	$objNavi = new SC_PageNavi($_POST['search_pageno'], $linemax, $page_max, "fnNaviSearchPage", NAVI_PMAX);
-	$objPage->tpl_strnavi = $objNavi->strnavi;		// É½¼¨Ê¸»úÎó
+	$objPage->tpl_strnavi = $objNavi->strnavi;		// è¡¨ç¤ºæ–‡å­—åˆ—
 	$startno = $objNavi->start_row;
 	
-	// ¼èÆÀÈÏ°Ï¤Î»ØÄê(³«»Ï¹ÔÈÖ¹æ¡¢¹Ô¿ô¤Î¥»¥Ã¥È)
+	// å–å¾—ç¯„å›²ã®æŒ‡å®š(é–‹å§‹è¡Œç•ªå·ã€è¡Œæ•°ã®ã‚»ãƒƒãƒˆ)
 	$objQuery->setlimitoffset($page_max, $startno);
 
-	// É½¼¨½ç½ø
+	// è¡¨ç¤ºé †åº
 	$objQuery->setorder($order);
-	// ¸¡º÷·ë²Ì¤Î¼èÆÀ
+	// æ¤œç´¢çµæžœã®å–å¾—
 	$objPage->arrProducts = $objQuery->select($col, $from, $where, $arrval);
 		
 }
@@ -110,22 +110,22 @@ $objPage->name = $_GET['name'];
 $objView->assignobj($objPage);
 $objView->display($objPage->tpl_mainpage);
 
-/* ¼èÆÀÊ¸»úÎó¤ÎÊÑ´¹ */
+/* å–å¾—æ–‡å­—åˆ—ã®å¤‰æ› */
 function lfConvertParam() {
 	global $objPage;
 	/*
-	 *	Ê¸»úÎó¤ÎÊÑ´¹
-	 *	K :  ¡ÖÈ¾³Ñ(ŽÊŽÝŽ¶Ž¸)ÊÒ²¾Ì¾¡×¤ò¡ÖÁ´³ÑÊÒ²¾Ì¾¡×¤ËÊÑ´¹
-	 *	C :  ¡ÖÁ´³Ñ¤Ò¤é²¾Ì¾¡×¤ò¡ÖÁ´³Ñ¤«¤¿²¾Ì¾¡×¤ËÊÑ´¹
-	 *	V :  ÂùÅÀÉÕ¤­¤ÎÊ¸»ú¤ò°ìÊ¸»ú¤ËÊÑ´¹¡£"K","H"¤È¶¦¤Ë»ÈÍÑ¤·¤Þ¤¹	
-	 *	n :  ¡ÖÁ´³Ñ¡×¿ô»ú¤ò¡ÖÈ¾³Ñ(ŽÊŽÝŽ¶Ž¸)¡×¤ËÊÑ´¹
+	 *	æ–‡å­—åˆ—ã®å¤‰æ›
+	 *	K :  ã€ŒåŠè§’(ï¾Šï¾ï½¶ï½¸)ç‰‡ä»®åã€ã‚’ã€Œå…¨è§’ç‰‡ä»®åã€ã«å¤‰æ›
+	 *	C :  ã€Œå…¨è§’ã²ã‚‰ä»®åã€ã‚’ã€Œå…¨è§’ã‹ãŸä»®åã€ã«å¤‰æ›
+	 *	V :  æ¿ç‚¹ä»˜ãã®æ–‡å­—ã‚’ä¸€æ–‡å­—ã«å¤‰æ›ã€‚"K","H"ã¨å…±ã«ä½¿ç”¨ã—ã¾ã™	
+	 *	n :  ã€Œå…¨è§’ã€æ•°å­—ã‚’ã€ŒåŠè§’(ï¾Šï¾ï½¶ï½¸)ã€ã«å¤‰æ›
 	 */
 	$arrConvList['search_name'] = "KVa";
 	$arrConvList['search_product_code'] = "KVa";
 	
-	// Ê¸»úÊÑ´¹
+	// æ–‡å­—å¤‰æ›
 	foreach ($arrConvList as $key => $val) {
-		// POST¤µ¤ì¤Æ¤­¤¿ÃÍ¤Î¤ßÊÑ´¹¤¹¤ë¡£
+		// POSTã•ã‚Œã¦ããŸå€¤ã®ã¿å¤‰æ›ã™ã‚‹ã€‚
 		if(isset($objPage->arrForm[$key])) {
 			$objPage->arrForm[$key] = mb_convert_kana($objPage->arrForm[$key] ,$val);
 		}

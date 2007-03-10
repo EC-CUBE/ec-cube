@@ -5,7 +5,7 @@
  * http://www.lockon.co.jp/
  */
 *}-->
-<!--¢§CONTENTS-->
+<!--â–¼CONTENTS-->
 <table width="556" border="0" cellspacing="0" cellpadding="0" summary=" ">
 <form name="form1" id="form1" method="post" action="login.php">
 	<tr><td height="182"></td></tr>
@@ -26,12 +26,12 @@
 				<td ><input type="password" name="password" size="20" class="box25"/></td>
 			</tr>
 			<tr><td height="10"></td></tr>
-			<!--¥¨¥é¡¼¥á¥Ã¥»¡¼¥¸¤³¤³¤«¤é-->
+			<!--ã‚¨ãƒ©ãƒ¼ãƒ¡ãƒƒã‚»ãƒ¼ã‚¸ã“ã“ã‹ã‚‰-->
 			<tr>
 				<td></td>
 				<td class="white10"><!--{$tpl_error}--></td>
 			</tr>
-			<!--¥¨¥é¡¼¥á¥Ã¥»¡¼¥¸¤³¤³¤Þ¤Ç-->
+			<!--ã‚¨ãƒ©ãƒ¼ãƒ¡ãƒƒã‚»ãƒ¼ã‚¸ã“ã“ã¾ã§-->
 			<tr><td height="15"></td></tr>
 			<tr>
 				<td colspan="2" align="center"><input type="image" onMouseover="chgImgImageSubmit('<!--{$smarty.const.URL_DIR}-->img/login/button_on.jpg',this)" onMouseout="chgImgImageSubmit('<!--{$smarty.const.URL_DIR}-->img/login/button.jpg',this)" src="<!--{$smarty.const.URL_DIR}-->img/login/button.jpg" width="77" height="23" alt="LOGIN" border="0" name="subm"></td>
@@ -50,7 +50,7 @@
 </form>
 </table>
 
-<!--¢¥CONTENTS-->
+<!--â–²CONTENTS-->
 
 <SCRIPT Language="JavaScript">
 <!--
