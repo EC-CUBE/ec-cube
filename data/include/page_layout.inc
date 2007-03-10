@@ -6,45 +6,45 @@
  */
 
 /**************************************************************************************************************
- * é–¢æ•°å	ï¼šsfGetPageLayout
- * å‡¦ç†å†…å®¹	ï¼šãƒšãƒ¼ã‚¸ã®ãƒ¬ã‚¤ã‚¢ã‚¦ãƒˆæƒ…å ±ã‚’ã‚»ãƒƒãƒˆã™ã‚‹
- * å¼•æ•°1	ï¼š$objPage
- * å¼•æ•°2	ï¼š$preview
- * æˆ»ã‚Šå€¤	ï¼šãƒšãƒ¼ã‚¸ã®ãƒ¬ã‚¤ã‚¢ã‚¦ãƒˆæƒ…å ±
+ * ´Ø¿ôÌ¾	¡§sfGetPageLayout
+ * ½èÍıÆâÍÆ	¡§¥Ú¡¼¥¸¤Î¥ì¥¤¥¢¥¦¥È¾ğÊó¤ò¥»¥Ã¥È¤¹¤ë
+ * °ú¿ô1	¡§$objPage
+ * °ú¿ô2	¡§$preview
+ * Ìá¤êÃÍ	¡§¥Ú¡¼¥¸¤Î¥ì¥¤¥¢¥¦¥È¾ğÊó
  **************************************************************************************************************/
 function sfGetPageLayout($objPage, $preview = false, $url = ""){
 	$arrPageLayout = array();
 
-	// ç¾åœ¨ã®URLã®å–å¾—
+	// ¸½ºß¤ÎURL¤Î¼èÆÀ
 	if ($preview === false) {
 		if ($url == "") {
 			$url = "http://" . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'];
 		}
-		// URLã‚’å…ƒã«ãƒšãƒ¼ã‚¸ãƒ‡ã‚¶ã‚¤ãƒ³ã‚’å–å¾—
+		// URL¤ò¸µ¤Ë¥Ú¡¼¥¸¥Ç¥¶¥¤¥ó¤ò¼èÆÀ
 		$arrPageData = lfgetPageData(" url = ? " , array($url));
 	}else{
 		$arrPageData = lfgetPageData(" page_id = ? " , array("0"));
 	}
 
-	// ãƒ¡ã‚¤ãƒ³ãƒ†ãƒ³ãƒ—ãƒ¬ãƒ¼ãƒˆãƒ•ã‚¡ã‚¤ãƒ«ã‚’è¨­å®š
+	// ¥á¥¤¥ó¥Æ¥ó¥×¥ì¡¼¥È¥Õ¥¡¥¤¥ë¤òÀßÄê
 	if (!isset($objPage->tpl_mainpage)) {
 		$objPage->tpl_mainpage = HTML_PATH . $arrPageData[0]['tpl_dir'] . $arrPageData[0]['filename'] . ".tpl";
 	}
 	
-	// ãƒšãƒ¼ã‚¸ã‚¿ã‚¤ãƒˆãƒ«ã‚’è¨­å®š
+	// ¥Ú¡¼¥¸¥¿¥¤¥È¥ë¤òÀßÄê
 	if (!isset($objPage->tpl_title)) {
 		$objPage->tpl_title = $arrPageData[0]['page_name'];
 	}
 
 	$arrPageLayout = $arrPageData[0];
 
-	// å…¨ãƒŠãƒ“ãƒ‡ãƒ¼ã‚¿ã‚’å–å¾—ã™ã‚‹
+	// Á´¥Ê¥Ó¥Ç¡¼¥¿¤ò¼èÆÀ¤¹¤ë
 	$arrNavi = lfGetNaviData($url, $preview);
 	
 	$arrPageLayout['LeftNavi']  = lfGetNavi($arrNavi,1);	// LEFT NAVI
-	$arrPageLayout['MainHead']  = lfGetNavi($arrNavi,2);	// ãƒ¡ã‚¤ãƒ³ä¸Šéƒ¨
+	$arrPageLayout['MainHead']  = lfGetNavi($arrNavi,2);	// ¥á¥¤¥ó¾åÉô
 	$arrPageLayout['RightNavi'] = lfGetNavi($arrNavi,3);	// RIGHT NAVI
-	$arrPageLayout['MainFoot']  = lfGetNavi($arrNavi,4);	// ãƒ¡ã‚¤ãƒ³ä¸‹éƒ¨
+	$arrPageLayout['MainFoot']  = lfGetNavi($arrNavi,4);	// ¥á¥¤¥ó²¼Éô
 	
 	$objPage->arrPageLayout = $arrPageLayout;
 	
@@ -52,39 +52,39 @@ function sfGetPageLayout($objPage, $preview = false, $url = ""){
 }
 
 /**************************************************************************************************************
- * é–¢æ•°å	ï¼šlfgetPageData
- * å‡¦ç†å†…å®¹	ï¼šãƒšãƒ¼ã‚¸æƒ…å ±ã‚’å–å¾—ã™ã‚‹
- * å¼•æ•°1	ï¼š$where  ï½¥ï½¥ï½¥ Whereå¥æ–‡
- * å¼•æ•°2	ï¼š$arrVal ï½¥ï½¥ï½¥ Whereå¥ã®çµè¾¼æ¡ä»¶å€¤
- * æˆ»ã‚Šå€¤	ï¼šãƒšãƒ¼ã‚¸æƒ…å ±
+ * ´Ø¿ôÌ¾	¡§lfgetPageData
+ * ½èÍıÆâÍÆ	¡§¥Ú¡¼¥¸¾ğÊó¤ò¼èÆÀ¤¹¤ë
+ * °ú¿ô1	¡§$where  ¥¥¥ Where¶çÊ¸
+ * °ú¿ô2	¡§$arrVal ¥¥¥ Where¶ç¤Î¹Ê¹ş¾ò·ïÃÍ
+ * Ìá¤êÃÍ	¡§¥Ú¡¼¥¸¾ğÊó
  **************************************************************************************************************/
 function lfgetPageData($where = '', $arrVal = ''){
-	$objDBConn = new SC_DbConn;		// DBæ“ä½œã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆ
-	$sql = "";						// ãƒ‡ãƒ¼ã‚¿å–å¾—SQLç”Ÿæˆç”¨
-	$arrRet = array();				// ãƒ‡ãƒ¼ã‚¿å–å¾—ç”¨
+	$objDBConn = new SC_DbConn;		// DBÁàºî¥ª¥Ö¥¸¥§¥¯¥È
+	$sql = "";						// ¥Ç¡¼¥¿¼èÆÀSQLÀ¸À®ÍÑ
+	$arrRet = array();				// ¥Ç¡¼¥¿¼èÆÀÍÑ
 	
-	// SQLç”Ÿæˆ
+	// SQLÀ¸À®
 	$sql .= " SELECT";
-	$sql .= " page_id";				// ãƒšãƒ¼ã‚¸ID
-	$sql .= " ,page_name";			// åç§°
+	$sql .= " page_id";				// ¥Ú¡¼¥¸ID
+	$sql .= " ,page_name";			// Ì¾¾Î
 	$sql .= " ,url";				// URL
-	$sql .= " ,php_dir";			// phpä¿å­˜å…ˆãƒ‡ã‚£ãƒ¬ã‚¯ãƒˆãƒª
-	$sql .= " ,tpl_dir";			// tplä¿å­˜å…ˆãƒ‡ã‚£dãƒ¬ã‚¯ãƒˆãƒª
-	$sql .= " ,filename";			// ãƒ•ã‚¡ã‚¤ãƒ«åç§°
-	$sql .= " ,header_chk ";		// ãƒ˜ãƒƒãƒ€ãƒ¼ä½¿ç”¨FLG
-	$sql .= " ,footer_chk ";		// ãƒ•ãƒƒã‚¿ãƒ¼ä½¿ç”¨FLG
-	$sql .= " ,edit_flg ";			// ç·¨é›†å¯èƒ½FLG
-	$sql .= " ,author";				// authorã‚¿ã‚°
-	$sql .= " ,description";		// descriptionã‚¿ã‚°
-	$sql .= " ,keyword";			// keywordã‚¿ã‚°
-	$sql .= " ,update_url";			// æ›´æ–°URL
-	$sql .= " ,create_date";		// ãƒ‡ãƒ¼ã‚¿ä½œæˆæ—¥
-	$sql .= " ,update_date";		// ãƒ‡ãƒ¼ã‚¿æ›´æ–°æ—¥
+	$sql .= " ,php_dir";			// phpÊİÂ¸Àè¥Ç¥£¥ì¥¯¥È¥ê
+	$sql .= " ,tpl_dir";			// tplÊİÂ¸Àè¥Ç¥£d¥ì¥¯¥È¥ê
+	$sql .= " ,filename";			// ¥Õ¥¡¥¤¥ëÌ¾¾Î
+	$sql .= " ,header_chk ";		// ¥Ø¥Ã¥À¡¼»ÈÍÑFLG
+	$sql .= " ,footer_chk ";		// ¥Õ¥Ã¥¿¡¼»ÈÍÑFLG
+	$sql .= " ,edit_flg ";			// ÊÔ½¸²ÄÇ½FLG
+	$sql .= " ,author";				// author¥¿¥°
+	$sql .= " ,description";		// description¥¿¥°
+	$sql .= " ,keyword";			// keyword¥¿¥°
+	$sql .= " ,update_url";			// ¹¹¿·URL
+	$sql .= " ,create_date";		// ¥Ç¡¼¥¿ºîÀ®Æü
+	$sql .= " ,update_date";		// ¥Ç¡¼¥¿¹¹¿·Æü
 	$sql .= " FROM ";
 	$sql .= "     dtb_pagelayout";
 	$sql .= " WHERE ";
 	
-	// whereå¥ã®æŒ‡å®šãŒã‚ã‚Œã°è¿½åŠ 
+	// where¶ç¤Î»ØÄê¤¬¤¢¤ì¤ĞÄÉ²Ã
 	if ($where != '') {
 		$sql .= $where;
 	}else{
@@ -100,17 +100,17 @@ function lfgetPageData($where = '', $arrVal = ''){
 
 
 /**************************************************************************************************************
- * é–¢æ•°å	ï¼šlfGetNaviData
- * å‡¦ç†å†…å®¹	ï¼šãƒŠãƒ“æƒ…å ±ã‚’å–å¾—ã™ã‚‹
- * æˆ»ã‚Šå€¤	ï¼šãƒ–ãƒ­ãƒƒã‚¯æƒ…å ±
+ * ´Ø¿ôÌ¾	¡§lfGetNaviData
+ * ½èÍıÆâÍÆ	¡§¥Ê¥Ó¾ğÊó¤ò¼èÆÀ¤¹¤ë
+ * Ìá¤êÃÍ	¡§¥Ö¥í¥Ã¥¯¾ğÊó
  **************************************************************************************************************/
 function lfGetNaviData($url, $preview=false){
-	$objDBConn = new SC_DbConn;		// DBæ“ä½œã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆ
-	$sql = "";						// ãƒ‡ãƒ¼ã‚¿å–å¾—SQLç”Ÿæˆç”¨
-	$arrRet = array();				// ãƒ‡ãƒ¼ã‚¿å–å¾—ç”¨
+	$objDBConn = new SC_DbConn;		// DBÁàºî¥ª¥Ö¥¸¥§¥¯¥È
+	$sql = "";						// ¥Ç¡¼¥¿¼èÆÀSQLÀ¸À®ÍÑ
+	$arrRet = array();				// ¥Ç¡¼¥¿¼èÆÀÍÑ
 	$arrData = array();
 
-	// SQLæ–‡ç”Ÿæˆ		
+	// SQLÊ¸À¸À®		
 	$sql = "";
 	$sql .= " SELECT ";
 	$sql .= "     target_id ";
@@ -129,24 +129,24 @@ function lfGetNaviData($url, $preview=false){
 	$sql .= " ORDER BY target_id,bloc_row";
 	$sql .= " ";
 	
-	// SQLå®Ÿè¡Œ
+	// SQL¼Â¹Ô
 	$arrRet = $objDBConn->getAll($sql, $arrData);
 	
-	// çµæœã‚’è¿”ã™
+	// ·ë²Ì¤òÊÖ¤¹
 	return $arrRet;
 }
 
 
 /**************************************************************************************************************
- * é–¢æ•°å	ï¼šlfGetNavi
- * å‡¦ç†å†…å®¹	ï¼šå„éƒ¨åˆ†ã®ãƒŠãƒ“æƒ…å ±ã‚’å–å¾—ã™ã‚‹
- * æˆ»ã‚Šå€¤	ï¼šãƒ–ãƒ­ãƒƒã‚¯æƒ…å ±
+ * ´Ø¿ôÌ¾	¡§lfGetNavi
+ * ½èÍıÆâÍÆ	¡§³ÆÉôÊ¬¤Î¥Ê¥Ó¾ğÊó¤ò¼èÆÀ¤¹¤ë
+ * Ìá¤êÃÍ	¡§¥Ö¥í¥Ã¥¯¾ğÊó
  **************************************************************************************************************/
 function lfGetNavi($arrNavi, $target_id){
 	$arrRet = array();
 	
 	foreach($arrNavi as $key => $val){
-		// æŒ‡å®šã•ã‚ŒãŸç®‡æ‰€ã¨åŒã˜ãƒ‡ãƒ¼ã‚¿ã ã‘ã‚’å–å¾—ã™ã‚‹
+		// »ØÄê¤µ¤ì¤¿²Õ½ê¤ÈÆ±¤¸¥Ç¡¼¥¿¤À¤±¤ò¼èÆÀ¤¹¤ë
 		if ($target_id == $val['target_id']){
 			if ($val['php_path'] != '') {
 				$arrNavi[$key]['php_path'] = HTML_PATH . $val['php_path'];
@@ -164,21 +164,21 @@ function lfGetNavi($arrNavi, $target_id){
 
 
 function lfDelPageData($page_id){
-	// DBã¸ãƒ‡ãƒ¼ã‚¿ã‚’æ›´æ–°ã™ã‚‹
-	$objDBConn = new SC_DbConn;		// DBæ“ä½œã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆ
-	$sql = "";						// ãƒ‡ãƒ¼ã‚¿æ›´æ–°SQLç”Ÿæˆç”¨
-	$ret = ""; 						// ãƒ‡ãƒ¼ã‚¿æ›´æ–°çµæœæ ¼ç´ç”¨
-	$arrDelData = array();			// æ›´æ–°ãƒ‡ãƒ¼ã‚¿ç”Ÿæˆç”¨
+	// DB¤Ø¥Ç¡¼¥¿¤ò¹¹¿·¤¹¤ë
+	$objDBConn = new SC_DbConn;		// DBÁàºî¥ª¥Ö¥¸¥§¥¯¥È
+	$sql = "";						// ¥Ç¡¼¥¿¹¹¿·SQLÀ¸À®ÍÑ
+	$ret = ""; 						// ¥Ç¡¼¥¿¹¹¿··ë²Ì³ÊÇ¼ÍÑ
+	$arrDelData = array();			// ¹¹¿·¥Ç¡¼¥¿À¸À®ÍÑ
 	
-	// page_id ãŒç©ºã§ãªã„å ´åˆã«ã¯deleteã‚’å®Ÿè¡Œ
+	// page_id ¤¬¶õ¤Ç¤Ê¤¤¾ì¹ç¤Ë¤Ïdelete¤ò¼Â¹Ô
 	if ($page_id !== '') {
-		// SQLç”Ÿæˆ
+		// SQLÀ¸À®
 		$sql = " DELETE FROM dtb_pagelayout WHERE page_id = ?";
 
-		// SQLå®Ÿè¡Œ
+		// SQL¼Â¹Ô
 		$ret = $objDBConn->query($sql,array($page_id));
 
-		// ãƒ•ã‚¡ã‚¤ãƒ«ã®å‰Šé™¤
+		// ¥Õ¥¡¥¤¥ë¤Îºï½ü
 		lfDelFile($arrPageData[0]);
 	}
 
@@ -187,32 +187,32 @@ function lfDelPageData($page_id){
 }
 
 /**************************************************************************************************************
- * é–¢æ•°å	ï¼šlfDelFile	
- * å‡¦ç†å†…å®¹	ï¼šãƒ•ã‚¡ã‚¤ãƒ«ã‚’å‰Šé™¤ã™ã‚‹
- * å¼•æ•°1	ï¼š$data  ï½¥ï½¥ï½¥ å‰Šé™¤ãƒ‡ãƒ¼ã‚¿
- * æˆ»ã‚Šå€¤	ï¼šãªã—
+ * ´Ø¿ôÌ¾	¡§lfDelFile	
+ * ½èÍıÆâÍÆ	¡§¥Õ¥¡¥¤¥ë¤òºï½ü¤¹¤ë
+ * °ú¿ô1	¡§$data  ¥¥¥ ºï½ü¥Ç¡¼¥¿
+ * Ìá¤êÃÍ	¡§¤Ê¤·
  **************************************************************************************************************/
 function lfDelFile($arrData){
-	// ãƒ•ã‚¡ã‚¤ãƒ«ãƒ‡ã‚£ãƒ¬ã‚¯ãƒˆãƒªå–å¾—
+	// ¥Õ¥¡¥¤¥ë¥Ç¥£¥ì¥¯¥È¥ê¼èÆÀ
 	$del_php = HTML_PATH . $arrData['php_dir'] . $arrData['filename'] . ".php";
 	$del_tpl = HTML_PATH . $arrData['tpl_dir'] . $arrData['filename'] . ".tpl";
 
-	// phpãƒ•ã‚¡ã‚¤ãƒ«ã®å‰Šé™¤
+	// php¥Õ¥¡¥¤¥ë¤Îºï½ü
 	if (file_exists($del_php)){
 		unlink($del_php);	
 	}
 
-	// tplãƒ•ã‚¡ã‚¤ãƒ«ã®å‰Šé™¤
+	// tpl¥Õ¥¡¥¤¥ë¤Îºï½ü
 	if (file_exists($del_tpl)){
 		unlink($del_tpl);	
 	}
 }
 
 /**************************************************************************************************************
- * é–¢æ•°å	ï¼šlfCheckBaseData
- * å‡¦ç†å†…å®¹	ï¼šãƒ‡ãƒ¼ã‚¿ãŒãƒ™ãƒ¼ã‚¹ãƒ‡ãƒ¼ã‚¿ãªã®ã‹ã‚’åˆ¤æ–­ã™ã‚‹
- * å¼•æ•°1	ï¼š$data  ï½¥ï½¥ï½¥ åˆ¤æ–­ãƒ‡ãƒ¼ã‚¿ï¼ˆãƒšãƒ¼ã‚¸IDï¼‰
- * æˆ»ã‚Šå€¤	ï¼štrueï½¥ï½¥ï½¥ãƒ™ãƒ¼ã‚¹ãƒ‡ãƒ¼ã‚¿ã€falseï½¥ï½¥ï½¥ãƒ™ãƒ¼ã‚¹ãƒ‡ãƒ¼ã‚¿ã§ãªã„
+ * ´Ø¿ôÌ¾	¡§lfCheckBaseData
+ * ½èÍıÆâÍÆ	¡§¥Ç¡¼¥¿¤¬¥Ù¡¼¥¹¥Ç¡¼¥¿¤Ê¤Î¤«¤òÈ½ÃÇ¤¹¤ë
+ * °ú¿ô1	¡§$data  ¥¥¥ È½ÃÇ¥Ç¡¼¥¿¡Ê¥Ú¡¼¥¸ID¡Ë
+ * Ìá¤êÃÍ	¡§true¥¥¥¥Ù¡¼¥¹¥Ç¡¼¥¿¡¢false¥¥¥¥Ù¡¼¥¹¥Ç¡¼¥¿¤Ç¤Ê¤¤
  **************************************************************************************************************/
 function lfCheckBaseData($data){
 	$ret = false;

@@ -14,9 +14,9 @@ class LC_Page {
 		global $arrCONVENIENCE;
 		$this->arrCONVENIENCE = $arrCONVENIENCE;
 		/*
-		 session_startæ™‚ã®no-cacheãƒ˜ãƒƒãƒ€ãƒ¼ã‚’æŠ‘åˆ¶ã™ã‚‹ã“ã¨ã§
-		 ã€Œæˆ»ã‚‹ã€ãƒœã‚¿ãƒ³ä½¿ç”¨æ™‚ã®æœ‰åŠ¹æœŸé™åˆ‡ã‚Œè¡¨ç¤ºã‚’æŠ‘åˆ¶ã™ã‚‹ã€‚
-		 private-no-expire:ã‚¯ãƒ©ã‚¤ã‚¢ãƒ³ãƒˆã®ã‚­ãƒ£ãƒƒã‚·ãƒ¥ã‚’è¨±å¯ã™ã‚‹ã€‚
+		 session_start»þ¤Îno-cache¥Ø¥Ã¥À¡¼¤òÍÞÀ©¤¹¤ë¤³¤È¤Ç
+		 ¡ÖÌá¤ë¡×¥Ü¥¿¥ó»ÈÍÑ»þ¤ÎÍ­¸ú´ü¸ÂÀÚ¤ìÉ½¼¨¤òÍÞÀ©¤¹¤ë¡£
+		 private-no-expire:¥¯¥é¥¤¥¢¥ó¥È¤Î¥­¥ã¥Ã¥·¥å¤òµö²Ä¤¹¤ë¡£
 		*/
 		session_cache_limiter('private-no-expire');		
 	}
@@ -32,64 +32,64 @@ $objCustomer = new SC_Customer;
 
 $arrInfo = $objSiteInfo->data;
 
-// ãƒ‘ãƒ©ãƒ¡ãƒ¼ã‚¿ç®¡ç†ã‚¯ãƒ©ã‚¹
+// ¥Ñ¥é¥á¡¼¥¿´ÉÍý¥¯¥é¥¹
 $objFormParam = new SC_FormParam();
-// ãƒ‘ãƒ©ãƒ¡ãƒ¼ã‚¿æƒ…å ±ã®åˆæœŸåŒ–
+// ¥Ñ¥é¥á¡¼¥¿¾ðÊó¤Î½é´ü²½
 lfInitParam();
-// POSTå€¤ã®å–å¾—
+// POSTÃÍ¤Î¼èÆÀ
 $objFormParam->setParam($_POST);
 
-// ã‚¢ã‚¯ã‚»ã‚¹ã®æ­£å½“æ€§ã®åˆ¤å®š
+// ¥¢¥¯¥»¥¹¤ÎÀµÅöÀ­¤ÎÈ½Äê
 $uniqid = sfCheckNormalAccess($objSiteSess, $objCartSess);
 
-//ã‚³ãƒ³ãƒ“ãƒ‹ã®ç¨®é¡žã§å‡¦ç†ãƒ•ã‚¡ã‚¤ãƒ«ã‚’åˆ‡ã‚Šæ›¿ãˆã‚‹
+//¥³¥ó¥Ó¥Ë¤Î¼ïÎà¤Ç½èÍý¥Õ¥¡¥¤¥ë¤òÀÚ¤êÂØ¤¨¤ë
 switch($_POST['mode']) {
-//å®Œäº†
+//´°Î»
 case 'complete':
-	//ã‚¨ãƒ©ãƒ¼ãƒã‚§ãƒƒã‚¯
+	//¥¨¥é¡¼¥Á¥§¥Ã¥¯
 	$objPage->arrErr = lfCheckError();
 	if($objPage->arrErr == "") {
-		// ãƒžãƒ¼ãƒãƒ£ãƒ³ãƒˆæƒ…å ±è¨­å®šãƒ•ã‚¡ã‚¤ãƒ«ã‚’ã‚¤ãƒ³ã‚¯ãƒ«ãƒ¼ãƒ‰
+		// ¥Þ¡¼¥Á¥ã¥ó¥È¾ðÊóÀßÄê¥Õ¥¡¥¤¥ë¤ò¥¤¥ó¥¯¥ë¡¼¥É
 		//require("merchant.ini");
-		// æ±ºæ¸ˆå‡¦ç†ãƒ‘ãƒƒã‚±ãƒ¼ã‚¸ã‚’ã‚¤ãƒ³ã‚¯ãƒ«ãƒ¼ãƒ‰
+		// ·èºÑ½èÍý¥Ñ¥Ã¥±¡¼¥¸¤ò¥¤¥ó¥¯¥ë¡¼¥É
 		require_once(DATA_PATH . "vtcvsmdk/mdk/lib/BSCVS/Transaction.php");
 		require_once(DATA_PATH . "vtcvsmdk/mdk/lib/BSCVS/Config.php");
 		require_once(DATA_PATH . "vtcvsmdk/mdk/lib/BSCVS/Log.php");
 	
-		// ãƒˆãƒ©ãƒ³ã‚¶ã‚¯ã‚·ãƒ§ãƒ³ã‚¤ãƒ³ã‚¹ã‚¿ãƒ³ã‚¹ã‚’ä½œæˆ
+		// ¥È¥é¥ó¥¶¥¯¥·¥ç¥ó¥¤¥ó¥¹¥¿¥ó¥¹¤òºîÀ®
 		$objTran = new Transaction;
 		
-		// è¨­å®šãƒ•ã‚¡ã‚¤ãƒ« cvsgwlib.conf ã«ã‚ˆã‚Šã‚¤ãƒ³ã‚¹ã‚¿ãƒ³ã‚¹ã‚’åˆæœŸåŒ–
+		// ÀßÄê¥Õ¥¡¥¤¥ë cvsgwlib.conf ¤Ë¤è¤ê¥¤¥ó¥¹¥¿¥ó¥¹¤ò½é´ü²½
 		$objTran->setServer(DATA_PATH . "vtcvsmdk/mdk/conf/cvsgwlib.conf");
 		
-		// ã‚«ãƒ¼ãƒˆé›†è¨ˆå‡¦ç†
+		// ¥«¡¼¥È½¸·×½èÍý
 		$objPage = sfTotalCart($objPage, $objCartSess, $arrInfo);
-		// ä¸€æ™‚å—æ³¨ãƒ†ãƒ¼ãƒ–ãƒ«ã®èª­è¾¼
+		// °ì»þ¼õÃí¥Æ¡¼¥Ö¥ë¤ÎÆÉ¹þ
 		$arrData = sfGetOrderTemp($uniqid);
-		// ã‚«ãƒ¼ãƒˆé›†è¨ˆã‚’å…ƒã«æœ€çµ‚è¨ˆç®—
+		// ¥«¡¼¥È½¸·×¤ò¸µ¤ËºÇ½ª·×»»
 		$arrPrice = sfTotalConfirm($arrData, $objPage, $objCartSess, $arrInfo, $objCustomer);
 		
-		// ãƒ­ã‚°å‡ºåŠ›ã‚¤ãƒ³ã‚¹ã‚¿ãƒ³ã‚¹ã‚’å–å¾—
+		// ¥í¥°½ÐÎÏ¥¤¥ó¥¹¥¿¥ó¥¹¤ò¼èÆÀ
 		$logger = $objTran->getLogger();
 		
-		// ãƒ­ã‚°å‡ºåŠ›(ã“ã“ã‹ã‚‰)
-		$logger->logprint('DEBUG', '<<< æ”¯æ‰•çµæžœç”»é¢å‡¦ç†é–‹å§‹... >>>');
+		// ¥í¥°½ÐÎÏ(¤³¤³¤«¤é)
+		$logger->logprint('DEBUG', '<<< »ÙÊ§·ë²Ì²èÌÌ½èÍý³«»Ï... >>>');
 		
-		//ã‚³ãƒ³ãƒ“ãƒ‹ã®ç¨®é¡žã‹ã‚‰CVSã‚¿ã‚¤ãƒ—ã‚’æ±ºå®šã™ã‚‹
+		//¥³¥ó¥Ó¥Ë¤Î¼ïÎà¤«¤éCVS¥¿¥¤¥×¤ò·èÄê¤¹¤ë
 		switch($_POST['convenience']) {
-		//ã‚»ãƒ–ãƒ³ã‚¤ãƒ¬ãƒ–ãƒ³
+		//¥»¥Ö¥ó¥¤¥ì¥Ö¥ó
 		case '1':
 			$cvs_type = '01';
 			break;
-		//ãƒ•ã‚¡ãƒŸãƒªãƒ¼ãƒžãƒ¼ãƒˆ
+		//¥Õ¥¡¥ß¥ê¡¼¥Þ¡¼¥È
 		case '2':
 			$cvs_type = '03';
 			break;
-		//ã‚µãƒ¼ã‚¯ãƒ«Kã‚µãƒ³ã‚¯ã‚¹
+		//¥µ¡¼¥¯¥ëK¥µ¥ó¥¯¥¹
 		case '3':
 			$cvs_type = '04';
 			break;
-		//ãã®ä»–
+		//¤½¤ÎÂ¾
 		case '4':
 		case '5':
 			$cvs_type = '02';
@@ -99,100 +99,100 @@ case 'complete':
 			break;
 		}
 	
-		//ãƒªã‚¯ã‚¨ã‚¹ãƒˆé›»æ–‡
+		//¥ê¥¯¥¨¥¹¥ÈÅÅÊ¸
 		$arrRequest = array(
-			// å–å¼• ID
+			// ¼è°ú ID
 		    REQ_ORDER_ID => $uniqid,		
-		    // CVSã‚¿ã‚¤ãƒ—
+		    // CVS¥¿¥¤¥×
 		    REQ_CVS_TYPE => $cvs_type,
-		    // é‡‘é¡
+		    // ¶â³Û
 		    REQ_AMOUNT => $arrPrice['payment_total'],
-		    // æ”¯æ‰•æœŸé™
+		    // »ÙÊ§´ü¸Â
 		    REQ_PAY_LIMIT => lfGetPayLimit(),
-		    // æ°åï¼ˆæ³¨æ„ï¼šãƒ™ãƒªãƒˆãƒ©ãƒ³ã‚¹ã‚³ãƒ³ãƒ“ãƒ‹ã‚²ãƒ¼ãƒˆã‚¦ã‚§ã‚¤ã¯ UTF-8 ã®æ–‡å­—ã®ã¿ã‚’
-		    // å—ã‘ä»˜ã‘ã‚‹ãŸã‚ã€ã‚²ãƒ¼ãƒˆã‚¦ã‚§ã‚¤æŽ¥ç¶šã®å‰ã« UTF-8 ã‚³ãƒ¼ãƒ‰ã¸å¤‰æ›ï¼‰
+		    // »áÌ¾¡ÊÃí°Õ¡§¥Ù¥ê¥È¥é¥ó¥¹¥³¥ó¥Ó¥Ë¥²¡¼¥È¥¦¥§¥¤¤Ï UTF-8 ¤ÎÊ¸»ú¤Î¤ß¤ò
+		    // ¼õ¤±ÉÕ¤±¤ë¤¿¤á¡¢¥²¡¼¥È¥¦¥§¥¤ÀÜÂ³¤ÎÁ°¤Ë UTF-8 ¥³¡¼¥É¤ØÊÑ´¹¡Ë
 		    REQ_NAME1 => $objTran->jCode($arrData['order_name01'], ENCODE_UTF8),
 		    REQ_NAME2 => $objTran->jCode($arrData['order_name02'], ENCODE_UTF8),
 			REQ_KANA => $objTran->jCode($arrData['order_kana01'].$arrData['order_kana02'], ENCODE_UTF8),
-		    // é›»è©±ç•ªå·
+		    // ÅÅÏÃÈÖ¹æ
 		    REQ_TEL_NO => $arrData['order_tel01']."-".$arrData['order_tel02']."-".$arrData['order_tel03']
 		);
 
-		//ãƒ™ãƒªãƒˆãƒ©ãƒ³ã‚¹ã‚³ãƒ³ãƒ“ãƒ‹ã‚²ãƒ¼ãƒˆã‚¦ã‚§ã‚¤ã«ãƒªã‚¯ã‚¨ã‚¹ãƒˆé›»æ–‡ã‚’æŠ•ã’ã€å–å¼•çµæžœã‚’æ ¼ç´
+		//¥Ù¥ê¥È¥é¥ó¥¹¥³¥ó¥Ó¥Ë¥²¡¼¥È¥¦¥§¥¤¤Ë¥ê¥¯¥¨¥¹¥ÈÅÅÊ¸¤òÅê¤²¡¢¼è°ú·ë²Ì¤ò³ÊÇ¼
 		$arrResult = $objTran->doTransaction(CMD_ENTRY, $arrRequest);
-		//å–å¼•æˆåŠŸ
+		//¼è°úÀ®¸ù
 		if($arrResult[RES_ACTION_CODE] = '010') {
-			//ã‚³ãƒ³ãƒ“ãƒ‹ã®ç¨®é¡ž
+			//¥³¥ó¥Ó¥Ë¤Î¼ïÎà
 			switch($_POST['convenience']) {
-			//ã‚»ãƒ–ãƒ³ã‚¤ãƒ¬ãƒ–ãƒ³
+			//¥»¥Ö¥ó¥¤¥ì¥Ö¥ó
 			case '1':
-				$arrRet['cv_type'] = '1';										//ã‚³ãƒ³ãƒ“ãƒ‹ã®ç¨®é¡ž
-				$arrRet['cv_payment_url'] = $arrResult[RES_HARAIKOMI_URL];		//æ‰•è¾¼ç¥¨URL(PC)
-				$arrRet['cv_receipt_no'] = $arrResult[RES_RECEIPT_NO];			//æ‰•è¾¼ç¥¨ç•ªå·
+				$arrRet['cv_type'] = '1';										//¥³¥ó¥Ó¥Ë¤Î¼ïÎà
+				$arrRet['cv_payment_url'] = $arrResult[RES_HARAIKOMI_URL];		//Ê§¹þÉ¼URL(PC)
+				$arrRet['cv_receipt_no'] = $arrResult[RES_RECEIPT_NO];			//Ê§¹þÉ¼ÈÖ¹æ
 				break;
-			//ãƒ•ã‚¡ãƒŸãƒªãƒ¼ãƒžãƒ¼ãƒˆ
+			//¥Õ¥¡¥ß¥ê¡¼¥Þ¡¼¥È
 			case '2':
 				$company_code = substr($arrResult[RES_RECEIPT_NO], 0, 5);
 				$order_no = substr($arrResult[RES_RECEIPT_NO], 6, 12);
-				$arrRet['cv_type'] = '2';						//ã‚³ãƒ³ãƒ“ãƒ‹ã®ç¨®é¡ž
-				$arrRet['cv_company_code'] = $company_code;	//ä¼æ¥­ã‚³ãƒ¼ãƒ‰
-				$arrRet['cv_order_no'] = $order_no;			//å—ä»˜ç•ªå·
+				$arrRet['cv_type'] = '2';						//¥³¥ó¥Ó¥Ë¤Î¼ïÎà
+				$arrRet['cv_company_code'] = $company_code;	//´ë¶È¥³¡¼¥É
+				$arrRet['cv_order_no'] = $order_no;			//¼õÉÕÈÖ¹æ
 				break;
-			//ã‚µãƒ¼ã‚¯ãƒ«Kã‚µãƒ³ã‚¯ã‚¹
+			//¥µ¡¼¥¯¥ëK¥µ¥ó¥¯¥¹
 			case '3':
 				$mobile_url = preg_replace("/https:\/\/.+?\/JLPcon/","https://w2.kessai.info/JLM/JLMcon", $arrResult[RES_HARAIKOMI_URL]);
-				$arrRet['cv_type'] = '3';										//ã‚³ãƒ³ãƒ“ãƒ‹ã®ç¨®é¡ž
-				$arrRet['cv_payment_url'] = $arrResult[RES_HARAIKOMI_URL];		//æ‰•è¾¼ç¥¨URL
-				$arrRet['cv_payment_mobile_url'] = $mobile_url;					//æ‰•è¾¼ç¥¨URL(ãƒ¢ãƒã‚¤ãƒ«)
+				$arrRet['cv_type'] = '3';										//¥³¥ó¥Ó¥Ë¤Î¼ïÎà
+				$arrRet['cv_payment_url'] = $arrResult[RES_HARAIKOMI_URL];		//Ê§¹þÉ¼URL
+				$arrRet['cv_payment_mobile_url'] = $mobile_url;					//Ê§¹þÉ¼URL(¥â¥Ð¥¤¥ë)
 				break;
-			//ãƒ­ãƒ¼ã‚½ãƒ³ã€ã‚»ã‚¤ã‚³ãƒ¼ãƒžãƒ¼ãƒˆ
+			//¥í¡¼¥½¥ó¡¢¥»¥¤¥³¡¼¥Þ¡¼¥È
 			case '4':
-				$arrRet['cv_type'] = '4';									//ã‚³ãƒ³ãƒ“ãƒ‹ã®ç¨®é¡ž
-				$arrRet['cv_receipt_no'] = $arrResult[RES_RECEIPT_NO];		//æ‰•è¾¼ç¥¨ç•ªå·
+				$arrRet['cv_type'] = '4';									//¥³¥ó¥Ó¥Ë¤Î¼ïÎà
+				$arrRet['cv_receipt_no'] = $arrResult[RES_RECEIPT_NO];		//Ê§¹þÉ¼ÈÖ¹æ
 				break;
-			//ãƒŸãƒ‹ã‚¹ãƒˆãƒƒãƒ—ã€ãƒ‡ã‚¤ãƒªãƒ¼ãƒ¤ãƒžã‚¶ã‚­ã€ãƒ¤ãƒžã‚¶ã‚­ãƒ‡ã‚¤ãƒªãƒ¼ã‚¹ãƒˆã‚¢
+			//¥ß¥Ë¥¹¥È¥Ã¥×¡¢¥Ç¥¤¥ê¡¼¥ä¥Þ¥¶¥­¡¢¥ä¥Þ¥¶¥­¥Ç¥¤¥ê¡¼¥¹¥È¥¢
 			case '5':
-				$arrRet['cv_type'] = '5';										//ã‚³ãƒ³ãƒ“ãƒ‹ã®ç¨®é¡ž
-				$arrRet['cv_payment_url'] = $arrResult[RES_HARAIKOMI_URL];		//æ‰•è¾¼ç¥¨URL(PC)
+				$arrRet['cv_type'] = '5';										//¥³¥ó¥Ó¥Ë¤Î¼ïÎà
+				$arrRet['cv_payment_url'] = $arrResult[RES_HARAIKOMI_URL];		//Ê§¹þÉ¼URL(PC)
 				break;
 			}
-			//æ”¯æ‰•æœŸé™
+			//»ÙÊ§´ü¸Â
 			$arrRet['cv_payment_limit'] = lfGetPayLimit();
-			//ã‚³ãƒ³ãƒ“ãƒ‹æ±ºæ¸ˆæƒ…å ±ã‚’æ ¼ç´
+			//¥³¥ó¥Ó¥Ë·èºÑ¾ðÊó¤ò³ÊÇ¼
 			$sqlval['conveni_data'] = serialize($arrRet);
 			$objQuery = new SC_Query;
 			$objQuery->update("dtb_order_temp", $sqlval, "order_temp_id = ? ", array($uniqid));
-			// æ­£å¸¸ã«ç™»éŒ²ã•ã‚ŒãŸã“ã¨ã‚’è¨˜éŒ²ã—ã¦ãŠã
+			// Àµ¾ï¤ËÅÐÏ¿¤µ¤ì¤¿¤³¤È¤òµ­Ï¿¤·¤Æ¤ª¤¯
 			$objSiteSess->setRegistFlag();
-			//è³¼å…¥å®Œäº†ãƒšãƒ¼ã‚¸ã¸
+			//¹ØÆþ´°Î»¥Ú¡¼¥¸¤Ø
 			header("Location: " . URL_SHOP_COMPLETE);
-		//å¤±æ•—
+		//¼ºÇÔ
 		} else {
-			$objPage->arrErr = 'ã‚¨ãƒ©ãƒ¼ãŒç™ºç”Ÿã—ã¾ã—ãŸã€‚';
+			$objPage->arrErr = '¥¨¥é¡¼¤¬È¯À¸¤·¤Þ¤·¤¿¡£';
 		}
 		
-		# ãƒ­ã‚°å‡ºåŠ›(ã“ã“ã¾ã§)
-		$logger->logprint('DEBUG', '<<< æ”¯æ‰•çµæžœç”»é¢å‡¦ç†çµ‚äº†. >>>');
+		# ¥í¥°½ÐÎÏ(¤³¤³¤Þ¤Ç)
+		$logger->logprint('DEBUG', '<<< »ÙÊ§·ë²Ì²èÌÌ½èÍý½ªÎ». >>>');
 	
 	}
 	break;
-//æˆ»ã‚‹
+//Ìá¤ë
 case 'return':
-	// æ­£å¸¸ã«ç™»éŒ²ã•ã‚ŒãŸã“ã¨ã‚’è¨˜éŒ²ã—ã¦ãŠã
+	// Àµ¾ï¤ËÅÐÏ¿¤µ¤ì¤¿¤³¤È¤òµ­Ï¿¤·¤Æ¤ª¤¯
 	$objSiteSess->setRegistFlag();
-	// ç¢ºèªãƒšãƒ¼ã‚¸ã¸ç§»å‹•
+	// ³ÎÇ§¥Ú¡¼¥¸¤Ø°ÜÆ°
 	header("Location: " . URL_SHOP_CONFIRM);
 	exit;
 	break;
 }
 
 $objView->assignobj($objPage);
-// ãƒ•ãƒ¬ãƒ¼ãƒ ã‚’é¸æŠž(ã‚­ãƒ£ãƒ³ãƒšãƒ¼ãƒ³ãƒšãƒ¼ã‚¸ã‹ã‚‰é·ç§»ãªã‚‰å¤‰æ›´)
+// ¥Õ¥ì¡¼¥à¤òÁªÂò(¥­¥ã¥ó¥Ú¡¼¥ó¥Ú¡¼¥¸¤«¤éÁ«°Ü¤Ê¤éÊÑ¹¹)
 $objCampaignSess->pageView($objView);
 
 //-------------------------------------------------------------------------------------------------------------
 
-//æ”¯æ‰•æœŸé™ã®ç”Ÿæˆ
+//»ÙÊ§´ü¸Â¤ÎÀ¸À®
 function lfGetPayLimit() {
     $date = sprintf("%10s",
                     date("Y/m/d",mktime(0,0,0,date("m"),
@@ -200,16 +200,16 @@ function lfGetPayLimit() {
     return $date;
 }
 
-//ãƒ‘ãƒ©ãƒ¡ãƒ¼ã‚¿ã®åˆæœŸåŒ–
+//¥Ñ¥é¥á¡¼¥¿¤Î½é´ü²½
 function lfInitParam() {
 	global $objFormParam;
-	$objFormParam->addParam("ã‚³ãƒ³ãƒ“ãƒ‹ã®ç¨®é¡ž", "convenience", INT_LEN, "n", array("EXIST_CHECK", "MAX_LENGTH_CHECK", "NUM_CHECK"));
+	$objFormParam->addParam("¥³¥ó¥Ó¥Ë¤Î¼ïÎà", "convenience", INT_LEN, "n", array("EXIST_CHECK", "MAX_LENGTH_CHECK", "NUM_CHECK"));
 }
 	
-// å…¥åŠ›å†…å®¹ã®ãƒã‚§ãƒƒã‚¯
+// ÆþÎÏÆâÍÆ¤Î¥Á¥§¥Ã¥¯
 function lfCheckError() {
 	global $objFormParam;
-	// å…¥åŠ›ãƒ‡ãƒ¼ã‚¿ã‚’æ¸¡ã™ã€‚
+	// ÆþÎÏ¥Ç¡¼¥¿¤òÅÏ¤¹¡£
 	$arrRet =  $objFormParam->getHashArray();
 	$objErr = new SC_CheckError($arrRet);
 	$objErr->arrErr = $objFormParam->checkError();

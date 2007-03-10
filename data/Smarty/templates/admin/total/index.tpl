@@ -5,16 +5,16 @@
  * http://www.lockon.co.jp/
  */
 *}-->
-<!--â˜…â˜…ãƒ¡ã‚¤ãƒ³ã‚³ãƒ³ãƒ†ãƒ³ãƒ„â˜…â˜…-->
+<!--¡ú¡ú¥á¥¤¥ó¥³¥ó¥Æ¥ó¥Ä¡ú¡ú-->
 <table width="878" border="0" cellspacing="0" cellpadding="0" summary=" ">
 	<tr valign="top">
 		<td background="<!--{$smarty.const.URL_DIR}-->img/contents/navi_bg.gif" height="200">
-			<!-- ã‚µãƒ–ãƒŠãƒ“ -->
+			<!-- ¥µ¥Ö¥Ê¥Ó -->
 			<!--{include file=$tpl_subnavi}-->
 		</td>
 		<td class="mainbg">
 		<table width="737" border="0" cellspacing="0" cellpadding="0" summary=" ">
-			<!--ãƒ¡ã‚¤ãƒ³ã‚¨ãƒªã‚¢-->
+			<!--¥á¥¤¥ó¥¨¥ê¥¢-->
 			<tr>
 				<td align="center">
 				<table width="706" border="0" cellspacing="0" cellpadding="0" summary=" ">
@@ -31,7 +31,7 @@
 							</tr>
 							<tr>
 								<td background="<!--{$smarty.const.URL_DIR}-->img/contents/contents_title_left_bg.gif"><img src="<!--{$smarty.const.URL_DIR}-->img/contents/contents_title_left.gif" width="22" height="12" alt=""></td>
-								<td bgcolor="#636469" width="638" class="fs14n"><span class="white"><!--ã‚³ãƒ³ãƒ†ãƒ³ãƒ„ã‚¿ã‚¤ãƒˆãƒ«--><!--{$tpl_subtitle}--></span></td>
+								<td bgcolor="#636469" width="638" class="fs14n"><span class="white"><!--¥³¥ó¥Æ¥ó¥Ä¥¿¥¤¥È¥ë--><!--{$tpl_subtitle}--></span></td>
 								<td background="<!--{$smarty.const.URL_DIR}-->img/contents/contents_title_right_bg.gif"><img src="<!--{$smarty.const.URL_DIR}-->img/common/_.gif" width="18" height="1" alt=""></td>
 							</tr>
 							<tr>
@@ -41,7 +41,7 @@
 								<td colspan="3"><img src="<!--{$smarty.const.URL_DIR}-->img/contents/main_bar.jpg" width="678" height="10" alt=""></td>
 							</tr>
 						</table>
-						<!--æ¤œç´¢æ¡ä»¶è¨­å®šãƒ†ãƒ¼ãƒ–ãƒ«ã“ã“ã‹ã‚‰-->
+						<!--¸¡º÷¾ò·ïÀßÄê¥Æ¡¼¥Ö¥ë¤³¤³¤«¤é-->
 						<table width="678" border="0" cellspacing="1" cellpadding="8" summary=" ">
 							<form name="search_form1" id="search_form1" method="post" action="<!--{$smarty.server.PHP_SELF|escape}-->">
 							<input type="hidden" name="mode" value="search">
@@ -49,17 +49,17 @@
 							<input type="hidden" name="page" value="<!--{$arrForm.page.value}-->">
 							<input type="hidden" name="type" value="<!--{$smarty.post.type}-->">
 							<tr class="fs12n">
-								<td bgcolor="#f2f1ec" width="110">æœˆåº¦é›†è¨ˆ</td>
+								<td bgcolor="#f2f1ec" width="110">·îÅÙ½¸·×</td>
 								<td bgcolor="#ffffff" width="607" colspan="3">
 									<span class="red"><!--{$arrErr.search_startyear_m}--></span>
 									<span class="red"><!--{$arrErr.search_endyear_m}--></span>		
 									<select name="search_startyear_m"  style="<!--{$arrErr.search_startyear_m|sfGetErrorColor}-->">
 									<!--{html_options options=$arrYear selected=$arrForm.search_startyear_m.value}-->
-									</select>å¹´
+									</select>Ç¯
 									<select name="search_startmonth_m" style="<!--{$arrErr.search_startyear_m|sfGetErrorColor}-->">
 									<!--{html_options options=$arrMonth selected=$arrForm.search_startmonth_m.value}-->
-									</select>æœˆåº¦ ï¼ˆ<!--{if $smarty.const.CLOSE_DAY == 31}-->æœ«<!--{else}--><!--{$smarty.const.CLOSE_DAY}--><!--{/if}-->æ—¥ç· ã‚ï¼‰
-									ã€€<input type="submit" name="subm" value="æœˆåº¦ã§é›†è¨ˆã™ã‚‹" />
+									</select>·îÅÙ ¡Ê<!--{if $smarty.const.CLOSE_DAY == 31}-->Ëö<!--{else}--><!--{$smarty.const.CLOSE_DAY}--><!--{/if}-->ÆüÄù¤á¡Ë
+									¡¡<input type="submit" name="subm" value="·îÅÙ¤Ç½¸·×¤¹¤ë" />
 								</td>
 							</tr>
 							</form>
@@ -69,41 +69,41 @@
 							<input type="hidden" name="page" value="<!--{$arrForm.page.value}-->">
 							<input type="hidden" name="type" value="<!--{$smarty.post.type}-->">
 							<tr class="fs12n">
-								<td bgcolor="#f2f1ec" width="110">æœŸé–“é›†è¨ˆ</td>
+								<td bgcolor="#f2f1ec" width="110">´ü´Ö½¸·×</td>
 								<td bgcolor="#ffffff" width="607" colspan="3">
 									<span class="red"><!--{$arrErr.search_startyear}--></span>
 									<span class="red"><!--{$arrErr.search_endyear}--></span>		
 									<select name="search_startyear"  style="<!--{$arrErr.search_startyear|sfGetErrorColor}-->">
 									<option value="">----</option>
 									<!--{html_options options=$arrYear selected=$arrForm.search_startyear.value}-->
-									</select>å¹´
+									</select>Ç¯
 									<select name="search_startmonth" style="<!--{$arrErr.search_startyear|sfGetErrorColor}-->">
 									<option value="">--</option>
 									<!--{html_options options=$arrMonth selected=$arrForm.search_startmonth.value}-->
-									</select>æœˆ
+									</select>·î
 									<select name="search_startday" style="<!--{$arrErr.search_startyear|sfGetErrorColor}-->">
 									<option value="">--</option>
 									<!--{html_options options=$arrDay selected=$arrForm.search_startday.value}-->
-									</select>æ—¥ã€œ
+									</select>Æü¡Á
 									<select name="search_endyear" style="<!--{$arrErr.search_endyear|sfGetErrorColor}-->">
 									<option value="">----</option>
 									<!--{html_options options=$arrYear selected=$arrForm.search_endyear.value}-->
-									</select>å¹´
+									</select>Ç¯
 									<select name="search_endmonth" style="<!--{$arrErr.search_endyear|sfGetErrorColor}-->">
 									<option value="">--</option>
 									<!--{html_options options=$arrMonth selected=$arrForm.search_endmonth.value}-->
-									</select>æœˆ
+									</select>·î
 									<select name="search_endday" style="<!--{$arrErr.search_endyear|sfGetErrorColor}-->">
 									<option value="">--</option>
 									<!--{html_options options=$arrDay selected=$arrForm.search_endday.value}-->
-									</select>æ—¥
-									ã€€<input type="submit" name="subm" value="æœŸé–“ã§é›†è¨ˆã™ã‚‹" />
+									</select>Æü
+									¡¡<input type="submit" name="subm" value="´ü´Ö¤Ç½¸·×¤¹¤ë" />
 								</td>
 							</tr>
 							</form>
 
 						</table>
-						<!--æ¤œç´¢æ¡ä»¶è¨­å®šãƒ†ãƒ¼ãƒ–ãƒ«ã“ã“ã¾ã§-->
+						<!--¸¡º÷¾ò·ïÀßÄê¥Æ¡¼¥Ö¥ë¤³¤³¤Ş¤Ç-->
 						</td>
 						<td background="<!--{$smarty.const.URL_DIR}-->img/contents/main_right.jpg"><img src="<!--{$smarty.const.URL_DIR}-->img/common/_.gif" width="14" height="1" alt=""></td>
 					</tr>
@@ -114,16 +114,16 @@
 				</table>
 				</td>
 			</tr>
-			<!--ãƒ¡ã‚¤ãƒ³ã‚¨ãƒªã‚¢-->
+			<!--¥á¥¤¥ó¥¨¥ê¥¢-->
 		</table>
 		</td>
 	</tr>
 </table>
-<!--â˜…â˜…ãƒ¡ã‚¤ãƒ³ã‚³ãƒ³ãƒ†ãƒ³ãƒ„â˜…â˜…-->
+<!--¡ú¡ú¥á¥¤¥ó¥³¥ó¥Æ¥ó¥Ä¡ú¡ú-->
 
 
 <!--{if count($arrResults) > 0}-->
-	<!--â˜…â˜…æ¤œç´¢çµæœä¸€è¦§â˜…â˜…-->
+	<!--¡ú¡ú¸¡º÷·ë²Ì°ìÍ÷¡ú¡ú-->
 	<table width="878" border="0" cellspacing="0" cellpadding="0" summary=" ">
 	<form name="form1" id="form1" method="post" action="<!--{$smarty.server.PHP_SELF|escape}-->">
 	<input type="hidden" name="mode" value="search">
@@ -142,10 +142,10 @@
 				<table width="840" border="0" cellspacing="0" cellpadding="0" summary=" ">
 					<tr>
 						<td bgcolor="#f0f0f0">
-						<!--æ¤œç´¢çµæœè¡¨ç¤ºãƒ†ãƒ¼ãƒ–ãƒ«-->
+						<!--¸¡º÷·ë²ÌÉ½¼¨¥Æ¡¼¥Ö¥ë-->
 						<table width="840" border="0" cellspacing="1" cellpadding="5" summary=" ">
 							<tr><td align="center">
-								<!--{* ã‚¿ã‚¤ãƒˆãƒ«è¡¨ç¤º *}-->
+								<!--{* ¥¿¥¤¥È¥ëÉ½¼¨ *}-->
 								<table width="740" border="0" cellspacing="0" cellpadding="0" summary=" ">
 									<tr><td><hr noshade size="1" color="#f0f0f0" /></td></tr>
 									<tr><td height="5"></td></tr>
@@ -158,40 +158,40 @@
 									<tr><td height="5"></td></tr>
 									<tr>
 										<td align = center>
-										<input type="button" name="subm" value="æ¤œç´¢çµæœã‚’CSVãƒ€ã‚¦ãƒ³ãƒ­ãƒ¼ãƒ‰" onclick="fnModeSubmit('csv','','');" />
-										<!--{* PDFæ©Ÿèƒ½ã¯æ¬¡æœŸé–‹ç™ºã§è¿½åŠ äºˆå®š
-										 <input type="button" name="subm" value="æ¤œç´¢çµæœã‚’PDFãƒ€ã‚¦ãƒ³ãƒ­ãƒ¼ãƒ‰" onclick="fnModeSubmit('pdf','','');" />
+										<input type="button" name="subm" value="¸¡º÷·ë²Ì¤òCSV¥À¥¦¥ó¥í¡¼¥É" onclick="fnModeSubmit('csv','','');" />
+										<!--{* PDFµ¡Ç½¤Ï¼¡´ü³«È¯¤ÇÄÉ²ÃÍ½Äê
+										 <input type="button" name="subm" value="¸¡º÷·ë²Ì¤òPDF¥À¥¦¥ó¥í¡¼¥É" onclick="fnModeSubmit('pdf','','');" />
 										*}-->
 										</td>
 									</tr>
 								</table>
 
-								<!--{* ã‚°ãƒ©ãƒ•è¡¨ç¤º *}-->		
+								<!--{* ¥°¥é¥ÕÉ½¼¨ *}-->		
 								<table width="740" border="0" cellspacing="0" cellpadding="0" summary=" ">
 									<tr><td height="15"></td></tr>
 									<tr>
 										<td align="center">
-											<!--{* <img src="<!--{$tpl_image}-->?<!--{$cashtime}-->" alt="ã‚°ãƒ©ãƒ•"> *}-->
-											<img src="<!--{$smarty.server.PHP_SELF|escape}-->?draw_image=true&mode=search&page=<!--{$smarty.post.page}-->&search_startyear_m=<!--{$smarty.post.search_startyear_m}-->&search_startmonth_m=<!--{$smarty.post.search_startmonth_m}-->&search_startyear=<!--{$smarty.post.search_startyear}-->&search_startmonth=<!--{$smarty.post.search_startmonth}-->&search_startday=<!--{$smarty.post.search_startday}-->&search_endyear=<!--{$smarty.post.search_endyear}-->&search_endmonth=<!--{$smarty.post.search_endmonth}-->&search_endday=<!--{$smarty.post.search_endday}-->" alt="ã‚°ãƒ©ãƒ•">
+											<!--{* <img src="<!--{$tpl_image}-->?<!--{$cashtime}-->" alt="¥°¥é¥Õ"> *}-->
+											<img src="<!--{$smarty.server.PHP_SELF|escape}-->?draw_image=true&mode=search&page=<!--{$smarty.post.page}-->&search_startyear_m=<!--{$smarty.post.search_startyear_m}-->&search_startmonth_m=<!--{$smarty.post.search_startmonth_m}-->&search_startyear=<!--{$smarty.post.search_startyear}-->&search_startmonth=<!--{$smarty.post.search_startmonth}-->&search_startday=<!--{$smarty.post.search_startday}-->&search_endyear=<!--{$smarty.post.search_endyear}-->&search_endmonth=<!--{$smarty.post.search_endmonth}-->&search_endday=<!--{$smarty.post.search_endday}-->" alt="¥°¥é¥Õ">
 										</td>
 									</tr>
 									<tr><td height="15"></td></tr>
 								</table>
-								<!--{* ã‚°ãƒ©ãƒ•è¡¨ç¤º *}-->		
+								<!--{* ¥°¥é¥ÕÉ½¼¨ *}-->		
 								<table width="840" border="0" cellspacing="0" cellpadding="0" summary=" ">
 									<tr>
 										<td bgcolor="#cccccc">
-										<!--â–¼æ¤œç´¢çµæœãƒ†ãƒ¼ãƒ–ãƒ«ã“ã“ã‹ã‚‰-->
+										<!--¢§¸¡º÷·ë²Ì¥Æ¡¼¥Ö¥ë¤³¤³¤«¤é-->
 										<!--{include file=$tpl_page_type}-->
-										<!--â–²æ¤œç´¢çµæœãƒ†ãƒ¼ãƒ–ãƒ«ã“ã“ã¾ã§-->
+										<!--¢¥¸¡º÷·ë²Ì¥Æ¡¼¥Ö¥ë¤³¤³¤Ş¤Ç-->
 										</td>
 									</tr>
 								</table>
-								<!--â–²MAIN CONTENTS-->
+								<!--¢¥MAIN CONTENTS-->
 								</td>
 							</tr>
 						</table>
-						<!--æ¤œç´¢çµæœè¡¨ç¤ºãƒ†ãƒ¼ãƒ–ãƒ«-->
+						<!--¸¡º÷·ë²ÌÉ½¼¨¥Æ¡¼¥Ö¥ë-->
 						</td>
 					</tr>
 				</table>
@@ -199,7 +199,7 @@
 		</tr>
 		</form>
 	</table>
-<!--â–²æ¤œç´¢çµæœè¡¨ç¤ºã‚¨ãƒªã‚¢ã“ã“ã¾ã§-->
+<!--¢¥¸¡º÷·ë²ÌÉ½¼¨¥¨¥ê¥¢¤³¤³¤Ş¤Ç-->
 <!--{else}-->
 	<!--{if $smarty.post.mode == 'search'}-->
 	<table width="878" border="0" cellspacing="0" cellpadding="0" summary=" ">
@@ -218,10 +218,10 @@
 				<table width="840" border="0" cellspacing="0" cellpadding="0" summary=" ">
 					<tr>
 						<td bgcolor="#f0f0f0">
-						<!--æ¤œç´¢çµæœè¡¨ç¤ºãƒ†ãƒ¼ãƒ–ãƒ«-->
+						<!--¸¡º÷·ë²ÌÉ½¼¨¥Æ¡¼¥Ö¥ë-->
 						<table width="840" border="0" cellspacing="1" cellpadding="5" summary=" ">
 							<tr><td align="center">	
-								<!--{* ã‚¿ã‚¤ãƒˆãƒ«è¡¨ç¤º *}-->
+								<!--{* ¥¿¥¤¥È¥ëÉ½¼¨ *}-->
 								<table width="740" border="0" cellspacing="0" cellpadding="0" summary=" ">
 									<tr><td><hr noshade size="1" color="#f0f0f0" /></td></tr>
 									<tr><td height="5"></td></tr>
@@ -231,12 +231,12 @@
 								</table>
 								<table width="740" border="0" cellspacing="0" cellpadding="0" summary=" ">
 									<tr><td height="10"></td></tr>
-									<tr class="fs12"><td align="center" height="200">è©²å½“ã™ã‚‹ãƒ‡ãƒ¼ã‚¿ã¯ã‚ã‚Šã¾ã›ã‚“ã€‚</td></tr>
+									<tr class="fs12"><td align="center" height="200">³ºÅö¤¹¤ë¥Ç¡¼¥¿¤Ï¤¢¤ê¤Ş¤»¤ó¡£</td></tr>
 								</table>
 								</td>
 							</tr>
 						</table>
-						<!--æ¤œç´¢çµæœè¡¨ç¤ºãƒ†ãƒ¼ãƒ–ãƒ«-->
+						<!--¸¡º÷·ë²ÌÉ½¼¨¥Æ¡¼¥Ö¥ë-->
 						</td>
 					</tr>
 				</table>
@@ -247,4 +247,4 @@
 	<!--{/if}-->
 <!--{/if}-->
 
-<!--â˜…â˜…æ¤œç´¢çµæœä¸€è¦§â˜…â˜…-->		
+<!--¡ú¡ú¸¡º÷·ë²Ì°ìÍ÷¡ú¡ú-->		

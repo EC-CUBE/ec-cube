@@ -8,9 +8,9 @@ require_once("../require.php");
 
 class LC_Page {
 	function LC_Page() {
-		$this->tpl_css = URL_DIR.'css/layout/contact/index.css';	// ãƒ¡ã‚¤ãƒ³CSSãƒ‘ã‚¹
+		$this->tpl_css = URL_DIR.'css/layout/contact/index.css';	// ¥á¥¤¥óCSS¥Ñ¥¹
 		$this->tpl_mainpage = 'contact/index.tpl';
-		$this->tpl_title = 'ãŠå•ã„åˆã‚ã›(å…¥åŠ›ãƒšãƒ¼ã‚¸)';
+		$this->tpl_title = '¤ªÌä¤¤¹ç¤ï¤»(ÆþÎÏ¥Ú¡¼¥¸)';
 		$this->tpl_page_category = 'contact';
 		global $arrPref;
 		$this->arrPref = $arrPref;
@@ -21,7 +21,7 @@ $conn = new SC_DBConn();
 $objPage = new LC_Page();
 $objView = new SC_SiteView();
 $objCampaignSess = new SC_CampaignSession();
-$CONF = sf_getBasisData();			// åº—èˆ—åŸºæœ¬æƒ…å ±
+$CONF = sf_getBasisData();			// Å¹ÊÞ´ðËÜ¾ðÊó
 sfDomainSessionStart();	 
 
 $objCustomer = new SC_Customer();
@@ -30,7 +30,7 @@ if ($objCustomer->isloginSuccess()){
 	$objPage->arrData = $_SESSION['customer'];
 }
 
-//SSLURLåˆ¤å®š
+//SSLURLÈ½Äê
 if (SSLURL_CHECK == 1){
 	$ssl_url= sfRmDupSlash(SSL_URL.$_SERVER['REQUEST_URI']);
 	if (!ereg("^https://", $non_ssl_url)){
@@ -38,10 +38,10 @@ if (SSLURL_CHECK == 1){
 	}
 }
 
-// ãƒ¬ã‚¤ã‚¢ã‚¦ãƒˆãƒ‡ã‚¶ã‚¤ãƒ³ã‚’å–å¾—
+// ¥ì¥¤¥¢¥¦¥È¥Ç¥¶¥¤¥ó¤ò¼èÆÀ
 $objPage = sfGetPageLayout($objPage, false, DEF_LAYOUT);
 
-//ãƒ•ã‚©ãƒ¼ãƒ å€¤å¤‰æ›ç”¨ã‚«ãƒ©ãƒ 
+//¥Õ¥©¡¼¥àÃÍÊÑ´¹ÍÑ¥«¥é¥à
 $arrConvertColumn = array(
 							 array(  "column" => "name01",		"convert" => "aKV" ),
 							 array(  "column" => "name02",		"convert" => "aKV" ),
@@ -61,15 +61,15 @@ $arrConvertColumn = array(
 
 switch ($_POST['mode']){
 	case 'confirm':
-	// ã‚¨ãƒ©ãƒ¼ãƒã‚§ãƒƒã‚¯
+	// ¥¨¥é¡¼¥Á¥§¥Ã¥¯
 	$objPage->arrForm = $_POST;
 	$objPage->arrForm['email'] = strtolower($_POST['email']);
 	$objPage->arrForm = lfConvertParam($objPage->arrForm,$arrConvertColumn);
 	$objPage->arrErr = lfErrorCheck($objPage->arrForm);
 	if ( ! $objPage->arrErr ){
-		// ã‚¨ãƒ©ãƒ¼ç„¡ã—ã§å®Œäº†ç”»é¢
+		// ¥¨¥é¡¼Ìµ¤·¤Ç´°Î»²èÌÌ
 		$objPage->tpl_mainpage = 'contact/confirm.tpl';
-		$objPage->tpl_title = 'ãŠå•ã„åˆã‚ã›(ç¢ºèªãƒšãƒ¼ã‚¸)';
+		$objPage->tpl_title = '¤ªÌä¤¤¹ç¤ï¤»(³ÎÇ§¥Ú¡¼¥¸)';
 	} else {
 		foreach ($objPage->arrForm as $key => $val){
 		$objPage->$key = $val;
@@ -90,7 +90,7 @@ switch ($_POST['mode']){
 	$objPage->arrErr = lfErrorCheck($objPage->arrForm);
 	if(!$objPage->arrErr) {
 		lfSendMail($CONF, $objPage);
-		//å®Œäº†ãƒšãƒ¼ã‚¸ã¸ç§»å‹•ã™ã‚‹
+		//´°Î»¥Ú¡¼¥¸¤Ø°ÜÆ°¤¹¤ë
 		header("location: ./complete.php");
 		exit;
 	} else {
@@ -102,55 +102,55 @@ switch ($_POST['mode']){
 	break;
 }
 
-//----ã€€ãƒšãƒ¼ã‚¸è¡¨ç¤º
+//----¡¡¥Ú¡¼¥¸É½¼¨
 $objView->assignobj($objPage);
-// ãƒ•ãƒ¬ãƒ¼ãƒ ã‚’é¸æŠž(ã‚­ãƒ£ãƒ³ãƒšãƒ¼ãƒ³ãƒšãƒ¼ã‚¸ã‹ã‚‰é·ç§»ãªã‚‰å¤‰æ›´)
+// ¥Õ¥ì¡¼¥à¤òÁªÂò(¥­¥ã¥ó¥Ú¡¼¥ó¥Ú¡¼¥¸¤«¤éÁ«°Ü¤Ê¤éÊÑ¹¹)
 $objCampaignSess->pageView($objView);
 //------------------------------------------------------------------------------------------------------------------------------------------
 
-//ã‚¨ãƒ©ãƒ¼ãƒã‚§ãƒƒã‚¯å‡¦ç†éƒ¨
+//¥¨¥é¡¼¥Á¥§¥Ã¥¯½èÍýÉô
 function lfErrorCheck($array) {
 
 	$objErr = new SC_CheckError($array);
-	$objErr->doFunc(array("ãŠåå‰(å§“)", 'name01', STEXT_LEN), array("EXIST_CHECK","SPTAB_CHECK","MAX_LENGTH_CHECK"));
-	$objErr->doFunc(array("ãŠåå‰(å)", 'name02', STEXT_LEN), array("EXIST_CHECK","SPTAB_CHECK","MAX_LENGTH_CHECK"));
-	$objErr->doFunc(array("ãƒ•ãƒªã‚¬ãƒŠ(ã‚»ã‚¤)", 'kana01', STEXT_LEN), array("EXIST_CHECK","SPTAB_CHECK","MAX_LENGTH_CHECK", "KANA_CHECK"));
-	$objErr->doFunc(array("ãƒ•ãƒªã‚¬ãƒŠ(ãƒ¡ã‚¤)", 'kana02', STEXT_LEN), array("EXIST_CHECK","SPTAB_CHECK","MAX_LENGTH_CHECK", "KANA_CHECK"));
-	$objErr->doFunc(array("éƒµä¾¿ç•ªå·1", "zip01", ZIP01_LEN ) ,array("SPTAB_CHECK" ,"NUM_CHECK", "NUM_COUNT_CHECK"));
-	$objErr->doFunc(array("éƒµä¾¿ç•ªå·2", "zip02", ZIP02_LEN ) ,array("SPTAB_CHECK" ,"NUM_CHECK", "NUM_COUNT_CHECK"));
-	$objErr->doFunc(array("ã”ä½æ‰€1", "addr01", MTEXT_LEN), array("SPTAB_CHECK" ,"MAX_LENGTH_CHECK"));
-	$objErr->doFunc(array("ã”ä½æ‰€2", "addr02", MTEXT_LEN), array("SPTAB_CHECK" ,"MAX_LENGTH_CHECK"));
-	$objErr->doFunc(array("ãŠå•ã„åˆã‚ã›å†…å®¹", "contents", MLTEXT_LEN), array("EXIST_CHECK", "MAX_LENGTH_CHECK"));
-	$objErr->doFunc(array('ãƒ¡ãƒ¼ãƒ«ã‚¢ãƒ‰ãƒ¬ã‚¹', "email", MTEXT_LEN) ,array("EXIST_CHECK", "EMAIL_CHECK", "EMAIL_CHAR_CHECK", "MAX_LENGTH_CHECK"));
-	$objErr->doFunc(array('ãƒ¡ãƒ¼ãƒ«ã‚¢ãƒ‰ãƒ¬ã‚¹(ç¢ºèª)', "email02", MTEXT_LEN) ,array("EXIST_CHECK", "EMAIL_CHECK", "EMAIL_CHAR_CHECK", "MAX_LENGTH_CHECK"));
-	$objErr->doFunc(array('ãƒ¡ãƒ¼ãƒ«ã‚¢ãƒ‰ãƒ¬ã‚¹', 'ãƒ¡ãƒ¼ãƒ«ã‚¢ãƒ‰ãƒ¬ã‚¹(ç¢ºèª)', "email", "email02") ,array("EQUAL_CHECK"));
-	$objErr->doFunc(array("ãŠé›»è©±ç•ªå·1", 'tel01', TEL_ITEM_LEN), array("NUM_CHECK", "MAX_LENGTH_CHECK"));
-	$objErr->doFunc(array("ãŠé›»è©±ç•ªå·2", 'tel02', TEL_ITEM_LEN), array("NUM_CHECK", "MAX_LENGTH_CHECK"));
-	$objErr->doFunc(array("ãŠé›»è©±ç•ªå·3", 'tel03', TEL_ITEM_LEN), array("NUM_CHECK", "MAX_LENGTH_CHECK"));
+	$objErr->doFunc(array("¤ªÌ¾Á°(À«)", 'name01', STEXT_LEN), array("EXIST_CHECK","SPTAB_CHECK","MAX_LENGTH_CHECK"));
+	$objErr->doFunc(array("¤ªÌ¾Á°(Ì¾)", 'name02', STEXT_LEN), array("EXIST_CHECK","SPTAB_CHECK","MAX_LENGTH_CHECK"));
+	$objErr->doFunc(array("¥Õ¥ê¥¬¥Ê(¥»¥¤)", 'kana01', STEXT_LEN), array("EXIST_CHECK","SPTAB_CHECK","MAX_LENGTH_CHECK", "KANA_CHECK"));
+	$objErr->doFunc(array("¥Õ¥ê¥¬¥Ê(¥á¥¤)", 'kana02', STEXT_LEN), array("EXIST_CHECK","SPTAB_CHECK","MAX_LENGTH_CHECK", "KANA_CHECK"));
+	$objErr->doFunc(array("Í¹ÊØÈÖ¹æ1", "zip01", ZIP01_LEN ) ,array("SPTAB_CHECK" ,"NUM_CHECK", "NUM_COUNT_CHECK"));
+	$objErr->doFunc(array("Í¹ÊØÈÖ¹æ2", "zip02", ZIP02_LEN ) ,array("SPTAB_CHECK" ,"NUM_CHECK", "NUM_COUNT_CHECK"));
+	$objErr->doFunc(array("¤´½»½ê1", "addr01", MTEXT_LEN), array("SPTAB_CHECK" ,"MAX_LENGTH_CHECK"));
+	$objErr->doFunc(array("¤´½»½ê2", "addr02", MTEXT_LEN), array("SPTAB_CHECK" ,"MAX_LENGTH_CHECK"));
+	$objErr->doFunc(array("¤ªÌä¤¤¹ç¤ï¤»ÆâÍÆ", "contents", MLTEXT_LEN), array("EXIST_CHECK", "MAX_LENGTH_CHECK"));
+	$objErr->doFunc(array('¥á¡¼¥ë¥¢¥É¥ì¥¹', "email", MTEXT_LEN) ,array("EXIST_CHECK", "EMAIL_CHECK", "EMAIL_CHAR_CHECK", "MAX_LENGTH_CHECK"));
+	$objErr->doFunc(array('¥á¡¼¥ë¥¢¥É¥ì¥¹(³ÎÇ§)', "email02", MTEXT_LEN) ,array("EXIST_CHECK", "EMAIL_CHECK", "EMAIL_CHAR_CHECK", "MAX_LENGTH_CHECK"));
+	$objErr->doFunc(array('¥á¡¼¥ë¥¢¥É¥ì¥¹', '¥á¡¼¥ë¥¢¥É¥ì¥¹(³ÎÇ§)', "email", "email02") ,array("EQUAL_CHECK"));
+	$objErr->doFunc(array("¤ªÅÅÏÃÈÖ¹æ1", 'tel01', TEL_ITEM_LEN), array("NUM_CHECK", "MAX_LENGTH_CHECK"));
+	$objErr->doFunc(array("¤ªÅÅÏÃÈÖ¹æ2", 'tel02', TEL_ITEM_LEN), array("NUM_CHECK", "MAX_LENGTH_CHECK"));
+	$objErr->doFunc(array("¤ªÅÅÏÃÈÖ¹æ3", 'tel03', TEL_ITEM_LEN), array("NUM_CHECK", "MAX_LENGTH_CHECK"));
 	
 
 	return $objErr->arrErr;
 
 }
 
-//----ã€€å–å¾—æ–‡å­—åˆ—ã®å¤‰æ›
+//----¡¡¼èÆÀÊ¸»úÎó¤ÎÊÑ´¹
 function lfConvertParam($array, $arrConvertColumn) {
 	/*
-	 *	æ–‡å­—åˆ—ã®å¤‰æ›
-	 *	K :  ã€ŒåŠè§’(ï¾Šï¾ï½¶ï½¸)ç‰‡ä»®åã€ã‚’ã€Œå…¨è§’ç‰‡ä»®åã€ã«å¤‰æ›
-	 *	C :  ã€Œå…¨è§’ã²ã‚‰ä»®åã€ã‚’ã€Œå…¨è§’ã‹ãŸä»®åã€ã«å¤‰æ›
-	 *	V :  æ¿ç‚¹ä»˜ãã®æ–‡å­—ã‚’ä¸€æ–‡å­—ã«å¤‰æ›ã€‚"K","H"ã¨å…±ã«ä½¿ç”¨ã—ã¾ã™	
-	 *	n :  ã€Œå…¨è§’ã€æ•°å­—ã‚’ã€ŒåŠè§’(ï¾Šï¾ï½¶ï½¸)ã€ã«å¤‰æ›
-	 *  a :  å…¨è§’è‹±æ•°å­—ã‚’åŠè§’è‹±æ•°å­—ã«å¤‰æ›ã™ã‚‹
+	 *	Ê¸»úÎó¤ÎÊÑ´¹
+	 *	K :  ¡ÖÈ¾³Ñ(ŽÊŽÝŽ¶Ž¸)ÊÒ²¾Ì¾¡×¤ò¡ÖÁ´³ÑÊÒ²¾Ì¾¡×¤ËÊÑ´¹
+	 *	C :  ¡ÖÁ´³Ñ¤Ò¤é²¾Ì¾¡×¤ò¡ÖÁ´³Ñ¤«¤¿²¾Ì¾¡×¤ËÊÑ´¹
+	 *	V :  ÂùÅÀÉÕ¤­¤ÎÊ¸»ú¤ò°ìÊ¸»ú¤ËÊÑ´¹¡£"K","H"¤È¶¦¤Ë»ÈÍÑ¤·¤Þ¤¹	
+	 *	n :  ¡ÖÁ´³Ñ¡×¿ô»ú¤ò¡ÖÈ¾³Ñ(ŽÊŽÝŽ¶Ž¸)¡×¤ËÊÑ´¹
+	 *  a :  Á´³Ñ±Ñ¿ô»ú¤òÈ¾³Ñ±Ñ¿ô»ú¤ËÊÑ´¹¤¹¤ë
 	 */
-	// ã‚«ãƒ©ãƒ åã¨ã‚³ãƒ³ãƒãƒ¼ãƒˆæƒ…å ±
+	// ¥«¥é¥àÌ¾¤È¥³¥ó¥Ð¡¼¥È¾ðÊó
 	foreach ($arrConvertColumn as $data) {
 		$arrConvList[ $data["column"] ] = $data["convert"];
 	}
 	
-	// æ–‡å­—å¤‰æ›
+	// Ê¸»úÊÑ´¹
 	foreach ($arrConvList as $key => $val) {
-		// POSTã•ã‚Œã¦ããŸå€¤ã®ã¿å¤‰æ›ã™ã‚‹ã€‚
+		// POST¤µ¤ì¤Æ¤­¤¿ÃÍ¤Î¤ßÊÑ´¹¤¹¤ë¡£
 		if(strlen(($array[$key])) > 0) {
 			$array[$key] = mb_convert_kana($array[$key] ,$val);
 		}
@@ -158,10 +158,10 @@ function lfConvertParam($array, $arrConvertColumn) {
 	return $array;
 }
 
-// ------------  ãƒ¡ãƒ¼ãƒ«é€ä¿¡ ------------ 
+// ------------  ¥á¡¼¥ëÁ÷¿® ------------ 
 
 function lfSendMail($CONF, $objPage){
-	//ã€€ãƒ‘ã‚¹ãƒ¯ãƒ¼ãƒ‰å¤‰æ›´ãŠçŸ¥ã‚‰ã›ãƒ¡ãƒ¼ãƒ«é€ä¿¡
+	//¡¡¥Ñ¥¹¥ï¡¼¥ÉÊÑ¹¹¤ªÃÎ¤é¤»¥á¡¼¥ëÁ÷¿®
 	
 	$objMailText = new SC_SiteView();
 	$objSiteInfo = $objView->objSiteInfo;
@@ -173,37 +173,37 @@ function lfSendMail($CONF, $objPage){
 	$objMail = new GC_SendMail();
 	
 	if ( $objPage->arrForm['email'] ) {
-		$fromMail_name = $objPage->arrForm['name01'] ." æ§˜";
+		$fromMail_name = $objPage->arrForm['name01'] ." ÍÍ";
 		$fromMail_address = $objPage->arrForm['email'];
 	} else {
 		$fromMail_name = $CONF["shop_name"];
 		$fromMail_address = $CONF["email02"];
 	}
-	$subject = sfMakeSubject("ãŠå•ã„åˆã‚ã›ãŒã‚ã‚Šã¾ã—ãŸã€‚");
+	$subject = sfMakeSubject("¤ªÌä¤¤¹ç¤ï¤»¤¬¤¢¤ê¤Þ¤·¤¿¡£");
 	$objMail->setItem(
-						  $CONF["email02"]					//ã€€å®›å…ˆ
-						, $subject							//ã€€ã‚µãƒ–ã‚¸ã‚§ã‚¯ãƒˆ
-						, $toCustomerMail					//ã€€æœ¬æ–‡
-						, $fromMail_address					//ã€€é…é€å…ƒã‚¢ãƒ‰ãƒ¬ã‚¹
-						, $fromMail_name					//ã€€é…é€å…ƒã€€åå‰
-						, $fromMail_address					//ã€€reply_to
-						, $CONF["email04"]					//ã€€return_path
+						  $CONF["email02"]					//¡¡°¸Àè
+						, $subject							//¡¡¥µ¥Ö¥¸¥§¥¯¥È
+						, $toCustomerMail					//¡¡ËÜÊ¸
+						, $fromMail_address					//¡¡ÇÛÁ÷¸µ¥¢¥É¥ì¥¹
+						, $fromMail_name					//¡¡ÇÛÁ÷¸µ¡¡Ì¾Á°
+						, $fromMail_address					//¡¡reply_to
+						, $CONF["email04"]					//¡¡return_path
 						, $CONF["email04"]					//  Errors_to
 														);
 	$objMail->sendMail();
 	
-	$subject = sfMakeSubject("ãŠå•ã„åˆã‚ã›ã‚’å—ã‘ä»˜ã‘ã¾ã—ãŸã€‚");
+	$subject = sfMakeSubject("¤ªÌä¤¤¹ç¤ï¤»¤ò¼õ¤±ÉÕ¤±¤Þ¤·¤¿¡£");
 	$objMail->setItem(
-						  ''								//ã€€å®›å…ˆ
-						, $subject							//ã€€ã‚µãƒ–ã‚¸ã‚§ã‚¯ãƒˆ
-						, $toCustomerMail					//ã€€æœ¬æ–‡
-						, $CONF["email03"]					//ã€€é…é€å…ƒã‚¢ãƒ‰ãƒ¬ã‚¹
-						, $CONF["shop_name"]				//ã€€é…é€å…ƒã€€åå‰
-						, $CONF["email02"]					//ã€€reply_to
-						, $CONF["email04"]					//ã€€return_path
+						  ''								//¡¡°¸Àè
+						, $subject							//¡¡¥µ¥Ö¥¸¥§¥¯¥È
+						, $toCustomerMail					//¡¡ËÜÊ¸
+						, $CONF["email03"]					//¡¡ÇÛÁ÷¸µ¥¢¥É¥ì¥¹
+						, $CONF["shop_name"]				//¡¡ÇÛÁ÷¸µ¡¡Ì¾Á°
+						, $CONF["email02"]					//¡¡reply_to
+						, $CONF["email04"]					//¡¡return_path
 						, $CONF["email04"]					//  Errors_to
 														);
-	$objMail->setTo($objPage->arrForm['email'], $objPage->arrForm['name01'] ." æ§˜");
+	$objMail->setTo($objPage->arrForm['email'], $objPage->arrForm['name01'] ." ÍÍ");
 	$objMail->sendMail();	
 }
 ?>

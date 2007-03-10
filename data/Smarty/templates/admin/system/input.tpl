@@ -5,7 +5,7 @@
  * http://www.lockon.co.jp/
  */
 *}-->
-<!--ã€€-->
+<!--¡¡-->
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="ja" lang="ja">
 
@@ -20,7 +20,7 @@
 <script type="text/javascript" src="<!--{$smarty.const.URL_DIR}-->js/site.js"></script>
 <script type="text/javascript" src="<!--{$smarty.const.URL_DIR}-->js/admin.js"></script>
 <!--{include file='css/contents.tpl'}-->
-<title>ãƒ¡ãƒ³ãƒãƒ¼ç™»éŒ²ãƒ»ç·¨é›†</title>
+<title>¥á¥ó¥Ğ¡¼ÅĞÏ¿¡¦ÊÔ½¸</title>
 <script type="text/javascript">
 <!--
 self.moveTo(20,20);self.focus();
@@ -34,7 +34,7 @@ self.moveTo(20,20);self.focus();
 </noscript>
 
 <div align="center">
-<!--â˜…â˜…ãƒ¡ã‚¤ãƒ³ã‚³ãƒ³ãƒ†ãƒ³ãƒ„â˜…â˜…-->
+<!--¡ú¡ú¥á¥¤¥ó¥³¥ó¥Æ¥ó¥Ä¡ú¡ú-->
 <table width="500" border="0" cellspacing="0" cellpadding="0" summary=" ">
 <form name="form1" id="form1" method="post" action="<!--{$tpl_recv}-->" onsubmit="return fnRegistMember();">
 <input type="hidden" name="mode" value="<!--{$tpl_mode}-->">
@@ -43,9 +43,9 @@ self.moveTo(20,20);self.focus();
 <input type="hidden" name="old_login_id" value="<!--{$tpl_old_login_id}-->">
 	<tr valign="top">
 		<td class="mainbg">
-			<!--â–¼ç™»éŒ²ãƒ†ãƒ¼ãƒ–ãƒ«ã“ã“ã‹ã‚‰-->
+			<!--¢§ÅĞÏ¿¥Æ¡¼¥Ö¥ë¤³¤³¤«¤é-->
 			<table width="500" border="0" cellspacing="0" cellpadding="0" summary=" ">
-				<!--ãƒ¡ã‚¤ãƒ³ã‚¨ãƒªã‚¢-->
+				<!--¥á¥¤¥ó¥¨¥ê¥¢-->
 				<tr>
 					<td align="center">
 						<table width="470" border="0" cellspacing="0" cellpadding="0" summary=" ">
@@ -63,7 +63,7 @@ self.moveTo(20,20);self.focus();
 										</tr>
 										<tr>
 											<td background="<!--{$smarty.const.URL_DIR}-->img/contents/contents_title_left_bg.gif"><img src="<!--{$smarty.const.URL_DIR}-->img/contents/contents_title_left.gif" width="22" height="12" alt=""></td>
-											<td bgcolor="#636469" width="400" class="fs14n"><span class="white"><!--ã‚³ãƒ³ãƒ†ãƒ³ãƒ„ã‚¿ã‚¤ãƒˆãƒ«-->ãƒ¡ãƒ³ãƒãƒ¼ç™»éŒ²/ç·¨é›†</span></td>
+											<td bgcolor="#636469" width="400" class="fs14n"><span class="white"><!--¥³¥ó¥Æ¥ó¥Ä¥¿¥¤¥È¥ë-->¥á¥ó¥Ğ¡¼ÅĞÏ¿/ÊÔ½¸</span></td>
 											<td background="<!--{$smarty.const.URL_DIR}-->img/contents/contents_title_right_bg.gif"><img src="<!--{$smarty.const.URL_DIR}-->img/common/_.gif" width="18" height="1" alt=""></td>
 										</tr>
 										<tr>
@@ -76,31 +76,31 @@ self.moveTo(20,20);self.focus();
 									
 									<table width="440" border="0" cellspacing="1" cellpadding="8" summary=" ">
 										<tr class="fs12n">
-											<td width="90" bgcolor="#f3f3f3">åå‰</td>
-											<td width="337" bgcolor="#ffffff"><!--{if $arrErr.name}--><span class="red"><!--{$arrErr.name}--></span><!--{/if}--><input type="text" name="name" size="30" class="box30" value="<!--{$arrForm.name}-->" maxlength="<!--{$smarty.const.STEXT_LEN}-->"/>ã€€<span class="red">â€»å¿…é ˆå…¥åŠ›</span>
+											<td width="90" bgcolor="#f3f3f3">Ì¾Á°</td>
+											<td width="337" bgcolor="#ffffff"><!--{if $arrErr.name}--><span class="red"><!--{$arrErr.name}--></span><!--{/if}--><input type="text" name="name" size="30" class="box30" value="<!--{$arrForm.name}-->" maxlength="<!--{$smarty.const.STEXT_LEN}-->"/>¡¡<span class="red">¢¨É¬¿ÜÆşÎÏ</span>
 											</td>
 										</tr>
 										<tr class="fs12n">
-											<td width="90" bgcolor="#f3f3f3">æ‰€å±</td>
+											<td width="90" bgcolor="#f3f3f3">½êÂ°</td>
 											<td width="337" bgcolor="#ffffff"><!--{if $arrErr.department}--><span class="red"><!--{$arrErr.department}--></span><!--{/if}--><input type="text" name="department" size="30" class="box30" value="<!--{$arrForm.department}-->" maxlength="<!--{$smarty.const.STEXT_LEN}-->"/>
 											</td>
 										</tr>
 										<tr class="fs12">
-											<td width="90" bgcolor="#f3f3f3">ãƒ­ã‚°ã‚¤ãƒ³ï¼©ï¼¤</td>
-											<td width="337" bgcolor="#ffffff"><!--{if $arrErr.login_id}--><span class="red"><!--{$arrErr.login_id}--></span><!--{/if}--><input type="text" name="login_id" size="20" class="box20"  value="<!--{$arrForm.login_id}-->" maxlength="<!--{$smarty.const.STEXT_LEN}-->"/>ã€€<span class="red">â€»å¿…é ˆå…¥åŠ›</span><br />
-											â€»åŠè§’è‹±æ•°å­—ãƒ»15æ–‡å­—ä»¥å†…</td>
+											<td width="90" bgcolor="#f3f3f3">¥í¥°¥¤¥ó£É£Ä</td>
+											<td width="337" bgcolor="#ffffff"><!--{if $arrErr.login_id}--><span class="red"><!--{$arrErr.login_id}--></span><!--{/if}--><input type="text" name="login_id" size="20" class="box20"  value="<!--{$arrForm.login_id}-->" maxlength="<!--{$smarty.const.STEXT_LEN}-->"/>¡¡<span class="red">¢¨É¬¿ÜÆşÎÏ</span><br />
+											¢¨È¾³Ñ±Ñ¿ô»ú¡¦15Ê¸»ú°ÊÆâ</td>
 										</tr>
 										<tr class="fs12">
-											<td width="90" bgcolor="#f3f3f3">ãƒ‘ã‚¹ãƒ¯ãƒ¼ãƒ‰</td>
-											<td width="337" bgcolor="#ffffff"><!--{if $arrErr.password}--><span class="red"><!--{$arrErr.password}--></span><!--{/if}--><input type="password" name="password" size="20" class="box20" value="<!--{$arrForm.password}-->" onfocus="<!--{$tpl_onfocus}-->" maxlength="<!--{$smarty.const.STEXT_LEN}-->"/>ã€€<span class="red">â€»å¿…é ˆå…¥åŠ›</span><br />
-											â€»åŠè§’è‹±æ•°å­—ãƒ»15æ–‡å­—ä»¥å†…</td>
+											<td width="90" bgcolor="#f3f3f3">¥Ñ¥¹¥ï¡¼¥É</td>
+											<td width="337" bgcolor="#ffffff"><!--{if $arrErr.password}--><span class="red"><!--{$arrErr.password}--></span><!--{/if}--><input type="password" name="password" size="20" class="box20" value="<!--{$arrForm.password}-->" onfocus="<!--{$tpl_onfocus}-->" maxlength="<!--{$smarty.const.STEXT_LEN}-->"/>¡¡<span class="red">¢¨É¬¿ÜÆşÎÏ</span><br />
+											¢¨È¾³Ñ±Ñ¿ô»ú¡¦15Ê¸»ú°ÊÆâ</td>
 										</tr>
 										<tr class="fs12n">
-											<td width="90" bgcolor="#f3f3f3">ç®¡ç†æ¨©é™</td>
+											<td width="90" bgcolor="#f3f3f3">´ÉÍı¸¢¸Â</td>
 											<td width="337" bgcolor="#ffffff"><!--{if $arrErr.authority}--><span class="red"><!--{$arrErr.authority}--></span><!--{/if}--><select name="authority">
-											<option value="" >é¸æŠã—ã¦ãã ã•ã„</option>
+											<option value="" >ÁªÂò¤·¤Æ¤¯¤À¤µ¤¤</option>
 											<!--{html_options options=$arrAUTHORITY selected=$arrForm.authority}-->
-											</select>ã€€<span class="red">â€»å¿…é ˆå…¥åŠ›</span></td>
+											</select>¡¡<span class="red">¢¨É¬¿ÜÆşÎÏ</span></td>
 										</tr>
 									</table>
 
@@ -115,7 +115,7 @@ self.moveTo(20,20);self.focus();
 											<td bgcolor="#e9e7de" align="center">
 											<table border="0" cellspacing="0" cellpadding="0" summary=" ">
 												<tr>
-													<td><input type="image" onMouseover="chgImgImageSubmit('<!--{$smarty.const.URL_DIR}-->img/contents/btn_regist_on.jpg',this)" onMouseout="chgImgImageSubmit('<!--{$smarty.const.URL_DIR}-->img/contents/btn_regist.jpg',this)" src="<!--{$smarty.const.URL_DIR}-->img/contents/btn_regist.jpg" width="123" height="24" alt="ã“ã®å†…å®¹ã§ç™»éŒ²ã™ã‚‹" border="0" name="subm" ></td>
+													<td><input type="image" onMouseover="chgImgImageSubmit('<!--{$smarty.const.URL_DIR}-->img/contents/btn_regist_on.jpg',this)" onMouseout="chgImgImageSubmit('<!--{$smarty.const.URL_DIR}-->img/contents/btn_regist.jpg',this)" src="<!--{$smarty.const.URL_DIR}-->img/contents/btn_regist.jpg" width="123" height="24" alt="¤³¤ÎÆâÍÆ¤ÇÅĞÏ¿¤¹¤ë" border="0" name="subm" ></td>
 												</tr>
 											</table>
 											</td>
@@ -135,14 +135,14 @@ self.moveTo(20,20);self.focus();
 						</table>
 					</td>
 				</tr>
-				<!--ãƒ¡ã‚¤ãƒ³ã‚¨ãƒªã‚¢-->
+				<!--¥á¥¤¥ó¥¨¥ê¥¢-->
 			</table>
-			<!--â–²ç™»éŒ²ãƒ†ãƒ¼ãƒ–ãƒ«ã“ã“ã¾ã§-->
+			<!--¢¥ÅĞÏ¿¥Æ¡¼¥Ö¥ë¤³¤³¤Ş¤Ç-->
 		</td>
 	</tr>
 </form>
 </table>
-<!--â˜…â˜…ãƒ¡ã‚¤ãƒ³ã‚³ãƒ³ãƒ†ãƒ³ãƒ„â˜…â˜…-->
+<!--¡ú¡ú¥á¥¤¥ó¥³¥ó¥Æ¥ó¥Ä¡ú¡ú-->
 </div>
 
 </body>

@@ -5,24 +5,24 @@
  */
 @charset "<!--{$smarty.const.CHAR_CODE}-->";
 
-/***Ц┐╛Ц┐⌠Ц┐╔Ц┐╪Ф⌡╦Ц│█Х╬╪Ц│©О╪ёО╪ЁО╪Ё***/
+/***╔Л╔с╔Е║╪╫Я╓╜╧Ч╓ъёцёсёс***/
 
-/***Е┘╗Д╫⌠***/
+/***а╢бн***/
 #layout{
 border: 0;
-margin: 0 auto;	/*Ц┌╩Ц┐ЁЦ┌©Ц┐╪Ф▐┐Ц│┬*/
+margin: 0 auto;	/*╔╩╔С╔©║╪б╥╓╗*/
 padding: 0;
 }
 
-/***Ц┌ЁЦ┐ЁЦ┐├Ц┐ЁЦ┐└***/
-/*Ц┌©Ц┌╓Ц┐┬Ц┐╚*/
+/***╔Ё╔С╔ф╔С╔д***/
+/*╔©╔╓╔х╔К*/
 #layout #title{
 border: 0;
 margin: 15px 0 15px 0;
 padding: 0;
 }
 
-/*Ц┐├Ц┐╪Ц┐√Ц┐╚*/
+/*╔ф║╪╔ж╔К*/
 #layout #frame{
 border: 0;
 margin-right: auto; margin-left: auto;
@@ -56,7 +56,7 @@ text-align: center;
 background: #fff;
 }
 
-/*Ц┐°Ц┌©Ц┐Ё*/
+/*╔э╔©╔С*/
 #layout #button{
 border: 0;
 margin: 30px 0 15px 0;

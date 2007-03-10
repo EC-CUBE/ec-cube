@@ -6,9 +6,9 @@
 
 @charset "<!--{$smarty.const.CHAR_CODE}-->";
 
-/***è²·ã„ç‰©ã‹ã”ï¼£ï¼³ï¼³***/
+/***Çã¤¤Êª¤«¤´£Ã£Ó£Ó***/
 
-/***ã‚³ãƒ³ãƒ†ãƒ³ãƒ„***/
+/***¥³¥ó¥Æ¥ó¥Ä***/
 #containerfull #maintitle{
 border: 0;
 margin: 0 0 15px 0;
@@ -16,8 +16,8 @@ padding: 0;
 width: 700px;
 }
 
-/**ãƒ†ãƒ¼ãƒ–ãƒ«**/
-/*æ */
+/**¥Æ¡¼¥Ö¥ë**/
+/*ÏÈ*/
 #containerfull #frame{
 border: 0;
 margin: 0;
@@ -26,7 +26,7 @@ width: 700px;
 background: #ccc;
 }
 
-/*ã‚¿ã‚¤ãƒˆãƒ«è¡Œ*/
+/*¥¿¥¤¥È¥ë¹Ô*/
 #containerfull #frame #delete{
 width: 50px;
 background: #ecf5ff;
@@ -63,7 +63,7 @@ background: #ecf5ff;
 text-align: center;
 }
 
-/*ã‚³ãƒ³ãƒ†ãƒ³ãƒ„è¡Œ*/
+/*¥³¥ó¥Æ¥ó¥Ä¹Ô*/
 #containerfull #frame #delete_c{
 width: 50px;
 background: #fff;
@@ -107,13 +107,13 @@ text-align: right;
 }
 
 
-/*ä¸‹è¡Œ*/
+/*²¼¹Ô*/
 #containerfull #frame #under{
 background: #ecf5ff;
 text-align: right;
 }
 
-/*ç¢ºèªç”»åƒ*/
+/*³ÎÇ§²èÁü*/
 #containerfull #confirm{
 border: 0;
 margin: 20px 0 0 0;
@@ -121,7 +121,7 @@ padding: 0;
 text-align: center;
 }
 
-/*ãƒœã‚¿ãƒ³*/
+/*¥Ü¥¿¥ó*/
 #containerfull #button{
 border: 0;
 margin: 0 0 20px 0;
@@ -129,7 +129,7 @@ padding: 0;
 text-align: center;
 }
 
-/*æ³¨æ„*/
+/*Ãí°Õ*/
 
 #containerfull #attention{
 border: 0;

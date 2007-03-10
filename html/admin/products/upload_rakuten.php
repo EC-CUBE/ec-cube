@@ -7,7 +7,7 @@
 require_once("../require.php");
 require_once("./upload_csv.inc");
 
-// 1è¡Œã‚ãŸã‚Šã®æœ€å¤§æ–‡å­—æ•°
+// 1¹Ô¤¢¤¿¤ê¤ÎºÇÂçÊ¸»ú¿ô
 define("CSV_LINE_MAX", 10000);
 
 class LC_Page {
@@ -26,16 +26,16 @@ $objPage = new LC_Page();
 $objView = new SC_AdminView();
 $objSess = new SC_Session();
 
-// èªè¨¼å¯å¦ã®åˆ¤å®š
+// Ç§¾Ú²ÄÈİ¤ÎÈ½Äê
 sfIsSuccess($objSess);
 
-// ãƒ•ã‚¡ã‚¤ãƒ«ç®¡ç†ã‚¯ãƒ©ã‚¹
+// ¥Õ¥¡¥¤¥ë´ÉÍı¥¯¥é¥¹
 $objUpFile = new SC_UploadFile(IMAGE_TEMP_DIR, IMAGE_SAVE_DIR);
-// ãƒ•ã‚¡ã‚¤ãƒ«æƒ…å ±ã®åˆæœŸåŒ–
+// ¥Õ¥¡¥¤¥ë¾ğÊó¤Î½é´ü²½
 lfInitFile();
-// ãƒ‘ãƒ©ãƒ¡ãƒ¼ã‚¿ç®¡ç†ã‚¯ãƒ©ã‚¹
+// ¥Ñ¥é¥á¡¼¥¿´ÉÍı¥¯¥é¥¹
 $objFormParam = new SC_FormParam();
-// ãƒ‘ãƒ©ãƒ¡ãƒ¼ã‚¿æƒ…å ±ã®åˆæœŸåŒ–
+// ¥Ñ¥é¥á¡¼¥¿¾ğÊó¤Î½é´ü²½
 lfInitParam();
 $colmax = $objFormParam->getCount();
 $objFormParam->setHtmlDispNameArray();
@@ -44,7 +44,7 @@ $objPage->arrTitle = $objFormParam->getHtmlDispNameArray();
 switch($_POST['mode']) {
 case 'csv_upload':
 	$err = false;
-	// ã‚¨ãƒ©ãƒ¼ãƒã‚§ãƒƒã‚¯
+	// ¥¨¥é¡¼¥Á¥§¥Ã¥¯
 	$objPage->arrErr['csv_file'] = $objUpFile->makeTempFile('csv_file');
 	
 	if($objPage->arrErr['css_file'] == "") {
@@ -52,13 +52,13 @@ case 'csv_upload':
 	}
 	
 	if($objPage->arrErr['csv_file'] == "") {
-		// ä¸€æ™‚ãƒ•ã‚¡ã‚¤ãƒ«åã®å–å¾—
+		// °ì»ş¥Õ¥¡¥¤¥ëÌ¾¤Î¼èÆÀ
 		$filepath = $objUpFile->getTempFilePath('csv_file');
-		// ã‚¨ãƒ³ã‚³ãƒ¼ãƒ‰
+		// ¥¨¥ó¥³¡¼¥É
 		$enc_filepath = sfEncodeFile($filepath, CHAR_CODE, CSV_TEMP_DIR);
 		$fp = fopen($enc_filepath, "r");
-		$line = 0;		// è¡Œæ•°
-		$regist = 0;	// ç™»éŒ²æ•°
+		$line = 0;		// ¹Ô¿ô
+		$regist = 0;	// ÅĞÏ¿¿ô
 		
 		$objQuery = new SC_Query();
 		$objQuery->begin();
@@ -66,39 +66,39 @@ case 'csv_upload':
 		while(!feof($fp) && !$err) {
 			$arrCSV = fgetcsv($fp, CSV_LINE_MAX);
 						
-			// è¡Œã‚«ã‚¦ãƒ³ãƒˆ
+			// ¹Ô¥«¥¦¥ó¥È
 			$line++;
 			
 			if($line <= 1) {
 				continue;
 			}			
 							
-			// é …ç›®æ•°ã‚«ã‚¦ãƒ³ãƒˆ
+			// ¹àÌÜ¿ô¥«¥¦¥ó¥È
 			$max = count($arrCSV);
 			
-			// é …ç›®æ•°ãŒ1ä»¥ä¸‹ã®å ´åˆã¯ç„¡è¦–ã™ã‚‹
+			// ¹àÌÜ¿ô¤¬1°Ê²¼¤Î¾ì¹ç¤ÏÌµ»ë¤¹¤ë
 			if($max <= 1) {
 				continue;			
 			}
 			
-			// é …ç›®æ•°ãƒã‚§ãƒƒã‚¯
+			// ¹àÌÜ¿ô¥Á¥§¥Ã¥¯
 			if($max != $colmax) {
-				$objPage->arrCSVErr['blank'] = "â€» é …ç›®æ•°ãŒ" . $max . "å€‹æ¤œå‡ºã•ã‚Œã¾ã—ãŸã€‚é …ç›®æ•°ã¯" . $colmax . "å€‹ã«ãªã‚Šã¾ã™ã€‚";
+				$objPage->arrCSVErr['blank'] = "¢¨ ¹àÌÜ¿ô¤¬" . $max . "¸Ä¸¡½Ğ¤µ¤ì¤Ş¤·¤¿¡£¹àÌÜ¿ô¤Ï" . $colmax . "¸Ä¤Ë¤Ê¤ê¤Ş¤¹¡£";
 				$err = true;
 			} else {
-				// ã‚·ãƒ¼ã‚±ãƒ³ã‚¹é…åˆ—ã‚’æ ¼ç´ã™ã‚‹ã€‚
+				// ¥·¡¼¥±¥ó¥¹ÇÛÎó¤ò³ÊÇ¼¤¹¤ë¡£
 				$objFormParam->setParam($arrCSV, true);
 				$arrRet = $objFormParam->getHashArray();
 				$objFormParam->setParam($arrRet);
-				// å…¥åŠ›å€¤ã®å¤‰æ›
+				// ÆşÎÏÃÍ¤ÎÊÑ´¹
 				$objFormParam->convParam();
-				// <br>ãªã—ã§ã‚¨ãƒ©ãƒ¼å–å¾—ã™ã‚‹ã€‚
+				// <br>¤Ê¤·¤Ç¥¨¥é¡¼¼èÆÀ¤¹¤ë¡£
 				$objPage->arrCSVErr = lfCheckError();
 			}
 			
-			// å…¥åŠ›ã‚¨ãƒ©ãƒ¼ãƒã‚§ãƒƒã‚¯
+			// ÆşÎÏ¥¨¥é¡¼¥Á¥§¥Ã¥¯
 			if(count($objPage->arrCSVErr) > 0) {
-				$objPage->tpl_errtitle = "â– " . $line . "è¡Œç›®ã§ã‚¨ãƒ©ãƒ¼ãŒç™ºç”Ÿã—ã¾ã—ãŸã€‚";
+				$objPage->tpl_errtitle = "¢£" . $line . "¹ÔÌÜ¤Ç¥¨¥é¡¼¤¬È¯À¸¤·¤Ş¤·¤¿¡£";
 				$objPage->arrParam = $objFormParam->getHashArray();
 				$err = true;
 			}
@@ -112,8 +112,8 @@ case 'csv_upload':
 		
 		if(!$err) {
 			$objQuery->commit();
-			$objPage->tpl_oktitle = "â– " . $regist . "ä»¶ã®ãƒ¬ã‚³ãƒ¼ãƒ‰ã‚’ç™»éŒ²ã—ã¾ã—ãŸã€‚";
-			// å•†å“ä»¶æ•°ã‚«ã‚¦ãƒ³ãƒˆé–¢æ•°ã®å®Ÿè¡Œ
+			$objPage->tpl_oktitle = "¢£" . $regist . "·ï¤Î¥ì¥³¡¼¥É¤òÅĞÏ¿¤·¤Ş¤·¤¿¡£";
+			// ¾¦ÉÊ·ï¿ô¥«¥¦¥ó¥È´Ø¿ô¤Î¼Â¹Ô
 			sfCategory_Count($objQuery);
 		} else {
 			$objQuery->rollback();
@@ -129,39 +129,39 @@ $objView->display(MAIN_FRAME);
 
 //--------------------------------------------------------------------------------------------------------------------------
 
-/* ãƒ•ã‚¡ã‚¤ãƒ«æƒ…å ±ã®åˆæœŸåŒ– */
+/* ¥Õ¥¡¥¤¥ë¾ğÊó¤Î½é´ü²½ */
 function lfInitFile() {
 	global $objUpFile;
-	$objUpFile->addFile("CSVãƒ•ã‚¡ã‚¤ãƒ«", 'csv_file', array('csv'), CSV_SIZE, true, 0, 0, false);
+	$objUpFile->addFile("CSV¥Õ¥¡¥¤¥ë", 'csv_file', array('csv'), CSV_SIZE, true, 0, 0, false);
 }
 
-/* ãƒ‘ãƒ©ãƒ¡ãƒ¼ã‚¿æƒ…å ±ã®åˆæœŸåŒ– */
+/* ¥Ñ¥é¥á¡¼¥¿¾ğÊó¤Î½é´ü²½ */
 function lfInitParam() {
 	global $objFormParam;
 	
-	$objFormParam->addParam("ãƒ•ãƒ©ã‚°(å¯¾å¿œãªã—)", "dummy1");
-	$objFormParam->addParam("å•†å“å", "name", STEXT_LEN, "KVa", array("EXIST_CHECK","SPTAB_CHECK","MAX_LENGTH_CHECK"));
-	$objFormParam->addParam("ãƒ¢ãƒã‚¤ãƒ«ç”¨å•†å“å(å¯¾å¿œãªã—)", "dummy2");
-	$objFormParam->addParam("å•†å“ã‚³ãƒ¼ãƒ‰", "product_code", STEXT_LEN, "KVa", array("SPTAB_CHECK","MAX_LENGTH_CHECK"));
-	$objFormParam->addParam("å•†å“ID(å¯¾å¿œãªã—)", "dummy3");
-	$objFormParam->addParam("å•†å“ãƒšãƒ¼ã‚¸ID(å¯¾å¿œãªã—)", "dummy1");
-	$objFormParam->addParam("å®Ÿå£²ä¾¡æ ¼", "price01", PRICE_LEN, "n", array("MAX_LENGTH_CHECK","NUM_CHECK"));
-	$objFormParam->addParam("è¡¨ç¤ºä¾¡æ ¼", "price02", PRICE_LEN, "n", array("EXIST_CHECK","MAX_LENGTH_CHECK","NUM_CHECK"));
-	$objFormParam->addParam("æ¶ˆè²»ç¨ãƒ•ãƒ©ã‚°(å¯¾å¿œãªã—)", "dummy4");
-	$objFormParam->addParam("é€æ–™(å¯¾å¿œãªã—)", "dummy5");
-	$objFormParam->addParam("å€‹åˆ¥é€æ–™(å¯¾å¿œãªã—)", "dummy6");
-	$objFormParam->addParam("æ³¨æ–‡ãƒœã‚¿ãƒ³(å¯¾å¿œãªã—)", "dummy7");
-	$objFormParam->addParam("è³‡æ–™è«‹æ±‚ãƒœã‚¿ãƒ³(å¯¾å¿œãªã—)", "dummy8");
-	$objFormParam->addParam("å•ã„åˆã‚ã›ãƒœã‚¿ãƒ³(å¯¾å¿œãªã—)", "dummy9");
-	$objFormParam->addParam("ãŠå‹§ã‚ãƒœã‚¿ãƒ³(å¯¾å¿œãªã—)", "dummy10");
-	$objFormParam->addParam("ã®ã—å¯¾å¿œãƒ•ãƒ©ã‚°(å¯¾å¿œãªã—)", "dummy11");
-	$objFormParam->addParam("åœ¨åº«æ•°", "stock", INT_LEN, "n", array("MAX_LENGTH_CHECK","NUM_CHECK"));
-	$objFormParam->addParam("é …ç›®é¸æŠè‚¢(å¯¾å¿œãªã—)", "dummy12");
-	$objFormParam->addParam("æœŸé–“é™å®šè²©å£²(å¯¾å¿œãªã—)", "dummy13");
-	$objFormParam->addParam("èª¬æ˜æ–‡", "main_comment", LTEXT_LEN, "KVa", array("EXIST_CHECK","SPTAB_CHECK","MAX_LENGTH_CHECK"));
-	$objFormParam->addParam("ãƒ¢ãƒã‚¤ãƒ«èª¬æ˜æ–‡(å¯¾å¿œãªã—)", "dummy14");
-	$objFormParam->addParam("ç”»åƒ(å¯¾å¿œãªã—)", "dummy15");
-	$objFormParam->addParam("æ¥½å¤©ãƒ‡ã‚£ãƒ¬ã‚¯ãƒˆãƒªID(å¯¾å¿œãªã—)", "dummy16");
-	$objFormParam->addParam("ãƒ¢ãƒã‚¤ãƒ«(å¯¾å¿œãªã—)", "dummy17");
+	$objFormParam->addParam("¥Õ¥é¥°(ÂĞ±ş¤Ê¤·)", "dummy1");
+	$objFormParam->addParam("¾¦ÉÊÌ¾", "name", STEXT_LEN, "KVa", array("EXIST_CHECK","SPTAB_CHECK","MAX_LENGTH_CHECK"));
+	$objFormParam->addParam("¥â¥Ğ¥¤¥ëÍÑ¾¦ÉÊÌ¾(ÂĞ±ş¤Ê¤·)", "dummy2");
+	$objFormParam->addParam("¾¦ÉÊ¥³¡¼¥É", "product_code", STEXT_LEN, "KVa", array("SPTAB_CHECK","MAX_LENGTH_CHECK"));
+	$objFormParam->addParam("¾¦ÉÊID(ÂĞ±ş¤Ê¤·)", "dummy3");
+	$objFormParam->addParam("¾¦ÉÊ¥Ú¡¼¥¸ID(ÂĞ±ş¤Ê¤·)", "dummy1");
+	$objFormParam->addParam("¼ÂÇä²Á³Ê", "price01", PRICE_LEN, "n", array("MAX_LENGTH_CHECK","NUM_CHECK"));
+	$objFormParam->addParam("É½¼¨²Á³Ê", "price02", PRICE_LEN, "n", array("EXIST_CHECK","MAX_LENGTH_CHECK","NUM_CHECK"));
+	$objFormParam->addParam("¾ÃÈñÀÇ¥Õ¥é¥°(ÂĞ±ş¤Ê¤·)", "dummy4");
+	$objFormParam->addParam("Á÷ÎÁ(ÂĞ±ş¤Ê¤·)", "dummy5");
+	$objFormParam->addParam("¸ÄÊÌÁ÷ÎÁ(ÂĞ±ş¤Ê¤·)", "dummy6");
+	$objFormParam->addParam("ÃíÊ¸¥Ü¥¿¥ó(ÂĞ±ş¤Ê¤·)", "dummy7");
+	$objFormParam->addParam("»ñÎÁÀÁµá¥Ü¥¿¥ó(ÂĞ±ş¤Ê¤·)", "dummy8");
+	$objFormParam->addParam("Ìä¤¤¹ç¤ï¤»¥Ü¥¿¥ó(ÂĞ±ş¤Ê¤·)", "dummy9");
+	$objFormParam->addParam("¤ª´«¤á¥Ü¥¿¥ó(ÂĞ±ş¤Ê¤·)", "dummy10");
+	$objFormParam->addParam("¤Î¤·ÂĞ±ş¥Õ¥é¥°(ÂĞ±ş¤Ê¤·)", "dummy11");
+	$objFormParam->addParam("ºß¸Ë¿ô", "stock", INT_LEN, "n", array("MAX_LENGTH_CHECK","NUM_CHECK"));
+	$objFormParam->addParam("¹àÌÜÁªÂò»è(ÂĞ±ş¤Ê¤·)", "dummy12");
+	$objFormParam->addParam("´ü´Ö¸ÂÄêÈÎÇä(ÂĞ±ş¤Ê¤·)", "dummy13");
+	$objFormParam->addParam("ÀâÌÀÊ¸", "main_comment", LTEXT_LEN, "KVa", array("EXIST_CHECK","SPTAB_CHECK","MAX_LENGTH_CHECK"));
+	$objFormParam->addParam("¥â¥Ğ¥¤¥ëÀâÌÀÊ¸(ÂĞ±ş¤Ê¤·)", "dummy14");
+	$objFormParam->addParam("²èÁü(ÂĞ±ş¤Ê¤·)", "dummy15");
+	$objFormParam->addParam("³ÚÅ·¥Ç¥£¥ì¥¯¥È¥êID(ÂĞ±ş¤Ê¤·)", "dummy16");
+	$objFormParam->addParam("¥â¥Ğ¥¤¥ë(ÂĞ±ş¤Ê¤·)", "dummy17");
 }
 ?>

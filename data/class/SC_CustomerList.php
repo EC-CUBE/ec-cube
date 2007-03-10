@@ -5,8 +5,8 @@
  * http://www.lockon.co.jp/
  */
 
-/*  [åç§°] SC_CustomerList
- *  [æ¦‚è¦] ä¼šå“¡æ¤œç´¢ç”¨ã‚¯ãƒ©ã‚¹
+/*  [Ì¾¾Î] SC_CustomerList
+ *  [³µÍ×] ²ñ°÷¸¡º÷ÍÑ¥¯¥é¥¹
  */
 class SC_CustomerList extends SC_SelectSql {
 
@@ -16,25 +16,25 @@ class SC_CustomerList extends SC_SelectSql {
 		parent::SC_SelectSql($array);
 		
 		if($mode == "") {
-			// ä¼šå“¡æœ¬ç™»éŒ²ä¼šå“¡ã§å‰Šé™¤ã—ã¦ã„ãªã„ä¼šå“¡
+			// ²ñ°÷ËÜÅÐÏ¿²ñ°÷¤Çºï½ü¤·¤Æ¤¤¤Ê¤¤²ñ°÷
 			$this->setWhere("status = 2 AND del_flg = 0 ");		
-			// ç™»éŒ²æ—¥ã‚’ç¤ºã™ã‚«ãƒ©ãƒ 
+			// ÅÐÏ¿Æü¤ò¼¨¤¹¥«¥é¥à
 			$regdate_col = 'dtb_customer.update_date';
 		}
 		
 		if($mode == "customer") {
-			// ç®¡ç†è€…ãƒšãƒ¼ã‚¸é¡§å®¢æ¤œç´¢ã®å ´åˆä»®ç™»éŒ²ä¼šå“¡ã‚‚æ¤œç´¢
+			// ´ÉÍý¼Ô¥Ú¡¼¥¸¸ÜµÒ¸¡º÷¤Î¾ì¹ç²¾ÅÐÏ¿²ñ°÷¤â¸¡º÷
 			$this->setWhere( "(status = 1 OR status = 2) AND del_flg = 0 ");		
-			// ç™»éŒ²æ—¥ã‚’ç¤ºã™ã‚«ãƒ©ãƒ 
+			// ÅÐÏ¿Æü¤ò¼¨¤¹¥«¥é¥à
 			$regdate_col = 'dtb_customer.update_date';
 		}
 				
-		// ãƒ¡ãƒ¼ãƒ«ãƒžã‚¬ã‚¸ãƒ³ã®å ´åˆ		
+		// ¥á¡¼¥ë¥Þ¥¬¥¸¥ó¤Î¾ì¹ç		
 		if($mode == "magazine") {
 			$this->setWhere("(del_flg = 0 OR del_flg IS NULL)");
 			$this->setWhere("status = 2");
 			
-			/*ã€€ä¼šå“¡ã®ã¿å¯¾è±¡ã¨ã™ã‚‹ãŸã‚å‰Šé™¤
+			/*¡¡²ñ°÷¤Î¤ßÂÐ¾Ý¤È¤¹¤ë¤¿¤áºï½ü
 			if(is_array($this->arrSql['customer'])) {
 				$tmp_where = "";
 				foreach($this->arrSql['customer'] as $val) {
@@ -42,15 +42,15 @@ class SC_CustomerList extends SC_SelectSql {
 						$tmp_where.= " OR ";
 					}					
 					switch($val) {
-					// ä¼šå“¡
+					// ²ñ°÷
 					case '1':
 						$tmp_where.= "status = 2";
 						break;
-					// ãƒ¡ãƒ«ãƒžã‚¬ç™»éŒ²
+					// ¥á¥ë¥Þ¥¬ÅÐÏ¿
 					case '2':
 						$tmp_where.= "customer_id IS NULL";
 						break;
-					// CSVç™»éŒ²
+					// CSVÅÐÏ¿
 					case '3':
 						$tmp_where.= "customer_id IS NULL";
 						break;
@@ -65,17 +65,17 @@ class SC_CustomerList extends SC_SelectSql {
 				$this->setWhere($tmp_where);
 			}
 			*/
-			// ç™»éŒ²æ—¥ã‚’ç¤ºã™ã‚«ãƒ©ãƒ 
+			// ÅÐÏ¿Æü¤ò¼¨¤¹¥«¥é¥à
 			$regdate_col = 'dtb_customer_mail.create_date';
 		}
 				
-		// é¡§å®¢ID
+		// ¸ÜµÒID
 		if ( strlen($this->arrSql['customer_id']) > 0 ) {
 			$this->setWhere( "customer_id =  ?" );
 			$this->arrVal[] = $this->arrSql['customer_id'];
 		}
 		
-		// åå‰
+		// Ì¾Á°
 		if ( strlen($this->arrSql['name']) > 0 ) {
 			if(DB_TYPE == "pgsql"){
 				$this->setWhere("(name01 || name02 LIKE ?)" );
@@ -84,10 +84,10 @@ class SC_CustomerList extends SC_SelectSql {
 			}
 
 			$searchName = $this->addSearchStr($this->arrSql['name']);
-			$this->arrVal[] = mb_ereg_replace("[ ã€€]+","",$searchName);
+			$this->arrVal[] = mb_ereg_replace("[ ¡¡]+","",$searchName);
 		}
 
-		//ã€€åå‰ï¼ˆã‚«ãƒŠï¼‰
+		//¡¡Ì¾Á°¡Ê¥«¥Ê¡Ë
 		if ( strlen($this->arrSql['kana']) > 0 ) {
 			if(DB_TYPE == "pgsql"){
 				$this->setWhere("(kana01 || kana02 LIKE ?)");
@@ -95,16 +95,16 @@ class SC_CustomerList extends SC_SelectSql {
 				$this->setWhere("concat(kana01,kana02) LIKE ?" );
 			}
 			$searchKana = $this->addSearchStr($this->arrSql['kana']);
-			$this->arrVal[] = mb_ereg_replace("[ ã€€]+","",$searchKana);
+			$this->arrVal[] = mb_ereg_replace("[ ¡¡]+","",$searchKana);
 		}
 		
-		//ã€€éƒ½é“åºœçœŒ
+		//¡¡ÅÔÆ»ÉÜ¸©
 		if ( strlen($this->arrSql['pref']) > 0 ) {
 			$this->setWhere( "pref = ?" );
 			$this->arrVal[] = $this->arrSql['pref'];
 		}
 
-		//ã€€é›»è©±ç•ªå·
+		//¡¡ÅÅÏÃÈÖ¹æ
 		if ( is_numeric( $this->arrSql['tel'] ) ) {
 			if(DB_TYPE == "pgsql"){
 				$this->setWhere( "(tel01 || tel02 || tel03 LIKE ?)" );
@@ -115,7 +115,7 @@ class SC_CustomerList extends SC_SelectSql {
 			$this->arrVal[] = ereg_replace("-", "", $searchTel);
 		}
 		
-		//ã€€æ€§åˆ¥
+		//¡¡À­ÊÌ
 		if ( is_array( $this->arrSql['sex'] ) ){
 			$arrSexVal = $this->setItemTerm( $this->arrSql['sex'] ,"sex" );
 			foreach ($arrSexVal as $data) {
@@ -123,9 +123,9 @@ class SC_CustomerList extends SC_SelectSql {
 			}
 		}
 
-		//ã€€è·æ¥­
+		//¡¡¿¦¶È
 		if ( is_array( $this->arrSql['job'] ) ){
-			if ( in_array("ä¸æ˜Ž", $this->arrSql['job'] ) ) {
+			if ( in_array("ÉÔÌÀ", $this->arrSql['job'] ) ) {
 				$arrJobVal = $this->setItemTermWithNull( $this->arrSql['job'] ,"job" );
 			} else {
 				$arrJobVal = $this->setItemTerm( $this->arrSql['job'] ,"job" );
@@ -137,14 +137,14 @@ class SC_CustomerList extends SC_SelectSql {
 			}
 		}
 
-		//ã€€E-MAIL
+		//¡¡E-MAIL
 		if (strlen($this->arrSql['email']) > 0) {
-			//ã‚«ãƒ³ãƒžåŒºåˆ‡ã‚Šã§è¤‡æ•°ã®æ¡ä»¶æŒ‡å®šå¯èƒ½ã«
+			//¥«¥ó¥Þ¶èÀÚ¤ê¤ÇÊ£¿ô¤Î¾ò·ï»ØÄê²ÄÇ½¤Ë
 			$this->arrSql['email'] = explode(",", $this->arrSql['email']);
 			$sql_where = "";
 			foreach($this->arrSql['email'] as $val) {
 				$val = trim($val);
-				//æ¤œç´¢æ¡ä»¶ã‚’å«ã¾ãªã„
+				//¸¡º÷¾ò·ï¤ò´Þ¤Þ¤Ê¤¤
 				if($this->arrSql['not_emailinc'] == '1') {
 					if($sql_where == "") {
 						$sql_where .= "dtb_customer.email NOT ILIKE ? ";
@@ -163,7 +163,7 @@ class SC_CustomerList extends SC_SelectSql {
 			}
 			$this->setWhere($sql_where);
 		}
-		//ã€€HTML-mail
+		//¡¡HTML-mail
 		if ( $mode == 'magazine' ){
 			if ( strlen($this->arrSql['htmlmail']) > 0 ) {
 				$this->setWhere( " mail_flag = ? ");
@@ -173,7 +173,7 @@ class SC_CustomerList extends SC_SelectSql {
 			}
 		}
 		
-		// è³¼å…¥é‡‘é¡æŒ‡å®š
+		// ¹ØÆþ¶â³Û»ØÄê
 		if( is_numeric( $this->arrSql["buy_total_from"] ) || is_numeric( $this->arrSql["buy_total_to"] ) ) {
 			$arrBuyTotal = $this->selectRange($this->arrSql["buy_total_from"], $this->arrSql["buy_total_to"], "buy_total");
 			foreach ($arrBuyTotal as $data1) {
@@ -181,7 +181,7 @@ class SC_CustomerList extends SC_SelectSql {
 			}
 		}
 
-		// è³¼å…¥å›žæ•°æŒ‡å®š
+		// ¹ØÆþ²ó¿ô»ØÄê
 		if( is_numeric( $this->arrSql["buy_times_from"] ) || is_numeric( $this->arrSql["buy_times_to"] ) ) {
 			$arrBuyTimes = $this->selectRange($this->arrSql["buy_times_from"], $this->arrSql["buy_times_to"], "buy_times");
 			foreach ($arrBuyTimes as $data2) {
@@ -189,7 +189,7 @@ class SC_CustomerList extends SC_SelectSql {
 			}
 		}
 		
-		// èª•ç”Ÿæ—¥æœŸé–“æŒ‡å®š
+		// ÃÂÀ¸Æü´ü´Ö»ØÄê
 		if ( (strlen($this->arrSql['b_start_year']) > 0 && strlen($this->arrSql['b_start_month']) > 0 && strlen($this->arrSql['b_start_day']) > 0) ||
 			  strlen($this->arrSql['b_end_year']) > 0 && strlen($this->arrSql['b_end_month']) > 0 && strlen($this->arrSql['b_end_day']) > 0) {
 
@@ -202,13 +202,13 @@ class SC_CustomerList extends SC_SelectSql {
 			}
 		}
 				
-		// èª•ç”Ÿæœˆã®æ¤œç´¢
+		// ÃÂÀ¸·î¤Î¸¡º÷
 		if (is_numeric($this->arrSql["birth_month"])) {
 			$this->setWhere(" EXTRACT(month from birth) = ?");  
 			$this->arrVal[] = $this->arrSql["birth_month"];
 		}
 			
-		// ç™»éŒ²æœŸé–“æŒ‡å®š
+		// ÅÐÏ¿´ü´Ö»ØÄê
 		if ( (strlen($this->arrSql['start_year']) > 0 && strlen($this->arrSql['start_month']) > 0 && strlen($this->arrSql['start_day']) > 0 ) || 
 				(strlen($this->arrSql['end_year']) > 0 && strlen($this->arrSql['end_month']) >0 && strlen($this->arrSql['end_day']) > 0) ) {
 
@@ -221,7 +221,7 @@ class SC_CustomerList extends SC_SelectSql {
 			}
 		}
 			
-		// æœ€çµ‚è³¼å…¥æ—¥æŒ‡å®š
+		// ºÇ½ª¹ØÆþÆü»ØÄê
 		if ( (strlen($this->arrSql['buy_start_year']) > 0 && strlen($this->arrSql['buy_start_month']) > 0 && strlen($this->arrSql['buy_start_day']) > 0 ) || 
 				(strlen($this->arrSql['buy_end_year']) > 0 && strlen($this->arrSql['buy_end_month']) >0 && strlen($this->arrSql['buy_end_day']) > 0) ) {
 			$arrRegistTime = $this->selectTermRange($this->arrSql['buy_start_year'], $this->arrSql['buy_start_month'], $this->arrSql['buy_start_day']
@@ -233,39 +233,39 @@ class SC_CustomerList extends SC_SelectSql {
 			}
 		}
 		
-		//è³¼å…¥å•†å“ã‚³ãƒ¼ãƒ‰
+		//¹ØÆþ¾¦ÉÊ¥³¡¼¥É
 		if ( strlen($this->arrSql['buy_product_code']) > 0 ) {
 			$this->setWhere( "customer_id IN (SELECT customer_id FROM dtb_order WHERE order_id IN (SELECT order_id FROM dtb_order_detail WHERE product_code LIKE ? ))");
 			$search_buyproduct_code = $this->addSearchStr($this->arrSql['buy_product_code']);
 			$this->arrVal[] = $search_buyproduct_code;
 		}
 
-		//è³¼å…¥å•†å“åç§°
+		//¹ØÆþ¾¦ÉÊÌ¾¾Î
 		if ( strlen($this->arrSql['buy_product_name']) > 0 ) {
 			$this->setWhere( "customer_id IN (SELECT customer_id FROM dtb_order WHERE order_id IN (SELECT order_id FROM dtb_order_detail WHERE product_name LIKE ? ))");
 			$search_buyproduct_name = $this->addSearchStr($this->arrSql['buy_product_name']);
 			$this->arrVal[] = $search_buyproduct_name;
 		}
 		
-		//ã‚«ãƒ†ã‚´ãƒªãƒ¼ã‚’é¸æŠžã—ã¦ã„ã‚‹å ´åˆã®ã¿çµžè¾¼æ¤œç´¢ã‚’è¡Œã†
+		//¥«¥Æ¥´¥ê¡¼¤òÁªÂò¤·¤Æ¤¤¤ë¾ì¹ç¤Î¤ß¹Ê¹þ¸¡º÷¤ò¹Ô¤¦
 		if ( strlen($this->arrSql['category_id']) != ""){
-			//ã‚«ãƒ†ã‚´ãƒªãƒ¼ã§çµžè¾¼æ¤œç´¢ã‚’è¡Œã†SQLæ–‡ç”Ÿæˆ
+			//¥«¥Æ¥´¥ê¡¼¤Ç¹Ê¹þ¸¡º÷¤ò¹Ô¤¦SQLÊ¸À¸À®
 			list($tmp_where, $tmp_arrval) = sfGetCatWhere(sfManualEscape($this->arrSql['category_id']));
 
-			//ã‚«ãƒ†ã‚´ãƒªãƒ¼ã§çµžè¾¼ã¿ãŒå¯èƒ½ã®å ´åˆ
+			//¥«¥Æ¥´¥ê¡¼¤Ç¹Ê¹þ¤ß¤¬²ÄÇ½¤Î¾ì¹ç
 			if($tmp_where != "") {
 				$this->setWhere( " customer_id IN (SELECT distinct customer_id FROM dtb_order WHERE order_id IN (SELECT distinct order_id FROM dtb_order_detail WHERE product_id IN (SELECT product_id FROM dtb_products WHERE ".$tmp_where." ))) ");
 				$this->arrVal = array_merge((array)$this->arrVal, (array)$tmp_arrval);
 			}
 		}
-		//ã€€æºå¸¯é›»è©±ç•ªå·
+		//¡¡·ÈÂÓÅÅÏÃÈÖ¹æ
 		if ( is_numeric( $this->arrSql['cell'] ) ) {
 			$this->setWhere( "(cell01 || cell02 || cell03 LIKE ?)" );
 			$searchTel = $this->addSearchStr($this->arrSql['cell']);
 			$this->arrVal[] = ereg_replace("-", "", $searchTel);
 		}
 
-		//ã€€ã‚­ãƒ£ãƒ³ãƒšãƒ¼ãƒ³
+		//¡¡¥­¥ã¥ó¥Ú¡¼¥ó
 		if ( is_numeric( $this->arrSql['campaign_id'] ) ) {
 			$this->setWhere( " customer_id IN (SELECT distinct customer_id FROM dtb_campaign_order WHERE campaign_id = ?)" );
 			$this->arrVal[] = $this->arrSql['campaign_id'];
@@ -274,7 +274,7 @@ class SC_CustomerList extends SC_SelectSql {
 		$this->setOrder( "customer_id DESC" );
 	}
 
-	// æ¤œç´¢ç”¨SQL
+	// ¸¡º÷ÍÑSQL
 	function getList() {
 		$this->select = "SELECT customer_id,name01,name02,kana01,kana02,sex,email,tel01,tel02,tel03,pref,status FROM dtb_customer ";
 		return $this->getSql(0);	
@@ -304,20 +304,20 @@ class SC_CustomerList extends SC_SelectSql {
 		$this->select = "SELECT COUNT(*) FROM dtb_customer_mail LEFT OUTER JOIN dtb_customer USING(email)";
 		return $this->getSql(0);	
 	}
-	//è³¼å…¥å•†å“ã‚³ãƒ¼ãƒ‰æ¤œç´¢ç”¨SQL
+	//¹ØÆþ¾¦ÉÊ¥³¡¼¥É¸¡º÷ÍÑSQL
 	function getBuyList(){
 		$this->select = "SELECT A.customer_id, A.name01, A.name02, A.kana01, A.kana02, A.sex, A.email, A.tel01, A.tel02, A.tel03, A.pref, A.mail_flag, B.order_email, B.order_id, C.product_code 
 						FROM (dtb_customer LEFT OUTER JOIN dtb_customer_mail USING (email)) AS A LEFT OUTER JOIN dtb_order AS B ON 
 						A.email=B.order_email LEFT OUTER JOIN dtb_order_detail AS C ON B.order_id = C.order_id";
 	}
 
-	//ã€€æ¤œç´¢ç·æ•°ã‚«ã‚¦ãƒ³ãƒˆç”¨SQL
+	//¡¡¸¡º÷Áí¿ô¥«¥¦¥ó¥ÈÍÑSQL
 	function getListCount() {
 		$this->select = "SELECT COUNT(customer_id) FROM dtb_customer ";	
 		return $this->getSql(1);
 	}
 
-	//ã€€CSVãƒ€ã‚¦ãƒ³ãƒ­ãƒ¼ãƒ‰ç”¨SQL
+	//¡¡CSV¥À¥¦¥ó¥í¡¼¥ÉÍÑSQL
 	function getListCSV($arrColumnCSV) {
 		$this->arrColumnCSV = $arrColumnCSV;
 		$i = 0;

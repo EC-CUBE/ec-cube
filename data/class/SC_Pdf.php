@@ -6,12 +6,12 @@
  */
 
 /*----------------------------------------------------------------------
- * [åç§°] GC_Pdf
- * [æ¦‚è¦] Pdfãƒ•ã‚¡ã‚¤ãƒ«ã‚’è¡¨ç¤ºã™ã‚‹ã€‚(PDFLibå¿…é ˆ)
+ * [Ì¾¾Î] GC_Pdf
+ * [³µÍ×] Pdf¥Õ¥¡¥¤¥ë¤òÉ½¼¨¤¹¤ë¡£(PDFLibÉ¬¿Ü)
  *----------------------------------------------------------------------
  */
 
-// ã‚°ãƒªãƒƒãƒ‰ã¨æ–‡å­—ã®é–“éš” 
+// ¥°¥ê¥Ã¥É¤ÈÊ¸»ú¤Î´Ö³Ö 
 define("GRID_SPACE", 4);
 
 class SC_Pdf {
@@ -28,121 +28,121 @@ class SC_Pdf {
 	function SC_Pdf($width = 595, $height = 842, $fontsize = 10) {
 		$this->license_key = "B600602-010400-714251-5851C1";
 		$this->src_code = CHAR_CODE;
-		// UTF-8ã§ãªã„ã¨ãƒ–ãƒ­ãƒƒã‚¯å†…ã§æ”¹è¡Œã§ããªã„ã€‚
+		// UTF-8¤Ç¤Ê¤¤¤È¥Ö¥í¥Ã¥¯Æâ¤Ç²ş¹Ô¤Ç¤­¤Ê¤¤¡£
 		$this->dst_code = "UTF-8";
-		// PDF BLOCKã®ãƒ—ãƒ­ãƒ‘ãƒ†ã‚£
+		// PDF BLOCK¤Î¥×¥í¥Ñ¥Æ¥£
 		$this->block_option = "encoding=UniJIS-UCS2-H textformat=utf8 fontname=HeiseiMin-W3 textflow=true";
-		// è­¦å‘Šè¡¨ç¤º
+		// ·Ù¹ğÉ½¼¨
 		$this->pdiwarning = "true";	
-		// ãƒšãƒ¼ã‚¸ã‚µã‚¤ã‚ºè¨­å®š
+		// ¥Ú¡¼¥¸¥µ¥¤¥ºÀßÄê
 		$this->width = $width;
 		$this->height = $height;
-		// PDFåˆæœŸåŒ–
+		// PDF½é´ü²½
 		$this->pdf = PDF_new();
 		PDF_set_parameter($this->pdf, "license", $this->license_key);
 		PDF_set_parameter($this->pdf, "pdiwarning", $this->pdiwarning);
-		// ãƒ‰ã‚­ãƒ¥ãƒ¡ãƒ³ãƒˆé–‹å§‹
+		// ¥É¥­¥å¥á¥ó¥È³«»Ï
 		PDF_begin_document($this->pdf, NULL, NULL);
-		// ãƒšãƒ¼ã‚¸ã®çŠ¶æ…‹
+		// ¥Ú¡¼¥¸¤Î¾õÂÖ
 		$this->page_open = false;
-		// ãƒ†ãƒ¼ãƒ–ãƒ«ã®è‰²è¨­å®š
+		// ¥Æ¡¼¥Ö¥ë¤Î¿§ÀßÄê
 		$this->setTableColor();
-		// ãƒ•ã‚©ãƒ³ãƒˆã‚µã‚¤ã‚ºã®è¨­å®š
+		// ¥Õ¥©¥ó¥È¥µ¥¤¥º¤ÎÀßÄê
 		$this->fontsize = $fontsize;
-		// ã‚°ãƒªãƒƒãƒ‰æç”»ã®ç‰¹æ®ŠæŒ‡å®š
+		// ¥°¥ê¥Ã¥ÉÉÁ²è¤ÎÆÃ¼ì»ØÄê
 		$this->arrLines = array();
-		// ãƒ†ãƒ¼ãƒ–ãƒ«ã‚¿ã‚¤ãƒˆãƒ«ã®ã‚¹ã‚¿ã‚¤ãƒ«
+		// ¥Æ¡¼¥Ö¥ë¥¿¥¤¥È¥ë¤Î¥¹¥¿¥¤¥ë
 		$this->arrHeaderColSize = array();
 		$this->arrHeaderAlign = array();
-		// ãƒ†ãƒ¼ãƒ–ãƒ«è£œæ­£å€¤
+		// ¥Æ¡¼¥Ö¥ëÊäÀµÃÍ
 		$this->table_left = 0;
-		// ã‚¿ã‚¤ãƒˆãƒ«è¡Œã®å‡ºåŠ›
+		// ¥¿¥¤¥È¥ë¹Ô¤Î½ĞÎÏ
 		$this->title_enable = true;
-		// ã‚°ãƒªãƒƒãƒ‰ã®å‡ºåŠ›
+		// ¥°¥ê¥Ã¥É¤Î½ĞÎÏ
 		$this->grid_enable = true;
 	}
 	
-	// ã‚¿ã‚¤ãƒˆãƒ«ã‚’å‡ºåŠ›ã™ã‚‹ã‹å¦ã‹
+	// ¥¿¥¤¥È¥ë¤ò½ĞÎÏ¤¹¤ë¤«Èİ¤«
 	function setTitleEnable($flag) {
 		$this->title_enable = $flag;
 	}
 	
-	// ã‚°ãƒªãƒƒãƒ‰ã‚’å‡ºåŠ›ã™ã‚‹ã‹å¦ã‹
+	// ¥°¥ê¥Ã¥É¤ò½ĞÎÏ¤¹¤ë¤«Èİ¤«
 	function setGridEnable($flag) {
 		$this->grid_enable = $flag;
 	}
 		
 		
-	// ã‚­ãƒ¼ï¼šãƒ–ãƒ­ãƒƒã‚¯åã€å€¤ï¼šè¡¨ç¤ºãƒ†ã‚­ã‚¹ãƒˆã®ãƒãƒƒã‚·ãƒ¥é…åˆ—ã‚’ã‚»ãƒƒãƒˆã™ã‚‹ã€‚
+	// ¥­¡¼¡§¥Ö¥í¥Ã¥¯Ì¾¡¢ÃÍ¡§É½¼¨¥Æ¥­¥¹¥È¤Î¥Ï¥Ã¥·¥åÇÛÎó¤ò¥»¥Ã¥È¤¹¤ë¡£
 	function setTextBlock($list) {
 		unset($this->arrText);
 		$this->arrText[] = $list;
 	}
 	
-	// ã‚­ãƒ¼ï¼šãƒ–ãƒ­ãƒƒã‚¯åã€å€¤ï¼šãƒ•ã‚¡ã‚¤ãƒ«ãƒ‘ã‚¹ã®ãƒãƒƒã‚·ãƒ¥é…åˆ—ã‚’ã‚»ãƒƒãƒˆã™ã‚‹ã€‚
-	// â€»ãƒ‘ã‚¹ã¯ãƒ‰ã‚­ãƒ¥ãƒ¡ãƒ³ãƒˆãƒ«ãƒ¼ãƒˆä»¥ä¸‹
+	// ¥­¡¼¡§¥Ö¥í¥Ã¥¯Ì¾¡¢ÃÍ¡§¥Õ¥¡¥¤¥ë¥Ñ¥¹¤Î¥Ï¥Ã¥·¥åÇÛÎó¤ò¥»¥Ã¥È¤¹¤ë¡£
+	// ¢¨¥Ñ¥¹¤Ï¥É¥­¥å¥á¥ó¥È¥ë¡¼¥È°Ê²¼
 	function setImageBlock($list) {
 		unset($this->arrImage);
 		$this->arrImage[] = $list;
 	}
 	
-	// è¡¨ç¤ºèƒŒæ™¯ã¨ãªã‚‹ãƒ†ãƒ³ãƒ—ãƒ¬ãƒ¼ãƒˆãƒ•ã‚¡ã‚¤ãƒ«ãƒ‘ã‚¹
-	// â€»ãƒ‘ã‚¹ã¯ãƒ‰ã‚­ãƒ¥ãƒ¡ãƒ³ãƒˆãƒ«ãƒ¼ãƒˆä»¥ä¸‹
+	// É½¼¨ÇØ·Ê¤È¤Ê¤ë¥Æ¥ó¥×¥ì¡¼¥È¥Õ¥¡¥¤¥ë¥Ñ¥¹
+	// ¢¨¥Ñ¥¹¤Ï¥É¥­¥å¥á¥ó¥È¥ë¡¼¥È°Ê²¼
 	function setTemplate($pdfpath) {
 		if(file_exists($pdfpath)) {
 			$this->pdfpath = $pdfpath;
 		} else {
-			print("æŒ‡å®šã—ãŸPDFãƒ†ãƒ³ãƒ—ãƒ¬ãƒ¼ãƒˆã¯å­˜åœ¨ã—ã¾ã›ã‚“ï¼š".$pdfpath);
+			print("»ØÄê¤·¤¿PDF¥Æ¥ó¥×¥ì¡¼¥È¤ÏÂ¸ºß¤·¤Ş¤»¤ó¡§".$pdfpath);
 			exit;
 		}
 	}
 	
-	// ãƒ†ãƒ¼ãƒ–ãƒ«ä½ç½®è£œæ­£å€¤
+	// ¥Æ¡¼¥Ö¥ë°ÌÃÖÊäÀµÃÍ
 	function setTableLeft($table_left) {
 		$this->table_left = $table_left;
 	}
 	
-	// ã‚°ãƒªãƒƒãƒ‰æç”»ã®ç‰¹æ®ŠæŒ‡å®š
+	// ¥°¥ê¥Ã¥ÉÉÁ²è¤ÎÆÃ¼ì»ØÄê
 	function setGridLines($list) {
 		$this->arrLines = $list;
 	}
 	
-	// ãƒ†ãƒ¼ãƒ–ãƒ«ã‚¿ã‚¤ãƒˆãƒ«ã®ã‚¹ã‚¿ã‚¤ãƒ«è¨­å®š
+	// ¥Æ¡¼¥Ö¥ë¥¿¥¤¥È¥ë¤Î¥¹¥¿¥¤¥ëÀßÄê
 	function setTableHeaderStyle($arrColSize, $arrAlign) {
 		$this->arrHeaderColSize = $arrColSize;
 		$this->arrHeaderAlign = $arrAlign;
 	}
 	
-	// ãƒ–ãƒ­ãƒƒã‚¯ãƒ‡ãƒ¼ã‚¿ã®æ›¸ãè¾¼ã¿(closeã™ã‚‹ã¨æ¬¡å›æ–°è¦ãƒšãƒ¼ã‚¸)
+	// ¥Ö¥í¥Ã¥¯¥Ç¡¼¥¿¤Î½ñ¤­¹ş¤ß(close¤¹¤ë¤È¼¡²ó¿·µ¬¥Ú¡¼¥¸)
 	function writeBlock() {
-		// ãƒ†ãƒ³ãƒ—ãƒ¬ãƒ¼ãƒˆã‚’ä½¿ç”¨ã™ã‚‹
+		// ¥Æ¥ó¥×¥ì¡¼¥È¤ò»ÈÍÑ¤¹¤ë
 		if(!file_exists($this->pdfpath)) {
 			return;
 		}
-		// æ—¢å­˜PDFã®ãƒ‰ã‚­ãƒ¥ãƒ¡ãƒ³ãƒˆã‚’å–å¾—
+		// ´ûÂ¸PDF¤Î¥É¥­¥å¥á¥ó¥È¤ò¼èÆÀ
 		$doc = pdf_open_pdi($this->pdf, $this->pdfpath, NULL, 0 );
-		// æ—¢å­˜PDFã®ãƒ‰ã‚­ãƒ¥ãƒ¡ãƒ³ãƒˆã‹ã‚‰æŒ‡å®šãƒšãƒ¼ã‚¸ã‚’å–å¾—
+		// ´ûÂ¸PDF¤Î¥É¥­¥å¥á¥ó¥È¤«¤é»ØÄê¥Ú¡¼¥¸¤ò¼èÆÀ
 		$page = pdf_open_pdi_page($this->pdf, $doc, 1, NULL );
-		// ãƒšãƒ¼ã‚¸ã‚’é–‹ã
+		// ¥Ú¡¼¥¸¤ò³«¤¯
 		$this->openPage();
 		
-		// æ—¢å­˜PDFã®ãƒšãƒ¼ã‚¸ã‚’å‰²ã‚Šå½“ã¦ã‚‹
+		// ´ûÂ¸PDF¤Î¥Ú¡¼¥¸¤ò³ä¤êÅö¤Æ¤ë
 		PDF_fit_pdi_page($this->pdf, $page, 0, 0, "adjustpage");
 		
-		// ãƒ†ã‚­ã‚¹ãƒˆãƒ–ãƒ­ãƒƒã‚¯ã®æ›¸ãè¾¼ã¿
+		// ¥Æ¥­¥¹¥È¥Ö¥í¥Ã¥¯¤Î½ñ¤­¹ş¤ß
 		$max = count($this->arrText);
 		for($i = 0;$i < $max; $i++) {
 			foreach($this->arrText[$i] as $key => $val) {
 				if($val != "") {
-					// æ–‡å­—ã‚³ãƒ¼ãƒ‰ã®å¤‰æ›
+					// Ê¸»ú¥³¡¼¥É¤ÎÊÑ´¹
 					mb_convert_variables($this->dst_code, $this->src_code, $val);
-					// æ›¸ãè¾¼ã¿
+					// ½ñ¤­¹ş¤ß
 					$ret = PDF_fill_textblock($this->pdf, $page, $key, $val, $this->block_option);
 				}
 			}
 		}
 		
-		// ã‚¤ãƒ¡ãƒ¼ã‚¸ãƒ–ãƒ­ãƒƒã‚¯ã®æ›¸ãè¾¼ã¿
+		// ¥¤¥á¡¼¥¸¥Ö¥í¥Ã¥¯¤Î½ñ¤­¹ş¤ß
 		$max = count($this->arrImage);
 		for($i = 0;$i < $max; $i++) {
 			foreach($this->arrImage[$i] as $key => $val) {
@@ -153,37 +153,37 @@ class SC_Pdf {
 			}
 		}
 		
-		// å‰²ã‚Šå½“ã¦ãŸãƒšãƒ¼ã‚¸ã‚’é–‰ã˜ã‚‹
+		// ³ä¤êÅö¤Æ¤¿¥Ú¡¼¥¸¤òÊÄ¤¸¤ë
 		PDF_close_pdi_page($this->pdf, $page);
-		// å‰²ã‚Šå½“ã¦ãŸãƒ‰ã‚­ãƒ¥ãƒ¡ãƒ³ãƒˆã‚’é–‰ã˜ã‚‹
+		// ³ä¤êÅö¤Æ¤¿¥É¥­¥å¥á¥ó¥È¤òÊÄ¤¸¤ë
 		PDF_close_pdi($this->pdf, $doc);
 	}
 	
-	// ãƒšãƒ¼ã‚¸ã‚’é–‰ã˜ã‚‹
+	// ¥Ú¡¼¥¸¤òÊÄ¤¸¤ë
 	function closePage() {
 		if($this->page_open) {
-			// ãƒšãƒ¼ã‚¸ã‚’é–‰ã˜ã‚‹
+			// ¥Ú¡¼¥¸¤òÊÄ¤¸¤ë
 			PDF_end_page_ext($this->pdf, NULL);
 			$this->page_open = false;
 		}		
 	}
 	
-	// ãƒšãƒ¼ã‚¸ã‚’é–‹ã
+	// ¥Ú¡¼¥¸¤ò³«¤¯
 	function openPage() {
 		if(!$this->page_open) {
-			// æ–°ã—ã„ãƒšãƒ¼ã‚¸ã‚’é–‹ã	
+			// ¿·¤·¤¤¥Ú¡¼¥¸¤ò³«¤¯	
 			PDF_begin_page_ext($this->pdf, $this->width, $this->height, NULL);
 			$this->page_open = true;
 		}
 	}
 	
-	// æ–°ã—ã„ãƒšãƒ¼ã‚¸ã‚’é–‹ã
+	// ¿·¤·¤¤¥Ú¡¼¥¸¤ò³«¤¯
 	function newPage() {
 		PDF_end_page_ext($this->pdf, NULL);
 		PDF_begin_page_ext($this->pdf, $this->width, $this->height, NULL);
 	}
 	
-	// ã‚¢ã‚¯ãƒ†ã‚£ãƒ–ãªãƒšãƒ¼ã‚¸ã®ã‚µã‚¤ã‚ºã‚’å–å¾—ã™ã‚‹
+	// ¥¢¥¯¥Æ¥£¥Ö¤Ê¥Ú¡¼¥¸¤Î¥µ¥¤¥º¤ò¼èÆÀ¤¹¤ë
 	function getSize() {
 		$this->openPage();
 		$x = PDF_get_value($this->pdf, 'pagewidth', 0);
@@ -191,18 +191,18 @@ class SC_Pdf {
 		return array($x, $y);
 	}
 	
-	// åº§æ¨™ã‚’å…¥ã‚Œæ›¿ãˆã¦å–å¾—ã™ã‚‹(å·¦ä¸‹(0,0)ã‚’å·¦ä¸Š(0,0)ã«å¤‰æ›)
+	// ºÂÉ¸¤òÆş¤ìÂØ¤¨¤Æ¼èÆÀ¤¹¤ë(º¸²¼(0,0)¤òº¸¾å(0,0)¤ËÊÑ´¹)
 	function posTopDown($x, $y) {
 		$width = 0;
 		$height = 0;
 		list($width, $height) = $this->getSize();
-		// xåº§æ¨™ã¯ã€å¤‰æ›´ã®å¿…è¦ãªã—
+		// xºÂÉ¸¤Ï¡¢ÊÑ¹¹¤ÎÉ¬Í×¤Ê¤·
 		$pdf_x = $x;
 		$pdf_y = $height - $y;
 		return array($pdf_x, $pdf_y);
 	}
 	
-	// ãƒ†ãƒ¼ãƒ–ãƒ«ã‚«ãƒ©ãƒ¼ã®è¨­å®š
+	// ¥Æ¡¼¥Ö¥ë¥«¥é¡¼¤ÎÀßÄê
 	function setTableColor($frame_color = "000000", $title_color = "F0F0F0", $line_color = "D1DEFE", $last_color = "FDCBFE") {
 		$this->frame_color = $frame_color;
 		$this->title_color = $title_color;
@@ -210,9 +210,9 @@ class SC_Pdf {
 		$this->last_color = $last_color;
 	}
 	
-	// ãƒ†ãƒ¼ãƒ–ãƒ«ã®ã‚°ãƒªãƒƒãƒ‰ã‚’è¡¨ç¤ºã™ã‚‹ã€‚
+	// ¥Æ¡¼¥Ö¥ë¤Î¥°¥ê¥Ã¥É¤òÉ½¼¨¤¹¤ë¡£
 	function writeGrid($x, $y, $arrCol, $line_max, $last_color_flg = true) {
-		// ãƒ†ãƒ¼ãƒ–ãƒ«å¹…
+		// ¥Æ¡¼¥Ö¥ëÉı
 		$max = count($arrCol);
 		$width = 0;
 		for($i = 0; $i < $max; $i++) {
@@ -220,21 +220,21 @@ class SC_Pdf {
 		}
 		
 		if($this->title_enable) { 
-			// ã‚¿ã‚¤ãƒˆãƒ«ã‚°ãƒªãƒƒãƒ‰æç”»
+			// ¥¿¥¤¥È¥ë¥°¥ê¥Ã¥ÉÉÁ²è
 			$this->writeFrameRect($x, $y + GRID_SPACE, $width + GRID_SPACE, $this->fontsize + GRID_SPACE, $this->title_color, $this->frame_color);
 		}
 		
-		// ã‚°ãƒªãƒƒãƒ‰ç‰¹æ®ŠæŒ‡å®šã‚ã‚Š
+		// ¥°¥ê¥Ã¥ÉÆÃ¼ì»ØÄê¤¢¤ê
 		if(count($this->arrLines) > 0) {
 			$count = count($this->arrLines);
 			$pos = 0;
 			for($i = 0; $i < $count; $i++) {
 				if(($i % 2) != 0) {
-					// è¡Œã®é–“éš”
+					// ¹Ô¤Î´Ö³Ö
 					$down = ($pos + 1) * $this->fontsize * 1.5;
-					// æç”»ã™ã‚‹ç¸¦å¹…ã‚’æ±‚ã‚ã‚‹
+					// ÉÁ²è¤¹¤ë½ÄÉı¤òµá¤á¤ë
 					$height = ($this->fontsize + GRID_SPACE) * $this->arrLines[$i] + ($this->arrLines[$i] - 1);
-					// è¡Œã‚°ãƒªãƒƒãƒ‰æç”»
+					// ¹Ô¥°¥ê¥Ã¥ÉÉÁ²è
 					$this->writeRect($x, $y + GRID_SPACE + $down, $width + GRID_SPACE, $height, $this->line_color);
 				}
 				$pos += $this->arrLines[$i];	
@@ -242,32 +242,32 @@ class SC_Pdf {
 		} else {
 			for($i = 1; $i <= $line_max; $i++) {
 				if(($i % 2) == 0) {
-					// è¡Œã®é–“éš”
+					// ¹Ô¤Î´Ö³Ö
 					$down = $i * $this->fontsize * 1.5;
-					// è¡Œã‚°ãƒªãƒƒãƒ‰æç”»
+					// ¹Ô¥°¥ê¥Ã¥ÉÉÁ²è
 					$this->writeRect($x, $y + GRID_SPACE + $down, $width + GRID_SPACE, $this->fontsize + GRID_SPACE, $this->line_color);
 				}
 			}
-			// æœ€çµ‚è¡Œã«è‰²ã‚’ã¤ã‘ã‚‹å ´åˆ
+			// ºÇ½ª¹Ô¤Ë¿§¤ò¤Ä¤±¤ë¾ì¹ç
 			if($last_color_flg) {
-				// è¡Œã®é–“éš”
+				// ¹Ô¤Î´Ö³Ö
 				$down = $line_max * $this->fontsize * 1.5;
-				// è¡Œã‚°ãƒªãƒƒãƒ‰æç”»
+				// ¹Ô¥°¥ê¥Ã¥ÉÉÁ²è
 				$this->writeRect($x, $y + GRID_SPACE + $down, $width + GRID_SPACE, $this->fontsize + GRID_SPACE, $this->last_color);
 			}
 		}
 	}
 	
-	// ã‚°ãƒªãƒƒãƒ‰ç”¨ã®ã‚¢ãƒ³ãƒ€ãƒ¼ãƒ©ã‚¤ãƒ³ã‚’å¼•ã
+	// ¥°¥ê¥Ã¥ÉÍÑ¤Î¥¢¥ó¥À¡¼¥é¥¤¥ó¤ò°ú¤¯
 	/*
-		$x			:ãƒ†ãƒ¼ãƒ–ãƒ«é–‹å§‹ä½ç½®Xè»¸
-		$y			:ãƒ†ãƒ¼ãƒ–ãƒ«é–‹å§‹ä½ç½®Yè»¸
-		$arrCol		:ã‚«ãƒ©ãƒ ã‚µã‚¤ã‚ºã®é…åˆ—
-		$line		:ã‚¢ãƒ³ãƒ€ãƒ¼ãƒ©ã‚¤ãƒ³ã‚’å¼•ãè¡Œ
-		$start_col	:ã‚¢ãƒ³ãƒ€ãƒ¼ãƒ©ã‚¤ãƒ³é–‹å§‹ã‚«ãƒ©ãƒ (0:é–‹å§‹ã‚«ãƒ©ãƒ )
+		$x			:¥Æ¡¼¥Ö¥ë³«»Ï°ÌÃÖX¼´
+		$y			:¥Æ¡¼¥Ö¥ë³«»Ï°ÌÃÖY¼´
+		$arrCol		:¥«¥é¥à¥µ¥¤¥º¤ÎÇÛÎó
+		$line		:¥¢¥ó¥À¡¼¥é¥¤¥ó¤ò°ú¤¯¹Ô
+		$start_col	:¥¢¥ó¥À¡¼¥é¥¤¥ó³«»Ï¥«¥é¥à(0:³«»Ï¥«¥é¥à)
 	 */
 	function writeUnderLine($x, $y, $arrCol, $line, $start_col = 0) {
-		// ãƒ†ãƒ¼ãƒ–ãƒ«å¹…
+		// ¥Æ¡¼¥Ö¥ëÉı
 		$max = count($arrCol);
 		$width = 0;
 		for($i = 0; $i < $max; $i++) {
@@ -279,9 +279,9 @@ class SC_Pdf {
 			$start_x += $arrCol[$i];
 		}
 		
-		// ã‚¢ãƒ³ãƒ€ãƒ¼ãƒ©ã‚¤ãƒ³ã®Yåº§æ¨™ã‚’æ±‚ã‚ã‚‹
+		// ¥¢¥ó¥À¡¼¥é¥¤¥ó¤ÎYºÂÉ¸¤òµá¤á¤ë
 		$down = ($line + 1) * $this->fontsize * 1.5;
-		// è¡Œã‚°ãƒªãƒƒãƒ‰æç”»
+		// ¹Ô¥°¥ê¥Ã¥ÉÉÁ²è
 		$sx = $x + $start_x + GRID_SPACE + $this->table_left;
 		$sy = $y + GRID_SPACE + $down - 1;
 		$ex = $x + $width + GRID_SPACE;
@@ -290,7 +290,7 @@ class SC_Pdf {
 		$this->writeLine($sx, $sy, $ex, $ey);		
 	}
 	
-	// çœŸã‚“ä¸­æ¨ªä½ç½®ã‚’æ±‚ã‚ã‚‹
+	// ¿¿¤óÃæ²£°ÌÃÖ¤òµá¤á¤ë
 	function getXCenter($width) {
 		$page_width = 0;
 		$page_height = 0;
@@ -299,23 +299,23 @@ class SC_Pdf {
 		return $x;
 	}
 	
-	// è‡ªå‹•ä¸­å¤®ã‚ˆã›
+	// ¼«Æ°Ãæ±û¤è¤»
 	function writeTableCenter($table, $y, $arrCol, $arrAlign, $line_max = 256, $start_no = 1, $last_color_flg = false) {
-		// ãƒ†ãƒ¼ãƒ–ãƒ«ã‚µã‚¤ã‚ºå–å¾—
+		// ¥Æ¡¼¥Ö¥ë¥µ¥¤¥º¼èÆÀ
 		$width = 0;
 		foreach($arrCol as $val) {
 			$width += $val;
 		}
-		// ä¸­å¤®ã‚ˆã›ä½ç½®å–å¾—
+		// Ãæ±û¤è¤»°ÌÃÖ¼èÆÀ
 		$x = $this->getXCenter($width) + $this->table_left;
 		list($ret_x, $ret_y) = $this->writeTable($table, $x, $y, $arrCol, $arrAlign, $line_max, $start_no, $last_color_flg);
-		// Xè»¸ã®åº§æ¨™ã‚’è¿”ã™
+		// X¼´¤ÎºÂÉ¸¤òÊÖ¤¹
 		return array($ret_x, $ret_y);
 	}
 	
-	// ãƒ‡ãƒ¼ã‚¿ã®æ›¸ãè¾¼ã¿(closeã™ã‚‹ã¨æ¬¡å›æ–°è¦ãƒšãƒ¼ã‚¸)
-	// $start_no:1è¡Œç›®(ã‚¿ã‚¤ãƒˆãƒ«)ã‚’0ã¨ã™ã‚‹ã€‚
-	// $line_max:ã‚¿ã‚¤ãƒˆãƒ«ã‚’å«ã¾ãªã„è¡Œæ•°
+	// ¥Ç¡¼¥¿¤Î½ñ¤­¹ş¤ß(close¤¹¤ë¤È¼¡²ó¿·µ¬¥Ú¡¼¥¸)
+	// $start_no:1¹ÔÌÜ(¥¿¥¤¥È¥ë)¤ò0¤È¤¹¤ë¡£
+	// $line_max:¥¿¥¤¥È¥ë¤ò´Ş¤Ş¤Ê¤¤¹Ô¿ô
 	function writeTable($table, $x, $y, $arrCol, $arrAlign, $line_max = 256, $start_no = 1, $last_color_flg = false) {
 		$this->openPage();
 		
@@ -327,16 +327,16 @@ class SC_Pdf {
 			$line_max = count($arrRet) - $start_no;
 		}
 		
-		// ã‚¿ã‚¤ãƒˆãƒ«æœ‰åŠ¹
+		// ¥¿¥¤¥È¥ëÍ­¸ú
 		if($this->grid_enable) {
-			// ã‚°ãƒªãƒƒãƒ‰ã®æç”»
+			// ¥°¥ê¥Ã¥É¤ÎÉÁ²è
 			$this->writeGrid($x, $y, $arrCol, $line_max, $last_color_flg);
 		}
 		
-		// Unicodeã‚¨ãƒ³ã‚³ãƒ¼ãƒ‡ã‚£ãƒ³ã‚°ã¨ã—ã¦UTF-8ã‚’è¨­å®š
+		// Unicode¥¨¥ó¥³¡¼¥Ç¥£¥ó¥°¤È¤·¤ÆUTF-8¤òÀßÄê
 		PDF_set_parameter($this->pdf, "textformat", "utf8");
 		
-		// ã‚¿ã‚¤ãƒˆãƒ«æœ‰åŠ¹
+		// ¥¿¥¤¥È¥ëÍ­¸ú
 		if($this->title_enable) {
 			if(count($this->arrHeaderColSize) > 0 && count($this->arrHeaderAlign) > 0 ) {
 				list($linecol, $aligncol, $width) = $this->getTableOption($this->arrHeaderColSize, $this->arrHeaderAlign);
@@ -344,7 +344,7 @@ class SC_Pdf {
 				list($linecol, $aligncol, $width) = $this->getTableOption($arrCol, $arrAlign);
 			}	
 						
-			// ã‚¿ã‚¤ãƒˆãƒ«è¡Œã®æ›¸ãè¾¼ã¿
+			// ¥¿¥¤¥È¥ë¹Ô¤Î½ñ¤­¹ş¤ß
 			$option = "ruler {" . $linecol . "} ";
 			$option.= "tabalignment {" . $aligncol . "} ";
 			$fontsize =  $this->fontsize;
@@ -355,7 +355,7 @@ class SC_Pdf {
 		
 		list($linecol, $aligncol, $width) = $this->getTableOption($arrCol, $arrAlign);
 		
-		// ãƒ‡ãƒ¼ã‚¿è¡Œã®æ›¸ãè¾¼ã¿
+		// ¥Ç¡¼¥¿¹Ô¤Î½ñ¤­¹ş¤ß
 		$option = "ruler {" . $linecol . "} ";
 		$option.= "tabalignment {" . $aligncol . "} ";
 		$option.= "hortabmethod ruler leading=150% fontname=HeiseiMin-W3 fontsize=$this->fontsize encoding=UniJIS-UCS2-H";
@@ -375,7 +375,7 @@ class SC_Pdf {
 	}
 	
 	function getTableOption($arrCol, $arrAlign) {
-		// ã‚«ãƒ©ãƒ ã‚µã‚¤ã‚º
+		// ¥«¥é¥à¥µ¥¤¥º
 		$max = count($arrCol);
 		$width = 0;
 		for($i = 0; $i < $max; $i++) {
@@ -383,7 +383,7 @@ class SC_Pdf {
 			$linecol.= $width . " ";
 		}
 		
-		// ã‚«ãƒ©ãƒ ä½ç½®
+		// ¥«¥é¥à°ÌÃÖ
 		$max = count($arrAlign);
 		for($i = 0; $i < $max; $i++) {
 			$aligncol.= $arrAlign[$i] . " ";
@@ -392,19 +392,19 @@ class SC_Pdf {
 		return array($linecol, $aligncol, $width);
 	}
 	
-	// ãƒ†ãƒ¼ãƒ–ãƒ«ãƒ‡ãƒ¼ã‚¿ã®æ›¸ãè¾¼ã¿
+	// ¥Æ¡¼¥Ö¥ë¥Ç¡¼¥¿¤Î½ñ¤­¹ş¤ß
 	function writeTableData($table, $x, $y, $table_width, $start_no, $end_no, $option) {
 		$arrLine = split("\n", $table);
 		for($i = $start_no; $i <= $end_no; $i++) {
 			$line.=$arrLine[$i] . "\n";
 		}
 				
-		// ãƒ†ãƒ¼ãƒ–ãƒ«ä½ç½®ã‚’æ±‚ã‚ã‚‹
+		// ¥Æ¡¼¥Ö¥ë°ÌÃÖ¤òµá¤á¤ë
 		list($pdf_x, $pdf_y) = $this->posTopDown($x, $y);
 						
-		// ãƒ†ãƒ¼ãƒ–ãƒ«é«˜ã•ã‚’æ±‚ã‚ã‚‹
+		// ¥Æ¡¼¥Ö¥ë¹â¤µ¤òµá¤á¤ë
 		$table_height = $this->fontsize * 1.5 * ($end_no - $start_no + 1);
-		// ãƒ†ãƒ¼ãƒ–ãƒ«å³ä¸‹ã®yåº§æ¨™ã‚’æ±‚ã‚ã‚‹
+		// ¥Æ¡¼¥Ö¥ë±¦²¼¤ÎyºÂÉ¸¤òµá¤á¤ë
 		$end_y = $pdf_y - $table_height;
 		if($end_y < 0) {
 			$end_y = 0;
@@ -416,11 +416,11 @@ class SC_Pdf {
 		PDF_fit_textflow($this->pdf, $tf, $pdf_x, $pdf_y, $pdf_x + $table_width, $end_y, NULL);
 		PDF_delete_textflow($this->pdf, $tf);
 		
-		// ãƒ†ãƒ¼ãƒ–ãƒ«å·¦ä¸‹åº§æ¨™ã‚’è¿”ã™
+		// ¥Æ¡¼¥Ö¥ëº¸²¼ºÂÉ¸¤òÊÖ¤¹
 		return array($x, $y + $table_height);		
 	}
 		
-	// è‰²ã®è¨­å®š
+	// ¿§¤ÎÀßÄê
 	function setColor($rgb) {
 		if($rgb != "") {
 			list($r, $g, $b) = sfGetPdfRgb($rgb);
@@ -428,7 +428,7 @@ class SC_Pdf {
 		}
 	}
 	
-	// çŸ­å½¢ã‚’æç”»
+	// Ã»·Á¤òÉÁ²è
 	function writeRect($x, $y, $width, $height, $rgb = "") {
 		$this->openPage();
 		list($pdf_x, $pdf_y) = $this->posTopDown($x, $y);
@@ -437,7 +437,7 @@ class SC_Pdf {
 		PDF_fill($this->pdf);
 	}
 	
-	// æ ä»˜ã®çŸ­å½¢ã‚’æç”»
+	// ÏÈÉÕ¤ÎÃ»·Á¤òÉÁ²è
 	function writeFrameRect($x, $y, $width, $height, $rgb, $frgb) {
 		$this->openPage();
 		list($pdf_x, $pdf_y) = $this->posTopDown($x, $y);
@@ -450,7 +450,7 @@ class SC_Pdf {
 		PDF_fill($this->pdf);		
 	}
 	
-	// ç›´ç·šã‚’æç”»
+	// Ä¾Àş¤òÉÁ²è
 	function writeLine($sx, $sy, $ex, $ey, $rgb = "000000") {
 		$this->openPage();
 		list($pdf_sx, $pdf_sy) = $this->posTopDown($sx, $sy);
@@ -462,14 +462,14 @@ class SC_Pdf {
 		PDF_stroke($this->pdf);
 	}
 		
-	// ãƒ•ã‚¡ã‚¤ãƒ«ã®ãƒ€ã‚¦ãƒ³ãƒ­ãƒ¼ãƒ‰
+	// ¥Õ¥¡¥¤¥ë¤Î¥À¥¦¥ó¥í¡¼¥É
 	function output($filekey = "") {
 		if(isset($this->pdf)) {
-			// ãƒšãƒ¼ã‚¸ã‚’é–‰ã˜ã‚‹
+			// ¥Ú¡¼¥¸¤òÊÄ¤¸¤ë
 			$this->closePage();
-			// PDFã®çµ‚äº†
+			// PDF¤Î½ªÎ»
 			PDF_end_document($this->pdf, NULL);
-			// å‡ºåŠ›ç”¨ãƒ‡ãƒ¼ã‚¿ã®å–å¾— 
+			// ½ĞÎÏÍÑ¥Ç¡¼¥¿¤Î¼èÆÀ 
 			$buf = PDF_get_buffer($this->pdf);
 			$filename = $filekey . date("ymdHis").".pdf";
 						
@@ -477,8 +477,8 @@ class SC_Pdf {
 			header("Content-type: application/octet-stream; name=$filename");
 					
 			/*
-			 * session_start()ã‚’äº‹å‰ã«å‘¼ã³å‡ºã—ã¦ã„ã‚‹å ´åˆã«å‡ºåŠ›ã•ã‚Œã‚‹ä»¥ä¸‹ã®ãƒ˜ãƒƒãƒ€ã¯ã€
-			 * URLç›´æ¥å‘¼ã³å‡ºã—æ™‚ã«ã‚¨ãƒ©ãƒ¼ã‚’ç™ºç”Ÿã•ã›ã‚‹ã®ã§ç©ºã«ã—ã¦ãŠãã€‚
+			 * session_start()¤ò»öÁ°¤Ë¸Æ¤Ó½Ğ¤·¤Æ¤¤¤ë¾ì¹ç¤Ë½ĞÎÏ¤µ¤ì¤ë°Ê²¼¤Î¥Ø¥Ã¥À¤Ï¡¢
+			 * URLÄ¾ÀÜ¸Æ¤Ó½Ğ¤·»ş¤Ë¥¨¥é¡¼¤òÈ¯À¸¤µ¤»¤ë¤Î¤Ç¶õ¤Ë¤·¤Æ¤ª¤¯¡£
 			 *
 			 * Cache-Control: no-store, no-cache, must-revalidate, post-check=0, pre-check=0
 			 * Progma: no-cache
@@ -488,23 +488,23 @@ class SC_Pdf {
 			header("Pragma: ");
 			print $buf;
 			
-			// PDFè§£æ”¾
+			// PDF²òÊü
 			PDF_delete($this->pdf);
 		} else {
-			print("PDFãŒç”Ÿæˆã•ã‚Œã¦ã„ã¾ã›ã‚“ã€‚");
+			print("PDF¤¬À¸À®¤µ¤ì¤Æ¤¤¤Ş¤»¤ó¡£");
 		}
 		exit;		
 	}
 	
-	// ãƒ•ã‚¡ã‚¤ãƒ«ã®è¡¨ç¤º
+	// ¥Õ¥¡¥¤¥ë¤ÎÉ½¼¨
 	function display() {
 		if(isset($this->pdf)) {
-			// ãƒšãƒ¼ã‚¸ã‚’é–‰ã˜ã‚‹
+			// ¥Ú¡¼¥¸¤òÊÄ¤¸¤ë
 			$this->closePage();
-			// PDFã®çµ‚äº†
+			// PDF¤Î½ªÎ»
 			PDF_end_document($this->pdf, NULL);
 			
-			// å‡ºåŠ›ç”¨ãƒ‡ãƒ¼ã‚¿ã®å–å¾— 
+			// ½ĞÎÏÍÑ¥Ç¡¼¥¿¤Î¼èÆÀ 
 			$buf = PDF_get_buffer($this->pdf);
 			$len = strlen($buf);
 			header("Content-type: application/pdf");
@@ -512,8 +512,8 @@ class SC_Pdf {
 			header("Content-Disposition: inline; filename=". date("YmdHis").".pdf");
 								
 			/*
-			 * session_start()ã‚’äº‹å‰ã«å‘¼ã³å‡ºã—ã¦ã„ã‚‹å ´åˆã«å‡ºåŠ›ã•ã‚Œã‚‹ä»¥ä¸‹ã®ãƒ˜ãƒƒãƒ€ã¯ã€
-			 * URLç›´æ¥å‘¼ã³å‡ºã—æ™‚ã«ã‚¨ãƒ©ãƒ¼ã‚’ç™ºç”Ÿã•ã›ã‚‹ã®ã§ç©ºã«ã—ã¦ãŠãã€‚
+			 * session_start()¤ò»öÁ°¤Ë¸Æ¤Ó½Ğ¤·¤Æ¤¤¤ë¾ì¹ç¤Ë½ĞÎÏ¤µ¤ì¤ë°Ê²¼¤Î¥Ø¥Ã¥À¤Ï¡¢
+			 * URLÄ¾ÀÜ¸Æ¤Ó½Ğ¤·»ş¤Ë¥¨¥é¡¼¤òÈ¯À¸¤µ¤»¤ë¤Î¤Ç¶õ¤Ë¤·¤Æ¤ª¤¯¡£
 			 *
 			 * Cache-Control: no-store, no-cache, must-revalidate, post-check=0, pre-check=0
 			 * Progma: no-cache
@@ -523,10 +523,10 @@ class SC_Pdf {
 			header("Pragma: ");
 			print $buf;
 			
-			// PDFè§£æ”¾
+			// PDF²òÊü
 			PDF_delete($this->pdf);
 		} else {
-			print("PDFãŒç”Ÿæˆã•ã‚Œã¦ã„ã¾ã›ã‚“ã€‚");
+			print("PDF¤¬À¸À®¤µ¤ì¤Æ¤¤¤Ş¤»¤ó¡£");
 		}
 		exit;
 	}

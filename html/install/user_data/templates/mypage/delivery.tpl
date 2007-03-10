@@ -7,7 +7,7 @@
 <!--
 	function fnCheckAfterOpenWin(){
 		if (<!--{$tpl_linemax}--> >= <!--{$smarty.const.DELIV_ADDR_MAX}-->){
-			alert('æœ€å¤§ç™»éŒ²æ•°ã‚’è¶…ãˆã¦ã„ã¾ã™');
+			alert('ºÇÂçÅĞÏ¿¿ô¤òÄ¶¤¨¤Æ¤¤¤Ş¤¹');
 			return false;
 		}else{
 			win02('./delivery_addr.php','new_deiv','600','640');
@@ -17,14 +17,14 @@
 //-->
 </script>
 
-<!--â–¼CONTENTS-->
+<!--¢§CONTENTS-->
 <table width="" border="0" cellspacing="0" cellpadding="0" summary=" ">
 	<tr>
 		<td align="center" bgcolor="#ffffff">
-		<!--â–¼MAIN ONTENTS-->
+		<!--¢§MAIN ONTENTS-->
 		<table width="100%" border="0" cellspacing="0" cellpadding="0" summary=" ">
 			<tr>
-				<td><img src="<!--{$smarty.const.URL_DIR}-->img/mypage/title.jpg" width="700" height="40" alt="MYãƒšãƒ¼ã‚¸"></td>
+				<td><img src="<!--{$smarty.const.URL_DIR}-->img/mypage/title.jpg" width="700" height="40" alt="MY¥Ú¡¼¥¸"></td>
 			</tr>
 			<tr><td height="15"></td></tr>
 		</table>
@@ -35,16 +35,16 @@
 		<input type="hidden" name="pageno" value="<!--{$tpl_pageno}-->">
 			<tr valign="top">
 				<td>
-				<!--â–¼NAVI-->
+				<!--¢§NAVI-->
 					<!--{include file=$tpl_navi}-->
-				<!--â–²NAVI-->
+				<!--¢¥NAVI-->
 				</td>
 				<td align="right">
 				
 				<table width="515" border="0" cellspacing="0" cellpadding="0" summary=" ">
 					<tr>
 						<!--{if $tpl_linemax < $smarty.const.DELIV_ADDR_MAX}-->
-						<td><!--â˜…ã‚¿ã‚¤ãƒˆãƒ«--><img src="<!--{$smarty.const.URL_DIR}-->img/mypage/subtitle03.gif" width="515" height="32" alt="ãŠå±Šã‘å…ˆè¿½åŠ ãƒ»å¤‰æ›´"></td>
+						<td><!--¡ú¥¿¥¤¥È¥ë--><img src="<!--{$smarty.const.URL_DIR}-->img/mypage/subtitle03.gif" width="515" height="32" alt="¤ªÆÏ¤±ÀèÄÉ²Ã¡¦ÊÑ¹¹"></td>
 						<!--{/if}-->
 					</tr>
 					<tr><td height="15"></td></tr>
@@ -56,9 +56,9 @@
 								<td><img src="<!--{$smarty.const.URL_DIR}-->img/common/_.gif" width="190" height="1" alt=""></td>
 							</tr>
 							<tr>
-								<td><span class="fs12">ç™»éŒ²ä½æ‰€ä»¥å¤–ã¸ã®ã”ä½æ‰€ã¸é€ä»˜ã•ã‚Œã‚‹å ´åˆç­‰ã«ã”åˆ©ç”¨ã„ãŸã ãã“ã¨ãŒã§ãã¾ã™ã€‚</span><br>
-								<span class="fs10">â€»æœ€å¤§<!--{$smarty.const.DELIV_ADDR_MAX}-->ä»¶ã¾ã§ç™»éŒ²ã§ãã¾ã™ã€‚</span></td>
-								<td align="right"><!--{if $tpl_linemax < 20}--><a href="<!--{$smarty.const.URL_DIR}-->mypage/delivery_addr.php" onclick="win03('./delivery_addr.php','delivadd','600','640'); return false;" onmouseover="chgImg('<!--{$smarty.const.URL_DIR}-->img/common/newadress_on.gif','newadress');" onmouseout="chgImg('<!--{$smarty.const.URL_DIR}-->img/common/newadress.gif','newadress');" target="_blank"><img src="<!--{$smarty.const.URL_DIR}-->img/common/newadress.gif" width="160" height="22" alt="æ–°ã—ã„ãŠå±Šã‘å…ˆã‚’è¿½åŠ " border="0" name="newadress"></a><!--{/if}--></td>
+								<td><span class="fs12">ÅĞÏ¿½»½ê°Ê³°¤Ø¤Î¤´½»½ê¤ØÁ÷ÉÕ¤µ¤ì¤ë¾ì¹çÅù¤Ë¤´ÍøÍÑ¤¤¤¿¤À¤¯¤³¤È¤¬¤Ç¤­¤Ş¤¹¡£</span><br>
+								<span class="fs10">¢¨ºÇÂç<!--{$smarty.const.DELIV_ADDR_MAX}-->·ï¤Ş¤ÇÅĞÏ¿¤Ç¤­¤Ş¤¹¡£</span></td>
+								<td align="right"><!--{if $tpl_linemax < 20}--><a href="<!--{$smarty.const.URL_DIR}-->mypage/delivery_addr.php" onclick="win03('./delivery_addr.php','delivadd','600','640'); return false;" onmouseover="chgImg('<!--{$smarty.const.URL_DIR}-->img/common/newadress_on.gif','newadress');" onmouseout="chgImg('<!--{$smarty.const.URL_DIR}-->img/common/newadress.gif','newadress');" target="_blank"><img src="<!--{$smarty.const.URL_DIR}-->img/common/newadress.gif" width="160" height="22" alt="¿·¤·¤¤¤ªÆÏ¤±Àè¤òÄÉ²Ã" border="0" name="newadress"></a><!--{/if}--></td>
 							</tr>
 							<tr><td height="10"></td></tr>
 						</table>
@@ -68,29 +68,29 @@
 					<tr>
 						<td bgcolor="#cccccc" align="center">
 						<!--{if $tpl_linemax > 0}-->
-						<!--è¡¨ç¤ºã‚¨ãƒªã‚¢ã“ã“ã‹ã‚‰-->
+						<!--É½¼¨¥¨¥ê¥¢¤³¤³¤«¤é-->
 						<table width="515" border="0" cellspacing="1" cellpadding="10" summary=" ">
 							<tr>
-								<td colspan="6" bgcolor="#f0f0f0" class="fs12n"><strong>â–¼ãŠå±Šã‘å…ˆ</strong></td>
+								<td colspan="6" bgcolor="#f0f0f0" class="fs12n"><strong>¢§¤ªÆÏ¤±Àè</strong></td>
 							</tr>
 							<!--{section name=cnt loop=$arrOtherDeliv}-->
 								<!--{assign var=OtherPref value="`$arrOtherDeliv[cnt].pref`"}--> 
 								<tr bgcolor="#ffffff">
 									<td width="10" align="center" class="fs12"><!--{$smarty.section.cnt.iteration}--></td>
-									<td width="80" class="fs12">ãŠå±Šã‘å…ˆä½æ‰€</td>
-									<td width="290" class="fs12">ã€’<!--{$arrOtherDeliv[cnt].zip01}-->-<!--{$arrOtherDeliv[cnt].zip02}--><br>
+									<td width="80" class="fs12">¤ªÆÏ¤±Àè½»½ê</td>
+									<td width="290" class="fs12">¢©<!--{$arrOtherDeliv[cnt].zip01}-->-<!--{$arrOtherDeliv[cnt].zip02}--><br>
 									<!--{$arrPref[$OtherPref]|escape}--><!--{$arrOtherDeliv[cnt].addr01|escape}--><!--{$arrOtherDeliv[cnt].addr02|escape}--><br>
 									<!--{$arrOtherDeliv[cnt].name01|escape}-->&nbsp;<!--{$arrOtherDeliv[cnt].name02|escape}--></td>
-									<td width="30" align="center" class="fs12"><a href="./delivery_addr.php" onclick="win02('./delivery_addr.php?other_deliv_id=<!--{$arrOtherDeliv[cnt].other_deliv_id}-->','deliv_disp','600','640'); return false;">å¤‰æ›´</a>
-									<td width="30" align="center" class="fs12"><a href="#" onclick="fnModeSubmit('delete','other_deliv_id','<!--{$arrOtherDeliv[cnt].other_deliv_id}-->');">å‰Šé™¤</a></td>
+									<td width="30" align="center" class="fs12"><a href="./delivery_addr.php" onclick="win02('./delivery_addr.php?other_deliv_id=<!--{$arrOtherDeliv[cnt].other_deliv_id}-->','deliv_disp','600','640'); return false;">ÊÑ¹¹</a>
+									<td width="30" align="center" class="fs12"><a href="#" onclick="fnModeSubmit('delete','other_deliv_id','<!--{$arrOtherDeliv[cnt].other_deliv_id}-->');">ºï½ü</a></td>
 								</tr>
 							<!--{/section}-->							
 						</table>
-						<!--è¡¨ç¤ºã‚¨ãƒªã‚¢ã“ã“ã¾ã§-->
+						<!--É½¼¨¥¨¥ê¥¢¤³¤³¤Ş¤Ç-->
 						<!--{else}-->
 						<table width="515" border="0" cellspacing="1" cellpadding="10" summary=" ">
 							<tr>
-								<td colspan="5" bgcolor="#ffffff" class="fs12n" align="center"><strong>æ–°ã—ã„ãŠå±Šã‘å…ˆã¯ã‚ã‚Šã¾ã›ã‚“ã€‚</strong></td>
+								<td colspan="5" bgcolor="#ffffff" class="fs12n" align="center"><strong>¿·¤·¤¤¤ªÆÏ¤±Àè¤Ï¤¢¤ê¤Ş¤»¤ó¡£</strong></td>
 							</tr>
 						</table>
 						<!--{/if}-->
@@ -101,10 +101,10 @@
 			</tr>
 		</form>
 		</table>
-		<!--â–²MAIN ONTENTS-->
+		<!--¢¥MAIN ONTENTS-->
 		</td>
 	</tr>
 </table>
-<!--â–²CONTENTS-->
+<!--¢¥CONTENTS-->
 
 

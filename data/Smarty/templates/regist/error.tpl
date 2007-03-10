@@ -3,17 +3,17 @@
  *
  * http://www.lockon.co.jp/
  *}-->
-<!--â–¼CONTENTS-->
+<!--¢§CONTENTS-->
 <table width="" cellspacing="0" cellpadding="0" summary=" ">
 	<tr>
 		<td bgcolor="#ffffff" align="left"> 
-		<!--â–¼MAIN CONTENTS-->
+		<!--¢§MAIN CONTENTS-->
 		<table cellspacing="0" cellpadding="0" summary=" " id="containerfull">
 			<tr><td height="20"></td></tr>
 			<tr valign="top">
-				<!--â–¼CONTENTS-->
+				<!--¢§CONTENTS-->
 				<td>
-				<div id="maintitle"><img src="<!--{$smarty.const.URL_DIR}-->img/regist/title.jpg" width="700" height="40" alt="æœ¬ä¼šå“¡ç™»éŒ²" /></div>
+				<div id="maintitle"><img src="<!--{$smarty.const.URL_DIR}-->img/regist/title.jpg" width="700" height="40" alt="ËÜ²ñ°÷ÅÐÏ¿" /></div>
 				
 				<form name="form1" method="post" action="./complete.php">
 				<table cellspacing="1" cellpadding="8" summary=" " id="frame">
@@ -21,14 +21,14 @@
 						<td class="fs12" id="left"><span class="red"><!--{$arrErr.id}--></span></td>
 					</tr>
 				</table>
-				<div id="button"><a href="javascript:history.back()" onmouseOver="chgImg('../img/button/back_on.gif','back');" onmouseOut="chgImg('../img/button/back.gif','back');"><img src="<!--{$smarty.const.URL_DIR}-->img/button/back.gif" width="150" height="30" alt="æˆ»ã‚‹" name="back" id="back" /></a></div>
+				<div id="button"><a href="javascript:history.back()" onmouseOver="chgImg('../img/button/back_on.gif','back');" onmouseOut="chgImg('../img/button/back.gif','back');"><img src="<!--{$smarty.const.URL_DIR}-->img/button/back.gif" width="150" height="30" alt="Ìá¤ë" name="back" id="back" /></a></div>
 				</form>
 				</td>
-				<!--â–²ONTENTS-->	
+				<!--¢¥ONTENTS-->	
 			</tr>
 		</table>
-		<!--â–²MAIN CONTENTS-->
+		<!--¢¥MAIN CONTENTS-->
 		</td>
 	</tr>
 </table>
-<!--â–²CONTENTS-->
+<!--¢¥CONTENTS-->

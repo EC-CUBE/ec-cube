@@ -12,7 +12,7 @@ require_once($SC_GRAPHPIE_DIR . "/lib.php");
 require_once(realpath(dirname( __FILE__)) . "/config.php");
 require_once(realpath(dirname( __FILE__)) . "/lib.php");	
 
-// SC_Graphå…±é€šã‚¯ãƒ©ã‚¹
+// SC_Graph¶¦ÄÌ¥¯¥é¥¹
 class SC_GraphBase {
 	var $arrRGB;
 	var $arrColor;
@@ -33,7 +33,7 @@ class SC_GraphBase {
 	var $mark_color;
 	var $arrLegend;
 	
-	// ã‚³ãƒ³ã‚¹ãƒˆãƒ©ã‚¯ã‚¿
+	// ¥³¥ó¥¹¥È¥é¥¯¥¿
 	function SC_GraphBase($bgw = BG_WIDTH, $bgh = BG_HEIGHT, $left, $top) {
 		global $ARR_GRAPH_RGB;
 		global $ARR_BG_COLOR;
@@ -45,18 +45,18 @@ class SC_GraphBase {
 		global $ARR_TITLE_COLOR;
 		global $ARR_GRID_COLOR;
 		
-		// ç”»åƒä½œæˆ
+		// ²èÁüºîÀ®
 		$this->bgw = $bgw;
 		$this->bgh = $bgh;	
 		$this->image = imagecreatetruecolor($bgw, $bgh);
-		// ã‚¢ãƒ³ãƒã‚¨ã‚¤ãƒªã‚¢ã‚¹æœ‰åŠ¹
+		// ¥¢¥ó¥Á¥¨¥¤¥ê¥¢¥¹Í­¸ú
 		if (function_exists("imageantialias")) imageantialias($this->image, true);
-		// èƒŒæ™¯è‰²ã‚’ã‚»ãƒƒãƒˆ
+		// ÇØ·Ê¿§¤ò¥»¥Ã¥È
 		imagefill($this->image, 0, 0, lfGetImageColor($this->image, $ARR_BG_COLOR));
 		
-		// ä½¿ç”¨è‰²ã®ç”Ÿæˆ
+		// »ÈÍÑ¿§¤ÎÀ¸À®
 		$this->setColorList($ARR_GRAPH_RGB);
-		// ã‚°ãƒ©ãƒ•æç”»ä½ç½®ã®è¨­å®š
+		// ¥°¥é¥ÕÉÁ²è°ÌÃÖ¤ÎÀßÄê
 		$this->left = $left;
 		$this->top = $top;
 		$this->shade_color = lfGetImageColor($this->image, $ARR_SHADE_COLOR);
@@ -67,11 +67,11 @@ class SC_GraphBase {
 		$this->title_color = lfGetImageColor($this->image, $ARR_TITLE_COLOR);
 		$this->grid_color = lfGetImageColor($this->image, $ARR_GRID_COLOR);
 			
-		// å½±ã‚ã‚Š
+		// ±Æ¤¢¤ê
 		$this->shade_on = true;
     }
 	
-	// ãƒªã‚µãƒ³ãƒ—ãƒ«(ç”»åƒã‚’æ»‘ã‚‰ã‹ã«ç¸®å°ã™ã‚‹)
+	// ¥ê¥µ¥ó¥×¥ë(²èÁü¤ò³ê¤é¤«¤Ë½Ì¾®¤¹¤ë)
 	function resampled() {
 		$new_width = $this->bgw * 0.8;
 		$new_height = $this->bgh * 0.8;		
@@ -82,26 +82,26 @@ class SC_GraphBase {
 	}
 	
 	
-	// ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã‚«ãƒ©ãƒ¼ã®è¨­å®š
+	// ¥ª¥Ö¥¸¥§¥¯¥È¥«¥é¡¼¤ÎÀßÄê
 	function setColorList($arrRGB) {
 		$this->arrRGB = $arrRGB;
 		$count = count($this->arrRGB);
-		// é€šå¸¸è‰²ã®è¨­å®š
+		// ÄÌ¾ï¿§¤ÎÀßÄê
 		for($i = 0; $i < $count; $i++) {
 			$this->arrColor[$i] = lfGetImageColor($this->image, $this->arrRGB[$i]);
 		}
-		// æš—è‰²ã®è¨­å®š
+		// °Å¿§¤ÎÀßÄê
 		for($i = 0; $i < $count; $i++) {
 			$this->arrDarkColor[$i] = lfGetImageDarkColor($this->image, $this->arrRGB[$i]);
 		}		
 	}
 	
-	// å½±ã®ã‚ã‚Šãªã—
+	// ±Æ¤Î¤¢¤ê¤Ê¤·
 	function setShadeOn($shade_on) {
 		$this->shade_on = $shade_on;
 	}
 	
-	// ç”»åƒã‚’å‡ºåŠ›ã™ã‚‹
+	// ²èÁü¤ò½ĞÎÏ¤¹¤ë
 	function outputGraph($header = true, $filename = "") {
 		if($header) {
 			header('Content-type: image/png');
@@ -116,24 +116,24 @@ class SC_GraphBase {
 		imagedestroy($this->image);
 	}
 
-	// æç”»æ™‚ã®ãƒ†ã‚­ã‚¹ãƒˆå¹…ã‚’æ±‚ã‚ã‚‹
+	// ÉÁ²è»ş¤Î¥Æ¥­¥¹¥ÈÉı¤òµá¤á¤ë
 	function getTextWidth($text, $font_size) {
 		$text_len = strlen($text);
 		$ret = $font_size * $text_len * TEXT_RATE;	
 		/*
-			â€»æ­£ç¢ºãªå€¤ãŒå–å¾—ã§ããªã‹ã£ãŸã®ã§å»ƒæ­¢
-			// ãƒ†ã‚­ã‚¹ãƒˆå¹…ã®å–å¾—
+			¢¨Àµ³Î¤ÊÃÍ¤¬¼èÆÀ¤Ç¤­¤Ê¤«¤Ã¤¿¤Î¤ÇÇÑ»ß
+			// ¥Æ¥­¥¹¥ÈÉı¤Î¼èÆÀ
 			$arrPos = imagettfbbox($font_size, 0, FONT_PATH, $text);
 			$ret = $arrPos[2] - $arrPos[0];
 		*/
 		return $ret;
 	}
 	
-	// ãƒ†ã‚­ã‚¹ãƒˆã‚’å‡ºåŠ›ã™ã‚‹
+	// ¥Æ¥­¥¹¥È¤ò½ĞÎÏ¤¹¤ë
 	function setText($font_size, $left, $top, $text, $color = NULL, $angle = 0, $labelbg = false) {
-		// æ™‚è¨ˆå›ã‚Šã«è§’åº¦ã‚’å¤‰æ›´
+		// »ş·×²ó¤ê¤Ë³ÑÅÙ¤òÊÑ¹¹
 		$angle = -$angle;		
-		// ãƒ©ãƒ™ãƒ«èƒŒæ™¯
+		// ¥é¥Ù¥ëÇØ·Ê
 		if($labelbg) {
 			$text_width = $this->getTextWidth($text, $font_size);
 			imagefilledrectangle($this->image, $left - 2, $top - 2, $left + $text_width + 2, $top + $font_size + 2, $this->labelbg_color);
@@ -147,29 +147,29 @@ class SC_GraphBase {
 		}
 	}
 	
-	// ã‚¿ã‚¤ãƒˆãƒ«ã‚’å‡ºåŠ›ã™ã‚‹
+	// ¥¿¥¤¥È¥ë¤ò½ĞÎÏ¤¹¤ë
 	function drawTitle($text, $font_size = TITLE_FONT_SIZE) {
-		// å‡ºåŠ›ä½ç½®ã®ç®—å‡º
+		// ½ĞÎÏ°ÌÃÖ¤Î»»½Ğ
 		$text_width = $this->getTextWidth($text, $font_size);
 		$left = ($this->bgw - $text_width) / 2;
 		$top = TITLE_TOP;
 		$this->setText($font_size, $left, $top, $text, $this->title_color);		
 	}
 	
-	// ãƒ­ã‚°ã‚’å‡ºåŠ›ã™ã‚‹
+	// ¥í¥°¤ò½ĞÎÏ¤¹¤ë
 	function debugPrint($text) {
 		$text = mb_convert_encoding($text, "UTF-8", CHAR_CODE);
 		if(!isset($this->text_top)) {
 			$this->text_top = FONT_SIZE + LINE_PAD;
 		}		
-		// ãƒ†ã‚­ã‚¹ãƒˆæç”»
+		// ¥Æ¥­¥¹¥ÈÉÁ²è
 		ImageTTFText($this->image, FONT_SIZE, 0, LINE_PAD, $this->text_top, $this->text_color, FONT_PATH, $text);
 		$this->text_top += FONT_SIZE + LINE_PAD;
 	}
 		
-	// ã‚«ãƒ©ãƒ¼ãƒ©ãƒ™ãƒ«ã‚’æç”»
+	// ¥«¥é¡¼¥é¥Ù¥ë¤òÉÁ²è
 	function drawLegend($legend_max = "", $clabelbg = true) {
-		// å‡¡ä¾‹ãŒç™»éŒ²ã•ã‚Œã¦ã„ãªã‘ã‚Œã°ä¸­æ­¢
+		// ËŞÎã¤¬ÅĞÏ¿¤µ¤ì¤Æ¤¤¤Ê¤±¤ì¤ĞÃæ»ß
 		if(count($this->arrLegend) <= 0) {
 			return;
 		}		
@@ -184,7 +184,7 @@ class SC_GraphBase {
 		$text_max = 0;
 		$width_max = 0;
 		
-		// ä¸€ç•ªæ–‡å­—æ•°ãŒå¤šã„ã‚‚ã®ã‚’å–å¾—
+		// °ìÈÖÊ¸»ú¿ô¤¬Â¿¤¤¤â¤Î¤ò¼èÆÀ
 		for($i = 0; $i < $label_max; $i++) {
 			$text_len = strlen($this->arrLegend[$i]);
 			if($text_max < $text_len) {
@@ -194,40 +194,40 @@ class SC_GraphBase {
 		}
 		$width_max = FONT_SIZE * $text_max * TEXT_RATE;		
 
-		// 	ã‚«ãƒ©ãƒ¼ã‚¢ã‚¤ã‚³ãƒ³ã¨æ–‡å­—é–“ã‚’å«ã‚ãŸå¹…
+		// 	¥«¥é¡¼¥¢¥¤¥³¥ó¤ÈÊ¸»ú´Ö¤ò´Ş¤á¤¿Éı
 		$width_max += FONT_SIZE + (LINE_PAD * 2);	
 		$left = $this->bgw - $width_max - LEGEND_RIGHT;
 		$top = LEGEND_TOP;
-		// ã‚«ãƒ©ãƒ¼ãƒ©ãƒ™ãƒ«èƒŒæ™¯ã®æç”»
+		// ¥«¥é¡¼¥é¥Ù¥ëÇØ·Ê¤ÎÉÁ²è
 		if($clabelbg) {
 			$this->drawClabelBG($left - LINE_PAD, $top, $left + $width_max, $top + $height_max + LINE_PAD);
 		}
 		$top += LINE_PAD;
 				
-		// è‰²æ•°ã®å–å¾—
+		// ¿§¿ô¤Î¼èÆÀ
 		$c_max = count($this->arrColor);
 		for($i = 0; $i < $label_max; $i++) {			
-			// ã‚«ãƒ©ãƒ¼ã‚¢ã‚¤ã‚³ãƒ³ã®è¡¨ç¤º
+			// ¥«¥é¡¼¥¢¥¤¥³¥ó¤ÎÉ½¼¨
 			imagerectangle($this->image, $left, $top, $left + FONT_SIZE, $top + FONT_SIZE, $this->flame_color);
 			imagefilledrectangle($this->image, $left + 1, $top + 1, $left + FONT_SIZE - 1, $top + FONT_SIZE - 1, $this->arrColor[($i % $c_max)]);
-			// ãƒ©ãƒ™ãƒ«ã®è¡¨ç¤º
+			// ¥é¥Ù¥ë¤ÎÉ½¼¨
 			$this->setText(FONT_SIZE, $left + FONT_SIZE + LINE_PAD, $top, $this->arrLegend[$i]);
 			$top += FONT_SIZE + LINE_PAD;
 		}
 	}
 	
-	// ã‚«ãƒ©ãƒ¼ãƒ©ãƒ™ãƒ«èƒŒæ™¯ã®æç”»
+	// ¥«¥é¡¼¥é¥Ù¥ëÇØ·Ê¤ÎÉÁ²è
 	function drawClabelBG($left, $top, $right, $bottom) {
-		// å½±ã®æç”»
+		// ±Æ¤ÎÉÁ²è
 		if($this->shade_on) {
 			imagefilledrectangle($this->image, $left + 2, $top + 2, $right + 2, $bottom + 2, $this->shade_color);
 		}
-		// ã‚«ãƒ©ãƒ¼ãƒ©ãƒ™ãƒ«èƒŒæ™¯ã®æç”»
+		// ¥«¥é¡¼¥é¥Ù¥ëÇØ·Ê¤ÎÉÁ²è
 		imagefilledrectangle($this->image, $left, $top, $right, $bottom, $this->clabelbg_color);
 		imagerectangle($this->image, $left, $top, $right, $bottom, $this->flame_color);
 	}
 	
-	// å‡¡ä¾‹ã‚’ã‚»ãƒƒãƒˆã™ã‚‹
+	// ËŞÎã¤ò¥»¥Ã¥È¤¹¤ë
 	function setLegend($arrLegend) {
 		$this->arrLegend = array_values((array)$arrLegend);
 	}

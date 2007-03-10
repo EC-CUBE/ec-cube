@@ -5,16 +5,16 @@
  * http://www.lockon.co.jp/
  */
 *}-->
-<!--★★メインコンテンツ★★-->
+<!--�����ᥤ�󥳥�ƥ�ġ���-->
 <table width="878" border="0" cellspacing="0" cellpadding="0" summary=" ">
 	<tr valign="top">
 		<td background="<!--{$smarty.const.URL_DIR}-->img/contents/navi_bg.gif" height="402">
-			<!-- サブナビ -->
+			<!-- ���֥ʥ� -->
 			<!--{include file=$tpl_subnavi}-->
 		</td>
 		<td class="mainbg" >
 		<table width="737" border="0" cellspacing="0" cellpadding="0" summary=" ">
-			<!--メインエリア-->
+			<!--�ᥤ�󥨥ꥢ-->
 			<tr>
 				<td align="center">
 				<table width="706" border="0" cellspacing="0" cellpadding="0" summary=" ">
@@ -26,14 +26,14 @@
 					<tr>
 						<td background="<!--{$smarty.const.URL_DIR}-->img/contents/main_left.jpg"><img src="<!--{$smarty.const.URL_DIR}-->img/common/_.gif" width="14" height="1" alt=""></td>
 						<td bgcolor="#f2f1ec">
-						<!--完了メッセージテーブルここから-->
+						<!--��λ��å������ơ��֥뤳������-->
 						<table width="678" border="0" cellspacing="1" cellpadding="8" summary=" " height="402">
 							<tr>
-								<td height="150" bgcolor="#ffffff" class="fs14n" align="center">登録が完了致しました。<br /> <br /> <br />
-								<a href="./template.php">→続けて設定を行う</a></td>
+								<td height="150" bgcolor="#ffffff" class="fs14n" align="center">��Ͽ����λ�פ��ޤ�����<br /> <br /> <br />
+								<a href="./template.php">��³���������Ԥ�</a></td>
 							</tr>
 						</table>
-						<!--完了メッセージテーブルここまで-->
+						<!--��λ��å������ơ��֥뤳���ޤ�-->
 						</td>
 						<td background="<!--{$smarty.const.URL_DIR}-->img/contents/main_right.jpg"><img src="<!--{$smarty.const.URL_DIR}-->img/common/_.gif" width="14" height="1" alt=""></td>
 					</tr>
@@ -45,10 +45,10 @@
 				</table>
 				</td>
 			</tr>
-			<!--メインエリア-->
+			<!--�ᥤ�󥨥ꥢ-->
 		</table>
 		</td>
 	</tr>
 </form>
 </table>
-<!--★★メインコンテンツ★★-->		
+<!--�����ᥤ�󥳥�ƥ�ġ���-->		

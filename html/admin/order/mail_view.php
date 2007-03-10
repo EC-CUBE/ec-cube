@@ -16,7 +16,7 @@ $objPage = new LC_Page();
 $objView = new SC_AdminView();
 $objSess = new SC_Session();
 
-// èªè¨¼å¯å¦ã®åˆ¤å®š
+// Ç§¾Ú²ÄÈİ¤ÎÈ½Äê
 sfIsSuccess($objSess);
 
 if(sfIsInt($_GET['send_id'])) {

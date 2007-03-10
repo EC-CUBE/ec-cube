@@ -22,21 +22,21 @@ $objPage = new LC_Page();
 $objView = new SC_AdminView();
 $objSess = new SC_Session();
 
-// 認証可否の判定
+// ǧ�ڲ��ݤ�Ƚ��
 sfIsSuccess($objSess);
 
 if(ADMIN_MODE != 1) {
-	print("このページには、アクセスできません。");
+	print("���Υڡ����ˤϡ����������Ǥ��ޤ���");
 	exit;
 }
 
-// ファイル管理クラス
+// �ե�����������饹
 $objUpFile = new SC_UploadFile(IMAGE_TEMP_DIR, IMAGE_SAVE_DIR);
-// ファイル情報の初期化
+// �ե��������ν����
 lfInitFile();
-// パラメータ管理クラス
+// �ѥ�᡼���������饹
 $objFormParam = new SC_FormParam();
-// パラメータ情報の初期化
+// �ѥ�᡼������ν����
 lfInitParam();
 $colmax = $objFormParam->getCount();
 $objPage->arrTitle = $objFormParam->getTitleArray();
@@ -44,7 +44,7 @@ $objPage->arrTitle = $objFormParam->getTitleArray();
 switch($_POST['mode']) {
 case 'csv_upload':
 	$err = false;
-	// エラーチェック
+	// ���顼�����å�
 	$objPage->arrErr['csv_file'] = $objUpFile->makeTempFile('csv_file');
 	
 	if($objPage->arrErr['css_file'] == "") {
@@ -52,34 +52,34 @@ case 'csv_upload':
 	}
 	
 	if($objPage->arrErr['csv_file'] == "") {
-		// 一時ファイル名の取得
+		// ����ե�����̾�μ���
 		$filepath = $objUpFile->getTempFilePath('csv_file');
-		// エンコード
+		// ���󥳡���
 		$enc_filepath = sfEncodeFile($filepath, CHAR_CODE, CSV_TEMP_DIR);
 		$fp = fopen($enc_filepath, "r");
 		
-		$line = 0;		// 行数
-		$regist = 0;	// 登録数
+		$line = 0;		// �Կ�
+		$regist = 0;	// ��Ͽ��
 		
 		$objQuery = new SC_Query();
 		$objQuery->begin();
 		
 		while(!feof($fp) && !$err) {
 			$arrCSV = fgetcsv($fp, 10000);
-			// 行カウント
+			// �ԥ������
 			$line++;
 	
-			// 項目数カウント
+			// ���ܿ��������
 			$max = count($arrCSV);
 			
-			// 項目数が1以下の場合は無視する
+			// ���ܿ���1�ʲ��ξ���̵�뤹��
 			if($max <= 1) {
 				continue;			
 			}
 			
-			// 項目数チェック
+			// ���ܿ������å�
 			if($max != $colmax) {
-				$objPage->arrCSVErr['blank'] = "※ 項目数が" . $max . "個検出されました。項目数は" . $colmax . "個になります。";
+				$objPage->arrCSVErr['blank'] = "�� ���ܿ���" . $max . "�ĸ��Ф���ޤ��������ܿ���" . $colmax . "�Ĥˤʤ�ޤ���";
 				
 				ob_start();
 				print_r($arrCSV);
@@ -88,21 +88,21 @@ case 'csv_upload':
 				
 				$err = true;
 			} else {
-				// シーケンス配列を格納する。
+				// ��������������Ǽ���롣
 				$objFormParam->setParam($arrCSV, true);
 				$arrRet = $objFormParam->getHashArray();
-				// 値をフォーマット変換して格納する。
+				// �ͤ�ե����ޥå��Ѵ����Ƴ�Ǽ���롣
 				$arrRet = lfConvFormat($arrRet);
 				$objFormParam->setParam($arrRet);
-				// 入力値の変換
+				// �����ͤ��Ѵ�
 				$objFormParam->convParam();
-				// <br>なしでエラー取得する。
+				// <br>�ʤ��ǥ��顼�������롣
 				$objPage->arrCSVErr = lfCheckError();
 			}
 			
-			// 入力エラーチェック
+			// ���ϥ��顼�����å�
 			if(count($objPage->arrCSVErr) > 0) {
-				$objPage->tpl_errtitle = "■" . $line . "行目でエラーが発生しました。";
+				$objPage->tpl_errtitle = "��" . $line . "���ܤǥ��顼��ȯ�����ޤ�����";
 				$objPage->arrParam = $objFormParam->getHashArray();
 				$err = true;
 			}
@@ -120,7 +120,7 @@ case 'csv_upload':
 			
 			gfPrintLog("commit csv:$regist");
 						
-			$objPage->tpl_oktitle = "■" . $regist . "件のレコードを登録しました。";
+			$objPage->tpl_oktitle = "��" . $regist . "��Υ쥳���ɤ���Ͽ���ޤ�����";
 		} else {
 			$objQuery->rollback();
 		}
@@ -135,47 +135,47 @@ $objView->display(MAIN_FRAME);
 
 //--------------------------------------------------------------------------------------------------------------------------
 
-/* ファイル情報の初期化 */
+/* �ե��������ν���� */
 function lfInitFile() {
 	global $objUpFile;
-	$objUpFile->addFile("CSVファイル", 'csv_file', array('csv'), CSV_SIZE, true, 0, 0, false);
+	$objUpFile->addFile("CSV�ե�����", 'csv_file', array('csv'), CSV_SIZE, true, 0, 0, false);
 }
 
-/* パラメータ情報の初期化 */
+/* �ѥ�᡼������ν���� */
 function lfInitParam() {
 	global $objFormParam;
 	
-	$objFormParam->addParam("商品名", "name", MTEXT_LEN, "KVa", array("EXIST_CHECK","SPTAB_CHECK","MAX_LENGTH_CHECK"));
-	$objFormParam->addParam("カテゴリID", "category_id", INT_LEN, "n", array("EXIST_CHECK","MAX_LENGTH_CHECK","NUM_CHECK"));
-	$objFormParam->addParam("商品コード", "product_code", STEXT_LEN, "KVa", array("SPTAB_CHECK","MAX_LENGTH_CHECK"));
-	$objFormParam->addParam("商品価格", "price02", PRICE_LEN, "n", array("EXIST_CHECK","MAX_LENGTH_CHECK","NUM_CHECK"));
-	$objFormParam->addParam("商品価格", "price01", PRICE_LEN, "n", array("MAX_LENGTH_CHECK","NUM_CHECK"));
-	$objFormParam->addParam("在庫数", "stock", INT_LEN, "n", array("MAX_LENGTH_CHECK","NUM_CHECK"));
-	$objFormParam->addParam("購入制限", "sale_limit", INT_LEN, "n", array("MAX_LENGTH_CHECK","NUM_CHECK"));
-	$objFormParam->addParam("メーカーURL", "comment1", LTEXT_LEN, "KVa", array("URL_CHECK", "SPTAB_CHECK","MAX_LENGTH_CHECK"));
-	$objFormParam->addParam("商品ステータス", "product_flag", INT_LEN, "n", array("MAX_LENGTH_CHECK","NUM_CHECK"));
-	$objFormParam->addParam("ポイント付与率", "point_rate", PERCENTAGE_LEN, "n", array("EXIST_CHECK","MAX_LENGTH_CHECK","NUM_CHECK"));
-	$objFormParam->addParam("メイン一覧コメント", "main_list_comment", LTEXT_LEN, "KVa", array("EXIST_CHECK","SPTAB_CHECK","MAX_LENGTH_CHECK"));
-	$objFormParam->addParam("メインコメント", "main_comment", LTEXT_LEN, "KVa", array("EXIST_CHECK","SPTAB_CHECK","MAX_LENGTH_CHECK"));
+	$objFormParam->addParam("����̾", "name", MTEXT_LEN, "KVa", array("EXIST_CHECK","SPTAB_CHECK","MAX_LENGTH_CHECK"));
+	$objFormParam->addParam("���ƥ���ID", "category_id", INT_LEN, "n", array("EXIST_CHECK","MAX_LENGTH_CHECK","NUM_CHECK"));
+	$objFormParam->addParam("���ʥ�����", "product_code", STEXT_LEN, "KVa", array("SPTAB_CHECK","MAX_LENGTH_CHECK"));
+	$objFormParam->addParam("���ʲ���", "price02", PRICE_LEN, "n", array("EXIST_CHECK","MAX_LENGTH_CHECK","NUM_CHECK"));
+	$objFormParam->addParam("���ʲ���", "price01", PRICE_LEN, "n", array("MAX_LENGTH_CHECK","NUM_CHECK"));
+	$objFormParam->addParam("�߸˿�", "stock", INT_LEN, "n", array("MAX_LENGTH_CHECK","NUM_CHECK"));
+	$objFormParam->addParam("��������", "sale_limit", INT_LEN, "n", array("MAX_LENGTH_CHECK","NUM_CHECK"));
+	$objFormParam->addParam("�᡼����URL", "comment1", LTEXT_LEN, "KVa", array("URL_CHECK", "SPTAB_CHECK","MAX_LENGTH_CHECK"));
+	$objFormParam->addParam("���ʥ��ơ�����", "product_flag", INT_LEN, "n", array("MAX_LENGTH_CHECK","NUM_CHECK"));
+	$objFormParam->addParam("�ݥ������ͿΨ", "point_rate", PERCENTAGE_LEN, "n", array("EXIST_CHECK","MAX_LENGTH_CHECK","NUM_CHECK"));
+	$objFormParam->addParam("�ᥤ�����������", "main_list_comment", LTEXT_LEN, "KVa", array("EXIST_CHECK","SPTAB_CHECK","MAX_LENGTH_CHECK"));
+	$objFormParam->addParam("�ᥤ�󥳥���", "main_comment", LTEXT_LEN, "KVa", array("EXIST_CHECK","SPTAB_CHECK","MAX_LENGTH_CHECK"));
 	
 	for($i = 1; $i <= PRODUCTSUB_MAX; $i++) {
-		$objFormParam->addParam("詳細-サブタイトル($i)", "sub_title$i", LTEXT_LEN, "KVa", array("SPTAB_CHECK","MAX_LENGTH_CHECK"));
-		$objFormParam->addParam("詳細-サブコメント($i)", "sub_comment$i", LTEXT_LEN, "KVa", array("SPTAB_CHECK","MAX_LENGTH_CHECK"));
-		$objFormParam->addParam("詳細-サブ画像($i)", "sub_image$i", LTEXT_LEN, "KVa", array("SPTAB_CHECK","MAX_LENGTH_CHECK","FIND_FILE"));
-		$objFormParam->addParam("詳細-サブ画像拡大($i)", "sub_large_image$i", LTEXT_LEN, "KVa", array("SPTAB_CHECK","MAX_LENGTH_CHECK","FIND_FILE"));
+		$objFormParam->addParam("�ܺ�-���֥����ȥ�($i)", "sub_title$i", LTEXT_LEN, "KVa", array("SPTAB_CHECK","MAX_LENGTH_CHECK"));
+		$objFormParam->addParam("�ܺ�-���֥�����($i)", "sub_comment$i", LTEXT_LEN, "KVa", array("SPTAB_CHECK","MAX_LENGTH_CHECK"));
+		$objFormParam->addParam("�ܺ�-���ֲ���($i)", "sub_image$i", LTEXT_LEN, "KVa", array("SPTAB_CHECK","MAX_LENGTH_CHECK","FIND_FILE"));
+		$objFormParam->addParam("�ܺ�-���ֲ�������($i)", "sub_large_image$i", LTEXT_LEN, "KVa", array("SPTAB_CHECK","MAX_LENGTH_CHECK","FIND_FILE"));
 	}
 		
-	$objFormParam->addParam("メイン一覧画像", "main_list_image", LTEXT_LEN, "KVa", array("EXIST_CHECK","SPTAB_CHECK","MAX_LENGTH_CHECK","FIND_FILE"));
-	$objFormParam->addParam("メイン詳細画像", "main_image", LTEXT_LEN, "KVa", array("EXIST_CHECK","SPTAB_CHECK","MAX_LENGTH_CHECK","FIND_FILE"));
-	$objFormParam->addParam("メイン詳細拡大画像", "main_large_image", LTEXT_LEN, "KVa", array("SPTAB_CHECK","MAX_LENGTH_CHECK","FIND_FILE"));
-	$objFormParam->addParam("比較画像", "file1", LTEXT_LEN, "KVa", array("SPTAB_CHECK","MAX_LENGTH_CHECK","FIND_FILE"));
-	$objFormParam->addParam("商品詳細ファイル", "file2", LTEXT_LEN, "KVa", array("SPTAB_CHECK","MAX_LENGTH_CHECK"));
-	$objFormParam->addParam("送料", "deliv_fee", PRICE_LEN, "n", array("MAX_LENGTH_CHECK","NUM_CHECK"));
-	$objFormParam->addParam("在庫無制限", "stock_unlimited", INT_LEN, "n", array("MAX_LENGTH_CHECK","NUM_CHECK"));
-	$objFormParam->addParam("販売無制限", "sale_unlimited", INT_LEN, "n", array("MAX_LENGTH_CHECK","NUM_CHECK"));
+	$objFormParam->addParam("�ᥤ���������", "main_list_image", LTEXT_LEN, "KVa", array("EXIST_CHECK","SPTAB_CHECK","MAX_LENGTH_CHECK","FIND_FILE"));
+	$objFormParam->addParam("�ᥤ��ܺٲ���", "main_image", LTEXT_LEN, "KVa", array("EXIST_CHECK","SPTAB_CHECK","MAX_LENGTH_CHECK","FIND_FILE"));
+	$objFormParam->addParam("�ᥤ��ܺٳ������", "main_large_image", LTEXT_LEN, "KVa", array("SPTAB_CHECK","MAX_LENGTH_CHECK","FIND_FILE"));
+	$objFormParam->addParam("��Ӳ���", "file1", LTEXT_LEN, "KVa", array("SPTAB_CHECK","MAX_LENGTH_CHECK","FIND_FILE"));
+	$objFormParam->addParam("���ʾܺ٥ե�����", "file2", LTEXT_LEN, "KVa", array("SPTAB_CHECK","MAX_LENGTH_CHECK"));
+	$objFormParam->addParam("����", "deliv_fee", PRICE_LEN, "n", array("MAX_LENGTH_CHECK","NUM_CHECK"));
+	$objFormParam->addParam("�߸�̵����", "stock_unlimited", INT_LEN, "n", array("MAX_LENGTH_CHECK","NUM_CHECK"));
+	$objFormParam->addParam("����̵����", "sale_unlimited", INT_LEN, "n", array("MAX_LENGTH_CHECK","NUM_CHECK"));
 }
 
-/* 特殊項目の変換 */
+/* �ü���ܤ��Ѵ� */
 function lfConvFormat($array) {
 	global $arrDISP;
 	foreach($array as $key => $val) {
@@ -191,12 +191,12 @@ function lfConvFormat($array) {
 	return $arrRet;
 }
 
-/* 商品の新規追加 */
+/* ���ʤο����ɲ� */
 function lfInsertProduct($objQuery) {
 	global $objFormParam;
 	$arrRet = $objFormParam->getHashArray();
 	
-	// 規格に登録される値を除外する。
+	// ���ʤ���Ͽ������ͤ�������롣
 	foreach($arrRet as $key => $val) {
 		switch($key) {
 		case 'product_code':
@@ -216,18 +216,18 @@ function lfInsertProduct($objQuery) {
 		$sqlval['product_id'] = $product_id;
 	}
 
-	$sqlval['status'] = 1;	// 表示に設定する。
+	$sqlval['status'] = 1;	// ɽ�������ꤹ�롣
 	$sqlval['update_date'] = "Now()";
 	$sqlval['create_date'] = "Now()";
 	$sqlval['creator_id'] = $_SESSION['member_id'];
 	$sqlval['rank'] = $objQuery->max("dtb_products", "rank", "del_flg = 0 AND category_id = ?", array($sqlval['category_id'])) + 1;
 	
-	// 規格登録
+	// ������Ͽ
 	sfInsertProductClass($objQuery, $arrRet, $product_id);
 	
 	gfPrintLog("insert productclass end");
 	
-	// INSERTの実行
+	// INSERT�μ¹�
 	$objQuery->insert("dtb_products", $sqlval);
 	
 	if (DB_TYPE == "mysql") {
@@ -237,10 +237,10 @@ function lfInsertProduct($objQuery) {
 	gfPrintLog("insert product end");
 }
 
-/* 入力内容のチェック */
+/* �������ƤΥ����å� */
 function lfCheckError() {
 	global $objFormParam;
-	// 入力データを渡す。
+	// ���ϥǡ������Ϥ���
 	$arrRet =  $objFormParam->getHashArray();
 	$objErr = new SC_CheckError($arrRet);
 	$objErr->arrErr = $objFormParam->checkError(false);
@@ -252,7 +252,7 @@ function lfCheckError() {
 		$where = "category_id = ?";
 		$level = $objQuery->get($table, $col, $where, array($arrRet['category_id']));
 		if($level != LEVEL_MAX) {
-			$objErr->arrErr['category_id'] = "※ このカテゴリIDには商品を登録できません。";
+			$objErr->arrErr['category_id'] = "�� ���Υ��ƥ���ID�ˤϾ��ʤ���Ͽ�Ǥ��ޤ���";
 		}
 	}
 	return $objErr->arrErr;

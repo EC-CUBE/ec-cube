@@ -13,11 +13,11 @@ class LC_Page {
 	function LC_Page() {
 		$this->tpl_mainpage = 'contents/campaign_create_tag.tpl';
 		$this->tpl_mainno = 'create';
-		$this->tpl_subtitle = 'å•†å“è¨­å®š';
+		$this->tpl_subtitle = '¾¦ÉÊÀßÄê';
 		/*
-		 session_startæ™‚ã®no-cacheãƒ˜ãƒƒãƒ€ãƒ¼ã‚’æŠ‘åˆ¶ã™ã‚‹ã“ã¨ã§
-		 ã€Œæˆ»ã‚‹ã€ãƒœã‚¿ãƒ³ä½¿ç”¨æ™‚ã®æœ‰åŠ¹æœŸé™åˆ‡ã‚Œè¡¨ç¤ºã‚’æŠ‘åˆ¶ã™ã‚‹ã€‚
-		 private-no-expire:ã‚¯ãƒ©ã‚¤ã‚¢ãƒ³ãƒˆã®ã‚­ãƒ£ãƒƒã‚·ãƒ¥ã‚’è¨±å¯ã™ã‚‹ã€‚
+		 session_start»ş¤Îno-cache¥Ø¥Ã¥À¡¼¤òÍŞÀ©¤¹¤ë¤³¤È¤Ç
+		 ¡ÖÌá¤ë¡×¥Ü¥¿¥ó»ÈÍÑ»ş¤ÎÍ­¸ú´ü¸ÂÀÚ¤ìÉ½¼¨¤òÍŞÀ©¤¹¤ë¡£
+		 private-no-expire:¥¯¥é¥¤¥¢¥ó¥È¤Î¥­¥ã¥Ã¥·¥å¤òµö²Ä¤¹¤ë¡£
 		*/
 		session_cache_limiter('private-no-expire');		
 	}
@@ -28,21 +28,21 @@ $objView = new SC_AdminView();
 $objSess = new SC_Session();
 $objQuery = new SC_Query();
 
-// èªè¨¼å¯å¦ã®åˆ¤å®š
+// Ç§¾Ú²ÄÈİ¤ÎÈ½Äê
 sfIsSuccess($objSess);
 
 switch($_POST['mode']) {
 
-// å•†å“æ¤œç´¢
+// ¾¦ÉÊ¸¡º÷
 case  'search':
-	// POSTå€¤ã®å¼•ãç¶™ã
+	// POSTÃÍ¤Î°ú¤­·Ñ¤®
 	$objPage->arrForm = $_POST;
-	// å…¥åŠ›æ–‡å­—ã®å¼·åˆ¶å¤‰æ›
+	// ÆşÎÏÊ¸»ú¤Î¶¯À©ÊÑ´¹
 	lfConvertParam();
 	
 	$where = "del_flg = 0";
 	
-	// whereå¥ç”Ÿæˆ
+	// where¶çÀ¸À®
 	foreach ($objPage->arrForm as $key => $val) {
 		if($val == "") {
 			continue;
@@ -54,7 +54,7 @@ case  'search':
 				$arrval[] = "%$val%";
 				break;
 			case 'search_category_id':
-				// å­ã‚«ãƒ†ã‚´ãƒªIDã®å–å¾—
+				// »Ò¥«¥Æ¥´¥êID¤Î¼èÆÀ
 				$arrRet = sfGetChildsID("dtb_category", "parent_category_id", "category_id", $val);
 				$tmp_where = "";
 				foreach ($arrRet as $val) {
@@ -81,88 +81,88 @@ case  'search':
 	
 	$order = "update_date DESC, product_id DESC ";
 	
-	// èª­ã¿è¾¼ã‚€åˆ—ã¨ãƒ†ãƒ¼ãƒ–ãƒ«ã®æŒ‡å®š
+	// ÆÉ¤ß¹ş¤àÎó¤È¥Æ¡¼¥Ö¥ë¤Î»ØÄê
 	$col = "product_id, name, category_id, main_list_image, status, product_code, price01, stock, stock_unlimited";
 	$from = "vw_products_nonclass AS noncls ";
 
-	// è¡Œæ•°ã®å–å¾—
+	// ¹Ô¿ô¤Î¼èÆÀ
 	$linemax = $objQuery->count("dtb_products", $where, $arrval);
-	$objPage->tpl_linemax = $linemax;				// ä½•ä»¶ãŒè©²å½“ã—ã¾ã—ãŸã€‚è¡¨ç¤ºç”¨
+	$objPage->tpl_linemax = $linemax;				// ²¿·ï¤¬³ºÅö¤·¤Ş¤·¤¿¡£É½¼¨ÍÑ
 	
-	// ãƒšãƒ¼ã‚¸é€ã‚Šã®å‡¦ç†
+	// ¥Ú¡¼¥¸Á÷¤ê¤Î½èÍı
 	if(is_numeric($_POST['search_page_max'])) {	
 		$page_max = $_POST['search_page_max'];
 	} else {
 		$page_max = SEARCH_PMAX;
 	}
 	
-	// ãƒšãƒ¼ã‚¸é€ã‚Šã®å–å¾—
+	// ¥Ú¡¼¥¸Á÷¤ê¤Î¼èÆÀ
 	$objNavi = new SC_PageNavi($_POST['search_pageno'], $linemax, $page_max, "fnNaviSearchOnlyPage", NAVI_PMAX);
-	$objPage->tpl_strnavi = $objNavi->strnavi;		// è¡¨ç¤ºæ–‡å­—åˆ—
+	$objPage->tpl_strnavi = $objNavi->strnavi;		// É½¼¨Ê¸»úÎó
 	$startno = $objNavi->start_row;
 	
-	// å–å¾—ç¯„å›²ã®æŒ‡å®š(é–‹å§‹è¡Œç•ªå·ã€è¡Œæ•°ã®ã‚»ãƒƒãƒˆ)
+	// ¼èÆÀÈÏ°Ï¤Î»ØÄê(³«»Ï¹ÔÈÖ¹æ¡¢¹Ô¿ô¤Î¥»¥Ã¥È)
 	if(DB_TYPE != "mysql") $objQuery->setlimitoffset($page_max, $startno);
-	// è¡¨ç¤ºé †åº
+	// É½¼¨½ç½ø
 	$objQuery->setorder($order);
 	
-	// viewã‚‚çµè¾¼ã¿ã‚’ã‹ã‘ã‚‹(mysqlç”¨)
+	// view¤â¹Ê¹ş¤ß¤ò¤«¤±¤ë(mysqlÍÑ)
 	sfViewWhere("&&noncls_where&&", $where, $arrval, $objQuery->order . " " .  $objQuery->setlimitoffset($page_max, $startno, true));
 	
-	// æ¤œç´¢çµæœã®å–å¾—
+	// ¸¡º÷·ë²Ì¤Î¼èÆÀ
 	$objPage->arrProducts = $objQuery->select($col, $from, $where, $arrval);
 	break;
 	
-// ã‚¿ã‚°è¡¨ç¤º
+// ¥¿¥°É½¼¨
 case 'view':
 
-	// ã‚¿ã‚°ã‚’ç”Ÿæˆ
+	// ¥¿¥°¤òÀ¸À®
 	$create_tag = lfGetCreateTag($_POST['product_id']);
 	$objPage->tpl_create_tag = $create_tag;
 	break;
 }
 
-// ã‚«ãƒ†ã‚´ãƒªå–å¾—
+// ¥«¥Æ¥´¥ê¼èÆÀ
 $objPage->arrCatList = sfGetCategoryList();
 
-//----ã€€ãƒšãƒ¼ã‚¸è¡¨ç¤º
+//----¡¡¥Ú¡¼¥¸É½¼¨
 $objView->assignobj($objPage);
 $objView->display($objPage->tpl_mainpage);
 
 //---------------------------------------------------------------------------------------------------------------------------------------------------------
 
-/* å–å¾—æ–‡å­—åˆ—ã®å¤‰æ› */
+/* ¼èÆÀÊ¸»úÎó¤ÎÊÑ´¹ */
 function lfConvertParam() {
 	global $objPage;
 	/*
-	 *	æ–‡å­—åˆ—ã®å¤‰æ›
-	 *	K :  ã€ŒåŠè§’(ï¾Šï¾ï½¶ï½¸)ç‰‡ä»®åã€ã‚’ã€Œå…¨è§’ç‰‡ä»®åã€ã«å¤‰æ›
-	 *	C :  ã€Œå…¨è§’ã²ã‚‰ä»®åã€ã‚’ã€Œå…¨è§’ã‹ãŸä»®åã€ã«å¤‰æ›
-	 *	V :  æ¿ç‚¹ä»˜ãã®æ–‡å­—ã‚’ä¸€æ–‡å­—ã«å¤‰æ›ã€‚"K","H"ã¨å…±ã«ä½¿ç”¨ã—ã¾ã™	
-	 *	n :  ã€Œå…¨è§’ã€æ•°å­—ã‚’ã€ŒåŠè§’(ï¾Šï¾ï½¶ï½¸)ã€ã«å¤‰æ›
+	 *	Ê¸»úÎó¤ÎÊÑ´¹
+	 *	K :  ¡ÖÈ¾³Ñ(Êİ¶¸)ÊÒ²¾Ì¾¡×¤ò¡ÖÁ´³ÑÊÒ²¾Ì¾¡×¤ËÊÑ´¹
+	 *	C :  ¡ÖÁ´³Ñ¤Ò¤é²¾Ì¾¡×¤ò¡ÖÁ´³Ñ¤«¤¿²¾Ì¾¡×¤ËÊÑ´¹
+	 *	V :  ÂùÅÀÉÕ¤­¤ÎÊ¸»ú¤ò°ìÊ¸»ú¤ËÊÑ´¹¡£"K","H"¤È¶¦¤Ë»ÈÍÑ¤·¤Ş¤¹	
+	 *	n :  ¡ÖÁ´³Ñ¡×¿ô»ú¤ò¡ÖÈ¾³Ñ(Êİ¶¸)¡×¤ËÊÑ´¹
 	 */
 	$arrConvList['search_name'] = "KVa";
 	$arrConvList['search_product_code'] = "KVa";
 	
-	// æ–‡å­—å¤‰æ›
+	// Ê¸»úÊÑ´¹
 	foreach ($arrConvList as $key => $val) {
-		// POSTã•ã‚Œã¦ããŸå€¤ã®ã¿å¤‰æ›ã™ã‚‹ã€‚
+		// POST¤µ¤ì¤Æ¤­¤¿ÃÍ¤Î¤ßÊÑ´¹¤¹¤ë¡£
 		if(isset($objPage->arrForm[$key])) {
 			$objPage->arrForm[$key] = mb_convert_kana($objPage->arrForm[$key] ,$val);
 		}
 	}
 }
 
-/* ã‚¿ã‚°ã‚’ç”Ÿæˆ */
+/* ¥¿¥°¤òÀ¸À® */
 function lfGetCreateTag($product_id) {
 	
 	global $objQuery;
 	
-	// æ›¸ãè¾¼ã¿ã‚¿ã‚°
+	// ½ñ¤­¹ş¤ß¥¿¥°
 	$read_file = file_get_contents(CAMPAIGN_BLOC_PATH . "cart_tag.tpl");
 	$read_file = ereg_replace("<{assign_product_id}>", $product_id, $read_file);
-	// ã‚«ãƒ¼ãƒˆã‚¿ã‚°ä¿å­˜ç”¨ãƒ•ã‚¡ã‚¤ãƒ«ä½œæˆ
-	$create_tag .= "<!--{* â–¼å•†å“ID$product_id *}-->\n";
+	// ¥«¡¼¥È¥¿¥°ÊİÂ¸ÍÑ¥Õ¥¡¥¤¥ëºîÀ®
+	$create_tag .= "<!--{* ¢§¾¦ÉÊID$product_id *}-->\n";
 	$create_tag .= $read_file;
 	
 	return $create_tag;	

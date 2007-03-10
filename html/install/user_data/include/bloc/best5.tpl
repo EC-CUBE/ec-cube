@@ -3,10 +3,10 @@
  *
  * http://www.lockon.co.jp/
  *}-->
-<!--â–¼ãŠã™ã™ã‚æƒ…å ±ã“ã“ã‹ã‚‰-->
+<!--¢§¤ª¤¹¤¹¤á¾ðÊó¤³¤³¤«¤é-->
 <table width="400" border="0" cellspacing="0" cellpadding="0" summary=" ">
 	<tr>
-		<td colspan="2"><img src="<!--{$smarty.const.URL_DIR}-->img/top/osusume.jpg" width="400" height="29" alt="ãŠã™ã™ã‚æƒ…å ±"></td>
+		<td colspan="2"><img src="<!--{$smarty.const.URL_DIR}-->img/top/osusume.jpg" width="400" height="29" alt="¤ª¤¹¤¹¤á¾ðÊó"></td>
 	</tr>
 	<tr><td height="10"></td></tr>
 
@@ -25,13 +25,13 @@
 						<!--{assign var=price01 value=`$arrBestProducts[cnt].price01_min`}-->
 						<!--{assign var=price02 value=`$arrBestProducts[cnt].price02_min`}-->
 						<td><span class="fs12"><a href="<!--{$smarty.const.URL_DIR}-->products/detail.php?product_id=<!--{$arrBestProducts[cnt].product_id}-->"><!--{$arrBestProducts[cnt].name|escape}--></a></span><br>
-						<span class="red"><span class="fs12">ä¾¡æ ¼</span><span class="fs10">(ç¨Žè¾¼)</span></span><span class="redst"><span class="fs12">ï¼š
+						<span class="red"><span class="fs12">²Á³Ê</span><span class="fs10">(ÀÇ¹þ)</span></span><span class="redst"><span class="fs12">¡§
 						<!--{if $price02 == ""}-->
 						<!--{$price01|sfPreTax:$arrInfo.tax:$arrInfo.tax_rule|number_format}-->
 						<!--{else}-->
 						<!--{$price02|sfPreTax:$arrInfo.tax:$arrInfo.tax_rule|number_format}-->
 						<!--{/if}-->
-						å††</span></span></td>
+						±ß</span></span></td>
 					</tr>
 					<tr><td height="5"></td></tr>
 					<tr>
@@ -57,13 +57,13 @@
 							<!--{assign var=price01 value=`$arrBestProducts[$cnt2].price01_min`}-->
 							<!--{assign var=price02 value=`$arrBestProducts[$cnt2].price02_min`}-->
 							<td><span class="fs12"><a href="<!--{$smarty.const.URL_DIR}-->products/detail.php?product_id=<!--{$arrBestProducts[$cnt2].product_id}-->"><!--{$arrBestProducts[$cnt2].name|escape}--></a></span><br>
-							<span class="red"><span class="fs12">ä¾¡æ ¼</span><span class="fs10">(ç¨Žè¾¼)</span></span><span class="redst"><span class="fs12">ï¼š
+							<span class="red"><span class="fs12">²Á³Ê</span><span class="fs10">(ÀÇ¹þ)</span></span><span class="redst"><span class="fs12">¡§
 							<!--{if $price02 == ""}-->
 							<!--{$price01|sfPreTax:$arrInfo.tax:$arrInfo.tax_rule|number_format}-->
 							<!--{else}-->
 							<!--{$price02|sfPreTax:$arrInfo.tax:$arrInfo.tax_rule|number_format}-->
 							<!--{/if}-->
-							å††</span></span></td>
+							±ß</span></span></td>
 						</tr>
 						<tr><td height="5"></td></tr>
 						<tr>
@@ -85,6 +85,6 @@
 	<!--{/section}-->
 <tr><td height="35"></td></tr>
 </table>
-<!--â–²ãŠã™ã™ã‚æƒ…å ±ã“ã“ã¾ã§-->
+<!--¢¥¤ª¤¹¤¹¤á¾ðÊó¤³¤³¤Þ¤Ç-->
 		
 		

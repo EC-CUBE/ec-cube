@@ -5,7 +5,7 @@
  * http://www.lockon.co.jp/
  */
 
-/* ã‚­ãƒ£ãƒ³ãƒšãƒ¼ãƒ³ç®¡ç†ã‚¯ãƒ©ã‚¹ */
+/* ¥­¥ã¥ó¥Ú¡¼¥ó´ÉÍý¥¯¥é¥¹ */
 class SC_CampaignSession {
 	var $key;
 	var $campaign_id;
@@ -14,48 +14,48 @@ class SC_CampaignSession {
 	var $is_campaign = 'is_campaign';
 	var $campaign_dir = 'campaign_dir';
 	
-	/* ã‚³ãƒ³ã‚¹ãƒˆãƒ©ã‚¯ã‚¿ */
+	/* ¥³¥ó¥¹¥È¥é¥¯¥¿ */
 	function SC_CampaignSession($key = "campaign") {
 		sfDomainSessionStart();
 		$this->key = $key;
 	}
 
-	/* ã‚­ãƒ£ãƒ³ãƒšãƒ¼ãƒ³IDã‚’ã‚»ãƒƒãƒˆ */
+	/* ¥­¥ã¥ó¥Ú¡¼¥óID¤ò¥»¥Ã¥È */
 	function setCampaignId($campaign_id) {
 		$_SESSION[$this->key][$this->campaign_id] = $campaign_id;
 	}
 	
-	/* ã‚­ãƒ£ãƒ³ãƒšãƒ¼ãƒ³IDã‚’å–å¾— */
+	/* ¥­¥ã¥ó¥Ú¡¼¥óID¤ò¼èÆÀ */
 	function getCampaignId() {
 		return $_SESSION[$this->key][$this->campaign_id];
 	}
 			
-	/* ã‚­ãƒ£ãƒ³ãƒšãƒ¼ãƒ³ãƒšãƒ¼ã‚¸ã‹ã‚‰ã®é·ç§»æƒ…å ±ã‚’ä¿æŒ */
+	/* ¥­¥ã¥ó¥Ú¡¼¥ó¥Ú¡¼¥¸¤«¤é¤ÎÁ«°Ü¾ðÊó¤òÊÝ»ý */
 	function setIsCampaign() {
 		$_SESSION[$this->key][$this->is_campaign] = true;
 	}
 
-	/* ã‚­ãƒ£ãƒ³ãƒšãƒ¼ãƒ³ãƒšãƒ¼ã‚¸ã‹ã‚‰ã®é·ç§»æƒ…å ±ã‚’å–å¾— */
+	/* ¥­¥ã¥ó¥Ú¡¼¥ó¥Ú¡¼¥¸¤«¤é¤ÎÁ«°Ü¾ðÊó¤ò¼èÆÀ */
 	function getIsCampaign() {
 		return $_SESSION[$this->key][$this->is_campaign];
 	}
 
-	/* ã‚­ãƒ£ãƒ³ãƒšãƒ¼ãƒ³æƒ…å ±ã‚’å‰Šé™¤ */
+	/* ¥­¥ã¥ó¥Ú¡¼¥ó¾ðÊó¤òºï½ü */
 	function delCampaign() {
 		unset($_SESSION[$this->key]);
 	}
 
-	/* ã‚­ãƒ£ãƒ³ãƒšãƒ¼ãƒ³ãƒ‡ã‚£ãƒ¬ã‚¯ãƒˆãƒªåã‚’ã‚»ãƒƒãƒˆ */
+	/* ¥­¥ã¥ó¥Ú¡¼¥ó¥Ç¥£¥ì¥¯¥È¥êÌ¾¤ò¥»¥Ã¥È */
 	function setCampaignDir($campaign_dir) {
 		$_SESSION[$this->key][$this->campaign_dir] = $campaign_dir;
 	}
 	
-	/* ã‚­ãƒ£ãƒ³ãƒšãƒ¼ãƒ³ãƒ‡ã‚£ãƒ¬ã‚¯ãƒˆãƒªåã‚’å–å¾— */
+	/* ¥­¥ã¥ó¥Ú¡¼¥ó¥Ç¥£¥ì¥¯¥È¥êÌ¾¤ò¼èÆÀ */
 	function getCampaignDir() {
 		return $_SESSION[$this->key][$this->campaign_dir];
 	}
 	
-	/* ã‚­ãƒ£ãƒ³ãƒšãƒ¼ãƒ³ãƒšãƒ¼ã‚¸ãªã‚‰ãƒ•ãƒ¬ãƒ¼ãƒ ã‚’å¤‰æ›´ */
+	/* ¥­¥ã¥ó¥Ú¡¼¥ó¥Ú¡¼¥¸¤Ê¤é¥Õ¥ì¡¼¥à¤òÊÑ¹¹ */
 	function pageView($objView, $site_frame = SITE_FRAME) {
 		if($this->getIsCampaign()) {
 			$objView->display(CAMPAIGN_TEMPLATE_PATH . $this->getCampaignDir()  . "/active/site_frame.tpl");

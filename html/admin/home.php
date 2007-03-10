@@ -18,43 +18,43 @@ $objPage = new LC_Page();
 $objView = new SC_AdminView();
 $objSess = new SC_Session();
 
-// èªè¨¼å¯å¦ã®åˆ¤å®š
+// Ç§¾Ú²ÄÈİ¤ÎÈ½Äê
 sfIsSuccess($objSess);
 
-// DBãƒãƒ¼ã‚¸ãƒ§ãƒ³ã®å–å¾—
+// DB¥Ğ¡¼¥¸¥ç¥ó¤Î¼èÆÀ
 $objPage->db_version = sfGetDBVersion();
 
-// PHPãƒãƒ¼ã‚¸ãƒ§ãƒ³ã®å–å¾—
+// PHP¥Ğ¡¼¥¸¥ç¥ó¤Î¼èÆÀ
 $objPage->php_version = "PHP " . phpversion();
 
-// ç¾åœ¨ã®ä¼šå“¡æ•°
+// ¸½ºß¤Î²ñ°÷¿ô
 $objPage->customer_cnt = lfGetCustomerCnt($conn);
 
-// æ˜¨æ—¥ã®å£²ä¸Šé«˜
+// ºòÆü¤ÎÇä¾å¹â
 $objPage->order_yesterday_amount = lfGetOrderYesterday($conn, "SUM");
 
-// æ˜¨æ—¥ã®å£²ä¸Šä»¶æ•°
+// ºòÆü¤ÎÇä¾å·ï¿ô
 $objPage->order_yesterday_cnt = lfGetOrderYesterday($conn, "COUNT");
 
-// ä»Šæœˆã®å£²ä¸Šé«˜
+// º£·î¤ÎÇä¾å¹â
 $objPage->order_month_amount = lfGetOrderMonth($conn, "SUM");
 
-// ä»Šæœˆã®å£²ä¸Šä»¶æ•°
+// º£·î¤ÎÇä¾å·ï¿ô
 $objPage->order_month_cnt = lfGetOrderMonth($conn, "COUNT");
 
-// é¡§å®¢ã®ç´¯è¨ˆãƒã‚¤ãƒ³ãƒˆ
+// ¸ÜµÒ¤ÎÎß·×¥İ¥¤¥ó¥È
 $objPage->customer_point = lfGetTotalCustomerPoint();
 
-//æ˜¨æ—¥ã®ãƒ¬ãƒ“ãƒ¥ãƒ¼æ›¸ãè¾¼ã¿æ•°
+//ºòÆü¤Î¥ì¥Ó¥å¡¼½ñ¤­¹ş¤ß¿ô
 $objPage->review_yesterday_cnt = lfGetReviewYesterday($conn);
 
-//ãƒ¬ãƒ“ãƒ¥ãƒ¼æ›¸ãè¾¼ã¿éè¡¨ç¤ºæ•°
+//¥ì¥Ó¥å¡¼½ñ¤­¹ş¤ßÈóÉ½¼¨¿ô
 $objPage->review_nondisp_cnt = lfGetReviewNonDisp($conn);
 
-// å“åˆ‡ã‚Œå•†å“
+// ÉÊÀÚ¤ì¾¦ÉÊ
 $objPage->arrSoldout = lfGetSoldOut();
 
-// æ–°è¦å—ä»˜ä¸€è¦§
+// ¿·µ¬¼õÉÕ°ìÍ÷
 $arrNewOrder = lfGetNewOrder();
 
 foreach ($arrNewOrder as $key => $val){
@@ -63,14 +63,14 @@ foreach ($arrNewOrder as $key => $val){
 }
 $objPage->arrNewOrder = $arrNewOrder;
 
-// ãŠçŸ¥ã‚‰ã›ä¸€è¦§ã®å–å¾—
+// ¤ªÃÎ¤é¤»°ìÍ÷¤Î¼èÆÀ
 $objPage->arrInfo = lfGetInfo();
 
 $objView->assignobj($objPage);
 $objView->display(MAIN_FRAME);
 //---------------------------------------------------------
 
-// ä¼šå“¡æ•°
+// ²ñ°÷¿ô
 function lfGetCustomerCnt($conn){
 	
 	$sql = "SELECT COUNT(customer_id) FROM dtb_customer WHERE del_flg = 0 AND status = 2";
@@ -78,10 +78,10 @@ function lfGetCustomerCnt($conn){
 	return $return;
 }
 
-// æ˜¨æ—¥ã®å£²ä¸Šé«˜ãƒ»å£²ä¸Šä»¶æ•°
+// ºòÆü¤ÎÇä¾å¹â¡¦Çä¾å·ï¿ô
 function lfGetOrderYesterday($conn, $method){
 	if ( $method == 'SUM' or $method == 'COUNT'){
-		// postgresql ã¨ mysql ã¨ã§SQLã‚’ã‚ã‘ã‚‹
+		// postgresql ¤È mysql ¤È¤ÇSQL¤ò¤ï¤±¤ë
 		if (DB_TYPE == "pgsql") {
 			$sql = "SELECT ".$method."(total) FROM dtb_order
 					 WHERE del_flg = 0 AND to_char(create_date,'YYYY/MM/DD') = to_char(now() - interval '1 days','YYYY/MM/DD')";
@@ -99,7 +99,7 @@ function lfGetOrderMonth($conn, $method){
 	$month = date("Y/m", mktime());
 	
 	if ( $method == 'SUM' or $method == 'COUNT'){
-	// postgresql ã¨ mysql ã¨ã§SQLã‚’ã‚ã‘ã‚‹
+	// postgresql ¤È mysql ¤È¤ÇSQL¤ò¤ï¤±¤ë
 	if (DB_TYPE == "pgsql") {
 		$sql = "SELECT ".$method."(total) FROM dtb_order
 				 WHERE del_flg = 0 AND to_char(create_date,'YYYY/MM') = ? 
@@ -124,7 +124,7 @@ function lfGetTotalCustomerPoint() {
 }
 
 function lfGetReviewYesterday($conn){
-	// postgresql ã¨ mysql ã¨ã§SQLã‚’ã‚ã‘ã‚‹
+	// postgresql ¤È mysql ¤È¤ÇSQL¤ò¤ï¤±¤ë
 	if (DB_TYPE == "pgsql") {
 		$sql = "SELECT COUNT(*) FROM dtb_review 
 				 WHERE del_flg=0 AND to_char(create_date, 'YYYY/MM/DD') = to_char(now() - interval '1 days','YYYY/MM/DD')
@@ -144,7 +144,7 @@ function lfGetReviewNonDisp($conn){
 	return $return;
 }
 
-// å“åˆ‡ã‚Œå•†å“ç•ªå·ã®å–å¾—
+// ÉÊÀÚ¤ì¾¦ÉÊÈÖ¹æ¤Î¼èÆÀ
 function lfGetSoldOut() {
 	$objQuery = new SC_Query();
 	$where = "product_id IN (SELECT product_id FROM dtb_products_class WHERE stock_unlimited IS NULL AND stock <= 0)";
@@ -152,7 +152,7 @@ function lfGetSoldOut() {
 	return $arrRet;
 }
 
-// æ–°è¦å—ä»˜ä¸€è¦§
+// ¿·µ¬¼õÉÕ°ìÍ÷
 function lfGetNewOrder() {
 	$objQuery = new SC_Query();
 	$col = "ord.order_id, customer_id, ord.order_name01 AS name01, ord.order_name02 AS name02, ord.total, ";
@@ -166,16 +166,16 @@ function lfGetNewOrder() {
 	return $arrRet;
 }
 
-// ãŠçŸ¥ã‚‰ã›å–å¾—
+// ¤ªÃÎ¤é¤»¼èÆÀ
 function lfGetInfo() {
-	// æ›´æ–°æƒ…å ±ã‚’æœ€æ–°ã«ã™ã‚‹
+	// ¹¹¿·¾ğÊó¤òºÇ¿·¤Ë¤¹¤ë
 	$objQuery = new SC_Query();
 	$path = UPDATE_HTTP . "info.txt";
 	$fp = @fopen($path, "rb");
 	
 	$arrRet = array();
 	if(!$fp) {
-		sfErrorHeader(">> " . $path . "ã®å–å¾—ã«å¤±æ•—ã—ã¾ã—ãŸã€‚");
+		sfErrorHeader(">> " . $path . "¤Î¼èÆÀ¤Ë¼ºÇÔ¤·¤Ş¤·¤¿¡£");
 	} else {
 		while (!feof($fp)) {
 			$arrRet[] = $arrCSV = fgetcsv($fp, UPDATE_CSV_LINE_MAX);

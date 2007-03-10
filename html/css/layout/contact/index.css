@@ -4,10 +4,10 @@
  * http://www.lockon.co.jp/
  */
 @charset "<!--{$smarty.const.CHAR_CODE}-->";
-/***ãŠå•ã„åˆã‚ã›***/
+/***¤ªÌä¤¤¹ç¤ï¤»***/
 
 
-/***å³ã‚³ãƒ³ãƒ†ãƒ³ãƒ„***/
+/***±¦¥³¥ó¥Æ¥ó¥Ä***/
 #container #right #maintitle{
 border: 0;
 margin: 0 0 15px 0;
@@ -29,7 +29,7 @@ padding: 0;
 width: 570px;
 }
 
-/*ãƒ†ãƒ¼ãƒ–ãƒ«*/
+/*¥Æ¡¼¥Ö¥ë*/
 #container #right #frame{
 border: 0;
 margin: 0;
@@ -48,7 +48,7 @@ background: #fff;
 width: 357px;
 }
 
-/*ãƒœã‚¿ãƒ³*/
+/*¥Ü¥¿¥ó*/
 #container #right #button{
 border: 0;
 margin: 20px 0 35px 0;

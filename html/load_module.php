@@ -21,7 +21,7 @@ if(is_numeric($module_id)) {
 		require_once($path);
 		exit;
 	} else {
-		print("ãƒ¢ã‚¸ãƒ¥ãƒ¼ãƒ«ã®å–å¾—ã«å¤±æ•—ã—ã¾ã—ãŸã€‚:".$path);
+		print("¥â¥¸¥å¡¼¥ë¤Î¼èÆÀ¤Ë¼ºÇÔ¤·¤Ş¤·¤¿¡£:".$path);
 	}
 }
 

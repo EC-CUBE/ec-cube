@@ -5,42 +5,42 @@
  * http://www.lockon.co.jp/
  */
 
-/*  [åç§°] SC_Customer
- *  [æ¦‚è¦] ä¼šå“¡ç®¡ç†ã‚¯ãƒ©ã‚¹
+/*  [Ì¾¾Î] SC_Customer
+ *  [³µÍ×] ²ñ°÷´ÉÍı¥¯¥é¥¹
  */
 class SC_Customer {
 	
 	var $conn;
 	var $email;
-	var $customer_data;		// ä¼šå“¡æƒ…å ±   
+	var $customer_data;		// ²ñ°÷¾ğÊó   
 		
 	function SC_Customer( $conn = '', $email = '', $pass = '' ) {
-		// ã‚»ãƒƒã‚·ãƒ§ãƒ³é–‹å§‹
-		/* startSessionã‹ã‚‰ç§»å‹• 2005/11/04 ä¸­å· */
+		// ¥»¥Ã¥·¥ç¥ó³«»Ï
+		/* startSession¤«¤é°ÜÆ° 2005/11/04 ÃæÀî */
 		sfDomainSessionStart();
 		
-		// DBæ¥ç¶šã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆç”Ÿæˆ
+		// DBÀÜÂ³¥ª¥Ö¥¸¥§¥¯¥ÈÀ¸À®
 		$DB_class_name = "SC_DbConn";
 		if ( is_object($conn)){
 			if ( is_a($conn, $DB_class_name)){
-				// $connãŒ$DB_class_nameã®ã‚¤ãƒ³ã‚¹ã‚¿ãƒ³ã‚¹ã§ã‚ã‚‹
+				// $conn¤¬$DB_class_name¤Î¥¤¥ó¥¹¥¿¥ó¥¹¤Ç¤¢¤ë
 				$this->conn = $conn;
 			}
 		} else {
 			if (class_exists($DB_class_name)){
-				//$DB_class_nameã®ã‚¤ãƒ³ã‚¹ã‚¿ãƒ³ã‚¹ã‚’ä½œæˆã™ã‚‹
+				//$DB_class_name¤Î¥¤¥ó¥¹¥¿¥ó¥¹¤òºîÀ®¤¹¤ë
 				$this->conn = new SC_DbConn();			
 			}
 		}
 			
 		if ( is_object($this->conn) ) { 
-			// æ­£å¸¸ã«DBã«æ¥ç¶šã§ãã‚‹
+			// Àµ¾ï¤ËDB¤ËÀÜÂ³¤Ç¤­¤ë
 			if ( $email ){
-				// emailã‹ã‚‰é¡§å®¢æƒ…å ±ã‚’å–å¾—ã™ã‚‹
+				// email¤«¤é¸ÜµÒ¾ğÊó¤ò¼èÆÀ¤¹¤ë
 				// $this->setCustomerDataFromEmail( $email );
 			}
 		} else {
-			echo "DBæ¥ç¶šã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã®ç”Ÿæˆã«å¤±æ•—ã—ã¦ã„ã¾ã™";
+			echo "DBÀÜÂ³¥ª¥Ö¥¸¥§¥¯¥È¤ÎÀ¸À®¤Ë¼ºÇÔ¤·¤Æ¤¤¤Ş¤¹";
 			exit;
 		}
 		
@@ -50,12 +50,12 @@ class SC_Customer {
 	}
 	
 	function getCustomerDataFromEmailPass( $pass, $email ) {
-		// æœ¬ç™»éŒ²ã•ã‚ŒãŸä¼šå“¡ã®ã¿
+		// ËÜÅĞÏ¿¤µ¤ì¤¿²ñ°÷¤Î¤ß
 		$sql = "SELECT * FROM dtb_customer WHERE email ILIKE ? AND del_flg = 0 AND status = 2";
 		$result = $this->conn->getAll($sql, array($email));
 		$data = $result[0];
 		
-		// ãƒ‘ã‚¹ãƒ¯ãƒ¼ãƒ‰ãŒåˆã£ã¦ã„ã‚Œã°é¡§å®¢æƒ…å ±ã‚’customer_dataã«ã‚»ãƒƒãƒˆã—ã¦trueã‚’è¿”ã™
+		// ¥Ñ¥¹¥ï¡¼¥É¤¬¹ç¤Ã¤Æ¤¤¤ì¤Ğ¸ÜµÒ¾ğÊó¤òcustomer_data¤Ë¥»¥Ã¥È¤·¤Ætrue¤òÊÖ¤¹
 		if ( sha1($pass . ":" . AUTH_MAGIC) == $data['password'] ){
 			$this->customer_data = $data;
 			$this->startSession();
@@ -64,9 +64,9 @@ class SC_Customer {
 		return false;
 	}
 	
-	// ãƒ‘ã‚¹ãƒ¯ãƒ¼ãƒ‰ã‚’ç¢ºèªã›ãšã«ãƒ­ã‚°ã‚¤ãƒ³
+	// ¥Ñ¥¹¥ï¡¼¥É¤ò³ÎÇ§¤»¤º¤Ë¥í¥°¥¤¥ó
 	function setLogin($email) {
-		// æœ¬ç™»éŒ²ã•ã‚ŒãŸä¼šå“¡ã®ã¿
+		// ËÜÅĞÏ¿¤µ¤ì¤¿²ñ°÷¤Î¤ß
 		$sql = "SELECT * FROM dtb_customer WHERE email ILIKE ? AND del_flg = 0 AND status = 2";
 		$result = $this->conn->getAll($sql, array($email));
 		$data = $result[0];
@@ -74,7 +74,7 @@ class SC_Customer {
 		$this->startSession();
 	}
 	
-	// ã‚»ãƒƒã‚·ãƒ§ãƒ³æƒ…å ±ã‚’æœ€æ–°ã®æƒ…å ±ã«æ›´æ–°ã™ã‚‹
+	// ¥»¥Ã¥·¥ç¥ó¾ğÊó¤òºÇ¿·¤Î¾ğÊó¤Ë¹¹¿·¤¹¤ë
 	function updateSession() {
 		$sql = "SELECT * FROM dtb_customer WHERE customer_id = ? AND del_flg = 0";
 		$customer_id = $this->getValue('customer_id');
@@ -83,25 +83,25 @@ class SC_Customer {
 		$_SESSION['customer'] = $this->customer_data;
 	}
 		
-	// ãƒ­ã‚°ã‚¤ãƒ³æƒ…å ±ã‚’ã‚»ãƒƒã‚·ãƒ§ãƒ³ã«ç™»éŒ²ã—ã€ãƒ­ã‚°ã«æ›¸ãè¾¼ã‚€
+	// ¥í¥°¥¤¥ó¾ğÊó¤ò¥»¥Ã¥·¥ç¥ó¤ËÅĞÏ¿¤·¡¢¥í¥°¤Ë½ñ¤­¹ş¤à
 	function startSession() {
 		sfDomainSessionStart();
 		$_SESSION['customer'] = $this->customer_data;
-		// ã‚»ãƒƒã‚·ãƒ§ãƒ³æƒ…å ±ã®ä¿å­˜
+		// ¥»¥Ã¥·¥ç¥ó¾ğÊó¤ÎÊİÂ¸
 		gfPrintLog("access : user=".$this->customer_data['customer_id'] ."\t"."ip=". $_SERVER['REMOTE_HOST'], CUSTOMER_LOG_PATH );
 	}
 
-	// ãƒ­ã‚°ã‚¢ã‚¦ãƒˆã€€$_SESSION['customer']ã‚’è§£æ”¾ã—ã€ãƒ­ã‚°ã«æ›¸ãè¾¼ã‚€
+	// ¥í¥°¥¢¥¦¥È¡¡$_SESSION['customer']¤ò²òÊü¤·¡¢¥í¥°¤Ë½ñ¤­¹ş¤à
 	function EndSession() {
-		// $_SESSION['customer']ã®è§£æ”¾
+		// $_SESSION['customer']¤Î²òÊü
 		unset($_SESSION['customer']);
-		// ãƒ­ã‚°ã«è¨˜éŒ²ã™ã‚‹
+		// ¥í¥°¤Ëµ­Ï¿¤¹¤ë
 		gfPrintLog("logout : user=".$this->customer_data['customer_id'] ."\t"."ip=". $_SERVER['REMOTE_HOST'], CUSTOMER_LOG_PATH );
 	}
 	
-	// ãƒ­ã‚°ã‚¤ãƒ³ã«æˆåŠŸã—ã¦ã„ã‚‹ã‹åˆ¤å®šã™ã‚‹ã€‚
+	// ¥í¥°¥¤¥ó¤ËÀ®¸ù¤·¤Æ¤¤¤ë¤«È½Äê¤¹¤ë¡£
 	function isLoginSuccess() {
-		// ãƒ­ã‚°ã‚¤ãƒ³æ™‚ã®ãƒ¡ãƒ¼ãƒ«ã‚¢ãƒ‰ãƒ¬ã‚¹ã¨DBã®ãƒ¡ãƒ¼ãƒ«ã‚¢ãƒ‰ãƒ¬ã‚¹ãŒä¸€è‡´ã—ã¦ã„ã‚‹å ´åˆ
+		// ¥í¥°¥¤¥ó»ş¤Î¥á¡¼¥ë¥¢¥É¥ì¥¹¤ÈDB¤Î¥á¡¼¥ë¥¢¥É¥ì¥¹¤¬°ìÃ×¤·¤Æ¤¤¤ë¾ì¹ç
 		if(sfIsInt($_SESSION['customer']['customer_id'])) {
 			$objQuery = new SC_Query();
 			$email = $objQuery->get("dtb_customer", "email", "customer_id = ?", array($_SESSION['customer']['customer_id']));
@@ -112,17 +112,17 @@ class SC_Customer {
 		return false;
 	}
 		
-	// ãƒ‘ãƒ©ãƒ¡ãƒ¼ã‚¿ã®å–å¾—
+	// ¥Ñ¥é¥á¡¼¥¿¤Î¼èÆÀ
 	function getValue($keyname) {
 		return $_SESSION['customer'][$keyname];
 	}
 	
-	// ãƒ‘ãƒ©ãƒ¡ãƒ¼ã‚¿ã®ã‚»ãƒƒãƒˆ
+	// ¥Ñ¥é¥á¡¼¥¿¤Î¥»¥Ã¥È
 	function setValue($keyname, $val) {
 		$_SESSION['customer'][$keyname] = $val;
 	}
 	
-	// èª•ç”Ÿæ—¥æœˆã§ã‚ã‚‹ã‹ã©ã†ã‹ã®åˆ¤å®š
+	// ÃÂÀ¸Æü·î¤Ç¤¢¤ë¤«¤É¤¦¤«¤ÎÈ½Äê
 	function isBirthMonth() {
 		$arrRet = split("[- :/]", $_SESSION['customer']['birth']);
 		$birth_month = intval($arrRet[1]);

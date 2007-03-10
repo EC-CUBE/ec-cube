@@ -6,8 +6,8 @@
  */
 class LC_CartPage {
 	function LC_CartPage() {
-		/** å¿…ãšå¤‰æ›´ã™ã‚‹ **/
-		$this->tpl_mainpage = BLOC_PATH . 'cart.tpl';	// ãƒ¡ã‚¤ãƒ³
+		/** É¬¤ºÊÑ¹¹¤¹¤ë **/
+		$this->tpl_mainpage = BLOC_PATH . 'cart.tpl';	// ¥á¥¤¥ó
 	}
 }
 
@@ -17,12 +17,12 @@ $objCart = new SC_CartSession();
 $objSiteInfo = new SC_SiteInfo;
 
 if (count($_SESSION[$objCart->key]) > 0){
-	// ã‚«ãƒ¼ãƒˆæƒ…å ±ã‚’å–å¾—
+	// ¥«¡¼¥È¾ðÊó¤ò¼èÆÀ
 	$arrCartList = $objCart->getCartList();
 	
-	// ã‚«ãƒ¼ãƒˆå†…ã®å•†å“ï¼©ï¼¤ä¸€è¦§ã‚’å–å¾—
+	// ¥«¡¼¥ÈÆâ¤Î¾¦ÉÊ£É£Ä°ìÍ÷¤ò¼èÆÀ
 	$arrAllProductID = $objCart->getAllProductID();
-	// å•†å“ãŒ1ã¤ä»¥ä¸Šå…¥ã£ã¦ã„ã‚‹å ´åˆã«ã¯å•†å“åç§°ã‚’å–å¾—
+	// ¾¦ÉÊ¤¬1¤Ä°Ê¾åÆþ¤Ã¤Æ¤¤¤ë¾ì¹ç¤Ë¤Ï¾¦ÉÊÌ¾¾Î¤ò¼èÆÀ
 	if (count($arrAllProductID) > 0){
 		$objQuery = new SC_Query();
 		$arrVal = array();
@@ -41,15 +41,15 @@ if (count($_SESSION[$objCart->key]) > 0){
 			$arrCartList[$key]['product_name'] = $val['name'];
 		}
 	}
-	// åº—èˆ—æƒ…å ±ã®å–å¾—
+	// Å¹ÊÞ¾ðÊó¤Î¼èÆÀ
 	$arrInfo = $objSiteInfo->data;
-	// è³¼å…¥é‡‘é¡åˆè¨ˆ
+	// ¹ØÆþ¶â³Û¹ç·×
 	$ProductsTotal = $objCart->getAllProductsTotal($arrInfo);
 	
-	// åˆè¨ˆå€‹æ•°
+	// ¹ç·×¸Ä¿ô
 	$TotalQuantity = $objCart->getTotalQuantity();
 	
-	// é€æ–™ç„¡æ–™ã¾ã§ã®é‡‘é¡
+	// Á÷ÎÁÌµÎÁ¤Þ¤Ç¤Î¶â³Û
 	if($arrInfo['free_rule'] > 0){
 		$deliv_free = $arrInfo['free_rule'] - $ProductsTotal;
 		$arrCartList[0]['free_rule'] = $arrInfo['free_rule'];

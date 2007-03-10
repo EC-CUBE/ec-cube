@@ -14,7 +14,7 @@ class LC_Page {
 		$this->tpl_subnavi = 'basis/subnavi.tpl';
 		$this->tpl_subno = 'point';
 		$this->tpl_mainno = 'basis';
-		$this->tpl_subtitle = 'ãƒã‚¤ãƒ³ãƒˆè¨­å®š';
+		$this->tpl_subtitle = '¥Ý¥¤¥ó¥ÈÀßÄê';
 	}
 }
 
@@ -24,14 +24,14 @@ $objView = new SC_AdminView();
 $objSess = new SC_Session();
 $objQuery = new SC_Query();
 
-// èªè¨¼å¯å¦ã®åˆ¤å®š
+// Ç§¾Ú²ÄÈÝ¤ÎÈ½Äê
 sfIsSuccess($objSess);
 
-// ãƒ‘ãƒ©ãƒ¡ãƒ¼ã‚¿ç®¡ç†ã‚¯ãƒ©ã‚¹
+// ¥Ñ¥é¥á¡¼¥¿´ÉÍý¥¯¥é¥¹
 $objFormParam = new SC_FormParam();
-// ãƒ‘ãƒ©ãƒ¡ãƒ¼ã‚¿æƒ…å ±ã®åˆæœŸåŒ–
+// ¥Ñ¥é¥á¡¼¥¿¾ðÊó¤Î½é´ü²½
 lfInitParam();
-// POSTå€¤ã®å–å¾—
+// POSTÃÍ¤Î¼èÆÀ
 $objFormParam->setParam($_POST);
 
 $cnt = $objQuery->count("dtb_baseinfo");
@@ -43,30 +43,30 @@ if ($cnt > 0) {
 }
 
 if($_POST['mode'] != "") {
-	// å…¥åŠ›å€¤ã®å¤‰æ›
+	// ÆþÎÏÃÍ¤ÎÊÑ´¹
 	$objFormParam->convParam();
 	$objPage->arrErr = $objFormParam->checkError();
 	
 	if(count($objPage->arrErr) == 0) {
 		switch($_POST['mode']) {
 		case 'update':
-			lfUpdateData(); // æ—¢å­˜ç·¨é›†
+			lfUpdateData(); // ´ûÂ¸ÊÔ½¸
 			break;
 		case 'insert':
-			lfInsertData(); // æ–°è¦ä½œæˆ
+			lfInsertData(); // ¿·µ¬ºîÀ®
 			break;
 		default:
 			break;
 		}
-		// å†è¡¨ç¤º
+		// ºÆÉ½¼¨
 		//sfReload();
-		$objPage->tpl_onload = "window.alert('ãƒã‚¤ãƒ³ãƒˆè¨­å®šãŒå®Œäº†ã—ã¾ã—ãŸã€‚');";
+		$objPage->tpl_onload = "window.alert('¥Ý¥¤¥ó¥ÈÀßÄê¤¬´°Î»¤·¤Þ¤·¤¿¡£');";
 	}
 } else {
-	$arrCol = $objFormParam->getKeyList(); // ã‚­ãƒ¼åä¸€è¦§ã‚’å–å¾—
+	$arrCol = $objFormParam->getKeyList(); // ¥­¡¼Ì¾°ìÍ÷¤ò¼èÆÀ
 	$col	= sfGetCommaList($arrCol);
 	$arrRet = $objQuery->select($col, "dtb_baseinfo");
-	// POSTå€¤ã®å–å¾—
+	// POSTÃÍ¤Î¼èÆÀ
 	$objFormParam->setParam($arrRet[0]);
 }
 
@@ -74,30 +74,30 @@ $objPage->arrForm = $objFormParam->getFormParamList();
 $objView->assignobj($objPage);
 $objView->display(MAIN_FRAME);
 //--------------------------------------------------------------------------------------------------------------------------------------
-/* ãƒ‘ãƒ©ãƒ¡ãƒ¼ã‚¿æƒ…å ±ã®åˆæœŸåŒ– */
+/* ¥Ñ¥é¥á¡¼¥¿¾ðÊó¤Î½é´ü²½ */
 function lfInitParam() {
 	global $objFormParam;
-	$objFormParam->addParam("ãƒã‚¤ãƒ³ãƒˆä»˜ä¸ŽçŽ‡", "point_rate", PERCENTAGE_LEN, "n", array("EXIST_CHECK", "MAX_LENGTH_CHECK", "NUM_CHECK"));
-	$objFormParam->addParam("ä¼šå“¡ç™»éŒ²æ™‚ä»˜ä¸Žãƒã‚¤ãƒ³ãƒˆ", "welcome_point", INT_LEN, "n", array("EXIST_CHECK", "MAX_LENGTH_CHECK", "NUM_CHECK"));
+	$objFormParam->addParam("¥Ý¥¤¥ó¥ÈÉÕÍ¿Î¨", "point_rate", PERCENTAGE_LEN, "n", array("EXIST_CHECK", "MAX_LENGTH_CHECK", "NUM_CHECK"));
+	$objFormParam->addParam("²ñ°÷ÅÐÏ¿»þÉÕÍ¿¥Ý¥¤¥ó¥È", "welcome_point", INT_LEN, "n", array("EXIST_CHECK", "MAX_LENGTH_CHECK", "NUM_CHECK"));
 }
 
 function lfUpdateData() {
 	global $objFormParam;
-	// å…¥åŠ›ãƒ‡ãƒ¼ã‚¿ã‚’æ¸¡ã™ã€‚
+	// ÆþÎÏ¥Ç¡¼¥¿¤òÅÏ¤¹¡£
 	$sqlval = $objFormParam->getHashArray();
 	$sqlval['update_date'] = 'Now()';
 	$objQuery = new SC_Query();
-	// UPDATEã®å®Ÿè¡Œ
+	// UPDATE¤Î¼Â¹Ô
 	$ret = $objQuery->update("dtb_baseinfo", $sqlval);
 }
 
 function lfInsertData() {
 	global $objFormParam;
-	// å…¥åŠ›ãƒ‡ãƒ¼ã‚¿ã‚’æ¸¡ã™ã€‚
+	// ÆþÎÏ¥Ç¡¼¥¿¤òÅÏ¤¹¡£
 	$sqlval = $objFormParam->getHashArray();
 	$sqlval['update_date'] = 'Now()';
 	$objQuery = new SC_Query();
-	// INSERTã®å®Ÿè¡Œ
+	// INSERT¤Î¼Â¹Ô
 	$ret = $objQuery->insert("dtb_baseinfo", $sqlval);
 }
 

@@ -26,14 +26,14 @@
 <div align="center">
 <a name="top" id="top"></a>
 
-<!--▼CONTENTS-->
+<!--��CONTENTS-->
 <table width="550" border="0" cellspacing="0" cellpadding="0" summary=" ">
 	<tr><td height="15"></td></tr>
 	<tr><td bgcolor="#ffa85c"><img src="<!--{$smarty.const.URL_DIR}-->misc/_.gif" width="1" height="5" alt=""></td></tr>
 	<tr>
 		<td align="center" bgcolor="#ffffff">
 
-		<!--▼入力フォームここから-->
+		<!--�����ϥե����ळ������-->
 		<table width="500" border="0" cellspacing="0" cellpadding="0" summary=" ">
 		<form name="form1" id="form1" method="post" action="<!--{$smarty.server.PHP_SELF|escape}-->">
 		<input type="hidden" name="mode" value="edit">
@@ -42,33 +42,33 @@
 
 			<tr><td height="15"></td></tr>
 			<tr>
-				<td><img src="<!--{$smarty.const.URL_DIR}-->img/shopping/delivadd_title.jpg" width="500" height="40" alt="新しいお届け先の追加・変更"></td>
+				<td><img src="<!--{$smarty.const.URL_DIR}-->img/shopping/delivadd_title.jpg" width="500" height="40" alt="���������Ϥ�����ɲá��ѹ�"></td>
 			</tr>
 			<tr><td height="15"></td></tr>
 			<tr>
-				<td class="fs12">下記項目にご入力ください。「<span class="red">※</span>」印は入力必須項目です。<br>
-				入力後、一番下の「確認ページへ」ボタンをクリックしてください。</td>
+				<td class="fs12">�������ܤˤ����Ϥ�����������<span class="red">��</span>�װ�������ɬ�ܹ��ܤǤ���<br>
+				���ϸ塢���ֲ��Ρֳ�ǧ�ڡ����ءץܥ���򥯥�å����Ƥ���������</td>
 			</tr>
 			<tr><td height="15"></td></tr>
 			<tr>
 				<td bgcolor="#cccccc">
-				<!--入力フォームここから-->
+				<!--���ϥե����ळ������-->
 				<table width="500" border="0" cellspacing="1" cellpadding="10" summary=" ">
 					<tr>
-						<td width="117" bgcolor="#f0f0f0" class="fs12">お名前<span class="red">※</span></td>
+						<td width="117" bgcolor="#f0f0f0" class="fs12">��̾��<span class="red">��</span></td>
 						<td width="340" bgcolor="#ffffff" class="fs12n">
 							<span class="red"><!--{$arrErr.name01}--><!--{$arrErr.name02}--></span>
-							姓&nbsp;<input type="text" name="name01" value="<!--{if $name01 == ""}--><!--{$arrOtherDeliv.name01|escape}--><!--{else}--><!--{$name01|escape}--><!--{/if}-->" maxlength="<!--{$smarty.const.STEXT_LEN}-->" style="<!--{$arrErr.name01|sfGetErrorColor}-->" size=15 class="box15" />　
-							名&nbsp;<input type="text" name="name02" value="<!--{if $name02 == ""}--><!--{$arrOtherDeliv.name02|escape}--><!--{else}--><!--{$name02|escape}--><!--{/if}-->" maxlength="<!--{$smarty.const.STEXT_LEN}-->" style="<!--{$arrErr.name02|sfGetErrorColor}-->" size=15 class="box15" />
+							��&nbsp;<input type="text" name="name01" value="<!--{if $name01 == ""}--><!--{$arrOtherDeliv.name01|escape}--><!--{else}--><!--{$name01|escape}--><!--{/if}-->" maxlength="<!--{$smarty.const.STEXT_LEN}-->" style="<!--{$arrErr.name01|sfGetErrorColor}-->" size=15 class="box15" />��
+							̾&nbsp;<input type="text" name="name02" value="<!--{if $name02 == ""}--><!--{$arrOtherDeliv.name02|escape}--><!--{else}--><!--{$name02|escape}--><!--{/if}-->" maxlength="<!--{$smarty.const.STEXT_LEN}-->" style="<!--{$arrErr.name02|sfGetErrorColor}-->" size=15 class="box15" />
 						</td>
 					</tr>
 					<tr>
-						<td bgcolor="#f0f0f0" class="fs12">お名前（フリガナ）<span class="red">※</span></td>
+						<td bgcolor="#f0f0f0" class="fs12">��̾���ʥեꥬ�ʡ�<span class="red">��</span></td>
 						<td bgcolor="#ffffff" class="fs12n"><span class="red"><!--{$arrErr.kana01}--><!--{$arrErr.kana02}--></span>
-							セイ&nbsp;<input type="text" name="kana01" value="<!--{if $kana01 == ""}--><!--{$arrOtherDeliv.kana01|escape}--><!--{else}--><!--{$kana01|escape}--><!--{/if}-->" maxlength="<!--{$smarty.const.STEXT_LEN}-->" style="<!--{$arrErr.kana01|sfGetErrorColor}-->" size=15 class="box15" />　メイ&nbsp;<input type="text" name="kana02" value="<!--{if $kana02 == ""}--><!--{$arrOtherDeliv.kana02|escape}--><!--{else}--><!--{$kana02|escape}--><!--{/if}-->" maxlength="<!--{$smarty.const.STEXT_LEN}-->" style="<!--{$arrErr.kana02|sfGetErrorColor}-->" size=15 class="box15" /></td>
+							����&nbsp;<input type="text" name="kana01" value="<!--{if $kana01 == ""}--><!--{$arrOtherDeliv.kana01|escape}--><!--{else}--><!--{$kana01|escape}--><!--{/if}-->" maxlength="<!--{$smarty.const.STEXT_LEN}-->" style="<!--{$arrErr.kana01|sfGetErrorColor}-->" size=15 class="box15" />���ᥤ&nbsp;<input type="text" name="kana02" value="<!--{if $kana02 == ""}--><!--{$arrOtherDeliv.kana02|escape}--><!--{else}--><!--{$kana02|escape}--><!--{/if}-->" maxlength="<!--{$smarty.const.STEXT_LEN}-->" style="<!--{$arrErr.kana02|sfGetErrorColor}-->" size=15 class="box15" /></td>
 					</tr>
 					<tr>
-						<td bgcolor="#f0f0f0" class="fs12">郵便番号<span class="red">※</span></td>
+						<td bgcolor="#f0f0f0" class="fs12">͹���ֹ�<span class="red">��</span></td>
 						<td bgcolor="#ffffff">
 							<table cellspacing="0" cellpadding="0" summary=" ">
 								<tr>
@@ -76,27 +76,27 @@
 										<!--{assign var=key1 value="zip01"}-->
 										<!--{assign var=key2 value="zip02"}-->
 										<span class="red"><!--{$arrErr[$key1]}--><!--{$arrErr[$key2]}--></span>
-										〒&nbsp;<input type="text" name="zip01" value="<!--{if $zip01 == ""}--><!--{$arrOtherDeliv.zip01|escape}--><!--{else}--><!--{$zip01|escape}--><!--{/if}-->" maxlength="<!--{$smarty.const.ZIP01_LEN}-->" style="<!--{$arrErr[$key1]|sfGetErrorColor}-->; ime-mode: disabled;" size=6 class="box6" />&nbsp;-&nbsp;<input type="text" name="zip02" value="<!--{if $zip02 == ""}--><!--{$arrOtherDeliv.zip02|escape}--><!--{else}--><!--{$zip02|escape}--><!--{/if}-->" maxlength="<!--{$smarty.const.ZIP02_LEN}-->" style="<!--{$arrErr[$key2]|sfGetErrorColor}-->; ime-mode: disabled;" size=6 class="box6" />
+										��&nbsp;<input type="text" name="zip01" value="<!--{if $zip01 == ""}--><!--{$arrOtherDeliv.zip01|escape}--><!--{else}--><!--{$zip01|escape}--><!--{/if}-->" maxlength="<!--{$smarty.const.ZIP01_LEN}-->" style="<!--{$arrErr[$key1]|sfGetErrorColor}-->; ime-mode: disabled;" size=6 class="box6" />&nbsp;-&nbsp;<input type="text" name="zip02" value="<!--{if $zip02 == ""}--><!--{$arrOtherDeliv.zip02|escape}--><!--{else}--><!--{$zip02|escape}--><!--{/if}-->" maxlength="<!--{$smarty.const.ZIP02_LEN}-->" style="<!--{$arrErr[$key2]|sfGetErrorColor}-->; ime-mode: disabled;" size=6 class="box6" />
 									</td>
 									<td>
-										&nbsp;&nbsp;<a href="../address/index.php" onclick="fnCallAddress('<!--{$smarty.const.URL_INPUT_ZIP}-->', 'zip01', 'zip02', 'pref', 'addr01'); return false;" target="_blank"><img src="<!--{$smarty.const.URL_DIR}-->img/common/address.gif" width="86" height="20" alt="住所自動入力" /></a></td>
+										&nbsp;&nbsp;<a href="../address/index.php" onclick="fnCallAddress('<!--{$smarty.const.URL_INPUT_ZIP}-->', 'zip01', 'zip02', 'pref', 'addr01'); return false;" target="_blank"><img src="<!--{$smarty.const.URL_DIR}-->img/common/address.gif" width="86" height="20" alt="���꼫ư����" /></a></td>
 									</td>
 								</tr>
 								<tr><td height="5"></td></tr>
 								<tr>
-									<td colspan="2" class="fs12">郵便番号がわからない方は→<a href="http://search.post.japanpost.jp/7zip/" target="_blank">こちら</a></td>
+									<td colspan="2" class="fs12">͹���ֹ椬�狼��ʤ����Ϣ�<a href="http://search.post.japanpost.jp/7zip/" target="_blank">������</a></td>
 								</tr>
 							</table>
 						</td>
 					</tr>
 					<tr>
-						<td bgcolor="#f0f0f0" class="fs12">住所<span class="red">※</span></td>
+						<td bgcolor="#f0f0f0" class="fs12">����<span class="red">��</span></td>
 						<td bgcolor="#ffffff">
 							<table cellspacing="0" cellpadding="0" summary=" " id="frame02">
 								<tr>
 									<td class="fs12n"><span class="red"><!--{$arrErr.pref}--></span>
 									<select name="pref" style="<!--{$arrErr.pref|sfGetErrorColor}-->">
-									<option value="" selected>選択してください</option>
+									<option value="" selected>���򤷤Ƥ�������</option>
 									<!--{if $pref == ""}-->
 									<!--{html_options options=$arrPref selected=$arrOtherDeliv.pref|escape}-->
 									<!--{else}-->
@@ -111,7 +111,7 @@
 								</tr>
 								<tr><td height="2"></td></tr>
 								<tr>
-									<td class="fs10n">ご住所1（神戸市中央区）</td>
+									<td class="fs10n">������1�ʿ��ͻ�������</td>
 								</tr>
 								<tr><td height="5"></td></tr>
 								<tr>
@@ -120,24 +120,24 @@
 								</tr>
 								<tr><td height="2"></td></tr>
 								<tr>
-									<td class="fs10"><span class="red">住所は必ず2つに分けてご記入ください。マンション名は必ず記入してください。</span></td>
+									<td class="fs10"><span class="red">�����ɬ��2�Ĥ�ʬ���Ƥ����������������ޥ󥷥��̾��ɬ���������Ƥ���������</span></td>
 								</tr>
 							</table>
 						</td>
 					</tr>
 					<tr>
-						<td bgcolor="#f0f0f0" class="fs12n">電話番号<span class="red">※</span></td>
+						<td bgcolor="#f0f0f0" class="fs12n">�����ֹ�<span class="red">��</span></td>
 						<td bgcolor="#ffffff" class="fs12n"><span class="red"><!--{$arrErr.tel01}--><!--{$arrErr.tel02}--><!--{$arrErr.tel03}--></span>
 							<input type="text" name="tel01" value="<!--{if $tel01 == ""}--><!--{$arrOtherDeliv.tel01|escape}--><!--{else}--><!--{$tel01|escape}--><!--{/if}-->" maxlength="<!--{$smarty.const.TEL_ITEM_LEN}-->" style="<!--{$arrErr.tel01|sfGetErrorColor}-->" size=6 class="box6" />&nbsp;-&nbsp;<input type="text" name="tel02" value="<!--{if $tel02 == ""}--><!--{$arrOtherDeliv.tel02|escape}--><!--{else}--><!--{$tel02|escape}--><!--{/if}-->" maxlength="<!--{$smarty.const.TEL_ITEM_LEN}-->" style="<!--{$arrErr.tel02|sfGetErrorColor}-->" size=6 class="box6" />&nbsp;-&nbsp;<input type="text" name="tel03" value="<!--{if $tel03 == ""}--><!--{$arrOtherDeliv.tel03|escape}--><!--{else}--><!--{$tel03|escape}--><!--{/if}-->" maxlength="<!--{$smarty.const.TEL_ITEM_LEN}-->" style="<!--{$arrErr.tel03|sfGetErrorColor}-->" size=6 class="box6" /></td>
 					</tr>
 				</table>
-				<!--入力フォームここまで-->
+				<!--���ϥե����ळ���ޤ�-->
 				</td>
 			</tr>
 			<tr><td height="15"></td></tr>
 			<tr>
 				<td align="center">
-					<input type="image" onmouseover="chgImgImageSubmit('<!--{$smarty.const.URL_DIR}-->img/common/b_entry_on.gif',this);" onmouseout="chgImgImageSubmit('<!--{$smarty.const.URL_DIR}-->img/common/b_entry.gif',this);" src="<!--{$smarty.const.URL_DIR}-->img/common/b_entry.gif" width="150" height="30" alt="登録する" name="register" id="register" />
+					<input type="image" onmouseover="chgImgImageSubmit('<!--{$smarty.const.URL_DIR}-->img/common/b_entry_on.gif',this);" onmouseout="chgImgImageSubmit('<!--{$smarty.const.URL_DIR}-->img/common/b_entry.gif',this);" src="<!--{$smarty.const.URL_DIR}-->img/common/b_entry.gif" width="150" height="30" alt="��Ͽ����" name="register" id="register" />
 				</td>
 			</tr>
 			<tr><td height="30"></td></tr>

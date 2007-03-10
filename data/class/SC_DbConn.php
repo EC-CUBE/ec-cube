@@ -20,13 +20,13 @@ class SC_DbConn{
 	var $dsn;
 	var $err_disp = true;
 	
-	// ã‚³ãƒ³ã‚¹ãƒˆãƒ©ã‚¯ã‚¿
+	// ¥³¥ó¥¹¥È¥é¥¯¥¿
 	function SC_DbConn($dsn = "", $err_disp = true, $new = false){
 		global $objDbConn;
 		
-		// Debugãƒ¢ãƒ¼ãƒ‰æŒ‡å®š
+		// Debug¥â¡¼¥É»ØÄê
 		$options['debug'] = PEAR_DB_DEBUG;
-		// æ—¢ã«æ¥ç¶šã•ã‚Œã¦ã„ãªã„ã‹ã€æ–°è¦æ¥ç¶šè¦æœ›ã®å ´åˆã¯æ¥ç¶šã™ã‚‹ã€‚
+		// ´û¤ËÀÜÂ³¤µ¤ì¤Æ¤¤¤Ê¤¤¤«¡¢¿·µ¬ÀÜÂ³Í×Ë¾¤Î¾ì¹ç¤ÏÀÜÂ³¤¹¤ë¡£
 		if(!isset($objDbConn->connection) || $new) {
 			if($dsn != "") {
 				$objDbConn = DB::connect($dsn, $options);
@@ -46,7 +46,7 @@ class SC_DbConn{
 		$this->err_disp = $err_disp;
 	}
 	
-	// ã‚¯ã‚¨ãƒªã®å®Ÿè¡Œ
+	// ¥¯¥¨¥ê¤Î¼Â¹Ô
 	function query($n ,$arr = "", $ignore_err = false){
 		if ( $arr ) {
 			$result = $this->conn->query($n, $arr);	
@@ -62,10 +62,10 @@ class SC_DbConn{
 		return $this->result;
 	}
 
-	// ä¸€ä»¶ã®ã¿å–å¾—
+	// °ì·ï¤Î¤ß¼èÆÀ
 	function getOne($n, $arr = ""){
 		
-		// mysqlã®å ´åˆã«ã¯ãƒ“ãƒ¥ãƒ¼è¡¨ã‚’å¤‰æ›ã™ã‚‹
+		// mysql¤Î¾ì¹ç¤Ë¤Ï¥Ó¥å¡¼É½¤òÊÑ´¹¤¹¤ë
 		if (DB_TYPE == "mysql") $n = sfChangeMySQL($n);
 		
 		if ( $arr ) {
@@ -83,7 +83,7 @@ class SC_DbConn{
 	
 	function getRow($n, $arr = ""){
 
-		// mysqlã®å ´åˆã«ã¯ãƒ“ãƒ¥ãƒ¼è¡¨ã‚’å¤‰æ›ã™ã‚‹
+		// mysql¤Î¾ì¹ç¤Ë¤Ï¥Ó¥å¡¼É½¤òÊÑ´¹¤¹¤ë
 		if (DB_TYPE == "mysql") $n = sfChangeMySQL($n);
 
 		if ( $arr ) {
@@ -98,17 +98,17 @@ class SC_DbConn{
 		return $this->result;
 	}
 
-	// SELECTæ–‡ã®å®Ÿè¡Œçµæœã‚’å…¨ã¦å–å¾—
+	// SELECTÊ¸¤Î¼Â¹Ô·ë²Ì¤òÁ´¤Æ¼èÆÀ
 	function getAll($n, $arr = ""){
 
-		// mysqlã®å ´åˆã«ã¯ãƒ“ãƒ¥ãƒ¼è¡¨ã‚’å¤‰æ›ã™ã‚‹
+		// mysql¤Î¾ì¹ç¤Ë¤Ï¥Ó¥å¡¼É½¤òÊÑ´¹¤¹¤ë
 		if (DB_TYPE == "mysql") $n = sfChangeMySQL($n);
 		
 		if(PEAR::isError($this->conn)) {
 			if(ADMIN_MODE){
-				sfErrorHeader("DBã¸ã®æ¥ç¶šã«å¤±æ•—ã—ã¾ã—ãŸã€‚:" . $this->dsn);
+				sfErrorHeader("DB¤Ø¤ÎÀÜÂ³¤Ë¼ºÇÔ¤·¤Ş¤·¤¿¡£:" . $this->dsn);
 			}else{
-				sfErrorHeader("DBã¸ã®æ¥ç¶šã«å¤±æ•—ã—ã¾ã—ãŸã€‚:");
+				sfErrorHeader("DB¤Ø¤ÎÀÜÂ³¤Ë¼ºÇÔ¤·¤Ş¤·¤¿¡£:");
 			}
 			return 0;
 		}

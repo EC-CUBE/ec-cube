@@ -8,19 +8,19 @@ require_once("../require.php");
 
 class LC_Page {
 	function LC_Page() {
-		/** å¿…ãšæŒ‡å®šã™ã‚‹ **/
-		$this->tpl_css = URL_DIR.'css/layout/abouts/index.css';		// ãƒ¡ã‚¤ãƒ³CSSãƒ‘ã‚¹
-		/** å¿…ãšæŒ‡å®šã™ã‚‹ **/
-		$this->tpl_mainpage = 'abouts/index.tpl';			// ãƒ¡ã‚¤ãƒ³ãƒ†ãƒ³ãƒ—ãƒ¬ãƒ¼ãƒˆ
+		/** É¬¤º»ØÄê¤¹¤ë **/
+		$this->tpl_css = URL_DIR.'css/layout/abouts/index.css';		// ¥á¥¤¥óCSS¥Ñ¥¹
+		/** É¬¤º»ØÄê¤¹¤ë **/
+		$this->tpl_mainpage = 'abouts/index.tpl';			// ¥á¥¤¥ó¥Æ¥ó¥×¥ì¡¼¥È
 		$this->tpl_page_category = 'abouts';	
-		$this->tpl_title = 'å½“ã‚µã‚¤ãƒˆã«ã¤ã„ã¦';
+		$this->tpl_title = 'Åö¥µ¥¤¥È¤Ë¤Ä¤¤¤Æ';
 	}
 }
 
 $objPage = new LC_Page();
 $objView = new SC_SiteView();
 
-// ãƒ¬ã‚¤ã‚¢ã‚¦ãƒˆãƒ‡ã‚¶ã‚¤ãƒ³ã‚’å–å¾—
+// ¥ì¥¤¥¢¥¦¥È¥Ç¥¶¥¤¥ó¤ò¼èÆÀ
 $objPage = sfGetPageLayout($objPage, false, DEF_LAYOUT);
 
 $objView->assignobj($objPage);

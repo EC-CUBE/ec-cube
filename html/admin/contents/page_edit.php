@@ -15,7 +15,7 @@ class LC_Page {
 		$this->tpl_subno = "page_edit";
 		global $arrPageList;
 		$this->arrPageList = $arrPageList;
-		$this->tpl_subtitle = 'ãƒšãƒ¼ã‚¸ç·¨é›†';
+		$this->tpl_subtitle = '¥Ú¡¼¥¸ÊÔ½¸';
 	}
 }
 
@@ -24,9 +24,9 @@ $objPage = new LC_Page();
 $objView = new SC_AdminView();
 $objSess = new SC_Session();
 
-$objFormParam = new SC_FormParam();			// ãƒ•ã‚©ãƒ¼ãƒ ç”¨
-lfInitParam();								// ãƒ‘ãƒ©ãƒ¡ãƒ¼ã‚¿æƒ…å ±ã®åˆæœŸåŒ–
-$objFormParam->setParam($_POST);			// POSTå€¤ã®å–å¾—
+$objFormParam = new SC_FormParam();			// ¥Õ¥©¡¼¥àÍÑ
+lfInitParam();								// ¥Ñ¥é¥á¡¼¥¿¾ðÊó¤Î½é´ü²½
+$objFormParam->setParam($_POST);			// POSTÃÍ¤Î¼èÆÀ
 
 switch($_POST['mode']) {
 case 'edit':
@@ -34,14 +34,14 @@ case 'edit':
 	if(count($objPage->arrErr) == 0) {
 		$page = $_POST['page'];
 		if($arrPageTpl[$page] != "") {
-			// ä¸€æ™‚ãƒ•ã‚¡ã‚¤ãƒ«ã«æ›¸ãè¾¼ã‚€
+			// °ì»þ¥Õ¥¡¥¤¥ë¤Ë½ñ¤­¹þ¤à
 			$path = TEMPLATE_FTP_DIR . $arrPageTpl[$page] . ".tmp";
 			$ret = lfWriteFile($path, $objFormParam->getValue('template'));
-			// æœ¬ç•ªãƒ•ã‚¡ã‚¤ãƒ«ã«åæ˜ 
+			// ËÜÈÖ¥Õ¥¡¥¤¥ë¤ËÈ¿±Ç
 			if($ret > 0) {
 				$dst_path = TEMPLATE_FTP_DIR . $arrPageTpl[$page];
 				if(!copy($path, $dst_path)) {
-					print("ãƒ•ã‚¡ã‚¤ãƒ«ã®æ›¸è¾¼ã¿ã«å¤±æ•—ã—ã¾ã—ãŸã€‚");
+					print("¥Õ¥¡¥¤¥ë¤Î½ñ¹þ¤ß¤Ë¼ºÇÔ¤·¤Þ¤·¤¿¡£");
 				}
 			}
 		}
@@ -52,10 +52,10 @@ case 'preview':
 	if(count($objPage->arrErr) == 0) {
 		$page = $_POST['page'];
 		if($arrPageTpl[$page] != "") {
-			// ä¸€æ™‚ãƒ•ã‚¡ã‚¤ãƒ«ã«æ›¸ãè¾¼ã‚€
+			// °ì»þ¥Õ¥¡¥¤¥ë¤Ë½ñ¤­¹þ¤à
 			$path = TEMPLATE_FTP_DIR . $arrPageTpl[$page] . ".tmp";
 			$ret = lfWriteFile($path, $objFormParam->getValue('template'));
-			// ãƒ—ãƒ¬ãƒ“ãƒ¥ãƒ¼è¡¨ç¤º
+			// ¥×¥ì¥Ó¥å¡¼É½¼¨
 			$url = $arrPageURL[$page] . "tpl=" . $arrPageTpl[$page] . ".tmp";
 			$objPage->tpl_onload ="window.open('$url', 'preview');";
 		}
@@ -64,7 +64,7 @@ case 'preview':
 case 'select':
 	$page = $_POST['page'];
 	if($arrPageTpl[$page] != "") {
-		// ãƒ•ã‚¡ã‚¤ãƒ«ã®ä¸­èº«ã‚’èª­ã‚“ã§æ–‡å­—åˆ—ã«æ ¼ç´ã™ã‚‹
+		// ¥Õ¥¡¥¤¥ë¤ÎÃæ¿È¤òÆÉ¤ó¤ÇÊ¸»úÎó¤Ë³ÊÇ¼¤¹¤ë
 		$path = TEMPLATE_FTP_DIR . $arrPageTpl[$page];
 		if(file_exists($path)) {
 	 		$fp = fopen($path, "r");
@@ -83,7 +83,7 @@ default:
 
 /*
 
-// ãƒ•ã‚¡ã‚¤ãƒ«ã®ä¸­èº«ã‚’èª­ã‚“ã§æ–‡å­—åˆ—ã«æ ¼ç´ã™ã‚‹
+// ¥Õ¥¡¥¤¥ë¤ÎÃæ¿È¤òÆÉ¤ó¤ÇÊ¸»úÎó¤Ë³ÊÇ¼¤¹¤ë
 $path = TEMPLATE_FTP_DIR . "index.tpl";
 $fp = fopen($path, "r");
 $contents = fread($fp, filesize($path));
@@ -94,17 +94,17 @@ fclose($fp);
 
 */
 
-// å…¥åŠ›å€¤ã®å–å¾—
+// ÆþÎÏÃÍ¤Î¼èÆÀ
 $objPage->arrForm = $objFormParam->getFormParamList();
 
 $objView->assignobj($objPage);
 $objView->display(MAIN_FRAME);
 //---------------------------------------------------------
-/* ãƒ‘ãƒ©ãƒ¡ãƒ¼ã‚¿æƒ…å ±ã®åˆæœŸåŒ– */
+/* ¥Ñ¥é¥á¡¼¥¿¾ðÊó¤Î½é´ü²½ */
 function lfInitParam() {
 	global $objFormParam;
-	$objFormParam->addParam("ãƒšãƒ¼ã‚¸é¸æŠž", "page", INT_LEN, "n", array("EXIST_CHECK", "SPTAB_CHECK", "MAX_LENGTH_CHECK"));
-	$objFormParam->addParam("ãƒ†ãƒ³ãƒ—ãƒ¬ãƒ¼ãƒˆ", "template", LLTEXT_LEN, "KVa", array("EXIST_CHECK", "SPTAB_CHECK", "MAX_LENGTH_CHECK"));
+	$objFormParam->addParam("¥Ú¡¼¥¸ÁªÂò", "page", INT_LEN, "n", array("EXIST_CHECK", "SPTAB_CHECK", "MAX_LENGTH_CHECK"));
+	$objFormParam->addParam("¥Æ¥ó¥×¥ì¡¼¥È", "template", LLTEXT_LEN, "KVa", array("EXIST_CHECK", "SPTAB_CHECK", "MAX_LENGTH_CHECK"));
 }
 
 function lfWriteFile($path, $string) {

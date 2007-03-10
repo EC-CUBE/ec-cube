@@ -10,7 +10,7 @@ require_once("../require.php");
 class LC_Page{
 	function LC_Page() {
 		$this->tpl_mainpage = USER_PATH . 'templates/mypage/login.tpl';
-		$this->tpl_title = 'MYãƒšãƒ¼ã‚¸(ãƒ­ã‚°ã‚¤ãƒ³)';
+		$this->tpl_title = 'MY¥Ú¡¼¥¸(¥í¥°¥¤¥ó)';
 	}
 }
 
@@ -19,10 +19,10 @@ $objView = new SC_SiteView();
 $objQuery = new SC_Query();
 $objCustomer = new SC_Customer();
 
-// ã‚¯ãƒƒã‚­ãƒ¼ç®¡ç†ã‚¯ãƒ©ã‚¹
+// ¥¯¥Ã¥­¡¼´ÉÍý¥¯¥é¥¹
 $objCookie = new SC_Cookie(COOKIE_EXPIRE);
 
-//SSLURLåˆ¤å®š
+//SSLURLÈ½Äê
 if (SSLURL_CHECK == 1){
 	$ssl_url= sfRmDupSlash(SSL_URL.$_SERVER['REQUEST_URI']);
 	if (!ereg("^https://", $non_ssl_url)){
@@ -30,33 +30,33 @@ if (SSLURL_CHECK == 1){
 	}
 }
 
-// ãƒ­ã‚°ã‚¤ãƒ³åˆ¤å®š
+// ¥í¥°¥¤¥óÈ½Äê
 if($objCustomer->isLoginSuccess()) {
 	header("location: ./index.php");
 } else {
-	// ã‚¯ãƒƒã‚­ãƒ¼åˆ¤å®š
+	// ¥¯¥Ã¥­¡¼È½Äê
 	$objPage->tpl_login_email = $objCookie->getCookie('login_email');
 		if($objPage->tpl_login_email != "") {
 		$objPage->tpl_login_memory = "1";
 	}
 	
-	// POSTã•ã‚Œã¦ããŸIDãŒã‚ã‚‹å ´åˆã¯å„ªå…ˆã™ã‚‹ã€‚
+	// POST¤µ¤ì¤Æ¤­¤¿ID¤¬¤¢¤ë¾ì¹ç¤ÏÍ¥Àè¤¹¤ë¡£
 	if($_POST['mypage_login_email'] != "") {
 		$objPage->tpl_login_email = $_POST['mypage_login_email'];
 	}
 }
 
-$objView->assignobj($objPage);				//$objpageå†…ã®å…¨ã¦ã®ãƒ†ãƒ³ãƒ—ãƒ¬ãƒ¼ãƒˆå¤‰æ•°ã‚’smartyã«æ ¼ç´
-$objView->display(SITE_FRAME);				//ãƒ‘ã‚¹ã¨ãƒ†ãƒ³ãƒ—ãƒ¬ãƒ¼ãƒˆå¤‰æ•°ã®å‘¼ã³å‡ºã—ã€å®Ÿè¡Œ
+$objView->assignobj($objPage);				//$objpageÆâ¤ÎÁ´¤Æ¤Î¥Æ¥ó¥×¥ì¡¼¥ÈÊÑ¿ô¤òsmarty¤Ë³ÊÇ¼
+$objView->display(SITE_FRAME);				//¥Ñ¥¹¤È¥Æ¥ó¥×¥ì¡¼¥ÈÊÑ¿ô¤Î¸Æ¤Ó½Ð¤·¡¢¼Â¹Ô
 
 //-------------------------------------------------------------------------------------------------------------------------
 											
-//ã‚¨ãƒ©ãƒ¼ãƒã‚§ãƒƒã‚¯
+//¥¨¥é¡¼¥Á¥§¥Ã¥¯
 
 function lfErrorCheck() {
 	$objErr = new SC_CheckError();
-			$objErr->doFunc(array("ãƒ¡ãƒ¼ãƒ«ã‚¢ãƒ‰ãƒ¬ã‚¹", "login_email", STEXT_LEN), array("EXIST_CHECK","SPTAB_CHECK","EMAIL_CHECK","MAX_LENGTH_CHECK"));
-			$objErr->dofunc(array("ãƒ‘ã‚¹ãƒ¯ãƒ¼ãƒ‰", "login_password", PASSWORD_LEN2), array("EXIST_CHECK","ALNUM_CHECK"));
+			$objErr->doFunc(array("¥á¡¼¥ë¥¢¥É¥ì¥¹", "login_email", STEXT_LEN), array("EXIST_CHECK","SPTAB_CHECK","EMAIL_CHECK","MAX_LENGTH_CHECK"));
+			$objErr->dofunc(array("¥Ñ¥¹¥ï¡¼¥É", "login_password", PASSWORD_LEN2), array("EXIST_CHECK","ALNUM_CHECK"));
 	return $objErr->arrErr;
 }									
 											

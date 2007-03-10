@@ -9,8 +9,8 @@
 require_once(MODULE_PATH . "mdl_epsilon/mdl_epsilon.inc");
 
 $arrPayment = array(
-	1 => 'ã‚¯ãƒ¬ã‚¸ãƒƒãƒˆ',
-	2 => 'ã‚³ãƒ³ãƒ“ãƒ‹'
+	1 => '¥¯¥ì¥¸¥Ã¥È',
+	2 => '¥³¥ó¥Ó¥Ë'
 );
 
 $arrCredit = array(
@@ -18,13 +18,13 @@ $arrCredit = array(
 	2 => 'JCB, AMEX'
 );
 
-//ãƒšãƒ¼ã‚¸ç®¡ç†ã‚¯ãƒ©ã‚¹
+//¥Ú¡¼¥¸´ÉÍı¥¯¥é¥¹
 class LC_Page {
-	//ã‚³ãƒ³ã‚¹ãƒˆãƒ©ã‚¯ã‚¿
+	//¥³¥ó¥¹¥È¥é¥¯¥¿
 	function LC_Page() {
-		//ãƒ¡ã‚¤ãƒ³ãƒ†ãƒ³ãƒ—ãƒ¬ãƒ¼ãƒˆã®æŒ‡å®š
+		//¥á¥¤¥ó¥Æ¥ó¥×¥ì¡¼¥È¤Î»ØÄê
 		$this->tpl_mainpage = MODULE_PATH . 'mdl_epsilon/mdl_epsilon.tpl';
-		$this->tpl_subtitle = 'ã‚¤ãƒ—ã‚·ãƒ­ãƒ³æ±ºæ¸ˆãƒ¢ã‚¸ãƒ¥ãƒ¼ãƒ«';
+		$this->tpl_subtitle = '¥¤¥×¥·¥í¥ó·èºÑ¥â¥¸¥å¡¼¥ë';
 		global $arrPayment;
 		$this->arrPayment = $arrPayment;
 		global $arrCredit;
@@ -37,157 +37,157 @@ $objPage = new LC_Page();
 $objView = new SC_AdminView();
 $objQuery = new SC_Query();
 
-// ã‚³ãƒ³ãƒ“ãƒ‹å…¥é‡‘ãƒã‚§ãƒƒã‚¯
+// ¥³¥ó¥Ó¥ËÆş¶â¥Á¥§¥Ã¥¯
 lfEpsilonCheck();
 
-// èªè¨¼ç¢ºèª
+// Ç§¾Ú³ÎÇ§
 $objSess = new SC_Session();
 sfIsSuccess($objSess);
 
-// ãƒ‘ãƒ©ãƒ¡ãƒ¼ã‚¿ç®¡ç†ã‚¯ãƒ©ã‚¹
+// ¥Ñ¥é¥á¡¼¥¿´ÉÍı¥¯¥é¥¹
 $objFormParam = new SC_FormParam();
 $objFormParam = lfInitParam($objFormParam);
-// POSTå€¤ã®å–å¾—
+// POSTÃÍ¤Î¼èÆÀ
 $objFormParam->setParam($_POST);
 
-// æ±ç”¨é …ç›®ã‚’è¿½åŠ (å¿…é ˆï¼ï¼)
+// ÈÆÍÑ¹àÌÜ¤òÄÉ²Ã(É¬¿Ü¡ª¡ª)
 sfAlterMemo();
 
 switch($_POST['mode']) {
 case 'edit':
-	// å…¥åŠ›ã‚¨ãƒ©ãƒ¼åˆ¤å®š
+	// ÆşÎÏ¥¨¥é¡¼È½Äê
 	$objPage->arrErr = lfCheckError();
 
-	// ã‚¨ãƒ©ãƒ¼ãªã—ã®å ´åˆã«ã¯ãƒ‡ãƒ¼ã‚¿ã‚’æ›´æ–°	
+	// ¥¨¥é¡¼¤Ê¤·¤Î¾ì¹ç¤Ë¤Ï¥Ç¡¼¥¿¤ò¹¹¿·	
 	if(count($objPage->arrErr) == 0) {
-		// ãƒ‡ãƒ¼ã‚¿æ›´æ–°
+		// ¥Ç¡¼¥¿¹¹¿·
 		lfUpdPaymentDB();
 		
-		// javascriptå®Ÿè¡Œ
-		$objPage->tpl_onload = 'alert("ç™»éŒ²å®Œäº†ã—ã¾ã—ãŸã€‚\nåŸºæœ¬æƒ…å ±ï¼æ”¯æ‰•æ–¹æ³•è¨­å®šã‚ˆã‚Šè©³ç´°è¨­å®šã‚’ã—ã¦ãã ã•ã„ã€‚"); window.close();';
+		// javascript¼Â¹Ô
+		$objPage->tpl_onload = 'alert("ÅĞÏ¿´°Î»¤·¤Ş¤·¤¿¡£\n´ğËÜ¾ğÊó¡ä»ÙÊ§ÊıË¡ÀßÄê¤è¤ê¾ÜºÙÀßÄê¤ò¤·¤Æ¤¯¤À¤µ¤¤¡£"); window.close();';
 	}
 	break;
 case 'module_del':
-	// æ±ç”¨é …ç›®ã®å­˜åœ¨ãƒã‚§ãƒƒã‚¯
+	// ÈÆÍÑ¹àÌÜ¤ÎÂ¸ºß¥Á¥§¥Ã¥¯
 	if(sfColumnExists("dtb_payment", "memo01")){
-		// ãƒ‡ãƒ¼ã‚¿ã®å‰Šé™¤ãƒ•ãƒ©ã‚°ã‚’ãŸã¦ã‚‹
+		// ¥Ç¡¼¥¿¤Îºï½ü¥Õ¥é¥°¤ò¤¿¤Æ¤ë
 		$objQuery->query("UPDATE dtb_payment SET del_flg = 1 WHERE module_id = ?", array(MDL_EPSILON_ID));
 	}
 	break;
 default:
-	// ãƒ‡ãƒ¼ã‚¿ã®ãƒ­ãƒ¼ãƒ‰
+	// ¥Ç¡¼¥¿¤Î¥í¡¼¥É
 	lfLoadData();	
 	break;
 }
 
 $objPage->arrForm = $objFormParam->getFormParamList();
 
-$objView->assignobj($objPage);					//å¤‰æ•°ã‚’ãƒ†ãƒ³ãƒ—ãƒ¬ãƒ¼ãƒˆã«ã‚¢ã‚µã‚¤ãƒ³ã™ã‚‹
-$objView->display($objPage->tpl_mainpage);		//ãƒ†ãƒ³ãƒ—ãƒ¬ãƒ¼ãƒˆã®å‡ºåŠ›
+$objView->assignobj($objPage);					//ÊÑ¿ô¤ò¥Æ¥ó¥×¥ì¡¼¥È¤Ë¥¢¥µ¥¤¥ó¤¹¤ë
+$objView->display($objPage->tpl_mainpage);		//¥Æ¥ó¥×¥ì¡¼¥È¤Î½ĞÎÏ
 //-------------------------------------------------------------------------------------------------------
-/* ãƒ‘ãƒ©ãƒ¡ãƒ¼ã‚¿æƒ…å ±ã®åˆæœŸåŒ– */
+/* ¥Ñ¥é¥á¡¼¥¿¾ğÊó¤Î½é´ü²½ */
 function lfInitParam($objFormParam) {
-	$objFormParam->addParam("å¥‘ç´„ã‚³ãƒ¼ãƒ‰", "code", INT_LEN, "KVa", array("EXIST_CHECK", "MAX_LENGTH_CHECK", "NUM_CHECK"));
-	$objFormParam->addParam("æ¥ç¶šå…ˆURL", "url", URL_LEN, "KVa", array("EXIST_CHECK", "MAX_LENGTH_CHECK", "URL_CHECK"));
-	$objFormParam->addParam("åˆ©ç”¨æ±ºæ¸ˆ", "payment", "", "", array("EXIST_CHECK"));
-	$objFormParam->addParam("åˆ©ç”¨ã‚¯ãƒ¬ã‚¸ãƒƒãƒˆ", "credit");	
-	$objFormParam->addParam("åˆ©ç”¨ã‚³ãƒ³ãƒ“ãƒ‹", "convenience");	
+	$objFormParam->addParam("·ÀÌó¥³¡¼¥É", "code", INT_LEN, "KVa", array("EXIST_CHECK", "MAX_LENGTH_CHECK", "NUM_CHECK"));
+	$objFormParam->addParam("ÀÜÂ³ÀèURL", "url", URL_LEN, "KVa", array("EXIST_CHECK", "MAX_LENGTH_CHECK", "URL_CHECK"));
+	$objFormParam->addParam("ÍøÍÑ·èºÑ", "payment", "", "", array("EXIST_CHECK"));
+	$objFormParam->addParam("ÍøÍÑ¥¯¥ì¥¸¥Ã¥È", "credit");	
+	$objFormParam->addParam("ÍøÍÑ¥³¥ó¥Ó¥Ë", "convenience");	
 	return $objFormParam;
 }
 
-// ã‚¨ãƒ©ãƒ¼ãƒã‚§ãƒƒã‚¯ã‚’è¡Œã†
+// ¥¨¥é¡¼¥Á¥§¥Ã¥¯¤ò¹Ô¤¦
 function lfCheckError(){
 	global $objFormParam;
 	
 	$arrErr = $objFormParam->checkError();
 	
-	// åˆ©ç”¨ã‚¯ãƒ¬ã‚¸ãƒƒãƒˆã€åˆ©ç”¨ã‚³ãƒ³ãƒ“ãƒ‹ã®ã‚¨ãƒ©ãƒ¼ãƒã‚§ãƒƒã‚¯
+	// ÍøÍÑ¥¯¥ì¥¸¥Ã¥È¡¢ÍøÍÑ¥³¥ó¥Ó¥Ë¤Î¥¨¥é¡¼¥Á¥§¥Ã¥¯
 	$arrChkPay = $_POST["payment"];
 	foreach((array)$arrChkPay as $key => $val){
-		// åˆ©ç”¨ã‚¯ãƒ¬ã‚¸ãƒƒãƒˆ
+		// ÍøÍÑ¥¯¥ì¥¸¥Ã¥È
 		if($val == 1 and count($_POST["credit"]) <= 0){
-			$arrErr["credit"] = "åˆ©ç”¨ã‚¯ãƒ¬ã‚¸ãƒƒãƒˆãŒé¸æŠã•ã‚Œã¦ã„ã¾ã›ã‚“ã€‚<br />";
+			$arrErr["credit"] = "ÍøÍÑ¥¯¥ì¥¸¥Ã¥È¤¬ÁªÂò¤µ¤ì¤Æ¤¤¤Ş¤»¤ó¡£<br />";
 		}
-		// åˆ©ç”¨ã‚³ãƒ³ãƒ“ãƒ‹
+		// ÍøÍÑ¥³¥ó¥Ó¥Ë
 		if($val == 2 and count($_POST["convenience"]) <= 0){
-			$arrErr["convenience"] = "åˆ©ç”¨ã‚³ãƒ³ãƒ“ãƒ‹ãŒé¸æŠã•ã‚Œã¦ã„ã¾ã›ã‚“ã€‚<br />";
+			$arrErr["convenience"] = "ÍøÍÑ¥³¥ó¥Ó¥Ë¤¬ÁªÂò¤µ¤ì¤Æ¤¤¤Ş¤»¤ó¡£<br />";
 		}
 	}
 
-	// sslå¯¾å¿œåˆ¤å®š
+	// sslÂĞ±şÈ½Äê
 	if(!extension_loaded('openssl') and ereg( "^https://", $_POST["url"] )){
-		$arrErr["url"] = "ã“ã®ã‚µãƒ¼ãƒãƒ¼ã¯SSLã«å¯¾å¿œã—ã¦ã„ã¾ã›ã‚“ã€‚<br>httpã§æ¥ç¶šã—ã¦ãã ã•ã„ã€‚";
+		$arrErr["url"] = "¤³¤Î¥µ¡¼¥Ğ¡¼¤ÏSSL¤ËÂĞ±ş¤·¤Æ¤¤¤Ş¤»¤ó¡£<br>http¤ÇÀÜÂ³¤·¤Æ¤¯¤À¤µ¤¤¡£";
 	}
 
-	// æ¥ç¶šãƒã‚§ãƒƒã‚¯ã‚’è¡Œã†
+	// ÀÜÂ³¥Á¥§¥Ã¥¯¤ò¹Ô¤¦
 	if(count($arrErr) == 0) $arrErr = lfChkConnect();
 
 	return $arrErr;
 }
 
-// æ¥ç¶šãƒã‚§ãƒƒã‚¯ã‚’è¡Œã†
+// ÀÜÂ³¥Á¥§¥Ã¥¯¤ò¹Ô¤¦
 function lfChkConnect(){
 	global $objQuery;
 	global $objPage;
 	
 	$arrRet = array();
 	
-	// ãƒ¡ãƒ¼ãƒ«ã‚¢ãƒ‰ãƒ¬ã‚¹å–å¾—
+	// ¥á¡¼¥ë¥¢¥É¥ì¥¹¼èÆÀ
 	$email = $objQuery->getone("SELECT email03 FROM dtb_baseinfo");
 
-	// å¥‘ç´„ã‚³ãƒ¼ãƒ‰	
+	// ·ÀÌó¥³¡¼¥É	
 	(in_array(1, (array)$_POST["payment"])) ? $cre = "1" : $cre = "0";
 	(in_array(2, (array)$_POST["payment"])) ? $con = "1" : $con = "0";
 	$st_code = $cre . "0" . $con . "00-0000-00000";
 	
-	// é€ä¿¡ãƒ‡ãƒ¼ã‚¿ç”Ÿæˆ
+	// Á÷¿®¥Ç¡¼¥¿À¸À®
 	$arrSendData = array(
-		'contract_code' => $_POST["code"],		// å¥‘ç´„ã‚³ãƒ¼ãƒ‰
-		'user_id' => "connect_test",			// ãƒ¦ãƒ¼ã‚¶ID
-		'user_name' => "æ¥ç¶šãƒ†ã‚¹ãƒˆ",			// ãƒ¦ãƒ¼ã‚¶å
-		'user_mail_add' => $email,				// ãƒ¡ãƒ¼ãƒ«ã‚¢ãƒ‰ãƒ¬ã‚¹
-		'st_code' => $st_code,					// æ±ºæ¸ˆåŒºåˆ†
-		'process_code' => '3',					// å‡¦ç†åŒºåˆ†(å›ºå®š)
-		'xml' => '1',							// å¿œç­”å½¢å¼(å›ºå®š)
+		'contract_code' => $_POST["code"],		// ·ÀÌó¥³¡¼¥É
+		'user_id' => "connect_test",			// ¥æ¡¼¥¶ID
+		'user_name' => "ÀÜÂ³¥Æ¥¹¥È",			// ¥æ¡¼¥¶Ì¾
+		'user_mail_add' => $email,				// ¥á¡¼¥ë¥¢¥É¥ì¥¹
+		'st_code' => $st_code,					// ·èºÑ¶èÊ¬
+		'process_code' => '3',					// ½èÍı¶èÊ¬(¸ÇÄê)
+		'xml' => '1',							// ±şÅú·Á¼°(¸ÇÄê)
 	);
 	
-	// ãƒ‡ãƒ¼ã‚¿é€ä¿¡
+	// ¥Ç¡¼¥¿Á÷¿®
 	$arrXML = sfPostPaymentData($_POST["url"], $arrSendData, false);
 	if($arrXML == "") {
-		$arrRet["url"] = "æ¥ç¶šã§ãã¾ã›ã‚“ã§ã—ãŸã€‚<br>";
+		$arrRet["url"] = "ÀÜÂ³¤Ç¤­¤Ş¤»¤ó¤Ç¤·¤¿¡£<br>";
 		return $arrRet;	
 	}
 	
-	// ã‚¨ãƒ©ãƒ¼ãŒã‚ã‚‹ã‹ãƒã‚§ãƒƒã‚¯ã™ã‚‹
+	// ¥¨¥é¡¼¤¬¤¢¤ë¤«¥Á¥§¥Ã¥¯¤¹¤ë
 	$err_code = sfGetXMLValue($arrXML,'RESULT','ERR_CODE');
 	switch ($err_code) {
 		case "":
 			break;
 		case "607":
-			$arrRet["code"] = "å¥‘ç´„ã‚³ãƒ¼ãƒ‰ãŒé•ã„ã¾ã™ã€‚<br>";
+			$arrRet["code"] = "·ÀÌó¥³¡¼¥É¤¬°ã¤¤¤Ş¤¹¡£<br>";
 			return $arrRet;
 		default :
 			$arrRet["service"] = sfGetXMLValue($arrXML,'RESULT','ERR_DETAIL');
 			return $arrRet;
 	}
 
-	// ã‚³ãƒ³ãƒ“ãƒ‹æŒ‡å®šãŒã‚ã‚Œã°ã‚³ãƒ³ãƒ“ãƒ‹åˆ†ãƒ«ãƒ¼ãƒ—ã—ã€ãƒã‚§ãƒƒã‚¯ã‚’è¡Œã†
+	// ¥³¥ó¥Ó¥Ë»ØÄê¤¬¤¢¤ì¤Ğ¥³¥ó¥Ó¥ËÊ¬¥ë¡¼¥×¤·¡¢¥Á¥§¥Ã¥¯¤ò¹Ô¤¦
 	if(count($_POST["convenience"]) > 0){
 		foreach($_POST["convenience"] as $key => $val){
-			// é€ä¿¡ãƒ‡ãƒ¼ã‚¿ç”Ÿæˆ
-			$arrSendData['conveni_code'] = $val;			// ã‚³ãƒ³ãƒ“ãƒ‹ã‚³ãƒ¼ãƒ‰
-			$arrSendData['user_tel'] = "0300000000";		// ãƒ€ãƒŸãƒ¼é›»è©±ç•ªå·
-			$arrSendData['user_name_kana'] = "é€ä¿¡ãƒ†ã‚¹ãƒˆ";	// ãƒ€ãƒŸãƒ¼æ°å(ã‚«ãƒŠ)
-			$arrSendData['haraikomi_mail'] = 0;				// æ‰•è¾¼ãƒ¡ãƒ¼ãƒ«(é€ä¿¡ã—ãªã„)
+			// Á÷¿®¥Ç¡¼¥¿À¸À®
+			$arrSendData['conveni_code'] = $val;			// ¥³¥ó¥Ó¥Ë¥³¡¼¥É
+			$arrSendData['user_tel'] = "0300000000";		// ¥À¥ß¡¼ÅÅÏÃÈÖ¹æ
+			$arrSendData['user_name_kana'] = "Á÷¿®¥Æ¥¹¥È";	// ¥À¥ß¡¼»áÌ¾(¥«¥Ê)
+			$arrSendData['haraikomi_mail'] = 0;				// Ê§¹ş¥á¡¼¥ë(Á÷¿®¤·¤Ê¤¤)
 			
-			// ãƒ‡ãƒ¼ã‚¿é€ä¿¡
+			// ¥Ç¡¼¥¿Á÷¿®
 			$arrXML = sfPostPaymentData($_POST["url"], $arrSendData, false);
 			if($arrXML == "") {
-				$arrRet["url"] = "æ¥ç¶šã§ãã¾ã›ã‚“ã§ã—ãŸã€‚<br>";
+				$arrRet["url"] = "ÀÜÂ³¤Ç¤­¤Ş¤»¤ó¤Ç¤·¤¿¡£<br>";
 				return $arrRet;	
 			}
 			
-			// ã‚¨ãƒ©ãƒ¼ãŒã‚ã‚‹ã‹ãƒã‚§ãƒƒã‚¯ã™ã‚‹
+			// ¥¨¥é¡¼¤¬¤¢¤ë¤«¥Á¥§¥Ã¥¯¤¹¤ë
 			$err_code = sfGetXMLValue($arrXML,'RESULT','ERR_CODE');
 			if($err_code != ""){
 				$arrRet["service"] = sfGetXMLValue($arrXML,'RESULT','ERR_DETAIL');
@@ -199,38 +199,38 @@ function lfChkConnect(){
 	return $arrRet;	
 }
 
-// ç™»éŒ²ãƒ‡ãƒ¼ã‚¿ã‚’èª­ã¿è¾¼ã‚€
+// ÅĞÏ¿¥Ç¡¼¥¿¤òÆÉ¤ß¹ş¤à
 function lfLoadData(){
 	global $objFormParam;
 	
-	//ãƒ‡ãƒ¼ã‚¿ã‚’å–å¾—
+	//¥Ç¡¼¥¿¤ò¼èÆÀ
 	$arrRet = lfGetPaymentDB(" AND del_flg = '0'");
 	
-	// å€¤ã‚’ã‚»ãƒƒãƒˆ
+	// ÃÍ¤ò¥»¥Ã¥È
 	$objFormParam->setParam($arrRet[0]);
 
-	// ç”»é¢è¡¨ç¤ºç”¨ã«ãƒ‡ãƒ¼ã‚¿ã‚’å¤‰æ›
+	// ²èÌÌÉ½¼¨ÍÑ¤Ë¥Ç¡¼¥¿¤òÊÑ´¹
 	$arrDisp = array();
 	foreach($arrRet as $key => $val){
-		// åˆ©ç”¨æ±ºæ¸ˆã‚’è¡¨ç¤ºç”¨ã«å¤‰æ›
+		// ÍøÍÑ·èºÑ¤òÉ½¼¨ÍÑ¤ËÊÑ´¹
 		$arrDisp["payment"][$key] = $val["payment"];
 		
-		// ã‚¯ãƒ¬ã‚¸ãƒƒãƒˆã®æ±ºæ¸ˆåŒºåˆ†ã‚’å–å¾—
+		// ¥¯¥ì¥¸¥Ã¥È¤Î·èºÑ¶èÊ¬¤ò¼èÆÀ
 		if($val["payment"] == 1) $credit = $val["payment_code"];
 		
-		// ã‚³ãƒ³ãƒ“ãƒ‹
+		// ¥³¥ó¥Ó¥Ë
 		if($val["payment"] == 2) $arrDisp["convenience"] = $val["convenience"];
 	}
 	$objFormParam->setParam($arrDisp);
 	$objFormParam->splitParamCheckBoxes("convenience");
 	
-	// ã‚¯ãƒ¬ã‚¸ãƒƒãƒˆ
+	// ¥¯¥ì¥¸¥Ã¥È
 	if(substr($credit, 0, 1)) $arrCredit["credit"][] = 1;
 	if(substr($credit, 1, 1)) $arrCredit["credit"][] = 2;
 	$objFormParam->setParam($arrCredit);
 }
 
-// DBã‹ã‚‰ãƒ‡ãƒ¼ã‚¿ã‚’å–å¾—ã™ã‚‹
+// DB¤«¤é¥Ç¡¼¥¿¤ò¼èÆÀ¤¹¤ë
 function lfGetPaymentDB($where = "", $arrWhereVal = array()){
 	global $objQuery;
 	
@@ -252,12 +252,12 @@ function lfGetPaymentDB($where = "", $arrWhereVal = array()){
 }
 
 
-// ãƒ‡ãƒ¼ã‚¿ã®æ›´æ–°å‡¦ç†
+// ¥Ç¡¼¥¿¤Î¹¹¿·½èÍı
 function lfUpdPaymentDB(){
 	global $objQuery;
 	global $objSess;
 	
-	// åˆ©ç”¨ã‚³ãƒ³ãƒ“ãƒ‹ã«ãƒã‚§ãƒƒã‚¯ãŒå…¥ã£ã¦ã„ã‚‹å ´åˆã«ã¯ã€ãƒã‚¤ãƒ•ãƒ³åŒºåˆ‡ã‚Šã«ç·¨é›†ã™ã‚‹
+	// ÍøÍÑ¥³¥ó¥Ó¥Ë¤Ë¥Á¥§¥Ã¥¯¤¬Æş¤Ã¤Æ¤¤¤ë¾ì¹ç¤Ë¤Ï¡¢¥Ï¥¤¥Õ¥ó¶èÀÚ¤ê¤ËÊÔ½¸¤¹¤ë
 	$convCnt = count($_POST["convenience"]);
 	if($convCnt > 0){
 		$convenience = $_POST["convenience"][0];
@@ -266,25 +266,25 @@ function lfUpdPaymentDB(){
 		}
 	}
 		
-	// del_flgã‚’å‰Šé™¤ã«ã—ã¦ãŠã
+	// del_flg¤òºï½ü¤Ë¤·¤Æ¤ª¤¯
 	$del_sql = "UPDATE dtb_payment SET del_flg = 1 WHERE module_id = ? ";
 	$arrDel = array(MDL_EPSILON_ID);
 	$objQuery->query($del_sql, $arrDel);
 	
-	// ãƒ‡ãƒ¼ã‚¿ç™»éŒ²
+	// ¥Ç¡¼¥¿ÅĞÏ¿
 	foreach($_POST["payment"] as $key => $val){
-		// ãƒ©ãƒ³ã‚¯ã®æœ€å¤§å€¤ã‚’å–å¾—ã™ã‚‹
+		// ¥é¥ó¥¯¤ÎºÇÂçÃÍ¤ò¼èÆÀ¤¹¤ë
 		$max_rank = $objQuery->getone("SELECT max(rank) FROM dtb_payment");
 
-		// æ”¯æ‰•æ–¹æ³•ãƒ‡ãƒ¼ã‚¿ã‚’å–å¾—			
+		// »ÙÊ§ÊıË¡¥Ç¡¼¥¿¤ò¼èÆÀ			
 		$arrPaymentData = lfGetPaymentDB("AND memo03 = ?", array($val));
 		
-		// ã‚¯ãƒ¬ã‚¸ãƒƒãƒˆã«ãƒã‚§ãƒƒã‚¯ãŒå…¥ã£ã¦ã„ã‚Œã°ã‚¯ãƒ¬ã‚¸ãƒƒãƒˆã‚’ç™»éŒ²ã™ã‚‹
+		// ¥¯¥ì¥¸¥Ã¥È¤Ë¥Á¥§¥Ã¥¯¤¬Æş¤Ã¤Æ¤¤¤ì¤Ğ¥¯¥ì¥¸¥Ã¥È¤òÅĞÏ¿¤¹¤ë
 		if($val == 1){
 			(in_array(1, $_POST["credit"])) ? $visa = "1" : $visa = "0";
 			(in_array(2, $_POST["credit"])) ? $jcb = "1" : $jcb = "0";
 			$arrData = array(			
-				"payment_method" => "Epsilonã‚¯ãƒ¬ã‚¸ãƒƒãƒˆ"
+				"payment_method" => "Epsilon¥¯¥ì¥¸¥Ã¥È"
 				,"fix" => 3
 				,"creator_id" => $objSess->member_id
 				,"create_date" => "now()"
@@ -303,10 +303,10 @@ function lfUpdPaymentDB(){
 			);
 		}
 		
-		// ã‚³ãƒ³ãƒ“ãƒ‹ã«ãƒã‚§ãƒƒã‚¯ãŒå…¥ã£ã¦ã„ã‚Œã°ã‚³ãƒ³ãƒ“ãƒ‹ã‚’ç™»éŒ²ã™ã‚‹
+		// ¥³¥ó¥Ó¥Ë¤Ë¥Á¥§¥Ã¥¯¤¬Æş¤Ã¤Æ¤¤¤ì¤Ğ¥³¥ó¥Ó¥Ë¤òÅĞÏ¿¤¹¤ë
 		if($val == 2){
 			
-			// ã‚»ãƒ–ãƒ³ã‚¤ãƒ¬ãƒ–ãƒ³ã®ã¿é¸æŠã—ãŸå ´åˆã«ã¯åˆ©ç”¨ä¸Šé™ã‚’30ä¸‡ã«ã™ã‚‹ã€‚
+			// ¥»¥Ö¥ó¥¤¥ì¥Ö¥ó¤Î¤ßÁªÂò¤·¤¿¾ì¹ç¤Ë¤ÏÍøÍÑ¾å¸Â¤ò30Ëü¤Ë¤¹¤ë¡£
 			if(count($_POST["convenience"]) == 1 and $_POST["convenience"][0] == 11) {
 				$upper_rule_max = SEVEN_CHARGE_MAX;
 				($arrPaymentData["upper_rule"] > $upper_rule_max or $arrPaymentData["upper_rule"] == "") ? $upper_rule = $upper_rule_max : $upper_rule = $arrPaymentData["upper_rule"];
@@ -316,7 +316,7 @@ function lfUpdPaymentDB(){
 			}
 			
 			$arrData = array(
-				"payment_method" => "Epsilonã‚³ãƒ³ãƒ“ãƒ‹"
+				"payment_method" => "Epsilon¥³¥ó¥Ó¥Ë"
 				,"fix" => 3
 				,"creator_id" => $objSess->member_id
 				,"create_date" => "now()"
@@ -335,7 +335,7 @@ function lfUpdPaymentDB(){
 			);
 		}
 
-		// ãƒ‡ãƒ¼ã‚¿ãŒå­˜åœ¨ã—ã¦ã„ã‚Œã°UPDATEã€ç„¡ã‘ã‚Œã°INSERT
+		// ¥Ç¡¼¥¿¤¬Â¸ºß¤·¤Æ¤¤¤ì¤ĞUPDATE¡¢Ìµ¤±¤ì¤ĞINSERT
 		if(count($arrPaymentData) > 0){
 			$objQuery->update("dtb_payment", $arrData, " module_id = '" . MDL_EPSILON_ID . "' AND memo03 = '" . $val ."'");
 		}else{
@@ -345,17 +345,17 @@ function lfUpdPaymentDB(){
 	}
 }
 
-// ã‚³ãƒ³ãƒ“ãƒ‹å…¥é‡‘ç¢ºèªå‡¦ç†
+// ¥³¥ó¥Ó¥ËÆş¶â³ÎÇ§½èÍı
 function lfEpsilonCheck(){
 	global $objQuery;
 	
-	// trans_code ã‚’æŒ‡å®šã•ã‚Œã¦ã„ã¦ä¸”ã¤ã€å…¥é‡‘æ¸ˆã¿ã®å ´åˆ
+	// trans_code ¤ò»ØÄê¤µ¤ì¤Æ¤¤¤Æ³î¤Ä¡¢Æş¶âºÑ¤ß¤Î¾ì¹ç
 	if($_POST["trans_code"] != "" and $_POST["paid"] == 1 and $_POST["order_number"] != ""){
-		// ã‚¹ãƒ†ãƒ¼ã‚¿ã‚¹ã‚’å…¥é‡‘æ¸ˆã¿ã«å¤‰æ›´ã™ã‚‹
+		// ¥¹¥Æ¡¼¥¿¥¹¤òÆş¶âºÑ¤ß¤ËÊÑ¹¹¤¹¤ë
 		$sql = "UPDATE dtb_order SET status = 6, update_date = now() WHERE order_id = ? AND memo04 = ? ";
 		$objQuery->query($sql, array($_POST["order_number"], $_POST["trans_code"]));
 		
-		// POSTã®å†…å®¹ã‚’å…¨ã¦ãƒ­ã‚°ä¿å­˜
+		// POST¤ÎÆâÍÆ¤òÁ´¤Æ¥í¥°ÊİÂ¸
 		$log_path = DATA_PATH . "logs/epsilon.log";
 		gfPrintLog("epsilon conveni start---------------------------------------------------------", $log_path);
 		foreach($_POST as $key => $val){
@@ -363,7 +363,7 @@ function lfEpsilonCheck(){
 		}
 		gfPrintLog("epsilon conveni end-----------------------------------------------------------", $log_path);
 		
-		//å¿œç­”çµæœã‚’è¡¨ç¤º
+		//±şÅú·ë²Ì¤òÉ½¼¨
 		echo "1";
 	}
 }

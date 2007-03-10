@@ -6,9 +6,9 @@
  */
  
 /* 
- * é–¢æ•°åï¼šsfGetFileList()
- * èª¬æ˜ã€€ï¼šæŒ‡å®šãƒ‘ã‚¹é…ä¸‹ã®ãƒ‡ã‚£ãƒ¬ã‚¯ãƒˆãƒªå–å¾—
- * å¼•æ•°1 ï¼šå–å¾—ã™ã‚‹ãƒ‡ã‚£ãƒ¬ã‚¯ãƒˆãƒªãƒ‘ã‚¹
+ * ´Ø¿ôÌ¾¡§sfGetFileList()
+ * ÀâÌÀ¡¡¡§»ØÄê¥Ñ¥¹ÇÛ²¼¤Î¥Ç¥£¥ì¥¯¥È¥ê¼èÆÀ
+ * °ú¿ô1 ¡§¼èÆÀ¤¹¤ë¥Ç¥£¥ì¥¯¥È¥ê¥Ñ¥¹
  */
 function sfGetFileList($dir) {
 	$arrFileList = array();
@@ -17,22 +17,22 @@ function sfGetFileList($dir) {
 	if (is_dir($dir)) {
 		if ($dh = opendir($dir)) { 
 			$cnt = 0;
-			// è¡Œæœ«ã®/ã‚’å–ã‚Šé™¤ã
+			// ¹ÔËö¤Î/¤ò¼è¤ê½ü¤¯
 			while (($file = readdir($dh)) !== false) $arrDir[] = $file;
 			$dir = ereg_replace("/$", "", $dir);
-			// ã‚¢ãƒ«ãƒ•ã‚¡ãƒ™ãƒƒãƒˆã¨æ•°å­—ã§ã‚½ãƒ¼ãƒˆ
+			// ¥¢¥ë¥Õ¥¡¥Ù¥Ã¥È¤È¿ô»ú¤Ç¥½¡¼¥È
 			natcasesort($arrDir);
 			foreach($arrDir as $file) {				
-				// ./ ã¨ ../ã‚’é™¤ããƒ•ã‚¡ã‚¤ãƒ«ã®ã¿ã‚’å–å¾—
+				// ./ ¤È ../¤ò½ü¤¯¥Õ¥¡¥¤¥ë¤Î¤ß¤ò¼èÆÀ
 				if($file != "." && $file != "..") {
 
 					$path = $dir."/".$file;
-					// SELECTå†…ã®è¦‹ãŸç›®ã‚’æ•´ãˆã‚‹ãŸã‚æŒ‡å®šæ–‡å­—æ•°ã§åˆ‡ã‚‹
+					// SELECTÆâ¤Î¸«¤¿ÌÜ¤òÀ°¤¨¤ë¤¿¤á»ØÄêÊ¸»ú¿ô¤ÇÀÚ¤ë
 					$file_name = sfCutString($file, FILE_NAME_LEN);						
 					$file_size = sfCutString(sfGetDirSize($path), FILE_NAME_LEN);
 					$file_time = date("Y/m/d", filemtime($path));
 					
-					// ãƒ‡ã‚£ãƒ¬ã‚¯ãƒˆãƒªã¨ãƒ•ã‚¡ã‚¤ãƒ«ã§æ ¼ç´é…åˆ—ã‚’å¤‰ãˆã‚‹
+					// ¥Ç¥£¥ì¥¯¥È¥ê¤È¥Õ¥¡¥¤¥ë¤Ç³ÊÇ¼ÇÛÎó¤òÊÑ¤¨¤ë
 					if(is_dir($path)) {
 						$arrDirList[$cnt]['file_name'] = $file;
 						$arrDirList[$cnt]['file_path'] = $path;
@@ -53,51 +53,51 @@ function sfGetFileList($dir) {
 	    }
 	}
 
-	// ãƒ•ã‚©ãƒ«ãƒ€ã‚’å…ˆé ­ã«ã—ã¦ãƒãƒ¼ã‚¸
+	// ¥Õ¥©¥ë¥À¤òÀèÆ¬¤Ë¤·¤Æ¥Ş¡¼¥¸
 	return array_merge($arrDirList, $arrFileList);
 }
 
 /* 
- * é–¢æ•°åï¼šsfGetDirSize()
- * èª¬æ˜ã€€ï¼šæŒ‡å®šã—ãŸãƒ‡ã‚£ãƒ¬ã‚¯ãƒˆãƒªã®ãƒã‚¤ãƒˆæ•°ã‚’å–å¾—
- * å¼•æ•°1 ï¼šãƒ‡ã‚£ãƒ¬ã‚¯ãƒˆãƒª
+ * ´Ø¿ôÌ¾¡§sfGetDirSize()
+ * ÀâÌÀ¡¡¡§»ØÄê¤·¤¿¥Ç¥£¥ì¥¯¥È¥ê¤Î¥Ğ¥¤¥È¿ô¤ò¼èÆÀ
+ * °ú¿ô1 ¡§¥Ç¥£¥ì¥¯¥È¥ê
  */
 function sfGetDirSize($dir) {
 	if(file_exists($dir)) {
-		// ãƒ‡ã‚£ãƒ¬ã‚¯ãƒˆãƒªã®å ´åˆä¸‹å±¤ãƒ•ã‚¡ã‚¤ãƒ«ã®ç·é‡ã‚’å–å¾—
+		// ¥Ç¥£¥ì¥¯¥È¥ê¤Î¾ì¹ç²¼ÁØ¥Õ¥¡¥¤¥ë¤ÎÁíÎÌ¤ò¼èÆÀ
 		if (is_dir($dir)) {
 		    $handle = opendir($dir); 
 		    while ($file = readdir($handle)) {
-				// è¡Œæœ«ã®/ã‚’å–ã‚Šé™¤ã
+				// ¹ÔËö¤Î/¤ò¼è¤ê½ü¤¯
 				$dir = ereg_replace("/$", "", $dir);
 				$path = $dir."/".$file;
 		        if ($file != '..' && $file != '.' && !is_dir($path)) { 
 		            $bytes += filesize($path); 
 		        } else if (is_dir($path) && $file != '..' && $file != '.') {
-					// ä¸‹å±¤ãƒ•ã‚¡ã‚¤ãƒ«ã®ãƒã‚¤ãƒˆæ•°ã‚’å–å¾—ã™ã‚‹ç‚ºã€å†å¸°çš„ã«å‘¼ã³å‡ºã™ã€‚
+					// ²¼ÁØ¥Õ¥¡¥¤¥ë¤Î¥Ğ¥¤¥È¿ô¤ò¼èÆÀ¤¹¤ë°Ù¡¢ºÆµ¢Åª¤Ë¸Æ¤Ó½Ğ¤¹¡£
 		            $bytes += sfGetDirSize($path); 
 		        } 
 		    } 
 		} else {
-			// ãƒ•ã‚¡ã‚¤ãƒ«ã®å ´åˆ
+			// ¥Õ¥¡¥¤¥ë¤Î¾ì¹ç
 			$bytes = filesize($dir);
 		}
 	}
-	// ãƒ‡ã‚£ãƒ¬ã‚¯ãƒˆãƒª(ãƒ•ã‚¡ã‚¤ãƒ«)ãŒå­˜åœ¨ã—ãªã„å ´åˆã¯0byteã‚’è¿”ã™
+	// ¥Ç¥£¥ì¥¯¥È¥ê(¥Õ¥¡¥¤¥ë)¤¬Â¸ºß¤·¤Ê¤¤¾ì¹ç¤Ï0byte¤òÊÖ¤¹
 	if($bytes == "") $bytes = 0;
 	
     return $bytes;
 }
 
 /* 
- * é–¢æ•°åï¼šsfDeleteDir()
- * èª¬æ˜ã€€ï¼šæŒ‡å®šã—ãŸãƒ‡ã‚£ãƒ¬ã‚¯ãƒˆãƒªã‚’å‰Šé™¤
- * å¼•æ•°1 ï¼šå‰Šé™¤ãƒ•ã‚¡ã‚¤ãƒ«
+ * ´Ø¿ôÌ¾¡§sfDeleteDir()
+ * ÀâÌÀ¡¡¡§»ØÄê¤·¤¿¥Ç¥£¥ì¥¯¥È¥ê¤òºï½ü
+ * °ú¿ô1 ¡§ºï½ü¥Õ¥¡¥¤¥ë
  */
 function sfDeleteDir($dir) {
 	$arrResult = array();
 	if(file_exists($dir)) {
-		// ãƒ‡ã‚£ãƒ¬ã‚¯ãƒˆãƒªã‹ãƒã‚§ãƒƒã‚¯
+		// ¥Ç¥£¥ì¥¯¥È¥ê¤«¥Á¥§¥Ã¥¯
 		if (is_dir($dir)) {
 			if ($handle = opendir("$dir")) {
 				$cnt = 0;
@@ -117,7 +117,7 @@ function sfDeleteDir($dir) {
 			$arrResult[$cnt]['result'] = @rmdir($dir);
 			$arrResult[$cnt]['file_name'] = "$dir/$item";
 		} else {
-			// ãƒ•ã‚¡ã‚¤ãƒ«å‰Šé™¤
+			// ¥Õ¥¡¥¤¥ëºï½ü
 			$arrResult[0]['result'] = @unlink("$dir");
 			$arrResult[0]['file_name'] = "$dir";			
 		}
@@ -127,10 +127,10 @@ function sfDeleteDir($dir) {
 }
 
 /* 
- * é–¢æ•°åï¼šsfGetFileTree()
- * èª¬æ˜ã€€ï¼šãƒ„ãƒªãƒ¼ç”Ÿæˆç”¨é…åˆ—å–å¾—(javascriptã«æ¸¡ã™ç”¨)
- * å¼•æ•°1 ï¼šãƒ‡ã‚£ãƒ¬ã‚¯ãƒˆãƒª
- * å¼•æ•°2 ï¼šç¾åœ¨ã®ãƒ„ãƒªãƒ¼ã®çŠ¶æ…‹é–‹ã„ã¦ã„ã‚‹ãƒ•ã‚©ãƒ«ãƒ€ã®ãƒ‘ã‚¹ãŒ | åŒºåˆ‡ã‚Šã§æ ¼ç´
+ * ´Ø¿ôÌ¾¡§sfGetFileTree()
+ * ÀâÌÀ¡¡¡§¥Ä¥ê¡¼À¸À®ÍÑÇÛÎó¼èÆÀ(javascript¤ËÅÏ¤¹ÍÑ)
+ * °ú¿ô1 ¡§¥Ç¥£¥ì¥¯¥È¥ê
+ * °ú¿ô2 ¡§¸½ºß¤Î¥Ä¥ê¡¼¤Î¾õÂÖ³«¤¤¤Æ¤¤¤ë¥Õ¥©¥ë¥À¤Î¥Ñ¥¹¤¬ | ¶èÀÚ¤ê¤Ç³ÊÇ¼
  */
 function sfGetFileTree($dir, $tree_status) {
 	
@@ -138,9 +138,9 @@ function sfGetFileTree($dir, $tree_status) {
 	$arrTree = array();
 	$default_rank = count(split('/', $dir));
 
-	// æ–‡æœ«ã®/ã‚’å–ã‚Šé™¤ã
+	// Ê¸Ëö¤Î/¤ò¼è¤ê½ü¤¯
 	$dir = ereg_replace("/$", "", $dir);	
-	// æœ€ä¸Šä½å±¤ã‚’æ ¼ç´(user_data/)
+	// ºÇ¾å°ÌÁØ¤ò³ÊÇ¼(user_data/)
 	if(sfDirChildExists($dir)) {
 		$arrTree[$cnt]['type'] = "_parent";
 	} else {
@@ -149,7 +149,7 @@ function sfGetFileTree($dir, $tree_status) {
 	$arrTree[$cnt]['path'] = $dir;
 	$arrTree[$cnt]['rank'] = 0;
 	$arrTree[$cnt]['count'] = $cnt;
-	// åˆæœŸè¡¨ç¤ºã¯ã‚ªãƒ¼ãƒ—ãƒ³
+	// ½é´üÉ½¼¨¤Ï¥ª¡¼¥×¥ó
 	if($_POST['mode'] != '') {
 		$arrTree[$cnt]['open'] = lfIsFileOpen($dir, $tree_status);
 	} else {
@@ -163,26 +163,26 @@ function sfGetFileTree($dir, $tree_status) {
 }
 
 /* 
- * é–¢æ•°åï¼šsfGetFileTree()
- * èª¬æ˜ã€€ï¼šãƒ„ãƒªãƒ¼ç”Ÿæˆç”¨é…åˆ—å–å¾—(javascriptã«æ¸¡ã™ç”¨)
- * å¼•æ•°1 ï¼šãƒ‡ã‚£ãƒ¬ã‚¯ãƒˆãƒª
- * å¼•æ•°2 ï¼šãƒ‡ãƒ•ã‚©ãƒ«ãƒˆã®éšå±¤(/åŒºåˆ‡ã‚Šã§ã€€0,1,2ãƒ»ãƒ»ãƒ»ã¨ã‚«ã‚¦ãƒ³ãƒˆ)
- * å¼•æ•°3 ï¼šé€£ç•ª
- * å¼•æ•°4 ï¼šç¾åœ¨ã®ãƒ„ãƒªãƒ¼ã®çŠ¶æ…‹é–‹ã„ã¦ã„ã‚‹ãƒ•ã‚©ãƒ«ãƒ€ã®ãƒ‘ã‚¹ãŒ | åŒºåˆ‡ã‚Šã§æ ¼ç´
+ * ´Ø¿ôÌ¾¡§sfGetFileTree()
+ * ÀâÌÀ¡¡¡§¥Ä¥ê¡¼À¸À®ÍÑÇÛÎó¼èÆÀ(javascript¤ËÅÏ¤¹ÍÑ)
+ * °ú¿ô1 ¡§¥Ç¥£¥ì¥¯¥È¥ê
+ * °ú¿ô2 ¡§¥Ç¥Õ¥©¥ë¥È¤Î³¬ÁØ(/¶èÀÚ¤ê¤Ç¡¡0,1,2¡¦¡¦¡¦¤È¥«¥¦¥ó¥È)
+ * °ú¿ô3 ¡§Ï¢ÈÖ
+ * °ú¿ô4 ¡§¸½ºß¤Î¥Ä¥ê¡¼¤Î¾õÂÖ³«¤¤¤Æ¤¤¤ë¥Õ¥©¥ë¥À¤Î¥Ñ¥¹¤¬ | ¶èÀÚ¤ê¤Ç³ÊÇ¼
  */
 function sfGetFileTreeSub($dir, $default_rank, &$cnt, &$arrTree, $tree_status) {
 	
 	if(file_exists($dir)) {
 		if ($handle = opendir("$dir")) {
 			while (false !== ($item = readdir($handle))) $arrDir[] = $item; 
-			// ã‚¢ãƒ«ãƒ•ã‚¡ãƒ™ãƒƒãƒˆã¨æ•°å­—ã§ã‚½ãƒ¼ãƒˆ
+			// ¥¢¥ë¥Õ¥¡¥Ù¥Ã¥È¤È¿ô»ú¤Ç¥½¡¼¥È
 			natcasesort($arrDir);
 			foreach($arrDir as $item) {
 				if ($item != "." && $item != "..") {
-					// æ–‡æœ«ã®/ã‚’å–ã‚Šé™¤ã
+					// Ê¸Ëö¤Î/¤ò¼è¤ê½ü¤¯
 					$dir = ereg_replace("/$", "", $dir);
 					$path = $dir."/".$item;
-					// ãƒ‡ã‚£ãƒ¬ã‚¯ãƒˆãƒªã®ã¿å–å¾—
+					// ¥Ç¥£¥ì¥¯¥È¥ê¤Î¤ß¼èÆÀ
 					if (is_dir($path)) {
 						$arrTree[$cnt]['path'] = $path;
 						if(sfDirChildExists($path)) {
@@ -191,15 +191,15 @@ function sfGetFileTreeSub($dir, $default_rank, &$cnt, &$arrTree, $tree_status) {
 							$arrTree[$cnt]['type'] = "_child";	
 						}
 						
-						// éšå±¤ã‚’å‰²ã‚Šå‡ºã™
+						// ³¬ÁØ¤ò³ä¤ê½Ğ¤¹
 						$arrCnt = split('/', $path);
 						$rank = count($arrCnt);
 						$arrTree[$cnt]['rank'] = $rank - $default_rank + 1;
 						$arrTree[$cnt]['count'] = $cnt;
-						// ãƒ•ã‚©ãƒ«ãƒ€ãŒé–‹ã„ã¦ã„ã‚‹ã‹
+						// ¥Õ¥©¥ë¥À¤¬³«¤¤¤Æ¤¤¤ë¤«
 						$arrTree[$cnt]['open'] = lfIsFileOpen($path, $tree_status);
 						$cnt++;
-						// ä¸‹å±¤ãƒ‡ã‚£ãƒ¬ã‚¯ãƒˆãƒªå–å¾—ã®ç‚ºã€å†å¸°çš„ã«å‘¼ã³å‡ºã™
+						// ²¼ÁØ¥Ç¥£¥ì¥¯¥È¥ê¼èÆÀ¤Î°Ù¡¢ºÆµ¢Åª¤Ë¸Æ¤Ó½Ğ¤¹
 						sfGetFileTreeSub($path, $default_rank, $cnt, $arrTree, $tree_status);
 					}
 				}
@@ -210,16 +210,16 @@ function sfGetFileTreeSub($dir, $default_rank, &$cnt, &$arrTree, $tree_status) {
 }
 
 /* 
- * é–¢æ•°åï¼šsfDirChildExists()
- * èª¬æ˜ã€€ï¼šæŒ‡å®šã—ãŸãƒ‡ã‚£ãƒ¬ã‚¯ãƒˆãƒªé…ä¸‹ã«ãƒ•ã‚¡ã‚¤ãƒ«ãŒã‚ã‚‹ã‹
- * å¼•æ•°1 ï¼šãƒ‡ã‚£ãƒ¬ã‚¯ãƒˆãƒª
+ * ´Ø¿ôÌ¾¡§sfDirChildExists()
+ * ÀâÌÀ¡¡¡§»ØÄê¤·¤¿¥Ç¥£¥ì¥¯¥È¥êÇÛ²¼¤Ë¥Õ¥¡¥¤¥ë¤¬¤¢¤ë¤«
+ * °ú¿ô1 ¡§¥Ç¥£¥ì¥¯¥È¥ê
  */
 function sfDirChildExists($dir) {
 	if(file_exists($dir)) {
 		if (is_dir($dir)) {
 		    $handle = opendir($dir); 
 		    while ($file = readdir($handle)) {
-				// è¡Œæœ«ã®/ã‚’å–ã‚Šé™¤ã
+				// ¹ÔËö¤Î/¤ò¼è¤ê½ü¤¯
 				$dir = ereg_replace("/$", "", $dir);
 				$path = $dir."/".$file;
 				if ($file != '..' && $file != '.' && is_dir($path)) { 
@@ -233,10 +233,10 @@ function sfDirChildExists($dir) {
 }
 
 /* 
- * é–¢æ•°åï¼šlfIsFileOpen()
- * èª¬æ˜ã€€ï¼šæŒ‡å®šã—ãŸãƒ•ã‚¡ã‚¤ãƒ«ãŒå‰å›é–‹ã‹ã‚ŒãŸçŠ¶æ…‹ã«ã‚ã£ãŸã‹ãƒã‚§ãƒƒã‚¯
- * å¼•æ•°1 ï¼šãƒ‡ã‚£ãƒ¬ã‚¯ãƒˆãƒª
- * å¼•æ•°2 ï¼šç¾åœ¨ã®ãƒ„ãƒªãƒ¼ã®çŠ¶æ…‹é–‹ã„ã¦ã„ã‚‹ãƒ•ã‚©ãƒ«ãƒ€ã®ãƒ‘ã‚¹ãŒ | åŒºåˆ‡ã‚Šã§æ ¼ç´
+ * ´Ø¿ôÌ¾¡§lfIsFileOpen()
+ * ÀâÌÀ¡¡¡§»ØÄê¤·¤¿¥Õ¥¡¥¤¥ë¤¬Á°²ó³«¤«¤ì¤¿¾õÂÖ¤Ë¤¢¤Ã¤¿¤«¥Á¥§¥Ã¥¯
+ * °ú¿ô1 ¡§¥Ç¥£¥ì¥¯¥È¥ê
+ * °ú¿ô2 ¡§¸½ºß¤Î¥Ä¥ê¡¼¤Î¾õÂÖ³«¤¤¤Æ¤¤¤ë¥Õ¥©¥ë¥À¤Î¥Ñ¥¹¤¬ | ¶èÀÚ¤ê¤Ç³ÊÇ¼
  */
 function lfIsFileOpen($dir, $tree_status) {
 	$arrTreeStatus = split('\|', $tree_status);
@@ -248,12 +248,12 @@ function lfIsFileOpen($dir, $tree_status) {
 }
 
 /* 
- * é–¢æ•°åï¼šsfDownloadFile()
- * å¼•æ•°1 ï¼šãƒ•ã‚¡ã‚¤ãƒ«ãƒ‘ã‚¹
- * èª¬æ˜ã€€ï¼šãƒ•ã‚¡ã‚¤ãƒ«ã®ãƒ€ã‚¦ãƒ³ãƒ­ãƒ¼ãƒ‰
+ * ´Ø¿ôÌ¾¡§sfDownloadFile()
+ * °ú¿ô1 ¡§¥Õ¥¡¥¤¥ë¥Ñ¥¹
+ * ÀâÌÀ¡¡¡§¥Õ¥¡¥¤¥ë¤Î¥À¥¦¥ó¥í¡¼¥É
  */
 function sfDownloadFile($file) {
- 	// ãƒ•ã‚¡ã‚¤ãƒ«ã®å ´åˆã¯ãƒ€ã‚¦ãƒ³ãƒ­ãƒ¼ãƒ‰ã•ã›ã‚‹
+ 	// ¥Õ¥¡¥¤¥ë¤Î¾ì¹ç¤Ï¥À¥¦¥ó¥í¡¼¥É¤µ¤»¤ë
 	Header("Content-disposition: attachment; filename=".basename($file));
 	Header("Content-type: application/octet-stream; name=".basename($file));
 	Header("Cache-Control: ");
@@ -262,13 +262,13 @@ function sfDownloadFile($file) {
 }
 
 /* 
- * é–¢æ•°åï¼šsfCreateFile()
- * å¼•æ•°1 ï¼šãƒ•ã‚¡ã‚¤ãƒ«ãƒ‘ã‚¹
- * å¼•æ•°2 ï¼šãƒ‘ãƒ¼ãƒŸãƒƒã‚·ãƒ§ãƒ³
- * èª¬æ˜ã€€ï¼šãƒ•ã‚¡ã‚¤ãƒ«ä½œæˆ
+ * ´Ø¿ôÌ¾¡§sfCreateFile()
+ * °ú¿ô1 ¡§¥Õ¥¡¥¤¥ë¥Ñ¥¹
+ * °ú¿ô2 ¡§¥Ñ¡¼¥ß¥Ã¥·¥ç¥ó
+ * ÀâÌÀ¡¡¡§¥Õ¥¡¥¤¥ëºîÀ®
  */
 function sfCreateFile($file, $mode = "") {
-	// è¡Œæœ«ã®/ã‚’å–ã‚Šé™¤ã
+	// ¹ÔËö¤Î/¤ò¼è¤ê½ü¤¯
 	if($mode != "") {
 		$ret = @mkdir($file, $mode);
 	} else {
@@ -279,15 +279,15 @@ function sfCreateFile($file, $mode = "") {
 }
 
 /* 
- * é–¢æ•°åï¼šsfReadFile()
- * å¼•æ•°1 ï¼šãƒ•ã‚¡ã‚¤ãƒ«ãƒ‘ã‚¹
- * èª¬æ˜ã€€ï¼šãƒ•ã‚¡ã‚¤ãƒ«èª­è¾¼
+ * ´Ø¿ôÌ¾¡§sfReadFile()
+ * °ú¿ô1 ¡§¥Õ¥¡¥¤¥ë¥Ñ¥¹
+ * ÀâÌÀ¡¡¡§¥Õ¥¡¥¤¥ëÆÉ¹ş
  */
 function sfReadFile($filename) { 
     $str = ""; 
-    // ãƒã‚¤ãƒŠãƒªãƒ¢ãƒ¼ãƒ‰ã§ã‚ªãƒ¼ãƒ—ãƒ³ 
+    // ¥Ğ¥¤¥Ê¥ê¥â¡¼¥É¤Ç¥ª¡¼¥×¥ó 
     $fp = @fopen($filename, "rb" ); 
-    //ãƒ•ã‚¡ã‚¤ãƒ«å†…å®¹ã‚’å…¨ã¦å¤‰æ•°ã«èª­ã¿è¾¼ã‚€ 
+    //¥Õ¥¡¥¤¥ëÆâÍÆ¤òÁ´¤ÆÊÑ¿ô¤ËÆÉ¤ß¹ş¤à 
     if($fp) { 
         $str = @fread($fp, filesize($filename)+1); 
     } 

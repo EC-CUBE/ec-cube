@@ -5,7 +5,7 @@
  * http://www.lockon.co.jp/
  */
 
-/* ãƒ‘ãƒ©ãƒ¡ãƒ¼ã‚¿ç®¡ç†ã‚¯ãƒ©ã‚¹ */
+/* ¥Ñ¥é¥á¡¼¥¿´ÉÍı¥¯¥é¥¹ */
 class SC_FormParam {
 
 	var $param;	
@@ -14,11 +14,11 @@ class SC_FormParam {
 	var $length;
 	var $convert;
 	var $arrCheck;
-	var $default;	// ä½•ã‚‚å…¥åŠ›ã•ã‚Œã¦ã„ãªã„ã¨ãã«è¡¨ç¤ºã™ã‚‹å€¤
-	var $input_db;	// DBã«ãã®ã¾ã¾æŒ¿å…¥å¯èƒ½ã‹å¦ã‹
+	var $default;	// ²¿¤âÆşÎÏ¤µ¤ì¤Æ¤¤¤Ê¤¤¤È¤­¤ËÉ½¼¨¤¹¤ëÃÍ
+	var $input_db;	// DB¤Ë¤½¤Î¤Ş¤ŞÁŞÆş²ÄÇ½¤«Èİ¤«
 	var $html_disp_name;
 	
-	// ã‚³ãƒ³ã‚¹ãƒˆãƒ©ã‚¯ã‚¿
+	// ¥³¥ó¥¹¥È¥é¥¯¥¿
 	function SC_FormParam() {
 		$this->check_dir = IMAGE_SAVE_DIR;
 		$this->disp_name = array();
@@ -30,7 +30,7 @@ class SC_FormParam {
 		$this->input_db = array();
 	}
 	
-	// ãƒ‘ãƒ©ãƒ¡ãƒ¼ã‚¿ã®è¿½åŠ 
+	// ¥Ñ¥é¥á¡¼¥¿¤ÎÄÉ²Ã
 	function addParam($disp_name, $keyname, $length="", $convert="", $arrCheck=array(), $default="", $input_db="true") {
 		$this->disp_name[] = $disp_name;
 		$this->keyname[] = $keyname;
@@ -41,9 +41,9 @@ class SC_FormParam {
 		$this->input_db[] = $input_db;
 	}
 	
-	// ãƒ‘ãƒ©ãƒ¡ãƒ¼ã‚¿ã®å…¥åŠ›
-	// $arrVal	:$arrVal['keyname']ãƒ»ãƒ»ã®é…åˆ—ã‚’ä¸€è‡´ã—ãŸã‚­ãƒ¼ã®ã‚¤ãƒ³ã‚¹ã‚¿ãƒ³ã‚¹ã«æ ¼ç´ã™ã‚‹
-	// $seq		:trueã®å ´åˆã€$arrVal[0]ï½ã®é…åˆ—ã‚’ç™»éŒ²é †ã«ã‚¤ãƒ³ã‚¹ã‚¿ãƒ³ã‚¹ã«æ ¼ç´ã™ã‚‹
+	// ¥Ñ¥é¥á¡¼¥¿¤ÎÆşÎÏ
+	// $arrVal	:$arrVal['keyname']¡¦¡¦¤ÎÇÛÎó¤ò°ìÃ×¤·¤¿¥­¡¼¤Î¥¤¥ó¥¹¥¿¥ó¥¹¤Ë³ÊÇ¼¤¹¤ë
+	// $seq		:true¤Î¾ì¹ç¡¢$arrVal[0]¢·¤ÎÇÛÎó¤òÅĞÏ¿½ç¤Ë¥¤¥ó¥¹¥¿¥ó¥¹¤Ë³ÊÇ¼¤¹¤ë
 	function setParam($arrVal, $seq = false) {
 		$cnt = 0;
 		if(!$seq){
@@ -60,7 +60,7 @@ class SC_FormParam {
 		}
 	}
 	
-	// ç”»é¢è¡¨ç¤ºç”¨ã‚¿ã‚¤ãƒˆãƒ«ç”Ÿæˆ
+	// ²èÌÌÉ½¼¨ÍÑ¥¿¥¤¥È¥ëÀ¸À®
 	function setHtmlDispNameArray() {
 		$cnt = 0;
 		foreach($this->keyname as $val) {
@@ -72,7 +72,7 @@ class SC_FormParam {
 			}
 			
 			if($find) {
-				$this->html_disp_name[$cnt] = $this->disp_name[$cnt] . "<span class='red'>(â€» å¿…é ˆ)</span>";					
+				$this->html_disp_name[$cnt] = $this->disp_name[$cnt] . "<span class='red'>(¢¨ É¬¿Ü)</span>";					
 			} else {
 				$this->html_disp_name[$cnt] = $this->disp_name[$cnt];
 			}								
@@ -80,14 +80,14 @@ class SC_FormParam {
 		}
 	}
 	
-	// ç”»é¢è¡¨ç¤ºç”¨ã‚¿ã‚¤ãƒˆãƒ«å–å¾—
+	// ²èÌÌÉ½¼¨ÍÑ¥¿¥¤¥È¥ë¼èÆÀ
 	function getHtmlDispNameArray() {
 		return $this->html_disp_name;
 	}
 		
-	// è¤‡æ•°åˆ—ãƒ‘ãƒ©ãƒ¡ãƒ¼ã‚¿ã®å–å¾—
+	// Ê£¿ôÎó¥Ñ¥é¥á¡¼¥¿¤Î¼èÆÀ
 	function setParamList($arrVal, $keyname) {
-		// DBã®ä»¶æ•°ã‚’å–å¾—ã™ã‚‹ã€‚
+		// DB¤Î·ï¿ô¤ò¼èÆÀ¤¹¤ë¡£
 		$count = count($arrVal);
 		$no = 1;
 		for($cnt = 0; $cnt < $count; $cnt++) {
@@ -106,7 +106,7 @@ class SC_FormParam {
 		$this->setValue($day_key, $d);
 	}
 	
-	// ã‚­ãƒ¼ã«å¯¾å¿œã—ãŸå€¤ã‚’ã‚»ãƒƒãƒˆã™ã‚‹ã€‚
+	// ¥­¡¼¤ËÂĞ±ş¤·¤¿ÃÍ¤ò¥»¥Ã¥È¤¹¤ë¡£
 	function setValue($key, $param) {
 		$cnt = 0;
 		foreach($this->keyname as $val) {
@@ -129,9 +129,9 @@ class SC_FormParam {
 		}
 	}
 	
-	// ã‚¨ãƒ©ãƒ¼ãƒã‚§ãƒƒã‚¯
+	// ¥¨¥é¡¼¥Á¥§¥Ã¥¯
 	function checkError($br = true, $keyname = "") {
-		// é€£æƒ³é…åˆ—ã®å–å¾—
+		// Ï¢ÁÛÇÛÎó¤Î¼èÆÀ
 		$arrRet = $this->getHashArray($keyname);
 		$objErr = new SC_CheckError($arrRet);
 		$cnt = 0;
@@ -191,18 +191,18 @@ class SC_FormParam {
 						}
 					}
 					break;
-				// å°æ–‡å­—ã«å¤‰æ›
+				// ¾®Ê¸»ú¤ËÊÑ´¹
 				case 'CHANGE_LOWER':
 					$this->param[$cnt] = strtolower($this->param[$cnt]);
 					break;
-				// ãƒ•ã‚¡ã‚¤ãƒ«ã®å­˜åœ¨ãƒã‚§ãƒƒã‚¯
+				// ¥Õ¥¡¥¤¥ë¤ÎÂ¸ºß¥Á¥§¥Ã¥¯
 				case 'FILE_EXISTS':
 					if($this->param[$cnt] != "" && !file_exists($this->check_dir . $this->param[$cnt])) {
-						$objErr->arrErr[$val] = "â€» " . $this->disp_name[$cnt] . "ã®ãƒ•ã‚¡ã‚¤ãƒ«ãŒå­˜åœ¨ã—ã¾ã›ã‚“ã€‚<br>";					
+						$objErr->arrErr[$val] = "¢¨ " . $this->disp_name[$cnt] . "¤Î¥Õ¥¡¥¤¥ë¤¬Â¸ºß¤·¤Ş¤»¤ó¡£<br>";					
 					}
 					break;
 				default:
-					$objErr->arrErr[$val] = "â€»â€»ã€€ã‚¨ãƒ©ãƒ¼ãƒã‚§ãƒƒã‚¯å½¢å¼($func)ã«ã¯å¯¾å¿œã—ã¦ã„ã¾ã›ã‚“ã€€â€»â€» <br>";
+					$objErr->arrErr[$val] = "¢¨¢¨¡¡¥¨¥é¡¼¥Á¥§¥Ã¥¯·Á¼°($func)¤Ë¤ÏÂĞ±ş¤·¤Æ¤¤¤Ş¤»¤ó¡¡¢¨¢¨ <br>";
 					break;
 				}
 			}
@@ -215,15 +215,15 @@ class SC_FormParam {
 		return $objErr->arrErr;
 	}
 	
-	// å…¥åŠ›æ–‡å­—ã®å¤‰æ›
+	// ÆşÎÏÊ¸»ú¤ÎÊÑ´¹
 	function convParam() {
 		/*
-		 *	æ–‡å­—åˆ—ã®å¤‰æ›
-		 *	K :  ã€ŒåŠè§’(ï¾Šï¾ï½¶ï½¸)ç‰‡ä»®åã€ã‚’ã€Œå…¨è§’ç‰‡ä»®åã€ã«å¤‰æ›
-		 *	C :  ã€Œå…¨è§’ã²ã‚‰ä»®åã€ã‚’ã€Œå…¨è§’ã‹ãŸä»®åã€ã«å¤‰æ›
-		 *	V :  æ¿ç‚¹ä»˜ãã®æ–‡å­—ã‚’ä¸€æ–‡å­—ã«å¤‰æ›ã€‚"K","H"ã¨å…±ã«ä½¿ç”¨ã—ã¾ã™	
-		 *	n :  ã€Œå…¨è§’ã€æ•°å­—ã‚’ã€ŒåŠè§’(ï¾Šï¾ï½¶ï½¸)ã€ã«å¤‰æ›
-		 *  a :  ã€Œå…¨è§’ã€è‹±å­—ã‚’ã€ŒåŠè§’ã€è‹±å­—ã«å¤‰æ›
+		 *	Ê¸»úÎó¤ÎÊÑ´¹
+		 *	K :  ¡ÖÈ¾³Ñ(Êİ¶¸)ÊÒ²¾Ì¾¡×¤ò¡ÖÁ´³ÑÊÒ²¾Ì¾¡×¤ËÊÑ´¹
+		 *	C :  ¡ÖÁ´³Ñ¤Ò¤é²¾Ì¾¡×¤ò¡ÖÁ´³Ñ¤«¤¿²¾Ì¾¡×¤ËÊÑ´¹
+		 *	V :  ÂùÅÀÉÕ¤­¤ÎÊ¸»ú¤ò°ìÊ¸»ú¤ËÊÑ´¹¡£"K","H"¤È¶¦¤Ë»ÈÍÑ¤·¤Ş¤¹	
+		 *	n :  ¡ÖÁ´³Ñ¡×¿ô»ú¤ò¡ÖÈ¾³Ñ(Êİ¶¸)¡×¤ËÊÑ´¹
+		 *  a :  ¡ÖÁ´³Ñ¡×±Ñ»ú¤ò¡ÖÈ¾³Ñ¡×±Ñ»ú¤ËÊÑ´¹
 		 */
 		$cnt = 0;
 		foreach ($this->keyname as $val) {
@@ -243,7 +243,7 @@ class SC_FormParam {
 		}
 	}
 	
-	// é€£æƒ³é…åˆ—ã®ä½œæˆ
+	// Ï¢ÁÛÇÛÎó¤ÎºîÀ®
 	function getHashArray($keyname = "") {
 		$cnt = 0;
 		foreach($this->keyname as $val) {
@@ -255,7 +255,7 @@ class SC_FormParam {
 		return $arrRet;
 	}
 	
-	// DBæ ¼ç´ç”¨é…åˆ—ã®ä½œæˆ
+	// DB³ÊÇ¼ÍÑÇÛÎó¤ÎºîÀ®
 	function getDbArray() {
 		$cnt = 0;
 		foreach ($this->keyname as $val) {
@@ -267,7 +267,7 @@ class SC_FormParam {
 		return $arrRet;
 	}
 	
-	// é…åˆ—ã®ç¸¦æ¨ªã‚’å…¥ã‚Œæ›¿ãˆã¦è¿”ã™
+	// ÇÛÎó¤Î½Ä²£¤òÆş¤ìÂØ¤¨¤ÆÊÖ¤¹
 	function getSwapArray($arrKey) {
 		foreach($arrKey as $keyname) {
 			$arrVal = $this->getValue($keyname);
@@ -279,26 +279,26 @@ class SC_FormParam {
 		return $arrRet;
 	}
 	
-	// é …ç›®åä¸€è¦§ã®å–å¾—
+	// ¹àÌÜÌ¾°ìÍ÷¤Î¼èÆÀ
 	function getTitleArray() {
 		return $this->disp_name;
 	}
 	
-	// é …ç›®æ•°ã‚’è¿”ã™
+	// ¹àÌÜ¿ô¤òÊÖ¤¹
 	function getCount() {
 		$count = count($this->keyname);
 		return $count;
 	}
 	
-	// ãƒ•ã‚©ãƒ¼ãƒ ã«æ¸¡ã™ç”¨ã®ãƒ‘ãƒ©ãƒ¡ãƒ¼ã‚¿ã‚’è¿”ã™
+	// ¥Õ¥©¡¼¥à¤ËÅÏ¤¹ÍÑ¤Î¥Ñ¥é¥á¡¼¥¿¤òÊÖ¤¹
 	function getFormParamList() {
 		$cnt = 0;
 		foreach($this->keyname as $val) {
-			// ã‚­ãƒ¼å
+			// ¥­¡¼Ì¾
 			$arrRet[$val]['keyname'] = $this->keyname[$cnt];
-			// æ–‡å­—æ•°åˆ¶é™
+			// Ê¸»ú¿ôÀ©¸Â
 			$arrRet[$val]['length'] = $this->length[$cnt];
-			// å…¥åŠ›å€¤
+			// ÆşÎÏÃÍ
 			$arrRet[$val]['value'] = $this->param[$cnt];
 			
 			if($this->default[$cnt] != "" && $this->param[$cnt] == "") {
@@ -310,7 +310,7 @@ class SC_FormParam {
 		return $arrRet;
 	}
 	
-	// ã‚­ãƒ¼åã®ä¸€è¦§ã‚’è¿”ã™
+	// ¥­¡¼Ì¾¤Î°ìÍ÷¤òÊÖ¤¹
 	function getKeyList() {
 		foreach($this->keyname as $val) {
 			$arrRet[] = $val;
@@ -318,7 +318,7 @@ class SC_FormParam {
 		return $arrRet;
 	}
 	
-	// ã‚­ãƒ¼åã¨ä¸€è‡´ã—ãŸå€¤ã‚’è¿”ã™
+	// ¥­¡¼Ì¾¤È°ìÃ×¤·¤¿ÃÍ¤òÊÖ¤¹
 	function getValue($keyname) {
 		$cnt = 0;
 		foreach($this->keyname as $val) {

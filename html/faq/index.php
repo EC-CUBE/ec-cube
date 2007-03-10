@@ -8,12 +8,12 @@ require_once("../require.php");
 
 class LC_Page {
 	function LC_Page() {
-		/** ÂøÖ„ÅöÊåáÂÆö„Åô„Çã **/
-		$this->tpl_css = URL_DIR.'css/layout/faq/index.css';	// „É°„Ç§„É≥CSS„Éë„Çπ
-		/** ÂøÖ„ÅöÊåáÂÆö„Åô„Çã **/
-		$this->tpl_mainpage = 'faq/index.tpl';			// „É°„Ç§„É≥„ÉÜ„É≥„Éó„É¨„Éº„Éà
+		/** …¨§∫ªÿƒÍ§π§Î **/
+		$this->tpl_css = URL_DIR.'css/layout/faq/index.css';	// •·•§•ÛCSS•—•π
+		/** …¨§∫ªÿƒÍ§π§Î **/
+		$this->tpl_mainpage = 'faq/index.tpl';			// •·•§•Û•∆•Û•◊•Ï°º•»
 		$this->tpl_page_category = 'faq';				
-		$this->tpl_title = '„Çà„Åè„ÅÇ„ÇãË≥™Âïè';
+		$this->tpl_title = '§Ë§Ø§¢§Îº¡Ã‰';
 	}
 }
 

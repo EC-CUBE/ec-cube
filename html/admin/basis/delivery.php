@@ -18,7 +18,7 @@ class LC_Page {
 		$this->arrPref = $arrPref;
 		global $arrTAXRULE;
 		$this->arrTAXRULE = $arrTAXRULE;
-		$this->tpl_subtitle = 'é…é€æ¥­è€…è¨­å®š';
+		$this->tpl_subtitle = 'ÇÛÁ÷¶È¼ÔÀßÄê';
 
 	}
 }
@@ -29,31 +29,31 @@ $objView = new SC_AdminView();
 $objSess = new SC_Session();
 $objQuery = new SC_Query();
 
-// èªè¨¼å¯å¦ã®åˆ¤å®š
+// Ç§¾Ú²ÄÈİ¤ÎÈ½Äê
 sfIsSuccess($objSess);
 
 switch($_POST['mode']) {
 case 'delete':
-	// ãƒ©ãƒ³ã‚¯ä»˜ããƒ¬ã‚³ãƒ¼ãƒ‰ã®å‰Šé™¤
+	// ¥é¥ó¥¯ÉÕ¤­¥ì¥³¡¼¥É¤Îºï½ü
 	sfDeleteRankRecord("dtb_deliv", "deliv_id", $_POST['deliv_id']);
-	// å†è¡¨ç¤º
+	// ºÆÉ½¼¨
 	sfReload();
 	break;
 case 'up':
 	sfRankUp("dtb_deliv", "deliv_id", $_POST['deliv_id']);
-	// å†è¡¨ç¤º
+	// ºÆÉ½¼¨
 	sfReload();
 	break;
 case 'down':
 	sfRankDown("dtb_deliv", "deliv_id", $_POST['deliv_id']);
-	// å†è¡¨ç¤º
+	// ºÆÉ½¼¨
 	sfReload();
 	break;
 default:
 	break;
 }
 
-// é…é€æ¥­è€…ä¸€è¦§ã®å–å¾—
+// ÇÛÁ÷¶È¼Ô°ìÍ÷¤Î¼èÆÀ
 $col = "deliv_id, name, service_name";
 $where = "del_flg = 0";
 $table = "dtb_deliv";

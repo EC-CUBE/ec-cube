@@ -17,7 +17,7 @@ class LC_Page {
 		$this->footer_row = 13;
 		$this->tpl_subno = "header";
 		$this->tpl_mainno = "design";
-		$this->tpl_subtitle = 'ãƒ˜ãƒƒãƒ€ãƒ¼ï½¥ãƒ•ãƒƒã‚¿ãƒ¼ç·¨é›†';
+		$this->tpl_subtitle = '¥Ø¥Ã¥À¡¼Ž¥¥Õ¥Ã¥¿¡¼ÊÔ½¸';
 		$this->tpl_onload = 'comment_start(); comment_end();';
 	}
 }
@@ -25,27 +25,27 @@ class LC_Page {
 $objPage = new LC_Page();
 $objView = new SC_AdminView();
 
-// èªè¨¼å¯å¦ã®åˆ¤å®š
+// Ç§¾Ú²ÄÈÝ¤ÎÈ½Äê
 $objSess = new SC_Session();
 sfIsSuccess($objSess);
 
 $division = $_POST['division'];
 $pre_DIR = USER_INC_PATH . 'preview/';
 
-// ãƒ‡ãƒ¼ã‚¿æ›´æ–°å‡¦ç†
+// ¥Ç¡¼¥¿¹¹¿·½èÍý
 if ($division != ''){
-	// ãƒ—ãƒ¬ãƒ“ãƒ¥ãƒ¼ç”¨ãƒ†ãƒ³ãƒ—ãƒ¬ãƒ¼ãƒˆã«æ›¸ãè¾¼ã¿	
+	// ¥×¥ì¥Ó¥å¡¼ÍÑ¥Æ¥ó¥×¥ì¡¼¥È¤Ë½ñ¤­¹þ¤ß	
 	$fp = fopen($pre_DIR.$division.'.tpl',"w");
 	fwrite($fp, $_POST[$division]);
 	fclose($fp);
 
-	// ç™»éŒ²æ™‚ã¯ãƒ—ãƒ¬ãƒ“ãƒ¥ãƒ¼ç”¨ãƒ†ãƒ³ãƒ—ãƒ¬ãƒ¼ãƒˆã‚’ã‚³ãƒ”ãƒ¼ã™ã‚‹
+	// ÅÐÏ¿»þ¤Ï¥×¥ì¥Ó¥å¡¼ÍÑ¥Æ¥ó¥×¥ì¡¼¥È¤ò¥³¥Ô¡¼¤¹¤ë
 	if ($_POST['mode'] == 'confirm'){
 		copy($pre_DIR.$division.".tpl", USER_INC_PATH . $division . ".tpl");
-		// å®Œäº†ãƒ¡ãƒƒã‚»ãƒ¼ã‚¸ï¼ˆãƒ—ãƒ¬ãƒ“ãƒ¥ãƒ¼æ™‚ã¯è¡¨ç¤ºã—ãªã„ï¼‰
-		$objPage->tpl_onload="alert('ç™»éŒ²ãŒå®Œäº†ã—ã¾ã—ãŸã€‚');";
+		// ´°Î»¥á¥Ã¥»¡¼¥¸¡Ê¥×¥ì¥Ó¥å¡¼»þ¤ÏÉ½¼¨¤·¤Ê¤¤¡Ë
+		$objPage->tpl_onload="alert('ÅÐÏ¿¤¬´°Î»¤·¤Þ¤·¤¿¡£');";
 		
-		// ãƒ†ã‚­ã‚¹ãƒˆã‚¨ãƒªã‚¢ã®å¹…ã‚’å…ƒã«æˆ»ã™(å‡¦ç†ã®çµ±ä¸€ã®ãŸã‚)
+		// ¥Æ¥­¥¹¥È¥¨¥ê¥¢¤ÎÉý¤ò¸µ¤ËÌá¤¹(½èÍý¤ÎÅý°ì¤Î¤¿¤á)
 		$_POST['header_row'] = "";
 		$_POST['footer_row'] = "";
 	}else if ($_POST['mode'] == 'preview'){
@@ -53,27 +53,27 @@ if ($division != ''){
 		if ($division == "footer") $objPage->footer_prev = "on";
 	}
 
-	// ãƒ˜ãƒƒãƒ€ãƒ¼ãƒ•ã‚¡ã‚¤ãƒ«ã®èª­ã¿è¾¼ã¿(ãƒ—ãƒ¬ãƒ“ãƒ¥ãƒ¼ãƒ‡ãƒ¼ã‚¿)
+	// ¥Ø¥Ã¥À¡¼¥Õ¥¡¥¤¥ë¤ÎÆÉ¤ß¹þ¤ß(¥×¥ì¥Ó¥å¡¼¥Ç¡¼¥¿)
 	$header_data = file_get_contents($pre_DIR . "header.tpl");
 	
-	// ãƒ•ãƒƒã‚¿ãƒ¼ãƒ•ã‚¡ã‚¤ãƒ«ã®èª­ã¿è¾¼ã¿(ãƒ—ãƒ¬ãƒ“ãƒ¥ãƒ¼ãƒ‡ãƒ¼ã‚¿)
+	// ¥Õ¥Ã¥¿¡¼¥Õ¥¡¥¤¥ë¤ÎÆÉ¤ß¹þ¤ß(¥×¥ì¥Ó¥å¡¼¥Ç¡¼¥¿)
 	$footer_data = file_get_contents($pre_DIR . "footer.tpl");
 }else{
-	// postã§ãƒ‡ãƒ¼ã‚¿ãŒæ¸¡ã•ã‚Œãªã‘ã‚Œã°æ–°è¦èª­ã¿è¾¼ã¿ã¨åˆ¤æ–­ã‚’ã—ã€ãƒ—ãƒ¬ãƒ“ãƒ¥ãƒ¼ç”¨ãƒ‡ãƒ¼ã‚¿ã‚’æ­£è¦ã®ãƒ‡ãƒ¼ã‚¿ã§ä¸Šæ›¸ãã™ã‚‹
+	// post¤Ç¥Ç¡¼¥¿¤¬ÅÏ¤µ¤ì¤Ê¤±¤ì¤Ð¿·µ¬ÆÉ¤ß¹þ¤ß¤ÈÈ½ÃÇ¤ò¤·¡¢¥×¥ì¥Ó¥å¡¼ÍÑ¥Ç¡¼¥¿¤òÀµµ¬¤Î¥Ç¡¼¥¿¤Ç¾å½ñ¤­¤¹¤ë
 	if (!is_dir($pre_DIR)) {
 		mkdir($pre_DIR);
 	}
 	copy(USER_INC_PATH . "header.tpl", $pre_DIR . "header.tpl");
 	copy(USER_INC_PATH . "footer.tpl", $pre_DIR . "footer.tpl");
 	
-	// ãƒ˜ãƒƒãƒ€ãƒ¼ãƒ•ã‚¡ã‚¤ãƒ«ã®èª­ã¿è¾¼ã¿
+	// ¥Ø¥Ã¥À¡¼¥Õ¥¡¥¤¥ë¤ÎÆÉ¤ß¹þ¤ß
 	$header_data = file_get_contents(USER_INC_PATH . "header.tpl");
-	// ãƒ•ãƒƒã‚¿ãƒ¼ãƒ•ã‚¡ã‚¤ãƒ«ã®èª­ã¿è¾¼ã¿
+	// ¥Õ¥Ã¥¿¡¼¥Õ¥¡¥¤¥ë¤ÎÆÉ¤ß¹þ¤ß
 	$footer_data = file_get_contents(USER_INC_PATH . "footer.tpl");
 
 }
 
-// ãƒ†ã‚­ã‚¹ãƒˆã‚¨ãƒªã‚¢ã«è¡¨ç¤º
+// ¥Æ¥­¥¹¥È¥¨¥ê¥¢¤ËÉ½¼¨
 $objPage->header_data = $header_data;
 $objPage->footer_data = $footer_data;
 
@@ -85,10 +85,10 @@ if ($_POST['footer_row'] != ''){
 	$objPage->footer_row = $_POST['footer_row'];
 }
 
-// ãƒ–ãƒ©ã‚¦ã‚¶ã‚¿ã‚¤ãƒ—
+// ¥Ö¥é¥¦¥¶¥¿¥¤¥×
 $objPage->browser_type = $_POST['browser_type'];
 
-// ç”»é¢ã®è¡¨ç¤º
+// ²èÌÌ¤ÎÉ½¼¨
 $objView->assignobj($objPage);
 $objView->display(MAIN_FRAME);
 

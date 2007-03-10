@@ -16,7 +16,7 @@ class LC_Page {
 		$this->tpl_subnavi = 'design/subnavi.tpl';
 		$this->tpl_subno = "layout";		
 		$this->tpl_mainno = "design";
-		$this->tpl_subtitle = 'ãƒ¬ã‚¤ã‚¢ã‚¦ãƒˆç·¨é›†';
+		$this->tpl_subtitle = '¥ì¥¤¥¢¥¦¥ÈÊÔ½¸';
 	}
 }
 
@@ -24,7 +24,7 @@ $objPage = new LC_Page();
 $objView = new SC_AdminView();
 $objSess = new SC_Session();
 
-// ãƒšãƒ¼ã‚¸IDã‚’å–å¾—
+// ¥Ú¡¼¥¸ID¤ò¼èÆÀ
 if (isset($_GET['page_id'])) {
 	$page_id = $_GET['page_id'];
 }else if ($_POST['page_id']){
@@ -33,10 +33,10 @@ if (isset($_GET['page_id'])) {
 	$page_id = 1;
 }
 
-// ç·¨é›†å¯èƒ½ãƒšãƒ¼ã‚¸ã‚’å–å¾—
+// ÊÔ½¸²ÄÇ½¥Ú¡¼¥¸¤ò¼èÆÀ
 $objPage->arrEditPage = lfgetPageData();
 
-// ãƒ–ãƒ­ãƒƒã‚¯é…ç½®ç”¨ãƒ‡ãƒ¼ã‚¿ã‚’å–å¾—
+// ¥Ö¥í¥Ã¥¯ÇÛÃÖÍÑ¥Ç¡¼¥¿¤ò¼èÆÀ
 $sel   = ", pos.target_id, pos.bloc_id, pos.bloc_row ";
 $from  = ", dtb_blocposition AS pos";
 $where = " where ";
@@ -45,7 +45,7 @@ $where .= "lay.page_id = pos.page_id AND exists (select bloc_id from dtb_bloc as
 $arrData = array($page_id);
 $arrBlocPos = lfgetLayoutData($sel, $from, $where, $arrData );
 
-// ãƒ‡ãƒ¼ã‚¿ã®å­˜åœ¨ãƒã‚§ãƒƒã‚¯ã‚’è¡Œã†
+// ¥Ç¡¼¥¿¤ÎÂ¸ºß¥Á¥§¥Ã¥¯¤ò¹Ô¤¦
 $arrPageData = lfgetPageData("page_id = ?", array($page_id));
 if (count($arrPageData) <= 0) {
 	$exists_page = 0;
@@ -54,25 +54,25 @@ if (count($arrPageData) <= 0) {
 }
 $objPage->exists_page = $exists_page;
 
-// ãƒ¡ãƒƒã‚»ãƒ¼ã‚¸è¡¨ç¤º
+// ¥á¥Ã¥»¡¼¥¸É½¼¨
 if ($_GET['msg'] == "on") {
-	$objPage->complate_msg="alert('ç™»éŒ²ãŒå®Œäº†ã—ã¾ã—ãŸã€‚');";
+	$objPage->complate_msg="alert('ÅĞÏ¿¤¬´°Î»¤·¤Ş¤·¤¿¡£');";
 }
 
-// ãƒ–ãƒ­ãƒƒã‚¯ã‚’å–å¾—
+// ¥Ö¥í¥Ã¥¯¤ò¼èÆÀ
 $arrBloc = lfgetBlocData();
 
-// æ–°è¦ãƒ–ãƒ­ãƒƒã‚¯ä½œæˆ
+// ¿·µ¬¥Ö¥í¥Ã¥¯ºîÀ®
 if ($_POST['mode'] == 'new_bloc') {
 	header("location: ./bloc.php");
 }
 
-// æ–°è¦ãƒšãƒ¼ã‚¸ä½œæˆ
+// ¿·µ¬¥Ú¡¼¥¸ºîÀ®
 if ($_POST['mode'] == 'new_page') {
 	header("location: ./main_edit.php");
 }
 
-// ãƒ‡ãƒ¼ã‚¿ç™»éŒ²å‡¦ç†
+// ¥Ç¡¼¥¿ÅĞÏ¿½èÍı
 if ($_POST['mode'] == 'confirm' or $_POST['mode'] == 'preview') {
 	
 	$arrPageData = array();
@@ -82,68 +82,68 @@ if ($_POST['mode'] == 'confirm' or $_POST['mode'] == 'preview') {
 		$_POST['page_id'] = "0";
 	}
 	
-	// æ›´æ–°ç”¨ã«ãƒ‡ãƒ¼ã‚¿ã‚’æ•´ãˆã‚‹
+	// ¹¹¿·ÍÑ¤Ë¥Ç¡¼¥¿¤òÀ°¤¨¤ë
 	$arrUpdBlocData = array();
 	$arrTargetFlip = array_flip($arrTarget);
 	
 	$upd_cnt = 1;
 	$arrUpdData[$upd_cnt]['page_id'] = $_POST['page_id'];
 	
-	// POSTã®ãƒ‡ãƒ¼ã‚¿ã‚’ä½¿ã„ã‚„ã™ã„ã‚ˆã†ã«ä¿®æ­£
+	// POST¤Î¥Ç¡¼¥¿¤ò»È¤¤¤ä¤¹¤¤¤è¤¦¤Ë½¤Àµ
 	for($upd_cnt = 1; $upd_cnt <= $_POST['bloc_cnt']; $upd_cnt++){
 		if (!isset($_POST['id_'.$upd_cnt])) {
 			break;
 		}
-		$arrUpdBlocData[$upd_cnt]['name'] 		= $_POST['name_'.$upd_cnt];							// ãƒ–ãƒ­ãƒƒã‚¯åç§°
-		$arrUpdBlocData[$upd_cnt]['id']	  		= $_POST['id_'.$upd_cnt];							// ãƒ–ãƒ­ãƒƒã‚¯ID 
-		$arrUpdBlocData[$upd_cnt]['target_id'] 	= $arrTargetFlip[$_POST['target_id_'.$upd_cnt]];	// ã‚¿ãƒ¼ã‚²ãƒƒãƒˆID
-		$arrUpdBlocData[$upd_cnt]['top'] 		= $_POST['top_'.$upd_cnt];							// TOPåº§æ¨™
-		$arrUpdBlocData[$upd_cnt]['update_url']	= $_SERVER['HTTP_REFERER'];							// æ›´æ–°URL
+		$arrUpdBlocData[$upd_cnt]['name'] 		= $_POST['name_'.$upd_cnt];							// ¥Ö¥í¥Ã¥¯Ì¾¾Î
+		$arrUpdBlocData[$upd_cnt]['id']	  		= $_POST['id_'.$upd_cnt];							// ¥Ö¥í¥Ã¥¯ID 
+		$arrUpdBlocData[$upd_cnt]['target_id'] 	= $arrTargetFlip[$_POST['target_id_'.$upd_cnt]];	// ¥¿¡¼¥²¥Ã¥ÈID
+		$arrUpdBlocData[$upd_cnt]['top'] 		= $_POST['top_'.$upd_cnt];							// TOPºÂÉ¸
+		$arrUpdBlocData[$upd_cnt]['update_url']	= $_SERVER['HTTP_REFERER'];							// ¹¹¿·URL
 	}
 
-	// ãƒ‡ãƒ¼ã‚¿ã®æ›´æ–°ã‚’è¡Œã†
-	$objDBConn = new SC_DbConn;		// DBæ“ä½œã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆ
-	$arrRet = array();				// ãƒ‡ãƒ¼ã‚¿å–å¾—ç”¨
+	// ¥Ç¡¼¥¿¤Î¹¹¿·¤ò¹Ô¤¦
+	$objDBConn = new SC_DbConn;		// DBÁàºî¥ª¥Ö¥¸¥§¥¯¥È
+	$arrRet = array();				// ¥Ç¡¼¥¿¼èÆÀÍÑ
 	
-	// deleteå®Ÿè¡Œ
+	// delete¼Â¹Ô
 	$del_sql = "";
 	$del_sql .= "DELETE FROM dtb_blocposition WHERE page_id = ? ";
 	$arrRet = $objDBConn->query($del_sql,array($page_id));
 	
-	// ãƒ–ãƒ­ãƒƒã‚¯ã®é †åºã‚’å–å¾—ã—ã€æ›´æ–°ã‚’è¡Œã†
+	// ¥Ö¥í¥Ã¥¯¤Î½ç½ø¤ò¼èÆÀ¤·¡¢¹¹¿·¤ò¹Ô¤¦
 	foreach($arrUpdBlocData as $key => $val){
-		// ãƒ–ãƒ­ãƒƒã‚¯ã®é †åºã‚’å–å¾—
+		// ¥Ö¥í¥Ã¥¯¤Î½ç½ø¤ò¼èÆÀ
 		$bloc_row = lfGetRowID($arrUpdBlocData, $val);
 		$arrUpdBlocData[$key]['bloc_row'] = $bloc_row;
-		$arrUpdBlocData[$key]['page_id'] 	= $_POST['page_id'];	// ãƒšãƒ¼ã‚¸ID
+		$arrUpdBlocData[$key]['page_id'] 	= $_POST['page_id'];	// ¥Ú¡¼¥¸ID
 		
 		if ($arrUpdBlocData[$key]['target_id'] == 5) {
 			$arrUpdBlocData[$key]['bloc_row'] = "0";
 		}
 		
-		// insertæ–‡ç”Ÿæˆ
+		// insertÊ¸À¸À®
 		$ins_sql = "";
 		$ins_sql .= "INSERT INTO dtb_blocposition ";
 		$ins_sql .= " values ( ";
-		$ins_sql .= "	?  ";			// ãƒšãƒ¼ã‚¸ID
-		$ins_sql .= "	,? ";			// ã‚¿ãƒ¼ã‚²ãƒƒãƒˆID
-		$ins_sql .= "	,? ";			// ãƒ–ãƒ­ãƒƒã‚¯ID
-		$ins_sql .= "	,? ";			// ãƒ–ãƒ­ãƒƒã‚¯ã®ä¸¦ã³é †åº
-		$ins_sql .= "	,(SELECT filename FROM dtb_bloc WHERE bloc_id = ?) ";			// ãƒ•ã‚¡ã‚¤ãƒ«åç§°
+		$ins_sql .= "	?  ";			// ¥Ú¡¼¥¸ID
+		$ins_sql .= "	,? ";			// ¥¿¡¼¥²¥Ã¥ÈID
+		$ins_sql .= "	,? ";			// ¥Ö¥í¥Ã¥¯ID
+		$ins_sql .= "	,? ";			// ¥Ö¥í¥Ã¥¯¤ÎÊÂ¤Ó½ç½ø
+		$ins_sql .= "	,(SELECT filename FROM dtb_bloc WHERE bloc_id = ?) ";			// ¥Õ¥¡¥¤¥ëÌ¾¾Î
 		$ins_sql .= "	)  ";
 
-		// insertãƒ‡ãƒ¼ã‚¿ç”Ÿæˆ
+		// insert¥Ç¡¼¥¿À¸À®
 		$arrInsData = array($page_id,
 							 $arrUpdBlocData[$key]['target_id'],
 							 $arrUpdBlocData[$key]['id'],
 							 $arrUpdBlocData[$key]['bloc_row'],
 							 $arrUpdBlocData[$key]['id']
 							);
-		// SQLå®Ÿè¡Œ
+		// SQL¼Â¹Ô
 		$arrRet = $objDBConn->query($ins_sql,$arrInsData);
 	}
 
-	// ãƒ—ãƒ¬ãƒ“ãƒ¥ãƒ¼å‡¦ç†
+	// ¥×¥ì¥Ó¥å¡¼½èÍı
 	if ($_POST['mode'] == 'preview') {
 		if ($page_id === "") {
 			header("location: ./index.php");
@@ -157,15 +157,15 @@ if ($_POST['mode'] == 'confirm' or $_POST['mode'] == 'preview') {
 	}
 }
 
-// ãƒ‡ãƒ¼ã‚¿å‰Šé™¤å‡¦ç† ãƒ™ãƒ¼ã‚¹ãƒ‡ãƒ¼ã‚¿ã§ãªã‘ã‚Œã°ãƒ•ã‚¡ã‚¤ãƒ«ã‚’å‰Šé™¤
+// ¥Ç¡¼¥¿ºï½ü½èÍı ¥Ù¡¼¥¹¥Ç¡¼¥¿¤Ç¤Ê¤±¤ì¤Ğ¥Õ¥¡¥¤¥ë¤òºï½ü
 if ($_POST['mode'] == 'delete' and 	!lfCheckBaseData($page_id)) {
 	lfDelPageData($page_id);
 }
 
-// ãƒ–ãƒ­ãƒƒã‚¯æƒ…å ±ã‚’ç”»é¢é…ç½®ç”¨ã«ç·¨é›†
+// ¥Ö¥í¥Ã¥¯¾ğÊó¤ò²èÌÌÇÛÃÖÍÑ¤ËÊÔ½¸
 $tpl_arrBloc = array();
 $cnt = 0;
-// ä½¿ç”¨ã•ã‚Œã¦ã„ã‚‹ãƒ–ãƒ­ãƒƒã‚¯ãƒ‡ãƒ¼ã‚¿ã‚’ç”Ÿæˆ
+// »ÈÍÑ¤µ¤ì¤Æ¤¤¤ë¥Ö¥í¥Ã¥¯¥Ç¡¼¥¿¤òÀ¸À®
 foreach($arrBlocPos as $key => $val){
 	if ($val['page_id'] == $page_id) {
 		$tpl_arrBloc = lfSetBlocData($arrBloc, $val, $tpl_arrBloc, $cnt);
@@ -173,10 +173,10 @@ foreach($arrBlocPos as $key => $val){
 	}
 }
 
-// æœªä½¿ç”¨ã®ãƒ–ãƒ­ãƒƒã‚¯ãƒ‡ãƒ¼ã‚¿ã‚’è¿½åŠ 
+// Ì¤»ÈÍÑ¤Î¥Ö¥í¥Ã¥¯¥Ç¡¼¥¿¤òÄÉ²Ã
 foreach($arrBloc as $key => $val){
 	if (!lfChkBloc($val, $tpl_arrBloc)) {
-		$val['target_id'] = 5;	// æœªä½¿ç”¨ã«è¿½åŠ ã™ã‚‹
+		$val['target_id'] = 5;	// Ì¤»ÈÍÑ¤ËÄÉ²Ã¤¹¤ë
 		$tpl_arrBloc = lfSetBlocData($arrBloc, $val, $tpl_arrBloc, $cnt);
 		$cnt++;
 	}
@@ -186,11 +186,11 @@ $objPage->tpl_arrBloc = $tpl_arrBloc;
 $objPage->bloc_cnt = count($tpl_arrBloc);
 $objPage->page_id = $page_id;
 
-// ãƒšãƒ¼ã‚¸åç§°ã‚’å–å¾—
+// ¥Ú¡¼¥¸Ì¾¾Î¤ò¼èÆÀ
 $arrPageData = lfgetPageData(' page_id = ?', array($page_id));
 $objPage->arrPageData = $arrPageData[0];
 
-// èªè¨¼å¯å¦ã®åˆ¤å®š
+// Ç§¾Ú²ÄÈİ¤ÎÈ½Äê
 $objSess = new SC_Session();
 sfIsSuccess($objSess);
 
@@ -205,26 +205,26 @@ if ($GLOBAL_ERR != "") {
 }
 $objPage->errCnt = $errCnt;
 
-// ç”»é¢ã®è¡¨ç¤º
+// ²èÌÌ¤ÎÉ½¼¨
 $objView->assignobj($objPage);
 $objView->display(MAIN_FRAME);
 
 //---------------------------------------------------------------------------------------------------------------------------------------------------------
 
 /**************************************************************************************************************
- * é–¢æ•°å	ï¼šlfgetLayoutData
- * å‡¦ç†å†…å®¹	ï¼šç·¨é›†å¯èƒ½ãªãƒšãƒ¼ã‚¸æƒ…å ±ã‚’å–å¾—ã™ã‚‹
- * å¼•æ•°1	ï¼š$sel    ï½¥ï½¥ï½¥ Selectå¥æ–‡
- * å¼•æ•°2	ï¼š$where  ï½¥ï½¥ï½¥ Whereå¥æ–‡
- * å¼•æ•°3	ï¼š$arrVal ï½¥ï½¥ï½¥ Whereå¥ã®çµè¾¼æ¡ä»¶å€¤
- * æˆ»ã‚Šå€¤	ï¼šãƒšãƒ¼ã‚¸ãƒ¬ã‚¤ã‚¢ã‚¦ãƒˆæƒ…å ±
+ * ´Ø¿ôÌ¾	¡§lfgetLayoutData
+ * ½èÍıÆâÍÆ	¡§ÊÔ½¸²ÄÇ½¤Ê¥Ú¡¼¥¸¾ğÊó¤ò¼èÆÀ¤¹¤ë
+ * °ú¿ô1	¡§$sel    ¥¥¥ Select¶çÊ¸
+ * °ú¿ô2	¡§$where  ¥¥¥ Where¶çÊ¸
+ * °ú¿ô3	¡§$arrVal ¥¥¥ Where¶ç¤Î¹Ê¹ş¾ò·ïÃÍ
+ * Ìá¤êÃÍ	¡§¥Ú¡¼¥¸¥ì¥¤¥¢¥¦¥È¾ğÊó
  **************************************************************************************************************/
 function lfgetLayoutData($sel = '' , $from = '', $where = '', $arrVal = ''){
-	$objDBConn = new SC_DbConn;		// DBæ“ä½œã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆ
-	$sql = "";						// ãƒ‡ãƒ¼ã‚¿å–å¾—SQLç”Ÿæˆç”¨
-	$arrRet = array();				// ãƒ‡ãƒ¼ã‚¿å–å¾—ç”¨
+	$objDBConn = new SC_DbConn;		// DBÁàºî¥ª¥Ö¥¸¥§¥¯¥È
+	$sql = "";						// ¥Ç¡¼¥¿¼èÆÀSQLÀ¸À®ÍÑ
+	$arrRet = array();				// ¥Ç¡¼¥¿¼èÆÀÍÑ
 	
-	// SQLç”Ÿæˆ
+	// SQLÀ¸À®
 
 	$sql = "";
 	$sql .= " select "; 
@@ -238,18 +238,18 @@ function lfgetLayoutData($sel = '' , $from = '', $where = '', $arrVal = ''){
 	$sql .= "     ,lay.create_date ";
 	$sql .= "     ,lay.update_date ";
 	
-	// Selectå¥ã®æŒ‡å®šãŒã‚ã‚Œã°è¿½åŠ 	
+	// Select¶ç¤Î»ØÄê¤¬¤¢¤ì¤ĞÄÉ²Ã	
 	if ($sel != '') {
 		$sql .= $sel;
 	}
 	
 	$sql .= " from dtb_pagelayout AS lay ";
-	// Fromå¥ã®æŒ‡å®šãŒã‚ã‚Œã°è¿½åŠ 	
+	// From¶ç¤Î»ØÄê¤¬¤¢¤ì¤ĞÄÉ²Ã	
 	if ($from != '') {
 		$sql .= $from;
 	}
 
-	// whereå¥ã®æŒ‡å®šãŒã‚ã‚Œã°è¿½åŠ 	
+	// where¶ç¤Î»ØÄê¤¬¤¢¤ì¤ĞÄÉ²Ã	
 	if ($where != '') {
 		$sql .= $where;
 	}else{
@@ -262,18 +262,18 @@ function lfgetLayoutData($sel = '' , $from = '', $where = '', $arrVal = ''){
 }
 
 /**************************************************************************************************************
- * é–¢æ•°å	ï¼šlfgetBlocData
- * å‡¦ç†å†…å®¹	ï¼šãƒ–ãƒ­ãƒƒã‚¯æƒ…å ±ã‚’å–å¾—ã™ã‚‹
- * å¼•æ•°1	ï¼š$where  ï½¥ï½¥ï½¥ Whereå¥æ–‡
- * å¼•æ•°2	ï¼š$arrVal ï½¥ï½¥ï½¥ Whereå¥ã®çµè¾¼æ¡ä»¶å€¤
- * æˆ»ã‚Šå€¤	ï¼šãƒ–ãƒ­ãƒƒã‚¯æƒ…å ±
+ * ´Ø¿ôÌ¾	¡§lfgetBlocData
+ * ½èÍıÆâÍÆ	¡§¥Ö¥í¥Ã¥¯¾ğÊó¤ò¼èÆÀ¤¹¤ë
+ * °ú¿ô1	¡§$where  ¥¥¥ Where¶çÊ¸
+ * °ú¿ô2	¡§$arrVal ¥¥¥ Where¶ç¤Î¹Ê¹ş¾ò·ïÃÍ
+ * Ìá¤êÃÍ	¡§¥Ö¥í¥Ã¥¯¾ğÊó
  **************************************************************************************************************/
 function lfgetBlocData($where = '', $arrVal = ''){
-	$objDBConn = new SC_DbConn;		// DBæ“ä½œã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆ
-	$sql = "";						// ãƒ‡ãƒ¼ã‚¿å–å¾—SQLç”Ÿæˆç”¨
-	$arrRet = array();				// ãƒ‡ãƒ¼ã‚¿å–å¾—ç”¨
+	$objDBConn = new SC_DbConn;		// DBÁàºî¥ª¥Ö¥¸¥§¥¯¥È
+	$sql = "";						// ¥Ç¡¼¥¿¼èÆÀSQLÀ¸À®ÍÑ
+	$arrRet = array();				// ¥Ç¡¼¥¿¼èÆÀÍÑ
 	
-	// SQLç”Ÿæˆ
+	// SQLÀ¸À®
 	$sql = "";
 	$sql .= " SELECT ";
 	$sql .= "	bloc_id";
@@ -284,7 +284,7 @@ function lfgetBlocData($where = '', $arrVal = ''){
 	$sql .= " FROM ";
 	$sql .= " 	dtb_bloc";
 
-	// whereå¥ã®æŒ‡å®šãŒã‚ã‚Œã°è¿½åŠ 	
+	// where¶ç¤Î»ØÄê¤¬¤¢¤ì¤ĞÄÉ²Ã	
 	if ($where != '') {
 		$sql .= " WHERE " . $where;
 	}
@@ -297,12 +297,12 @@ function lfgetBlocData($where = '', $arrVal = ''){
 }
 
 /**************************************************************************************************************
- * é–¢æ•°å	ï¼šlfSetBlocData
- * å‡¦ç†å†…å®¹	ï¼šãƒ–ãƒ­ãƒƒã‚¯æƒ…å ±ã®é…åˆ—ã‚’ç”Ÿæˆã™ã‚‹
- * å¼•æ•°1	ï¼š$arrBloc    	ï½¥ï½¥ï½¥ Blocæƒ…å ±
- * å¼•æ•°2	ï¼š$tpl_arrBloc	ï½¥ï½¥ï½¥ ãƒ‡ãƒ¼ã‚¿ã‚’ã‚»ãƒƒãƒˆã™ã‚‹é…åˆ—
- * å¼•æ•°3	ï¼š$cnt			ï½¥ï½¥ï½¥ é…åˆ—ç•ªå·
- * æˆ»ã‚Šå€¤	ï¼šãƒ‡ãƒ¼ã‚¿ã‚’ã‚»ãƒƒãƒˆã—ãŸé…åˆ—
+ * ´Ø¿ôÌ¾	¡§lfSetBlocData
+ * ½èÍıÆâÍÆ	¡§¥Ö¥í¥Ã¥¯¾ğÊó¤ÎÇÛÎó¤òÀ¸À®¤¹¤ë
+ * °ú¿ô1	¡§$arrBloc    	¥¥¥ Bloc¾ğÊó
+ * °ú¿ô2	¡§$tpl_arrBloc	¥¥¥ ¥Ç¡¼¥¿¤ò¥»¥Ã¥È¤¹¤ëÇÛÎó
+ * °ú¿ô3	¡§$cnt			¥¥¥ ÇÛÎóÈÖ¹æ
+ * Ìá¤êÃÍ	¡§¥Ç¡¼¥¿¤ò¥»¥Ã¥È¤·¤¿ÇÛÎó
  **************************************************************************************************************/
 function lfSetBlocData($arrBloc, $val, $tpl_arrBloc, $cnt) {
 	global $arrTarget;
@@ -323,81 +323,81 @@ function lfSetBlocData($arrBloc, $val, $tpl_arrBloc, $cnt) {
 }
 
 /**************************************************************************************************************
- * é–¢æ•°å	ï¼šlfChkBloc
- * å‡¦ç†å†…å®¹	ï¼šãƒ–ãƒ­ãƒƒã‚¯IDãŒé…åˆ—ã«è¿½åŠ ã•ã‚Œã¦ã„ã‚‹ã‹ã®ãƒã‚§ãƒƒã‚¯ã‚’è¡Œã†
- * å¼•æ•°1	ï¼š$arrBloc    ï½¥ï½¥ï½¥ Blocæƒ…å ±
- * å¼•æ•°2	ï¼š$arrChkData ï½¥ï½¥ï½¥ ãƒã‚§ãƒƒã‚¯ã‚’è¡Œã†ãƒ‡ãƒ¼ã‚¿é…åˆ—
- * æˆ»ã‚Šå€¤	ï¼šTrue	ï½¥ï½¥ï½¥ å­˜åœ¨ã™ã‚‹
- * 			ã€€False	ï½¥ï½¥ï½¥ å­˜åœ¨ã—ãªã„
+ * ´Ø¿ôÌ¾	¡§lfChkBloc
+ * ½èÍıÆâÍÆ	¡§¥Ö¥í¥Ã¥¯ID¤¬ÇÛÎó¤ËÄÉ²Ã¤µ¤ì¤Æ¤¤¤ë¤«¤Î¥Á¥§¥Ã¥¯¤ò¹Ô¤¦
+ * °ú¿ô1	¡§$arrBloc    ¥¥¥ Bloc¾ğÊó
+ * °ú¿ô2	¡§$arrChkData ¥¥¥ ¥Á¥§¥Ã¥¯¤ò¹Ô¤¦¥Ç¡¼¥¿ÇÛÎó
+ * Ìá¤êÃÍ	¡§True	¥¥¥ Â¸ºß¤¹¤ë
+ * 			¡¡False	¥¥¥ Â¸ºß¤·¤Ê¤¤
  **************************************************************************************************************/
 function lfChkBloc($arrBloc, $arrChkData) {
 	foreach($arrChkData as $key => $val){
 		if ($val['bloc_id'] === $arrBloc['bloc_id'] ) {
-			// é…åˆ—ã«å­˜åœ¨ã™ã‚Œã°Trueã‚’è¿”ã™
+			// ÇÛÎó¤ËÂ¸ºß¤¹¤ì¤ĞTrue¤òÊÖ¤¹
 			return true;
 		}
 	}
 	
-	// é…åˆ—ã«å­˜åœ¨ã—ãªã‘ã‚Œã°Flaseã‚’è¿”ã™
+	// ÇÛÎó¤ËÂ¸ºß¤·¤Ê¤±¤ì¤ĞFlase¤òÊÖ¤¹
 	return false;
 }
 
 /**************************************************************************************************************
- * é–¢æ•°å	ï¼šlfGetRowID
- * å‡¦ç†å†…å®¹	ï¼šãƒ–ãƒ­ãƒƒã‚¯IDãŒä½•ç•ªç›®ã«é…ç½®ã•ã‚Œã¦ã„ã‚‹ã‹ã‚’èª¿ã¹ã‚‹
- * å¼•æ•°1	ï¼š$arrUpdData   ï½¥ï½¥ï½¥ æ›´æ–°æƒ…å ±
- * å¼•æ•°2	ï¼š$arrObj 		ï½¥ï½¥ï½¥ ãƒã‚§ãƒƒã‚¯ã‚’è¡Œã†ãƒ‡ãƒ¼ã‚¿é…åˆ—
- * æˆ»ã‚Šå€¤	ï¼šé †ç•ª
+ * ´Ø¿ôÌ¾	¡§lfGetRowID
+ * ½èÍıÆâÍÆ	¡§¥Ö¥í¥Ã¥¯ID¤¬²¿ÈÖÌÜ¤ËÇÛÃÖ¤µ¤ì¤Æ¤¤¤ë¤«¤òÄ´¤Ù¤ë
+ * °ú¿ô1	¡§$arrUpdData   ¥¥¥ ¹¹¿·¾ğÊó
+ * °ú¿ô2	¡§$arrObj 		¥¥¥ ¥Á¥§¥Ã¥¯¤ò¹Ô¤¦¥Ç¡¼¥¿ÇÛÎó
+ * Ìá¤êÃÍ	¡§½çÈÖ
  **************************************************************************************************************/
 function lfGetRowID($arrUpdData, $arrObj){
-	$no = 0; // ã‚«ã‚¦ãƒ³ãƒˆç”¨ï¼ˆåŒã˜ãƒ‡ãƒ¼ã‚¿ãŒå¿…ãš1ä»¶ã‚ã‚‹ã®ã§ã€åˆæœŸå€¤ã¯0ï¼‰
+	$no = 0; // ¥«¥¦¥ó¥ÈÍÑ¡ÊÆ±¤¸¥Ç¡¼¥¿¤¬É¬¤º1·ï¤¢¤ë¤Î¤Ç¡¢½é´üÃÍ¤Ï0¡Ë
 	
-	// å¯¾è±¡ãƒ‡ãƒ¼ã‚¿ãŒä½•ç•ªç›®ã«é…ç½®ã•ã‚Œã¦ã„ã‚‹ã®ã‹ã‚’å–å¾—ã™ã‚‹ã€‚
+	// ÂĞ¾İ¥Ç¡¼¥¿¤¬²¿ÈÖÌÜ¤ËÇÛÃÖ¤µ¤ì¤Æ¤¤¤ë¤Î¤«¤ò¼èÆÀ¤¹¤ë¡£
 	foreach ($arrUpdData as $key => $val) {
 		if ($val['target_id'] === $arrObj['target_id'] and $val['top'] <= $arrObj['top']){
 			$no++;
 		}
 	}
-	// ç•ªå·ã‚’è¿”ã™
+	// ÈÖ¹æ¤òÊÖ¤¹
 	return $no;
 }
 
 /**************************************************************************************************************
- * é–¢æ•°å	ï¼šlfGetRowID
- * å‡¦ç†å†…å®¹	ï¼šãƒ–ãƒ­ãƒƒã‚¯IDãŒä½•ç•ªç›®ã«é…ç½®ã•ã‚Œã¦ã„ã‚‹ã‹ã‚’èª¿ã¹ã‚‹
- * å¼•æ•°1	ï¼š$arrUpdData   ï½¥ï½¥ï½¥ æ›´æ–°æƒ…å ±
- * å¼•æ•°2	ï¼š$arrObj 		ï½¥ï½¥ï½¥ ãƒã‚§ãƒƒã‚¯ã‚’è¡Œã†ãƒ‡ãƒ¼ã‚¿é…åˆ—
- * æˆ»ã‚Šå€¤	ï¼šé †ç•ª
+ * ´Ø¿ôÌ¾	¡§lfGetRowID
+ * ½èÍıÆâÍÆ	¡§¥Ö¥í¥Ã¥¯ID¤¬²¿ÈÖÌÜ¤ËÇÛÃÖ¤µ¤ì¤Æ¤¤¤ë¤«¤òÄ´¤Ù¤ë
+ * °ú¿ô1	¡§$arrUpdData   ¥¥¥ ¹¹¿·¾ğÊó
+ * °ú¿ô2	¡§$arrObj 		¥¥¥ ¥Á¥§¥Ã¥¯¤ò¹Ô¤¦¥Ç¡¼¥¿ÇÛÎó
+ * Ìá¤êÃÍ	¡§½çÈÖ
  **************************************************************************************************************/
 function lfSetPreData($arrPageData){
-	$objDBConn = new SC_DbConn;		// DBæ“ä½œã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆ
-	$sql = "";						// ãƒ‡ãƒ¼ã‚¿æ›´æ–°SQLç”Ÿæˆç”¨
-	$ret = ""; 						// ãƒ‡ãƒ¼ã‚¿æ›´æ–°çµæœæ ¼ç´ç”¨
-	$arrUpdData = array();			// æ›´æ–°ãƒ‡ãƒ¼ã‚¿ç”Ÿæˆç”¨
+	$objDBConn = new SC_DbConn;		// DBÁàºî¥ª¥Ö¥¸¥§¥¯¥È
+	$sql = "";						// ¥Ç¡¼¥¿¹¹¿·SQLÀ¸À®ÍÑ
+	$ret = ""; 						// ¥Ç¡¼¥¿¹¹¿··ë²Ì³ÊÇ¼ÍÑ
+	$arrUpdData = array();			// ¹¹¿·¥Ç¡¼¥¿À¸À®ÍÑ
 	$filename = uniqid("");
 
 	$arrPreData = lfgetPageData(" page_id = ? " , array("0"));
 
-	// tplãƒ•ã‚¡ã‚¤ãƒ«ã®å‰Šé™¤
+	// tpl¥Õ¥¡¥¤¥ë¤Îºï½ü
 	$del_tpl = USER_PATH . "templates/" . $arrPreData[0]['filename'] . '.tpl';
 	if (file_exists($del_tpl)){
 		unlink($del_tpl);	
 	}
 	
-	// ãƒ—ãƒ¬ãƒ“ãƒ¥ãƒ¼ç”¨tplãƒ•ã‚¡ã‚¤ãƒ«ã®ã‚³ãƒ”ãƒ¼
+	// ¥×¥ì¥Ó¥å¡¼ÍÑtpl¥Õ¥¡¥¤¥ë¤Î¥³¥Ô¡¼
 	$tplfile = $arrPageData[0]['tpl_dir'] . $arrPageData[0]['filename'];
 	
 	if($tplfile == ""){
-		// tplãƒ•ã‚¡ã‚¤ãƒ«ãŒç©ºã®å ´åˆã«ã¯MYãƒšãƒ¼ã‚¸ã¨åˆ¤æ–­
+		// tpl¥Õ¥¡¥¤¥ë¤¬¶õ¤Î¾ì¹ç¤Ë¤ÏMY¥Ú¡¼¥¸¤ÈÈ½ÃÇ
 		$tplfile = "user_data/templates/mypage/index";
 	}
 	copy(HTML_PATH . $tplfile . ".tpl", USER_PATH . "templates/" . $filename . ".tpl");
 	
-	// æ›´æ–°ãƒ‡ãƒ¼ã‚¿ã®å–å¾—
+	// ¹¹¿·¥Ç¡¼¥¿¤Î¼èÆÀ
 	$sql = "select page_name, header_chk, footer_chk from dtb_pagelayout where page_id = ?";
 	$ret = $objDBConn->getAll($sql, array($arrPageData[0]['page_id']));
 
-	// dbãƒ‡ãƒ¼ã‚¿ã®ã‚³ãƒ”ãƒ¼
+	// db¥Ç¡¼¥¿¤Î¥³¥Ô¡¼
 	$sql = " update dtb_pagelayout set ";
 	$sql .= "     page_name = ?";
 	$sql .= "     ,header_chk = ?";

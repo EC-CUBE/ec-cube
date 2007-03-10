@@ -9,7 +9,7 @@ require_once("../require.php");
 class LC_Page{
 	function LC_Page(){
 		$this->tpl_mainpage = USER_PATH . 'templates/mypage/refusal.tpl';
-		$this->tpl_title = "MYãƒšãƒ¼ã‚¸/é€€ä¼šæ‰‹ç¶šã(å…¥åŠ›ãƒšãƒ¼ã‚¸)";
+		$this->tpl_title = "MY¥Ú¡¼¥¸/Âà²ñ¼êÂ³¤­(ÆşÎÏ¥Ú¡¼¥¸)";
 		$this->tpl_navi = USER_PATH . 'templates/mypage/navi.tpl';
 		$this->tpl_mainno = 'mypage';
 		$this->tpl_mypageno = 'refusal';
@@ -22,29 +22,29 @@ $objView = new SC_SiteView();
 $objCustomer = new SC_Customer();
 $objQuery = new SC_Query();
 
-//ãƒ­ã‚°ã‚¤ãƒ³åˆ¤å®š
+//¥í¥°¥¤¥óÈ½Äê
 if (!$objCustomer->isLoginSuccess()){
 	sfDispSiteError(CUSTOMER_ERROR);
 }else {
-	//ãƒã‚¤ãƒšãƒ¼ã‚¸ãƒˆãƒƒãƒ—é¡§å®¢æƒ…å ±è¡¨ç¤ºç”¨
+	//¥Ş¥¤¥Ú¡¼¥¸¥È¥Ã¥×¸ÜµÒ¾ğÊóÉ½¼¨ÍÑ
 	$objPage->CustomerName1 = $objCustomer->getvalue('name01');
 	$objPage->CustomerName2 = $objCustomer->getvalue('name02');
 	$objPage->CustomerPoint = $objCustomer->getvalue('point');
 }
 
 
-// ãƒ¬ã‚¤ã‚¢ã‚¦ãƒˆãƒ‡ã‚¶ã‚¤ãƒ³ã‚’å–å¾—
+// ¥ì¥¤¥¢¥¦¥È¥Ç¥¶¥¤¥ó¤ò¼èÆÀ
 $objPage = sfGetPageLayout($objPage, false, "mypage/index.php");
 
 switch ($_POST['mode']){
 	case 'confirm':
 	$objPage->tpl_mainpage = USER_PATH . 'templates/mypage/refusal_confirm.tpl';
-	$objPage->tpl_title = "MYãƒšãƒ¼ã‚¸/é€€ä¼šæ‰‹ç¶šã(ç¢ºèªãƒšãƒ¼ã‚¸)";
+	$objPage->tpl_title = "MY¥Ú¡¼¥¸/Âà²ñ¼êÂ³¤­(³ÎÇ§¥Ú¡¼¥¸)";
 
 	break;
 	
 	case 'complete':
-	//ä¼šå“¡å‰Šé™¤
+	//²ñ°÷ºï½ü
 	$objQuery->exec("UPDATE dtb_customer SET del_flg=1, update_date=now() WHERE customer_id=?", array($objCustomer->getValue('customer_id')));
 
 	$where = "email ILIKE ?";
@@ -52,7 +52,7 @@ switch ($_POST['mode']){
 	
 	$objQuery->delete("dtb_customer_mail", $where, array($objCustomer->getValue('email')));
 	$objCustomer->EndSession();
-	//å®Œäº†ãƒšãƒ¼ã‚¸ã¸
+	//´°Î»¥Ú¡¼¥¸¤Ø
 	header("Location: ./refusal_complete.php");
 	exit;
 }

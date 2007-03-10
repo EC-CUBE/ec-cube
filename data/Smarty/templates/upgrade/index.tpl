@@ -3,16 +3,16 @@
  *
  * http://www.lockon.co.jp/
  *}-->
-<p>уВвуГГуГЧуГЗуГ╝уГИхПпшГ╜уБкуГХуВбуВдуГлф╕АшжзуБзуБЩуАВ</p>
+<p>еве├е╫е╟б╝е╚▓─╟╜д╩е╒ебедеы░ь═ўд╟д╣бг</p>
 
 <table>
 <form name="form1" method="post" action="<!--{$smarty.server.PHP_SELF|escape}-->">
 <input type="hidden" name="filename" value="">
 <input type="hidden" name="mode" value="">
 <tr>
-<td>уГХуВбуВдуГлхРН</td>
-<td>цЫ┤цЦ░цЧецЩВ</td>
-<td>уГХуВбуВдуГлуВ╡уВдуВ║</td>
+<td>е╒ебедеы╠╛</td>
+<td>╣╣┐╖╞№╗■</td>
+<td>е╒ебедеые╡еде║</td>
 </tr>
 <!--{section name=cnt loop=$arrFile}-->
 <tr>

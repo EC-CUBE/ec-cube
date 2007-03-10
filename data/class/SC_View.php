@@ -12,9 +12,9 @@ require_once($SC_VIEW_PHP_DIR . "/../include/php_ini.inc");
 class SC_View {
 	
     var $_smarty;
-	var $objSiteInfo; // サイト情報
+	var $objSiteInfo; // �����Ⱦ���
 	
-    // コンストラクタ
+    // ���󥹥ȥ饯��
     function SC_View($siteinfo = true) {
 		global $SC_VIEW_PHP_DIR;
 
@@ -48,17 +48,17 @@ class SC_View {
 			$this->time_start = time();
 		}
 
-		// サイト情報を取得する
+		// �����Ⱦ�����������
 		if($siteinfo) {
 			if(!defined('LOAD_SITEINFO')) {
 				$this->objSiteInfo = new SC_SiteInfo();
 				$arrInfo['arrSiteInfo'] = $this->objSiteInfo->data;
 				
-				// 都道府県名を変換
+				// ��ƻ�ܸ�̾���Ѵ�
 				global $arrPref;
 				$arrInfo['arrSiteInfo']['pref'] = $arrPref[$arrInfo['arrSiteInfo']['pref']];
 				
-	 			// サイト情報を割り当てる
+	 			// �����Ⱦ���������Ƥ�
 				foreach ($arrInfo as $key => $value){
 					$this->_smarty->assign($key, $value);
 				}
@@ -68,17 +68,17 @@ class SC_View {
 		}
 	}
     
-    // テンプレートに値を割り当てる
+    // �ƥ�ץ졼�Ȥ��ͤ������Ƥ�
     function assign($val1, $val2) {
         $this->_smarty->assign($val1, $val2);
     }
     
-    // テンプレートの処理結果を取得
+    // �ƥ�ץ졼�Ȥν�����̤����
     function fetch($template) {
         return $this->_smarty->fetch($template);
     }
     
-    // テンプレートの処理結果を表示
+    // �ƥ�ץ졼�Ȥν�����̤�ɽ��
     function display($template, $no_error = false) {
 		if(!$no_error) {
 			global $GLOBAL_ERR;
@@ -92,11 +92,11 @@ class SC_View {
 		if(ADMIN_MODE == '1') {
 			$time_end = time();
 			$time = $time_end - $this->time_start;
-			print("処理時間:" . $time . "秒");
+			print("��������:" . $time . "��");
 		}
 	}
   	
-  	// オブジェクト内の変数をすべて割り当てる。
+  	// ���֥�����������ѿ��򤹤٤Ƴ�����Ƥ롣
   	function assignobj($obj) {
 		$data = get_object_vars($obj);
 		
@@ -105,14 +105,14 @@ class SC_View {
 		}
   	}
   	
-  	// 連想配列内の変数をすべて割り当てる。
+  	// Ϣ����������ѿ��򤹤٤Ƴ�����Ƥ롣
   	function assignarray($array) {
   		foreach ($array as $key => $val) {
   			$this->_smarty->assign($key, $val);
   		}
   	}
 
-	/* サイト初期設定 */
+	/* �����Ƚ������ */
 	function initpath() {
 		global $SC_VIEW_PHP_DIR;
 		
@@ -142,7 +142,7 @@ class SC_SiteView extends SC_View{
 		$this->_smarty->compile_dir = COMPILE_DIR;
 		$this->initpath();
 		
-		// PHP5ではsessionをスタートする前にヘッダー情報を送信していると警告が出るため、先にセッションをスタートするように変更
+		// PHP5�Ǥ�session�򥹥����Ȥ������˥إå���������������Ƥ���ȷٹ𤬽Ф뤿�ᡢ��˥��å����򥹥����Ȥ���褦���ѹ�
 		sfDomainSessionStart();
 		
 		if($cart){

@@ -18,17 +18,17 @@ $arrREVIEW_CVSCOL = array(
 						);
 						
 $arrREVIEW_CVSTITLE = array(
-						'å•†å“å',
-						'ãƒ¬ãƒ“ãƒ¥ãƒ¼è¡¨ç¤º',
-						'æŠ•ç¨¿æ—¥',
-						'æŠ•ç¨¿è€…å',
-						'æ€§åˆ¥',
-						'ãŠã™ã™ã‚ãƒ¬ãƒ™ãƒ«',
-						'ã‚¿ã‚¤ãƒˆãƒ«',
-						'ã‚³ãƒ¡ãƒ³ãƒˆ'
+						'¾¦ÉÊÌ¾',
+						'¥ì¥Ó¥å¡¼É½¼¨',
+						'Åê¹ÆÆü',
+						'Åê¹Æ¼ÔÌ¾',
+						'À­ÊÌ',
+						'¤ª¤¹¤¹¤á¥ì¥Ù¥ë',
+						'¥¿¥¤¥È¥ë',
+						'¥³¥á¥ó¥È'
 						);
 
-// CSVå‡ºåŠ›ãƒ‡ãƒ¼ã‚¿ã‚’ä½œæˆã™ã‚‹ã€‚(å•†å“)
+// CSV½ĞÎÏ¥Ç¡¼¥¿¤òºîÀ®¤¹¤ë¡£(¾¦ÉÊ)
 function lfGetProductsCSV($where, $option, $arrval, $arrOutputCols) {
 	global $arrPRODUCTS_CVSCOL;
 
@@ -41,21 +41,21 @@ function lfGetProductsCSV($where, $option, $arrval, $arrOutputCols) {
 	$list_data = $objQuery->select($cols, $from, $where, $arrval);
 	$max = count($list_data);
 	
-	// è¦æ ¼åˆ†é¡åä¸€è¦§
+	// µ¬³ÊÊ¬ÎàÌ¾°ìÍ÷
 	$arrClassCatName = sfGetIDValueList("dtb_classcategory", "classcategory_id", "name");
 	
 	for($i = 0; $i < $max; $i++) {
-		// é–¢é€£å•†å“æƒ…å ±ã®ä»˜ä¸
+		// ´ØÏ¢¾¦ÉÊ¾ğÊó¤ÎÉÕÍ¿
 		$list_data[$i]['classcategory_id1'] = $arrClassCatName[$list_data[$i]['classcategory_id1']];
 		$list_data[$i]['classcategory_id2'] = $arrClassCatName[$list_data[$i]['classcategory_id2']];
 		
-		// å„é …ç›®ã‚’CSVå‡ºåŠ›ç”¨ã«å¤‰æ›ã™ã‚‹ã€‚
+		// ³Æ¹àÌÜ¤òCSV½ĞÎÏÍÑ¤ËÊÑ´¹¤¹¤ë¡£
 		$data .= lfMakeProductsCSV($list_data[$i]);	
 	}
 	return $data;
 }
 
-// CSVå‡ºåŠ›ãƒ‡ãƒ¼ã‚¿ã‚’ä½œæˆã™ã‚‹ã€‚(ãƒ¬ãƒ“ãƒ¥ãƒ¼)
+// CSV½ĞÎÏ¥Ç¡¼¥¿¤òºîÀ®¤¹¤ë¡£(¥ì¥Ó¥å¡¼)
 function lfGetReviewCSV($where, $option, $arrval) {
 	global $arrREVIEW_CVSCOL;
 
@@ -69,13 +69,13 @@ function lfGetReviewCSV($where, $option, $arrval) {
 
 	$max = count($list_data);
 	for($i = 0; $i < $max; $i++) {
-		// å„é …ç›®ã‚’CSVå‡ºåŠ›ç”¨ã«å¤‰æ›ã™ã‚‹ã€‚
+		// ³Æ¹àÌÜ¤òCSV½ĞÎÏÍÑ¤ËÊÑ´¹¤¹¤ë¡£
 		$data .= lfMakeReviewCSV($list_data[$i]);
 	}
 	return $data;
 }
 
-// å„é …ç›®ã‚’CSVå‡ºåŠ›ç”¨ã«å¤‰æ›ã™ã‚‹ã€‚(å•†å“)
+// ³Æ¹àÌÜ¤òCSV½ĞÎÏÍÑ¤ËÊÑ´¹¤¹¤ë¡£(¾¦ÉÊ)
 function lfMakeProductsCSV($list) {
 	global $arrDISP;
 	$line = "";
@@ -98,14 +98,14 @@ function lfMakeProductsCSV($list) {
 			$tmp = str_replace("\"", "\\\"", $tmp);
 			$line .= "\"".$tmp."\",";
 		}
-		// æ–‡æœ«ã®","ã‚’å¤‰æ›
+		// Ê¸Ëö¤Î","¤òÊÑ´¹
 		$line = ereg_replace(",$", "\n", $line);
 	}
 	return $line;
 }
 
 
-// å„é …ç›®ã‚’CSVå‡ºåŠ›ç”¨ã«å¤‰æ›ã™ã‚‹ã€‚(ãƒ¬ãƒ“ãƒ¥ãƒ¼)
+// ³Æ¹àÌÜ¤òCSV½ĞÎÏÍÑ¤ËÊÑ´¹¤¹¤ë¡£(¥ì¥Ó¥å¡¼)
 function lfMakeReviewCSV($list) {
 	global $arrSex;
 	global $arrRECOMMEND;
@@ -133,7 +133,7 @@ function lfMakeReviewCSV($list) {
 		$tmp = ereg_replace("[\",]", " ", $tmp);
 		$line .= "\"".$tmp."\",";
 	}
-	// æ–‡æœ«ã®","ã‚’å¤‰æ›
+	// Ê¸Ëö¤Î","¤òÊÑ´¹
 	$line = ereg_replace(",$", "\n", $line);
 	return $line;
 }

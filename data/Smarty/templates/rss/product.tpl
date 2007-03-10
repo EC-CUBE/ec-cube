@@ -6,7 +6,7 @@
  *}-->
 <rss version="2.0">
 
-<!--{* channelè¦ç´  *}-->
+<!--{* channelÍ×ÁÇ *}-->
 <channel>
 <title><!--{$title|sf_mb_convert_encoding:$encode}--></title>
 <shop_name><!--{$arrSiteInfo.shop_name|sf_mb_convert_encoding:$encode}--></shop_name>
@@ -16,7 +16,7 @@
 <language>ja</language>
 <docs>http://backend.userland.com/rss</docs>
 <!--{section name=cnt loop=$arrProduct}-->
-	<!--{* ï¼‘ã¤ã®itemè¦ç´ ã‚’å‡ºåŠ›ã™ã‚‹ *}-->
+	<!--{* £±¤Ä¤ÎitemÍ×ÁÇ¤ò½ÐÎÏ¤¹¤ë *}-->
 	<item>
 		<link><!--{$smarty.const.SITE_URL}-->rss/product.php?product_id=<!--{$arrProduct[cnt].product_id}--></link>
 		<!--{foreach key=key item=item from=$arrProductKeys}-->

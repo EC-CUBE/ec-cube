@@ -15,7 +15,7 @@ class LC_Page {
 		$this->tpl_subnavi = 'basis/subnavi.tpl';
 		$this->tpl_subno = 'seo';
 		$this->tpl_mainno = 'basis';
-		$this->tpl_subtitle = 'SEOç®¡ç†';
+		$this->tpl_subtitle = 'SEO´ÉÍı';
 		global $arrPref;
 		$this->arrPref = $arrPref;
 		global $arrTAXRULE;
@@ -31,44 +31,44 @@ $objView = new SC_AdminView();
 $objSess = new SC_Session();
 $objQuery = new SC_Query();
 
-// èªè¨¼å¯å¦ã®åˆ¤å®š
+// Ç§¾Ú²ÄÈİ¤ÎÈ½Äê
 sfIsSuccess($objSess);
 
-// ãƒ‡ãƒ¼ã‚¿ã®å–å¾—
+// ¥Ç¡¼¥¿¤Î¼èÆÀ
 $arrPageData = lfgetPageData(" edit_flg = 2 ");
 $objPage->arrPageData = $arrPageData;
 
 $page_id = $_POST['page_id'];
 
 if($_POST['mode'] == "confirm") {
-	// ã‚¨ãƒ©ãƒ¼ãƒã‚§ãƒƒã‚¯
+	// ¥¨¥é¡¼¥Á¥§¥Ã¥¯
 	$objPage->arrErr[$page_id] = lfErrorCheck($arrPOST['meta'][$page_id]);
 	
-	// ã‚¨ãƒ©ãƒ¼ãŒãªã‘ã‚Œã°ãƒ‡ãƒ¼ã‚¿ã‚’æ›´æ–°
+	// ¥¨¥é¡¼¤¬¤Ê¤±¤ì¤Ğ¥Ç¡¼¥¿¤ò¹¹¿·
 	if(count($objPage->arrErr[$page_id]) == 0) {
 
-		// æ›´æ–°ãƒ‡ãƒ¼ã‚¿ã®å¤‰æ›
+		// ¹¹¿·¥Ç¡¼¥¿¤ÎÊÑ´¹
 		$arrMETA = lfConvertParam($_POST['meta'][$page_id]);
 
-		// æ›´æ–°ãƒ‡ãƒ¼ã‚¿é…åˆ—ç”Ÿæˆ
+		// ¹¹¿·¥Ç¡¼¥¿ÇÛÎóÀ¸À®
 		$arrUpdData = array($arrMETA['author'], $arrMETA['description'], $arrMETA['keyword'], $page_id);
-		// ãƒ‡ãƒ¼ã‚¿æ›´æ–°
+		// ¥Ç¡¼¥¿¹¹¿·
 		lfUpdPageData($arrUpdData);
 	}else{	
-		// POSTã®ãƒ‡ãƒ¼ã‚¿ã‚’å†è¡¨ç¤º
+		// POST¤Î¥Ç¡¼¥¿¤òºÆÉ½¼¨
 		$arrPageData = lfSetData($arrPageData, $arrPOST['meta']);
 		$objPage->arrPageData = $arrPageData;
 	}
 }
 
-// ã‚¨ãƒ©ãƒ¼ãŒãªã‘ã‚Œã°ãƒ‡ãƒ¼ã‚¿ã®å–å¾—
+// ¥¨¥é¡¼¤¬¤Ê¤±¤ì¤Ğ¥Ç¡¼¥¿¤Î¼èÆÀ
 if(count($objPage->arrErr[$page_id]) == 0) {
-	// ãƒ‡ãƒ¼ã‚¿ã®å–å¾—
+	// ¥Ç¡¼¥¿¤Î¼èÆÀ
 	$arrPageData = lfgetPageData(" edit_flg = 2 ");
 	$objPage->arrPageData = $arrPageData;
 }
 
-// è¡¨ç¤ºï½¥éè¡¨ç¤ºåˆ‡ã‚Šæ›¿ãˆ
+// É½¼¨¥ÈóÉ½¼¨ÀÚ¤êÂØ¤¨
 $arrDisp_flg = array();
 foreach($arrPageData as $key => $val){
 	$arrDisp_flg[$val['page_id']] = $_POST['disp_flg'.$val['page_id']];
@@ -80,16 +80,16 @@ $objView->assignobj($objPage);
 $objView->display(MAIN_FRAME);
 //--------------------------------------------------------------------------------------------------------------------------------------
 /**************************************************************************************************************
- * é–¢æ•°å	ï¼šlfUpdPageData
- * å‡¦ç†å†…å®¹	ï¼šãƒšãƒ¼ã‚¸ãƒ¬ã‚¤ã‚¢ã‚¦ãƒˆãƒ†ãƒ¼ãƒ–ãƒ«ã«ãƒ‡ãƒ¼ã‚¿æ›´æ–°ã‚’è¡Œã†
- * å¼•æ•°		ï¼šæ›´æ–°ãƒ‡ãƒ¼ã‚¿
- * æˆ»ã‚Šå€¤	ï¼šæ›´æ–°çµæœ
+ * ´Ø¿ôÌ¾	¡§lfUpdPageData
+ * ½èÍıÆâÍÆ	¡§¥Ú¡¼¥¸¥ì¥¤¥¢¥¦¥È¥Æ¡¼¥Ö¥ë¤Ë¥Ç¡¼¥¿¹¹¿·¤ò¹Ô¤¦
+ * °ú¿ô		¡§¹¹¿·¥Ç¡¼¥¿
+ * Ìá¤êÃÍ	¡§¹¹¿··ë²Ì
  **************************************************************************************************************/
 function lfUpdPageData($arrUpdData = array()){
 	$objQuery = new SC_Query();
 	$sql = "";
 
-	// SQLç”Ÿæˆ
+	// SQLÀ¸À®
 	$sql .= " UPDATE ";
 	$sql .= "     dtb_pagelayout ";
 	$sql .= " SET ";
@@ -100,34 +100,34 @@ function lfUpdPageData($arrUpdData = array()){
 	$sql .= "     page_id = ? ";
 	$sql .= " ";
 
-	// SQLå®Ÿè¡Œ
+	// SQL¼Â¹Ô
 	$ret = $objQuery->query($sql, $arrUpdData);
 	
 	return $ret;	
 }
 
 /**************************************************************************************************************
- * é–¢æ•°å	ï¼šlfErrorCheck
- * å‡¦ç†å†…å®¹	ï¼šå…¥åŠ›é …ç›®ã®ã‚¨ãƒ©ãƒ¼ãƒã‚§ãƒƒã‚¯ã‚’è¡Œã†
- * å¼•æ•°		ï¼šã‚¨ãƒ©ãƒ¼ãƒã‚§ãƒƒã‚¯å¯¾è±¡ãƒ‡ãƒ¼ã‚¿
- * æˆ»ã‚Šå€¤	ï¼šã‚¨ãƒ©ãƒ¼å†…å®¹
+ * ´Ø¿ôÌ¾	¡§lfErrorCheck
+ * ½èÍıÆâÍÆ	¡§ÆşÎÏ¹àÌÜ¤Î¥¨¥é¡¼¥Á¥§¥Ã¥¯¤ò¹Ô¤¦
+ * °ú¿ô		¡§¥¨¥é¡¼¥Á¥§¥Ã¥¯ÂĞ¾İ¥Ç¡¼¥¿
+ * Ìá¤êÃÍ	¡§¥¨¥é¡¼ÆâÍÆ
  **************************************************************************************************************/
 function lfErrorCheck($array) {
 	$objErr = new SC_CheckError($array);
 	
-	$objErr->doFunc(array("ãƒ¡ã‚¿ã‚¿ã‚°:Author", "author", STEXT_LEN), array("MAX_LENGTH_CHECK"));
-	$objErr->doFunc(array("ãƒ¡ã‚¿ã‚¿ã‚°:Description", "description", STEXT_LEN), array("MAX_LENGTH_CHECK"));
-	$objErr->doFunc(array("ãƒ¡ã‚¿ã‚¿ã‚°:Keywords", "keyword", STEXT_LEN), array("MAX_LENGTH_CHECK"));
+	$objErr->doFunc(array("¥á¥¿¥¿¥°:Author", "author", STEXT_LEN), array("MAX_LENGTH_CHECK"));
+	$objErr->doFunc(array("¥á¥¿¥¿¥°:Description", "description", STEXT_LEN), array("MAX_LENGTH_CHECK"));
+	$objErr->doFunc(array("¥á¥¿¥¿¥°:Keywords", "keyword", STEXT_LEN), array("MAX_LENGTH_CHECK"));
 
 	return $objErr->arrErr;
 }
 
 /**************************************************************************************************************
- * é–¢æ•°å	ï¼šlfSetData
- * å‡¦ç†å†…å®¹	ï¼šãƒ†ãƒ³ãƒ—ãƒ¬ãƒ¼ãƒˆè¡¨ç¤ºãƒ‡ãƒ¼ã‚¿ã«å€¤ã‚’ã‚»ãƒƒãƒˆã™ã‚‹
- * å¼•æ•°1	ï¼šè¡¨ç¤ºå…ƒãƒ‡ãƒ¼ã‚¿
- * å¼•æ•°2	ï¼šè¡¨ç¤ºãƒ‡ãƒ¼ã‚¿
- * æˆ»ã‚Šå€¤	ï¼šè¡¨ç¤ºãƒ‡ãƒ¼ã‚¿
+ * ´Ø¿ôÌ¾	¡§lfSetData
+ * ½èÍıÆâÍÆ	¡§¥Æ¥ó¥×¥ì¡¼¥ÈÉ½¼¨¥Ç¡¼¥¿¤ËÃÍ¤ò¥»¥Ã¥È¤¹¤ë
+ * °ú¿ô1	¡§É½¼¨¸µ¥Ç¡¼¥¿
+ * °ú¿ô2	¡§É½¼¨¥Ç¡¼¥¿
+ * Ìá¤êÃÍ	¡§É½¼¨¥Ç¡¼¥¿
  **************************************************************************************************************/
 function lfSetData($arrPageData, $arrDispData){
 	
@@ -141,26 +141,26 @@ function lfSetData($arrPageData, $arrDispData){
 	return $arrPageData;
 }
 
-/* å–å¾—æ–‡å­—åˆ—ã®å¤‰æ› */
+/* ¼èÆÀÊ¸»úÎó¤ÎÊÑ´¹ */
 function lfConvertParam($array) {
 	/*
-	 *	æ–‡å­—åˆ—ã®å¤‰æ›
-	 *	K :  ã€ŒåŠè§’(ï¾Šï¾ï½¶ï½¸)ç‰‡ä»®åã€ã‚’ã€Œå…¨è§’ç‰‡ä»®åã€ã«å¤‰æ›
-	 *	C :  ã€Œå…¨è§’ã²ã‚‰ä»®åã€ã‚’ã€Œå…¨è§’ã‹ãŸä»®åã€ã«å¤‰æ›
-	 *	V :  æ¿ç‚¹ä»˜ãã®æ–‡å­—ã‚’ä¸€æ–‡å­—ã«å¤‰æ›ã€‚"K","H"ã¨å…±ã«ä½¿ç”¨ã—ã¾ã™	
-	 *	n :  ã€Œå…¨è§’ã€æ•°å­—ã‚’ã€ŒåŠè§’(ï¾Šï¾ï½¶ï½¸)ã€ã«å¤‰æ›
-	 *  a :  å…¨è§’è‹±æ•°å­—ã‚’åŠè§’è‹±æ•°å­—ã«å¤‰æ›ã™ã‚‹
+	 *	Ê¸»úÎó¤ÎÊÑ´¹
+	 *	K :  ¡ÖÈ¾³Ñ(Êİ¶¸)ÊÒ²¾Ì¾¡×¤ò¡ÖÁ´³ÑÊÒ²¾Ì¾¡×¤ËÊÑ´¹
+	 *	C :  ¡ÖÁ´³Ñ¤Ò¤é²¾Ì¾¡×¤ò¡ÖÁ´³Ñ¤«¤¿²¾Ì¾¡×¤ËÊÑ´¹
+	 *	V :  ÂùÅÀÉÕ¤­¤ÎÊ¸»ú¤ò°ìÊ¸»ú¤ËÊÑ´¹¡£"K","H"¤È¶¦¤Ë»ÈÍÑ¤·¤Ş¤¹	
+	 *	n :  ¡ÖÁ´³Ñ¡×¿ô»ú¤ò¡ÖÈ¾³Ñ(Êİ¶¸)¡×¤ËÊÑ´¹
+	 *  a :  Á´³Ñ±Ñ¿ô»ú¤òÈ¾³Ñ±Ñ¿ô»ú¤ËÊÑ´¹¤¹¤ë
 	 */
-	// äººç‰©åŸºæœ¬æƒ…å ±
+	// ¿ÍÊª´ğËÜ¾ğÊó
 	
-	// ã‚¹ãƒãƒƒãƒˆå•†å“
+	// ¥¹¥İ¥Ã¥È¾¦ÉÊ
 	$arrConvList['author'] = "KVa";
 	$arrConvList['description'] = "KVa";
 	$arrConvList['keyword'] = "KVa";
 
-	// æ–‡å­—å¤‰æ›
+	// Ê¸»úÊÑ´¹
 	foreach ($arrConvList as $key => $val) {
-		// POSTã•ã‚Œã¦ããŸå€¤ã®ã¿å¤‰æ›ã™ã‚‹ã€‚
+		// POST¤µ¤ì¤Æ¤­¤¿ÃÍ¤Î¤ßÊÑ´¹¤¹¤ë¡£
 		if(isset($array[$key])) {
 			$array[$key] = mb_convert_kana($array[$key] ,$val);
 		}

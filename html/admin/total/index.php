@@ -25,15 +25,15 @@ class LC_Page {
 		$this->tpl_mainno = 'total';
 		global $arrWDAY;
 		$this->arrWDAY = $arrWDAY;
-		// ãƒšãƒ¼ã‚¸ã‚¿ã‚¤ãƒˆãƒ«
-		$this->arrTitle[''] = "æœŸé–“åˆ¥é›†è¨ˆ";
-		$this->arrTitle['term'] = "æœŸé–“åˆ¥é›†è¨ˆ";
-		$this->arrTitle['products'] = "å•†å“åˆ¥é›†è¨ˆ";
-		$this->arrTitle['age'] = "å¹´ä»£åˆ¥é›†è¨ˆ";
-		$this->arrTitle['job'] = "è·æ¥­åˆ¥é›†è¨ˆ";
-		$this->arrTitle['member'] = "ä¼šå“¡åˆ¥é›†è¨ˆ";
+		// ¥Ú¡¼¥¸¥¿¥¤¥È¥ë
+		$this->arrTitle[''] = "´ü´ÖÊÌ½¸·×";
+		$this->arrTitle['term'] = "´ü´ÖÊÌ½¸·×";
+		$this->arrTitle['products'] = "¾¦ÉÊÊÌ½¸·×";
+		$this->arrTitle['age'] = "Ç¯ÂåÊÌ½¸·×";
+		$this->arrTitle['job'] = "¿¦¶ÈÊÌ½¸·×";
+		$this->arrTitle['member'] = "²ñ°÷ÊÌ½¸·×";
 		
-		// ã‚­ãƒ£ãƒƒã‚·ãƒ¥å›é¿ã®ãŸã‚ã«æ—¥ä»˜ã‚’æ¸¡ã™
+		// ¥­¥ã¥Ã¥·¥å²óÈò¤Î¤¿¤á¤ËÆüÉÕ¤òÅÏ¤¹
 		$this->cashtime = time();
 	}
 }
@@ -41,10 +41,10 @@ class LC_Page {
 $objPage = new LC_Page();
 $objView = new SC_AdminView();
 $objSess = new SC_Session();
-// èªè¨¼å¯å¦ã®åˆ¤å®š
+// Ç§¾Ú²ÄÈİ¤ÎÈ½Äê
 sfIsSuccess($objSess);
 
-// å…¥åŠ›æœŸé–“ã‚’ã‚»ãƒƒã‚·ãƒ§ãƒ³ã«è¨˜éŒ²ã™ã‚‹
+// ÆşÎÏ´ü´Ö¤ò¥»¥Ã¥·¥ç¥ó¤Ëµ­Ï¿¤¹¤ë
 lfSaveDateSession();
 
 if($_GET['draw_image'] != ""){
@@ -53,14 +53,14 @@ if($_GET['draw_image'] != ""){
 	define(DRAW_IMAGE , false);
 }
 
-// ãƒ‘ãƒ©ãƒ¡ãƒ¼ã‚¿ç®¡ç†ã‚¯ãƒ©ã‚¹
+// ¥Ñ¥é¥á¡¼¥¿´ÉÍı¥¯¥é¥¹
 $objFormParam = new SC_FormParam();
-// ãƒ‘ãƒ©ãƒ¡ãƒ¼ã‚¿æƒ…å ±ã®åˆæœŸåŒ–
+// ¥Ñ¥é¥á¡¼¥¿¾ğÊó¤Î½é´ü²½
 lfInitParam();
 $objFormParam->setParam($_POST);
 $objFormParam->setParam($_GET);
 
-// æ¤œç´¢ãƒ¯ãƒ¼ãƒ‰ã®å¼•ãç¶™ã
+// ¸¡º÷¥ï¡¼¥É¤Î°ú¤­·Ñ¤®
 foreach ($_POST as $key => $val) {
 	if (ereg("^search_", $key)) {
 		$objPage->arrHidden[$key] = $val;		
@@ -72,12 +72,12 @@ switch($mode) {
 case 'pdf':
 case 'csv':
 case 'search':
-	// å…¥åŠ›å€¤ã®å¤‰æ›
+	// ÆşÎÏÃÍ¤ÎÊÑ´¹
 	$objFormParam->convParam();
 	$objPage->arrErr = lfCheckError($arrRet);
 	$arrRet = $objFormParam->getHashArray();
 	
-	// å…¥åŠ›ã‚¨ãƒ©ãƒ¼ãªã—
+	// ÆşÎÏ¥¨¥é¡¼¤Ê¤·
 	if (count($objPage->arrErr) == 0) {
 		foreach ($arrRet as $key => $val) {
 			if($val == "") {
@@ -104,91 +104,91 @@ case 'search':
 				
 		$page = $objFormParam->getValue('page');
 		switch($page) {
-		// å•†å“åˆ¥é›†è¨ˆ
+		// ¾¦ÉÊÊÌ½¸·×
 		case 'products':
 			if($type == "") {
 				$type = 'all';
 			}
 			$objPage->tpl_page_type = "total/page_products.tpl";
-			// æœªé›†è¨ˆãƒ‡ãƒ¼ã‚¿ã®é›†è¨ˆã‚’è¡Œã†
+			// Ì¤½¸·×¥Ç¡¼¥¿¤Î½¸·×¤ò¹Ô¤¦
 			if(!DAILY_BATCH_MODE) {
 				lfRealTimeDailyTotal($sdate, $edate);
 			}
-			// æ¤œç´¢çµæœã®å–å¾—
+			// ¸¡º÷·ë²Ì¤Î¼èÆÀ
 			$objPage = lfGetOrderProducts($type, $sdate, $edate, $objPage, true, $mode);
 			break;
-		// è·æ¥­åˆ¥é›†è¨ˆ
+		// ¿¦¶ÈÊÌ½¸·×
 		case 'job':
 			if($type == "") {
 				$type = 'all';
 			}
 			$objPage->tpl_page_type = "total/page_job.tpl";
-			// æœªé›†è¨ˆãƒ‡ãƒ¼ã‚¿ã®é›†è¨ˆã‚’è¡Œã†
+			// Ì¤½¸·×¥Ç¡¼¥¿¤Î½¸·×¤ò¹Ô¤¦
 			if(!DAILY_BATCH_MODE) {
 				lfRealTimeDailyTotal($sdate, $edate);
 			}
-			// æ¤œç´¢çµæœã®å–å¾—
+			// ¸¡º÷·ë²Ì¤Î¼èÆÀ
 			$objPage = lfGetOrderJob($type, $sdate, $edate, $objPage);
 			break;
-		// ä¼šå“¡åˆ¥é›†è¨ˆ
+		// ²ñ°÷ÊÌ½¸·×
 		case 'member':
 			if($type == "") {
 				$type = 'all';
 			}
 			$objPage->tpl_page_type = "total/page_member.tpl";
-			// æœªé›†è¨ˆãƒ‡ãƒ¼ã‚¿ã®é›†è¨ˆã‚’è¡Œã†
+			// Ì¤½¸·×¥Ç¡¼¥¿¤Î½¸·×¤ò¹Ô¤¦
 			if(!DAILY_BATCH_MODE) {
 				lfRealTimeDailyTotal($sdate, $edate);
 			}
-			// æ¤œç´¢çµæœã®å–å¾—
+			// ¸¡º÷·ë²Ì¤Î¼èÆÀ
 			$objPage = lfGetOrderMember($type, $sdate, $edate, $objPage);
 			break;
-		// å¹´ä»£åˆ¥é›†è¨ˆ
+		// Ç¯ÂåÊÌ½¸·×
 		case 'age':
 			if($type == "") {
 				$type = 'all';
 			}
 			
 			$objPage->tpl_page_type = "total/page_age.tpl";
-			// æœªé›†è¨ˆãƒ‡ãƒ¼ã‚¿ã®é›†è¨ˆã‚’è¡Œã†
+			// Ì¤½¸·×¥Ç¡¼¥¿¤Î½¸·×¤ò¹Ô¤¦
 			if(!DAILY_BATCH_MODE) {
 				lfRealTimeDailyTotal($sdate, $edate);
 			}
-			// æ¤œç´¢çµæœã®å–å¾—
+			// ¸¡º÷·ë²Ì¤Î¼èÆÀ
 			$objPage = lfGetOrderAge($type, $sdate, $edate, $objPage);
 			break;
-		// æœŸé–“åˆ¥é›†è¨ˆ
+		// ´ü´ÖÊÌ½¸·×
 		default:
 			if($type == "") {
 				$type = 'day';
 			}
 			$objPage->tpl_page_type = "total/page_term.tpl";
-			// æœªé›†è¨ˆãƒ‡ãƒ¼ã‚¿ã®é›†è¨ˆã‚’è¡Œã†
+			// Ì¤½¸·×¥Ç¡¼¥¿¤Î½¸·×¤ò¹Ô¤¦
 			if(!DAILY_BATCH_MODE) {
 				lfRealTimeDailyTotal($sdate, $edate);
 			}
-			// æ¤œç´¢çµæœã®å–å¾—
+			// ¸¡º÷·ë²Ì¤Î¼èÆÀ
 			$objPage = lfGetOrderTerm($type, $sdate, $edate, $objPage);
 			
 			break;
 		}
 
 		if($mode == 'csv') {
-			// CSVå‡ºåŠ›ã‚¿ã‚¤ãƒˆãƒ«è¡Œã®å–å¾—
+			// CSV½ĞÎÏ¥¿¥¤¥È¥ë¹Ô¤Î¼èÆÀ
 			list($arrTitleCol, $arrDataCol) = lfGetCSVColum($page, $objPage->keyname);
 			$head = sfGetCSVList($arrTitleCol);
 			$data = lfGetDataColCSV($objPage->arrResults, $arrDataCol);
-			// CSVã‚’é€ä¿¡ã™ã‚‹ã€‚
+			// CSV¤òÁ÷¿®¤¹¤ë¡£
 			sfCSVDownload($head.$data, $page."_".$type);
 			exit;
 		}
 		
 		if($mode == 'pdf') {
-			// CSVå‡ºåŠ›ã‚¿ã‚¤ãƒˆãƒ«è¡Œã®å–å¾—
+			// CSV½ĞÎÏ¥¿¥¤¥È¥ë¹Ô¤Î¼èÆÀ
 			list($arrTitleCol, $arrDataCol, $arrColSize, $arrAlign, $title) = lfGetPDFColum($page, $type, $objPage->keyname);
 			$head = sfGetPDFList($arrTitleCol);
 			$data = lfGetDataColPDF($objPage->arrResults, $arrDataCol, 40);
-			// PDFå‡ºåŠ›ç”¨
+			// PDF½ĞÎÏÍÑ
 			$graph_name = basename($objPage->tpl_image);
 			lfPDFDownload($graph_name, $head . $data, $arrColSize, $arrAlign, $sdate, $edate, $title, $page);
 			exit;
@@ -197,23 +197,23 @@ case 'search':
 	break;
 default:
 	if(count($_GET) == 0) {
-		// ãƒãƒƒãƒãƒ¢ãƒ¼ãƒ‰ã®å ´åˆã®ã¿å®Ÿè¡Œã™ã‚‹
+		// ¥Ğ¥Ã¥Á¥â¡¼¥É¤Î¾ì¹ç¤Î¤ß¼Â¹Ô¤¹¤ë
 		if(DAILY_BATCH_MODE) {
-			// 1ãƒ¶æœˆåˆ†ã®é›†è¨ˆ
+			// 1¥ö·îÊ¬¤Î½¸·×
 			lfStartDailyTotal(31,0);
 		}
 	}
 	break;
 }
 
-// ç™»éŒ²ãƒ»æ›´æ–°æ—¥æ¤œç´¢ç”¨
+// ÅĞÏ¿¡¦¹¹¿·Æü¸¡º÷ÍÑ
 $objDate = new SC_Date();
 $objDate->setStartYear(RELEASE_YEAR);
 $objDate->setEndYear(DATE("Y"));
 $objPage->arrYear = $objDate->getYear();
 $objPage->arrMonth = $objDate->getMonth();
 $objPage->arrDay = $objDate->getDay();
-// å…¥åŠ›å€¤ã®å–å¾—
+// ÆşÎÏÃÍ¤Î¼èÆÀ
 $objPage->arrForm = $objFormParam->getFormParamList();
 
 $objPage->tpl_subtitle = $objPage->arrTitle[$objFormParam->getValue('page')];
@@ -222,13 +222,13 @@ $objView->assignobj($objPage);
 $objView->display(MAIN_FRAME);
 
 //---------------------------------------------------------------------------------------------------------------------------
-/* PDFå‡ºåŠ› */
+/* PDF½ĞÎÏ */
 function lfPDFDownload($image, $table, $arrColSize, $arrAlign, $sdate, $edate, $title, $page = "") {
 	
 	$objPdf = new SC_Pdf();
 	$objPdf->setTableColor("CCCCCC", "F0F0F0", "D1DEFE");
 			
-	// åœŸå°ã¨ãªã‚‹PDFãƒ•ã‚¡ã‚¤ãƒ«ã®æŒ‡å®š
+	// ÅÚÂæ¤È¤Ê¤ëPDF¥Õ¥¡¥¤¥ë¤Î»ØÄê
 	$objPdf->setTemplate(PDF_DIR . "total.pdf");
 
 	$disp_sdate = sfDispDBDate($sdate, false);
@@ -238,26 +238,26 @@ function lfPDFDownload($image, $table, $arrColSize, $arrAlign, $sdate, $edate, $
 	$arrText['date_block'] = "$disp_sdate-$disp_edate";
 	$arrImage['graph_block'] = GRAPH_DIR . $image;
 	
-	// æ–‡æœ«ã®\nã‚’å‰Šé™¤ã™ã‚‹
+	// Ê¸Ëö¤Î\n¤òºï½ü¤¹¤ë
 	$table = ereg_replace("\n$", "", $table);
 	$arrRet = split("\n", $table);
 	$page_max = intval((count($arrRet) / 35) + 1);
 	
 	for($page = 1; $page <= $page_max; $page++) {
 		if($page > 1) {
-			// 2ãƒšãƒ¼ã‚¸ä»¥é™
+			// 2¥Ú¡¼¥¸°Ê¹ß
 			$start_no = 35 * ($page - 1) + 1;
 		} else {
-			// é–‹å§‹ãƒšãƒ¼ã‚¸
+			// ³«»Ï¥Ú¡¼¥¸
 			$start_no = 1;			
 		}
 				
 		$arrText['page_block'] = $page . " / " . $page_max;
 		$objPdf->setTextBlock($arrText);
 		$objPdf->setImageBlock($arrImage);
-		// ãƒ–ãƒ­ãƒƒã‚¯å€¤ã®å…¥åŠ›
+		// ¥Ö¥í¥Ã¥¯ÃÍ¤ÎÆşÎÏ
 		$objPdf->writeBlock();
-		// æœ€çµ‚ãƒšãƒ¼ã‚¸ã®ã¿ã€å•†å“åˆ¥é›†è¨ˆã¯åˆè¨ˆãŒãªã„ã®ã§æœ€çµ‚è¡Œã®è‰²ã‚’å¤‰æ›´ã—ãªã„ã€‚
+		// ºÇ½ª¥Ú¡¼¥¸¤Î¤ß¡¢¾¦ÉÊÊÌ½¸·×¤Ï¹ç·×¤¬¤Ê¤¤¤Î¤ÇºÇ½ª¹Ô¤Î¿§¤òÊÑ¹¹¤·¤Ê¤¤¡£
 		if($page == $page_max && $page != 'products') {
 			$last_color_flg = true;
 		} else {
@@ -267,11 +267,11 @@ function lfPDFDownload($image, $table, $arrColSize, $arrAlign, $sdate, $edate, $
 		$objPdf->closePage();
 	}
 
-	// PDFã®å‡ºåŠ›
+	// PDF¤Î½ĞÎÏ
 	$objPdf->output();	
 }
 
-/* ã‚»ãƒƒã‚·ãƒ§ãƒ³ã«å…¥åŠ›æœŸé–“ã‚’è¨˜éŒ²ã™ã‚‹ */
+/* ¥»¥Ã¥·¥ç¥ó¤ËÆşÎÏ´ü´Ö¤òµ­Ï¿¤¹¤ë */
 function lfSaveDateSession() {
 	if($_POST['form'] == 1) {
 		$_SESSION['total']['startyear_m'] = $_POST['search_startyear_m'];
@@ -288,7 +288,7 @@ function lfSaveDateSession() {
 	}
 }
 
-/* ãƒ‡ãƒ•ã‚©ãƒ«ãƒˆå€¤ã®å–å¾— */
+/* ¥Ç¥Õ¥©¥ë¥ÈÃÍ¤Î¼èÆÀ */
 function lfGetDateDefault() {
 	$year = date("Y");
 	$month = date("m");
@@ -296,13 +296,13 @@ function lfGetDateDefault() {
 	
 	$list = $_SESSION['total'];
 	
-	// ã‚»ãƒƒã‚·ãƒ§ãƒ³æƒ…å ±ã«é–‹å§‹æœˆåº¦ãŒä¿å­˜ã•ã‚Œã¦ã„ãªã„ã€‚
+	// ¥»¥Ã¥·¥ç¥ó¾ğÊó¤Ë³«»Ï·îÅÙ¤¬ÊİÂ¸¤µ¤ì¤Æ¤¤¤Ê¤¤¡£
 	if($_SESSION['total']['startyear_m'] == "") {
 		$list['startyear_m'] = $year;
 		$list['startmonth_m'] = $month;
 	}
 	
-	// ã‚»ãƒƒã‚·ãƒ§ãƒ³æƒ…å ±ã«é–‹å§‹æ—¥ä»˜ã€çµ‚äº†æ—¥ä»˜ãŒä¿å­˜ã•ã‚Œã¦ã„ãªã„ã€‚
+	// ¥»¥Ã¥·¥ç¥ó¾ğÊó¤Ë³«»ÏÆüÉÕ¡¢½ªÎ»ÆüÉÕ¤¬ÊİÂ¸¤µ¤ì¤Æ¤¤¤Ê¤¤¡£
 	if($_SESSION['total']['startyear'] == "" && $_SESSION['total']['endyear'] == "") {
 		$list['startyear'] = $year;
 		$list['startmonth'] = $month;
@@ -315,72 +315,72 @@ function lfGetDateDefault() {
 	return $list;	
 }
 
-/* ãƒ‘ãƒ©ãƒ¡ãƒ¼ã‚¿æƒ…å ±ã®åˆæœŸåŒ– */
+/* ¥Ñ¥é¥á¡¼¥¿¾ğÊó¤Î½é´ü²½ */
 function lfInitParam() {
 	global $objFormParam;
 		
-	// ãƒ‡ãƒ•ã‚©ãƒ«ãƒˆå€¤ã®å–å¾—
+	// ¥Ç¥Õ¥©¥ë¥ÈÃÍ¤Î¼èÆÀ
 	$arrList = lfGetDateDefault();
 	
-	// æœˆåº¦é›†è¨ˆ
-	$objFormParam->addParam("æœˆåº¦", "search_startyear_m", INT_LEN, "n", array("MAX_LENGTH_CHECK", "NUM_CHECK"), $arrList['startyear_m']);
-	$objFormParam->addParam("æœˆåº¦", "search_startmonth_m", INT_LEN, "n", array("MAX_LENGTH_CHECK", "NUM_CHECK"), $arrList['startmonth_m']);
-	// æœŸé–“é›†è¨ˆ
-	$objFormParam->addParam("é–‹å§‹æ—¥", "search_startyear", INT_LEN, "n", array("MAX_LENGTH_CHECK", "NUM_CHECK"), $arrList['startyear']);
-	$objFormParam->addParam("é–‹å§‹æ—¥", "search_startmonth", INT_LEN, "n", array("MAX_LENGTH_CHECK", "NUM_CHECK"), $arrList['startmonth']);
-	$objFormParam->addParam("é–‹å§‹æ—¥", "search_startday", INT_LEN, "n", array("MAX_LENGTH_CHECK", "NUM_CHECK"), $arrList['startday']);
-	$objFormParam->addParam("çµ‚äº†æ—¥", "search_endyear", INT_LEN, "n", array("MAX_LENGTH_CHECK", "NUM_CHECK"), $arrList['endyear']);
-	$objFormParam->addParam("çµ‚äº†æ—¥", "search_endmonth", INT_LEN, "n", array("MAX_LENGTH_CHECK", "NUM_CHECK"), $arrList['endmonth']);
-	$objFormParam->addParam("çµ‚äº†æ—¥", "search_endday", INT_LEN, "n", array("MAX_LENGTH_CHECK", "NUM_CHECK"), $arrList['endday']);
+	// ·îÅÙ½¸·×
+	$objFormParam->addParam("·îÅÙ", "search_startyear_m", INT_LEN, "n", array("MAX_LENGTH_CHECK", "NUM_CHECK"), $arrList['startyear_m']);
+	$objFormParam->addParam("·îÅÙ", "search_startmonth_m", INT_LEN, "n", array("MAX_LENGTH_CHECK", "NUM_CHECK"), $arrList['startmonth_m']);
+	// ´ü´Ö½¸·×
+	$objFormParam->addParam("³«»ÏÆü", "search_startyear", INT_LEN, "n", array("MAX_LENGTH_CHECK", "NUM_CHECK"), $arrList['startyear']);
+	$objFormParam->addParam("³«»ÏÆü", "search_startmonth", INT_LEN, "n", array("MAX_LENGTH_CHECK", "NUM_CHECK"), $arrList['startmonth']);
+	$objFormParam->addParam("³«»ÏÆü", "search_startday", INT_LEN, "n", array("MAX_LENGTH_CHECK", "NUM_CHECK"), $arrList['startday']);
+	$objFormParam->addParam("½ªÎ»Æü", "search_endyear", INT_LEN, "n", array("MAX_LENGTH_CHECK", "NUM_CHECK"), $arrList['endyear']);
+	$objFormParam->addParam("½ªÎ»Æü", "search_endmonth", INT_LEN, "n", array("MAX_LENGTH_CHECK", "NUM_CHECK"), $arrList['endmonth']);
+	$objFormParam->addParam("½ªÎ»Æü", "search_endday", INT_LEN, "n", array("MAX_LENGTH_CHECK", "NUM_CHECK"), $arrList['endday']);
 	
-	// hiddenãƒ‡ãƒ¼ã‚¿ã®å–å¾—ç”¨
+	// hidden¥Ç¡¼¥¿¤Î¼èÆÀÍÑ
 	$objFormParam->addParam("", "page");
 	$objFormParam->addParam("", "type");
 	$objFormParam->addParam("", "mode");
 
 }
 
-/* å…¥åŠ›å†…å®¹ã®ãƒã‚§ãƒƒã‚¯ */
+/* ÆşÎÏÆâÍÆ¤Î¥Á¥§¥Ã¥¯ */
 function lfCheckError() {
 	global $objFormParam;
-	// å…¥åŠ›ãƒ‡ãƒ¼ã‚¿ã‚’æ¸¡ã™ã€‚
+	// ÆşÎÏ¥Ç¡¼¥¿¤òÅÏ¤¹¡£
 	$arrRet =  $objFormParam->getHashArray();
 	$objErr = new SC_CheckError($arrRet);
 	$objErr->arrErr = $objFormParam->checkError();
 	
-	// ç‰¹æ®Šé …ç›®ãƒã‚§ãƒƒã‚¯
+	// ÆÃ¼ì¹àÌÜ¥Á¥§¥Ã¥¯
 	if($_POST['form'] == 1) {
-		$objErr->doFunc(array("æœˆåº¦", "search_startyear_m"), array("ONE_EXIST_CHECK"));
+		$objErr->doFunc(array("·îÅÙ", "search_startyear_m"), array("ONE_EXIST_CHECK"));
 	}
 	
 	if($_POST['form'] == 2) {
-		$objErr->doFunc(array("æœŸé–“", "search_startyear", "search_endyear"), array("ONE_EXIST_CHECK"));
+		$objErr->doFunc(array("´ü´Ö", "search_startyear", "search_endyear"), array("ONE_EXIST_CHECK"));
 	}
 			
-	$objErr->doFunc(array("æœˆåº¦", "search_startyear_m", "search_startmonth_m"), array("ALL_EXIST_CHECK"));
-	$objErr->doFunc(array("é–‹å§‹æ—¥", "search_startyear", "search_startmonth", "search_startday"), array("CHECK_DATE"));
-	$objErr->doFunc(array("çµ‚äº†æ—¥", "search_endyear", "search_endmonth", "search_endday"), array("CHECK_DATE"));
-	$objErr->doFunc(array("é–‹å§‹æ—¥", "çµ‚äº†æ—¥", "search_startyear", "search_startmonth", "search_startday", "search_endyear", "search_endmonth", "search_endday"), array("CHECK_SET_TERM"));
+	$objErr->doFunc(array("·îÅÙ", "search_startyear_m", "search_startmonth_m"), array("ALL_EXIST_CHECK"));
+	$objErr->doFunc(array("³«»ÏÆü", "search_startyear", "search_startmonth", "search_startday"), array("CHECK_DATE"));
+	$objErr->doFunc(array("½ªÎ»Æü", "search_endyear", "search_endmonth", "search_endday"), array("CHECK_DATE"));
+	$objErr->doFunc(array("³«»ÏÆü", "½ªÎ»Æü", "search_startyear", "search_startmonth", "search_startday", "search_endyear", "search_endmonth", "search_endday"), array("CHECK_SET_TERM"));
 	return $objErr->arrErr;
 }
 
-/* æŠ˜ã‚Œç·šã‚°ãƒ©ãƒ•ã®ä½œæˆ */
+/* ÀŞ¤ìÀş¥°¥é¥Õ¤ÎºîÀ® */
 function lfGetGraphLine($arrResults, $keyname, $type, $xtitle, $ytitle, $sdate, $edate) {
 	
 	$ret_path = "";
 	
-	// çµæœãŒ0è¡Œä»¥ä¸Šã‚ã‚‹å ´åˆã®ã¿ã‚°ãƒ©ãƒ•ã‚’ç”Ÿæˆã™ã‚‹ã€‚
+	// ·ë²Ì¤¬0¹Ô°Ê¾å¤¢¤ë¾ì¹ç¤Î¤ß¥°¥é¥Õ¤òÀ¸À®¤¹¤ë¡£
 	if(count($arrResults) > 0) {
 		
-		// ã‚°ãƒ©ãƒ•ã®ç”Ÿæˆ
+		// ¥°¥é¥Õ¤ÎÀ¸À®
 		$arrList = sfArrKeyValue($arrResults, $keyname, "total");
 
-		// ä¸€æ™‚ãƒ•ã‚¡ã‚¤ãƒ«åã®å–å¾—
+		// °ì»ş¥Õ¥¡¥¤¥ëÌ¾¤Î¼èÆÀ
 		$pngname = lfGetGraphPng($type);
 		
 		$path = GRAPH_DIR . $pngname;
 		
-		// ãƒ©ãƒ™ãƒ«è¡¨ç¤ºã‚¤ãƒ³ã‚¿ãƒ¼ãƒãƒ«ã‚’æ±‚ã‚ã‚‹
+		// ¥é¥Ù¥ëÉ½¼¨¥¤¥ó¥¿¡¼¥Ğ¥ë¤òµá¤á¤ë
 		$interval = intval(count($arrList) / 20);
 		if($interval < 1) {
 			$interval = 1;
@@ -388,122 +388,122 @@ function lfGetGraphLine($arrResults, $keyname, $type, $xtitle, $ytitle, $sdate, 
 		$objGraphPie = new SC_GraphPie();
 		$objGraphLine = new SC_GraphLine();
 		
-		// å€¤ã®ã‚»ãƒƒãƒˆ
+		// ÃÍ¤Î¥»¥Ã¥È
 		$objGraphLine->setData($arrList);
 		$objGraphLine->setXLabel(array_keys($arrList));
 		
-		// ãƒ©ãƒ™ãƒ«å›è»¢(æ—¥æœ¬èªä¸å¯)
+		// ¥é¥Ù¥ë²óÅ¾(ÆüËÜ¸ìÉÔ²Ä)
 		if($keyname == "key_day"){
 			$objGraphLine->setXLabelAngle(45);
 		}
 
-		// ã‚¿ã‚¤ãƒˆãƒ«ã‚»ãƒƒãƒˆ
+		// ¥¿¥¤¥È¥ë¥»¥Ã¥È
 		$objGraphLine->setXTitle($xtitle);
 		$objGraphLine->setYTitle($ytitle);
 		
-		// ãƒ¡ã‚¤ãƒ³ã‚¿ã‚¤ãƒˆãƒ«ä½œæˆ
+		// ¥á¥¤¥ó¥¿¥¤¥È¥ëºîÀ®
 		list($sy, $sm, $sd) = split("[/ ]" , $sdate);
 		list($ey, $em, $ed) = split("[/ ]" , $edate);
-		$start_date = $sy . "å¹´" . $sm . "æœˆ" . $sd . "æ—¥";
-		$end_date = $ey . "å¹´" . $em . "æœˆ" . $ed . "æ—¥";
-		$objGraphLine->drawTitle("é›†è¨ˆæœŸé–“ï¼š" . $start_date . " - " . $end_date);
+		$start_date = $sy . "Ç¯" . $sm . "·î" . $sd . "Æü";
+		$end_date = $ey . "Ç¯" . $em . "·î" . $ed . "Æü";
+		$objGraphLine->drawTitle("½¸·×´ü´Ö¡§" . $start_date . " - " . $end_date);
 		
-		// ã‚°ãƒ©ãƒ•æç”»
+		// ¥°¥é¥ÕÉÁ²è
 		$objGraphLine->drawGraph();
 		
-		// ã‚°ãƒ©ãƒ•ã®å‡ºåŠ›
+		// ¥°¥é¥Õ¤Î½ĞÎÏ
 		if(DRAW_IMAGE){
 			$objGraphLine->outputGraph();
 			exit();
 		}
 
-		// ãƒ•ã‚¡ã‚¤ãƒ«ãƒ‘ã‚¹ã‚’è¿”ã™
+		// ¥Õ¥¡¥¤¥ë¥Ñ¥¹¤òÊÖ¤¹
 		$ret_path = GRAPH_URL . $pngname;
 	}
 	return $ret_path;
 }
 
-// å††ã‚°ãƒ©ãƒ•ã®ä½œæˆ 
+// ±ß¥°¥é¥Õ¤ÎºîÀ® 
 function lfGetGraphPie($arrResults, $keyname, $type, $title = "", $sdate = "", $edate = "") {
 	
 	$ret_path = "";
 	
-	// çµæœãŒ0è¡Œä»¥ä¸Šã‚ã‚‹å ´åˆã®ã¿ã‚°ãƒ©ãƒ•ã‚’ç”Ÿæˆã™ã‚‹ã€‚
+	// ·ë²Ì¤¬0¹Ô°Ê¾å¤¢¤ë¾ì¹ç¤Î¤ß¥°¥é¥Õ¤òÀ¸À®¤¹¤ë¡£
 	if(count($arrResults) > 0) {
-		// ã‚°ãƒ©ãƒ•ã®ç”Ÿæˆ
+		// ¥°¥é¥Õ¤ÎÀ¸À®
 		$arrList = sfArrKeyValue($arrResults, $keyname, "total", GRAPH_PIE_MAX, GRAPH_LABEL_MAX);
 		
-		// ä¸€æ™‚ãƒ•ã‚¡ã‚¤ãƒ«åã®å–å¾—
+		// °ì»ş¥Õ¥¡¥¤¥ëÌ¾¤Î¼èÆÀ
 		$pngname = lfGetGraphPng($type);
 		$path = GRAPH_DIR . $pngname;
 		
 		$objGraphPie = new SC_GraphPie();
 		
-		/* ãƒ‡ãƒãƒƒã‚°è¡¨ç¤ºç”¨ by naka
+		/* ¥Ç¥Ğ¥Ã¥°É½¼¨ÍÑ by naka
 		foreach($arrList as $key => $val) {
 			$objGraphPie->debugPrint("key:$key val:$val");
 		}
 		*/
 		
-		// ãƒ‡ãƒ¼ã‚¿ã‚’ã‚»ãƒƒãƒˆã™ã‚‹
+		// ¥Ç¡¼¥¿¤ò¥»¥Ã¥È¤¹¤ë
 		$objGraphPie->setData($arrList);
-		// å‡¡ä¾‹ã‚’ã‚»ãƒƒãƒˆã™ã‚‹
+		// ËŞÎã¤ò¥»¥Ã¥È¤¹¤ë
 		$objGraphPie->setLegend(array_keys($arrList));
 								
-		// ãƒ¡ã‚¤ãƒ³ã‚¿ã‚¤ãƒˆãƒ«ä½œæˆ
+		// ¥á¥¤¥ó¥¿¥¤¥È¥ëºîÀ®
 		list($sy, $sm, $sd) = split("[/ ]" , $sdate);
 		list($ey, $em, $ed) = split("[/ ]" , $edate);
-		$start_date = $sy . "å¹´" . $sm . "æœˆ" . $sd . "æ—¥";
-		$end_date = $ey . "å¹´" . $em . "æœˆ" . $ed . "æ—¥";
-		$objGraphPie->drawTitle("é›†è¨ˆæœŸé–“ï¼š" . $start_date . " - " . $end_date);
+		$start_date = $sy . "Ç¯" . $sm . "·î" . $sd . "Æü";
+		$end_date = $ey . "Ç¯" . $em . "·î" . $ed . "Æü";
+		$objGraphPie->drawTitle("½¸·×´ü´Ö¡§" . $start_date . " - " . $end_date);
 				
-		// å††ã‚°ãƒ©ãƒ•æç”»
+		// ±ß¥°¥é¥ÕÉÁ²è
 		$objGraphPie->drawGraph();
 		
-		// ã‚°ãƒ©ãƒ•ã®å‡ºåŠ›
+		// ¥°¥é¥Õ¤Î½ĞÎÏ
 		if(DRAW_IMAGE){
 			$objGraphPie->outputGraph();
 			exit();
 		}
 
-		// ãƒ•ã‚¡ã‚¤ãƒ«ãƒ‘ã‚¹ã‚’è¿”ã™
+		// ¥Õ¥¡¥¤¥ë¥Ñ¥¹¤òÊÖ¤¹
 		$ret_path = GRAPH_URL . $pngname;
 	}
 	return $ret_path;
 }
 
-// æ£’ã‚°ãƒ©ãƒ•ã®ä½œæˆ 
+// ËÀ¥°¥é¥Õ¤ÎºîÀ® 
 function lfGetGraphBar($arrResults, $keyname, $type, $xtitle, $ytitle, $sdate, $edate) {
 	$ret_path = "";
 	
-	// çµæœãŒ0è¡Œä»¥ä¸Šã‚ã‚‹å ´åˆã®ã¿ã‚°ãƒ©ãƒ•ã‚’ç”Ÿæˆã™ã‚‹ã€‚
+	// ·ë²Ì¤¬0¹Ô°Ê¾å¤¢¤ë¾ì¹ç¤Î¤ß¥°¥é¥Õ¤òÀ¸À®¤¹¤ë¡£
 	if(count($arrResults) > 0) {
-		// ã‚°ãƒ©ãƒ•ã®ç”Ÿæˆ
+		// ¥°¥é¥Õ¤ÎÀ¸À®
 		$arrList = sfArrKeyValue($arrResults, $keyname, "total", GRAPH_PIE_MAX, GRAPH_LABEL_MAX);
 		
-		// ä¸€æ™‚ãƒ•ã‚¡ã‚¤ãƒ«åã®å–å¾—
+		// °ì»ş¥Õ¥¡¥¤¥ëÌ¾¤Î¼èÆÀ
 		$pngname = lfGetGraphPng($type);
 		$path = GRAPH_DIR . $pngname;
 		
 		$objGraphBar = new SC_GraphBar();
 		
 		foreach(array_keys($arrList) as $val) {
-			$arrKey[] = ereg_replace("ã€œ", "-", $val);
+			$arrKey[] = ereg_replace("¡Á", "-", $val);
 		}
 		
-		// ã‚°ãƒ©ãƒ•æç”»
+		// ¥°¥é¥ÕÉÁ²è
 		$objGraphBar->setXLabel($arrKey);
 		$objGraphBar->setXTitle($xtitle);
 		$objGraphBar->setYTitle($ytitle);
 		$objGraphBar->setData($arrList);
 		
-		// ãƒ¡ã‚¤ãƒ³ã‚¿ã‚¤ãƒˆãƒ«ä½œæˆ
+		// ¥á¥¤¥ó¥¿¥¤¥È¥ëºîÀ®
 		$arrKey = array_keys($arrList);
 		list($sy, $sm, $sd) = split("[/ ]" , $sdate);
 		list($ey, $em, $ed) = split("[/ ]" , $edate);
-		$start_date = $sy . "å¹´" . $sm . "æœˆ" . $sd . "æ—¥";
-		$end_date = $ey . "å¹´" . $em . "æœˆ" . $ed . "æ—¥";
-		$objGraphBar->drawTitle("é›†è¨ˆæœŸé–“ï¼š" . $start_date . " - " . $end_date);
+		$start_date = $sy . "Ç¯" . $sm . "·î" . $sd . "Æü";
+		$end_date = $ey . "Ç¯" . $em . "·î" . $ed . "Æü";
+		$objGraphBar->drawTitle("½¸·×´ü´Ö¡§" . $start_date . " - " . $end_date);
 		
 		$objGraphBar->drawGraph();
 		
@@ -512,13 +512,13 @@ function lfGetGraphBar($arrResults, $keyname, $type, $xtitle, $ytitle, $sdate, $
 			exit();
 		}
 		
-		// ãƒ•ã‚¡ã‚¤ãƒ«ãƒ‘ã‚¹ã‚’è¿”ã™
+		// ¥Õ¥¡¥¤¥ë¥Ñ¥¹¤òÊÖ¤¹
 		$ret_path = GRAPH_URL . $pngname;
 	}
 	return $ret_path;
 }
 
-// ã‚°ãƒ©ãƒ•ç”¨ã®PNGãƒ•ã‚¡ã‚¤ãƒ«å 
+// ¥°¥é¥ÕÍÑ¤ÎPNG¥Õ¥¡¥¤¥ëÌ¾ 
 function lfGetGraphPng($keyname) {
 	if($_POST['search_startyear_m'] != "") {
 		$pngname = sprintf("%s_%02d%02d.png", $keyname, substr($_POST['search_startyear_m'],2), $_POST['search_startmonth_m']);
@@ -528,9 +528,9 @@ function lfGetGraphPng($keyname) {
 	return $pngname;
 }
 
-// ä¼šå“¡ã€éä¼šå“¡é›†è¨ˆã®WHEREåˆ†ã®ä½œæˆ
+// ²ñ°÷¡¢Èó²ñ°÷½¸·×¤ÎWHEREÊ¬¤ÎºîÀ®
 function lfGetWhereMember($col_date, $sdate, $edate, $type, $col_member = "customer_id") {
-	// å–å¾—æ—¥ä»˜ã®æŒ‡å®š
+	// ¼èÆÀÆüÉÕ¤Î»ØÄê
 	if($sdate != "") {
 		if ($where != "") {
 			$where.= " AND ";
@@ -546,9 +546,9 @@ function lfGetWhereMember($col_date, $sdate, $edate, $type, $col_member = "custo
 		$where.= " $col_date < date('" . $edate ."')";
 	}
 	
-	// ä¼šå“¡ã€éä¼šå“¡ã®åˆ¤å®š
+	// ²ñ°÷¡¢Èó²ñ°÷¤ÎÈ½Äê
 	switch($type) {
-	// å…¨ä½“
+	// Á´ÂÎ
 	case 'all':
 		break;
 	case 'member':
@@ -570,13 +570,13 @@ function lfGetWhereMember($col_date, $sdate, $edate, $type, $col_member = "custo
 	return array($where, $arrval);
 }
 
-/** ä¼šå“¡åˆ¥é›†è¨ˆ **/
+/** ²ñ°÷ÊÌ½¸·× **/
 function lfGetOrderMember($type, $sdate, $edate, $objPage, $graph = true) {
 	global $arrSex;
 		
 	list($where, $arrval) = lfGetWhereMember('create_date', $sdate, $edate, $type);
 	
-	// ä¼šå“¡é›†è¨ˆã®å–å¾—
+	// ²ñ°÷½¸·×¤Î¼èÆÀ
 	$col = "COUNT(*) AS order_count, SUM(total) AS total, (AVG(total)) AS total_average, order_sex";
 	$from = "dtb_order";
 	$objQuery = new SC_Query();
@@ -585,34 +585,34 @@ function lfGetOrderMember($type, $sdate, $edate, $objPage, $graph = true) {
 	$tmp_where = $where . " AND customer_id <> 0 AND del_flg = 0 ";
 	$arrRet = $objQuery->select($col, $from, $tmp_where, $arrval);
 	
-	// ä¼šå“¡è³¼å…¥ã§ã‚ã‚‹ã“ã¨ã‚’è¨˜éŒ²ã™ã‚‹ã€‚
+	// ²ñ°÷¹ØÆş¤Ç¤¢¤ë¤³¤È¤òµ­Ï¿¤¹¤ë¡£
 	$max = count($arrRet);
 	for($i = 0; $i < $max; $i++) {
-		$arrRet[$i]['member_name'] = 'ä¼šå“¡'.$arrSex[$arrRet[$i]['order_sex']];
+		$arrRet[$i]['member_name'] = '²ñ°÷'.$arrSex[$arrRet[$i]['order_sex']];
 	}
 	$objPage->arrResults = $arrRet;
 	
-	// éä¼šå“¡é›†è¨ˆã®å–å¾—
+	// Èó²ñ°÷½¸·×¤Î¼èÆÀ
 	$tmp_where = $where . " AND customer_id = 0 AND del_flg = 0 ";
 	$arrRet = $objQuery->select($col, $from, $tmp_where, $arrval);
-	// éä¼šå“¡è³¼å…¥ã§ã‚ã‚‹ã“ã¨ã‚’è¨˜éŒ²ã™ã‚‹ã€‚
+	// Èó²ñ°÷¹ØÆş¤Ç¤¢¤ë¤³¤È¤òµ­Ï¿¤¹¤ë¡£
 	$max = count($arrRet);
 	for($i = 0; $i < $max; $i++) {
-		$arrRet[$i]['member_name'] = 'éä¼šå“¡'.$arrSex[$arrRet[$i]['order_sex']];
+		$arrRet[$i]['member_name'] = 'Èó²ñ°÷'.$arrSex[$arrRet[$i]['order_sex']];
 	}
 	
 	$objPage->arrResults = array_merge($objPage->arrResults, $arrRet);
 	
-	// å††ã‚°ãƒ©ãƒ•ã®ç”Ÿæˆ
+	// ±ß¥°¥é¥Õ¤ÎÀ¸À®
 	if($graph) {	
 		$image_key = "member";
-		$objPage->tpl_image = lfGetGraphPie($objPage->arrResults, "member_name", $image_key, "(å£²ä¸Šæ¯”ç‡)", $sdate, $edate);
+		$objPage->tpl_image = lfGetGraphPie($objPage->arrResults, "member_name", $image_key, "(Çä¾åÈæÎ¨)", $sdate, $edate);
 	}
 	
 	return $objPage;
 }
 
-/** å•†å“åˆ¥é›†è¨ˆ **/
+/** ¾¦ÉÊÊÌ½¸·× **/
 function lfGetOrderProducts($type, $sdate, $edate, $objPage, $graph = true, $mode = "") {
 	list($where, $arrval) = lfGetWhereMember('create_date', $sdate, $edate, $type);
 	
@@ -634,16 +634,16 @@ function lfGetOrderProducts($type, $sdate, $edate, $objPage, $graph = true, $mod
 	$objQuery = new SC_Query();
 	$objPage->arrResults = $objQuery->getall($sql, $arrval);
 	
-	// å††ã‚°ãƒ©ãƒ•ã®ç”Ÿæˆ
+	// ±ß¥°¥é¥Õ¤ÎÀ¸À®
 	if($graph) {
 		$image_key = "products_" . $type;
-		$objPage->tpl_image = lfGetGraphPie($objPage->arrResults, "name", $image_key, "(å£²ä¸Šæ¯”ç‡)", $sdate, $edate);
+		$objPage->tpl_image = lfGetGraphPie($objPage->arrResults, "name", $image_key, "(Çä¾åÈæÎ¨)", $sdate, $edate);
 	}
 	
 	return $objPage;
 }
 
-/** è·æ¥­åˆ¥é›†è¨ˆ **/
+/** ¿¦¶ÈÊÌ½¸·× **/
 function lfGetOrderJob($type, $sdate, $edate, $objPage, $graph = true) {
 	global $arrJob;	
 		
@@ -662,20 +662,20 @@ function lfGetOrderJob($type, $sdate, $edate, $objPage, $graph = true) {
 		if($job_key != "") {
 			$objPage->arrResults[$i]['job_name'] = $arrJob[$job_key];
 		} else {
-			$objPage->arrResults[$i]['job_name'] = "æœªå›ç­”";
+			$objPage->arrResults[$i]['job_name'] = "Ì¤²óÅú";
 		}
 	}
 
-	// å††ã‚°ãƒ©ãƒ•ã®ç”Ÿæˆ	
+	// ±ß¥°¥é¥Õ¤ÎÀ¸À®	
 	if($graph) {
 		$image_key = "job_" . $type;
-		$objPage->tpl_image = lfGetGraphPie($objPage->arrResults, "job_name", $image_key, "(å£²ä¸Šæ¯”ç‡)", $sdate, $edate);
+		$objPage->tpl_image = lfGetGraphPie($objPage->arrResults, "job_name", $image_key, "(Çä¾åÈæÎ¨)", $sdate, $edate);
 	}
 	
 	return $objPage;
 }
 
-/** å¹´ä»£åˆ¥é›†è¨ˆ **/
+/** Ç¯ÂåÊÌ½¸·× **/
 function lfGetOrderAge($type, $sdate, $edate, $objPage, $graph = true) {
 
 	list($where, $arrval) = lfGetWhereMember('order_date', $sdate, $edate, $type, "member");
@@ -696,27 +696,27 @@ function lfGetOrderAge($type, $sdate, $edate, $objPage, $graph = true) {
 		$end_age = $objPage->arrResults[$i]['end_age'];
 		if($start_age != "" || $end_age != "") {
 			if($end_age != 999) {
-				$objPage->arrResults[$i]['age_name'] = $start_age . "ã€œ" . $end_age . "æ­³";
+				$objPage->arrResults[$i]['age_name'] = $start_age . "¡Á" . $end_age . "ºĞ";
 			} else {
-				$objPage->arrResults[$i]['age_name'] = $start_age . "æ­³ã€œ";
+				$objPage->arrResults[$i]['age_name'] = $start_age . "ºĞ¡Á";
 			}
 		} else {
-			$objPage->arrResults[$i]['age_name'] = "æœªå›ç­”";
+			$objPage->arrResults[$i]['age_name'] = "Ì¤²óÅú";
 		}
 	}
 	
-	// æ£’ã‚°ãƒ©ãƒ•ã®ç”Ÿæˆ
+	// ËÀ¥°¥é¥Õ¤ÎÀ¸À®
 	if($graph) {
 		$image_key = "age_" . $type;
-		$xtitle = "(å¹´é½¢)";
-		$ytitle = "(å£²ä¸Šåˆè¨ˆ)";
+		$xtitle = "(Ç¯Îğ)";
+		$ytitle = "(Çä¾å¹ç·×)";
 		$objPage->tpl_image = lfGetGraphBar($objPage->arrResults, "age_name", $image_key, $xtitle, $ytitle, $sdate, $edate);
 	}
 	
 	return $objPage;
 }
 
-/** æœŸé–“åˆ¥é›†è¨ˆ **/
+/** ´ü´ÖÊÌ½¸·× **/
 function lfGetOrderTerm($type, $sdate, $edate, $objPage, $graph = true) {
 		
 		$tmp_col = "sum(total_order) as total_order, sum(men) as men, sum(women) as women,";
@@ -726,62 +726,62 @@ function lfGetOrderTerm($type, $sdate, $edate, $objPage, $graph = true) {
 		$objQuery = new SC_Query();
 		
 		switch($type) {
-		// æœˆåˆ¥
+		// ·îÊÌ
 		case 'month':
 			$col = $tmp_col . ",key_month";
 			$objQuery->setgroupby("key_month");
 			$objQuery->setOrder("key_month");
 			$objPage->keyname = "key_month";
-			$objPage->tpl_tail = "æœˆ";
+			$objPage->tpl_tail = "·î";
 			$from = "dtb_bat_order_daily";
-			$xtitle = "(æœˆåˆ¥)";
-			$ytitle = "(å£²ä¸Šåˆè¨ˆ)";
+			$xtitle = "(·îÊÌ)";
+			$ytitle = "(Çä¾å¹ç·×)";
 			break;
-		// å¹´åˆ¥
+		// Ç¯ÊÌ
 		case 'year':
 			$col = $tmp_col . ",key_year";
 			$objQuery->setgroupby("key_year");
 			$objQuery->setOrder("key_year");
 			$objPage->keyname = "key_year";
-			$objPage->tpl_tail = "å¹´";
+			$objPage->tpl_tail = "Ç¯";
 			$from = "dtb_bat_order_daily";
-			$xtitle = "(å¹´åˆ¥)";
-			$ytitle = "(å£²ä¸Šåˆè¨ˆ)";
+			$xtitle = "(Ç¯ÊÌ)";
+			$ytitle = "(Çä¾å¹ç·×)";
 			break;
-		// æ›œæ—¥åˆ¥
+		// ÍËÆüÊÌ
 		case 'wday':
 			$col = $tmp_col . ",key_wday, wday";
 			$objQuery->setgroupby("key_wday, wday");
 			$objQuery->setOrder("wday");
 			$objPage->keyname = "key_wday";
-			$objPage->tpl_tail = "æ›œæ—¥";
+			$objPage->tpl_tail = "ÍËÆü";
 			$from = "dtb_bat_order_daily";
-			$xtitle = "(æ›œæ—¥åˆ¥)";
-			$ytitle = "(å£²ä¸Šåˆè¨ˆ)";
+			$xtitle = "(ÍËÆüÊÌ)";
+			$ytitle = "(Çä¾å¹ç·×)";
 			break;
-		// æ™‚é–“åˆ¥
+		// »ş´ÖÊÌ
 		case 'hour':
 			$col = $tmp_col . ",hour";
 			$objQuery->setgroupby("hour");
 			$objQuery->setOrder("hour");
 			$objPage->keyname = "hour";
-			$objPage->tpl_tail = "æ™‚";
+			$objPage->tpl_tail = "»ş";
 			$from = "dtb_bat_order_daily_hour";
-			$xtitle = "(æ™‚é–“åˆ¥)";
-			$ytitle = "(å£²ä¸Šåˆè¨ˆ)";
+			$xtitle = "(»ş´ÖÊÌ)";
+			$ytitle = "(Çä¾å¹ç·×)";
 			break;
 		default:
 			$col = "*";
 			$objQuery->setOrder("key_day");
 			$objPage->keyname = "key_day";
 			$from = "dtb_bat_order_daily";
-			$xtitle = "(æ—¥åˆ¥)";
-			$ytitle = "(å£²ä¸Šåˆè¨ˆ)";
+			$xtitle = "(ÆüÊÌ)";
+			$ytitle = "(Çä¾å¹ç·×)";
 			break;
 		}
 		
 
-	// å–å¾—æ—¥ä»˜ã®æŒ‡å®š
+	// ¼èÆÀÆüÉÕ¤Î»ØÄê
 		if($sdate != "") {
 			if ($where != "") {
 				$where.= " AND ";
@@ -797,26 +797,26 @@ function lfGetOrderTerm($type, $sdate, $edate, $objPage, $graph = true) {
 			$where.= " order_date < date('" . $edate_next ."')";
 		}
 		
-		// æ¤œç´¢çµæœã®å–å¾—
+		// ¸¡º÷·ë²Ì¤Î¼èÆÀ
 		$objPage->arrResults = $objQuery->select($col, $from, $where, $arrval);
 		
-		// æŠ˜ã‚Œç·šã‚°ãƒ©ãƒ•ã®ç”Ÿæˆ	
+		// ÀŞ¤ìÀş¥°¥é¥Õ¤ÎÀ¸À®	
 		if($graph) {
 			$image_key = "term_" . $type;
 			$objPage->tpl_image = lfGetGraphLine($objPage->arrResults, $objPage->keyname, $image_key, $xtitle, $ytitle, $sdate, $edate);
 		}
 		
-		// æ¤œç´¢çµæœãŒ0ã§ãªã„å ´åˆ
+		// ¸¡º÷·ë²Ì¤¬0¤Ç¤Ê¤¤¾ì¹ç
 		if(count($objPage->arrResults) > 0) {
-			// æœ€çµ‚é›†è¨ˆè¡Œå–å¾—ã™ã‚‹
+			// ºÇ½ª½¸·×¹Ô¼èÆÀ¤¹¤ë
 			$col = $tmp_col;
 			$objQuery = new SC_Query();
 			$arrRet = $objQuery->select($col, $from, $where, $arrval);
-			$arrRet[0][$objPage->keyname] = "åˆè¨ˆ";
+			$arrRet[0][$objPage->keyname] = "¹ç·×";
 			$objPage->arrResults[] = $arrRet[0];
 		}
 
-		// å¹³å‡å€¤ã®è¨ˆç®—
+		// Ê¿¶ÑÃÍ¤Î·×»»
 		$max = count($objPage->arrResults);
 		for($i = 0; $i < $max; $i++) {
 			if($objPage->arrResults[$i]['total_order'] > 0) {

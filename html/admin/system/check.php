@@ -4,26 +4,26 @@
  *
  * http://www.lockon.co.jp/
  *
- *		check.php ç¨¼åƒãƒ»éžç¨¼åƒã®åˆ‡æ›¿
+ *		check.php ²ÔÆ¯¡¦Èó²ÔÆ¯¤ÎÀÚÂØ
  */
 require_once("../require.php");
 
 $conn = new SC_DbConn();
 
-// èªè¨¼å¯å¦ã®åˆ¤å®š
+// Ç§¾Ú²ÄÈÝ¤ÎÈ½Äê
 $objSess = new SC_Session();
 sfIsSuccess($objSess);
 
-// GETå€¤ã®æ­£å½“æ€§ã‚’åˆ¤å®šã™ã‚‹
+// GETÃÍ¤ÎÀµÅöÀ­¤òÈ½Äê¤¹¤ë
 if(sfIsInt($_GET['id']) && ($_GET['no'] == 1 || $_GET['no'] == 0)){
 	$sqlup = "UPDATE dtb_member SET work = ? WHERE member_id = ?";
 	$conn->query($sqlup, array($_GET['no'], $_GET['id']));
 } else {
-	// ã‚¨ãƒ©ãƒ¼å‡¦ç†
+	// ¥¨¥é¡¼½èÍý
 	gfPrintLog("error id=".$_GET['id']);
 }
 
-// ãƒšãƒ¼ã‚¸ã®è¡¨ç¤º
+// ¥Ú¡¼¥¸¤ÎÉ½¼¨
 $location = "Location: " . URL_SYSTEM_TOP . "?pageno=".$_GET['pageno'];
 header($location);
 ?>

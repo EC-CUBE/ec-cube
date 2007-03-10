@@ -5,7 +5,7 @@
  * http://www.lockon.co.jp/
  */
 
-//---ã“ã®ãƒ•ã‚¡ã‚¤ãƒ«ã®ãƒ‘ã‚¹ã‚’æŒ‡å®š
+//---¤³¤Î¥Õ¥¡¥¤¥ë¤Î¥Ñ¥¹¤ò»ØÄê
 $INC_PATH = realpath( dirname( __FILE__) );
 require_once( $INC_PATH ."/../conf/conf.php" );
 require_once( $INC_PATH ."/../class/SC_DbConn.php" );
@@ -13,13 +13,13 @@ require_once( $INC_PATH ."/../class/SC_Query.php" );
 require_once( $INC_PATH ."/../class/SC_CampaignSession.php" );
 require_once( $INC_PATH ."/../include/session.inc" );
 
-// å…¨ãƒšãƒ¼ã‚¸å…±é€šã‚¨ãƒ©ãƒ¼
+// Á´¥Ú¡¼¥¸¶¦ÄÌ¥¨¥é¡¼
 $GLOBAL_ERR = "";
 
-// ã‚¤ãƒ³ã‚¹ãƒˆãƒ¼ãƒ«åˆæœŸå‡¦ç†
+// ¥¤¥ó¥¹¥È¡¼¥ë½é´ü½èÍı
 sfInitInstall();
 
-/* ãƒ‡ãƒ¼ã‚¿ãƒ™ãƒ¼ã‚¹ã®ãƒãƒ¼ã‚¸ãƒ§ãƒ³æ‰€å¾— */
+/* ¥Ç¡¼¥¿¥Ù¡¼¥¹¤Î¥Ğ¡¼¥¸¥ç¥ó½êÆÀ */
 function sfGetDBVersion($dsn = "") {
 	if($dsn == "") {
 		if(defined('DEFAULT_DSN')) {
@@ -43,7 +43,7 @@ function sfGetDBVersion($dsn = "") {
 	return $version;
 }
 
-/* ãƒ†ãƒ¼ãƒ–ãƒ«ã®å­˜åœ¨ãƒã‚§ãƒƒã‚¯ */
+/* ¥Æ¡¼¥Ö¥ë¤ÎÂ¸ºß¥Á¥§¥Ã¥¯ */
 function sfTabaleExists($table_name, $dsn = "") {
 	if($dsn == "") {
 		if(defined('DEFAULT_DSN')) {
@@ -54,10 +54,10 @@ function sfTabaleExists($table_name, $dsn = "") {
 	}
 	
 	$objQuery = new SC_Query($dsn, true, true);
-	// æ­£å¸¸ã«æ¥ç¶šã•ã‚Œã¦ã„ã‚‹å ´åˆ
+	// Àµ¾ï¤ËÀÜÂ³¤µ¤ì¤Æ¤¤¤ë¾ì¹ç
 	if(!$objQuery->isError()) {
 		list($db_type) = split(":", $dsn);
-		// postgresqlã¨mysqlã¨ã§å‡¦ç†ã‚’åˆ†ã‘ã‚‹
+		// postgresql¤Èmysql¤È¤Ç½èÍı¤òÊ¬¤±¤ë
 		if ($db_type == "pgsql") {
 			$sql = "SELECT
 						relname
@@ -83,7 +83,7 @@ function sfTabaleExists($table_name, $dsn = "") {
 	return false;
 }
 
-// ã‚«ãƒ©ãƒ ã®å­˜åœ¨ãƒã‚§ãƒƒã‚¯
+// ¥«¥é¥à¤ÎÂ¸ºß¥Á¥§¥Ã¥¯
 function sfColumnExists($table_name, $col_name, $col_type = "", $dsn = "", $add = false) {
 	if($dsn == "") {
 		if(defined('DEFAULT_DSN')) {
@@ -93,15 +93,15 @@ function sfColumnExists($table_name, $col_name, $col_type = "", $dsn = "", $add 
 		}
 	}
 
-	// ãƒ†ãƒ¼ãƒ–ãƒ«ãŒç„¡ã‘ã‚Œã°ã‚¨ãƒ©ãƒ¼
+	// ¥Æ¡¼¥Ö¥ë¤¬Ìµ¤±¤ì¤Ğ¥¨¥é¡¼
 	if(!sfTabaleExists($table_name, $dsn)) return false;
 	
 	$objQuery = new SC_Query($dsn, true, true);
-	// æ­£å¸¸ã«æ¥ç¶šã•ã‚Œã¦ã„ã‚‹å ´åˆ
+	// Àµ¾ï¤ËÀÜÂ³¤µ¤ì¤Æ¤¤¤ë¾ì¹ç
 	if(!$objQuery->isError()) {
 		list($db_type) = split(":", $dsn);
 		
-		// ã‚«ãƒ©ãƒ ãƒªã‚¹ãƒˆã‚’å–å¾—
+		// ¥«¥é¥à¥ê¥¹¥È¤ò¼èÆÀ
 		$arrRet = sfGetColumnList($table_name, $objQuery, $db_type);
 		if(count($arrRet) > 0) {
 			if(in_array($col_name, $arrRet)){
@@ -110,7 +110,7 @@ function sfColumnExists($table_name, $col_name, $col_type = "", $dsn = "", $add 
 		}
 	}
 	
-	// ã‚«ãƒ©ãƒ ã‚’è¿½åŠ ã™ã‚‹
+	// ¥«¥é¥à¤òÄÉ²Ã¤¹¤ë
 	if($add){
 		$objQuery->query("ALTER TABLE $table_name ADD $col_name $col_type ");
 		return true;
@@ -119,7 +119,7 @@ function sfColumnExists($table_name, $col_name, $col_type = "", $dsn = "", $add 
 	return false;
 }
 
-// ãƒ‡ãƒ¼ã‚¿ã®å­˜åœ¨ãƒã‚§ãƒƒã‚¯
+// ¥Ç¡¼¥¿¤ÎÂ¸ºß¥Á¥§¥Ã¥¯
 function sfDataExists($table_name, $where, $arrval, $dsn = "", $sql = "", $add = false) {
 	if($dsn == "") {
 		if(defined('DEFAULT_DSN')) {
@@ -136,7 +136,7 @@ function sfDataExists($table_name, $where, $arrval, $dsn = "", $sql = "", $add =
 	} else {
 		$ret = false;
 	}
-	// ãƒ‡ãƒ¼ã‚¿ã‚’è¿½åŠ ã™ã‚‹
+	// ¥Ç¡¼¥¿¤òÄÉ²Ã¤¹¤ë
 	if(!$ret && $add) {
 		$objQuery->exec($sql);
 	}
@@ -144,12 +144,12 @@ function sfDataExists($table_name, $where, $arrval, $dsn = "", $sql = "", $add =
 	return $ret;
 }
 
-// ãƒ†ãƒ¼ãƒ–ãƒ«ã®ã‚«ãƒ©ãƒ ä¸€è¦§ã‚’å–å¾—ã™ã‚‹
+// ¥Æ¡¼¥Ö¥ë¤Î¥«¥é¥à°ìÍ÷¤ò¼èÆÀ¤¹¤ë
 function sfGetColumnList($table_name, $objQuery = "", $db_type = DB_TYPE){
 	if($objQuery == "") $objQuery = new SC_Query();
 	$arrRet = array();
 	
-	// postgresqlã¨mysqlã¨ã§å‡¦ç†ã‚’åˆ†ã‘ã‚‹
+	// postgresql¤Èmysql¤È¤Ç½èÍı¤òÊ¬¤±¤ë
 	if ($db_type == "pgsql") {
 		$sql = "SELECT a.attname FROM pg_class c, pg_attribute a WHERE c.relname=? AND c.oid=a.attrelid AND a.attnum > 0 ORDER BY a.attnum";
 		$arrColList = $objQuery->getAll($sql, array($table_name));
@@ -164,9 +164,9 @@ function sfGetColumnList($table_name, $objQuery = "", $db_type = DB_TYPE){
 	return $arrRet;
 }
 
-// ã‚¤ãƒ³ã‚¹ãƒˆãƒ¼ãƒ«åˆæœŸå‡¦ç†
+// ¥¤¥ó¥¹¥È¡¼¥ë½é´ü½èÍı
 function sfInitInstall() {
-	// ã‚¤ãƒ³ã‚¹ãƒˆãƒ¼ãƒ«æ¸ˆã¿ãŒå®šç¾©ã•ã‚Œã¦ã„ãªã„ã€‚
+	// ¥¤¥ó¥¹¥È¡¼¥ëºÑ¤ß¤¬ÄêµÁ¤µ¤ì¤Æ¤¤¤Ê¤¤¡£
 	if(!defined('ECCUBE_INSTALL')) {
 		if(!ereg("/install/", $_SERVER['PHP_SELF'])) {
 			header("Location: ./install/");
@@ -174,20 +174,20 @@ function sfInitInstall() {
 	} else {
 		$path = HTML_PATH . "install/index.php";
 		if(file_exists($path)) {
-			sfErrorHeader(">> /install/index.phpã¯ã€ã‚¤ãƒ³ã‚¹ãƒˆãƒ¼ãƒ«å®Œäº†å¾Œã«ãƒ•ã‚¡ã‚¤ãƒ«ã‚’å‰Šé™¤ã—ã¦ãã ã•ã„ã€‚");
+			sfErrorHeader(">> /install/index.php¤Ï¡¢¥¤¥ó¥¹¥È¡¼¥ë´°Î»¸å¤Ë¥Õ¥¡¥¤¥ë¤òºï½ü¤·¤Æ¤¯¤À¤µ¤¤¡£");
 		}
 		
-		// æ—§ãƒãƒ¼ã‚¸ãƒ§ãƒ³ã®install.incã®ãƒã‚§ãƒƒã‚¯
+		// µì¥Ğ¡¼¥¸¥ç¥ó¤Îinstall.inc¤Î¥Á¥§¥Ã¥¯
 		$path = HTML_PATH . "install.inc";
 		if(file_exists($path)) {
-			sfErrorHeader(">> /install.incã¯ã‚»ã‚­ãƒ¥ãƒªãƒ†ã‚£ãƒ¼ãƒ›ãƒ¼ãƒ«ã¨ãªã‚Šã¾ã™ã€‚å‰Šé™¤ã—ã¦ãã ã•ã„ã€‚");
+			sfErrorHeader(">> /install.inc¤Ï¥»¥­¥å¥ê¥Æ¥£¡¼¥Û¡¼¥ë¤È¤Ê¤ê¤Ş¤¹¡£ºï½ü¤·¤Æ¤¯¤À¤µ¤¤¡£");
 		}		
 	}
 }
 
-// ã‚¢ãƒƒãƒ—ãƒ‡ãƒ¼ãƒˆã§ç”Ÿæˆã•ã‚ŒãŸPHPã‚’èª­ã¿å‡ºã—
+// ¥¢¥Ã¥×¥Ç¡¼¥È¤ÇÀ¸À®¤µ¤ì¤¿PHP¤òÆÉ¤ß½Ğ¤·
 function sfLoadUpdateModule() {
-	// URLè¨­å®šãƒ‡ã‚£ãƒ¬ã‚¯ãƒˆãƒªã‚’å‰Šé™¤
+	// URLÀßÄê¥Ç¥£¥ì¥¯¥È¥ê¤òºï½ü
 	$main_php = ereg_replace(URL_DIR, "", $_SERVER['PHP_SELF']);
 	$extern_php = UPDATE_PATH . $main_php;
 	if(file_exists($extern_php)) {
@@ -196,7 +196,7 @@ function sfLoadUpdateModule() {
 }
 
 function sf_getBasisData() {
-	//DBã‹ã‚‰è¨­å®šæƒ…å ±ã‚’å–å¾—
+	//DB¤«¤éÀßÄê¾ğÊó¤ò¼èÆÀ
 	$objConn = new SC_DbConn(DEFAULT_DSN);
 	$result = $objConn->getAll("SELECT * FROM dtb_baseinfo");
 	if(is_array($result[0])) {
@@ -207,7 +207,7 @@ function sf_getBasisData() {
 	return $CONF;
 }
 
-// è£…é£¾ä»˜ãã‚¨ãƒ©ãƒ¼ãƒ¡ãƒƒã‚»ãƒ¼ã‚¸ã®è¡¨ç¤º
+// Áõ¾şÉÕ¤­¥¨¥é¡¼¥á¥Ã¥»¡¼¥¸¤ÎÉ½¼¨
 function sfErrorHeader($mess, $print = false) {
 	global $GLOBAL_ERR;
 	if($GLOBAL_ERR == "") {
@@ -226,13 +226,13 @@ function sfErrorHeader($mess, $print = false) {
 	}
 }
 
-/* ã‚¨ãƒ©ãƒ¼ãƒšãƒ¼ã‚¸ã®è¡¨ç¤º */
+/* ¥¨¥é¡¼¥Ú¡¼¥¸¤ÎÉ½¼¨ */
 function sfDispError($type) {
 	
 	class LC_ErrorPage {
 		function LC_ErrorPage() {
 			$this->tpl_mainpage = 'login_error.tpl';
-			$this->tpl_title = 'ã‚¨ãƒ©ãƒ¼';
+			$this->tpl_title = '¥¨¥é¡¼';
 		}
 	}
 
@@ -241,19 +241,19 @@ function sfDispError($type) {
 	
 	switch ($type) {
 	    case LOGIN_ERROR:
-			$objPage->tpl_error="ï¼©ï¼¤ã¾ãŸã¯ãƒ‘ã‚¹ãƒ¯ãƒ¼ãƒ‰ãŒæ­£ã—ãã‚ã‚Šã¾ã›ã‚“ã€‚<br />ã‚‚ã†ä¸€åº¦ã”ç¢ºèªã®ã†ãˆã€å†åº¦å…¥åŠ›ã—ã¦ãã ã•ã„ã€‚";
+			$objPage->tpl_error="£É£Ä¤Ş¤¿¤Ï¥Ñ¥¹¥ï¡¼¥É¤¬Àµ¤·¤¯¤¢¤ê¤Ş¤»¤ó¡£<br />¤â¤¦°ìÅÙ¤´³ÎÇ§¤Î¤¦¤¨¡¢ºÆÅÙÆşÎÏ¤·¤Æ¤¯¤À¤µ¤¤¡£";
 	    	break;
 		case ACCESS_ERROR:
-			$objPage->tpl_error="ãƒ­ã‚°ã‚¤ãƒ³èªè¨¼ã®æœ‰åŠ¹æœŸé™åˆ‡ã‚Œã®å¯èƒ½æ€§ãŒã‚ã‚Šã¾ã™ã€‚<br />ã‚‚ã†ä¸€åº¦ã”ç¢ºèªã®ã†ãˆã€å†åº¦ãƒ­ã‚°ã‚¤ãƒ³ã—ã¦ãã ã•ã„ã€‚";
+			$objPage->tpl_error="¥í¥°¥¤¥óÇ§¾Ú¤ÎÍ­¸ú´ü¸ÂÀÚ¤ì¤Î²ÄÇ½À­¤¬¤¢¤ê¤Ş¤¹¡£<br />¤â¤¦°ìÅÙ¤´³ÎÇ§¤Î¤¦¤¨¡¢ºÆÅÙ¥í¥°¥¤¥ó¤·¤Æ¤¯¤À¤µ¤¤¡£";
 			break;
 		case AUTH_ERROR:
-			$objPage->tpl_error="ã“ã®ãƒ•ã‚¡ã‚¤ãƒ«ã«ã¯ã‚¢ã‚¯ã‚»ã‚¹æ¨©é™ãŒã‚ã‚Šã¾ã›ã‚“ã€‚<br />ã‚‚ã†ä¸€åº¦ã”ç¢ºèªã®ã†ãˆã€å†åº¦ãƒ­ã‚°ã‚¤ãƒ³ã—ã¦ãã ã•ã„ã€‚";
+			$objPage->tpl_error="¤³¤Î¥Õ¥¡¥¤¥ë¤Ë¤Ï¥¢¥¯¥»¥¹¸¢¸Â¤¬¤¢¤ê¤Ş¤»¤ó¡£<br />¤â¤¦°ìÅÙ¤´³ÎÇ§¤Î¤¦¤¨¡¢ºÆÅÙ¥í¥°¥¤¥ó¤·¤Æ¤¯¤À¤µ¤¤¡£";
 			break;
 		case PAGE_ERROR:
-			$objPage->tpl_error="ä¸æ­£ãªãƒšãƒ¼ã‚¸ç§»å‹•ã§ã™ã€‚<br />ã‚‚ã†ä¸€åº¦ã”ç¢ºèªã®ã†ãˆã€å†åº¦å…¥åŠ›ã—ã¦ãã ã•ã„ã€‚";
+			$objPage->tpl_error="ÉÔÀµ¤Ê¥Ú¡¼¥¸°ÜÆ°¤Ç¤¹¡£<br />¤â¤¦°ìÅÙ¤´³ÎÇ§¤Î¤¦¤¨¡¢ºÆÅÙÆşÎÏ¤·¤Æ¤¯¤À¤µ¤¤¡£";
 			break;
 		default:
-	    	$objPage->tpl_error="ã‚¨ãƒ©ãƒ¼ãŒç™ºç”Ÿã—ã¾ã—ãŸã€‚<br />ã‚‚ã†ä¸€åº¦ã”ç¢ºèªã®ã†ãˆã€å†åº¦ãƒ­ã‚°ã‚¤ãƒ³ã—ã¦ãã ã•ã„ã€‚";
+	    	$objPage->tpl_error="¥¨¥é¡¼¤¬È¯À¸¤·¤Ş¤·¤¿¡£<br />¤â¤¦°ìÅÙ¤´³ÎÇ§¤Î¤¦¤¨¡¢ºÆÅÙ¥í¥°¥¤¥ó¤·¤Æ¤¯¤À¤µ¤¤¡£";
 			break;
 	}
 	
@@ -263,7 +263,7 @@ function sfDispError($type) {
 	exit;
 }
 
-/* ã‚µã‚¤ãƒˆã‚¨ãƒ©ãƒ¼ãƒšãƒ¼ã‚¸ã®è¡¨ç¤º */
+/* ¥µ¥¤¥È¥¨¥é¡¼¥Ú¡¼¥¸¤ÎÉ½¼¨ */
 function sfDispSiteError($type, $objSiteSess = "", $return_top = false, $err_msg = "") {
 	global $objCampaignSess;
 	
@@ -275,7 +275,7 @@ function sfDispSiteError($type, $objSiteSess = "", $return_top = false, $err_msg
 		function LC_ErrorPage() {
 			$this->tpl_mainpage = 'error.tpl';
 			$this->tpl_css = URL_DIR.'css/layout/error.css';
-			$this->tpl_title = 'ã‚¨ãƒ©ãƒ¼';
+			$this->tpl_title = '¥¨¥é¡¼';
 		}
 	}
 	
@@ -284,73 +284,73 @@ function sfDispSiteError($type, $objSiteSess = "", $return_top = false, $err_msg
 	
 	switch ($type) {
 	    case PRODUCT_NOT_FOUND:
-			$objPage->tpl_error="ã”æŒ‡å®šã®ãƒšãƒ¼ã‚¸ã¯ã”ã–ã„ã¾ã›ã‚“ã€‚";
+			$objPage->tpl_error="¤´»ØÄê¤Î¥Ú¡¼¥¸¤Ï¤´¤¶¤¤¤Ş¤»¤ó¡£";
 			break;
 		case PAGE_ERROR:
-			$objPage->tpl_error="ä¸æ­£ãªãƒšãƒ¼ã‚¸ç§»å‹•ã§ã™ã€‚";
+			$objPage->tpl_error="ÉÔÀµ¤Ê¥Ú¡¼¥¸°ÜÆ°¤Ç¤¹¡£";
 			break;
 		case CART_EMPTY:
-			$objPage->tpl_error="ã‚«ãƒ¼ãƒˆã«å•†å“ãŒãŒã‚ã‚Šã¾ã›ã‚“ã€‚";
+			$objPage->tpl_error="¥«¡¼¥È¤Ë¾¦ÉÊ¤¬¤¬¤¢¤ê¤Ş¤»¤ó¡£";
 			break;
 	    case CART_ADD_ERROR:
-			$objPage->tpl_error="è³¼å…¥å‡¦ç†ä¸­ã¯ã€ã‚«ãƒ¼ãƒˆã«å•†å“ã‚’è¿½åŠ ã™ã‚‹ã“ã¨ã¯ã§ãã¾ã›ã‚“ã€‚";
+			$objPage->tpl_error="¹ØÆş½èÍıÃæ¤Ï¡¢¥«¡¼¥È¤Ë¾¦ÉÊ¤òÄÉ²Ã¤¹¤ë¤³¤È¤Ï¤Ç¤­¤Ş¤»¤ó¡£";
 			break;
 		case CANCEL_PURCHASE:
-			$objPage->tpl_error="ã“ã®æ‰‹ç¶šãã¯ç„¡åŠ¹ã¨ãªã‚Šã¾ã—ãŸã€‚ä»¥ä¸‹ã®è¦å› ãŒè€ƒãˆã‚‰ã‚Œã¾ã™ã€‚<br />ãƒ»ã‚»ãƒƒã‚·ãƒ§ãƒ³æƒ…å ±ã®æœ‰åŠ¹æœŸé™ãŒåˆ‡ã‚Œã¦ã‚‹å ´åˆ<br />ãƒ»è³¼å…¥æ‰‹ç¶šãä¸­ã«æ–°ã—ã„è³¼å…¥æ‰‹ç¶šãã‚’å®Ÿè¡Œã—ãŸå ´åˆ<br />ãƒ»ã™ã§ã«è³¼å…¥æ‰‹ç¶šãã‚’å®Œäº†ã—ã¦ã„ã‚‹å ´åˆ";
+			$objPage->tpl_error="¤³¤Î¼êÂ³¤­¤ÏÌµ¸ú¤È¤Ê¤ê¤Ş¤·¤¿¡£°Ê²¼¤ÎÍ×°ø¤¬¹Í¤¨¤é¤ì¤Ş¤¹¡£<br />¡¦¥»¥Ã¥·¥ç¥ó¾ğÊó¤ÎÍ­¸ú´ü¸Â¤¬ÀÚ¤ì¤Æ¤ë¾ì¹ç<br />¡¦¹ØÆş¼êÂ³¤­Ãæ¤Ë¿·¤·¤¤¹ØÆş¼êÂ³¤­¤ò¼Â¹Ô¤·¤¿¾ì¹ç<br />¡¦¤¹¤Ç¤Ë¹ØÆş¼êÂ³¤­¤ò´°Î»¤·¤Æ¤¤¤ë¾ì¹ç";
 			break;
 		case CATEGORY_NOT_FOUND:
-			$objPage->tpl_error="ã”æŒ‡å®šã®ã‚«ãƒ†ã‚´ãƒªã¯å­˜åœ¨ã—ã¾ã›ã‚“ã€‚";
+			$objPage->tpl_error="¤´»ØÄê¤Î¥«¥Æ¥´¥ê¤ÏÂ¸ºß¤·¤Ş¤»¤ó¡£";
 			break;
 		case SITE_LOGIN_ERROR:
-			$objPage->tpl_error="ãƒ¡ãƒ¼ãƒ«ã‚¢ãƒ‰ãƒ¬ã‚¹ã‚‚ã—ãã¯ãƒ‘ã‚¹ãƒ¯ãƒ¼ãƒ‰ãŒæ­£ã—ãã‚ã‚Šã¾ã›ã‚“ã€‚";
+			$objPage->tpl_error="¥á¡¼¥ë¥¢¥É¥ì¥¹¤â¤·¤¯¤Ï¥Ñ¥¹¥ï¡¼¥É¤¬Àµ¤·¤¯¤¢¤ê¤Ş¤»¤ó¡£";
 			break;
 		case TEMP_LOGIN_ERROR:
-			$objPage->tpl_error="ãƒ¡ãƒ¼ãƒ«ã‚¢ãƒ‰ãƒ¬ã‚¹ã‚‚ã—ãã¯ãƒ‘ã‚¹ãƒ¯ãƒ¼ãƒ‰ãŒæ­£ã—ãã‚ã‚Šã¾ã›ã‚“ã€‚<br />æœ¬ç™»éŒ²ãŒãŠæ¸ˆã¿ã§ãªã„å ´åˆã¯ã€ä»®ç™»éŒ²ãƒ¡ãƒ¼ãƒ«ã«è¨˜è¼‰ã•ã‚Œã¦ã„ã‚‹<br />URLã‚ˆã‚Šæœ¬ç™»éŒ²ã‚’è¡Œã£ã¦ãã ã•ã„ã€‚";
+			$objPage->tpl_error="¥á¡¼¥ë¥¢¥É¥ì¥¹¤â¤·¤¯¤Ï¥Ñ¥¹¥ï¡¼¥É¤¬Àµ¤·¤¯¤¢¤ê¤Ş¤»¤ó¡£<br />ËÜÅĞÏ¿¤¬¤ªºÑ¤ß¤Ç¤Ê¤¤¾ì¹ç¤Ï¡¢²¾ÅĞÏ¿¥á¡¼¥ë¤Ëµ­ºÜ¤µ¤ì¤Æ¤¤¤ë<br />URL¤è¤êËÜÅĞÏ¿¤ò¹Ô¤Ã¤Æ¤¯¤À¤µ¤¤¡£";
 			break;
 		case CUSTOMER_ERROR:
-			$objPage->tpl_error="ä¸æ­£ãªã‚¢ã‚¯ã‚»ã‚¹ã§ã™ã€‚";
+			$objPage->tpl_error="ÉÔÀµ¤Ê¥¢¥¯¥»¥¹¤Ç¤¹¡£";
 			break;
 		case SOLD_OUT:
-			$objPage->tpl_error="ç”³ã—è¨³ã”ã–ã„ã¾ã›ã‚“ãŒã€ã”è³¼å…¥ã®ç›´å‰ã§å£²ã‚Šåˆ‡ã‚ŒãŸå•†å“ãŒã‚ã‚Šã¾ã™ã€‚ã“ã®æ‰‹ç¶šãã¯ç„¡åŠ¹ã¨ãªã‚Šã¾ã—ãŸã€‚";
+			$objPage->tpl_error="¿½¤·Ìõ¤´¤¶¤¤¤Ş¤»¤ó¤¬¡¢¤´¹ØÆş¤ÎÄ¾Á°¤ÇÇä¤êÀÚ¤ì¤¿¾¦ÉÊ¤¬¤¢¤ê¤Ş¤¹¡£¤³¤Î¼êÂ³¤­¤ÏÌµ¸ú¤È¤Ê¤ê¤Ş¤·¤¿¡£";
 			break;
 		case CART_NOT_FOUND:
-			$objPage->tpl_error="ç”³ã—è¨³ã”ã–ã„ã¾ã›ã‚“ãŒã€ã‚«ãƒ¼ãƒˆå†…ã®å•†å“æƒ…å ±ã®å–å¾—ã«å¤±æ•—ã—ã¾ã—ãŸã€‚ã“ã®æ‰‹ç¶šãã¯ç„¡åŠ¹ã¨ãªã‚Šã¾ã—ãŸã€‚";
+			$objPage->tpl_error="¿½¤·Ìõ¤´¤¶¤¤¤Ş¤»¤ó¤¬¡¢¥«¡¼¥ÈÆâ¤Î¾¦ÉÊ¾ğÊó¤Î¼èÆÀ¤Ë¼ºÇÔ¤·¤Ş¤·¤¿¡£¤³¤Î¼êÂ³¤­¤ÏÌµ¸ú¤È¤Ê¤ê¤Ş¤·¤¿¡£";
 			break;
 		case LACK_POINT:
-			$objPage->tpl_error="ç”³ã—è¨³ã”ã–ã„ã¾ã›ã‚“ãŒã€ãƒã‚¤ãƒ³ãƒˆãŒä¸è¶³ã—ã¦ãŠã‚Šã¾ã™ã€‚ã“ã®æ‰‹ç¶šãã¯ç„¡åŠ¹ã¨ãªã‚Šã¾ã—ãŸã€‚";
+			$objPage->tpl_error="¿½¤·Ìõ¤´¤¶¤¤¤Ş¤»¤ó¤¬¡¢¥İ¥¤¥ó¥È¤¬ÉÔÂ­¤·¤Æ¤ª¤ê¤Ş¤¹¡£¤³¤Î¼êÂ³¤­¤ÏÌµ¸ú¤È¤Ê¤ê¤Ş¤·¤¿¡£";
 			break;
 		case FAVORITE_ERROR:
-			$objPage->tpl_error="æ—¢ã«ãŠæ°—ã«å…¥ã‚Šã«è¿½åŠ ã•ã‚Œã¦ã„ã‚‹å•†å“ã§ã™ã€‚";
+			$objPage->tpl_error="´û¤Ë¤ªµ¤¤ËÆş¤ê¤ËÄÉ²Ã¤µ¤ì¤Æ¤¤¤ë¾¦ÉÊ¤Ç¤¹¡£";
 			break;
 		case EXTRACT_ERROR:
-			$objPage->tpl_error="ãƒ•ã‚¡ã‚¤ãƒ«ã®è§£å‡ã«å¤±æ•—ã—ã¾ã—ãŸã€‚\næŒ‡å®šã®ãƒ‡ã‚£ãƒ¬ã‚¯ãƒˆãƒªã«æ›¸ãè¾¼ã¿æ¨©é™ãŒä¸ãˆã‚‰ã‚Œã¦ã„ãªã„å¯èƒ½æ€§ãŒã‚ã‚Šã¾ã™ã€‚";
+			$objPage->tpl_error="¥Õ¥¡¥¤¥ë¤Î²òÅà¤Ë¼ºÇÔ¤·¤Ş¤·¤¿¡£\n»ØÄê¤Î¥Ç¥£¥ì¥¯¥È¥ê¤Ë½ñ¤­¹ş¤ß¸¢¸Â¤¬Í¿¤¨¤é¤ì¤Æ¤¤¤Ê¤¤²ÄÇ½À­¤¬¤¢¤ê¤Ş¤¹¡£";
 			break;
 		case FTP_DOWNLOAD_ERROR:
-			$objPage->tpl_error="ãƒ•ã‚¡ã‚¤ãƒ«ã®FTPãƒ€ã‚¦ãƒ³ãƒ­ãƒ¼ãƒ‰ã«å¤±æ•—ã—ã¾ã—ãŸã€‚";
+			$objPage->tpl_error="¥Õ¥¡¥¤¥ë¤ÎFTP¥À¥¦¥ó¥í¡¼¥É¤Ë¼ºÇÔ¤·¤Ş¤·¤¿¡£";
 			break;
 		case FTP_LOGIN_ERROR:
-			$objPage->tpl_error="FTPãƒ­ã‚°ã‚¤ãƒ³ã«å¤±æ•—ã—ã¾ã—ãŸã€‚";
+			$objPage->tpl_error="FTP¥í¥°¥¤¥ó¤Ë¼ºÇÔ¤·¤Ş¤·¤¿¡£";
 			break;
 		case FTP_CONNECT_ERROR:
-			$objPage->tpl_error="FTPãƒ­ã‚°ã‚¤ãƒ³ã«å¤±æ•—ã—ã¾ã—ãŸã€‚";
+			$objPage->tpl_error="FTP¥í¥°¥¤¥ó¤Ë¼ºÇÔ¤·¤Ş¤·¤¿¡£";
 			break;
 		case CREATE_DB_ERROR:
-			$objPage->tpl_error="DBã®ä½œæˆã«å¤±æ•—ã—ã¾ã—ãŸã€‚\næŒ‡å®šã®ãƒ¦ãƒ¼ã‚¶ãƒ¼ã«ã¯ã€DBä½œæˆã®æ¨©é™ãŒä¸ãˆã‚‰ã‚Œã¦ã„ãªã„å¯èƒ½æ€§ãŒã‚ã‚Šã¾ã™ã€‚";
+			$objPage->tpl_error="DB¤ÎºîÀ®¤Ë¼ºÇÔ¤·¤Ş¤·¤¿¡£\n»ØÄê¤Î¥æ¡¼¥¶¡¼¤Ë¤Ï¡¢DBºîÀ®¤Î¸¢¸Â¤¬Í¿¤¨¤é¤ì¤Æ¤¤¤Ê¤¤²ÄÇ½À­¤¬¤¢¤ê¤Ş¤¹¡£";
 			break;
 		case DB_IMPORT_ERROR:
-			$objPage->tpl_error="ãƒ‡ãƒ¼ã‚¿ãƒ™ãƒ¼ã‚¹æ§‹é€ ã®ã‚¤ãƒ³ãƒãƒ¼ãƒˆã«å¤±æ•—ã—ã¾ã—ãŸã€‚\nsqlãƒ•ã‚¡ã‚¤ãƒ«ãŒå£Šã‚Œã¦ã„ã‚‹å¯èƒ½æ€§ãŒã‚ã‚Šã¾ã™ã€‚";
+			$objPage->tpl_error="¥Ç¡¼¥¿¥Ù¡¼¥¹¹½Â¤¤Î¥¤¥ó¥İ¡¼¥È¤Ë¼ºÇÔ¤·¤Ş¤·¤¿¡£\nsql¥Õ¥¡¥¤¥ë¤¬²õ¤ì¤Æ¤¤¤ë²ÄÇ½À­¤¬¤¢¤ê¤Ş¤¹¡£";
 			break;
 		case FILE_NOT_FOUND:
-			$objPage->tpl_error="æŒ‡å®šã®ãƒ‘ã‚¹ã«ã€è¨­å®šãƒ•ã‚¡ã‚¤ãƒ«ãŒå­˜åœ¨ã—ã¾ã›ã‚“ã€‚";
+			$objPage->tpl_error="»ØÄê¤Î¥Ñ¥¹¤Ë¡¢ÀßÄê¥Õ¥¡¥¤¥ë¤¬Â¸ºß¤·¤Ş¤»¤ó¡£";
 			break;
 		case WRITE_FILE_ERROR:
-			$objPage->tpl_error="è¨­å®šãƒ•ã‚¡ã‚¤ãƒ«ã«æ›¸ãè¾¼ã‚ã¾ã›ã‚“ã€‚\nè¨­å®šãƒ•ã‚¡ã‚¤ãƒ«ã«æ›¸ãè¾¼ã¿æ¨©é™ã‚’ä¸ãˆã¦ãã ã•ã„ã€‚";
+			$objPage->tpl_error="ÀßÄê¥Õ¥¡¥¤¥ë¤Ë½ñ¤­¹ş¤á¤Ş¤»¤ó¡£\nÀßÄê¥Õ¥¡¥¤¥ë¤Ë½ñ¤­¹ş¤ß¸¢¸Â¤òÍ¿¤¨¤Æ¤¯¤À¤µ¤¤¡£";
 			break;
 		case FREE_ERROR_MSG:
 			$objPage->tpl_error=$err_msg;
 			break;
  		default:
-	    	$objPage->tpl_error="ã‚¨ãƒ©ãƒ¼ãŒç™ºç”Ÿã—ã¾ã—ãŸã€‚";
+	    	$objPage->tpl_error="¥¨¥é¡¼¤¬È¯À¸¤·¤Ş¤·¤¿¡£";
 			break;
 	}
 	
@@ -359,7 +359,7 @@ function sfDispSiteError($type, $objSiteSess = "", $return_top = false, $err_msg
 	$objView->assignobj($objPage);
 	
 	if(is_object($objCampaignSess)) {
-		// ãƒ•ãƒ¬ãƒ¼ãƒ ã‚’é¸æŠ(ã‚­ãƒ£ãƒ³ãƒšãƒ¼ãƒ³ãƒšãƒ¼ã‚¸ã‹ã‚‰é·ç§»ãªã‚‰å¤‰æ›´)
+		// ¥Õ¥ì¡¼¥à¤òÁªÂò(¥­¥ã¥ó¥Ú¡¼¥ó¥Ú¡¼¥¸¤«¤éÁ«°Ü¤Ê¤éÊÑ¹¹)
 		$objCampaignSess->pageView($objView);
 	} else {
 		$objView->display(SITE_FRAME);
@@ -367,12 +367,12 @@ function sfDispSiteError($type, $objSiteSess = "", $return_top = false, $err_msg
 	exit;
 }
 
-/* èªè¨¼ã®å¯å¦åˆ¤å®š */
+/* Ç§¾Ú¤Î²ÄÈİÈ½Äê */
 function sfIsSuccess($objSess, $disp_error = true) { 
 	$ret = $objSess->IsSuccess();
 	if($ret != SUCCESS) {
 		if($disp_error) {
-			// ã‚¨ãƒ©ãƒ¼ãƒšãƒ¼ã‚¸ã®è¡¨ç¤º
+			// ¥¨¥é¡¼¥Ú¡¼¥¸¤ÎÉ½¼¨
 			sfDispError($ret);
 		}
 		return false;
@@ -380,39 +380,39 @@ function sfIsSuccess($objSess, $disp_error = true) {
 	return true;		
 }
 
-/* å‰ã®ãƒšãƒ¼ã‚¸ã§æ­£ã—ãç™»éŒ²ãŒè¡Œã‚ã‚ŒãŸã‹åˆ¤å®š */
+/* Á°¤Î¥Ú¡¼¥¸¤ÇÀµ¤·¤¯ÅĞÏ¿¤¬¹Ô¤ï¤ì¤¿¤«È½Äê */
 function sfIsPrePage($objSiteSess) {
 	$ret = $objSiteSess->isPrePage();
 	if($ret != true) {
-		// ã‚¨ãƒ©ãƒ¼ãƒšãƒ¼ã‚¸ã®è¡¨ç¤º
+		// ¥¨¥é¡¼¥Ú¡¼¥¸¤ÎÉ½¼¨
 		sfDispSiteError(PAGE_ERROR, $objSiteSess);
 	}
 }
 
 function sfCheckNormalAccess($objSiteSess, $objCartSess) {
-	// ãƒ¦ãƒ¼ã‚¶ãƒ¦ãƒ‹ãƒ¼ã‚¯IDã®å–å¾—
+	// ¥æ¡¼¥¶¥æ¥Ë¡¼¥¯ID¤Î¼èÆÀ
 	$uniqid = $objSiteSess->getUniqId();
-	// è³¼å…¥ãƒœã‚¿ãƒ³ã‚’æŠ¼ã—ãŸæ™‚ã®ã‚«ãƒ¼ãƒˆå†…å®¹ãŒã‚³ãƒ”ãƒ¼ã•ã‚Œã¦ã„ãªã„å ´åˆã®ã¿ã‚³ãƒ”ãƒ¼ã™ã‚‹ã€‚
+	// ¹ØÆş¥Ü¥¿¥ó¤ò²¡¤·¤¿»ş¤Î¥«¡¼¥ÈÆâÍÆ¤¬¥³¥Ô¡¼¤µ¤ì¤Æ¤¤¤Ê¤¤¾ì¹ç¤Î¤ß¥³¥Ô¡¼¤¹¤ë¡£
 	$objCartSess->saveCurrentCart($uniqid);
-	// POSTã®ãƒ¦ãƒ‹ãƒ¼ã‚¯IDã¨ã‚»ãƒƒã‚·ãƒ§ãƒ³ã®ãƒ¦ãƒ‹ãƒ¼ã‚¯IDã‚’æ¯”è¼ƒ(ãƒ¦ãƒ‹ãƒ¼ã‚¯IDãŒPOSTã•ã‚Œã¦ã„ãªã„å ´åˆã¯ã‚¹ãƒ«ãƒ¼)
+	// POST¤Î¥æ¥Ë¡¼¥¯ID¤È¥»¥Ã¥·¥ç¥ó¤Î¥æ¥Ë¡¼¥¯ID¤òÈæ³Ó(¥æ¥Ë¡¼¥¯ID¤¬POST¤µ¤ì¤Æ¤¤¤Ê¤¤¾ì¹ç¤Ï¥¹¥ë¡¼)
 	$ret = $objSiteSess->checkUniqId();
 	if($ret != true) {
-		// ã‚¨ãƒ©ãƒ¼ãƒšãƒ¼ã‚¸ã®è¡¨ç¤º
+		// ¥¨¥é¡¼¥Ú¡¼¥¸¤ÎÉ½¼¨
 		sfDispSiteError(CANCEL_PURCHASE, $objSiteSess);
 	}
 	
-	// ã‚«ãƒ¼ãƒˆå†…ãŒç©ºã§ãªã„ã‹ || è³¼å…¥ãƒœã‚¿ãƒ³ã‚’æŠ¼ã—ã¦ã‹ã‚‰å¤‰åŒ–ãŒãªã„ã‹
+	// ¥«¡¼¥ÈÆâ¤¬¶õ¤Ç¤Ê¤¤¤« || ¹ØÆş¥Ü¥¿¥ó¤ò²¡¤·¤Æ¤«¤éÊÑ²½¤¬¤Ê¤¤¤«
 	$quantity = $objCartSess->getTotalQuantity();
 	$ret = $objCartSess->checkChangeCart();
 	if($ret == true || !($quantity > 0)) {
-		// ã‚«ãƒ¼ãƒˆæƒ…å ±è¡¨ç¤ºã«å¼·åˆ¶ç§»å‹•ã™ã‚‹
+		// ¥«¡¼¥È¾ğÊóÉ½¼¨¤Ë¶¯À©°ÜÆ°¤¹¤ë
 		header("Location: ".URL_CART_TOP);
 		exit;
 	}
 	return $uniqid;
 }
 
-/* DBç”¨æ—¥ä»˜æ–‡å­—åˆ—å–å¾— */
+/* DBÍÑÆüÉÕÊ¸»úÎó¼èÆÀ */
 function sfGetTimestamp($year, $month, $day, $last = false) {
 	if($year != "" && $month != "" && $day != "") {	
 		if($last) {
@@ -427,7 +427,7 @@ function sfGetTimestamp($year, $month, $day, $last = false) {
 	return 	$date;
 }
 
-// INTå‹ã®æ•°å€¤ãƒã‚§ãƒƒã‚¯
+// INT·¿¤Î¿ôÃÍ¥Á¥§¥Ã¥¯
 function sfIsInt($value) {
 	if($value != "" && strlen($value) <= INT_LEN && is_numeric($value)) {
 		return true;
@@ -444,13 +444,13 @@ function sfCSVDownload($data, $prefix = ""){
 		$file_name = $prefix . date("ymdHis") .".csv";
 	}
 	
-	/* HTTPãƒ˜ãƒƒãƒ€ã®å‡ºåŠ› */
+	/* HTTP¥Ø¥Ã¥À¤Î½ĞÎÏ */
 	Header("Content-disposition: attachment; filename=${file_name}");
 	Header("Content-type: application/octet-stream; name=${file_name}");
 	Header("Cache-Control: ");
 	Header("Pragma: ");
 	
-	/* i18nï½ ã ã¨æ­£å¸¸ã«å‹•ä½œã—ãªã„ãŸã‚ã€mbï½ ã«å¤‰æ›´
+	/* i18n¢· ¤À¤ÈÀµ¾ï¤ËÆ°ºî¤·¤Ê¤¤¤¿¤á¡¢mb¢· ¤ËÊÑ¹¹
 	if (i18n_discover_encoding($data) == CHAR_CODE){
 		$data = i18n_convert($data,'SJIS',CHAR_CODE);
 	}
@@ -459,11 +459,11 @@ function sfCSVDownload($data, $prefix = ""){
 		$data = mb_convert_encoding($data,'SJIS',CHAR_CODE);
 	}
 	
-	/* ãƒ‡ãƒ¼ã‚¿ã‚’å‡ºåŠ› */
+	/* ¥Ç¡¼¥¿¤ò½ĞÎÏ */
 	echo $data;
 }
 
-/* 1éšå±¤ä¸Šã®ãƒ‡ã‚£ãƒ¬ã‚¯ãƒˆãƒªåã‚’å–å¾—ã™ã‚‹ */
+/* 1³¬ÁØ¾å¤Î¥Ç¥£¥ì¥¯¥È¥êÌ¾¤ò¼èÆÀ¤¹¤ë */
 function sfUpDirName() {
 	$path = $_SERVER['PHP_SELF'];
 	$arrVal = split("/", $path);
@@ -471,7 +471,7 @@ function sfUpDirName() {
 	return $arrVal[($cnt - 2)];
 }
 
-// ç¾åœ¨ã®ã‚µã‚¤ãƒˆã‚’æ›´æ–°ï¼ˆãŸã ã—ãƒã‚¹ãƒˆã¯è¡Œã‚ãªã„ï¼‰
+// ¸½ºß¤Î¥µ¥¤¥È¤ò¹¹¿·¡Ê¤¿¤À¤·¥İ¥¹¥È¤Ï¹Ô¤ï¤Ê¤¤¡Ë
 function sfReload($get = "") {
 	if ($_SERVER["SERVER_PORT"] == "443" ){
 		$protocol = "https";
@@ -487,7 +487,7 @@ function sfReload($get = "") {
 	exit;
 }
 
-// ãƒ©ãƒ³ã‚­ãƒ³ã‚°ã‚’ä¸Šã’ã‚‹ã€‚
+// ¥é¥ó¥­¥ó¥°¤ò¾å¤²¤ë¡£
 function sfRankUp($table, $colname, $id, $andwhere = "") {
 	$objQuery = new SC_Query();
 	$objQuery->begin();
@@ -495,20 +495,20 @@ function sfRankUp($table, $colname, $id, $andwhere = "") {
 	if($andwhere != "") {
 		$where.= " AND $andwhere";
 	}
-	// å¯¾è±¡é …ç›®ã®ãƒ©ãƒ³ã‚¯ã‚’å–å¾—
+	// ÂĞ¾İ¹àÌÜ¤Î¥é¥ó¥¯¤ò¼èÆÀ
 	$rank = $objQuery->get($table, "rank", $where, array($id));
-	// ãƒ©ãƒ³ã‚¯ã®æœ€å¤§å€¤ã‚’å–å¾—
+	// ¥é¥ó¥¯¤ÎºÇÂçÃÍ¤ò¼èÆÀ
 	$maxrank = $objQuery->max($table, "rank", $andwhere);
-	// ãƒ©ãƒ³ã‚¯ãŒæœ€å¤§å€¤ã‚ˆã‚Šã‚‚å°ã•ã„å ´åˆã«å®Ÿè¡Œã™ã‚‹ã€‚
+	// ¥é¥ó¥¯¤¬ºÇÂçÃÍ¤è¤ê¤â¾®¤µ¤¤¾ì¹ç¤Ë¼Â¹Ô¤¹¤ë¡£
 	if($rank < $maxrank) {
-		// ãƒ©ãƒ³ã‚¯ãŒä¸€ã¤ä¸Šã®IDã‚’å–å¾—ã™ã‚‹ã€‚
+		// ¥é¥ó¥¯¤¬°ì¤Ä¾å¤ÎID¤ò¼èÆÀ¤¹¤ë¡£
 		$where = "rank = ?";
 		if($andwhere != "") {
 			$where.= " AND $andwhere";
 		}
 		$uprank = $rank + 1;
 		$up_id = $objQuery->get($table, $colname, $where, array($uprank));
-		// ãƒ©ãƒ³ã‚¯å…¥ã‚Œæ›¿ãˆã®å®Ÿè¡Œ
+		// ¥é¥ó¥¯Æş¤ìÂØ¤¨¤Î¼Â¹Ô
 		$sqlup = "UPDATE $table SET rank = ?, update_date = Now() WHERE $colname = ?";
 		$objQuery->exec($sqlup, array($rank + 1, $id));
 		$objQuery->exec($sqlup, array($rank, $up_id));
@@ -516,7 +516,7 @@ function sfRankUp($table, $colname, $id, $andwhere = "") {
 	$objQuery->commit();
 }
 
-// ãƒ©ãƒ³ã‚­ãƒ³ã‚°ã‚’ä¸‹ã’ã‚‹ã€‚
+// ¥é¥ó¥­¥ó¥°¤ò²¼¤²¤ë¡£
 function sfRankDown($table, $colname, $id, $andwhere = "") {
 	$objQuery = new SC_Query();
 	$objQuery->begin();
@@ -524,19 +524,19 @@ function sfRankDown($table, $colname, $id, $andwhere = "") {
 	if($andwhere != "") {
 		$where.= " AND $andwhere";
 	}
-	// å¯¾è±¡é …ç›®ã®ãƒ©ãƒ³ã‚¯ã‚’å–å¾—
+	// ÂĞ¾İ¹àÌÜ¤Î¥é¥ó¥¯¤ò¼èÆÀ
 	$rank = $objQuery->get($table, "rank", $where, array($id));
 		
-	// ãƒ©ãƒ³ã‚¯ãŒ1(æœ€å°å€¤)ã‚ˆã‚Šã‚‚å¤§ãã„å ´åˆã«å®Ÿè¡Œã™ã‚‹ã€‚
+	// ¥é¥ó¥¯¤¬1(ºÇ¾®ÃÍ)¤è¤ê¤âÂç¤­¤¤¾ì¹ç¤Ë¼Â¹Ô¤¹¤ë¡£
 	if($rank > 1) {
-		// ãƒ©ãƒ³ã‚¯ãŒä¸€ã¤ä¸‹ã®IDã‚’å–å¾—ã™ã‚‹ã€‚
+		// ¥é¥ó¥¯¤¬°ì¤Ä²¼¤ÎID¤ò¼èÆÀ¤¹¤ë¡£
 		$where = "rank = ?";
 		if($andwhere != "") {
 			$where.= " AND $andwhere";
 		}
 		$downrank = $rank - 1;
 		$down_id = $objQuery->get($table, $colname, $where, array($downrank));
-		// ãƒ©ãƒ³ã‚¯å…¥ã‚Œæ›¿ãˆã®å®Ÿè¡Œ
+		// ¥é¥ó¥¯Æş¤ìÂØ¤¨¤Î¼Â¹Ô
 		$sqlup = "UPDATE $table SET rank = ?, update_date = Now() WHERE $colname = ?";
 		$objQuery->exec($sqlup, array($rank - 1, $id));
 		$objQuery->exec($sqlup, array($rank, $down_id));
@@ -544,16 +544,16 @@ function sfRankDown($table, $colname, $id, $andwhere = "") {
 	$objQuery->commit();
 }
 
-//----ã€€æŒ‡å®šé †ä½ã¸ç§»å‹•
+//----¡¡»ØÄê½ç°Ì¤Ø°ÜÆ°
 function sfMoveRank($tableName, $keyIdColumn, $keyId, $pos, $where = "") {
 	$objQuery = new SC_Query();
 	$objQuery->begin();
 		
-	// è‡ªèº«ã®ãƒ©ãƒ³ã‚¯ã‚’å–å¾—ã™ã‚‹
+	// ¼«¿È¤Î¥é¥ó¥¯¤ò¼èÆÀ¤¹¤ë
 	$rank = $objQuery->get($tableName, "rank", "$keyIdColumn = ?", array($keyId));	
 	$max = $objQuery->max($tableName, "rank", $where);
 		
-	// å€¤ã®èª¿æ•´ï¼ˆé€†é †ï¼‰
+	// ÃÍ¤ÎÄ´À°¡ÊµÕ½ç¡Ë
 	if($pos > $max) {
 		$position = 1;
 	} else if($pos < 1) {
@@ -562,10 +562,10 @@ function sfMoveRank($tableName, $keyIdColumn, $keyId, $pos, $where = "") {
 		$position = $max - $pos + 1;
 	}
 	
-	if( $position > $rank ) $term = "rank - 1";	//å…¥ã‚Œæ›¿ãˆå…ˆã®é †ä½ãŒå…¥ã‚Œæ›ãˆå…ƒã®é †ä½ã‚ˆã‚Šå¤§ãã„å ´åˆ
-	if( $position < $rank ) $term = "rank + 1";	//å…¥ã‚Œæ›¿ãˆå…ˆã®é †ä½ãŒå…¥ã‚Œæ›ãˆå…ƒã®é †ä½ã‚ˆã‚Šå°ã•ã„å ´åˆ
+	if( $position > $rank ) $term = "rank - 1";	//Æş¤ìÂØ¤¨Àè¤Î½ç°Ì¤¬Æş¤ì´¹¤¨¸µ¤Î½ç°Ì¤è¤êÂç¤­¤¤¾ì¹ç
+	if( $position < $rank ) $term = "rank + 1";	//Æş¤ìÂØ¤¨Àè¤Î½ç°Ì¤¬Æş¤ì´¹¤¨¸µ¤Î½ç°Ì¤è¤ê¾®¤µ¤¤¾ì¹ç
 
-	//--ã€€æŒ‡å®šã—ãŸé †ä½ã®å•†å“ã‹ã‚‰ç§»å‹•ã•ã›ã‚‹å•†å“ã¾ã§ã®rankã‚’ï¼‘ã¤ãšã‚‰ã™
+	//--¡¡»ØÄê¤·¤¿½ç°Ì¤Î¾¦ÉÊ¤«¤é°ÜÆ°¤µ¤»¤ë¾¦ÉÊ¤Ş¤Ç¤Îrank¤ò£±¤Ä¤º¤é¤¹
 	$sql = "UPDATE $tableName SET rank = $term, update_date = NOW() WHERE rank BETWEEN ? AND ? AND del_flg = 0";
 	if($where != "") {
 		$sql.= " AND $where";
@@ -574,7 +574,7 @@ function sfMoveRank($tableName, $keyIdColumn, $keyId, $pos, $where = "") {
 	if( $position > $rank ) $objQuery->exec( $sql, array( $rank + 1, $position ));
 	if( $position < $rank ) $objQuery->exec( $sql, array( $position, $rank - 1 ));
 
-	//-- æŒ‡å®šã—ãŸé †ä½ã¸rankã‚’æ›¸ãæ›ãˆã‚‹ã€‚
+	//-- »ØÄê¤·¤¿½ç°Ì¤Ørank¤ò½ñ¤­´¹¤¨¤ë¡£
 	$sql  = "UPDATE $tableName SET rank = ?, update_date = NOW() WHERE $keyIdColumn = ? AND del_flg = 0 ";
 	if($where != "") {
 		$sql.= " AND $where";
@@ -584,12 +584,12 @@ function sfMoveRank($tableName, $keyIdColumn, $keyId, $pos, $where = "") {
 	$objQuery->commit();
 }
 
-// ãƒ©ãƒ³ã‚¯ã‚’å«ã‚€ãƒ¬ã‚³ãƒ¼ãƒ‰ã®å‰Šé™¤
-// ãƒ¬ã‚³ãƒ¼ãƒ‰ã”ã¨å‰Šé™¤ã™ã‚‹å ´åˆã¯ã€$deleteã‚’trueã«ã™ã‚‹ã€‚
+// ¥é¥ó¥¯¤ò´Ş¤à¥ì¥³¡¼¥É¤Îºï½ü
+// ¥ì¥³¡¼¥É¤´¤Èºï½ü¤¹¤ë¾ì¹ç¤Ï¡¢$delete¤òtrue¤Ë¤¹¤ë¡£
 function sfDeleteRankRecord($table, $colname, $id, $andwhere = "", $delete = false) {
 	$objQuery = new SC_Query();
 	$objQuery->begin();
-	// å‰Šé™¤ãƒ¬ã‚³ãƒ¼ãƒ‰ã®ãƒ©ãƒ³ã‚¯ã‚’å–å¾—ã™ã‚‹ã€‚		
+	// ºï½ü¥ì¥³¡¼¥É¤Î¥é¥ó¥¯¤ò¼èÆÀ¤¹¤ë¡£		
 	$where = "$colname = ?";
 	if($andwhere != "") {
 		$where.= " AND $andwhere";
@@ -597,16 +597,16 @@ function sfDeleteRankRecord($table, $colname, $id, $andwhere = "", $delete = fal
 	$rank = $objQuery->get($table, "rank", $where, array($id));
 
 	if(!$delete) {
-		// ãƒ©ãƒ³ã‚¯ã‚’æœ€ä¸‹ä½ã«ã™ã‚‹ã€DELãƒ•ãƒ©ã‚°ON
+		// ¥é¥ó¥¯¤òºÇ²¼°Ì¤Ë¤¹¤ë¡¢DEL¥Õ¥é¥°ON
 		$sqlup = "UPDATE $table SET rank = 0, del_flg = 1, update_date = Now() ";
 		$sqlup.= "WHERE $colname = ?";
-		// UPDATEã®å®Ÿè¡Œ
+		// UPDATE¤Î¼Â¹Ô
 		$objQuery->exec($sqlup, array($id));
 	} else {
 		$objQuery->delete($table, "$colname = ?", array($id));
 	}
 	
-	// è¿½åŠ ãƒ¬ã‚³ãƒ¼ãƒ‰ã®ãƒ©ãƒ³ã‚¯ã‚ˆã‚Šä¸Šã®ãƒ¬ã‚³ãƒ¼ãƒ‰ã‚’ä¸€ã¤ãšã‚‰ã™ã€‚
+	// ÄÉ²Ã¥ì¥³¡¼¥É¤Î¥é¥ó¥¯¤è¤ê¾å¤Î¥ì¥³¡¼¥É¤ò°ì¤Ä¤º¤é¤¹¡£
 	$where = "rank > ?";
 	if($andwhere != "") {
 		$where.= " AND $andwhere";
@@ -616,7 +616,7 @@ function sfDeleteRankRecord($table, $colname, $id, $andwhere = "", $delete = fal
 	$objQuery->commit();
 }
 
-// ãƒ¬ã‚³ãƒ¼ãƒ‰ã®å­˜åœ¨ãƒã‚§ãƒƒã‚¯
+// ¥ì¥³¡¼¥É¤ÎÂ¸ºß¥Á¥§¥Ã¥¯
 function sfIsRecord($table, $col, $arrval, $addwhere = "") {
 	$objQuery = new SC_Query();
 	$arrCol = split("[, ]", $col);
@@ -644,7 +644,7 @@ function sfIsRecord($table, $col, $arrval, $addwhere = "") {
 	return false;
 }
 
-// ãƒã‚§ãƒƒã‚¯ãƒœãƒƒã‚¯ã‚¹ã®å€¤ã‚’ãƒãƒ¼ã‚¸
+// ¥Á¥§¥Ã¥¯¥Ü¥Ã¥¯¥¹¤ÎÃÍ¤ò¥Ş¡¼¥¸
 function sfMergeCBValue($keyname, $max) {
 	$conv = "";
 	$cnt = 1;
@@ -658,7 +658,7 @@ function sfMergeCBValue($keyname, $max) {
 	return $conv;
 }
 
-// html_checkboxesã®å€¤ã‚’ãƒãƒ¼ã‚¸ã—ã¦2é€²æ•°å½¢å¼ã«å¤‰æ›´ã™ã‚‹ã€‚
+// html_checkboxes¤ÎÃÍ¤ò¥Ş¡¼¥¸¤·¤Æ2¿Ê¿ô·Á¼°¤ËÊÑ¹¹¤¹¤ë¡£
 function sfMergeCheckBoxes($array, $max) {
 	$ret = "";
 	if(is_array($array)) {	
@@ -677,7 +677,7 @@ function sfMergeCheckBoxes($array, $max) {
 }
 
 
-// html_checkboxesã®å€¤ã‚’ãƒãƒ¼ã‚¸ã—ã¦ã€Œ-ã€ã§ã¤ãªã’ã‚‹ã€‚
+// html_checkboxes¤ÎÃÍ¤ò¥Ş¡¼¥¸¤·¤Æ¡Ö-¡×¤Ç¤Ä¤Ê¤²¤ë¡£
 function sfMergeParamCheckBoxes($array) {
 	if(is_array($array)) {
 		foreach($array as $val) {
@@ -693,7 +693,7 @@ function sfMergeParamCheckBoxes($array) {
 	return $ret;
 }
 
-// html_checkboxesã®å€¤ã‚’ãƒãƒ¼ã‚¸ã—ã¦SQLæ¤œç´¢ç”¨ã«å¤‰æ›´ã™ã‚‹ã€‚
+// html_checkboxes¤ÎÃÍ¤ò¥Ş¡¼¥¸¤·¤ÆSQL¸¡º÷ÍÑ¤ËÊÑ¹¹¤¹¤ë¡£
 function sfSearchCheckBoxes($array) {
 	$max = 0;
 	$ret = "";
@@ -717,7 +717,7 @@ function sfSearchCheckBoxes($array) {
 	return $ret;
 }
 
-// 2é€²æ•°å½¢å¼ã®å€¤ã‚’html_checkboxeså¯¾å¿œã®å€¤ã«åˆ‡ã‚Šæ›¿ãˆã‚‹
+// 2¿Ê¿ô·Á¼°¤ÎÃÍ¤òhtml_checkboxesÂĞ±ş¤ÎÃÍ¤ËÀÚ¤êÂØ¤¨¤ë
 function sfSplitCheckBoxes($val) {
 	$len = strlen($val);
 	for($i = 0; $i < $len; $i++) {
@@ -728,7 +728,7 @@ function sfSplitCheckBoxes($val) {
 	return $arrRet;
 }
 
-// ãƒã‚§ãƒƒã‚¯ãƒœãƒƒã‚¯ã‚¹ã®å€¤ã‚’ãƒãƒ¼ã‚¸
+// ¥Á¥§¥Ã¥¯¥Ü¥Ã¥¯¥¹¤ÎÃÍ¤ò¥Ş¡¼¥¸
 function sfMergeCBSearchValue($keyname, $max) {
 	$conv = "";
 	$cnt = 1;
@@ -742,7 +742,7 @@ function sfMergeCBSearchValue($keyname, $max) {
 	return $conv;
 }
 
-// ãƒã‚§ãƒƒã‚¯ãƒœãƒƒã‚¯ã‚¹ã®å€¤ã‚’åˆ†è§£
+// ¥Á¥§¥Ã¥¯¥Ü¥Ã¥¯¥¹¤ÎÃÍ¤òÊ¬²ò
 function sfSplitCBValue($val, $keyname = "") {
 	$len = strlen($val);
 	$no = 1;
@@ -757,7 +757,7 @@ function sfSplitCBValue($val, $keyname = "") {
 	return $arr;
 }
 
-// ã‚­ãƒ¼ã¨å€¤ã‚’ã‚»ãƒƒãƒˆã—ãŸé…åˆ—ã‚’å–å¾—
+// ¥­¡¼¤ÈÃÍ¤ò¥»¥Ã¥È¤·¤¿ÇÛÎó¤ò¼èÆÀ
 function sfArrKeyValue($arrList, $keyname, $valname, $len_max = "", $keysize = "") {
 	
 	$max = count($arrList);
@@ -782,7 +782,7 @@ function sfArrKeyValue($arrList, $keyname, $valname, $len_max = "", $keysize = "
 	return $arrRet;
 }
 
-// ã‚­ãƒ¼ã¨å€¤ã‚’ã‚»ãƒƒãƒˆã—ãŸé…åˆ—ã‚’å–å¾—(å€¤ãŒè¤‡æ•°ã®å ´åˆ)
+// ¥­¡¼¤ÈÃÍ¤ò¥»¥Ã¥È¤·¤¿ÇÛÎó¤ò¼èÆÀ(ÃÍ¤¬Ê£¿ô¤Î¾ì¹ç)
 function sfArrKeyValues($arrList, $keyname, $valname, $len_max = "", $keysize = "", $connect = "") {
 	
 	$max = count($arrList);
@@ -808,7 +808,7 @@ function sfArrKeyValues($arrList, $keyname, $valname, $len_max = "", $keysize = 
 	return $arrRet;
 }
 
-// é…åˆ—ã®å€¤ã‚’ã‚«ãƒ³ãƒåŒºåˆ‡ã‚Šã§è¿”ã™ã€‚
+// ÇÛÎó¤ÎÃÍ¤ò¥«¥ó¥Ş¶èÀÚ¤ê¤ÇÊÖ¤¹¡£
 function sfGetCommaList($array, $space=true) {
 	if (count($array) > 0) {
 		foreach($array as $val) {
@@ -830,7 +830,7 @@ function sfGetCommaList($array, $space=true) {
 	
 }
 
-/* é…åˆ—ã®è¦ç´ ã‚’CSVãƒ•ã‚©ãƒ¼ãƒãƒƒãƒˆã§å‡ºåŠ›ã™ã‚‹ã€‚*/
+/* ÇÛÎó¤ÎÍ×ÁÇ¤òCSV¥Õ¥©¡¼¥Ş¥Ã¥È¤Ç½ĞÎÏ¤¹¤ë¡£*/
 function sfGetCSVList($array) {
 	if (count($array) > 0) {
 		foreach($array as $key => $val) {
@@ -844,7 +844,7 @@ function sfGetCSVList($array) {
 	return $line;
 }
 
-/* é…åˆ—ã®è¦ç´ ã‚’PDFãƒ•ã‚©ãƒ¼ãƒãƒƒãƒˆã§å‡ºåŠ›ã™ã‚‹ã€‚*/
+/* ÇÛÎó¤ÎÍ×ÁÇ¤òPDF¥Õ¥©¡¼¥Ş¥Ã¥È¤Ç½ĞÎÏ¤¹¤ë¡£*/
 function sfGetPDFList($array) {
 	foreach($array as $key => $val) {
 		$line .= "\t".$val;
@@ -857,16 +857,16 @@ function sfGetPDFList($array) {
 
 /*-----------------------------------------------------------------*/
 /*	check_set_term
-/*	å¹´æœˆæ—¥ã«åˆ¥ã‚ŒãŸ2ã¤ã®æœŸé–“ã®å¦¥å½“æ€§ã‚’ãƒã‚§ãƒƒã‚¯ã—ã€æ•´åˆæ€§ã¨æœŸé–“ã‚’è¿”ã™
-/*ã€€å¼•æ•° (é–‹å§‹å¹´,é–‹å§‹æœˆ,é–‹å§‹æ—¥,çµ‚äº†å¹´,çµ‚äº†æœˆ,çµ‚äº†æ—¥)
-/*ã€€æˆ»å€¤ array(ï¼‘ï¼Œï¼’ï¼Œï¼“ï¼‰
-/*  		ï¼‘ï¼é–‹å§‹å¹´æœˆæ—¥ (YYYY/MM/DD 000000)
-/*			ï¼’ï¼çµ‚äº†å¹´æœˆæ—¥ (YYYY/MM/DD 235959)
-/*			ï¼“ï¼ã‚¨ãƒ©ãƒ¼ ( 0 = OK, 1 = NG )
+/*	Ç¯·îÆü¤ËÊÌ¤ì¤¿2¤Ä¤Î´ü´Ö¤ÎÂÅÅöÀ­¤ò¥Á¥§¥Ã¥¯¤·¡¢À°¹çÀ­¤È´ü´Ö¤òÊÖ¤¹
+/*¡¡°ú¿ô (³«»ÏÇ¯,³«»Ï·î,³«»ÏÆü,½ªÎ»Ç¯,½ªÎ»·î,½ªÎ»Æü)
+/*¡¡ÌáÃÍ array(£±¡¤£²¡¤£³¡Ë
+/*  		£±¡¥³«»ÏÇ¯·îÆü (YYYY/MM/DD 000000)
+/*			£²¡¥½ªÎ»Ç¯·îÆü (YYYY/MM/DD 235959)
+/*			£³¡¥¥¨¥é¡¼ ( 0 = OK, 1 = NG )
 /*-----------------------------------------------------------------*/
 function sfCheckSetTerm ( $start_year, $start_month, $start_day, $end_year, $end_month, $end_day ) {
 
-	// æœŸé–“æŒ‡å®š
+	// ´ü´Ö»ØÄê
 	$error = 0;
 	if ( $start_month || $start_day || $start_year){
 		if ( ! checkdate($start_month, $start_day , $start_year) ) $error = 1;
@@ -886,13 +886,13 @@ function sfCheckSetTerm ( $start_year, $start_month, $start_day, $end_year, $end
 	return array($date1, $date2, $error);
 }
 
-// ã‚¨ãƒ©ãƒ¼ç®‡æ‰€ã®èƒŒæ™¯è‰²ã‚’å¤‰æ›´ã™ã‚‹ãŸã‚ã®function SC_Viewã§èª­ã¿è¾¼ã‚€
+// ¥¨¥é¡¼²Õ½ê¤ÎÇØ·Ê¿§¤òÊÑ¹¹¤¹¤ë¤¿¤á¤Îfunction SC_View¤ÇÆÉ¤ß¹ş¤à
 function sfSetErrorStyle(){
 	return 'style="background-color:'.ERR_COLOR.'"';
 }
 
-/* DBã«æ¸¡ã™æ•°å€¤ã®ãƒã‚§ãƒƒã‚¯
- * 10æ¡ä»¥ä¸Šã¯ã‚ªãƒ¼ãƒãƒ¼ãƒ•ãƒ­ãƒ¼ã‚¨ãƒ©ãƒ¼ã‚’èµ·ã“ã™ã®ã§ã€‚
+/* DB¤ËÅÏ¤¹¿ôÃÍ¤Î¥Á¥§¥Ã¥¯
+ * 10·å°Ê¾å¤Ï¥ª¡¼¥Ğ¡¼¥Õ¥í¡¼¥¨¥é¡¼¤òµ¯¤³¤¹¤Î¤Ç¡£
  */
 function sfCheckNumLength( $value ){
 	if ( ! is_numeric($value)  ){
@@ -906,7 +906,7 @@ function sfCheckNumLength( $value ){
 	return true;
 }
 
-// ä¸€è‡´ã—ãŸå€¤ã®ã‚­ãƒ¼åã‚’å–å¾—
+// °ìÃ×¤·¤¿ÃÍ¤Î¥­¡¼Ì¾¤ò¼èÆÀ
 function sfSearchKey($array, $word, $default) {
 	foreach($array as $key => $val) {
 		if($val == $word) {
@@ -916,7 +916,7 @@ function sfSearchKey($array, $word, $default) {
 	return $default;
 }
 
-// ã‚«ãƒ†ã‚´ãƒªãƒ„ãƒªãƒ¼ã®å–å¾—($products_check:trueå•†å“ç™»éŒ²æ¸ˆã¿ã®ã‚‚ã®ã ã‘å–å¾—)
+// ¥«¥Æ¥´¥ê¥Ä¥ê¡¼¤Î¼èÆÀ($products_check:true¾¦ÉÊÅĞÏ¿ºÑ¤ß¤Î¤â¤Î¤À¤±¼èÆÀ)
 function sfGetCategoryList($addwhere = "", $products_check = false, $head = CATEGORY_HEAD) {
 	$objQuery = new SC_Query();
 	$where = "del_flg = 0";
@@ -945,7 +945,7 @@ function sfGetCategoryList($addwhere = "", $products_check = false, $head = CATE
 		$arrList[$id] = "";
 		/*
 		for($n = 1; $n < $arrRet[$cnt]['level']; $n++) {
-			$arrList[$id].= "ã€€";
+			$arrList[$id].= "¡¡";
 		}
 		*/
 		for($cat_cnt = 0; $cat_cnt < $arrRet[$cnt]['level']; $cat_cnt++) {
@@ -956,7 +956,7 @@ function sfGetCategoryList($addwhere = "", $products_check = false, $head = CATE
 	return $arrList;
 }
 
-// ã‚«ãƒ†ã‚´ãƒªãƒ„ãƒªãƒ¼ã®å–å¾—ï¼ˆè¦ªã‚«ãƒ†ã‚´ãƒªã®Value:0)
+// ¥«¥Æ¥´¥ê¥Ä¥ê¡¼¤Î¼èÆÀ¡Ê¿Æ¥«¥Æ¥´¥ê¤ÎValue:0)
 function sfGetLevelCatList($parent_zero = true) {
 	$objQuery = new SC_Query();
 	$col = "category_id, category_name, level";
@@ -979,7 +979,7 @@ function sfGetLevelCatList($parent_zero = true) {
 		$arrOutput[$cnt] = "";
 		/*	 		
 		for($n = 1; $n < $arrRet[$cnt]['level']; $n++) {
-			$arrOutput[$cnt].= "ã€€";
+			$arrOutput[$cnt].= "¡¡";
 		}
 		*/
 		for($cat_cnt = 0; $cat_cnt < $arrRet[$cnt]['level']; $cat_cnt++) {
@@ -1012,7 +1012,7 @@ function sfGetChecked($param, $value) {
 	return "";
 }
 
-// SELECTãƒœãƒƒã‚¯ã‚¹ç”¨ãƒªã‚¹ãƒˆã®ä½œæˆ
+// SELECT¥Ü¥Ã¥¯¥¹ÍÑ¥ê¥¹¥È¤ÎºîÀ®
 function sfGetIDValueList($table, $keyname, $valname) {
 	$objQuery = new SC_Query();
 	$col = "$keyname, $valname";
@@ -1029,21 +1029,21 @@ function sfGetIDValueList($table, $keyname, $valname) {
 }
 
 function sfTrim($str) {
-	$ret = ereg_replace("^[ã€€ \n\r]*", "", $str);
-	$ret = ereg_replace("[ã€€ \n\r]*$", "", $ret);
+	$ret = ereg_replace("^[¡¡ \n\r]*", "", $str);
+	$ret = ereg_replace("[¡¡ \n\r]*$", "", $ret);
 	return $ret;
 }
 
-/* æ‰€å±ã™ã‚‹ã™ã¹ã¦ã®éšå±¤ã®è¦ªIDã‚’é…åˆ—ã§è¿”ã™ */
+/* ½êÂ°¤¹¤ë¤¹¤Ù¤Æ¤Î³¬ÁØ¤Î¿ÆID¤òÇÛÎó¤ÇÊÖ¤¹ */
 function sfGetParents($objQuery, $table, $pid_name, $id_name, $id) {
 	$arrRet = sfGetParentsArray($table, $pid_name, $id_name, $id);
-	// é…åˆ—ã®å…ˆé ­1ã¤ã‚’å‰Šé™¤ã™ã‚‹ã€‚
+	// ÇÛÎó¤ÎÀèÆ¬1¤Ä¤òºï½ü¤¹¤ë¡£
 	array_shift($arrRet);
 	return $arrRet;
 }
 
 
-/* è¦ªIDã®é…åˆ—ã‚’å…ƒã«ç‰¹å®šã®ã‚«ãƒ©ãƒ ã‚’å–å¾—ã™ã‚‹ã€‚*/
+/* ¿ÆID¤ÎÇÛÎó¤ò¸µ¤ËÆÃÄê¤Î¥«¥é¥à¤ò¼èÆÀ¤¹¤ë¡£*/
 function sfGetParentsCol($objQuery, $table, $id_name, $col_name, $arrId ) {
 	$col = $col_name;
 	$len = count($arrId);
@@ -1062,51 +1062,51 @@ function sfGetParentsCol($objQuery, $table, $id_name, $col_name, $arrId ) {
 	return $arrRet;	
 }
 
-/* å­IDã®é…åˆ—ã‚’è¿”ã™ */
+/* »ÒID¤ÎÇÛÎó¤òÊÖ¤¹ */
 function sfGetChildsID($table, $pid_name, $id_name, $id) {
 	$arrRet = sfGetChildrenArray($table, $pid_name, $id_name, $id);
 	return $arrRet;
 }
 
-/* ã‚«ãƒ†ã‚´ãƒªå¤‰æ›´æ™‚ã®ç§»å‹•å‡¦ç† */
+/* ¥«¥Æ¥´¥êÊÑ¹¹»ş¤Î°ÜÆ°½èÍı */
 function sfMoveCatRank($objQuery, $table, $id_name, $cat_name, $old_catid, $new_catid, $id) {
 	if ($old_catid == $new_catid) {
 		return;
 	}
-	// æ—§ã‚«ãƒ†ã‚´ãƒªã§ã®ãƒ©ãƒ³ã‚¯å‰Šé™¤å‡¦ç†
-	// ç§»å‹•ãƒ¬ã‚³ãƒ¼ãƒ‰ã®ãƒ©ãƒ³ã‚¯ã‚’å–å¾—ã™ã‚‹ã€‚		
+	// µì¥«¥Æ¥´¥ê¤Ç¤Î¥é¥ó¥¯ºï½ü½èÍı
+	// °ÜÆ°¥ì¥³¡¼¥É¤Î¥é¥ó¥¯¤ò¼èÆÀ¤¹¤ë¡£		
 	$where = "$id_name = ?";
 	$rank = $objQuery->get($table, "rank", $where, array($id));
-	// å‰Šé™¤ãƒ¬ã‚³ãƒ¼ãƒ‰ã®ãƒ©ãƒ³ã‚¯ã‚ˆã‚Šä¸Šã®ãƒ¬ã‚³ãƒ¼ãƒ‰ã‚’ä¸€ã¤ä¸‹ã«ãšã‚‰ã™ã€‚
+	// ºï½ü¥ì¥³¡¼¥É¤Î¥é¥ó¥¯¤è¤ê¾å¤Î¥ì¥³¡¼¥É¤ò°ì¤Ä²¼¤Ë¤º¤é¤¹¡£
 	$where = "rank > ? AND $cat_name = ?";
 	$sqlup = "UPDATE $table SET rank = (rank - 1) WHERE $where";
 	$objQuery->exec($sqlup, array($rank, $old_catid));
-	// æ–°ã‚«ãƒ†ã‚´ãƒªã§ã®ç™»éŒ²å‡¦ç†
-	// æ–°ã‚«ãƒ†ã‚´ãƒªã®æœ€å¤§ãƒ©ãƒ³ã‚¯ã‚’å–å¾—ã™ã‚‹ã€‚
+	// ¿·¥«¥Æ¥´¥ê¤Ç¤ÎÅĞÏ¿½èÍı
+	// ¿·¥«¥Æ¥´¥ê¤ÎºÇÂç¥é¥ó¥¯¤ò¼èÆÀ¤¹¤ë¡£
 	$max_rank = $objQuery->max($table, "rank", "$cat_name = ?", array($new_catid)) + 1;
 	$where = "$id_name = ?";
 	$sqlup = "UPDATE $table SET rank = ? WHERE $where";
 	$objQuery->exec($sqlup, array($max_rank, $id));
 }
 
-/* ç¨é‡‘è¨ˆç®— */
+/* ÀÇ¶â·×»» */
 function sfTax($price, $tax, $tax_rule) {
 	$real_tax = $tax / 100;
 	$ret = $price * $real_tax;
 	switch($tax_rule) {
-	// å››æ¨äº”å…¥
+	// »Í¼Î¸ŞÆş
 	case 1:
 		$ret = round($ret);
 		break;
-	// åˆ‡ã‚Šæ¨ã¦
+	// ÀÚ¤ê¼Î¤Æ
 	case 2:
 		$ret = floor($ret);
 		break;
-	// åˆ‡ã‚Šä¸Šã’
+	// ÀÚ¤ê¾å¤²
 	case 3:
 		$ret = ceil($ret);
 		break;
-	// ãƒ‡ãƒ•ã‚©ãƒ«ãƒˆ:åˆ‡ã‚Šä¸Šã’
+	// ¥Ç¥Õ¥©¥ë¥È:ÀÚ¤ê¾å¤²
 	default:
 		$ret = ceil($ret);
 		break;
@@ -1114,25 +1114,25 @@ function sfTax($price, $tax, $tax_rule) {
 	return $ret;
 }
 
-/* ç¨é‡‘ä»˜ä¸ */
+/* ÀÇ¶âÉÕÍ¿ */
 function sfPreTax($price, $tax, $tax_rule) {
 	$real_tax = $tax / 100;
 	$ret = $price * (1 + $real_tax);
 	
 	switch($tax_rule) {
-	// å››æ¨äº”å…¥
+	// »Í¼Î¸ŞÆş
 	case 1:
 		$ret = round($ret);
 		break;
-	// åˆ‡ã‚Šæ¨ã¦
+	// ÀÚ¤ê¼Î¤Æ
 	case 2:
 		$ret = floor($ret);
 		break;
-	// åˆ‡ã‚Šä¸Šã’
+	// ÀÚ¤ê¾å¤²
 	case 3:
 		$ret = ceil($ret);
 		break;
-	// ãƒ‡ãƒ•ã‚©ãƒ«ãƒˆ:åˆ‡ã‚Šä¸Šã’
+	// ¥Ç¥Õ¥©¥ë¥È:ÀÚ¤ê¾å¤²
 	default:
 		$ret = ceil($ret);
 		break;
@@ -1140,11 +1140,11 @@ function sfPreTax($price, $tax, $tax_rule) {
 	return $ret;
 }
 
-// æ¡æ•°ã‚’æŒ‡å®šã—ã¦å››æ¨äº”å…¥
+// ·å¿ô¤ò»ØÄê¤·¤Æ»Í¼Î¸ŞÆş
 function sfRound($value, $pow = 0){
 	$adjust = pow(10 ,$pow-1);
 
-	// æ•´æ•°ä¸”ã¤0å‡ºãªã‘ã‚Œã°æ¡æ•°æŒ‡å®šã‚’è¡Œã†
+	// À°¿ô³î¤Ä0½Ğ¤Ê¤±¤ì¤Ğ·å¿ô»ØÄê¤ò¹Ô¤¦
 	if(sfIsInt($adjust) and $pow > 1){
 		$ret = (round($value * $adjust)/$adjust);
 	}
@@ -1154,7 +1154,7 @@ function sfRound($value, $pow = 0){
 	return $ret;
 }
 
-/* ãƒã‚¤ãƒ³ãƒˆä»˜ä¸ */
+/* ¥İ¥¤¥ó¥ÈÉÕÍ¿ */
 function sfPrePoint($price, $point_rate, $rule = POINT_RULE, $product_id = "") {
 	if(sfIsInt($product_id)) {
 		$objQuery = new SC_Query();
@@ -1162,12 +1162,12 @@ function sfPrePoint($price, $point_rate, $rule = POINT_RULE, $product_id = "") {
 	    $where .= "now() < cast(end_date as date) AND ";
 		
 		$where .= "del_flg = 0 AND campaign_id IN (SELECT campaign_id FROM dtb_campaign_detail where product_id = ? )";
-		//ç™»éŒ²(æ›´æ–°)æ—¥ä»˜é †
+		//ÅĞÏ¿(¹¹¿·)ÆüÉÕ½ç
 		$objQuery->setorder('update_date DESC');
-		//ã‚­ãƒ£ãƒ³ãƒšãƒ¼ãƒ³ãƒã‚¤ãƒ³ãƒˆã®å–å¾—
+		//¥­¥ã¥ó¥Ú¡¼¥ó¥İ¥¤¥ó¥È¤Î¼èÆÀ
 		$arrRet = $objQuery->select("campaign_name, campaign_point_rate", "dtb_campaign", $where, array($product_id));
 	}
-	//è¤‡æ•°ã®ã‚­ãƒ£ãƒ³ãƒšãƒ¼ãƒ³ã«ç™»éŒ²ã•ã‚Œã¦ã„ã‚‹å•†å“ã¯ã€æœ€æ–°ã®ã‚­ãƒ£ãƒ³ãƒšãƒ¼ãƒ³ã‹ã‚‰ãƒã‚¤ãƒ³ãƒˆã‚’å–å¾—
+	//Ê£¿ô¤Î¥­¥ã¥ó¥Ú¡¼¥ó¤ËÅĞÏ¿¤µ¤ì¤Æ¤¤¤ë¾¦ÉÊ¤Ï¡¢ºÇ¿·¤Î¥­¥ã¥ó¥Ú¡¼¥ó¤«¤é¥İ¥¤¥ó¥È¤ò¼èÆÀ
 	if($arrRet[0]['campaign_point_rate'] != "") {
 		$campaign_point_rate = $arrRet[0]['campaign_point_rate'];
 		$real_point = $campaign_point_rate / 100;
@@ -1176,31 +1176,31 @@ function sfPrePoint($price, $point_rate, $rule = POINT_RULE, $product_id = "") {
 	}
 	$ret = $price * $real_point;
 	switch($rule) {
-	// å››æ¨äº”å…¥
+	// »Í¼Î¸ŞÆş
 	case 1:
 		$ret = round($ret);
 		break;
-	// åˆ‡ã‚Šæ¨ã¦
+	// ÀÚ¤ê¼Î¤Æ
 	case 2:
 		$ret = floor($ret);
 		break;
-	// åˆ‡ã‚Šä¸Šã’
+	// ÀÚ¤ê¾å¤²
 	case 3:
 		$ret = ceil($ret);
 		break;
-	// ãƒ‡ãƒ•ã‚©ãƒ«ãƒˆ:åˆ‡ã‚Šä¸Šã’
+	// ¥Ç¥Õ¥©¥ë¥È:ÀÚ¤ê¾å¤²
 	default:
 		$ret = ceil($ret);
 		break;
 	}
-	//ã‚­ãƒ£ãƒ³ãƒšãƒ¼ãƒ³å•†å“ã®å ´åˆ
+	//¥­¥ã¥ó¥Ú¡¼¥ó¾¦ÉÊ¤Î¾ì¹ç
 	if($campaign_point_rate != "") {
-		$ret = "(".$arrRet[0]['campaign_name']."ãƒã‚¤ãƒ³ãƒˆç‡".$campaign_point_rate."%)".$ret;
+		$ret = "(".$arrRet[0]['campaign_name']."¥İ¥¤¥ó¥ÈÎ¨".$campaign_point_rate."%)".$ret;
 	}
 	return $ret;
 }
 
-/* è¦æ ¼åˆ†é¡ã®ä»¶æ•°å–å¾— */
+/* µ¬³ÊÊ¬Îà¤Î·ï¿ô¼èÆÀ */
 function sfGetClassCatCount() {
 	$sql = "select count(dtb_class.class_id) as count, dtb_class.class_id ";
 	$sql.= "from dtb_class inner join dtb_classcategory on dtb_class.class_id = dtb_classcategory.class_id ";
@@ -1208,21 +1208,21 @@ function sfGetClassCatCount() {
 	$sql.= "group by dtb_class.class_id, dtb_class.name";
 	$objQuery = new SC_Query();
 	$arrList = $objQuery->getall($sql);
-	// ã‚­ãƒ¼ã¨å€¤ã‚’ã‚»ãƒƒãƒˆã—ãŸé…åˆ—ã‚’å–å¾—
+	// ¥­¡¼¤ÈÃÍ¤ò¥»¥Ã¥È¤·¤¿ÇÛÎó¤ò¼èÆÀ
 	$arrRet = sfArrKeyValue($arrList, 'class_id', 'count');
 	
 	return $arrRet;
 }
 
-/* è¦æ ¼ã®ç™»éŒ² */
+/* µ¬³Ê¤ÎÅĞÏ¿ */
 function sfInsertProductClass($objQuery, $arrList, $product_id) {
-	// ã™ã§ã«è¦æ ¼ç™»éŒ²ãŒã‚ã‚‹ã‹ã©ã†ã‹ã‚’ãƒã‚§ãƒƒã‚¯ã™ã‚‹ã€‚
+	// ¤¹¤Ç¤Ëµ¬³ÊÅĞÏ¿¤¬¤¢¤ë¤«¤É¤¦¤«¤ò¥Á¥§¥Ã¥¯¤¹¤ë¡£
 	$where = "product_id = ? AND classcategory_id1 <> 0 AND classcategory_id1 <> 0";
 	$count = $objQuery->count("dtb_products_class", $where,  array($product_id));
 	
-	// ã™ã§ã«è¦æ ¼ç™»éŒ²ãŒãªã„å ´åˆ
+	// ¤¹¤Ç¤Ëµ¬³ÊÅĞÏ¿¤¬¤Ê¤¤¾ì¹ç
 	if($count == 0) {
-		// æ—¢å­˜è¦æ ¼ã®å‰Šé™¤
+		// ´ûÂ¸µ¬³Ê¤Îºï½ü
 		$where = "product_id = ?";
 		$objQuery->delete("dtb_products_class", $where, array($product_id));
 		$sqlval['product_id'] = $product_id;
@@ -1240,7 +1240,7 @@ function sfInsertProductClass($objQuery, $arrList, $product_id) {
 			$sqlval['creator_id'] = '0';
 		}
 		
-		// INSERTã®å®Ÿè¡Œ
+		// INSERT¤Î¼Â¹Ô
 		$objQuery->insert("dtb_products_class", $sqlval);
 	}
 }
@@ -1252,13 +1252,13 @@ function sfGetProductClassId($product_id, $classcategory_id1, $classcategory_id2
 	return $ret;
 }
 
-/* æ–‡æœ«ã®ã€Œ/ã€ã‚’ãªãã™ */
+/* Ê¸Ëö¤Î¡Ö/¡×¤ò¤Ê¤¯¤¹ */
 function sfTrimURL($url) {
 	$ret = ereg_replace("[/]+$", "", $url);
 	return $ret;
 }
 
-/* å•†å“è¦æ ¼æƒ…å ±ã®å–å¾— */
+/* ¾¦ÉÊµ¬³Ê¾ğÊó¤Î¼èÆÀ */
 function sfGetProductsClass($arrID) {
 	list($product_id, $classcategory_id1, $classcategory_id2) = $arrID;	
 	
@@ -1269,7 +1269,7 @@ function sfGetProductsClass($arrID) {
 		$classcategory_id2 = '0';
 	}
 		
-	// å•†å“è¦æ ¼å–å¾—
+	// ¾¦ÉÊµ¬³Ê¼èÆÀ
 	$objQuery = new SC_Query();
 	$col = "product_id, deliv_fee, name, product_code, main_list_image, main_image, price01, price02, point_rate, product_class_id, classcategory_id1, classcategory_id2, class_id1, class_id2, stock, stock_unlimited, sale_limit, sale_unlimited";
 	$table = "vw_product_class AS prdcls";
@@ -1279,56 +1279,56 @@ function sfGetProductsClass($arrID) {
 	return $arrRet[0];
 }
 
-/* é›†è¨ˆæƒ…å ±ã‚’å…ƒã«æœ€çµ‚è¨ˆç®— */
+/* ½¸·×¾ğÊó¤ò¸µ¤ËºÇ½ª·×»» */
 function sfTotalConfirm($arrData, $objPage, $objCartSess, $arrInfo, $objCustomer = "") {
-	// å•†å“ã®åˆè¨ˆå€‹æ•°
+	// ¾¦ÉÊ¤Î¹ç·×¸Ä¿ô
 	$total_quantity = $objCartSess->getTotalQuantity(true);
 	
-	// ç¨é‡‘ã®å–å¾—
+	// ÀÇ¶â¤Î¼èÆÀ
 	$arrData['tax'] = $objPage->tpl_total_tax;
-	// å°è¨ˆã®å–å¾—
+	// ¾®·×¤Î¼èÆÀ
 	$arrData['subtotal'] = $objPage->tpl_total_pretax;	
 	
-	// åˆè¨ˆé€æ–™ã®å–å¾—
+	// ¹ç·×Á÷ÎÁ¤Î¼èÆÀ
 	$arrData['deliv_fee'] = 0;
 		
-	// å•†å“ã”ã¨ã®é€æ–™ãŒæœ‰åŠ¹ã®å ´åˆ
+	// ¾¦ÉÊ¤´¤È¤ÎÁ÷ÎÁ¤¬Í­¸ú¤Î¾ì¹ç
 	if (OPTION_PRODUCT_DELIV_FEE == 1) {
 		$arrData['deliv_fee']+= $objCartSess->getAllProductsDelivFee();
 	}
 	
-	// é…é€æ¥­è€…ã®é€æ–™ãŒæœ‰åŠ¹ã®å ´åˆ
+	// ÇÛÁ÷¶È¼Ô¤ÎÁ÷ÎÁ¤¬Í­¸ú¤Î¾ì¹ç
 	if (OPTION_DELIV_FEE == 1) {
-		// é€æ–™ã®åˆè¨ˆã‚’è¨ˆç®—ã™ã‚‹
+		// Á÷ÎÁ¤Î¹ç·×¤ò·×»»¤¹¤ë
 		$arrData['deliv_fee']+= sfGetDelivFee($arrData['deliv_pref'], $arrData['payment_id']);
 	}
 	
-	// é€æ–™ç„¡æ–™ã®è³¼å…¥æ•°ãŒè¨­å®šã•ã‚Œã¦ã„ã‚‹å ´åˆ
+	// Á÷ÎÁÌµÎÁ¤Î¹ØÆş¿ô¤¬ÀßÄê¤µ¤ì¤Æ¤¤¤ë¾ì¹ç
 	if(DELIV_FREE_AMOUNT > 0) {
 		if($total_quantity >= DELIV_FREE_AMOUNT) {
 			$arrData['deliv_fee'] = 0;
 		}	
 	}
 		
-	// é€æ–™ç„¡æ–™æ¡ä»¶ãŒè¨­å®šã•ã‚Œã¦ã„ã‚‹å ´åˆ
+	// Á÷ÎÁÌµÎÁ¾ò·ï¤¬ÀßÄê¤µ¤ì¤Æ¤¤¤ë¾ì¹ç
 	if($arrInfo['free_rule'] > 0) {
-		// å°è¨ˆãŒç„¡æ–™æ¡ä»¶ã‚’è¶…ãˆã¦ã„ã‚‹å ´åˆ
+		// ¾®·×¤¬ÌµÎÁ¾ò·ï¤òÄ¶¤¨¤Æ¤¤¤ë¾ì¹ç
 		if($arrData['subtotal'] >= $arrInfo['free_rule']) {
 			$arrData['deliv_fee'] = 0;
 		}
 	}
 
-	// åˆè¨ˆã®è¨ˆç®—
-	$arrData['total'] = $objPage->tpl_total_pretax;	// å•†å“åˆè¨ˆ
-	$arrData['total']+= $arrData['deliv_fee'];		// é€æ–™
-	$arrData['total']+= $arrData['charge'];			// æ‰‹æ•°æ–™
-	// ãŠæ”¯æ‰•ã„åˆè¨ˆ
+	// ¹ç·×¤Î·×»»
+	$arrData['total'] = $objPage->tpl_total_pretax;	// ¾¦ÉÊ¹ç·×
+	$arrData['total']+= $arrData['deliv_fee'];		// Á÷ÎÁ
+	$arrData['total']+= $arrData['charge'];			// ¼ê¿ôÎÁ
+	// ¤ª»ÙÊ§¤¤¹ç·×
 	$arrData['payment_total'] = $arrData['total'] - ($arrData['use_point'] * POINT_VALUE);
-	// åŠ ç®—ãƒã‚¤ãƒ³ãƒˆã®è¨ˆç®—
+	// ²Ã»»¥İ¥¤¥ó¥È¤Î·×»»
 	$arrData['add_point'] = sfGetAddPoint($objPage->tpl_total_point, $arrData['use_point'], $arrInfo);
 	
 	if($objCustomer != "") {
-		// èª•ç”Ÿæ—¥æœˆã§ã‚ã£ãŸå ´åˆ
+		// ÃÂÀ¸Æü·î¤Ç¤¢¤Ã¤¿¾ì¹ç
 		if($objCustomer->isBirthMonth()) {
 			$arrData['birth_point'] = BIRTH_MONTH_POINT;
 			$arrData['add_point'] += $arrData['birth_point'];
@@ -1342,30 +1342,30 @@ function sfTotalConfirm($arrData, $objPage, $objCartSess, $arrInfo, $objCustomer
 	return $arrData;
 }
 
-/* ã‚«ãƒ¼ãƒˆå†…å•†å“ã®é›†è¨ˆå‡¦ç† */
+/* ¥«¡¼¥ÈÆâ¾¦ÉÊ¤Î½¸·×½èÍı */
 function sfTotalCart($objPage, $objCartSess, $arrInfo) {
-	// è¦æ ¼åä¸€è¦§
+	// µ¬³ÊÌ¾°ìÍ÷
 	$arrClassName = sfGetIDValueList("dtb_class", "class_id", "name");
-	// è¦æ ¼åˆ†é¡åä¸€è¦§
+	// µ¬³ÊÊ¬ÎàÌ¾°ìÍ÷
 	$arrClassCatName = sfGetIDValueList("dtb_classcategory", "classcategory_id", "name");
 	
-	$objPage->tpl_total_pretax = 0;		// è²»ç”¨åˆè¨ˆ(ç¨è¾¼ã¿)
-	$objPage->tpl_total_tax = 0;		// æ¶ˆè²»ç¨åˆè¨ˆ
-	$objPage->tpl_total_point = 0;		// ãƒã‚¤ãƒ³ãƒˆåˆè¨ˆ
+	$objPage->tpl_total_pretax = 0;		// ÈñÍÑ¹ç·×(ÀÇ¹ş¤ß)
+	$objPage->tpl_total_tax = 0;		// ¾ÃÈñÀÇ¹ç·×
+	$objPage->tpl_total_point = 0;		// ¥İ¥¤¥ó¥È¹ç·×
 	
-	// ã‚«ãƒ¼ãƒˆå†…æƒ…å ±ã®å–å¾—
+	// ¥«¡¼¥ÈÆâ¾ğÊó¤Î¼èÆÀ
 	$arrCart = $objCartSess->getCartList();
 	$max = count($arrCart);
 	$cnt = 0;
 
 	for ($i = 0; $i < $max; $i++) {
-		// å•†å“è¦æ ¼æƒ…å ±ã®å–å¾—	
+		// ¾¦ÉÊµ¬³Ê¾ğÊó¤Î¼èÆÀ	
 		$arrData = sfGetProductsClass($arrCart[$i]['id']);
 		$limit = "";
-		// DBã«å­˜åœ¨ã™ã‚‹å•†å“
+		// DB¤ËÂ¸ºß¤¹¤ë¾¦ÉÊ
 		if (count($arrData) > 0) {
 			
-			// è³¼å…¥åˆ¶é™æ•°ã‚’æ±‚ã‚ã‚‹ã€‚			
+			// ¹ØÆşÀ©¸Â¿ô¤òµá¤á¤ë¡£			
 			if ($arrData['stock_unlimited'] != '1' && $arrData['sale_unlimited'] != '1') {
 				if($arrData['sale_limit'] < $arrData['stock']) {
 					$limit = $arrData['sale_limit'];
@@ -1382,10 +1382,10 @@ function sfTotalCart($objPage, $objCartSess, $arrInfo) {
 			}
 						
 			if($limit != "" && $limit < $arrCart[$i]['quantity']) {
-				// ã‚«ãƒ¼ãƒˆå†…å•†å“æ•°ã‚’åˆ¶é™ã«åˆã‚ã›ã‚‹
+				// ¥«¡¼¥ÈÆâ¾¦ÉÊ¿ô¤òÀ©¸Â¤Ë¹ç¤ï¤»¤ë
 				$objCartSess->setProductValue($arrCart[$i]['id'], 'quantity', $limit);
 				$quantity = $limit;
-				$objPage->tpl_message = "â€»ã€Œ" . $arrData['name'] . "ã€ã¯è²©å£²åˆ¶é™ã—ã¦ãŠã‚Šã¾ã™ã€ä¸€åº¦ã«ã“ã‚Œä»¥ä¸Šã®è³¼å…¥ã¯ã§ãã¾ã›ã‚“ã€‚";
+				$objPage->tpl_message = "¢¨¡Ö" . $arrData['name'] . "¡×¤ÏÈÎÇäÀ©¸Â¤·¤Æ¤ª¤ê¤Ş¤¹¡¢°ìÅÙ¤Ë¤³¤ì°Ê¾å¤Î¹ØÆş¤Ï¤Ç¤­¤Ş¤»¤ó¡£";
 			} else {
 				$quantity = $arrCart[$i]['quantity'];
 			}
@@ -1398,12 +1398,12 @@ function sfTotalCart($objPage, $objCartSess, $arrInfo) {
 			$objPage->arrProductsClass[$cnt]['classcategory_name1'] = $arrClassCatName[$arrData['classcategory_id1']];
 			$objPage->arrProductsClass[$cnt]['classcategory_name2'] = $arrClassCatName[$arrData['classcategory_id2']];
 			
-			// ç”»åƒã‚µã‚¤ã‚º
+			// ²èÁü¥µ¥¤¥º
 			list($image_width, $image_height) = getimagesize(IMAGE_SAVE_DIR . basename($objPage->arrProductsClass[$cnt]["main_image"]));
 			$objPage->arrProductsClass[$cnt]["tpl_image_width"] = $image_width + 60;
 			$objPage->arrProductsClass[$cnt]["tpl_image_height"] = $image_height + 80;
 			
-			// ä¾¡æ ¼ã®ç™»éŒ²
+			// ²Á³Ê¤ÎÅĞÏ¿
 			if ($arrData['price02'] != "") {
 				$objCartSess->setProductValue($arrCart[$i]['id'], 'price', $arrData['price02']);
 				$objPage->arrProductsClass[$cnt]['uniq_price'] = $arrData['price02'];
@@ -1411,30 +1411,30 @@ function sfTotalCart($objPage, $objCartSess, $arrInfo) {
 				$objCartSess->setProductValue($arrCart[$i]['id'], 'price', $arrData['price01']);
 				$objPage->arrProductsClass[$cnt]['uniq_price'] = $arrData['price01'];
 			}
-			// ãƒã‚¤ãƒ³ãƒˆä»˜ä¸ç‡ã®ç™»éŒ²
+			// ¥İ¥¤¥ó¥ÈÉÕÍ¿Î¨¤ÎÅĞÏ¿
 			$objCartSess->setProductValue($arrCart[$i]['id'], 'point_rate', $arrData['point_rate']);
-			// å•†å“ã”ã¨ã®åˆè¨ˆé‡‘é¡
+			// ¾¦ÉÊ¤´¤È¤Î¹ç·×¶â³Û
 			$objPage->arrProductsClass[$cnt]['total_pretax'] = $objCartSess->getProductTotal($arrInfo, $arrCart[$i]['id']);
-			// é€æ–™ã®åˆè¨ˆã‚’è¨ˆç®—ã™ã‚‹
+			// Á÷ÎÁ¤Î¹ç·×¤ò·×»»¤¹¤ë
 			$objPage->tpl_total_deliv_fee+= ($arrData['deliv_fee'] * $arrCart[$i]['quantity']);
 			$cnt++;
 		} else {
-			// DBã«å•†å“ãŒè¦‹ã¤ã‹ã‚‰ãªã„å ´åˆã¯ã‚«ãƒ¼ãƒˆå•†å“ã®å‰Šé™¤
+			// DB¤Ë¾¦ÉÊ¤¬¸«¤Ä¤«¤é¤Ê¤¤¾ì¹ç¤Ï¥«¡¼¥È¾¦ÉÊ¤Îºï½ü
 			$objCartSess->delProductKey('id', $arrCart[$i]['id']);
 		}
 	}
 	
-	// å…¨å•†å“åˆè¨ˆé‡‘é¡(ç¨è¾¼ã¿)
+	// Á´¾¦ÉÊ¹ç·×¶â³Û(ÀÇ¹ş¤ß)
 	$objPage->tpl_total_pretax = $objCartSess->getAllProductsTotal($arrInfo);
-	// å…¨å•†å“åˆè¨ˆæ¶ˆè²»ç¨
+	// Á´¾¦ÉÊ¹ç·×¾ÃÈñÀÇ
 	$objPage->tpl_total_tax = $objCartSess->getAllProductsTax($arrInfo);
-	// å…¨å•†å“åˆè¨ˆãƒã‚¤ãƒ³ãƒˆ
+	// Á´¾¦ÉÊ¹ç·×¥İ¥¤¥ó¥È
 	$objPage->tpl_total_point = $objCartSess->getAllProductsPoint();
 	
 	return $objPage;	
 }
 
-/* DBã‹ã‚‰å–ã‚Šå‡ºã—ãŸæ—¥ä»˜ã®æ–‡å­—åˆ—ã‚’èª¿æ•´ã™ã‚‹ã€‚*/
+/* DB¤«¤é¼è¤ê½Ğ¤·¤¿ÆüÉÕ¤ÎÊ¸»úÎó¤òÄ´À°¤¹¤ë¡£*/
 function sfDispDBDate($dbdate, $time = true) {
 	list($y, $m, $d, $H, $M) = split("[- :]", $dbdate);
 
@@ -1471,18 +1471,18 @@ function sfGetDelivTime($payment_id = "") {
 }
 
 
-// éƒ½é“åºœçœŒã€æ”¯æ‰•ã„æ–¹æ³•ã‹ã‚‰é…é€æ–™é‡‘ã‚’å–å¾—ã™ã‚‹
+// ÅÔÆ»ÉÜ¸©¡¢»ÙÊ§¤¤ÊıË¡¤«¤éÇÛÁ÷ÎÁ¶â¤ò¼èÆÀ¤¹¤ë
 function sfGetDelivFee($pref, $payment_id = "") {
 	$objQuery = new SC_Query();
 	
 	$deliv_id = "";
 	
-	// æ”¯æ‰•ã„æ–¹æ³•ãŒæŒ‡å®šã•ã‚Œã¦ã„ã‚‹å ´åˆã¯ã€å¯¾å¿œã—ãŸé…é€æ¥­è€…ã‚’å–å¾—ã™ã‚‹
+	// »ÙÊ§¤¤ÊıË¡¤¬»ØÄê¤µ¤ì¤Æ¤¤¤ë¾ì¹ç¤Ï¡¢ÂĞ±ş¤·¤¿ÇÛÁ÷¶È¼Ô¤ò¼èÆÀ¤¹¤ë
 	if($payment_id != "") {
 		$where = "del_flg = 0 AND payment_id = ?";
 		$arrRet = $objQuery->select("deliv_id", "dtb_payment", $where, array($payment_id));
 		$deliv_id = $arrRet[0]['deliv_id'];
-	// æ”¯æ‰•ã„æ–¹æ³•ãŒæŒ‡å®šã•ã‚Œã¦ã„ãªã„å ´åˆã¯ã€å…ˆé ­ã®é…é€æ¥­è€…ã‚’å–å¾—ã™ã‚‹
+	// »ÙÊ§¤¤ÊıË¡¤¬»ØÄê¤µ¤ì¤Æ¤¤¤Ê¤¤¾ì¹ç¤Ï¡¢ÀèÆ¬¤ÎÇÛÁ÷¶È¼Ô¤ò¼èÆÀ¤¹¤ë
 	} else {
 		$where = "del_flg = 0";
 		$objQuery->setOrder("rank DESC");
@@ -1491,10 +1491,10 @@ function sfGetDelivFee($pref, $payment_id = "") {
 		$deliv_id = $arrRet[0]['deliv_id'];	
 	}
 	
-	// é…é€æ¥­è€…ã‹ã‚‰é…é€æ–™ã‚’å–å¾—
+	// ÇÛÁ÷¶È¼Ô¤«¤éÇÛÁ÷ÎÁ¤ò¼èÆÀ
 	if($deliv_id != "") {
 		
-		// éƒ½é“åºœçœŒãŒæŒ‡å®šã•ã‚Œã¦ã„ãªã„å ´åˆã¯ã€æ±äº¬éƒ½ã®ç•ªå·ã‚’æŒ‡å®šã—ã¦ãŠã
+		// ÅÔÆ»ÉÜ¸©¤¬»ØÄê¤µ¤ì¤Æ¤¤¤Ê¤¤¾ì¹ç¤Ï¡¢ÅìµşÅÔ¤ÎÈÖ¹æ¤ò»ØÄê¤·¤Æ¤ª¤¯
 		if($pref == "") {
 			$pref = 13;
 		}
@@ -1506,17 +1506,17 @@ function sfGetDelivFee($pref, $payment_id = "") {
 	return $arrRet[0]['fee'];	
 }
 
-/* æ”¯æ‰•ã„æ–¹æ³•ã®å–å¾— */
+/* »ÙÊ§¤¤ÊıË¡¤Î¼èÆÀ */
 function sfGetPayment() {
 	$objQuery = new SC_Query();
-	// è³¼å…¥é‡‘é¡ãŒæ¡ä»¶é¡ä»¥ä¸‹ã®é …ç›®ã‚’å–å¾—
+	// ¹ØÆş¶â³Û¤¬¾ò·ï³Û°Ê²¼¤Î¹àÌÜ¤ò¼èÆÀ
 	$where = "del_flg = 0";
 	$objQuery->setorder("fix, rank DESC");
 	$arrRet = $objQuery->select("payment_id, payment_method, rule", "dtb_payment", $where);
 	return $arrRet;	
 }
 
-/* é…åˆ—ã‚’ã‚­ãƒ¼åã”ã¨ã®é…åˆ—ã«å¤‰æ›´ã™ã‚‹ */
+/* ÇÛÎó¤ò¥­¡¼Ì¾¤´¤È¤ÎÇÛÎó¤ËÊÑ¹¹¤¹¤ë */
 function sfSwapArray($array) {
 	$max = count($array);
 	for($i = 0; $i < $max; $i++) {
@@ -1527,16 +1527,16 @@ function sfSwapArray($array) {
 	return $arrRet;
 }
 
-/* ã‹ã‘ç®—ã‚’ã™ã‚‹ï¼ˆSmartyç”¨) */
+/* ¤«¤±»»¤ò¤¹¤ë¡ÊSmartyÍÑ) */
 function sfMultiply($num1, $num2) {
 	return ($num1 * $num2);
 }
 
-/* DBã«ç™»éŒ²ã•ã‚ŒãŸãƒ†ãƒ³ãƒ—ãƒ¬ãƒ¼ãƒˆãƒ¡ãƒ¼ãƒ«ã®é€ä¿¡ */
+/* DB¤ËÅĞÏ¿¤µ¤ì¤¿¥Æ¥ó¥×¥ì¡¼¥È¥á¡¼¥ë¤ÎÁ÷¿® */
 function sfSendTemplateMail($to, $to_name, $template_id, $objPage) {
 	global $arrMAILTPLPATH;
 	$objQuery = new SC_Query();
-	// ãƒ¡ãƒ¼ãƒ«ãƒ†ãƒ³ãƒ—ãƒ¬ãƒ¼ãƒˆæƒ…å ±ã®å–å¾—
+	// ¥á¡¼¥ë¥Æ¥ó¥×¥ì¡¼¥È¾ğÊó¤Î¼èÆÀ
 	$where = "template_id = ?";
 	$arrRet = $objQuery->select("subject, header, footer", "dtb_mailtemplate", $where, array($template_id));
 	$objPage->tpl_header = $arrRet[0]['header'];
@@ -1547,21 +1547,21 @@ function sfSendTemplateMail($to, $to_name, $template_id, $objPage) {
 	$arrInfo = $objSiteInfo->data;
 	
 	$objMailView = new SC_SiteView();
-	// ãƒ¡ãƒ¼ãƒ«æœ¬æ–‡ã®å–å¾—
+	// ¥á¡¼¥ëËÜÊ¸¤Î¼èÆÀ
 	$objMailView->assignobj($objPage);
 	$body = $objMailView->fetch($arrMAILTPLPATH[$template_id]);
 	
-	// ãƒ¡ãƒ¼ãƒ«é€ä¿¡å‡¦ç†
+	// ¥á¡¼¥ëÁ÷¿®½èÍı
 	$objSendMail = new GC_SendMail();
 	$from = $arrInfo['email03'];
 	$error = $arrInfo['email04'];
 	$tosubject = $tmp_subject;
 	$objSendMail->setItem('', $tosubject, $body, $from, $arrInfo['shop_name'], $from, $error, $error);
 	$objSendMail->setTo($to, $to_name);
-	$objSendMail->sendMail();	// ãƒ¡ãƒ¼ãƒ«é€ä¿¡
+	$objSendMail->sendMail();	// ¥á¡¼¥ëÁ÷¿®
 }
 
-/* å—æ³¨å®Œäº†ãƒ¡ãƒ¼ãƒ«é€ä¿¡ */
+/* ¼õÃí´°Î»¥á¡¼¥ëÁ÷¿® */
 function sfSendOrderMail($order_id, $template_id, $subject = "", $header = "", $footer = "", $send = true) {
 	global $arrMAILTPLPATH;
 	
@@ -1573,7 +1573,7 @@ function sfSendOrderMail($order_id, $template_id, $subject = "", $header = "", $
 	$objQuery = new SC_Query();
 		
 	if($subject == "" && $header == "" && $footer == "") {
-		// ãƒ¡ãƒ¼ãƒ«ãƒ†ãƒ³ãƒ—ãƒ¬ãƒ¼ãƒˆæƒ…å ±ã®å–å¾—
+		// ¥á¡¼¥ë¥Æ¥ó¥×¥ì¡¼¥È¾ğÊó¤Î¼èÆÀ
 		$where = "template_id = ?";
 		$arrRet = $objQuery->select("subject, header, footer", "dtb_mailtemplate", $where, array('1'));
 		$objPage->tpl_header = $arrRet[0]['header'];
@@ -1585,7 +1585,7 @@ function sfSendOrderMail($order_id, $template_id, $subject = "", $header = "", $
 		$tmp_subject = $subject;
 	}
 	
-	// å—æ³¨æƒ…å ±ã®å–å¾—
+	// ¼õÃí¾ğÊó¤Î¼èÆÀ
 	$where = "order_id = ?";
 	$arrRet = $objQuery->select("*", "dtb_order", $where, array($order_id));
 	$arrOrder = $arrRet[0];
@@ -1593,7 +1593,7 @@ function sfSendOrderMail($order_id, $template_id, $subject = "", $header = "", $
 	
 	$objPage->Message_tmp = $arrOrder['message'];
 		
-	// é¡§å®¢æƒ…å ±ã®å–å¾—
+	// ¸ÜµÒ¾ğÊó¤Î¼èÆÀ
 	$customer_id = $arrOrder['customer_id'];
 	$arrRet = $objQuery->select("point", "dtb_customer", "customer_id = ?", array($customer_id));
 	$arrCustomer = $arrRet[0];
@@ -1601,7 +1601,7 @@ function sfSendOrderMail($order_id, $template_id, $subject = "", $header = "", $
 	$objPage->arrCustomer = $arrCustomer;
 	$objPage->arrOrder = $arrOrder;
 
-	//ãã®ä»–æ±ºæ¸ˆæƒ…å ±
+	//¤½¤ÎÂ¾·èºÑ¾ğÊó
 	if($arrOrder['memo02'] != "") {
 		$arrOther = unserialize($arrOrder['memo02']);
 		
@@ -1614,7 +1614,7 @@ function sfSendOrderMail($order_id, $template_id, $subject = "", $header = "", $
 		$objPage->arrOther = $arrOther;
 	}
 
-	// éƒ½é“åºœçœŒå¤‰æ›
+	// ÅÔÆ»ÉÜ¸©ÊÑ´¹
 	global $arrPref;
 	$objPage->arrOrder['deliv_pref'] = $arrPref[$objPage->arrOrder['deliv_pref']];
 	
@@ -1624,11 +1624,11 @@ function sfSendOrderMail($order_id, $template_id, $subject = "", $header = "", $
 	$objPage->tpl_user_point = $objCustomer->getValue('point');
 	
 	$objMailView = new SC_SiteView();
-	// ãƒ¡ãƒ¼ãƒ«æœ¬æ–‡ã®å–å¾—
+	// ¥á¡¼¥ëËÜÊ¸¤Î¼èÆÀ
 	$objMailView->assignobj($objPage);
 	$body = $objMailView->fetch($arrMAILTPLPATH[$template_id]);
 	
-	// ãƒ¡ãƒ¼ãƒ«é€ä¿¡å‡¦ç†
+	// ¥á¡¼¥ëÁ÷¿®½èÍı
 	$objSendMail = new GC_SendMail();
 	$bcc = $arrInfo['email01'];
 	$from = $arrInfo['email03'];
@@ -1637,10 +1637,10 @@ function sfSendOrderMail($order_id, $template_id, $subject = "", $header = "", $
 	$tosubject = sfMakeSubject($tmp_subject);
 	
 	$objSendMail->setItem('', $tosubject, $body, $from, $arrInfo['shop_name'], $from, $error, $error, $bcc);
-	$objSendMail->setTo($arrOrder["order_email"], $arrOrder["order_name01"] . " ". $arrOrder["order_name02"] ." æ§˜");
+	$objSendMail->setTo($arrOrder["order_email"], $arrOrder["order_name01"] . " ". $arrOrder["order_name02"] ." ÍÍ");
 
 
-	// é€ä¿¡ãƒ•ãƒ©ã‚°:trueã®å ´åˆã¯ã€é€ä¿¡ã™ã‚‹ã€‚
+	// Á÷¿®¥Õ¥é¥°:true¤Î¾ì¹ç¤Ï¡¢Á÷¿®¤¹¤ë¡£
 	if($send) {
 		if ($objSendMail->sendMail()) {
 			sfSaveMailHistory($order_id, $template_id, $tosubject, $body);
@@ -1650,17 +1650,17 @@ function sfSendOrderMail($order_id, $template_id, $subject = "", $header = "", $
 	return $objSendMail;
 }
 
-// ãƒ†ãƒ³ãƒ—ãƒ¬ãƒ¼ãƒˆã‚’ä½¿ç”¨ã—ãŸãƒ¡ãƒ¼ãƒ«ã®é€ä¿¡
+// ¥Æ¥ó¥×¥ì¡¼¥È¤ò»ÈÍÑ¤·¤¿¥á¡¼¥ë¤ÎÁ÷¿®
 function sfSendTplMail($to, $subject, $tplpath, $objPage) {
 	$objMailView = new SC_SiteView();
 	$objSiteInfo = new SC_SiteInfo();
 	$arrInfo = $objSiteInfo->data;
-	// ãƒ¡ãƒ¼ãƒ«æœ¬æ–‡ã®å–å¾—
+	// ¥á¡¼¥ëËÜÊ¸¤Î¼èÆÀ
 	$objPage->tpl_shopname=$arrInfo['shop_name'];
 	$objPage->tpl_infoemail = $arrInfo['email02'];
 	$objMailView->assignobj($objPage);
 	$body = $objMailView->fetch($tplpath);
-	// ãƒ¡ãƒ¼ãƒ«é€ä¿¡å‡¦ç†
+	// ¥á¡¼¥ëÁ÷¿®½èÍı
 	$objSendMail = new GC_SendMail();
 	$to = mb_encode_mimeheader($to);
 	$bcc = $arrInfo['email01'];
@@ -1670,11 +1670,11 @@ function sfSendTplMail($to, $subject, $tplpath, $objPage) {
 	$objSendMail->sendMail();	
 }
 
-// é€šå¸¸ã®ãƒ¡ãƒ¼ãƒ«é€ä¿¡
+// ÄÌ¾ï¤Î¥á¡¼¥ëÁ÷¿®
 function sfSendMail($to, $subject, $body) {
 	$objSiteInfo = new SC_SiteInfo();
 	$arrInfo = $objSiteInfo->data;
-	// ãƒ¡ãƒ¼ãƒ«é€ä¿¡å‡¦ç†
+	// ¥á¡¼¥ëÁ÷¿®½èÍı
 	$objSendMail = new GC_SendMail();
 	$bcc = $arrInfo['email01'];
 	$from = $arrInfo['email03'];
@@ -1683,7 +1683,7 @@ function sfSendMail($to, $subject, $body) {
 	$objSendMail->sendMail();
 }
 
-//ä»¶åã«ãƒ†ãƒ³ãƒ—ãƒ¬ãƒ¼ãƒˆã‚’ç”¨ã„ã‚‹
+//·ïÌ¾¤Ë¥Æ¥ó¥×¥ì¡¼¥È¤òÍÑ¤¤¤ë
 function sfMakeSubject($subject){
 	
 	$objQuery = new SC_Query();
@@ -1700,7 +1700,7 @@ function sfMakeSubject($subject){
 	return $ret; 
 }
 
-// ãƒ¡ãƒ¼ãƒ«é…ä¿¡å±¥æ­´ã¸ã®ç™»éŒ²
+// ¥á¡¼¥ëÇÛ¿®ÍúÎò¤Ø¤ÎÅĞÏ¿
 function sfSaveMailHistory($order_id, $template_id, $subject, $body) {
 	$sqlval['subject'] = $subject;
 	$sqlval['order_id'] = $order_id;
@@ -1717,12 +1717,12 @@ function sfSaveMailHistory($order_id, $template_id, $subject, $body) {
 	$objQuery->insert("dtb_mail_history", $sqlval);
 }
 
-/* ä¼šå“¡æƒ…å ±ã‚’ä¸€æ™‚å—æ³¨ãƒ†ãƒ¼ãƒ–ãƒ«ã¸ */
+/* ²ñ°÷¾ğÊó¤ò°ì»ş¼õÃí¥Æ¡¼¥Ö¥ë¤Ø */
 function sfGetCustomerSqlVal($uniqid, $sqlval) {
 	$objCustomer = new SC_Customer();
-	// ä¼šå“¡æƒ…å ±ç™»éŒ²å‡¦ç†
+	// ²ñ°÷¾ğÊóÅĞÏ¿½èÍı
 	if ($objCustomer->isLoginSuccess()) {
-		// ç™»éŒ²ãƒ‡ãƒ¼ã‚¿ã®ä½œæˆ
+		// ÅĞÏ¿¥Ç¡¼¥¿¤ÎºîÀ®
 		$sqlval['order_temp_id'] = $uniqid;
 		$sqlval['update_date'] = 'Now()';
 		$sqlval['customer_id'] = $objCustomer->getValue('customer_id');
@@ -1746,16 +1746,16 @@ function sfGetCustomerSqlVal($uniqid, $sqlval) {
 	return $sqlval;
 }
 
-// å—æ³¨ä¸€æ™‚ãƒ†ãƒ¼ãƒ–ãƒ«ã¸ã®æ›¸ãè¾¼ã¿å‡¦ç†
+// ¼õÃí°ì»ş¥Æ¡¼¥Ö¥ë¤Ø¤Î½ñ¤­¹ş¤ß½èÍı
 function sfRegistTempOrder($uniqid, $sqlval) {
 	if($uniqid != "") {
-		// æ—¢å­˜ãƒ‡ãƒ¼ã‚¿ã®ãƒã‚§ãƒƒã‚¯
+		// ´ûÂ¸¥Ç¡¼¥¿¤Î¥Á¥§¥Ã¥¯
 		$objQuery = new SC_Query();
 		$where = "order_temp_id = ?";
 		$cnt = $objQuery->count("dtb_order_temp", $where, array($uniqid));
-		// æ—¢å­˜ãƒ‡ãƒ¼ã‚¿ãŒãªã„å ´åˆ
+		// ´ûÂ¸¥Ç¡¼¥¿¤¬¤Ê¤¤¾ì¹ç
 		if ($cnt == 0) {
-			// åˆå›æ›¸ãè¾¼ã¿æ™‚ã«ä¼šå“¡ã®ç™»éŒ²æ¸ˆã¿æƒ…å ±ã‚’å–ã‚Šè¾¼ã‚€
+			// ½é²ó½ñ¤­¹ş¤ß»ş¤Ë²ñ°÷¤ÎÅĞÏ¿ºÑ¤ß¾ğÊó¤ò¼è¤ê¹ş¤à
 			$sqlval = sfGetCustomerSqlVal($uniqid, $sqlval);
 			$sqlval['create_date'] = "now()";
 			$objQuery->insert("dtb_order_temp", $sqlval);
@@ -1765,40 +1765,40 @@ function sfRegistTempOrder($uniqid, $sqlval) {
 	}
 }
 
-/* ä¼šå“¡ã®ãƒ¡ãƒ«ãƒã‚¬ç™»éŒ²ãŒã‚ã‚‹ã‹ã©ã†ã‹ã®ãƒã‚§ãƒƒã‚¯(ä»®ä¼šå“¡ã‚’å«ã¾ãªã„) */
+/* ²ñ°÷¤Î¥á¥ë¥Ş¥¬ÅĞÏ¿¤¬¤¢¤ë¤«¤É¤¦¤«¤Î¥Á¥§¥Ã¥¯(²¾²ñ°÷¤ò´Ş¤Ş¤Ê¤¤) */
 function sfCheckCustomerMailMaga($email) {
 	$col = "T1.email, T1.mail_flag, T2.customer_id";
 	$from = "dtb_customer_mail AS T1 LEFT JOIN dtb_customer AS T2 ON T1.email = T2.email";
 	$where = "T1.email = ? AND T2.status = 2";
 	$objQuery = new SC_Query();
 	$arrRet = $objQuery->select($col, $from, $where, array($email));
-	// ä¼šå“¡ã®ãƒ¡ãƒ¼ãƒ«ã‚¢ãƒ‰ãƒ¬ã‚¹ãŒç™»éŒ²ã•ã‚Œã¦ã„ã‚‹
+	// ²ñ°÷¤Î¥á¡¼¥ë¥¢¥É¥ì¥¹¤¬ÅĞÏ¿¤µ¤ì¤Æ¤¤¤ë
 	if($arrRet[0]['customer_id'] != "") {
 		return true;
 	}
 	return false;
 }
 
-// ã‚«ãƒ¼ãƒ‰ã®å‡¦ç†çµæœã‚’è¿”ã™
+// ¥«¡¼¥É¤Î½èÍı·ë²Ì¤òÊÖ¤¹
 function sfGetAuthonlyResult($dir, $file_name, $name01, $name02, $card_no, $card_exp, $amount, $order_id, $jpo_info = "10"){
 
-	$path = $dir .$file_name;		// cgiãƒ•ã‚¡ã‚¤ãƒ«ã®ãƒ•ãƒ«ãƒ‘ã‚¹ç”Ÿæˆ
-	$now_dir = getcwd();			// requireãŒã†ã¾ãã„ã‹ãªã„ã®ã§ã€cgiå®Ÿè¡Œãƒ‡ã‚£ãƒ¬ã‚¯ãƒˆãƒªã«ç§»å‹•ã™ã‚‹
+	$path = $dir .$file_name;		// cgi¥Õ¥¡¥¤¥ë¤Î¥Õ¥ë¥Ñ¥¹À¸À®
+	$now_dir = getcwd();			// require¤¬¤¦¤Ş¤¯¤¤¤«¤Ê¤¤¤Î¤Ç¡¢cgi¼Â¹Ô¥Ç¥£¥ì¥¯¥È¥ê¤Ë°ÜÆ°¤¹¤ë
 	chdir($dir);
 	
-	// ãƒ‘ã‚¤ãƒ—æ¸¡ã—ã§ã‚³ãƒãƒ³ãƒ‰ãƒ©ã‚¤ãƒ³ã‹ã‚‰cgièµ·å‹•
+	// ¥Ñ¥¤¥×ÅÏ¤·¤Ç¥³¥Ş¥ó¥É¥é¥¤¥ó¤«¤écgiµ¯Æ°
 	$cmd = "$path card_no=$card_no name01=$name01 name02=$name02 card_exp=$card_exp amount=$amount order_id=$order_id jpo_info=$jpo_info";
 
 	$tmpResult = popen($cmd, "r");
 	
-	// çµæœå–å¾—
+	// ·ë²Ì¼èÆÀ
 	while( ! FEOF ( $tmpResult ) ) {
 		$result .= FGETS($tmpResult);
 	}
-	pclose($tmpResult);				// 	ãƒ‘ã‚¤ãƒ—ã‚’é–‰ã˜ã‚‹
-	chdir($now_dir);				//ã€€å…ƒã«ã„ãŸãƒ‡ã‚£ãƒ¬ã‚¯ãƒˆãƒªã«å¸°ã‚‹
+	pclose($tmpResult);				// 	¥Ñ¥¤¥×¤òÊÄ¤¸¤ë
+	chdir($now_dir);				//¡¡¸µ¤Ë¤¤¤¿¥Ç¥£¥ì¥¯¥È¥ê¤Ëµ¢¤ë
 	
-	// çµæœã‚’é€£æƒ³é…åˆ—ã¸æ ¼ç´
+	// ·ë²Ì¤òÏ¢ÁÛÇÛÎó¤Ø³ÊÇ¼
 	$result = ereg_replace("&$", "", $result);
 	foreach (explode("&",$result) as $data) {
 		list($key, $val) = explode("=", $data, 2);
@@ -1808,7 +1808,7 @@ function sfGetAuthonlyResult($dir, $file_name, $name01, $name02, $card_no, $card
 	return $return;
 }
 
-// å—æ³¨ä¸€æ™‚ãƒ†ãƒ¼ãƒ–ãƒ«ã‹ã‚‰æƒ…å ±ã‚’å–å¾—ã™ã‚‹
+// ¼õÃí°ì»ş¥Æ¡¼¥Ö¥ë¤«¤é¾ğÊó¤ò¼èÆÀ¤¹¤ë
 function sfGetOrderTemp($order_temp_id) {
 	$objQuery = new SC_Query();
 	$where = "order_temp_id = ?";
@@ -1816,11 +1816,11 @@ function sfGetOrderTemp($order_temp_id) {
 	return $arrRet[0];
 }
 
-// ã‚«ãƒ†ã‚´ãƒªIDå–å¾—åˆ¤å®šç”¨ã®ã‚°ãƒ­ãƒ¼ãƒãƒ«å¤‰æ•°(ä¸€åº¦å–å¾—ã•ã‚Œã¦ã„ãŸã‚‰å†å–å¾—ã—ãªã„ã‚ˆã†ã«ã™ã‚‹)
+// ¥«¥Æ¥´¥êID¼èÆÀÈ½ÄêÍÑ¤Î¥°¥í¡¼¥Ğ¥ëÊÑ¿ô(°ìÅÙ¼èÆÀ¤µ¤ì¤Æ¤¤¤¿¤éºÆ¼èÆÀ¤·¤Ê¤¤¤è¤¦¤Ë¤¹¤ë)
 $g_category_on = false;
 $g_category_id = "";
 
-/* é¸æŠä¸­ã®ã‚«ãƒ†ã‚´ãƒªã‚’å–å¾—ã™ã‚‹ */
+/* ÁªÂòÃæ¤Î¥«¥Æ¥´¥ê¤ò¼èÆÀ¤¹¤ë */
 function sfGetCategoryId($product_id, $category_id) {
 	global $g_category_on;
 	global $g_category_id;
@@ -1834,18 +1834,18 @@ function sfGetCategoryId($product_id, $category_id) {
 			$category_id = $objQuery->get("dtb_products", "category_id", $where, array($product_id));
 			$g_category_id = $category_id;
 		} else {
-			// ä¸æ­£ãªå ´åˆã¯ã€0ã‚’è¿”ã™ã€‚
+			// ÉÔÀµ¤Ê¾ì¹ç¤Ï¡¢0¤òÊÖ¤¹¡£
 			$g_category_id = 0;
 		}
 	}
 	return $g_category_id;
 }
 
-// ROOTIDå–å¾—åˆ¤å®šç”¨ã®ã‚°ãƒ­ãƒ¼ãƒãƒ«å¤‰æ•°(ä¸€åº¦å–å¾—ã•ã‚Œã¦ã„ãŸã‚‰å†å–å¾—ã—ãªã„ã‚ˆã†ã«ã™ã‚‹)
+// ROOTID¼èÆÀÈ½ÄêÍÑ¤Î¥°¥í¡¼¥Ğ¥ëÊÑ¿ô(°ìÅÙ¼èÆÀ¤µ¤ì¤Æ¤¤¤¿¤éºÆ¼èÆÀ¤·¤Ê¤¤¤è¤¦¤Ë¤¹¤ë)
 $g_root_on = false;
 $g_root_id = "";
 
-/* é¸æŠä¸­ã®ã‚¢ã‚¤ãƒ†ãƒ ã®ãƒ«ãƒ¼ãƒˆã‚«ãƒ†ã‚´ãƒªIDã‚’å–å¾—ã™ã‚‹ */
+/* ÁªÂòÃæ¤Î¥¢¥¤¥Æ¥à¤Î¥ë¡¼¥È¥«¥Æ¥´¥êID¤ò¼èÆÀ¤¹¤ë */
 function sfGetRootId() {
 	global $g_root_on;
 	global $g_root_id;
@@ -1853,13 +1853,13 @@ function sfGetRootId() {
 		$g_root_on = true;
 		$objQuery = new SC_Query();
 		if($_GET['product_id'] != "" || $_GET['category_id'] != "") {
-			// é¸æŠä¸­ã®ã‚«ãƒ†ã‚´ãƒªIDã‚’åˆ¤å®šã™ã‚‹
+			// ÁªÂòÃæ¤Î¥«¥Æ¥´¥êID¤òÈ½Äê¤¹¤ë
 			$category_id = sfGetCategoryId($_GET['product_id'], $_GET['category_id']);
-			// ROOTã‚«ãƒ†ã‚´ãƒªIDã®å–å¾—
+			// ROOT¥«¥Æ¥´¥êID¤Î¼èÆÀ
 			 $arrRet = sfGetParents($objQuery, 'dtb_category', 'parent_category_id', 'category_id', $category_id);
 			 $root_id = $arrRet[0];
 		} else {
-			// ROOTã‚«ãƒ†ã‚´ãƒªIDã‚’ãªã—ã«è¨­å®šã™ã‚‹
+			// ROOT¥«¥Æ¥´¥êID¤ò¤Ê¤·¤ËÀßÄê¤¹¤ë
 			$root_id = "";
 		}
 		$g_root_id = $root_id;
@@ -1867,9 +1867,9 @@ function sfGetRootId() {
 	return $g_root_id;
 }
 
-/* ã‚«ãƒ†ã‚´ãƒªã‹ã‚‰å•†å“ã‚’æ¤œç´¢ã™ã‚‹å ´åˆã®WHEREæ–‡ã¨å€¤ã‚’è¿”ã™ */
+/* ¥«¥Æ¥´¥ê¤«¤é¾¦ÉÊ¤ò¸¡º÷¤¹¤ë¾ì¹ç¤ÎWHEREÊ¸¤ÈÃÍ¤òÊÖ¤¹ */
 function sfGetCatWhere($category_id) {
-	// å­ã‚«ãƒ†ã‚´ãƒªIDã®å–å¾—
+	// »Ò¥«¥Æ¥´¥êID¤Î¼èÆÀ
 	$arrRet = sfGetChildsID("dtb_category", "parent_category_id", "category_id", $category_id);
 	$tmp_where = "";
 	foreach ($arrRet as $val) {
@@ -1884,9 +1884,9 @@ function sfGetCatWhere($category_id) {
 	return array($tmp_where, $arrval);
 }
 
-/* åŠ ç®—ãƒã‚¤ãƒ³ãƒˆã®è¨ˆç®—å¼ */
+/* ²Ã»»¥İ¥¤¥ó¥È¤Î·×»»¼° */
 function sfGetAddPoint($totalpoint, $use_point, $arrInfo) {
-	// è³¼å…¥å•†å“ã®åˆè¨ˆãƒã‚¤ãƒ³ãƒˆã‹ã‚‰åˆ©ç”¨ã—ãŸãƒã‚¤ãƒ³ãƒˆã®ãƒã‚¤ãƒ³ãƒˆæ›ç®—ä¾¡å€¤ã‚’å¼•ãæ–¹å¼
+	// ¹ØÆş¾¦ÉÊ¤Î¹ç·×¥İ¥¤¥ó¥È¤«¤éÍøÍÑ¤·¤¿¥İ¥¤¥ó¥È¤Î¥İ¥¤¥ó¥È´¹»»²ÁÃÍ¤ò°ú¤¯Êı¼°
 	$add_point = $totalpoint - intval($use_point * ($arrInfo['point_rate'] / 100));
 	
 	if($add_point < 0) {
@@ -1895,18 +1895,18 @@ function sfGetAddPoint($totalpoint, $use_point, $arrInfo) {
 	return $add_point;
 }
 
-/* ä¸€æ„ã‹ã¤äºˆæ¸¬ã•ã‚Œã«ãã„ID */
+/* °ì°Õ¤«¤ÄÍ½Â¬¤µ¤ì¤Ë¤¯¤¤ID */
 function sfGetUniqRandomId($head = "") {
-	// äºˆæ¸¬ã•ã‚Œãªã„ã‚ˆã†ã«ãƒ©ãƒ³ãƒ€ãƒ æ–‡å­—åˆ—ã‚’ä»˜ä¸ã™ã‚‹ã€‚
+	// Í½Â¬¤µ¤ì¤Ê¤¤¤è¤¦¤Ë¥é¥ó¥À¥àÊ¸»úÎó¤òÉÕÍ¿¤¹¤ë¡£
 	$random = gfMakePassword(8);
-	// åŒä¸€ãƒ›ã‚¹ãƒˆå†…ã§ä¸€æ„ãªIDã‚’ç”Ÿæˆ
+	// Æ±°ì¥Û¥¹¥ÈÆâ¤Ç°ì°Õ¤ÊID¤òÀ¸À®
 	$id = uniqid($head);
 	return ($id . $random);
 }
 
-// ã‚«ãƒ†ã‚´ãƒªåˆ¥ã‚ªã‚¹ã‚¹ãƒ¡å“ã®å–å¾—
+// ¥«¥Æ¥´¥êÊÌ¥ª¥¹¥¹¥áÉÊ¤Î¼èÆÀ
 function sfGetBestProducts( $conn, $category_id = 0){
-	// æ—¢ã«ç™»éŒ²ã•ã‚Œã¦ã„ã‚‹å†…å®¹ã‚’å–å¾—ã™ã‚‹
+	// ´û¤ËÅĞÏ¿¤µ¤ì¤Æ¤¤¤ëÆâÍÆ¤ò¼èÆÀ¤¹¤ë
 	$sql = "SELECT name, main_image, main_list_image, price01_min, price01_max, price02_min, price02_max, point_rate,
 			 A.product_id, A.comment FROM dtb_best_products as A LEFT JOIN vw_products_allclass AS allcls 
 			USING (product_id) WHERE A.category_id = ? AND A.del_flg = 0 AND status = 1 ORDER BY A.rank";
@@ -1915,9 +1915,9 @@ function sfGetBestProducts( $conn, $category_id = 0){
 	return $arrItems;
 }
 
-// ç‰¹æ®Šåˆ¶å¾¡æ–‡å­—ã®æ‰‹å‹•ã‚¨ã‚¹ã‚±ãƒ¼ãƒ—
+// ÆÃ¼ìÀ©¸æÊ¸»ú¤Î¼êÆ°¥¨¥¹¥±¡¼¥×
 function sfManualEscape($data) {
-	// é…åˆ—ã§ãªã„å ´åˆ
+	// ÇÛÎó¤Ç¤Ê¤¤¾ì¹ç
 	if(!is_array($data)) {
 		if (DB_TYPE == "pgsql") {
 			$ret = pg_escape_string($data);
@@ -1929,7 +1929,7 @@ function sfManualEscape($data) {
 		return $ret;
 	}
 	
-	// é…åˆ—ã®å ´åˆ
+	// ÇÛÎó¤Î¾ì¹ç
 	foreach($data as $val) {
 		if (DB_TYPE == "pgsql") {
 			$ret = pg_escape_string($val);
@@ -1945,7 +1945,7 @@ function sfManualEscape($data) {
 	return $arrRet;
 }
 
-// å—æ³¨ç•ªå·ã€åˆ©ç”¨ãƒã‚¤ãƒ³ãƒˆã€åŠ ç®—ãƒã‚¤ãƒ³ãƒˆã‹ã‚‰æœ€çµ‚ãƒã‚¤ãƒ³ãƒˆã‚’å–å¾—
+// ¼õÃíÈÖ¹æ¡¢ÍøÍÑ¥İ¥¤¥ó¥È¡¢²Ã»»¥İ¥¤¥ó¥È¤«¤éºÇ½ª¥İ¥¤¥ó¥È¤ò¼èÆÀ
 function sfGetCustomerPoint($order_id, $use_point, $add_point) {
 	$objQuery = new SC_Query();
 	$arrRet = $objQuery->select("customer_id", "dtb_order", "order_id = ?", array($order_id));
@@ -1961,29 +1961,29 @@ function sfGetCustomerPoint($order_id, $use_point, $add_point) {
 	return array($point, $total_point);
 }
 
-/* ãƒ‰ãƒ¡ã‚¤ãƒ³é–“ã§æœ‰åŠ¹ãªã‚»ãƒƒã‚·ãƒ§ãƒ³ã®ã‚¹ã‚¿ãƒ¼ãƒˆ */
+/* ¥É¥á¥¤¥ó´Ö¤ÇÍ­¸ú¤Ê¥»¥Ã¥·¥ç¥ó¤Î¥¹¥¿¡¼¥È */
 function sfDomainSessionStart() {
 	$ret = session_id();
 /*
-	ãƒ˜ãƒƒãƒ€ãƒ¼ã‚’é€ä¿¡ã—ã¦ã„ã¦ã‚‚session_start()ãŒå¿…è¦ãªãƒšãƒ¼ã‚¸ãŒã‚ã‚‹ã®ã§
-	ã‚³ãƒ¡ãƒ³ãƒˆã‚¢ã‚¦ãƒˆã—ã¦ãŠã
+	¥Ø¥Ã¥À¡¼¤òÁ÷¿®¤·¤Æ¤¤¤Æ¤âsession_start()¤¬É¬Í×¤Ê¥Ú¡¼¥¸¤¬¤¢¤ë¤Î¤Ç
+	¥³¥á¥ó¥È¥¢¥¦¥È¤·¤Æ¤ª¤¯
 	if($ret == "" && !headers_sent()) {
 */
 	if($ret == "") {
-		/* ã‚»ãƒƒã‚·ãƒ§ãƒ³ãƒ‘ãƒ©ãƒ¡ãƒ¼ã‚¿ã®æŒ‡å®š
-		 ãƒ»ãƒ–ãƒ©ã‚¦ã‚¶ã‚’é–‰ã˜ã‚‹ã¾ã§æœ‰åŠ¹
-		 ãƒ»ã™ã¹ã¦ã®ãƒ‘ã‚¹ã§æœ‰åŠ¹
-		 ãƒ»åŒã˜ãƒ‰ãƒ¡ã‚¤ãƒ³é–“ã§å…±æœ‰ */
+		/* ¥»¥Ã¥·¥ç¥ó¥Ñ¥é¥á¡¼¥¿¤Î»ØÄê
+		 ¡¦¥Ö¥é¥¦¥¶¤òÊÄ¤¸¤ë¤Ş¤ÇÍ­¸ú
+		 ¡¦¤¹¤Ù¤Æ¤Î¥Ñ¥¹¤ÇÍ­¸ú
+		 ¡¦Æ±¤¸¥É¥á¥¤¥ó´Ö¤Ç¶¦Í­ */
 		session_set_cookie_params (0, "/", DOMAIN_NAME);
 
 		if(!ini_get("session.auto_start")){
-			// ã‚»ãƒƒã‚·ãƒ§ãƒ³é–‹å§‹
+			// ¥»¥Ã¥·¥ç¥ó³«»Ï
 			session_start();
 		}
 	}
 }
 
-/* æ–‡å­—åˆ—ã«å¼·åˆ¶çš„ã«æ”¹è¡Œã‚’å…¥ã‚Œã‚‹ */
+/* Ê¸»úÎó¤Ë¶¯À©Åª¤Ë²ş¹Ô¤òÆş¤ì¤ë */
 function sfPutBR($str, $size) {
 	$i = 0;
 	$cnt = 0;
@@ -2005,7 +2005,7 @@ function sfPutBR($str, $size) {
 	return $ret;
 }
 
-// äºŒå›ä»¥ä¸Šç¹°ã‚Šè¿”ã•ã‚Œã¦ã„ã‚‹ã‚¹ãƒ©ãƒƒã‚·ãƒ¥[/]ã‚’ä¸€ã¤ã«å¤‰æ›ã™ã‚‹ã€‚
+// Æó²ó°Ê¾å·«¤êÊÖ¤µ¤ì¤Æ¤¤¤ë¥¹¥é¥Ã¥·¥å[/]¤ò°ì¤Ä¤ËÊÑ´¹¤¹¤ë¡£
 function sfRmDupSlash($istr){
 	if(ereg("^http://", $istr)) {
 		$str = substr($istr, 7);
@@ -2063,52 +2063,52 @@ function sfCutString($str, $len, $byte = true, $commadisp = true) {
 	return $ret;
 }
 
-// å¹´ã€æœˆã€ç· ã‚æ—¥ã‹ã‚‰ã€å…ˆæœˆã®ç· ã‚æ—¥+1ã€ä»Šæœˆã®ç· ã‚æ—¥ã‚’æ±‚ã‚ã‚‹ã€‚
+// Ç¯¡¢·î¡¢Äù¤áÆü¤«¤é¡¢Àè·î¤ÎÄù¤áÆü+1¡¢º£·î¤ÎÄù¤áÆü¤òµá¤á¤ë¡£
 function sfTermMonth($year, $month, $close_day) {
 	$end_year = $year;
 	$end_month = $month;
 	
-	// é–‹å§‹æœˆãŒçµ‚äº†æœˆã¨åŒã˜ã‹å¦ã‹
+	// ³«»Ï·î¤¬½ªÎ»·î¤ÈÆ±¤¸¤«Èİ¤«
 	$same_month = false;
 	
-	// è©²å½“æœˆã®æœ«æ—¥ã‚’æ±‚ã‚ã‚‹ã€‚
+	// ³ºÅö·î¤ÎËöÆü¤òµá¤á¤ë¡£
 	$end_last_day = date("d", mktime(0, 0, 0, $month + 1, 0, $year));
 	
-	// æœˆã®æœ«æ—¥ãŒç· ã‚æ—¥ã‚ˆã‚Šå°‘ãªã„å ´åˆ
+	// ·î¤ÎËöÆü¤¬Äù¤áÆü¤è¤ê¾¯¤Ê¤¤¾ì¹ç
 	if($end_last_day < $close_day) {
-		// ç· ã‚æ—¥ã‚’æœˆæœ«æ—¥ã«åˆã‚ã›ã‚‹
+		// Äù¤áÆü¤ò·îËöÆü¤Ë¹ç¤ï¤»¤ë
 		$end_day = $end_last_day;
 	} else {
 		$end_day = $close_day;
 	}
 	
-	// å‰æœˆã®å–å¾—
+	// Á°·î¤Î¼èÆÀ
 	$tmp_year = date("Y", mktime(0, 0, 0, $month, 0, $year));
 	$tmp_month = date("m", mktime(0, 0, 0, $month, 0, $year));
-	// å‰æœˆã®æœ«æ—¥ã‚’æ±‚ã‚ã‚‹ã€‚
+	// Á°·î¤ÎËöÆü¤òµá¤á¤ë¡£
 	$start_last_day = date("d", mktime(0, 0, 0, $month, 0, $year));
 	
-	// å‰æœˆã®æœ«æ—¥ãŒç· ã‚æ—¥ã‚ˆã‚Šå°‘ãªã„å ´åˆ
+	// Á°·î¤ÎËöÆü¤¬Äù¤áÆü¤è¤ê¾¯¤Ê¤¤¾ì¹ç
 	if ($start_last_day < $close_day) {
-		// æœˆæœ«æ—¥ã«åˆã‚ã›ã‚‹
+		// ·îËöÆü¤Ë¹ç¤ï¤»¤ë
 		$tmp_day = $start_last_day;
 	} else {
 		$tmp_day = $close_day;
 	}
 	
-	// å…ˆæœˆã®æœ«æ—¥ã®ç¿Œæ—¥ã‚’å–å¾—ã™ã‚‹
+	// Àè·î¤ÎËöÆü¤ÎÍâÆü¤ò¼èÆÀ¤¹¤ë
 	$start_year = date("Y", mktime(0, 0, 0, $tmp_month, $tmp_day + 1, $tmp_year));
 	$start_month = date("m", mktime(0, 0, 0, $tmp_month, $tmp_day + 1, $tmp_year));
 	$start_day = date("d", mktime(0, 0, 0, $tmp_month, $tmp_day + 1, $tmp_year));
 	
-	// æ—¥ä»˜ã®ä½œæˆ
+	// ÆüÉÕ¤ÎºîÀ®
 	$start_date = sprintf("%d/%d/%d 00:00:00", $start_year, $start_month, $start_day);
 	$end_date = sprintf("%d/%d/%d 23:59:59", $end_year, $end_month, $end_day);
 	
 	return array($start_date, $end_date);
 }
 
-// PDFç”¨ã®RGBã‚«ãƒ©ãƒ¼ã‚’è¿”ã™
+// PDFÍÑ¤ÎRGB¥«¥é¡¼¤òÊÖ¤¹
 function sfGetPdfRgb($hexrgb) {
 	$hex = substr($hexrgb, 0, 2);
 	$r = hexdec($hex) / 255;
@@ -2122,7 +2122,7 @@ function sfGetPdfRgb($hexrgb) {
 	return array($r, $g, $b);	
 }
 
-//ãƒ¡ãƒ«ãƒã‚¬ä»®ç™»éŒ²ã¨ãƒ¡ãƒ¼ãƒ«é…ä¿¡
+//¥á¥ë¥Ş¥¬²¾ÅĞÏ¿¤È¥á¡¼¥ëÇÛ¿®
 function sfRegistTmpMailData($mail_flag, $email){
 	$objQuery = new SC_Query();
 	$objConn = new SC_DBConn();
@@ -2135,7 +2135,7 @@ function sfRegistTmpMailData($mail_flag, $email){
 	$arrRegistMailMagazine["end_flag"]='0';
 	$arrRegistMailMagazine["update_date"] = 'now()';
 	
-	//ãƒ¡ãƒ«ãƒã‚¬ä»®ç™»éŒ²ç”¨ãƒ•ãƒ©ã‚°
+	//¥á¥ë¥Ş¥¬²¾ÅĞÏ¿ÍÑ¥Õ¥é¥°
 	$flag = $objQuery->count("dtb_customer_mail_temp", "email=?", array($email));
 	$objConn->query("BEGIN");
 	switch ($flag){
@@ -2148,28 +2148,28 @@ function sfRegistTmpMailData($mail_flag, $email){
 		break;
 	}
 	$objConn->query("COMMIT");
-	$subject = sfMakeSubject('ãƒ¡ãƒ«ãƒã‚¬ä»®ç™»éŒ²ãŒå®Œäº†ã—ã¾ã—ãŸã€‚');
+	$subject = sfMakeSubject('¥á¥ë¥Ş¥¬²¾ÅĞÏ¿¤¬´°Î»¤·¤Ş¤·¤¿¡£');
 	$objPage->tpl_url = SSL_URL."mailmagazine/regist.php?temp_id=".$arrRegistMailMagazine['temp_id'];
 	switch ($mail_flag){
 		case '1':
-		$objPage->tpl_name = "ç™»éŒ²";
+		$objPage->tpl_name = "ÅĞÏ¿";
 		$objPage->tpl_kindname = "HTML";
 		break;
 		
 		case '2':
-		$objPage->tpl_name = "ç™»éŒ²";
-		$objPage->tpl_kindname = "ãƒ†ã‚­ã‚¹ãƒˆ";
+		$objPage->tpl_name = "ÅĞÏ¿";
+		$objPage->tpl_kindname = "¥Æ¥­¥¹¥È";
 		break;
 		
 		case '3':
-		$objPage->tpl_name = "è§£é™¤";
+		$objPage->tpl_name = "²ò½ü";
 		break;
 	}
 		$objPage->tpl_email = $email;
 	sfSendTplMail($email, $subject, 'mail_templates/mailmagazine_temp.tpl', $objPage);
 }
 
-// å†å¸°çš„ã«å¤šæ®µé…åˆ—ã‚’æ¤œç´¢ã—ã¦ä¸€æ¬¡å…ƒé…åˆ—(Hiddenå¼•æ¸¡ã—ç”¨é…åˆ—)ã«å¤‰æ›ã™ã‚‹ã€‚
+// ºÆµ¢Åª¤ËÂ¿ÃÊÇÛÎó¤ò¸¡º÷¤·¤Æ°ì¼¡¸µÇÛÎó(Hidden°úÅÏ¤·ÍÑÇÛÎó)¤ËÊÑ´¹¤¹¤ë¡£
 function sfMakeHiddenArray($arrSrc, $arrDst = array(), $parent_key = "") {
 	if(is_array($arrSrc)) {
 		foreach($arrSrc as $key => $val) {
@@ -2188,14 +2188,14 @@ function sfMakeHiddenArray($arrSrc, $arrDst = array(), $parent_key = "") {
 	return $arrDst;
 }
 
-// DBå–å¾—æ—¥æ™‚ã‚’ã‚¿ã‚¤ãƒ ã«å¤‰æ›
+// DB¼èÆÀÆü»ş¤ò¥¿¥¤¥à¤ËÊÑ´¹
 function sfDBDatetoTime($db_date) {
 	$date = ereg_replace("\..*$","",$db_date);
 	$time = strtotime($date);
 	return $time;
 }
 
-// å‡ºåŠ›ã®éš›ã«ãƒ†ãƒ³ãƒ—ãƒ¬ãƒ¼ãƒˆã‚’åˆ‡ã‚Šæ›¿ãˆã‚‰ã‚Œã‚‹
+// ½ĞÎÏ¤Îºİ¤Ë¥Æ¥ó¥×¥ì¡¼¥È¤òÀÚ¤êÂØ¤¨¤é¤ì¤ë
 /*
 	index.php?tpl=test.tpl
 */
@@ -2229,7 +2229,7 @@ function sfCustomDisplay($objPage) {
 	}
 }
 
-//ä¼šå“¡ç·¨é›†ç™»éŒ²å‡¦ç†
+//²ñ°÷ÊÔ½¸ÅĞÏ¿½èÍı
 function sfEditCustomerData($array, $arrRegistColumn) {
 	$objQuery = new SC_Query();
 	
@@ -2248,7 +2248,7 @@ function sfEditCustomerData($array, $arrRegistColumn) {
 		$arrRegist["birth"] = NULL;
 	}
 
-	//-- ãƒ‘ã‚¹ãƒ¯ãƒ¼ãƒ‰ã®æ›´æ–°ãŒã‚ã‚‹å ´åˆã¯æš—å·åŒ–ã€‚ï¼ˆæ›´æ–°ãŒãªã„å ´åˆã¯UPDATEæ–‡ã‚’æ§‹æˆã—ãªã„ï¼‰
+	//-- ¥Ñ¥¹¥ï¡¼¥É¤Î¹¹¿·¤¬¤¢¤ë¾ì¹ç¤Ï°Å¹æ²½¡£¡Ê¹¹¿·¤¬¤Ê¤¤¾ì¹ç¤ÏUPDATEÊ¸¤ò¹½À®¤·¤Ê¤¤¡Ë
 	if ($array["password"] != DEFAULT_PASSWORD) $arrRegist["password"] = sha1($array["password"] . ":" . AUTH_MAGIC); 
 	$arrRegist["update_date"] = "NOW()";
 	
@@ -2256,7 +2256,7 @@ function sfEditCustomerData($array, $arrRegistColumn) {
 	$sqlval["update_date"] = "NOW()";
 	$sqlval['email'] = $array['email'];
 	$sqlval['mail_flag'] = $array['mail_flag'];
-	//-- ç·¨é›†ç™»éŒ²å®Ÿè¡Œ
+	//-- ÊÔ½¸ÅĞÏ¿¼Â¹Ô
 	$objQuery->begin();
 	$objQuery->update("dtb_customer", $arrRegist, "customer_id = ? ", array($array['customer_id']));
 	$objQuery->delete("dtb_customer_mail", "email = ?", array($array['email']));
@@ -2264,22 +2264,22 @@ function sfEditCustomerData($array, $arrRegistColumn) {
 	$objQuery->commit();
 }
 
-// PHPã®mb_convert_encodingé–¢æ•°ã‚’Smartyã§ã‚‚ä½¿ãˆã‚‹ã‚ˆã†ã«ã™ã‚‹
+// PHP¤Îmb_convert_encoding´Ø¿ô¤òSmarty¤Ç¤â»È¤¨¤ë¤è¤¦¤Ë¤¹¤ë
 function sf_mb_convert_encoding($str, $encode = 'CHAR_CODE') {
 	return  mb_convert_encoding($str, $encode);
 }	
 
-// PHPã®mktimeé–¢æ•°ã‚’Smartyã§ã‚‚ä½¿ãˆã‚‹ã‚ˆã†ã«ã™ã‚‹
+// PHP¤Îmktime´Ø¿ô¤òSmarty¤Ç¤â»È¤¨¤ë¤è¤¦¤Ë¤¹¤ë
 function sf_mktime($format, $hour=0, $minute=0, $second=0, $month=1, $day=1, $year=1999) {
 	return  date($format,mktime($hour, $minute, $second, $month, $day, $year));
 }	
 
-// PHPã®dateé–¢æ•°ã‚’Smartyã§ã‚‚ä½¿ãˆã‚‹ã‚ˆã†ã«ã™ã‚‹
+// PHP¤Îdate´Ø¿ô¤òSmarty¤Ç¤â»È¤¨¤ë¤è¤¦¤Ë¤¹¤ë
 function sf_date($format, $timestamp = '') {
 	return  date( $format, $timestamp);
 }
 
-// ãƒã‚§ãƒƒã‚¯ãƒœãƒƒã‚¯ã‚¹ã®å‹ã‚’å¤‰æ›ã™ã‚‹
+// ¥Á¥§¥Ã¥¯¥Ü¥Ã¥¯¥¹¤Î·¿¤òÊÑ´¹¤¹¤ë
 function sfChangeCheckBox($data , $tpl = false){
 	if ($tpl) {
 		if ($data == 1){
@@ -2299,11 +2299,11 @@ function sfChangeCheckBox($data , $tpl = false){
 function sfCategory_Count($objQuery){
 	$sql = "";
 	
-	//ãƒ†ãƒ¼ãƒ–ãƒ«å†…å®¹ã®å‰Šé™¤
+	//¥Æ¡¼¥Ö¥ëÆâÍÆ¤Îºï½ü
 	$objQuery->query("DELETE FROM dtb_category_count");
 	$objQuery->query("DELETE FROM dtb_category_total_count");
 	
-	//å„ã‚«ãƒ†ã‚´ãƒªå†…ã®å•†å“æ•°ã‚’æ•°ãˆã¦æ ¼ç´
+	//³Æ¥«¥Æ¥´¥êÆâ¤Î¾¦ÉÊ¿ô¤ò¿ô¤¨¤Æ³ÊÇ¼
 	$sql = " INSERT INTO dtb_category_count(category_id, product_count, create_date) ";
 	$sql .= " SELECT T1.category_id, count(T2.category_id), now() FROM dtb_category AS T1 LEFT JOIN dtb_products AS T2 ";
 	$sql .= " ON T1.category_id = T2.category_id  ";
@@ -2311,13 +2311,13 @@ function sfCategory_Count($objQuery){
 	$sql .= " GROUP BY T1.category_id, T2.category_id ";
 	$objQuery->query($sql);
 	
-	//å­ã‚«ãƒ†ã‚´ãƒªå†…ã®å•†å“æ•°ã‚’é›†è¨ˆã™ã‚‹
+	//»Ò¥«¥Æ¥´¥êÆâ¤Î¾¦ÉÊ¿ô¤ò½¸·×¤¹¤ë
 	$arrCat = $objQuery->getAll("SELECT * FROM dtb_category");
 	
 	$sql = "";
 	foreach($arrCat as $key => $val){
 		
-		// å­IDä¸€è¦§ã‚’å–å¾—
+		// »ÒID°ìÍ÷¤ò¼èÆÀ
 		$arrRet = sfGetChildrenArray('dtb_category', 'parent_category_id', 'category_id', $val['category_id']);	
 		$line = sfGetCommaList($arrRet);
 		
@@ -2329,7 +2329,7 @@ function sfCategory_Count($objQuery){
 	}
 }
 
-// 2ã¤ã®é…åˆ—ã‚’ç”¨ã„ã¦é€£æƒ³é…åˆ—ã‚’ä½œæˆã™ã‚‹
+// 2¤Ä¤ÎÇÛÎó¤òÍÑ¤¤¤ÆÏ¢ÁÛÇÛÎó¤òºîÀ®¤¹¤ë
 function sfarrCombine($arrKeys, $arrValues) {
 
 	if(count($arrKeys) <= 0 and count($arrValues) <= 0) return array();
@@ -2347,7 +2347,7 @@ function sfarrCombine($arrKeys, $arrValues) {
 	return false; 
 }
 
-/* éšå±¤æ§‹é€ ã®ãƒ†ãƒ¼ãƒ–ãƒ«ã‹ã‚‰å­IDé…åˆ—ã‚’å–å¾—ã™ã‚‹ */
+/* ³¬ÁØ¹½Â¤¤Î¥Æ¡¼¥Ö¥ë¤«¤é»ÒIDÇÛÎó¤ò¼èÆÀ¤¹¤ë */
 function sfGetChildrenArray($table, $pid_name, $id_name, $id) {
 	$objQuery = new SC_Query();
 	$col = $pid_name . "," . $id_name;
@@ -2368,7 +2368,7 @@ function sfGetChildrenArray($table, $pid_name, $id_name, $id) {
 	return $arrChildren;
 }
 
-/* è¦ªIDç›´ä¸‹ã®å­IDã‚’ã™ã¹ã¦å–å¾—ã™ã‚‹ */
+/* ¿ÆIDÄ¾²¼¤Î»ÒID¤ò¤¹¤Ù¤Æ¼èÆÀ¤¹¤ë */
 function sfGetChildrenArraySub($arrData, $pid_name, $id_name, $arrPID) {
 	$arrChildren = array();
 	$max = count($arrData);
@@ -2384,7 +2384,7 @@ function sfGetChildrenArraySub($arrData, $pid_name, $id_name, $arrPID) {
 }
 
 
-/* éšå±¤æ§‹é€ ã®ãƒ†ãƒ¼ãƒ–ãƒ«ã‹ã‚‰è¦ªIDé…åˆ—ã‚’å–å¾—ã™ã‚‹ */
+/* ³¬ÁØ¹½Â¤¤Î¥Æ¡¼¥Ö¥ë¤«¤é¿ÆIDÇÛÎó¤ò¼èÆÀ¤¹¤ë */
 function sfGetParentsArray($table, $pid_name, $id_name, $id) {
 	$objQuery = new SC_Query();
 	$col = $pid_name . "," . $id_name;
@@ -2406,7 +2406,7 @@ function sfGetParentsArray($table, $pid_name, $id_name, $id) {
 	return $arrParents;
 }
 
-/* å­IDæ‰€å±ã™ã‚‹è¦ªIDã‚’å–å¾—ã™ã‚‹ */
+/* »ÒID½êÂ°¤¹¤ë¿ÆID¤ò¼èÆÀ¤¹¤ë */
 function sfGetParentsArraySub($arrData, $pid_name, $id_name, $child) {
 	$max = count($arrData);
 	$parent = "";
@@ -2419,20 +2419,20 @@ function sfGetParentsArraySub($arrData, $pid_name, $id_name, $child) {
 	return $parent;
 }
 
-/* éšå±¤æ§‹é€ ã®ãƒ†ãƒ¼ãƒ–ãƒ«ã‹ã‚‰ä¸ãˆã‚‰ã‚ŒãŸIDã®å…„å¼Ÿã‚’å–å¾—ã™ã‚‹ */
+/* ³¬ÁØ¹½Â¤¤Î¥Æ¡¼¥Ö¥ë¤«¤éÍ¿¤¨¤é¤ì¤¿ID¤Î·»Äï¤ò¼èÆÀ¤¹¤ë */
 function sfGetBrothersArray($arrData, $pid_name, $id_name, $arrPID) {
 	$max = count($arrData);
 	
 	$arrBrothers = array();
 	foreach($arrPID as $id) {
-		// è¦ªIDã‚’æ¤œç´¢ã™ã‚‹
+		// ¿ÆID¤ò¸¡º÷¤¹¤ë
 		for($i = 0; $i < $max; $i++) {
 			if($arrData[$i][$id_name] == $id) {
 				$parent = $arrData[$i][$pid_name];
 				break;
 			}
 		}
-		// å…„å¼ŸIDã‚’æ¤œç´¢ã™ã‚‹
+		// ·»ÄïID¤ò¸¡º÷¤¹¤ë
 		for($i = 0; $i < $max; $i++) {
 			if($arrData[$i][$pid_name] == $parent) {
 				$arrBrothers[] = $arrData[$i][$id_name];
@@ -2442,12 +2442,12 @@ function sfGetBrothersArray($arrData, $pid_name, $id_name, $arrPID) {
 	return $arrBrothers;
 }
 
-/* éšå±¤æ§‹é€ ã®ãƒ†ãƒ¼ãƒ–ãƒ«ã‹ã‚‰ä¸ãˆã‚‰ã‚ŒãŸIDã®ç›´å±ã®å­ã‚’å–å¾—ã™ã‚‹ */
+/* ³¬ÁØ¹½Â¤¤Î¥Æ¡¼¥Ö¥ë¤«¤éÍ¿¤¨¤é¤ì¤¿ID¤ÎÄ¾Â°¤Î»Ò¤ò¼èÆÀ¤¹¤ë */
 function sfGetUnderChildrenArray($arrData, $pid_name, $id_name, $parent) {
 	$max = count($arrData);
 	
 	$arrChildren = array();
-	// å­IDã‚’æ¤œç´¢ã™ã‚‹
+	// »ÒID¤ò¸¡º÷¤¹¤ë
 	for($i = 0; $i < $max; $i++) {
 		if($arrData[$i][$pid_name] == $parent) {
 			$arrChildren[] = $arrData[$i][$id_name];
@@ -2457,7 +2457,7 @@ function sfGetUnderChildrenArray($arrData, $pid_name, $id_name, $parent) {
 }
 
 
-// ã‚«ãƒ†ã‚´ãƒªãƒ„ãƒªãƒ¼ã®å–å¾—
+// ¥«¥Æ¥´¥ê¥Ä¥ê¡¼¤Î¼èÆÀ
 function sfGetCatTree($parent_category_id, $count_check = false) {
 	$objQuery = new SC_Query();
 	$col = "";
@@ -2472,7 +2472,7 @@ function sfGetCatTree($parent_category_id, $count_check = false) {
 	$col .= " cat.del_flg, ";
 	$col .= " ttl.product_count";	
 	$from = "dtb_category as cat left join dtb_category_total_count as ttl on ttl.category_id = cat.category_id";
-	// ç™»éŒ²å•†å“æ•°ã®ãƒã‚§ãƒƒã‚¯
+	// ÅĞÏ¿¾¦ÉÊ¿ô¤Î¥Á¥§¥Ã¥¯
 	if($count_check) {
 		$where = "del_flg = 0 AND product_count > 0";
 	} else {
@@ -2495,35 +2495,35 @@ function sfGetCatTree($parent_category_id, $count_check = false) {
 	return $arrRet;
 }
 
-// è¦ªã‚«ãƒ†ã‚´ãƒªãƒ¼ã‚’é€£çµã—ãŸæ–‡å­—åˆ—ã‚’å–å¾—ã™ã‚‹
+// ¿Æ¥«¥Æ¥´¥ê¡¼¤òÏ¢·ë¤·¤¿Ê¸»úÎó¤ò¼èÆÀ¤¹¤ë
 function sfGetCatCombName($category_id){
-	// å•†å“ãŒå±ã™ã‚‹ã‚«ãƒ†ã‚´ãƒªIDã‚’ç¸¦ã«å–å¾—
+	// ¾¦ÉÊ¤¬Â°¤¹¤ë¥«¥Æ¥´¥êID¤ò½Ä¤Ë¼èÆÀ
 	$objQuery = new SC_Query();
 	$arrCatID = sfGetParents($objQuery, "dtb_category", "parent_category_id", "category_id", $category_id);	
 	$ConbName = "";
 	
-	// ã‚«ãƒ†ã‚´ãƒªãƒ¼åç§°ã‚’å–å¾—ã™ã‚‹
+	// ¥«¥Æ¥´¥ê¡¼Ì¾¾Î¤ò¼èÆÀ¤¹¤ë
 	foreach($arrCatID as $key => $val){
 		$sql = "SELECT category_name FROM dtb_category WHERE category_id = ?";
 		$arrVal = array($val);
 		$CatName = $objQuery->getOne($sql,$arrVal);
 		$ConbName .= $CatName . ' | ';
 	}
-	// æœ€å¾Œã® ï½œ ã‚’ã‚«ãƒƒãƒˆã™ã‚‹
+	// ºÇ¸å¤Î ¡Ã ¤ò¥«¥Ã¥È¤¹¤ë
 	$ConbName = substr_replace($ConbName, "", strlen($ConbName) - 2, 2);
 	
 	return $ConbName;
 }
 
-// æŒ‡å®šã—ãŸã‚«ãƒ†ã‚´ãƒªãƒ¼IDã®å¤§ã‚«ãƒ†ã‚´ãƒªãƒ¼ã‚’å–å¾—ã™ã‚‹
+// »ØÄê¤·¤¿¥«¥Æ¥´¥ê¡¼ID¤ÎÂç¥«¥Æ¥´¥ê¡¼¤ò¼èÆÀ¤¹¤ë
 function GetFirstCat($category_id){
-	// å•†å“ãŒå±ã™ã‚‹ã‚«ãƒ†ã‚´ãƒªIDã‚’ç¸¦ã«å–å¾—
+	// ¾¦ÉÊ¤¬Â°¤¹¤ë¥«¥Æ¥´¥êID¤ò½Ä¤Ë¼èÆÀ
 	$objQuery = new SC_Query();
 	$arrRet = array();
 	$arrCatID = sfGetParents($objQuery, "dtb_category", "parent_category_id", "category_id", $category_id);	
 	$arrRet['id'] = $arrCatID[0];
 	
-	// ã‚«ãƒ†ã‚´ãƒªãƒ¼åç§°ã‚’å–å¾—ã™ã‚‹
+	// ¥«¥Æ¥´¥ê¡¼Ì¾¾Î¤ò¼èÆÀ¤¹¤ë
 	$sql = "SELECT category_name FROM dtb_category WHERE category_id = ?";
 	$arrVal = array($arrRet['id']);
 	$arrRet['name'] = $objQuery->getOne($sql,$arrVal);
@@ -2531,19 +2531,19 @@ function GetFirstCat($category_id){
 	return $arrRet;
 }
 
-//MySQLç”¨ã®SQLæ–‡ã«å¤‰æ›´ã™ã‚‹
+//MySQLÍÑ¤ÎSQLÊ¸¤ËÊÑ¹¹¤¹¤ë
 function sfChangeMySQL($sql){
-	// æ”¹è¡Œã€ã‚¿ãƒ–ã‚’1ã‚¹ãƒšãƒ¼ã‚¹ã«å¤‰æ›
+	// ²ş¹Ô¡¢¥¿¥Ö¤ò1¥¹¥Ú¡¼¥¹¤ËÊÑ´¹
 	$sql = preg_replace("/[\r\n\t]/"," ",$sql);
 	
-	$sql = sfChangeView($sql);		// viewè¡¨ã‚’ã‚¤ãƒ³ãƒ©ã‚¤ãƒ³ãƒ“ãƒ¥ãƒ¼ã«å¤‰æ›ã™ã‚‹
-	$sql = sfChangeILIKE($sql);		// ILIKEæ¤œç´¢ã‚’LIKEæ¤œç´¢ã«å¤‰æ›ã™ã‚‹
-	$sql = sfChangeRANDOM($sql);	// RANDOM()ã‚’RAND()ã«å¤‰æ›ã™ã‚‹
+	$sql = sfChangeView($sql);		// viewÉ½¤ò¥¤¥ó¥é¥¤¥ó¥Ó¥å¡¼¤ËÊÑ´¹¤¹¤ë
+	$sql = sfChangeILIKE($sql);		// ILIKE¸¡º÷¤òLIKE¸¡º÷¤ËÊÑ´¹¤¹¤ë
+	$sql = sfChangeRANDOM($sql);	// RANDOM()¤òRAND()¤ËÊÑ´¹¤¹¤ë
 
 	return $sql;
 }
 
-// SQLã®ä¸­ã«viewãŒå­˜åœ¨ã—ã¦ã„ã‚‹ã‹ãƒã‚§ãƒƒã‚¯ã‚’è¡Œã†ã€‚
+// SQL¤ÎÃæ¤Ëview¤¬Â¸ºß¤·¤Æ¤¤¤ë¤«¥Á¥§¥Ã¥¯¤ò¹Ô¤¦¡£
 function sfInArray($sql){
 	global $arrView;
 
@@ -2556,7 +2556,7 @@ function sfInArray($sql){
 	return false;
 }
 
-// SQLã‚·ãƒ³ã‚°ãƒ«ã‚¯ã‚©ãƒ¼ãƒˆå¯¾å¿œ
+// SQL¥·¥ó¥°¥ë¥¯¥©¡¼¥ÈÂĞ±ş
 function sfQuoteSmart($in){
 	
     if (is_int($in) || is_double($in)) {
@@ -2570,37 +2570,37 @@ function sfQuoteSmart($in){
     }
 }
 	
-// viewè¡¨ã‚’ã‚¤ãƒ³ãƒ©ã‚¤ãƒ³ãƒ“ãƒ¥ãƒ¼ã«å¤‰æ›ã™ã‚‹
+// viewÉ½¤ò¥¤¥ó¥é¥¤¥ó¥Ó¥å¡¼¤ËÊÑ´¹¤¹¤ë
 function sfChangeView($sql){
 	global $arrView;
 	global $arrViewWhere;
 	
 	$arrViewTmp = $arrView;
 
-	// viewã®whereã‚’å¤‰æ›
+	// view¤Îwhere¤òÊÑ´¹
 	foreach($arrViewTmp as $key => $val){
 		$arrViewTmp[$key] = strtr($arrViewTmp[$key], $arrViewWhere);
 	}
 	
-	// viewã‚’å¤‰æ›
+	// view¤òÊÑ´¹
 	$changesql = strtr($sql, $arrViewTmp);
 
 	return $changesql;
 }
 
-// ILIKEæ¤œç´¢ã‚’LIKEæ¤œç´¢ã«å¤‰æ›ã™ã‚‹
+// ILIKE¸¡º÷¤òLIKE¸¡º÷¤ËÊÑ´¹¤¹¤ë
 function sfChangeILIKE($sql){
 	$changesql = eregi_replace("(ILIKE )", "LIKE BINARY ", $sql);
 	return $changesql;
 }
 
-// RANDOM()ã‚’RAND()ã«å¤‰æ›ã™ã‚‹
+// RANDOM()¤òRAND()¤ËÊÑ´¹¤¹¤ë
 function sfChangeRANDOM($sql){
 	$changesql = eregi_replace("( RANDOM)", " RAND", $sql);
 	return $changesql;
 }
 
-// viewã®whereã‚’ç½®æ›ã™ã‚‹
+// view¤Îwhere¤òÃÖ´¹¤¹¤ë
 function sfViewWhere($target, $where = "", $arrval = array(), $option = ""){
 	global $arrViewWhere;
 	$arrWhere = split("[?]", $where);
@@ -2611,7 +2611,7 @@ function sfViewWhere($target, $where = "", $arrval = array(), $option = ""){
 	$arrViewWhere[$target] = $where_tmp . " " . $option;
 }
 
-// ãƒ‡ã‚£ãƒ¬ã‚¯ãƒˆãƒªä»¥ä¸‹ã®ãƒ•ã‚¡ã‚¤ãƒ«ã‚’å†å¸°çš„ã«ã‚³ãƒ”ãƒ¼
+// ¥Ç¥£¥ì¥¯¥È¥ê°Ê²¼¤Î¥Õ¥¡¥¤¥ë¤òºÆµ¢Åª¤Ë¥³¥Ô¡¼
 function sfCopyDir($src, $des, $mess, $override = false){
 	if(!is_dir($src)){
 		return false;
@@ -2620,7 +2620,7 @@ function sfCopyDir($src, $des, $mess, $override = false){
 	$oldmask = umask(0);
 	$mod= stat($src);
 	
-	// ãƒ‡ã‚£ãƒ¬ã‚¯ãƒˆãƒªãŒãªã‘ã‚Œã°ä½œæˆã™ã‚‹
+	// ¥Ç¥£¥ì¥¯¥È¥ê¤¬¤Ê¤±¤ì¤ĞºîÀ®¤¹¤ë
 	if(!file_exists($des)) {
 		if(!mkdir($des, $mod[2])) {
 			print("path:" . $des);
@@ -2629,7 +2629,7 @@ function sfCopyDir($src, $des, $mess, $override = false){
 	
 	$fileArray=glob( $src."*" );
 	foreach( $fileArray as $key => $data_ ){
-		// CVSç®¡ç†ãƒ•ã‚¡ã‚¤ãƒ«ã¯ã‚³ãƒ”ãƒ¼ã—ãªã„
+		// CVS´ÉÍı¥Õ¥¡¥¤¥ë¤Ï¥³¥Ô¡¼¤·¤Ê¤¤
 		if(ereg("/CVS/Entries", $data_)) {
 			break;
 		}
@@ -2646,12 +2646,12 @@ function sfCopyDir($src, $des, $mess, $override = false){
 			$mess = sfCopyDir( $data_.'/', $des.$data.'/', $mess);
 		}else{
 			if(!$override && file_exists($des.$data)) {
-				$mess.= $des.$data . "ï¼šãƒ•ã‚¡ã‚¤ãƒ«ãŒå­˜åœ¨ã—ã¾ã™\n";
+				$mess.= $des.$data . "¡§¥Õ¥¡¥¤¥ë¤¬Â¸ºß¤·¤Ş¤¹\n";
 			} else {
 				if(@copy( $data_, $des.$data)) {
-					$mess.= $des.$data . "ï¼šã‚³ãƒ”ãƒ¼æˆåŠŸ\n";
+					$mess.= $des.$data . "¡§¥³¥Ô¡¼À®¸ù\n";
 				} else {
-					$mess.= $des.$data . "ï¼šã‚³ãƒ”ãƒ¼å¤±æ•—\n";
+					$mess.= $des.$data . "¡§¥³¥Ô¡¼¼ºÇÔ\n";
 				}
 			}
 			$mod=stat($data_ );
@@ -2661,10 +2661,10 @@ function sfCopyDir($src, $des, $mess, $override = false){
 	return $mess;
 }
 
-// æŒ‡å®šã—ãŸãƒ•ã‚©ãƒ«ãƒ€å†…ã®ãƒ•ã‚¡ã‚¤ãƒ«ã‚’å…¨ã¦å‰Šé™¤ã™ã‚‹
+// »ØÄê¤·¤¿¥Õ¥©¥ë¥ÀÆâ¤Î¥Õ¥¡¥¤¥ë¤òÁ´¤Æºï½ü¤¹¤ë
 function sfDelFile($dir){
 	$dh = opendir($dir);
-	// ãƒ•ã‚©ãƒ«ãƒ€å†…ã®ãƒ•ã‚¡ã‚¤ãƒ«ã‚’å‰Šé™¤
+	// ¥Õ¥©¥ë¥ÀÆâ¤Î¥Õ¥¡¥¤¥ë¤òºï½ü
 	while($file = readdir($dh)){
 		if ($file == "." or $file == "..") continue;
 		$del_file = $dir . "/" . $file;
@@ -2678,35 +2678,35 @@ function sfDelFile($dir){
 			return $ret;
 		}
 	}
-	// ãƒ•ã‚©ãƒ«ãƒ€ã‚’å‰Šé™¤
+	// ¥Õ¥©¥ë¥À¤òºï½ü
 	return rmdir($dir);
 	
 }
 
 /* 
- * é–¢æ•°åï¼šsfWriteFile
- * å¼•æ•°1 ï¼šæ›¸ãè¾¼ã‚€ãƒ‡ãƒ¼ã‚¿
- * å¼•æ•°2 ï¼šãƒ•ã‚¡ã‚¤ãƒ«ãƒ‘ã‚¹
- * å¼•æ•°3 ï¼šæ›¸ãè¾¼ã¿ã‚¿ã‚¤ãƒ—
- * å¼•æ•°4 ï¼šãƒ‘ãƒ¼ãƒŸãƒƒã‚·ãƒ§ãƒ³
- * æˆ»ã‚Šå€¤ï¼šçµæœãƒ•ãƒ©ã‚° æˆåŠŸãªã‚‰ true å¤±æ•—ãªã‚‰ false
- * èª¬æ˜ã€€ï¼šãƒ•ã‚¡ã‚¤ãƒ«æ›¸ãå‡ºã—
+ * ´Ø¿ôÌ¾¡§sfWriteFile
+ * °ú¿ô1 ¡§½ñ¤­¹ş¤à¥Ç¡¼¥¿
+ * °ú¿ô2 ¡§¥Õ¥¡¥¤¥ë¥Ñ¥¹
+ * °ú¿ô3 ¡§½ñ¤­¹ş¤ß¥¿¥¤¥×
+ * °ú¿ô4 ¡§¥Ñ¡¼¥ß¥Ã¥·¥ç¥ó
+ * Ìá¤êÃÍ¡§·ë²Ì¥Õ¥é¥° À®¸ù¤Ê¤é true ¼ºÇÔ¤Ê¤é false
+ * ÀâÌÀ¡¡¡§¥Õ¥¡¥¤¥ë½ñ¤­½Ğ¤·
  */
 function sfWriteFile($str, $path, $type, $permission = "") {
-	//ãƒ•ã‚¡ã‚¤ãƒ«ã‚’é–‹ã
+	//¥Õ¥¡¥¤¥ë¤ò³«¤¯
 	if (!($file = fopen ($path, $type))) {
 		return false;
 	}
 
-	//ãƒ•ã‚¡ã‚¤ãƒ«ãƒ­ãƒƒã‚¯
+	//¥Õ¥¡¥¤¥ë¥í¥Ã¥¯
 	flock ($file, LOCK_EX);
-	//ãƒ•ã‚¡ã‚¤ãƒ«ã®æ›¸ãè¾¼ã¿
+	//¥Õ¥¡¥¤¥ë¤Î½ñ¤­¹ş¤ß
 	fputs ($file, $str);
-	//ãƒ•ã‚¡ã‚¤ãƒ«ãƒ­ãƒƒã‚¯ã®è§£é™¤
+	//¥Õ¥¡¥¤¥ë¥í¥Ã¥¯¤Î²ò½ü
 	flock ($file, LOCK_UN);
-	//ãƒ•ã‚¡ã‚¤ãƒ«ã‚’é–‰ã˜ã‚‹
+	//¥Õ¥¡¥¤¥ë¤òÊÄ¤¸¤ë
 	fclose ($file);
-	// æ¨©é™ã‚’æŒ‡å®š
+	// ¸¢¸Â¤ò»ØÄê
 	if($permission != "") {
 		chmod($path, $permission);
 	}
@@ -2715,27 +2715,27 @@ function sfWriteFile($str, $path, $type, $permission = "") {
 }
 	
 function sfFlush($output = " ", $sleep = 0){
-	// å®Ÿè¡Œæ™‚é–“ã‚’åˆ¶é™ã—ãªã„
+	// ¼Â¹Ô»ş´Ö¤òÀ©¸Â¤·¤Ê¤¤
 	set_time_limit(0);
-	// å‡ºåŠ›ã‚’ãƒãƒƒãƒ•ã‚¡ãƒªãƒ³ã‚°ã—ãªã„(==æ—¥æœ¬èªè‡ªå‹•å¤‰æ›ã‚‚ã—ãªã„)
+	// ½ĞÎÏ¤ò¥Ğ¥Ã¥Õ¥¡¥ê¥ó¥°¤·¤Ê¤¤(==ÆüËÜ¸ì¼«Æ°ÊÑ´¹¤â¤·¤Ê¤¤)
 	ob_end_clean();
 	
-	// IEã®ãŸã‚ã«256ãƒã‚¤ãƒˆç©ºæ–‡å­—å‡ºåŠ›
+	// IE¤Î¤¿¤á¤Ë256¥Ğ¥¤¥È¶õÊ¸»ú½ĞÎÏ
 	echo str_pad('',256);
 	
-	// å‡ºåŠ›ã¯ãƒ–ãƒ©ãƒ³ã‚¯ã ã‘ã§ã‚‚ã„ã„ã¨æ€ã†
+	// ½ĞÎÏ¤Ï¥Ö¥é¥ó¥¯¤À¤±¤Ç¤â¤¤¤¤¤È»×¤¦
 	echo $output;
-	// å‡ºåŠ›ã‚’ãƒ•ãƒ©ãƒƒã‚·ãƒ¥ã™ã‚‹
+	// ½ĞÎÏ¤ò¥Õ¥é¥Ã¥·¥å¤¹¤ë
 	flush();
 	
 	ob_end_flush();
 	ob_start();	
 	
-	// æ™‚é–“ã®ã‹ã‹ã‚‹å‡¦ç†
+	// »ş´Ö¤Î¤«¤«¤ë½èÍı
 	sleep($sleep);
 }
 
-// @versionã®è¨˜è¼‰ãŒã‚ã‚‹ãƒ•ã‚¡ã‚¤ãƒ«ã‹ã‚‰ãƒãƒ¼ã‚¸ãƒ§ãƒ³ã‚’å–å¾—ã™ã‚‹ã€‚
+// @version¤Îµ­ºÜ¤¬¤¢¤ë¥Õ¥¡¥¤¥ë¤«¤é¥Ğ¡¼¥¸¥ç¥ó¤ò¼èÆÀ¤¹¤ë¡£
 function sfGetFileVersion($path) {
 	if(file_exists($path)) {
 		$src_fp = fopen($path, "rb");
@@ -2753,23 +2753,23 @@ function sfGetFileVersion($path) {
 	return $version;
 }
 
-// æŒ‡å®šã—ãŸURLã«å¯¾ã—ã¦POSTã§ãƒ‡ãƒ¼ã‚¿ã‚’é€ä¿¡ã™ã‚‹
+// »ØÄê¤·¤¿URL¤ËÂĞ¤·¤ÆPOST¤Ç¥Ç¡¼¥¿¤òÁ÷¿®¤¹¤ë
 function sfSendPostData($url, $arrData, $arrOkCode = array()){
 	require_once(DATA_PATH . "module/Request.php");
 	
-	// é€ä¿¡ã‚¤ãƒ³ã‚¹ã‚¿ãƒ³ã‚¹ç”Ÿæˆ
+	// Á÷¿®¥¤¥ó¥¹¥¿¥ó¥¹À¸À®
 	$req = new HTTP_Request($url);
 	
-	$req->addHeader('User-Agent', 'DoCoMo/2.0ã€€P2101V(c100)');
+	$req->addHeader('User-Agent', 'DoCoMo/2.0¡¡P2101V(c100)');
 	$req->setMethod(HTTP_REQUEST_METHOD_POST);
 	
-	// POSTãƒ‡ãƒ¼ã‚¿é€ä¿¡
+	// POST¥Ç¡¼¥¿Á÷¿®
 	$req->addPostDataArray($arrData);
 	
-	// ã‚¨ãƒ©ãƒ¼ãŒç„¡ã‘ã‚Œã°ã€å¿œç­”æƒ…å ±ã‚’å–å¾—ã™ã‚‹
+	// ¥¨¥é¡¼¤¬Ìµ¤±¤ì¤Ğ¡¢±şÅú¾ğÊó¤ò¼èÆÀ¤¹¤ë
 	if (!PEAR::isError($req->sendRequest())) {
 		
-		// ãƒ¬ã‚¹ãƒãƒ³ã‚¹ã‚³ãƒ¼ãƒ‰ãŒã‚¨ãƒ©ãƒ¼åˆ¤å®šãªã‚‰ã€ç©ºã‚’è¿”ã™
+		// ¥ì¥¹¥İ¥ó¥¹¥³¡¼¥É¤¬¥¨¥é¡¼È½Äê¤Ê¤é¡¢¶õ¤òÊÖ¤¹
 		$res_code = $req->getResponseCode();
 		
 		if(!in_array($res_code, $arrOkCode)){
@@ -2782,20 +2782,20 @@ function sfSendPostData($url, $arrData, $arrOkCode = array()){
 		$response = "";
 	}
 	
-	// POSTãƒ‡ãƒ¼ã‚¿ã‚¯ãƒªã‚¢
+	// POST¥Ç¡¼¥¿¥¯¥ê¥¢
 	$req->clearPostData();	
 	
 	return $response;
 }
 
-/* ãƒ‡ãƒãƒƒã‚°ç”¨ ------------------------------------------------------------------------------------------------*/
+/* ¥Ç¥Ğ¥Ã¥°ÍÑ ------------------------------------------------------------------------------------------------*/
 function sfPrintR($obj) {
 	print("<div style='font-size: 12px;color: #00FF00;'>\n");
-	print("<strong>**ãƒ‡ãƒãƒƒã‚°ä¸­**</strong><br />\n");
+	print("<strong>**¥Ç¥Ğ¥Ã¥°Ãæ**</strong><br />\n");
 	print("<pre>\n");
 	print_r($obj);
 	print("</pre>\n");
-	print("<strong>**ãƒ‡ãƒãƒƒã‚°ä¸­**</strong></div>\n");
+	print("<strong>**¥Ç¥Ğ¥Ã¥°Ãæ**</strong></div>\n");
 }
 
 ?>

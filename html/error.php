@@ -11,7 +11,7 @@ class LC_Page {
 	var $arrSession;
 	function LC_Page() {
 		$this->tpl_mainpage = 'error.tpl';
-		$this->tpl_title = 'ã‚¨ãƒ©ãƒ¼';
+		$this->tpl_title = '¥¨¥é¡¼';
 	}
 }
 

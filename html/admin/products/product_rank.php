@@ -12,7 +12,7 @@ class LC_Page {
 		$this->tpl_subnavi = 'products/subnavi.tpl';
 		$this->tpl_mainno = 'products';		
 		$this->tpl_subno = 'product_rank';
-		$this->tpl_subtitle = 'å•†å“ä¸¦ã³æ›¿ãˆ';
+		$this->tpl_subtitle = '¾¦ÉÊÊÂ¤ÓÂØ¤¨';
 	}
 }
 
@@ -21,12 +21,12 @@ $objPage = new LC_Page();
 $objView = new SC_AdminView();
 $objSess = new SC_Session();
 
-// èªè¨¼å¯å¦ã®åˆ¤å®š
+// Ç§¾Ú²ÄÈÝ¤ÎÈ½Äê
 sfIsSuccess($objSess);
 
 $objPage->tpl_pageno = $_POST['pageno'];
 
-// é€šå¸¸æ™‚ã¯è¦ªã‚«ãƒ†ã‚´ãƒªã‚’0ã«è¨­å®šã™ã‚‹ã€‚
+// ÄÌ¾ï»þ¤Ï¿Æ¥«¥Æ¥´¥ê¤ò0¤ËÀßÄê¤¹¤ë¡£
 $objPage->arrForm['parent_category_id'] = $_POST['parent_category_id'];
 
 switch($_POST['mode']) {
@@ -47,7 +47,7 @@ case 'move':
 	}
 	break;
 case 'tree':
-	// ã‚«ãƒ†ã‚´ãƒªã®åˆ‡æ›¿ã¯ã€ãƒšãƒ¼ã‚¸ç•ªå·ã‚’ã‚¯ãƒªã‚¢ã™ã‚‹ã€‚
+	// ¥«¥Æ¥´¥ê¤ÎÀÚÂØ¤Ï¡¢¥Ú¡¼¥¸ÈÖ¹æ¤ò¥¯¥ê¥¢¤¹¤ë¡£
 	$objPage->tpl_pageno = "";
 	break;
 default:
@@ -61,7 +61,7 @@ $objView->assignobj($objPage);
 $objView->display(MAIN_FRAME);
 
 //-----------------------------------------------------------------------------------------------------------------------------------
-/* å•†å“èª­ã¿è¾¼ã¿ */
+/* ¾¦ÉÊÆÉ¤ß¹þ¤ß */
 function lfGetProduct($category_id) {
 	global $objPage;
 	
@@ -70,23 +70,23 @@ function lfGetProduct($category_id) {
 	$table = "vw_products_nonclass AS noncls ";
 	$where = "del_flg = 0 AND category_id = ?";
 	
-	// è¡Œæ•°ã®å–å¾—
+	// ¹Ô¿ô¤Î¼èÆÀ
 	$linemax = $objQuery->count("dtb_products", $where, array($category_id));
-	// é †ä½ã€è©²å½“ä»¶æ•°è¡¨ç¤ºç”¨
+	// ½ç°Ì¡¢³ºÅö·ï¿ôÉ½¼¨ÍÑ
 	$objPage->tpl_linemax = $linemax;
 	
 	$objNavi = new SC_PageNavi($objPage->tpl_pageno, $linemax, SEARCH_PMAX, "fnNaviPage", NAVI_PMAX);
 	$startno = $objNavi->start_row;
-	$objPage->tpl_strnavi = $objNavi->strnavi;		// Naviè¡¨ç¤ºæ–‡å­—åˆ—
-	$objPage->tpl_pagemax = $objNavi->max_page;		// ãƒšãƒ¼ã‚¸æœ€å¤§æ•°ï¼ˆã€Œä¸Šã¸ä¸‹ã¸ã€è¡¨ç¤ºåˆ¤å®šç”¨ï¼‰
-	$objPage->tpl_disppage = $objNavi->now_page;	// è¡¨ç¤ºãƒšãƒ¼ã‚¸ç•ªå·ï¼ˆã€Œä¸Šã¸ä¸‹ã¸ã€è¡¨ç¤ºåˆ¤å®šç”¨ï¼‰
+	$objPage->tpl_strnavi = $objNavi->strnavi;		// NaviÉ½¼¨Ê¸»úÎó
+	$objPage->tpl_pagemax = $objNavi->max_page;		// ¥Ú¡¼¥¸ºÇÂç¿ô¡Ê¡Ö¾å¤Ø²¼¤Ø¡×É½¼¨È½ÄêÍÑ¡Ë
+	$objPage->tpl_disppage = $objNavi->now_page;	// É½¼¨¥Ú¡¼¥¸ÈÖ¹æ¡Ê¡Ö¾å¤Ø²¼¤Ø¡×É½¼¨È½ÄêÍÑ¡Ë
 			
-	// å–å¾—ç¯„å›²ã®æŒ‡å®š(é–‹å§‹è¡Œç•ªå·ã€è¡Œæ•°ã®ã‚»ãƒƒãƒˆ)
+	// ¼èÆÀÈÏ°Ï¤Î»ØÄê(³«»Ï¹ÔÈÖ¹æ¡¢¹Ô¿ô¤Î¥»¥Ã¥È)
 	if(DB_TYPE != "mysql") $objQuery->setlimitoffset(SEARCH_PMAX, $startno);
 	
 	$objQuery->setorder("rank DESC");
 	
-	// viewã‚‚çµžè¾¼ã¿ã‚’ã‹ã‘ã‚‹(mysqlç”¨)
+	// view¤â¹Ê¹þ¤ß¤ò¤«¤±¤ë(mysqlÍÑ)
 	sfViewWhere("&&noncls_where&&", $where, array($category_id), $objQuery->order . " " .  $objQuery->setlimitoffset(SEARCH_PMAX, $startno, true));
 	
 	$arrRet = $objQuery->select($col, $table, $where, array($category_id));

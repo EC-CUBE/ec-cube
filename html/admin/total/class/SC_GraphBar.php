@@ -7,46 +7,46 @@
 $SC_GRAPHBAR_DIR = realpath(dirname( __FILE__));
 require_once($SC_GRAPHBAR_DIR . "/SC_GraphLine.php");	
 
-// æ£’ã‚°ãƒ©ãƒ•ç”Ÿæˆã‚¯ãƒ©ã‚¹
+// ËÀ¥°¥é¥ÕÀ¸À®¥¯¥é¥¹
 class SC_GraphBar extends SC_GraphLine{
-    // ã‚³ãƒ³ã‚¹ãƒˆãƒ©ã‚¯ã‚¿
+    // ¥³¥ó¥¹¥È¥é¥¯¥¿
 	function SC_GraphLine(
 		$bgw = BG_WIDTH, $bgh = BG_HEIGHT, $left = LINE_LEFT, $top = LINE_TOP,
 		$area_width = LINE_AREA_WIDTH, $area_height = LINE_AREA_HEIGHT) {
 		parent::SC_GraphLine($bgw, $bgh, $left, $top, $area_width, $area_height);	
 	}
 	
-	// ã‚°ãƒ©ãƒ•ã®æç”»
+	// ¥°¥é¥Õ¤ÎÉÁ²è
 	function drawGraph() {
 		$this->drawYLine();
 		$this->drawXLine(true);
 		
-		// æ£’ã‚°ãƒ©ãƒ•ã®æç”»
+		// ËÀ¥°¥é¥Õ¤ÎÉÁ²è
 		for($i = 0; $i < $this->line_max; $i++) {
 			$this->drawBar($i);
 		}
 		
-		// ãƒ©ãƒ™ãƒ«ã®æç”»
+		// ¥é¥Ù¥ë¤ÎÉÁ²è
 		for($i = 0; $i < $this->line_max; $i++) {
 			$this->drawLabel($i);
 		}
 		
-		// å‡¡ä¾‹ã®æç”»
+		// ËŞÎã¤ÎÉÁ²è
 		$this->drawLegend();	
 	}
 	
-	// æ£’ã‚°ãƒ©ãƒ•ã®æç”»
+	// ËÀ¥°¥é¥Õ¤ÎÉÁ²è
 	function drawBar($line_no) {
 		$arrPointList = $this->arrPointList[$line_no];
-		// ãƒ‡ãƒ¼ã‚¿æ•°ã‚’æ•°ãˆã‚‹
+		// ¥Ç¡¼¥¿¿ô¤ò¿ô¤¨¤ë
 		$count = count($arrPointList);
-		// åŠç›®ç››ã‚Šã®å¹…ã‚’æ±‚ã‚ã‚‹
+		// È¾ÌÜÀ¹¤ê¤ÎÉı¤òµá¤á¤ë
 		$half_scale = intval($this->area_width / ($count + 1) / 2);
-		// ç›®ç››ã‚Šã®å¹…ã‚’æ±‚ã‚ã‚‹
+		// ÌÜÀ¹¤ê¤ÎÉı¤òµá¤á¤ë
 		$scale_width = intval($this->area_width / ($count + 1));
-		// æ£’ã‚°ãƒ©ãƒ•ã®ã‚µã‚¤ã‚ºã‚’æ±‚ã‚ã‚‹
+		// ËÀ¥°¥é¥Õ¤Î¥µ¥¤¥º¤òµá¤á¤ë
 		$bar_width = intval(($scale_width - (BAR_PAD * 2)) / $this->line_max);
-		// è‰²æ•°ã®å–å¾—
+		// ¿§¿ô¤Î¼èÆÀ
 		$c_max = count($this->arrColor);
 		for($i = 0; $i < $count; $i++) {
 			$left = $arrPointList[$i][0] - $half_scale + BAR_PAD + ($bar_width * $line_no);
@@ -54,7 +54,7 @@ class SC_GraphBar extends SC_GraphLine{
 			$right = $left + $bar_width;
 			$bottom = $this->top + $this->area_height;
 			
-			// å½±ã®æç”»
+			// ±Æ¤ÎÉÁ²è
 			if($this->shade_on) {
 				imagefilledrectangle($this->image, $left + 2, $top + 2, $right + 2, $bottom, $this->shade_color);
 			}
@@ -64,7 +64,7 @@ class SC_GraphBar extends SC_GraphLine{
 		}
 	}
 	
-	// ãƒ©ãƒ™ãƒ«ã‚’æç”»ã™ã‚‹
+	// ¥é¥Ù¥ë¤òÉÁ²è¤¹¤ë
 	function drawLabel($line_no) {
 		$arrData = $this->arrDataList[$line_no];
 		$arrPointList = $this->arrPointList[$line_no];

@@ -7,27 +7,27 @@
 
 ///////////////////////////////////////////////////////////
 /*
-	ã‚µã‚¤ãƒˆã”ã¨ã«å¿…ãšå¤‰æ›´ã™ã‚‹è¨­å®š
+	¥µ¥¤¥È¤´¤È¤ËÉ¬¤ºÊÑ¹¹¤¹¤ëÀßÄê
 */
 ///////////////////////////////////////////////////////////
 
-// DBã‚¨ãƒ©ãƒ¼ãƒ¡ãƒ¼ãƒ«é€ä¿¡å…ˆ
+// DB¥¨¥é¡¼¥á¡¼¥ëÁ÷¿®Àè
 define ("DB_ERROR_MAIL_TO", "error-ml@lockon.co.jp");
 
-// DBã‚¨ãƒ©ãƒ¼ãƒ¡ãƒ¼ãƒ«ä»¶å
+// DB¥¨¥é¡¼¥á¡¼¥ë·ïÌ¾
 define ("DB_ERROR_MAIL_SUBJECT", "OS_TEST_ERROR");
 
 if(defined('DB_TYPE') && defined('DB_USER') && defined('DB_PASSWORD') && defined('DB_SERVER') && defined('DB_PORT') && defined('DB_NAME')) {
-	// ã‚µã‚¤ãƒˆç”¨DB
+	// ¥µ¥¤¥ÈÍÑDB
 	define ("DEFAULT_DSN", DB_TYPE . "://" . DB_USER . ":" . DB_PASSWORD . "@" . DB_SERVER . ":" .DB_PORT . "/" . DB_NAME);
 }
 
-// éƒµä¾¿ç•ªå·å°‚ç”¨DB
+// Í¹ÊØÈÖ¹æÀìÍÑDB
 define ("ZIP_DSN", DEFAULT_DSN);
 
-define ("USER_URL", SITE_URL."user_data/"); // ãƒ¦ãƒ¼ã‚¶ãƒ¼ä½œæˆãƒšãƒ¼ã‚¸ç­‰ 
+define ("USER_URL", SITE_URL."user_data/"); // ¥æ¡¼¥¶¡¼ºîÀ®¥Ú¡¼¥¸Åù 
 
-// èªè¨¼ç”¨ magic
+// Ç§¾ÚÍÑ magic
 define ("AUTH_MAGIC", "31eafcbd7a81d7b401a7fdc12bba047c02d1fae6");
 
 ?>

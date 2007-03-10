@@ -5,13 +5,13 @@
  * http://www.lockon.co.jp/
  */
 
-//ãƒ‡ãƒ¼ã‚¿ãƒ™ãƒ¼ã‚¹ã‹ã‚‰å•†å“æ¤œç´¢ã‚’å®Ÿè¡Œã™ã‚‹ã€‚ï¼ˆECã‚­ãƒƒãƒˆå‹•ä½œè©¦é¨“ç”¨ã®é–‹ç™ºï¼‰
+//¥Ç¡¼¥¿¥Ù¡¼¥¹¤«¤é¾¦ÉÊ¸¡º÷¤ò¼Â¹Ô¤¹¤ë¡£¡ÊEC¥­¥Ã¥ÈÆ°ºî»î¸³ÍÑ¤Î³«È¯¡Ë
 require_once("../require.php");
 
 class LC_Page{
 	function LC_Page() {
 		$this->tpl_mainpage = USER_PATH . 'templates/mypage/index.tpl';
-		$this->tpl_title = 'MYãƒšãƒ¼ã‚¸/è³¼å…¥å±¥æ­´ä¸€è¦§';
+		$this->tpl_title = 'MY¥Ú¡¼¥¸/¹ØÆþÍúÎò°ìÍ÷';
 		$this->tpl_navi = USER_PATH . 'templates/mypage/navi.tpl';
 		$this->tpl_mainno = 'mypage';
 		$this->tpl_mypageno = 'index';
@@ -24,20 +24,20 @@ $objView = new SC_SiteView();
 $objQuery = new SC_Query();             
 $objCustomer = new SC_Customer();
 
-// ãƒ¬ã‚¤ã‚¢ã‚¦ãƒˆãƒ‡ã‚¶ã‚¤ãƒ³ã‚’å–å¾—
+// ¥ì¥¤¥¢¥¦¥È¥Ç¥¶¥¤¥ó¤ò¼èÆÀ
 $objPage = sfGetPageLayout($objPage, false, "mypage/index.php");
 
-// ãƒ­ã‚°ã‚¤ãƒ³ãƒã‚§ãƒƒã‚¯
+// ¥í¥°¥¤¥ó¥Á¥§¥Ã¥¯
 if(!isset($_SESSION['customer'])) {
 	sfDispSiteError(CUSTOMER_ERROR);
 }else {
-	//ãƒžã‚¤ãƒšãƒ¼ã‚¸ãƒˆãƒƒãƒ—é¡§å®¢æƒ…å ±è¡¨ç¤ºç”¨
+	//¥Þ¥¤¥Ú¡¼¥¸¥È¥Ã¥×¸ÜµÒ¾ðÊóÉ½¼¨ÍÑ
 	$objPage->CustomerName1 = $objCustomer->getvalue('name01');
 	$objPage->CustomerName2 = $objCustomer->getvalue('name02');
 	$objPage->CustomerPoint = $objCustomer->getvalue('point');
 }
 
-//ãƒšãƒ¼ã‚¸é€ã‚Šç”¨
+//¥Ú¡¼¥¸Á÷¤êÍÑ
 $objPage->tpl_pageno = $_POST['pageno'];
 	
 $col = "order_id, create_date, payment_id, payment_total";
@@ -49,34 +49,34 @@ $order = "order_id DESC";
 $linemax = $objQuery->count($from, $where, $arrval);
 $objPage->tpl_linemax = $linemax;
 
-// ãƒšãƒ¼ã‚¸é€ã‚Šã®å–å¾—
+// ¥Ú¡¼¥¸Á÷¤ê¤Î¼èÆÀ
 $objNavi = new SC_PageNavi($_POST['pageno'], $linemax, SEARCH_PMAX, "fnNaviPage", NAVI_PMAX);
-$objPage->tpl_strnavi = $objNavi->strnavi;		// è¡¨ç¤ºæ–‡å­—åˆ—
+$objPage->tpl_strnavi = $objNavi->strnavi;		// É½¼¨Ê¸»úÎó
 $startno = $objNavi->start_row;
 
-// å–å¾—ç¯„å›²ã®æŒ‡å®š(é–‹å§‹è¡Œç•ªå·ã€è¡Œæ•°ã®ã‚»ãƒƒãƒˆ)
+// ¼èÆÀÈÏ°Ï¤Î»ØÄê(³«»Ï¹ÔÈÖ¹æ¡¢¹Ô¿ô¤Î¥»¥Ã¥È)
 $objQuery->setlimitoffset(SEARCH_PMAX, $startno);
-// è¡¨ç¤ºé †åº
+// É½¼¨½ç½ø
 $objQuery->setorder($order);
 
-//è³¼å…¥å±¥æ­´ã®å–å¾—
+//¹ØÆþÍúÎò¤Î¼èÆÀ
 $objPage->arrOrder = $objQuery->select($col, $from, $where, $arrval);
 
-// æ”¯æ‰•ã„æ–¹æ³•ã®å–å¾—
+// »ÙÊ§¤¤ÊýË¡¤Î¼èÆÀ
 $objPage->arrPayment = sfGetIDValueList("dtb_payment", "payment_id", "payment_method");
 
-$objView->assignobj($objPage);				//$objpageå†…ã®å…¨ã¦ã®ãƒ†ãƒ³ãƒ—ãƒ¬ãƒ¼ãƒˆå¤‰æ•°ã‚’smartyã«æ ¼ç´
-$objView->display(SITE_FRAME);				//ãƒ‘ã‚¹ã¨ãƒ†ãƒ³ãƒ—ãƒ¬ãƒ¼ãƒˆå¤‰æ•°ã®å‘¼ã³å‡ºã—ã€å®Ÿè¡Œ
+$objView->assignobj($objPage);				//$objpageÆâ¤ÎÁ´¤Æ¤Î¥Æ¥ó¥×¥ì¡¼¥ÈÊÑ¿ô¤òsmarty¤Ë³ÊÇ¼
+$objView->display(SITE_FRAME);				//¥Ñ¥¹¤È¥Æ¥ó¥×¥ì¡¼¥ÈÊÑ¿ô¤Î¸Æ¤Ó½Ð¤·¡¢¼Â¹Ô
 
 
 //-------------------------------------------------------------------------------------------------------------------------
 											
-//ã‚¨ãƒ©ãƒ¼ãƒã‚§ãƒƒã‚¯
+//¥¨¥é¡¼¥Á¥§¥Ã¥¯
 
 function lfErrorCheck() {
 	$objErr = new SC_CheckError();
-			$objErr->doFunc(array("ãƒ¡ãƒ¼ãƒ«ã‚¢ãƒ‰ãƒ¬ã‚¹", "login_email", STEXT_LEN), array("EXIST_CHECK","SPTAB_CHECK","EMAIL_CHECK","MAX_LENGTH_CHECK"));
-			$objErr->dofunc(array("ãƒ‘ã‚¹ãƒ¯ãƒ¼ãƒ‰", "login_password", PASSWORD_LEN2), array("EXIST_CHECK","ALNUM_CHECK"));
+			$objErr->doFunc(array("¥á¡¼¥ë¥¢¥É¥ì¥¹", "login_email", STEXT_LEN), array("EXIST_CHECK","SPTAB_CHECK","EMAIL_CHECK","MAX_LENGTH_CHECK"));
+			$objErr->dofunc(array("¥Ñ¥¹¥ï¡¼¥É", "login_password", PASSWORD_LEN2), array("EXIST_CHECK","ALNUM_CHECK"));
 	return $objErr->arrErr;
 }
 				

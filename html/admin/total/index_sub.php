@@ -6,19 +6,19 @@
  */
 function lfGetPDFColum($page, $type, $key = "") {
 	
-	$arrSUBNAME['day'] = "æ—¥åˆ¥";
-	$arrSUBNAME['month'] = "æœˆåˆ¥";
-	$arrSUBNAME['year'] = "å¹´åˆ¥";
-	$arrSUBNAME['hour'] = "æ™‚é–“åˆ¥";
-	$arrSUBNAME['wday'] = "æ›œæ—¥åˆ¥";
-	$arrSUBNAME['all'] = "å…¨ä½“";
-	$arrSUBNAME['member'] = "ä¼šå“¡";
-	$arrSUBNAME['nonmember'] = "éä¼šå“¡";
+	$arrSUBNAME['day'] = "ÆüÊÌ";
+	$arrSUBNAME['month'] = "·îÊÌ";
+	$arrSUBNAME['year'] = "Ç¯ÊÌ";
+	$arrSUBNAME['hour'] = "»ş´ÖÊÌ";
+	$arrSUBNAME['wday'] = "ÍËÆüÊÌ";
+	$arrSUBNAME['all'] = "Á´ÂÎ";
+	$arrSUBNAME['member'] = "²ñ°÷";
+	$arrSUBNAME['nonmember'] = "Èó²ñ°÷";
 			
 	switch($page) {
-	// å•†å“åˆ¥é›†è¨ˆ
+	// ¾¦ÉÊÊÌ½¸·×
 	case 'products':
-		$title = "å•†å“åˆ¥é›†è¨ˆ(" . $arrSUBNAME[$type] . ")";
+		$title = "¾¦ÉÊÊÌ½¸·×(" . $arrSUBNAME[$type] . ")";
 		$arrColSize = array(
 			60,
 			120,
@@ -36,9 +36,9 @@ function lfGetPDFColum($page, $type, $key = "") {
 			'right',
 		);
 		break;
-	// è·æ¥­åˆ¥é›†è¨ˆ
+	// ¿¦¶ÈÊÌ½¸·×
 	case 'job':
-		$title = "è·æ¥­åˆ¥é›†è¨ˆ(" . $arrSUBNAME[$type] . ")";
+		$title = "¿¦¶ÈÊÌ½¸·×(" . $arrSUBNAME[$type] . ")";
 		$arrColSize = array(
 			100,
 			100,
@@ -52,9 +52,9 @@ function lfGetPDFColum($page, $type, $key = "") {
 			'right',
 		);
 		break;
-	// ä¼šå“¡åˆ¥é›†è¨ˆ
+	// ²ñ°÷ÊÌ½¸·×
 	case 'member':
-		$title = "ä¼šå“¡åˆ¥é›†è¨ˆ(" . $arrSUBNAME[$type] . ")";
+		$title = "²ñ°÷ÊÌ½¸·×(" . $arrSUBNAME[$type] . ")";
 		$arrColSize = array(
 			100,
 			100,
@@ -68,9 +68,9 @@ function lfGetPDFColum($page, $type, $key = "") {
 			'right',
 		);
 		break;
-	// å¹´ä»£åˆ¥é›†è¨ˆ
+	// Ç¯ÂåÊÌ½¸·×
 	case 'age':
-		$title = "å¹´ä»£åˆ¥é›†è¨ˆ(" . $arrSUBNAME[$type] . ")";
+		$title = "Ç¯ÂåÊÌ½¸·×(" . $arrSUBNAME[$type] . ")";
 		$arrColSize = array(
 			80,
 			100,
@@ -84,9 +84,9 @@ function lfGetPDFColum($page, $type, $key = "") {
 			'right',
 		);
 		break;
-	// æœŸé–“åˆ¥é›†è¨ˆ
+	// ´ü´ÖÊÌ½¸·×
 	default:
-		$title = "æœŸé–“åˆ¥é›†è¨ˆ(" . $arrSUBNAME[$type] . ")";
+		$title = "´ü´ÖÊÌ½¸·×(" . $arrSUBNAME[$type] . ")";
 		$arrColSize = array(
 			60,
 			60,
@@ -122,15 +122,15 @@ function lfGetPDFColum($page, $type, $key = "") {
 
 function lfGetCSVColum($page, $key = "") {
 	switch($page) {
-	// å•†å“åˆ¥é›†è¨ˆ
+	// ¾¦ÉÊÊÌ½¸·×
 	case 'products':
 		$arrTitleCol = array(
-			'å•†å“ç•ªå·',
-			'å•†å“å',
-			'è³¼å…¥ä»¶æ•°',
-			'ç‚¹æ•°',
-			'å˜ä¾¡',
-			'é‡‘é¡'			
+			'¾¦ÉÊÈÖ¹æ',
+			'¾¦ÉÊÌ¾',
+			'¹ØÆş·ï¿ô',
+			'ÅÀ¿ô',
+			'Ã±²Á',
+			'¶â³Û'			
 		);
 		$arrDataCol = array(
 			'product_code',
@@ -141,13 +141,13 @@ function lfGetCSVColum($page, $key = "") {
 			'total',
 		);
 		break;
-	// è·æ¥­åˆ¥é›†è¨ˆ
+	// ¿¦¶ÈÊÌ½¸·×
 	case 'job':
 		$arrTitleCol = array(
-			'è·æ¥­',
-			'è³¼å…¥ä»¶æ•°',
-			'è³¼å…¥åˆè¨ˆ',
-			'è³¼å…¥å¹³å‡',
+			'¿¦¶È',
+			'¹ØÆş·ï¿ô',
+			'¹ØÆş¹ç·×',
+			'¹ØÆşÊ¿¶Ñ',
 		);
 		$arrDataCol = array(
 			'job_name',
@@ -156,13 +156,13 @@ function lfGetCSVColum($page, $key = "") {
 			'total_average',
 		);
 		break;
-	// ä¼šå“¡åˆ¥é›†è¨ˆ
+	// ²ñ°÷ÊÌ½¸·×
 	case 'member':
 		$arrTitleCol = array(
-			'ä¼šå“¡',
-			'è³¼å…¥ä»¶æ•°',
-			'è³¼å…¥åˆè¨ˆ',
-			'è³¼å…¥å¹³å‡',
+			'²ñ°÷',
+			'¹ØÆş·ï¿ô',
+			'¹ØÆş¹ç·×',
+			'¹ØÆşÊ¿¶Ñ',
 		);
 		$arrDataCol = array(
 			'member_name',
@@ -171,13 +171,13 @@ function lfGetCSVColum($page, $key = "") {
 			'total_average',
 		);
 		break;
-	// å¹´ä»£åˆ¥é›†è¨ˆ
+	// Ç¯ÂåÊÌ½¸·×
 	case 'age':
 		$arrTitleCol = array(
-			'å¹´é½¢',
-			'è³¼å…¥ä»¶æ•°',
-			'è³¼å…¥åˆè¨ˆ',
-			'è³¼å…¥å¹³å‡',
+			'Ç¯Îğ',
+			'¹ØÆş·ï¿ô',
+			'¹ØÆş¹ç·×',
+			'¹ØÆşÊ¿¶Ñ',
 		);
 		$arrDataCol = array(
 			'age_name',
@@ -186,19 +186,19 @@ function lfGetCSVColum($page, $key = "") {
 			'total_average',
 		);
 		break;
-	// æœŸé–“åˆ¥é›†è¨ˆ
+	// ´ü´ÖÊÌ½¸·×
 	default:
 		$arrTitleCol = array(
-			'æœŸé–“',
-			'è³¼å…¥ä»¶æ•°',
-			'ç”·æ€§',
-			'å¥³æ€§',
-			'ç”·æ€§(ä¼šå“¡)',
-			'ç”·æ€§(éä¼šå“¡)',
-			'å¥³æ€§(ä¼šå“¡)',
-			'å¥³æ€§(éä¼šå“¡)',
-			'è³¼å…¥åˆè¨ˆ',
-			'è³¼å…¥å¹³å‡',		
+			'´ü´Ö',
+			'¹ØÆş·ï¿ô',
+			'ÃËÀ­',
+			'½÷À­',
+			'ÃËÀ­(²ñ°÷)',
+			'ÃËÀ­(Èó²ñ°÷)',
+			'½÷À­(²ñ°÷)',
+			'½÷À­(Èó²ñ°÷)',
+			'¹ØÆş¹ç·×',
+			'¹ØÆşÊ¿¶Ñ',		
 		);
 		$arrDataCol = array(
 			$key,
@@ -218,7 +218,7 @@ function lfGetCSVColum($page, $key = "") {
 	return array($arrTitleCol, $arrDataCol);
 }
 
-// å¿…è¦ãªã‚«ãƒ©ãƒ ã®ã¿æŠ½å‡ºã™ã‚‹(CSVãƒ‡ãƒ¼ã‚¿ã§å–å¾—ã™ã‚‹)
+// É¬Í×¤Ê¥«¥é¥à¤Î¤ßÃê½Ğ¤¹¤ë(CSV¥Ç¡¼¥¿¤Ç¼èÆÀ¤¹¤ë)
 function lfGetDataColCSV($arrData, $arrDataCol) {
 	$max = count($arrData);
 	for($i = 0; $i < $max; $i++) {
@@ -230,7 +230,7 @@ function lfGetDataColCSV($arrData, $arrDataCol) {
 	return $csv_data;
 }
 
-// å¿…è¦ãªã‚«ãƒ©ãƒ ã®ã¿æŠ½å‡ºã™ã‚‹(PDFãƒ‡ãƒ¼ã‚¿ã§å–å¾—ã™ã‚‹)
+// É¬Í×¤Ê¥«¥é¥à¤Î¤ßÃê½Ğ¤¹¤ë(PDF¥Ç¡¼¥¿¤Ç¼èÆÀ¤¹¤ë)
 function lfGetDataColPDF($arrData, $arrDataCol, $len) {
 	$max = count($arrData);
 	for($i = 0; $i < $max; $i++) {

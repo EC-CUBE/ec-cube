@@ -13,21 +13,21 @@ class LC_Page {
 		$this->tpl_mainno = 'mail';
 		$this->tpl_subnavi = 'mail/subnavi.tpl';
 		$this->tpl_subno = "history";
-		$this->tpl_subtitle = 'é…ä¿¡å±¥æ­´';
+		$this->tpl_subtitle = 'ÇÛ¿®ÍúÎò';
 	}
 }
 
-//---- ãƒšãƒ¼ã‚¸åˆæœŸè¨­å®š
+//---- ¥Ú¡¼¥¸½é´üÀßÄê
 $conn = new SC_DBConn();
 $objPage = new LC_Page();
 $objView = new SC_AdminView();
 $objSess = new SC_Session();
 $objDate = new SC_Date();
 
-// èªè¨¼å¯å¦ã®åˆ¤å®š
+// Ç§¾Ú²ÄÈÝ¤ÎÈ½Äê
 sfIsSuccess($objSess);
 
-// å‰Šé™¤æ™‚
+// ºï½ü»þ
 if ( sfCheckNumLength($_GET['send_id']) && ($_GET['mode']=='delete') ){
 	
 	$sql = "UPDATE dtb_send_history SET del_flg = 1 WHERE send_id = ?";
@@ -42,25 +42,25 @@ if ( sfCheckNumLength($_GET['send_id']) && ($_GET['mode']=='delete') ){
 	$arrval[] = "0";
 	
 	$objQuery = new SC_Query();
-	// è¡Œæ•°ã®å–å¾—
+	// ¹Ô¿ô¤Î¼èÆÀ
 	$linemax = $objQuery->count($from, $where, $arrval);
-	$objPage->tpl_linemax = $linemax;				// ä½•ä»¶ãŒè©²å½“ã—ã¾ã—ãŸã€‚è¡¨ç¤ºç”¨
+	$objPage->tpl_linemax = $linemax;				// ²¿·ï¤¬³ºÅö¤·¤Þ¤·¤¿¡£É½¼¨ÍÑ
 	
-	// ãƒšãƒ¼ã‚¸é€ã‚Šã®å–å¾—
+	// ¥Ú¡¼¥¸Á÷¤ê¤Î¼èÆÀ
 	$objNavi = new SC_PageNavi($_POST['search_pageno'], $linemax, SEARCH_PMAX, "fnNaviSearchPage", NAVI_PMAX);
-	$objPage->tpl_strnavi = $objNavi->strnavi;		// è¡¨ç¤ºæ–‡å­—åˆ—
+	$objPage->tpl_strnavi = $objNavi->strnavi;		// É½¼¨Ê¸»úÎó
 	$startno = $objNavi->start_row;
 	
-	// å–å¾—ç¯„å›²ã®æŒ‡å®š(é–‹å§‹è¡Œç•ªå·ã€è¡Œæ•°ã®ã‚»ãƒƒãƒˆ)
+	// ¼èÆÀÈÏ°Ï¤Î»ØÄê(³«»Ï¹ÔÈÖ¹æ¡¢¹Ô¿ô¤Î¥»¥Ã¥È)
 	$objQuery->setlimitoffset(SEARCH_PMAX, $startno);
 	
-	// è¡¨ç¤ºé †åº
+	// É½¼¨½ç½ø
 	$order = "start_date DESC, send_id DESC";
 	$objQuery->setorder($order);
 	
-	// æ¤œç´¢çµæžœã®å–å¾—
+	// ¸¡º÷·ë²Ì¤Î¼èÆÀ
 	$objPage->arrDataList = $objQuery->select($col, $from, $where, $arrval);
 	
-//----ã€€ãƒšãƒ¼ã‚¸è¡¨ç¤º
+//----¡¡¥Ú¡¼¥¸É½¼¨
 $objView->assignobj($objPage);
 $objView->display(MAIN_FRAME);

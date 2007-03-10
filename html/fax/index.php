@@ -8,12 +8,12 @@ require_once("../require.php");
 
 class LC_Page {
 	function LC_Page() {
-		/** å¿…ãšæŒ‡å®šã™ã‚‹ **/
-		$this->tpl_css = URL_DIR.'css/layout/fax/index.css';	// ãƒ¡ã‚¤ãƒ³CSSãƒ‘ã‚¹
-		/** å¿…ãšæŒ‡å®šã™ã‚‹ **/
-		$this->tpl_mainpage = 'fax/index.tpl';			// ãƒ¡ã‚¤ãƒ³ãƒ†ãƒ³ãƒ—ãƒ¬ãƒ¼ãƒˆ
+		/** É¬¤º»ØÄê¤¹¤ë **/
+		$this->tpl_css = URL_DIR.'css/layout/fax/index.css';	// ¥á¥¤¥óCSS¥Ñ¥¹
+		/** É¬¤º»ØÄê¤¹¤ë **/
+		$this->tpl_mainpage = 'fax/index.tpl';			// ¥á¥¤¥ó¥Æ¥ó¥×¥ì¡¼¥È
 		$this->tpl_page_category = 'fax';				
-		$this->tpl_title = 'FAXæ³¨æ–‡ã«ã¤ã„ã¦';
+		$this->tpl_title = 'FAXÃíÊ¸¤Ë¤Ä¤¤¤Æ';
 	}
 }
 

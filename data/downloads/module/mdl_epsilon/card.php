@@ -11,12 +11,12 @@ require_once(MODULE_PATH . "mdl_epsilon/mdl_epsilon.inc");
 
 class LC_Page {
 	function LC_Page() {
-		/** å¿…ãšæŒ‡å®šã™ã‚‹ **/
-		$this->tpl_mainpage = 'mdl_epsilon/card.tpl';			// ãƒ¡ã‚¤ãƒ³ãƒ†ãƒ³ãƒ—ãƒ¬ãƒ¼ãƒˆ
+		/** É¬¤º»ØÄê¤¹¤ë **/
+		$this->tpl_mainpage = 'mdl_epsilon/card.tpl';			// ¥á¥¤¥ó¥Æ¥ó¥×¥ì¡¼¥È
 		/*
-		 session_startæ™‚ã®no-cacheãƒ˜ãƒƒãƒ€ãƒ¼ã‚’æŠ‘åˆ¶ã™ã‚‹ã“ã¨ã§
-		 ã€Œæˆ»ã‚‹ã€ãƒœã‚¿ãƒ³ä½¿ç”¨æ™‚ã®æœ‰åŠ¹æœŸé™åˆ‡ã‚Œè¡¨ç¤ºã‚’æŠ‘åˆ¶ã™ã‚‹ã€‚
-		 private-no-expire:ã‚¯ãƒ©ã‚¤ã‚¢ãƒ³ãƒˆã®ã‚­ãƒ£ãƒƒã‚·ãƒ¥ã‚’è¨±å¯ã™ã‚‹ã€‚
+		 session_start»ş¤Îno-cache¥Ø¥Ã¥À¡¼¤òÍŞÀ©¤¹¤ë¤³¤È¤Ç
+		 ¡ÖÌá¤ë¡×¥Ü¥¿¥ó»ÈÍÑ»ş¤ÎÍ­¸ú´ü¸ÂÀÚ¤ìÉ½¼¨¤òÍŞÀ©¤¹¤ë¡£
+		 private-no-expire:¥¯¥é¥¤¥¢¥ó¥È¤Î¥­¥ã¥Ã¥·¥å¤òµö²Ä¤¹¤ë¡£
 		*/
 		session_cache_limiter('private-no-expire');		
 	}
@@ -28,99 +28,99 @@ $objCampaignSess = new SC_CampaignSession();
 $objSiteInfo = $objView->objSiteInfo;
 $arrInfo = $objSiteInfo->data;
 
-// ãƒ¦ãƒ¼ã‚¶ãƒ¦ãƒ‹ãƒ¼ã‚¯IDã®å–å¾—ã¨è³¼å…¥çŠ¶æ…‹ã®æ­£å½“æ€§ã‚’ãƒã‚§ãƒƒã‚¯
+// ¥æ¡¼¥¶¥æ¥Ë¡¼¥¯ID¤Î¼èÆÀ¤È¹ØÆş¾õÂÖ¤ÎÀµÅöÀ­¤ò¥Á¥§¥Ã¥¯
 $uniqid = sfCheckNormalAccess($objSiteSess, $objCartSess);
 
-// ã‚«ãƒ¼ãƒˆé›†è¨ˆå‡¦ç†
+// ¥«¡¼¥È½¸·×½èÍı
 $objPage = sfTotalCart($objPage, $objCartSess, $arrInfo);
 
-// ä¸€æ™‚å—æ³¨ãƒ†ãƒ¼ãƒ–ãƒ«ã®èª­è¾¼
+// °ì»ş¼õÃí¥Æ¡¼¥Ö¥ë¤ÎÆÉ¹ş
 $arrData = sfGetOrderTemp($uniqid);
 
-// ã‚«ãƒ¼ãƒˆé›†è¨ˆã‚’å…ƒã«æœ€çµ‚è¨ˆç®—
+// ¥«¡¼¥È½¸·×¤ò¸µ¤ËºÇ½ª·×»»
 $arrData = sfTotalConfirm($arrData, $objPage, $objCartSess, $arrInfo);
 
-// ä»£è¡¨å•†å“æƒ…å ±
+// ÂåÉ½¾¦ÉÊ¾ğÊó
 $arrMainProduct = $objPage->arrProductsClass[0];
 
-// æ”¯æ‰•ã„æƒ…å ±ã‚’å–å¾—
+// »ÙÊ§¤¤¾ğÊó¤ò¼èÆÀ
 $arrPayment = $objQuery->getall("SELECT module_id, memo01, memo02, memo03, memo04, memo05, memo06, memo07, memo08, memo09, memo10 FROM dtb_payment WHERE payment_id = ? ", array($arrData["payment_id"]));
 
-// trans_codeã«å€¤ãŒã‚ã‚Šä¸”ã¤ã€æ­£å¸¸çµ‚äº†ã®ã¨ãã¯ã‚ªãƒ¼ãƒ€ãƒ¼ç¢ºèªã‚’è¡Œã†ã€‚
+// trans_code¤ËÃÍ¤¬¤¢¤ê³î¤Ä¡¢Àµ¾ï½ªÎ»¤Î¤È¤­¤Ï¥ª¡¼¥À¡¼³ÎÇ§¤ò¹Ô¤¦¡£
 if($_GET["result"] == "1"){
 	
-	// æ­£å¸¸ãªæ¨ç§»ã§ã‚ã‚‹ã“ã¨ã‚’è¨˜éŒ²ã—ã¦ãŠã
+	// Àµ¾ï¤Ê¿ä°Ü¤Ç¤¢¤ë¤³¤È¤òµ­Ï¿¤·¤Æ¤ª¤¯
 	$objSiteSess->setRegistFlag();
 	
-	// GETãƒ‡ãƒ¼ã‚¿ã‚’ä¿å­˜
+	// GET¥Ç¡¼¥¿¤òÊİÂ¸
 	$arrVal["credit_result"] = $_GET["result"];
 	$arrVal["memo01"] = PAYMENT_CREDIT_ID;
 	$arrVal["memo03"] = $arrPayment[0]["module_id"];
 	$sqlval["memo04"] = sfGetXMLValue($arrXML,'RESULT','TRANS_CODE');
 
-	// ãƒˆãƒ©ãƒ³ã‚¶ã‚¯ã‚·ãƒ§ãƒ³ã‚³ãƒ¼ãƒ‰
-	$arrMemo["trans_code"] = array("name"=>"Epsilonãƒˆãƒ©ãƒ³ã‚¶ã‚¯ã‚·ãƒ§ãƒ³ã‚³ãƒ¼ãƒ‰", "value" => $_GET["trans_code"]);
+	// ¥È¥é¥ó¥¶¥¯¥·¥ç¥ó¥³¡¼¥É
+	$arrMemo["trans_code"] = array("name"=>"Epsilon¥È¥é¥ó¥¶¥¯¥·¥ç¥ó¥³¡¼¥É", "value" => $_GET["trans_code"]);
 	$arrVal["memo02"] = serialize($arrMemo);
 
-	// å—æ³¨ä¸€æ™‚ãƒ†ãƒ¼ãƒ–ãƒ«ã«æ›´æ–°
+	// ¼õÃí°ì»ş¥Æ¡¼¥Ö¥ë¤Ë¹¹¿·
 	sfRegistTempOrder($uniqid, $arrVal);
 
-	// å®Œäº†ç”»é¢ã¸
+	// ´°Î»²èÌÌ¤Ø
 	header("Location: " .  URL_SHOP_COMPLETE);
 }
 
-// ãƒ‡ãƒ¼ã‚¿é€ä¿¡
+// ¥Ç¡¼¥¿Á÷¿®
 lfSendCredit($arrData, $arrPayment, $arrMainProduct);
 
 //---------------------------------------------------------------------------------------------------------------------------------------------------------
 
-// ãƒ‡ãƒ¼ã‚¿é€ä¿¡å‡¦ç†
+// ¥Ç¡¼¥¿Á÷¿®½èÍı
 function lfSendCredit($arrData, $arrPayment, $arrMainProduct, $again = true){
 	global $objSiteSess;
 	global $objCampaignSess;
 	
-	// ãƒ‡ãƒ¼ã‚¿é€ä¿¡å…ˆCGI
+	// ¥Ç¡¼¥¿Á÷¿®ÀèCGI
 	$order_url = $arrPayment[0]["memo02"];
 
-	// éä¼šå“¡ã®ã¨ãã¯ user_id ã« not_memberã¨é€ã‚‹
+	// Èó²ñ°÷¤Î¤È¤­¤Ï user_id ¤Ë not_member¤ÈÁ÷¤ë
 	($arrData["customer_id"] == 0) ? $user_id = "not_member" : $user_id = $arrData["customer_id"];	
 	
-	// é€ä¿¡ãƒ‡ãƒ¼ã‚¿ç”Ÿæˆ
-	$item_name = $arrMainProduct["name"] . "Ã—" . $arrMainProduct["quantity"] . "å€‹ (ä»£è¡¨)";
+	// Á÷¿®¥Ç¡¼¥¿À¸À®
+	$item_name = $arrMainProduct["name"] . "¡ß" . $arrMainProduct["quantity"] . "¸Ä (ÂåÉ½)";
 	$arrSendData = array(
-		'contract_code' => $arrPayment[0]["memo01"],						// å¥‘ç´„ã‚³ãƒ¼ãƒ‰
-		'user_id' => $user_id ,												// ãƒ¦ãƒ¼ã‚¶ID
-		'user_name' => $arrData["order_name01"].$arrData["order_name02"],	// ãƒ¦ãƒ¼ã‚¶å
-		'user_mail_add' => $arrData["order_email"],							// ãƒ¡ãƒ¼ãƒ«ã‚¢ãƒ‰ãƒ¬ã‚¹
-		'order_number' => $arrData["order_id"],								// ã‚ªãƒ¼ãƒ€ãƒ¼ç•ªå·
-		'item_code' => $arrMainProduct["product_code"],						// å•†å“ã‚³ãƒ¼ãƒ‰(ä»£è¡¨)
-		'item_name' => $item_name,											// å•†å“å(ä»£è¡¨)
-		'item_price' => $arrData["payment_total"],							// å•†å“ä¾¡æ ¼(ç¨è¾¼ã¿ç·é¡)
-		'st_code' => $arrPayment[0]["memo04"],								// æ±ºæ¸ˆåŒºåˆ†
-		'mission_code' => '1',												// èª²é‡‘åŒºåˆ†(å›ºå®š)
-		'process_code' => '1',												// å‡¦ç†åŒºåˆ†(å›ºå®š)
-		'xml' => '1',														// å¿œç­”å½¢å¼(å›ºå®š)
-		'memo1' => "",														// äºˆå‚™01
-		'memo2' => ECCUBE_PAYMENT . "_" . date("YmdHis"),					// äºˆå‚™02
+		'contract_code' => $arrPayment[0]["memo01"],						// ·ÀÌó¥³¡¼¥É
+		'user_id' => $user_id ,												// ¥æ¡¼¥¶ID
+		'user_name' => $arrData["order_name01"].$arrData["order_name02"],	// ¥æ¡¼¥¶Ì¾
+		'user_mail_add' => $arrData["order_email"],							// ¥á¡¼¥ë¥¢¥É¥ì¥¹
+		'order_number' => $arrData["order_id"],								// ¥ª¡¼¥À¡¼ÈÖ¹æ
+		'item_code' => $arrMainProduct["product_code"],						// ¾¦ÉÊ¥³¡¼¥É(ÂåÉ½)
+		'item_name' => $item_name,											// ¾¦ÉÊÌ¾(ÂåÉ½)
+		'item_price' => $arrData["payment_total"],							// ¾¦ÉÊ²Á³Ê(ÀÇ¹ş¤ßÁí³Û)
+		'st_code' => $arrPayment[0]["memo04"],								// ·èºÑ¶èÊ¬
+		'mission_code' => '1',												// ²İ¶â¶èÊ¬(¸ÇÄê)
+		'process_code' => '1',												// ½èÍı¶èÊ¬(¸ÇÄê)
+		'xml' => '1',														// ±şÅú·Á¼°(¸ÇÄê)
+		'memo1' => "",														// Í½È÷01
+		'memo2' => ECCUBE_PAYMENT . "_" . date("YmdHis"),					// Í½È÷02
 	);
 
-	// ãƒ‡ãƒ¼ã‚¿é€ä¿¡
+	// ¥Ç¡¼¥¿Á÷¿®
 	$arrXML = sfPostPaymentData($order_url, $arrSendData);
 	
-	// ã‚¨ãƒ©ãƒ¼ãŒã‚ã‚‹ã‹ãƒã‚§ãƒƒã‚¯ã™ã‚‹
+	// ¥¨¥é¡¼¤¬¤¢¤ë¤«¥Á¥§¥Ã¥¯¤¹¤ë
 	$err_code = sfGetXMLValue($arrXML,'RESULT','ERR_CODE');
 	
 	if($err_code != "") {
 		$err_detail = sfGetXMLValue($arrXML,'RESULT','ERR_DETAIL');
 		
-		// æ±ºæ¸ˆåŒºåˆ†ã‚¨ãƒ©ãƒ¼ã®å ´åˆã«ã¯ VISA,MASTER ã®ã¿ã§å†é€ä¿¡ã‚’è©¦ã¿ã‚‹
+		// ·èºÑ¶èÊ¬¥¨¥é¡¼¤Î¾ì¹ç¤Ë¤Ï VISA,MASTER ¤Î¤ß¤ÇºÆÁ÷¿®¤ò»î¤ß¤ë
 		if($err_code == "909" and $again){
 			$arrPayment[0]["memo04"] = "10000-0000-00000";
 			lfSendCredit($arrData, $arrPayment, $arrMainProduct, false);
 		}
-		sfDispSiteError(FREE_ERROR_MSG, "", true, "è³¼å…¥å‡¦ç†ä¸­ã«ä»¥ä¸‹ã®ã‚¨ãƒ©ãƒ¼ãŒç™ºç”Ÿã—ã¾ã—ãŸã€‚<br /><br /><br />ãƒ»" . $err_detail . "<br /><br /><br />ã“ã®æ‰‹ç¶šãã¯ç„¡åŠ¹ã¨ãªã‚Šã¾ã—ãŸã€‚");
+		sfDispSiteError(FREE_ERROR_MSG, "", true, "¹ØÆş½èÍıÃæ¤Ë°Ê²¼¤Î¥¨¥é¡¼¤¬È¯À¸¤·¤Ş¤·¤¿¡£<br /><br /><br />¡¦" . $err_detail . "<br /><br /><br />¤³¤Î¼êÂ³¤­¤ÏÌµ¸ú¤È¤Ê¤ê¤Ş¤·¤¿¡£");
 	} else {
-		// æ­£å¸¸ãªæ¨ç§»ã§ã‚ã‚‹ã“ã¨ã‚’è¨˜éŒ²ã—ã¦ãŠã
+		// Àµ¾ï¤Ê¿ä°Ü¤Ç¤¢¤ë¤³¤È¤òµ­Ï¿¤·¤Æ¤ª¤¯
 		$objSiteSess->setRegistFlag();
 		
 		$url = sfGetXMLValue($arrXML,'RESULT','REDIRECT');

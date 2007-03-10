@@ -12,7 +12,7 @@ class LC_Page {
 		$this->tpl_mainpage = 'basis/kiyaku.tpl';
 		$this->tpl_subnavi = 'basis/subnavi.tpl';
 		$this->tpl_subno = 'kiyaku';
-		$this->tpl_subtitle = 'ä¼šå“¡è¦ç´„ç™»éŒ²';
+		$this->tpl_subtitle = '²ñ°÷µ¬ÌóÅĞÏ¿';
 		$this->tpl_mainno = 'basis';
 	}
 }
@@ -23,65 +23,65 @@ $objView = new SC_AdminView();
 $objSess = new SC_Session();
 $objQuery = new SC_Query();
 
-// èªè¨¼å¯å¦ã®åˆ¤å®š
+// Ç§¾Ú²ÄÈİ¤ÎÈ½Äê
 sfIsSuccess($objSess);
 
-// è¦æ±‚åˆ¤å®š
+// Í×µáÈ½Äê
 switch($_POST['mode']) {
-// ç·¨é›†å‡¦ç†
+// ÊÔ½¸½èÍı
 case 'edit':
-	// POSTå€¤ã®å¼•ãç¶™ã
+	// POSTÃÍ¤Î°ú¤­·Ñ¤®
 	$objPage->arrForm = $_POST;
-	// å…¥åŠ›æ–‡å­—ã®å¤‰æ›
+	// ÆşÎÏÊ¸»ú¤ÎÊÑ´¹
 	$objPage->arrForm = lfConvertParam($objPage->arrForm);
 	
-	// ã‚¨ãƒ©ãƒ¼ãƒã‚§ãƒƒã‚¯
+	// ¥¨¥é¡¼¥Á¥§¥Ã¥¯
 	$objPage->arrErr = lfErrorCheck();
 	if(count($objPage->arrErr) <= 0) {
 		if($_POST['kiyaku_id'] == "") {
-			lfInsertClass($objPage->arrForm);	// æ–°è¦ä½œæˆ
+			lfInsertClass($objPage->arrForm);	// ¿·µ¬ºîÀ®
 		} else {
-			lfUpdateClass($objPage->arrForm);	// æ—¢å­˜ç·¨é›†
+			lfUpdateClass($objPage->arrForm);	// ´ûÂ¸ÊÔ½¸
 		}
-		// å†è¡¨ç¤º
+		// ºÆÉ½¼¨
 		sfReload();
 	} else {
-		// POSTãƒ‡ãƒ¼ã‚¿ã‚’å¼•ãç¶™ã
+		// POST¥Ç¡¼¥¿¤ò°ú¤­·Ñ¤°
 		$objPage->tpl_kiyaku_id = $_POST['kiyaku_id'];
 	}
 	break;
-// å‰Šé™¤
+// ºï½ü
 case 'delete':
 	sfDeleteRankRecord("dtb_kiyaku", "kiyaku_id", $_POST['kiyaku_id'], "", true);
-	// å†è¡¨ç¤º
+	// ºÆÉ½¼¨
 	sfReload();
 	break;
-// ç·¨é›†å‰å‡¦ç†
+// ÊÔ½¸Á°½èÍı
 case 'pre_edit':
-	// ç·¨é›†é …ç›®ã‚’DBã‚ˆã‚Šå–å¾—ã™ã‚‹ã€‚
+	// ÊÔ½¸¹àÌÜ¤òDB¤è¤ê¼èÆÀ¤¹¤ë¡£
 	$where = "kiyaku_id = ?";
 	$arrRet = $objQuery->select("kiyaku_text, kiyaku_title", "dtb_kiyaku", $where, array($_POST['kiyaku_id']));
-	// å…¥åŠ›é …ç›®ã«ã‚«ãƒ†ã‚´ãƒªåã‚’å…¥åŠ›ã™ã‚‹ã€‚
+	// ÆşÎÏ¹àÌÜ¤Ë¥«¥Æ¥´¥êÌ¾¤òÆşÎÏ¤¹¤ë¡£
 	$objPage->arrForm['kiyaku_title'] = $arrRet[0]['kiyaku_title'];
 	$objPage->arrForm['kiyaku_text'] = $arrRet[0]['kiyaku_text'];
-	// POSTãƒ‡ãƒ¼ã‚¿ã‚’å¼•ãç¶™ã
+	// POST¥Ç¡¼¥¿¤ò°ú¤­·Ñ¤°
 	$objPage->tpl_kiyaku_id = $_POST['kiyaku_id'];
 break;
 case 'down':
 	sfRankDown("dtb_kiyaku", "kiyaku_id", $_POST['kiyaku_id']);
-	// å†è¡¨ç¤º
+	// ºÆÉ½¼¨
 	sfReload();
 	break;
 case 'up':
 	sfRankUp("dtb_kiyaku", "kiyaku_id", $_POST['kiyaku_id']);
-	// å†è¡¨ç¤º
+	// ºÆÉ½¼¨
 	sfReload();
 	break;
 default:
 	break;
 }
 
-// è¦æ ¼ã®èª­è¾¼
+// µ¬³Ê¤ÎÆÉ¹ş
 $where = "del_flg <> 1";
 $objQuery->setorder("rank DESC");
 $objPage->arrKiyaku = $objQuery->select("kiyaku_title, kiyaku_text, kiyaku_id", "dtb_kiyaku", $where);
@@ -91,42 +91,42 @@ $objView->display(MAIN_FRAME);
 
 //--------------------------------------------------------------------------------------------------------------------------------
 
-/* DBã¸ã®æŒ¿å…¥ */
+/* DB¤Ø¤ÎÁŞÆş */
 function lfInsertClass($arrData) {
 	$objQuery = new SC_Query();
-	// INSERTã™ã‚‹å€¤ã‚’ä½œæˆã™ã‚‹ã€‚
+	// INSERT¤¹¤ëÃÍ¤òºîÀ®¤¹¤ë¡£
 	$sqlval['kiyaku_title'] = $arrData['kiyaku_title'];
 	$sqlval['kiyaku_text'] = $arrData['kiyaku_text'];
 	$sqlval['creator_id'] = $_SESSION['member_id'];
 	$sqlval['rank'] = $objQuery->max("dtb_kiyaku", "rank") + 1;
 	$sqlval['update_date'] = "Now()";
 	$sqlval['create_date'] = "Now()";
-	// INSERTã®å®Ÿè¡Œ
+	// INSERT¤Î¼Â¹Ô
 	$ret = $objQuery->insert("dtb_kiyaku", $sqlval);
 	return $ret;
 }
 
-/* DBã¸ã®æ›´æ–° */
+/* DB¤Ø¤Î¹¹¿· */
 function lfUpdateClass($arrData) {
 	$objQuery = new SC_Query();
-	// UPDATEã™ã‚‹å€¤ã‚’ä½œæˆã™ã‚‹ã€‚
+	// UPDATE¤¹¤ëÃÍ¤òºîÀ®¤¹¤ë¡£
 	$sqlval['kiyaku_title'] = $arrData['kiyaku_title'];
 	$sqlval['kiyaku_text'] = $arrData['kiyaku_text'];
 	$sqlval['update_date'] = "Now()";
 	$where = "kiyaku_id = ?";
-	// UPDATEã®å®Ÿè¡Œ
+	// UPDATE¤Î¼Â¹Ô
 	$ret = $objQuery->update("dtb_kiyaku", $sqlval, $where, array($_POST['kiyaku_id']));
 	return $ret;
 }
 
-/* å–å¾—æ–‡å­—åˆ—ã®å¤‰æ› */
+/* ¼èÆÀÊ¸»úÎó¤ÎÊÑ´¹ */
 function lfConvertParam($array) {
-	// æ–‡å­—å¤‰æ›
+	// Ê¸»úÊÑ´¹
 	$arrConvList['kiyaku_title'] = "KVa";
 	$arrConvList['kiyaku_text'] = "KVa";
 
 	foreach ($arrConvList as $key => $val) {
-		// POSTã•ã‚Œã¦ããŸå€¤ã®ã¿å¤‰æ›ã™ã‚‹ã€‚
+		// POST¤µ¤ì¤Æ¤­¤¿ÃÍ¤Î¤ßÊÑ´¹¤¹¤ë¡£
 		if(isset($array[$key])) {
 			$array[$key] = mb_convert_kana($array[$key] ,$val);
 		}
@@ -134,17 +134,17 @@ function lfConvertParam($array) {
 	return $array;
 }
 
-/* å…¥åŠ›ã‚¨ãƒ©ãƒ¼ãƒã‚§ãƒƒã‚¯ */
+/* ÆşÎÏ¥¨¥é¡¼¥Á¥§¥Ã¥¯ */
 function lfErrorCheck() {
 	$objErr = new SC_CheckError();
-	$objErr->doFunc(array("è¦ç´„ã‚¿ã‚¤ãƒˆãƒ«", "kiyaku_title", SMTEXT_LEN), array("EXIST_CHECK","SPTAB_CHECK","MAX_LENGTH_CHECK"));
-	$objErr->doFunc(array("è¦ç´„å†…å®¹", "kiyaku_text", MTEXT_LEN), array("EXIST_CHECK","SPTAB_CHECK","MAX_LENGTH_CHECK"));
+	$objErr->doFunc(array("µ¬Ìó¥¿¥¤¥È¥ë", "kiyaku_title", SMTEXT_LEN), array("EXIST_CHECK","SPTAB_CHECK","MAX_LENGTH_CHECK"));
+	$objErr->doFunc(array("µ¬ÌóÆâÍÆ", "kiyaku_text", MTEXT_LEN), array("EXIST_CHECK","SPTAB_CHECK","MAX_LENGTH_CHECK"));
 	if(!isset($objErr->arrErr['name'])) {
 		$objQuery = new SC_Query();
 		$arrRet = $objQuery->select("kiyaku_id, kiyaku_title", "dtb_kiyaku", "del_flg = 0 AND kiyaku_title = ?", array($_POST['kiyaku_title']));
-		// ç·¨é›†ä¸­ã®ãƒ¬ã‚³ãƒ¼ãƒ‰ä»¥å¤–ã«åŒã˜åç§°ãŒå­˜åœ¨ã™ã‚‹å ´åˆ		
+		// ÊÔ½¸Ãæ¤Î¥ì¥³¡¼¥É°Ê³°¤ËÆ±¤¸Ì¾¾Î¤¬Â¸ºß¤¹¤ë¾ì¹ç		
 		if ($arrRet[0]['kiyaku_id'] != $_POST['kiyaku_id'] && $arrRet[0]['kiyaku_title'] == $_POST['kiyaku_title']) {
-			$objErr->arrErr['name'] = "â€» æ—¢ã«åŒã˜å†…å®¹ã®ç™»éŒ²ãŒå­˜åœ¨ã—ã¾ã™ã€‚<br>";
+			$objErr->arrErr['name'] = "¢¨ ´û¤ËÆ±¤¸ÆâÍÆ¤ÎÅĞÏ¿¤¬Â¸ºß¤·¤Ş¤¹¡£<br>";
 		}
 	}
 	return $objErr->arrErr;

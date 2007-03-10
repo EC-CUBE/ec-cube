@@ -12,17 +12,17 @@
 require_once("./require.php");
 
 $arrConversionPage = array(
-	1 => 'å•†å“è³¼å…¥å®Œäº†ç”»é¢',
-	2 => 'ä¼šå“¡ç™»éŒ²å®Œäº†ç”»é¢'
+	1 => '¾¦ÉÊ¹ØÆþ´°Î»²èÌÌ',
+	2 => '²ñ°÷ÅÐÏ¿´°Î»²èÌÌ'
 );
 
-//ãƒšãƒ¼ã‚¸ç®¡ç†ã‚¯ãƒ©ã‚¹
+//¥Ú¡¼¥¸´ÉÍý¥¯¥é¥¹
 class LC_Page {
-	//ã‚³ãƒ³ã‚¹ãƒˆãƒ©ã‚¯ã‚¿
+	//¥³¥ó¥¹¥È¥é¥¯¥¿
 	function LC_Page() {
-		//ãƒ¡ã‚¤ãƒ³ãƒ†ãƒ³ãƒ—ãƒ¬ãƒ¼ãƒˆã®æŒ‡å®š
+		//¥á¥¤¥ó¥Æ¥ó¥×¥ì¡¼¥È¤Î»ØÄê
 		$this->tpl_mainpage = MODULE_PATH . 'affiliate.tpl';
-		$this->tpl_subtitle = 'ã‚¢ãƒ•ã‚£ãƒªã‚¨ã‚¤ãƒˆã‚¿ã‚°åŸ‹ã‚è¾¼ã¿';
+		$this->tpl_subtitle = '¥¢¥Õ¥£¥ê¥¨¥¤¥È¥¿¥°Ëä¤á¹þ¤ß';
 		global $arrConversionPage;
 		$this->arrConversionPage = $arrConversionPage;
 	}
@@ -30,19 +30,19 @@ class LC_Page {
 $objPage = new LC_Page();
 $objView = new SC_AdminView();
 
-// èªè¨¼ç¢ºèª
+// Ç§¾Ú³ÎÇ§
 $objSess = new SC_Session();
 sfIsSuccess($objSess);
 
-// ãƒ‘ãƒ©ãƒ¡ãƒ¼ã‚¿ç®¡ç†ã‚¯ãƒ©ã‚¹
+// ¥Ñ¥é¥á¡¼¥¿´ÉÍý¥¯¥é¥¹
 $objFormParam = new SC_FormParam();
 $objFormParam = lfInitParam($objFormParam);
-// POSTå€¤ã®å–å¾—
+// POSTÃÍ¤Î¼èÆÀ
 $objFormParam->setParam($_POST);
 
 switch($_POST['mode']) {
 case 'edit':
-	// å…¥åŠ›ã‚¨ãƒ©ãƒ¼åˆ¤å®š
+	// ÆþÎÏ¥¨¥é¡¼È½Äê
 	$objPage->arrErr = $objFormParam->checkError();
 	if(count($objPage->arrErr) == 0) {
 		$arrRet = $objQuery->select("sub_data", "dtb_module", "module_id = ?", array(AFF_TAG_MID));
@@ -52,14 +52,14 @@ case 'edit':
 		$sqlval['sub_data'] = serialize($arrSubData);
 		$objQuery = new SC_Query();
 		$objQuery->update("dtb_module", $sqlval, "module_id = ?", array(AFF_TAG_MID));
-		// javascriptå®Ÿè¡Œ
+		// javascript¼Â¹Ô
 		$objPage->tpl_onload = "window.close();";
 	}
 	break;
-// ã‚³ãƒ³ãƒãƒ¼ã‚¸ãƒ§ãƒ³ãƒšãƒ¼ã‚¸ã®é¸æŠž
+// ¥³¥ó¥Ð¡¼¥¸¥ç¥ó¥Ú¡¼¥¸¤ÎÁªÂò
 case 'select':
 	if(is_numeric($_POST['conv_page'])) {
-		// sub_dataã‚ˆã‚Šã‚¿ã‚°æƒ…å ±ã‚’èª­ã¿è¾¼ã‚€
+		// sub_data¤è¤ê¥¿¥°¾ðÊó¤òÆÉ¤ß¹þ¤à
 		$conv_page = $_POST['conv_page'];
 		$arrRet = $objQuery->select("sub_data", "dtb_module", "module_id = ?", array(AFF_TAG_MID));
 		$arrSubData = unserialize($arrRet[0]['sub_data']);
@@ -73,13 +73,13 @@ default:
 }
 
 $objPage->arrForm = $objFormParam->getFormParamList();
-$objView->assignobj($objPage);					//å¤‰æ•°ã‚’ãƒ†ãƒ³ãƒ—ãƒ¬ãƒ¼ãƒˆã«ã‚¢ã‚µã‚¤ãƒ³ã™ã‚‹
-$objView->display($objPage->tpl_mainpage);		//ãƒ†ãƒ³ãƒ—ãƒ¬ãƒ¼ãƒˆã®å‡ºåŠ›
+$objView->assignobj($objPage);					//ÊÑ¿ô¤ò¥Æ¥ó¥×¥ì¡¼¥È¤Ë¥¢¥µ¥¤¥ó¤¹¤ë
+$objView->display($objPage->tpl_mainpage);		//¥Æ¥ó¥×¥ì¡¼¥È¤Î½ÐÎÏ
 //-------------------------------------------------------------------------------------------------------
-/* ãƒ‘ãƒ©ãƒ¡ãƒ¼ã‚¿æƒ…å ±ã®åˆæœŸåŒ– */
+/* ¥Ñ¥é¥á¡¼¥¿¾ðÊó¤Î½é´ü²½ */
 function lfInitParam($objFormParam) {
-	$objFormParam->addParam("ã‚³ãƒ³ãƒãƒ¼ã‚¸ãƒ§ãƒ³ãƒšãƒ¼ã‚¸", "conv_page", STEXT_LEN, "KVa", array("EXIST_CHECK", "MAX_LENGTH_CHECK"));
-	$objFormParam->addParam("ã‚¢ãƒ•ã‚£ãƒªã‚¨ã‚¤ãƒˆã‚¿ã‚°", "aff_tag", MTEXT_LEN, "KVa", array("EXIST_CHECK", "MAX_LENGTH_CHECK"));	
+	$objFormParam->addParam("¥³¥ó¥Ð¡¼¥¸¥ç¥ó¥Ú¡¼¥¸", "conv_page", STEXT_LEN, "KVa", array("EXIST_CHECK", "MAX_LENGTH_CHECK"));
+	$objFormParam->addParam("¥¢¥Õ¥£¥ê¥¨¥¤¥È¥¿¥°", "aff_tag", MTEXT_LEN, "KVa", array("EXIST_CHECK", "MAX_LENGTH_CHECK"));	
 	return $objFormParam;
 }
 ?>

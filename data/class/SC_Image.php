@@ -5,13 +5,13 @@
  * http://www.lockon.co.jp/
  */
 
-//---- ã‚¢ãƒƒãƒ—ãƒ­ãƒ¼ãƒ‰ãƒ•ã‚¡ã‚¤ãƒ«åŠ å·¥ã‚¯ãƒ©ã‚¹(thumb.phpã¨ã‚»ãƒƒãƒˆã§ä½¿ç”¨ã™ã‚‹)
+//---- ¥¢¥Ã¥×¥í¡¼¥É¥Õ¥¡¥¤¥ë²Ã¹©¥¯¥é¥¹(thumb.php¤È¥»¥Ã¥È¤Ç»ÈÍÑ¤¹¤ë)
 class SC_Image {
 	
 	var $tmp_dir;
 		
 	function SC_Image($tmp_dir) {
-		// ãƒ˜ãƒƒãƒ€ãƒ•ã‚¡ã‚¤ãƒ«èª­è¾¼
+		// ¥Ø¥Ã¥À¥Õ¥¡¥¤¥ëÆÉ¹þ
 		$include_dir = realpath(dirname( __FILE__));
 		require_once($include_dir . "/../lib/thumb.php");
 		if(!ereg("/$", $tmp_dir)) {
@@ -21,30 +21,30 @@ class SC_Image {
 		}
 	}
 	
-	//--- ä¸€æ™‚ãƒ•ã‚¡ã‚¤ãƒ«ç”Ÿæˆ(ã‚µãƒ ãƒã‚¤ãƒ«ç”»åƒç”Ÿæˆç”¨)
+	//--- °ì»þ¥Õ¥¡¥¤¥ëÀ¸À®(¥µ¥à¥Í¥¤¥ë²èÁüÀ¸À®ÍÑ)
 	function makeTempImage($keyname, $max_width, $max_height) {
-		// ä¸€æ„ãªIDã‚’å–å¾—ã™ã‚‹ã€‚
+		// °ì°Õ¤ÊID¤ò¼èÆÀ¤¹¤ë¡£
 		$mainname = uniqid("").".";
-		// æ‹¡å¼µå­ä»¥å¤–ã‚’ç½®ãæ›ãˆã‚‹ã€‚
+		// ³ÈÄ¥»Ò°Ê³°¤òÃÖ¤­´¹¤¨¤ë¡£
 		$newFileName = ereg_replace("^.*\.",$mainname, $_FILES[$keyname]['name']);
 		$result  = MakeThumb($_FILES[$keyname]['tmp_name'], $this->tmp_dir , $max_width, $max_height, $newFileName);
 		gfDebugLog($result);
 		return $newFileName;
 	}
 
-	//--- ãƒ•ã‚¡ã‚¤ãƒ«ã‚’æŒ‡å®šä¿å­˜DIRã¸ç§»å‹•
+	//--- ¥Õ¥¡¥¤¥ë¤ò»ØÄêÊÝÂ¸DIR¤Ø°ÜÆ°
 	function moveTempImage($filename, $save_dir) {
-		// ã‚³ãƒ”ãƒ¼å…ƒãƒ•ã‚¡ã‚¤ãƒ«ã€ã‚³ãƒ”ãƒ¼å…ˆãƒ‡ã‚£ãƒ¬ã‚¯ãƒˆãƒªãŒå­˜åœ¨ã™ã‚‹å ´åˆã«ã®ã¿å®Ÿè¡Œã™ã‚‹
+		// ¥³¥Ô¡¼¸µ¥Õ¥¡¥¤¥ë¡¢¥³¥Ô¡¼Àè¥Ç¥£¥ì¥¯¥È¥ê¤¬Â¸ºß¤¹¤ë¾ì¹ç¤Ë¤Î¤ß¼Â¹Ô¤¹¤ë
 		if(file_exists($this->tmp_dir.$filename) && file_exists($save_dir)) {
 			if(copy($this->tmp_dir . $filename , $save_dir."/".$filename)) {
 				unlink( $this->tmp_dir . $filename );
 			}
 		} else {
-			gfDebugLog($this->tmp_dir.$filename."ã®ç§»å‹•ã«å¤±æ•—ã—ã¾ã—ãŸã€‚");
+			gfDebugLog($this->tmp_dir.$filename."¤Î°ÜÆ°¤Ë¼ºÇÔ¤·¤Þ¤·¤¿¡£");
 		}
 	}
 
-	//---- æŒ‡å®šãƒ•ã‚¡ã‚¤ãƒ«ã‚’å‰Šé™¤	
+	//---- »ØÄê¥Õ¥¡¥¤¥ë¤òºï½ü	
 	function deleteImage($filename, $dir) {
 		if(file_exists($dir."/".$filename)) {
 			unlink($dir."/".$filename);

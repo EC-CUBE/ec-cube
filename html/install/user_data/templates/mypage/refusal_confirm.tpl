@@ -3,30 +3,30 @@
  *
  * http://www.lockon.co.jp/
  *}-->
-<!--â–¼CONTENTS-->
+<!--¢§CONTENTS-->
 <table width="" border="0" cellspacing="0" cellpadding="0" summary=" ">
 <form name="form1" method="post" action="<!--{$smarty.server.PHP_SELF|escape}-->">
 <input type="hidden" name="mode" value="complete">
 	<tr>
 		<td align="center" bgcolor="#ffffff">
-		<!--â–¼MAIN ONTENTS-->
+		<!--¢§MAIN ONTENTS-->
 		<table width="100%" border="0" cellspacing="0" cellpadding="0" summary=" ">
 			<tr>
-				<td><img src="<!--{$smarty.const.URL_DIR}-->img/mypage/title.jpg" width="700" height="40" alt="MYãƒšãƒ¼ã‚¸"></td>
+				<td><img src="<!--{$smarty.const.URL_DIR}-->img/mypage/title.jpg" width="700" height="40" alt="MY¥Ú¡¼¥¸"></td>
 			</tr>
 			<tr><td height="15"></td></tr>
 		</table>
 		<table width="100%" border="0" cellspacing="0" cellpadding="0" summary=" ">
 			<tr valign="top">
 				<td>
-				<!--â–¼NAVI-->
+				<!--¢§NAVI-->
 					<!--{include file=$tpl_navi}-->
-				<!--â–²NAVI-->
+				<!--¢¥NAVI-->
 				</td>
 				<td align="right">
 				<table width="515" border="0" cellspacing="0" cellpadding="0" summary=" ">
 					<tr>
-						<td><!--â˜…ã‚¿ã‚¤ãƒˆãƒ«--><img src="<!--{$smarty.const.URL_DIR}-->img/mypage/subtitle04.gif" width="515" height="32" alt="é€€ä¼šæ‰‹ç¶šã"></td>
+						<td><!--¡ú¥¿¥¤¥È¥ë--><img src="<!--{$smarty.const.URL_DIR}-->img/mypage/subtitle04.gif" width="515" height="32" alt="Âà²ñ¼êÂ³¤­"></td>
 					</tr>
 					<tr><td height="15"></td></tr>
 					<tr>
@@ -35,26 +35,26 @@
 							<tr><td height="5"></td></tr>
 							<tr>
 								<td align="center" bgcolor="#ffffff">
-								<!--è¡¨ç¤ºã“ã“ã‹ã‚‰-->
+								<!--É½¼¨¤³¤³¤«¤é-->
 								<table width="465" border="0" cellspacing="0" cellpadding="0" summary=" ">
 									<tr><td height="55"></td></tr>
 									<tr>
-										<td align="center" class="fs12n">é€€ä¼šæ‰‹ç¶šãã‚’å®Ÿè¡Œã—ã¦ã‚‚ã‚ˆã‚ã—ã„ã§ã—ã‚‡ã†ã‹ï¼Ÿ</td>
+										<td align="center" class="fs12n">Âà²ñ¼êÂ³¤­¤ò¼Â¹Ô¤·¤Æ¤â¤è¤í¤·¤¤¤Ç¤·¤ç¤¦¤«¡©</td>
 									</tr>
 									<tr><td height="55"></td></tr>
 									<tr>
 										<td align="center">
-											<a href="./refusal.php" onmouseover="chgImg('<!--{$smarty.const.URL_DIR}-->img/mypage/b_no_on.gif','refusal_no');" onmouseout="chgImg('<!--{$smarty.const.URL_DIR}-->img/mypage/b_no.gif','refusal_no');"><img src="<!--{$smarty.const.URL_DIR}-->img/mypage/b_no.gif" width="180" height="30" alt="ã„ã„ãˆã€é€€ä¼šã—ã¾ã›ã‚“" name="refusal_no" id="refusal_no" /></a>ã€€
-											<input type="image" onmouseover="chgImgImageSubmit('<!--{$smarty.const.URL_DIR}-->img/mypage/b_yes_on.gif',this);" onmouseout="chgImgImageSubmit('<!--{$smarty.const.URL_DIR}-->img/mypage/b_yes.gif',this);" src="<!--{$smarty.const.URL_DIR}-->img/mypage/b_yes.gif" width="180" height="30" alt="ã¯ã„ã€ã¯ã„ã€é€€ä¼šã—ã¾ã™" name="refusal_yes" id="refusal_yes" />
+											<a href="./refusal.php" onmouseover="chgImg('<!--{$smarty.const.URL_DIR}-->img/mypage/b_no_on.gif','refusal_no');" onmouseout="chgImg('<!--{$smarty.const.URL_DIR}-->img/mypage/b_no.gif','refusal_no');"><img src="<!--{$smarty.const.URL_DIR}-->img/mypage/b_no.gif" width="180" height="30" alt="¤¤¤¤¤¨¡¢Âà²ñ¤·¤Ş¤»¤ó" name="refusal_no" id="refusal_no" /></a>¡¡
+											<input type="image" onmouseover="chgImgImageSubmit('<!--{$smarty.const.URL_DIR}-->img/mypage/b_yes_on.gif',this);" onmouseout="chgImgImageSubmit('<!--{$smarty.const.URL_DIR}-->img/mypage/b_yes.gif',this);" src="<!--{$smarty.const.URL_DIR}-->img/mypage/b_yes.gif" width="180" height="30" alt="¤Ï¤¤¡¢¤Ï¤¤¡¢Âà²ñ¤·¤Ş¤¹" name="refusal_yes" id="refusal_yes" />
 										</td>
 									</tr>
 									<tr><td height="10"></td></tr>
 									<tr>
-										<td class="fs10"><span class="red">â€»é€€ä¼šæ‰‹ç¶šããŒå®Œäº†ã—ãŸæ™‚ç‚¹ã§ã€ç¾åœ¨ä¿å­˜ã•ã‚Œã¦ã„ã‚‹è³¼å…¥å±¥æ­´ã‚„ã€ãŠå±Šã‘å…ˆç­‰ã®æƒ…å ±ã¯ã™ã¹ã¦ãªããªã‚Šã¾ã™ã®ã§ã”æ³¨æ„ãã ã•ã„ã€‚</span></td>
+										<td class="fs10"><span class="red">¢¨Âà²ñ¼êÂ³¤­¤¬´°Î»¤·¤¿»şÅÀ¤Ç¡¢¸½ºßÊİÂ¸¤µ¤ì¤Æ¤¤¤ë¹ØÆşÍúÎò¤ä¡¢¤ªÆÏ¤±ÀèÅù¤Î¾ğÊó¤Ï¤¹¤Ù¤Æ¤Ê¤¯¤Ê¤ê¤Ş¤¹¤Î¤Ç¤´Ãí°Õ¤¯¤À¤µ¤¤¡£</span></td>
 									</tr>
 									<tr><td height="30"></td></tr>
 								</table>
-								<!--è¡¨ç¤ºã“ã“ã¾ã§-->
+								<!--É½¼¨¤³¤³¤Ş¤Ç-->
 								</td>
 							</tr>
 							<tr><td height="5"></td></tr>
@@ -65,11 +65,11 @@
 				</td>
 			</tr>
 		</table>
-		<!--â–²MAIN ONTENTS-->
+		<!--¢¥MAIN ONTENTS-->
 		</td>
 	</tr>
 </form>
 </table>
-<!--â–²CONTENTS-->
+<!--¢¥CONTENTS-->
 
 

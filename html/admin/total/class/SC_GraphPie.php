@@ -7,7 +7,7 @@
 $SC_GRAPHPIE_DIR = realpath(dirname( __FILE__));
 require_once($SC_GRAPHPIE_DIR . "/SC_GraphBase.php");	
 
-// å††ã‚°ãƒ©ãƒ•ç”Ÿæˆã‚¯ãƒ©ã‚¹
+// ±ß¥°¥é¥ÕÀ¸À®¥¯¥é¥¹
 class SC_GraphPie extends SC_GraphBase{
 	var $cw;
 	var $ch;
@@ -17,16 +17,16 @@ class SC_GraphPie extends SC_GraphBase{
 	var $arrLabel;
 	var $arrData;
 	
-    // ã‚³ãƒ³ã‚¹ãƒˆãƒ©ã‚¯ã‚¿
+    // ¥³¥ó¥¹¥È¥é¥¯¥¿
 	function SC_GraphPie($bgw = BG_WIDTH, $bgh = BG_HEIGHT, $left = PIE_LEFT, $top = PIE_TOP) {
 		parent::SC_GraphBase($bgw, $bgh, $left, $top);
-		// ã‚µã‚¤ã‚ºè¨­å®š
+		// ¥µ¥¤¥ºÀßÄê
 		$this->setSize(PIE_WIDTH, PIE_HEIGHT, PIE_THICK);
-		// ä½ç½®è¨­å®š
+		// °ÌÃÖÀßÄê
 		$this->setPosition($this->left + ($this->cw / 2), $this->top + ($this->ch / 2));
     }
 	
-	// ãƒ‡ãƒ¼ã‚¿ã‚’360Â°å€¤ã«å¤‰æ›ã™ã‚‹
+	// ¥Ç¡¼¥¿¤ò360¡ëÃÍ¤ËÊÑ´¹¤¹¤ë
 	function getCircleData($array) {
 		if(!is_array($array)) {
 			return;
@@ -39,36 +39,36 @@ class SC_GraphPie extends SC_GraphBase{
 			return;
 		}		
 		$rate = 360 / $total;
-		// ãƒ©ãƒ™ãƒ«è¡¨ç¤ºç”¨
+		// ¥é¥Ù¥ëÉ½¼¨ÍÑ
 		$p_rate = 100 / $total;
 		$cnt = 0;
 		foreach($array as $val) {
 			$ret = round($val * $rate);
 			$new_total+= $ret;
 			$arrRet[] = $ret;
-			// ãƒ‘ãƒ¼ã‚»ãƒ³ãƒˆè¡¨ç¤ºç”¨
+			// ¥Ñ¡¼¥»¥ó¥ÈÉ½¼¨ÍÑ
 			$this->arrLabel[] = round($val * $p_rate) . " %";
 			$cnt++;
 		}
-		// åˆè¨ˆãŒ360ã«ãªã‚‹ã‚ˆã†ã«è£œæ­£ã—ã¦ãŠã
+		// ¹ç·×¤¬360¤Ë¤Ê¤ë¤è¤¦¤ËÊäÀµ¤·¤Æ¤ª¤¯
 		$arrRet[0] -= $new_total - 360;
 		return $arrRet;
 	}	
 		
-	// å††ã®ä½ç½®è¨­å®šã‚’è¡Œã†
+	// ±ß¤Î°ÌÃÖÀßÄê¤ò¹Ô¤¦
 	function setPosition($cx, $cy) {
 		$this->cx = $cx;
 		$this->cy = $cy;
 	}
 		
-	// å††ã®ã‚µã‚¤ã‚ºè¨­å®šã‚’è¡Œã†
+	// ±ß¤Î¥µ¥¤¥ºÀßÄê¤ò¹Ô¤¦
 	function setSize($cw, $ch, $cz = 0) {
 		$this->cw = $cw;
 		$this->ch = $ch;
 		$this->cz = $cz;
 	}
 	
-	// å½±ã®æç”»
+	// ±Æ¤ÎÉÁ²è
 	function drawShade() {
 		$move = 1;
 		for($i = ($this->cy + $this->cz); $i <= ($this->cy + $this->cz + ($this->cz * PIE_SHADE_IMPACT)); $i++) {
@@ -77,12 +77,12 @@ class SC_GraphPie extends SC_GraphBase{
 		}
 	}
 	
-	// ãƒ‡ãƒ¼ã‚¿ã‚’ã‚»ãƒƒãƒˆã™ã‚‹
+	// ¥Ç¡¼¥¿¤ò¥»¥Ã¥È¤¹¤ë
 	function setData($arrData) {
 		$this->arrData = array_values($arrData);
 	}
 	
-	// å††ã‚°ãƒ©ãƒ•ã‚’æç”»ã™ã‚‹
+	// ±ß¥°¥é¥Õ¤òÉÁ²è¤¹¤ë
 	function drawGraph() {
 		$x = $this->cx;
 		$y = $this->cy;
@@ -90,82 +90,82 @@ class SC_GraphPie extends SC_GraphBase{
 		$h = $this->ch;
 		$w = $this->cw;
 		
-		// ãƒ‡ãƒ¼ã‚¿ã®è§’åº¦ã‚’å–å¾—ã™ã‚‹
+		// ¥Ç¡¼¥¿¤Î³ÑÅÙ¤ò¼èÆÀ¤¹¤ë
 		$arrRad = $this->getCircleData($this->arrData);
 		$rd_max = count($arrRad);
 		
-		// ãƒ‡ãƒ¼ã‚¿ãŒå­˜åœ¨ã—ãªã„å ´åˆ
+		// ¥Ç¡¼¥¿¤¬Â¸ºß¤·¤Ê¤¤¾ì¹ç
 		if($rd_max <= 0) {
 			return;
 		}
 		
-		// å½±ã®æç”»
+		// ±Æ¤ÎÉÁ²è
 		if($this->shade_on) {
 			$this->drawShade();
 		}
 			
-		// è‰²æ•°ã®å–å¾—
+		// ¿§¿ô¤Î¼èÆÀ
 		$c_max = count($this->arrColor);
 		$dc_max = count($this->arrDarkColor);
 		
-		// å´é¢ã®æç”»		
+		// Â¦ÌÌ¤ÎÉÁ²è		
 		for ($i = ($y + $z - 1); $i >= $y; $i--) {
 			$start = 0;
 			for($j = 0; $j < $rd_max; $j++) {
-				// è§’åº¦ãŒ0åº¦ä»¥ä¸Šã®å ´åˆã®ã¿å´é¢ã‚’æç”»ã™ã‚‹ã€‚
+				// ³ÑÅÙ¤¬0ÅÙ°Ê¾å¤Î¾ì¹ç¤Î¤ßÂ¦ÌÌ¤òÉÁ²è¤¹¤ë¡£
 				if($arrRad[$j] > 0) {
 					$end = $start + $arrRad[$j];
 					if($start == 0 && $end == 360) {
-						// -90ï½270ã§æŒ‡å®šã™ã‚‹ã¨å††ãŒæç”»ã§ããªã„ã®ã§0ï½360ã«æŒ‡å®š
+						// -90¢·270¤Ç»ØÄê¤¹¤ë¤È±ß¤¬ÉÁ²è¤Ç¤­¤Ê¤¤¤Î¤Ç0¢·360¤Ë»ØÄê
 						imagearc($this->image, $x, $i, $w, $h, 0, 360, $this->arrDarkColor[($j % $dc_max)]);
 					} else {
-						// -90Â°ã¯12æ™‚ã®ä½ç½®ã‹ã‚‰é–‹å§‹ã™ã‚‹ã‚ˆã†ã«è£œæ­£ã—ã¦ã„ã‚‹
+						// -90¡ë¤Ï12»ş¤Î°ÌÃÖ¤«¤é³«»Ï¤¹¤ë¤è¤¦¤ËÊäÀµ¤·¤Æ¤¤¤ë
 						imagearc($this->image, $x, $i, $w, $h, $start - 90, $end - 90, $this->arrDarkColor[($j % $dc_max)]);	
 					}			
 					$start = $end;
 				}
 			}
 		}
-		// åº•é¢ã®æç”»
+		// ÄìÌÌ¤ÎÉÁ²è
 		imagearc($this->image, $x, $y + $z, $w, $h, 0, 180 , $this->flame_color);
 
-		// ä¸Šé¢ã®æç”»
+		// ¾åÌÌ¤ÎÉÁ²è
 		$start = 0;
 		for($i = 0; $i < $rd_max; $i++) {
 			$end = $start + $arrRad[$i];
 			if($start == 0 && $end == 360) {
-				// -90ï½270ã§æŒ‡å®šã™ã‚‹ã¨å††ãŒæç”»ã§ããªã„ã®ã§0ï½360ã«æŒ‡å®š
+				// -90¢·270¤Ç»ØÄê¤¹¤ë¤È±ß¤¬ÉÁ²è¤Ç¤­¤Ê¤¤¤Î¤Ç0¢·360¤Ë»ØÄê
 				imagefilledarc($this->image, $x, $y, $w, $h, 0, 360, $this->arrColor[($i % $c_max)], IMG_ARC_PIE);			
 			} else {
-				// -90Â°ã¯12æ™‚ã®ä½ç½®ã‹ã‚‰é–‹å§‹ã™ã‚‹ã‚ˆã†ã«è£œæ­£ã—ã¦ã„ã‚‹ã€‚		
+				// -90¡ë¤Ï12»ş¤Î°ÌÃÖ¤«¤é³«»Ï¤¹¤ë¤è¤¦¤ËÊäÀµ¤·¤Æ¤¤¤ë¡£		
 				imagefilledarc($this->image, $x, $y, $w, $h, $start - 90, $end - 90, $this->arrColor[($i % $c_max)], IMG_ARC_PIE);
 			}
 			$start = $end;
 		}
 
-		// ä¸Šé¢ã®ç¸å–ã‚Š
+		// ¾åÌÌ¤Î±ï¼è¤ê
 		$start = 0;
 		for($i = 0; $i < $rd_max; $i++) {
 			$end = $start + $arrRad[$i];
 			if($start == 0 && $end == 360) {
-				// -90ï½270ã§æŒ‡å®šã™ã‚‹ã¨å††ãŒæç”»ã§ããªã„ã®ã§0ï½360ã«æŒ‡å®š
+				// -90¢·270¤Ç»ØÄê¤¹¤ë¤È±ß¤¬ÉÁ²è¤Ç¤­¤Ê¤¤¤Î¤Ç0¢·360¤Ë»ØÄê
 				imagearc($this->image, $x, $y, $w, $h, 0, 360 , $this->flame_color);
 			}
-			// -90Â°ã¯12æ™‚ã®ä½ç½®ã‹ã‚‰é–‹å§‹ã™ã‚‹ã‚ˆã†ã«è£œæ­£ã—ã¦ã„ã‚‹ã€‚
+			// -90¡ë¤Ï12»ş¤Î°ÌÃÖ¤«¤é³«»Ï¤¹¤ë¤è¤¦¤ËÊäÀµ¤·¤Æ¤¤¤ë¡£
 			imagefilledarc($this->image, $x, $y, $w, $h, $start - 90, $end - 90, $this->flame_color, IMG_ARC_EDGED|IMG_ARC_NOFILL);
 			$start = $end;
 		}
 
-		// å´é¢ã®ç¸å–ã‚Š
+		// Â¦ÌÌ¤Î±ï¼è¤ê
 		imageline($this->image, $x + ($w / 2), $y, $x + ($w / 2), $y + $z, $this->flame_color);
 		imageline($this->image, $x - ($w / 2), $y, $x - ($w / 2), $y + $z, $this->flame_color);
 		$start = 0;
 		for($i = 0; $i < $rd_max; $i++) {
 			$end = $start + $arrRad[$i];
-			// å‰é¢ã®ã¿
+			// Á°ÌÌ¤Î¤ß
 			if($end > 90 && $end < 270) {
 				list($ax, $ay) = lfGetArcPos($x, $y, $w, $h, $end);
-				// ãƒ©ã‚¤ãƒ³ã®ãšã‚Œã‚’è£œæ­£ã™ã‚‹
+				// ¥é¥¤¥ó¤Î¤º¤ì¤òÊäÀµ¤¹¤ë
 				if($end > 180) {
 					$ax = $ax + 1;
 				}
@@ -174,13 +174,13 @@ class SC_GraphPie extends SC_GraphBase{
 			$start = $end;	
 		}
 				
-		// ãƒ©ãƒ™ãƒ«ã®æç”»
+		// ¥é¥Ù¥ë¤ÎÉÁ²è
 		$this->drawLabel($arrRad);
-		// å‡¡ä¾‹ã®æç”»
+		// ËŞÎã¤ÎÉÁ²è
 		$this->drawLegend(count($this->arrData));			
 	}
 	
-	// å††ã‚°ãƒ©ãƒ•ã®ãƒ©ãƒ™ãƒ«ã‚’æç”»ã™ã‚‹
+	// ±ß¥°¥é¥Õ¤Î¥é¥Ù¥ë¤òÉÁ²è¤¹¤ë
 	function drawLabel($arrRad) {
 		$rd_max = count($arrRad);
 		$start = 0;
@@ -189,7 +189,7 @@ class SC_GraphPie extends SC_GraphBase{
 			$end = $start + $arrRad[$i];
 			list($sx, $sy) = lfGetArcPos($this->cx, $this->cy, ($this->cw / 1.5), ($this->ch / 1.5), $center);
 			list($ex, $ey) = lfGetArcPos($this->cx, $this->cy, ($this->cw * 1.5), ($this->ch * 1.5), $center);
-			// æŒ‡ç¤ºç·šã®æç”»
+			// »Ø¼¨Àş¤ÎÉÁ²è
 			imageline($this->image, $sx, $sy, $ex + 2, $ey - PIE_LABEL_UP, $this->flame_color);
 			$this->setText(FONT_SIZE, $ex - 10, $ey - PIE_LABEL_UP - FONT_SIZE, $this->arrLabel[$i], NULL, 0, true);
 			$start = $end;

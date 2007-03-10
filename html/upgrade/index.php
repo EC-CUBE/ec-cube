@@ -7,11 +7,11 @@
 
 require_once("../require.php");
 
-//ãƒšãƒ¼ã‚¸ç®¡ç†ã‚¯ãƒ©ã‚¹
+//¥Ú¡¼¥¸´ÉÍý¥¯¥é¥¹
 class LC_Page {
-	//ã‚³ãƒ³ã‚¹ãƒˆãƒ©ã‚¯ã‚¿
+	//¥³¥ó¥¹¥È¥é¥¯¥¿
 	function LC_Page() {
-		//ãƒ¡ã‚¤ãƒ³ãƒ†ãƒ³ãƒ—ãƒ¬ãƒ¼ãƒˆã®æŒ‡å®š
+		//¥á¥¤¥ó¥Æ¥ó¥×¥ì¡¼¥È¤Î»ØÄê
 		$this->tpl_mainpage = 'upgrade/index.tpl';
 	}
 }
@@ -22,29 +22,29 @@ $objView = new SC_SiteView();
 $con = ftp_connect("localhost");
 $res = ftp_login($con, "osuser", "password");
 if($con != false && $res != false) {
-	//ãƒ•ã‚¡ã‚¤ãƒ«ã®ãƒ€ã‚¦ãƒ³ãƒ­ãƒ¼ãƒ‰
+	//¥Õ¥¡¥¤¥ë¤Î¥À¥¦¥ó¥í¡¼¥É
 	if($_POST['filename'] != "") {
 		
 		$download_file = DATA_PATH . "module/upload/" . $_POST['filename'];
 		
 		if(ftp_get($con, $download_file, $_POST['filename'], FTP_BINARY)) {
 			ftp_quit($con);
-			//ãƒ•ã‚¡ã‚¤ãƒ«æ‰€æœ‰è€…å¤‰æ›´
-			echo "ãƒ•ã‚¡ã‚¤ãƒ«ã®ãƒ€ã‚¦ãƒ³ãƒ­ãƒ¼ãƒ‰ã«æˆåŠŸã—ã¾ã—ãŸã€‚";
+			//¥Õ¥¡¥¤¥ë½êÍ­¼ÔÊÑ¹¹
+			echo "¥Õ¥¡¥¤¥ë¤Î¥À¥¦¥ó¥í¡¼¥É¤ËÀ®¸ù¤·¤Þ¤·¤¿¡£";
 			sfPrintR(exec("tar zxvf " . $download_file . " ./", $arrRes));
 		} else {
-			echo 'ãƒ•ã‚¡ã‚¤ãƒ«ã®ãƒ€ã‚¦ãƒ³ãƒ­ãƒ¼ãƒ‰ã«å¤±æ•—ã—ã¾ã—ãŸã€‚';
+			echo '¥Õ¥¡¥¤¥ë¤Î¥À¥¦¥ó¥í¡¼¥É¤Ë¼ºÇÔ¤·¤Þ¤·¤¿¡£';
 		}
 	}
 	
-	//ãƒ‡ã‚£ãƒ¬ã‚¯ãƒˆãƒªå†…ã®å…¨ã¦ã®ãƒ•ã‚¡ã‚¤ãƒ«ã‚’å–å¾—
+	//¥Ç¥£¥ì¥¯¥È¥êÆâ¤ÎÁ´¤Æ¤Î¥Õ¥¡¥¤¥ë¤ò¼èÆÀ
 	$arrRet = ftp_nlist($con, ".");
 	$i = 0;
-	//å¿…è¦ãªãƒ•ã‚¡ã‚¤ãƒ«æƒ…å ±ã‚’å–å¾—
+	//É¬Í×¤Ê¥Õ¥¡¥¤¥ë¾ðÊó¤ò¼èÆÀ
 	foreach($arrRet as $val) {
 		if(!ereg("^\.|^\..", $val)) {
 			$arrFile[$i]['filename'] = $val;
-			$arrFile[$i]['date'] = date("Yå¹´mæœˆdæ—¥", ftp_mdtm($con, $val));
+			$arrFile[$i]['date'] = date("YÇ¯m·îdÆü", ftp_mdtm($con, $val));
 			$arrFile[$i]['filesize'] = number_format(ftp_size($con, $val))."Byte";
 			$i++;
 		}
@@ -52,8 +52,8 @@ if($con != false && $res != false) {
 	$objPage->arrFile = $arrFile;
 }
 
-$objView->assignobj($objPage);		//å¤‰æ•°ã‚’ãƒ†ãƒ³ãƒ—ãƒ¬ãƒ¼ãƒˆã«ã‚¢ã‚µã‚¤ãƒ³ã™ã‚‹
-$objView->display(SITE_FRAME);		//ãƒ†ãƒ³ãƒ—ãƒ¬ãƒ¼ãƒˆã®å‡ºåŠ›
+$objView->assignobj($objPage);		//ÊÑ¿ô¤ò¥Æ¥ó¥×¥ì¡¼¥È¤Ë¥¢¥µ¥¤¥ó¤¹¤ë
+$objView->display(SITE_FRAME);		//¥Æ¥ó¥×¥ì¡¼¥È¤Î½ÐÎÏ
 
 //-------------------------------------------------------------------------------------------------------
 

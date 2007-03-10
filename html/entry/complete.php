@@ -8,9 +8,9 @@ require_once("../require.php");
 
 class LC_Page {
 	function LC_Page() {
-		$this->tpl_css = URL_DIR.'css/layout/entry/complete.css';	// ãƒ¡ã‚¤ãƒ³CSSãƒ‘ã‚¹
-		$this->tpl_mainpage = 'entry/complete.tpl';			// ãƒ¡ã‚¤ãƒ³ãƒ†ãƒ³ãƒ—ãƒ¬ãƒ¼ãƒˆ
-		$this->tpl_title .= 'ä¼šå“¡ç™»éŒ²(å®Œäº†ãƒšãƒ¼ã‚¸)';			//ã€€ãƒšãƒ¼ã‚¸ã‚¿ã‚¤ãƒˆãƒ«
+		$this->tpl_css = URL_DIR.'css/layout/entry/complete.css';	// ¥á¥¤¥óCSS¥Ñ¥¹
+		$this->tpl_mainpage = 'entry/complete.tpl';			// ¥á¥¤¥ó¥Æ¥ó¥×¥ì¡¼¥È
+		$this->tpl_title .= '²ñ°÷ÅÐÏ¿(´°Î»¥Ú¡¼¥¸)';			//¡¡¥Ú¡¼¥¸¥¿¥¤¥È¥ë
 	}
 }
 
@@ -18,15 +18,15 @@ $objPage = new LC_Page();
 $objView = new SC_SiteView();
 $objCampaignSess = new SC_CampaignSession();
 
-// ãƒ¬ã‚¤ã‚¢ã‚¦ãƒˆãƒ‡ã‚¶ã‚¤ãƒ³ã‚’å–å¾—
+// ¥ì¥¤¥¢¥¦¥È¥Ç¥¶¥¤¥ó¤ò¼èÆÀ
 $objPage = sfGetPageLayout($objPage, false, DEF_LAYOUT);
 
-// ã‚­ãƒ£ãƒ³ãƒšãƒ¼ãƒ³ã‹ã‚‰ã®é·ç§»ãŒãƒã‚§ãƒƒã‚¯
+// ¥­¥ã¥ó¥Ú¡¼¥ó¤«¤é¤ÎÁ«°Ü¤¬¥Á¥§¥Ã¥¯
 $objPage->is_campaign = $objCampaignSess->getIsCampaign();
 $objPage->campaign_dir = $objCampaignSess->getCampaignDir();
 
 $objView->assignobj($objPage);
-// ãƒ•ãƒ¬ãƒ¼ãƒ ã‚’é¸æŠž(ã‚­ãƒ£ãƒ³ãƒšãƒ¼ãƒ³ãƒšãƒ¼ã‚¸ã‹ã‚‰é·ç§»ãªã‚‰å¤‰æ›´)
+// ¥Õ¥ì¡¼¥à¤òÁªÂò(¥­¥ã¥ó¥Ú¡¼¥ó¥Ú¡¼¥¸¤«¤éÁ«°Ü¤Ê¤éÊÑ¹¹)
 $objCampaignSess->pageView($objView);
 //----------------------------------------------------------------------------------------------------------------------
 ?>

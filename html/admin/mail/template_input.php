@@ -29,23 +29,23 @@ $objPage = new LC_Page();
 $objView = new SC_AdminView();
 $objSess = new SC_Session();
 
-// èªè¨¼å¯å¦ã®åˆ¤å®š
+// Ç§¾Ú²ÄÈÝ¤ÎÈ½Äê
 sfIsSuccess($objSess);
 
 $objPage->arrMagazineType = $arrMagazineType;
 $objPage->mode = "regist";
 
-// idãŒæŒ‡å®šã•ã‚Œã¦ã„ã‚‹ã¨ãã¯ã€Œç·¨é›†ã€è¡¨ç¤º
+// id¤¬»ØÄê¤µ¤ì¤Æ¤¤¤ë¤È¤­¤Ï¡ÖÊÔ½¸¡×É½¼¨
 if ( $_REQUEST['template_id'] ){
-	$objPage->title = "ç·¨é›†";
+	$objPage->title = "ÊÔ½¸";
 } else {
-	$objPage->title = "æ–°è¦ç™»éŒ²";
+	$objPage->title = "¿·µ¬ÅÐÏ¿";
 }
 
-// ãƒ¢ãƒ¼ãƒ‰ã«ã‚ˆã‚‹å‡¦ç†åˆ†å²
+// ¥â¡¼¥É¤Ë¤è¤ë½èÍýÊ¬´ô
 if ( $_GET['mode'] == 'edit' && sfCheckNumLength($_GET['template_id'])===true ){
 	
-	// ç·¨é›†
+	// ÊÔ½¸
 	$sql = "SELECT * FROM dtb_mailmaga_template WHERE template_id = ? AND del_flg = 0";
 	$result = $conn->getAll($sql, array($_GET['template_id']));
 	$objPage->arrForm = $result[0];
@@ -53,19 +53,19 @@ if ( $_GET['mode'] == 'edit' && sfCheckNumLength($_GET['template_id'])===true ){
 		
 } elseif ( $_POST['mode'] == 'regist' ) {
 	
-	// æ–°è¦ç™»éŒ²
+	// ¿·µ¬ÅÐÏ¿
 	$objPage->arrForm = lfConvData( $_POST );
 	$objPage->arrErr = lfErrorCheck($objPage->arrForm);
 	
 	if ( ! $objPage->arrErr ){
-		// ã‚¨ãƒ©ãƒ¼ãŒç„¡ã„ã¨ãã¯ç™»éŒ²ãƒ»ç·¨é›†
+		// ¥¨¥é¡¼¤¬Ìµ¤¤¤È¤­¤ÏÅÐÏ¿¡¦ÊÔ½¸
 		lfRegistData( $objPage->arrForm, $_POST['template_id']);	
-		sfReload("mode=complete");	// è‡ªåˆ†ã‚’å†èª­è¾¼ã—ã¦ã€å®Œäº†ç”»é¢ã¸é·ç§»
+		sfReload("mode=complete");	// ¼«Ê¬¤òºÆÆÉ¹þ¤·¤Æ¡¢´°Î»²èÌÌ¤ØÁ«°Ü
 	}
 	
 } elseif ( $_GET['mode'] == 'complete' ) {		
 	
-	// å®Œäº†ç”»é¢è¡¨ç¤º
+	// ´°Î»²èÌÌÉ½¼¨
 	$objPage->tpl_mainpage = 'mail/template_complete.tpl';
 	
 } 
@@ -99,7 +99,7 @@ function lfRegistData( $arrVal, $id = null ){
 
 function lfConvData( $data ){
 	
-	 // æ–‡å­—åˆ—ã®å¤‰æ›ï¼ˆmb_convert_kanaã®å¤‰æ›ã‚ªãƒ—ã‚·ãƒ§ãƒ³ï¼‰							
+	 // Ê¸»úÎó¤ÎÊÑ´¹¡Êmb_convert_kana¤ÎÊÑ´¹¥ª¥×¥·¥ç¥ó¡Ë							
 	$arrFlag = array(
 					  "subject" => "KV"
 					 ,"body" => "KV"
@@ -114,13 +114,13 @@ function lfConvData( $data ){
 	return $data;
 }
 
-// å…¥åŠ›ã‚¨ãƒ©ãƒ¼ãƒã‚§ãƒƒã‚¯
+// ÆþÎÏ¥¨¥é¡¼¥Á¥§¥Ã¥¯
 function lfErrorCheck() {
 	$objErr = new SC_CheckError();
 	
-	$objErr->doFunc(array("ãƒ¡ãƒ¼ãƒ«å½¢å¼", "mail_method"), array("EXIST_CHECK", "ALNUM_CHECK"));
+	$objErr->doFunc(array("¥á¡¼¥ë·Á¼°", "mail_method"), array("EXIST_CHECK", "ALNUM_CHECK"));
 	$objErr->doFunc(array("Subject", "subject", STEXT_LEN), array("EXIST_CHECK","MAX_LENGTH_CHECK"));
-	$objErr->doFunc(array("æœ¬æ–‡", 'body', LLTEXT_LEN), array("EXIST_CHECK","MAX_LENGTH_CHECK"));
+	$objErr->doFunc(array("ËÜÊ¸", 'body', LLTEXT_LEN), array("EXIST_CHECK","MAX_LENGTH_CHECK"));
 
 	return $objErr->arrErr;
 }

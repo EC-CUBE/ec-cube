@@ -7,29 +7,29 @@
 
 require_once("../require.php");
 
-$arrJPO_INFO['10'] = "ä¸€æ‹¬æ‰•ã„";
-$arrJPO_INFO['21'] = "ãƒœãƒ¼ãƒŠã‚¹ä¸€æ‹¬æ‰•ã„";
-$arrJPO_INFO['80'] = "ãƒªãƒœæ‰•ã„";
-$arrJPO_INFO['61C02'] = "åˆ†å‰²2å›žæ‰•ã„";
-$arrJPO_INFO['61C03'] = "åˆ†å‰²3å›žæ‰•ã„";
-$arrJPO_INFO['61C05'] = "åˆ†å‰²5å›žæ‰•ã„";
-$arrJPO_INFO['61C06'] = "åˆ†å‰²6å›žæ‰•ã„";
-$arrJPO_INFO['61C10'] = "åˆ†å‰²10å›žæ‰•ã„";
-$arrJPO_INFO['61C12'] = "åˆ†å‰²12å›žæ‰•ã„";
-$arrJPO_INFO['61C15'] = "åˆ†å‰²15å›žæ‰•ã„";
+$arrJPO_INFO['10'] = "°ì³çÊ§¤¤";
+$arrJPO_INFO['21'] = "¥Ü¡¼¥Ê¥¹°ì³çÊ§¤¤";
+$arrJPO_INFO['80'] = "¥ê¥ÜÊ§¤¤";
+$arrJPO_INFO['61C02'] = "Ê¬³ä2²óÊ§¤¤";
+$arrJPO_INFO['61C03'] = "Ê¬³ä3²óÊ§¤¤";
+$arrJPO_INFO['61C05'] = "Ê¬³ä5²óÊ§¤¤";
+$arrJPO_INFO['61C06'] = "Ê¬³ä6²óÊ§¤¤";
+$arrJPO_INFO['61C10'] = "Ê¬³ä10²óÊ§¤¤";
+$arrJPO_INFO['61C12'] = "Ê¬³ä12²óÊ§¤¤";
+$arrJPO_INFO['61C15'] = "Ê¬³ä15²óÊ§¤¤";
 
 class LC_Page {
 	function LC_Page() {
-		/** å¿…ãšæŒ‡å®šã™ã‚‹ **/
-		$this->tpl_css = URL_DIR.'css/layout/shopping/card.css';	// ãƒ¡ã‚¤ãƒ³CSSãƒ‘ã‚¹
-		/** å¿…ãšæŒ‡å®šã™ã‚‹ **/
-		$this->tpl_mainpage = 'shopping/card.tpl';			// ãƒ¡ã‚¤ãƒ³ãƒ†ãƒ³ãƒ—ãƒ¬ãƒ¼ãƒˆ
+		/** É¬¤º»ØÄê¤¹¤ë **/
+		$this->tpl_css = URL_DIR.'css/layout/shopping/card.css';	// ¥á¥¤¥óCSS¥Ñ¥¹
+		/** É¬¤º»ØÄê¤¹¤ë **/
+		$this->tpl_mainpage = 'shopping/card.tpl';			// ¥á¥¤¥ó¥Æ¥ó¥×¥ì¡¼¥È
 		global $arrJPO_INFO;
 		$this->arrJPO_INFO = $arrJPO_INFO;
 		/*
-		 session_startæ™‚ã®no-cacheãƒ˜ãƒƒãƒ€ãƒ¼ã‚’æŠ‘åˆ¶ã™ã‚‹ã“ã¨ã§
-		 ã€Œæˆ»ã‚‹ã€ãƒœã‚¿ãƒ³ä½¿ç”¨æ™‚ã®æœ‰åŠ¹æœŸé™åˆ‡ã‚Œè¡¨ç¤ºã‚’æŠ‘åˆ¶ã™ã‚‹ã€‚
-		 private-no-expire:ã‚¯ãƒ©ã‚¤ã‚¢ãƒ³ãƒˆã®ã‚­ãƒ£ãƒƒã‚·ãƒ¥ã‚’è¨±å¯ã™ã‚‹ã€‚
+		 session_start»þ¤Îno-cache¥Ø¥Ã¥À¡¼¤òÍÞÀ©¤¹¤ë¤³¤È¤Ç
+		 ¡ÖÌá¤ë¡×¥Ü¥¿¥ó»ÈÍÑ»þ¤ÎÍ­¸ú´ü¸ÂÀÚ¤ìÉ½¼¨¤òÍÞÀ©¤¹¤ë¡£
+		 private-no-expire:¥¯¥é¥¤¥¢¥ó¥È¤Î¥­¥ã¥Ã¥·¥å¤òµö²Ä¤¹¤ë¡£
 		*/
 		session_cache_limiter('private-no-expire');		
 	}
@@ -43,72 +43,72 @@ $objCampaignSess = new SC_CampaignSession();
 $objSiteInfo = $objView->objSiteInfo;
 $arrInfo = $objSiteInfo->data;
 
-// ãƒ‘ãƒ©ãƒ¡ãƒ¼ã‚¿ç®¡ç†ã‚¯ãƒ©ã‚¹
+// ¥Ñ¥é¥á¡¼¥¿´ÉÍý¥¯¥é¥¹
 $objFormParam = new SC_FormParam();
-// ãƒ‘ãƒ©ãƒ¡ãƒ¼ã‚¿æƒ…å ±ã®åˆæœŸåŒ–
+// ¥Ñ¥é¥á¡¼¥¿¾ðÊó¤Î½é´ü²½
 lfInitParam();
-// POSTå€¤ã®å–å¾—
+// POSTÃÍ¤Î¼èÆÀ
 $objFormParam->setParam($_POST);
 
-// ã‚¢ã‚¯ã‚»ã‚¹ã®æ­£å½“æ€§ã®åˆ¤å®š
+// ¥¢¥¯¥»¥¹¤ÎÀµÅöÀ­¤ÎÈ½Äê
 $uniqid = sfCheckNormalAccess($objSiteSess, $objCartSess);
 
 switch($_POST['mode']) {
-// ç™»éŒ²
+// ÅÐÏ¿
 case 'regist':
-	// å…¥åŠ›å€¤ã®å¤‰æ›
+	// ÆþÎÏÃÍ¤ÎÊÑ´¹
 	$objFormParam->convParam();
 	$objPage->arrErr = lfCheckError($arrRet);
-	// å…¥åŠ›ã‚¨ãƒ©ãƒ¼ãªã—ã®å ´åˆ
+	// ÆþÎÏ¥¨¥é¡¼¤Ê¤·¤Î¾ì¹ç
 	if(count($objPage->arrErr) == 0) {
-		// ã‚«ãƒ¼ãƒˆé›†è¨ˆå‡¦ç†
+		// ¥«¡¼¥È½¸·×½èÍý
 		$objPage = sfTotalCart($objPage, $objCartSess, $arrInfo);
-		// ä¸€æ™‚å—æ³¨ãƒ†ãƒ¼ãƒ–ãƒ«ã®èª­è¾¼
+		// °ì»þ¼õÃí¥Æ¡¼¥Ö¥ë¤ÎÆÉ¹þ
 		$arrData = sfGetOrderTemp($uniqid);
-		// ã‚«ãƒ¼ãƒˆé›†è¨ˆã‚’å…ƒã«æœ€çµ‚è¨ˆç®—
+		// ¥«¡¼¥È½¸·×¤ò¸µ¤ËºÇ½ª·×»»
 		$arrData = sfTotalConfirm($arrData, $objPage, $objCartSess, $arrInfo);
 
-		// ã‚«ãƒ¼ãƒ‰ã®èªè¨¼ã‚’è¡Œã†
+		// ¥«¡¼¥É¤ÎÇ§¾Ú¤ò¹Ô¤¦
 		$arrVal = $objFormParam->getHashArray();
 		$card_no = $arrVal['card_no01'].$arrVal['card_no02'].$arrVal['card_no03'].$arrVal['card_no04'];
 		$card_exp = $arrVal['card_month']. "/" . $arrVal['card_year']; // MM/DD
 		$result = sfGetAuthonlyResult(CGI_DIR, CGI_FILE, $arrVal['name01'], $arrVal['name02'], $card_no, $card_exp, $arrData['payment_total'], $uniqid, $arrVal['jpo_info']);
 
-		// å¿œç­”å†…å®¹ã®è¨˜éŒ²
+		// ±þÅúÆâÍÆ¤Îµ­Ï¿
 		$sqlval['credit_result'] = $result['action-code'];
 		$sqlval['credit_msg'] = $result['aux-msg'].$result['MErrMsg'];
 		$objQuery = new SC_Query();
 		$objQuery->update("dtb_order_temp", $sqlval, "order_temp_id = ?", array($uniqid));
 				
-		// ä¸Žä¿¡å‡¦ç†æˆåŠŸã®å ´åˆ
+		// Í¿¿®½èÍýÀ®¸ù¤Î¾ì¹ç
 		if($result['action-code'] == '000') {
-			// æ­£å¸¸ã«ç™»éŒ²ã•ã‚ŒãŸã“ã¨ã‚’è¨˜éŒ²ã—ã¦ãŠã
+			// Àµ¾ï¤ËÅÐÏ¿¤µ¤ì¤¿¤³¤È¤òµ­Ï¿¤·¤Æ¤ª¤¯
 			$objSiteSess->setRegistFlag();
-			// å‡¦ç†å®Œäº†ãƒšãƒ¼ã‚¸ã¸
+			// ½èÍý´°Î»¥Ú¡¼¥¸¤Ø
 			header("Location: " . URL_SHOP_COMPLETE);
 		} else {
 			switch($result['action-code']) {
 			case '115':
-				$objPage->tpl_error = "â€» ã‚«ãƒ¼ãƒ‰ã®æœ‰åŠ¹æœŸé™ãŒåˆ‡ã‚Œã¦ã„ã¾ã™ã€‚";
+				$objPage->tpl_error = "¢¨ ¥«¡¼¥É¤ÎÍ­¸ú´ü¸Â¤¬ÀÚ¤ì¤Æ¤¤¤Þ¤¹¡£";
 				break;
 			case '212':
-				$objPage->tpl_error = "â€» ã‚«ãƒ¼ãƒ‰ç•ªå·ã«èª¤ã‚ŠãŒã‚ã‚Šã¾ã™ã€‚";
+				$objPage->tpl_error = "¢¨ ¥«¡¼¥ÉÈÖ¹æ¤Ë¸í¤ê¤¬¤¢¤ê¤Þ¤¹¡£";
 				break;
 			case '100':
-				$objPage->tpl_error = "â€» ã‚«ãƒ¼ãƒ‰ä¼šç¤¾ã§ãŠå–å¼•ãŒæ‰¿èªã•ã‚Œã¾ã›ã‚“ã§ã—ãŸã€‚";
+				$objPage->tpl_error = "¢¨ ¥«¡¼¥É²ñ¼Ò¤Ç¤ª¼è°ú¤¬¾µÇ§¤µ¤ì¤Þ¤»¤ó¤Ç¤·¤¿¡£";
 				break;
 			default:
-				$objPage->tpl_error = "â€» ã‚¯ãƒ¬ã‚¸ãƒƒãƒˆã‚«ãƒ¼ãƒ‰ã®ç…§åˆã«å¤±æ•—ã—ã¾ã—ãŸã€‚";
+				$objPage->tpl_error = "¢¨ ¥¯¥ì¥¸¥Ã¥È¥«¡¼¥É¤Î¾È¹ç¤Ë¼ºÇÔ¤·¤Þ¤·¤¿¡£";
 				break;
 			}
 		}
 	}
 	break;
-// å‰ã®ãƒšãƒ¼ã‚¸ã«æˆ»ã‚‹
+// Á°¤Î¥Ú¡¼¥¸¤ËÌá¤ë
 case 'return':
-	// æ­£å¸¸ã«ç™»éŒ²ã•ã‚ŒãŸã“ã¨ã‚’è¨˜éŒ²ã—ã¦ãŠã
+	// Àµ¾ï¤ËÅÐÏ¿¤µ¤ì¤¿¤³¤È¤òµ­Ï¿¤·¤Æ¤ª¤¯
 	$objSiteSess->setRegistFlag();
-	// ç¢ºèªãƒšãƒ¼ã‚¸ã¸ç§»å‹•
+	// ³ÎÇ§¥Ú¡¼¥¸¤Ø°ÜÆ°
 	header("Location: " . URL_SHOP_CONFIRM);
 	exit;
 	break;
@@ -122,27 +122,27 @@ $objPage->arrMonth = $objDate->getZeroMonth();
 
 $objPage->arrForm = $objFormParam->getFormParamList();
 $objView->assignobj($objPage);
-// ãƒ•ãƒ¬ãƒ¼ãƒ ã‚’é¸æŠž(ã‚­ãƒ£ãƒ³ãƒšãƒ¼ãƒ³ãƒšãƒ¼ã‚¸ã‹ã‚‰é·ç§»ãªã‚‰å¤‰æ›´)
+// ¥Õ¥ì¡¼¥à¤òÁªÂò(¥­¥ã¥ó¥Ú¡¼¥ó¥Ú¡¼¥¸¤«¤éÁ«°Ü¤Ê¤éÊÑ¹¹)
 $objCampaignSess->pageView($objView);
 //-----------------------------------------------------------------------------------------------------------------------------------
-/* ãƒ‘ãƒ©ãƒ¡ãƒ¼ã‚¿æƒ…å ±ã®åˆæœŸåŒ– */
+/* ¥Ñ¥é¥á¡¼¥¿¾ðÊó¤Î½é´ü²½ */
 function lfInitParam() {
 	global $objFormParam;
-	$objFormParam->addParam("ã‚«ãƒ¼ãƒ‰ç•ªå·1", "card_no01", CREDIT_NO_LEN, "n", array("EXIST_CHECK", "MAX_LENGTH_CHECK", "NUM_CHECK"));
-	$objFormParam->addParam("ã‚«ãƒ¼ãƒ‰ç•ªå·2", "card_no02", CREDIT_NO_LEN, "n", array("EXIST_CHECK", "MAX_LENGTH_CHECK", "NUM_CHECK"));
-	$objFormParam->addParam("ã‚«ãƒ¼ãƒ‰ç•ªå·3", "card_no03", CREDIT_NO_LEN, "n", array("EXIST_CHECK", "MAX_LENGTH_CHECK", "NUM_CHECK"));
-	$objFormParam->addParam("ã‚«ãƒ¼ãƒ‰ç•ªå·4", "card_no04", CREDIT_NO_LEN, "n", array("EXIST_CHECK", "MAX_LENGTH_CHECK", "NUM_CHECK"));
-	$objFormParam->addParam("ã‚«ãƒ¼ãƒ‰æœŸé™å¹´", "card_year", 2, "n", array("EXIST_CHECK", "NUM_COUNT_CHECK", "NUM_CHECK"));
-	$objFormParam->addParam("ã‚«ãƒ¼ãƒ‰æœŸé™æœˆ", "card_month", 2, "n", array("EXIST_CHECK", "NUM_COUNT_CHECK", "NUM_CHECK"));
-	$objFormParam->addParam("å§“", "card_name01", STEXT_LEN, "KVa", array("EXIST_CHECK", "MAX_LENGTH_CHECK", "ALPHA_CHECK"));
-	$objFormParam->addParam("å", "card_name02", STEXT_LEN, "KVa", array("EXIST_CHECK", "MAX_LENGTH_CHECK", "ALPHA_CHECK"));
-	$objFormParam->addParam("ãŠæ”¯æ‰•ã„æ–¹æ³•", "jpo_info", STEXT_LEN, "KVa", array("EXIST_CHECK", "MAX_LENGTH_CHECK", "ALNUM_CHECK"));
+	$objFormParam->addParam("¥«¡¼¥ÉÈÖ¹æ1", "card_no01", CREDIT_NO_LEN, "n", array("EXIST_CHECK", "MAX_LENGTH_CHECK", "NUM_CHECK"));
+	$objFormParam->addParam("¥«¡¼¥ÉÈÖ¹æ2", "card_no02", CREDIT_NO_LEN, "n", array("EXIST_CHECK", "MAX_LENGTH_CHECK", "NUM_CHECK"));
+	$objFormParam->addParam("¥«¡¼¥ÉÈÖ¹æ3", "card_no03", CREDIT_NO_LEN, "n", array("EXIST_CHECK", "MAX_LENGTH_CHECK", "NUM_CHECK"));
+	$objFormParam->addParam("¥«¡¼¥ÉÈÖ¹æ4", "card_no04", CREDIT_NO_LEN, "n", array("EXIST_CHECK", "MAX_LENGTH_CHECK", "NUM_CHECK"));
+	$objFormParam->addParam("¥«¡¼¥É´ü¸ÂÇ¯", "card_year", 2, "n", array("EXIST_CHECK", "NUM_COUNT_CHECK", "NUM_CHECK"));
+	$objFormParam->addParam("¥«¡¼¥É´ü¸Â·î", "card_month", 2, "n", array("EXIST_CHECK", "NUM_COUNT_CHECK", "NUM_CHECK"));
+	$objFormParam->addParam("À«", "card_name01", STEXT_LEN, "KVa", array("EXIST_CHECK", "MAX_LENGTH_CHECK", "ALPHA_CHECK"));
+	$objFormParam->addParam("Ì¾", "card_name02", STEXT_LEN, "KVa", array("EXIST_CHECK", "MAX_LENGTH_CHECK", "ALPHA_CHECK"));
+	$objFormParam->addParam("¤ª»ÙÊ§¤¤ÊýË¡", "jpo_info", STEXT_LEN, "KVa", array("EXIST_CHECK", "MAX_LENGTH_CHECK", "ALNUM_CHECK"));
 }
 
-/* å…¥åŠ›å†…å®¹ã®ãƒã‚§ãƒƒã‚¯ */
+/* ÆþÎÏÆâÍÆ¤Î¥Á¥§¥Ã¥¯ */
 function lfCheckError() {
 	global $objFormParam;
-	// å…¥åŠ›ãƒ‡ãƒ¼ã‚¿ã‚’æ¸¡ã™ã€‚
+	// ÆþÎÏ¥Ç¡¼¥¿¤òÅÏ¤¹¡£
 	$arrRet =  $objFormParam->getHashArray();
 	$objErr = new SC_CheckError($arrRet);
 	$objErr->arrErr = $objFormParam->checkError();

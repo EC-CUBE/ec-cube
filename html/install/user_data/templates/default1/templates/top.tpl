@@ -3,11 +3,11 @@
  *
  * http://www.lockon.co.jp/
  *}-->
-<!--â–¼MAINã“ã“ã‹ã‚‰-->
+<!--¢§MAIN¤³¤³¤«¤é-->
 <table width="400" border="0" cellspacing="0" cellpadding="0" summary=" ">
 	<tr>
 		<td><img src="<!--{$smarty.const.URL_DIR}-->img/main/image.gif"></td>
 	</tr>
 	<tr><td height="10"></td></tr>
 </table>
-<!--â–²MAINã“ã“ã¾ã§-->
+<!--¢¥MAIN¤³¤³¤Þ¤Ç-->

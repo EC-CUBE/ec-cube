@@ -5,7 +5,7 @@
  * http://www.lockon.co.jp/
  */
 *}-->
-<!--ã€€-->
+<!--¡¡-->
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="ja" lang="ja">
 
@@ -21,7 +21,7 @@
 <script type="text/javascript" src="<!--{$smarty.const.URL_DIR}-->js/css.js"></script>
 <script type="text/javascript">
 </script>
-<title>ECã‚µã‚¤ãƒˆç®¡ç†è€…ãƒšãƒ¼ã‚¸</title>
+<title>EC¥µ¥¤¥È´ÉÍý¼Ô¥Ú¡¼¥¸</title>
 </head>
 
 
@@ -30,10 +30,10 @@
 <link rel="stylesheet" href="<!--{$smarty.const.URL_ADMIN_CSS}-->common.css" type="text/css" />
 </noscript>
 
-<!--â–¼CONTENTS-->
+<!--¢§CONTENTS-->
 <div align="center">
-ã€€
-<!--â–¼æ¤œç´¢ãƒ•ã‚©ãƒ¼ãƒ -->
+¡¡
+<!--¢§¸¡º÷¥Õ¥©¡¼¥à-->
 <form name="form1" id="form1" method="post" action="<!--{$smarty.server.REQUEST_URI|escape}-->">
 <input name="mode" type="hidden" value="search">
 <input name="anchor_key" type="hidden" value="">
@@ -43,7 +43,7 @@
 <!--{if $tpl_create_tag != ""}-->
 <table bgcolor="#cccccc" width="420" border="0" cellspacing="1" cellpadding="5" summary=" ">
 	<tr class="fs12n">
-		<td bgcolor="#f0f0f0">ç”Ÿæˆã‚¿ã‚°</td>
+		<td bgcolor="#f0f0f0">À¸À®¥¿¥°</td>
 	</tr>
 	<tr class="fs12n">
 		<td bgcolor="#ffffff">
@@ -52,59 +52,59 @@
 	</tr>
 </table>
 <br />
-<input type="button" value="æ¤œç´¢çµæžœã¸æˆ»ã‚‹" onClick="history.back()" />
+<input type="button" value="¸¡º÷·ë²Ì¤ØÌá¤ë" onClick="history.back()" />
 
-<!--{* ã‚¿ã‚°è¡¨ç¤ºã®æ™‚ä»¥ä¸‹ã‚’è¡¨ç¤ºã—ãªã„ *}-->
+<!--{* ¥¿¥°É½¼¨¤Î»þ°Ê²¼¤òÉ½¼¨¤·¤Ê¤¤ *}-->
 <!--{else}-->
 <table bgcolor="#cccccc" width="420" border="0" cellspacing="1" cellpadding="5" summary=" ">
 	<tr class="fs12n">
-		<td bgcolor="#f0f0f0" width="100">ã‚«ãƒ†ã‚´ãƒª</td>
+		<td bgcolor="#f0f0f0" width="100">¥«¥Æ¥´¥ê</td>
 		<td bgcolor="#ffffff" width="287"><select name="search_category_id">
-		<option value="" selected="selected">é¸æŠžã—ã¦ãã ã•ã„</option>
+		<option value="" selected="selected">ÁªÂò¤·¤Æ¤¯¤À¤µ¤¤</option>
 		<!--{html_options options=$arrCatList selected=$arrForm.search_category_id}-->
 		</select>
 		</td>
 	</tr>
 	<tr class="fs12n">
-		<td bgcolor="#f0f0f0">å•†å“ID</td>
+		<td bgcolor="#f0f0f0">¾¦ÉÊID</td>
 		<td bgcolor="#ffffff"><input type="text" name="search_product_id" value="<!--{$arrForm.search_product_id}-->" size="35" class="box35" /></td>
 	</tr>
 	<tr class="fs12n">
-		<td bgcolor="#f0f0f0">å•†å“å</td>
+		<td bgcolor="#f0f0f0">¾¦ÉÊÌ¾</td>
 		<td bgcolor="#ffffff"><input type="text" name="search_name" value="<!--{$arrForm.search_name}-->" size="35" class="box35" /></td>
 	</tr>
 </table>
 <br />
-<input type="submit" name="subm" value="æ¤œç´¢ã‚’é–‹å§‹" />
+<input type="submit" name="subm" value="¸¡º÷¤ò³«»Ï" />
 <br />
 <br />
 
-	<!--â–¼æ¤œç´¢çµæžœè¡¨ç¤º-->
+	<!--¢§¸¡º÷·ë²ÌÉ½¼¨-->
 	<!--{if $tpl_linemax}-->
 	<table width="420" border="0" cellspacing="0" cellpadding="0" summary=" " bgcolor="#FFFFFF">
 		<tr class="fs12">
-			<td align="left"><!--{$tpl_linemax}-->ä»¶ãŒè©²å½“ã—ã¾ã—ãŸã€‚	</td>
+			<td align="left"><!--{$tpl_linemax}-->·ï¤¬³ºÅö¤·¤Þ¤·¤¿¡£	</td>
 		</tr>
 		<tr class="fs12">
 			<td align="center">
-			<!--â–¼ãƒšãƒ¼ã‚¸ãƒŠãƒ“-->
+			<!--¢§¥Ú¡¼¥¸¥Ê¥Ó-->
 			<!--{$tpl_strnavi}-->
-			<!--â–²ãƒšãƒ¼ã‚¸ãƒŠãƒ“-->
+			<!--¢¥¥Ú¡¼¥¸¥Ê¥Ó-->
 			</td>
 		</tr>
 		<tr><td height="10"></td></tr>
 	</table>
 		
-	<!--â–¼æ¤œç´¢å¾Œè¡¨ç¤ºéƒ¨åˆ†-->
+	<!--¢§¸¡º÷¸åÉ½¼¨ÉôÊ¬-->
 	<table width="420" border="0" cellspacing="1" cellpadding="5" bgcolor="#cccccc">
 		<tr bgcolor="#f0f0f0" align="center" class="fs12">
-			<td>å•†å“ç”»åƒ</td>
-			<td>å•†å“ID</td>
-			<td>å•†å“å</td>
-			<td>æ±ºå®š</td>
+			<td>¾¦ÉÊ²èÁü</td>
+			<td>¾¦ÉÊID</td>
+			<td>¾¦ÉÊÌ¾</td>
+			<td>·èÄê</td>
 		</tr>
 		<!--{section name=cnt loop=$arrProducts}-->
-		<!--â–¼å•†å“<!--{$smarty.section.cnt.iteration}-->-->
+		<!--¢§¾¦ÉÊ<!--{$smarty.section.cnt.iteration}-->-->
 		<tr bgcolor="#FFFFFF" class="fs12n">
 			<td width="90" align="center">
 			<!--{if $arrProducts[cnt].main_list_image != ""}-->
@@ -116,23 +116,23 @@
 			</td>	
 			<td><!--{$arrProducts[cnt].product_code|escape|default:"-"}--></td>
 			<td><!--{$arrProducts[cnt].name|escape}--></td>
-			<td align="center"><a href="#" onClick="fnFormModeSubmit('form1', 'view', 'product_id', '<!--{$arrProducts[cnt].product_id}-->'); return false;">æ±ºå®š</a></td>
+			<td align="center"><a href="#" onClick="fnFormModeSubmit('form1', 'view', 'product_id', '<!--{$arrProducts[cnt].product_id}-->'); return false;">·èÄê</a></td>
 		</tr>
-		<!--â–²å•†å“<!--{$smarty.section.cnt.iteration}-->-->
+		<!--¢¥¾¦ÉÊ<!--{$smarty.section.cnt.iteration}-->-->
 		<!--{sectionelse}-->
 		<tr bgcolor="#FFFFFF" class="fs10n">
-			<td colspan="4">å•†å“ãŒç™»éŒ²ã•ã‚Œã¦ã„ã¾ã›ã‚“</td>
+			<td colspan="4">¾¦ÉÊ¤¬ÅÐÏ¿¤µ¤ì¤Æ¤¤¤Þ¤»¤ó</td>
 		</tr>	
 		<!--{/section}-->
 	</table>
 	<!--{/if}-->
-	<!--â–²æ¤œç´¢çµæžœè¡¨ç¤º-->
+	<!--¢¥¸¡º÷·ë²ÌÉ½¼¨-->
 <!--{/if}-->
-<!--{* ã‚¿ã‚°è¡¨ç¤ºã—ãªã„ã“ã“ã¾ã§ *}-->
+<!--{* ¥¿¥°É½¼¨¤·¤Ê¤¤¤³¤³¤Þ¤Ç *}-->
 
 </form>
 
 </div>
-<!--â–²CONTENTS-->
+<!--¢¥CONTENTS-->
 </body>
 </html>

@@ -5,51 +5,51 @@
  * http://www.lockon.co.jp/
  */
 *}-->
-<!--â–¼CONTENTS-->
+<!--¢§CONTENTS-->
 <table width="780" border="0" cellspacing="0" cellpadding="0" summary=" ">
 	<tr>
 		<td bgcolor="#ffffff" align="center" valign="top" height="200">
 		<table width="740" border="0" cellspacing="0" cellpadding="0" summary=" ">
 			<tr>
-				<!--â–¼SUB NAVI-->
+				<!--¢§SUB NAVI-->
 				<td class="fs12n"></td>
-				<!--â–²SUB NAVI-->
+				<!--¢¥SUB NAVI-->
 			</tr><tr><td height="25"></td></tr>
 		</table>
 		
-		<!--â–¼MAIN CONTENTS-->
+		<!--¢§MAIN CONTENTS-->
 		<table width="740" border="0" cellspacing="0" cellpadding="0" summary=" ">
 			<tr>
-				<td class="fs14n"><strong>â– CSVã‚¢ãƒƒãƒ—ãƒ­ãƒ¼ãƒ‰</strong></td>
+				<td class="fs14n"><strong>¢£CSV¥¢¥Ã¥×¥í¡¼¥É</strong></td>
 			</tr>
 			<tr><td height="10"></td></tr>
 		</table>
 		
-		<!--â–¼ç™»éŒ²ãƒ†ãƒ¼ãƒ–ãƒ«ã“ã“ã‹ã‚‰-->
+		<!--¢§ÅÐÏ¿¥Æ¡¼¥Ö¥ë¤³¤³¤«¤é-->
 		<form name="form1" id="form1" method="post" action="" enctype="multipart/form-data">
 		<input type="hidden" name="mode" value="csv_upload">
 		<table width="740" border="0" cellspacing="1" cellpadding="5" summary=" " bgcolor="#cccccc">
 			<tr class="fs12n">
-				<td bgcolor="#f0f0f0" width="110">CSVãƒ•ã‚¡ã‚¤ãƒ«</td>
+				<td bgcolor="#f0f0f0" width="110">CSV¥Õ¥¡¥¤¥ë</td>
 				<td bgcolor="#ffffff" width="607">
 				<span class="red12"><!--{$arrErr.csv_file}--></span>
-				<input type="file" name="csv_file" size="60" class="box60" /><span class="red10"> (1è¡Œç›®ã‚¿ã‚¤ãƒˆãƒ«è¡Œ)</span></td>
+				<input type="file" name="csv_file" size="60" class="box60" /><span class="red10"> (1¹ÔÌÜ¥¿¥¤¥È¥ë¹Ô)</span></td>
 			</tr>
 			<tr class="fs12n">
-				<td bgcolor="#f0f0f0" width="110">ç™»éŒ²æƒ…å ±</td>
+				<td bgcolor="#f0f0f0" width="110">ÅÐÏ¿¾ðÊó</td>
 				<td bgcolor="#ffffff" width="607">
 				<!--{foreach name=title key=key item=item from=$arrTitle}-->
-				<!--{$smarty.foreach.title.iteration}-->é …ç›®ï¼š<!--{$item}--><br>
+				<!--{$smarty.foreach.title.iteration}-->¹àÌÜ¡§<!--{$item}--><br>
 				<!--{/foreach}-->
 				</td>
 			</tr>
 		</table>
-		<!--â–²ç™»éŒ²ãƒ†ãƒ¼ãƒ–ãƒ«ã“ã“ã¾ã§-->
+		<!--¢¥ÅÐÏ¿¥Æ¡¼¥Ö¥ë¤³¤³¤Þ¤Ç-->
 		
 		<br />
-		<input type="submit" name="subm" value="ã“ã®å†…å®¹ã§ç™»éŒ²ã™ã‚‹" />
+		<input type="submit" name="subm" value="¤³¤ÎÆâÍÆ¤ÇÅÐÏ¿¤¹¤ë" />
 				
-		<!--â–²MAIN CONTENTS-->
+		<!--¢¥MAIN CONTENTS-->
 		<table width="740" border="0" cellspacing="0" cellpadding="5" summary=" ">
 			</tr><tr><td height="25"></td></tr>
 		</table>
@@ -61,7 +61,7 @@
 			<!--{foreach key=key item=item from=$arrCSVErr}-->
 			<span class="red12"><!--{$item}-->
 			<!--{if $key != 'blank'}-->
-			[å€¤ï¼š<!--{$arrParam[$key]}-->]
+			[ÃÍ¡§<!--{$arrParam[$key]}-->]
 			<!--{/if}-->
 			<br></span>
 			<!--{/foreach}-->
@@ -81,4 +81,4 @@
 		</form>
 </table>
 
-<!--â–²CONTENTS-->
+<!--¢¥CONTENTS-->

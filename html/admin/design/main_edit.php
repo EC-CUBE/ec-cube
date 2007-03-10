@@ -18,20 +18,20 @@ class LC_Page {
 		$this->text_row 	= 13;
 		$this->tpl_subno = "main_edit";
 		$this->tpl_mainno = "design";
-		$this->tpl_subtitle = 'ページ詳細設定';
+		$this->tpl_subtitle = '�ڡ����ܺ�����';
 	}
 }
 $objPage = new LC_Page();
 $objView = new SC_AdminView();
 
-// 認証可否の判定
+// ǧ�ڲ��ݤ�Ƚ��
 $objSess = new SC_Session();
 sfIsSuccess($objSess);
 
-// ページ一覧を取得
+// �ڡ������������
 $objPage->arrPageList = lfgetPageData();
 
-// ブロックIDを取得
+// �֥��å�ID�����
 if (isset($_POST['page_id'])) {
 	$page_id = $_POST['page_id'];
 }else if ($_GET['page_id']){
@@ -42,40 +42,40 @@ if (isset($_POST['page_id'])) {
 
 $objPage->page_id = $page_id;
 
-// メッセージ表示
+// ��å�����ɽ��
 if ($_GET['msg'] == "on"){
-	$objPage->tpl_onload="alert('登録が完了しました。');";
+	$objPage->tpl_onload="alert('��Ͽ����λ���ޤ�����');";
 }
 
-// page_id が指定されている場合にはテンプレートデータの取得
+// page_id �����ꤵ��Ƥ�����ˤϥƥ�ץ졼�ȥǡ����μ���
 if (is_numeric($page_id) and $page_id != '') {
 	$arrPageData = lfgetPageData(" page_id = ? " , array($page_id));
 
 	if ($arrPageData[0]['tpl_dir'] === "") {
-		$objPage->arrErr['page_id_err'] = "※ 指定されたページは編集できません。";
-		// 画面の表示
+		$objPage->arrErr['page_id_err'] = "�� ���ꤵ�줿�ڡ������Խ��Ǥ��ޤ���";
+		// ���̤�ɽ��
 		$objView->assignobj($objPage);
 		$objView->display(MAIN_FRAME);
 		exit;
 	}
 
-	// テンプレートファイルが存在していれば読み込む
+	// �ƥ�ץ졼�ȥե����뤬¸�ߤ��Ƥ�����ɤ߹���
 	$tpl_file = HTML_PATH . $arrPageData[0]['tpl_dir'] . $arrPageData[0]['filename'] . ".tpl";
 	if (file_exists($tpl_file)){
 		$arrPageData[0]['tpl_data'] = file_get_contents($tpl_file);		
 	}
 
-	// チェックボックスの値変更
+	// �����å��ܥå��������ѹ�
 	$arrPageData[0]['header_chk'] = sfChangeCheckBox($arrPageData[0]['header_chk'], true);
 	$arrPageData[0]['footer_chk'] = sfChangeCheckBox($arrPageData[0]['footer_chk'], true);
 
-	// ディレクトリを画面表示用に編集
+	// �ǥ��쥯�ȥ�����ɽ���Ѥ��Խ�
 	$arrPageData[0]['directory'] = str_replace( USER_DIR,'', $arrPageData[0]['php_dir']);
 	
 	$objPage->arrPageData = $arrPageData[0];
 }
 
-// プレビュー処理
+// �ץ�ӥ塼����
 if ($_POST['mode'] == 'preview') {
 	
 	$page_id_old = $page_id;
@@ -87,32 +87,32 @@ if ($_POST['mode'] == 'preview') {
 	
 	$arrPreData = lfgetPageData(" page_id = ? " , array($page_id));
 
-	// tplファイルの削除
+	// tpl�ե�����κ��
 	$del_tpl = USER_PATH . "templates/" . $arrPreData[0]['filename'] . '.tpl';
 	if (file_exists($del_tpl)){
 		unlink($del_tpl);	
 	}
 
-	// DBへデータを更新する
+	// DB�إǡ����򹹿�����
 	lfEntryPageData($_POST);
 
-	// TPLファイル作成
+	// TPL�ե��������
 	$cre_tpl = USER_PATH . "templates/" . $url . '.tpl';
 	lfCreateFile($cre_tpl);
 	
-	// blocposition を削除
-	$objDBConn = new SC_DbConn;		// DB操作オブジェクト
+	// blocposition ����
+	$objDBConn = new SC_DbConn;		// DB���֥�������
 	$sql = 'delete from dtb_blocposition where page_id = 0';
 	$ret = $objDBConn->query($sql);
 	
 	if ($page_id_old != "") {
-		// 登録データを取得
+		// ��Ͽ�ǡ��������
 		$sql = "SELECT 0, target_id, bloc_id, bloc_row FROM dtb_blocposition WHERE page_id = ?";
 		$ret = $objDBConn->getAll($sql,array($page_id_old));
 		
 		if (count($ret) > 0) {
 			
-			// blocposition を複製
+			// blocposition ��ʣ��
 			$sql = " insert into dtb_blocposition (";
 			$sql .= "     page_id,";
 			$sql .= "     target_id,";
@@ -120,7 +120,7 @@ if ($_POST['mode'] == 'preview') {
 			$sql .= "     bloc_row";
 			$sql .= "     )values(?, ?, ?, ?)";
 			
-			// 取得件数文INSERT実行
+			// �������ʸINSERT�¹�
 			foreach($ret as $key => $val){
 				$ret = $objDBConn->query($sql,$val);
 			}
@@ -133,43 +133,43 @@ if ($_POST['mode'] == 'preview') {
 	header("location: " . URL_DIR . "preview/index.php");
 }
 
-// データ登録処理
+// �ǡ�����Ͽ����
 if ($_POST['mode'] == 'confirm') {
 	
-	// エラーチェック
+	// ���顼�����å�
 	$objPage->arrErr = lfErrorCheck($_POST);
 
-	// エラーがなければ更新処理を行う	
+	// ���顼���ʤ���й���������Ԥ�	
 	if (count($objPage->arrErr) == 0) {
 
-		// DBへデータを更新する
+		// DB�إǡ����򹹿�����
 		lfEntryPageData($_POST);
 		
-		// ベースデータでなければファイルを削除し、PHPファイルを作成する
+		// �١����ǡ����Ǥʤ���Хե������������PHP�ե�������������
 		if (!lfCheckBaseData($page_id)) {
-			// ファイル削除
+			// �ե�������
 			lfDelFile($arrPageData[0]);
 			
-			// PHPファイル作成
+			// PHP�ե��������
 			$cre_php = USER_PATH . $_POST['url'] . ".php";
 			lfCreatePHPFile($cre_php);
 		}
 
-		// TPLファイル作成
+		// TPL�ե��������
 		$cre_tpl = dirname(USER_PATH . "templates/" . $_POST['url']) . "/" . basename($_POST['url']) . '.tpl';
 
 		lfCreateFile($cre_tpl);
 
-		// 編集可能ページの場合にのみ処理を行う
+		// �Խ���ǽ�ڡ����ξ��ˤΤ߽�����Ԥ�
 		if ($arrPageData[0]['edit_flg'] != 2) {
-			// 新規作成した場合のために改にページIDを取得する
+			// ���������������Τ���˲��˥ڡ���ID���������
 			$arrPageData = lfgetPageData(" url = ? " , array(USER_URL.$_POST['url'].".php"));
 			$page_id = $arrPageData[0]['page_id'];
 		}
 
 		header("location: ./main_edit.php?page_id=$page_id&msg=on");
 	}else{
-		// エラーがあれば入力時のデータを表示する
+		// ���顼����������ϻ��Υǡ�����ɽ������
 		$objPage->arrPageData = $_POST;
 		$objPage->arrPageData['header_chk'] = sfChangeCheckBox(sfChangeCheckBox($_POST['header_chk']), true);
 		$objPage->arrPageData['footer_chk'] = sfChangeCheckBox(sfChangeCheckBox($_POST['footer_chk']), true);
@@ -178,40 +178,40 @@ if ($_POST['mode'] == 'confirm') {
 	}
 }
 
-// データ削除処理 ベースデータでなければファイルを削除
+// �ǡ���������� �١����ǡ����Ǥʤ���Хե��������
 if ($_POST['mode'] == 'delete' and 	!lfCheckBaseData($page_id)) {
 	lfDelPageData($_POST['page_id']);
 }
 
-// 画面の表示
+// ���̤�ɽ��
 $objView->assignobj($objPage);
 $objView->display(MAIN_FRAME);
 
 //---------------------------------------------------------------------------------------------------------------------------------------------------------
 /**************************************************************************************************************
- * 関数名	：lfEntryPageData
- * 処理内容	：ブロック情報を更新する
- * 引数1	：$arrData  ･･･ 更新データ
- * 戻り値	：更新結果
+ * �ؿ�̾	��lfEntryPageData
+ * ��������	���֥��å�����򹹿�����
+ * ����1	��$arrData  ������ �����ǡ���
+ * �����	���������
  **************************************************************************************************************/
 function lfEntryPageData($arrData){
-	$objDBConn = new SC_DbConn;		// DB操作オブジェクト
-	$sql = "";						// データ更新SQL生成用
-	$ret = ""; 						// データ更新結果格納用
-	$arrUpdData = array();			// 更新データ生成用
-	$arrChk = array();				// 排他チェック用
+	$objDBConn = new SC_DbConn;		// DB���֥�������
+	$sql = "";						// �ǡ�������SQL������
+	$ret = ""; 						// �ǡ���������̳�Ǽ��
+	$arrUpdData = array();			// �����ǡ���������
+	$arrChk = array();				// ��¾�����å���
 
-	// 更新データ生成
+	// �����ǡ�������
 	$arrUpdData = lfGetUpdData($arrData);
 	
-	// データが存在しているかチェックを行う
+	// �ǡ�����¸�ߤ��Ƥ��뤫�����å���Ԥ�
 	if($arrData['page_id'] !== ''){
 		$arrChk = lfgetPageData(" page_id = ?", array($arrData['page_id']));
 	}
 
-	// page_id が空 若しくは データが存在していない場合にはINSERTを行う
+	// page_id ���� �㤷���� �ǡ�����¸�ߤ��Ƥ��ʤ����ˤ�INSERT��Ԥ�
 	if ($arrData['page_id'] === '' or !isset($arrChk[0])) {
-		// SQL生成
+		// SQL����
 		$sql = " INSERT INTO dtb_pagelayout ";
 		$sql .= " ( ";
 		$sql .= " 	  page_name";
@@ -227,8 +227,8 @@ function lfEntryPageData($arrData){
 		$sql .= " ) VALUES ( ?,?,?,?,?,?,?,?,now(),now() )";
 		$sql .= " ";
 	}else{
-		// データが存在してる場合にはアップデートを行う
-		// SQL生成
+		// �ǡ�����¸�ߤ��Ƥ���ˤϥ��åץǡ��Ȥ�Ԥ�
+		// SQL����
 		$sql = " UPDATE dtb_pagelayout ";
 		$sql .= " SET";
 		$sql .= "	  page_name = ? ";
@@ -243,25 +243,25 @@ function lfEntryPageData($arrData){
 		$sql .= " WHERE page_id = ?";
 		$sql .= " ";
 
-		// 更新データにブロックIDを追加
+		// �����ǡ����˥֥��å�ID���ɲ�
 		array_push($arrUpdData, $arrData['page_id']);
 	}
 
-	// SQL実行
+	// SQL�¹�
 	$ret = $objDBConn->query($sql,$arrUpdData);
 	
 	return $ret;
 }
 
 /**************************************************************************************************************
- * 関数名	：lfGetUpdData
- * 処理内容	：DBへ更新を行うデータを生成する
- * 引数1	：$arrData  ･･･ 更新データ
- * 戻り値	：更新データ
+ * �ؿ�̾	��lfGetUpdData
+ * ��������	��DB�ع�����Ԥ��ǡ�������������
+ * ����1	��$arrData  ������ �����ǡ���
+ * �����	�������ǡ���
  **************************************************************************************************************/
 function lfGetUpdData($arrData){
 	
-	// ベースデータの場合には変更しない。
+	// �١����ǡ����ξ��ˤ��ѹ����ʤ���
 	if (lfCheckBaseData($arrData['page_id'])) {
 		$arrPageData = lfgetPageData( ' page_id = ? ' , array($arrData['page_id']));
 
@@ -278,50 +278,50 @@ function lfGetUpdData($arrData){
 		$filename = basename($arrData['url']);
 	}
 
-	// 更新データ配列の作成
+	// �����ǡ�������κ���
 	$arrUpdData = array(
-					$name										// 名称	
+					$name										// ̾��	
 					,$url										// URL
-					,$php_dir									// PHPディレクトリ
-					,$tpl_dir									// TPLディレクトリ
-					,$filename									// ファイル名
-					,sfChangeCheckBox($arrData['header_chk'])	// ヘッダー使用
-					,sfChangeCheckBox($arrData['footer_chk'])	// フッター使用
-					,$_SERVER['HTTP_REFERER']					// 更新URL
+					,$php_dir									// PHP�ǥ��쥯�ȥ�
+					,$tpl_dir									// TPL�ǥ��쥯�ȥ�
+					,$filename									// �ե�����̾
+					,sfChangeCheckBox($arrData['header_chk'])	// �إå�������
+					,sfChangeCheckBox($arrData['footer_chk'])	// �եå�������
+					,$_SERVER['HTTP_REFERER']					// ����URL
 					);
 					
 	return $arrUpdData;
 }
 
 /**************************************************************************************************************
- * 関数名	：lfErrorCheck
- * 処理内容	：入力項目のエラーチェックを行う
- * 引数1	：$arrData  ･･･ 入力データ
- * 戻り値	：エラー情報
+ * �ؿ�̾	��lfErrorCheck
+ * ��������	�����Ϲ��ܤΥ��顼�����å���Ԥ�
+ * ����1	��$arrData  ������ ���ϥǡ���
+ * �����	�����顼����
  **************************************************************************************************************/
 function lfErrorCheck($array) {
 	global $objPage;
 	
 	$objErr = new SC_CheckError($array);
-	$objErr->doFunc(array("名称", "page_name", STEXT_LEN), array("EXIST_CHECK", "SPTAB_CHECK", "MAX_LENGTH_CHECK"));
+	$objErr->doFunc(array("̾��", "page_name", STEXT_LEN), array("EXIST_CHECK", "SPTAB_CHECK", "MAX_LENGTH_CHECK"));
 	$objErr->doFunc(array("URL", "url", STEXT_LEN), array("EXIST_CHECK", "SPTAB_CHECK", "MAX_LENGTH_CHECK"));
 
-	// URLチェック
+	// URL�����å�
 	if (substr(strrev(trim($array['url'])),0,1) == "/") {
-		$objErr->arrErr['url'] = "※ URLを正しく入力してください。<br />";
+		$objErr->arrErr['url'] = "�� URL�����������Ϥ��Ƥ���������<br />";
 	}
 	
 	$check_url = USER_URL . $array['url'] . ".php";
 	if( strlen($array['url']) > 0 && !ereg( "^https?://+($|[a-zA-Z0-9_~=&\?\.\/-])+$", $check_url ) ) {
-		$objErr->arrErr['url'] = "※ URLを正しく入力してください。<br />";
+		$objErr->arrErr['url'] = "�� URL�����������Ϥ��Ƥ���������<br />";
 	}
 
-	// 同一のURLが存在している場合にはエラー
+	// Ʊ���URL��¸�ߤ��Ƥ�����ˤϥ��顼
 	if(!isset($objErr->arrErr['url']) and $array['url'] !== ''){
 		$arrChk = lfgetPageData(" url = ? " , array(USER_URL . $array['url'].".php"));
 
 		if (count($arrChk[0]) >= 1 and $arrChk[0]['page_id'] != $array['page_id']) {
-			$objErr->arrErr['url'] = '※ 同じURLのデータが存在しています。別のURLを付けてください。';
+			$objErr->arrErr['url'] = '�� Ʊ��URL�Υǡ�����¸�ߤ��Ƥ��ޤ����̤�URL���դ��Ƥ���������';
 		}
 	}
 	
@@ -329,46 +329,46 @@ function lfErrorCheck($array) {
 }
 
 /**************************************************************************************************************
- * 関数名	：lfCreateFile
- * 処理内容	：ファイルを作成する
- * 引数1	：$path･･･テンプレートファイルのパス
- * 戻り値	：なし
+ * �ؿ�̾	��lfCreateFile
+ * ��������	���ե�������������
+ * ����1	��$path�������ƥ�ץ졼�ȥե�����Υѥ�
+ * �����	���ʤ�
  **************************************************************************************************************/
 function lfCreateFile($path){
 	
-	// ディレクトリが存在していなければ作成する		
+	// �ǥ��쥯�ȥ꤬¸�ߤ��Ƥ��ʤ���к�������		
 	if (!is_dir(dirname($path))) {
 		mkdir(dirname($path));
 	}
 
-	// ファイル作成
+	// �ե��������
 	$fp = fopen($path,"w");
 	fwrite($fp, $_POST['tpl_data']);
 	fclose($fp);
 }
 
 /**************************************************************************************************************
- * 関数名	：lfCreatePHPFile
- * 処理内容	：PHPファイルを作成する
- * 引数1	：$path･･･PHPファイルのパス
- * 戻り値	：なし
+ * �ؿ�̾	��lfCreatePHPFile
+ * ��������	��PHP�ե�������������
+ * ����1	��$path������PHP�ե�����Υѥ�
+ * �����	���ʤ�
  **************************************************************************************************************/
 function lfCreatePHPFile($path){
 
-	// php保存先ディレクトリが存在していなければ作成する
+	// php��¸��ǥ��쥯�ȥ꤬¸�ߤ��Ƥ��ʤ���к�������
 	if (!is_dir(dirname($path))) {
 		mkdir(dirname($path));
 	}
 	
-	// ベースとなるPHPファイルの読み込み
+	// �١����Ȥʤ�PHP�ե�������ɤ߹���
 	if (file_exists(USER_DEF_PHP)){
 		$php_data = file_get_contents(USER_DEF_PHP);		
 	}
 	
-	// require.phpの場所を書き換える
+	// require.php�ξ���񤭴�����
 	$php_data = str_replace("###require###", HTML_PATH . "require.php", $php_data);
 	
-	// phpファイルの作成
+	// php�ե�����κ���
 	$fp = fopen($path,"w");
 	fwrite($fp, $php_data);
 	fclose($fp);

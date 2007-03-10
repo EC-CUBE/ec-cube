@@ -15,10 +15,10 @@ $objView = new SC_SiteView();
 $objSess = new SC_Session();
 
 if ($_SESSION['preview'] === "ON") {
-	// ãƒ¬ã‚¤ã‚¢ã‚¦ãƒˆãƒ‡ã‚¶ã‚¤ãƒ³ã‚’å–å¾—
+	// ¥ì¥¤¥¢¥¦¥È¥Ç¥¶¥¤¥ó¤ò¼èÆÀ
 	$objPage = sfGetPageLayout($objPage, true);
 	
-	// ç”»é¢ã®è¡¨ç¤º
+	// ²èÌÌ¤ÎÉ½¼¨
 	$objView->assignobj($objPage);
 	$objView->display(SITE_FRAME);
 }

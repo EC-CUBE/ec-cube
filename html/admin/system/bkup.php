@@ -7,16 +7,16 @@
 require_once("../require.php");
 require_once(DATA_PATH. "module/Tar.php");
 
-//ãƒšãƒ¼ã‚¸ç®¡ç†ã‚¯ãƒ©ã‚¹
+//¥Ú¡¼¥¸´ÉÍı¥¯¥é¥¹
 class LC_Page {
-	//ã‚³ãƒ³ã‚¹ãƒˆãƒ©ã‚¯ã‚¿
+	//¥³¥ó¥¹¥È¥é¥¯¥¿
 	function LC_Page() {
-		//ãƒ¡ã‚¤ãƒ³ãƒ†ãƒ³ãƒ—ãƒ¬ãƒ¼ãƒˆã®æŒ‡å®š
+		//¥á¥¤¥ó¥Æ¥ó¥×¥ì¡¼¥È¤Î»ØÄê
 		$this->tpl_mainpage = 'system/bkup.tpl';
 		$this->tpl_subnavi = 'system/subnavi.tpl';
 		$this->tpl_mainno = 'system';		
 		$this->tpl_subno = 'bkup';
-		$this->tpl_subtitle = 'ãƒãƒƒã‚¯ã‚¢ãƒƒãƒ—ç®¡ç†';
+		$this->tpl_subtitle = '¥Ğ¥Ã¥¯¥¢¥Ã¥×´ÉÍı';
 		
 		$this->bkup_dir = USER_PATH . "bkup/";
 	}
@@ -26,43 +26,43 @@ $objPage = new LC_Page();
 $objView = new SC_AdminView();
 $objQuery = new SC_Query();
 
-// ã‚»ãƒƒã‚·ãƒ§ãƒ³ã‚¯ãƒ©ã‚¹
+// ¥»¥Ã¥·¥ç¥ó¥¯¥é¥¹
 $objSess = new SC_Session();
-// èªè¨¼å¯å¦ã®åˆ¤å®š
+// Ç§¾Ú²ÄÈİ¤ÎÈ½Äê
 sfIsSuccess($objSess);
 
-// ãƒãƒƒã‚¯ã‚¢ãƒƒãƒ—ãƒ†ãƒ¼ãƒ–ãƒ«ãŒãªã‘ã‚Œã°ä½œæˆã™ã‚‹
+// ¥Ğ¥Ã¥¯¥¢¥Ã¥×¥Æ¡¼¥Ö¥ë¤¬¤Ê¤±¤ì¤ĞºîÀ®¤¹¤ë
 lfCreateBkupTable();
 
 switch($_POST['mode']) {
-// ãƒãƒƒã‚¯ã‚¢ãƒƒãƒ—ã‚’ä½œæˆã™ã‚‹
+// ¥Ğ¥Ã¥¯¥¢¥Ã¥×¤òºîÀ®¤¹¤ë
 case 'bkup':
-	// å…¥åŠ›æ–‡å­—åˆ—ã®å¤‰æ›
+	// ÆşÎÏÊ¸»úÎó¤ÎÊÑ´¹
 	$arrData = lfConvertParam($_POST);
 
-	// ã‚¨ãƒ©ãƒ¼ãƒã‚§ãƒƒã‚¯
+	// ¥¨¥é¡¼¥Á¥§¥Ã¥¯
 	$arrErr = lfCheckError($arrData);
 
-	// ã‚¨ãƒ©ãƒ¼ãŒãªã‘ã‚Œã°ãƒãƒƒã‚¯ã‚¢ãƒƒãƒ—å‡¦ç†ã‚’è¡Œã†	
+	// ¥¨¥é¡¼¤¬¤Ê¤±¤ì¤Ğ¥Ğ¥Ã¥¯¥¢¥Ã¥×½èÍı¤ò¹Ô¤¦	
 	if (count($arrErr) <= 0) {
-		// ãƒãƒƒã‚¯ã‚¢ãƒƒãƒ—ãƒ•ã‚¡ã‚¤ãƒ«ä½œæˆ
+		// ¥Ğ¥Ã¥¯¥¢¥Ã¥×¥Õ¥¡¥¤¥ëºîÀ®
 		$arrErr = lfCreateBkupData($arrData['bkup_name']);
 		
-		// DBã«ãƒ‡ãƒ¼ã‚¿æ›´æ–°
+		// DB¤Ë¥Ç¡¼¥¿¹¹¿·
 		if (count($arrErr) <= 0) {
 			lfUpdBkupData($arrData);
 		}else{
 			$arrForm = $arrData;
 		}
 		
-		$objPage->tpl_onload = "alert('ãƒãƒƒã‚¯ã‚¢ãƒƒãƒ—å®Œäº†ã—ã¾ã—ãŸ');";
+		$objPage->tpl_onload = "alert('¥Ğ¥Ã¥¯¥¢¥Ã¥×´°Î»¤·¤Ş¤·¤¿');";
 	}else{
 		$arrForm = $arrData;
 	}
 
 	break;
 	
-// ãƒªã‚¹ãƒˆã‚¢
+// ¥ê¥¹¥È¥¢
 case 'restore':
 case 'restore_config':
 	if ($_POST['mode'] == 'restore_config') {
@@ -73,26 +73,26 @@ case 'restore_config':
 
 	break;
 	
-// å‰Šé™¤
+// ºï½ü
 case 'delete':
 	$del_file = $objPage->bkup_dir.$_POST['list_name'] . ".tar.gz";
-	// ãƒ•ã‚¡ã‚¤ãƒ«ã®å‰Šé™¤
+	// ¥Õ¥¡¥¤¥ë¤Îºï½ü
 	if(is_file($del_file)){
 		$ret = unlink($del_file);
 	}
 
-	// DBã‹ã‚‰å‰Šé™¤
+	// DB¤«¤éºï½ü
 	$delsql = "DELETE FROM dtb_bkup WHERE bkup_name = ?";
 	$objQuery->query($delsql, array($_POST['list_name']));
 
 	break;
 	
-// ãƒ€ã‚¦ãƒ³ãƒ­ãƒ¼ãƒ‰
+// ¥À¥¦¥ó¥í¡¼¥É
 case 'download' :
 	$filename = $_POST['list_name'] . ".tar.gz";
 	$dl_file = $objPage->bkup_dir.$_POST['list_name'] . ".tar.gz";
 	
-	// ãƒ€ã‚¦ãƒ³ãƒ­ãƒ¼ãƒ‰é–‹å§‹
+	// ¥À¥¦¥ó¥í¡¼¥É³«»Ï
 	Header("Content-disposition: attachment; filename=${filename}");
 	Header("Content-type: application/octet-stream; name=${filename}");
 	header("Content-Length: " .filesize($dl_file)); 
@@ -104,33 +104,33 @@ default:
 	break;
 }
 
-// ãƒãƒƒã‚¯ã‚¢ãƒƒãƒ—ãƒªã‚¹ãƒˆã‚’å–å¾—ã™ã‚‹
+// ¥Ğ¥Ã¥¯¥¢¥Ã¥×¥ê¥¹¥È¤ò¼èÆÀ¤¹¤ë
 $arrBkupList = lfGetBkupData("ORDER BY create_date DESC");
-// ãƒ†ãƒ³ãƒ—ãƒ¬ãƒ¼ãƒˆãƒ•ã‚¡ã‚¤ãƒ«ã«æ¸¡ã™ãƒ‡ãƒ¼ã‚¿ã‚’ã‚»ãƒƒãƒˆ
+// ¥Æ¥ó¥×¥ì¡¼¥È¥Õ¥¡¥¤¥ë¤ËÅÏ¤¹¥Ç¡¼¥¿¤ò¥»¥Ã¥È
 $objPage->arrErr = $arrErr;
 $objPage->arrForm = $arrForm;
 $objPage->arrBkupList = $arrBkupList;
 
-$objView->assignobj($objPage);		//å¤‰æ•°ã‚’ãƒ†ãƒ³ãƒ—ãƒ¬ãƒ¼ãƒˆã«ã‚¢ã‚µã‚¤ãƒ³ã™ã‚‹
-$objView->display(MAIN_FRAME);		//ãƒ†ãƒ³ãƒ—ãƒ¬ãƒ¼ãƒˆã®å‡ºåŠ›
+$objView->assignobj($objPage);		//ÊÑ¿ô¤ò¥Æ¥ó¥×¥ì¡¼¥È¤Ë¥¢¥µ¥¤¥ó¤¹¤ë
+$objView->display(MAIN_FRAME);		//¥Æ¥ó¥×¥ì¡¼¥È¤Î½ĞÎÏ
 
 //-------------------------------------------------------------------------------------------------------
-/* å–å¾—æ–‡å­—åˆ—ã®å¤‰æ› */
+/* ¼èÆÀÊ¸»úÎó¤ÎÊÑ´¹ */
 function lfConvertParam($array) {
 	/*
-	 *	æ–‡å­—åˆ—ã®å¤‰æ›
-	 *	K :  ã€ŒåŠè§’(ï¾Šï¾ï½¶ï½¸)ç‰‡ä»®åã€ã‚’ã€Œå…¨è§’ç‰‡ä»®åã€ã«å¤‰æ›
-	 *	C :  ã€Œå…¨è§’ã²ã‚‰ä»®åã€ã‚’ã€Œå…¨è§’ã‹ãŸä»®åã€ã«å¤‰æ›
-	 *	V :  æ¿ç‚¹ä»˜ãã®æ–‡å­—ã‚’ä¸€æ–‡å­—ã«å¤‰æ›ã€‚"K","H"ã¨å…±ã«ä½¿ç”¨ã—ã¾ã™	
-	 *	n :  ã€Œå…¨è§’ã€æ•°å­—ã‚’ã€ŒåŠè§’(ï¾Šï¾ï½¶ï½¸)ã€ã«å¤‰æ›
-	 *  a :  å…¨è§’è‹±æ•°å­—ã‚’åŠè§’è‹±æ•°å­—ã«å¤‰æ›ã™ã‚‹
+	 *	Ê¸»úÎó¤ÎÊÑ´¹
+	 *	K :  ¡ÖÈ¾³Ñ(Êİ¶¸)ÊÒ²¾Ì¾¡×¤ò¡ÖÁ´³ÑÊÒ²¾Ì¾¡×¤ËÊÑ´¹
+	 *	C :  ¡ÖÁ´³Ñ¤Ò¤é²¾Ì¾¡×¤ò¡ÖÁ´³Ñ¤«¤¿²¾Ì¾¡×¤ËÊÑ´¹
+	 *	V :  ÂùÅÀÉÕ¤­¤ÎÊ¸»ú¤ò°ìÊ¸»ú¤ËÊÑ´¹¡£"K","H"¤È¶¦¤Ë»ÈÍÑ¤·¤Ş¤¹	
+	 *	n :  ¡ÖÁ´³Ñ¡×¿ô»ú¤ò¡ÖÈ¾³Ñ(Êİ¶¸)¡×¤ËÊÑ´¹
+	 *  a :  Á´³Ñ±Ñ¿ô»ú¤òÈ¾³Ñ±Ñ¿ô»ú¤ËÊÑ´¹¤¹¤ë
 	 */
 	$arrConvList['bkup_name'] = "a";
 	$arrConvList['bkup_memo'] = "KVa";
 	
-	// æ–‡å­—å¤‰æ›
+	// Ê¸»úÊÑ´¹
 	foreach ($arrConvList as $key => $val) {
-		// POSTã•ã‚Œã¦ããŸå€¤ã®ã¿å¤‰æ›ã™ã‚‹ã€‚
+		// POST¤µ¤ì¤Æ¤­¤¿ÃÍ¤Î¤ßÊÑ´¹¤¹¤ë¡£
 		if(isset($array[$key])) {
 			$array[$key] = mb_convert_kana($array[$key] ,$val);
 		}
@@ -138,23 +138,23 @@ function lfConvertParam($array) {
 	return $array;
 }
 
-// ã‚¨ãƒ©ãƒ¼ãƒã‚§ãƒƒã‚¯
+// ¥¨¥é¡¼¥Á¥§¥Ã¥¯
 function lfCheckError($array){
 	$objErr = new SC_CheckError($array);
 	
-	$objErr->doFunc(array("ãƒãƒƒã‚¯ã‚¢ãƒƒãƒ—å", "bkup_name", STEXT_LEN), array("EXIST_CHECK","MAX_LENGTH_CHECK","NO_SPTAB","ALNUM_CHECK"));
-	$objErr->doFunc(array("ãƒãƒƒã‚¯ã‚¢ãƒƒãƒ—ãƒ¡ãƒ¢", "bkup_memo", MTEXT_LEN), array("MAX_LENGTH_CHECK"));
+	$objErr->doFunc(array("¥Ğ¥Ã¥¯¥¢¥Ã¥×Ì¾", "bkup_name", STEXT_LEN), array("EXIST_CHECK","MAX_LENGTH_CHECK","NO_SPTAB","ALNUM_CHECK"));
+	$objErr->doFunc(array("¥Ğ¥Ã¥¯¥¢¥Ã¥×¥á¥â", "bkup_memo", MTEXT_LEN), array("MAX_LENGTH_CHECK"));
 	
-	// é‡è¤‡ãƒã‚§ãƒƒã‚¯
+	// ½ÅÊ£¥Á¥§¥Ã¥¯
 	$ret = lfGetBkupData("WHERE bkup_name = ?", array($array['bkup_name']));
 	if (count($ret) > 0) {
-		$objErr->arrErr['bkup_name'] = "ãƒãƒƒã‚¯ã‚¢ãƒƒãƒ—åãŒé‡è¤‡ã—ã¦ã„ã¾ã™ã€‚åˆ¥åã‚’å…¥åŠ›ã—ã¦ãã ã•ã„ã€‚";
+		$objErr->arrErr['bkup_name'] = "¥Ğ¥Ã¥¯¥¢¥Ã¥×Ì¾¤¬½ÅÊ£¤·¤Æ¤¤¤Ş¤¹¡£ÊÌÌ¾¤òÆşÎÏ¤·¤Æ¤¯¤À¤µ¤¤¡£";
 	}
 
 	return $objErr->arrErr;
 }
 
-// ãƒãƒƒã‚¯ã‚¢ãƒƒãƒ—ãƒ•ã‚¡ã‚¤ãƒ«ä½œæˆ
+// ¥Ğ¥Ã¥¯¥¢¥Ã¥×¥Õ¥¡¥¤¥ëºîÀ®
 function lfCreateBkupData($bkup_name){
 	global $objPage;
 	$objQuery = new SC_Query();
@@ -166,45 +166,45 @@ function lfCreateBkupData($bkup_name){
 	if (!is_dir(dirname($bkup_dir))) $err = mkdir(dirname($bkup_dir));		
 	$bkup_dir = $bkup_dir . $bkup_name . "/";
 
-	// å…¨ãƒ†ãƒ¼ãƒ–ãƒ«å–å¾—
+	// Á´¥Æ¡¼¥Ö¥ë¼èÆÀ
 	$arrTableList = lfGetTableList();
 	
-	// å„ãƒ†ãƒ¼ãƒ–ãƒ«æƒ…å ±ã‚’å–å¾—ã™ã‚‹
+	// ³Æ¥Æ¡¼¥Ö¥ë¾ğÊó¤ò¼èÆÀ¤¹¤ë
 	foreach($arrTableList as $key => $val){
 		
 		if ($val != "dtb_bkup") {
 			
-			// è‡ªå‹•æ¡ç•ªå‹ã®æ§‹æˆã‚’å–å¾—ã™ã‚‹
+			// ¼«Æ°ºÎÈÖ·¿¤Î¹½À®¤ò¼èÆÀ¤¹¤ë
 			$csv_autoinc .= lfGetAutoIncrement($val);
 			
-			// å…¨ãƒ‡ãƒ¼ã‚¿ã‚’å–å¾—
+			// Á´¥Ç¡¼¥¿¤ò¼èÆÀ
 			if ($val == "dtb_pagelayout"){
 				$arrData = $objQuery->getAll("SELECT * FROM $val ORDER BY page_id");
 			}else{
 				$arrData = $objQuery->getAll("SELECT * FROM $val");
 			}
 			
-			// CSVãƒ‡ãƒ¼ã‚¿ç”Ÿæˆ
+			// CSV¥Ç¡¼¥¿À¸À®
 			if (count($arrData) > 0) {
 				
-				// ã‚«ãƒ©ãƒ ã‚’CSVå½¢å¼ã«æ•´ãˆã‚‹
+				// ¥«¥é¥à¤òCSV·Á¼°¤ËÀ°¤¨¤ë
 				$arrKyes = sfGetCommaList(array_keys($arrData[0]), false);
 				
-				// ãƒ‡ãƒ¼ã‚¿ã‚’CSVå½¢å¼ã«æ•´ãˆã‚‹
+				// ¥Ç¡¼¥¿¤òCSV·Á¼°¤ËÀ°¤¨¤ë
 				$data = "";
 				foreach($arrData as $data_key => $data_val){
 					//$val = str_replace("\"", "\\\"", $val);
 					$data .= lfGetCSVList($arrData[$data_key]);
 
 				}
-				// CSVå‡ºåŠ›ãƒ‡ãƒ¼ã‚¿ç”Ÿæˆ
+				// CSV½ĞÎÏ¥Ç¡¼¥¿À¸À®
 				$csv_data .= $val . "\n";
 				$csv_data .= $arrKyes . "\n";
 				$csv_data .= $data;
 				$csv_data .= "\n";
 			}	
 			
-			// ã‚¿ã‚¤ãƒ ã‚¢ã‚¦ãƒˆã‚’é˜²ã
+			// ¥¿¥¤¥à¥¢¥¦¥È¤òËÉ¤°
 			sfFlush();
 		}
 	}
@@ -212,13 +212,13 @@ function lfCreateBkupData($bkup_name){
 	$csv_file = $bkup_dir . "bkup_data.csv";
 	$csv_autoinc_file = $bkup_dir . "autoinc_data.csv";
 	mb_internal_encoding(CHAR_CODE);
-	// CSVå‡ºåŠ›
-	// ãƒ‡ã‚£ãƒ¬ã‚¯ãƒˆãƒªãŒå­˜åœ¨ã—ã¦ã„ãªã‘ã‚Œã°ä½œæˆã™ã‚‹		
+	// CSV½ĞÎÏ
+	// ¥Ç¥£¥ì¥¯¥È¥ê¤¬Â¸ºß¤·¤Æ¤¤¤Ê¤±¤ì¤ĞºîÀ®¤¹¤ë		
 	if (!is_dir(dirname($csv_file))) {
 		$err = mkdir(dirname($csv_file));
 	}
 	if ($err) {
-		// dataã‚’CSVå‡ºåŠ›
+		// data¤òCSV½ĞÎÏ
 		$fp = fopen($csv_file,"w");
 		if($fp) {
 			if($csv_data != ""){
@@ -227,7 +227,7 @@ function lfCreateBkupData($bkup_name){
 			fclose($fp);
 		}
 		
-		// è‡ªå‹•æ¡ç•ªã‚’CSVå‡ºåŠ›
+		// ¼«Æ°ºÎÈÖ¤òCSV½ĞÎÏ
 		$fp = fopen($csv_autoinc_file,"w");
 		if($fp) {
 			if($csv_autoinc != ""){
@@ -237,59 +237,59 @@ function lfCreateBkupData($bkup_name){
 		}
 	}
 
-	// å„ç¨®ãƒ•ã‚¡ã‚¤ãƒ«ã‚³ãƒ”ãƒ¼
+	// ³Æ¼ï¥Õ¥¡¥¤¥ë¥³¥Ô¡¼
 	if ($err) {
-		// å•†å“ç”»åƒãƒ•ã‚¡ã‚¤ãƒ«ã‚’ã‚³ãƒ”ãƒ¼
-		// ãƒ‡ã‚£ãƒ¬ã‚¯ãƒˆãƒªãŒå­˜åœ¨ã—ã¦ã„ãªã‘ã‚Œã°ä½œæˆã™ã‚‹		
+		// ¾¦ÉÊ²èÁü¥Õ¥¡¥¤¥ë¤ò¥³¥Ô¡¼
+		// ¥Ç¥£¥ì¥¯¥È¥ê¤¬Â¸ºß¤·¤Æ¤¤¤Ê¤±¤ì¤ĞºîÀ®¤¹¤ë		
 		$image_dir = $bkup_dir . "save_image/";
 		if (!is_dir(dirname($image_dir))) $err = mkdir(dirname($image_dir));		
 		$copy_mess = "";
 		$copy_mess = sfCopyDir("../../upload/save_image/",$image_dir, $copy_mess);
 		
-		// ãƒ†ãƒ³ãƒ—ãƒ¬ãƒ¼ãƒˆãƒ•ã‚¡ã‚¤ãƒ«ã‚’ã‚³ãƒ”ãƒ¼
-		// ãƒ‡ã‚£ãƒ¬ã‚¯ãƒˆãƒªãŒå­˜åœ¨ã—ã¦ã„ãªã‘ã‚Œã°ä½œæˆã™ã‚‹		
+		// ¥Æ¥ó¥×¥ì¡¼¥È¥Õ¥¡¥¤¥ë¤ò¥³¥Ô¡¼
+		// ¥Ç¥£¥ì¥¯¥È¥ê¤¬Â¸ºß¤·¤Æ¤¤¤Ê¤±¤ì¤ĞºîÀ®¤¹¤ë		
 		$templates_dir = $bkup_dir . "templates/";
 		if (!is_dir(dirname($templates_dir))) $err = mkdir(dirname($templates_dir));		
 		$copy_mess = "";
 		$copy_mess = sfCopyDir("../../user_data/templates/",$templates_dir, $copy_mess);
 		
-		// ã‚¤ãƒ³ã‚¯ãƒ«ãƒ¼ãƒ‰ãƒ•ã‚¡ã‚¤ãƒ«ã‚’ã‚³ãƒ”ãƒ¼
-		// ãƒ‡ã‚£ãƒ¬ã‚¯ãƒˆãƒªãŒå­˜åœ¨ã—ã¦ã„ãªã‘ã‚Œã°ä½œæˆã™ã‚‹		
+		// ¥¤¥ó¥¯¥ë¡¼¥É¥Õ¥¡¥¤¥ë¤ò¥³¥Ô¡¼
+		// ¥Ç¥£¥ì¥¯¥È¥ê¤¬Â¸ºß¤·¤Æ¤¤¤Ê¤±¤ì¤ĞºîÀ®¤¹¤ë		
 		$inc_dir = $bkup_dir . "include/";
 		if (!is_dir(dirname($inc_dir))) $err = mkdir(dirname($inc_dir));		
 		$copy_mess = "";
 		$copy_mess = sfCopyDir("../../user_data/include/",$inc_dir, $copy_mess);
 	
-		// CSSãƒ•ã‚¡ã‚¤ãƒ«ã‚’ã‚³ãƒ”ãƒ¼
-		// ãƒ‡ã‚£ãƒ¬ã‚¯ãƒˆãƒªãŒå­˜åœ¨ã—ã¦ã„ãªã‘ã‚Œã°ä½œæˆã™ã‚‹		
+		// CSS¥Õ¥¡¥¤¥ë¤ò¥³¥Ô¡¼
+		// ¥Ç¥£¥ì¥¯¥È¥ê¤¬Â¸ºß¤·¤Æ¤¤¤Ê¤±¤ì¤ĞºîÀ®¤¹¤ë		
 		$css_dir = $bkup_dir . "css/";
 		if (!is_dir(dirname($css_dir))) $err = mkdir(dirname($css_dir));		
 		$copy_mess = "";
 		$copy_mess = sfCopyDir("../../user_data/css/",$css_dir, $copy_mess);
 
-		//åœ§ç¸®ãƒ•ãƒ©ã‚°TRUEã¯gzipåœ§ç¸®ã‚’ãŠã“ãªã†
+		//°µ½Ì¥Õ¥é¥°TRUE¤Ïgzip°µ½Ì¤ò¤ª¤³¤Ê¤¦
 		$tar = new Archive_Tar($objPage->bkup_dir . $bkup_name.".tar.gz", TRUE);
 
-		//bkupãƒ•ã‚©ãƒ«ãƒ€ã«ç§»å‹•ã™ã‚‹
+		//bkup¥Õ¥©¥ë¥À¤Ë°ÜÆ°¤¹¤ë
 		chdir($objPage->bkup_dir);
 
-		//åœ§ç¸®ã‚’ãŠã“ãªã†
+		//°µ½Ì¤ò¤ª¤³¤Ê¤¦
 		$zip = $tar->create("./" . $bkup_name . "/");
 
-		// ãƒãƒƒã‚¯ã‚¢ãƒƒãƒ—ãƒ‡ãƒ¼ã‚¿ã®å‰Šé™¤
+		// ¥Ğ¥Ã¥¯¥¢¥Ã¥×¥Ç¡¼¥¿¤Îºï½ü
 		if ($zip) sfDelFile($bkup_dir);
 	}
 
 	if (!$err) {
-		$arrErr['bkup_name'] = "ãƒãƒƒã‚¯ã‚¢ãƒƒãƒ—ã«å¤±æ•—ã—ã¾ã—ãŸã€‚";
-		// ãƒãƒƒã‚¯ã‚¢ãƒƒãƒ—ãƒ‡ãƒ¼ã‚¿ã®å‰Šé™¤
+		$arrErr['bkup_name'] = "¥Ğ¥Ã¥¯¥¢¥Ã¥×¤Ë¼ºÇÔ¤·¤Ş¤·¤¿¡£";
+		// ¥Ğ¥Ã¥¯¥¢¥Ã¥×¥Ç¡¼¥¿¤Îºï½ü
 		sfDelFile($bkup_dir);
 	}
 	
 	return $arrErr;
 }
 
-/* é…åˆ—ã®è¦ç´ ã‚’CSVãƒ•ã‚©ãƒ¼ãƒãƒƒãƒˆã§å‡ºåŠ›ã™ã‚‹ã€‚*/
+/* ÇÛÎó¤ÎÍ×ÁÇ¤òCSV¥Õ¥©¡¼¥Ş¥Ã¥È¤Ç½ĞÎÏ¤¹¤ë¡£*/
 function lfGetCSVList($array) {
 	if (count($array) > 0) {
 		foreach($array as $key => $val) {
@@ -304,7 +304,7 @@ function lfGetCSVList($array) {
 	return $line;
 }
 
-// å…¨ãƒ†ãƒ¼ãƒ–ãƒ«ãƒªã‚¹ãƒˆã‚’å–å¾—ã™ã‚‹
+// Á´¥Æ¡¼¥Ö¥ë¥ê¥¹¥È¤ò¼èÆÀ¤¹¤ë
 function lfGetTableList(){
 	$objQuery = new SC_Query();
 	
@@ -318,7 +318,7 @@ function lfGetTableList(){
 		$arrRet = $objQuery->getAll($sql);
 		$arrRet = sfSwapArray($arrRet);
 		
-		// ã‚­ãƒ¼ã‚’å–å¾—
+		// ¥­¡¼¤ò¼èÆÀ
 		$arrKey = array_keys($arrRet);
 		
 		$arrRet = $arrRet[$arrKey[0]];
@@ -326,7 +326,7 @@ function lfGetTableList(){
 	return $arrRet;
 }
 
-// è‡ªå‹•æ¡ç•ªå‹ã‚’CSVå‡ºåŠ›å½¢å¼ã«å¤‰æ›ã™ã‚‹
+// ¼«Æ°ºÎÈÖ·¿¤òCSV½ĞÎÏ·Á¼°¤ËÊÑ´¹¤¹¤ë
 function lfGetAutoIncrement($table_name){
 	$arrColList = lfGetColumnList($table_name);
 	$ret = "";
@@ -349,7 +349,7 @@ function lfGetAutoIncrement($table_name){
 	return $ret;
 }
 
-// ãƒ†ãƒ¼ãƒ–ãƒ«æ§‹æˆã‚’å–å¾—ã™ã‚‹
+// ¥Æ¡¼¥Ö¥ë¹½À®¤ò¼èÆÀ¤¹¤ë
 function lfGetColumnList($table_name){
 	$objQuery = new SC_Query();
 
@@ -379,7 +379,7 @@ function lfGetColumnList($table_name){
 	return $arrRet;
 }
 
-// è‡ªå‹•æ¡ç•ªå‹ã®å€¤ã‚’å–å¾—ã™ã‚‹
+// ¼«Æ°ºÎÈÖ·¿¤ÎÃÍ¤ò¼èÆÀ¤¹¤ë
 function lfGetAutoIncrementVal($table_name , $colname = ""){
 	$objQuery = new SC_Query();
 	$ret = "";
@@ -394,7 +394,7 @@ function lfGetAutoIncrementVal($table_name , $colname = ""){
 	return $ret;
 }
 
-// ãƒãƒƒã‚¯ã‚¢ãƒƒãƒ—ãƒ†ãƒ¼ãƒ–ãƒ«ã«ãƒ‡ãƒ¼ã‚¿ã‚’æ›´æ–°ã™ã‚‹
+// ¥Ğ¥Ã¥¯¥¢¥Ã¥×¥Æ¡¼¥Ö¥ë¤Ë¥Ç¡¼¥¿¤ò¹¹¿·¤¹¤ë
 function lfUpdBkupData($data){
 	$objQuery = new SC_Query();
 	
@@ -402,7 +402,7 @@ function lfUpdBkupData($data){
 	$objQuery->query($sql, array($data['bkup_name'],$data['bkup_memo']));
 }
 
-// ãƒãƒƒã‚¯ã‚¢ãƒƒãƒ—ãƒ†ãƒ¼ãƒ–ãƒ«ã‹ã‚‰ãƒ‡ãƒ¼ã‚¿ã‚’å–å¾—ã™ã‚‹
+// ¥Ğ¥Ã¥¯¥¢¥Ã¥×¥Æ¡¼¥Ö¥ë¤«¤é¥Ç¡¼¥¿¤ò¼èÆÀ¤¹¤ë
 function lfGetBkupData($where = "", $data = array()){
 	$objQuery = new SC_Query();
 	
@@ -414,7 +414,7 @@ function lfGetBkupData($where = "", $data = array()){
 	return $ret;
 }
 
-// ãƒãƒƒã‚¯ã‚¢ãƒƒãƒ—ãƒ•ã‚¡ã‚¤ãƒ«ã‚’ãƒªã‚¹ãƒˆã‚¢ã™ã‚‹
+// ¥Ğ¥Ã¥¯¥¢¥Ã¥×¥Õ¥¡¥¤¥ë¤ò¥ê¥¹¥È¥¢¤¹¤ë
 function lfRestore($bkup_name){
 	global $objPage;
 	$objQuery = new SC_Query("", false);
@@ -423,71 +423,71 @@ function lfRestore($bkup_name){
 	
 	$bkup_dir = $objPage->bkup_dir . $bkup_name . "/";
 	
-	//ãƒãƒƒã‚¯ã‚¢ãƒƒãƒ—ãƒ•ã‚©ãƒ«ãƒ€ã«ç§»å‹•ã™ã‚‹
+	//¥Ğ¥Ã¥¯¥¢¥Ã¥×¥Õ¥©¥ë¥À¤Ë°ÜÆ°¤¹¤ë
 	chdir($objPage->bkup_dir);
 	
-	//åœ§ç¸®ãƒ•ãƒ©ã‚°TRUEã¯gzipè§£å‡ã‚’ãŠã“ãªã†
+	//°µ½Ì¥Õ¥é¥°TRUE¤Ïgzip²òÅà¤ò¤ª¤³¤Ê¤¦
 	$tar = new Archive_Tar($bkup_name . ".tar.gz", TRUE);
 	
-	//æŒ‡å®šã•ã‚ŒãŸãƒ•ã‚©ãƒ«ãƒ€å†…ã«è§£å‡ã™ã‚‹
+	//»ØÄê¤µ¤ì¤¿¥Õ¥©¥ë¥ÀÆâ¤Ë²òÅà¤¹¤ë
 	$err = $tar->extract("./");
 	
-	// ç„¡äº‹è§£å‡ã§ãã‚Œã°ã€ãƒªã‚¹ãƒˆã‚¢ã‚’è¡Œã†
+	// Ìµ»ö²òÅà¤Ç¤­¤ì¤Ğ¡¢¥ê¥¹¥È¥¢¤ò¹Ô¤¦
 	if ($err) {
 		
-		// ãƒˆãƒ©ãƒ³ã‚¶ã‚¯ã‚·ãƒ§ãƒ³é–‹å§‹
+		// ¥È¥é¥ó¥¶¥¯¥·¥ç¥ó³«»Ï
 		$objQuery->begin();
 		
-		// DBã‚’ã‚¯ãƒªã‚¢
+		// DB¤ò¥¯¥ê¥¢
 		$err = lfDeleteAll($objQuery);
 		
-		// INSERTå®Ÿè¡Œ
+		// INSERT¼Â¹Ô
 		if ($err) $err = lfExeInsertSQL($objQuery, $bkup_dir . "bkup_data.csv");
 
-		// è‡ªå‹•æ¡ç•ªã®å€¤ã‚’ã‚»ãƒƒãƒˆ
+		// ¼«Æ°ºÎÈÖ¤ÎÃÍ¤ò¥»¥Ã¥È
 		if ($err) lfSetAutoInc($objQuery, $bkup_dir . "autoinc_data.csv");
 
-		// å„ç¨®ãƒ•ã‚¡ã‚¤ãƒ«ã®ã‚³ãƒ”ãƒ¼
+		// ³Æ¼ï¥Õ¥¡¥¤¥ë¤Î¥³¥Ô¡¼
 		if ($err) {
-			// ç”»åƒã®ã‚³ãƒ”ãƒ¼
+			// ²èÁü¤Î¥³¥Ô¡¼
 			$image_dir = $bkup_dir . "save_image/";
 			$copy_mess = "";
 			$copy_mess = sfCopyDir($image_dir, "../../upload/save_image/", $copy_mess, true);		
 	
-			// ãƒ†ãƒ³ãƒ—ãƒ¬ãƒ¼ãƒˆã®ã‚³ãƒ”ãƒ¼
+			// ¥Æ¥ó¥×¥ì¡¼¥È¤Î¥³¥Ô¡¼
 			$tmp_dir = $bkup_dir . "templates/";
 			$copy_mess = "";
 			$copy_mess = sfCopyDir($tmp_dir, "../../user_data/templates/", $copy_mess, true);		
 			
-			// ã‚¤ãƒ³ã‚¯ãƒ«ãƒ¼ãƒ‰ãƒ•ã‚¡ã‚¤ãƒ«ã®ã‚³ãƒ”ãƒ¼
+			// ¥¤¥ó¥¯¥ë¡¼¥É¥Õ¥¡¥¤¥ë¤Î¥³¥Ô¡¼
 			$inc_dir = $bkup_dir . "include/";
 			$copy_mess = "";
 			$copy_mess = sfCopyDir($inc_dir, "../../user_data/include/", $copy_mess, true);		
 			
-			// CSSã®ã‚³ãƒ”ãƒ¼
+			// CSS¤Î¥³¥Ô¡¼
 			$css_dir = $bkup_dir . "css/";
 			$copy_mess = "";
 			$copy_mess = sfCopyDir($css_dir, "../../user_data/css/", $copy_mess, true);		
 
-			// ãƒãƒƒã‚¯ã‚¢ãƒƒãƒ—ãƒ‡ãƒ¼ã‚¿ã®å‰Šé™¤
+			// ¥Ğ¥Ã¥¯¥¢¥Ã¥×¥Ç¡¼¥¿¤Îºï½ü
 			sfDelFile($bkup_dir);
 		}
 
-		// ãƒªã‚¹ãƒˆã‚¢æˆåŠŸãªã‚‰ã‚³ãƒŸãƒƒãƒˆå¤±æ•—ãªã‚‰ãƒ­ãƒ¼ãƒ«ãƒãƒƒã‚¯
+		// ¥ê¥¹¥È¥¢À®¸ù¤Ê¤é¥³¥ß¥Ã¥È¼ºÇÔ¤Ê¤é¥í¡¼¥ë¥Ğ¥Ã¥¯
 		if ($err) {
 			$objQuery->commit();
-			$objPage->restore_msg = "ãƒªã‚¹ãƒˆã‚¢çµ‚äº†ã—ã¾ã—ãŸã€‚";
+			$objPage->restore_msg = "¥ê¥¹¥È¥¢½ªÎ»¤·¤Ş¤·¤¿¡£";
 			$objPage->restore_err = true;
 		}else{
 			$objQuery->rollback();
-			$objPage->restore_msg = "ãƒªã‚¹ãƒˆã‚¢ã«å¤±æ•—ã—ã¾ã—ãŸã€‚";
+			$objPage->restore_msg = "¥ê¥¹¥È¥¢¤Ë¼ºÇÔ¤·¤Ş¤·¤¿¡£";
 			$objPage->restore_name = $bkup_name;
 			$objPage->restore_err = false;
 		}
 	}
 }
 
-// CSVãƒ•ã‚¡ã‚¤ãƒ«ã‹ã‚‰ã‚¤ãƒ³ã‚µãƒ¼ãƒˆå®Ÿè¡Œ
+// CSV¥Õ¥¡¥¤¥ë¤«¤é¥¤¥ó¥µ¡¼¥È¼Â¹Ô
 function lfExeInsertSQL($objQuery, $csv){
 	global $objPage;
 
@@ -499,12 +499,12 @@ function lfExeInsertSQL($objQuery, $csv){
 	$pagelayout_flg = false;
 	$mode = $objPage->mode;
 	
-	// csvãƒ•ã‚¡ã‚¤ãƒ«ã‹ã‚‰ãƒ‡ãƒ¼ã‚¿ã®å–å¾—
+	// csv¥Õ¥¡¥¤¥ë¤«¤é¥Ç¡¼¥¿¤Î¼èÆÀ
 	$fp = fopen($csv, "r");
 	while (!feof($fp)) {
 		$data = fgetcsv($fp, 1000000);
 				
-		//ç©ºç™½è¡Œã®ã¨ãã¯ãƒ†ãƒ¼ãƒ–ãƒ«å¤‰æ›´
+		//¶õÇò¹Ô¤Î¤È¤­¤Ï¥Æ¡¼¥Ö¥ëÊÑ¹¹
 		if (count($data) <= 1 and $data[0] == "") {
 			$base_sql = "";
 			$tbl_flg = false;
@@ -512,7 +512,7 @@ function lfExeInsertSQL($objQuery, $csv){
 			continue;
 		}
 		
-		// ãƒ†ãƒ¼ãƒ–ãƒ«ãƒ•ãƒ©ã‚°ãŒãŸã£ã¦ã„ãªã„å ´åˆã«ã¯ãƒ†ãƒ¼ãƒ–ãƒ«åã‚»ãƒƒãƒˆ
+		// ¥Æ¡¼¥Ö¥ë¥Õ¥é¥°¤¬¤¿¤Ã¤Æ¤¤¤Ê¤¤¾ì¹ç¤Ë¤Ï¥Æ¡¼¥Ö¥ëÌ¾¥»¥Ã¥È
 		if (!$tbl_flg) {
 			$base_sql = "INSERT INTO $data[0] ";
 			$tbl_flg = true;
@@ -524,7 +524,7 @@ function lfExeInsertSQL($objQuery, $csv){
 			continue;
 		}
 		
-		// ã‚«ãƒ©ãƒ ãƒ•ãƒ©ã‚°ãŒãŸã£ã¦ã„ãªã„å ´åˆã«ã¯ã‚«ãƒ©ãƒ ã‚»ãƒƒãƒˆ
+		// ¥«¥é¥à¥Õ¥é¥°¤¬¤¿¤Ã¤Æ¤¤¤Ê¤¤¾ì¹ç¤Ë¤Ï¥«¥é¥à¥»¥Ã¥È
 		if (!$col_flg) {
 			if ($mode != "restore_config"){
 				$base_sql .= " ( $data[0] ";
@@ -537,7 +537,7 @@ function lfExeInsertSQL($objQuery, $csv){
 			continue;
 		}
 
-		// ã‚¤ãƒ³ã‚µãƒ¼ãƒˆã™ã‚‹å€¤ã‚’ã‚»ãƒƒãƒˆ
+		// ¥¤¥ó¥µ¡¼¥È¤¹¤ëÃÍ¤ò¥»¥Ã¥È
 		$sql = $base_sql . "VALUES ( ? ";
 		for($i = 1; $i < count($data); $i++){
 			$sql .= ", ?";
@@ -546,20 +546,20 @@ function lfExeInsertSQL($objQuery, $csv){
 		$data = str_replace("\\\"", "\"", $data);
 		$err = $objQuery->query($sql, $data);
 
-		// ã‚¨ãƒ©ãƒ¼ãŒã‚ã‚Œã°çµ‚äº†
+		// ¥¨¥é¡¼¤¬¤¢¤ì¤Ğ½ªÎ»
 		if ($err->message != ""){
 			sfErrorHeader(">> " . $objQuery->getlastquery(false));
 			return false;
 		}
 		
 		if ($pagelayout_flg) {
-			// dtb_pagelayoutã®å ´åˆã«ã¯æœ€åˆã®ãƒ‡ãƒ¼ã‚¿ã¯page_id = 0ã«ã™ã‚‹
+			// dtb_pagelayout¤Î¾ì¹ç¤Ë¤ÏºÇ½é¤Î¥Ç¡¼¥¿¤Ïpage_id = 0¤Ë¤¹¤ë
 			$sql = "UPDATE dtb_pagelayout SET page_id = '0'";
 			$objQuery->query($sql);
 			$pagelayout_flg = false;
 		}
 
-		// ã‚¿ã‚¤ãƒ ã‚¢ã‚¦ãƒˆã‚’é˜²ã
+		// ¥¿¥¤¥à¥¢¥¦¥È¤òËÉ¤°
 		sfFlush();
 	}
 	fclose($fp);
@@ -567,9 +567,9 @@ function lfExeInsertSQL($objQuery, $csv){
 	return $ret;
 }
 
-// è‡ªå‹•æ¡ç•ªã‚’ã‚»ãƒƒãƒˆ
+// ¼«Æ°ºÎÈÖ¤ò¥»¥Ã¥È
 function lfSetAutoInc($objQuery, $csv){
-	// csvãƒ•ã‚¡ã‚¤ãƒ«ã‹ã‚‰ãƒ‡ãƒ¼ã‚¿ã®å–å¾—
+	// csv¥Õ¥¡¥¤¥ë¤«¤é¥Ç¡¼¥¿¤Î¼èÆÀ
 	$arrCsvData = file($csv);
 
 	foreach($arrCsvData as $key => $val){
@@ -580,14 +580,14 @@ function lfSetAutoInc($objQuery, $csv){
 	}
 }
 
-// DBã‚’å…¨ã¦ã‚¯ãƒªã‚¢ã™ã‚‹
+// DB¤òÁ´¤Æ¥¯¥ê¥¢¤¹¤ë
 function lfDeleteAll($objQuery){
 	$ret = true;
 
 	$arrTableList = lfGetTableList();
 	
 	foreach($arrTableList as $key => $val){
-		// ãƒãƒƒã‚¯ã‚¢ãƒƒãƒ—ãƒ†ãƒ¼ãƒ–ãƒ«ã¯å‰Šé™¤ã—ãªã„
+		// ¥Ğ¥Ã¥¯¥¢¥Ã¥×¥Æ¡¼¥Ö¥ë¤Ïºï½ü¤·¤Ê¤¤
 		if ($val != "dtb_bkup") {
 			$trun_sql = "DELETE FROM $val;";
 			$ret = $objQuery->query($trun_sql);
@@ -599,15 +599,15 @@ function lfDeleteAll($objQuery){
 	return $ret;
 }
 
-// ãƒãƒƒã‚¯ã‚¢ãƒƒãƒ—ãƒ†ãƒ¼ãƒ–ãƒ«ã‚’ä½œæˆã™ã‚‹
+// ¥Ğ¥Ã¥¯¥¢¥Ã¥×¥Æ¡¼¥Ö¥ë¤òºîÀ®¤¹¤ë
 function lfCreateBkupTable(){
 	$objQuery = new SC_Query();
 	
-	// ãƒ†ãƒ¼ãƒ–ãƒ«ã®å­˜åœ¨ãƒã‚§ãƒƒã‚¯
+	// ¥Æ¡¼¥Ö¥ë¤ÎÂ¸ºß¥Á¥§¥Ã¥¯
 	$arrTableList = lfGetTableList();
 
 	if(!in_array("dtb_bkup", $arrTableList)){
-		// å­˜åœ¨ã—ã¦ã„ãªã‘ã‚Œã°ä½œæˆ
+		// Â¸ºß¤·¤Æ¤¤¤Ê¤±¤ì¤ĞºîÀ®
 		$cre_sql = "
 			create table dtb_bkup
 			(

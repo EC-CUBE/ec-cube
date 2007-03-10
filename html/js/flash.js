@@ -4,21 +4,21 @@
  * http://www.lockon.co.jp/
  */
 
-// **************  İ’è•”•ª *******************
+// **************  ÀßÄêÉôÊ¬ *******************
 
-	// Flashƒtƒ@ƒCƒ‹‚Ö‚Ì‘Š‘ÎƒpƒX
+	// Flash¥Õ¥¡¥¤¥ë¤Ø¤ÎÁêÂĞ¥Ñ¥¹
 	var flashFilePath = "swf/index.swf";
 
-	// Flash‰¡•
+	// Flash²£Éı
 	var flashWidth = "400";
 
-	// Flashc•
+	// Flash½ÄÉı
 	var flashHeight = "279";
 
-	// Flash‚Ì•K—vƒo[ƒWƒ‡ƒ“
+	// Flash¤ÎÉ¬Í×¥Ğ¡¼¥¸¥ç¥ó
 	var reqVersion = 6;
 
-	// Flash‚ªƒCƒ“ƒXƒg[ƒ‹‚³‚ê‚Ä‚¢‚È‚¢‚Æ‚«‚É•\¦‚·‚éƒƒbƒZ[ƒW
+	// Flash¤¬¥¤¥ó¥¹¥È¡¼¥ë¤µ¤ì¤Æ¤¤¤Ê¤¤¤È¤­¤ËÉ½¼¨¤¹¤ë¥á¥Ã¥»¡¼¥¸
 	var noFlashMsg =
 		"<table width=\"400\" border=\"0\" cellspacing=\"0\" cellpadding=\"0\" summary=\" \">"
 		+"<tr><td colspan=\"3\"><img src=\"./img/flash/image_flash01.jpg\" width=\"400\" height=\"174\" alt=\"\"></td></tr>"
@@ -31,7 +31,7 @@
 		+"</table>";
 
 
-// ************** ƒƒCƒ“ *********************
+// ************** ¥á¥¤¥ó *********************
 
 	var maxVersion = 7;
 	var actualVersion = 0;

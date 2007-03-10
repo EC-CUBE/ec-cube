@@ -4,17 +4,17 @@
  *
  * http://www.lockon.co.jp/
  *
- * CSVé…ä¿¡æ©Ÿèƒ½å®Ÿè£…ã®ãŸã‚ã€å…±é€šéƒ¨åˆ†ã‚’å¤–éƒ¨ãƒ•ã‚¡ã‚¤ãƒ«åŒ–ã—ã¾ã—ãŸã€‚<br>
+ * CSVÇÛ¿®µ¡Ç½¼ÂÁõ¤Î¤¿¤á¡¢¶¦ÄÌÉôÊ¬¤ò³°Éô¥Õ¥¡¥¤¥ë²½¤·¤Ş¤·¤¿¡£<br>
  * @author hirokazu_fukuda
  * @version 2005/12/27
  */
 
 
-//---- æ¤œç´¢ç”¨é …ç›®é…åˆ—
-$objPage->arrHtmlmail = array( "" => "ä¸¡æ–¹",  1 => "HTML", 2 => "TEXT" );
+//---- ¸¡º÷ÍÑ¹àÌÜÇÛÎó
+$objPage->arrHtmlmail = array( "" => "Î¾Êı",  1 => "HTML", 2 => "TEXT" );
 
 
-//---- é…åˆ—å†…å®¹å°‚ç”¨é …ç›®ã®é…åˆ—
+//---- ÇÛÎóÆâÍÆÀìÍÑ¹àÌÜ¤ÎÇÛÎó
 $arrRegistColumn = array(
 							 array(  "column" => "template_id",		"convert" => "n" )
 							,array(  "column" => "mail_method",		"convert" => "n" )
@@ -27,14 +27,14 @@ $arrRegistColumn = array(
 							,array(  "column" => "body",			"convert" => "KV" )
 						);
 
-//---- ãƒ¡ãƒ«ãƒã‚¬ä¼šå“¡ç¨®åˆ¥
+//---- ¥á¥ë¥Ş¥¬²ñ°÷¼ïÊÌ
 $arrCustomerType = array(
-						1 => "ä¼šå“¡",
-						2 => "éä¼šå“¡",
-						//3 => "CSVç™»éŒ²"
+						1 => "²ñ°÷",
+						2 => "Èó²ñ°÷",
+						//3 => "CSVÅĞÏ¿"
 						);
 
-//---- æ¤œç´¢é …ç›®
+//---- ¸¡º÷¹àÌÜ
 $arrSearchColumn = array(
 							array(  "column" => "name",				"convert" => "aKV"),
 							array(  "column" => "pref",				"convert" => "n" ),
@@ -78,7 +78,7 @@ $arrSearchColumn = array(
 
 //--------------------------------------------------------------------------------------------------------------------------------------
 
-//---- HTMLãƒ†ãƒ³ãƒ—ãƒ¬ãƒ¼ãƒˆã‚’ä½¿ç”¨ã™ã‚‹å ´åˆã€ãƒ‡ãƒ¼ã‚¿ã‚’å–å¾—ã™ã‚‹ã€‚	
+//---- HTML¥Æ¥ó¥×¥ì¡¼¥È¤ò»ÈÍÑ¤¹¤ë¾ì¹ç¡¢¥Ç¡¼¥¿¤ò¼èÆÀ¤¹¤ë¡£	
 function lfGetHtmlTemplateData($id) {
 	
 	global $conn;
@@ -86,12 +86,12 @@ function lfGetHtmlTemplateData($id) {
 	$result = $conn->getAll($sql, array($id));
 	$list_data = $result[0];
 
-	// ãƒ¡ã‚¤ãƒ³å•†å“ã®æƒ…å ±å–å¾—
+	// ¥á¥¤¥ó¾¦ÉÊ¤Î¾ğÊó¼èÆÀ
 	$sql = "SELECT name, main_image, point_rate, deliv_fee, price01_min, price01_max, price02_min, price02_max FROM vw_products_allclass AS allcls WHERE product_id = ?";
 	$main = $conn->getAll($sql, array($list_data["main_product_id"]));
 	$list_data["main"] = $main[0];
 
-	// ã‚µãƒ–å•†å“ã®æƒ…å ±å–å¾—
+	// ¥µ¥Ö¾¦ÉÊ¤Î¾ğÊó¼èÆÀ
 	$sql = "SELECT product_id, name, main_list_image, price01_min, price01_max, price02_min, price02_max FROM vw_products_allclass AS allcls WHERE product_id = ?";
 	$k = 0;
 	$l = 0;
@@ -109,14 +109,14 @@ function lfGetHtmlTemplateData($id) {
 		if (is_numeric($list_data["sub_product_id" .$j])) {
 			$result = $conn->getAll($sql, array($list_data["sub_product_id" .$j]));
 			$list_data["sub"][$k][$l] = $result[0];
-			$list_data["sub"][$k]["data_exists"] = "OK";	//å½“è©²æ®µã«ãƒ‡ãƒ¼ã‚¿ãŒï¼‘ã¤ä»¥ä¸Šå­˜åœ¨ã™ã‚‹ãƒ•ãƒ©ã‚°
+			$list_data["sub"][$k]["data_exists"] = "OK";	//Åö³ºÃÊ¤Ë¥Ç¡¼¥¿¤¬£±¤Ä°Ê¾åÂ¸ºß¤¹¤ë¥Õ¥é¥°
 		}
 		$l ++;
 	}
 	return $list_data;
 }
 
-//---   ãƒ†ãƒ³ãƒ—ãƒ¬ãƒ¼ãƒˆã®ç¨®é¡ã‚’è¿”ã™
+//---   ¥Æ¥ó¥×¥ì¡¼¥È¤Î¼ïÎà¤òÊÖ¤¹
 function lfGetTemplateMethod($conn, $templata_id){
 	
 	if ( sfCheckNumLength($template_id) ){
@@ -124,7 +124,7 @@ function lfGetTemplateMethod($conn, $templata_id){
 	}	
 }
 
-//---   hiddenè¦ç´ å‡ºåŠ›ç”¨é…åˆ—ã®ä½œæˆ
+//---   hiddenÍ×ÁÇ½ĞÎÏÍÑÇÛÎó¤ÎºîÀ®
 function lfGetHidden( $array ){
 	if ( is_array($array) ){
 		foreach( $array as $key => $val ){
@@ -140,17 +140,17 @@ function lfGetHidden( $array ){
 	return $return;
 }
 
-//----ã€€å–å¾—æ–‡å­—åˆ—ã®å¤‰æ›
+//----¡¡¼èÆÀÊ¸»úÎó¤ÎÊÑ´¹
 function lfConvertParam($array, $arrSearchColumn) {
 	
-	// æ–‡å­—å¤‰æ›
+	// Ê¸»úÊÑ´¹
 	foreach ($arrSearchColumn as $data) {
 		$arrConvList[ $data["column"] ] = $data["convert"];
 	}
 
 	$new_array = array();
 	foreach ($arrConvList as $key => $val) {
-		if ( strlen($array[$key]) > 0 ){						// ãƒ‡ãƒ¼ã‚¿ã®ã‚ã‚‹ã‚‚ã®ã ã‘è¿”ã™
+		if ( strlen($array[$key]) > 0 ){						// ¥Ç¡¼¥¿¤Î¤¢¤ë¤â¤Î¤À¤±ÊÖ¤¹
 			$new_array[$key] = $array[$key];
 			if( strlen($val) > 0) {
 				$new_array[$key] = mb_convert_kana($new_array[$key] ,$val);
@@ -162,95 +162,95 @@ function lfConvertParam($array, $arrSearchColumn) {
 }
 
 
-//---- å…¥åŠ›ã‚¨ãƒ©ãƒ¼ãƒã‚§ãƒƒã‚¯
+//---- ÆşÎÏ¥¨¥é¡¼¥Á¥§¥Ã¥¯
 function lfErrorCheck($array, $flag = '') {
 
-	// flag ã¯ç™»éŒ²æ™‚ç”¨
+	// flag ¤ÏÅĞÏ¿»şÍÑ
 	
 	$objErr = new SC_CheckError($array);
 	
-	$objErr->doFunc(array("é¡§å®¢ã‚³ãƒ¼ãƒ‰", "customer_id", INT_LEN), array("NUM_CHECK","MAX_LENGTH_CHECK"));
-	$objErr->doFunc(array("éƒ½é“åºœçœŒ", "pref", 2), array("NUM_CHECK","MAX_LENGTH_CHECK"));
-	$objErr->doFunc(array("é¡§å®¢å", "name", STEXT_LEN), array("MAX_LENGTH_CHECK"));
-	$objErr->doFunc(array("é¡§å®¢å(ã‚«ãƒŠ)", "kana", STEXT_LEN), array("KANA_CHECK", "MAX_LENGTH_CHECK"));
+	$objErr->doFunc(array("¸ÜµÒ¥³¡¼¥É", "customer_id", INT_LEN), array("NUM_CHECK","MAX_LENGTH_CHECK"));
+	$objErr->doFunc(array("ÅÔÆ»ÉÜ¸©", "pref", 2), array("NUM_CHECK","MAX_LENGTH_CHECK"));
+	$objErr->doFunc(array("¸ÜµÒÌ¾", "name", STEXT_LEN), array("MAX_LENGTH_CHECK"));
+	$objErr->doFunc(array("¸ÜµÒÌ¾(¥«¥Ê)", "kana", STEXT_LEN), array("KANA_CHECK", "MAX_LENGTH_CHECK"));
 
-	$objErr->doFunc(array('ãƒ¡ãƒ¼ãƒ«ã‚¢ãƒ‰ãƒ¬ã‚¹', "email", STEXT_LEN) ,array("EMAIL_CHAR_CHECK", "MAX_LENGTH_CHECK"));
-	$objErr->doFunc(array("é›»è©±ç•ªå·", "tel", TEL_LEN), array("NUM_CHECK","MAX_LENGTH_CHECK"));
+	$objErr->doFunc(array('¥á¡¼¥ë¥¢¥É¥ì¥¹', "email", STEXT_LEN) ,array("EMAIL_CHAR_CHECK", "MAX_LENGTH_CHECK"));
+	$objErr->doFunc(array("ÅÅÏÃÈÖ¹æ", "tel", TEL_LEN), array("NUM_CHECK","MAX_LENGTH_CHECK"));
 		
-	$objErr->doFunc(array("è³¼å…¥å›æ•°(é–‹å§‹)", "buy_times_from", INT_LEN), array("NUM_CHECK","MAX_LENGTH_CHECK"));
-	$objErr->doFunc(array("è³¼å…¥å›æ•°(çµ‚äº†)", "buy_times_to", INT_LEN), array("NUM_CHECK","MAX_LENGTH_CHECK"));
-	if ((is_numeric($array["buy_total_from"]) && is_numeric($array["buy_total_to"]) ) && ($array["buy_times_from"] > $array["buy_times_to"]) ) $objErr->arrErr["buy_times_from"] .= "â€» è³¼å…¥å›æ•°ã®æŒ‡å®šç¯„å›²ãŒä¸æ­£ã§ã™ã€‚";
+	$objErr->doFunc(array("¹ØÆş²ó¿ô(³«»Ï)", "buy_times_from", INT_LEN), array("NUM_CHECK","MAX_LENGTH_CHECK"));
+	$objErr->doFunc(array("¹ØÆş²ó¿ô(½ªÎ»)", "buy_times_to", INT_LEN), array("NUM_CHECK","MAX_LENGTH_CHECK"));
+	if ((is_numeric($array["buy_total_from"]) && is_numeric($array["buy_total_to"]) ) && ($array["buy_times_from"] > $array["buy_times_to"]) ) $objErr->arrErr["buy_times_from"] .= "¢¨ ¹ØÆş²ó¿ô¤Î»ØÄêÈÏ°Ï¤¬ÉÔÀµ¤Ç¤¹¡£";
 	
-	$objErr->doFunc(array("èª•ç”Ÿæœˆ", "birth_month", 2), array("NUM_CHECK","MAX_LENGTH_CHECK"));
+	$objErr->doFunc(array("ÃÂÀ¸·î", "birth_month", 2), array("NUM_CHECK","MAX_LENGTH_CHECK"));
 	
-	$objErr->doFunc(array("èª•ç”Ÿæ—¥(é–‹å§‹æ—¥)", "b_start_year", "b_start_month", "b_start_day",), array("CHECK_DATE"));
-	$objErr->doFunc(array("èª•ç”Ÿæ—¥(çµ‚äº†æ—¥)", "b_end_year", "b_end_month", "b_end_day"), array("CHECK_DATE"));	
-	$objErr->doFunc(array("èª•ç”Ÿæ—¥(é–‹å§‹æ—¥)","èª•ç”Ÿæ—¥(çµ‚äº†æ—¥)", "b_start_year", "b_start_month", "b_start_day", "b_end_year", "b_end_month", "b_end_day"), array("CHECK_SET_TERM"));
+	$objErr->doFunc(array("ÃÂÀ¸Æü(³«»ÏÆü)", "b_start_year", "b_start_month", "b_start_day",), array("CHECK_DATE"));
+	$objErr->doFunc(array("ÃÂÀ¸Æü(½ªÎ»Æü)", "b_end_year", "b_end_month", "b_end_day"), array("CHECK_DATE"));	
+	$objErr->doFunc(array("ÃÂÀ¸Æü(³«»ÏÆü)","ÃÂÀ¸Æü(½ªÎ»Æü)", "b_start_year", "b_start_month", "b_start_day", "b_end_year", "b_end_month", "b_end_day"), array("CHECK_SET_TERM"));
 	
-	$objErr->doFunc(array("ç™»éŒ²ãƒ»æ›´æ–°æ—¥(é–‹å§‹æ—¥)", "start_year", "start_month", "start_day",), array("CHECK_DATE"));
-	$objErr->doFunc(array("ç™»éŒ²ãƒ»æ›´æ–°æ—¥(çµ‚äº†æ—¥)", "end_year", "end_month", "end_day"), array("CHECK_DATE"));	
-	$objErr->doFunc(array("ç™»éŒ²ãƒ»æ›´æ–°æ—¥(é–‹å§‹æ—¥)","ç™»éŒ²ãƒ»æ›´æ–°æ—¥(çµ‚äº†æ—¥)", "start_year", "start_month", "start_day", "end_year", "end_month", "end_day"), array("CHECK_SET_TERM"));
+	$objErr->doFunc(array("ÅĞÏ¿¡¦¹¹¿·Æü(³«»ÏÆü)", "start_year", "start_month", "start_day",), array("CHECK_DATE"));
+	$objErr->doFunc(array("ÅĞÏ¿¡¦¹¹¿·Æü(½ªÎ»Æü)", "end_year", "end_month", "end_day"), array("CHECK_DATE"));	
+	$objErr->doFunc(array("ÅĞÏ¿¡¦¹¹¿·Æü(³«»ÏÆü)","ÅĞÏ¿¡¦¹¹¿·Æü(½ªÎ»Æü)", "start_year", "start_month", "start_day", "end_year", "end_month", "end_day"), array("CHECK_SET_TERM"));
 	
-	$objErr->doFunc(array("æœ€çµ‚è³¼å…¥æ—¥(é–‹å§‹æ—¥)", "buy_start_year", "buy_start_month", "buy_start_day",), array("CHECK_DATE"));
-	$objErr->doFunc(array("æœ€çµ‚è³¼å…¥(çµ‚äº†æ—¥)", "buy_end_year", "buy_end_month", "buy_end_day"), array("CHECK_DATE"));	
-	$objErr->doFunc(array("æœ€çµ‚è³¼å…¥æ—¥(é–‹å§‹æ—¥)","ç™»éŒ²ãƒ»æ›´æ–°æ—¥(çµ‚äº†æ—¥)", "buy_start_year", "buy_start_month", "buy_start_day", "buy_end_year", "buy_end_month", "buy_end_day"), array("CHECK_SET_TERM"));
+	$objErr->doFunc(array("ºÇ½ª¹ØÆşÆü(³«»ÏÆü)", "buy_start_year", "buy_start_month", "buy_start_day",), array("CHECK_DATE"));
+	$objErr->doFunc(array("ºÇ½ª¹ØÆş(½ªÎ»Æü)", "buy_end_year", "buy_end_month", "buy_end_day"), array("CHECK_DATE"));	
+	$objErr->doFunc(array("ºÇ½ª¹ØÆşÆü(³«»ÏÆü)","ÅĞÏ¿¡¦¹¹¿·Æü(½ªÎ»Æü)", "buy_start_year", "buy_start_month", "buy_start_day", "buy_end_year", "buy_end_month", "buy_end_day"), array("CHECK_SET_TERM"));
 	
-	$objErr->doFunc(array("è³¼å…¥å•†å“ã‚³ãƒ¼ãƒ‰", "buy_product_code", STEXT_LEN), array("MAX_LENGTH_CHECK"));
+	$objErr->doFunc(array("¹ØÆş¾¦ÉÊ¥³¡¼¥É", "buy_product_code", STEXT_LEN), array("MAX_LENGTH_CHECK"));
 
-	$objErr->doFunc(array("è³¼å…¥å•†å“å", "buy_product_name", STEXT_LEN), array("MAX_LENGTH_CHECK"));
+	$objErr->doFunc(array("¹ØÆş¾¦ÉÊÌ¾", "buy_product_name", STEXT_LEN), array("MAX_LENGTH_CHECK"));
 	
-	$objErr->doFunc(array("è³¼å…¥é‡‘é¡(é–‹å§‹)", "buy_total_from", INT_LEN), array("NUM_CHECK","MAX_LENGTH_CHECK"));	
-	$objErr->doFunc(array("è³¼å…¥é‡‘é¡(çµ‚äº†)", "buy_total_to", INT_LEN), array("NUM_CHECK","MAX_LENGTH_CHECK"));	
+	$objErr->doFunc(array("¹ØÆş¶â³Û(³«»Ï)", "buy_total_from", INT_LEN), array("NUM_CHECK","MAX_LENGTH_CHECK"));	
+	$objErr->doFunc(array("¹ØÆş¶â³Û(½ªÎ»)", "buy_total_to", INT_LEN), array("NUM_CHECK","MAX_LENGTH_CHECK"));	
 
-	$objErr->doFunc(array("ã‚­ãƒ£ãƒ³ãƒšãƒ¼ãƒ³", "campaign_id", INT_LEN), array("NUM_CHECK"));	
+	$objErr->doFunc(array("¥­¥ã¥ó¥Ú¡¼¥ó", "campaign_id", INT_LEN), array("NUM_CHECK"));	
 		
-	//è³¼å…¥é‡‘é¡(from) ï¼ è³¼å…¥é‡‘é¡(to) ã®å ´åˆã¯ã‚¨ãƒ©ãƒ¼ã¨ã™ã‚‹
+	//¹ØÆş¶â³Û(from) ¡ä ¹ØÆş¶â³Û(to) ¤Î¾ì¹ç¤Ï¥¨¥é¡¼¤È¤¹¤ë
 	if ( (is_numeric($array["buy_total_from"]) && is_numeric($array["buy_total_to"]) ) && 
 		 ($array["buy_total_from"] > $array["buy_total_to"]) ) {
-		 $objErr->arrErr["buy_total_from"] .= "â€» è³¼å…¥é‡‘é¡ã®æŒ‡å®šç¯„å›²ãŒä¸æ­£ã§ã™ã€‚";
+		 $objErr->arrErr["buy_total_from"] .= "¢¨ ¹ØÆş¶â³Û¤Î»ØÄêÈÏ°Ï¤¬ÉÔÀµ¤Ç¤¹¡£";
 	 }
 
 	if ( $flag ){
-		$objErr->doFunc(array("ãƒ†ãƒ³ãƒ—ãƒ¬ãƒ¼ãƒˆ", "template_id"), array("EXIST_CHECK", "NUM_CHECK"));
-		$objErr->doFunc(array("ãƒ¡ãƒ¼ãƒ«é€ä¿¡æ³•æ³•", "mail_method"), array("EXIST_CHECK", "NUM_CHECK"));
+		$objErr->doFunc(array("¥Æ¥ó¥×¥ì¡¼¥È", "template_id"), array("EXIST_CHECK", "NUM_CHECK"));
+		$objErr->doFunc(array("¥á¡¼¥ëÁ÷¿®Ë¡Ë¡", "mail_method"), array("EXIST_CHECK", "NUM_CHECK"));
 		
 		if(MELMAGA_BATCH_MODE) {
-			$objErr->doFunc(array("é…ä¿¡æ—¥ï¼ˆå¹´ï¼‰","send_year"), array("EXIST_CHECK", "NUM_CHECK"));
-			$objErr->doFunc(array("é…ä¿¡æ—¥ï¼ˆæœˆï¼‰","send_month"), array("EXIST_CHECK", "NUM_CHECK"));
-			$objErr->doFunc(array("é…ä¿¡æ—¥ï¼ˆæ—¥ï¼‰","send_day"), array("EXIST_CHECK", "NUM_CHECK"));
-			$objErr->doFunc(array("é…ä¿¡æ—¥ï¼ˆæ™‚ï¼‰","send_hour"), array("EXIST_CHECK", "NUM_CHECK"));
-			$objErr->doFunc(array("é…ä¿¡æ—¥ï¼ˆåˆ†ï¼‰","send_minutes"), array("EXIST_CHECK", "NUM_CHECK"));
-			$objErr->doFunc(array("é…ä¿¡æ—¥", "send_year", "send_month", "send_day"), array("CHECK_DATE"));
-			$objErr->doFunc(array("é…ä¿¡æ—¥", "send_year", "send_month", "send_day","send_hour", "send_minutes"), array("ALL_EXIST_CHECK"));
+			$objErr->doFunc(array("ÇÛ¿®Æü¡ÊÇ¯¡Ë","send_year"), array("EXIST_CHECK", "NUM_CHECK"));
+			$objErr->doFunc(array("ÇÛ¿®Æü¡Ê·î¡Ë","send_month"), array("EXIST_CHECK", "NUM_CHECK"));
+			$objErr->doFunc(array("ÇÛ¿®Æü¡ÊÆü¡Ë","send_day"), array("EXIST_CHECK", "NUM_CHECK"));
+			$objErr->doFunc(array("ÇÛ¿®Æü¡Ê»ş¡Ë","send_hour"), array("EXIST_CHECK", "NUM_CHECK"));
+			$objErr->doFunc(array("ÇÛ¿®Æü¡ÊÊ¬¡Ë","send_minutes"), array("EXIST_CHECK", "NUM_CHECK"));
+			$objErr->doFunc(array("ÇÛ¿®Æü", "send_year", "send_month", "send_day"), array("CHECK_DATE"));
+			$objErr->doFunc(array("ÇÛ¿®Æü", "send_year", "send_month", "send_day","send_hour", "send_minutes"), array("ALL_EXIST_CHECK"));
 		}
 		$objErr->doFunc(array("Subject", "subject", STEXT_LEN), array("EXIST_CHECK","MAX_LENGTH_CHECK"));
-		$objErr->doFunc(array("æœ¬æ–‡", 'body', LLTEXT_LEN), array("EXIST_CHECK","MAX_LENGTH_CHECK"));	// HTMLãƒ†ãƒ³ãƒ—ãƒ¬ãƒ¼ãƒˆã‚’ä½¿ç”¨ã—ãªã„å ´åˆ
+		$objErr->doFunc(array("ËÜÊ¸", 'body', LLTEXT_LEN), array("EXIST_CHECK","MAX_LENGTH_CHECK"));	// HTML¥Æ¥ó¥×¥ì¡¼¥È¤ò»ÈÍÑ¤·¤Ê¤¤¾ì¹ç
 	}
 	
 	return $objErr->arrErr;
 }
 
-/* ãƒ†ãƒ³ãƒ—ãƒ¬ãƒ¼ãƒˆIDã¨subjectã®é…åˆ—ã‚’è¿”ã™ */ 
+/* ¥Æ¥ó¥×¥ì¡¼¥ÈID¤Èsubject¤ÎÇÛÎó¤òÊÖ¤¹ */ 
 function getTemplateList($conn){
 	global $arrMagazineTypeAll;
 	
 	$sql = "SELECT template_id, subject, mail_method FROM dtb_mailmaga_template WHERE del_flg = 0 ";
 	if ($_POST["htmlmail"] == 2) {
-		$sql .= " AND mail_method = 2 ";	//TEXTå¸Œæœ›è€…ã¸ã®TESTãƒ¡ãƒ¼ãƒ«ãƒ†ãƒ³ãƒ—ãƒ¬ãƒ¼ãƒˆãƒªã‚¹ãƒˆ
+		$sql .= " AND mail_method = 2 ";	//TEXT´õË¾¼Ô¤Ø¤ÎTEST¥á¡¼¥ë¥Æ¥ó¥×¥ì¡¼¥È¥ê¥¹¥È
 	}
 	$sql .= " ORDER BY template_id DESC";
 	$result = $conn->getAll($sql);
 	
 	if ( is_array($result) ){ 
 		foreach( $result as $line ){
-			$return[$line['template_id']] = "ã€" . $arrMagazineTypeAll[$line['mail_method']] . "ã€‘" . $line['subject'];  
+			$return[$line['template_id']] = "¡Ú" . $arrMagazineTypeAll[$line['mail_method']] . "¡Û" . $line['subject'];  
 		}
 	}
 	
 	return $return;
 }
 
-/* ãƒ†ãƒ³ãƒ—ãƒ¬ãƒ¼ãƒˆIDã‹ã‚‰ãƒ†ãƒ³ãƒ—ãƒ¬ãƒ¼ãƒˆãƒ‡ãƒ¼ã‚¿ã‚’å–å¾— */ 
+/* ¥Æ¥ó¥×¥ì¡¼¥ÈID¤«¤é¥Æ¥ó¥×¥ì¡¼¥È¥Ç¡¼¥¿¤ò¼èÆÀ */ 
 function getTemplateData($conn, $id){
 	
 	if ( sfCheckNumLength($id) ){

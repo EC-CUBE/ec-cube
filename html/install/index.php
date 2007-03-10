@@ -25,44 +25,44 @@ class LC_Page {
 
 $objPage = new LC_Page();
 
-// ãƒ†ãƒ³ãƒ—ãƒ¬ãƒ¼ãƒˆã‚³ãƒ³ãƒ‘ã‚¤ãƒ«ãƒ‡ã‚£ãƒ¬ã‚¯ãƒˆãƒªã®æ›¸è¾¼ã¿æ¨©é™ãƒã‚§ãƒƒã‚¯
+// ¥Æ¥ó¥×¥ì¡¼¥È¥³¥ó¥Ñ¥¤¥ë¥Ç¥£¥ì¥¯¥È¥ê¤Î½ñ¹ş¤ß¸¢¸Â¥Á¥§¥Ã¥¯
 $temp_dir = $INSTALL_DIR . '/temp';
 $mode = lfGetFileMode($temp_dir);
 
 if($mode != '777') {
-	sfErrorHeader($temp_dir . "ã«ãƒ¦ãƒ¼ã‚¶æ›¸è¾¼ã¿æ¨©é™(777)ã‚’ä»˜ä¸ã—ã¦ä¸‹ã•ã„ã€‚", true);
+	sfErrorHeader($temp_dir . "¤Ë¥æ¡¼¥¶½ñ¹ş¤ß¸¢¸Â(777)¤òÉÕÍ¿¤·¤Æ²¼¤µ¤¤¡£", true);
 	exit;
 }
 
 $objView = new SC_InstallView($INSTALL_DIR . '/templates', $INSTALL_DIR . '/temp');
 
-// ãƒ‘ãƒ©ãƒ¡ãƒ¼ã‚¿ç®¡ç†ã‚¯ãƒ©ã‚¹
+// ¥Ñ¥é¥á¡¼¥¿´ÉÍı¥¯¥é¥¹
 $objWebParam = new SC_FormParam();
 $objDBParam = new SC_FormParam();
-// ãƒ‘ãƒ©ãƒ¡ãƒ¼ã‚¿æƒ…å ±ã®åˆæœŸåŒ–
+// ¥Ñ¥é¥á¡¼¥¿¾ğÊó¤Î½é´ü²½
 $objWebParam = lfInitWebParam($objWebParam);
 $objDBParam = lfInitDBParam($objDBParam);
 
-//ãƒ•ã‚©ãƒ¼ãƒ é…åˆ—ã®å–å¾—
+//¥Õ¥©¡¼¥àÇÛÎó¤Î¼èÆÀ
 $objWebParam->setParam($_POST);
 $objDBParam->setParam($_POST);
 
 switch($_POST['mode']) {
-// ã‚ˆã†ã“ã
+// ¤è¤¦¤³¤½
 case 'welcome':
 	$objPage = lfDispStep0($objPage);
 	break;
-// ã‚¢ã‚¯ã‚»ã‚¹æ¨©é™ã®ãƒã‚§ãƒƒã‚¯
+// ¥¢¥¯¥»¥¹¸¢¸Â¤Î¥Á¥§¥Ã¥¯
 case 'step0':
 	$objPage = lfDispStep0_1($objPage);
 	break;	
-// ãƒ•ã‚¡ã‚¤ãƒ«ã®ã‚³ãƒ”ãƒ¼
+// ¥Õ¥¡¥¤¥ë¤Î¥³¥Ô¡¼
 case 'step0_1':
 	$objPage = lfDispStep1($objPage);
 	break;	
-// WEBã‚µã‚¤ãƒˆã®è¨­å®š
+// WEB¥µ¥¤¥È¤ÎÀßÄê
 case 'step1':
-	//å…¥åŠ›å€¤ã®ã‚¨ãƒ©ãƒ¼ãƒã‚§ãƒƒã‚¯
+	//ÆşÎÏÃÍ¤Î¥¨¥é¡¼¥Á¥§¥Ã¥¯
 	$objPage->arrErr = lfCheckWEBError($objWebParam);
 	if(count($objPage->arrErr) == 0) {
 		$objPage = lfDispStep2($objPage);
@@ -70,9 +70,9 @@ case 'step1':
 		$objPage = lfDispStep1($objPage);
 	}
 	break;
-// ãƒ‡ãƒ¼ã‚¿ãƒ™ãƒ¼ã‚¹ã®è¨­å®š
+// ¥Ç¡¼¥¿¥Ù¡¼¥¹¤ÎÀßÄê
 case 'step2':
-	//å…¥åŠ›å€¤ã®ã‚¨ãƒ©ãƒ¼ãƒã‚§ãƒƒã‚¯
+	//ÆşÎÏÃÍ¤Î¥¨¥é¡¼¥Á¥§¥Ã¥¯
 	$objPage->arrErr = lfCheckDBError($objDBParam);
 	if(count($objPage->arrErr) == 0) {
 		$objPage = lfDispStep3($objPage);
@@ -80,32 +80,32 @@ case 'step2':
 		$objPage = lfDispStep2($objPage);
 	}
 	break;
-// ãƒ†ãƒ¼ãƒ–ãƒ«ã®ä½œæˆ
+// ¥Æ¡¼¥Ö¥ë¤ÎºîÀ®
 case 'step3':
-	// å…¥åŠ›ãƒ‡ãƒ¼ã‚¿ã‚’æ¸¡ã™ã€‚
+	// ÆşÎÏ¥Ç¡¼¥¿¤òÅÏ¤¹¡£
 	$arrRet =  $objDBParam->getHashArray();
 	$dsn = $arrRet['db_type']."://".$arrRet['db_user'].":".$arrRet['db_password']."@".$arrRet['db_server'].":".$arrRet['db_port']."/".$arrRet['db_name'];
 	
 	/*
-		lfAddTableã¯ã€ãƒãƒ¼ã‚¸ãƒ§ãƒ³ã‚¢ãƒƒãƒ—ç­‰ã§è¿½åŠ ãƒ†ãƒ¼ãƒ–ãƒ«ãŒç™ºç”Ÿã—ãŸå ´åˆã«å®Ÿè¡Œã™ã‚‹ã€‚
-		ï¼ˆï¼¤ï¼¢æ§‹æˆã®ä¸‹ä½äº’æ›ã®ãŸã‚ã‚¹ã‚­ãƒƒãƒ—æ™‚ã‚‚å¼·åˆ¶ï¼‰
+		lfAddTable¤Ï¡¢¥Ğ¡¼¥¸¥ç¥ó¥¢¥Ã¥×Åù¤ÇÄÉ²Ã¥Æ¡¼¥Ö¥ë¤¬È¯À¸¤·¤¿¾ì¹ç¤Ë¼Â¹Ô¤¹¤ë¡£
+		¡Ê£Ä£Â¹½À®¤Î²¼°Ì¸ß´¹¤Î¤¿¤á¥¹¥­¥Ã¥×»ş¤â¶¯À©¡Ë
 	*/
-	// ãƒ†ãƒ¼ãƒ–ãƒ«ãŒå­˜åœ¨ã—ãªã„å ´åˆã«è¿½åŠ ã•ã‚Œã‚‹ã€‚
-	$objPage->arrErr = lfAddTable("dtb_session", $dsn);			// ã‚»ãƒƒã‚·ãƒ§ãƒ³ç®¡ç†ãƒ†ãƒ¼ãƒ–ãƒ«
-	$objPage->arrErr = lfAddTable("dtb_module", $dsn);			// ãƒ¢ã‚¸ãƒ¥ãƒ¼ãƒ«ç®¡ç†ãƒ†ãƒ¼ãƒ–ãƒ«
-	$objPage->arrErr = lfAddTable("dtb_campaign_order", $dsn);	// ã‚­ãƒ£ãƒ³ãƒšãƒ¼ãƒ³å—æ³¨ãƒ†ãƒ¼ãƒ–ãƒ«
+	// ¥Æ¡¼¥Ö¥ë¤¬Â¸ºß¤·¤Ê¤¤¾ì¹ç¤ËÄÉ²Ã¤µ¤ì¤ë¡£
+	$objPage->arrErr = lfAddTable("dtb_session", $dsn);			// ¥»¥Ã¥·¥ç¥ó´ÉÍı¥Æ¡¼¥Ö¥ë
+	$objPage->arrErr = lfAddTable("dtb_module", $dsn);			// ¥â¥¸¥å¡¼¥ë´ÉÍı¥Æ¡¼¥Ö¥ë
+	$objPage->arrErr = lfAddTable("dtb_campaign_order", $dsn);	// ¥­¥ã¥ó¥Ú¡¼¥ó¼õÃí¥Æ¡¼¥Ö¥ë
 	
-	// ã‚«ãƒ©ãƒ ã‚’è¿½åŠ 
+	// ¥«¥é¥à¤òÄÉ²Ã
 	lfAddColumn($dsn);
 
-	// ãƒ‡ãƒ¼ã‚¿ã‚’è¿½åŠ 
+	// ¥Ç¡¼¥¿¤òÄÉ²Ã
 	lfAddData($dsn);
 	
 	if(count($objPage->arrErr) == 0) {
-		// ã‚¹ã‚­ãƒƒãƒ—ã™ã‚‹å ´åˆã«ã¯æ¬¡ç”»é¢ã¸é·ç§»
+		// ¥¹¥­¥Ã¥×¤¹¤ë¾ì¹ç¤Ë¤Ï¼¡²èÌÌ¤ØÁ«°Ü
 		$skip = $_POST["db_skip"];
 		if ($skip == "on") {
-			// è¨­å®šãƒ•ã‚¡ã‚¤ãƒ«ã®ç”Ÿæˆ
+			// ÀßÄê¥Õ¥¡¥¤¥ë¤ÎÀ¸À®
 			lfMakeConfigFile();
 			//$objPage = lfDispComplete($objPage);
 			$objPage = lfDispStep4($objPage);
@@ -113,58 +113,58 @@ case 'step3':
 		}
 	}
 	
-	// ãƒ†ãƒ¼ãƒ–ãƒ«ã®ä½œæˆ
+	// ¥Æ¡¼¥Ö¥ë¤ÎºîÀ®
 	$objPage->arrErr = lfExecuteSQL("./sql/create_table_".$arrRet['db_type'].".sql", $dsn); 
 	if(count($objPage->arrErr) == 0) {
-		$objPage->tpl_message.="â—‹ï¼šãƒ†ãƒ¼ãƒ–ãƒ«ã®ä½œæˆã«æˆåŠŸã—ã¾ã—ãŸã€‚<br>";
+		$objPage->tpl_message.="¡û¡§¥Æ¡¼¥Ö¥ë¤ÎºîÀ®¤ËÀ®¸ù¤·¤Ş¤·¤¿¡£<br>";
 	} else {
-		$objPage->tpl_message.="Ã—ï¼šãƒ†ãƒ¼ãƒ–ãƒ«ã®ä½œæˆã«å¤±æ•—ã—ã¾ã—ãŸã€‚<br>";		
+		$objPage->tpl_message.="¡ß¡§¥Æ¡¼¥Ö¥ë¤ÎºîÀ®¤Ë¼ºÇÔ¤·¤Ş¤·¤¿¡£<br>";		
 	}
 
-	// ãƒ“ãƒ¥ãƒ¼ã®ä½œæˆ
+	// ¥Ó¥å¡¼¤ÎºîÀ®
 	if(count($objPage->arrErr) == 0 and $arrRet['db_type'] == 'pgsql') {
-		// ãƒ“ãƒ¥ãƒ¼ã®ä½œæˆ
+		// ¥Ó¥å¡¼¤ÎºîÀ®
 		$objPage->arrErr = lfExecuteSQL("./sql/create_view.sql", $dsn); 
 		if(count($objPage->arrErr) == 0) {
-			$objPage->tpl_message.="â—‹ï¼šãƒ“ãƒ¥ãƒ¼ã®ä½œæˆã«æˆåŠŸã—ã¾ã—ãŸã€‚<br>";
+			$objPage->tpl_message.="¡û¡§¥Ó¥å¡¼¤ÎºîÀ®¤ËÀ®¸ù¤·¤Ş¤·¤¿¡£<br>";
 		} else {
-			$objPage->tpl_message.="Ã—ï¼šãƒ“ãƒ¥ãƒ¼ã®ä½œæˆã«å¤±æ•—ã—ã¾ã—ãŸã€‚<br>";		
+			$objPage->tpl_message.="¡ß¡§¥Ó¥å¡¼¤ÎºîÀ®¤Ë¼ºÇÔ¤·¤Ş¤·¤¿¡£<br>";		
 		}
 	}	
 	
-	// åˆæœŸãƒ‡ãƒ¼ã‚¿ã®ä½œæˆ
+	// ½é´ü¥Ç¡¼¥¿¤ÎºîÀ®
 	if(count($objPage->arrErr) == 0) {
 		$objPage->arrErr = lfExecuteSQL("./sql/insert_data.sql", $dsn); 
 		
 		if(count($objPage->arrErr) == 0) {
-			$objPage->tpl_message.="â—‹ï¼šåˆæœŸãƒ‡ãƒ¼ã‚¿ã®ä½œæˆã«æˆåŠŸã—ã¾ã—ãŸã€‚<br>";
+			$objPage->tpl_message.="¡û¡§½é´ü¥Ç¡¼¥¿¤ÎºîÀ®¤ËÀ®¸ù¤·¤Ş¤·¤¿¡£<br>";
 		} else {
-			$objPage->tpl_message.="Ã—ï¼šåˆæœŸãƒ‡ãƒ¼ã‚¿ã®ä½œæˆã«å¤±æ•—ã—ã¾ã—ãŸã€‚<br>";		
+			$objPage->tpl_message.="¡ß¡§½é´ü¥Ç¡¼¥¿¤ÎºîÀ®¤Ë¼ºÇÔ¤·¤Ş¤·¤¿¡£<br>";		
 		}
 	}	
 	
-	// ã‚«ãƒ©ãƒ ã‚³ãƒ¡ãƒ³ãƒˆã®æ›¸è¾¼ã¿
+	// ¥«¥é¥à¥³¥á¥ó¥È¤Î½ñ¹ş¤ß
 	if(count($objPage->arrErr) == 0) {
 		$objPage->arrErr = lfExecuteSQL("./sql/column_comment.sql", $dsn); 
 		if(count($objPage->arrErr) == 0) {
-			$objPage->tpl_message.="â—‹ï¼šã‚«ãƒ©ãƒ ã‚³ãƒ¡ãƒ³ãƒˆã®æ›¸è¾¼ã¿ã«æˆåŠŸã—ã¾ã—ãŸã€‚<br>";
+			$objPage->tpl_message.="¡û¡§¥«¥é¥à¥³¥á¥ó¥È¤Î½ñ¹ş¤ß¤ËÀ®¸ù¤·¤Ş¤·¤¿¡£<br>";
 		} else {
-			$objPage->tpl_message.="Ã—ï¼šã‚«ãƒ©ãƒ ã‚³ãƒ¡ãƒ³ãƒˆã®æ›¸è¾¼ã¿ã«å¤±æ•—ã—ã¾ã—ãŸã€‚<br>";		
+			$objPage->tpl_message.="¡ß¡§¥«¥é¥à¥³¥á¥ó¥È¤Î½ñ¹ş¤ß¤Ë¼ºÇÔ¤·¤Ş¤·¤¿¡£<br>";		
 		}
 	}	
 	
-	// ãƒ†ãƒ¼ãƒ–ãƒ«ã‚³ãƒ¡ãƒ³ãƒˆã®æ›¸è¾¼ã¿
+	// ¥Æ¡¼¥Ö¥ë¥³¥á¥ó¥È¤Î½ñ¹ş¤ß
 	if(count($objPage->arrErr) == 0) {
 		$objPage->arrErr = lfExecuteSQL("./sql/table_comment.sql", $dsn); 
 		if(count($objPage->arrErr) == 0) {
-			$objPage->tpl_message.="â—‹ï¼šãƒ†ãƒ¼ãƒ–ãƒ«ã‚³ãƒ¡ãƒ³ãƒˆã®æ›¸è¾¼ã¿ã«æˆåŠŸã—ã¾ã—ãŸã€‚<br>";
+			$objPage->tpl_message.="¡û¡§¥Æ¡¼¥Ö¥ë¥³¥á¥ó¥È¤Î½ñ¹ş¤ß¤ËÀ®¸ù¤·¤Ş¤·¤¿¡£<br>";
 		} else {
-			$objPage->tpl_message.="Ã—ï¼šãƒ†ãƒ¼ãƒ–ãƒ«ã‚³ãƒ¡ãƒ³ãƒˆã®æ›¸è¾¼ã¿ã«å¤±æ•—ã—ã¾ã—ãŸã€‚<br>";		
+			$objPage->tpl_message.="¡ß¡§¥Æ¡¼¥Ö¥ë¥³¥á¥ó¥È¤Î½ñ¹ş¤ß¤Ë¼ºÇÔ¤·¤Ş¤·¤¿¡£<br>";		
 		}
 	}
 
 	if(count($objPage->arrErr) == 0) {
-		// è¨­å®šãƒ•ã‚¡ã‚¤ãƒ«ã®ç”Ÿæˆ
+		// ÀßÄê¥Õ¥¡¥¤¥ë¤ÎÀ¸À®
 		lfMakeConfigFile();
 		$objPage = lfDispStep3($objPage);
 		$objPage->tpl_mode = 'step4';
@@ -176,40 +176,40 @@ case 'step4':
 	$objPage = lfDispStep4($objPage);
 	break;
 	
-// ãƒ†ãƒ¼ãƒ–ãƒ«é¡å‰Šé™¤
+// ¥Æ¡¼¥Ö¥ëÎàºï½ü
 case 'drop':
-	// å…¥åŠ›ãƒ‡ãƒ¼ã‚¿ã‚’æ¸¡ã™ã€‚
+	// ÆşÎÏ¥Ç¡¼¥¿¤òÅÏ¤¹¡£
 	$arrRet =  $objDBParam->getHashArray();
 	$dsn = $arrRet['db_type']."://".$arrRet['db_user'].":".$arrRet['db_password']."@".$arrRet['db_server'].":".$arrRet['db_port']."/".$arrRet['db_name'];
 	
-	// è¿½åŠ ãƒ†ãƒ¼ãƒ–ãƒ«ãŒã‚ã‚Œã°å‰Šé™¤ã™ã‚‹ã€‚
+	// ÄÉ²Ã¥Æ¡¼¥Ö¥ë¤¬¤¢¤ì¤Ğºï½ü¤¹¤ë¡£
 	lfDropTable("dtb_module", $dsn);
 	lfDropTable("dtb_session", $dsn);
 		
 	if ($arrRet['db_type'] == 'pgsql'){
-		// ãƒ“ãƒ¥ãƒ¼ã®å‰Šé™¤
+		// ¥Ó¥å¡¼¤Îºï½ü
 		$objPage->arrErr = lfExecuteSQL("./sql/drop_view.sql", $dsn, false); 
 		if(count($objPage->arrErr) == 0) {
-			$objPage->tpl_message.="â—‹ï¼šãƒ“ãƒ¥ãƒ¼ã®å‰Šé™¤ã«æˆåŠŸã—ã¾ã—ãŸã€‚<br>";
+			$objPage->tpl_message.="¡û¡§¥Ó¥å¡¼¤Îºï½ü¤ËÀ®¸ù¤·¤Ş¤·¤¿¡£<br>";
 		} else {
-			$objPage->tpl_message.="Ã—ï¼šãƒ“ãƒ¥ãƒ¼ã®å‰Šé™¤ã«å¤±æ•—ã—ã¾ã—ãŸã€‚<br>";		
+			$objPage->tpl_message.="¡ß¡§¥Ó¥å¡¼¤Îºï½ü¤Ë¼ºÇÔ¤·¤Ş¤·¤¿¡£<br>";		
 		}
 	}
 
-	// ãƒ†ãƒ¼ãƒ–ãƒ«ã®å‰Šé™¤
+	// ¥Æ¡¼¥Ö¥ë¤Îºï½ü
 	if(count($objPage->arrErr) == 0) {
 		$objPage->arrErr = lfExecuteSQL("./sql/drop_table.sql", $dsn, false); 
 		if(count($objPage->arrErr) == 0) {
-			$objPage->tpl_message.="â—‹ï¼šãƒ†ãƒ¼ãƒ–ãƒ«ã®å‰Šé™¤ã«æˆåŠŸã—ã¾ã—ãŸã€‚<br>";
+			$objPage->tpl_message.="¡û¡§¥Æ¡¼¥Ö¥ë¤Îºï½ü¤ËÀ®¸ù¤·¤Ş¤·¤¿¡£<br>";
 		} else {
-			$objPage->tpl_message.="Ã—ï¼šãƒ†ãƒ¼ãƒ–ãƒ«ã®å‰Šé™¤ã«å¤±æ•—ã—ã¾ã—ãŸã€‚<br>";		
+			$objPage->tpl_message.="¡ß¡§¥Æ¡¼¥Ö¥ë¤Îºï½ü¤Ë¼ºÇÔ¤·¤Ş¤·¤¿¡£<br>";		
 		}
 	}
 	$objPage = lfDispStep3($objPage);
 	break;
-// å®Œäº†ç”»é¢
+// ´°Î»²èÌÌ
 case 'complete':
-	// ã‚·ãƒ§ãƒƒãƒ—ãƒã‚¹ã‚¿æƒ…å ±ã®æ›¸ãè¾¼ã¿
+	// ¥·¥ç¥Ã¥×¥Ş¥¹¥¿¾ğÊó¤Î½ñ¤­¹ş¤ß
 	$arrRet =  $objDBParam->getHashArray();
 	
 	$dsn = $arrRet['db_type']."://".$arrRet['db_user'].":".$arrRet['db_password']."@".$arrRet['db_server'].":".$arrRet['db_port']."/".$arrRet['db_name'];
@@ -231,7 +231,7 @@ case 'complete':
 		$objQuery->insert("dtb_baseinfo", $sqlval);		
 	}
 
-	// ç®¡ç†è€…ç™»éŒ²
+	// ´ÉÍı¼ÔÅĞÏ¿
 	$login_id = $objWebParam->getValue('login_id');
 	$login_pass = sha1($objWebParam->getValue('login_pass') . ":" . AUTH_MAGIC);
 	
@@ -239,7 +239,7 @@ case 'complete':
 	$objQuery->query($sql, array($login_id));	
 
 	$sql = "INSERT INTO dtb_member (name, login_id, password, creator_id, authority, work, del_flg, rank, create_date, update_date)
-			VALUES ('ç®¡ç†è€…',?,?,0,0,1,0,1, now(), now());";
+			VALUES ('´ÉÍı¼Ô',?,?,0,0,1,0,1, now(), now());";
 	
 	$objQuery->query($sql, array($login_id, $login_pass));		
 	
@@ -247,7 +247,7 @@ case 'complete':
 	$GLOBAL_ERR = "";
 	$objPage = lfDispComplete($objPage);
 	
-	// ã‚µã‚¤ãƒˆæƒ…å ±ã‚’é€ä¿¡ã—ã¦ã‚‚è‰¯ã„å ´åˆã«ã¯é€ã‚‹
+	// ¥µ¥¤¥È¾ğÊó¤òÁ÷¿®¤·¤Æ¤âÎÉ¤¤¾ì¹ç¤Ë¤ÏÁ÷¤ë
 	if($_POST['send_info'] == "true"){
 		$req = new HTTP_Request("http://www.ec-cube.net/mall/use_site.php");
 		$req->setMethod(HTTP_REQUEST_METHOD_POST);
@@ -289,21 +289,21 @@ default:
 	break;
 }
 
-//ãƒ•ã‚©ãƒ¼ãƒ ç”¨ã®ãƒ‘ãƒ©ãƒ¡ãƒ¼ã‚¿ã‚’è¿”ã™
+//¥Õ¥©¡¼¥àÍÑ¤Î¥Ñ¥é¥á¡¼¥¿¤òÊÖ¤¹
 $objPage->arrForm = $objWebParam->getFormParamList();
 $objPage->arrForm = array_merge($objPage->arrForm, $objDBParam->getFormParamList());
 
-// SiteInfoã‚’èª­ã¿è¾¼ã¾ãªã„
+// SiteInfo¤òÆÉ¤ß¹ş¤Ş¤Ê¤¤
 $objView->assignobj($objPage);
 $objView->display('install_frame.tpl');
 //-----------------------------------------------------------------------------------------------------------------------------------
-// ã‚ˆã†ã“ãç”»é¢ã®è¡¨ç¤º
+// ¤è¤¦¤³¤½²èÌÌ¤ÎÉ½¼¨
 function lfDispWelcome($objPage) {
 	global $objWebParam;
 	global $objDBParam;
-	// hiddenã«å…¥åŠ›å€¤ã‚’ä¿æŒ
+	// hidden¤ËÆşÎÏÃÍ¤òÊİ»ı
 	$objPage->arrHidden = $objWebParam->getHashArray();
-	// hiddenã«å…¥åŠ›å€¤ã‚’ä¿æŒ
+	// hidden¤ËÆşÎÏÃÍ¤òÊİ»ı
 	$objPage->arrHidden = array_merge($objPage->arrHidden, $objDBParam->getHashArray());
 	$objPage->arrHidden['db_skip'] = $_POST['db_skip'];
 	$objPage->tpl_mainpage = 'welcome.tpl';
@@ -311,19 +311,19 @@ function lfDispWelcome($objPage) {
 	return $objPage;
 }
 
-// STEP0ç”»é¢ã®è¡¨ç¤º(ãƒ•ã‚¡ã‚¤ãƒ«æ¨©é™ãƒã‚§ãƒƒã‚¯) 
+// STEP0²èÌÌ¤ÎÉ½¼¨(¥Õ¥¡¥¤¥ë¸¢¸Â¥Á¥§¥Ã¥¯) 
 function lfDispStep0($objPage) {
 	global $objWebParam;
 	global $objDBParam;
-	// hiddenã«å…¥åŠ›å€¤ã‚’ä¿æŒ
+	// hidden¤ËÆşÎÏÃÍ¤òÊİ»ı
 	$objPage->arrHidden = $objWebParam->getHashArray();
-	// hiddenã«å…¥åŠ›å€¤ã‚’ä¿æŒ
+	// hidden¤ËÆşÎÏÃÍ¤òÊİ»ı
 	$objPage->arrHidden = array_merge($objPage->arrHidden, $objDBParam->getHashArray());
 	$objPage->arrHidden['db_skip'] = $_POST['db_skip'];
 	$objPage->tpl_mainpage = 'step0.tpl';
 	$objPage->tpl_mode = 'step0';
 	
-	// ãƒ—ãƒ­ã‚°ãƒ©ãƒ ã§æ›¸è¾¼ã¿ã•ã‚Œã‚‹ãƒ•ã‚¡ã‚¤ãƒ«ãƒ»ãƒ‡ã‚£ãƒ¬ã‚¯ãƒˆãƒª
+	// ¥×¥í¥°¥é¥à¤Ç½ñ¹ş¤ß¤µ¤ì¤ë¥Õ¥¡¥¤¥ë¡¦¥Ç¥£¥ì¥¯¥È¥ê
 	$arrWriteFile = array(
 		"../../data/install.inc",
 		"../user_data",
@@ -340,29 +340,29 @@ function lfDispStep0($objPage) {
 			$mode = lfGetFileMode($val);
 			$real_path = realpath($val);
 						
-			// ãƒ‡ã‚£ãƒ¬ã‚¯ãƒˆãƒªã®å ´åˆ
+			// ¥Ç¥£¥ì¥¯¥È¥ê¤Î¾ì¹ç
 			if(is_dir($val)) {
 				if($mode == "777") {
-					$mess.= ">> â—‹ï¼š$real_path($mode) <br>ã‚¢ã‚¯ã‚»ã‚¹æ¨©é™ã¯æ­£å¸¸ã§ã™ã€‚<br>";					
+					$mess.= ">> ¡û¡§$real_path($mode) <br>¥¢¥¯¥»¥¹¸¢¸Â¤ÏÀµ¾ï¤Ç¤¹¡£<br>";					
 				} else {
-					$mess.= ">> Ã—ï¼š$real_path($mode) <br>ãƒ¦ãƒ¼ã‚¶æ›¸è¾¼ã¿æ¨©é™(777)ã‚’ä»˜ä¸ã—ã¦ä¸‹ã•ã„ã€‚<br>";
+					$mess.= ">> ¡ß¡§$real_path($mode) <br>¥æ¡¼¥¶½ñ¹ş¤ß¸¢¸Â(777)¤òÉÕÍ¿¤·¤Æ²¼¤µ¤¤¡£<br>";
 					$err_file = true;										
 				}
 			} else {
 				if($mode == "666") {
-					$mess.= ">> â—‹ï¼š$real_path($mode) <br>ã‚¢ã‚¯ã‚»ã‚¹æ¨©é™ã¯æ­£å¸¸ã§ã™ã€‚<br>";					
+					$mess.= ">> ¡û¡§$real_path($mode) <br>¥¢¥¯¥»¥¹¸¢¸Â¤ÏÀµ¾ï¤Ç¤¹¡£<br>";					
 				} else {
-					$mess.= ">> Ã—ï¼š$real_path($mode) <br>ãƒ¦ãƒ¼ã‚¶æ›¸è¾¼ã¿æ¨©é™(666)ã‚’ä»˜ä¸ã—ã¦ä¸‹ã•ã„ã€‚<br>";
+					$mess.= ">> ¡ß¡§$real_path($mode) <br>¥æ¡¼¥¶½ñ¹ş¤ß¸¢¸Â(666)¤òÉÕÍ¿¤·¤Æ²¼¤µ¤¤¡£<br>";
 					$err_file = true;							
 				}
 			}			
 		} else {
-			$mess.= ">> Ã—ï¼š$val ãŒè¦‹ã¤ã‹ã‚Šã¾ã›ã‚“ã€‚<br>";
+			$mess.= ">> ¡ß¡§$val ¤¬¸«¤Ä¤«¤ê¤Ş¤»¤ó¡£<br>";
 			$err_file = true;
 		}
 	}
 	
-	// æ¨©é™ã‚¨ãƒ©ãƒ¼ç­‰ãŒç™ºç”Ÿã—ã¦ã„ãªã„å ´åˆ
+	// ¸¢¸Â¥¨¥é¡¼Åù¤¬È¯À¸¤·¤Æ¤¤¤Ê¤¤¾ì¹ç
 	if(!$err_file) {
 		$path = "../../data/Smarty/templates_c/admin";
 		if(!file_exists($path)) {
@@ -405,18 +405,18 @@ function lfDispStep0($objPage) {
 }
 
 
-// STEP0_1ç”»é¢ã®è¡¨ç¤º(ãƒ•ã‚¡ã‚¤ãƒ«ã®ã‚³ãƒ”ãƒ¼) 
+// STEP0_1²èÌÌ¤ÎÉ½¼¨(¥Õ¥¡¥¤¥ë¤Î¥³¥Ô¡¼) 
 function lfDispStep0_1($objPage) {
 	global $objWebParam;
 	global $objDBParam;
-	// hiddenã«å…¥åŠ›å€¤ã‚’ä¿æŒ
+	// hidden¤ËÆşÎÏÃÍ¤òÊİ»ı
 	$objPage->arrHidden = $objWebParam->getHashArray();
-	// hiddenã«å…¥åŠ›å€¤ã‚’ä¿æŒ
+	// hidden¤ËÆşÎÏÃÍ¤òÊİ»ı
 	$objPage->arrHidden = array_merge($objPage->arrHidden, $objDBParam->getHashArray());
 	$objPage->arrHidden['db_skip'] = $_POST['db_skip'];
 	$objPage->tpl_mainpage = 'step0_1.tpl';
 	$objPage->tpl_mode = 'step0_1';
-	// ãƒ•ã‚¡ã‚¤ãƒ«ã‚³ãƒ”ãƒ¼
+	// ¥Õ¥¡¥¤¥ë¥³¥Ô¡¼
 	$objPage->copy_mess = sfCopyDir("./user_data/", "../user_data/", $objPage->copy_mess);
 	$objPage->copy_mess = sfCopyDir("./save_image/", "../upload/save_image/", $objPage->copy_mess);	
 	return $objPage;
@@ -427,10 +427,10 @@ function lfGetFileMode($path) {
 	return $mode;
 }
 
-// STEP1ç”»é¢ã®è¡¨ç¤º
+// STEP1²èÌÌ¤ÎÉ½¼¨
 function lfDispStep1($objPage) {
 	global $objDBParam;
-	// hiddenã«å…¥åŠ›å€¤ã‚’ä¿æŒ
+	// hidden¤ËÆşÎÏÃÍ¤òÊİ»ı
 	$objPage->arrHidden = $objDBParam->getHashArray();
 	$objPage->arrHidden['db_skip'] = $_POST['db_skip'];
 	$objPage->tpl_mainpage = 'step1.tpl';
@@ -438,11 +438,11 @@ function lfDispStep1($objPage) {
 	return $objPage;
 }
 
-// STEP2ç”»é¢ã®è¡¨ç¤º
+// STEP2²èÌÌ¤ÎÉ½¼¨
 function lfDispStep2($objPage) {
 	global $objWebParam;
 	global $objDBParam;
-	// hiddenã«å…¥åŠ›å€¤ã‚’ä¿æŒ
+	// hidden¤ËÆşÎÏÃÍ¤òÊİ»ı
 	$objPage->arrHidden = $objWebParam->getHashArray();
 	$objPage->arrHidden['db_skip'] = $_POST['db_skip'];
 	$objPage->tpl_mainpage = 'step2.tpl';
@@ -450,13 +450,13 @@ function lfDispStep2($objPage) {
 	return $objPage;
 }
 
-// STEP3ç”»é¢ã®è¡¨ç¤º
+// STEP3²èÌÌ¤ÎÉ½¼¨
 function lfDispStep3($objPage) {
 	global $objWebParam;
 	global $objDBParam;
-	// hiddenã«å…¥åŠ›å€¤ã‚’ä¿æŒ
+	// hidden¤ËÆşÎÏÃÍ¤òÊİ»ı
 	$objPage->arrHidden = $objWebParam->getHashArray();
-	// hiddenã«å…¥åŠ›å€¤ã‚’ä¿æŒ
+	// hidden¤ËÆşÎÏÃÍ¤òÊİ»ı
 	$objPage->arrHidden = array_merge($objPage->arrHidden, $objDBParam->getHashArray());
 	$objPage->tpl_db_skip = $_POST['db_skip'];
 	$objPage->tpl_mainpage = 'step3.tpl';
@@ -464,17 +464,17 @@ function lfDispStep3($objPage) {
 	return $objPage;
 }
 
-// STEP4ç”»é¢ã®è¡¨ç¤º
+// STEP4²èÌÌ¤ÎÉ½¼¨
 function lfDispStep4($objPage) {
 	global $objWebParam;
 	global $objDBParam;
-	// hiddenã«å…¥åŠ›å€¤ã‚’ä¿æŒ
+	// hidden¤ËÆşÎÏÃÍ¤òÊİ»ı
 	$objPage->arrHidden = $objWebParam->getHashArray();
 	$objPage->arrHidden = array_merge($objPage->arrHidden, $objDBParam->getHashArray());
-	// hiddenã«å…¥åŠ›å€¤ã‚’ä¿æŒ
+	// hidden¤ËÆşÎÏÃÍ¤òÊİ»ı
 
 	$normal_url = $objWebParam->getValue('normal_url');
-	// èªå°¾ã«'/'ã‚’ã¤ã‘ã‚‹
+	// ¸ìÈø¤Ë'/'¤ò¤Ä¤±¤ë
 	if (!ereg("/$", $normal_url)) $normal_url = $normal_url . "/";
 
 	$arrDbParam = $objDBParam->getHashArray();
@@ -491,20 +491,20 @@ function lfDispStep4($objPage) {
 	return $objPage;
 }
 
-// å®Œäº†ç”»é¢ã®è¡¨ç¤º
+// ´°Î»²èÌÌ¤ÎÉ½¼¨
 function lfDispComplete($objPage) {
 	global $objWebParam;
 	global $objDBParam;
-	// hiddenã«å…¥åŠ›å€¤ã‚’ä¿æŒ
+	// hidden¤ËÆşÎÏÃÍ¤òÊİ»ı
 	$objPage->arrHidden = $objWebParam->getHashArray();
-	// hiddenã«å…¥åŠ›å€¤ã‚’ä¿æŒ
+	// hidden¤ËÆşÎÏÃÍ¤òÊİ»ı
 	$objPage->arrHidden = array_merge($objPage->arrHidden, $objDBParam->getHashArray());
 	$objPage->arrHidden['db_skip'] = $_POST['db_skip'];
 	$objPage->tpl_mainpage = 'complete.tpl';
 	$objPage->tpl_mode = 'complete';
 	
 	$secure_url = $objWebParam->getValue('secure_url');
-	// èªå°¾ã«'/'ã‚’ã¤ã‘ã‚‹
+	// ¸ìÈø¤Ë'/'¤ò¤Ä¤±¤ë
 	if (!ereg("/$", $secure_url)) {
 		$secure_url = $secure_url . "/";
 	}
@@ -512,7 +512,7 @@ function lfDispComplete($objPage) {
 	return $objPage;
 }
 
-// WEBãƒ‘ãƒ©ãƒ¡ãƒ¼ã‚¿æƒ…å ±ã®åˆæœŸåŒ–
+// WEB¥Ñ¥é¥á¡¼¥¿¾ğÊó¤Î½é´ü²½
 function lfInitWebParam($objWebParam) {
 	
 	if(defined('HTML_PATH')) {
@@ -535,7 +535,7 @@ function lfInitWebParam($objWebParam) {
 		$secure_url = "http://" . $_SERVER['HTTP_HOST'] . $dir;
 	}
 
-	// åº—åã€ç®¡ç†è€…ãƒ¡ãƒ¼ãƒ«ã‚¢ãƒ‰ãƒ¬ã‚¹ã‚’å–å¾—ã™ã‚‹ã€‚(å†ã‚¤ãƒ³ã‚¹ãƒˆãƒ¼ãƒ«æ™‚)
+	// Å¹Ì¾¡¢´ÉÍı¼Ô¥á¡¼¥ë¥¢¥É¥ì¥¹¤ò¼èÆÀ¤¹¤ë¡£(ºÆ¥¤¥ó¥¹¥È¡¼¥ë»ş)
 	if(defined('DEFAULT_DSN')) {
 		$ret = sfTabaleExists("dtb_baseinfo", DEFAULT_DSN);
 		if($ret) {
@@ -546,19 +546,19 @@ function lfInitWebParam($objWebParam) {
 		}
 	}
 
-	$objWebParam->addParam("åº—å", "shop_name", MTEXT_LEN, "", array("EXIST_CHECK","MAX_LENGTH_CHECK"), $shop_name);
-	$objWebParam->addParam("ç®¡ç†è€…ï¼šãƒ¡ãƒ¼ãƒ«ã‚¢ãƒ‰ãƒ¬ã‚¹", "admin_mail", MTEXT_LEN, "", array("EXIST_CHECK","EMAIL_CHECK","EMAIL_CHAR_CHECK","MAX_LENGTH_CHECK"), $admin_mail);
-	$objWebParam->addParam("ç®¡ç†è€…ï¼šãƒ­ã‚°ã‚¤ãƒ³ID", "login_id", MTEXT_LEN, "", array("EXIST_CHECK","EXIST_CHECK", "ALNUM_CHECK"));
-	$objWebParam->addParam("ç®¡ç†è€…ï¼šãƒ‘ã‚¹ãƒ¯ãƒ¼ãƒ‰", "login_pass", MTEXT_LEN, "", array("EXIST_CHECK","EXIST_CHECK", "ALNUM_CHECK"));
-	$objWebParam->addParam("ã‚¤ãƒ³ã‚¹ãƒˆãƒ¼ãƒ«ãƒ‡ã‚£ãƒ¬ã‚¯ãƒˆãƒª", "install_dir", MTEXT_LEN, "", array("EXIST_CHECK","MAX_LENGTH_CHECK"), $install_dir);
-	$objWebParam->addParam("URL(é€šå¸¸)", "normal_url", MTEXT_LEN, "", array("EXIST_CHECK","URL_CHECK","MAX_LENGTH_CHECK"), $normal_url);
-	$objWebParam->addParam("URL(ã‚»ã‚­ãƒ¥ã‚¢)", "secure_url", MTEXT_LEN, "", array("EXIST_CHECK","URL_CHECK","MAX_LENGTH_CHECK"), $secure_url);
-	$objWebParam->addParam("ãƒ‰ãƒ¡ã‚¤ãƒ³", "domain", MTEXT_LEN, "", array("MAX_LENGTH_CHECK"));	
+	$objWebParam->addParam("Å¹Ì¾", "shop_name", MTEXT_LEN, "", array("EXIST_CHECK","MAX_LENGTH_CHECK"), $shop_name);
+	$objWebParam->addParam("´ÉÍı¼Ô¡§¥á¡¼¥ë¥¢¥É¥ì¥¹", "admin_mail", MTEXT_LEN, "", array("EXIST_CHECK","EMAIL_CHECK","EMAIL_CHAR_CHECK","MAX_LENGTH_CHECK"), $admin_mail);
+	$objWebParam->addParam("´ÉÍı¼Ô¡§¥í¥°¥¤¥óID", "login_id", MTEXT_LEN, "", array("EXIST_CHECK","EXIST_CHECK", "ALNUM_CHECK"));
+	$objWebParam->addParam("´ÉÍı¼Ô¡§¥Ñ¥¹¥ï¡¼¥É", "login_pass", MTEXT_LEN, "", array("EXIST_CHECK","EXIST_CHECK", "ALNUM_CHECK"));
+	$objWebParam->addParam("¥¤¥ó¥¹¥È¡¼¥ë¥Ç¥£¥ì¥¯¥È¥ê", "install_dir", MTEXT_LEN, "", array("EXIST_CHECK","MAX_LENGTH_CHECK"), $install_dir);
+	$objWebParam->addParam("URL(ÄÌ¾ï)", "normal_url", MTEXT_LEN, "", array("EXIST_CHECK","URL_CHECK","MAX_LENGTH_CHECK"), $normal_url);
+	$objWebParam->addParam("URL(¥»¥­¥å¥¢)", "secure_url", MTEXT_LEN, "", array("EXIST_CHECK","URL_CHECK","MAX_LENGTH_CHECK"), $secure_url);
+	$objWebParam->addParam("¥É¥á¥¤¥ó", "domain", MTEXT_LEN, "", array("MAX_LENGTH_CHECK"));	
 	
 	return $objWebParam;
 }
 
-// DBãƒ‘ãƒ©ãƒ¡ãƒ¼ã‚¿æƒ…å ±ã®åˆæœŸåŒ–
+// DB¥Ñ¥é¥á¡¼¥¿¾ğÊó¤Î½é´ü²½
 function lfInitDBParam($objDBParam) {
 		
 	if(defined('DB_SERVER')) {
@@ -591,64 +591,64 @@ function lfInitDBParam($objDBParam) {
 		$db_user = "eccube_db_user";				
 	}
 			
-	$objDBParam->addParam("DBã®ç¨®é¡", "db_type", INT_LEN, "", array("EXIST_CHECK","MAX_LENGTH_CHECK"), $db_type);
-	$objDBParam->addParam("DBã‚µãƒ¼ãƒ", "db_server", MTEXT_LEN, "", array("EXIST_CHECK","MAX_LENGTH_CHECK"), $db_server);
-	$objDBParam->addParam("DBãƒãƒ¼ãƒˆ", "db_port", INT_LEN, "", array("MAX_LENGTH_CHECK"), $db_port);
-	$objDBParam->addParam("DBå", "db_name", MTEXT_LEN, "", array("EXIST_CHECK","MAX_LENGTH_CHECK"), $db_name);
-	$objDBParam->addParam("DBãƒ¦ãƒ¼ã‚¶", "db_user", MTEXT_LEN, "", array("EXIST_CHECK","MAX_LENGTH_CHECK"), $db_user);
-	$objDBParam->addParam("DBãƒ‘ã‚¹ãƒ¯ãƒ¼ãƒ‰", "db_password", MTEXT_LEN, "", array("EXIST_CHECK","MAX_LENGTH_CHECK"));	
+	$objDBParam->addParam("DB¤Î¼ïÎà", "db_type", INT_LEN, "", array("EXIST_CHECK","MAX_LENGTH_CHECK"), $db_type);
+	$objDBParam->addParam("DB¥µ¡¼¥Ğ", "db_server", MTEXT_LEN, "", array("EXIST_CHECK","MAX_LENGTH_CHECK"), $db_server);
+	$objDBParam->addParam("DB¥İ¡¼¥È", "db_port", INT_LEN, "", array("MAX_LENGTH_CHECK"), $db_port);
+	$objDBParam->addParam("DBÌ¾", "db_name", MTEXT_LEN, "", array("EXIST_CHECK","MAX_LENGTH_CHECK"), $db_name);
+	$objDBParam->addParam("DB¥æ¡¼¥¶", "db_user", MTEXT_LEN, "", array("EXIST_CHECK","MAX_LENGTH_CHECK"), $db_user);
+	$objDBParam->addParam("DB¥Ñ¥¹¥ï¡¼¥É", "db_password", MTEXT_LEN, "", array("EXIST_CHECK","MAX_LENGTH_CHECK"));	
 		
 	return $objDBParam;
 }
 
-// å…¥åŠ›å†…å®¹ã®ãƒã‚§ãƒƒã‚¯
+// ÆşÎÏÆâÍÆ¤Î¥Á¥§¥Ã¥¯
 function lfCheckWebError($objFormParam) {
-	// å…¥åŠ›ãƒ‡ãƒ¼ã‚¿ã‚’æ¸¡ã™ã€‚
+	// ÆşÎÏ¥Ç¡¼¥¿¤òÅÏ¤¹¡£
 	$arrRet =  $objFormParam->getHashArray();
 	$objErr = new SC_CheckError($arrRet);
 	$objErr->arrErr = $objFormParam->checkError();
 	
-	// ãƒ‡ã‚£ãƒ¬ã‚¯ãƒˆãƒªåã®ã¿å–å¾—ã™ã‚‹
+	// ¥Ç¥£¥ì¥¯¥È¥êÌ¾¤Î¤ß¼èÆÀ¤¹¤ë
 	$normal_dir = ereg_replace("^https?://[a-zA-Z0-9_~=&\?\.\-]+", "", $arrRet['normal_url']);
 	$secure_dir = ereg_replace("^https?://[a-zA-Z0-9_~=&\?\.\-]+", "", $arrRet['secure_url']);
 	
 	if($normal_dir != $secure_dir) {
-		$objErr->arrErr['normal_url'] = "URLã«ç•°ãªã‚‹éšå±¤ã‚’æŒ‡å®šã™ã‚‹ã“ã¨ã¯ã§ãã¾ã›ã‚“ã€‚";
-		$objErr->arrErr['secure_url'] = "URLã«ç•°ãªã‚‹éšå±¤ã‚’æŒ‡å®šã™ã‚‹ã“ã¨ã¯ã§ãã¾ã›ã‚“ã€‚";		
+		$objErr->arrErr['normal_url'] = "URL¤Ë°Û¤Ê¤ë³¬ÁØ¤ò»ØÄê¤¹¤ë¤³¤È¤Ï¤Ç¤­¤Ş¤»¤ó¡£";
+		$objErr->arrErr['secure_url'] = "URL¤Ë°Û¤Ê¤ë³¬ÁØ¤ò»ØÄê¤¹¤ë¤³¤È¤Ï¤Ç¤­¤Ş¤»¤ó¡£";		
 	}
 	
-	// ãƒ­ã‚°ã‚¤ãƒ³IDãƒã‚§ãƒƒã‚¯
-	$objErr->doFunc(array("ç®¡ç†è€…ï¼šãƒ­ã‚°ã‚¤ãƒ³ID",'login_id',ID_MIN_LEN , ID_MAX_LEN) ,array("NUM_RANGE_CHECK"));
+	// ¥í¥°¥¤¥óID¥Á¥§¥Ã¥¯
+	$objErr->doFunc(array("´ÉÍı¼Ô¡§¥í¥°¥¤¥óID",'login_id',ID_MIN_LEN , ID_MAX_LEN) ,array("NUM_RANGE_CHECK"));
 	
-	// ãƒ‘ã‚¹ãƒ¯ãƒ¼ãƒ‰ã®ãƒã‚§ãƒƒã‚¯
-	$objErr->doFunc( array("ç®¡ç†è€…ï¼šãƒ‘ã‚¹ãƒ¯ãƒ¼ãƒ‰",'login_pass',4 ,15 ) ,array( "NUM_RANGE_CHECK" ) );	
+	// ¥Ñ¥¹¥ï¡¼¥É¤Î¥Á¥§¥Ã¥¯
+	$objErr->doFunc( array("´ÉÍı¼Ô¡§¥Ñ¥¹¥ï¡¼¥É",'login_pass',4 ,15 ) ,array( "NUM_RANGE_CHECK" ) );	
 	
 	return $objErr->arrErr;
 }
 
-// å…¥åŠ›å†…å®¹ã®ãƒã‚§ãƒƒã‚¯
+// ÆşÎÏÆâÍÆ¤Î¥Á¥§¥Ã¥¯
 function lfCheckDBError($objFormParam) {
 	global $objPage;
 	
-	// å…¥åŠ›ãƒ‡ãƒ¼ã‚¿ã‚’æ¸¡ã™ã€‚
+	// ÆşÎÏ¥Ç¡¼¥¿¤òÅÏ¤¹¡£
 	$arrRet =  $objFormParam->getHashArray();
 	
 	$objErr = new SC_CheckError($arrRet);
 	$objErr->arrErr = $objFormParam->checkError();
 	
 	if(count($objErr->arrErr) == 0) {
-		// æ¥ç¶šç¢ºèª
+		// ÀÜÂ³³ÎÇ§
 		$dsn = $arrRet['db_type']."://".$arrRet['db_user'].":".$arrRet['db_password']."@".$arrRet['db_server'].":".$arrRet['db_port']."/".$arrRet['db_name'];
-		// Debugãƒ¢ãƒ¼ãƒ‰æŒ‡å®š
+		// Debug¥â¡¼¥É»ØÄê
 		$options['debug'] = PEAR_DB_DEBUG;
 		$objDB = DB::connect($dsn, $options);
-		// æ¥ç¶šæˆåŠŸ
+		// ÀÜÂ³À®¸ù
 		if(!PEAR::isError($objDB)) {
-			// ãƒ‡ãƒ¼ã‚¿ãƒ™ãƒ¼ã‚¹ãƒãƒ¼ã‚¸ãƒ§ãƒ³æƒ…å ±ã®å–å¾—
+			// ¥Ç¡¼¥¿¥Ù¡¼¥¹¥Ğ¡¼¥¸¥ç¥ó¾ğÊó¤Î¼èÆÀ
 			$objPage->tpl_db_version = sfGetDBVersion($dsn);			
 		} else {
 			$objErr->arrErr['all'] = ">> " . $objDB->message . "<br>";
-			// ã‚¨ãƒ©ãƒ¼æ–‡ã‚’å–å¾—ã™ã‚‹
+			// ¥¨¥é¡¼Ê¸¤ò¼èÆÀ¤¹¤ë
 			ereg("\[(.*)\]", $objDB->userinfo, $arrKey);
 			$objErr->arrErr['all'].= $arrKey[0] . "<br>";
 			gfPrintLog($objDB->userinfo, INSTALL_LOG);
@@ -657,23 +657,23 @@ function lfCheckDBError($objFormParam) {
 	return $objErr->arrErr;
 }
 
-// SQLæ–‡ã®å®Ÿè¡Œ
+// SQLÊ¸¤Î¼Â¹Ô
 function lfExecuteSQL($filepath, $dsn, $disp_err = true) {
 	$arrErr = array();
 	
 	if(!file_exists($filepath)) {
-		$arrErr['all'] = ">> ã‚¹ã‚¯ãƒªãƒ—ãƒˆãƒ•ã‚¡ã‚¤ãƒ«ãŒè¦‹ã¤ã‹ã‚Šã¾ã›ã‚“";
+		$arrErr['all'] = ">> ¥¹¥¯¥ê¥×¥È¥Õ¥¡¥¤¥ë¤¬¸«¤Ä¤«¤ê¤Ş¤»¤ó";
 	} else {
   		if($fp = fopen($filepath,"r")) {
 			$sql = fread($fp, filesize($filepath));
 			fclose($fp);
 		}
-		// Debugãƒ¢ãƒ¼ãƒ‰æŒ‡å®š
+		// Debug¥â¡¼¥É»ØÄê
 		$options['debug'] = PEAR_DB_DEBUG;
 		$objDB = DB::connect($dsn, $options);
-		// æ¥ç¶šã‚¨ãƒ©ãƒ¼
+		// ÀÜÂ³¥¨¥é¡¼
 		if(!PEAR::isError($objDB)) {
-			// æ”¹è¡Œã€ã‚¿ãƒ–ã‚’1ã‚¹ãƒšãƒ¼ã‚¹ã«å¤‰æ›
+			// ²ş¹Ô¡¢¥¿¥Ö¤ò1¥¹¥Ú¡¼¥¹¤ËÊÑ´¹
 			$sql = preg_replace("/[\r\n\t]/"," ",$sql);
 			$sql_split = split(";",$sql);
 			foreach($sql_split as $key => $val){
@@ -681,10 +681,10 @@ function lfExecuteSQL($filepath, $dsn, $disp_err = true) {
 					$ret = $objDB->query($val);
 					if(PEAR::isError($ret) && $disp_err) {
 						$arrErr['all'] = ">> " . $ret->message . "<br>";
-						// ã‚¨ãƒ©ãƒ¼æ–‡ã‚’å–å¾—ã™ã‚‹
+						// ¥¨¥é¡¼Ê¸¤ò¼èÆÀ¤¹¤ë
 						ereg("\[(.*)\]", $ret->userinfo, $arrKey);
 						$arrErr['all'].= $arrKey[0] . "<br>";
-						$objPage->update_mess.=">> ãƒ†ãƒ¼ãƒ–ãƒ«æ§‹æˆã®å¤‰æ›´ã«å¤±æ•—ã—ã¾ã—ãŸã€‚<br>";
+						$objPage->update_mess.=">> ¥Æ¡¼¥Ö¥ë¹½À®¤ÎÊÑ¹¹¤Ë¼ºÇÔ¤·¤Ş¤·¤¿¡£<br>";
 						gfPrintLog($ret->userinfo, INSTALL_LOG);
 					}
 				}
@@ -697,30 +697,30 @@ function lfExecuteSQL($filepath, $dsn, $disp_err = true) {
 	return $arrErr;
 }
 
-// è¨­å®šãƒ•ã‚¡ã‚¤ãƒ«ã®ä½œæˆ
+// ÀßÄê¥Õ¥¡¥¤¥ë¤ÎºîÀ®
 function lfMakeConfigFile() {
 	global $objWebParam;
 	global $objDBParam;
 	
 	$root_dir = $objWebParam->getValue('install_dir');
-	// èªå°¾ã«'/'ã‚’ã¤ã‘ã‚‹
+	// ¸ìÈø¤Ë'/'¤ò¤Ä¤±¤ë
 	if (!ereg("/$", $root_dir)) {
 		$root_dir = $root_dir . "/";
 	}
 	
 	$normal_url = $objWebParam->getValue('normal_url');
-	// èªå°¾ã«'/'ã‚’ã¤ã‘ã‚‹
+	// ¸ìÈø¤Ë'/'¤ò¤Ä¤±¤ë
 	if (!ereg("/$", $normal_url)) {
 		$normal_url = $normal_url . "/";
 	}
 	
 	$secure_url = $objWebParam->getValue('secure_url');
-	// èªå°¾ã«'/'ã‚’ã¤ã‘ã‚‹
+	// ¸ìÈø¤Ë'/'¤ò¤Ä¤±¤ë
 	if (!ereg("/$", $secure_url)) {
 		$secure_url = $secure_url . "/";
 	}
 	
-	// ãƒ‡ã‚£ãƒ¬ã‚¯ãƒˆãƒªã®å–å¾—
+	// ¥Ç¥£¥ì¥¯¥È¥ê¤Î¼èÆÀ
 	$url_dir = ereg_replace("^https?://[a-zA-Z0-9_~=&\?\.\-]+", "", $normal_url);
 	
 	$data_path = $root_dir . "../data/";
@@ -749,7 +749,7 @@ function lfMakeConfigFile() {
 	}
 }
 
-// ãƒ†ãƒ¼ãƒ–ãƒ«ã®è¿½åŠ ï¼ˆæ—¢ã«ãƒ†ãƒ¼ãƒ–ãƒ«ãŒå­˜åœ¨ã™ã‚‹å ´åˆã¯ä½œæˆã—ãªã„ï¼‰
+// ¥Æ¡¼¥Ö¥ë¤ÎÄÉ²Ã¡Ê´û¤Ë¥Æ¡¼¥Ö¥ë¤¬Â¸ºß¤¹¤ë¾ì¹ç¤ÏºîÀ®¤·¤Ê¤¤¡Ë
 function lfAddTable($table_name, $dsn) {
 	$arrErr = array();
 	if(!sfTabaleExists($table_name, $dsn)) {
@@ -760,19 +760,19 @@ function lfAddTable($table_name, $dsn) {
 	return $arrErr;
 }
 
-// ãƒ†ãƒ¼ãƒ–ãƒ«ã®å‰Šé™¤ï¼ˆæ—¢ã«ãƒ†ãƒ¼ãƒ–ãƒ«ãŒå­˜åœ¨ã™ã‚‹å ´åˆã®ã¿å‰Šé™¤ã™ã‚‹ï¼‰
+// ¥Æ¡¼¥Ö¥ë¤Îºï½ü¡Ê´û¤Ë¥Æ¡¼¥Ö¥ë¤¬Â¸ºß¤¹¤ë¾ì¹ç¤Î¤ßºï½ü¤¹¤ë¡Ë
 function lfDropTable($table_name, $dsn) {
 	$arrErr = array();
 	if(sfTabaleExists($table_name, $dsn)) {
-		// Debugãƒ¢ãƒ¼ãƒ‰æŒ‡å®š
+		// Debug¥â¡¼¥É»ØÄê
 		$options['debug'] = PEAR_DB_DEBUG;
 		$objDB = DB::connect($dsn, $options);
-		// æ¥ç¶šæˆåŠŸ
+		// ÀÜÂ³À®¸ù
 		if(!PEAR::isError($objDB)) {
 			$objDB->query("DROP TABLE " . $table_name);
 		} else {
 			$arrErr['all'] = ">> " . $objDB->message . "<br>";
-			// ã‚¨ãƒ©ãƒ¼æ–‡ã‚’å–å¾—ã™ã‚‹
+			// ¥¨¥é¡¼Ê¸¤ò¼èÆÀ¤¹¤ë
 			ereg("\[(.*)\]", $objDB->userinfo, $arrKey);
 			$arrErr['all'].= $arrKey[0] . "<br>";
 			gfPrintLog($objDB->userinfo, INSTALL_LOG);
@@ -781,9 +781,9 @@ function lfDropTable($table_name, $dsn) {
 	return $arrErr;
 }
 
-// ã‚«ãƒ©ãƒ ã®è¿½åŠ ï¼ˆæ—¢ã«ã‚«ãƒ©ãƒ ãŒå­˜åœ¨ã™ã‚‹å ´åˆã¯ä½œæˆã—ãªã„ï¼‰
+// ¥«¥é¥à¤ÎÄÉ²Ã¡Ê´û¤Ë¥«¥é¥à¤¬Â¸ºß¤¹¤ë¾ì¹ç¤ÏºîÀ®¤·¤Ê¤¤¡Ë
 function lfAddColumn($dsn) {
-	// å—æ³¨ãƒ†ãƒ¼ãƒ–ãƒ«	
+	// ¼õÃí¥Æ¡¼¥Ö¥ë	
 	sfColumnExists("dtb_order", "memo01", "text", $dsn, true);	
 	sfColumnExists("dtb_order", "memo02", "text", $dsn, true);
 	sfColumnExists("dtb_order", "memo03", "text", $dsn, true);
@@ -796,7 +796,7 @@ function lfAddColumn($dsn) {
 	sfColumnExists("dtb_order", "memo10", "text", $dsn, true);
 	sfColumnExists("dtb_order", "campaign_id", "int4", $dsn, true);
 
-	// å—æ³¨ä¸€æ™‚ãƒ†ãƒ¼ãƒ–ãƒ«	
+	// ¼õÃí°ì»ş¥Æ¡¼¥Ö¥ë	
 	sfColumnExists("dtb_order_temp", "order_id", "text", $dsn, true);	
 	sfColumnExists("dtb_order_temp", "memo01", "text", $dsn, true);	
 	sfColumnExists("dtb_order_temp", "memo02", "text", $dsn, true);
@@ -809,7 +809,7 @@ function lfAddColumn($dsn) {
 	sfColumnExists("dtb_order_temp", "memo09", "text", $dsn, true);
 	sfColumnExists("dtb_order_temp", "memo10", "text", $dsn, true);
 
-	// æ”¯æ‰•æƒ…å ±ãƒ†ãƒ¼ãƒ–ãƒ«
+	// »ÙÊ§¾ğÊó¥Æ¡¼¥Ö¥ë
 	sfColumnExists("dtb_payment", "charge_flg", "int2 default 1", $dsn, true);	
 	sfColumnExists("dtb_payment", "rule_min", "numeric", $dsn, true);	
 	sfColumnExists("dtb_payment", "upper_rule_max", "numeric", $dsn, true);	
@@ -826,7 +826,7 @@ function lfAddColumn($dsn) {
 	sfColumnExists("dtb_payment", "memo09", "text", $dsn, true);
 	sfColumnExists("dtb_payment", "memo10", "text", $dsn, true);
 	
-	// ã‚­ãƒ£ãƒ³ãƒšãƒ¼ãƒ³ãƒ†ãƒ¼ãƒ–ãƒ«
+	// ¥­¥ã¥ó¥Ú¡¼¥ó¥Æ¡¼¥Ö¥ë
 	sfColumnExists("dtb_campaign", "directory_name", "text NOT NULL", $dsn, true);
 	sfColumnExists("dtb_campaign", "limit_count", "int4 NOT NULL DEFAULT 0", $dsn, true);
 	sfColumnExists("dtb_campaign", "total_count", "int4 NOT NULL DEFAULT 0", $dsn, true);
@@ -835,54 +835,54 @@ function lfAddColumn($dsn) {
 	sfColumnExists("dtb_campaign", "deliv_free_flg", "int2 NOT NULL DEFAULT 0", $dsn, true);	
 }
 
-// ãƒ‡ãƒ¼ã‚¿ã®è¿½åŠ ï¼ˆæ—¢ã«ãƒ‡ãƒ¼ã‚¿ãŒå­˜åœ¨ã™ã‚‹å ´åˆã¯ä½œæˆã—ãªã„ï¼‰
+// ¥Ç¡¼¥¿¤ÎÄÉ²Ã¡Ê´û¤Ë¥Ç¡¼¥¿¤¬Â¸ºß¤¹¤ë¾ì¹ç¤ÏºîÀ®¤·¤Ê¤¤¡Ë
 function lfAddData($dsn) {
-	// CSVãƒ†ãƒ¼ãƒ–ãƒ«
+	// CSV¥Æ¡¼¥Ö¥ë
 	if(sfTabaleExists('dtb_csv', $dsn)) {
-		lfInsertCSVData(1,'category_id','ã‚«ãƒ†ã‚´ãƒªID',53,'now()','now()');		
-		lfInsertCSVData(4,'order_id','æ³¨æ–‡ID',1,'now()','now()');
-		lfInsertCSVData(4,'campaign_id','ã‚­ãƒ£ãƒ³ãƒšãƒ¼ãƒ³ID',2,'now()','now()');
-		lfInsertCSVData(4,'customer_id','é¡§å®¢ID',3,'now()','now()');
-		lfInsertCSVData(4,'message','è¦æœ›ç­‰',4,'now()','now()');
-		lfInsertCSVData(4,'order_name01','é¡§å®¢å1',5,'now()','now()');
-		lfInsertCSVData(4,'order_name02','é¡§å®¢å2',6,'now()','now()');
-		lfInsertCSVData(4,'order_kana01','é¡§å®¢åã‚«ãƒŠ1',7,'now()','now()');
-		lfInsertCSVData(4,'order_kana02','é¡§å®¢åã‚«ãƒŠ2',8,'now()','now()');
-		lfInsertCSVData(4,'order_email','ãƒ¡ãƒ¼ãƒ«ã‚¢ãƒ‰ãƒ¬ã‚¹',9,'now()','now()');
-		lfInsertCSVData(4,'order_tel01','é›»è©±ç•ªå·1',10,'now()','now()');
-		lfInsertCSVData(4,'order_tel02','é›»è©±ç•ªå·2',11,'now()','now()');
-		lfInsertCSVData(4,'order_tel03','é›»è©±ç•ªå·3',12,'now()','now()');
+		lfInsertCSVData(1,'category_id','¥«¥Æ¥´¥êID',53,'now()','now()');		
+		lfInsertCSVData(4,'order_id','ÃíÊ¸ID',1,'now()','now()');
+		lfInsertCSVData(4,'campaign_id','¥­¥ã¥ó¥Ú¡¼¥óID',2,'now()','now()');
+		lfInsertCSVData(4,'customer_id','¸ÜµÒID',3,'now()','now()');
+		lfInsertCSVData(4,'message','Í×Ë¾Åù',4,'now()','now()');
+		lfInsertCSVData(4,'order_name01','¸ÜµÒÌ¾1',5,'now()','now()');
+		lfInsertCSVData(4,'order_name02','¸ÜµÒÌ¾2',6,'now()','now()');
+		lfInsertCSVData(4,'order_kana01','¸ÜµÒÌ¾¥«¥Ê1',7,'now()','now()');
+		lfInsertCSVData(4,'order_kana02','¸ÜµÒÌ¾¥«¥Ê2',8,'now()','now()');
+		lfInsertCSVData(4,'order_email','¥á¡¼¥ë¥¢¥É¥ì¥¹',9,'now()','now()');
+		lfInsertCSVData(4,'order_tel01','ÅÅÏÃÈÖ¹æ1',10,'now()','now()');
+		lfInsertCSVData(4,'order_tel02','ÅÅÏÃÈÖ¹æ2',11,'now()','now()');
+		lfInsertCSVData(4,'order_tel03','ÅÅÏÃÈÖ¹æ3',12,'now()','now()');
 		lfInsertCSVData(4,'order_fax01','FAX1',13,'now()','now()');
 		lfInsertCSVData(4,'order_fax02','FAX2',14,'now()','now()');
 		lfInsertCSVData(4,'order_fax03','FAX3',15,'now()','now()');
-		lfInsertCSVData(4,'order_zip01','éƒµä¾¿ç•ªå·1',16,'now()','now()');
-		lfInsertCSVData(4,'order_zip02','éƒµä¾¿ç•ªå·2',17,'now()','now()');
-		lfInsertCSVData(4,'order_pref','éƒ½é“åºœçœŒ',18,'now()','now()');
-		lfInsertCSVData(4,'order_addr01','ä½æ‰€1',19,'now()','now()');
-		lfInsertCSVData(4,'order_addr02','ä½æ‰€2',20,'now()','now()');
-		lfInsertCSVData(4,'order_sex','æ€§åˆ¥',21,'now()','now()');
-		lfInsertCSVData(4,'order_birth','ç”Ÿå¹´æœˆæ—¥',22,'now()','now()');
-		lfInsertCSVData(4,'order_job','è·ç¨®',23,'now()','now()');
-		lfInsertCSVData(4,'deliv_name01','é…é€å…ˆåå‰',24,'now()','now()');
-		lfInsertCSVData(4,'deliv_name02','é…é€å…ˆåå‰',25,'now()','now()');
-		lfInsertCSVData(4,'deliv_kana01','é…é€å…ˆã‚«ãƒŠ',26,'now()','now()');
-		lfInsertCSVData(4,'deliv_kana02','é…é€å…ˆã‚«ãƒŠ',27,'now()','now()');
-		lfInsertCSVData(4,'deliv_tel01','é›»è©±ç•ªå·1',28,'now()','now()');
-		lfInsertCSVData(4,'deliv_tel02','é›»è©±ç•ªå·2',29,'now()','now()');
-		lfInsertCSVData(4,'deliv_tel03','é›»è©±ç•ªå·3',30,'now()','now()');
+		lfInsertCSVData(4,'order_zip01','Í¹ÊØÈÖ¹æ1',16,'now()','now()');
+		lfInsertCSVData(4,'order_zip02','Í¹ÊØÈÖ¹æ2',17,'now()','now()');
+		lfInsertCSVData(4,'order_pref','ÅÔÆ»ÉÜ¸©',18,'now()','now()');
+		lfInsertCSVData(4,'order_addr01','½»½ê1',19,'now()','now()');
+		lfInsertCSVData(4,'order_addr02','½»½ê2',20,'now()','now()');
+		lfInsertCSVData(4,'order_sex','À­ÊÌ',21,'now()','now()');
+		lfInsertCSVData(4,'order_birth','À¸Ç¯·îÆü',22,'now()','now()');
+		lfInsertCSVData(4,'order_job','¿¦¼ï',23,'now()','now()');
+		lfInsertCSVData(4,'deliv_name01','ÇÛÁ÷ÀèÌ¾Á°',24,'now()','now()');
+		lfInsertCSVData(4,'deliv_name02','ÇÛÁ÷ÀèÌ¾Á°',25,'now()','now()');
+		lfInsertCSVData(4,'deliv_kana01','ÇÛÁ÷Àè¥«¥Ê',26,'now()','now()');
+		lfInsertCSVData(4,'deliv_kana02','ÇÛÁ÷Àè¥«¥Ê',27,'now()','now()');
+		lfInsertCSVData(4,'deliv_tel01','ÅÅÏÃÈÖ¹æ1',28,'now()','now()');
+		lfInsertCSVData(4,'deliv_tel02','ÅÅÏÃÈÖ¹æ2',29,'now()','now()');
+		lfInsertCSVData(4,'deliv_tel03','ÅÅÏÃÈÖ¹æ3',30,'now()','now()');
 		lfInsertCSVData(4,'deliv_fax01','FAX1',31,'now()','now()');
 		lfInsertCSVData(4,'deliv_fax02','FAX2',32,'now()','now()');
 		lfInsertCSVData(4,'deliv_fax03','FAX3',33,'now()','now()');
-		lfInsertCSVData(4,'deliv_zip01','éƒµä¾¿ç•ªå·1',34,'now()','now()');
-		lfInsertCSVData(4,'deliv_zip02','éƒµä¾¿ç•ªå·2',35,'now()','now()');
-		lfInsertCSVData(4,'deliv_pref','éƒ½é“åºœçœŒ',36,'now()','now()');
-		lfInsertCSVData(4,'deliv_addr01','ä½æ‰€1',37,'now()','now()');
-		lfInsertCSVData(4,'deliv_addr02','ä½æ‰€2',38,'now()','now()');
-		lfInsertCSVData(4,'payment_total','ãŠæ”¯æ‰•ã„åˆè¨ˆ',39,'now()','now()');
+		lfInsertCSVData(4,'deliv_zip01','Í¹ÊØÈÖ¹æ1',34,'now()','now()');
+		lfInsertCSVData(4,'deliv_zip02','Í¹ÊØÈÖ¹æ2',35,'now()','now()');
+		lfInsertCSVData(4,'deliv_pref','ÅÔÆ»ÉÜ¸©',36,'now()','now()');
+		lfInsertCSVData(4,'deliv_addr01','½»½ê1',37,'now()','now()');
+		lfInsertCSVData(4,'deliv_addr02','½»½ê2',38,'now()','now()');
+		lfInsertCSVData(4,'payment_total','¤ª»ÙÊ§¤¤¹ç·×',39,'now()','now()');
 	}
 }
 
-// CSVãƒ†ãƒ¼ãƒ–ãƒ«ã¸ã®ãƒ‡ãƒ¼ã‚¿ã®è¿½åŠ 
+// CSV¥Æ¡¼¥Ö¥ë¤Ø¤Î¥Ç¡¼¥¿¤ÎÄÉ²Ã
 function lfInsertCSVData($csv_id,$col,$disp_name,$rank,$create_date,$update_date) {
 	$sql = "insert into dtb_csv(csv_id,col,disp_name,rank,create_date,update_date) values($csv_id,'$col','$disp_name',$rank,$create_date,$update_date);";
 	sfDataExists("dtb_csv", "csv_id = ? AND col = ?", array($csv_id, $col), $dsn = "", $sql, true);

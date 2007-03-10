@@ -5,7 +5,7 @@
  * http://www.lockon.co.jp/
  */
 
-/* ---- SQLæ–‡ã‚’ä½œã‚‹ã‚¯ãƒ©ã‚¹ ---- */
+/* ---- SQLÊ¸¤òºî¤ë¥¯¥é¥¹ ---- */
 class SC_SelectSql {
 	
 	var $sql;
@@ -19,18 +19,18 @@ class SC_SelectSql {
 	var $arrSql;
 	var $arrVal;
 
-	//--ã€€ã‚³ãƒ³ã‚¹ãƒˆãƒ©ã‚¯ã‚¿ã€‚
+	//--¡¡¥³¥ó¥¹¥È¥é¥¯¥¿¡£
 	function SC_SelectSql($array = "") {
 		if (is_array($array)) {
 			$this->arrSql = $array;
 		}
 	}
 
-	//-- SQLåˆ†ç”Ÿæˆ
+	//-- SQLÊ¬À¸À®
 	function getSql( $mode = "" ){
 		$this->sql = $this->select ." ". $this->where ." ". $this->group ." ";
 						
-		// $mode == 1 ã¯ limit & offsetç„¡ã—						
+		// $mode == 1 ¤Ï limit & offsetÌµ¤·						
 		if ( $mode != 1 ){
 			$this->sql .= $this->order . " " .$this->limit ." ". $this->offset;	
 		} elseif ($mode == 2) {
@@ -39,29 +39,29 @@ class SC_SelectSql {
 		return $this->sql;	
 	}
 
-		// æ¤œç´¢ç”¨
+		// ¸¡º÷ÍÑ
 	function addSearchStr($val) {
 		$return = sfManualEscape($val);
 		$return = "%" .$return. "%";
 		return $return;
 	}
 	
-	//-- ç¯„å›²æ¤œç´¢ï¼ˆâ—‹ã€€ï½žã€€â—‹ã€€ã¾ã§ï¼‰
+	//-- ÈÏ°Ï¸¡º÷¡Ê¡û¡¡¢·¡¡¡û¡¡¤Þ¤Ç¡Ë
 	function selectRange($from, $to, $column) {
 
-		// ã‚ã‚‹å˜ä½ã®ã¿æ¤œç´¢($from = $to)
+		// ¤¢¤ëÃ±°Ì¤Î¤ß¸¡º÷($from = $to)
 		if(  $from == $to ) {
 			$this->setWhere( $column ." = ?" );
 			$return = array($from);
-		//ã€€ï½ž$toã¾ã§æ¤œç´¢
+		//¡¡¢·$to¤Þ¤Ç¸¡º÷
 		} elseif(  strlen($from) == 0 && strlen($to) > 0 ) {
 			$this->setWhere( $column ." <= ? "); 
 			$return = array($to);
-		//ã€€ï½ž$fromä»¥ä¸Šã‚’æ¤œç´¢
+		//¡¡¢·$from°Ê¾å¤ò¸¡º÷
 		} elseif(  strlen($from) > 0 && strlen($to) == 0 ) {
 			$this->setWhere( $column ." >= ? ");
 			$return = array($from);
-		//ã€€$fromï½ž$toã®æ¤œç´¢
+		//¡¡$from¢·$to¤Î¸¡º÷
 		} else {
 			$this->setWhere( $column ."	BETWEEN ? AND ?" ); 
 			$return = array($from, $to);
@@ -69,7 +69,7 @@ class SC_SelectSql {
 		return $return;
 	}
 
-	//--ã€€æœŸé–“æ¤œç´¢ï¼ˆâ—‹å¹´â—‹æœˆâ—‹æ—¥ã‹ï½žâ—‹å¹´â—‹æœˆâ—‹æ—¥ã¾ã§ï¼‰
+	//--¡¡´ü´Ö¸¡º÷¡Ê¡ûÇ¯¡û·î¡ûÆü¤«¢·¡ûÇ¯¡û·î¡ûÆü¤Þ¤Ç¡Ë
 	function selectTermRange($from_year, $from_month, $from_day, $to_year, $to_month, $to_day, $column) {
 
 		// FROM
@@ -80,25 +80,25 @@ class SC_SelectSql {
 		$date2 = $date2 + 86400;
 		$date2 = date('y/m/d', $date2);
 		
-		// é–‹å§‹æœŸé–“ã ã‘æŒ‡å®šã®å ´åˆ
+		// ³«»Ï´ü´Ö¤À¤±»ØÄê¤Î¾ì¹ç
 		if( ( $from_year != "" ) && ( $from_month != "" ) && ( $from_day != "" ) &&	( $to_year == "" ) && ( $to_month == "" ) && ( $to_day == "" ) ) {
 			$this->setWhere( $column ." >= '" . $date1 . "'");
 		}
 
-		//ã€€é–‹å§‹ã€œçµ‚äº†
+		//¡¡³«»Ï¡Á½ªÎ»
 		if( ( $from_year != "" ) && ( $from_month != "" ) && ( $from_day != "" ) && 
 			( $to_year != "" ) && ( $to_month != "" ) && ( $to_day != "" ) ) {
 			$this->setWhere( $column ." >= '" . $date1 ."' AND ". $column . " < date('" . $date2 . "')" );
 		}
 
-		// çµ‚äº†æœŸé–“ã ã‘æŒ‡å®šã®å ´åˆ
+		// ½ªÎ»´ü´Ö¤À¤±»ØÄê¤Î¾ì¹ç
 		if( ( $from_year == "" ) && ( $from_month == "" ) && ( $from_day == "" ) && ( $to_year != "" ) && ( $to_month != "" ) && ( $to_day != "" ) ) {
 			$this->setWhere( $column ." < date('" . $date2 . "')");
 		}
 		return $return;
 	}	
 
-	// checkboxãªã©ã§åŒä¸€ã‚«ãƒ©ãƒ å†…ã§å˜ä¸€ã€ã‚‚ã—ãã¯è¤‡æ•°é¸æŠžè‚¢ãŒæœ‰ã‚‹å ´åˆã€€ä¾‹: AND ( sex = xxx OR sex = xxx OR sex = xxx  ) AND ... 
+	// checkbox¤Ê¤É¤ÇÆ±°ì¥«¥é¥àÆâ¤ÇÃ±°ì¡¢¤â¤·¤¯¤ÏÊ£¿ôÁªÂò»è¤¬Í­¤ë¾ì¹ç¡¡Îã: AND ( sex = xxx OR sex = xxx OR sex = xxx  ) AND ... 
 	function setItemTerm( $arr, $ItemStr ) {
 
 		foreach( $arr as $data ) {
@@ -116,14 +116,14 @@ class SC_SelectSql {
 		return $return;
 	}
 
-	//ã€€NULLå€¤ãŒå¿…è¦ãªå ´åˆ
+	//¡¡NULLÃÍ¤¬É¬Í×¤Ê¾ì¹ç
 	function setItemTermWithNull( $arr, $ItemStr ) {
 
 		$item = " ${ItemStr} IS NULL ";
 		
 		if ( $arr ){
 			foreach( $arr as $data ) {	
-				if ($data != "ä¸æ˜Ž") {
+				if ($data != "ÉÔÌÀ") {
 					$item .= " OR ${ItemStr} = ?";
 					$return[] = $data;
 				}
@@ -134,7 +134,7 @@ class SC_SelectSql {
 		$this->setWhere( $item );
 		return $return;
 	}
-	// NULLã‚‚ã—ãã¯''ã§æ¤œç´¢ã™ã‚‹å ´åˆ
+	// NULL¤â¤·¤¯¤Ï''¤Ç¸¡º÷¤¹¤ë¾ì¹ç
 	function setItemTermWithNullAndSpace( $arr, $ItemStr ) {
 		$count = count($arr);
 		$item = " ${ItemStr} IS NULL OR ${ItemStr} = '' ";
@@ -154,9 +154,9 @@ class SC_SelectSql {
 	
 
 
-	/* è¤‡æ•°ã®ã‚«ãƒ©ãƒ ã§ORã§å„ªå…ˆæ¤œç´¢ã™ã‚‹å ´åˆã€€ä¾‹ï¼šã€€AND ( item_flag1 = xxx OR item_flag2 = xxx OR item_flag3 = xxx  ) AND ... 
+	/* Ê£¿ô¤Î¥«¥é¥à¤ÇOR¤ÇÍ¥Àè¸¡º÷¤¹¤ë¾ì¹ç¡¡Îã¡§¡¡AND ( item_flag1 = xxx OR item_flag2 = xxx OR item_flag3 = xxx  ) AND ... 
 
-		é…åˆ—ã®æ§‹é€ ä¾‹ã€€
+		ÇÛÎó¤Î¹½Â¤Îã¡¡
 		if ( $_POST['show_site1'] ) $arrShowsite_1 = array( "column" => "show_site1",
 															"value"  => $_POST['show_site1'] );
 

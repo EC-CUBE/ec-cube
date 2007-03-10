@@ -16,7 +16,7 @@ class LC_Page {
 		$this->tpl_mainno = 'mail';
 		$this->tpl_subnavi = 'mail/subnavi.tpl';
 		$this->tpl_subno = "template";
-		$this->tpl_subtitle = 'ãƒ†ãƒ³ãƒ—ãƒ¬ãƒ¼ãƒˆè¨­å®š';
+		$this->tpl_subtitle = '¥Æ¥ó¥×¥ì¡¼¥ÈÀßÄê';
 	}
 }
 
@@ -25,19 +25,19 @@ $objPage = new LC_Page();
 $objView = new SC_AdminView();
 $objSess = new SC_Session();
 
-// èªè¨¼å¯å¦ã®åˆ¤å®š
+// Ç§¾Ú²ÄÈÝ¤ÎÈ½Äê
 sfIsSuccess($objSess);
 
 if ( $_GET['mode'] == "delete" && sfCheckNumLength($_GET['id'])===true ){
 
-	// ãƒ¡ãƒ¼ãƒ«æ‹…å½“ã®ç”»åƒãŒã‚ã‚Œã°å‰Šé™¤ã—ã¦ãŠã
+	// ¥á¡¼¥ëÃ´Åö¤Î²èÁü¤¬¤¢¤ì¤Ðºï½ü¤·¤Æ¤ª¤¯
 	$sql = "SELECT charge_image FROM dtb_mailmaga_template WHERE template_id = ?";
 	$result = $conn->getOne($sql, array($_GET["id"]));
 	if (strlen($result) > 0) {
 		@unlink(IMAGE_SAVE_DIR. $result);
 	}
 	
-	// ç™»éŒ²å‰Šé™¤
+	// ÅÐÏ¿ºï½ü
 	$sql = "UPDATE dtb_mailmaga_template SET del_flg = 1 WHERE template_id = ?";
 	$conn->query($sql, array($_GET['id']));
 	sfReload();

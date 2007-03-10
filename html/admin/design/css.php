@@ -16,38 +16,38 @@ class LC_Page {
 		$this->area_row = 30;
 		$this->tpl_subno = "css";
 		$this->tpl_mainno = "design";
-		$this->tpl_subtitle = 'CSSç·¨é›†';
+		$this->tpl_subtitle = 'CSSÊÔ½¸';
 	}
 }
 
 $objPage = new LC_Page();
 $objView = new SC_AdminView();
 
-// èªè¨¼å¯å¦ã®åˆ¤å®š
+// Ç§¾Ú²ÄÈÝ¤ÎÈ½Äê
 $objSess = new SC_Session();
 sfIsSuccess($objSess);
 
 $css_path = USER_PATH . "css/contents.css";
 
-// ãƒ‡ãƒ¼ã‚¿æ›´æ–°å‡¦ç†
+// ¥Ç¡¼¥¿¹¹¿·½èÍý
 if ($_POST['mode'] == 'confirm'){
-	// ãƒ—ãƒ¬ãƒ“ãƒ¥ãƒ¼ç”¨ãƒ†ãƒ³ãƒ—ãƒ¬ãƒ¼ãƒˆã«æ›¸ãè¾¼ã¿	
+	// ¥×¥ì¥Ó¥å¡¼ÍÑ¥Æ¥ó¥×¥ì¡¼¥È¤Ë½ñ¤­¹þ¤ß	
 	$fp = fopen($css_path,"w");
 	fwrite($fp, $_POST['css']);
 	fclose($fp);
 	
-	$objPage->tpl_onload="alert('ç™»éŒ²ãŒå®Œäº†ã—ã¾ã—ãŸã€‚');";
+	$objPage->tpl_onload="alert('ÅÐÏ¿¤¬´°Î»¤·¤Þ¤·¤¿¡£');";
 }
 
-// CSSãƒ•ã‚¡ã‚¤ãƒ«ã®èª­ã¿è¾¼ã¿
+// CSS¥Õ¥¡¥¤¥ë¤ÎÆÉ¤ß¹þ¤ß
 if(file_exists($css_path)){
 	$css_data = file_get_contents($css_path);
 }
 
-// ãƒ†ã‚­ã‚¹ãƒˆã‚¨ãƒªã‚¢ã«è¡¨ç¤º
+// ¥Æ¥­¥¹¥È¥¨¥ê¥¢¤ËÉ½¼¨
 $objPage->css_data = $css_data;
 
-// ç”»é¢ã®è¡¨ç¤º
+// ²èÌÌ¤ÎÉ½¼¨
 $objView->assignobj($objPage);
 $objView->display(MAIN_FRAME);
 

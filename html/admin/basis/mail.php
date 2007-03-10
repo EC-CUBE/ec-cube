@@ -14,7 +14,7 @@ class LC_Page {
 		$this->tpl_subnavi = 'basis/subnavi.tpl';
 		$this->tpl_mainno = 'basis';
 		$this->tpl_subno = 'mail';
-		$this->tpl_subtitle = 'ãƒ¡ãƒ¼ãƒ«è¨­å®š';
+		$this->tpl_subtitle = '¥á¡¼¥ëÀßÄê';
 	}
 }
 
@@ -23,13 +23,13 @@ $objPage = new LC_Page();
 $objView = new SC_AdminView();
 $objSess = new SC_Session();
 
-// èªè¨¼å¯å¦ã®åˆ¤å®š
+// Ç§¾Ú²ÄÈÝ¤ÎÈ½Äê
 sfIsSuccess($objSess);
 
 $objPage->arrMailTEMPLATE = $arrMAILTEMPLATE;
 
 if ( $_POST['mode'] == 'id_set'){
-	// ãƒ†ãƒ³ãƒ—ãƒ¬ãƒ¼ãƒˆãƒ—ãƒ«ãƒ€ã‚¦ãƒ³å¤‰æ›´æ™‚
+	// ¥Æ¥ó¥×¥ì¡¼¥È¥×¥ë¥À¥¦¥óÊÑ¹¹»þ
 	
 	if ( sfCheckNumLength( $_POST['template_id']) ){
 		$sql = "SELECT * FROM dtb_mailtemplate WHERE template_id = ?";
@@ -43,20 +43,20 @@ if ( $_POST['mode'] == 'id_set'){
 	
 } elseif ( $_POST['mode'] == 'regist' && sfCheckNumLength( $_POST['template_id']) ){
 
-	// POSTãƒ‡ãƒ¼ã‚¿ã®å¼•ãç¶™ãŽ
+	// POST¥Ç¡¼¥¿¤Î°ú¤­·Ñ¤®
 	$objPage->arrForm = lfConvertParam($_POST);
 	$objPage->arrErr = fnErrorCheck($objPage->arrForm);
 	
 	if ( $objPage->arrErr ){
-		// ã‚¨ãƒ©ãƒ¼ãƒ¡ãƒƒã‚»ãƒ¼ã‚¸
-		$objPage->tpl_msg = "ã‚¨ãƒ©ãƒ¼ãŒç™ºç”Ÿã—ã¾ã—ãŸ";
+		// ¥¨¥é¡¼¥á¥Ã¥»¡¼¥¸
+		$objPage->tpl_msg = "¥¨¥é¡¼¤¬È¯À¸¤·¤Þ¤·¤¿";
 		
 	} else {
-		// æ­£å¸¸
+		// Àµ¾ï
 		lfRegist($conn, $objPage->arrForm);
 		
-		// å®Œäº†ãƒ¡ãƒƒã‚»ãƒ¼ã‚¸
-		$objPage->tpl_onload = "window.alert('ãƒ¡ãƒ¼ãƒ«è¨­å®šãŒå®Œäº†ã—ã¾ã—ãŸã€‚ãƒ†ãƒ³ãƒ—ãƒ¬ãƒ¼ãƒˆã‚’é¸æŠžã—ã¦å†…å®¹ã‚’ã”ç¢ºèªãã ã•ã„ã€‚');";
+		// ´°Î»¥á¥Ã¥»¡¼¥¸
+		$objPage->tpl_onload = "window.alert('¥á¡¼¥ëÀßÄê¤¬´°Î»¤·¤Þ¤·¤¿¡£¥Æ¥ó¥×¥ì¡¼¥È¤òÁªÂò¤·¤ÆÆâÍÆ¤ò¤´³ÎÇ§¤¯¤À¤µ¤¤¡£');";
 		unset($objPage->arrForm);
 	}
 
@@ -93,15 +93,15 @@ function lfConvertParam($array) {
 	return $new_array;
 }
 
-/* å…¥åŠ›ã‚¨ãƒ©ãƒ¼ã®ãƒã‚§ãƒƒã‚¯ */
+/* ÆþÎÏ¥¨¥é¡¼¤Î¥Á¥§¥Ã¥¯ */
 function fnErrorCheck($array) {
 	
 	$objErr = new SC_CheckError($array);
 	
-	$objErr->doFunc(array("ãƒ†ãƒ³ãƒ—ãƒ¬ãƒ¼ãƒˆ",'template_id'), array("EXIST_CHECK"));
-	$objErr->doFunc(array("ãƒ¡ãƒ¼ãƒ«ã‚¿ã‚¤ãƒˆãƒ«",'subject',MTEXT_LEN,"BIG"), array("EXIST_CHECK", "MAX_LENGTH_CHECK"));
-	$objErr->doFunc(array("ãƒ˜ãƒƒãƒ€ãƒ¼",'header',LTEXT_LEN,"BIG"), array("MAX_LENGTH_CHECK"));
-	$objErr->doFunc(array("ãƒ•ãƒƒã‚¿ãƒ¼",'footer',LTEXT_LEN,"BIG"), array("MAX_LENGTH_CHECK"));
+	$objErr->doFunc(array("¥Æ¥ó¥×¥ì¡¼¥È",'template_id'), array("EXIST_CHECK"));
+	$objErr->doFunc(array("¥á¡¼¥ë¥¿¥¤¥È¥ë",'subject',MTEXT_LEN,"BIG"), array("EXIST_CHECK", "MAX_LENGTH_CHECK"));
+	$objErr->doFunc(array("¥Ø¥Ã¥À¡¼",'header',LTEXT_LEN,"BIG"), array("MAX_LENGTH_CHECK"));
+	$objErr->doFunc(array("¥Õ¥Ã¥¿¡¼",'footer',LTEXT_LEN,"BIG"), array("MAX_LENGTH_CHECK"));
 
 	return $objErr->arrErr;
 }

@@ -5,15 +5,15 @@
  */
 @charset "<!--{$smarty.const.CHAR_CODE}-->";
 
-/***å…¨ä½“***/
+/***Á´ÂÎ***/
 #layout{
 border: 0;
-margin: 0 auto;	/*ã‚»ãƒ³ã‚¿ãƒ¼æƒãˆ*/
+margin: 0 auto;	/*¥»¥ó¥¿¡¼Â·¤¨*/
 padding: 0;
 }
 
-/***ã‚³ãƒ³ãƒ†ãƒ³ãƒ„***/
-/*ã‚¿ã‚¤ãƒˆãƒ«*/
+/***¥³¥ó¥Æ¥ó¥Ä***/
+/*¥¿¥¤¥È¥ë*/
 #layout #title{
 border: 0;
 margin: 15px 0 15px 0;
@@ -28,17 +28,17 @@ width: 480px;
 text-align: left;
 }
 
-/*ã‚°ãƒ¬ãƒ¼éƒ¨åˆ†*/
+/*¥°¥ì¡¼ÉôÊ¬*/
 #layout #gray{
 border: 0;
-margin: 0 auto;	/*ã‚»ãƒ³ã‚¿ãƒ¼æƒãˆ*/
+margin: 0 auto;	/*¥»¥ó¥¿¡¼Â·¤¨*/
 padding: 0;
 width: 480px;
 background: #f5f5f5;
 text-align: center;
 }
 
-/*ãƒœã‚¿ãƒ³*/
+/*¥Ü¥¿¥ó*/
 #layout #button{
 border: 0;
 margin: 30px 0 15px 0;

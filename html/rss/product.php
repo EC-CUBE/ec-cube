@@ -5,14 +5,14 @@
  * http://www.lockon.co.jp/
  */
 
-//å…±é€šéƒ¨å“ã®èª­ã¿è¾¼ã¿
+//¶¦ÄÌÉôÉÊ¤ÎÆÉ¤ß¹ş¤ß
 require_once("../require.php");
 
 class LC_Page{
 	function LC_Page(){
 		$this->tpl_mainpage = "rss/product.tpl";
 		$this->encode = "UTF-8";
-		$this->title = "å•†å“ä¸€è¦§æƒ…å ±";
+		$this->title = "¾¦ÉÊ°ìÍ÷¾ğÊó";
 	}
 }
 
@@ -21,23 +21,23 @@ $objPage = new LC_Page();
 $objView = new SC_SiteView();
 $objSiteInfo = new SC_SiteInfo();
 
-//åº—èˆ—æƒ…å ±ã‚’ã‚»ãƒƒãƒˆ
+//Å¹ÊŞ¾ğÊó¤ò¥»¥Ã¥È
 $arrSiteInfo = $objSiteInfo->data;
 
-//å•†å“IDã‚’å–å¾—
+//¾¦ÉÊID¤ò¼èÆÀ
 $product_id = $_GET['product_id'];
 $mode = $_GET['mode'];
 
 if(($product_id != "" and is_numeric($product_id)) or $mode == "all"){
-	//å•†å“è©³ç´°ã‚’å–å¾—
+	//¾¦ÉÊ¾ÜºÙ¤ò¼èÆÀ
 	($mode == "all") ? $arrProduct = lfGetProductsDetail($objQuery, $mode) : $arrProduct = lfGetProductsDetail($objQuery, $product_id);
 
-	// å€¤ã®ã‚»ãƒƒãƒˆã—ç›´ã—
+	// ÃÍ¤Î¥»¥Ã¥È¤·Ä¾¤·
 	foreach($arrProduct as $key => $val){
-		//å•†å“ä¾¡æ ¼ã‚’ç¨è¾¼ã¿ã«ç·¨é›†
+		//¾¦ÉÊ²Á³Ê¤òÀÇ¹ş¤ß¤ËÊÔ½¸
 		$arrProduct[$key]["price02"] = sfPreTax($arrProduct[$key]["price02"], $arrSiteInfo["tax"], $arrSiteInfo["tax_rule"]);
 		
-		// ç”»åƒãƒ•ã‚¡ã‚¤ãƒ«ã®URLã‚»ãƒƒãƒˆ
+		// ²èÁü¥Õ¥¡¥¤¥ë¤ÎURL¥»¥Ã¥È
 		(file_exists(IMAGE_SAVE_DIR . $arrProduct[$key]["main_list_image"])) ? $dir = IMAGE_SAVE_URL_RSS : $dir = IMAGE_TEMP_URL_RSS;
 		$arrProduct[$key]["main_list_image"] = $dir . $arrProduct[$key]["main_list_image"];
 		(file_exists(IMAGE_SAVE_DIR . $arrProduct[$key]["main_image"])) ? $dir = IMAGE_SAVE_URL_RSS : $dir = IMAGE_TEMP_URL_RSS;
@@ -45,24 +45,24 @@ if(($product_id != "" and is_numeric($product_id)) or $mode == "all"){
 		(file_exists(IMAGE_SAVE_DIR . $arrProduct[$key]["main_large_image"])) ? $dir = IMAGE_SAVE_URL_RSS : $dir = IMAGE_TEMP_URL_RSS;
 		$arrProduct[$key]["main_large_image"] = $dir . $arrProduct[$key]["main_large_image"];
 		
-		// ãƒã‚¤ãƒ³ãƒˆè¨ˆç®—
+		// ¥İ¥¤¥ó¥È·×»»
 		$arrProduct[$key]["point"] = sfPrePoint($arrProduct[$key]["price02"], $arrProduct[$key]["point_rate"], POINT_RULE, $arrProduct[$key]["product_id"]);
 	}
 }elseif($mode == "list"){
-	//å•†å“ä¸€è¦§ã‚’å–å¾—
+	//¾¦ÉÊ°ìÍ÷¤ò¼èÆÀ
 	$arrProduct = $objQuery->getall("SELECT product_id, name AS product_name FROM dtb_products");
 }else{
 	$arrProduct = lfGetProductsAllclass($objQuery);
 	
-	// å€¤ã®ã‚»ãƒƒãƒˆã—ç›´ã—
+	// ÃÍ¤Î¥»¥Ã¥È¤·Ä¾¤·
 	foreach($arrProduct as $key => $val){
-		//å•†å“ä¾¡æ ¼ã‚’ç¨è¾¼ã¿ã«ç·¨é›†
+		//¾¦ÉÊ²Á³Ê¤òÀÇ¹ş¤ß¤ËÊÔ½¸
 		$arrProduct[$key]["price01_max"] = sfPreTax($arrProduct[$key]["price01_max"], $arrSiteInfo["tax"], $arrSiteInfo["tax_rule"]);
 		$arrProduct[$key]["price01_min"] = sfPreTax($arrProduct[$key]["price01_min"], $arrSiteInfo["tax"], $arrSiteInfo["tax_rule"]);
 		$arrProduct[$key]["price02_max"] = sfPreTax($arrProduct[$key]["price02_max"], $arrSiteInfo["tax"], $arrSiteInfo["tax_rule"]);
 		$arrProduct[$key]["price02_min"] = sfPreTax($arrProduct[$key]["price02_min"], $arrSiteInfo["tax"], $arrSiteInfo["tax_rule"]);
 		
-		// ç”»åƒãƒ•ã‚¡ã‚¤ãƒ«ã®URLã‚»ãƒƒãƒˆ
+		// ²èÁü¥Õ¥¡¥¤¥ë¤ÎURL¥»¥Ã¥È
 		(file_exists(IMAGE_SAVE_DIR . $arrProduct[$key]["main_list_image"])) ? $dir = IMAGE_SAVE_URL_RSS : $dir = IMAGE_TEMP_URL_RSS;
 		$arrProduct[$key]["main_list_image"] = $dir . $arrProduct[$key]["main_list_image"];
 		(file_exists(IMAGE_SAVE_DIR . $arrProduct[$key]["main_image"])) ? $dir = IMAGE_SAVE_URL_RSS : $dir = IMAGE_TEMP_URL_RSS;
@@ -70,41 +70,41 @@ if(($product_id != "" and is_numeric($product_id)) or $mode == "all"){
 		(file_exists(IMAGE_SAVE_DIR . $arrProduct[$key]["main_large_image"])) ? $dir = IMAGE_SAVE_URL_RSS : $dir = IMAGE_TEMP_URL_RSS;
 		$arrProduct[$key]["main_large_image"] = $dir . $arrProduct[$key]["main_large_image"];
 		
-		// ãƒã‚¤ãƒ³ãƒˆè¨ˆç®—
+		// ¥İ¥¤¥ó¥È·×»»
 		$arrProduct[$key]["point_max"] = sfPrePoint($arrProduct[$key]["price02_max"], $arrProduct[$key]["point_rate"], POINT_RULE, $arrProduct[$key]["product_id"]);
 		$arrProduct[$key]["point_min"] = sfPrePoint($arrProduct[$key]["price02_min"], $arrProduct[$key]["point_rate"], POINT_RULE, $arrProduct[$key]["product_id"]);
 	}
 }
 
-//å•†å“æƒ…å ±ã‚’ã‚»ãƒƒãƒˆ
+//¾¦ÉÊ¾ğÊó¤ò¥»¥Ã¥È
 $objPage->arrProduct = $arrProduct;
 if(is_array(sfswaparray($arrProduct))){
 	$objPage->arrProductKeys = array_keys(sfswaparray($arrProduct));
 }
 
-//åº—èˆ—æƒ…å ±ã‚’ã‚»ãƒƒãƒˆ
+//Å¹ÊŞ¾ğÊó¤ò¥»¥Ã¥È
 $objPage->arrSiteInfo = $arrSiteInfo;
 
-//ã‚»ãƒƒãƒˆã—ãŸãƒ‡ãƒ¼ã‚¿ã‚’ãƒ†ãƒ³ãƒ—ãƒ¬ãƒ¼ãƒˆãƒ•ã‚¡ã‚¤ãƒ«ã«å‡ºåŠ›
+//¥»¥Ã¥È¤·¤¿¥Ç¡¼¥¿¤ò¥Æ¥ó¥×¥ì¡¼¥È¥Õ¥¡¥¤¥ë¤Ë½ĞÎÏ
 $objView->assignobj($objPage);
 
-//ã‚­ãƒ£ãƒƒã‚·ãƒ¥ã—ãªã„(å¿µã®ãŸã‚)
+//¥­¥ã¥Ã¥·¥å¤·¤Ê¤¤(Ç°¤Î¤¿¤á)
 header("Paragrama: no-cache");
 
-//XMLãƒ†ã‚­ã‚¹ãƒˆ(ã“ã‚ŒãŒãªã„ã¨æ­£å¸¸ã«RSSã¨ã—ã¦èªè­˜ã—ã¦ãã‚Œãªã„ãƒ„ãƒ¼ãƒ«ãŒã‚ã‚‹ãŸã‚)
+//XML¥Æ¥­¥¹¥È(¤³¤ì¤¬¤Ê¤¤¤ÈÀµ¾ï¤ËRSS¤È¤·¤ÆÇ§¼±¤·¤Æ¤¯¤ì¤Ê¤¤¥Ä¡¼¥ë¤¬¤¢¤ë¤¿¤á)
 header("Content-type: application/xml");
 DETAIL_P_HTML;
 
-//ç”»é¢è¡¨ç¤º
+//²èÌÌÉ½¼¨
 $objView->display($objPage->tpl_mainpage, true);
 
 //---------------------------------------------------------------------------------------------------------------------
 /**************************************************************************************************************
- * é–¢æ•°å:lfGetProducts
- * èª¬æ˜ã€€:å•†å“æƒ…å ±ã‚’å–å¾—ã™ã‚‹
- * å¼•æ•°ï¼‘:$objQuery		DBæ“ä½œã‚¯ãƒ©ã‚¹
- * å¼•æ•°ï¼’:$product_id	å•†å“ID
- * æˆ»ã‚Šå€¤:$arrProduct	å–å¾—çµæœã‚’é…åˆ—ã§è¿”ã™
+ * ´Ø¿ôÌ¾:lfGetProducts
+ * ÀâÌÀ¡¡:¾¦ÉÊ¾ğÊó¤ò¼èÆÀ¤¹¤ë
+ * °ú¿ô£±:$objQuery		DBÁàºî¥¯¥é¥¹
+ * °ú¿ô£²:$product_id	¾¦ÉÊID
+ * Ìá¤êÃÍ:$arrProduct	¼èÆÀ·ë²Ì¤òÇÛÎó¤ÇÊÖ¤¹
  **************************************************************************************************************/
 function lfGetProductsDetail($objQuery, $product_id = "all"){
 	$sql = "";
@@ -140,10 +140,10 @@ function lfGetProductsDetail($objQuery, $product_id = "all"){
 }
 
 /**************************************************************************************************************
- * é–¢æ•°å:lfGetProductsAllclass
- * èª¬æ˜ã€€:å•†å“æƒ…å ±ã‚’å–å¾—ã™ã‚‹(vw_products_allclassä½¿ç”¨)
- * å¼•æ•°ï¼‘:$objQuery		DBæ“ä½œã‚¯ãƒ©ã‚¹
- * æˆ»ã‚Šå€¤:$arrProduct	å–å¾—çµæœã‚’é…åˆ—ã§è¿”ã™
+ * ´Ø¿ôÌ¾:lfGetProductsAllclass
+ * ÀâÌÀ¡¡:¾¦ÉÊ¾ğÊó¤ò¼èÆÀ¤¹¤ë(vw_products_allclass»ÈÍÑ)
+ * °ú¿ô£±:$objQuery		DBÁàºî¥¯¥é¥¹
+ * Ìá¤êÃÍ:$arrProduct	¼èÆÀ·ë²Ì¤òÇÛÎó¤ÇÊÖ¤¹
  **************************************************************************************************************/
 function lfGetProductsAllclass($objQuery){
 	$sql = "";

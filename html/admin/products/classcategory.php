@@ -16,7 +16,7 @@ class LC_Page {
 		$this->tpl_mainpage = 'products/classcategory.tpl';
 		$this->tpl_subnavi = 'products/subnavi.tpl';
 		$this->tpl_subno = 'class';
-		$this->tpl_subtitle = 'è¦æ ¼ç™»éŒ²';
+		$this->tpl_subtitle = 'µ¬³ÊÅĞÏ¿';
 		$this->tpl_mainno = 'products';
 	}
 }
@@ -26,66 +26,66 @@ $objPage = new LC_Page();
 $objView = new SC_AdminView();
 $objQuery = new SC_Query();
 
-// èªè¨¼å¯å¦ã®åˆ¤å®š
+// Ç§¾Ú²ÄÈİ¤ÎÈ½Äê
 $objSess = new SC_Session();
 sfIsSuccess($objSess);
 
 $get_check = false;
 
-// è¦æ ¼IDã®ãƒã‚§ãƒƒã‚¯
+// µ¬³ÊID¤Î¥Á¥§¥Ã¥¯
 if(sfIsInt($_GET['class_id'])) {
-	// è¦æ ¼åã®å–å¾—
+	// µ¬³ÊÌ¾¤Î¼èÆÀ
 	$objPage->tpl_class_name = $objQuery->get("dtb_class", "name", "class_id = ?", array($_GET['class_id']));
 	if($objPage->tpl_class_name != "") {
-		// è¦æ ¼IDã®å¼•ãç¶™ã
+		// µ¬³ÊID¤Î°ú¤­·Ñ¤®
 		$objPage->arrHidden['class_id'] = $_GET['class_id'];
 		$get_check = true;
 	}
 }
 
 if(!$get_check) {
-	// è¦æ ¼ç™»éŒ²ãƒšãƒ¼ã‚¸ã«é£›ã°ã™ã€‚
+	// µ¬³ÊÅĞÏ¿¥Ú¡¼¥¸¤ËÈô¤Ğ¤¹¡£
 	header("Location: " . URL_CLASS_REGIST);
 	exit;
 }
 
-// æ–°è¦ä½œæˆ or ç·¨é›†
+// ¿·µ¬ºîÀ® or ÊÔ½¸
 switch($_POST['mode']) {
-// ç™»éŒ²ãƒœã‚¿ãƒ³æŠ¼ä¸‹
+// ÅĞÏ¿¥Ü¥¿¥ó²¡²¼
 case 'edit':
-	// POSTå€¤ã®å¼•ãç¶™ã
+	// POSTÃÍ¤Î°ú¤­·Ñ¤®
 	$objPage->arrForm = $_POST;
-	// å…¥åŠ›æ–‡å­—ã®å¤‰æ›
+	// ÆşÎÏÊ¸»ú¤ÎÊÑ´¹
 	$_POST = lfConvertParam($_POST);
-	// ã‚¨ãƒ©ãƒ¼ãƒã‚§ãƒƒã‚¯
+	// ¥¨¥é¡¼¥Á¥§¥Ã¥¯
 	$objPage->arrErr = lfErrorCheck();
 	if(count($objPage->arrErr) <= 0) {
 		if($_POST['classcategory_id'] == "") {
-			lfInsertClass();	// DBã¸ã®æ›¸ãè¾¼ã¿
+			lfInsertClass();	// DB¤Ø¤Î½ñ¤­¹ş¤ß
 		} else {
-			lfUpdateClass();	// DBã¸ã®æ›¸ãè¾¼ã¿
+			lfUpdateClass();	// DB¤Ø¤Î½ñ¤­¹ş¤ß
 		}
-		// å†è¡¨ç¤º
+		// ºÆÉ½¼¨
 		sfReload("class_id=" . $_GET['class_id']);
 	} else {
-		// POSTãƒ‡ãƒ¼ã‚¿ã‚’å¼•ãç¶™ã
+		// POST¥Ç¡¼¥¿¤ò°ú¤­·Ñ¤°
 		$objPage->tpl_classcategory_id = $_POST['classcategory_id'];
 	}
 	break;
-// å‰Šé™¤
+// ºï½ü
 case 'delete':
-	// ãƒ©ãƒ³ã‚¯ä»˜ããƒ¬ã‚³ãƒ¼ãƒ‰ã®å‰Šé™¤
+	// ¥é¥ó¥¯ÉÕ¤­¥ì¥³¡¼¥É¤Îºï½ü
 	$where = "class_id = " . addslashes($_POST['class_id']);
 	sfDeleteRankRecord("dtb_classcategory", "classcategory_id", $_POST['classcategory_id'], $where, true);
 	break;
-// ç·¨é›†å‰å‡¦ç†
+// ÊÔ½¸Á°½èÍı
 case 'pre_edit':
-	// ç·¨é›†é …ç›®ã‚’DBã‚ˆã‚Šå–å¾—ã™ã‚‹ã€‚
+	// ÊÔ½¸¹àÌÜ¤òDB¤è¤ê¼èÆÀ¤¹¤ë¡£
 	$where = "classcategory_id = ?";
 	$name = $objQuery->get("dtb_classcategory", "name", $where, array($_POST['classcategory_id']));
-	// å…¥åŠ›é …ç›®ã«ã‚«ãƒ†ã‚´ãƒªåã‚’å…¥åŠ›ã™ã‚‹ã€‚
+	// ÆşÎÏ¹àÌÜ¤Ë¥«¥Æ¥´¥êÌ¾¤òÆşÎÏ¤¹¤ë¡£
 	$objPage->arrForm['name'] = $name;
-	// POSTãƒ‡ãƒ¼ã‚¿ã‚’å¼•ãç¶™ã
+	// POST¥Ç¡¼¥¿¤ò°ú¤­·Ñ¤°
 	$objPage->tpl_classcategory_id = $_POST['classcategory_id'];
 	break;
 case 'down':
@@ -100,7 +100,7 @@ default:
 	break;
 }
 
-// è¦æ ¼åˆ†é¡ã®èª­è¾¼
+// µ¬³ÊÊ¬Îà¤ÎÆÉ¹ş
 $where = "del_flg <> 1 AND class_id = ?";
 $objQuery->setorder("rank DESC");
 $objPage->arrClassCat = $objQuery->select("name, classcategory_id", "dtb_classcategory", $where, array($_GET['class_id']));
@@ -110,47 +110,47 @@ $objView->display(MAIN_FRAME);
 
 //-----------------------------------------------------------------------------------------------------------------------------
 
-/* DBã¸ã®æŒ¿å…¥ */
+/* DB¤Ø¤ÎÁŞÆş */
 function lfInsertClass() {
 	$objQuery = new SC_Query();
 	$objQuery->begin();
-	// è¦ªè¦æ ¼IDã®å­˜åœ¨ãƒã‚§ãƒƒã‚¯
+	// ¿Æµ¬³ÊID¤ÎÂ¸ºß¥Á¥§¥Ã¥¯
 	$where = "del_flg <> 1 AND class_id = ?";
 	$ret = 	$objQuery->get("dtb_class", "class_id", $where, array($_POST['class_id']));
 	if($ret != "") {	
-		// INSERTã™ã‚‹å€¤ã‚’ä½œæˆã™ã‚‹ã€‚
+		// INSERT¤¹¤ëÃÍ¤òºîÀ®¤¹¤ë¡£
 		$sqlval['name'] = $_POST['name'];
 		$sqlval['class_id'] = $_POST['class_id'];
 		$sqlval['creator_id'] = $_SESSION['member_id'];
 		$sqlval['rank'] = $objQuery->max("dtb_classcategory", "rank", $where, array($_POST['class_id'])) + 1;
 		$sqlval['create_date'] = "now()";
 		$sqlval['update_date'] = "now()";
-		// INSERTã®å®Ÿè¡Œ
+		// INSERT¤Î¼Â¹Ô
 		$ret = $objQuery->insert("dtb_classcategory", $sqlval);
 	}
 	$objQuery->commit();
 	return $ret;
 }
 
-/* DBã¸ã®æ›´æ–° */
+/* DB¤Ø¤Î¹¹¿· */
 function lfUpdateClass() {
 	$objQuery = new SC_Query();
-	// UPDATEã™ã‚‹å€¤ã‚’ä½œæˆã™ã‚‹ã€‚
+	// UPDATE¤¹¤ëÃÍ¤òºîÀ®¤¹¤ë¡£
 	$sqlval['name'] = $_POST['name'];
 	$sqlval['update_date'] = "Now()";
 	$where = "classcategory_id = ?";
-	// UPDATEã®å®Ÿè¡Œ
+	// UPDATE¤Î¼Â¹Ô
 	$ret = $objQuery->update("dtb_classcategory", $sqlval, $where, array($_POST['classcategory_id']));
 	return $ret;
 }
 
-/* å–å¾—æ–‡å­—åˆ—ã®å¤‰æ› */
+/* ¼èÆÀÊ¸»úÎó¤ÎÊÑ´¹ */
 function lfConvertParam($array) {
-	// æ–‡å­—å¤‰æ›
+	// Ê¸»úÊÑ´¹
 	$arrConvList['name'] = "KVa";
 
 	foreach ($arrConvList as $key => $val) {
-		// POSTã•ã‚Œã¦ããŸå€¤ã®ã¿å¤‰æ›ã™ã‚‹ã€‚
+		// POST¤µ¤ì¤Æ¤­¤¿ÃÍ¤Î¤ßÊÑ´¹¤¹¤ë¡£
 		if(isset($array[$key])) {
 			$array[$key] = mb_convert_kana($array[$key] ,$val);
 		}
@@ -158,17 +158,17 @@ function lfConvertParam($array) {
 	return $array;
 }
 
-/* å…¥åŠ›ã‚¨ãƒ©ãƒ¼ãƒã‚§ãƒƒã‚¯ */
+/* ÆşÎÏ¥¨¥é¡¼¥Á¥§¥Ã¥¯ */
 function lfErrorCheck() {
 	$objErr = new SC_CheckError();
-	$objErr->doFunc(array("åˆ†é¡å", "name", STEXT_LEN), array("EXIST_CHECK","MAX_LENGTH_CHECK"));
+	$objErr->doFunc(array("Ê¬ÎàÌ¾", "name", STEXT_LEN), array("EXIST_CHECK","MAX_LENGTH_CHECK"));
 	if(!isset($objErr->arrErr['name'])) {
 		$objQuery = new SC_Query();
 		$where = "class_id = ? AND name = ?";
 		$arrRet = $objQuery->select("classcategory_id, name", "dtb_classcategory", $where, array($_GET['class_id'], $_POST['name']));
-		// ç·¨é›†ä¸­ã®ãƒ¬ã‚³ãƒ¼ãƒ‰ä»¥å¤–ã«åŒã˜åç§°ãŒå­˜åœ¨ã™ã‚‹å ´åˆ
+		// ÊÔ½¸Ãæ¤Î¥ì¥³¡¼¥É°Ê³°¤ËÆ±¤¸Ì¾¾Î¤¬Â¸ºß¤¹¤ë¾ì¹ç
 		if ($arrRet[0]['classcategory_id'] != $_POST['classcategory_id'] && $arrRet[0]['name'] == $_POST['name']) {
-			$objErr->arrErr['name'] = "â€» æ—¢ã«åŒã˜å†…å®¹ã®ç™»éŒ²ãŒå­˜åœ¨ã—ã¾ã™ã€‚<br>";
+			$objErr->arrErr['name'] = "¢¨ ´û¤ËÆ±¤¸ÆâÍÆ¤ÎÅĞÏ¿¤¬Â¸ºß¤·¤Ş¤¹¡£<br>";
 		}
 	}
 	return $objErr->arrErr;

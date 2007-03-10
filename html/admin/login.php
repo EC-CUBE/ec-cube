@@ -11,50 +11,50 @@ $conn = new SC_DBConn();
 $osess = new SC_Session();
 $ret = false;
 
-// å…¥åŠ›åˆ¤å®š
+// ÆşÎÏÈ½Äê
 if(strlen($_POST{'login_id'}) > 0 && strlen($_POST{'password'}) > 0) {
-	// èªè¨¼ãƒ‘ã‚¹ãƒ¯ãƒ¼ãƒ‰ã®åˆ¤å®š
+	// Ç§¾Ú¥Ñ¥¹¥ï¡¼¥É¤ÎÈ½Äê
 	$ret = fnCheckPassword($conn);
 }
 
 if($ret){
-	// æˆåŠŸ
+	// À®¸ù
 	header("Location: ".URL_HOME);
 	exit;
 } else {
-	// ã‚¨ãƒ©ãƒ¼ãƒšãƒ¼ã‚¸ã®è¡¨ç¤º
+	// ¥¨¥é¡¼¥Ú¡¼¥¸¤ÎÉ½¼¨
 	sfDispError(LOGIN_ERROR);
 	exit;
 }
 
-/* èªè¨¼ãƒ‘ã‚¹ãƒ¯ãƒ¼ãƒ‰ã®åˆ¤å®š */
+/* Ç§¾Ú¥Ñ¥¹¥ï¡¼¥É¤ÎÈ½Äê */
 function fnCheckPassword($conn) {
 	$sql = "SELECT member_id, password, authority, login_date, name FROM dtb_member WHERE login_id = ? AND del_flg <> 1 AND work = 1";
 	$arrcol = array ($_POST['login_id']);
-	// DBã‹ã‚‰æš—å·åŒ–ãƒ‘ã‚¹ãƒ¯ãƒ¼ãƒ‰ã‚’å–å¾—ã™ã‚‹ã€‚
+	// DB¤«¤é°Å¹æ²½¥Ñ¥¹¥ï¡¼¥É¤ò¼èÆÀ¤¹¤ë¡£
 	$data_list = $conn->getAll($sql ,$arrcol); 
-	// ãƒ‘ã‚¹ãƒ¯ãƒ¼ãƒ‰ã®å–å¾—
+	// ¥Ñ¥¹¥ï¡¼¥É¤Î¼èÆÀ
 	$password = $data_list[0]['password'];
-	// ãƒ¦ãƒ¼ã‚¶å…¥åŠ›ãƒ‘ã‚¹ãƒ¯ãƒ¼ãƒ‰ã®åˆ¤å®š
+	// ¥æ¡¼¥¶ÆşÎÏ¥Ñ¥¹¥ï¡¼¥É¤ÎÈ½Äê
 	$ret = sha1($_POST['password'] . ":" . AUTH_MAGIC);
 	
 	if ($ret == $password) {
-   		// ã‚»ãƒƒã‚·ãƒ§ãƒ³ç™»éŒ²
+   		// ¥»¥Ã¥·¥ç¥óÅĞÏ¿
 		fnSetLoginSession($data_list[0]['member_id'], $data_list[0]['authority'], $data_list[0]['login_date'], $data_list[0]['name']);
-		// ãƒ­ã‚°ã‚¤ãƒ³æ—¥æ™‚ã®ç™»éŒ²
+		// ¥í¥°¥¤¥óÆü»ş¤ÎÅĞÏ¿
 		fnSetLoginDate();
 		return true;
 	} 
 	
-	// ãƒ‘ã‚¹ãƒ¯ãƒ¼ãƒ‰
+	// ¥Ñ¥¹¥ï¡¼¥É
 	gfPrintLog($_POST['login_id'] . " password incorrect.");
 	return false;
 }
 
-/* èªè¨¼ã‚»ãƒƒã‚·ãƒ§ãƒ³ã®ç™»éŒ² */
+/* Ç§¾Ú¥»¥Ã¥·¥ç¥ó¤ÎÅĞÏ¿ */
 function fnSetLoginSession($member_id,$authority,$login_date, $login_name = '') {
 	global $osess;
-	// èªè¨¼æ¸ˆã¿ã®è¨­å®š
+	// Ç§¾ÚºÑ¤ß¤ÎÀßÄê
 	$osess->SetSession('cert', CERT_STRING);
 	$osess->SetSession('login_id', $_POST{'login_id'});
 	$osess->SetSession('authority', $authority);
@@ -67,11 +67,11 @@ function fnSetLoginSession($member_id,$authority,$login_date, $login_name = '') 
 		$osess->SetSession('last_login', date("Y-m-d H:i:s"));
 	}
 	$sid = $osess->GetSID();
-	// ãƒ­ã‚°ã«è¨˜éŒ²ã™ã‚‹
+	// ¥í¥°¤Ëµ­Ï¿¤¹¤ë
 	gfPrintLog("login : user=".$_SESSION{'login_id'}." auth=".$_SESSION{'authority'}." lastlogin=". $_SESSION{'last_login'} ." sid=".$sid);
 }
 
-/* ãƒ­ã‚°ã‚¤ãƒ³æ—¥æ™‚ã®æ›´æ–° */
+/* ¥í¥°¥¤¥óÆü»ş¤Î¹¹¿· */
 function fnSetLoginDate() {
 	global $osess;
 	$oquery = new SC_Query();

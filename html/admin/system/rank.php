@@ -8,44 +8,44 @@ require_once("../require.php");
 
 $conn = new SC_DbConn();
 
-// èªè¨¼å¯å¦ã®åˆ¤å®š
+// Ç§¾Ú²ÄÈİ¤ÎÈ½Äê
 $objSess = new SC_Session();
 sfIsSuccess($objSess);
 
-// ãƒ©ãƒ³ã‚­ãƒ³ã‚°ã®å¤‰æ›´
+// ¥é¥ó¥­¥ó¥°¤ÎÊÑ¹¹
 if($_GET['move'] == 'up') {
-	// æ­£å½“ãªæ•°å€¤ã§ã‚ã£ãŸå ´åˆ
+	// ÀµÅö¤Ê¿ôÃÍ¤Ç¤¢¤Ã¤¿¾ì¹ç
 	if(sfIsInt($_GET['id'])){
 		lfRunkUp($conn, $_GET['id']);
 	} else {
-		// ã‚¨ãƒ©ãƒ¼å‡¦ç†
+		// ¥¨¥é¡¼½èÍı
 		gfPrintLog("error id=".$_GET['id']);
 	}
 } else if($_GET['move'] == 'down') {
 	if(sfIsInt($_GET['id'])){
 		lfRunkDown($conn, $_GET['id']);
 	}  else {
-		// ã‚¨ãƒ©ãƒ¼å‡¦ç†
+		// ¥¨¥é¡¼½èÍı
 		gfPrintLog("error id=".$_GET['id']);
 	}
 }
 
-// ãƒšãƒ¼ã‚¸ã®è¡¨ç¤º
+// ¥Ú¡¼¥¸¤ÎÉ½¼¨
 $location = "Location: " . URL_SYSTEM_TOP . "?pageno=".$_GET['pageno'];
 header($location);
 
-// ãƒ©ãƒ³ã‚­ãƒ³ã‚°ã‚’ä¸Šã’ã‚‹ã€‚
+// ¥é¥ó¥­¥ó¥°¤ò¾å¤²¤ë¡£
 function lfRunkUp($conn, $id) {
-	// è‡ªèº«ã®ãƒ©ãƒ³ã‚¯ã‚’å–å¾—ã™ã‚‹ã€‚
+	// ¼«¿È¤Î¥é¥ó¥¯¤ò¼èÆÀ¤¹¤ë¡£
 	$rank = $conn->getOne("SELECT rank FROM dtb_member WHERE member_id = ".$id);
-	// ãƒ©ãƒ³ã‚¯ã®æœ€å¤§å€¤ã‚’å–å¾—ã™ã‚‹ã€‚
+	// ¥é¥ó¥¯¤ÎºÇÂçÃÍ¤ò¼èÆÀ¤¹¤ë¡£
 	$maxno = $conn->getOne("SELECT max(rank) FROM dtb_member");
-	// ãƒ©ãƒ³ã‚¯ãŒæœ€å¤§å€¤ã‚ˆã‚Šã‚‚å°ã•ã„å ´åˆã«å®Ÿè¡Œã™ã‚‹ã€‚
+	// ¥é¥ó¥¯¤¬ºÇÂçÃÍ¤è¤ê¤â¾®¤µ¤¤¾ì¹ç¤Ë¼Â¹Ô¤¹¤ë¡£
 	if($rank < $maxno) {
-		// ãƒ©ãƒ³ã‚¯ãŒã²ã¨ã¤ä¸Šã®IDã‚’å–å¾—ã™ã‚‹ã€‚
+		// ¥é¥ó¥¯¤¬¤Ò¤È¤Ä¾å¤ÎID¤ò¼èÆÀ¤¹¤ë¡£
 		$sqlse = "SELECT member_id FROM dtb_member WHERE rank = ?";
 		$up_id = $conn->getOne($sqlse, $rank + 1);
-		// ãƒ©ãƒ³ã‚¯å…¥ã‚Œæ›¿ãˆã®å®Ÿè¡Œ
+		// ¥é¥ó¥¯Æş¤ìÂØ¤¨¤Î¼Â¹Ô
 		$conn->query("BEGIN");
 		$sqlup = "UPDATE dtb_member SET rank = ? WHERE member_id = ?";
 		$conn->query($sqlup, array($rank + 1, $id));
@@ -54,18 +54,18 @@ function lfRunkUp($conn, $id) {
 	}
 }
 
-// ãƒ©ãƒ³ã‚­ãƒ³ã‚°ã‚’ä¸‹ã’ã‚‹ã€‚
+// ¥é¥ó¥­¥ó¥°¤ò²¼¤²¤ë¡£
 function lfRunkDown($conn, $id) {
-	// è‡ªèº«ã®ãƒ©ãƒ³ã‚¯ã‚’å–å¾—ã™ã‚‹ã€‚
+	// ¼«¿È¤Î¥é¥ó¥¯¤ò¼èÆÀ¤¹¤ë¡£
 	$rank = $conn->getOne("SELECT rank FROM dtb_member WHERE member_id = ".$id);
-	// ãƒ©ãƒ³ã‚¯ã®æœ€å°å€¤ã‚’å–å¾—ã™ã‚‹ã€‚
+	// ¥é¥ó¥¯¤ÎºÇ¾®ÃÍ¤ò¼èÆÀ¤¹¤ë¡£
 	$minno = $conn->getOne("SELECT min(rank) FROM dtb_member");
-	// ãƒ©ãƒ³ã‚¯ãŒæœ€å¤§å€¤ã‚ˆã‚Šã‚‚å¤§ãã„å ´åˆã«å®Ÿè¡Œã™ã‚‹ã€‚
+	// ¥é¥ó¥¯¤¬ºÇÂçÃÍ¤è¤ê¤âÂç¤­¤¤¾ì¹ç¤Ë¼Â¹Ô¤¹¤ë¡£
 	if($rank > $minno) {
-		// ãƒ©ãƒ³ã‚¯ãŒã²ã¨ã¤ä¸‹ã®IDã‚’å–å¾—ã™ã‚‹ã€‚
+		// ¥é¥ó¥¯¤¬¤Ò¤È¤Ä²¼¤ÎID¤ò¼èÆÀ¤¹¤ë¡£
 		$sqlse = "SELECT member_id FROM dtb_member WHERE rank = ?";
 		$down_id = $conn->getOne($sqlse, $rank - 1);
-		// ãƒ©ãƒ³ã‚¯å…¥ã‚Œæ›¿ãˆã®å®Ÿè¡Œ
+		// ¥é¥ó¥¯Æş¤ìÂØ¤¨¤Î¼Â¹Ô
 		$conn->query("BEGIN");
 		$sqlup = "UPDATE dtb_member SET rank = ? WHERE member_id = ?";
 		$conn->query($sqlup, array($rank - 1, $id));

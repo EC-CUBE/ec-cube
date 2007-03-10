@@ -4,68 +4,68 @@
  *
  * http://www.lockon.co.jp/
  *
- *	共通 
+ *	���� 
 */
-// TTFフォントファイル
+// TTF�ե���ȥե�����
 define("FONT_PATH", DATA_PATH . "fonts/wlmaru20044.ttf");
-define("FONT_SIZE", 8);			// フォントサイズ
-define("TITLE_FONT_SIZE", 11);	// タイトルフォントサイズ
-define("BG_WIDTH", 720);		// 背景幅
-define("BG_HEIGHT", 400);		// 背景高さ
-define("LINE_PAD", 5);			// 行間
-define("TEXT_RATE", 0.75);		// フォント補正値(実際の描画幅/フォントサイズ)
+define("FONT_SIZE", 8);			// �ե���ȥ�����
+define("TITLE_FONT_SIZE", 11);	// �����ȥ�ե���ȥ�����
+define("BG_WIDTH", 720);		// �ط���
+define("BG_HEIGHT", 400);		// �طʹ⤵
+define("LINE_PAD", 5);			// �Դ�
+define("TEXT_RATE", 0.75);		// �ե����������(�ºݤ�������/�ե���ȥ�����)
 
 /*
-	円グラフ
+	�ߥ����
 */
-define("PIE_LEFT", 200);			// 円グラフ位置
-define("PIE_TOP", 150);				// 円グラフ位置
-define("PIE_WIDTH", 230);			// 円グラフ幅
-define("PIE_HEIGHT", 100);			// 円グラフ高さ
-define("PIE_THICK", 30);			// 円グラフ太さ
-define("PIE_LABEL_UP", 20);			// 円グラフのラベル位置を上にあげる
-define("PIE_SHADE_IMPACT", 0.1);	// 値が大きいほど影が長くなる
+define("PIE_LEFT", 200);			// �ߥ���հ���
+define("PIE_TOP", 150);				// �ߥ���հ���
+define("PIE_WIDTH", 230);			// �ߥ������
+define("PIE_HEIGHT", 100);			// �ߥ���չ⤵
+define("PIE_THICK", 30);			// �ߥ��������
+define("PIE_LABEL_UP", 20);			// �ߥ���դΥ�٥���֤��ˤ�����
+define("PIE_SHADE_IMPACT", 0.1);	// �ͤ��礭���ۤɱƤ�Ĺ���ʤ�
 
 /*
-	折れ線グラフ
+	�ޤ��������
 */
-define("LINE_Y_SCALE", 10);			// Y軸の目盛り数
-define("LINE_X_SCALE", 10);			// X軸の目盛り数
-define("LINE_LEFT", 60);			// 線グラフ位置
-define("LINE_TOP", 50);				// 線グラフ位置
-define("LINE_AREA_WIDTH", 600);		// 線グラフ背景のサイズ
-define("LINE_AREA_HEIGHT", 300);	// 線グラフ背景のサイズ
-define("LINE_MARK_SIZE", 6);		// 線グラフマークのサイズ
-define("LINE_SCALE_SIZE", 6);		// 目盛り幅
-define("LINE_XLABEL_MAX", 30);		// X軸のラベルの表示制限数
-define("LINE_XTITLE_PAD", -5);		// X軸のタイトルと軸の間隔
-define("LINE_YTITLE_PAD", 15);		// Y軸のタイトルと軸の間隔
+define("LINE_Y_SCALE", 10);			// Y�����������
+define("LINE_X_SCALE", 10);			// X�����������
+define("LINE_LEFT", 60);			// ������հ���
+define("LINE_TOP", 50);				// ������հ���
+define("LINE_AREA_WIDTH", 600);		// ��������طʤΥ�����
+define("LINE_AREA_HEIGHT", 300);	// ��������طʤΥ�����
+define("LINE_MARK_SIZE", 6);		// ������եޡ����Υ�����
+define("LINE_SCALE_SIZE", 6);		// ��������
+define("LINE_XLABEL_MAX", 30);		// X���Υ�٥��ɽ�����¿�
+define("LINE_XTITLE_PAD", -5);		// X���Υ����ȥ�ȼ��δֳ�
+define("LINE_YTITLE_PAD", 15);		// Y���Υ����ȥ�ȼ��δֳ�
 
 /* 
-	棒グラフ
+	�������
 */
-define("BAR_PAD", 6);				// グラフと目盛りの間隔
+define("BAR_PAD", 6);				// ����դ�������δֳ�
 
 /*
-	タイトルラベル
+	�����ȥ��٥�
 */
-define("TITLE_TOP", 10);	// 背景枠との上幅
+define("TITLE_TOP", 10);	// �ط��ȤȤξ���
 
 /*
-	凡例
+	����
 */
-define("LEGEND_TOP", 10); 	// 背景枠との上幅
-define("LEGEND_RIGHT", 10); // 背景枠との右幅
+define("LEGEND_TOP", 10); 	// �ط��ȤȤξ���
+define("LEGEND_RIGHT", 10); // �ط��ȤȤα���
 
 
 /*
-	表示色
+	ɽ����
 */
-// 凡例背景
+// �����ط�
 $ARR_LEGENDBG_COLOR = array(245,245,245);
-// ラベル背景
+// ��٥��ط�
 $ARR_LABELBG_COLOR = array(255,255,255);
-// グラフカラー
+// ����ե��顼
 $ARR_GRAPH_RGB = array(
 	array(200,50,50),
 	array(50,50,200),
@@ -77,19 +77,19 @@ $ARR_GRAPH_RGB = array(
 	array(255,255,255),
 	array(244,244,244),
 );
-// 影の色
+// �Ƥο�
 $ARR_SHADE_COLOR = array(100,100,100);
-// 縁の色
+// ��ο�
 $ARR_FLAME_COLOR = array(0, 0, 0);
-// 文字色
+// ʸ����
 $ARR_TEXT_COLOR = array(0, 0, 0);
-// 背景カラー
+// �طʥ��顼
 $ARR_BG_COLOR = array(255,255,255);	
-// タイトル文字色
+// �����ȥ�ʸ����
 $ARR_TITLE_COLOR = array(0, 0, 0);
-// グリッド線色
+// ����å�����
 $ARR_GRID_COLOR = array(200, 200, 200);
-// マークの色
+// �ޡ����ο�
 $ARR_MARK_COLOR = array(130, 130, 255);
 
 

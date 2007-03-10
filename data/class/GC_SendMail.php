@@ -5,35 +5,35 @@
  * http://www.lockon.co.jp/
  */
 
-//--- ãƒ†ã‚­ã‚¹ãƒˆ/HTMLã€€ãƒ¡ãƒ¼ãƒ«é€ä¿¡
+//--- ¥Æ¥­¥¹¥È/HTML¡¡¥á¡¼¥ëÁ÷¿®
 class GC_SendMail {
 
-	var	$html;			//	HTML ãƒ¡ãƒ¼ãƒ«ãƒ˜ãƒƒãƒ€ãƒ¼
-	var $to;			//	é€ä¿¡å…ˆ
-	var $subject;		//	é¡Œå
-	var $body;			//	æœ¬æ–‡
-	var $header;		//	ãƒ˜ãƒƒãƒ€ãƒ¼
-	var $return_path;	//ã€€return path
+	var	$html;			//	HTML ¥á¡¼¥ë¥Ø¥Ã¥À¡¼
+	var $to;			//	Á÷¿®Àè
+	var $subject;		//	ÂêÌ¾
+	var $body;			//	ËÜÊ¸
+	var $header;		//	¥Ø¥Ã¥À¡¼
+	var $return_path;	//¡¡return path
 	var $mailer;
 
-	/*	ãƒ˜ãƒƒãƒ€ç­‰ã‚’æ ¼ç´
-		 $to			-> é€ä¿¡å…ˆãƒ¡ãƒ¼ãƒ«ã‚¢ãƒ‰ãƒ¬ã‚¹
-		 $subject		-> ãƒ¡ãƒ¼ãƒ«ã®ã‚¿ã‚¤ãƒˆãƒ«
-		 $body			-> ãƒ¡ãƒ¼ãƒ«æœ¬æ–‡
-		 $fromaddress	-> é€ä¿¡å…ƒã®ãƒ¡ãƒ¼ãƒ«ã‚¢ãƒ‰ãƒ¬ã‚¹
-		 $header		-> ãƒ˜ãƒƒãƒ€ãƒ¼
-		 $from_name		-> é€ä¿¡å…ƒã®åå‰ï¼ˆå…¨è§’OKï¼‰
-		 $reply_to		-> reply_toè¨­å®š
-		 $return_path	-> return-pathã‚¢ãƒ‰ãƒ¬ã‚¹è¨­å®šï¼ˆã‚¨ãƒ©ãƒ¼ãƒ¡ãƒ¼ãƒ«è¿”é€ç”¨ï¼‰
-		 $cc			-> ã‚«ãƒ¼ãƒœãƒ³ã‚³ãƒ”ãƒ¼
-		 $bcc			-> ãƒ–ãƒ©ã‚¤ãƒ³ãƒ‰ã‚«ãƒ¼ãƒœãƒ³ã‚³ãƒ”ãƒ¼
+	/*	¥Ø¥Ã¥ÀÅù¤ò³ÊÇ¼
+		 $to			-> Á÷¿®Àè¥á¡¼¥ë¥¢¥É¥ì¥¹
+		 $subject		-> ¥á¡¼¥ë¤Î¥¿¥¤¥È¥ë
+		 $body			-> ¥á¡¼¥ëËÜÊ¸
+		 $fromaddress	-> Á÷¿®¸µ¤Î¥á¡¼¥ë¥¢¥É¥ì¥¹
+		 $header		-> ¥Ø¥Ã¥À¡¼
+		 $from_name		-> Á÷¿®¸µ¤ÎÌ¾Á°¡ÊÁ´³ÑOK¡Ë
+		 $reply_to		-> reply_toÀßÄê
+		 $return_path	-> return-path¥¢¥É¥ì¥¹ÀßÄê¡Ê¥¨¥é¡¼¥á¡¼¥ëÊÖÁ÷ÍÑ¡Ë
+		 $cc			-> ¥«¡¼¥Ü¥ó¥³¥Ô¡¼
+		 $bcc			-> ¥Ö¥é¥¤¥ó¥É¥«¡¼¥Ü¥ó¥³¥Ô¡¼
 	*/	
 	
 	
 	function setTo($to, $to_name = "") {
 		if($to_name != "") {
-			$name = ereg_replace("<","ï¼œ", $to_name);
-			$name = ereg_replace(">","ï¼", $name);
+			$name = ereg_replace("<","¡ã", $to_name);
+			$name = ereg_replace(">","¡ä", $name);
 			$name = mb_encode_mimeheader($name);
 			$this->to = $name . "<" . $to . ">";
 		} else {
@@ -46,9 +46,9 @@ class GC_SendMail {
 		$this->to			 = $to;
 		$this->subject		 = $subject;
 		$this->body			 = $body;
-		// ãƒ˜ãƒƒãƒ€ãƒ¼ã«æ—¥æœ¬èªã‚’ä½¿ç”¨ã™ã‚‹å ´åˆã¯Mb_encode_mimeheaderã§ã‚¨ãƒ³ã‚³ãƒ¼ãƒ‰ã™ã‚‹ã€‚
-		$from_name = ereg_replace("<","ï¼œ", $from_name);
-		$from_name = ereg_replace(">","ï¼", $from_name);
+		// ¥Ø¥Ã¥À¡¼¤ËÆüËÜ¸ì¤ò»ÈÍÑ¤¹¤ë¾ì¹ç¤ÏMb_encode_mimeheader¤Ç¥¨¥ó¥³¡¼¥É¤¹¤ë¡£
+		$from_name = ereg_replace("<","¡ã", $from_name);
+		$from_name = ereg_replace(">","¡ä", $from_name);
 				
 		$this->header		 = "From: ". Mb_encode_mimeheader( $from_name )."<".$fromaddress.">\n";
 		$this->header		.= "Reply-To: ". $reply_to . "\n";
@@ -75,12 +75,12 @@ class GC_SendMail {
 		$this->return_path   = $return_path;
 	}
 
-	//	ãƒ¡ãƒ¼ãƒ«é€ä¿¡ã‚’å®Ÿè¡Œã™ã‚‹
+	//	¥á¡¼¥ëÁ÷¿®¤ò¼Â¹Ô¤¹¤ë
 	function sendMail() {
 
 		Mb_language( "Japanese" );
 		
-		//ã€€ãƒ¡ãƒ¼ãƒ«é€ä¿¡
+		//¡¡¥á¡¼¥ëÁ÷¿®
 		if( mb_send_mail( $this->to, $this->subject, $this->body, $this->header, "" . $this->return_path ) ) {
 			return true;
 		}
@@ -91,7 +91,7 @@ class GC_SendMail {
 
 		Mb_language( "Japanese" );	
 		
-		//ã€€ãƒ¡ãƒ¼ãƒ«é€ä¿¡
+		//¡¡¥á¡¼¥ëÁ÷¿®
 		if( mail( $this->to, $this->subject, $this->body, $this->header, "" . $this->return_path ) ) {
 			return true;
 		}

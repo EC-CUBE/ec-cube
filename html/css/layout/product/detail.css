@@ -5,7 +5,7 @@
  */
 @charset "<!--{$smarty.const.CHAR_CODE}-->";
 
-/***å³ã‚³ãƒ³ãƒ†ãƒ³ãƒ„***/
+/***±¦¥³¥ó¥Æ¥ó¥Ä***/
 #container #right #maintitle{
 border: 0;
 margin: 0;
@@ -28,7 +28,7 @@ padding: 0;
 width: 570px;
 }
 
-/*å•†å“å*/
+/*¾¦ÉÊÌ¾*/
 #container #right #title{
 border-width: 0 0 1px 0;
 border-style: solid;
@@ -54,7 +54,7 @@ margin-right: 6px;
 }
 
 
-/*å•†å“*/
+/*¾¦ÉÊ*/
 #container #right #contents #left{
 width:262px;
 }
@@ -107,7 +107,7 @@ width: 295px;
 background: #ffecf0;
 }
 
-/*è©³ç´°*/
+/*¾ÜºÙ*/
 #container #right #commenttitle{
 border-width: 0 0 1px 0;
 border-style: solid;
@@ -159,7 +159,7 @@ margin-top: 5px;
 padding: 0;
 }
 
-/*ãŠå®¢æ§˜ã®å£°*/
+/*¤ªµÒÍÍ¤ÎÀ¼*/
 #container #right #voicetitle{
 border: 0;
 margin: 0;
@@ -216,7 +216,7 @@ margin: 0;
 width: 554px;
 }
 
-/*ã‚ªã‚¹ã‚¹ãƒ¡*/
+/*¥ª¥¹¥¹¥á*/
 #container #right #osusumetitle{
 border: 0;
 margin-bottom: 10px;

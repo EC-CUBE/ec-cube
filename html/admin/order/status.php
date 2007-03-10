@@ -7,7 +7,7 @@
 require_once("../require.php");
 require_once("./index_csv.php");
 
-//ã‚¹ãƒ†ãƒ¼ã‚¿ã‚¹ç®¡ç†-ä¸€æ‹¬ç§»å‹•æ©Ÿèƒ½
+//¥¹¥Æ¡¼¥¿¥¹´ÉÍı-°ì³ç°ÜÆ°µ¡Ç½
 
 class LC_Page {
 	function LC_Page() {
@@ -28,15 +28,15 @@ $objView = new SC_AdminView();
 $objSess = new SC_Session();
 $objQuery = new SC_Query();
 
-// èªè¨¼å¯å¦ã®åˆ¤å®š
+// Ç§¾Ú²ÄÈİ¤ÎÈ½Äê
 $objSess = new SC_Session();
 sfIsSuccess($objSess);
 
-//ã‚¹ãƒ†ãƒ¼ã‚¿ã‚¹æƒ…å ±ï¼ˆä»®å®šï¼‰
+//¥¹¥Æ¡¼¥¿¥¹¾ğÊó¡Ê²¾Äê¡Ë
 $objPage->SelectedStatus = $_POST['status'];
 $objPage->arrForm = $_POST;
 					
-//æ”¯æ‰•æ–¹æ³•ã®å–å¾—
+//»ÙÊ§ÊıË¡¤Î¼èÆÀ
 $objPage->arrPayment = sfGetIDValueList("dtb_payment", "payment_id", "payment_method");
 
 switch ($_POST['mode']){
@@ -47,48 +47,48 @@ switch ($_POST['mode']){
 				default:
 				break;
 			
-				//æ–°è¦å—ä»˜
+				//¿·µ¬¼õÉÕ
 				case '1':
 					lfStatusMove(1,$_POST['move']);
 				break;
 				
-				//å…¥é‡‘å¾…ã¡
+				//Æş¶âÂÔ¤Á
 				case '2':
 					lfStatusMove(2,$_POST['move']);
 				break;
 				
-				//ã‚­ãƒ£ãƒ³ã‚»ãƒ«
+				//¥­¥ã¥ó¥»¥ë
 				case '3':
 					lfStatusMove(3,$_POST['move']);
 				break;
 				
-				//å–ã‚Šå¯„ã›ä¸­
+				//¼è¤ê´ó¤»Ãæ
 				case '4':
 					lfStatusMove(4,$_POST['move']);
 				break;
 				
-				//ç™ºé€æ¸ˆã¿
+				//È¯Á÷ºÑ¤ß
 				case '5':
 					lfStatusMove(5,$_POST['move']);
 				break;
 				
-				//å…¥é‡‘æ¸ˆã¿
+				//Æş¶âºÑ¤ß
 				case '6':
 					lfStatusMove(6,$_POST['move']);
 				break;
 				
-				//å‰Šé™¤
+				//ºï½ü
 				case 'delete':
 					lfStatusMove("delete",$_POST['move']);
 				break;
 			}
 	
-	//æ¤œç´¢çµæœã®è¡¨ç¤º
+	//¸¡º÷·ë²Ì¤ÎÉ½¼¨
 	lfStatusDisp($_POST['status'],$_POST['search_pageno']);
 	break;
 	
 	default:
-	//ãƒ‡ãƒ•ã‚©ãƒ«ãƒˆã§æ–°è¦å—ä»˜ä¸€è¦§è¡¨ç¤º
+	//¥Ç¥Õ¥©¥ë¥È¤Ç¿·µ¬¼õÉÕ°ìÍ÷É½¼¨
 	lfStatusDisp(1,$_POST['search_pageno']);
 	$objPage->defaultstatus = 1;
 	break;
@@ -99,7 +99,7 @@ $objView->display(MAIN_FRAME);
 
 //-----------------------------------------------------------------------------------------------------------------------------------
 
-//ã‚¹ãƒ†ãƒ¼ã‚¿ã‚¹ä¸€è¦§ã®è¡¨ç¤º
+//¥¹¥Æ¡¼¥¿¥¹°ìÍ÷¤ÎÉ½¼¨
 function lfStatusDisp($status,$pageno){
 	global $objPage;
 	global $objQuery;
@@ -112,29 +112,29 @@ function lfStatusDisp($status,$pageno){
 	$linemax = $objQuery->count("dtb_order", "del_flg = 0 AND status=?", array($status));
 	$objPage->tpl_linemax = $linemax;
 	
-	// ãƒšãƒ¼ã‚¸é€ã‚Šã®å‡¦ç†
+	// ¥Ú¡¼¥¸Á÷¤ê¤Î½èÍı
 	$page_max = ORDER_STATUS_MAX;
 	
-	// ãƒšãƒ¼ã‚¸é€ã‚Šã®å–å¾—
+	// ¥Ú¡¼¥¸Á÷¤ê¤Î¼èÆÀ
 	$objNavi = new SC_PageNavi($pageno, $linemax, $page_max, "fnNaviSearchOnlyPage", NAVI_PMAX);
-	$objPage->tpl_strnavi = $objNavi->strnavi;		// è¡¨ç¤ºæ–‡å­—åˆ—
+	$objPage->tpl_strnavi = $objNavi->strnavi;		// É½¼¨Ê¸»úÎó
 	$startno = $objNavi->start_row;
 	
 	$objPage->tpl_pageno = $pageno;
 	
-	// å–å¾—ç¯„å›²ã®æŒ‡å®š(é–‹å§‹è¡Œç•ªå·ã€è¡Œæ•°ã®ã‚»ãƒƒãƒˆ)
+	// ¼èÆÀÈÏ°Ï¤Î»ØÄê(³«»Ï¹ÔÈÖ¹æ¡¢¹Ô¿ô¤Î¥»¥Ã¥È)
 	$objQuery->setlimitoffset($page_max, $startno);
 	
-	//è¡¨ç¤ºé †åº
+	//É½¼¨½ç½ø
 	$objQuery->setorder($order);
 	
-	//æ¤œç´¢çµæœã®å–å¾—
+	//¸¡º÷·ë²Ì¤Î¼èÆÀ
 	$objPage->arrStatus = $objQuery->select($select, $from, $where, array($status));
 	
 	return $objPage;
 }
 
-//ã‚¹ãƒ†ãƒ¼ã‚¿ã‚¹æƒ…å ±ã®æ›´æ–°ï¼ˆç§»å‹•ï¼‰
+//¥¹¥Æ¡¼¥¿¥¹¾ğÊó¤Î¹¹¿·¡Ê°ÜÆ°¡Ë
 function lfStatusMove($status_id,$move){
 	global $objQuery;
 	global $objPage;
@@ -152,7 +152,7 @@ function lfStatusMove($status_id,$move){
 			if ($val != "") {
 				$objQuery->exec($sql, array($val));
 			}
-			$objPage->tpl_onload = "window.alert('é¸æŠé …ç›®ã‚’ç§»å‹•ã—ã¾ã—ãŸã€‚');";
+			$objPage->tpl_onload = "window.alert('ÁªÂò¹àÌÜ¤ò°ÜÆ°¤·¤Ş¤·¤¿¡£');";
 			}
 		}
 }

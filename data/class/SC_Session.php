@@ -5,39 +5,39 @@
  * http://www.lockon.co.jp/
  */
 
-/* セッション管理クラス */
+/* ���å����������饹 */
 class SC_Session {
-	var $login_id;		// ログインユーザ名
-	var $authority;		// ユーザ権限
-	var $cert;			// 認証文字列(認証成功の判定に使用)
-	var $sid;			// セッションID
-	var $member_id;		// ログインユーザの主キー
+	var $login_id;		// ��������桼��̾
+	var $authority;		// �桼������
+	var $cert;			// ǧ��ʸ����(ǧ��������Ƚ��˻���)
+	var $sid;			// ���å����ID
+	var $member_id;		// ��������桼���μ祭��
 
-	/* コンストラクタ */
+	/* ���󥹥ȥ饯�� */
 	function SC_Session() {
-		// セッション開始
+		// ���å���󳫻�
 		sfDomainSessionStart();
 
-		// セッション情報の保存
+		// ���å����������¸
 		if(isset($_SESSION['cert'])) {
 			$this->sid = session_id();
 			$this->cert = $_SESSION['cert'];
 			$this->login_id = $_SESSION['login_id'];
-			$this->authority = $_SESSION['authority'];	// 管理者:0, 一般:1, 閲覧:2
+			$this->authority = $_SESSION['authority'];	// ������:0, ����:1, ����:2
 			$this->member_id = $_SESSION['member_id'];
-			// ログに記録する
+			// �����˵�Ͽ����
 			gfPrintLog("access : user=".$this->login_id." auth=".$this->authority." sid=".$this->sid);
 		} else {
-			// ログに記録する
+			// �����˵�Ͽ����
 			gfPrintLog("access error.");
 		}
 	}
-	/* 認証成功の判定 */
+	/* ǧ��������Ƚ�� */
 	function IsSuccess() {
 		global $arrPERMISSION;
 		if($this->cert == CERT_STRING) {
 			if(isset($arrPERMISSION[$_SERVER['PHP_SELF']])) {
-				// 数値が自分の権限以上のものでないとアクセスできない。
+				// ���ͤ���ʬ�θ��°ʾ�Τ�ΤǤʤ��ȥ��������Ǥ��ʤ���
 				if($arrPERMISSION[$_SERVER['PHP_SELF']] < $this->authority) {			
 					return AUTH_ERROR;
 				} 
@@ -48,45 +48,45 @@ class SC_Session {
 		return ACCESS_ERROR;
 	}
 	
-	/* セッションの書き込み */
+	/* ���å����ν񤭹��� */
 	function SetSession($key, $val) {
 		$_SESSION[$key] = $val;
 	}
 	
-	/* セッションの読み込み */
+	/* ���å������ɤ߹��� */
 	function GetSession($key) {
 		return $_SESSION[$key];
 	}
 	
-	/* セッションIDの取得 */
+	/* ���å����ID�μ��� */
 	function GetSID() {
 		return $this->sid;
 	}
 	
-	/* セッションの破棄 */
+	/* ���å������˴� */
 	function EndSession() {
-		// デフォルトは、「PHPSESSID」
+		// �ǥե���Ȥϡ���PHPSESSID��
 		$sname = session_name();
-		// セッション変数を全て解除する
+		// ���å�����ѿ������Ʋ������
 		$_SESSION = array();
-		// セッションを切断するにはセッションクッキーも削除する。
-		// Note: セッション情報だけでなくセッションを破壊する。
+		// ���å��������Ǥ���ˤϥ��å���󥯥å����������롣
+		// Note: ���å�����������Ǥʤ����å������˲����롣
 		if (isset($_COOKIE[$sname])) {
 			setcookie($sname, '', time()-42000, '/');
 		}
-		// 最終的に、セッションを破壊する
+		// �ǽ�Ū�ˡ����å������˲�����
 		session_destroy();
-		// ログに記録する
+		// �����˵�Ͽ����
 		gfPrintLog("logout : user=".$this->login_id." auth=".$this->authority." sid=".$this->sid);
 	}
 	
-	// 関連セッションのみ破棄する。
+	// ��Ϣ���å����Τ��˴����롣
 	function logout() {
 		unset($_SESSION['cert']);
 		unset($_SESSION['login_id']);
 		unset($_SESSION['authority']);
 		unset($_SESSION['member_id']);
-		// ログに記録する
+		// �����˵�Ͽ����
 		gfPrintLog("logout : user=".$this->login_id." auth=".$this->authority." sid=".$this->sid);
 	}
 }

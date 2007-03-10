@@ -25,7 +25,7 @@ require_once($include_dir . "/../../data/class/SC_FormParam.php");
 require_once($include_dir . "/../../data/class/SC_CustomerList.php");
 require_once($include_dir . "/../../data/class/SC_Customer.php");
 require_once($include_dir . "/../../data/class/SC_Pdf.php");
-// ã‚¢ãƒƒãƒ—ãƒ‡ãƒ¼ãƒˆã§å–å¾—ã—ãŸPHPã‚’èª­ã¿å‡ºã™
+// ¥¢¥Ã¥×¥Ç¡¼¥È¤Ç¼èÆÀ¤·¤¿PHP¤òÆÉ¤ß½Ð¤¹
 sfLoadUpdateModule();
 
 ?>

@@ -6,7 +6,7 @@
  */
 require_once("../require.php");
 
-// èªè¨¼å¯å¦ã®åˆ¤å®š
+// Ç§¾Ú²ÄÈİ¤ÎÈ½Äê
 $objSess = new SC_Session();
 sfIsSuccess($objSess);
 
@@ -39,7 +39,7 @@ function lfGetCSVData() {
 		$data .= $line;
 	}
 	
-	$header = "\"æ¨©é™\",\"åå‰\",\"æ‰€å±\",\"ãƒ­ã‚°ã‚¤ãƒ³ID\",\"ç¨¼åƒçŠ¶æ³\"\n";
+	$header = "\"¸¢¸Â\",\"Ì¾Á°\",\"½êÂ°\",\"¥í¥°¥¤¥óID\",\"²ÔÆ¯¾õ¶·\"\n";
 	
 	return $header.$data;
 }

@@ -18,7 +18,7 @@ $objView = new SC_SiteView();
 $objQuery = new SC_Query();
 $objCustomer = new SC_Customer();
 
-//ãƒ­ã‚°ã‚¤ãƒ³åˆ¤å®š
+//¥í¥°¥¤¥óÈ½Äê
 if (!$objCustomer->isLoginSuccess()){
 	sfDispSiteError(CUSTOMER_ERROR);
 }else{

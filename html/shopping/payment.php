@@ -14,11 +14,11 @@ class LC_Page {
 		$this->tpl_css = URL_DIR.'css/layout/shopping/pay.css';
 		$this->tpl_mainpage = 'shopping/payment.tpl';
 		$this->tpl_onload = 'fnCheckInputPoint();';
-		$this->tpl_title = "ãŠæ”¯æ‰•æ–¹æ³•ãƒ»ãŠå±Šã‘æ™‚é–“ç­‰ã®æŒ‡å®š";
+		$this->tpl_title = "¤ª»ÙÊ§ÊıË¡¡¦¤ªÆÏ¤±»ş´ÖÅù¤Î»ØÄê";
 		/*
-		 session_startæ™‚ã®no-cacheãƒ˜ãƒƒãƒ€ãƒ¼ã‚’æŠ‘åˆ¶ã™ã‚‹ã“ã¨ã§
-		 ã€Œæˆ»ã‚‹ã€ãƒœã‚¿ãƒ³ä½¿ç”¨æ™‚ã®æœ‰åŠ¹æœŸé™åˆ‡ã‚Œè¡¨ç¤ºã‚’æŠ‘åˆ¶ã™ã‚‹ã€‚
-		 private-no-expire:ã‚¯ãƒ©ã‚¤ã‚¢ãƒ³ãƒˆã®ã‚­ãƒ£ãƒƒã‚·ãƒ¥ã‚’è¨±å¯ã™ã‚‹ã€‚
+		 session_start»ş¤Îno-cache¥Ø¥Ã¥À¡¼¤òÍŞÀ©¤¹¤ë¤³¤È¤Ç
+		 ¡ÖÌá¤ë¡×¥Ü¥¿¥ó»ÈÍÑ»ş¤ÎÍ­¸ú´ü¸ÂÀÚ¤ìÉ½¼¨¤òÍŞÀ©¤¹¤ë¡£
+		 private-no-expire:¥¯¥é¥¤¥¢¥ó¥È¤Î¥­¥ã¥Ã¥·¥å¤òµö²Ä¤¹¤ë¡£
 		*/
 		session_cache_limiter('private-no-expire');		
 	}
@@ -33,123 +33,123 @@ $objCustomer = new SC_Customer();
 $objSiteInfo = $objView->objSiteInfo;
 $arrInfo = $objSiteInfo->data;
 
-// ãƒ‘ãƒ©ãƒ¡ãƒ¼ã‚¿ç®¡ç†ã‚¯ãƒ©ã‚¹
+// ¥Ñ¥é¥á¡¼¥¿´ÉÍı¥¯¥é¥¹
 $objFormParam = new SC_FormParam();
-// ãƒ‘ãƒ©ãƒ¡ãƒ¼ã‚¿æƒ…å ±ã®åˆæœŸåŒ–
+// ¥Ñ¥é¥á¡¼¥¿¾ğÊó¤Î½é´ü²½
 lfInitParam();
-// POSTå€¤ã®å–å¾—
+// POSTÃÍ¤Î¼èÆÀ
 $objFormParam->setParam($_POST);
 
-// ãƒ¦ãƒ¼ã‚¶ãƒ¦ãƒ‹ãƒ¼ã‚¯IDã®å–å¾—ã¨è³¼å…¥çŠ¶æ…‹ã®æ­£å½“æ€§ã‚’ãƒã‚§ãƒƒã‚¯
+// ¥æ¡¼¥¶¥æ¥Ë¡¼¥¯ID¤Î¼èÆÀ¤È¹ØÆş¾õÂÖ¤ÎÀµÅöÀ­¤ò¥Á¥§¥Ã¥¯
 $uniqid = sfCheckNormalAccess($objSiteSess, $objCartSess);
-// ãƒ¦ãƒ‹ãƒ¼ã‚¯IDã‚’å¼•ãç¶™ã
+// ¥æ¥Ë¡¼¥¯ID¤ò°ú¤­·Ñ¤°
 $objPage->tpl_uniqid = $uniqid;
 
-// ä¼šå“¡ãƒ­ã‚°ã‚¤ãƒ³ãƒã‚§ãƒƒã‚¯
+// ²ñ°÷¥í¥°¥¤¥ó¥Á¥§¥Ã¥¯
 if($objCustomer->isLoginSuccess()) {
 	$objPage->tpl_login = '1';
 	$objPage->tpl_user_point = $objCustomer->getValue('point');
 }
 
-// é‡‘é¡ã®å–å¾— (è³¼å…¥é€”ä¸­ã§å£²ã‚Šåˆ‡ã‚ŒãŸå ´åˆã«ã¯ã“ã®é–¢æ•°å†…ã«ã¦ãã®å•†å“ã®å€‹æ•°ãŒï¼ã«ãªã‚‹)
+// ¶â³Û¤Î¼èÆÀ (¹ØÆşÅÓÃæ¤ÇÇä¤êÀÚ¤ì¤¿¾ì¹ç¤Ë¤Ï¤³¤Î´Ø¿ôÆâ¤Ë¤Æ¤½¤Î¾¦ÉÊ¤Î¸Ä¿ô¤¬£°¤Ë¤Ê¤ë)
 $objPage = sfTotalCart($objPage, $objCartSess, $arrInfo);
 $objPage->arrData = sfTotalConfirm($arrData, $objPage, $objCartSess, $arrInfo);
 
-// ã‚«ãƒ¼éƒ½å†…ã®å•†å“ã®å£²ã‚Šåˆ‡ã‚Œãƒã‚§ãƒƒã‚¯
+// ¥«¡¼ÅÔÆâ¤Î¾¦ÉÊ¤ÎÇä¤êÀÚ¤ì¥Á¥§¥Ã¥¯
 $objCartSess->chkSoldOut($objCartSess->getCartList());
 
 switch($_POST['mode']) {
 case 'confirm':
-	// å…¥åŠ›å€¤ã®å¤‰æ›
+	// ÆşÎÏÃÍ¤ÎÊÑ´¹
 	$objFormParam->convParam();
 	$objPage->arrErr = lfCheckError($objPage->arrData );
-	// å…¥åŠ›ã‚¨ãƒ©ãƒ¼ãªã—
+	// ÆşÎÏ¥¨¥é¡¼¤Ê¤·
 	if(count($objPage->arrErr) == 0) {
-		// DBã¸ã®ãƒ‡ãƒ¼ã‚¿ç™»éŒ²
+		// DB¤Ø¤Î¥Ç¡¼¥¿ÅĞÏ¿
 		lfRegistData($uniqid);
-		// æ­£å¸¸ã«ç™»éŒ²ã•ã‚ŒãŸã“ã¨ã‚’è¨˜éŒ²ã—ã¦ãŠã
+		// Àµ¾ï¤ËÅĞÏ¿¤µ¤ì¤¿¤³¤È¤òµ­Ï¿¤·¤Æ¤ª¤¯
 		$objSiteSess->setRegistFlag();
-		// ç¢ºèªãƒšãƒ¼ã‚¸ã¸ç§»å‹•
+		// ³ÎÇ§¥Ú¡¼¥¸¤Ø°ÜÆ°
 		header("Location: " . URL_SHOP_CONFIRM);
 		exit;
 	}else{
-		// ãƒ¦ãƒ¼ã‚¶ãƒ¦ãƒ‹ãƒ¼ã‚¯IDã®å–å¾—
+		// ¥æ¡¼¥¶¥æ¥Ë¡¼¥¯ID¤Î¼èÆÀ
 		$uniqid = $objSiteSess->getUniqId();
-		// å—æ³¨ä¸€æ™‚ãƒ†ãƒ¼ãƒ–ãƒ«ã‹ã‚‰ã®æƒ…å ±ã‚’æ ¼ç´
+		// ¼õÃí°ì»ş¥Æ¡¼¥Ö¥ë¤«¤é¤Î¾ğÊó¤ò³ÊÇ¼
 		lfSetOrderTempData($uniqid);
 	}
 	break;
-// å‰ã®ãƒšãƒ¼ã‚¸ã«æˆ»ã‚‹
+// Á°¤Î¥Ú¡¼¥¸¤ËÌá¤ë
 case 'return':
-	// éä¼šå“¡ã®å ´åˆ
-	// æ­£å¸¸ãªæ¨ç§»ã§ã‚ã‚‹ã“ã¨ã‚’è¨˜éŒ²ã—ã¦ãŠã
+	// Èó²ñ°÷¤Î¾ì¹ç
+	// Àµ¾ï¤Ê¿ä°Ü¤Ç¤¢¤ë¤³¤È¤òµ­Ï¿¤·¤Æ¤ª¤¯
 	$objSiteSess->setRegistFlag();
 	header("Location: " . URL_SHOP_TOP);
 	exit;
 	break;
-// æ”¯æ‰•ã„æ–¹æ³•ãŒå¤‰æ›´ã•ã‚ŒãŸå ´åˆ
+// »ÙÊ§¤¤ÊıË¡¤¬ÊÑ¹¹¤µ¤ì¤¿¾ì¹ç
 case 'payment':
-	// ã“ã“ã®breakã¯ã€æ„å‘³ãŒã‚ã‚‹ã®ã§å¤–ã•ãªã„ã§ä¸‹ã•ã„ã€‚
+	// ¤³¤³¤Îbreak¤Ï¡¢°ÕÌ£¤¬¤¢¤ë¤Î¤Ç³°¤µ¤Ê¤¤¤Ç²¼¤µ¤¤¡£
 	break;
 default:
-	// å—æ³¨ä¸€æ™‚ãƒ†ãƒ¼ãƒ–ãƒ«ã‹ã‚‰ã®æƒ…å ±ã‚’æ ¼ç´
+	// ¼õÃí°ì»ş¥Æ¡¼¥Ö¥ë¤«¤é¤Î¾ğÊó¤ò³ÊÇ¼
 	lfSetOrderTempData($uniqid);
 	break;
 }
 
-// åº—èˆ—æƒ…å ±ã®å–å¾—
+// Å¹ÊŞ¾ğÊó¤Î¼èÆÀ
 $arrInfo = $objSiteInfo->data;
-// è³¼å…¥é‡‘é¡ã®å–å¾—å¾—
+// ¹ØÆş¶â³Û¤Î¼èÆÀÆÀ
 $total_pretax = $objCartSess->getAllProductsTotal($arrInfo);
-// æ”¯æ‰•ã„æ–¹æ³•ã®å–å¾—
+// »ÙÊ§¤¤ÊıË¡¤Î¼èÆÀ
 $objPage->arrPayment = lfGetPayment($total_pretax);
-// é…é€æ™‚é–“ã®å–å¾—
+// ÇÛÁ÷»ş´Ö¤Î¼èÆÀ
 $arrRet = sfGetDelivTime($objFormParam->getValue('payment_id'));
 $objPage->arrDelivTime = sfArrKeyValue($arrRet, 'time_id', 'deliv_time');
 $objPage->objCustomer = $objCustomer;
-//ã€€é…é€æ—¥ä¸€è¦§ã®å–å¾—
+//¡¡ÇÛÁ÷Æü°ìÍ÷¤Î¼èÆÀ
 $objPage->arrDelivDate = lfGetDelivDate();
 
 $objPage->arrForm = $objFormParam->getFormParamList();
 
 $objView->assignobj($objPage);
-// ãƒ•ãƒ¬ãƒ¼ãƒ ã‚’é¸æŠ(ã‚­ãƒ£ãƒ³ãƒšãƒ¼ãƒ³ãƒšãƒ¼ã‚¸ã‹ã‚‰é·ç§»ãªã‚‰å¤‰æ›´)
+// ¥Õ¥ì¡¼¥à¤òÁªÂò(¥­¥ã¥ó¥Ú¡¼¥ó¥Ú¡¼¥¸¤«¤éÁ«°Ü¤Ê¤éÊÑ¹¹)
 $objCampaignSess->pageView($objView);
 //--------------------------------------------------------------------------------------------------------------------------
-/* ãƒ‘ãƒ©ãƒ¡ãƒ¼ã‚¿æƒ…å ±ã®åˆæœŸåŒ– */
+/* ¥Ñ¥é¥á¡¼¥¿¾ğÊó¤Î½é´ü²½ */
 function lfInitParam() {
 	global $objFormParam;
-	$objFormParam->addParam("ãŠæ”¯æ‰•ã„æ–¹æ³•", "payment_id", INT_LEN, "n", array("EXIST_CHECK", "MAX_LENGTH_CHECK", "NUM_CHECK"));
-	$objFormParam->addParam("ãƒã‚¤ãƒ³ãƒˆ", "use_point", INT_LEN, "n", array("MAX_LENGTH_CHECK", "NUM_CHECK", "ZERO_START"));
-	$objFormParam->addParam("é…é”æ™‚é–“", "deliv_time_id", INT_LEN, "n", array("MAX_LENGTH_CHECK", "NUM_CHECK"));
-	$objFormParam->addParam("ã”è³ªå•", "message", LTEXT_LEN, "KVa", array("SPTAB_CHECK", "MAX_LENGTH_CHECK"));
-	$objFormParam->addParam("ãƒã‚¤ãƒ³ãƒˆã‚’ä½¿ç”¨ã™ã‚‹", "point_check", INT_LEN, "n", array("MAX_LENGTH_CHECK", "NUM_CHECK"), '2');
-	$objFormParam->addParam("é…é”æ—¥", "deliv_date", STEXT_LEN, "KVa", array("MAX_LENGTH_CHECK"));
+	$objFormParam->addParam("¤ª»ÙÊ§¤¤ÊıË¡", "payment_id", INT_LEN, "n", array("EXIST_CHECK", "MAX_LENGTH_CHECK", "NUM_CHECK"));
+	$objFormParam->addParam("¥İ¥¤¥ó¥È", "use_point", INT_LEN, "n", array("MAX_LENGTH_CHECK", "NUM_CHECK", "ZERO_START"));
+	$objFormParam->addParam("ÇÛÃ£»ş´Ö", "deliv_time_id", INT_LEN, "n", array("MAX_LENGTH_CHECK", "NUM_CHECK"));
+	$objFormParam->addParam("¤´¼ÁÌä", "message", LTEXT_LEN, "KVa", array("SPTAB_CHECK", "MAX_LENGTH_CHECK"));
+	$objFormParam->addParam("¥İ¥¤¥ó¥È¤ò»ÈÍÑ¤¹¤ë", "point_check", INT_LEN, "n", array("MAX_LENGTH_CHECK", "NUM_CHECK"), '2');
+	$objFormParam->addParam("ÇÛÃ£Æü", "deliv_date", STEXT_LEN, "KVa", array("MAX_LENGTH_CHECK"));
 }
 
 function lfGetPayment($total_pretax) {
 	$objQuery = new SC_Query();
 	$objQuery->setorder("rank DESC");
-	//å‰Šé™¤ã•ã‚Œã¦ã„ãªã„æ”¯æ‰•æ–¹æ³•ã‚’å–å¾—
+	//ºï½ü¤µ¤ì¤Æ¤¤¤Ê¤¤»ÙÊ§ÊıË¡¤ò¼èÆÀ
 	$arrRet = $objQuery->select("payment_id, payment_method, rule, upper_rule, note, payment_image", "dtb_payment", "del_flg = 0 AND deliv_id IN (SELECT deliv_id FROM dtb_deliv WHERE del_flg = 0) ");
-	//åˆ©ç”¨æ¡ä»¶ã‹ã‚‰æ”¯æ‰•å¯èƒ½æ–¹æ³•ã‚’åˆ¤å®š
+	//ÍøÍÑ¾ò·ï¤«¤é»ÙÊ§²ÄÇ½ÊıË¡¤òÈ½Äê
 	foreach($arrRet as $data) {
-		//ä¸‹é™ã¨ä¸Šé™ãŒè¨­å®šã•ã‚Œã¦ã„ã‚‹
+		//²¼¸Â¤È¾å¸Â¤¬ÀßÄê¤µ¤ì¤Æ¤¤¤ë
 		if($data['rule'] > 0 && $data['upper_rule'] > 0) {
 			if($data['rule'] <= $total_pretax && $data['upper_rule'] >= $total_pretax) {
 				$arrPayment[] = $data;
 			}
-		//ä¸‹é™ã®ã¿è¨­å®šã•ã‚Œã¦ã„ã‚‹
+		//²¼¸Â¤Î¤ßÀßÄê¤µ¤ì¤Æ¤¤¤ë
 		} elseif($data['rule'] > 0) {	
 			if($data['rule'] <= $total_pretax) {
 				$arrPayment[] = $data;
 			}
-		//ä¸Šé™ã®ã¿è¨­å®šã•ã‚Œã¦ã„ã‚‹
+		//¾å¸Â¤Î¤ßÀßÄê¤µ¤ì¤Æ¤¤¤ë
 		} elseif($data['upper_rule'] > 0) {
 			if($data['upper_rule'] >= $total_pretax) {
 				$arrPayment[] = $data;
 			}
-		//è¨­å®šãªã—
+		//ÀßÄê¤Ê¤·
 		} else {
 			$arrPayment[] = $data;
 		}	
@@ -157,33 +157,33 @@ function lfGetPayment($total_pretax) {
 	return $arrPayment;	
 }
 
-/* å…¥åŠ›å†…å®¹ã®ãƒã‚§ãƒƒã‚¯ */
+/* ÆşÎÏÆâÍÆ¤Î¥Á¥§¥Ã¥¯ */
 function lfCheckError($arrData) {
 	global $objFormParam;
 	global $objCustomer;
-	// å…¥åŠ›ãƒ‡ãƒ¼ã‚¿ã‚’æ¸¡ã™ã€‚
+	// ÆşÎÏ¥Ç¡¼¥¿¤òÅÏ¤¹¡£
 	$arrRet =  $objFormParam->getHashArray();
 	$objErr = new SC_CheckError($arrRet);
 	$objErr->arrErr = $objFormParam->checkError();
 	
 	if($_POST['point_check'] == '1') {
-		$objErr->doFunc(array("ãƒã‚¤ãƒ³ãƒˆã‚’ä½¿ç”¨ã™ã‚‹", "point_check"), array("EXIST_CHECK"));
-		$objErr->doFunc(array("ãƒã‚¤ãƒ³ãƒˆ", "use_point"), array("EXIST_CHECK"));
+		$objErr->doFunc(array("¥İ¥¤¥ó¥È¤ò»ÈÍÑ¤¹¤ë", "point_check"), array("EXIST_CHECK"));
+		$objErr->doFunc(array("¥İ¥¤¥ó¥È", "use_point"), array("EXIST_CHECK"));
 		$max_point = $objCustomer->getValue('point');
 		if($max_point == "") {
 			$max_point = 0;
 		}
 		if($arrRet['use_point'] > $max_point) {
-			$objErr->arrErr['use_point'] = "â€» ã”åˆ©ç”¨ãƒã‚¤ãƒ³ãƒˆãŒæ‰€æŒãƒã‚¤ãƒ³ãƒˆã‚’è¶…ãˆã¦ã„ã¾ã™ã€‚<br />";
+			$objErr->arrErr['use_point'] = "¢¨ ¤´ÍøÍÑ¥İ¥¤¥ó¥È¤¬½ê»ı¥İ¥¤¥ó¥È¤òÄ¶¤¨¤Æ¤¤¤Ş¤¹¡£<br />";
 		}
 		if(($arrRet['use_point'] * POINT_VALUE) > $arrData['subtotal']) {
-			$objErr->arrErr['use_point'] = "â€» ã”åˆ©ç”¨ãƒã‚¤ãƒ³ãƒˆãŒã”è³¼å…¥é‡‘é¡ã‚’è¶…ãˆã¦ã„ã¾ã™ã€‚<br />";
+			$objErr->arrErr['use_point'] = "¢¨ ¤´ÍøÍÑ¥İ¥¤¥ó¥È¤¬¤´¹ØÆş¶â³Û¤òÄ¶¤¨¤Æ¤¤¤Ş¤¹¡£<br />";
 		}
 	}
 	return $objErr->arrErr;
 }
 
-/* æ”¯æ‰•ã„æ–¹æ³•æ–‡å­—åˆ—ã®å–å¾— */
+/* »ÙÊ§¤¤ÊıË¡Ê¸»úÎó¤Î¼èÆÀ */
 function lfGetPaymentInfo($payment_id) {
 	$objQuery = new SC_Query();
 	$where = "payment_id = ?";
@@ -191,7 +191,7 @@ function lfGetPaymentInfo($payment_id) {
 	return (array($arrRet[0]['payment_method'], $arrRet[0]['charge']));
 }
 
-/* é…é€æ™‚é–“æ–‡å­—åˆ—ã®å–å¾— */
+/* ÇÛÁ÷»ş´ÖÊ¸»úÎó¤Î¼èÆÀ */
 function lfGetDelivTimeInfo($time_id) {
 	$objQuery = new SC_Query();
 	$where = "time_id = ?";
@@ -199,12 +199,12 @@ function lfGetDelivTimeInfo($time_id) {
 	return (array($arrRet[0]['deliv_id'], $arrRet[0]['deliv_time']));
 }
 
-/* DBã¸ãƒ‡ãƒ¼ã‚¿ã®ç™»éŒ² */
+/* DB¤Ø¥Ç¡¼¥¿¤ÎÅĞÏ¿ */
 function lfRegistData($uniqid) {
 	global $objFormParam;
 	$arrRet = $objFormParam->getHashArray();
 	$sqlval = $objFormParam->getDbArray();
-	// ç™»éŒ²ãƒ‡ãƒ¼ã‚¿ã®ä½œæˆ
+	// ÅĞÏ¿¥Ç¡¼¥¿¤ÎºîÀ®
 	$sqlval['order_temp_id'] = $uniqid;
 	$sqlval['update_date'] = 'Now()';
 	
@@ -223,7 +223,7 @@ function lfRegistData($uniqid) {
 		$sqlval['deliv_time'] = "";
 	}
 	
-	// ä½¿ç”¨ãƒã‚¤ãƒ³ãƒˆã®è¨­å®š
+	// »ÈÍÑ¥İ¥¤¥ó¥È¤ÎÀßÄê
 	if($sqlval['point_check'] != '1') {
 		$sqlval['use_point'] = 0;
 	}
@@ -231,11 +231,11 @@ function lfRegistData($uniqid) {
 	sfRegistTempOrder($uniqid, $sqlval);
 }
 
-/* é…é”æ—¥ä¸€è¦§ã‚’å–å¾—ã™ã‚‹ */
+/* ÇÛÃ£Æü°ìÍ÷¤ò¼èÆÀ¤¹¤ë */
 function lfGetDelivDate() {
 	$objCartSess = new SC_CartSession();
 	$objQuery = new SC_Query();
-	// å•†å“IDã®å–å¾—
+	// ¾¦ÉÊID¤Î¼èÆÀ
 	$max = $objCartSess->getMax();
 	for($i = 1; $i <= $max; $i++) {
 		if($_SESSION[$objCartSess->key][$i]['id'][0] != "") {
@@ -244,67 +244,67 @@ function lfGetDelivDate() {
 	}
 	if(count($arrID['product_id']) > 0) {
 		$id = implode(",", $arrID['product_id']);
-		//å•†å“ã‹ã‚‰ç™ºé€ç›®å®‰ã®å–å¾—
+		//¾¦ÉÊ¤«¤éÈ¯Á÷ÌÜ°Â¤Î¼èÆÀ
 		$deliv_date = $objQuery->get("dtb_products", "MAX(deliv_date_id)", "product_id IN (".$id.")");
-		//ç™ºé€ç›®å®‰
+		//È¯Á÷ÌÜ°Â
 		switch($deliv_date) {
-		//å³æ—¥ç™ºé€
+		//Â¨ÆüÈ¯Á÷
 		case '1':
 			$start_day = 1;
 			break;
-		//1-2æ—¥å¾Œ
+		//1-2Æü¸å
 		case '2':
 			$start_day = 3;
 			break;
-		//3-4æ—¥å¾Œ
+		//3-4Æü¸å
 		case '3':
 			$start_day = 5;
 			break;
-		//1é€±é–“ä»¥å†…
+		//1½µ´Ö°ÊÆâ
 		case '4':
 			$start_day = 8;
 			break;
-		//2é€±é–“ä»¥å†…
+		//2½µ´Ö°ÊÆâ
 		case '5':
 			$start_day = 15;
 			break;
-		//3é€±é–“ä»¥å†…
+		//3½µ´Ö°ÊÆâ
 		case '6':
 			$start_day = 22;
 			break;
-		//1ãƒ¶æœˆä»¥å†…
+		//1¥ö·î°ÊÆâ
 		case '7':
 			$start_day = 32;
 			break;
-		//2ãƒ¶æœˆä»¥é™
+		//2¥ö·î°Ê¹ß
 		case '8':
 			$start_day = 62;			
 			break;
-		//ãŠå–ã‚Šå¯„ã›(å•†å“å…¥è·å¾Œ)
+		//¤ª¼è¤ê´ó¤»(¾¦ÉÊÆş²Ù¸å)
 		case '9':
 			$start_day = "";
 			break;
 		default:
-			//ãŠå±Šã‘æ—¥ãŒè¨­å®šã•ã‚Œã¦ã„ãªã„å ´åˆ
+			//¤ªÆÏ¤±Æü¤¬ÀßÄê¤µ¤ì¤Æ¤¤¤Ê¤¤¾ì¹ç
 			$start_day = "";
 			break;
 		}
-		//é…é”å¯èƒ½æ—¥ã®ã‚¹ã‚¿ãƒ¼ãƒˆå€¤ã‹ã‚‰ã€é…é”æ—¥ã®é…åˆ—ã‚’å–å¾—ã™ã‚‹
+		//ÇÛÃ£²ÄÇ½Æü¤Î¥¹¥¿¡¼¥ÈÃÍ¤«¤é¡¢ÇÛÃ£Æü¤ÎÇÛÎó¤ò¼èÆÀ¤¹¤ë
 		$arrDelivDate = lfGetDateArray($start_day, DELIV_DATE_END_MAX);
 	}
 	return $arrDelivDate;
 }
 
-//é…é”å¯èƒ½æ—¥ã®ã‚¹ã‚¿ãƒ¼ãƒˆå€¤ã‹ã‚‰ã€é…é”æ—¥ã®é…åˆ—ã‚’å–å¾—ã™ã‚‹
+//ÇÛÃ£²ÄÇ½Æü¤Î¥¹¥¿¡¼¥ÈÃÍ¤«¤é¡¢ÇÛÃ£Æü¤ÎÇÛÎó¤ò¼èÆÀ¤¹¤ë
 function lfGetDateArray($start_day, $end_day) {
 	global $arrWDAY;
-	//é…é”å¯èƒ½æ—¥ã®ã‚¹ã‚¿ãƒ¼ãƒˆå€¤ãŒã‚»ãƒƒãƒˆã•ã‚Œã¦ã„ã‚Œã°
+	//ÇÛÃ£²ÄÇ½Æü¤Î¥¹¥¿¡¼¥ÈÃÍ¤¬¥»¥Ã¥È¤µ¤ì¤Æ¤¤¤ì¤Ğ
 	if($start_day >= 1) {
 		$now_time = time();
 		$max_day = $start_day + $end_day;
-		// é›†è¨ˆ
+		// ½¸·×
 		for ($i = $start_day; $i < $max_day; $i++) {
-			// åŸºæœ¬æ™‚é–“ã‹ã‚‰æ—¥æ•°ã‚’è¿½åŠ ã—ã¦ã„ã
+			// ´ğËÜ»ş´Ö¤«¤éÆü¿ô¤òÄÉ²Ã¤·¤Æ¤¤¤¯
 			$tmp_time = $now_time + ($i * 24 * 3600);
 			list($y, $m, $d, $w) = split(" ", date("y m d w", $tmp_time));	
 			$val = sprintf("%02d/%02d/%02d(%s)", $y, $m, $d, $arrWDAY[$w]);
@@ -316,7 +316,7 @@ function lfGetDateArray($start_day, $end_day) {
 	return $arrDate;
 }
 
-//ä¸€æ™‚å—æ³¨ãƒ†ãƒ¼ãƒ–ãƒ«ã‹ã‚‰ã®æƒ…å ±ã‚’æ ¼ç´ã™ã‚‹
+//°ì»ş¼õÃí¥Æ¡¼¥Ö¥ë¤«¤é¤Î¾ğÊó¤ò³ÊÇ¼¤¹¤ë
 function lfSetOrderTempData($uniqid) {
 	global $objQuery;
 	global $objFormParam;
@@ -326,7 +326,7 @@ function lfSetOrderTempData($uniqid) {
 	$from = "dtb_order_temp";
 	$where = "order_temp_id = ?";
 	$arrRet = $objQuery->select($col, $from, $where, array($uniqid));
-	// DBå€¤ã®å–å¾—
+	// DBÃÍ¤Î¼èÆÀ
 	$objFormParam->setParam($arrRet[0]);
 	return $objFormParam;
 }

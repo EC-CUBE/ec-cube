@@ -32,7 +32,7 @@
 	imgObj.src = fileName;
 	}
 	
-	// サブナビの表示切替
+	// ･ｵ･ﾖ･ﾊ･ﾓ､ﾎﾉｽｼｨﾀﾚﾂﾘ
 	function naviStyleChange(ids, bcColor, color){
 		document.getElementById(ids).style.backgroundColor = bcColor;
 	}	

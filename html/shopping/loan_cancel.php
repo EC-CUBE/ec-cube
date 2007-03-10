@@ -11,27 +11,27 @@ class LC_Page {
 	function LC_Page() {
 		$this->tpl_mainpage = 'shopping/loan.tpl';
 		$this->tpl_css = URL_DIR.'css/layout/shopping/pay.css';
-		// ãƒ›ãƒ¼ãƒ ã‚¢ãƒ‰ãƒ¬ã‚¹
+		// ¥Û¡¼¥à¥¢¥É¥ì¥¹
 		$this->tpl_homeaddr = CF_HOMEADDR;
-		// ã‚·ãƒ¥ãƒŸãƒ¬ãƒ¼ã‚·ãƒ§ãƒ³å‘¼ã³å‡ºã—
+		// ¥·¥å¥ß¥ì¡¼¥·¥ç¥ó¸Æ¤Ó½Ð¤·
 		$this->tpl_simulate = CF_SIMULATE;
-		// åŠ ç›Ÿåº—ã‚³ãƒ¼ãƒ‰
+		// ²ÃÌÁÅ¹¥³¡¼¥É
 		$this->tpl_storecode = CF_STORECODE;
-		// æˆ»ã‚Šå…ˆ
+		// Ìá¤êÀè
 		$this->tpl_returnurl = CF_RETURNURL;
-		// å‘¼ã³å‡ºã—åŒºåˆ†(0:ã‚·ãƒ¥ãƒŸãƒ¬ãƒ¼ã‚·ãƒ§ãƒ³ã®ã¿ã€1:ã‚·ãƒ¥ãƒŸãƒ¬ãƒ¼ã‚·ãƒ§ãƒ³+ç”³è¾¼)
+		// ¸Æ¤Ó½Ð¤·¶èÊ¬(0:¥·¥å¥ß¥ì¡¼¥·¥ç¥ó¤Î¤ß¡¢1:¥·¥å¥ß¥ì¡¼¥·¥ç¥ó+¿½¹þ)
 		$this->tpl_continue = CF_CONTINUE;
-		// å½¹å‹™æœ‰ç„¡åŒºåˆ†(0:ç„¡ã€1:æœ‰)
+		// ÌòÌ³Í­Ìµ¶èÊ¬(0:Ìµ¡¢1:Í­)
 		$this->tpl_labor = CF_LABOR;
-		// çµæžœå¿œç­”(1:çµæžœã‚ã‚Šã€2:çµæžœãªã—)
+		// ·ë²Ì±þÅú(1:·ë²Ì¤¢¤ê¡¢2:·ë²Ì¤Ê¤·)
 		$this->tpl_result = CF_RESULT;
-		// ã‚­ãƒ£ãƒ³ã‚»ãƒ«URL
+		// ¥­¥ã¥ó¥»¥ëURL
 		$this->tpl_cancelurl = CF_CANCELURL;
 		
 		/*
-		 session_startæ™‚ã®no-cacheãƒ˜ãƒƒãƒ€ãƒ¼ã‚’æŠ‘åˆ¶ã™ã‚‹ã“ã¨ã§
-		 ã€Œæˆ»ã‚‹ã€ãƒœã‚¿ãƒ³ä½¿ç”¨æ™‚ã®æœ‰åŠ¹æœŸé™åˆ‡ã‚Œè¡¨ç¤ºã‚’æŠ‘åˆ¶ã™ã‚‹ã€‚
-		 private-no-expire:ã‚¯ãƒ©ã‚¤ã‚¢ãƒ³ãƒˆã®ã‚­ãƒ£ãƒƒã‚·ãƒ¥ã‚’è¨±å¯ã™ã‚‹ã€‚
+		 session_start»þ¤Îno-cache¥Ø¥Ã¥À¡¼¤òÍÞÀ©¤¹¤ë¤³¤È¤Ç
+		 ¡ÖÌá¤ë¡×¥Ü¥¿¥ó»ÈÍÑ»þ¤ÎÍ­¸ú´ü¸ÂÀÚ¤ìÉ½¼¨¤òÍÞÀ©¤¹¤ë¡£
+		 private-no-expire:¥¯¥é¥¤¥¢¥ó¥È¤Î¥­¥ã¥Ã¥·¥å¤òµö²Ä¤¹¤ë¡£
 		*/
 		session_cache_limiter('private-no-expire');		
 	}
@@ -46,23 +46,23 @@ $objCustomer = new SC_Customer();
 $objSiteInfo = $objView->objSiteInfo;
 $arrInfo = $objSiteInfo->data;
 
-// æ³¨æ–‡ä¸€æ™‚IDã®å–å¾—
+// ÃíÊ¸°ì»þID¤Î¼èÆÀ
 $uniqid = $objSiteSess->getUniqId();
 
-// ãƒ­ãƒ¼ãƒ³æ±ºæ¸ˆã®æˆ»ã‚Šå€¤ã‚’ãƒã‚§ãƒƒã‚¯ã™ã‚‹ã€‚
+// ¥í¡¼¥ó·èºÑ¤ÎÌá¤êÃÍ¤ò¥Á¥§¥Ã¥¯¤¹¤ë¡£
 if($_GET['tranno'] == $uniqid) {
-	// ãƒ­ãƒ¼ãƒ³æ±ºæ¸ˆå—ä»˜ç•ªå·ã‚’DBã«æ›¸ãè¾¼ã‚€
+	// ¥í¡¼¥ó·èºÑ¼õÉÕÈÖ¹æ¤òDB¤Ë½ñ¤­¹þ¤à
 	$sqlval['loan_result'] = $_GET['receiptno'];
 	$objQuery = new SC_Query();
 	$objQuery->update("dtb_order_temp", $sqlval, "order_temp_id = ?", array($uniqid));
 	
-	$objPage->tpl_message = "ã‚·ãƒ§ãƒƒãƒ”ãƒ³ã‚°ãƒ­ãƒ¼ãƒ³ã®æ‰‹ç¶šãã¯ã€ã‚­ãƒ£ãƒ³ã‚»ãƒ«ã•ã‚Œã¾ã—ãŸã€‚";	
+	$objPage->tpl_message = "¥·¥ç¥Ã¥Ô¥ó¥°¥í¡¼¥ó¤Î¼êÂ³¤­¤Ï¡¢¥­¥ã¥ó¥»¥ë¤µ¤ì¤Þ¤·¤¿¡£";	
 }
 
 switch($_POST['mode']) {
-// å‰ã®ãƒšãƒ¼ã‚¸ã«æˆ»ã‚‹
+// Á°¤Î¥Ú¡¼¥¸¤ËÌá¤ë
 case 'return':
-	// æ­£å¸¸ãªæŽ¨ç§»ã§ã‚ã‚‹ã“ã¨ã‚’è¨˜éŒ²ã—ã¦ãŠã
+	// Àµ¾ï¤Ê¿ä°Ü¤Ç¤¢¤ë¤³¤È¤òµ­Ï¿¤·¤Æ¤ª¤¯
 	$objSiteSess->setRegistFlag();
 	header("Location: " . URL_SHOP_CONFIRM);
 	exit;
@@ -71,22 +71,22 @@ default:
 	break;
 }
 
-// ã‚«ãƒ¼ãƒˆé›†è¨ˆå‡¦ç†
+// ¥«¡¼¥È½¸·×½èÍý
 $objPage = sfTotalCart($objPage, $objCartSess, $arrInfo);
-// ä¸€æ™‚å—æ³¨ãƒ†ãƒ¼ãƒ–ãƒ«ã®èª­è¾¼
+// °ì»þ¼õÃí¥Æ¡¼¥Ö¥ë¤ÎÆÉ¹þ
 $arrData = sfGetOrderTemp($uniqid);
-// ã‚«ãƒ¼ãƒˆé›†è¨ˆã‚’å…ƒã«æœ€çµ‚è¨ˆç®—
+// ¥«¡¼¥È½¸·×¤ò¸µ¤ËºÇ½ª·×»»
 $arrData = sfTotalConfirm($arrData, $objPage, $objCartSess, $arrInfo);
 
-// æ”¯æ‰•ã„ç·é¡
+// »ÙÊ§¤¤Áí³Û
 $objPage->tpl_amount = $arrData['payment_total'];
-// å—æ³¨ä»®ç•ªå·
+// ¼õÃí²¾ÈÖ¹æ
 $objPage->tpl_tranno = $uniqid;
-// åŸºæœ¬æƒ…å ±ã‚’æ¸¡ã™
+// ´ðËÜ¾ðÊó¤òÅÏ¤¹
 $objPage->arrInfo = $arrInfo;
 
 $objView->assignobj($objPage);
-// ãƒ•ãƒ¬ãƒ¼ãƒ ã‚’é¸æŠž(ã‚­ãƒ£ãƒ³ãƒšãƒ¼ãƒ³ãƒšãƒ¼ã‚¸ã‹ã‚‰é·ç§»ãªã‚‰å¤‰æ›´)
+// ¥Õ¥ì¡¼¥à¤òÁªÂò(¥­¥ã¥ó¥Ú¡¼¥ó¥Ú¡¼¥¸¤«¤éÁ«°Ü¤Ê¤éÊÑ¹¹)
 $objCampaignSess->pageView($objView);
 //--------------------------------------------------------------------------------------------------------------------------
 ?>

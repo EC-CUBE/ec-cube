@@ -3,46 +3,46 @@
  *
  * http://www.lockon.co.jp/
  *}-->
-<!--â–¼CONTENTS-->
+<!--¢§CONTENTS-->
 <table width="760" border="0" cellspacing="0" cellpadding="0" summary=" ">
 	<tr>
 		<td align="center" bgcolor="#ffffff">
 		
-		<!--è³¼å…¥æ‰‹ç¶šãã®æµã‚Œ-->
+		<!--¹ØÆş¼êÂ³¤­¤ÎÎ®¤ì-->
 		<table width="700" border="0" cellspacing="0" cellpadding="0" summary=" ">
 			<tr><td height="15"></td></tr>
 			<tr>
-				<td><img src="<!--{$smarty.const.URL_DIR}-->img/shopping/flow01.gif" width="700" height="36" alt="è³¼å…¥æ‰‹ç¶šãã®æµã‚Œ"></td>
+				<td><img src="<!--{$smarty.const.URL_DIR}-->img/shopping/flow01.gif" width="700" height="36" alt="¹ØÆş¼êÂ³¤­¤ÎÎ®¤ì"></td>
 			</tr>
 			<tr><td height="15"></td></tr>
 		</table>
-		<!--è³¼å…¥æ‰‹ç¶šãã®æµã‚Œ-->
+		<!--¹ØÆş¼êÂ³¤­¤ÎÎ®¤ì-->
 
-		<!--â–¼MAIN ONTENTS-->
+		<!--¢§MAIN ONTENTS-->
 		<table width="700" border="0" cellspacing="0" cellpadding="0" summary=" ">
 		<form name="form1" id="form1" method="post" action="<!--{$smarty.server.PHP_SELF|escape}-->">
 		<input type="hidden" name="mode" value="customer_addr">
 		<input type="hidden" name="uniqid" value="<!--{$tpl_uniqid}-->">
 		<input type="hidden" name="other_deliv_id" value="">
 			<tr>
-				<td><img src="<!--{$smarty.const.URL_DIR}-->img/shopping/deliv_title.jpg" width="700" height="40" alt="ãŠå±Šã‘å…ˆã®æŒ‡å®š"></td>
+				<td><img src="<!--{$smarty.const.URL_DIR}-->img/shopping/deliv_title.jpg" width="700" height="40" alt="¤ªÆÏ¤±Àè¤Î»ØÄê"></td>
 			</tr>
 			<tr><td height="15"></td></tr>
 			<tr>
-				<td class="fs12">ä¸‹è¨˜ä¸€è¦§ã‚ˆã‚ŠãŠå±Šã‘å…ˆä½æ‰€ã‚’é¸æŠã—ã¦ã€ã€Œé¸æŠã—ãŸãŠå±Šã‘å…ˆã«é€ã‚‹ã€ãƒœã‚¿ãƒ³ã‚’ã‚¯ãƒªãƒƒã‚¯ã—ã¦ãã ã•ã„ã€‚
-				ä¸€è¦§ã«ã”å¸Œæœ›ã®ä½æ‰€ãŒç„¡ã„å ´åˆã¯ã€ã€Œæ–°ã—ã„ãŠå±Šã‘å…ˆã‚’è¿½åŠ ã™ã‚‹ã€ã‚ˆã‚Šè¿½åŠ ç™»éŒ²ã—ã¦ãã ã•ã„ã€‚<br>
-				â€»æœ€å¤§20ä»¶ã¾ã§ç™»éŒ²ã§ãã¾ã™ã€‚</td>
+				<td class="fs12">²¼µ­°ìÍ÷¤è¤ê¤ªÆÏ¤±Àè½»½ê¤òÁªÂò¤·¤Æ¡¢¡ÖÁªÂò¤·¤¿¤ªÆÏ¤±Àè¤ËÁ÷¤ë¡×¥Ü¥¿¥ó¤ò¥¯¥ê¥Ã¥¯¤·¤Æ¤¯¤À¤µ¤¤¡£
+				°ìÍ÷¤Ë¤´´õË¾¤Î½»½ê¤¬Ìµ¤¤¾ì¹ç¤Ï¡¢¡Ö¿·¤·¤¤¤ªÆÏ¤±Àè¤òÄÉ²Ã¤¹¤ë¡×¤è¤êÄÉ²ÃÅĞÏ¿¤·¤Æ¤¯¤À¤µ¤¤¡£<br>
+				¢¨ºÇÂç20·ï¤Ş¤ÇÅĞÏ¿¤Ç¤­¤Ş¤¹¡£</td>
 			</tr>
 			<tr><td height="15"></td></tr>
 			<tr>
 				<td>
-					<a href="../mypage/delivery_addr.php" onclick="win02('../mypage/delivery_addr.php?page=<!--{$smarty.server.PHP_SELF|escape}-->','new_deiv','600','640'); return false;" onmouseover="chgImg('<!--{$smarty.const.URL_DIR}-->img/common/newadress_on.gif','addition');" onmouseout="chgImg('<!--{$smarty.const.URL_DIR}-->img/common/newadress.gif','addition');"><img src="<!--{$smarty.const.URL_DIR}-->img/common/newadress.gif" width="160" height="22" alt="æ–°ã—ã„ãŠå±Šã‘å…ˆã‚’è¿½åŠ ã™ã‚‹" name="addition" id="addition" /></a>
+					<a href="../mypage/delivery_addr.php" onclick="win02('../mypage/delivery_addr.php?page=<!--{$smarty.server.PHP_SELF|escape}-->','new_deiv','600','640'); return false;" onmouseover="chgImg('<!--{$smarty.const.URL_DIR}-->img/common/newadress_on.gif','addition');" onmouseout="chgImg('<!--{$smarty.const.URL_DIR}-->img/common/newadress.gif','addition');"><img src="<!--{$smarty.const.URL_DIR}-->img/common/newadress.gif" width="160" height="22" alt="¿·¤·¤¤¤ªÆÏ¤±Àè¤òÄÉ²Ã¤¹¤ë" name="addition" id="addition" /></a>
 				</td>
 			</tr>
 			<tr><td height="20"></td></tr>
 			<tr>
 				<td bgcolor="#cccccc">
-				<!--è¡¨ç¤ºã‚¨ãƒªã‚¢ã“ã“ã‹ã‚‰-->
+				<!--É½¼¨¥¨¥ê¥¢¤³¤³¤«¤é-->
 				
 				<!--{if $arrErr.deli != ""}-->
 				<table width="700" border="0" cellspacing="2" cellpadding="10" summary=" " bgcolor="#ff7e56">
@@ -57,11 +57,11 @@
 				
 				<table width="700" border="0" cellspacing="1" cellpadding="10" summary=" ">
 					<tr align="center" bgcolor="#f0f0f0">
-						<td width="40" class="fs12">é¸æŠ</td>
-						<td width="100" class="fs12">ä½æ‰€ç¨®é¡</td>
-						<td width="374" class="fs12">ãŠå±Šã‘å…ˆ</td>
-						<td width="40" class="fs12">å¤‰æ›´</td>
-						<td width="40" class="fs12">å‰Šé™¤</td>
+						<td width="40" class="fs12">ÁªÂò</td>
+						<td width="100" class="fs12">½»½ê¼ïÎà</td>
+						<td width="374" class="fs12">¤ªÆÏ¤±Àè</td>
+						<td width="40" class="fs12">ÊÑ¹¹</td>
+						<td width="40" class="fs12">ºï½ü</td>
 					</tr>
 
 					<!--{section name=cnt loop=$arrAddr}-->		
@@ -74,35 +74,35 @@
 								<!--{/if}-->
 							</td>
 							<td>
-								<label for="chk_id_<!--{$smarty.section.cnt.iteration}-->"><!--{if $smarty.section.cnt.first}-->ä¼šå“¡ç™»éŒ²ä½æ‰€<!--{else}-->è¿½åŠ ç™»éŒ²ä½æ‰€<!--{/if}--></label>
+								<label for="chk_id_<!--{$smarty.section.cnt.iteration}-->"><!--{if $smarty.section.cnt.first}-->²ñ°÷ÅĞÏ¿½»½ê<!--{else}-->ÄÉ²ÃÅĞÏ¿½»½ê<!--{/if}--></label>
 							</td>
 							<td>
 								<!--{assign var=key value=$arrAddr[cnt].pref}--><!--{$arrPref[$key]}--><!--{$arrAddr[cnt].addr01|escape}--><!--{$arrAddr[cnt].addr02|escape}--><br/>
 								<!--{$arrAddr[cnt].name01|escape}--> <!--{$arrAddr[cnt].name02|escape}-->
 							</td>
 							<td align="center">
-								<!--{if !$smarty.section.cnt.first}--><a href="<!--{$smarty.const.URL_DIR}-->mypage/delivery_addr.php" onclick="win02('/mypage/delivery_addr.php?page=<!--{$smarty.server.PHP_SELF|escape}-->&other_deliv_id=<!--{$arrAddr[cnt].other_deliv_id}-->','new_deiv','600','640'); return false;">å¤‰æ›´</a><!--{/if}-->
+								<!--{if !$smarty.section.cnt.first}--><a href="<!--{$smarty.const.URL_DIR}-->mypage/delivery_addr.php" onclick="win02('/mypage/delivery_addr.php?page=<!--{$smarty.server.PHP_SELF|escape}-->&other_deliv_id=<!--{$arrAddr[cnt].other_deliv_id}-->','new_deiv','600','640'); return false;">ÊÑ¹¹</a><!--{/if}-->
 							</td>
 							<td align="center">
-								<!--{if !$smarty.section.cnt.first}--><a href="<!--{$smarty.server.PHP_SELF|escape}-->" onclick="fnModeSubmit('delete', 'other_deliv_id', '<!--{$arrAddr[cnt].other_deliv_id}-->'); return false">å‰Šé™¤</a><!--{/if}-->
+								<!--{if !$smarty.section.cnt.first}--><a href="<!--{$smarty.server.PHP_SELF|escape}-->" onclick="fnModeSubmit('delete', 'other_deliv_id', '<!--{$arrAddr[cnt].other_deliv_id}-->'); return false">ºï½ü</a><!--{/if}-->
 							</td>
 						</tr>
 					<!--{/section}-->
 
 				</table>
-				<!--è¡¨ç¤ºã‚¨ãƒªã‚¢ã“ã“ã¾ã§-->
+				<!--É½¼¨¥¨¥ê¥¢¤³¤³¤Ş¤Ç-->
 				</td>
 			</tr>
 			<tr><td height="25"></td></tr>
 			<tr align="center">
 				<td>
-					<input type="image" onmouseover="chgImgImageSubmit('<!--{$smarty.const.URL_DIR}-->img/shopping/b_select_on.gif',this)" onmouseout="chgImgImageSubmit('<!--{$smarty.const.URL_DIR}-->img/shopping/b_select.gif',this)" src="<!--{$smarty.const.URL_DIR}-->img/shopping/b_select.gif" width="190" height="30" alt="é¸æŠã—ãŸãŠå±Šã‘å…ˆã«é€ã‚‹" border="0" name="send_button" id="send_button" />
+					<input type="image" onmouseover="chgImgImageSubmit('<!--{$smarty.const.URL_DIR}-->img/shopping/b_select_on.gif',this)" onmouseout="chgImgImageSubmit('<!--{$smarty.const.URL_DIR}-->img/shopping/b_select.gif',this)" src="<!--{$smarty.const.URL_DIR}-->img/shopping/b_select.gif" width="190" height="30" alt="ÁªÂò¤·¤¿¤ªÆÏ¤±Àè¤ËÁ÷¤ë" border="0" name="send_button" id="send_button" />
 				</td>
 			</tr>
 		</form>
 		</table>
-		<!--â–²MAIN ONTENTS-->
+		<!--¢¥MAIN ONTENTS-->
 		</td>
 	</tr>
 </table>
-<!--â–²CONTENTS-->
+<!--¢¥CONTENTS-->

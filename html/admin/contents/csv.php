@@ -17,7 +17,7 @@ class LC_Page {
 		$this->tpl_subno = 'csv';
 		$this->tpl_subno_csv = $this->arrSubnavi[1];
 		$this->tpl_mainno = "contents";
-		$this->tpl_subtitle = 'CSVå‡ºåŠ›è¨­å®š';
+		$this->tpl_subtitle = 'CSV½ÐÎÏÀßÄê';
 	}
 }
 $objPage = new LC_Page();
@@ -27,7 +27,7 @@ $objSess = new SC_Session();
 $objPage->arrSubnavi = $arrSubnavi;
 $objPage->arrSubnaviName = $arrSubnaviName;
 
-// èªè¨¼å¯å¦ã®åˆ¤å®š
+// Ç§¾Ú²ÄÈÝ¤ÎÈ½Äê
 $objSess = new SC_Session();
 sfIsSuccess($objSess);
 
@@ -35,16 +35,16 @@ $arrOutput = array();
 $arrChoice = array();
 
 $get_tpl_subno_csv = $_GET['tpl_subno_csv'];
-// GETã§å€¤ãŒé€ã‚‰ã‚Œã¦ã„ã‚‹å ´åˆã«ã¯ãã®å€¤ã‚’å…ƒã«ç”»é¢è¡¨ç¤ºã‚’åˆ‡ã‚Šæ›¿ãˆã‚‹
+// GET¤ÇÃÍ¤¬Á÷¤é¤ì¤Æ¤¤¤ë¾ì¹ç¤Ë¤Ï¤½¤ÎÃÍ¤ò¸µ¤Ë²èÌÌÉ½¼¨¤òÀÚ¤êÂØ¤¨¤ë
 if ($get_tpl_subno_csv != ""){
-	// é€ã‚‰ã‚Œã¦ããŸå€¤ãŒé…åˆ—ã«ç™»éŒ²ã•ã‚Œã¦ã„ãªã‘ã‚Œã°TOPã‚’è¡¨ç¤º
+	// Á÷¤é¤ì¤Æ¤­¤¿ÃÍ¤¬ÇÛÎó¤ËÅÐÏ¿¤µ¤ì¤Æ¤¤¤Ê¤±¤ì¤ÐTOP¤òÉ½¼¨
 	if (in_array($get_tpl_subno_csv,$objPage->arrSubnavi)){
 		$subno_csv = $get_tpl_subno_csv;
 	}else{
 		$subno_csv = $objPage->arrSubnavi[1];
 	}
 } else {
-	// GETã§å€¤ãŒãªã‘ã‚Œã°POSTã®å€¤ã‚’ä½¿ç”¨ã™ã‚‹
+	// GET¤ÇÃÍ¤¬¤Ê¤±¤ì¤ÐPOST¤ÎÃÍ¤ò»ÈÍÑ¤¹¤ë
 	if ($_POST['tpl_subno_csv'] != ""){
 		$subno_csv = $_POST['tpl_subno_csv'];
 	}else{
@@ -52,29 +52,29 @@ if ($get_tpl_subno_csv != ""){
 	}
 }
 
-// subnoã®ç•ªå·ã‚’å–å¾—
+// subno¤ÎÈÖ¹æ¤ò¼èÆÀ
 $subno_id = array_keys($objPage->arrSubnavi,$subno_csv);
 $subno_id = $subno_id[0];
-// ãƒ‡ãƒ¼ã‚¿ã®ç™»éŒ²
+// ¥Ç¡¼¥¿¤ÎÅÐÏ¿
 if ($_POST["mode"] == "confirm") {
 	
-	// ã‚¨ãƒ©ãƒ¼ãƒã‚§ãƒƒã‚¯
+	// ¥¨¥é¡¼¥Á¥§¥Ã¥¯
 	$objPage->arrErr = lfCheckError($_POST['output_list']);
 	
 	if (count($objPage->arrErr) <= 0){
-		// ãƒ‡ãƒ¼ã‚¿ã®æ›´æ–°
+		// ¥Ç¡¼¥¿¤Î¹¹¿·
 		lfUpdCsvOutput($subno_id, $_POST['output_list']);
 		
-		// ç”»é¢ã®ãƒªãƒ­ãƒ¼ãƒ‰
+		// ²èÌÌ¤Î¥ê¥í¡¼¥É
 		sfReload("tpl_subno_csv=$subno_csv");
 	}
 }
 
-// å‡ºåŠ›é …ç›®ã®å–å¾—
+// ½ÐÎÏ¹àÌÜ¤Î¼èÆÀ
 $arrOutput = sfSwapArray(sfgetCsvOutput($subno_csv, "WHERE csv_id = ? AND status = 1", array($subno_id)));
 $arrOutput = sfarrCombine($arrOutput['col'], $arrOutput['disp_name']);
 
-// éžå‡ºåŠ›é …ç›®ã®å–å¾—
+// Èó½ÐÎÏ¹àÌÜ¤Î¼èÆÀ
 $arrChoice = sfSwapArray(sfgetCsvOutput($subno_csv, "WHERE csv_id = ? AND status = 2", array($subno_id)));
 $arrChoice = sfarrCombine($arrChoice['col'], $arrChoice['disp_name']);
 
@@ -85,24 +85,24 @@ $objPage->arrChoice=$arrChoice;
 $objPage->SubnaviName = $objPage->arrSubnaviName[$subno_id];
 $objPage->tpl_subno_csv = $subno_csv;
 
-// ç”»é¢ã®è¡¨ç¤º
+// ²èÌÌ¤ÎÉ½¼¨
 $objView->assignobj($objPage);
 $objView->display(MAIN_FRAME);
 
 //---------------------------------------------------------------------------------------------------------------------------------------------------------
 /**************************************************************************************************************
- * é–¢æ•°å	ï¼šlfUpdCsvOutput
- * å‡¦ç†å†…å®¹	ï¼šCSVå‡ºåŠ›é …ç›®ã‚’æ›´æ–°ã™ã‚‹
- * å¼•æ•°		ï¼šãªã—
+ * ´Ø¿ôÌ¾	¡§lfUpdCsvOutput
+ * ½èÍýÆâÍÆ	¡§CSV½ÐÎÏ¹àÌÜ¤ò¹¹¿·¤¹¤ë
+ * °ú¿ô		¡§¤Ê¤·
  **************************************************************************************************************/
 function lfUpdCsvOutput($csv_id, $arrData = array()){
 	$objQuery = new SC_Query();
 
-	// ã²ã¨ã¾ãšã€å…¨éƒ¨ä½¿ç”¨ã—ãªã„ã§æ›´æ–°ã™ã‚‹
+	// ¤Ò¤È¤Þ¤º¡¢Á´Éô»ÈÍÑ¤·¤Ê¤¤¤Ç¹¹¿·¤¹¤ë
 	$upd_sql = "UPDATE dtb_csv SET status = 2, rank = NULL, update_date = now() WHERE csv_id = ?";
 	$objQuery->query($upd_sql, array($csv_id));
 
-	// ä½¿ç”¨ã™ã‚‹ã‚‚ã®ã ã‘ã€å†æ›´æ–°ã™ã‚‹ã€‚
+	// »ÈÍÑ¤¹¤ë¤â¤Î¤À¤±¡¢ºÆ¹¹¿·¤¹¤ë¡£
 	if (is_array($arrData)) {
 		foreach($arrData as $key => $val){
 			$upd_sql = "UPDATE dtb_csv SET status = 1, rank = ? WHERE csv_id = ? AND col = ? ";
@@ -112,14 +112,14 @@ function lfUpdCsvOutput($csv_id, $arrData = array()){
 }
 
 /**************************************************************************************************************
- * é–¢æ•°å	ï¼šlfUpdCsvOutput
- * å‡¦ç†å†…å®¹	ï¼šCSVå‡ºåŠ›é …ç›®ã‚’æ›´æ–°ã™ã‚‹
- * å¼•æ•°		ï¼šãªã—
- * æˆ»å€¤		ï¼šãªã—
+ * ´Ø¿ôÌ¾	¡§lfUpdCsvOutput
+ * ½èÍýÆâÍÆ	¡§CSV½ÐÎÏ¹àÌÜ¤ò¹¹¿·¤¹¤ë
+ * °ú¿ô		¡§¤Ê¤·
+ * ÌáÃÍ		¡§¤Ê¤·
  **************************************************************************************************************/
 function lfCheckError($data){
 	$objErr = new SC_CheckError();
-	$objErr->doFunc( array("å‡ºåŠ›é …ç›®", "output_list"), array("EXIST_CHECK") );
+	$objErr->doFunc( array("½ÐÎÏ¹àÌÜ", "output_list"), array("EXIST_CHECK") );
 	
 	return $objErr->arrErr;
 

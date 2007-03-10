@@ -4,7 +4,7 @@ $SESSION_HANDLER_PHP_PATH = realpath( dirname( __FILE__) );
 require_once($SESSION_HANDLER_PHP_PATH ."/../class/SC_Query.php" );
 require_once($SESSION_HANDLER_PHP_PATH ."/../lib/glib.php" );
 
-// ã‚»ãƒƒã‚·ãƒ§ãƒ³ã®æœ‰åŠ¹æœŸé™(ç§’)
+// ¥»¥Ã¥·¥ç¥ó¤ÎÍ­¸ú´ü¸Â(ÉÃ)
 define("MAX_LIFETIME", 7200);
 
 function sfSessOpen($save_path, $session_name) 
@@ -17,7 +17,7 @@ function sfSessClose()
   return true;
 }
 
-// ã‚»ãƒƒã‚·ãƒ§ãƒ³èª­ã¿è¾¼ã¿
+// ¥»¥Ã¥·¥ç¥óÆÉ¤ß¹ş¤ß
 function sfSessRead($id) 
 {
 	$objQuery = new SC_Query();
@@ -25,19 +25,19 @@ function sfSessRead($id)
 	return($arrRet[0]['sess_data']);
 }
 
-// ã‚»ãƒƒã‚·ãƒ§ãƒ³æ›¸è¾¼ã¿
+// ¥»¥Ã¥·¥ç¥ó½ñ¹ş¤ß
 function sfSessWrite($id, $sess_data) 
 {
 	$objQuery = new SC_Query();
 	$count = $objQuery->count("dtb_session", "sess_id = ?", array($id));
 	$sqlval = array();
 	if($count > 0) {
-		// ãƒ¬ã‚³ãƒ¼ãƒ‰æ›´æ–°
+		// ¥ì¥³¡¼¥É¹¹¿·
 		$sqlval['sess_data'] = $sess_data;
 		$sqlval['update_date'] = 'Now()';
 		$objQuery->update("dtb_session", $sqlval, "sess_id = ?", array($id));
 	} else {
-		// ã‚»ãƒƒã‚·ãƒ§ãƒ³ãƒ‡ãƒ¼ã‚¿ãŒã‚ã‚‹å ´åˆã¯ã€ãƒ¬ã‚³ãƒ¼ãƒ‰ä½œæˆ
+		// ¥»¥Ã¥·¥ç¥ó¥Ç¡¼¥¿¤¬¤¢¤ë¾ì¹ç¤Ï¡¢¥ì¥³¡¼¥ÉºîÀ®
 		if(strlen($sess_data) > 0) {
 			$sqlval['sess_id'] = $id;
 			$sqlval['sess_data'] = $sess_data;
@@ -49,7 +49,7 @@ function sfSessWrite($id, $sess_data)
 	return true;
 }
 
-// ã‚»ãƒƒã‚·ãƒ§ãƒ³ç ´æ£„
+// ¥»¥Ã¥·¥ç¥óÇË´ş
 function sfSessDestroy($id) 
 {
 	$objQuery = new SC_Query();
@@ -59,8 +59,8 @@ function sfSessDestroy($id)
 
 function sfSessGc($maxlifetime) 
 {
-	// â€»$maxlifetimeã¯ã€åˆ©ç”¨ã—ãªã„ã€‚
-	// MAX_LIFETIMEä»¥ä¸Šæ›´æ–°ã•ã‚Œã¦ã„ãªã„ã‚»ãƒƒã‚·ãƒ§ãƒ³ã‚’å‰Šé™¤ã™ã‚‹ã€‚
+	// ¢¨$maxlifetime¤Ï¡¢ÍøÍÑ¤·¤Ê¤¤¡£
+	// MAX_LIFETIME°Ê¾å¹¹¿·¤µ¤ì¤Æ¤¤¤Ê¤¤¥»¥Ã¥·¥ç¥ó¤òºï½ü¤¹¤ë¡£
 	$objQuery = new SC_Query();
 	$where = "update_date < current_timestamp + '-". MAX_LIFETIME . " secs'";
 	$objQuery->delete("dtb_session", $where);

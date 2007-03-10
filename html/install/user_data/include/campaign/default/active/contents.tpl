@@ -13,14 +13,14 @@
 				<table width="604" border="0" cellspacing="0" cellpadding="0" summary=" ">
 					<tr><td height="13"></td></tr>
 					<tr>
-						<td>ã‚­ãƒ£ãƒ³ãƒšãƒ¼ãƒ³é–‹å‚¬ä¸­</td>
+						<td>¥­¥ã¥ó¥Ú¡¼¥ó³«ºÅÃæ</td>
 					</tr>
 					<tr><td height="20"></td></tr>
 				</table>
 				
 				<table width="530" border="0" cellspacing="0" cellpadding="0" summary=" ">
 					<tr>
-						<td class="fs12">ã‚­ãƒ£ãƒ³ãƒšãƒ¼ãƒ³å†…å®¹</td>
+						<td class="fs12">¥­¥ã¥ó¥Ú¡¼¥óÆâÍÆ</td>
 					</tr>
 					<tr><td height="10"></td></tr>
 				</table>

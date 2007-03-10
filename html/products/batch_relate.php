@@ -5,7 +5,7 @@
  * http://www.lockon.co.jp/
  */
 
-/*ã€€ã“ã®å•†å“ã‚’è²·ã£ãŸäººã¯ã“ã‚“ãªå•†å“ã‚‚è²·ã£ã¦ã„ã¾ã™ã€‚é›†è¨ˆãƒ•ã‚¡ã‚¤ãƒ«  */
+/*¡¡¤³¤Î¾¦ÉÊ¤òÇã¤Ã¤¿¿Í¤Ï¤³¤ó¤Ê¾¦ÉÊ¤âÇã¤Ã¤Æ¤¤¤Þ¤¹¡£½¸·×¥Õ¥¡¥¤¥ë  */
 require_once(DATA_PATH . "lib/slib.php");
 require_once(DATA_PATH . "lib/glib.php");
 require_once(DATA_PATH . "class/SC_Query.php");
@@ -18,19 +18,19 @@ $objQuery->delete("dtb_bat_relate_products");
 $arrCID = $objQuery->select("customer_id", "dtb_order", "del_flg = 0");
 foreach($arrCID as $cdata) {
 	$where = "order_id IN (SELECT order_id FROM dtb_order WHERE customer_id = ? )";
-	//é¡§å®¢ãŒè³¼å…¥ã—ãŸå•†å“ï¼©ï¼¤ã‚’å–å¾—ã™ã‚‹
+	//¸ÜµÒ¤¬¹ØÆþ¤·¤¿¾¦ÉÊ£É£Ä¤ò¼èÆÀ¤¹¤ë
 	$arrPID = $objQuery->select("product_id", "dtb_order_detail", $where, array($cdata['customer_id']));
-	//é¡§å®¢ãŒå•†å“ã‚’è¤‡æ•°è³¼å…¥ã—ã¦ã„ã‚Œã°
+	//¸ÜµÒ¤¬¾¦ÉÊ¤òÊ£¿ô¹ØÆþ¤·¤Æ¤¤¤ì¤Ð
 	if(count($arrPID) > 1) {
 		foreach($arrPID as $pdata1) {
-			//ã“ã®å•†å“ID
+			//¤³¤Î¾¦ÉÊID
 			$sqlval['product_id'] = $pdata1['product_id'];
 			foreach($arrPID as $pdata2) {
 				if($pdata2['product_id'] != $pdata1['product_id']) {
-					//ã“ã‚“ãªå•†å“ID
+					//¤³¤ó¤Ê¾¦ÉÊID
 					$sqlval['relate_product_id'] = $pdata2['product_id'];
 					$sqlval['create_date'] = "now()";
-					//ãƒ‡ãƒ¼ã‚¿æŒ¿å…¥
+					//¥Ç¡¼¥¿ÁÞÆþ
 					$objQuery->insert("dtb_bat_relate_products", $sqlval);
 				}
 			}

@@ -9,43 +9,43 @@ require_once("../require.php");
 $conn = new SC_DbConn();
 $oquery = new SC_Query();
 
-// èªè¨¼å¯å¦ã®åˆ¤å®š
+// Ç§¾Ú²ÄÈÝ¤ÎÈ½Äê
 $objSess = new SC_Session();
 sfIsSuccess($objSess);
 
-// member_idã®ãƒã‚§ãƒƒã‚¯
+// member_id¤Î¥Á¥§¥Ã¥¯
 if(sfIsInt($_GET['id'])){
-	// ãƒ¬ã‚³ãƒ¼ãƒ‰ã®å‰Šé™¤
+	// ¥ì¥³¡¼¥É¤Îºï½ü
 	$conn->query("BEGIN");
 	fnRenumberRank($conn, $oquery, $_GET['id']);
 	fnDeleteRecord($conn, $_GET['id']);
 	$conn->query("COMMIT");
 } else {
-	// ã‚¨ãƒ©ãƒ¼å‡¦ç†
+	// ¥¨¥é¡¼½èÍý
 	gfPrintLog("error id=".$_GET['id']);
 }
 
-// ãƒšãƒ¼ã‚¸ã®è¡¨ç¤º
+// ¥Ú¡¼¥¸¤ÎÉ½¼¨
 $location = "Location: " . URL_SYSTEM_TOP . "?pageno=".$_GET['pageno'];
 header($location);
 
-// ãƒ©ãƒ³ã‚­ãƒ³ã‚°ã®æŒ¯ã‚Šç›´ã—
+// ¥é¥ó¥­¥ó¥°¤Î¿¶¤êÄ¾¤·
 function fnRenumberRank($conn, $oquery, $id) {
 	$where = "member_id = $id";
-	// ãƒ©ãƒ³ã‚¯ã®å–å¾—
+	// ¥é¥ó¥¯¤Î¼èÆÀ
 	$rank = $oquery->get("dtb_member", "rank", $where);
-	// å‰Šé™¤ã—ãŸãƒ¬ã‚³ãƒ¼ãƒ‰ã‚ˆã‚Šä¸Šã®ãƒ©ãƒ³ã‚­ãƒ³ã‚°ã‚’ä¸‹ã’ã¦RANKã®ç©ºãã‚’åŸ‹ã‚ã‚‹ã€‚
+	// ºï½ü¤·¤¿¥ì¥³¡¼¥É¤è¤ê¾å¤Î¥é¥ó¥­¥ó¥°¤ò²¼¤²¤ÆRANK¤Î¶õ¤­¤òËä¤á¤ë¡£
 	$sqlup = "UPDATE dtb_member SET rank = (rank - 1) WHERE rank > $rank AND del_flg <> 1";
-	// UPDATEã®å®Ÿè¡Œ
+	// UPDATE¤Î¼Â¹Ô
 	$ret = $conn->query($sqlup);
 	return $ret;
 }
 
-// ãƒ¬ã‚³ãƒ¼ãƒ‰ã®å‰Šé™¤(å‰Šé™¤ãƒ•ãƒ©ã‚°ã‚’ONã«ã™ã‚‹)
+// ¥ì¥³¡¼¥É¤Îºï½ü(ºï½ü¥Õ¥é¥°¤òON¤Ë¤¹¤ë)
 function fnDeleteRecord($conn, $id) {
-	// ãƒ©ãƒ³ã‚¯ã‚’æœ€ä¸‹ä½ã«ã™ã‚‹ã€DELãƒ•ãƒ©ã‚°ON
+	// ¥é¥ó¥¯¤òºÇ²¼°Ì¤Ë¤¹¤ë¡¢DEL¥Õ¥é¥°ON
 	$sqlup = "UPDATE dtb_member SET rank = 0, del_flg = 1 WHERE member_id = $id";
-	// UPDATEã®å®Ÿè¡Œ
+	// UPDATE¤Î¼Â¹Ô
 	$ret = $conn->query($sqlup);
 	return $ret;
 }

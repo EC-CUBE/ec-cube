@@ -9,7 +9,7 @@ require_once("../require.php");
 class LC_Page {
 	function LC_Page() {
 		$this->tpl_mainpage = 'entry/kiyaku.tpl';
-		$this->tpl_title="ã”åˆ©ç”¨è¦ç´„";
+		$this->tpl_title="¤´ÍøÍÑµ¬Ìó";
 	}
 }
 
@@ -18,10 +18,10 @@ $objView = new SC_SiteView();
 $objCustomer = new SC_Customer();
 $objCampaignSess = new SC_CampaignSession();
 
-// ãƒ¬ã‚¤ã‚¢ã‚¦ãƒˆãƒ‡ã‚¶ã‚¤ãƒ³ã‚’å–å¾—
+// ¥ì¥¤¥¢¥¦¥È¥Ç¥¶¥¤¥ó¤ò¼èÆÀ
 $objPage = sfGetPageLayout($objPage, false, DEF_LAYOUT);
 
-// è¦ç´„å†…å®¹ã®å–å¾—
+// µ¬ÌóÆâÍÆ¤Î¼èÆÀ
 $objQuery = new SC_Query();
 $objQuery->setorder("rank DESC");
 $arrRet = $objQuery->select("kiyaku_title, kiyaku_text", "dtb_kiyaku", "del_flg <> 1");
@@ -33,12 +33,12 @@ for ($i = 0; $i < $max; $i++) {
 	$objPage->tpl_kiyaku_text.=$arrRet[$i]['kiyaku_text'] . "\n\n"; 
 }
 
-// ã‚­ãƒ£ãƒ³ãƒšãƒ¼ãƒ³ã‹ã‚‰ã®é·ç§»ãŒãƒã‚§ãƒƒã‚¯
+// ¥­¥ã¥ó¥Ú¡¼¥ó¤«¤é¤ÎÁ«°Ü¤¬¥Á¥§¥Ã¥¯
 $objPage->is_campaign = $objCampaignSess->getIsCampaign();
 $objPage->campaign_dir = $objCampaignSess->getCampaignDir();
 
 $objView->assignobj($objPage);
-// ãƒ•ãƒ¬ãƒ¼ãƒ ã‚’é¸æŠž(ã‚­ãƒ£ãƒ³ãƒšãƒ¼ãƒ³ãƒšãƒ¼ã‚¸ã‹ã‚‰é·ç§»ãªã‚‰å¤‰æ›´)
+// ¥Õ¥ì¡¼¥à¤òÁªÂò(¥­¥ã¥ó¥Ú¡¼¥ó¥Ú¡¼¥¸¤«¤éÁ«°Ü¤Ê¤éÊÑ¹¹)
 $objCampaignSess->pageView($objView);
 //--------------------------------------------------------------------------------------------------------------------------
 ?>

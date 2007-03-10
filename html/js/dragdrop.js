@@ -9,12 +9,12 @@ var offsetY;
 var arrObj;
 var objParam;
 
-// ƒpƒ‰ƒ[ƒ^ŠÇ—ƒNƒ‰ƒX‚Ì’è‹`
+// ¥Ñ¥é¥á¡¼¥¿´ÉÍı¥¯¥é¥¹¤ÎÄêµÁ
 function SC_Param() {
 	this.ITEM_MAX = 3;		
 }
 
-// ƒTƒCƒYŠÇ—ƒNƒ‰ƒX‚Ì’è‹`
+// ¥µ¥¤¥º´ÉÍı¥¯¥é¥¹¤ÎÄêµÁ
 function SC_Size() {
 	this.id = '';
 	this.left = 0;
@@ -24,9 +24,9 @@ function SC_Size() {
 	this.obj;
 };
 
-// ƒIƒ“ƒ[ƒhˆ—
+// ¥ª¥ó¥í¡¼¥É½èÍı
 onload=function () {
-	// ƒpƒ‰ƒ[ƒ^‚Ì‰Šú‰»
+	// ¥Ñ¥é¥á¡¼¥¿¤Î½é´ü²½
 	objParam = new SC_Param();
 	
 	// WIN-IE
@@ -57,7 +57,7 @@ onload=function () {
 		arrObj[id].bottom =Number(arrObj[id].top) + Number(arrObj[id].height);
 	}
 	
-	// MouseDownƒCƒxƒ“ƒgˆ—‚Ì“ü‚ê‘Ö‚¦
+	// MouseDown¥¤¥Ù¥ó¥È½èÍı¤ÎÆş¤ìÂØ¤¨
 	objlist['item0'].onmousedown = onMouseDown;
 	objlist['item1'].onmousedown = onMouseDown;
 	objlist['item2'].onmousedown = onMouseDown;
@@ -66,7 +66,7 @@ onload=function () {
 	document.onmouseup = onMouseUp;
 }
 
-// MouseDownƒCƒxƒ“ƒg
+// MouseDown¥¤¥Ù¥ó¥È
 function onMouseDown(e) {
    obj = this;
    // WIN-IE
@@ -81,7 +81,7 @@ function onMouseDown(e) {
    return false;
 }
 
-// MouseMoveƒCƒxƒ“ƒg
+// MouseMove¥¤¥Ù¥ó¥È
 function onMouseMove(e) {
 	if (!obj) {
 		return true;
@@ -89,7 +89,7 @@ function onMouseMove(e) {
 	// WIN-IE
 	if (document.all) {
 		x = event.clientX - offsetX;
-		// ‰æ–ÊŠO‚Éo‚È‚¢‚æ‚¤‚É§Œä‚·‚é@
+		// ²èÌÌ³°¤Ë½Ğ¤Ê¤¤¤è¤¦¤ËÀ©¸æ¤¹¤ë¡¡
 		if(x <= 0) {
 			x = 0;
 		}
@@ -98,7 +98,7 @@ function onMouseMove(e) {
 			x =left_max;			
 		}
 		obj.style.left = x;
-		// ‰æ–ÊŠO‚Éo‚È‚¢‚æ‚¤‚É§Œä‚·‚é@
+		// ²èÌÌ³°¤Ë½Ğ¤Ê¤¤¤è¤¦¤ËÀ©¸æ¤¹¤ë¡¡
 		y = event.clientY - offsetY;
 		if(y <= 0) {
 			y = 0;
@@ -111,7 +111,7 @@ function onMouseMove(e) {
 	// WIN-NN,WIN-FF
 	} else if (obj.getElementsByTagName) {
 		x = e.pageX - offsetX;
-		// ‰æ–ÊŠO‚Éo‚È‚¢‚æ‚¤‚É§Œä‚·‚é@
+		// ²èÌÌ³°¤Ë½Ğ¤Ê¤¤¤è¤¦¤ËÀ©¸æ¤¹¤ë¡¡
 		if(x <= 0) {
 			x = 0;
 		}
@@ -122,7 +122,7 @@ function onMouseMove(e) {
 		obj.style.left = x;
 		
 		y = e.pageY - offsetY;
-		// ‰æ–ÊŠO‚Éo‚È‚¢‚æ‚¤‚É§Œä‚·‚é@
+		// ²èÌÌ³°¤Ë½Ğ¤Ê¤¤¤è¤¦¤ËÀ©¸æ¤¹¤ë¡¡
 		if(y <= 0) {
 			y = 0;
 			obj.style.top = 0;
@@ -142,7 +142,7 @@ function onMouseMove(e) {
 	return false;
 }
 
-// MouseUpƒCƒxƒ“ƒg
+// MouseUp¥¤¥Ù¥ó¥È
 function onMouseUp(e) {
 	if (!obj) {
 		return true;
@@ -151,12 +151,12 @@ function onMouseUp(e) {
 	if(!isInFlame('flame0', obj)) {
 		// WIN-IE
 		if (document.all) {
-			// Å‰‚ÌˆÊ’u‚É–ß‚·
+			// ºÇ½é¤Î°ÌÃÖ¤ËÌá¤¹
 			obj.style.left = arrObj[obj.id].left;
 			obj.style.top = arrObj[obj.id].top;
 		// WIN-NN,WIN-FF
 		} else if (obj.getElementsByTagName) {
-			// Å‰‚ÌˆÊ’u‚É–ß‚·
+			// ºÇ½é¤Î°ÌÃÖ¤ËÌá¤¹
 			obj.style.left = arrObj[obj.id].left;
 			obj.style.top = arrObj[obj.id].top;
 		}
@@ -165,7 +165,7 @@ function onMouseUp(e) {
 	obj = null;
 }
 
-// ƒtƒŒ[ƒ€“à‚ÉƒAƒCƒeƒ€‚ª‘¶İ‚·‚é‚©”»’è‚·‚é@
+// ¥Õ¥ì¡¼¥àÆâ¤Ë¥¢¥¤¥Æ¥à¤¬Â¸ºß¤¹¤ë¤«È½Äê¤¹¤ë¡¡
 function isInFlame(flame_id, item) {
 	top_val = item.style.top;
 	top_val = Number(top_val.replace(/px/, ''));
@@ -184,7 +184,7 @@ function isInFlame(flame_id, item) {
 	return false;
 }
 
-// ‘—M‘O‚Ìˆ—
+// Á÷¿®Á°¤Î½èÍı
 function preSubmit() {
 	for(i = 0; i < 3; i++) {
 		id = 'item' + i;

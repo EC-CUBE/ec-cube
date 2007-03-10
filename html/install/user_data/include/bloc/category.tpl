@@ -3,10 +3,10 @@
  *
  * http://www.lockon.co.jp/
  *}-->
-<!--â–¼å•†å“ã‚«ãƒ†ã‚´ãƒªãƒ¼ã“ã“ã‹ã‚‰-->
+<!--¢§¾¦ÉÊ¥«¥Æ¥´¥ê¡¼¤³¤³¤«¤é-->
 <table width="166" border="0" cellspacing="0" cellpadding="0" summary=" ">
 	<tr>
-		<td colspan="3"><img src="<!--{$smarty.const.URL_DIR}-->img/side/title_cat.jpg" width="166" height="35" alt="å•†å“ã‚«ãƒ†ã‚´ãƒªãƒ¼"></td>
+		<td colspan="3"><img src="<!--{$smarty.const.URL_DIR}-->img/side/title_cat.jpg" width="166" height="35" alt="¾¦ÉÊ¥«¥Æ¥´¥ê¡¼"></td>
 	</tr>
 	<tr>
 		<td bgcolor="#cccccc"><img src="<!--{$smarty.const.URL_DIR}-->img/common/_.gif" width="1" height="10" alt=""></td>
@@ -21,11 +21,11 @@
 				<!--{section name=cnt loop=$arrTree}-->
 				<!--{assign var=level value="`$arrTree[cnt].level`}-->
 				
-				<!--{* åŒºåˆ‡ã‚Šç·šè¡¨ç¤º *}-->				
+				<!--{* ¶èÀÚ¤êÀþÉ½¼¨ *}-->				
 				<!--{if $level == 1 && !$smarty.section.cnt.first}-->
 				<tr><td colspan="2" height="15"><img src="<!--{$smarty.const.URL_DIR}-->img/side/line_146.gif" width="146" height="1" alt=""></td></tr>
 				<!--{/if}-->
-				<!--{* ã‚«ãƒ†ã‚´ãƒªåè¡¨ç¤º *}-->
+				<!--{* ¥«¥Æ¥´¥êÌ¾É½¼¨ *}-->
 				<!--{assign var=disp_name value="`$arrTree[cnt].category_name`"}-->
 				<!--{if $arrTree[cnt].display == 1}-->
 				<tr>
@@ -53,4 +53,4 @@
 	</tr>
 	<tr><td height="10"></td></tr>
 </table>
-<!--â–²å•†å“ã‚«ãƒ†ã‚´ãƒªãƒ¼ã“ã“ã¾ã§-->
+<!--¢¥¾¦ÉÊ¥«¥Æ¥´¥ê¡¼¤³¤³¤Þ¤Ç-->

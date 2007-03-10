@@ -13,7 +13,7 @@ class LC_Page {
 		$this->tpl_mainno = 'products';		
 		$this->tpl_subno = 'category';
 		$this->tpl_onload = " fnSetFocus('category_name'); ";
-		$this->tpl_subtitle = 'ã‚«ãƒ†ã‚´ãƒªãƒ¼ç™»éŒ²';
+		$this->tpl_subtitle = '¥«¥Æ¥´¥ê¡¼ÅĞÏ¿';
 	}
 }
 
@@ -22,17 +22,17 @@ $objPage = new LC_Page();
 $objView = new SC_AdminView();
 $objSess = new SC_Session();
 
-// èªè¨¼å¯å¦ã®åˆ¤å®š
+// Ç§¾Ú²ÄÈİ¤ÎÈ½Äê
 sfIsSuccess($objSess);
 
-// ãƒ‘ãƒ©ãƒ¡ãƒ¼ã‚¿ç®¡ç†ã‚¯ãƒ©ã‚¹
+// ¥Ñ¥é¥á¡¼¥¿´ÉÍı¥¯¥é¥¹
 $objFormParam = new SC_FormParam();
-// ãƒ‘ãƒ©ãƒ¡ãƒ¼ã‚¿æƒ…å ±ã®åˆæœŸåŒ–
+// ¥Ñ¥é¥á¡¼¥¿¾ğÊó¤Î½é´ü²½
 lfInitParam();
-// POSTå€¤ã®å–å¾—
+// POSTÃÍ¤Î¼èÆÀ
 $objFormParam->setParam($_POST);
 
-// é€šå¸¸æ™‚ã¯è¦ªã‚«ãƒ†ã‚´ãƒªã‚’0ã«è¨­å®šã™ã‚‹ã€‚
+// ÄÌ¾ï»ş¤Ï¿Æ¥«¥Æ¥´¥ê¤ò0¤ËÀßÄê¤¹¤ë¡£
 $objPage->arrForm['parent_category_id'] = $_POST['parent_category_id'];
 
 switch($_POST['mode']) {
@@ -48,7 +48,7 @@ case 'edit':
 			if($count < CATEGORY_MAX) {			
 				lfInsertCat($_POST['parent_category_id']);
 			} else {
-				print("ã‚«ãƒ†ã‚´ãƒªã®ç™»éŒ²æœ€å¤§æ•°ã‚’è¶…ãˆã¾ã—ãŸã€‚");
+				print("¥«¥Æ¥´¥ê¤ÎÅĞÏ¿ºÇÂç¿ô¤òÄ¶¤¨¤Ş¤·¤¿¡£");
 			}
 		} else {
 			lfUpdateCat($_POST['category_id']);
@@ -59,32 +59,32 @@ case 'edit':
 	}
 	break;
 case 'pre_edit':
-	// ç·¨é›†é …ç›®ã®ã‚«ãƒ†ã‚´ãƒªåã‚’DBã‚ˆã‚Šå–å¾—ã™ã‚‹ã€‚
+	// ÊÔ½¸¹àÌÜ¤Î¥«¥Æ¥´¥êÌ¾¤òDB¤è¤ê¼èÆÀ¤¹¤ë¡£
 	$oquery = new SC_Query();
 	$where = "category_id = ?";
 	$cat_name = $oquery->get("dtb_category", "category_name", $where, array($_POST['category_id']));
-	// å…¥åŠ›é …ç›®ã«ã‚«ãƒ†ã‚´ãƒªåã‚’å…¥åŠ›ã™ã‚‹ã€‚
+	// ÆşÎÏ¹àÌÜ¤Ë¥«¥Æ¥´¥êÌ¾¤òÆşÎÏ¤¹¤ë¡£
 	$objPage->arrForm['category_name'] = $cat_name;
-	// POSTãƒ‡ãƒ¼ã‚¿ã‚’å¼•ãç¶™ã
+	// POST¥Ç¡¼¥¿¤ò°ú¤­·Ñ¤°
 	$objPage->arrForm['category_id'] = $_POST['category_id'];
 	break;
 case 'delete':
 	$objQuery = new SC_Query();
-	// å­ã‚«ãƒ†ã‚´ãƒªã®ãƒã‚§ãƒƒã‚¯
+	// »Ò¥«¥Æ¥´¥ê¤Î¥Á¥§¥Ã¥¯
 	$where = "parent_category_id = ? AND del_flg = 0";
 	$count = $objQuery->count("dtb_category", $where, array($_POST['category_id']));
 	if($count != 0) {
-		$objPage->arrErr['category_name'] = "â€» å­ã‚«ãƒ†ã‚´ãƒªãŒå­˜åœ¨ã™ã‚‹ãŸã‚å‰Šé™¤ã§ãã¾ã›ã‚“ã€‚<br>";
+		$objPage->arrErr['category_name'] = "¢¨ »Ò¥«¥Æ¥´¥ê¤¬Â¸ºß¤¹¤ë¤¿¤áºï½ü¤Ç¤­¤Ş¤»¤ó¡£<br>";
 	}
-	// ç™»éŒ²å•†å“ã®ãƒã‚§ãƒƒã‚¯
+	// ÅĞÏ¿¾¦ÉÊ¤Î¥Á¥§¥Ã¥¯
 	$where = "category_id = ? AND del_flg = 0";
 	$count = $objQuery->count("dtb_products", $where, array($_POST['category_id']));
 	if($count != 0) {
-		$objPage->arrErr['category_name'] = "â€» ã‚«ãƒ†ã‚´ãƒªå†…ã«å•†å“ãŒå­˜åœ¨ã™ã‚‹ãŸã‚å‰Šé™¤ã§ãã¾ã›ã‚“ã€‚<br>";
+		$objPage->arrErr['category_name'] = "¢¨ ¥«¥Æ¥´¥êÆâ¤Ë¾¦ÉÊ¤¬Â¸ºß¤¹¤ë¤¿¤áºï½ü¤Ç¤­¤Ş¤»¤ó¡£<br>";
 	}	
 	
 	if(!isset($objPage->arrErr['category_name'])) {
-		// ãƒ©ãƒ³ã‚¯ä»˜ããƒ¬ã‚³ãƒ¼ãƒ‰ã®å‰Šé™¤(â€»å‡¦ç†è² è·ã‚’è€ƒæ…®ã—ã¦ãƒ¬ã‚³ãƒ¼ãƒ‰ã”ã¨å‰Šé™¤ã™ã‚‹ã€‚)
+		// ¥é¥ó¥¯ÉÕ¤­¥ì¥³¡¼¥É¤Îºï½ü(¢¨½èÍıÉé²Ù¤ò¹ÍÎ¸¤·¤Æ¥ì¥³¡¼¥É¤´¤Èºï½ü¤¹¤ë¡£)
 		sfDeleteRankRecord("dtb_category", "category_id", $_POST['category_id'], "", true);
 	}
 	break;
@@ -93,14 +93,14 @@ case 'up':
 	$objQuery->begin();
 	$up_id = lfGetUpRankID($objQuery, "dtb_category", "parent_category_id", "category_id", $_POST['category_id']);
 	if($up_id != "") {
-		// ä¸Šã®ã‚°ãƒ«ãƒ¼ãƒ—ã®rankã‹ã‚‰æ¸›ç®—ã™ã‚‹æ•°
+		// ¾å¤Î¥°¥ë¡¼¥×¤Îrank¤«¤é¸º»»¤¹¤ë¿ô
 		$my_count = lfCountChilds($objQuery, "dtb_category", "parent_category_id", "category_id", $_POST['category_id']);
-		// è‡ªåˆ†ã®ã‚°ãƒ«ãƒ¼ãƒ—ã®rankã«åŠ ç®—ã™ã‚‹æ•°
+		// ¼«Ê¬¤Î¥°¥ë¡¼¥×¤Îrank¤Ë²Ã»»¤¹¤ë¿ô
 		$up_count = lfCountChilds($objQuery, "dtb_category", "parent_category_id", "category_id", $up_id);
 		if($my_count > 0 && $up_count > 0) {
-			// è‡ªåˆ†ã®ã‚°ãƒ«ãƒ¼ãƒ—ã«åŠ ç®—
+			// ¼«Ê¬¤Î¥°¥ë¡¼¥×¤Ë²Ã»»
 			lfUpRankChilds($objQuery, "dtb_category", "parent_category_id", "category_id", $_POST['category_id'], $up_count);
-			// ä¸Šã®ã‚°ãƒ«ãƒ¼ãƒ—ã‹ã‚‰æ¸›ç®—
+			// ¾å¤Î¥°¥ë¡¼¥×¤«¤é¸º»»
 			lfDownRankChilds($objQuery, "dtb_category", "parent_category_id", "category_id", $up_id, $my_count);
 		}
 	}
@@ -111,14 +111,14 @@ case 'down':
 	$objQuery->begin();
 	$down_id = lfGetDownRankID($objQuery, "dtb_category", "parent_category_id", "category_id", $_POST['category_id']);
 	if($down_id != "") {
-		// ä¸‹ã®ã‚°ãƒ«ãƒ¼ãƒ—ã®rankã«åŠ ç®—ã™ã‚‹æ•°
+		// ²¼¤Î¥°¥ë¡¼¥×¤Îrank¤Ë²Ã»»¤¹¤ë¿ô
 		$my_count = lfCountChilds($objQuery, "dtb_category", "parent_category_id", "category_id", $_POST['category_id']);
-		// è‡ªåˆ†ã®ã‚°ãƒ«ãƒ¼ãƒ—ã®rankã‹ã‚‰æ¸›ç®—ã™ã‚‹æ•°
+		// ¼«Ê¬¤Î¥°¥ë¡¼¥×¤Îrank¤«¤é¸º»»¤¹¤ë¿ô
 		$down_count = lfCountChilds($objQuery, "dtb_category", "parent_category_id", "category_id", $down_id);
 		if($my_count > 0 && $down_count > 0) {
-			// è‡ªåˆ†ã®ã‚°ãƒ«ãƒ¼ãƒ—ã‹ã‚‰æ¸›ç®—
+			// ¼«Ê¬¤Î¥°¥ë¡¼¥×¤«¤é¸º»»
 			lfUpRankChilds($objQuery, "dtb_category", "parent_category_id", "category_id", $down_id, $my_count);
-			// ä¸‹ã®ã‚°ãƒ«ãƒ¼ãƒ—ã«åŠ ç®—
+			// ²¼¤Î¥°¥ë¡¼¥×¤Ë²Ã»»
 			lfDownRankChilds($objQuery, "dtb_category", "parent_category_id", "category_id", $_POST['category_id'], $down_count);
 		}
 	}
@@ -138,32 +138,32 @@ $objView->assignobj($objPage);
 $objView->display(MAIN_FRAME);
 //-----------------------------------------------------------------------------------------------------------------------------------
 
-// ã‚«ãƒ†ã‚´ãƒªã®æ–°è¦è¿½åŠ 
+// ¥«¥Æ¥´¥ê¤Î¿·µ¬ÄÉ²Ã
 function lfInsertCat($parent_category_id) {
 	global $objFormParam;
 	
 	$objQuery = new SC_Query();
-	$objQuery->begin();	// ãƒˆãƒ©ãƒ³ã‚¶ã‚¯ã‚·ãƒ§ãƒ³ã®é–‹å§‹
+	$objQuery->begin();	// ¥È¥é¥ó¥¶¥¯¥·¥ç¥ó¤Î³«»Ï
 	
 	
 	if($parent_category_id == 0) {
-		// ROOTéšå±¤ã§æœ€å¤§ã®ãƒ©ãƒ³ã‚¯ã‚’å–å¾—ã™ã‚‹ã€‚		
+		// ROOT³¬ÁØ¤ÇºÇÂç¤Î¥é¥ó¥¯¤ò¼èÆÀ¤¹¤ë¡£		
 		$where = "parent_category_id = ?";
 		$rank = $objQuery->max("dtb_category", "rank", $where, array($parent_category_id)) + 1;
 	} else {
-		// è¦ªã®ãƒ©ãƒ³ã‚¯ã‚’è‡ªåˆ†ã®ãƒ©ãƒ³ã‚¯ã¨ã™ã‚‹ã€‚
+		// ¿Æ¤Î¥é¥ó¥¯¤ò¼«Ê¬¤Î¥é¥ó¥¯¤È¤¹¤ë¡£
 		$where = "category_id = ?";
 		$rank = $objQuery->get("dtb_category", "rank", $where, array($parent_category_id));
-		// è¿½åŠ ãƒ¬ã‚³ãƒ¼ãƒ‰ã®ãƒ©ãƒ³ã‚¯ä»¥ä¸Šã®ãƒ¬ã‚³ãƒ¼ãƒ‰ã‚’ä¸€ã¤ã‚ã’ã‚‹ã€‚
+		// ÄÉ²Ã¥ì¥³¡¼¥É¤Î¥é¥ó¥¯°Ê¾å¤Î¥ì¥³¡¼¥É¤ò°ì¤Ä¤¢¤²¤ë¡£
 		$sqlup = "UPDATE dtb_category SET rank = (rank + 1) WHERE rank >= ?";
 		$objQuery->exec($sqlup, array($rank));
 	}
 	
 	$where = "category_id = ?";
-	// è‡ªåˆ†ã®ãƒ¬ãƒ™ãƒ«ã‚’å–å¾—ã™ã‚‹(è¦ªã®ãƒ¬ãƒ™ãƒ« + 1)	
+	// ¼«Ê¬¤Î¥ì¥Ù¥ë¤ò¼èÆÀ¤¹¤ë(¿Æ¤Î¥ì¥Ù¥ë + 1)	
 	$level = $objQuery->get("dtb_category", "level", $where, array($parent_category_id)) + 1;
 	
-	// å…¥åŠ›ãƒ‡ãƒ¼ã‚¿ã‚’æ¸¡ã™ã€‚
+	// ÆşÎÏ¥Ç¡¼¥¿¤òÅÏ¤¹¡£
 	$sqlval = $objFormParam->getHashArray();
 	$sqlval['create_date'] = "Now()";
 	$sqlval['update_date'] = "Now()";
@@ -172,24 +172,24 @@ function lfInsertCat($parent_category_id) {
 	$sqlval['rank'] = $rank;
 	$sqlval['level'] = $level;
 	
-	// INSERTã®å®Ÿè¡Œ
+	// INSERT¤Î¼Â¹Ô
 	$objQuery->insert("dtb_category", $sqlval);
 	
-	$objQuery->commit();	// ãƒˆãƒ©ãƒ³ã‚¶ã‚¯ã‚·ãƒ§ãƒ³ã®çµ‚äº†
+	$objQuery->commit();	// ¥È¥é¥ó¥¶¥¯¥·¥ç¥ó¤Î½ªÎ»
 }
 
-// ã‚«ãƒ†ã‚´ãƒªã®ç·¨é›†
+// ¥«¥Æ¥´¥ê¤ÎÊÔ½¸
 function lfUpdateCat($category_id) {
 	global $objFormParam;
 	$objQuery = new SC_Query();
-	// å…¥åŠ›ãƒ‡ãƒ¼ã‚¿ã‚’æ¸¡ã™ã€‚
+	// ÆşÎÏ¥Ç¡¼¥¿¤òÅÏ¤¹¡£
 	$sqlval = $objFormParam->getHashArray();
 	$sqlval['update_date'] = "Now()";
 	$where = "category_id = ?";
 	$objQuery->update("dtb_category", $sqlval, $where, array($category_id));
 }
 
-// ã‚«ãƒ†ã‚´ãƒªã®å–å¾—
+// ¥«¥Æ¥´¥ê¤Î¼èÆÀ
 function lfGetCat($parent_category_id) {
 	$objQuery = new SC_Query();
 	
@@ -204,36 +204,36 @@ function lfGetCat($parent_category_id) {
 	return $arrRet;
 }
 
-/* ãƒ‘ãƒ©ãƒ¡ãƒ¼ã‚¿æƒ…å ±ã®åˆæœŸåŒ– */
+/* ¥Ñ¥é¥á¡¼¥¿¾ğÊó¤Î½é´ü²½ */
 function lfInitParam() {
 	global $objFormParam;
-	$objFormParam->addParam("ã‚«ãƒ†ã‚´ãƒªå", "category_name", STEXT_LEN, "KVa", array("EXIST_CHECK","SPTAB_CHECK","MAX_LENGTH_CHECK"));
+	$objFormParam->addParam("¥«¥Æ¥´¥êÌ¾", "category_name", STEXT_LEN, "KVa", array("EXIST_CHECK","SPTAB_CHECK","MAX_LENGTH_CHECK"));
 }
 
-/* å…¥åŠ›å†…å®¹ã®ãƒã‚§ãƒƒã‚¯ */
+/* ÆşÎÏÆâÍÆ¤Î¥Á¥§¥Ã¥¯ */
 function lfCheckError($array) {
 	global $objFormParam;
 	$objErr = new SC_CheckError($array);
 	$objErr->arrErr = $objFormParam->checkError();
 	
-	// éšå±¤ãƒã‚§ãƒƒã‚¯
+	// ³¬ÁØ¥Á¥§¥Ã¥¯
 	if(!isset($objErr->arrErr['category_name'])) {
 		$objQuery = new SC_Query();
 		$level = $objQuery->get("dtb_category", "level", "category_id = ?", array($_POST['parent_category_id']));
 		
 		if($level >= LEVEL_MAX) {
-			$objErr->arrErr['category_name'] = "â€» ".LEVEL_MAX."éšå±¤ä»¥ä¸Šã®ç™»éŒ²ã¯ã§ãã¾ã›ã‚“ã€‚<br>";
+			$objErr->arrErr['category_name'] = "¢¨ ".LEVEL_MAX."³¬ÁØ°Ê¾å¤ÎÅĞÏ¿¤Ï¤Ç¤­¤Ş¤»¤ó¡£<br>";
 		}
 	}
 		
-	// é‡è¤‡ãƒã‚§ãƒƒã‚¯
+	// ½ÅÊ£¥Á¥§¥Ã¥¯
 	if(!isset($objErr->arrErr['category_name'])) {
 		$objQuery = new SC_Query();
 		$where = "parent_category_id = ? AND category_name = ?";
 		$arrRet = $objQuery->select("category_id, category_name", "dtb_category", $where, array($_POST['parent_category_id'], $array['category_name']));
-		// ç·¨é›†ä¸­ã®ãƒ¬ã‚³ãƒ¼ãƒ‰ä»¥å¤–ã«åŒã˜åç§°ãŒå­˜åœ¨ã™ã‚‹å ´åˆ
+		// ÊÔ½¸Ãæ¤Î¥ì¥³¡¼¥É°Ê³°¤ËÆ±¤¸Ì¾¾Î¤¬Â¸ºß¤¹¤ë¾ì¹ç
 		if ($arrRet[0]['category_id'] != $_POST['category_id'] && $arrRet[0]['category_name'] == $_POST['category_name']) {
-			$objErr->arrErr['category_name'] = "â€» æ—¢ã«åŒã˜å†…å®¹ã®ç™»éŒ²ãŒå­˜åœ¨ã—ã¾ã™ã€‚<br>";
+			$objErr->arrErr['category_name'] = "¢¨ ´û¤ËÆ±¤¸ÆâÍÆ¤ÎÅĞÏ¿¤¬Â¸ºß¤·¤Ş¤¹¡£<br>";
 		}
 	}
 
@@ -241,13 +241,13 @@ function lfCheckError($array) {
 }
 
 
-// ä¸¦ã³ãŒ1ã¤ä¸‹ã®IDã‚’å–å¾—ã™ã‚‹ã€‚
+// ÊÂ¤Ó¤¬1¤Ä²¼¤ÎID¤ò¼èÆÀ¤¹¤ë¡£
 function lfGetDownRankID($objQuery, $table, $pid_name, $id_name, $id) {
-	// è¦ªIDã‚’å–å¾—ã™ã‚‹ã€‚
+	// ¿ÆID¤ò¼èÆÀ¤¹¤ë¡£
 	$col = "$pid_name";
 	$where = "$id_name = ?";
 	$pid = $objQuery->get($table, $col, $where, $id);
-	// ã™ã¹ã¦ã®å­ã‚’å–å¾—ã™ã‚‹ã€‚
+	// ¤¹¤Ù¤Æ¤Î»Ò¤ò¼èÆÀ¤¹¤ë¡£
 	$col = "$id_name";
 	$where = "del_flg = 0 AND $pid_name = ? ORDER BY rank DESC";
 	$arrRet = $objQuery->select($col, $table, $where, array($pid));
@@ -262,13 +262,13 @@ function lfGetDownRankID($objQuery, $table, $pid_name, $id_name, $id) {
 	return $down_id;
 }
 
-// ä¸¦ã³ãŒ1ã¤ä¸Šã®IDã‚’å–å¾—ã™ã‚‹ã€‚
+// ÊÂ¤Ó¤¬1¤Ä¾å¤ÎID¤ò¼èÆÀ¤¹¤ë¡£
 function lfGetUpRankID($objQuery, $table, $pid_name, $id_name, $id) {
-	// è¦ªIDã‚’å–å¾—ã™ã‚‹ã€‚
+	// ¿ÆID¤ò¼èÆÀ¤¹¤ë¡£
 	$col = "$pid_name";
 	$where = "$id_name = ?";
 	$pid = $objQuery->get($table, $col, $where, $id);
-	// ã™ã¹ã¦ã®å­ã‚’å–å¾—ã™ã‚‹ã€‚
+	// ¤¹¤Ù¤Æ¤Î»Ò¤ò¼èÆÀ¤¹¤ë¡£
 	$col = "$id_name";
 	$where = "del_flg = 0 AND $pid_name = ? ORDER BY rank DESC";
 	$arrRet = $objQuery->select($col, $table, $where, array($pid));
@@ -284,13 +284,13 @@ function lfGetUpRankID($objQuery, $table, $pid_name, $id_name, $id) {
 }
 
 function lfCountChilds($objQuery, $table, $pid_name, $id_name, $id) {
-	// å­IDä¸€è¦§ã‚’å–å¾—
+	// »ÒID°ìÍ÷¤ò¼èÆÀ
 	$arrRet = sfGetChildrenArray($table, $pid_name, $id_name, $id);	
 	return count($arrRet);
 }
 
 function lfUpRankChilds($objQuery, $table, $pid_name, $id_name, $id, $count) {
-	// å­IDä¸€è¦§ã‚’å–å¾—
+	// »ÒID°ìÍ÷¤ò¼èÆÀ
 	$arrRet = sfGetChildrenArray($table, $pid_name, $id_name, $id);	
 	$line = sfGetCommaList($arrRet);
 	$sql = "UPDATE $table SET rank = (rank + $count) WHERE $id_name IN ($line) ";
@@ -300,7 +300,7 @@ function lfUpRankChilds($objQuery, $table, $pid_name, $id_name, $id, $count) {
 }
 
 function lfDownRankChilds($objQuery, $table, $pid_name, $id_name, $id, $count) {
-	// å­IDä¸€è¦§ã‚’å–å¾—
+	// »ÒID°ìÍ÷¤ò¼èÆÀ
 	$arrRet = sfGetChildrenArray($table, $pid_name, $id_name, $id);	
 	$line = sfGetCommaList($arrRet);
 	$sql = "UPDATE $table SET rank = (rank - $count) WHERE $id_name IN ($line) ";

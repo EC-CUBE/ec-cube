@@ -7,8 +7,8 @@
 class LC_LoginPage {
 	var $tpl_login_email;
 	function LC_LoginPage() {
-		/** å¿…ãšå¤‰æ›´ã™ã‚‹ **/
-		$this->tpl_mainpage = BLOC_PATH . 'login.tpl';	// ãƒ¡ã‚¤ãƒ³
+		/** É¬¤ºÊÑ¹¹¤¹¤ë **/
+		$this->tpl_mainpage = BLOC_PATH . 'login.tpl';	// ¥á¥¤¥ó
 		$this->tpl_login = false;
 		$this->tpl_disable_logout = false;
 	}
@@ -16,23 +16,23 @@ class LC_LoginPage {
 
 $objSubPage = new LC_LoginPage();
 $objCustomer = new SC_Customer();
-// ã‚¯ãƒƒã‚­ãƒ¼ç®¡ç†ã‚¯ãƒ©ã‚¹
+// ¥¯¥Ã¥­¡¼´ÉÍý¥¯¥é¥¹
 $objCookie = new SC_Cookie(COOKIE_EXPIRE);
 
-// ãƒ­ã‚°ã‚¤ãƒ³åˆ¤å®š
+// ¥í¥°¥¤¥óÈ½Äê
 if($objCustomer->isLoginSuccess()) {
 	$objSubPage->tpl_login = true;
 	$objSubPage->tpl_user_point = $objCustomer->getValue('point');
 	$objSubPage->tpl_name1 = $objCustomer->getValue('name01');
 	$objSubPage->tpl_name2 = $objCustomer->getValue('name02');
 } else {
-	// ã‚¯ãƒƒã‚­ãƒ¼åˆ¤å®š
+	// ¥¯¥Ã¥­¡¼È½Äê
 	$objSubPage->tpl_login_email = $objCookie->getCookie('login_email');
 	if($objSubPage->tpl_login_email != "") {
 		$objSubPage->tpl_login_memory = "1";
 	}
 	
-	// POSTã•ã‚Œã¦ããŸIDãŒã‚ã‚‹å ´åˆã¯å„ªå…ˆã™ã‚‹ã€‚
+	// POST¤µ¤ì¤Æ¤­¤¿ID¤¬¤¢¤ë¾ì¹ç¤ÏÍ¥Àè¤¹¤ë¡£
 	if($_POST['login_email'] != "") {
 		$objSubPage->tpl_login_email = $_POST['login_email'];
 	}

@@ -6,8 +6,8 @@
  */
 class LC_Best5Page {
 	function LC_Best5Page() {
-		/** å¿…ãšå¤‰æ›´ã™ã‚‹ **/
-		$this->tpl_mainpage = BLOC_PATH . 'best5.tpl';	// ãƒ¡ã‚¤ãƒ³
+		/** É¬¤ºÊÑ¹¹¤¹¤ë **/
+		$this->tpl_mainpage = BLOC_PATH . 'best5.tpl';	// ¥á¥¤¥ó
 	}
 }
 
@@ -15,17 +15,17 @@ $objSubPage = new LC_Best5Page();
 $objSubView = new SC_SiteView();
 $objSiteInfo = $objView->objSiteInfo;
 
-// åŸºæœ¬æƒ…å ±ã‚’æ¸¡ã™
+// ´ğËÜ¾ğÊó¤òÅÏ¤¹
 $objSiteInfo = new SC_SiteInfo();
 $objSubPage->arrInfo = $objSiteInfo->data;
 
-//ãŠã™ã™ã‚å•†å“è¡¨ç¤º
+//¤ª¤¹¤¹¤á¾¦ÉÊÉ½¼¨
 $objSubPage->arrBestProducts = lfGetRanking();
 
 $objSubView->assignobj($objSubPage);
 $objSubView->display($objSubPage->tpl_mainpage);
 //-----------------------------------------------------------------------------------------------------------------------------------
-//ãŠã™ã™ã‚å•†å“æ¤œç´¢
+//¤ª¤¹¤¹¤á¾¦ÉÊ¸¡º÷
 function lfGetRanking(){
 	$objQuery = new SC_Query();
 	
