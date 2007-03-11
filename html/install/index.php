@@ -200,7 +200,10 @@ case 'drop':
 	// 追加テーブルがあれば削除する。
 	lfDropTable("dtb_module", $dsn);
 	lfDropTable("dtb_session", $dsn);
-		
+	lfDropTable("dtb_campaign_order", $dsn);
+	lfDropTable("dtb_mobile_ext_session_id", $dsn);
+	lfDropTable("dtb_mobile_kara_mail", $dsn);
+			
 	if ($arrRet['db_type'] == 'pgsql'){
 		// ビューの削除
 		$objPage->arrErr = lfExecuteSQL("./sql/drop_view.sql", $dsn, false); 
