@@ -144,8 +144,8 @@ case 'back':
 		// 生成されたWHERE文を取得する		
 		list($where, $arrval) = $objSelect->getWhere();
 
-sfpirntr($where);		
-sfpirntr($arrval);		
+sfprintr($where);		
+sfprintr($arrval);		
 		
 		// 「WHERE」部分を削除する。
 		$where = ereg_replace("^WHERE", "", $where);
