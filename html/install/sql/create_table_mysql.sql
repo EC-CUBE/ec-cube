@@ -523,14 +523,6 @@ CREATE TABLE dtb_customer (
 
 CREATE INDEX dtb_customer_mobile_phone_id_key ON dtb_customer (mobile_phone_id(64));
 
-CREATE TABLE dtb_customer_mail (
-    email varchar(50) NOT NULL UNIQUE,
-    mail_flag smallint,
-    secret_key varchar(50) UNIQUE,
-    create_date datetime NOT NULL ,
-    update_date datetime 
-) TYPE=InnoDB ;
-
 CREATE TABLE dtb_customer_mail_temp (
     email varchar(50) NOT NULL UNIQUE,
     mail_flag smallint,
