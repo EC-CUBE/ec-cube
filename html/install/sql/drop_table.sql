@@ -48,5 +48,3 @@ DROP TABLE dtb_csv_sql;
 DROP TABLE dtb_user_regist;
 DROP TABLE dtb_templates;
 DROP TABLE dtb_table_comment;
-DROP TABLE dtb_mobile_ext_session_id;
-DROP TABLE dtb_mobile_kara_mail;
