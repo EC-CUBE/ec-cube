@@ -82,7 +82,7 @@
 								<tr class="fs12n">
 									<td bgcolor="#f2f1ec">ホームページアドレス</td>
 									<td bgcolor="#ffffff"><span class="red12"><!--{$arrErr.reviewer_url}--></span>
-									<input type="text" class="box60" name="reviewer_url" max_length="<!--{$smarty.const.URL_LEN}-->" value="<!--{$arrReview.reviewer_url|escape}-->" style="<!--{$arrErr.reviewer_url|sfGetErrorColor}-->" size=30><span class="red12"></td>
+									<input type="text" class="box60" name="reviewer_url" maxlength="<!--{$smarty.const.URL_LEN}-->" value="<!--{$arrReview.reviewer_url|escape}-->" style="<!--{$arrErr.reviewer_url|sfGetErrorColor}-->" size=30><span class="red12"></td>
 								</tr>
 								<tr class="fs12n">
 									<td bgcolor="#f2f1ec">性別</td>

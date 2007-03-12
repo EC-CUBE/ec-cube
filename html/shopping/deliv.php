@@ -151,6 +151,7 @@ $col = "other_deliv_id, name01, name02, pref, addr01, addr02";
 $objQuery->setorder("other_deliv_id DESC");
 $objOtherAddr = $objQuery->select($col, "dtb_other_deliv", $where, array($_SESSION['customer']['customer_id']));
 $objPage->arrAddr = $arrCustomerAddr;
+$objPage->tpl_addrmax = count($objOtherAddr);
 $cnt = 1;
 foreach($objOtherAddr as $val) {
 	$objPage->arrAddr[$cnt] = $val;
