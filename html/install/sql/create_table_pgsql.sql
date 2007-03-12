@@ -158,9 +158,9 @@ CREATE TABLE dtb_payment (
     update_date timestamp,
     payment_image text,
     upper_rule numeric,
-	charge_flg int2 DEFAULT 1,
-	rule_min numeric,
-	upper_rule_max numeric,
+    charge_flg int2 DEFAULT 1,
+    rule_min numeric,
+    upper_rule_max numeric,
     module_id int4,
     module_path text,
     memo01 text,
@@ -517,18 +517,11 @@ CREATE TABLE dtb_customer (
     cell01 text,
     cell02 text,
     cell03 text,
-    mobile_phone_id text
+    mobile_phone_id text,
+    mailmaga_flg int2
 );
 
 CREATE INDEX dtb_customer_mobile_phone_id_key ON dtb_customer (mobile_phone_id);
-
-CREATE TABLE dtb_customer_mail (
-    email text NOT NULL UNIQUE,
-    mail_flag int2,
-    secret_key text UNIQUE,
-    create_date timestamp NOT NULL DEFAULT now(),
-    update_date timestamp DEFAULT now()
-);
 
 CREATE TABLE dtb_customer_mail_temp (
     email text NOT NULL UNIQUE,
@@ -901,16 +894,17 @@ CREATE TABLE dtb_user_regist (
 
 create table dtb_templates 
 (
-template_code		text		NOT NULL UNIQUE	,
-template_name		text			,
-create_date		timestamp		NOT NULL	default now(),
-update_date		timestamp		NOT NULL	default now()
+template_code        text        NOT NULL UNIQUE    ,
+template_name        text            ,
+create_date        timestamp        NOT NULL    default now(),
+update_date        timestamp        NOT NULL    default now()
 );
 
 create table dtb_table_comment
 (
-id	serial,
-table_name	text,
-column_name	text,
-description	text
+id    serial,
+table_name    text,
+column_name    text,
+description    text
 );
+

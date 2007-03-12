@@ -43,6 +43,7 @@ $arrSearchColumn = array(
 							array(  "column" => "tel",				"convert" => "n" ),
 							array(  "column" => "job",				"convert" => "" ),
 							array(  "column" => "email",			"convert" => "a" ),
+							array(  "column" => "email_mobile",		"convert" => "a" ),							
 							array(  "column" => "htmlmail",			"convert" => "n" ),
 							array(  "column" => "customer",			"convert" => "" ),
 							array(  "column" => "buy_total_from",	"convert" => "n" ),
@@ -237,7 +238,7 @@ function getTemplateList($conn){
 	global $arrMagazineTypeAll;
 	
 	$sql = "SELECT template_id, subject, mail_method FROM dtb_mailmaga_template WHERE del_flg = 0 ";
-	if ($_POST["htmlmail"] == 2) {
+	if ($_POST["htmlmail"] == 2 || $_POST['mail_type'] == 2) {
 		$sql .= " AND mail_method = 2 ";	//TEXT希望者へのTESTメールテンプレートリスト
 	}
 	$sql .= " ORDER BY template_id DESC";

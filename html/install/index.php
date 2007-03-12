@@ -50,13 +50,19 @@ $objDBParam->setParam($_POST);
 switch($_POST['mode']) {
 // ようこそ
 case 'welcome':
-	$objPage = lfDispAgreement($objPage);
+	//$objPage = lfDispAgreement($objPage);
+	$objPage = lfDispStep0($objPage);
 	$objPage->tpl_onload .= "fnChangeVisible('agreement_yes', 'next');";
 	break;
+
+/* 現在保留中
+
 // 使用許諾契約書の同意
 case 'agreement':
 	$objPage = lfDispStep0($objPage);
 	break;
+*/	
+	
 // アクセス権限のチェック
 case 'step0':
 	$objPage = lfDispStep0_1($objPage);
@@ -194,7 +200,10 @@ case 'drop':
 	// 追加テーブルがあれば削除する。
 	lfDropTable("dtb_module", $dsn);
 	lfDropTable("dtb_session", $dsn);
-		
+	lfDropTable("dtb_campaign_order", $dsn);
+	lfDropTable("dtb_mobile_ext_session_id", $dsn);
+	lfDropTable("dtb_mobile_kara_mail", $dsn);
+			
 	if ($arrRet['db_type'] == 'pgsql'){
 		// ビューの削除
 		$objPage->arrErr = lfExecuteSQL("./sql/drop_view.sql", $dsn, false); 
@@ -920,14 +929,9 @@ function lfAddColumn($dsn) {
 
 	// 顧客
 	sfColumnExists("dtb_customer", "mailmaga_flg", "int2", $dsn, true);
-	if (!sfColumnExists("dtb_customer", "mobile_phone_id", "", $dsn)) {
-		sfColumnExists("dtb_customer", "mobile_phone_id", "text", $dsn, true);
-		$objQuery = new SC_Query($dsn);
-		if ($objDBParam->getValue('db_type') == 'mysql') {
-			$objQuery->query("CREATE INDEX dtb_customer_mobile_phone_id_key ON dtb_customer (mobile_phone_id(64))");
-		} else {
-			$objQuery->query("CREATE INDEX dtb_customer_mobile_phone_id_key ON dtb_customer (mobile_phone_id)");
-		}
+	if (!sfColumnExists("dtb_customer", "mobile_phone_id", "text", $dsn, true)) {
+		// インデックスの追加
+		sfIndexExists("dtb_customer", "mobile_phone_id", "dtb_customer_mobile_phone_id_key", 64, $dsn, true);
 	}
 
 	// 顧客メール

@@ -83,7 +83,7 @@ function sfTabaleExists($table_name, $dsn = "") {
 	return false;
 }
 
-// カラムの存在チェック
+// カラムの存在チェックと作成
 function sfColumnExists($table_name, $col_name, $col_type = "", $dsn = "", $add = false) {
 	if($dsn == "") {
 		if(defined('DEFAULT_DSN')) {
@@ -116,6 +116,58 @@ function sfColumnExists($table_name, $col_name, $col_type = "", $dsn = "", $add 
 		return true;
 	}
 	
+	return false;
+}
+
+// インデックスの存在チェックと作成
+function sfIndexExists($table_name, $col_name, $index_name, $length = "", $dsn = "", $add = false) {
+	if($dsn == "") {
+		if(defined('DEFAULT_DSN')) {
+			$dsn = DEFAULT_DSN;
+		} else {
+			return;
+		}
+	}
+
+	// テーブルが無ければエラー
+	if(!sfTabaleExists($table_name, $dsn)) return false;
+	
+	$objQuery = new SC_Query($dsn, true, true);
+	// 正常に接続されている場合
+	if(!$objQuery->isError()) {
+		list($db_type) = split(":", $dsn);		
+		switch($db_type) {
+		case 'pgsql':
+			// インデックスの存在確認
+			$arrRet = $objQuery->getAll("SELECT relname FROM pg_class WHERE relname = ?", array($index_name));
+			break;
+		case 'mysql':
+			// インデックスの存在確認
+			$arrRet = $objQuery->getAll("SHOW INDEX FROM ? WHERE Key_name = ?", array($table_name, $index_name));			
+			break;
+		default:
+			return false;
+		}
+		// すでにインデックスが存在する場合
+		if(count($arrRet) > 0) {
+			return true;
+		}
+	}
+	
+	// インデックスを作成する
+	if($add){
+		switch($db_type) {
+		case 'pgsql':
+			$objQuery->query("CREATE INDEX ? ON ? (?)", array($index_name, $table_name, $col_name));
+			break;
+		case 'mysql':
+			$objQuery->query("CREATE INDEX ? ON ? (?(?))", array($index_name, $table_name, $col_name, $length));			
+			break;
+		default:
+			return false;
+		}
+		return true;
+	}	
 	return false;
 }
 

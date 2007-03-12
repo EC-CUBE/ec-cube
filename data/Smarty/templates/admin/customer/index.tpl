@@ -141,6 +141,10 @@
 								<td bgcolor="#ffffff" width="499" colspan="3"><!--{if $arrErr.email}--><span class="red12"><!--{$arrErr.email}--></span><!--{/if}--><input type="text" name="email" maxlength="<!--{$smarty.const.STEXT_LEN}-->" value="<!--{$arrForm.email|escape}-->" size="60" class="box60" <!--{if $arrErr.email}--><!--{sfSetErrorStyle}--><!--{/if}-->/></td>
 							</tr>
 							<tr class="fs12n">
+								<td bgcolor="#f2f1ec" width="110">携帯メールアドレス</td>
+								<td bgcolor="#ffffff" width="499" colspan="3"><!--{if $arrErr.email_mobile}--><span class="red12"><!--{$arrErr.email_mobile}--></span><!--{/if}--><input type="text" name="email_mobile" maxlength="<!--{$smarty.const.STEXT_LEN}-->" value="<!--{$arrForm.email_mobile|escape}-->" size="60" class="box60" <!--{if $arrErr.email_mobile}--><!--{sfSetErrorStyle}--><!--{/if}-->/></td>
+							</tr>
+							<tr class="fs12n">
 								<td bgcolor="#f2f1ec" width="110">電話番号</td>
 								<td bgcolor="#ffffff" width="499" colspan="3"><!--{if $arrErr.tel}--><span class="red12"><!--{$arrErr.tel}--></span><br><!--{/if}--><input type="text" name="tel" maxlength="<!--{$smarty.const.TEL_LEN}-->" value="<!--{$arrForm.tel|escape}-->" size="60" class="box60" /></td>
 							</tr>

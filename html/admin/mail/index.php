@@ -94,16 +94,7 @@ if ($_GET["mode"] == "query" && sfCheckNumLength($_GET["send_id"])) {
 		}
 		$list_data['job_disp'] = $job_disp;
 	}
-	
-	// メール種別の変換
-	if (count($list_data['mail_type']) > 0) {
-		foreach($list_data['mail_type'] as $key => $val){
-			$list_data['mail_type'][$key] = $objPage->arrMailType[$val];
-			$mail_type_disp .= $list_data['mail_type'][$key] . " ";
-		}
-		$list_data['mail_type_disp'] = $mail_type_disp;
-	}
-	
+		
 	// カテゴリ変換
 	$arrCatList = sfGetCategoryList();
 	$list_data['category_name'] = $arrCatList[$list_data['category_id']];
@@ -140,9 +131,9 @@ case 'back':
 
 		//-- 検索データ取得	
 		$objSelect = new SC_CustomerList($objPage->list_data, "magazine");
-
 		// 生成されたWHERE文を取得する		
 		list($where, $arrval) = $objSelect->getWhere();
+	
 		// 「WHERE」部分を削除する。
 		$where = ereg_replace("^WHERE", "", $where);
 
@@ -163,27 +154,16 @@ case 'back':
 		$objQuery->setlimitoffset(SEARCH_PMAX, $startno);
 		// 表示順序
 		$objQuery->setorder("customer_id DESC");
-		// 検索結果の取得
-		$col = "dtb_customer.customer_id,
-			dtb_customer.name01,
-			dtb_customer.name02,
-			dtb_customer.kana01,
-			dtb_customer.kana02,
-			dtb_customer.sex,
-			dtb_customer.email,
-			dtb_customer.tel01,
-			dtb_customer.tel02,
-			dtb_customer.tel03,
-			dtb_customer.pref,
-			dtb_customer.mailmaga_flg";
+		
+		// 検索結果の取得	
+		$col = $objSelect->getMailMagazineColumn(lfGetIsMobile($_POST['mail_type']));
 		$objPage->arrResults = $objQuery->select($col, $from, $where, $arrval);
-
 		//現在時刻の取得
 		$objPage->arrNowDate = lfGetNowDate();
 	}
 	break;
 /*
-	input:検索結果画面「配信内容設定」ボタン
+	input:検索結果画面「htmlmail内容設定」ボタン
 */
 case 'input':
 	//-- 入力値コンバート
@@ -286,6 +266,7 @@ case 'regist_complete':
 	}
 	break;
 default:
+	$objPage->list_data['mail_type'] = 1;
 	break;
 }
 
@@ -394,9 +375,9 @@ function lfRegistData($arrData){
 	global $arrSearchColumn;
 	
 	$objQuery = new SC_Query();
-		
 	$objSelect = new SC_CustomerList( lfConvertParam($arrData, $arrSearchColumn), "magazine" );
-	$search_data = $conn->getAll($objSelect->getListMailMagazine(), $objSelect->arrVal);
+	
+	$search_data = $conn->getAll($objSelect->getListMailMagazine(lfGetIsMobile($_POST['mail_type'])), $objSelect->arrVal);
 	$dataCnt = count($search_data);
 	
 	$dtb_send_history = array();
@@ -446,5 +427,23 @@ function lfGetCampaignList() {
 	}
 
 	return $arrCampaign;
+}
+
+function lfGetIsMobile($mail_type) {
+	// 検索結果の取得			
+	$is_mobile = false;
+	switch($mail_type) {
+		case 1:
+			$is_mobile = false;
+			break;
+		case 2:
+			$is_mobile = true;		
+			break;
+		default:
+			$is_mobile = false;
+			break;
+	}
+	
+	return $is_mobile;
 }
 ?>

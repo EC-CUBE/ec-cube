@@ -139,74 +139,65 @@ class SC_CustomerList extends SC_SelectSql {
 
 		//　E-MAIL
 		if (strlen($this->arrSql['email']) > 0) {
-
-			$search_all = 'all';
-			$search_pc = 'email';
-			$search_mobile = 'email_mobile';
-			
 			//カンマ区切りで複数の条件指定可能に
 			$this->arrSql['email'] = explode(",", $this->arrSql['email']);
-			
-			//　メール種別
-			if ( is_array( $this->arrSql['mail_type'] ) ){
-
-				if(in_array(MAIL_TYPE_PC, $this->arrSql['mail_type']) && !in_array(MAIL_TYPE_MOBILE, $this->arrSql['mail_type'])) {
-					// PCのみ検索
-					$search_patern = $search_pc;			
-				} else if(!in_array(MAIL_TYPE_PC, $this->arrSql['mail_type']) && in_array(MAIL_TYPE_MOBILE, $this->arrSql['mail_type'])) {
-					// モバイルのみ検索
-					$search_patern = $search_mobile;
-				} else {
-					// 全検索
-					$search_patern = $search_all;
-				}
-				
-			} else {
-				// 全検索
-				$search_patern = $search_all;				
-			}
-
-
 			$sql_where = "";
 			foreach($this->arrSql['email'] as $val) {
 				$val = trim($val);
 				//検索条件を含まない
 				if($this->arrSql['not_emailinc'] == '1') {
-					
-					if($sql_where != "") {
-						$sql_where .= "AND ";
-					}						
-					
-					if($search_patern == $search_all) {
-						$sql_where .= "(dtb_customer.$search_pc NOT ILIKE ? OR dtb_customer.$search_mobile NOT ILIKE ?) ";
+					if($sql_where == "") {
+						$sql_where .= "dtb_customer.email NOT ILIKE ? ";
 					} else {
-						$sql_where .= "dtb_customer.$search_patern NOT ILIKE ? ";						
+						$sql_where .= "AND dtb_customer.email NOT ILIKE ? ";
 					}
-					
 				} else {				
-					if($sql_where != "") {
-						$sql_where .= "OR ";
-					}
-						
-					if($search_patern == $search_all) {
-						$sql_where .= "(dtb_customer.$search_pc ILIKE ? OR dtb_customer.$search_mobile ILIKE ?) ";
+					if($sql_where == "") {
+						$sql_where .= "dtb_customer.email ILIKE ? ";
 					} else {
-						$sql_where .= "dtb_customer.$search_patern ILIKE ?  ";
+						$sql_where .= "OR dtb_customer.email ILIKE ? ";
 					}
 				}
 				$searchEmail = $this->addSearchStr($val);
-				
-				if($search_patern == $search_all) {
-					$this->arrVal[] = $searchEmail;
-					$this->arrVal[] = $searchEmail;
-				} else {
-					$this->arrVal[] = $searchEmail;					
-				}
+				$this->arrVal[] = $searchEmail;
 			}
-			
 			$this->setWhere($sql_where);
 		}
-					
+
+		//　E-MAIL(mobile)
+		if (strlen($this->arrSql['email_mobile']) > 0) {
+			//カンマ区切りで複数の条件指定可能に
+			$this->arrSql['email_mobile'] = explode(",", $this->arrSql['email_mobile']);
+			$sql_where = "";
+			foreach($this->arrSql['email_mobile'] as $val) {
+				$val = trim($val);
+				//検索条件を含まない
+				if($this->arrSql['not_email_mobileinc'] == '1') {
+					if($sql_where == "") {
+						$sql_where .= "dtb_customer.email_mobile NOT ILIKE ? ";
+					} else {
+						$sql_where .= "AND dtb_customer.email_mobile NOT ILIKE ? ";
+					}
+				} else {				
+					if($sql_where == "") {
+						$sql_where .= "dtb_customer.email_mobile ILIKE ? ";
+					} else {
+						$sql_where .= "OR dtb_customer.email_mobile ILIKE ? ";
+					}
+				}
+				$searchemail_mobile = $this->addSearchStr($val);
+				$this->arrVal[] = $searchemail_mobile;
+			}
+			$this->setWhere($sql_where);
+		}
+				
+		//　配信メールアドレス種別
+		if ( $mode == 'magazine' ){
+			if ( strlen($this->arrSql['mail_type']) > 0 && $this->arrSql['mail_type'] == 2) {
+				$this->setWhere( " dtb_customer.email_mobile <> ''  ");
+			}
+		}
+							
 		//　HTML-mail
 		if ( $mode == 'magazine' ){
 			if ( strlen($this->arrSql['htmlmail']) > 0 ) {
@@ -324,24 +315,38 @@ class SC_CustomerList extends SC_SelectSql {
 		return $this->getSql(0);	
 	}
 
-	function getListMailMagazine() {
+	function getListMailMagazine($is_mobile = false) {
+			
+		$colomn = $this->getMailMagazineColumn($is_mobile);
 		$this->select = "
 			SELECT 
-				dtb_customer.customer_id,
+				$colomn
+			FROM 
+				dtb_customer";
+		return $this->getSql(0);	
+	}
+	
+	function getMailMagazineColumn($is_mobile= false) {
+		if($is_mobile == true) {
+			$email_column = "dtb_customer.email_mobile as email";
+		} else {
+			$email_column = "dtb_customer.email";			
+		}
+		
+		$column ="dtb_customer.customer_id,
 				dtb_customer.name01,
 				dtb_customer.name02,
 				dtb_customer.kana01,
 				dtb_customer.kana02,
 				dtb_customer.sex,
-				dtb_customer.email,
+				$email_column,		
 				dtb_customer.tel01,
 				dtb_customer.tel02,
 				dtb_customer.tel03,
 				dtb_customer.pref, 
-				dtb_customer.mailmaga_flg 
-			FROM 
-				dtb_customer";
-		return $this->getSql(0);	
+				dtb_customer.mailmaga_flg";
+				
+		return $column;
 	}
 	
 	//　検索総数カウント用SQL
