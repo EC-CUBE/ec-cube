@@ -363,13 +363,13 @@ INSERT INTO dtb_category_total_count VALUES (5, 1, now());
 INSERT INTO dtb_category_total_count VALUES (4, 1, now());
 
 INSERT INTO dtb_kiyaku (kiyaku_title, kiyaku_text, rank, creator_id, update_date, del_flg, create_date) 
-VALUES ('Âè£±¾ò¡Ê²ñ°÷¡Ë','1. ¡Ö²ñ°÷¡×¤È¤Ï¡¢Åö¼Ò¤¬Äê¤á¤ë¼êÂ³¤Ë½¾¤¤ËÜµ¬Ìó¤ËÆ±°Õ¤Î¾å¡¢Æþ²ñ¤Î¿½¤·¹þ¤ß¤ò¹Ô¤¦¸Ä¿Í¤ò¤¤¤¤¤Þ¤¹¡£
+VALUES ('Âè1¾ò¡Ê²ñ°÷¡Ë','1. ¡Ö²ñ°÷¡×¤È¤Ï¡¢Åö¼Ò¤¬Äê¤á¤ë¼êÂ³¤Ë½¾¤¤ËÜµ¬Ìó¤ËÆ±°Õ¤Î¾å¡¢Æþ²ñ¤Î¿½¤·¹þ¤ß¤ò¹Ô¤¦¸Ä¿Í¤ò¤¤¤¤¤Þ¤¹¡£
 2. ¡Ö²ñ°÷¾ðÊó¡×¤È¤Ï¡¢²ñ°÷¤¬Åö¼Ò¤Ë³«¼¨¤·¤¿²ñ°÷¤ÎÂ°À­¤Ë´Ø¤¹¤ë¾ðÊó¤ª¤è¤Ó²ñ°÷¤Î¼è°ú¤Ë´Ø¤¹¤ëÍúÎòÅù¤Î¾ðÊó¤ò¤¤¤¤¤Þ¤¹¡£
 3. ËÜµ¬Ìó¤Ï¡¢¤¹¤Ù¤Æ¤Î²ñ°÷¤ËÅ¬ÍÑ¤µ¤ì¡¢ÅÐÏ¿¼êÂ³»þ¤ª¤è¤ÓÅÐÏ¿¸å¤Ë¤ª¼é¤ê¤¤¤¿¤À¤¯µ¬Ìó¤Ç¤¹¡£',
 12,0,Now(),0, now());
 
 INSERT INTO dtb_kiyaku (kiyaku_title, kiyaku_text, rank, creator_id, update_date, del_flg, create_date) 
-VALUES ('Âè£²¾ò¡ÊÅÐÏ¿¡Ë','1. ²ñ°÷»ñ³Ê
+VALUES ('Âè2¾ò¡ÊÅÐÏ¿¡Ë','1. ²ñ°÷»ñ³Ê
 ËÜµ¬Ìó¤ËÆ±°Õ¤Î¾å¡¢½êÄê¤ÎÆþ²ñ¿½¹þ¤ß¤ò¤µ¤ì¤¿¤ªµÒÍÍ¤Ï¡¢½êÄê¤ÎÅÐÏ¿¼êÂ³´°Î»¸å¤Ë²ñ°÷¤È¤·¤Æ¤Î»ñ³Ê¤òÍ­¤·¤Þ¤¹¡£²ñ°÷ÅÐÏ¿¼êÂ³¤Ï¡¢²ñ°÷¤È¤Ê¤ë¤´ËÜ¿Í¤¬¹Ô¤Ã¤Æ¤¯¤À¤µ¤¤¡£ÂåÍý¤Ë¤è¤ëÅÐÏ¿¤Ï°ìÀÚÇ§¤á¤é¤ì¤Þ¤»¤ó¡£¤Ê¤ª¡¢²áµî¤Ë²ñ°÷»ñ³Ê¤¬¼è¤ê¾Ã¤µ¤ì¤¿Êý¤ä¤½¤ÎÂ¾Åö¼Ò¤¬Áê±þ¤·¤¯¤Ê¤¤¤ÈÈ½ÃÇ¤·¤¿Êý¤«¤é¤Î²ñ°÷¿½¹þ¤Ï¤ªÃÇ¤ê¤¹¤ë¾ì¹ç¤¬¤¢¤ê¤Þ¤¹¡£
 
 2. ²ñ°÷¾ðÊó¤ÎÆþÎÏ
@@ -382,16 +382,16 @@ VALUES ('Âè£²¾ò¡ÊÅÐÏ¿¡Ë','1. ²ñ°÷»ñ³Ê
 11,0,Now(),0, now());
 
 INSERT INTO dtb_kiyaku (kiyaku_title, kiyaku_text, rank, creator_id, update_date, del_flg, create_date) 
-VALUES ('Âè£³¾ò¡ÊÊÑ¹¹¡Ë','1. ²ñ°÷¤Ï¡¢»áÌ¾¡¢½»½ê¤Ê¤ÉÅö¼Ò¤ËÆÏ¤±½Ð¤¿»ö¹à¤ËÊÑ¹¹¤¬¤¢¤Ã¤¿¾ì¹ç¤Ë¤Ï¡¢Â®¤ä¤«¤ËÅö¼Ò¤ËÏ¢Íí¤¹¤ë¤â¤Î¤È¤·¤Þ¤¹¡£
+VALUES ('Âè3¾ò¡ÊÊÑ¹¹¡Ë','1. ²ñ°÷¤Ï¡¢»áÌ¾¡¢½»½ê¤Ê¤ÉÅö¼Ò¤ËÆÏ¤±½Ð¤¿»ö¹à¤ËÊÑ¹¹¤¬¤¢¤Ã¤¿¾ì¹ç¤Ë¤Ï¡¢Â®¤ä¤«¤ËÅö¼Ò¤ËÏ¢Íí¤¹¤ë¤â¤Î¤È¤·¤Þ¤¹¡£
 2. ÊÑ¹¹ÅÐÏ¿¤¬¤Ê¤µ¤ì¤Ê¤«¤Ã¤¿¤³¤È¤Ë¤è¤êÀ¸¤¸¤¿Â»³²¤Ë¤Ä¤¤¤Æ¡¢Åö¼Ò¤Ï°ìÀÚÀÕÇ¤¤òÉé¤¤¤Þ¤»¤ó¡£¤Þ¤¿¡¢ÊÑ¹¹ÅÐÏ¿¤¬¤Ê¤µ¤ì¤¿¾ì¹ç¤Ç¤â¡¢ÊÑ¹¹ÅÐÏ¿Á°¤Ë¤¹¤Ç¤Ë¼êÂ³¤¬¤Ê¤µ¤ì¤¿¼è°ú¤Ï¡¢ÊÑ¹¹ÅÐÏ¿Á°¤Î¾ðÊó¤Ë´ð¤Å¤¤¤Æ¹Ô¤ï¤ì¤Þ¤¹¤Î¤Ç¤´Ãí°Õ¤¯¤À¤µ¤¤¡£',
 10,0,Now(),0, now());
 
 INSERT INTO dtb_kiyaku (kiyaku_title, kiyaku_text, rank, creator_id, update_date, del_flg, create_date) 
-VALUES ('Âè£´¾ò¡ÊÂà²ñ¡Ë','²ñ°÷¤¬Âà²ñ¤ò´õË¾¤¹¤ë¾ì¹ç¤Ë¤Ï¡¢²ñ°÷ËÜ¿Í¤¬Âà²ñ¼êÂ³¤­¤ò¹Ô¤Ã¤Æ¤¯¤À¤µ¤¤¡£½êÄê¤ÎÂà²ñ¼êÂ³¤Î½ªÎ»¸å¤Ë¡¢Âà²ñ¤È¤Ê¤ê¤Þ¤¹¡£',
+VALUES ('Âè4¾ò¡ÊÂà²ñ¡Ë','²ñ°÷¤¬Âà²ñ¤ò´õË¾¤¹¤ë¾ì¹ç¤Ë¤Ï¡¢²ñ°÷ËÜ¿Í¤¬Âà²ñ¼êÂ³¤­¤ò¹Ô¤Ã¤Æ¤¯¤À¤µ¤¤¡£½êÄê¤ÎÂà²ñ¼êÂ³¤Î½ªÎ»¸å¤Ë¡¢Âà²ñ¤È¤Ê¤ê¤Þ¤¹¡£',
 9,0,Now(),0, now());
 
 INSERT INTO dtb_kiyaku (kiyaku_title, kiyaku_text, rank, creator_id, update_date, del_flg, create_date) 
-VALUES ('Âè£µ¾ò¡Ê²ñ°÷»ñ³Ê¤ÎÁÓ¼ºµÚ¤ÓÇå½þµÁÌ³¡Ë','1. ²ñ°÷¤¬¡¢²ñ°÷»ñ³Ê¼èÆÀ¿½¹þ¤ÎºÝ¤Ëµõµ¶¤Î¿½¹ð¤ò¤·¤¿¤È¤­¡¢ÄÌ¿®ÈÎÇä¤Ë¤è¤ëÂå¶â»ÙÊ§ºÄÌ³¤òÂÕ¤Ã¤¿¤È¤­¡¢¤½¤ÎÂ¾Åö¼Ò¤¬²ñ°÷¤È¤·¤ÆÉÔÅ¬Åö¤ÈÇ§¤á¤ë»öÍ³¤¬¤¢¤ë¤È¤­¤Ï¡¢Åö¼Ò¤Ï¡¢²ñ°÷»ñ³Ê¤ò¼è¤ê¾Ã¤¹¤³¤È¤¬¤Ç¤­¤ë¤³¤È¤È¤·¤Þ¤¹¡£
+VALUES ('Âè5¾ò¡Ê²ñ°÷»ñ³Ê¤ÎÁÓ¼ºµÚ¤ÓÇå½þµÁÌ³¡Ë','1. ²ñ°÷¤¬¡¢²ñ°÷»ñ³Ê¼èÆÀ¿½¹þ¤ÎºÝ¤Ëµõµ¶¤Î¿½¹ð¤ò¤·¤¿¤È¤­¡¢ÄÌ¿®ÈÎÇä¤Ë¤è¤ëÂå¶â»ÙÊ§ºÄÌ³¤òÂÕ¤Ã¤¿¤È¤­¡¢¤½¤ÎÂ¾Åö¼Ò¤¬²ñ°÷¤È¤·¤ÆÉÔÅ¬Åö¤ÈÇ§¤á¤ë»öÍ³¤¬¤¢¤ë¤È¤­¤Ï¡¢Åö¼Ò¤Ï¡¢²ñ°÷»ñ³Ê¤ò¼è¤ê¾Ã¤¹¤³¤È¤¬¤Ç¤­¤ë¤³¤È¤È¤·¤Þ¤¹¡£
 2. ²ñ°÷¤¬¡¢°Ê²¼¤Î³Æ¹æ¤ËÄê¤á¤ë¹Ô°Ù¤ò¤·¤¿¤È¤­¤Ï¡¢¤³¤ì¤Ë¤è¤êÅö¼Ò¤¬Èï¤Ã¤¿Â»³²¤òÇå½þ¤¹¤ëÀÕÇ¤¤òÉé¤¤¤Þ¤¹¡£
 (1)²ñ°÷ÈÖ¹æ¡¢¥Ñ¥¹¥ï¡¼¥É¤òÉÔÀµ¤ËÍøÍÑ¤¹¤ë¤³¤È
 (2)Åö¥Û¡¼¥à¥Ú¡¼¥¸¤Ë¥¢¥¯¥»¥¹¤·¤Æ¾ðÊó¤ò²þ¤¶¤ó¤·¤¿¤ê¡¢Åö¥Û¡¼¥à¥Ú¡¼¥¸¤ËÍ­³²¤Ê¥³¥ó¥Ô¥å¡¼¥¿¥×¥í¥°¥é¥à¤òÁ÷¿®¤¹¤ë¤Ê¤É¤·¤Æ¡¢Åö¼Ò¤Î±Ä¶È¤òË¸³²¤¹¤ë¤³¤È
@@ -400,7 +400,7 @@ VALUES ('Âè£µ¾ò¡Ê²ñ°÷»ñ³Ê¤ÎÁÓ¼ºµÚ¤ÓÇå½þµÁÌ³¡Ë','1. ²ñ°÷¤¬¡¢²ñ°÷»ñ³Ê¼èÆÀ¿½¹þ¤ÎºÝ¤
 8,0,Now(),0, now());
 
 INSERT INTO dtb_kiyaku (kiyaku_title, kiyaku_text, rank, creator_id, update_date, del_flg, create_date) 
-VALUES ('Âè£¶¾ò¡Ê²ñ°÷¾ðÊó¤Î¼è°·¤¤¡Ë','1. Åö¼Ò¤Ï¡¢¸¶Â§¤È¤·¤Æ²ñ°÷¾ðÊó¤ò²ñ°÷¤Î»öÁ°¤ÎÆ±°Õ¤Ê¤¯Âè»°¼Ô¤ËÂÐ¤·¤Æ³«¼¨¤¹¤ë¤³¤È¤Ï¤¢¤ê¤Þ¤»¤ó¡£¤¿¤À¤·¡¢¼¡¤Î³Æ¹æ¤Î¾ì¹ç¤Ë¤Ï¡¢²ñ°÷¤Î»öÁ°¤ÎÆ±°Õ¤Ê¤¯¡¢Åö¼Ò¤Ï²ñ°÷¾ðÊó¤½¤ÎÂ¾¤Î¤ªµÒÍÍ¾ðÊó¤ò³«¼¨¤Ç¤­¤ë¤â¤Î¤È¤·¤Þ¤¹¡£
+VALUES ('Âè6¾ò¡Ê²ñ°÷¾ðÊó¤Î¼è°·¤¤¡Ë','1. Åö¼Ò¤Ï¡¢¸¶Â§¤È¤·¤Æ²ñ°÷¾ðÊó¤ò²ñ°÷¤Î»öÁ°¤ÎÆ±°Õ¤Ê¤¯Âè»°¼Ô¤ËÂÐ¤·¤Æ³«¼¨¤¹¤ë¤³¤È¤Ï¤¢¤ê¤Þ¤»¤ó¡£¤¿¤À¤·¡¢¼¡¤Î³Æ¹æ¤Î¾ì¹ç¤Ë¤Ï¡¢²ñ°÷¤Î»öÁ°¤ÎÆ±°Õ¤Ê¤¯¡¢Åö¼Ò¤Ï²ñ°÷¾ðÊó¤½¤ÎÂ¾¤Î¤ªµÒÍÍ¾ðÊó¤ò³«¼¨¤Ç¤­¤ë¤â¤Î¤È¤·¤Þ¤¹¡£
 (1)Ë¡Îá¤Ë´ð¤Å¤­³«¼¨¤òµá¤á¤é¤ì¤¿¾ì¹ç
 (2)Åö¼Ò¤Î¸¢Íø¡¢Íø±×¡¢Ì¾ÍÀÅù¤òÊÝ¸î¤¹¤ë¤¿¤á¤ËÉ¬Í×¤Ç¤¢¤ë¤ÈÅö¼Ò¤¬È½ÃÇ¤·¤¿¾ì¹ç
 2. ²ñ°÷¾ðÊó¤Ë¤Ä¤­¤Þ¤·¤Æ¤Ï¡¢Åö¼Ò¤Î¡Ö¸Ä¿Í¾ðÊóÊÝ¸î¤Ø¤Î¼èÁÈ¤ß¡×¤Ë½¾¤¤¡¢Åö¼Ò¤¬´ÉÍý¤·¤Þ¤¹¡£Åö¼Ò¤Ï¡¢²ñ°÷¾ðÊó¤ò¡¢²ñ°÷¤Ø¤Î¥µ¡¼¥Ó¥¹Äó¶¡¡¢¥µ¡¼¥Ó¥¹ÆâÍÆ¤Î¸þ¾å¡¢¥µ¡¼¥Ó¥¹¤ÎÍøÍÑÂ¥¿Ê¡¢¤ª¤è¤Ó¥µ¡¼¥Ó¥¹¤Î·òÁ´¤«¤Ä±ß³ê¤Ê±¿±Ä¤Î³ÎÊÝ¤ò¿Þ¤ëÌÜÅª¤Î¤¿¤á¤Ë¡¢Åö¼Ò¤ª¤¤¤ÆÍøÍÑ¤¹¤ë¤³¤È¤¬¤Ç¤­¤ë¤â¤Î¤È¤·¤Þ¤¹¡£
@@ -408,7 +408,7 @@ VALUES ('Âè£¶¾ò¡Ê²ñ°÷¾ðÊó¤Î¼è°·¤¤¡Ë','1. Åö¼Ò¤Ï¡¢¸¶Â§¤È¤·¤Æ²ñ°÷¾ðÊó¤ò²ñ°÷¤Î»öÁ°¤
 7,0,Now(),0, now());
 
 INSERT INTO dtb_kiyaku (kiyaku_title, kiyaku_text, rank, creator_id, update_date, del_flg, create_date) 
-VALUES ('Âè£·¾ò¡Ê¶Ø»ß»ö¹à¡Ë','ËÜ¥µ¡¼¥Ó¥¹¤ÎÍøÍÑ¤ËºÝ¤·¤Æ¡¢²ñ°÷¤ËÂÐ¤·¼¡¤Î³Æ¹æ¤Î¹Ô°Ù¤ò¹Ô¤¦¤³¤È¤ò¶Ø»ß¤·¤Þ¤¹¡£
+VALUES ('Âè7¾ò¡Ê¶Ø»ß»ö¹à¡Ë','ËÜ¥µ¡¼¥Ó¥¹¤ÎÍøÍÑ¤ËºÝ¤·¤Æ¡¢²ñ°÷¤ËÂÐ¤·¼¡¤Î³Æ¹æ¤Î¹Ô°Ù¤ò¹Ô¤¦¤³¤È¤ò¶Ø»ß¤·¤Þ¤¹¡£
 
 1. Ë¡Îá¤Þ¤¿¤ÏËÜµ¬Ìó¡¢ËÜ¥µ¡¼¥Ó¥¹¤´ÍøÍÑ¾å¤Î¤´Ãí°Õ¡¢ËÜ¥µ¡¼¥Ó¥¹¤Ç¤Î¤ªÇã¤¤Êª¾å¤Î¤´Ãí°Õ¤½¤ÎÂ¾¤ÎËÜµ¬ÌóÅù¤Ë°ãÈ¿¤¹¤ë¤³¤È
 2. Åö¼Ò¡¢¤ª¤è¤Ó¤½¤ÎÂ¾¤ÎÂè»°¼Ô¤Î¸¢Íø¡¢Íø±×¡¢Ì¾ÍÀÅù¤òÂ»¤Í¤ë¤³¤È
@@ -422,7 +422,7 @@ VALUES ('Âè£·¾ò¡Ê¶Ø»ß»ö¹à¡Ë','ËÜ¥µ¡¼¥Ó¥¹¤ÎÍøÍÑ¤ËºÝ¤·¤Æ¡¢²ñ°÷¤ËÂÐ¤·¼¡¤Î³Æ¹æ¤Î¹Ô°Ù
 6,0,Now(),0, now());
 
 INSERT INTO dtb_kiyaku (kiyaku_title, kiyaku_text, rank, creator_id, update_date, del_flg, create_date) 
-VALUES ('Âè£¸¾ò¡Ê¥µ¡¼¥Ó¥¹¤ÎÃæÃÇ¡¦Ää»ßÅù¡Ë','1. Åö¼Ò¤Ï¡¢ËÜ¥µ¡¼¥Ó¥¹¤Î²ÔÆ°¾õÂÖ¤òÎÉ¹¥¤ËÊÝ¤Ä¤¿¤á¤Ë¡¢¼¡¤Î³Æ¹æ¤Î°ì¤Ë³ºÅö¤¹¤ë¾ì¹ç¡¢Í½¹ð¤Ê¤·¤Ë¡¢ËÜ¥µ¡¼¥Ó¥¹¤ÎÄó¶¡Á´¤Æ¤¢¤ë¤¤¤Ï°ìÉô¤òÄä»ß¤¹¤ë¤³¤È¤¬¤¢¤ê¤Þ¤¹¡£
+VALUES ('Âè8¾ò¡Ê¥µ¡¼¥Ó¥¹¤ÎÃæÃÇ¡¦Ää»ßÅù¡Ë','1. Åö¼Ò¤Ï¡¢ËÜ¥µ¡¼¥Ó¥¹¤Î²ÔÆ°¾õÂÖ¤òÎÉ¹¥¤ËÊÝ¤Ä¤¿¤á¤Ë¡¢¼¡¤Î³Æ¹æ¤Î°ì¤Ë³ºÅö¤¹¤ë¾ì¹ç¡¢Í½¹ð¤Ê¤·¤Ë¡¢ËÜ¥µ¡¼¥Ó¥¹¤ÎÄó¶¡Á´¤Æ¤¢¤ë¤¤¤Ï°ìÉô¤òÄä»ß¤¹¤ë¤³¤È¤¬¤¢¤ê¤Þ¤¹¡£
 (1)¥·¥¹¥Æ¥à¤ÎÄê´üÊÝ¼é¤ª¤è¤Ó¶ÛµÞÊÝ¼é¤Î¤¿¤á¤ËÉ¬Í×¤Ê¾ì¹ç
 (2)¥·¥¹¥Æ¥à¤ËÉé²Ù¤¬½¸Ãæ¤·¤¿¾ì¹ç
 (3)²ÐºÒ¡¢ÄäÅÅ¡¢Âè»°¼Ô¤Ë¤è¤ëË¸³²¹Ô°Ù¤Ê¤É¤Ë¤è¤ê¥·¥¹¥Æ¥à¤Î±¿ÍÑ¤¬º¤Æñ¤Ë¤Ê¤Ã¤¿¾ì¹ç
@@ -430,7 +430,7 @@ VALUES ('Âè£¸¾ò¡Ê¥µ¡¼¥Ó¥¹¤ÎÃæÃÇ¡¦Ää»ßÅù¡Ë','1. Åö¼Ò¤Ï¡¢ËÜ¥µ¡¼¥Ó¥¹¤Î²ÔÆ°¾õÂÖ¤òÎÉ¹
 5,0,Now(),0, now());
 
 INSERT INTO dtb_kiyaku (kiyaku_title, kiyaku_text, rank, creator_id, update_date, del_flg, create_date) 
-VALUES ('Âè£¹¾ò¡Ê¥µ¡¼¥Ó¥¹¤ÎÊÑ¹¹¡¦ÇÑ»ß¡Ë','Åö¼Ò¤Ï¡¢¤½¤ÎÈ½ÃÇ¤Ë¤è¤ê¥µ¡¼¥Ó¥¹¤ÎÁ´Éô¤Þ¤¿¤Ï°ìÉô¤ò»öÁ°¤ÎÄÌÃÎ¤Ê¤¯¡¢Å¬µ¹ÊÑ¹¹¡¦ÇÑ»ß¤Ç¤­¤ë¤â¤Î¤È¤·¤Þ¤¹¡£',
+VALUES ('Âè9¾ò¡Ê¥µ¡¼¥Ó¥¹¤ÎÊÑ¹¹¡¦ÇÑ»ß¡Ë','Åö¼Ò¤Ï¡¢¤½¤ÎÈ½ÃÇ¤Ë¤è¤ê¥µ¡¼¥Ó¥¹¤ÎÁ´Éô¤Þ¤¿¤Ï°ìÉô¤ò»öÁ°¤ÎÄÌÃÎ¤Ê¤¯¡¢Å¬µ¹ÊÑ¹¹¡¦ÇÑ»ß¤Ç¤­¤ë¤â¤Î¤È¤·¤Þ¤¹¡£',
 4,0,Now(),0, now());
 
 INSERT INTO dtb_kiyaku (kiyaku_title, kiyaku_text, rank, creator_id, update_date, del_flg, create_date) 
