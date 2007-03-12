@@ -281,7 +281,14 @@ class SC_CustomerList extends SC_SelectSql {
 		return $this->getSql(0);	
 	}
 
-	function getListMailMagazine() {
+	function getListMailMagazine($is_mobile = false) {
+		
+		if($is_mobile == true) {
+			$email_column = "dtb_customer.email_mobile";
+		} else {
+			$email_column = "dtb_customer.email";			
+		}
+		
 		$this->select = "
 			SELECT 
 				dtb_customer.customer_id,
@@ -290,7 +297,7 @@ class SC_CustomerList extends SC_SelectSql {
 				dtb_customer.kana01,
 				dtb_customer.kana02,
 				dtb_customer.sex,
-				dtb_customer.email,
+				$email_column,		
 				dtb_customer.tel01,
 				dtb_customer.tel02,
 				dtb_customer.tel03,
