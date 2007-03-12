@@ -53,7 +53,7 @@ $objView = new SC_AdminView();
 $objDate = new SC_Date();
 $objQuery = new SC_Query();
 $objPage->objDate = $objDate;
-$objPage->arrTemplate = getTemplateList($conn);
+$objPage->arrTemplate = getTemplarrTemplateateList($conn);
 
 $objSess = new SC_Session();
 
@@ -218,7 +218,7 @@ case 'template':
 		}
 
 		//-- HTMLテンプレートを使用する場合は、HTMLソースを生成してBODYへ挿入
-		if ( $objPage->list_data["mail_method"] == 3 && $objPage->list_data["mail_type"] == 1) {
+		if ( $objPage->list_data["mail_method"] == 3) {
 			$objTemplate = new LC_HTMLtemplate;
 			$objTemplate->list_data = lfGetHtmlTemplateData($_POST['template_id']);
 			$objSiteInfo = new SC_SiteInfo();

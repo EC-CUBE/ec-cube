@@ -237,7 +237,7 @@ function getTemplateList($conn){
 	global $arrMagazineTypeAll;
 	
 	$sql = "SELECT template_id, subject, mail_method FROM dtb_mailmaga_template WHERE del_flg = 0 ";
-	if ($_POST["htmlmail"] == 2) {
+	if ($_POST["htmlmail"] == 2 || $_POST['mail_type'] == 2) {
 		$sql .= " AND mail_method = 2 ";	//TEXT希望者へのTESTメールテンプレートリスト
 	}
 	$sql .= " ORDER BY template_id DESC";
