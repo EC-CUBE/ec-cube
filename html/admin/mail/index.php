@@ -218,7 +218,7 @@ case 'template':
 		}
 
 		//-- HTMLテンプレートを使用する場合は、HTMLソースを生成してBODYへ挿入
-		if ( $objPage->list_data["mail_method"] == 3) {
+		if ( $objPage->list_data["mail_method"] == 3 && $objPage->list_data["mail_type"] == 1) {
 			$objTemplate = new LC_HTMLtemplate;
 			$objTemplate->list_data = lfGetHtmlTemplateData($_POST['template_id']);
 			$objSiteInfo = new SC_SiteInfo();
