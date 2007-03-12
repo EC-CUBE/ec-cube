@@ -284,7 +284,7 @@ class SC_CustomerList extends SC_SelectSql {
 	function getListMailMagazine($is_mobile = false) {
 		
 		if($is_mobile == true) {
-			$email_column = "dtb_customer.email_mobile";
+			$email_column = "dtb_customer.email_mobile as email";
 		} else {
 			$email_column = "dtb_customer.email";			
 		}
