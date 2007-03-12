@@ -11,9 +11,9 @@
 
 <!--{foreach from=$arrChildren key=i item=arrChild}-->
 <!--{if $arrChild.has_children}-->
-<!--{assign var=path value="`$smarty.const.URL_DIR`products/category_list.php"}-->
+<!--{assign var=path value="`$smarty.const.MOBILE_URL_DIR`products/category_list.php"}-->
 <!--{else}-->
-<!--{assign var=path value="`$smarty.const.URL_DIR`products/list.php"}-->
+<!--{assign var=path value="`$smarty.const.MOBILE_URL_DIR`products/list.php"}-->
 <!--{/if}-->
 <!--{if $i+1<9}-->
 <a href="<!--{$path}-->?category_id=<!--{$arrChild.category_id}-->" accesskey="<!--{$i+1}-->"><!--{$i+1|numeric_emoji}--><!--{$arrChild.category_name|escape}-->(<!--{$arrChild.product_count}-->)</a><br>

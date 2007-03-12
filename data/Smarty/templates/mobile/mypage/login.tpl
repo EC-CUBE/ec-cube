@@ -24,7 +24,7 @@
 	<!--{assign var=key value="login_pass"}--><font color="#FF0000"><!--{$arrErr[$key]}--></font>
 	<input type="password" name="<!--{$key}-->" maxlength="<!--{$arrForm[$key].length}-->" size="40" istyle="3"><br>
 	<center><input type="submit" value="送信" name="log"></center><br>
-	<a href="<!--{$smarty.const.URL_DIR}-->forgot/index.php">パスワードをお忘れの方はこちら</a><br>
+	<a href="<!--{$smarty.const.MOBILE_URL_DIR}-->forgot/index.php">パスワードをお忘れの方はこちら</a><br>
 </form>
 <!--▲CONTENTS-->
 
