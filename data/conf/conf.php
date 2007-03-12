@@ -12,7 +12,7 @@ require_once($CONF_PHP_PATH ."/../install.inc");
 require_once($CONF_PHP_PATH ."/core.php" );
 
 //--------------------------------------------------------------------------------------------------------
-/** エラーレベル設定 **/
+/** エラーレベル設定
 /*
  *	'E_ERROR'             => 大な実行時エラー。これは、メモリ確保に関する問題のように復帰で きないエラーを示します。スクリプトの実行は中断されます。 
  *	'E_WARNING'           => 実行時の警告 (致命的なエラーではない)。スクリプトの実行は中断さ れません
@@ -117,7 +117,7 @@ define("CREDIT_HTTP_ANALYZE_URL", CREDIT_HTTP_DOMAIN . CREDIT_HTTP_ANALYZE_PROGR
 define("CHAR_CODE", "EUC-JP");
 
 // EC-CUBEバージョン情報
-define("ECCUBE_VERSION", "1.1.1");
+define("ECCUBE_VERSION", "1.2.0");
 
 // 決済モジュール付与文言
 define("ECCUBE_PAYMENT", "EC-CUBE");
