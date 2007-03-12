@@ -167,7 +167,7 @@ class SC_CustomerList extends SC_SelectSql {
 		//　配信メールアドレス種別
 		if ( $mode == 'magazine' ){
 			if ( strlen($this->arrSql['mail_type']) > 0 && $this->arrSql['mail_type'] == 2) {
-				$this->setWhere( " dtb_customer.email_mobile NOT NULL  ");
+				$this->setWhere( " dtb_customer.email_mobile <> ''  ");
 			}
 		}
 							
