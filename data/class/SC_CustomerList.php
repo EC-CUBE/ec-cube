@@ -139,71 +139,28 @@ class SC_CustomerList extends SC_SelectSql {
 
 		//　E-MAIL
 		if (strlen($this->arrSql['email']) > 0) {
-
-			$search_all = 'all';
-			$search_pc = 'email';
-			$search_mobile = 'email_mobile';
-			
 			//カンマ区切りで複数の条件指定可能に
 			$this->arrSql['email'] = explode(",", $this->arrSql['email']);
-			
-			//　メール種別
-			if ( is_array( $this->arrSql['mail_type'] ) ){
-
-				if(in_array(MAIL_TYPE_PC, $this->arrSql['mail_type']) && !in_array(MAIL_TYPE_MOBILE, $this->arrSql['mail_type'])) {
-					// PCのみ検索
-					$search_patern = $search_pc;			
-				} else if(!in_array(MAIL_TYPE_PC, $this->arrSql['mail_type']) && in_array(MAIL_TYPE_MOBILE, $this->arrSql['mail_type'])) {
-					// モバイルのみ検索
-					$search_patern = $search_mobile;
-				} else {
-					// 全検索
-					$search_patern = $search_all;
-				}
-				
-			} else {
-				// 全検索
-				$search_patern = $search_all;				
-			}
-
-
 			$sql_where = "";
 			foreach($this->arrSql['email'] as $val) {
 				$val = trim($val);
 				//検索条件を含まない
 				if($this->arrSql['not_emailinc'] == '1') {
-					
-					if($sql_where != "") {
-						$sql_where .= "AND ";
-					}						
-					
-					if($search_patern == $search_all) {
-						$sql_where .= "(dtb_customer.$search_pc NOT ILIKE ? OR dtb_customer.$search_mobile NOT ILIKE ?) ";
+					if($sql_where == "") {
+						$sql_where .= "dtb_customer.email NOT ILIKE ? ";
 					} else {
-						$sql_where .= "dtb_customer.$search_patern NOT ILIKE ? ";						
+						$sql_where .= "AND dtb_customer.email NOT ILIKE ? ";
 					}
-					
 				} else {				
-					if($sql_where != "") {
-						$sql_where .= "OR ";
-					}
-						
-					if($search_patern == $search_all) {
-						$sql_where .= "(dtb_customer.$search_pc ILIKE ? OR dtb_customer.$search_mobile ILIKE ?) ";
+					if($sql_where == "") {
+						$sql_where .= "dtb_customer.email ILIKE ? ";
 					} else {
-						$sql_where .= "dtb_customer.$search_patern ILIKE ?  ";
+						$sql_where .= "OR dtb_customer.email ILIKE ? ";
 					}
 				}
 				$searchEmail = $this->addSearchStr($val);
-				
-				if($search_patern == $search_all) {
-					$this->arrVal[] = $searchEmail;
-					$this->arrVal[] = $searchEmail;
-				} else {
-					$this->arrVal[] = $searchEmail;					
-				}
+				$this->arrVal[] = $searchEmail;
 			}
-			
 			$this->setWhere($sql_where);
 		}
 					
