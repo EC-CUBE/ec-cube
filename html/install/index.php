@@ -53,10 +53,6 @@ case 'welcome':
 	//$objPage = lfDispAgreement($objPage);
 	$objPage = lfDispStep0($objPage);
 	//$objPage->tpl_onload .= "fnChangeVisible('agreement_yes', 'next');";
-	
-	
-	
-	
 	break;
 
 /* 現在保留中
@@ -305,7 +301,7 @@ case 'return_step3':
 	break;
 case 'return_agreement':
 	$objPage = lfDispAgreement($objPage);
-	$objPage->tpl_onload .= "fnChangeVisible('agreement_yes', 'next');";
+	//$objPage->tpl_onload .= "fnChangeVisible('agreement_yes', 'next');";
 	break;
 case 'return_welcome':
 default:
