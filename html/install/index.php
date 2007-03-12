@@ -52,7 +52,7 @@ switch($_POST['mode']) {
 case 'welcome':
 	//$objPage = lfDispAgreement($objPage);
 	$objPage = lfDispStep0($objPage);
-	$objPage->tpl_onload .= "fnChangeVisible('agreement_yes', 'next');";
+	//$objPage->tpl_onload .= "fnChangeVisible('agreement_yes', 'next');";
 	break;
 
 /* 現在保留中
