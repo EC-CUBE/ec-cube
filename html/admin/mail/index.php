@@ -184,7 +184,7 @@ case 'back':
 	}
 	break;
 /*
-	input:検索結果画面「配信内容設定」ボタン
+	input:検索結果画面「htmlmail内容設定」ボタン
 */
 case 'input':
 	//-- 入力値コンバート
@@ -287,6 +287,7 @@ case 'regist_complete':
 	}
 	break;
 default:
+	$objPage->list_data = $list_data['mail_type'] = 1;
 	break;
 }
 
