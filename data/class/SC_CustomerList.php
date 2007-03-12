@@ -282,16 +282,24 @@ class SC_CustomerList extends SC_SelectSql {
 	}
 
 	function getListMailMagazine($is_mobile = false) {
-		
+			
+		$colomn = $this->getMailMagazineColumn($is_mobile);
+		$this->select = "
+			SELECT 
+				$colomn
+			FROM 
+				dtb_customer";
+		return $this->getSql(0);	
+	}
+	
+	function getMailMagazineColumn($is_mobile= false) {
 		if($is_mobile == true) {
 			$email_column = "dtb_customer.email_mobile as email";
 		} else {
 			$email_column = "dtb_customer.email";			
 		}
 		
-		$this->select = "
-			SELECT 
-				dtb_customer.customer_id,
+		$column ="dtb_customer.customer_id,
 				dtb_customer.name01,
 				dtb_customer.name02,
 				dtb_customer.kana01,
@@ -302,10 +310,9 @@ class SC_CustomerList extends SC_SelectSql {
 				dtb_customer.tel02,
 				dtb_customer.tel03,
 				dtb_customer.pref, 
-				dtb_customer.mailmaga_flg 
-			FROM 
-				dtb_customer";
-		return $this->getSql(0);	
+				dtb_customer.mailmaga_flg";
+				
+		return $column;
 	}
 	
 	//　検索総数カウント用SQL
