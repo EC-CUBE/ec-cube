@@ -287,7 +287,7 @@ case 'regist_complete':
 	}
 	break;
 default:
-	$objPage->list_data = $list_data['mail_type'] = 1;
+	$objPage->list_data['mail_type'] = 1;
 	break;
 }
 
