@@ -163,7 +163,34 @@ class SC_CustomerList extends SC_SelectSql {
 			}
 			$this->setWhere($sql_where);
 		}
-		
+
+		//　E-MAIL(mobile)
+		if (strlen($this->arrSql['email_mobile']) > 0) {
+			//カンマ区切りで複数の条件指定可能に
+			$this->arrSql['email_mobile'] = explode(",", $this->arrSql['email_mobile']);
+			$sql_where = "";
+			foreach($this->arrSql['email_mobile'] as $val) {
+				$val = trim($val);
+				//検索条件を含まない
+				if($this->arrSql['not_email_mobileinc'] == '1') {
+					if($sql_where == "") {
+						$sql_where .= "dtb_customer.email_mobile NOT ILIKE ? ";
+					} else {
+						$sql_where .= "AND dtb_customer.email_mobile NOT ILIKE ? ";
+					}
+				} else {				
+					if($sql_where == "") {
+						$sql_where .= "dtb_customer.email_mobile ILIKE ? ";
+					} else {
+						$sql_where .= "OR dtb_customer.email_mobile ILIKE ? ";
+					}
+				}
+				$searchemail_mobile = $this->addSearchStr($val);
+				$this->arrVal[] = $searchemail_mobile;
+			}
+			$this->setWhere($sql_where);
+		}
+				
 		//　配信メールアドレス種別
 		if ( $mode == 'magazine' ){
 			if ( strlen($this->arrSql['mail_type']) > 0 && $this->arrSql['mail_type'] == 2) {
