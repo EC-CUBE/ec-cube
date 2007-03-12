@@ -164,7 +164,7 @@ case 'back':
 		// 表示順序
 		$objQuery->setorder("customer_id DESC");
 		
-		// 検索結果の取得
+		// 検索結果の取得			
 		$is_mobile = false;
 		switch($_POST['mail_type']) {
 			case 1:
@@ -177,9 +177,21 @@ case 'back':
 				$is_mobile = false;
 				break;
 		}
+		$col = "dtb_customer.customer_id,
+				dtb_customer.name01,
+				dtb_customer.name02,
+				dtb_customer.kana01,
+				dtb_customer.kana02,
+				dtb_customer.sex,
+				$email_column,		
+				dtb_customer.tel01,
+				dtb_customer.tel02,
+				dtb_customer.tel03,
+				dtb_customer.pref, 
+				dtb_customer.mailmaga_flg";
+						
 		$col = $objSelect->getListMailMagazine($is_mobile);
 		$objPage->arrResults = $objQuery->select($col, $from, $where, $arrval);
-sfprintr($where);
 		//現在時刻の取得
 		$objPage->arrNowDate = lfGetNowDate();
 	}
