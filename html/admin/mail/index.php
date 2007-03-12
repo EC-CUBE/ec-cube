@@ -94,16 +94,7 @@ if ($_GET["mode"] == "query" && sfCheckNumLength($_GET["send_id"])) {
 		}
 		$list_data['job_disp'] = $job_disp;
 	}
-	
-	// メール種別の変換
-	if (count($list_data['mail_type']) > 0) {
-		foreach($list_data['mail_type'] as $key => $val){
-			$list_data['mail_type'][$key] = $objPage->arrMailType[$val];
-			$mail_type_disp .= $list_data['mail_type'][$key] . " ";
-		}
-		$list_data['mail_type_disp'] = $mail_type_disp;
-	}
-	
+		
 	// カテゴリ変換
 	$arrCatList = sfGetCategoryList();
 	$list_data['category_name'] = $arrCatList[$list_data['category_id']];
