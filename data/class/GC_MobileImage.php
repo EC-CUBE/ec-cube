@@ -70,7 +70,7 @@ class GC_MobileImage {
 
 			// HTML中のIMGタグを変換後のファイルパスに置換する
 			foreach ($images[1] as $key => $value) {
-				$converted = $imageConverter->execute(preg_replace('|^' . PC_URL_DIR . '|', PC_HTML_PATH, $value));
+				$converted = $imageConverter->execute(preg_replace('|^' . URL_DIR . '|', HTML_PATH, $value));
 				if (isset($converted['outputImageName'])) {
 					$buffer = str_replace($value, MOBILE_IMAGE_URL . '/' . $converted['outputImageName'], $buffer);
 				} else {
