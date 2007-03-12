@@ -140,7 +140,6 @@ case 'back':
 
 		//-- 検索データ取得	
 		$objSelect = new SC_CustomerList($objPage->list_data, "magazine");
-
 		// 生成されたWHERE文を取得する		
 		list($where, $arrval) = $objSelect->getWhere();
 	
@@ -164,21 +163,23 @@ case 'back':
 		$objQuery->setlimitoffset(SEARCH_PMAX, $startno);
 		// 表示順序
 		$objQuery->setorder("customer_id DESC");
+		
 		// 検索結果の取得
-		$col = "dtb_customer.customer_id,
-			dtb_customer.name01,
-			dtb_customer.name02,
-			dtb_customer.kana01,
-			dtb_customer.kana02,
-			dtb_customer.sex,
-			dtb_customer.email,
-			dtb_customer.tel01,
-			dtb_customer.tel02,
-			dtb_customer.tel03,
-			dtb_customer.pref,
-			dtb_customer.mailmaga_flg";
+		$is_mobile = false;
+		switch($_POST['mail_type']) {
+			case 1:
+				$is_mobile = false;
+				break;
+			case 2:
+				$is_mobile = true;		
+				break;
+			default:
+				$is_mobile = false;
+				break;
+		}
+		$col = $objSelect->getListMailMagazine($is_mobile);
 		$objPage->arrResults = $objQuery->select($col, $from, $where, $arrval);
-
+sfprintr($where);
 		//現在時刻の取得
 		$objPage->arrNowDate = lfGetNowDate();
 	}
@@ -396,8 +397,8 @@ function lfRegistData($arrData){
 	global $arrSearchColumn;
 	
 	$objQuery = new SC_Query();
-		
 	$objSelect = new SC_CustomerList( lfConvertParam($arrData, $arrSearchColumn), "magazine" );
+	
 	$search_data = $conn->getAll($objSelect->getListMailMagazine(), $objSelect->arrVal);
 	$dataCnt = count($search_data);
 	
