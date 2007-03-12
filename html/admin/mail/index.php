@@ -164,21 +164,8 @@ case 'back':
 		// 表示順序
 		$objQuery->setorder("customer_id DESC");
 		
-		// 検索結果の取得			
-		$is_mobile = false;
-		switch($_POST['mail_type']) {
-			case 1:
-				$is_mobile = false;
-				break;
-			case 2:
-				$is_mobile = true;		
-				break;
-			default:
-				$is_mobile = false;
-				break;
-		}
-		
-		$col = $objSelect->getMailMagazineColumn($is_mobile);
+		// 検索結果の取得	
+		$col = $objSelect->getMailMagazineColumn(lfGetIsMobile($_POST['mail_type']));
 		$objPage->arrResults = $objQuery->select($col, $from, $where, $arrval);
 		//現在時刻の取得
 		$objPage->arrNowDate = lfGetNowDate();
@@ -399,7 +386,7 @@ function lfRegistData($arrData){
 	$objQuery = new SC_Query();
 	$objSelect = new SC_CustomerList( lfConvertParam($arrData, $arrSearchColumn), "magazine" );
 	
-	$search_data = $conn->getAll($objSelect->getListMailMagazine(), $objSelect->arrVal);
+	$search_data = $conn->getAll($objSelect->getListMailMagazine(lfGetIsMobile($_POST['mail_type'])), $objSelect->arrVal);
 	$dataCnt = count($search_data);
 	
 	$dtb_send_history = array();
@@ -449,5 +436,23 @@ function lfGetCampaignList() {
 	}
 
 	return $arrCampaign;
+}
+
+function lfGetIsMobile($mail_type) {
+	// 検索結果の取得			
+	$is_mobile = false;
+	switch($mail_type) {
+		case 1:
+			$is_mobile = false;
+			break;
+		case 2:
+			$is_mobile = true;		
+			break;
+		default:
+			$is_mobile = false;
+			break;
+	}
+	
+	return $is_mobile;
 }
 ?>
