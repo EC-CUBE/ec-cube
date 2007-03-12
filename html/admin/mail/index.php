@@ -190,7 +190,6 @@ case 'back':
 				dtb_customer.pref, 
 				dtb_customer.mailmaga_flg";
 						
-		$col = $objSelect->getListMailMagazine($is_mobile);
 		$objPage->arrResults = $objQuery->select($col, $from, $where, $arrval);
 		//現在時刻の取得
 		$objPage->arrNowDate = lfGetNowDate();
