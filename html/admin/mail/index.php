@@ -53,7 +53,7 @@ $objView = new SC_AdminView();
 $objDate = new SC_Date();
 $objQuery = new SC_Query();
 $objPage->objDate = $objDate;
-$objPage->arrTemplate = getTemplarrTemplateateList($conn);
+$objPage->arrTemplate = getTemplateList($conn);
 
 $objSess = new SC_Session();
 
