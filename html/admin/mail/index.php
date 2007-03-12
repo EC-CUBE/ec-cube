@@ -142,6 +142,7 @@ case 'back':
 		$objSelect = new SC_CustomerList($objPage->list_data, "magazine");
 		// 生成されたWHERE文を取得する		
 		list($where, $arrval) = $objSelect->getWhere();
+sfprintr($where);
 	
 		// 「WHERE」部分を削除する。
 		$where = ereg_replace("^WHERE", "", $where);
