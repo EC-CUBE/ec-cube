@@ -322,6 +322,7 @@ function lfConvertParam() {
 // 入力エラーチェック
 function lfCheckError() {
 	$objErr = new SC_CheckError();
+	$objErr->doFunc(array("商品ID", "search_product_id"), array("NUM_CHECK"));
 	$objErr->doFunc(array("開始日", "search_startyear", "search_startmonth", "search_startday"), array("CHECK_DATE"));
 	$objErr->doFunc(array("終了日", "search_endyear", "search_endmonth", "search_endday"), array("CHECK_DATE"));
 	$objErr->doFunc(array("開始日", "終了日", "search_startyear", "search_startmonth", "search_startday", "search_endyear", "search_endmonth", "search_endday"), array("CHECK_SET_TERM"));
