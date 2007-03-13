@@ -2281,7 +2281,7 @@ function sfDBDatetoTime($db_date) {
 /*
 	index.php?tpl=test.tpl
 */
-function sfCustomDisplay($objPage) {
+function sfCustomDisplay($objPage, $is_mobile = false) {
 	$basename = basename($_SERVER["REQUEST_URI"]);
 
 	if($basename == "") {
@@ -2305,7 +2305,12 @@ function sfCustomDisplay($objPage) {
 		$objView->assignobj($objPage);
 		$objView->display($tpl_name);
 	} else {
-		$objView = new SC_SiteView();
+		// 携帯サイトとＰＣサイトで切り分ける
+		if($is_mobile === true) {
+			$objView = new SC_MobileView();			
+		} else {
+			$objView = new SC_SiteView();
+		}
 		$objView->assignobj($objPage);
 		$objView->display(SITE_FRAME);
 	}
