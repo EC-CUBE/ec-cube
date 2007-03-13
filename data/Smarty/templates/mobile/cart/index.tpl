@@ -41,7 +41,7 @@
 		<a href="<!--{$smarty.server.PHP_SELF|escape}-->?mode=delete&amp;cart_no=<!--{$arrProductsClass[cnt].cart_no}-->">削除</a><br>
 		<!--{* 合計 *}-->
 		小計:<!--{$arrProductsClass[cnt].total_pretax|number_format}-->円<br>
-		<div align="right"><a href="<!--{$smarty.const.DETAIL_P_HTML}--><!--{$arrProductsClass[cnt].product_id}-->">商品購入詳細へ→</a></div>
+		<div align="right"><a href="<!--{$smarty.const.MOBILE_DETAIL_P_HTML}--><!--{$arrProductsClass[cnt].product_id}-->">商品購入詳細へ→</a></div>
 		<HR>
 	<!--{/section}-->
 	商品合計:<!--{$tpl_total_pretax|number_format}-->円<br>

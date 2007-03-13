@@ -10,7 +10,7 @@
 <!--{foreach from=$arrBestProducts item=arrProduct name=best_products}-->
 
 <!-- ▼オススメコメント ここから -->
-<a href="<!--{$smarty.const.DETAIL_P_HTML}--><!--{$arrProduct.product_id}-->">
+<a href="<!--{$smarty.const.MOBILE_DETAIL_P_HTML}--><!--{$arrProduct.product_id}-->">
 <!--{$arrProduct.comment|escape|nl2br}-->
 </a>
 <!-- ▲オススメコメント ここまで -->
