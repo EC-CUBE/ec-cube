@@ -141,10 +141,17 @@ class SC_AdminView extends SC_View{
 }
 
 class SC_SiteView extends SC_View{
-    function SC_SiteView($cart = true) {
+    function SC_SiteView($cart = true, $is_mobile = false) {
     	parent::SC_View();
-		$this->_smarty->template_dir = TEMPLATE_DIR;
-		$this->_smarty->compile_dir = COMPILE_DIR;
+		
+		// 携帯サイトとPCサイトでテンプレートファイルを変更
+		if($is_mobile == true) {
+			$this->_smarty->template_dir = MOBILE_TEMPLATE_DIR;
+			$this->_smarty->compile_dir = MOBILE_COMPILE_DIR;
+		} else {
+			$this->_smarty->template_dir = TEMPLATE_DIR;
+			$this->_smarty->compile_dir = COMPILE_DIR;			
+		}
 		$this->initpath();
 		
 		// PHP5ではsessionをスタートする前にヘッダー情報を送信していると警告が出るため、先にセッションをスタートするように変更
