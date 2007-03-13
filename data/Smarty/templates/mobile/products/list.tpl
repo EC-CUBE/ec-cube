@@ -39,9 +39,9 @@
 
 <div align="right">
 <!--{if $i+1<9}-->
-<a href="<!--{$smarty.const.DETAIL_P_HTML}--><!--{$arrProduct.product_id}-->" accesskey="<!--{$i+1}-->">商品詳細へ→</a>
+<a href="<!--{$smarty.const.MOBILE_DETAIL_P_HTML}--><!--{$arrProduct.product_id}-->" accesskey="<!--{$i+1}-->">商品詳細へ→</a>
 <!--{else}-->
-<a href="<!--{$smarty.const.DETAIL_P_HTML}--><!--{$arrProduct.product_id}-->">商品詳細へ→</a>
+<a href="<!--{$smarty.const.MOBILE_DETAIL_P_HTML}--><!--{$arrProduct.product_id}-->">商品詳細へ→</a>
 <!--{/if}-->
 </div>
 
