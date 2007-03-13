@@ -11,7 +11,6 @@
 
 <br>
 
-html_path=><!--{$smarty.const.MOBILE_HTML_PATH}-->frontparts/bloc/news.php
 <!-- ▼新着情報 ここから -->
 <!--{include_php file=`$smarty.const.MOBILE_HTML_PATH`frontparts/bloc/news.php}-->
 <!-- ▲新着情報 ここまで -->
