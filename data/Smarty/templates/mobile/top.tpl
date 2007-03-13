@@ -20,7 +20,7 @@
 
 <!-- ▼ピックアップ商品 ここから -->
 <hr>
-<!--{include_php file=`$smarty.const.MOBILE_HTML_PATH`frontparts/bloc/best5.phpa}-->
+<!--{include_php file=`$smarty.const.MOBILE_HTML_PATH`frontparts/bloc/best5.php}-->
 <hr>
 <!-- ▲ピックアップ商品 ここまで -->
 
