@@ -19,6 +19,6 @@ if (isset($_GET['token'])) {
 if (isset($next_url) && $next_url !== false) {
 	header("Location: $next_url");
 } else {
-	header('Location: ' . SITE_URL);
+	header('Location: ' . MOBILE_SITE_URL);
 }
 ?>

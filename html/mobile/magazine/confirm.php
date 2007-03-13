@@ -65,7 +65,7 @@ if (isset($_REQUEST['btnRegist'])) {
 	}
 	$CONF = sf_getBasisData();
 	$objPage->CONF = $CONF;
-	$objPage->tpl_url = gfAddSessionId(SSL_URL . "magazine/" . $_REQUEST['mode'] . ".php?id=" . $uniqId);
+	$objPage->tpl_url = gfAddSessionId(MOBILE_SSL_URL . "magazine/" . $_REQUEST['mode'] . ".php?id=" . $uniqId);
 	
 	$objMailText = new SC_SiteView();
 	$objMailText->assignobj($objPage);

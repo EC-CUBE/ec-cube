@@ -42,7 +42,7 @@ if (isset($_SESSION['mobile']['kara_mail_from'])) {
 
 //SSLURL判定
 if (SSLURL_CHECK == 1){
-	$ssl_url= sfRmDupSlash(SSL_URL.$_SERVER['REQUEST_URI']);
+	$ssl_url= sfRmDupSlash(MOBILE_SSL_URL.$_SERVER['REQUEST_URI']);
 	if (!ereg("^https://", $non_ssl_url)){
 		sfDispSiteError(URL_ERROR);
 	}
@@ -182,7 +182,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
 			// 空メールを受信済みの場合はすぐに本登録完了にする。
 			if (isset($_SESSION['mobile']['kara_mail_from'])) {
-				header("Location:" . gfAddSessionId(URL_DIR . "regist/index.php?mode=regist&id=" . $objPage->uniqid));
+				header("Location:" . gfAddSessionId(MOBILE_URL_DIR . "regist/index.php?mode=regist&id=" . $objPage->uniqid));
 				exit;
 			}
 
