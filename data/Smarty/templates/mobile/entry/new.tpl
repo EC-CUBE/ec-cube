@@ -12,7 +12,7 @@
 ご利用の規約をよくお読みの上、ご登録下さい。<br>
 <a href="kiyaku.php" accesskey="1"><!--{1|numeric_emoji}-->会員規約を読む<br>
 <a href="index.php" accesskey="2"><!--{2|numeric_emoji}-->同意して登録へ<br>
-<a href="<!--{$smarty.const.URL_SITE_TOP}-->" accesskey="3"><!--{3|numeric_emoji}-->同意しない<br>
+<a href="<!--{$smarty.const.MOBILE_URL_SITE_TOP}-->" accesskey="3"><!--{3|numeric_emoji}-->同意しない<br>
 
 <br>
 <hr>

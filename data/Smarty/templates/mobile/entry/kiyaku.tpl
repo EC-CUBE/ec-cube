@@ -15,7 +15,7 @@
 <!--{/if}-->
 
 <a href="index.php" accesskey="1"><!--{1|numeric_emoji}-->同意して登録へ</a><br>
-<a href="<!--{$smarty.const.URL_SITE_TOP}-->" accesskey="2"><!--{2|numeric_emoji}-->同意しない</a><br>
+<a href="<!--{$smarty.const.MOBILE_URL_SITE_TOP}-->" accesskey="2"><!--{2|numeric_emoji}-->同意しない</a><br>
 
 <br>
 <hr>
