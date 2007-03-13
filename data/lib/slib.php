@@ -2299,7 +2299,7 @@ function sfCustomDisplay($objPage, $is_mobile = false) {
 	}
 
 	$template_path = TEMPLATE_FTP_DIR . $tpl_name;
-
+sfprintr($template_path);
 	if(file_exists($template_path)) {
 		$objView = new SC_UserView(TEMPLATE_FTP_DIR, COMPILE_FTP_DIR);
 		$objView->assignobj($objPage);
