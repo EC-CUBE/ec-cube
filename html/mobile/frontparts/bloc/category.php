@@ -16,7 +16,7 @@ class LC_CatPage {
 }
 
 $objSubPage = new LC_CatPage();
-$objSubView = new SC_SiteView();
+$objSubView = new SC_MobileView();
 
 $objSubPage = lfGetMainCat(true, $objSubPage);
 

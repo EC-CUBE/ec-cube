@@ -12,7 +12,7 @@ class LC_NewsPage {
 }
 
 $objSubPage = new LC_NewsPage();
-$objSubView = new SC_SiteView();
+$objSubView = new SC_MobileView();
 
 //新着情報取得
 $objSubPage->arrNews = lfGetNews();
