@@ -16,7 +16,7 @@ class LC_Page {
 }
 
 $objPage = new LC_Page();
-$objView = new SC_SiteView();
+$objView = new SC_MobileView();
 
 //----　ページ表示
 $objView->assignobj($objPage);

@@ -20,7 +20,7 @@ class LC_Page {
 $objPage = new LC_Page();
 
 // レイアウトデザインを取得
-$objView = new SC_SiteView();
+$objView = new SC_MobileView();
 $objView->assignobj($objPage);
 $objView->display(SITE_FRAME);
 

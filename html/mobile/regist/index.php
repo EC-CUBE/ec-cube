@@ -21,7 +21,7 @@ class LC_Page {
 
 $objConn = new SC_DBConn();
 $objPage = new LC_Page();
-$objView = new SC_SiteView();
+$objView = new SC_MobileView();
 $objSiteInfo = $objView->objSiteInfo;
 $objCustomer = new SC_Customer();
 $CONF = sf_getBasisData();
@@ -169,7 +169,7 @@ function lfSendRegistMail($registSecretKey) {
 	$data = $result[0];
 	
 	//--　メール送信
-	$objMailText = new SC_SiteView();
+	$objMailText = new SC_MobileView();
 	$objMailText->assign("CONF", $CONF);
 	$objMailText->assign("name01", $data["name01"]);
 	$objMailText->assign("name02", $data["name02"]);

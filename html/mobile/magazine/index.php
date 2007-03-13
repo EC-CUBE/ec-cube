@@ -25,7 +25,7 @@ $objPage->arrForm = $_POST;
 // レイアウトデザインを取得
 $objPage = sfGetPageLayout($objPage, false, DEF_LAYOUT);
 
-$objView = new SC_SiteView();
+$objView = new SC_MobileView();
 $objView->assignobj($objPage);
 $objView->display(SITE_FRAME);
 

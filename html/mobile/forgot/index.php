@@ -26,7 +26,7 @@ class LC_Page {
 $conn = new SC_DBConn();
 $objPage = new LC_Page();
 $objPage = sfGetPageLayout($objPage, false, DEF_LAYOUT);
-$objView = new SC_SiteView();
+$objView = new SC_MobileView();
 $objSess = new SC_Session();
 $CONF = sf_getBasisData();					// 店舗基本情報
 // クッキー管理クラス
@@ -139,7 +139,7 @@ function lfSendMail($CONF, $email, $customer_name, $temp_password){
 	$objPage = new LC_Page();
 	$objPage->customer_name = $customer_name;
 	$objPage->temp_password = $temp_password;
-	$objMailText = new SC_SiteView();
+	$objMailText = new SC_MobileView();
 	$objMailText->assignobj($objPage);
 	
 	$toCustomerMail = $objMailText->fetch("mail_templates/forgot_mail.tpl");

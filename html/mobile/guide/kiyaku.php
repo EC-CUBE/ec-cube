@@ -27,7 +27,7 @@ $objPage = sfGetPageLayout($objPage, false, DEF_LAYOUT);
 // 利用規約を取得する。
 lfGetKiyaku(intval(@$_GET['page']), $objPage);
 
-$objView = new SC_SiteView();
+$objView = new SC_MobileView();
 $objView->assignobj($objPage);
 $objView->display(SITE_FRAME);
 

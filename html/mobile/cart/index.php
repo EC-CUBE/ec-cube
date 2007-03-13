@@ -31,7 +31,7 @@ if($_REQUEST['continue']) {
 }
 
 $objPage = new LC_Page();
-$objView = new SC_SiteView(false);
+$objView = new SC_MobileView(false);
 $objCartSess = new SC_CartSession("", false);
 $objSiteSess = new SC_SiteSession();
 $objSiteInfo = $objView->objSiteInfo;

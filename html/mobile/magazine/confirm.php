@@ -67,7 +67,7 @@ if (isset($_REQUEST['btnRegist'])) {
 	$objPage->CONF = $CONF;
 	$objPage->tpl_url = gfAddSessionId(MOBILE_SSL_URL . "magazine/" . $_REQUEST['mode'] . ".php?id=" . $uniqId);
 	
-	$objMailText = new SC_SiteView();
+	$objMailText = new SC_MobileView();
 	$objMailText->assignobj($objPage);
 	$toCustomerMail = $objMailText->fetch("mail_templates/mailmagazine_" . $_REQUEST['mode'] . ".tpl");
 	$objMail = new GC_SendMail();
@@ -96,7 +96,7 @@ if (isset($_REQUEST['btnRegist'])) {
 // レイアウトデザインを取得
 $objPage = sfGetPageLayout($objPage, false, DEF_LAYOUT);
 
-$objView = new SC_SiteView();
+$objView = new SC_MobileView();
 $objView->assignobj($objPage);
 $objView->display(SITE_FRAME);
 

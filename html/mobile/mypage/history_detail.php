@@ -20,7 +20,7 @@ class LC_Page {
 }
 
 $objPage = new LC_Page();
-$objView = new SC_SiteView();
+$objView = new SC_MobileView();
 $objQuery = new SC_Query();
 $objCustomer = new SC_Customer();
 

@@ -16,7 +16,7 @@ class LC_Page{
 }
 
 $objPage = new LC_Page();
-$objView = new SC_SiteView();
+$objView = new SC_MobileView();
 
 // カートが空かどうかを確認する。
 $objCartSess = new SC_CartSession("", false);

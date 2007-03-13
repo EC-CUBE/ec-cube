@@ -31,7 +31,7 @@ if (empty($key) or !lfExistKey($key))  {
 	lfChangeData($key);
 }
 
-$objView = new SC_SiteView();
+$objView = new SC_MobileView();
 $objView->assignobj($objPage);
 $objView->display(SITE_FRAME);
 

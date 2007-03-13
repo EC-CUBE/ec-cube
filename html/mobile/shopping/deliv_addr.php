@@ -17,7 +17,7 @@ class LC_Page{
 }
 
 $objPage = new LC_Page();
-$objView = new SC_SiteView(false);
+$objView = new SC_MobileView(false);
 $objQuery = new SC_Query();
 $objCustomer = new SC_Customer();
 $objConn = new SC_DBConn();

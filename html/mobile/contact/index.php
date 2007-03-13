@@ -21,7 +21,7 @@ class LC_Page {
 
 $conn = new SC_DBConn();
 $objPage = new LC_Page();
-$objView = new SC_SiteView();
+$objView = new SC_MobileView();
 $CONF = sf_getBasisData();			// 店舗基本情報
 
 //----　ページ表示

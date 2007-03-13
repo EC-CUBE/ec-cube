@@ -22,7 +22,7 @@ class LC_Page{
 define ("HISTORY_NUM", 5);
 
 $objPage = new LC_Page();
-$objView = new SC_SiteView();
+$objView = new SC_MobileView();
 $objQuery = new SC_Query();
 $objCustomer = new SC_Customer();
 $pageNo = isset($_GET['pageno']) ? $_GET['pageno'] : 0;

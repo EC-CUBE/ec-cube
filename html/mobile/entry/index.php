@@ -18,7 +18,7 @@ class LC_Page {
 $CONF = sf_getBasisData();					// Å¹ÊÞ´ðËÜ¾ðÊó
 $objConn = new SC_DbConn();
 $objPage = new LC_Page();
-$objView = new SC_SiteView();
+$objView = new SC_MobileView();
 $objDate = new SC_Date(START_BIRTH_YEAR, date("Y",strtotime("now")));
 $objPage->arrPref = $arrPref;
 $objPage->arrJob = $arrJob;
@@ -195,7 +195,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 			$objPage->CONF = $CONF;
 			$objPage->to_name01 = $_POST['name01'];
 			$objPage->to_name02 = $_POST['name02'];
-			$objMailText = new SC_SiteView();
+			$objMailText = new SC_MobileView();
 			$objMailText->assignobj($objPage);
 			$subject = sfMakesubject('²ñ°÷ÅÐÏ¿¤Î¤´³ÎÇ§');
 			$toCustomerMail = $objMailText->fetch("mail_templates/customer_mail.tpl");
