@@ -29,7 +29,7 @@ require_once($CONF_PHP_PATH ."/core.php" );
  *	'E_STRICT'            => ※PHP5からサポート 実行時の注意。コードの相互運用性や互換性を維持するために PHP がコードの変更を提案する。
  *	'E_RECOVERABLE_ERROR' => ※PHP5からサポート キャッチできる致命的なエラー。危険なエラーが発生したが、 エンジンが不安定な状態になるほどではないことを表す。 ユーザ定義のハンドラでエラーがキャッチされなかった場合 (set_error_handler() も参照ください) は、 E_ERROR として異常終了する。 
  */
-error_reporting(E_ALL);
+error_reporting(E_ALL & ~E_NOTICE);
 
 //--------------------------------------------------------------------------------------------------------
 
@@ -706,17 +706,17 @@ define ("ORDER_NEW",1);	 		// 新規注文
 define ("ORDER_PAY_WAIT",2);	// 入金待ち
 define ("ORDER_PRE_END",6);		// 入金済み
 define ("ORDER_CANCEL",3);		// キャンセル
-define ("ORDER_BACK_ORDER ",4);	// 取り寄せ中
+define ("ORDER_BACK_ORDER",4);	// 取り寄せ中
 define ("ORDER_DELIV",5);		// 発送済み
 
 /* 受注ステータス */
 $arrORDERSTATUS = array(
-	ORDER_NEW => "新規受付",
-	ORDER_PAY_WAIT => "入金待ち",
-	ORDER_PRE_END => "入金済み",
-	ORDER_CANCEL => "キャンセル",
+	ORDER_NEW        => "新規受付",
+	ORDER_PAY_WAIT   => "入金待ち",
+	ORDER_PRE_END    => "入金済み",
+	ORDER_CANCEL     => "キャンセル",
 	ORDER_BACK_ORDER => "取り寄せ中",
-	ORDER_DELIV => "発送済み"
+	ORDER_DELIV      => "発送済み"
 );
 
 // 受注ステータス変更の際にポイント等を加算するステータス番号（発送済み）
