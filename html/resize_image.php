@@ -12,5 +12,5 @@ if(file_exists($file)){
 }else{
 	$objThumb->Main(NO_IMAGE_DIR, $_GET["width"], $_GET["height"], "", true);
 }
-
+echo "test";
 ?>
