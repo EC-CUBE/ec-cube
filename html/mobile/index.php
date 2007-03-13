@@ -25,7 +25,7 @@ $objCustomer = new SC_Customer();
 // レイアウトデザインを取得
 $objPage = sfGetPageLayout($objPage, false, 'index.php');
 
-$objView = new SC_SiteView();
+$objView = new SC_SiteView(true, true);
 $objView->assign("isLogin", $objCustomer->isLoginSuccess());
 $objView->assignobj($objPage);
 $objView->display(SITE_FRAME);
