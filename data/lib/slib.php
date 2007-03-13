@@ -2299,18 +2299,17 @@ function sfCustomDisplay($objPage, $is_mobile = false) {
 	}
 
 	$template_path = TEMPLATE_FTP_DIR . $tpl_name;
-sfprintr($template_path);
-	if(file_exists($template_path)) {
+
+	if($is_mobile === true) {
+		$objView = new SC_MobileView();			
+		$objView->assignobj($objPage);
+		$objView->display(SITE_FRAME);		
+	} else if(file_exists($template_path)) {
 		$objView = new SC_UserView(TEMPLATE_FTP_DIR, COMPILE_FTP_DIR);
 		$objView->assignobj($objPage);
 		$objView->display($tpl_name);
 	} else {
-		// 携帯サイトとＰＣサイトで切り分ける
-		if($is_mobile === true) {
-			$objView = new SC_MobileView();			
-		} else {
-			$objView = new SC_SiteView();
-		}
+		$objView = new SC_SiteView();
 		$objView->assignobj($objPage);
 		$objView->display(SITE_FRAME);
 	}
