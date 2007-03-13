@@ -20,7 +20,7 @@ class LC_Page {
 		global $arrRECOMMEND;
 		$this->arrRECOMMEND = $arrRECOMMEND;
 		
-		$this->tpl_mainpage="products/detail.tpl";
+		//$this->tpl_mainpage="products/detail.tpl";
 		
 		/*
 		 session_start時のno-cacheヘッダーを抑制することで
@@ -32,7 +32,7 @@ class LC_Page {
 }
 
 $objPage = new LC_Page();
-$objView = new SC_MobileView();
+$objView = new SC_SiteView();
 $objCustomer = new SC_Customer();
 $objQuery = new SC_Query();
 
