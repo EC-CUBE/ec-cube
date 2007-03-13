@@ -25,8 +25,6 @@ $objCustomer = new SC_Customer();
 // レイアウトデザインを取得
 $objPage = sfGetPageLayout($objPage, false, 'index.php');
 
-echo MOBILE_HTML_PATH;
-
 $objView = new SC_MobileView();
 $objView->assign("isLogin", $objCustomer->isLoginSuccess());
 $objView->assignobj($objPage);
