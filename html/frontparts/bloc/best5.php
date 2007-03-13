@@ -12,7 +12,7 @@ class LC_Best5Page {
 }
 
 $objSubPage = new LC_Best5Page();
-$objSubView = new SC_SiteView();
+$objSubView = new SC_MobileView();
 $objSiteInfo = $objView->objSiteInfo;
 
 // 基本情報を渡す
