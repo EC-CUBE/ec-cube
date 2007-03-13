@@ -7,12 +7,12 @@
 class LC_Best5Page {
 	function LC_Best5Page() {
 		/** 必ず変更する **/
-		$this->tpl_mainpage = 'frontparts/bloc/best5.tpl';	// メイン
+		$this->tpl_mainpage = 'mobile/frontparts/bloc/best5.tpl';	// メイン
 	}
 }
 
 $objSubPage = new LC_Best5Page();
-$objSubView = new SC_SiteView();
+$objSubView = new SC_MobileView();
 $objSiteInfo = $objView->objSiteInfo;
 
 // 基本情報を渡す
