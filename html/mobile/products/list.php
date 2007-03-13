@@ -126,7 +126,7 @@ if($_POST['mode'] == "cart" && $_POST['product_id'] != "") {
 			}
 			$objCartSess->setPrevURL($_SERVER['REQUEST_URI']);
 			$objCartSess->addProduct(array($_POST['product_id'], $classcategory_id1, $classcategory_id2), $_POST[$quantity]);
-			header("Location: " . URL_CART_TOP);
+			header("Location: " . MOBILE_URL_CART_TOP);
 			exit;
 		}
 	}

@@ -169,7 +169,7 @@ case 'cart':
 		$objCartSess->setPrevURL($_SERVER['REQUEST_URI']);
 		$objCartSess->addProduct(array($_POST['product_id'], $classcategory_id1, $classcategory_id2), $objFormParam->getValue('quantity'));
 
-		header("Location: " . gfAddSessionId(URL_CART_TOP));
+		header("Location: " . gfAddSessionId(MOBILE_URL_CART_TOP));
 
 		exit;
 	}

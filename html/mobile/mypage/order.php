@@ -30,7 +30,7 @@ for($num = 0; $num < count($arrDisp); $num++) {
 	$objCartSess->addProduct(array($product_id, $cate_id1, $cate_id2), $quantity);
 }
 
-header("Location: " . gfAddSessionId(URL_CART_TOP));
+header("Location: " . gfAddSessionId(MOBILE_URL_CART_TOP));
 
 
 //-----------------------------------------------------------------------------------------------------------------------------------

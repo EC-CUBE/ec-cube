@@ -77,7 +77,7 @@ case 'confirm':
 		// 正常に登録されたことを記録しておく
 		$objSiteSess->setRegistFlag();
 		// お支払い方法選択ページへ移動
-		header("Location: " . gfAddSessionId(URL_SHOP_PAYMENT));
+		header("Location: " . gfAddSessionId(MOBILE_URL_SHOP_PAYMENT));
 		exit;		
 	}
 	
@@ -85,7 +85,7 @@ case 'confirm':
 // 前のページに戻る
 case 'return':
 	// 確認ページへ移動
-	header("Location: " . gfAddSessionId(URL_CART_TOP));
+	header("Location: " . gfAddSessionId(MOBILE_URL_CART_TOP));
 	exit;
 	break;
 case 'nonmember':

@@ -26,7 +26,7 @@ class LC_Page {
 
 // 買い物を続ける場合
 if($_REQUEST['continue']) {
-	header("Location: " . gfAddSessionId(URL_SITE_TOP) );
+	header("Location: " . gfAddSessionId(MOBILE_URL_SITE_TOP) );
 	exit;
 }
 
@@ -76,7 +76,7 @@ case 'confirm':
 		// カートを購入モードに設定
 		$objCartSess->saveCurrentCart($uniqid);
 		// 購入ページへ
-		header("Location: " . gfAddSessionId(URL_SHOP_TOP));
+		header("Location: " . gfAddSessionId(MOBILE_URL_SHOP_TOP));
 		exit;
 	}
 	break;
