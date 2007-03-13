@@ -163,7 +163,7 @@ $objPage->arrForm = $_POST;
 $objPage->category_id = $category_id;
 $objPage->arrSearch = $arrSearch;
 
-sfCustomDisplay($objPage);
+sfCustomDisplay($objPage, true);
 
 //-----------------------------------------------------------------------------------------------------------------------------------
 /* カテゴリIDがルートかどうかの判定 */
