@@ -6,7 +6,7 @@
  */
 *}-->
 <!-- ▼ロゴ ここから -->
-<center><img src="<!--{$smarty.const.PC_URL_DIR}-->img/header/logo.gif"></center>
+<center><img src="<!--{$smarty.const.URL_DIR}-->img/header/logo.gif"></center>
 <!-- ▲ロゴ ここまで -->
 
 <br>
