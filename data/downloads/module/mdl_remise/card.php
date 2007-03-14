@@ -121,7 +121,7 @@ $retUrl = SITE_URL . 'shopping/load_payment_module.php?module_id=' . MDL_REMISE_
 $exitUrl = SITE_URL . 'shopping/load_payment_module.php';
 
 $arrSendData = array(
-	'SEND_URL' => $arrPayment[0]["memo04"],		// 接続先URL
+	'SEND_URL' => $arrPayment[0]["memo04"],	// 接続先URL
 	'S_TORIHIKI_NO' => $arrData["order_id"],	// オーダー番号
 	'MAIL' => $arrData["order_email"],			// メールアドレス
 	'AMOUNT' => $arrData["subtotal"],			// 金額
@@ -129,10 +129,10 @@ $arrSendData = array(
 	'TOTAL' => $arrData["payment_total"],		// 合計金額
 	'SHOPCO' => $arrPayment[0]["memo01"],		// 店舗コード
 	'HOSTID' => $arrPayment[0]["memo02"],		// ホストID
-	'JOB' => 'AUTH',							// 
+	'JOB' => REMISE_PAYMENT_JOB_CODE,			// ジョブコード 
 	'ITEM' => '0000120',						// 商品コード(ルミーズ固定)
 	'RETURL' => $retUrl,						// 完了通知URL
-	'NG_RETURL' => $retUrl,						// NG完了通知URL
+	'NG_RETURL' => $retUrl,					// NG完了通知URL
 	'EXITURL' => $exitUrl,						// 戻り先URL
 	'REMARKS3' => MDL_REMISE_POST_VALUE
 );

@@ -30,6 +30,11 @@ define("REMISE_PAYMENT_METHOD_REVO", 80);
 // ECサイト様の条件に合わせて変更して下さい
 define("REMISE_PAYMENT_DIVIDE_MAX", 2);
 
+// ECサイト様の条件に合わせて変更して下さい
+// AUTH(仮売上)
+// CAPTURE(実売上)
+define("REMISE_PAYMENT_JOB_CODE", "AUTH");
+
 // 分割回数
 $arrCreditDivide = array(
 	2 => "2"
