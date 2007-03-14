@@ -4,7 +4,7 @@
  * モバイルサイト/空メールテスト送信スクリプト
  */
 
-require_once dirname(__FILE__) . '/../conf/mobile.conf';
+require_once dirname(__FILE__) . '/../conf/mobile_conf.php';
 
 if ($argc != 4) {
 	echo "Usage: $argv[0] sender command token\n";
