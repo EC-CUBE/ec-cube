@@ -15,8 +15,6 @@
 define('MOBILE_TEMPLATE_DIR', DATA_PATH . 'Smarty/templates/mobile');	// SMARTYテンプレート
 define('MOBILE_COMPILE_DIR', DATA_PATH . 'Smarty/templates_c/mobile');	// SMARTYコンパイル
 
-//--------------------------------------------------------------------------------------------------------
-
 /**
  * モバイルサイトであることを表す定数
  */
