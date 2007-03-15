@@ -10,8 +10,6 @@
  * モバイルサイト共有設定ファイル
  */
 
-require_once(dirname(__FILE__) . "/../install.inc");
-
 //--------------------------------------------------------------------------------------------------------
 
 define('MOBILE_TEMPLATE_DIR', DATA_PATH . 'Smarty/templates/mobile');	// SMARTYテンプレート
