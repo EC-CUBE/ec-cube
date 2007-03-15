@@ -316,7 +316,7 @@ function sfDispError($type) {
 }
 
 /* サイトエラーページの表示 */
-function sfDispSiteError($type, $objSiteSess = "", $return_top = false, $err_msg = "") {
+function sfDispSiteError($type, $objSiteSess = "", $return_top = false, $err_msg = "", $is_mobile = false) {
 	global $objCampaignSess;
 	
 	if ($objSiteSess != "") {
@@ -332,7 +332,12 @@ function sfDispSiteError($type, $objSiteSess = "", $return_top = false, $err_msg
 	}
 	
 	$objPage = new LC_ErrorPage();
-	$objView = new SC_SiteView();
+	
+	if($is_mobile　=== true) {
+		$objView = new SC_MobileView();		
+	} else {
+		$objView = new SC_SiteView();
+	}
 	
 	switch ($type) {
 	    case PRODUCT_NOT_FOUND:

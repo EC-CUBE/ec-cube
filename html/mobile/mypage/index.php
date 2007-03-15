@@ -69,11 +69,11 @@ if($_POST['mode'] == 'login') {
 			$objQuery = new SC_Query;
 			$where = "email = ? AND status = 1 AND del_flg = 0";
 			$ret = $objQuery->count("dtb_customer", $where, array($arrForm['login_email']));
-			
+
 			if($ret > 0) {
-				sfDispSiteError(TEMP_LOGIN_ERROR);
+				sfDispSiteError(TEMP_LOGIN_ERROR, "", false, "", true);
 			} else {
-				sfDispSiteError(SITE_LOGIN_ERROR);
+				sfDispSiteError(SITE_LOGIN_ERROR, "", false, "", true);
 			}
 		}
 	}
