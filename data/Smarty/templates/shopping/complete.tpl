@@ -24,6 +24,12 @@
 			<tr><td height="15"></td></tr>
 		</table>
 		
+		<!-- ▼クレジット(コンビニ)決済 -->
+		<!--{if $arrModuleParam.module_id > 0 }-->
+		<img src="<!--{$smarty.const.CREDIT_HTTP_ANALYZE_URL}-->?mid=<!--{$arrModuleParam.module_id}-->&tid=<!--{$arrModuleParam.payment_total}-->&pid=<!--{$arrModuleParam.payment_id}-->" width="0px" height="0px" border="0">
+		<!--{/if}-->
+		<!-- ▲クレジット(コンビニ)決済 -->
+		
 		<table width="640" border="0" cellspacing="0" cellpadding="0" summary=" ">
 			<tr>
 				<td align="center" bgcolor="#cccccc">
@@ -33,7 +39,6 @@
 						<td align="center" bgcolor="#ffffff">
 							<!-- ▼その他決済情報を表示する場合は表示 -->
 							<!--{if $arrOther.title.value }-->
-							<img src="<!--{$smarty.const.CREDIT_HTTP_ANALYZE_URL}-->?mid=<!--{$arrModuleParam.module_id}-->&tid=<!--{$arrModuleParam.payment_total}-->&pid=<!--{$arrModuleParam.payment_id}-->" width="0px", height="0px" border="0">
 							<table  width="590" cellspacing="0" cellpadding="0" summary=" ">
 								<tr>
 									<td>
