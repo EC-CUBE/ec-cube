@@ -106,7 +106,7 @@ $objPage = sfGetPageLayout($objPage, false, "products/list.php");
 if($_POST['mode'] == "cart" && $_POST['product_id'] != "") {
 	// 値の正当性チェック
 	if(!sfIsInt($_POST['product_id']) || !sfIsRecord("dtb_products", "product_id", $_POST['product_id'], "del_flg = 0 AND status = 1")) {
-		sfDispSiteError(PRODUCT_NOT_FOUND);
+		sfDispSiteError(PRODUCT_NOT_FOUND, "", false, "", true);
 	} else {
 		// 入力値の変換
 		$objPage->arrErr = lfCheckError($_POST['product_id']);

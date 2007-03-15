@@ -90,7 +90,7 @@ if (isset($_REQUEST['btnRegist'])) {
 	header("Location:" . gfAddSessionId("./complete.php"));
 	exit;
 } else {
-	sfDispSiteError(CUSTOMER_ERROR);
+	sfDispSiteError(CUSTOMER_ERROR, "", false, "", true);
 }
 
 // レイアウトデザインを取得

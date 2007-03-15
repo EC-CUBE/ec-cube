@@ -382,7 +382,7 @@ function lfRegistOrderDetail($objQuery, $order_id, $objCartSess) {
 			// INSERT¤Î¼Â¹Ô
 			$objQuery->insert("dtb_order_detail", $sqlval);
 		} else {
-			sfDispSiteError(CART_NOT_FOUND);
+			sfDispSiteError(CART_NOT_FOUND, "", false, "", true);
 		}
 	}
 }

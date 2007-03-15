@@ -26,7 +26,7 @@ $objQuery = new SC_Query();
 $key = $_GET['id'];
 
 if (empty($key) or !lfExistKey($key))  {
-	sfDispSiteError(PAGE_ERROR);
+	sfDispSiteError(PAGE_ERROR, "", false, "", true);
 } else {
 	lfChangeData($key);
 }

@@ -36,7 +36,7 @@ $cnt = $objQuery->count($from, $where, $arrval);
 
 //ログインしていない、またはDBに情報が無い場合
 if (!$objCustomer->isLoginSuccess() or $cnt == 0){
-	sfDispSiteError(CUSTOMER_ERROR);
+	sfDispSiteError(CUSTOMER_ERROR, "", false, "", true);
 } else {
 	//受注詳細データの取得
 	$objPage->arrDisp = lfGetOrderData($_POST['order_id']);

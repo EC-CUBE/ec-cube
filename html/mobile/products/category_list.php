@@ -46,7 +46,7 @@ function lfGetCategories($category_id, $count_check = false, &$objPage) {
 	// カテゴリーの正しいIDを取得する。
 	$category_id = sfGetCategoryId('', $category_id);
 	if ($category_id == 0) {
-		sfDispSiteError(CATEGORY_NOT_FOUND);
+		sfDispSiteError(CATEGORY_NOT_FOUND, "", false, "", true);
 	}
 
 	$arrCategory = null;	// 選択されたカテゴリー
@@ -72,7 +72,7 @@ function lfGetCategories($category_id, $count_check = false, &$objPage) {
 	}
 
 	if (!isset($arrCategory)) {
-		sfDispSiteError(CATEGORY_NOT_FOUND);
+		sfDispSiteError(CATEGORY_NOT_FOUND, "", false, "", true);
 	}
 
 	// 子カテゴリーの商品数を合計する。

@@ -26,7 +26,7 @@ $objCartSess = new SC_CartSession();
 
 //ログイン判定
 if (!$objCustomer->isLoginSuccess()){
-	sfDispSiteError(CUSTOMER_ERROR);
+	sfDispSiteError(CUSTOMER_ERROR, "", false, "", true);
 }
 
 $objPage->arrForm = $_POST;

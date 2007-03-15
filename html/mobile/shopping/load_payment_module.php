@@ -22,7 +22,7 @@ $payment_id = $_SESSION["payment_id"];
 
 // 支払いIDが無い場合にはエラー
 if($payment_id == ""){
-	sfDispSiteError(PAGE_ERROR, "", true);
+	sfDispSiteError(PAGE_ERROR, "", true, "", true);
 }
 
 // 決済情報を取得する
@@ -37,7 +37,7 @@ if(count($arrPayment) > 0) {
 		require_once($path);
 		exit;
 	} else {
-		sfDispSiteError(FREE_ERROR_MSG, "", true, "モジュールファイルの取得に失敗しました。<br />この手続きは無効となりました。");
+		sfDispSiteError(FREE_ERROR_MSG, "", true, "モジュールファイルの取得に失敗しました。<br />この手続きは無効となりました。", true);
 	}
 }
 

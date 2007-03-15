@@ -44,7 +44,7 @@ if (isset($_SESSION['mobile']['kara_mail_from'])) {
 if (SSLURL_CHECK == 1){
 	$ssl_url= sfRmDupSlash(MOBILE_SSL_URL.$_SERVER['REQUEST_URI']);
 	if (!ereg("^https://", $non_ssl_url)){
-		sfDispSiteError(URL_ERROR);
+		sfDispSiteError(URL_ERROR, "", false, "", true);
 	}
 }
 

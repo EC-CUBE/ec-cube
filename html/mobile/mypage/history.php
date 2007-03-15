@@ -32,7 +32,7 @@ $objPage = sfGetPageLayout($objPage, false, "mypage/index.php");
 
 // ログインチェック
 if(!isset($_SESSION['customer'])) {
-	sfDispSiteError(CUSTOMER_ERROR);
+	sfDispSiteError(CUSTOMER_ERROR, "", false, "", true);
 }
 
 $col = "order_id, create_date, payment_id, payment_total";

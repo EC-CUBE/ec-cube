@@ -25,7 +25,7 @@ $objQuery = new SC_Query();
 
 //ログイン判定
 if (!$objCustomer->isLoginSuccess()){
-	sfDispSiteError(CUSTOMER_ERROR);
+	sfDispSiteError(CUSTOMER_ERROR, "", false, "", true);
 }else {
 	//マイページトップ顧客情報表示用
 	$objPage->CustomerName1 = $objCustomer->getvalue('name01');

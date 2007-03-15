@@ -187,7 +187,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 				header("Location: " . gfAddSessionId("change_complete.php"));
 				exit;
 			} else {
-				sfDispSiteError(CUSTOMER_ERROR);
+				sfDispSiteError(CUSTOMER_ERROR, "", false, "", true);
 			}
 
 		}

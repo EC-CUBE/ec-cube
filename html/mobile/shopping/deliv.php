@@ -55,7 +55,7 @@ $objPage->tpl_uniqid = $uniqid;
 // ログインチェック
 if($_POST['mode'] != 'login' && !$objCustomer->isLoginSuccess()) {
 	// 不正アクセスとみなす
-	sfDispSiteError(CUSTOMER_ERROR);
+	sfDispSiteError(CUSTOMER_ERROR, "", false, "", true);
 }
 
 switch($_POST['mode']) {
@@ -80,9 +80,9 @@ case 'login':
 			$ret = $objQuery->count("dtb_customer", $where, array($arrForm['login_email']));
 			
 			if($ret > 0) {
-				sfDispSiteError(TEMP_LOGIN_ERROR);
+				sfDispSiteError(TEMP_LOGIN_ERROR, "", false, "", true);
 			} else {
-				sfDispSiteError(SITE_LOGIN_ERROR);
+				sfDispSiteError(SITE_LOGIN_ERROR, "", false, "", true);
 			}
 		} 
 	} else {

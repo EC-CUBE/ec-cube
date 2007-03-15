@@ -67,7 +67,7 @@ if($_POST['mode'] != "") {
 
 // 値の正当性チェック
 if(!sfIsInt($_GET['product_id']) || !sfIsRecord("dtb_products", "product_id", $tmp_id, $where)) {
-	sfDispSiteError(PRODUCT_NOT_FOUND);
+	sfDispSiteError(PRODUCT_NOT_FOUND, "", false, "", true);
 }
 // ログイン判定
 if($objCustomer->isLoginSuccess()) {

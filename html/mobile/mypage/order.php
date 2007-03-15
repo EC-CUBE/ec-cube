@@ -18,7 +18,7 @@ $arrDisp = lfGetOrderDetail($_POST['order_id']);
 
 //ログインしていない、またはDBに情報が無い場合
 if (!$objCustomer->isLoginSuccess() or count($arrDisp) == 0){
-	sfDispSiteError(CUSTOMER_ERROR);
+	sfDispSiteError(CUSTOMER_ERROR, "", false, "", true);
 }
 
 for($num = 0; $num < count($arrDisp); $num++) {
