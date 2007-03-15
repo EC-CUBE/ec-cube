@@ -438,11 +438,11 @@ function sfIsSuccess($objSess, $disp_error = true) {
 }
 
 /* 前のページで正しく登録が行われたか判定 */
-function sfIsPrePage($objSiteSess) {
+function sfIsPrePage($objSiteSess, $is_mobile = false) {
 	$ret = $objSiteSess->isPrePage();
 	if($ret != true) {
 		// エラーページの表示
-		sfDispSiteError(PAGE_ERROR, $objSiteSess);
+		sfDispSiteError(PAGE_ERROR, $objSiteSess, false, "", $is_mobile);			
 	}
 }
 

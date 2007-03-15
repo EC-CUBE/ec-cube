@@ -41,7 +41,7 @@ $arrInfo = $objSiteInfo->data;
 $objCustomer = new SC_Customer();
 
 // 前のページで正しく登録手続きが行われたか判定
-sfIsPrePage($objSiteSess);
+sfIsPrePage($objSiteSess, true);
 // ユーザユニークIDの取得と購入状態の正当性をチェック
 $uniqid = sfCheckNormalAccess($objSiteSess, $objCartSess);
 if ($uniqid != "") {
