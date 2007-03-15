@@ -65,6 +65,8 @@ define ("MOBILE_URL_SHOP_TOP", MOBILE_SSL_URL . "shopping/index.php");						// ²
 define ("MOBILE_URL_SHOP_CONFIRM", MOBILE_URL_DIR . "shopping/confirm.php");				// ¹ØÆþ³ÎÇ§¥Ú¡¼¥¸
 define ("MOBILE_URL_SHOP_PAYMENT", MOBILE_URL_DIR . "shopping/payment.php");				// ¤ª»ÙÊ§¤¤ÊýË¡ÁªÂò¥Ú¡¼¥¸
 define ("MOBILE_DETAIL_P_HTML", MOBILE_URL_DIR . "products/detail.php?product_id=");		// ¾¦ÉÊ¾ÜºÙ(HTML½ÐÎÏ)
+define ("MOBILE_URL_SHOP_COMPLETE", MOBILE_URL_DIR . "shopping/complete.php");				// ¹ØÆþ´°Î»²èÌÌ
+define ("MOBILE_URL_SHOP_MODULE", MOBILE_URL_DIR . "shopping/load_payment_module.php");		// ¥â¥¸¥å¡¼¥ëÄÉ²ÃÍÑ²èÌÌ
 
 //--------------------------------------------------------------------------------------------------------
 

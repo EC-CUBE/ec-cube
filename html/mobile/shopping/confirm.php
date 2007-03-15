@@ -104,9 +104,9 @@ case 'confirm':
 	// 決済方法により画面切替
 	if($payment_type != "") {
 		$_SESSION["payment_id"] = $arrData['payment_id'];
-		header("Location: " . gfAddSessionId(URL_SHOP_MODULE));
+		header("Location: " . gfAddSessionId(MOBILE_URL_SHOP_MODULE));
 	}else{
-		header("Location: " . gfAddSessionId(URL_SHOP_COMPLETE));
+		header("Location: " . gfAddSessionId(MOBILE_URL_SHOP_COMPLETE));
 	}
 	break;
 default:
