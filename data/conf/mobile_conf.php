@@ -72,10 +72,6 @@ define ("MOBILE_DETAIL_P_HTML", MOBILE_URL_DIR . "products/detail.php?product_id
 
 //--------------------------------------------------------------------------------------------------------
 // conf.php から残りの設定を読み込む。
-// 定数の定義が重複するため、error_reporting のレベルを調整する。
-
-$error_reporting = error_reporting();
-error_reporting($error_reporting & ~E_NOTICE);
 require_once(DATA_PATH . 'conf/conf.php');
 error_reporting($error_reporting);
 unset($error_reporting);
