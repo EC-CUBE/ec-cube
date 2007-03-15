@@ -333,7 +333,7 @@ function sfDispSiteError($type, $objSiteSess = "", $return_top = false, $err_msg
 	
 	$objPage = new LC_ErrorPage();
 	
-	if($is_mobile¡¡=== true) {
+	if($is_mobile === true) {
 		$objView = new SC_MobileView();		
 	} else {
 		$objView = new SC_SiteView();
