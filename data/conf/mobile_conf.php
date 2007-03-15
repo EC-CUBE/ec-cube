@@ -12,29 +12,12 @@
 
 require_once(dirname(__FILE__) . "/../install.inc");
 
-// モバイルサイト設定ファイルを読み込む。
-//require_once(dirname(__FILE__) . '/../install_mobile.inc');
-
-
 //--------------------------------------------------------------------------------------------------------
-// conf.php で定義される定数のうち、モバイルサイト用に変更が必要なもの
-/*
-define ('MOBILE_HTML_PATH', HTML_PATH);
-define ('MOBILE_URL_DIR', URL_DIR);
-define ('MOBILE_SITE_URL', SITE_URL);
-define ('MOBILE_SSL_URL', SSL_URL);
-*/
+
 define('MOBILE_TEMPLATE_DIR', DATA_PATH . 'Smarty/templates/mobile');	// SMARTYテンプレート
 define('MOBILE_COMPILE_DIR', DATA_PATH . 'Smarty/templates_c/mobile');	// SMARTYコンパイル
 
-/*
-define('IMAGE_TEMP_DIR', HTML_PATH . 'upload/temp_image/');	// 画像一時保存
-define('IMAGE_SAVE_DIR', HTML_PATH . 'upload/save_image/');	// 画像保存先
-define('IMAGE_TEMP_URL', URL_DIR . 'upload/temp_image/');	// 画像一時保存URL
-define('IMAGE_SAVE_URL', URL_DIR . 'upload/save_image/');	// 画像保存先URL
-*/
 //--------------------------------------------------------------------------------------------------------
-// モバイルサイト専用の設定
 
 /**
  * モバイルサイトであることを表す定数
