@@ -363,7 +363,6 @@ function lfDispStep0($objPage) {
 	// プログラムで書込みされるファイル・ディレクトリ
 	$arrWriteFile = array(
 		"../../data/install.inc",
-		"../../data/install_mobile.inc",
 		"../user_data",
 		"../cp",
 		"../upload",
@@ -813,7 +812,8 @@ function lfMakeConfigFile() {
 		fwrite($fp, $config_data);
 		fclose($fp);
 	}
-/*
+/* install_mobile.incは使用しない用に変更
+
 	// モバイル版の設定ファイル install_mobile.inc を作成する。
 	$filepath = $data_path . "install_mobile.inc";
 	
