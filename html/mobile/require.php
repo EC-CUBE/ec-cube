@@ -7,7 +7,7 @@
  * 
  */
 $include_dir = realpath(dirname( __FILE__));
-require_once($include_dir . "/../../data/conf/mobile_conf.php");
+require_once($include_dir . "/../../data/conf/conf.php");
 require_once($include_dir . "/../../data/include/module.inc");
 require_once($include_dir . "/../../data/include/mobile.inc");
 require_once($include_dir . "/../../data/lib/glib.php");

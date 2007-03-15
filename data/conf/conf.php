@@ -10,6 +10,7 @@
 $CONF_PHP_PATH = realpath( dirname( __FILE__) );
 require_once($CONF_PHP_PATH ."/../install.inc");
 require_once($CONF_PHP_PATH ."/core.php" );
+require_once($CONF_PHP_PATH ."/mobile_conf.php" );
 
 //--------------------------------------------------------------------------------------------------------
 /** エラーレベル設定

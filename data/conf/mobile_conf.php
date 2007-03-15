@@ -71,7 +71,5 @@ define ("MOBILE_URL_SHOP_PAYMENT", MOBILE_URL_DIR . "shopping/payment.php");				
 define ("MOBILE_DETAIL_P_HTML", MOBILE_URL_DIR . "products/detail.php?product_id=");		// 商品詳細(HTML出力)
 
 //--------------------------------------------------------------------------------------------------------
-// conf.php から残りの設定を読み込む。
-require_once(DATA_PATH . 'conf/conf.php');
 
 ?>
