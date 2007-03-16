@@ -42,8 +42,12 @@
 
 	<br>
 
-	<div align="center"><input type="submit" name="confirm" value="次へ"></div>
+	<div align="center"><input type="submit" name="submit" value="次へ"></div>
+	<div align="center"><input type="submit" name="return" value="戻る"></div>
 
+	<!--{foreach from=$list_data key=key item=item}-->
+		<input type="hidden" name="<!--{$key|escape}-->" value="<!--{$item|escape}-->">
+	<!--{/foreach}-->
 </form>
 
 <br>

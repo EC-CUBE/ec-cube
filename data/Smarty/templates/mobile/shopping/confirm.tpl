@@ -59,6 +59,14 @@
 
 <center><input type="submit" value="ÃíÊ¸"></center>
 </form>
+<form action="<!--{$smarty.const.URL_SHOP_PAYMENT}-->" method="post">
+<input type="hidden" name="mode" value="deliv_date">
+<input type="hidden" name="uniqid" value="<!--{$tpl_uniqid}-->">
+<input type="hidden" name="payment_id" value="<!--{$arrData.payment_id}-->">
+<input type="hidden" name="deliv_date" value="<!--{$arrData.deliv_date}-->">
+<input type="hidden" name="deliv_time_id" value="<!--{$arrData.deliv_time_id}-->">
+<center><input type="submit" value="Ìá¤ë"></center>
+</form>
 
 <br>
 <hr>

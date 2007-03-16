@@ -40,7 +40,8 @@
 	<!--{if $list_data.mailmaga_flg eq 2}-->歹司する<!--{else}-->歹司しない<!--{/if}--><br>
 	<br>
 
-	<input type="submit" name="submit" value="恃构">
+	<input type="submit" name="submit" value="恃构"><br>
+	<input type="submit" name="return" value="提る">
 </form>
 
 <br>

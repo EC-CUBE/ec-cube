@@ -18,6 +18,7 @@
 	<!--{$list_data.tel01|escape}-->-<!--{$list_data.tel02|escape}-->-<!--{$list_data.tel03|escape}--><br>
 
 	<div align="center"><input type="submit" name="submit" value="¼¡¤Ø"></div>
+	<div align="center"><input type="submit" name="return" value="Ìá¤ë"></div>
 
 	<!--{foreach from=$list_data key=key item=item}-->
 		<input type="hidden" name="<!--{$key|escape}-->" value="<!--{$item|escape}-->">

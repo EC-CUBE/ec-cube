@@ -39,7 +39,8 @@
 	&nbsp;-&nbsp;
 	<input size="<!--{$size2}-->" type="text" name="zip02" value="<!--{if $zip02 == ""}--><!--{$arrOtherDeliv.zip02|escape}--><!--{else}--><!--{$zip02|escape}--><!--{/if}-->" maxlength="<!--{$smarty.const.ZIP02_LEN}-->" istyle="4"><br>
 
-	<input type="submit" name="confirm" value="次へ">
+	<input type="submit" name="submit" value="次へ"><br>
+	<input type="submit" name="return" value="戻る">
 
 	<!--{foreach from=$list_data key=key item=item}-->
 		<input type="hidden" name="<!--{$key|escape}-->" value="<!--{$item|escape}-->">

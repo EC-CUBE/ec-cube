@@ -54,7 +54,11 @@
 	カナ/名（例：ハナコ）<br>
 	<input type="text" name="kana02" value="<!--{$kana02|escape}-->" maxlength="<!--{$smarty.const.STEXT_LEN}-->" istyle="2"><br>
 
-	<input type="submit" name="confirm" value="次へ">
+	<input type="submit" name="submit" value="次へ">
+
+	<!--{foreach from=$list_data key=key item=item}-->
+		<input type="hidden" name="<!--{$key|escape}-->" value="<!--{$item|escape}-->">
+	<!--{/foreach}-->
 </form>
 
 <br>

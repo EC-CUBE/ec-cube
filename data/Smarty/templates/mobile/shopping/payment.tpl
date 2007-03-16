@@ -12,6 +12,8 @@
 <form method="post" action="<!--{$smarty.server.PHP_SELF|escape}-->">
 <input type="hidden" name="mode" value="deliv_date">
 <input type="hidden" name="uniqid" value="<!--{$tpl_uniqid}-->">
+<input type="hidden" name="deliv_date" value="<!--{$arrForm.deliv_date.value}-->">
+<input type="hidden" name="deliv_time_id" value="<!--{$arrForm.deliv_time_id.value}-->">
 <!--<input type="hidden" name="message" value="">-->
 <!--{if $tpl_login == 1}-->
 <!--<input type="hidden" name="point_check" value="2">-->
@@ -28,6 +30,7 @@
 <!--{/section}-->
 
 <center><input type="submit" value="¼¡¤Ø"></center>
+<center><input type="submit" name="return" value="Ìá¤ë"></center>
 </form>
 
 <br>

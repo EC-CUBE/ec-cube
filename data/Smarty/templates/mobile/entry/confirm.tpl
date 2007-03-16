@@ -36,7 +36,12 @@
 	<!--{if $list_data.mailmaga_flg eq 2}-->´õË¾¤¹¤ë<!--{else}-->´õË¾¤·¤Ê¤¤<!--{/if}--><br>
 	<br>
 
-	<input type="submit" name="submit" value="ÅÐÏ¿">
+	<input type="submit" name="submit" value="ÅÐÏ¿"><br>
+	<input type="submit" name="return" value="Ìá¤ë">
+
+	<!--{foreach from=$list_data key=key item=item}-->
+		<input type="hidden" name="<!--{$key|escape}-->" value="<!--{$item|escape}-->">
+	<!--{/foreach}-->
 </form>
 
 <br>
