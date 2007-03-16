@@ -4,7 +4,7 @@
  * モバイルサイト/空メール受け付けスクリプト
  */
 
-require_once dirname(__FILE__) . '/../conf/conf.php';
+require_once dirname(__FILE__) . '/../conf/mobile_conf.php';
 require_once DATA_PATH . '/include/php_ini.inc';
 require_once DATA_PATH . '/include/mobile.inc';
 require_once DATA_PATH . '/lib/slib.php';

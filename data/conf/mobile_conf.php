@@ -71,5 +71,5 @@ define ("MOBILE_URL_SHOP_TOP", MOBILE_SSL_URL . "shopping/index.php");									/
 
 
 //--------------------------------------------------------------------------------------------------------
-
+require_once(DATA_PATH . 'conf/conf.php');
 ?>
