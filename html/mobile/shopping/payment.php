@@ -68,7 +68,7 @@ if (!empty($_POST['return'])) {
 	default:
 		// 正常な推移であることを記録しておく
 		$objSiteSess->setRegistFlag();
-		header("Location: " . gfAddSessionId(URL_SHOP_TOP));
+		header("Location: " . gfAddSessionId(MOBILE_URL_SHOP_TOP));
 		exit;
 	}
 }
