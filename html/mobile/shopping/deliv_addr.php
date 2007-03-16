@@ -124,7 +124,7 @@ switch ($_POST['mode']){
 			header("Location: " . gfAddSessionId(MOBILE_URL_SHOP_PAYMENT));
 			exit;
 		} else {
-			sfDispSiteError(CUSTOMER_ERROR);
+			sfDispSiteError(CUSTOMER_ERROR, "", false, "", true);
 		}
 		break;
 	default:
