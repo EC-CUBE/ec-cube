@@ -99,6 +99,21 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 	//-- 入力データの変換
 	$objPage->arrForm = lfConvertParam($objPage->arrForm, $arrRegistColumn);
 
+	// 戻るボタン用処理
+	if (!empty($_POST["return"])) {
+		switch ($_POST["mode"]) {
+		case "complete":
+			$_POST["mode"] = "set3";
+			break;
+		case "confirm":
+			$_POST["mode"] = "set2";
+			break;
+		default:
+			$_POST["mode"] = "set1";
+			break;
+		}
+	}
+
 	//--　入力エラーチェック
 	if ($_POST["mode"] == "set1") {
 		$objPage->arrErr = lfErrorCheck1($objPage->arrForm);
@@ -114,29 +129,26 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 		$objPage->tpl_title = '会員登録(3/3)';
 	}
 
-	if ($objPage->arrErr || $_POST["mode"] == "return") {		// 入力エラーのチェック
-		foreach($objPage->arrForm as $key => $val) {
-			$objPage->$key = $val;
-		}
+	foreach($objPage->arrForm as $key => $val) {
+		$objPage->$key = $val;
+	}
+
+	if ($objPage->arrErr || !empty($_POST["return"])) {		// 入力エラーのチェック
 
 		//-- データの設定
 		if ($_POST["mode"] == "set1") {
 			$checkVal = array("email", "password", "reminder", "reminder_answer", "name01", "name02", "kana01", "kana02");
-			foreach($objPage->arrForm as $key => $val) {
-				if ($key != "mode" && $key != "subm" & !in_array($key, $checkVal)) $objPage->list_data[ $key ] = $val;
-			}
-
 		} elseif ($_POST["mode"] == "set2") {
 			$checkVal = array("sex", "year", "month", "day", "zip01", "zip02");
-			foreach($objPage->arrForm as $key => $val) {
-				if ($key != "mode" && $key != "subm" & !in_array($key, $checkVal)) $objPage->list_data[ $key ] = $val;
-			}
 		} else {
-			$checkVal = array("pref", "addr01", "addr02", "tel01", "tel02", "tel03");
-			foreach($objPage->arrForm as $key => $val) {
-				if ($key != "mode" && $key != "subm" & !in_array($key, $checkVal)) $objPage->list_data[ $key ] = $val;
-			}
+			$checkVal = array("pref", "addr01", "addr02", "tel01", "tel02", "tel03", "mail_flag");
 		}
+
+		foreach($objPage->arrForm as $key => $val) {
+			if ($key != "mode" && $key != "submit" && $key != "return" && $key != session_name() && !in_array($key, $checkVal))
+				$objPage->list_data[ $key ] = $val;
+		}
+
 
 
 	} else {
@@ -149,9 +161,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 			$objPage->tpl_mainpage = 'entry/set2.tpl';
 			$objPage->tpl_title = '会員登録(3/3)';
 
-			$address = lfGetAddress($_REQUEST['zip01'].$_REQUEST['zip02']);
-			$objView->assign("pref", @$address[0]['state']);
-			$objView->assign("addr01", @$address[0]['city'] . @$address[0]['town']);
+			if (@$objPage->arrForm['pref'] == "" && @$objPage->arrForm['addr01'] == "" && @$objPage->arrForm['addr02'] == "") {
+				$address = lfGetAddress($_REQUEST['zip01'].$_REQUEST['zip02']);
+				$objPage->pref = @$address[0]['state'];
+				$objPage->addr01 = @$address[0]['city'] . @$address[0]['town'];
+			}
 		} elseif ($_POST["mode"] == "confirm") {
 			//パスワード表示
 			$passlen = strlen($objPage->arrForm['password']);
@@ -171,8 +185,18 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
 		//-- データ設定
 		unset($objPage->list_data);
+		if ($_POST["mode"] == "set1") {
+			$checkVal = array("sex", "year", "month", "day", "zip01", "zip02");
+		} elseif ($_POST["mode"] == "set2") {
+			$checkVal = array("pref", "addr01", "addr02", "tel01", "tel02", "tel03", "mail_flag");
+		} else {
+			$checkVal = array();
+		}
+
 		foreach($objPage->arrForm as $key => $val) {
-			if ($key != "mode" && $key != "subm") $objPage->list_data[ $key ] = $val;
+			if ($key != "mode" && $key != "submit" && $key != "confirm" && $key != "return" && $key != session_name() && !in_array($key, $checkVal)) {
+				$objPage->list_data[ $key ] = $val;
+			}
 		}
 
 

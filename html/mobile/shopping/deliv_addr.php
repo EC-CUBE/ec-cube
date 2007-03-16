@@ -33,9 +33,10 @@ $objPage->arrForm = $_POST;
 $objPage->arrPref = $arrPref;
 //-- データ設定
 foreach($_POST as $key => $val) {
-	if ($key != "mode") $objPage->list_data[ $key ] = $val;
+	if ($key != "mode" && $key != "return" && $key != "submit" && $key != session_name()) {
+		$objPage->list_data[ $key ] = $val;
+	}
 }
-
 // ユーザユニークIDの取得と購入状態の正当性をチェック
 $uniqid = sfCheckNormalAccess($objSiteSess, $objCartSess);
 
@@ -55,31 +56,56 @@ $arrRegistColumn = array(
 							 array(  "column" => "tel03",		"convert" => "n" ),
 						);
 
+// 戻るボタン用処理
+if (!empty($_POST["return"])) {
+	switch ($_POST["mode"]) {
+	case 'complete':
+		$_POST["mode"] = "set2";
+		break;
+	case 'set2':
+		$_POST["mode"] = "set1";
+		break;
+	default:
+		header("Location: " . gfAddSessionId('deliv.php'));
+		exit;
+	}
+}
+
 switch ($_POST['mode']){
 	case 'set1':
 		$objPage->arrErr = lfErrorCheck1($objPage->arrForm);
-		if (count($objPage->arrErr) == 0) {
+		if (count($objPage->arrErr) == 0 && empty($_POST["return"])) {
 			$objPage->tpl_mainpage = 'shopping/set1.tpl';
 
-			// 郵便番号から住所の取得
-			$address = lfGetAddress($_REQUEST['zip01'].$_REQUEST['zip02']);
+			$checkVal = array("pref", "addr01", "addr02", "addr03", "tel01", "tel02", "tel03");
+			foreach($checkVal as $key) {
+				unset($objPage->list_data[$key]);
+			}
 
-			$objPage->arrForm['pref'] = @$address[0]['state'];
-			$objPage->arrForm['addr01'] = @$address[0]['city'] . @$address[0]['town'];
+			// 郵便番号から住所の取得
+			if (@$objPage->arrForm['pref'] == "" && @$objPage->arrForm['addr01'] == "" && @$objPage->arrForm['addr02'] == "") {
+				$address = lfGetAddress($_REQUEST['zip01'].$_REQUEST['zip02']);
+
+				$objPage->arrForm['pref'] = @$address[0]['state'];
+				$objPage->arrForm['addr01'] = @$address[0]['city'] . @$address[0]['town'];
+			}
+		} else {
+			$checkVal = array("name01", "name02", "kana01", "kana02", "zip01", "zip02");
+			foreach($checkVal as $key) {
+				unset($objPage->list_data[$key]);
+			}
 		}
 		break;
 	case 'set2':
 		$objPage->arrErr = lfErrorCheck2($objPage->arrForm);
-		if (count($objPage->arrErr) == 0) {
+		if (count($objPage->arrErr) == 0 && empty($_POST["return"])) {
 			$objPage->tpl_mainpage = 'shopping/set2.tpl';
 		} else {
 			$objPage->tpl_mainpage = 'shopping/set1.tpl';
 
 			$checkVal = array("pref", "addr01", "addr02", "addr03", "tel01", "tel02", "tel03");
-			//-- データ設定
-			unset($objPage->list_data);
-			foreach($_POST as $key => $val) {
-				if ($key != "mode" && !in_array($key, $checkVal)) $objPage->list_data[ $key ] = $val;
+			foreach($checkVal as $key) {
+				unset($objPage->list_data[$key]);
 			}
 		}
 		break;

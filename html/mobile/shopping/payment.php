@@ -59,6 +59,20 @@ $objPage->arrData = sfTotalConfirm($arrData, $objPage, $objCartSess, $arrInfo);
 // カー都内の商品の売り切れチェック
 $objCartSess->chkSoldOut($objCartSess->getCartList());
 
+// 戻るボタンの処理
+if (!empty($_POST['return'])) {
+	switch ($_POST['mode']) {
+	case 'confirm':
+		$_POST['mode'] = 'payment';
+		break;
+	default:
+		// 正常な推移であることを記録しておく
+		$objSiteSess->setRegistFlag();
+		header("Location: " . gfAddSessionId(URL_SHOP_TOP));
+		exit;
+	}
+}
+
 switch($_POST['mode']) {
 // 支払い方法指定 → 配達日時指定
 case 'deliv_date':

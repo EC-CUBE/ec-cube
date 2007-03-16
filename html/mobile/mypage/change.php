@@ -84,6 +84,21 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 	//-- 入力データの変換
 	$objPage->arrForm = lfConvertParam($objPage->arrForm, $arrRegistColumn);
 
+	// 戻るボタン用処理
+	if (!empty($_POST["return"])) {
+		switch ($_POST["mode"]) {
+		case "complete":
+			$_POST["mode"] = "set3";
+			break;
+		case "confirm":
+			$_POST["mode"] = "set2";
+			break;
+		default:
+			$_POST["mode"] = "set1";
+			break;
+		}
+	}
+
 	//--　入力エラーチェック
 	if ($_POST["mode"] == "set1") {
 		$objPage->arrErr = lfErrorCheck1($objPage->arrForm);
@@ -99,7 +114,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 		$objPage->tpl_title = '登録変更(3/3)';
 	}
 
-	if ($objPage->arrErr || $_POST["mode"] == "return") {		// 入力エラーのチェック
+	if ($objPage->arrErr || !empty($_POST["return"])) {		// 入力エラーのチェック
 		foreach($objPage->arrForm as $key => $val) {
 			$objPage->$key = $val;
 		}
@@ -107,22 +122,17 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 		//-- データの設定
 		if ($_POST["mode"] == "set1") {
 			$checkVal = array("email", "password", "reminder", "reminder_answer", "name01", "name02", "kana01", "kana02");
-			foreach($objPage->arrForm as $key => $val) {
-				if ($key != "mode" && $key != "subm" & !in_array($key, $checkVal)) $objPage->list_data[ $key ] = $val;
-			}
-
 		} elseif ($_POST["mode"] == "set2") {
 			$checkVal = array("sex", "year", "month", "day", "zip01", "zip02");
-			foreach($objPage->arrForm as $key => $val) {
-				if ($key != "mode" && $key != "subm" & !in_array($key, $checkVal)) $objPage->list_data[ $key ] = $val;
-			}
 		} else {
-			$checkVal = array("pref", "addr01", "addr02", "tel01", "tel02", "tel03");
-			foreach($objPage->arrForm as $key => $val) {
-				if ($key != "mode" && $key != "subm" & !in_array($key, $checkVal)) $objPage->list_data[ $key ] = $val;
-			}
+			$checkVal = array("pref", "addr01", "addr02", "tel01", "tel02", "tel03", "mail_flag");
 		}
 
+		foreach($objPage->arrForm as $key => $val) {
+			if ($key != "return" && $key != "mode" && $key != "confirm" && $key != session_name() && !in_array($key, $checkVal)) {
+				$objPage->list_data[ $key ] = $val;
+			}
+		}
 
 	} else {
 
@@ -152,8 +162,18 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
 		//-- データ設定
 		unset($objPage->list_data);
+		if ($_POST["mode"] == "set1") {
+			$checkVal = array("sex", "year", "month", "day", "zip01", "zip02");
+		} elseif ($_POST["mode"] == "set2") {
+			$checkVal = array("pref", "addr01", "addr02", "tel01", "tel02", "tel03", "mail_flag");
+		} else {
+			$checkVal = array();
+		}
+
 		foreach($_POST as $key => $val) {
-			if ($key != "mode" && $key != "subm") $objPage->list_data[ $key ] = $val;
+			if ($key != "return" && $key != "mode" && $key != "confirm" && $key != session_name() && !in_array($key, $checkVal)) {
+				$objPage->list_data[ $key ] = $val;
+			}
 		}
 
 
@@ -192,6 +212,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
 		}
 	}
+}
+
+$arrPrivateVariables = array('secret_key', 'first_buy_date', 'last_buy_date', 'buy_times', 'buy_total', 'point', 'note', 'status', 'create_date', 'update_date', 'del_flg', 'cell01', 'cell02', 'cell03', 'mobile_phone_id');
+foreach ($arrPrivateVariables as $key) {
+	unset($objPage->list_data[$key]);
 }
 
 //----　ページ表示
