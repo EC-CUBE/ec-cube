@@ -67,8 +67,6 @@ define ("MOBILE_URL_SHOP_PAYMENT", MOBILE_URL_DIR . "shopping/payment.php");				
 define ("MOBILE_DETAIL_P_HTML", MOBILE_URL_DIR . "products/detail.php?product_id=");		// 商品詳細(HTML出力)
 define ("MOBILE_URL_SHOP_COMPLETE", MOBILE_URL_DIR . "shopping/complete.php");				// 購入完了画面
 define ("MOBILE_URL_SHOP_MODULE", MOBILE_URL_DIR . "shopping/load_payment_module.php");		// モジュール追加用画面
-define ("MOBILE_URL_SHOP_TOP", MOBILE_SSL_URL . "shopping/index.php");						// 会員情報入力
-
 
 //--------------------------------------------------------------------------------------------------------
 
