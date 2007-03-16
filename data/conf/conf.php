@@ -30,7 +30,7 @@ require_once($CONF_PHP_PATH ."/core.php" );
  *	'E_RECOVERABLE_ERROR' => ※PHP5からサポート キャッチできる致命的なエラー。危険なエラーが発生したが、 エンジンが不安定な状態になるほどではないことを表す。 ユーザ定義のハンドラでエラーがキャッチされなかった場合 (set_error_handler() も参照ください) は、 E_ERROR として異常終了する。 
  */
 //error_reporting(E_ALL & ~E_NOTICE);
-error_reporting(E_ALL & ~E_NOTICE);
+error_reporting(E_ALL);
 
 //--------------------------------------------------------------------------------------------------------
 
