@@ -159,6 +159,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 			$checkVal = array("sex", "year", "month", "day", "zip01", "zip02");
 		} elseif ($_POST["mode"] == "set2") {
 			$checkVal = array("pref", "addr01", "addr02", "tel01", "tel02", "tel03", "mail_flag");
+		} else {
+			$checkVal = array();
 		}
 
 		foreach($_POST as $key => $val) {
