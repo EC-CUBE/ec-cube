@@ -32,7 +32,7 @@
 
 	【メールマガジン】<br>
 	お得な情報を希望されますか？<br>
-	配信希望<input type="checkbox" name="mail_flag" value="on" <!--{if $arrForm.mail_flag eq '2'}-->checked<!--{/if}--> /><br>
+	配信希望<input type="checkbox" name="mail_flag" value="on" <!--{if $arrForm.mail_flag eq 'on' || $arrForm.mail_flag eq '2'}-->checked<!--{/if}--> /><br>
 	（希望されない場合はチェックをはずしてください）<br>
 	<br>
 
@@ -41,7 +41,8 @@
 	<input type="hidden" name="fax03" value="<!--{$arrForm.fax03|escape}-->">
 	<input type="hidden" name="job" value="<!--{$arrForm.job|escape}-->">
 
-	<input type="submit" name="confirm" value="次へ">
+	<input type="submit" name="confirm" value="次へ"><br>
+	<input type="submit" name="return" value="戻る">
 
 	<!--{foreach from=$list_data key=key item=item}-->
 		<input type="hidden" name="<!--{$key|escape}-->" value="<!--{$item|escape}-->">

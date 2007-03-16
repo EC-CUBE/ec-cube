@@ -29,14 +29,18 @@
 	<font color="#FF0000"><!--{$arrErr[$key1]}--><!--{$arrErr[$key2]}--></font>
 	<!--{assign var="size1" value="`$smarty.const.ZIP01_LEN+2`"}-->
 	<!--{assign var="size2" value="`$smarty.const.ZIP02_LEN+2`"}-->
-	<input size="<!--{$size1}-->" type="text" name="zip01" value="<!--{if $arrForm.zip01 == ""}--><!--{$arrForm.zip01|escape}--><!--{else}--><!--{$zip01|escape}--><!--{/if}-->" maxlength="<!--{$smarty.const.ZIP01_LEN}-->" istyle="4">
+	<input size="<!--{$size1}-->" type="text" name="zip01" value="<!--{if $arrForm.zip01 != ""}--><!--{$arrForm.zip01|escape}--><!--{else}--><!--{$zip01|escape}--><!--{/if}-->" maxlength="<!--{$smarty.const.ZIP01_LEN}-->" istyle="4">
 	&nbsp;-&nbsp;
-	<input size="<!--{$size2}-->" type="text" name="zip02" value="<!--{if $arrForm.zip02 == ""}--><!--{$arrForm.zip02|escape}--><!--{else}--><!--{$zip02|escape}--><!--{/if}-->" maxlength="<!--{$smarty.const.ZIP02_LEN}-->" istyle="4"><br>
+	<input size="<!--{$size2}-->" type="text" name="zip02" value="<!--{if $arrForm.zip02 != ""}--><!--{$arrForm.zip02|escape}--><!--{else}--><!--{$zip02|escape}--><!--{/if}-->" maxlength="<!--{$smarty.const.ZIP02_LEN}-->" istyle="4"><br>
 
 	<br>
 
-	<div align="center"><input type="submit" name="confirm" value="次へ"></div>
+	<div align="center"><input type="submit" name="submit" value="次へ"></div>
+	<div align="center"><input type="submit" name="return" value="戻る"></div>
 
+	<!--{foreach from=$list_data key=key item=item}-->
+		<input type="hidden" name="<!--{$key|escape}-->" value="<!--{$item|escape}-->">
+	<!--{/foreach}-->
 </form>
 
 <br>
