@@ -38,7 +38,7 @@
 <table><tr><td height="15"></td></tr></table>
 
 <!-- 現在のポイント ここから -->
-<!--{if $point_disp !== false}-->
+<!--{if $point_disp != false}-->
 <table width="170" border="0" cellspacing="0" cellpadding="0" summary=" ">
 	<tr align="center">
 		<td class="fs12" bgcolor="#f0d0a0">
