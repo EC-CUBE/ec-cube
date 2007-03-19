@@ -31,11 +31,12 @@ class SC_SelectSql {
 		$this->sql = $this->select ." ". $this->where ." ". $this->group ." ";
 						
 		// $mode == 1 ¤Ï limit & offsetÌµ¤·						
-		if ( $mode != 1 ){
-			$this->sql .= $this->order . " " .$this->limit ." ". $this->offset;	
-		} elseif ($mode == 2) {
+		if ($mode == 2) {
 			$this->sql .= $this->order;
+		}elseif ( $mode != 1 ){
+			$this->sql .= $this->order . " " .$this->limit ." ". $this->offset;	
 		}
+
 		return $this->sql;	
 	}
 
