@@ -313,6 +313,7 @@ define ("URL_CLASS_REGIST", URL_DIR . "admin/products/class.php");		// 規格登録
 define ("URL_INPUT_ZIP", URL_DIR . "input_zip.php");					// 郵便番号入力
 define ("URL_DELIVERY_TOP", URL_DIR . "admin/basis/delivery.php");		// 配送業者登録
 define ("URL_PAYMENT_TOP", URL_DIR . "admin/basis/payment.php");		// 支払い方法登録
+define ("URL_CONTROL_TOP", URL_DIR . "admin/basis/control.php");		// サイト管理情報登録
 define ("URL_HOME", URL_DIR . "admin/home.php");						// ホーム
 define ("URL_LOGIN", URL_DIR . "admin/index.php");						// ログインページ
 define ("URL_SEARCH_TOP", URL_DIR . "admin/products/index.php");		// 商品検索ページ
