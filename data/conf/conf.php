@@ -836,6 +836,24 @@ $arrTarget = array(
 	5 => "Unused"
 );
 
+/*--------- ▲サイト管理用 ---------*/
+
+define ("SITE_CONTROL_TRACKBACK", 1);		// トラックバック
+define ("SITE_CONTROL_AFFILIATE", 2);		// アフィリエイト
+
+// トラックバック
+$arrSiteControlTrackBack = array(
+	1 => "有効",
+	2 => "無効"
+);
+
+// アフィリエイト
+$arrSiteControlAffiliate = array(
+	1 => "有効",
+	2 => "無効"
+);
+
+/*--------- ▲View管理用 ---------*/
 
 // ViewのWhere句置換用
 $arrViewWhere = array(
