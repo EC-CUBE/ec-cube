@@ -25,5 +25,7 @@
 	<tr><td><img src="<!--{$smarty.const.URL_DIR}-->img/contents/navi_line.gif" width="140" height="2" alt=""></td></tr>
 	<tr><td class=<!--{if $tpl_subno != 'zip_install'}-->"navi"<!--{else}-->"navi-on"<!--{/if}-->><a href="#" onclick="win03('<!--{$smarty.const.URL_DIR}-->admin/basis/zip_install.php', 'install', '750', '350');" onMouseOver="naviStyleChange('zip_install', '#a5a5a5')" <!--{if $tpl_subno != 'zip_install'}-->onMouseOut="naviStyleChange('zip_install', '#636469')"<!--{/if}--> id="zip_install"><img src="<!--{$smarty.const.URL_DIR}-->img/contents/icon.jpg" width="15" height="9" alt="" border="0"><span class="navi_text">郵便番号DB登録</span></a></td></tr>
 	<tr><td><img src="<!--{$smarty.const.URL_DIR}-->img/contents/navi_line.gif" width="140" height="2" alt=""></td></tr>
+		<tr><td class=<!--{if $tpl_subno != 'control'}-->"navi"<!--{else}-->"navi-on"<!--{/if}-->><a href="./control.php" onMouseOver="naviStyleChange('control', '#a5a5a5')" <!--{if $tpl_subno != 'control'}-->onMouseOut="naviStyleChange('control', '#636469')"<!--{/if}--> id="control"><img src="<!--{$smarty.const.URL_DIR}-->img/contents/icon.jpg" width="15" height="9" alt="" border="0"><span class="navi_text">サイト管理設定</span></a></td></tr>
+	<tr><td><img src="<!--{$smarty.const.URL_DIR}-->img/contents/navi_line.gif" width="140" height="2" alt=""></td></tr>
 	<!--ナビ-->
 </table>
