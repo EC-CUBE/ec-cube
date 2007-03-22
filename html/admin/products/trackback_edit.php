@@ -119,7 +119,7 @@ function lfConvertParam($array, $arrRegistColumn) {
 function lfGetTrackbackData($trackback_id) {
 	global $objPage;
 	global $objQuery;
-	$select = "tra.trackback_id, tra.product_id, tra.blog_name, tra.title, tra.excerpt ";
+	$select = "tra.trackback_id, tra.product_id, tra.blog_name, tra.title, tra.excerpt, ";
 	$select .= "tra.url, tra.status, tra.create_date, tra.update_date, pro.name ";
 	$from = "dtb_trackback AS tra LEFT JOIN dtb_products AS pro ON tra.product_id = pro.product_id ";
 	$where = "tra.del_flg = 0 AND pro.del_flg = 0 AND tra.trackback_id = ? ";
