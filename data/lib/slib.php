@@ -196,6 +196,45 @@ function sfDataExists($table_name, $where, $arrval, $dsn = "", $sql = "", $add =
 	return $ret;
 }
 
+/*
+ * サイト管理情報から値を取得する。
+ * データが存在する場合、必ず1以上の数値が設定されている。
+ * 0を返した場合は、呼び出し元で対応すること。
+ * 
+ * @param $control_id 管理ID
+ * @param $dsn DataSource
+ * @return $control_flg フラグ
+ */
+function sfGetSiteControlFlg($control_id, $dsn = "") {
+
+	// データソース
+	if($dsn == "") {
+		if(defined('DEFAULT_DSN')) {
+			$dsn = DEFAULT_DSN;
+		} else {
+			return;
+		}
+	}
+
+	// クエリ生成
+	$target_column = "control_flg";
+	$table_name = "dtb_site_control";
+	$where = "control_id = ?";
+	$arrval = array($control_id);
+	$control_flg = 0;
+
+	// クエリ発行
+	$objQuery = new SC_Query($dsn, true, true);
+	$arrSiteControl = $objQuery->select($target_column, $table_name, $where, $arrval);
+
+	// データが存在すればフラグを取得する
+	if (count($arrSiteControl) > 0) {
+		$control_flg = $arrSiteControl[0]["control_flg"];
+	}
+	
+	return $control_flg;
+}
+
 // テーブルのカラム一覧を取得する
 function sfGetColumnList($table_name, $objQuery = "", $db_type = DB_TYPE){
 	if($objQuery == "") $objQuery = new SC_Query();
