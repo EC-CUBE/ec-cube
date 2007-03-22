@@ -21,5 +21,7 @@
 	<tr><td><img src="<!--{$smarty.const.URL_DIR}-->img/contents/navi_line.gif" width="140" height="2" alt=""></td></tr>
 	<tr><td class=<!--{if $tpl_subno != 'review'}-->"navi"<!--{else}-->"navi-on"<!--{/if}-->><a href="./review.php" onMouseOver="naviStyleChange('review', '#a5a5a5')" <!--{if $tpl_subno != 'review'}-->onMouseOut="naviStyleChange('review', '#636469')"<!--{/if}--> id="review"><img src="<!--{$smarty.const.URL_DIR}-->img/contents/icon.jpg" width="15" height="9" alt="" border="0"><span class="navi_text">レビュー管理</span></a></td></tr>
 	<tr><td><img src="<!--{$smarty.const.URL_DIR}-->img/contents/navi_line.gif" width="140" height="2" alt=""></td></tr>
+	<tr><td class=<!--{if $tpl_subno != 'trackback'}-->"navi"<!--{else}-->"navi-on"<!--{/if}-->><a href="./trackback.php" onMouseOver="naviStyleChange('trackback', '#a5a5a5')" <!--{if $tpl_subno != 'trackback'}-->onMouseOut="naviStyleChange('trackback', '#636469')"<!--{/if}--> id="review"><img src="<!--{$smarty.const.URL_DIR}-->img/contents/icon.jpg" width="15" height="9" alt="" border="0"><span class="navi_text">トラックバック管理</span></a></td></tr>
+	<tr><td><img src="<!--{$smarty.const.URL_DIR}-->img/contents/navi_line.gif" width="140" height="2" alt=""></td></tr>
 	<!--ナビ-->
 </table>
