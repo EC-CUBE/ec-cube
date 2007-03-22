@@ -21,7 +21,7 @@ class LC_Page {
 		$this->tpl_mainpage = 'products/trackback.tpl';
 		$this->tpl_subnavi = 'products/subnavi.tpl';
 		$this->tpl_mainno = 'products';
-		$this->tpl_subno = 'review';
+		$this->tpl_subno = 'trackback';
 		$this->tpl_pager = DATA_PATH . 'Smarty/templates/admin/pager.tpl';
 		$this->tpl_subtitle = 'トラックバック管理';
 	}
