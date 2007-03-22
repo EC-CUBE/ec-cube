@@ -51,8 +51,6 @@ $objPage->tpl_trackback_id = $_POST['trackback_id'];
 // トラックバック情報のカラムの取得
 $objPage->arrTrackback = lfGetTrackbackData($_POST['trackback_id']);
 
-print("COUNT : ". count($objPage->arrTrackback));
-
 // 商品ごとのトラックバック表示数取得
 $count = $objQuery->count("dtb_trackback", "del_flg = 0 AND product_id = ?", array($objPage->arrTrackback['product_id']));
 // 両方選択可能
