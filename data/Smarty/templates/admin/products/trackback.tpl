@@ -207,10 +207,10 @@
 						<table width="840" border="0" cellspacing="1" cellpadding="5" summary=" ">
 							<tr bgcolor="#636469" align="center" class="fs12">
 								<td width="130"><span class="white">投稿日</span></td>
-								<td width="252"><span class="white">商品名</span></td>
+								<td width="212"><span class="white">商品名</span></td>
 								<td width="100"><span class="white">ブログ名</span></td>
-								<td width="100"><span class="white">ブログ記事タイトル</span></td>
-								<td width="80"><span class="white">表示・非表示</span></td>
+								<td width="140"><span class="white">ブログ記事タイトル</span></td>
+								<td width="80"><span class="white">状態</span></td>
 								<td width="50"><span class="white">編集</span></td>
 								<td width="50"><span class="white">削除</span></td>
 							</tr>
@@ -219,9 +219,9 @@
 							<tr bgcolor="#ffffff" class="fs12">
 								<td align="center"><!--{$arrReview[cnt].create_date|sfDispDBDate}--></td>
 								<td><!--{$arrReview[cnt].name|escape}--></td>
-								<td><!--{$arrReview[cnt].blog_name|escape}--></td>
+								<td><a href="<!--{$arrReview[cnt].url|escape}-->"><!--{$arrReview[cnt].blog_name|escape}--></a></td>
 								<td><!--{$arrReview[cnt].title|escape}--></td>
-								<td align="center"><!--{if $arrReview[cnt].status eq 1}-->非表示<!--{elseif $arrReview[cnt].status eq 2}-->スパム<!--{/if}--></td>
+								<td align="center"><!--{if $arrReview[cnt].status eq 0}-->表示<!--{elseif $arrReview[cnt].status eq 1}-->非表示<!--{elseif $arrReview[cnt].status eq 2}-->スパム<!--{/if}--></td>
 								<td align="center"><a href="#" onclick="fnChangeAction('./review_edit.php'); fnModeSubmit('','review_id','<!--{$arrReview[cnt].review_id}-->');">編集</a></td>
 								<td align="center"><a href="#" onclick="fnModeSubmit('delete','review_id','<!--{$arrReview[cnt].review_id}-->'); return false;">削除</a></td>
 							</tr>
