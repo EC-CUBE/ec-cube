@@ -156,7 +156,7 @@
 	<table width="878" border="0" cellspacing="0" cellpadding="0" summary=" ">
 	<form name="form1" id="form1" method="post" action="<!--{$smarty.server.PHP_SELF|escape}-->">
 	<input type="hidden" name="mode" value="search">
-	<input type="hidden" name="review_id" value="">
+	<input type="hidden" name="trackback_id" value="">
 	<input type="hidden" name="search_pageno" value="<!--{$tpl_pageno}-->">
 	<!--{foreach key=key item=item from=$arrHidden}-->
 	<!--{if $key ne "search_pageno"}-->
@@ -205,7 +205,7 @@
 		<tr><td bgcolor="cbcbcb" colspan="2"><img src="<!--{$smarty.const.URL_DIR}-->img/common/_.gif" width="1" height="5" alt=""></td></tr>
 	</table>
 	
-	<!--{ if $arrReview > 0 & $tpl_linemax > 0 }-->
+	<!--{ if $arrTrackback > 0 & $tpl_linemax > 0 }-->
 		<table width="878" border="0" cellspacing="0" cellpadding="0" summary=" ">
 			<tr>
 				<td bgcolor="#f0f0f0" align="center">
