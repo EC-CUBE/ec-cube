@@ -62,7 +62,7 @@ foreach ($_POST as $key => $val) {
 
 // トラックバックの削除
 if ($_POST['mode'] == "delete") {
-	$objQuery->exec("UPDATE dtb_trackback SET del_flg = 1 WHERE trackback_id = ?", array($_POST['trackback_id']));
+	$objQuery->exec("UPDATE dtb_trackback SET del_flg = 1, update_date = now() WHERE trackback_id = ?", array($_POST['trackback_id']));
 }
 	
 if ($_POST['mode'] == 'search' || $_POST['mode'] == 'csv' || $_POST['mode'] == 'delete'){
