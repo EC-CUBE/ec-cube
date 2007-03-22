@@ -47,10 +47,8 @@ $arrRegistColumn = array (
 $objPage->tpl_trackback_id = $_POST['trackback_id'];
 // トラックバック情報のカラムの取得
 $objPage->arrTrackback = lfGetTrackbackData($_POST['trackback_id']);
-// 登録済みのステータスを渡す
-$objPage->tpl_pre_status = $objPage->arrTrackback['status'];
 // 商品ごとのトラックバック表示数取得
-$count = $objQuery->count("dtb_trackback", "del_flg = 0 AND status = 0 AND product_id = ?", array($objPage->arrTrackback['product_id']));
+$count = $objQuery->count("dtb_trackback", "del_flg = 0 AND product_id = ?", array($objPage->arrTrackback['product_id']));
 // 両方選択可能
 $objPage->tpl_status_change = true;
 
