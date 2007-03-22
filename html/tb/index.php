@@ -11,14 +11,7 @@ $objQuery = new SC_Query();
 $objFormParam = new SC_FormParam();
 
 // トラックバック機能の稼働状況チェック
-$arrSiteControl = $objQuery->select("*", "dtb_site_control", "control_id = ?", array(SITE_CONTROL_TRACKBACK));
-
-// TODO:共通関数化する
-if (count($arrSiteControl) > 0) {
-	if ($arrSiteControl[0]["control_flg"] == 2) {
-		IfResponseNg();
-	}
-} else {
+if (sfGetSiteControlFlg(SITE_CONTROL_TRACKBACK) != 1) {
 	// NG
 	IfResponseNg();
 }
