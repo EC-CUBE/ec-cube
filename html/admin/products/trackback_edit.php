@@ -62,7 +62,7 @@ switch($_POST['mode']) {
 	// 登録
 	case 'complete':
 		//フォーム値の変換
-		$arrReview = lfConvertParam($_POST, $arrRegistColumn);
+		$arrTrackback = lfConvertParam($_POST, $arrRegistColumn);
 		$objPage->arrErr = lfCheckError($arrTrackback);
 		//エラー無し
 
