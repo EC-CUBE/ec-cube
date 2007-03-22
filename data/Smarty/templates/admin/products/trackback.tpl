@@ -48,9 +48,20 @@
 						<table width="678" border="0" cellspacing="1" cellpadding="8" summary=" ">
 							<tr class="fs12n">
 								<td bgcolor="#f2f1ec" width="110">ブログ名</td>
-								<td bgcolor="#ffffff" width="248"><input type="text" name="search_reviewer_name" value="<!--{$arrForm.search_reviewer_name|escape}-->" size="30" class="box30" /></td>
+								<td bgcolor="#ffffff" width="248"><input type="text" name="search_blog_name" value="<!--{$arrForm.search_blog_name|escape}-->" size="30" class="box30" /></td>
+								<td bgcolor="#f2f1ec" width="110">ブログ記事<br />タイトル</td>
+								<td bgcolor="#ffffff" width="249"><input type="text" name="search_blog_title" value="<!--{$arrForm.search_blog_title|escape}-->" size="30" class="box30" /></td>
+							</tr>
+							<tr class="fs12n">
 								<td bgcolor="#f2f1ec" width="110">URL</td>
-								<td bgcolor="#ffffff" width="249"><input type="text" name="search_reviewer_url" value="<!--{$arrForm.search_reviewer_url}-->" size="30" class="box30" /></td>
+								<td bgcolor="#ffffff" width="248"><input type="text" name="search_blog_url" value="<!--{$arrForm.search_blog_url|escape}-->" size="30" class="box30" /></td>
+								<td bgcolor="#f2f1ec" width="110">状態</td>
+								<td bgcolor="#ffffff" width="249">
+								<select name="search_status" style="<!--{$arrErr.search_status|sfGetErrorColor}-->">
+								<option value="">----</option>
+								<!--{html_options options=$arrTrackBackStatus selected=$arrForm.search_status}-->
+								</select>
+								</td>
 							</tr>
 							<tr class="fs12n">
 								<td bgcolor="#f2f1ec" width="110">商品名</td>
