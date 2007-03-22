@@ -123,7 +123,7 @@ function lfGetTrackbackData($trackback_id) {
 	$where = "tra.del_flg = 0 AND pro.del_flg = 0 AND tra.trackback_id = ? ";
 	$arrTrackback = $objQuery->select($select, $from, $where, array($trackback_id));
 	if(!empty($arrTrackback)) {
-		$objPage->arrReview = $arrTrackback[0];
+		$objPage->arrTrackback = $arrTrackback[0];
 	} else {
 		sfDispError("");
 	}
