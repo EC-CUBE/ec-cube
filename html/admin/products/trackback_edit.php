@@ -32,6 +32,9 @@ foreach ($_POST as $key => $val){
 	}
 }
 
+// 状態の設定
+$objPage->arrTrackBackStatus = $arrTrackBackStatus;
+
 //取得文字列の変換用カラム
 $arrRegistColumn = array (		
 						array( "column" => "update_date"),
