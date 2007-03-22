@@ -232,7 +232,7 @@
 								<td><!--{$arrTrackback[cnt].name|escape}--></td>
 								<td><a href="<!--{$arrTrackback[cnt].url|escape}-->"><!--{$arrTrackback[cnt].blog_name|escape}--></a></td>
 								<td><!--{$arrTrackback[cnt].title|escape}--></td>
-								<td align="center"><!--{if $arrTrackback[cnt].status eq 0}-->表示<!--{elseif $arrTrackback[cnt].status eq 1}-->非表示<!--{elseif $arrTrackback[cnt].status eq 2}-->スパム<!--{/if}--></td>
+								<td align="center"><!--{if $arrTrackback[cnt].status eq 1}-->表示<!--{elseif $arrTrackback[cnt].status eq 2}-->非表示<!--{elseif $arrTrackback[cnt].status eq 3}-->スパム<!--{/if}--></td>
 								<td align="center"><a href="#" onclick="fnChangeAction('./trackback_edit.php'); fnModeSubmit('','trackback_id','<!--{$arrTrackback[cnt].trackback_id}-->');">編集</a></td>
 								<td align="center"><a href="#" onclick="fnModeSubmit('delete','trackback_id','<!--{$arrTrackback[cnt].trackback_id}-->'); return false;">削除</a></td>
 							</tr>
