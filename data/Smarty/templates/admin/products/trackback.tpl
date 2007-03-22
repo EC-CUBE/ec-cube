@@ -207,8 +207,8 @@
 						<table width="840" border="0" cellspacing="1" cellpadding="5" summary=" ">
 							<tr bgcolor="#636469" align="center" class="fs12">
 								<td width="130"><span class="white">投稿日</span></td>
-								<td width="212"><span class="white">商品名</span></td>
-								<td width="100"><span class="white">ブログ名</span></td>
+								<td width="162"><span class="white">商品名</span></td>
+								<td width="150"><span class="white">ブログ名</span></td>
 								<td width="140"><span class="white">ブログ記事タイトル</span></td>
 								<td width="80"><span class="white">状態</span></td>
 								<td width="50"><span class="white">編集</span></td>
