@@ -92,14 +92,14 @@ if ($_POST['mode'] == 'search' || $_POST['mode'] == 'csv' || $_POST['mode'] == '
 				case 'search_blog_name':
 					$val = ereg_replace(" ", "%", $val);
 					$val = ereg_replace("¡¡", "%", $val);
-					$where.= " AND pro.blog_name ILIKE ? ";
+					$where.= " AND tra.blog_name ILIKE ? ";
 					$arrval[] = "%$val%";
 					break;
 			
 				case 'search_blog_title':
 					$val = ereg_replace(" ", "%", $val);
 					$val = ereg_replace("¡¡", "%", $val);
-					$where.= " AND pro.title ILIKE ? ";
+					$where.= " AND tra.title ILIKE ? ";
 					$arrval[] = "%$val%";
 					break;
 			
