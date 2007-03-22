@@ -176,7 +176,7 @@ if ($_POST['mode'] == 'search' || $_POST['mode'] == 'csv' || $_POST['mode'] == '
 	$objQuery->setorder($order);
 	
 	//検索結果の取得
-	$objPage->arrReview = $objQuery->select($select, $from, $where, $arrval);
+	$objPage->arrTrackback = $objQuery->select($select, $from, $where, $arrval);
 	
 	//CSVダウンロード
 	if ($_POST['mode'] == 'csv'){
