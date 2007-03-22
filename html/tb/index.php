@@ -15,7 +15,7 @@ $arrSiteControl = $objQuery->select("*", "dtb_site_control", "control_id = ?", a
 
 // TODO:共通関数化する
 if (count($arrSiteControl) > 0) {
-	if ($arrSiteControl["control_flg"] == 2) {
+	if ($arrSiteControl[0]["control_flg"] == 2) {
 		IfResponseNg();
 	}
 } else {
