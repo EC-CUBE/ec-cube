@@ -836,6 +836,12 @@ $arrTarget = array(
 	5 => "Unused"
 );
 
+/*--------- ▲トラックバック用 ---------*/
+
+define ("TRACKBACK_STATUS_VIEW", 0);		// 表示
+define ("TRACKBACK_STATUS_NOT_VIEW", 1);	// 非表示
+define ("TRACKBACK_STATUS_SPAM", 2);		// スパム
+
 /*--------- ▲サイト管理用 ---------*/
 
 define ("SITE_CONTROL_TRACKBACK", 1);		// トラックバック
