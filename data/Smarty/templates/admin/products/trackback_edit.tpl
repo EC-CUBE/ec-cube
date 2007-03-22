@@ -9,7 +9,6 @@
 <table width="878" border="0" cellspacing="0" cellpadding="0" summary=" ">
 <form name="form1" id="form1" method="post" action="<!--{$smarty.server.PHP_SELF|escape}-->" >
 <input type="hidden" name="mode" value="complete">
-<input type="hidden" name="trackback_id" value="<!--{$tpl_trackback_id}-->" >
 <!--{foreach key=key item=item from=$arrTrackback}-->
 <!--{if $key ne "mode"}-->
 <input type="hidden" name="<!--{$key}-->" value="<!--{$item|escape}-->">
