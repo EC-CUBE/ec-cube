@@ -13,11 +13,7 @@ class LC_Page {
 	var $arrSession;
 	function LC_Page() {
 		global $arrPageMax;
-		global $arrRECOMMEND;
-		global $arrSex;
 		$this->arrPageMax = $arrPageMax;
-		$this->arrRECOMMEND = $arrRECOMMEND;
-		$this->arrSex = $arrSex;
 		$this->tpl_mainpage = 'products/trackback.tpl';
 		$this->tpl_subnavi = 'products/subnavi.tpl';
 		$this->tpl_mainno = 'products';
