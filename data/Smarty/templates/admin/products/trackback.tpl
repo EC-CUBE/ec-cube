@@ -233,8 +233,8 @@
 								<td><a href="<!--{$arrReview[cnt].url|escape}-->"><!--{$arrReview[cnt].blog_name|escape}--></a></td>
 								<td><!--{$arrReview[cnt].title|escape}--></td>
 								<td align="center"><!--{if $arrReview[cnt].status eq 0}-->表示<!--{elseif $arrReview[cnt].status eq 1}-->非表示<!--{elseif $arrReview[cnt].status eq 2}-->スパム<!--{/if}--></td>
-								<td align="center"><a href="#" onclick="fnChangeAction('./review_edit.php'); fnModeSubmit('','review_id','<!--{$arrReview[cnt].review_id}-->');">編集</a></td>
-								<td align="center"><a href="#" onclick="fnModeSubmit('delete','review_id','<!--{$arrReview[cnt].review_id}-->'); return false;">削除</a></td>
+								<td align="center"><a href="#" onclick="fnChangeAction('./trackback_edit.php'); fnModeSubmit('','trackback_id','<!--{$arrTrackback[cnt].trackback_id}-->');">編集</a></td>
+								<td align="center"><a href="#" onclick="fnModeSubmit('delete','trackback_id','<!--{$arrTrackback[cnt].trackback_id}-->'); return false;">削除</a></td>
 							</tr>
 							<!--{/section}-->
 						</table>
