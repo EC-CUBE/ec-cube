@@ -838,15 +838,15 @@ $arrTarget = array(
 
 /*--------- ▲トラックバック用 ---------*/
 
-define ("TRACKBACK_STATUS_VIEW", 0);		// 表示
-define ("TRACKBACK_STATUS_NOT_VIEW", 1);	// 非表示
-define ("TRACKBACK_STATUS_SPAM", 2);		// スパム
+define ("TRACKBACK_STATUS_VIEW", 1);		// 表示
+define ("TRACKBACK_STATUS_NOT_VIEW", 2);	// 非表示
+define ("TRACKBACK_STATUS_SPAM", 3);		// スパム
 
 // 状態
 $arrTrackBackStatus = array(
-	0 => "表示",
-	1 => "非表示",
-	2 => "スパム"
+	1 => "表示",
+	2 => "非表示",
+	3 => "スパム"
 );
 
 /*--------- ▲サイト管理用 ---------*/
