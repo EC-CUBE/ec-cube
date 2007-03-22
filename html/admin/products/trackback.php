@@ -48,10 +48,10 @@ $objPage->arrEndDay = $objDate->getDay();
 // 認証可否の判定
 sfIsSuccess($objSess);
 
-// トラックバック情報のカラムの取得
-$select="trackback_id, tra.product_id, tra.blog_name, tra.title, tra.url, ";
-$select.="tra.excerpt, tra.status, tra.create_date, tra.update_date, pro.name";
-$from = "dtb_trackback AS tra LEFT JOIN dtb_products AS pro ON tra.product_id = pro.product_id ";
+// トラックバック情報のカラムの取得(viewとの結合のため、テーブルをAと定義しておく)
+$select = "A.trackback_id, A.product_id, A.blog_name, A.title, A.url, ";
+$select .= "A.excerpt, A.status, A.create_date, A.update_date, B.name";
+$from = "dtb_trackback AS A LEFT JOIN dtb_products AS B ON A.product_id = B.product_id ";
 
 // 検索ワードの引き継ぎ
 foreach ($_POST as $key => $val) {
@@ -62,13 +62,13 @@ foreach ($_POST as $key => $val) {
 
 // トラックバックの削除
 if ($_POST['mode'] == "delete") {
-	$objQuery->exec("UPDATE dtb_trackback SET del_flg = 1 WHERE trackback_id=?", array($_POST['trackback_id']));
+	$objQuery->exec("UPDATE dtb_trackback SET del_flg = 1 WHERE trackback_id = ?", array($_POST['trackback_id']));
 }
 	
 if ($_POST['mode'] == 'search' || $_POST['mode'] == 'csv' || $_POST['mode'] == 'delete'){
 	
 	//削除されていない商品を検索
-	$where="tra.del_flg = 0 AND pro.del_flg = 0";
+	$where="A.del_flg = 0 AND B.del_flg = 0";
 	$objPage->arrForm = $_POST;
 
 	//エラーチェック
@@ -88,27 +88,27 @@ if ($_POST['mode'] == 'search' || $_POST['mode'] == 'csv' || $_POST['mode'] == '
 				case 'search_blog_name':
 					$val = ereg_replace(" ", "%", $val);
 					$val = ereg_replace("　", "%", $val);
-					$where.= " AND tra.blog_name ILIKE ? ";
+					$where.= " AND A.blog_name ILIKE ? ";
 					$arrval[] = "%$val%";
 					break;
 			
 				case 'search_blog_title':
 					$val = ereg_replace(" ", "%", $val);
 					$val = ereg_replace("　", "%", $val);
-					$where.= " AND tra.title ILIKE ? ";
+					$where.= " AND A.title ILIKE ? ";
 					$arrval[] = "%$val%";
 					break;
 			
 				case 'search_blog_url':
 					$val = ereg_replace(" ", "%", $val);
 					$val = ereg_replace("　", "%", $val);
-					$where.= " AND tra.url ILIKE ? ";
+					$where.= " AND A.url ILIKE ? ";
 					$arrval[] = "%$val%";
 					break;
 					
 				case 'search_status':
 					if (isset($_POST['search_status'])) {
-						$where.= " AND tra.status = ? ";
+						$where.= " AND A.status = ? ";
 						$arrval[] = $val;
 					}
 					break;
@@ -116,21 +116,21 @@ if ($_POST['mode'] == 'search' || $_POST['mode'] == 'csv' || $_POST['mode'] == '
 				case 'search_name':
 					$val = ereg_replace(" ", "%", $val);
 					$val = ereg_replace("　", "%", $val);
-					$where.= " AND pro.name ILIKE ? ";
+					$where.= " AND B.name ILIKE ? ";
 					$arrval[] = "%$val%";
 					break;
 					
 				case 'search_product_code':
 					$val = ereg_replace(" ", "%", $val);
 					$val = ereg_replace("　", "%", $val);
-					$where.= " AND pro.product_id IN (SELECT product_id FROM dtb_products_class WHERE product_code ILIKE ? )";
+					$where.= " AND B.product_id IN (SELECT product_id FROM dtb_products_class WHERE product_code ILIKE ? )";
 					$arrval[] = "%$val%";
 					break;
 					
 				case 'search_startyear':
 					if (isset($_POST['search_startyear']) && isset($_POST['search_startmonth']) && isset($_POST['search_startday'])) {
 						$date = sfGetTimestamp($_POST['search_startyear'], $_POST['search_startmonth'], $_POST['search_startday']);
-						$where.= " AND tra.create_date >= ? ";
+						$where.= " AND A.create_date >= ? ";
 						$arrval[] = $date;
 					}
 					break;
@@ -141,7 +141,7 @@ if ($_POST['mode'] == 'search' || $_POST['mode'] == 'csv' || $_POST['mode'] == '
 						
 						$end_date = date("Y/m/d",strtotime("1 day" ,strtotime($date)));
 						
-						$where.= " AND tra.create_date <= cast('$end_date' as date) ";
+						$where.= " AND A.create_date <= cast('$end_date' as date) ";
 					}
 					break;
 			}
@@ -150,7 +150,7 @@ if ($_POST['mode'] == 'search' || $_POST['mode'] == 'csv' || $_POST['mode'] == '
 			
 	}
 	
-	$order = "tra.create_date DESC";
+	$order = "A.create_date DESC";
 	
 	// ページ送りの処理
 	if(is_numeric($_POST['search_page_max'])) {	
@@ -181,10 +181,10 @@ if ($_POST['mode'] == 'search' || $_POST['mode'] == 'csv' || $_POST['mode'] == '
 	//CSVダウンロード
 	if ($_POST['mode'] == 'csv'){
 		// オプションの指定
-		$option = "ORDER BY trackback_id";
+		$option = "ORDER BY A.trackback_id";
 		// CSV出力タイトル行の作成
-		$head = sfGetCSVList($arrREVIEW_CVSTITLE);
-		$data = lfGetReviewCSV($where, '', $arrval);
+		$head = sfGetCSVList($arrTRACKBACK_CVSTITLE);
+		$data = lfGetTrackbackCSV($where, '', $arrval);
 		// CSVを送信する。
 		sfCSVDownload($head.$data);
 		exit;
