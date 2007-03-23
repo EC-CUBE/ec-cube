@@ -89,7 +89,7 @@
 									<!--{assign var=key value="status"}-->
 									<span class="red12"><!--{$arrErr.status}--></span>
 									<select name="<!--{$key}-->" style="<!--{$arrErr.status|sfGetErrorColor}-->" >
-									<option value="" selected="selected">選択してください</option>
+									<option value="">選択してください</option>
 									<!--{html_options options=$arrTrackBackStatus selected=$arrTrackback[$key]}-->
 									</select>
 									</td>
