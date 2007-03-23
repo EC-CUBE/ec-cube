@@ -332,7 +332,7 @@ function lnSetSelect(form, name1, name2, val) {
 					<tr><td height="5"></td></tr>
 					<!--{section name=cnt loop=$arrTrackback}-->
 					<tr>
-						<td class="fs12"><strong><!--{$arrTrackback[cnt].create_date|sfDispDBDate:false}-->¡¡<a href="<!--{$arrTrackback[cnt].reviewer_url}-->" target="_blank"><!--{$arrTrackback[cnt].title|escape}--></a> from <!--{$arrTrackback[cnt].blog_name|escape}--></strong></td>
+						<td class="fs12"><strong><!--{$arrTrackback[cnt].create_date|sfDispDBDate:false}-->¡¡<a href="<!--{$arrTrackback[cnt].url}-->" target="_blank"><!--{$arrTrackback[cnt].title|escape}--></a> from <!--{$arrTrackback[cnt].blog_name|escape}--></strong></td>
 					</tr>
 					<tr><td height="5"></td></tr>
 					<tr>
