@@ -842,6 +842,8 @@ define ("TRACKBACK_STATUS_VIEW", 1);		// 表示
 define ("TRACKBACK_STATUS_NOT_VIEW", 2);	// 非表示
 define ("TRACKBACK_STATUS_SPAM", 3);		// スパム
 
+define ("TRACKBACK_VIEW_MAX", 10);			// フロント最大表示数
+
 // 状態
 $arrTrackBackStatus = array(
 	1 => "表示",
