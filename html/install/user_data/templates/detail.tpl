@@ -315,7 +315,7 @@ function lnSetSelect(form, name1, name2, val) {
 				</table>
 				<!--お客様の声ここまで-->
 
-				<!--{if $arrTrackback}-->
+				<!--{if $arrTrackbackView == "ON"}-->
 				<!--▼トラックバックここから-->
 				<table width="580" border="0" cellspacing="0" cellpadding="0" summary=" ">
 					<tr>
@@ -329,6 +329,7 @@ function lnSetSelect(form, name1, name2, val) {
 					<tr>
 						<td class="fs12"><input type="text" name="trackback" value="<!--{$trackback_url}-->" size="100"></td>
 					</tr>
+					<!--{if $arrTrackback}-->
 					<tr><td height="5"></td></tr>
 					<!--{section name=cnt loop=$arrTrackback}-->
 					<tr>
@@ -344,6 +345,7 @@ function lnSetSelect(form, name1, name2, val) {
 					<!--{/if}-->
 					
 					<!--{/section}-->
+					<!--{/if}-->
 					
 					<tr><td height="30"></td></tr>
 				</table>
