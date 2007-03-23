@@ -315,6 +315,41 @@ function lnSetSelect(form, name1, name2, val) {
 				</table>
 				<!--お客様の声ここまで-->
 
+				<!--{if $arrTrackback}-->
+				<!--▼トラックバックここから-->
+				<table width="580" border="0" cellspacing="0" cellpadding="0" summary=" ">
+					<tr>
+						<td><img src="<!--{$smarty.const.URL_DIR}-->img/products/title_voice.jpg" width="580" height="30" alt="この商品に対するトラックバック"></td>
+					</tr>
+					<tr><td height="10"></td></tr>
+					<tr>
+						<td class="fs12"><strong>この商品のトラックバック先URL</strong></td>
+					</tr>
+					<tr><td height="5"></td></tr>
+					<tr>
+						<td class="fs12"><input type="text" name="trackback" value="<!--{$trackback_url}-->" size="100"></td>
+					</tr>
+					<tr><td height="5"></td></tr>
+					<!--{section name=cnt loop=$arrTrackback}-->
+					<tr>
+						<td class="fs12"><strong><!--{$arrTrackback[cnt].create_date|sfDispDBDate:false}-->　<a href="<!--{$arrTrackback[cnt].reviewer_url}-->" target="_blank"><!--{$arrTrackback[cnt].title|escape}--></a> from <!--{$arrTrackback[cnt].blog_name|escape}--></strong></td>
+					</tr>
+					<tr><td height="5"></td></tr>
+					<tr>
+						<td class="fs14"><!--{$arrTrackback[cnt].excerpt|escape|nl2br}--></td>
+					</tr>
+			
+					<!--{if !$smarty.section.cnt.last}-->
+					<tr><td height="20"><img src="<!--{$smarty.const.URL_DIR}-->img/common/line_580.gif" width="580" height="1" alt=""></td></tr>
+					<!--{/if}-->
+					
+					<!--{/section}-->
+					
+					<tr><td height="30"></td></tr>
+				</table>
+				<!--▲トラックバックここまで-->
+				<!--{/if}-->
+
 				<!--{if $arrRecommend}-->
 				<!--▼オススメ商品ここから-->
 				<table width="580" border="0" cellspacing="0" cellpadding="0" summary=" ">
