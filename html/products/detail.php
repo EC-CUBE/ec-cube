@@ -172,7 +172,14 @@ $objPage->arrForm = $objFormParam->getFormParamList();
 //レビュー情報の取得
 $objPage->arrReview = lfGetReviewData($tmp_id);
 // トラックバック情報の取得
-$objPage->arrTrackback = lfGetTrackbackData($tmp_id);
+
+// トラックバック機能の稼働状況チェック
+if (sfGetSiteControlFlg(SITE_CONTROL_TRACKBACK) != 1) {
+	$objPage->arrTrackbackView = "OFF";
+} else {
+	$objPage->arrTrackbackView = "ON";
+	$objPage->arrTrackback = lfGetTrackbackData($tmp_id);
+}
 $objPage->trackback_url = TRACKBACK_TO_URL . $tmp_id;
 // タイトルに商品名を入れる
 $objPage->tpl_title = "商品詳細 ". $objPage->arrProduct["name"];
@@ -438,11 +445,6 @@ function lfGetReviewData($id) {
 function lfGetTrackbackData($product_id) {
 
 	$arrTrackback = array();
-
-	// トラックバック機能の稼働状況チェック
-	if (sfGetSiteControlFlg(SITE_CONTROL_TRACKBACK) != 1) {
-		return $arrTrackback;
-	}	
 
 	$objQuery = new SC_Query;
 	//商品ごとのトラックバック情報を取得する
