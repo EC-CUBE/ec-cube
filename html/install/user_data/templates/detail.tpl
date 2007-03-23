@@ -336,7 +336,7 @@ function lnSetSelect(form, name1, name2, val) {
 					</tr>
 					<tr><td height="5"></td></tr>
 					<tr>
-						<td class="fs12"><!--{$arrTrackback[cnt].excerpt|escape}--></td>
+						<td class="fs12"><!--{$arrTrackback[cnt].excerpt|escape|mb_strimwidth:0:200}--></td>
 					</tr>
 			
 					<!--{if !$smarty.section.cnt.last}-->
