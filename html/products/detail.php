@@ -171,6 +171,9 @@ $objPage->arrPayment = lfGetPayment();
 $objPage->arrForm = $objFormParam->getFormParamList();
 //レビュー情報の取得
 $objPage->arrReview = lfGetReviewData($tmp_id);
+// トラックバック情報の取得
+$objPage->arrTrackback = lfGetTrackbackData($tmp_id);
+$objPage->trackback_url = TRACKBACK_TO_URL . $tmp_id;
 // タイトルに商品名を入れる
 $objPage->tpl_title = "商品詳細 ". $objPage->arrProduct["name"];
 //オススメ商品情報表示
@@ -424,6 +427,31 @@ function lfGetReviewData($id) {
 	$arrval[] = $id;
 	$arrReview = $objQuery->select($col, $from, $where, $arrval);
 	return $arrReview; 
+}
+
+/*
+ * 商品ごとのトラックバック情報を取得する
+ * 
+ * @param $product_id
+ * @return $arrTrackback
+ */
+function lfGetTrackbackData($product_id) {
+
+	$arrTrackback = array();
+
+	// トラックバック機能の稼働状況チェック
+	if (sfGetSiteControlFlg(SITE_CONTROL_TRACKBACK) != 1) {
+		return $arrTrackback;
+	}	
+
+	$objQuery = new SC_Query;
+	//商品ごとのトラックバック情報を取得する
+	$col = "blog_name, url, title, excerpt, title, create_date";
+	$from = "dtb_trackback";
+	$where = "del_flg = 0 AND status = 1 AND product_id = ? ORDER BY create_date DESC LIMIT " . TRACKBACK_VIEW_MAX;
+	$arrval[] = $product_id;
+	$arrTrackback = $objQuery->select($col, $from, $where, $arrval);
+	return $arrTrackback; 
 }
 
 //支払方法の取得
