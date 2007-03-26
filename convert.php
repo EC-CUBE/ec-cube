@@ -8,7 +8,7 @@
  */
 
 /** include files suffix. */
-$includes = ".php,.inc,.tpl,.css";
+$includes = ".php,.inc,.tpl,.css,.sql";
 
 /** convert from encoding. */
 $fromEncoding = "EUC-JP";
