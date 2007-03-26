@@ -44,7 +44,11 @@ if (isset($_POST["url"])) {
 } else if (isset($_GET["url"])) {
 	$arrData["url"] = trim(mb_convert_encoding($_GET["url"], $afterEncode, $beforeEncode));
 } else {
-	// TODO:URLは必須、さらにGETでの空アクセスを制御(livedoor blog)
+	/*
+	 * TODO:トラックバック受信の標準化を決める
+	 * RSS目的ではないGETリクエストを制御(livedoor blog)
+	 * _rssパラメータでのGETリクエストを制御(Yahoo blog)
+	 */
 	exit();
 }
 
