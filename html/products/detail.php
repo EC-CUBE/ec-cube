@@ -157,7 +157,7 @@ if($objPage->arrProduct['sale_unlimited'] == 1 || $objPage->arrProduct['sale_lim
 }
 
 // サブタイトルを取得
-$arrFirstCat = GetFirstCat($arrRet[0]['category_id']);
+$arrFirstCat = sfGetFirstCat($arrRet[0]['category_id']);
 $tpl_subtitle = $arrFirstCat['name'];
 $objPage->tpl_subtitle = $tpl_subtitle;
 

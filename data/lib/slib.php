@@ -2644,7 +2644,7 @@ function sfGetCatCombName($category_id){
 }
 
 // 指定したカテゴリーIDの大カテゴリーを取得する
-function GetFirstCat($category_id){
+function sfGetFirstCat($category_id){
 	// 商品が属するカテゴリIDを縦に取得
 	$objQuery = new SC_Query();
 	$arrRet = array();
