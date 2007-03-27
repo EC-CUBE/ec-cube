@@ -319,7 +319,7 @@ function lnSetSelect(form, name1, name2, val) {
 				<!--▼トラックバックここから-->
 				<table width="580" border="0" cellspacing="0" cellpadding="0" summary=" ">
 					<tr>
-						<td><img src="<!--{$smarty.const.URL_DIR}-->img/products/title_voice.jpg" width="580" height="30" alt="この商品に対するトラックバック"></td>
+						<td><img src="<!--{$smarty.const.URL_DIR}-->img/products/title_tb.jpg" width="580" height="30" alt="この商品に対するトラックバック"></td>
 					</tr>
 					<tr><td height="10"></td></tr>
 					<tr>
