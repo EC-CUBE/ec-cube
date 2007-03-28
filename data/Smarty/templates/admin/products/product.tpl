@@ -253,6 +253,12 @@
 									*}-->
 								</table>
 								
+								<table width="678" border="0">
+									<tr>
+										<td><input type="button" name="btn" onclick="" value="サブ情報表示"></td>
+									</tr>
+								</table>
+												
 								<div id="sub_detail" style="display:none">
 								<table width="678" border="0" cellspacing="1" cellpadding="8" summary=" ">
 									<!--{section name=cnt loop=$smarty.const.PRODUCTSUB_MAX}-->
