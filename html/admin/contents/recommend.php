@@ -140,4 +140,5 @@ function lfErrorCheck() {
 	return $objErr->arrErr;
 }
 
+>>>>>>> .merge-right.r11984
 ?>
