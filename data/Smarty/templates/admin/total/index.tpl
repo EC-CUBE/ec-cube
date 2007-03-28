@@ -172,7 +172,7 @@
 									<tr>
 										<td align="center">
 											<!--{* <img src="<!--{$tpl_image}-->?<!--{$cashtime}-->" alt="グラフ"> *}-->
-											<img src="<!--{$smarty.server.PHP_SELF|escape}-->?draw_image=true&mode=search&page=<!--{$smarty.post.page}-->&search_startyear_m=<!--{$smarty.post.search_startyear_m}-->&search_startmonth_m=<!--{$smarty.post.search_startmonth_m}-->&search_startyear=<!--{$smarty.post.search_startyear}-->&search_startmonth=<!--{$smarty.post.search_startmonth}-->&search_startday=<!--{$smarty.post.search_startday}-->&search_endyear=<!--{$smarty.post.search_endyear}-->&search_endmonth=<!--{$smarty.post.search_endmonth}-->&search_endday=<!--{$smarty.post.search_endday}-->" alt="グラフ">
+											<img src="<!--{$smarty.server.PHP_SELF|escape}-->?draw_image=true&type=<!--{$smarty.post.type}-->&mode=search&page=<!--{$smarty.post.page}-->&search_startyear_m=<!--{$smarty.post.search_startyear_m}-->&search_startmonth_m=<!--{$smarty.post.search_startmonth_m}-->&search_startyear=<!--{$smarty.post.search_startyear}-->&search_startmonth=<!--{$smarty.post.search_startmonth}-->&search_startday=<!--{$smarty.post.search_startday}-->&search_endyear=<!--{$smarty.post.search_endyear}-->&search_endmonth=<!--{$smarty.post.search_endmonth}-->&search_endday=<!--{$smarty.post.search_endday}-->" alt="グラフ">
 										</td>
 									</tr>
 									<tr><td height="15"></td></tr>

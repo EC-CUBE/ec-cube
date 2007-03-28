@@ -54,10 +54,10 @@
 								<table width="678" border="0" cellspacing="1" cellpadding="8" summary=" ">
 									<tr>
 										<td bgcolor="#f2f1ec" width="160" class="fs12n">¾¦ÉÊÌ¾</td>
-										<td bgcolor="#ffffff" width="557" class="fs12n"><!--{$arrForm.product_name}--></td>
+										<td bgcolor="#ffffff" width="557" class="fs12n"><!--{$arrForm.product_name|escape}--></td>
 									</tr>
 									<tr>
-										<td bgcolor="#f2f1ec" width="160" class="fs12n">µ¬³Ê1<span class="red"> *</span></td>
+										<td bgcolor="#f2f1ec" width="160" class="fs12n">µ¬³Ê1<span class="red">*</span></td>
 										<td bgcolor="#ffffff" width="557" class="fs12n">
 										<span class="red12"><!--{$arrErr.select_class_id1}--></span>
 										<select name="select_class_id1">
@@ -118,9 +118,9 @@
 											<td width="100">µ¬³Ê1(<!--{$arrClass[$class_id1]|default:"Ì¤ÁªÂò"}-->)</td>
 											<td width="100">µ¬³Ê2(<!--{$arrClass[$class_id2]|default:"Ì¤ÁªÂò"}-->)</td>
 											<td width="80">¾¦ÉÊ¥³¡¼¥É</td>
-											<td width="160">ºß¸Ë(¸Ä)</td>
-											<td width="100">»²¹Í»Ô¾ì²Á³Ê(±ß)</td>
-											<td width="100">²Á³Ê(±ß)</td>
+											<td width="160">ºß¸Ë(¸Ä)<span class="red">*</span></td>
+											<td width="100"><!--{$smarty.const.NORMAL_PRICE_TITLE}-->(±ß)</td>
+											<td width="100"><!--{$smarty.const.SALE_PRICE_TITLE}-->(±ß)<span class="red">*</span></td>
 										</tr>
 										<!--{section name=cnt loop=$arrClassCat}-->
 										<!--{assign var=key value="error:`$smarty.section.cnt.iteration`"}-->

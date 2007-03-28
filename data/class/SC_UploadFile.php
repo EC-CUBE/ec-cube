@@ -194,7 +194,7 @@ class SC_UploadFile {
 				} else {
 					$arrRet[$val]['filepath'] = $temp_url . "/" . $this->temp_file[$cnt];
 				}
-				$arrRet[$val]['filepath_dir'] = $this->temp_dir . $this->temp_file[$cnt];
+				$arrRet[$val]['real_filepath'] = $this->temp_dir . $this->temp_file[$cnt];
 			} elseif ($this->save_file[$cnt] != "") {
 				// ファイルパスチェック(パスのスラッシュ/が連続しないようにする。)
 				if(ereg("/$", $save_url)) {
@@ -202,12 +202,13 @@ class SC_UploadFile {
 				} else {
 					$arrRet[$val]['filepath'] = $save_url . "/" . $this->save_file[$cnt];
 				}
-				$arrRet[$val]['filepath_dir'] = $this->save_dir . $this->save_file[$cnt];
+				$arrRet[$val]['real_filepath'] = $this->save_dir . $this->save_file[$cnt];
 			}
 			if($arrRet[$val]['filepath'] != "") {
-				
 				if($real_size){
-					list($width, $height) = getimagesize($arrRet[$val]['filepath_dir']);
+					if(is_file($arrRet[$val]['real_filepath'])) {
+						list($width, $height) = getimagesize($arrRet[$val]['real_filepath']);
+					}
 					// ファイル横幅
 					$arrRet[$val]['width'] = $width;
 					// ファイル縦幅

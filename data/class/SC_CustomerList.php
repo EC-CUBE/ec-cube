@@ -66,7 +66,7 @@ class SC_CustomerList extends SC_SelectSql {
 			}
 			*/
 			// 登録日を示すカラム
-			$regdate_col = 'dtb_customer_mail.create_date';
+			$regdate_col = 'dtb_customer.create_date';
 		}
 				
 		// 顧客ID
@@ -163,13 +163,48 @@ class SC_CustomerList extends SC_SelectSql {
 			}
 			$this->setWhere($sql_where);
 		}
+
+		//　E-MAIL(mobile)
+		if (strlen($this->arrSql['email_mobile']) > 0) {
+			//カンマ区切りで複数の条件指定可能に
+			$this->arrSql['email_mobile'] = explode(",", $this->arrSql['email_mobile']);
+			$sql_where = "";
+			foreach($this->arrSql['email_mobile'] as $val) {
+				$val = trim($val);
+				//検索条件を含まない
+				if($this->arrSql['not_email_mobileinc'] == '1') {
+					if($sql_where == "") {
+						$sql_where .= "dtb_customer.email_mobile NOT ILIKE ? ";
+					} else {
+						$sql_where .= "AND dtb_customer.email_mobile NOT ILIKE ? ";
+					}
+				} else {				
+					if($sql_where == "") {
+						$sql_where .= "dtb_customer.email_mobile ILIKE ? ";
+					} else {
+						$sql_where .= "OR dtb_customer.email_mobile ILIKE ? ";
+					}
+				}
+				$searchemail_mobile = $this->addSearchStr($val);
+				$this->arrVal[] = $searchemail_mobile;
+			}
+			$this->setWhere($sql_where);
+		}
+				
+		//　配信メールアドレス種別
+		if ( $mode == 'magazine' ){
+			if ( strlen($this->arrSql['mail_type']) > 0 && $this->arrSql['mail_type'] == 2) {
+				$this->setWhere( " dtb_customer.email_mobile <> ''  ");
+			}
+		}
+							
 		//　HTML-mail
 		if ( $mode == 'magazine' ){
 			if ( strlen($this->arrSql['htmlmail']) > 0 ) {
-				$this->setWhere( " mail_flag = ? ");
+				$this->setWhere( " mailmaga_flg = ? ");
 				$this->arrVal[] = $this->arrSql['htmlmail'];
 			} else {
-				$this->setWhere( " (mail_flag = 1 or mail_flag = 2) ");
+				$this->setWhere( " (mailmaga_flg = 1 or mailmaga_flg = 2) ");
 			}
 		}
 		
@@ -280,37 +315,40 @@ class SC_CustomerList extends SC_SelectSql {
 		return $this->getSql(0);	
 	}
 
-	function getListMailMagazine() {
+	function getListMailMagazine($is_mobile = false) {
+			
+		$colomn = $this->getMailMagazineColumn($is_mobile);
 		$this->select = "
 			SELECT 
-				dtb_customer.customer_id,
+				$colomn
+			FROM 
+				dtb_customer";
+		return $this->getSql(0);	
+	}
+	
+	function getMailMagazineColumn($is_mobile= false) {
+		if($is_mobile == true) {
+			$email_column = "dtb_customer.email_mobile as email";
+		} else {
+			$email_column = "dtb_customer.email";			
+		}
+		
+		$column ="dtb_customer.customer_id,
 				dtb_customer.name01,
 				dtb_customer.name02,
 				dtb_customer.kana01,
 				dtb_customer.kana02,
 				dtb_customer.sex,
-				dtb_customer.email,
+				$email_column,		
 				dtb_customer.tel01,
 				dtb_customer.tel02,
 				dtb_customer.tel03,
 				dtb_customer.pref, 
-				dtb_customer_mail.mail_flag 
-			FROM 
-				dtb_customer_mail LEFT OUTER JOIN dtb_customer USING(email)";
-		return $this->getSql(0);	
+				dtb_customer.mailmaga_flg";
+				
+		return $column;
 	}
 	
-	function getListMailMagazineCount() {
-		$this->select = "SELECT COUNT(*) FROM dtb_customer_mail LEFT OUTER JOIN dtb_customer USING(email)";
-		return $this->getSql(0);	
-	}
-	//購入商品コード検索用SQL
-	function getBuyList(){
-		$this->select = "SELECT A.customer_id, A.name01, A.name02, A.kana01, A.kana02, A.sex, A.email, A.tel01, A.tel02, A.tel03, A.pref, A.mail_flag, B.order_email, B.order_id, C.product_code 
-						FROM (dtb_customer LEFT OUTER JOIN dtb_customer_mail USING (email)) AS A LEFT OUTER JOIN dtb_order AS B ON 
-						A.email=B.order_email LEFT OUTER JOIN dtb_order_detail AS C ON B.order_id = C.order_id";
-	}
-
 	//　検索総数カウント用SQL
 	function getListCount() {
 		$this->select = "SELECT COUNT(customer_id) FROM dtb_customer ";	

@@ -144,19 +144,20 @@ function lfGetNaviData($url, $preview=false){
  **************************************************************************************************************/
 function lfGetNavi($arrNavi, $target_id){
 	$arrRet = array();
-	
-	foreach($arrNavi as $key => $val){
-		// 指定された箇所と同じデータだけを取得する
-		if ($target_id == $val['target_id']){
-			if ($val['php_path'] != '') {
-				$arrNavi[$key]['php_path'] = HTML_PATH . $val['php_path'];
-				$arrNavi[$key]['include'] = "<!--{include file='".$val['php_path']."'}-->";
-			}else{
-				$arrNavi[$key]['tpl_path'] = USER_PATH . $val['tpl_path'];
-				$arrNavi[$key]['include'] = "<!--{include file='". USER_PATH . $val['tpl_path'] ."'}-->";
+	if(is_array($arrNavi)) {
+		foreach($arrNavi as $key => $val){
+			// 指定された箇所と同じデータだけを取得する
+			if ($target_id == $val['target_id']){
+				if ($val['php_path'] != '') {
+					$arrNavi[$key]['php_path'] = HTML_PATH . $val['php_path'];
+					$arrNavi[$key]['include'] = "<!--{include file='".$val['php_path']."'}-->";
+				}else{
+					$arrNavi[$key]['tpl_path'] = USER_PATH . $val['tpl_path'];
+					$arrNavi[$key]['include'] = "<!--{include file='". USER_PATH . $val['tpl_path'] ."'}-->";
+				}
+				
+				$arrRet[] = $arrNavi[$key];
 			}
-			
-			$arrRet[] = $arrNavi[$key];
 		}
 	}
 	return $arrRet;	

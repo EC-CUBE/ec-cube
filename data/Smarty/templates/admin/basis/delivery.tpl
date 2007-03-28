@@ -51,15 +51,17 @@
 									<tr align="center" bgcolor="#f2f1ec" class="fs12n">
 										<td width="223">配送業者</td>
 										<td width="222">名称</td>
-										<td width="50">編集</td>
+										<td width="50">変更</td>
 										<td width="50">削除</td>
 										<td width="130">移動</td>
+										
 									</tr>
 									<!--{section name=cnt loop=$arrDelivList}-->
 										<tr bgcolor="#ffffff" class="fs12n">
 											<td><!--{$arrDelivList[cnt].name|escape}--></td>
 											<td><!--{$arrDelivList[cnt].service_name|escape}--></td>
-											<td align="center"><a href="<!--{$smarty.const.URL_DIR}-->" onclick="fnChangeAction('./delivery_input.php'); fnModeSubmit('pre_edit', 'deliv_id', <!--{$arrDelivList[cnt].deliv_id}-->); return false;">編集</a></td>
+											<td align="center"><a href="<!--{$smarty.const.URL_DIR}-->" onclick="fnChangeAction('./delivery_input.php'); fnModeSubmit('pre_edit', 'deliv_id', <!--{$arrDelivList[cnt].deliv_id}-->); return false;">変更</a></td>
+											
 											<td align="center"><a href="<!--{$smarty.server.PHP_SELF|escape}-->" onclick="fnModeSubmit('delete', 'deliv_id', <!--{$arrDelivList[cnt].deliv_id}-->); return false;">削除</a></td>
 											<td align="center">
 											<!--{if $smarty.section.cnt.iteration != 1}-->
@@ -72,7 +74,6 @@
 										</tr>
 									<!--{/section}-->
 								</table>
-
 								<table width="678" border="0" cellspacing="0" cellpadding="0" summary=" ">
 									<tr>
 										<td bgcolor="#cccccc"><img src="<!--{$smarty.const.URL_DIR}-->img/common/_.gif" width="1" height="5" alt=""></td>
@@ -82,6 +83,7 @@
 									<tr>
 										<td bgcolor="#cccccc"><img src="<!--{$smarty.const.URL_DIR}-->img/common/_.gif" width="1" height="10" alt=""></td>
 										<td bgcolor="#e9e7de" align="center">
+										
 										<table border="0" cellspacing="0" cellpadding="0" summary=" ">
 											<tr>
 												<td><input type="button" name="subm2" value="配送業者<!--{if $smarty.const.INPUT_DELIV_FEE}-->・配送料<!--{/if}-->を追加" onclick="fnChangeAction('./delivery_input.php'); fnModeSubmit('pre_edit','','');" /></td>

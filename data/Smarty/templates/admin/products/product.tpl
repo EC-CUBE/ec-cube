@@ -100,13 +100,13 @@
 										<input type="text" name="product_code" value="<!--{$arrForm.product_code|escape}-->" maxlength="<!--{$smarty.const.STEXT_LEN}-->" style="<!--{if $arrErr.product_code != ""}-->background-color: <!--{$smarty.const.ERR_COLOR}--><!--{/if}-->" size="60" class="box60" /><span class="red"> （上限<!--{$smarty.const.STEXT_LEN}-->文字）</span></td>
 									</tr>
 									<tr class="fs12n">
-										<td bgcolor="#f2f1ec" width="160">参考市場価格</td>
+										<td bgcolor="#f2f1ec" width="160"><!--{$smarty.const.NORMAL_PRICE_TITLE}--></td>
 										<td bgcolor="#ffffff" width="557">
 										<span class="red12"><!--{$arrErr.price01}--></span>
 										<input type="text" name="price01" value="<!--{$arrForm.price01|escape}-->" size="6" class="box6" maxlength="<!--{$smarty.const.PRICE_LEN}-->" style="<!--{if $arrErr.price01 != ""}-->background-color: <!--{$smarty.const.ERR_COLOR}--><!--{/if}-->"/>円<span class="red10"> （半角数字で入力）</span></td>
 									</tr>
 									<tr class="fs12n">
-										<td bgcolor="#f2f1ec" width="160">商品価格<span class="red"> *</span></td>
+										<td bgcolor="#f2f1ec" width="160"><!--{$smarty.const.SALE_PRICE_TITLE}--><span class="red"> *</span></td>
 										<td bgcolor="#ffffff" width="557">
 										<span class="red12"><!--{$arrErr.price02}--></span>
 										<input type="text" name="price02" value="<!--{$arrForm.price02|escape}-->" size="6" class="box6" maxlength="<!--{$smarty.const.PRICE_LEN}-->" style="<!--{if $arrErr.price02 != ""}-->background-color: <!--{$smarty.const.ERR_COLOR}--><!--{/if}-->"/>円<span class="red10"> （半角数字で入力）</span></td>
@@ -187,7 +187,7 @@
 									</tr>
 									<tr>
 										<!--{assign var=key value="main_list_image"}-->
-										<td bgcolor="#f2f1ec" width="160" class="fs12n">一覧-メイン画像<span class="red"> *</span><br />[<!--{$smarty.const.SMALL_IMAGE_HEIGHT}-->×<!--{$smarty.const.SMALL_IMAGE_WIDTH}-->]</td>
+										<td bgcolor="#f2f1ec" width="160" class="fs12n">一覧-メイン画像<span class="red"> *</span><br />[<!--{$smarty.const.SMALL_IMAGE_WIDTH}-->×<!--{$smarty.const.SMALL_IMAGE_HEIGHT}-->]</td>
 										<td bgcolor="#ffffff" width="557" class="fs12n">
 										<a name="<!--{$key}-->"></a>
 										<a name="main_image"></a>
@@ -202,7 +202,7 @@
 									</tr>
 									<tr>
 										<!--{assign var=key value="main_image"}-->
-										<td bgcolor="#f2f1ec" width="160" class="fs12n">詳細-メイン画像<span class="red"> *</span><br />[<!--{$smarty.const.NORMAL_IMAGE_HEIGHT}-->×<!--{$smarty.const.NORMAL_IMAGE_WIDTH}-->]</td>
+										<td bgcolor="#f2f1ec" width="160" class="fs12n">詳細-メイン画像<span class="red"> *</span><br />[<!--{$smarty.const.NORMAL_IMAGE_WIDTH}-->×<!--{$smarty.const.NORMAL_IMAGE_HEIGHT}-->]</td>
 										<td bgcolor="#ffffff" width="557" class="fs12n">
 										<span class="red12"><!--{$arrErr[$key]}--></span>
 										<!--{if $arrFile[$key].filepath != ""}-->
@@ -214,7 +214,7 @@
 									</tr>
 									<tr>
 										<!--{assign var=key value="main_large_image"}-->
-										<td bgcolor="#f2f1ec" width="160" class="fs12n">詳細-メイン拡大画像<br />[<!--{$smarty.const.LARGE_IMAGE_HEIGHT}-->×<!--{$smarty.const.LARGE_IMAGE_WIDTH}-->]</td>
+										<td bgcolor="#f2f1ec" width="160" class="fs12n">詳細-メイン拡大画像<br />[<!--{$smarty.const.LARGE_IMAGE_WIDTH}-->×<!--{$smarty.const.LARGE_IMAGE_HEIGHT}-->]</td>
 										<td bgcolor="#ffffff" width="557" class="fs12n">
 										<span class="red12"><!--{$arrErr[$key]}--></span>
 										<!--{if $arrFile[$key].filepath != ""}-->
@@ -270,7 +270,7 @@
 									</tr>
 									<tr>
 										<!--{assign var=key value="sub_image`$smarty.section.cnt.iteration`"}-->
-										<td bgcolor="#f2f1ec" width="160" class="fs12n">詳細-サブ画像（<!--{$smarty.section.cnt.iteration}-->）<br />[<!--{$smarty.const.NORMAL_SUBIMAGE_HEIGHT}-->×<!--{$smarty.const.NORMAL_SUBIMAGE_WIDTH}-->]</td>
+										<td bgcolor="#f2f1ec" width="160" class="fs12n">詳細-サブ画像（<!--{$smarty.section.cnt.iteration}-->）<br />[<!--{$smarty.const.NORMAL_SUBIMAGE_WIDTH}-->×<!--{$smarty.const.NORMAL_SUBIMAGE_HEIGHT}-->]</td>
 										<td bgcolor="#ffffff" width="557" class="fs12n">
 										<a name="<!--{$key}-->"></a>
 										<!--{assign var=largekey value="sub_large_image`$smarty.section.cnt.iteration`"}-->
@@ -285,7 +285,7 @@
 									</tr>
 									<tr>
 										<!--{assign var=key value="sub_large_image`$smarty.section.cnt.iteration`"}-->
-										<td bgcolor="#f2f1ec" width="160" class="fs12n">詳細-サブ拡大画像（<!--{$smarty.section.cnt.iteration}-->）<br />[<!--{$smarty.const.LARGE_SUBIMAGE_HEIGHT}-->×<!--{$smarty.const.LARGE_SUBIMAGE_WIDTH}-->]</td>
+										<td bgcolor="#f2f1ec" width="160" class="fs12n">詳細-サブ拡大画像（<!--{$smarty.section.cnt.iteration}-->）<br />[<!--{$smarty.const.LARGE_SUBIMAGE_WIDTH}-->×<!--{$smarty.const.LARGE_SUBIMAGE_HEIGHT}-->]</td>
 										<td bgcolor="#ffffff" width="557" class="fs12n">
 										<span class="red12"><!--{$arrErr[$key]}--></span>
 										<!--{if $arrFile[$key].filepath != ""}-->

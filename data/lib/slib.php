@@ -83,7 +83,7 @@ function sfTabaleExists($table_name, $dsn = "") {
 	return false;
 }
 
-// カラムの存在チェック
+// カラムの存在チェックと作成
 function sfColumnExists($table_name, $col_name, $col_type = "", $dsn = "", $add = false) {
 	if($dsn == "") {
 		if(defined('DEFAULT_DSN')) {
@@ -119,6 +119,58 @@ function sfColumnExists($table_name, $col_name, $col_type = "", $dsn = "", $add 
 	return false;
 }
 
+// インデックスの存在チェックと作成
+function sfIndexExists($table_name, $col_name, $index_name, $length = "", $dsn = "", $add = false) {
+	if($dsn == "") {
+		if(defined('DEFAULT_DSN')) {
+			$dsn = DEFAULT_DSN;
+		} else {
+			return;
+		}
+	}
+
+	// テーブルが無ければエラー
+	if(!sfTabaleExists($table_name, $dsn)) return false;
+	
+	$objQuery = new SC_Query($dsn, true, true);
+	// 正常に接続されている場合
+	if(!$objQuery->isError()) {
+		list($db_type) = split(":", $dsn);		
+		switch($db_type) {
+		case 'pgsql':
+			// インデックスの存在確認
+			$arrRet = $objQuery->getAll("SELECT relname FROM pg_class WHERE relname = ?", array($index_name));
+			break;
+		case 'mysql':
+			// インデックスの存在確認
+			$arrRet = $objQuery->getAll("SHOW INDEX FROM ? WHERE Key_name = ?", array($table_name, $index_name));			
+			break;
+		default:
+			return false;
+		}
+		// すでにインデックスが存在する場合
+		if(count($arrRet) > 0) {
+			return true;
+		}
+	}
+	
+	// インデックスを作成する
+	if($add){
+		switch($db_type) {
+		case 'pgsql':
+			$objQuery->query("CREATE INDEX ? ON ? (?)", array($index_name, $table_name, $col_name));
+			break;
+		case 'mysql':
+			$objQuery->query("CREATE INDEX ? ON ? (?(?))", array($index_name, $table_name, $col_name, $length));			
+			break;
+		default:
+			return false;
+		}
+		return true;
+	}	
+	return false;
+}
+
 // データの存在チェック
 function sfDataExists($table_name, $where, $arrval, $dsn = "", $sql = "", $add = false) {
 	if($dsn == "") {
@@ -142,6 +194,45 @@ function sfDataExists($table_name, $where, $arrval, $dsn = "", $sql = "", $add =
 	}
 	
 	return $ret;
+}
+
+/*
+ * サイト管理情報から値を取得する。
+ * データが存在する場合、必ず1以上の数値が設定されている。
+ * 0を返した場合は、呼び出し元で対応すること。
+ * 
+ * @param $control_id 管理ID
+ * @param $dsn DataSource
+ * @return $control_flg フラグ
+ */
+function sfGetSiteControlFlg($control_id, $dsn = "") {
+
+	// データソース
+	if($dsn == "") {
+		if(defined('DEFAULT_DSN')) {
+			$dsn = DEFAULT_DSN;
+		} else {
+			return;
+		}
+	}
+
+	// クエリ生成
+	$target_column = "control_flg";
+	$table_name = "dtb_site_control";
+	$where = "control_id = ?";
+	$arrval = array($control_id);
+	$control_flg = 0;
+
+	// クエリ発行
+	$objQuery = new SC_Query($dsn, true, true);
+	$arrSiteControl = $objQuery->select($target_column, $table_name, $where, $arrval);
+
+	// データが存在すればフラグを取得する
+	if (count($arrSiteControl) > 0) {
+		$control_flg = $arrSiteControl[0]["control_flg"];
+	}
+	
+	return $control_flg;
 }
 
 // テーブルのカラム一覧を取得する
@@ -264,7 +355,7 @@ function sfDispError($type) {
 }
 
 /* サイトエラーページの表示 */
-function sfDispSiteError($type, $objSiteSess = "", $return_top = false, $err_msg = "") {
+function sfDispSiteError($type, $objSiteSess = "", $return_top = false, $err_msg = "", $is_mobile = false) {
 	global $objCampaignSess;
 	
 	if ($objSiteSess != "") {
@@ -280,7 +371,12 @@ function sfDispSiteError($type, $objSiteSess = "", $return_top = false, $err_msg
 	}
 	
 	$objPage = new LC_ErrorPage();
-	$objView = new SC_SiteView();
+	
+	if($is_mobile === true) {
+		$objView = new SC_MobileView();		
+	} else {
+		$objView = new SC_SiteView();
+	}
 	
 	switch ($type) {
 	    case PRODUCT_NOT_FOUND:
@@ -381,11 +477,11 @@ function sfIsSuccess($objSess, $disp_error = true) {
 }
 
 /* 前のページで正しく登録が行われたか判定 */
-function sfIsPrePage($objSiteSess) {
+function sfIsPrePage($objSiteSess, $is_mobile = false) {
 	$ret = $objSiteSess->isPrePage();
 	if($ret != true) {
 		// エラーページの表示
-		sfDispSiteError(PAGE_ERROR, $objSiteSess);
+		sfDispSiteError(PAGE_ERROR, $objSiteSess, false, "", $is_mobile);			
 	}
 }
 
@@ -474,15 +570,15 @@ function sfUpDirName() {
 // 現在のサイトを更新（ただしポストは行わない）
 function sfReload($get = "") {
 	if ($_SERVER["SERVER_PORT"] == "443" ){
-		$protocol = "https";
+		$url = ereg_replace(URL_DIR . "$", "", SSL_URL);
 	} else {
-		$protocol = "http";
+		$url = ereg_replace(URL_DIR . "$", "", SITE_URL);
 	}
-		
+	
 	if($get != "") {
-		header("Location: ".$protocol."://" .$_SERVER["SERVER_NAME"] . $_SERVER['PHP_SELF'] . "?" . $get);
+		header("Location: ". $url . $_SERVER['PHP_SELF'] . "?" . $get);
 	} else {
-		header("Location: ".$protocol."://" .$_SERVER["SERVER_NAME"] . $_SERVER['PHP_SELF']);
+		header("Location: ". $url . $_SERVER['PHP_SELF']);
 	}
 	exit;
 }
@@ -811,6 +907,7 @@ function sfArrKeyValues($arrList, $keyname, $valname, $len_max = "", $keysize = 
 // 配列の値をカンマ区切りで返す。
 function sfGetCommaList($array, $space=true) {
 	if (count($array) > 0) {
+		$line = "";
 		foreach($array as $val) {
 			if ($space) {
 				$line .= $val . ", ";
@@ -1739,7 +1836,11 @@ function sfGetCustomerSqlVal($uniqid, $sqlval) {
 	    $sqlval['order_tel01'] = $objCustomer->getValue('tel01');
 	    $sqlval['order_tel02'] = $objCustomer->getValue('tel02');
 		$sqlval['order_tel03'] = $objCustomer->getValue('tel03');
-		$sqlval['order_email'] = $objCustomer->getValue('email');
+		if (defined('MOBILE_SITE')) {
+			$sqlval['order_email'] = $objCustomer->getValue('email_mobile');
+		} else {
+			$sqlval['order_email'] = $objCustomer->getValue('email');
+		}
 		$sqlval['order_job'] = $objCustomer->getValue('job');
 		$sqlval['order_birth'] = $objCustomer->getValue('birth');
 	}
@@ -1767,9 +1868,9 @@ function sfRegistTempOrder($uniqid, $sqlval) {
 
 /* 会員のメルマガ登録があるかどうかのチェック(仮会員を含まない) */
 function sfCheckCustomerMailMaga($email) {
-	$col = "T1.email, T1.mail_flag, T2.customer_id";
-	$from = "dtb_customer_mail AS T1 LEFT JOIN dtb_customer AS T2 ON T1.email = T2.email";
-	$where = "T1.email = ? AND T2.status = 2";
+	$col = "email, mailmaga_flg, customer_id";
+	$from = "dtb_customer";
+	$where = "email = ? AND status = 2";
 	$objQuery = new SC_Query();
 	$arrRet = $objQuery->select($col, $from, $where, array($email));
 	// 会員のメールアドレスが登録されている
@@ -2045,6 +2146,7 @@ function sfCutString($str, $len, $byte = true, $commadisp = true) {
 	if($byte) {
 		if(strlen($str) > ($len + 2)) {
 			$ret =substr($str, 0, $len);
+			$cut = substr($str, $len);
 		} else {
 			$ret = $str;
 			$commadisp = false;
@@ -2052,11 +2154,35 @@ function sfCutString($str, $len, $byte = true, $commadisp = true) {
 	} else {
 		if(mb_strlen($str) > ($len + 1)) {
 			$ret = mb_substr($str, 0, $len);
+			$cut = mb_substr($str, $len);
 		} else {
 			$ret = $str;
 			$commadisp = false;
 		}
 	}
+
+	// 絵文字タグの途中で分断されないようにする。
+	if (isset($cut)) {
+		// 分割位置より前の最後の [ 以降を取得する。
+		$head = strrchr($ret, '[');
+
+		// 分割位置より後の最初の ] 以前を取得する。
+		$tail_pos = strpos($cut, ']');
+		if ($tail_pos !== false) {
+			$tail = substr($cut, 0, $tail_pos + 1);
+		}
+
+		// 分割位置より前に [、後に ] が見つかった場合は、[ から ] までを
+		// 接続して絵文字タグ1個分になるかどうかをチェックする。
+		if ($head !== false && $tail_pos !== false) {
+			$subject = $head . $tail;
+			if (preg_match('/^\[emoji:e?\d+\]$/', $subject)) {
+				// 絵文字タグが見つかったので削除する。
+				$ret = substr($ret, 0, -strlen($head));
+			}
+		}
+	}
+
 	if($commadisp){
 		$ret = $ret . "...";
 	}
@@ -2199,7 +2325,7 @@ function sfDBDatetoTime($db_date) {
 /*
 	index.php?tpl=test.tpl
 */
-function sfCustomDisplay($objPage) {
+function sfCustomDisplay($objPage, $is_mobile = false) {
 	$basename = basename($_SERVER["REQUEST_URI"]);
 
 	if($basename == "") {
@@ -2218,7 +2344,11 @@ function sfCustomDisplay($objPage) {
 
 	$template_path = TEMPLATE_FTP_DIR . $tpl_name;
 
-	if(file_exists($template_path)) {
+	if($is_mobile === true) {
+		$objView = new SC_MobileView();			
+		$objView->assignobj($objPage);
+		$objView->display(SITE_FRAME);		
+	} else if(file_exists($template_path)) {
 		$objView = new SC_UserView(TEMPLATE_FTP_DIR, COMPILE_FTP_DIR);
 		$objView->assignobj($objPage);
 		$objView->display($tpl_name);
@@ -2252,15 +2382,13 @@ function sfEditCustomerData($array, $arrRegistColumn) {
 	if ($array["password"] != DEFAULT_PASSWORD) $arrRegist["password"] = sha1($array["password"] . ":" . AUTH_MAGIC); 
 	$arrRegist["update_date"] = "NOW()";
 	
-	$sqlval["create_date"] = "NOW()";
-	$sqlval["update_date"] = "NOW()";
-	$sqlval['email'] = $array['email'];
-	$sqlval['mail_flag'] = $array['mail_flag'];
 	//-- 編集登録実行
+	if (defined('MOBILE_SITE')) {
+		$arrRegist['email_mobile'] = $arrRegist['email'];
+		unset($arrRegist['email']);
+	}
 	$objQuery->begin();
 	$objQuery->update("dtb_customer", $arrRegist, "customer_id = ? ", array($array['customer_id']));
-	$objQuery->delete("dtb_customer_mail", "email = ?", array($array['email']));
-	$objQuery->insert("dtb_customer_mail", $sqlval);
 	$objQuery->commit();
 }
 
@@ -2516,7 +2644,7 @@ function sfGetCatCombName($category_id){
 }
 
 // 指定したカテゴリーIDの大カテゴリーを取得する
-function GetFirstCat($category_id){
+function sfGetFirstCat($category_id){
 	// 商品が属するカテゴリIDを縦に取得
 	$objQuery = new SC_Query();
 	$arrRet = array();

@@ -1,3 +1,10 @@
+<!--{*
+/*
+ * Copyright(c) 2000-2007 LOCKON CO.,LTD. All Rights Reserved.
+ *
+ * http://www.lockon.co.jp/
+ */
+*}-->
 <!--▼CONTENTS-->
 <table width="780" cellspacing="0" cellpadding="0" summary=" ">
 	<tr>
@@ -137,7 +144,8 @@
 				<div class="red12" id="comment02">※「ご注文完了ページへ」をクリック後、完了ページが表示されるまでお待ちください。</div>
 				<div id="button">
 				<!--「戻る」「登録」-->
-				<a href="<!--{$smarty.server.PHP_SELF|escape}-->" onmouseover="chgImg('/img/button/back03_on.gif','back03')" onmouseout="chgImg('/img/button/back03.gif','back03')" onclick="history.back(); return false;" /><img src="/img/button/back03.gif" width="110" height="30" alt="戻る" border="0" name="back03" id="back03" ></a><img src="../img/_.gif" width="20" height="" alt="" /><input type="image" onmouseover="chgImgImageSubmit('../img/shopping/complete_on.gif',this)" onmouseout="chgImgImageSubmit('../img/shopping/complete.gif',this)" src="../img/shopping/complete.gif" width="170" height="30" alt="ご注文完了ページへ" border="0" name="complete" id="complete" />
+				<a href="<!--{$smarty.server.PHP_SELF|escape}-->" onmouseover="chgImg('/img/button/back03_on.gif','back03')" onmouseout="chgImg('/img/button/back03.gif','back03')" onclick="history.back(); return false;" /><img src="/img/button/back03.gif" width="110" height="30" alt="戻る" border="0" name="back03" id="back03" ></a><img src="../img/_.gif" width="12" height="" alt="" />
+				<input type="image" onmouseover="chgImgImageSubmit('../img/shopping/complete_on.gif',this)" onmouseout="chgImgImageSubmit('../img/shopping/complete.gif',this)" src="../img/shopping/complete.gif" width="170" height="30" alt="ご注文完了ページへ" border="0" name="complete" id="complete" />
 				</div>
 				</form>
 				

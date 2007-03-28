@@ -49,7 +49,7 @@
 							</a>
 						</td>
 						<td class="fs12">
-							<strong><!--{$arrProductsClass[cnt].name}--></strong><br>
+							<strong><!--{$arrProductsClass[cnt].name|escape}--></strong><br>
 							<!--{if $arrProductsClass[cnt].classcategory_name1 != ""}-->
 								<!--{$arrProductsClass[cnt].class_name1}-->：<!--{$arrProductsClass[cnt].classcategory_name1}--><br>
 							<!--{/if}-->
@@ -133,7 +133,8 @@
 					<tr>
 						<td colspan="2" bgcolor="#f0f0f0" class="fs12n"><strong>▼お届け先</strong></td>
 					</tr>
-					<!--{if $arrData.deliv_check == 1}-->
+					<!--{* 別のお届け先が選択されている場合 *}-->
+					<!--{if $arrData.deliv_check >= 1}-->
 						<tr>
 							<td width="150" bgcolor="#f0f0f0" class="fs12">お名前</td>
 							<td width="507" bgcolor="#ffffff" class="fs12"><!--{$arrData.deliv_name01|escape}--> <!--{$arrData.deliv_name02|escape}--></td>
@@ -220,8 +221,7 @@
 
 			<tr>
 				<td align="center">
-					<a href="<!--{$smarty.server.PHP_SELF|escape}-->" onmouseover="chgImgImageSubmit('<!--{$smarty.const.URL_DIR}-->img/common/b_back_on.gif',back03)" onmouseout="chgImgImageSubmit('<!--{$smarty.const.URL_DIR}-->img/common/b_back.gif',back03)" onclick="fnModeSubmit('return', '', ''); return false;"><img src="<!--{$smarty.const.URL_DIR}-->img/common/b_back.gif" width="150" height="30" alt="戻る" border="0" name="back03" id="back03"/></a>
-					<img src="<!--{$smarty.const.URL_DIR}-->img/_.gif" width="20" height="" alt="" />
+					<a href="./payment.php" onmouseover="chgImgImageSubmit('<!--{$smarty.const.URL_DIR}-->img/common/b_back_on.gif',back03)" onmouseout="chgImgImageSubmit('<!--{$smarty.const.URL_DIR}-->img/common/b_back.gif',back03)"><img src="<!--{$smarty.const.URL_DIR}-->img/common/b_back.gif" width="150" height="30" alt="戻る" border="0" name="back03" id="back03"/></a><img src="<!--{$smarty.const.URL_DIR}-->img/_.gif" width="12" height="" alt="" />
 					<!--{if $payment_type != ""}-->
 						<input type="image" onmouseover="chgImgImageSubmit('<!--{$smarty.const.URL_DIR}-->img/common/b_next_on.gif',this)" onmouseout="chgImgImageSubmit('<!--{$smarty.const.URL_DIR}-->img/common/b_next.gif',this)" src="<!--{$smarty.const.URL_DIR}-->img/common/b_next.gif" width="150" height="30" alt="次へ" border="0" name="next" id="next" />
 					<!--{else}-->

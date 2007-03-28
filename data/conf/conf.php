@@ -12,6 +12,30 @@ require_once($CONF_PHP_PATH ."/../install.inc");
 require_once($CONF_PHP_PATH ."/core.php" );
 
 //--------------------------------------------------------------------------------------------------------
+
+/** ¥¨¥é¡¼¥ì¥Ù¥ëÀßÄê
+/*
+ *	'E_ERROR'             => Âç¤Ê¼Â¹Ô»þ¥¨¥é¡¼¡£¤³¤ì¤Ï¡¢¥á¥â¥ê³ÎÊÝ¤Ë´Ø¤¹¤ëÌäÂê¤Î¤è¤¦¤ËÉüµ¢¤Ç ¤­¤Ê¤¤¥¨¥é¡¼¤ò¼¨¤·¤Þ¤¹¡£¥¹¥¯¥ê¥×¥È¤Î¼Â¹Ô¤ÏÃæÃÇ¤µ¤ì¤Þ¤¹¡£ 
+ *	'E_WARNING'           => ¼Â¹Ô»þ¤Î·Ù¹ð (Ã×Ì¿Åª¤Ê¥¨¥é¡¼¤Ç¤Ï¤Ê¤¤)¡£¥¹¥¯¥ê¥×¥È¤Î¼Â¹Ô¤ÏÃæÃÇ¤µ ¤ì¤Þ¤»¤ó
+ *	'E_PARSE'             => ¥³¥ó¥Ñ¥¤¥ë»þ¤Î¥Ñ¡¼¥¹¥¨¥é¡¼¡£¥Ñ¡¼¥¹¥¨¥é¡¼¤Ï¥Ñ¡¼¥µ¤Ç¤Î¤ßÀ¸À®¤µ¤ì¤Þ ¤¹¡£ 
+ *	'E_NOTICE'            => ¼Â¹Ô»þ¤Î·Ù¹ð¡£¥¨¥é¡¼¤òÈ¯¤·¤¦¤ë¾õ¶·¤ËÁø¶ø¤·¤¿¤³¤È¤ò¼¨¤¹¡£ ¤¿¤À¤·ÄÌ¾ï¤Î¥¹¥¯¥ê¥×¥È¼Â¹Ô¤Î¾ì¹ç¤Ë¤â¤³¤Î·Ù¹ð¤òÈ¯¤¹¤ë¤³¤È¤¬¤¢¤ê¤¦¤ë¡£
+ *	'E_CORE_ERROR'        => PHP¤Î½é´ü»ÏÆ°»þÅÀ¤Ç¤ÎÃ×Ì¿Åª¤Ê¥¨¥é¡¼¡£E_ERROR¤Ë »÷¤Æ¤¤¤ë¤¬PHP¤Î¥³¥¢¤Ë¤è¤Ã¤ÆÈ¯¹Ô¤µ¤ì¤ëÅÀ¤¬°ã¤¦¡£ 
+ *	'E_CORE_WARNING'      => ¡ÊÃ×Ì¿Åª¤Ç¤Ï¤Ê¤¤¡Ë·Ù¹ð¡£PHP¤Î½é´ü»ÏÆ°»þ¤ËÈ¯À¸¤¹¤ë¡£ E_WARNING¤Ë»÷¤Æ¤¤¤ë¤¬PHP¤Î¥³¥¢¤Ë¤è¤Ã¤ÆÈ¯¹Ô¤µ¤ì¤ë ÅÀ¤¬°ã¤¦¡£ 
+ *	'E_COMPILE_ERROR'     => ¥³¥ó¥Ñ¥¤¥ë»þ¤ÎÃ×Ì¿Åª¤Ê¥¨¥é¡¼¡£E_ERROR¤Ë »÷¤Æ¤¤¤ë¤¬Zend¥¹¥¯¥ê¥×¥Æ¥£¥ó¥°¥¨¥ó¥¸¥ó¤Ë¤è¤Ã¤ÆÈ¯¹Ô¤µ¤ì¤ëÅÀ¤¬°ã¤¦¡£ 
+ *	'E_COMPILE_WARNING'   => ¥³¥ó¥Ñ¥¤¥ë»þ¤Î·Ù¹ð¡ÊÃ×Ì¿Åª¤Ç¤Ï¤Ê¤¤¡Ë¡£E_WARNING¤Ë »÷¤Æ¤¤¤ë¤¬Zend¥¹¥¯¥ê¥×¥Æ¥£¥ó¥°¥¨¥ó¥¸¥ó¤Ë¤è¤Ã¤ÆÈ¯¹Ô¤µ¤ì¤ëÅÀ¤¬°ã¤¦¡£ 
+ *	'E_USER_ERROR'        => ¥æ¡¼¥¶¡¼¤Ë¤è¤Ã¤ÆÈ¯¹Ô¤µ¤ì¤ë¥¨¥é¡¼¥á¥Ã¥»¡¼¥¸¡£E_ERROR ¤Ë»÷¤Æ¤¤¤ë¤¬PHP¥³¡¼¥É¾å¤Çtrigger_error()´Ø¿ô¤ò »ÈÍÑ¤·¤¿¾ì¹ç¤ËÈ¯¹Ô¤µ¤ì¤ëÅÀ¤¬°ã¤¦¡£ 
+ *	'E_USER_WARNING'      => ¥æ¡¼¥¶¡¼¤Ë¤è¤Ã¤ÆÈ¯¹Ô¤µ¤ì¤ë·Ù¹ð¥á¥Ã¥»¡¼¥¸¡£E_WARNING ¤Ë»÷¤Æ¤¤¤ë¤¬PHP¥³¡¼¥É¾å¤Çtrigger_error()´Ø¿ô¤ò »ÈÍÑ¤·¤¿¾ì¹ç¤ËÈ¯¹Ô¤µ¤ì¤ëÅÀ¤¬°ã¤¦¡£ 
+ *	'E_USER_NOTICE'       => ¥æ¡¼¥¶¡¼¤Ë¤è¤Ã¤ÆÈ¯¹Ô¤µ¤ì¤ëÃí°Õ¥á¥Ã¥»¡¼¥¸¡£E_NOTICE¤Ë ¤Ë»÷¤Æ¤¤¤ë¤¬PHP¥³¡¼¥É¾å¤Çtrigger_error()´Ø¿ô¤ò »ÈÍÑ¤·¤¿¾ì¹ç¤ËÈ¯¹Ô¤µ¤ì¤ëÅÀ¤¬°ã¤¦¡£ 
+ *	'E_ALL'               => ¥µ¥Ý¡¼¥È¤µ¤ì¤ëÁ´¤Æ¤Î¥¨¥é¡¼¤È·Ù¹ð¡£PHP < 6 ¤Ç¤Ï E_STRICT ¥ì¥Ù¥ë¤Î¥¨¥é¡¼¤Ï½ü¤¯¡£ 
+ *	'E_STRICT'            => ¢¨PHP5¤«¤é¥µ¥Ý¡¼¥È ¼Â¹Ô»þ¤ÎÃí°Õ¡£¥³¡¼¥É¤ÎÁê¸ß±¿ÍÑÀ­¤ä¸ß´¹À­¤ò°Ý»ý¤¹¤ë¤¿¤á¤Ë PHP ¤¬¥³¡¼¥É¤ÎÊÑ¹¹¤òÄó°Æ¤¹¤ë¡£
+ *	'E_RECOVERABLE_ERROR' => ¢¨PHP5¤«¤é¥µ¥Ý¡¼¥È ¥­¥ã¥Ã¥Á¤Ç¤­¤ëÃ×Ì¿Åª¤Ê¥¨¥é¡¼¡£´í¸±¤Ê¥¨¥é¡¼¤¬È¯À¸¤·¤¿¤¬¡¢ ¥¨¥ó¥¸¥ó¤¬ÉÔ°ÂÄê¤Ê¾õÂÖ¤Ë¤Ê¤ë¤Û¤É¤Ç¤Ï¤Ê¤¤¤³¤È¤òÉ½¤¹¡£ ¥æ¡¼¥¶ÄêµÁ¤Î¥Ï¥ó¥É¥é¤Ç¥¨¥é¡¼¤¬¥­¥ã¥Ã¥Á¤µ¤ì¤Ê¤«¤Ã¤¿¾ì¹ç (set_error_handler() ¤â»²¾È¤¯¤À¤µ¤¤) ¤Ï¡¢ E_ERROR ¤È¤·¤Æ°Û¾ï½ªÎ»¤¹¤ë¡£ 
+ */
+error_reporting(E_ALL & ~E_NOTICE);
+//error_reporting(E_ALL);
+
+//--------------------------------------------------------------------------------------------------------
+
+//--------------------------------------------------------------------------------------------------------
 /** ¥Õ¥í¥ó¥ÈÉ½¼¨´ØÏ¢ **/
 define("SAMPLE_ADDRESS1", "»Ô¶èÄ®Â¼Ì¾¡ÊÎã¡§ÅìµþÅÔÀéÂåÅÄ¶è¿ÀÅÄ¿ÀÊÝÄ®¡Ë");
 define("SAMPLE_ADDRESS2", "ÈÖÃÏ¡¦¥Ó¥ëÌ¾¡ÊÎã¡§1-3-5¡Ë");
@@ -85,13 +109,21 @@ define("AFF_TAG_MID", 3);
 define("AFF_SHOPPING_COMPLETE", 1);
 // ¥æ¡¼¥¶ÅÐÏ¿´°Î»
 define("AFF_ENTRY_COMPLETE", 2);
+// ·èºÑ¼õ¿®ÍÑURL
+define("CREDIT_HTTP_DOMAIN", "http://rcv.ec-cube.net/");
+define("CREDIT_HTTP_ANALYZE_PROGRAM", "rcv_credit.php");
+define("CREDIT_HTTP_ANALYZE_URL", CREDIT_HTTP_DOMAIN . CREDIT_HTTP_ANALYZE_PROGRAM);
 //--------------------------------------------------------------------------------------------------------
 
 // Ê¸»ú¥³¡¼¥É
 define("CHAR_CODE", "EUC-JP");
 
 // EC-CUBE¥Ð¡¼¥¸¥ç¥ó¾ðÊó
+<<<<<<< .working
 define("ECCUBE_VERSION", "1.1.1");
+=======
+define("ECCUBE_VERSION", "1.2.0-beta");
+>>>>>>> .merge-right.r11982
 
 // ·èºÑ¥â¥¸¥å¡¼¥ëÉÕÍ¿Ê¸¸À
 define("ECCUBE_PAYMENT", "EC-CUBE");
@@ -162,6 +194,7 @@ define("REVIEW_REGIST_MAX", 5);
  */
 /* ¥·¥¹¥Æ¥à´ØÏ¢ */
 define ("ADMIN_ID", "1");								// ´ÉÍý¥æ¡¼¥¶ID(¥á¥ó¥Æ¥Ê¥ó¥¹ÍÑÉ½¼¨¤µ¤ì¤Ê¤¤¡£)
+define ("CUSTOMER_CONFIRM_MAIL", false);				// ²ñ°÷ÅÐÏ¿»þ¤Ë²¾²ñ°÷³ÎÇ§¥á¡¼¥ë¤òÁ÷¿®¤¹¤ë¤«¡Êtrue:²¾²ñ°÷¡¢false:ËÜ²ñ°÷¡Ë
 define ("MELMAGA_SEND", true);							// ¥á¥ë¥Þ¥¬ÇÛ¿®ÍÞÀ©(false:OFF¡¢true:ON)
 define ("MELMAGA_BATCH_MODE", false);					// ¥á¥¤¥ë¥Þ¥¬¥¸¥ó¥Ð¥Ã¥Á¥â¡¼¥É(true:¥Ð¥Ã¥Á¤ÇÁ÷¿®¤¹¤ë ¢¨Í×cronÀßÄê¡¢false:¥ê¥¢¥ë¥¿¥¤¥à¤ÇÁ÷¿®¤¹¤ë)
 define ("LOGIN_FRAME", "login_frame.tpl");				// ¥í¥°¥¤¥ó²èÌÌ¥Õ¥ì¡¼¥à
@@ -179,8 +212,13 @@ define ("POINT_RULE", 2);								// ¥Ý¥¤¥ó¥È¤Î·×»»¥ë¡¼¥ë(1:»Í¼Î¸ÞÆþ¡¢2:ÀÚ¤ê¼Î¤Æ¡
 define ("POINT_VALUE", 1);								// 1¥Ý¥¤¥ó¥ÈÅö¤¿¤ê¤ÎÃÍÃÊ(±ß)
 define ("ADMIN_MODE", 0);								// ´ÉÍý¥â¡¼¥É 1:Í­¸ú¡¡0:Ìµ¸ú(Ç¼ÉÊ»þ)
 define ("DAILY_BATCH_MODE", false);						// Çä¾å½¸·×¥Ð¥Ã¥Á¥â¡¼¥É(true:¥Ð¥Ã¥Á¤Ç½¸·×¤¹¤ë ¢¨Í×cronÀßÄê¡¢false:¥ê¥¢¥ë¥¿¥¤¥à¤Ç½¸·×¤¹¤ë)
+<<<<<<< .working
 define ("MAX_LOG_QUANTITY", 5);							// ¥í¥°¥Õ¥¡¥¤¥ëºÇÂç¿ô(¥í¥°¥Æ¡¼¥·¥ç¥ó)
 define ("MAX_LOG_SIZE", "10000");						// 1¤Ä¤Î¥í¥°¥Õ¥¡¥¤¥ë¤ËÊÝÂ¸¤¹¤ëºÇÂçÍÆÎÌ(byte)
+=======
+define ("MAX_LOG_QUANTITY", 5);							// ¥í¥°¥Õ¥¡¥¤¥ëºÇÂç¿ô(¥í¥°¥Æ¡¼¥·¥ç¥ó)
+define ("MAX_LOG_SIZE", "1000000");						// 1¤Ä¤Î¥í¥°¥Õ¥¡¥¤¥ë¤ËÊÝÂ¸¤¹¤ëºÇÂçÍÆÎÌ(byte)
+>>>>>>> .merge-right.r11982
 
 define ("FORGOT_MAIL", 0);								// ¥Ñ¥¹¥ï¡¼¥ÉËº¤ì¤Î³ÎÇ§¥á¡¼¥ë¤òÁ÷ÉÕ¤¹¤ë¤«ÈÝ¤«¡£(0:Á÷¿®¤·¤Ê¤¤¡¢1:Á÷¿®¤¹¤ë)
 define ("HTML_TEMPLATE_SUB_MAX", 12);					// ÅÐÏ¿¤Ç¤­¤ë¥µ¥Ö¾¦ÉÊ¤Î¿ô
@@ -285,6 +323,7 @@ define ("URL_CLASS_REGIST", URL_DIR . "admin/products/class.php");		// µ¬³ÊÅÐÏ¿
 define ("URL_INPUT_ZIP", URL_DIR . "input_zip.php");					// Í¹ÊØÈÖ¹æÆþÎÏ
 define ("URL_DELIVERY_TOP", URL_DIR . "admin/basis/delivery.php");		// ÇÛÁ÷¶È¼ÔÅÐÏ¿
 define ("URL_PAYMENT_TOP", URL_DIR . "admin/basis/payment.php");		// »ÙÊ§¤¤ÊýË¡ÅÐÏ¿
+define ("URL_CONTROL_TOP", URL_DIR . "admin/basis/control.php");		// ¥µ¥¤¥È´ÉÍý¾ðÊóÅÐÏ¿
 define ("URL_HOME", URL_DIR . "admin/home.php");						// ¥Û¡¼¥à
 define ("URL_LOGIN", URL_DIR . "admin/index.php");						// ¥í¥°¥¤¥ó¥Ú¡¼¥¸
 define ("URL_SEARCH_TOP", URL_DIR . "admin/products/index.php");		// ¾¦ÉÊ¸¡º÷¥Ú¡¼¥¸
@@ -377,6 +416,7 @@ define ("URL_SHOP_TOP", SSL_URL . "shopping/index.php");						// ²ñ°÷¾ðÊóÆþÎÏ
 define ("URL_ENTRY_TOP", SSL_URL . "entry/index.php");	 						// ²ñ°÷ÅÐÏ¿¥Ú¡¼¥¸TOP
 define ("URL_SITE_TOP", URL_DIR . "index.php");									// ¥µ¥¤¥È¥È¥Ã¥×
 define ("URL_CART_TOP", URL_DIR . "cart/index.php");							// ¥«¡¼¥È¥È¥Ã¥×
+define ("URL_DELIV_TOP", URL_DIR . "shopping/deliv.php");						// ÇÛÁ÷»þ´ÖÀßÄê 
 define ("URL_MYPAGE_TOP", SSL_URL . "mypage/login.php");						// My¥Ú¡¼¥¸¥È¥Ã¥×
 define ("URL_SHOP_CONFIRM", URL_DIR . "shopping/confirm.php");					// ¹ØÆþ³ÎÇ§¥Ú¡¼¥¸
 define ("URL_SHOP_PAYMENT", URL_DIR . "shopping/payment.php");					// ¤ª»ÙÊ§¤¤ÊýË¡ÁªÂò¥Ú¡¼¥¸
@@ -650,6 +690,15 @@ $arrSex = array(
 					2 => "½÷À­"
 				);
 
+/*¡¡¥á¡¼¥ë¥¢¥É¥ì¥¹¼ïÊÌ¡¡*/
+define ("MAIL_TYPE_PC",1);
+define ("MAIL_TYPE_MOBILE",2);
+$arrMailType = array(
+					MAIL_TYPE_PC => "¥Ñ¥½¥³¥óÍÑ¥¢¥É¥ì¥¹",
+					MAIL_TYPE_MOBILE => "·ÈÂÓÍÑ¥¢¥É¥ì¥¹",
+				);		
+				
+				
 /*¡¡1¹Ô¿ô¡¡*/		
 $arrPageRows = array(
 						10 => 10,
@@ -663,19 +712,27 @@ $arrPageRows = array(
 						90 => 90,
 						100 => 100,
 					);
-		
+
+/* ¼õÃí¥¹¥Æ¡¼¥¿¥¹ */
+define ("ORDER_NEW",1);	 		// ¿·µ¬ÃíÊ¸
+define ("ORDER_PAY_WAIT",2);	// Æþ¶âÂÔ¤Á
+define ("ORDER_PRE_END",6);		// Æþ¶âºÑ¤ß
+define ("ORDER_CANCEL",3);		// ¥­¥ã¥ó¥»¥ë
+define ("ORDER_BACK_ORDER",4);	// ¼è¤ê´ó¤»Ãæ
+define ("ORDER_DELIV",5);		// È¯Á÷ºÑ¤ß
+
 /* ¼õÃí¥¹¥Æ¡¼¥¿¥¹ */
 $arrORDERSTATUS = array(
-	1 => "¿·µ¬¼õÉÕ",
-	2 => "Æþ¶âÂÔ¤Á",
-	6 => "Æþ¶âºÑ¤ß",
-	3 => "¥­¥ã¥ó¥»¥ë",
-	4 => "¼è¤ê´ó¤»Ãæ",
-	5 => "È¯Á÷ºÑ¤ß"
+	ORDER_NEW        => "¿·µ¬¼õÉÕ",
+	ORDER_PAY_WAIT   => "Æþ¶âÂÔ¤Á",
+	ORDER_PRE_END    => "Æþ¶âºÑ¤ß",
+	ORDER_CANCEL     => "¥­¥ã¥ó¥»¥ë",
+	ORDER_BACK_ORDER => "¼è¤ê´ó¤»Ãæ",
+	ORDER_DELIV      => "È¯Á÷ºÑ¤ß"
 );
 
 // ¼õÃí¥¹¥Æ¡¼¥¿¥¹ÊÑ¹¹¤ÎºÝ¤Ë¥Ý¥¤¥ó¥ÈÅù¤ò²Ã»»¤¹¤ë¥¹¥Æ¡¼¥¿¥¹ÈÖ¹æ¡ÊÈ¯Á÷ºÑ¤ß¡Ë
-define("ODERSTATUS_COMMIT", 5);
+define("ODERSTATUS_COMMIT", ORDER_DELIV);
 
 /* ¾¦ÉÊ¼ïÊÌ¤ÎÉ½¼¨¿§ */
 $arrPRODUCTSTATUS_COLOR = array(
@@ -789,6 +846,40 @@ $arrTarget = array(
 	5 => "Unused"
 );
 
+/*--------- ¢¥¥È¥é¥Ã¥¯¥Ð¥Ã¥¯ÍÑ ---------*/
+
+define ("TRACKBACK_STATUS_VIEW", 1);		// É½¼¨
+define ("TRACKBACK_STATUS_NOT_VIEW", 2);	// ÈóÉ½¼¨
+define ("TRACKBACK_STATUS_SPAM", 3);		// ¥¹¥Ñ¥à
+
+define ("TRACKBACK_VIEW_MAX", 10);			// ¥Õ¥í¥ó¥ÈºÇÂçÉ½¼¨¿ô
+define ("TRACKBACK_TO_URL", SITE_URL . "tb/index.php?pid=");	// ¥È¥é¥Ã¥¯¥Ð¥Ã¥¯ÀèURL
+
+// ¾õÂÖ
+$arrTrackBackStatus = array(
+	1 => "É½¼¨",
+	2 => "ÈóÉ½¼¨",
+	3 => "¥¹¥Ñ¥à"
+);
+
+/*--------- ¢¥¥µ¥¤¥È´ÉÍýÍÑ ---------*/
+
+define ("SITE_CONTROL_TRACKBACK", 1);		// ¥È¥é¥Ã¥¯¥Ð¥Ã¥¯
+define ("SITE_CONTROL_AFFILIATE", 2);		// ¥¢¥Õ¥£¥ê¥¨¥¤¥È
+
+// ¥È¥é¥Ã¥¯¥Ð¥Ã¥¯
+$arrSiteControlTrackBack = array(
+	1 => "Í­¸ú",
+	2 => "Ìµ¸ú"
+);
+
+// ¥¢¥Õ¥£¥ê¥¨¥¤¥È
+$arrSiteControlAffiliate = array(
+	1 => "Í­¸ú",
+	2 => "Ìµ¸ú"
+);
+
+/*--------- ¢¥View´ÉÍýÍÑ ---------*/
 
 // View¤ÎWhere¶çÃÖ´¹ÍÑ
 $arrViewWhere = array(

@@ -62,11 +62,21 @@ if($_GET["result"] == "1"){
 	$arrMemo["trans_code"] = array("name"=>"Epsilonトランザクションコード", "value" => $_GET["trans_code"]);
 	$arrVal["memo02"] = serialize($arrMemo);
 
+	// 決済送信データ作成
+	$arrModule['module_id'] = MDL_EPSILON_ID;
+	$arrModule['payment_total'] = $arrPayment[0]["payment_total"];
+	$arrModule['payment_id'] = PAYMENT_CREDIT_ID;
+	$arrVal["memo05"] = serialize($arrModule);
+
 	// 受注一時テーブルに更新
 	sfRegistTempOrder($uniqid, $arrVal);
 
 	// 完了画面へ
-	header("Location: " .  URL_SHOP_COMPLETE);
+	if (is_callable(GC_MobileUserAgent) && GC_MobileUserAgent::isMobile()) {
+		header("Location: " .  gfAddSessionId(URL_SHOP_COMPLETE));
+	} else {
+		header("Location: " .  URL_SHOP_COMPLETE);
+	}
 }
 
 // データ送信
@@ -123,6 +133,12 @@ function lfSendCredit($arrData, $arrPayment, $arrMainProduct, $again = true){
 		// 正常な推移であることを記録しておく
 		$objSiteSess->setRegistFlag();
 		
+		// 携帯端末の場合は、セッションID・オーダー番号・戻ってくるURLを保存しておく。
+		if (is_callable(GC_MobileUserAgent) && GC_MobileUserAgent::isMobile()) {
+			sfMobileSetExtSessionId('order_number', $arrData['order_id'], 'shopping/load_payment_module.php');
+			sfMobileSetExtSessionId('order_number', $arrData['order_id'], 'shopping/confirm.php');
+		}
+
 		$url = sfGetXMLValue($arrXML,'RESULT','REDIRECT');
 		header("Location: " . $url);
 	}

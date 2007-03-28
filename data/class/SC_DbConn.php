@@ -48,6 +48,9 @@ class SC_DbConn{
 	
 	// クエリの実行
 	function query($n ,$arr = "", $ignore_err = false){
+		// mysqlの場合にはビュー表を変換する
+		if (DB_TYPE == "mysql") $n = sfChangeMySQL($n);
+
 		if ( $arr ) {
 			$result = $this->conn->query($n, $arr);	
 		} else {

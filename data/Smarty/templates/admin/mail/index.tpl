@@ -77,7 +77,7 @@
 							<tr class="fs12n">
 								<td bgcolor="#f2f1ec" width="110">性別</td>
 								<td bgcolor="#ffffff" width="194">
-									<!--{html_checkboxes name="sex" options=$arrSex separator="&nbsp;" selected=$list_data.sex}-->
+									<!--{html_checkboxes_ex name="sex" options=$arrSex separator="&nbsp;" selected=$list_data.sex}-->
 								</td>
 								<td bgcolor="#f2f1ec" width="110">誕生月</td>
 								<td bgcolor="#ffffff" width="195">
@@ -135,12 +135,29 @@
 									</span>
 								</td>
 							</tr>
-							
+
+							<tr class="fs12n">
+								<td bgcolor="#f2f1ec" width="110">携帯メールアドレス</td>
+								<td bgcolor="#ffffff" colspan="3">
+									<!--{if $arrErr.email_mobile}--><span class="red12"><!--{$arrErr.email_mobile}--></span><!--{/if}-->
+									<span style="<!--{$arrErr.email_mobile|sfGetErrorColor}-->">
+									<input type="text" name="email_mobile" maxlength="<!--{$smarty.const.STEXT_LEN}-->" value="<!--{$list_data.email_mobile|escape}-->" size="60" class="box60"  style="<!--{$arrErr.email_mobile|sfGetErrorColor}-->"/>
+									</span>
+								</td>
+							</tr>
+
+							<tr class="fs12n">
+								<td bgcolor="#f2f1ec" width="110">配信メールアドレス種別</td>
+								<td bgcolor="#ffffff" colspan="3">
+									<!--{html_radios name="mail_type" options=$arrMailType separator="&nbsp;" selected=$list_data.mail_type}-->
+								</td>
+							</tr>
+																						
 							<tr class="fs12n">
 								<td bgcolor="#f2f1ec" width="110">職業</td>
 								<td bgcolor="#ffffff" width="499" colspan="3">
 									<!--{if $arrErr.job}--><span class="red12"><!--{$arrErr.job}--></span><!--{/if}-->
-									<!--{html_checkboxes name="job" options=$arrJob separator="&nbsp;" selected=$list_data.job}-->
+									<!--{html_checkboxes_ex name="job" options=$arrJob separator="&nbsp;" selected=$list_data.job}-->
 								</td>
 							</tr>
 				
@@ -253,12 +270,12 @@
 							</tr>
 							<tr class="fs12n">
 								<td bgcolor="#f2f1ec" width="110">キャンペーン</td>
-								<td bgcolor="#ffffff" width="499" colspan="3">
+								<td bgcolor="#ffffff" colspan="3">
 									<select name="campaign_id" style="<!--{if $arrErr.campaign_id != ""}-->background-color: <!--{$smarty.const.ERR_COLOR}--><!--{/if}-->">
 										<option value="">選択してください</option>
 										<!--{html_options options=$arrCampaignList selected=$list_data.campaign_id}-->
 									</select>
-								</td>
+								</td>						
 							</tr>
 						</table>
 						<!--検索条件設定テーブルここまで-->
@@ -371,7 +388,7 @@
 							<td width="20"><span class="white">#</span></td>
 							<td width="80"><span class="white">会員番号</span></td>
 							<td width="80"><span class="white">受注番号</span></td>
-							<td width="140"><span class="white">名前</span></td>				
+							<td width="140"><span class="white">名前</span></td>	
 							<td width="190"><span class="white">メールアドレス</span></td>	
 							<td width="101"><span class="white">希望配信</span></td>
 							<td width="100"><span class="white">登録日</span></td>
@@ -393,7 +410,7 @@
 							
 							<td><!--{$arrResults[i].name01|escape}--> <!--{$arrResults[i].name02|escape}--></td>
 							<td><!--{$arrResults[i].email|escape}--></td>
-							<!--{assign var="key" value="`$arrResults[i].mail_flag`"}-->
+							<!--{assign var="key" value="`$arrResults[i].mailmaga_flg`"}-->
 							<td align="center"><!--{$arrMAILMAGATYPE[$key]}--></td>
 							<td><!--{$arrResults[i].create_date|sfDispDBDate}--></td>
 							<!--{if $arrResults[i].customer_id != ""}-->

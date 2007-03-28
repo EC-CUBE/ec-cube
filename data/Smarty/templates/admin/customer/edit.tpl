@@ -136,12 +136,12 @@
 											<tr><td height="5"></td></tr>
 											<tr class="fs10n">
 												<td><input type="text" name="addr01" value="<!--{$list_data.addr01|escape}-->" size="60" class="box60" <!--{if $arrErr.addr01 != ""}--><!--{sfSetErrorStyle}--><!--{/if}--> /><br />
-												※市区町村を入力 （例：大阪市北区堂島）</td>
+												<!--{$smarty.const.SAMPLE_ADDRESS1}--></td>
 											</tr>
 											<tr><td height="5"></td></tr>
 											<tr class="fs10n">
 												<td><input type="text" name="addr02" value="<!--{$list_data.addr02|escape}-->" size="60" class="box60" <!--{if $arrErr.addr02 != ""}--><!--{sfSetErrorStyle}--><!--{/if}--> /><br />
-												※番地、建物、マンション名などを入力 （例：2丁目1-31 ORIX堂島ビル5階）</td>
+												<!--{$smarty.const.SAMPLE_ADDRESS2}--></td>
 											</tr>
 										</table>
 										</td>
@@ -149,6 +149,10 @@
 									<tr>
 										<td bgcolor="#f2f1ec" width="190" class="fs12n">メールアドレス<span class="red"> *</span></td>
 										<td bgcolor="#ffffff" width="527" class="fs10n"><span class="red12"><!--{$arrErr.email}--></span><input type="text" name="email" value="<!--{$list_data.email|escape}-->" size="60" class="box60" <!--{if $arrErr.email != ""}--><!--{sfSetErrorStyle}--><!--{/if}--> /></td>
+									</tr>
+									<tr>
+										<td bgcolor="#f2f1ec" width="190" class="fs12n">メールアドレス(モバイル)</td>
+										<td bgcolor="#ffffff" width="527" class="fs10n"><span class="red12"><!--{$arrErr.email_mobile}--></span><input type="text" name="email_mobile" value="<!--{$list_data.email_mobile|escape}-->" size="60" class="box60" <!--{if $arrErr.email_mobile != ""}--><!--{sfSetErrorStyle}--><!--{/if}--> /></td>
 									</tr>
 									<tr class="fs12n">
 										<td bgcolor="#f2f1ec" width="190">電話番号<span class="red"> *</span></td>
@@ -212,10 +216,10 @@
 									</tr>
 									<tr class="fs12n">
 										<td bgcolor="#f2f1ec" width="190">メールマガジン<span class="red"> *</span></td>
-										<td bgcolor="#ffffff" width="527"><span class="red12"><!--{$arrErr.mail_flag}--></span>
-											<input type="radio" name="mail_flag" value="1" <!--{if $arrErr.mail_flag != ""}--><!--{sfSetErrorStyle}--><!--{/if}--> <!--{if $list_data.mail_flag eq 1 or $list_data.mail_flag eq 4}-->checked<!--{/if}--> />HTML　
-											<input type="radio" name="mail_flag" value="2" <!--{if $arrErr.mail_flag != ""}--><!--{sfSetErrorStyle}--><!--{/if}--> <!--{if $list_data.mail_flag eq 2 or $list_data.mail_flag eq 5}-->checked<!--{/if}--> />テキスト　
-											<input type="radio" name="mail_flag" value="3" <!--{if $arrErr.mail_flag != ""}--><!--{sfSetErrorStyle}--><!--{/if}--> <!--{if $list_data.mail_flag eq "" or $list_data.mail_flag eq 3 or $list_data.mail_flag eq 6}-->checked<!--{/if}--> />希望しない</td>
+										<td bgcolor="#ffffff" width="527"><span class="red12"><!--{$arrErr.mailmaga_flg}--></span>
+											<input type="radio" name="mailmaga_flg" value="1" <!--{if $arrErr.mailmaga_flg != ""}--><!--{sfSetErrorStyle}--><!--{/if}--> <!--{if $list_data.mailmaga_flg eq 1 or $list_data.mailmaga_flg eq 4}-->checked<!--{/if}--> />HTML　
+											<input type="radio" name="mailmaga_flg" value="2" <!--{if $arrErr.mailmaga_flg != ""}--><!--{sfSetErrorStyle}--><!--{/if}--> <!--{if $list_data.mailmaga_flg eq 2 or $list_data.mailmaga_flg eq 5}-->checked<!--{/if}--> />テキスト　
+											<input type="radio" name="mailmaga_flg" value="3" <!--{if $arrErr.mailmaga_flg != ""}--><!--{sfSetErrorStyle}--><!--{/if}--> <!--{if $list_data.mailmaga_flg eq "" or $list_data.mailmaga_flg eq 3 or $list_data.mailmaga_flg eq 6}-->checked<!--{/if}--> />希望しない</td>
 									</tr>
 									<tr>
 										<td bgcolor="#f2f1ec" width="960" class="fs12n">SHOP用メモ</td>

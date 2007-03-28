@@ -6,6 +6,7 @@
  */
 *}-->
 <!--¡ú¡ú¥á¥¤¥ó¥³¥ó¥Æ¥ó¥Ä¡ú¡ú-->
+<table width="878" border="0" cellspacing="0" cellpadding="0" summary=" ">
 <form name="form1" id="form1" method="post" action="<!--{$smarty.server.PHP_SELF|escape}-->" >
 <input type="hidden" name="mode" value="">
 <input type="hidden" name="campaign_id" value="<!--{$arrForm.campaign_id}-->">
@@ -13,7 +14,6 @@
 <input type="hidden" name="header_row" value="">
 <input type="hidden" name="contents_row" value="">
 <input type="hidden" name="footer_row" value="">
-<table width="878" border="0" cellspacing="0" cellpadding="0" summary=" ">
 	<tr valign="top">
 		<td background="<!--{$smarty.const.URL_DIR}-->img/contents/navi_bg.gif" height="402">
 			<!--¢§SUB NAVI-->
@@ -169,8 +169,8 @@
 			<!--¢¥ÅÐÏ¿¥Æ¡¼¥Ö¥ë¤³¤³¤Þ¤Ç-->
 		</td>
 	</tr>
-</table>
 </form>
+</table>
 <!--¡ú¡ú¥á¥¤¥ó¥³¥ó¥Æ¥ó¥Ä¡ú¡ú-->
 
 <script type="text/javascript">

@@ -21,9 +21,17 @@ class SC_Date {
 	function setStartYear($year){
 		$this->start_year = $year;
 	}
-
+	
+	function getStartYear(){
+		return $this->start_year;
+	}
+	
 	function setEndYear($endYear) {
 		$this->end_year = $endYear;	
+	}
+	
+	function getEndYear() {
+		return $this->end_year;
 	}
 	
 	function setMonth($month){

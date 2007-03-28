@@ -146,7 +146,7 @@ function func_return(){
 					<tr>
 						<td class="fs12n" bgcolor="#ebf9ff" width="150"><span class="red">※</span>お電話番号</td>
 						<td class="fs12n" bgcolor="#ffffff" width="407">
-							<!--{$arrForm.tel02|escape}-->-<!--{$arrForm.tel02|escape}-->-<!--{$arrForm.tel02|escape}-->
+							<!--{$arrForm.tel01|escape}-->-<!--{$arrForm.tel02|escape}-->-<!--{$arrForm.tel03|escape}-->
 							<input type="hidden" name="tel01" value="<!--{$arrForm.tel01|escape}-->" />
 							<input type="hidden" name="tel02" value="<!--{$arrForm.tel02|escape}-->" />
 							<input type="hidden" name="tel03" value="<!--{$arrForm.tel03|escape}-->" />

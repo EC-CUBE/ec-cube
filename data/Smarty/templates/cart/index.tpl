@@ -53,7 +53,7 @@
 					<!--{if $tpl_message != ""}-->
 					<table cellspacing="0" cellpadding="0" summary=" " bgcolor="#ffffff" width=100%>
 						<tr>
-							<td class="fs12"><span class="redst"><!--{$tpl_message}--></span></td>
+							<td class="fs12"><span class="redst"><!--{$tpl_message|escape}--></span></td>
 						</tr>
 					</table>
 					<!--{/if}-->
@@ -78,7 +78,7 @@
 						<tr bgcolor="#ffffff" class="fs12n">
 							<td align="center"><a href="<!--{$smarty.server.PHP_SELF|escape}-->" onclick="fnChangeAction('<!--{$smarty.server.PHP_SELF|escape}-->'); fnModeSubmit('delete', 'cart_no', '<!--{$arrProductsClass[cnt].cart_no}-->'); return false;">削除</a></td>
 							<td ><a href="<!--{$smarty.server.PHP_SELF|escape}-->" onclick="win01('../products/detail_image.php?product_id=<!--{$arrProductsClass[cnt].product_id}-->&image=main_image','detail_image','<!--{$arrProductsClass[cnt].tpl_image_width}-->','<!--{$arrProductsClass[cnt].tpl_image_height}-->'); return false;" target="_blank">
-								<img src="<!--{$smarty.const.SITE_URL}-->resize_image.php?image=<!--{$smarty.const.IMAGE_SAVE_DIR}-->/<!--{$arrProductsClass[cnt].main_list_image}-->&width=65&height=65" alt="<!--{$arrProductsClass[cnt].name|escape}-->">
+								<img src="<!--{$smarty.const.URL_DIR}-->resize_image.php?image=<!--{$smarty.const.IMAGE_SAVE_DIR}-->/<!--{$arrProductsClass[cnt].main_list_image}-->&width=65&height=65" alt="<!--{$arrProductsClass[cnt].name|escape}-->">
 							</a></td>
 							<td ><!--{* 商品名 *}--><strong><!--{$arrProductsClass[cnt].name|escape}--></storng><br />
 							<!--{if $arrProductsClass[cnt].classcategory_name1 != ""}-->
@@ -150,7 +150,7 @@
 			<tr>
 				<td align="center">
 					<!--{if $tpl_prev_url != ""}-->
-					<a href="<!--{$tpl_prev_url}-->" onmouseOver="chgImg('<!--{$smarty.const.URL_DIR}-->img/cart/b_pageback_on.gif','back');" onmouseOut="chgImg('<!--{$smarty.const.URL_DIR}-->img/cart/b_pageback.gif','back');"><img src="<!--{$smarty.const.URL_DIR}-->img/cart/b_pageback.gif" width="150" height="30" alt="前のページへ戻る" name="back" id="back" /></a>　
+					<a href="<!--{$tpl_prev_url}-->" onmouseOver="chgImg('<!--{$smarty.const.URL_DIR}-->img/cart/b_continue_on.gif','back');" onmouseOut="chgImg('<!--{$smarty.const.URL_DIR}-->img/cart/b_continue.gif','back');"><img src="<!--{$smarty.const.URL_DIR}-->img/cart/b_continue.gif" width="150" height="30" alt="買い物を続ける" name="back" id="back" /></a>　
 					<!--{/if}-->
 					<input type="image" onMouseover="chgImgImageSubmit('<!--{$smarty.const.URL_DIR}-->img/cart/b_buystep_on.gif',this)" onMouseout="chgImgImageSubmit('<!--{$smarty.const.URL_DIR}-->img/cart/b_buystep.gif',this)" src="<!--{$smarty.const.URL_DIR}-->img/cart/b_buystep.gif" width="150" height="30" alt="購入手続きへ" name="confirm" />
 				</td>

@@ -63,7 +63,7 @@
 							<table width="678" border="0" cellspacing="1" cellpadding="8" summary=" " bgcolor="#cccccc">
 								<tr class="fs12n">
 									<td bgcolor="#f2f1ec" width="160">商品名</td>
-									<td bgcolor="#ffffff" width="483"><!--{$arrReview.name}--></td>
+									<td bgcolor="#ffffff" width="483"><!--{$arrReview.name|escape}--></td>
 								</tr>
 								<tr class="fs12n">
 									<td bgcolor="#f2f1ec">レビュー表示</td>
@@ -76,31 +76,33 @@
 								</tr>
 								<tr class="fs12n">
 									<td bgcolor="#f2f1ec">投稿者名</td>
-									<td bgcolor="#ffffff"><!--{$arrReview.reviewer_name|escape}--></td>
+									<td bgcolor="#ffffff"><span class="red12"><!--{$arrErr.reviewer_name}--></span>
+									<input type="text" class="box60" name="reviewer_name" value="<!--{$arrReview.reviewer_name|escape}-->" style="<!--{$arrErr.reviewer_name|sfGetErrorColor}-->" size=30><span class="red12"></td>
 								</tr>
 								<tr class="fs12n">
 									<td bgcolor="#f2f1ec">ホームページアドレス</td>
-									<td bgcolor="#ffffff"><a href="<!--{$arrReview.reviewer_url}-->" target="_blank"><!--{$arrReview.reviewer_url}--></a></td>
+									<td bgcolor="#ffffff"><span class="red12"><!--{$arrErr.reviewer_url}--></span>
+									<input type="text" class="box60" name="reviewer_url" maxlength="<!--{$smarty.const.URL_LEN}-->" value="<!--{$arrReview.reviewer_url|escape}-->" style="<!--{$arrErr.reviewer_url|sfGetErrorColor}-->" size=30><span class="red12"></td>
 								</tr>
 								<tr class="fs12n">
 									<td bgcolor="#f2f1ec">性別</td>
-									<td bgcolor="#ffffff"><!--{if $arrReview.sex eq 1}-->男性<!--{elseif $arrReview.sex eq 2}-->女性<!--{/if}--></td>
+									<td bgcolor="#ffffff"><!--{html_radios_ex name="sex" options=$arrSex selected=$arrReview.sex}--></td>
 								</tr>
 								<tr class="fs12n">
 									<td bgcolor="#f2f1ec">おすすめレベル</td>
 									<td bgcolor="#ffffff">
 									<!--{assign var=key value="recommend_level"}-->
+									<span class="red12"><!--{$arrErr.recommend_level}--></span>
 									<select name="<!--{$key}-->" style="<!--{$arrErr.recommend_level|sfGetErrorColor}-->" >
 									<option value="" selected="selected">選択してください</option>
 									<!--{html_options options=$arrRECOMMEND selected=$arrReview[$key]}-->
 									</select>
-									<span class="red12"><!--{$arrErr.recommend_level}--></span>
 									</td>
 								</tr>
 								<tr class="fs12n">
 									<td bgcolor="#f2f1ec">タイトル</td>
 									<td bgcolor="#ffffff"><span class="red12"><!--{$arrErr.title}--></span>
-									<input type="text" name="title" value="<!--{$arrReview.title|escape}-->" style="<!--{$arrErr.title|sfGetErrorColor}-->" size=30><span class="red12"><!--{$arrErr.title}--></td>
+									<input type="text" class="box60" name="title" value="<!--{$arrReview.title|escape}-->" style="<!--{$arrErr.title|sfGetErrorColor}-->" size=30><span class="red12"></td>
 								</tr>
 								<tr class="fs12n">
 									<td bgcolor="#f2f1ec">コメント</td>

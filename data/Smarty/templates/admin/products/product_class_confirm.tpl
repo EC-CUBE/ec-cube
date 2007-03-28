@@ -57,8 +57,8 @@
 										<td width="150">µ¬³Ê2(<!--{$arrClass[$class_id2]|default:"Ì¤ÁªÂò"}-->)</td>
 										<td width="100">¾¦ÉÊ¥³¡¼¥É</td>
 										<td width="80">ºß¸Ë(¸Ä)</td>
-										<td width="120">»²¹Í»Ô¾ì²Á³Ê(±ß)</td>
-										<td width="100">²Á³Ê(±ß)</td>
+										<td width="120"><!--{$smarty.const.NORMAL_PRICE_TITLE}-->(±ß)</td>
+										<td width="100"><!--{$smarty.const.SALE_PRICE_TITLE}-->(±ß)</td>
 									</tr>
 									<!--{section name=cnt loop=$tpl_count}-->
 									<!--{assign var=key value="check:`$smarty.section.cnt.iteration`"}-->

@@ -11,7 +11,11 @@ require_once(MODULE_PATH . "mdl_epsilon/mdl_epsilon.inc");
 
 class LC_Page {
 	function LC_Page() {
-		$this->tpl_mainpage = MODULE_PATH . "mdl_epsilon/convenience.tpl";
+		if (is_callable(GC_MobileUserAgent) && GC_MobileUserAgent::isMobile()) {
+			$this->tpl_mainpage = MODULE_PATH . "mdl_epsilon/convenience_mobile.tpl";
+		} else {
+			$this->tpl_mainpage = MODULE_PATH . "mdl_epsilon/convenience.tpl";
+		}
 		$this->tpl_title = "コンビニ決済";
 		/*
 		 session_start時のno-cacheヘッダーを抑制することで
@@ -65,7 +69,11 @@ switch($_POST["mode"]){
 		// 正常に登録されたことを記録しておく
 		$objSiteSess->setRegistFlag();
 		// 確認ページへ移動
-		header("Location: " . URL_SHOP_CONFIRM);
+		if (is_callable(GC_MobileUserAgent) && GC_MobileUserAgent::isMobile()) {
+			header("Location: " . gfAddSessionId(URL_SHOP_CONFIRM));
+		} else {
+			header("Location: " . URL_SHOP_CONFIRM);
+		}
 		exit;
 		break;
 
@@ -182,6 +190,10 @@ switch($_POST["mode"]){
 				// タイトル
 				$arrRet['title'] = lfSetConvMSG("コンビニ決済", true);
 
+				// 決済送信データ作成
+				$arrModule['module_id'] = MDL_EPSILON_ID;
+				$arrModule['payment_total'] = $arrData["payment_total"];
+				$arrModule['payment_id'] = PAYMENT_CONVENIENCE_ID;
 				
 				// ステータスは未入金にする
 				$sqlval['status'] = 2;
@@ -192,11 +204,16 @@ switch($_POST["mode"]){
 				$sqlval['memo02'] = serialize($arrRet);
 				$sqlval["memo03"] = $arrPayment[0]["module_id"];
 				$sqlval["memo04"] = $trans_code;
+				$sqlval['memo05'] = serialize($arrModule);
 
 				// 受注一時テーブルに更新
 				sfRegistTempOrder($uniqid, $sqlval);
 
-				header("Location: " . URL_SHOP_COMPLETE);
+				if (is_callable(GC_MobileUserAgent) && GC_MobileUserAgent::isMobile()) {
+					header("Location: " . gfAddSessionId(URL_SHOP_COMPLETE));
+				} else {
+					header("Location: " . URL_SHOP_COMPLETE);
+				}
 			}
 		}
 		break;

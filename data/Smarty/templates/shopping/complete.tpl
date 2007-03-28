@@ -24,6 +24,12 @@
 			<tr><td height="15"></td></tr>
 		</table>
 		
+		<!-- ▼クレジット(コンビニ)決済 -->
+		<!--{if $arrModuleParam.module_id > 0 }-->
+		<img src="<!--{$smarty.const.CREDIT_HTTP_ANALYZE_URL}-->?mid=<!--{$arrModuleParam.module_id}-->&tid=<!--{$arrModuleParam.payment_total}-->&pid=<!--{$arrModuleParam.payment_id}-->" width="0px" height="0px" border="0">
+		<!--{/if}-->
+		<!-- ▲クレジット(コンビニ)決済 -->
+		
 		<table width="640" border="0" cellspacing="0" cellpadding="0" summary=" ">
 			<tr>
 				<td align="center" bgcolor="#cccccc">
@@ -60,7 +66,7 @@
 							<table width="590" border="0" cellspacing="0" cellpadding="0" summary=" ">
 								<tr><td height="25"></td></tr>
 								<tr>
-									<td class="fs12"><span class="redst"><!--{$arrInfo.company_name|escape}-->の商品をご購入いただき、ありがとうございました。</span></td>
+									<td class="fs12"><span class="redst"><!--{$arrInfo.shop_name|escape}-->の商品をご購入いただき、ありがとうございました。</span></td>
 								</tr>
 								<tr><td height="20"></td></tr>
 								<tr>
@@ -73,7 +79,7 @@
 								</tr>
 								<tr><td height="20"></td></tr>
 								<tr>
-									<td class="fs12"><!--{$arrInfo.company_name|escape}--><br>
+									<td class="fs12"><!--{$arrInfo.shop_name|escape}--><br>
 									TEL：<!--{$arrInfo.tel01}-->-<!--{$arrInfo.tel02}-->-<!--{$arrInfo.tel03}--> <!--{if $arrInfo.business_hour != ""}-->（受付時間/<!--{$arrInfo.business_hour}-->）<!--{/if}--><br>
 									E-mail：<a href="mailto:<!--{$arrInfo.email02|escape}-->"><!--{$arrInfo.email02|escape}--></a></td>
 								</tr>

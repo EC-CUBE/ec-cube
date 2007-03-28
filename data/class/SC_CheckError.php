@@ -184,6 +184,17 @@ class SC_CheckError {
 		}
 	}
 	
+	/*　最小数値制限の判定　*/
+	// value[0] = 項目名 value[1] = 判定対象文字列  value[2] = 最小数
+	function MIN_CHECK( $value ) {		// 入力が最小数未満ならエラーを返す
+		if(isset($this->arrErr[$value[1]])) {
+			return;
+		}
+		if($this->arrParam[$value[1]] < $value[2] ) {
+			$this->arrErr[$value[1]] = "※ " . $value[0] . "は" . $value[2] . "以上で入力してください。<br />";
+		}
+	}
+	
 		
 	/*　数字の判定　*/
 	// value[0] = 項目名 value[1] = 判定対象文字列 
@@ -377,7 +388,7 @@ class SC_CheckError {
 		if(isset($this->arrErr[$value[1]])) {
 			return;
 		}
-		if(strlen($this->arrParam[$value[1]]) > 0 && ! mb_ereg("^([ァ-ヶ]|[ー])+$", $this->arrParam[$value[1]])) {
+		if(strlen($this->arrParam[$value[1]]) > 0 && ! mb_ereg("^[ァ-ヶｦ-ﾟー]+$", $this->arrParam[$value[1]])) {
 			$this->arrErr[$value[1]] = "※ " . $value[0] . "はカタカナで入力してください。<br />";	
 		}
 	}
@@ -779,5 +790,16 @@ class SC_CheckError {
 			$this->arrErr[$value[1]] = "※ " . $value[0] . "の形式が不正です。<br />";
 		}
 	}	
+	
+	/*　携帯メールアドレスの判定　*/
+	// value[0] = 項目名 value[1] = 判定対象メールアドレス
+	function MOBILE_EMAIL_CHECK( $value ){				//　メールアドレスを正規表現で判定する
+		if(isset($this->arrErr[$value[1]])) {
+			return;
+		}
+		if(strlen($this->arrParam[$value[1]]) > 0 && !gfIsMobileMailAddress($this->arrParam[$value[1]])) {
+			$this->arrErr[$value[1]] = "※ " . $value[0] . "は携帯電話のものではありません。<br />";
+		}
+	}		
 }
 ?>

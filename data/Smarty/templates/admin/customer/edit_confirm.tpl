@@ -102,6 +102,10 @@ function func_return(){
 										<td bgcolor="#ffffff" width="527"><!--{$arrForm.email|escape}--></td>
 									</tr>
 									<tr class="fs12n">
+										<td bgcolor="#f2f1ec" width="190">メールアドレス(モバイル)</td>
+										<td bgcolor="#ffffff" width="527"><!--{$arrForm.email_mobile|escape}--></td>
+									</tr>
+									<tr class="fs12n">
 										<td bgcolor="#f2f1ec" width="190">お電話番号<span class="red"> *</span></td>
 										<td bgcolor="#ffffff" width="527"><!--{$arrForm.tel01|escape}--> - <!--{$arrForm.tel02|escape}--> - <!--{$arrForm.tel03|escape}--></td>
 									</tr>
@@ -140,7 +144,7 @@ function func_return(){
 									</tr>
 									<tr class="fs12n">
 										<td bgcolor="#f2f1ec" width="190">メールマガジン<span class="red"> *</span></td>
-										<td bgcolor="#ffffff" width="527"><!--{if $arrForm.mail_flag eq 1}-->HTML<!--{elseif $arrForm.mail_flag eq 2}-->テキスト<!--{else}-->希望しない<!--{/if}--></td>
+										<td bgcolor="#ffffff" width="527"><!--{if $arrForm.mailmaga_flg eq 1}-->HTML<!--{elseif $arrForm.mailmaga_flg eq 2}-->テキスト<!--{else}-->希望しない<!--{/if}--></td>
 									</tr>
 									<tr class="fs12n">
 										<td bgcolor="#f2f1ec" width="960">SHOP用メモ</td>

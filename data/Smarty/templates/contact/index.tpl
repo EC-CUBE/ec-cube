@@ -75,14 +75,14 @@
 								<td><input type="text" name="addr01" size="40" class="box40" value="<!--{$addr01|escape|default:$arrData.addr01|escape}-->" style="<!--{$arrErr.addr01|sfGetErrorColor}-->"/></td>
 							</tr>
 							<tr>
-								<td class="fs10n">市区町村名（例：大阪市北区堂島）</td>
+								<td class="fs10n"><!--{$smarty.const.SAMPLE_ADDRESS1}--></td>
 							</tr>
 							<tr><td height="5"></td></tr>
 							<tr>
 								<td><input type="text" name="addr02" size="40" class="box40" value="<!--{$addr02|escape|default:$arrData.addr02|escape}-->" style="<!--{$arrErr.addr02|sfGetErrorColor}-->"/><span class="mini"></td>
 							</tr>
 							<tr>
-								<td class="fs10n">番地・ビル名（例：6-1-1）</td>
+								<td class="fs10n"><!--{$smarty.const.SAMPLE_ADDRESS2}--></td>
 							</tr>
 							<tr><td height="5"></td></tr>
 							<tr>

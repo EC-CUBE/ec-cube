@@ -100,7 +100,7 @@
 								</td>
 							</tr>
 							<tr>
-								<td class="fs10n">市区町村名（例：大阪市北区堂島）</td>
+								<td class="fs10n"><!--{$smarty.const.SAMPLE_ADDRESS1}--></td>
 							</tr>
 							<tr><td height="5"></td></tr>
 							<tr>
@@ -110,7 +110,7 @@
 								</td>
 							</tr>
 							<tr>
-								<td class="fs10n">番地・ビル名（例：6-1-1）</td>
+								<td class="fs10n"><!--{$smarty.const.SAMPLE_ADDRESS2}--></td>
 							</tr>
 							<tr><td height="5"></td></tr>
 							<tr>
@@ -222,7 +222,7 @@
 					<tr>
 						<td bgcolor="#f0f0f0" class="fs12">メールマガジン送付について<span class="red">※</span></td>
 						<td bgcolor="#ffffff" class="fs12">
-							<!--{assign var=key value="mail_flag"}-->
+							<!--{assign var=key value="mailmaga_flg"}-->
 							<!--{if $arrErr[$key]}-->
 							<!--{assign var=err_mail value="background-color: `$smarty.const.ERR_COLOR`"}-->
 							<!--{/if}-->

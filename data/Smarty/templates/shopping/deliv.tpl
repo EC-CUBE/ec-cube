@@ -34,16 +34,17 @@
 				※最大20件まで登録できます。</td>
 			</tr>
 			<tr><td height="15"></td></tr>
+			<!--{if $tpl_addrmax < $smarty.const.DELIV_ADDR_MAX}-->
 			<tr>
 				<td>
 					<a href="../mypage/delivery_addr.php" onclick="win02('../mypage/delivery_addr.php?page=<!--{$smarty.server.PHP_SELF|escape}-->','new_deiv','600','640'); return false;" onmouseover="chgImg('<!--{$smarty.const.URL_DIR}-->img/common/newadress_on.gif','addition');" onmouseout="chgImg('<!--{$smarty.const.URL_DIR}-->img/common/newadress.gif','addition');"><img src="<!--{$smarty.const.URL_DIR}-->img/common/newadress.gif" width="160" height="22" alt="新しいお届け先を追加する" name="addition" id="addition" /></a>
 				</td>
 			</tr>
 			<tr><td height="20"></td></tr>
+			<!--{/if}-->
 			<tr>
 				<td bgcolor="#cccccc">
 				<!--表示エリアここから-->
-				
 				<!--{if $arrErr.deli != ""}-->
 				<table width="700" border="0" cellspacing="2" cellpadding="10" summary=" " bgcolor="#ff7e56">
 					<tr>
@@ -68,9 +69,9 @@
 						<tr class="fs12" bgcolor="#ffffff">
 							<td align="center">
 								<!--{if $smarty.section.cnt.first}-->
-								<input type="radio" name="deli" id="chk_id_<!--{$smarty.section.cnt.iteration}-->" value="<!--{$smarty.section.cnt.iteration}-->" onclick="mode.value='customer_addr';">
+								<input type="radio" name="deliv_check" id="chk_id_<!--{$smarty.section.cnt.iteration}-->" value="-1" <!--{if $arrForm.deliv_check.value == "" || $arrForm.deliv_check.value == -1}-->checked<!--{/if}-->>
 								<!--{else}-->
-								<input type="radio" name="deli" id="chk_id_<!--{$smarty.section.cnt.iteration}-->" value="<!--{$smarty.section.cnt.iteration}-->" onclick="mode.value='other_addr'; other_deliv_id.value=<!--{$arrAddr[cnt].other_deliv_id}-->;">
+								<input type="radio" name="deliv_check" id="chk_id_<!--{$smarty.section.cnt.iteration}-->" value="<!--{$arrAddr[cnt].other_deliv_id}-->" <!--{if $arrForm.deliv_check.value == $arrAddr[cnt].other_deliv_id}-->checked<!--{/if}-->>
 								<!--{/if}-->
 							</td>
 							<td>
@@ -96,7 +97,8 @@
 			<tr><td height="25"></td></tr>
 			<tr align="center">
 				<td>
-					<input type="image" onmouseover="chgImgImageSubmit('<!--{$smarty.const.URL_DIR}-->img/shopping/b_select_on.gif',this)" onmouseout="chgImgImageSubmit('<!--{$smarty.const.URL_DIR}-->img/shopping/b_select.gif',this)" src="<!--{$smarty.const.URL_DIR}-->img/shopping/b_select.gif" width="190" height="30" alt="選択したお届け先に送る" border="0" name="send_button" id="send_button" />
+					<a href="<!--{$smarty.const.URL_DIR}-->cart/index.php" onmouseover="chgImgImageSubmit('<!--{$smarty.const.URL_DIR}-->img/common/b_back_on.gif',back03)" onmouseout="chgImgImageSubmit('<!--{$smarty.const.URL_DIR}-->img/common/b_back.gif',back03)"><img src="<!--{$smarty.const.URL_DIR}-->img/common/b_back.gif" width="150" height="30" alt="戻る" border="0" name="back03" id="back03"/></a>
+					<img src="<!--{$smarty.const.URL_DIR}-->img/_.gif" width="12" height="" alt="" /><input type="image" onmouseover="chgImgImageSubmit('<!--{$smarty.const.URL_DIR}-->img/shopping/b_select_on.gif',this)" onmouseout="chgImgImageSubmit('<!--{$smarty.const.URL_DIR}-->img/shopping/b_select.gif',this)" src="<!--{$smarty.const.URL_DIR}-->img/shopping/b_select.gif" width="190" height="30" alt="選択したお届け先に送る" border="0" name="send_button" id="send_button" />
 				</td>
 			</tr>
 		</form>

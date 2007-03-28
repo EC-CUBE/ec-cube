@@ -120,6 +120,11 @@ class SC_View {
 		$array['tpl_root_id'] = sfGetRootId();
 		$this->assignarray($array);
 	}
+	
+	// デバッグ
+	function debug($var = true){
+		$this->_smarty->debugging = $var;
+	}	
 }
 
 class SC_AdminView extends SC_View{
@@ -138,6 +143,7 @@ class SC_AdminView extends SC_View{
 class SC_SiteView extends SC_View{
     function SC_SiteView($cart = true) {
     	parent::SC_View();
+		
 		$this->_smarty->template_dir = TEMPLATE_DIR;
 		$this->_smarty->compile_dir = COMPILE_DIR;
 		$this->initpath();
@@ -170,4 +176,11 @@ class SC_InstallView extends SC_View{
 	}
 }
 
+class SC_MobileView extends SC_SiteView {
+    function SC_MobileView() {
+    	parent::SC_SiteView();
+		$this->_smarty->template_dir = MOBILE_TEMPLATE_DIR;
+		$this->_smarty->compile_dir = MOBILE_COMPILE_DIR;
+	}	
+}
 ?>

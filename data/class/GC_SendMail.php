@@ -34,7 +34,7 @@ class GC_SendMail {
 		if($to_name != "") {
 			$name = ereg_replace("<","＜", $to_name);
 			$name = ereg_replace(">","＞", $name);
-			$name = mb_encode_mimeheader($name);
+			$name = mb_encode_mimeheader(mb_convert_encoding($name, "JIS", CHAR_CODE));
 			$this->to = $name . "<" . $to . ">";
 		} else {
 			$this->to = $to;
@@ -45,25 +45,28 @@ class GC_SendMail {
 		
 		$this->to			 = $to;
 		$this->subject		 = $subject;
-		$this->body			 = $body;
+
+		// iso-2022-jpだと特殊文字が？で送信されるのでJISを使用する。
+		$this->body			 = mb_convert_encoding( $body, "JIS", CHAR_CODE);
+
 		// ヘッダーに日本語を使用する場合はMb_encode_mimeheaderでエンコードする。
 		$from_name = ereg_replace("<","＜", $from_name);
 		$from_name = ereg_replace(">","＞", $from_name);
-				
+		$from_name = mb_convert_encoding($from_name,"JIS",CHAR_CODE); 
 		$this->header		 = "From: ". Mb_encode_mimeheader( $from_name )."<".$fromaddress.">\n";
 		$this->header		.= "Reply-To: ". $reply_to . "\n";
 		$this->header		.= "Cc: " . $cc. "\n";
 		$this->header		.= "Bcc: " . $bcc . "\n";
 		$this->header		.= "Errors-To: ". $errors_to ."\n";
+		
 		$this->return_path   = $return_path;
 	}
 
-	
 	function setItemHtml( $to, $subject, $body, $fromaddress, $from_name, $reply_to, $return_path, $errors_to="", $bcc="", $cc ="" ) {
 			
 		$this->to			 = $to;
-		$this->subject		 = Mb_encode_mimeheader($subject);
-		$this->body			 = mb_convert_encoding( $body, "iso-2022-jp", CHAR_CODE);
+		$this->subject		 = mb_encode_mimeheader($subject);
+		$this->body			 = mb_convert_encoding( $body, "JIS", CHAR_CODE);
 		$this->header		 = "Mime-Version: 1.0\n";
 		$this->header		.= "Content-Type: text/html; charset=iso-2022-jp\n";
 		$this->header		.= "Content-Transfer-Encoding: 7bit\n";
