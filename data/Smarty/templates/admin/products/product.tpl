@@ -252,7 +252,7 @@
 									</tr>		
 									*}-->
 									<tr>
-										<td bgcolor="#f2f1ec" colspan="2"><input type="button" name="btn" onclick="document.getElementById('sub_detail').style.display == ''" value="サブ情報表示"></td>
+										<td bgcolor="#f2f1ec" colspan="2"><input type="button" name="btn" onclick="document.getElementById('sub_detail').style.display = ''" value="サブ情報表示"></td>
 									</tr>
 								</table>
 												
