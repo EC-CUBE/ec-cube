@@ -262,7 +262,13 @@ function lfDispSwitch(id){
 										<td bgcolor="#f2f1ec" colspan="2"><input type="button" name="btn" onclick="lfDispSwitch('sub_detail');" value="サブ情報表示/非表示"></td>
 									</tr>
 								</table>
-												
+
+								<table width="678" border="0" cellspacing="1" cellpadding="8" summary=" ">
+									<tr>
+										<td bgcolor="#f2f1ec" colspan="2"><input type="button" name="btn" onclick="lfDispSwitch('sub_detail');" value="サブ情報表示/非表示"></td>
+									</tr>
+								</table>
+								
 								<div id="sub_detail" style="display:none">
 								<table width="678" border="0" cellspacing="1" cellpadding="8" summary=" ">
 									<!--{section name=cnt loop=$smarty.const.PRODUCTSUB_MAX}-->
