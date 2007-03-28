@@ -179,6 +179,18 @@ if($_POST['mode'] != 'pre_edit') {
 // 基本情報を渡す
 $objPage->arrInfo = $objSiteInfo->data;
 
+// サブ情報があるかどうかチェックする
+$sub_find = false;
+for ($cnt = 1; $cnt <= PRODUCTSUB_MAX; $cnt++) {
+	if(	$objPage->arrForm['sub_title'.$cnt] != "" || 
+		$objPage->arrForm['sub_comment'.$cnt] != "" || 
+		$objPage->arrForm['sub_image'.$cnt] != "" || 
+		$objPage->arrForm['sub_large_image'.$cnt] != ""	) {
+		$sub_find = true;
+		break;
+	}
+}
+
 $objView->assignobj($objPage);
 $objView->display(MAIN_FRAME);
 //-----------------------------------------------------------------------------------------------------------------------------
@@ -320,8 +332,7 @@ function lfRegistProduct($arrList) {
 	$sqlval['product_flag'] = $arrList['product_flag'];
 	$sqlval['main_list_comment'] = $arrList['main_list_comment'];
 	$sqlval['main_comment'] = $arrList['main_comment'];
-	$sqlval['point_rate'] = $arrList['point_rate'];
-	
+	$sqlval['point_rate'] = $arrList['point_rate'];	
 	$sqlval['deliv_fee'] = $arrList['deliv_fee'];
 	$sqlval['comment1'] = $arrList['comment1'];
 	$sqlval['comment2'] = $arrList['comment2'];
