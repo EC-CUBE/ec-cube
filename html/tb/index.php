@@ -49,6 +49,11 @@ if (isset($_POST["url"])) {
 	 * RSS目的ではないGETリクエストを制御(livedoor blog)
 	 * _rssパラメータでのGETリクエストを制御(Yahoo blog)
 	 */
+	if (isset($_GET["__mode"]) && isset($_GET["pid"])) {
+		if ($_GET["__mode"] == "rss") {
+			IfResponseRss($_GET["pid"]);
+		}
+	}
 	exit();
 }
 
@@ -118,7 +123,12 @@ exit();
 
 //----------------------------------------------------------------------------------------------------
 
-/* パラメータ情報の初期化 */
+/*
+ * パラメータ情報の初期化
+ * 
+ * @param void なし
+ * @return void なし
+ */
 function lfInitParam() {
 	global $objFormParam;
 	$objFormParam->addParam("URL", "url", URL_LEN, "KVa", array("EXIST_CHECK", "MAX_LENGTH_CHECK"));
@@ -127,7 +137,12 @@ function lfInitParam() {
 	$objFormParam->addParam("記事内容", "excerpt", MLTEXT_LEN, "KVa", array("EXIST_CHECK", "MAX_LENGTH_CHECK"));
 }
 
-/* 入力内容のチェック */
+/*
+ * 入力内容のチェック
+ * 
+ * @param void なし
+ * @return $objErr->arrErr エラーメッセージ
+ */
 function lfCheckError() {
 	global $objFormParam;
 	
@@ -139,7 +154,12 @@ function lfCheckError() {
 	return $objErr->arrErr;
 }
 
-/* 更新処理 */
+/*
+ * 更新処理
+ * 
+ * @param $arrData トラックバックデータ
+ * @return $ret 結果
+ */
 function lfEntryTrackBack($arrData) {
 	global $objQuery;
 
@@ -170,7 +190,13 @@ function lfEntryTrackBack($arrData) {
 	return $ret;
 }
 
-/* スパムフィルター */
+/*
+ * スパムフィルター
+ * 
+ * @param $arrData トラックバックデータ
+ * @param $run フィルターフラグ(true:使用する false:使用しない)
+ * @return $ret 結果
+ */
 function lfSpamFilter($arrData, $run = false) {
 	$ret = true;
 	
@@ -180,7 +206,12 @@ function lfSpamFilter($arrData, $run = false) {
 	return $ret;
 }
 
-// OKレスポンスを返す
+/*
+ * OKレスポンスを返す
+ * 
+ * @param void なし
+ * @return void なし
+ */
 function IfResponseOk() {
 	header("Content-type: text/xml");
 	print("<?xml version=\"1.0\" encoding=\"iso-8859-1\"?>");
@@ -190,7 +221,12 @@ function IfResponseOk() {
 	exit();
 }
 
-// NGレスポンスを返す
+/*
+ * NGレスポンスを返す
+ * 
+ * @param void なし
+ * @return void なし
+ */
 function IfResponseNg() {
 	header("Content-type: text/xml");
 	print("<?xml version=\"1.0\" encoding=\"iso-8859-1\"?>");
@@ -200,5 +236,39 @@ function IfResponseNg() {
 	print("</response>");
 	exit();
 }
+
+/*
+ * トラックバックRSSを返す
+ * 
+ * @param $product_id 商品コード
+ * @return void なし
+ */
+function IfResponseRss($product_id) {
+	global $objQuery;
+	
+	$retProduct = $objQuery->select("*", "dtb_products", "product_id = ?", array($product_id));
+	
+	if (count($retProduct) > 0) {
+		header("Content-type: text/xml");
+		print("<?xml version=\"1.0\" encoding=\"iso-8859-1\"?>");
+		print("<response>");
+		print("<error>0</error>");
+		print("<rss version=\"0.91\">");
+		print("<channel>");
+		print("<title>" . $retProduct[0]["name"] . "</title>");
+		print("<link>");
+		print(TRACKBACK_TO_URL . $product_id);
+		print("</link>");
+		print("<description>");
+		print($retProduct[0]["main_comment"]);
+		print("</description>");
+		print("<language>ja-jp</language>");
+		print("</channel>");
+		print("</rss>");
+		print("</response>");
+		exit();
+	}
+}
+
 //-----------------------------------------------------------------------------------------------------------------------------------
 ?>
