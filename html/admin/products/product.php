@@ -191,6 +191,10 @@ for ($cnt = 1; $cnt <= PRODUCTSUB_MAX; $cnt++) {
 	}
 }
 
+if($sub_find == true) {
+	sfPrintR("ari");
+}
+
 $objView->assignobj($objPage);
 $objView->display(MAIN_FRAME);
 //-----------------------------------------------------------------------------------------------------------------------------
