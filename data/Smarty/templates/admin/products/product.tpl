@@ -324,7 +324,12 @@ function lfDispSwitch(id){
 									</tr>
 								</table>
 								
+								<!--{if count($arrRecommend) > 0}-->
+								<div id="recommend_select" style="">
+								<!--{else}-->
 								<div id="recommend_select" style="display:none">
+								<!--{/if}-->
+								
 								<table width="678" border="0" cellspacing="1" cellpadding="8" summary=" ">
 									<!--{if $smarty.const.OPTION_RECOMMEND == 1}-->			
 									<!--¢§´ØÏ¢¾¦ÉÊ-->
@@ -388,6 +393,7 @@ function lfDispSwitch(id){
 										<td colspan="3"><img src="<!--{$smarty.const.URL_DIR}-->img/contents/tbl_bottom.gif" width="678" height="8" alt=""></td>
 									</tr>
 								</table>
+								
 								</td>
 								<td background="<!--{$smarty.const.URL_DIR}-->img/contents/main_right.jpg"><img src="<!--{$smarty.const.URL_DIR}-->img/common/_.gif" width="14" height="1" alt=""></td>
 							</tr>
