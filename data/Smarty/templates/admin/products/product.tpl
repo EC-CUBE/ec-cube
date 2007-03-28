@@ -251,11 +251,8 @@
 										</td>
 									</tr>		
 									*}-->
-								</table>
-								
-								<table width="678" border="0" cellspacing="1" cellpadding="2" summary=" ">
 									<tr>
-										<td bgcolor="#f2f1ec"><input type="button" name="btn" onclick="" value="サブ情報表示"></td>
+										<td bgcolor="#f2f1ec" colspan="2"><input type="button" name="btn" onclick="document.getElementById('sub_detail').style.display == ''" value="サブ情報表示"></td>
 									</tr>
 								</table>
 												
