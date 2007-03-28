@@ -253,7 +253,7 @@
 									*}-->
 								</table>
 								
-								<table width="678" border="0" cellspacing="0" cellpadding="0" summary=" ">
+								<table width="678" border="0" cellspacing="1" cellpadding="2" summary=" ">
 									<tr>
 										<td bgcolor="#f2f1ec"><input type="button" name="btn" onclick="" value="サブ情報表示"></td>
 									</tr>
