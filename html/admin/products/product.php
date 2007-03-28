@@ -179,7 +179,7 @@ if($_POST['mode'] != 'pre_edit') {
 // 基本情報を渡す
 $objPage->arrInfo = $objSiteInfo->data;
 
-// サブ情報があるかどうかチェックする
+// サブ情報の入力があるかどうかチェックする
 $sub_find = false;
 for ($cnt = 1; $cnt <= PRODUCTSUB_MAX; $cnt++) {
 	if(	$objPage->arrForm['sub_title'.$cnt] != "" || 
@@ -190,10 +190,7 @@ for ($cnt = 1; $cnt <= PRODUCTSUB_MAX; $cnt++) {
 		break;
 	}
 }
-
-if($sub_find == true) {
-	sfPrintR("ari");
-}
+$objPage->sub_find = $sub_find;
 
 $objView->assignobj($objPage);
 $objView->display(MAIN_FRAME);

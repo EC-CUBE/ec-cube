@@ -266,7 +266,11 @@ function lfDispSwitch(id){
 									</tr>
 								</table>
 								
+								<!--{if $sub_find == true}-->								
+								<div id="sub_detail" style="">
+								<!--{else}-->
 								<div id="sub_detail" style="display:none">
+								<!--{/if}-->
 								<table width="678" border="0" cellspacing="1" cellpadding="8" summary=" ">
 									<!--{section name=cnt loop=$smarty.const.PRODUCTSUB_MAX}-->
 									<!--¢§¾¦ÉÊ<!--{$smarty.section.cnt.iteration}-->-->
@@ -328,8 +332,7 @@ function lfDispSwitch(id){
 								<div id="recommend_select" style="">
 								<!--{else}-->
 								<div id="recommend_select" style="display:none">
-								<!--{/if}-->
-								
+								<!--{/if}-->								
 								<table width="678" border="0" cellspacing="1" cellpadding="8" summary=" ">
 									<!--{if $smarty.const.OPTION_RECOMMEND == 1}-->			
 									<!--¢§´ØÏ¢¾¦ÉÊ-->
