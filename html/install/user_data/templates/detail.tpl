@@ -132,7 +132,7 @@ function lnSetSelect(form, name1, name2, val) {
 									<!--{/if}-->
 									</span></span><br/>
 								<!--★価格★-->
-									<span class="red"><span class="fs12">価格</span><span class="fs10">(税込)</span></span><span class="redst"><span class="fs12">：
+									<span class="red"><span class="fs12"><!--{$smarty.const.SALE_PRICE_TITLE}--></span><span class="fs10">(税込)</span></span><span class="redst"><span class="fs12">：
 									<!--{if $arrProduct.price02_min == $arrProduct.price02_max}-->				
 										<!--{$arrProduct.price02_min|sfPreTax:$arrSiteInfo.tax:$arrSiteInfo.tax_rule|number_format}-->
 									<!--{else}-->
@@ -141,7 +141,7 @@ function lnSetSelect(form, name1, name2, val) {
 									円</span></span><br/>
 									
 									<!--{if $arrProduct.price01_max > 0}-->
-										<span class="fs12"><span class="red">参考市場価格：</span><span class="redst">
+										<span class="fs12"><span class="red"><!--{$smarty.const.NORMAL_PRICE_TITLE}-->：</span><span class="redst">
 										<!--{if $arrProduct.price01_min == $arrProduct.price01_max}-->				
 											<!--{$arrProduct.price01_min|number_format}-->
 										<!--{else}-->
@@ -314,6 +314,43 @@ function lnSetSelect(form, name1, name2, val) {
 					<tr><td height="30"></td></tr>
 				</table>
 				<!--お客様の声ここまで-->
+
+				<!--{if $arrTrackbackView == "ON"}-->
+				<!--▼トラックバックここから-->
+				<table width="580" border="0" cellspacing="0" cellpadding="0" summary=" ">
+					<tr>
+						<td><img src="<!--{$smarty.const.URL_DIR}-->img/products/title_tb.jpg" width="580" height="30" alt="この商品に対するトラックバック"></td>
+					</tr>
+					<tr><td height="10"></td></tr>
+					<tr>
+						<td class="fs12"><strong>この商品のトラックバック先URL</strong></td>
+					</tr>
+					<tr><td height="5"></td></tr>
+					<tr>
+						<td class="fs12"><input type="text" name="trackback" value="<!--{$trackback_url}-->" size="100"></td>
+					</tr>
+					<!--{if $arrTrackback}-->
+					<tr><td height="5"></td></tr>
+					<!--{section name=cnt loop=$arrTrackback}-->
+					<tr>
+						<td class="fs12"><strong><!--{$arrTrackback[cnt].create_date|sfDispDBDate:false}-->　<a href="<!--{$arrTrackback[cnt].url}-->" target="_blank"><!--{$arrTrackback[cnt].title|escape}--></a> from <!--{$arrTrackback[cnt].blog_name|escape}--></strong></td>
+					</tr>
+					<tr><td height="5"></td></tr>
+					<tr>
+						<td class="fs12"><!--{$arrTrackback[cnt].excerpt|escape|mb_strimwidth:0:200:"..."}--></td>
+					</tr>
+			
+					<!--{if !$smarty.section.cnt.last}-->
+					<tr><td height="20"><img src="<!--{$smarty.const.URL_DIR}-->img/common/line_580.gif" width="580" height="1" alt=""></td></tr>
+					<!--{/if}-->
+					
+					<!--{/section}-->
+					<!--{/if}-->
+					
+					<tr><td height="30"></td></tr>
+				</table>
+				<!--▲トラックバックここまで-->
+				<!--{/if}-->
 
 				<!--{if $arrRecommend}-->
 				<!--▼オススメ商品ここから-->

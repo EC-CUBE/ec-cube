@@ -22,27 +22,27 @@ insert into dtb_pagelayout (page_name,url,php_dir,tpl_dir,filename,edit_flg, cre
 insert into dtb_pagelayout (page_id,page_name,url, create_date, update_date)values(0, '¥×¥ì¥Ó¥å¡¼¥Ç¡¼¥¿',' ',now(),now());
 update dtb_pagelayout set page_id = 0 where page_id = 5;
 
-INSERT INTO dtb_blocposition (page_id,target_id,bloc_id,bloc_row,filename)values(1,1,(SELECT bloc_id FROM dtb_bloc WHERE filename = 'category'),2,'category');
-INSERT INTO dtb_blocposition (page_id,target_id,bloc_id,bloc_row,filename)values(1,1,(SELECT bloc_id FROM dtb_bloc WHERE filename = 'guide'),3,'guide');
-INSERT INTO dtb_blocposition (page_id,target_id,bloc_id,bloc_row,filename)values(1,1,(SELECT bloc_id FROM dtb_bloc WHERE filename = 'cart'),1,'cart');
-INSERT INTO dtb_blocposition (page_id,target_id,bloc_id,bloc_row,filename)values(1,3,(SELECT bloc_id FROM dtb_bloc WHERE filename = 'search_products'),2,'search_products');
-INSERT INTO dtb_blocposition (page_id,target_id,bloc_id,bloc_row,filename)values(1,4,(SELECT bloc_id FROM dtb_bloc WHERE filename = 'news'),1,'news');
-INSERT INTO dtb_blocposition (page_id,target_id,bloc_id,bloc_row,filename)values(1,3,(SELECT bloc_id FROM dtb_bloc WHERE filename = 'login'),1,'login');
-INSERT INTO dtb_blocposition (page_id,target_id,bloc_id,bloc_row,filename)values(1,4,(SELECT bloc_id FROM dtb_bloc WHERE filename = 'best5'),2,'best5');
-INSERT INTO dtb_blocposition (page_id,target_id,bloc_id,bloc_row,filename)values(2,1,(SELECT bloc_id FROM dtb_bloc WHERE filename = 'category'),2,'category');
-INSERT INTO dtb_blocposition (page_id,target_id,bloc_id,bloc_row,filename)values(2,1,(SELECT bloc_id FROM dtb_bloc WHERE filename = 'guide'),3,'guide');
-INSERT INTO dtb_blocposition (page_id,target_id,bloc_id,bloc_row,filename)values(2,1,(SELECT bloc_id FROM dtb_bloc WHERE filename = 'cart'),1,'cart');
-INSERT INTO dtb_blocposition (page_id,target_id,bloc_id,bloc_row,filename)values(2,5,(SELECT bloc_id FROM dtb_bloc WHERE filename = 'search_products'),0,'search_products');
-INSERT INTO dtb_blocposition (page_id,target_id,bloc_id,bloc_row,filename)values(2,5,(SELECT bloc_id FROM dtb_bloc WHERE filename = 'news'),0,'news');
-INSERT INTO dtb_blocposition (page_id,target_id,bloc_id,bloc_row,filename)values(2,5,(SELECT bloc_id FROM dtb_bloc WHERE filename = 'login'),0,'login');
-INSERT INTO dtb_blocposition (page_id,target_id,bloc_id,bloc_row,filename)values(2,5,(SELECT bloc_id FROM dtb_bloc WHERE filename = 'best5'),0,'best5');
-INSERT INTO dtb_blocposition (page_id,target_id,bloc_id,bloc_row,filename)values(3,1,(SELECT bloc_id FROM dtb_bloc WHERE filename = 'category'),2,'category');
-INSERT INTO dtb_blocposition (page_id,target_id,bloc_id,bloc_row,filename)values(3,1,(SELECT bloc_id FROM dtb_bloc WHERE filename = 'guide'),3,'guide');
-INSERT INTO dtb_blocposition (page_id,target_id,bloc_id,bloc_row,filename)values(3,1,(SELECT bloc_id FROM dtb_bloc WHERE filename = 'cart'),1,'cart');
-INSERT INTO dtb_blocposition (page_id,target_id,bloc_id,bloc_row,filename)values(3,5,(SELECT bloc_id FROM dtb_bloc WHERE filename = 'search_products'),0,'search_products');
-INSERT INTO dtb_blocposition (page_id,target_id,bloc_id,bloc_row,filename)values(3,5,(SELECT bloc_id FROM dtb_bloc WHERE filename = 'news'),0,'news');
-INSERT INTO dtb_blocposition (page_id,target_id,bloc_id,bloc_row,filename)values(3,5,(SELECT bloc_id FROM dtb_bloc WHERE filename = 'login'),0,'login');
-INSERT INTO dtb_blocposition (page_id,target_id,bloc_id,bloc_row,filename)values(3,5,(SELECT bloc_id FROM dtb_bloc WHERE filename = 'best5'),0,'best5');
+INSERT INTO dtb_blocposition (page_id,target_id,bloc_id,bloc_row,filename)values(1,1,1,2,'category');
+INSERT INTO dtb_blocposition (page_id,target_id,bloc_id,bloc_row,filename)values(1,1,2,3,'guide');
+INSERT INTO dtb_blocposition (page_id,target_id,bloc_id,bloc_row,filename)values(1,1,3,1,'cart');
+INSERT INTO dtb_blocposition (page_id,target_id,bloc_id,bloc_row,filename)values(1,3,4,2,'search_products');
+INSERT INTO dtb_blocposition (page_id,target_id,bloc_id,bloc_row,filename)values(1,4,5,1,'news');
+INSERT INTO dtb_blocposition (page_id,target_id,bloc_id,bloc_row,filename)values(1,3,6,1,'login');
+INSERT INTO dtb_blocposition (page_id,target_id,bloc_id,bloc_row,filename)values(1,4,7,2,'best5');
+INSERT INTO dtb_blocposition (page_id,target_id,bloc_id,bloc_row,filename)values(2,1,1,2,'category');
+INSERT INTO dtb_blocposition (page_id,target_id,bloc_id,bloc_row,filename)values(2,1,2,3,'guide');
+INSERT INTO dtb_blocposition (page_id,target_id,bloc_id,bloc_row,filename)values(2,1,3,1,'cart');
+INSERT INTO dtb_blocposition (page_id,target_id,bloc_id,bloc_row,filename)values(2,5,4,0,'search_products');
+INSERT INTO dtb_blocposition (page_id,target_id,bloc_id,bloc_row,filename)values(2,5,5,0,'news');
+INSERT INTO dtb_blocposition (page_id,target_id,bloc_id,bloc_row,filename)values(2,5,6,0,'login');
+INSERT INTO dtb_blocposition (page_id,target_id,bloc_id,bloc_row,filename)values(2,5,7,0,'best5');
+INSERT INTO dtb_blocposition (page_id,target_id,bloc_id,bloc_row,filename)values(3,1,1,2,'category');
+INSERT INTO dtb_blocposition (page_id,target_id,bloc_id,bloc_row,filename)values(3,1,2,3,'guide');
+INSERT INTO dtb_blocposition (page_id,target_id,bloc_id,bloc_row,filename)values(3,1,3,1,'cart');
+INSERT INTO dtb_blocposition (page_id,target_id,bloc_id,bloc_row,filename)values(3,5,4,0,'search_products');
+INSERT INTO dtb_blocposition (page_id,target_id,bloc_id,bloc_row,filename)values(3,5,5,0,'news');
+INSERT INTO dtb_blocposition (page_id,target_id,bloc_id,bloc_row,filename)values(3,5,6,0,'login');
+INSERT INTO dtb_blocposition (page_id,target_id,bloc_id,bloc_row,filename)values(3,5,7,0,'best5');
 
 insert into dtb_csv(csv_id,col,disp_name,rank,create_date,update_date)values(1,'product_id','¾¦ÉÊID',1,now(),now());
 insert into dtb_csv(csv_id,col,disp_name,rank,create_date,update_date)values(1,'product_class_id','µ¬³ÊID',2,now(),now());
@@ -52,8 +52,8 @@ insert into dtb_csv(csv_id,col,disp_name,rank,create_date,update_date)values(1,'
 insert into dtb_csv(csv_id,col,disp_name,rank,create_date,update_date)values(1,'status','¸ø³«¥Õ¥é¥°',6,now(),now());
 insert into dtb_csv(csv_id,col,disp_name,rank,create_date,update_date)values(1,'product_flag','¾¦ÉÊ¥¹¥Æ¡¼¥¿¥¹',7,now(),now());
 insert into dtb_csv(csv_id,col,disp_name,rank,create_date,update_date)values(1,'product_code','¾¦ÉÊ¥³¡¼¥É',8,now(),now());
-insert into dtb_csv(csv_id,col,disp_name,rank,create_date,update_date)values(1,'price01','»²¹Í»Ô¾ì²Á³Ê',9,now(),now());
-insert into dtb_csv(csv_id,col,disp_name,rank,create_date,update_date)values(1,'price02','²Á³Ê',10,now(),now());
+insert into dtb_csv(csv_id,col,disp_name,rank,create_date,update_date)values(1,'price01','ÄÌ¾ï²Á³Ê',9,now(),now());
+insert into dtb_csv(csv_id,col,disp_name,rank,create_date,update_date)values(1,'price02','ÈÎÇä²Á³Ê',10,now(),now());
 insert into dtb_csv(csv_id,col,disp_name,rank,create_date,update_date)values(1,'stock','ºß¸Ë¿ô',11,now(),now());
 insert into dtb_csv(csv_id,col,disp_name,rank,create_date,update_date)values(1,'deliv_fee','Á÷ÎÁ',12,now(),now());
 insert into dtb_csv(csv_id,col,disp_name,rank,create_date,update_date)values(1,'point_rate','¥İ¥¤¥ó¥ÈÉÕÍ¿Î¨',13,now(),now());
@@ -363,13 +363,13 @@ INSERT INTO dtb_category_total_count VALUES (5, 1, now());
 INSERT INTO dtb_category_total_count VALUES (4, 1, now());
 
 INSERT INTO dtb_kiyaku (kiyaku_title, kiyaku_text, rank, creator_id, update_date, del_flg, create_date) 
-VALUES ('Âè£±¾ò¡Ê²ñ°÷¡Ë','1. ¡Ö²ñ°÷¡×¤È¤Ï¡¢Åö¼Ò¤¬Äê¤á¤ë¼êÂ³¤Ë½¾¤¤ËÜµ¬Ìó¤ËÆ±°Õ¤Î¾å¡¢Æş²ñ¤Î¿½¤·¹ş¤ß¤ò¹Ô¤¦¸Ä¿Í¤ò¤¤¤¤¤Ş¤¹¡£
+VALUES ('Âè1¾ò¡Ê²ñ°÷¡Ë','1. ¡Ö²ñ°÷¡×¤È¤Ï¡¢Åö¼Ò¤¬Äê¤á¤ë¼êÂ³¤Ë½¾¤¤ËÜµ¬Ìó¤ËÆ±°Õ¤Î¾å¡¢Æş²ñ¤Î¿½¤·¹ş¤ß¤ò¹Ô¤¦¸Ä¿Í¤ò¤¤¤¤¤Ş¤¹¡£
 2. ¡Ö²ñ°÷¾ğÊó¡×¤È¤Ï¡¢²ñ°÷¤¬Åö¼Ò¤Ë³«¼¨¤·¤¿²ñ°÷¤ÎÂ°À­¤Ë´Ø¤¹¤ë¾ğÊó¤ª¤è¤Ó²ñ°÷¤Î¼è°ú¤Ë´Ø¤¹¤ëÍúÎòÅù¤Î¾ğÊó¤ò¤¤¤¤¤Ş¤¹¡£
 3. ËÜµ¬Ìó¤Ï¡¢¤¹¤Ù¤Æ¤Î²ñ°÷¤ËÅ¬ÍÑ¤µ¤ì¡¢ÅĞÏ¿¼êÂ³»ş¤ª¤è¤ÓÅĞÏ¿¸å¤Ë¤ª¼é¤ê¤¤¤¿¤À¤¯µ¬Ìó¤Ç¤¹¡£',
 12,0,Now(),0, now());
 
 INSERT INTO dtb_kiyaku (kiyaku_title, kiyaku_text, rank, creator_id, update_date, del_flg, create_date) 
-VALUES ('Âè£²¾ò¡ÊÅĞÏ¿¡Ë','1. ²ñ°÷»ñ³Ê
+VALUES ('Âè2¾ò¡ÊÅĞÏ¿¡Ë','1. ²ñ°÷»ñ³Ê
 ËÜµ¬Ìó¤ËÆ±°Õ¤Î¾å¡¢½êÄê¤ÎÆş²ñ¿½¹ş¤ß¤ò¤µ¤ì¤¿¤ªµÒÍÍ¤Ï¡¢½êÄê¤ÎÅĞÏ¿¼êÂ³´°Î»¸å¤Ë²ñ°÷¤È¤·¤Æ¤Î»ñ³Ê¤òÍ­¤·¤Ş¤¹¡£²ñ°÷ÅĞÏ¿¼êÂ³¤Ï¡¢²ñ°÷¤È¤Ê¤ë¤´ËÜ¿Í¤¬¹Ô¤Ã¤Æ¤¯¤À¤µ¤¤¡£ÂåÍı¤Ë¤è¤ëÅĞÏ¿¤Ï°ìÀÚÇ§¤á¤é¤ì¤Ş¤»¤ó¡£¤Ê¤ª¡¢²áµî¤Ë²ñ°÷»ñ³Ê¤¬¼è¤ê¾Ã¤µ¤ì¤¿Êı¤ä¤½¤ÎÂ¾Åö¼Ò¤¬Áê±ş¤·¤¯¤Ê¤¤¤ÈÈ½ÃÇ¤·¤¿Êı¤«¤é¤Î²ñ°÷¿½¹ş¤Ï¤ªÃÇ¤ê¤¹¤ë¾ì¹ç¤¬¤¢¤ê¤Ş¤¹¡£
 
 2. ²ñ°÷¾ğÊó¤ÎÆşÎÏ
@@ -382,16 +382,16 @@ VALUES ('Âè£²¾ò¡ÊÅĞÏ¿¡Ë','1. ²ñ°÷»ñ³Ê
 11,0,Now(),0, now());
 
 INSERT INTO dtb_kiyaku (kiyaku_title, kiyaku_text, rank, creator_id, update_date, del_flg, create_date) 
-VALUES ('Âè£³¾ò¡ÊÊÑ¹¹¡Ë','1. ²ñ°÷¤Ï¡¢»áÌ¾¡¢½»½ê¤Ê¤ÉÅö¼Ò¤ËÆÏ¤±½Ğ¤¿»ö¹à¤ËÊÑ¹¹¤¬¤¢¤Ã¤¿¾ì¹ç¤Ë¤Ï¡¢Â®¤ä¤«¤ËÅö¼Ò¤ËÏ¢Íí¤¹¤ë¤â¤Î¤È¤·¤Ş¤¹¡£
+VALUES ('Âè3¾ò¡ÊÊÑ¹¹¡Ë','1. ²ñ°÷¤Ï¡¢»áÌ¾¡¢½»½ê¤Ê¤ÉÅö¼Ò¤ËÆÏ¤±½Ğ¤¿»ö¹à¤ËÊÑ¹¹¤¬¤¢¤Ã¤¿¾ì¹ç¤Ë¤Ï¡¢Â®¤ä¤«¤ËÅö¼Ò¤ËÏ¢Íí¤¹¤ë¤â¤Î¤È¤·¤Ş¤¹¡£
 2. ÊÑ¹¹ÅĞÏ¿¤¬¤Ê¤µ¤ì¤Ê¤«¤Ã¤¿¤³¤È¤Ë¤è¤êÀ¸¤¸¤¿Â»³²¤Ë¤Ä¤¤¤Æ¡¢Åö¼Ò¤Ï°ìÀÚÀÕÇ¤¤òÉé¤¤¤Ş¤»¤ó¡£¤Ş¤¿¡¢ÊÑ¹¹ÅĞÏ¿¤¬¤Ê¤µ¤ì¤¿¾ì¹ç¤Ç¤â¡¢ÊÑ¹¹ÅĞÏ¿Á°¤Ë¤¹¤Ç¤Ë¼êÂ³¤¬¤Ê¤µ¤ì¤¿¼è°ú¤Ï¡¢ÊÑ¹¹ÅĞÏ¿Á°¤Î¾ğÊó¤Ë´ğ¤Å¤¤¤Æ¹Ô¤ï¤ì¤Ş¤¹¤Î¤Ç¤´Ãí°Õ¤¯¤À¤µ¤¤¡£',
 10,0,Now(),0, now());
 
 INSERT INTO dtb_kiyaku (kiyaku_title, kiyaku_text, rank, creator_id, update_date, del_flg, create_date) 
-VALUES ('Âè£´¾ò¡ÊÂà²ñ¡Ë','²ñ°÷¤¬Âà²ñ¤ò´õË¾¤¹¤ë¾ì¹ç¤Ë¤Ï¡¢²ñ°÷ËÜ¿Í¤¬Âà²ñ¼êÂ³¤­¤ò¹Ô¤Ã¤Æ¤¯¤À¤µ¤¤¡£½êÄê¤ÎÂà²ñ¼êÂ³¤Î½ªÎ»¸å¤Ë¡¢Âà²ñ¤È¤Ê¤ê¤Ş¤¹¡£',
+VALUES ('Âè4¾ò¡ÊÂà²ñ¡Ë','²ñ°÷¤¬Âà²ñ¤ò´õË¾¤¹¤ë¾ì¹ç¤Ë¤Ï¡¢²ñ°÷ËÜ¿Í¤¬Âà²ñ¼êÂ³¤­¤ò¹Ô¤Ã¤Æ¤¯¤À¤µ¤¤¡£½êÄê¤ÎÂà²ñ¼êÂ³¤Î½ªÎ»¸å¤Ë¡¢Âà²ñ¤È¤Ê¤ê¤Ş¤¹¡£',
 9,0,Now(),0, now());
 
 INSERT INTO dtb_kiyaku (kiyaku_title, kiyaku_text, rank, creator_id, update_date, del_flg, create_date) 
-VALUES ('Âè£µ¾ò¡Ê²ñ°÷»ñ³Ê¤ÎÁÓ¼ºµÚ¤ÓÇå½şµÁÌ³¡Ë','1. ²ñ°÷¤¬¡¢²ñ°÷»ñ³Ê¼èÆÀ¿½¹ş¤Îºİ¤Ëµõµ¶¤Î¿½¹ğ¤ò¤·¤¿¤È¤­¡¢ÄÌ¿®ÈÎÇä¤Ë¤è¤ëÂå¶â»ÙÊ§ºÄÌ³¤òÂÕ¤Ã¤¿¤È¤­¡¢¤½¤ÎÂ¾Åö¼Ò¤¬²ñ°÷¤È¤·¤ÆÉÔÅ¬Åö¤ÈÇ§¤á¤ë»öÍ³¤¬¤¢¤ë¤È¤­¤Ï¡¢Åö¼Ò¤Ï¡¢²ñ°÷»ñ³Ê¤ò¼è¤ê¾Ã¤¹¤³¤È¤¬¤Ç¤­¤ë¤³¤È¤È¤·¤Ş¤¹¡£
+VALUES ('Âè5¾ò¡Ê²ñ°÷»ñ³Ê¤ÎÁÓ¼ºµÚ¤ÓÇå½şµÁÌ³¡Ë','1. ²ñ°÷¤¬¡¢²ñ°÷»ñ³Ê¼èÆÀ¿½¹ş¤Îºİ¤Ëµõµ¶¤Î¿½¹ğ¤ò¤·¤¿¤È¤­¡¢ÄÌ¿®ÈÎÇä¤Ë¤è¤ëÂå¶â»ÙÊ§ºÄÌ³¤òÂÕ¤Ã¤¿¤È¤­¡¢¤½¤ÎÂ¾Åö¼Ò¤¬²ñ°÷¤È¤·¤ÆÉÔÅ¬Åö¤ÈÇ§¤á¤ë»öÍ³¤¬¤¢¤ë¤È¤­¤Ï¡¢Åö¼Ò¤Ï¡¢²ñ°÷»ñ³Ê¤ò¼è¤ê¾Ã¤¹¤³¤È¤¬¤Ç¤­¤ë¤³¤È¤È¤·¤Ş¤¹¡£
 2. ²ñ°÷¤¬¡¢°Ê²¼¤Î³Æ¹æ¤ËÄê¤á¤ë¹Ô°Ù¤ò¤·¤¿¤È¤­¤Ï¡¢¤³¤ì¤Ë¤è¤êÅö¼Ò¤¬Èï¤Ã¤¿Â»³²¤òÇå½ş¤¹¤ëÀÕÇ¤¤òÉé¤¤¤Ş¤¹¡£
 (1)²ñ°÷ÈÖ¹æ¡¢¥Ñ¥¹¥ï¡¼¥É¤òÉÔÀµ¤ËÍøÍÑ¤¹¤ë¤³¤È
 (2)Åö¥Û¡¼¥à¥Ú¡¼¥¸¤Ë¥¢¥¯¥»¥¹¤·¤Æ¾ğÊó¤ò²ş¤¶¤ó¤·¤¿¤ê¡¢Åö¥Û¡¼¥à¥Ú¡¼¥¸¤ËÍ­³²¤Ê¥³¥ó¥Ô¥å¡¼¥¿¥×¥í¥°¥é¥à¤òÁ÷¿®¤¹¤ë¤Ê¤É¤·¤Æ¡¢Åö¼Ò¤Î±Ä¶È¤òË¸³²¤¹¤ë¤³¤È
@@ -400,7 +400,7 @@ VALUES ('Âè£µ¾ò¡Ê²ñ°÷»ñ³Ê¤ÎÁÓ¼ºµÚ¤ÓÇå½şµÁÌ³¡Ë','1. ²ñ°÷¤¬¡¢²ñ°÷»ñ³Ê¼èÆÀ¿½¹ş¤Îºİ¤
 8,0,Now(),0, now());
 
 INSERT INTO dtb_kiyaku (kiyaku_title, kiyaku_text, rank, creator_id, update_date, del_flg, create_date) 
-VALUES ('Âè£¶¾ò¡Ê²ñ°÷¾ğÊó¤Î¼è°·¤¤¡Ë','1. Åö¼Ò¤Ï¡¢¸¶Â§¤È¤·¤Æ²ñ°÷¾ğÊó¤ò²ñ°÷¤Î»öÁ°¤ÎÆ±°Õ¤Ê¤¯Âè»°¼Ô¤ËÂĞ¤·¤Æ³«¼¨¤¹¤ë¤³¤È¤Ï¤¢¤ê¤Ş¤»¤ó¡£¤¿¤À¤·¡¢¼¡¤Î³Æ¹æ¤Î¾ì¹ç¤Ë¤Ï¡¢²ñ°÷¤Î»öÁ°¤ÎÆ±°Õ¤Ê¤¯¡¢Åö¼Ò¤Ï²ñ°÷¾ğÊó¤½¤ÎÂ¾¤Î¤ªµÒÍÍ¾ğÊó¤ò³«¼¨¤Ç¤­¤ë¤â¤Î¤È¤·¤Ş¤¹¡£
+VALUES ('Âè6¾ò¡Ê²ñ°÷¾ğÊó¤Î¼è°·¤¤¡Ë','1. Åö¼Ò¤Ï¡¢¸¶Â§¤È¤·¤Æ²ñ°÷¾ğÊó¤ò²ñ°÷¤Î»öÁ°¤ÎÆ±°Õ¤Ê¤¯Âè»°¼Ô¤ËÂĞ¤·¤Æ³«¼¨¤¹¤ë¤³¤È¤Ï¤¢¤ê¤Ş¤»¤ó¡£¤¿¤À¤·¡¢¼¡¤Î³Æ¹æ¤Î¾ì¹ç¤Ë¤Ï¡¢²ñ°÷¤Î»öÁ°¤ÎÆ±°Õ¤Ê¤¯¡¢Åö¼Ò¤Ï²ñ°÷¾ğÊó¤½¤ÎÂ¾¤Î¤ªµÒÍÍ¾ğÊó¤ò³«¼¨¤Ç¤­¤ë¤â¤Î¤È¤·¤Ş¤¹¡£
 (1)Ë¡Îá¤Ë´ğ¤Å¤­³«¼¨¤òµá¤á¤é¤ì¤¿¾ì¹ç
 (2)Åö¼Ò¤Î¸¢Íø¡¢Íø±×¡¢Ì¾ÍÀÅù¤òÊİ¸î¤¹¤ë¤¿¤á¤ËÉ¬Í×¤Ç¤¢¤ë¤ÈÅö¼Ò¤¬È½ÃÇ¤·¤¿¾ì¹ç
 2. ²ñ°÷¾ğÊó¤Ë¤Ä¤­¤Ş¤·¤Æ¤Ï¡¢Åö¼Ò¤Î¡Ö¸Ä¿Í¾ğÊóÊİ¸î¤Ø¤Î¼èÁÈ¤ß¡×¤Ë½¾¤¤¡¢Åö¼Ò¤¬´ÉÍı¤·¤Ş¤¹¡£Åö¼Ò¤Ï¡¢²ñ°÷¾ğÊó¤ò¡¢²ñ°÷¤Ø¤Î¥µ¡¼¥Ó¥¹Äó¶¡¡¢¥µ¡¼¥Ó¥¹ÆâÍÆ¤Î¸ş¾å¡¢¥µ¡¼¥Ó¥¹¤ÎÍøÍÑÂ¥¿Ê¡¢¤ª¤è¤Ó¥µ¡¼¥Ó¥¹¤Î·òÁ´¤«¤Ä±ß³ê¤Ê±¿±Ä¤Î³ÎÊİ¤ò¿Ş¤ëÌÜÅª¤Î¤¿¤á¤Ë¡¢Åö¼Ò¤ª¤¤¤ÆÍøÍÑ¤¹¤ë¤³¤È¤¬¤Ç¤­¤ë¤â¤Î¤È¤·¤Ş¤¹¡£
@@ -408,7 +408,7 @@ VALUES ('Âè£¶¾ò¡Ê²ñ°÷¾ğÊó¤Î¼è°·¤¤¡Ë','1. Åö¼Ò¤Ï¡¢¸¶Â§¤È¤·¤Æ²ñ°÷¾ğÊó¤ò²ñ°÷¤Î»öÁ°¤
 7,0,Now(),0, now());
 
 INSERT INTO dtb_kiyaku (kiyaku_title, kiyaku_text, rank, creator_id, update_date, del_flg, create_date) 
-VALUES ('Âè£·¾ò¡Ê¶Ø»ß»ö¹à¡Ë','ËÜ¥µ¡¼¥Ó¥¹¤ÎÍøÍÑ¤Ëºİ¤·¤Æ¡¢²ñ°÷¤ËÂĞ¤·¼¡¤Î³Æ¹æ¤Î¹Ô°Ù¤ò¹Ô¤¦¤³¤È¤ò¶Ø»ß¤·¤Ş¤¹¡£
+VALUES ('Âè7¾ò¡Ê¶Ø»ß»ö¹à¡Ë','ËÜ¥µ¡¼¥Ó¥¹¤ÎÍøÍÑ¤Ëºİ¤·¤Æ¡¢²ñ°÷¤ËÂĞ¤·¼¡¤Î³Æ¹æ¤Î¹Ô°Ù¤ò¹Ô¤¦¤³¤È¤ò¶Ø»ß¤·¤Ş¤¹¡£
 
 1. Ë¡Îá¤Ş¤¿¤ÏËÜµ¬Ìó¡¢ËÜ¥µ¡¼¥Ó¥¹¤´ÍøÍÑ¾å¤Î¤´Ãí°Õ¡¢ËÜ¥µ¡¼¥Ó¥¹¤Ç¤Î¤ªÇã¤¤Êª¾å¤Î¤´Ãí°Õ¤½¤ÎÂ¾¤ÎËÜµ¬ÌóÅù¤Ë°ãÈ¿¤¹¤ë¤³¤È
 2. Åö¼Ò¡¢¤ª¤è¤Ó¤½¤ÎÂ¾¤ÎÂè»°¼Ô¤Î¸¢Íø¡¢Íø±×¡¢Ì¾ÍÀÅù¤òÂ»¤Í¤ë¤³¤È
@@ -422,7 +422,7 @@ VALUES ('Âè£·¾ò¡Ê¶Ø»ß»ö¹à¡Ë','ËÜ¥µ¡¼¥Ó¥¹¤ÎÍøÍÑ¤Ëºİ¤·¤Æ¡¢²ñ°÷¤ËÂĞ¤·¼¡¤Î³Æ¹æ¤Î¹Ô°Ù
 6,0,Now(),0, now());
 
 INSERT INTO dtb_kiyaku (kiyaku_title, kiyaku_text, rank, creator_id, update_date, del_flg, create_date) 
-VALUES ('Âè£¸¾ò¡Ê¥µ¡¼¥Ó¥¹¤ÎÃæÃÇ¡¦Ää»ßÅù¡Ë','1. Åö¼Ò¤Ï¡¢ËÜ¥µ¡¼¥Ó¥¹¤Î²ÔÆ°¾õÂÖ¤òÎÉ¹¥¤ËÊİ¤Ä¤¿¤á¤Ë¡¢¼¡¤Î³Æ¹æ¤Î°ì¤Ë³ºÅö¤¹¤ë¾ì¹ç¡¢Í½¹ğ¤Ê¤·¤Ë¡¢ËÜ¥µ¡¼¥Ó¥¹¤ÎÄó¶¡Á´¤Æ¤¢¤ë¤¤¤Ï°ìÉô¤òÄä»ß¤¹¤ë¤³¤È¤¬¤¢¤ê¤Ş¤¹¡£
+VALUES ('Âè8¾ò¡Ê¥µ¡¼¥Ó¥¹¤ÎÃæÃÇ¡¦Ää»ßÅù¡Ë','1. Åö¼Ò¤Ï¡¢ËÜ¥µ¡¼¥Ó¥¹¤Î²ÔÆ°¾õÂÖ¤òÎÉ¹¥¤ËÊİ¤Ä¤¿¤á¤Ë¡¢¼¡¤Î³Æ¹æ¤Î°ì¤Ë³ºÅö¤¹¤ë¾ì¹ç¡¢Í½¹ğ¤Ê¤·¤Ë¡¢ËÜ¥µ¡¼¥Ó¥¹¤ÎÄó¶¡Á´¤Æ¤¢¤ë¤¤¤Ï°ìÉô¤òÄä»ß¤¹¤ë¤³¤È¤¬¤¢¤ê¤Ş¤¹¡£
 (1)¥·¥¹¥Æ¥à¤ÎÄê´üÊİ¼é¤ª¤è¤Ó¶ÛµŞÊİ¼é¤Î¤¿¤á¤ËÉ¬Í×¤Ê¾ì¹ç
 (2)¥·¥¹¥Æ¥à¤ËÉé²Ù¤¬½¸Ãæ¤·¤¿¾ì¹ç
 (3)²ĞºÒ¡¢ÄäÅÅ¡¢Âè»°¼Ô¤Ë¤è¤ëË¸³²¹Ô°Ù¤Ê¤É¤Ë¤è¤ê¥·¥¹¥Æ¥à¤Î±¿ÍÑ¤¬º¤Æñ¤Ë¤Ê¤Ã¤¿¾ì¹ç
@@ -430,7 +430,7 @@ VALUES ('Âè£¸¾ò¡Ê¥µ¡¼¥Ó¥¹¤ÎÃæÃÇ¡¦Ää»ßÅù¡Ë','1. Åö¼Ò¤Ï¡¢ËÜ¥µ¡¼¥Ó¥¹¤Î²ÔÆ°¾õÂÖ¤òÎÉ¹
 5,0,Now(),0, now());
 
 INSERT INTO dtb_kiyaku (kiyaku_title, kiyaku_text, rank, creator_id, update_date, del_flg, create_date) 
-VALUES ('Âè£¹¾ò¡Ê¥µ¡¼¥Ó¥¹¤ÎÊÑ¹¹¡¦ÇÑ»ß¡Ë','Åö¼Ò¤Ï¡¢¤½¤ÎÈ½ÃÇ¤Ë¤è¤ê¥µ¡¼¥Ó¥¹¤ÎÁ´Éô¤Ş¤¿¤Ï°ìÉô¤ò»öÁ°¤ÎÄÌÃÎ¤Ê¤¯¡¢Å¬µ¹ÊÑ¹¹¡¦ÇÑ»ß¤Ç¤­¤ë¤â¤Î¤È¤·¤Ş¤¹¡£',
+VALUES ('Âè9¾ò¡Ê¥µ¡¼¥Ó¥¹¤ÎÊÑ¹¹¡¦ÇÑ»ß¡Ë','Åö¼Ò¤Ï¡¢¤½¤ÎÈ½ÃÇ¤Ë¤è¤ê¥µ¡¼¥Ó¥¹¤ÎÁ´Éô¤Ş¤¿¤Ï°ìÉô¤ò»öÁ°¤ÎÄÌÃÎ¤Ê¤¯¡¢Å¬µ¹ÊÑ¹¹¡¦ÇÑ»ß¤Ç¤­¤ë¤â¤Î¤È¤·¤Ş¤¹¡£',
 4,0,Now(),0, now());
 
 INSERT INTO dtb_kiyaku (kiyaku_title, kiyaku_text, rank, creator_id, update_date, del_flg, create_date) 

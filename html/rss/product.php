@@ -89,7 +89,7 @@ $objPage->arrSiteInfo = $arrSiteInfo;
 $objView->assignobj($objPage);
 
 //キャッシュしない(念のため)
-header("Paragrama: no-cache");
+header("Pragma: no-cache");
 
 //XMLテキスト(これがないと正常にRSSとして認識してくれないツールがあるため)
 header("Content-type: application/xml");

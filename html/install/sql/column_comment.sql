@@ -367,8 +367,10 @@ INSERT INTO dtb_table_comment(table_name,column_name,description) values ('dtb_c
 INSERT INTO dtb_table_comment(table_name,column_name,description) values ('dtb_customer','cell01','携帯電話番号1');
 INSERT INTO dtb_table_comment(table_name,column_name,description) values ('dtb_customer','cell02','携帯電話番号2');
 INSERT INTO dtb_table_comment(table_name,column_name,description) values ('dtb_customer','cell03','携帯電話番号3');
+INSERT INTO dtb_table_comment(table_name,column_name,description) values ('dtb_customer','mobile_phone_id','携帯端末ID');
 INSERT INTO dtb_table_comment(table_name,column_name,description) values ('dtb_customer_mail','email','メールアドレス');
 INSERT INTO dtb_table_comment(table_name,column_name,description) values ('dtb_customer_mail','mail_flag','1:HTML 2:TEXT 3:希望しない 4:仮登録（HTML） 5:仮登録(TEXT) 6:仮登録(希望しない)');
+INSERT INTO dtb_table_comment(table_name,column_name,description) values ('dtb_customer_mail','secret_key','暗号化顧客ID');
 INSERT INTO dtb_table_comment(table_name,column_name,description) values ('dtb_customer_mail_temp','email','メールアドレス');
 INSERT INTO dtb_table_comment(table_name,column_name,description) values ('dtb_customer_mail_temp','mail_flag','1:HTML 2:TEXT 3:希望しない(停止)');
 INSERT INTO dtb_table_comment(table_name,column_name,description) values ('dtb_customer_mail_temp','temp_id','一時ＩＤ');

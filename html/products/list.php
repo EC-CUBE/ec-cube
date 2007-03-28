@@ -51,7 +51,7 @@ if($_GET['mode'] == 'search'){
 }elseif ($category_id == "" ) {
 	$tpl_subtitle = "¡¥æ¶… ";
 }else{
-	$arrFirstCat = GetFirstCat($category_id);
+	$arrFirstCat = sfGetFirstCat($category_id);
 	$tpl_subtitle = $arrFirstCat['name'];
 }
 

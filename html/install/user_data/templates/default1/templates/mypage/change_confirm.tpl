@@ -92,7 +92,7 @@
 							</tr>
 							<tr>
 								<td bgcolor="#f0f0f0" class="fs12n">メールマガジン送付について<span class="red">※</span></td>
-								<td bgcolor="#ffffff" class="fs12n"><!--{$arrMAILMAGATYPE[$arrForm.mail_flag]}--></td>
+								<td bgcolor="#ffffff" class="fs12n"><!--{$arrMAILMAGATYPE[$arrForm.mailmaga_flg]}--></td>
 							</tr>
 						</table>
 						<!--入力フォームここまで-->
@@ -101,7 +101,7 @@
 					<tr><td height="20"></td></tr>
 					<tr>
 						<td align="center">
-							<a href="<!--{$smarty.server.PHP_SELF|escape}-->" onclick="fnModeSubmit('return', '', ''); return false;" onmouseover="chgImg('<!--{$smarty.const.URL_DIR}-->img/common/b_back_on.gif','back');" onmouseout="chgImg('<!--{$smarty.const.URL_DIR}-->img/common/b_back.gif','back');"><img src="<!--{$smarty.const.URL_DIR}-->img/common/b_back.gif" width="150" height="30" alt="戻る" name="change" id="change" /></a>
+							<a href="<!--{$smarty.server.PHP_SELF|escape}-->" onclick="fnModeSubmit('return', '', ''); return false;" onmouseover="chgImg('<!--{$smarty.const.URL_DIR}-->img/common/b_back_on.gif','back');" onmouseout="chgImg('<!--{$smarty.const.URL_DIR}-->img/common/b_back.gif','back');"><img src="<!--{$smarty.const.URL_DIR}-->img/common/b_back.gif" width="150" height="30" alt="戻る" name="back" id="back" /></a>
 							<img src="<!--{$smarty.const.URL_DIR}-->img/_.gif" width="20" height="" alt="" />
 							<input type="image" onmouseover="chgImgImageSubmit('<!--{$smarty.const.URL_DIR}-->img/common/b_send_on.gif',this)" onmouseout="chgImgImageSubmit('<!--{$smarty.const.URL_DIR}-->img/common/b_send.gif',this)" src="<!--{$smarty.const.URL_DIR}-->img/common/b_send.gif" width="150" height="30" alt="送信" name="complete" id="complete" />
 						</td>

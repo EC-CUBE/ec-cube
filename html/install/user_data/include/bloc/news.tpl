@@ -3,6 +3,7 @@
  *
  * http://www.lockon.co.jp/
  *}-->
+<link rel="alternate" type="application/rss+xml" title="RSS" href="<!--{$smarty.const.SITE_URL}-->/rss/index.php">
 <table width="400" border="0" cellspacing="0" cellpadding="0" summary=" ">
 	<tr>
 		<td colspan="3"><img src="<!--{$smarty.const.URL_DIR}-->img/top/news.jpg" width="400" height="29" alt="新着情報"></td>

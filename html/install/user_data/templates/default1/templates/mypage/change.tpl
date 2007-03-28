@@ -84,14 +84,14 @@
 										<td><input type="text" name="addr01" value="<!--{$arrForm.addr01}-->" size="60" class="box60" style="<!--{$arrErr.addr01|sfGetErrorColor}-->; ime-mode: active;" /></td>
 									</tr>
 									<tr>
-										<td class="fs10n">市区町村名（例：大阪市北区堂島）</td>
+										<td class="fs10n"><!--{$smarty.const.SAMPLE_ADDRESS1}--></td>
 									</tr>
 									<tr><td height="5"></td></tr>
 									<tr>
 										<td><input type="text" name="addr02" value="<!--{$arrForm.addr02}-->" size="60" class="box60" style="<!--{$arrErr.addr02|sfGetErrorColor}-->; ime-mode: active;" /></td>
 									</tr>
 									<tr>
-										<td class="fs10n">番地・ビル名（例：6-1-1）</td>
+										<td class="fs10n"><!--{$smarty.const.SAMPLE_ADDRESS2}--></td>
 									</tr>
 									<tr><td height="5"></td></tr>
 									<tr>
@@ -208,10 +208,10 @@
 							<tr>
 								<td bgcolor="#f0f0f0" class="fs12">メールマガジン送付について<span class="red">※</span></td>
 								<td bgcolor="#ffffff" class="fs12">
-									<span class="red"><!--{$arrErr.mail_flag}--></span>
-									<input type="radio" name="mail_flag" value="1" id="html" style="<!--{$arrErr.mail_flag|sfGetErrorColor}-->" <!--{if $arrForm.mail_flag eq 1}--> checked <!--{/if}--> />HTMLメール＋テキストメールを受け取る</label><br>
-									<input type="radio" name="mail_flag" value="2" id="text" style="<!--{$arrErr.mail_flag|sfGetErrorColor}-->" <!--{if $arrForm.mail_flag eq 2}--> checked <!--{/if}--> /><label for="text">テキストメールを受け取る</label><br>
-									<input type="radio" name="mail_flag" value="3" id="no" style="<!--{$arrErr.mail_flag|sfGetErrorColor}-->" <!--{if $arrForm.mail_flag eq 3}--> checked <!--{/if}--> /><label for="no">受け取らない</label>
+									<span class="red"><!--{$arrErr.mailmaga_flg}--></span>
+									<input type="radio" name="mailmaga_flg" value="1" id="html" style="<!--{$arrErr.mailmaga_flg|sfGetErrorColor}-->" <!--{if $arrForm.mailmaga_flg eq 1}--> checked <!--{/if}--> />HTMLメール＋テキストメールを受け取る</label><br>
+									<input type="radio" name="mailmaga_flg" value="2" id="text" style="<!--{$arrErr.mailmaga_flg|sfGetErrorColor}-->" <!--{if $arrForm.mailmaga_flg eq 2}--> checked <!--{/if}--> /><label for="text">テキストメールを受け取る</label><br>
+									<input type="radio" name="mailmaga_flg" value="3" id="no" style="<!--{$arrErr.mailmaga_flg|sfGetErrorColor}-->" <!--{if $arrForm.mailmaga_flg eq 3}--> checked <!--{/if}--> /><label for="no">受け取らない</label>
 								</td>
 							</tr>
 						</table>

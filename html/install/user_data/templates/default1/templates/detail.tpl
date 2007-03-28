@@ -132,7 +132,7 @@ function lnSetSelect(form, name1, name2, val) {
 									<!--{/if}-->
 									</span></span><br/>
 								<!--¡ú²Á³Ê¡ú-->
-									<span class="red"><span class="fs12">²Á³Ê</span><span class="fs10">(ÀÇ¹þ)</span></span><span class="redst"><span class="fs12">¡§
+									<span class="red"><span class="fs12"><!--{$smarty.const.SALE_PRICE_TITLE}--></span><span class="fs10">(ÀÇ¹þ)</span></span><span class="redst"><span class="fs12">¡§
 									<!--{if $arrProduct.price02_min == $arrProduct.price02_max}-->				
 										<!--{$arrProduct.price02_min|sfPreTax:$arrSiteInfo.tax:$arrSiteInfo.tax_rule|number_format}-->
 									<!--{else}-->
@@ -141,7 +141,7 @@ function lnSetSelect(form, name1, name2, val) {
 									±ß</span></span><br/>
 									
 									<!--{if $arrProduct.price01_max > 0}-->
-										<span class="fs12"><span class="red">»²¹Í»Ô¾ì²Á³Ê¡§</span><span class="redst">
+										<span class="fs12"><span class="red"><!--{$smarty.const.NORMAL_PRICE_TITLE}-->¡§</span><span class="redst">
 										<!--{if $arrProduct.price01_min == $arrProduct.price01_max}-->				
 											<!--{$arrProduct.price01_min|number_format}-->
 										<!--{else}-->

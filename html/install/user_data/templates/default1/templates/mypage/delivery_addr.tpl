@@ -111,7 +111,7 @@
 								</tr>
 								<tr><td height="2"></td></tr>
 								<tr>
-									<td class="fs10n">ご住所1（神戸市中央区）</td>
+									<td class="fs10n"><!--{$smarty.const.SAMPLE_ADDRESS1}--></td>
 								</tr>
 								<tr><td height="5"></td></tr>
 								<tr>
@@ -120,7 +120,7 @@
 								</tr>
 								<tr><td height="2"></td></tr>
 								<tr>
-									<td class="fs10"><span class="red">住所は必ず2つに分けてご記入ください。マンション名は必ず記入してください。</span></td>
+									<td class="fs10"><!--{$smarty.const.SAMPLE_ADDRESS2}--></td>
 								</tr>
 							</table>
 						</td>

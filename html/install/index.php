@@ -50,8 +50,19 @@ $objDBParam->setParam($_POST);
 switch($_POST['mode']) {
 // ようこそ
 case 'welcome':
+	//$objPage = lfDispAgreement($objPage);
+	$objPage = lfDispStep0($objPage);
+	//$objPage->tpl_onload .= "fnChangeVisible('agreement_yes', 'next');";
+	break;
+
+/* 現在保留中
+
+// 使用許諾契約書の同意
+case 'agreement':
 	$objPage = lfDispStep0($objPage);
 	break;
+*/	
+	
 // アクセス権限のチェック
 case 'step0':
 	$objPage = lfDispStep0_1($objPage);
@@ -94,6 +105,10 @@ case 'step3':
 	$objPage->arrErr = lfAddTable("dtb_session", $dsn);			// セッション管理テーブル
 	$objPage->arrErr = lfAddTable("dtb_module", $dsn);			// モジュール管理テーブル
 	$objPage->arrErr = lfAddTable("dtb_campaign_order", $dsn);	// キャンペーン受注テーブル
+	// テーブルが存在しない場合に追加される。
+	$objPage->arrErr = lfAddTable("dtb_mobile_kara_mail", $dsn);	// 空メール管理テーブル
+	// テーブルが存在しない場合に追加される。
+	$objPage->arrErr = lfAddTable("dtb_mobile_ext_session_id", $dsn);	// セッションID管理テーブル
 	
 	// カラムを追加
 	lfAddColumn($dsn);
@@ -107,8 +122,8 @@ case 'step3':
 		if ($skip == "on") {
 			// 設定ファイルの生成
 			lfMakeConfigFile();
-			//$objPage = lfDispComplete($objPage);
-			$objPage = lfDispStep4($objPage);
+			$objPage = lfDispComplete($objPage);
+			//$objPage = lfDispStep4($objPage);
 			break;
 		}
 	}
@@ -185,7 +200,10 @@ case 'drop':
 	// 追加テーブルがあれば削除する。
 	lfDropTable("dtb_module", $dsn);
 	lfDropTable("dtb_session", $dsn);
-		
+	lfDropTable("dtb_campaign_order", $dsn);
+	lfDropTable("dtb_mobile_ext_session_id", $dsn);
+	lfDropTable("dtb_mobile_kara_mail", $dsn);
+			
 	if ($arrRet['db_type'] == 'pgsql'){
 		// ビューの削除
 		$objPage->arrErr = lfExecuteSQL("./sql/drop_view.sql", $dsn, false); 
@@ -247,28 +265,26 @@ case 'complete':
 	$GLOBAL_ERR = "";
 	$objPage = lfDispComplete($objPage);
 	
-	// サイト情報を送信しても良い場合には送る
-	if($_POST['send_info'] == "true"){
-		$req = new HTTP_Request("http://www.ec-cube.net/mall/use_site.php");
-		$req->setMethod(HTTP_REQUEST_METHOD_POST);
-		
-		$arrSendData = array();
-		foreach($_POST as $key => $val){
-			if (ereg("^senddata_*", $key)){
-				$arrSendDataTmp = array(str_replace("senddata_", "", $key) => $val);
-				$arrSendData = array_merge($arrSendData, $arrSendDataTmp);
-			}
+	// サイト情報を送信
+	$req = new HTTP_Request("http://www.ec-cube.net/mall/use_site.php");
+	$req->setMethod(HTTP_REQUEST_METHOD_POST);
+	
+	$arrSendData = array();
+	foreach($_POST as $key => $val){
+		if (ereg("^senddata_*", $key)){
+			$arrSendDataTmp = array(str_replace("senddata_", "", $key) => $val);
+			$arrSendData = array_merge($arrSendData, $arrSendDataTmp);
 		}
-		
-		$req->addPostDataArray($arrSendData);
-		
-		if (!PEAR::isError($req->sendRequest())) {
-			$response1 = $req->getResponseBody();
-		} else {
-			$response1 = "";
-		}
-		$req->clearPostData();
 	}
+	
+	$req->addPostDataArray($arrSendData);
+	
+	if (!PEAR::isError($req->sendRequest())) {
+		$response1 = $req->getResponseBody();
+	} else {
+		$response1 = "";
+	}
+	$req->clearPostData();
 	
 	break;
 case 'return_step0':
@@ -282,6 +298,10 @@ case 'return_step2':
 	break;
 case 'return_step3':
 	$objPage = lfDispStep3($objPage);
+	break;
+case 'return_agreement':
+	$objPage = lfDispAgreement($objPage);
+	$objPage->tpl_onload .= "fnChangeVisible('agreement_yes', 'next');";
 	break;
 case 'return_welcome':
 default:
@@ -306,8 +326,24 @@ function lfDispWelcome($objPage) {
 	// hiddenに入力値を保持
 	$objPage->arrHidden = array_merge($objPage->arrHidden, $objDBParam->getHashArray());
 	$objPage->arrHidden['db_skip'] = $_POST['db_skip'];
+	$objPage->arrHidden['agreement'] = $_POST['agreement'];
 	$objPage->tpl_mainpage = 'welcome.tpl';
 	$objPage->tpl_mode = 'welcome';
+	return $objPage;
+}
+
+// 使用許諾契約書の表示
+function lfDispAgreement($objPage) {
+	global $objWebParam;
+	global $objDBParam;
+	// hiddenに入力値を保持
+	$objPage->arrHidden = $objWebParam->getHashArray();
+	// hiddenに入力値を保持
+	$objPage->arrHidden = array_merge($objPage->arrHidden, $objDBParam->getHashArray());
+	$objPage->arrHidden['db_skip'] = $_POST['db_skip'];
+	$objPage->arrHidden['agreement'] = $_POST['agreement'];	
+	$objPage->tpl_mainpage = 'agreement.tpl';
+	$objPage->tpl_mode = 'agreement';
 	return $objPage;
 }
 
@@ -320,6 +356,7 @@ function lfDispStep0($objPage) {
 	// hiddenに入力値を保持
 	$objPage->arrHidden = array_merge($objPage->arrHidden, $objDBParam->getHashArray());
 	$objPage->arrHidden['db_skip'] = $_POST['db_skip'];
+	$objPage->arrHidden['agreement'] = $_POST['agreement'];
 	$objPage->tpl_mainpage = 'step0.tpl';
 	$objPage->tpl_mode = 'step0';
 	
@@ -327,8 +364,10 @@ function lfDispStep0($objPage) {
 	$arrWriteFile = array(
 		"../../data/install.inc",
 		"../user_data",
+		"../cp",
 		"../upload",
-		"../../data/Smarty/templates_c",		
+		"../mobile/converted_images",
+		"../../data/Smarty/templates_c",
 		"../../data/downloads",
 		"../../data/logs"
 	);
@@ -404,7 +443,6 @@ function lfDispStep0($objPage) {
 	return $objPage;
 }
 
-
 // STEP0_1画面の表示(ファイルのコピー) 
 function lfDispStep0_1($objPage) {
 	global $objWebParam;
@@ -414,6 +452,25 @@ function lfDispStep0_1($objPage) {
 	// hiddenに入力値を保持
 	$objPage->arrHidden = array_merge($objPage->arrHidden, $objDBParam->getHashArray());
 	$objPage->arrHidden['db_skip'] = $_POST['db_skip'];
+	$objPage->arrHidden['agreement'] = $_POST['agreement'];
+	$objPage->tpl_mainpage = 'step0_1.tpl';
+	$objPage->tpl_mode = 'step0_1';
+	// ファイルコピー
+	$objPage->copy_mess = sfCopyDir("./user_data/", "../user_data/", $objPage->copy_mess);
+	$objPage->copy_mess = sfCopyDir("./save_image/", "../upload/save_image/", $objPage->copy_mess);	
+	return $objPage;
+}
+
+// STEP0_2画面の表示(ファイルのコピー) 
+function lfDispStep0_2($objPage) {
+	global $objWebParam;
+	global $objDBParam;
+	// hiddenに入力値を保持
+	$objPage->arrHidden = $objWebParam->getHashArray();
+	// hiddenに入力値を保持
+	$objPage->arrHidden = array_merge($objPage->arrHidden, $objDBParam->getHashArray());
+	$objPage->arrHidden['db_skip'] = $_POST['db_skip'];
+	$objPage->arrHidden['agreement'] = $_POST['agreement'];
 	$objPage->tpl_mainpage = 'step0_1.tpl';
 	$objPage->tpl_mode = 'step0_1';
 	// ファイルコピー
@@ -433,6 +490,7 @@ function lfDispStep1($objPage) {
 	// hiddenに入力値を保持
 	$objPage->arrHidden = $objDBParam->getHashArray();
 	$objPage->arrHidden['db_skip'] = $_POST['db_skip'];
+	$objPage->arrHidden['agreement'] = $_POST['agreement'];
 	$objPage->tpl_mainpage = 'step1.tpl';
 	$objPage->tpl_mode = 'step1';
 	return $objPage;
@@ -445,6 +503,7 @@ function lfDispStep2($objPage) {
 	// hiddenに入力値を保持
 	$objPage->arrHidden = $objWebParam->getHashArray();
 	$objPage->arrHidden['db_skip'] = $_POST['db_skip'];
+	$objPage->arrHidden['agreement'] = $_POST['agreement'];
 	$objPage->tpl_mainpage = 'step2.tpl';
 	$objPage->tpl_mode = 'step2';
 	return $objPage;
@@ -458,6 +517,7 @@ function lfDispStep3($objPage) {
 	$objPage->arrHidden = $objWebParam->getHashArray();
 	// hiddenに入力値を保持
 	$objPage->arrHidden = array_merge($objPage->arrHidden, $objDBParam->getHashArray());
+	$objPage->arrHidden['agreement'] = $_POST['agreement'];
 	$objPage->tpl_db_skip = $_POST['db_skip'];
 	$objPage->tpl_mainpage = 'step3.tpl';
 	$objPage->tpl_mode = 'step3';
@@ -472,7 +532,8 @@ function lfDispStep4($objPage) {
 	$objPage->arrHidden = $objWebParam->getHashArray();
 	$objPage->arrHidden = array_merge($objPage->arrHidden, $objDBParam->getHashArray());
 	// hiddenに入力値を保持
-
+	$objPage->arrHidden['agreement'] = $_POST['agreement'];
+	
 	$normal_url = $objWebParam->getValue('normal_url');
 	// 語尾に'/'をつける
 	if (!ereg("/$", $normal_url)) $normal_url = $normal_url . "/";
@@ -741,12 +802,47 @@ function lfMakeConfigFile() {
 	"    define ('DB_NAME', '" . $objDBParam->getValue('db_name') . "');\n" .
 	"    define ('DB_PORT', '" . $objDBParam->getValue('db_port') .  "');\n" .
 	"    define ('DATA_PATH', '".$data_path."');\n" .
+    "	 define ('MOBILE_HTML_PATH', HTML_PATH . 'mobile/');\n" .
+    "	 define ('MOBILE_SITE_URL', SITE_URL . 'mobile/');\n" .
+    "	 define ('MOBILE_SSL_URL', SSL_URL . 'mobile/');\n" .
+    "	 define ('MOBILE_URL_DIR', URL_DIR . 'mobile/');\n" .
 	"?>";
 	
 	if($fp = fopen($filepath,"w")) {
 		fwrite($fp, $config_data);
 		fclose($fp);
 	}
+/* install_mobile.incは使用しない用に変更
+
+	// モバイル版の設定ファイル install_mobile.inc を作成する。
+	$filepath = $data_path . "install_mobile.inc";
+	
+	$config_data = 
+	"<?php\n".
+	"    define ('ECCUBE_INSTALL', 'ON');\n" .
+	"    define ('HTML_PATH', '" . $root_dir . "mobile/');\n" .	 
+	"    define ('PC_HTML_PATH', '" . $root_dir . "');\n" .	 
+	"    define ('SITE_URL', '" . $normal_url . "mobile/');\n" .
+	"    define ('PC_SITE_URL', '" . $normal_url . "');\n" .
+	"    define ('SSL_URL', '" . $secure_url . "mobile/');\n" .
+	"    define ('PC_SSL_URL', '" . $secure_url . "');\n" .
+	"    define ('URL_DIR', '" . $url_dir . "mobile/');\n" .	
+	"    define ('PC_URL_DIR', '" . $url_dir . "');\n" .	
+	"    define ('DOMAIN_NAME', '" . $objWebParam->getValue('domain') . "');\n" .
+	"    define ('DB_TYPE', '" . $objDBParam->getValue('db_type') . "');\n" .
+	"    define ('DB_USER', '" . $objDBParam->getValue('db_user') . "');\n" . 
+	"    define ('DB_PASSWORD', '" . $objDBParam->getValue('db_password') . "');\n" .
+	"    define ('DB_SERVER', '" . $objDBParam->getValue('db_server') . "');\n" .
+	"    define ('DB_NAME', '" . $objDBParam->getValue('db_name') . "');\n" .
+	"    define ('DB_PORT', '" . $objDBParam->getValue('db_port') .  "');\n" .
+	"    define ('DATA_PATH', '".$data_path."');\n" .
+	"?>";
+	
+	if($fp = fopen($filepath,"w")) {
+		fwrite($fp, $config_data);
+		fclose($fp);
+	}
+*/
 }
 
 // テーブルの追加（既にテーブルが存在する場合は作成しない）
@@ -783,6 +879,8 @@ function lfDropTable($table_name, $dsn) {
 
 // カラムの追加（既にカラムが存在する場合は作成しない）
 function lfAddColumn($dsn) {
+	global $objDBParam;
+
 	// 受注テーブル	
 	sfColumnExists("dtb_order", "memo01", "text", $dsn, true);	
 	sfColumnExists("dtb_order", "memo02", "text", $dsn, true);
@@ -833,6 +931,20 @@ function lfAddColumn($dsn) {
 	sfColumnExists("dtb_campaign", "orverlapping_flg", "int2 NOT NULL DEFAULT 0", $dsn, true);
 	sfColumnExists("dtb_campaign", "cart_flg", "int2 NOT NULL DEFAULT 0", $dsn, true);
 	sfColumnExists("dtb_campaign", "deliv_free_flg", "int2 NOT NULL DEFAULT 0", $dsn, true);	
+
+	// 顧客
+	sfColumnExists("dtb_customer", "mailmaga_flg", "int2", $dsn, true);
+	if (!sfColumnExists("dtb_customer", "mobile_phone_id", "text", $dsn, true)) {
+		// インデックスの追加
+		sfIndexExists("dtb_customer", "mobile_phone_id", "dtb_customer_mobile_phone_id_key", 64, $dsn, true);
+	}
+
+	// 顧客メール
+	if ($objDBParam->getValue('db_type') == 'mysql') {
+		sfColumnExists("dtb_customer_mail", "secret_key", "varchar(50) unique", $dsn, true);
+	} else {
+		sfColumnExists("dtb_customer_mail", "secret_key", "text unique", $dsn, true);
+	}
 }
 
 // データの追加（既にデータが存在する場合は作成しない）

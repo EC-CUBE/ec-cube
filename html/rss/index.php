@@ -18,13 +18,13 @@ class LC_Page{
 
 $objQuery = new SC_Query();
 $objPage = new LC_Page();
-$objView = new SC_SiteView();
+$objView = new SC_SiteView(false);
 
 //新着情報を取得
 $arrNews = lfGetNews($objQuery);
 
 //キャッシュしない(念のため)
-header("Paragrama: no-cache");
+header("pragma: no-cache");
 
 //XMLテキスト(これがないと正常にRSSとして認識してくれないツールがあるため)
 header("Content-type: application/xml");
