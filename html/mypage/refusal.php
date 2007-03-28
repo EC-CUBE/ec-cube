@@ -47,10 +47,6 @@ switch ($_POST['mode']){
 	//²ñ°÷ºï½ü
 	$objQuery->exec("UPDATE dtb_customer SET del_flg=1, update_date=now() WHERE customer_id=?", array($objCustomer->getValue('customer_id')));
 
-	$where = "email ILIKE ?";
-	if (DB_TYPE == "mysql")	$where = sfChangeILIKE($where);
-	
-	$objQuery->delete("dtb_customer_mail", $where, array($objCustomer->getValue('email')));
 	$objCustomer->EndSession();
 	//´°Î»¥Ú¡¼¥¸¤Ø
 	header("Location: ./refusal_complete.php");

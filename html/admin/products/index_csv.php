@@ -28,6 +28,24 @@ $arrREVIEW_CVSTITLE = array(
 						'コメント'
 						);
 
+$arrTRACKBACK_CVSTITLE = array(
+						'商品名',
+						'ブログ名',
+						'ブログ記事タイトル',
+						'ブログ記事内容',
+						'状態',
+						'投稿日'
+						);
+
+$arrTRACKBACK_CVSCOL = array( 
+						'B.name',
+						'A.blog_name',
+						'A.title',
+						'A.excerpt',
+						'A.status',
+						'A.create_date'
+						);
+
 // CSV出力データを作成する。(商品)
 function lfGetProductsCSV($where, $option, $arrval, $arrOutputCols) {
 	global $arrPRODUCTS_CVSCOL;
@@ -71,6 +89,26 @@ function lfGetReviewCSV($where, $option, $arrval) {
 	for($i = 0; $i < $max; $i++) {
 		// 各項目をCSV出力用に変換する。
 		$data .= lfMakeReviewCSV($list_data[$i]);
+	}
+	return $data;
+}
+
+// CSV出力データを作成する。(トラックバック)
+function lfGetTrackbackCSV($where, $option, $arrval) {
+	global $arrTRACKBACK_CVSCOL;
+
+	$from = "dtb_trackback AS A INNER JOIN dtb_products AS B on A.product_id = B.product_id ";
+	$cols = sfGetCommaList($arrTRACKBACK_CVSCOL);
+	
+	$objQuery = new SC_Query();
+	$objQuery->setoption($option);
+	
+	$list_data = $objQuery->select($cols, $from, $where, $arrval);	
+
+	$max = count($list_data);
+	for($i = 0; $i < $max; $i++) {
+		// 各項目をCSV出力用に変換する。
+		$data .= lfMakeTrackbackCSV($list_data[$i]);
 	}
 	return $data;
 }
@@ -128,6 +166,32 @@ function lfMakeReviewCSV($list) {
 		default:
 			$tmp = $val;
 			break;
+		}
+
+		$tmp = ereg_replace("[\",]", " ", $tmp);
+		$line .= "\"".$tmp."\",";
+	}
+	// 文末の","を変換
+	$line = ereg_replace(",$", "\n", $line);
+	return $line;
+}
+
+// 各項目をCSV出力用に変換する。(トラックバック)
+function lfMakeTrackbackCSV($list) {
+	global $arrTrackBackStatus;
+	global $arrDISP;
+	
+	$line = "";
+	
+	foreach($list as $key => $val) {
+		$tmp = "";
+		switch($key) {
+			case 'status':
+				$tmp = $arrTrackBackStatus[$val];
+				break;
+			default:
+				$tmp = $val;
+				break;
 		}
 
 		$tmp = ereg_replace("[\",]", " ", $tmp);

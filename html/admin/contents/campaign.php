@@ -336,11 +336,11 @@ function lfCreateTemplate($dir, $file) {
 
 	// キャンペーン実行PHPをコピー
 	$ret = sfCreateFile(CAMPAIGN_PATH . $file);
-	copy(CAMPAIGN_PATH . "default/index.php", CAMPAIGN_PATH . $file . "/index.php");
-	copy(CAMPAIGN_PATH . "default/application.php", CAMPAIGN_PATH . $file . "/application.php");
-	copy(CAMPAIGN_PATH . "default/complete.php", CAMPAIGN_PATH . $file . "/complete.php");
-	copy(CAMPAIGN_PATH . "default/entry.php", CAMPAIGN_PATH . $file . "/entry.php");
-	
+	copy($default_dir . "/src/index.php", CAMPAIGN_PATH . $file . "/index.php");
+	copy($default_dir . "/src/application.php", CAMPAIGN_PATH . $file . "/application.php");
+	copy($default_dir . "/src/complete.php", CAMPAIGN_PATH . $file . "/complete.php");
+	copy($default_dir . "/src/entry.php", CAMPAIGN_PATH . $file . "/entry.php");
+
 	// デフォルトテンプレート作成(キャンペーン中)
 	$header = lfGetFileContents($default_active_dir."header.tpl");
 	sfWriteFile($header, $create_active_dir."header.tpl", "w");

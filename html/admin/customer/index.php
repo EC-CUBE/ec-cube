@@ -85,7 +85,7 @@ $arrColumnCSV= array(
 					);
 
 //---- ページ初期設定
-$objConn = new SC_DBConn();
+$objQuery = new SC_Query();
 $objPage = new LC_Page();
 $objView = new SC_AdminView();
 $objDate = new SC_Date(1901);
@@ -122,17 +122,15 @@ foreach ($_POST as $key => $val) {
 // 顧客削除
 if ($_POST['mode'] == "delete") {
 	$sql = "SELECT status,email FROM dtb_customer WHERE customer_id = ? AND del_flg = 0";
-	$result_customer = $objConn->getAll($sql, array($_POST["edit_customer_id"]));
+	$result_customer = $objQuery->conn->getAll($sql, array($_POST["edit_customer_id"]));
 
 	if ($result_customer[0]["status"] == 2) {			//本会員削除
 		$arrDel = array("del_flg" => 1, "update_date" => "NOW()"); 
-		$objConn->autoExecute("dtb_customer", $arrDel, "customer_id = " .addslashes($_POST["edit_customer_id"]) );
+		$objQuery->conn->autoExecute("dtb_customer", $arrDel, "customer_id = " .addslashes($_POST["edit_customer_id"]) );
 	} elseif ($result_customer[0]["status"] == 1) {		//仮会員削除
 		$sql = "DELETE FROM dtb_customer WHERE customer_id = ?";
-		$objConn->query($sql, array($_POST["edit_customer_id"]));
+		$objQuery->conn->query($sql, array($_POST["edit_customer_id"]));
 	}
-	$sql = "DELETE FROM dtb_customer_mail WHERE email = ?";
-	$objConn->query($sql, array($result_customer[0]["email"]));
 }
 if ($_POST['mode'] == "search" || $_POST['mode'] == "csv"  || $_POST['mode'] == "delete" || $_POST['mode'] == "delete_all") {
 	// 入力文字の強制変換
@@ -169,7 +167,7 @@ if ($_POST['mode'] == "search" || $_POST['mode'] == "csv"  || $_POST['mode'] == 
 			$searchSql = $objSelect->getList();
 		}
 		
-		$objPage->search_data = $objConn->getAll($searchSql, $objSelect->arrVal);
+		$objPage->search_data = $objQuery->conn->getAll($searchSql, $objSelect->arrVal);
 		
 		switch($_POST['mode']) {
 		case 'csv':
@@ -208,23 +206,21 @@ if ($_POST['mode'] == "search" || $_POST['mode'] == "csv"  || $_POST['mode'] == 
 			$objQuery->update("dtb_products", $sqlval, $where, $arrval);
 
 			$sql = "SELECT status,email FROM dtb_customer WHERE customer_id = ? AND del_flg = 0";
-			$result_customer = $objConn->getAll($sql, array($_POST["del_customer_id"]));
+			$result_customer = $objQuery->conn->getAll($sql, array($_POST["del_customer_id"]));
 
 			if ($result_customer[0]["status"] == 2) {			//本会員削除
 				$arrDel = array("del_flg" => 1, "update_date" => "NOW()");
-				$objConn->autoExecute("dtb_customer", $arrDel, "customer_id = " .addslashes($_POST["del_customer_id"]) );
+				$objQuery->conn->autoExecute("dtb_customer", $arrDel, "customer_id = " .addslashes($_POST["del_customer_id"]) );
 			} elseif ($result_customer[0]["status"] == 1) {		//仮会員削除
 				$sql = "DELETE FROM dtb_customer WHERE customer_id = ?";
-				$objConn->query($sql, array($_POST["del_customer_id"]));
+				$objQuery->conn->query($sql, array($_POST["del_customer_id"]));
 			}
-			$sql = "DELETE FROM dtb_customer_mail WHERE email = ?";
-			$objConn->query($sql, array($result_customer[0]["email"]));	
 			
 			break;
 		default:
 
 			// 行数の取得
-			$linemax = $objConn->getOne( $objSelect->getListCount(), $objSelect->arrVal);
+			$linemax = $objQuery->conn->getOne( $objSelect->getListCount(), $objSelect->arrVal);
 			$objPage->tpl_linemax = $linemax;				// 何件が該当しました。表示用
 
 			// ページ送りの取得
@@ -315,6 +311,7 @@ function lfCheckError($array) {
 	$objErr->doFunc(array("誕生日(開始日)","誕生日(終了日)", "b_start_year", "b_start_month", "b_start_day", "b_end_year", "b_end_month", "b_end_day"), array("CHECK_SET_TERM"));
 	$objErr->doFunc(array("誕生月", "birth_month", 2), array("NUM_CHECK","MAX_LENGTH_CHECK"));
 	$objErr->doFunc(array('メールアドレス', "email", STEXT_LEN) ,array("EMAIL_CHAR_CHECK", "MAX_LENGTH_CHECK"));
+	$objErr->doFunc(array('携帯メールアドレス', "email_mobile", STEXT_LEN) ,array("EMAIL_CHAR_CHECK", "MAX_LENGTH_CHECK"));	
 	$objErr->doFunc(array("電話番号", "tel", TEL_LEN), array("NUM_CHECK","MAX_LENGTH_CHECK"));
 	$objErr->doFunc(array("購入金額(開始)", "buy_total_from", INT_LEN), array("NUM_CHECK","MAX_LENGTH_CHECK"));
 	$objErr->doFunc(array("購入金額(終了)", "buy_total_to", INT_LEN), array("NUM_CHECK","MAX_LENGTH_CHECK"));

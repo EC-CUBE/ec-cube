@@ -19,6 +19,7 @@ $CONF = sf_getBasisData();					// 店舗基本情報
 $objConn = new SC_DbConn();
 $objPage = new LC_Page();
 $objView = new SC_SiteView();
+$objCustomer = new SC_Customer();
 $objCampaignSess = new SC_CampaignSession();
 $objDate = new SC_Date(START_BIRTH_YEAR, date("Y",strtotime("now")));
 $objPage->arrPref = $arrPref;
@@ -66,7 +67,8 @@ $arrRegistColumn = array(
 							 array(  "column" => "reminder", "convert" => "n" ),
 							 array(  "column" => "reminder_answer", "convert" => "aKV"),
 							 array(  "column" => "password", "convert" => "a" ),
-							 array(  "column" => "password02", "convert" => "a" )
+							 array(  "column" => "password02", "convert" => "a" ),
+							 array(  "column" => "mailmaga_flg", "convert" => "n" ),
 						 );
 
 //---- 登録除外用カラム配列
@@ -112,27 +114,38 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
 		}
 
-		//--　仮登録と完了画面
+		//--　会員登録と完了画面
 		if ($_POST["mode"] == "complete") {
 			// キャンペーンからの遷移の時用の値
 			if($objCampaignSess->getIsCampaign()) {
 				$objPage->etc_value = "&cp=".$objCampaignSess->getCampaignId();
 			}
 			
-			$objPage->uniqid = lfRegistData ($objPage->arrForm, $arrRegistColumn, $arrRejectRegistColumn);
+			// 会員情報の登録
+			$objPage->uniqid = lfRegistData ($objPage->arrForm, $arrRegistColumn, $arrRejectRegistColumn, CUSTOMER_CONFIRM_MAIL);
 			
 			$objPage->tpl_css = '/css/layout/entry/complete.css';
 			$objPage->tpl_mainpage = 'entry/complete.tpl';
 			$objPage->tpl_title = '会員登録(完了ページ)';
 
-			//　仮登録完了メール送信
+			//　完了メール送信
 			$objPage->CONF = $CONF;
-			$objPage->to_name01 = $_POST['name01'];
-			$objPage->to_name02 = $_POST['name02'];
+			$objPage->name01 = $_POST['name01'];
+			$objPage->name02 = $_POST['name02'];
 			$objMailText = new SC_SiteView();
 			$objMailText->assignobj($objPage);
-			$subject = sfMakesubject('会員登録のご確認');
-			$toCustomerMail = $objMailText->fetch("mail_templates/customer_mail.tpl");
+			
+			// 仮会員が有効の場合
+			if(CUSTOMER_CONFIRM_MAIL == true) {
+				$subject = sfMakesubject('会員登録のご確認');
+				$toCustomerMail = $objMailText->fetch("mail_templates/customer_mail.tpl");
+			} else {
+				$subject = sfMakesubject('会員登録のご完了');
+				$toCustomerMail = $objMailText->fetch("mail_templates/customer_regist_mail.tpl");
+				// ログイン状態にする
+				$objCustomer->setLogin($_POST["email"]);
+			}
+			
 			$objMail = new GC_SendMail();
 			$objMail->setItem(
 								''									//　宛先
@@ -143,8 +156,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 								, $CONF["email03"]					//　reply_to
 								, $CONF["email04"]					//　return_path
 								, $CONF["email04"]					//  Errors_to
-								, $CONF["email01"]					//  Bcc
-																);
+							);
 			// 宛先の設定
 			$name = $_POST["name01"] . $_POST["name02"] ." 様";
 			$objMail->setTo($_POST["email"], $name);
@@ -167,12 +179,11 @@ $objView->assignobj($objPage);
 $objCampaignSess->pageView($objView);
 
 //----------------------------------------------------------------------------------------------------------------------
-
-//---- function群
-function lfRegistData ($array, $arrRegistColumn, $arrRejectRegistColumn) {
+// 会員情報の登録
+function lfRegistData ($array, $arrRegistColumn, $arrRejectRegistColumn, $confirm_flg) {
 	global $objConn;
-
-	// 仮登録
+	
+	// 登録データの生成
 	foreach ($arrRegistColumn as $data) {
 		if (strlen($array[ $data["column"] ]) > 0 && ! in_array($data["column"], $arrRejectRegistColumn)) {
 			$arrRegist[ $data["column"] ] = $array[ $data["column"] ];
@@ -187,13 +198,42 @@ function lfRegistData ($array, $arrRegistColumn, $arrRejectRegistColumn) {
 	// パスワードの暗号化
 	$arrRegist["password"] = sha1($arrRegist["password"] . ":" . AUTH_MAGIC);
 	
-	$count = 1;
-	while ($count != 0) {
-		$uniqid = sfGetUniqRandomId("t");
-		$count = $objConn->getOne("SELECT COUNT(*) FROM dtb_customer WHERE secret_key = ?", array($uniqid));
+	// 仮会員登録の場合
+	if($confirm_flg == true) {
+		// 重複しない会員登録キーを発行する。
+		$count = 1;
+		while ($count != 0) {
+			$uniqid = sfGetUniqRandomId("t");
+			$count = $objConn->getOne("SELECT COUNT(*) FROM dtb_customer WHERE secret_key = ?", array($uniqid));
+		}
+		switch($array["mailmaga_flg"]) {
+			case 1:
+				$arrRegist["mailmaga_flg"] = 4; 
+				break;
+			case 2:
+				$arrRegist["mailmaga_flg"] = 5; 
+				break;
+			default:
+				$arrRegist["mailmaga_flg"] = 6;
+				break;
+		}
+		
+		$arrRegist["status"] = "1";				// 仮会員
+	} else {
+		// 重複しない会員登録キーを発行する。
+		$count = 1;
+		while ($count != 0) {
+			$uniqid = sfGetUniqRandomId("r");
+			$count = $objConn->getOne("SELECT COUNT(*) FROM dtb_customer WHERE secret_key = ?", array($uniqid));
+		}
+		$arrRegist["status"] = "2";				// 本会員
 	}
 	
-	$arrRegist["secret_key"] = $uniqid;		// 仮登録ID発行
+	/*
+	  secret_keyは、テーブルで重複許可されていない場合があるので、
+      本会員登録では利用されないがセットしておく。
+    */
+	$arrRegist["secret_key"] = $uniqid;		// 会員登録キー
 	$arrRegist["create_date"] = "now()"; 	// 作成日
 	$arrRegist["update_date"] = "now()"; 	// 更新日
 	$arrRegist["first_buy_date"] = "";	 	// 最初の購入日
@@ -204,18 +244,22 @@ function lfRegistData ($array, $arrRegistColumn, $arrRejectRegistColumn) {
 	$objQuery = new SC_Query();
 	$objQuery->insert("dtb_customer", $arrRegist);
 
+
+/* メルマガ会員機能は現在停止中　2007/03/07
+
+
 	//--　非会員でメルマガ登録しているかの判定
 	$sql = "SELECT count(*) FROM dtb_customer_mail WHERE email = ?";
 	$mailResult = $objConn->getOne($sql, array($arrRegist["email"]));
 
 	//--　メルマガ仮登録実行
 	$arrRegistMail["email"] = $arrRegist["email"];	
-	if ($array["mail_flag"] == 1) {
-		$arrRegistMail["mail_flag"] = 4; 
-	} elseif ($array["mail_flag"] == 2) {
-		$arrRegistMail["mail_flag"] = 5; 
+	if ($array["mailmaga_flg"] == 1) {
+		$arrRegistMail["mailmaga_flg"] = 4; 
+	} elseif ($array["mailmaga_flg"] == 2) {
+		$arrRegistMail["mailmaga_flg"] = 5; 
 	} else {
-		$arrRegistMail["mail_flag"] = 6; 
+		$arrRegistMail["mailmaga_flg"] = 6; 
 	}
 	$arrRegistMail["update_date"] = "now()";
 	
@@ -226,6 +270,7 @@ function lfRegistData ($array, $arrRegistColumn, $arrRejectRegistColumn) {
 		$arrRegistMail["create_date"] = "now()";
 		$objQuery->insert("dtb_customer_mail", $arrRegistMail);		
 	}
+*/
 	$objConn->query("COMMIT");
 
 	return $uniqid;
@@ -312,10 +357,10 @@ function lfErrorCheck($array) {
 	$objErr->doFunc(array('パスワード', 'パスワード(確認)', "password", "password02") ,array("EQUAL_CHECK"));
 	$objErr->doFunc(array("パスワードを忘れたときのヒント 質問", "reminder") ,array("SELECT_CHECK", "NUM_CHECK")); 
 	$objErr->doFunc(array("パスワードを忘れたときのヒント 答え", "reminder_answer", STEXT_LEN) ,array("EXIST_CHECK","SPTAB_CHECK" , "MAX_LENGTH_CHECK"));
-	$objErr->doFunc(array("メールマガジン", "mail_flag") ,array("SELECT_CHECK", "NUM_CHECK"));
+	$objErr->doFunc(array("メールマガジン", "mailmaga_flg") ,array("SELECT_CHECK", "NUM_CHECK"));
 	
 	$objErr->doFunc(array("生年月日", "year", "month", "day"), array("CHECK_DATE"));
-	$objErr->doFunc(array("メールマガジン", 'mail_flag'), array("SELECT_CHECK"));
+	$objErr->doFunc(array("メールマガジン", 'mailmaga_flg'), array("SELECT_CHECK"));
 	
 	return $objErr->arrErr;
 }

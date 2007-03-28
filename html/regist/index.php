@@ -71,6 +71,7 @@ $objView->display(SITE_FRAME);
 
 //---- ÅÐÏ¿
 function lfRegistData($array) {
+	global $objQuery;
 	global $objConn;
 	global $arrInfo;
 	
@@ -111,28 +112,28 @@ function lfRegistData($array) {
 	}
 	*/
 
-	$sql = "SELECT mail_flag FROM dtb_customer_mail WHERE email = ?";
+	$sql = "SELECT mailmaga_flg FROM dtb_customer WHERE email = ?";
 	$result = $objConn->getOne($sql, array($email));
 	
 	switch($result) {
 	// ²¾HTML
 	case '4':
-		$arrRegistMail["mail_flag"] = 1;
+		$arrRegistMail["mailmaga_flg"] = 1;
 		break;
 	// ²¾TEXT
 	case '5':
-		$arrRegistMail["mail_flag"] = 2;
+		$arrRegistMail["mailmaga_flg"] = 2;
 		break;
 	// ²¾¤Ê¤·
 	case '6':
-		$arrRegistMail["mail_flag"] = 3;
+		$arrRegistMail["mailmaga_flg"] = 3;
 		break;
 	default:
-		$arrRegistMail["mail_flag"] = $result;
+		$arrRegistMail["mailmaga_flg"] = $result;
 		break;
 	}
 
-	$objConn->autoExecute("dtb_customer_mail", $arrRegistMail, "email = '" .addslashes($email). "'");
+	$objQuery->update("dtb_customer", $arrRegistMail, "email = '" .addslashes($email). "' AND del_flg = 0");
 	$objConn->query("COMMIT");
 		
 	return $secret;		// ËÜÅÐÏ¿ID¤òÊÖ¤¹
@@ -179,7 +180,7 @@ function lfSendRegistMail($registSecretKey) {
 	$objMailText->assign("name01", $data["name01"]);
 	$objMailText->assign("name02", $data["name02"]);
 	$toCustomerMail = $objMailText->fetch("mail_templates/customer_regist_mail.tpl");
-	$subject = sfMakeSubject('ËÜ²ñ°÷ÅÐÏ¿¤¬´°Î»¤·¤Þ¤·¤¿¡£');
+	$subject = sfMakeSubject('²ñ°÷ÅÐÏ¿¤¬´°Î»¤·¤Þ¤·¤¿¡£');
 	$objMail = new GC_SendMail();
 
 	$objMail->setItem(

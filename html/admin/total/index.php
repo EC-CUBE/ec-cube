@@ -98,8 +98,8 @@ case 'search':
 			}
 		}
 
-		if($_POST['type'] != "") {
-			$type = $_POST['type'];
+		if($objFormParam->getValue('type') != "") {
+			$type = $objFormParam->getValue('type');
 		}
 				
 		$page = $objFormParam->getValue('page');
@@ -199,8 +199,8 @@ default:
 	if(count($_GET) == 0) {
 		// バッチモードの場合のみ実行する
 		if(DAILY_BATCH_MODE) {
-			// 1ヶ月分の集計
-			lfStartDailyTotal(31,0);
+			// 3日前までの集計
+			lfStartDailyTotal(3,0);
 		}
 	}
 	break;

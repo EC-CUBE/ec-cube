@@ -16,6 +16,8 @@ class LC_Page {
 		global $arrRECOMMEND;
 		$this->arrRECOMMEND = $arrRECOMMEND;
 		$this->tpl_subtitle = 'レビュー管理';
+		global $arrSex;
+		$this->arrSex = $arrSex;
 	}
 }
 
@@ -38,8 +40,12 @@ $arrRegistColumn = array (
 								array( "column" => "update_date"),
 								array( "column" => "status"),
 								array( "column" => "recommend_level"),		
-								array(	"column" => "title",		"convert" => "KVa"),
-								array(	"column" => "comment",		"convert" => "KVa")	
+								array(	"column" => "title","convert" => "KVa"),
+								array(	"column" => "comment","convert" => "KVa"),
+								array(	"column" => "reviewer_name","convert" => "KVa"),
+								array(	"column" => "reviewer_url","convert" => "KVa"),
+								array(	"column" => "sex","convert" => "n")
+								
 							);
 
 //レビューIDを渡す
@@ -50,33 +56,21 @@ $objPage->arrReview = lfGetReviewData($_POST['review_id']);
 $objPage->tpl_pre_status = $objPage->arrReview['status'];
 //商品ごとのレビュー表示数取得
 $count = $objQuery->count("dtb_review", "del_flg=0 AND status=1 AND product_id=?", array($objPage->arrReview['product_id']));
-//レビュー表示数が設定値以上の場合
-if ($count >= REVIEW_REGIST_MAX){
-	//表示は選択できない
-	$objPage->tpl_status_change = false;
-}else{
-	//両方選択可能
-	$objPage->tpl_status_change = true;
-}
-					
+//両方選択可能
+$objPage->tpl_status_change = true;
+
 switch($_POST['mode']) {
 //登録
 case 'complete':
 	//フォーム値の変換
 	$arrReview = lfConvertParam($_POST, $arrRegistColumn);
 	$objPage->arrErr = lfCheckError($arrReview);
-	//非表示から表示にステータスを切り替えて、商品ごとの表示レビュー数が設定値を超えているとき
-	if ($arrReview['pre_status'] == '2' && $arrReview['status'] == '1' && $count >= REVIEW_REGIST_MAX){
-		$objPage->arrErr['status'] = '※ レビュー表示数は5件までです。';
+	//エラー無し
+	if (!$objPage->arrErr){
+		//レビュー情報の編集登録
+		lfRegistReviewData($arrReview, $arrRegistColumn);
 		$objPage->arrReview = $arrReview;
-	} else {
-		//エラー無し
-		if (!$objPage->arrErr){
-			//レビュー情報の編集登録
-			lfRegistReviewData($arrReview, $arrRegistColumn);
-			$objPage->arrReview = $arrReview;
-			$objPage->tpl_onload = "confirm('登録が完了しました。');";
-		}
+		$objPage->tpl_onload = "confirm('登録が完了しました。');";
 	}
 	break;
 default:
@@ -91,9 +85,13 @@ $objView->display(MAIN_FRAME);
 // 入力エラーチェック
 function lfCheckError($array) {
 	$objErr = new SC_CheckError($array);
-		$objErr->doFunc(array("おすすめレベル", "recommend_level"), array("SELECT_CHECK"));
-		$objErr->doFunc(array("タイトル", "title", STEXT_LEN), array("EXIST_CHECK", "SPTAB_CHECK", "MAX_LENGTH_CHECK"));
-		$objErr->doFunc(array("コメント", "comment", LTEXT_LEN), array("EXIST_CHECK", "SPTAB_CHECK", "MAX_LENGTH_CHECK"));
+	$objErr->doFunc(array("おすすめレベル", "recommend_level"), array("SELECT_CHECK"));
+	$objErr->doFunc(array("タイトル", "title", STEXT_LEN), array("EXIST_CHECK", "SPTAB_CHECK", "MAX_LENGTH_CHECK"));
+	$objErr->doFunc(array("コメント", "comment", LTEXT_LEN), array("EXIST_CHECK", "SPTAB_CHECK", "MAX_LENGTH_CHECK"));
+	$objErr->doFunc(array("投稿者名", "reviewer_name", STEXT_LEN), array("EXIST_CHECK", "SPTAB_CHECK", "MAX_LENGTH_CHECK"));
+	$objErr->doFunc(array("ホームページアドレス", "reviewer_url", URL_LEN), array("SPTAB_CHECK", "MAX_LENGTH_CHECK"));
+	$objErr->doFunc(array("タイトル", "title", STEXT_LEN), array("EXIST_CHECK", "SPTAB_CHECK", "MAX_LENGTH_CHECK"));
+	$objErr->doFunc(array("性別", "sex", STEXT_LEN), array("SPTAB_CHECK", "MAX_LENGTH_CHECK"));
 	return $objErr->arrErr;
 }
 

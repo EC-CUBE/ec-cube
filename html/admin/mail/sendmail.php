@@ -126,7 +126,8 @@ for( $i = 0; $i < count( $time_data ); $i++ ) {
 
 	//---　送信完了　報告メール
 	$compData =  date("Y年m月d日H時i分" . "  下記メールの配信が完了しました。" );
-	MAIL_SENDING(
+
+	HTML_MAIL_SENDING(
 					 $objSite->data["email03"]	
 					,$compData
 					,$mail_data[$i][0]["body"]
@@ -136,7 +137,7 @@ for( $i = 0; $i < count( $time_data ); $i++ ) {
 					,$objSite->data["email04"]					//　return_path
 					,$objSite->data["email04"]					//　errors_to
 				 );
-	
+				 
 	if ($_GET['mode'] = "now") {
 		header("Location: " . URL_DIR . "admin/mail/history.php");
 	}

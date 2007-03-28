@@ -72,7 +72,7 @@ case 'confirm':
 		$objSendMail = sfSendOrderMail($_POST['order_id'], $_POST['template_id'], $_POST['subject'], $_POST['header'], $_POST['footer'], false);
 		// 確認ページの表示
 		$objPage->tpl_subject = $objSendMail->subject;
-		$objPage->tpl_body = $objSendMail->body;
+		$objPage->tpl_body = mb_convert_encoding( $objSendMail->body, "EUC-JP", "auto" );		
 		$objPage->tpl_to = $objSendMail->tpl_to;
 		$objPage->tpl_mainpage = 'order/mail_confirm.tpl';
 		

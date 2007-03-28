@@ -106,7 +106,7 @@ function lfRealTimeDailyTotal($sdate, $edate) {
 // バッチ集計用のSQL文を取得する。
 function lfGetOrderDailySQL($start, $end) {
 	$from = " FROM dtb_order AS T1 LEFT JOIN dtb_customer AS T2 USING ( customer_id ) ";
-	$where = " WHERE T1.del_flg = 0 AND T1.create_date BETWEEN '$start' AND '$end' ";
+	$where = " WHERE T1.del_flg = 0 AND T1.status <> " . ORDER_CANCEL . " AND T1.create_date BETWEEN '$start' AND '$end' ";
 
 /*	mysqlでも問題ないように修正
 	$sql = "SELECT ";
@@ -231,7 +231,7 @@ function lfBatOrderAge($time) {
 
 	/* 会員集計 */
 
-	$base_where = "WHERE (create_date BETWEEN ? AND ?) AND customer_id <> 0 AND del_flg = 0 ";
+	$base_where = "WHERE (create_date BETWEEN ? AND ?) AND customer_id <> 0 AND del_flg = 0 AND status <> " . ORDER_CANCEL;
 
 	$end_date = date("Y/m/d", time()); 
 	$start_date = date("Y/m/d",strtotime("-10 year" ,strtotime($end_date)));
@@ -258,7 +258,7 @@ function lfBatOrderAge($time) {
 
 	/* 非会員集計 */
 	
-	$base_where = "WHERE (create_date BETWEEN ? AND ?) AND customer_id = 0 AND del_flg = 0";
+	$base_where = "WHERE (create_date BETWEEN ? AND ?) AND customer_id = 0 AND del_flg = 0 AND status <> " . ORDER_CANCEL;
 	$where = $base_where . " AND (to_number(to_char(age(current_timestamp, order_birth), 'YYY'), 999) BETWEEN ? AND ?) ";
 
 	$end_date = date("Y/m/d", time()); 

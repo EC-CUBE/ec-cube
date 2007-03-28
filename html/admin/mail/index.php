@@ -26,6 +26,8 @@ class LC_Page {
 		$this->arrJob = $arrJob;
 		global $arrSex;		
 		$this->arrSex = $arrSex;
+		global $arrMailType;
+		$this->arrMailType = $arrMailType;
 		global $arrPageRows;
 		$this->arrPageRows = $arrPageRows;
 		// ページナビ用
@@ -92,7 +94,7 @@ if ($_GET["mode"] == "query" && sfCheckNumLength($_GET["send_id"])) {
 		}
 		$list_data['job_disp'] = $job_disp;
 	}
-	
+		
 	// カテゴリ変換
 	$arrCatList = sfGetCategoryList();
 	$list_data['category_name'] = $arrCatList[$list_data['category_id']];
@@ -105,8 +107,6 @@ if ($_GET["mode"] == "query" && sfCheckNumLength($_GET["send_id"])) {
 }
 
 if($_POST['mode'] == 'delete') {
-	$objQuery = new SC_Query();
-	$objQuery->delete("dtb_customer_mail", "email = ?", array($_POST['result_email']));
 }
 
 switch($_POST['mode']) {
@@ -119,7 +119,7 @@ case 'search':
 case 'back':
 	//-- 入力値コンバート
 	$objPage->list_data = lfConvertParam($_POST, $arrSearchColumn);
-	
+		
 	//-- 入力エラーのチェック
 	$objPage->arrErr = lfErrorCheck($objPage->list_data);
 
@@ -131,15 +131,15 @@ case 'back':
 
 		//-- 検索データ取得	
 		$objSelect = new SC_CustomerList($objPage->list_data, "magazine");
-
 		// 生成されたWHERE文を取得する		
 		list($where, $arrval) = $objSelect->getWhere();
+	
 		// 「WHERE」部分を削除する。
 		$where = ereg_replace("^WHERE", "", $where);
 
 		// 検索結果の取得
 		$objQuery = new SC_Query();
-		$from = "dtb_customer_mail LEFT OUTER JOIN dtb_customer USING(email)";
+		$from = "dtb_customer";
 
 		// 行数の取得
 		$linemax = $objQuery->count($from, $where, $arrval);
@@ -154,27 +154,16 @@ case 'back':
 		$objQuery->setlimitoffset(SEARCH_PMAX, $startno);
 		// 表示順序
 		$objQuery->setorder("customer_id DESC");
-		// 検索結果の取得
-		$col = "dtb_customer.customer_id,
-			dtb_customer.name01,
-			dtb_customer.name02,
-			dtb_customer.kana01,
-			dtb_customer.kana02,
-			dtb_customer.sex,
-			dtb_customer.email,
-			dtb_customer.tel01,
-			dtb_customer.tel02,
-			dtb_customer.tel03,
-			dtb_customer.pref,
-			dtb_customer_mail.mail_flag";
+		
+		// 検索結果の取得	
+		$col = $objSelect->getMailMagazineColumn(lfGetIsMobile($_POST['mail_type']));
 		$objPage->arrResults = $objQuery->select($col, $from, $where, $arrval);
-
 		//現在時刻の取得
 		$objPage->arrNowDate = lfGetNowDate();
 	}
 	break;
 /*
-	input:検索結果画面「配信内容設定」ボタン
+	input:検索結果画面「htmlmail内容設定」ボタン
 */
 case 'input':
 	//-- 入力値コンバート
@@ -277,6 +266,7 @@ case 'regist_complete':
 	}
 	break;
 default:
+	$objPage->list_data['mail_type'] = 1;
 	break;
 }
 
@@ -385,9 +375,9 @@ function lfRegistData($arrData){
 	global $arrSearchColumn;
 	
 	$objQuery = new SC_Query();
-		
 	$objSelect = new SC_CustomerList( lfConvertParam($arrData, $arrSearchColumn), "magazine" );
-	$search_data = $conn->getAll($objSelect->getListMailMagazine(), $objSelect->arrVal);
+	
+	$search_data = $conn->getAll($objSelect->getListMailMagazine(lfGetIsMobile($_POST['mail_type'])), $objSelect->arrVal);
 	$dataCnt = count($search_data);
 	
 	$dtb_send_history = array();
@@ -437,5 +427,23 @@ function lfGetCampaignList() {
 	}
 
 	return $arrCampaign;
+}
+
+function lfGetIsMobile($mail_type) {
+	// 検索結果の取得			
+	$is_mobile = false;
+	switch($mail_type) {
+		case 1:
+			$is_mobile = false;
+			break;
+		case 2:
+			$is_mobile = true;		
+			break;
+		default:
+			$is_mobile = false;
+			break;
+	}
+	
+	return $is_mobile;
 }
 ?>

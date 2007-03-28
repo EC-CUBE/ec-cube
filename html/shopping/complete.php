@@ -60,21 +60,27 @@ if ($uniqid != "") {
 		sfSendOrderMail($order_id, '1');
 	}
 
-	//その他情報の取得
-	$other_data = $objQuery->get("dtb_order", "memo02", "order_id = ? ", array($order_id));
-	if($other_data != "") {
-		$arrOther = unserialize($other_data);
-		
-		// データを編集
-		foreach($arrOther as $key => $val){
-			// URLの場合にはリンクつきで表示させる
-			if (preg_match('/^(https?|ftp)(:\/\/[-_.!~*\'()a-zA-Z0-9;\/?:\@&=+\$,%#]+)$/', $val["value"])) {
-				$arrOther[$key]["value"] = "<a href='#' onClick=\"window.open('". $val["value"] . "'); \" >" . $val["value"] ."</a>";
+	// その他情報の取得
+	$arrResults = $objQuery->getall("SELECT memo02, memo05 FROM dtb_order WHERE order_id = ? ", array($order_id));
+
+	if (count($arrResults) > 0) {	
+		if (isset($arrResults[0]["memo02"]) || isset($arrResults[0]["memo05"])) {
+			// 完了画面で表示する決済内容
+			$arrOther = unserialize($arrResults[0]["memo02"]);
+			// 完了画面から送信する決済内容
+			$arrModuleParam = unserialize($arrResults[0]["memo05"]);
+			
+			// データを編集
+			foreach($arrOther as $key => $val){
+				// URLの場合にはリンクつきで表示させる
+				if (preg_match('/^(https?|ftp)(:\/\/[-_.!~*\'()a-zA-Z0-9;\/?:\@&=+\$,%#]+)$/', $val["value"])) {
+					$arrOther[$key]["value"] = "<a href='#' onClick=\"window.open('". $val["value"] . "'); \" >" . $val["value"] ."</a>";
+				}
 			}
+					
+			$objPage->arrOther = $arrOther;
+			$objPage->arrModuleParam = $arrModuleParam;
 		}
-				
-		$objPage->arrOther = $arrOther;
-		
 	}
 	
 	// アフィリエイト用コンバージョンタグの設定
@@ -228,19 +234,6 @@ function lfRegistPreCustomer($arrData, $arrInfo) {
 	$sqlval['password'] = $arrData['password'];
 	$sqlval['reminder'] = $arrData['reminder'];
 	$sqlval['reminder_answer'] = $arrData['reminder_answer'];
-	// 会員仮登録
-	$sqlval['status'] = 1;
-	// URL判定用キー
-	$sqlval['secret_key'] = sfGetUniqRandomId("t"); 
-	
-	$objQuery = new SC_Query();
-	$sqlval['create_date'] = "now()";
-	$sqlval['update_date'] = "now()";
-	$objQuery->insert("dtb_customer", $sqlval);
-	
-	// 顧客IDの取得
-	$arrRet = $objQuery->select("customer_id", "dtb_customer", "secret_key = ?", array($sqlval['secret_key']));
-	$customer_id = $arrRet[0]['customer_id'];
 	
 	// メルマガ配信用フラグの判定
 	switch($arrData['mail_flag']) {
@@ -257,13 +250,23 @@ function lfRegistPreCustomer($arrData, $arrInfo) {
 		$mail_flag = 6;
 		break;
 	}
-
+	// メルマガフラグ
+	$sqlval['mailmaga_flg'] = $mail_flag;
+		
+	// 会員仮登録
+	$sqlval['status'] = 1;
+	// URL判定用キー
+	$sqlval['secret_key'] = sfGetUniqRandomId("t"); 
+	
 	$objQuery = new SC_Query();
-	$objQuery->begin();	
-	// メルマガ配信用テーブル登録
-	lfRegistNonCustomer($arrData['order_email'], $mail_flag, $objQuery);
-	$objQuery->commit();
-
+	$sqlval['create_date'] = "now()";
+	$sqlval['update_date'] = "now()";
+	$objQuery->insert("dtb_customer", $sqlval);
+	
+	// 顧客IDの取得
+	$arrRet = $objQuery->select("customer_id", "dtb_customer", "secret_key = ?", array($sqlval['secret_key']));
+	$customer_id = $arrRet[0]['customer_id'];
+	
 	//　仮登録完了メール送信
 	$objMailPage = new LC_Page();
 	$objMailPage->to_name01 = $arrData['order_name01'];
@@ -299,21 +302,22 @@ function lfRegistOrder($objQuery, $arrData, $objCampaignSess) {
 	$sqlval = $arrData;
 
 	// 受注テーブルに書き込まない列を除去
-	unset($sqlval['mail_flag']);		// メルマガチェック
+	unset($sqlval['mailmaga_flg']);		// メルマガチェック
 	unset($sqlval['deliv_check']);		// 別のお届け先チェック
 	unset($sqlval['point_check']);		// ポイント利用チェック
 	unset($sqlval['member_check']);		// 購入時会員チェック
 	unset($sqlval['password']);			// ログインパスワード
 	unset($sqlval['reminder']);			// リマインダー質問
 	unset($sqlval['reminder_answer']);	// リマインダー答え
-
+	unset($sqlval['mail_flag']);		// メールフラグ
+	
 	// 注文ステータス:指定が無ければ新規受付に設定
 	if($sqlval["status"] == ""){
 		$sqlval['status'] = '1';			
 	}
 	
 	// 別のお届け先を指定していない場合、配送先に登録住所をコピーする。
-	if($arrData["deliv_check"] != "1") {
+	if($arrData["deliv_check"] == "-1") {
 		$sqlval['deliv_name01'] = $arrData['order_name01'];
 		$sqlval['deliv_name02'] = $arrData['order_name02'];
 		$sqlval['deliv_kana01'] = $arrData['order_kana01'];
@@ -339,9 +343,6 @@ function lfRegistOrder($objQuery, $arrData, $objCampaignSess) {
 	
 	// INSERTの実行
 	$objQuery->insert("dtb_order", $sqlval);
-	
-	// メルマガ配信希望情報の登録
-	lfRegistNonCustomer($arrData['order_email'], $arrData['mail_flag'], $objQuery);
 	
 	return $order_id;
 }
@@ -492,20 +493,6 @@ function lfSetCustomerPurchase($customer_id, $arrData, $objQuery) {
 	}
 	
 	$objQuery->update("dtb_customer", $sqlval, $where, array($customer_id));
-}
-
-/* 非会員のメルマガテーブルへの登録 */
-function lfRegistNonCustomer($email, $mail_flag, $objQuery) {
-	// 会員のメールアドレスが登録されていない場合
-	if(!sfCheckCustomerMailMaga($email)) {
-		$where = "email = ?";
-		$objQuery->delete("dtb_customer_mail", $where, array($email));
-		$sqlval['email'] = $email;
-		$sqlval['mail_flag'] = $mail_flag;
-		$sqlval['create_date'] = "now()";
-		$sqlval['update_date'] = "now()";
-		$objQuery->insert("dtb_customer_mail", $sqlval);
-	}
 }
 
 // 在庫を減らす処理

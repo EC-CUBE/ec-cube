@@ -138,7 +138,7 @@ function lfConvertParam($array) {
 function lfErrorCheck() {
 	$objErr = new SC_CheckError();
 	$objErr->doFunc(array("µ¬Ìó¥¿¥¤¥È¥ë", "kiyaku_title", SMTEXT_LEN), array("EXIST_CHECK","SPTAB_CHECK","MAX_LENGTH_CHECK"));
-	$objErr->doFunc(array("µ¬ÌóÆâÍÆ", "kiyaku_text", MTEXT_LEN), array("EXIST_CHECK","SPTAB_CHECK","MAX_LENGTH_CHECK"));
+	$objErr->doFunc(array("µ¬ÌóÆâÍÆ", "kiyaku_text", MLTEXT_LEN), array("EXIST_CHECK","SPTAB_CHECK","MAX_LENGTH_CHECK"));
 	if(!isset($objErr->arrErr['name'])) {
 		$objQuery = new SC_Query();
 		$arrRet = $objQuery->select("kiyaku_id, kiyaku_title", "dtb_kiyaku", "del_flg = 0 AND kiyaku_title = ?", array($_POST['kiyaku_title']));

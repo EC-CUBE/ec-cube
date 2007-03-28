@@ -74,7 +74,7 @@ switch ($_POST['mode']){
 		}else{
 			//別のお届け先登録数の取得
 			$deliv_count = $objQuery->count("dtb_other_deliv", "customer_id=?", array($objCustomer->getValue('customer_id')));
-			if ($deliv_count < DELIV_ADDR_MAX){
+			if ($deliv_count < DELIV_ADDR_MAX or isset($_POST['other_deliv_id'])){
 				lfRegistData($_POST,$arrRegistColumn);
 			}
 			$objPage->tpl_onload = "fnUpdateParent('".$_POST['ParentPage']."'); window.close();";

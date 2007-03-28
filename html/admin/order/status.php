@@ -134,25 +134,25 @@ function lfStatusDisp($status,$pageno){
 	return $objPage;
 }
 
-//ステータス情報の更新（移動）
+//ステータス情報の更新（削除）
 function lfStatusMove($status_id,$move){
 	global $objQuery;
 	global $objPage;
 	
 	if ($status_id == 'delete'){
-		$sql="UPDATE dtb_order SET del_flg=1";
+		$sql = "UPDATE dtb_order SET del_flg = 1 ";
 	}elseif ($status_id == 5){
-		$sql="UPDATE dtb_order SET status=".$status_id.",commit_date=now() ";
+		$sql = "UPDATE dtb_order SET status = ".$status_id.",commit_date = now() ";
 	}else{
-		$sql="UPDATE dtb_order SET status=".$status_id." ";
+		$sql = "UPDATE dtb_order SET status = ".$status_id." ";
 	}
-		$sql.="WHERE order_id=?";
+		$sql .= "WHERE order_id = ? ";
 		if (isset($move)){
 			foreach ($move as $val){
 			if ($val != "") {
 				$objQuery->exec($sql, array($val));
 			}
-			$objPage->tpl_onload = "window.alert('選択項目を移動しました。');";
+			$objPage->tpl_onload = "window.alert('選択項目を削除しました。');";
 			}
 		}
 }

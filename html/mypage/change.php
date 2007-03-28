@@ -77,6 +77,7 @@ $arrRegistColumn = array(
 							 array(  "column" => "password",	"convert" => "an" ),
 							 array(  "column" => "reminder",	"convert" => "n" ),
 							 array(  "column" => "reminder_answer", "convert" => "aKV" ),
+							 array(  "column" => "mailmaga_flg", "convert" => "n" )							 
 						);
 
 
@@ -232,7 +233,7 @@ function lfErrorCheck($array) {
 	$objErr->doFunc(array("パスワード", 'パスワード(確認)', 'password', 'password02'), array("EQUAL_CHECK"));
 	$objErr->doFunc(array("パスワードを忘れたときの質問", "reminder") ,array("SELECT_CHECK", "NUM_CHECK")); 
 	$objErr->doFunc(array("パスワードを忘れたときの答え", "reminder_answer", STEXT_LEN) ,array("EXIST_CHECK", "MAX_LENGTH_CHECK"));
-	$objErr->doFunc(array("メールマガジン", "mail_flag") ,array("SELECT_CHECK", "NUM_CHECK"));
+	$objErr->doFunc(array("メールマガジン", "mailmaga_flg") ,array("SELECT_CHECK", "NUM_CHECK"));
 	return $objErr->arrErr;
 	
 }
@@ -270,9 +271,6 @@ function lfGetCustomerData(){
 	$ret = $objQuery->select("*","dtb_customer","customer_id=?", array($objCustomer->getValue('customer_id')));
 	$arrForm = $ret[0];
 
-	//メルマガフラグ取得
-	$arrForm['mail_flag'] = $objQuery->get("dtb_customer_mail","mail_flag","email=?", array($objCustomer->getValue('email')));
-	
 	//誕生日の年月日取得
 	if (isset($arrForm['birth'])){
 		$birth = split(" ", $arrForm["birth"]);

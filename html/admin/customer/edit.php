@@ -35,7 +35,7 @@ class LC_Page {
 		$this->tpl_subno = 'index';
 		$this->tpl_pager = DATA_PATH . 'Smarty/templates/admin/pager.tpl';
 		$this->tpl_subtitle = '顧客マスタ';
-		
+
 		global $arrPref;
 		$this->arrPref = $arrPref;
 		global $arrJob;
@@ -67,6 +67,7 @@ $arrRegistColumn = array(
 							 array(  "column" => "addr01",		"convert" => "aKV" ),
 							 array(  "column" => "addr02",		"convert" => "aKV" ),
 							 array(  "column" => "email",		"convert" => "a" ),
+							 array(  "column" => "email_mobile",	"convert" => "a" ),
 							 array(  "column" => "tel01",		"convert" => "n" ),
 							 array(  "column" => "tel02",		"convert" => "n" ),
 							 array(  "column" => "tel03",		"convert" => "n" ),
@@ -79,6 +80,7 @@ $arrRegistColumn = array(
 							 array(  "column" => "password",	"convert" => "a" ),
 							 array(  "column" => "reminder",	"convert" => "n" ),
 							 array(  "column" => "reminder_answer", "convert" => "aKV" ),
+							 array(  "column" => "mailmaga_flg", "convert" => "n" ),						 
 							 array(  "column" => "note",		"convert" => "aKV" ),
 							 array(  "column" => "point",		"convert" => "n" ),
 							 array(  "column" => "status",		"convert" => "n" )
@@ -105,8 +107,7 @@ $objPage->arrSearchData= $arrSearchData;
 if (($_POST["mode"] == "edit" || $_POST["mode"] == "edit_search") && is_numeric($_POST["edit_customer_id"])) {
 
 	//--　顧客データ取得
-	$sql = "SELECT A.*, B.mail_flag FROM dtb_customer AS A LEFT OUTER JOIN dtb_customer_mail AS B USING(email)
-			 WHERE A.del_flg = 0 AND A.customer_id = ?";
+	$sql = "SELECT * FROM dtb_customer WHERE del_flg = 0 AND customer_id = ?";
 	$result = $objConn->getAll($sql, array($_POST["edit_customer_id"]));
 	$objPage->list_data = $result[0];
 	
@@ -127,7 +128,7 @@ if (($_POST["mode"] == "edit" || $_POST["mode"] == "edit_search") && is_numeric(
 }
 
 //----　顧客情報編集
-if ( $_POST["mode"] != "edit" && is_numeric($_POST["customer_id"])) {
+if ( $_POST["mode"] != "edit" && $_POST["mode"] != "edit_search" && is_numeric($_POST["customer_id"])) {
 
 	//-- POSTデータの引き継ぎ
 	$objPage->arrForm = $_POST;
@@ -206,23 +207,11 @@ function lfRegisDatat($array, $arrRegistColumn) {
 	}
 
 	$arrRegist["update_date"] = "Now()";
-	$arrRegistMail["update_date"] = "Now()";
-	$arrRegistMail["mail_flag"] = $array["mail_flag"];
-	$arrRegistMail['email'] = $array['email'];
+
 	//-- 編集登録実行
 	$objConn->query("BEGIN");
 	$objQuery->Insert("dtb_customer", $arrRegist, "customer_id = '" .addslashes($array["customer_id"]). "'");
-	
-	//-- メルマガ登録
-	$mailmaga = $objQuery->getAll("SELECT * FROM dtb_customer_mail WHERE email = ?", $array["edit_email"]);
-	
-	if(count($mailmaga) > 0 ){
-		$objQuery->Update("dtb_customer_mail", $arrRegistMail, "email = '" .addslashes($array["edit_email"]). "'");
-	}else{
-		$arrRegistMail["create_date"] = "Now()";
-		//$arrRegist["create_date"] = date( "Y/m/d H:i:s", time());
-		$objQuery->Insert("dtb_customer_mail", $arrRegistMail);
-	}
+
 	$objConn->query("COMMIT");
 }
 
@@ -281,6 +270,17 @@ function lfErrorCheck($array) {
 	}
 	
 	$objErr->doFunc(array('メールアドレス(モバイル)', "email_mobile", MTEXT_LEN) ,array("EMAIL_CHECK", "EMAIL_CHAR_CHECK", "MAX_LENGTH_CHECK"));
+	//現会員の判定 →　現会員もしくは仮登録中は、メアド一意が前提になってるので同じメアドで登録不可
+	if (strlen($array["email_mobile"]) > 0) {
+		$sql = "SELECT customer_id FROM dtb_customer WHERE email_mobile ILIKE ? escape '#' AND (status = 1 OR status = 2) AND del_flg = 0 AND customer_id <> ?";
+		$checkMail = ereg_replace( "_", "#_", $array["email_mobile"]);
+		$result = $objConn->getAll($sql, array($checkMail, $array["customer_id"]));
+		if (count($result) > 0) {
+			$objErr->arrErr["email_mobile"] .= "※ すでに登録されているメールアドレス(モバイル)です。";
+		} 
+	}
+	
+	
 	$objErr->doFunc(array("お電話番号1", 'tel01'), array("EXIST_CHECK"));
 	$objErr->doFunc(array("お電話番号2", 'tel02'), array("EXIST_CHECK"));
 	$objErr->doFunc(array("お電話番号3", 'tel03'), array("EXIST_CHECK"));
@@ -293,9 +293,8 @@ function lfErrorCheck($array) {
 	}
 	$objErr->doFunc(array("パスワードを忘れたときのヒント 質問", "reminder") ,array("SELECT_CHECK", "NUM_CHECK")); 
 	$objErr->doFunc(array("パスワードを忘れたときのヒント 答え", "reminder_answer", STEXT_LEN) ,array("EXIST_CHECK", "MAX_LENGTH_CHECK"));
-	$objErr->doFunc(array("メールマガジン", "mail_flag") ,array("SELECT_CHECK", "NUM_CHECK"));
+	$objErr->doFunc(array("メールマガジン", "mailmaga_flg") ,array("SELECT_CHECK", "NUM_CHECK"));
 	$objErr->doFunc(array("生年月日", "year", "month", "day"), array("CHECK_DATE"));
-	$objErr->doFunc(array("メールマガジン", 'mail_flag'), array("SELECT_CHECK"));
 	$objErr->doFunc(array("SHOP用メモ", 'note', LTEXT_LEN), array("MAX_LENGTH_CHECK"));
 	$objErr->doFunc(array("所持ポイント", "point", TEL_LEN) ,array("MAX_LENGTH_CHECK", "NUM_CHECK"));
 	return $objErr->arrErr;
@@ -313,7 +312,7 @@ function lfPurchaseHistory($customer_id){
 		// ページ送りの処理
 		$page_max = SEARCH_PMAX;
 		//購入履歴の件数取得
-		$objPage->tpl_linemax = $objQuery->count("dtb_order","customer_id=?", array($customer_id));
+		$objPage->tpl_linemax = $objQuery->count("dtb_order","customer_id=? AND del_flg = 0 ", array($customer_id));
 		$linemax = $objPage->tpl_linemax;
 		
 		// ページ送りの取得
@@ -328,7 +327,7 @@ function lfPurchaseHistory($customer_id){
 		$order = "order_id DESC";
 		$objQuery->setorder($order);
 		//購入履歴情報の取得
-		$arrPurchaseHistory = $objQuery->select("*", "dtb_order", "customer_id=?", array($customer_id));
+		$arrPurchaseHistory = $objQuery->select("*", "dtb_order", "customer_id=? AND del_flg = 0 ", array($customer_id));
 		
 		return $arrPurchaseHistory;
 }
