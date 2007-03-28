@@ -257,7 +257,7 @@ function IfResponseRss($product_id) {
 		print("<channel>");
 		print("<title>" . $retProduct[0]["name"] . "</title>");
 		print("<link>");
-		print(TRACKBACK_TO_URL . $product_id);
+		print(SITE_URL . "products/detail.php?product_id=" . $product_id);
 		print("</link>");
 		print("<description>");
 		print($retProduct[0]["main_comment"]);
