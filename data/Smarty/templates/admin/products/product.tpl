@@ -251,6 +251,8 @@
 										</td>
 									</tr>		
 									*}-->
+									
+									<div id="sub_detail" style="display:none">
 									<!--{section name=cnt loop=$smarty.const.PRODUCTSUB_MAX}-->
 									<!--¢§¾¦ÉÊ<!--{$smarty.section.cnt.iteration}-->-->
 									<tr>
@@ -297,6 +299,7 @@
 									</tr>
 									<!--¢¥¾¦ÉÊ<!--{$smarty.section.cnt.iteration}-->-->
 									<!--{/section}-->
+									</div>
 									
 									<!--{if $smarty.const.OPTION_RECOMMEND == 1}-->			
 									<!--¢§´ØÏ¢¾¦ÉÊ-->
