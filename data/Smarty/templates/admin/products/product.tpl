@@ -259,7 +259,7 @@ function lfDispSwitch(id){
 									</tr>		
 									*}-->
 									<tr>
-										<td bgcolor="#f2f1ec" colspan="2"><input type="button" name="btn" onclick="lfDispSwitch('sub_detail');" value="サブ情報表示"></td>
+										<td bgcolor="#f2f1ec" colspan="2"><input type="button" name="btn" onclick="lfDispSwitch('sub_detail');" value="サブ情報表示/非表示"></td>
 									</tr>
 								</table>
 												
