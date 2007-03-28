@@ -8,7 +8,12 @@
 <script type="text/javascript">
 // URLの表示非表示切り替え
 function lfDispSwitch(id){
-	document.getElementById('sub_detail').style.display = '';
+	var obj = document.getElementById(id);
+	if (obj.style.display == 'none') {
+		obj.style.display = '';
+	} else {
+		obj.style.display = 'none';		
+	}
 }
 </script>
 <!--★★メインコンテンツ★★-->
