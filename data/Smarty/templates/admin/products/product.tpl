@@ -6,8 +6,10 @@
  */
 *}-->
 <script type="text/javascript">
-<!--
-//-->
+// URLの表示非表示切り替え
+function lfDispSwitch(id){
+	document.getElementById('sub_detail').style.display = '';
+}
 </script>
 <!--★★メインコンテンツ★★-->
 <table width="878" border="0" cellspacing="0" cellpadding="0" summary=" ">
@@ -252,7 +254,7 @@
 									</tr>		
 									*}-->
 									<tr>
-										<td bgcolor="#f2f1ec" colspan="2"><input type="button" name="btn" onclick="document.getElementById('sub_detail').style.display = ''" value="サブ情報表示"></td>
+										<td bgcolor="#f2f1ec" colspan="2"><input type="button" name="btn" onclick="lfDispSwitch('sub_detail');" value="サブ情報表示"></td>
 									</tr>
 								</table>
 												
