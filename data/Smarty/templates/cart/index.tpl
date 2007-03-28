@@ -4,11 +4,6 @@
  * http://www.lockon.co.jp/
  *}-->
 <!--▼CONTENTS-->
-
-<h5>テスト1</h5>
-<h6>テスト2</h6>
-
-
 <table width="760" border="0" cellspacing="0" cellpadding="0" summary=" ">
 	<tr>
 		<td align="center" bgcolor="#ffffff">
