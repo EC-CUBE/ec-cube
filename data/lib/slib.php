@@ -533,7 +533,7 @@ function sfIsInt($value) {
 
 // INT型の整数チェック
 function sfIsRealInt($value) {
-	sfprintr(is_int($value));
+	sfprintr($value . " ---> " . is_int($value));
 	if($value != "" && strlen($value) <= INT_LEN && is_int($value)) {
 		return true;
 	}
