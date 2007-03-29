@@ -618,7 +618,7 @@ function lfGetOrderProducts($type, $sdate, $edate, $objPage, $graph = true, $mod
 	
 	$sql = "SELECT T1.product_id, T1.product_code, T1.product_name, T1.products_count, T1.order_count, T1.price, T1.total ";
 	$sql.= "FROM ( ";
-	$sql.= "SELECT product_id, product_code, price, ";
+	$sql.= "SELECT product_id, product_name, product_code, price, ";
 	$sql.= "COUNT(*) AS order_count, ";
 	$sql.= "SUM(quantity) AS products_count, ";
 	$sql.= "(price * sum(quantity)) AS total ";
