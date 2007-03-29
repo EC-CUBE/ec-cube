@@ -10,4 +10,3 @@ CREATE TABLE dtb_site_control (
 );
 
 INSERT INTO dtb_site_control (control_title, control_text) VALUES('トラックバック機能', 'トラックバック機能を使用するかどうかを決定します。');
-INSERT INTO dtb_site_control (control_title, control_text) VALUES('アフィリエイト機能', 'アフィリエイト機能を使用するかどうかを決定します。');

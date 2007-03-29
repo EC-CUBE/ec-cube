@@ -11,4 +11,3 @@ CREATE TABLE dtb_site_control (
 ) TYPE=InnoDB;
 
 INSERT INTO dtb_site_control (control_title, control_text, create_date, update_date) VALUES('トラックバック機能', 'トラックバック機能を使用するかどうかを決定します。', NOW(), NOW());
-INSERT INTO dtb_site_control (control_title, control_text, create_date, update_date) VALUES('アフィリエイト機能', 'アフィリエイト機能を使用するかどうかを決定します。', NOW(), NOW());
