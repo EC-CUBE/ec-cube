@@ -266,6 +266,9 @@ function lfDispSwitch(id){
 										<td bgcolor="#f2f1ec" width="676"><input type="button" name="btn" onclick="lfDispSwitch('sub_detail');" value="サブ情報表示/非表示"></td>
 										<td bgcolor="#cccccc"><img src="<!--{$smarty.const.URL_DIR}-->img/common/_.gif" width="1" height="10" alt=""></td>
 									</tr>
+									<tr height="1" align="center">
+										<td bgcolor="#cccccc"><img src="<!--{$smarty.const.URL_DIR}-->img/common/_.gif" height="1" alt=""></td>
+									</tr>
 								</table>
 								
 								<!--{if $sub_find == true}-->								
@@ -330,9 +333,6 @@ function lfDispSwitch(id){
 										<td bgcolor="#f2f1ec" width="676"><input type="button" name="btn" onclick="lfDispSwitch('recommend_select');" value="関連商品表示/非表示"></td>
 										<td bgcolor="#cccccc"><img src="<!--{$smarty.const.URL_DIR}-->img/common/_.gif" width="1" height="10" alt=""></td>
 									</tr>
-								</table>
-								
-								<table width="678" border="0" cellspacing="0" cellpadding="0" summary=" ">
 									<tr height="1" align="center">
 										<td bgcolor="#cccccc"><img src="<!--{$smarty.const.URL_DIR}-->img/common/_.gif" height="1" alt=""></td>
 									</tr>
