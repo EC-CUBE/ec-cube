@@ -109,6 +109,9 @@ case 'step3':
 	$objPage->arrErr = lfAddTable("dtb_mobile_kara_mail", $dsn);	// 空メール管理テーブル
 	// テーブルが存在しない場合に追加される。
 	$objPage->arrErr = lfAddTable("dtb_mobile_ext_session_id", $dsn);	// セッションID管理テーブル
+	// テーブルが存在しない場合に追加される。
+	$objPage->arrErr = lfAddTable("dtb_trackback", $dsn);	// トラックバック管理テーブル
+	
 	
 	// カラムを追加
 	lfAddColumn($dsn);
@@ -203,6 +206,7 @@ case 'drop':
 	lfDropTable("dtb_campaign_order", $dsn);
 	lfDropTable("dtb_mobile_ext_session_id", $dsn);
 	lfDropTable("dtb_mobile_kara_mail", $dsn);
+	lfDropTable("dtb_trackback", $dsn);
 			
 	if ($arrRet['db_type'] == 'pgsql'){
 		// ビューの削除
