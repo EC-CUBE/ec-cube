@@ -332,6 +332,12 @@ function lfDispSwitch(id){
 									</tr>
 								</table>
 								
+								<table width="678" border="0" cellspacing="0" cellpadding="0" summary=" ">
+									<tr height="1" align="center">
+										<td bgcolor="#cccccc"><img src="<!--{$smarty.const.URL_DIR}-->img/common/_.gif" height="1" alt=""></td>
+									</tr>
+								</table>
+								
 								<!--{if count($arrRecommend) > 0}-->
 								<div id="recommend_select" style="">
 								<!--{else}-->
