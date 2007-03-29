@@ -194,8 +194,6 @@ for ($cnt = 1; $cnt <= PRODUCTSUB_MAX; $cnt++) {
 }
 $objPage->sub_find = $sub_find;
 
-sfPrintR($objPage);
-
 $objView->assignobj($objPage);
 $objView->display(MAIN_FRAME);
 //-----------------------------------------------------------------------------------------------------------------------------
