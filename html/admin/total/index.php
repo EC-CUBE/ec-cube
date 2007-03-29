@@ -624,7 +624,7 @@ function lfGetOrderProducts($type, $sdate, $edate, $objPage, $graph = true, $mod
 	$sql.= "(price * sum(quantity)) AS total ";
 	$sql.= "FROM dtb_order_detail WHERE order_id IN (SELECT order_id FROM dtb_order WHERE $where ) ";
 	$sql.= "GROUP BY product_id, product_code, price ";
-	$sql.= ") ";
+	$sql.= ") AS T1 ";
 	$sql.= "ORDER BY T1.total DESC ";
 	
 	if($mode != "csv") {
