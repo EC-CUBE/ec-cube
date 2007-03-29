@@ -531,6 +531,14 @@ function sfIsInt($value) {
 	return false;
 }
 
+// INT型の整数チェック
+function sfIsRealInt($value) {
+	if($value != "" && strlen($value) <= INT_LEN && is_Int($value)) {
+		return true;
+	}
+	return false;
+}
+
 function sfCSVDownload($data, $prefix = ""){
 	
 	if($prefix == "") {
@@ -1927,9 +1935,9 @@ function sfGetCategoryId($product_id, $category_id) {
 	global $g_category_id;
 	if(!$g_category_on)	{
 		$g_category_on = true;
-		if(sfIsInt($category_id) && sfIsRecord("dtb_category","category_id", $category_id)) {
+		if(sfIsRealInt($category_id) && sfIsRecord("dtb_category","category_id", $category_id)) {
 			$g_category_id = $category_id;
-		} else if (sfIsInt($product_id) && sfIsRecord("dtb_products","product_id", $product_id, "status = 1")) {
+		} else if (sfIsRealInt($product_id) && sfIsRecord("dtb_products","product_id", $product_id, "status = 1")) {
 			$objQuery = new SC_Query();
 			$where = "product_id = ?";
 			$category_id = $objQuery->get("dtb_products", "category_id", $where, array($product_id));
