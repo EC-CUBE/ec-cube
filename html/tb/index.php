@@ -14,6 +14,7 @@ $objFormParam = new SC_FormParam();
 if (sfGetSiteControlFlg(SITE_CONTROL_TRACKBACK) != 1) {
 	// NG
 	IfResponseNg();
+	exit();
 }
 
 // パラメータ情報の初期化
@@ -45,7 +46,6 @@ if (isset($_POST["url"])) {
 	$arrData["url"] = trim(mb_convert_encoding($_GET["url"], $afterEncode, $beforeEncode));
 } else {
 	/*
-	 * TODO:トラックバック受信の標準化を決める
 	 * RSS目的ではないGETリクエストを制御(livedoor blog)
 	 * _rssパラメータでのGETリクエストを制御(Yahoo blog)
 	 */
@@ -72,11 +72,11 @@ if (isset($_POST["excerpt"])) {
 }
 
 $log_path = DATA_PATH . "logs/tb_result.log";
-gfPrintLog("s1--------------------", $log_path);
+gfPrintLog("request data start -----", $log_path);
 foreach($arrData as $key => $val) {
 	gfPrintLog( "\t" . $key . " => " . $val, $log_path);
 }
-gfPrintLog("s1--------------------", $log_path);
+gfPrintLog("request data end   -----", $log_path);
 
 $objFormParam->setParam($arrData);
 
@@ -85,10 +85,7 @@ $objFormParam->convParam();
 $arrData = $objFormParam->getHashArray();
 
 // エラーチェック(トラックバックが成り立たないので、URL以外も必須とする)
-gfPrintLog("--- ERROR CHECK START ---", $log_path);
 $objPage->arrErr = lfCheckError();
-gfPrintLog("--- ERROR CHECK FINISH ---", $log_path);
-gfPrintLog("--- ERROR COUNT : " . count($objPage->arrErr), $log_path);
 
 // エラーがない場合はデータを更新
 if(count($objPage->arrErr) == 0) {
@@ -96,8 +93,6 @@ if(count($objPage->arrErr) == 0) {
 	// 商品コードの取得(GET)
 	if (isset($_GET["pid"])) {
 		$product_id = $_GET["pid"];
-
-		gfPrintLog("--- PRODUCT ID : " . $product_id, $log_path);
 
 		// 商品データの存在確認
 		$table = "dtb_products";
@@ -176,17 +171,9 @@ function lfEntryTrackBack($arrData) {
 	$arrData["create_date"] = "now()";
 	$arrData["update_date"] = "now()";
 
-	gfPrintLog("e--------------------", $log_path);
-	foreach($arrData as $key => $val) {
-		gfPrintLog( "\t" . $key . " => " . $val, $log_path);
-	}
-	gfPrintLog("e--------------------", $log_path);
-
 	// データの登録
 	$table = "dtb_trackback";
 	$ret = $objQuery->insert($table, $arrData);
-
-	gfPrintLog("INSERT RESULT : " . $ret, $log_path);
 	return $ret;
 }
 
