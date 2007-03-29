@@ -192,6 +192,7 @@ for ($cnt = 1; $cnt <= PRODUCTSUB_MAX; $cnt++) {
 		break;
 	}
 }
+// サブ情報表示・非表示のチェックに使用する。
 $objPage->sub_find = $sub_find;
 
 $objView->assignobj($objPage);
