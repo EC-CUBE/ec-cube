@@ -324,9 +324,11 @@ function lfDispSwitch(id){
 								</div>
 								
 								
-								<table width="678" border="0" cellspacing="1" cellpadding="8" summary=" ">
-									<tr>
-										<td bgcolor="#f2f1ec" colspan="2"><input type="button" name="btn" onclick="lfDispSwitch('recommend_select');" value="関連商品表示/非表示"></td>
+								<table width="678" border="0" cellspacing="0" cellpadding="0" summary=" ">
+									<tr height="36" align="center">
+										<td bgcolor="#cccccc"><img src="<!--{$smarty.const.URL_DIR}-->img/common/_.gif" width="1" height="10" alt=""></td>
+										<td bgcolor="#f2f1ec" width="676"><input type="button" name="btn" onclick="lfDispSwitch('recommend_select');" value="関連商品表示/非表示"></td>
+										<td bgcolor="#cccccc"><img src="<!--{$smarty.const.URL_DIR}-->img/common/_.gif" width="1" height="10" alt=""></td>
 									</tr>
 								</table>
 								
