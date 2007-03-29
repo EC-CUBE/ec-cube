@@ -616,7 +616,7 @@ function lfGetOrderMember($type, $sdate, $edate, $objPage, $graph = true) {
 function lfGetOrderProducts($type, $sdate, $edate, $objPage, $graph = true, $mode = "") {
 	list($where, $arrval) = lfGetWhereMember('create_date', $sdate, $edate, $type);
 	
-	$sql = "SELECT T1.product_id, T1.product_code, T2.name, T1.products_count, T1.order_count, T1.price, T1.total ";
+	$sql = "SELECT T1.product_id, T1.product_code, T1.product_name, T1.products_count, T1.order_count, T1.price, T1.total ";
 	$sql.= "FROM ( ";
 	$sql.= "SELECT product_id, product_code, price, ";
 	$sql.= "COUNT(*) AS order_count, ";
@@ -625,7 +625,7 @@ function lfGetOrderProducts($type, $sdate, $edate, $objPage, $graph = true, $mod
 	$sql.= "FROM dtb_order_detail WHERE order_id IN (SELECT order_id FROM dtb_order WHERE $where ) ";
 	$sql.= "GROUP BY product_id, product_code, price ";
 	$sql.= ") ";
-	$sql.= "AS T1 LEFT JOIN dtb_products AS T2 USING (product_id) WHERE T2.name IS NOT NULL AND status = 1 ORDER BY T1.total DESC ";
+	$sql.= "ORDER BY T1.total DESC ";
 	
 	if($mode != "csv") {
 		$sql.= "LIMIT " . PRODUCTS_TOTAL_MAX;

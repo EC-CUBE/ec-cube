@@ -134,7 +134,7 @@ function lfGetCSVColum($page, $key = "") {
 		);
 		$arrDataCol = array(
 			'product_code',
-			'name',
+			'product_name',
 			'order_count',
 			'products_count',
 			'price',
