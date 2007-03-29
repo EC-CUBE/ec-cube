@@ -185,7 +185,9 @@ for ($cnt = 1; $cnt <= PRODUCTSUB_MAX; $cnt++) {
 	if(	$objPage->arrForm['sub_title'.$cnt] != "" || 
 		$objPage->arrForm['sub_comment'.$cnt] != "" || 
 		$objPage->arrForm['sub_image'.$cnt] != "" || 
-		$objPage->arrForm['sub_large_image'.$cnt] != ""	) {
+		$objPage->arrForm['sub_large_image'.$cnt] != ""	|| 
+		is_array($objPage->arrFile['sub_image'.$cnt]) || 
+		is_array($objPage->arrFile['sub_large_image'.$cnt])) {
 		$sub_find = true;
 		break;
 	}
