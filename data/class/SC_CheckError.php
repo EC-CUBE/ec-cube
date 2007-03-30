@@ -392,6 +392,17 @@ class SC_CheckError {
 			$this->arrErr[$value[1]] = "※ " . $value[0] . "はカタカナで入力してください。<br />";	
 		}
 	}
+	
+	/*　カタカナの判定2（タブ、スペースは許可する）　*/
+	// value[0] = 項目名 value[1] = 判定対象文字列 
+	function KANABLANK_CHECK( $value ) {				// 入力文字がカナ以外ならエラーを返す
+		if(isset($this->arrErr[$value[1]])) {
+			return;
+		}
+		if(strlen($this->arrParam[$value[1]]) > 0 && ! mb_ereg("^([　 \t\r\n]|[ァ-ヶ]|[ー])+$", $this->arrParam[$value[1]])) {
+			$this->arrErr[$value[1]] = "※ " . $value[0] . "はカタカナで入力してください。<br />";	
+		}
+	}
 
 	/*　英数字の判定　*/
 	// value[0] = 項目名 value[1] = 判定対象文字列 
