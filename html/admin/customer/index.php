@@ -305,7 +305,7 @@ function lfCheckError($array) {
 	$objErr->doFunc(array("¸ÜµÒ¥³¡¼¥É", "customer_id", INT_LEN), array("NUM_CHECK","MAX_LENGTH_CHECK"));
 	$objErr->doFunc(array("ÅÔÆ»ÉÜ¸©", "pref", 2), array("NUM_CHECK","MAX_LENGTH_CHECK"));
 	$objErr->doFunc(array("¸ÜµÒÌ¾", "name", STEXT_LEN), array("MAX_LENGTH_CHECK"));
-	$objErr->doFunc(array("¸ÜµÒÌ¾(¥«¥Ê)", "kana", STEXT_LEN), array("EXIST_CHECK", "SPTAB_CHECK" ,"MAX_LENGTH_CHECK", "KANABLANK_CHECK"));
+	$objErr->doFunc(array("¸ÜµÒÌ¾(¥«¥Ê)", "kana", STEXT_LEN), array("SPTAB_CHECK" ,"MAX_LENGTH_CHECK", "KANABLANK_CHECK"));
 	$objErr->doFunc(array("ÃÂÀ¸Æü(³«»ÏÆü)", "b_start_year", "b_start_month", "b_start_day"), array("CHECK_DATE"));
 	$objErr->doFunc(array("ÃÂÀ¸Æü(½ªÎ»Æü)", "b_end_year", "b_end_month", "b_end_day"), array("CHECK_DATE"));
 	$objErr->doFunc(array("ÃÂÀ¸Æü(³«»ÏÆü)","ÃÂÀ¸Æü(½ªÎ»Æü)", "b_start_year", "b_start_month", "b_start_day", "b_end_year", "b_end_month", "b_end_day"), array("CHECK_SET_TERM"));
