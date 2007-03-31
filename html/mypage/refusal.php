@@ -49,7 +49,7 @@ switch ($_POST['mode']){
 
 	$objCustomer->EndSession();
 	//´°Î»¥Ú¡¼¥¸¤Ø
-	header("Location: ./refusal_complete.php");
+	header("Location: " . sfGetCurrentUri() . "/refusal_complete.php");
 	exit;
 }
 

@@ -158,7 +158,7 @@ case 'complete':
 			//セッション情報を最新の状態に更新する
 			$objCustomer->updateSession();
 			//完了ページへ
-			header("Location: ./change_complete.php");
+			header("Location: " . sfGetCurrentUri() . "/change_complete.php");
 			exit;
 		} else {
 			sfDispSiteError(CUSTOMER_ERROR);

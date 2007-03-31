@@ -260,7 +260,7 @@ function sfInitInstall() {
 	// インストール済みが定義されていない。
 	if(!defined('ECCUBE_INSTALL')) {
 		if(!ereg("/install/", $_SERVER['PHP_SELF'])) {
-			header("Location: ./install/");
+			header("Location: " . sfGetCurrentUri() . "/install/");
 		}
 	} else {
 		$path = HTML_PATH . "install/index.php";
@@ -2914,6 +2914,46 @@ function sfSendPostData($url, $arrData, $arrOkCode = array()){
 	$req->clearPostData();	
 	
 	return $response;
+}
+
+/**
+ * 現在の URI を取得する.
+ * 
+ * <p>
+ * $_SERVER["SERVER_PORT"] が 443 の場合は, スキーマに https:// を使用.
+ * それ以外は http:// を使用する.
+ * <strong>URI 末尾の / は削除されます.</strong>
+ * </p>
+ * @param boolean $hasFileName ファイル名を含める場合 true
+ * @return string 現在の URI
+ */
+function sfGetCurrentUri($hasFileName = false) {
+	$host = $_SERVER["HTTP_HOST"];
+	$path = rtrim(dirname($_SERVER["SCRIPT_NAME"]), "/\\");
+	
+	if ($hasFileName === true) {
+		return sfGetCurrentSchema() . $host . $_SERVER["SCRIPT_NAME"];
+	} else {
+		return sfGetCurrentSchema() . $host . $path;
+	}
+}
+
+/**
+ * 現在の スキーマ名を返す.
+ * 
+ * <p>
+ * $_SERVER["SERVER_PORT"] が 443 の場合は, https:// を返す.
+ * それ以外は http:// を返す.
+ * </p>
+ * @return string http:// または https:// の string.
+ */
+function sfGetCurrentSchema() {
+	
+	if ($_SERVER["SERVER_PORT"] == 443) {
+		return "https://";
+	} else {
+		return "http://";
+	}
 }
 
 /* デバッグ用 ------------------------------------------------------------------------------------------------*/

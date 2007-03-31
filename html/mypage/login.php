@@ -32,7 +32,7 @@ if (SSLURL_CHECK == 1){
 
 // ログイン判定
 if($objCustomer->isLoginSuccess()) {
-	header("location: ./index.php");
+	header("location: " . sfGetCurrentUri() . "/index.php");
 } else {
 	// クッキー判定
 	$objPage->tpl_login_email = $objCookie->getCookie('login_email');

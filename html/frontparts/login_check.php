@@ -56,7 +56,7 @@ case 'logout':
 	$mypage_url_search = strpos('.'.$_POST['url'], "mypage");
 	//マイページログイン中はログイン画面へ移行
 	if ($mypage_url_search == 2){
-	header("Location: /mypage/login.php");
+	header("Location: " . URL_MYPAGE_TOP);
 	}else{
 	header("Location: " . $_POST['url']);	
 	}

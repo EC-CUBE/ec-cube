@@ -204,7 +204,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 				//セッション情報を最新の状態に更新する
 				$objCustomer->updateSession();
 				//完了ページへ
-				header("Location: " . gfAddSessionId("change_complete.php"));
+				header("Location: " . gfAddSessionId(sfGetCurrentUri() . "/change_complete.php"));
 				exit;
 			} else {
 				sfDispSiteError(CUSTOMER_ERROR, "", false, "", true);

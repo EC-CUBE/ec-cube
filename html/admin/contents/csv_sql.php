@@ -80,13 +80,13 @@ switch($_POST['mode']) {
 
 	// 新規作成
 	case "new_page":
-		header("location: ./csv_sql.php");
+		header("location: " . sfGetCurrentUri() . "/csv_sql.php");
 		break;
 		
 	// データ削除
 	case "delete":
 		lfDelData($sql_id);
-		header("location: ./csv_sql.php");
+		header("location: " . sfGetCurrentUri() . "/csv_sql.php");
 		break;
 		
 	case "csv_output":

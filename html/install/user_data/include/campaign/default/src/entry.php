@@ -156,7 +156,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 			lfRegistCampaignOrder($objPage->uniqid);
 			
 			// 完了ページに移動させる。
-			header("Location: ./complete.php");
+			header("Location: " . sfGetCurrentUri() . "/complete.php");
 			exit;
 		}
 	}

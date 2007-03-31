@@ -52,7 +52,7 @@ if ($_GET["mode"] == "regist") {
 		// ログイン済みの状態にする。
 		$email = $objQuery->get("dtb_customer", "email", "secret_key = ?", array($registSecretKey));
 		$objCustomer->setLogin($email);
-		header("Location: ./complete.php$etc_val");
+		header("Location: " . sfGetCurrentUri() . "/complete.php$etc_val");
 		exit;
 	}
 

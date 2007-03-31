@@ -51,7 +51,7 @@ $objPage->tpl_uniqid = $uniqid;
 // ログインチェック
 if($objCustomer->isLoginSuccess()) {
 	// すでにログインされている場合は、お届け先設定画面に転送
-	header("Location: " . gfAddSessionId('deliv.php'));
+	header("Location: " . gfAddSessionId(sfGetCurrentUri() . "/deliv.php"));
 	exit;
 }
 

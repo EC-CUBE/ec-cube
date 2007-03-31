@@ -119,11 +119,7 @@ define("CREDIT_HTTP_ANALYZE_URL", CREDIT_HTTP_DOMAIN . CREDIT_HTTP_ANALYZE_PROGR
 define("CHAR_CODE", "EUC-JP");
 
 // EC-CUBE¥Ð¡¼¥¸¥ç¥ó¾ðÊó
-<<<<<<< .working
-define("ECCUBE_VERSION", "1.1.1");
-=======
 define("ECCUBE_VERSION", "1.2.0-beta");
->>>>>>> .merge-right.r11982
 
 // ·èºÑ¥â¥¸¥å¡¼¥ëÉÕÍ¿Ê¸¸À
 define("ECCUBE_PAYMENT", "EC-CUBE");
@@ -212,13 +208,8 @@ define ("POINT_RULE", 2);								// ¥Ý¥¤¥ó¥È¤Î·×»»¥ë¡¼¥ë(1:»Í¼Î¸ÞÆþ¡¢2:ÀÚ¤ê¼Î¤Æ¡
 define ("POINT_VALUE", 1);								// 1¥Ý¥¤¥ó¥ÈÅö¤¿¤ê¤ÎÃÍÃÊ(±ß)
 define ("ADMIN_MODE", 0);								// ´ÉÍý¥â¡¼¥É 1:Í­¸ú¡¡0:Ìµ¸ú(Ç¼ÉÊ»þ)
 define ("DAILY_BATCH_MODE", false);						// Çä¾å½¸·×¥Ð¥Ã¥Á¥â¡¼¥É(true:¥Ð¥Ã¥Á¤Ç½¸·×¤¹¤ë ¢¨Í×cronÀßÄê¡¢false:¥ê¥¢¥ë¥¿¥¤¥à¤Ç½¸·×¤¹¤ë)
-<<<<<<< .working
 define ("MAX_LOG_QUANTITY", 5);							// ¥í¥°¥Õ¥¡¥¤¥ëºÇÂç¿ô(¥í¥°¥Æ¡¼¥·¥ç¥ó)
 define ("MAX_LOG_SIZE", "10000");						// 1¤Ä¤Î¥í¥°¥Õ¥¡¥¤¥ë¤ËÊÝÂ¸¤¹¤ëºÇÂçÍÆÎÌ(byte)
-=======
-define ("MAX_LOG_QUANTITY", 5);							// ¥í¥°¥Õ¥¡¥¤¥ëºÇÂç¿ô(¥í¥°¥Æ¡¼¥·¥ç¥ó)
-define ("MAX_LOG_SIZE", "1000000");						// 1¤Ä¤Î¥í¥°¥Õ¥¡¥¤¥ë¤ËÊÝÂ¸¤¹¤ëºÇÂçÍÆÎÌ(byte)
->>>>>>> .merge-right.r11982
 
 define ("FORGOT_MAIL", 0);								// ¥Ñ¥¹¥ï¡¼¥ÉËº¤ì¤Î³ÎÇ§¥á¡¼¥ë¤òÁ÷ÉÕ¤¹¤ë¤«ÈÝ¤«¡£(0:Á÷¿®¤·¤Ê¤¤¡¢1:Á÷¿®¤¹¤ë)
 define ("HTML_TEMPLATE_SUB_MAX", 12);					// ÅÐÏ¿¤Ç¤­¤ë¥µ¥Ö¾¦ÉÊ¤Î¿ô

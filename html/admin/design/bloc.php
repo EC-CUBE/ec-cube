@@ -101,7 +101,7 @@ if ($_POST['mode'] == 'confirm') {
 		$arrBlocData = lfgetBlocData(" filename = ? " , array($_POST['filename']));
 			
 		$bloc_id = $arrBlocData[0]['bloc_id'];	
-		header("location: ./bloc.php?bloc_id=$bloc_id&msg=on");
+		header("location: " . sfGetCurrentUri() . "/bloc.php?bloc_id=$bloc_id&msg=on");
 	}else{
 		// エラーがあれば入力時のデータを表示する
 		$objPage->arrBlocData = $_POST;
@@ -139,7 +139,7 @@ if ($_POST['mode'] == 'delete') {
 		}
 	}
 
-	header("location: ./bloc.php");
+	header("location: " . sfGetCurrentUri() . "/bloc.php");
 }
 
 

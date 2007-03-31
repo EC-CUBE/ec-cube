@@ -91,7 +91,7 @@ switch ($_POST['mode']){
 	if(!$objPage->arrErr) {
 		lfSendMail($CONF, $objPage);
 		//完了ページへ移動する
-		header("location: ./complete.php");
+		header("location: " . sfGetCurrentUri() . "/complete.php");
 		exit;
 	} else {
 		sfDispSiteError(CUSTOMER_ERROR);

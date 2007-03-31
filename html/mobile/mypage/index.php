@@ -62,7 +62,7 @@ if($_POST['mode'] == 'login') {
 
 			// 携帯のメールアドレスが登録されていない場合
 			if (!$objCustomer->hasValue('email_mobile')) {
-				header('Location: ' . gfAddSessionId('../entry/email_mobile.php'));
+				header('Location: ' . gfAddSessionId(sfGetCurrentUri() . "/../entry/email_mobile.php"));
 				exit;
 			}
 		} else {
