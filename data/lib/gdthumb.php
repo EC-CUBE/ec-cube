@@ -194,7 +194,12 @@ class gdthumb {
 			
 				$src_im = imageCreateFromJpeg($path);
 				$dst_im = $imagecreate($re_size[0], $re_size[1]);
-				$imageresize( $dst_im, $src_im, 0, 0, 0, 0, $re_size[0], $re_size[1], $size[0], $size[1]);
+                
+                if($re_size[0] != $size[0] || $re_size[1] != $size[1]) {
+                    $imageresize( $dst_im, $src_im, 0, 0, 0, 0, $re_size[0], $re_size[1], $size[0], $size[1]);
+                } else {
+                    $dst_im = $src_im;
+                }
                                 
 				// ²èÁü½ÐÎÏ
 				if($header){
