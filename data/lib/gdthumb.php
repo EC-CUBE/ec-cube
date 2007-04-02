@@ -136,18 +136,21 @@ class gdthumb {
 					}
           			$imageresize($dst_im, $src_im, 0, 0, 0, 0, $re_size[0], $re_size[1], $size[0], $size[1]);
 
-					if(function_exists("imagegif")) {
-						
+					if(function_exists("imagegif")) {						
 						// 画像出力
 						if($header){
 							header("Content-Type: image/gif");
 							imagegif($dst_im);
 							return "";
 						}else{
-							$dst_file = $dst_file . ".gif";
-							imagegif($dst_im, $dst_file);
-						}
-						
+                            $dst_file = $dst_file . ".gif";
+		                    if($re_size[0] == $size[0] && $re_size[1] == $size[1]) {
+		                        // サイズが同じ場合には、そのままコピーする。(画質劣化を防ぐ）           
+		                        copy($path, $dst_file);
+		                    } else {
+		                        imagegif($dst_im, $dst_file);
+		                    }
+						}						
 						imagedestroy($src_im);
 						imagedestroy($dst_im);
 					} else {
@@ -157,8 +160,13 @@ class gdthumb {
 							imagepng($dst_im);
 							return "";
 						}else{
-							$dst_file = $dst_file . ".png";						
-							imagepng($dst_im, $dst_file);
+							$dst_file = $dst_file . ".png";
+		                    if($re_size[0] == $size[0] && $re_size[1] == $size[1]) {
+		                        // サイズが同じ場合には、そのままコピーする。(画質劣化を防ぐ）           
+		                        copy($path, $dst_file);
+		                    } else {
+		                        imagepng($dst_im, $dst_file);
+		                    }
 						}
 						imagedestroy($src_im);
 						imagedestroy($dst_im);
@@ -206,7 +214,7 @@ class gdthumb {
 					$dst_file = $dst_file . ".jpg";
                     
                     if($re_size[0] == $size[0] && $re_size[1] == $size[1]) {
-                        // サイズが同じ場合には、そのままコピーする。           
+                        // サイズが同じ場合には、そのままコピーする。(画質劣化を防ぐ）       
                         copy($path, $dst_file);
                     } else {
                         imageJpeg($dst_im, $dst_file);
@@ -246,7 +254,12 @@ class gdthumb {
 					return "";
 				}else{
 					$dst_file = $dst_file . ".png";
-					imagepng($dst_im, $dst_file);
+                    if($re_size[0] == $size[0] && $re_size[1] == $size[1]) {
+                        // サイズが同じ場合には、そのままコピーする。(画質劣化を防ぐ）           
+                        copy($path, $dst_file);
+                    } else {
+                        imagepng($dst_im, $dst_file);
+                    }
 				}
 				imagedestroy($src_im);
 				imagedestroy($dst_im);
