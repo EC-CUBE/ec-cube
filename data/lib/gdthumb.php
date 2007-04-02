@@ -201,8 +201,8 @@ class gdthumb {
                     $dst_im = $src_im;
                 }
                 
-                gfPrintLog($re_size);
-                gfPrintLog($size);
+                gfDebugLog($re_size);
+                gfDebugLog($size);
                 
                 
 				// ²èÁü½ÐÎÏ
