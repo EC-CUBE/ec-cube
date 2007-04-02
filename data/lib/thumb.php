@@ -119,6 +119,13 @@ $PreWord = $head;
             if($re_size[0] != $size[0] || $re_size[0] != $size[0]) {
                 ImageCopyResampled( $ImgNew,$ImgDefault, 0, 0, 0, 0,$re_size[0], $re_size[1],$size[0], $size[1]);
             }
+            
+            sfDebugPrint($size);
+            sfDebugPrint($re_size);
+            
+            
+            
+            
 			if ( $newFileName ) {
 				$ToFile = $newFileName;
 			} elseif($ext) {
