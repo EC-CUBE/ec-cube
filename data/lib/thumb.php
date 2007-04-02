@@ -120,10 +120,9 @@ $PreWord = $head;
                 ImageCopyResampled( $ImgNew,$ImgDefault, 0, 0, 0, 0,$re_size[0], $re_size[1],$size[0], $size[1]);
             }
             
-            gfDebugPrint($size);
-            gfDebugPrint($re_size);
-            
-            
+            gfDebugLog($size);
+            gfDebugLog($re_size);
+                        
             
             
 			if ( $newFileName ) {
