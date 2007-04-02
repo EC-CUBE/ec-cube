@@ -200,7 +200,11 @@ class gdthumb {
                 } else {
                     $dst_im = $src_im;
                 }
-                                
+                
+                gfPrintLog($re_size);
+                gfPrintLog($size);
+                
+                
 				// ²èÁü½ÐÎÏ
 				if($header){
 					header("Content-Type: image/jpeg");
