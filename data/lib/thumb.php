@@ -115,8 +115,10 @@ $PreWord = $head;
 	 	case "2": //jpg·Á¼°
 			$ImgDefault = ImageCreateFromJpeg($FromImgPath);
 			//ImageCopyResized( $ImgNew,$ImgDefault, 0, 0, 0, 0,$re_size[0], $re_size[1],$size[0], $size[1]);
-			ImageCopyResampled( $ImgNew,$ImgDefault, 0, 0, 0, 0,$re_size[0], $re_size[1],$size[0], $size[1]);
-
+			
+            if($re_size[0] != $size[0] || $re_size[0] != $size[0]) {
+                ImageCopyResampled( $ImgNew,$ImgDefault, 0, 0, 0, 0,$re_size[0], $re_size[1],$size[0], $size[1]);
+            }
 			if ( $newFileName ) {
 				$ToFile = $newFileName;
 			} elseif($ext) {
