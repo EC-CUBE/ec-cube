@@ -33,7 +33,12 @@ function sfCheckDataPath() {
     // ドキュメントルートのパスを推測する。
     $doc_root = ereg_replace(URL_DIR . "$","/",HTML_PATH);
     $arrResult['title'] = "設定ファイルの保存パス";
-    $arrResult['result'] = $doc_root;
+    
+    $data_path = realpath(DATA_PATH);
+    
+    $arrResult['result'] = $data_path;
+    
+    
     return $arrResult;
 }
 
