@@ -74,6 +74,7 @@ self.moveTo(20,20);self.focus();
 										<!--{section name=i loop=$arrList}-->
 										<tr class="fs12n">
 											<td bgcolor="#ffffff"><!--{$arrList[i].title}--></td>
+											<td bgcolor="#ffffff"><!--{$arrList[i].result}--></td>
 										</tr>
 										<!--{/section}-->
 									</table>
