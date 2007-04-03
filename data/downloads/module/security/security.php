@@ -31,7 +31,7 @@ $objView->display($objPage->tpl_mainpage);		//テンプレートの出力
 // 設定ファイル(data)のパスが公開パスでないか確認する
 function sfCheckOpenData() {
     // ドキュメントルートのパスを推測する。
-    $doc_root = ereg_replace(URL_DIR . "html/$","/",HTML_PATH);
+    $doc_root = ereg_replace(URL_DIR . "$","/",HTML_PATH);
     $data_path = realpath(DATA_PATH);
     
     // dataのパスがドキュメントルート以下にあるか判定
