@@ -34,14 +34,15 @@ function sfCheckOpenData() {
     $doc_root = ereg_replace(URL_DIR . "$","/",HTML_PATH);
     $data_path = realpath(DATA_PATH);
     
+    // dataのパスがドキュメントルート以下にあるか判定
     if(ereg("^".$doc_root, $data_path)) {
         $arrResult['result'] = "×";
         $arrResult['detail'] = "公開";
     } else {
         $arrResult['result'] = "○";
-        $arrResult['detail'] = "公開されている可能性は低いです。";        
+        $arrResult['detail'] = "設定ファイルが公開されている可能性は低いです。";        
     }
-        
+    
     $arrResult['title'] = "設定ファイルの保存パス";
     return $arrResult;
 }
