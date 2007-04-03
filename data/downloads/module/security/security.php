@@ -21,7 +21,7 @@ $objPage = new LC_Page();
 $objView = new SC_AdminView();
 $objQuery = new SC_Query();
 
-$arrList[] = sfCheckDataPath();
+$arrList[] = sfCheckOpenData();
 
 $objPage->arrList = $arrList;
 
