@@ -37,10 +37,10 @@ function sfCheckOpenData() {
     // dataのパスがドキュメントルート以下にあるか判定
     if(ereg("^".$doc_root, $data_path)) {
         $arrResult['result'] = "×";
-        $arrResult['detail'] = "公開";
+        $arrResult['detail'] = "設定ファイルが公開されている可能性は高い";
     } else {
         $arrResult['result'] = "○";
-        $arrResult['detail'] = "設定ファイルが公開されている可能性は低いです。";        
+        $arrResult['detail'] = "設定ファイルが公開されている可能性は低い";        
     }
     
     $arrResult['title'] = "設定ファイルの保存パス";
