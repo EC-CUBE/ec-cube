@@ -24,60 +24,6 @@
 <script type="text/javascript">
 <!--
 self.moveTo(20,20);self.focus();
-
-function lfnCheckPayment(){
-	var fm = document.form1;
-	var val = 0;
-	
-	payment = new Array('payment[]');
-	list = new Array('convenience_url', 'mobile_convenience_url');
-	
-	var max = fm["payment[]"].length;
-	
-	for (pi = 0; pi < payment.length; pi++) {
-		if (max == undefined) {
-			if (fm["payment[]"].checked) {
-				fnChangeDisabled(list, false);
-			} else {
-				fnChangeDisabled(list);
-			}
-		} else {
-			if (fm["payment[]"][0].checked) {
-				fnChangeDisabled(list, false);
-			} else {
-				fnChangeDisabled(list);
-			}
-		}
-	}
-}
-
-function fnChangeDisabled(list, disable) {
-	len = list.length;
-
-	if(disable == null) { disable = true; }
-	
-	for(i = 0; i < len; i++) {
-		if(document.form1[list[i]]) {
-			// ラジオボタン、チェックボックス等の配列に対応
-			max = document.form1[list[i]].length
-			if(max > 1) {
-				for(j = 0; j < max; j++) {
-					// 有効、無効の切り替え
-					document.form1[list[i]][j].disabled = disable;
-				}
-			} else {
-				// 有効、無効の切り替え
-				document.form1[list[i]].disabled = disable;
-			}
-		}
-	}
-}
-
-function win_open(URL){
-	var WIN;
-	WIN = window.open(URL);
-	WIN.focus();
-}
 //-->
 </script>
 </head>
@@ -130,79 +76,8 @@ function win_open(URL){
 												ルミーズ決済モジュールをご利用頂く為には、ユーザ様ご自身で
 												ルミーズ株式会社様とご契約を行っていただく必要があります。 <br/>
 												お申し込みにつきましては、下記のページから、お申し込みを行って下さい。<br/><br/>
-												<a href="#" onClick="win_open('http://www.remise.jp/')" > ＞＞ ルミーズ決済システムについて</a><br/>
-												<a href="#" onClick="win_open('http://wiki.ec-cube.net/')" > ＞＞ ルミーズ決済モジュール設定マニュアル</a>
 											</td>
 										</tr>
-									</table>
-									
-									<table width="442" border="0" cellspacing="0" cellpadding="0" summary=" ">
-										<tr><td><img src="<!--{$smarty.const.URL_DIR}-->img/contents/main_bar.jpg" width="442" height="10" alt=""></td></tr>
-									</table>
-									
-									<table width="442" border="0" cellspacing="1" cellpadding="8" summary=" ">
-										<tr class="fs12n">
-											<td width="" bgcolor="#f3f3f3">加盟店コード<span class="red">※</span></td>
-											<td width="337" bgcolor="#ffffff">
-											<!--{assign var=key value="code"}-->
-											<span class="red12"><!--{$arrErr[$key]}--></span>
-											<input type="text" name="<!--{$key}-->" style="ime-mode:disabled; <!--{$arrErr[$key]|sfGetErrorColor}-->" value="<!--{$arrForm[$key].value}-->" class="box10" maxlength="<!--{$smarty.const.INT_LEN}-->">
-											</td>
-										</tr>
-										<tr class="fs12n">
-											<td width="" bgcolor="#f3f3f3">ホスト番号<span class="red">※</span></td>
-											<td width="337" bgcolor="#ffffff">
-											<!--{assign var=key value="host_id"}-->
-											<span class="red12"><!--{$arrErr[$key]}--></span>
-											<input type="text" name="<!--{$key}-->" style="ime-mode:disabled; <!--{$arrErr[$key]|sfGetErrorColor}-->" value="<!--{$arrForm[$key].value}-->" class="box10" maxlength="<!--{$smarty.const.INT_LEN}-->">
-											</td>
-										</tr>
-										<tr class="fs12n">
-											<td width="" bgcolor="#f3f3f3">接続先URL<br />(クレジット)<span class="red">※</span></td>
-											<td width="337" bgcolor="#ffffff">
-											<!--{assign var=key value="credit_url"}-->
-											<span class="red12"><!--{$arrErr[$key]}--></span>
-											[PC]<br /><input type="text" name="<!--{$key}-->" style="ime-mode:disabled; <!--{$arrErr[$key]|sfGetErrorColor}-->" value="<!--{$arrForm[$key].value}-->" class="box40" maxlength="<!--{$smarty.const.URL_LEN}-->"><br />
-											<!--{assign var=key value="mobile_credit_url"}-->
-											<span class="red12"><!--{$arrErr[$key]}--></span>
-											[モバイル]<br /><input type="text" name="<!--{$key}-->" style="ime-mode:disabled; <!--{$arrErr[$key]|sfGetErrorColor}-->" value="<!--{$arrForm[$key].value}-->" class="box40" maxlength="<!--{$smarty.const.URL_LEN}-->">
-											</td>
-										</tr>
-										<tr class="fs12n">
-											<td width="90" bgcolor="#f3f3f3">支払い方法<span class="red">※</span></td>
-											<td width="337" bgcolor="#ffffff">
-											<!--{assign var=key value="credit_method"}-->
-											<span class="red12"><!--{$arrErr[$key]}--></span>
-											<!--{html_checkboxes_ex name="$key" options=$arrCredit selected=$arrForm[$key].value style=$arrErr[$key]|sfGetErrorColor}-->
-											</td>
-										</tr>
-										<tr class="fs12n">
-											<td width="90" bgcolor="#f3f3f3">オプション</td>
-											<td width="337" bgcolor="#ffffff">
-											<!--{assign var=key value="payment"}-->
-											<span class="red12"><!--{$arrErr[$key]}--></span>
-											<!--{html_checkboxes_ex name="$key" options=$arrPayment selected=$arrForm[$key].value style=$arrErr[$key]|sfGetErrorColor onclick="lfnCheckPayment();"}-->
-											</td>
-										</tr>
-										<tr class="fs12n">
-											<td width="" bgcolor="#f3f3f3">接続先URL<br />(コンビニ)</td>
-											<td width="337" bgcolor="#ffffff">
-											<!--{assign var=key value="convenience_url"}-->
-											<span class="red12"><!--{$arrErr[$key]}--></span>
-											[PC]<br /><input type="text" name="<!--{$key}-->" style="ime-mode:disabled; <!--{$arrErr[$key]|sfGetErrorColor}-->" value="<!--{$arrForm[$key].value}-->" class="box40" maxlength="<!--{$smarty.const.URL_LEN}-->"><br />
-											<!--{assign var=key value="mobile_convenience_url"}-->
-											<span class="red12"><!--{$arrErr[$key]}--></span>
-											[モバイル]<br /><input type="text" name="<!--{$key}-->" style="ime-mode:disabled; <!--{$arrErr[$key]|sfGetErrorColor}-->" value="<!--{$arrForm[$key].value}-->" class="box40" maxlength="<!--{$smarty.const.URL_LEN}-->">
-											</td>
-										</tr>
-										<!--{assign var=key value="service"}-->
-										<!--{if $arrErr[$key] != ""}-->
-										<tr class="fs12n">
-											<td bgcolor="#ffffff" colspan=2>
-											<span class="red12"><!--{$arrErr[$key]}--></span>
-											</td>
-										</tr>
-										<!--{/if}-->
 									</table>
 
 									<table width="442" border="0" cellspacing="0" cellpadding="0" summary=" ">
