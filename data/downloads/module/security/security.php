@@ -21,6 +21,10 @@ $objPage = new LC_Page();
 $objView = new SC_AdminView();
 $objQuery = new SC_Query();
 
+$arrList[0]['title'] = "タイトル";
+$arrList[0]['result'] = "結果";
+
+$objPage->arrList = $arrList;
 
 $objView->assignobj($objPage);					//変数をテンプレートにアサインする
 $objView->display($objPage->tpl_mainpage);		//テンプレートの出力
