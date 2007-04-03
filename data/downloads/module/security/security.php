@@ -6,5 +6,25 @@
  * @link		http://www.lockon.co.jp/
  *
  */
-	print("testaaaaaa");
+
+ require_once("../../require.php");
+ 
+//ページ管理クラス
+class LC_Page {
+	//コンストラクタ
+	function LC_Page() {
+		//メインテンプレートの指定
+		$this->tpl_mainpage = MODULE_PATH . 'security/security.tpl';
+		$this->tpl_subtitle = 'セキュリティチェック';
+	}
+}
+
+$objPage = new LC_Page();
+$objView = new SC_AdminView();
+$objQuery = new SC_Query();
+
+
+
+
+
 ?>
