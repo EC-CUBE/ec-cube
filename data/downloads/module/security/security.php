@@ -6,5 +6,5 @@
  * @link		http://www.lockon.co.jp/
  *
  */
-	print("testaaaaa");
+	print("testaaaaaa");
 ?>
