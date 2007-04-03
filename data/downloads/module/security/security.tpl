@@ -72,13 +72,15 @@ self.moveTo(20,20);self.focus();
 
 									<table width="442" border="0" cellspacing="1" cellpadding="5" summary=" ">
 										<tr bgcolor="#f2f1ec" align="center" class="fs12n">
-											<td width="140">チェック内容</td>
-											<td width="300">結果</td>
+											<td width="120">チェック内容</td>
+											<td width="20">結果</td>
+											<td width="300">詳細</td>
 										</tr>
 										<!--{section name=i loop=$arrList}-->
 										<tr class="fs12n">
 											<td bgcolor="#ffffff"><!--{$arrList[i].title}--></td>
 											<td bgcolor="#ffffff"><!--{$arrList[i].result}--></td>
+											<td bgcolor="#ffffff"><!--{$arrList[i].detail}--></td>
 										</tr>
 										<!--{/section}-->
 									</table>
