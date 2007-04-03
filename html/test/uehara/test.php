@@ -1,6 +1,8 @@
 <?php
 require_once("../../require.php");
 
+echo "test!!";
+
 $objQuery = new SC_Query();
 
 $objQuery->begin();
