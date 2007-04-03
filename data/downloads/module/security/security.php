@@ -21,8 +21,11 @@ $objPage = new LC_Page();
 $objView = new SC_AdminView();
 $objQuery = new SC_Query();
 
-$arrList[0]['title'] = "タイトル";
-$arrList[0]['result'] = "結果";
+$arrList[0]['title'] = "タイトル1";
+$arrList[0]['result'] = "結果1";
+
+$arrList[1]['title'] = "タイトル2";
+$arrList[1]['result'] = "結果2";
 
 $objPage->arrList = $arrList;
 
