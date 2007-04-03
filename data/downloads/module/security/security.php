@@ -21,11 +21,7 @@ $objPage = new LC_Page();
 $objView = new SC_AdminView();
 $objQuery = new SC_Query();
 
-$arrList[0]['title'] = "設定ファイルの保存パス";
-$arrList[0]['result'] = "";
-
-$arrList[1]['title'] = "タイトル2";
-$arrList[1]['result'] = "結果2";
+$arrList[] = sfCheckDataPath();
 
 $objPage->arrList = $arrList;
 
@@ -35,8 +31,10 @@ $objView->display($objPage->tpl_mainpage);		//テンプレートの出力
 // 設定ファイル(data)のパスが公開パスでないか確認する
 function sfCheckDataPath() {
     // ドキュメントルートのパスを推測する。
-    
-    
+    $doc_root = ereg_replace(URL_DIR . "$","/",HTML_DIR);
+    $arrResult['title'] = "設定ファイルの保存パス";
+    $arrResult['result'] = $doc_root;
+    return $arrResult;
 }
 
 ?>
