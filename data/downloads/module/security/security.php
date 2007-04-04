@@ -24,6 +24,7 @@ $objView = new SC_AdminView();
 $arrList[] = sfCheckOpenData();
 $arrList[] = sfCheckInstall();
 $arrList[] = sfCheckIDPass('admin', 'password');
+$arrList[] = sfCheckInstallInc();
 
 $objPage->arrList = $arrList;
 
