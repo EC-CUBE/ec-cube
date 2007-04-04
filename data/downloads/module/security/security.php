@@ -112,6 +112,9 @@ function sfCheckInstallInc() {
         $arrResult['result'] = "○";
         $arrResult['detail'] = "install.incは、存在しません。";               
     }
+    
+    $arrResult['title'] = "install.incのチェック";
+    return $arrResult;
 }
 
 ?>
