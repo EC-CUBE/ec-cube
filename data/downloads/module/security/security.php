@@ -22,7 +22,11 @@ $objView = new SC_AdminView();
 
 switch($_POST['mode']) {
 case 'edit':
-    print("iei");
+    // install.incの隠蔽
+    $hidden_inc = MODULE_PATH . 'security/install_inc.php';
+    if(!file_exist($hidden_inc)) {
+        
+    }
 	break;
 default:
     break;
@@ -104,6 +108,20 @@ function sfCheckIDPass($user, $password) {
 
 // install.incのファイルをチェックする
 function sfCheckInstallInc() {
+    if(sfIsNormalInstallInc()) {
+        $arrResult['result'] = "×";
+        $arrResult['detail'] = "install.incの内容を隠蔽しますか？";
+        $arrResult['detail'].= "<input type='submit' value='隠蔽する'>";        
+    } else {
+        $arrResult['result'] = "○";
+        $arrResult['detail'] = "install.incの隠蔽対策がとられています。";                       
+    }
+    $arrResult['title'] = "install.incのチェック";
+    return $arrResult;
+}
+
+// install.incが隠蔽後のものか判定する
+function sfIsNormalInstallInc() {
     // install.incのパスを取得する
     $inst_inc = DATA_PATH . 'install.inc';
     if(file_exists($inst_inc)) {
@@ -111,22 +129,11 @@ function sfCheckInstallInc() {
             $data = fread($fp, filesize($inst_inc));
             fclose($fp);
         }
-        
         if(ereg("DB_PASSWORD", $data)) {
-            $arrResult['result'] = "×";
-            $arrResult['detail'] = "install.incの内容を隠蔽しますか？";
-            $arrResult['detail'].= "<input type='submit' value='隠蔽する'>";        
-        } else {
-	        $arrResult['result'] = "○";
-	        $arrResult['detail'] = "install.incの隠蔽対策がとられています。";                       
+            return true;
         }
-    } else {
-        $arrResult['result'] = "○";
-        $arrResult['detail'] = "install.incは、存在しません。";               
     }
-    
-    $arrResult['title'] = "install.incのチェック";
-    return $arrResult;
+    return false;
 }
 
 ?>
