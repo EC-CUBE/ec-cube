@@ -19,7 +19,7 @@ class LC_Page {
 
 $objPage = new LC_Page();
 $objView = new SC_AdminView();
-$objQuery = new SC_Query();
+
 
 $arrList[] = sfCheckOpenData();
 $arrList[] = sfCheckInstall();
@@ -64,5 +64,28 @@ function sfCheckInstall() {
     
     $arrResult['title'] = "インストールファイルのチェック";
     return $arrResult;
+}
+
+// 管理者ユーザのID/パスワードチェック
+function sfCheckIDPass($user, $password) {
+    $objQuery = new SC_Query();
+    $sql = "SELECT password FROM dtb_member WHERE login_id = ?";
+	// DBから暗号化パスワードを取得する。
+	$arrRet = $objQuery->getAll($sql ,$user); 
+	// ユーザ入力パスワードの判定
+	$ret = sha1($password . ":" . AUTH_MAGIC);
+    
+    if($ret == $arrRet[0]['password']) {
+        $arrResult['result'] = "×";
+        $arrResult['detail'] = "非常に推測のしやすい管理者IDとなっています。個人情報漏洩の危険性が高いです。";       
+    } else {
+        if(count($arrRet) > 0) {
+	        $arrResult['result'] = "△";
+	        $arrResult['detail'] = "管理者名に「admin」を利用しないようにして下さい。";               
+        } else {
+            $arrResult['result'] = "○";
+            $arrResult['detail'] = "独自のID、パスワードが設定されているようです。";               
+        }
+    }
 }
 ?>
