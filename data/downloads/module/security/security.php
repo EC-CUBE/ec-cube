@@ -128,7 +128,7 @@ function sfCheckInstallInc() {
         $arrResult['result'] = "○";
         $arrResult['detail'] = "install.incの隠蔽対策がとられています。";                       
     }
-    $arrResult['title'] = "install.incのチェック";
+    $arrResult['title'] = "install.incの可読性チェック";
     return $arrResult;
 }
 
