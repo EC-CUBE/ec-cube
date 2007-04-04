@@ -22,6 +22,7 @@ $objView = new SC_AdminView();
 $objQuery = new SC_Query();
 
 $arrList[] = sfCheckOpenData();
+$arrList[] = sfCheckInstall();
 
 $objPage->arrList = $arrList;
 
@@ -48,4 +49,17 @@ function sfCheckOpenData() {
     return $arrResult;
 }
 
+// インストールファイルが存在するか確認する
+function sfCheckInstall() {
+    // インストールファイルの存在チェック
+    $inst_path = HTML_PATH . "install/index.php";
+    
+    if(file_exists($inst_path)) {
+        $arrResult['result'] = "×";
+        $arrResult['detail'] = "/install/index.phpは、インストール完了後にファイルを削除してください。";            
+    } else {
+        $arrResult['result'] = "○";
+        $arrResult['detail'] = "/install/index.phpは、見つかりませんでした。";    
+    }
+}
 ?>
