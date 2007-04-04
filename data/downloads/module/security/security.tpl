@@ -77,7 +77,7 @@ self.moveTo(20,20);self.focus();
 											<td width="300">¾ÜºÙ</td>
 										</tr>
 										<!--{section name=i loop=$arrList}-->
-										<tr class="fs12n" height="30">
+										<tr class="fs12n">
 											<td bgcolor="#ffffff"><!--{$arrList[i].title}--></td>
 											<td bgcolor="#ffffff" align="center"><!--{$arrList[i].result}--></td>
 											<td bgcolor="#ffffff"><!--{$arrList[i].detail}--></td>
