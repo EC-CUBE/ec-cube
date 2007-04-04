@@ -22,11 +22,20 @@ $objView = new SC_AdminView();
 
 switch($_POST['mode']) {
 case 'edit':
+    $inst_inc = DATA_PATH . 'install.inc';
     // install.incの隠蔽
     $hidden_inc = MODULE_PATH . 'security/install_inc.php';
-    
-    
-    
+    if(sfIsNormalInstallInc()) {
+        copy($inst_inc, $hidden_inc);
+        
+        $require = "<?php
+        				require_once($hidden_inc);
+        			?>";
+        if($fp = fopen($inst_inc,"w")) {
+			fwrite($fp, $require);
+			fclose($fp);
+        }
+	}
 	break;
 default:
     break;
@@ -108,6 +117,7 @@ function sfCheckIDPass($user, $password) {
 
 // install.incのファイルをチェックする
 function sfCheckInstallInc() {
+    // install.incが隠蔽後のものか判定する
     if(sfIsNormalInstallInc()) {
         $arrResult['result'] = "×";
         $arrResult['detail'] = "install.incの内容を隠蔽しますか？";
