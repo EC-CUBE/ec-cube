@@ -87,5 +87,8 @@ function sfCheckIDPass($user, $password) {
             $arrResult['detail'] = "独自のID、パスワードが設定されているようです。";               
         }
     }
+    
+    $arrResult['title'] = "ID/パスワードのチェック";
+    return $arrResult;
 }
 ?>
