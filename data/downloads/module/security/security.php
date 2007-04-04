@@ -29,7 +29,7 @@ case 'edit':
         if(copy($inst_inc, $hidden_inc)) {
             if(file_exists($hidden_inc)) {
 		        $require = "<?php\n".
-		        		   "    require_once($hidden_inc);\n".
+		        		   "    require_once('$hidden_inc');\n".
 		        		   "?>";
 		        if($fp = fopen($inst_inc,"w")) {
 					fwrite($fp, $require);
