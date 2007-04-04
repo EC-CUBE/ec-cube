@@ -26,14 +26,14 @@ case 'edit':
     // install.inc§Œ±£ √
     $hidden_inc = MODULE_PATH . 'security/install_inc.php';
     if(sfIsNormalInstallInc()) {
-        copy($inst_inc, $hidden_inc);
-        
-        $require = "<?php
-        				require_once($hidden_inc);
-        			?>";
-        if($fp = fopen($inst_inc,"w")) {
-			fwrite($fp, $require);
-			fclose($fp);
+        if(copy($inst_inc, $hidden_inc)) {
+	        $require = "<?php
+	        				require_once($hidden_inc);
+	        			?>";
+	        if($fp = fopen($inst_inc,"w")) {
+				fwrite($fp, $require);
+				fclose($fp);
+	        }
         }
 	}
 	break;
