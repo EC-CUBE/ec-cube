@@ -107,10 +107,10 @@ function sfCheckInstallInc() {
         
         if(ereg("DB_PASSWORD", $data)) {
             $arrResult['result'] = "×";
-            $arrResult['detail'] = 'install.incを隠蔽しますか？';
+            $arrResult['detail'] = 'install.incの内容を隠蔽しますか？';
         } else {
 	        $arrResult['result'] = "○";
-	        $arrResult['detail'] = "install.incの隠蔽処理がとられています。";                       
+	        $arrResult['detail'] = "install.incの隠蔽対策がとられています。";                       
         }
     } else {
         $arrResult['result'] = "○";
