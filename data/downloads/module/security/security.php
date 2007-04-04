@@ -101,7 +101,7 @@ function sfCheckIDPass($user, $password) {
     
     if($ret == $arrRet[0]['password']) {
         $arrResult['result'] = "×";
-        $arrResult['detail'] = "非常に推測のしやすい管理者IDとなっています。個人情報漏洩の危険性が高いです。";       
+        $arrResult['detail'] = "非常に推測のしやすい管理者IDとなっています。個人情報漏洩の危険性があります。";       
     } else {
         if(count($arrRet) > 0) {
 	        $arrResult['result'] = "△";
@@ -122,7 +122,7 @@ function sfCheckInstallInc() {
     // install.incが隠蔽後のものか判定する
     if(sfIsNormalInstallInc()) {
         $arrResult['result'] = "×";
-        $arrResult['detail'] = "install.incの内容を隠蔽しますか？";
+        $arrResult['detail'] = "install.incを簡単に表示できなくすることができます。内容を隠蔽しますか？";
         $arrResult['detail'].= "<input type='submit' value='隠蔽する'>";        
     } else {
         $arrResult['result'] = "○";
