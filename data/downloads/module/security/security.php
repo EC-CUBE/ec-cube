@@ -100,7 +100,7 @@ function sfCheckInstallInc() {
     // install.incのパスを取得する
     $inst_inc = DATA_PATH . 'install.inc';
     if(file_exists($inst_inc)) {
-        if($fp = fopen($inst_inc)) {
+        if($fp = fopen($inst_inc, "r")) {
             $data = fread($fp, filesize($inst_inc));
             fclose($fp);
         }
