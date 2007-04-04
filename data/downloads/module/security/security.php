@@ -114,7 +114,7 @@ function sfCheckInstallInc() {
         
         if(ereg("DB_PASSWORD", $data)) {
             $arrResult['result'] = "∵";
-            $arrResult['detail'] = "install.incの柒推を保拭しますか々<br>";
+            $arrResult['detail'] = "install.incの柒推を保拭しますか々";
             $arrResult['detail'].= "<input type='submit' value='保拭する'>";        
         } else {
 	        $arrResult['result'] = "←";
