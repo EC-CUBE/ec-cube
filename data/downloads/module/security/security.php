@@ -61,5 +61,8 @@ function sfCheckInstall() {
         $arrResult['result'] = "○";
         $arrResult['detail'] = "/install/index.phpは、見つかりませんでした。";    
     }
+    
+    $arrResult['title'] = "インストールファイルのチェック";
+    return $arrResult;
 }
 ?>
