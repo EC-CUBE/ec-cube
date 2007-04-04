@@ -24,9 +24,9 @@ switch($_POST['mode']) {
 case 'edit':
     // install.inc§Œ±£ √
     $hidden_inc = MODULE_PATH . 'security/install_inc.php';
-    if(!file_exist($hidden_inc)) {
-        
-    }
+    
+    
+    
 	break;
 default:
     break;
