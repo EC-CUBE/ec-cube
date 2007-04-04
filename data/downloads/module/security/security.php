@@ -27,9 +27,9 @@ case 'edit':
     $hidden_inc = MODULE_PATH . 'security/install_inc.php';
     if(sfIsNormalInstallInc()) {
         if(copy($inst_inc, $hidden_inc)) {
-	        $require = "<?php
-	        				require_once($hidden_inc);
-	        			?>";
+	        $require = "<?php\n".
+	        		   "    require_once($hidden_inc);\n".
+	        		   "?>";
 	        if($fp = fopen($inst_inc,"w")) {
 				fwrite($fp, $require);
 				fclose($fp);
