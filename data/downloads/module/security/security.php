@@ -20,6 +20,13 @@ class LC_Page {
 $objPage = new LC_Page();
 $objView = new SC_AdminView();
 
+switch($_POST['mode']) {
+case 'edit':
+    print("iei");
+	break;
+default:
+    break;
+}
 
 $arrList[] = sfCheckOpenData();
 $arrList[] = sfCheckInstall();
@@ -107,7 +114,8 @@ function sfCheckInstallInc() {
         
         if(ereg("DB_PASSWORD", $data)) {
             $arrResult['result'] = "×";
-            $arrResult['detail'] = 'install.incの内容を隠蔽しますか？';
+            $arrResult['detail'] = "install.incの内容を隠蔽しますか？<br>";
+            $arrResult['detail'].= "<input type='submit' value='隠蔽する'>";        
         } else {
 	        $arrResult['result'] = "○";
 	        $arrResult['detail'] = "install.incの隠蔽対策がとられています。";                       
