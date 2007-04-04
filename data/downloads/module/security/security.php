@@ -92,4 +92,26 @@ function sfCheckIDPass($user, $password) {
     $arrResult['title'] = "ID/パスワードのチェック";
     return $arrResult;
 }
+
+
+// install.incのファイルをチェックする
+function sfCheckInstallInc() {
+    // install.incのパスを取得する
+    $inst_inc = DATA_PATH . 'install.inc';
+    if(file_exists($inst_inc)) {
+        if($fp = fopen($inst_inc)) {
+            $data = fread($fp, filesize($inst_inc));
+            fclose($fp);
+        }
+        
+        $arrResult['result'] = "×";
+        $arrResult['detail'] = $data;
+        
+        
+    } else {
+        $arrResult['result'] = "○";
+        $arrResult['detail'] = "install.incは、存在しません。";               
+    }
+}
+
 ?>
