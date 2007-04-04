@@ -105,10 +105,13 @@ function sfCheckInstallInc() {
             fclose($fp);
         }
         
-        $arrResult['result'] = "×";
-        $arrResult['detail'] = $data;
-        
-        
+        if(ereg("DB_PASSWORD", $data)) {
+            $arrResult['result'] = "×";
+            $arrResult['detail'] = 'install.incを隠蔽しますか？';
+        } else {
+	        $arrResult['result'] = "○";
+	        $arrResult['detail'] = "install.incの隠蔽処理がとられています。";                       
+        }
     } else {
         $arrResult['result'] = "○";
         $arrResult['detail'] = "install.incは、存在しません。";               
