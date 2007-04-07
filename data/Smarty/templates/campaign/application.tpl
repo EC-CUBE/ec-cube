@@ -1,4 +1,4 @@
-<!--{*¥Ø¥Ã¥À¡¼ÆÉ¹þ*}-->
+<!--{*ãƒ˜ãƒƒãƒ€ãƒ¼èª­è¾¼*}-->
 <!--{include file=`$tpl_dir_name`/header.tpl}-->
 
 <script type="text/javascript" src="<!--{$smarty.const.URL_DIR}-->js/site.js"></script>
@@ -9,8 +9,8 @@
 //-->
 </script>
 
-<!--{*¥³¥ó¥Æ¥ó¥ÄÆÉ¹þ*}-->
+<!--{*ã‚³ãƒ³ãƒ†ãƒ³ãƒ„èª­è¾¼*}-->
 <!--{include file=`$tpl_dir_name`/contents.tpl}-->
 
-<!--{*¥Õ¥Ã¥¿¡¼ÆÉ¹þ*}-->
+<!--{*ãƒ•ãƒƒã‚¿ãƒ¼èª­è¾¼*}-->
 <!--{include file=`$tpl_dir_name`/footer.tpl}-->
