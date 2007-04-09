@@ -55,8 +55,8 @@ define('MOBILE_ADDITIONAL_MAIL_DOMAINS', 'rebelt.co.jp, lockon.co.jp');
 /**
  * 携帯電話向け変換画像保存ディレクトリ
  */
-define('MOBILE_IMAGE_DIR', HTML_PATH . 'converted_images');
-define('MOBILE_IMAGE_URL', URL_DIR . 'converted_images');
+define('MOBILE_IMAGE_DIR', HTML_PATH . 'upload/mobile_image');
+define('MOBILE_IMAGE_URL', URL_DIR . 'upload/mobile_image');
 
 /* URL */
 define ('MOBILE_URL_SITE_TOP', MOBILE_URL_DIR . 'index.php');								// サイトトップ
