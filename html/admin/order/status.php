@@ -146,7 +146,7 @@ function lfStatusMove($status_id,$move){
 	}else{
 		$sql = "UPDATE dtb_order SET status = ".$status_id." ";
 	}
-		$sql .= "WHERE order_id = ? ";
+		$sql .= " WHERE order_id = ? ";
 		if (isset($move)){
 			foreach ($move as $val){
 			if ($val != "") {

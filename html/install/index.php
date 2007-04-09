@@ -369,7 +369,6 @@ function lfDispStep0($objPage) {
 		"../user_data",
 		"../cp",
 		"../upload",
-		"../mobile/converted_images",
 		"../../data/Smarty/templates_c",
 		"../../data/downloads",
 		"../../data/logs"
@@ -423,6 +422,10 @@ function lfDispStep0($objPage) {
 			mkdir($path);
 		}
 		$path = "../upload/graph_image";
+		if(!file_exists($path)) {
+			mkdir($path);
+		}
+        $path = "../upload/mobile_image";
 		if(!file_exists($path)) {
 			mkdir($path);
 		}

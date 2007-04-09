@@ -1,10 +1,10 @@
 CREATE TABLE dtb_site_control (
     control_id serial primary key NOT NULL,
-    control_title text NOT NULL DEFAULT '',
-    control_text text NOT NULL DEFAULT '',
+    control_title text ,
+    control_text text ,
     control_flg int2 NOT NULL DEFAULT 2,
     del_flg int2 NOT NULL DEFAULT 0,
-    memo text NOT NULL DEFAULT '',
+    memo text ,
     create_date timestamp NOT NULL DEFAULT now(),
     update_date timestamp NOT NULL DEFAULT now()
 );
