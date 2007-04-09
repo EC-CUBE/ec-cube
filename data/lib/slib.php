@@ -1730,7 +1730,7 @@ function sfSendOrderMail($order_id, $template_id, $subject = "", $header = "", $
 	$bcc = $arrInfo['email01'];
 	$from = $arrInfo['email03'];
 	$error = $arrInfo['email04'];
-	sfprintr($arrInfo);
+
 	$tosubject = sfMakeSubject($tmp_subject);
 	
 	$objSendMail->setItem('', $tosubject, $body, $from, $arrInfo['shop_name'], $from, $error, $error, $bcc);
