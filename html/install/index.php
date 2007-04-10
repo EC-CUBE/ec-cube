@@ -957,52 +957,52 @@ function lfAddColumn($dsn) {
 function lfAddData($dsn) {
 	// CSVテーブル
 	if(sfTabaleExists('dtb_csv', $dsn)) {
-		lfInsertCSVData(1,'category_id','カテゴリID',53,'now()','now()');		
-		lfInsertCSVData(4,'order_id','注文ID',1,'now()','now()');
-		lfInsertCSVData(4,'campaign_id','キャンペーンID',2,'now()','now()');
-		lfInsertCSVData(4,'customer_id','顧客ID',3,'now()','now()');
-		lfInsertCSVData(4,'message','要望等',4,'now()','now()');
-		lfInsertCSVData(4,'order_name01','顧客名1',5,'now()','now()');
-		lfInsertCSVData(4,'order_name02','顧客名2',6,'now()','now()');
-		lfInsertCSVData(4,'order_kana01','顧客名カナ1',7,'now()','now()');
-		lfInsertCSVData(4,'order_kana02','顧客名カナ2',8,'now()','now()');
-		lfInsertCSVData(4,'order_email','メールアドレス',9,'now()','now()');
-		lfInsertCSVData(4,'order_tel01','電話番号1',10,'now()','now()');
-		lfInsertCSVData(4,'order_tel02','電話番号2',11,'now()','now()');
-		lfInsertCSVData(4,'order_tel03','電話番号3',12,'now()','now()');
-		lfInsertCSVData(4,'order_fax01','FAX1',13,'now()','now()');
-		lfInsertCSVData(4,'order_fax02','FAX2',14,'now()','now()');
-		lfInsertCSVData(4,'order_fax03','FAX3',15,'now()','now()');
-		lfInsertCSVData(4,'order_zip01','郵便番号1',16,'now()','now()');
-		lfInsertCSVData(4,'order_zip02','郵便番号2',17,'now()','now()');
-		lfInsertCSVData(4,'order_pref','都道府県',18,'now()','now()');
-		lfInsertCSVData(4,'order_addr01','住所1',19,'now()','now()');
-		lfInsertCSVData(4,'order_addr02','住所2',20,'now()','now()');
-		lfInsertCSVData(4,'order_sex','性別',21,'now()','now()');
-		lfInsertCSVData(4,'order_birth','生年月日',22,'now()','now()');
-		lfInsertCSVData(4,'order_job','職種',23,'now()','now()');
-		lfInsertCSVData(4,'deliv_name01','配送先名前',24,'now()','now()');
-		lfInsertCSVData(4,'deliv_name02','配送先名前',25,'now()','now()');
-		lfInsertCSVData(4,'deliv_kana01','配送先カナ',26,'now()','now()');
-		lfInsertCSVData(4,'deliv_kana02','配送先カナ',27,'now()','now()');
-		lfInsertCSVData(4,'deliv_tel01','電話番号1',28,'now()','now()');
-		lfInsertCSVData(4,'deliv_tel02','電話番号2',29,'now()','now()');
-		lfInsertCSVData(4,'deliv_tel03','電話番号3',30,'now()','now()');
-		lfInsertCSVData(4,'deliv_fax01','FAX1',31,'now()','now()');
-		lfInsertCSVData(4,'deliv_fax02','FAX2',32,'now()','now()');
-		lfInsertCSVData(4,'deliv_fax03','FAX3',33,'now()','now()');
-		lfInsertCSVData(4,'deliv_zip01','郵便番号1',34,'now()','now()');
-		lfInsertCSVData(4,'deliv_zip02','郵便番号2',35,'now()','now()');
-		lfInsertCSVData(4,'deliv_pref','都道府県',36,'now()','now()');
-		lfInsertCSVData(4,'deliv_addr01','住所1',37,'now()','now()');
-		lfInsertCSVData(4,'deliv_addr02','住所2',38,'now()','now()');
-		lfInsertCSVData(4,'payment_total','お支払い合計',39,'now()','now()');
+		lfInsertCSVData(1,'category_id','カテゴリID',53,'now()','now()', $dsn);		
+		lfInsertCSVData(4,'order_id','注文ID',1,'now()','now()', $dsn);
+		lfInsertCSVData(4,'campaign_id','キャンペーンID',2,'now()','now()', $dsn);
+		lfInsertCSVData(4,'customer_id','顧客ID',3,'now()','now()', $dsn);
+		lfInsertCSVData(4,'message','要望等',4,'now()','now()', $dsn);
+		lfInsertCSVData(4,'order_name01','顧客名1',5,'now()','now()', $dsn);
+		lfInsertCSVData(4,'order_name02','顧客名2',6,'now()','now()', $dsn);
+		lfInsertCSVData(4,'order_kana01','顧客名カナ1',7,'now()','now()', $dsn);
+		lfInsertCSVData(4,'order_kana02','顧客名カナ2',8,'now()','now()', $dsn);
+		lfInsertCSVData(4,'order_email','メールアドレス',9,'now()','now()', $dsn);
+		lfInsertCSVData(4,'order_tel01','電話番号1',10,'now()','now()', $dsn);
+		lfInsertCSVData(4,'order_tel02','電話番号2',11,'now()','now()', $dsn);
+		lfInsertCSVData(4,'order_tel03','電話番号3',12,'now()','now()', $dsn);
+		lfInsertCSVData(4,'order_fax01','FAX1',13,'now()','now()', $dsn);
+		lfInsertCSVData(4,'order_fax02','FAX2',14,'now()','now()', $dsn);
+		lfInsertCSVData(4,'order_fax03','FAX3',15,'now()','now()', $dsn);
+		lfInsertCSVData(4,'order_zip01','郵便番号1',16,'now()','now()', $dsn);
+		lfInsertCSVData(4,'order_zip02','郵便番号2',17,'now()','now()', $dsn);
+		lfInsertCSVData(4,'order_pref','都道府県',18,'now()','now()', $dsn);
+		lfInsertCSVData(4,'order_addr01','住所1',19,'now()','now()', $dsn);
+		lfInsertCSVData(4,'order_addr02','住所2',20,'now()','now()', $dsn);
+		lfInsertCSVData(4,'order_sex','性別',21,'now()','now()', $dsn);
+		lfInsertCSVData(4,'order_birth','生年月日',22,'now()','now()', $dsn);
+		lfInsertCSVData(4,'order_job','職種',23,'now()','now()', $dsn);
+		lfInsertCSVData(4,'deliv_name01','配送先名前',24,'now()','now()', $dsn);
+		lfInsertCSVData(4,'deliv_name02','配送先名前',25,'now()','now()', $dsn);
+		lfInsertCSVData(4,'deliv_kana01','配送先カナ',26,'now()','now()', $dsn);
+		lfInsertCSVData(4,'deliv_kana02','配送先カナ',27,'now()','now()', $dsn);
+		lfInsertCSVData(4,'deliv_tel01','電話番号1',28,'now()','now()', $dsn);
+		lfInsertCSVData(4,'deliv_tel02','電話番号2',29,'now()','now()', $dsn);
+		lfInsertCSVData(4,'deliv_tel03','電話番号3',30,'now()','now()', $dsn);
+		lfInsertCSVData(4,'deliv_fax01','FAX1',31,'now()','now()', $dsn);
+		lfInsertCSVData(4,'deliv_fax02','FAX2',32,'now()','now()', $dsn);
+		lfInsertCSVData(4,'deliv_fax03','FAX3',33,'now()','now()', $dsn);
+		lfInsertCSVData(4,'deliv_zip01','郵便番号1',34,'now()','now()', $dsn);
+		lfInsertCSVData(4,'deliv_zip02','郵便番号2',35,'now()','now()', $dsn);
+		lfInsertCSVData(4,'deliv_pref','都道府県',36,'now()','now()', $dsn);
+		lfInsertCSVData(4,'deliv_addr01','住所1',37,'now()','now()', $dsn);
+		lfInsertCSVData(4,'deliv_addr02','住所2',38,'now()','now()', $dsn);
+		lfInsertCSVData(4,'payment_total','お支払い合計',39,'now()','now()', $dsn);
 	}
 }
 
 // CSVテーブルへのデータの追加
-function lfInsertCSVData($csv_id,$col,$disp_name,$rank,$create_date,$update_date) {
+function lfInsertCSVData($csv_id,$col,$disp_name,$rank,$create_date,$update_date, $dsn) {
 	$sql = "insert into dtb_csv(csv_id,col,disp_name,rank,create_date,update_date) values($csv_id,'$col','$disp_name',$rank,$create_date,$update_date);";
-	sfDataExists("dtb_csv", "csv_id = ? AND col = ?", array($csv_id, $col), $dsn = "", $sql, true);
+	sfDataExists("dtb_csv", "csv_id = ? AND col = ?", array($csv_id, $col), $dsn, $sql, true);
 }
 ?>
