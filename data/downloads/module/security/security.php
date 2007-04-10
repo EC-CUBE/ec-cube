@@ -93,9 +93,9 @@ function sfCheckInstall() {
 // 管理者ユーザのID/パスワードチェック
 function sfCheckIDPass($user, $password) {
     $objQuery = new SC_Query();
-    $sql = "SELECT password FROM dtb_member WHERE login_id = ?";
+    $sql = "SELECT password FROM dtb_member WHERE login_id = ? AND del_flg = 0";
 	// DBから暗号化パスワードを取得する。
-	$arrRet = $objQuery->getAll($sql, array($user)); 
+	$arrRet = $objQuery->getAll($sql, array($user));
 	// ユーザ入力パスワードの判定
 	$ret = sha1($password . ":" . AUTH_MAGIC);
     
