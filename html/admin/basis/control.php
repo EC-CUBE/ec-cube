@@ -42,7 +42,7 @@ switch($_POST['mode']) {
 		if(count($objPage->arrErr) == 0) {
 			lfSiteControlData($_POST['control_id']);
 			// javascript実行
-			$objPage->tpl_onload = "alert('更新が完了しました。'); window.close();";
+			$objPage->tpl_onload = "alert('更新が完了しました。');";
 		}
 		
 		break;
