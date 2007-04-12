@@ -141,11 +141,11 @@ case 'complete':
 	} else {*/
 	
 		//エラーチェック
-		$objPage->arrErr = lfErrorCheck($objPage->arrForm);
+		$objPage->arrErr = lfErrorCheck($arrForm);
 		$email_flag = true;
-		if($objPage->arrForm['email'] != $objCustomer->getValue('email')) {
+		if($arrForm['email'] != $objCustomer->getValue('email')) {
 			//メールアドレスの重複チェック
-			$email_cnt = $objQuery->count("dtb_customer","del_flg=0 AND email=?", array($objPage->arrForm['email']));
+			$email_cnt = $objQuery->count("dtb_customer","del_flg=0 AND email=?", array($arrForm['email']));
 			if ($email_cnt > 0){
 				$email_flag = false;
 			}
