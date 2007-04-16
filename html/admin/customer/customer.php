@@ -122,7 +122,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             $objPage->tpl_mainpage = 'customer/customer_confirm.tpl';
             $passlen = strlen($objPage->arrForm['password']);
             $objPage->passlen = lfPassLen($passlen);
-            
         }
         
         //║║╡Я╟Вепо©╓х╢╟н╩╡Хлл
