@@ -199,7 +199,7 @@ function lfRegistData ($array, $arrRegistColumn, $arrRejectRegistColumn) {
     $arrRegist["password"] = sha1($arrRegist["password"] . ":" . AUTH_MAGIC);
     
     // 仮会員登録の場合
-    if($confirm_flg == true) {
+    if($array["status"] == 1) {
         // 重複しない会員登録キーを発行する。
         $count = 1;
         while ($count != 0) {
