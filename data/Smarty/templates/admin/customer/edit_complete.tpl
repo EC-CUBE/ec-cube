@@ -53,7 +53,7 @@
 
 								<table width="678" border="0" cellspacing="1" cellpadding="8" summary=" ">
 									<tr>
-										<td  height="350" bgcolor="#ffffff" class="fs14n" align="center">ÅÐÏ¿¤¬´°Î»Ã×¤·¤Þ¤·¤¿¡£</td>
+										<td  height="350" bgcolor="#ffffff" class="fs14n" align="center"><!--{if $smarty.arrForm.status == '1'}-->²¾<!--{/if}-->ÅÐÏ¿¤¬´°Î»Ã×¤·¤Þ¤·¤¿¡£</td>
 									</tr>
 								</table>
 
