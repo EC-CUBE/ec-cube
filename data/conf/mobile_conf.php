@@ -56,7 +56,7 @@ define('MOBILE_KARA_MAIL_ADDRESS_DOMAIN', 'mobile.ec-cube.net');
  * 携帯のメールアドレスではないが、携帯だとみなすドメインのリスト
  * 任意の数の「,」「 」で区切る。
  */
-define('MOBILE_ADDITIONAL_MAIL_DOMAINS', 'lockon.co.jp, rebelt.co.jp');
+define('MOBILE_ADDITIONAL_MAIL_DOMAINS', 'example.co.jp');
 
 /**
  * 携帯電話向け変換画像保存ディレクトリ
