@@ -50,6 +50,8 @@ if (!$objCustomer->isLoginSuccess() || $cnt == 0){
 	$objPage->CustomerPoint = $objCustomer->getvalue('point');
 }
 
+$objPage->arrPref = $arrPref;
+
 $objView->assignobj($objPage);
 $objView->display(SITE_FRAME);
 //-----------------------------------------------------------------------------------------------------------------------------------
