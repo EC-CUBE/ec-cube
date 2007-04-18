@@ -641,3 +641,17 @@ INSERT INTO dtb_table_comment(table_name,column_name,description) values ('dtb_c
 INSERT INTO dtb_table_comment(table_name,column_name,description) values ('dtb_csv_sql','sql','SQL文');
 INSERT INTO dtb_table_comment(table_name,column_name,description) values ('dtb_csv_sql','update_date','作成日時');
 INSERT INTO dtb_table_comment(table_name,column_name,description) values ('dtb_csv_sql','create_date','更新日時');
+INSERT INTO dtb_table_comment (table_name, description) VALUES ('dtb_mobile_ext_session_id', 'セッションID管理');
+INSERT INTO dtb_table_comment (table_name, column_name, description) VALUES ('dtb_mobile_ext_session_id', 'session_id', 'セッションID');
+INSERT INTO dtb_table_comment (table_name, column_name, description) VALUES ('dtb_mobile_ext_session_id', 'param_key', 'パラメータ名');
+INSERT INTO dtb_table_comment (table_name, column_name, description) VALUES ('dtb_mobile_ext_session_id', 'param_value', 'パラメータ値');
+INSERT INTO dtb_table_comment (table_name, column_name, description) VALUES ('dtb_mobile_ext_session_id', 'url', 'URL');
+INSERT INTO dtb_table_comment (table_name, column_name, description) VALUES ('dtb_mobile_ext_session_id', 'create_date', '作成日時');
+INSERT INTO dtb_table_comment (table_name, description) VALUES ('dtb_mobile_kara_mail', '空メール管理');
+INSERT INTO dtb_table_comment (table_name, column_name, description) VALUES ('dtb_mobile_kara_mail', 'kara_mail_id', '空メール管理ID');
+INSERT INTO dtb_table_comment (table_name, column_name, description) VALUES ('dtb_mobile_kara_mail', 'session_id', 'セッションID');
+INSERT INTO dtb_table_comment (table_name, column_name, description) VALUES ('dtb_mobile_kara_mail', 'token', 'トークン');
+INSERT INTO dtb_table_comment (table_name, column_name, description) VALUES ('dtb_mobile_kara_mail', 'next_url', '次ページURL');
+INSERT INTO dtb_table_comment (table_name, column_name, description) VALUES ('dtb_mobile_kara_mail', 'create_date', '作成日時');
+INSERT INTO dtb_table_comment (table_name, column_name, description) VALUES ('dtb_mobile_kara_mail', 'email', 'メールアドレス');
+INSERT INTO dtb_table_comment (table_name, column_name, description) VALUES ('dtb_mobile_kara_mail', 'receive_date', '受信日時');
