@@ -209,6 +209,9 @@ default:
 	break;
 }
 
+
+$objPage->install_GD = $install_GD;
+
 // ÅÐÏ¿¡¦¹¹¿·Æü¸¡º÷ÍÑ
 $objDate = new SC_Date();
 $objDate->setStartYear(RELEASE_YEAR);
