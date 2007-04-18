@@ -853,11 +853,17 @@ function lfMakeConfigFile() {
 
 // テーブルの追加（既にテーブルが存在する場合は作成しない）
 function lfAddTable($table_name, $dsn) {
+    global $objPage;
 	$arrErr = array();
 	if(!sfTabaleExists($table_name, $dsn)) {
 		list($db_type) = split(":", $dsn);
 		$sql_path = "./sql/add/". $table_name . "_" .$db_type .".sql";
 		$arrErr = lfExecuteSQL($sql_path, $dsn);
+		if(count($arrErr) == 0) {
+			$objPage->tpl_message.="○：追加テーブル($table_name)の作成に成功しました。<br>";
+		} else {
+			$objPage->tpl_message.="×：追加テーブル($table_name)の作成に失敗しました。<br>";		
+		}
 	}
 	return $arrErr;
 }
@@ -940,6 +946,8 @@ function lfAddColumn($dsn) {
 
 	// 顧客
 	sfColumnExists("dtb_customer", "mailmaga_flg", "int2", $dsn, true);
+    
+    // インデックスの確認
 	if (!sfColumnExists("dtb_customer", "mobile_phone_id", "text", $dsn, true)) {
 		// インデックスの追加
 		sfIndexExists("dtb_customer", "mobile_phone_id", "dtb_customer_mobile_phone_id_key", 64, $dsn, true);
