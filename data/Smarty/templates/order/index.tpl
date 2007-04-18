@@ -38,7 +38,7 @@
 					</tr>
 					<tr>
 						<td bgcolor="#f0f0f0" class="fs12n">メールアドレス</td>
-						<td bgcolor="#ffffff" class="fs12n"><a href="<!--{$arrRet.law_email}-->"><!--{$arrRet.law_email}--></a></td>
+						<td bgcolor="#ffffff" class="fs12n"><a href="mailto:<!--{$arrRet.law_email}-->"><!--{$arrRet.law_email}--></a></td>
 					</tr>
 					<tr>
 						<td bgcolor="#f0f0f0" class="fs12n">URL</td>
