@@ -867,6 +867,9 @@ function lfAddTable($table_name, $dsn) {
 	} else {
 		$objPage->tpl_message.="○：追加テーブル($table_name)が確認されました。<br>";        
     }
+    
+    sfPrintR($arrErr);
+    
 	return $arrErr;
 }
 
