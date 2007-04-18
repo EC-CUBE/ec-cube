@@ -864,7 +864,9 @@ function lfAddTable($table_name, $dsn) {
 		} else {
 			$objPage->tpl_message.="×：追加テーブル($table_name)の作成に失敗しました。<br>";		
 		}
-	}
+	} else {
+		$objPage->tpl_message.="○：追加テーブル($table_name)が確認されました。<br>";        
+    }
 	return $arrErr;
 }
 
