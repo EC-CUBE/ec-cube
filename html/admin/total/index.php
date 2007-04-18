@@ -12,6 +12,9 @@ require_once("./class/SC_GraphPie.php");
 require_once("./class/SC_GraphLine.php");
 require_once("./class/SC_GraphBar.php");
 
+// GDライブラリのインストール判定
+$install_GD = (function_exists("gd_info"))?true:false;
+
 class LC_Page {
 	var $arrResults;
 	var $keyname;
@@ -115,7 +118,7 @@ case 'search':
 				lfRealTimeDailyTotal($sdate, $edate);
 			}
 			// 検索結果の取得
-			$objPage = lfGetOrderProducts($type, $sdate, $edate, $objPage, true, $mode);
+			$objPage = lfGetOrderProducts($type, $sdate, $edate, $objPage, $install_GD, $mode);
 			break;
 		// 職業別集計
 		case 'job':
@@ -128,7 +131,7 @@ case 'search':
 				lfRealTimeDailyTotal($sdate, $edate);
 			}
 			// 検索結果の取得
-			$objPage = lfGetOrderJob($type, $sdate, $edate, $objPage);
+			$objPage = lfGetOrderJob($type, $sdate, $edate, $objPage, $install_GD);
 			break;
 		// 会員別集計
 		case 'member':
@@ -141,7 +144,7 @@ case 'search':
 				lfRealTimeDailyTotal($sdate, $edate);
 			}
 			// 検索結果の取得
-			$objPage = lfGetOrderMember($type, $sdate, $edate, $objPage);
+			$objPage = lfGetOrderMember($type, $sdate, $edate, $objPage, $install_GD);
 			break;
 		// 年代別集計
 		case 'age':
@@ -155,7 +158,7 @@ case 'search':
 				lfRealTimeDailyTotal($sdate, $edate);
 			}
 			// 検索結果の取得
-			$objPage = lfGetOrderAge($type, $sdate, $edate, $objPage);
+			$objPage = lfGetOrderAge($type, $sdate, $edate, $objPage, $install_GD);
 			break;
 		// 期間別集計
 		default:
@@ -168,7 +171,7 @@ case 'search':
 				lfRealTimeDailyTotal($sdate, $edate);
 			}
 			// 検索結果の取得
-			$objPage = lfGetOrderTerm($type, $sdate, $edate, $objPage);
+			$objPage = lfGetOrderTerm($type, $sdate, $edate, $objPage, $install_GD);
 			
 			break;
 		}
