@@ -587,12 +587,6 @@ function lfInitWebParam($objWebParam) {
 	} else {
 		$install_dir = realpath(dirname( __FILE__) . "/../") . "/";
 	}
-    
-	if(defined('DATA_PATH')) {
-		$data_dir = DATA_PATH;
-	} else {
-		$data_dir = realpath(dirname( __FILE__) . "/../../data") . "/";
-	}
 	
 	if(defined('SITE_URL')) {
 		$normal_url = SITE_URL;
