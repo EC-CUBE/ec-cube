@@ -365,7 +365,7 @@ function lfDispStep0($objPage) {
 	
 	// プログラムで書込みされるファイル・ディレクトリ
 	$arrWriteFile = array(
-		".." . HTML2DATA_DIR . "install.inc",
+		".." . HTML2DATA_DIR . "install.php",
 		"../user_data",
 		"../cp",
 		"../upload",
@@ -791,7 +791,7 @@ function lfMakeConfigFile() {
 	$url_dir = ereg_replace("^https?://[a-zA-Z0-9_~=&\?\.\-]+", "", $normal_url);
 	
 	$data_path = $root_dir . "../data/";
-	$filepath = $data_path . "install.inc";
+	$filepath = $data_path . "install.php";
 	
 	$config_data = 
 	"<?php\n".

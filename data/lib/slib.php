@@ -268,10 +268,10 @@ function sfInitInstall() {
 			sfErrorHeader(">> /install/index.phpは、インストール完了後にファイルを削除してください。");
 		}
 		
-		// 旧バージョンのinstall.incのチェック
-		$path = HTML_PATH . "install.inc";
+		// 旧バージョンのinstall.phpのチェック
+		$path = HTML_PATH . "install.php";
 		if(file_exists($path)) {
-			sfErrorHeader(">> /install.incはセキュリティーホールとなります。削除してください。");
+			sfErrorHeader(">> /install.phpはセキュリティーホールとなります。削除してください。");
 		}		
 	}
 }

@@ -22,8 +22,8 @@ $objView = new SC_AdminView();
 
 switch($_POST['mode']) {
 case 'edit':
-    $inst_inc = DATA_PATH . 'install.inc';
-    // install.incの隠蔽
+    $inst_inc = DATA_PATH . 'install.php';
+    // install.phpの隠蔽
     $hidden_inc = MODULE_PATH . 'security/install_inc.php';
     if(sfIsNormalInstallInc()) {
         if(copy($inst_inc, $hidden_inc)) {
@@ -117,25 +117,25 @@ function sfCheckIDPass($user, $password) {
 }
 
 
-// install.incのファイルをチェックする
+// install.phpのファイルをチェックする
 function sfCheckInstallInc() {
-    // install.incが隠蔽後のものか判定する
+    // install.phpが隠蔽後のものか判定する
     if(sfIsNormalInstallInc()) {
         $arrResult['result'] = "×";
-        $arrResult['detail'] = "install.incを簡単に表示できなくすることができます。内容を隠蔽しますか？";
+        $arrResult['detail'] = "install.phpを簡単に表示できなくすることができます。内容を隠蔽しますか？";
         $arrResult['detail'].= "<input type='submit' value='隠蔽する'>";        
     } else {
         $arrResult['result'] = "○";
-        $arrResult['detail'] = "install.incの隠蔽対策がとられています。";                       
+        $arrResult['detail'] = "install.phpの隠蔽対策がとられています。";                       
     }
-    $arrResult['title'] = "install.incの可読性チェック";
+    $arrResult['title'] = "install.phpの可読性チェック";
     return $arrResult;
 }
 
-// install.incが隠蔽後のものか判定する
+// install.phpが隠蔽後のものか判定する
 function sfIsNormalInstallInc() {
-    // install.incのパスを取得する
-    $inst_inc = DATA_PATH . 'install.inc';
+    // install.phpのパスを取得する
+    $inst_inc = DATA_PATH . 'install.php';
     if(file_exists($inst_inc)) {
         if($fp = fopen($inst_inc, "r")) {
             $data = fread($fp, filesize($inst_inc));
