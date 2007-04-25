@@ -6,7 +6,7 @@
  */
 require_once("../require.php");
 $INSTALL_DIR = realpath(dirname( __FILE__));
-require_once("../../data/module/Request.php");
+require_once("../" . HTML2DATA_DIR . "module/Request.php");
 
 define("INSTALL_LOG", "./temp/install.log");
 
@@ -365,13 +365,13 @@ function lfDispStep0($objPage) {
 	
 	// プログラムで書込みされるファイル・ディレクトリ
 	$arrWriteFile = array(
-		"../../data/install.inc",
+		".." . HTML2DATA_DIR . "install.inc",
 		"../user_data",
 		"../cp",
 		"../upload",
-		"../../data/Smarty/templates_c",
-		"../../data/downloads",
-		"../../data/logs"
+		".." . HTML2DATA_DIR . "Smarty/templates_c",
+		".." . HTML2DATA_DIR . "downloads",
+		".." . HTML2DATA_DIR . "logs"
 	);
 	
 	$mess = "";
@@ -405,7 +405,7 @@ function lfDispStep0($objPage) {
 	
 	// 権限エラー等が発生していない場合
 	if(!$err_file) {
-		$path = "../../data/Smarty/templates_c/admin";
+		$path = ".." . HTML2DATA_DIR . "Smarty/templates_c/admin";
 		if(!file_exists($path)) {
 			mkdir($path);
 		}
@@ -433,11 +433,11 @@ function lfDispStep0($objPage) {
 		if(!file_exists($path)) {
 			mkdir($path);
 		}
-		$path = "../../data/downloads/module";
+		$path = ".." . HTML2DATA_DIR . "downloads/module";
 		if(!file_exists($path)) {
 			mkdir($path);
 		}
-		$path = "../../data/downloads/update";
+		$path = ".." . HTML2DATA_DIR . "downloads/update";
 		if(!file_exists($path)) {
 			mkdir($path);
 		}		
