@@ -790,7 +790,7 @@ function lfMakeConfigFile() {
 	// ディレクトリの取得
 	$url_dir = ereg_replace("^https?://[a-zA-Z0-9_~=&\?\.\-]+", "", $normal_url);
 	
-	$data_path = $root_dir . "../data/";
+	$data_path = $root_dir . HTML2DATA_DIR;
 	$filepath = $data_path . "install.php";
 	
 	$config_data = 
