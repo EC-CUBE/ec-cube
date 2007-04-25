@@ -1,0 +1,36 @@
+/*
+ * Copyright(c) 2000-2007 LOCKON CO.,LTD. All Rights Reserved.
+ *
+ * http://www.lockon.co.jp/
+ */
+#tree{
+	height: 410px;
+	width: 308px;
+	overflow: auto;
+	margin: 0px;
+	background-color : #FFFFFF;
+	border-style: solid;
+	border-color: #C0C0C0;
+	border-width: 1px
+}
+
+#file_view {
+	height: 380px;
+	width: 330px;
+	overflow: auto;
+	background-color : #FFFFFF;
+	border-style: solid;
+	border-color: #C0C0C0;
+	border-width: 1px
+}
+
+#now_dir {
+	height: 20px;
+	width: 300px;
+	padding-left: 3px;
+	overflow: hidden;
+	background-color : #FFFFFF;
+	border-style: solid;
+	border-color: #C0C0C0;
+	border-width: 1px
+}
