@@ -30,7 +30,7 @@
 	<tr bgcolor="<!--{$color}-->" class="fs12">
 		<td align="center"><!--{*½ç°Ì*}--><!--{$smarty.section.cnt.iteration}--></td>
 		<td align="right"><!--{*¾¦ÉÊÈÖ¹æ*}--><!--{$arrResults[cnt].product_code|escape}--></td>
-		<td align="left"><!--{*¾¦ÉÊÌ¾*}--><!--{$arrResults[cnt].product_name|sfCutString:40|escape}--></td>
+		<td align="left"><!--{*¾¦ÉÊÌ¾*}--><!--{$arrResults[cnt].name|sfCutString:40|escape}--></td>
 		<td align="right"><!--{*¹ØÆþ·ï¿ô*}--><!--{$arrResults[cnt].order_count}-->·ï</td>
 		<td align="right"><!--{*ÅÀ¿ô*}--><!--{$arrResults[cnt].products_count}--></td>
 		<td align="right"><!--{*Ã±²Á*}--><!--{$arrResults[cnt].price|number_format}-->±ß</td>
