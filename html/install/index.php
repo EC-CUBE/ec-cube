@@ -587,6 +587,12 @@ function lfInitWebParam($objWebParam) {
 	} else {
 		$install_dir = realpath(dirname( __FILE__) . "/../") . "/";
 	}
+    
+	if(defined('DATA_PATH')) {
+		$data_dir = DATA_PATH;
+	} else {
+		$data_dir = realpath(dirname( __FILE__) . "/../../data") . "/";
+	}
 	
 	if(defined('SITE_URL')) {
 		$normal_url = SITE_URL;
@@ -618,6 +624,7 @@ function lfInitWebParam($objWebParam) {
 	$objWebParam->addParam("管理者：ログインID", "login_id", MTEXT_LEN, "", array("EXIST_CHECK","EXIST_CHECK", "ALNUM_CHECK"));
 	$objWebParam->addParam("管理者：パスワード", "login_pass", MTEXT_LEN, "", array("EXIST_CHECK","EXIST_CHECK", "ALNUM_CHECK"));
 	$objWebParam->addParam("インストールディレクトリ", "install_dir", MTEXT_LEN, "", array("EXIST_CHECK","MAX_LENGTH_CHECK"), $install_dir);
+	$objWebParam->addParam("dataディレクトリ", "data_dir", MTEXT_LEN, "", array("EXIST_CHECK","MAX_LENGTH_CHECK"), $data_dir);
 	$objWebParam->addParam("URL(通常)", "normal_url", MTEXT_LEN, "", array("EXIST_CHECK","URL_CHECK","MAX_LENGTH_CHECK"), $normal_url);
 	$objWebParam->addParam("URL(セキュア)", "secure_url", MTEXT_LEN, "", array("EXIST_CHECK","URL_CHECK","MAX_LENGTH_CHECK"), $secure_url);
 	$objWebParam->addParam("ドメイン", "domain", MTEXT_LEN, "", array("MAX_LENGTH_CHECK"));	
@@ -790,8 +797,8 @@ function lfMakeConfigFile() {
 	// ディレクトリの取得
 	$url_dir = ereg_replace("^https?://[a-zA-Z0-9_~=&\?\.\-]+", "", $normal_url);
 	
-	$data_path = $root_dir . "../data/";
-	$filepath = $data_path . "install.inc";
+	//$data_path = $root_dir . "../data/";
+	//$filepath = $data_path . "install.inc";
 	
 	$config_data = 
 	"<?php\n".
@@ -807,7 +814,7 @@ function lfMakeConfigFile() {
 	"    define ('DB_SERVER', '" . $objDBParam->getValue('db_server') . "');\n" .
 	"    define ('DB_NAME', '" . $objDBParam->getValue('db_name') . "');\n" .
 	"    define ('DB_PORT', '" . $objDBParam->getValue('db_port') .  "');\n" .
-	"    define ('DATA_PATH', '".$data_path."');\n" .
+	//"    define ('DATA_PATH', '".$data_path."');\n" .
     "	 define ('MOBILE_HTML_PATH', HTML_PATH . 'mobile/');\n" .
     "	 define ('MOBILE_SITE_URL', SITE_URL . 'mobile/');\n" .
     "	 define ('MOBILE_SSL_URL', SSL_URL . 'mobile/');\n" .

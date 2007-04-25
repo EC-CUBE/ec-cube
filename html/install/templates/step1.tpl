@@ -70,6 +70,14 @@
 			</td>
 		</tr>
 		<tr>
+			<td bgcolor="#f2f1ec" width="150" class="fs12n">DATAパス<span class="red">※</span></td>
+			<td bgcolor="#ffffff" width="332" class="fs12">
+			<!--{assign var=key value="data_dir"}-->
+			<span class="red"><!--{$arrErr[$key]}--></span>
+			<input type="text" name="<!--{$key}-->" value="<!--{$arrForm[$key].value|escape}-->" maxlength="<!--{$arrForm[$key].length}-->" style="<!--{$arrErr[$key]|sfGetErrorColor}-->" size="40" class="box40" />
+			</td>
+		</tr>
+		<tr>
 			<td bgcolor="#f2f1ec" width="150" class="fs12n">URL(通常)<span class="red">※</span></td>
 			<td bgcolor="#ffffff" width="332" class="fs12">
 			<!--{assign var=key value="normal_url"}-->
