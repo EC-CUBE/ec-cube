@@ -19,6 +19,8 @@ $CONF = sf_getBasisData();					// 店舗基本情報
 $objConn = new SC_DbConn();
 $objPage = new LC_Page();
 $objView = new SC_SiteView();
+$objSiteInfo = $objView->objSiteInfo;
+$arrInfo = $objSiteInfo->data;
 $objCustomer = new SC_Customer();
 $objCampaignSess = new SC_CampaignSession();
 $objDate = new SC_Date(START_BIRTH_YEAR, date("Y",strtotime("now")));
@@ -182,7 +184,8 @@ $objCampaignSess->pageView($objView);
 // 会員情報の登録
 function lfRegistData ($array, $arrRegistColumn, $arrRejectRegistColumn, $confirm_flg) {
 	global $objConn;
-	
+	global $arrInfo;
+
 	// 登録データの生成
 	foreach ($arrRegistColumn as $data) {
 		if (strlen($array[ $data["column"] ]) > 0 && ! in_array($data["column"], $arrRejectRegistColumn)) {
@@ -227,6 +230,7 @@ function lfRegistData ($array, $arrRegistColumn, $arrRejectRegistColumn, $confir
 			$count = $objConn->getOne("SELECT COUNT(*) FROM dtb_customer WHERE secret_key = ?", array($uniqid));
 		}
 		$arrRegist["status"] = "2";				// 本会員
+		$arrRegist["status"] = $arrInfo['welcome_point'];
 	}
 	
 	/*
