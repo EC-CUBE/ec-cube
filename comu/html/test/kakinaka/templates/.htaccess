@@ -1,0 +1,6 @@
+AuthType Basic
+AuthName "Please enter username and password"
+AuthUserFile /home/web/test.ec-cube.net/html/test/kakinaka/.htpasswd
+AuthGroupFile /dev/null
+require valid-user
+Options -Indexes
