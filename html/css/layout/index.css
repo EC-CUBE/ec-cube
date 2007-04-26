@@ -1,0 +1,79 @@
+/*
+ * Copyright(c) 2000-2007 LOCKON CO.,LTD. All Rights Reserved.
+ *
+ * http://www.lockon.co.jp/
+ */
+@charset "<!--{$smarty.const.CHAR_CODE}-->"; 
+
+#container #right #contents #left {
+width: 325px;
+}
+
+#container #right #contents #right {
+width: 245px;
+}
+
+/*新着情報*/
+#container #right #contents #right #news{
+border: 0;
+margin: 0;
+padding: 0;
+width: 245px;
+}
+
+#container #right #contents #right #newscontents{
+border: 0;
+margin: 0;
+padding: 0;
+width: 238px;
+text-align: left;
+}
+
+/*おすすめ*/
+#container #right #osusumetitle{
+border: 0;
+margin: 0;
+padding: 0;
+width: 570px;
+}
+
+#container #right #osusume{
+border: 0;
+margin: 0;
+padding: 0;
+width: 555px;
+}
+
+#container #right #osusume #spacer{
+width: 15px;
+}
+
+#container #right #osusume #contents{
+border: 0;
+margin: 0;
+padding: 0;
+width: 270px;
+text-align: left;
+}
+
+#container #right #osusume #contents #left{
+width: 67px;
+}
+
+#container #right #osusume #contents #spacer{
+width: 10px;
+}
+
+#container #right #osusume #contents #right{
+width: 193px;
+}
+
+#container #right #osusume #contents #left #picture{
+border-width: 1px;
+border-style: solid;
+border-color: #ccc;
+margin: 0;
+padding: 0;
+}
+
+
