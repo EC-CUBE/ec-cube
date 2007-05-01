@@ -757,7 +757,7 @@ define ("ADMIN_NEWS_STARTYEAR", 2005);	// 開始年(西暦)
 /* 会員登録 */
 define("ENTRY_CUSTOMER_TEMP_SUBJECT", "会員仮登録が完了いたしました。");
 define("ENTRY_CUSTOMER_REGIST_SUBJECT", "本会員登録が完了いたしました。");
-define("ENTRY_LIMIT_HOUR", 1);		//再入会制限時間（単位: 時間)
+define("ENTRY_LIMIT_HOUR", 0);		//再入会制限時間（単位: 時間)
 
 // オススメ商品表示数
 define("RECOMMEND_NUM", 8);			// オススメ商品
