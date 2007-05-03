@@ -14,7 +14,7 @@ class LC_Page {
 		/** 必ず指定する **/
 		$this->tpl_mainpage = 'order/index.tpl';			// メインテンプレート
 		$this->tpl_page_category = 'order';	
-		$this->tpl_title = '特定商取引法に関する法律';
+		$this->tpl_title = '特定商取引に関する法律';
 	}
 }
 

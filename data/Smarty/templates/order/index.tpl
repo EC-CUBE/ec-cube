@@ -10,7 +10,7 @@
 		<!--▼MAIN ONTENTS-->
 		<table width="" border="0" cellspacing="0" cellpadding="0" summary=" ">
 			<tr>
-				<td><img src="<!--{$smarty.const.URL_DIR}-->img/aboutshopping/transaction_title.jpg" width="580" height="40" alt="特定商取引法に関する法律に基づく表記"></td>
+				<td><img src="<!--{$smarty.const.URL_DIR}-->img/aboutshopping/transaction_title.jpg" width="580" height="40" alt="特定商取引に関する法律に基づく表記"></td>
 			</tr>
 			<tr><td height="15"></td></tr>
 			<tr>
