@@ -704,7 +704,6 @@ $arrDomain = array(
                       12 => "q.vodafone.ne.jp";
                   );				
 				
-				
 /*　1行数　*/		
 $arrPageRows = array(
 						10 => 10,
