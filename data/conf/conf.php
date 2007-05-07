@@ -690,19 +690,26 @@ $arrMailType = array(
 
 /*  携帯ドメイン配列　*/
 $arrDomain = array(
-                      1 => "docomo.ne.jp",
-                      2 => "ezweb.ne.jp",
-                      3 => "softbank.ne.jp",
-                      4 => "t.vodafone.ne.jp",
-                      5 => "d.vodafone.ne.jp",
-                      6 => "h.vodafone.ne.jp",
-                      7 => "c.vodafone.ne.jp",
-                      8 => "k.vodafone.ne.jp",
-                      9 => "r.vodafone.ne.jp",
-                      10 => "n.vodafone.ne.jp",
-                      11 => "s.vodafone.ne.jp",
-                      12 => "q.vodafone.ne.jp",
-                  );				
+                        1 => "全て",
+                        2 => "ＰＣドメイン",
+                        3 => "モバイルドメイン",
+                    );
+				
+
+//$arrDomain = array(
+//                      1 => "docomo.ne.jp",
+//                      2 => "ezweb.ne.jp",
+//                      3 => "softbank.ne.jp",
+//                      4 => "t.vodafone.ne.jp",
+//                      5 => "d.vodafone.ne.jp",
+//                      6 => "h.vodafone.ne.jp",
+//                      7 => "c.vodafone.ne.jp",
+//                      8 => "k.vodafone.ne.jp",
+//                      9 => "r.vodafone.ne.jp",
+//                      10 => "n.vodafone.ne.jp",
+//                      11 => "s.vodafone.ne.jp",
+//                      12 => "q.vodafone.ne.jp",
+//                  );				
 				
 /*　1行数　*/		
 $arrPageRows = array(
