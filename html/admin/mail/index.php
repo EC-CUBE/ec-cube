@@ -28,6 +28,8 @@ class LC_Page {
 		$this->arrSex = $arrSex;
 		global $arrMailType;
 		$this->arrMailType = $arrMailType;
+		global $arrDomain;
+		$this->arrDomain = $arrDomain;
 		global $arrPageRows;
 		$this->arrPageRows = $arrPageRows;
 		// ページナビ用
