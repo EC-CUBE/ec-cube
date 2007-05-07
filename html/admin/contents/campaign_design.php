@@ -78,7 +78,14 @@ case 'regist':
 	break;
 case 'preview':
 	// プレビューを書き出し別窓で開く
-	sfWriteFile($arrForm['header'] . $arrForm['contents'] . $arrForm['footer'], $campaign_dir."preview.tpl", "w");
+	// プレビューを書き出し別窓で開く
+	$preview  = $arrForm['header']."\n";
+	$preview .= '<script type="text/javascript" src="<!--{$smarty.const.URL_DIR}-->js/site.js"></script>'."\n";
+	$preview .= '<script type="text/javascript" src="<!--{$smarty.const.URL_DIR}-->js/navi.js"></script>'."\n";
+	$preview .= $arrForm['contents'] . "\n";
+	$preview .= $arrForm['footer']."\n";
+	sfWriteFile($preview, $campaign_dir."preview.tpl", "w");
+	
 	$objPage->tpl_onload = "win02('./campaign_preview.php?status=". $arrForm['status'] ."&campaign_id=". $arrForm['campaign_id'] ."', 'preview', '600', '400');";
 	$objPage->header_data = $arrForm['header'];	
 	$objPage->contents_data = $arrForm['contents'];	
