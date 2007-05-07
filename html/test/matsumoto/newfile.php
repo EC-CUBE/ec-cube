@@ -1,4 +1,4 @@
 <?php
-echo "test";
-echo "test";
+$a = "欧米か"
+echo $a;
 ?>
