@@ -47,35 +47,35 @@ switch ($_POST['mode']){
 				default:
 				break;
 			
-				//新規受付
-				case '1':
-					lfStatusMove(1,$_POST['move']);
-				break;
-				
-				//入金待ち
-				case '2':
-					lfStatusMove(2,$_POST['move']);
-				break;
-				
-				//キャンセル
-				case '3':
-					lfStatusMove(3,$_POST['move']);
-				break;
-				
-				//取り寄せ中
-				case '4':
-					lfStatusMove(4,$_POST['move']);
-				break;
-				
-				//発送済み
-				case '5':
-					lfStatusMove(5,$_POST['move']);
-				break;
-				
-				//入金済み
-				case '6':
-					lfStatusMove(6,$_POST['move']);
-				break;
+                //新規受付
+                case ORDER_NEW:
+                    lfStatusMove(ORDER_NEW, $_POST['move']);
+                break;
+                
+                //入金待ち
+                case ORDER_PAY_WAIT:
+                    lfStatusMove(ORDER_PAY_WAIT, $_POST['move']);
+                break;
+                
+                //キャンセル
+                case ORDER_CANCEL:
+                    lfStatusMove(ORDER_CANCEL, $_POST['move']);
+                break;
+                
+                //取り寄せ中
+                case ORDER_BACK_ORDER:
+                    lfStatusMove(ORDER_BACK_ORDER, $_POST['move']);
+                break;
+                
+                //発送済み
+                case ORDER_DELIV:
+                    lfStatusMove(ORDER_DELIV, $_POST['move']);
+                break;
+                
+                //入金済み
+                case ORDER_PRE_END:
+                    lfStatusMove(ORDER_PRE_END, $_POST['move']);
+                break;
 				
 				//削除
 				case 'delete':
@@ -89,8 +89,8 @@ switch ($_POST['mode']){
 	
 	default:
 	//デフォルトで新規受付一覧表示
-	lfStatusDisp(1,$_POST['search_pageno']);
-	$objPage->defaultstatus = 1;
+	lfStatusDisp(ORDER_NEW, $_POST['search_pageno']);
+	$objPage->defaultstatus = ORDER_NEW;
 	break;
 	}
 
@@ -141,7 +141,7 @@ function lfStatusMove($status_id,$move){
 	
 	if ($status_id == 'delete'){
 		$sql = "UPDATE dtb_order SET del_flg = 1 ";
-	}elseif ($status_id == 5){
+	}elseif ($status_id == ORDER_DELIV){
 		$sql = "UPDATE dtb_order SET status = ".$status_id.",commit_date = now() ";
 	}else{
 		$sql = "UPDATE dtb_order SET status = ".$status_id." ";
