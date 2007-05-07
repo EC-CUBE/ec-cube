@@ -701,7 +701,7 @@ $arrDomain = array(
                       9 => "r.vodafone.ne.jp",
                       10 => "n.vodafone.ne.jp",
                       11 => "s.vodafone.ne.jp",
-                      12 => "q.vodafone.ne.jp",
+                      12 => "q.vodafone.ne.jp";
                   );				
 				
 /*　1行数　*/		
