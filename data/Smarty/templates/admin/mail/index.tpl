@@ -152,6 +152,13 @@
 									<!--{html_radios name="mail_type" options=$arrMailType separator="&nbsp;" selected=$list_data.mail_type}-->
 								</td>
 							</tr>
+							
+							<tr class="fs12n">
+								<td bgcolor="#f2f1ec" width="110">ドメイン指定</td>
+								<td bgcolor="#ffffff" colspan="3">
+									<!--{html_radios name="domain_type" options=$arrMailType separator="&nbsp;" selected=$list_data.mail_type}-->
+								</td>
+							</tr>
 																						
 							<tr class="fs12n">
 								<td bgcolor="#f2f1ec" width="110">職業</td>
