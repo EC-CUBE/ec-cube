@@ -215,7 +215,7 @@ function lfErrorCheck($array, $flag = '') {
 
 	if ( $flag ){
 		$objErr->doFunc(array("テンプレート", "template_id"), array("EXIST_CHECK", "NUM_CHECK"));
-		$objErr->doFunc(array("メール送信法法", "mail_method"), array("EXIST_CHECK", "NUM_CHECK"));
+		$objErr->doFunc(array("メール送信方法", "mail_method"), array("EXIST_CHECK", "NUM_CHECK"));
 		
 		if(MELMAGA_BATCH_MODE) {
 			$objErr->doFunc(array("配信日（年）","send_year"), array("EXIST_CHECK", "NUM_CHECK"));
