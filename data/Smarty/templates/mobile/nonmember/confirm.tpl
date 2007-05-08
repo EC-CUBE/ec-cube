@@ -5,14 +5,14 @@
  * http://www.lockon.co.jp/
  */
 *}-->
-<div align="center">登録確認</div>
+<div align="center">お客様情報確認</div>
 <hr>
 <form name="form1" id="form1" method="post" action="<!--{$smarty.server.PHP_SELF|escape}-->">
 	<input type="hidden" name="mode" value="complete">
 	<!--{foreach from=$list_data key=key item=item}-->
 		<input type="hidden" name="<!--{$key|escape}-->" value="<!--{$item|escape}-->">
 	<!--{/foreach}-->
-	下記の内容でご登録してもよろしいですか？<br>
+	下記の内容でよろしいですか？<br>
 	<br>
 	【ﾒｰﾙｱﾄﾞﾚｽ】<br>
 	<!--{$list_data.email|escape}--><br>
@@ -30,7 +30,7 @@
 	<!--{if $list_data.mailmaga_flg eq 2}-->希望する<!--{else}-->希望しない<!--{/if}--><br>
 	<br>
 
-	<input type="submit" name="submit" value="登録"><br>
+	<input type="submit" name="submit" value="配送先確認"><br>
 	<input type="submit" name="return" value="戻る">
 
 	<!--{foreach from=$list_data key=key item=item}-->
