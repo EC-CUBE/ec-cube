@@ -5,21 +5,23 @@
  * http://www.lockon.co.jp/
  */
 *}-->
-<center>ご注文完了</center>
-
+<div align="center">会員登録完了</div>
 <hr>
 
-ご注文、有り難うございました。<br>
-商品到着をお楽しみにお待ち下さいませ。<br>
-どうぞ、今後とも、<!--{$arrInfo.shop_name|escape}-->をよろしくお願いします。<br>
+会員登録の受付が完了いたしました。<br>
+現在<font color="#FF0000">仮会員</font>の状態です。<br>
+ご入力いただいたメールアドレス宛てに、ご連絡が届いておりますので、本会員登録になった上でお買い物をお楽しみください。<br>
+今後ともご愛顧賜りますようよろしくお願い申し上げます。<br>
 
 <br>
 
-<a href="<!--{$smarty.const.MOBILE_URL_SITE_TOP}-->" accesskey="0"><!--{0|numeric_emoji}-->TOPページに戻る</a><br>
+<hr>
+
+<a href="<!--{$smarty.const.MOBILE_URL_CART_TOP}-->" accesskey="9"><!--{9|numeric_emoji}-->かごを見る</a><br>
+<a href="<!--{$smarty.const.MOBILE_URL_SITE_TOP}-->" accesskey="0"><!--{0|numeric_emoji}-->TOPページへ</a><br>
 
 <br>
-<hr>
 
 <!-- ▼フッター ここから -->
-<center>LOCKON CO.,LTD.</center>
+<!--{include file='footer.tpl'}-->
 <!-- ▲フッター ここまで -->
