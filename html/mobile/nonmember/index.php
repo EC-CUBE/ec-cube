@@ -83,7 +83,7 @@ $arrRegistColumn = array(
                          );
 
 //---- 登録除外用カラム配列
-$arrRejectRegistColumn = array("year", "month", "day", "email02", "email_mobile02", "password02");
+$arrRejectRegistColumn = array("year", "month", "day", "email02", "email_mobile02", "password","password02","reminder","reminder_answer");
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
