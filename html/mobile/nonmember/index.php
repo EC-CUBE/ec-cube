@@ -117,7 +117,7 @@ if($objPage->tpl_login_email != "") {
 $objDate = new SC_Date(START_BIRTH_YEAR);
 $objPage->arrYear = $objDate->getYear('', 1950);	//　日付プルダウン設定
 $objPage->arrMonth = $objDate->getMonth();
-$objPage->arrDay = $objDate->getDay();
+$objPage->arrDay
 
 if($objPage->year == '') {
 	$objPage->year = '----';
