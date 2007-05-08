@@ -17,12 +17,6 @@
 	【ﾒｰﾙｱﾄﾞﾚｽ】<br>
 	<!--{$list_data.email|escape}--><br>
 
-	【ﾊﾟｽﾜｰﾄﾞ確認用質問】<br>
-	<!--{$arrReminder[$list_data.reminder]|escape}--><br>
-
-	【質問の答え】<br>
-	<!--{$list_data.reminder_answer|escape}--><br>
-
 	【個人情報】<br>
 	<!--{$list_data.name01|escape}-->　<!--{$list_data.name02|escape}--><br>
 	<!--{$list_data.kana01|escape}-->　<!--{$list_data.kana02|escape}--><br>
