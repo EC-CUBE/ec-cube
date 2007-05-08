@@ -99,7 +99,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             $_POST["mode"] = "set1";
             break;
         }
-    }
+    }else{
 
     //--　入力エラーチェック
     if ($_POST["mode"] == "set1") {
@@ -119,7 +119,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     foreach($objPage->arrForm as $key => $val) {
         $objPage->$key = $val;
     }
-
+}
     if ($objPage->arrErr || !empty($_POST["return"])) {     // 入力エラーのチェック
 
         //-- データの設定
