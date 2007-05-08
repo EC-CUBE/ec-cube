@@ -7,7 +7,7 @@
 *}-->
 <div align="center">お客様情報入力 1/3</div>
 <hr>
-<form name="form1" method="post" action="<!--{$smarty.server.PHP_SELF|escape}-->nomember/set1.php">
+<form name="form1" method="post" action="<!--{$smarty.server.PHP_SELF|escape}-->">
 	<input type="hidden" name="mode" value="set1">
 
 	<font color="#FF0000">*は必須項目です。</font><br>
