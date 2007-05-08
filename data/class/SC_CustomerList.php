@@ -201,11 +201,14 @@ class SC_CustomerList extends SC_SelectSql {
 /*		//ドメイン指定
         if ( $mode == 'magazine' ){
             if ( strlen($this->arrSql['domain']) > 0 && $this->arrSql['domain'] == 3) {
-　　　　　　　　$this->setWhere( "dtb_customer.email_mobile <> ''  " );
-			} else {
-				$this->setWhere( "dtb_customer.mobile <> ''  " );
+　　　　　　    $this->setWhere("(email || email_mobile LIKE ?)" );　　
 			}
+            $searchDomain = $this->addSearchStr($this->arrSql['domain_type']);
 			if ( strlen($this->arrSql['domain']) > 0 && $this->arrSql['domain'] == 2) {
+
+            } else {
+
+            }
         }
 */
 		//　HTML-mail（配信方式)
