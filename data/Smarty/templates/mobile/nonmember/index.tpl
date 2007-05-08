@@ -15,6 +15,9 @@
 
 	【メールアドレス】<font color="#FF0000">※</font><br>
 	<font color="#FF0000"><!--{$arrErr.email}--></font>
+
+	<input type="text" name="email" value="<!--{$email|escape}-->" istyle="3">
+
   <br>
 
 	【お名前】<font color="#FF0000">※</font><br>
