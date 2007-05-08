@@ -791,6 +791,7 @@ function lfMakeConfigFile() {
 	$url_dir = ereg_replace("^https?://[a-zA-Z0-9_~=&\?\.\-]+", "", $normal_url);
 	
 	$data_path = sfRmDupSlash($root_dir . HTML2DATA_DIR);
+    $data_path = realpath($data_path);
 	$filepath = $data_path . "install.php";
 	
 	$config_data = 
