@@ -27,19 +27,6 @@ $objPage->arrYear = $objDate->getYear('', 1950);    //　日付プルダウン設定
 $objPage->arrMonth = $objDate->getMonth();
 $objPage->arrDay = $objDate->getDay();
 
-// 空メール
-if (isset($_SESSION['mobile']['kara_mail_from'])) {
-    $objPage->tpl_kara_mail_from = $_POST['email'] = $_SESSION['mobile']['kara_mail_from'];
-} elseif (MOBILE_USE_KARA_MAIL) {
-    $token = gfPrepareKaraMail('nonmember/index.php');
-    if ($token !== false) {
-        $objPage->tpl_mainpage = 'nonmember/mail.tpl';
-        $objPage->tpl_title = '会員登録(空メール)';
-        $objPage->tpl_kara_mail_to = MOBILE_KARA_MAIL_ADDRESS_USER . MOBILE_KARA_MAIL_ADDRESS_DELIMITER . 'entry_' . $token . '@' . MOBILE_KARA_MAIL_ADDRESS_DOMAIN;
-        $objPage->tpl_from_address = $CONF['email03'];
-    }
-}
-
 //SSLURL判定
 if (SSLURL_CHECK == 1){
     $ssl_url= sfRmDupSlash(MOBILE_SSL_URL.$_SERVER['REQUEST_URI']);
@@ -118,15 +105,15 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     if ($_POST["mode"] == "set1") {
         $objPage->arrErr = lfErrorCheck1($objPage->arrForm);
         $objPage->tpl_mainpage = 'nonmember/index.tpl';
-        $objPage->tpl_title = 'お客様情報(1/3)';
+        $objPage->tpl_title = 'お客様情報入力(1/3)';
     } elseif ($_POST["mode"] == "set2") {
         $objPage->arrErr = lfErrorCheck2($objPage->arrForm);
         $objPage->tpl_mainpage = 'nonmember/set1.tpl';
-        $objPage->tpl_title = '会員登録(2/3)';
+        $objPage->tpl_title = 'お客様情報入力(2/3)';
     } else {
         $objPage->arrErr = lfErrorCheck3($objPage->arrForm);
         $objPage->tpl_mainpage = 'nonmember/set2.tpl';
-        $objPage->tpl_title = '会員登録(3/3)';
+        $objPage->tpl_title = 'お客様情報入力(3/3)';
     }
 
     foreach($objPage->arrForm as $key => $val) {
@@ -156,10 +143,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         //--　テンプレート設定
         if ($_POST["mode"] == "set1") {
             $objPage->tpl_mainpage = 'nonmember/set1.tpl';
-            $objPage->tpl_title = '会員登録(2/3)';
+            $objPage->tpl_title = 'お客様情報入力(2/3)';
         } elseif ($_POST["mode"] == "set2") {
             $objPage->tpl_mainpage = 'nonmember/set2.tpl';
-            $objPage->tpl_title = '会員登録(3/3)';
+            $objPage->tpl_title = 'お客様情報入力(3/3)';
 
             if (@$objPage->arrForm['pref'] == "" && @$objPage->arrForm['addr01'] == "" && @$objPage->arrForm['addr02'] == "") {
                 $address = lfGetAddress($_REQUEST['zip01'].$_REQUEST['zip02']);
@@ -179,7 +166,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             }
 
             $objPage->tpl_mainpage = 'nonmember/confirm.tpl';
-            $objPage->tpl_title = '会員登録(確認ページ)';
+            $objPage->tpl_title = 'お客様情報(確認ページ)';
 
         }
 
@@ -211,7 +198,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             }
 
             $objPage->tpl_mainpage = 'nonmember/complete.tpl';
-            $objPage->tpl_title = '会員登録(完了ページ)';
+            $objPage->tpl_title = 'お客様情報入力(完了ページ)';
 
             sfMobileSetExtSessionId('id', $objPage->uniqid, 'regist/index.php');
 
@@ -221,7 +208,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             $objPage->to_name02 = $_POST['name02'];
             $objMailText = new SC_MobileView();
             $objMailText->assignobj($objPage);
-            $subject = sfMakesubject('会員登録のご確認');
+            $subject = sfMakesubject('お客様情報のご確認');
             $toCustomerMail = $objMailText->fetch("mail_templates/customer_mail.tpl");
             $objMail = new GC_SendMail();
             $objMail->setItem(
