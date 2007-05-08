@@ -790,7 +790,12 @@ function lfMakeConfigFile() {
 	// ディレクトリの取得
 	$url_dir = ereg_replace("^https?://[a-zA-Z0-9_~=&\?\.\-]+", "", $normal_url);
 	
-	$data_path = $root_dir . HTML2DATA_DIR;
+	$data_path = sfRmDupSlash($root_dir . HTML2DATA_DIR);
+    $data_path = realpath($data_path);
+    // 語尾に'/'をつける
+	if (!ereg("/$", $data_path)) {
+		$data_path = $data_path . "/";
+	}
 	$filepath = $data_path . "install.php";
 	
 	$config_data = 
@@ -808,10 +813,10 @@ function lfMakeConfigFile() {
 	"    define ('DB_NAME', '" . $objDBParam->getValue('db_name') . "');\n" .
 	"    define ('DB_PORT', '" . $objDBParam->getValue('db_port') .  "');\n" .
 	"    define ('DATA_PATH', '".$data_path."');\n" .
-    "	 define ('MOBILE_HTML_PATH', HTML_PATH . 'mobile/');\n" .
-    "	 define ('MOBILE_SITE_URL', SITE_URL . 'mobile/');\n" .
-    "	 define ('MOBILE_SSL_URL', SSL_URL . 'mobile/');\n" .
-    "	 define ('MOBILE_URL_DIR', URL_DIR . 'mobile/');\n" .
+    "    define ('MOBILE_HTML_PATH', HTML_PATH . 'mobile/');\n" .
+    "    define ('MOBILE_SITE_URL', SITE_URL . 'mobile/');\n" .
+    "    define ('MOBILE_SSL_URL', SSL_URL . 'mobile/');\n" .
+    "    define ('MOBILE_URL_DIR', URL_DIR . 'mobile/');\n" .
 	"?>";
 	
 	if($fp = fopen($filepath,"w")) {
