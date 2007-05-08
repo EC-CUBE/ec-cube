@@ -69,14 +69,14 @@ $arrSearchColumn = array(
 							array(  "column" => "buy_end_year",		"convert" => "n" ),
 							array(  "column" => "buy_end_month",	"convert" => "n" ),
 							array(  "column" => "buy_end_day",		"convert" => "n" ),
-							array(  "column" => "buy_product_code",	"convert" => "aKV" )
-							,array(  "column" => "buy_product_name","convert" => "aKV" )
-							,array(  "column" => "category_id",	    "convert" => ""  )			
-							,array(  "column" => "buy_total_from",	"convert" => "n" )		
-							,array(  "column" => "buy_total_to",	"convert" => "n" )
-							,array(  "column" => "campaign_id",	    "convert" => ""  )
-							,array(  "column" => "mail_type",		"convert" => ""  )
-							,array(  "column" => "domain",          "convert" => "n" )
+							array(  "column" => "buy_product_code",	"convert" => "aKV" ),
+							array(  "column" => "buy_product_name", "convert" => "aKV" ),
+							array(  "column" => "category_id",	    "convert" => ""  ),		
+							array(  "column" => "buy_total_from",	"convert" => "n" ),	
+							array(  "column" => "buy_total_to",	    "convert" => "n" ),
+							array(  "column" => "campaign_id",	    "convert" => ""  ),
+							array(  "column" => "mail_type",		"convert" => ""  ),
+							array(  "column" => "domain",           "convert" => "n" )
 
 					);
 
