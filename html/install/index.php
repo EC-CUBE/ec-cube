@@ -813,10 +813,10 @@ function lfMakeConfigFile() {
 	"    define ('DB_NAME', '" . $objDBParam->getValue('db_name') . "');\n" .
 	"    define ('DB_PORT', '" . $objDBParam->getValue('db_port') .  "');\n" .
 	"    define ('DATA_PATH', '".$data_path."');\n" .
-    "	 define ('MOBILE_HTML_PATH', HTML_PATH . 'mobile/');\n" .
-    "	 define ('MOBILE_SITE_URL', SITE_URL . 'mobile/');\n" .
-    "	 define ('MOBILE_SSL_URL', SSL_URL . 'mobile/');\n" .
-    "	 define ('MOBILE_URL_DIR', URL_DIR . 'mobile/');\n" .
+    "    define ('MOBILE_HTML_PATH', HTML_PATH . 'mobile/');\n" .
+    "    define ('MOBILE_SITE_URL', SITE_URL . 'mobile/');\n" .
+    "    define ('MOBILE_SSL_URL', SSL_URL . 'mobile/');\n" .
+    "    define ('MOBILE_URL_DIR', URL_DIR . 'mobile/');\n" .
 	"?>";
 	
 	if($fp = fopen($filepath,"w")) {
