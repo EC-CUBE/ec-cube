@@ -792,7 +792,11 @@ function lfMakeConfigFile() {
 	
 	$data_path = sfRmDupSlash($root_dir . HTML2DATA_DIR);
     $data_path = realpath($data_path);
-	$filepath = $data_path . "/install.php";
+    // 語尾に'/'をつける
+	if (!ereg("/$", $data_path)) {
+		$data_path = $data_path . "/";
+	}
+	$filepath = $data_path . "install.php";
 	
 	$config_data = 
 	"<?php\n".
