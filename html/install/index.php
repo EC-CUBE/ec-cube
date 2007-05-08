@@ -6,7 +6,7 @@
  */
 require_once("../require.php");
 $INSTALL_DIR = realpath(dirname( __FILE__));
-require_once("../../data/module/Request.php");
+require_once("../" . HTML2DATA_DIR . "module/Request.php");
 
 define("INSTALL_LOG", "./temp/install.log");
 
@@ -365,13 +365,13 @@ function lfDispStep0($objPage) {
 	
 	// プログラムで書込みされるファイル・ディレクトリ
 	$arrWriteFile = array(
-		"../../data/install.inc",
+		".." . HTML2DATA_DIR . "install.php",
 		"../user_data",
 		"../cp",
 		"../upload",
-		"../../data/Smarty/templates_c",
-		"../../data/downloads",
-		"../../data/logs"
+		".." . HTML2DATA_DIR . "Smarty/templates_c",
+		".." . HTML2DATA_DIR . "downloads",
+		".." . HTML2DATA_DIR . "logs"
 	);
 	
 	$mess = "";
@@ -405,7 +405,7 @@ function lfDispStep0($objPage) {
 	
 	// 権限エラー等が発生していない場合
 	if(!$err_file) {
-		$path = "../../data/Smarty/templates_c/admin";
+		$path = ".." . HTML2DATA_DIR . "Smarty/templates_c/admin";
 		if(!file_exists($path)) {
 			mkdir($path);
 		}
@@ -433,11 +433,11 @@ function lfDispStep0($objPage) {
 		if(!file_exists($path)) {
 			mkdir($path);
 		}
-		$path = "../../data/downloads/module";
+		$path = ".." . HTML2DATA_DIR . "downloads/module";
 		if(!file_exists($path)) {
 			mkdir($path);
 		}
-		$path = "../../data/downloads/update";
+		$path = ".." . HTML2DATA_DIR . "downloads/update";
 		if(!file_exists($path)) {
 			mkdir($path);
 		}		
@@ -790,8 +790,13 @@ function lfMakeConfigFile() {
 	// ディレクトリの取得
 	$url_dir = ereg_replace("^https?://[a-zA-Z0-9_~=&\?\.\-]+", "", $normal_url);
 	
-	$data_path = $root_dir . "../data/";
-	$filepath = $data_path . "install.inc";
+	$data_path = sfRmDupSlash($root_dir . HTML2DATA_DIR);
+    $data_path = realpath($data_path);
+    // 語尾に'/'をつける
+	if (!ereg("/$", $data_path)) {
+		$data_path = $data_path . "/";
+	}
+	$filepath = $data_path . "install.php";
 	
 	$config_data = 
 	"<?php\n".
@@ -808,10 +813,10 @@ function lfMakeConfigFile() {
 	"    define ('DB_NAME', '" . $objDBParam->getValue('db_name') . "');\n" .
 	"    define ('DB_PORT', '" . $objDBParam->getValue('db_port') .  "');\n" .
 	"    define ('DATA_PATH', '".$data_path."');\n" .
-    "	 define ('MOBILE_HTML_PATH', HTML_PATH . 'mobile/');\n" .
-    "	 define ('MOBILE_SITE_URL', SITE_URL . 'mobile/');\n" .
-    "	 define ('MOBILE_SSL_URL', SSL_URL . 'mobile/');\n" .
-    "	 define ('MOBILE_URL_DIR', URL_DIR . 'mobile/');\n" .
+    "    define ('MOBILE_HTML_PATH', HTML_PATH . 'mobile/');\n" .
+    "    define ('MOBILE_SITE_URL', SITE_URL . 'mobile/');\n" .
+    "    define ('MOBILE_SSL_URL', SSL_URL . 'mobile/');\n" .
+    "    define ('MOBILE_URL_DIR', URL_DIR . 'mobile/');\n" .
 	"?>";
 	
 	if($fp = fopen($filepath,"w")) {
