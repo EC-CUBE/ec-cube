@@ -370,32 +370,7 @@ function lfErrorCheck1($array) {
     $objErr->doFunc(array('メールアドレス', "email", MTEXT_LEN) ,array("NO_SPTAB", "EXIST_CHECK", "EMAIL_CHECK", "SPTAB_CHECK" ,"EMAIL_CHAR_CHECK", "MAX_LENGTH_CHECK", "MOBILE_EMAIL_CHECK"));
 
     //現会員の判定 →　現会員もしくは仮登録中は、メアド一意が前提になってるので同じメアドで登録不可
-    if (strlen($array["email"]) > 0) {
-        $objQuery = new SC_Query();
-        $arrRet = $objQuery->select("email, update_date, del_flg", "dtb_customer","email ILIKE ? OR email_mobile ILIKE ? ORDER BY del_flg", array($array["email"], $array["email"]));
-                
-        if(count($arrRet) > 0) {
-            if($arrRet[0]['del_flg'] != '1') {
-                // 会員である場合
-                $objErr->arrErr["email"] .= "※ すでに会員登録で使用されているメールアドレスです。<br />";
-            } else {
-                // 退会した会員である場合
-                $leave_time = sfDBDatetoTime($arrRet[0]['update_date']);
-                $now_time = time();
-                $pass_time = $now_time - $leave_time;
-                // 退会から何時間-経過しているか判定する。
-                $limit_time = ENTRY_LIMIT_HOUR * 3600;                      
-                if($pass_time < $limit_time) {
-                    $objErr->arrErr["email"] .= "※ 退会から一定期間の間は、同じメールアドレスを使用することはできません。<br />";
-                }
-            }
-        }
-    }
 
-    $objErr->doFunc(array("パスワード", 'password', PASSWORD_LEN1, PASSWORD_LEN2), array("EXIST_CHECK", "SPTAB_CHECK" ,"ALNUM_CHECK", "NUM_RANGE_CHECK"));
-    $objErr->doFunc(array("パスワード確認用の質問", "reminder") ,array("SELECT_CHECK", "NUM_CHECK")); 
-    $objErr->doFunc(array("パスワード確認用の質問の答え", "reminder_answer", STEXT_LEN) ,array("EXIST_CHECK","SPTAB_CHECK" , "MAX_LENGTH_CHECK"));
-    
     return $objErr->arrErr;
 }
 
