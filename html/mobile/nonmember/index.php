@@ -120,7 +120,7 @@ $objPage->arrMonth = $objDate->getMonth();
 $objPage->arrDay
 
 
-if($objPage->year == '') {
+if($objPage->year==''){
 	$objPage->year = '----';
 }
 
