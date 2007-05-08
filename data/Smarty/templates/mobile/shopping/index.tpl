@@ -38,6 +38,7 @@
 	<input type="password" name="<!--{$key}-->" maxlength="<!--{$arrForm[$key].length}-->" size="40" istyle="3"><br>
 	<center><input type="submit" value="送信" name="log"></center><br>
 	<a href="<!--{$smarty.const.MOBILE_URL_DIR}-->forgot/index.php">パスワードをお忘れの方はこちら</a><br>
+	<center><input type="submit" value="登録せずに購入" name="nonmember"></center><br>
 </form>
 <!--▲会員登録がお済のお客様-->
 <!--▲MAIN ONTENTS-->
