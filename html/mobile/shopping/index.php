@@ -135,7 +135,7 @@ $objView->display(SITE_FRAME);
 //--------------------------------------------------------------------------------------------------------------------------
 /* 非会員入力ページのセット */
 function lfSetNonMember($objPage) {
-	$objPage->tpl_mainpage = 'shopping/nonmember_input.tpl';
+	$objPage->tpl_mainpage = 'nonmember/nonmember_input.tpl';
 	$objPage->tpl_css = array();
 	$objPage->tpl_css[] = '/css/layout/login/nonmember.css';
 	return $objPage;
