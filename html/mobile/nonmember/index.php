@@ -120,6 +120,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $objPage->$key = $val;
     }
 }
+
     if ($objPage->arrErr || !empty($_POST["return"])) {     // 入力エラーのチェック
 
         //-- データの設定
