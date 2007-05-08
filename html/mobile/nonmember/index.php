@@ -118,7 +118,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     if ($_POST["mode"] == "set1") {
         $objPage->arrErr = lfErrorCheck1($objPage->arrForm);
         $objPage->tpl_mainpage = 'entry/index.tpl';
-        $objPage->tpl_title = '²ñ°÷ÅĞÏ¿(1/3)';
+        $objPage->tpl_title = '¤ªµÒÍÍ¾ğÊó(1/3)';
     } elseif ($_POST["mode"] == "set2") {
         $objPage->arrErr = lfErrorCheck2($objPage->arrForm);
         $objPage->tpl_mainpage = 'entry/set1.tpl';
