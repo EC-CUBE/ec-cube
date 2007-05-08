@@ -792,7 +792,7 @@ function lfMakeConfigFile() {
 	
 	$data_path = sfRmDupSlash($root_dir . HTML2DATA_DIR);
     $data_path = realpath($data_path);
-	$filepath = $data_path . "install.php";
+	$filepath = $data_path . "/install.php";
 	
 	$config_data = 
 	"<?php\n".
