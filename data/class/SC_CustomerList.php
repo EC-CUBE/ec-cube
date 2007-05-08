@@ -198,10 +198,16 @@ class SC_CustomerList extends SC_SelectSql {
 			}
 		}
 
-/*		//ドメイン指定
+		//ドメイン指定
         if ( $mode == 'magazine' ){
-            if ( strlen($this->arrSql['domain']) > 0 )
-*/
+            if ( strlen($this->arrSql['domain']) > 0 && $this->arrSql['domain'] == 3) {
+　　　　　　　　$this->setWhere( "dtb_customer.email_mobile <> ''  " );
+			} else {
+				$this->setWhere( "dtb_customer.mobile <> ''  " );
+			}
+			if ( strlen($this->arrSql['domain']) > 0 && $this->arrSql['domain'] == 2) {
+        }
+
 		//　HTML-mail（配信方式)
 		if ( $mode == 'magazine' ){
 			if ( strlen($this->arrSql['htmlmail']) > 0 ) {
