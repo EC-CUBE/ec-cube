@@ -99,9 +99,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             $_POST["mode"] = "set1";
             break;
         }
-    }else{
-print "disp";
-/*
+    
+
     //--　入力エラーチェック
     if ($_POST["mode"] == "set1") {
         $objPage->arrErr = lfErrorCheck1($objPage->arrForm);
@@ -119,9 +118,9 @@ print "disp";
 
     foreach($objPage->arrForm as $key => $val) {
         $objPage->$key = $val;
+        }
     }
-*/
-}
+
 
     if ($objPage->arrErr || !empty($_POST["return"])) {     // 入力エラーのチェック
 
