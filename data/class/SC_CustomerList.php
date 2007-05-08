@@ -197,7 +197,10 @@ class SC_CustomerList extends SC_SelectSql {
 				$this->setWhere( " dtb_customer.email_mobile <> ''  ");
 			}
 		}
-							
+
+/*		//ドメイン指定
+        if ( $mode == 'magazine' ){
+*/		
 		//　HTML-mail
 		if ( $mode == 'magazine' ){
 			if ( strlen($this->arrSql['htmlmail']) > 0 ) {
