@@ -117,15 +117,15 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     //--　入力エラーチェック
     if ($_POST["mode"] == "set1") {
         $objPage->arrErr = lfErrorCheck1($objPage->arrForm);
-        $objPage->tpl_mainpage = 'entry/index.tpl';
+        $objPage->tpl_mainpage = 'nonmember/index.tpl';
         $objPage->tpl_title = 'お客様情報(1/3)';
     } elseif ($_POST["mode"] == "set2") {
         $objPage->arrErr = lfErrorCheck2($objPage->arrForm);
-        $objPage->tpl_mainpage = 'entry/set1.tpl';
+        $objPage->tpl_mainpage = 'nonmember/set1.tpl';
         $objPage->tpl_title = '会員登録(2/3)';
     } else {
         $objPage->arrErr = lfErrorCheck3($objPage->arrForm);
-        $objPage->tpl_mainpage = 'entry/set2.tpl';
+        $objPage->tpl_mainpage = 'nonmember/set2.tpl';
         $objPage->tpl_title = '会員登録(3/3)';
     }
 
@@ -178,7 +178,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 $objPage->arrForm['mail_flag']  = "3";
             }
 
-            $objPage->tpl_mainpage = 'entry/confirm.tpl';
+            $objPage->tpl_mainpage = 'nonmember/confirm.tpl';
             $objPage->tpl_title = '会員登録(確認ページ)';
 
         }
