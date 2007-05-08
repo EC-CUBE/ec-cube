@@ -119,6 +119,7 @@ $objPage->arrYear = $objDate->getYear('', 1950);	//　日付プルダウン設定
 $objPage->arrMonth = $objDate->getMonth();
 $objPage->arrDay
 
+
 if($objPage->year == '') {
 	$objPage->year = '----';
 }
