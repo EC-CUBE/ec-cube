@@ -128,7 +128,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
         //-- データの設定
         if ($_POST["mode"] == "set1") {
-            $checkVal = array("email", "password", "reminder", "reminder_answer", "name01", "name02", "kana01", "kana02");
+            $checkVal = array("email", "name01", "name02", "kana01", "kana02");
         } elseif ($_POST["mode"] == "set2") {
             $checkVal = array("sex", "year", "month", "day", "zip01", "zip02");
         } else {
