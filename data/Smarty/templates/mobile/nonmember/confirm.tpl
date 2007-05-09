@@ -8,7 +8,7 @@
 <div align="center">お客様情報確認</div>
 <hr>
 <form name="form1" id="form1" method="post" action="<!--{$smarty.server.PHP_SELF|escape}-->">
-	<input type="hidden" name="mode" value="complete">
+	<input type="hidden" name="mode" value="deliv_addr">
 	<!--{foreach from=$list_data key=key item=item}-->
 		<input type="hidden" name="<!--{$key|escape}-->" value="<!--{$item|escape}-->">
 	<!--{/foreach}-->
