@@ -77,7 +77,7 @@ $arrSearchColumn = array(
 							array(  "column" => "campaign_id",	    "convert" => ""  ),
 							array(  "column" => "mail_type",		"convert" => ""  ),
 							array(  "column" => "domain",           "convert" => "n" ),
-							array(  "column" => "domain_type",      "convert" => "n" ),
+							array(  "column" => "domain_type",      "convert" => "n" )
 
 					);
 
