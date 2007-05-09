@@ -7,8 +7,6 @@
  * 
  */
 
-print("ok");
- 
 $CONF_PHP_PATH = realpath( dirname( __FILE__) );
 require_once($CONF_PHP_PATH ."/../install.php");
 require_once($CONF_PHP_PATH ."/core.php" );
@@ -1079,7 +1077,4 @@ $arrView = array(
 		FROM dtb_category AS T1 LEFT JOIN dtb_category_total_count AS T2
 		ON T1.category_id = T2.category_id) '
 );
-
-print("ok");
-
 ?>
