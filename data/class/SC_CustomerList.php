@@ -199,13 +199,13 @@ class SC_CustomerList extends SC_SelectSql {
 		}
 
 		//ドメイン指定
-//        if ( $mode == 'magazine' ){
-//        	$val = $this->arrSql['domain'];
-//        	if($val==3){
-//        			$sql = "SELECT email_mobile FROM dtb_customer WHERE email_mobile LIKE ?";
-//			}
+        if ( $mode == 'magazine' ){
+        	$val = strlen($this->arrSql['domain']);
+        	if($val==3){
+        			$sql = "SELECT * FROM dtb_customer WHERE email_mobile LIKE '%@docomo.ne.jp%'";
+			}
 //			$this->arrVal[] = $sql;
-//        }
+        }
         
         
 print_r($this->arrSql);
