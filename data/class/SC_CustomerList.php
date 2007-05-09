@@ -198,11 +198,11 @@ class SC_CustomerList extends SC_SelectSql {
 			}
 		}
 
-		//ドメイン指定
+/*		//ドメイン指定
         if ( strlen($this->arrSql['domain']) > 0) {
 　　　　　　echo " ";　　            
         }
-		//　HTML-mail（配信方式)
+*/		//　HTML-mail（配信方式)
 		if ( $mode == 'magazine' ){
 			if ( strlen($this->arrSql['htmlmail']) > 0 ) {
 				$this->setWhere( " mailmaga_flg = ? ");
