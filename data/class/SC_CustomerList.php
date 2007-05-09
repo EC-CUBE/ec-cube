@@ -229,7 +229,7 @@ class SC_CustomerList extends SC_SelectSql {
 			$sql_where .= "dtb_customer.email_mobile LIKE ? ";
 			$this->setWhere($sql_where);
 			$searchDomainType = $this->addSearchStr("@docomo.ne.jp");
-           
+        	}
         }
         
 //print_r($this->arrSql);
