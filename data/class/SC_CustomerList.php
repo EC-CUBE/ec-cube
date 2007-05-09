@@ -199,8 +199,19 @@ class SC_CustomerList extends SC_SelectSql {
 		}
 
 		//ドメイン指定
-        　　            
-
+/*        if ( $mode == 'magazine' ){
+            if ( strlen($this->arrSql['domain']) > 0 && $this->arrSql['domain'] == 3) {
+　　　　　　    $this->setWhere("(email || email_mobile LIKE ?)" );　　
+			}
+            $searchDomainType = $this->addSearchStr($this->arrSql['domain_type']);
+            $this->arrVal[] = $searchDomaintype;
+			if ( strlen($this->arrSql['domain']) > 0 && $this->arrSql['domain'] == 2) {
+                $this->setWhere("(email || email_mobile NOT LIKE ?)" );
+            }
+            $searchDomainType = $this->addSearchStr($this->arrSql['domain_type']);
+            $this->arrVal[] = $searchDomaintype;
+        }
+*/
 		//　HTML-mail（配信方式)
 		if ( $mode == 'magazine' ){
 			if ( strlen($this->arrSql['htmlmail']) > 0 ) {
