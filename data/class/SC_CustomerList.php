@@ -229,6 +229,8 @@ class SC_CustomerList extends SC_SelectSql {
 //			}
 			$searchDomainType = $this->addSearchStr("@docomo.ne.jp");
             print_r($searchDomaintype);
+            break;
+        		default;
             
         }
 print_r($this->arrSql);
