@@ -7,7 +7,9 @@ print("?");
  */
 print("?");
 require_once("../require.php");
+print("?");
 $INSTALL_DIR = realpath(dirname( __FILE__));
+print("?");
 require_once("../" . HTML2DATA_DIR . "module/Request.php");
 print("?");
 define("INSTALL_LOG", "./temp/install.log");
