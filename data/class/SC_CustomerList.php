@@ -200,7 +200,7 @@ class SC_CustomerList extends SC_SelectSql {
 
 		//ドメイン指定
         if ( strlen($this->arrSql['domain']) > 0) {
-　　　　　　echo "欧米か";　　            
+　　　　　　echo " ";　　            
         }
 		//　HTML-mail（配信方式)
 		if ( $mode == 'magazine' ){
