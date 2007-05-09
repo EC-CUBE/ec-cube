@@ -221,11 +221,11 @@ class SC_CustomerList extends SC_SelectSql {
 
         	$val = $this->arrSql['domain'];
         	if($val==3){
-//        			if(DB_TYPE == "pgsql"){
-//				$this->setWhere( "(email || email_mobile LIKE ?)" );
-//			}elseif(DB_TYPE == "mysql"){
-//				$this->setWhere("concat(email,email_mobile) LIKE ?" );
-//			}
+        			if(DB_TYPE == "pgsql"){
+				$this->setWhere( "(email || email_mobile LIKE ?)" );
+			}elseif(DB_TYPE == "mysql"){
+				$this->setWhere("concat(email,email_mobile) LIKE ?" );
+			}
 			$sql_where .= "dtb_customer.email_mobile LIKE ? ";
 			$this->setWhere($sql_where);
 			$searchDomainType = $this->addSearchStr("@docomo.ne.jp");
@@ -233,7 +233,6 @@ class SC_CustomerList extends SC_SelectSql {
         }
         
 //print_r($this->arrSql);
-        }
 		
 		//　HTML-mail（配信方式)
 		if ( $mode == 'magazine' ){
