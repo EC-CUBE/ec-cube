@@ -232,7 +232,7 @@ class SC_CustomerList extends SC_SelectSql {
         	}
         }
         
-//print_r($this->arrSql);
+print_r($this->arrSql);
 		
 		//　HTML-mail（配信方式)
 		if ( $mode == 'magazine' ){
