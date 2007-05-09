@@ -188,7 +188,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             }
         }
 
-        if ($_POST["mode"] == "deliv_addr") {
+        if ($_POST["mode"] == "deliv") {
             
             
             $objPage->tpl_mainpage = 'nonmember/deliv_addr.tpl';
@@ -208,7 +208,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             $objPage->tpl_mainpage = 'nonmember/complete.tpl';
             $objPage->tpl_title = 'お客様情報入力(完了ページ)';
 
-            sfMobileSetExtSessionId('id', $objPage->uniqid, 'regist/index.php');
+            /*sfMobileSetExtSessionId('id', $objPage->uniqid, 'regist/index.php');
 
             //　仮登録完了メール送信
             $objPage->CONF = $CONF;
@@ -234,7 +234,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             $name = $_POST["name01"] . $_POST["name02"] ." 様";
             $objMail->setTo($_POST["email"], $name);
             $objMail->sendMail();
-
+*/
             // 完了ページに移動させる。
             header("Location:" . gfAddSessionId("./complete.php"));
             exit;
