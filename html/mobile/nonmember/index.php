@@ -189,8 +189,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         }
 
         if ($_POST["mode"] == "deliv_addr") {
-            $objPage->tpl_mainpage = 'nonmember/deliv_addr.tpl';
-            $objPage->tpl_title = 'お届け先情報';
+            
+            print("お届け先情報");
+            //$objPage->tpl_mainpage = 'nonmember/deliv_addr.tpl';
+            //$objPage->tpl_title = 'お届け先情報';
         }
         
         //--　仮登録と完了画面
