@@ -685,14 +685,14 @@ define ("MAIL_TYPE_PC",1);
 define ("MAIL_TYPE_MOBILE",2);
 $arrMailType = array(
 					MAIL_TYPE_PC => "パソコン用アドレス",
-					MAIL_TYPE_MOBILE => "携帯用アドレス",
+					MAIL_TYPE_MOBILE => "携帯用アドレス"
 				);	
 
 /*  携帯ドメイン指定　*/
 $arrDomain = array(
                         1 => "指定しない",
                         2 => "ＰＣドメイン",
-                        3 => "モバイルドメイン",
+                        3 => "モバイルドメイン"
                     );
 				
 
