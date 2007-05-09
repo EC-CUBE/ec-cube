@@ -199,7 +199,7 @@ class SC_CustomerList extends SC_SelectSql {
 		}
 
 		//ドメイン指定
-/*        if ( $mode == 'magazine' ){
+        if ( $mode == 'magazine' ){
             if ( strlen($this->arrSql['domain']) > 0 && $this->arrSql['domain'] == 3) {
 　　　　　　    if(DB_TYPE == "pgsql"){
 				$this->setWhere( "(email || email_mobile LIKE ?)" );
@@ -217,9 +217,8 @@ class SC_CustomerList extends SC_SelectSql {
             }
             $searchDomainType = $this->addSearchStr($this->arrSql['domain_type']);
             $this->arrVal[] = $searchDomaintype;
+        	}
         }
-*/
-		echo "test";
 		
 		//　HTML-mail（配信方式)
 		if ( $mode == 'magazine' ){
