@@ -684,8 +684,8 @@ $arrSex = array(
 define ("MAIL_TYPE_PC",1);
 define ("MAIL_TYPE_MOBILE",2);
 $arrMailType = array(
-					MAIL_TYPE_PC => "パソコン用アドレス",
-					MAIL_TYPE_MOBILE => "携帯用アドレス"
+					MAIL_TYPE_PC => "パソコンから登録",
+					MAIL_TYPE_MOBILE => "携帯から登録"
 				);	
 
 /*  携帯ドメイン指定　*/
