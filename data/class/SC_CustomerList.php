@@ -201,7 +201,11 @@ class SC_CustomerList extends SC_SelectSql {
 		//ドメイン指定
         if ( $mode == 'magazine' ){
             if ( strlen($this->arrSql['domain']) > 0) {
-　　　　　　    echo "欧米か";　　            
+　　　　　　    if(DB_TYPE == "pgsql"){
+				$this->setWhere( "(email || email_mobile LIKE ?)" );
+			}elseif(DB_TYPE == "mysql"){
+				$this->setWhere("concat(email,email_mobile) LIKE ?" );
+			}　　            
             }
         }
 */
