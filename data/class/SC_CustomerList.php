@@ -219,7 +219,7 @@ class SC_CustomerList extends SC_SelectSql {
 //            $this->arrVal[] = $searchDomaintype;
 //        	}
 
-        	$val = $this->arrSql['domain']
+        	$val = $this->arrSql['domain'];
         	if($val==3){
 //        			if(DB_TYPE == "pgsql"){
 //				$this->setWhere( "(email || email_mobile LIKE ?)" );
