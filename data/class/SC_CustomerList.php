@@ -202,7 +202,7 @@ class SC_CustomerList extends SC_SelectSql {
         if ( $mode == 'magazine' ){
         	$val = strlen($this->arrSql['domain']);
         	if($val==3){
-        			$sql = "SELECT * FROM dtb_customer WHERE email_mobile LIKE '%@docomo.ne.jp%'";
+        			$this->setWhere( "email_mobile LIKE '%@docomo.ne.jp%'");
         	}
         }
         
