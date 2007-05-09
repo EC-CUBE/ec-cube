@@ -199,7 +199,8 @@ class SC_CustomerList extends SC_SelectSql {
 		}
 
 		//ドメイン指定
-        if ( strlen($this->arrSql['domain']) > 0) {　　            
+        if ( strlen($this->arrSql['domain']) > 0) {
+        	print("test");　　            
         }
 
 		//　HTML-mail（配信方式)
