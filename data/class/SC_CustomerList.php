@@ -198,7 +198,6 @@ class SC_CustomerList extends SC_SelectSql {
 			}
 		}
 
-print_r($this->arrSql);		
 		//ドメイン指定
         if ( $mode == 'magazine' ){
 //            if ( strlen($this->arrSql['domain']) > 0 && $this->arrSql['domain'] == 3) {
@@ -220,7 +219,19 @@ print_r($this->arrSql);
 //            $this->arrVal[] = $searchDomaintype;
 //        	}
 
-
+        	$val = $this->arrSql['domain']
+        	switch($val){
+        		case 2:
+//        			if(DB_TYPE == "pgsql"){
+//				$this->setWhere( "(email || email_mobile LIKE ?)" );
+//			}elseif(DB_TYPE == "mysql"){
+//				$this->setWhere("concat(email,email_mobile) LIKE ?" );
+//			}
+			$searchDomainType = $this->addSearchStr("@docomo.ne.jp");
+            print_r($searchDomaintype);
+            
+        }
+print_r($this->arrSql);
         }
 		
 		//　HTML-mail（配信方式)
