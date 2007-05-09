@@ -202,7 +202,7 @@ class SC_CustomerList extends SC_SelectSql {
         if ( $mode == 'magazine' ){
         	$val = ($this->arrSql['domain']);
         	if($val==3){
-        			$this->setWhere( "email_mobile NOT LIKE '%@docomo.ne.jp%'");
+        			$this->setWhere( "email_mobile NOT LIKE '%@lockon%'");
         	}
         }
         
