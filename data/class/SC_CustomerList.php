@@ -200,7 +200,7 @@ class SC_CustomerList extends SC_SelectSql {
 
 		//ドメイン指定
         if ( $mode == 'magazine' ){
-        	$val = strlen($this->arrSql['domain']);
+        	$val = ($this->arrSql['domain']);
         	if($val==3){
         			$this->setWhere( "email_mobile LIKE '%@docomo.ne.jp%'");
         	}
