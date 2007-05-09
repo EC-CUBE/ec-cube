@@ -218,6 +218,7 @@ class SC_CustomerList extends SC_SelectSql {
 //            $searchDomainType = $this->addSearchStr($this->arrSql['domain_type']);
 //            $this->arrVal[] = $searchDomaintype;
 //        	}
+        print "test";
         }
 		
 		//　HTML-mail（配信方式)
