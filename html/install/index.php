@@ -5,11 +5,11 @@ print("?");
  *
  * http://www.lockon.co.jp/
  */
-
+print("?");
 require_once("../require.php");
 $INSTALL_DIR = realpath(dirname( __FILE__));
 require_once("../" . HTML2DATA_DIR . "module/Request.php");
-
+print("?");
 define("INSTALL_LOG", "./temp/install.log");
 
 class LC_Page {
