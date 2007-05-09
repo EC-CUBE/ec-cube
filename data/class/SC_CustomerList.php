@@ -205,7 +205,7 @@ class SC_CustomerList extends SC_SelectSql {
             	$this->setWhere( "email LIKE '%@docomo.ne.jp%' AND email_mobile LIKE '%@docomo.ne.jp%'");
         	}
         	if($val==2){
-        		$this->setWhere( "email || email_mobile NOT LIKE '%@docomo.ne.jp%'");
+        		$this->setWhere( "email NOT LIKE '%@docomo.ne.jp%'");
         	}
         }
         
