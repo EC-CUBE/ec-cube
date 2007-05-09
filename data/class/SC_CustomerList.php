@@ -198,6 +198,7 @@ class SC_CustomerList extends SC_SelectSql {
 			}
 		}
 
+print_r($this->arrSql);		
 		//ドメイン指定
         if ( $mode == 'magazine' ){
 //            if ( strlen($this->arrSql['domain']) > 0 && $this->arrSql['domain'] == 3) {
@@ -219,7 +220,7 @@ class SC_CustomerList extends SC_SelectSql {
 //            $this->arrVal[] = $searchDomaintype;
 //        	}
 
-print_r($this->arrSql);
+
         }
 		
 		//　HTML-mail（配信方式)
