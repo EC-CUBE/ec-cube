@@ -199,24 +199,13 @@ class SC_CustomerList extends SC_SelectSql {
 		}
 
 		//ドメイン指定
-/*        if ( $mode == 'magazine' ){
-            if ( strlen($this->arrSql['domain']) > 0 && $this->arrSql['domain'] == 3) {
+        if ( $mode == 'magazine' ){
+            if ( strlen($this->arrSql['domain']) > 0) {
 　　　　　　    if(DB_TYPE == "pgsql"){
 				$this->setWhere( "(email || email_mobile LIKE ?)" );
 			}elseif(DB_TYPE == "mysql"){
 				$this->setWhere("concat(email,email_mobile) LIKE ?" );
-			}　　
-            $searchDomainType = $this->addSearchStr($this->arrSql['domain_type']);
-            $this->arrVal[] = $searchDomaintype;
-            }
-			if ( strlen($this->arrSql['domain']) > 0 && $this->arrSql['domain'] == 2) {
-            if(DB_TYPE == "pgsql"){
-				$this->setWhere( "(email || email_mobile LIKE ?)" );
-			}elseif(DB_TYPE == "mysql"){
-				$this->setWhere("concat(email,email_mobile) LIKE ?" );
-            }
-            $searchDomainType = $this->addSearchStr($this->arrSql['domain_type']);
-            $this->arrVal[] = $searchDomaintype;
+			}　　            
             }
         }
 */
