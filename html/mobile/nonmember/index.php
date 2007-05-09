@@ -159,8 +159,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             }
         } elseif ($_POST["mode"] == "confirm") {
             //パスワード表示
-            $passlen = strlen($objPage->arrForm['password']);
-            $objPage->passlen = lfPassLen($passlen);
             
             //メール受け取り
             if (strtolower($objPage->arrForm['mail_flag']) == "on") {
@@ -190,7 +188,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             }
         }
 
-
+        if ($_POST["mode"] == "deliv_addr") {
+            $objPage->tpl_mainpage = 'nonmember/deliv_addr.tpl';
+            $objPage->tpl_title = 'お届け先情報';
+        }
+        
         //--　仮登録と完了画面
         if ($_POST["mode"] == "complete") {
             $objPage->uniqid = lfRegistData ($objPage->arrForm, $arrRegistColumn, $arrRejectRegistColumn);
