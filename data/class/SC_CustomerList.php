@@ -199,7 +199,7 @@ class SC_CustomerList extends SC_SelectSql {
 		}
 
 		//ドメイン指定
-        $oubei = strlen($this->arrSql['domain']) > 0)
+        $oubei = strlen($this->arrSql['domain']) > 0;
         print($oubei);　　            
 
 		//　HTML-mail（配信方式)
