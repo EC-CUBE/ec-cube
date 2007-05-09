@@ -18,7 +18,7 @@
 	<input type="radio" name="sex" value="1" <!--{if $sex eq 1}-->checked<!--{/if}--> />男性&nbsp;<input type="radio" name="sex" value="2" <!--{if $sex eq 2}-->checked<!--{/if}--> />女性<br>
 
 	【生年月日】<font color="#FF0000">*</font><br>
-	<font color="#FF0000"><!--{$arrErr.year}--><!--{$arrErr.month}--><!--{$arrErr.day}--></font>
+	<font color="#FF0000"><!--{$arrErr.year}-->(西暦)<!--{$arrErr.month}--><!--{$arrErr.day}--></font>
 	<input type="text" name="year" value="<!--{$year|escape}-->" size="4" maxlength="4" istyle="4">年<br>
 	<select name="month">
 		<option value="">--</option>
