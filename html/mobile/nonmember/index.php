@@ -191,7 +191,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         if ($_POST["mode"] == "deliv") {
             
             
-            $objPage->tpl_mainpage = 'nonmember/deliv_addr.tpl';
+            $objPage->tpl_mainpage = 'nonmember/deliv.tpl';
             $objPage->tpl_title = 'お届け先情報';
         }
         
