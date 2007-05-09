@@ -99,7 +99,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             $_POST["mode"] = "set1";
             break;
         }
-    }
+    }else{
 
     //--　入力エラーチェック
     
@@ -115,8 +115,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $objPage->arrErr = lfErrorCheck3($objPage->arrForm);
         $objPage->tpl_mainpage = 'nonmember/set2.tpl';
         $objPage->tpl_title = 'お客様情報入力(3/3)';
+        }
     }
-
     foreach($objPage->arrForm as $key => $val) {
         $objPage->$key = $val;
     }
