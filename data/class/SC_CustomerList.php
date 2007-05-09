@@ -199,8 +199,7 @@ class SC_CustomerList extends SC_SelectSql {
 		}
 
 		//ドメイン指定
-        $oubei = strlen($this->arrSql['domain']);
-        print($oubei);　　            
+        　　            
 
 		//　HTML-mail（配信方式)
 		if ( $mode == 'magazine' ){
