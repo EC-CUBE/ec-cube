@@ -116,12 +116,12 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             $objPage->tpl_mainpage = 'nonmember/set2.tpl';
             $objPage->tpl_title = 'お客様情報入力(3/3)';
         }
-    }
+    
 
     foreach($objPage->arrForm as $key => $val) {
         $objPage->$key = $val;
+        }
     }
-
 
 
     if ($objPage->arrErr || !empty($_POST["return"])) {     // 入力エラーのチェック
