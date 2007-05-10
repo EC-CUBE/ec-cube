@@ -82,7 +82,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     }
     
     $objPage->arrForm['email'] = strtolower($objPage->arrForm['email']);        // emailはすべて小文字で処理
-    print($objPage->arrForm['email']);
+    print_r($_POST);
     
     //-- 入力データの変換
     $objPage->arrForm = lfConvertParam($objPage->arrForm, $arrRegistColumn);
