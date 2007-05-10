@@ -195,6 +195,19 @@ class SC_SelectSql {
 			}
 		}
 	}
+	
+	function setWhereOR($where){
+		if ($where != "") {		
+			if( $this->where ) {
+	
+				$this->where .= " OR " . $where;
+	
+			} else {
+	
+				$this->where = "WHERE " . $where;
+			}
+		}
+	}
 
 	function setOrder($order){
 		
