@@ -206,9 +206,9 @@ class SC_CustomerList extends SC_SelectSql {
             $domain = ($this->arrSql['domain']);
             //ドメイン指定時
             if($domain == 2 || $domain == 3) {
+            	foreach($arrDomainType as $val) {
             	//PCドメイン
-            	if($domain == 2) {
-	            	foreach($arrDomainType as $val) {
+            	    if($domain == 2) {
 	            		switch($this->arrSql['mail_type']){
 	            			case '1':
 	            			    if($sql_where == "") {
@@ -224,15 +224,10 @@ class SC_CustomerList extends SC_SelectSql {
             	                    $sql_where .= "AND dtb_customer.email_mobile NOT LIKE ? " ;
         		    	        }
         		    	        break;
-	        		    }
-		        	    $searchDomain = $this->addSearchStr($val);
-		        	    $this->arrVal[] = $searchDomain;
-		            }
-		            $this->setWhere($sql_where);
-            	}
+	            		}
+	        		}
             	//モバイルドメイン
-            	if($domain == 3) {
-	            	foreach($arrDomainType as $val) { 
+            	    if($domain == 3) {
 	        		    switch($this->arrSql['mail_type']){
 	        		    	case '1':
 	            	            if($sql_where == "") {
@@ -246,13 +241,14 @@ class SC_CustomerList extends SC_SelectSql {
         		    		        $sql_where .= "dtb_customer.email_mobile ILIKE ? ";
         		    	        } else {
             	                    $sql_where .= "OR dtb_customer.email_mobile LIKE ? " ;
-        		    	    }
+        		    	        }
+        		    	        break;
 	        		    }
+            	    }
 		        	    $searchDomain = $this->addSearchStr($val);
 		        	    $this->arrVal[] = $searchDomain;
-		            }
-		            $this->setWhere($sql_where);
-            	}
+		        }
+		        $this->setWhere($sql_where);
             }  
         }  
 
