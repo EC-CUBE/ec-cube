@@ -8,7 +8,7 @@
 <div align="center">お客様情報入力 3/3</div>
 <hr>
 <form name="form1" method="post" action="<!--{$smarty.server.PHP_SELF|escape}-->">
-	<input type="hidden" name="mode" value="confirm">
+	<input type="hidden" name="mode" value="deliv">
 
 	<font color="#FF0000">*は必須項目です。</font><br>
 	<br>
