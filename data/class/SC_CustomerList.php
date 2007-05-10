@@ -252,7 +252,8 @@ class SC_CustomerList extends SC_SelectSql {
 		            }
             	}
                         print_r($searchDomain);
-            }  
+            }
+        }  
 print_r($this->arrSql);
 print_r($this->arrVal);
 		
