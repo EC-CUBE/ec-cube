@@ -210,7 +210,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
            //$objPage->arrAddr = $objPage->zip01;
            //$objPage->arrAddr[2] = $objPage->pref;
            //$objPage->arrAddr[3] = $objPage->pref;
-            print_r($objPage); 
+            print($objPage->zip01.$objPage->zip02); 
            
             $objPage->tpl_mainpage = 'shopping/deliv.tpl';
             $objPage->tpl_title = 'お届け先情報';
