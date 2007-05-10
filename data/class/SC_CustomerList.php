@@ -204,7 +204,9 @@ class SC_CustomerList extends SC_SelectSql {
         	$sql_where = "";
         	$arrDomainType = array(
                       1 => "docomo.ne.jp",
-                      
+                      2 => "ezweb.ne.jp",
+                      3 => "softbank.ne.jp",
+                      4 => "vodafone.ne.jp"
                   );
         	foreach($arrDomainType as $val) {
         	    $domain = ($this->arrSql['domain']);
@@ -226,7 +228,7 @@ class SC_CustomerList extends SC_SelectSql {
         	    }
         	    $searchDomain = $this->addSearchStr($val);
             }
-            $this->setWhere($sql_where);
+            print_r($searchDomain);
         }
         
         
