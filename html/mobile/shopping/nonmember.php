@@ -193,7 +193,7 @@ print_r($_POST);
             
             $objFormParam = new SC_FormParam();
             // パラメータ情報の初期化
-            lfInitParam();
+           
             // POST値の取得
             $objFormParam->setParam($_POST);
             
