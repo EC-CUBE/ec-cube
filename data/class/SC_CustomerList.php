@@ -212,9 +212,9 @@ class SC_CustomerList extends SC_SelectSql {
         	//ＰＣドメイン指定
         	if($val==2){
         		if($this->arrSql['mail_type']==1){
-            	$this->setWhere( "email NOT ILIKE '%@docomo.ne.jp%' AND email NOT ILIKE '%@softbank.ne.jp%' AND email NOT ILIKE '%@ezweb.ne.jp%' AND email NOT ILIKE '%@vodafone.ne.jp%'" );
+            	$this->setWhere( "email NOT ILIKE '%@docomo.ne.jp%' AND email NOT ILIKE '%@softbank.ne.jp%' AND email NOT ILIKE '%@ezweb.ne.jp%' AND email NOT ILIKE '%@vodafone.ne.jp'" );
         	}elseif($this->arrSql['mail_type']==2){
-        		$this->setWhere( "email_mobile NOT ILIKE '%@docomo.ne.jp%' AND email_mobile NOT ILIKE '%@softbank.ne.jp%' AND email_mobile NOT ILIKE '%@ezweb.ne.jp%' AND email_mobile NOT ILIKE '%@vodafone.ne.jp%'" );
+        		$this->setWhere( "email_mobile NOT ILIKE '%@docomo.ne.jp%' AND email_mobile NOT ILIKE '%@softbank.ne.jp%' AND email_mobile NOT ILIKE '%@ezweb.ne.jp%' AND email_mobile NOT ILIKE '%@vodafone.ne.jp'" );
         	    }
         	}
         }
