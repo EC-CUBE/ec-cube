@@ -213,7 +213,11 @@ class SC_CustomerList extends SC_SelectSql {
         	    //モバイルドメイン指定
         	    if($domain==3){
         		    if($this->arrSql['mail_type']==1){
-            	        $sql_where .= "OR dtb_customer.email LIKE ? " ;
+        		    	if($sql_where == "") {
+        		    		$sql_where = "dtb_customer.email ILIKE ? ";
+        		    	} else {
+            	            $sql_where .= "OR dtb_customer.email LIKE ? " ;
+        		    	}
         	    }elseif($this->arrSql['mail_type']==2){
         		        $sql_where .= "OR dtb_customer.email_mobile LIKE ? " ;
         	        }
