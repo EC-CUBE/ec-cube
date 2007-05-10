@@ -158,7 +158,7 @@ print_r($_POST);
                 $objPage->pref = @$address[0]['state'];
                 $objPage->addr01 = @$address[0]['city'] . @$address[0]['town'];
             }
-        } elseif ($_POST["mode"] == "deliv") {
+        } /*elseif ($_POST["mode"] == "deliv") {
             //パスワード表示
             
             //メール受け取り
@@ -171,7 +171,7 @@ print_r($_POST);
             $objPage->tpl_mainpage = 'shopping/deliv.tpl';
             $objPage->tpl_title = 'お客様情報(確認ページ)';
 
-        }
+        }*/
 
         //-- データ設定
         unset($objPage->list_data);
@@ -189,12 +189,12 @@ print_r($_POST);
             }
         }
 
-        /*if ($_POST["mode"] == "deliv") {
+        if ($_POST["mode"] == "deliv") {
             
             
             $objPage->tpl_mainpage = 'shopping/deliv.tpl';
             $objPage->tpl_title = 'お届け先情報';
-        }*/
+        }
         
         //--　仮登録と完了画面
         if ($_POST["mode"] == "complete") {
