@@ -89,7 +89,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $objPage->arrForm = lfConvertParam($objPage->arrForm, $arrRegistColumn);
 
     // 戻るボタン用処理
-    if (empty($_POST["return"])) {
+    if (!empty($_POST["return"])) {
         switch ($_POST["mode"]) {
         case "complete":
             $_POST["mode"] = "set3";
@@ -120,11 +120,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         }
     
 
-    foreach($objPage->arrForm as $key => $val) {
+ 
+    }
+   foreach($objPage->arrForm as $key => $val) {
         $objPage->$key = $val;
         }
-    }
-
 
     if ($objPage->arrErr || !empty($_POST["return"])) {     // 入力エラーのチェック
 
