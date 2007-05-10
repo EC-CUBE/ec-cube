@@ -210,9 +210,9 @@ class SC_CustomerList extends SC_SelectSql {
         	}
         	if($val==2){
         		if($this->arrSql['mail_type']==1){
-            	$this->setWhere( "email NOT LIKE '%@docomo.ne.jp%'" );
+            	$this->setWhere( "email NOT LIKE '%@docomo.ne.jp%' OR email NOT LIKE '%@softbank.ne.jp%'" );
         	}elseif($this->arrSql['mail_type']==2){
-        		$this->setWhere( "email_mobile NOT LIKE '%@docomo.ne.jp%'" );
+        		$this->setWhere( "email_mobile NOT LIKE '%@docomo.ne.jp%' OR email_mobile NOT LIKE '%@softbank.ne.jp%'" );
         	    }
         	}
         }
