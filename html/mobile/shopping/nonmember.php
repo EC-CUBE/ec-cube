@@ -206,7 +206,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 //                $cnt++;
 //            }
             
+           $objPage->arrAddr[0]['zip01'] = $objPage->zip01;
+           $objPage->arrAddr[0]['zip02'] = $objPage->zip02;
            $objPage->arrAddr[0]['pref'] = $objPage->pref;
+           $objPage->arrAddr[0]['addr01'] = $objPage->addr01;
+           $objPage->arrAddr[0]['addr02'] = $objPage->addr02;
            $arrAddr['pref'] = $objPage->pref;
            //$objPage->arrAddr[0] = $objPage->zip01;
            //$objPage->arrAddr[2] = $objPage->pref;
