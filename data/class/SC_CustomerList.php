@@ -238,9 +238,9 @@ class SC_CustomerList extends SC_SelectSql {
         		    	    }
 	        	    	}else{
 	        		        if($sql_where == "") {
-        		    		$sql_where .= "dtb_customer.email_mobile NOT ILIKE ? ";
+        		    		$sql_where .= "dtb_customer.email_mobile ILIKE ? ";
         		    	    } else {
-            	            $sql_where .= "OR dtb_customer.email _mobile NOT LIKE ? " ;
+            	            $sql_where .= "OR dtb_customer.email _mobile LIKE ? " ;
         		    	    }
 	        		    }
 		        	    $searchDomain = $this->addSearchStr($val);
