@@ -233,17 +233,19 @@ class SC_CustomerList extends SC_SelectSql {
             	//モバイルドメイン
             	if($domain == 3) {
 	            	foreach($arrDomainType as $val) { 
-	        		    if($this->arrSql['mail_type'] == 1 ){
-	            	        if($sql_where == "") {
-        		    		$sql_where .= "dtb_customer.email ILIKE ? ";
-        		    	    } else {
-            	            $sql_where .= "OR dtb_customer.email LIKE ? " ;
-        		    	    }
-	        	    	}else{
-	        		        if($sql_where == "") {
-        		    		$sql_where .= "dtb_customer.email_mobile ILIKE ? ";
-        		    	    } else {
-            	            $sql_where .= "OR dtb_customer.email_mobile LIKE ? " ;
+	        		    switch($this->arrSql['mail_type']){
+	        		    	case '1':
+	            	            if($sql_where == "") {
+        		    		        $sql_where .= "dtb_customer.email ILIKE ? ";
+        		    	        } else {
+            	                    $sql_where .= "OR dtb_customer.email LIKE ? " ;
+        		    	        }
+        		    	        break;
+	        	    	    case '2':
+	        		            if($sql_where == "") {
+        		    		        $sql_where .= "dtb_customer.email_mobile ILIKE ? ";
+        		    	        } else {
+            	                    $sql_where .= "OR dtb_customer.email_mobile LIKE ? " ;
         		    	    }
 	        		    }
 		        	    $searchDomain = $this->addSearchStr($val);
