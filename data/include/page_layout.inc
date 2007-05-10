@@ -18,7 +18,7 @@ function sfGetPageLayout($objPage, $preview = false, $url = ""){
 	// 現在のURLの取得
 	if ($preview === false) {
 		if ($url == "") {
-			$url = "http://" . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'];
+			$url = "http://" . $_SERVER['HTTP_HOST'] . $_SERVER['PHP_SELF'];			
 		}
 		// URLを元にページデザインを取得
 		$arrPageData = lfgetPageData(" url = ? " , array($url));
