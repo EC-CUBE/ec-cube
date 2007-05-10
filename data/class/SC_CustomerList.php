@@ -5,7 +5,7 @@
  * http://www.lockon.co.jp/
  */
 $INC_PATH = realpath( dirname( __FILE__) );
-require_once( $INC_PATH ."/../conf/conf.php" );
+require( $INC_PATH ."/../conf/conf.php" );
 /*  [名称] SC_CustomerList
  *  [概要] 会員検索用クラス
  */
@@ -202,6 +202,12 @@ class SC_CustomerList extends SC_SelectSql {
 		//ドメイン指定
         if ( $mode == 'magazine' ){
         	$sql_where = "";
+        	$arrDomainType = array(
+                      1 => "docomo.ne.jp",
+                      2 => "ezweb.ne.jp",
+                      3 => "softbank.ne.jp",
+                      4 => "vodafone.ne.jp"
+                  );
         	foreach($arrDomainType as $val) {
         	    $domain = ($this->arrSql['domain']);
         	    //モバイルドメイン指定
