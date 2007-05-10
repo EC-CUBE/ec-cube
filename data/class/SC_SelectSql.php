@@ -46,13 +46,6 @@ class SC_SelectSql {
 		$return = "%" .$return. "%";
 		return $return;
 	}
-
-    //ËöÈø¸¡º÷ÍÑ	
-	function addSearchEnd($val) {
-		$return = sfManuaiEscape($val);
-		$return = "%" .$return;
-		return $return;
-	}
 	
 	//-- ÈÏ°Ï¸¡º÷¡Ê¡û¡¡¢·¡¡¡û¡¡¤Ş¤Ç¡Ë
 	function selectRange($from, $to, $column) {

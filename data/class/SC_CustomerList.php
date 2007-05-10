@@ -226,7 +226,7 @@ class SC_CustomerList extends SC_SelectSql {
         		        $sql_where .= "email_mobile NOT LIKE ? " ;
         	        }
         	    }
-        	    $searchDomain = $this->addSearchEnd($val);
+        	    $searchDomain = $this->addSearchStr($val);
         	    $this->arrVal[] = $searchDomain;
             }
             $this->setWhere($sql_where);
