@@ -191,6 +191,16 @@ print_r($_POST);
 
         if ($_POST["mode"] == "deliv") {
             
+            $objFormParam = new SC_FormParam();
+            // パラメータ情報の初期化
+            lfInitParam();
+            // POST値の取得
+            $objFormParam->setParam($_POST);
+            
+            // 入力値の取得
+            $objPage->arrForm = $objFormParam->getFormParamList();
+            $objPage->arrErr = $arrErr;
+
             
             $objPage->tpl_mainpage = 'shopping/deliv.tpl';
             $objPage->tpl_title = 'お届け先情報';
