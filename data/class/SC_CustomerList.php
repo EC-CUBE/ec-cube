@@ -204,20 +204,19 @@ class SC_CustomerList extends SC_SelectSql {
         	//モバイルドメイン指定
         	if($val==3){
         		if($this->arrSql['mail_type']==1){
-            	$this->setWhere( "email LIKE ? " );
+            	$this->setWhere( "email LIKE '%@docomo.ne.jp%' OR email LIKE '%@softbank.ne.jp%' OR email LIKE '%@ezweb.ne.jp%' OR email LIKE '%vodafone.ne.jp'" );
         	}elseif($this->arrSql['mail_type']==2){
-        		$this->setWhere( "email_mobile LIKE ? " );
+        		$this->setWhere( "email_mobile LIKE '%@docomo.ne.jp%' OR email_mobile LIKE '%@softbank.ne.jp%' OR email_mobile LIKE '%@ezweb.ne.jp%' OR email_mobile LIKE '%vodafone.ne.jp'" );
         	    }
         	}
         	//ＰＣドメイン指定
         	if($val==2){
         		if($this->arrSql['mail_type']==1){
-            	$this->setWhere( "email NOT LIKE ? " );
+            	$this->setWhere( "email NOT ILIKE '%@docomo.ne.jp%' AND email NOT ILIKE '%@softbank.ne.jp%' AND email NOT ILIKE '%@ezweb.ne.jp%' AND email NOT ILIKE '%vodafone.ne.jp'" );
         	}elseif($this->arrSql['mail_type']==2){
-        		$this->setWhere( "email_mobile NOT LIKE ? " );
+        		$this->setWhere( "email_mobile NOT ILIKE '%@docomo.ne.jp%' AND email_mobile NOT ILIKE '%@softbank.ne.jp%' AND email_mobile NOT ILIKE '%@ezweb.ne.jp%' AND email_mobile NOT ILIKE '%vodafone.ne.jp'" );
         	    }
         	}
-        	$searchDomain = $this->addSearchStr['domain_type'];
         }
         
         
