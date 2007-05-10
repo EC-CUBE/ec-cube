@@ -199,7 +199,14 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             // 入力値の取得
             $objPage->arrForm = $objFormParam->getFormParamList();
             $objPage->arrErr = $arrErr;
-           print_r($objPage->name01);
+            
+//            $cnt = 1;
+//            foreach($objOtherAddr as $val) {
+//                $objPage->arrAddr[$cnt] = $val;
+//                $cnt++;
+//            }
+            
+           $objPage->arrAddr = $objPage->name01;
             $objPage->tpl_mainpage = 'shopping/deliv.tpl';
             $objPage->tpl_title = 'お届け先情報';
         }
