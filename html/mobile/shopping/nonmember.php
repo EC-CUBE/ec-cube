@@ -74,7 +74,7 @@ $arrRegistColumn = array(
 $arrRejectRegistColumn = array("year", "month", "day");
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
-
+print_r($_POST);
     //-- POSTデータの引き継ぎ
     $objPage->arrForm = $_POST;
     
@@ -82,8 +82,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $objPage->arrForm['year'] = '';
     }
     
-    $objPage->arrForm['email'] = strtolower($objPage->arrForm['email']);        // emailはすべて小文字で処理
-    print_r($_POST);
+    //$objPage->arrForm['email'] = strtolower($objPage->arrForm['email']);        // emailはすべて小文字で処理
     
     //-- 入力データの変換
     $objPage->arrForm = lfConvertParam($objPage->arrForm, $arrRegistColumn);
@@ -119,12 +118,12 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             $objPage->tpl_title = 'お客様情報入力(3/3)';
         }
     
-
- 
-    }
    foreach($objPage->arrForm as $key => $val) {
         $objPage->$key = $val;
         }
+ 
+    }
+
 
     if ($objPage->arrErr || !empty($_POST["return"])) {     // 入力エラーのチェック
 
