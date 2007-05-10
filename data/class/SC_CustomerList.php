@@ -224,20 +224,6 @@ class SC_CustomerList extends SC_SelectSql {
             	                    $sql_where .= "AND dtb_customer.email_mobile NOT LIKE ? " ;
         		    	        }
         		    	        break;
-        		    	    default:
-        		    	        $sql_where ="";
-//	        		    if($this->arrSql['mail_type'] == 1 ){
-//	            	        if($sql_where == "") {
-//        		    		$sql_where .= "dtb_customer.email NOT ILIKE ? ";
-//        		    	    } else {
-//            	            $sql_where .= "AND dtb_customer.email NOT LIKE ? " ;
-//        		    	    }
-//	        	    	} else {
-//	        		        if($sql_where == "") {
-//        		    		$sql_where .= "dtb_customer.email_mobile NOT ILIKE ? ";
-//        		    	    } else {
-//            	            $sql_where .= "AND dtb_customer.email_mobile NOT LIKE ? " ;
-//        		    	    }
 	        		    }
 		        	    $searchDomain = $this->addSearchStr($val);
 		        	    $this->arrVal[] = $searchDomain;
