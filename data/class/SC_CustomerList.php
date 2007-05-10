@@ -208,7 +208,8 @@ class SC_CustomerList extends SC_SelectSql {
             if($domain == 2 || $domain == 3) {
             	//PCドメイン
             	if($domain == 2) {
-	        		if($this->arrSql['mail_type'] == 1 ){
+	            	foreach($arrDomainType as $val) {
+	        		    if($this->arrSql['mail_type'] == 1 ){
 	            	        if($sql_where == "") {
         		    		$sql_where .= "dtb_customer.email NOT ILIKE ? ";
         		    	    } else {
