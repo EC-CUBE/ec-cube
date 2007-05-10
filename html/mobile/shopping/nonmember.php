@@ -211,11 +211,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
            $objPage->arrAddr[0]['pref'] = $objPage->pref;
            $objPage->arrAddr[0]['addr01'] = $objPage->addr01;
            $objPage->arrAddr[0]['addr02'] = $objPage->addr02;
-           $arrAddr['pref'] = $objPage->pref;
-           //$objPage->arrAddr[0] = $objPage->zip01;
-           //$objPage->arrAddr[2] = $objPage->pref;
-           //$objPage->arrAddr[3] = $objPage->pref;
-            //print($objPage->zip01.$objPage->zip02); 
+           
            print($arrAddr['pref']);
            
             $objPage->tpl_mainpage = 'shopping/deliv.tpl';
