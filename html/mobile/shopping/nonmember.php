@@ -74,7 +74,6 @@ $arrRegistColumn = array(
 $arrRejectRegistColumn = array("year", "month", "day");
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
-print_r($_POST);
     //-- POSTデータの引き継ぎ
     $objPage->arrForm = $_POST;
     
