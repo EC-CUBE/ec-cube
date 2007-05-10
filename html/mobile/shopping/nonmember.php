@@ -206,12 +206,12 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 //                $cnt++;
 //            }
             
-           $objPage->arrAddr[0] = $objPage->pref;
+           $objPage->arrAddr['pref'] = $objPage->pref;
            //$objPage->arrAddr[0] = $objPage->zip01;
            //$objPage->arrAddr[2] = $objPage->pref;
            //$objPage->arrAddr[3] = $objPage->pref;
             //print($objPage->zip01.$objPage->zip02); 
-           print($objFormParam->getFormParamList());
+           //print($objFormParam->getFormParamList());
            
             $objPage->tpl_mainpage = 'shopping/deliv.tpl';
             $objPage->tpl_title = 'お届け先情報';
