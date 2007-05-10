@@ -197,7 +197,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         
         //--　仮登録と完了画面
         if ($_POST["mode"] == "complete") {
-            $objPage->uniqid = lfRegistData ($objPage->arrForm, $arrRegistColumn, $arrRejectRegistColumn);
+            //$objPage->uniqid = lfRegistData ($objPage->arrForm, $arrRegistColumn, $arrRejectRegistColumn);
 
             // 空メールを受信済みの場合はすぐに本登録完了にする。
             if (isset($_SESSION['mobile']['kara_mail_from'])) {
