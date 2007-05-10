@@ -218,8 +218,8 @@ class SC_CustomerList extends SC_SelectSql {
         		    	} else {
             	            $sql_where .= "OR dtb_customer.email LIKE ? " ;
         		    	}
-        	    }elseif($this->arrSql['mail_type']==2){
-        		        $sql_where .= "OR dtb_customer.email_mobile LIKE ? " ;
+	        	    }elseif($this->arrSql['mail_type']==2){
+	        		       $sql_where .= "OR dtb_customer.email_mobile LIKE ? " ;
         	        }
         	    }
         	    //ＰＣドメイン指定
@@ -231,6 +231,7 @@ class SC_CustomerList extends SC_SelectSql {
         	        }
         	    }
         	    $searchDomain = $this->addSearchStr($val);
+        	    $this->arrVal[] = $searchDomain;
             }
             print_r($searchDomain);
             $this->setWhere($sql_where);
