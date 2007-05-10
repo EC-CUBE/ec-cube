@@ -201,13 +201,8 @@ class SC_CustomerList extends SC_SelectSql {
 
 		//ドメイン指定
         if ( $mode == 'magazine' ){
+        	global $arrDomainType;
         	$sql_where = "";
-        	$arrDomainType = array(
-                      1 => "docomo.ne.jp",
-                      2 => "ezweb.ne.jp",
-                      3 => "softbank.ne.jp",
-                      4 => "vodafone.ne.jp"
-                  );
             $domain = ($this->arrSql['domain']);
             //ドメイン指定時
             if($domain == 2 || $domain == 3) {
@@ -230,6 +225,7 @@ class SC_CustomerList extends SC_SelectSql {
 		        	    $searchDomain = $this->addSearchStr($val);
 		        	    $this->arrVal[] = $searchDomain;
 		            }
+		            $this->setWhere($sql_where);
             	}
             	//モバイルドメイン
             	if($domain == 3) {
@@ -250,10 +246,9 @@ class SC_CustomerList extends SC_SelectSql {
 		        	    $searchDomain = $this->addSearchStr($val);
 		        	    $this->arrVal[] = $searchDomain;
 		            }
+		            $this->setWhereOR($sql_where);
             	}
-                        print_r($searchDomain);
-            }
-            $this->setWhere($sql_where);
+            }  
         }  
 print_r($this->arrSql);
 print_r($this->arrVal);
