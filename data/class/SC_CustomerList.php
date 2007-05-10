@@ -214,13 +214,13 @@ class SC_CustomerList extends SC_SelectSql {
             	//PCドメイン
             	if($domain == 2) {
 	            	foreach($arrDomainType as $val) { 
-	        		    if($this->arrSql['mail_type']==1 ){
+	        		    if($this->arrSql['mail_type'] == 1 ){
 	            	        if($sql_where == "") {
         		    		$sql_where .= "dtb_customer.email NOT ILIKE ? ";
         		    	    } else {
             	            $sql_where .= "AND dtb_customer.email NOT LIKE ? " ;
         		    	    }
-	        	    	}elseif($this->arrSql['mail_type']==2){
+	        	    	}elseif($this->arrSql['mail_type'] == 2 ){
 	        		        if($sql_where == "") {
         		    		$sql_where .= "dtb_customer.email_mobile NOT ILIKE ? ";
         		    	    } else {
@@ -234,13 +234,13 @@ class SC_CustomerList extends SC_SelectSql {
             	//モバイルドメイン
             	if($domain == 3) {
 	            	foreach($arrDomainType as $val) { 
-	        		    if($this->arrSql['mail_type']==1 ){
+	        		    if($this->arrSql['mail_type'] == 1 ){
 	            	        if($sql_where == "") {
         		    		$sql_where .= "dtb_customer.email ILIKE ? ";
         		    	    } else {
             	            $sql_where .= "OR dtb_customer.email LIKE ? " ;
         		    	    }
-	        	    	}elseif($this->arrSql['mail_type']==2){
+	        	    	}elseif($this->arrSql['mail_type'] == 2 ){
 	        		        if($sql_where == "") {
         		    		$sql_where .= "dtb_customer.email_mobile NOT ILIKE ? ";
         		    	    } else {
