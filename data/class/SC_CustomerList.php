@@ -206,7 +206,7 @@ class SC_CustomerList extends SC_SelectSql {
         		if($this->arrSql['mail_type']==1){
             	$this->setWhere( "email LIKE '%@docomo.ne.jp%' OR email LIKE '%@softbank.ne.jp%' OR email LIKE '%@ezweb.ne.jp%' OR email LIKE '%vodafone.ne.jp'" );
         	}elseif($this->arrSql['mail_type']==2){
-        		$this->setWhere( "email_mobile LIKE '%@docomo.ne.jp%' OR email_mobile LIKE '%@softbank.ne.jp%' OR email_mobile LIKE '%@ezweb.ne.jp%' OR email_mobile LIKE '%@vodafone.ne.jp%'" );
+        		$this->setWhere( "email_mobile LIKE '%@docomo.ne.jp%' OR email_mobile LIKE '%@softbank.ne.jp%' OR email_mobile LIKE '%@ezweb.ne.jp%' OR email_mobile LIKE '%@vodafone.ne.jp'" );
         	    }
         	}
         	//ＰＣドメイン指定
