@@ -4,7 +4,8 @@
  *
  * http://www.lockon.co.jp/
  */
-
+$INC_PATH = realpath( dirname( __FILE__) );
+require_once( $INC_PATH ."/../conf/conf.php" );
 /*  [Ì¾¾Î] SC_CustomerList
  *  [³µÍ×] ²ñ°÷¸¡º÷ÍÑ¥¯¥é¥¹
  */
