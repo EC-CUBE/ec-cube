@@ -213,22 +213,23 @@ class SC_CustomerList extends SC_SelectSql {
         	    //モバイルドメイン指定
         	    if($domain==3){
         		    if($this->arrSql['mail_type']==1){
-            	        $this->setWhere( "email LIKE ? ");
+            	        $sql_where .= "dtb_customer.email LIKE ? " ;
         	    }elseif($this->arrSql['mail_type']==2){
-        		        $this->setWhere( "email_mobile LIKE ? ");
+        		        $sql_where .= "dtb_customer.email_mobile LIKE ? " ;
         	        }
         	    }
         	    //ＰＣドメイン指定
         	    if($domain==2){
         		    if($this->arrSql['mail_type']==1){
-            	        $this->setWhere( "email NOT LIKE ? ");
+            	        $sql_where .= "email NOT LIKE ? " ;
         	    }elseif($this->arrSql['mail_type']==2){
-        		        $this->setWhere( "email_mobile NOT LIKE ? ");
+        		        $sql_where .= "email_mobile NOT LIKE ? " ;
         	        }
         	    }
         	    $searchDomain = $this->addSearchStr($val);
             }
             print_r($searchDomain);
+            $this->setWhere($sql_where);
         }
         
         
