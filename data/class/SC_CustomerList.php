@@ -215,7 +215,7 @@ class SC_CustomerList extends SC_SelectSql {
         		    	    } else {
             	            $sql_where .= "AND dtb_customer.email NOT LIKE ? " ;
         		    	    }
-	        	    	} else {
+	        	    	} elseif($this->arrSql['mail_type'] == 2) {
 	        		        if($sql_where == "") {
         		    		$sql_where .= "dtb_customer.email_mobile NOT ILIKE ? ";
         		    	    } else {
