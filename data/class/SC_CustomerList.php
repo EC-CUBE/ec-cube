@@ -203,7 +203,7 @@ class SC_CustomerList extends SC_SelectSql {
         	$val = ($this->arrSql['domain']);
         	if($val==3){
         		if($this->arrSql['mail_type']==1){
-            	$this->setWhere( "email LIKE '%@docomo.ne.jp%'" );
+            	$this->setWhere( "email LIKE '%@docomo.ne.jp%' OR email LIKE '%@softbank.ne.jp%'" );
         	}elseif($this->arrSql['mail_type']==2){
         		$this->setWhere( "email_mobile LIKE '%@docomo.ne.jp%'" );
         	    }
