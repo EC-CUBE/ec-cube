@@ -246,7 +246,7 @@ class SC_CustomerList extends SC_SelectSql {
 		        	    $searchDomain = $this->addSearchStr($val);
 		        	    $this->arrVal[] = $searchDomain;
 		            }
-		            $this->setWhereOR($sql_where);
+		            $this->setWhere($sql_where);
             	}
             }  
         }  
