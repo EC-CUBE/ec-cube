@@ -189,12 +189,12 @@ print_r($_POST);
             }
         }
 
-        if ($_POST["mode"] == "deliv") {
+        /*if ($_POST["mode"] == "deliv") {
             
             
             $objPage->tpl_mainpage = 'shopping/deliv.tpl';
             $objPage->tpl_title = 'お届け先情報';
-        }
+        }*/
         
         //--　仮登録と完了画面
         if ($_POST["mode"] == "complete") {
