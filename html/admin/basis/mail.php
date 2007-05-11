@@ -39,6 +39,7 @@ if ( $_POST['mode'] == 'id_set'){
 		} else {
 			$objPage->arrForm['template_id'] = $_POST['template_id'];
 		}
+		print_r($result);
 	}
 	
 } elseif ( $_POST['mode'] == 'regist' && sfCheckNumLength( $_POST['template_id']) ){
