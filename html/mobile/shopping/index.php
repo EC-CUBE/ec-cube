@@ -250,20 +250,7 @@ $arrRejectRegistColumn = array("year", "month", "day");
     //-- 入力データの変換
     $objPage->arrForm = lfConvertParam($objPage->arrForm, $arrRegistColumn);
 
-    // 戻るボタン用処理
-    if (!empty($_POST["return"])) {
-        switch ($_POST["mode2"]) {
-        case "set3":
-            $_POST["mode2"] = "set2";
-            break;
-        case "set2":
-            $_POST["mode2"] = "set1";
-            break;
-        default:
-            $_POST["mode2"] = "set1";
-            break;
-        }
-    }
+
 
     //--　入力エラーチェック
     if (!empty($_POST["mode2"])) {
@@ -280,6 +267,21 @@ $arrRejectRegistColumn = array("year", "month", "day");
             $objPage->tpl_mainpage = 'shopping/nonmember_set3.tpl';
             $objPage->tpl_title = 'お客様情報入力(3/3)';
         }
+    
+        // 戻るボタン用処理
+    if (!empty($_POST["return"])) {
+        switch ($_POST["mode2"]) {
+        case "set3":
+            $_POST["mode2"] = "set3";
+            break;
+        case "set2":
+            $_POST["mode2"] = "set2";
+            break;
+        default:
+            $_POST["mode2"] = "set1";
+            break;
+        }
+    }
     
    foreach($objPage->arrForm as $key => $val) {
         $objPage->$key = $val;
