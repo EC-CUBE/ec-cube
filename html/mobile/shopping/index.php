@@ -254,10 +254,10 @@ $arrRejectRegistColumn = array("year", "month", "day");
     if (!empty($_POST["return"])) {
         switch ($_POST["mode2"]) {
         case "set3":
-            $_POST["mode2"] = "set3";
+            $_POST["mode2"] = "set2";
             break;
         case "set2":
-            $_POST["mode2"] = "set2";
+            $_POST["mode2"] = "set1";
             break;
         default:
             $_POST["mode2"] = "set1";
