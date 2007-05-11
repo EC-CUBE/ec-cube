@@ -691,6 +691,14 @@ $arrMailType = array(
 					MAIL_TYPE_MOBILE => "携帯から登録"
 				);	
 
+/*　登録種別　*/
+define ("REGIST_TYPE_PC",1);
+define ("REGIST_TYPE_MOBILE",2);
+$arrRegistType = array(
+					REGIST_TYPE_PC => "パソコンから登録",
+					REGIST_TYPE_MOBILE => "携帯から登録"
+				);
+
 /*  携帯ドメイン指定　*/
 $arrDomain = array(
                         1 => "指定しない",
