@@ -251,19 +251,19 @@ $arrRejectRegistColumn = array("year", "month", "day");
     $objPage->arrForm = lfConvertParam($objPage->arrForm, $arrRegistColumn);
 
     // 戻るボタン用処理
-//    if (!empty($_POST["return"])) {
-//        switch ($_POST["mode2"]) {
-//        case "set3":
-//            $_POST["mode2"] = "set2";
-//            break;
-//        case "set2":
-//            $_POST["mode2"] = "set1";
-//            break;
-//        default:
-//            $_POST["mode2"] = "set1";
-//            break;
-//        }
-//    }
+    if (!empty($_POST["return"])) {
+        switch ($_POST["mode2"]) {
+        case "set3":
+            $_POST["mode2"] = "set2";
+            break;
+        case "set2":
+            $_POST["mode2"] = "set1";
+            break;
+        default:
+            $_POST["mode2"] = "set1";
+            break;
+        }
+    }
 
     //--　入力エラーチェック
     if (!empty($_POST["mode2"])) {
