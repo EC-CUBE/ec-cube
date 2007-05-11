@@ -46,17 +46,21 @@ $uniqid = sfCheckNormalAccess($objSiteSess, $objCartSess);
 // ユニークIDを引き継ぐ
 $objPage->tpl_uniqid = $uniqid;
 
-// 会員ログインチェック
 if($objCustomer->isLoginSuccess()) {
-	$objPage->tpl_login = '1';
-	$objPage->tpl_user_point = $objCustomer->getValue('point');
+    $objPage->tpl_login = '1';
+    $objPage->tpl_user_point = $objCustomer->getValue('point');
+    //戻り先URL
+    $objPage->tpl_back_url = URL_DELIV_TOP;
+} else {
+    $objPage->tpl_back_url = URL_SHOP_TOP . "?from=nonmember";
 }
+
 
 // 金額の取得 (購入途中で売り切れた場合にはこの関数内にてその商品の個数が０になる)
 $objPage = sfTotalCart($objPage, $objCartSess, $arrInfo);
 $objPage->arrData = sfTotalConfirm($arrData, $objPage, $objCartSess, $arrInfo);
 
-// カー都内の商品の売り切れチェック
+// カート内の商品の売り切れチェック
 $objCartSess->chkSoldOut($objCartSess->getCartList(), true);
 
 // 戻るボタンの処理
