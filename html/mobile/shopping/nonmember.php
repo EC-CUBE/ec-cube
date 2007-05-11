@@ -212,8 +212,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
            $objPage->arrAddr[0]['addr01'] = $objPage->addr01;
            $objPage->arrAddr[0]['addr02'] = $objPage->addr02;
            
-           $cnt = 1;
-           
             $objPage->tpl_mainpage = 'shopping/deliv.tpl';
             $objPage->tpl_title = 'お届け先情報';
         }
@@ -249,8 +247,8 @@ print($_POST);
 //               $cnt++;
 //            }
 //           
-//            $objPage->tpl_mainpage = 'shopping/deliv.tpl';
-//            $objPage->tpl_title = 'お届け先情報';
+            $objPage->tpl_mainpage = 'shopping/deliv_addr.tpl';
+            $objPage->tpl_title = 'お届け先情報';
         }
         
         //--　仮登録と完了画面
