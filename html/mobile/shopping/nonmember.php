@@ -213,10 +213,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
            $objPage->arrAddr[0]['addr02'] = $objPage->addr02;
            
            $cnt = 1;
-           foreach($arrAddr as $val) {
-               $objPage->arrAddr[$cnt] = $val;
-               $cnt++;
-            }
            
             $objPage->tpl_mainpage = 'shopping/deliv.tpl';
             $objPage->tpl_title = 'お届け先情報';
