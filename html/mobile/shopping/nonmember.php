@@ -218,7 +218,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         
          if ($_POST["mode"] == "customer_addr") {
 
-print($_POST);
+
             
 //            $objFormParam = new SC_FormParam();
 //            // パラメータ情報の初期化
@@ -247,7 +247,7 @@ print($_POST);
 //               $cnt++;
 //            }
            header("Location:" . gfAddSessionId("./payment.php"));
-        ;
+        print($_POST);
         }
         
         //--　仮登録と完了画面
