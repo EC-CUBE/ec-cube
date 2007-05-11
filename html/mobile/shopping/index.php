@@ -252,7 +252,7 @@ $arrRejectRegistColumn = array("year", "month", "day");
 
     // 戻るボタン用処理
     if (!empty($_POST["return"])) {
-        switch ($_POST["mode"]) {
+        switch ($_POST["mode2"]) {
         case "complete":
             $_POST["mode2"] = "set3";
             break;
