@@ -253,10 +253,10 @@ $arrRejectRegistColumn = array("year", "month", "day");
     // 戻るボタン用処理
     if (!empty($_POST["return"])) {
         switch ($_POST["mode2"]) {
-        case "complete":
+        case "set3":
             $_POST["mode2"] = "set3";
             break;
-        case "confirm":
+        case "set2":
             $_POST["mode2"] = "set2";
             break;
         default:
@@ -287,7 +287,6 @@ $arrRejectRegistColumn = array("year", "month", "day");
  
     }
 
-
     if ($objPage->arrErr || !empty($_POST["return"])) {     // 入力エラーのチェック
 
         //-- データの設定
@@ -303,8 +302,6 @@ $arrRejectRegistColumn = array("year", "month", "day");
             if ($key != "mode" && $key != "submit" && $key != "return" && $key != session_name() && !in_array($key, $checkVal))
                 $objPage->list_data[ $key ] = $val;
         }
-
-
 
     } else {
 
