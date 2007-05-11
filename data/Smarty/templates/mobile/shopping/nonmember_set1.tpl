@@ -9,7 +9,8 @@
 <hr>
 <form name="form1" method="post" action="<!--{$smarty.server.PHP_SELF|escape}-->">
 
-	<input type="text" name="mode" value="set1">
+	<input type="text" name="mode" value="nonmember">
+	<input type="text" name="mode2" value="set1">
 	<input type="hidden" name="uniqid" value="<!--{$tpl_uniqid}-->">
 	
 	<font color="#FF0000">*は必須項目です。</font><br>
