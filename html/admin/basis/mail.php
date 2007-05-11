@@ -39,7 +39,7 @@ if ( $_POST['mode'] == 'id_set'){
 		} else {
 			$objPage->arrForm['template_id'] = $_POST['template_id'];
 		}
-		print_r($result[0]);
+		print_r($objPage->arrForm);
 	}
 	
 } elseif ( $_POST['mode'] == 'regist' && sfCheckNumLength( $_POST['template_id']) ){
@@ -60,6 +60,7 @@ if ( $_POST['mode'] == 'id_set'){
 		$objPage->tpl_onload = "window.alert('メール設定が完了しました。テンプレートを選択して内容をご確認ください。');";
 		unset($objPage->arrForm);
 	}
+	print_r($objPage->arrForm);
 
 }
 
