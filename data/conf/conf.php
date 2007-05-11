@@ -692,9 +692,9 @@ $arrMailType = array(
 				);	
 
 /*  携帯ドメイン指定　*/
-define ("DOMAIN_TYPE_NONE");
-define ("DOMAIN_TYPE_PC");
-define ("DOMAIN_TYPE_MOBILE");
+define ("DOMAIN_TYPE_NONE",1);
+define ("DOMAIN_TYPE_PC",2);
+define ("DOMAIN_TYPE_MOBILE",3);
 $arrDomain = array(
                         DOMAIN_TYPE_NONE => "指定しない",
                         DOMAIN_TYPE_PC => "ＰＣドメイン",
