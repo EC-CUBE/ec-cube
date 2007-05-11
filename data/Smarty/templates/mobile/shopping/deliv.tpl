@@ -17,13 +17,13 @@
 <!--{section name=cnt loop=$arrAddr}-->
 <form method="post" action="<!--{$smarty.server.PHP_SELF|escape}-->">
 <input type="hidden" name="uniqid" value="<!--{$tpl_uniqid}-->">
-<input type="text" name="deli" value="<!--{$smarty.section.cnt.iteration}-->">
+<input type="hidden" name="deli" value="<!--{$smarty.section.cnt.iteration}-->">
 <!--{if $smarty.section.cnt.first}-->
-<input type="hidden" name="mode" value="customer_addr">
+<input type="text" name="mode" value="customer_addr">
 <input type="hidden" name="other_deliv_id" value="">
 <!--{else}-->
 <input type="hidden" name="mode" value="other_addr">
-<input type="hidden" name="other_deliv_id" value="<!--{$arrAddr[cnt].other_deliv_id}-->">
+<input type="text" name="other_deliv_id" value="<!--{$arrAddr[cnt].other_deliv_id}-->">
 <!--{/if}-->
 ¢£ÇÛÁ÷Àè<!--{$smarty.section.cnt.iteration}--><br>
 ¢©<!--{$arrAddr[cnt].zip01}-->-<!--{$arrAddr[cnt].zip02}--><br>
