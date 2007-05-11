@@ -217,7 +217,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 //        }
         
          if ($_POST["mode"] == "customer_addr") {
-           $objPage->uniqid = lfRegistData ($objPage->arrForm, $arrRegistColumn, $arrRejectRegistColumn); 
+           lfRegistData ($uniqid); 
            header("Location:" . gfAddSessionId("./payment.php"));
         print($_POST);
         }
