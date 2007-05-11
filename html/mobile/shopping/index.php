@@ -234,7 +234,7 @@ $arrRejectRegistColumn = array("year", "month", "day");
     
     print_r($_POST);
         
-    $objPage->tpl_mainpage = 'shopping/nonmember.tpl';
+    $objPage->tpl_mainpage = 'shopping/nonmember_set1.tpl';
 	$objPage->tpl_css = array();
 	$objPage->tpl_css[] = '/css/layout/login/nonmember.css';
     
