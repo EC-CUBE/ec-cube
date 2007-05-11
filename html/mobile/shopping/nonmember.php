@@ -247,8 +247,8 @@ print($_POST);
 //               $cnt++;
 //            }
 //           
-            $objPage->tpl_mainpage = 'shopping/deliv_addr.tpl';
-            $objPage->tpl_title = 'お届け先情報';
+            $objPage->tpl_mainpage = 'shopping/payment.tpl';
+            $objPage->tpl_title = 'お支払方法';
         }
         
         //--　仮登録と完了画面
