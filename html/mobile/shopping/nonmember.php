@@ -246,9 +246,8 @@ print($_POST);
 //               $objPage->arrAddr[$cnt] = $val;
 //               $cnt++;
 //            }
-//           
-            $objPage->tpl_mainpage = 'shopping/payment.tpl';
-            $objPage->tpl_title = 'お支払方法';
+           header("Location:" . gfAddSessionId("./payment.php"));
+        ;
         }
         
         //--　仮登録と完了画面
