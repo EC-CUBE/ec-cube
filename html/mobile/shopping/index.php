@@ -233,7 +233,7 @@ function lfSetNonMember($objPage) {
 //$arrRejectRegistColumn = array("year", "month", "day", "email02", "email_mobile02","password","password02","reminder","reminder_answer");
 $arrRejectRegistColumn = array("year", "month", "day");
     
-    print($_POST);
+    print_r($_POST);
         
     $objPage->tpl_mainpage = 'shopping/nonmember.tpl';
 	$objPage->tpl_css = array();
