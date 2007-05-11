@@ -147,9 +147,9 @@
 							</tr>
 
 							<tr class="fs12n">
-								<td bgcolor="#f2f1ec" width="110">登録種別</td>
+								<td bgcolor="#f2f1ec" width="110">配信メールアドレス種別</td>
 								<td bgcolor="#ffffff" colspan="3">
-									<!--{html_radios name="regist_type" options=$arrRegistType separator="&nbsp;" selected=$list_data.regist_type}-->
+									<!--{html_radios name="mail_type" options=$arrMailType separator="&nbsp;" selected=$list_data.mail_type}-->
 								</td>
 							</tr>
 							

@@ -578,9 +578,9 @@ $arrTAXRULE = array(
 
 // メールテンプレートの種類
 $arrMAILTEMPLATE = array(
-	 1 => "ＰＣ：注文受付メール"
-	,2 => "ＰＣ：注文キャンセル受付メール"
-	,3 => "ＰＣ：取り寄せ確認メール"
+	 1 => "PC：注文受付メール"
+	,2 => "PC：注文キャンセル受付メール"
+	,3 => "PC：取り寄せ確認メール"
 	,4 => "携帯：注文受付メール"
 	,5 => "携帯：注文キャンセル受付メール"
 	,6 => "携帯：取り寄せ確認メール"
@@ -687,17 +687,9 @@ $arrSex = array(
 define ("MAIL_TYPE_PC",1);
 define ("MAIL_TYPE_MOBILE",2);
 $arrMailType = array(
-					MAIL_TYPE_PC => "パソコンから登録",
-					MAIL_TYPE_MOBILE => "携帯から登録"
+					MAIL_TYPE_PC => "パソコン用メールアドレス",
+					MAIL_TYPE_MOBILE => "携帯用メールアドレス"
 				);	
-
-/*　登録種別　*/
-define ("REGIST_TYPE_PC",1);
-define ("REGIST_TYPE_MOBILE",2);
-$arrRegistType = array(
-					REGIST_TYPE_PC => "パソコンから登録",
-					REGIST_TYPE_MOBILE => "携帯から登録"
-				);
 
 /*  携帯ドメイン指定　*/
 $arrDomain = array(
