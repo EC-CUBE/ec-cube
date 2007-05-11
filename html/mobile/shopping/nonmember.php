@@ -111,7 +111,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             $objPage->arrErr = lfErrorCheck2($objPage->arrForm);
             $objPage->tpl_mainpage = 'shopping/nonmember_set1.tpl';
             $objPage->tpl_title = 'お客様情報入力(2/3)';
-        } else {
+        } elseif ($_POST["mode"] == "deliv"){
             $objPage->arrErr = lfErrorCheck3($objPage->arrForm);
             $objPage->tpl_mainpage = 'shopping/nonmember_set2.tpl';
             $objPage->tpl_title = 'お客様情報入力(3/3)';
