@@ -197,7 +197,6 @@ $objView->display(SITE_FRAME);
 
 //--------------------------------------------------------------------------------------------------------------------------
 /* 非会員入力ページのセット */
-
 function lfSetNonMember($objPage) {
 	
     $arrRegistColumn = array(
@@ -234,6 +233,8 @@ function lfSetNonMember($objPage) {
 //$arrRejectRegistColumn = array("year", "month", "day", "email02", "email_mobile02","password","password02","reminder","reminder_answer");
 $arrRejectRegistColumn = array("year", "month", "day");
     
+    print($_POST);
+        
     $objPage->tpl_mainpage = 'shopping/nonmember.tpl';
 	$objPage->tpl_css = array();
 	$objPage->tpl_css[] = '/css/layout/login/nonmember.css';
