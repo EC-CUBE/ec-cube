@@ -255,28 +255,28 @@ $arrRejectRegistColumn = array("year", "month", "day");
     if (!empty($_POST["return"])) {
         switch ($_POST["mode"]) {
         case "complete":
-            $_POST["mode"] = "set3";
+            $_POST["mode2"] = "set3";
             break;
         case "confirm":
-            $_POST["mode"] = "set2";
+            $_POST["mode2"] = "set2";
             break;
         default:
-            $_POST["mode"] = "set1";
+            $_POST["mode2"] = "set1";
             break;
         }
     }
 
     //--　入力エラーチェック
-    if (!empty($_POST["mode"])) {
-            if ($_POST["mode"] == "set1") {
+    if (!empty($_POST["mode2"])) {
+            if ($_POST["mode2"] == "set1") {
             $objPage->arrErr = lfErrorCheck1($objPage->arrForm);
             $objPage->tpl_mainpage = 'shopping/nonmember_set1.tpl';
             $objPage->tpl_title = 'お客様情報入力(1/3)';
-        } elseif ($_POST["mode"] == "set2") {
+        } elseif ($_POST["mode2"] == "set2") {
             $objPage->arrErr = lfErrorCheck2($objPage->arrForm);
             $objPage->tpl_mainpage = 'shopping/nonmember_set2.tpl';
             $objPage->tpl_title = 'お客様情報入力(2/3)';
-        } elseif ($_POST["mode"] == "deliv"){
+        } elseif ($_POST["mode2"] == "deliv"){
             $objPage->arrErr = lfErrorCheck3($objPage->arrForm);
             $objPage->tpl_mainpage = 'shopping/nonmember_set3.tpl';
             $objPage->tpl_title = 'お客様情報入力(3/3)';
@@ -310,10 +310,10 @@ $arrRejectRegistColumn = array("year", "month", "day");
     } else {
 
         //--　テンプレート設定
-        if ($_POST["mode"] == "set1") {
+        if ($_POST["mode2"] == "set1") {
             $objPage->tpl_mainpage = 'shopping/nonmember_set2.tpl';
             $objPage->tpl_title = 'お客様情報入力(2/3)';
-        } elseif ($_POST["mode"] == "set2") {
+        } elseif ($_POST["mode2"] == "set2") {
             $objPage->tpl_mainpage = 'shopping/nonmember_set3.tpl';
             $objPage->tpl_title = 'お客様情報入力(3/3)';
 
