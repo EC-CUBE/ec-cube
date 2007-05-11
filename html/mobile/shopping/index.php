@@ -47,8 +47,6 @@ $objFormParam->setParam($_POST);			// POST値の取得
 //-------------------------------------▼NONMEMBER----------------------------------------------
 //---- ページ初期設定
 $CONF = sf_getBasisData();                  // 店舗基本情報
-$objConn = new SC_DbConn();
-$objPage = new LC_Page();
 $objView = new SC_MobileView();
 $objDate = new SC_Date(START_BIRTH_YEAR, date("Y",strtotime("now")));
 $objPage->arrPref = $arrPref;
@@ -152,7 +150,7 @@ case 'return':
 	exit;
 	break;
 case 'nonmember':
-    print("test");
+    print("nonmember");
 	$objPage = lfSetNonMember($objPage);
 	// ※breakなし
 default:
@@ -196,10 +194,47 @@ if($objPage->arrForm['year']['value'] == ""){
 
 $objView->assignobj($objPage);
 $objView->display(SITE_FRAME);
+
 //--------------------------------------------------------------------------------------------------------------------------
 /* 非会員入力ページのセット */
+
 function lfSetNonMember($objPage) {
-	$objPage->tpl_mainpage = 'shopping/nonmember.tpl';
+	
+    $arrRegistColumn = array(
+                             array(  "column" => "name01", "convert" => "aKV" ),
+                             array(  "column" => "name02", "convert" => "aKV" ),
+                             array(  "column" => "kana01", "convert" => "CKV" ),
+                             array(  "column" => "kana02", "convert" => "CKV" ),
+                             array(  "column" => "zip01", "convert" => "n" ),
+                             array(  "column" => "zip02", "convert" => "n" ),
+                             array(  "column" => "pref", "convert" => "n" ),
+                             array(  "column" => "addr01", "convert" => "aKV" ),
+                             array(  "column" => "addr02", "convert" => "aKV" ),
+                             array(  "column" => "email", "convert" => "a" ),
+                             array(  "column" => "email2", "convert" => "a" ),
+                             array(  "column" => "email_mobile", "convert" => "a" ),
+                             array(  "column" => "email_mobile2", "convert" => "a" ),
+                             array(  "column" => "tel01", "convert" => "n" ),
+                             array(  "column" => "tel02", "convert" => "n" ),
+                             array(  "column" => "tel03", "convert" => "n" ),
+                             array(  "column" => "fax01", "convert" => "n" ),
+                             array(  "column" => "fax02", "convert" => "n" ),
+                             array(  "column" => "fax03", "convert" => "n" ),
+                             array(  "column" => "sex", "convert" => "n" ),
+                             array(  "column" => "job", "convert" => "n" ),
+                             array(  "column" => "birth", "convert" => "n" ),
+                             array(  "column" => "reminder", "convert" => "n" ),
+                             array(  "column" => "reminder_answer", "convert" => "aKV"),
+                             array(  "column" => "password", "convert" => "a" ),
+                             array(  "column" => "password02", "convert" => "a" ),
+                             array(  "column" => "mailmaga_flg", "convert" => "n" ),
+                         );
+
+//---- 登録除外用カラム配列
+//$arrRejectRegistColumn = array("year", "month", "day", "email02", "email_mobile02","password","password02","reminder","reminder_answer");
+$arrRejectRegistColumn = array("year", "month", "day");
+    
+    $objPage->tpl_mainpage = 'shopping/nonmember.tpl';
 	$objPage->tpl_css = array();
 	$objPage->tpl_css[] = '/css/layout/login/nonmember.css';
     
