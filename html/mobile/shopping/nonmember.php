@@ -212,7 +212,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
            $objPage->arrAddr[0]['addr01'] = $objPage->addr01;
            $objPage->arrAddr[0]['addr02'] = $objPage->addr02;
            
-           foreach($objOtherAddr as $val) {
+           $cnt = 1;
+           foreach($arrAddr as $val) {
                $objPage->arrAddr[$cnt] = $val;
                $cnt++;
             }
