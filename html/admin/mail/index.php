@@ -26,8 +26,8 @@ class LC_Page {
 		$this->arrJob = $arrJob;
 		global $arrSex;		
 		$this->arrSex = $arrSex;
-		global $arrRegistType;
-		$this->arrRegistType = $arrRegistType;
+		global $arrMailType;
+		$this->arrMailType = $arrMailType;
 		global $arrDomain;
 		$this->arrDomain = $arrDomain;
 		global $arrPageRows;
