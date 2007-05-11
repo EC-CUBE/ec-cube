@@ -37,7 +37,7 @@
 			<!--{if $tpl_addrmax < $smarty.const.DELIV_ADDR_MAX}-->
 			<tr>
 				<td>
-					<a href="../mypage/delivery_addr.php" onclick="win02('../mypage/delivery_addr.php?page=<!--{$smarty.server.PHP_SELF|escape}-->','new_deiv','600','640'); return false;" onmouseover="chgImg('<!--{$smarty.const.URL_DIR}-->img/common/newadress_on.gif','addition');" onmouseout="chgImg('<!--{$smarty.const.URL_DIR}-->img/common/newadress.gif','addition');"><img src="<!--{$smarty.const.URL_DIR}-->img/common/newadress.gif" width="160" height="22" alt="新しいお届け先を追加する" name="addition" id="addition" /></a>
+					<a href="<!--{$smarty.const.URL_DIR}-->mypage/delivery_addr.php" onclick="win02('<!--{$smarty.const.URL_DIR}-->mypage/delivery_addr.php?page=<!--{$smarty.server.PHP_SELF|escape}-->','new_deiv','600','640'); return false;" onmouseover="chgImg('<!--{$smarty.const.URL_DIR}-->img/common/newadress_on.gif','addition');" onmouseout="chgImg('<!--{$smarty.const.URL_DIR}-->img/common/newadress.gif','addition');"><img src="<!--{$smarty.const.URL_DIR}-->img/common/newadress.gif" width="160" height="22" alt="新しいお届け先を追加する" name="addition" id="addition" /></a>
 				</td>
 			</tr>
 			<tr><td height="20"></td></tr>
