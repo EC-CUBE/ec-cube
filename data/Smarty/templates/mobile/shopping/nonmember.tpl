@@ -8,8 +8,10 @@
 <div align="center">お客様情報入力 1/3</div>
 <hr>
 <form name="form1" method="post" action="<!--{$smarty.server.PHP_SELF|escape}-->">
-	<input type="text" name="mode" value="set1">
 
+	<input type="text" name="mode" value="set1">
+	<input type="hidden" name="uniqid" value="<!--{$tpl_uniqid}-->">
+	
 	<font color="#FF0000">*は必須項目です。</font><br>
 	<br>
 
