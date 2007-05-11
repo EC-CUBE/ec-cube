@@ -268,8 +268,9 @@ function lfRegistData($uniqid) {
 	if($sqlval['point_check'] != '1') {
 		$sqlval['use_point'] = 0;
 	}
-	print("trave");
+	
 	sfRegistTempOrder($uniqid, $sqlval);
+    print("trave");
 }
 
 /* 配達日一覧を取得する */
