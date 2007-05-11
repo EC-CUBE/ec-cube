@@ -188,38 +188,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             }
         }
 
-        if ($_POST["mode"] == "deliv") {
-            
-            $objFormParam = new SC_FormParam();
-            // パラメータ情報の初期化
-           
-            // POST値の取得
-            $objFormParam->setParam($_POST);
-            
-            // 入力値の取得
-            $objPage->arrForm = $objFormParam->getFormParamList();
-            $objPage->arrErr = $arrErr;
-            
-//            $cnt = 1;
-//            foreach($objOtherAddr as $val) {
-//                $objPage->arrAddr[$cnt] = $val;
-//                $cnt++;
-//            }
-            
-           $objPage->arrAddr[0]['zip01'] = $objPage->zip01;
-           $objPage->arrAddr[0]['zip02'] = $objPage->zip02;
-           $objPage->arrAddr[0]['pref'] = $objPage->pref;
-           $objPage->arrAddr[0]['addr01'] = $objPage->addr01;
-           $objPage->arrAddr[0]['addr02'] = $objPage->addr02;
-           
-            $objPage->tpl_mainpage = 'shopping/deliv.tpl';
-            $objPage->tpl_title = 'お届け先情報';
-        }
-        
-         if ($_POST["mode"] == "customer_addr") {
-
-
-            
+//        if ($_POST["mode"] == "deliv") {
+//            
 //            $objFormParam = new SC_FormParam();
 //            // パラメータ情報の初期化
 //           
@@ -242,23 +212,25 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 //           $objPage->arrAddr[0]['addr01'] = $objPage->addr01;
 //           $objPage->arrAddr[0]['addr02'] = $objPage->addr02;
 //           
-//           foreach($objOtherAddr as $val) {
-//               $objPage->arrAddr[$cnt] = $val;
-//               $cnt++;
-//            }
+//            $objPage->tpl_mainpage = 'shopping/deliv.tpl';
+//            $objPage->tpl_title = 'お届け先情報';
+//        }
+        
+         if ($_POST["mode"] == "customer_addr") {
+           $objPage->uniqid = lfRegistData ($objPage->arrForm, $arrRegistColumn, $arrRejectRegistColumn); 
            header("Location:" . gfAddSessionId("./payment.php"));
         print($_POST);
         }
         
         //--　仮登録と完了画面
         if ($_POST["mode"] == "complete") {
-            //$objPage->uniqid = lfRegistData ($objPage->arrForm, $arrRegistColumn, $arrRejectRegistColumn);
+            $objPage->uniqid = lfRegistData ($objPage->arrForm, $arrRegistColumn, $arrRejectRegistColumn);
 
             // 空メールを受信済みの場合はすぐに本登録完了にする。
-            if (isset($_SESSION['mobile']['kara_mail_from'])) {
-                header("Location:" . gfAddSessionId(MOBILE_URL_DIR . "regist/index.php?mode=regist&id=" . $objPage->uniqid));
-                exit;
-            }
+//            if (isset($_SESSION['mobile']['kara_mail_from'])) {
+//                header("Location:" . gfAddSessionId(MOBILE_URL_DIR . "regist/index.php?mode=regist&id=" . $objPage->uniqid));
+//                exit;
+//            }
 
             $objPage->tpl_mainpage = 'shopping/complete.tpl';
             $objPage->tpl_title = 'お客様情報入力(完了ページ)';
@@ -304,83 +276,27 @@ $objView->display(SITE_FRAME);
 //----------------------------------------------------------------------------------------------------------------------
 
 //---- function群
-function lfRegistData ($array, $arrRegistColumn, $arrRejectRegistColumn) {
-    global $objConn;
-
-    // 仮登録
-    foreach ($arrRegistColumn as $data) {
-        if (strlen($array[ $data["column"] ]) > 0 && ! in_array($data["column"], $arrRejectRegistColumn)) {
-            $arrRegist[ $data["column"] ] = $array[ $data["column"] ];
-        }
-    }
-        
-    // 誕生日が入力されている場合
-    if (strlen($array["year"]) > 0 ) {
-        $arrRegist["birth"] = $array["year"] ."/". $array["month"] ."/". $array["day"] ." 00:00:00";
-    }
+function lfRegistData($uniqid) {
+    global $objFormParam;
+    $arrRet = $objFormParam->getHashArray();
+    $sqlval = $objFormParam->getDbArray();
+    // 登録データの作成
+    $sqlval['order_temp_id'] = $uniqid;
+    $sqlval['order_birth'] = sfGetTimestamp($arrRet['year'], $arrRet['month'], $arrRet['day']);
+    $sqlval['update_date'] = 'Now()';
+    $sqlval['customer_id'] = '0';
     
-    // パスワードの暗号化
-    $arrRegist["password"] = sha1($arrRegist["password"] . ":" . AUTH_MAGIC);
-    
-    $count = 1;
-    while ($count != 0) {
-        $uniqid = sfGetUniqRandomId("t");
-        $count = $objConn->getOne("SELECT COUNT(*) FROM dtb_customer WHERE secret_key = ?", array($uniqid));
-    }
-
-    switch($array["mailmaga_flg"]) {
-        case 1:
-            $arrRegist["mailmaga_flg"] = 4; 
-            break;
-        case 2:
-            $arrRegist["mailmaga_flg"] = 5; 
-            break;
-        default:
-            $arrRegist["mailmaga_flg"] = 6;
-            break;
-    }
-        
-    $arrRegist["secret_key"] = $uniqid;     // 仮登録ID発行
-    $arrRegist["create_date"] = "now()";    // 作成日
-    $arrRegist["update_date"] = "now()";    // 更新日
-    $arrRegist["first_buy_date"] = "";      // 最初の購入日
-    
-    // 携帯メールアドレス
-    $arrRegist['email_mobile'] = $arrRegist['email'];
-
-    //-- 仮登録実行
-    $objConn->query("BEGIN");
-
+    // 既存データのチェック
     $objQuery = new SC_Query();
-    $objQuery->insert("dtb_customer", $arrRegist);
-
-/* メルマガ会員機能は現在停止中　2007/03/07
-    //--　非会員でメルマガ登録しているかの判定
-    $sql = "SELECT count(*) FROM dtb_customer_mail WHERE email = ?";
-    $mailResult = $objConn->getOne($sql, array($arrRegist["email"]));
-
-    //--　メルマガ仮登録実行
-    $arrRegistMail["email"] = $arrRegist["email"];  
-    if ($array["mailmaga_flg"] == 1) {
-        $arrRegistMail["mailmaga_flg"] = 4; 
-    } elseif ($array["mailmaga_flg"] == 2) {
-        $arrRegistMail["mailmaga_flg"] = 5; 
+    $where = "order_temp_id = ?";
+    $cnt = $objQuery->count("dtb_order_temp", $where, array($uniqid));
+    // 既存データがない場合
+    if ($cnt == 0) {
+        $sqlval['create_date'] = 'Now()';
+        $objQuery->insert("dtb_order_temp", $sqlval);
     } else {
-        $arrRegistMail["mailmaga_flg"] = 6; 
+        $objQuery->update("dtb_order_temp", $sqlval, $where, array($uniqid));
     }
-    $arrRegistMail["update_date"] = "now()";
-    
-    // 非会員でメルマガ登録している場合
-    if ($mailResult == 1) {     
-        $objQuery->update("dtb_customer_mail", $arrRegistMail, "email = '" .addslashes($arrRegistMail["email"]). "'");          
-    } else {                //　新規登録の場合
-        $arrRegistMail["create_date"] = "now()";
-        $objQuery->insert("dtb_customer_mail", $arrRegistMail);     
-    }
-*/
-    $objConn->query("COMMIT");
-
-    return $uniqid;
 }
 
 //----　取得文字列の変換
