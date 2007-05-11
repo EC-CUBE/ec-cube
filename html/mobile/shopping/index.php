@@ -150,7 +150,6 @@ case 'return':
 	exit;
 	break;
 case 'nonmember':
-    print("nonmember");
 	$objPage = lfSetNonMember($objPage);
 	// ¢¨break¤Ê¤·
 default:
