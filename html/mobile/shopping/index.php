@@ -291,9 +291,9 @@ $arrRejectRegistColumn = array("year", "month", "day");
     if ($objPage->arrErr || !empty($_POST["return"])) {     // 入力エラーのチェック
 
         //-- データの設定
-        if ($_POST["mode2"] == "set2") {
+        if ($_POST["mode2"] == "set1") {
             $checkVal = array("email", "name01", "name02", "kana01", "kana02");
-        } elseif ($_POST["mode2"] == "set3") {
+        } elseif ($_POST["mode2"] == "set2") {
             $checkVal = array("sex", "year", "month", "day", "zip01", "zip02");
         } else {
             $checkVal = array("pref", "addr01", "addr02", "tel01", "tel02", "tel03", "mail_flag");
