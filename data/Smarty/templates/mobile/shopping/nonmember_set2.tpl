@@ -5,45 +5,39 @@
  * http://www.lockon.co.jp/
  */
 *}-->
-<div align="center">お客様情報入力 3/3</div>
+<div align="center">お客様情報入力 2/3</div>
 <hr>
-<!--<form name="form1" method="post" action="<!--{$smarty.server.PHP_SELF|escape}-->">-->
-	<form name="form1" method="post" action="<!--{$smarty.server.PHP_SELF|escape}-->">
-	<input type="hidden" name="mode" value="customer_addr">
+<form name="form1" method="post" action="<!--{$smarty.server.PHP_SELF|escape}-->">
+	<input type="hidden" name="mode" value="set2">
 	<input type="hidden" name="uniqid" value="<!--{$tpl_uniqid}-->">
-	
 	<font color="#FF0000">*は必須項目です。</font><br>
 	<br>
 
-	【都道府県】<font color="#FF0000">*</font><br>
-	<font color="#FF0000"><!--{$arrErr.pref}--></font>
-	<select name="pref">
-		<option value="">都道府県を選択</option>
-		<!--{html_options options=$arrPref selected=$pref}-->
-	</select><br>
+	【性別】<font color="#FF0000">*</font><br>
+	<font color="#FF0000"><!--{$arrErr.sex}--></font>
+	<input type="radio" name="sex" value="1" <!--{if $sex eq 1}-->checked<!--{/if}--> />男性&nbsp;<input type="radio" name="sex" value="2" <!--{if $sex eq 2}-->checked<!--{/if}--> />女性<br>
 
-	【市区町村】<font color="#FF0000">*</font><br>
-	<font color="#FF0000"><!--{$arrErr.addr01}--></font>
-	<input type="text" name="addr01" value="<!--{$addr01|escape}-->" istyle="1"><br>
+	【生年月日】<font color="#FF0000">*</font><br>
+	<font color="#FF0000"><!--{$arrErr.year}--><!--{$arrErr.month}--><!--{$arrErr.day}--></font>
+	<input type="text" name="year" value="<!--{$year|escape}-->" size="4" maxlength="4" istyle="4">年(西暦)<br>
+	<select name="month">
+		<option value="">--</option>
+		<!--{html_options options=$arrMonth selected=$month}-->
+	</select>月<br>
+	<select name="day">
+		<option value="">--</option>
+		<!--{html_options options=$arrDay selected=$day}-->
+	</select>日<br>
 
-	【番地】<font color="#FF0000">*</font><br>
-	<font color="#FF0000"><!--{$arrErr.addr02}--></font>
-	<input type="text" name="addr02" value="<!--{$addr02|escape}-->" istyle="1"><br>
-
-	【電話番号】<font color="#FF0000">*</font><br>
-	<font color="#FF0000"><!--{$arrErr.tel01}--><!--{$arrErr.tel02}--><!--{$arrErr.tel03}--></font>
-	<!--{assign var="size" value="`$smarty.const.TEL_ITEM_LEN+2`"}-->
-	<input type="text" size="<!--{$size}-->" name="tel01" value="<!--{$tel01|escape}-->" maxlength="<!--{$smarty.const.TEL_ITEM_LEN}-->" istyle="4">
+	<!--{assign var=key1 value="zip01"}-->
+	<!--{assign var=key2 value="zip02"}-->
+	【郵便番号】<font color="#FF0000">*</font><br>
+	<font color="#FF0000"><!--{$arrErr[$key1]}--><!--{$arrErr[$key2]}--></font>
+	<!--{assign var="size1" value="`$smarty.const.ZIP01_LEN+2`"}-->
+	<!--{assign var="size2" value="`$smarty.const.ZIP02_LEN+2`"}-->
+	<input size="<!--{$size1}-->" type="text" name="zip01" value="<!--{if $zip01 == ""}--><!--{$arrOtherDeliv.zip01|escape}--><!--{else}--><!--{$zip01|escape}--><!--{/if}-->" maxlength="<!--{$smarty.const.ZIP01_LEN}-->" istyle="4">
 	&nbsp;-&nbsp;
-	<input type="text" size="<!--{$size}-->" name="tel02" value="<!--{$tel02|escape}-->" maxlength="<!--{$smarty.const.TEL_ITEM_LEN}-->" istyle="4">
-	&nbsp;-&nbsp;
-	<input type="text" size="<!--{$size}-->" name="tel03" value="<!--{$tel03|escape}-->" maxlength="<!--{$smarty.const.TEL_ITEM_LEN}-->" istyle="4"><br>
-
-	【メールマガジン】<br>
-	お得な情報を希望されますか？<br>
-	配信希望<input type="checkbox" name="mailmaga_flg" value="on" <!--{if $mailmaga_flg eq 'on'}-->checked<!--{/if}--> /><br>
-	（希望されない場合はチェックをはずしてください）<br>
-	<br>
+	<input size="<!--{$size2}-->" type="text" name="zip02" value="<!--{if $zip02 == ""}--><!--{$arrOtherDeliv.zip02|escape}--><!--{else}--><!--{$zip02|escape}--><!--{/if}-->" maxlength="<!--{$smarty.const.ZIP02_LEN}-->" istyle="4"><br>
 
 	<input type="submit" name="submit" value="次へ"><br>
 	<input type="submit" name="return" value="戻る">

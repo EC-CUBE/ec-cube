@@ -5,45 +5,42 @@
  * http://www.lockon.co.jp/
  */
 *}-->
-<div align="center">お客様情報入力 2/3</div>
+<div align="center">お客様情報入力 1/3</div>
 <hr>
 <form name="form1" method="post" action="<!--{$smarty.server.PHP_SELF|escape}-->">
-	<input type="hidden" name="mode" value="set2">
+
+	<input type="text" name="mode" value="set1">
 	<input type="hidden" name="uniqid" value="<!--{$tpl_uniqid}-->">
+	
 	<font color="#FF0000">*は必須項目です。</font><br>
 	<br>
 
-	【性別】<font color="#FF0000">*</font><br>
-	<font color="#FF0000"><!--{$arrErr.sex}--></font>
-	<input type="radio" name="sex" value="1" <!--{if $sex eq 1}-->checked<!--{/if}--> />男性&nbsp;<input type="radio" name="sex" value="2" <!--{if $sex eq 2}-->checked<!--{/if}--> />女性<br>
+	【メールアドレス】<font color="#FF0000">※</font><br>
+	<font color="#FF0000"><!--{$arrErr.email}--></font>
 
-	【生年月日】<font color="#FF0000">*</font><br>
-	<font color="#FF0000"><!--{$arrErr.year}--><!--{$arrErr.month}--><!--{$arrErr.day}--></font>
-	<input type="text" name="year" value="<!--{$year|escape}-->" size="4" maxlength="4" istyle="4">年(西暦)<br>
-	<select name="month">
-		<option value="">--</option>
-		<!--{html_options options=$arrMonth selected=$month}-->
-	</select>月<br>
-	<select name="day">
-		<option value="">--</option>
-		<!--{html_options options=$arrDay selected=$day}-->
-	</select>日<br>
+	<input type="text" name="email" value="<!--{$email|escape}-->" istyle="3">
 
-	<!--{assign var=key1 value="zip01"}-->
-	<!--{assign var=key2 value="zip02"}-->
-	【郵便番号】<font color="#FF0000">*</font><br>
-	<font color="#FF0000"><!--{$arrErr[$key1]}--><!--{$arrErr[$key2]}--></font>
-	<!--{assign var="size1" value="`$smarty.const.ZIP01_LEN+2`"}-->
-	<!--{assign var="size2" value="`$smarty.const.ZIP02_LEN+2`"}-->
-	<input size="<!--{$size1}-->" type="text" name="zip01" value="<!--{if $zip01 == ""}--><!--{$arrOtherDeliv.zip01|escape}--><!--{else}--><!--{$zip01|escape}--><!--{/if}-->" maxlength="<!--{$smarty.const.ZIP01_LEN}-->" istyle="4">
-	&nbsp;-&nbsp;
-	<input size="<!--{$size2}-->" type="text" name="zip02" value="<!--{if $zip02 == ""}--><!--{$arrOtherDeliv.zip02|escape}--><!--{else}--><!--{$zip02|escape}--><!--{/if}-->" maxlength="<!--{$smarty.const.ZIP02_LEN}-->" istyle="4"><br>
+  <br>
 
-	<input type="submit" name="submit" value="次へ"><br>
-	<input type="submit" name="return" value="戻る">
+	【お名前】<font color="#FF0000">※</font><br>
+	<font color="#FF0000"><!--{$arrErr.name01}--><!--{$arrErr.name02}--></font>
+	姓（例：渋谷）<br>
+	<input type="text" name="name01" value="<!--{$name01|escape}-->" maxlength="<!--{$smarty.const.STEXT_LEN}-->" istyle="1"><br>
+
+	名（例：花子）<br>
+	<input type="text" name="name02" value="<!--{$name02|escape}-->" maxlength="<!--{$smarty.const.STEXT_LEN}-->" istyle="1"><br>
+	<font color="#FF0000"><!--{$arrErr.kana01}--><!--{$arrErr.kana02}--></font>
+
+	カナ/姓（例：シブヤ）<br>
+	<input type="text" name="kana01" value="<!--{$kana01|escape}-->" maxlength="<!--{$smarty.const.STEXT_LEN}-->" istyle="2"><br>
+
+	カナ/名（例：ハナコ）<br>
+	<input type="text" name="kana02" value="<!--{$kana02|escape}-->" maxlength="<!--{$smarty.const.STEXT_LEN}-->" istyle="2"><br>
+
+	<input type="submit" name="submit" value="次へ">
 
 	<!--{foreach from=$list_data key=key item=item}-->
-		<input type="hidden" name="<!--{$key|escape}-->" value="<!--{$item|escape}-->">
+		<input type="text" name="<!--{$key|escape}-->" value="<!--{$item|escape}-->">
 	<!--{/foreach}-->
 </form>
 
