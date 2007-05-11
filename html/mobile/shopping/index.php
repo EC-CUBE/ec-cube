@@ -240,7 +240,7 @@ $arrRejectRegistColumn = array("year", "month", "day");
     
         //-- POSTデータの引き継ぎ
     $objPage->arrForm = $_POST;
-    
+    print($objPage->arrForm['year']);
     if($objPage->arrForm['year'] == '----') {
         $objPage->arrForm['year'] = '';
     }
