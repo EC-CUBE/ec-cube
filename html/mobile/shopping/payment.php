@@ -242,7 +242,6 @@ function lfGetDelivTimeInfo($time_id) {
 /* DBへデータの登録 */
 function lfRegistData($uniqid) {
     
-print("trave");
 	global $objFormParam;
 	$arrRet = $objFormParam->getHashArray();
 	$sqlval = $objFormParam->getDbArray();
@@ -269,7 +268,7 @@ print("trave");
 	if($sqlval['point_check'] != '1') {
 		$sqlval['use_point'] = 0;
 	}
-	
+	print("trave");
 	sfRegistTempOrder($uniqid, $sqlval);
 }
 
