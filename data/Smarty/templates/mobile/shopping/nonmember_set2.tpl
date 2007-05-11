@@ -9,7 +9,7 @@
 <hr>
 <!--<form name="form1" method="post" action="<!--{$smarty.server.PHP_SELF|escape}-->">-->
 	<form name="form1" method="post" action="<!--{$smarty.server.PHP_SELF|escape}-->">
-	<input type="hidden" name="mode" value="deliv">
+	<input type="hidden" name="mode" value="customer_addr">
 	<input type="hidden" name="uniqid" value="<!--{$tpl_uniqid}-->">
 	
 	<font color="#FF0000">*は必須項目です。</font><br>
