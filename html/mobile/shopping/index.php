@@ -243,8 +243,8 @@ $arrRejectRegistColumn = array("year", "month", "day", "email02", "email_mobile0
     //-- POSTデータの引き継ぎ
     $objPage->arrForm = $_POST;
     
-    if($objPage->arrForm['year']['value'] == '----') {
-        $objPage->arrForm['year']['value'] = '';
+    if($objPage->arrForm['year'] == '----') {
+        $objPage->arrForm['year'] = '';
     }
     
     print($objPage->arrForm['year']);
