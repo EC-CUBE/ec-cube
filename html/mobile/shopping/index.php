@@ -354,7 +354,7 @@ $arrRejectRegistColumn = array("year", "month", "day");
             }
         }
 
-        if ($_POST["mode"] == "deliv") {
+        if ($_POST["mode2"] == "deliv") {
             
             $objFormParam = new SC_FormParam();
             // パラメータ情報の初期化
@@ -382,14 +382,14 @@ $arrRejectRegistColumn = array("year", "month", "day");
             $objPage->tpl_title = 'お届け先情報';
         }
         
-         if ($_POST["mode"] == "customer_addr") {
+         if ($_POST["mode2"] == "customer_addr") {
            lfRegistData ($objPage->tpl_uniqid); 
            header("Location:" . gfAddSessionId("./payment.php"));
         print($_POST);
         }
         
         //--　仮登録と完了画面
-        if ($_POST["mode"] == "complete") {
+        if ($_POST["mode2"] == "complete") {
             $objPage->uniqid = lfRegistData ($objPage->arrForm, $arrRegistColumn, $arrRejectRegistColumn);
 
             // 空メールを受信済みの場合はすぐに本登録完了にする。
