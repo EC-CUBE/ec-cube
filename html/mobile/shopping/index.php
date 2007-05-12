@@ -254,6 +254,20 @@ $arrRejectRegistColumn = array("year", "month", "day", "email02", "email_mobile0
     //-- 入力データの変換
     $objPage->arrForm = lfConvertParam($objPage->arrForm, $arrRegistColumn);
 
+	if (!empty($_POST["return"])) {
+        switch ($_POST["mode2"]) {
+        case "deliv":
+            $_POST["mode2"] = "set3";
+            break;
+        case "set3":
+            $_POST["mode2"] = "set2";
+            break;
+        default:
+            $_POST["mode2"] = "set1";
+            break;
+        }
+    }    
+
     //--　入力エラーチェック
     if (!empty($_POST["mode2"])) {
             if ($_POST["mode2"] == "set2") {
@@ -286,19 +300,7 @@ $arrRejectRegistColumn = array("year", "month", "day", "email02", "email_mobile0
 //        }
 //    }
     
-    if (!empty($_POST["return"])) {
-        switch ($_POST["mode2"]) {
-        case "deliv":
-            $_POST["mode2"] = "set3";
-            break;
-        case "set3":
-            $_POST["mode2"] = "set2";
-            break;
-        default:
-            $_POST["mode2"] = "set1";
-            break;
-        }
-    }    
+    
     
     //フォームの値を$objPageのキーとして代入していく
    foreach($objPage->arrForm as $key => $val) {
