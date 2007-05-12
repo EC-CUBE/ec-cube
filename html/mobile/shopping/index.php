@@ -323,15 +323,15 @@ $arrRejectRegistColumn = array("year", "month", "day");
                 $objPage->pref = @$address[0]['state'];
                 $objPage->addr01 = @$address[0]['city'] . @$address[0]['town'];
             }
-        } /*elseif ($_POST["mode"] == "deliv") {
+        }/*elseif ($_POST["mode"] == "deliv") {
             //パスワード表示
             
             //メール受け取り
-            if (strtolower($objPage->arrForm['mail_flag']) == "on") {
-                $objPage->arrForm['mail_flag']  = "2";
-            } else {
-                $objPage->arrForm['mail_flag']  = "3";
-            }
+//            if (strtolower($objPage->arrForm['mail_flag']) == "on") {
+//                $objPage->arrForm['mail_flag']  = "2";
+//            } else {
+//                $objPage->arrForm['mail_flag']  = "3";
+//            }
 
             $objPage->tpl_mainpage = 'shopping/deliv.tpl';
             $objPage->tpl_title = 'お客様情報(確認ページ)';
@@ -354,33 +354,33 @@ $arrRejectRegistColumn = array("year", "month", "day");
             }
         }
 
-//        if ($_POST["mode"] == "deliv") {
-//            
-//            $objFormParam = new SC_FormParam();
-//            // パラメータ情報の初期化
-//           
-//            // POST値の取得
-//            $objFormParam->setParam($_POST);
-//            
-//            // 入力値の取得
-//            $objPage->arrForm = $objFormParam->getFormParamList();
-//            $objPage->arrErr = $arrErr;
-//            
-////            $cnt = 1;
-////            foreach($objOtherAddr as $val) {
-////                $objPage->arrAddr[$cnt] = $val;
-////                $cnt++;
-////            }
-//            
-//           $objPage->arrAddr[0]['zip01'] = $objPage->zip01;
-//           $objPage->arrAddr[0]['zip02'] = $objPage->zip02;
-//           $objPage->arrAddr[0]['pref'] = $objPage->pref;
-//           $objPage->arrAddr[0]['addr01'] = $objPage->addr01;
-//           $objPage->arrAddr[0]['addr02'] = $objPage->addr02;
-//           
-//            $objPage->tpl_mainpage = 'shopping/deliv.tpl';
-//            $objPage->tpl_title = 'お届け先情報';
-//        }
+        if ($_POST["mode"] == "deliv") {
+            
+            $objFormParam = new SC_FormParam();
+            // パラメータ情報の初期化
+           
+            // POST値の取得
+            $objFormParam->setParam($_POST);
+            
+            // 入力値の取得
+            $objPage->arrForm = $objFormParam->getFormParamList();
+            $objPage->arrErr = $arrErr;
+            
+//            $cnt = 1;
+//            foreach($objOtherAddr as $val) {
+//                $objPage->arrAddr[$cnt] = $val;
+//                $cnt++;
+//            }
+            
+           $objPage->arrAddr[0]['zip01'] = $objPage->zip01;
+           $objPage->arrAddr[0]['zip02'] = $objPage->zip02;
+           $objPage->arrAddr[0]['pref'] = $objPage->pref;
+           $objPage->arrAddr[0]['addr01'] = $objPage->addr01;
+           $objPage->arrAddr[0]['addr02'] = $objPage->addr02;
+           
+            $objPage->tpl_mainpage = 'shopping/deliv.tpl';
+            $objPage->tpl_title = 'お届け先情報';
+        }
         
          if ($_POST["mode"] == "customer_addr") {
            lfRegistData ($objPage->tpl_uniqid); 
