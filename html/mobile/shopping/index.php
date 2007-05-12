@@ -248,7 +248,7 @@ $arrRejectRegistColumn = array("year", "month", "day", "email02", "email_mobile0
         $objPage->arrForm['year'] = '';
     }
     
-    $objPage->arrForm['email'] = strtolower($objPage->arrForm['email']);        // emailはすべて小文字で処理
+    //$objPage->arrForm['email'] = strtolower($objPage->arrForm['email']);        // emailはすべて小文字で処理
     
     //-- 入力データの変換
     $objPage->arrForm = lfConvertParam($objPage->arrForm, $arrRegistColumn);
