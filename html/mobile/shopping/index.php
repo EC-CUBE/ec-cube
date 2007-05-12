@@ -385,7 +385,7 @@ $arrRejectRegistColumn = array("year", "month", "day");
 //        }
         
          if ($_POST["mode"] == "customer_addr") {
-           lfRegistData ($uniqid); 
+           lfRegistData ($objPage->tpl_uniqid); 
            header("Location:" . gfAddSessionId("./payment.php"));
         print($_POST);
         }
