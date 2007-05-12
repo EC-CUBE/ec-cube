@@ -10,7 +10,7 @@
 <!--<form name="form1" method="post" action="<!--{$smarty.server.PHP_SELF|escape}-->">-->
 	<form name="form1" method="post" action="<!--{$smarty.server.PHP_SELF|escape}-->">
 	<input type="text" name="mode" value="nonmenber">
-	<input type="text" name="mode2" value="set3">
+	<input type="text" name="mode2" value="deliv">
 	<input type="hidden" name="uniqid" value="<!--{$tpl_uniqid}-->">
 	
 	<font color="#FF0000">*は必須項目です。</font><br>
