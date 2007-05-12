@@ -256,15 +256,15 @@ $arrRejectRegistColumn = array("year", "month", "day");
 
     //--　入力エラーチェック
     if (!empty($_POST["mode2"])) {
-            if ($_POST["mode2"] == "nonmember") {
+            if ($_POST["mode2"] == "set1") {
             $objPage->arrErr = lfErrorCheck1($objPage->arrForm);
             $objPage->tpl_mainpage = 'shopping/nonmember_set1.tpl';
             $objPage->tpl_title = 'お客様情報入力(1/3)';
-        } elseif ($_POST["mode2"] == "set1") {
+        } elseif ($_POST["mode2"] == "set2") {
             $objPage->arrErr = lfErrorCheck2($objPage->arrForm);
             $objPage->tpl_mainpage = 'shopping/nonmember_set2.tpl';
             $objPage->tpl_title = 'お客様情報入力(2/3)';
-        } elseif ($_POST["mode2"] == "set2"){
+        } elseif ($_POST["mode2"] == "set3"){
             $objPage->arrErr = lfErrorCheck3($objPage->arrForm);
             $objPage->tpl_mainpage = 'shopping/nonmember_set3.tpl';
             $objPage->tpl_title = 'お客様情報入力(3/3)';
