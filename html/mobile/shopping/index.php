@@ -240,7 +240,7 @@ $arrRejectRegistColumn = array("year", "month", "day");
 	$objPage->tpl_css = array();
 	$objPage->tpl_css[] = '/css/layout/login/nonmember.css';
     
-        //-- POSTデータの引き継ぎ
+    //-- POSTデータの引き継ぎ
     $objPage->arrForm = $_POST;
     print($objPage->arrForm['year']);
     if($objPage->arrForm['year'] == '----') {
@@ -251,8 +251,6 @@ $arrRejectRegistColumn = array("year", "month", "day");
     
     //-- 入力データの変換
     $objPage->arrForm = lfConvertParam($objPage->arrForm, $arrRegistColumn);
-
-
 
     //--　入力エラーチェック
     if (!empty($_POST["mode2"])) {
@@ -272,7 +270,7 @@ $arrRejectRegistColumn = array("year", "month", "day");
     
         // 戻るボタン用処理
         //returnの中に元のページの名前が入っている
-    /*if (!empty($_POST["return"])) {
+    if (!empty($_POST["return"])) {
         switch ($_POST["mode2"]) {
         case "set3":
             $_POST["mode2"] = "set3";
@@ -281,10 +279,10 @@ $arrRejectRegistColumn = array("year", "month", "day");
             $_POST["mode2"] = "set2";
             break;
         default:
-            $_POST["mode2"] = "set1";
+            $_POST["mode2"] = "set2";
             break;
         }
-    }*/
+    }
     
     //フォームの値を$objPageのキーとして代入していく
    foreach($objPage->arrForm as $key => $val) {
