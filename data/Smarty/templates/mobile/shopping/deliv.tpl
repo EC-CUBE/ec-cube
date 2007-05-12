@@ -19,7 +19,8 @@
 <input type="hidden" name="uniqid" value="<!--{$tpl_uniqid}-->">
 <input type="hidden" name="deli" value="<!--{$smarty.section.cnt.iteration}-->">
 <!--{if $smarty.section.cnt.first}-->
-<input type="text" name="mode" value="customer_addr">
+<input type="text" name="mode" value="nonmember">
+<input type="text" name="mode2" value="customer_addr">
 <input type="hidden" name="other_deliv_id" value="">
 <!--{else}-->
 <input type="hidden" name="mode" value="other_addr">
