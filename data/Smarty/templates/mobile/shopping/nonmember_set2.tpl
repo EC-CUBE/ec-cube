@@ -45,7 +45,7 @@
 	<input type="submit" name="return" value="╠сды">
 
 	<!--{foreach from=$list_data key=key item=item}-->
-		<input type="hidden" name="<!--{$key|escape}-->" value="<!--{$item|escape}-->">
+		<input type="text" name="<!--{$key|escape}-->" value="<!--{$item|escape}-->">
 	<!--{/foreach}-->
 </form>
 
