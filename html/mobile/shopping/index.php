@@ -270,21 +270,35 @@ $arrRejectRegistColumn = array("year", "month", "day", "email02", "email_mobile0
             $objPage->tpl_title = 'お客様情報入力(3/3)';
         }
     
-        // 戻るボタン用処理
-        //returnの中に元のページの名前が入っている
+    // 戻るボタン用処理
+    //returnの中に元のページの名前が入っている
+//    if (!empty($_POST["return"])) {
+//        switch ($_POST["mode2"]) {
+//        case "deliv":
+//            $_POST["mode2"] = "set3";
+//            break;
+//        case "set3":
+//            $_POST["mode2"] = "set2";
+//            break;
+//        default:
+//            $_POST["mode2"] = "set1";
+//            break;
+//        }
+//    }
+    
     if (!empty($_POST["return"])) {
         switch ($_POST["mode2"]) {
-        case "deliv":
+        case "set3":
             $_POST["mode2"] = "set3";
             break;
-        case "set3":
+        case "set2":
             $_POST["mode2"] = "set2";
             break;
         default:
             $_POST["mode2"] = "set1";
             break;
         }
-    }
+    }    
     
     //フォームの値を$objPageのキーとして代入していく
    foreach($objPage->arrForm as $key => $val) {
