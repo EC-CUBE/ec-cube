@@ -46,6 +46,7 @@ $objFormParam->setParam($_POST);			// POST値の取得
 
 //-------------------------------------▼NONMEMBER----------------------------------------------
 //---- ページ初期設定
+
 $CONF = sf_getBasisData();                  // 店舗基本情報
 $objView = new SC_MobileView();
 $objDate = new SC_Date(START_BIRTH_YEAR, date("Y",strtotime("now")));
@@ -66,7 +67,7 @@ if (SSLURL_CHECK == 1){
 
 // レイアウトデザインを取得
 $objPage = sfGetPageLayout($objPage, false, DEF_LAYOUT);
-
+/*
 //---- 登録用カラム配列
 $arrRegistColumn = array(
                              array(  "column" => "name01", "convert" => "aKV" ),
@@ -101,6 +102,7 @@ $arrRegistColumn = array(
 //---- 登録除外用カラム配列
 //$arrRejectRegistColumn = array("year", "month", "day", "email02", "email_mobile02","password","password02","reminder","reminder_answer");
 $arrRejectRegistColumn = array("year", "month", "day");
+*/
 //-------------------------------------▲NONMEMBER----------------------------------------------
 
 
@@ -254,21 +256,22 @@ $arrRejectRegistColumn = array("year", "month", "day");
 
     //--　入力エラーチェック
     if (!empty($_POST["mode2"])) {
-            if ($_POST["mode2"] == "set1") {
+            if ($_POST["mode2"] == "nonmember") {
             $objPage->arrErr = lfErrorCheck1($objPage->arrForm);
             $objPage->tpl_mainpage = 'shopping/nonmember_set1.tpl';
             $objPage->tpl_title = 'お客様情報入力(1/3)';
-        } elseif ($_POST["mode2"] == "set2") {
+        } elseif ($_POST["mode2"] == "set1") {
             $objPage->arrErr = lfErrorCheck2($objPage->arrForm);
             $objPage->tpl_mainpage = 'shopping/nonmember_set2.tpl';
             $objPage->tpl_title = 'お客様情報入力(2/3)';
-        } elseif ($_POST["mode2"] == "set3"){
+        } elseif ($_POST["mode2"] == "set2"){
             $objPage->arrErr = lfErrorCheck3($objPage->arrForm);
             $objPage->tpl_mainpage = 'shopping/nonmember_set3.tpl';
             $objPage->tpl_title = 'お客様情報入力(3/3)';
         }
     
         // 戻るボタン用処理
+        //returnの中に元のページの名前が入っている
     if (!empty($_POST["return"])) {
         switch ($_POST["mode2"]) {
         case "set3":
@@ -283,13 +286,15 @@ $arrRejectRegistColumn = array("year", "month", "day");
         }
     }
     
+    //フォームの値を$objPageのキーとして代入していく
    foreach($objPage->arrForm as $key => $val) {
         $objPage->$key = $val;
         }
  
     }
 
-    if ($objPage->arrErr || !empty($_POST["return"])) {     // 入力エラーのチェック
+		// 入力エラーのチェック
+    if ($objPage->arrErr || !empty($_POST["return"])) {     
 
         //-- データの設定
         if ($_POST["mode2"] == "set1") {
