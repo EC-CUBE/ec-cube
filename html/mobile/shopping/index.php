@@ -272,10 +272,10 @@ $arrRejectRegistColumn = array("year", "month", "day");
         //returnの中に元のページの名前が入っている
     if (!empty($_POST["return"])) {
         switch ($_POST["mode2"]) {
-        case "set3":
+        case "deliv":
             $_POST["mode2"] = "set3";
             break;
-        case "set2":
+        case "set3":
             $_POST["mode2"] = "set2";
             break;
         default:
