@@ -244,8 +244,9 @@ $arrRejectRegistColumn = array("year", "month", "day", "email02", "email_mobile0
     $objPage->arrForm = $_POST;
     
     print($objPage->arrForm['year']);
-    if($objPage->arrForm['year'] == '----') {
-        $objPage->arrForm['year'] = '';
+    
+    if($objPage->arrForm['year']['value'] == '----') {
+        $objPage->arrForm['year']['value'] = '';
     }
     
     //$objPage->arrForm['email'] = strtolower($objPage->arrForm['email']);        // emailはすべて小文字で処理
