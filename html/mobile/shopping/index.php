@@ -350,6 +350,7 @@ $arrRejectRegistColumn = array("year", "month", "day", "email02", "email_mobile0
             $checkVal = array();
         }
 
+//$objPage->list_data
         foreach($objPage->arrForm as $key => $val) {
             if ($key != "mode2" && $key != "submit" && $key != "confirm" && $key != "return" && $key != session_name() && !in_array($key, $checkVal)) {
                 $objPage->list_data[ $key ] = $val;
