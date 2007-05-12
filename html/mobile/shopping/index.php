@@ -256,8 +256,13 @@ $arrRejectRegistColumn = array("year", "month", "day", "email02", "email_mobile0
     //-- 入力データの変換
     $objPage->arrForm = lfConvertParam($objPage->arrForm, $arrRegistColumn);
 
+    // 戻るボタン用処理
+    //returnの中に元のページの名前が入っている
 	if (!empty($_POST["return"])) {
         switch ($_POST["mode2"]) {
+        case "deliv_date":	
+        
+        	break;
         case "deliv":
             $_POST["mode2"] = "set3";
             break;
@@ -285,24 +290,6 @@ $arrRejectRegistColumn = array("year", "month", "day", "email02", "email_mobile0
             $objPage->tpl_mainpage = 'shopping/nonmember_set3.tpl';
             $objPage->tpl_title = 'お客様情報入力(3/3)';
         }
-    
-    // 戻るボタン用処理
-    //returnの中に元のページの名前が入っている
-//    if (!empty($_POST["return"])) {
-//        switch ($_POST["mode2"]) {
-//        case "deliv":
-//            $_POST["mode2"] = "set3";
-//            break;
-//        case "set3":
-//            $_POST["mode2"] = "set2";
-//            break;
-//        default:
-//            $_POST["mode2"] = "set1";
-//            break;
-//        }
-//    }
-    
-    
     
     //フォームの値を$objPageのキーとして代入していく
    foreach($objPage->arrForm as $key => $val) {
@@ -393,11 +380,11 @@ $arrRejectRegistColumn = array("year", "month", "day", "email02", "email_mobile0
 //                $cnt++;
 //            }
             
-           $objPage->arrAddr[0]['zip01'] = $objPage->zip01;
-           $objPage->arrAddr[0]['zip02'] = $objPage->zip02;
-           $objPage->arrAddr[0]['pref'] = $objPage->pref;
-           $objPage->arrAddr[0]['addr01'] = $objPage->addr01;
-           $objPage->arrAddr[0]['addr02'] = $objPage->addr02;
+           $objPage->arrAddr[1]['zip01'] = $objPage->zip01;
+           $objPage->arrAddr[1]['zip02'] = $objPage->zip02;
+           $objPage->arrAddr[1]['pref'] = $objPage->pref;
+           $objPage->arrAddr[1]['addr01'] = $objPage->addr01;
+           $objPage->arrAddr[1]['addr02'] = $objPage->addr02;
            
             $objPage->tpl_mainpage = 'shopping/deliv.tpl';
             $objPage->tpl_title = 'お届け先情報';
