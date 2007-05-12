@@ -304,7 +304,7 @@ $arrRejectRegistColumn = array("year", "month", "day");
         }
 
         foreach($objPage->arrForm as $key => $val) {
-            if ($key != "mode" && $key != "submit" && $key != "return" && $key != session_name() && !in_array($key, $checkVal))
+            if ($key != "mode2" && $key != "submit" && $key != "return" && $key != session_name() && !in_array($key, $checkVal))
                 $objPage->list_data[ $key ] = $val;
         }
 
@@ -349,7 +349,7 @@ $arrRejectRegistColumn = array("year", "month", "day");
         }
 
         foreach($objPage->arrForm as $key => $val) {
-            if ($key != "mode" && $key != "submit" && $key != "confirm" && $key != "return" && $key != session_name() && !in_array($key, $checkVal)) {
+            if ($key != "mode2" && $key != "submit" && $key != "confirm" && $key != "return" && $key != session_name() && !in_array($key, $checkVal)) {
                 $objPage->list_data[ $key ] = $val;
             }
         }
