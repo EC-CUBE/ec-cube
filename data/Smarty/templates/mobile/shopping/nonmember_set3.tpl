@@ -9,8 +9,8 @@
 <hr>
 <!--<form name="form1" method="post" action="<!--{$smarty.server.PHP_SELF|escape}-->">-->
 	<form name="form1" method="post" action="<!--{$smarty.server.PHP_SELF|escape}-->">
-	<input type="hidden" name="mode" value="nonmember">
-	<input type="hidden" name="mode2" value="set3">
+	<input type="text" name="mode" value="nonmember">
+	<input type="text" name="mode2" value="set3">
 	<input type="hidden" name="uniqid" value="<!--{$tpl_uniqid}-->">
 	
 	<font color="#FF0000">*は必須項目です。</font><br>
@@ -50,7 +50,7 @@
 	<input type="submit" name="return" value="戻る">
 
 	<!--{foreach from=$list_data key=key item=item}-->
-		<input type="hidden" name="<!--{$key|escape}-->" value="<!--{$item|escape}-->">
+		<input type="text" name="<!--{$key|escape}-->" value="<!--{$item|escape}-->">
 	<!--{/foreach}-->
 </form>
 
