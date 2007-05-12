@@ -272,7 +272,7 @@ $arrRejectRegistColumn = array("year", "month", "day");
     
         // 戻るボタン用処理
         //returnの中に元のページの名前が入っている
-    if (!empty($_POST["return"])) {
+    /*if (!empty($_POST["return"])) {
         switch ($_POST["mode2"]) {
         case "set3":
             $_POST["mode2"] = "set3";
@@ -284,7 +284,7 @@ $arrRejectRegistColumn = array("year", "month", "day");
             $_POST["mode2"] = "set1";
             break;
         }
-    }
+    }*/
     
     //フォームの値を$objPageのキーとして代入していく
    foreach($objPage->arrForm as $key => $val) {
