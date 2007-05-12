@@ -232,7 +232,7 @@ function lfSetNonMember($objPage) {
 
 //---- 登録除外用カラム配列
 //$arrRejectRegistColumn = array("year", "month", "day", "email02", "email_mobile02","password","password02","reminder","reminder_answer");
-$arrRejectRegistColumn = array("year", "month", "day");
+$arrRejectRegistColumn = array("year", "month", "day", "email02", "email_mobile02", "password02");
     
     //print_r($_POST);
         
@@ -248,7 +248,7 @@ $arrRejectRegistColumn = array("year", "month", "day");
         $objPage->arrForm['year'] = '';
     }
     
-    //$objPage->arrForm['email'] = strtolower($objPage->arrForm['email']);        // emailはすべて小文字で処理
+    $objPage->arrForm['email'] = strtolower($objPage->arrForm['email']);        // emailはすべて小文字で処理
     
     //-- 入力データの変換
     $objPage->arrForm = lfConvertParam($objPage->arrForm, $arrRegistColumn);
