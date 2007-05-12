@@ -279,7 +279,7 @@ $arrRejectRegistColumn = array("year", "month", "day");
             $_POST["mode2"] = "set2";
             break;
         default:
-            $_POST["mode2"] = "set2";
+            $_POST["mode2"] = "set1";
             break;
         }
     }
