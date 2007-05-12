@@ -9,7 +9,7 @@
 <hr>
 <!--<form name="form1" method="post" action="<!--{$smarty.server.PHP_SELF|escape}-->">-->
 	<form name="form1" method="post" action="<!--{$smarty.server.PHP_SELF|escape}-->">
-	<input type="text" name="mode" value="nonmember">
+	<input type="text" name="mode" value="deliv">
 	<input type="text" name="mode2" value="set3">
 	<input type="hidden" name="uniqid" value="<!--{$tpl_uniqid}-->">
 	
