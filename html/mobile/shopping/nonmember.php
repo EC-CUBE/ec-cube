@@ -323,22 +323,6 @@ function lfConvertParam($array, $arrRegistColumn) {
     return $array;
 }
 
-//---- 入力エラーチェック
-function lfErrorCheck1($array) {
-
-    global $objConn;
-    $objErr = new SC_CheckError($array);
-    
-    $objErr->doFunc(array("お名前（姓）", 'name01', STEXT_LEN), array("EXIST_CHECK", "NO_SPTAB", "SPTAB_CHECK" ,"MAX_LENGTH_CHECK"));
-    $objErr->doFunc(array("お名前（名）", 'name02', STEXT_LEN), array("EXIST_CHECK", "NO_SPTAB", "SPTAB_CHECK" , "MAX_LENGTH_CHECK"));
-    $objErr->doFunc(array("お名前（カナ/姓）", 'kana01', STEXT_LEN), array("EXIST_CHECK", "NO_SPTAB", "SPTAB_CHECK" ,"MAX_LENGTH_CHECK", "KANA_CHECK"));
-    $objErr->doFunc(array("お名前（カナ/名）", 'kana02', STEXT_LEN), array("EXIST_CHECK", "NO_SPTAB", "SPTAB_CHECK" ,"MAX_LENGTH_CHECK", "KANA_CHECK"));
-    $objErr->doFunc(array('メールアドレス', "email", MTEXT_LEN) ,array("NO_SPTAB", "EXIST_CHECK", "EMAIL_CHECK", "SPTAB_CHECK" ,"EMAIL_CHAR_CHECK", "MAX_LENGTH_CHECK", "MOBILE_EMAIL_CHECK"));
-
-    //現会員の判定 →　現会員もしくは仮登録中は、メアド一意が前提になってるので同じメアドで登録不可
-
-    return $objErr->arrErr;
-}
 
 //---- 入力エラーチェック
 function lfErrorCheck2($array) {
@@ -364,6 +348,7 @@ function lfErrorCheck2($array) {
     return $objErr->arrErr;
 }
 
+
 //---- 入力エラーチェック
 function lfErrorCheck3($array) {
 
@@ -380,18 +365,6 @@ function lfErrorCheck3($array) {
     
     return $objErr->arrErr;
 }
-
-//確認ページ用パスワード表示用
-
-function lfPassLen($passlen){
-    $ret = "";
-    for ($i=0;$i<$passlen;true){
-    $ret.="*";
-    $i++;
-    }
-    return $ret;
-}
-
 
 // 郵便番号から住所の取得
 function lfGetAddress($zipcode) {
