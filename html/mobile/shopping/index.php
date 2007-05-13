@@ -370,6 +370,10 @@ $arrRejectRegistColumn = array("year", "month", "day", "email02", "email_mobile0
             // POST値の取得
             $objFormParam->setParam($_POST);
             
+           	$arrRet = $objFormParam->getHashArray();
+			print_r($arrRet);
+			$sqlval = $objFormParam->getDbArray();
+            
             // 入力値の取得
             $objPage->arrForm = $objFormParam->getFormParamList();
             $objPage->arrErr = $arrErr;
@@ -379,11 +383,7 @@ $arrRejectRegistColumn = array("year", "month", "day", "email02", "email_mobile0
 //                $objPage->arrAddr[$cnt] = $val;
 //                $cnt++;
 //            }
-           
-           	$objQuery = new SC_Query();
-			$where = "order_temp_id = ?";
-			$arrRet = $objQuery->select("*", "dtb_order_temp", $where, array($uniqid));
-			$objFormParam->setParam($arrRet[0]);
+         
             
            $objPage->arrAddr[0]['zip01'] = $objPage->zip01;
            $objPage->arrAddr[0]['zip02'] = $objPage->zip02;
