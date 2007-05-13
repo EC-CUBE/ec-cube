@@ -4,12 +4,15 @@
  *
  * http://www.lockon.co.jp/
  */
+ 
 *}-->
 <div align="center">お客様情報入力 3/3</div>
 <hr>
-<form name="form1" method="post" action="<!--{$smarty.server.PHP_SELF|escape}-->">
-	<input type="hidden" name="mode" value="confirm">
-
+	<form name="form1" method="post" action="<!--{$smarty.server.PHP_SELF|escape}-->">
+	<input type="text" name="mode" value="nonmember">
+	<input type="text" name="mode2" value="deliv">
+	<input type="hidden" name="uniqid" value="<!--{$tpl_uniqid}-->">
+	
 	<font color="#FF0000">*は必須項目です。</font><br>
 	<br>
 
@@ -37,17 +40,17 @@
 	&nbsp;-&nbsp;
 	<input type="text" size="<!--{$size}-->" name="tel03" value="<!--{$tel03|escape}-->" maxlength="<!--{$smarty.const.TEL_ITEM_LEN}-->" istyle="4"><br>
 
-	【メールマガジン】<br>
+	<!--【メールマガジン】<br>
 	お得な情報を希望されますか？<br>
 	配信希望<input type="checkbox" name="mailmaga_flg" value="on" <!--{if $mailmaga_flg eq 'on'}-->checked<!--{/if}--> /><br>
 	（希望されない場合はチェックをはずしてください）<br>
-	<br>
+	<br>-->
 
 	<input type="submit" name="submit" value="次へ"><br>
 	<input type="submit" name="return" value="戻る">
 
 	<!--{foreach from=$list_data key=key item=item}-->
-		<input type="hidden" name="<!--{$key|escape}-->" value="<!--{$item|escape}-->">
+		<input type="text" name="<!--{$key|escape}-->" value="<!--{$item|escape}-->">
 	<!--{/foreach}-->
 </form>
 
