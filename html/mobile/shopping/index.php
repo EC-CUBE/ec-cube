@@ -408,51 +408,6 @@ $arrRejectRegistColumn = array("year", "month", "day", "email02", "email_mobile0
 	}
 	break;
         }
-        
-        //--　仮登録と完了画面
-        if ($_POST["mode2"] == "complete") {
-            $objPage->uniqid = lfRegistData ($objPage->arrForm, $arrRegistColumn, $arrRejectRegistColumn);
-
-            // 空メールを受信済みの場合はすぐに本登録完了にする。
-//            if (isset($_SESSION['mobile']['kara_mail_from'])) {
-//                header("Location:" . gfAddSessionId(MOBILE_URL_DIR . "regist/index.php?mode=regist&id=" . $objPage->uniqid));
-//                exit;
-//            }
-
-            $objPage->tpl_mainpage = 'shopping/complete.tpl';
-            $objPage->tpl_title = 'お客様情報入力(完了ページ)';
-
-            /*sfMobileSetExtSessionId('id', $objPage->uniqid, 'regist/index.php');
-
-            //　仮登録完了メール送信
-            $objPage->CONF = $CONF;
-            $objPage->to_name01 = $_POST['name01'];
-            $objPage->to_name02 = $_POST['name02'];
-            $objMailText = new SC_MobileView();
-            $objMailText->assignobj($objPage);
-            $subject = sfMakesubject('お客様情報のご確認');
-            $toCustomerMail = $objMailText->fetch("mail_templates/customer_mail.tpl");
-            $objMail = new GC_SendMail();
-            $objMail->setItem(
-                                ''                                  //　宛先
-                                , $subject                          //　サブジェクト
-                                , $toCustomerMail                   //　本文
-                                , $CONF["email03"]                  //　配送元アドレス
-                                , $CONF["shop_name"]                //　配送元　名前
-                                , $CONF["email03"]                  //　reply_to
-                                , $CONF["email04"]                  //　return_path
-                                , $CONF["email04"]                  //  Errors_to
-                                , $CONF["email01"]                  //  Bcc
-                                                                );
-            // 宛先の設定
-            $name = $_POST["name01"] . $_POST["name02"] ." 様";
-            $objMail->setTo($_POST["email"], $name);
-            $objMail->sendMail();
-*/
-            // 完了ページに移動させる。
-            header("Location:" . gfAddSessionId("./complete.php"));
-            exit;
-        }
     }
 
         
@@ -567,6 +522,29 @@ function lfCheckError() {
 	}
 		
 	return $objErr->arrErr;
+}
+
+// 受注一時テーブルのお届け先をコピーする
+function lfCopyDeliv($uniqid, $arrData) {
+	$objQuery = new SC_Query();
+	
+	// 別のお届け先を指定していない場合、配送先に登録住所をコピーする。
+	if($arrData["deliv_check"] != "1") {
+		$sqlval['deliv_name01'] = $arrData['order_name01'];
+		$sqlval['deliv_name02'] = $arrData['order_name02'];
+		$sqlval['deliv_kana01'] = $arrData['order_kana01'];
+		$sqlval['deliv_kana02'] = $arrData['order_kana02'];
+		$sqlval['deliv_pref'] = $arrData['order_pref'];
+		$sqlval['deliv_zip01'] = $arrData['order_zip01'];
+		$sqlval['deliv_zip02'] = $arrData['order_zip02'];
+		$sqlval['deliv_addr01'] = $arrData['order_addr01'];
+		$sqlval['deliv_addr02'] = $arrData['order_addr02'];
+		$sqlval['deliv_tel01'] = $arrData['order_tel01'];
+		$sqlval['deliv_tel02'] = $arrData['order_tel02'];
+		$sqlval['deliv_tel03'] = $arrData['order_tel03'];
+		$where = "order_temp_id = ?";
+		$objQuery->update("dtb_order_temp", $sqlval, $where, array($uniqid));
+	}
 }
 
 //-----------------------------NONMEMBER関数群▼------------------------------------------------------------------
