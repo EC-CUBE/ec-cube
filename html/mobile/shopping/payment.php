@@ -68,11 +68,9 @@ $objCartSess->chkSoldOut($objCartSess->getCartList(), true);
 if (!empty($_POST['return'])) {
 	switch ($_POST['mode']) {
 	case 'confirm':
-		$objFormParam->setParam($_POST);
 		$_POST['mode'] = 'payment';
 		break;
 	default:
-		$objFormParam->setParam($_POST);
 		// 正常な推移であることを記録しておく
 		$objSiteSess->setRegistFlag();
 		header("Location: " . gfAddSessionId(MOBILE_URL_SHOP_TOP));
@@ -83,7 +81,6 @@ if (!empty($_POST['return'])) {
 switch($_POST['mode']) {
 // 支払い方法指定 → 配達日時指定
 case 'deliv_date':
-	$objFormParam->setParam($_POST);
 	// 入力値の変換
 	$objFormParam->convParam();
 	$objPage->arrErr = lfCheckError($objPage->arrData);
@@ -100,7 +97,6 @@ case 'deliv_date':
 	}
 	break;
 case 'confirm':
-	$objFormParam->setParam($_POST);
 	// 入力値の変換
 	$objFormParam->convParam();
 	$objPage->arrErr = lfCheckError($objPage->arrData );
