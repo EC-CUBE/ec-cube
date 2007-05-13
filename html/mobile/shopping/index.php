@@ -379,6 +379,11 @@ $arrRejectRegistColumn = array("year", "month", "day", "email02", "email_mobile0
 //                $objPage->arrAddr[$cnt] = $val;
 //                $cnt++;
 //            }
+           
+           	$objQuery = new SC_Query();
+			$where = "order_temp_id = ?";
+			$arrRet = $objQuery->select("*", "dtb_order_temp", $where, array($uniqid));
+			$objFormParam->setParam($arrRet[0]);
             
            $objPage->arrAddr[0]['zip01'] = $objPage->zip01;
            $objPage->arrAddr[0]['zip02'] = $objPage->zip02;
