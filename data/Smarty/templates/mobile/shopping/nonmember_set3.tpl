@@ -40,11 +40,11 @@
 	&nbsp;-&nbsp;
 	<input type="text" size="<!--{$size}-->" name="tel03" value="<!--{$tel03|escape}-->" maxlength="<!--{$smarty.const.TEL_ITEM_LEN}-->" istyle="4"><br>
 
-	【メールマガジン】<br>
+	<!--【メールマガジン】<br>
 	お得な情報を希望されますか？<br>
 	配信希望<input type="checkbox" name="mailmaga_flg" value="on" <!--{if $mailmaga_flg eq 'on'}-->checked<!--{/if}--> /><br>
 	（希望されない場合はチェックをはずしてください）<br>
-	<br>
+	<br>-->
 
 	<input type="submit" name="submit" value="次へ"><br>
 	<input type="submit" name="return" value="戻る">
