@@ -42,7 +42,7 @@
 </form>
 <!--¢¥²ñ°÷ÅÐÏ¿¤¬¤ªºÑ¤Î¤ªµÒÍÍ-->
 <!--¢§²ñ°÷ÅÐÏ¿¤µ¤ì¤Ê¤¤¤ªµÒÍÍ-->
-<form name="nonmember_form" id="nonmember_form" method="post" action="<!--{$smarty.const.MOBILE_URL_DIR}-->shopping/index.php">
+<form name="nonmember_form" id="nonmember_form" method="post" action="<!--{$smarty.const.MOBILE_URL_DIR}-->nonmember/index.php">
 	<input type="hidden" name="mode" value="nonmember">
 	<input type="hidden" name="mode2" value="set1">
 	<center><input type="submit" value="ÅÐÏ¿¤»¤º¤Ë¹ØÆþ" name="nonmember"></center>
