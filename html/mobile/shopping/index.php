@@ -387,7 +387,7 @@ $arrRejectRegistColumn = array("year", "month", "day", "email02", "email_mobile0
             lfRegistData($objPage->tpl_uniqid); 
             
             lfCopyDeliv($objPage->tpl_uniqid, $_POST);
-            print_r($objPage->arrAddr[0]);
+            print_r($objPage->tpl_uniqid);
            $objPage->arrAddr[0]['zip01'] = $objPage->zip01;
            $objPage->arrAddr[0]['zip02'] = $objPage->zip02;
            $objPage->arrAddr[0]['pref'] = $objPage->pref;
