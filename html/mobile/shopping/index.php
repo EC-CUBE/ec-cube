@@ -233,8 +233,6 @@ function lfSetNonMember($objPage) {
 //---- 登録除外用カラム配列
 //$arrRejectRegistColumn = array("year", "month", "day", "email02", "email_mobile02","password","password02","reminder","reminder_answer");
 $arrRejectRegistColumn = array("year", "month", "day", "email02", "email_mobile02", "password02");
-    
-    //print_r($_POST);
         
     $objPage->tpl_mainpage = 'shopping/nonmember_set1.tpl';
 	$objPage->tpl_css = array();
@@ -291,7 +289,6 @@ $arrRejectRegistColumn = array("year", "month", "day", "email02", "email_mobile0
    foreach($objPage->arrForm as $key => $val) {
         $objPage->$key = $val;
         }
- 
     }
 
 		// 入力エラーのチェック
@@ -374,7 +371,8 @@ $arrRejectRegistColumn = array("year", "month", "day", "email02", "email_mobile0
            $objPage->arrAddr[0]['zip02'] = $objPage->zip02;
            $objPage->arrAddr[0]['pref'] = $objPage->pref;
            $objPage->arrAddr[0]['addr01'] = $objPage->addr01;
-           $objPage->arrAddr[0]['addr02'] = $objPage->addr02;
+           $objPage->arrAddr[0]['addr02'] = $objPage->addr02; 
+           $arrData = $_POST;
            
             $objPage->tpl_mainpage = 'shopping/nonmember_deliv.tpl';
             $objPage->tpl_title = 'お届け先情報';
@@ -385,7 +383,7 @@ $arrRejectRegistColumn = array("year", "month", "day", "email02", "email_mobile0
           	if ($_POST['deli'] != "") {
            lfRegistData($objPage->tpl_uniqid); 
            
-           header("Location:" . gfAddSessionId("./payment.php"));
+           header("Location:" . gfAddSessionId("./payment.php?test=test"));
      		exit;
 	}else{
 		// エラーを返す
@@ -395,7 +393,6 @@ $arrRejectRegistColumn = array("year", "month", "day", "email02", "email_mobile0
         }
     }
 
-        
 	return $objPage;
 }
 
