@@ -14,7 +14,7 @@ class LC_Page {
 	var $tpl_mode;
 	var $arrAddr;
 	function LC_Page() {
-		$this->tpl_mainpage = 'shopping/deliv.tpl';
+		$this->tpl_mainpage = 'nonmember/deliv.tpl';
 		$this->tpl_css = '/css/layout/shopping/index.css';
 		global $arrPref;
 		$this->arrPref = $arrPref;

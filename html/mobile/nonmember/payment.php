@@ -14,7 +14,7 @@ class LC_Page {
 	var $tpl_mode;
 	function LC_Page() {
 		$this->tpl_css = '/css/layout/shopping/pay.css';
-		$this->tpl_mainpage = 'shopping/payment.tpl';
+		$this->tpl_mainpage = 'nonmember/payment.tpl';
 		$this->tpl_onload = 'fnCheckInputPoint();';
 		$this->tpl_title = "お支払方法の指定";
 		/*
@@ -81,7 +81,7 @@ case 'deliv_date':
 	$objPage->arrErr = lfCheckError($objPage->arrData);
 	if (!isset($objPage->arrErr['payment_id'])) {
 		// 支払い方法の入力エラーなし
-		$objPage->tpl_mainpage = 'shopping/deliv_date.tpl';
+		$objPage->tpl_mainpage = 'nonmember/deliv_date.tpl';
 		$objPage->tpl_title = "配達日時指定";
 		break;
 	} else {
@@ -111,7 +111,7 @@ case 'confirm':
 		lfSetOrderTempData($uniqid);
 		if (!isset($objPage->arrErr['payment_id'])) {
 			// 支払い方法の入力エラーなし
-			$objPage->tpl_mainpage = 'shopping/deliv_date.tpl';
+			$objPage->tpl_mainpage = 'nonmember/deliv_date.tpl';
 			$objPage->tpl_title = "配達日時指定";
 		}
 	}
