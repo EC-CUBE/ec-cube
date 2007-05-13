@@ -247,10 +247,6 @@ $arrRejectRegistColumn = array("year", "month", "day", "email02", "email_mobile0
         $objPage->arrForm['year'] = '';
     }
     
-    print($objPage->arrForm['year']);
-    
-
-    
     //$objPage->arrForm['email'] = strtolower($objPage->arrForm['email']);        // emailはすべて小文字で処理
     
     //-- 入力データの変換
@@ -330,20 +326,7 @@ $arrRejectRegistColumn = array("year", "month", "day", "email02", "email_mobile0
                 $objPage->pref = @$address[0]['state'];
                 $objPage->addr01 = @$address[0]['city'] . @$address[0]['town'];
             }
-        }/*elseif ($_POST["mode"] == "deliv") {
-            //パスワード表示
-            
-            //メール受け取り
-//            if (strtolower($objPage->arrForm['mail_flag']) == "on") {
-//                $objPage->arrForm['mail_flag']  = "2";
-//            } else {
-//                $objPage->arrForm['mail_flag']  = "3";
-//            }
-
-            $objPage->tpl_mainpage = 'shopping/deliv.tpl';
-            $objPage->tpl_title = 'お客様情報(確認ページ)';
-
-        }*/
+        }
 
         //-- データ設定
         unset($objPage->list_data);
@@ -387,7 +370,7 @@ $arrRejectRegistColumn = array("year", "month", "day", "email02", "email_mobile0
             lfRegistData($objPage->tpl_uniqid); 
             
             lfCopyDeliv($objPage->tpl_uniqid, $_POST);
-            print_r($objPage->tpl_uniqid);
+            print_r($objPage);
            $objPage->arrAddr[0]['zip01'] = $objPage->zip01;
            $objPage->arrAddr[0]['zip02'] = $objPage->zip02;
            $objPage->arrAddr[0]['pref'] = $objPage->pref;
