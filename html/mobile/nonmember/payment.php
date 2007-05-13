@@ -40,7 +40,7 @@ $objFormParam = new SC_FormParam();
 lfInitParam();
 // POST値の取得
 $objFormParam->setParam($_POST);
-
+print_r($_POST);
 // ユーザユニークIDの取得と購入状態の正当性をチェック
 $uniqid = sfCheckNormalAccess($objSiteSess, $objCartSess);
 // ユニークIDを引き継ぐ
