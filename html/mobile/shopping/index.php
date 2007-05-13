@@ -395,9 +395,6 @@ $arrRejectRegistColumn = array("year", "month", "day", "email02", "email_mobile0
           	if ($_POST['deli'] != "") {
            lfRegistData($objPage->tpl_uniqid); 
            
-           // 正常に登録されたことを記録しておく
-			$objSiteSess->setRegistFlag();
-           
            header("Location:" . gfAddSessionId("./payment.php"));
      		exit;
 	}else{
