@@ -383,6 +383,7 @@ $arrRejectRegistColumn = array("year", "month", "day", "email02", "email_mobile0
           	if ($_POST['deli'] != "") {
            lfRegistData($objPage->tpl_uniqid); 
            setcookie('eccube_mobile',$_POST);
+           echo $_COOKIE['eccube_mobile'];
            header("Location:" . gfAddSessionId("./payment.php"));
      		exit;
 	}else{
