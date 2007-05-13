@@ -384,6 +384,9 @@ $arrRejectRegistColumn = array("year", "month", "day", "email02", "email_mobile0
 //                $cnt++;
 //            }
          
+            lfRegistData($objPage->tpl_uniqid); 
+            
+            lfCopyDeliv($objPage->tpl_uniqid, $_POST);
             
            $objPage->arrAddr[0]['zip01'] = $objPage->zip01;
            $objPage->arrAddr[0]['zip02'] = $objPage->zip02;
@@ -658,4 +661,5 @@ function lfGetAddress($zipcode) {
 
     return $data_list;
 }
-//NONMEMBER_´Ø¿ô·²---------------------------------------------------------------------------------------?>
+//NONMEMBER_´Ø¿ô·²---------------------------------------------------------------------------------------
+?>
