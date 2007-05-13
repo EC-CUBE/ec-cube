@@ -83,7 +83,10 @@ switch($_POST['mode']) {
 case 'deliv_date':
 	$objFormParam->setParam($_POST);
 	
+	
+	
 	$objPage->arrAddr[0]['zip01'] = $_POST['zip01'];
+    print("trace".$objPage->arrAddr[0]['zip01']);
     $objPage->arrAddr[0]['zip02'] = $objPage->zip02;
     $objPage->arrAddr[0]['pref'] = $objPage->pref;
     $objPage->arrAddr[0]['addr01'] = $objPage->addr01;
