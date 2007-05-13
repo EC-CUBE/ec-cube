@@ -22,6 +22,11 @@
 <input type="text" name="mode" value="nonmember">
 <input type="text" name="mode2" value="customer_addr">
 <input type="hidden" name="other_deliv_id" value="">
+<input type="hidden" name="zip01" value="<!--{$arrAddr[0].zip01}-->">
+<input type="hidden" name="zip02" value="<!--{$arrAddr[0].zip02}-->">
+<input type="hidden" name="pref" value="<!--{$arrAddr[0].pref}-->">
+<input type="hidden" name="addr01" value="<!--{$arrAddr[0].addr01}-->">
+<input type="hidden" name="addr02" value="<!--{$arrAddr[cnt].addr02}-->">
 <!--{else}-->
 <input type="hidden" name="mode" value="other_addr">
 <input type="text" name="other_deliv_id" value="<!--{$arrAddr[cnt].other_deliv_id}-->">
