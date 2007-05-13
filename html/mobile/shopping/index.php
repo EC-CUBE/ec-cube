@@ -391,9 +391,20 @@ $arrRejectRegistColumn = array("year", "month", "day", "email02", "email_mobile0
         }
         
          if ($_POST["mode2"] == "customer_addr") {
+          	print_r($_POST);
+          	if ($_POST['deli'] != "") {
            lfRegistData($objPage->tpl_uniqid); 
+           
+           // 正常に登録されたことを記録しておく
+			$objSiteSess->setRegistFlag();
+           
            header("Location:" . gfAddSessionId("./payment.php"));
-        print($_POST);
+     		exit;
+	}else{
+		// エラーを返す
+		$arrErr['deli'] = '※ お届け先を選択してください。';
+	}
+	break;
         }
         
         //--　仮登録と完了画面
