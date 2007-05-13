@@ -14,7 +14,7 @@ class LC_Page {
 	var $tpl_mode;
 	var $tpl_login_email;
 	function LC_Page() {
-		$this->tpl_mainpage = 'shopping/index.tpl';
+		$this->tpl_mainpage = 'nonmember/index.tpl';
 		global $arrPref;
 		$this->arrPref = $arrPref;
 		global $arrSex;
@@ -234,7 +234,7 @@ function lfSetNonMember($objPage) {
 //$arrRejectRegistColumn = array("year", "month", "day", "email02", "email_mobile02","password","password02","reminder","reminder_answer");
 $arrRejectRegistColumn = array("year", "month", "day", "email02", "email_mobile02", "password02");
         
-    $objPage->tpl_mainpage = 'shopping/nonmember_set1.tpl';
+    $objPage->tpl_mainpage = 'nonmember/nonmember_set1.tpl';
 	$objPage->tpl_css = array();
 	$objPage->tpl_css[] = '/css/layout/login/nonmember.css';
     
@@ -273,15 +273,15 @@ $arrRejectRegistColumn = array("year", "month", "day", "email02", "email_mobile0
     if (!empty($_POST["mode2"])) {
             if ($_POST["mode2"] == "set2") {
             $objPage->arrErr = lfErrorCheck1($objPage->arrForm);
-            $objPage->tpl_mainpage = 'shopping/nonmember_set1.tpl';
+            $objPage->tpl_mainpage = 'nonmember/nonmember_set1.tpl';
             $objPage->tpl_title = 'お客様情報入力(1/3)';
         } elseif ($_POST["mode2"] == "set3") {
             $objPage->arrErr = lfErrorCheck2($objPage->arrForm);
-            $objPage->tpl_mainpage = 'shopping/nonmember_set2.tpl';
+            $objPage->tpl_mainpage = 'nonmember/nonmember_set2.tpl';
             $objPage->tpl_title = 'お客様情報入力(2/3)';
         } elseif ($_POST["mode2"] == "deliv"){
             $objPage->arrErr = lfErrorCheck3($objPage->arrForm);
-            $objPage->tpl_mainpage = 'shopping/nonmember_set3.tpl';
+            $objPage->tpl_mainpage = 'nonmember/nonmember_set3.tpl';
             $objPage->tpl_title = 'お客様情報入力(3/3)';
         }
     
@@ -312,10 +312,10 @@ $arrRejectRegistColumn = array("year", "month", "day", "email02", "email_mobile0
 
         //--　テンプレート設定
         if ($_POST["mode2"] == "set2") {
-            $objPage->tpl_mainpage = 'shopping/nonmember_set2.tpl';
+            $objPage->tpl_mainpage = 'nonmember/nonmember_set2.tpl';
             $objPage->tpl_title = 'お客様情報入力(2/3)';
         } elseif ($_POST["mode2"] == "set3") {
-            $objPage->tpl_mainpage = 'shopping/nonmember_set3.tpl';
+            $objPage->tpl_mainpage = 'nonmember/nonmember_set3.tpl';
             $objPage->tpl_title = 'お客様情報入力(3/3)';
 
             if (@$objPage->arrForm['pref'] == "" && @$objPage->arrForm['addr01'] == "" && @$objPage->arrForm['addr02'] == "") {
@@ -374,7 +374,7 @@ $arrRejectRegistColumn = array("year", "month", "day", "email02", "email_mobile0
            $objPage->arrAddr[0]['addr02'] = $objPage->addr02; 
            $arrData = $_POST;
            
-            $objPage->tpl_mainpage = 'shopping/nonmember_deliv.tpl';
+            $objPage->tpl_mainpage = 'nonmember/nonmember_deliv.tpl';
             $objPage->tpl_title = 'お届け先情報';
         }
         
