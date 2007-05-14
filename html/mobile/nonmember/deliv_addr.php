@@ -64,6 +64,7 @@ print_r($objPage->arrForm);
 print("<br>");                        
  //-- 入力データの変換
     $objPage->arrForm = lfConvertParam($objPage->arrForm, $arrRegistColumn);
+print_r($objPage->arrForm);
 print_r(lfErrorCheck1($objPage->arrForm));                        
 
 // 戻るボタン用処理
