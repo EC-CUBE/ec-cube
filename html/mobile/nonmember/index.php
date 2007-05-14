@@ -364,7 +364,7 @@ $arrRejectRegistColumn = array("year", "month", "day", "email02", "email_mobile0
 //                $cnt++;
 //            }
          
-            lfRegistData($objPage->tpl_uniqid); 
+            lfRegistDataTemp($objPage->tpl_uniqid,$objPage->arrAddr[0]); 
             
             lfCopyDeliv($objPage->tpl_uniqid, $_POST);
             
@@ -405,6 +405,32 @@ function lfRegistData($uniqid) {
     $sqlval['update_date'] = 'Now()';
     $sqlval['customer_id'] = '0';
     $sqlval['order_name01'] = $objPage->arrAddr[0]['name01'];
+          
+    print_r($sqlval);
+    // 既存データのチェック
+    $objQuery = new SC_Query();
+    $where = "order_temp_id = ?";
+    $cnt = $objQuery->count("dtb_order_temp", $where, array($uniqid));
+    // 既存データがない場合
+    if ($cnt == 0) {
+        $sqlval['create_date'] = 'Now()';
+        $objQuery->insert("dtb_order_temp", $sqlval);
+    } else {
+        $objQuery->update("dtb_order_temp", $sqlval, $where, array($uniqid));
+    }
+}
+
+function lfRegistDataTemp($uniqid,$array) {
+    global $objFormParam;
+    $arrRet = $objFormParam->getHashArray();
+    $sqlval = $objFormParam->getDbArray();
+    
+    // 登録データの作成
+    $sqlval['order_temp_id'] = $uniqid;
+    $sqlval['order_birth'] = sfGetTimestamp($arrRet['year'], $arrRet['month'], $arrRet['day']);
+    $sqlval['update_date'] = 'Now()';
+    $sqlval['customer_id'] = '0';
+    $sqlval['order_name01'] = $array['name01'];
           
     print_r($sqlval);
     // 既存データのチェック
