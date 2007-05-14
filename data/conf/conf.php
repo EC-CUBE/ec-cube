@@ -191,6 +191,7 @@ define("REVIEW_REGIST_MAX", 5);
 define ("ADMIN_ID", "1");								// ´ÉÍý¥æ¡¼¥¶ID(¥á¥ó¥Æ¥Ê¥ó¥¹ÍÑÉ½¼¨¤µ¤ì¤Ê¤¤¡£)
 define ("CUSTOMER_CONFIRM_MAIL", false);				// ²ñ°÷ÅÐÏ¿»þ¤Ë²¾²ñ°÷³ÎÇ§¥á¡¼¥ë¤òÁ÷¿®¤¹¤ë¤«¡Êtrue:²¾²ñ°÷¡¢false:ËÜ²ñ°÷¡Ë
 define ("MELMAGA_SEND", true);							// ¥á¥ë¥Þ¥¬ÇÛ¿®ÍÞÀ©(false:OFF¡¢true:ON)
+define ("MELMAGA_MOBIE_SEND", true);                   // ·ÈÂÓ¤Ë¥á¥ë¥Þ¥¬ÇÛ¿®¤¹¤ë¤È¤­¡¢¥Ö¥ì¥¤¥óSMTP¤ò·ÐÍ³¤¹¤ë¡£¡Êfalse:·ÐÍ³¤·¤Ê¤¤¡¢true:·ÐÍ³¤¹¤ë¡Ë
 define ("MELMAGA_BATCH_MODE", false);					// ¥á¥¤¥ë¥Þ¥¬¥¸¥ó¥Ð¥Ã¥Á¥â¡¼¥É(true:¥Ð¥Ã¥Á¤ÇÁ÷¿®¤¹¤ë ¢¨Í×cronÀßÄê¡¢false:¥ê¥¢¥ë¥¿¥¤¥à¤ÇÁ÷¿®¤¹¤ë)
 define ("LOGIN_FRAME", "login_frame.tpl");				// ¥í¥°¥¤¥ó²èÌÌ¥Õ¥ì¡¼¥à
 define ("MAIN_FRAME", "main_frame.tpl");				// ´ÉÍý²èÌÌ¥Õ¥ì¡¼¥à
@@ -214,7 +215,6 @@ define ("FORGOT_MAIL", 0);								// ¥Ñ¥¹¥ï¡¼¥ÉËº¤ì¤Î³ÎÇ§¥á¡¼¥ë¤òÁ÷ÉÕ¤¹¤ë¤«ÈÝ¤«¡
 define ("HTML_TEMPLATE_SUB_MAX", 12);					// ÅÐÏ¿¤Ç¤­¤ë¥µ¥Ö¾¦ÉÊ¤Î¿ô
 define ("LINE_LIMIT_SIZE", 60);							// Ê¸»ú¿ô¤¬Â¿¤¹¤®¤ë¤È¤­¤Ë¶¯À©²þ¹Ô¤¹¤ë¥µ¥¤¥º(È¾³Ñ)
 define ("BIRTH_MONTH_POINT", 0);						// ÃÂÀ¸Æü·î¥Ý¥¤¥ó¥È
-define ("MAILMAGA_MOBIE_SEND", 1);                      // ·ÈÂÓ¤Ë¥á¥ë¥Þ¥¬ÇÛ¿®¤¹¤ë¤È¤­¡¢¥Ö¥ì¥¤¥óSMTP¤ò·ÐÍ³¤¹¤ë¡£¡Ê0:·ÐÍ³¤·¤Ê¤¤¡¢1:·ÐÍ³¤¹¤ë¡Ë
 
 /* ¥¯¥ì¥¸¥Ã¥È¥í¡¼¥ó(¥»¥ó¥È¥é¥ë¥Õ¥¡¥¤¥Ê¥ó¥¹) */
 define ("CF_HOMEADDR", "https://cf.ufit.ne.jp/dotcredit");					// ¥Û¡¼¥à¥¢¥É¥ì¥¹
