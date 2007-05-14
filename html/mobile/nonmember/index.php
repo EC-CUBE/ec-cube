@@ -422,22 +422,26 @@ function lfRegistDataTemp($uniqid,$array) {
     global $objFormParam;
     $arrRet = $objFormParam->getHashArray();
     $sqlval = $objFormParam->getDbArray();
-    
-    foreach($array as $key => $value){
-        $sqlval[$key] = $value;
-    }
-    
-    
-    
+        
     // 登録データの作成
     $sqlval['order_temp_id'] = $uniqid;
     $sqlval['order_birth'] = sfGetTimestamp($arrRet['year'], $arrRet['month'], $arrRet['day']);
     $sqlval['update_date'] = 'Now()';
     $sqlval['customer_id'] = '0';
     
-//    $sqlval['order_name01'] = $array['name01'];
-//    $sqlval['order_name01'] = $array['name02'];
-//    $sqlval['order_name01'] = $array['name02'];
+    $sqlval['order_name01'] = $array['name01'];
+    $sqlval['order_name02'] = $array['name02'];
+    $sqlval['order_kana01'] = $array['kana01'];
+    $sqlval['order_kana02'] = $array['kana02'];
+    $sqlval['order_zip01'] = $array['zip01'];
+    $sqlval['order_zip02'] = $array['zip02'];
+    $sqlval['order_pref'] = $array['pref'];
+    $sqlval['order_addr01'] = $array['addr01'];
+    $sqlval['order_addr02'] = $array['addr02'];
+    $sqlval['order_tel1'] = $array['tel01'];
+    $sqlval['order_tel2'] = $array['tel02'];
+    $sqlval['order_tel3'] = $array['tel03'];
+    $sqlval['order_email'] = $array['email'];
           
     print_r($sqlval);
     // 既存データのチェック
