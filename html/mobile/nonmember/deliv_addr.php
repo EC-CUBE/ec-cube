@@ -202,14 +202,14 @@ function lfRegistData($array, $arrRegistColumn,$uniqid) {
     
     $sqlse = "SELECT customer_id FROM dtb_order_temp WHERE order_temp_id = ?";
     $arrRegist['customer_id'] = $objConn->getOne($sqlse, array($uniqid));
-    print("print".$arrRegist['customer_id']);
+    
 	foreach ($arrRegistColumn as $data) {
 		if (strlen($array[ $data["column"] ]) > 0) {
 			$arrRegist[ $data["column"] ] = $array[ $data["column"] ];
 		}
 	}
 	
-	$arrRegist['customer_id'] = $objCustomer->getvalue('customer_id');
+	//$arrRegist['customer_id'] = $objCustomer->getvalue('customer_id');
     
 	//-- ÊÔ½¸ÅÐÏ¿¼Â¹Ô
 	$objConn->query("BEGIN");
