@@ -5,7 +5,7 @@
  * http://www.lockon.co.jp/
  */
 *}-->
-<div align="center">お届け先登録確認</div>
+<div align="center">他のお届け先登録確認</div>
 <hr>
 <form name="form1" method="post" action="<!--{$smarty.server.PHP_SELF|escape}-->">
 	<input type="hidden" name="mode" value="complete">
