@@ -11,7 +11,7 @@ require_once("../require.php");
 
 class LC_Page{
 	function LC_Page(){
-		$this->tpl_mainpage = 'shopping/deliv_addr.tpl';
+		$this->tpl_mainpage = 'nonmember/deliv_addr.tpl';
 		$this->tpl_title = "Â¾¤Î¤ªÆÏ¤±Àè¤ÎÅÐÏ¿";
 	}
 }
@@ -82,7 +82,7 @@ switch ($_POST['mode']){
 	case 'set1':
 		$objPage->arrErr = lfErrorCheck1($objPage->arrForm);
 		if (count($objPage->arrErr) == 0 && empty($_POST["return"])) {
-			$objPage->tpl_mainpage = 'shopping/set1.tpl';
+			$objPage->tpl_mainpage = 'nonmember/set1.tpl';
 
 			$checkVal = array("pref", "addr01", "addr02", "addr03", "tel01", "tel02", "tel03");
 			foreach($checkVal as $key) {
@@ -106,9 +106,9 @@ switch ($_POST['mode']){
 	case 'set2':
 		$objPage->arrErr = lfErrorCheck2($objPage->arrForm);
 		if (count($objPage->arrErr) == 0 && empty($_POST["return"])) {
-			$objPage->tpl_mainpage = 'shopping/set2.tpl';
+			$objPage->tpl_mainpage = 'nonmember/set2.tpl';
 		} else {
-			$objPage->tpl_mainpage = 'shopping/set1.tpl';
+			$objPage->tpl_mainpage = 'nonmember/set1.tpl';
 
 			$checkVal = array("pref", "addr01", "addr02", "addr03", "tel01", "tel02", "tel03");
 			foreach($checkVal as $key) {
