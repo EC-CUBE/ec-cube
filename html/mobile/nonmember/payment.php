@@ -72,7 +72,7 @@ if (!empty($_POST['return'])) {
 	}
 }
 
-print("trace");
+$objPage->arrAddr[0]['zip01'] = $_POST['zip01'];
 
 switch($_POST['mode']) {
 // 支払い方法指定 → 配達日時指定
