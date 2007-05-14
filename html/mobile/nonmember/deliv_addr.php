@@ -116,7 +116,7 @@ switch ($_POST['mode']){
 			$other_deliv_id = lfRegistData($_POST,$arrRegistColumn);
 
 			// 登録済みの別のお届け先を受注一時テーブルに書き込む
-			lfRegistOtherDelivData($uniqid, $objCustomer, $other_deliv_id);
+			//lfRegistOtherDelivData($uniqid, $objCustomer, $other_deliv_id);
 
 			// 正常に登録されたことを記録しておく
 			$objSiteSess->setRegistFlag();
@@ -193,7 +193,7 @@ function lfErrorCheck2() {
 
 
 
-/* 登録実行 */
+/* 登録実行 非会員購入であるために恒久的な登録はしない*/
 function lfRegistData($array, $arrRegistColumn) {
 	global $objConn;
 	global $objCustomer;
@@ -204,8 +204,8 @@ function lfRegistData($array, $arrRegistColumn) {
 		}
 	}
 	
-	//$arrRegist['customer_id'] = $objCustomer->getvalue('customer_id');
-	$arrRegist['customer_id'] = '0';
+	$arrRegist['customer_id'] = $objCustomer->getvalue('customer_id');
+
 	//-- 編集登録実行
 	$objConn->query("BEGIN");
 	if ($array['other_deliv_id'] != ""){
