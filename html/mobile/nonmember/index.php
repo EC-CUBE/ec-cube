@@ -438,9 +438,9 @@ function lfRegistDataTemp($uniqid,$array) {
     $sqlval['order_pref'] = $array['pref'];
     $sqlval['order_addr01'] = $array['addr01'];
     $sqlval['order_addr02'] = $array['addr02'];
-    $sqlval['order_tel1'] = $array['tel01'];
-    $sqlval['order_tel2'] = $array['tel02'];
-    $sqlval['order_tel3'] = $array['tel03'];
+    $sqlval['order_tel01'] = $array['tel01'];
+    $sqlval['order_tel02'] = $array['tel02'];
+    $sqlval['order_tel03'] = $array['tel03'];
     $sqlval['order_email'] = $array['email'];
           
     print_r($sqlval);
