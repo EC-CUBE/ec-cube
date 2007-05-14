@@ -15,7 +15,7 @@
 
 <!--¢§CONTENTS-->
 <!--{section name=cnt loop=$arrAddr}-->
-<form method="post" action="<!--{$smarty.const.MOBILE_URL_DIR}-->shopping/payment.php">
+<form method="post" action="<!--{$smarty.const.MOBILE_URL_DIR}-->nonmember/payment.php">
 <input type="hidden" name="uniqid" value="<!--{$tpl_uniqid}-->">
 <input type="hidden" name="deli" value="<!--{$smarty.section.cnt.iteration}-->">
 <!--{if $smarty.section.cnt.first}-->
