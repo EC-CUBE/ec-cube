@@ -66,7 +66,7 @@ if (!empty($_POST["return"])) {
 		$_POST["mode"] = "set1";
 		break;
 	default:
-		header("Location: " . gfAddSessionId('deliv.php'));
+		header("Location: " . gfAddSessionId('index.php'));
 		exit;
 	}
 }
