@@ -38,8 +38,7 @@ foreach($_POST as $key => $val) {
 	}
 }
 
- //-- 入力データの変換
-    $objPage->arrForm = lfConvertParam($objPage->arrForm, $arrRegistColumn);
+
 
 // ユーザユニークIDの取得と購入状態の正当性をチェック
 $uniqid = sfCheckNormalAccess($objSiteSess, $objCartSess);
@@ -59,6 +58,10 @@ $arrRegistColumn = array(
 							 array(  "column" => "tel02",		"convert" => "n" ),
 							 array(  "column" => "tel03",		"convert" => "n" ),
 						);
+                        
+ //-- 入力データの変換
+    $objPage->arrForm = lfConvertParam($objPage->arrForm, $arrRegistColumn);
+                        
 
 // 戻るボタン用処理
 if (!empty($_POST["return"])) {
