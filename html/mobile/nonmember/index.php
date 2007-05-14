@@ -350,7 +350,8 @@ $arrRejectRegistColumn = array("year", "month", "day", "email02", "email_mobile0
            foreach($_POST as $key => $value){
                $objPage->arrAddr[0][$key] = $value;
            }
-            
+            print("arrAddr:");
+            print_r( $objPage->arrAddr[0]);
 //           $objPage->arrAddr[0]['zip01'] = $_POST['zip01'];
 //           $objPage->arrAddr[0]['zip02'] = $_POST['zip02'];
 //           $objPage->arrAddr[0]['pref'] = $_POST['pref'];
