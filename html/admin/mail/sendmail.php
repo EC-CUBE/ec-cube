@@ -35,7 +35,7 @@ $count = count($time_data);
 if( $count > 0 ){
 	print("start sending <br />\n");
 } else {
-	print("not found <br />\n");
+	print("not found ! <br />\n");
 	exit;
 }
 
