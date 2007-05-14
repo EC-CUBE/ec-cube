@@ -370,9 +370,10 @@ $arrRejectRegistColumn = array("year", "month", "day", "email02", "email_mobile0
          if ($_POST["mode2"] == "customer_addr") {
           	print_r($_POST);
           	if ($_POST['deli'] != "") {
+           
+           $objPage->arrAddr[0]['zip01'] = $objPage->zip01;
+           
            lfRegistData($objPage->tpl_uniqid); 
-           setcookie('eccube_mobile','test');
-           echo $_COOKIE['eccube_mobile'];
            header("Location:" . gfAddSessionId("./payment.php"));
      		exit;
 	}else{
