@@ -75,7 +75,9 @@ if (!empty($_POST['return'])) {
 switch($_POST['mode']) {
 // 支払い方法指定 → 配達日時指定
 case 'deliv_date':
-	// 入力値の変換
+	
+    print("test");
+    // 入力値の変換
 	$objFormParam->convParam();
 	$objPage->arrErr = lfCheckError($objPage->arrData);
 	if (!isset($objPage->arrErr['payment_id'])) {
@@ -91,7 +93,6 @@ case 'deliv_date':
 	}
 	break;
 case 'confirm':
-    print("confirm");
 	// 入力値の変換
 	$objFormParam->convParam();
 	$objPage->arrErr = lfCheckError($objPage->arrData );
