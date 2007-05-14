@@ -134,16 +134,10 @@ $objPage->arrYear = $objDate->getYear('', 1950);	//　日付プルダウン設定
 $objPage->arrMonth = $objDate->getMonth();
 $objPage->arrDay = $objDate->getDay();
 
-if($objPage->year == '') {
-	//$objPage->year = '----';
-}
+
 
 // 入力値の取得
 $objPage->arrForm = $objFormParam->getFormParamList();
-
-if($objPage->arrForm['year']['value'] == ""){
-	//$objPage->arrForm['year']['value'] = '----';	
-}
 
 $objView->assignobj($objPage);
 $objView->display(SITE_FRAME);
@@ -289,7 +283,7 @@ $arrRejectRegistColumn = array("year", "month", "day", "email02", "email_mobile0
             $checkVal = array();
         }
 
-//$objPage->list_data
+        //$objPage->arrFormフォームの値をlistに格納
         foreach($objPage->arrForm as $key => $val) {
             if ($key != "mode2" && $key != "submit" && $key != "confirm" && $key != "return" && $key != session_name() && !in_array($key, $checkVal)) {
                 $objPage->list_data[ $key ] = $val;
@@ -324,12 +318,8 @@ $arrRejectRegistColumn = array("year", "month", "day", "email02", "email_mobile0
 //                $objPage->arrAddr[$cnt] = $val;
 //                $cnt++;
 //            }
-         
             lfRegistDataTemp($objPage->tpl_uniqid,$objPage->arrAddr[0]); 
-            
             lfCopyDeliv($objPage->tpl_uniqid, $_POST);
-            
-            
            
             $objPage->tpl_mainpage = 'nonmember/nonmember_deliv.tpl';
             $objPage->tpl_title = 'お届け先情報';
@@ -403,7 +393,6 @@ function lfRegistDataTemp($uniqid,$array) {
     $sqlval['order_tel03'] = $array['tel03'];
     $sqlval['order_email'] = $array['email'];
           
-    print_r($sqlval);
     // 既存データのチェック
     $objQuery = new SC_Query();
     $where = "order_temp_id = ?";
