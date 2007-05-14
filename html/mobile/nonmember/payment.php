@@ -62,7 +62,7 @@ $objCartSess->chkSoldOut($objCartSess->getCartList(), true);
 if (!empty($_POST['return'])) {
 	switch ($_POST['mode']) {
 	case 'confirm':
-		$_POST['mode2'] = 'payment';
+		$_POST['mode'] = 'payment';
 		break;
 	default:
 		// 正常な推移であることを記録しておく
