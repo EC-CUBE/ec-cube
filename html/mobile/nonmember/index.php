@@ -111,16 +111,6 @@ $uniqid = sfCheckNormalAccess($objSiteSess, $objCartSess);
 
 $objPage->tpl_uniqid = $uniqid;
 
-// ログインチェック
-if($objCustomer->isLoginSuccess()) {
-	// すでにログインされている場合は、お届け先設定画面に転送
-	header("Location: " . gfAddSessionId('deliv.php'));
-	exit;
-}
-
-// 携帯端末IDが一致する会員が存在するかどうかをチェックする。
-$objPage->tpl_valid_phone_id = $objCustomer->checkMobilePhoneId();
-
 switch($_POST['mode']) {
 case 'nonmember_confirm':
 	$objPage = lfSetNonMember($objPage);
@@ -295,9 +285,9 @@ $arrRejectRegistColumn = array("year", "month", "day", "email02", "email_mobile0
     if ($objPage->arrErr || !empty($_POST["return"])) {     
 
         //-- データの設定
-        if ($_POST["mode2"] == "set1") {
+        if ($_POST["mode2"] == "set2") {
             $checkVal = array("email", "name01", "name02", "kana01", "kana02");
-        } elseif ($_POST["mode2"] == "set2") {
+        } elseif ($_POST["mode2"] == "set3") {
             $checkVal = array("sex", "year", "month", "day", "zip01", "zip02");
         } else {
             $checkVal = array("pref", "addr01", "addr02", "tel01", "tel02", "tel03", "mail_flag");
@@ -372,7 +362,6 @@ $arrRejectRegistColumn = array("year", "month", "day", "email02", "email_mobile0
            $objPage->arrAddr[0]['pref'] = $objPage->pref;
            $objPage->arrAddr[0]['addr01'] = $objPage->addr01;
            $objPage->arrAddr[0]['addr02'] = $objPage->addr02; 
-           $arrData = $_POST;
            
             $objPage->tpl_mainpage = 'nonmember/nonmember_deliv.tpl';
             $objPage->tpl_title = 'お届け先情報';
