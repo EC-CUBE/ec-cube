@@ -60,7 +60,7 @@ $objCartSess->chkSoldOut($objCartSess->getCartList(), true);
 
 // 戻るボタンの処理
 if (!empty($_POST['return'])) {
-	switch ($_POST['mode2']) {
+	switch ($_POST['mode']) {
 	case 'confirm':
 		$_POST['mode2'] = 'payment';
 		break;
@@ -72,7 +72,7 @@ if (!empty($_POST['return'])) {
 	}
 }
 
-switch($_POST['mode2']) {
+switch($_POST['mode']) {
 // 支払い方法指定 → 配達日時指定
 case 'deliv_date':
 	// 入力値の変換
