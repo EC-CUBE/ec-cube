@@ -363,7 +363,6 @@ function lfRegistData($uniqid) {
     $sqlval['customer_id'] = '0';
     $sqlval['order_name01'] = $objPage->arrAddr[0]['name01'];
           
-    print_r($sqlval);
     // 既存データのチェック
     $objQuery = new SC_Query();
     $where = "order_temp_id = ?";
