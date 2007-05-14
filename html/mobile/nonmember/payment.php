@@ -91,6 +91,7 @@ case 'deliv_date':
 	}
 	break;
 case 'confirm':
+    print("confirm");
 	// 入力値の変換
 	$objFormParam->convParam();
 	$objPage->arrErr = lfCheckError($objPage->arrData );
