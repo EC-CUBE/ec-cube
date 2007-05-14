@@ -142,7 +142,7 @@ if($objPage->year == '') {
 $objPage->arrForm = $objFormParam->getFormParamList();
 
 if($objPage->arrForm['year']['value'] == ""){
-	$objPage->arrForm['year']['value'] = '----';	
+	//$objPage->arrForm['year']['value'] = '----';	
 }
 
 $objView->assignobj($objPage);
@@ -265,9 +265,7 @@ $arrRejectRegistColumn = array("year", "month", "day", "email02", "email_mobile0
 
         //--　テンプレート設定
         if ($_POST["mode2"] == "set2") {
-              if($objPage->arrForm['year'] == '----') {
-        $objPage->arrForm['year'] = '';
-    }
+            
             $objPage->tpl_mainpage = 'nonmember/nonmember_set2.tpl';
             $objPage->tpl_title = 'お客様情報入力(2/3)';
         } elseif ($_POST["mode2"] == "set3") {
