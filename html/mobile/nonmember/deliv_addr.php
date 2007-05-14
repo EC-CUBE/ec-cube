@@ -64,7 +64,7 @@ $uniqid = sfCheckNormalAccess($objSiteSess, $objCartSess);
 print("64");                        
  //-- 入力データの変換
     $objPage->arrForm = lfConvertParam($objPage->arrForm, $arrRegistColumn);
-print("67");                        
+print_r($objPage->arrForm);                        
 
 // 戻るボタン用処理
 if (!empty($_POST["return"])) {
