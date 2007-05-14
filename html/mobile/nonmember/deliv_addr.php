@@ -39,7 +39,7 @@ foreach($_POST as $key => $val) {
 }
 // ユーザユニークIDの取得と購入状態の正当性をチェック
 $uniqid = sfCheckNormalAccess($objSiteSess, $objCartSess);
-
+print($uniqid);
 //別のお届け先ＤＢ登録用カラム配列
 $arrRegistColumn = array(
 							 array(  "column" => "name01",		"convert" => "aKV" ),
