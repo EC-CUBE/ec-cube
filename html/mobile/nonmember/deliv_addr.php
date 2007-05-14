@@ -205,7 +205,7 @@ function lfRegistData($array, $arrRegistColumn) {
 	}
 	
 	//$arrRegist['customer_id'] = $objCustomer->getvalue('customer_id');
-	$arrRegist['customer_id'] = 0;
+	$arrRegist['customer_id'] = '0';
 	//-- ÊÔ½¸ÅÐÏ¿¼Â¹Ô
 	$objConn->query("BEGIN");
 	if ($array['other_deliv_id'] != ""){
