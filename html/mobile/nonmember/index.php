@@ -228,6 +228,9 @@ $arrRejectRegistColumn = array("year", "month", "day", "email02", "email_mobile0
             $objPage->tpl_mainpage = 'nonmember/nonmember_set1.tpl';
             $objPage->tpl_title = 'お客様情報入力(1/3)';
         } elseif ($_POST["mode2"] == "set3") {
+              if($objPage->arrForm['year'] == '----') {
+        $objPage->arrForm['year'] = '';
+    }
             $objPage->arrErr = lfErrorCheck2($objPage->arrForm);
             $objPage->tpl_mainpage = 'nonmember/nonmember_set2.tpl';
             $objPage->tpl_title = 'お客様情報入力(2/3)';
