@@ -112,9 +112,8 @@ switch ($_POST['mode']){
 	case 'complete':
 		$objPage->arrErr = lfErrorCheck($objPage->arrForm);
 		if (count($objPage->arrErr) == 0) {
-			print("115");
             // 登録
-			$other_deliv_id = lfRegistData($_POST,$arrRegistColumn);
+			$other_deliv_id = lfRegistData($_POST,$arrRegistColumn,$uniqid);
 
 			// 登録済みの別のお届け先を受注一時テーブルに書き込む
 			//lfRegistOtherDelivData($uniqid, $objCustomer, $other_deliv_id);
@@ -195,10 +194,15 @@ function lfErrorCheck2() {
 
 
 /* 登録実行 非会員購入であるために恒久的な登録はしない*/
-function lfRegistData($array, $arrRegistColumn) {
+function lfRegistData($array, $arrRegistColumn,$uniqid) {
 	global $objConn;
 	global $objCustomer;
 	
+    $objQuery = new SC_Query();
+    
+    $sqlse = "SELECT customer_id FROM dtb_other_deliv WHERE order_temp_id = ?";
+    $arrRegist['customer_id'] = $objConn->getOne($sqlse, array('customer_id'));
+    
 	foreach ($arrRegistColumn as $data) {
 		if (strlen($array[ $data["column"] ]) > 0) {
 			$arrRegist[ $data["column"] ] = $array[ $data["column"] ];
@@ -206,7 +210,7 @@ function lfRegistData($array, $arrRegistColumn) {
 	}
 	
 	$arrRegist['customer_id'] = $objCustomer->getvalue('customer_id');
-    print("'customer_id'".$arrRegist['customer_id']);
+    
 	//-- 編集登録実行
 	$objConn->query("BEGIN");
 	if ($array['other_deliv_id'] != ""){
