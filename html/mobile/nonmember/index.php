@@ -339,7 +339,7 @@ $arrRejectRegistColumn = array("year", "month", "day", "email02", "email_mobile0
            
             // POST値の取得
             $objFormParam->setParam($_POST);
-            print_r($_POST);
+            //print_r($_POST);
            	$arrRet = $objFormParam->getHashArray();
 			$sqlval = $objFormParam->getDbArray();
             
@@ -357,18 +357,14 @@ $arrRejectRegistColumn = array("year", "month", "day", "email02", "email_mobile0
             
             lfCopyDeliv($objPage->tpl_uniqid, $_POST);
             
-           $objPage->arrAddr[0]['zip01'] = $objPage->zip01;
-           $objPage->arrAddr[0]['zip02'] = $objPage->zip02;
-           $objPage->arrAddr[0]['pref'] = $objPage->pref;
-           $objPage->arrAddr[0]['addr01'] = $objPage->addr01;
-           $objPage->arrAddr[0]['addr02'] = $objPage->addr02; 
+
            
             $objPage->tpl_mainpage = 'nonmember/nonmember_deliv.tpl';
             $objPage->tpl_title = 'お届け先情報';
         }
         
          if ($_POST["mode2"] == "customer_addr") {
-          	print_r($_POST);
+          	//print_r($_POST);
           	if ($_POST['deli'] != "") {
            
                      
@@ -397,6 +393,8 @@ function lfRegistData($uniqid) {
     $sqlval['order_birth'] = sfGetTimestamp($arrRet['year'], $arrRet['month'], $arrRet['day']);
     $sqlval['update_date'] = 'Now()';
     $sqlval['customer_id'] = '0';
+    $sqlval['order_name01'] = $objPage->name01;
+          
     print_r($sqlval);
     // 既存データのチェック
     $objQuery = new SC_Query();
