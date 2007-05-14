@@ -28,6 +28,7 @@ if($_GET['mode'] == 'now') {
 	}	
 	//----　30分毎にCronが送信時間データ確認
 	$time_data = $conn->getAll($sql);
+	print_r($time_data);
 }
 
 $count = count($time_data);
