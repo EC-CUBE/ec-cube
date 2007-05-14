@@ -61,10 +61,10 @@ foreach($_POST as $key => $val) {
 $uniqid = sfCheckNormalAccess($objSiteSess, $objCartSess);
 
 
-                        
+print("64");                        
  //-- 入力データの変換
     $objPage->arrForm = lfConvertParam($objPage->arrForm, $arrRegistColumn);
-                        
+print("67");                        
 
 // 戻るボタン用処理
 if (!empty($_POST["return"])) {
@@ -248,6 +248,7 @@ function lfConvertParam($array, $arrRegistColumn) {
 	 *  a :  全角英数字を半角英数字に変換する
 	 */
 	// カラム名とコンバート情報
+    print("251");    
 	foreach ($arrRegistColumn as $data) {
 		$arrConvList[ $data["column"] ] = $data["convert"];
 	}
