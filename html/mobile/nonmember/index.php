@@ -135,7 +135,7 @@ $objPage->arrMonth = $objDate->getMonth();
 $objPage->arrDay = $objDate->getDay();
 
 if($objPage->year == '') {
-	$objPage->year = '----';
+	//$objPage->year = '----';
 }
 
 // 入力値の取得
