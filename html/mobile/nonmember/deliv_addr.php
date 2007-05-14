@@ -150,6 +150,32 @@ $objView->display(SITE_FRAME);
 
 //-------------------------------------------------------------------------------------------------------------
 
+//----　取得文字列の変換
+function lfConvertParam($array, $arrRegistColumn) {
+    /*
+     *  文字列の変換
+     *  K :  「半角(ﾊﾝｶｸ)片仮名」を「全角片仮名」に変換
+     *  C :  「全角ひら仮名」を「全角かた仮名」に変換
+     *  V :  濁点付きの文字を一文字に変換。"K","H"と共に使用します 
+     *  n :  「全角」数字を「半角(ﾊﾝｶｸ)」に変換
+     *  a :  全角英数字を半角英数字に変換する
+     */
+    // カラム名とコンバート情報
+    print("251");    
+    foreach ($arrRegistColumn as $data) {
+        $arrConvList[ $data["column"] ] = $data["convert"];
+    }
+    
+    // 文字変換
+    foreach ($arrConvList as $key => $val) {
+        // POSTされてきた値のみ変換する。
+        if(strlen(($array[$key])) > 0) {
+            $array[$key] = mb_convert_kana($array[$key] ,$val);
+        }
+    }
+    return $array;
+}
+
 /* エラーチェック */
 function lfErrorCheck() {
 	$objErr = new SC_CheckError();
@@ -238,31 +264,7 @@ function lfRegistData($array, $arrRegistColumn,$uniqid) {
 	return $array['other_deliv_id'];
 }
 
-//----　取得文字列の変換
-function lfConvertParam($array, $arrRegistColumn) {
-	/*
-	 *	文字列の変換
-	 *	K :  「半角(ﾊﾝｶｸ)片仮名」を「全角片仮名」に変換
-	 *	C :  「全角ひら仮名」を「全角かた仮名」に変換
-	 *	V :  濁点付きの文字を一文字に変換。"K","H"と共に使用します	
-	 *	n :  「全角」数字を「半角(ﾊﾝｶｸ)」に変換
-	 *  a :  全角英数字を半角英数字に変換する
-	 */
-	// カラム名とコンバート情報
-    print("251");    
-	foreach ($arrRegistColumn as $data) {
-		$arrConvList[ $data["column"] ] = $data["convert"];
-	}
-	
-	// 文字変換
-	foreach ($arrConvList as $key => $val) {
-		// POSTされてきた値のみ変換する。
-		if(strlen(($array[$key])) > 0) {
-			$array[$key] = mb_convert_kana($array[$key] ,$val);
-		}
-	}
-	return $array;
-}
+
 
 // 郵便番号から住所の取得
 function lfGetAddress($zipcode) {
