@@ -72,9 +72,9 @@ if (!empty($_POST['return'])) {
 	}
 }
 
-print($_SERVER['refferer']);
+print("trace");
 
-switch($_POST['mode2']) {
+switch($_POST['mode']) {
 // 支払い方法指定 → 配達日時指定
 case 'deliv_date':
 	
