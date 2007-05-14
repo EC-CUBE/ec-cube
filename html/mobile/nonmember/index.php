@@ -279,9 +279,9 @@ $arrRejectRegistColumn = array("year", "month", "day", "email02", "email_mobile0
 
         //-- データ設定
         unset($objPage->list_data);
-        if ($_POST["mode2"] == "set1") {
+        if ($_POST["mode2"] == "set2") {
             $checkVal = array("sex", "year", "month", "day", "zip01", "zip02");
-        } elseif ($_POST["mode2"] == "set2") {
+        } elseif ($_POST["mode2"] == "set3") {
             $checkVal = array("pref", "addr01", "addr02", "tel01", "tel02", "tel03", "mail_flag");
         } else {
             $checkVal = array();
