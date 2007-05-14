@@ -247,9 +247,9 @@ $arrRejectRegistColumn = array("year", "month", "day", "email02", "email_mobile0
     if ($objPage->arrErr || !empty($_POST["return"])) {     
 
         //-- データの設定
-        if ($_POST["mode2"] == "set1") {
+        if ($_POST["mode2"] == "set2") {
             $checkVal = array("email", "name01", "name02", "kana01", "kana02");
-        } elseif ($_POST["mode2"] == "set2") {
+        } elseif ($_POST["mode2"] == "set3") {
             $checkVal = array("sex", "year", "month", "day", "zip01", "zip02");
         } else {
             $checkVal = array("pref", "addr01", "addr02", "tel01", "tel02", "tel03", "mail_flag");
@@ -263,10 +263,10 @@ $arrRejectRegistColumn = array("year", "month", "day", "email02", "email_mobile0
     } else {
 
         //--　テンプレート設定
-        if ($_POST["mode2"] == "set1") {
+        if ($_POST["mode2"] == "set2") {
             $objPage->tpl_mainpage = 'nonmember/nonmember_set2.tpl';
             $objPage->tpl_title = 'お客様情報入力(2/3)';
-        } elseif ($_POST["mode2"] == "set2") {
+        } elseif ($_POST["mode2"] == "set3") {
             $objPage->tpl_mainpage = 'nonmember/nonmember_set3.tpl';
             $objPage->tpl_title = 'お客様情報入力(3/3)';
 
