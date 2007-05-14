@@ -71,10 +71,9 @@ if (!empty($_POST['return'])) {
 		exit;
 	}
 }
-
            $objPage->arrAddr[0]['zip01'] = $_POST['zip01'];
            $objPage->arrAddr[0]['zip02'] = $_POST['zip02'];
-           $objPage->arrAddr[0]['pref'] = $_POST['pref'];;
+           $objPage->arrAddr[0]['pref'] = $_POST['pref'];
            $objPage->arrAddr[0]['addr01'] = $_POST['addr01'];
            $objPage->arrAddr[0]['addr02'] = $_POST['addr02']; 
 
@@ -83,7 +82,6 @@ switch($_POST['mode']) {
 // 支払い方法指定 → 配達日時指定
 case 'deliv_date':
 	
-
     // 入力値の変換
 	$objFormParam->convParam();
 	$objPage->arrErr = lfCheckError($objPage->arrData);
