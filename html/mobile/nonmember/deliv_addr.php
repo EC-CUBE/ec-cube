@@ -55,8 +55,6 @@ foreach($_POST as $key => $val) {
 	}
 }
 
-
-
 // ユーザユニークIDの取得と購入状態の正当性をチェック
 $uniqid = sfCheckNormalAccess($objSiteSess, $objCartSess);
 
@@ -157,8 +155,7 @@ function lfConvertParam($array, $arrRegistColumn) {
      *  n :  「全角」数字を「半角(ﾊﾝｶｸ)」に変換
      *  a :  全角英数字を半角英数字に変換する
      */
-    // カラム名とコンバート情報
-    print("251");    
+    // カラム名とコンバート情報   
     foreach ($arrRegistColumn as $data) {
         $arrConvList[ $data["column"] ] = $data["convert"];
     }
