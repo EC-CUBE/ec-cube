@@ -12,7 +12,7 @@ require_once("../require.php");
 class LC_Page{
 	function LC_Page(){
 		$this->tpl_mainpage = 'shopping/deliv_addr.tpl';
-		$this->tpl_title = "新しいお届け先の追加";
+		$this->tpl_title = "他のお届け先の登録";
 	}
 }
 
