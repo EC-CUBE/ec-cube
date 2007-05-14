@@ -371,8 +371,7 @@ $arrRejectRegistColumn = array("year", "month", "day", "email02", "email_mobile0
           	print_r($_POST);
           	if ($_POST['deli'] != "") {
            
-           $objPage->arrAddr[0]['zip01'] = "test";
-           
+                     
            lfRegistData($objPage->tpl_uniqid); 
            header("Location:" . gfAddSessionId("./payment.php"));
      		exit;
@@ -392,12 +391,13 @@ function lfRegistData($uniqid) {
     global $objFormParam;
     $arrRet = $objFormParam->getHashArray();
     $sqlval = $objFormParam->getDbArray();
+    
     // 登録データの作成
     $sqlval['order_temp_id'] = $uniqid;
     $sqlval['order_birth'] = sfGetTimestamp($arrRet['year'], $arrRet['month'], $arrRet['day']);
     $sqlval['update_date'] = 'Now()';
     $sqlval['customer_id'] = '0';
-    
+    print_r($sqlval);
     // 既存データのチェック
     $objQuery = new SC_Query();
     $where = "order_temp_id = ?";
