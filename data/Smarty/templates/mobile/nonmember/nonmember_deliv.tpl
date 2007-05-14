@@ -16,20 +16,15 @@
 <!--¢§CONTENTS-->
 <!--{section name=cnt loop=$arrAddr}-->
 <form method="post" action="<!--{$smarty.const.MOBILE_URL_DIR}-->nonmember/payment.php">
-<input type="text" name="uniqid" value="<!--{$tpl_uniqid}-->">
-<input type="text" name="deli" value="<!--{$smarty.section.cnt.iteration}-->">
+<input type="hidden" name="uniqid" value="<!--{$tpl_uniqid}-->">
+<input type="hidden" name="deli" value="<!--{$smarty.section.cnt.iteration}-->">
 <!--{if $smarty.section.cnt.first}-->
-<input type="text" name="mode" value="nonmember">
-<input type="text" name="mode2" value="customer_addr">
-<input type="text" name="other_deliv_id" value="">
-<input type="text" name="zip01" value="<!--{$arrAddr[0].zip01}-->">
-<input type="text" name="zip02" value="<!--{$arrAddr[0].zip02}-->">
-<input type="text" name="pref" value="<!--{$arrAddr[0].pref}-->">
-<input type="text" name="addr01" value="<!--{$arrAddr[0].addr01}-->">
-<input type="text" name="addr02" value="<!--{$arrAddr[cnt].addr02}-->">
+<input type="hidden" name="mode" value="nonmember">
+<input type="hidden" name="mode2" value="customer_addr">
+<input type="hidden" name="other_deliv_id" value="">
 <!--{else}-->
-<input type="text" name="mode" value="other_addr">
-<input type="text" name="other_deliv_id" value="<!--{$arrAddr[cnt].other_deliv_id}-->">
+<input type="hidden" name="mode" value="other_addr">
+<input type="hidden" name="other_deliv_id" value="<!--{$arrAddr[cnt].other_deliv_id}-->">
 <!--{/if}-->
 ¢£ÇÛÁ÷Àè<!--{$smarty.section.cnt.iteration}--><br>
 ¢©<!--{$arrAddr[cnt].zip01}-->-<!--{$arrAddr[cnt].zip02}--><br>

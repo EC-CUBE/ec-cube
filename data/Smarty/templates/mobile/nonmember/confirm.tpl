@@ -8,14 +8,9 @@
 <div align="center">お客様情報確認</div>
 <hr>
 <form name="form1" id="form1" method="post" action="<!--{$smarty.server.PHP_SELF|escape}-->">
-	<input type="text" name="mode" value="deliv">
-	<input type="text" name="zip01" value="<!--{$arrAddr[0].zip01}-->">
-<input type="text" name="zip02" value="<!--{$arrAddr[0].zip02}-->">
-<input type="text" name="pref" value="<!--{$arrAddr[0].pref}-->">
-<input type="text" name="addr01" value="<!--{$arrAddr[0].addr01}-->">
-<input type="text" name="addr02" value="<!--{$arrAddr[0].addr02}-->">
+	<input type="hidden" name="mode" value="deliv">
 	<!--{foreach from=$list_data key=key item=item}-->
-		<input type="text" name="<!--{$key|escape}-->" value="<!--{$item|escape}-->">
+		<input type="hidden" name="<!--{$key|escape}-->" value="<!--{$item|escape}-->">
 	<!--{/foreach}-->
 	下記の内容でよろしいですか？<br>
 	<br>
@@ -39,7 +34,7 @@
 	<input type="submit" name="return" value="戻る">
 
 	<!--{foreach from=$list_data key=key item=item}-->
-		<input type="text" name="<!--{$key|escape}-->" value="<!--{$item|escape}-->">
+		<input type="hidden" name="<!--{$key|escape}-->" value="<!--{$item|escape}-->">
 	<!--{/foreach}-->
 </form>
 
