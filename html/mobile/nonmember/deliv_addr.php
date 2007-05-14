@@ -24,10 +24,10 @@ $objConn = new SC_DBConn();
 $objSiteSess = new SC_SiteSession();
 $objCartSess = new SC_CartSession();
 
-//ログイン判定
-if (!$objCustomer->isLoginSuccess()){
-	sfDispSiteError(CUSTOMER_ERROR, "", false, "", true);
-}
+////ログイン判定
+//if (!$objCustomer->isLoginSuccess()){
+//	sfDispSiteError(CUSTOMER_ERROR, "", false, "", true);
+//}
 
 $objPage->arrForm = $_POST;
 $objPage->arrPref = $arrPref;
