@@ -200,7 +200,7 @@ function lfRegistData($array, $arrRegistColumn,$uniqid) {
 	
     $objQuery = new SC_Query();
     
-    $sqlse = "SELECT customer_id FROM dtb_other_temp WHERE order_temp_id = ?";
+    $sqlse = "SELECT customer_id FROM dtb_order_temp WHERE order_temp_id = ?";
     $arrRegist['customer_id'] = $objConn->getOne($sqlse, array($uniqid));
     
 	foreach ($arrRegistColumn as $data) {
