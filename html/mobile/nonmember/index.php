@@ -263,10 +263,10 @@ $arrRejectRegistColumn = array("year", "month", "day", "email02", "email_mobile0
     } else {
 
         //--　テンプレート設定
-        if ($_POST["mode2"] == "set2") {
+        if ($_POST["mode2"] == "set1") {
             $objPage->tpl_mainpage = 'nonmember/nonmember_set2.tpl';
             $objPage->tpl_title = 'お客様情報入力(2/3)';
-        } elseif ($_POST["mode2"] == "set3") {
+        } elseif ($_POST["mode2"] == "set2") {
             $objPage->tpl_mainpage = 'nonmember/nonmember_set3.tpl';
             $objPage->tpl_title = 'お客様情報入力(3/3)';
 
