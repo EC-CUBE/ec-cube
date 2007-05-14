@@ -10,10 +10,10 @@
 <hr>
 
 <form method="post" action="<!--{$smarty.server.PHP_SELF|escape}-->">
-<input type="hidden" name="mode" value="deliv_date">
-<input type="hidden" name="uniqid" value="<!--{$tpl_uniqid}-->">
-<input type="hidden" name="deliv_date" value="<!--{$arrForm.deliv_date.value}-->">
-<input type="hidden" name="deliv_time_id" value="<!--{$arrForm.deliv_time_id.value}-->">
+<input type="text" name="mode" value="deliv_date">
+<input type="text" name="uniqid" value="<!--{$tpl_uniqid}-->">
+<input type="text" name="deliv_date" value="<!--{$arrForm.deliv_date.value}-->">
+<input type="text" name="deliv_time_id" value="<!--{$arrForm.deliv_time_id.value}-->">
 <input type="text" name="zip01" value="<!--{$arrAddr[0].zip01}-->">
 <input type="text" name="zip02" value="<!--{$arrAddr[0].zip02}-->">
 <input type="text" name="pref" value="<!--{$arrAddr[0].pref}-->">
