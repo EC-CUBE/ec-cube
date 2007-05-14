@@ -393,7 +393,7 @@ function lfRegistData($uniqid) {
     $sqlval['order_birth'] = sfGetTimestamp($arrRet['year'], $arrRet['month'], $arrRet['day']);
     $sqlval['update_date'] = 'Now()';
     $sqlval['customer_id'] = '0';
-    $sqlval['order_name01'] = $objPage->name01;
+    $sqlval['order_name01'] = "test";
           
     print_r($sqlval);
     // 既存データのチェック
