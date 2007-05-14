@@ -67,44 +67,6 @@ if (SSLURL_CHECK == 1){
 
 // レイアウトデザインを取得
 $objPage = sfGetPageLayout($objPage, false, DEF_LAYOUT);
-/*
-//---- 登録用カラム配列
-$arrRegistColumn = array(
-                             array(  "column" => "name01", "convert" => "aKV" ),
-                             array(  "column" => "name02", "convert" => "aKV" ),
-                             array(  "column" => "kana01", "convert" => "CKV" ),
-                             array(  "column" => "kana02", "convert" => "CKV" ),
-                             array(  "column" => "zip01", "convert" => "n" ),
-                             array(  "column" => "zip02", "convert" => "n" ),
-                             array(  "column" => "pref", "convert" => "n" ),
-                             array(  "column" => "addr01", "convert" => "aKV" ),
-                             array(  "column" => "addr02", "convert" => "aKV" ),
-                             array(  "column" => "email", "convert" => "a" ),
-                             array(  "column" => "email2", "convert" => "a" ),
-                             array(  "column" => "email_mobile", "convert" => "a" ),
-                             array(  "column" => "email_mobile2", "convert" => "a" ),
-                             array(  "column" => "tel01", "convert" => "n" ),
-                             array(  "column" => "tel02", "convert" => "n" ),
-                             array(  "column" => "tel03", "convert" => "n" ),
-                             array(  "column" => "fax01", "convert" => "n" ),
-                             array(  "column" => "fax02", "convert" => "n" ),
-                             array(  "column" => "fax03", "convert" => "n" ),
-                             array(  "column" => "sex", "convert" => "n" ),
-                             array(  "column" => "job", "convert" => "n" ),
-                             array(  "column" => "birth", "convert" => "n" ),
-                             array(  "column" => "reminder", "convert" => "n" ),
-                             array(  "column" => "reminder_answer", "convert" => "aKV"),
-                             array(  "column" => "password", "convert" => "a" ),
-                             array(  "column" => "password02", "convert" => "a" ),
-                             array(  "column" => "mailmaga_flg", "convert" => "n" ),
-                         );
-
-//---- 登録除外用カラム配列
-//$arrRejectRegistColumn = array("year", "month", "day", "email02", "email_mobile02","password","password02","reminder","reminder_answer");
-$arrRejectRegistColumn = array("year", "month", "day");
-*/
-//-------------------------------------▲NONMEMBER----------------------------------------------
-
 
 // ユーザユニークIDの取得と購入状態の正当性をチェック
 $uniqid = sfCheckNormalAccess($objSiteSess, $objCartSess);
@@ -339,7 +301,6 @@ $arrRejectRegistColumn = array("year", "month", "day", "email02", "email_mobile0
            
             // POST値の取得
             $objFormParam->setParam($_POST);
-            //print_r($_POST);
            	$arrRet = $objFormParam->getHashArray();
 			$sqlval = $objFormParam->getDbArray();
             
@@ -350,8 +311,6 @@ $arrRejectRegistColumn = array("year", "month", "day", "email02", "email_mobile0
            foreach($_POST as $key => $value){
                $objPage->arrAddr[0][$key] = $value;
            }
-            print("arrAddr:");
-            print_r( $objPage->arrAddr[0]);
 //           $objPage->arrAddr[0]['zip01'] = $_POST['zip01'];
 //           $objPage->arrAddr[0]['zip02'] = $_POST['zip02'];
 //           $objPage->arrAddr[0]['pref'] = $_POST['pref'];
