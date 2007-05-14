@@ -72,11 +72,11 @@ if (!empty($_POST['return'])) {
 	}
 }
 
-switch($_POST['mode']) {
+switch($_POST['mode2']) {
 // 支払い方法指定 → 配達日時指定
 case 'deliv_date':
 	
-    print("test");
+
     // 入力値の変換
 	$objFormParam->convParam();
 	$objPage->arrErr = lfCheckError($objPage->arrData);
