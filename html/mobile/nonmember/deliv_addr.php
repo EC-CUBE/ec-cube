@@ -31,6 +31,23 @@ $objCartSess = new SC_CartSession();
 
 $objPage->arrForm = $_POST;
 $objPage->arrPref = $arrPref;
+
+//別のお届け先ＤＢ登録用カラム配列
+$arrRegistColumn = array(
+                             array(  "column" => "name01",      "convert" => "aKV" ),
+                             array(  "column" => "name02",      "convert" => "aKV" ),
+                             array(  "column" => "kana01",      "convert" => "CKV" ),
+                             array(  "column" => "kana02",      "convert" => "CKV" ),
+                             array(  "column" => "zip01",       "convert" => "n" ),
+                             array(  "column" => "zip02",       "convert" => "n" ),
+                             array(  "column" => "pref",        "convert" => "n" ),
+                             array(  "column" => "addr01",      "convert" => "aKV" ),
+                             array(  "column" => "addr02",      "convert" => "aKV" ),
+                             array(  "column" => "tel01",       "convert" => "n" ),
+                             array(  "column" => "tel02",       "convert" => "n" ),
+                             array(  "column" => "tel03",       "convert" => "n" ),
+                        );
+
 //-- データ設定
 foreach($_POST as $key => $val) {
 	if ($key != "mode" && $key != "return" && $key != "submit" && $key != session_name()) {
@@ -43,21 +60,7 @@ foreach($_POST as $key => $val) {
 // ユーザユニークIDの取得と購入状態の正当性をチェック
 $uniqid = sfCheckNormalAccess($objSiteSess, $objCartSess);
 
-//別のお届け先ＤＢ登録用カラム配列
-$arrRegistColumn = array(
-							 array(  "column" => "name01",		"convert" => "aKV" ),
-							 array(  "column" => "name02",		"convert" => "aKV" ),
-							 array(  "column" => "kana01",		"convert" => "CKV" ),
-							 array(  "column" => "kana02",		"convert" => "CKV" ),
-							 array(  "column" => "zip01",		"convert" => "n" ),
-							 array(  "column" => "zip02",		"convert" => "n" ),
-							 array(  "column" => "pref",		"convert" => "n" ),
-							 array(  "column" => "addr01",		"convert" => "aKV" ),
-							 array(  "column" => "addr02",		"convert" => "aKV" ),
-							 array(  "column" => "tel01",		"convert" => "n" ),
-							 array(  "column" => "tel02",		"convert" => "n" ),
-							 array(  "column" => "tel03",		"convert" => "n" ),
-						);
+
                         
  //-- 入力データの変換
     $objPage->arrForm = lfConvertParam($objPage->arrForm, $arrRegistColumn);
