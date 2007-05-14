@@ -346,12 +346,16 @@ $arrRejectRegistColumn = array("year", "month", "day", "email02", "email_mobile0
             // 入力値の取得
             $objPage->arrForm = $objFormParam->getFormParamList();
             $objPage->arrErr = $arrErr;
+           
+           foreach($_POST as $key => $value){
+               $objPage->arrAddr[0][$key] = $value;
+           }
             
-             $objPage->arrAddr[0]['zip01'] = $_POST['zip01'];
-           $objPage->arrAddr[0]['zip02'] = $_POST['zip02'];
-           $objPage->arrAddr[0]['pref'] = $_POST['pref'];
-           $objPage->arrAddr[0]['addr01'] = $_POST['addr01'];
-           $objPage->arrAddr[0]['addr02'] = $_POST['addr02']; 
+//           $objPage->arrAddr[0]['zip01'] = $_POST['zip01'];
+//           $objPage->arrAddr[0]['zip02'] = $_POST['zip02'];
+//           $objPage->arrAddr[0]['pref'] = $_POST['pref'];
+//           $objPage->arrAddr[0]['addr01'] = $_POST['addr01'];
+//           $objPage->arrAddr[0]['addr02'] = $_POST['addr02']; 
             
 //            $cnt = 1;
 //            foreach($objOtherAddr as $val) {
