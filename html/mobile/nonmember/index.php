@@ -392,6 +392,7 @@ function lfRegistDataTemp($uniqid,$array) {
     $sqlval['order_tel02'] = $array['tel02'];
     $sqlval['order_tel03'] = $array['tel03'];
     $sqlval['order_email'] = $array['email'];
+    $sqlval['order_sex'] = $array['sex'];
           
     // 既存データのチェック
     $objQuery = new SC_Query();
@@ -448,7 +449,6 @@ function lfInitParam() {
 }
 
 /* DBへデータの登録 */
-
 
 /* 入力内容のチェック */
 function lfCheckError() {
