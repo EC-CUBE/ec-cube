@@ -201,7 +201,7 @@ function lfRegistData($array, $arrRegistColumn,$uniqid) {
     $objQuery = new SC_Query();
     
     $sqlse = "SELECT customer_id FROM dtb_other_deliv WHERE order_temp_id = ?";
-    $arrRegist['customer_id'] = $objConn->getOne($sqlse, array('customer_id'));
+    $arrRegist['customer_id'] = $objConn->getOne($sqlse, array($uniqid));
     
 	foreach ($arrRegistColumn as $data) {
 		if (strlen($array[ $data["column"] ]) > 0) {
