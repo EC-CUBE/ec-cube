@@ -287,7 +287,8 @@ function lfRegistOtherDelivData($uniqid, $objCustomer, $other_deliv_id) {
 	// 登録データの作成
 	$sqlval['order_temp_id'] = $uniqid;
 	$sqlval['update_date'] = 'Now()';
-	$sqlval['customer_id'] = $objCustomer->getValue('customer_id');
+	$sqlval['customer_id'] = '0';
+    //$sqlval['customer_id'] = $objCustomer->getValue('customer_id');
 	$sqlval['order_birth'] = $objCustomer->getValue('birth');
 
 	$objQuery = new SC_Query();
