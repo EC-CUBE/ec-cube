@@ -116,7 +116,7 @@ switch ($_POST['mode']){
 			$other_deliv_id = lfRegistData($_POST,$arrRegistColumn,$uniqid);
 
 			// 登録済みの別のお届け先を受注一時テーブルに書き込む
-			//lfRegistOtherDelivData($uniqid, $objCustomer, $other_deliv_id);
+			lfRegistOtherDelivData($uniqid, $objCustomer, $other_deliv_id);
 
 			// 正常に登録されたことを記録しておく
 			$objSiteSess->setRegistFlag();
