@@ -72,6 +72,8 @@ if (!empty($_POST['return'])) {
 	}
 }
 
+print($_SERVER['refferer']);
+
 switch($_POST['mode2']) {
 // 支払い方法指定 → 配達日時指定
 case 'deliv_date':
