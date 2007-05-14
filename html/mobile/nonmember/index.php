@@ -371,7 +371,7 @@ $arrRejectRegistColumn = array("year", "month", "day", "email02", "email_mobile0
           	print_r($_POST);
           	if ($_POST['deli'] != "") {
            
-           $objPage->arrAddr[0]['zip01'] = $objPage->zip01;
+           $objPage->arrAddr[0]['zip01'] = "test";
            
            lfRegistData($objPage->tpl_uniqid); 
            header("Location:" . gfAddSessionId("./payment.php"));
