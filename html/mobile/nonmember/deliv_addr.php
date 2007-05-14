@@ -60,12 +60,9 @@ foreach($_POST as $key => $val) {
 // ユーザユニークIDの取得と購入状態の正当性をチェック
 $uniqid = sfCheckNormalAccess($objSiteSess, $objCartSess);
 
-print_r($objPage->arrForm);
-print("<br>");                        
+                      
  //-- 入力データの変換
-    $objPage->arrForm = lfConvertParam($objPage->arrForm, $arrRegistColumn);
-print_r($objPage->arrForm);
-print_r(lfErrorCheck1($objPage->arrForm));                        
+    $objPage->arrForm = lfConvertParam($objPage->arrForm, $arrRegistColumn);                        
 
 // 戻るボタン用処理
 if (!empty($_POST["return"])) {
