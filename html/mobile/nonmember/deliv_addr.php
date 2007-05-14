@@ -112,7 +112,8 @@ switch ($_POST['mode']){
 	case 'complete':
 		$objPage->arrErr = lfErrorCheck($objPage->arrForm);
 		if (count($objPage->arrErr) == 0) {
-			// 登録
+			print("115");
+            // 登録
 			$other_deliv_id = lfRegistData($_POST,$arrRegistColumn);
 
 			// 登録済みの別のお届け先を受注一時テーブルに書き込む
