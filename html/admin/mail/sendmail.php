@@ -90,8 +90,8 @@ for( $i = 0; $i < count( $time_data ); $i++ ) {
 									,$objSite->data["email04"]					//　errors_to
 																	);
 				//メールの分解
-				$decoder = new Mail_mimeDecode(  );
-				$parts = $decoder->getSendArray($mail_text);
+				$decoder = new Mail_mimeDecode($mail_text);
+				$parts = $decoder->getSendArray();
 				list( $to, $headers, $body) = $parts;
 				
 				//SMTPサーバ
