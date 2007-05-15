@@ -78,8 +78,30 @@ for( $i = 0; $i < count( $time_data ); $i++ ) {
 
 		//-- メール配信ブレイン連携の場合	
 		if(MELMAGA_MOBIE_SEND){
-			$str = "欧米か";
-			print_r($str);
+			if($mail_data[$i][0]["mail_method"]) {
+				$mail_text = array(
+									$list_data[$i][$j]["email"]				//　顧客宛先
+									,$subjectBody								//　Subject
+									,$mailBody									//　メール本文
+									,$objSite->data["email03"]					//　送信元メールアドレス
+									,$objSite->data["company_name"]				//　送信元名
+									,$objSite->data["email03"]					//　reply_to
+									,$objSite->data["email04"]					//　return_path
+									,$objSite->data["email04"]					//　errors_to
+																	);
+				//メールの分解
+				$decoder = new Mail_mimeDecode(  );
+				$parts = $decoder->getSendArray($mail_text);
+				list( $to, $headers, $body) = $parts;
+				
+				//SMTPサーバ
+				$mail_options = array(
+				                       'host'    => '210.188.254.83',
+				                       'port'    => 25
+				                                                        );
+				$mail_object =& Mail::factory("SMTP", $mail_options);
+				$mail_object->send($to, $header, $body);
+			}
 		} else {
 		    //-- テキストメール配信の場合
 		    if( $mail_data[$i][0]["mail_method"] == 2 ) {
@@ -153,6 +175,19 @@ for( $i = 0; $i < count( $time_data ); $i++ ) {
 
 }
 
+
+//--- メール配信ブレイン連携の配信
+function BLAYN_MAIL_SENDING( $to, $subject, $body, $fromaddress, $from_name, $reply_to, $return_path, $errors_to="", $bcc="", $cc ="" ) {
+
+
+    $mail_obj = new GC_SendMail();  
+    $mail_obj->setItem( $to, $subject, $body, $fromaddress, $from_name, $reply_to, $return_path, $errors_to, $bcc, $cc );
+        
+    if( $mail_obj->sendMail() ) {
+        return true;
+    }
+    
+}
 
 //--- テキストメール配信
 function MAIL_SENDING( $to, $subject, $body, $fromaddress, $from_name, $reply_to, $return_path, $errors_to="", $bcc="", $cc ="" ) {
