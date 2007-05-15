@@ -80,7 +80,6 @@ if (!empty($_POST['return'])) {
 switch($_POST['mode']) {
 // 支払い方法指定 → 配達日時指定
 case 'deliv_date':
-	$objFormParam->setParam($_POST);
 	
 	// 入力値の変換
 	$objFormParam->convParam();
