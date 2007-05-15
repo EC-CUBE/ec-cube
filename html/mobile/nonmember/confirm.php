@@ -83,7 +83,7 @@ switch($_POST['mode']) {
 case 'return':
 	// 正常な推移であることを記録しておく
 	$objSiteSess->setRegistFlag();
-	header("Location: " . gfAddSessionId('./payment.php'));
+	header("Location: " . gfAddSessionId(MOBILE_URL_SHOP_PAYMENT));
 	exit;
 	break;
 case 'confirm':
@@ -112,6 +112,7 @@ case 'confirm':
 default:
 	break;
 }
+
 
 $objPage->arrData = $arrData;
 $objPage->arrInfo = $arrInfo;
