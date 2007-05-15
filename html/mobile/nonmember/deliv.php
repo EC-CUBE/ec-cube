@@ -75,31 +75,6 @@ if ($_POST["mode2"] == "deliv") {
         $arrErr['deli'] = '※ お届け先を選択してください。';
     }
          }
-         
-         function lfRegistData($uniqid) {
-    global $objFormParam;
-    $arrRet = $objFormParam->getHashArray();
-    $sqlval = $objFormParam->getDbArray();
-    
-    // 登録データの作成
-    $sqlval['order_temp_id'] = $uniqid;
-    $sqlval['order_birth'] = sfGetTimestamp($arrRet['year'], $arrRet['month'], $arrRet['day']);
-    $sqlval['update_date'] = 'Now()';
-    $sqlval['customer_id'] = '0';
-    $sqlval['order_name01'] = $objPage->arrAddr[0]['name01'];
-          
-    // 既存データのチェック
-    $objQuery = new SC_Query();
-    $where = "order_temp_id = ?";
-    $cnt = $objQuery->count("dtb_order_temp", $where, array($uniqid));
-    // 既存データがない場合
-    if ($cnt == 0) {
-        $sqlval['create_date'] = 'Now()';
-        $objQuery->insert("dtb_order_temp", $sqlval);
-    } else {
-        $objQuery->update("dtb_order_temp", $sqlval, $where, array($uniqid));
-    }
-}
 
 //入力された情報をデータベースdtb_order_tempに格納する
 function lfRegistDataTemp($uniqid,$array) {
@@ -184,47 +159,6 @@ function lfInitParam() {
 
 /* DBへデータの登録 */
 
-/* 入力内容のチェック */
-function lfCheckError() {
-    global $objFormParam;
-    // 入力データを渡す。
-    $arrRet =  $objFormParam->getHashArray();
-    $objErr = new SC_CheckError($arrRet);
-    $objErr->arrErr = $objFormParam->checkError();
-        
-    // 別のお届け先チェック
-    if($_POST['deliv_check'] == "1") { 
-        $objErr->doFunc(array("お名前（姓）", "deliv_name01"), array("EXIST_CHECK"));
-        $objErr->doFunc(array("お名前（名）", "deliv_name02"), array("EXIST_CHECK"));
-        $objErr->doFunc(array("フリガナ（セイ）", "deliv_kana01"), array("EXIST_CHECK"));
-        $objErr->doFunc(array("フリガナ（メイ）", "deliv_kana02"), array("EXIST_CHECK"));
-        $objErr->doFunc(array("郵便番号1", "deliv_zip01"), array("EXIST_CHECK"));
-        $objErr->doFunc(array("郵便番号2", "deliv_zip02"), array("EXIST_CHECK"));
-        $objErr->doFunc(array("都道府県", "deliv_pref"), array("EXIST_CHECK"));
-        $objErr->doFunc(array("住所1", "deliv_addr01"), array("EXIST_CHECK"));
-        $objErr->doFunc(array("住所2", "deliv_addr02"), array("EXIST_CHECK"));
-        $objErr->doFunc(array("電話番号1", "deliv_tel01"), array("EXIST_CHECK"));
-        $objErr->doFunc(array("電話番号2", "deliv_tel02"), array("EXIST_CHECK"));
-        $objErr->doFunc(array("電話番号3", "deliv_tel03"), array("EXIST_CHECK"));
-    }
-    
-    // 複数項目チェック
-    $objErr->doFunc(array("TEL", "order_tel01", "order_tel02", "order_tel03", TEL_ITEM_LEN), array("TEL_CHECK"));
-    $objErr->doFunc(array("FAX", "order_fax01", "order_fax02", "order_fax03", TEL_ITEM_LEN), array("TEL_CHECK"));
-    $objErr->doFunc(array("郵便番号", "order_zip01", "order_zip02"), array("ALL_EXIST_CHECK"));
-    $objErr->doFunc(array("TEL", "deliv_tel01", "deliv_tel02", "deliv_tel03", TEL_ITEM_LEN), array("TEL_CHECK"));
-    $objErr->doFunc(array("FAX", "deliv_fax01", "deliv_fax02", "deliv_fax03", TEL_ITEM_LEN), array("TEL_CHECK"));
-    $objErr->doFunc(array("郵便番号", "deliv_zip01", "deliv_zip02"), array("ALL_EXIST_CHECK"));
-    $objErr->doFunc(array("生年月日", "year", "month", "day"), array("CHECK_DATE"));
-    $objErr->doFunc(array("メールアドレス", "メールアドレス（確認）", "order_email", "order_email_check"), array("EQUAL_CHECK"));
-    
-    // すでにメルマガテーブルに会員としてメールアドレスが登録されている場合
-    if(sfCheckCustomerMailMaga($arrRet['order_email'])) {
-        $objErr->arrErr['order_email'] = "このメールアドレスはすでに登録されています。<br>";
-    }
-        
-    return $objErr->arrErr;
-}
 
 // 受注一時テーブルのお届け先をコピーする
 function lfCopyDeliv($uniqid, $arrData) {
@@ -249,118 +183,6 @@ function lfCopyDeliv($uniqid, $arrData) {
     }
 }
 
-//-----------------------------NONMEMBER関数群▼------------------------------------------------------------------
-//----　取得文字列の変換
-function lfConvertParam($array, $arrRegistColumn) {
-    /*
-     *  文字列の変換
-     *  K :  「半角(ﾊﾝｶｸ)片仮名」を「全角片仮名」に変換
-     *  C :  「全角ひら仮名」を「全角かた仮名」に変換
-     *  V :  濁点付きの文字を一文字に変換。"K","H"と共に使用します 
-     *  n :  「全角」数字を「半角(ﾊﾝｶｸ)」に変換
-     *  a :  全角英数字を半角英数字に変換する
-     */
-    // カラム名とコンバート情報
-    foreach ($arrRegistColumn as $data) {
-        $arrConvList[ $data["column"] ] = $data["convert"];
-    }
-    // 文字変換
-    foreach ($arrConvList as $key => $val) {
-        // POSTされてきた値のみ変換する。
-        if(strlen(($array[$key])) > 0) {
-            $array[$key] = mb_convert_kana($array[$key] ,$val);
-        }
-    }
-    return $array;
-}
-
-//---- 入力エラーチェック
-function lfErrorCheck1($array) {
-
-    global $objConn;
-    $objErr = new SC_CheckError($array);
-    
-    $objErr->doFunc(array("お名前（姓）", 'name01', STEXT_LEN), array("EXIST_CHECK", "NO_SPTAB", "SPTAB_CHECK" ,"MAX_LENGTH_CHECK"));
-    $objErr->doFunc(array("お名前（名）", 'name02', STEXT_LEN), array("EXIST_CHECK", "NO_SPTAB", "SPTAB_CHECK" , "MAX_LENGTH_CHECK"));
-    $objErr->doFunc(array("お名前（カナ/姓）", 'kana01', STEXT_LEN), array("EXIST_CHECK", "NO_SPTAB", "SPTAB_CHECK" ,"MAX_LENGTH_CHECK", "KANA_CHECK"));
-    $objErr->doFunc(array("お名前（カナ/名）", 'kana02', STEXT_LEN), array("EXIST_CHECK", "NO_SPTAB", "SPTAB_CHECK" ,"MAX_LENGTH_CHECK", "KANA_CHECK"));
-    $objErr->doFunc(array('メールアドレス', "email", MTEXT_LEN) ,array("NO_SPTAB", "EXIST_CHECK", "EMAIL_CHECK", "SPTAB_CHECK" ,"EMAIL_CHAR_CHECK", "MAX_LENGTH_CHECK", "MOBILE_EMAIL_CHECK"));
-
-    return $objErr->arrErr;
-}
-
-//---- 入力エラーチェック
-function lfErrorCheck2($array) {
-
-    global $objConn, $objDate;
-    $objErr = new SC_CheckError($array);
-    
-    $objErr->doFunc(array("郵便番号1", "zip01", ZIP01_LEN ) ,array("EXIST_CHECK", "SPTAB_CHECK" ,"NUM_CHECK", "NUM_COUNT_CHECK"));
-    $objErr->doFunc(array("郵便番号2", "zip02", ZIP02_LEN ) ,array("EXIST_CHECK", "SPTAB_CHECK" ,"NUM_CHECK", "NUM_COUNT_CHECK")); 
-    $objErr->doFunc(array("郵便番号", "zip01", "zip02"), array("ALL_EXIST_CHECK"));
-
-    $objErr->doFunc(array("性別", "sex") ,array("SELECT_CHECK", "NUM_CHECK")); 
-    $objErr->doFunc(array("生年月日 (年)", "year", 4), array("EXIST_CHECK", "SPTAB_CHECK", "NUM_CHECK", "NUM_COUNT_CHECK"));
-    if (!isset($objErr->arrErr['year'])) {
-        $objErr->doFunc(array("生年月日 (年)", "year", $objDate->getStartYear()), array("MIN_CHECK"));
-        $objErr->doFunc(array("生年月日 (年)", "year", $objDate->getEndYear()), array("MAX_CHECK"));
-    }
-    $objErr->doFunc(array("生年月日 (月日)", "month", "day"), array("SELECT_CHECK"));
-    if (!isset($objErr->arrErr['year']) && !isset($objErr->arrErr['month']) && !isset($objErr->arrErr['day'])) {
-        $objErr->doFunc(array("生年月日", "year", "month", "day"), array("CHECK_DATE"));
-    }
-    
-    return $objErr->arrErr;
-}
-
-
-//---- 入力エラーチェック
-function lfErrorCheck3($array) {
-
-    global $objConn;
-    $objErr = new SC_CheckError($array);
-    
-    $objErr->doFunc(array("都道府県", 'pref'), array("SELECT_CHECK","NUM_CHECK"));
-    $objErr->doFunc(array("市区町村", "addr01", MTEXT_LEN), array("EXIST_CHECK","SPTAB_CHECK" ,"MAX_LENGTH_CHECK"));
-    $objErr->doFunc(array("番地", "addr02", MTEXT_LEN), array("EXIST_CHECK","SPTAB_CHECK" ,"MAX_LENGTH_CHECK"));
-    $objErr->doFunc(array("電話番号1", 'tel01'), array("EXIST_CHECK","SPTAB_CHECK" ));
-    $objErr->doFunc(array("電話番号2", 'tel02'), array("EXIST_CHECK","SPTAB_CHECK" ));
-    $objErr->doFunc(array("電話番号3", 'tel03'), array("EXIST_CHECK","SPTAB_CHECK" ));
-    $objErr->doFunc(array("電話番号", "tel01", "tel02", "tel03",TEL_ITEM_LEN) ,array("TEL_CHECK"));
-    
-    return $objErr->arrErr;
-}
-
-// 郵便番号から住所の取得
-function lfGetAddress($zipcode) {
-    global $arrPref;
-
-    $conn = new SC_DBconn(ZIP_DSN);
-
-    // 郵便番号検索文作成
-    $zipcode = mb_convert_kana($zipcode ,"n");
-    $sqlse = "SELECT state, city, town FROM mtb_zip WHERE zipcode = ?";
-
-    $data_list = $conn->getAll($sqlse, array($zipcode));
-
-    // インデックスと値を反転させる。
-    $arrREV_PREF = array_flip($arrPref);
-
-    /*
-        総務省からダウンロードしたデータをそのままインポートすると
-        以下のような文字列が入っているので   対策する。
-        ・（１・１９丁目）
-        ・以下に掲載がない場合
-    */
-    $town =  $data_list[0]['town'];
-    $town = ereg_replace("（.*）$","",$town);
-    $town = ereg_replace("以下に掲載がない場合","",$town);
-    $data_list[0]['town'] = $town;
-    $data_list[0]['state'] = $arrREV_PREF[$data_list[0]['state']];
-
-    return $data_list;
-}
-//NONMEMBER_関数群---------------------------------------------------------------------------------------
 ?>
          
 ?>
