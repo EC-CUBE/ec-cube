@@ -43,7 +43,6 @@ $objFormParam = new SC_FormParam();			// フォーム用
 lfInitParam();								// パラメータ情報の初期化
 $objFormParam->setParam($_POST);			// POST値の取得
 
-
 //-------------------------------------▼NONMEMBER----------------------------------------------
 //---- ページ初期設定
 
@@ -160,14 +159,21 @@ $objView->display(SITE_FRAME);
 
 //--------------------------------------------------------------------------------------------------------------------------
 /* 非会員入力ページのセット */
+<<<<<<< .mine
+function lfSetNonMember($objPage) {        
+=======
 function lfSetNonMember($objPage) {
         
+<<<<<<< .mine
+>>>>>>> .r12670
+    $objPage->tpl_mainpage = 'shopping/nonmember_set1.tpl';
+=======
     $objPage->tpl_mainpage = 'nonmember/nonmember_set1.tpl';
+>>>>>>> .r12821
 	$objPage->tpl_css = array();
 	$objPage->tpl_css[] = '/css/layout/login/nonmember.css';
     return $objPage;
 }
-
 
 function lfRegistData($uniqid) {
     global $objFormParam;
@@ -260,21 +266,20 @@ function lfCheckError() {
 		$objErr->doFunc(array("電話番号3", "deliv_tel03"), array("EXIST_CHECK"));
 	}
 	
-	// 複数項目チェック
-	$objErr->doFunc(array("TEL", "order_tel01", "order_tel02", "order_tel03", TEL_ITEM_LEN), array("TEL_CHECK"));
-	$objErr->doFunc(array("FAX", "order_fax01", "order_fax02", "order_fax03", TEL_ITEM_LEN), array("TEL_CHECK"));
-	$objErr->doFunc(array("郵便番号", "order_zip01", "order_zip02"), array("ALL_EXIST_CHECK"));
-	$objErr->doFunc(array("TEL", "deliv_tel01", "deliv_tel02", "deliv_tel03", TEL_ITEM_LEN), array("TEL_CHECK"));
-	$objErr->doFunc(array("FAX", "deliv_fax01", "deliv_fax02", "deliv_fax03", TEL_ITEM_LEN), array("TEL_CHECK"));
-	$objErr->doFunc(array("郵便番号", "deliv_zip01", "deliv_zip02"), array("ALL_EXIST_CHECK"));
-	$objErr->doFunc(array("生年月日", "year", "month", "day"), array("CHECK_DATE"));
-	$objErr->doFunc(array("メールアドレス", "メールアドレス（確認）", "order_email", "order_email_check"), array("EQUAL_CHECK"));
+    	// 複数項目チェック
+    	$objErr->doFunc(array("TEL", "order_tel01", "order_tel02", "order_tel03", TEL_ITEM_LEN), array("TEL_CHECK"));
+    	$objErr->doFunc(array("FAX", "order_fax01", "order_fax02", "order_fax03", TEL_ITEM_LEN), array("TEL_CHECK"));
+    	$objErr->doFunc(array("郵便番号", "order_zip01", "order_zip02"), array("ALL_EXIST_CHECK"));
+    	$objErr->doFunc(array("TEL", "deliv_tel01", "deliv_tel02", "deliv_tel03", TEL_ITEM_LEN), array("TEL_CHECK"));
+    	$objErr->doFunc(array("FAX", "deliv_fax01", "deliv_fax02", "deliv_fax03", TEL_ITEM_LEN), array("TEL_CHECK"));
+    	$objErr->doFunc(array("郵便番号", "deliv_zip01", "deliv_zip02"), array("ALL_EXIST_CHECK"));
+    	$objErr->doFunc(array("生年月日", "year", "month", "day"), array("CHECK_DATE"));
+    	$objErr->doFunc(array("メールアドレス", "メールアドレス（確認）", "order_email", "order_email_check"), array("EQUAL_CHECK"));
 	
 	// すでにメルマガテーブルに会員としてメールアドレスが登録されている場合
 	if(sfCheckCustomerMailMaga($arrRet['order_email'])) {
 		$objErr->arrErr['order_email'] = "このメールアドレスはすでに登録されています。<br>";
 	}
-		
 	return $objErr->arrErr;
 }
 
