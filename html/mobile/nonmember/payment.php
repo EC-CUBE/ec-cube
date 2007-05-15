@@ -101,7 +101,8 @@ case 'confirm':
 		// 正常に登録されたことを記録しておく
 		$objSiteSess->setRegistFlag();
 		// 確認ページへ移動
-		header("Location: " . gfAddSessionId(MOBILE_URL_SHOP_CONFIRM));
+		//header("Location: " . gfAddSessionId(MOBILE_URL_SHOP_CONFIRM));
+        header("Location: " . gfAddSessionId('./confirm.php'));
 		exit;
 	}else{
 		// ユーザユニークIDの取得
@@ -365,4 +366,6 @@ function lfSetOrderTempData($uniqid) {
 	$objFormParam->setParam($arrRet[0]);
 	return $objFormParam;
 }
+
+
 ?>
