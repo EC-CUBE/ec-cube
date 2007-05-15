@@ -35,7 +35,7 @@ $objCookie = new SC_Cookie();
 $objFormParam = new SC_FormParam();         // フォーム用
 lfInitParam();                              // パラメータ情報の初期化
 $objFormParam->setParam($_POST);            // POST値の取得
-
+print_r($_POST);
 
 if ($_POST["mode2"] == "deliv") {
             
