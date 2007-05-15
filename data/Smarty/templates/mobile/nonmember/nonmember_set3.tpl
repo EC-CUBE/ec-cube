@@ -8,7 +8,8 @@
 *}-->
 <div align="center">お客様情報入力 3/3</div>
 <hr>
-	<form name="form1" method="post" action="<!--{$smarty.server.PHP_SELF|escape}-->">
+	<!--<form name="form1" method="post" action="<!--{$smarty.server.PHP_SELF|escape}-->">-->
+	<form name="form1" method="post" action="./deliv.php">
 	<input type="hidden" name="mode" value="nonmember">
 	<input type="hidden" name="mode2" value="deliv">
 	<input type="hidden" name="uniqid" value="<!--{$tpl_uniqid}-->">
