@@ -79,6 +79,7 @@ if($objCustomer->isLoginSuccess()) {
 	exit;
 }
 
+
 // 携帯端末IDが一致する会員が存在するかどうかをチェックする。
 $objPage->tpl_valid_phone_id = $objCustomer->checkMobilePhoneId();
 
