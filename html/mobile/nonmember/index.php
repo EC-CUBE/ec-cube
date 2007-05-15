@@ -40,15 +40,13 @@ $objCartSess = new SC_CartSession();
 $objCustomer = new SC_Customer();
 $objCookie = new SC_Cookie();
 $objFormParam = new SC_FormParam();			// フォーム用
-lfInitParam();								// パラメータ情報の初期化
+lfInitParam();  							// パラメータ情報の初期化
 $objFormParam->setParam($_POST);			// POST値の取得
-
 
 //-------------------------------------▼NONMEMBER----------------------------------------------
 //---- ページ初期設定
 
 $CONF = sf_getBasisData();                  // 店舗基本情報
-$objView = new SC_MobileView();
 $objDate = new SC_Date(START_BIRTH_YEAR, date("Y",strtotime("now")));
 $objPage->arrPref = $arrPref;
 $objPage->arrJob = $arrJob;
@@ -82,9 +80,7 @@ case 'confirm':
 	$objFormParam->convParam();
 	$objFormParam->toLower('order_mail');
 	$objFormParam->toLower('order_mail_check');
-	
 	$objPage->arrErr = lfCheckError();
-
 	// 入力エラーなし
 	if(count($objPage->arrErr) == 0) {
 		// DBへのデータ登録
@@ -134,11 +130,10 @@ $objPage->arrYear = $objDate->getYear('', 1950);	//　日付プルダウン設定
 $objPage->arrMonth = $objDate->getMonth();
 $objPage->arrDay = $objDate->getDay();
 
-
-
 // 入力値の取得
 $objPage->arrForm = $objFormParam->getFormParamList();
 
+//objPageの情報をobjViewに格納
 $objView->assignobj($objPage);
 $objView->display(SITE_FRAME);
 
@@ -327,11 +322,10 @@ $arrRejectRegistColumn = array("year", "month", "day", "email02", "email_mobile0
 	break;
         }
     }
-
 	return $objPage;
 }
 
-
+//データの登録を行う
 function lfRegistData($uniqid) {
     global $objFormParam;
     $arrRet = $objFormParam->getHashArray();
@@ -357,6 +351,7 @@ function lfRegistData($uniqid) {
     }
 }
 
+//入力された情報をデータベースdtb_order_tempに格納する
 function lfRegistDataTemp($uniqid,$array) {
     global $objFormParam;
     $arrRet = $objFormParam->getHashArray();
