@@ -83,8 +83,9 @@ switch($_POST['mode']) {
 case 'return':
 	// 正常な推移であることを記録しておく
 	$objSiteSess->setRegistFlag();
-	header("Location: " . gfAddSessionId(MOBILE_URL_SHOP_PAYMENT));
-	exit;
+	//header("Location: " . gfAddSessionId(MOBILE_URL_SHOP_PAYMENT));
+    header("Location: " . gfAddSessionId('./payment.php'));
+    exit;
 	break;
 case 'confirm':
 	// この時点でオーダーIDを確保しておく（クレジット、コンビニ決済で必要なため）
