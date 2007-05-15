@@ -56,7 +56,7 @@ if ($_POST["mode2"] == "deliv") {
            }
             lfRegistDataTemp($objPage->tpl_uniqid,$objPage->arrAddr[0]); 
             
-            print("test<BR>");
+            print("test-------------------------------------------<BR>");
             lfCopyDeliv($objPage->tpl_uniqid, $_POST);
            
             $objPage->tpl_mainpage = 'nonmember/nonmember_deliv.tpl';
