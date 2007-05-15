@@ -121,7 +121,7 @@ case 'return':
 	// 非会員の場合
 	// 正常な推移であることを記録しておく
 	$objSiteSess->setRegistFlag();
-	header("Location: " . gfAddSessionId(MOBILE_URL_SHOP_TOP));
+	header("Location: " . gfAddSessionId('index.php'));
 	exit;
 	break;
 // 支払い方法が変更された場合
