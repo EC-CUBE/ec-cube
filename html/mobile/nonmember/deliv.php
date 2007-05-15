@@ -35,7 +35,6 @@ $objCookie = new SC_Cookie();
 $objFormParam = new SC_FormParam();         // フォーム用
 lfInitParam();                              // パラメータ情報の初期化
 $objFormParam->setParam($_POST);            // POST値の取得
-print_r($_POST);
 
 if ($_POST["mode2"] == "deliv") {
             
@@ -56,14 +55,13 @@ if ($_POST["mode2"] == "deliv") {
            }
             lfRegistDataTemp($objPage->arrAddr[0]['uniqid'],$objPage->arrAddr[0]); 
             
-            print("test-------------------------------------------<BR>");
             lfCopyDeliv($objPage->tpl_uniqid, $_POST);
            
             $objPage->tpl_mainpage = 'nonmember/nonmember_deliv.tpl';
             $objPage->tpl_title = 'お届け先情報';
             //objPageの情報をobjViewに格納
-$objView->assignobj($objPage);
-$objView->display(SITE_FRAME);
+            $objView->assignobj($objPage);
+            $objView->display(SITE_FRAME);
         }
         
          if ($_POST["mode2"] == "customer_addr") {
