@@ -61,6 +61,9 @@ if ($_POST["mode2"] == "deliv") {
            
             $objPage->tpl_mainpage = 'nonmember/nonmember_deliv.tpl';
             $objPage->tpl_title = 'お届け先情報';
+            //objPageの情報をobjViewに格納
+$objView->assignobj($objPage);
+$objView->display(SITE_FRAME);
         }
         
          if ($_POST["mode2"] == "customer_addr") {
