@@ -54,8 +54,8 @@ for( $i = 0; $i < count( $time_data ); $i++ ) {
 //---- 送信結果フラグ用SQL
 $sql_flag ="UPDATE dtb_send_customer SET send_flag = ? WHERE send_id = ? AND customer_id = ?";
 $objMail = new GC_SendMail();
-array_r($list_data);
-array_r($mail_data);
+array($list_data);
+array($mail_data);
 
 //----　メール生成と送信
 for( $i = 0; $i < count( $time_data ); $i++ ) {
