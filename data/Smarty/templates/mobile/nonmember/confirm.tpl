@@ -59,7 +59,8 @@
 
 <center><input type="submit" value="ÃíÊ¸"></center>
 </form>
-<form action="<!--{$smarty.const.MOBILE_URL_SHOP_PAYMENT}-->" method="post">
+<!--<form action="<!--{$smarty.const.MOBILE_URL_SHOP_PAYMENT}-->" method="post">-->
+<form action="./payment.php" method="post">
 <input type="hidden" name="mode" value="deliv_date">
 <input type="hidden" name="uniqid" value="<!--{$tpl_uniqid}-->">
 <input type="hidden" name="payment_id" value="<!--{$arrData.payment_id}-->">
