@@ -14,7 +14,7 @@ class LC_Page {
 	var $tpl_mode;
 	var $tpl_total_deliv_fee;
 	function LC_Page() {
-		$this->tpl_mainpage = 'shopping/confirm.tpl';
+		$this->tpl_mainpage = 'nonmember/confirm.tpl';
 		$this->tpl_css = '/css/layout/shopping/confirm.css';
 		$this->tpl_title = "ご入力内容のご確認";
 		global $arrPref;
