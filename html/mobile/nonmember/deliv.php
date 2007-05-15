@@ -54,7 +54,7 @@ if ($_POST["mode2"] == "deliv") {
            foreach($_POST as $key => $value){
                $objPage->arrAddr[0][$key] = $value;
            }
-            lfRegistDataTemp($objPage->tpl_uniqid,$objPage->arrAddr[0]); 
+            lfRegistDataTemp($objPage->arrAddr[0]['uniqid'],$objPage->arrAddr[0]); 
             
             print("test-------------------------------------------<BR>");
             lfCopyDeliv($objPage->tpl_uniqid, $_POST);
