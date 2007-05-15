@@ -64,45 +64,52 @@ for( $i = 0; $i < count( $time_data ); $i++ ) {
         $mailBody = "";
         $sendFlag = "";
 
-        //-- 顧客名の変換
-        $name = trim($list_data[$i][$j]["name"]);
-        
-        if ($name == "") {
-            $name = "お客";
-        }
-        
-        $customerName = htmlspecialchars($name);
-        $subjectBody = ereg_replace( "{name}", $customerName , $mail_data[$i][0]["subject"] );
-        $mailBody = ereg_replace( "{name}", $customerName ,  $mail_data[$i][0]["body"] );
+		//-- 顧客名の変換
+		$name = trim($list_data[$i][$j]["name"]);
+		
+		if ($name == "") {
+			$name = "お客";
+		}
+		
+		$customerName = htmlspecialchars($name);
+		$subjectBody = ereg_replace( "{name}", $customerName , $mail_data[$i][0]["subject"] );
+		$mailBody = ereg_replace( "{name}", $customerName ,  $mail_data[$i][0]["body"] );
 
-        //-- テキストメール配信の場合   
-        if( $mail_data[$i][0]["mail_method"] == 2 ) {
 
-            $sendResut = MAIL_SENDING(
-                                         $list_data[$i][$j]["email"]                //　顧客宛先
-                                        ,$subjectBody                               //　Subject
-                                        ,$mailBody                                  //　メール本文
-                                        ,$objSite->data["email03"]                  //　送信元メールアドレス
-                                        ,$objSite->data["company_name"]             //　送信元名
-                                        ,$objSite->data["email03"]                  //　reply_to
-                                        ,$objSite->data["email04"]                  //　return_path
-                                        ,$objSite->data["email04"]                  //　errors_to
-                                                                             );
+		//-- メール配信ブレイン連携の場合	
+		if(MELMAGA_MOBIE_SEND){
+			$str = "欧米か";
+			print_r($str);
+		} else {
+		    //-- テキストメール配信の場合
+		    if( $mail_data[$i][0]["mail_method"] == 2 ) {
 
-        //--  HTMLメール配信の場合  
-        } elseif( $mail_data[$i][0]["mail_method"] == 1 || $mail_data[$i][0]["mail_method"] == 3) {
+			    $sendResut = MAIL_SENDING(
+										 $list_data[$i][$j]["email"]				//　顧客宛先
+										,$subjectBody								//　Subject
+										,$mailBody									//　メール本文
+										,$objSite->data["email03"]					//　送信元メールアドレス
+										,$objSite->data["company_name"]				//　送信元名
+										,$objSite->data["email03"]					//　reply_to
+										,$objSite->data["email04"]					//　return_path
+										,$objSite->data["email04"]					//　errors_to
+																			 );
+
+            //--  HTMLメール配信の場合  
+            } elseif( $mail_data[$i][0]["mail_method"] == 1 || $mail_data[$i][0]["mail_method"] == 3) {
             
-            $sendResut = HTML_MAIL_SENDING(
-                                             $list_data[$i][$j]["email"]
-                                            ,$subjectBody
-                                            ,$mailBody
-                                            ,$objSite->data["email03"]                  //　送信元メールアドレス
-                                            ,$objSite->data["company_name"]             //　送信元名
-                                            ,$objSite->data["email03"]                  //　reply_to
-                                            ,$objSite->data["email04"]                  //　return_path
-                                            ,$objSite->data["email04"]                  //　errors_to
-                                                                     );
-        }
+                $sendResut = HTML_MAIL_SENDING(
+                                                 $list_data[$i][$j]["email"]
+                                                ,$subjectBody
+                                                ,$mailBody
+                                                ,$objSite->data["email03"]                  //　送信元メールアドレス
+                                                ,$objSite->data["company_name"]             //　送信元名
+                                                ,$objSite->data["email03"]                  //　reply_to
+                                                ,$objSite->data["email04"]                  //　return_path
+                                                ,$objSite->data["email04"]                  //　errors_to
+                                                                         );
+            }
+		}
     
         //-- 送信完了なら1、失敗なら0をメール送信結果フラグとしてDBに挿入
         if( ! $sendResut ){
