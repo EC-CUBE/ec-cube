@@ -54,7 +54,7 @@ if ($_POST["mode2"] == "deliv") {
             // 入力値の取得
             $objPage->arrForm = $objFormParam->getFormParamList();
             $objPage->arrErr = $arrErr;
-            $objPage->reffer = $_SERVER['refferer'];
+            $objPage->reffer = $_SERVER['HTTP_REFERER'];
            foreach($_POST as $key => $value){
                $objPage->arrAddr[0][$key] = $value;
            }
