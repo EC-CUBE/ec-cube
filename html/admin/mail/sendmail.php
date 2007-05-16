@@ -83,11 +83,6 @@ for( $i = 0; $i < count( $time_data ); $i++ ) {
 									$list_data[$i][$j]["email"]				//　顧客宛先
 									,$subjectBody								//　Subject
 									,$mailBody									//　メール本文
-									,$objSite->data["email03"]					//　送信元メールアドレス
-									,$objSite->data["company_name"]				//　送信元名
-									,$objSite->data["email03"]					//　reply_to
-									,$objSite->data["email04"]					//　return_path
-									,$objSite->data["email04"]					//　errors_to
 																	);
 				//メールの分解
 				$decoder = new Mail_mimeDecode($mail_text);
