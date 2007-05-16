@@ -90,11 +90,15 @@ for( $i = 0; $i < count( $time_data ); $i++ ) {
 				list( $to, $headers, $body) = $parts;
 				
 				//SMTP¥µ¡¼¥Ð
-				$mail_options = array(
-				                       'host'    => '210.188.254.83',
-				                       'port'    => 25
-				                                                        );
-				$mail_object =& Mail::factory("SMTP", $mail_options);
+				$mail_send = array(
+                                 'host' => 'mail.example.org',
+                                 'port' => '25',
+                                 'auth' => false,
+                                 'username' => '',
+                                 'password' => '',
+                                );
+				
+				$mail_object =& Mail::factory("SMTP", $mail_send);
 				$mail_object->send($to, $header, $body);
 			}
 		} else {
