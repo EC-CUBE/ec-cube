@@ -54,7 +54,7 @@ if ($_POST["mode2"] == "deliv") {
             // 入力値の取得
             $objPage->arrForm = $objFormParam->getFormParamList();
             $objPage->arrErr = $arrErr;
-           
+           print_r($_POST);
            foreach($_POST as $key => $value){
                $objPage->arrAddr[0][$key] = $value;
            }
