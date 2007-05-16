@@ -197,5 +197,3 @@ function lfCopyDeliv($uniqid, $arrData) {
 }
 
 ?>
-         
-?>
