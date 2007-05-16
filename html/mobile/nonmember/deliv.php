@@ -33,6 +33,8 @@ $objCartSess = new SC_CartSession();
 $objCustomer = new SC_Customer();
 $objCookie = new SC_Cookie();
 $objFormParam = new SC_FormParam();         // フォーム用
+lfInitParam();                              // パラメータ情報の初期化
+$objFormParam->setParam($_POST);            // POST値の取得
 
 $uniqid = sfCheckNormalAccess($objSiteSess, $objCartSess);
 // ユニークIDを引き継ぐ
@@ -43,7 +45,7 @@ if ($_POST["mode2"] == "deliv") {
             
             $objFormParam = new SC_FormParam();
             // パラメータ情報の初期化
-           lfInitParam(); 
+           
             // POST値の取得
             $objFormParam->setParam($_POST);
             $arrRet = $objFormParam->getHashArray();
@@ -91,7 +93,7 @@ if ($_POST["mode2"] == "deliv") {
         $objPage->arrForm = $objFormParam->getFormParamList();        
         
              foreach($objPage->arrForm as $key => $value){
-               $objPage->arrAddr[0][$key] = $value;
+               $objPage->arrAddr[0][$key] = $value['value'];
            }
         
         $objView->assignobj($objPage);
