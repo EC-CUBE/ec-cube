@@ -80,20 +80,24 @@ if ($_POST["mode2"] == "deliv") {
         $arrErr['deli'] = '※ お届け先を選択してください。';
             }
         }
-    }elseif(!empty($_POST["mode"]) && $_POST["mode"]=="deliv_date"){
-            
-            $objQuery = new SC_Query();
-            print($objPage->tpl_uniqid);
-            $objPage->tpl_mainpage = 'nonmember/nonmember_deliv.tpl';
-            $objPage->tpl_title = 'お届け先情報';
-            //objPageの情報をobjViewに格納
-            
-                $where = "order_temp_id = ?";
-    $arrRet = $objQuery->select("*", "dtb_order_temp", $where, array($objPage->tpl_uniqid));
-    $objFormParam->setParam($arrRet[0]);
-    $objPage->arrForm = $objFormParam->getFormParamList();        
-            $objView->assignobj($objPage);
-            $objView->display(SITE_FRAME);
+    }elseif(!empty($_POST["mode"]) && $_POST["mode"]=="deliv_date"){  
+        $objQuery = new SC_Query();
+        print($objPage->tpl_uniqid);
+        $objPage->tpl_mainpage = 'nonmember/nonmember_deliv.tpl';
+        $objPage->tpl_title = 'お届け先情報';
+        //objPageの情報をobjViewに格納
+        
+        $where = "order_temp_id = ?";
+        $arrRet = $objQuery->select("*", "dtb_order_temp", $where, array($objPage->tpl_uniqid));
+        $objFormParam->setParam($arrRet[0]);
+        $objPage->arrForm = $objFormParam->getFormParamList();        
+        
+             foreach($objPage->arrForm as $key => $value){
+               $objPage->arrAddr[0][$key] = $value;
+           }
+        
+        $objView->assignobj($objPage);
+        $objView->display(SITE_FRAME);
     }
 
 //入力された情報をデータベースdtb_order_tempに格納する
