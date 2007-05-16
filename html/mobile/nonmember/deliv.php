@@ -92,7 +92,7 @@ if ($_POST["mode2"] == "deliv") {
         $objFormParam->setParam($arrRet[0]);
         $objPage->arrForm = $objFormParam->getFormParamList();        
         
-             foreach($objPage->arrForm as $key => $value){
+             foreach($objPage->arrForm[0] as $key => $value){
                $objPage->arrAddr[0][$key] = $value;
            }
         print_r($objPage->arrAddr[0]);
