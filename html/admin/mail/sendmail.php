@@ -79,16 +79,6 @@ for( $i = 0; $i < count( $time_data ); $i++ ) {
 		//-- メール配信ブレイン連携の場合	
 		if(MELMAGA_MOBIE_SEND){
 			if($mail_data[$i][0]["mail_method"]) {
-				$mail_text = array(
-									$list_data[$i][$j]["email"]				//　顧客宛先
-									,$subjectBody								//　Subject
-									,$mailBody									//　メール本文
-																	);
-				//メールの分解
-				$decoder = new Mail_mimeDecode($mail_text);
-				$parts = $decoder->getSendArray();
-				list( $to, $headers, $body) = $parts;
-				
 				//SMTPサーバ
 				$mail_send = array(
                                  'host' => 'mail.example.org',
@@ -98,6 +88,14 @@ for( $i = 0; $i < count( $time_data ); $i++ ) {
                                  'password' => '',
                                 );
 				
+				$recipinets = $list_data[$i][$j]["email"];
+				
+				$headers['From']    = $objSite->data["email03"];
+                $headers['To']      = $list_data[$i][$j]["email"];
+                $headers['Subject'] = $subjectBody;
+                
+                $body = $mailbody;
+                
 				$mail_object =& Mail::factory("SMTP", $mail_send);
 				$mail_object->send($to, $header, $body);
 				if (PEAR::isError($result)) {
