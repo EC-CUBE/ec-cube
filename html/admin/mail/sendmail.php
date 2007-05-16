@@ -81,7 +81,7 @@ for( $i = 0; $i < count( $time_data ); $i++ ) {
 			if($mail_data[$i][0]["mail_method"]) {
 				//SMTP¥µ¡¼¥Ð
 				$mail_send = array(
-                                 'host' => 'mail.example.org',
+                                 'host' => '210.188.254.83',
                                  'port' => '25',
                                  'auth' => false,
                                  'username' => '',
