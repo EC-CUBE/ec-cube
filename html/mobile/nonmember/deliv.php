@@ -82,7 +82,7 @@ if ($_POST["mode2"] == "deliv") {
         }
     }elseif(!empty($_POST["mode"]) && $_POST["mode"]=="deliv_date"){  
         $objQuery = new SC_Query();
-        
+        $objPage->reffer = $_SERVER['HTTP_REFERER'];
         //objPageの情報をobjViewに格納
         
         $where = "order_temp_id = ?";
