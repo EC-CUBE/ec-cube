@@ -100,6 +100,9 @@ for( $i = 0; $i < count( $time_data ); $i++ ) {
 				
 				$mail_object =& Mail::factory("SMTP", $mail_send);
 				$mail_object->send($to, $header, $body);
+				if (PEAR::isError($result)) {
+                    die($result->getMessage());
+                }
 			}
 		} else {
 		    //-- テキストメール配信の場合
