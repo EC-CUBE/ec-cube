@@ -95,7 +95,7 @@ if ($_POST["mode2"] == "deliv") {
              foreach($objPage->arrForm as $key => $value){
                $objPage->arrAddr[0][$key] = $value['value'];
            }
-        
+        print_r($objPage->arrAddr[0]);
         $objView->assignobj($objPage);
         $objView->display(SITE_FRAME);
     }
