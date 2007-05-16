@@ -96,8 +96,8 @@ for( $i = 0; $i < count( $time_data ); $i++ ) {
                 
                 $body = $mailbody;
                 
-				$mail_object =& Mail::factory("SMTP", $mail_send);
-				$mail_object->send($recipients, $header, $body);
+				$objMail =& Mail::factory("SMTP", $mail_send);
+				$result = $objMail->send($recipients, $headers, $body);
 				if (PEAR::isError($result)) {
                     die($result->getMessage());
                 }
