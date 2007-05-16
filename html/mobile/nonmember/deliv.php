@@ -36,6 +36,11 @@ $objFormParam = new SC_FormParam();         // フォーム用
 lfInitParam();                              // パラメータ情報の初期化
 $objFormParam->setParam($_POST);            // POST値の取得
 
+$uniqid = sfCheckNormalAccess($objSiteSess, $objCartSess);
+// ユニークIDを引き継ぐ
+$objPage->tpl_uniqid = $uniqid;
+
+if(!empty($_POST["mode2"])){
 if ($_POST["mode2"] == "deliv") {
             
             $objFormParam = new SC_FormParam();
@@ -73,8 +78,16 @@ if ($_POST["mode2"] == "deliv") {
     }else{
         // エラーを返す
         $arrErr['deli'] = '※ お届け先を選択してください。';
+            }
+        }
+    }elseif(!empty($_POST["mode"]) && $_POST["mode"]=="deliv_date"){
+            print($objPage->tpl_uniqid);
+            $objPage->tpl_mainpage = 'nonmember/nonmember_deliv.tpl';
+            $objPage->tpl_title = 'お届け先情報';
+            //objPageの情報をobjViewに格納
+            $objView->assignobj($objPage);
+            $objView->display(SITE_FRAME);
     }
-         }
 
 //入力された情報をデータベースdtb_order_tempに格納する
 function lfRegistDataTemp($uniqid,$array) {
