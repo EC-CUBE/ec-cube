@@ -84,7 +84,7 @@ if ($_POST["mode2"] == "deliv") {
         $objQuery = new SC_Query();
         //print($objPage->tpl_uniqid);
         $objPage->tpl_mainpage = 'nonmember/nonmember_deliv.tpl';
-        $objPage->tpl_title = 'お届け先情報';
+        $objPage->tpl_title = 'お届け先情報(戻るボタンテスト中)';
         //objPageの情報をobjViewに格納
         
         $where = "order_temp_id = ?";
@@ -95,7 +95,7 @@ if ($_POST["mode2"] == "deliv") {
              foreach($objPage->arrForm as $key => $value){
                $objPage->arrAddr[0][$key] = $value['value'];
            }
-        print_r($objPage->arrAddr[0]);
+        
         $objView->assignobj($objPage);
         $objView->display(SITE_FRAME);
     }
