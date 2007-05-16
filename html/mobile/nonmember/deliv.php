@@ -83,8 +83,7 @@ if ($_POST["mode2"] == "deliv") {
     }elseif(!empty($_POST["mode"]) && $_POST["mode"]=="deliv_date"){  
         $objQuery = new SC_Query();
         //print($objPage->tpl_uniqid);
-        $objPage->tpl_mainpage = 'nonmember/nonmember_deliv.tpl';
-        $objPage->tpl_title = 'お届け先情報(戻るボタンテスト中)';
+        
         //objPageの情報をobjViewに格納
         
         $where = "order_temp_id = ?";
@@ -96,6 +95,8 @@ if ($_POST["mode2"] == "deliv") {
                $objPage->arrAddr[0][$key] = $value['value'];
            }
         print_r($objPage->arrAddr[0]);
+        $objPage->tpl_mainpage = 'nonmember/nonmember_deliv.tpl';
+        $objPage->tpl_title = 'お届け先情報(戻るボタンテスト中)';
         $objView->assignobj($objPage);
         $objView->display(SITE_FRAME);
     }
