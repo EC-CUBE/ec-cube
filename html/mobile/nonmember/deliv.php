@@ -92,7 +92,7 @@ if ($_POST["mode2"] == "deliv") {
         $objPage->arrForm = $objFormParam->getFormParamList();        
         
              foreach($objPage->arrForm as $key => $value){
-               $objPage->arrAddr[0][$key] = $value['value'];
+               $objPage->arrAddr[0][str_replace("order_","",$key)] = $value['value'];
            }
         print_r($objPage->arrAddr[0]);
         $objPage->tpl_mainpage = 'nonmember/nonmember_deliv.tpl';
