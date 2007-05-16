@@ -91,7 +91,7 @@ if ($_POST["mode2"] == "deliv") {
         $arrRet = $objQuery->select("*", "dtb_order_temp", $where, array($objPage->tpl_uniqid));
         $objFormParam->setParam($arrRet[0]);
         $objPage->arrForm = $objFormParam->getFormParamList();        
-        print_r($objFormParam->setParam($arrRet[0]));
+        
              foreach($objPage->arrForm as $key => $value){
                $objPage->arrAddr[0][$key] = $value;
            }
