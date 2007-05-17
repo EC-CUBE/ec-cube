@@ -89,8 +89,8 @@ for( $i = 0; $i < count( $time_data ); $i++ ) {
                           ,'port' => "25"
                                           );
             
+            print_r($sendresult);
             $decoder = new Mail_mimeDecode($sendResut);
-            print_r($sendResut);
             $parts = $decoder->getSendArray();
             list($recipients, $header, $body) = $parts;
             
