@@ -191,7 +191,7 @@ define("REVIEW_REGIST_MAX", 5);
 define ("ADMIN_ID", "1");								// 管理ユーザID(メンテナンス用表示されない。)
 define ("CUSTOMER_CONFIRM_MAIL", false);				// 会員登録時に仮会員確認メールを送信するか（true:仮会員、false:本会員）
 define ("MELMAGA_SEND", true);							// メルマガ配信抑制(false:OFF、true:ON)
-define ("MELMAGA_MOBIE_SEND", true);                   // 携帯にメルマガ配信するとき、ブレインSMTPを経由する。（false:経由しない、true:経由する）
+define ("MELMAGA_MOBIE_SEND", false);                   // 携帯にメルマガ配信するとき、ブレインSMTPを経由する。（false:経由しない、true:経由する）
 define ("MELMAGA_BATCH_MODE", false);					// メイルマガジンバッチモード(true:バッチで送信する ※要cron設定、false:リアルタイムで送信する)
 define ("LOGIN_FRAME", "login_frame.tpl");				// ログイン画面フレーム
 define ("MAIN_FRAME", "main_frame.tpl");				// 管理画面フレーム
