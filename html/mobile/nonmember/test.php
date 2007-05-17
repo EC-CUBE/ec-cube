@@ -60,9 +60,8 @@ $objPage->arrDay = $objDate->getDay();
 $objPage = sfGetPageLayout($objPage, false, DEF_LAYOUT);
 
 // ユーザユニークIDの取得と購入状態の正当性をチェック
-$uniqid = sfCheckNormalAccess($objSiteSess, $objCartSess);
 
-$objPage->tpl_uniqid = $uniqid;
+
 
 
 
