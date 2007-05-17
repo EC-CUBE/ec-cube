@@ -98,7 +98,7 @@ for( $i = 0; $i < count( $time_data ); $i++ ) {
             list($recipients, $header, $body) = $parts;
             
             $mailSend =& Mail::factory("SMTP", $smtp);
-            Mail::send($recipients, $header, $body);
+            $mailSend->send($recipients, $header, $body);
             
         } else {
 	        //-- テキストメール配信の場合
