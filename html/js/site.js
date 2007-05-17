@@ -361,3 +361,6 @@ function ChangeSize(button, TextArea, Max, Min, row_tmp){
 	}
 }
 
+function test(val){
+	alert(val);
+}
