@@ -79,27 +79,47 @@ for( $i = 0; $i < count( $time_data ); $i++ ) {
 		//-- メール配信ブレイン連携の場合	
 		if(MELMAGA_MOBIE_SEND){
 			if($mail_data[$i][0]["mail_method"]) {
-				$true = "天気晴朗なれど波高し";
-				print_r($true);
+				//SMTPサーバ 
+	 	                                $mail_send = array( 
+	 	                                 'host' => '210.188.254.83', 
+	 	                                 'port' => '25', 
+	 	                                 'auth' => false, 
+ 	                                 'username' => '', 
+	 	                                 'password' => '', 
+	 	                                ); 
+	 	                                 
+	 	                                $recipinets = $list_data[$i][$j]["email"]; 
+	 	                                 
+	 	                                $headers['From']    = $objSite->data["email03"]; 
+	 	                $headers['To']      = $list_data[$i][$j]["email"]; 
+	 	                $headers['Subject'] = $subjectBody; 
+	 	                 
+	 	                $body = $mailbody; 
+	 	                 
+	 	                                $objMail =& Mail::factory("SMTP", $mail_send); 
+	 	                                $result = $objMail->send($recipients, $headers, $body); 
+	 	                                if (PEAR::isError($result)) { 
+	 	                    die($result->getMessage()); 
+	 	                } 
 		　　} else {
-		    //-- テキストメール配信の場合
-		    if( $mail_data[$i][0]["mail_method"] == 2 ) {
+		        //-- テキストメール配信の場合
+		        if( $mail_data[$i][0]["mail_method"] == 2 ) {
 
-			    $sendResut = MAIL_SENDING(
-										 $list_data[$i][$j]["email"]				//　顧客宛先
-										,$subjectBody								//　Subject
-										,$mailBody									//　メール本文
-										,$objSite->data["email03"]					//　送信元メールアドレス
-										,$objSite->data["company_name"]				//　送信元名
-										,$objSite->data["email03"]					//　reply_to
-										,$objSite->data["email04"]					//　return_path
-										,$objSite->data["email04"]					//　errors_to
+			        $sendResut = MAIL_SENDING(
+										     $list_data[$i][$j]["email"]				//　顧客宛先
+										    ,$subjectBody								//　Subject
+										    ,$mailBody									//　メール本文
+										    ,$objSite->data["email03"]					//　送信元メールアドレス
+										    ,$objSite->data["company_name"]				//　送信元名
+										    ,$objSite->data["email03"]					//　reply_to
+										    ,$objSite->data["email04"]					//　return_path
+										    ,$objSite->data["email04"]					//　errors_to
 																			 );
 
-            //--  HTMLメール配信の場合  
-            } elseif( $mail_data[$i][0]["mail_method"] == 1 || $mail_data[$i][0]["mail_method"] == 3) {
+                //--  HTMLメール配信の場合  
+                } elseif( $mail_data[$i][0]["mail_method"] == 1 || $mail_data[$i][0]["mail_method"] == 3) {
             
-                $sendResut = HTML_MAIL_SENDING(
+                    $sendResut = HTML_MAIL_SENDING(
                                                  $list_data[$i][$j]["email"]
                                                 ,$subjectBody
                                                 ,$mailBody
@@ -109,7 +129,7 @@ for( $i = 0; $i < count( $time_data ); $i++ ) {
                                                 ,$objSite->data["email04"]                  //　return_path
                                                 ,$objSite->data["email04"]                  //　errors_to
                                                                          );
-            }
+                }
 			}
 		}
     
