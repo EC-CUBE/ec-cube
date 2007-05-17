@@ -18,7 +18,7 @@ $arrErr = fnErrorCheck();
 if(count($arrErr) == 0) {
 
 // Í¹ÊØÈÖ¹æ¸¡º÷Ê¸ºîÀ®
-$zipcode = $_GET['zip1'].$_GET['zip2'];
+$zipcode = $_GET['zip01'].$_GET['zip02'];
 //$zipcode = mb_convert_kana($zipcode ,"n");
 $sqlse = "SELECT state, city, town FROM mtb_zip WHERE zipcode = ?";
 
@@ -52,8 +52,8 @@ function fnErrorCheck() {
 	$objErr = new SC_CheckError();
 	
 	// Í¹ÊØÈÖ¹æ
-	$objErr->doFunc( array("Í¹ÊØÈÖ¹æ1",'zip1',ZIP01_LEN ) ,array( "NUM_COUNT_CHECK" ) );
-	$objErr->doFunc( array("Í¹ÊØÈÖ¹æ2",'zip2',ZIP02_LEN ) ,array( "NUM_COUNT_CHECK" ) );
+	$objErr->doFunc( array("Í¹ÊØÈÖ¹æ1",'zip01',ZIP01_LEN ) ,array( "NUM_COUNT_CHECK" ) );
+	$objErr->doFunc( array("Í¹ÊØÈÖ¹æ2",'zip02',ZIP02_LEN ) ,array( "NUM_COUNT_CHECK" ) );
 	
 	return $objErr->arrErr;
 }
