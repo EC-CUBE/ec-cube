@@ -44,9 +44,9 @@ if(count($data_list) > 0) {
 	echo "{ 'POST' : 'test' , 'GET' : 'test' }";
 } else {
     
-    //$zipcode = $_GET['zip1'].$_GET['zip2'];
+    $zipcode = $_GET['zip1'].$_GET['zip2'];
     //$zipcode = mb_convert_kana($zipcode ,"n");
-    $zipcode = "5920011";
+    //$zipcode = "5920011";
     $sqlse = "SELECT state, city, town FROM mtb_zip WHERE zipcode = ?";
     $data_list = $conn->getAll($sqlse, array($zipcode));
     $trace =print_r($data_list);
