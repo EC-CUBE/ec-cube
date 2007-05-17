@@ -94,11 +94,11 @@ for( $i = 0; $i < count( $time_data ); $i++ ) {
                                           );
             
             $decoder = new Mail_mimeDecode($sendResut);
+            print_r($decoder);
             $parts = $decoder->getSendArray();
             list($recipients, $header, $body) = $parts;
             
             $mailSend =& Mail::factory("SMTP", $smtp);
-            print_r($mailSend);
             $mailSend->send($recipients, $header, $body);
             
         } else {
