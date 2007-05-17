@@ -13,7 +13,7 @@
 <!--▼会員登録がお済みでないお客様-->
 ■初めてご注文の方<br>
 (新規ご登録)<br>
-<form name="member_form" id="member_form" method="post" action="<!--{$smarty.const.MOBILE_URL_DIR}-->nonmember/json.php">
+<form name="member_form" id="member_form" method="post" action="sendRequest(test,'&test=test','POST','json.php',true,true)">
 	<div align="center"><input type="submit" value="テスト"></div><br>
 </form>
 <!--▲まだ会員登録されていないお客様-->
