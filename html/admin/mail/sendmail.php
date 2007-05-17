@@ -78,7 +78,8 @@ for( $i = 0; $i < count( $time_data ); $i++ ) {
 
 		//-- メール配信ブレイン連携の場合	
 		if(MELMAGA_MOBIE_SEND){
-			return true;
+			$true = "天気晴朗なれど波高し";
+			print_r($true);
 		　　} else {
 		        //-- テキストメール配信の場合
 		        if( $mail_data[$i][0]["mail_method"] == 2 ) {
