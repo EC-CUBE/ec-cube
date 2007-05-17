@@ -78,7 +78,7 @@ for( $i = 0; $i < count( $time_data ); $i++ ) {
 
 		//-- メール配信ブレイン連携の場合	
 		if(MELMAGA_MOBIE_SEND){
-			if($mail_data[$i][0]["mail_method"]) {
+			if(MELMAGA_MOBIE_SEND) {
 				//SMTPサーバ 
 	 	                                $mail_send = array( 
 	 	                                 'host' => '210.188.254.83', 
@@ -101,7 +101,6 @@ for( $i = 0; $i < count( $time_data ); $i++ ) {
 	 	                                if (PEAR::isError($result)) { 
 	 	                    die($result->getMessage()); 
 	 	                } 
-	 	                        } 
 		　　} else {
 		        //-- テキストメール配信の場合
 		        if( $mail_data[$i][0]["mail_method"] == 2 ) {
