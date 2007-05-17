@@ -10,8 +10,6 @@ require_once("./require.php");
 
 
 $conn = new SC_DBconn(ZIP_DSN);
-$objPage = new LC_Page();
-$objView = new SC_SiteView(false);
 
 // 入力エラーチェック
 $arrErr = fnErrorCheck();
