@@ -363,5 +363,5 @@ function test(){
 }
 
 function back(data){
-	alert(data.responseText);
+	alert(data);
 }
