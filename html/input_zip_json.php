@@ -49,8 +49,8 @@ if(count($data_list) > 0) {
     $zipcode = "5920011";
     $sqlse = "SELECT state, city, town FROM mtb_zip WHERE zipcode = ?";
     $data_list = $conn->getAll($sqlse, array($zipcode));
-    
-echo "{'MSG' : '住所が見つかりませんでした。' , 'ZIP' : '$zipcode','DATA_LIST':'$data_list[0]'}" ;
+    $trace =print_r($data_list);
+echo "{'MSG' : '住所が見つかりませんでした。' , 'ZIP' : '$zipcode','DATA_LIST':'$data_list[0]','TRACE':$trace}" ;
     }
 }
 /* 入力エラーのチェック */
