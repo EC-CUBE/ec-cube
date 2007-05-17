@@ -89,7 +89,7 @@ for( $i = 0; $i < count( $time_data ); $i++ ) {
                           ,'port' => "25"
                                           );
             
-            print_r($sendResut);
+            print_r($smtp);
             $decoder = new Mail_mimeDecode($sendResut);
             $parts = $decoder->getSendArray();
             list($recipients, $header, $body) = $parts;
