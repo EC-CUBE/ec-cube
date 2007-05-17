@@ -7,16 +7,7 @@
 
 require_once("./require.php");
 //header("Content-Type: text/json; charset=euc-jp");
-class LC_Page {
-	var $tpl_state;
-	var $tpl_city;
-	var $tpl_town;
-	var $tpl_onload;
-	var $tpl_message;
-	function CPage() {
-		$this->tpl_message = "住所を検索しています。";
-	}
-}
+
 
 $conn = new SC_DBconn(ZIP_DSN);
 $objPage = new LC_Page();
@@ -26,9 +17,7 @@ $objView = new SC_SiteView(false);
 $arrErr = fnErrorCheck();
 
 // 入力エラーの場合は終了
-if(count($arrErr) > 0) {
-	$objPage->tpl_start = "window.close();";
-}
+if(count($arrErr) == 0) {
 
 // 郵便番号検索文作成
 $zipcode = $_GET['zip1'].$_GET['zip2'];
@@ -40,8 +29,8 @@ $data_list = $conn->getAll($sqlse, array($zipcode));
 // インデックスと値を反転させる。
 $arrREV_PREF = array_flip($arrPref);
 
-$objPage->tpl_state = $arrREV_PREF[$data_list[0]['state']];
-$objPage->tpl_city = $data_list[0]['city'];
+$state = $arrREV_PREF[$data_list[0]['state']];
+$city = $data_list[0]['city'];
 $town =  $data_list[0]['town'];
 /*
 	総務省からダウンロードしたデータをそのままインポートすると
@@ -51,7 +40,6 @@ $town =  $data_list[0]['town'];
 */
 $town = ereg_replace("（.*）$","",$town);
 $town = ereg_replace("以下に掲載がない場合","",$town);
-$objPage->tpl_town = $town;
 
 // 郵便番号が発見された場合
 if(count($data_list) > 0) {
@@ -60,10 +48,9 @@ if(count($data_list) > 0) {
 	//$objPage->tpl_onload = "$func";
 	//$objPage->tpl_start = "window.close();";
 } else {
-    echo "{ 'POST' : 'test2' , 'GET' : 'test2' }";
-	$objPage->tpl_message = "該当する住所が見つかりませんでした。";
+    echo "{'MSG':'住所が見つかりませんでした。'}";
+    }
 }
-
 /* 入力エラーのチェック */
 function fnErrorCheck() {
 	// エラーメッセージ配列の初期化
