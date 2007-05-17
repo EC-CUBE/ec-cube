@@ -38,11 +38,8 @@ function fnPutAddress(input1, input2) {
 			// 項目に値を入力する.
 			state_id = document.form1['state'].value;
 			town = document.form1['city'].value + document.form1['town'].value;
-			//document.getEementById("order_zip02").value = state_id;
-			document.getEementById("order_addr01").value = town;
-			
-			//window.opener.document.form1[input1].selectedIndex = state_id;
-			//window.opener.document.form1[input2].value = town;
+			window.opener.document.form1[input1].selectedIndex = state_id;
+			window.opener.document.form1[input2].value = town;
 		}
 	} else {
 		window.close();
@@ -361,6 +358,10 @@ function ChangeSize(button, TextArea, Max, Min, row_tmp){
 	}
 }
 
-function test(val){
-	alert(val);
+function test(){
+	sendRequest(back,'&zip01=530&zip02=0003','GET','input_zip_json.php',true,true)
+}
+
+function back(data){
+	alert(data.responseText);
 }
