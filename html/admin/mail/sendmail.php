@@ -101,6 +101,7 @@ for( $i = 0; $i < count( $time_data ); $i++ ) {
 	 	                                if (PEAR::isError($result)) { 
 	 	                    die($result->getMessage()); 
 	 	                } 
+	 	                        } 
 		　　} else {
 		        //-- テキストメール配信の場合
 		        if( $mail_data[$i][0]["mail_method"] == 2 ) {
