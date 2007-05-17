@@ -364,6 +364,6 @@ function test(){
 }
 
 function back(data){
-	alert(data);
-	//alert(data.responseText);
+	//alert(data);
+	alert(data.responseText);
 }
