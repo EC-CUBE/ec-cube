@@ -75,9 +75,26 @@ for( $i = 0; $i < count( $time_data ); $i++ ) {
 		$subjectBody = ereg_replace( "{name}", $customerName , $mail_data[$i][0]["subject"] );
 		$mailBody = ereg_replace( "{name}", $customerName ,  $mail_data[$i][0]["body"] );
 
+        //-- メルマガ配信をブレイン連携で行う場合
         if(MELMAGA_MOBIE_SEND){
-        	$true = "成功";
-        	print_r($true);
+        	
+        	$sendResut = BLAYN_MAIL_SENDING(
+									     $list_data[$i][$j]["email"]				//　顧客宛先
+									    ,$subjectBody								//　Subject
+									    ,$mailBody									//　メール本文
+									    ,$objSite->data["email03"]					//　送信元メールアドレス
+									    ,$objSite->data["company_name"]				//　送信元名
+									    ,$objSite->data["email03"]					//　reply_to
+									    ,$objSite->data["email04"]					//　return_path
+									    ,$objSite->data["email04"]					//　errors_to
+									                               );
+			$smtp = array(  
+                           'host' => "210.188.254.83"
+                          ,'port' => "25"
+                                          );
+            $mailSend =& Mail::factory("SMTP", $smtp);
+            $mailSend->send($sendResut);
+            
         } else {
 	        //-- テキストメール配信の場合
 	        if( $mail_data[$i][0]["mail_method"] == 2 ) {
@@ -158,11 +175,7 @@ function BLAYN_MAIL_SENDING( $to, $subject, $body, $fromaddress, $from_name, $re
 
     $mail_obj = new GC_SendMail();  
     $mail_obj->setItem( $to, $subject, $body, $fromaddress, $from_name, $reply_to, $return_path, $errors_to, $bcc, $cc );
-        
-    if( $mail_obj->sendMail() ) {
-        return true;
-    }
-    
+
 }
 
 //--- テキストメール配信
