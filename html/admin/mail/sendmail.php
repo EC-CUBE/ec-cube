@@ -123,8 +123,6 @@ for( $i = 0; $i < count( $time_data ); $i++ ) {
         }
 
         $conn->query( $sql_flag, array( $sendFlag, $mail_data[$i][0]["send_id"], $list_data[$i][$j]["customer_id"] ) );
-        
-        
 
     }
 
