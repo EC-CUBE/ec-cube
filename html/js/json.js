@@ -204,7 +204,3 @@
 
 		return oj
 	}
-
-function test(data){
-	alert(data.responseText);
-}
