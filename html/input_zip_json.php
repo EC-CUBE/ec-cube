@@ -46,7 +46,8 @@ if(count($data_list) > 0) {
 	//$objPage->tpl_onload = "$func";
 	//$objPage->tpl_start = "window.close();";
 } else {
-    echo "{'MSG':'住所が見つかりませんでした。'}";
+    $zip = $_GET['zip01'].$_GET['zip02']
+    echo "{'MSG':'住所が見つかりませんでした。','ZIP':'$zip'}";
     }
 }
 /* 入力エラーのチェック */
