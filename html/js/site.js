@@ -366,7 +366,8 @@ function test(){
 	sendRequest(back,'&zip01='+zip01+'&zip02='+zip02,'GET','../input_zip_json.php',true,true);
 }
 
-function back(data){
+function back(val){
 	//alert(data);
-	alert(data.responseText);
+	var address = val.responseText;
+	document.getElementsByName("order_addr01").item(0).value =address["town"].value
 }
