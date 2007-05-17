@@ -6,5 +6,5 @@
  * Window - Preferences - PHPeclipse - PHP - Code Templates
  */
  header("Content-Type: text/json; charset=utf-8");
-echo "{ 'POST' : '$pos' , 'GET' : '$get' }";
+echo $_POST['test'];
 ?>
