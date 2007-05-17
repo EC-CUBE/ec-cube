@@ -60,7 +60,7 @@ if(count($data_list) > 0) {
 	//$objPage->tpl_onload = "$func";
 	//$objPage->tpl_start = "window.close();";
 } else {
-    echo "{ 'POST' : 'test' , 'GET' : 'test' }";
+    echo "{ 'POST' : 'test2' , 'GET' : 'test2' }";
 	$objPage->tpl_message = "該当する住所が見つかりませんでした。";
 }
 
