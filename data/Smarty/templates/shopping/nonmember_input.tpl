@@ -62,9 +62,9 @@
 									<!--{assign var=key2 value="order_zip02"}-->
 									<span class="fs12n"><span class="red"><!--{$arrErr[$key1]}--><!--{$arrErr[$key2]}--></span></span>
 									¢©
-									<input type="text" name="<!--{$key1}-->" value="<!--{$arrForm[$key1].value|escape}-->" maxlength="<!--{$arrForm[$key1].length}-->" style="<!--{$arrErr[$key1]|sfGetErrorColor}-->"  size="6" onblur="fnPutAddress()"/>
+									<input type="text" name="<!--{$key1}-->" value="<!--{$arrForm[$key1].value|escape}-->" maxlength="<!--{$arrForm[$key1].length}-->" style="<!--{$arrErr[$key1]|sfGetErrorColor}-->"  size="6" />
 									 - 
-									<input type="text"  name="<!--{$key2}-->" value="<!--{$arrForm[$key2].value|escape}-->" maxlength="<!--{$arrForm[$key2].length}-->" style="<!--{$arrErr[$key2]|sfGetErrorColor}-->"  size="6" />°°
+									<input type="text"  name="<!--{$key2}-->" value="<!--{$arrForm[$key2].value|escape}-->" maxlength="<!--{$arrForm[$key2].length}-->" style="<!--{$arrErr[$key2]|sfGetErrorColor}-->"  size="6" onblur="fnPutAddress(document.getEementById("order_zip01").value,document.getEementById("order_zip02").value)"/>°°
 									<a href="http://search.post.japanpost.jp/7zip/" target="_blank"><span class="fs10">Õπ ÿ»÷πÊ∏°∫˜</span></a>
 								</td>
 							</tr>
