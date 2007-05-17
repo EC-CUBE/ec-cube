@@ -360,7 +360,7 @@ function ChangeSize(button, TextArea, Max, Min, row_tmp){
 
 function test(){
 	alert("send");
-	sendRequest(back,'&zip01=530&zip02=0003','GET','input_zip_json.php',true,true)
+	sendRequest(back,'&zip01=530&zip02=0003','GET','input_zip_json.php',true,true);
 }
 
 function back(data){
