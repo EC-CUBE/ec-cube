@@ -63,10 +63,6 @@ if(count($data_list) > 0) {
 	$objPage->tpl_message = "該当する住所が見つかりませんでした。";
 }
 
-/* ページの表示　*/
-$objView->assignobj($objPage);
-$objView->display("input_zip.tpl");
-
 /* 入力エラーのチェック */
 function fnErrorCheck() {
 	// エラーメッセージ配列の初期化
