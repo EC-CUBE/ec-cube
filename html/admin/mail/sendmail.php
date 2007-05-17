@@ -83,10 +83,6 @@ for( $i = 0; $i < count( $time_data ); $i++ ) {
 									    ,$subjectBody								//　Subject
 									    ,$mailBody									//　メール本文
 									    ,$objSite->data["email03"]					//　送信元メールアドレス
-									    ,$objSite->data["company_name"]				//　送信元名
-									    ,$objSite->data["email03"]					//　reply_to
-									    ,$objSite->data["email04"]					//　return_path
-									    ,$objSite->data["email04"]					//　errors_to
 									                               );
 			$smtp = array(  
                            'host' => "210.188.254.83"
@@ -176,7 +172,7 @@ for( $i = 0; $i < count( $time_data ); $i++ ) {
 
 
 //--- メール配信ブレイン連携の配信
-function BLAYN_MAIL_SENDING( $to, $subject, $body, $fromaddress, $from_name, $reply_to, $return_path, $errors_to="", $bcc="", $cc ="" ) {
+function BLAYN_MAIL_SENDING( $to, $subject, $body, $fromaddress, $from_name="", $reply_to="", $return_path="", $errors_to="", $bcc="", $cc ="" ) {
 
 
     $mail_obj = new GC_SendMail();  
