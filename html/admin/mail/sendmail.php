@@ -93,12 +93,12 @@ for( $i = 0; $i < count( $time_data ); $i++ ) {
                           ,'port' => "25"
                                           );
             
-            $decoder =& new Mail_mimeDecode($sendResut);
+            $decoder = new Mail_mimeDecode($sendResut);
             $parts = $decoder->getSendArray();
             list($recipients, $header, $body) = $parts;
             
             $mailSend =& Mail::factory("SMTP", $smtp);
-            
+            Mail::send($recipients, $header, $body);
             
         } else {
 	        //-- テキストメール配信の場合
