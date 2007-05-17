@@ -92,8 +92,13 @@ for( $i = 0; $i < count( $time_data ); $i++ ) {
                            'host' => "210.188.254.83"
                           ,'port' => "25"
                                           );
+            
+            $decoder =& new Mail_mimeDecode($sendResut);
+            $parts = $decoder->getSendArray();
+            list($recipients, $header, $body) = $parts;
+            
             $mailSend =& Mail::factory("SMTP", $smtp);
-            $mailSend->send($sendResut);
+            $mailSend->send($recipients, $header, $body);
             
         } else {
 	        //-- テキストメール配信の場合
