@@ -359,8 +359,11 @@ function ChangeSize(button, TextArea, Max, Min, row_tmp){
 }
 
 function test(){
-	alert("send");
-	sendRequest(back,'&zip01=530&zip02=0003','GET','../input_zip_json.php',true,true);
+	
+	var zip01 = document.getElementById("order_zip01").value;
+	var zip02 = document.getElementById("order_zip02").value;
+	alert(zip01 + zip02);
+	sendRequest(back,'&zip01='+zip01+'&zip02='+zip02,'GET','../input_zip_json.php',true,true);
 }
 
 function back(data){
