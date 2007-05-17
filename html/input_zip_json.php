@@ -56,7 +56,7 @@ $objPage->tpl_town = $town;
 // 郵便番号が発見された場合
 if(count($data_list) > 0) {
     mb_http_output ( 'UTF-8' );
-	echo "{ 'POST' : '$town' , 'GET' : 'test' }";
+	echo "{ 'POST' : 'test' , 'GET' : 'test' }";
     //$func = "fnPutAddress('" . $_GET['input1'] . "','" . $_GET['input2']. "');";
 	//$objPage->tpl_onload = "$func";
 	//$objPage->tpl_start = "window.close();";
