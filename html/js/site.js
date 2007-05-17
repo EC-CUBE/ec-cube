@@ -360,8 +360,8 @@ function ChangeSize(button, TextArea, Max, Min, row_tmp){
 
 function test(){
 	
-	var zip01 = document.getElementsByName("order_zip01").items(0).value;
-	var zip02 = document.getElementsByName("order_zip02").items(0).value;
+	var zip01 = document.getElementsByName("order_zip01").item(0).value;
+	var zip02 = document.getElementsByName("order_zip02").item(0).value;
 	alert(zip01 + zip02);
 	sendRequest(back,'&zip01='+zip01+'&zip02='+zip02,'GET','../input_zip_json.php',true,true);
 }
