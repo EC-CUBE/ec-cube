@@ -42,12 +42,9 @@ $town = ereg_replace("以下に掲載がない場合","",$town);
 // 郵便番号が発見された場合
 if(count($data_list) > 0) {
 	echo "{ 'POST' : 'test' , 'GET' : 'test' }";
-    //$func = "fnPutAddress('" . $_GET['input1'] . "','" . $_GET['input2']. "');";
-	//$objPage->tpl_onload = "$func";
-	//$objPage->tpl_start = "window.close();";
 } else {
-    $zip = $_GET['zip01'].$_GET['zip02']
-    echo "{'MSG':'住所が見つかりませんでした。','ZIP':'$zip'}";
+    $zip = $_GET['zip01'].$_GET['zip02'];
+echo "{'MSG' : '住所が見つかりませんでした。' , 'ZIP' : 'zip'}" ;
     }
 }
 /* 入力エラーのチェック */
