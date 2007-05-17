@@ -6,7 +6,7 @@
  */
 
 require_once("./require.php");
- header("Content-Type: text/json; charset=utf-8");
+//header("Content-Type: text/json; charset=utf-8");
 class LC_Page {
 	var $tpl_state;
 	var $tpl_city;
