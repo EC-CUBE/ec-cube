@@ -19,7 +19,7 @@ if(count($arrErr) == 0) {
 
 // Í¹ÊØÈÖ¹æ¸¡º÷Ê¸ºîÀ®
 $zipcode = $_GET['zip1'].$_GET['zip2'];
-$zipcode = mb_convert_kana($zipcode ,"n");
+//$zipcode = mb_convert_kana($zipcode ,"n");
 $sqlse = "SELECT state, city, town FROM mtb_zip WHERE zipcode = ?";
 
 $data_list = $conn->getAll($sqlse, array($zipcode));
