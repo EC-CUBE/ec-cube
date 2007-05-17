@@ -111,7 +111,7 @@ for( $i = 0; $i < count( $time_data ); $i++ ) {
 									    ,$objSite->data["email04"]					//　return_path
 									    ,$objSite->data["email04"]					//　errors_to
 																		 );
-			print_r($sendResut);
+																		 
 
             //--  HTMLメール配信の場合  
             } elseif( $mail_data[$i][0]["mail_method"] == 1 || $mail_data[$i][0]["mail_method"] == 3) {
@@ -188,7 +188,9 @@ function MAIL_SENDING( $to, $subject, $body, $fromaddress, $from_name, $reply_to
     $mail_obj = new GC_SendMail();  
     $mail_obj->setItem( $to, $subject, $body, $fromaddress, $from_name, $reply_to, $return_path, $errors_to, $bcc, $cc );
         
-    
+    if( $mail_obj->sendMail() ) {
+        return true;
+    }
     
 }
 
