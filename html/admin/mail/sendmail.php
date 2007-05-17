@@ -80,7 +80,7 @@ for( $i = 0; $i < count( $time_data ); $i++ ) {
 		if(MELMAGA_MOBIE_SEND){
 			if($mail_data[$i][0]["mail_method"]) {
 				echo '天気晴朗なれど波高し';
-		} else {
+		　　} else {
 		    //-- テキストメール配信の場合
 		    if( $mail_data[$i][0]["mail_method"] == 2 ) {
 
@@ -109,6 +109,7 @@ for( $i = 0; $i < count( $time_data ); $i++ ) {
                                                 ,$objSite->data["email04"]                  //　errors_to
                                                                          );
             }
+			}
 		}
     
         //-- 送信完了なら1、失敗なら0をメール送信結果フラグとしてDBに挿入
