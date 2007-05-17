@@ -26,7 +26,7 @@ $data_list = $conn->getAll($sqlse, array($zipcode));
 
 // インデックスと値を反転させる。
 $arrREV_PREF = array_flip($arrPref);
-
+$trace =print_r($data_list);
 $state = $arrREV_PREF[$data_list[0]['state']];
 $city = $data_list[0]['city'];
 $town =  $data_list[0]['town'];
@@ -43,13 +43,6 @@ $town = ereg_replace("以下に掲載がない場合","",$town);
 if(count($data_list) > 0) {
 	echo "{ 'POST' : 'test' , 'GET' : 'test' }";
 } else {
-    
-    $zipcode = $_GET['zip1'].$_GET['zip2'];
-    //$zipcode = mb_convert_kana($zipcode ,"n");
-    //$zipcode = "5920011";
-    $sqlse = "SELECT state, city, town FROM mtb_zip WHERE zipcode = ?";
-    $data_list = $conn->getAll($sqlse, array($zipcode));
-    $trace =print_r($data_list);
 echo "{'MSG' : '住所が見つかりませんでした。' , 'ZIP' : '$zipcode','DATA_LIST':'$data_list[0]','TRACE':$trace}" ;
     }
 }
