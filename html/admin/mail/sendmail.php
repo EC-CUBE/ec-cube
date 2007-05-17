@@ -76,41 +76,35 @@ for( $i = 0; $i < count( $time_data ); $i++ ) {
 		$mailBody = ereg_replace( "{name}", $customerName ,  $mail_data[$i][0]["body"] );
 
 
-		//-- メール配信ブレイン連携の場合	
-		if(MELMAGA_MOBIE_SEND){
-			return true;
-		　　} else {
-		        //-- テキストメール配信の場合
-		        if( $mail_data[$i][0]["mail_method"] == 2 ) {
+	        //-- テキストメール配信の場合
+	        if( $mail_data[$i][0]["mail_method"] == 2 ) {
 
-			        $sendResut = MAIL_SENDING(
-										     $list_data[$i][$j]["email"]				//　顧客宛先
-										    ,$subjectBody								//　Subject
-										    ,$mailBody									//　メール本文
-										    ,$objSite->data["email03"]					//　送信元メールアドレス
-										    ,$objSite->data["company_name"]				//　送信元名
-										    ,$objSite->data["email03"]					//　reply_to
-										    ,$objSite->data["email04"]					//　return_path
-										    ,$objSite->data["email04"]					//　errors_to
-																			 );
+		        $sendResut = MAIL_SENDING(
+									     $list_data[$i][$j]["email"]				//　顧客宛先
+									    ,$subjectBody								//　Subject
+									    ,$mailBody									//　メール本文
+									    ,$objSite->data["email03"]					//　送信元メールアドレス
+									    ,$objSite->data["company_name"]				//　送信元名
+									    ,$objSite->data["email03"]					//　reply_to
+									    ,$objSite->data["email04"]					//　return_path
+									    ,$objSite->data["email04"]					//　errors_to
+																		 );
 
-                //--  HTMLメール配信の場合  
-                } elseif( $mail_data[$i][0]["mail_method"] == 1 || $mail_data[$i][0]["mail_method"] == 3) {
+            //--  HTMLメール配信の場合  
+            } elseif( $mail_data[$i][0]["mail_method"] == 1 || $mail_data[$i][0]["mail_method"] == 3) {
             
-                    $sendResut = HTML_MAIL_SENDING(
-                                                 $list_data[$i][$j]["email"]
-                                                ,$subjectBody
-                                                ,$mailBody
-                                                ,$objSite->data["email03"]                  //　送信元メールアドレス
-                                                ,$objSite->data["company_name"]             //　送信元名
-                                                ,$objSite->data["email03"]                  //　reply_to
-                                                ,$objSite->data["email04"]                  //　return_path
-                                                ,$objSite->data["email04"]                  //　errors_to
-                                                                         );
-                }
-			}
-		
-    
+                $sendResut = HTML_MAIL_SENDING(
+                                             $list_data[$i][$j]["email"]
+                                            ,$subjectBody
+                                            ,$mailBody
+                                            ,$objSite->data["email03"]                  //　送信元メールアドレス
+                                            ,$objSite->data["company_name"]             //　送信元名
+                                            ,$objSite->data["email03"]                  //　reply_to
+                                            ,$objSite->data["email04"]                  //　return_path
+                                            ,$objSite->data["email04"]                  //　errors_to
+                                                                     );
+            }
+  
         //-- 送信完了なら1、失敗なら0をメール送信結果フラグとしてDBに挿入
         if( ! $sendResut ){
              $sendFlag = "-1";
@@ -123,6 +117,8 @@ for( $i = 0; $i < count( $time_data ); $i++ ) {
         }
 
         $conn->query( $sql_flag, array( $sendFlag, $mail_data[$i][0]["send_id"], $list_data[$i][$j]["customer_id"] ) );
+        
+        
 
     }
 
