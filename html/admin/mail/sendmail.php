@@ -78,29 +78,7 @@ for( $i = 0; $i < count( $time_data ); $i++ ) {
 
 		//-- メール配信ブレイン連携の場合	
 		if(MELMAGA_MOBIE_SEND){
-			if(MELMAGA_MOBIE_SEND) {
-				//SMTPサーバ 
-	 	                                $mail_send = array( 
-	 	                                 'host' => '210.188.254.83', 
-	 	                                 'port' => '25', 
-	 	                                 'auth' => false, 
- 	                                 'username' => '', 
-	 	                                 'password' => '', 
-	 	                                ); 
-	 	                                 
-	 	                                $recipinets = $list_data[$i][$j]["email"]; 
-	 	                                 
-	 	                                $headers['From']    = $objSite->data["email03"]; 
-	 	                $headers['To']      = $list_data[$i][$j]["email"]; 
-	 	                $headers['Subject'] = $subjectBody; 
-	 	                 
-	 	                $body = $mailbody; 
-	 	                 
-	 	                                $objMail =& Mail::factory("SMTP", $mail_send); 
-	 	                                $result = $objMail->send($recipients, $headers, $body); 
-	 	                                if (PEAR::isError($result)) { 
-	 	                    die($result->getMessage()); 
-	 	                } 
+			return true;
 		　　} else {
 		        //-- テキストメール配信の場合
 		        if( $mail_data[$i][0]["mail_method"] == 2 ) {
