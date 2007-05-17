@@ -44,7 +44,7 @@ if(count($data_list) > 0) {
 	echo "{ 'POST' : 'test' , 'GET' : 'test' }";
 } else {
     $zip = $_GET['zip01'].$_GET['zip02'];
-echo "{'MSG' : '住所が見つかりませんでした。' , 'ZIP' : '$zip','DATA_LIST':'$data_list'}" ;
+echo "{'MSG' : '住所が見つかりませんでした。' , 'ZIP' : '$zip','DATA_LIST':'$data_list[0]'}" ;
     }
 }
 /* 入力エラーのチェック */
