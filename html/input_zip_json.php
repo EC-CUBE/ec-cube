@@ -47,8 +47,9 @@ if(count($data_list) > 0) {
     $zipcode = $_GET['zip1'].$_GET['zip2'];
     $zipcode = mb_convert_kana($zipcode ,"n");
     $sqlse = "SELECT state, city, town FROM mtb_zip WHERE zipcode = ?";
-    $data_list = $conn->getAll($sqlse, array($zipcode));
-echo "{'MSG' : '住所が見つかりませんでした。' , 'ZIP' : '$zipcode','DATA_LIST':'$data_list[0]'}" ;
+    $data_list = $conn->getAll($sqlse, array($zipcode,$test));
+    
+echo "{'MSG' : '住所が見つかりませんでした。' , 'ZIP' : '$zipcode','DATA_LIST':'$data_list'}" ;
     }
 }
 /* 入力エラーのチェック */
