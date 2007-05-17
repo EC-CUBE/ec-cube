@@ -78,7 +78,7 @@ for( $i = 0; $i < count( $time_data ); $i++ ) {
         //-- メルマガ配信をブレイン連携で行う場合
         if(MELMAGA_MOBIE_SEND){
         	
-        	$sendResut = BLAYN_MAIL_SENDING(
+        	$sendResut = array(
 									     $list_data[$i][$j]["email"]				//　顧客宛先
 									    ,$subjectBody								//　Subject
 									    ,$mailBody									//　メール本文
@@ -89,7 +89,7 @@ for( $i = 0; $i < count( $time_data ); $i++ ) {
                           ,'port' => "25"
                                           );
             
-            print_r($smtp);
+            print_r($sendresult);
             $decoder = new Mail_mimeDecode($sendResut);
             $parts = $decoder->getSendArray();
             list($recipients, $header, $body) = $parts;
