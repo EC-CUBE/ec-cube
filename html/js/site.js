@@ -369,5 +369,5 @@ function test(){
 function back(val){
 	//alert(data);
 	var address = val.responseText;
-	document.getElementsByName("order_addr01").item(0).value =address["town"].value
+	document.getElementsByName("order_addr01").item(0).value =address[0].town
 }
