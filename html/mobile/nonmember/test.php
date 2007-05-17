@@ -55,13 +55,6 @@ $objPage->arrYear = $objDate->getYear('', 1950);    //　日付プルダウン設定
 $objPage->arrMonth = $objDate->getMonth();
 $objPage->arrDay = $objDate->getDay();
 
-//SSLURL判定
-if (SSLURL_CHECK == 1){
-    $ssl_url= sfRmDupSlash(MOBILE_SSL_URL.$_SERVER['REQUEST_URI']);
-    if (!ereg("^https://", $non_ssl_url)){
-        sfDispSiteError(URL_ERROR, "", false, "", true);
-    }
-}
 
 // レイアウトデザインを取得
 $objPage = sfGetPageLayout($objPage, false, DEF_LAYOUT);
@@ -71,58 +64,7 @@ $uniqid = sfCheckNormalAccess($objSiteSess, $objCartSess);
 
 $objPage->tpl_uniqid = $uniqid;
 
-switch($_POST['mode']) {
-case 'nonmember_confirm':
-    $objPage = lfSetNonMember($objPage);
-    // ※breakなし
-case 'confirm':
-    // 入力値の変換
-    $objFormParam->convParam();
-    $objFormParam->toLower('order_mail');
-    $objFormParam->toLower('order_mail_check');
-    $objPage->arrErr = lfCheckError();
-    // 入力エラーなし
-    if(count($objPage->arrErr) == 0) {
-        // DBへのデータ登録
-        lfRegistData($uniqid);
-        // 正常に登録されたことを記録しておく
-        $objSiteSess->setRegistFlag();
-        // お支払い方法選択ページへ移動
-        header("Location: " . gfAddSessionId(MOBILE_URL_SHOP_PAYMENT));
-        exit;       
-    }
-    
-    break;
-// 前のページに戻る
-case 'return':
-    // 確認ページへ移動
-    header("Location: " . gfAddSessionId(MOBILE_URL_CART_TOP));
-    exit;
-    break;
-case 'nonmember':
-    $objPage = lfSetNonMember($objPage);
-    // ※breakなし
-default:
-    if($_GET['from'] == 'nonmember') {
-        $objPage = lfSetNonMember($objPage);
-    }
-    // ユーザユニークIDの取得
-    $uniqid = $objSiteSess->getUniqId();
-    $objQuery = new SC_Query();
-    $where = "order_temp_id = ?";
-    $arrRet = $objQuery->select("*", "dtb_order_temp", $where, array($uniqid));
-    // DB値の取得
-    $objFormParam->setParam($arrRet[0]);
-    $objFormParam->setValue('order_email_check', $arrRet[0]['order_email']);
-    $objFormParam->setDBDate($arrRet[0]['order_birth']);
-    break;
-}
 
-// クッキー判定
-$objPage->tpl_login_email = $objCookie->getCookie('login_email');
-if($objPage->tpl_login_email != "") {
-    $objPage->tpl_login_memory = "1";
-}
 
 // 選択用日付の取得
 $objDate = new SC_Date(START_BIRTH_YEAR);
