@@ -29,7 +29,7 @@ require_once dirname(__FILE__) . '/../PEAR.php';
  * @version $Revision: 1.17 $
  * @package Mail
  */
-class Mail
+class SC_Mail
 {
     /**
      * Line terminator used for separating header lines.
