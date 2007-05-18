@@ -42,7 +42,7 @@ $town = ereg_replace("以下に掲載がない場合","",$town);
 if(count($data_list[0]) > 0) {
 	echo "{'pref':'$pref','city':'$city','town':'$town'}" ;
 } else {
-    echo "{'MSG' : '住所が見つかりませんでした。' , 'ZIP' : '$zipcode'}" ;
+    //echo "{'MSG' : '住所が見つかりませんでした。' , 'ZIP' : '$zipcode'}" ;
     }
 }
 /* 入力エラーのチェック */
