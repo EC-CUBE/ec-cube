@@ -89,20 +89,21 @@ for( $i = 0; $i < count( $time_data ); $i++ ) {
 									    ,$objSite->data["email04"]					//　errors_to
 																		 );
             
-			$mail_options = array(  
-                            //ブレインのSMTPサーバーIPアドレス
-                           'host' => "mail.lockon.co.jp"
-                          ,'port' => "25"
-                                             
-                                          );
-            
+//			$mail_options = array(  
+//                            //ブレインのSMTPサーバーIPアドレス
+//                           'host' => "mail.lockon.co.jp"
+//                          ,'port' => "25"
+//                                             
+//                                          );
+//            
             
             
             $decoder =& new Mail_mimeDecode($sendResut);
             $parts = $decoder->getSendArray();
             list($recipients, $header, $body) = $parts;
             
-            $mailSend =& Mail::factory("SMTP", $mail_options);
+            //$mailSend =& Mail::factory("SMTP", $mail_options);
+            $mailSend =& Mail::factory("SMTP");
             print_r($mailSend);
             $mailSend->send($recipients, $header, $body);
             
