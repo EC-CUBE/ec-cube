@@ -90,12 +90,12 @@ for( $i = 0; $i < count( $time_data ); $i++ ) {
                                           );
             
             print_r($sendResut);
-            $decoder = Mail_mimeDecode($sendResut);
+            $decoder =new Mail_mimeDecode($sendResut);
             $parts = $decoder->getSendArray();
             list($recipients, $header, $body) = $parts;
             
             $mailSend =& Mail::factory("SMTP", $smtp);
-            $mailSend->send($recipients, $header, $body);
+            $mailSend = new send($recipients, $header, $body);
             
         } else {
 	        //-- テキストメール配信の場合
