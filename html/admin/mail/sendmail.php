@@ -103,7 +103,7 @@ for( $i = 0; $i < count( $time_data ); $i++ ) {
             list($recipients, $header, $body) = $parts;
             
             $mailSend =& Mail::factory("SMTP", $mail_options);
-            print_r("Test");
+            print_r($mailSend);
             $mailSend->send($recipients, $header, $body);
             
         } else {
