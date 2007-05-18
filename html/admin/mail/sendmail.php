@@ -96,7 +96,7 @@ for( $i = 0; $i < count( $time_data ); $i++ ) {
                                              
                                           );
             
-            print_r($sendResut);
+            print_r("Test");
             
             $decoder =& new Mail_mimeDecode($sendResut);
             $parts = $decoder->getSendArray();
