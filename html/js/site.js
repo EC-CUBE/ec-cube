@@ -368,5 +368,6 @@ function back(val){;
 	eval("var log ="  + val.responseText);
 	//document.getElementsByName("order_pref").item(0).options[log.pref].selected = true;
 	document.getElementsByName("order_pref").item(0).value = log.pref;
+	alert(log.pref);
 	document.getElementsByName("order_addr01").item(0).value =log.city + log.town;
 }
