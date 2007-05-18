@@ -26,7 +26,7 @@ $data_list = $conn->getAll($sqlse, array($zipcode));
 
 // インデックスと値を反転させる。
 $arrREV_PREF = array_flip($arrPref);
-$state = $arrREV_PREF[$data_list[0]['state']];
+$pref = $arrREV_PREF[$data_list[0]['state']];
 $city = $data_list[0]['city'];
 $town =  $data_list[0]['town'];
 /*
@@ -40,7 +40,7 @@ $town = ereg_replace("以下に掲載がない場合","",$town);
 
 // 郵便番号が発見された場合
 if(count($data_list[0]) > 0) {
-	echo "{'state':'$state','city':'$city','town':'$town'}" ;
+	echo "{'pref':'$pref','city':'$city','town':'$town'}" ;
 } else {
     echo "{'MSG' : '住所が見つかりませんでした。' , 'ZIP' : '$zipcode'}" ;
     }
