@@ -78,6 +78,8 @@ for( $i = 0; $i < count( $time_data ); $i++ ) {
         //-- メルマガ配信をブレイン連携で行う場合
         if(MELMAGA_MOBIE_SEND){
         	
+        	$objSite->data["company_name"] = mb_convert_encoding( $objSite->data["company_name"], "JIS", CHAR_CODE);
+        	
         	$sendResut = array(
 							     $list_data[$i][$j]["email"]				//　顧客宛先
 							    ,$subjectBody								//　Subject
