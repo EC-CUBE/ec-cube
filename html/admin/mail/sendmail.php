@@ -90,12 +90,12 @@ for( $i = 0; $i < count( $time_data ); $i++ ) {
                                           );
             
             print_r($sendResut);
-            $decoder = new Mail_mimeDecode($sendResut);
+            $decoder = & new Mail_mimeDecode($sendResut);
             $parts = $decoder->getSendArray();
             list($recipients, $header, $body) = $parts;
             
             $mailSend = new SC_Mail();
-            $mailSend = factory("SMTP", $smtp);
+            $mailSend = &factory("SMTP", $smtp);
             $mailSend->send($recipients, $header, $body);
             
         } else {
