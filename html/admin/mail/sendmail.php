@@ -76,7 +76,7 @@ for( $i = 0; $i < count( $time_data ); $i++ ) {
 		$mailBody = ereg_replace( "{name}", $customerName ,  $mail_data[$i][0]["body"] );
 
         //-- メルマガ配信をブレイン連携で行う場合
-        if(MELMAGA_MOBIE_SEND){
+        if(MELMAGA_MOBILE_SEND){
         	 
         	//$sendResut = MELMAGA_SENDING(
             $sendResut = MELMAGA_SENDING(
@@ -109,7 +109,7 @@ for( $i = 0; $i < count( $time_data ); $i++ ) {
             $mailSend =& Mail::factory("SMTP");
             //print_r($mailSend);
             //$mailSend->send($recipients, $header, $body);
-            abreak;            
+            break;            
         } else {
 	        //-- テキストメール配信の場合
 	        if( $mail_data[$i][0]["mail_method"] == 2 ) {
