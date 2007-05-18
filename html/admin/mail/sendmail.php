@@ -93,6 +93,9 @@ for( $i = 0; $i < count( $time_data ); $i++ ) {
                             //ブレインのSMTPサーバーIPアドレス
                            'host' => "210.188.254.83"
                           ,'port' => "25"
+                          ,'auth' => true
+                          ,
+                          
                                           );
             
             print_r($sendResut);
