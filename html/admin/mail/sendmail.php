@@ -79,7 +79,7 @@ for( $i = 0; $i < count( $time_data ); $i++ ) {
         if(MELMAGA_MOBIE_SEND){
         	 
         	//$sendResut = MELMAGA_SENDING(
-            $sendResut = array(
+            $sendResut = MELMAGA_SENDING(
 									     $list_data[$i][$j]["email"]				//　顧客宛先
 									    ,$subjectBody								//　Subject
 									    ,$mailBody									//　メール本文
@@ -97,7 +97,7 @@ for( $i = 0; $i < count( $time_data ); $i++ ) {
 //                                             
 //                                          );
 //            
-            print_r($sendResut);
+            //print_r($sendResut);
             
             $decoder =& new Mail_mimeDecode($sendResut);
             $parts = $decoder->getSendArray();
@@ -108,7 +108,7 @@ for( $i = 0; $i < count( $time_data ); $i++ ) {
             $mailSend =& Mail::factory("SMTP");
             //print_r($mailSend);
             $mailSend->send($recipients, $header, $body);
-            break;            
+            //break;            
         } else {
 	        //-- テキストメール配信の場合
 	        if( $mail_data[$i][0]["mail_method"] == 2 ) {
