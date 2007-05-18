@@ -369,8 +369,9 @@ function fnSendZipcode(){
 }
 
 function fnReturnAddress(val){
-	if(val.length!=0){
+	
 	eval("var log ="  + val.responseText);
+	if(log.flag ==1){
 	document.getElementsByName("order_pref").item(0).value = log.pref;
 	document.getElementsByName("order_addr01").item(0).value =log.city + log.town;
 	}
