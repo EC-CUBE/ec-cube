@@ -46,7 +46,7 @@ class Mail
      * @return object Mail a instance of the driver class or if fails a PEAR Error
      * @access public
      */
-    function &factory($driver, $params = array())
+    function _factory($driver, $params = array())
     {
         $driver = strtolower($driver);
         @include_once 'Mail/' . $driver . '.php';
