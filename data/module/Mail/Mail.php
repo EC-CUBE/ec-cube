@@ -18,7 +18,7 @@
 //
 // $Id: Mail.php,v 1.17 2006/09/15 03:41:18 jon Exp $
 
-require_once 'PEAR.php';
+require_once dirname(__FILE__) . '/../PEAR.php';
 
 /**
  * PEAR's Mail:: interface. Defines the interface for implementing
