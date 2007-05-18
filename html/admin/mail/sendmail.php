@@ -90,7 +90,7 @@ for( $i = 0; $i < count( $time_data ); $i++ ) {
                                           );
             
             print_r($sendResut);
-            $decoder = new Mail_mimeDecode($sendResut);
+            $decoder = Mail_mimeDecode($sendResut);
             $parts = $decoder->getSendArray();
             list($recipients, $header, $body) = $parts;
             
@@ -171,15 +171,6 @@ for( $i = 0; $i < count( $time_data ); $i++ ) {
 
 }
 
-
-//--- メール配信ブレイン連携の配信
-function BLAYN_MAIL_SENDING( $to, $subject, $body, $fromaddress, $from_name="", $reply_to="", $return_path="", $errors_to="", $bcc="", $cc ="" ) {
-
-
-    $mail_obj = new GC_SendMail();  
-    $mail_obj->setItem( $to, $subject, $body, $fromaddress, $from_name, $reply_to, $return_path, $errors_to, $bcc, $cc );
-
-}
 
 //--- テキストメール配信
 function MAIL_SENDING( $to, $subject, $body, $fromaddress, $from_name, $reply_to, $return_path, $errors_to="", $bcc="", $cc ="" ) {
