@@ -109,6 +109,7 @@ for( $i = 0; $i < count( $time_data ); $i++ ) {
             $mailSend =& Mail::factory("SMTP");
             //print_r($mailSend);
             //$mailSend->send($recipients, $header, $body);
+            matumoto;
             break;            
         } else {
 	        //-- テキストメール配信の場合
