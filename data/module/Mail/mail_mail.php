@@ -23,7 +23,7 @@
  * @package Mail
  * @version $Revision: 1.18 $
  */
-class Mail_mail extends Mail {
+class Mail_mail extends SC_Mail {
 
     /**
      * Any arguments to pass to the mail() function.
