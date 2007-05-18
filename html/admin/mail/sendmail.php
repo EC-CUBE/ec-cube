@@ -75,6 +75,7 @@ for( $i = 0; $i < count( $time_data ); $i++ ) {
 		$subjectBody = ereg_replace( "{name}", $customerName , $mail_data[$i][0]["subject"] );
 		$mailBody = ereg_replace( "{name}", $customerName ,  $mail_data[$i][0]["body"] );
 
+print("trace");
         //-- メルマガ配信をブレイン連携で行う場合
         if(MELMAGA_MOBILE_SEND){
         	 
@@ -109,7 +110,6 @@ for( $i = 0; $i < count( $time_data ); $i++ ) {
             $mailSend =& Mail::factory("SMTP");
             //print_r($mailSend);
             //$mailSend->send($recipients, $header, $body);
-            matumoto;
             break;            
         } else {
 	        //-- テキストメール配信の場合
