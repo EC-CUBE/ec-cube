@@ -365,7 +365,7 @@ function test(){
 	sendRequest(back,'&zip01='+zip01+'&zip02='+zip02,'GET','../input_zip_json.php',true,true);
 }
 function back(val){
-	sele2 = document.form1[name2];
+	sele2 = document.form1[order_pref];
 	
 	eval("var log ="  + val.responseText);
 	//document.getElementsByName("order_pref").item(0).innerHTML = log.pref;
