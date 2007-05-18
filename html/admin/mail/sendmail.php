@@ -192,9 +192,8 @@ function MELMAGA_SENDING( $to, $subject, $body, $fromaddress, $from_name, $reply
 
     $mail_obj = new GC_SendMail();  
     $mail_obj->setItem( $to, $subject, $body, $fromaddress, $from_name, $reply_to, $return_path, $errors_to, $bcc, $cc );
-      if(MELMAGA_MOBILE_SEND) {
+      
         return true;
-    }
 }
 
 //--- テキストメール配信
