@@ -368,5 +368,6 @@ function test(){
 function back(val){
 	//alert(data);
 	eval("var log ="  + val.responseText);
-	document.getElementsByName("order_addr01").item(0).value =log.town;
+	document.getElementsByName("order_addr01").item(0).value =log.city + log.town;
+	//document.getElementsByName("order_addr02").item(0).value =log.town;
 }
