@@ -107,7 +107,7 @@ for( $i = 0; $i < count( $time_data ); $i++ ) {
             //$mailSend =& Mail::factory("SMTP", $mail_options);
             $mailSend =& Mail::factory("SMTP");
             //print_r($mailSend);
-            $mailSend->send($recipients, $header, $body);
+            //$mailSend->send($recipients, $header, $body);
             //break;            
         } else {
 	        //-- テキストメール配信の場合
