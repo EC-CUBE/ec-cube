@@ -79,11 +79,15 @@ for( $i = 0; $i < count( $time_data ); $i++ ) {
         if(MELMAGA_MOBIE_SEND){
         	
         	$sendResut = array(
-									     $list_data[$i][$j]["email"]				//　顧客宛先
-									    ,$subjectBody								//　Subject
-									    ,$mailBody									//　メール本文
-									    ,$objSite->data["email03"]					//　送信元メールアドレス
-									                               );
+							     $list_data[$i][$j]["email"]				//　顧客宛先
+							    ,$subjectBody								//　Subject
+							    ,$mailBody									//　メール本文
+							    ,$objSite->data["email03"]					//　送信元メールアドレス
+							    ,$objSite->data["company_name"]				//　送信元名
+							    ,$objSite->data["email03"]					//　reply_to
+							    ,$objSite->data["email04"]					//　return_path
+							    ,$objSite->data["email04"]					//　errors_to
+							                               );
 			$smtp = array(  
                            'host' => "210.188.254.83"
                           ,'port' => "25"
