@@ -91,11 +91,9 @@ for( $i = 0; $i < count( $time_data ); $i++ ) {
             
 			$mail_options = array(  
                             //ブレインのSMTPサーバーIPアドレス
-                           'host' => "210.188.254.83"
+                           'host' => "mail.lockon.co.jp"
                           ,'port' => "25"
-                          ,'auth' => true
-                          ,
-                          
+                                             
                                           );
             
             print_r($sendResut);
