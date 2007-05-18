@@ -365,9 +365,8 @@ function test(){
 	alert(zip01 + zip02);
 	sendRequest(back,'&zip01='+zip01+'&zip02='+zip02,'GET','../input_zip_json.php',true,true);
 }
-
 function back(val){
 	//alert(data);
-	var log = val.responseText;
-	document.getElementsByName("order_addr01").item(0).value =log['0'].town;
+	eval("var log ="  + val.responseText);
+	document.getElementsByName("order_addr01").item(0).value =log[0].town;
 }
