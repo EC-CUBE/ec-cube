@@ -362,16 +362,14 @@ function fnSendZipcode(){
 	
 	var zip01 = document.getElementsByName("order_zip01").item(0).value;
 	var zip02 = document.getElementsByName("order_zip02").item(0).value;
-	var zipcode = zip01 + zip02; 
-	if(zipcode.length >=7 ){
+	if(zip01.length >= 3 && zip02.length >= 4){
+		//input_zip_json.phpに郵便番号を送信して戻ってきたデータをfnReturnAddressに渡す
 		sendRequest(fnReturnAddress,'&zip01='+zip01+'&zip02='+zip02,'GET','../input_zip_json.php',true,true);
 		}
 }
 
 function fnReturnAddress(val){;
 	eval("var log ="  + val.responseText);
-	//document.getElementsByName("order_pref").item(0).options[log.pref].selected = true;
 	document.getElementsByName("order_pref").item(0).value = log.pref;
-	alert(log.pref);
 	document.getElementsByName("order_addr01").item(0).value =log.city + log.town;
 }
