@@ -79,38 +79,10 @@ print("trace");
         //-- メルマガ配信をブレイン連携で行う場合
         if(MELMAGA_MOBILE_SEND){
         	 
-        	//$sendResut = MELMAGA_SENDING(
-            $sendResut = MELMAGA_SENDING(
-									     $list_data[$i][$j]["email"]				//　顧客宛先
-									    ,$subjectBody								//　Subject
-									    ,$mailBody									//　メール本文
-									    ,$objSite->data["email03"]					//　送信元メールアドレス
-									    ,$objSite->data["company_name"]				//　送信元名
-									    ,$objSite->data["email03"]					//　reply_to
-									    ,$objSite->data["email04"]					//　return_path
-									    ,$objSite->data["email04"]					//　errors_to
-																		 );
-            
-//			$mail_options = array(  
-//                            //ブレインのSMTPサーバーIPアドレス
-//                           'host' => "mail.lockon.co.jp"
-//                          ,'port' => "25"
-//                                             
-//                                          );
-//            
-            //print_r($sendResut);
-            
-            $decoder =& new Mail_mimeDecode($sendResut);
-            print_r($decoder);
-            $parts = $decoder->getSendArray();
-            //print_r($parts);
-            list($recipients, $header, $body) = $parts;
-            
-            //$mailSend =& Mail::factory("SMTP", $mail_options);
-            $mailSend =& Mail::factory("SMTP");
-            //print_r($mailSend);
-            //$mailSend->send($recipients, $header, $body);
-            break;            
+            $masuo = "んー？";
+            print_r($masuo);
+            a
+                 
         } else {
 	        //-- テキストメール配信の場合
 	        if( $mail_data[$i][0]["mail_method"] == 2 ) {
