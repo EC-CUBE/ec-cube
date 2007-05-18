@@ -358,13 +358,17 @@ function ChangeSize(button, TextArea, Max, Min, row_tmp){
 	}
 }
 
-function test(){
+function fnSendZipcode(){
 	
 	var zip01 = document.getElementsByName("order_zip01").item(0).value;
 	var zip02 = document.getElementsByName("order_zip02").item(0).value;
-	sendRequest(back,'&zip01='+zip01+'&zip02='+zip02,'GET','../input_zip_json.php',true,true);
+	var zipcode = zip01 + zip02; 
+	if(zipcode.length >=7 ){
+		sendRequest(fnReturnAddress,'&zip01='+zip01+'&zip02='+zip02,'GET','../input_zip_json.php',true,true);
+		}
 }
-function back(val){;
+
+function fnReturnAddress(val){;
 	eval("var log ="  + val.responseText);
 	//document.getElementsByName("order_pref").item(0).options[log.pref].selected = true;
 	document.getElementsByName("order_pref").item(0).value = log.pref;
