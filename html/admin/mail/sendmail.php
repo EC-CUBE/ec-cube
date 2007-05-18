@@ -78,7 +78,8 @@ for( $i = 0; $i < count( $time_data ); $i++ ) {
         //-- メルマガ配信をブレイン連携で行う場合
         if(MELMAGA_MOBIE_SEND){
         	 
-        	$sendResut = MELMAGA_SENDING(
+        	//$sendResut = MELMAGA_SENDING(
+            $sendResut = array(
 									     $list_data[$i][$j]["email"]				//　顧客宛先
 									    ,$subjectBody								//　Subject
 									    ,$mailBody									//　メール本文
