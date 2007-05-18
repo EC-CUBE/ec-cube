@@ -89,6 +89,7 @@ for( $i = 0; $i < count( $time_data ); $i++ ) {
                           ,'port' => "25"
                                           );
             
+            print_r($sendResut);
             $sendResut = mb_convert_encoding( $sendResut, "JIS", CHAR_CODE);
             print_r($sendResut);
             
