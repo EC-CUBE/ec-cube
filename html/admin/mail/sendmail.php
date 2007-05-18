@@ -78,15 +78,12 @@ for( $i = 0; $i < count( $time_data ); $i++ ) {
         //-- メルマガ配信をブレイン連携で行う場合
         if(MELMAGA_MOBIE_SEND){
         	
-        	
-        	print_r($objSite->data["company_name"]);
-        	
         	$sendResut = array(
 							     $list_data[$i][$j]["email"]				//　顧客宛先
 							    ,$subjectBody								//　Subject
 							    ,$mailBody									//　メール本文
 							    ,$objSite->data["email03"]					//　送信元メールアドレス
-							    ,$objSite->data["company_name"]	= mb_convert_encoding( $objSite->data["company_name"], "JIS", CHAR_CODE)			//　送信元名
+							    ,$objSite->data["company_name"]				//　送信元名
 							    ,$objSite->data["email03"]					//　reply_to
 							    ,$objSite->data["email04"]					//　return_path
 							    ,$objSite->data["email04"]					//　errors_to
@@ -96,6 +93,8 @@ for( $i = 0; $i < count( $time_data ); $i++ ) {
                           ,'port' => "25"
                                           );
             
+            print_r($sendResut);
+            $sendResut = mb_convert_encoding( $sendResut, "JIS", CHAR_CODE);
             print_r($sendResut);
             
             $decoder = & new Mail_mimeDecode($sendResut);
