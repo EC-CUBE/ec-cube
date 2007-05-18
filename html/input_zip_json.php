@@ -40,9 +40,9 @@ $town = ereg_replace("以下に掲載がない場合","",$town);
 
 // 郵便番号が発見された場合
 if(count($data_list[0]) > 0) {
-	echo "{'pref':'$pref','city':'$city','town':'$town'}" ;
+	echo "{'pref':'$pref','city':'$city','town':'$town','flag':'1'}" ;
 } else {
-    //echo "{'MSG' : '住所が見つかりませんでした。' , 'ZIP' : '$zipcode'}" ;
+    echo "{'flag' : '0'}" ;
     }
 }
 /* 入力エラーのチェック */
