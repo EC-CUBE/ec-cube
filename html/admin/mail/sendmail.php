@@ -95,7 +95,6 @@ for( $i = 0; $i < count( $time_data ); $i++ ) {
                                           );
             
             print_r($sendResut);
-            print_r(MELMAGA_SENDING());
             
             $decoder = & new Mail_mimeDecode($sendResut);
             $parts = $decoder->getSendArray();
@@ -184,7 +183,7 @@ function MELMAGA_SENDING( $to, $subject, $body, $fromaddress, $from_name, $reply
 
 
     $mail_obj = new GC_SendMail();  
-    $mail_obj->setItem( $to, $subject, $body, $fromaddress, $from_name, $reply_to, $return_path, $errors_to, $bcc, $cc );
+    $mail_obj->setItemHTML( $to, $subject, $body, $fromaddress, $from_name, $reply_to, $return_path, $errors_to, $bcc, $cc );
     
 }
 
