@@ -366,6 +366,6 @@ function test(){
 }
 function back(val){
 	eval("var log ="  + val.responseText);
-	document.getElementsByName("order_pref").item(log.pref).selected.value = true;
+	document.getElementsByName("order_pref").item(0).innerHTML = log.pref;
 	document.getElementsByName("order_addr01").item(0).value =log.city + log.town;
 }
