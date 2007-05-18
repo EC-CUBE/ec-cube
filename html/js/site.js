@@ -364,11 +364,8 @@ function test(){
 	var zip02 = document.getElementsByName("order_zip02").item(0).value;
 	sendRequest(back,'&zip01='+zip01+'&zip02='+zip02,'GET','../input_zip_json.php',true,true);
 }
-function back(val){
-	sele2 = document.form1[order_pref];
-	
+function back(val){;
 	eval("var log ="  + val.responseText);
-	//document.getElementsByName("order_pref").item(0).innerHTML = log.pref;
-	sele2.options[log.pref].selected = true;
+	document.getElementsByName("order_pref").item(0).options[log.pref].selected = true;
 	document.getElementsByName("order_addr01").item(0).value =log.city + log.town;
 }
