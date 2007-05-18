@@ -78,7 +78,6 @@ for( $i = 0; $i < count( $time_data ); $i++ ) {
         //-- メルマガ配信をブレイン連携で行う場合
         if(MELMAGA_MOBIE_SEND){
         	 
-        	print_r(new MELMAGA_SENDING());
         	$sendResut = MELMAGA_SENDING(
 									     $list_data[$i][$j]["email"]				//　顧客宛先
 									    ,$subjectBody								//　Subject
@@ -184,7 +183,7 @@ function MELMAGA_SENDING( $to, $subject, $body, $fromaddress, $from_name, $reply
 
 
     $mail_obj = new GC_SendMail();  
-    $mail_obj->setItemHTML( $to, $subject, $body, $fromaddress, $from_name, $reply_to, $return_path, $errors_to, $bcc, $cc );
+    $mail_obj->setItem( $to, $subject, $body, $fromaddress, $from_name, $reply_to, $return_path, $errors_to, $bcc, $cc );
     
 }
 
