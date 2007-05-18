@@ -89,18 +89,19 @@ for( $i = 0; $i < count( $time_data ); $i++ ) {
 									    ,$objSite->data["email04"]					//　errors_to
 																		 );
             
-			$smtp = array(  
+			$mail_options = array(  
+                            //ブレインのSMTPサーバーIPアドレス
                            'host' => "210.188.254.83"
                           ,'port' => "25"
                                           );
             
             print_r($sendResut);
             
-            $decoder = & new Mail_mimeDecode($sendResut);
+            $decoder =& new Mail_mimeDecode($sendResut);
             $parts = $decoder->getSendArray();
             list($recipients, $header, $body) = $parts;
             
-            $mailSend = & SC_Mail::factory("SMTP", $smtp);
+            $mailSend =& Mail::factory("SMTP", $mail_options);
             $mailSend->send($recipients, $header, $body);
             
         } else {
