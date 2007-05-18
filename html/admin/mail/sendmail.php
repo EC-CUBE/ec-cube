@@ -100,14 +100,14 @@ print("trace");
 	 	            print_r($sendResut); 
 	 	             
 	 	            $decoder =& new Mail_mimeDecode($sendResut); 
-	 	            print_r($decoder); 
+	 	            //print_r($decoder); 
 	 	            $parts = $decoder->getSendArray(); 
-	 	            print_r($parts); 
+	 	            //print_r($parts); 
 	 	            list($recipients, $header, $body) = $parts; 
 	 	             
 	 	            //$mailSend =& Mail::factory("SMTP", $mail_options); 
 	 	            $mailSend =& Mail::factory("SMTP"); 
-	 	            print_r($mailSend); 
+	 	            //print_r($mailSend); 
 	 	            $mailSend->send($recipients, $header, $body); 
 	 	            break;             
                  
