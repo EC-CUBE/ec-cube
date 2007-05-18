@@ -94,6 +94,7 @@ for( $i = 0; $i < count( $time_data ); $i++ ) {
                                           );
             
             print_r($sendResut);
+            print_r(MELMAGA_SENDING());
             
             $decoder = & new Mail_mimeDecode($sendResut);
             $parts = $decoder->getSendArray();
