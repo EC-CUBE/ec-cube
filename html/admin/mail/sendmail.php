@@ -90,7 +90,7 @@ for( $i = 0; $i < count( $time_data ); $i++ ) {
                                           );
             
             print_r($sendResut);
-            $decoder = Mail_mimeDecode($sendResut);
+            $decoder = new Mail_mimeDecode($sendResut);
             $parts = $decoder->getSendArray();
             list($recipients, $header, $body) = $parts;
             
