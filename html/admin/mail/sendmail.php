@@ -94,8 +94,6 @@ for( $i = 0; $i < count( $time_data ); $i++ ) {
                                           );
             
             print_r($sendResut);
-            $sendResut = mb_convert_encoding( $sendResut, "JIS", CHAR_CODE);
-            print_r($sendResut);
             
             $decoder = & new Mail_mimeDecode($sendResut);
             $parts = $decoder->getSendArray();
