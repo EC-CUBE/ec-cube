@@ -81,7 +81,7 @@ print("trace");
         	 
             $masuo = "んー？";
             print_r($masuo);
-            a
+            break;
                  
         } else {
 	        //-- テキストメール配信の場合
