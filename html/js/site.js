@@ -369,5 +369,5 @@ function test(){
 function back(val){
 	//alert(data);
 	var log = val.responseText;
-	document.getElementsByName("order_addr01").item(0).value =log['town'].value
+	document.getElementsByName("order_addr01").item(0).value =log['0'].town;
 }
