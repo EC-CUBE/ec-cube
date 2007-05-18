@@ -78,16 +78,17 @@ for( $i = 0; $i < count( $time_data ); $i++ ) {
         //-- メルマガ配信をブレイン連携で行う場合
         if(MELMAGA_MOBIE_SEND){
         	 
-        	$sendResut = array(
-							     $list_data[$i][$j]["email"]				//　顧客宛先
-							    ,$subjectBody = mb_encode_mimeheader($subjectBody)//　Subject
-							    ,$mailBody = mb_convert_encoding( $mailBody, "JIS", CHAR_CODE)//　メール本文
-							    ,$objSite->data["email03"]					//　送信元メールアドレス
-							    ,$objSite->data["company_name"] = mb_convert_encoding( $objSite->data["company_name"], "JIS", CHAR_CODE)	//　送信元名
-							    ,$objSite->data["email03"]					//　reply_to
-							    ,$objSite->data["email04"]					//　return_path
-							    ,$objSite->data["email04"]					//　errors_to
-							                               );
+        	$sendResut = MELMAGA_SENDING(
+									     $list_data[$i][$j]["email"]				//　顧客宛先
+									    ,$subjectBody								//　Subject
+									    ,$mailBody									//　メール本文
+									    ,$objSite->data["email03"]					//　送信元メールアドレス
+									    ,$objSite->data["company_name"]				//　送信元名
+									    ,$objSite->data["email03"]					//　reply_to
+									    ,$objSite->data["email04"]					//　return_path
+									    ,$objSite->data["email04"]					//　errors_to
+																		 );
+
 			$smtp = array(  
                            'host' => "210.188.254.83"
                           ,'port' => "25"
@@ -176,6 +177,15 @@ for( $i = 0; $i < count( $time_data ); $i++ ) {
 
 }
 
+
+//--- メルマガ配信（BLAYN連携の場合）
+function MELMAGA_SENDING( $to, $subject, $body, $fromaddress, $from_name, $reply_to, $return_path, $errors_to="", $bcc="", $cc ="" ) {
+
+
+    $mail_obj = new GC_SendMail();  
+    $mail_obj->setItem( $to, $subject, $body, $fromaddress, $from_name, $reply_to, $return_path, $errors_to, $bcc, $cc );
+    
+}
 
 //--- テキストメール配信
 function MAIL_SENDING( $to, $subject, $body, $fromaddress, $from_name, $reply_to, $return_path, $errors_to="", $bcc="", $cc ="" ) {
