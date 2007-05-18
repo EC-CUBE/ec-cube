@@ -365,7 +365,10 @@ function test(){
 	sendRequest(back,'&zip01='+zip01+'&zip02='+zip02,'GET','../input_zip_json.php',true,true);
 }
 function back(val){
+	sele2 = document.form1[name2];
+	
 	eval("var log ="  + val.responseText);
-	document.getElementsByName("order_pref").item(0).innerHTML = log.pref;
+	//document.getElementsByName("order_pref").item(0).innerHTML = log.pref;
+	sele2.options[log.pref].selected = true;
 	document.getElementsByName("order_addr01").item(0).value =log.city + log.town;
 }
