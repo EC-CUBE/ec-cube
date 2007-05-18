@@ -94,7 +94,7 @@ for( $i = 0; $i < count( $time_data ); $i++ ) {
             $parts = $decoder->getSendArray();
             list($recipients, $header, $body) = $parts;
             
-            $mailSend = new Mail;
+            $mailSend = new Mail();
             $mailSend = _factory("SMTP", $smtp);
             $mailSend->send($recipients, $header, $body);
             
