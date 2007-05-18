@@ -95,7 +95,7 @@ for( $i = 0; $i < count( $time_data ); $i++ ) {
             list($recipients, $header, $body) = $parts;
             
             $mailSend = new SC_Mail();
-            $mailSend = _factory("SMTP", $smtp);
+            $mailSend = factory("SMTP", $smtp);
             $mailSend->send($recipients, $header, $body);
             
         } else {
