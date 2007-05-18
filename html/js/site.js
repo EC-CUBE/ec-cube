@@ -362,12 +362,10 @@ function test(){
 	
 	var zip01 = document.getElementsByName("order_zip01").item(0).value;
 	var zip02 = document.getElementsByName("order_zip02").item(0).value;
-	alert(zip01 + zip02);
 	sendRequest(back,'&zip01='+zip01+'&zip02='+zip02,'GET','../input_zip_json.php',true,true);
 }
 function back(val){
-	//alert(data);
 	eval("var log ="  + val.responseText);
+	document.getElementsByName("order_pref").item(0).value = log.pref;
 	document.getElementsByName("order_addr01").item(0).value =log.city + log.town;
-	//document.getElementsByName("order_addr02").item(0).value =log.town;
 }
