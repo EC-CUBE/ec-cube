@@ -18,7 +18,7 @@
 //
 // $Id: Mail.php,v 1.17 2006/09/15 03:41:18 jon Exp $
 
-require_once dirname(__FILE__) . '/../PEAR.php';
+require_once dirname(__FILE__) . "/../PEAR.php";
 
 /**
  * PEAR's Mail:: interface. Defines the interface for implementing
@@ -49,7 +49,8 @@ class Mail
     function &factory($driver, $params = array())
     {
         $driver = strtolower($driver);
-        include_once '/../Mail/' . $driver . '.php';
+        $include_dir = realpath(dirname( __FILE__));
+        include_once $include_dir ."/../Mail/" . $driver . ".php";
         $class = 'Mail_' . $driver;
         if (class_exists($class)) {
             $mailer = new $class($params);
