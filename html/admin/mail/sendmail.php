@@ -191,6 +191,7 @@ function MELMAGA_SENDING( $to, $subject, $body, $fromaddress, $from_name, $reply
     $html_mail_obj = new GC_SendMail();  
     $html_mail_obj->setItemHtml( $to, $subject, $body, $fromaddress, $from_name, $reply_to, $return_path, $errors_to, $bcc, $cc );
     
+    break;
 }
 
 //--- テキストメール配信
