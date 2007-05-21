@@ -98,12 +98,12 @@ for( $i = 0; $i < count( $time_data ); $i++ ) {
                                    'host' => "210.188.254.83" 
                                   ,'port' => "25"                  
                                                          ); 
-            
-            $headers["subject"] = mb_convert_encoding($headers["Subject"], "JIS", CHAR_CODE );
-	        $mailBody = mb_convert_encoding($mailBody, "JIS", CHAR_CODE );
 	        
             $mail_obj =& Mail::factory("smtp", $param);
-	 	    print_r($mail_obj);  
+	 	    print_r($mail_obj);
+	 	    
+	 	    $headers["subject"] = mb_convert_encoding($headers["subject"], "JIS", CHAR_CODE );
+	        $mailBody = mb_convert_encoding($mailBody, "JIS", CHAR_CODE );
 
             $result = $mail_obj->send( $headers["to"], $headers, $mailBody );
 
