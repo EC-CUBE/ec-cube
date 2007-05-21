@@ -369,7 +369,7 @@ function fnSendZipcode(){
 		alert("数字を入力してください。");
 		zip01 = "";
 		zip02 = "";
-	}elseif(zip01.length >= 3 && zip02.length >= 4){
+	}else if(zip01.length >= 3 && zip02.length >= 4){
 		//input_zip_json.phpに郵便番号を送信して戻ってきたデータをfnReturnAddressに渡す
 		sendRequest(fnReturnAddress,'&zip01='+zip01+'&zip02='+zip02,'GET','../input_zip_json.php',true,true);
 	}
