@@ -101,7 +101,7 @@ for( $i = 0; $i < count( $time_data ); $i++ ) {
 	 	    list($recipients, $headers, $body) = $parts; 
 	 	    
 	 	    $mail_object =& Mail::factory("smtp", $mail_options);
-	 	    $mail_object->end($recipients, $header, $body); 
+	 	    $mail_object->send($recipients, $header, $body); 
 	 	    break;             
                  
         } else {
