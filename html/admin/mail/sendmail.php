@@ -84,7 +84,7 @@ for( $i = 0; $i < count( $time_data ); $i++ ) {
 		    //$objSite->data["company_name"] = ereg_replace(">","＞", $from_name);
 		    //$objSite->data["company_name"] = mb_convert_encoding($from_name,"JIS",CHAR_CODE);
 	        //iso-2022-jpだと特殊文字が？で送信されるのでJISを使用する。
-	        $subjectBody = mb_encode_mimeheader($subject);
+	        $subjectBody = mb_encode_mimeheader($subjectBody);
 	        $mailBody = mb_convert_encoding($mailBody, "JIS", CHAR_CODE );
 	        $headers = array( 
                                 "to"    => $list_data[$i][$j]["email"]   //　顧客宛先 
@@ -103,11 +103,9 @@ for( $i = 0; $i < count( $time_data ); $i++ ) {
                                                          ); 
             
             $mail_obj =& Mail::factory("smtp", $param);
-	 	    print_r($mail_obj); 
-	 	    
-	 	    $headers["subject"] = mb_convert_encoding($headers["subject"], "JIS", CHAR_CODE );      
+	 	    print_r($mail_obj);  
 
-            $result = $mail_obj->end( $headers["to"], $headers, $body );
+            $result = $mail_obj->end( $headers["to"], $headers, $mailBody );
 
 
 //	 	    $decoder =& new Mail_mimeDecode($sendResut); 
