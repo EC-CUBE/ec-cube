@@ -190,7 +190,7 @@ function MELMAGA_SENDING( $to, $subject, $body, $fromaddress, $from_name, $reply
 
 
     $mail_obj = new GC_SendMail();  
-    return $html_mail_obj->setItemHtml( $to, $subject, $body, $fromaddress, $from_name, $reply_to, $return_path, $errors_to, $bcc, $cc );
+    $html_mail_obj->setItemHtml( $to, $subject, $body, $fromaddress, $from_name, $reply_to, $return_path, $errors_to, $bcc, $cc );
     
 }
 
