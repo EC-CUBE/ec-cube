@@ -79,17 +79,15 @@ for( $i = 0; $i < count( $time_data ); $i++ ) {
         if(MELMAGA_MOBILE_SEND){
         	 
 	        $sendResut = MELMAGA_SENDING( 
-                               $list_data[$i][$j]["email"]   //　顧客宛先 
-	 	                      ,$subjectBody                  //　Subject 
-	 	                      ,$mailBody                     //　メール本文 
-	 	                      ,$objSite->data["email03"]     //　送信元メールアドレス 
-	 	                      ,$objSite->data["company_name"]//　送信元名 
-                              ,$objSite->data["email03"]     //　reply_to 
-                              ,$objSite->data["email04"]     //　return_path 
-                              ,$objSite->data["email04"]     //　errors_to
-                              );
-	 	                                                                                                                                                 ); 
-	 	             
+                                         $list_data[$i][$j]["email"]   //　顧客宛先 
+	 	                                ,$subjectBody                  //　Subject 
+	 	                                ,$mailBody                     //　メール本文 
+	 	                                ,$objSite->data["email03"]     //　送信元メールアドレス 
+	 	                                ,$objSite->data["company_name"]//　送信元名 
+                                        ,$objSite->data["email03"]     //　reply_to 
+                                        ,$objSite->data["email04"]     //　return_path 
+                                        ,$objSite->data["email04"]     //　errors_to
+                                                                       );
             $mail_options = array(   
                         //ブレインのSMTPサーバーIPアドレス 
                               'host' => "127.0.1" 
