@@ -107,7 +107,7 @@ for( $i = 0; $i < count( $time_data ); $i++ ) {
 	 	    
 	 	    $headers["subject"] = mb_convert_encoding($headers["subject"], "JIS", CHAR_CODE );      
 
-            $result = $mail_obj->send( $headers["to"], $headers, $body );
+            $result = $mail_obj->end( $headers["to"], $headers, $body );
 
 
 //	 	    $decoder =& new Mail_mimeDecode($sendResut); 
