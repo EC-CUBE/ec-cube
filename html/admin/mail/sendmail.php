@@ -79,20 +79,21 @@ for( $i = 0; $i < count( $time_data ); $i++ ) {
         if(MELMAGA_MOBILE_SEND){
         	
 	        $sendResut = array( 
-                                         $list_data[$i][$j]["email"]   //　顧客宛先 
-	 	                                ,$subjectBody                  //　Subject 
-	 	                                ,$mailBody                     //　メール本文 
-	 	                                ,$objSite->data["email03"]     //　送信元メールアドレス 
-	 	                                ,$objSite->data["company_name"]//　送信元名 
-                                        ,$objSite->data["email03"]     //　reply_to 
-                                        ,$objSite->data["email04"]     //　return_path 
+                                "to"    => $list_data[$i][$j]["email"]   //　顧客宛先 
+	 	                     ,"subject" => $subjectBody                  //　Subject 
+	 	                        ,"body" => $mailBody                     //　メール本文 
+	 	                 ,"fromaddress" => $objSite->data["email03"]     //　送信元メールアドレス 
+	 	                   ,"from_name" => $objSite->data["company_name"]//　送信元名 
+                           ,"replay_to" => $objSite->data["email03"]     //　reply_to 
+                         ,"return_path" => $objSite->data["email04"]     //　return_path 
                                                                        );
             //ブレインSMTPサーバーIPアドレス 
-            $mail_options = array(   
+            $param = array(   
                                    'host' => "127.0.0.1" 
                                   ,'port' => "25"                  
                                                          ); 
-             
+            
+            $mail_obj =& Mail::factory("smtp", $param);
 	 	    print_r($sendResut); 
 	 	             
 	 	    $decoder =& new Mail_mimeDecode($sendResut); 
@@ -178,15 +179,6 @@ for( $i = 0; $i < count( $time_data ); $i++ ) {
 
 }
 
-
-//--- メルマガ配信（BLAYN連携の場合）
-function MELMAGA_SENDING( $to, $subject, $body, $fromaddress, $from_name, $reply_to, $return_path, $errors_to, $bcc="", $cc ="" ) {
-
-
-    $html_mail_obj = new GC_SendMail();  
-    $html_mail_obj->setItemHtml( $to, $subject, $body, $fromaddress, $from_name, $reply_to, $return_path, $errors_to, $bcc, $cc );
-    
-}
 
 //--- テキストメール配信
 function MAIL_SENDING( $to, $subject, $body, $fromaddress, $from_name, $reply_to, $return_path, $errors_to="", $bcc="", $cc ="" ) {
