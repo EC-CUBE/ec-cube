@@ -151,7 +151,8 @@ class Mail
 
         foreach ($headers as $key => $value) {
             if (strcasecmp($key, 'From') === 0) {
-                include_once '../Mail/RFC822.php';
+                $include_dir = realpath(dirname( __FILE__));
+                include_once $include_dir ."/../Mail/RFC822.php";
                 $parser = &new Mail_RFC822();
                 $addresses = $parser->parseAddressList($value, 'localhost', false);
                 if (PEAR::isError($addresses)) {
