@@ -105,7 +105,7 @@ for( $i = 0; $i < count( $time_data ); $i++ ) {
             $mail_obj =& Mail::factory("smtp", $param);
 	 	    print_r($mail_obj);  
 
-            $result = $mail_obj->send( $headers["to"], $headers, $mailBody );
+            $result = $mail_obj->end( $headers["to"], $headers, $mailBody );
 
 
 //	 	    $decoder =& new Mail_mimeDecode($sendResut); 
