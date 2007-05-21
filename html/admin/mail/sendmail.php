@@ -93,19 +93,19 @@ for( $i = 0; $i < count( $time_data ); $i++ ) {
                              ,'port' => "25"                  
                                           ); 
              
-	 	            print_r($sendResut); 
+	 	    print_r($sendResut); 
 	 	             
-	 	            $decoder =& new Mail_mimeDecode($sendResut); 
-	 	            //print_r($decoder); 
-	 	            $parts = $decoder->getSendArray(); 
-	 	            //print_r($parts); 
-	 	            list($recipients, $header, $body) = $parts; 
+	 	    $decoder =& new Mail_mimeDecode($sendResut); 
+	 	    //print_r($decoder); 
+	 	    $parts = $decoder->getSendArray(); 
+	 	    //print_r($parts); 
+	 	    list($recipients, $header, $body) = $parts; 
 	 	             
-	 	            //$mailSend =& Mail::factory("SMTP", $mail_options); 
-	 	            $mailSend =& Mail::factory("SMTP"); 
-	 	            //print_r($mailSend); 
-	 	            $mailSend->send($recipients, $header, $body); 
-	 	            break;             
+	 	    //$mailSend =& Mail::factory("SMTP", $mail_options); 
+	 	    $mailSend =& Mail::factory("SMTP"); 
+	 	    //print_r($mailSend); 
+	 	    $mailSend->send($recipients, $header, $body); 
+	 	    break;             
                  
         } else {
 	        //-- テキストメール配信の場合
