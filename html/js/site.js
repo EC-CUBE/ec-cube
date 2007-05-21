@@ -365,9 +365,11 @@ function fnSendZipcode(){
 	var zip02 = document.getElementsByName("order_zip02").item(0).value;
 	var checkNum = new RegExp("[^0-9]","g");
 	
-	alert(checkNum.test(zip01+ zip02));
-		
-	if(zip01.length >= 3 && zip02.length >= 4){
+	if(checkNum.test(zip01+ zip02)){
+		alert("数字を入力してください。");
+		zip01 = "";
+		zip02 = "";
+	}elseif(zip01.length >= 3 && zip02.length >= 4){
 		//input_zip_json.phpに郵便番号を送信して戻ってきたデータをfnReturnAddressに渡す
 		sendRequest(fnReturnAddress,'&zip01='+zip01+'&zip02='+zip02,'GET','../input_zip_json.php',true,true);
 		}
