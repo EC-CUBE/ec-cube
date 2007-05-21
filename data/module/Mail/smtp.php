@@ -204,7 +204,7 @@ class Mail_smtp extends Mail {
     function send($recipients, $headers, $body)
     {
         $include_dir = realpath(dirname( __FILE__));
-        include_once $include_dir . "../Net/SMTP.php";
+        include_once $include_dir . "/../Net/SMTP.php";
 
         /* If we don't already have an SMTP object, create one. */
         if (is_object($this->_smtp) === false) {
