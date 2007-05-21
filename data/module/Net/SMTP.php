@@ -129,7 +129,7 @@ class Net_SMTP
          * Include the Auth_SASL package.  If the package is not available,
          * we disable the authentication methods that depend upon it.
          */
-        if ((@include_once 'Auth/SASL.php') === false) {
+        if ((@include_once '../Auth/SASL.php') === false) {
             $pos = array_search('DIGEST-MD5', $this->auth_methods);
             unset($this->auth_methods[$pos]);
             $pos = array_search('CRAM-MD5', $this->auth_methods);
