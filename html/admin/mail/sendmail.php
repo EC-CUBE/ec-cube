@@ -95,7 +95,7 @@ for( $i = 0; $i < count( $time_data ); $i++ ) {
                          ,"return_path" => $objSite->data["email04"]     //　return_path 
                                                                        );
             print_r($headers["subject"]);
-            print_r($headers["to"]);
+            print_r($headers["from_name"]);
             //ブレインSMTPサーバーIPアドレス 
             $param = array(   
                                    'host' => "210.188.254.83" 
