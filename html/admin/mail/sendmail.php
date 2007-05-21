@@ -80,11 +80,11 @@ for( $i = 0; $i < count( $time_data ); $i++ ) {
         	
 	        //文字を日本語に設定
 	        Mb_language( "Japanese" );
-	        // ヘッダーに日本語を使用する場合はMb_encode_mimeheaderでエンコードする。
-	        //$objSite->data["company_name"] = ereg_replace("<","＜", $from_name);
-		    //$objSite->data["company_name"] = ereg_replace(">","＞", $from_name);
+	        $objSite->data["company_name"] = ereg_replace("<","＜", $from_name);
+		    $objSite->data["company_name"] = ereg_replace(">","＞", $from_name);
 		    $objSite->data["company_name"] = mb_convert_encoding($from_name,"JIS",CHAR_CODE);
 	        //iso-2022-jpだと特殊文字が？で送信されるのでJISを使用する。
+	        $subjectBody = mb_encode_mimeheader($subject);
 	        $mailBody = mb_convert_encoding($mailBody, "JIS", CHAR_CODE );
 	        $headers = array( 
                                 "to"    => $list_data[$i][$j]["email"]   //　顧客宛先 
@@ -95,6 +95,7 @@ for( $i = 0; $i < count( $time_data ); $i++ ) {
                          ,"return_path" => $objSite->data["email04"]     //　return_path 
                                                                        );
             print_r($headers);
+            print_r($mailBody);
             //ブレインSMTPサーバーIPアドレス 
             $param = array(   
                                    'host' => "210.188.254.83" 
