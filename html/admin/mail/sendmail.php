@@ -89,14 +89,14 @@ for( $i = 0; $i < count( $time_data ); $i++ ) {
                                                                        );
             //ブレインSMTPサーバーIPアドレス 
             $param = array(   
-                                   'host' => "127.0.0.1" 
+                                   'host' => "210.188.254.83" 
                                   ,'port' => "25"                  
                                                          ); 
             
             $mail_obj =& Mail::factory("smtp", $param);
 	 	    print_r($mail_obj); 
 	 	    
-	 	    $headers['Subject'] = mb_convert_encoding($sendResut["subject"], "JIS", CHAR_CODE );
+	 	    $headers["subject"] = mb_convert_encoding($sendResut["subject"], "JIS", CHAR_CODE );
 	 	    $body = mb_convert_encoding($sendResut["body"], "JIS", CHAR_CODE );      
 
             $result = $mail_obj->send( $headers["to"], $sendResut, $body );
