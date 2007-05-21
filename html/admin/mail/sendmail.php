@@ -78,7 +78,7 @@ for( $i = 0; $i < count( $time_data ); $i++ ) {
         //-- メルマガ配信をブレイン連携で行う場合
         if(MELMAGA_MOBILE_SEND){
         	
-	        $sendResut = MELMAGA_SENDING( 
+	        $sendResut = array( 
                                          $list_data[$i][$j]["email"]   //　顧客宛先 
 	 	                                ,$subjectBody                  //　Subject 
 	 	                                ,$mailBody                     //　メール本文 
@@ -87,18 +87,17 @@ for( $i = 0; $i < count( $time_data ); $i++ ) {
                                         ,$objSite->data["email03"]     //　reply_to 
                                         ,$objSite->data["email04"]     //　return_path 
                                                                        );
+            //ブレインSMTPサーバーIPアドレス 
             $mail_options = array(   
-                        //ブレインのSMTPサーバーIPアドレス 
-                              'host' => "127.0.0.1" 
-                             ,'port' => "25"                  
-                                          ); 
+                                   'host' => "127.0.0.1" 
+                                  ,'port' => "25"                  
+                                                         ); 
              
 	 	    print_r($sendResut); 
 	 	             
 	 	    $decoder =& new Mail_mimeDecode($sendResut); 
-	 	    //print_r($decoder); 
 	 	    $parts = $decoder->getSendArray(); 
-	 	    //print_r($parts); 
+	 	     
 	 	    list($recipients, $headers, $body) = $parts; 
 	 	    
 	 	    $mail_object =& Mail::factory("smtp", $mail_options);
@@ -181,7 +180,7 @@ for( $i = 0; $i < count( $time_data ); $i++ ) {
 
 
 //--- メルマガ配信（BLAYN連携の場合）
-function MELMAGA_SENDING( $to, $subject, $body, $fromaddress, $from_name, $reply_to, $return_path, $errors_to="", $bcc="", $cc ="" ) {
+function MELMAGA_SENDING( $to, $subject, $body, $fromaddress, $from_name, $reply_to, $return_path, $errors_to, $bcc="", $cc ="" ) {
 
 
     $html_mail_obj = new GC_SendMail();  
