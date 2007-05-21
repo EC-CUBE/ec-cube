@@ -363,7 +363,7 @@ function fnSendZipcode(){
 	
 	var zip01 = document.getElementsByName("order_zip01").item(0).value;
 	var zip02 = document.getElementsByName("order_zip02").item(0).value;
-	var checkNum = new RegExp("/[^0-9]+/","g");
+	var checkNum = new RegExp("[^0-9]","g");
 	
 	alert(checkNum.test(zip01+ zip02));
 		
