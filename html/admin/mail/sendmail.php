@@ -94,7 +94,7 @@ for( $i = 0; $i < count( $time_data ); $i++ ) {
                                                          ); 
             
             $mail_obj =& Mail::factory("smtp", $param);
-	 	    print_r($sendResut); 
+	 	    print_r($mail_obj); 
 	 	    
 	 	    $headers['Subject'] = mb_convert_encoding($sendResut["subject"], "JIS", CHAR_CODE );
 	 	    $body = mb_convert_encoding($sendResut["body"], "JIS", CHAR_CODE );      
