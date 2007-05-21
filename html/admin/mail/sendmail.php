@@ -89,8 +89,7 @@ for( $i = 0; $i < count( $time_data ); $i++ ) {
 	        $headers = array( 
                      "to"    => $list_data[$i][$j]["email"]   //　顧客宛先 
 	 	          ,"subject" => $subjectBody                  //　Subject  
-	 	             ,"from" => "From: ".$objSite->data["company_name"]."<".
-	 	             　　　　　　　　　　$objSite->data["email03"].">\n"//送信元名前＆メールアドレス
+	 	             ,"from" => "From: ".$objSite->data["company_name"]."<".$objSite->data["email03"].">\n"//送信元名前＆メールアドレス
                 ,"replay_to" => "Reply-To: ".$objSite->data["email03"]     //　reply_to 
               ,"return_path" => $objSite->data["email04"]     //　return_path 
                                                                        );
