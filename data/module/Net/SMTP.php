@@ -20,8 +20,9 @@
 //
 // $Id: SMTP.php,v 1.58 2007/03/28 04:53:34 chagenbu Exp $
 
-require_once "../PEAR.php";
-require_once "../Net/Socket.php";
+$include_dir = realpath(dirname( __FILE__));
+require_once $include_dir . "/../PEAR.php";
+require_once $include_dir . "/../Net/Socket.php";
 
 /**
  * Provides an implementation of the SMTP protocol using PEAR's
