@@ -99,11 +99,10 @@ for( $i = 0; $i < count( $time_data ); $i++ ) {
 	 	    //print_r($decoder); 
 	 	    $parts = $decoder->getSendArray(); 
 	 	    //print_r($parts); 
-	 	    list($recipients, $header, $body) = $parts; 
+	 	    list($recipients, $headers, $body) = $parts; 
 	 	    
-	 	    $mailSend = new Mail();          
-	 	    $mailSend =& Mail::factory("SMTP", $mail_options);
-	 	    $mailSend->send($recipients, $header, $body); 
+	 	    $mail_object =& Mail::factory("smtp", $mail_options);
+	 	    $mail_object->send($recipients, $header, $body); 
 	 	    break;             
                  
         } else {
