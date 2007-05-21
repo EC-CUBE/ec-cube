@@ -87,11 +87,12 @@ for( $i = 0; $i < count( $time_data ); $i++ ) {
 	        $subjectBody = mb_encode_mimeheader($subjectBody);
 	        $mailBody = mb_convert_encoding($mailBody, "JIS", CHAR_CODE );
 	        $headers = array( 
-                     "to"    => $list_data[$i][$j]["email"]   //　顧客宛先 
-	 	          ,"subject" => $subjectBody                  //　Subject  
-	 	             ,"from" => "From: ".$objSite->data["company_name"] . "<" . $objSite->data["email03"] . ">\n"//送信元名前＆メールアドレス
-                ,"replay_to" => "Reply-To: ".$objSite->data["email03"] . "\n"     //　reply_to 
-              ,"return_path" => $objSite->data["email04"]     //　return_path 
+                       "to"    => $list_data[$i][$j]["email"]   //　顧客宛先 
+	 	            ,"subject" => $subjectBody                  //　Subject  
+	 	        ,"fromaddress" => $objSite->data["email03"]     //　送信元メールアドレス 
+	 	          ,"from_name" => $objSite->data["company_name"]//　送信元名 
+                  ,"replay_to" => $objSite->data["email03"]     //　reply_to 
+                ,"return_path" => $objSite->data["email04"]     //　return_path 
                                                                        );
             print_r($headers);
             print_r($mailBody);
