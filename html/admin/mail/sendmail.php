@@ -95,15 +95,21 @@ for( $i = 0; $i < count( $time_data ); $i++ ) {
             
             $mail_obj =& Mail::factory("smtp", $param);
 	 	    print_r($sendResut); 
-	 	             
-	 	    $decoder =& new Mail_mimeDecode($sendResut); 
-	 	    $parts = $decoder->getSendArray(); 
-	 	     
-	 	    list($recipients, $headers, $body) = $parts; 
 	 	    
-	 	    $mail_object =& Mail::factory("smtp", $mail_options);
-	 	    $mail_object->end($recipients, $header, $body); 
-	 	    break;             
+	 	    $headers['Subject'] = mb_convert_encoding($sendResut["subject"], "JIS", CHAR_CODE );
+	 	    $body = mb_convert_encoding($sendResut["body"], "JIS", CHAR_CODE );      
+
+            $result = $mail_obj->send( $headers["to"], $sendResut, $body );
+
+
+//	 	    $decoder =& new Mail_mimeDecode($sendResut); 
+//	 	    $parts = $decoder->getSendArray(); 
+//	 	     
+//	 	    list($recipients, $headers, $body) = $parts; 
+//	 	    
+//	 	    $mail_object =& Mail::factory("smtp", $mail_options);
+//	 	    $mail_object->end($recipients, $header, $body); 
+//	 	    break;             
                  
         } else {
 	        //-- テキストメール配信の場合
