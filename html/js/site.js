@@ -358,10 +358,15 @@ function ChangeSize(button, TextArea, Max, Min, row_tmp){
 	}
 }
 
+//郵便番号から住所を検索するため情報を非同期的にフォームからデータベースに送信する。
 function fnSendZipcode(){
 	
 	var zip01 = document.getElementsByName("order_zip01").item(0).value;
 	var zip02 = document.getElementsByName("order_zip02").item(0).value;
+	var checkNum = new RegExp("/[^0-9]+/",g);
+	
+	alert(checkNum.test(zip01+ zip02));
+		
 	if(zip01.length >= 3 && zip02.length >= 4){
 		//input_zip_json.phpに郵便番号を送信して戻ってきたデータをfnReturnAddressに渡す
 		sendRequest(fnReturnAddress,'&zip01='+zip01+'&zip02='+zip02,'GET','../input_zip_json.php',true,true);
