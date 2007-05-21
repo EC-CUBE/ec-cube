@@ -84,14 +84,14 @@ for( $i = 0; $i < count( $time_data ); $i++ ) {
 		    //$objSite->data["company_name"] = ereg_replace(">","＞", $from_name);
 		    //$objSite->data["company_name"] = Mb_encode_mimeheader(mb_convert_encoding($from_name,"JIS",CHAR_CODE));
 	        //iso-2022-jpだと特殊文字が？で送信されるのでJISを使用する。
-	        $headers = array( 
+	        $sendResut = array( 
                        "to"    => $list_data[$i][$j]["email"]   //　顧客宛先 
 	 	            ,"subject" => $subjectBody                  //　Subject  
 	 	               ,"from" => $objSite->data["email03"]     //　送信元メールアドレス 
                   ,"replay_to" => $objSite->data["email03"]     //　reply_to 
                 ,"return_path" => $objSite->data["email04"]     //　return_path 
                                                                        );
-            print_r($headers);
+            print_r($sendResut);
             print_r($mailBody);
             //ブレインSMTPサーバーIPアドレス 
             $param = array(   
@@ -102,20 +102,11 @@ for( $i = 0; $i < count( $time_data ); $i++ ) {
             $mail_obj =& Mail::factory("smtp", $param);
 	 	    print_r($mail_obj);
 	 	    
-	 	    $headers["subject"] = mb_convert_encoding($headers["subject"], "JIS", CHAR_CODE );
+	 	    $sendResut["subject"] = mb_convert_encoding($sendResut["subject"], "JIS", CHAR_CODE );
 	        $mailBody = mb_convert_encoding($mailBody, "JIS", CHAR_CODE );
 
-            $result = $mail_obj->send( $headers["to"], $headers, $mailBody );
-
-
-//	 	    $decoder =& new Mail_mimeDecode($sendResut); 
-//	 	    $parts = $decoder->getSendArray(); 
-//	 	     
-//	 	    list($recipients, $headers, $body) = $parts; 
-//	 	    
-//	 	    $mail_object =& Mail::factory("smtp", $mail_options);
-//	 	    $mail_object->end($recipients, $header, $body); 
-//	 	    break;             
+            $result = $mail_obj->send( $sendResut["to"], $sendResut, $mailBody );
+            /*trueを入れてあげればよい。そうすれば、送信完了なら1、失敗なら0をメール送信結果フラグが１になる*/         
                  
         } else {
 	        //-- テキストメール配信の場合
