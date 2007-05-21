@@ -89,13 +89,13 @@ for( $i = 0; $i < count( $time_data ); $i++ ) {
                               ,$objSite->data["email04"]     //　errors_to 
 	 	                                                                                                                                                 ); 
 	 	             
-//                      $mail_options = array(   
-//                            //ブレインのSMTPサーバーIPアドレス 
-//                           'host' => "mail.lockon.co.jp" 
-//                          ,'port' => "25" 
-//                                              
-//                                          ); 
-//             
+                      $mail_options = array(   
+                            //ブレインのSMTPサーバーIPアドレス 
+                           'host' => "127.0.1" 
+                          ,'port' => "25" 
+                                              
+                                          ); 
+             
 	 	            print_r($sendResut); 
 	 	             
 	 	            $decoder =& new Mail_mimeDecode($sendResut); 
