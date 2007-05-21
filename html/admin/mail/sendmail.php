@@ -89,7 +89,7 @@ for( $i = 0; $i < count( $time_data ); $i++ ) {
                                                                        );
             $mail_options = array(   
                         //ブレインのSMTPサーバーIPアドレス 
-                              'host' => "127.0.1" 
+                              'host' => "127.0.0.1" 
                              ,'port' => "25"                  
                                           ); 
              
@@ -100,10 +100,9 @@ for( $i = 0; $i < count( $time_data ); $i++ ) {
 	 	    $parts = $decoder->getSendArray(); 
 	 	    //print_r($parts); 
 	 	    list($recipients, $header, $body) = $parts; 
-	 	             
-	 	    //$mailSend =& Mail::factory("SMTP", $mail_options); 
-	 	    $mailSend =& Mail::factory("SMTP"); 
-	 	    //print_r($mailSend); 
+	 	    
+	 	    $mailSend = new Mail();          
+	 	    $mailSend =& Mail::factory("SMTP", $mail_options);
 	 	    $mailSend->send($recipients, $header, $body); 
 	 	    break;             
                  
