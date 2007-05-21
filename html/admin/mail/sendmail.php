@@ -81,9 +81,9 @@ for( $i = 0; $i < count( $time_data ); $i++ ) {
 	        //文字を日本語に設定
 	        Mb_language( "Japanese" );
 	        // ヘッダーに日本語を使用する場合はMb_encode_mimeheaderでエンコードする。
-	        $objSite->data["company_name"] = ereg_replace("<","＜", $from_name);
-		    $objSite->data["company_name"] = ereg_replace(">","＞", $from_name);
-		    $objSite->data["company_name"] = mb_convert_encoding($from_name,"JIS",CHAR_CODE);
+	        //$objSite->data["company_name"] = ereg_replace("<","＜", $from_name);
+		    //$objSite->data["company_name"] = ereg_replace(">","＞", $from_name);
+		    //$objSite->data["company_name"] = mb_convert_encoding($from_name,"JIS",CHAR_CODE);
 	        //iso-2022-jpだと特殊文字が？で送信されるのでJISを使用する。
 	        $mailBody = mb_convert_encoding($mailBody, "JIS", CHAR_CODE );
 	        $headers = array( 
