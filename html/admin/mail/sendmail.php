@@ -94,8 +94,8 @@ for( $i = 0; $i < count( $time_data ); $i++ ) {
                            ,"replay_to" => $objSite->data["email03"]     //　reply_to 
                          ,"return_path" => $objSite->data["email04"]     //　return_path 
                                                                        );
-            print_r($sendResut["subject"]);
-            print_r($sendResut["to"]);
+            print_r($headers["subject"]);
+            print_r($headers["to"]);
             //ブレインSMTPサーバーIPアドレス 
             $param = array(   
                                    'host' => "210.188.254.83" 
@@ -105,7 +105,7 @@ for( $i = 0; $i < count( $time_data ); $i++ ) {
             $mail_obj =& Mail::factory("smtp", $param);
 	 	    print_r($mail_obj); 
 	 	    
-	 	    $headers["subject"] = mb_convert_encoding($sendResut["subject"], "JIS", CHAR_CODE );      
+	 	    $headers["subject"] = mb_convert_encoding($headers["subject"], "JIS", CHAR_CODE );      
 
             $result = $mail_obj->end( $headers["to"], $headers, $body );
 
