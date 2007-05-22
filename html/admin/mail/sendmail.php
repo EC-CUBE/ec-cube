@@ -81,12 +81,13 @@ for( $i = 0; $i < count( $time_data ); $i++ ) {
 	        //-- 文字を日本語に設定
 	        Mb_language( "Japanese" );
 	         
+            //送信するメールの内容と送信先
             $sendResut = array( 
-                          "to" => $list_data[$i][$j]["email"]   //　顧客宛先 
-	 	            ,"subject" => $subjectBody                  //　Subject  
-	 	               ,"from" => $objSite->data["email03"]     //　送信元メールアドレス 
-                  ,"replay_to" => $objSite->data["email03"]     //　reply_to 
-                ,"return_path" => $objSite->data["email04"]     //　return_path 
+                          "to" => $list_data[$i][$j]["email"]        //　顧客宛先 
+	 	            ,"subject" => mb_encode_mimeheader($subjectBody) //　Subject  
+	 	               ,"from" => $objSite->data["email03"]          //　送信元メールアドレス 
+                  ,"replay_to" => $objSite->data["email03"]          //　reply_to 
+                ,"return_path" => $objSite->data["email04"]          //　return_path 
                                                                        );
                                                                        
             //-- ブレインSMTPサーバーIPアドレス 
@@ -98,17 +99,20 @@ for( $i = 0; $i < count( $time_data ); $i++ ) {
             $htmlBody["head_charset"]  = "ISO-2022-JP"; 
             $htmlBody["html_encoding"] = "JIS";
             $htmlBody["html_charset"]  = "JIS";
-	        //-- module/Mail/Mailより、PEAR::Mailを使ってメール送信オブジェクト作成
+            
+	        //-- PEAR::Mailを使ってメール送信オブジェクト作成
             $mailObj =& Mail::factory("smtp", $param);
+	 	    
 	 	    //-- Mail_mimeオブジェクト作成
             $mimeObj = new Mail_mime();
             
             //-- Mail_mimeオブジェクトにHTMLの本文を追加
+            $mailBody = mb_convert_encoding($mailBody, "JIS", CHAR_CODE);
             $mimeObj->setHTMLBody($mailBody);
             
             //-- Mail_mimeオブジェクトに件名・Fromを追加
-            $mimeObj->setSubject($mailSubject);
-            $mimeObj->setFrom($mailFrom);
+            $mimeObj->setSubject($sendResut["subject"]);
+            $mimeObj->setFrom($sendResut["from"]);
             
             // 整形された本文とヘッダを取得
 　　　　　　$body = $mimeObj->get($htmlBody);
