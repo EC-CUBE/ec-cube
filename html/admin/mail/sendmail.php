@@ -116,12 +116,14 @@ for( $i = 0; $i < count( $time_data ); $i++ ) {
             $mimeObj->setSubject($sendResut["subject"]);
             $mimeObj->setFrom($sendResut["from"]);
             
-            print_r($sendResut["subject"]);
-            print_r($sendResut["from"]);
+            print_r($htmlBody);
             // 整形された本文とヘッダを取得
+　　　　　　$body = $mimeObj->get($htmlBody);
+　　　　　　$headers = $mimeObj->headers($sendResut);
             
             // メール送信
-            $sendResut = $mailObj->end($sendResut["to"], $headers, $body);         
+            $sendResut = $mailObj->send($sendResut["to"], $headers, $body);
+            header( "Content-Type: text/plain; charset=UTF-8" );
                  
         } else {
 	        //-- テキストメール配信の場合
