@@ -2814,7 +2814,6 @@ function sfDelFile($dir){
     
 	// フォルダを削除
 	return rmdir($dir);
-	
 }
 
 /* 
