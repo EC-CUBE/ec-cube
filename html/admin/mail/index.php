@@ -255,6 +255,7 @@ case 'regist_complete':
 		} else if( $_POST['mode'] == 'regist_complete' ){
 			lfRegistData($objPage->list_data);
 			if(MELMAGA_SEND == true) {
+                //予約配信モードの分岐
 				if(MELMAGA_BATCH_MODE) {
 					header("Location: " . URL_DIR . "admin/mail/history.php");
 				} else {	
@@ -381,10 +382,9 @@ function lfRegistData($arrData){
 	
 	$search_data = $conn->getAll($objSelect->getListMailMagazine(lfGetIsMobile($_POST['mail_type'])), $objSelect->arrVal);
 	$dataCnt = count($search_data);
-	
 	$dtb_send_history = array();
 	
-	$dtb_send_history["send_id"] = $objQuery->nextval('dtb_send_history', 'send_id');
+	//$dtb_send_history["send_id"] = $objQuery->nextval('dtb_send_history', 'send_id');
 	$dtb_send_history["mail_method"] = $arrData['mail_method'];
 	$dtb_send_history["subject"] = $arrData['subject'];
 	$dtb_send_history["body"] = $arrData['body'];
@@ -403,7 +403,8 @@ function lfRegistData($arrData){
 	$dtb_send_history["create_date"] = "now()";
     //ハッシュdtb_send_historyをデータベースdtb_send_historyに挿入
 	$objQuery->insert("dtb_send_history", $dtb_send_history );	
-	
+	$dtb_send_history["send_id"] = $objQuery->nextval('dtb_send_history', 'send_id');
+    
 	if ( is_array( $search_data ) ){
 		foreach( $search_data as $line ){
 			$dtb_send_customer = array();
