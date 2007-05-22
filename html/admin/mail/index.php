@@ -383,16 +383,17 @@ function lfRegistData($arrData){
 	$dataCnt = count($search_data);
 	
 	$dtb_send_history = array();
-	if (DB_TYPE == "pgsql") {
-		$dtb_send_history["send_id"] = $objQuery->nextval('dtb_send_history', 'send_id');
-	}
+	
+	$dtb_send_history["send_id"] = $objQuery->nextval('dtb_send_history', 'send_id');
 	$dtb_send_history["mail_method"] = $arrData['mail_method'];
 	$dtb_send_history["subject"] = $arrData['subject'];
 	$dtb_send_history["body"] = $arrData['body'];
 	if(MELMAGA_BATCH_MODE) {
-		$dtb_send_history["start_date"] = $arrData['send_year'] ."/".$arrData['send_month']."/".$arrData['send_day']." ".$arrData['send_hour'].":".$arrData['send_minutes'];
+		//インストール先のサーバーでCRONが有効であるなら指定された時間にメールを送る
+        $dtb_send_history["start_date"] = $arrData['send_year'] ."/".$arrData['send_month']."/".$arrData['send_day']." ".$arrData['send_hour'].":".$arrData['send_minutes'];
 	} else {
-		$dtb_send_history["start_date"] = "now()";
+		//CRONが無効であればリアルタイムに送信する
+        $dtb_send_history["start_date"] = "now()";
 	}
 	$dtb_send_history["creator_id"] = $_SESSION['member_id'];
 	$dtb_send_history["send_count"] = $dataCnt;
@@ -400,6 +401,7 @@ function lfRegistData($arrData){
 	$dtb_send_history["search_data"] = serialize($arrData);
 	$dtb_send_history["update_date"] = "now()";
 	$dtb_send_history["create_date"] = "now()";
+    //ハッシュdtb_send_historyをデータベースdtb_send_historyに挿入
 	$objQuery->insert("dtb_send_history", $dtb_send_history );	
 	
 	if ( is_array( $search_data ) ){
@@ -427,7 +429,6 @@ function lfGetCampaignList() {
 	foreach($arrResult as $arrVal) {
 		$arrCampaign[$arrVal['campaign_id']] = $arrVal['campaign_name'];
 	}
-
 	return $arrCampaign;
 }
 
