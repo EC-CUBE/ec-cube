@@ -521,10 +521,12 @@ class SC_Query {
 		if (DB_TYPE == "pgsql") {
 			$seqtable = $table . "_" . $colname . "_seq";
 			$sql = "SELECT NEXTVAL('$seqtable')";
+            $ret = $this->conn->getOne($sql);
 		}else if (DB_TYPE == "mysql") {
             $sql = "SELECT last_insert_id();";
-		}
-		$ret = $this->conn->getOne($sql);
+		    $ret = $this->conn->getOne($sql);
+        }
+		
 		
 		return $ret;
 	}
