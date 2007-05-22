@@ -31,6 +31,7 @@ require_once($include_dir . "/.." . HTML2DATA_DIR . "module/PEAR.php");
 require_once($include_dir . "/.." . HTML2DATA_DIR . "module/Mail/mimeDecode.php");
 require_once($include_dir . "/.." . HTML2DATA_DIR . "module/Mail/Mail.php");
 require_once($include_dir . "/.." . HTML2DATA_DIR . "module/Mail/mime.php");
+require_once($include_dir . "/.." . HTML2DATA_DIR . "module/Mail/mimePart.php");
 
 // アップデートで取得したPHPを読み出す
 sfLoadUpdateModule();
