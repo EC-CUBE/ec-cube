@@ -99,7 +99,6 @@ for( $i = 0; $i < count( $time_data ); $i++ ) {
                        'host' => "210.188.254.83" 
                       ,'port' => "25"                  
                                                   );
-	 	    
 	 	    //-- Mail_mimeオブジェクト作成
             $mail_mimeObj = new Mail_mime();
             
