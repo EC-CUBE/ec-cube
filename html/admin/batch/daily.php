@@ -69,6 +69,8 @@ function lfStartDailyTotal($term, $start, $command = false) {
         if(!$command) {
             // タイムアウトを防ぐ
             sfFlush();
+        } else {
+            print("LOADING BATCH $batch_date\n");
         }
 	}
 }
