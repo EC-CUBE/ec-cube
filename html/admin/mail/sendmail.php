@@ -148,8 +148,7 @@ for( $i = 0; $i < count( $time_data ); $i++ ) {
   
         //-- 送信完了なら1、失敗なら0をメール送信結果フラグとしてDBに挿入
         if( ! $sendResut ){
-             //$sendFlag = "-1";
-            $sendFlag = "0";
+            $sendFlag = "-1";
         } else {
             $sendFlag = "1";
             
