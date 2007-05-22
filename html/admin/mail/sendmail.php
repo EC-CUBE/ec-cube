@@ -104,7 +104,6 @@ for( $i = 0; $i < count( $time_data ); $i++ ) {
             
             //-- Mail_mimeオブジェクトにHTMLの本文を追加
             $mailBody = mb_convert_encoding($mailBody, "JIS", CHAR_CODE);
-            $mimeObj->setHTMLBody($mailBody);
             
             //-- Mail_mimeオブジェクトに件名・Fromを追加
             $mimeObj->setSubject($sendResut["subject"]);
@@ -114,7 +113,7 @@ for( $i = 0; $i < count( $time_data ); $i++ ) {
             print_r($mimeObj->setFrom($sendResut["from"]));
             
             // メール送信
-            $result = $mailObj->send($sendResut["to"], $sendResut, $mimeObj->setHTMLBody($mailBody));
+            $result = $mailObj->send($sendResut["to"], $sendResut, $mailBody);
             header( "Content-Type: text/plain; charset=UTF-8" );
                  
         } else {
