@@ -81,14 +81,19 @@ for( $i = 0; $i < count( $time_data ); $i++ ) {
 	        //-- 文字を日本語に設定
 	        Mb_language( "Japanese" );
 	         
-            //送信するメールの内容と送信先
+            //-- mime-version
+            $mime  = "Mime-Version: 1.0\n";
+		    $mime .= "Content-Type: text/html; charset=iso-2022-jp\n";
+		    $mime .= "Content-Transfer-Encoding: 7bit\n";
+            
+            //-- 送信するメールの内容と送信先
             $sendResut = array( 
                           "to" => $list_data[$i][$j]["email"]        //　顧客宛先 
 	 	            ,"subject" => mb_encode_mimeheader($subjectBody) //　Subject  
 	 	               ,"from" => $objSite->data["email03"]          //　送信元メールアドレス 
                   ,"replay_to" => $objSite->data["email03"]          //　reply_to 
                 ,"return_path" => $objSite->data["email04"]          //　return_path
-                       ,"mime" => 'Mime-Version: 1.0\nContent-Type: text/html; charset=iso-2022-jp\nContent-Transfer-Encoding: 7bit\n'
+                       ,"mime" => $mime
                                                                        );
                                                                        
             print_r($sendResut);
