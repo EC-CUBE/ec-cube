@@ -118,8 +118,7 @@ for( $i = 0; $i < count( $time_data ); $i++ ) {
             
             print_r($htmlBody);
             // 整形された本文とヘッダを取得
-　　　　　　//$body = $mimeObj->get($htmlBody);
-　　　　　　//$headers = $mimeObj->headers($sendResut);
+　　　　　　
             
             // メール送信
             $sendResut = $mailObj->send($sendResut["to"], $headers, $body);         
