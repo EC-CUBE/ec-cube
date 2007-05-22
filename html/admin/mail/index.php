@@ -381,9 +381,8 @@ function lfRegistData($arrData){
 	$dataCnt = count($search_data);
 	
 	$dtb_send_history = array();
-	if (DB_TYPE == "pgsql") {
-		$dtb_send_history["send_id"] = $objQuery->nextval('dtb_send_history', 'send_id');
-	}
+	
+	$dtb_send_history["send_id"] = $objQuery->nextval('dtb_send_history', 'send_id');
 	$dtb_send_history["mail_method"] = $arrData['mail_method'];
 	$dtb_send_history["subject"] = $arrData['subject'];
 	$dtb_send_history["body"] = $arrData['body'];
