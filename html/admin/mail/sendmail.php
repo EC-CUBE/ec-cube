@@ -96,9 +96,11 @@ for( $i = 0; $i < count( $time_data ); $i++ ) {
                       ,'port' => "25"                  
                                                   );
             //-- メッセージを構築する
-            $htmlBody["head_charset"]  = "ISO-2022-JP"; 
-            $htmlBody["html_encoding"] = "JIS";
-            $htmlBody["html_charset"]  = "JIS";
+            $htmlBody = array(
+               "head_charset"  => "ISO-2022-JP" 
+              ,"html_encoding" => "JIS"
+              ,"html_charset"  => "JIS"
+                                                  );
             
 	        //-- PEAR::Mailを使ってメール送信オブジェクト作成
             $mailObj =& Mail::factory("smtp", $param);
