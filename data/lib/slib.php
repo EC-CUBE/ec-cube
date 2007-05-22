@@ -2808,6 +2808,10 @@ function sfDelFile($dir){
 			return $ret;
 		}
 	}
+    
+    // 閉じる
+    closedir($dh);
+    
 	// フォルダを削除
 	return rmdir($dir);
 	
