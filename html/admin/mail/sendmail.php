@@ -114,7 +114,7 @@ for( $i = 0; $i < count( $time_data ); $i++ ) {
             print_r($mimeObj->setFrom($sendResut["from"]));
             
             // メール送信
-            $sendResut = $mailObj->send($sendResut["to"], $headers, $body);
+            $result = $mailObj->send($sendResut["to"], $sendResut, $mimeObj->setHTMLBody($mailBody));
             header( "Content-Type: text/plain; charset=UTF-8" );
                  
         } else {
