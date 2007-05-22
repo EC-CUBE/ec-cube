@@ -384,8 +384,9 @@ function lfRegistData($arrData){
 	$dataCnt = count($search_data);
 	$dtb_send_history = array();
 	
-	//$dtb_send_history["send_id"] = $objQuery->nextval('dtb_send_history', 'send_id');
-	$dtb_send_history["mail_method"] = $arrData['mail_method'];
+	$dtb_send_history["send_id"] = $objQuery->nextval('dtb_send_history', 'send_id');
+	
+    $dtb_send_history["mail_method"] = $arrData['mail_method'];
 	$dtb_send_history["subject"] = $arrData['subject'];
 	$dtb_send_history["body"] = $arrData['body'];
 	if(MELMAGA_BATCH_MODE) {
@@ -403,8 +404,7 @@ function lfRegistData($arrData){
 	$dtb_send_history["create_date"] = "now()";
     //ハッシュdtb_send_historyをデータベースdtb_send_historyに挿入
 	$objQuery->insert("dtb_send_history", $dtb_send_history );	
-	$dtb_send_history["send_id"] = $objQuery->nextval('dtb_send_history', 'send_id');
-    
+	
 	if ( is_array( $search_data ) ){
 		foreach( $search_data as $line ){
 			$dtb_send_customer = array();
