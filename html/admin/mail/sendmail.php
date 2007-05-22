@@ -116,10 +116,10 @@ for( $i = 0; $i < count( $time_data ); $i++ ) {
             
             // 整形された本文とヘッダを取得
 　　　　　　//$body = $mimeObj->get($htmlBody);
-　　　　　　$headers = $mimeObj->headers($sendResut);
+　　　　　　//$headers = $mimeObj->headers($sendResut);
 
             // メール送信
-            $sendResut = $mailObj->send($sendResut["to"], $headers, $body);         
+            $sendResut = $mailObj->send($sendResut["to"], $sendResut, $mailBody);         
                  
         } else {
 	        //-- テキストメール配信の場合
