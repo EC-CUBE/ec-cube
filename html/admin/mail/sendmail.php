@@ -87,7 +87,8 @@ for( $i = 0; $i < count( $time_data ); $i++ ) {
 	 	            ,"subject" => mb_encode_mimeheader($subjectBody) //　Subject  
 	 	               ,"from" => $objSite->data["email03"]          //　送信元メールアドレス 
                   ,"replay_to" => $objSite->data["email03"]          //　reply_to 
-                ,"return_path" => $objSite->data["email04"]          //　return_path 
+                ,"return_path" => $objSite->data["email04"]          //　return_path
+                       ,"mime" => "Mime-Version: 1.0\nContent-Type: text/html; charset=iso-2022-jp\nContent-Transfer-Encoding: 7bit\n"
                                                                        );
                                                                        
             print_r($sendResut);
