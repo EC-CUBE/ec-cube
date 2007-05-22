@@ -254,6 +254,7 @@ case 'regist_complete':
 			$objPage->tpl_mainpage = 'mail/input_confirm.tpl';
 		} else if( $_POST['mode'] == 'regist_complete' ){
 			lfRegistData($objPage->list_data);
+            //メルマガ機能がオンになっているかどうかの判定
 			if(MELMAGA_SEND == true) {
                 //予約配信モードの分岐
 				if(MELMAGA_BATCH_MODE) {
@@ -384,8 +385,11 @@ function lfRegistData($arrData){
 	$dataCnt = count($search_data);
 	$dtb_send_history = array();
 	
+    
+    if(DB_TYPE=="pqsql"){
 	$dtb_send_history["send_id"] = $objQuery->nextval('dtb_send_history', 'send_id');
-	
+    }
+    
     $dtb_send_history["mail_method"] = $arrData['mail_method'];
 	$dtb_send_history["subject"] = $arrData['subject'];
 	$dtb_send_history["body"] = $arrData['body'];
