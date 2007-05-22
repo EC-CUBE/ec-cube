@@ -36,12 +36,14 @@ $objFormParam = new SC_FormParam();         // フォーム用
 lfInitParam();                              // パラメータ情報の初期化
 $objFormParam->setParam($_POST);            // POST値の取得
 
+// ユーザユニークIDの取得と購入状態の正当性をチェック
 $uniqid = sfCheckNormalAccess($objSiteSess, $objCartSess);
+
 // ユニークIDを引き継ぐ
 $objPage->tpl_uniqid = $uniqid;
 
-if(!empty($_POST["mode2"])){
-if ($_POST["mode2"] == "deliv") {
+if(!empty($_POST["mode2"]) ){
+    if ($_POST["mode2"] == "deliv") {
             
             $objFormParam = new SC_FormParam();
             // パラメータ情報の初期化
@@ -54,10 +56,12 @@ if ($_POST["mode2"] == "deliv") {
             // 入力値の取得
             $objPage->arrForm = $objFormParam->getFormParamList();
             $objPage->arrErr = $arrErr;
-            $objPage->reffer = $_SERVER['HTTP_REFERER'];
+            
            foreach($_POST as $key => $value){
                $objPage->arrAddr[0][$key] = $value;
            }
+            
+            //データベースの一時保存用テーブルdtb_order_tempにデータを格納する
             lfRegistDataTemp($objPage->arrAddr[0]['uniqid'],$objPage->arrAddr[0]); 
             
             lfCopyDeliv($objPage->tpl_uniqid, $_POST);
@@ -69,37 +73,41 @@ if ($_POST["mode2"] == "deliv") {
             $objView->display(SITE_FRAME);
         }
         
-         if ($_POST["mode2"] == "customer_addr") {
+        if ($_POST["mode2"] == "customer_addr") {
             //print_r($_POST);
             if ($_POST['deli'] != "") {
-           
-           header("Location:" . gfAddSessionId("./payment.php"));
+                header("Location:" . gfAddSessionId("./payment.php"));
             exit;
-    }else{
-        // エラーを返す
-        $arrErr['deli'] = '※ お届け先を選択してください。';
+            }else{
+                // エラーを返す
+                $arrErr['deli'] = '※ お届け先を選択してください。';
             }
         }
-    }elseif(!empty($_POST["mode"]) && $_POST["mode"]=="deliv_date"){  
-        $objQuery = new SC_Query();
-        $objPage->reffer = $_SERVER['HTTP_REFERER'];
-        //objPageの情報をobjViewに格納
-        
-        $where = "order_temp_id = ?";
-        $arrRet = $objQuery->select("*", "dtb_order_temp", $where, array($objPage->tpl_uniqid));
-        $objFormParam->setParam($arrRet[0]);
-        $objPage->arrForm = $objFormParam->getFormParamList();        
-        
-             foreach($objPage->arrForm as $key => $value){
-               $objPage->arrAddr[0][str_replace("order_","",$key)] = $value['value'];
-           }
-        $objPage->tpl_mainpage = 'nonmember/nonmember_deliv.tpl';
-        $objPage->tpl_title = 'お届け先情報';
-        $objView->assignobj($objPage);
-        $objView->display(SITE_FRAME);
-    }
+//戻るボタン用処理        
+}elseif(!empty($_POST["mode"]) && $_POST["mode"]=="deliv_date"){  
+    //uniqidからデータベースのデータを読み込み表示する
+    $objQuery = new SC_Query();
+    $where = "order_temp_id = ?";
+    $arrRet = $objQuery->select("*", "dtb_order_temp", $where, array($objPage->tpl_uniqid));
+    $objFormParam->setParam($arrRet[0]);
+    $objPage->arrForm = $objFormParam->getFormParamList();        
+    
+         foreach($objPage->arrForm as $key => $value){
+           $objPage->arrAddr[0][str_replace("order_","",$key)] = $value['value'];
+       }
+    $objPage->tpl_mainpage = 'nonmember/nonmember_deliv.tpl';
+    $objPage->tpl_title = 'お届け先情報';
+    $objView->assignobj($objPage);
+    $objView->display(SITE_FRAME);
+}
 
-//入力された情報をデータベースdtb_order_tempに格納する
+/**
+ *入力された情報をデータベースdtb_order_tempに格納する
+ * 
+ * @param string $uniqid unique id
+ * @param array $array 
+ * 
+*/
 function lfRegistDataTemp($uniqid,$array) {
     global $objFormParam;
     $arrRet = $objFormParam->getHashArray();
