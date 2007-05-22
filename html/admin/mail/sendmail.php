@@ -16,7 +16,8 @@ if(MELMAGA_SEND != true) {
 //リアルタイム配信モードがオンのとき
 if($_GET['mode'] == 'now') {
     //----　未送信データを取得する
-    $time_data = $conn->getAll( "SELECT send_id FROM dtb_send_history  WHERE complete_count = 0 AND del_flg = 0 ORDER BY send_id ASC, start_date ASC" );
+    //$time_data = $conn->getAll( "SELECT send_id FROM dtb_send_history  WHERE complete_count = 0 AND del_flg = 0 ORDER BY send_id ASC, start_date ASC" );
+    $time_data = $conn->getAll( "SELECT send_id FROM dtb_send_history  WHERE  del_flg = 0 ORDER BY send_id ASC, start_date ASC" );
 } else {
     
     // postgresql と mysql とでSQLをわける
@@ -154,7 +155,7 @@ for( $i = 0; $i < count( $time_data ); $i++ ) {
             
             // 完了を1こ増やす
             $sql = "UPDATE dtb_send_history SET complete_count = complete_count + 1 WHERE send_id = ?";
-            $conn->query( $sql, array($mail_data[$i][0]["send_id"]) );
+            $conn->query( $sql, array($mail_data[$i][0]["send_id"]));
         }
 
         $conn->query( $sql_flag, array( $sendFlag, $mail_data[$i][0]["send_id"], $list_data[$i][$j]["customer_id"] ) );
