@@ -89,8 +89,8 @@ for( $i = 0; $i < count( $time_data ); $i++ ) {
                                                                        );
             //ブレインSMTPサーバーIPアドレス 
             $param = array(   
-                       'host' => MELMAGA_BLAYN_IP 
-                      ,'port' => MELMAGA_BLAYN_PORT                  
+                       'host' => "210.188.254.83" 
+                      ,'port' => "25"                  
                                                   ); 
 	        
             $mail_obj =& Mail::factory("smtp", $param);
