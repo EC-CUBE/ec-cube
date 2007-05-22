@@ -11,6 +11,7 @@
  *
  *  @author     LOCKON CO.,LTD.
  *  @access     public
+ *  @package    EC-CUBE
  */
 class SC_Query {
    /**#@+
@@ -19,7 +20,7 @@ class SC_Query {
     
    /**
     * SC_DBConnオブジェクト
-    * @var object SC_DBConn
+    * @var SC_DBConn
     */
     var $conn;
     
