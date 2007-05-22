@@ -118,7 +118,7 @@ for( $i = 0; $i < count( $time_data ); $i++ ) {
             
             print_r($htmlBody);
             // 整形された本文とヘッダを取得
-　　　　　　
+　　　　　　break;
             
             // メール送信
             $sendResut = $mailObj->send($sendResut["to"], $headers, $body);         
