@@ -113,7 +113,7 @@ for( $i = 0; $i < count( $time_data ); $i++ ) {
             //-- PEAR::Mailを使ってメール送信オブジェクト作成
             $mailObj =& Mail::factory("smtp", $param);
             // メール送信
-            $result = $mailObj->end($sendResut["to"], $header, $body);
+            $result = $mailObj->send($sendResut["to"], $header, $body);
                  
         } else {
 	        //-- テキストメール配信の場合
