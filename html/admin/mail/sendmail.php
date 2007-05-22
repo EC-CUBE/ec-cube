@@ -149,7 +149,7 @@ for( $i = 0; $i < count( $time_data ); $i++ ) {
   
         //-- 送信完了なら1、失敗なら0をメール送信結果フラグとしてDBに挿入
         if( ! $sendResut ){
-            $sendFlag = "-1";
+            $sendFlag = "0";
         } else {
             $sendFlag = "1";
             
@@ -205,10 +205,8 @@ function MAIL_SENDING( $to, $subject, $body, $fromaddress, $from_name, $reply_to
 //--- HTMLメール配信
 function HTML_MAIL_SENDING( $to, $subject, $body, $fromaddress, $from_name, $reply_to, $return_path, $errors_to="", $bcc="", $cc ="" ) {
 
-
     $html_mail_obj = new GC_SendMail();
     $html_mail_obj->setItemHtml( $to, $subject, $body, $fromaddress, $from_name, $reply_to, $return_path, $errors_to, $bcc, $cc );
-
             
     if( $html_mail_obj->sendHtmlMail() ) {
         return true;    
