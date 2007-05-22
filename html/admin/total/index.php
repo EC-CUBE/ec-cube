@@ -200,7 +200,7 @@ case 'search':
 	break;
 default:
 	if(count($_GET) == 0) {
-		// バッチモードの場合のみ実行する
+		// バッチモードの場合のみ実行する（当日の集計を行うため）
 		if(DAILY_BATCH_MODE) {
 			// 3日前までの集計
 			lfStartDailyTotal(3,0);
