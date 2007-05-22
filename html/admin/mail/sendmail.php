@@ -90,18 +90,12 @@ for( $i = 0; $i < count( $time_data ); $i++ ) {
                 ,"return_path" => $objSite->data["email04"]          //　return_path 
                                                                        );
                                                                        
+            print_r($sendResut);
             //-- ブレインSMTPサーバーIPアドレス 
             $param = array(   
                        'host' => "210.188.254.83" 
                       ,'port' => "25"                  
                                                   );
-            //-- メッセージを構築する
-            $htmlBody = array(
-               "head_charset"  => "ISO-2022-JP" 
-              ,"html_encoding" => "JIS"
-              ,"html_charset"  => "JIS"
-                                                  );
-            
 	        //-- PEAR::Mailを使ってメール送信オブジェクト作成
             $mailObj =& Mail::factory("smtp", $param);
 	 	    
@@ -116,10 +110,8 @@ for( $i = 0; $i < count( $time_data ); $i++ ) {
             $mimeObj->setSubject($sendResut["subject"]);
             $mimeObj->setFrom($sendResut["from"]);
             
-            print_r($htmlBody);
-            // 整形された本文とヘッダを取得
-　　　　　　$body = $mimeObj->get($htmlBody);
-　　　　　　$headers = $mimeObj->headers($sendResut);
+            print_r($mimeObj->setSubject($sendResut["subject"]));
+            print_r($mimeObj->setFrom($sendResut["from"]));
             
             // メール送信
             $sendResut = $mailObj->send($sendResut["to"], $headers, $body);
