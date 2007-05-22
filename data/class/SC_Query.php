@@ -514,6 +514,7 @@ class SC_Query {
 		return $ret;
 	}
 	
+    //指定したカラムの一番最後にレコードを挿入
 	function nextval($table, $colname) {
 		$sql = "";
 		// postgresqlとmysqlとで処理を分ける
@@ -521,7 +522,7 @@ class SC_Query {
 			$seqtable = $table . "_" . $colname . "_seq";
 			$sql = "SELECT NEXTVAL('$seqtable')";
 		}else if (DB_TYPE == "mysql") {
-			$sql = "SELECT last_insert_id();";
+            $sql = "SELECT last_insert_id() as $colname;";
 		}
 		$ret = $this->conn->getOne($sql);
 		
