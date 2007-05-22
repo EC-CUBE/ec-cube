@@ -212,8 +212,8 @@ class SC_Query {
      *  LIMIT句、OFFSET句をセットする
      *
      *  @access public
-     *  @param  string  $limit  LIMITの件数
-     *  @param  integer $offset OFFSETの件数
+     *  @param  mixed   $limit  LIMITの件数
+     *  @param  mixed   $offset OFFSETの件数
      *  @param  string  $return 生成したLIMIT,OFFSET句をreturnするかどうか
      *  @return string  生成したLIMIT,OFFSET句
      */
@@ -230,49 +230,96 @@ class SC_Query {
             }
         }
     }
-	
-	function setgroupby($str) {
-		$this->groupby = "GROUP BY " . $str;
-	}
-	
-	function andwhere($str) {
-		if($this->where != "") {
-			$this->where .= " AND " . $str;
-		} else {
-			$this->where = $str;
-		}
-	}
-	
-	function orwhere($str) {
-		if($this->where != "") {
-			$this->where .= " OR " . $str;
-		} else {
-			$this->where = $str;
-		}
-	}
-		
-	function setwhere($str) {
-		$this->where = $str;
-	}
-	
-	function setorder($str) {
-		$this->order = "ORDER BY " . $str;
-	}
-	
-		
-	function setlimit($limit){
-		if ( is_numeric($limit)){
-			$this->option = " LIMIT " .$limit;
-		}	
-	}
-	
-	function setoffset($offset) {
-		if ( is_numeric($offset)){
-			$this->offset = " OFFSET " .$offset;
-		}	
-	}
-	
-	
+
+    /**
+     *  GROUP BY 句をセットする
+     *
+     *  @access public
+     *  @param  string  $str カラム名
+     */
+    function setgroupby($str) {
+        $this->groupby = "GROUP BY " . $str;
+    }
+    
+    /**
+     *  WHERE 句をセットする(AND)
+     *
+     *  @access  public
+     *  @param   string  $str WHERE 句
+     *  @example $objQuery->andWhere('product_id = ?');
+     */
+    function andwhere($str) {
+        if($this->where != "") {
+            $this->where .= " AND " . $str;
+        } else {
+            $this->where = $str;
+        }
+    }
+    
+    /**
+     *  WHERE 句をセットする(OR)
+     *
+     *  @access  public
+     *  @param   string  $str WHERE 句
+     *  @example $objQuery->orWhere('product_id = ?');
+     */
+    function orwhere($str) {
+        if($this->where != "") {
+            $this->where .= " OR " . $str;
+        } else {
+            $this->where = $str;
+        }
+    }
+    
+    /**
+     *  WHERE 句をセットする
+     *
+     *  @access  public
+     *  @param   string  $str WHERE 句
+     *  @example $objQuery->setWhere('product_id = ?');
+     */
+    function setwhere($str) {
+        $this->where = $str;
+    }
+    
+    /**
+     *  ORDER BY 句をセットする
+     *
+     *  @access  public
+     *  @param   string  $str カラム名
+     *  @example $objQuery->setorder("rank DESC");
+     */
+    function setorder($str) {
+        $this->order = "ORDER BY " . $str;
+    }
+    
+    /**
+     *  LIMIT 句をセットする
+     *
+     *  @access  public
+     *  @param   mixed  $limit LIMITの件数
+     *  @example $objQuery->setlimit(50);
+     */
+    function setlimit($limit){
+        if ( is_numeric($limit)){
+            $this->option = " LIMIT " .$limit;
+        }   
+    }
+    
+    /**
+     *  OFFSET 句をセットする
+     *
+     *  @access  public
+     *  @param   mixed  $offset OFFSETの件数
+     *  @example $objQuery->setOffset(30);
+     */
+    function setoffset($offset) {
+        if ( is_numeric($offset)){
+            $this->offset = " OFFSET " .$offset;
+        }   
+    }
+    
+    
 	// INSERT文の生成・実行
 	// $table	:テーブル名
 	// $sqlval	:列名 => 値の格納されたハッシュ配列
