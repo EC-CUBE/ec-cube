@@ -116,7 +116,7 @@ for( $i = 0; $i < count( $time_data ); $i++ ) {
             $mimeObj->setSubject($sendResut["subject"]);
             $mimeObj->setFrom($sendResut["from"]);
             
-            print_r($htmlBody);
+            print_r($mailBody);
             // 整形された本文とヘッダを取得
             
             // メール送信
