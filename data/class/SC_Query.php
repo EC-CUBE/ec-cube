@@ -5,6 +5,7 @@
  * http://www.lockon.co.jp/
  */
 
+// {{{ SC_Query
 /**
  *  SC_Query¥¯¥é¥¹
  *
@@ -531,5 +532,5 @@ class SC_Query {
 		return $auto_inc_no;
 	}
 }
-
+// }}}
 ?>
