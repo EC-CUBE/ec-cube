@@ -11,7 +11,6 @@
  *
  *  @author     LOCKON CO.,LTD.
  *  @access     public
- *  @package    EC-CUBE
  */
 class SC_Query {
    /**#@+
