@@ -92,32 +92,28 @@ for( $i = 0; $i < count( $time_data ); $i++ ) {
             //-- メッセージの構築
             $html_param['head_charset'] = "ISO-2022-JP";
             $html_param['html_encoding'] = "ISO-2022-JP";
-            $html_param['html_charset'] = "SJIS";
-            print_r($html_param);
-            print_r($sendResut);
+            $html_param['html_charset'] = "JIS";
+            
             //-- ブレインSMTPサーバーIPアドレス 
             $param = array(   
                        'host' => "210.188.254.83" 
                       ,'port' => "25"                  
                                                   );
-	        //-- PEAR::Mailを使ってメール送信オブジェクト作成
-            $mailObj =& Mail::factory("smtp", $param);
 	 	    
 	 	    //-- Mail_mimeオブジェクト作成
-            $mimeObj = new Mail_mime();
+            $mail_mimeObj = new Mail_mime();
             
             //-- Mail_mimeオブジェクトにHTMLの本文を追加
             $mailBody = mb_convert_encoding($mailBody, "JIS", CHAR_CODE);
+            $mail_mimeObj->setHTMLBody($mailBody);
             
-            //-- Mail_mimeオブジェクトに件名・Fromを追加
-            $mimeObj->setSubject($sendResut["subject"]);
-            $mimeObj->setFrom($sendResut["from"]);
+            $body = $mail_mimeObj->get($html_param);
+            $header = $mail_mimeObj->headers($sendResut);
             
-            print_r($mimeObj->setSubject($sendResut["subject"]));
-            print_r($mimeObj->setFrom($sendResut["from"]));
-            
+            //-- PEAR::Mailを使ってメール送信オブジェクト作成
+            $mailObj =& Mail::factory("smtp", $param);
             // メール送信
-            $result = $mailObj->end($sendResut["to"], $sendResut, $mailBody);
+            $result = $mailObj->end($sendResut["to"], $header, $body);
                  
         } else {
 	        //-- テキストメール配信の場合
