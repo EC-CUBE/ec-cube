@@ -13,7 +13,7 @@ if(MELMAGA_SEND != true) {
     exit;
 }
 
-
+//リアルタイム配信モードがオンのとき
 if($_GET['mode'] == 'now') {
     //----　未送信データを取得する
     $time_data = $conn->getAll( "SELECT send_id FROM dtb_send_history  WHERE complete_count = 0 AND del_flg = 0 ORDER BY send_id ASC, start_date ASC" );
@@ -148,7 +148,8 @@ for( $i = 0; $i < count( $time_data ); $i++ ) {
   
         //-- 送信完了なら1、失敗なら0をメール送信結果フラグとしてDBに挿入
         if( ! $sendResut ){
-             $sendFlag = "-1";
+             //$sendFlag = "-1";
+            $sendFlag = "0";
         } else {
             $sendFlag = "1";
             
@@ -191,7 +192,6 @@ for( $i = 0; $i < count( $time_data ); $i++ ) {
 
 //--- テキストメール配信
 function MAIL_SENDING( $to, $subject, $body, $fromaddress, $from_name, $reply_to, $return_path, $errors_to="", $bcc="", $cc ="" ) {
-
 
     $mail_obj = new GC_SendMail();  
     $mail_obj->setItem( $to, $subject, $body, $fromaddress, $from_name, $reply_to, $return_path, $errors_to, $bcc, $cc );
