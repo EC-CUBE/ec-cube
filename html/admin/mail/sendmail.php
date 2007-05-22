@@ -77,29 +77,39 @@ for( $i = 0; $i < count( $time_data ); $i++ ) {
 
         //-- メルマガ配信をブレイン連携で行う場合
         if(MELMAGA_SEND_BLAYN){
-	        //文字を日本語に設定
+	        //-- 文字を日本語に設定
 	        Mb_language( "Japanese" );
-	        
-	        $sendResut = array( 
-                          "to" => $list_data[$i][$j]["email"]   //　顧客宛先 
-	 	            ,"subject" => $subjectBody                  //　Subject  
-	 	               ,"from" => $objSite->data["email03"]     //　送信元メールアドレス 
-                  ,"replay_to" => $objSite->data["email03"]     //　reply_to 
-                ,"return_path" => $objSite->data["email04"]     //　return_path 
-                                                                       );
-            //ブレインSMTPサーバーIPアドレス 
+	         
+            $mailTo      = $list_data[$i][$j]["email"];                        //　顧客宛先 
+	 	    $mailSubject = mb_convert_encoding($subjectBody, "JIS", CHAR_CODE);//　Subject  
+	 	    $mailBody    = mb_convert_encoding($mailBody, "JIS", CHAR_CODE );  //  本文
+	 	    $mailFrom    = $objSite->data["email03"];                          //　送信元メールアドレス 
+            $replay_to   = $objSite->data["email03"];                          //　reply_to 
+            $return_path = $objSite->data["email04"];                          //　return_path 
+                                                                       
+            //-- ブレインSMTPサーバーIPアドレス 
             $param = array(   
                        'host' => "210.188.254.83" 
                       ,'port' => "25"                  
                                                   ); 
-	        
-            $mail_obj =& Mail::factory("smtp", $param);
-	 	    
-	 	    $sendResut["subject"] = mb_convert_encoding($sendResut["subject"], "JIS", CHAR_CODE );
-	        $mailBody = mb_convert_encoding($mailBody, "JIS", CHAR_CODE );
+	        //-- module/Mail/Mailより、PEAR::Mailを使ってメール送信オブジェクト作成
+            $mailObj =& Mail::factory("smtp", $param);
+	 	    // Mail_mimeオブジェクト作成
+            $mimeObj = new Mail_mime();
+            
+            // Mail_mimeオブジェクトにHTMLの本文を追加
+            $mimeObj->setHTMLBody($mailBody);
+            
+            // Mail_mimeオブジェクトに件名・Fromを追加
+            $mimeObj->setSubject($mailSubject);
+            $mimeObj->setFrom($mailFrom);
+            
+            // 整形された本文とヘッダを取得
+　　　　　　$body = $mimeObj->get();
+　　　　　　$headers = $mimeObj->headers();
 
-            $result = $mail_obj->send( $sendResut["to"], $sendResut, $mailBody );
-            /*trueを入れてあげればよい。そうすれば、送信完了なら1、失敗なら0をメール送信結果フラグが１になる*/         
+            // メール送信
+            $sendResut = $mailObj->send($mailTo, $headers, $body);         
                  
         } else {
 	        //-- テキストメール配信の場合
