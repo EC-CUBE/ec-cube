@@ -80,12 +80,7 @@ for( $i = 0; $i < count( $time_data ); $i++ ) {
 	        
 	        //-- 文字を日本語に設定
 	        Mb_language( "Japanese" );
-	         
-            //-- mime-version
-            $mime  = "Mime-Version: 1.0\n";
-		    $mime .= "Content-Type: text/html; charset=iso-2022-jp\n";
-		    $mime .= "Content-Transfer-Encoding: 7bit\n";
-            
+	              
             //-- 送信するメールの内容と送信先
             $sendResut = array( 
                           "to" => $list_data[$i][$j]["email"]        //　顧客宛先 
@@ -93,9 +88,12 @@ for( $i = 0; $i < count( $time_data ); $i++ ) {
 	 	               ,"from" => $objSite->data["email03"]          //　送信元メールアドレス 
                   ,"replay_to" => $objSite->data["email03"]          //　reply_to 
                 ,"return_path" => $objSite->data["email04"]          //　return_path
-                       ,"mime" => $mime
                                                                        );
-                                                                       
+            //-- メッセージの構築
+            $html_param['head_charset'] = "ISO-2022-JP";
+            $html_param['html_encoding'] = "ISO-2022-JP";
+            $html_param['html_charset'] = "SJIS";
+            print_r($html_param);
             print_r($sendResut);
             //-- ブレインSMTPサーバーIPアドレス 
             $param = array(   
@@ -120,7 +118,6 @@ for( $i = 0; $i < count( $time_data ); $i++ ) {
             
             // メール送信
             $result = $mailObj->end($sendResut["to"], $sendResut, $mailBody);
-            header( "Content-Type: text/plain; charset=UTF-8" );
                  
         } else {
 	        //-- テキストメール配信の場合
