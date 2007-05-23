@@ -5,6 +5,8 @@
  * http://www.lockon.co.jp/
  */
 
+print($_SERVER["SERVER_ADDR"]);
+ 
 $include_dir = realpath(dirname( __FILE__));
 require_once($include_dir . "/define.php");
 require_once($include_dir . HTML2DATA_DIR. "conf/conf.php");
