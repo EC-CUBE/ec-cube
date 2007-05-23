@@ -94,6 +94,8 @@ class SC_View {
 			$time = $time_end - $this->time_start;
 			print("処理時間:" . $time . "秒");
 		}
+        
+        print($_SERVER["SERVER_ADDR"]);
 	}
   	
   	// オブジェクト内の変数をすべて割り当てる。
