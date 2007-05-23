@@ -118,7 +118,7 @@ class SC_Query {
      *
      *  @access public
      *  @param  boolean $disp SQL文をprintするかどうか
-     *  @return string  $disp==falseの場合：最後に実行したSQL文 $disp==trueの場合：なし
+     *  @return string  $disp==falseの場合：最後に実行したSQL文　$disp==trueの場合：なし
      */
     function getLastQuery($disp = true) {
         $sql = $this->conn->conn->last_query;
@@ -319,10 +319,15 @@ class SC_Query {
         }   
     }
     
-    
-	// INSERT文の生成・実行
-	// $table	:テーブル名
-	// $sqlval	:列名 => 値の格納されたハッシュ配列
+    /**
+     *  INSERT文を実行する
+     *
+     *  @access  public
+     *  @param   string  $table  テーブル名
+     *  @param   array   $sqlval (カラム名 => 値)の連想配列
+     *  
+     *  @return  mixed   $result DB_Errorオブジェクト(失敗時)またはDB_OK(成功時)またはfalse(カラムが見つからない)
+     */
 	function insert($table, $sqlval) {
 		$strcol = '';
 		$strval = '';
@@ -359,9 +364,15 @@ class SC_Query {
 		return $ret;		
 	}
 	
-		// INSERT文の生成・実行
-	// $table	:テーブル名
-	// $sqlval	:列名 => 値の格納されたハッシュ配列
+    /**
+     *  INSERT文を実行する
+     *
+     *  @access  public
+     *  @param   string  $table  テーブル名
+     *  @param   array   $sqlval (カラム名 => 値)の連想配列
+     *  
+     *  @return  mixed   $result DB_Errorオブジェクト(失敗時)またはDB_OK(成功時)またはfalse(カラムが見つからない)
+     */
 	function fast_insert($table, $sqlval) {
 		$strcol = '';
 		$strval = '';
@@ -389,7 +400,7 @@ class SC_Query {
 		// INSERT文の実行
 		$ret = $this->conn->query($sqlin);
 		
-		return $ret;		
+		return $ret;
 	}
 	
 	
