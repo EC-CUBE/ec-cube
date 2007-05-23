@@ -437,6 +437,7 @@ function lfConvertParam($array, $arrRegistColumn) {
     return $array;
 }
 
+
 //---- 入力エラーチェック
 function lfErrorCheck1($array) {
 
