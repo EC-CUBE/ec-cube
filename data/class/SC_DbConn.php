@@ -111,7 +111,7 @@ class SC_DbConn{
 			if(ADMIN_MODE){
 				sfErrorHeader("DBへの接続に失敗しました。:" . $this->dsn);
 			}else{
-				sfErrorHeader("DBへの接続に失敗しました。:");
+				sfErrorHeader("DBへの接続に失敗しました。");
 			}
 			return 0;
 		}
