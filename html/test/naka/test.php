@@ -1,27 +1,23 @@
-<html lang="ja">
-<head>
-<meta http-equiv=Content-Type content="text/html; charset=EUC-JP">
-</head>
-
-<body>
-
-<table>
-<form name="form1" action="test.php" method="POST">
-<tr>
-	<td>文字を入力してください</td>
-	<td><input type="text" name="string"></td>
-	<td><input type="submit" value="送信"></td>
-</tr>
-</form>
-</table>
-
 <?php
-require_once("../../require.php");
 
-    if(isset($_POST['string'])) {
-        print("string is " . $_POST['string']);
-    }
+function gfIsMobileMailAddress($address) {
+	$arrMobileMailDomains = array('docomo.ne.jp', 'ezweb.ne.jp', 'softbank.ne.jp', 'vodafone.ne.jp', 'pdx.ne.jp');
+
+	if (defined('MOBILE_ADDITIONAL_MAIL_DOMAINS')) {
+		$arrMobileMailDomains = array_merge($arrMobileMailDomains, split('[ ,]+', MOBILE_ADDITIONAL_MAIL_DOMAINS));
+	}
+
+	foreach ($arrMobileMailDomains as $domain) {
+		$domain = str_replace('.', '\\.', $domain);
+		if (preg_match("/@([^@]+\\.)?$domain\$/", $address)) {
+			return true;
+		}
+	}
+
+	return false;
+}
+
+
+print(gfIsMobileMailAddress('tatsuyadake-aisitel@dk.pdx.ne.jp'));
+
 ?>
-
-</body>
-</html>
