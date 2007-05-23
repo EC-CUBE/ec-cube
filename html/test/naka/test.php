@@ -18,6 +18,6 @@ function gfIsMobileMailAddress($address) {
 }
 
 
-print(gfIsMobileMailAddress('tatsuyadake-aisitel@dk.pdx.ne.jp'));
+print(gfIsMobileMailAddress('tatsuyadake-aisitel@dk.pdxa.ne.jp'));
 
 ?>
