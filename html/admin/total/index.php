@@ -616,6 +616,8 @@ function lfGetOrderMember($type, $sdate, $edate, $objPage, $graph = true) {
 function lfGetOrderProducts($type, $sdate, $edate, $objPage, $graph = true, $mode = "") {
 	list($where, $arrval) = lfGetWhereMember('create_date', $sdate, $edate, $type);
 	
+    $where .= " and del_flg=0 and status <> " . ORDER_CANCEL;
+    
 	$sql = "SELECT T1.product_id, T1.product_code, T1.product_name, T1.products_count, T1.order_count, T1.price, T1.total ";
 	$sql.= "FROM ( ";
 	$sql.= "SELECT product_id, product_name, product_code, price, ";
