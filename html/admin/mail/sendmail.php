@@ -60,6 +60,7 @@ $objMail = new GC_SendMail();
 sfprintr($count);
 sfprintr($list_data);
 sfprintr($mail_data);
+exit;
 
 //----　メール生成と送信
 for( $i = 0; $i < $count; $i++ ) {
