@@ -396,7 +396,8 @@ function sfMobileSetExtSessionId($param_key, $param_value, $url) {
  * @return boolean 携帯のメールアドレスの場合はtrue、それ以外の場合はfalseを返す。
  */
 function gfIsMobileMailAddress($address) {
-	$arrMobileMailDomains = array('docomo.ne.jp', 'ezweb.ne.jp', 'softbank.ne.jp', 'vodafone.ne.jp');
+    // pdx.ne.jp(ウィルコム)追加
+	$arrMobileMailDomains = array('docomo.ne.jp', 'ezweb.ne.jp', 'softbank.ne.jp', 'vodafone.ne.jp', 'pdx.ne.jp');
 
 	if (defined('MOBILE_ADDITIONAL_MAIL_DOMAINS')) {
 		$arrMobileMailDomains = array_merge($arrMobileMailDomains, split('[ ,]+', MOBILE_ADDITIONAL_MAIL_DOMAINS));
