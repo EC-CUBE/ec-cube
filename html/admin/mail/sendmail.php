@@ -114,7 +114,13 @@ for( $i = 0; $i < count( $time_data ); $i++ ) {
             $mailObj =& Mail::factory("smtp", $param);
             // メール送信
             $result = $mailObj->send($sendResut["to"], $header, $body);
-                 
+if($result) {
+	echo "OK!!";
+	exit;
+} else {
+	echo "NG!!";
+	exit;
+}              
         } else {
 	        //-- テキストメール配信の場合
 	        if( $mail_data[$i][0]["mail_method"] == 2 ) {
