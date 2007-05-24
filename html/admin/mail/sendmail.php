@@ -62,10 +62,6 @@ $objMail = new GC_SendMail();
 //----　メール生成と送信
 for( $i = 0; $i < $count; $i++ ) {
 
-print($count);
-print_r($list_data[$i]);
-exit;
-	
     for( $j = 0; $j < count( $list_data[$i] ); $j ++ ) {
 
         $customerName = "";
