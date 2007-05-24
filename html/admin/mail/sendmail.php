@@ -34,6 +34,10 @@ if($_GET['mode'] == 'now') {
 
 $count = count($time_data);
 
+
+echo $count;
+exit;
+
 if( $count > 0 ){
     print("start sending <br />\n");
 } else {
@@ -57,7 +61,7 @@ $sql_flag ="UPDATE dtb_send_customer SET send_flag = ? WHERE send_id = ? AND cus
 $objMail = new GC_SendMail();
 
 //----　メール生成と送信
-for( $i = 0; $i < count( $time_data ); $i++ ) {
+for( $i = 0; $i < $count; $i++ ) {
 
     for( $j = 0; $j < count( $list_data[$i] ); $j ++ ) {
 
