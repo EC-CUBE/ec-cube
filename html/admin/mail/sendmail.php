@@ -56,6 +56,14 @@ for( $i = 0; $i < count( $time_data ); $i++ ) {
 $sql_flag ="UPDATE dtb_send_customer SET send_flag = ? WHERE send_id = ? AND customer_id = ?";
 $objMail = new GC_SendMail();
 
+
+if(MELMAGA_SEND_BLAYN === true) {
+	echo "BLAYN_ON";
+} else {
+	echo "BLAYN_OFF";
+}
+
+
 //----　メール生成と送信
 for( $i = 0; $i < count( $time_data ); $i++ ) {
 
