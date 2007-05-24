@@ -42,7 +42,7 @@ if( $count > 0 ){
 }
 
 //---- メール送信準備
-for( $i = 0; $i < count( $time_data ); $i++ ) {
+for( $i = 0; $i < $count; $i++ ) {
 
     $sql = "SELECT * FROM dtb_send_customer WHERE send_id = ? AND (send_flag = 2 OR send_flag IS NULL)";
     $list_data[] = $conn->getAll( $sql, array( $time_data[$i]["send_id"] ) );
@@ -55,14 +55,6 @@ for( $i = 0; $i < count( $time_data ); $i++ ) {
 //---- 送信結果フラグ用SQL
 $sql_flag ="UPDATE dtb_send_customer SET send_flag = ? WHERE send_id = ? AND customer_id = ?";
 $objMail = new GC_SendMail();
-
-
-if(MELMAGA_SEND_BLAYN === true) {
-	echo "BLAYN_ON";
-} else {
-	echo "BLAYN_OFF";
-}
-
 
 //----　メール生成と送信
 for( $i = 0; $i < count( $time_data ); $i++ ) {
