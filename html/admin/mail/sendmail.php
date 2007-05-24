@@ -62,7 +62,7 @@ if(MELMAGA_SEND_BLAYN === true) {
 } else {
 	echo "BLAYN_OFF";
 }
-exit;
+
 
 //----　メール生成と送信
 for( $i = 0; $i < count( $time_data ); $i++ ) {
