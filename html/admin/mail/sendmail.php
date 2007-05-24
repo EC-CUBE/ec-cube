@@ -58,9 +58,7 @@ $sql_flag ="UPDATE dtb_send_customer SET send_flag = ? WHERE send_id = ? AND cus
 $objMail = new GC_SendMail();
 
 print($count);
-print_r($time_data);
 print_r($list_data);
-print_r($mail_data);
 exit;
 
 //----　メール生成と送信
