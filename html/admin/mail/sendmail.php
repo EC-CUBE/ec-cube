@@ -17,7 +17,7 @@ if(MELMAGA_SEND != true) {
 if($_GET['mode'] == 'now') {
     //----　未送信データを取得する
     $time_data = $conn->getAll( "SELECT send_id FROM dtb_send_history  WHERE complete_count = 0 AND del_flg = 0 ORDER BY send_id ASC, start_date ASC" );
-print_r($time_data);
+
 } else {
     
     // postgresql と mysql とでSQLをわける
@@ -57,10 +57,10 @@ for( $i = 0; $i < $count; $i++ ) {
 $sql_flag ="UPDATE dtb_send_customer SET send_flag = ? WHERE send_id = ? AND customer_id = ?";
 $objMail = new GC_SendMail();
 
-sfprintr($count);
-sfprintr($time_data);
-sfprintr($list_data);
-sfprintr($mail_data);
+print($count);
+print_r($time_data);
+print_r($list_data);
+print_r($mail_data);
 exit;
 
 //----　メール生成と送信
