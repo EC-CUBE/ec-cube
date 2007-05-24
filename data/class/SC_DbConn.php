@@ -168,7 +168,7 @@ class SC_DbConn{
 
 	function send_err_mail( $result, $sql ){
 		
-		if ($this->err_disp) {
+		if ($this->err_disp && DEBUG_MODE) {
 			if ($_SERVER['HTTPS'] == "on") {
 				$url = "https://";
 			} else {
@@ -180,7 +180,7 @@ class SC_DbConn{
 			$errmsg.= $sql . "\n";
 			$errmsg.= $result->message . "\n\n";
 			$errmsg.= $result->userinfo . "\n\n";
-			print_r($errmsg);
+            print_r(htmlspecialchars($errmsg, ENT_QUOTES, CHAR_CODE));
 
 			exit();
 		}
