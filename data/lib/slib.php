@@ -2922,14 +2922,39 @@ function sfSendPostData($url, $arrData, $arrOkCode = array()){
 	return $response;
 }
 
-/* デバッグ用 ------------------------------------------------------------------------------------------------*/
-function sfPrintR($obj) {
-	print("<div style='font-size: 12px;color: #00FF00;'>\n");
-	print("<strong>**デバッグ中**</strong><br />\n");
-	print("<pre>\n");
-	print_r($obj);
-	print("</pre>\n");
-	print("<strong>**デバッグ中**</strong></div>\n");
+/** デバッグ用関数 **/
+
+/**
+ *  渡された変数をDumpする
+ *
+ *  @param  mixed  $obj   Dumpしたい変数
+ *  @param  string $color 出力する色
+ *  
+ *  @return void なし
+ */
+function sfPrintR($obj, $color='green') {
+    if ( DEBUG_MODE === false ) {
+        return;
+    }
+    
+    $arrColor = array(
+        'green' => '#00FF00',
+        'red'   => '#FF0000',
+        'blue'  => '#0000FF'
+    );
+    
+    if ( empty($arrColor[$color]) ) {
+        $color = $arrColor['green'];
+    } else {
+        $color = $arrColor[$color];
+    }
+    
+    print("<div style='font-size: 12px;color: $color;'>\n");
+    print("<strong>**デバッグ中**</strong><br />\n");
+    print("<pre>\n");
+    print_r($obj);
+    print("</pre>\n");
+    print("<strong>**デバッグ中**</strong></div>\n");
 }
 
 ?>
