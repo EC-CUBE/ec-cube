@@ -57,8 +57,9 @@ for( $i = 0; $i < $count; $i++ ) {
 $sql_flag ="UPDATE dtb_send_customer SET send_flag = ? WHERE send_id = ? AND customer_id = ?";
 $objMail = new GC_SendMail();
 
+sfprintr($count);
 sfprintr($list_data);
-
+sfprintr($mail_data);
 
 //----　メール生成と送信
 for( $i = 0; $i < $count; $i++ ) {
@@ -186,7 +187,7 @@ for( $i = 0; $i < $count; $i++ ) {
                     ,$objSite->data["email04"]                  //　return_path
                     ,$objSite->data["email04"]                  //　errors_to
                  );
-exit;                 
+               
     if ($_GET['mode'] = "now") {
         header("Location: " . URL_DIR . "admin/mail/history.php");
     }
