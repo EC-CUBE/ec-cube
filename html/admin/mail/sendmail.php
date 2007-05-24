@@ -35,9 +35,6 @@ if($_GET['mode'] == 'now') {
 $count = count($time_data);
 
 
-echo $count;
-exit;
-
 if( $count > 0 ){
     print("start sending <br />\n");
 } else {
@@ -80,6 +77,8 @@ for( $i = 0; $i < $count; $i++ ) {
 		$subjectBody = ereg_replace( "{name}", $customerName , $mail_data[$i][0]["subject"] );
 		$mailBody = ereg_replace( "{name}", $customerName ,  $mail_data[$i][0]["body"] );
 
+echo $list_data[$i][$j]["email"];
+
         //-- メルマガ配信をブレイン連携で行う場合
         if(MELMAGA_SEND_BLAYN){
 	        
@@ -118,14 +117,8 @@ for( $i = 0; $i < $count; $i++ ) {
             $mailObj =& Mail::factory("smtp", $param);
             // メール送信
             $result = $mailObj->send($sendResut["to"], $header, $body);
-if($result) {
-	echo "OK!!";
-	exit;
-} else {
-	echo "NG!!";
-	exit;
-}              
-        } else {
+
+		} else {
 	        //-- テキストメール配信の場合
 	        if( $mail_data[$i][0]["mail_method"] == 2 ) {
 
@@ -191,7 +184,7 @@ if($result) {
                     ,$objSite->data["email04"]                  //　return_path
                     ,$objSite->data["email04"]                  //　errors_to
                  );
-                 
+exit;                 
     if ($_GET['mode'] = "now") {
         header("Location: " . URL_DIR . "admin/mail/history.php");
     }
