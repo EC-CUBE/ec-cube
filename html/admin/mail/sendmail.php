@@ -41,7 +41,7 @@ if( $count > 0 ){
     exit;
 }
 
-//---- メール送信
+//---- メール送信準備
 for( $i = 0; $i < count( $time_data ); $i++ ) {
 
     $sql = "SELECT * FROM dtb_send_customer WHERE send_id = ? AND (send_flag = 2 OR send_flag IS NULL)";
