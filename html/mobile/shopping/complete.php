@@ -60,7 +60,7 @@ if ($uniqid != "") {
 		$order_email = $objQuery->select("order_email", "dtb_order", "order_id = ?", array($order_id));
     
     //登録されているメールアドレスが携帯かPCかに応じて注文完了メールのテンプレートを変える
-    if(ereg("(@ezweb.ne.jp$|@docomo.ne.jp$|@softbank.ne.jp$|@vodafon.ne.jp$)",$order_email[0]['order_email'])){
+    if(ereg("(ezweb.ne.jp$|docomo.ne.jp$|softbank.ne.jp$|vodafone.ne.jp$)",$order_email[0]['order_email'])){
               sfSendOrderMail($order_id, '4');
         }else{
               sfSendOrderMail($order_id, '1');
