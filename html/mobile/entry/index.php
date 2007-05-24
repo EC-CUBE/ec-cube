@@ -19,6 +19,7 @@ $CONF = sf_getBasisData();					// 店舗基本情報
 $objConn = new SC_DbConn();
 $objPage = new LC_Page();
 $objView = new SC_MobileView();
+$objCustomer = new SC_Customer();
 $objDate = new SC_Date(START_BIRTH_YEAR, date("Y",strtotime("now")));
 $objPage->arrPref = $arrPref;
 $objPage->arrJob = $arrJob;
@@ -202,7 +203,44 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
 		//--　仮登録と完了画面
 		if ($_POST["mode"] == "complete") {
-			$objPage->uniqid = lfRegistData ($objPage->arrForm, $arrRegistColumn, $arrRejectRegistColumn);
+            
+            // 確認画面で再度エラーチェックを行う。（画面1）
+            $arrErr = lfErrorCheck1($objPage->arrForm);
+            if(count($arrErr) > 0){
+                $objPage->tpl_mainpage = 'entry/index.tpl';
+                $objPage->tpl_title = '会員登録(1/3)';
+                $objPage->arrErr = $arrErr;
+                //----　ページ表示
+                $objView->assignobj($objPage);
+                $objView->display(SITE_FRAME);
+                exit();
+            }
+            
+            // 確認画面で再度エラーチェックを行う。（画面2）
+            $arrErr = lfErrorCheck2($objPage->arrForm);
+            if(count($arrErr) > 0){
+                $objPage->tpl_mainpage = 'entry/set1.tpl';
+                $objPage->tpl_title = '会員登録(2/3)';
+                $objPage->arrErr = $arrErr;
+                //----　ページ表示
+                $objView->assignobj($objPage);
+                $objView->display(SITE_FRAME);
+                exit();
+            }
+
+            // 確認画面で再度エラーチェックを行う。（画面3）
+            $arrErr = lfErrorCheck3($objPage->arrForm);
+            if(count($arrErr) > 0){
+                $objPage->tpl_mainpage = 'entry/set2.tpl';
+                $objPage->tpl_title = '会員登録(3/3)';
+                $objPage->arrErr = $arrErr;
+                //----　ページ表示
+                $objView->assignobj($objPage);
+                $objView->display(SITE_FRAME);
+                exit();
+            }
+            
+			$objPage->uniqid = lfRegistData ($objPage->arrForm, $arrRegistColumn, $arrRejectRegistColumn, CUSTOMER_CONFIRM_MAIL);
 
 			// 空メールを受信済みの場合はすぐに本登録完了にする。
 			if (isset($_SESSION['mobile']['kara_mail_from'])) {
@@ -221,8 +259,18 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 			$objPage->to_name02 = $_POST['name02'];
 			$objMailText = new SC_MobileView();
 			$objMailText->assignobj($objPage);
-			$subject = sfMakesubject('会員登録のご確認');
-			$toCustomerMail = $objMailText->fetch("mail_templates/customer_mail.tpl");
+            
+            // 仮会員が有効の場合
+			if(CUSTOMER_CONFIRM_MAIL == true) {
+				$subject = sfMakesubject('会員登録のご確認');
+				$toCustomerMail = $objMailText->fetch("mail_templates/customer_mail.tpl");
+			} else {
+				$subject = sfMakesubject('会員登録のご完了');
+				$toCustomerMail = $objMailText->fetch("mail_templates/customer_regist_mail.tpl");
+				// ログイン状態にする
+				$objCustomer->setLogin($_POST["email"]);
+			}
+            
 			$objMail = new GC_SendMail();
 			$objMail->setItem(
 								''									//　宛先
@@ -254,7 +302,7 @@ $objView->display(SITE_FRAME);
 //----------------------------------------------------------------------------------------------------------------------
 
 //---- function群
-function lfRegistData ($array, $arrRegistColumn, $arrRejectRegistColumn) {
+function lfRegistData ($array, $arrRegistColumn, $arrRejectRegistColumn, $confirm_flg) {
 	global $objConn;
 
 	// 仮登録
@@ -271,25 +319,38 @@ function lfRegistData ($array, $arrRegistColumn, $arrRejectRegistColumn) {
 	
 	// パスワードの暗号化
 	$arrRegist["password"] = sha1($arrRegist["password"] . ":" . AUTH_MAGIC);
-	
-	$count = 1;
-	while ($count != 0) {
-		$uniqid = sfGetUniqRandomId("t");
-		$count = $objConn->getOne("SELECT COUNT(*) FROM dtb_customer WHERE secret_key = ?", array($uniqid));
-	}
 
-	switch($array["mailmaga_flg"]) {
-		case 1:
-			$arrRegist["mailmaga_flg"] = 4; 
-			break;
-		case 2:
-			$arrRegist["mailmaga_flg"] = 5; 
-			break;
-		default:
-			$arrRegist["mailmaga_flg"] = 6;
-			break;
-	}
-		
+    // 仮会員登録の場合
+	if($confirm_flg == true) {
+        // 重複しない会員登録キーを発行する。
+		$count = 1;
+		while ($count != 0) {
+			$uniqid = sfGetUniqRandomId("t");
+			$count = $objConn->getOne("SELECT COUNT(*) FROM dtb_customer WHERE secret_key = ?", array($uniqid));
+		}
+	
+		switch($array["mailmaga_flg"]) {
+			case 1:
+				$arrRegist["mailmaga_flg"] = 4; 
+				break;
+			case 2:
+				$arrRegist["mailmaga_flg"] = 5; 
+				break;
+			default:
+				$arrRegist["mailmaga_flg"] = 6;
+				break;
+		}
+		$arrRegist["status"] = "1";				// 仮会員
+	} else {
+		// 重複しない会員登録キーを発行する。
+		$count = 1;
+		while ($count != 0) {
+			$uniqid = sfGetUniqRandomId("r");
+			$count = $objConn->getOne("SELECT COUNT(*) FROM dtb_customer WHERE secret_key = ?", array($uniqid));
+		}
+		$arrRegist["status"] = "2";				// 本会員
+    }
+    
 	$arrRegist["secret_key"] = $uniqid;		// 仮登録ID発行
 	$arrRegist["create_date"] = "now()"; 	// 作成日
 	$arrRegist["update_date"] = "now()"; 	// 更新日
