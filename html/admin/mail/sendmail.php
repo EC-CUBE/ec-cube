@@ -57,8 +57,7 @@ for( $i = 0; $i < $count; $i++ ) {
 $sql_flag ="UPDATE dtb_send_customer SET send_flag = ? WHERE send_id = ? AND customer_id = ?";
 $objMail = new GC_SendMail();
 
-
-sfpirntr($list_data);
+sfprintr($list_data);
 
 
 //----　メール生成と送信
