@@ -57,6 +57,10 @@ for( $i = 0; $i < $count; $i++ ) {
 $sql_flag ="UPDATE dtb_send_customer SET send_flag = ? WHERE send_id = ? AND customer_id = ?";
 $objMail = new GC_SendMail();
 
+
+sfpirntr($list_data);
+
+
 //----　メール生成と送信
 for( $i = 0; $i < $count; $i++ ) {
 
@@ -77,7 +81,6 @@ for( $i = 0; $i < $count; $i++ ) {
 		$subjectBody = ereg_replace( "{name}", $customerName , $mail_data[$i][0]["subject"] );
 		$mailBody = ereg_replace( "{name}", $customerName ,  $mail_data[$i][0]["body"] );
 
-echo $list_data[$i][$j]["email"];
 
         //-- メルマガ配信をブレイン連携で行う場合
         if(MELMAGA_SEND_BLAYN){
