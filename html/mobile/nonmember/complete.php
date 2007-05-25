@@ -55,11 +55,17 @@ if ($uniqid != "") {
 	// セッションに保管されている情報を更新する
 	$objCustomer->updateSession();
 
-	// 完了メール送信
-	if($order_id != "") {
-		sfSendOrderMail($order_id, '1');
-	}
-
+    // 完了メール送信 4は携帯版
+    if($order_id != "") {
+        $order_email = $objQuery->select("order_email", "dtb_order", "order_id = ?", array($order_id));
+    
+    //登録されているメールアドレスが携帯かPCかに応じて注文完了メールのテンプレートを変える
+    if(ereg("(ezweb.ne.jp$|docomo.ne.jp$|softbank.ne.jp$|vodafone.ne.jp$)",$order_email[0]['order_email'])){
+              sfSendOrderMail($order_id, '4');
+        }else{
+              sfSendOrderMail($order_id, '1');
+        }
+    }
 	//その他情報の取得
 	$other_data = $objQuery->get("dtb_order", "memo02", "order_id = ? ", array($order_id));
 	if($other_data != "") {
