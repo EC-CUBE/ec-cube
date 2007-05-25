@@ -170,28 +170,35 @@ class SC_DbConn{
         $this->send_err_mail($result, $sql);
     }
     
-	function send_err_mail( $result, $sql ){
-		
-		if ($this->err_disp && DEBUG_MODE) {
-			if ($_SERVER['HTTPS'] == "on") {
-				$url = "https://";
-			} else {
-				$url = "http://";
-			}
-			$url.= $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'];
-			
-			$errmsg = $url."\n\n";
-			$errmsg.= $sql . "\n";
-			$errmsg.= $result->message . "\n\n";
-			$errmsg.= $result->userinfo . "\n\n";
-			print('<pre>');
-            print_r(htmlspecialchars($errmsg, ENT_QUOTES, CHAR_CODE));
-            print('</pre>');
+    function send_err_mail($result, $sql){
+        
+        if ($this->err_disp) {
+            $url = '';
+            $errmsg = '';
+            
+            if ($_SERVER['HTTPS'] == "on") {
+                $url = "https://";
+            } else {
+                $url = "http://";
+            }
+            $url .= $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'];
+            
+            $errmsg  = $url."\n\n";
+            $errmsg .= $sql . "\n";
+            $errmsg .= $result->message . "\n\n";
+            $errmsg .= $result->userinfo . "\n\n";
+            
+            if (DEBUG_MODE === true) {
+                print('<pre>');
+                print_r(htmlspecialchars($errmsg, ENT_QUOTES, CHAR_CODE));
+                print('</pre>');
+            }
+            
             gfDebugLog($errmsg);
-			exit();
-		}
-		gfDebugLog($errmsg);
-	}
+        }
+        
+        exit();
+    }
 }
 
 ?>
