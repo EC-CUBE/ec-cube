@@ -169,6 +169,7 @@
 								<!--{* グラフ表示 *}-->		
 								<table width="740" border="0" cellspacing="0" cellpadding="0" summary=" ">
 									<tr><td height="15"></td></tr>
+									<!--{if $install_GD}-->
 									<tr>
 										<td align="center">
 											<!--{* <img src="<!--{$tpl_image}-->?<!--{$cashtime}-->" alt="グラフ"> *}-->
@@ -176,8 +177,9 @@
 										</td>
 									</tr>
 									<tr><td height="15"></td></tr>
+									<!--{/if}-->
 								</table>
-								<!--{* グラフ表示 *}-->		
+								<!--{* グラフ表示 *}-->			
 								<table width="840" border="0" cellspacing="0" cellpadding="0" summary=" ">
 									<tr>
 										<td bgcolor="#cccccc">

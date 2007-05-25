@@ -12,6 +12,9 @@ require_once("./class/SC_GraphPie.php");
 require_once("./class/SC_GraphLine.php");
 require_once("./class/SC_GraphBar.php");
 
+// GDライブラリのインストール判定
+$install_GD = (function_exists("gd_info"))?true:false;
+
 class LC_Page {
 	var $arrResults;
 	var $keyname;
@@ -103,6 +106,7 @@ case 'search':
 		}
 				
 		$page = $objFormParam->getValue('page');
+        
 		switch($page) {
 		// 商品別集計
 		case 'products':
@@ -115,7 +119,7 @@ case 'search':
 				lfRealTimeDailyTotal($sdate, $edate);
 			}
 			// 検索結果の取得
-			$objPage = lfGetOrderProducts($type, $sdate, $edate, $objPage, true, $mode);
+			$objPage = lfGetOrderProducts($type, $sdate, $edate, $objPage, $install_GD, $mode);
 			break;
 		// 職業別集計
 		case 'job':
@@ -128,7 +132,7 @@ case 'search':
 				lfRealTimeDailyTotal($sdate, $edate);
 			}
 			// 検索結果の取得
-			$objPage = lfGetOrderJob($type, $sdate, $edate, $objPage);
+			$objPage = lfGetOrderJob($type, $sdate, $edate, $objPage, $install_GD);
 			break;
 		// 会員別集計
 		case 'member':
@@ -141,7 +145,7 @@ case 'search':
 				lfRealTimeDailyTotal($sdate, $edate);
 			}
 			// 検索結果の取得
-			$objPage = lfGetOrderMember($type, $sdate, $edate, $objPage);
+			$objPage = lfGetOrderMember($type, $sdate, $edate, $objPage, $install_GD);
 			break;
 		// 年代別集計
 		case 'age':
@@ -155,7 +159,7 @@ case 'search':
 				lfRealTimeDailyTotal($sdate, $edate);
 			}
 			// 検索結果の取得
-			$objPage = lfGetOrderAge($type, $sdate, $edate, $objPage);
+			$objPage = lfGetOrderAge($type, $sdate, $edate, $objPage, $install_GD);
 			break;
 		// 期間別集計
 		default:
@@ -168,7 +172,7 @@ case 'search':
 				lfRealTimeDailyTotal($sdate, $edate);
 			}
 			// 検索結果の取得
-			$objPage = lfGetOrderTerm($type, $sdate, $edate, $objPage);
+			$objPage = lfGetOrderTerm($type, $sdate, $edate, $objPage, $install_GD);
 			
 			break;
 		}
@@ -197,7 +201,7 @@ case 'search':
 	break;
 default:
 	if(count($_GET) == 0) {
-		// バッチモードの場合のみ実行する
+		// バッチモードの場合のみ実行する（当日の集計を行うため）
 		if(DAILY_BATCH_MODE) {
 			// 3日前までの集計
 			lfStartDailyTotal(3,0);
@@ -205,6 +209,9 @@ default:
 	}
 	break;
 }
+
+
+$objPage->install_GD = $install_GD;
 
 // 登録・更新日検索用
 $objDate = new SC_Date();
@@ -615,10 +622,10 @@ function lfGetOrderMember($type, $sdate, $edate, $objPage, $graph = true) {
 /** 商品別集計 **/
 function lfGetOrderProducts($type, $sdate, $edate, $objPage, $graph = true, $mode = "") {
 	list($where, $arrval) = lfGetWhereMember('create_date', $sdate, $edate, $type);
-	
-    $where .= " and del_flg=0 and status <> " . ORDER_CANCEL;
     
-	$sql = "SELECT T1.product_id, T1.product_code, T1.product_name, T1.products_count, T1.order_count, T1.price, T1.total ";
+    $where .= " and del_flg=0 and status <> " . ORDER_CANCEL;
+	
+	$sql = "SELECT T1.product_id, T1.product_code, T1.product_name as name, T1.products_count, T1.order_count, T1.price, T1.total ";
 	$sql.= "FROM ( ";
 	$sql.= "SELECT product_id, product_name, product_code, price, ";
 	$sql.= "COUNT(*) AS order_count, ";
@@ -652,12 +659,12 @@ function lfGetOrderJob($type, $sdate, $edate, $objPage, $graph = true) {
 	list($where, $arrval) = lfGetWhereMember('T2.create_date', $sdate, $edate, $type);
 	
 	$sql = "SELECT job, count(*) AS order_count, SUM(total) AS total, (AVG(total)) AS total_average ";
-    $sql.= "FROM dtb_customer AS T1 LEFT JOIN dtb_order AS T2 USING ( customer_id ) WHERE $where AND T2.del_flg = 0 and T2.status <> " . ORDER_CANCEL;
+	$sql.= "FROM dtb_customer AS T1 LEFT JOIN dtb_order AS T2 USING ( customer_id ) WHERE $where AND T2.del_flg = 0 and T2.status <> " . ORDER_CANCEL;
 	$sql.= " GROUP BY job ORDER BY total DESC";
 	
 	$objQuery = new SC_Query();
 	$objPage->arrResults = $objQuery->getall($sql, $arrval);
-			
+    
 	$max = count($objPage->arrResults);
 	for($i = 0; $i < $max; $i++) {
 		$job_key = $objPage->arrResults[$i]['job'];
