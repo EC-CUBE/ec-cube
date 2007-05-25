@@ -135,6 +135,8 @@ $objPage->arrPayment = lfGetPayment();
 // 入力情報を渡す
 $objPage->arrForm = $_POST;
 
+lfConvertParam();
+
 $objPage->category_id = $category_id;
 $objPage->arrSearch = $arrSearch;
 
@@ -416,4 +418,18 @@ function lfGetPayment() {
 	return $arrRet;
 }
 
+function lfconvertParam () {
+    global $objPage;
+    $count = 1;
+    while(1) {
+        $quantity_key = 'quantity' . $count;
+        if (isset($objPage->arrForm[$quantity_key])) {
+            $objPage->arrForm[$quantity_key]
+                = htmlspecialchars($objPage->arrForm[$quantity_key], ENT_QUOTES, CHAR_CODE);
+        } else {
+            break;
+        }
+        $count++;
+    }
+}
 ?>

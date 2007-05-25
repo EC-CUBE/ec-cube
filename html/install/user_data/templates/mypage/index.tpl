@@ -7,7 +7,7 @@
 <table width="" border="0" cellspacing="0" cellpadding="0" summary=" ">
 <form name="form1" method="post" action="<!--{$smarty.server.PHP_SELF|escape}-->">
 <input type="hidden" name="order_id" value="" >
-<input type="hidden" name="pageno" value="<!--{$tpl_pageno|escape}-->">
+<input type="hidden" name="pageno" value="<!--{$tpl_pageno}-->">
 	<tr>
 		<td align="center" bgcolor="#ffffff">
 		<!--¢§MAIN ONTENTS-->
