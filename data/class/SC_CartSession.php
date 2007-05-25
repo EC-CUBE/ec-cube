@@ -321,6 +321,7 @@ class SC_CartSession {
 			}
 		}
 	}
-	
+    
+
 }
 ?>
