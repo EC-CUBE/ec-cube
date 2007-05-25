@@ -414,7 +414,8 @@ function lfRegistData($arrData){
 //       $dtb_send_history["send_id"] = $objQuery->nextval('dtb_send_history', 'send_id');
 //    }
     
-sfprintr($search_data);    
+sfprintr($search_data);
+exit; 
 	if ( is_array( $search_data ) ){
 		foreach( $search_data as $line ){
             $dtb_send_customer = array();
