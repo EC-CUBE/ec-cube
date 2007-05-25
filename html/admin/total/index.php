@@ -70,10 +70,6 @@ foreach ($_POST as $key => $val) {
 	}
 }
 
-
-sfprintr($_POST);
-exit();
-
 $mode = $objFormParam->getValue('mode');
 switch($mode) {
 case 'pdf':
