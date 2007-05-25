@@ -385,7 +385,7 @@ function lfRegistData($arrData){
 	$dataCnt = count($search_data);
 	$dtb_send_history = array();
 	
-    if(DB_TYPE == "pqsql"){
+    if(DB_TYPE == "pgsql"){
 	   $dtb_send_history["send_id"] = $objQuery->nextval('dtb_send_history', 'send_id');
     }elseif(DB_TYPE == "mysql"){
        $dtb_send_history["send_id"] = $objQuery->max('dtb_send_history', 'send_id')+1;
