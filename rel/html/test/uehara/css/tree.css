@@ -1,0 +1,12 @@
+#tree{
+	height: 500px;
+	width: 400px;
+	overflow: auto;
+	margin: 0px;
+}
+
+#file_view {
+	height: 480px;
+	width: 400px;
+	overflow: auto;
+}

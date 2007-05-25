@@ -1,0 +1,78 @@
+/*
+ * Copyright(c) 2000-2007 LOCKON CO.,LTD. All Rights Reserved.
+ *
+ * http://www.lockon.co.jp/
+ */
+
+@charset "<!--{$smarty.const.CHAR_CODE}-->";
+
+/*FORM*/
+.box3 { width: 33px; }	/*W3*/
+.box6 { width: 54px; }	/*W6*/
+.box10 { width: 82px; }	/*W10*/
+.box12 { width: 96px; }	/*W12*/
+.box18 { width: 138px; }	/*W18*/
+.box19 { width: 145px; }	/*W19*/
+.box20 { width: 152px; }	/*W20*/
+.box30 { width: 222px; }	/*W30*/
+.box33 { width: 243px; }	/*W30*/
+.box40 { width: 292px; }	/*W40*/
+.box47 { width: 341px; }	/*W47*/
+.area40 { width: 302px; height: 134px; }	/*W40¡ßH8*/
+.area45 { width: 337px; height: 290px; }	/*W40¡ßH20*/
+.area46 { width: 337px; height: 134px; }	/*W40¡ßH8*/
+.area50 { width: 372px; height: 290px; }	/*W50¡ßH20*/
+.area55 { width: 407px; height: 290px; }	/*W55¡ßH20*/
+.area65 { width: 444px; height: 290px; }	/*W65¡ßH20*/
+.area68 { width: 498px; height: 134px; }	/*W68¡ßH8*/
+.area80 { width: 572px; height: 134px; }	/*W80¡ßH8*/
+.area80_2 { width: 572px; height: 420px; }	/*W80¡ßH30*/
+.area92 { width: 666px; height: 160px; }	/*W92¡ßH10*/
+.area96 { width: 694px; height: 420px; }	/*W80¡ßH30*/
+.area96_2 { width: 694px; height: 160px; }	/*W80¡ßH10*/
+
+/*LINK*/
+a:link { color: #3a75af; text-decoration: underline; }
+a:visited { color: #3a75af; text-decoration: underline; }
+a:hover { color: #3a75af; text-decoration: none; }
+
+/*OVER*/
+a.over:link{ color:#4a6fa6; text-decoration: none; }
+a.over:visited { color:#4a6fa6; text-decoration: none; }
+a.over:hover { color:#4a6fa6; text-decoration: underline; }
+
+/*COLOR*/
+.white { color: #ffffff; }
+.whitest { color: #ffffff; font-weight: bold; }
+.red { color: #ec0000; }
+.redst { color: #ec0000; font-weight: bold; }
+.blue { color: #3a75af; }
+.bluest { color: #3a75af; font-weight: bold; }
+.black { color: #000000; }
+.blackst { color: #000000; font-weight: bold; }
+.orange { color: #ff6600; }
+.orangest { color: #ff6600; font-weight: bold; }
+
+/*PHOTO*/
+.picture { 
+	border-width: 1px;
+	border-style: solid;
+	border-color: #cccccc;
+}
+
+/*PHOTO*/
+img { 
+	border: 0px;
+}
+
+
+#container #right #contents #right #price{
+border-width: 1px;
+border-style: solid;
+border-color: #ccc;
+padding: 0;
+margin: 0;
+padding: 0;
+width: 295px;
+background: #ecf5ff;
+}
