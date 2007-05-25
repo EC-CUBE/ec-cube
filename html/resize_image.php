@@ -1,8 +1,10 @@
 <?php
 
 $include_dir = realpath(dirname( __FILE__));
-require_once($include_dir . "/../data/lib/gdthumb.php");
-require_once($include_dir . "/../data/conf/conf.php");	
+require_once($include_dir . "/define.php");
+
+require_once($include_dir . HTML2DATA_DIR. "lib/gdthumb.php");
+require_once($include_dir . HTML2DATA_DIR. "conf/conf.php");	
 
 $objThumb = new gdthumb();
 
