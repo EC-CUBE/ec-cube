@@ -106,6 +106,9 @@ case 'search':
 		}
 				
 		$page = $objFormParam->getValue('page');
+        
+        sfprintr($page);
+        
 		switch($page) {
 		// 商品別集計
 		case 'products':
