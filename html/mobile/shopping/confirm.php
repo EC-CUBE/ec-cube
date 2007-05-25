@@ -69,11 +69,13 @@ if($objCustomer->isLoginSuccess()) {
 
 // 決済区分を取得する
 $payment_type = "";
+$module_id = "";
 if(sfColumnExists("dtb_payment", "memo01")){
 	// MEMO03に値が入っている場合には、モジュール追加されたものとみなす
-	$sql = "SELECT memo03 FROM dtb_payment WHERE payment_id = ?";
+	$sql = "SELECT module_id,memo03 FROM dtb_payment WHERE payment_id = ?";
 	$arrPayment = $objQuery->getall($sql, array($arrData['payment_id']));
 	$payment_type = $arrPayment[0]["memo03"];
+    $module_id =  $arrPayment[0]["module_id"];    
 }
 $objPage->payment_type = $payment_type;
 
@@ -102,7 +104,7 @@ case 'confirm':
 	$objSiteSess->setRegistFlag();
 	
 	// 決済方法により画面切替
-	if($payment_type != "") {
+	if($module_id != "") {
 		$_SESSION["payment_id"] = $arrData['payment_id'];
 		header("Location: " . gfAddSessionId(MOBILE_URL_SHOP_MODULE));
 	}else{
