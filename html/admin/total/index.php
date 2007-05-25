@@ -665,9 +665,6 @@ function lfGetOrderJob($type, $sdate, $edate, $objPage, $graph = true) {
 	$objQuery = new SC_Query();
 	$objPage->arrResults = $objQuery->getall($sql, $arrval);
     
-    
-    sfprintr($objQuery->getlastquery(false));
-			
 	$max = count($objPage->arrResults);
 	for($i = 0; $i < $max; $i++) {
 		$job_key = $objPage->arrResults[$i]['job'];
