@@ -425,10 +425,8 @@ function lfRegistData($arrData){
 				
 			$conn->autoExecute("dtb_send_customer", $dtb_send_customer );					
 
-sfprintr($dtb_send_customer);			
 		}	
 	}
-	exit; 
 }
 
 // キャンペーン一覧
