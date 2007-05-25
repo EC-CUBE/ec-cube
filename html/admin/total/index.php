@@ -70,6 +70,10 @@ foreach ($_POST as $key => $val) {
 	}
 }
 
+
+sfprintr($_POST);
+exit();
+
 $mode = $objFormParam->getValue('mode');
 switch($mode) {
 case 'pdf':
@@ -106,8 +110,6 @@ case 'search':
 		}
 				
 		$page = $objFormParam->getValue('page');
-        
-        sfprintr($page);
         
 		switch($page) {
 		// 商品別集計
