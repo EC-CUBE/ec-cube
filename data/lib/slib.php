@@ -1672,7 +1672,7 @@ function sfSendOrderMail($order_id, $template_id, $subject = "", $header = "", $
 	if($subject == "" && $header == "" && $footer == "") {
 		// メールテンプレート情報の取得
 		$where = "template_id = ?";
-		$arrRet = $objQuery->select("subject, header, footer", "dtb_mailtemplate", $where, array('$template_id'));
+		$arrRet = $objQuery->select("subject, header, footer", "dtb_mailtemplate", $where, array($template_id));
 		$objPage->tpl_header = $arrRet[0]['header'];
 		$objPage->tpl_footer = $arrRet[0]['footer'];
 		$tmp_subject = $arrRet[0]['subject'];
