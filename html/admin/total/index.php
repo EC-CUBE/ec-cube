@@ -652,7 +652,7 @@ function lfGetOrderJob($type, $sdate, $edate, $objPage, $graph = true) {
 	list($where, $arrval) = lfGetWhereMember('T2.create_date', $sdate, $edate, $type);
 	
 	$sql = "SELECT job, count(*) AS order_count, SUM(total) AS total, (AVG(total)) AS total_average ";
-	$sql.= "FROM dtb_customer AS T1 LEFT JOIN dtb_order AS T2 USING ( customer_id ) WHERE $where AND T2.del_flg = 0 ";
+    $sql.= "FROM dtb_customer AS T1 LEFT JOIN dtb_order AS T2 USING ( customer_id ) WHERE $where AND T2.del_flg = 0 and T2.status <> " . ORDER_CANCEL;
 	$sql.= "GROUP BY job ORDER BY total DESC";
 	
 	$objQuery = new SC_Query();
