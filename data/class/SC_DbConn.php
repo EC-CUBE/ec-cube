@@ -166,6 +166,10 @@ class SC_DbConn{
 		$this->conn->disconnect();
 	}
 
+    function debug_print($result, $sql){
+        $this->send_err_mail($result, $sql);
+    }
+    
 	function send_err_mail( $result, $sql ){
 		
 		if ($this->err_disp && DEBUG_MODE) {
@@ -180,10 +184,13 @@ class SC_DbConn{
 			$errmsg.= $sql . "\n";
 			$errmsg.= $result->message . "\n\n";
 			$errmsg.= $result->userinfo . "\n\n";
+			print('<pre>');
             print_r(htmlspecialchars($errmsg, ENT_QUOTES, CHAR_CODE));
+            print('</pre>');
             gfDebugLog($errmsg);
 			exit();
 		}
+		gfDebugLog($errmsg);
 	}
 }
 
