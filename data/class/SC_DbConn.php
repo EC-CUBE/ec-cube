@@ -181,7 +181,7 @@ class SC_DbConn{
 			$errmsg.= $result->message . "\n\n";
 			$errmsg.= $result->userinfo . "\n\n";
             print_r(htmlspecialchars($errmsg, ENT_QUOTES, CHAR_CODE));
-
+            gfDebugLog($errmsg);
 			exit();
 		}
 	}
