@@ -414,8 +414,6 @@ function lfRegistData($arrData){
 //       $dtb_send_history["send_id"] = $objQuery->nextval('dtb_send_history', 'send_id');
 //    }
     
-sfprintr($search_data);
-exit; 
 	if ( is_array( $search_data ) ){
 		foreach( $search_data as $line ){
             $dtb_send_customer = array();
@@ -426,8 +424,11 @@ exit;
 			$dtb_send_customer["name"] = $line["name01"] . " " . $line["name02"];
 				
 			$conn->autoExecute("dtb_send_customer", $dtb_send_customer );					
+
+sfprintr($dtb_send_customer);			
 		}	
-	}	
+	}
+	exit; 
 }
 
 // キャンペーン一覧
