@@ -409,6 +409,10 @@ function lfDispStep0($objPage) {
 		if(!file_exists($path)) {
 			mkdir($path);
 		}
+		$path = ".." . HTML2DATA_DIR . "Smarty/templates_c/mobile";
+		if(!file_exists($path)) {
+			mkdir($path);
+		}
 		$path = "../upload/temp_template";
 		if(!file_exists($path)) {
 			mkdir($path);
