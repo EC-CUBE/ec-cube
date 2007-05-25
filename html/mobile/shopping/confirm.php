@@ -104,7 +104,7 @@ case 'confirm':
 	$objSiteSess->setRegistFlag();
 	
 	// 決済方法により画面切替
-	if($module_id != "") {
+	if(!empty($module_id)) {
 		$_SESSION["payment_id"] = $arrData['payment_id'];
 		header("Location: " . gfAddSessionId(MOBILE_URL_SHOP_MODULE));
 	}else{
