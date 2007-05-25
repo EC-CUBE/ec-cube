@@ -7,6 +7,9 @@
 *}-->
 <!--{$arrOrder.order_name01}--> <!--{$arrOrder.order_name02}--> 様
 
+<!--{$tpl_header}-->
+
+
 ■配送情報とご請求金額
 ご注文番号：<!--{$arrOrder.order_id}-->
 お支払合計：￥ <!--{$arrOrder.payment_total|number_format|default:0}-->
@@ -26,3 +29,5 @@
 金額：￥ <!--{$arrOrderDetail[cnt].price|sfPreTax:$arrInfo.tax:$arrInfo.tax_rule|number_format}-->
 
 <!--{/section}-->
+
+<!--{$tpl_footer}-->
