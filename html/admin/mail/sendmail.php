@@ -101,8 +101,8 @@ for( $i = 0; $i < $count; $i++ ) {
             
             //-- ブレインSMTPサーバーIPアドレス 
             $param = array(   
-                       'host' => "210.188.254.83" 
-                      ,'port' => "25"                  
+                       'host' => SMTP_HOST_BLAYN 
+                      ,'port' => SMTP_PORT_BLAYN                  
                                                   );
 	 	    //-- Mail_mimeオブジェクト作成
             $mail_mimeObj = new Mail_mime();

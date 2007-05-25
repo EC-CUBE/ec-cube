@@ -231,8 +231,12 @@ define ("CF_LABOR", "0");													// 役務有無区分(0:無、1:有)
 define ("CF_RESULT", "1");													// 結果応答(1:結果あり、2:結果なし)
 
 /* クレジットカード(ベリトランス) */
-define ("CGI_DIR", HTML_PATH . "../cgi-bin/");									// モジュール格納ディレクトリ
+define ("CGI_DIR", HTML_PATH . "../cgi-bin/");								// モジュール格納ディレクトリ
 define ("CGI_FILE", "mauthonly.cgi");										// コアCGI
+
+/* ブレインSMTP情報 */
+define ("SMTP_HOST_BLAYN", "210.188.254.83");					// ブレインSMTPサーバ
+define ("SMTP_PORT_BLAYN", 25);									// ブレインSMTPポート番号
 
 // ルートカテゴリID
 define ("ROOT_CATEGORY_1", 2);
