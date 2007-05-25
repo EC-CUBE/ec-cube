@@ -388,7 +388,8 @@ function lfRegistData($arrData){
     if(DB_TYPE == "pgsql"){
 	   $dtb_send_history["send_id"] = $objQuery->nextval('dtb_send_history', 'send_id');
     }elseif(DB_TYPE == "mysql"){
-       $dtb_send_history["send_id"] = $objQuery->max('dtb_send_history', 'send_id')+1;
+       $dtb_send_history["send_id"] = ""; 
+       //$objQuery->max('dtb_send_history', 'send_id')+1;
     }
     
     $dtb_send_history["mail_method"] = $arrData['mail_method'];
