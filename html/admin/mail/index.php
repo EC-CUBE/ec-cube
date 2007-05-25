@@ -405,12 +405,12 @@ function lfRegistData($arrData){
 	$dtb_send_history["search_data"] = serialize($arrData);
 	$dtb_send_history["update_date"] = "now()";
 	$dtb_send_history["create_date"] = "now()";
-    print_r($dtb_send_history);
-    exit;
+   
     
     //ハッシュdtb_send_historyをデータベースdtb_send_historyに挿入
     $objQuery->insert("dtb_send_history", $dtb_send_history );
-    
+     print_r($dtb_send_history);
+    exit;
     
     
 	if ( is_array( $search_data ) ){
