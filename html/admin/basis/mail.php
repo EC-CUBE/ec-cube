@@ -29,33 +29,26 @@ sfIsSuccess($objSess);
 
 //------------------------------------------------------------------
 
-if (count($objPage->arrErr) == 0) {
+    if($_POST["mode"] == ''){
+        if (count($objPage->arrErr) == 0) {
         
         //-- 検索データ取得
         $sql = "SELECT * FROM dtb_templates";
         $mail_list = $objQuery->getall($sql);
         
-        print_r($mail_list);print("<br>");
-        
         // 表示件数設定
         $page_rows = $objQuery->count("dtb_templates");
         print($page_rows);
-        exit;
         if(is_numeric($page_rows)) {    
             $page_max = $page_rows;
         } else {
             $page_max = SEARCH_PMAX;
         }
         
-        if ($objPage->arrForm['search_pageno'] == 0){
-            $objPage->arrForm['search_pageno'] = 1;
-        }
+        //$offset = $page_max * ($objPage->arrForm['search_pageno'] - 1);
+        //$objSelect->setLimitOffset($page_max, $offset);
         
-        $offset = $page_max * ($objPage->arrForm['search_pageno'] - 1);
-        $objSelect->setLimitOffset($page_max, $offset);
-        
-        $objPage->search_data = $objQuery->conn->getAll($searchSql, $objSelect->arrVal);
-
+        $objPage->search_data = $mail_list;
         // 行数の取得
             $linemax = $objQuery->conn->getOne( $objSelect->getListCount(), $objSelect->arrVal);
             $objPage->tpl_linemax = $linemax;               // 何件が該当しました。表示用
@@ -65,7 +58,7 @@ if (count($objPage->arrErr) == 0) {
             $startno = $objNavi->start_row;
             $objPage->arrPagenavi = $objNavi->arrPagenavi;      
         }
-
+    }
 
 //-----------------------------------------------------------------
 
