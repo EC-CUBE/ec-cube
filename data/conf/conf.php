@@ -597,7 +597,10 @@ $arrMAILTPLPATH = array(
 	1 => "mail_templates/order_mail.tpl",
 	2 => "mail_templates/order_mail.tpl",
 	3 => "mail_templates/order_mail.tpl",
-	4 => "mail_templates/contact_mail.tpl",
+    4 => "mobile/mail_templates/order_mail.tpl",
+    5 => "mobile/mail_templates/order_mail.tpl",
+    6 => "mobile/mail_templates/order_mail.tpl",
+	7 => "mail_templates/contact_mail.tpl"
 );
 
 /* ÅÔÆ»ÉÜ¸©ÇÛÎó */
