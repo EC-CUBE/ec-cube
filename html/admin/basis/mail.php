@@ -57,7 +57,13 @@ sfIsSuccess($objSess);
             // ページ送りの取得
             $objNavi = new SC_PageNavi($_POST['search_pageno'], $linemax, $page_max, "fnCustomerPage", NAVI_PMAX);
             $startno = $objNavi->start_row;
-            $objPage->arrPagenavi = $objNavi->arrPagenavi;      
+            $objPage->arrPagenavi = $objNavi->arrPagenavi;
+            
+//            foreach($mail_list as $key => $value){
+//                
+//            }
+            
+                  
         }
     }
 
