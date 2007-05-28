@@ -60,12 +60,12 @@
 					<!--検索結果表示テーブル-->
 					<table width="840" border="0" cellspacing="1" cellpadding="5" summary=" ">
 						<tr bgcolor="#636469" align="center" class="fs12n">
-							<td width="50"><span class="white">日付</span></td>
+							<td width="200"><span class="white">日付</span></td>
 							<td width="200"><span class="white">タイトル</span></td>
-							<td width="50"><span class="white">テンプレートの種類</span></td>
-							<td width="50" "><span class="white">編集</span></td>
-							<td width="50"><span class="white">削除</span></td>
-							<td width="50" ><span class="white">プレビュー</span></td>
+							<td width="110"><span class="white">テンプレートの種類</span></td>
+							<td width="110" "><span class="white">編集</span></td>
+							<td width="110"><span class="white">削除</span></td>
+							<td width="110" ><span class="white">プレビュー</span></td>
 						</tr>
 						<!--{section name=data loop=$mail_list}-->
 							<!--顧客<!--{$smarty.section.data.iteration}-->-->
