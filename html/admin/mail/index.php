@@ -425,7 +425,7 @@ function lfRegistData($arrData){
 			
 			$dtb_send_customer["name"] = $line["name01"] . " " . $line["name02"];
 				
-			$conn->autoExecute("dtb_send_customer", $dtb_send_customer );					
+			//$conn->autoExecute("dtb_send_customer", $dtb_send_customer );					
 
 		}	
 	}
