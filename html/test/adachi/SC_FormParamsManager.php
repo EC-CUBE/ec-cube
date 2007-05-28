@@ -63,13 +63,18 @@ class SC_FormParamsManager {
                 $objValidator = SC_Validate::factory($method, $args);
                 
                 if ($objValidator->validate($objParam)->is_error()) {
-                    $this->arrErr[$_key] = $objValidate->getErrorMessage();
+                    $this->arrErr[$_key] = $objValidator->getErrorMessage();
                 }
             }
         }
         
         // Group Validation
         foreach ($arrGroups as $group => $_value) {
+            // 既にエラーがある場合はvalidationを行わない
+            if (array_key_exists(array_keys($value), $this->arrErr)) {
+                continue;
+            }
+            
             $objValidator = SC_Validate::factory('GROUP');
             if ($objValidator->validate($arrGroups[$group])->is_error()) {
                 $this->arrErr[$group] = $objValidator->getErrorMessage();
@@ -77,6 +82,8 @@ class SC_FormParamsManager {
         }
         
         // 親子 validation
+        
+        return $this;
     }
     function getEM(){
         return $this->getErrorMessage()
