@@ -414,16 +414,18 @@ function lfRegistData($arrData){
        $dtb_send_history["send_id"] = $objQuery->nextval('dtb_send_history', 'send_id');
     }
     
-    print("dtb_send_history:");print_r($dtb_send_history);print("\n");
+    print("dtb_send_history:");print_r($dtb_send_history);print("<br>");
 	if ( is_array( $search_data ) ){
-		print_r($search_data);print("\n");exit;//トレース
+		
         foreach( $search_data as $line ){
             $dtb_send_customer = array();
 			$dtb_send_customer["customer_id"] = $line["customer_id"];
 			$dtb_send_customer["send_id"] = $dtb_send_history["send_id"];
 			$dtb_send_customer["email"] = $line["email"];
 			$dtb_send_customer["name"] = $line["name01"] . " " . $line["name02"];
-				
+			
+            print_r($search_data);exit;//トレース
+            	
 			$conn->autoExecute("dtb_send_customer", $dtb_send_customer );					
 
 		}	
