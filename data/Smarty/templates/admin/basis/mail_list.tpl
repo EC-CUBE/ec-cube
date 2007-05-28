@@ -49,6 +49,10 @@
 								<table width="678" border="0" cellspacing="1" cellpadding="8" summary=" ">
 									<tr>
 										<td bgcolor="#f2f1ec" colspan="2" class="fs12n">▼基本情報</td>
+										<td bgcolor="#f2f1ec" colspan="2" class="fs12n">▼基本情報</td>
+										<td bgcolor="#f2f1ec" colspan="2" class="fs12n">▼基本情報</td>
+										<td bgcolor="#f2f1ec" colspan="2" class="fs12n">▼基本情報</td>
+										<td bgcolor="#f2f1ec" colspan="2" class="fs12n">▼基本情報</td>
 									</tr>
 									<tr>
 										<td bgcolor="#f2f1ec" width="180" class="fs12n">会社名</td>
