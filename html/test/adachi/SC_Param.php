@@ -10,6 +10,7 @@ class SC_Param {
     var $_file;
     var $_convertType;
     var $_validateType;
+    var $_error;
     
     function SC_Param($arrParamInfo){
         $this->init($arrParamInfo);

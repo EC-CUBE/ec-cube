@@ -7,17 +7,12 @@ require_once('SC_Validate.php')
  */
 
 class SC_FormParamsManager {
-    var $_objQuery;
-    var $_objValidate;
     var $_arrParamsInfo;
-    var $_arrInputDBData;
     var $_arrErr;
     
-    function SC_FormParamsManager($arrParams = array(), $arrParamsInfo = array()){
-        $this->_objQuery    = new SC_Query();
-        $this->_objValidate = new SC_Validate();
-        $this->_arrParamsInfo  = array();
-        $this->_arrInputDBData = array();
+    function SC_FormParamsManager($arrParams, $arrParamsInfo){
+        $this->_arrParamsInfo = array();
+        $this->_arrErr = array();
         
         if (count($arrParams) > 0 && count($arrParamsInfo) > 0) {
             $this->setParams($arrParams, $arrParamsInfo);
@@ -34,17 +29,36 @@ class SC_FormParamsManager {
         unset($_POST);
     }
     
+    function setGroups($arrGroup){
+        $this->_groups = $arrGroup;
+    }
+    
+    function getGroups(){
+        return $this->_groups;
+    }
+    
+    
     function validate(){
-        $arrGroups = array();
-        $arrParentAndChild = array();
+        $arrGroups = array();    // 複数項目チェック用
+        $arrParent = array();    // 上位項目チェック用
         
-        // Single Validation
+        
         foreach ($this->_arrParamsInfo as $_key => $objParam) {
-            $objParam->has_group() ? $arrGroups[$objParam->getGroup()][$_key] = $objParam;
-            $arrParentAndChild
+            // 複数項目チェック用配列を構築
+            if ($objParam->has_group())  { $arrGroups[$objParam->getGroup()][$_key] = $objParam; }
+            
+            // 上位項目チェック
+            if ($objParam->has_parent()) {
+                $has_parent = true;
+                while ($has_parent) {
+                    if ($this->_arrParamsInfo[$objParam->getParent()]->has_parent()) {
+                        
+                    }
+            }
             
             $arrValidateType = $objParam->getValidateType();
             
+            // Single Validation
             foreach ($arrValidateType as $method => $args) {
                 $objValidator = SC_Validate::factory($method, $args);
                 
@@ -61,6 +75,8 @@ class SC_FormParamsManager {
                 $this->arrErr[$group] = $objValidator->getErrorMessage();
             }
         }
+        
+        // 親子 validation
     }
     function getEM(){
         return $this->getErrorMessage()
