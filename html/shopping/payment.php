@@ -102,7 +102,7 @@ default:
 }
 
 if (!sfisInt($objFormParam->getValue('payment_id'))) {
-    sfDispError();
+    sfDispError('');
 }
 
 // 店舗情報の取得
