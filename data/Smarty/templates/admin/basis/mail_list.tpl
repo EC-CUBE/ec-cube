@@ -67,10 +67,6 @@
 							<td width="250"><span class="white">削除</span></td>
 							<td width="50" rowspan="2"><span class="white">プレビュー</span></td>
 						</tr>
-						<tr bgcolor="#636469" align="center" class="fs12n">
-							<td width=""><span class="white">都道府県</span></td>
-							<td width=""><span class="white">メールアドレス</span></td>
-						</tr>
 						<!--{section name=data loop=$search_data}-->
 							<!--顧客<!--{$smarty.section.data.iteration}-->-->
 							<tr bgcolor="#ffffff" class="fs12n">
