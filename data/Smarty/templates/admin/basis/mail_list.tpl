@@ -73,8 +73,8 @@
 								<td align="center" rowspan="2"><!--{$mail_list[data].create_date|escape}--></td>
 								<td align="center" rowspan="2"><!--{$mail_list[data].template_name|escape}--></td>					
 								<td><!--{if $mail_list[data].send_type eq 0}-->╔я╔╫╔Ё╔С<!--{else}-->╥хбс<!--{/if}--></td>
-								<td align="center" rowspan="2"><span class="icon_edit"><a href="#" onclick="return fnEdit('<!--{$mail_list[data].template_code|escape}-->');">йт╫╦</a></span>
-								</td>
+								<td align="center" rowspan="2"><span class="icon_edit"><a href="#" onclick="return fnEdit('<!--{$mail_list[data].template_code|escape}-->');">йт╫╦</a></span></td>
+								<td align="center" rowspan="2"><span class="icon_delete"><a href="#" onclick="return fnDelete('<!--{$mail_list[data].template_code|escape}-->');">╨О╫Э</a></span></td>
 								<td align="center" rowspan="2"><span class="icon_delete"><a href="#" onclick="return fnDelete('<!--{$mail_list[data].template_code|escape}-->');">╨О╫Э</a></span></td>
 							</tr>
 							<!--╦э╣р<!--{$smarty.section.data.iteration}-->-->
