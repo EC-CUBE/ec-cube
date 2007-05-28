@@ -54,6 +54,13 @@
 										<td bgcolor="#f2f1ec" colspan="2" class="fs12n">▼基本情報</td>
 										<td bgcolor="#f2f1ec" colspan="2" class="fs12n">▼基本情報</td>
 									</tr>
+																		<tr>
+										<td bgcolor="#f2f1ec" colspan="2" class="fs12n">▼基本情報</td>
+										<td bgcolor="#f2f1ec" colspan="2" class="fs12n">▼基本情報</td>
+										<td bgcolor="#f2f1ec" colspan="2" class="fs12n">▼基本情報</td>
+										<td bgcolor="#f2f1ec" colspan="2" class="fs12n">▼基本情報</td>
+										<td bgcolor="#f2f1ec" colspan="2" class="fs12n">▼基本情報</td>
+									</tr>
 								</table>
 
 								<table width="678" border="0" cellspacing="0" cellpadding="0" summary=" ">
