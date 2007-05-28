@@ -423,11 +423,9 @@ function lfRegistData($arrData){
 			$dtb_send_customer["send_id"] = $dtb_send_history["send_id"];
 			$dtb_send_customer["email"] = $line["email"];
 			$dtb_send_customer["name"] = $line["name01"] . " " . $line["name02"];
-			
-            print_r($dtb_send_customer);exit;//トレース
-            	
+			       	
 			$conn->autoExecute("dtb_send_customer", $dtb_send_customer );					
-
+            print_r($dtb_send_customer);exit;//トレース
 		}	
 	}
 }
