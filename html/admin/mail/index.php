@@ -411,7 +411,7 @@ function lfRegistData($arrData){
     $objQuery->insert("dtb_send_history", $dtb_send_history );
     
     if(DB_TYPE == "mysql"){
-       $dtb_send_history["send_id"] = $objQuery->nextval('dtb_send_history', 'send_id');
+       //$dtb_send_history["send_id"] = $objQuery->nextval('dtb_send_history', 'send_id');
     }
     
     //print("dtb_send_history:");print_r($dtb_send_history);print("<br>");
@@ -420,7 +420,7 @@ function lfRegistData($arrData){
         foreach( $search_data as $line ){
             $dtb_send_customer = array();
 			$dtb_send_customer["customer_id"] = $line["customer_id"];
-			$dtb_send_customer["send_id"] = $dtb_send_history["send_id"] + 1;
+			$dtb_send_customer["send_id"] = $dtb_send_history["send_id"];
 			$dtb_send_customer["email"] = $line["email"];
 			$dtb_send_customer["name"] = $line["name01"] . " " . $line["name02"];
 			       	
