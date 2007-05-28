@@ -35,10 +35,12 @@ if (count($objPage->arrErr) == 0) {
         $sql = "SELECT * FROM dtb_templates";
         $mail_list = $objQuery->getall($sql);
         
-        print_r($mail_list);exit;
+        print_r($mail_list);print("<br>");
         
         // 表示件数設定
         $page_rows = $objQuery->count("dtb_templates");
+        print($page_rows);
+        exit;
         if(is_numeric($page_rows)) {    
             $page_max = $page_rows;
         } else {
