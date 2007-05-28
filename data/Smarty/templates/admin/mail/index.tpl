@@ -145,14 +145,14 @@
 									</span>
 								</td>
 							</tr>
-　　　　　　　　　　　　　　<!--{*一旦停止/2007/05/28 
+　　　　　　　　　　　　　　{*一旦停止/2007/05/28 
 							<tr class="fs12n">
 								<td bgcolor="#f2f1ec" width="110">配信メールアドレス種別</td>
 								<td bgcolor="#ffffff" colspan="3">
 								<!--{html_radios name="mail_type" options=$arrMailType separator="&nbsp;" selected=$list_data.mail_type}-->
 								</td>
 							</tr>
-							*}-->
+							*}
 							<tr class="fs12n">
 								<td bgcolor="#f2f1ec" width="110">ドメイン指定</td>
 								<td bgcolor="#ffffff" colspan="3">
