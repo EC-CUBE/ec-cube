@@ -70,11 +70,11 @@
 						<!--{section name=data loop=$mail_list}-->
 							<!--顧客<!--{$smarty.section.data.iteration}-->-->
 							<tr bgcolor="#ffffff" class="fs12n">
-								<td align="center" rowspan="2"><!--{if $mail_list[data].status eq 1}-->仮<!--{else}-->本<!--{/if}--></td>
-								<td><!--{$mail_list[data].customer_id|escape}--></td>
-								<td rowspan="2"><!--{$mail_list[data].name01|escape}--> <!--{$mail_list[data].name02|escape}-->(<!--{$mail_list[data].kana01|escape}--> <!--{$mail_list[data].kana02|escape}-->)</td>
-								<td align="center" rowspan="2"><!--{if $mail_list[data].sex eq 1}-->男性<!--{else}-->女性<!--{/if}--></td>
-								<td><!--{$mail_list[data].tel01|escape}-->-<!--{$mail_list[data].template_code|escape}-->-<!--{$mail_list[data].tel03|escape}--></td>
+								<td align="center" rowspan="2"><!--{$mail_list[data].template_code|escape}--></td>
+								<td><!--{$mail_list[data].template_name|escape}--></td>
+								<td rowspan="2"><!--{$mail_list[data].template_code|escape}--></td>
+								<td align="center" rowspan="2"><!--{$mail_list[data].create_date|escape}--></td>
+								<td><!--{if $mail_list[data].sex eq 1}-->パソコン<!--{else}-->携帯<!--{/if}--></td>
 								<td align="center" rowspan="2"><span class="icon_edit"><a href="#" onclick="return fnEdit('<!--{$mail_list[data].customer_id|escape}-->');">編集</a></span>
 								</td>
 								<td align="center" rowspan="2"><span class="icon_delete"><a href="#" onclick="return fnDelete('<!--{$mail_list[data].customer_id|escape}-->');">削除</a></span></td>
