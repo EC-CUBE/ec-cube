@@ -424,9 +424,14 @@ function lfRegistData($arrData){
 			$dtb_send_customer["email"] = $line["email"];
 			$dtb_send_customer["name"] = $line["name01"] . " " . $line["name02"];
 			       	
-			$conn->autoExecute("dtb_send_customer", $dtb_send_customer );					
-            print_r($dtb_send_customer);exit;//トレース
-		}	
+			
+            if(DB_TYPE=="pgsql"){
+                $conn->autoExecute("dtb_send_customer", $dtb_send_customer );					
+            }elseif(DB_TYPE=="mysql"){
+                $conn->query("dtb_send_customer", $dtb_send_customer );
+                print_r($dtb_send_customer);exit;//トレース
+            }
+        }	
 	}
 }
 
