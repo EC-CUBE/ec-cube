@@ -420,16 +420,12 @@ function lfGetPayment() {
 
 function lfconvertParam () {
     global $objPage;
-    $count = 1;
-    while(1) {
-        $quantity_key = 'quantity' . $count;
-        if (isset($objPage->arrForm[$quantity_key])) {
-            $objPage->arrForm[$quantity_key]
-                = htmlspecialchars($objPage->arrForm[$quantity_key], ENT_QUOTES, CHAR_CODE);
-        } else {
-            break;
+    
+    foreach ($objPage->arrForm as $key => $value) {
+        if (preg_match('/^quantity[0-9]+/', $key)) {
+             $objPage->arrForm[$key]
+                = htmlspecialchars($objPage->arrForm[$key], ENT_QUOTES, CHAR_CODE);
         }
-        $count++;
     }
 }
 ?>
