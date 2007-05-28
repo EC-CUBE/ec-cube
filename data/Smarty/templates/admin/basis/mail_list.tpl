@@ -70,14 +70,14 @@
 						<!--{section name=data loop=$mail_list}-->
 							<!--顧客<!--{$smarty.section.data.iteration}-->-->
 							<tr bgcolor="#ffffff" class="fs12n">
-								<td align="center" rowspan="2"><!--{$mail_list[data].template_code|escape}--></td>
+								<td align="center" rowspan="2"></td>
 								<td><!--{$mail_list[data].template_name|escape}--></td>
 								<td rowspan="2"><!--{$mail_list[data].template_code|escape}--></td>
 								<td align="center" rowspan="2"><!--{$mail_list[data].create_date|escape}--></td>
-								<td><!--{if $mail_list[data].sex eq 1}-->パソコン<!--{else}-->携帯<!--{/if}--></td>
-								<td align="center" rowspan="2"><span class="icon_edit"><a href="#" onclick="return fnEdit('<!--{$mail_list[data].customer_id|escape}-->');">編集</a></span>
+								<td><!--{if $mail_list[data].send_type eq 1}-->パソコン<!--{else}-->携帯<!--{/if}--></td>
+								<td align="center" rowspan="2"><span class="icon_edit"><a href="#" onclick="return fnEdit('<!--{$mail_list[data].template_code|escape}-->');">編集</a></span>
 								</td>
-								<td align="center" rowspan="2"><span class="icon_delete"><a href="#" onclick="return fnDelete('<!--{$mail_list[data].customer_id|escape}-->');">削除</a></span></td>
+								<td align="center" rowspan="2"><span class="icon_delete"><a href="#" onclick="return fnDelete('<!--{$mail_list[data].template_code|escape}-->');">削除</a></span></td>
 							</tr>
 							<tr bgcolor="#ffffff" class="fs12n">
 								<td width=""><!--{assign var=pref value=$mail_list[data].pref}--><!--{$arrPref[$pref]}--></td>
