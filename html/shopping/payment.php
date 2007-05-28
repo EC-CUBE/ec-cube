@@ -101,10 +101,6 @@ default:
 	break;
 }
 
-if (!sfisInt($_POST['payment_id'])) {
-    header('Location: ' . SITE_URL);
-}
-
 // 店舗情報の取得
 $arrInfo = $objSiteInfo->data;
 // 購入金額の取得得
