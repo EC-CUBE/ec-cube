@@ -39,8 +39,8 @@ class SC_FormParamsManager {
         $arrParentAndChild = array();
         
         // Single Validation
-        foreach ($this->$_arrParamsInfo as $_key => $objParam) {
-            $arrGroups[$objParam->getGroup()][$_key] = $objParam;
+        foreach ($this->_arrParamsInfo as $_key => $objParam) {
+            $objParam->has_group() ? $arrGroups[$objParam->getGroup()][$_key] = $objParam;
             $arrParentAndChild
             
             $arrValidateType = $objParam->getValidateType();
@@ -48,7 +48,7 @@ class SC_FormParamsManager {
             foreach ($arrValidateType as $method => $args) {
                 $objValidator = SC_Validate::factory($method, $args);
                 
-                if ($objValidator->validate($objParam->getValue)->is_error()) {
+                if ($objValidator->validate($objParam)->is_error()) {
                     $this->arrErr[$_key] = $objValidate->getErrorMessage();
                 }
             }
@@ -56,11 +56,11 @@ class SC_FormParamsManager {
         
         // Group Validation
         foreach ($arrGroups as $group => $_value) {
-            foreach ($_value as $_key => $objParam) {
-                $objValidator = SC_Validate::factory('GROUP', $objParam);
-                if ($objValidator->validate()->is_error()) {
-                    $this->arrErr[$group] = 
-                }
+            $objValidator = SC_Validate::factory('GROUP');
+            if ($objValidator->validate($arrGroups[$group])->is_error()) {
+                $this->arrErr[$group] = $objValidator->getErrorMessage();
+            }
+        }
     }
     function getEM(){
         return $this->getErrorMessage()
