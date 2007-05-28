@@ -416,7 +416,7 @@ function lfRegistData($arrData){
     
     print("dtb_send_history:");print_r($dtb_send_history);print("\n");
 	if ( is_array( $search_data ) ){
-		print_r($search_data);exit;//トレース
+		print_r($search_data);print("\n");exit;//トレース
         foreach( $search_data as $line ){
             $dtb_send_customer = array();
 			$dtb_send_customer["customer_id"] = $line["customer_id"];
