@@ -101,6 +101,10 @@ default:
 	break;
 }
 
+if (!sfisInt($objFormParam->getValue('payment_id'))) {
+    sfDispPage();
+}
+
 // 店舗情報の取得
 $arrInfo = $objSiteInfo->data;
 // 購入金額の取得得
