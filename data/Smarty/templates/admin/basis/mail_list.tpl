@@ -58,7 +58,7 @@
 				<tr>
 					<td bgcolor="#cccccc">
 					<!--検索結果表示テーブル-->
-					<table width="840" border="0" cellspacing="1" cellpadding="5" summary=" ">
+					<table width="600" border="0" cellspacing="1" cellpadding="5" summary=" ">
 						<tr bgcolor="#636469" align="center" class="fs12n">
 							<td width="180"><span class="white">日付</span></td>
 							<td width="180"><span class="white">タイトル</span></td>
