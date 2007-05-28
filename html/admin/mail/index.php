@@ -410,22 +410,21 @@ function lfRegistData($arrData){
     //ハッシュdtb_send_historyをデータベースdtb_send_historyに挿入
     $objQuery->insert("dtb_send_history", $dtb_send_history );
     
-    
     if(DB_TYPE == "mysql"){
        $dtb_send_history["send_id"] = $objQuery->nextval('dtb_send_history', 'send_id');
     }
-    //print_r($dtb_send_history);exit;//トレース
+    
     
 	if ( is_array( $search_data ) ){
-		foreach( $search_data as $line ){
+		print_r($search_data);exit;//トレース
+        foreach( $search_data as $line ){
             $dtb_send_customer = array();
 			$dtb_send_customer["customer_id"] = $line["customer_id"];
 			$dtb_send_customer["send_id"] = $dtb_send_history["send_id"];
 			$dtb_send_customer["email"] = $line["email"];
-			
 			$dtb_send_customer["name"] = $line["name01"] . " " . $line["name02"];
 				
-			//$conn->autoExecute("dtb_send_customer", $dtb_send_customer );					
+			$conn->autoExecute("dtb_send_customer", $dtb_send_customer );					
 
 		}	
 	}
