@@ -409,8 +409,12 @@ function lfRegistData($arrData){
     
     //ハッシュdtb_send_historyをデータベースdtb_send_historyに挿入
     $objQuery->insert("dtb_send_history", $dtb_send_history );
-     print_r($dtb_send_history);
     
+    
+    if(DB_TYPE == "mysql"){
+       $dtb_send_history["send_id"] = $objQuery->nextval('dtb_send_history', 'send_id');
+    }
+    print_r($dtb_send_history);exit;//トレース
     
 	if ( is_array( $search_data ) ){
 		foreach( $search_data as $line ){
