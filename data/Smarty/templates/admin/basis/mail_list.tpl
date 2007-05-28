@@ -47,21 +47,21 @@
 								</table>
 
 <!--▼リスト表示部分-->
-<table width="638" border="0" cellspacing="0" cellpadding="0" summary=" ">
+<table width="680" border="0" cellspacing="0" cellpadding="0" summary=" ">
 	<tr>
 		<td bgcolor="#f0f0f0" align="center">
 
 		<!--{if count($search_data) > 0}-->		
 
-			<table width="638" border="0" cellspacing="0" cellpadding="0" summary=" ">
+			<table width="680" border="0" cellspacing="0" cellpadding="0" summary=" ">
 				<tr><td height="12"></td></tr>
 				<tr>
 					<td bgcolor="#cccccc">
 					<!--検索結果表示テーブル-->
-					<table width="638" border="0" cellspacing="1" cellpadding="5" summary=" ">
+					<table width="680" border="0" cellspacing="1" cellpadding="5" summary=" ">
 						<tr bgcolor="#636469" align="center" class="fs12n">
-							<td width="180"><span class="white">日付</span></td>
-							<td width="180"><span class="white">タイトル</span></td>
+							<td width="220"><span class="white">日付</span></td>
+							<td width="220"><span class="white">タイトル</span></td>
 							<td width="60"><span class="white">テンプレートの種類</span></td>
 							<td width="60" "><span class="white">編集</span></td>
 							<td width="60"><span class="white">削除</span></td>
