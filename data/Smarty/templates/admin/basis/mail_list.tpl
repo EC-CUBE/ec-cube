@@ -79,10 +79,6 @@
 								</td>
 								<td align="center" rowspan="2"><span class="icon_delete"><a href="#" onclick="return fnDelete('<!--{$mail_list[data].template_code|escape}-->');">ºï½ü</a></span></td>
 							</tr>
-							<tr bgcolor="#ffffff" class="fs12n">
-								<td width=""><!--{assign var=pref value=$mail_list[data].pref}--><!--{$arrPref[$pref]}--></td>
-								<td width=""><!--{mailto address=$mail_list[data].email encode="javascript"}--></a></td>
-							</tr>
 							<!--¸ÜµÒ<!--{$smarty.section.data.iteration}-->-->
 						<!--{/section}-->
 					</table>
