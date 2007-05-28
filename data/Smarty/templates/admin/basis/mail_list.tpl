@@ -70,12 +70,12 @@
 						<!--{section name=data loop=$mail_list}-->
 							<!--¸ÜµÒ<!--{$smarty.section.data.iteration}-->-->
 							<tr bgcolor="#ffffff" class="fs12n">
-								<td align="center" rowspan="2"><!--{$mail_list[data].create_date|escape}--></td>
-								<td align="center" rowspan="2"><!--{$mail_list[data].template_name|escape}--></td>					
+								<td align="center" ><!--{$mail_list[data].create_date|escape}--></td>
+								<td align="center" ><!--{$mail_list[data].template_name|escape}--></td>					
 								<td><!--{if $mail_list[data].send_type eq 0}-->¥Ñ¥½¥³¥ó<!--{else}-->·ÈÂÓ<!--{/if}--></td>
-								<td align="center" rowspan="2"><span class="icon_edit"><a href="#" onclick="return fnEdit('<!--{$mail_list[data].template_code|escape}-->');">ÊÔ½¸</a></span></td>
-								<td align="center" rowspan="2"><span class="icon_delete"><a href="#" onclick="return fnDelete('<!--{$mail_list[data].template_code|escape}-->');">ºï½ü</a></span></td>
-								<td align="center" rowspan="2"><span class="icon_delete"><a href="#" onclick="return fnDelete('<!--{$mail_list[data].template_code|escape}-->');">ºï½ü</a></span></td>
+								<td align="center" ><span class="icon_edit"><a href="#" onclick="return fnEdit('<!--{$mail_list[data].template_code|escape}-->');">ÊÔ½¸</a></span></td>
+								<td align="center" ><span class="icon_delete"><a href="#" onclick="return fnDelete('<!--{$mail_list[data].template_code|escape}-->');">ºï½ü</a></span></td>
+								<td align="center" ><span class="icon_delete"><a href="#" onclick="return fnDelete('<!--{$mail_list[data].template_code|escape}-->');">ºï½ü</a></span></td>
 							</tr>
 							<!--¸ÜµÒ<!--{$smarty.section.data.iteration}-->-->
 						<!--{/section}-->
