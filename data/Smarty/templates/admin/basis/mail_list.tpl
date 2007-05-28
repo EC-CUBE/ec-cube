@@ -53,7 +53,7 @@
 
 		<!--{if count($search_data) > 0}-->		
 
-			<table width="840" border="0" cellspacing="0" cellpadding="0" summary=" ">
+			<table width="600" border="0" cellspacing="0" cellpadding="0" summary=" ">
 				<tr><td height="12"></td></tr>
 				<tr>
 					<td bgcolor="#cccccc">
