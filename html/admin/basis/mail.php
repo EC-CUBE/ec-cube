@@ -34,7 +34,7 @@ if (count($objPage->arrErr) == 0) {
         //-- 検索データ取得
         $sql = "SELECT * FROM dtb_templates";
         $mail_list = $objQuery->query($sql);
-        print_r($mail_list["result"]);exit;
+        print_r($mail_list);exit;
         
         // 表示件数設定
         $page_rows = $objPage->arrForm['page_rows'];
