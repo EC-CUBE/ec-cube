@@ -32,7 +32,8 @@ sfIsSuccess($objSess);
 if (count($objPage->arrErr) == 0) {
         
         //-- 検索データ取得
-        $mail_list = $objQuery->getall("dtb_template");
+        $sql = "SELECT * FROM dtb_template";
+        $mail_list = $objQuery->query($sql);
         print_r($mail_list);exit;
         
         // 表示件数設定
