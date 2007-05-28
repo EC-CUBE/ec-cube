@@ -74,6 +74,14 @@
 
 						<table width="678" border="0" cellspacing="1" cellpadding="8" summary=" ">
 							<tr>
+							    <td bgcolor="#f2f1ec" width="160" class="fs12n">顧客名</td>
+							    <td bgcolor="#ffffff" width="557" class="fs10n"></td>
+							</tr>
+							<tr>
+							    <td bgcolor="#f2f1ec" width="160" class="fs12n">メールアドレス</td>
+							    <td bgcolor="#ffffff" width="557" class="fs10n"></td>
+							</tr>
+							<tr>
 								<td bgcolor="#f2f1ec" width="160" class="fs12n">テンプレート<span class="red"> *</span></td>
 								<td bgcolor="#ffffff" width="557" class="fs10n">
 								<!--{assign var=key value="template_id"}-->
