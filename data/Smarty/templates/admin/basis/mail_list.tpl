@@ -70,8 +70,7 @@
 						<!--{section name=data loop=$mail_list}-->
 							<!--¸ÜµÒ<!--{$smarty.section.data.iteration}-->-->
 							<tr bgcolor="#ffffff" class="fs12n">
-								<td align="center" rowspan="2"></td>
-								<td><!--{$mail_list[data].template_name|escape}--></td>
+								<td align="center" rowspan="2"><!--{$mail_list[data].template_name|escape}--></td>
 								<td rowspan="2"><!--{$mail_list[data].template_code|escape}--></td>
 								<td align="center" rowspan="2"><!--{$mail_list[data].create_date|escape}--></td>
 								<td><!--{if $mail_list[data].send_type eq 0}-->¥Ñ¥½¥³¥ó<!--{else}-->·ÈÂÓ<!--{/if}--></td>
