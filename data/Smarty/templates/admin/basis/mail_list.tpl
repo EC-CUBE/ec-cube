@@ -70,9 +70,8 @@
 						<!--{section name=data loop=$mail_list}-->
 							<!--∏‹µ“<!--{$smarty.section.data.iteration}-->-->
 							<tr bgcolor="#ffffff" class="fs12n">
-								<td align="center" rowspan="2"><!--{$mail_list[data].template_name|escape}--></td>
-								<td rowspan="2"><!--{$mail_list[data].template_code|escape}--></td>
 								<td align="center" rowspan="2"><!--{$mail_list[data].create_date|escape}--></td>
+								<td align="center" rowspan="2"><!--{$mail_list[data].template_name|escape}--></td>					
 								<td><!--{if $mail_list[data].send_type eq 0}-->•—•Ω•≥•Û<!--{else}-->∑»¬”<!--{/if}--></td>
 								<td align="center" rowspan="2"><span class="icon_edit"><a href="#" onclick="return fnEdit('<!--{$mail_list[data].template_code|escape}-->');"> ‘Ω∏</a></span>
 								</td>
