@@ -410,7 +410,6 @@ function lfRegistData($arrData){
     //ハッシュdtb_send_historyをデータベースdtb_send_historyに挿入
     $objQuery->insert("dtb_send_history", $dtb_send_history );
      print_r($dtb_send_history);
-    exit;
     
     
 	if ( is_array( $search_data ) ){
