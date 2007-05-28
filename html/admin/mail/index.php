@@ -413,8 +413,6 @@ function lfRegistData($arrData){
     if(DB_TYPE == "mysql"){
         $dtb_send_history["send_id"] = $objQuery->nextval('dtb_send_history', 'send_id');
     }
-    
-    //print("dtb_send_history:");print_r($dtb_send_history);print("<br>");
 	if ( is_array( $search_data ) ){
 		
         foreach( $search_data as $line ){
@@ -424,7 +422,6 @@ function lfRegistData($arrData){
 			$dtb_send_customer["send_id"] = $dtb_send_history["send_id"];
 			$dtb_send_customer["email"] = $line["email"];
 			$dtb_send_customer["name"] = $line["name01"] . " " . $line["name02"];			       	
-            print_r($dtb_send_customer);exit;
             if(DB_TYPE=="pgsql"){
                 $conn->autoExecute("dtb_send_customer", $dtb_send_customer );					
             }elseif(DB_TYPE=="mysql"){
