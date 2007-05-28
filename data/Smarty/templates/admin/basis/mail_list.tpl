@@ -55,31 +55,26 @@
 										<td bgcolor="#f2f1ec" colspan="2" class="fs12n">▼基本情報</td>
 									</tr>
 									<tr>
-										<td bgcolor="#f2f1ec" width="180" class="fs12n">会社名</td>
 										<td bgcolor="#ffffff" width="537" class="fs10n">
 										<span class="red12"><!--{$arrErr.company_name}--></span>
 										<input type="text" name="company_name" value="<!--{$arrForm.company_name|escape}-->" maxlength="<!--{$smarty.const.STEXT_LEN}-->" size="60" class="box60" style="<!--{if $arrErr.company_name != ""}-->background-color: <!--{$smarty.const.ERR_COLOR}--><!--{/if}-->" /><span class="red"> （上限<!--{$smarty.const.STEXT_LEN}-->文字）</span></td>
 									</tr>
 									<tr>
-										<td bgcolor="#f2f1ec" width="180" class="fs12n">会社名（カナ）</td>
 										<td bgcolor="#ffffff" width="537" class="fs10n">
 										<span class="red12"><!--{$arrErr.company_kana}--></span>
 										<input type="text" name="company_kana" value="<!--{$arrForm.company_kana|escape}-->" maxlength="<!--{$smarty.const.STEXT_LEN}-->" size="60" class="box60" style="<!--{if $arrErr.company_kana != ""}-->background-color: <!--{$smarty.const.ERR_COLOR}--><!--{/if}-->" /><span class="red"> （上限<!--{$smarty.const.STEXT_LEN}-->文字）</span></td>
 									</tr>
 									<tr>
-										<td bgcolor="#f2f1ec" width="180" class="fs12n">店名<span class="red"> *</span></td>
 										<td bgcolor="#ffffff" width="537" class="fs10n">
 										<span class="red12"><!--{$arrErr.shop_name}--></span>
 										<input type="text" name="shop_name" value="<!--{$arrForm.shop_name|escape}-->" maxlength="<!--{$smarty.const.STEXT_LEN}-->" size="60" class="box60" style="<!--{if $arrErr.shop_name != ""}-->background-color: <!--{$smarty.const.ERR_COLOR}--><!--{/if}-->" /><span class="red"> （上限<!--{$smarty.const.STEXT_LEN}-->文字）</span></td>
 									</tr>
 									<tr>
-										<td bgcolor="#f2f1ec" width="180" class="fs12n">店名（カナ）</td>
 										<td bgcolor="#ffffff" width="537" class="fs10n">
 										<span class="red12"><!--{$arrErr.shop_kana}--></span>
 										<input type="text" name="shop_kana" value="<!--{$arrForm.shop_kana|escape}-->" maxlength="<!--{$smarty.const.STEXT_LEN}-->" size="60" class="box60" style="<!--{if $arrErr.shop_kana != ""}-->background-color: <!--{$smarty.const.ERR_COLOR}--><!--{/if}-->" /><span class="red"> （上限<!--{$smarty.const.STEXT_LEN}-->文字）</span></td>
 									</tr>
 									<tr class="fs12n">
-										<td bgcolor="#f2f1ec" width="160">郵便番号<span class="red"> *</span></td>
 										<td bgcolor="#ffffff" width="537">
 										<span class="red12"><!--{$arrErr.zip01}--></span>
 										<span class="red12"><!--{$arrErr.zip02}--></span>
