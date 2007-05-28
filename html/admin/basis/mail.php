@@ -52,7 +52,7 @@ sfIsSuccess($objSess);
         // 行数の取得
             //$linemax = $objQuery->conn->getOne( $objSelect->getListCount(), $objSelect->arrVal);
             //$objPage->tpl_linemax = $linemax;               // 何件が該当しました。表示用
-            $objPage->tpl_linemax = $pagemax;
+            $objPage->tpl_linemax = $page_rows;
             
             // ページ送りの取得
             $objNavi = new SC_PageNavi($_POST['search_pageno'], $linemax, $page_max, "fnCustomerPage", NAVI_PMAX);
