@@ -34,10 +34,11 @@ if (count($objPage->arrErr) == 0) {
         //-- 検索データ取得
         $sql = "SELECT * FROM dtb_templates";
         $mail_list = $objQuery->getall($sql);
+        
         print_r($mail_list);exit;
         
         // 表示件数設定
-        $page_rows = $objPage->arrForm['page_rows'];
+        $page_rows = $objQuery->count("dtb_templates");
         if(is_numeric($page_rows)) {    
             $page_max = $page_rows;
         } else {
@@ -49,13 +50,7 @@ if (count($objPage->arrErr) == 0) {
         }
         
         $offset = $page_max * ($objPage->arrForm['search_pageno'] - 1);
-        $objSelect->setLimitOffset($page_max, $offset);     
-        
-        if ($_POST["mode"] == 'csv') {
-            $searchSql = $objSelect->getListCSV($arrColumnCSV);
-        }else{
-            $searchSql = $objSelect->getList();
-        }
+        $objSelect->setLimitOffset($page_max, $offset);
         
         $objPage->search_data = $objQuery->conn->getAll($searchSql, $objSelect->arrVal);
 
