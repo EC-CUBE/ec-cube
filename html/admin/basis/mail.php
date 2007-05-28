@@ -10,7 +10,7 @@ class LC_Page {
 	var $arrSession;
 	var $tpl_mode;
 	function LC_Page() {
-		$this->tpl_mainpage = 'basis/mail.tpl';
+		$this->tpl_mainpage = 'basis/mail_list.tpl';
 		$this->tpl_subnavi = 'basis/subnavi.tpl';
 		$this->tpl_mainno = 'basis';
 		$this->tpl_subno = 'mail';
