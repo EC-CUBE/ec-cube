@@ -47,7 +47,7 @@
 								</table>
 
 <!--▼リスト表示部分-->
-<table width="878" border="0" cellspacing="0" cellpadding="0" summary=" ">
+<table width="638" border="0" cellspacing="0" cellpadding="0" summary=" ">
 	<tr>
 		<td bgcolor="#f0f0f0" align="center">
 
