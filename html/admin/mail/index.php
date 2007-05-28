@@ -411,7 +411,7 @@ function lfRegistData($arrData){
     $objQuery->insert("dtb_send_history", $dtb_send_history );
     
     if(DB_TYPE == "mysql"){
-       //$dtb_send_history["send_id"] = $objQuery->nextval('dtb_send_history', 'send_id');
+       $dtb_send_history["send_id"] = $objQuery->nextval('dtb_send_history', 'send_id');
     }
     
     //print("dtb_send_history:");print_r($dtb_send_history);print("<br>");
