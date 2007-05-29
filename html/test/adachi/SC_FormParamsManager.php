@@ -61,8 +61,9 @@ class SC_FormParamsManager {
             // Single Validation
             foreach ($arrValidateType as $method => $args) {
                 $objValidator = SC_Validate::factory($method, $args);
+                $objValidator->validate($objParam);
                 
-                if ($objValidator->validate($objParam)->is_error()) {
+                if ($objValidator->is_error()) {
                     $this->arrErr[$_key] = $objValidator->getErrorMessage();
                 }
             }
