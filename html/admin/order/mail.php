@@ -38,7 +38,7 @@ $objPage->tpl_order_name02 = $_POST['order_name02'];
 $objPage->tpl_order_email = $_POST['order_email'];
 
 print_r($_POST);
-print_r($objPage);
+//print_r($objPage);
 
 // パラメータ管理クラス
 $objFormParam = new SC_FormParam();
