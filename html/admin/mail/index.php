@@ -428,7 +428,7 @@ function lfRegistData($arrData){
                 $conn->autoExecute("dtb_send_customer", $dtb_send_customer );					
             }elseif(DB_TYPE=="mysql"){
                 $sql = "SELECT * FROM dtb_send_customer WHERE send_id = ?";
-                print_r($conn->query($sql,array($dtb_send_history["send_id"])));exit; 
+                print_r($conn->getOne($sql,array($dtb_send_history["send_id"])));exit; 
                 $conn->autoExecute("dtb_send_customer", $dtb_send_customer );
                 
             }
