@@ -10,7 +10,7 @@ class LC_Page {
 	var $arrSession;
 	var $tpl_mode;
 	function LC_Page() {
-		$this->tpl_mainpage = 'basis/mail_list.tpl';
+		$this->tpl_mainpage = 'basis/template.tpl';
 		$this->tpl_subnavi = 'basis/subnavi.tpl';
 		$this->tpl_mainno = 'basis';
 		$this->tpl_subno = 'mail';
@@ -45,8 +45,8 @@ sfIsSuccess($objSess);
             $page_max = SEARCH_PMAX;
         }
         
-        //$offset = $page_max * ($objPage->arrForm['search_pageno'] - 1);
-        //$objSelect->setLimitOffset($page_max, $offset);
+        $offset = $page_max * ($objPage->arrForm['search_pageno'] - 1);
+        $objSelect->setLimitOffset($page_max, $offset);
         
         $objPage->search_data = $mail_list;
         // 行数の取得
@@ -58,7 +58,7 @@ sfIsSuccess($objSess);
             $objNavi = new SC_PageNavi($_POST['search_pageno'], $linemax, $page_max, "fnCustomerPage", NAVI_PMAX);
             $startno = $objNavi->start_row;
             $objPage->arrPagenavi = $objNavi->arrPagenavi;
-            $objPage->mail_list = $mail_list;
+            $objPage->mail_list = $list_data;
 //            foreach($mail_list as $key => $value){
 //                
 //            }
