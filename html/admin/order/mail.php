@@ -25,14 +25,6 @@ $objView = new SC_AdminView();
 $objSess = new SC_Session();
 sfIsSuccess($objSess);
 
-//-- カラムの配列
-$arrRegistColumn = array(
-                           array(  "column" => "name01",		"convert" => "aKV" ),
-                           array(  "column" => "name02",		"convert" => "aKV" ),
-                           array(  "column" => "email",		"convert" => "a" ),
-						   array(  "column" => "email_mobile",	"convert" => "a" ),
-                         );
-
 // 検索パラメータの引き継ぎ
 foreach ($_POST as $key => $val) {
 	if (ereg("^search_", $key)) {
@@ -44,8 +36,10 @@ $objPage->tpl_order_id = $_POST['order_id'];
 $objPage->tpl_order_name01 = $_POST['order_name01'];
 $objPage->tpl_order_name02 = $_POST['order_name02'];
 $objPage->tpl_order_email = $_POST['order_email'];
-print_r($objPage->tpl_order_name02);
-print_r($_POST['order_id']);
+
+print_r($objPage->tpl_order_id);
+print_r($objPage);
+
 // パラメータ管理クラス
 $objFormParam = new SC_FormParam();
 // パラメータ情報の初期化
