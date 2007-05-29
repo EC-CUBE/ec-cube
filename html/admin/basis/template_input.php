@@ -17,9 +17,9 @@ class LC_Page {
 	var $title;
 	
 	function LC_Page() {
-		$this->tpl_mainpage = 'mail/template_input.tpl';
+		$this->tpl_mainpage = 'basis/template_input.tpl';
 		$this->tpl_mainno = 'mail';
-		$this->tpl_subnavi = 'mail/subnavi.tpl';
+		$this->tpl_subnavi = 'basis/subnavi.tpl';
 		$this->tpl_subno = "template";
 	}
 }
@@ -46,7 +46,7 @@ if ( $_REQUEST['template_id'] ){
 if ( $_GET['mode'] == 'edit' && sfCheckNumLength($_GET['template_id'])===true ){
 	
 	// ÊÔ½¸
-	$sql = "SELECT * FROM dtb_mailmaga_template WHERE template_id = ? AND del_flg = 0";
+	$sql = "SELECT * FROM dtb_templates WHERE template_id = ? AND delete_flag = 0";
 	$result = $conn->getAll($sql, array($_GET['template_id']));
 	$objPage->arrForm = $result[0];
 	
@@ -66,7 +66,7 @@ if ( $_GET['mode'] == 'edit' && sfCheckNumLength($_GET['template_id'])===true ){
 } elseif ( $_GET['mode'] == 'complete' ) {		
 	
 	// ´°Î»²èÌÌÉ½¼¨
-	$objPage->tpl_mainpage = 'mail/template_complete.tpl';
+	$objPage->tpl_mainpage = 'basis/template_complete.tpl';
 	
 } 
 
