@@ -1,6 +1,7 @@
 <?php
 
 require_once("../../require.php");
+require_once("SC_FormParamsManager.php");
 
 // Smartyへのassign用連想配列
 $arrAssignVars = array(
