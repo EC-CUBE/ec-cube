@@ -31,7 +31,6 @@ $objPage->arrMailTEMPLATE = $arrMAILTEMPLATE;
 
 $objPage->arrSendType = array("パソコン","携帯");
 
-
 if ( $_GET['mode'] == 'edit' && sfCheckNumLength($_GET['template_id'])===true ){
 	
 	if ( sfCheckNumLength( $_GET['template_id']) ){
