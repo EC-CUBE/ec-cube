@@ -156,13 +156,13 @@ for( $i = 0; $i < $count; $i++ ) {
             }
         }
   
-        //-- 送信完了なら1、失敗なら0をメール送信結果フラグとしてDBに挿入
+        //-- 送信完了なら1、失敗なら-1をメール送信結果フラグとしてDBに挿入
         if( ! $sendResut ){
             $sendFlag = "-1";
         } else {
             $sendFlag = "1";
             
-            // 完了を1こ増やす
+            // 完了を 1 増やす
             $sql = "UPDATE dtb_send_history SET complete_count = complete_count + 1 WHERE send_id = ?";
             $conn->query( $sql, array($mail_data[$i][0]["send_id"]));
         }
