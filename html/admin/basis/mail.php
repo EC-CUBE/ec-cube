@@ -30,7 +30,7 @@ sfIsSuccess($objSess);
 $objPage->arrMailTEMPLATE = $arrMAILTEMPLATE;
 
 if ( $_GET['mode'] == 'edit' && sfCheckNumLength($_GET['template_id'])===true ){
-	
+	exit;
 	
 	if ( sfCheckNumLength( $_POST['template_id']) ){
 		$sql = "SELECT * FROM dtb_mailtemplate WHERE template_id = ?";
