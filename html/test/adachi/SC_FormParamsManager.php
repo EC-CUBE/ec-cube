@@ -7,11 +7,11 @@ require_once('SC_Validator.php');
  */
 
 class SC_FormParamsManager {
-    var $_arrParamsInfo;
+    var $_arrObjParams;
     var $_arrErr;
     
-    function SC_FormParamsManager($arrParams, $arrParamsInfo){
-        $this->_arrParamsInfo = array();
+    function SC_FormParamsManager($arrParams = array(), $arrParamsInfo = array()){
+        $this->_arrObjParams = array();
         $this->_arrErr = array();
         
         if (count($arrParams) > 0 && count($arrParamsInfo) > 0) {
@@ -19,14 +19,14 @@ class SC_FormParamsManager {
         }
     }
     
-    function setParams($arrParams, $arrParamsInfo, $usePOST = false){
+    function setParams($arrParams, $arrParamsInfo, $useRowParams = false){
         foreach ($arrParamsInfo as $_key => $_value) {
             $arrParamsInfo[$_key]['value'] = $arrParams[$_key];
-            $this->_arrParamsInfo[$_key] = new SC_Param($arrParamsInfo[$_key]);
+            $this->_arrObjParams[$_key] = new SC_Param($arrParamsInfo[$_key]);
         }
-        // $_POSTは原則使用禁止
-        if ($usePOST === true) { return; }
-        unset($_POST);
+        // $_POST、$_GETは原則使用禁止
+        if ($useRowParams === true) { return; }
+        unset($_POST, $_GET);
     }
     
     function setGroups($arrGroup){
@@ -43,7 +43,7 @@ class SC_FormParamsManager {
         $arrParent = array();    // 上位項目チェック用
         
         
-        foreach ($this->_arrParamsInfo as $_key => $objParam) {
+        foreach ($this->_arrObjParams as $_key => $objParam) {
             // 複数項目チェック用配列を構築
             if ($objParam->has_group())  { $arrGroups[$objParam->getGroup()][$_key] = $objParam; }
             
@@ -62,9 +62,8 @@ class SC_FormParamsManager {
             // Single Validation
             foreach ($arrValidateType as $method => $args) {
                 $objValidator = SC_Validate::factory($method, $args);
-                $objValidator->validate($objParam);
                 
-                if ($objValidator->is_error()) {
+                if ($objValidator->validate($objParam) == true) {
                     $this->arrErr[$_key] = $objValidator->getErrorMessage();
                 }
             }
