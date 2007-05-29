@@ -95,7 +95,7 @@ class SC_FormParamsManager {
         $arrErr = array();
         foreach ($this->_arrParamsInfo as $_key => $objParam) {
             if ($onjParam->isRelation === true) {
-                $arrErr['$_key'] = $objParam->getRelateErrorMessage();
+                $arrErr[$_key] = $objParam->getRelateErrorMessage();
             } else {
                 $arrErr[$_key] = $objParam->getErrorMessage();
             }
@@ -157,7 +157,7 @@ class SC_FormParamsManager {
         if (!is_array($arrNonEscape)) { $arrNonEscape = (array)$arrNonEscape; }
         
         foreach ($this->_arrParams as $_key => $_value) {
-            if (isset($arrNonEscape['$_key']) && $arrNonEscape['$_key'] == $_key) {
+            if (isset($arrNonEscape[$_key]) && $arrNonEscape[$_key] == $_key) {
                 $arrRet[$key] = $objParam->getValue();
             }
             else {
@@ -191,13 +191,6 @@ class SC_FormParamsManager {
                 $this->_arrDBData[$key] = $value['value'];
             }
         }
-    }
-    function _addDBData(){
-        
-    }
-    
-    function _getEscapeParams($string){
-        
     }
 }
 ?>
