@@ -50,6 +50,8 @@ if ( $_GET['mode'] == 'edit' && sfCheckNumLength($_GET['template_id'])===true ){
 	$result = $conn->getAll($sql, array($_GET['template_id']));
 	$objPage->arrForm = $result[0];
 	
+    print_r($result[0]);exit;
+    
 		
 } elseif ( $_POST['mode'] == 'regist' ) {
 	
