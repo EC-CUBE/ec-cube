@@ -32,7 +32,7 @@ $objSess = new SC_Session();
 // 認証可否の判定
 sfIsSuccess($objSess);
 
-$objPage->arrMagazineType = $arrMagazineType;
+$objPage->arrSendType = array("パソコン","携帯");
 $objPage->mode = "regist";
 
 // idが指定されているときは「編集」表示
