@@ -255,7 +255,6 @@ case 'search':
 			$objQuery->setorder($order);
 			// 検索結果の取得
 			$objPage->arrResults = $objQuery->select($col, $from, $where, $arrval);
-			print_r($objPage->arrResults);
 		}
 	}
 	break;
