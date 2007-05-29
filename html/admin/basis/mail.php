@@ -45,10 +45,10 @@ sfIsSuccess($objSess);
             $page_max = SEARCH_PMAX;
         }
         
-        $offset = $page_max * ($objPage->arrForm['search_pageno'] - 1);
-        $objSelect->setLimitOffset($page_max, $offset);
+        //$offset = $page_max * ($objPage->arrForm['search_pageno'] - 1);
+        //$objSelect->setLimitOffset($page_max, $offset);
         
-        $objPage->search_data = $mail_list;
+        $objPage->search_data = $list_data;
         // 行数の取得
             //$linemax = $objQuery->conn->getOne( $objSelect->getListCount(), $objSelect->arrVal);
             //$objPage->tpl_linemax = $linemax;               // 何件が該当しました。表示用
@@ -58,7 +58,7 @@ sfIsSuccess($objSess);
             $objNavi = new SC_PageNavi($_POST['search_pageno'], $linemax, $page_max, "fnCustomerPage", NAVI_PMAX);
             $startno = $objNavi->start_row;
             $objPage->arrPagenavi = $objNavi->arrPagenavi;
-            $objPage->mail_list = $list_data;
+            $objPage->list_data = $list_data;
 //            foreach($mail_list as $key => $value){
 //                
 //            }
