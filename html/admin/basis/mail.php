@@ -44,8 +44,8 @@ if ( $_GET['mode'] == 'edit' && sfCheckNumLength($_GET['template_id'])===true ){
 		}
 	}
 	
-} //elseif ( $_GET['mode'] == 'regist' && sfCheckNumLength( $_GET['template_id']) ){
-    elseif ( $_GET['mode'] == 'regist' ){
+} elseif ( $_GET['mode'] == 'regist' && sfCheckNumLength( $_GET['template_id']) ){
+//    elseif ( $_GET['mode'] == 'regist' ){
 	// POSTデータの引き継ぎ
 	$objPage->arrForm = lfConvertParam($_GET);
 	$objPage->arrErr = fnErrorCheck($objPage->arrForm);
