@@ -85,17 +85,19 @@ function lfRegistData( $arrVal, $id = null ){
 	
 	$query = new SC_Query();
 	
+    $sqlval['template_name'] = $arrVal['template_name'];
 	$sqlval['subject'] = $arrVal['subject'];
 	$sqlval['mail_method'] = $arrVal['mail_method'];
 	$sqlval['creator_id'] = $_SESSION['member_id'];
-	$sqlval['body'] = $arrVal['body'];
+	$sqlval['header'] = $arrVal['header'];
+    $sqlval['footer'] = $arrVal['footer'];
 	$sqlval['update_date'] = "now()";
 
 	if ( $id ){
-		$query->update("dtb_mailmaga_template", $sqlval, "template_id=".$id );
+		$query->update("dtb_mailtemplate", $sqlval, "template_id=".$id );
 	} else {
 		$sqlval['create_date'] = "now()";
-		$query->insert("dtb_mailmaga_template", $sqlval);
+		$query->insert("dtb_mailtemplate", $sqlval);
 	}
 }
 
@@ -103,7 +105,8 @@ function lfConvData( $data ){
 	
 	 // 文字列の変換（mb_convert_kanaの変換オプション）							
 	$arrFlag = array(
-					  "subject" => "KV"
+					  "template_name" => "KV"
+                     ,"subject" => "KV"
 					 ,"body" => "KV"
 					);
 		
@@ -120,9 +123,11 @@ function lfConvData( $data ){
 function lfErrorCheck() {
 	$objErr = new SC_CheckError();
 	
-	$objErr->doFunc(array("メール形式", "mail_method"), array("EXIST_CHECK", "ALNUM_CHECK"));
+	$objErr->doFunc(array("メール形式", "send_type"), array("EXIST_CHECK", "ALNUM_CHECK"));
+    $objErr->doFunc(array("テンプレート", "template_name"), array("EXIST_CHECK", "ALNUM_CHECK"));
 	$objErr->doFunc(array("Subject", "subject", STEXT_LEN), array("EXIST_CHECK","MAX_LENGTH_CHECK"));
-	$objErr->doFunc(array("本文", 'body', LLTEXT_LEN), array("EXIST_CHECK","MAX_LENGTH_CHECK"));
+	$objErr->doFunc(array("ヘッダー", 'header', LLTEXT_LEN), array("EXIST_CHECK","MAX_LENGTH_CHECK"));
+    $objErr->doFunc(array("フッター", 'header', LLTEXT_LEN), array("EXIST_CHECK","MAX_LENGTH_CHECK"));
 
 	return $objErr->arrErr;
 }
