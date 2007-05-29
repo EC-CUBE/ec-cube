@@ -237,8 +237,6 @@ case 'search':
 			$linemax = $objQuery->count($from, $where, $arrval);
 			$objPage->tpl_linemax = $linemax;				// 何件が該当しました。表示用
 			
-			print_r($arrval);
-			print_r($where);
 			// ページ送りの処理
 			if(is_numeric($_POST['search_page_max'])) {	
 				$page_max = $_POST['search_page_max'];
@@ -257,6 +255,7 @@ case 'search':
 			$objQuery->setorder($order);
 			// 検索結果の取得
 			$objPage->arrResults = $objQuery->select($col, $from, $where, $arrval);
+			print_r($objPage->arrResults);
 		}
 	}
 	break;
