@@ -47,6 +47,7 @@ $objFormParam = new SC_FormParam();
 // パラメータ情報の初期化
 lfInitParam();
 
+print_r($_POST['mode']);
 switch($_POST['mode']) {
 case 'pre_edit':
 	break;
