@@ -55,7 +55,6 @@ for( $i = 0; $i < $count; $i++ ) {
     $sql = "SELECT * FROM dtb_send_history WHERE send_id = ?";
     $mail_data[] = $conn->getAll( $sql, array( $time_data[$i]["send_id"] ) );
     
-    print_r($mail_data);exit;
 }
 
 //---- 送信結果フラグ用SQL
