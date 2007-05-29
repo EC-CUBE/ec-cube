@@ -54,6 +54,7 @@ class SC_FormParamsManager {
                     if ($this->_arrParamsInfo[$objParam->getParent()]->has_parent()) {
                         
                     }
+                }
             }
             
             $arrValidateType = $objParam->getValidateType();
@@ -192,4 +193,12 @@ class SC_FormParamsManager {
             }
         }
     }
+    function _addDBData(){
+        
+    }
+    
+    function _getEscapeParams($string){
+        
+    }
+}
 ?>
