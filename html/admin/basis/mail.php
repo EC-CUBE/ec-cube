@@ -101,7 +101,7 @@ function lfConvertParam($array) {
 function fnErrorCheck($array) {
 	
 	$objErr = new SC_CheckError($array);
-	
+	$objErr->doFunc(array("メールの種類",'send_type'), array("EXIST_CHECK"));
 	$objErr->doFunc(array("テンプレート",'template_id'), array("EXIST_CHECK"));
     $objErr->doFunc(array("テンプレート",'template_name'), array("EXIST_CHECK"));
 	$objErr->doFunc(array("メールタイトル",'subject',MTEXT_LEN,"BIG"), array("EXIST_CHECK", "MAX_LENGTH_CHECK"));
