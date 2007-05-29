@@ -77,7 +77,7 @@ class SC_FormParamsManager {
             }
             
             $objValidator = SC_Validate::factory('GROUP');
-            if ($objValidator->validate($arrGroups[$group])->is_error()) {
+            if ($objValidator->validate($arrGroups[$group]) === true) {
                 $this->arrErr[$group] = $objValidator->getErrorMessage();
             }
         }
