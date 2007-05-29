@@ -45,6 +45,7 @@ $objPage->tpl_order_name01 = $_POST['order_name01'];
 $objPage->tpl_order_name02 = $_POST['order_name02'];
 $objPage->tpl_order_email = $_POST['order_email'];
 print_r($objPage->tpl_order_name02);
+print_r($objPage->tpl_order_id);
 // パラメータ管理クラス
 $objFormParam = new SC_FormParam();
 // パラメータ情報の初期化
