@@ -17,7 +17,7 @@ if(MELMAGA_SEND != true) {
 if($_GET['mode'] == 'now') {
     //----　未送信データを取得する
     $time_data = $conn->getAll( "SELECT send_id FROM dtb_send_history  WHERE complete_count = 0 AND del_flg = 0 ORDER BY send_id ASC, start_date ASC" );
-    print_r("SELECT * FROM dtb_send_history WHERE send_id = $time_data[0]");print("<br>");
+    print_r($conn->getAll("SELECT * FROM dtb_send_history WHERE send_id = $time_data[0]"));print("<br>");
 } else {
     
     // postgresql と mysql とでSQLをわける
