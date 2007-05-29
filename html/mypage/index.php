@@ -38,8 +38,10 @@ if(!isset($_SESSION['customer'])) {
 }
 
 //ページ送り用
-$objPage->tpl_pageno = $_POST['pageno'];
-	
+if (isset($_POST['pageno'])) {
+    $objPage->tpl_pageno = htmlspecialchars($_POST['pageno'], ENT_QUOTES, CHAR_CODE);
+}
+
 $col = "order_id, create_date, payment_id, payment_total";
 $from = "dtb_order";
 $where = "del_flg = 0 AND customer_id=?";
@@ -70,7 +72,7 @@ $objView->display(SITE_FRAME);				//パスとテンプレート変数の呼び出し、実行
 
 
 //-------------------------------------------------------------------------------------------------------------------------
-											
+
 //エラーチェック
 
 function lfErrorCheck() {
@@ -79,5 +81,5 @@ function lfErrorCheck() {
 			$objErr->dofunc(array("パスワード", "login_password", PASSWORD_LEN2), array("EXIST_CHECK","ALNUM_CHECK"));
 	return $objErr->arrErr;
 }
-				
+
 ?>
