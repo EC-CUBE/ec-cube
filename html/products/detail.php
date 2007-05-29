@@ -193,6 +193,8 @@ list($large_width, $large_height) = getimagesize(IMAGE_SAVE_DIR . basename($objP
 $objPage->tpl_large_width = $large_width + 60;
 $objPage->tpl_large_height = $large_height + 80;
 
+lfConvertParam();
+
 $objView->assignobj($objPage);
 $objView->display(SITE_FRAME);
 //-----------------------------------------------------------------------------------------------------------------------------------
@@ -469,4 +471,10 @@ function lfGetPayment() {
 	return $arrRet;
 }
 
+function lfConvertParam() {
+    global $objPage;
+    
+    $value = $objPage->arrForm['quantity']['value'];
+    $objPage->arrForm['quantity']['value'] = htmlspecialchars($value, ENT_QUOTES, CHAR_CODE);
+}
 ?>
