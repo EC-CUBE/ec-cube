@@ -427,9 +427,11 @@ function lfRegistData($arrData){
             if(DB_TYPE=="pgsql"){
                 $conn->autoExecute("dtb_send_customer", $dtb_send_customer );					
             }elseif(DB_TYPE=="mysql"){
-                //$sql = "SELECT * FROM dtb_send_customer WHERE send_id = ?";
+                $sql = "SELECT * FROM dtb_send_customer WHERE send_id = ?";
+                print("send_id¤Ï");
+                print_r($conn->getRow($sql,array($dtb_send_history["send_id"])));exit;
+                print("<br>");
                 $sql = "SELECT * FROM dtb_send_customer ";
-                //print_r($conn->getAll($sql,array($dtb_send_history["send_id"])));exit;
                 print_r($conn->getAll($sql));exit; 
                 $conn->autoExecute("dtb_send_customer", $dtb_send_customer );
                 
