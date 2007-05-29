@@ -234,7 +234,7 @@ CREATE TABLE dtb_send_history (
 
 CREATE TABLE dtb_send_customer (
     customer_id int,
-    send_id int auto_increment primary key NOT NULL,
+    send_id int NOT NULL,
     email text,
     name text,
     send_flag smallint
