@@ -15,12 +15,12 @@ function setFlag(){
 function checkFlagAndSubmit(){
 	if ( flag == 1 ){
 		if( confirm('内容が変更されています。続行すれば変更内容は破棄されます。\n宜しいでしょうか？' )){
-			fnSetvalAndSubmit( 'form1', 'mode', 'id_set' );
+			fnSetvalAndSubmit( 'form1', 'mode', 'edit' );
 		} else {
 			return false;
 		}
 	} else {
-		fnSetvalAndSubmit( 'form1', 'mode', 'id_set' );
+		fnSetvalAndSubmit( 'form1', 'mode', 'edit' );
 	}
 }
 
