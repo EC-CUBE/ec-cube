@@ -74,10 +74,11 @@ function checkFlagAndSubmit(){
 										<td bgcolor="#ffffff" width="557" class="fs10n">
 										<!--{assign var=key value="template_id"}-->
 										<span class="red12"><!--{$arrErr[$key]}--></span>
-										<select name="template_id" onChange="return checkFlagAndSubmit();" style="<!--{$arrErr[$key]|sfGetErrorColor}-->">
+										<input type="text" name="subject" value="<!--{$arrForm[$key]|escape}-->" onChange="setFlag();" size="30" class="box30" style="<!--{$arrErr[$key]|sfGetErrorColor}-->">
+										<!--<select name="template_id" onChange="return checkFlagAndSubmit();" style="<!--{$arrErr[$key]|sfGetErrorColor}-->">
 										<option value="" selected="selected">選択してください</option>
 										<!--{html_options options=$arrMailTEMPLATE selected=$arrForm[$key]}-->
-										</select>
+										</select>-->
 										</td>
 									</tr>
 									<tr>
