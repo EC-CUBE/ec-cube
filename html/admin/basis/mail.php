@@ -29,7 +29,7 @@ sfIsSuccess($objSess);
 
 $objPage->arrMailTEMPLATE = $arrMAILTEMPLATE;
 
-$objPage->arrSendType("パソコン","携帯");
+$objPage->arrSendType = array("パソコン","携帯");
 
 
 if ( $_GET['mode'] == 'edit' && sfCheckNumLength($_GET['template_id'])===true ){
