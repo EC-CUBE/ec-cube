@@ -247,8 +247,18 @@ case 'search':
 			// ページ送りの取得
 			$objNavi = new SC_PageNavi($_POST['search_pageno'], $linemax, $page_max, "fnNaviSearchPage", NAVI_PMAX);
 			$startno = $objNavi->start_row;
-			$objPage->arrPagenavi = $objNavi->arrPagenavi;		
+			$objPage->arrPagenavi = $objNavi->arrPagenavi;
 			
+			if($_POST['mode'] == 'search') {
+	            if($_POST['order_name']) {
+			        if(DB_TYPE == "pgsql"){
+			            $where .= " AND order_name01||order_name02 ILIKE ?";
+			    }elseif(DB_TYPE == "mysql"){
+			            $where .= " AND concat(order_name01,order_name02) ILIKE ?";
+			    }
+			$nonsp_val = ereg_replace("[ 　]+","",$val);
+			$arrval[] = "%$nonsp_val%";	}}
+		
 			// 取得範囲の指定(開始行番号、行数のセット)
 			$objQuery->setlimitoffset($page_max, $startno);
 			// 表示順序
