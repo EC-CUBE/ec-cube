@@ -1,7 +1,7 @@
 <?php
 
 require_once('SC_Param.php');
-require_once('SC_Validate.php')
+require_once('SC_Validator.php')
 /**
  * Formパラメータ管理クラス
  */
@@ -71,7 +71,7 @@ class SC_FormParamsManager {
         // Group Validation
         foreach ($arrGroups as $group => $_value) {
             // 既にエラーがある場合はvalidationを行わない
-            if (array_key_exists(array_keys($value), $this->arrErr)) {
+            if (array_key_exists(array_keys($_value), $this->arrErr)) {
                 continue;
             }
             
@@ -85,8 +85,9 @@ class SC_FormParamsManager {
         
         return $this;
     }
+    
     function getEM(){
-        return $this->getErrorMessage()
+        return $this->getErrorMessage();
     }
     
     function getErrorMessage(){
