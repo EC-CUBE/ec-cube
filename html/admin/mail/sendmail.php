@@ -33,6 +33,11 @@ if($_GET['mode'] == 'now') {
 
 //未送信メールの数
 $count = count($time_data);
+
+if(DB_TYPE == "mysql"){
+    $count  = $count -1;
+}
+
 //print_r($count);exit;
 
 //未送信メールがあれば送信処理を続ける。なければ中断する。
