@@ -4,7 +4,7 @@
  */
 class SC_Param {
     var $_keyname;
-    var $_dispname
+    var $_dispname;
     var $_value;
     var $_group;
     var $_parent;
