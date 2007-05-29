@@ -71,7 +71,7 @@ function checkFlagAndSubmit(){
 								<table width="678" border="0" cellspacing="1" cellpadding="8" summary=" ">
 									<tr class="fs12n">
 										<td bgcolor="#f2f1ec">メール形式<span class="red"> *</span></td>
-										<td bgcolor="#ffffff"><span <!--{if $arrErr.mail_method}--><!--{sfSetErrorStyle}--><!--{/if}-->><!--{html_radios name="mail_method" options=$arrMagazineType separator="&nbsp;" selected=$arrForm.mail_method}--></span>
+										<td bgcolor="#ffffff"><span <!--{if $arrErr.send_type}--><!--{sfSetErrorStyle}--><!--{/if}-->><!--{html_radios name="send_type" options=$arrMagazineType separator="&nbsp;" selected=$arrForm.send_type}--></span>
 										<!--{if $arrErr.mail_method}--><br><span class="red12"><!--{$arrErr.mail_method}--></span><!--{/if}-->
 										</td>
 									</tr>
