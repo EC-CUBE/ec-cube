@@ -30,23 +30,22 @@ sfIsSuccess($objSess);
 $objPage->arrMailTEMPLATE = $arrMAILTEMPLATE;
 
 if ( $_GET['mode'] == 'edit' && sfCheckNumLength($_GET['template_id'])===true ){
-	exit;
 	
-	if ( sfCheckNumLength( $_POST['template_id']) ){
+	if ( sfCheckNumLength( $_GET['template_id']) ){
 		$sql = "SELECT * FROM dtb_mailtemplate WHERE template_id = ?";
 		$result = $conn->getAll($sql, array($_POST['template_id']) );
         print_r($result);exit;
 		if ( $result ){
 			$objPage->arrForm = $result[0];
 		} else {
-			$objPage->arrForm['template_id'] = $_POST['template_id'];
+			$objPage->arrForm['template_id'] = $_GET['template_id'];
 		}
 	}
 	
-} elseif ( $_POST['mode'] == 'regist' && sfCheckNumLength( $_POST['template_id']) ){
+} elseif ( $_GET['mode'] == 'regist' && sfCheckNumLength( $_GET['template_id']) ){
 
 	// POSTデータの引き継ぎ
-	$objPage->arrForm = lfConvertParam($_POST);
+	$objPage->arrForm = lfConvertParam($_GET);
 	$objPage->arrErr = fnErrorCheck($objPage->arrForm);
 	
 	if ( $objPage->arrErr ){
