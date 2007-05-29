@@ -3,33 +3,32 @@
  * 個々のパラメータを管理するクラス
  */
 class SC_Param {
-    var $_name;
+    var $_keyname;
+    var $_dispname
     var $_value;
     var $_group;
     var $_parent;
     var $_file;
-    var $_convertType;
-    var $_validateType;
-    var $_error;
+    var $_convert;
+    var $_validate;
+    var $_javascript;
     
     function SC_Param($arrParamInfo){
-        $this->init($arrParamInfo);
+        $this->_init($arrParamInfo);
     }
     
-    function init($arrParamInfo){
-        $arrProperties = array(
-            'name', 'value', 'group', 'child', 'parent',
-            'file', 'convertType', 'validateType'
-        );
+    function _init($arrParamInfo){
+        $arrProperties = array_keys(get_object_vars($this));
         
         foreach ($arrProperties as $property) {
-            $this->$property
-                = isset($arrParamInfo[$property]) ? $arrParamInfo[$property] : null;
+            $this->$property = isset($arrParamInfo[$property])
+                ? $arrParamInfo[preg_replace('/^_/', '', $property)]
+                : null;
         }
     }
     
-    function getEscapeValue(){
-        return htmlspecialchars($this->_value, ENT_QUOTES, CHAR_CODE));
+    function getEscapeValue($CHAR_CODE = CHAR_CODE){
+        return htmlspecialchars($this->_value, ENT_QUOTES, $CHAR_CODE);
     }
     
     function getValue(){
@@ -37,17 +36,20 @@ class SC_Param {
     }
     
     function convert(){
-        $this->_value = mb_convert_kana($this->_value, $this->$_convertType);
+        $this->_value = mb_convert_kana($this->_value, $this->$_convert);
     }
     
-    function getName(){
-        return $this->_Name;
+    function getKeyName(){
+        return $this->_keyname;
+    }
+    
+    function getDispName(){
+        return $this->_dispname;
     }
     
     function is_file(){
         return $this->_file == true ? true : false;
     }
     
-    }
 }
 ?>
