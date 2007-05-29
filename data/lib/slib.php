@@ -775,6 +775,7 @@ function sfMergeCheckBoxes($array, $max) {
 
 // html_checkboxesの値をマージして「-」でつなげる。
 function sfMergeParamCheckBoxes($array) {
+    $ret = '';
 	if(is_array($array)) {
 		foreach($array as $val) {
 			if($ret != "") {
