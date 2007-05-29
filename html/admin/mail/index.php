@@ -419,15 +419,14 @@ function lfRegistData($arrData){
 			$dtb_send_customer["customer_id"] = $line["customer_id"];
 			$dtb_send_customer["send_id"] = $dtb_send_history["send_id"];
 			$dtb_send_customer["email"] = $line["email"];
-			$dtb_send_customer["name"] = $line["name01"] . " " . $line["name02"];
-            
-            
-            
+			$dtb_send_customer["name"] = $line["name01"] . " " . $line["name02"]; 
 		       	
             if(DB_TYPE=="pgsql"){
                 $conn->autoExecute("dtb_send_customer", $dtb_send_customer );					
             }elseif(DB_TYPE=="mysql"){
-                $sql = "SELECT * FROM dtb_send_customer WHERE send_id = ?";
+                //$sql = "SELECT * FROM dtb_send_customer WHERE send_id = ?";
+                $sql = "ALTER TABLE `dtb_send_customer` CHANGE `send_id` `send_id` INT( 11 ) NOT NULL ";
+                $conn->query($sql);exit;
                 print("send_id¤Ï");
                 print_r($conn->getRow($sql,array($dtb_send_history["send_id"])));
                 print("<br>");
