@@ -85,7 +85,7 @@ function checkFlagAndSubmit(){
 										<td bgcolor="#ffffff" width="557" class="fs10n">
 										<!--{assign var=key value="subject"}-->
 										<span class="red12"><!--{$arrErr[$key]}--></span>
-										<input type="text" name="subject" value="<!--{$arrForm[$key]|escape}-->" onChange="setFlag();" size="30" class="box30" style="<!--{$arrErr[$key]|sfGetErrorColor}-->">
+										<input type="text" name="subject" value="<!--{$arrForm.subject|escape}-->" onChange="setFlag();" size="30" class="box30" style="<!--{$arrErr[$key]|sfGetErrorColor}-->">
 										</td>
 									</tr>
 									<tr>
