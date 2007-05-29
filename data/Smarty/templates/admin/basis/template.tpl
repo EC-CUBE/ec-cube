@@ -79,7 +79,7 @@
 										<table border="0" cellspacing="0" cellpadding="0" summary=" ">
 											<tr>
 												<td>
-													<input type="button" name="subm" onclick="location.href='./mail.php'" value="新規作成" />　
+													<input type="button" name="subm" onclick="location.href='./template_input.php'" value="新規作成" />　
 													<!-- ＨＴＭＬ作成ウィザードは保留 （次期開発）
 													<input type="button" name="subm" onclick="location.href='./htmlmail.php'" value="HTMLテンプレート作成ウィザード" />
 													-->
