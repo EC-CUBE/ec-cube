@@ -34,10 +34,6 @@ if($_GET['mode'] == 'now') {
 //未送信メールの数
 $count = count($time_data);
 
-if(DB_TYPE == "mysql"){
-    $count  = $count -1;
-}
-
 //print_r($count);exit;
 
 //未送信メールがあれば送信処理を続ける。なければ中断する。
@@ -53,6 +49,8 @@ for( $i = 0; $i < $count; $i++ ) {
 
     $sql = "SELECT * FROM dtb_send_customer WHERE send_id = ? AND (send_flag = 2 OR send_flag IS NULL)";
     $list_data[] = $conn->getAll( $sql, array( $time_data[$i]["send_id"] ) );
+    
+    print_r($list_data);
     
     $sql = "SELECT * FROM dtb_send_history WHERE send_id = ?";
     $mail_data[] = $conn->getAll( $sql, array( $time_data[$i]["send_id"] ) );
