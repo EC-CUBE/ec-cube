@@ -50,11 +50,12 @@ for( $i = 0; $i < $count; $i++ ) {
     $sql = "SELECT * FROM dtb_send_customer WHERE send_id = ? AND (send_flag = 2 OR send_flag IS NULL)";
     $list_data[] = $conn->getAll( $sql, array( $time_data[$i]["send_id"] ) );
     
-    print_r($list_data);exit;
+    print_r($list_data);
     
     $sql = "SELECT * FROM dtb_send_history WHERE send_id = ?";
     $mail_data[] = $conn->getAll( $sql, array( $time_data[$i]["send_id"] ) );
-
+    
+    print_r($mail_data);exit;
 }
 
 //---- 送信結果フラグ用SQL
