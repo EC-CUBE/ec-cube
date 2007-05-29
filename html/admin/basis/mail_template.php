@@ -12,9 +12,9 @@ class LC_Page {
     var $arrMagazineType;
     
     function LC_Page() {
-        $this->tpl_mainpage = 'mail/template.tpl';
+        $this->tpl_mainpage = 'basis/template.tpl';
         $this->tpl_mainno = 'mail';
-        $this->tpl_subnavi = 'mail/subnavi.tpl';
+        $this->tpl_subnavi = 'basis/subnavi.tpl';
         $this->tpl_subno = "template";
         $this->tpl_subtitle = 'テンプレート設定';
     }
