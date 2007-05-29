@@ -434,9 +434,9 @@ function lfRegistData($arrData){
                 print("sendid¤Ï".$dtb_send_history["send_id"]."<br>");
                 
                 $conn->autoExecute("dtb_send_customer", $dtb_send_customer );
-                ; 
+                
             }
-        }print_r($conn->getAll($sql));exit	
+        }print_r($conn->getAll($sql));exit;	
 	}
 }
 
