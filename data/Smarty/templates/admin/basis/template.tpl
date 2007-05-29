@@ -34,7 +34,7 @@
 									</tr>
 									<tr>
 										<td background="<!--{$smarty.const.URL_DIR}-->img/contents/contents_title_left_bg.gif"><img src="<!--{$smarty.const.URL_DIR}-->img/contents/contents_title_left.gif" width="22" height="12" alt=""></td>
-										<td bgcolor="#636469" width="638" class="fs14n"><span class="white"><!--コンテンツタイトル-->テンプレート</span></td>
+										<td bgcolor="#636469" width="638" class="fs14n"><span class="white"><!--コンテンツタイトル-->メールテンプレート</span></td>
 										<td background="<!--{$smarty.const.URL_DIR}-->img/contents/contents_title_right_bg.gif"><img src="<!--{$smarty.const.URL_DIR}-->img/common/_.gif" width="18" height="1" alt=""></td>
 									</tr>
 									<tr>
@@ -59,8 +59,8 @@
 										<td width="120" align="center"><!--{$list_data[data].create_date|escape}--></td>
 										<td width="333"><!--{$list_data[data].template_name|escape}--></td>
 										<!--{assign var=type value=$list_data[data].mail_method|escape}-->
-										<td width="70" align="center"><!--{if $mail_list[data].send_type eq 0}-->パソコン<!--{else}-->携帯<!--{/if}--></td>
-										<td width="40" align="center"><!--{if $list_data[data].mail_method eq 3}--><a href="./htmlmail.php?mode=edit&template_id=<!--{$list_data[data].template_id}-->"><!--{else}--><a href="./template_input.php?mode=edit&template_id=<!--{$list_data[data].template_id}-->"><!--{/if}-->編集</a></td>
+										<td width="70" align="center"><!--{if $list_data[data].send_type eq 0}-->パソコン<!--{else}-->携帯<!--{/if}--></td>
+										<td width="40" align="center"><!--{if $list_data[data].mail_method eq 3}--><a href="./htmlmail.php?mode=edit&template_id=<!--{$list_data[data].template_id}-->"><!--{else}--><a href="./mail.php?mode=edit&template_id=<!--{$list_data[data].template_id}-->"><!--{/if}-->編集</a></td>
 										<td width="40" align="center"><a href="" onclick="fnDelete('<!--{$smarty.server.PHP_SELF|escape}-->?mode=delete&id=<!--{$list_data[data].template_id}-->'); return false;">削除</a></td>
 										<td width="70" align="center"><!--{if $list_data[data].mail_method eq 3}--><a href="" onclick="win03('./preview.php?method=template&id=<!--{$list_data[data].template_id}-->','preview','650','700'); return false;" target="_blank"><!--{else}--><a href="" onclick="win03('./preview.php?id=<!--{$list_data[data].template_id}-->','preview','650','700'); return false;" target="_blank"><!--{/if}-->プレビュー</a></td>
 									</tr>
