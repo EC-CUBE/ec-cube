@@ -13,7 +13,7 @@ class LC_Page {
     
     function LC_Page() {
         $this->tpl_mainpage = 'basis/template.tpl';
-        $this->tpl_mainno = 'mail';
+        $this->tpl_mainno = 'basis';
         $this->tpl_subnavi = 'basis/subnavi.tpl';
         $this->tpl_subno = "template";
         $this->tpl_subtitle = 'テンプレート設定';
