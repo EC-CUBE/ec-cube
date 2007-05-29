@@ -35,6 +35,7 @@ if ( $_GET['mode'] == 'edit' && sfCheckNumLength($_GET['template_id'])===true ){
 	if ( sfCheckNumLength( $_POST['template_id']) ){
 		$sql = "SELECT * FROM dtb_mailtemplate WHERE template_id = ?";
 		$result = $conn->getAll($sql, array($_POST['template_id']) );
+        print_r($result);
 		if ( $result ){
 			$objPage->arrForm = $result[0];
 		} else {
