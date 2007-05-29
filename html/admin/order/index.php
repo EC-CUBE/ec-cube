@@ -88,7 +88,7 @@ case 'search':
 			$val = sfManualEscape($val);
 			
 			switch ($key) {
-				case 'search_order_name':
+				case 'search_ordername':
 					if(DB_TYPE == "pgsql"){
 						$where .= " AND order_name01||order_name02 ILIKE ?";
 					}elseif(DB_TYPE == "mysql"){
