@@ -50,7 +50,7 @@ if(sfIsInt($_GET['order_id'])) {
 	$order_id = $_POST['order_id'];
 }
 $objPage->tpl_order_id = $order_id;
-
+print_r($order_id);
 // DBから受注情報を読み込む
 lfGetOrderData($order_id);
 
