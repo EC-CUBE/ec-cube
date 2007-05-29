@@ -235,7 +235,8 @@ case 'search':
 			$objQuery = new SC_Query();
 			// 行数の取得
 			$linemax = $objQuery->count($from, $where, $arrval);
-			$objPage->tpl_linemax = $linemax;				// 何件が該当しました。表示用
+			$objPage->tpl_linemax = $linemax;
+			print_r($arrval);				// 何件が該当しました。表示用
 			
 			// ページ送りの処理
 			if(is_numeric($_POST['search_page_max'])) {	
