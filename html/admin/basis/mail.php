@@ -10,7 +10,7 @@ class LC_Page {
 	var $arrSession;
 	var $tpl_mode;
 	function LC_Page() {
-		$this->tpl_mainpage = 'basis/template.tpl';
+		$this->tpl_mainpage = 'basis/mail.tpl';
 		$this->tpl_subnavi = 'basis/subnavi.tpl';
 		$this->tpl_mainno = 'basis';
 		$this->tpl_subno = 'mail';
@@ -29,8 +29,8 @@ sfIsSuccess($objSess);
 
 $objPage->arrMailTEMPLATE = $arrMAILTEMPLATE;
 
-if ( $_POST['mode'] == 'id_set'){
-	// テンプレートプルダウン変更時
+if ( $_GET['mode'] == 'edit' && sfCheckNumLength($_GET['template_id'])===true ){
+	
 	
 	if ( sfCheckNumLength( $_POST['template_id']) ){
 		$sql = "SELECT * FROM dtb_mailtemplate WHERE template_id = ?";
