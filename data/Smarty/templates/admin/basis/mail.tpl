@@ -31,6 +31,7 @@ function checkFlagAndSubmit(){
 <table width="878" border="0" cellspacing="0" cellpadding="0" summary=" ">
 <form name="form1" id="form1" method="GET" action="<!--{$smarty.server.PHP_SELF|escape}-->">
 <input type="hidden" name="mode" value="regist">
+<input type="hidden" name="template_id" value="">
 	<tr valign="top">
 		<td background="<!--{$smarty.const.URL_DIR}-->img/contents/navi_bg.gif" height="402">
 			<!--¢§SUB NAVI-->
