@@ -217,7 +217,7 @@ CREATE TABLE dtb_mailmaga_template (
 ) TYPE=InnoDB ;
 
 CREATE TABLE dtb_send_history (
-    send_id int NOT NULL,
+    send_id int auto_increment primary key NOT NULL,
     mail_method smallint,
     subject text,
     body text,
