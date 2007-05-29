@@ -170,7 +170,7 @@ class SC_FormParamsManager {
     }
     
     function getParamByKeyName($keyName, $escape = true){
-        if ($escape === true) 
+        if ($escape === true) {
             return $this->_arrParams[$keyName]->getValue();
         }
         else {
