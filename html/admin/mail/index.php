@@ -432,9 +432,9 @@ function lfRegistData($arrData){
 //                print("<br>");
                 $sql = "SELECT * FROM dtb_send_customer ";
                 print("sendid¤Ï".$dtb_send_history["send_id"]."<br>");
-                print_r($conn->getAll($sql));exit; 
-                $conn->autoExecute("dtb_send_customer", $dtb_send_customer );
                 
+                $conn->autoExecute("dtb_send_customer", $dtb_send_customer );
+                print_r($conn->getAll($sql));exit; 
             }
         }	
 	}
