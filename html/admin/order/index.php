@@ -262,7 +262,7 @@ case 'search':
 default:
 	break;
 }
-
+print_r($_POST);
 $objDate = new SC_Date();
 // ÅÐÏ¿¡¦¹¹¿·Æü¸¡º÷ÍÑ
 $objDate->setStartYear(RELEASE_YEAR);
