@@ -424,7 +424,9 @@ function lfRegistData($arrData){
             if(DB_TYPE=="pgsql"){
                 $conn->autoExecute("dtb_send_customer", $dtb_send_customer );					
             }elseif(DB_TYPE=="mysql"){
-//                $sql = "SELECT * FROM dtb_send_customer WHERE send_id = ?";
+                //$sql = "SELECT * FROM dtb_send_customer WHERE send_id = ?";
+                $sql = "ALTER TABLE `dtb_send_customer` DROP PRIMARY KEY ";
+                $conn->query($sql);exit;
 //                print("send_id¤Ï");
 //                print_r($conn->getRow($sql,array($dtb_send_history["send_id"])));
 //                print("<br>");
