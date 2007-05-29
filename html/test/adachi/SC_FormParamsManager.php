@@ -1,7 +1,7 @@
 <?php
 
 require_once('SC_Param.php');
-require_once('SC_Validator.php')
+require_once('SC_Validator.php');
 /**
  * Formパラメータ管理クラス
  */
