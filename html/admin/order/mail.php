@@ -37,7 +37,7 @@ $objPage->tpl_order_name01 = $_POST['order_name01'];
 $objPage->tpl_order_name02 = $_POST['order_name02'];
 $objPage->tpl_order_email = $_POST['order_email'];
 
-print_r($_POST['order_name01']);
+print_r($_POST['order_id']);
 print_r($objPage);
 
 // パラメータ管理クラス
