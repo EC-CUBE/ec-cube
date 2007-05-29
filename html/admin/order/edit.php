@@ -29,6 +29,7 @@ $arrInfo = $objSiteInfo->data;
 
 // パラメータ管理クラス
 $objFormParam = new SC_FormParam();
+print_r($_GET);
 // パラメータ情報の初期化
 lfInitParam();
 
@@ -50,7 +51,7 @@ if(sfIsInt($_GET['order_id'])) {
 	$order_id = $_POST['order_id'];
 }
 $objPage->tpl_order_id = $order_id;
-print_r($_GET);
+
 // DBから受注情報を読み込む
 lfGetOrderData($order_id);
 
