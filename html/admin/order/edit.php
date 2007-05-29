@@ -57,7 +57,8 @@ lfGetOrderData($order_id);
 
 switch($_POST['mode']) {
 case 'pre_edit':
-    print_r($_GET);
+    $str = "¤¢¤¤¤¦";
+    print_r($str);
     break;
 case 'order_id':
 	break;
