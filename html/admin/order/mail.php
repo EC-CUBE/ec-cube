@@ -7,6 +7,8 @@
 require_once("../require.php");
 
 class LC_Page {
+    var $list_data;
+
 	function LC_Page() {
 		$this->tpl_mainpage = 'order/mail.tpl';
 		$this->tpl_subnavi = 'order/subnavi.tpl';
