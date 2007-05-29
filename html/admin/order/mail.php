@@ -41,11 +41,11 @@ foreach ($_POST as $key => $val) {
 }
 
 $objPage->tpl_order_id = $_POST['order_id'];
-
+print_r($objPage->tpl_order_id);
 // パラメータ管理クラス
 $objFormParam = new SC_FormParam();
 // パラメータ情報の初期化
-lfInitParam();
+lfInitParam($objPage->tpl_order_id);
 
 switch($_POST['mode']) {
 case 'pre_edit':
