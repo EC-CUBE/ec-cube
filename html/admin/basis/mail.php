@@ -27,50 +27,6 @@ $objSess = new SC_Session();
 //認証可否の判定
 sfIsSuccess($objSess);
 
-//------------------------------------------------------------------
-
-    if($_POST["mode"] == ''){
-        if (count($objPage->arrErr) == 0) {
-        
-        //-- 検索データ取得
-        $sql = "SELECT * FROM dtb_templates";
-        $mail_list = $objQuery->getall($sql);
-        
-        // 表示件数設定
-        $page_rows = $objQuery->count("dtb_templates");
-        print($page_rows);
-        if(is_numeric($page_rows)) {    
-            $page_max = $page_rows;
-        } else {
-            $page_max = SEARCH_PMAX;
-        }
-        
-        //$offset = $page_max * ($objPage->arrForm['search_pageno'] - 1);
-        //$objSelect->setLimitOffset($page_max, $offset);
-        
-        $objPage->search_data = $list_data;
-        // 行数の取得
-            //$linemax = $objQuery->conn->getOne( $objSelect->getListCount(), $objSelect->arrVal);
-            //$objPage->tpl_linemax = $linemax;               // 何件が該当しました。表示用
-            $objPage->tpl_linemax = $page_rows;
-            
-            // ページ送りの取得
-            $objNavi = new SC_PageNavi($_POST['search_pageno'], $linemax, $page_max, "fnCustomerPage", NAVI_PMAX);
-            $startno = $objNavi->start_row;
-            $objPage->arrPagenavi = $objNavi->arrPagenavi;
-            $objPage->list_data = $list_data;
-//            foreach($mail_list as $key => $value){
-//                
-//            }
-            
-                  
-        }
-    }
-
-//-----------------------------------------------------------------
-
-
-
 $objPage->arrMailTEMPLATE = $arrMAILTEMPLATE;
 
 if ( $_POST['mode'] == 'id_set'){
