@@ -436,7 +436,7 @@ function lfRegistData($arrData){
                 $conn->autoExecute("dtb_send_customer", $dtb_send_customer );
                 
             }
-        }print_r($conn->getAll($sql));exit;	
+        }//print_r($conn->getAll($sql));exit;	
 	}
 }
 
