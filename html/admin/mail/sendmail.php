@@ -31,9 +31,11 @@ if($_GET['mode'] == 'now') {
     $time_data = $conn->getAll($sql);
 }
 
+//未送信メールの数
 $count = count($time_data);
-print_r($count);exit;
+//print_r($count);exit;
 
+//未送信メールがあれば送信処理を続ける。なければ中断する。
 if( $count > 0 ){
     print("start sending <br />\n");
 } else {
@@ -48,7 +50,7 @@ for( $i = 0; $i < $count; $i++ ) {
     $list_data[] = $conn->getAll( $sql, array( $time_data[$i]["send_id"] ) );
     
     $sql = "SELECT * FROM dtb_send_history WHERE send_id = ?";
-    $mail_data[] = $conn->getAll( $sql, array(  $time_data[$i]["send_id"] ) );
+    $mail_data[] = $conn->getAll( $sql, array( $time_data[$i]["send_id"] ) );
 
 }
 
