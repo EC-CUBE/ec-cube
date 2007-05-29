@@ -237,7 +237,7 @@ case 'search':
 			$linemax = $objQuery->count($from, $where, $arrval);
 			$objPage->tpl_linemax = $linemax;				// 何件が該当しました。表示用
 			
-			array_r($arraval);
+			array_r($arrval);
 			array_r($from);
 			// ページ送りの処理
 			if(is_numeric($_POST['search_page_max'])) {	
