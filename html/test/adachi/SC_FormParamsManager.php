@@ -198,4 +198,5 @@ class SC_FormParamsManager {
     function _getEscapeParams($string){
         
     }
+}
 ?>
