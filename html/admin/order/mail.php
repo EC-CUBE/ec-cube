@@ -5,6 +5,7 @@
  * http://www.lockon.co.jp/
  */
 require_once("../require.php");
+require_once("./index.php");
 
 class LC_Page {
 	function LC_Page() {
