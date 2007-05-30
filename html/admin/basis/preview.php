@@ -8,7 +8,6 @@ require_once("../require.php");
 
 class LC_Page {
 	var $arrSession;
-	var $body;
 	var $list_data;
 
 	function LC_Page() {
@@ -27,7 +26,7 @@ $objDate = new SC_Date();
 sfIsSuccess($objSess);
 
 if ( $_GET['mode']=="preview" || $_GET['id']){
-		$sql = "SELECT header , footer , send_type FROM dtb_mailtemplate WHERE template_id = ? AND del_flg = 0";
+		$sql = "SELECT * FROM dtb_mailtemplate WHERE template_id = ? AND del_flg = 0";
 		$id = $_GET['id'];
         $result = $conn->getAll($sql, array($id));
 	       
@@ -37,8 +36,7 @@ if ( $_GET['mode']=="preview" || $_GET['id']){
                 // テキスト形式の時はタグ文字をエスケープ
                     $objPage->escape_flag = 1;
                 }
-            $objPage->header = $result[0]["header"];
-            $objPage->footer = $result[0]["footer"];
+            $objPage->list_data = $result[0];    
         }
     
     }
