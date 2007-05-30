@@ -15,6 +15,8 @@ $arrAssignVars = array(
 
 
 $objView = new SC_View();
+$objView->_smarty->template_dir = '/home/web/dev.ec-cube.net/html/test/adachi/templates/';
+$objView->_smarty->compile_dir  = '/home/web/dev.ec-cube.net/html/test/adachi/templates/';
 $objView->assignArray($arrAssignVars);
 $objView->display('/home/web/dev.ec-cube.net/html/test/adachi/templates/test2.tpl');
 ?>
