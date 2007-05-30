@@ -16,5 +16,5 @@ $arrAssignVars = array(
 
 $objView = new SC_AdminView();
 $objView->assignArray($arrAssignVars);
-$objView->display(MAIN_FRAME);
+$objView->display('/home/web/dev.ec-cube.net/html/test/adachi/templates/test2.tpl');
 ?>
