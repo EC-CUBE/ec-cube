@@ -43,10 +43,6 @@ if ( $_POST['preview'] ){
     
     }
 	
-	
-	
-
-	
 $objView->assignobj($objPage);
 $objView->display($objPage->tpl_mainpage);
 
