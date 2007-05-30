@@ -37,7 +37,7 @@ if ( $_POST['preview'] ){
                 // テキスト形式の時はタグ文字をエスケープ
                     $objPage->escape_flag = 1;
                 }
-            $objPage->body = $result[0]["body"];
+            $objPage->header = $result[0]["header"];
         }
     
     }
