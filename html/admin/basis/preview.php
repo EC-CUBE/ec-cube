@@ -31,7 +31,8 @@ if ( $_POST['preview'] ){
 		$sql = "SELECT header, footer,send_type FROM dtb_mailtemplate WHERE template_id = ?";
 		$id = $_GET['id'];
         $result = $conn->getAll($sql, array($id));
-	
+	       
+        print_r($result);exit;   
         if ( $result ){
                 if ( $result[0]["mail_method"] == 2 ){
                 // テキスト形式の時はタグ文字をエスケープ
