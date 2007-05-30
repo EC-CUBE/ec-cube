@@ -5,5 +5,7 @@
  * http://www.lockon.co.jp/
  */
 *}-->
-<!--{if $escape_flag eq 1}--><!--{$header|escape|nl2br}-->
-<!--{$footer|escape|nl2br}--><!--{else}--><!--{$header}--><!--{$footer}--><!--{/if}-->
+<!--{*if $escape_flag eq 1}--><!--{$header|escape|nl2br}-->
+<!--{$footer|escape|nl2br}--><!--{else}--><!--{$header}--><!--{$footer}--><!--{/if*}-->
+
+<!--{$header}--><!--{$footer}-->
