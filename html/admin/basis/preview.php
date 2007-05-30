@@ -38,6 +38,7 @@ if ( $_POST['preview'] ){
                     $objPage->escape_flag = 1;
                 }
             $objPage->header = $result[0]["header"];
+            $objPage->footer = $result[0]["footer"];
         }
     
     }
