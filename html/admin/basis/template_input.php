@@ -20,7 +20,7 @@ class LC_Page {
 		$this->tpl_mainpage = 'basis/mail.tpl';
 		$this->tpl_mainno = 'basis';
 		$this->tpl_subnavi = 'basis/subnavi.tpl';
-		$this->tpl_subno = "template";
+		$this->tpl_subno = "mail";
 	}
 }
 
@@ -43,33 +43,17 @@ if ( $_REQUEST['template_id'] ){
 }
 
 // モードによる処理分岐
-if ( $_GET['mode'] == 'edit' && sfCheckNumLength($_GET['template_id'])===true ){
-	
-	// 編集
-	$sql = "SELECT * FROM dtb_templates WHERE template_id = ? AND delete_flag = 0";
-	$result = $conn->getAll($sql, array($_GET['template_id']));
-	$objPage->arrForm = $result[0];
-	
-    //print_r($result[0]);exit;
-    
-		
-} elseif ( $_POST['mode'] == 'regist' ) {
+if ( $_GET['mode'] == 'regist' ) {
 	
 	// 新規登録
-	$objPage->arrForm = lfConvData( $_POST );
+	$objPage->arrForm = lfConvData( $_GET );
 	$objPage->arrErr = lfErrorCheck($objPage->arrForm);
 	
 	if ( ! $objPage->arrErr ){
 		// エラーが無いときは登録・編集
-		lfRegistData( $objPage->arrForm, $_POST['template_id']);	
-		sfReload("mode=complete");	// 自分を再読込して、完了画面へ遷移
+		lfRegistData( $objPage->arrForm, $_GET['template_id']);	
+		//sfReload("mode=complete");	// 自分を再読込して、完了画面へ遷移
 	}
-	
-} elseif ( $_GET['mode'] == 'complete' ) {		
-	
-	// 完了画面表示
-	$objPage->tpl_mainpage = 'basis/template_complete.tpl';
-	
 } 
 
 
