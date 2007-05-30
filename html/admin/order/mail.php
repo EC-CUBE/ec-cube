@@ -32,10 +32,14 @@ foreach ($_POST as $key => $val) {
 	}
 }
 
+// 表示モード判定
+if(sfIsInt($_GET['order_id'])) {
+	$objPage->disp_mode = true;
+	$order_id = $_GET['order_id'];
+} else {
+	$order_id = $_POST['order_id'];
+}
 $objPage->tpl_order_id = $_POST['order_id'];
-$objPage->tpl_order_name01 = $_POST['order_name01'];
-$objPage->tpl_order_name02 = $_POST['order_name02'];
-$objPage->tpl_order_email = $_POST['order_email'];
 print_r($_POST);
 // パラメータ管理クラス
 $objFormParam = new SC_FormParam();
