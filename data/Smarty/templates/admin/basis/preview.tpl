@@ -74,6 +74,7 @@ function checkFlagAndSubmit(){
 									<tr class="fs12n">
 										<td bgcolor="#f2f1ec">メール形式<span class="red"> *</span></td>
 										<td bgcolor="#ffffff">
+										<!--{if $list_data[data].send_type eq 0}-->パソコン<!--{else}-->携帯<!--{/if}-->
 										</td>
 									</tr>
 									<tr>
