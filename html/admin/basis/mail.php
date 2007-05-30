@@ -87,8 +87,9 @@ function lfRegist( $conn, $data ){
 
 function lfConvertParam($array) {
 	
+    $new_array["send_type"] = $array["send_type"];
 	$new_array["template_id"] = $array["template_id"];
-    $new_array["template_name"] = $array["template_name"];
+    $new_array["template_name"] = mb_convert_kana($array["template_name"],"KV");
 	$new_array["subject"] = mb_convert_kana($array["subject"] ,"KV");
 	$new_array["header"] = mb_convert_kana($array["header"] ,"KV");
 	$new_array["footer"] = mb_convert_kana($array["footer"] ,"KV");
