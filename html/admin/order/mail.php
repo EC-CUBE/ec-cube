@@ -25,14 +25,6 @@ $objView = new SC_AdminView();
 $objSess = new SC_Session();
 sfIsSuccess($objSess);
 
-//-- カラムの配列
-$arrRegistColumn = array(
-                           array(  "column" => "name01",		"convert" => "aKV" ),
-                           array(  "column" => "name02",		"convert" => "aKV" ),
-                           array(  "column" => "email",		"convert" => "a" ),
-						   array(  "column" => "email_mobile",	"convert" => "a" ),
-                         );
-
 // 検索パラメータの引き継ぎ
 foreach ($_POST as $key => $val) {
 	if (ereg("^search_", $key)) {
