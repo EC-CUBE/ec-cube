@@ -100,8 +100,8 @@ function lfConvData( $data ){
 
 // 入力エラーチェック
 function lfErrorCheck($array) {
-	$objErr = new SC_CheckError();
-    //print_r($array);exit;
+	$objErr = new SC_CheckError($array);
+    print_r($array);exit;
 	$objErr->doFunc(array("メール形式", "send_type"), array("EXIST_CHECK"));
     $objErr->doFunc(array("テンプレート", "template_name"), array("EXIST_CHECK"));
 //	$objErr->doFunc(array("Subject", "subject"), array("EXIST_CHECK","MAX_LENGTH_CHECK"));
