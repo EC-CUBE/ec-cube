@@ -69,7 +69,7 @@
 							<tr class="fs12n">
 								<td bgcolor="#f2f1ec" width="110">ธÜตาฬพ</td>
 								<td bgcolor="#ffffff" width="194">
-								<!--{assign var=key value="search_orde_name"}-->
+								<!--{assign var=key value="search_order_name"}-->
 								<span class="red12"><!--{$arrErr[$key]}--></span>
 								<input type="text" name="<!--{$key}-->" value="<!--{$arrForm[$key].value|escape}-->" maxlength="<!--{$arrForm[$key].length}-->" style="<!--{$arrErr[$key]|sfGetErrorColor}-->" size="30" class="box30" />				
 								</td>
