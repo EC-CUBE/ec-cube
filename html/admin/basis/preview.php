@@ -26,7 +26,7 @@ $objDate = new SC_Date();
 // Ç§¾Ú²ÄÈÝ¤ÎÈ½Äê
 sfIsSuccess($objSess);
 
-//if ( $_POST['preview'] ){
+if ( $_POST['preview'] ){
 		$sql = "SELECT header , footer , send_type FROM dtb_mailtemplate WHERE template_id = ? AND del_flg = 0";
 		$id = $_GET['id'];
         $result = $conn->getAll($sql, array($id));
@@ -41,7 +41,7 @@ sfIsSuccess($objSess);
             $objPage->footer = $result[0]["footer"];
         }
     
-//    }
+    }
 	
 	
 	
