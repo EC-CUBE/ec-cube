@@ -28,7 +28,7 @@ $objSess = new SC_Session();
 // 認証可否の判定
 sfIsSuccess($objSess);
 
-if ( $_POST['mode'] == "delete" && sfCheckNumLength($_POST['id'])===true ){
+if ( $_GET['mode'] == "delete" && sfCheckNumLength($_GET['id'])===true ){
 
     // メール担当の画像があれば削除しておく
     $sql = "SELECT charge_image FROM dtb_mailtemplate WHERE template_id = ?";
