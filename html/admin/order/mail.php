@@ -23,6 +23,7 @@ class LC_Page {
 $objPage = new LC_Page();
 $objView = new SC_AdminView();
 $objSess = new SC_Session();
+// 認証可否の判定
 sfIsSuccess($objSess);
 
 // 検索パラメータの引き継ぎ
