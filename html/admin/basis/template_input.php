@@ -111,7 +111,7 @@ function lfErrorCheck() {
     $objErr->doFunc(array("テンプレート", "template_name"), array("EXIST_CHECK", "ALNUM_CHECK"));
 	$objErr->doFunc(array("Subject", "subject", STEXT_LEN), array("EXIST_CHECK","MAX_LENGTH_CHECK"));
 	$objErr->doFunc(array("ヘッダー", 'header', LLTEXT_LEN), array("EXIST_CHECK","MAX_LENGTH_CHECK"));
-    $objErr->doFunc(array("フッター", 'header', LLTEXT_LEN), array("EXIST_CHECK","MAX_LENGTH_CHECK"));
+    $objErr->doFunc(array("フッター", 'footer', LLTEXT_LEN), array("EXIST_CHECK","MAX_LENGTH_CHECK"));
 
 	return $objErr->arrErr;
 }
