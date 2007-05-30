@@ -130,7 +130,6 @@ function lfInitParam() {
 }
 
 function lfGetOrderData($order_id) {
-	global $objFormParam;
 	global $objPage;
 	if(sfIsInt($order_id)) {
 		// DBから受注情報を読み込む
