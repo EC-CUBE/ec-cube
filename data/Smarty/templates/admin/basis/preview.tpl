@@ -8,5 +8,5 @@
 <!--{*if $escape_flag eq 1}--><!--{$header|escape|nl2br}-->
 <!--{$footer|escape|nl2br}--><!--{else}--><!--{$header}--><!--{$footer}--><!--{/if*}-->
 
-<!--{$list_data[0].header|escape}-->
-<!--{$list_data[0].footer|escape}-->
+<!--{$list_data.header|escape}-->
+<!--{$list_data.footer|escape}-->
