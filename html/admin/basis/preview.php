@@ -28,7 +28,6 @@ sfIsSuccess($objSess);
 
 
 if ( $_POST['preview'] ){
-	$objPage->body = $_POST['body'];
 		$sql = "SELECT header, footer,send_type FROM dtb_mailtemplate WHERE template_id = ?";
 		$id = $_GET['id'];
 	}
