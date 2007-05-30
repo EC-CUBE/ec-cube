@@ -88,7 +88,7 @@ case 'search':
 			$val = sfManualEscape($val);
 			
 			switch ($key) {
-				case 'search_ordername':
+				case 'search_order_name':
 					if(DB_TYPE == "pgsql"){
 						$where .= " AND order_name01||order_name02 ILIKE ?";
 					}elseif(DB_TYPE == "mysql"){
@@ -249,13 +249,6 @@ case 'search':
 			$startno = $objNavi->start_row;
 			$objPage->arrPagenavi = $objNavi->arrPagenavi;
 			
-			if($_POST['mode'] == 'search') {
-	            if($_POST['order_name']) {
-			        if(DB_TYPE == "pgsql"){
-			            $where .= " AND order_name01||order_name02 ILIKE ?";
-			    }elseif(DB_TYPE == "mysql"){
-			            $where .= " AND concat(order_name01,order_name02) ILIKE ?";
-			    }
 			$nonsp_val = ereg_replace("[ ¡¡]+","",$val);
 			$arrval[] = "%$nonsp_val%";	}}
 		
