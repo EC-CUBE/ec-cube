@@ -23,6 +23,12 @@ class LC_Page {
 $objPage = new LC_Page();
 $objView = new SC_AdminView();
 $objSess = new SC_Session();
+
+// パラメータ管理クラス
+$objFormParam = new SC_FormParam();
+// パラメータ情報の初期化
+lfInitParam();
+
 // 認証可否の判定
 sfIsSuccess($objSess);
 
@@ -36,10 +42,7 @@ foreach ($_POST as $key => $val) {
 
 $objPage->tpl_order_id = $_POST['order_id'];
 print_r($_POST);
-// パラメータ管理クラス
-$objFormParam = new SC_FormParam();
-// パラメータ情報の初期化
-lfInitParam();
+
 
 switch($_POST['mode']) {
 case 'pre_edit':
