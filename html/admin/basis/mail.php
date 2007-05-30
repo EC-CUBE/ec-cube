@@ -98,7 +98,7 @@ function lfConvertParam($array) {
 
 /* 入力エラーのチェック */
 function fnErrorCheck($array) {
-	print_r($array);exit
+	print_r($array);exit;
 	$objErr = new SC_CheckError($array);
 	$objErr->doFunc(array("メールの種類",'send_type'), array("EXIST_CHECK"));
 	$objErr->doFunc(array("テンプレート",'template_id'), array("EXIST_CHECK"));
