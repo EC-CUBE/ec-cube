@@ -29,7 +29,6 @@ $arrInfo = $objSiteInfo->data;
 
 // パラメータ管理クラス
 $objFormParam = new SC_FormParam();
-
 // パラメータ情報の初期化
 lfInitParam();
 
@@ -57,9 +56,6 @@ lfGetOrderData($order_id);
 
 switch($_POST['mode']) {
 case 'pre_edit':
-    $str = "あいう";
-    print_r($str);
-    break;
 case 'order_id':
 	break;
 case 'edit':
