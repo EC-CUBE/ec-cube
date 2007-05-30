@@ -47,7 +47,7 @@ if ( $_GET['mode'] == 'regist' ) {
 	
 	// ¿·µ¬ÅÐÏ¿
 	$objPage->arrForm = lfConvData( $_GET );
-	print_r($_GET);
+	print_r($objPage->arrForm);
     $objPage->arrErr = lfErrorCheck($objPage->arrForm);
 	
 	if ( ! $objPage->arrErr ){
