@@ -103,10 +103,10 @@ function lfErrorCheck() {
 	$objErr = new SC_CheckError();
     
 	$objErr->doFunc(array("メール形式", "send_type"), array("EXIST_CHECK", "ALNUM_CHECK"));
-    $objErr->doFunc(array("テンプレート", "template_name"), array("EXIST_CHECK", "ALNUM_CHECK"));
-	$objErr->doFunc(array("Subject", "subject"), array("EXIST_CHECK","MAX_LENGTH_CHECK"));
-	$objErr->doFunc(array("ヘッダー", 'header'), array("EXIST_CHECK","MAX_LENGTH_CHECK"));
-    $objErr->doFunc(array("フッター", 'footer'), array("EXIST_CHECK","MAX_LENGTH_CHECK"));
+//    $objErr->doFunc(array("テンプレート", "template_name"), array("EXIST_CHECK", "ALNUM_CHECK"));
+//	$objErr->doFunc(array("Subject", "subject"), array("EXIST_CHECK","MAX_LENGTH_CHECK"));
+//	$objErr->doFunc(array("ヘッダー", 'header'), array("EXIST_CHECK","MAX_LENGTH_CHECK"));
+//    $objErr->doFunc(array("フッター", 'footer'), array("EXIST_CHECK","MAX_LENGTH_CHECK"));
 
 	return $objErr->arrErr;
 }
