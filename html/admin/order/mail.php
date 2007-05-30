@@ -41,6 +41,9 @@ if(sfIsInt($_GET['order_id'])) {
 }
 $objPage->tpl_order_id = order_id;
 print_r($_POST);
+// DBから受注情報を読み込む
+lfGetOrderData($order_id);
+
 // パラメータ管理クラス
 $objFormParam = new SC_FormParam();
 // パラメータ情報の初期化
