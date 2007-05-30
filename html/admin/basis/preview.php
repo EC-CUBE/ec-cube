@@ -30,19 +30,21 @@ sfIsSuccess($objSess);
 if ( $_POST['preview'] ){
 		$sql = "SELECT header, footer,send_type FROM dtb_mailtemplate WHERE template_id = ?";
 		$id = $_GET['id'];
-	}
-	$result = $conn->getAll($sql, array($id));
+        $result = $conn->getAll($sql, array($id));
+	
+        if ( $result ){
+                if ( $result[0]["mail_method"] == 2 ){
+                // テキスト形式の時はタグ文字をエスケープ
+                    $objPage->escape_flag = 1;
+                }
+            $objPage->body = $result[0]["body"];
+        }
+    
+    }
 	
 	
-	if ( $result ){
-		if ( $result[0]["mail_method"] == 2 ){
-			// テキスト形式の時はタグ文字をエスケープ
-			$objPage->escape_flag = 1;
-		}
-		$objPage->body = $result[0]["body"];
-	}
+	
 
-}
 	
 $objView->assignobj($objPage);
 $objView->display($objPage->tpl_mainpage);
