@@ -49,7 +49,6 @@ if ( $_GET['mode'] == 'edit' && sfCheckNumLength($_GET['template_id'])===true ){
 	// POSTデータの引き継ぎ
 	$objPage->arrForm = lfConvertParam($_GET);
 	$objPage->arrErr = fnErrorCheck($objPage->arrForm);
-	print_r($objPage->arrForm);exit;
 	if ( $objPage->arrErr ){
 		// エラーメッセージ
 		$objPage->tpl_msg = "エラーが発生しました";
