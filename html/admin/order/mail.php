@@ -39,13 +39,6 @@ foreach ($_POST as $key => $val) {
 	}
 }
 
-// 表示モード判定
-if(sfIsInt($_GET['order_id'])) {
-	$objPage->disp_mode = true;
-	$order_id = $_GET['order_id'];
-} else {
-	$order_id = $_POST['order_id'];
-}
 $objPage->tpl_order_id = order_id;
 print_r($_POST);
 // DBから受注情報を読み込む
