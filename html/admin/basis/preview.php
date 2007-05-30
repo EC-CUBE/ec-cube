@@ -32,7 +32,7 @@ if ( $_POST['preview'] ){
 		$id = $_GET['id'];
         $result = $conn->getAll($sql, array($id));
 	       
-        print_r($result);exit;   
+        //print_r($result);exit;   
         if ( $result ){
                 if ( $result[0]["mail_method"] == 2 ){
                 // テキスト形式の時はタグ文字をエスケープ
