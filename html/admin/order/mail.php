@@ -39,7 +39,7 @@ if(sfIsInt($_GET['order_id'])) {
 } else {
 	$order_id = $_POST['order_id'];
 }
-$objPage->tpl_order_id = $_POST['order_id'];
+$objPage->tpl_order_id = order_id;
 print_r($_POST);
 // パラメータ管理クラス
 $objFormParam = new SC_FormParam();
