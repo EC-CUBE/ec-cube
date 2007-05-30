@@ -42,7 +42,7 @@ foreach ($_POST as $key => $val) {
 $objPage->tpl_order_id = $_POST['order_id'];
 
 // DBから受注情報を読み込む
-lfGetCustomerData($_POST['order_id']);
+lfGetOrderData($_POST['order_id']);
 
 
 switch($_POST['mode']) {
@@ -125,14 +125,14 @@ function lfInitParam() {
 	$objFormParam->addParam("フッター", "footer", LTEXT_LEN, "KVa", array("EXIST_CHECK", "MAX_LENGTH_CHECK", "SPTAB_CHECK"));
 }
 
-function lfGetCustomerData($order_id) {
+function lfGetOrderData($order_id) {
 	global $objFormParam;
 	global $objPage;
 	if(sfIsInt($order_id)) {
 		// DBから受注情報を読み込む
 		$objQuery = new SC_Query();
 		$where = "order_id = ?";
-		$arrRet = $objQuery->select("*", "dtb_customer", $where, array($order_id));
+		$arrRet = $objQuery->select("*", "dtb_order", $where, array($order_id));
 		$objFormParam->setParam($arrRet[0]);
 		list($point, $total_point) = sfGetCustomerPoint($order_id, $arrRet[0]['use_point'], $arrRet[0]['add_point']);
 		$objFormParam->setValue('total_point', $total_point);
