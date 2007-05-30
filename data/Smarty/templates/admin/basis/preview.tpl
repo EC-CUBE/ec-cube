@@ -79,8 +79,7 @@ function checkFlagAndSubmit(){
 									<tr>
 										<td bgcolor="#f2f1ec" width="160" class="fs12n">テンプレート<span class="red"> *</span></td>
 										<td bgcolor="#ffffff" width="557" class="fs10n">
-										<!--{assign var=key value="template_name"}-->
-										<input type="text" name="template_name" value="<!--{$arrForm[$key]|escape}-->" onChange="setFlag();" size="30" class="box30" style="<!--{$arrErr[$key]|sfGetErrorColor}-->">
+										<!--{$list_data.template_name|escape}-->
 										</td>
 									</tr>
 									<tr>
