@@ -67,7 +67,6 @@ function lfRegistData( $arrVal, $id = null ){
 	
     $sqlval['template_name'] = $arrVal['template_name'];
 	$sqlval['subject'] = $arrVal['subject'];
-	$sqlval['mail_method'] = $arrVal['mail_method'];
 	$sqlval['creator_id'] = $_SESSION['member_id'];
 	$sqlval['header'] = $arrVal['header'];
     $sqlval['footer'] = $arrVal['footer'];
@@ -104,9 +103,9 @@ function lfErrorCheck($array) {
 //    print_r($array);exit;
 	$objErr->doFunc(array("メール形式", "send_type"), array("EXIST_CHECK"));
     $objErr->doFunc(array("テンプレート", "template_name"), array("EXIST_CHECK"));
-//	$objErr->doFunc(array("Subject", "subject"), array("EXIST_CHECK","MAX_LENGTH_CHECK"));
-//	$objErr->doFunc(array("ヘッダー", 'header'), array("EXIST_CHECK","MAX_LENGTH_CHECK"));
-//    $objErr->doFunc(array("フッター", 'footer'), array("EXIST_CHECK","MAX_LENGTH_CHECK"));
+	$objErr->doFunc(array("Subject", "subject"), array("EXIST_CHECK","MAX_LENGTH_CHECK"));
+	$objErr->doFunc(array("ヘッダー", 'header'), array("EXIST_CHECK","MAX_LENGTH_CHECK"));
+    $objErr->doFunc(array("フッター", 'footer'), array("EXIST_CHECK","MAX_LENGTH_CHECK"));
 
 	return $objErr->arrErr;
 }
