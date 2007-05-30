@@ -145,10 +145,5 @@ function lfGetOrderData($order_id) {
 		$objFormParam->setValue('total_point', $total_point);
 		$objFormParam->setValue('point', $point);
 		$objPage->arrDisp = $arrRet[0];
-		// 受注詳細データの取得
-		$arrRet = lfGetOrderDetail($order_id);
-		$arrRet = sfSwapArray($arrRet);
-		$objPage->arrDisp = array_merge($objPage->arrDisp, $arrRet);
-		$objFormParam->setParam($arrRet);
 	}
 }
