@@ -28,17 +28,17 @@ $objSess = new SC_Session();
 // 認証可否の判定
 sfIsSuccess($objSess);
 
-if ( $_GET['mode'] == "delete" && sfCheckNumLength($_GET['id'])===true ){
+if ( $_POST['mode'] == "delete" && sfCheckNumLength($_POST['id'])===true ){
 
     // メール担当の画像があれば削除しておく
-    $sql = "SELECT charge_image FROM dtb_mailmaga_template WHERE template_id = ?";
+    $sql = "SELECT charge_image FROM dtb_mailtemplate WHERE template_id = ?";
     $result = $conn->getOne($sql, array($_GET["id"]));
     if (strlen($result) > 0) {
         @unlink(IMAGE_SAVE_DIR. $result);
     }
     
     // 登録削除
-    $sql = "UPDATE dtb_mailmaga_template SET del_flg = 1 WHERE template_id = ?";
+    $sql = "UPDATE dtb_mailtemplate SET del_flg = 1 WHERE template_id = ?";
     $conn->query($sql, array($_GET['id']));
     sfReload();
 }
