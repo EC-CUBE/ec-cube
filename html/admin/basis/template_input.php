@@ -20,7 +20,7 @@ class LC_Page {
 		$this->tpl_mainpage = 'basis/mail.tpl';
 		$this->tpl_mainno = 'basis';
 		$this->tpl_subnavi = 'basis/subnavi.tpl';
-		$this->tpl_subno = "mail";
+		$this->tpl_subno = 'mail';
 	}
 }
 
@@ -56,11 +56,6 @@ if ( $_GET['mode'] == 'regist' ) {
 		//sfReload("mode=complete");	// 自分を再読込して、完了画面へ遷移
 	}
 } 
-
-
-
-
-
 
 $objView->assignobj($objPage);
 $objView->display(MAIN_FRAME);
@@ -100,7 +95,6 @@ function lfConvData( $data ){
 			$data[$key] = mb_convert_kana($data[$key], $line);
 		}
 	}
-
 	return $data;
 }
 
@@ -110,9 +104,9 @@ function lfErrorCheck() {
 	
 	$objErr->doFunc(array("メール形式", "send_type"), array("EXIST_CHECK", "ALNUM_CHECK"));
     $objErr->doFunc(array("テンプレート", "template_name"), array("EXIST_CHECK", "ALNUM_CHECK"));
-	$objErr->doFunc(array("Subject", "subject", STEXT_LEN), array("EXIST_CHECK","MAX_LENGTH_CHECK"));
-	$objErr->doFunc(array("ヘッダー", 'header', LLTEXT_LEN), array("EXIST_CHECK","MAX_LENGTH_CHECK"));
-    $objErr->doFunc(array("フッター", 'footer', LLTEXT_LEN), array("EXIST_CHECK","MAX_LENGTH_CHECK"));
+	$objErr->doFunc(array("Subject", "subject"), array("EXIST_CHECK","MAX_LENGTH_CHECK"));
+	$objErr->doFunc(array("ヘッダー", 'header'), array("EXIST_CHECK","MAX_LENGTH_CHECK"));
+    $objErr->doFunc(array("フッター", 'footer'), array("EXIST_CHECK","MAX_LENGTH_CHECK"));
 
 	return $objErr->arrErr;
 }
