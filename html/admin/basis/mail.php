@@ -73,7 +73,7 @@ function lfRegist( $conn, $data ){
 	
 	$data['creator_id'] = $_SESSION['member_id'];
 	
-	$sql = "SELECT * FROM dtb_mailtemplate WHERE template_id = ?";
+	$sql = "SELECT * FROM dtb_mailtemplate WHERE template_id = ? AND del_flg = 0";
 	$result = $conn->getAll($sql, array($_POST['template_id']) );
 	if ( $result ){
 		$sql_where = "template_id = ". addslashes($_POST['template_id']);
