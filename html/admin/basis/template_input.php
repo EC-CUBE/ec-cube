@@ -47,8 +47,8 @@ if ( $_GET['mode'] == 'regist' ) {
 	
 	// 新規登録
 	$objPage->arrForm = lfConvData( $_GET );
-	print_r($objPage->arrForm);
-    $objPage->arrErr = lfErrorCheck($objPage->arrForm);
+	print_r($objPage->arrForm);print("<br>");
+    $objPage->arrErr = print_r(lfErrorCheck($objPage->arrForm));
 	
 	if ( ! $objPage->arrErr ){
 		// エラーが無いときは登録・編集
