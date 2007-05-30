@@ -30,12 +30,12 @@ sfIsSuccess($objSess);
 
 if ( $_GET['mode'] == "delete" && sfCheckNumLength($_GET['id'])===true ){
 
-    // メール担当の画像があれば削除しておく
-    $sql = "SELECT charge_image FROM dtb_mailtemplate WHERE template_id = ?";
-    $result = $conn->getOne($sql, array($_GET["id"]));
-    if (strlen($result) > 0) {
-        @unlink(IMAGE_SAVE_DIR. $result);
-    }
+//    // メール担当の画像があれば削除しておく
+//    $sql = "SELECT charge_image FROM dtb_mailtemplate WHERE template_id = ?";
+//    $result = $conn->getOne($sql, array($_GET["id"]));
+//    if (strlen($result) > 0) {
+//        @unlink(IMAGE_SAVE_DIR. $result);
+//    }
     
     // 登録削除
     $sql = "UPDATE dtb_mailtemplate SET del_flg = 1 WHERE template_id = ?";
