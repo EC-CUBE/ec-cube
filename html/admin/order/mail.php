@@ -39,9 +39,8 @@ foreach ($_POST as $key => $val) {
 	}
 }
 
-
 $objPage->tpl_order_id = $_POST['order_id'];
-print_r($_POST);
+
 // DBから受注情報を読み込む
 lfGetOrderData($_POST['order_id']);
 
