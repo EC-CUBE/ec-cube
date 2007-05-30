@@ -42,7 +42,7 @@ foreach ($_POST as $key => $val) {
 $objPage->tpl_order_id = $_POST['order_id'];
 
 // DBから受注情報を読み込む
-lfGetOrderData($_POST['order_id']);
+lfGetCustomerData($_POST['order_id']);
 
 
 switch($_POST['mode']) {
