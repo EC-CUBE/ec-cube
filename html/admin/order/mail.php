@@ -23,6 +23,13 @@ class LC_Page {
 $objPage = new LC_Page();
 $objView = new SC_AdminView();
 $objSess = new SC_Session();
+
+// パラメータ管理クラス
+$objFormParam = new SC_FormParam();
+// パラメータ情報の初期化
+lfInitParam();
+
+// 認証可否の判定
 sfIsSuccess($objSess);
 
 // 検索パラメータの引き継ぎ
@@ -43,11 +50,6 @@ $objPage->tpl_order_id = order_id;
 print_r($_POST);
 // DBから受注情報を読み込む
 lfGetOrderData($order_id);
-
-// パラメータ管理クラス
-$objFormParam = new SC_FormParam();
-// パラメータ情報の初期化
-lfInitParam();
 
 switch($_POST['mode']) {
 case 'pre_edit':
