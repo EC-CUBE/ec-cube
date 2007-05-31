@@ -46,14 +46,14 @@ lfGetOrderData($_POST['order_id']);
 
 // --テンプレート／プルダウンメニューの作成
 $conn = new SC_DbConn();
-$sql = "SELECT template_name FROM dtb_mailtemplate WHERE del_flg=0";
-$arrTemp = $conn->getAll($sql);
+$sql = "SELECT * FROM dtb_mailtemplate WHERE del_flg=0";
+$arrTemplateName = $conn->getAll($sql);
 
 for($i = 0;$i < count($arrTemp);$i++){
-    $arrTemp[$i] = $arrTemp[$i]['template_name'];
+    $arrTemplateName[$i] = $arrTemp[$i]['template_name'];
 }
 
-$objPage->arrMAILTEMPLATE = $arrTemp;
+$objPage->arrMAILTEMPLATE = $arrTemplateName;
 
 switch($_POST['mode']) {
 case 'pre_edit':
@@ -107,7 +107,7 @@ case 'change':
 		$objQuery = new SC_Query();
 		$where = "template_id = ?";
 		$arrRet = $objQuery->select("subject, header, footer", "dtb_mailtemplate", $where, array($_POST['template_id']));
-		print_r($arrRet);exit;
+		print_r($arrRet[0]);exit;
         $objFormParam->setParam($arrRet[0]);
 	}
 	break;
