@@ -63,6 +63,15 @@
 										<td width="40" align="center">-</td>
 										<td width="70" align="center"><!--{if $list_data[data].send_type eq 0}--><a href="" onclick="win03('./preview.php?mode=preview&id=0','preview','750','550'); return false;" target="_blank"><!--{else}--><a href="" onclick="win03('./preview.php?id=0','preview','650','700'); return false;" target="_blank"><!--{/if}-->プレビュー</a></td>
 									</tr>
+									<tr bgcolor="#ffffff" class="fs12n">
+										<td width="120" align="center"><!--{$list_data[0].create_date|escape}--></td>
+										<td width="333"><!--{$list_data[1].template_name|escape}--></td>
+										<!--{assign var=type value=$list_data[1].mail_method|escape}-->
+										<td width="70" align="center">携帯</td>
+										<td width="40" align="center"><a href="./mail.php?mode=edit&template_id=1">編集</a></td>
+										<td width="40" align="center">-</td>
+										<td width="70" align="center"><!--{if $list_data[data].send_type eq 0}--><a href="" onclick="win03('./preview.php?mode=preview&id=0','preview','750','550'); return false;" target="_blank"><!--{else}--><a href="" onclick="win03('./preview.php?id=1','preview','650','700'); return false;" target="_blank"><!--{/if}-->プレビュー</a></td>
+									</tr>
 									<!--{section name=data loop=$list_data}-->
 									<tr bgcolor="#ffffff" class="fs12n">
 										<td width="120" align="center"><!--{$list_data[data].create_date|escape}--></td>
