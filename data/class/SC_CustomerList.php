@@ -212,7 +212,7 @@ class SC_CustomerList extends SC_SelectSql {
         				} else {
         					$sql_where .= "AND dtb_customer.email NOT LIKE ? " ;
         				}
-        			} elseif($this->arrSql['domain'] == 3) {
+        			} else {
         				if($sql_where == "") {
         					$sql_where .= "dtb_customer.email LIKE ? ";
         				} else {
