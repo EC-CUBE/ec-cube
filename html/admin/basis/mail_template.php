@@ -47,7 +47,7 @@ $sql = "SELECT * FROM dtb_mailtemplate WHERE template_id = 1";
 $default_template_mobile = $conn->getAll($sql);
 $objPage->default_template_mobile = $default_template_mobile;
 
-$sql = "SELECT * FROM dtb_mailtemplate WHERE del_flg = 0 ORDER BY create_date ASC";
+$sql = "SELECT * FROM dtb_mailtemplate WHERE del_flg = 0 AND template_id >1 ORDER BY create_date ASC";
 $list_data = $conn->getAll($sql);
 $linemax = count($list_data);
 
