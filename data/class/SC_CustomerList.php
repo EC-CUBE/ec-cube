@@ -206,6 +206,11 @@ class SC_CustomerList extends SC_SelectSql {
         	//ドメイン指定時
         	
         		foreach($arrDomainType as $val) {
+        			//指定しない
+        			if($this->arrSql['domain'] == 1) {
+        				exit;
+        			}
+        			
         			//PCドメイン
         			if($this->arrSql['domain'] == 2) {
         				if($sql_where == "") {
