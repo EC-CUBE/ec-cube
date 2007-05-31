@@ -8,7 +8,7 @@ require_once("../require.php");
 
 class LC_Page {
     var $list_data;
-
+    var $mailTemp;
 	function LC_Page() {
 		$this->tpl_mainpage = 'order/mail.tpl';
 		$this->tpl_subnavi = 'order/subnavi.tpl';
@@ -47,8 +47,7 @@ lfGetOrderData($_POST['order_id']);
 // --テンプレート／プルダウンメニューの作成
 $conn = new SC_DbConn();
 $sql = "SELECT subject FROM dtb_mailtemplate WHERE del_flg=0";
-$mailTemp = $conn->getAll($sql);
-$objPage->mailtemp = $mailTemp;
+$this->arrMAILTEMPLATE = $conn->getAll($sql);
 
 switch($_POST['mode']) {
 case 'pre_edit':
