@@ -200,35 +200,37 @@ class SC_CustomerList extends SC_SelectSql {
  *			}
  *		}
  */
-		//ドメイン指定
-        if ( $mode == 'magazine' ){
+        if($mode == 'magazine'){
         	global $arrDomainType;
         	$sql_where = "";
-            $domain = $this->arrSql['domain'];
-            foreach($arrDomainType as $val) {
-            //PCドメイン
-            	if($domain == 2) {
-	            	if($sql_where == "") {
-        		        $sql_where .= "dtb_customer.email NOT ILIKE ? ";
-        		    } else {
-            	        $sql_where .= "AND dtb_customer.email NOT LIKE ? " ;
-        		    }
-	            }
-            //携帯ドメイン
-            	if($domain == 3) {
-	            	if($sql_where == "") {
-        		    	$sql_where .= "dtb_customer.email ILIKE ? ";
-        		    } else {
-            	        $sql_where .= "OR dtb_customer.email LIKE ? " ;
-        		    }
-	        	}
-		        $this->arrVal[] = $this->addSearchStr($val);
-		    }
-		    $this->setWhere($sql_where);
-        }  
+        	$domain = ($this->arrSql['domai']);
+        	//ドメイン指定時
+        	if($domain == 2 || $domain == 3) {
+        		foreach($arrDomainType as $val) {
+        			//PCドメイン
+        			if($domain == 2) {
+        				if($sql_where == "") {
+        					$sql_where .= "dtb_customer.email NOT ILIKE ? ";
+        				} else {
+        					$sql_where .= "AND dtb_customer.email NOT LIKE ? " ;
+        				}
+        			}
+        			//携帯ドメイン
+        			if($domain == 3) {
+        				if($sql_where == "") {
+        					$sql_where .= "dtb_customer.email ILIKE ? ";
+        				} else {
+        					$sql_where .= "OR dtb_customer.email LIKE ? " ;
+        				}
+        			}
+        			$this->arrVal[] = $this->addSearchStr($val);
+        		}
+        		$this->setWhere($sql_where);
+        	}
+        }
 
 		//　HTML-mail（配信方式)
-		if ( $mode == 'magazine' ){
+		if( $mode == 'magazine' ){
 			if ( strlen($this->arrSql['htmlmail']) > 0 ) {
 				$this->setWhere( " mailmaga_flg = ? ");
 				$this->arrVal[] = $this->arrSql['htmlmail'];
