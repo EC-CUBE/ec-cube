@@ -133,7 +133,7 @@ function lfnCheckSubmit(){
 										<td bgcolor="#ffffff" width="557" class="fs10">
 										<!--{assign var=key value="header"}-->
 										<span class="red12"><!--{$arrErr[$key]}--></span>
-										<textarea name="header" cols="75" rows="12" class="area75" onChange="setFlag();" style="<!--{$arrErr[$key]|sfGetErrorColor}-->"><!--{$arrForm[$key]|escape}--></textarea><br />
+										<textarea name="header" cols="75" rows="20" class="area75" onChange="setFlag();" style="<!--{$arrErr[$key]|sfGetErrorColor}-->"><!--{$arrForm[$key]|escape}--></textarea><br />
 										<span class="red"> （上限<!--{$smarty.const.LTEXT_LEN}-->文字）
 										</span>
 						
