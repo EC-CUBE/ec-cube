@@ -51,7 +51,7 @@ function lfnCheckSubmit(){
 
 <!--¡ú¡ú¥á¥¤¥ó¥³¥ó¥Æ¥ó¥Ä¡ú¡ú-->
 <table width="878" border="0" cellspacing="0" cellpadding="0" summary=" ">
-<form name="form1" id="form1" method="GET" action="<!--{$smarty.server.PHP_SELF|escape}-->" onSubmit="return lfnCheckSubmit();">
+<form name="form1" id="form1" method="POST" action="<!--{$smarty.server.PHP_SELF|escape}-->" onSubmit="return lfnCheckSubmit();">
 <input type="hidden" name="mode" value="regist">
 <!--{assign var=key value="template_id"}-->
 <input type="hidden" name="template_id" value="<!--{$arrForm[$key]|escape}-->">
