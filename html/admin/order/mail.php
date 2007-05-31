@@ -94,6 +94,7 @@ case 'change':
 	// POST値の取得
 	$objFormParam->setValue('template_id', $_POST['template_id']);
 	$mailTemp = "SELECT template_id FROM dtb_mailtemplate WHERE del_flg=0";
+	print_r($mailTemp);
 	if(sfIsInt($_POST['template_id'])) {
 		$objQuery = new SC_Query();
 		$where = "template_id = ?";
@@ -102,7 +103,6 @@ case 'change':
 	}
 	break;
 }
-print_r($mailTemp);
 
 $objQuery = new SC_Query();
 $col = "send_date, subject, template_id, send_id";
