@@ -103,9 +103,11 @@ case 'confirm':
 	break;
 case 'change':
 	// POST値の取得
+    
 	$objFormParam->setValue('template_id', $_POST['template_id']);
+    $_POST['template_id'] = $arrTemplate[0][$_POST['template_id']];
     if(sfIsInt($_POST['template_id'])) {
-		$objQuery = new SC_Query();
+        $objQuery = new SC_Query();
 		$where = "template_id = ?";
 		$arrRet = $objQuery->select("subject, header, footer", "dtb_mailtemplate", $where, array($_POST['template_id']));
 		
