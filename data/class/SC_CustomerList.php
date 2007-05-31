@@ -163,7 +163,6 @@ class SC_CustomerList extends SC_SelectSql {
 				$this->arrVal[] = $searchEmail;
 			}
 			$this->setWhere($sql_where);
-			$this->setWhere("mailmaga_flg = 0");
 		}
 
 		//　E-MAIL(mobile)
@@ -225,6 +224,7 @@ class SC_CustomerList extends SC_SelectSql {
         		}
         	}
         	$this->setWhere($sql_where);
+        	$this->setWhere("mailmaga_flg = 0");
         }
 
 		//　HTML-mail（配信方式)
