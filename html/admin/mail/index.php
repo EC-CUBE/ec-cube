@@ -411,7 +411,7 @@ function lfRegistData($arrData){
     if(DB_TYPE == "mysql"){
         $dtb_send_history["send_id"] = $objQuery->nextval('dtb_send_history','send_id');
     }
-    
+    print_r( $dtb_send_history);exit;
 	if ( is_array( $search_data ) ){
         foreach( $search_data as $line ){
             
