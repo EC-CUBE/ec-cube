@@ -220,7 +220,7 @@ class SC_CustomerList extends SC_SelectSql {
         				if($sql_where == "") {
         					$sql_where .= "dtb_customer.email ILIKE ? ";
         				} else {
-        					$sql_where .= "OR dtb_customer.email LIKE ? " ;
+        					$sql_where .= "AND dtb_customer.email LIKE ? " ;
         				}
         			}
         			$searchDomain = $this->addSearchStr($val);
