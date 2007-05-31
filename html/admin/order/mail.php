@@ -50,7 +50,7 @@ $sql = "SELECT template_name FROM dtb_mailtemplate WHERE del_flg=0";
 $arrTemp = $conn->getAll($sql);
 
 for($i = 0;$i < count($arrTemp);$i++){
-    $arrTemp = $arrTemp[$i]['template_name'];
+    $arrTemp[$i] = $arrTemp[$i]['template_name'];
 }
 
 print_r($arrTemp);exit;
