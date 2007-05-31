@@ -6,7 +6,7 @@
  */
 *}-->
 <script language="JavaScript">
-<!--
+
 var flag = 0;
 
 function setFlag(){
@@ -52,7 +52,7 @@ function lfnCheckSubmit(){
 		}
 	}
 }
-//-->
+
 </script>
 
 <!--¡ú¡ú¥á¥¤¥ó¥³¥ó¥Æ¥ó¥Ä¡ú¡ú-->
