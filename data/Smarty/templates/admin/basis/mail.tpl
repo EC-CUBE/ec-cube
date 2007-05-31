@@ -23,13 +23,35 @@ function checkFlagAndSubmit(){
 		fnSetvalAndSubmit( 'form1', 'mode', 'edit' );
 	}
 }
-
+function lfnCheckSubmit(){
+	
+	fm = document.form1;
+	var err = '';
+	
+	if ( ! fm["subject"].value ){
+		err += 'Subjectを入力して下さい。';
+	}
+	if ( ! fm["body"].value ){
+		if ( err ) err += '\n';
+		err += '本文を入力して下さい。';
+	}
+	if ( err ){
+		alert(err);
+		return false;
+	} else {
+		if(window.confirm('内容を登録しても宜しいですか')){
+			return true;
+		}else{
+			return false;
+		}
+	}
+}
 //-->
 </script>
 
 <!--★★メインコンテンツ★★-->
 <table width="878" border="0" cellspacing="0" cellpadding="0" summary=" ">
-<form name="form1" id="form1" method="GET" action="<!--{$smarty.server.PHP_SELF|escape}-->">
+<form name="form1" id="form1" method="GET" action="<!--{$smarty.server.PHP_SELF|escape}-->" onSubmit="return lfnCheckSubmit();">
 <input type="hidden" name="mode" value="regist">
 <!--{assign var=key value="template_id"}-->
 <input type="hidden" name="template_id" value="<!--{$arrForm[$key]|escape}-->">
