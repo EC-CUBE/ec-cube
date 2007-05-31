@@ -99,6 +99,7 @@ case 'change':
 		$arrRet = $objQuery->select("subject, header, footer", "dtb_mailtemplate", $where, array($_POST['template_id']));
 		$objFormParam->setParam($arrRet[0]);
 	}
+	print_r($arrRet[0]);
 	break;
 }
 
