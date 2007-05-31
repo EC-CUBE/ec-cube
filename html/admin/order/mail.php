@@ -47,7 +47,8 @@ lfGetOrderData($_POST['order_id']);
 // --テンプレート／プルダウンメニューの作成
 $conn = new SC_DbConn();
 $sql = "SELECT subject FROM dtb_mailtemplate WHERE del_flg=0";
-$objPage->arrMAILTEMPLATE = $conn->getAll($sql);
+$arrTemp = $conn->getAll($sql);
+$objPage->arrMAILTEMPLATE = $arrTemp[0];
 
 switch($_POST['mode']) {
 case 'pre_edit':
