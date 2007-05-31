@@ -41,6 +41,11 @@ class LC_Page {
 		$this->arrHtmlmail[2] = $arrMAILMAGATYPE[2];
 		global $arrCustomerType;
 		$this->arrCustomerType = $arrCustomerType;
+		global $arrDomain;
+		$this->domain[1] = $arrDomain[DOMAIN_TYPE_NONE];
+		$this->domain[2] = $arrDomain[DOMAIN_TYPE_PC];
+		$this->domain[3] = $arrDomain[DOMAIN_TYPE_MOBILE];
+		
 	}
 }
 
