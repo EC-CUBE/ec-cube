@@ -39,6 +39,7 @@ if ( $_GET['mode'] == "delete" && sfCheckNumLength($_GET['id'])===true ){
 
 $sql = "SELECT * FROM dtb_mailtemplate WHERE del_flg = 0 ORDER BY create_date ASC";
 $list_data = $conn->getAll($sql);
+print_r($list_data);
 $objPage->list_data = $list_data;
 $objPage->arrMagazineType = $arrMagazineTypeAll;
 
