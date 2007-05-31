@@ -47,13 +47,14 @@ lfGetOrderData($_POST['order_id']);
 // --テンプレート／プルダウンメニューの作成
 $conn = new SC_DbConn();
 $sql = "SELECT * FROM dtb_mailtemplate WHERE del_flg=0";
-$arrTemplateName = $conn->getAll($sql);
+$Temp = $conn->getAll($sql);
 
-for($i = 0;$i < count($arrTemp);$i++){
-    $arrTemplateName[$i] = $arrTemp[$i]['template_name'];
+for($i = 0;$i < count($Temp);$i++){
+    $arrTemplate[0][$i] = $Temp[$i]['template_name'];
+    $arrTemplate[1][$i] = $Temp[$i]['template_id'];
 }
 
-$objPage->arrMAILTEMPLATE = $arrTemplateName;
+$objPage->arrMAILTEMPLATE = $arrTemplate;
 
 switch($_POST['mode']) {
 case 'pre_edit':
