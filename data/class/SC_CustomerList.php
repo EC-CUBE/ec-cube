@@ -226,9 +226,9 @@ class SC_CustomerList extends SC_SelectSql {
         			$searchDomain = $this->addSearchStr($val);
         			$this->arrVal[] = $searchDomain;
         		}
-        		print_r($sql_where);
-        		$this->etWhere($sql_where);
         	}
+        	print_r($sql_where);
+        	$this->setWhere($sql_where);
         }
 
 		//　HTML-mail（配信方式)
