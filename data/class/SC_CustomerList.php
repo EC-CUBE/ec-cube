@@ -214,9 +214,9 @@ class SC_CustomerList extends SC_SelectSql {
         				}
         			} else {
         				if($sql_where == "") {
-        					$sql_where .= "dtb_customer.email ILIKE ? ";
+        					$sql_where .= "dtb_customer.mailmaga_flg = 0 AND email ILIKE ? ";
         				} else {
-        					$sql_where .= "OR dtb_customer.email ILIKE ? " ;
+        					$sql_where .= "OR dtb_customer.mailmaga_flg = 0 AND email ILIKE ? " ;
         				}
         			}
         			$searchDomain = $this->addSearchStr($val);
@@ -224,7 +224,6 @@ class SC_CustomerList extends SC_SelectSql {
         		}
         	}
         	$this->setWhere($sql_where);
-        	$this->setWhere("mailmaga_flg = 0");
         }
 
 		//　HTML-mail（配信方式)
