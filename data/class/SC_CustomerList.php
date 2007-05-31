@@ -207,11 +207,11 @@ class SC_CustomerList extends SC_SelectSql {
         	//ドメイン回年。１は回年しない、２はＰＣ、３は啡掠
         	if ( $this->arrSql['domain'] > 1 ) {
         		foreach($arrDomainType as $val) {
-        			if($this->arrSql['not_domaininc'] == '2') {
+        			if($this->arrSql['domain'] == '3') {
         				if($sql_where == "") {
-        					$sql_where .= "dtb_customer.email NOT ILIKE ? ";
+        					$sql_where .= "dtb_customer.email ILIKE ? ";
         				} else {
-        					$sql_where .= "OR dtb_customer.email NOT ILIKE ? " ;
+        					$sql_where .= "OR dtb_customer.email ILIKE ? " ;
         				}
         			} else {
         				if($sql_where == "") {
