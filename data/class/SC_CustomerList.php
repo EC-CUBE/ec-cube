@@ -205,7 +205,7 @@ class SC_CustomerList extends SC_SelectSql {
         	$sql_where = "";
         	$domain = ($this->arrSql['domain']);
         	//ドメイン指定時
-        	if($domain == 2 || $domain == 3) {
+        	
         		foreach($arrDomainType as $val) {
         			//PCドメイン
         			if($domain == 2) {
@@ -226,7 +226,7 @@ class SC_CustomerList extends SC_SelectSql {
         			$searchDomain = $this->addSearchStr($val);
         			$this->arrVal[] = $searchDomain;
         		}
-        	}
+        	
         	$this->setWhere($sql_where);
         }
 
