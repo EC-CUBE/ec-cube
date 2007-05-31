@@ -210,13 +210,13 @@ class SC_CustomerList extends SC_SelectSql {
         				if($sql_where == "") {
         					$sql_where .= "dtb_customer.email ILIKE ? ";
         				} else {
-        					$sql_where .= "AND dtb_customer.email ILIKE ? " ;
+        					$sql_where .= "OR dtb_customer.email ILIKE ? " ;
         				}
         			} else {
         				if($sql_where == "") {
         					$sql_where .= "dtb_customer.email NOT ILIKE ? ";
         				} else {
-        					$sql_where .= "OR dtb_customer.email NOT ILIKE ? " ;
+        					$sql_where .= "AND dtb_customer.email NOT ILIKE ? " ;
         				}
         			}
         			$searchDomain = $this->addSearchStr($val);
