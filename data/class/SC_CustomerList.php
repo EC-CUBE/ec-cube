@@ -192,13 +192,14 @@ class SC_CustomerList extends SC_SelectSql {
 			$this->setWhere($sql_where);
 		}
 
-//      2007/05/28  一旦、停止します。				
-		//　配信メールアドレス種別
-		if ( $mode == 'magazine' ){
- 			if ( strlen($this->arrSql['mail_type']) > 0 && $this->arrSql['mail_type'] == 2) {
-				$this->setWhere( " dtb_customer.email_mobile <> ''  ");
-			}
-		}
+/*      2007/05/28  一旦、停止します。				
+ *		//　配信メールアドレス種別
+ *		if ( $mode == 'magazine' ){
+ *			if ( strlen($this->arrSql['mail_type']) > 0 && $this->arrSql['mail_type'] == 2) {
+ *				$this->setWhere( " dtb_customer.email_mobile <> ''  ");
+ *			}
+ *		}
+ */
 
         if($mode == 'magazine'){
         	global $arrDomainType;
@@ -206,7 +207,7 @@ class SC_CustomerList extends SC_SelectSql {
         	//ドメイン指定。１は指定しない、２はＰＣ、３は携帯
         	if ( $this->arrSql['domain'] > 1 ) {
         		foreach($arrDomainType as $val) {
-        			if($this->arrSql['not_domaininc'] == '3') {
+        			if($this->arrSql['not_domaininc'] == '2') {
         				if($sql_where == "") {
         					$sql_where .= "dtb_customer.email NOT ILIKE ? ";
         				} else {
