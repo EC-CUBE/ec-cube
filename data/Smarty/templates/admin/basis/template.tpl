@@ -65,7 +65,7 @@
 									<tr bgcolor="#ffffff" class="fs12n">
 										<td width="120" align="center"><!--{$default_template_mobile.create_date|escape}--></td>
 										<td width="333"><!--{$default_template_mobile.template_name|escape}--></td>
-										<td width="70" align="center">パソコン</td>
+										<td width="70" align="center">携帯電話</td>
 										<td width="40" align="center"><a href="./mail.php?mode=edit&template_id=1">編集</a></td>
 										<td width="40" align="center">-</td>
 										<td width="70" align="center"><a href="" onclick="win03('./preview.php?mode=preview&id=1','preview','750','550'); return false;" target="_blank">プレビュー</a></td>
