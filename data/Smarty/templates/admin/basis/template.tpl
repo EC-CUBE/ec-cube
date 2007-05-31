@@ -48,7 +48,7 @@
 								<table width="678" border="0" cellspacing="1" cellpadding="8" summary=" ">
 									<tr bgcolor="#f2f1ec" align="center" class="fs12n">
 										<td width="120">作成日</td>
-										<td width="333">subject</td>
+										<td width="333">テンプレート名</td>
 										<td width="70">メール形式</td>
 										<td width="40">編集</td>
 										<td width="40">削除</td>
@@ -57,7 +57,7 @@
 									<!--{section name=data loop=$list_data}-->
 									<tr bgcolor="#ffffff" class="fs12n">
 										<td width="120" align="center"><!--{$list_data[data].create_date|escape}--></td>
-										<td width="333"><!--{$list_data[data].subject|escape}--></td>
+										<td width="333"><!--{$list_data[data].template_name|escape}--></td>
 										<!--{assign var=type value=$list_data[data].mail_method|escape}-->
 										<td width="70" align="center"><!--{if $list_data[data].send_type eq 0}-->パソコン<!--{else}-->携帯<!--{/if}--></td>
 										<td width="40" align="center"><a href="./mail.php?mode=edit&template_id=<!--{$list_data[data].template_id}-->">編集</a></td>
