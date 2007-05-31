@@ -203,12 +203,11 @@ class SC_CustomerList extends SC_SelectSql {
         if($mode == 'magazine'){
         	global $arrDomainType;
         	$sql_where = "";
-        	$domain = ($this->arrSql['domain']);
         	//ドメイン指定時
         	
         		foreach($arrDomainType as $val) {
         			//PCドメイン
-        			if($domain == 2) {
+        			if($this->arrSql['domain'] == 2) {
         				if($sql_where == "") {
         					$sql_where .= "dtb_customer.email NOT ILIKE ? ";
         				} else {
@@ -216,7 +215,7 @@ class SC_CustomerList extends SC_SelectSql {
         				}
         			}
         			//携帯ドメイン
-        			if($domain == 3) {
+        			if($this->arrSql['domain'] == 3) {
         				if($sql_where == "") {
         					$sql_where .= "dtb_customer.email ILIKE ? ";
         				} else {
