@@ -55,20 +55,20 @@
 										<td width="70">プレビュー</td>
 									</tr>
 									<tr bgcolor="#ffffff" class="fs12n">
-										<td width="120" align="center"><!--{$list_data[0].create_date|escape}--></td>
-										<td width="333"><!--{$list_data[0].template_name|escape}--></td>
+										<td width="120" align="center"><!--{$default_template.create_date|escape}--></td>
+										<td width="333"><!--{$default_template.template_name|escape}--></td>
 										<td width="70" align="center">パソコン</td>
 										<td width="40" align="center"><a href="./mail.php?mode=edit&template_id=0">編集</a></td>
 										<td width="40" align="center">-</td>
-										<td width="70" align="center"><!--{if $list_data[data].send_type eq 0}--><a href="" onclick="win03('./preview.php?mode=preview&id=0','preview','750','550'); return false;" target="_blank"><!--{else}--><a href="" onclick="win03('./preview.php?id=0','preview','650','700'); return false;" target="_blank"><!--{/if}-->プレビュー</a></td>
+										<td width="70" align="center"><a href="" onclick="win03('./preview.php?mode=preview&id=0','preview','750','550'); return false;" target="_blank">プレビュー</a></td>
 									</tr>
 									<tr bgcolor="#ffffff" class="fs12n">
-										<td width="120" align="center"><!--{$list_data[1].create_date|escape}--></td>
-										<td width="333"><!--{$list_data[1].template_name|escape}--></td>
-										<td width="70" align="center">携帯</td>
-										<td width="40" align="center"><a href="./mail.php?mode=edit&template_id=1">編集</a></td>
+										<td width="120" align="center"><!--{$default_template_mobile.create_date|escape}--></td>
+										<td width="333"><!--{$default_template_mobile.template_name|escape}--></td>
+										<td width="70" align="center">パソコン</td>
+										<td width="40" align="center"><a href="./mail.php?mode=edit&template_id=0">編集</a></td>
 										<td width="40" align="center">-</td>
-										<td width="70" align="center"><!--{if $list_data[data].send_type eq 0}--><a href="" onclick="win03('./preview.php?mode=preview&id=1','preview','750','550'); return false;" target="_blank"><!--{else}--><a href="" onclick="win03('./preview.php?id=1','preview','650','700'); return false;" target="_blank"><!--{/if}-->プレビュー</a></td>
+										<td width="70" align="center"><a href="" onclick="win03('./preview.php?mode=preview&id=0','preview','750','550'); return false;" target="_blank">プレビュー</a></td>
 									</tr>
 									<!--{section name=data loop=$list_data}-->
 									<tr bgcolor="#ffffff" class="fs12n">
