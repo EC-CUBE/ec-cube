@@ -53,10 +53,7 @@ for($i = 0;$i < count($arrTemp);$i++){
     $arrTemp[$i] = $arrTemp[$i]['template_name'];
 }
 
-print_r($arrTemp);exit;
-
-
-$objPage->arrMAILTEMPLATE = $arrTemp[0];
+$objPage->arrMAILTEMPLATE = $arrTemp;
 
 switch($_POST['mode']) {
 case 'pre_edit':
