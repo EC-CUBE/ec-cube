@@ -103,7 +103,6 @@ case 'confirm':
 case 'change':
 	// POST値の取得
 	$objFormParam->setValue('template_id', $_POST['template_id']);
-	print_r($_POST['template_id']);exit;
     if(sfIsInt($_POST['template_id'])) {
 		$objQuery = new SC_Query();
 		$where = "template_id = ?";
