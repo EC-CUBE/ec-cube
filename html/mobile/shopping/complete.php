@@ -279,6 +279,7 @@ function lfRegistPreCustomer($arrData, $arrInfo) {
 														);
 	// 宛先の設定
 	$name = $arrData['order_name01'] . $arrData['order_name02'] ." 様";
+	$arrData['order_email'] = $objQuery->select("email_mobile", "dtb_customer", "secret_key = ?", array($sqlval['secret_key']));
 	$objMail->setTo($arrData['order_email'], $name);			
 	$objMail->sendMail();
 	
