@@ -12,6 +12,7 @@ var flag = 0;
 function setFlag(){
 	flag = 1;
 }
+
 function checkFlagAndSubmit(){
 	if ( flag == 1 ){
 		if( confirm('内容が変更されています。続行すれば変更内容は破棄されます。\n宜しいでしょうか？' )){
@@ -23,6 +24,7 @@ function checkFlagAndSubmit(){
 		fnSetvalAndSubmit( 'form1', 'mode', 'edit' );
 	}
 }
+
 function lfnCheckSubmit(){
 	
 	fm = document.form1;
