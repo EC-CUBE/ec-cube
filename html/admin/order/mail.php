@@ -44,6 +44,11 @@ $objPage->tpl_order_id = $_POST['order_id'];
 // DBから受注情報を読み込む
 lfGetOrderData($_POST['order_id']);
 
+// --テンプレート／プルダウンメニューの作成
+$conn = new SC_DbConn();
+$sql = "SELECT subject FROM dtb_mailtemplate WHERE del_flg=0";
+$mailTemp = $conn->getAll($sql);
+print_r($mailTemp[0][subject]);
 
 switch($_POST['mode']) {
 case 'pre_edit':
@@ -91,12 +96,8 @@ case 'confirm':
 	}
 	break;
 case 'change':
-	$conn = new SC_DbConn();
 	// POST値の取得
 	$objFormParam->setValue('template_id', $_POST['template_id']);
-	$sql = "SELECT subject FROM dtb_mailtemplate WHERE del_flg=0";
-	$mailTemp = $conn->getAll($sql);
-	print_r($mailTemp[0][subject]);
 	if(sfIsInt($_POST['template_id'])) {
 		$objQuery = new SC_Query();
 		$where = "template_id = ?";
