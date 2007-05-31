@@ -31,7 +31,7 @@ function lfnCheckSubmit(){
 	var err = '';
 	
 	if ( ! fm["send_type"].value ){
-		err += 'メールの方式を入力して下さい。';
+		err += 'メールの方式を入力して下さい。'+fm["send_type"].value;
 	}
 	if ( ! fm["subject"].value ){
 		err += 'Subjectを入力して下さい。';
