@@ -42,9 +42,10 @@ class LC_Page {
 		global $arrCustomerType;
 		$this->arrCustomerType = $arrCustomerType;
 		global $arrDomain;
-		$this->domain[1] = $arrDomain[DOMAIN_TYPE_NONE];
-		$this->domain[2] = $arrDomain[DOMAIN_TYPE_PC];
-		$this->domain[3] = $arrDomain[DOMAIN_TYPE_MOBILE];
+		$this->arrDomain = $arrDomain;
+		$this->domain[1] = $arrDomain[1];
+		$this->domain[2] = $arrDomain[2];
+		$this->domain[3] = $arrDomain[3];
 		
 	}
 }
