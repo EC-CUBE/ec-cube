@@ -46,7 +46,7 @@ lfGetOrderData($_POST['order_id']);
 
 // --テンプレート／プルダウンメニューの作成
 $conn = new SC_DbConn();
-$sql = "SELECT subject FROM dtb_mailtemplate WHERE del_flg=0";
+$sql = "SELECT template_name FROM dtb_mailtemplate WHERE del_flg=0";
 $arrTemp = $conn->getAll($sql);
 $objPage->arrMAILTEMPLATE = $arrTemp[0];
 
