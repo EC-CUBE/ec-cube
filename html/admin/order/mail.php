@@ -16,7 +16,7 @@ class LC_Page {
 		$this->tpl_subno = 'index';
 		$this->tpl_subtitle = '¼õÃí´ÉÍý';
 		global $arrMAILTEMPLATE;
-		$this->arrMAILTEMPLATE = $arrMAILTEMPLATE;
+		//$this->arrMAILTEMPLATE = $arrMAILTEMPLATE;
 	}
 }
 
