@@ -16,7 +16,7 @@ class LC_Page {
 		$this->tpl_subno = 'index';
 		$this->tpl_subtitle = '受注管理';
 		global $arrMAILTEMPLATE;
-		//$this->arrMAILTEMPLATE = $arrMAILTEMPLATE;
+		$this->arrMAILTEMPLATE = $arrMAILTEMPLATE;
 	}
 }
 
@@ -47,7 +47,7 @@ lfGetOrderData($_POST['order_id']);
 // --テンプレート／プルダウンメニューの作成
 $conn = new SC_DbConn();
 $sql = "SELECT subject FROM dtb_mailtemplate WHERE del_flg=0";
-$this->arrMAILTEMPLATE = $conn->getAll($sql);
+$objPage->arrMAILTEMPLATE = $conn->getAll($sql);
 
 switch($_POST['mode']) {
 case 'pre_edit':
