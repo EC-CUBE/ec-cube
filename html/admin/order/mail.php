@@ -93,11 +93,11 @@ case 'confirm':
 case 'change':
 	// POST値の取得
 	$objFormParam->setValue('template_id', $_POST['template_id']);
+	$mailTemp = "SELECT template_id FROM dtb_mailtemplate WHERE del_flg=0";
 	if(sfIsInt($_POST['template_id'])) {
 		$objQuery = new SC_Query();
 		$where = "template_id = ?";
 		$arrRet = $objQuery->select("subject, header, footer", "dtb_mailtemplate", $where, array($_POST['template_id']));
-		$mailTemp = "SELECT template_id FROM dtb_mailtemplate WHERE del_flg=0";
 		$objFormParam->setParam($arrRet[0]);
 	}
 	break;
