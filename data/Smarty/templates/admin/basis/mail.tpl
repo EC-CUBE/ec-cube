@@ -30,6 +30,7 @@ function lfnCheckSubmit(){
 	fm = document.form1;
 	var err = '';
 	
+	/*
 	if ( ! fm["subject"].value ){
 		err += 'Subjectを入力して下さい。';
 	}
@@ -44,13 +45,13 @@ function lfnCheckSubmit(){
 	if ( err ){
 		alert(err);
 		return false;
-	} else {
+	} else {*/
 		if(window.confirm('内容を登録しても宜しいですか')){
 			return true;
 		}else{
 			return false;
 		}
-	}
+	//}
 }
 //-->
 </script>
