@@ -47,13 +47,16 @@ lfGetOrderData($_POST['order_id']);
 // --テンプレート／プルダウンメニューの作成
 $conn = new SC_DbConn();
 $sql = "SELECT * FROM dtb_mailtemplate WHERE del_flg=0";
-$Temp = $conn->getAll($sql);
 
+$Temp = $conn->getAll($sql);//$Tempに取得したデータを一時的に格納
+
+//テンプレートファイルに出力するために二次元配列に代入する
 for($i = 0;$i < count($Temp);$i++){
     $arrTemplate[0][$i] = $Temp[$i]['template_id'];
     $arrTemplate[1][$i] = $Temp[$i]['template_name'];
 }
 
+//テンプレートファイルへデータを代入
 $objPage->arrMAILTEMPLATE = $arrTemplate;
 
 switch($_POST['mode']) {
@@ -105,12 +108,13 @@ case 'change':
 	// POST値の取得
     
 	$objFormParam->setValue('template_id', $_POST['template_id']);
+    
+    //テンプレートファイルで選択されたテンプレート名をテンプレートIDと関連付ける
     $_POST['template_id'] = $arrTemplate[0][$_POST['template_id']];
     if(sfIsInt($_POST['template_id'])) {
         $objQuery = new SC_Query();
 		$where = "template_id = ?";
 		$arrRet = $objQuery->select("subject, header, footer", "dtb_mailtemplate", $where, array($_POST['template_id']));
-		
         $objFormParam->setParam($arrRet[0]);
 	}
 	break;
