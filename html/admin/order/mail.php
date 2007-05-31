@@ -49,7 +49,13 @@ $conn = new SC_DbConn();
 $sql = "SELECT template_name FROM dtb_mailtemplate WHERE del_flg=0";
 $arrTemp = $conn->getAll($sql);
 
+for($i = 0;$i < count($arrTemp);$i++){
+    $arrTemp = $arrTemp[$i]['template_name'];
+}
+
 print_r($arrTemp);exit;
+
+
 $objPage->arrMAILTEMPLATE = $arrTemp[0];
 
 switch($_POST['mode']) {
