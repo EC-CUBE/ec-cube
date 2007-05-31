@@ -43,10 +43,11 @@ $list_data = $conn->getAll($sql);
 
 for($i = 0;$i < count($list_data);$i++){
    $split_data = explode(".",$list_data[$i]["create_datae"]);
+   print_r($split_data);
    $list_data[$i]["create_datae"] = $split_data[0];    
 }
 
-print_r($list_data);
+//print_r($list_data);
 $objPage->list_data = $list_data;
 $objPage->arrMagazineType = $arrMagazineTypeAll;
 
