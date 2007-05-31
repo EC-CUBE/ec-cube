@@ -1724,7 +1724,7 @@ function sfSendOrderMail($order_id, $template_id, $subject = "", $header = "", $
 	// メール本文の取得
 	$objMailView->assignobj($objPage);
 	$body = $objMailView->fetch($arrMAILTPLPATH[$template_id]);
-	print_r($body);exit;
+	
     
 	// メール送信処理
 	$objSendMail = new GC_SendMail();
