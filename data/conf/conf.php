@@ -595,12 +595,7 @@ $arrMAILTEMPLATE = array(
 // 各テンプレートのパス
 $arrMAILTPLPATH = array(
 	0 => "mail_templates/order_mail.tpl",
-	2 => "mail_templates/order_mail.tpl",
-	3 => "mail_templates/order_mail.tpl",
     1 => "mobile/mail_templates/order_mail.tpl",
-    5 => "mobile/mail_templates/order_mail.tpl",
-    6 => "mobile/mail_templates/order_mail.tpl",
-	7 => "mail_templates/contact_mail.tpl"
 );
 
 /* 都道府県配列 */
