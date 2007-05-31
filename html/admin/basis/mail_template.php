@@ -41,11 +41,11 @@ if ( $_GET['mode'] == "delete" && sfCheckNumLength($_GET['id'])===true ){
 
 $sql = "SELECT * FROM dtb_mailtemplate WHERE template_id = 0";
 $default_template = $conn->getAll($sql);
-$objPage->default_template = $default_template;
+$objPage->default_template = $default_template[0];
 
 $sql = "SELECT * FROM dtb_mailtemplate WHERE template_id = 1";
 $default_template_mobile = $conn->getAll($sql);
-$objPage->default_template_mobile = $default_template_mobile;
+$objPage->default_template_mobile = $default_template_mobile[0];
 
 $sql = "SELECT * FROM dtb_mailtemplate WHERE del_flg = 0 AND template_id >1 ORDER BY create_date ASC";
 $list_data = $conn->getAll($sql);
