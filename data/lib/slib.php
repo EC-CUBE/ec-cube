@@ -1743,7 +1743,6 @@ function sfSendOrderMail($order_id, $template_id, $subject = "", $header = "", $
 			sfSaveMailHistory($order_id, $template_id, $tosubject, $body);
 		}
 	}
-print("ここまでいけてる");exit;
 	return $objSendMail;
 }
 
