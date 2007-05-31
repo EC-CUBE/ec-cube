@@ -48,6 +48,8 @@ lfGetOrderData($_POST['order_id']);
 $conn = new SC_DbConn();
 $sql = "SELECT template_name FROM dtb_mailtemplate WHERE del_flg=0";
 $arrTemp = $conn->getAll($sql);
+
+print_r($arrTemp);exit;
 $objPage->arrMAILTEMPLATE = $arrTemp[0];
 
 switch($_POST['mode']) {
