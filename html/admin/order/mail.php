@@ -100,10 +100,9 @@ case 'change':
 		$mailTemp = $objQuery->count("dtb_mailtemplate", "subject AND del_flg = 0");
 		$objFormParam->setParam($arrRet[0]);
 	}
-	print_r($mailTemp);
 	break;
 }
-
+print_r($mailTemp);
 
 $objQuery = new SC_Query();
 $col = "send_date, subject, template_id, send_id";
