@@ -54,6 +54,15 @@
 										<td width="40">削除</td>
 										<td width="70">プレビュー</td>
 									</tr>
+									<tr bgcolor="#ffffff" class="fs12n">
+										<td width="120" align="center"><!--{$list_data[0].create_date|escape}--></td>
+										<td width="333"><!--{$list_data[0].template_name|escape}--></td>
+										<!--{assign var=type value=$list_data[0].mail_method|escape}-->
+										<td width="70" align="center">パソコン</td>
+										<td width="40" align="center"><a href="./mail.php?mode=edit&template_id=0">編集</a></td>
+										<td width="40" align="center"><a href="" onclick="fnDelete('<!--{$smarty.server.PHP_SELF|escape}-->?mode=delete&id=0'); return false;">削除</a></td>
+										<td width="70" align="center"><!--{if $list_data[data].send_type eq 0}--><a href="" onclick="win03('./preview.php?mode=preview&id=0','preview','750','550'); return false;" target="_blank"><!--{else}--><a href="" onclick="win03('./preview.php?id=0','preview','650','700'); return false;" target="_blank"><!--{/if}-->プレビュー</a></td>
+									</tr>
 									<!--{section name=data loop=$list_data}-->
 									<tr bgcolor="#ffffff" class="fs12n">
 										<td width="120" align="center"><!--{$list_data[data].create_date|escape}--></td>
