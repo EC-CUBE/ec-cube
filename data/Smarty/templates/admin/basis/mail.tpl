@@ -30,7 +30,9 @@ function lfnCheckSubmit(){
 	fm = document.form1;
 	var err = '';
 	
-	/*
+	if ( ! fm["send_type"].value ){
+		err += 'Subjectを入力して下さい。';
+	}
 	if ( ! fm["subject"].value ){
 		err += 'Subjectを入力して下さい。';
 	}
@@ -42,16 +44,20 @@ function lfnCheckSubmit(){
 		if ( err ) err += '\n';
 		err += 'メールのフッターを入力して下さい。';
 	}
+	if( ! fm["template_name"]){
+		if ( err ) err += '\n';
+		err += 'テンプレートの名前を入力して下さい。';
+	}
 	if ( err ){
 		alert(err);
 		return false;
-	} else {*/
+	} else {
 		if(window.confirm('内容を登録しても宜しいですか')){
 			return true;
 		}else{
 			return false;
 		}
-	//}
+	}
 }
 //-->
 </script>
