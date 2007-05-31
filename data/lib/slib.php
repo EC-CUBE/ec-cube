@@ -1723,8 +1723,13 @@ function sfSendOrderMail($order_id, $template_id, $subject = "", $header = "", $
 	$objMailView = new SC_SiteView();
 	// メール本文の取得
 	$objMailView->assignobj($objPage);
-	$body = $objMailView->fetch($arrMAILTPLPATH[$template_id]);
-	
+    
+    
+    if($arrRet[0]['send_type']==1){
+	   $body = $objMailView->fetch($arrMAILTPLPATH[1]);
+    }else{
+       $body = $objMailView->fetch($arrMAILTPLPATH[0]); 
+    }
     
 	// メール送信処理
 	$objSendMail = new GC_SendMail();
