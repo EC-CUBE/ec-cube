@@ -146,25 +146,6 @@ function lfnCheckSubmit(){
 						
 										</td>
 									</tr>
-						
-									<tr class="fs12n">
-										<td bgcolor="#ffffff" colspan="2" align="center" height="40">動的データ挿入部分</td>
-									</tr>
-									<tr>
-										<td bgcolor="#f2f1ec" width="160" class="fs12">フッター</td>
-										<td bgcolor="#ffffff" width="557" class="fs10">
-										<!--{assign var=key value="footer"}-->
-										<span class="red12"><!--{$arrErr[$key]}--></span>
-										<textarea name="footer" cols="75" rows="12" class="area75" onChange="setFlag();" style="<!--{$arrErr[$key]|sfGetErrorColor}-->"><!--{$arrForm[$key]|escape}--></textarea><br />
-										<span class="red"> （上限<!--{$smarty.const.LTEXT_LEN}-->文字）</span>
-										<div align="right">
-											<input type="button" width="110" height="30" value="文字数カウント" onclick="fnCharCount('form1','footer','cnt_footer');" border="0" name="next" id="next" />
-											<br>今までに入力したのは
-											<input type="text" name="cnt_footer" size="4" class="box4" readonly = true style="text-align:right">
-											文字です。
-										</div>
-										</td>
-									</tr>
 								</table>
 
 								<table width="678" border="0" cellspacing="0" cellpadding="0" summary=" ">
