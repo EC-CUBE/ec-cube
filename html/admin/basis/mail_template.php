@@ -9,6 +9,8 @@ require_once("../require.php");
 class LC_Page {
     var $arrSession;
     var $list_data;
+    var $default_template;
+    var $default_template_mobile;
     var $arrMagazineType;
     
     function LC_Page() {
@@ -37,9 +39,17 @@ if ( $_GET['mode'] == "delete" && sfCheckNumLength($_GET['id'])===true ){
 }
 
 
+$sql = "SELECT * FROM dtb_mailtemplate WHERE template_id = 0";
+$default_template = $conn->getAll($sql);
+$objPage->default_template = $default_template;
+
+$sql = "SELECT * FROM dtb_mailtemplate WHERE template_id = 1";
+$default_template_mobile = $conn->getAll($sql);
+$objPage->default_template_mobile = $default_template_mobile;
+
 $sql = "SELECT * FROM dtb_mailtemplate WHERE del_flg = 0 ORDER BY create_date ASC";
 $list_data = $conn->getAll($sql);
-
+$linemax = count($list_data);
 
 for($i = 0;$i < count($list_data);$i++){
    $split_data = explode(".",$list_data[$i]["create_date"]);
@@ -49,7 +59,6 @@ for($i = 0;$i < count($list_data);$i++){
 //print_r($list_data);
 $objPage->list_data = $list_data;
 $objPage->arrMagazineType = $arrMagazineTypeAll;
-
 
 $objView->assignobj($objPage);
 $objView->display(MAIN_FRAME);
