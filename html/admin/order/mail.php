@@ -97,7 +97,7 @@ case 'change':
 		$objQuery = new SC_Query();
 		$where = "template_id = ?";
 		$arrRet = $objQuery->select("subject, header, footer", "dtb_mailtemplate", $where, array($_POST['template_id']));
-		$mailTemp = $objQuery->count("dtb_mailtemplate", "subject AND del_flg = 0");
+		$mailTemp = "SELECT template_id FROM dtb_mailtemplate WHERE del_flg=0";
 		$objFormParam->setParam($arrRet[0]);
 	}
 	break;
