@@ -48,7 +48,7 @@ lfGetOrderData($_POST['order_id']);
 $conn = new SC_DbConn();
 $sql = "SELECT subject FROM dtb_mailtemplate WHERE del_flg=0";
 $mailTemp = $conn->getAll($sql);
-print_r($mailTemp);
+$objPage->mailtemp = $mailTemp;
 
 switch($_POST['mode']) {
 case 'pre_edit':
