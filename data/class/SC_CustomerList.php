@@ -223,7 +223,8 @@ class SC_CustomerList extends SC_SelectSql {
         					$sql_where .= "OR dtb_customer.email LIKE ? " ;
         				}
         			}
-        			$this->arrVal[] = $this->addSearchStr($val);
+        			$searchDomain = $this->addSearchStr($val);
+        			$this->arrVal[] = $searchDomain;
         		}
         		$this->setWhere($sql_where);
         	}
