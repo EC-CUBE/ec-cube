@@ -37,6 +37,7 @@ $count = count($time_data);
 //未送信メールがあれば送信処理を続ける。なければ中断する。
 if( $count > 0 ){
     print("start sending <br />\n");
+    exit;
 } else {
     print("not found <br />\n");
     exit;
