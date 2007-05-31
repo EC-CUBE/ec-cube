@@ -94,7 +94,7 @@ case 'change':
 	$conn = new SC_DbConn();
 	// POST値の取得
 	$objFormParam->setValue('template_id', $_POST['template_id']);
-	$sql = "SELECT template_id FROM dtb_mailtemplate WHERE del_flg=0";
+	$sql = "SELECT subject FROM dtb_mailtemplate WHERE del_flg=0";
 	$mailTemp = $conn->getAll($sql);
 	print_r($mailTemp);
 	if(sfIsInt($_POST['template_id'])) {
