@@ -203,7 +203,7 @@ class SC_CustomerList extends SC_SelectSql {
         if($mode == 'magazine'){
         	global $arrDomainType;
         	$sql_where = "";
-        	$domain = ($this->arrSql['domai']);
+        	$domain = ($this->arrSql['domain']);
         	//ドメイン指定時
         	if($domain == 2 || $domain == 3) {
         		foreach($arrDomainType as $val) {
