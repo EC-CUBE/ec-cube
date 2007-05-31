@@ -57,7 +57,6 @@
 									<tr bgcolor="#ffffff" class="fs12n">
 										<td width="120" align="center"><!--{$list_data[0].create_date|escape}--></td>
 										<td width="333"><!--{$list_data[0].template_name|escape}--></td>
-										<!--{assign var=type value=$list_data[0].mail_method|escape}-->
 										<td width="70" align="center">•—•Ω•≥•Û</td>
 										<td width="40" align="center"><a href="./mail.php?mode=edit&template_id=0"> ‘Ω∏</a></td>
 										<td width="40" align="center">-</td>
@@ -66,7 +65,6 @@
 									<tr bgcolor="#ffffff" class="fs12n">
 										<td width="120" align="center"><!--{$list_data[0].create_date|escape}--></td>
 										<td width="333"><!--{$list_data[1].template_name|escape}--></td>
-										<!--{assign var=type value=$list_data[1].mail_method|escape}-->
 										<td width="70" align="center">∑»¬”</td>
 										<td width="40" align="center"><a href="./mail.php?mode=edit&template_id=1"> ‘Ω∏</a></td>
 										<td width="40" align="center">-</td>
