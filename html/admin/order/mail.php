@@ -50,8 +50,8 @@ $sql = "SELECT * FROM dtb_mailtemplate WHERE del_flg=0";
 $Temp = $conn->getAll($sql);
 
 for($i = 0;$i < count($Temp);$i++){
-    $arrTemplate[0][$i] = $Temp[$i]['template_name'];
-    $arrTemplate[1][$i] = $Temp[$i]['template_id'];
+    $arrTemplate[0][$i] = $Temp[$i]['template_id'];
+    $arrTemplate[1][$i] = $Temp[$i]['template_name'];
 }
 
 $objPage->arrMAILTEMPLATE = $arrTemplate;
