@@ -96,7 +96,7 @@ case 'change':
 	$objFormParam->setValue('template_id', $_POST['template_id']);
 	$sql = "SELECT subject FROM dtb_mailtemplate WHERE del_flg=0";
 	$mailTemp = $conn->getAll($sql);
-	print_r($mailTemp);
+	print_r($mailTemp[0][subject]);
 	if(sfIsInt($_POST['template_id'])) {
 		$objQuery = new SC_Query();
 		$where = "template_id = ?";
