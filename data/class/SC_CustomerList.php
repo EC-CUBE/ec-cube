@@ -206,7 +206,7 @@ class SC_CustomerList extends SC_SelectSql {
         	//ドメイン回年。１は回年しない、２はＰＣ、３は啡掠
         	if ( $this->arrSql['domain'] > 1 ) {
         		foreach($arrDomainType as $val) {
-        			if($this->arrSql['domain'] == '2') {
+        			if($this->arrSql['not_domaininc'] == '3') {
         				if($sql_where == "") {
         					$sql_where .= "dtb_customer.email NOT ILIKE ? ";
         				} else {
@@ -214,9 +214,9 @@ class SC_CustomerList extends SC_SelectSql {
         				}
         			} else {
         				if($sql_where == "") {
-        					$sql_where .= "dtb_customer.mailmaga_flg = 0 AND email ILIKE ? ";
+        					$sql_where .= "dtb_customer.email ILIKE ? ";
         				} else {
-        					$sql_where .= "OR dtb_customer.mailmaga_flg = 0 AND email ILIKE ? " ;
+        					$sql_where .= "OR dtb_customer.email ILIKE ? " ;
         				}
         			}
         			$searchDomain = $this->addSearchStr($val);
