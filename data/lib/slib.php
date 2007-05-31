@@ -1726,10 +1726,10 @@ function sfSendOrderMail($order_id, $template_id, $subject = "", $header = "", $
     
     if($arrRet[0]['send_type']==1){
 	   $body = $objMailView->fetch($arrMAILTPLPATH[1]);
-       $body = ereg_replace( "([[body]])", $body ,  $objPage->tpl_header );
+       $body = ereg_replace( "(\[\[body\]\])", $body ,  $objPage->tpl_header );
     }else{
        $body = $objMailView->fetch($arrMAILTPLPATH[0]); 
-       $body = ereg_replace( "([[body]])", $body ,  $objPage->tpl_header );
+       $body = ereg_replace( "(\[\[body\]\])", $body ,  $objPage->tpl_header );
     }
     
 	// メール送信処理
