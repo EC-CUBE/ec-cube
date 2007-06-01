@@ -105,7 +105,7 @@
 								</td>
 							</tr>
 							<tr>
-								<td bgcolor="#f2f1ec" width="160" class="fs12"></td>
+								<td bgcolor="#f2f1ec" width="160" class="fs12">メールの内容</td>
 								<td bgcolor="#ffffff" width="557" class="fs10">
 								<!--{assign var=key value="body"}-->
 								<span class="red12"><!--{$arrErr[$key]}--></span>
