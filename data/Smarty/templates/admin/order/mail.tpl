@@ -90,7 +90,7 @@
 								<option value="" selected="selected">選択してください</option>
 
 
-								<!--{html_options options=$arrMAILTEMPLATE[1] selected=$arrForm[$key].value|escape}-->
+								<!--{html_options options=$mailTemp[1] selected=$arrForm[$key].value|escape}-->
 								</select>
 								</td>
 							</tr>
