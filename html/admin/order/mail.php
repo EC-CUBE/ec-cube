@@ -49,7 +49,6 @@ $conn = new SC_DbConn();
 $sql = "SELECT * FROM dtb_mailtemplate WHERE del_flg=0";
 
 $Temp = $conn->getAll($sql);//$Tempに取得したデータを一時的に格納
-
 //テンプレートファイルに出力するために二次元配列に代入する
 for($i = 0;$i < count($Temp);$i++){
     $arrTemplate[0][$i] = $Temp[$i]['template_id'];
@@ -57,7 +56,7 @@ for($i = 0;$i < count($Temp);$i++){
 }
 
 //テンプレートファイルへデータを代入
-$objPage->arrMAILTEMPLATE = $arrTemplate;
+$objPage->mailTemp = $arrTemplate;
 
 switch($_POST['mode']) {
 case 'pre_edit':
