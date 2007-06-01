@@ -93,7 +93,7 @@
 								<td bgcolor="#f2f1ec" width="110">配信形式</td>
 								<td bgcolor="#ffffff" width="194">
 									<!--{if $arrErr.htmlmail}--><span class="red12"><!--{$arrErr.htmlmail}--></span><br /><!--{/if}-->
-									<!--{html_radios name="htmlmail" options=$arrHtmlmail separator="&nbsp;"}-->
+									<!--{html_radios name="htmlmail" options=$arrHtmlmail separator="&nbsp;" selected=$htmlmail}-->
 								</td>
 								<td bgcolor="#f2f1ec" width="110">購入回数</td>
 								<td bgcolor="#ffffff" width="195">
