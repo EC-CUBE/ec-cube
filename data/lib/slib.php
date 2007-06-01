@@ -1692,7 +1692,7 @@ function sfSendOrderMail($order_id, $template_id, $subject = "", $body, $send = 
 		
 	// 顧客情報の取得
 	$customer_id = $arrOrder['customer_id'];
-	$arrRet = $objQuery->select("point", "dtb_customer", "customer_id = ?", array($customer_id));
+	$arrRet = $objQuery->select("point,name01,name02", "dtb_customer", "customer_id = ?", array($customer_id));
 	$arrCustomer = $arrRet[0];
 
 	$objPage->arrCustomer = $arrCustomer;
