@@ -77,20 +77,10 @@ function checkFlagAndSubmit(){
 										</td>
 									</tr>
 									<tr>
-										<td bgcolor="#f2f1ec" width="160" class="fs12">ヘッダー</td>
+										<td bgcolor="#f2f1ec" width="160" class="fs12">メール内容</td>
 										<td bgcolor="#ffffff" width="557" class="fs10">
 										<!--{$list_data.header|escape}--></td>
-									</tr>
-						
-									<tr class="fs12n">
-										<td bgcolor="#ffffff" colspan="2" align="center" height="40">動的データ挿入部分</td>
-									</tr>
-									<tr>
-										<td bgcolor="#f2f1ec" width="160" class="fs12">フッター</td>
-										<td bgcolor="#ffffff" width="557" class="fs10">
-										<!--{$list_data.footer|escape}-->
-										</td>
-									</tr>
+									</tr>						
 								</table>
 
 								<table width="678" border="0" cellspacing="0" cellpadding="0" summary=" ">
