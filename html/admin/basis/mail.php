@@ -90,8 +90,7 @@ function lfConvertParam($array) {
 	$new_array["template_id"] = $array["template_id"];
     $new_array["template_name"] = mb_convert_kana($array["template_name"],"KV");
 	$new_array["subject"] = mb_convert_kana($array["subject"] ,"KV");
-	$new_array["header"] = mb_convert_kana($array["header"] ,"KV");
-	$new_array["footer"] = mb_convert_kana($array["footer"] ,"KV");
+	$new_array["body"] = mb_convert_kana($array["body"] ,"KV");
 	
 	return $new_array;
 }
@@ -104,8 +103,7 @@ function fnErrorCheck($array) {
 	$objErr->doFunc(array("テンプレート",'template_id'), array("EXIST_CHECK"));
     $objErr->doFunc(array("テンプレート",'template_name'), array("EXIST_CHECK"));
 	$objErr->doFunc(array("メールタイトル",'subject',MTEXT_LEN,"BIG"), array("EXIST_CHECK", "MAX_LENGTH_CHECK"));
-	$objErr->doFunc(array("ヘッダー",'header',LTEXT_LEN,"BIG"), array("MAX_LENGTH_CHECK"));
-	//$objErr->doFunc(array("フッター",'footer',LTEXT_LEN,"BIG"), array("MAX_LENGTH_CHECK"));
+	$objErr->doFunc(array("ヘッダー",'body',LTEXT_LEN,"BIG"), array("MAX_LENGTH_CHECK"));
 
 	return $objErr->arrErr;
 }
