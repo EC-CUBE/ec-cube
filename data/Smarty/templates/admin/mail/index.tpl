@@ -156,7 +156,7 @@
 							<tr class="fs12n">
 								<td bgcolor="#f2f1ec" width="110">ドメイン指定</td>
 								<td bgcolor="#ffffff" colspan="3">
-									<!--{html_radios name="domain" options=$arrDomain separator="&nbsp;" selected=domain}-->
+									<!--{html_radios name="domain" options=$arrDomain separator="&nbsp;" selected=$list_data.domain}-->
 								</td>
 							</tr>
 																						
