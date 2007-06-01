@@ -91,7 +91,7 @@ case 'confirm':
 	// メールの送信
 	if (count($objPage->arrErr) == 0) {
 		// 注文受付メール(送信なし)
-		$objSendMail = sfSendOrderMail($_POST['order_id'], $_POST['template_id'], $_POST['subject'], $_POST['header'], $_POST['footer'], false);
+		$objSendMail = sfSendOrderMail($_POST['order_id'], $_POST['template_id'], $_POST['subject'], $_POST['body'], false);
 		// 確認ページの表示
 		$objPage->tpl_subject = $objSendMail->subject;
 		$objPage->tpl_body = mb_convert_encoding( $objSendMail->body, "EUC-JP", "auto" );		
@@ -114,7 +114,7 @@ case 'change':
     if(sfIsInt($_POST['template_id'])) {
         $objQuery = new SC_Query();
 		$where = "template_id = ?";
-		$arrRet = $objQuery->select("subject, header, footer", "dtb_mailtemplate", $where, array($_POST['template_id']));
+		$arrRet = $objQuery->select("subject, body", "dtb_mailtemplate", $where, array($_POST['template_id']));
         $objFormParam->setParam($arrRet[0]);
 	}
 	break;
