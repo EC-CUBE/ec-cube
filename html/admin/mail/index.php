@@ -44,8 +44,8 @@ class LC_Page {
 		global $arrDOMAIN;
 		$this->arrDomain = $arrDOMAIN;
 		$this->arrDomain[''] = "指定しない";
-		$this->arrDomain[2] = $arrDOMAIN[1];
-		$this->arrDomain[3] = $arrDOMAIN[2]; 
+		$this->arrDomain[1] = $arrDOMAIN[1];
+		$this->arrDomain[2] = $arrDOMAIN[2]; 
 	}
 }
 
