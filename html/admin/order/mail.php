@@ -9,14 +9,15 @@ require_once("../require.php");
 class LC_Page {
     var $list_data;
     var $mailTemp;
+    var $arrMAILTEMPLATE;
 	function LC_Page() {
 		$this->tpl_mainpage = 'order/mail.tpl';
 		$this->tpl_subnavi = 'order/subnavi.tpl';
 		$this->tpl_mainno = 'order';		
 		$this->tpl_subno = 'index';
 		$this->tpl_subtitle = '¼õÃí´ÉÍý';
-		global $arrMAILTEMPLATE;
-		$this->arrMAILTEMPLATE = $arrMAILTEMPLATE;
+		
+		
 	}
 }
 
