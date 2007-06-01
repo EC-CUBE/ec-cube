@@ -43,7 +43,7 @@ class LC_Page {
 		$this->arrCustomerType = $arrCustomerType;
 		global $arrDomain;
 		$this->arrDomain = $arrDomain;
-		$this->arrDomain[''] = "指定しない";
+		$this->arrDomain[1] = "指定しない";
 		$this->arrDomain[2] = $arrDomain[1];
 		$this->arrDomain[3] = $arrDomain[2]; 
 	}
