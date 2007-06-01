@@ -79,7 +79,7 @@ class SC_CustomerList extends SC_SelectSql {
 		// 名前
 		if ( strlen($this->arrSql['name']) > 0 ) {
 			if(DB_TYPE == "pgsql"){
-				$this->setWhere("(name01 || name02) LIKE ?" );
+				$this->setWhere("(name01 || name02 LIKE ?)" );
 			}elseif(DB_TYPE == "mysql"){
 				$this->setWhere("concat(name01,name02) LIKE ?" );
 			}
@@ -91,7 +91,7 @@ class SC_CustomerList extends SC_SelectSql {
 		//　名前（カナ）
 		if ( strlen($this->arrSql['kana']) > 0 ) {
 			if(DB_TYPE == "pgsql"){
-				$this->setWhere("(kana01 || kana02) LIKE ?");
+				$this->setWhere("(kana01 || kana02 LIKE ?)");
 			}elseif(DB_TYPE == "mysql"){
 				$this->setWhere("concat(kana01,kana02) LIKE ?" );
 			}
@@ -217,8 +217,9 @@ class SC_CustomerList extends SC_SelectSql {
         				if($sql_where == "") {
         					$sql_where .= "dtb_customer.email ILIKE ? ";
         				} else {
-        					$sql_where .= "OR dtb_customer.email ILIKE ? " ;
+        					$sql_where .= "OR dtb_customer.email LIKE ? " ;
         				}
+                        $sql_where = "(".$sql_where.")";
         			}
         			$searchDomain = $this->addSearchStr($val);
         			$this->arrVal[] = $searchDomain;
