@@ -59,7 +59,7 @@ if ( $_GET['mode'] == 'edit' && sfCheckNumLength($_GET['template_id'])===true ){
 		
 		// 完了メッセージ
 		$objPage->tpl_onload = "window.alert('メール設定が完了しました。テンプレートを選択して内容をご確認ください。');";
-		unset($objPage->arrForm);
+		//unset($objPage->arrForm);
 	}
 }
 
