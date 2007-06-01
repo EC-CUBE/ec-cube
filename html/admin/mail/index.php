@@ -35,7 +35,7 @@ class LC_Page {
 		// ページナビ用
 		$this->tpl_pageno = $_POST['search_pageno'];
 		global $arrMAILMAGATYPE;
-		$this->arrMAILMAGATYP = $arrMAILMAGATYPE;
+		$this->arrMAILMAGATYPE = $arrMAILMAGATYPE;
 		$this->arrHtmlmail[''] = "すべて";
 		$this->arrHtmlmail[1] = $arrMAILMAGATYPE[1];
 		$this->arrHtmlmail[2] = $arrMAILMAGATYPE[2];
@@ -43,6 +43,9 @@ class LC_Page {
 		$this->arrCustomerType = $arrCustomerType;
 		global $arrDomain;
 		$this->arrDomain = $arrDomain;
+		$this->domain[1] = $arrDomain[1];
+		$this->domain[2] = $arrDomain[2];
+		$this->domain[3] = $arrDomain[3];
 		
 	}
 }
