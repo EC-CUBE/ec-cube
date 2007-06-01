@@ -28,15 +28,13 @@ sfIsSuccess($objSess);
 if ( $_GET['mode']=="preview" || $_GET['id']){
 		$sql = "SELECT * FROM dtb_mailtemplate WHERE template_id = ? AND del_flg = 0";
 		$id = $_GET['id'];
-        $result = $conn->getAll($sql, array($id));
-	    print_r($result);   
-        //print_r($result);exit;   
+        $result = $conn->getAll($sql, array($id));   
         if ( $result ){
                 if ( $result[0]["mail_method"] == 2 ){
                 // テキスト形式の時はタグ文字をエスケープ
                     $objPage->escape_flag = 1;
                 }
-//            $result[0] = nl2br($result[0]);
+            $result[0] = nl2br($result[0]);
             $objPage->list_data = $result[0];    
         }
     
