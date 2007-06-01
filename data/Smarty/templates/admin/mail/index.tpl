@@ -93,7 +93,7 @@
 								<td bgcolor="#f2f1ec" width="110">配信形式</td>
 								<td bgcolor="#ffffff" width="194">
 									<!--{if $arrErr.htmlmail}--><span class="red12"><!--{$arrErr.htmlmail}--></span><br /><!--{/if}-->
-									<!--{html_radios name="htmlmail" options=$arrHtmlmail separator="&nbsp;" selected=$htmlmail}-->
+									<!--{html_radios name="htmlmail" options=$arrHtmlmail separator="&nbsp;"}-->
 								</td>
 								<td bgcolor="#f2f1ec" width="110">購入回数</td>
 								<td bgcolor="#ffffff" width="195">
@@ -157,7 +157,6 @@
 							<tr class="fs12n">
 								<td bgcolor="#f2f1ec" width="110">ドメイン指定</td>
 								<td bgcolor="#ffffff" colspan="3">
-								    <!--{if $arrErr.domain}--><span class="red12"><!--{$arrErr.domain}--></span><br /><!--{/if}-->
 									<!--{html_radios name="domain" options=$arrDomain separator="&nbsp;" selected=$list_data.domain}-->
 								</td>
 							</tr>
