@@ -129,11 +129,11 @@ function lfnCheckSubmit(){
 										</td>
 									</tr>
 									<tr>
-										<td bgcolor="#f2f1ec" width="160" class="fs12">ヘッダー</td>
+										<td bgcolor="#f2f1ec" width="160" class="fs12">メールの内容</td>
 										<td bgcolor="#ffffff" width="557" class="fs10">
-										<!--{assign var=key value="header"}-->
+										<!--{assign var=key value="body"}-->
 										<span class="red12"><!--{$arrErr[$key]}--></span>
-										<textarea name="header" cols="75" rows="20" class="area75" onChange="setFlag();" style="<!--{$arrErr[$key]|sfGetErrorColor}-->"><!--{$arrForm[$key]|escape}--></textarea><br />
+										<textarea name="body" cols="75" rows="20" class="area75" onChange="setFlag();" style="<!--{$arrErr[$key]|sfGetErrorColor}-->"><!--{$arrForm[$key]|escape}--></textarea><br />
 										<span class="red"> （上限<!--{$smarty.const.LTEXT_LEN}-->文字）
 										</span>
 						
