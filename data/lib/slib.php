@@ -1673,11 +1673,11 @@ function sfSendOrderMail($order_id, $template_id, $subject = "", $body, $send = 
 		// メールテンプレート情報の取得
 		$where = "template_id = ?";
 		$arrRet = $objQuery->select("subject, body", "dtb_mailtemplate", $where, array($template_id));
-		$objPage->tpl_header = $arrRet[0]['body'];
+		$objPage->tpl_body = $arrRet[0]['body'];
 //		$objPage->tpl_footer = $arrRet[0]['footer'];
 		$tmp_subject = $arrRet[0]['subject'];
 	} else {
-		$objPage->tpl_header = $body;
+		$objPage->tpl_body = $body;
 //		$objPage->tpl_footer = $footer;
 		$tmp_subject = $subject;
 	}
@@ -1726,10 +1726,10 @@ function sfSendOrderMail($order_id, $template_id, $subject = "", $body, $send = 
     
     if($arrRet[0]['send_type']==1){
 	   $body = $objMailView->fetch($arrMAILTPLPATH[1]);
-       $body = ereg_replace( "(\[\[body\]\])", $body ,  $objPage->tpl_header );
+       $body = ereg_replace( "(\[\[body\]\])", $body ,  $objPage->tpl_body );
     }else{
        $body = $objMailView->fetch($arrMAILTPLPATH[0]); 
-       $body = ereg_replace( "(\[\[body\]\])", $body ,  $objPage->tpl_header );
+       $body = ereg_replace( "(\[\[body\]\])", $body ,  $objPage->tpl_body );
     }
     
 	// メール送信処理
