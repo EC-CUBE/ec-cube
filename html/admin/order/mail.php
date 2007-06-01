@@ -57,7 +57,7 @@ for($i = 0;$i < count($Temp);$i++){
 
 //テンプレートファイルへデータを代入
 $objPage->mailTemp = $arrTemplate;
-$objPage->arrMAILTEMPLATE = $arrTemplate[0];
+$objPage->arrMAILTEMPLATE = $arrTemplate[1];
 
 switch($_POST['mode']) {
 case 'pre_edit':
