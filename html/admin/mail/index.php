@@ -43,9 +43,6 @@ class LC_Page {
 		$this->arrCustomerType = $arrCustomerType;
 		global $arrDomain;
 		$this->arrDomain = $arrDomain;
-		$this->domain[1] = $arrDomain[1];
-		$this->domain[2] = $arrDomain[2];
-		$this->domain[3] = $arrDomain[3];
 		
 	}
 }
