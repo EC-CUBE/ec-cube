@@ -1674,11 +1674,9 @@ function sfSendOrderMail($order_id, $template_id, $subject = "", $body, $send = 
 		$where = "template_id = ?";
 		$arrRet = $objQuery->select("subject, body", "dtb_mailtemplate", $where, array($template_id));
 		$objPage->tpl_body = $arrRet[0]['body'];
-//		$objPage->tpl_footer = $arrRet[0]['footer'];
 		$tmp_subject = $arrRet[0]['subject'];
 	} else {
 		$objPage->tpl_body = $body;
-//		$objPage->tpl_footer = $footer;
 		$tmp_subject = $subject;
 	}
 	
@@ -1725,6 +1723,7 @@ function sfSendOrderMail($order_id, $template_id, $subject = "", $body, $send = 
 	$objMailView->assignobj($objPage);
     $name = $objPage->arrCustomer['name01']." ".$objPage->arrCustomer['name02'];
     $objPage->tpl_body = ereg_replace( "(\{name\})", $name ,  $objPage->tpl_body );
+    $tmp_subject = ereg_replace( "(\{name\})", $name ,  $tmp_subject );
     
     if($arrRet[0]['send_type']==1){
 	   $body = $objMailView->fetch($arrMAILTPLPATH[1]);
