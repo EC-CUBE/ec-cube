@@ -11,7 +11,7 @@
 
 
 //---- 検索用項目配列
-$objPage->arrHtmlmai = array( "" => "両方",  1 => "HTML", 2 => "TEXT" );
+$objPage->arrHtmlmail = array( "" => "両方",  1 => "HTML", 2 => "TEXT" );
 
 
 //---- 配列内容専用項目の配列
