@@ -76,9 +76,7 @@ $arrSearchColumn = array(
 							array(  "column" => "buy_total_to",	    "convert" => "n" ),
 							array(  "column" => "campaign_id",	    "convert" => ""  ),
 							array(  "column" => "mail_type",		"convert" => ""  ),
-							array(  "column" => "domain",           "convert" => "" ),
-							array(  "column" => "domain_type",      "convert" => "" )
-
+							array(  "column" => "domain",           "convert" => "" )
 					);
 
 //--------------------------------------------------------------------------------------------------------------------------------------
