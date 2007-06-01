@@ -119,7 +119,7 @@ self.moveTo(20,20);self.focus();
 										
 										<tr class="fs12n">
 											<td bgcolor="#f0f0f0" width="110">ドメイン指定</td>
-											<td bgcolor="#ffffff" width="507" colspan="3"><!--{$list_data.domain|escape|default:"（未指定）"}--></td>
+											<td bgcolor="#ffffff" width="507" colspan="3"><!--{$list_data.domain_disp|escape|default:"（未指定）"}--></td>
 										</tr>
 							            
 							            <tr class="fs12n">
