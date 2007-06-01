@@ -204,16 +204,16 @@ class SC_CustomerList extends SC_SelectSql {
         if($mode == 'magazine'){
         	global $arrDomainType;
         	$sql_where = "";
-        	//ドメイン回年。１は回年しない、２はＰＣ、３は啡掠
-        	if ( strlen($this->arrSql['domain']) > 0 && $this->arrSql['domain'] > 1) {
+        	//ドメイン回年。１はＰＣ、２は啡掠
+        	if ( $this->arrSql['domain'] > 0 ) {
         		foreach($arrDomainType as $val) {
-        			if($this->arrSql['domain'] == 2) {
+        			if($this->arrSql['domain'] == 1) {
         				if($sql_where == "") {
         					$sql_where .= "dtb_customer.email NOT ILIKE ? ";
         				} else {
         					$sql_where .= "AND dtb_customer.email NOT ILIKE ? " ;
         				}
-        			} elseif($this->arrSql['domain'] == 3) {
+        			} elseif($this->arrSql['domain'] == 2) {
         				if($sql_where == "") {
         					$sql_where .= "dtb_customer.email ILIKE ? ";
         				} else {
