@@ -41,11 +41,11 @@ class LC_Page {
 		$this->arrHtmlmail[2] = $arrMAILMAGATYPE[2];
 		global $arrCustomerType;
 		$this->arrCustomerType = $arrCustomerType;
-		global $arrDomain;
-		$this->arrDomain = $arrDomain;
+		global $arrDOMAIN;
+		$this->arrDomain = $arrDOMAIN;
 		$this->arrDomain[1] = "指定しない";
-		$this->arrDomain[2] = $arrDomain[1];
-		$this->arrDomain[3] = $arrDomain[2]; 
+		$this->arrDomain[2] = $arrDOMAIN[1];
+		$this->arrDomain[3] = $arrDOMAIN[2]; 
 	}
 }
 
