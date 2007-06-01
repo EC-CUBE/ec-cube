@@ -207,7 +207,7 @@ class SC_CustomerList extends SC_SelectSql {
         	//ドメイン回年。１は回年しない、２はＰＣ、３は啡掠
         	if ( strlen($this->arrSql['domain']) > 0 && $this->arrSql['domain'] > 1) {
         		foreach($arrDomainType as $val) {
-        			if($this->arrSql['domain'] == 3) {
+        			if($this->arrSql['domain'] == 2) {
         				if($sql_where == "") {
         					$sql_where .= "dtb_customer.email ILIKE ? ";
         				} else {
