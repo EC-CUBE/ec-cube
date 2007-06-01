@@ -79,7 +79,7 @@ function checkFlagAndSubmit(){
 									<tr>
 										<td bgcolor="#f2f1ec" width="160" class="fs12">メールの内容</td>
 										<td bgcolor="#ffffff" width="557" class="fs10">
-										<textarea  name="body" maxlength="<!--{$arrForm[$key].length}-->" style="color:#000000;background-color:#ffffff;" cols="55" rows="12" class="area75" disabled="true"><!--{$list_data.body|escape}--></textarea></td>
+										<textarea  name="body" maxlength="<!--{$arrForm[$key].length}-->" style="color:#000000;background-color:#ffffff;border-width:0px;" cols="55" rows="12" class="area75" disabled="true"><!--{$list_data.body|escape}--></textarea></td>
 									</tr>						
 								</table>
 
