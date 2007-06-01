@@ -81,6 +81,9 @@ if ($_GET["mode"] == "query" && sfCheckNumLength($_GET["send_id"])) {
 	// 都道府県を変換
 	$list_data['pref_disp'] = $objPage->arrPref[$list_data['pref']];
 	
+	//ドメイン指定を変換
+	$list_data['domain'] = $objPage->arrDomain[$list_data['domain']];
+	
 	// 配信形式
 	$list_data['htmlmail_disp'] = $objPage->arrHtmlmail[$list_data['htmlmail']];
 	
