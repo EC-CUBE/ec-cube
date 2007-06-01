@@ -75,7 +75,7 @@ case 'send':
 	// メールの送信
 	if (count($objPage->arrErr) == 0) {
 		// 注文受付メール
-		sfSendOrderMail($_POST['order_id'], $_POST['template_id'], $_POST['subject'], $_POST['header'], $_POST['footer']);
+		sfSendOrderMail($_POST['order_id'], $_POST['template_id'], $_POST['subject'], $_POST['body']);
 	}
 	header("Location: " . URL_SEARCH_ORDER);
 	exit;
