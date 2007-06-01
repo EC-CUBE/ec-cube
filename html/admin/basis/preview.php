@@ -28,7 +28,8 @@ sfIsSuccess($objSess);
 if ( $_GET['mode']=="preview" || $_GET['id']){
 		$sql = "SELECT * FROM dtb_mailtemplate WHERE template_id = ? AND del_flg = 0";
 		$id = $_GET['id'];
-        $result = $conn->getAll($sql, array($id));   
+        $result = $conn->getAll($sql, array($id));
+        print($result["header"]);
         if ( $result ){
                 if ( $result[0]["mail_method"] == 2 ){
                 // テキスト形式の時はタグ文字をエスケープ
