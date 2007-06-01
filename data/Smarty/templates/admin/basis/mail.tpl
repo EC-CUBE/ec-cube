@@ -129,6 +129,10 @@ function lfnCheckSubmit(){
 										</td>
 									</tr>
 									<tr>
+										<td bgcolor="#f2f1ec" colspan="2" class="fs12n">本文<span class="red"> *</span>（名前差し込み時は {name} といれてください。）</td>
+										<td bgcolor="#f2f1ec" colspan="2" class="fs12n">本文<span class="red"> *</span>（メールの内容は [[body]] に挿入されます。）</td>
+									</tr>
+									<tr>
 										<td bgcolor="#f2f1ec" width="160" class="fs12">メールの内容</td>
 										<td bgcolor="#ffffff" width="557" class="fs10">
 										<!--{assign var=key value="body"}-->
