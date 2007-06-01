@@ -706,7 +706,7 @@ $arrDomain = array(
 $arrDomainType = array(
                       1 => "@docomo.ne.jp",
                       2 => "@ezweb.ne.jp",
-                      //3 => "@softbank.ne.jp",
+                      3 => "@softbank.ne.jp",
                       4 => "@t.vodafone.ne.jp",
                       5 => "@d.vodafone.ne.jp",
                       6 => "@h.vodafone.ne.jp",
@@ -720,8 +720,7 @@ $arrDomainType = array(
                       14 => "@di.pdx.ne.jp",
                       15 => "@dj.pdx.ne.jp",
                       16 => "@dk.pdx.ne.jp",
-                      17 => "@wm.pdx.ne.jp",
-                      19 => "@softbank.ne.jp"  
+                      17 => "@wm.pdx.ne.jp"
                   );				
 				
 /*　1行数　*/		
