@@ -215,7 +215,7 @@ class SC_CustomerList extends SC_SelectSql {
         				}
         			} elseif($this->arrSql['domain'] == 3) {
         				if($sql_where == "") {
-        					$sql_where .= "dtb_customer.email ILIKE ? ";
+        					$sql_where .= "dtb_customer.email NOT ILIKE ? ";
         				} else {
         					$sql_where .= "OR dtb_customer.email ILIKE ? " ;
         				}
