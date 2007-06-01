@@ -199,7 +199,7 @@ function lfDoComplete($objQuery, $uniqid) {
 	// 受注一時テーブルの情報を削除する。
 	lfDeleteTempOrder($objQuery, $uniqid);
 	// キャンペーンからの遷移の場合登録する。
-	if($objCampaignSess->getIsCampaign() and $objCartSess->chkCampaign()) {
+	if($objCampaignSess->getIsCampaign() and $objCartSess->chkCampaign($objCampaignSess->getCampaignId())) {
 		lfRegistCampaignOrder($objQuery, $objCampaignSess, $order_id);
 	}
 	

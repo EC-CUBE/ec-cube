@@ -72,7 +72,7 @@ case 'cart':
 			$classcategory_id2 = '0';
 		}
 		$objCartSess->setPrevURL($_SERVER['REQUEST_URI']);
-		$objCartSess->addProduct(array($_POST['product_id'], $classcategory_id1, $classcategory_id2), $_POST[$quantity], true);
+		$objCartSess->addProduct(array($_POST['product_id'], $classcategory_id1, $classcategory_id2), $_POST[$quantity], $campaign_id);
 		header("Location: " . URL_CART_TOP);
 		exit;
 	}
