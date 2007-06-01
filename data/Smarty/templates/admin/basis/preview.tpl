@@ -77,9 +77,9 @@ function checkFlagAndSubmit(){
 										</td>
 									</tr>
 									<tr>
-										<td bgcolor="#f2f1ec" width="160" class="fs12">メール内容</td>
+										<td bgcolor="#f2f1ec" width="160" class="fs12">メールの内容</td>
 										<td bgcolor="#ffffff" width="557" class="fs10">
-										<!--{$list_data.header|escape}--></td>
+										<!--{$list_data.body|escape}--></td>
 									</tr>						
 								</table>
 
