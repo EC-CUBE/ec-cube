@@ -105,14 +105,11 @@
 								</td>
 							</tr>
 							<tr>
-								<td bgcolor="#f2f1ec" width="160" class="fs12">ヘッダー</td>
+								<td bgcolor="#f2f1ec" width="160" class="fs12"></td>
 								<td bgcolor="#ffffff" width="557" class="fs10">
-								<!--{assign var=key value="header"}-->
+								<!--{assign var=key value="body"}-->
 								<span class="red12"><!--{$arrErr[$key]}--></span>
 								<textarea  name="<!--{$arrForm[$key].keyname}-->" maxlength="<!--{$arrForm[$key].length}-->" style="<!--{$arrErr[$key]|sfGetErrorColor}-->" cols="75" rows="12" class="area75"><!--{$arrForm[$key].value|escape}--></textarea></td>
-							</tr>
-							<tr class="fs12n">
-								<td bgcolor="#ffffff" colspan="2" align="center" height="40">動的データ挿入部分</td>
 							</tr>
 						</table>
 
