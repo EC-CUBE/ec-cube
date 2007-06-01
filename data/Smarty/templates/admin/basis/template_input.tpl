@@ -78,7 +78,7 @@ function lfnCheckSubmit(){
 								<table width="678" border="0" cellspacing="1" cellpadding="8" summary=" ">
 									<tr class="fs12n">
 										<td bgcolor="#f2f1ec">メール形式<span class="red"> *</span></td>
-										<td bgcolor="#ffffff"><span <!--{if $arrErr.mail_method}--><!--{sfSetErrorStyle}--><!--{/if}-->><!--{html_radios name="mail_method" options=$arrMagazineType separator="&nbsp;" selected="0"}--></span>
+										<td bgcolor="#ffffff"><span <!--{if $arrErr.mail_method}--><!--{sfSetErrorStyle}--><!--{/if}-->><!--{html_radios name="mail_method" options=$arrMagazineType separator="&nbsp;" selected="パソコン"}--></span>
 										<!--{if $arrErr.mail_method}--><br><span class="red12"><!--{$arrErr.mail_method}--></span><!--{/if}-->
 										</td>
 									</tr>
