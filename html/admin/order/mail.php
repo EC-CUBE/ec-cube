@@ -46,7 +46,7 @@ lfGetOrderData($_POST['order_id']);
 
 // --テンプレート／プルダウンメニューの作成
 $conn = new SC_DbConn();
-$sql = "SELECT * FROM dtb_mailtemplate WHERE del_flg=0";
+$sql = "SELECT * FROM dtb_mailtemplate WHERE del_flg=0 ORDER BY template_id ASC";
 
 $Temp = $conn->getAll($sql);//$Tempに取得したデータを一時的に格納
 //テンプレートファイルに出力するために二次元配列に代入する
