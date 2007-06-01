@@ -205,9 +205,9 @@ class SC_CustomerList extends SC_SelectSql {
         	global $arrDomainType;
         	$sql_where = "";
         	//ドメイン回年。１は回年しない、２はＰＣ、３は啡掠
-        	if ( $this->arrSql['domain'] > 1 ) {
+        	if (!$this->arrSql['domain'] == 1 && $this->arrSql['domain'] == 2 ) {
         		foreach($arrDomainType as $val) {
-        			if($this->arrSql['domain'] == '3') {
+        			if($this->arrSql['domain'] == 2) {
         				if($sql_where == "") {
         					$sql_where .= "dtb_customer.email ILIKE ? ";
         				} else {
