@@ -68,8 +68,7 @@ function lfRegistData( $arrVal, $id = null ){
     $sqlval['template_name'] = $arrVal['template_name'];
 	$sqlval['subject'] = $arrVal['subject'];
 	$sqlval['creator_id'] = $_SESSION['member_id'];
-	$sqlval['header'] = $arrVal['header'];
-    $sqlval['footer'] = $arrVal['footer'];
+	$sqlval['body'] = $arrVal['body'];
 	$sqlval['update_date'] = "now()";
 
 	if ( $id ){
@@ -104,8 +103,7 @@ function lfErrorCheck($array) {
 	$objErr->doFunc(array("メール形式", "send_type"), array("EXIST_CHECK"));
     $objErr->doFunc(array("テンプレート", "template_name"), array("EXIST_CHECK"));
 	$objErr->doFunc(array("Subject", "subject"), array("EXIST_CHECK"));
-	$objErr->doFunc(array("ヘッダー", 'header'), array("EXIST_CHECK"));
-    $objErr->doFunc(array("フッター", 'footer'), array("EXIST_CHECK"));
+	$objErr->doFunc(array("本文", 'body'), array("EXIST_CHECK"));
 
 	return $objErr->arrErr;
 }
