@@ -36,13 +36,9 @@ function lfnCheckSubmit(){
 	if ( ! fm["subject"].value ){
 		err += 'Subjectを入力して下さい。';
 	}
-	if ( ! fm["header"].value ){
+	if ( ! fm["body"].value ){
 		if ( err ) err += '\n';
-		err += 'メールのヘッダーを入力して下さい。';
-	}
-	if ( ! fm["footer"].value ){
-		if ( err ) err += '\n';
-		err += 'メールのフッターを入力して下さい。';
+		err += 'メールの本文を入力して下さい。';
 	}
 	if( ! fm["template_name"]){
 		if ( err ) err += '\n';
@@ -132,7 +128,7 @@ function lfnCheckSubmit(){
 										<td bgcolor="#f2f1ec" colspan="2" class="fs12n"><span class="red"> *</span>名前差し込み時は {name} といれてください。<br><span class="red"> *</span>メールの内容は [[body]] に挿入されます。</td>
 									</tr>
 									<tr>
-										<td bgcolor="#f2f1ec" width="160" class="fs12">メールの内容</td>
+										<td bgcolor="#f2f1ec" width="160" class="fs12">本文</td>
 										<td bgcolor="#ffffff" width="557" class="fs10">
 										<!--{assign var=key value="body"}-->
 										<span class="red12"><!--{$arrErr[$key]}--></span>
