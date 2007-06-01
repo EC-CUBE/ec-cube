@@ -1659,7 +1659,7 @@ function sfSendTemplateMail($to, $to_name, $template_id, $objPage) {
 }
 
 /* 受注完了メール送信 */
-function sfSendOrderMail($order_id, $template_id, $subject = "", $header = "", $footer = "", $send = true) {
+function sfSendOrderMail($order_id, $template_id, $subject = "", $body, $send = true) {
 	global $arrMAILTPLPATH;
 	
 	$objPage = new LC_Page();
@@ -1669,16 +1669,16 @@ function sfSendOrderMail($order_id, $template_id, $subject = "", $header = "", $
 	
 	$objQuery = new SC_Query();
 		
-	if($subject == "" && $header == "" && $footer == "") {
+	if($subject == "" && $body == "" ) {
 		// メールテンプレート情報の取得
 		$where = "template_id = ?";
-		$arrRet = $objQuery->select("subject, header, footer", "dtb_mailtemplate", $where, array($template_id));
-		$objPage->tpl_header = $arrRet[0]['header'];
-		$objPage->tpl_footer = $arrRet[0]['footer'];
+		$arrRet = $objQuery->select("subject, body", "dtb_mailtemplate", $where, array($template_id));
+		$objPage->tpl_header = $arrRet[0]['body'];
+//		$objPage->tpl_footer = $arrRet[0]['footer'];
 		$tmp_subject = $arrRet[0]['subject'];
 	} else {
-		$objPage->tpl_header = $header;
-		$objPage->tpl_footer = $footer;
+		$objPage->tpl_header = $body;
+//		$objPage->tpl_footer = $footer;
 		$tmp_subject = $subject;
 	}
 	
