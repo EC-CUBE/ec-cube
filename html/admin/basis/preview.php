@@ -29,7 +29,7 @@ if ( $_GET['mode']=="preview" || $_GET['id']){
 		$sql = "SELECT * FROM dtb_mailtemplate WHERE template_id = ? AND del_flg = 0";
 		$id = $_GET['id'];
         $result = $conn->getAll($sql, array($id));
-	       
+	    print_r($result);   
         //print_r($result);exit;   
         if ( $result ){
                 if ( $result[0]["mail_method"] == 2 ){
