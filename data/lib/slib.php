@@ -1724,6 +1724,9 @@ function sfSendOrderMail($order_id, $template_id, $subject = "", $body, $send = 
 	// メール本文の取得
 	$objMailView->assignobj($objPage);
     
+    $name = $objPage->arrCustomer['name01']." ".$objPage->arrCustomer['name02'];
+    $objPage->tpl_body = ereg_replace( "(\{name\})", $name ,  $objPage->tpl_body );
+    
     if($arrRet[0]['send_type']==1){
 	   $body = $objMailView->fetch($arrMAILTPLPATH[1]);
        $body = ereg_replace( "(\[\[body\]\])", $body ,  $objPage->tpl_body );
