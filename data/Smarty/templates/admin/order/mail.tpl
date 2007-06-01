@@ -88,11 +88,9 @@
 								<span class="red12"><!--{$arrErr[$key]}--></span>
 								<select name="template_id" style="<!--{$arrErr[$key]|sfGetErrorColor}-->" onchange="fnModeSubmit('change', '', '');">
 								<option value="" selected="selected">選択してください</option>
-<<<<<<< .mine
-								<!--{html_options options=mailTemp selected=$arrForm[$key].value|escape}-->
-=======
+
+
 								<!--{html_options options=$arrMAILTEMPLATE[1] selected=$arrForm[$key].value|escape}-->
->>>>>>> .r13936
 								</select>
 								</td>
 							</tr>
