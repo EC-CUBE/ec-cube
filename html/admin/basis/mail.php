@@ -103,7 +103,7 @@ function fnErrorCheck($array) {
 	$objErr->doFunc(array("テンプレート",'template_id'), array("EXIST_CHECK"));
     $objErr->doFunc(array("テンプレート",'template_name'), array("EXIST_CHECK"));
 	$objErr->doFunc(array("メールタイトル",'subject',MTEXT_LEN,"BIG"), array("EXIST_CHECK", "MAX_LENGTH_CHECK"));
-	$objErr->doFunc(array("メールの内容",'body',LTEXT_LEN,"BIG"), array("MAX_LENGTH_CHECK"));
+	$objErr->doFunc(array("メールの内容",'body',LTEXT_LEN,"BIG"), array("MAX_LENGTH_CHECK","EXIST_CHECK"));
 
 	return $objErr->arrErr;
 }
