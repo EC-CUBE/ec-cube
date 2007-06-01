@@ -37,7 +37,7 @@ if ( $_GET['mode']=="preview" || $_GET['id']){
                     $objPage->escape_flag = 1;
                 }
 //            $result[0] = nl2br($result[0]);
-            $objPage->preview_data = $result[0];    
+            $objPage->list_data = $result[0];    
         }
     
     }
