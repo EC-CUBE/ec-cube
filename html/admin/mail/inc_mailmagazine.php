@@ -11,7 +11,7 @@
 
 
 //---- ¸¡º÷ÍÑ¹àÌÜÇÛÎó
-$objPage->arrHtmlmail = array( "" => "Î¾Êý",  1 => "HTML", 2 => "TEXT" );
+$objPage->arrHtmlmai = array( "" => "Î¾Êý",  1 => "HTML", 2 => "TEXT" );
 
 
 //---- ÇÛÎóÆâÍÆÀìÍÑ¹àÌÜ¤ÎÇÛÎó
@@ -76,8 +76,8 @@ $arrSearchColumn = array(
 							array(  "column" => "buy_total_to",	    "convert" => "n" ),
 							array(  "column" => "campaign_id",	    "convert" => ""  ),
 							array(  "column" => "mail_type",		"convert" => ""  ),
-							array(  "column" => "domain",           "convert" => "n" ),
-							array(  "column" => "domain_type",      "convert" => "n" )
+							array(  "column" => "domain",           "convert" => "" ),
+							array(  "column" => "domain_type",      "convert" => "" )
 
 					);
 
