@@ -209,9 +209,15 @@ class SC_CustomerList extends SC_SelectSql {
         		foreach($arrDomainType as $val) {
         			if($this->arrSql['domain'] == 2) {
         				if($sql_where == "") {
-        					$sql_where .= "dtb_customer.email ILIKE ? ";
+        					$sql_where .= "dtb_customer.email NOT ILIKE ? ";
         				} else {
-        					$sql_where .= "OR dtb_customer.email ILIKE ? " ;
+        					$sql_where .= "AND dtb_customer.email NOT ILIKE ? " ;
+        				}
+        			} elseif($this->arrSql['domain'] == 3) {
+        				if($sql_where == "") {
+        					$sql_where .= "dtb_customer.email LIKE ? ";
+        				} else {
+        					$sql_where .= "OR dtb_customer.email LIKE ? " ;
         				}
         			}
         			$searchDomain = $this->addSearchStr($val);
