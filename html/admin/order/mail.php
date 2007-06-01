@@ -7,7 +7,7 @@
 require_once("../require.php");
 
 class LC_Page {
-    var $list_data;
+    
     var $mailTemp;
     var $arrMAILTEMPLATE;
 	function LC_Page() {
@@ -41,7 +41,6 @@ foreach ($_POST as $key => $val) {
 }
 
 $objPage->tpl_order_id = $_POST['order_id'];
-print($_POST['order_id']);exit;
 // DBから受注情報を読み込む
 lfGetOrderData($_POST['order_id']);
 
