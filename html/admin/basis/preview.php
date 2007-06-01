@@ -36,8 +36,7 @@ if ( $_GET['mode']=="preview" || $_GET['id']){
                 // テキスト形式の時はタグ文字をエスケープ
                     $objPage->escape_flag = 1;
                 }
-            $result[0] = nl2br($result[0]);
-            print_r($result[0]);
+//            $result[0] = nl2br($result[0]);
             $objPage->preview_data = $result[0];    
         }
     
