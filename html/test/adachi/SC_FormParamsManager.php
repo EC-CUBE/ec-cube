@@ -5,86 +5,92 @@ require_once('SC_Validator.php');
 /**
  * Formパラメータ管理クラス
  */
-
 class SC_FormParamsManager {
     var $_arrObjParams;
-    var $_arrErr;
+    var $_arrErrorMessage;
+    var $_arrGropus;
     
     function SC_FormParamsManager($arrParams = array(), $arrParamsInfo = array()){
-        $this->_arrObjParams = array();
-        $this->_arrErr = array();
+        $this->_arrObjParams    = array();
+        $this->_arrErrorMessage = array();
+        $this->_arrGropus       = array();
         
-        if (count($arrParams) > 0 && count($arrParamsInfo) > 0) {
-            $this->setParams($arrParams, $arrParamsInfo);
-        }
+        $this->setParams($arrParams, $arrParamsInfo);
     }
     
-    function setParams($arrParams, $arrParamsInfo, $useRowParams = false){
+    function setParams($arrParams, $arrParamsInfo, $useRawParams = false){
         foreach ($arrParamsInfo as $_key => $_value) {
             $arrParamsInfo[$_key]['value'] = $arrParams[$_key];
-            $this->_arrObjParams[$_key] = new SC_Param($arrParamsInfo[$_key]);
+            $this->_arrObjParams[] = new SC_Param($arrParamsInfo[$_key]);
         }
-        // $_POST、$_GETは原則使用禁止
-        if ($useRowParams === true) { return; }
+        // $_POST、$_GETは原則使用禁止(別メソッドにする？)
+        if ($useRawParams === true) { return; }
         unset($_POST, $_GET);
     }
     
-    function setGroups($arrGroup){
-        $this->_groups = $arrGroup;
+    function serGroups($groupName, $arrTargetName, $arrValidateMethod){
+        foreach ($arrTargetName as $targetName) {
+            $this->_arrObjParams['group'] = $groupName:
+        );
+        $this->_arrGroups[$groupName]['validateMethd'] = $arrValidateMethod
     }
-    
-    function getGroups(){
-        return $this->_groups;
-    }
-    
     
     function validate(){
-        $arrGroups = array();    // 複数項目チェック用
-        $arrParent = array();    // 上位項目チェック用
+        $arrErrorMessage = array();  // エラーメッセージ格納用配列
+        $arrGroups = $this->_arrGroups;        // 複数項目検証用配列
         
-        
-        foreach ($this->_arrObjParams as $_key => $objParam) {
-            // 複数項目チェック用配列を構築
-            if ($objParam->has_group())  { $arrGroups[$objParam->getGroup()][$_key] = $objParam; }
+        foreach ($this->_arrObjParams as $objParam) {
+            $keyname = $objParam->getKeyName();
             
-            // 上位項目チェック
-            if ($objParam->has_parent()) {
-                $has_parent = true;
-                while ($has_parent) {
-                    if ($this->_arrParamsInfo[$objParam->getParent()]->has_parent()) {
-                        
-                    }
-                }
+            // 複数項目検証用配列を構築
+            /*
+            if ($objParam->has_group() === true) {
+                $arrGroups[$objParam->getGroupName()][] = $objParam;
             }
+            */
             
-            $arrValidateType = $objParam->getValidateType();
+            $arrValidateMethod = $objParam->getValidateMethod();
             
-            // Single Validation
-            foreach ($arrValidateType as $method => $args) {
-                $objValidator = SC_Validate::factory($method, $args);
+            // 単体項目の検証
+            foreach ($arrValidateMethod as $method => $args) {
+                $objValidator = SC_Validator::factory($method, $args);
                 
-                if ($objValidator->validate($objParam) == true) {
-                    $this->arrErr[$_key] = $objValidator->getErrorMessage();
+                if ($objValidator->validate($objParam) === false) {
+                    $arrErrorMessage[$keyname] = $objValidator->getErrorMessage();
                 }
             }
         }
         
-        // Group Validation
-        foreach ($arrGroups as $group => $_value) {
+        // 複数項目の検証
+        foreach ($arrGroups as $groupname => $objParam) {
+            $keyname = $objParam->getKeyName();
+            
             // 既にエラーがある場合はvalidationを行わない
-            if (array_key_exists(array_keys($_value), $this->arrErr)) {
+            if (array_key_exists($keyname, $arrErrorMessage)) {
                 continue;
             }
             
+            $arrValidateMethod = $objParam->getGroupValidateMethod();
             $objValidator = SC_Validate::factory('GROUP');
             if ($objValidator->validate($arrGroups[$group]) === true) {
                 $this->arrErr[$group] = $objValidator->getErrorMessage();
             }
         }
         
-        // 親子 validation
-        
-        return $this;
+        return $arrErrorMessage;
+    }
+    
+    function convert(){
+        foreach ($this->_arrObjParams as &$objParams) {
+            $objParams->convert();
+        }
+    }
+    function is_error(){
+        if (count($this->_arrErrorMessage) > 0) {
+            return true;
+        } else {
+            return false;
+        }
     }
     
     function getEM(){

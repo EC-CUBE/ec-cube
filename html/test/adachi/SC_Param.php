@@ -22,8 +22,8 @@ class SC_Param {
         
         foreach ($arrProperties as $property) {
             $this->$property = isset($arrParamInfo[$property])
-                ? $arrParamInfo[preg_replace('/^_/', '', $property)]
-                : null;
+                ? $this->$property = $arrParamInfo[preg_replace('/^_/', '', $property)]
+                : $this->$property = null;
         }
     }
     

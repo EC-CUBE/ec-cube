@@ -3,6 +3,8 @@
 require_once("../../require.php");
 require_once("SC_FormParamsManager.php");
 
+error_reporting(E_ALL);
+
 // Smartyへのassign用連想配列
 $arrAssignVars = array(
     'tpl_mainpage' => 'basis/kiyaku.tpl',
