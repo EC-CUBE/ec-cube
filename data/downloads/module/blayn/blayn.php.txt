@@ -7,7 +7,13 @@
  *
  */
  
-
+class LC_Page {
+    
+    function LC_Page() {
+        $this->tpl_mainpage = "index.tpl";
+        $this->tpl_title = "ルルファイテンTOP";
+    }
+}
 $objPage = new LC_Page();
 $objView = new SC_AdminView();
 $objQuery = new SC_Query();
