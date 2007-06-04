@@ -137,9 +137,9 @@ function lfnCheckSubmit(){
 										</span>
 						
 										<div align="right">
-											<input type="button" width="110" height="30" value="文字数カウント" onclick="fnCharCount('form1','header','cnt_header');" border="0" name="next" id="next" />
+											<input type="button" width="110" height="30" value="文字数カウント" onclick="fnCharCount('form1','body','cnt_body');" border="0" name="next" id="next" />
 											<br>今までに入力したのは
-											<input type="text" name="cnt_header" size="4" class="box4" readonly = true style="text-align:right">
+											<input type="text" name="cnt_body" size="4" class="box4" readonly = true style="text-align:right">
 											文字です。
 										</div>
 						
