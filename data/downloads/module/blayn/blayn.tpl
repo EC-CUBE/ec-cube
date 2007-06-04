@@ -12,3 +12,6 @@
 		<td><input type="submit" value="Á÷¿®">
 	</tr>
 </table>
+</body>
+
+</html>
