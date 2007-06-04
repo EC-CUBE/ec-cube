@@ -23,7 +23,7 @@
 </noscript>
 
 <div align="center">
-<!--¡ú¡ú¡ú¥á¥¤¥ó¥³¥ó¥Æ¥ó¥Ä¡ú¡ú¡ú-->
+<!--¢§CONTENTS-->
 <form action="<!--{$smarty.server.REQUEST_URI|escape}-->" method="post">
 <table>
 	<tr>
@@ -31,11 +31,11 @@
 		<td><input type="text" name="ipaddress" value=""></td>
 	</tr>
 	<tr>
-		<td><input type="submit" value="Á÷¿®">
+		<td><input type="submit" value="ÅÐÏ¿">
 	</tr>
 </table>
 </form>
-<!--¡ú¡ú¥á¥¤¥ó¥³¥ó¥Æ¥ó¥Ä¡ú¡ú-->
+<!--¢¥CONTENTS-->
 </div>
 
 </body>
