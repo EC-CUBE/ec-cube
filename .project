@@ -5,14 +5,13 @@
 	<projects>
 	</projects>
 	<buildSpec>
-		<buildCommand>
-			<name>org.trustudio.oss.core.PHPscriptbuilder</name>
-			<arguments>
-			</arguments>
-		</buildCommand>
-	</buildSpec>
-	<natures>
-		<nature>org.trustudio.oss.core.scriptnature</nature>
-		<nature>org.trustudio.php.core.phpnature</nature>
-	</natures>
+   <buildCommand>
+       <name>net.sourceforge.phpeclipse.parserbuilder</name>
+       <arguments>
+       </arguments>
+   </buildCommand>
+ </buildSpec>
+ <natures>
+   <nature>net.sourceforge.phpeclipse.phpnature</nature>
+ </natures>
 </projectDescription>
