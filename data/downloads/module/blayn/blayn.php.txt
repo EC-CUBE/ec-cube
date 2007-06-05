@@ -1,4 +1,5 @@
 <?php
+<?php
 /**
  * 
  * @copyright   2000-2007 LOCKON CO.,LTD. All Rights Reserved.
@@ -30,8 +31,15 @@ function lfRegist() {
     
     global $objQuery;
     
-
+    $blayn_ip .= $_POST['blayn_ip01'];
+    $blayn_ip .= "." . $_POST['blayn_ip02'];
+    $blayn_ip .= "." . $_POST['blayn_ip03'];
+    $blayn_ip .= "." . $_POST['blayn_ip04'];
+    
+    $objQuery->conn->query("INSERT INTO dtb_module(blayn_ip), VALUE(" . $blayn_ip .")");
 }
 
 ?>
 
+
+?>
