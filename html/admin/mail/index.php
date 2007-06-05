@@ -169,7 +169,6 @@ case 'back':
 		$objPage->arrResults = $objQuery->select($col, $from, $where, $arrval);
 		//現在時刻の取得
 		$objPage->arrNowDate = lfGetNowDate();
-        sfprintr($objPage->arrResults);
 	}
 	break;
 /*
@@ -290,7 +289,7 @@ for ($year=date("Y"); $year<=date("Y") + 1;$year++){
 //$objPage->arrIP = lfGetBlayn();
 
 $objPage->arrYear = $arrYear;
-
+sfprintr($_POST['mode']);
 $objPage->arrCustomerOrderId = lfGetCustomerOrderId($_POST['buy_product_code']);
 
 $objPage->arrCatList = sfGetCategoryList();
