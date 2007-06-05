@@ -28,7 +28,10 @@
 <table>
 	<tr>
 		<td>IP¥¢¥É¥ì¥¹</td>
-		<td><input type="text" name="ipaddress" value=""></td>
+		<td><input type="text" name="blayn_ip01" value=""></td>
+		<td><input type="text" name="blayn_ip02" value=""></td>
+		<td><input type="text" name="blayn_ip03" value=""></td>
+		<td><input type="text" name="blayn_ip04" value=""></td>
 	</tr>
 	<tr>
 		<td><input type="submit" value="ÅÐÏ¿">
