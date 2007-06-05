@@ -326,7 +326,7 @@
 </table>
 <!--¡ú¡ú¥á¥¤¥ó¥³¥ó¥Æ¥ó¥Ä¡ú¡ú-->
 
-<!--{if count($arrErr) >= 0}-->
+<!--{if count($arrErr) == 1}-->
 
 <!--¡ú¡ú¸¡º÷·ë²Ì°ìÍ÷¡ú¡ú-->
 <table width="878" border="0" cellspacing="0" cellpadding="0" summary=" ">
