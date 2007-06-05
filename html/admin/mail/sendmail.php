@@ -104,7 +104,7 @@ for( $i = 0; $i < $count; $i++ ) {
             
             //-- ブレインSMTPサーバーIPアドレス 
             $sql = "SELECT blayn_ip FROM dtb_blayn";
-            $host = $conn->getAll("sql");
+            $host = $conn->getAll($sql);
             $param = array(   
                        'host' => $host[0][blayn_ip]
                       ,'port' => SMTP_PORT_BLAYN                  
