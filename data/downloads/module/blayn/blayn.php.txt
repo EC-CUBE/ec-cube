@@ -1,5 +1,4 @@
 <?php
-<?php
 /**
  * 
  * @copyright   2000-2007 LOCKON CO.,LTD. All Rights Reserved.
@@ -39,7 +38,7 @@ function lfRegist() {
     $objQuery->conn->query("INSERT INTO dtb_module(blayn_ip), VALUE(" . $blayn_ip .")");
 }
 
-?>
+
 
 
 ?>
