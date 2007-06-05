@@ -236,7 +236,7 @@ define ("CGI_DIR", HTML_PATH . "../cgi-bin/");								// •‚•∏•Â°º•Î≥ «º•«•£•Ï•Ø•
 define ("CGI_FILE", "mauthonly.cgi");										// •≥•¢CGI
 
 /* •÷•Ï•§•ÛSMTPæ Û */
-define ("SMTP_HOST_BLAYN", "210.188.254.83");					// •÷•Ï•§•ÛSMTP•µ°º•–
+// define ("SMTP_HOST_BLAYN", "210.188.254.83");					// •÷•Ï•§•ÛSMTP•µ°º•–
 define ("SMTP_PORT_BLAYN", 25);									// •÷•Ï•§•ÛSMTP•›°º•»»÷πÊ
 
 // •Î°º•»•´•∆•¥•ÍID
