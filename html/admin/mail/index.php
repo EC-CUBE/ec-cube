@@ -472,9 +472,8 @@ function lfGetBlayn() {
     
     global $objQuery;
     
-    $objQuery->releaseoption();
-    $arrRet = $objQuery->select("blayn_ip", "dtb_blayn");
+    $arrRet = $objQuery->count("dtb_blayn");
     
-    return $arrRet[0];
+    return $arrRet;
 }
 ?>
