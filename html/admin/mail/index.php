@@ -291,6 +291,7 @@ $objPage->arrIP = lfGetBlayn();
 $objPage->arrYear = $arrYear;
 $a = count($objPage->arrErr);
 sfprintr($a);
+sfprintr($_POST['mode']);
 $objPage->arrCustomerOrderId = lfGetCustomerOrderId($_POST['buy_product_code']);
 
 $objPage->arrCatList = sfGetCategoryList();
