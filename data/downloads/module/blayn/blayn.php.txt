@@ -40,6 +40,7 @@ function lfRegist() {
     $blayn_ip .= "." . $_POST['blayn_ip03'];
     $blayn_ip .= "." . $_POST['blayn_ip04'];
     
+    $objQuery->setorder("blayn_ip DESC");
     $sqlVal['blayn_ip'] = $blayn_ip;
     $objQuery->insert("dtb_blayn", $sqlVal);
 }
