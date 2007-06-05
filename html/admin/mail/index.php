@@ -289,7 +289,7 @@ for ($year=date("Y"); $year<=date("Y") + 1;$year++){
 $objPage->arrIP = lfGetBlayn();
 
 $objPage->arrYear = $arrYear;
-$a = count($objPage->arrErr);
+$objPage->a = count($objPage->arrErr);
 sfprintr($a);
 
 
