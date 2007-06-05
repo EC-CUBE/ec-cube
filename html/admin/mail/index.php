@@ -289,8 +289,7 @@ for ($year=date("Y"); $year<=date("Y") + 1;$year++){
 $objPage->arrIP = lfGetBlayn();
 
 $objPage->arrYear = $arrYear;
-$objPage->a = count($objPage->arrErr);
-sfprintr($a);
+$objPage->errorCount = count($objPage->arrErr);
 
 
 $objPage->arrCustomerOrderId = lfGetCustomerOrderId($_POST['buy_product_code']);
