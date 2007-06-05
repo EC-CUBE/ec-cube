@@ -21,6 +21,9 @@ $objQuery = new SC_Query();
 echo "aaa";
 echo"ccc";
 
+lfRegist();
+$objPage->arrIP = lfGetIP();
+
 $objView->assignobj($objPage);      //変数をテンプレートにアサインする
 $objView->display($objPage->tpl_mainpage);      //テンプレートの出力
 
@@ -39,6 +42,14 @@ function lfRegist() {
 }
 
 
-
+function lfGetIP() {
+    
+    global $objQuery;
+    
+    $ret = $objQuery->select("dtb_blayn", "blayn_ip");
+    $arrRet = split(".", $ret);
+    
+    return $arrRet;
+}
 
 ?>
