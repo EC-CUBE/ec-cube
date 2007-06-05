@@ -38,7 +38,8 @@ function lfRegist() {
     $blayn_ip .= "." . $_POST['blayn_ip03'];
     $blayn_ip .= "." . $_POST['blayn_ip04'];
     
-    $objQuery->conn->query("INSERT INTO dtb_blayn(blayn_ip) VALUE(" . $blayn_ip .")");
+    $sqlVal['blayn_ip'] = $blayn_ip;
+    $objQuery->insert("dtb_blayn", $sqlVal);
 }
 
 
