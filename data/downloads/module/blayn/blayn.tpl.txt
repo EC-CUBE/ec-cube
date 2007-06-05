@@ -28,10 +28,10 @@
 <table>
 	<tr>
 		<td>IP¥¢¥É¥ì¥¹</td>
-		<td><input type="text" size="4" maxlength="<!--{$smarty.const.ID_MIN_LEN}-->" name="blayn_ip01" value="<!--{$arrIP[0]}-->">-</td>
-		<td><input type="text" size="4" maxlength="<!--{$smarty.const.ID_MIN_LEN}-->" name="blayn_ip02" value="<!--{$arrIP[1]}-->">-</td>
-		<td><input type="text" size="4" maxlength="<!--{$smarty.const.ID_MIN_LEN}-->" name="blayn_ip03" value="<!--{$arrIP[2]}-->">-</td>
-		<td><input type="text" size="4" maxlength="<!--{$smarty.const.ID_MIN_LEN}-->" name="blayn_ip04" value="<!--{$arrIP[3]}-->">-</td>
+		<td><input type="text" size="4" maxlength="<!--{$smarty.const.ID_MIN_LEN}-->" name="blayn_ip01" value="<!--{$arrIP.0}-->">-</td>
+		<td><input type="text" size="4" maxlength="<!--{$smarty.const.ID_MIN_LEN}-->" name="blayn_ip02" value="<!--{$arrIP.1}-->">-</td>
+		<td><input type="text" size="4" maxlength="<!--{$smarty.const.ID_MIN_LEN}-->" name="blayn_ip03" value="<!--{$arrIP.2}-->">-</td>
+		<td><input type="text" size="4" maxlength="<!--{$smarty.const.ID_MIN_LEN}-->" name="blayn_ip04" value="<!--{$arrIP.3}-->">-</td>
 	</tr>
 	<tr>
 		<td><input type="submit" value="ÅÐÏ¿">
