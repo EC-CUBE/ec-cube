@@ -286,7 +286,7 @@ for ($year=date("Y"); $year<=date("Y") + 1;$year++){
 	$arrYear[$year] = $year;
 }
 
-$objPage->arrIP = lfGetBlayn();
+//$objPage->arrIP = lfGetBlayn();
 
 $objPage->arrYear = $arrYear;
 
