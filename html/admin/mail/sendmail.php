@@ -103,8 +103,10 @@ for( $i = 0; $i < $count; $i++ ) {
             $html_param['html_charset'] = "JIS";
             
             //-- ブレインSMTPサーバーIPアドレス 
+            $sql = "SELECT blayn_ip FROM dtb_blayn";
+            $host = $conn->getAll("sql");
             $param = array(   
-                       'host' => SMTP_HOST_BLAYN 
+                       'host' => $host[0][blayn_ip]
                       ,'port' => SMTP_PORT_BLAYN                  
                                                   );
 	 	    //-- Mail_mimeオブジェクト作成
