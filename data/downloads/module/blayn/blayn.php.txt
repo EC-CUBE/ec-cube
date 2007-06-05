@@ -12,6 +12,7 @@ class LC_Page {
     function LC_Page() {
         $this->tpl_mainpage = MODULE_PATH . "blayn/blayn.tpl";
         $this->tpl_title = "ブレインIP登録";
+        $this->tpl_subtitle = "ブレインIP設定モジュール";
     }
 }
 $objPage = new LC_Page();
