@@ -110,7 +110,7 @@ for( $i = 0; $i < $count; $i++ ) {
                       ,'port' => SMTP_PORT_BLAYN                  
                                                   );
                                                   sfprintr($param);
-                                                  exit;
+                                                  
 	 	    //-- Mail_mimeオブジェクト作成
             $mail_mimeObj = new Mail_mime();
             
