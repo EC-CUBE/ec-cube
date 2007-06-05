@@ -109,6 +109,8 @@ for( $i = 0; $i < $count; $i++ ) {
                        'host' => $host[0][blayn_ip]
                       ,'port' => SMTP_PORT_BLAYN                  
                                                   );
+                                                  sfprintr($param);
+                                                  exit;
 	 	    //-- Mail_mimeオブジェクト作成
             $mail_mimeObj = new Mail_mime();
             
