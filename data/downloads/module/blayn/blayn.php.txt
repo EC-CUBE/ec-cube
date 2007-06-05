@@ -19,9 +19,6 @@ $objPage = new LC_Page();
 $objView = new SC_AdminView();
 $objQuery = new SC_Query();
 
-echo "aaa";
-echo"ccc";
-
 
 if(isset($_POST['blayn_ip01'])) {
     lfDelete();
