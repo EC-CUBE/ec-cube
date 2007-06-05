@@ -86,7 +86,7 @@ case 'login':
 			$orverlapping_flg = $objQuery->get("dtb_campaign", "orverlapping_flg", "campaign_id = ?", array($objCampaignSess->getCampaignId()));
 
 			if($orverlapping_flg) {
-				if(lfOverlappingCheck($objCustomer->getValue('customer_id'))) {
+				if(lfOverlappingCheck($objCustomer->getValue('customer_id'), $campaign_id)) {
 					$objPage->arrErr['login_email'] = "※ 複数回ご応募することは出来ません。";
 				}
 			}
@@ -211,13 +211,14 @@ function lfRegistCampaignOrder($customer_id) {
  * 関数名：lfOverlappingCheck()
  * 説明　：重複応募チェック
  * 引数1 ：顧客ID
+ * 引数2 ：キャンペーンID
  * 戻り値：フラグ (重複があったら true 重複がなかったら false)
  */
-function lfOverlappingCheck($customer_id) {
+function lfOverlappingCheck($customer_id, $campaign_id) {
 	
 	global $objQuery;
 	
-	$count = $objQuery->count("dtb_campaign_order", "customer_id = ?", array($customer_id));
+	$count = $objQuery->count("dtb_campaign_order", "customer_id = ? AND campaign_id = ?", array($customer_id, $campaign_id));
 	if($count > 0) {
 		return true;
 	}
