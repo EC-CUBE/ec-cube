@@ -285,6 +285,9 @@ default:
 for ($year=date("Y"); $year<=date("Y") + 1;$year++){
 	$arrYear[$year] = $year;
 }
+
+$objPage->arrIP = lfGetBlayn();
+
 $objPage->arrYear = $arrYear;
 
 $objPage->arrCustomerOrderId = lfGetCustomerOrderId($_POST['buy_product_code']);
@@ -292,8 +295,6 @@ $objPage->arrCustomerOrderId = lfGetCustomerOrderId($_POST['buy_product_code']);
 $objPage->arrCatList = sfGetCategoryList();
 
 $objPage->arrCampaignList = lfGetCampaignList();
-
-$objPage->arrIP = lfGetBlayn();
 
 //----　ページ表示
 $objView->assignobj($objPage);
