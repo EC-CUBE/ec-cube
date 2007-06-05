@@ -169,6 +169,7 @@ case 'back':
 		$objPage->arrResults = $objQuery->select($col, $from, $where, $arrval);
 		//現在時刻の取得
 		$objPage->arrNowDate = lfGetNowDate();
+        sfprintr($objPage->arrResults);
 	}
 	break;
 /*
