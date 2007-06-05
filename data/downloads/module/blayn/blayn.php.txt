@@ -10,8 +10,8 @@
 class LC_Page {
     
     function LC_Page() {
-        $this->tpl_mainpage = "blayn.tpl";
-        $this->tpl_title = "ルルファイテンTOP";
+        $this->tpl_mainpage = MODULE_PATH . "blayn.tpl";
+        $this->tpl_title = "ブレインIP登録";
     }
 }
 $objPage = new LC_Page();
