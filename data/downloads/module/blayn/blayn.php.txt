@@ -49,7 +49,7 @@ function lfGetIP() {
     
     global $objQuery;
     
-    $ret = $objQuery->select("dtb_blayn", "blayn_ip");
+    $ret = $objQuery->select("blayn_ip", "dtb_blayn");
     $arrRet = split(".", $ret);
     
     return $arrRet;
