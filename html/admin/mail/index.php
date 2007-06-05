@@ -291,14 +291,14 @@ $objPage->arrIP = lfGetBlayn();
 $objPage->arrYear = $arrYear;
 $a = count($objPage->arrErr);
 sfprintr($a);
-sfprintr($objPage->arrErr);
+
 
 $objPage->arrCustomerOrderId = lfGetCustomerOrderId($_POST['buy_product_code']);
 
 $objPage->arrCatList = sfGetCategoryList();
 
 $objPage->arrCampaignList = lfGetCampaignList();
-
+sfprintr($objPage->arrErr);
 //----　ページ表示
 $objView->assignobj($objPage);
 $objView->display(MAIN_FRAME);
