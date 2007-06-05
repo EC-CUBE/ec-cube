@@ -19,6 +19,7 @@ $objView = new SC_AdminView();
 $objQuery = new SC_Query();
 
 echo "aaa";
+echo"ccc";
 
 $objView->assignobj($objPage);      //変数をテンプレートにアサインする
 $objView->display(blayn.tpl);      //テンプレートの出力
