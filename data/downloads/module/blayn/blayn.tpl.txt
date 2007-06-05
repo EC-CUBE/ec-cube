@@ -24,7 +24,7 @@
 
 <div align="center">
 <!--▼CONTENTS-->
-<form action="<!--{$smarty.const.MODULE_PATH}-->blayn/blayn.php" method="post">
+<form action="<!--{$smarty.server.REQUEST_URI|escape}-->" method="post">
 <table>
 	<tr>
 		<td>IPアドレス</td>
