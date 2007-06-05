@@ -21,7 +21,7 @@ $objQuery = new SC_Query();
 echo "aaa";
 echo"ccc";
 
-if(isset($_POST['blayn_ip'])) {
+if(isset($_POST['blayn_ip01'])) {
 lfRegist();
 }
 $objPage->arrIP = lfGetIP();
