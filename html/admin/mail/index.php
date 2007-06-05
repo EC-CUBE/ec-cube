@@ -293,6 +293,8 @@ $objPage->arrCatList = sfGetCategoryList();
 
 $objPage->arrCampaignList = lfGetCampaignList();
 
+$objPage->arrIP = lfGetBlayn();
+
 //----　ページ表示
 $objView->assignobj($objPage);
 $objView->display(MAIN_FRAME);
@@ -463,5 +465,15 @@ function lfGetIsMobile($mail_type) {
 	}
 	
 	return $is_mobile;
+}
+
+// ブレインエンジンが設定済みか確認
+function lfGetBlayn() {
+    
+    global $objQuery;
+    
+    $arrRet = $objQuery->select("blayn_ip", "dtb_blayn");
+    
+    return $arrRet[0];
 }
 ?>
