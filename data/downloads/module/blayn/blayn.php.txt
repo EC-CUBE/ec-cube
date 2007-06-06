@@ -22,7 +22,7 @@ $objFormParam = new SC_FormParam;
 
 lfIntiParam();
 
-if(isset($_POST['blayn_ip01'])) {
+if(isset($_POST)) {
     $objPage->arrErr = lfCheckError();
     if(count($objPage->arrErr) <= 0) {
         lfDelete();
