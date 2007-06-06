@@ -20,6 +20,7 @@ $objView = new SC_AdminView();
 $objQuery = new SC_Query();
 $objFormParam = new SC_FormParam;
 
+lfIntiParam();
 
 if(isset($_POST['blayn_ip01'])) {
     $objPage->arrErr = lfCheckError();
