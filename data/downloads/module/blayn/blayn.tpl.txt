@@ -82,7 +82,7 @@ function win_open(URL){
 									<table width="442" border="0" cellspacing="1" cellpadding="8" summary=" ">
 									<tr class="fs12n">
 										<td bgcolor="#f3f3f3">IPアドレス</td>
-										<td bgcolor="#ffffff" <!--{if $arrErr != ""}-->style="background-color:<!--{$smarty.const.ERR_COLOR|escape}-->"<!--{/if}-->><span class="red"><!--{$arrErr.blayn_ip}--></span><input type="text" size="4" maxlength="<!--{$smarty.const.ID_MIN_LEN}-->" name="blayn_ip01" value="<!--{$arrIP.0}-->"> . <input type="text" size="4" maxlength="<!--{$smarty.const.ID_MIN_LEN}-->" name="blayn_ip02" value="<!--{$arrIP.1}-->"> . <input type="text" size="4" maxlength="<!--{$smarty.const.ID_MIN_LEN}-->" name="blayn_ip03" value="<!--{$arrIP.2}-->"> . <input type="text" size="4" maxlength="<!--{$smarty.const.ID_MIN_LEN}-->" name="blayn_ip04" value="<!--{$arrIP.3}-->"></td>
+										<td bgcolor="#ffffff" <!--{if $error != ""}-->style="background-color:<!--{$smarty.const.ERR_COLOR|escape}-->"<!--{/if}-->><span class="red"><!--{$error}--></span><input type="text" size="4" maxlength="<!--{$smarty.const.ID_MIN_LEN}-->" name="blayn_ip01" value="<!--{$arrIP.0}-->"> . <input type="text" size="4" maxlength="<!--{$smarty.const.ID_MIN_LEN}-->" name="blayn_ip02" value="<!--{$arrIP.1}-->"> . <input type="text" size="4" maxlength="<!--{$smarty.const.ID_MIN_LEN}-->" name="blayn_ip03" value="<!--{$arrIP.2}-->"> . <input type="text" size="4" maxlength="<!--{$smarty.const.ID_MIN_LEN}-->" name="blayn_ip04" value="<!--{$arrIP.3}-->"></td>
 									</tr>
 									</table>
 									<table width="442" border="0" cellspacing="0" cellpadding="0" summary="">
