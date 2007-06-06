@@ -38,30 +38,11 @@ function lfCheckError() {
     
     $objErr = new SC_CheckError;
     
-    $arrErr->arrErr[blayn_ip01] = $objErr->doFunc(array("IPアドレス", "blayn_ip01"), array("EXIST_CHECK", "MAX_LENGTH_CHECK", "NUM_CHECK"));
-    $arrErr->arrErr[blayn_ip02] = $objErr->doFunc(array("IPアドレス", "blayn_ip02"), array("EXIST_CHECK", "MAX_LENGTH_CHECK", "NUM_CHECK"));
-    $arrErr->arrErr[blayn_ip03] = $objErr->doFunc(array("IPアドレス", "blayn_ip03"), array("EXIST_CHECK", "MAX_LENGTH_CHECK", "NUM_CHECK"));
-    $arrErr->arrErr[blayn_ip04] = $objErr->doFunc(array("IPアドレス", "blayn_ip04"), array("EXIST_CHECK", "MAX_LENGTH_CHECK", "NUM_CHECK"));
-    /*sfprintr($arrErr->arrErr);
-    if(is_array($arrErr->arrErr)) {
-        foreach($arrErr->arrErr as $val) {
-            if(!empty($val)) {
-                sfprintr($val);
-                $arrVal = split("。", $val);
-                foreach($arrVal as $val02) {
-                    $val02 .= "。";
-                    sfprintr($val02);
-                    if(!ereg("$val02", $arrErr->error)) {
-                        sfprintr($arrErr->error);
-                        $arrErr->error .= $val02;
-                        sfprintr($arrErr->error);
-                    }
-                
-                }
-            }
-        }
-    }*/
-    sfprintr($arrErr->arrErr);
+    $arrErr->arrErr[blayn_ip01] = $objErr->doFunc(array("IPアドレス1", "blayn_ip01"), array("EXIST_CHECK", "MAX_LENGTH_CHECK", "NUM_CHECK"));
+    $arrErr->arrErr[blayn_ip02] = $objErr->doFunc(array("IPアドレス2", "blayn_ip02"), array("EXIST_CHECK", "MAX_LENGTH_CHECK", "NUM_CHECK"));
+    $arrErr->arrErr[blayn_ip03] = $objErr->doFunc(array("IPアドレス3", "blayn_ip03"), array("EXIST_CHECK", "MAX_LENGTH_CHECK", "NUM_CHECK"));
+    $arrErr->arrErr[blayn_ip04] = $objErr->doFunc(array("IPアドレス4", "blayn_ip04"), array("EXIST_CHECK", "MAX_LENGTH_CHECK", "NUM_CHECK"));
+
     return($arrErr->arrErr);
 }
 
