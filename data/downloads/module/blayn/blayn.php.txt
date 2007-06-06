@@ -61,6 +61,7 @@ function lfCheckError() {
             }
         }
     }*/
+    sfprintr($arrErr->arrErr);
     return($arrErr->arrErr);
 }
 
