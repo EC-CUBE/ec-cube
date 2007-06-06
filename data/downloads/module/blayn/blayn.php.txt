@@ -42,15 +42,19 @@ function lfCheckError() {
     $arrErr->arrErr[] = $objErr->doFunc(array("IPアドレス", "blayn_ip02"), array("EXIST_CHECK", "MAX_LENGTH_CHECK", "NUM_CHECK"));
     $arrErr->arrErr[] = $objErr->doFunc(array("IPアドレス", "blayn_ip03"), array("EXIST_CHECK", "MAX_LENGTH_CHECK", "NUM_CHECK"));
     $arrErr->arrErr[] = $objErr->doFunc(array("IPアドレス", "blayn_ip04"), array("EXIST_CHECK", "MAX_LENGTH_CHECK", "NUM_CHECK"));
-    
+    sfprintr($arrErr->arrErr);
     if(is_array($arrErr->arrErr)) {
         foreach($arrErr->arrErr as $val) {
             if(!empty($val)) {
+                sfprintr($val);
                 $arrVal = split("。", $val);
                 foreach($arrVal as $val02) {
                     $val02 .= "。";
+                    sfprintr($val02);
                     if(!ereg("$val02", $arrErr->error)) {
+                        sfprintr($arrErr->error);
                         $arrErr->error .= $val02;
+                        sfprintr($arrErr->error);
                     }
                 
                 }
