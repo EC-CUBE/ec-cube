@@ -61,7 +61,7 @@ function lfCheckError() {
             }
         }
     }*/
-    return($arrErr->error);
+    return($arrErr->arrErr);
 }
 
 function lfRegist() {
