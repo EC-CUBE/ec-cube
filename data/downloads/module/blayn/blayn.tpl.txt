@@ -62,7 +62,7 @@
 											<td bgcolor="#ffffff">
 												ブレインネールサービスをご利用頂く為には、ユーザ様ご自身でブレイン株式会社とご契約を行っていただく必要があります。 <br/>
 												お申し込みにつきましては、下記のページから、お申し込みを行って下さい。<br/><br/>
-												<a href="#" onClick="win_open('http://www.blayn.co.jp/')" > ＞＞ ブレインメールサービスについて</a><br/>
+												<a href="#" onClick="win_open('http://www.blaynengine.jp/ec-cube/')" > ＞＞ ブレインメールサービスについて</a><br/>
 												<a href="#" onClick="win_open('http://wiki.ec-cube.net/')" > ＞＞ ブレインメール設定マニュアル</a>
 											</td>
 										</tr>
@@ -75,10 +75,7 @@
 									<table width="442" border="0" cellspacing="0" cellpadding="8" summary=" ">
 									<tr class="fs12n">
 										<td bgcolor="#f3f3f3">IPアドレス</td>
-										<td bgcolor="#ffffff"><input type="text" size="4" maxlength="<!--{$smarty.const.ID_MIN_LEN}-->" name="blayn_ip01" value="<!--{$arrIP.0}-->">-</td>
-										<td bgcolor="#ffffff"><input type="text" size="4" maxlength="<!--{$smarty.const.ID_MIN_LEN}-->" name="blayn_ip02" value="<!--{$arrIP.1}-->">-</td>
-										<td bgcolor="#ffffff"><input type="text" size="4" maxlength="<!--{$smarty.const.ID_MIN_LEN}-->" name="blayn_ip03" value="<!--{$arrIP.2}-->">-</td>
-										<td bgcolor="#ffffff"><input type="text" size="4" maxlength="<!--{$smarty.const.ID_MIN_LEN}-->" name="blayn_ip04" value="<!--{$arrIP.3}-->"></td>
+										<td bgcolor="#ffffff"><input type="text" size="4" maxlength="<!--{$smarty.const.ID_MIN_LEN}-->" name="blayn_ip01" value="<!--{$arrIP.0}-->"> - </td><input type="text" size="4" maxlength="<!--{$smarty.const.ID_MIN_LEN}-->" name="blayn_ip02" value="<!--{$arrIP.1}-->"> - <input type="text" size="4" maxlength="<!--{$smarty.const.ID_MIN_LEN}-->" name="blayn_ip03" value="<!--{$arrIP.2}-->"> - <input type="text" size="4" maxlength="<!--{$smarty.const.ID_MIN_LEN}-->" name="blayn_ip04" value="<!--{$arrIP.3}-->"></td>
 									</tr>
 									</table>
 									<table width="442" border="0" cellspacing="0" cellpadding="0" summary="">
