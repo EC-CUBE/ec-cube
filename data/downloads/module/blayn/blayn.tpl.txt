@@ -80,9 +80,6 @@
 										<td bgcolor="#ffffff"><input type="text" size="4" maxlength="<!--{$smarty.const.ID_MIN_LEN}-->" name="blayn_ip03" value="<!--{$arrIP.2}-->">-</td>
 										<td bgcolor="#ffffff"><input type="text" size="4" maxlength="<!--{$smarty.const.ID_MIN_LEN}-->" name="blayn_ip04" value="<!--{$arrIP.3}-->"></td>
 									</tr>
-									<tr>
-										<td><input type="submit" value="епо©">
-									</tr>
 									</table>
 									<table width="442" border="0" cellspacing="0" cellpadding="0" summary="">
 										<tr>
