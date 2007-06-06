@@ -21,11 +21,13 @@ $objQuery = new SC_Query();
 
 
 if(isset($_POST['blayn_ip01'])) {
-    lfDelete();
-    lfRegist();
+    $objPage->arrErr = lfCheckError();
+    if(count($objPage->arrErr) <= 0) {
+        lfDelete();
+        lfRegist();
+    }
 }
 $objPage->arrIP = lfGetIP();
-$objPage->arrErr = lfCheckError();
 
 $objView->assignobj($objPage);      //変数をテンプレートにアサインする
 $objView->display($objPage->tpl_mainpage);      //テンプレートの出力
