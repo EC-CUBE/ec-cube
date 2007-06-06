@@ -61,11 +61,13 @@ function lfCheckError() {
 function lfRegist() {
     
     global $objQuery;
+    global $objFormParam;
     
-    $blayn_ip .= $_POST['blayn_ip01'];
-    $blayn_ip .= "." . $_POST['blayn_ip02'];
-    $blayn_ip .= "." . $_POST['blayn_ip03'];
-    $blayn_ip .= "." . $_POST['blayn_ip04'];
+    $arrPost = $objFormParam->getHashArray();
+    $blayn_ip .= $arrPost['blayn_ip01'];
+    $blayn_ip .= "." . $arrPost['blayn_ip02'];
+    $blayn_ip .= "." . $arrPost['blayn_ip03'];
+    $blayn_ip .= "." . $arrPost['blayn_ip04'];
     
     $sqlVal['blayn_ip'] = $blayn_ip;
     $objQuery->insert("dtb_blayn", $sqlVal);
