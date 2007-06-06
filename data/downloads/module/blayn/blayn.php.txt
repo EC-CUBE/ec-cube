@@ -25,11 +25,24 @@ if(isset($_POST['blayn_ip01'])) {
     lfRegist();
 }
 $objPage->arrIP = lfGetIP();
-//sfprintr($objPage->arrIP);
+$objPage->arrErr = lfCheckError();
+
 $objView->assignobj($objPage);      //変数をテンプレートにアサインする
 $objView->display($objPage->tpl_mainpage);      //テンプレートの出力
 
 // ------------------------------------------------------------------------------------------------------
+
+function lfCheckError() {
+    
+    $objErr = new SC_CheckError;
+    
+    $arrErr->arrErr = $objErr->doFunc(array("IPアドレス", "blayn_ip01"), array("EXIST_CHECK", "MAX_LENGTH_CHECK", "NUM_CHECK"));
+    $arrErr->arrErr = $objErr->doFunc(array("IPアドレス", "blayn_ip02"), array("EXIST_CHECK", "MAX_LENGTH_CHECK", "NUM_CHECK"));
+    $arrErr->arrErr = $objErr->doFunc(array("IPアドレス", "blayn_ip03"), array("EXIST_CHECK", "MAX_LENGTH_CHECK", "NUM_CHECK"));
+    $arrErr->arrErr = $objErr->doFunc(array("IPアドレス", "blayn_ip04"), array("EXIST_CHECK", "MAX_LENGTH_CHECK", "NUM_CHECK"));
+
+    return($arrErr->arrErr);
+}
 
 function lfRegist() {
     
