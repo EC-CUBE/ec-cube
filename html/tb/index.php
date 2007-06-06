@@ -180,6 +180,11 @@ function lfEntryTrackBack($arrData) {
 	$arrData["create_date"] = "now()";
 	$arrData["update_date"] = "now()";
 
+    if(!isset($arrData['url'])){
+        $arrData['url'] = '';
+    }elseif(!isset($arrData['excerpt'])){
+        $arrData['excerpt'] = '';
+    }
 	// ¥Ç¡¼¥¿¤ÎÅĞÏ¿
 	$table = "dtb_trackback";
 	$ret = $objQuery->insert($table, $arrData);
