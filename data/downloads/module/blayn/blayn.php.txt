@@ -18,6 +18,7 @@ class LC_Page {
 $objPage = new LC_Page();
 $objView = new SC_AdminView();
 $objQuery = new SC_Query();
+$objFormParam = new SC_FormParam;
 
 
 if(isset($_POST['blayn_ip01'])) {
@@ -34,16 +35,26 @@ $objView->display($objPage->tpl_mainpage);      //テンプレートの出力
 
 // ------------------------------------------------------------------------------------------------------
 
+function lfIntiParam() {
+    
+    global $objFormParam;
+    
+        $objFormParam->addParam("IPアドレス1", "blayn_ip01", INT_LEN, "KVa", array("EXIST_CHECK", "MAX_LENGTH_CHECK", "NUM_CHECK"));
+        $objFormParam->addParam("IPアドレス2", "blayn_ip02", INT_LEN, "KVa", array("EXIST_CHECK", "MAX_LENGTH_CHECK", "NUM_CHECK"));
+        $objFormParam->addParam("IPアドレス3", "blayn_ip03", INT_LEN, "KVa", array("EXIST_CHECK", "MAX_LENGTH_CHECK", "NUM_CHECK"));
+        $objFormParam->addParam("IPアドレス4", "blayn_ip04", INT_LEN, "KVa", array("EXIST_CHECK", "MAX_LENGTH_CHECK", "NUM_CHECK"));
+        
+}
+
 function lfCheckError() {
     
-    $objErr = new SC_CheckError;
+    global $objFormParam;
     
-    $arrErr->arrErr[blayn_ip01] = $objErr->doFunc(array("IPアドレス1", "blayn_ip01"), array("EXIST_CHECK", "MAX_LENGTH_CHECK", "NUM_CHECK"));
-    $arrErr->arrErr[blayn_ip02] = $objErr->doFunc(array("IPアドレス2", "blayn_ip02"), array("EXIST_CHECK", "MAX_LENGTH_CHECK", "NUM_CHECK"));
-    $arrErr->arrErr[blayn_ip03] = $objErr->doFunc(array("IPアドレス3", "blayn_ip03"), array("EXIST_CHECK", "MAX_LENGTH_CHECK", "NUM_CHECK"));
-    $arrErr->arrErr[blayn_ip04] = $objErr->doFunc(array("IPアドレス4", "blayn_ip04"), array("EXIST_CHECK", "MAX_LENGTH_CHECK", "NUM_CHECK"));
-    sfprintr($arrErr->arrErr);
-    return($arrErr->arrErr);
+    $arrList = $objFormParam->getHashArray();
+    $objErr = new SC_CheckError($arrList);
+    $objErr->arrErr = $objFormParam->checkError();
+    
+    return $arrErr->arrErr;
 }
 
 function lfRegist() {
