@@ -343,8 +343,12 @@ class SC_UploadFile {
 
         // 全てのサーバにファイルをコピーする
         foreach($arrWEB_SERVERS as $array) {
-            sfFtpCopy($array['host'], $array['user'], $array['pass'], $dst_path, $src_path);            
+sfprintr($dst_path);
+sfprintr($src_path);
+
+            //sfFtpCopy($array['host'], $array['user'], $array['pass'], $dst_path, $src_path);
         }
+        exit;
         // 移動後はファイルを削除
         //unlink($src_path);
     }
