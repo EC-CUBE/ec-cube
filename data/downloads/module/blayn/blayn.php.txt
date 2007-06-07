@@ -104,6 +104,12 @@ function lfGetIP() {
     
     $arrSql = $objQuery->select("blayn_ip", "dtb_blayn");
     $arrRet = split("\.", $arrSql[0]['blayn_ip']);
+    
+    $arrRet[blayn_ip01] = $arrRet[0];
+    $arrRet[blayn_ip02] = $arrRet[1];
+    $arrRet[blayn_ip03] = $arrRet[2];
+    $arrRet[blayn_ip04] = $arrRet[3];
+        
     return $arrRet;
     
 }
