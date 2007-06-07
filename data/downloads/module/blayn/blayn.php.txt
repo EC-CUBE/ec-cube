@@ -25,7 +25,7 @@ lfIntiParam();
 $objFormParam->setParam($_POST);
 $arrForm = $objFormParam->getHashArray();
 
-if($mode = 'regist') {
+if($mode == 'regist') {
     $objPage->arrErr = lfCheckError();
     if(count($objPage->arrErr) <= 0) {
         lfDelete();
