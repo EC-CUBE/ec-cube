@@ -108,7 +108,7 @@ case 'step3':
 	$objPage->arrErr = lfAddTable("dtb_mobile_ext_session_id", $dsn);	// セッションID管理テーブル
 	$objPage->arrErr = lfAddTable("dtb_site_control", $dsn);	// サイト情報管理テーブル
 	$objPage->arrErr = lfAddTable("dtb_trackback", $dsn);	// トラックバック管理テーブル
-	
+    $objPage->arrErr = lfAddTable("dtb_blayn", $dsn);   // ブレインIP管理テーブル	
 	
 	// カラムを追加
 	lfAddColumn($dsn);
