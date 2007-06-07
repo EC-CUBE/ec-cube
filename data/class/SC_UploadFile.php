@@ -13,7 +13,8 @@ require_once($SC_UPLOADFILE_DIR . "/../include/ftp.php");
 class SC_UploadFile {
     var $temp_dir;                  // 一時ファイル保存ディレクトリ
     var $save_dir;                  // ファイル保存ディレクト
-    var $ftp_dir;                   // FTP先ディレクトリ(負荷分散時使用)
+    var $ftp_temp_dir;              // FTP先一時ディレクトリ(負荷分散時使用)
+    var $ftp_save_dir;              // FTP先ファイル保存ディレクトリ(負荷分散時使用)
     var $multi_web_server_mode;     // 負荷分散フラグ(負荷分散時使用)
     var $keyname;                   // ファイルinputタグのname
     var $width;                     // 横サイズ
@@ -27,10 +28,11 @@ class SC_UploadFile {
     var $image;                     // 画像の場合:true
     
     // ファイル管理クラス
-    function SC_UploadFile($temp_dir, $save_dir, $ftp_dir = "", $multi_web_server_mode = false) {
+    function SC_UploadFile($temp_dir, $save_dir, $ftp_temp_dir = "", $ftp_save_dir = "", $multi_web_server_mode = false) {
         $this->temp_dir = $temp_dir;
         $this->save_dir = $save_dir;
-        $this->ftp_dir = $ftp_dir;
+        $this->ftp_temp_dir = $ftp_temp_dir;
+        $this->ftp_save_dir = $ftp_save_dir;
         $this->multi_web_server_mode = $multi_web_server_mode;
         $this->file_max = 0;
     }

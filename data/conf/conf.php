@@ -310,6 +310,8 @@ define ("IMAGE_TEMP_URL", URL_DIR . "upload/temp_image/");					// 画像一時保存UR
 define ("IMAGE_SAVE_URL", URL_DIR . "upload/save_image/");					// 画像保存先URL
 define ("IMAGE_TEMP_URL_RSS", SITE_URL . "upload/temp_image/");				// RSS用画像一時保存URL
 define ("IMAGE_SAVE_URL_RSS", SITE_URL . "upload/save_image/");				// RSS用画像保存先URL
+define ("FTP_IMAGE_SAVE_DIR", "./html" . URL_DIR . "upload/save_image/");   // FTP画像保存(相対パス)
+define ("FTP_IMAGE_TEMP_DIR", "./html" . URL_DIR . "upload/temp_image/");   // FTP画像一時保存(相対パス)
 define ("CSV_TEMP_DIR", HTML_PATH . "upload/csv/");							// エンコードCSVの一時保存先
 define ("NO_IMAGE_URL", URL_DIR . "misc/blank.gif");						// 画像がない場合に表示
 define ("NO_IMAGE_DIR", HTML_PATH . "misc/blank.gif");						// 画像がない場合に表示
