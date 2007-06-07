@@ -23,9 +23,8 @@ $objFormParam = new SC_FormParam;
 lfIntiParam();
 
 $objFormParam->setParam($_POST);
-$arrForm = $objFormParam->getHashArray();
-sfprintr($arrForm);
-if($arrForm['mode'] == 'regist') {
+
+if($_POST['mode'] == 'regist') {
     $objPage->arrErr = lfCheckError();
     if(count($objPage->arrErr) <= 0) {
         lfDelete();
