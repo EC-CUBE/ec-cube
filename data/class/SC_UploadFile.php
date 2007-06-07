@@ -58,7 +58,7 @@ class SC_UploadFile {
         // WEBサーバ負荷分散環境の場合
         if($this->multi_web_server_mode === true) {
             // FTP用ファイル一時格納用ディレクトリ
-            $ftp_temp_dir = $this->temp_dir . "ftp/";
+            $ftp_temp_dir = $this->temp_dir . "ftp_temp/";
             // ディレクトリが存在しなかったら作成
             if(!file_exists($ftp_temp_dir)) {
                 mkdir($ftp_temp_dir, 0777);
