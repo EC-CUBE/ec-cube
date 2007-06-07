@@ -4,6 +4,7 @@
 $TEST_DIR = realpath(dirname( __FILE__));
 require_once($TEST_DIR . "/../../../data/conf/core.php");
 require_once($TEST_DIR . "/../../../data/conf/conf.php");
+require_once($TEST_DIR . "/../../../data/include/ftp.php");
 
 // FTP画像保存相対パス
 define("FTP_IMAGE_SAVE_DIR", "./html" . URL_DIR . "upload/save_image/");
