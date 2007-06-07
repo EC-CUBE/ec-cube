@@ -326,7 +326,7 @@
 </table>
 <!--★★メインコンテンツ★★-->
 
-<!--{if count($arrErr) == "" and ($smarty.post.mode == 'search' or $smarty.post.mode == 'delete' or $smarty.post.mode == 'back') }-->
+<!--{if count($arrErr) == 1 and ($smarty.post.mode == 'search' or $smarty.post.mode == 'delete' or $smarty.post.mode == 'back') }-->
 
 <!--★★検索結果一覧★★-->
 <table width="878" border="0" cellspacing="0" cellpadding="0" summary=" ">
@@ -393,7 +393,7 @@
 					<table width="840" border="0" cellspacing="1" cellpadding="5" summary=" ">
 						<tr bgcolor="#636469" align="center" class="fs12n">
 							<td width="20"><span class="white">#</span></td>
-							<td width="80"><span class="white">会員番号</span></td>
+							<td width="80"><span class="white">会員番号<!--{$arrErr|escape}--></span></td>
 							<td width="80"><span class="white">受注番号</span></td>
 							<td width="140"><span class="white">名前</span></td>	
 							<td width="190"><span class="white">メールアドレス</span></td>	
