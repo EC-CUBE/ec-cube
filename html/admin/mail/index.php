@@ -297,6 +297,7 @@ $objPage->arrCustomerOrderId = lfGetCustomerOrderId($_POST['buy_product_code']);
 $objPage->arrCatList = sfGetCategoryList();
 
 $objPage->arrCampaignList = lfGetCampaignList();
+sfprintr($objPage->arrErr);
 sfprintr(count($objPage->arrErr));
 //----　ページ表示
 $objView->assignobj($objPage);
