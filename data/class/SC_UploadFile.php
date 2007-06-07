@@ -343,7 +343,7 @@ class SC_UploadFile {
             sfFtpCopy($array['host'], $array['user'], $array['pass'], $dst_path, $src_path);
         }
         // 移動後はファイルを削除
-        unlink($src_path);
+        @unlink($src_path);
     }
     
     /**
