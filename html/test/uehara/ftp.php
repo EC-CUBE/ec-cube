@@ -30,8 +30,7 @@ function ftpMoveTempFile($ftp_image_save_dir) {
                $dst_path = $ftp_image_save_dir . $files;
                $src_path = IMAGE_SAVE_DIR . $files;
                
-echo $dst_path;
-echo $src_path;
+
                
                sfFtpCopy($array['host'], $array['user'], $array['pass'], $dst_path, $src_path);            
         }

@@ -49,7 +49,7 @@ $objSess = new SC_Session();
 sfIsSuccess($objSess);
 
 // ファイル管理クラス
-$objUpFile = new SC_UploadFile(IMAGE_TEMP_DIR, IMAGE_SAVE_DIR, FTP_TEMP_SAVE_DIR, FTP_IMAGE_SAVE_DIR, MULTI_WEB_SERVER_MODE);
+$objUpFile = new SC_UploadFile(IMAGE_TEMP_DIR, IMAGE_SAVE_DIR, FTP_IMAGE_TEMP_DIR, FTP_IMAGE_SAVE_DIR, MULTI_WEB_SERVER_MODE);
 
 // ファイル情報の初期化
 lfInitFile();
