@@ -23,7 +23,7 @@ $objFormParam = new SC_FormParam;
 lfIntiParam();
 
 $objFormParam->setParam($_POST);
-sfprintr($objFormParam->setParam($_POST));
+
 if(isset($_POST)) {
     $objPage->arrErr = lfCheckError();
     if(count($objPage->arrErr) <= 0) {
@@ -54,6 +54,7 @@ function lfCheckError() {
     global $objFormParam;
     
     $arrList = $objFormParam->getHashArray();
+    sfprintr($arrList);
     $objErr = new SC_CheckError($arrList);
     $objErr->arrErr = $objFormParam->checkError();
     
