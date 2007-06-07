@@ -41,7 +41,7 @@ define ("MULTI_WEB_SERVER_MODE", true);    // 負荷分散モード(true:ON false:OFF)
  *  pass:FTPパスワード
  */
 $arrWEB_SERVERS = array(
-    //array('host_name' => 'share-web3', 'host' => '192.168.3.2',   'user' => 'dev-web01', 'pass' => 'naturemade'),        // WEBサーバ1
+    array('host_name' => 'share-web3', 'host' => '192.168.3.2',   'user' => 'dev-web01', 'pass' => 'naturemade'),        // WEBサーバ1
     array('host_name' => 'share-web4', 'host' => '192.168.3.3',   'user' => 'dev_admin', 'pass' => 'naturemade'),        // WEBサーバ2
 );
 //////////////////////////////////////////////////////////////////////////////////?///////////////////////////////////////////
