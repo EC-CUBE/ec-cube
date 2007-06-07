@@ -808,9 +808,6 @@ function lfGetOrderTerm($type, $sdate, $edate, $objPage, $graph = true) {
 		// 検索結果の取得
 		$objPage->arrResults = $objQuery->select($col, $from, $where, $arrval);
         
-        
-        sfprintr($objPage->arrResults);
-		
 		// 折れ線グラフの生成	
 		if($graph) {
 			$image_key = "term_" . $type;
