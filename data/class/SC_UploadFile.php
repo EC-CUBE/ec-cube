@@ -359,6 +359,8 @@ class SC_UploadFile {
     function ftpDeleteFile($dst_path) {
         global $arrWEB_SERVERS;
 
+sfpirntr($dst_path);
+
         // 全てのサーバにファイルをコピーする
         foreach($arrWEB_SERVERS as $array) {
             sfFtpDelete($array['host'], $array['user'], $array['pass'], $dst_path);
