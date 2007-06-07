@@ -65,7 +65,6 @@ function lfErrorcheck() {
     global $objFormParam;
     
     $arrList = $objFormParam->getHashArray();
- //   sfprintr($arrList);
     $objErr = new SC_CheckError($arrList);
     $arrErr->arrErr = $objFormParam->checkError();
 
@@ -79,7 +78,6 @@ function lfRegist() {
     global $objFormParam;
     
     $arrPost = $objFormParam->getHashArray();
-    sfprintr($arrPost);
     $blayn_ip .= $arrPost['blayn_ip01'];
     $blayn_ip .= "." . $arrPost['blayn_ip02'];
     $blayn_ip .= "." . $arrPost['blayn_ip03'];
