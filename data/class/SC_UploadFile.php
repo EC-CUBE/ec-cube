@@ -60,7 +60,6 @@ class SC_UploadFile {
             
             // FTP用ファイル一時格納用ディレクトリ作成
             $ftp_temp_dir = $this->makeFtpTempDir($this->temp_dir);
-            
             $dst_file = $ftp_temp_dir . $uniqname;
             $ret = $objThumb->Main($src_file, $width, $height, $dst_file);
             $this->ftpMoveFile($this->ftp_temp_dir . basename($ret[1]), $ret[1]);
