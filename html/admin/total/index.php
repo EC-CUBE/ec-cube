@@ -210,9 +210,6 @@ default:
 	break;
 }
 
-sfprintr($mode);
-
-
 $objPage->install_GD = $install_GD;
 
 // 登録・更新日検索用
@@ -810,6 +807,9 @@ function lfGetOrderTerm($type, $sdate, $edate, $objPage, $graph = true) {
 		
 		// 検索結果の取得
 		$objPage->arrResults = $objQuery->select($col, $from, $where, $arrval);
+        
+        
+        sfprintr($objPage->arrResults);
 		
 		// 折れ線グラフの生成	
 		if($graph) {

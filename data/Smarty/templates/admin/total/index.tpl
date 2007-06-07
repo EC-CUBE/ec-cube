@@ -122,7 +122,7 @@
 <!--¡ú¡ú¥á¥¤¥ó¥³¥ó¥Æ¥ó¥Ä¡ú¡ú-->
 
 
-<!--{if count($arrResults) > 0}-->
+<!--{if count($) > 0}-->
 	<!--¡ú¡ú¸¡º÷·ë²Ì°ìÍ÷¡ú¡ú-->
 	<table width="878" border="0" cellspacing="0" cellpadding="0" summary=" ">
 	<form name="form1" id="form1" method="post" action="<!--{$smarty.server.PHP_SELF|escape}-->">
