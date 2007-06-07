@@ -209,7 +209,7 @@ define ("PARENT_CAT_MAX", 12);							// 親カテゴリのカテゴリIDの最大数（これ以下
 define ("NUMBER_MAX", 1000000000);						// GET値変更などのいたずらを防ぐため最大数制限を設ける。
 define ("POINT_RULE", 2);								// ポイントの計算ルール(1:四捨五入、2:切り捨て、3:切り上げ)
 define ("POINT_VALUE", 1);								// 1ポイント当たりの値段(円)
-define ("ADMIN_MODE", 1);								// 管理モード 1:有効　0:無効(納品時)
+define ("ADMIN_MODE", 0);								// 管理モード 1:有効　0:無効(納品時)
 define ("DAILY_BATCH_MODE", false);						// 売上集計バッチモード(true:バッチで集計する ※要cron設定、false:リアルタイムで集計する)
 define ("MAX_LOG_QUANTITY", 5);							// ログファイル最大数(ログテーション)
 define ("MAX_LOG_SIZE", "1000000");						// 1つのログファイルに保存する最大容量(byte)
