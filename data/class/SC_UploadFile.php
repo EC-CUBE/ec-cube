@@ -26,7 +26,7 @@ class SC_UploadFile {
     var $size;                      // 制限サイズ
     var $necessary;                 // 必須の場合:true
     var $image;                     // 画像の場合:true
-    
+
     // ファイル管理クラス
     function SC_UploadFile($temp_dir, $save_dir, $ftp_temp_dir = "", $ftp_save_dir = "", $multi_web_server_mode = false) {
         $this->temp_dir = $temp_dir;
@@ -126,7 +126,12 @@ class SC_UploadFile {
             if ($val == $keyname) {
                 // 一時ファイルの場合削除する。
                 if($this->temp_file[$cnt] != "") {
-                    $objImage->deleteImage($this->temp_file[$cnt], $this->save_dir);
+                    // 負荷分散時はすべてのサーバから削除
+                    if($this->multi_web_server_mode === true) {
+                        ftpDeleteFile($this->save_dir . $this->temp_file[$cnt]);
+                    } else {
+                        $objImage->deleteImage($this->temp_file[$cnt], $this->save_dir);
+                    }
                 }
                 $this->temp_file[$cnt] = "";
                 $this->save_file[$cnt] = "";
@@ -328,7 +333,7 @@ class SC_UploadFile {
     }
 
     /**         
-     * ファイルを全てのWEBサーバへコピーします。
+     * ファイルを全てのWEBサーバへコピー
      *
      * @param string $dst_path コピー先ファイルパス(相対パス)
      * @param string $src_path コピー元ファイルパス(絶対パス)
@@ -344,7 +349,23 @@ class SC_UploadFile {
         // 移動後はファイルを削除
         @unlink($src_path);
     }
-    
+
+    /**         
+     * ファイルを全てのWEBサーバ上から削除
+     *
+     * @param string $dst_path コピー先ファイルパス(相対パス)
+     * @return void
+     */
+    function ftpDeleteFile($dst_path) {
+        global $arrWEB_SERVERS;
+
+        // 全てのサーバにファイルをコピーする
+        foreach($arrWEB_SERVERS as $array) {
+            sfFtpDelete($array['host'], $array['user'], $array['pass'], $dst_path);
+        }
+    }
+
+
     /**
      * FTP用ファイル一時格納ディレクトリ作成
      *
