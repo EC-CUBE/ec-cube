@@ -296,6 +296,8 @@ $objPage->arrCatList = sfGetCategoryList();
 
 $objPage->arrCampaignList = lfGetCampaignList();
 //$objPage->arrErr = array();
+
+count($objPage->arrErr);
 //----　ページ表示
 $objView->assignobj($objPage);
 $objView->display(MAIN_FRAME);
