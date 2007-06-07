@@ -49,7 +49,7 @@ $objSess = new SC_Session();
 sfIsSuccess($objSess);
 
 // ファイル管理クラス
-$objUpFile = new SC_UploadFile(IMAGE_TEMP_DIR, IMAGE_SAVE_DIR);
+$objUpFile = new SC_UploadFile(IMAGE_TEMP_DIR, IMAGE_SAVE_DIR, FTP_TEMP_SAVE_DIR, FTP_IMAGE_SAVE_DIR, MULTI_WEB_SERVER_MODE);
 
 // ファイル情報の初期化
 lfInitFile();
@@ -552,17 +552,21 @@ function lfSetScaleImage(){
 		case "main_large_image":
 			// 詳細メイン画像
 			lfMakeScaleImage($_POST['image_key'], "main_image");
+            $arrKey[] = "main_image";
 		case "main_image":
 			// 一覧メイン画像
 			lfMakeScaleImage($_POST['image_key'], "main_list_image");
-			break;
+            $arrKey[] = "main_list_image";
+            break;
 		case "sub_large_image" . $subno:
 			// サブメイン画像
 			lfMakeScaleImage($_POST['image_key'], "sub_image" . $subno);
+            $arrKey[] = "sub_image" . $subno;
 			break;
 		default:
 			break;
 	}
+    return $arrKey;
 }
 
 // 縮小画像生成
