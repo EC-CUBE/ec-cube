@@ -33,7 +33,7 @@ if($arrForm['mode'] == 'regist') {
     }
 }
 $objPage->arrIP = lfGetIP();
-$arrPage->mode = 'regist';
+$objPage->mode = 'regist';
 
 $objView->assignobj($objPage);      //変数をテンプレートにアサインする
 $objView->display($objPage->tpl_mainpage);      //テンプレートの出力
