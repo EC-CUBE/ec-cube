@@ -325,7 +325,9 @@
 </form>	
 </table>
 <!--¡ú¡ú¥á¥¤¥ó¥³¥ó¥Æ¥ó¥Ä¡ú¡ú-->
-
+<!--{foreach key=key item=val from=$arrErr}-->
+<!--{$val}-->	
+<!--{/foreach}-->
 <!--{if count($arrErr) == 0 and ($smarty.post.mode == 'search' or $smarty.post.mode == 'delete' or $smarty.post.mode == 'back') }-->
 
 <!--¡ú¡ú¸¡º÷·ë²Ì°ìÍ÷¡ú¡ú-->
