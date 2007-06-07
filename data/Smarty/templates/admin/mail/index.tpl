@@ -326,7 +326,7 @@
 </table>
 <!--★★メインコンテンツ★★-->
 <!--{foreach key=key item=val from=$arrErr}-->
-<!--{$val}--><!--{key}--><!--{$arrErr}-->あ	
+<!--{$val}--><!--{$key}--><!--{$arrErr}-->あ	
 <!--{/foreach}-->
 <!--{if count($arrErr) == 0 and ($smarty.post.mode == 'search' or $smarty.post.mode == 'delete' or $smarty.post.mode == 'back') }-->
 
