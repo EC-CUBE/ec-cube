@@ -22,6 +22,8 @@ $objFormParam = new SC_FormParam;
 
 lfIntiParam();
 
+$objFormParam->setParam($_POST);
+
 if(isset($_POST)) {
     $objPage->arrErr = lfCheckError();
     if(count($objPage->arrErr) <= 0) {
