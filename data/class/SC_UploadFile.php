@@ -57,13 +57,9 @@ class SC_UploadFile {
         
         // WEBサーバ負荷分散環境の場合
         if($this->multi_web_server_mode === true) {
-            // FTP用ファイル一時格納用ディレクトリ
-            $ftp_temp_dir = $this->temp_dir . "ftp_temp/";
-            // ディレクトリが存在しなかったら作成
-            if(!file_exists($ftp_temp_dir)) {
-                mkdir($ftp_temp_dir);
-                chmod($ftp_temp_dir, 0777);
-            }
+            
+            // FTP用ファイル一時格納用ディレクトリ作成
+            $ftp_temp_dir = makeFtpTempDir($this->temp_dir);
             
             $dst_file = $ftp_temp_dir . $uniqname;
             $ret = $objThumb->Main($src_file, $width, $height, $dst_file);
@@ -348,6 +344,24 @@ class SC_UploadFile {
         }
         // 移動後はファイルを削除
         unlink($src_path);
+    }
+    
+    /**
+     * FTP用ファイル一時格納ディレクトリ作成
+     *
+     * @param string $dir 作成ディレクトリ
+     * @return string $ftp_temp_dir 作成一時格納ディレクトリパス
+     */
+    function makeFtpTempDir($dir) {
+        // FTP用ファイル一時格納用ディレクトリ
+        $ftp_temp_dir = $this->temp_dir . "ftp_temp/";
+        // ディレクトリが存在しなかったら作成
+        if(!file_exists($ftp_temp_dir)) {
+            mkdir($ftp_temp_dir);
+            chmod($ftp_temp_dir, 0777);
+        }
+        
+        return $ftp_temp_dir;
     }
 }
 ?>
