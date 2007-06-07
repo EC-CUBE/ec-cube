@@ -65,7 +65,7 @@ function lfErrorcheck() {
     global $objFormParam;
     
     $arrList = $objFormParam->getHashArray();
-    sfprintr($arrList);
+ //   sfprintr($arrList);
     $objErr = new SC_CheckError($arrList);
     $arrErr->arrErr = $objFormParam->checkError();
 
