@@ -229,7 +229,7 @@ function lfErrorCheck($array, $flag = '') {
 		$objErr->doFunc(array("Subject", "subject", STEXT_LEN), array("EXIST_CHECK","MAX_LENGTH_CHECK"));
 		$objErr->doFunc(array("本文", 'body', LLTEXT_LEN), array("EXIST_CHECK","MAX_LENGTH_CHECK"));	// HTMLテンプレートを使用しない場合
 	}
-	
+echo count($objErr->arrErr);
 	return $objErr->arrErr;
 }
 
