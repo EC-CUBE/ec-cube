@@ -25,7 +25,7 @@ lfIntiParam();
 $objFormParam->setParam($_POST);
 
 if($_POST['mode'] == 'regist') {
-    $objPage->arrErr = lfCheckError();
+    $objPage->arrErr = lfErrorcheck();
     if(count($objPage->arrErr) <= 0) {
         lfDelete();
         lfRegist();
@@ -50,16 +50,17 @@ function lfIntiParam() {
         
 }
 
-function lfCheckError() {
+function lfErrorcheck() {
     
     global $objFormParam;
     
     $arrList = $objFormParam->getHashArray();
     sfprintr($arrList);
     $objErr = new SC_CheckError($arrList);
-    $objErr->arrErr = $objFormParam->checkError();
-    
+    $arrErr->arrErr = $objFormParam->checkError();
+    sfpritr($arrErr->arrErr);
     return $arrErr->arrErr;
+    
 }
 
 function lfRegist() {
