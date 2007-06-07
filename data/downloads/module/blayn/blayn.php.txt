@@ -25,7 +25,7 @@ lfIntiParam();
 $objFormParam->setParam($_POST);
 $arrForm = $objFormParam->getHashArray();
 
-if(!empty($arrForm)) {
+if($mode = 'regist') {
     $objPage->arrErr = lfCheckError();
     if(count($objPage->arrErr) <= 0) {
         lfDelete();
@@ -94,7 +94,8 @@ function lfGetIP() {
     $arrSql = $objQuery->select("blayn_ip", "dtb_blayn");
     $arrRet = split("\.", $arrSql[0]['blayn_ip']);
     return $arrRet;
-
+    
+    $mode = 'regist';
 }
 
 ?>
