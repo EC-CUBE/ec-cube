@@ -33,6 +33,7 @@ if($mode == 'regist') {
     }
 }
 $objPage->arrIP = lfGetIP();
+$mode = 'regist';
 
 $objView->assignobj($objPage);      //変数をテンプレートにアサインする
 $objView->display($objPage->tpl_mainpage);      //テンプレートの出力
@@ -95,7 +96,6 @@ function lfGetIP() {
     $arrRet = split("\.", $arrSql[0]['blayn_ip']);
     return $arrRet;
     
-    $mode = 'regist';
 }
 
 ?>
