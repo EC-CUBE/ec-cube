@@ -59,7 +59,7 @@ class SC_UploadFile {
         if($this->multi_web_server_mode === true) {
             
             // FTP用ファイル一時格納用ディレクトリ作成
-            $ftp_temp_dir = makeFtpTempDir($this->temp_dir);
+            $ftp_temp_dir = $this->makeFtpTempDir($this->temp_dir);
             
             $dst_file = $ftp_temp_dir . $uniqname;
             $ret = $objThumb->Main($src_file, $width, $height, $dst_file);
