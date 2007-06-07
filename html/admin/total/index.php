@@ -210,7 +210,7 @@ default:
 	break;
 }
 
-sfprintr($objFormParam);
+sfprintr($mode);
 
 
 $objPage->install_GD = $install_GD;
