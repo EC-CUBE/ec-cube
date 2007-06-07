@@ -289,16 +289,13 @@ for ($year=date("Y"); $year<=date("Y") + 1;$year++){
 $objPage->arrIP = lfGetBlayn();
 
 $objPage->arrYear = $arrYear;
-$objPage->errorCount = count($objPage->arrErr);
-
 
 $objPage->arrCustomerOrderId = lfGetCustomerOrderId($_POST['buy_product_code']);
 
 $objPage->arrCatList = sfGetCategoryList();
 
 $objPage->arrCampaignList = lfGetCampaignList();
-sfprintr($objPage->arrErr);
-sfprintr(count($objPage->arrErr));
+
 //----　ページ表示
 $objView->assignobj($objPage);
 $objView->display(MAIN_FRAME);
