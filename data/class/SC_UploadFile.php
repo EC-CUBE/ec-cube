@@ -61,7 +61,7 @@ class SC_UploadFile {
             $ftp_temp_dir = $this->temp_dir . "ftp/";
             // ディレクトリが存在しなかったら作成
             if(!file_exists($ftp_temp_dir)) {
-                mkdir($ftp_temp_dir);
+                mkdir($ftp_temp_dir, 0777);
             }
             
             $dst_file = $ftp_temp_dir . $uniqname;
