@@ -25,7 +25,7 @@ lfIntiParam();
 $objFormParam->setParam($_POST);
 $arrForm = $objFormParam->getHashArray();
 
-if(isset($arrForm)) {
+if(!empty($arrForm)) {
     $objPage->arrErr = lfCheckError();
     if(count($objPage->arrErr) <= 0) {
         lfDelete();
@@ -68,6 +68,7 @@ function lfRegist() {
     global $objFormParam;
     
     $arrPost = $objFormParam->getHashArray();
+    sfprintr($arrPost);
     $blayn_ip .= $arrPost['blayn_ip01'];
     $blayn_ip .= "." . $arrPost['blayn_ip02'];
     $blayn_ip .= "." . $arrPost['blayn_ip03'];
