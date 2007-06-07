@@ -66,7 +66,7 @@ class SC_UploadFile {
             
             $dst_file = $ftp_temp_dir . $uniqname;
             $ret = $objThumb->Main($src_file, $width, $height, $dst_file);
-            ftpMoveFile($this->ftp_dir, $ret[1]);
+            $this->ftpMoveFile($this->ftp_dir, $ret[1]);
         } else {
             $dst_file = $this->temp_dir . $uniqname;
             $ret = $objThumb->Main($src_file, $width, $height, $dst_file);          
