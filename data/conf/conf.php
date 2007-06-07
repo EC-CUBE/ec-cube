@@ -301,7 +301,7 @@ define ("TEMPLATE_DIR", DATA_PATH . "Smarty/templates");					// SMARTYテンプレー
 define ("COMPILE_ADMIN_DIR", DATA_PATH . "Smarty/templates_c/admin");		// SMARTYコンパイル
 define ("COMPILE_DIR", DATA_PATH . "Smarty/templates_c");					// SMARTYコンパイル
 
-define ("TEMPLATE_FTP_DIR", USER_PATH . "templates/");			// SMARTYテンプレート(FTP許可)
+define ("TEMPLATE_FTP_DIR", USER_PATH . "templates/");                      // SMARTYテンプレート(FTP許可)
 define ("COMPILE_FTP_DIR", DATA_PATH . "Smarty/templates_c/user_data/");	// SMARTYコンパイル
 
 define ("IMAGE_TEMP_DIR", HTML_PATH . "upload/temp_image/");				// 画像一時保存
