@@ -23,15 +23,25 @@ $objFormParam = new SC_FormParam;
 lfIntiParam();
 
 $objFormParam->setParam($_POST);
+$objPage->arrIP = $objFormParam->getHashArray;
 
-if($_POST['mode'] == 'regist') {
-    $objPage->arrErr = lfErrorcheck();
-    if(count($objPage->arrErr) <= 0) {
-        lfDelete();
-        lfRegist();
-    }
+switch ($_POST['mode']) {
+    
+    case 'regist':
+
+        $objPage->arrErr = lfErrorcheck();
+        if(count($objPage->arrErr) <= 0) {
+            lfDelete();
+            lfRegist();
+        }
+    break;
+    
+    
+    default:
+        
+        $objPage->arrIP = lfGetIP();
 }
-$objPage->arrIP = lfGetIP();
+
 $objPage->mode = 'regist';
 
 $objView->assignobj($objPage);      //変数をテンプレートにアサインする
@@ -58,7 +68,7 @@ function lfErrorcheck() {
     sfprintr($arrList);
     $objErr = new SC_CheckError($arrList);
     $arrErr->arrErr = $objFormParam->checkError();
-    sfpritr($arrErr->arrErr);
+
     return $arrErr->arrErr;
     
 }
