@@ -22,7 +22,7 @@ function ftpMoveTempFile($ftp_image_save_dir) {
     global $arrWEB_SERVERS;
     
     $arrFiles = array();
-    $arrFiles[] = test.jpg;
+    $arrFiles[] = 'test.jpg';
     
     // 負荷分散している全てのサーバにファイルをコピーする
     foreach($arrFiles as $files) {
