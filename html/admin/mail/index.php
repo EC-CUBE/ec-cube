@@ -290,7 +290,7 @@ $objPage->arrIP = lfGetBlayn();
 
 $objPage->arrYear = $arrYear;
 $objPage->errorCount = count($objPage->arrErr);
-$objPage->mode = $_POST['mode']
+$objPage->mode = $_POST['mode'];
 
 $objPage->arrCustomerOrderId = lfGetCustomerOrderId($_POST['buy_product_code']);
 
