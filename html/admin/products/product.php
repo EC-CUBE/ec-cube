@@ -438,7 +438,7 @@ function lfConvertParam($array) {
 	$arrConvList['point_rate'] = "n";
 	$arrConvList['product_code'] = "KVna";
 	$arrConvList['comment1'] = "a";
-	//ホネケーキ:送料の指定なし
+	// 送料の指定なし
 	$arrConvList['deliv_fee'] = "n";
 	
 	// 詳細-サブ
