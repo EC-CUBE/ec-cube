@@ -393,7 +393,7 @@
 					<table width="840" border="0" cellspacing="1" cellpadding="5" summary=" ">
 						<tr bgcolor="#636469" align="center" class="fs12n">
 							<td width="20"><span class="white">#</span></td>
-							<td width="80"><span class="white">会員番号<!--{$mode}--></span></td>
+							<td width="80"><span class="white">会員番号</span></td>
 							<td width="80"><span class="white">受注番号</span></td>
 							<td width="140"><span class="white">名前</span></td>	
 							<td width="190"><span class="white">メールアドレス</span></td>	
