@@ -30,4 +30,21 @@ define ("USER_URL", SITE_URL."user_data/"); // ユーザー作成ページ等
 // 認証用 magic
 define ("AUTH_MAGIC", "31eafcbd7a81d7b401a7fdc12bba047c02d1fae6");
 
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+// WEB負荷分散設定
+
+define ("MULTI_WEB_SERVER_MODE", true);    // 負荷分散モード(true:ON false:OFF)
+
+/*
+ *  host:IPアドレスで指定する。
+ *  user:FTPユーザ
+ *  pass:FTPパスワード
+ */
+$arrWEB_SERVERS = array(
+    array('host_name' => 'share-web3', 'host' => '192.168.3.2',   'user' => 'dev-web01', 'pass' => 'naturemade'),       // WEBサーバ1
+    array('host_name' => 'share-web4', 'host' => '192.168.3.3',   'user' => 'dev-admin', 'pass' => ''),                 // WEBサーバ2
+);
+//////////////////////////////////////////////////////////////////////////////////?///////////////////////////////////////////
+
+
 ?>
