@@ -24,7 +24,7 @@ lfIntiParam();
 
 $objFormParam->setParam($_POST);
 $objPage->arrIP = $objFormParam->getHashArray;
-
+sfprintr($objPage->arrIP);
 switch ($_POST['mode']) {
     
     case 'regist':
