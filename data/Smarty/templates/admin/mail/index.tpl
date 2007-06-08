@@ -29,7 +29,7 @@
 						<td bgcolor="#cccccc">
 						<table width="678" border="0" cellspacing="0" cellpadding="0" summary=" ">
 							<tr>
-								<td colspan="3"><img src="<!--{$smarty.const.URL_DIR}-->img/contents/contents_title_top.gif" width="678" height="7" alt=""></td>
+								<td colspan="<!--{if $arrIP > 0}-->4<!--{else}-->3<!--{/if}-->"><img src="<!--{$smarty.const.URL_DIR}-->img/contents/contents_title_top.gif" width="678" height="7" alt=""></td>
 							</tr>
 							<tr>
 								<td background="<!--{$smarty.const.URL_DIR}-->img/contents/contents_title_left_bg.gif"><img src="<!--{$smarty.const.URL_DIR}-->img/contents/contents_title_left.gif" width="22" height="12" alt=""></td>
@@ -37,10 +37,10 @@
 								<td background="<!--{$smarty.const.URL_DIR}-->img/contents/contents_title_right_bg.gif"><img src="<!--{$smarty.const.URL_DIR}-->img/common/_.gif" width="18" height="1" alt=""></td>
 							</tr>
 							<tr>
-								<td colspan="3"><img src="<!--{$smarty.const.URL_DIR}-->img/contents/contents_title_bottom.gif" width="678" height="7" alt=""></td>
+								<td colspan="<!--{if $arrIP > 0}-->4<!--{else}-->3<!--{/if}-->"><img src="<!--{$smarty.const.URL_DIR}-->img/contents/contents_title_bottom.gif" width="678" height="7" alt=""></td>
 							</tr>
 							<tr>
-								<td colspan="3"><img src="<!--{$smarty.const.URL_DIR}-->img/contents/main_bar.jpg" width="678" height="10" alt=""></td>
+								<td colspan="<!--{if $arrIP > 0}-->4<!--{else}-->3<!--{/if}-->"><img src="<!--{$smarty.const.URL_DIR}-->img/contents/main_bar.jpg" width="678" height="10" alt=""></td>
 							</tr>
 						</table>
 						
