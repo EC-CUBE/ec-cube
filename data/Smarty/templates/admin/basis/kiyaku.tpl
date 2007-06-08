@@ -128,7 +128,7 @@
 								<!--{if $smarty.section.cnt.iteration != $smarty.section.cnt.last}-->
 								<a href="<!--{$smarty.server.PHP_SELF|escape}-->" onclick="fnModeSubmit('down', 'kiyaku_id', <!--{$arrKiyaku[cnt].kiyaku_id}-->); return false;" />²¼¤Ø</a>
 								<!--{/if}-->
-								<!--{$smarty.section.cnt.last|modifiers_test}--> <!--{$smarty.section.cnt.iteration|modifiers_test}-->
+								<!--{$smarty.section.cnt.last}--> <!--{$smarty.section.cnt.iteration}-->
 								</td>
 							</tr>
 							<!--{/section}-->
