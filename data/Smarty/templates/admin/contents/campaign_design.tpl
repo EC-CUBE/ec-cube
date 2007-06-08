@@ -123,7 +123,7 @@
 
 									<tr class="fs12n">
 										<td bgcolor="#f2f1ec" align="center"><br/>
-											<textarea name="footer" cols=90 rows=<!--{$footer_row}--> align="left" wrap=off style="width: 650px;"><!--{$footer_data}--></textarea>
+											<textarea name="footer" cols=90 rows=<!--{$footer_row}--> align="left" wrap=off style="width: 650px;"><!--{$footer_data|smarty:nodefaults}--></textarea>
 											<div align="right">
 											<input type="button" value=<!--{if $footer_row > 13}-->"小さくする"<!--{else}-->"大きくする"<!--{/if}--> onClick="ChangeSize(this, footer, 50, 13, footer_row)">
 											</div><br/>
