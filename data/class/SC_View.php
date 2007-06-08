@@ -9,6 +9,11 @@ $SC_VIEW_PHP_DIR = realpath(dirname(__FILE__));
 require_once($SC_VIEW_PHP_DIR . "/../module/Smarty/libs/Smarty.class.php");
 require_once($SC_VIEW_PHP_DIR . "/../include/php_ini.inc");
 
+
+function modifiers_test($val) {
+    return "-".$val."-";
+}
+
 class SC_View {
 	
     var $_smarty;
@@ -43,7 +48,8 @@ class SC_View {
 		$this->_smarty->register_function("str_replace","str_replace");
 		$this->_smarty->register_function("sfPrintEbisTag","sfPrintEbisTag");
 		$this->_smarty->register_function("sfPrintAffTag","sfPrintAffTag");
-		$this->_smarty->default_modifiers = array('script_escape');
+		//$this->_smarty->default_modifiers = array('script_escape');
+        $this->_smarty->default_modifiers = array('modifiers_test');
         
         sfPrintR($this->_smarty->default_modifiers);
         
