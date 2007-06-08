@@ -33,7 +33,7 @@
 								<td bgcolor="#cccccc">
 								<table width="678" border="0" cellspacing="0" cellpadding="0" summary=" ">
 									<tr>
-																				<!--{if $arrBlaynEngine.now_version > 0 && $arrBlaynEngine.blayn_ip > 0}--><!--{assign var=key value="4"}--><!--{else}--><!--{assign var=key value="3"}--><!--{/if}-->
+										<!--{if $arrBlaynEngine.now_version > 0 && $arrBlaynEngine.blayn_ip > 0}--><!--{assign var=key value="4"}--><!--{else}--><!--{assign var=key value="3"}--><!--{/if}-->
 										<td colspan="<!--{$key}-->"><img src="<!--{$smarty.const.URL_DIR}-->img/contents/contents_title_top.gif" width="678" height="7" alt=""></td>
 									</tr>
 									<tr>
