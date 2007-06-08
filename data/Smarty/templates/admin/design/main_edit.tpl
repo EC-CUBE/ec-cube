@@ -121,7 +121,7 @@ else if(navigator.userAgent.indexOf("Mozilla") >= 0){
 								<td bgcolor="#f2f1ec" align="center" colspan=2>
 									<br/>
 									<div>
-									<textarea name="tpl_data" cols=90 rows=<!--{$text_row}--> align="left" wrap=off style="width: 650px; "><!--{$arrPageData.tpl_data|escape}--></textarea>
+									<textarea name="tpl_data" cols=90 rows=<!--{$text_row}--> align="left" wrap=off style="width: 650px; "><!--{$arrPageData.tpl_data|escape|smarty:nodefaults}--></textarea>
 									<input type="hidden" name="html_area_row" value="<!--{$text_row}-->">
 									</div>
 									<div align="right">
