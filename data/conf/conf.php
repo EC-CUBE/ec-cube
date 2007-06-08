@@ -296,6 +296,7 @@ define("SALE_PRICE_TITLE","販売価格");
 
 /* システムパス */
 define ("LOG_PATH", DATA_PATH . "logs/site.log");							// ログファイル
+define ("DB_ERR_LOG_PATH", DATA_PATH . "logs/db_err.log");                  // ログファイル(DBエラー用)
 define ("CUSTOMER_LOG_PATH", DATA_PATH . "logs/customer.log");				// 会員ログイン ログファイル
 define ("TEMPLATE_ADMIN_DIR", DATA_PATH . "Smarty/templates/admin");		// SMARTYテンプレート
 define ("TEMPLATE_DIR", DATA_PATH . "Smarty/templates");					// SMARTYテンプレート
