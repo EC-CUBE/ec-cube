@@ -120,10 +120,15 @@
 								<!--{/if}-->
 								</td>
 								<td align="center">
+								
 								<!--{if $smarty.section.cnt.iteration != 1}-->
 								<a href="<!--{$smarty.server.PHP_SELF|escape}-->" onclick="fnModeSubmit('up', 'kiyaku_id', <!--{$arrKiyaku[cnt].kiyaku_id}-->); return false;" />上へ</a>
 								<!--{/if}-->
+								
 								<!--{if $smarty.section.cnt.iteration != $smarty.section.cnt.last}-->
+								
+								#<!--{$smarty.section.cnt.last}-->##<!--{$smarty.section.cnt.iteration}-->#
+								
 								<a href="<!--{$smarty.server.PHP_SELF|escape}-->" onclick="fnModeSubmit('down', 'kiyaku_id', <!--{$arrKiyaku[cnt].kiyaku_id}-->); return false;" />下へ</a>
 								<!--{/if}-->
 								</td>
