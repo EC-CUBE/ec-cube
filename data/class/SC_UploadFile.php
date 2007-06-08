@@ -302,7 +302,13 @@ class SC_UploadFile {
         foreach($this->keyname as $val) {
             if($arrVal[$val] != "") {
                 if($this->save_file[$cnt] == "" && !ereg("^sub/", $arrVal[$val])) {
-                    $objImage->deleteImage($arrVal[$val], $this->save_dir);
+                    
+                    // 負荷分散時はすべてのサーバでファイル削除
+                    if($this->multi_web_server_mode === true) {
+                        $this->ftpDeleteFile($this->save_dir . $arrVal[$val]);
+                    } else {
+                        $objImage->deleteImage($arrVal[$val], $this->save_dir);
+                    }
                 }
             }
             $cnt++; 
