@@ -13,7 +13,7 @@ define ("IMAGE_TEMP_DIR", HTML_PATH . "upload/temp_image/");                // ²
 define ("IMAGE_SAVE_DIR", HTML_PATH . "upload/save_image/");                // ²èÁüÊÝÂ¸Àè
 
 
-ftpMoveTempFile(FTP_IMAGE_SAVE_DIR);
+ftpMoveTempFile(FTP_IMAGE_TEMP_DIR);
 
 //----------------------------------------------------------------------------
 
