@@ -128,7 +128,7 @@ class SC_UploadFile {
                 if($this->temp_file[$cnt] != "") {
                     // 負荷分散時はすべてのサーバから削除
                     if($this->multi_web_server_mode === true) {
-                        $this->ftpDeleteFile($this->temp_dir . $this->temp_file[$cnt]);
+                        $this->ftpDeleteFile($this->ftp_temp_dir . $this->temp_file[$cnt]);
                     } else {
                         $objImage->deleteImage($this->temp_file[$cnt], $this->save_dir);
                     }
