@@ -162,11 +162,21 @@ class SC_UploadFile {
         
         foreach($this->keyname as $val) {
             if($this->temp_file[$cnt] != "") {
-                                                    
-                $objImage->moveTempImage($this->temp_file[$cnt], $this->save_dir);
+                // 負荷分散時はすべてのサーバで移動を実行
+                if($this->multi_web_server_mode === true) {
+                    $this->ftpMoveFile($this->save_dir . $this->temp_file[$cnt]);
+                } else {
+                    $objImage->moveTempImage($this->temp_file[$cnt], $this->save_dir);
+                }
+                
                 // すでに保存ファイルがあった場合は削除する。
                 if($this->save_file[$cnt] != "" && !ereg("^sub/", $this->save_file[$cnt])) {
-                    $objImage->deleteImage($this->save_file[$cnt], $this->save_dir);
+                    // 負荷分散時はすべてのサーバでファイル削除
+                    if($this->multi_web_server_mode === true) {
+                        $this->ftpDeleteFile($this->save_dir . $this->save_file[$cnt]);
+                    } else {
+                        $objImage->deleteImage($this->save_file[$cnt], $this->save_dir);
+                    }
                 }
             }
             $cnt++;
@@ -358,8 +368,6 @@ class SC_UploadFile {
      */
     function ftpDeleteFile($dst_path) {
         global $arrWEB_SERVERS;
-
-echo $dst_path;
 
         // 全てのサーバにファイルをコピーする
         foreach($arrWEB_SERVERS as $array) {
