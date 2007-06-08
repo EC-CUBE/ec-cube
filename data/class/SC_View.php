@@ -11,7 +11,7 @@ require_once($SC_VIEW_PHP_DIR . "/../include/php_ini.inc");
 
 
 function modifiers_test($val) {
-    return "-".$val."-";
+    return "#".$val."#";
 }
 
 class SC_View {
