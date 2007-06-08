@@ -45,6 +45,8 @@ class SC_View {
 		$this->_smarty->register_function("sfPrintAffTag","sfPrintAffTag");
 		$this->_smarty->default_modifiers = array('script_escape');
         
+        sfPrintR($this->_smarty->default_modifiers);
+        
 		if(ADMIN_MODE == '1') {		
 			$this->time_start = time();
 		}
