@@ -3,7 +3,9 @@
 $str = 'test@<script>alert(document.cookie)</script>.com;';
 $pt = "/<script.*?>|<\/script>/";
 
-preg_match_all($pt, $str, $match);
+if (preg_match_all($pt, $str, $match)) {
+    print('ok');
+}
 
 
 
