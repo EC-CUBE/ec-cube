@@ -175,7 +175,7 @@ class SC_UploadFile {
                 if($this->save_file[$cnt] != "" && !ereg("^sub/", $this->save_file[$cnt])) {
                     // 負荷分散時はすべてのサーバでファイル削除
                     if($this->multi_web_server_mode === true) {
-                        $this->ftpDeleteFile($this->save_dir . $this->save_file[$cnt]);
+                        $this->ftpDeleteFile($this->ftp_save_dir . $this->save_file[$cnt]);
                     } else {
                         $objImage->deleteImage($this->save_file[$cnt], $this->save_dir);
                     }
@@ -307,7 +307,7 @@ class SC_UploadFile {
                     
                     // 負荷分散時はすべてのサーバでファイル削除
                     if($this->multi_web_server_mode === true) {
-                        $this->ftpDeleteFile($this->save_dir . $arrVal[$val]);
+                        $this->ftpDeleteFile($this->ftp_save_dir . $arrVal[$val]);
                     } else {
                         $objImage->deleteImage($arrVal[$val], $this->save_dir);
                     }
