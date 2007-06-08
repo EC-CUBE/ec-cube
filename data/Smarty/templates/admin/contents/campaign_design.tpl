@@ -59,7 +59,7 @@
 									
 									<tr class="fs12n">
 										<td bgcolor="#f2f1ec" align="center">
-											<br/><textarea name="header" cols=90 rows=<!--{$header_row}--> align="left" wrap=off style="width: 650px;"><!--{$header_data}--></textarea>
+											<br/><textarea name="header" cols=90 rows=<!--{$header_row}--> align="left" wrap=off style="width: 650px;"><!--{$header_data|smarty:nodefaults}--></textarea>
 											<div align="right">
 											<input type="button" value=<!--{if $header_row > 13}-->"小さくする"<!--{else}-->"大きくする"<!--{/if}--> onClick="ChangeSize(this, header, 50, 13, header_row)">
 											</div><br/>
@@ -90,7 +90,7 @@
 									</tr>
 									<tr class="fs12n">
 										<td bgcolor="#f2f1ec" align="center" colspan="2"><br/>
-											<textarea name="contents" cols=90 rows=<!--{$contents_row}--> align="left" wrap=off style="width: 650px;"><!--{$contents_data}--></textarea>
+											<textarea name="contents" cols=90 rows=<!--{$contents_row}--> align="left" wrap=off style="width: 650px;"><!--{$contents_data|smarty:nodefaults}--></textarea>
 											<div align="right">
 											<input type="button" value="商品設定" onclick="win03('./campaign_create_tag.php?campaign_id=<!--{$arrForm.campaign_id}-->', 'search', '550', '500');">
 											<input type="button" value=<!--{if $contents_row > 13}-->"小さくする"<!--{else}-->"大きくする"<!--{/if}--> onClick="ChangeSize(this, contents, 50, 13, contents_row)">
