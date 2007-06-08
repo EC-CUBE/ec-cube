@@ -192,7 +192,7 @@ class SC_DbConn{
             print('</pre>');
         }
         
-        gfDebugLog($errmsg);
+        gfDebugLog($errmsg, DB_ERR_LOG_PATH);
         
         exit();
     }
