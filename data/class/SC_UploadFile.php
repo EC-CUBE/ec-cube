@@ -164,7 +164,7 @@ class SC_UploadFile {
             if($this->temp_file[$cnt] != "") {
                 // 負荷分散時はすべてのサーバで移動を実行
                 if($this->multi_web_server_mode === true) {
-                    $dist_path = $this->save_dir . $this->temp_file[$cnt];
+                    $dist_path = $this->ftp_save_dir . $this->temp_file[$cnt];
                     $src_path = $this->temp_dir . $this->temp_file[$cnt];
                     $this->ftpMoveFile($dist_path, $src_path);
                 } else {
