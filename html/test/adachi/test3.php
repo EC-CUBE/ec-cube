@@ -9,7 +9,10 @@ $arrAssignVars = array(
     'arr'   => array('1','2','3')
 );
 
-$objView->_smarty->template_dir = '/home/web/dev.ec-cube.net/html/test/adachi/templates/';
-$objView->_smarty->compile_dir  = '/home/web/dev.ec-cube.net/html/test/adachi/templates_c/';
+//$objView->_smarty->template_dir = '/home/web/dev.ec-cube.net/html/test/adachi/templates/';
+//$objView->_smarty->compile_dir  = '/home/web/dev.ec-cube.net/html/test/adachi/templates_c/';
+
+$objView->_smarty->template_dir = 'C:\Eclipse322\workspace\dev.ec-cube.net\html\test\adachi\templates';
+$objView->_smarty->compile_dir  = 'C:\Eclipse322\workspace\dev.ec-cube.net\html\test\adachi\template_c';
 $objView->assignArray($arrAssignVars);
-$objView->display('/home/web/dev.ec-cube.net/html/test/adachi/templates/test3.tpl');
+$objView->display('C:\Eclipse322\workspace\dev.ec-cube.net\html\test\adachi\\templates/test3.tpl');
