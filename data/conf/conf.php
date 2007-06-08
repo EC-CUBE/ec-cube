@@ -921,6 +921,7 @@ $arrViewWhere = array(
 );
 
 // View変換用(MySQL対応)
+
 $arrView = array(
 	"vw_cross_class" => '
 		(SELECT T1.class_id AS class_id1, T2.class_id AS class_id2, T1.classcategory_id AS classcategory_id1, T2.classcategory_id AS classcategory_id2, T1.name AS name1, T2.name AS name2, T1.rank AS rank1, T2.rank AS rank2
@@ -932,86 +933,6 @@ $arrView = array(
 		FROM (SELECT T1.class_id AS class_id1, T2.class_id AS class_id2, T1.classcategory_id AS classcategory_id1, T2.classcategory_id AS classcategory_id2, T1.name AS name1, T2.name AS name2, T1.rank AS rank1, T2.rank AS rank2
 		FROM dtb_classcategory AS T1, dtb_classcategory AS T2 ) AS T1 LEFT JOIN dtb_products_class AS T2 
 		ON T1.classcategory_id1 = T2.classcategory_id1 AND T1.classcategory_id2 = T2.classcategory_id2) ',
-
-	"vw_products_nonclass" => '
-		(SELECT 
-		    T1.product_id,
-		    T1.name,
-		    T1.deliv_fee,
-		    T1.sale_limit,
-		    T1.sale_unlimited,
-		    T1.category_id,
-		    T1.rank,
-		    T1.status,
-		    T1.product_flag,
-		    T1.point_rate,
-		    T1.comment1,
-		    T1.comment2,
-		    T1.comment3,
-		    T1.comment4,
-		    T1.comment5,
-		    T1.comment6,
-		    T1.file1,
-		    T1.file2,
-		    T1.file3,
-		    T1.file4,
-		    T1.file5,
-		    T1.file6,
-		    T1.main_list_comment,
-		    T1.main_list_image,
-		    T1.main_comment,
-		    T1.main_image,
-		    T1.main_large_image,
-		    T1.sub_title1,
-		    T1.sub_comment1,
-		    T1.sub_image1,
-		    T1.sub_large_image1,
-		    T1.sub_title2,
-		    T1.sub_comment2,
-		    T1.sub_image2,
-		    T1.sub_large_image2,
-		    T1.sub_title3,
-		    T1.sub_comment3,
-		    T1.sub_image3,
-		    T1.sub_large_image3,
-		    T1.sub_title4,
-		    T1.sub_comment4,
-		    T1.sub_image4,
-		    T1.sub_large_image4,
-		    T1.sub_title5,
-		    T1.sub_comment5,
-		    T1.sub_image5,
-		    T1.sub_large_image5,
-		    T1.sub_title6,
-		    T1.sub_comment6,
-		    T1.sub_image6,
-		    T1.sub_large_image6,
-		    T1.del_flg,
-		    T1.creator_id,
-		    T1.create_date,
-		    T1.update_date,
-		    T1.deliv_date_id,
-		    T2.product_id_sub,
-		    T2.product_code,
-		    T2.price01,
-		    T2.price02,
-		    T2.stock,
-		    T2.stock_unlimited,
-		    T2.classcategory_id1,
-		    T2.classcategory_id2
-		FROM (SELECT * FROM dtb_products &&noncls_where&&) AS T1 LEFT JOIN 
-		(SELECT
-		product_id AS product_id_sub,
-		product_code,
-		price01,
-		price02,
-		stock,
-		stock_unlimited,
-		classcategory_id1,
-		classcategory_id2
-		FROM dtb_products_class WHERE classcategory_id1 = 0 AND classcategory_id2 = 0) 
-		AS T2
-		ON T1.product_id = T2.product_id_sub) ',
 
 	"vw_products_allclass" => '
 		(SELECT
@@ -1101,4 +1022,72 @@ $arrView = array(
 		FROM dtb_category AS T1 LEFT JOIN dtb_category_total_count AS T2
 		ON T1.category_id = T2.category_id) '
 );
+
+$vw_products_nonclass = "
+		(SELECT 
+		    T1.product_id,
+		    T1.name,
+		    T1.deliv_fee,
+		    T1.sale_limit,
+		    T1.sale_unlimited,
+		    T1.category_id,
+		    T1.rank,
+		    T1.status,
+		    T1.product_flag,
+		    T1.point_rate,
+		    T1.comment1,
+		    T1.comment2,
+		    T1.comment3,
+		    T1.comment4,
+		    T1.comment5,
+		    T1.comment6,
+		    T1.file1,
+		    T1.file2,
+		    T1.file3,
+		    T1.file4,
+		    T1.file5,
+		    T1.file6,
+		    T1.main_list_comment,
+		    T1.main_list_image,
+		    T1.main_comment,
+		    T1.main_image,
+		    T1.main_large_image,";
+            
+for ($cnt = 1; $cnt <= PRODUCTSUB_MAX; $cnt++) {
+            $vw_products_nonclass.= "
+		    T1.sub_title$cnt,
+		    T1.sub_comment$cnt,
+		    T1.sub_image$cnt,
+            T1.sub_large_image$cnt,";
+}
+
+$vw_products_nonclass.= "
+		    T1.del_flg,
+		    T1.creator_id,
+		    T1.create_date,
+		    T1.update_date,
+		    T1.deliv_date_id,
+		    T2.product_id_sub,
+		    T2.product_code,
+		    T2.price01,
+		    T2.price02,
+		    T2.stock,
+		    T2.stock_unlimited,
+		    T2.classcategory_id1,
+		    T2.classcategory_id2
+		FROM (SELECT * FROM dtb_products &&noncls_where&&) AS T1 LEFT JOIN 
+		(SELECT
+		product_id AS product_id_sub,
+		product_code,
+		price01,
+		price02,
+		stock,
+		stock_unlimited,
+		classcategory_id1,
+		classcategory_id2
+		FROM dtb_products_class WHERE classcategory_id1 = 0 AND classcategory_id2 = 0) 
+		AS T2
+		ON T1.product_id = T2.product_id_sub) ";
+
+$arrView['vw_products_nonclass'] = $vw_products_nonclass;
 ?>
