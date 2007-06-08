@@ -12,7 +12,7 @@ function smarty_modifier_script_escape($value) {
     $pattern = "/<script.*?>|<\/script>/";
     $convert = "#####";
     
-    if ( preg_match_all($pattern, $value, $matches) > 0) {
+    if ( preg_match_all($pattern, $value, $matches) ) {
         return preg_replace($pattern, $convert, $value);
     } else {
         return $value;
