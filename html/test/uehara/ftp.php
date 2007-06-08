@@ -28,7 +28,7 @@ function ftpMoveTempFile($ftp_image_save_dir) {
     foreach($arrFiles as $files) {
         foreach($arrWEB_SERVERS as $array) {
                $dst_path = $ftp_image_save_dir . $files;
-               $src_path = IMAGE_SAVE_DIR . $files;
+               $src_path = IMAGE_TEMP_DIR . $files;
                
 echo $dst_path;
                sfFtpDelete($array['host'], $array['user'], $array['pass'], $dst_path);
