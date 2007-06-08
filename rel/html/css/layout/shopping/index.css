@@ -1,0 +1,151 @@
+/*
+ * Copyright(c) 2000-2007 LOCKON CO.,LTD. All Rights Reserved.
+ *
+ * http://www.lockon.co.jp/
+ */
+@charset "<!--{$smarty.const.CHAR_CODE}-->";
+
+/***コンテンツ***/
+#containerfull #maintitle{
+border: 0;
+margin: 0 0 15px 0;
+padding: 0;
+width: 700px;
+}
+
+#containerfull #subtitle01{
+border: 0;
+margin: 0 0 15px 0;
+padding: 0;
+width: 700px;
+}
+
+#containerfull #subtitle02{
+border: 0;
+margin: 50px 0 15px 0;
+padding: 0;
+width: 700px;
+}
+
+/**テーブル**/
+/*枠*/
+#containerfull #frame{
+border: 0;
+margin: 0;
+padding: 0;
+width: 700px;
+background: #ccc;
+}
+
+/*コメント*/
+#containerfull #comment01{
+border: 0;
+margin: 0 0 20px 0;
+padding: 0;
+width: 700px;
+}
+
+#containerfull #comment02{
+border: 0;
+margin: 20px 0;
+padding: 0;
+width: 700px;
+}
+
+/*登録されているお届け先一覧タイトル行*/
+#containerfull #frame #number{
+width: 90px;
+background: #ecf5ff;
+text-align: center;
+}
+
+#containerfull #frame #name{
+width: 110px;
+background: #ecf5ff;
+text-align: center;
+}
+
+#containerfull #frame #address{
+width: 195px;
+background: #ecf5ff;
+text-align: center;
+}
+
+#containerfull #frame #fixed{
+width: 100px;
+background: #ecf5ff;
+text-align: center;
+}
+
+#containerfull #frame #change{
+width: 50px;
+background: #ecf5ff;
+text-align: center;
+}
+
+#containerfull #frame #delete{
+width: 50px;
+background: #ecf5ff;
+text-align: center;
+}
+
+/*登録されているお届け先一覧コンテンツ行*/
+#containerfull #frame #number_c{
+width: 90px;
+background: #fff;
+}
+
+#containerfull #frame #name_c{
+width: 110px;
+background: #fff;
+}
+
+#containerfull #frame #address_c{
+width: 195px;
+background: #fff;
+}
+
+#containerfull #frame #fixed_c{
+width: 100px;
+background: #fff;
+text-align: center;
+}
+
+#containerfull #frame #change_c{
+width: 50px;
+background: #fff;
+text-align: center;
+}
+
+#containerfull #frame #delete_c{
+width: 50px;
+background: #fff;
+text-align: center;
+}
+
+/*別のお届け先を指定コンテンツ行*/
+#containerfull #left{
+background: #ecf5ff;
+width: 170px;
+}
+
+#containerfull #right{
+background: #fff;
+width: 507px;
+}
+
+/*ボタン*/
+#containerfull #button{
+border: 0;
+margin: 30px 0 15px 0;
+padding: 0;
+text-align: center;
+}
+
+/*ベリサイン*/
+#containerfull #verisign{
+border: 0;
+margin: 35px 65px;
+padding: 0;
+width: 570px;
+}

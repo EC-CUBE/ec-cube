@@ -1,0 +1,518 @@
+/* ===================================================================================
+
+????
+
+???????????
+
+??????????
+
+????????
+
+	???
+
+	????????
+	
+	???????? ?????
+	
+	???????
+	
+?????????
+	
+	????????????
+	
+	????????
+	
+????
+
+=================================================================================== */
+
+
+/* ????
+------------------------------------------------------------------------------------*/
+body,
+h1,h2,h3,h4,h5,h6,
+ul,ol,li,
+dl,dt,dd,
+p,
+img,
+form {
+	margin: 0;
+	padding: 0;
+	text-align: center;
+	list-style-type: none;
+	border: none;
+	/*font-size: 12px;*/
+	/*font-family: "?????? Pro W3", "?? ?????", Osaka;*/
+	color: #333333;}
+
+p {
+	font-size: 12px;
+}
+a,
+a:link {
+	color: #0033FF;
+	text-decoration: underline;}
+
+a:visited {
+	color: #990066;}
+
+a:hover,
+a:active {
+	color: #0099ff;}
+/*
+img {
+	vertical-align: top;}
+*/
+.red-text,
+.price {
+	font-size: 12px;
+	color: #FF0000;}
+
+.float-clear {
+	clear: both;
+	line-height: 0;
+	font-size: 0;}
+
+.float-clear-1 {
+	height: 1px;
+	clear: both;
+	line-height: 0;
+	font-size: 0;}
+
+
+/* ???????????
+------------------------------------------------------------------------------------*/
+div#wraper,
+div#wraper div#header,
+div#wraper div#container,
+div#wraper div#footer {
+	width: 780px;
+	margin: 0 auto;
+	text-align: left;}
+
+div#wraper div#container div#left-column {
+	width: 180px;
+	float: left;}
+
+div#wraper div#container div#main-column {
+	width: 600px;
+	float: left;}
+
+
+/* ??????????
+------------------------------------------------------------------------------------*/
+div#header {
+	padding: 6px 0 10px 0;
+	background: url(../../img/renewal/head_topbar.gif) left top no-repeat;}
+	
+div#header div#upper-block {
+	height: 88px;
+	background: url(../../img/renewal/head_kitasan.jpg) right top no-repeat;}
+
+div#header h1 {
+	width: 137px;
+	float: left;}
+
+div#header ul {
+	text-align: left;}
+
+div#header ul li {
+	display: inline;}
+
+
+/* ????????
+------------------------------------------------------------------------------------*/
+div#left-column div#left-container {
+	padding: 0 10px 0 0;}
+	
+div#left-column div#left-container p,
+div#left-column div#left-container li {
+	font-size: 11px;}
+
+
+/* ???
+---------------------------------------- */
+div#left-column div#left-container div#search-box {
+	height: 63px;
+	background: url(../../img/renewal/left_column_search_bg.gif) left bottom no-repeat #226EBC;}
+
+div#left-column div#left-container div#search-box ul li {
+	text-align: left;}
+
+div#left-column div#left-container div#search-box ul li input {
+	margin: 0;
+	padding: 0;}
+
+div#left-column div#left-container div#search-box ul li.txt-area {
+	padding: 3px 0 0 0px;
+	text-align: center;}
+
+
+/* ????????
+---------------------------------------- */
+div#left-column div#left-container div#my-menu {
+	padding: 0px 0 0 0;
+	background-image: url(../../img/renewal/left_column_my_bg_middle.gif);
+	background-position: 0 30px;
+	background-repeat: repeat-y;}
+
+div#left-column div#left-container div#my-menu ul {
+	padding: 10px 0 0 0;
+	float: none !important;
+	float: left;
+	background-color: #ffffff;}
+
+div#left-column div#left-container div#my-menu ul li {
+	height: auto !important;
+	height: 22px;
+	float: left;
+	min-height: 22px;
+	background: url(../../img/renewal/left_column_my_ttlbg.gif) right top no-repeat #226EBC;}
+
+div#left-column div#left-container div#my-menu ul li#my-ttl {
+	width: 76px;}
+
+div#left-column div#left-container div#my-menu ul li#login {
+	width: 94px;
+	padding: 0px 0 0 0;
+	font-size: 12px;
+	text-align: right;}
+
+div#left-column div#left-container div#my-menu ul li#login a,
+div#left-column div#left-container div#my-menu ul li#login a:link,
+div#left-column div#left-container div#my-menu ul li#login a:visited {
+	display: block;
+	padding: 4px 10px 0 0;
+	color: #FFFFFF;}
+
+div#left-column div#left-container div#my-menu ul li#login a:hover,
+div#left-column div#left-container div#my-menu ul li#login a:active {
+	color: #FFFF00;}
+
+div#left-column div#left-container div#my-menu p {
+	padding: 7px;
+	clear: both;
+	text-align: left;}
+
+div#left-column div#left-container div#my-menu p#my-btn {
+	padding: 0 0 10px 0;
+	text-align: center;
+	background: url(../../img/renewal/left_column_my_bg.gif) left bottom no-repeat;} 
+
+
+/* ???????? ?????
+---------------------------------------- */
+
+div#left-column div#left-container div#my-menu p#member-name {
+	padding: 10px 0 ;
+	text-align: center;
+	font-size: 12px;}
+
+div#left-column div#left-container div#my-menu p#member-name span {
+	color: #6A9735;}
+
+div#left-column div#left-container div#my-menu ul#member-point {
+	padding: 0px 10px 15px 10px;
+	text-align: center;
+	float: none;
+	background: url(../../img/renewal/left_column_my_bg.gif) left bottom no-repeat;} 
+
+div#left-column div#left-container div#my-menu ul#member-point li {
+	height: auto;
+	min-height: inherit;
+	padding: 0;
+	float: none;
+	background: #ffffff;
+	font-size: 12px;
+	text-align: center;}
+
+div#left-column div#left-container div#my-menu ul#member-point li#top-bar {
+	padding: 10px 0 0 0;
+	border-top: 1px solid #A7C8ED;}
+
+
+
+/* ???????
+---------------------------------------- */
+div#left-column div#left-container div.box01,
+div#left-column div#left-container div.box02,
+div#left-column div#left-container div.box03 {
+	padding: 0 0 10px 0;
+	background: url(../../img/renewal/left_column_box_bgbottom.gif) left bottom no-repeat #DCEAFA;}
+
+div#left-column div#left-container div.box01 h2,
+div#left-column div#left-container div.box02 h2,
+div#left-column div#left-container div.box03 h2 {
+	padding: 10px 0 0 0;
+	background-color: #ffffff;}
+
+div#left-column div#left-container div.box01 ul,
+div#left-column div#left-container div.box02 ul,
+div#left-column div#left-container div.box03 ul {
+	padding: 5px 10px 0 10px;}
+
+div#left-column div#left-container div.box01 ul li,
+div#left-column div#left-container div.box02 ul li,
+div#left-column div#left-container div.box03 ul li {
+	text-align: left;}
+
+div#left-column div#left-container div.box01 ul li.price {
+	font-size: 12px;
+	text-align: center;
+	color: #FF0000;}
+
+div#left-column div#left-container div.box01 p {
+	padding: 16px 0 0 0;
+	background: url(../../img/renewal/left_column_box01_arrow.gif) 50% 2px no-repeat;}
+
+div#left-column div#left-container div.box02 div#box2-dott {
+	height: 1px;
+	padding-bottom: 5px;
+	background: url(../../img/renewal/left_column_box_dott.gif) center bottom no-repeat;}
+
+div#left-column div#left-container div.box02 h2 {
+position: relative;}
+
+div#left-column div#left-container div.box02 ul li {
+position: relative;}
+
+div#left-column div#left-container div.box02 ul li.item-image {
+	width: 75px;
+	float: left;}
+
+div#left-column div#left-container div.box03 p {
+	padding: 5px 0 0 0;
+	color: #FF0000;}
+
+div#left-column div#left-container div.box04 {
+	padding: 10px 0 10px 0;
+	clear: both;}
+
+
+/* ?????????
+------------------------------------------------------------------------------------*/
+div#main-column {
+	width: 600px;}
+
+div#main-column h2#top-banner {
+	padding: 0 0 10px 0;}
+
+
+
+
+/* ????????????
+---------------------------------------- */
+div#main-column div#box-nav {
+	padding: 10px 0 0 0;}
+
+div#main-column div#box-nav div {
+	width: 200px;
+	float: left;}
+
+div#main-column div#box-nav div dl {}
+
+div#main-column div#box-nav div dl dt {
+	text-align: left;}
+
+div#main-column div#box-nav div dl dt img,
+div#main-column div#box-nav div p img {
+	border: #ddd solid 1px;
+	border-width: 1px 0;}
+
+div#main-column div#box-nav div dl dd {}
+
+div#main-column div#box-nav div dl dd ul {
+	padding: 5px 0 10px 0;}
+
+div#main-column div#box-nav div dl dd ul li {
+	padding: 2px 0 2px 1em;
+	text-align: left;}
+
+div#main-column div#nav-left {
+	font-size: 12px;
+}
+
+div#main-column div#nav-center {
+	font-size: 12px;
+}
+
+div#main-column div#nav-right {
+	font-size: 12px;
+}
+
+
+/* ????????
+---------------------------------------- */
+div#main-column div.box01 {
+	width: 600px;}
+
+div#main-column div.box01 h2 {
+	width: 600px;}
+
+div#main-column div.box01 ul {
+	width: 600px;
+	padding: 10px 0 0 0;}
+
+div#main-column div.box01 ul li {
+	padding: 0 10px 0 0;
+	float: left;}
+
+div#main-column div.box01 ul li.img01 {
+	width: 130px;}
+
+div#main-column div.box01 ul li.img02 {
+	width: 281px;}
+
+div#main-column div.box01 ul li.img03 {
+	width: 159px;}
+
+div#main-column div.box01 ul li.img03 span {
+	display: block;
+	padding: 10px 0 0 0;}
+
+div#main-column div.box02 {
+	width: 600px;}
+
+div#main-column div.box02 h2 {
+	width: 600px;
+	padding: 10px 0 5px 0;}
+
+div#main-column div.box02 ul {
+	width: 120px;
+	float: left;
+	background-color:}
+
+div#main-column div.box02 ul li {
+	padding: 0 3px 3px 0;
+	text-align: left;}
+
+div#main-column div.box02 ul li.item-txt {
+	height: auto !important;
+	height: 60px;
+	min-height: 60px;
+	font-size: 12px;
+	}
+
+div#main-column div.box02 p {
+	clear: both;
+	padding: 5px 0 0 0;
+	text-align: right;}
+
+div#main-column div.box03 {
+	width: 600px;
+	font-size: 12px;
+	padding: 0 0 10px 0;}
+
+div#main-column div.box03 h2 {
+	padding: 5px 0 7px 0;
+	clear: both;}
+
+div#main-column div.box03 div {
+	height: 220px;
+	width: 600px;
+	overflow: auto;
+	padding: 0;
+	margin: 0;
+	border: 1px #cccccc solid;
+	border-width: 1px 0 1px 0;}
+
+div#main-column div.box03 div ul {
+	padding: 0;
+	margin: 0;}
+
+div#main-column div.box03 div ul li {
+	padding: 5px 0 5px 10px;
+	border: 1px #cccccc solid;
+	border-width: 1px 0 0 1px;}
+
+div#main-column div.box03 div ul li.bg-gray {
+	background-color: #eeeeee;}
+
+div#main-column div.box03 div ul li span.day {
+	width: 60px;
+	text-align: left;
+	float: left;
+	color: #FF0000;}
+
+div#main-column div.box03 div ul li span.topic-txt {
+	width: 400px;
+	text-align: left;}
+
+div#main-column div.box03 div ul li p {}
+
+
+/* ????
+------------------------------------------------------------------------------------*/
+div#footer {}
+
+div#footer div {}
+
+div#footer div.top-list {
+	padding: 6px 0;
+	font-size: 12px;
+	background: url(../../img/renewal/foot_bg_top.gif) center top no-repeat #D3D3D3;}
+
+div#footer div.middle-list {
+	padding: 6px 0;
+	font-size: 12px;
+	background: url(../../img/renewal/foot_bg_middle.gif) center top repeat-y #D2E3EC;}
+
+div#footer div.bottom-list {
+	background: url(../../img/renewal/foot_bg_bottom2.gif) center bottom repeat-y #AECBDA;
+	border: 1px solid #D6D6D6;
+	border-width: 1px 0;}
+
+div#footer div ul li {
+	display: inline;}
+
+div#footer div.bottom-list ul li {
+	display: block;
+	padding: 10px 0 10px 0;
+	float: left;
+	text-align: left;
+	font-size: 10px;}
+
+div#footer div.bottom-list ul li p {
+	font-size: 10px;
+	text-align: left;}
+
+div#footer div.bottom-list ul li.bottom-list01 {
+	width: 225px;}
+
+div#footer div.bottom-list ul li.bottom-list01 p {
+	text-align: left;}
+
+div#footer div.bottom-list ul li.bottom-list01 p.bottom-img01 {
+	width: 55px;
+	float: left;
+	text-align: center;}
+
+div#footer div.bottom-list ul li.bottom-list02 {
+	width: 178px;}
+
+div#footer div.bottom-list ul li.bottom-list02 p {
+	padding: 0 0 0 10px;}
+
+div#footer div.bottom-list ul li.bottom-list03 {
+	width: 250px;}
+
+div#footer div.bottom-list ul li.bottom-list03 p {
+	padding: 0 10px 0 0;
+	text-align: left;}
+
+div#footer div.bottom-list ul li.bottom-list03 p.bottom-img03 {
+	width: 130px;
+	padding: 0;
+	float: left;
+	text-align: center;}
+
+div#footer div.bottom-list ul li.bottom-list04 {
+	width: 127px;
+	text-align: center;}
+
+div#footer p#footer-copy {
+	clear: both;
+	padding: 10px 0;
+	text-align: center;}
+
+
