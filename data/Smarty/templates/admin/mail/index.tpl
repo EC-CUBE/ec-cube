@@ -29,18 +29,18 @@
 						<td bgcolor="#cccccc">
 						<table width="678" border="0" cellspacing="0" cellpadding="0" summary=" ">
 							<tr>
-								<td colspan="<!--{if $arrIP > 0}-->4<!--{else}-->3<!--{/if}-->"><img src="<!--{$smarty.const.URL_DIR}-->img/contents/contents_title_top.gif" width="678" height="7" alt=""></td>
+								<td colspan="<!--{if $arrIP.now_version > 0 && $arrIP.blayn_ip > 0}-->4<!--{else}-->3<!--{/if}-->"><img src="<!--{$smarty.const.URL_DIR}-->img/contents/contents_title_top.gif" width="678" height="7" alt=""></td>
 							</tr>
 							<tr>
 								<td background="<!--{$smarty.const.URL_DIR}-->img/contents/contents_title_left_bg.gif"><img src="<!--{$smarty.const.URL_DIR}-->img/contents/contents_title_left.gif" width="22" height="12" alt=""></td>
-								<td bgcolor="#636469" width="638" class="fs14n"><span class="white"><!--コンテンツタイトル-->配信先検索条件設定</span><!--{if $arrIP > 0}--></td><td align="right"><img src="<!--{$smarty.const.URL_DIR}-->img/contents/blayn_icon.jpg"><!--{/if}--></td>
+								<td bgcolor="#636469" width="638" class="fs14n"><span class="white"><!--コンテンツタイトル-->配信先検索条件設定</span><!--{if $arrIP.now_version > 0 && $arrIP.blayn_ip > 0}--></td><td align="right"><img src="<!--{$smarty.const.URL_DIR}-->img/contents/blayn_icon.jpg"><!--{/if}--></td>
 								<td background="<!--{$smarty.const.URL_DIR}-->img/contents/contents_title_right_bg.gif"><img src="<!--{$smarty.const.URL_DIR}-->img/common/_.gif" width="18" height="1" alt=""></td>
 							</tr>
 							<tr>
-								<td colspan="<!--{if $arrIP > 0}-->4<!--{else}-->3<!--{/if}-->"><img src="<!--{$smarty.const.URL_DIR}-->img/contents/contents_title_bottom.gif" width="678" height="7" alt=""></td>
+								<td colspan="<!--{if $arrIP.now_version > 0 && $arrIP.blayn_ip > 0}-->4<!--{else}-->3<!--{/if}-->"><img src="<!--{$smarty.const.URL_DIR}-->img/contents/contents_title_bottom.gif" width="678" height="7" alt=""></td>
 							</tr>
 							<tr>
-								<td colspan="<!--{if $arrIP > 0}-->4<!--{else}-->3<!--{/if}-->"><img src="<!--{$smarty.const.URL_DIR}-->img/contents/main_bar.jpg" width="678" height="10" alt=""></td>
+								<td colspan="<!--{if $arrIP.now_version > 0 && $arrIP.blayn_ip > 0}-->4<!--{else}-->3<!--{/if}-->"><img src="<!--{$smarty.const.URL_DIR}-->img/contents/main_bar.jpg" width="678" height="10" alt=""></td>
 							</tr>
 						</table>
 						
