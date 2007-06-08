@@ -474,7 +474,7 @@ function lfGetBlayn() {
     global $objQuery;
     
     $arrRet[now_version] = $objQuery->count("dtb_module", "now_version = (SELECT now_version FROM dtb_module WHERE main_php='blayn/blayn.php')");
-    $arrRet[blayn_ip] = $objQuery->count("dtb_blayn", "blayn_ip");
+    $arrRet[blayn_ip] = $objQuery->count("dtb_blayn");
     return $arrRet;
 }
 ?>
