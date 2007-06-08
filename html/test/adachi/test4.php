@@ -4,10 +4,10 @@ $str = 'test@<script>alert(document.cookie)</script>.com;';
 $pt = "/<script.*?>|<\/script>/";
 
 if (preg_match_all($pt, $str, $match)) {
-    print('ok');
+    $str = preg_replace($pt, '###', $str);
 }
 
 
 
-var_dump($match);
+var_dump($str);
 
