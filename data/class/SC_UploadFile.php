@@ -62,7 +62,7 @@ class SC_UploadFile {
             $ftp_temp_dir = $this->makeFtpTempDir($this->temp_dir);
             $dst_file = $ftp_temp_dir . $uniqname;
             $ret = $objThumb->Main($src_file, $width, $height, $dst_file);
-            $this->ftpMoveFile($this->ftp_temp_dir . basename($ret[1]), $ret[1]);
+            $this->ftpMoveFile($this->ftp_temp_dir . basename($ret[1]), $ret[1], true);
         } else {
             $dst_file = $this->temp_dir . $uniqname;
             $ret = $objThumb->Main($src_file, $width, $height, $dst_file);          
@@ -366,7 +366,7 @@ class SC_UploadFile {
             sfFtpCopy($array['host'], $array['user'], $array['pass'], $dst_path, $src_path);
         }
         // 移動後はファイルを削除
-        if($del_flag) {
+        if($del_flag === true) {
             @unlink($src_path);
         }
     }
