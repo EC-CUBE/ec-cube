@@ -78,6 +78,21 @@ class SC_Query {
     }
     
     /**
+     *  オプションの初期化
+     *
+     *  @access public
+     *  @return void
+     */
+    function clear(){
+        $arrProperty = array_keys((get_object_vars($this)));
+        foreach ( $arrProperty as $property ) {
+            if ($property != 'conn') {
+                $this->$property = '';
+            }
+        }
+    }
+    
+    /**
      *  COUNT文の実行
      *
      *  @access public
