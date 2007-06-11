@@ -355,9 +355,10 @@ class SC_UploadFile {
      *
      * @param string $dst_path コピー先ファイルパス(相対パス)
      * @param string $src_path コピー元ファイルパス(絶対パス)
+     * @param boolean $del_flag 移動ファイルを削除するフラグ
      * @return void
      */
-    function ftpMoveFile($dst_path, $src_path) {
+    function ftpMoveFile($dst_path, $src_path, $del_flag = false) {
         global $arrWEB_SERVERS;
 
         // 全てのサーバにファイルをコピーする
@@ -365,7 +366,9 @@ class SC_UploadFile {
             sfFtpCopy($array['host'], $array['user'], $array['pass'], $dst_path, $src_path);
         }
         // 移動後はファイルを削除
-        @unlink($src_path);
+        if($del_flag) {
+            @unlink($src_path);
+        }
     }
 
     /**         
