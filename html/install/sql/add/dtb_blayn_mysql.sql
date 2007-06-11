@@ -1,3 +1,3 @@
 CREATE TABLE dtb_blayn (
-    blayn_ip int
+    blayn_ip text
 ) TYPE=InnoDB;
