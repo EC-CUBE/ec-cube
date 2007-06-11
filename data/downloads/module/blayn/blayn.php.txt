@@ -48,7 +48,7 @@ switch ($_POST['mode']) {
 // 初期表示以外は'regist'を通らせる
 $objPage->mode = 'regist';
 
-$url = "'SITE_URL" . "admin/system/module.php'";
+$url = SITE_URL . "admin/system/module.php";
 $tpl_onload  = 'onload = "opener_reload(' .$url. ');window.close();"';
 $objPage->tpl_onload = $tpl_onload;
 
