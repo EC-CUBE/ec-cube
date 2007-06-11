@@ -97,7 +97,7 @@ function gfDebugLog($obj, $path = DEBUG_LOG_PATH){
 		gfPrintLog("*** end Debug ***");
 
 		// ログテーション
-		gfLogRotation(MAX_LOG_QUANTITY, MAX_LOG_SIZE, LOG_PATH);
+		gfLogRotation(MAX_LOG_QUANTITY, MAX_LOG_SIZE, $path);
 }
 
 /*----------------------------------------------------------------------
