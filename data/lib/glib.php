@@ -85,7 +85,7 @@ function gfGetAge($dbdate)
  * [°ÍÂ¸] gfPrintLog
  * [Ãí¼á] -
  *----------------------------------------------------------------------*/
-function gfDebugLog($obj, $path = LOG_PATH){
+function gfDebugLog($obj, $path = DEBUG_LOG_PATH){
 		gfPrintLog("*** start Debug ***");
 		ob_start();
 		print_r($obj);
