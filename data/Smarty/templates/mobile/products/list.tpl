@@ -11,14 +11,14 @@
 
 <hr>
 
-<!--{if isset($tpl_previous_page) || isset($tpl_next_page)}-->
-<!--{if isset($tpl_previous_page)}-->
+<!--{if isset($tpl_previous_page|smarty:nodefaults) || isset($tpl_next_page|smarty:nodefaults)}-->
+<!--{if isset($tpl_previous_page|smarty:nodefaults)}-->
 <a href="<!--{$tpl_previous_page|escape}-->">前へ</a>
 <!--{/if}-->
-<!--{if isset($tpl_previous_page) && isset($tpl_next_page)}-->
+<!--{if isset($tpl_previous_page|smarty:nodefaults) && isset($tpl_next_page|smarty:nodefaults)}-->
 ｜
 <!--{/if}-->
-<!--{if isset($tpl_next_page)}-->
+<!--{if isset($tpl_next_page|smarty:nodefaults)}-->
 <a href="<!--{$tpl_next_page|escape}-->">次へ</a>
 <!--{/if}-->
 <br><br>
@@ -55,14 +55,14 @@
 <!--{/if}-->
 <!--{/foreach}-->
 
-<!--{if isset($tpl_previous_page) || isset($tpl_next_page)}-->
-<!--{if isset($tpl_previous_page)}-->
+<!--{if isset($tpl_previous_page|smarty:nodefaults) || isset($tpl_next_page|smarty:nodefaults)}-->
+<!--{if isset($tpl_previous_page|smarty:nodefaults)}-->
 <a href="<!--{$tpl_previous_page|escape}-->">前へ</a>
 <!--{/if}-->
-<!--{if isset($tpl_previous_page) && isset($tpl_next_page)}-->
+<!--{if isset($tpl_previous_page|smarty:nodefaults) && isset($tpl_next_page|smarty:nodefaults)}-->
 ｜
 <!--{/if}-->
-<!--{if isset($tpl_next_page)}-->
+<!--{if isset($tpl_next_page|smarty:nodefaults)}-->
 <a href="<!--{$tpl_next_page|escape}-->">次へ</a>
 <!--{/if}-->
 <br>
