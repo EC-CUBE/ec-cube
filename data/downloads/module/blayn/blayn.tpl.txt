@@ -20,6 +20,11 @@ function win_open(URL){
 	WIN = window.open(URL);
 	WIN.focus();
 }
+
+function opener_reload(url){
+	window.opener.location.href = url ;
+	window.close();
+}
 //-->
 </script>
 </head>
