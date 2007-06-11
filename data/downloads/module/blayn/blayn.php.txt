@@ -49,7 +49,7 @@ switch ($_POST['mode']) {
 $objPage->mode = 'regist';
 
 $url = SITE_URL . "admin/system/module.php";
-$tpl_onload  = 'onload = "opener_reload(' .$url. ');window.close();"';
+$tpl_onload  = "onload = \"opener_reload('" .$url. "');window.close();\"";
 $objPage->tpl_onload = $tpl_onload;
 
 $objView->assignobj($objPage);      //変数をテンプレートにアサインする
