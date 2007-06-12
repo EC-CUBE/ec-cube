@@ -89,14 +89,14 @@ define("UPDATE_PATH", DATA_PATH . UPDATE_DIR);
 /** アップデート管理用 **/
 // アップデート管理用ファイル格納場所　
 define("UPDATE_HTTP", "http://www.lockon.co.jp/share/");
-//define("UPDATE_HTTP", "../../../data/downloads/module/");
-
 // アップデート管理用CSV1行辺りの最大文字数
 define("UPDATE_CSV_LINE_MAX", 4096);
 // アップデート管理用CSVカラム数
 define("UPDATE_CSV_COL_MAX", 13);
 // モジュール管理用CSVカラム数
 define("MODULE_CSV_COL_MAX", 16);
+// モジュール管理用CSVファイル
+define("MODULE_CSV", "module_001.txt");
 //--------------------------------------------------------------------------------------------------------
 
 //--------------------------------------------------------------------------------------------------------
