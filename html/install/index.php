@@ -205,6 +205,7 @@ case 'drop':
 	lfDropTable("dtb_mobile_kara_mail", $dsn);
 	lfDropTable("dtb_site_control", $dsn);
 	lfDropTable("dtb_trackback", $dsn);
+    lfDropTable("dtb_blayn", $dsn);
 			
 	if ($arrRet['db_type'] == 'pgsql'){
 		// ビューの削除
