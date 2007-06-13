@@ -1,20 +1,21 @@
 <?php
 require_once('LLReader/Util.php');
-require_once('LLReader/Feed.php');
 //require_once('LLReader/Constant.php');
 
 class LLReader {
     private $config;
     private $plugins;
     private $feeds;
-
+    
     public function __construct($config){
-        $this->config = $config;
+        $this->config  = $config;
+        $this->plugins = array();
+        $this->feeds   = array();
     }
-
+    
     public function run () {
         $this->load_plugins();
-
+        
         $phases = array(
             'Subscription',
             'Filter',
@@ -29,15 +30,15 @@ class LLReader {
             }
         }
     }
-
+    
     private function load_plugins () {
         foreach ($this->config['plugins'] as $name => $config) {
             $class   = 'LLReader_Plugin_' . $name;
             $include = preg_replace('/_/', '/', $class) . '.php';
             $ret     = include_once($include);
-
+            
             $err = 0;
-
+            
             if ($ret) {
                 if ( preg_match("/^(.+?)_/", $name, $matches) ) {
                     $phase = $matches[1];
@@ -50,34 +51,42 @@ class LLReader {
                 }
             }
             else {
-                $this->log('[ERR] ' . $class . " not found");
+                $this->log('[ERR] ' . $class . ' not found');
                 $err++;
             }
         }
-
+        
         if ($err) {
-            $this->log('[Die] ' . 'function load_plugins()');
-            exit();
+            $this->_die('function load_plugins()');
         }
     }
-
+    
     public function log ($msg) {
         LLReader_Util::log($msg);
     }
-
+    
     public function p ($var) {
         LLReader_Util::p($var);
     }
-
+    
+    public function _die ($msg) {
+        $this->log('[DIE] ' . $msg);
+        exit();
+    }
+    
     private function get_plugins ($phase) {
         if ( empty($this->plugins[$phase]) ) {
-        	return array();
+            return array();
         }
         return $this->plugins[$phase];
     }
-
+    
     public function get_feeds () {
         return $this->feeds;
+    }
+    
+    public function add_feed ($feed) {
+        $this->feeds[] = $feed;
     }
 }
 ?>
