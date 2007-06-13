@@ -96,7 +96,7 @@ define("UPDATE_CSV_COL_MAX", 13);
 // モジュール管理用CSVカラム数
 define("MODULE_CSV_COL_MAX", 16);
 // モジュール管理用CSVファイル
-define("MODULE_CSV", "module.txt");
+define("MODULE_CSV", "module_001.txt");
 //--------------------------------------------------------------------------------------------------------
 
 //--------------------------------------------------------------------------------------------------------
@@ -185,7 +185,7 @@ define("ORDER_STATUS_MAX", 50);
 //フロントレビュー書き込み最大数
 define("REVIEW_REGIST_MAX", 5);
 
-/*
+/*F
  * サイト定義定数
  */
 /* システム関連 */
@@ -193,7 +193,6 @@ define ('DEBUG_MODE', false);                           // デバッグモード(true：
 define ("ADMIN_ID", "1");								// 管理ユーザID(メンテナンス用表示されない。)
 define ("CUSTOMER_CONFIRM_MAIL", false);				// 会員登録時に仮会員確認メールを送信するか（true:仮会員、false:本会員）
 define ("MELMAGA_SEND", true);							// メルマガ配信抑制(false:OFF、true:ON)
-define ("MELMAGA_SEND_BLAYN", false);                   // メルマガ配信するとき、ブレインSMTPを経由する。（false:経由しない、true:経由する）
 define ("MELMAGA_BATCH_MODE", false);					// メイルマガジンバッチモード(true:バッチで送信する ※要cron設定、false:リアルタイムで送信する)
 define ("LOGIN_FRAME", "login_frame.tpl");				// ログイン画面フレーム
 define ("MAIN_FRAME", "main_frame.tpl");				// 管理画面フレーム
