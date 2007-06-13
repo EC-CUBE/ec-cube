@@ -6,11 +6,13 @@ class LLReader {
     private $config;
     private $plugins;
     private $feeds;
+    private $update_feeds;
     
     public function __construct($config){
         $this->config  = $config;
         $this->plugins = array();
         $this->feeds   = array();
+        $this->update_feeds = array();
     }
     
     public function run () {
@@ -82,6 +84,9 @@ class LLReader {
     }
     
     public function get_feeds () {
+        if ( count($this->update_feeds) > 0 ) {
+            return $this->update_feeds;
+        }
         return $this->feeds;
     }
     

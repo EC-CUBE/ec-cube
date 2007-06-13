@@ -30,8 +30,31 @@ class LLReader_Plugin_Filter_SearchEntry2Feed extends LLReader_Plugin {
         $llr->p(mb_convert_encoding($maches_entries[0]->__toString(), 'SJIS', 'UTF-8'));
     }
     
-    private function entry2feed ($llr, $feed, $entry) {
+    private function entry2feed ($llr, $feed, $entries) {
+        $output = "<?xml version=\"1.0\"?>
+                    <rss version=\"2.0\">
+                        <channel>
+                            <title>{$feed->title}</title>
+                            <link>http://www.tracypeterson.com/RSS/RSS.php</link>
+                            <description>$feed->description</description>
+                            <language>$feed->language</language>
+                            <pubDate>$feed->date</pubDate>
+                            <lastBuildDate>$feed->lastBuildDate</lastBuildDate>
+                            <docs>http://someurl.com</docs>
+                            <managingEditor>you@youremail.com</managingEditor>
+                            <webMaster>you@youremail.com</webMaster>
+                    ";
+                    
+        foreach ($entries as $entry)
+        {
+            $output .= "<item><title>" . $entry->title . "</title>
+                            <link>" . $entry->link . "</link>
+                            
+        <description>".htmlentities(strip_tags($line['description']))."</description>
+                        </item>";
+        }
         
+        return new LLReader_Feed($output);
     }
 }
 
