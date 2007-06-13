@@ -225,7 +225,7 @@ function HTML_MAIL_SENDING( $to, $subject, $body, $fromaddress, $from_name, $rep
 // ブレインエンジンが設定済みか確認
 function lfGetBlayn() {
     
-    global $objQuery;
+    $objQuery = new SC_Query();
     
     $arrRet[now_version] = $objQuery->count("dtb_module", "now_version = (SELECT now_version FROM dtb_module WHERE main_php='blayn/blayn.php')");
     $arrRet[blayn_ip] = $objQuery->count("dtb_blayn");
