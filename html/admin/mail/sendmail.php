@@ -82,7 +82,7 @@ for( $i = 0; $i < $count; $i++ ) {
 
 
         //-- メルマガ配信をブレイン連携で行う場合
-        if(MELMAGA_SEND_BLAYN){
+        if(lfGetBlayn()){
 	        
 	        //-- 文字を日本語に設定
 	        Mb_language( "Japanese" );
@@ -222,5 +222,18 @@ function HTML_MAIL_SENDING( $to, $subject, $body, $fromaddress, $from_name, $rep
     
 }
 
-
+// ブレインエンジンが設定済みか確認
+function lfGetBlayn() {
+    
+    global $objQuery;
+    
+    $arrRet[now_version] = $objQuery->count("dtb_module", "now_version = (SELECT now_version FROM dtb_module WHERE main_php='blayn/blayn.php')");
+    $arrRet[blayn_ip] = $objQuery->count("dtb_blayn");
+    
+    if (!empty($arrRet[now_version]) && !empty($arrRet[blayn_ip])) {
+        return true;
+    } else {
+        return false;
+    }
+}
 ?>
