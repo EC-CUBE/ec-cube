@@ -16,7 +16,7 @@ $config = array(
             'urls' => array('http://feeds.feedburner.jp/cnet/rss')
         ),
         'Filter_SearchEntry2Feed' => array(
-            'regex' => '/ライブドア/i'
+            'regex' => '/google/i'
         ),
     )
 );
