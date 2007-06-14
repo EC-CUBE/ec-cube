@@ -31,16 +31,15 @@ if ( $_GET['mode']=="preview" || $_GET['id']){
         $result = $conn->getAll($sql, array($id));
         print($result[0]["header"]);
         if ( $result ){
-                if ( $result[0]["mail_method"] == 2 ){
-                // テキスト形式の時はタグ文字をエスケープ
-                    $objPage->escape_flag = 1;
-                }
-//            $result[0] = nl2br($result[0]["header"]);
+            if ( $result[0]["mail_method"] == 2 ){
+            // テキスト形式の時はタグ文字をエスケープ
+                $objPage->escape_flag = 1;
+            }
             $objPage->list_data = $result[0];    
         }
     
     }
-	
+
 $objView->assignobj($objPage);
 $objView->display($objPage->tpl_mainpage);
 
