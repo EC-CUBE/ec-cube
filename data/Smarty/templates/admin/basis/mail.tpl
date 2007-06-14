@@ -30,7 +30,7 @@ function lfnCheckSubmit(){
 	fm = document.form1;
 	var err = '';
 	
-	if ( ! fm["send_type"][0].checked && ! fm["send_type"][0].checked ){
+	if ( ! fm["send_type"][0].checked && ! fm["send_type"][1].checked ){
 		err += 'メールの方式を入力して下さい。';
 	}
 	if ( ! fm["subject"].value ){
