@@ -1,8 +1,8 @@
 <?php
 
-require_once('LLReader/Plugin.php');
+require_once('PLLagger/Plugin.php');
 
-class LLReader_Plugin_Filter_SearchEntry2Feed extends LLReader_Plugin {
+class PLLagger_Plugin_Filter_SearchEntry2Feed extends PLLagger_Plugin {
     public function execute ($llr) {
         $config = $this->get_config();
         $maches_entries = array();
@@ -28,7 +28,7 @@ class LLReader_Plugin_Filter_SearchEntry2Feed extends LLReader_Plugin {
             
             error_reporting($err_rep);
         }
-        //new LLReader_Feed($maches_entries[0]->__toString());
+        //new PLLagger_Feed($maches_entries[0]->__toString());
         //$llr->p(mb_convert_encoding($maches_entries[0]->title, 'EUC-JP', 'UTF-8'));
     }
     
@@ -56,7 +56,7 @@ class LLReader_Plugin_Filter_SearchEntry2Feed extends LLReader_Plugin {
                         </item>";
         }
         
-        return new LLReader_Feed($output);
+        return new PLLagger_Feed($output);
     }
 }
 

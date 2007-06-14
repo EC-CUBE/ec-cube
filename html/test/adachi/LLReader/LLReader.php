@@ -2,7 +2,7 @@
 require_once('LLReader/Util.php');
 //require_once('LLReader/Constant.php');
 
-class LLReader {
+class PLLgger {
     private $config;
     private $plugins;
     private $feeds;

@@ -1,14 +1,14 @@
 <?php
 
-$_path1 = '/home/web/dev.ec-cube.net/html/test/adachi/LLReader';
-$_path2 = '/home/web/dev.ec-cube.net/html/test/adachi/LLReader/Lib';
+$_path1 = '/home/web/dev.ec-cube.net/html/test/adachi/PLLagger';
+$_path2 = '/home/web/dev.ec-cube.net/html/test/adachi/PLLagger/Lib';
 
 $_ps = PATH_SEPARATOR;
 $_include_path = ini_get('include_path') . $_ps . $_path1 . $_ps . $_path2;
 
 ini_set('include_path', $_include_path);
 
-require_once('LLReader.php');
+require_once('PLLagger.php');
 
 $config = array(
     'plugins' => array(
@@ -25,7 +25,7 @@ $config = array(
     )
 );
  
-$LLR = new LLReader($config);
+$LLR = new PLLagger($config);
 $LLR->run();
 
 ?>

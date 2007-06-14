@@ -1,6 +1,6 @@
 <?php
 
-class LLReader_Util {
+class PLLagger_Util {
     public static function log ($msg) {
         echo $msg . "\n";
     }

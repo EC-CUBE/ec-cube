@@ -1,9 +1,9 @@
 <?php
 
-require_once('LLReader/Plugin.php');
-require_once('LLReader/Feed.php');
+require_once('PLLagger/Plugin.php');
+require_once('PLLagger/Feed.php');
 
-class LLReader_Plugin_Subscription_Simple extends LLReader_Plugin {
+class PLLagger_Plugin_Subscription_Simple extends PLLagger_Plugin {
     public function execute ($llr) {
         $config = $this->get_config();
         $urls   = array();
@@ -19,7 +19,7 @@ class LLReader_Plugin_Subscription_Simple extends LLReader_Plugin {
             $xml = file_get_contents($url);
             
             try {
-                $feed = new LLReader_Feed($xml);
+                $feed = new PLLagger_Feed($xml);
                 $llr->add_feed($feed);
             }
             catch ( XML_Feed_Parser_Exception $e ) {

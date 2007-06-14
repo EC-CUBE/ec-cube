@@ -1,6 +1,6 @@
 <?php
 
-abstract class LLReader_Plugin {
+abstract class PLLagger_Plugin {
     protected $config;
     
     public function __construct ($llr, $config) {
