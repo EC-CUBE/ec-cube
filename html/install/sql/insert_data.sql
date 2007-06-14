@@ -240,6 +240,7 @@ Now(),
 0,
 '受注完了テンプレート(PC用)');
 
+insert into dtb_mailtemplate (template_id, subject, body, creator_id, update_date, create_date, send_type, template_name) values (
 1,
 'ご注文ありがとうございます。',
 '{name}様
