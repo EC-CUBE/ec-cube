@@ -1658,7 +1658,9 @@ function sfSendTemplateMail($to, $to_name, $template_id, $objPage) {
 	$objSendMail->sendMail();	// メール送信
 }
 
-/* 受注完了メール送信 */
+/** 受注完了メール送信
+ *  $template_id が 1：携帯用テンプレート、0：PC用テンプレート
+ */
 function sfSendOrderMail($order_id, $template_id, $subject = "", $body, $send = true) {
 	global $arrMAILTPLPATH;
 	
@@ -1725,7 +1727,7 @@ function sfSendOrderMail($order_id, $template_id, $subject = "", $body, $send = 
     $objPage->tpl_body = ereg_replace( "(\{name\})", $name ,  $objPage->tpl_body );
     $tmp_subject = ereg_replace( "(\{name\})", $name ,  $tmp_subject );
     
-    if($arrRet[0]['send_type']==1){
+    if($template_id == '1'){
 	   $body = $objMailView->fetch($arrMAILTPLPATH[1]);
        $body = ereg_replace( "(\[\[body\]\])", $body ,  $objPage->tpl_body );
     }else{
