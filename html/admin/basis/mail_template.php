@@ -50,7 +50,7 @@ $split_data = explode(".",$default_template_mobile[0]["create_date"]);
 $default_template_mobile[0]["create_date"] = $split_data[0]; 
 $objPage->default_template_mobile = $default_template_mobile[0];
 
-$sql = "SELECT * FROM dtb_mailtemplate WHERE del_flg = 0 AND template_id >1 ORDER BY create_date ASC";
+$sql = "SELECT * FROM dtb_mailtemplate WHERE del_flg = 0 ORDER BY template_id ASC";
 $list_data = $conn->getAll($sql);
 $linemax = count($list_data);
 
