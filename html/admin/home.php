@@ -200,7 +200,7 @@ function lfGetNewOrder() {
 function lfGetInfo() {
 	// 更新情報を最新にする
 	$objQuery = new SC_Query();
-	$path = UPDATE_HTTP . "info3.txt";
+	$path = UPDATE_HTTP . "info.txt";
 	$fp = @fopen($path, "rb");
 	
 	$arrRet = array();
