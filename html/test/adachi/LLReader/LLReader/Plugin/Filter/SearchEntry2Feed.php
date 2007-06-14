@@ -18,6 +18,7 @@ class LLReader_Plugin_Filter_SearchEntry2Feed extends LLReader_Plugin {
                 $pattern = mb_convert_encoding($config['regex'], 'UTF-8', 'EUC-JP, SJIS, UTF-8');
                 if ( preg_match_all($pattern , $entry->title, $maches) ) {
                     $maches_entries[] = $entry;
+                    $llr->p(mb_convert_encoding($entry->title, 'EUC-JP', 'UTF-8'));
                 }
                 else {
                     unset($entry);
@@ -27,7 +28,7 @@ class LLReader_Plugin_Filter_SearchEntry2Feed extends LLReader_Plugin {
             error_reporting($err_rep);
         }
         //new LLReader_Feed($maches_entries[0]->__toString());
-        $llr->p($maches_entries[0]->title);
+        //$llr->p(mb_convert_encoding($maches_entries[0]->title, 'EUC-JP', 'UTF-8'));
     }
     
     private function entry2feed ($llr, $feed, $entries) {
