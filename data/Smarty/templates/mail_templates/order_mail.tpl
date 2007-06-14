@@ -3,9 +3,7 @@
  *
  * http://www.lockon.co.jp/
  *}-->
-<!--{$arrOrder.order_name01}--> <!--{$arrOrder.order_name02}--> 様
 
-<!--{*<!--{$tpl_header}-->*}-->
 
 ******************************************************************
 　配送情報とご請求金額
@@ -60,4 +58,3 @@
 今回加算される加算ポイント <!--{$arrOrder.add_point|default:0}--> pt
 保持ポイント <!--{$arrCustomer.point|default:0}--> pt
 
-<!--{*<!--{$tpl_footer}-->*}-->
