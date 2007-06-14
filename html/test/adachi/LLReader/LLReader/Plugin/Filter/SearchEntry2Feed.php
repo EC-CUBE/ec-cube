@@ -18,10 +18,10 @@ class LLReader_Plugin_Filter_SearchEntry2Feed extends LLReader_Plugin {
                 $pattern = mb_convert_encoding($config['regex'], 'UTF-8', 'EUC-JP, SJIS, UTF-8');
                 if ( preg_match_all($pattern , $entry->title, $maches) ) {
                     $maches_entries[] = $entry;
-                    $llr->p(mb_convert_encoding($entry->title, 'EUC-JP', 'UTF-8'));
+                    $llr->log($feed->title . ':' . mb_convert_encoding($entry->title, 'EUC-JP', 'UTF-8'));
                 }
                 else {
-                    unset($entry);
+                    
                 } 
             }
             
