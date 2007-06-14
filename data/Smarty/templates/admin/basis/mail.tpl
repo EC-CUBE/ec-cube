@@ -109,7 +109,8 @@ function lfnCheckSubmit(){
 										<!--{if $arrForm.template_id > 1}-->
 										<!--{html_radios_ex name="send_type" options=$arrSendType separator="&nbsp;" selected=$arrForm[$key]}-->
 										<!--{else}-->
-										<!--{html_radios_ex name="send_type" options=$arrSendType separator="&nbsp;" selected=$arrForm[$key] disabled=true}-->										
+										<!--{assign var="arrSendType" value="パソコン"}-->
+										<!--{html_radios_ex name="send_type" options=$arrSendType separator="&nbsp;" selected=$arrForm[$key]}-->
 										<!--{/if}-->
 										</td>
 									</tr>
