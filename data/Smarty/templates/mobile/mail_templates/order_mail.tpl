@@ -5,9 +5,6 @@
  * http://www.lockon.co.jp/
  */
 *}-->
-<!--{$arrOrder.order_name01}--> <!--{$arrOrder.order_name02}--> 様
-
-<!--{$tpl_header}-->
 
 
 ■配送情報とご請求金額
@@ -29,5 +26,3 @@
 金額：￥ <!--{$arrOrderDetail[cnt].price|sfPreTax:$arrInfo.tax:$arrInfo.tax_rule|number_format}-->
 
 <!--{/section}-->
-
-<!--{$tpl_footer}-->

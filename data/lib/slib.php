@@ -1727,12 +1727,13 @@ function sfSendOrderMail($order_id, $template_id, $subject = "", $body, $send = 
     $objPage->tpl_body = ereg_replace( "(\{name\})", $name ,  $objPage->tpl_body );
     $tmp_subject = ereg_replace( "(\{name\})", $name ,  $tmp_subject );
     
+    // $template_id==1は携帯用
     if($template_id == '1'){
 	   $body = $objMailView->fetch($arrMAILTPLPATH[1]);
-       $body = ereg_replace( "(\[\[body\]\])", $body ,  $objPage->tpl_body );
+       $body = ereg_replace( "(\{order\})", $body ,  $objPage->tpl_body );
     }else{
        $body = $objMailView->fetch($arrMAILTPLPATH[0]); 
-       $body = ereg_replace( "(\[\[body\]\])", $body ,  $objPage->tpl_body );
+       $body = ereg_replace( "(\{order\})", $body ,  $objPage->tpl_body );
     }
     
 	// メール送信処理
