@@ -107,9 +107,9 @@ function lfnCheckSubmit(){
 										<td bgcolor="#ffffff">
 										<!--{assign var=key value="send_type"}-->
 										<!--{if $arrForm.template_id > 1}-->
-										<!--{html_radios name="send_type" options=$arrSendType separator="&nbsp;" selected=$arrForm[$key]}-->
+										<!--{html_radios_ex name="send_type" options=$arrSendType separator="&nbsp;" selected=$arrForm[$key]}-->
 										<!--{else}-->
-										<!--{html_radios name="send_type" options=$arrSendType separator="&nbsp;" selected=$arrForm[$key] disabled=true}-->										
+										<!--{html_radios_ex name="send_type" options=$arrSendType separator="&nbsp;" selected=$arrForm[$key] disabled=true}-->										
 										<!--{/if}-->
 										</td>
 									</tr>
