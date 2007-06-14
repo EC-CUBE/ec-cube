@@ -110,11 +110,11 @@ function lfnCheckSubmit(){
 										<!--{html_radios_ex name="send_type" options=$arrSendType separator="&nbsp;" selected=$arrForm[$key]}-->
 										<!--{else}-->
 											<!--{if $arrForm.template_id=='0'}-->
-											<!--{assign var="arrSendType" value="パソコン"}-->
+											<input type="radio" name="send_type" value="0" id="send_type_0" checked="checked" /><label for="send_type_0">パソコン</label>&nbsp;
 											<!--{else}-->
-											<!--{assign var="arrSendType" value="携帯"}-->
+											<input type="radio" name="send_type" value="1" id="send_type_1" checked="checked" /><label for="send_type_1">携帯</label>&nbsp;
 											<!--{/if}-->
-										<!--{html_radios_ex name="send_type" options=$arrSendType separator="&nbsp;" selected=$arrForm[$key]}-->
+											<!--{* <!--{html_radios_ex name="send_type" options=$arrSendType separator="&nbsp;" selected=$arrForm[$key]}--> *}-->
 										<!--{/if}-->
 										</td>
 									</tr>
