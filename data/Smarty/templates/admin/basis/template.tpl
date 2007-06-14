@@ -54,6 +54,7 @@
 										<td width="40">削除</td>
 										<td width="70">プレビュー</td>
 									</tr>
+									<!--{*
 									<tr bgcolor="#ffffff" class="fs12n">
 										<td width="120" align="center"><!--{$default_template.create_date|escape}--></td>
 										<td width="333"><!--{$default_template.template_name|escape}--></td>
@@ -70,6 +71,7 @@
 										<td width="40" align="center">-</td>
 										<td width="70" align="center"><a href="" onclick="win03('./preview.php?mode=preview&id=1','preview','750','550'); return false;" target="_blank">プレビュー</a></td>
 									</tr>
+									*}-->
 									<!--{section name=data loop=$list_data}-->
 									<tr bgcolor="#ffffff" class="fs12n">
 										<td width="120" align="center"><!--{$list_data[data].create_date|escape}--></td>
