@@ -180,6 +180,7 @@ CREATE TABLE dtb_mailtemplate (
     subject text,
     header text,
     footer text,
+    body   text,
     creator_id int NOT NULL,
     del_flg smallint NOT NULL DEFAULT 0,
     create_date datetime NOT NULL ,

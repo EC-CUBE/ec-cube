@@ -89,6 +89,7 @@ INSERT INTO dtb_table_comment(table_name,column_name,description) values ('dtb_m
 INSERT INTO dtb_table_comment(table_name,column_name,description) values ('dtb_mailtemplate','subject','メールタイトル');
 INSERT INTO dtb_table_comment(table_name,column_name,description) values ('dtb_mailtemplate','header','ヘッダー文書');
 INSERT INTO dtb_table_comment(table_name,column_name,description) values ('dtb_mailtemplate','footer','フッター文書');
+INSERT INTO dtb_table_comment(table_name,column_name,description) values ('dtb_mailtemplate','body','本文文書');
 INSERT INTO dtb_table_comment(table_name,column_name,description) values ('dtb_mailtemplate','creator_id','作成した管理者ID');
 INSERT INTO dtb_table_comment(table_name,column_name,description) values ('dtb_mailtemplate','del_flg','0:既定、1:削除');
 INSERT INTO dtb_table_comment(table_name,column_name,description) values ('dtb_mailtemplate','create_date','作成日時');
