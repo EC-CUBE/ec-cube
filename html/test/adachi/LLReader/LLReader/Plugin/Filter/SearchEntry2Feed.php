@@ -26,8 +26,8 @@ class LLReader_Plugin_Filter_SearchEntry2Feed extends LLReader_Plugin {
             
             error_reporting($err_rep);
         }
-        new LLReader_Feed($maches_entries[0]->__toString());
-        $llr->p(mb_convert_encoding($maches_entries[0]->__toString(), 'SJIS', 'UTF-8'));
+        //new LLReader_Feed($maches_entries[0]->__toString());
+        //$llr->p(mb_convert_encoding($maches_entries[0]->__toString(), 'SJIS', 'UTF-8'));
     }
     
     private function entry2feed ($llr, $feed, $entries) {
