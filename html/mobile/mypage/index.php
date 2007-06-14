@@ -58,7 +58,7 @@ if($_POST['mode'] == 'login') {
 			$objCustomer->updateMobilePhoneId();
 
 			// 携帯のメールアドレスをコピーする。
-			$objCustomer->updateEmailMobile();
+			// $objCustomer->updateEmailMobile();
 
 			// 携帯のメールアドレスが登録されていない場合
 			if (!$objCustomer->hasValue('email_mobile')) {

@@ -69,14 +69,14 @@ $arrSearchColumn = array(
 							array(  "column" => "buy_end_year",		"convert" => "n" ),
 							array(  "column" => "buy_end_month",	"convert" => "n" ),
 							array(  "column" => "buy_end_day",		"convert" => "n" ),
-							array(  "column" => "buy_product_code",	"convert" => "aKV" )
-							,array(  "column" => "buy_product_name",	"convert" => "aKV" )
-							,array(  "column" => "category_id",	"convert" => "" )			
-							,array(  "column" => "buy_total_from",	"convert" => "n" )		
-							,array(  "column" => "buy_total_to",	"convert" => "n" )
-							,array(  "column" => "campaign_id",	"convert" => "" )
-							,array(  "column" => "mail_type",			"convert" => "" )
-
+							array(  "column" => "buy_product_code",	"convert" => "aKV" ),
+							array(  "column" => "buy_product_name", "convert" => "aKV" ),
+							array(  "column" => "category_id",	    "convert" => ""  ),		
+							array(  "column" => "buy_total_from",	"convert" => "n" ),	
+							array(  "column" => "buy_total_to",	    "convert" => "n" ),
+							array(  "column" => "campaign_id",	    "convert" => ""  ),
+							array(  "column" => "mail_type",		"convert" => ""  ),
+							array(  "column" => "domain",           "convert" => "" )
 					);
 
 //--------------------------------------------------------------------------------------------------------------------------------------
@@ -215,7 +215,7 @@ function lfErrorCheck($array, $flag = '') {
 
 	if ( $flag ){
 		$objErr->doFunc(array("テンプレート", "template_id"), array("EXIST_CHECK", "NUM_CHECK"));
-		$objErr->doFunc(array("メール送信法法", "mail_method"), array("EXIST_CHECK", "NUM_CHECK"));
+		$objErr->doFunc(array("メール送信方法", "mail_method"), array("EXIST_CHECK", "NUM_CHECK"));
 		
 		if(MELMAGA_BATCH_MODE) {
 			$objErr->doFunc(array("配信日（年）","send_year"), array("EXIST_CHECK", "NUM_CHECK"));
@@ -229,7 +229,7 @@ function lfErrorCheck($array, $flag = '') {
 		$objErr->doFunc(array("Subject", "subject", STEXT_LEN), array("EXIST_CHECK","MAX_LENGTH_CHECK"));
 		$objErr->doFunc(array("本文", 'body', LLTEXT_LEN), array("EXIST_CHECK","MAX_LENGTH_CHECK"));	// HTMLテンプレートを使用しない場合
 	}
-	
+
 	return $objErr->arrErr;
 }
 

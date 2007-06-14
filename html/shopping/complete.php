@@ -57,7 +57,14 @@ if ($uniqid != "") {
 
 	// 完了メール送信
 	if($order_id != "") {
-		sfSendOrderMail($order_id, '1');
+		$order_email = $objQuery->select("order_email", "dtb_order", "order_id = ?", array($order_id));
+    
+    //登録されているメールアドレスが携帯かPCかに応じて注文完了メールのテンプレートを変える
+    if(ereg("(ezweb.ne.jp$|docomo.ne.jp$|softbank.ne.jp$|vodafone.ne.jp$)",$order_email[0]['order_email'])){
+              sfSendOrderMail($order_id, '1',"","");
+        }else{
+              sfSendOrderMail($order_id, '0',"","");
+        }
 	}
 
 	// その他情報の取得
@@ -199,7 +206,7 @@ function lfDoComplete($objQuery, $uniqid) {
 	// 受注一時テーブルの情報を削除する。
 	lfDeleteTempOrder($objQuery, $uniqid);
 	// キャンペーンからの遷移の場合登録する。
-	if($objCampaignSess->getIsCampaign()) {
+	if($objCampaignSess->getIsCampaign() and $objCartSess->chkCampaign($objCampaignSess->getCampaignId())) {
 		lfRegistCampaignOrder($objQuery, $objCampaignSess, $order_id);
 	}
 	

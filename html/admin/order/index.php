@@ -247,8 +247,8 @@ case 'search':
 			// ページ送りの取得
 			$objNavi = new SC_PageNavi($_POST['search_pageno'], $linemax, $page_max, "fnNaviSearchPage", NAVI_PMAX);
 			$startno = $objNavi->start_row;
-			$objPage->arrPagenavi = $objNavi->arrPagenavi;		
-			
+			$objPage->arrPagenavi = $objNavi->arrPagenavi;
+		
 			// 取得範囲の指定(開始行番号、行数のセット)
 			$objQuery->setlimitoffset($page_max, $startno);
 			// 表示順序
@@ -262,7 +262,6 @@ case 'search':
 default:
 	break;
 }
-
 $objDate = new SC_Date();
 // 登録・更新日検索用
 $objDate->setStartYear(RELEASE_YEAR);

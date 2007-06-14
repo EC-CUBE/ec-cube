@@ -12,25 +12,58 @@ var flag = 0;
 function setFlag(){
 	flag = 1;
 }
+
 function checkFlagAndSubmit(){
 	if ( flag == 1 ){
 		if( confirm('内容が変更されています。続行すれば変更内容は破棄されます。\n宜しいでしょうか？' )){
-			fnSetvalAndSubmit( 'form1', 'mode', 'id_set' );
+			fnSetvalAndSubmit( 'form1', 'mode', 'edit' );
 		} else {
 			return false;
 		}
 	} else {
-		fnSetvalAndSubmit( 'form1', 'mode', 'id_set' );
+		fnSetvalAndSubmit( 'form1', 'mode', 'edit' );
 	}
 }
 
+function lfnCheckSubmit(){
+	
+	fm = document.form1;
+	var err = '';
+	
+	if ( ! fm["send_type"][0].checked && ! fm["send_type"][1].checked ){
+		err += 'メールの形式を入力して下さい。';
+	}
+	if ( ! fm["subject"].value ){
+		err += 'Subjectを入力して下さい。';
+	}
+	if ( ! fm["body"].value ){
+		if ( err ) err += '\n';
+		err += 'メールの本文を入力して下さい。';
+	}
+	if( ! fm["template_name"]){
+		if ( err ) err += '\n';
+		err += 'テンプレートの名前を入力して下さい。';
+	}
+	if ( err ){
+		alert(err);
+		return false;
+	} else {
+		if(window.confirm('内容を登録しても宜しいですか')){
+			return true;
+		}else{
+			return false;
+		}
+	}
+}
 //-->
 </script>
 
 <!--★★メインコンテンツ★★-->
 <table width="878" border="0" cellspacing="0" cellpadding="0" summary=" ">
-<form name="form1" id="form1" method="post" action="<!--{$smarty.server.PHP_SELF|escape}-->">
+<form name="form1" id="form1" method="POST" action="<!--{$smarty.server.PHP_SELF|escape}-->" onsubmit="return lfnCheckSubmit();" >
 <input type="hidden" name="mode" value="regist">
+<!--{assign var=key value="template_id"}-->
+<input type="hidden" name="template_id" value="<!--{$arrForm[$key]|escape}-->">
 	<tr valign="top">
 		<td background="<!--{$smarty.const.URL_DIR}-->img/contents/navi_bg.gif" height="402">
 			<!--▼SUB NAVI-->
@@ -69,15 +102,28 @@ function checkFlagAndSubmit(){
 								</table>
 
 								<table width="678" border="0" cellspacing="1" cellpadding="8" summary=" ">
+									<tr class="fs12n">
+										<td bgcolor="#f2f1ec">メール形式<span class="red"> *</span></td>
+										<td bgcolor="#ffffff">
+										<!--{assign var=key value="send_type"}-->
+										<!--{if $arrForm.template_id > 1}-->
+										<!--{html_radios_ex name="send_type" options=$arrSendType separator="&nbsp;" selected=$arrForm[$key]}-->
+										<!--{else}-->
+											<!--{if $arrForm.template_id=='0'}-->
+											<input type="radio" name="send_type" value="0" id="send_type_0" checked="checked" /><label for="send_type_0">パソコン</label>&nbsp;
+											<!--{else}-->
+											<input type="radio" name="send_type" value="1" id="send_type_1" checked="checked" /><label for="send_type_1">携帯</label>&nbsp;
+											<!--{/if}-->
+											<!--{* <!--{html_radios_ex name="send_type" options=$arrSendType separator="&nbsp;" selected=$arrForm[$key]}--> *}-->
+										<!--{/if}-->
+										</td>
+									</tr>
 									<tr>
 										<td bgcolor="#f2f1ec" width="160" class="fs12n">テンプレート<span class="red"> *</span></td>
 										<td bgcolor="#ffffff" width="557" class="fs10n">
-										<!--{assign var=key value="template_id"}-->
+										<!--{assign var=key value="template_name"}-->
 										<span class="red12"><!--{$arrErr[$key]}--></span>
-										<select name="template_id" onChange="return checkFlagAndSubmit();" style="<!--{$arrErr[$key]|sfGetErrorColor}-->">
-										<option value="" selected="selected">選択してください</option>
-										<!--{html_options options=$arrMailTEMPLATE selected=$arrForm[$key]}-->
-										</select>
+										<input type="text" name="template_name" value="<!--{$arrForm[$key]|escape}-->" onChange="setFlag();" size="30" class="box30" style="<!--{$arrErr[$key]|sfGetErrorColor}-->">
 										</td>
 									</tr>
 									<tr>
@@ -89,40 +135,25 @@ function checkFlagAndSubmit(){
 										</td>
 									</tr>
 									<tr>
-										<td bgcolor="#f2f1ec" width="160" class="fs12">ヘッダー</td>
+										<td bgcolor="#f2f1ec" colspan="2" class="fs12n"><span class="red"> *</span>名前を差し込む場合は、{name}と入力して下さい。<br>
+										<span class="red"> *</span>注文情報を差し込む場合は、{order}と入力して下さい。</td>
+									</tr>
+									<tr>
+										<td bgcolor="#f2f1ec" width="160" class="fs12">本文</td>
 										<td bgcolor="#ffffff" width="557" class="fs10">
-										<!--{assign var=key value="header"}-->
+										<!--{assign var=key value="body"}-->
 										<span class="red12"><!--{$arrErr[$key]}--></span>
-										<textarea name="header" cols="75" rows="12" class="area75" onChange="setFlag();" style="<!--{$arrErr[$key]|sfGetErrorColor}-->"><!--{$arrForm[$key]|escape}--></textarea><br />
+										<textarea name="body" cols="75" rows="20" class="area75" onChange="setFlag();" style="<!--{$arrErr[$key]|sfGetErrorColor}-->"><!--{$arrForm[$key]|escape}--></textarea><br />
 										<span class="red"> （上限<!--{$smarty.const.LTEXT_LEN}-->文字）
 										</span>
 						
 										<div align="right">
-											<input type="button" width="110" height="30" value="文字数カウント" onclick="fnCharCount('form1','header','cnt_header');" border="0" name="next" id="next" />
+											<input type="button" width="110" height="30" value="文字数カウント" onclick="fnCharCount('form1','body','cnt_body');" border="0" name="next" id="next" />
 											<br>今までに入力したのは
-											<input type="text" name="cnt_header" size="4" class="box4" readonly = true style="text-align:right">
+											<input type="text" name="cnt_body" size="4" class="box4" readonly = true style="text-align:right">
 											文字です。
 										</div>
 						
-										</td>
-									</tr>
-						
-									<tr class="fs12n">
-										<td bgcolor="#ffffff" colspan="2" align="center" height="40">動的データ挿入部分</td>
-									</tr>
-									<tr>
-										<td bgcolor="#f2f1ec" width="160" class="fs12">フッター</td>
-										<td bgcolor="#ffffff" width="557" class="fs10">
-										<!--{assign var=key value="footer"}-->
-										<span class="red12"><!--{$arrErr[$key]}--></span>
-										<textarea name="footer" cols="75" rows="12" class="area75" onChange="setFlag();" style="<!--{$arrErr[$key]|sfGetErrorColor}-->"><!--{$arrForm[$key]|escape}--></textarea><br />
-										<span class="red"> （上限<!--{$smarty.const.LTEXT_LEN}-->文字）</span>
-										<div align="right">
-											<input type="button" width="110" height="30" value="文字数カウント" onclick="fnCharCount('form1','footer','cnt_footer');" border="0" name="next" id="next" />
-											<br>今までに入力したのは
-											<input type="text" name="cnt_footer" size="4" class="box4" readonly = true style="text-align:right">
-											文字です。
-										</div>
 										</td>
 									</tr>
 								</table>

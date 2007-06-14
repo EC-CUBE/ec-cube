@@ -106,6 +106,7 @@ case 'search':
 		}
 				
 		$page = $objFormParam->getValue('page');
+        
 		switch($page) {
 		// 商品別集計
 		case 'products':
@@ -200,7 +201,7 @@ case 'search':
 	break;
 default:
 	if(count($_GET) == 0) {
-		// バッチモードの場合のみ実行する
+		// バッチモードの場合のみ実行する（当日の集計を行うため）
 		if(DAILY_BATCH_MODE) {
 			// 3日前までの集計
 			lfStartDailyTotal(3,0);
@@ -208,7 +209,6 @@ default:
 	}
 	break;
 }
-
 
 $objPage->install_GD = $install_GD;
 
@@ -621,6 +621,8 @@ function lfGetOrderMember($type, $sdate, $edate, $objPage, $graph = true) {
 /** 商品別集計 **/
 function lfGetOrderProducts($type, $sdate, $edate, $objPage, $graph = true, $mode = "") {
 	list($where, $arrval) = lfGetWhereMember('create_date', $sdate, $edate, $type);
+    
+    $where .= " and del_flg=0 and status <> " . ORDER_CANCEL;
 	
     $where .= " and del_flg=0 and status <> " . ORDER_CANCEL;
     
@@ -658,12 +660,12 @@ function lfGetOrderJob($type, $sdate, $edate, $objPage, $graph = true) {
 	list($where, $arrval) = lfGetWhereMember('T2.create_date', $sdate, $edate, $type);
 	
 	$sql = "SELECT job, count(*) AS order_count, SUM(total) AS total, (AVG(total)) AS total_average ";
-	$sql.= "FROM dtb_customer AS T1 LEFT JOIN dtb_order AS T2 USING ( customer_id ) WHERE $where AND T2.del_flg = 0 ";
-	$sql.= "GROUP BY job ORDER BY total DESC";
+	$sql.= "FROM dtb_customer AS T1 LEFT JOIN dtb_order AS T2 USING ( customer_id ) WHERE $where AND T2.del_flg = 0 and T2.status <> " . ORDER_CANCEL;
+	$sql.= " GROUP BY job ORDER BY total DESC";
 	
 	$objQuery = new SC_Query();
 	$objPage->arrResults = $objQuery->getall($sql, $arrval);
-			
+    
 	$max = count($objPage->arrResults);
 	for($i = 0; $i < $max; $i++) {
 		$job_key = $objPage->arrResults[$i]['job'];
@@ -807,7 +809,7 @@ function lfGetOrderTerm($type, $sdate, $edate, $objPage, $graph = true) {
 		
 		// 検索結果の取得
 		$objPage->arrResults = $objQuery->select($col, $from, $where, $arrval);
-		
+        
 		// 折れ線グラフの生成	
 		if($graph) {
 			$image_key = "term_" . $type;

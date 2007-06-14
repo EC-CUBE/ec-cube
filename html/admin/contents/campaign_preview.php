@@ -37,6 +37,7 @@ switch($_GET['status']) {
 
 // ディレクトリ名を取得名		
 $directory_name = $objQuery->get("dtb_campaign", "directory_name", "campaign_id = ?", array($_GET['campaign_id']));
+$objPage->dir_name = $directory_name;
 
 $template_dir = CAMPAIGN_TEMPLATE_PATH . $directory_name  . "/" . $status . "preview.tpl";
 

@@ -5,7 +5,7 @@
  * http://www.lockon.co.jp/
  */
 *}-->
-<!--{$arrOrder.order_name01}--> <!--{$arrOrder.order_name02}--> 様
+
 
 ■配送情報とご請求金額
 ご注文番号：<!--{$arrOrder.order_id}-->

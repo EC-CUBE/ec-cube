@@ -111,11 +111,22 @@ self.moveTo(20,20);self.focus();
 											<td bgcolor="#f0f0f0" width="110">メールアドレス</td>
 											<td bgcolor="#ffffff" width="507" colspan="3"><!--{$list_data.email|escape|default:"（未指定）"}--></td>
 										</tr>
+										
 										<tr class="fs12n">
+											<td bgcolor="#f0f0f0" width="110">携帯メールアドレス</td>
+											<td bgcolor="#ffffff" width="507" colspan="3"><!--{$list_data.email_mobile|escape|default:"（未指定）"}--></td>
+										</tr>
+										
+										<tr class="fs12n">
+											<td bgcolor="#f0f0f0" width="110">ドメイン指定</td>
+											<td bgcolor="#ffffff" width="507" colspan="3"><!--{$list_data.domain_disp|escape|default:"（未指定）"}--></td>
+										</tr>
+							            
+							            <tr class="fs12n">
 											<td bgcolor="#f0f0f0" width="110">職業</td>
 											<td bgcolor="#ffffff" width="507" colspan="3"><!--{$list_data.job_disp|escape|default:"（未指定）"}--></td>
 										</tr>
-							
+										
 										<tr class="fs12n">
 											<td bgcolor="#f0f0f0" width="110">生年月日</td>
 											<td bgcolor="#ffffff" width="507" colspan="3">

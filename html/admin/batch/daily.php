@@ -48,7 +48,7 @@ function lfStartDailyTotal($term, $start, $command = false) {
 	$pass = $now_time - strtotime($batch_last);
 		
 	// 最後のバッチ実行からLOAD_BATCH_PASS秒経過していないと実行しない。
-	if($pass < LOAD_BATCH_PASS) {
+	if(!$command && $pass < LOAD_BATCH_PASS) {
 		gfPrintLog("LAST BATCH " . $arrRet[0]['create_date'] . " > " . $batch_pass . " -> EXIT BATCH $batch_date");
 		return;
 	}
@@ -65,8 +65,13 @@ function lfStartDailyTotal($term, $start, $command = false) {
 		lfBatOrderDailyHour($tmp_time);
 		lfBatOrderAge($tmp_time);
 		
-		// タイムアウトを防ぐ
-		sfFlush();
+        // ブラウザからの実行の場合
+        if(!$command) {
+            // タイムアウトを防ぐ
+            sfFlush();
+        } else {
+            print("LOADING BATCH $batch_date\n");
+        }
 	}
 }
 
@@ -90,7 +95,7 @@ function lfRealTimeDailyTotal($sdate, $edate) {
 			list($order_date) = split("\.", $arrRet[0]['order_date']);
 			$create_time = strtotime($create_date);
 			$order_time = strtotime($order_date);
-			// オーダー開始日より一日以上後に集計されている場合は集計しなおさない
+			// 集計開始日より1日以上後に集計されている場合は集計しなおさない
 			if($order_time + 86400 < $create_time || $tmp_time > time()) {
 				gfPrintLog("EXIT BATCH $batch_date $tmp_time" . " " . time());
 				continue;

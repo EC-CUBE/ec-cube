@@ -16,6 +16,7 @@
 <script type="text/javascript" src="<!--{$smarty.const.URL_DIR}-->js/navi.js"></script>
 <script type="text/javascript" src="<!--{$smarty.const.URL_DIR}-->js/win_op.js"></script>
 <script type="text/javascript" src="<!--{$smarty.const.URL_DIR}-->js/site.js"></script>
+<script type="text/javascript" src="<!--{$smarty.const.URL_DIR}-->js/json.js"></script>
 <title><!--{$arrSiteInfo.shop_name}-->/<!--{$tpl_title|escape}--></title>
 <meta name="author" content="<!--{$arrPageLayout.author|escape}-->">
 <meta name="description" content="<!--{$arrPageLayout.description|escape}-->">

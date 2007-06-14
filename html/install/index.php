@@ -7,7 +7,6 @@
 require_once("../require.php");
 $INSTALL_DIR = realpath(dirname( __FILE__));
 require_once("../" . HTML2DATA_DIR . "module/Request.php");
-
 define("INSTALL_LOG", "./temp/install.log");
 
 class LC_Page {
@@ -19,7 +18,7 @@ class LC_Page {
 		$this->arrDB_PORT = array(
 			'pgsql' => '',
 			'mysql' => ''	
-		);
+		);    
 	}
 }
 
@@ -109,7 +108,7 @@ case 'step3':
 	$objPage->arrErr = lfAddTable("dtb_mobile_ext_session_id", $dsn);	// セッションID管理テーブル
 	$objPage->arrErr = lfAddTable("dtb_site_control", $dsn);	// サイト情報管理テーブル
 	$objPage->arrErr = lfAddTable("dtb_trackback", $dsn);	// トラックバック管理テーブル
-	
+    $objPage->arrErr = lfAddTable("dtb_blayn", $dsn);   // ブレインIP管理テーブル	
 	
 	// カラムを追加
 	lfAddColumn($dsn);
@@ -206,6 +205,7 @@ case 'drop':
 	lfDropTable("dtb_mobile_kara_mail", $dsn);
 	lfDropTable("dtb_site_control", $dsn);
 	lfDropTable("dtb_trackback", $dsn);
+    lfDropTable("dtb_blayn", $dsn);
 			
 	if ($arrRet['db_type'] == 'pgsql'){
 		// ビューの削除
@@ -408,6 +408,10 @@ function lfDispStep0($objPage) {
 		$path = ".." . HTML2DATA_DIR . "Smarty/templates_c/admin";
 		if(!file_exists($path)) {
 			mkdir($path);
+		}
+		$path = ".." . HTML2DATA_DIR . "Smarty/templates_c/mobile";
+		if(!file_exists($path)) {
+			mkdir($path); 
 		}
 		$path = "../upload/temp_template";
 		if(!file_exists($path)) {
@@ -823,37 +827,6 @@ function lfMakeConfigFile() {
 		fwrite($fp, $config_data);
 		fclose($fp);
 	}
-/* install_mobile.incは使用しない用に変更
-
-	// モバイル版の設定ファイル install_mobile.inc を作成する。
-	$filepath = $data_path . "install_mobile.inc";
-	
-	$config_data = 
-	"<?php\n".
-	"    define ('ECCUBE_INSTALL', 'ON');\n" .
-	"    define ('HTML_PATH', '" . $root_dir . "mobile/');\n" .	 
-	"    define ('PC_HTML_PATH', '" . $root_dir . "');\n" .	 
-	"    define ('SITE_URL', '" . $normal_url . "mobile/');\n" .
-	"    define ('PC_SITE_URL', '" . $normal_url . "');\n" .
-	"    define ('SSL_URL', '" . $secure_url . "mobile/');\n" .
-	"    define ('PC_SSL_URL', '" . $secure_url . "');\n" .
-	"    define ('URL_DIR', '" . $url_dir . "mobile/');\n" .	
-	"    define ('PC_URL_DIR', '" . $url_dir . "');\n" .	
-	"    define ('DOMAIN_NAME', '" . $objWebParam->getValue('domain') . "');\n" .
-	"    define ('DB_TYPE', '" . $objDBParam->getValue('db_type') . "');\n" .
-	"    define ('DB_USER', '" . $objDBParam->getValue('db_user') . "');\n" . 
-	"    define ('DB_PASSWORD', '" . $objDBParam->getValue('db_password') . "');\n" .
-	"    define ('DB_SERVER', '" . $objDBParam->getValue('db_server') . "');\n" .
-	"    define ('DB_NAME', '" . $objDBParam->getValue('db_name') . "');\n" .
-	"    define ('DB_PORT', '" . $objDBParam->getValue('db_port') .  "');\n" .
-	"    define ('DATA_PATH', '".$data_path."');\n" .
-	"?>";
-	
-	if($fp = fopen($filepath,"w")) {
-		fwrite($fp, $config_data);
-		fclose($fp);
-	}
-*/
 }
 
 // テーブルの追加（既にテーブルが存在する場合は作成しない）

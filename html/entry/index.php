@@ -230,7 +230,6 @@ function lfRegistData ($array, $arrRegistColumn, $arrRejectRegistColumn, $confir
 			$count = $objConn->getOne("SELECT COUNT(*) FROM dtb_customer WHERE secret_key = ?", array($uniqid));
 		}
 		$arrRegist["status"] = "2";				// ËÜ²ñ°÷
-		$arrRegist["status"] = $arrInfo['welcome_point'];
 	}
 	
 	/*

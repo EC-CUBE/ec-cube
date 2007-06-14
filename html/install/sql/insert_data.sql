@@ -219,26 +219,47 @@ insert into dtb_csv(csv_id,col,disp_name,rank,create_date,update_date)values(4,'
 
 INSERT INTO dtb_templates (template_code, template_name, create_date, update_date) VALUES('default1','デフォルト1', now(), now());
 
-insert into dtb_mailtemplate (template_id, subject, header, footer, creator_id, update_date, create_date) values (
-1,
+insert into dtb_mailtemplate (template_id, subject, body, creator_id, update_date, create_date, send_type, template_name) values (
+0,
 'ご注文ありがとうございます。',
-'この度はご注文いただき誠に有難うございます。
+'{name}様
+
+この度はご注文いただき誠に有難うございます。
 下記ご注文内容にお間違えがないかご確認下さい。
 
-',
-'
-
-==============================================================☆
-
+{order}
 
 このメッセージはお客様へのお知らせ専用ですので、
 このメッセージへの返信としてご質問をお送りいただいても回答できません。
 ご了承ください。
 
-ご質問やご不明な点がございましたら、こちらからお願いいたします。
-http://------.co.jp
+ご質問やご不明な点がございましたら、こちらからお願いいたします。',
+0,
+Now(),
+Now(),
+0,
+'受注完了テンプレート(PC用)');
 
-',0,Now(), now());
+insert into dtb_mailtemplate (template_id, subject, body, creator_id, update_date, create_date, send_type, template_name) values (
+1,
+'ご注文ありがとうございます。',
+'{name}様
+
+この度はご注文いただき誠に有難うございます。
+下記ご注文内容にお間違えがないかご確認下さい。
+
+{order}
+
+このメッセージはお客様へのお知らせ専用ですので、
+このメッセージへの返信としてご質問をお送りいただいても回答できません。
+ご了承ください。
+
+ご質問やご不明な点がございましたら、こちらからお願いいたします。',
+0,
+Now(),
+Now(),
+1,
+'受注完了テンプレート(携帯用)');
 
 insert into dtb_news (news_date,rank, news_title, news_comment, creator_id, create_date, update_date) 
 values(now(),1,'サイトオープンいたしました!','一人暮らしからオフィスなどさまざまなシーンで あなたの生活をサポートするグッズをご家庭へお届けします！一人暮らしからオフィスなどさまざまなシーンで あなたの生活をサポートするグッズをご家庭へお届けします！一人暮らしからオフィスなどさまざまなシーンで あなたの生活をサポートするグッズをご家庭へお届けします！',1, now(), now());

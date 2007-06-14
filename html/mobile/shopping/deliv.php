@@ -95,7 +95,7 @@ case 'login':
 	$objCustomer->updateMobilePhoneId();
 
 	// 携帯のメールアドレスをコピーする。
-	$objCustomer->updateEmailMobile();
+	// $objCustomer->updateEmailMobile();
 
 	// 携帯のメールアドレスが登録されていない場合
 	if (!$objCustomer->hasValue('email_mobile')) {
@@ -188,6 +188,7 @@ $col = "name01, name02, pref, addr01, addr02, zip01, zip02";
 $where = "customer_id = ?";
 $objQuery = new SC_Query();
 $arrCustomerAddr = $objQuery->select($col, "dtb_customer", $where, array($_SESSION['customer']['customer_id']));
+
 // 別のお届け先住所の取得
 $col = "other_deliv_id, name01, name02, pref, addr01, addr02, zip01, zip02";
 $objQuery->setorder("other_deliv_id DESC");

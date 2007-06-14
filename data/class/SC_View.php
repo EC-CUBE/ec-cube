@@ -43,7 +43,7 @@ class SC_View {
 		$this->_smarty->register_function("str_replace","str_replace");
 		$this->_smarty->register_function("sfPrintEbisTag","sfPrintEbisTag");
 		$this->_smarty->register_function("sfPrintAffTag","sfPrintAffTag");
-        $this->_smarty->default_modifiers = array('script_escape');
+		$this->_smarty->default_modifiers = array('script_escape');
         
 		if(ADMIN_MODE == '1') {		
 			$this->time_start = time();
@@ -95,6 +95,10 @@ class SC_View {
 			$time = $time_end - $this->time_start;
 			print("処理時間:" . $time . "秒");
 		}
+        
+        if (DEBUG_MODE === true) {
+            print($_SERVER["SERVER_ADDR"]."-");
+        }
 	}
   	
   	// オブジェクト内の変数をすべて割り当てる。

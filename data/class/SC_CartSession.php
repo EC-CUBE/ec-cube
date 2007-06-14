@@ -172,7 +172,7 @@ class SC_CartSession {
 	}
 	
 	// カートへの商品追加
-	function addProduct($id, $quantity) {
+	function addProduct($id, $quantity, $campaign_id = "") {
 		$find = false;
 		$max = $this->getMax();
 		for($i = 0; $i <= $max; $i++) {
@@ -181,6 +181,10 @@ class SC_CartSession {
 				$val = $_SESSION[$this->key][$i]['quantity'] + $quantity;
 				if(strlen($val) <= INT_LEN) {
 					$_SESSION[$this->key][$i]['quantity']+= $quantity;
+                    if(!empty($campaign_id)){
+                        $_SESSION[$this->key][$i]['campaign_id'] = $campaign_id;
+                        $_SESSION[$this->key][$i]['is_campaign'] = true;
+                    }
 				}
 				$find = true;
 			}
@@ -189,6 +193,10 @@ class SC_CartSession {
 			$_SESSION[$this->key][$max+1]['id'] = $id;
 			$_SESSION[$this->key][$max+1]['quantity'] = $quantity;
 			$_SESSION[$this->key][$max+1]['cart_no'] = $this->getNextCartID();
+            if(!empty($campaign_id)){
+                $_SESSION[$this->key][$max+1]['campaign_id'] = $campaign_id;
+                $_SESSION[$this->key][$max+1]['is_campaign'] = true;
+            }
 		}
 	}
 	
@@ -321,6 +329,21 @@ class SC_CartSession {
 			}
 		}
 	}
-	
+    
+    /**
+     * カートの中のキャンペーン商品のチェック
+     * @param integer $campaign_id キャンペーンID
+     * @return boolean True:キャンペーン商品有り False:キャンペーン商品無し
+     */
+	function chkCampaign($campaign_id){
+		$max = $this->getMax();
+		for($i = 0; $i <= $max; $i++) {
+			if($_SESSION[$this->key][$i]['is_campaign'] and $_SESSION[$this->key][$i]['campaign_id'] == $campaign_id) return true;
+		}
+        
+		return false;
+	}
+    
+
 }
 ?>

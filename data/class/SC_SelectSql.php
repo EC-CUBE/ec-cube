@@ -26,7 +26,7 @@ class SC_SelectSql {
 		}
 	}
 
-	//-- SQL分生成
+	//-- SQL文生成
 	function getSql( $mode = "" ){
 		$this->sql = $this->select ." ". $this->where ." ". $this->group ." ";
 						
@@ -195,7 +195,7 @@ class SC_SelectSql {
 			}
 		}
 	}
-
+	
 	function setOrder($order){
 		
 			$this->order =  "ORDER BY " . $order;

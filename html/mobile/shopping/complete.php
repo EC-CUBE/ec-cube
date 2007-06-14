@@ -55,9 +55,16 @@ if ($uniqid != "") {
 	// セッションに保管されている情報を更新する
 	$objCustomer->updateSession();
 
-	// 完了メール送信
+	// 完了メール送信 4は携帯版
 	if($order_id != "") {
-		sfSendOrderMail($order_id, '1');
+		$order_email = $objQuery->select("order_email", "dtb_order", "order_id = ?", array($order_id));
+    
+    //登録されているメールアドレスが携帯かPCかに応じて注文完了メールのテンプレートを変える
+    if(ereg("(ezweb.ne.jp$|docomo.ne.jp$|softbank.ne.jp$|vodafone.ne.jp$)",$order_email[0]['order_email'])){
+              sfSendOrderMail($order_id, '1', '', '');
+        }else{
+              sfSendOrderMail($order_id, '0', '', '');
+        }
 	}
 
 	//その他情報の取得
@@ -256,7 +263,7 @@ function lfRegistPreCustomer($arrData, $arrInfo) {
 	$objMailPage->uniqid = $sqlval['secret_key'];
 	$objMailView = new SC_SiteView();
 	$objMailView->assignobj($objMailPage);
-	$body = $objMailView->fetch("mail_templates/customer_mail.tpl");
+	$body = $objMailView->fetch("/mail_templates/customer_mail.tpl");
 	
 	$objMail = new GC_SendMail();
 	$objMail->setItem(
@@ -272,6 +279,7 @@ function lfRegistPreCustomer($arrData, $arrInfo) {
 														);
 	// 宛先の設定
 	$name = $arrData['order_name01'] . $arrData['order_name02'] ." 様";
+	$arrData['order_email'] = $objQuery->select("email_mobile", "dtb_customer", "secret_key = ?", array($sqlval['secret_key']));
 	$objMail->setTo($arrData['order_email'], $name);			
 	$objMail->sendMail();
 	

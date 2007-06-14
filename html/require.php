@@ -4,11 +4,10 @@
  *
  * http://www.lockon.co.jp/
  */
-
+ 
 $include_dir = realpath(dirname( __FILE__));
 require_once($include_dir . "/define.php");
-
-require_once($include_dir . HTML2DATA_DIR. "conf/conf.php");	
+require_once($include_dir . HTML2DATA_DIR. "conf/conf.php");
 require_once($include_dir . HTML2DATA_DIR . "include/module.inc");
 require_once($include_dir . HTML2DATA_DIR . "lib/glib.php");
 require_once($include_dir . HTML2DATA_DIR . "lib/slib.php");

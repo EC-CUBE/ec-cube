@@ -1658,8 +1658,10 @@ function sfSendTemplateMail($to, $to_name, $template_id, $objPage) {
 	$objSendMail->sendMail();	// メール送信
 }
 
-/* 受注完了メール送信 */
-function sfSendOrderMail($order_id, $template_id, $subject = "", $header = "", $footer = "", $send = true) {
+/** 受注完了メール送信
+ *  $template_id が 1：携帯用テンプレート、0：PC用テンプレート
+ */
+function sfSendOrderMail($order_id, $template_id, $subject = "", $body, $send = true) {
 	global $arrMAILTPLPATH;
 	
 	$objPage = new LC_Page();
@@ -1669,16 +1671,14 @@ function sfSendOrderMail($order_id, $template_id, $subject = "", $header = "", $
 	
 	$objQuery = new SC_Query();
 		
-	if($subject == "" && $header == "" && $footer == "") {
+	if($subject == "" && $body == "" ) {
 		// メールテンプレート情報の取得
 		$where = "template_id = ?";
-		$arrRet = $objQuery->select("subject, header, footer", "dtb_mailtemplate", $where, array('1'));
-		$objPage->tpl_header = $arrRet[0]['header'];
-		$objPage->tpl_footer = $arrRet[0]['footer'];
+		$arrRet = $objQuery->select("subject, body", "dtb_mailtemplate", $where, array($template_id));
+		$objPage->tpl_body = $arrRet[0]['body'];
 		$tmp_subject = $arrRet[0]['subject'];
 	} else {
-		$objPage->tpl_header = $header;
-		$objPage->tpl_footer = $footer;
+		$objPage->tpl_body = $body;
 		$tmp_subject = $subject;
 	}
 	
@@ -1692,7 +1692,7 @@ function sfSendOrderMail($order_id, $template_id, $subject = "", $header = "", $
 		
 	// 顧客情報の取得
 	$customer_id = $arrOrder['customer_id'];
-	$arrRet = $objQuery->select("point", "dtb_customer", "customer_id = ?", array($customer_id));
+	$arrRet = $objQuery->select("point,name01,name02", "dtb_customer", "customer_id = ?", array($customer_id));
 	$arrCustomer = $arrRet[0];
 
 	$objPage->arrCustomer = $arrCustomer;
@@ -1723,8 +1723,19 @@ function sfSendOrderMail($order_id, $template_id, $subject = "", $header = "", $
 	$objMailView = new SC_SiteView();
 	// メール本文の取得
 	$objMailView->assignobj($objPage);
-	$body = $objMailView->fetch($arrMAILTPLPATH[$template_id]);
-	
+    $name = $objPage->arrCustomer['name01']." ".$objPage->arrCustomer['name02'];
+    $objPage->tpl_body = ereg_replace( "(\{name\})", $name ,  $objPage->tpl_body );
+    $tmp_subject = ereg_replace( "(\{name\})", $name ,  $tmp_subject );
+    
+    // $template_id==1は携帯用
+    if($template_id == '1'){
+	   $body = $objMailView->fetch($arrMAILTPLPATH[1]);
+       $body = ereg_replace( "(\{order\})", $body ,  $objPage->tpl_body );
+    }else{
+       $body = $objMailView->fetch($arrMAILTPLPATH[0]); 
+       $body = ereg_replace( "(\{order\})", $body ,  $objPage->tpl_body );
+    }
+    
 	// メール送信処理
 	$objSendMail = new GC_SendMail();
 	$bcc = $arrInfo['email01'];
@@ -1743,7 +1754,6 @@ function sfSendOrderMail($order_id, $template_id, $subject = "", $header = "", $
 			sfSaveMailHistory($order_id, $template_id, $tosubject, $body);
 		}
 	}
-
 	return $objSendMail;
 }
 
@@ -2922,14 +2932,39 @@ function sfSendPostData($url, $arrData, $arrOkCode = array()){
 	return $response;
 }
 
-/* デバッグ用 ------------------------------------------------------------------------------------------------*/
-function sfPrintR($obj) {
-	print("<div style='font-size: 12px;color: #00FF00;'>\n");
-	print("<strong>**デバッグ中**</strong><br />\n");
-	print("<pre>\n");
-	print_r($obj);
-	print("</pre>\n");
-	print("<strong>**デバッグ中**</strong></div>\n");
+/** デバッグ用関数 **/
+
+/**
+ *  渡された変数をDumpする
+ *
+ *  @param  mixed  $obj   Dumpしたい変数
+ *  @param  string $color 出力する色
+ *  
+ *  @return void なし
+ */
+function sfPrintR($obj, $color='green') {
+    if ( DEBUG_MODE === false ) {
+        return;
+    }
+    
+    $arrColor = array(
+        'green' => '#00FF00',
+        'red'   => '#FF0000',
+        'blue'  => '#0000FF'
+    );
+    
+    if ( empty($arrColor[$color]) ) {
+        $color = $arrColor['green'];
+    } else {
+        $color = $arrColor[$color];
+    }
+    
+    print("<div style='font-size: 12px;color: $color;'>\n");
+    print("<strong>**デバッグ中**</strong><br />\n");
+    print("<pre>\n");
+    print_r($obj);
+    print("</pre>\n");
+    print("<strong>**デバッグ中**</strong></div>\n");
 }
 
 ?>

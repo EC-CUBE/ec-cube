@@ -129,7 +129,7 @@ function lfMakeDirectory($path) {
 // 更新情報を最新にする
 function lfLoadUpdateList() {
 	$objQuery = new SC_Query();
-	$path = UPDATE_HTTP . "module.txt";
+	$path = UPDATE_HTTP . MODULE_CSV;
 	$fp = @fopen($path, "rb");
 	
 	$arrInsID = array();

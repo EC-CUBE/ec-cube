@@ -25,22 +25,23 @@
 						<td colspan="3"><img src="<!--{$smarty.const.URL_DIR}-->img/contents/main_top.jpg" width="706" height="14" alt=""></td>
 					</tr>
 					<tr>
+						<!--{if $arrBlaynEngine.now_version > 0 && $arrBlaynEngine.blayn_ip > 0}--><!--{assign var=key value="4"}--><!--{else}--><!--{assign var=key value="3"}--><!--{/if}-->
 						<td background="<!--{$smarty.const.URL_DIR}-->img/contents/main_left.jpg"><img src="<!--{$smarty.const.URL_DIR}-->img/common/_.gif" width="14" height="1" alt=""></td>
 						<td bgcolor="#cccccc">
 						<table width="678" border="0" cellspacing="0" cellpadding="0" summary=" ">
 							<tr>
-								<td colspan="3"><img src="<!--{$smarty.const.URL_DIR}-->img/contents/contents_title_top.gif" width="678" height="7" alt=""></td>
+								<td colspan="<!--{$key}-->"><img src="<!--{$smarty.const.URL_DIR}-->img/contents/contents_title_top.gif" width="678" height="7" alt=""></td>
 							</tr>
 							<tr>
 								<td background="<!--{$smarty.const.URL_DIR}-->img/contents/contents_title_left_bg.gif"><img src="<!--{$smarty.const.URL_DIR}-->img/contents/contents_title_left.gif" width="22" height="12" alt=""></td>
-								<td bgcolor="#636469" width="638" class="fs14n"><span class="white"><!--コンテンツタイトル-->配信先検索条件設定</span></td>
+								<td bgcolor="#636469" width="638" class="fs14n"><span class="white"><!--コンテンツタイトル-->配信先検索条件設定</span><!--{if $arrBlaynEngine.now_version > 0 && $arrBlaynEngine.blayn_ip > 0}--></td><td align="right"><img src="<!--{$smarty.const.URL_DIR}-->img/contents/blayn_icon.jpg"><!--{/if}--></td>
 								<td background="<!--{$smarty.const.URL_DIR}-->img/contents/contents_title_right_bg.gif"><img src="<!--{$smarty.const.URL_DIR}-->img/common/_.gif" width="18" height="1" alt=""></td>
 							</tr>
 							<tr>
-								<td colspan="3"><img src="<!--{$smarty.const.URL_DIR}-->img/contents/contents_title_bottom.gif" width="678" height="7" alt=""></td>
+								<td colspan="<!--{$key}-->"><img src="<!--{$smarty.const.URL_DIR}-->img/contents/contents_title_bottom.gif" width="678" height="7" alt=""></td>
 							</tr>
 							<tr>
-								<td colspan="3"><img src="<!--{$smarty.const.URL_DIR}-->img/contents/main_bar.jpg" width="678" height="10" alt=""></td>
+								<td colspan="<!--{$key}-->"><img src="<!--{$smarty.const.URL_DIR}-->img/contents/main_bar.jpg" width="678" height="10" alt=""></td>
 							</tr>
 						</table>
 						
@@ -92,7 +93,7 @@
 								<td bgcolor="#f2f1ec" width="110">配信形式</td>
 								<td bgcolor="#ffffff" width="194">
 									<!--{if $arrErr.htmlmail}--><span class="red12"><!--{$arrErr.htmlmail}--></span><br /><!--{/if}-->
-									<!--{html_radios name="htmlmail" options=$arrHtmlmail separator="&nbsp;" selected=$list_data.htmlmail}-->
+									<!--{html_radios name="htmlmail" options=$arrHtmlmail separator="&nbsp;" selected=$htmlmail}-->
 								</td>
 								<td bgcolor="#f2f1ec" width="110">購入回数</td>
 								<td bgcolor="#ffffff" width="195">
@@ -145,11 +146,18 @@
 									</span>
 								</td>
 							</tr>
-
+                            <!--{* いったん、停止とします　2007/05/28 
 							<tr class="fs12n">
 								<td bgcolor="#f2f1ec" width="110">配信メールアドレス種別</td>
 								<td bgcolor="#ffffff" colspan="3">
 									<!--{html_radios name="mail_type" options=$arrMailType separator="&nbsp;" selected=$list_data.mail_type}-->
+								</td>
+							</tr>
+							*}-->
+							<tr class="fs12n">
+								<td bgcolor="#f2f1ec" width="110">ドメイン指定</td>
+								<td bgcolor="#ffffff" colspan="3">
+									<!--{html_radios name="domain" options=$arrDomain separator="&nbsp;" selected=$list_data.domain}-->
 								</td>
 							</tr>
 																						

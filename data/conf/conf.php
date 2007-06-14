@@ -89,13 +89,14 @@ define("UPDATE_PATH", DATA_PATH . UPDATE_DIR);
 /** アップデート管理用 **/
 // アップデート管理用ファイル格納場所　
 define("UPDATE_HTTP", "http://www.lockon.co.jp/share/");
-
 // アップデート管理用CSV1行辺りの最大文字数
 define("UPDATE_CSV_LINE_MAX", 4096);
 // アップデート管理用CSVカラム数
 define("UPDATE_CSV_COL_MAX", 13);
 // モジュール管理用CSVカラム数
 define("MODULE_CSV_COL_MAX", 16);
+// モジュール管理用CSVファイル
+define("MODULE_CSV", "module.txt");
 //--------------------------------------------------------------------------------------------------------
 
 //--------------------------------------------------------------------------------------------------------
@@ -118,7 +119,7 @@ define("CREDIT_HTTP_ANALYZE_URL", CREDIT_HTTP_DOMAIN . CREDIT_HTTP_ANALYZE_PROGR
 define("CHAR_CODE", "EUC-JP");
 
 // EC-CUBEバージョン情報
-define("ECCUBE_VERSION", "1.3.1-beta");
+define("ECCUBE_VERSION", "1.4.0a-beta");
 
 // 決済モジュール付与文言
 define("ECCUBE_PAYMENT", "EC-CUBE");
@@ -184,10 +185,11 @@ define("ORDER_STATUS_MAX", 50);
 //フロントレビュー書き込み最大数
 define("REVIEW_REGIST_MAX", 5);
 
-/*
+/*F
  * サイト定義定数
  */
 /* システム関連 */
+define ('DEBUG_MODE', false);                          // デバッグモード(true：sfPrintRやDBのエラーメッセージを出力する、false：出力しない)
 define ("ADMIN_ID", "1");								// 管理ユーザID(メンテナンス用表示されない。)
 define ("CUSTOMER_CONFIRM_MAIL", false);				// 会員登録時に仮会員確認メールを送信するか（true:仮会員、false:本会員）
 define ("MELMAGA_SEND", true);							// メルマガ配信抑制(false:OFF、true:ON)
@@ -229,8 +231,12 @@ define ("CF_LABOR", "0");													// 役務有無区分(0:無、1:有)
 define ("CF_RESULT", "1");													// 結果応答(1:結果あり、2:結果なし)
 
 /* クレジットカード(ベリトランス) */
-define ("CGI_DIR", HTML_PATH . "../cgi-bin/");									// モジュール格納ディレクトリ
+define ("CGI_DIR", HTML_PATH . "../cgi-bin/");								// モジュール格納ディレクトリ
 define ("CGI_FILE", "mauthonly.cgi");										// コアCGI
+
+/* ブレインSMTP情報 */
+// define ("SMTP_HOST_BLAYN", "210.188.254.83");					// ブレインSMTPサーバ
+define ("SMTP_PORT_BLAYN", 25);									// ブレインSMTPポート番号
 
 // ルートカテゴリID
 define ("ROOT_CATEGORY_1", 2);
@@ -288,13 +294,15 @@ define("SALE_PRICE_TITLE","販売価格");
 
 /* システムパス */
 define ("LOG_PATH", DATA_PATH . "logs/site.log");							// ログファイル
+define ("DB_ERR_LOG_PATH", DATA_PATH . "logs/db_err.log");                  // ログファイル(DBエラー用)
+define ("DEBUG_LOG_PATH", DATA_PATH . "logs/debug.log");                    // ログファイル(DEBUG用)
 define ("CUSTOMER_LOG_PATH", DATA_PATH . "logs/customer.log");				// 会員ログイン ログファイル
 define ("TEMPLATE_ADMIN_DIR", DATA_PATH . "Smarty/templates/admin");		// SMARTYテンプレート
 define ("TEMPLATE_DIR", DATA_PATH . "Smarty/templates");					// SMARTYテンプレート
 define ("COMPILE_ADMIN_DIR", DATA_PATH . "Smarty/templates_c/admin");		// SMARTYコンパイル
 define ("COMPILE_DIR", DATA_PATH . "Smarty/templates_c");					// SMARTYコンパイル
 
-define ("TEMPLATE_FTP_DIR", USER_PATH . "templates/");			// SMARTYテンプレート(FTP許可)
+define ("TEMPLATE_FTP_DIR", USER_PATH . "templates/");                      // SMARTYテンプレート(FTP許可)
 define ("COMPILE_FTP_DIR", DATA_PATH . "Smarty/templates_c/user_data/");	// SMARTYコンパイル
 
 define ("IMAGE_TEMP_DIR", HTML_PATH . "upload/temp_image/");				// 画像一時保存
@@ -303,6 +311,8 @@ define ("IMAGE_TEMP_URL", URL_DIR . "upload/temp_image/");					// 画像一時保存UR
 define ("IMAGE_SAVE_URL", URL_DIR . "upload/save_image/");					// 画像保存先URL
 define ("IMAGE_TEMP_URL_RSS", SITE_URL . "upload/temp_image/");				// RSS用画像一時保存URL
 define ("IMAGE_SAVE_URL_RSS", SITE_URL . "upload/save_image/");				// RSS用画像保存先URL
+define ("FTP_IMAGE_SAVE_DIR", "./html" . URL_DIR . "upload/save_image/");   // FTP画像保存(相対パス)
+define ("FTP_IMAGE_TEMP_DIR", "./html" . URL_DIR . "upload/temp_image/");   // FTP画像一時保存(相対パス)
 define ("CSV_TEMP_DIR", HTML_PATH . "upload/csv/");							// エンコードCSVの一時保存先
 define ("NO_IMAGE_URL", URL_DIR . "misc/blank.gif");						// 画像がない場合に表示
 define ("NO_IMAGE_DIR", HTML_PATH . "misc/blank.gif");						// 画像がない場合に表示
@@ -578,17 +588,18 @@ $arrTAXRULE = array(
 
 // メールテンプレートの種類
 $arrMAILTEMPLATE = array(
-	 1 => "注文受付メール"
-	,2 => "注文キャンセル受付メール"
-	,3 => "取り寄せ確認メール"
+	 1 => "PC：注文受付メール"
+	,2 => "PC：注文キャンセル受付メール"
+	,3 => "PC：取り寄せ確認メール"
+	,4 => "携帯：注文受付メール"
+	,5 => "携帯：注文キャンセル受付メール"
+	,6 => "携帯：取り寄せ確認メール"
 );
 
 // 各テンプレートのパス
 $arrMAILTPLPATH = array(
-	1 => "mail_templates/order_mail.tpl",
-	2 => "mail_templates/order_mail.tpl",
-	3 => "mail_templates/order_mail.tpl",
-	4 => "mail_templates/contact_mail.tpl",
+	0 => "mail_templates/order_mail.tpl",
+    1 => "mobile/mail_templates/order_mail.tpl"
 );
 
 /* 都道府県配列 */
@@ -666,7 +677,7 @@ $arrJob = array(
 
 /* パスワードの答え配列 */
 $arrReminder = array(
-						1 => "母親の旧姓は？",
+						1 => "親の旧姓は？",
 						2 => "お気に入りのマンガは？",
 						3 => "大好きなペットの名前は？",
 						4 => "初恋の人の名前は？",
@@ -684,10 +695,36 @@ $arrSex = array(
 define ("MAIL_TYPE_PC",1);
 define ("MAIL_TYPE_MOBILE",2);
 $arrMailType = array(
-					MAIL_TYPE_PC => "パソコン用アドレス",
-					MAIL_TYPE_MOBILE => "携帯用アドレス",
-				);		
+					MAIL_TYPE_PC => "パソコン用メールアドレス",
+					MAIL_TYPE_MOBILE => "携帯用メールアドレス"
+				);	
+
+/*  携帯ドメイン指定　*/
+$arrDOMAIN = array(
+                        1 => "PCドメイン",
+                        2 => "携帯ドメイン"
+                    );
 				
+
+$arrDomainType = array(
+                      1 => "@docomo.ne.jp",
+                      2 => "@ezweb.ne.jp",
+                      3 => "@softbank.ne.jp",
+                      4 => "@t.vodafone.ne.jp",
+                      5 => "@d.vodafone.ne.jp",
+                      6 => "@h.vodafone.ne.jp",
+                      7 => "@c.vodafone.ne.jp",
+                      8 => "@k.vodafone.ne.jp",
+                      9 => "@r.vodafone.ne.jp",
+                      10 => "@n.vodafone.ne.jp",
+                      11 => "@s.vodafone.ne.jp",
+                      12 => "@q.vodafone.ne.jp",
+                      13 => "@pdx.ne.jp",
+                      14 => "@di.pdx.ne.jp",
+                      15 => "@dj.pdx.ne.jp",
+                      16 => "@dk.pdx.ne.jp",
+                      17 => "@wm.pdx.ne.jp"
+                  );				
 				
 /*　1行数　*/		
 $arrPageRows = array(
@@ -883,6 +920,7 @@ $arrViewWhere = array(
 );
 
 // View変換用(MySQL対応)
+
 $arrView = array(
 	"vw_cross_class" => '
 		(SELECT T1.class_id AS class_id1, T2.class_id AS class_id2, T1.classcategory_id AS classcategory_id1, T2.classcategory_id AS classcategory_id2, T1.name AS name1, T2.name AS name2, T1.rank AS rank1, T2.rank AS rank2
@@ -894,86 +932,6 @@ $arrView = array(
 		FROM (SELECT T1.class_id AS class_id1, T2.class_id AS class_id2, T1.classcategory_id AS classcategory_id1, T2.classcategory_id AS classcategory_id2, T1.name AS name1, T2.name AS name2, T1.rank AS rank1, T2.rank AS rank2
 		FROM dtb_classcategory AS T1, dtb_classcategory AS T2 ) AS T1 LEFT JOIN dtb_products_class AS T2 
 		ON T1.classcategory_id1 = T2.classcategory_id1 AND T1.classcategory_id2 = T2.classcategory_id2) ',
-
-	"vw_products_nonclass" => '
-		(SELECT 
-		    T1.product_id,
-		    T1.name,
-		    T1.deliv_fee,
-		    T1.sale_limit,
-		    T1.sale_unlimited,
-		    T1.category_id,
-		    T1.rank,
-		    T1.status,
-		    T1.product_flag,
-		    T1.point_rate,
-		    T1.comment1,
-		    T1.comment2,
-		    T1.comment3,
-		    T1.comment4,
-		    T1.comment5,
-		    T1.comment6,
-		    T1.file1,
-		    T1.file2,
-		    T1.file3,
-		    T1.file4,
-		    T1.file5,
-		    T1.file6,
-		    T1.main_list_comment,
-		    T1.main_list_image,
-		    T1.main_comment,
-		    T1.main_image,
-		    T1.main_large_image,
-		    T1.sub_title1,
-		    T1.sub_comment1,
-		    T1.sub_image1,
-		    T1.sub_large_image1,
-		    T1.sub_title2,
-		    T1.sub_comment2,
-		    T1.sub_image2,
-		    T1.sub_large_image2,
-		    T1.sub_title3,
-		    T1.sub_comment3,
-		    T1.sub_image3,
-		    T1.sub_large_image3,
-		    T1.sub_title4,
-		    T1.sub_comment4,
-		    T1.sub_image4,
-		    T1.sub_large_image4,
-		    T1.sub_title5,
-		    T1.sub_comment5,
-		    T1.sub_image5,
-		    T1.sub_large_image5,
-		    T1.sub_title6,
-		    T1.sub_comment6,
-		    T1.sub_image6,
-		    T1.sub_large_image6,
-		    T1.del_flg,
-		    T1.creator_id,
-		    T1.create_date,
-		    T1.update_date,
-		    T1.deliv_date_id,
-		    T2.product_id_sub,
-		    T2.product_code,
-		    T2.price01,
-		    T2.price02,
-		    T2.stock,
-		    T2.stock_unlimited,
-		    T2.classcategory_id1,
-		    T2.classcategory_id2
-		FROM (SELECT * FROM dtb_products &&noncls_where&&) AS T1 LEFT JOIN 
-		(SELECT
-		product_id AS product_id_sub,
-		product_code,
-		price01,
-		price02,
-		stock,
-		stock_unlimited,
-		classcategory_id1,
-		classcategory_id2
-		FROM dtb_products_class WHERE classcategory_id1 = 0 AND classcategory_id2 = 0) 
-		AS T2
-		ON T1.product_id = T2.product_id_sub) ',
 
 	"vw_products_allclass" => '
 		(SELECT
@@ -1064,4 +1022,71 @@ $arrView = array(
 		ON T1.category_id = T2.category_id) '
 );
 
+$vw_products_nonclass = "
+		(SELECT 
+		    T1.product_id,
+		    T1.name,
+		    T1.deliv_fee,
+		    T1.sale_limit,
+		    T1.sale_unlimited,
+		    T1.category_id,
+		    T1.rank,
+		    T1.status,
+		    T1.product_flag,
+		    T1.point_rate,
+		    T1.comment1,
+		    T1.comment2,
+		    T1.comment3,
+		    T1.comment4,
+		    T1.comment5,
+		    T1.comment6,
+		    T1.file1,
+		    T1.file2,
+		    T1.file3,
+		    T1.file4,
+		    T1.file5,
+		    T1.file6,
+		    T1.main_list_comment,
+		    T1.main_list_image,
+		    T1.main_comment,
+		    T1.main_image,
+		    T1.main_large_image,";
+            
+for ($cnt = 1; $cnt <= PRODUCTSUB_MAX; $cnt++) {
+            $vw_products_nonclass.= "
+		    T1.sub_title$cnt,
+		    T1.sub_comment$cnt,
+		    T1.sub_image$cnt,
+            T1.sub_large_image$cnt,";
+}
+
+$vw_products_nonclass.= "
+		    T1.del_flg,
+		    T1.creator_id,
+		    T1.create_date,
+		    T1.update_date,
+		    T1.deliv_date_id,
+		    T2.product_id_sub,
+		    T2.product_code,
+		    T2.price01,
+		    T2.price02,
+		    T2.stock,
+		    T2.stock_unlimited,
+		    T2.classcategory_id1,
+		    T2.classcategory_id2
+		FROM (SELECT * FROM dtb_products &&noncls_where&&) AS T1 LEFT JOIN 
+		(SELECT
+		product_id AS product_id_sub,
+		product_code,
+		price01,
+		price02,
+		stock,
+		stock_unlimited,
+		classcategory_id1,
+		classcategory_id2
+		FROM dtb_products_class WHERE classcategory_id1 = 0 AND classcategory_id2 = 0) 
+		AS T2
+		ON T1.product_id = T2.product_id_sub) ";
+
+$arrView['vw_products_nonclass'] = $vw_products_nonclass;
 ?>

@@ -4,7 +4,8 @@
  *
  * http://www.lockon.co.jp/
  */
-
+$INC_PATH = realpath( dirname( __FILE__) );
+require( $INC_PATH ."/../conf/conf.php" );
 /*  [名称] SC_CustomerList
  *  [概要] 会員検索用クラス
  */
@@ -190,16 +191,45 @@ class SC_CustomerList extends SC_SelectSql {
 			}
 			$this->setWhere($sql_where);
 		}
-				
-		//　配信メールアドレス種別
-		if ( $mode == 'magazine' ){
-			if ( strlen($this->arrSql['mail_type']) > 0 && $this->arrSql['mail_type'] == 2) {
-				$this->setWhere( " dtb_customer.email_mobile <> ''  ");
-			}
-		}
-							
-		//　HTML-mail
-		if ( $mode == 'magazine' ){
+
+/*      2007/05/28  一旦、停止します。				
+ *		//　配信メールアドレス種別
+ *		if ( $mode == 'magazine' ){
+ *			if ( strlen($this->arrSql['mail_type']) > 0 && $this->arrSql['mail_type'] == 2) {
+ *				$this->setWhere( " dtb_customer.email_mobile <> ''  ");
+ *			}
+ *		}
+ */
+
+        if($mode == 'magazine'){
+        	global $arrDomainType;
+        	$sql_where = "";
+        	//ドメイン指定。１はＰＣ、２は携帯
+        	if ( $this->arrSql['domain'] > 0 ) {
+        		foreach($arrDomainType as $val) {
+        			if($this->arrSql['domain'] == 1) {
+        				if($sql_where == "") {
+        					$sql_where .= "dtb_customer.email NOT ILIKE ? ";
+        				} else {
+        					$sql_where .= "AND dtb_customer.email NOT ILIKE ? " ;
+        				}
+        			} elseif($this->arrSql['domain'] == 2) {
+        				if($sql_where == "") {
+        					$sql_where .= "dtb_customer.email ILIKE ? ";
+        				} else {
+        					$sql_where .= "OR dtb_customer.email LIKE ? " ;
+        				}
+                        $sql_where = "(".$sql_where.")";
+        			}
+        			$searchDomain = $this->addSearchStr($val);
+        			$this->arrVal[] = $searchDomain;
+        		}
+        	    $this->setWhere($sql_where);
+        	}
+        }
+
+		//　HTML-mail（配信方式)
+		if( $mode == 'magazine' ){
 			if ( strlen($this->arrSql['htmlmail']) > 0 ) {
 				$this->setWhere( " mailmaga_flg = ? ");
 				$this->arrVal[] = $this->arrSql['htmlmail'];

@@ -1,61 +1,147 @@
 <?php
-/*
+/**
  * Copyright(c) 2000-2007 LOCKON CO.,LTD. All Rights Reserved.
  *
  * http://www.lockon.co.jp/
  */
 
+/**
+ *  SC_Queryクラス
+ *
+ *  @author     LOCKON CO.,LTD.
+ *  @access     public
+ */
 class SC_Query {
-	var $option;
-	var $where;
-	var $conn;
-	var $groupby;
-	var $order;
-	
-	// コンストラクタ
-	/*
-		$err_disp:エラー表示を行うか
-		$new：新規に接続を行うか
-	 */
-	function SC_Query($dsn = "", $err_disp = true, $new = false) {
-		$this->conn = new SC_DBconn($dsn, $err_disp, $new);
-		$this->where = "";
-		return $this->conn;
-	}
-	
-	// エラー判定
-	function isError() {
-		if(PEAR::isError($this->conn->conn)) {
-			return true;
-		}
-		return false;
-	}
-	
-	// COUNT文の実行
-	function count($table, $where = "", $arrval = array()) {
-		if(strlen($where) <= 0) {
-			$sqlse = "SELECT COUNT(*) FROM $table";
-		} else {
-			$sqlse = "SELECT COUNT(*) FROM $table WHERE $where";
-		}
-		// カウント文の実行
-		$ret = $this->conn->getOne($sqlse, $arrval);
-		return $ret;
-	}
-	
-	function select($col, $table, $where = "", $arrval = array()){
-		$sqlse = $this->getsql($col, $table, $where);
-		$ret = $this->conn->getAll($sqlse, $arrval);
-		return $ret;
-	}
-
-	function getLastQuery($disp = true) {
-		$sql = $this->conn->conn->last_query;
-		if($disp) { 
-			print($sql.";<br />\n");
-		}
-		return $sql;
-	}
+   /**#@+
+    * @access private
+    */
+    
+   /**
+    * SC_DBConnオブジェクト
+    * @var SC_DBConn
+    */
+    var $conn;
+    
+   /**
+    * LIMIT,OFFSET 句
+    * @var string
+    */
+    var $option;
+    
+   /**
+    * WHERE 句
+    * @var string
+    */
+    var $where;
+    
+   /**
+    * GROUP BY 句
+    * @var string
+    */
+    var $groupby;
+    
+   /**
+    * ORDER BY 句
+    * @var string
+    */
+    var $order;
+    
+    /**#@-*/
+    
+    /**
+     *  SC_Queryクラスのコンストラクタ
+     *
+     *  @access public
+     *  @param  string  $dsn      DSN情報
+     *  @param  boolean $err_disp エラー表示を行うかどうか
+     *  @param  boolean $new      新規にDB接続を行うかどうか
+     */
+    function SC_Query($dsn = "", $err_disp = true, $new = false) {
+        $this->conn = new SC_DBconn($dsn, $err_disp, $new);
+        $this->where   = "";
+        $this->option  = "";
+        $this->groupby = "";
+        return $this->conn; //?
+    }
+    
+    /**
+     *  DBエラーの判定
+     *
+     *  @access public
+     *  @return boolean 成功時：true 失敗時：false
+     */
+    function isError() {
+        if(PEAR::isError($this->conn->conn)) {
+            return true;
+        }
+        return false;
+    }
+    
+    /**
+     *  オプションの初期化
+     *
+     *  @access public
+     *  @return void
+     */
+    function clear(){
+        $arrProperty = array_keys((get_object_vars($this)));
+        foreach ( $arrProperty as $property ) {
+            if ($property != 'conn') {
+                $this->$property = '';
+            }
+        }
+    }
+    
+    /**
+     *  COUNT文の実行
+     *
+     *  @access public
+     *  @param  string  $table  テーブル名
+     *  @param  string  $where  WHERE句
+     *  @param  array   $arrval プレースホルダの配列
+     *  @return string  レコード件数
+     */
+    function count($table, $where = "", $arrval = array()) {
+        if(strlen($where) <= 0) {
+            $sqlse = "SELECT COUNT(*) FROM $table";
+        } else {
+            $sqlse = "SELECT COUNT(*) FROM $table WHERE $where";
+        }
+        // カウント文の実行
+        $ret = $this->conn->getOne($sqlse, $arrval);
+        return $ret;
+    }
+    
+    /**
+     *  SELECT文の実行
+     *
+     *  @access public
+     *  @param  string  $col    カラム名
+     *  @param  string  $table  テーブル名
+     *  @param  string  $where  WHERE句
+     *  @param  array   $arrval プレースホルダの配列
+     *  @return array   SELECT文の実行結果
+     */
+    function select($col, $table, $where = "", $arrval = array()){
+        $sqlse = $this->getsql($col, $table, $where);
+        $ret = $this->conn->getAll($sqlse, $arrval);
+        return $ret;
+    }
+    
+    /**
+     *  最後に実行したSQL文を取得する
+     *
+     *  @access public
+     *  @param  boolean $disp SQL文をprintするかどうか
+     *  @return string  $disp==falseの場合：最後に実行したSQL文　$disp==trueの場合：なし
+     */
+    function getLastQuery($disp = true) {
+        $sql = $this->conn->conn->last_query;
+        if($disp) { 
+            print($sql.";<br />\n");
+        }
+        return $sql;
+    }
 
 	function commit() {
 		$this->conn->query("COMMIT");
@@ -104,83 +190,159 @@ class SC_Query {
 		return $ret;
 	}
 
-	function getsql($col, $table, $where) {
-		if($where != "") {
-			// 引数の$whereを優先して実行する。
-			$sqlse = "SELECT $col FROM $table WHERE $where " . $this->groupby . " " . $this->order . " " . $this->option;
-		} else {
-			if($this->where != "") {
-					$sqlse = "SELECT $col FROM $table WHERE $this->where " . $this->groupby . " " . $this->order . " " . $this->option;
-				} else {
-					$sqlse = "SELECT $col FROM $table " . $this->groupby . " " . $this->order . " " . $this->option;
-			}
-		}
-		return $sqlse;
-	}
-			
-	function setoption($str) {
-		$this->option = $str;
-	}
-	
-	function setlimitoffset($limit, $offset = 0, $return = false) {
-		if (is_numeric($limit) && is_numeric($offset)){
-			
-			$option.= " LIMIT " . $limit;
-			$option.= " OFFSET " . $offset;
-			
-			if($return){
-				return $option;
-			}else{
-				$this->option.= $option;
-			}
-		}
-	}
-	
-	function setgroupby($str) {
-		$this->groupby = "GROUP BY " . $str;
-	}
-	
-	function andwhere($str) {
-		if($this->where != "") {
-			$this->where .= " AND " . $str;
-		} else {
-			$this->where = $str;
-		}
-	}
-	
-	function orwhere($str) {
-		if($this->where != "") {
-			$this->where .= " OR " . $str;
-		} else {
-			$this->where = $str;
-		}
-	}
-		
-	function setwhere($str) {
-		$this->where = $str;
-	}
-	
-	function setorder($str) {
-		$this->order = "ORDER BY " . $str;
-	}
-	
-		
-	function setlimit($limit){
-		if ( is_numeric($limit)){
-			$this->option = " LIMIT " .$limit;
-		}	
-	}
-	
-	function setoffset($offset) {
-		if ( is_numeric($offset)){
-			$this->offset = " OFFSET " .$offset;
-		}	
-	}
-	
-	
-	// INSERT文の生成・実行
-	// $table	:テーブル名
-	// $sqlval	:列名 => 値の格納されたハッシュ配列
+    /**
+     *  SELECT文を構築する
+     *
+     *  @access public
+     *  @param  string  $col    カラム名
+     *  @param  string  $table  テーブル名
+     *  @param  string  $where  WHERE句
+     *  @return string  SQL文
+     */
+    function getsql($col, $table, $where="") {
+        if($where != "") {
+            // 引数の$whereを優先して実行する。
+            $sqlse = "SELECT $col FROM $table WHERE $where " . $this->groupby . " " . $this->order . " " . $this->option;
+        } else {
+            if($this->where != "") {
+                    $sqlse = "SELECT $col FROM $table WHERE $this->where " . $this->groupby . " " . $this->order . " " . $this->option;
+                } else {
+                    $sqlse = "SELECT $col FROM $table " . $this->groupby . " " . $this->order . " " . $this->option;
+            }
+        }
+        return $sqlse;
+    }
+    
+    /**
+     *  WHERE,GROUPBY,ORDERBY以外のオプショナルな句をセットする
+     *
+     *  @access public
+     *  @param  string  $str オプションに使用する文字列
+     */
+    function setoption($str) {
+        $this->option = $str;
+    }
+    
+    /**
+     *  LIMIT句、OFFSET句をセットする
+     *
+     *  @access public
+     *  @param  mixed   $limit  LIMITの件数
+     *  @param  mixed   $offset OFFSETの件数
+     *  @param  string  $return 生成したLIMIT,OFFSET句をreturnするかどうか
+     *  @return string  生成したLIMIT,OFFSET句
+     */
+    function setlimitoffset($limit, $offset = 0, $return = false) {
+        if (is_numeric($limit) && is_numeric($offset)){
+            
+            $option.= " LIMIT " . $limit;
+            $option.= " OFFSET " . $offset;
+            
+            if($return){
+                return $option;
+            }else{
+                $this->option.= $option;
+            }
+        }
+    }
+
+    /**
+     *  GROUP BY 句をセットする
+     *
+     *  @access public
+     *  @param  string  $str カラム名
+     */
+    function setgroupby($str) {
+        $this->groupby = "GROUP BY " . $str;
+    }
+    
+    /**
+     *  WHERE 句をセットする(AND)
+     *
+     *  @access  public
+     *  @param   string  $str WHERE 句
+     *  @example $objQuery->andWhere('product_id = ?');
+     */
+    function andwhere($str) {
+        if($this->where != "") {
+            $this->where .= " AND " . $str;
+        } else {
+            $this->where = $str;
+        }
+    }
+    
+    /**
+     *  WHERE 句をセットする(OR)
+     *
+     *  @access  public
+     *  @param   string  $str WHERE 句
+     *  @example $objQuery->orWhere('product_id = ?');
+     */
+    function orwhere($str) {
+        if($this->where != "") {
+            $this->where .= " OR " . $str;
+        } else {
+            $this->where = $str;
+        }
+    }
+    
+    /**
+     *  WHERE 句をセットする
+     *
+     *  @access  public
+     *  @param   string  $str WHERE 句
+     *  @example $objQuery->setWhere('product_id = ?');
+     */
+    function setwhere($str) {
+        $this->where = $str;
+    }
+    
+    /**
+     *  ORDER BY 句をセットする
+     *
+     *  @access  public
+     *  @param   string  $str カラム名
+     *  @example $objQuery->setorder("rank DESC");
+     */
+    function setorder($str) {
+        $this->order = "ORDER BY " . $str;
+    }
+    
+    /**
+     *  LIMIT 句をセットする
+     *
+     *  @access  public
+     *  @param   mixed  $limit LIMITの件数
+     *  @example $objQuery->setlimit(50);
+     */
+    function setlimit($limit){
+        if ( is_numeric($limit)){
+            $this->option = " LIMIT " .$limit;
+        }   
+    }
+    
+    /**
+     *  OFFSET 句をセットする
+     *
+     *  @access  public
+     *  @param   mixed  $offset OFFSETの件数
+     *  @example $objQuery->setOffset(30);
+     */
+    function setoffset($offset) {
+        if ( is_numeric($offset)){
+            $this->offset = " OFFSET " .$offset;
+        }   
+    }
+    
+    /**
+     *  INSERT文を実行する
+     *
+     *  @access  public
+     *  @param   string  $table  テーブル名
+     *  @param   array   $sqlval (カラム名 => 値)の連想配列
+     *  
+     *  @return  mixed   $result DB_Errorオブジェクト(失敗時)またはDB_OK(成功時)またはfalse(カラムが見つからない)
+     */
 	function insert($table, $sqlval) {
 		$strcol = '';
 		$strval = '';
@@ -217,9 +379,15 @@ class SC_Query {
 		return $ret;		
 	}
 	
-		// INSERT文の生成・実行
-	// $table	:テーブル名
-	// $sqlval	:列名 => 値の格納されたハッシュ配列
+    /**
+     *  INSERT文を実行する
+     *
+     *  @access  public
+     *  @param   string  $table  テーブル名
+     *  @param   array   $sqlval (カラム名 => 値)の連想配列
+     *  
+     *  @return  mixed   $result DB_Errorオブジェクト(失敗時)またはDB_OK(成功時)またはfalse(カラムが見つからない)
+     */
 	function fast_insert($table, $sqlval) {
 		$strcol = '';
 		$strval = '';
@@ -247,7 +415,7 @@ class SC_Query {
 		// INSERT文の実行
 		$ret = $this->conn->query($sqlin);
 		
-		return $ret;		
+		return $ret;
 	}
 	
 	
@@ -372,16 +540,19 @@ class SC_Query {
 		return $ret;
 	}
 	
+    //指定したカラムの一番最後にレコードを挿入
 	function nextval($table, $colname) {
 		$sql = "";
 		// postgresqlとmysqlとで処理を分ける
 		if (DB_TYPE == "pgsql") {
 			$seqtable = $table . "_" . $colname . "_seq";
 			$sql = "SELECT NEXTVAL('$seqtable')";
+            $ret = $this->conn->getOne($sql);
 		}else if (DB_TYPE == "mysql") {
-			$sql = "SELECT last_insert_id();";
-		}
-		$ret = $this->conn->getOne($sql);
+            $sql = "SELECT last_insert_id();";
+		    $ret = $this->conn->getOne($sql);
+        }
+		
 		
 		return $ret;
 	}
@@ -436,5 +607,4 @@ class SC_Query {
 		return $auto_inc_no;
 	}
 }
-
 ?>

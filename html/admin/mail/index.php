@@ -28,6 +28,8 @@ class LC_Page {
 		$this->arrSex = $arrSex;
 		global $arrMailType;
 		$this->arrMailType = $arrMailType;
+		global $arrDomain;
+		$this->arrDomain = $arrDomain;
 		global $arrPageRows;
 		$this->arrPageRows = $arrPageRows;
 		// ページナビ用
@@ -39,6 +41,11 @@ class LC_Page {
 		$this->arrHtmlmail[2] = $arrMAILMAGATYPE[2];
 		global $arrCustomerType;
 		$this->arrCustomerType = $arrCustomerType;
+		global $arrDOMAIN;
+		$this->arrDomain = $arrDOMAIN;
+		$this->arrDomain[''] = "指定しない";
+		$this->arrDomain[1] = $arrDOMAIN[1];
+		$this->arrDomain[2] = $arrDOMAIN[2]; 
 	}
 }
 
@@ -73,6 +80,9 @@ if ($_GET["mode"] == "query" && sfCheckNumLength($_GET["send_id"])) {
 	
 	// 都道府県を変換
 	$list_data['pref_disp'] = $objPage->arrPref[$list_data['pref']];
+	
+	//ドメイン指定を変換
+	$list_data['domain_disp'] = $objPage->arrDomain[$list_data['domain']];
 	
 	// 配信形式
 	$list_data['htmlmail_disp'] = $objPage->arrHtmlmail[$list_data['htmlmail']];
@@ -133,7 +143,6 @@ case 'back':
 		$objSelect = new SC_CustomerList($objPage->list_data, "magazine");
 		// 生成されたWHERE文を取得する		
 		list($where, $arrval) = $objSelect->getWhere();
-	
 		// 「WHERE」部分を削除する。
 		$where = ereg_replace("^WHERE", "", $where);
 
@@ -144,7 +153,7 @@ case 'back':
 		// 行数の取得
 		$linemax = $objQuery->count($from, $where, $arrval);
 		$objPage->tpl_linemax = $linemax;				// 何件が該当しました。表示用
-		
+
 		// ページ送りの取得
 		$objNavi = new SC_PageNavi($_POST['search_pageno'], $linemax, SEARCH_PMAX, "fnResultPageNavi", NAVI_PMAX);
 		$objPage->arrPagenavi = $objNavi->arrPagenavi;	
@@ -252,7 +261,9 @@ case 'regist_complete':
 			$objPage->tpl_mainpage = 'mail/input_confirm.tpl';
 		} else if( $_POST['mode'] == 'regist_complete' ){
 			lfRegistData($objPage->list_data);
+            //メルマガ機能がオンになっているかどうかの判定
 			if(MELMAGA_SEND == true) {
+                //予約配信モードの分岐
 				if(MELMAGA_BATCH_MODE) {
 					header("Location: " . URL_DIR . "admin/mail/history.php");
 				} else {	
@@ -274,6 +285,9 @@ default:
 for ($year=date("Y"); $year<=date("Y") + 1;$year++){
 	$arrYear[$year] = $year;
 }
+
+$objPage->arrBlaynEngine = lfGetBlayn();
+
 $objPage->arrYear = $arrYear;
 
 $objPage->arrCustomerOrderId = lfGetCustomerOrderId($_POST['buy_product_code']);
@@ -379,19 +393,21 @@ function lfRegistData($arrData){
 	
 	$search_data = $conn->getAll($objSelect->getListMailMagazine(lfGetIsMobile($_POST['mail_type'])), $objSelect->arrVal);
 	$dataCnt = count($search_data);
-	
 	$dtb_send_history = array();
 	
-	if(DB_TYPE == "pgsql"){
-        $dtb_send_history["send_id"] = $objQuery->nextval('dtb_send_history', 'send_id');
+    if(DB_TYPE == "pgsql"){
+	   $dtb_send_history["send_id"] = $objQuery->nextval('dtb_send_history', 'send_id');
     }
+    
     $dtb_send_history["mail_method"] = $arrData['mail_method'];
 	$dtb_send_history["subject"] = $arrData['subject'];
 	$dtb_send_history["body"] = $arrData['body'];
 	if(MELMAGA_BATCH_MODE) {
-		$dtb_send_history["start_date"] = $arrData['send_year'] ."/".$arrData['send_month']."/".$arrData['send_day']." ".$arrData['send_hour'].":".$arrData['send_minutes'];
+		//インストール先のサーバーでCRONが有効であるなら指定された時間にメールを送る
+        $dtb_send_history["start_date"] = $arrData['send_year'] ."/".$arrData['send_month']."/".$arrData['send_day']." ".$arrData['send_hour'].":".$arrData['send_minutes'];
 	} else {
-		$dtb_send_history["start_date"] = "now()";
+		//CRONが無効であればリアルタイムに送信する
+        $dtb_send_history["start_date"] = "now()";
 	}
 	$dtb_send_history["creator_id"] = $_SESSION['member_id'];
 	$dtb_send_history["send_count"] = $dataCnt;
@@ -399,23 +415,25 @@ function lfRegistData($arrData){
 	$dtb_send_history["search_data"] = serialize($arrData);
 	$dtb_send_history["update_date"] = "now()";
 	$dtb_send_history["create_date"] = "now()";
-	$objQuery->insert("dtb_send_history", $dtb_send_history );	
-	if(DB_TYPE == "mysql"){
+   
+    //ハッシュdtb_send_historyをデータベースdtb_send_historyに挿入
+    $objQuery->insert("dtb_send_history", $dtb_send_history );
+    if(DB_TYPE == "mysql"){
         $dtb_send_history["send_id"] = $objQuery->nextval('dtb_send_history','send_id');
     }
     
 	if ( is_array( $search_data ) ){
-		foreach( $search_data as $line ){
-			$dtb_send_customer = array();
+        foreach( $search_data as $line ){
+            
+            $dtb_send_customer = array();
 			$dtb_send_customer["customer_id"] = $line["customer_id"];
 			$dtb_send_customer["send_id"] = $dtb_send_history["send_id"];
 			$dtb_send_customer["email"] = $line["email"];
-			
-			$dtb_send_customer["name"] = $line["name01"] . " " . $line["name02"];
-				
-			$conn->autoExecute("dtb_send_customer", $dtb_send_customer );					
-		}	
-	}	
+			$dtb_send_customer["name"] = $line["name01"] . " " . $line["name02"];            
+            $conn->autoExecute("dtb_send_customer", $dtb_send_customer );					
+            
+        }	
+	}
 }
 
 // キャンペーン一覧
@@ -429,7 +447,6 @@ function lfGetCampaignList() {
 	foreach($arrResult as $arrVal) {
 		$arrCampaign[$arrVal['campaign_id']] = $arrVal['campaign_name'];
 	}
-
 	return $arrCampaign;
 }
 
@@ -449,5 +466,15 @@ function lfGetIsMobile($mail_type) {
 	}
 	
 	return $is_mobile;
+}
+
+// ブレインエンジンが設定済みか確認
+function lfGetBlayn() {
+    
+    global $objQuery;
+    
+    $arrRet[now_version] = $objQuery->count("dtb_module", "now_version = (SELECT now_version FROM dtb_module WHERE main_php='blayn/blayn.php')");
+    $arrRet[blayn_ip] = $objQuery->count("dtb_blayn");
+    return $arrRet;
 }
 ?>

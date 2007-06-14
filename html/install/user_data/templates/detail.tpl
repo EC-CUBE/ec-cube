@@ -381,7 +381,7 @@ function lnSetSelect(form, name1, name2, val) {
 									<!--{else}-->
 										<!--{assign var=image_path value="`$smarty.const.NO_IMAGE_DIR`"}-->
 									<!--{/if}-->
-									<img src="<!--{$smarty.const.SITE_URL}-->resize_image.php?image=<!--{$image_path|sfRmDupSlash}-->&width=65&height=65" alt="<!--{$arrRecommend[cnt].name|escape}-->"></a></td>
+									<img src="<!--{$smarty.const.URL_DIR}-->resize_image.php?image=<!--{$image_path|sfRmDupSlash}-->&width=65&height=65" alt="<!--{$arrRecommend[cnt].name|escape}-->"></a></td>
 									<td align="right">
 									<table width="145" border="0" cellspacing="0" cellpadding="0" summary=" ">
 										<tr>
@@ -422,7 +422,7 @@ function lnSetSelect(form, name1, name2, val) {
 									<!--{else}-->
 										<!--{assign var=image_path value="`$smarty.const.NO_IMAGE_DIR`"}-->
 									<!--{/if}-->
-									<img src="<!--{$smarty.const.SITE_URL}-->resize_image.php?image=<!--{$image_path|sfRmDupSlash}-->&width=65&height=65" alt="<!--{$arrRecommend[$nextCnt].name|escape}-->"></a></td>
+									<img src="<!--{$smarty.const.URL_DIR}-->resize_image.php?image=<!--{$image_path|sfRmDupSlash}-->&width=65&height=65" alt="<!--{$arrRecommend[$nextCnt].name|escape}-->"></a></td>
 									<td align="right">
 									<table width="145" border="0" cellspacing="0" cellpadding="0" summary=" ">
 										<tr>

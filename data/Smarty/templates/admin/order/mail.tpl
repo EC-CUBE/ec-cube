@@ -74,13 +74,23 @@
 
 						<table width="678" border="0" cellspacing="1" cellpadding="8" summary=" ">
 							<tr>
+							    <td bgcolor="#f2f1ec" width="160" class="fs12n">顧客名</td>
+							    <td bgcolor="#ffffff" width="557" class="fs12n"><!--{$arrDisp.order_name01|escape}--> <!--{$arrDisp.order_name02|escape}--></td>
+							</tr>
+							<tr>
+							    <td bgcolor="#f2f1ec" width="160" class="fs12n">メールアドレス</td>
+							    <td bgcolor="#ffffff" width="557" class="fs12n"><!--{$arrDisp.order_email|escape}--></td>
+							</tr>
+							<tr>
 								<td bgcolor="#f2f1ec" width="160" class="fs12n">テンプレート<span class="red"> *</span></td>
 								<td bgcolor="#ffffff" width="557" class="fs10n">
 								<!--{assign var=key value="template_id"}-->
 								<span class="red12"><!--{$arrErr[$key]}--></span>
 								<select name="template_id" style="<!--{$arrErr[$key]|sfGetErrorColor}-->" onchange="fnModeSubmit('change', '', '');">
 								<option value="" selected="selected">選択してください</option>
-								<!--{html_options options=$arrMAILTEMPLATE selected=$arrForm[$key].value|escape}-->
+
+
+								<!--{html_options options=$mailTemp[1] selected=$arrForm[$key].value|escape}-->
 								</select>
 								</td>
 							</tr>
@@ -93,19 +103,9 @@
 								</td>
 							</tr>
 							<tr>
-								<td bgcolor="#f2f1ec" width="160" class="fs12">ヘッダー</td>
+								<td bgcolor="#f2f1ec" width="160" class="fs12">メールの内容</td>
 								<td bgcolor="#ffffff" width="557" class="fs10">
-								<!--{assign var=key value="header"}-->
-								<span class="red12"><!--{$arrErr[$key]}--></span>
-								<textarea  name="<!--{$arrForm[$key].keyname}-->" maxlength="<!--{$arrForm[$key].length}-->" style="<!--{$arrErr[$key]|sfGetErrorColor}-->" cols="75" rows="12" class="area75"><!--{$arrForm[$key].value|escape}--></textarea></td>
-							</tr>
-							<tr class="fs12n">
-								<td bgcolor="#ffffff" colspan="2" align="center" height="40">動的データ挿入部分</td>
-							</tr>
-							<tr>
-								<td bgcolor="#f2f1ec" width="160" class="fs12">フッター</td>
-								<td bgcolor="#ffffff" width="557" class="fs10">
-								<!--{assign var=key value="footer"}-->
+								<!--{assign var=key value="body"}-->
 								<span class="red12"><!--{$arrErr[$key]}--></span>
 								<textarea  name="<!--{$arrForm[$key].keyname}-->" maxlength="<!--{$arrForm[$key].length}-->" style="<!--{$arrErr[$key]|sfGetErrorColor}-->" cols="75" rows="12" class="area75"><!--{$arrForm[$key].value|escape}--></textarea></td>
 							</tr>

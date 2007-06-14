@@ -111,7 +111,7 @@ class SC_DbConn{
 			if(ADMIN_MODE){
 				sfErrorHeader("DBへの接続に失敗しました。:" . $this->dsn);
 			}else{
-				sfErrorHeader("DBへの接続に失敗しました。:");
+				sfErrorHeader("DBへの接続に失敗しました。");
 			}
 			return 0;
 		}
@@ -166,24 +166,35 @@ class SC_DbConn{
 		$this->conn->disconnect();
 	}
 
-    function send_err_mail( $result, $sql ){
+    function debug_print($result, $sql){
+        $this->send_err_mail($result, $sql);
+    }
+    
+    function send_err_mail($result, $sql){
+        $url = '';
+        $errmsg = '';
         
-        if ($this->err_disp && DEBUG_MODE) {
-            if ($_SERVER['HTTPS'] == "on") {
-                $url = "https://";
-            } else {
-                $url = "http://";
-            }
-            $url.= $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'];
-            
-            $errmsg = $url."\n\n";
-            $errmsg.= $sql . "\n";
-            $errmsg.= $result->message . "\n\n";
-            $errmsg.= $result->userinfo . "\n\n";
-            print_r(htmlspecialchars($errmsg, ENT_QUOTES, CHAR_CODE));
-
-            exit();
+        if ($_SERVER['HTTPS'] == "on") {
+            $url = "https://";
+        } else {
+            $url = "http://";
         }
+        $url .= $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'];
+        
+        $errmsg  = $url."\n\n";
+        $errmsg .= $sql . "\n";
+        $errmsg .= $result->message . "\n\n";
+        $errmsg .= $result->userinfo . "\n\n";
+        
+        if ($this->err_disp && DEBUG_MODE === true) {
+            print('<pre>');
+            print_r(htmlspecialchars($errmsg, ENT_QUOTES, CHAR_CODE));
+            print('</pre>');
+        }
+        
+        gfDebugLog($errmsg, DB_ERR_LOG_PATH);
+        
+        exit();
     }
 }
 

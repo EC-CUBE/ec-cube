@@ -49,7 +49,7 @@ $objSess = new SC_Session();
 sfIsSuccess($objSess);
 
 // ファイル管理クラス
-$objUpFile = new SC_UploadFile(IMAGE_TEMP_DIR, IMAGE_SAVE_DIR);
+$objUpFile = new SC_UploadFile(IMAGE_TEMP_DIR, IMAGE_SAVE_DIR, FTP_IMAGE_TEMP_DIR, FTP_IMAGE_SAVE_DIR, MULTI_WEB_SERVER_MODE);
 
 // ファイル情報の初期化
 lfInitFile();
@@ -438,7 +438,7 @@ function lfConvertParam($array) {
 	$arrConvList['point_rate'] = "n";
 	$arrConvList['product_code'] = "KVna";
 	$arrConvList['comment1'] = "a";
-	//ホネケーキ:送料の指定なし
+	// 送料の指定なし
 	$arrConvList['deliv_fee'] = "n";
 	
 	// 詳細-サブ
@@ -555,7 +555,7 @@ function lfSetScaleImage(){
 		case "main_image":
 			// 一覧メイン画像
 			lfMakeScaleImage($_POST['image_key'], "main_list_image");
-			break;
+            break;
 		case "sub_large_image" . $subno:
 			// サブメイン画像
 			lfMakeScaleImage($_POST['image_key'], "sub_image" . $subno);
