@@ -14,8 +14,9 @@ $config = array(
     'plugins' => array(
         'Subscription_Simple' => array(
             'urls' => array(
-                'http://feeds.feedburner.jp/cnet/rss',
-                'http://rss.rssad.jp/rss/itm/rss.xml'
+                'http://feeds.feedburner.jp/cnet/rss', //cnet
+                'http://rss.rssad.jp/rss/itm/rss.xml', //@IT
+                'http://rss.rssad.jp/rss/itm/1.0/topstory.xml' //ITmedia
             )
         ),
         'Filter_SearchEntry2Feed' => array(
