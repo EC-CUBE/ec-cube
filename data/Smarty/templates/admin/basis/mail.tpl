@@ -130,7 +130,8 @@ function lfnCheckSubmit(){
 										</td>
 									</tr>
 									<tr>
-										<td bgcolor="#f2f1ec" colspan="2" class="fs12n"><span class="red"> *</span>名前差し込み時は {name} といれてください。<br><span class="red"> *</span>メールの内容は [[body]] に挿入されます。</td>
+										<td bgcolor="#f2f1ec" colspan="2" class="fs12n"><span class="red"> *</span>名前を差し込む場合は、{name}と入力して下さい。<br>
+										<span class="red"> *</span>注文情報を差し込む場合は、{order}と入力して下さい。</td>
 									</tr>
 									<tr>
 										<td bgcolor="#f2f1ec" width="160" class="fs12">本文</td>
