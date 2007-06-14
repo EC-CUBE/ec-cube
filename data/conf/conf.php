@@ -338,7 +338,7 @@ define ("PRODUCTS_LIST_MAX", 15);	// 商品一覧表示数
 define ("MEMBER_PMAX", 10);			// メンバー管理ページ表示行数
 define ("SEARCH_PMAX", 10);			// 検索ページ表示行数
 define ("NAVI_PMAX", 5);			// ページ番号の最大表示個数
-define ("PRODUCTSUB_MAX", 5);		// 商品サブ情報最大数
+define ("PRODUCTSUB_MAX", 8);		// 商品サブ情報最大数
 define ("DELIVTIME_MAX", 16);		// 配送時間の最大表示数
 define ("DELIVFEE_MAX", 47);		// 配送料金の最大表示数
 
