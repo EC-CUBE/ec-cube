@@ -106,7 +106,7 @@ function lfnCheckSubmit(){
 										<td bgcolor="#f2f1ec">メール形式<span class="red"> *</span></td>
 										<td bgcolor="#ffffff">
 										<!--{assign var=key value="send_type"}-->
-										<span <!--{if $arrErr.send_type}--><!--{sfSetErrorStyle}--><!--{/if}-->><!--{html_radios name="send_type" options=$arrSendType separator="&nbsp;" selected=$arrForm[$key]}--></span>
+										<span <!--{if $arrErr.send_type}--><!--{sfSetErrorStyle}--><!--{/if}-->><!--{html_radios name="send_type" options=$arrSendType separator="&nbsp;" selected=$arrForm[$key] disabled}--></span>
 										<!--{if $arrErr.send_type}--><br><span class="red12"><!--{$arrErr.send_type}--></span><!--{/if}-->
 										</td>
 									</tr>
