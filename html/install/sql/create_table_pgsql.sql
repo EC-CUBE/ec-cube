@@ -181,6 +181,8 @@ CREATE TABLE dtb_mailtemplate (
     header text,
     footer text,
     body   text,
+    send_type   text,
+    template_name text,
     creator_id int4 NOT NULL,
     del_flg int2 NOT NULL DEFAULT 0,
     create_date timestamp NOT NULL DEFAULT now(),
