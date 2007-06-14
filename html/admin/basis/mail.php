@@ -51,9 +51,6 @@ if ( $_GET['mode'] == 'edit' && sfCheckNumLength($_GET['template_id']) === true 
 	} else {
 		// 正常
 		lfRegist($conn, $objPage->arrForm);
-        
-        sfPrintR($objPage->arrForm);
-        
 		// 完了メッセージ
 		$objPage->tpl_onload = "window.alert('メール設定が完了しました。');";
 	}
