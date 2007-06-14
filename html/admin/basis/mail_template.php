@@ -38,18 +38,6 @@ if ( $_GET['mode'] == "delete" && sfCheckNumLength($_GET['id'])===true ){
     sfReload();
 }
 
-$sql = "SELECT * FROM dtb_mailtemplate WHERE template_id = 0";
-$default_template = $conn->getAll($sql);
-$split_data = explode(".",$default_template[0]["create_date"]);
-$default_template[0]["create_date"] = $split_data[0];    
-$objPage->default_template = $default_template[0];
-
-$sql = "SELECT * FROM dtb_mailtemplate WHERE template_id = 1";
-$default_template_mobile = $conn->getAll($sql);
-$split_data = explode(".",$default_template_mobile[0]["create_date"]);
-$default_template_mobile[0]["create_date"] = $split_data[0]; 
-$objPage->default_template_mobile = $default_template_mobile[0];
-
 $sql = "SELECT * FROM dtb_mailtemplate WHERE del_flg = 0 ORDER BY template_id ASC";
 $list_data = $conn->getAll($sql);
 $linemax = count($list_data);
