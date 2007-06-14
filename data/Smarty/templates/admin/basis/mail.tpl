@@ -106,7 +106,11 @@ function lfnCheckSubmit(){
 										<td bgcolor="#f2f1ec">メール形式<span class="red"> *</span></td>
 										<td bgcolor="#ffffff">
 										<!--{assign var=key value="send_type"}-->
-										<!--{html_radios name="send_type" options=$arrSendType separator="&nbsp;" selected=$arrForm[$key] disabled=true}-->
+										<!--{if $arrForm.template_id > 1}-->
+										<!--{html_radios name="send_type" options=$arrSendType separator="&nbsp;" selected=$arrForm[$key]}-->
+										<!--{else}-->
+										<!--{html_radios name="send_type" options=$arrSendType separator="&nbsp;" selected=$arrForm[$key] disabled=true}-->										
+										<!--{/if}-->
 										</td>
 									</tr>
 									<tr>
