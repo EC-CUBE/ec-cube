@@ -31,35 +31,31 @@ $objPage->arrMailTEMPLATE = $arrMAILTEMPLATE;
 
 $objPage->arrSendType = array("パソコン","携帯");
 
-if ( $_GET['mode'] == 'edit' && sfCheckNumLength($_GET['template_id'])===true ){
-	
+if ( $_GET['mode'] == 'edit' && sfCheckNumLength($_GET['template_id']) === true ){
 	if ( sfCheckNumLength( $_GET['template_id']) ){
 		$sql = "SELECT * FROM dtb_mailtemplate WHERE template_id = ?";
 		$result = $conn->getAll($sql, array($_GET['template_id']) );
-        //print_r($result);
 		if ( $result ){
 			$objPage->arrForm = $result[0];
 		} else {
 			$objPage->arrForm['template_id'] = $_GET['template_id'];
 		}
 	}
-	
 } elseif ( $_POST['mode'] == 'regist' && sfCheckNumLength( $_POST['template_id']) ){
-//    elseif ( $_GET['mode'] == 'regist' ){
 	// POSTデータの引き継ぎ
 	$objPage->arrForm = lfConvertParam($_POST);
 	$objPage->arrErr = fnErrorCheck($objPage->arrForm);
 	if ( $objPage->arrErr ){
 		// エラーメッセージ
 		$objPage->tpl_msg = "エラーが発生しました";
-		
 	} else {
 		// 正常
 		lfRegist($conn, $objPage->arrForm);
-		
+        
+        sfPrintR($objPage->arrForm);
+        
 		// 完了メッセージ
-		$objPage->tpl_onload = "window.alert('メール設定が完了しました。テンプレートを選択して内容をご確認ください。');";
-		//unset($objPage->arrForm);
+		$objPage->tpl_onload = "window.alert('メール設定が完了しました。');";
 	}
 }
 
@@ -82,7 +78,6 @@ function lfRegist( $conn, $data ){
 	}
 
 }
-
 
 function lfConvertParam($array) {
 	
