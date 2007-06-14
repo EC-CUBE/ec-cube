@@ -13,7 +13,10 @@ require_once('LLReader.php');
 $config = array(
     'plugins' => array(
         'Subscription_Simple' => array(
-            'urls' => array('http://feeds.feedburner.jp/cnet/rss')
+            'urls' => array(
+                'http://feeds.feedburner.jp/cnet/rss',
+                'http://rss.rssad.jp/rss/itm/rss.xml'
+            )
         ),
         'Filter_SearchEntry2Feed' => array(
             'regex' => '/google/i'
