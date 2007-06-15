@@ -430,7 +430,7 @@ define ("LIST_P_HTML", URL_DIR . "products/list-p");							// 商品一覧(HTML出力)
 define ("LIST_C_HTML", URL_DIR . "products/list.php?mode=search&category_id=");	// 商品一覧(HTML出力)
 define ("DETAIL_P_HTML", URL_DIR . "products/detail.php?product_id=");			// 商品詳細(HTML出力)
 define ("MYPAGE_DELIVADDR_URL", URL_DIR . "mypage/delivery.php");				// マイページお届け先URL
-
+exit();
 /*
  * サイト定義変数
  */
