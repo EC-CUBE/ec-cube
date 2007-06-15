@@ -33,7 +33,7 @@ define ("AUTH_MAGIC", "31eafcbd7a81d7b401a7fdc12bba047c02d1fae6");
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // WEB負荷分散設定
 
-define ("MULTI_WEB_SERVER_MODE", true);    // 負荷分散モード(true:ON false:OFF)
+define ("MULTI_WEB_SERVER_MODE", false);    // 負荷分散モード(true:ON false:OFF)
 
 /*
  *  host:IPアドレスで指定する。
