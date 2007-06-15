@@ -114,7 +114,7 @@ define("CREDIT_HTTP_DOMAIN", "http://rcv.ec-cube.net/");
 define("CREDIT_HTTP_ANALYZE_PROGRAM", "rcv_credit.php");
 define("CREDIT_HTTP_ANALYZE_URL", CREDIT_HTTP_DOMAIN . CREDIT_HTTP_ANALYZE_PROGRAM);
 //--------------------------------------------------------------------------------------------------------
-
+exit();
 // 文字コード
 define("CHAR_CODE", "EUC-JP");
 
@@ -185,7 +185,6 @@ define("ORDER_STATUS_MAX", 50);
 //フロントレビュー書き込み最大数
 define("REVIEW_REGIST_MAX", 5);
 
-exit();
 /*
  * サイト定義定数
  */
