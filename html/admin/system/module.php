@@ -249,10 +249,10 @@ function lfInstallModule() {
 		}
 	}
 	
-	if($flg_ok) {
-        
         sfprintr(sfGetFileVersion($path));
         sfprintr($path);
+	if($flg_ok) {
+        
         
 		$path = MODULE_PATH . $arrRet[0]['extern_php'];
 		$sqlval['now_version'] = sfGetFileVersion($path);
