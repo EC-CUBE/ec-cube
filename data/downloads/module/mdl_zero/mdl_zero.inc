@@ -9,9 +9,10 @@
 
 /**** ▼定数宣言 *********************************************************************************************/
 
-define("MDL_ZERO_ID", 6);
+define("MDL_ZERO_ID", 8);
 define("ZERO_PC", 1);        // dtb_payment の区分用
 define("ZERO_MOBILE", 2);    // dtb_payment の区分用
+define("ZERO_CREDIT_ID", 1);      // dtb_payment の区分用
 
 
 // 送信パラメータ

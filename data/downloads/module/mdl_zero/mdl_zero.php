@@ -176,8 +176,8 @@ function lfGetPaymentDB($where = "", $arrWhereVal = array()){
                 module_id, 
                 memo01 as pc_send, 
                 memo02 as pc_clientip,
-                memo03 as mobile_send, 
-                memo04 as mobile_clientip
+                memo04 as mobile_send, 
+                memo05 as mobile_clientip
             FROM dtb_payment WHERE module_id = ? " . $where;
     $arrRet = $objQuery->getall($sql, $arrVal);
 
@@ -206,6 +206,7 @@ function lfUpdPaymentDB(){
 		$arrData["module_path"] = MODULE_PATH . "mdl_zero/card.php";
 		$arrData["memo01"] = $_POST["pc_send"];
 		$arrData["memo02"] = $_POST["pc_clientip"];
+		$arrData["memo03"] = ZERO_CREDIT_ID;
 		$arrData["del_flg"] = "0";
     }
     
@@ -217,8 +218,9 @@ function lfUpdPaymentDB(){
 		$arrData["update_date"] = "now()";
 		$arrData["module_id"] = MDL_ZERO_ID;
 		$arrData["module_path"] = MODULE_PATH . "mdl_zero/card.php";
-		$arrData["memo03"] = $_POST["mobile_send"];
-		$arrData["memo04"] = $_POST["mobile_clientip"];
+		$arrData["memo03"] = ZERO_CREDIT_ID;
+		$arrData["memo04"] = $_POST["mobile_send"];
+		$arrData["memo05"] = $_POST["mobile_clientip"];
 		$arrData["del_flg"] = "0";
     }
     
