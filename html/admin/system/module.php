@@ -227,7 +227,7 @@ function lfInstallModule() {
 	} else {
 		sfErrorHeader(">> 対象の機能は、配布を終了しております。");
 		$flg_ok = false;
-	}
+	} 
 	
 	// 必要なSQL文の実行
 	if($arrRet[0]['install_sql'] != "") {
