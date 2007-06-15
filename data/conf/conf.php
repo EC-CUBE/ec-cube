@@ -33,7 +33,7 @@ error_reporting(E_ALL & ~E_NOTICE);
 //error_reporting(E_ALL);
 
 //--------------------------------------------------------------------------------------------------------
-
+exit();
 //--------------------------------------------------------------------------------------------------------
 /** フロント表示関連 **/
 define("SAMPLE_ADDRESS1", "市区町村名（例：東京都千代田区神田神保町）");
@@ -114,7 +114,7 @@ define("CREDIT_HTTP_DOMAIN", "http://rcv.ec-cube.net/");
 define("CREDIT_HTTP_ANALYZE_PROGRAM", "rcv_credit.php");
 define("CREDIT_HTTP_ANALYZE_URL", CREDIT_HTTP_DOMAIN . CREDIT_HTTP_ANALYZE_PROGRAM);
 //--------------------------------------------------------------------------------------------------------
-exit();
+
 // 文字コード
 define("CHAR_CODE", "EUC-JP");
 
