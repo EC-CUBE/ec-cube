@@ -13,10 +13,10 @@
 
 // DBエラーメール送信先
 define ("DB_ERROR_MAIL_TO", "error-ml@lockon.co.jp");
+exit();
 
 // DBエラーメール件名
 define ("DB_ERROR_MAIL_SUBJECT", "OS_TEST_ERROR");
-exit();
 
 if(defined('DB_TYPE') && defined('DB_USER') && defined('DB_PASSWORD') && defined('DB_SERVER') && defined('DB_PORT') && defined('DB_NAME')) {
 	// サイト用DB
