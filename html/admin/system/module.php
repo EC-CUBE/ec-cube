@@ -257,6 +257,7 @@ function lfInstallModule() {
 		$sqlval['now_version'] = sfGetFileVersion($path);
 		$sqlval['update_date'] = "now()";
 		$objQuery->update("dtb_module", $sqlval, "module_id = ?", array($arrRet[0]['module_id']));
+        sfprintr($objQuery->getlastquery());
 	}
 }
 
