@@ -251,6 +251,7 @@ function lfInstallModule() {
 	
         sfprintr(sfGetFileVersion($path));
         sfprintr($path);
+        exit();
 	if($flg_ok) {
         
 		$path = MODULE_PATH . $arrRet[0]['extern_php'];
