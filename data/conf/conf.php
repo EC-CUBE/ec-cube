@@ -6,7 +6,7 @@
  * http://www.lockon.co.jp/
  * 
  */
-
+exit();
 $CONF_PHP_PATH = realpath( dirname( __FILE__) );
 require_once($CONF_PHP_PATH ."/../install.php");
 require_once($CONF_PHP_PATH ."/core.php" );
@@ -33,7 +33,7 @@ error_reporting(E_ALL & ~E_NOTICE);
 //error_reporting(E_ALL);
 
 //--------------------------------------------------------------------------------------------------------
-exit();
+
 //--------------------------------------------------------------------------------------------------------
 /** フロント表示関連 **/
 define("SAMPLE_ADDRESS1", "市区町村名（例：東京都千代田区神田神保町）");
