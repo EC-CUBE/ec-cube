@@ -4,7 +4,7 @@
  *
  * http://www.lockon.co.jp/
  */
-exit();
+
 //---このファイルのパスを指定
 $INC_PATH = realpath( dirname( __FILE__) );
 require_once( $INC_PATH ."/../conf/conf.php" );
