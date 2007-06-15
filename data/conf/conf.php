@@ -6,9 +6,10 @@
  * http://www.lockon.co.jp/
  * 
  */
-exit();
+
 $CONF_PHP_PATH = realpath( dirname( __FILE__) );
 require_once($CONF_PHP_PATH ."/../install.php");
+exit();
 require_once($CONF_PHP_PATH ."/core.php" );
 
 //--------------------------------------------------------------------------------------------------------
