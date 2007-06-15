@@ -10,10 +10,10 @@
 	サイトごとに必ず変更する設定
 */
 ///////////////////////////////////////////////////////////
+exit();
 
 // DBエラーメール送信先
 define ("DB_ERROR_MAIL_TO", "error-ml@lockon.co.jp");
-exit();
 
 // DBエラーメール件名
 define ("DB_ERROR_MAIL_SUBJECT", "OS_TEST_ERROR");
