@@ -2,7 +2,7 @@
 /**
  * 
  * @copyright    2000-2007 LOCKON CO.,LTD. All Rights Reserved.
- * @version CVS: $Id: mdl_zero.php 1.2 2006-12-04 06:08:28Z kakinaka $
+ * @version CVS: $Id: 1.0 2006-06-04 06:38:01Z kakinaka $
  * @link        http://www.lockon.co.jp/
  *
  */
