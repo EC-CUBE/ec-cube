@@ -103,7 +103,7 @@ function lfSendMobileCredit($arrData, $arrPayment, $objPage){
 	
 	// 送信データ生成
 	$arrSendData = array(
-		'clientip' => $arrPayment[0]["memo04"],						                                // 番組コード
+		'clientip' => $arrPayment[0]["memo05"],						                                // 番組コード
 		'act' => SEND_PARAM_ACT ,										                            // imode固定
 		'send' => SEND_PARAM_SEND,	                                                                // jpall固定
 		'money' => $arrData["payment_total"],						                    	        // 金額

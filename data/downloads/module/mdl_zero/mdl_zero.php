@@ -238,7 +238,6 @@ function lfUpdPaymentDB(){
 	    }else{
 	        $arrData["rank"] = $max_rank + 1;
 	        $objQuery->insert("dtb_payment", $arrData);
-            sfprintr($objQuery->getlastquery(false));
 	    }
     }
     
