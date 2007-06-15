@@ -249,7 +249,11 @@ function lfInstallModule() {
 		}
 	}
 	
-	if($flg_ok) {		
+	if($flg_ok) {
+        
+        sfprintr(sfGetFileVersion($path));
+        sfprintr($path);
+        
 		$path = MODULE_PATH . $arrRet[0]['extern_php'];
 		$sqlval['now_version'] = sfGetFileVersion($path);
 		$sqlval['update_date'] = "now()";
