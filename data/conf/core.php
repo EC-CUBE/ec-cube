@@ -21,6 +21,7 @@ if(defined('DB_TYPE') && defined('DB_USER') && defined('DB_PASSWORD') && defined
 	// •µ•§•»Õ—DB
 	define ("DEFAULT_DSN", DB_TYPE . "://" . DB_USER . ":" . DB_PASSWORD . "@" . DB_SERVER . ":" .DB_PORT . "/" . DB_NAME);
 }
+exit();
 
 // Õπ ÿ»÷πÊ¿ÏÕ—DB
 define ("ZIP_DSN", DEFAULT_DSN);
@@ -32,7 +33,6 @@ define ("AUTH_MAGIC", "31eafcbd7a81d7b401a7fdc12bba047c02d1fae6");
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // WEB…È≤Ÿ ¨ª∂¿ﬂƒÍ
-exit();
 define ("MULTI_WEB_SERVER_MODE", false);    // …È≤Ÿ ¨ª∂•‚°º•…(true:ON false:OFF)
 
 /*
