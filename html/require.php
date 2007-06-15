@@ -6,9 +6,9 @@
  */
 $include_dir = realpath(dirname( __FILE__));
 require_once($include_dir . "/define.php");
- exit();
 require_once($include_dir . HTML2DATA_DIR. "conf/conf.php");
 require_once($include_dir . HTML2DATA_DIR . "include/module.inc");
+ exit();
 require_once($include_dir . HTML2DATA_DIR . "lib/glib.php");
 require_once($include_dir . HTML2DATA_DIR . "lib/slib.php");
 require_once($include_dir . HTML2DATA_DIR . "class/SC_View.php");
