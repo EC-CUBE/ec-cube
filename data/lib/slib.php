@@ -2887,7 +2887,6 @@ function sfGetFileVersion($path) {
 			while (!feof($src_fp)) {
 				$line = fgets($src_fp);
 				if(ereg("@version", $line)) {
-                sfprintr($line);
 					$arrLine = split(" ", $line);
 					$version = $arrLine[5];
 				}
