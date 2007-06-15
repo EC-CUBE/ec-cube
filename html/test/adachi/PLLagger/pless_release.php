@@ -14,6 +14,7 @@ $config = array(
     'plugins' => array(
         'Subscription_Simple' => array(
             'urls' => array(
+                'http://blogsearch.google.co.jp/blogsearch_feeds?hl=ja&q=%E3%83%AD%E3%83%83%E3%82%AF%E3%82%AA%E3%83%B3&lr=lang_ja&ie=utf-8&num=10&output=atom',
                 'http://feeds.feedburner.jp/cnet/rss', //cnet
                 'http://rss.rssad.jp/rss/itm/rss.xml', //@IT
                 'http://rss.rssad.jp/rss/itm/1.0/topstory.xml' //ITmedia
