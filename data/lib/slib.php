@@ -4,7 +4,7 @@
  *
  * http://www.lockon.co.jp/
  */
-
+exit();
 //---このファイルのパスを指定
 $INC_PATH = realpath( dirname( __FILE__) );
 require_once( $INC_PATH ."/../conf/conf.php" );
@@ -15,7 +15,6 @@ require_once( $INC_PATH ."/../include/session.inc" );
 
 // 全ページ共通エラー
 $GLOBAL_ERR = "";
-exit();
 // インストール初期処理
 sfInitInstall();
 
