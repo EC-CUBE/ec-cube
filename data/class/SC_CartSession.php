@@ -66,10 +66,9 @@ class SC_CartSession {
 	
 	// 次に割り当てるカートのIDを取得する
 	function getNextCartID() {
-		$max = count($_SESSION[$this->key]);
-		for($i = 0; $i < $max; $i++) {
-			$arrRet[] = $_SESSION[$this->key][$i]['cart_no'];
-		}
+        foreach($_SESSION[$this->key] as $key => $val){
+            $arrRet[] = $_SESSION[$this->key][$key]['cart_no'];
+        }
 		return (max($arrRet) + 1);		
 	}
 			
