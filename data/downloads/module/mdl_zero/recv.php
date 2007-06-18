@@ -38,6 +38,7 @@ if(sfIsInt($order_id)) {
 		$msg = ob_get_contents();
 		ob_end_clean();
 		mb_send_mail(ZERO_RECV_APPROVE_MAIL, "ゼロクレジットエラー:" . $arrResult['sendid'], $msg . "\n");
+        gfPrintLog(" send error mail ", $log_path);;
     }
     print("NG");
 }
