@@ -73,8 +73,8 @@ if (!empty($_POST["return"])) {
 		break;
 	default:
         
-		header("Location: " . gfAddSessionId('deliv_addr.php'));
-		exit;
+		$_POST["mode"] = "set1";
+        break;
 	}
 }
 
