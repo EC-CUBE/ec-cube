@@ -71,6 +71,8 @@ if (!empty($_POST["return"])) {
         exit;
 
 	}
+}else{
+    $_POST["mode"] = "set1";
 }
 
 switch ($_POST['mode']){
