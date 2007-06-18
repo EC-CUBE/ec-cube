@@ -51,7 +51,7 @@ if($objCustomer->isLoginSuccess()) {
 	$objPage->tpl_user_point = $objCustomer->getValue('point');
 }
 
-sfprintr($objSiteSess);
+sfprintr($objCartSess);
 
 // 金額の取得 (購入途中で売り切れた場合にはこの関数内にてその商品の個数が０になる)
 $objPage = sfTotalCart($objPage, $objCartSess, $arrInfo);
