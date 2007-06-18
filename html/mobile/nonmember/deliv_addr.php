@@ -57,7 +57,7 @@ $uniqid = sfCheckNormalAccess($objSiteSess, $objCartSess);
     //-- 入力データの変換
     $objPage->arrForm = lfConvertParam($objPage->arrForm, $arrRegistColumn);                        
 
-sfprintr($_POST);
+sfprintr($SESSION);
 
 // 戻るボタン用処理
 if (!empty($_POST["return"])) {
