@@ -24,8 +24,6 @@ class LC_Page {
 	}
 }
 
-sfPrintR($_SESSION);
-
 // 買い物を続ける場合
 if($_REQUEST['continue']) {
 	header("Location: " . gfAddSessionId(MOBILE_URL_SITE_TOP) );
