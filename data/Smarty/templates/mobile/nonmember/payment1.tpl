@@ -10,7 +10,7 @@
 <hr>
 
 <!--<form method="post" action="<!--{$smarty.server.PHP_SELF|escape}-->">-->
-<form method="post" action="./payment.php">
+<form method="post" action="./payment1.php">
 <input type="hidden" name="mode" value="deliv_date">
 <input type="hidden" name="uniqid" value="<!--{$tpl_uniqid}-->">
 <input type="hidden" name="deliv_date" value="<!--{$arrForm.deliv_date.value}-->">
