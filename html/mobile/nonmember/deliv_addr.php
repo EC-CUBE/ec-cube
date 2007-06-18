@@ -112,7 +112,8 @@ switch ($_POST['mode']){
 		break;
 	case 'complete':
 		$objPage->arrErr = lfErrorCheck($objPage->arrForm);
-		if (count($objPage->arrErr) == 0) {
+		print("test");exit;
+        if (count($objPage->arrErr) == 0) {
             // епо©
 			$other_deliv_id = lfRegistData($_POST,$arrRegistColumn,$uniqid);
 
