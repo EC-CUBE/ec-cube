@@ -55,7 +55,7 @@ if($objCustomer->isLoginSuccess()) {
 $objPage = sfTotalCart($objPage, $objCartSess, $arrInfo);
 $objPage->arrData = sfTotalConfirm($arrData, $objPage, $objCartSess, $arrInfo);
 
-// カー都内の商品の売り切れチェック
+// カート内の商品の売り切れチェック
 $objCartSess->chkSoldOut($objCartSess->getCartList(), true);
 
 // 戻るボタンの処理
