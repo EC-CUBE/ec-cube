@@ -1693,7 +1693,7 @@ function sfSendOrderMail($order_id, $template_id, $subject = "", $body, $send = 
 	$customer_id = $arrOrder['customer_id'];
 	$arrRet = $objQuery->select("point,name01,name02", "dtb_customer", "customer_id = ?", array($customer_id));
 	$arrCustomer = $arrRet[0];
-sfprintr($arrCustomer);exit;
+
 	$objPage->arrCustomer = $arrCustomer;
 	$objPage->arrOrder = $arrOrder;
     
@@ -1722,7 +1722,7 @@ sfprintr($arrCustomer);exit;
 	$objMailView = new SC_SiteView();
 	// メール本文の取得
 	$objMailView->assignobj($objPage);
-    $name = $objPage->arrCustomer['name01']." ".$objPage->arrCustomer['name02'];
+    $name = $objPage->arrOrder['name01']." ".$objPage->arrOrder['name02'];
     $objPage->tpl_body = ereg_replace( "(\{name\})", $name ,  $objPage->tpl_body );
     $tmp_subject = ereg_replace( "(\{name\})", $name ,  $tmp_subject );
     
