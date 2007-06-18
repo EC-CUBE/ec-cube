@@ -42,6 +42,8 @@ $uniqid = sfCheckNormalAccess($objSiteSess, $objCartSess);
 // ユニークIDを引き継ぐ
 $objPage->tpl_uniqid = $uniqid;
 
+sfprintr($_POST);
+
 if(!empty($_POST["mode2"]) ){
     if ($_POST["mode2"] == "deliv") {
             
@@ -76,7 +78,7 @@ if(!empty($_POST["mode2"]) ){
         if ($_POST["mode2"] == "customer_addr") {
             //print_r($_POST);
             if ($_POST['deli'] != "") {
-                header("Location:" . gfAddSessionId("./payment.php"));
+                header("Location:" . gfAddSessionId("./payment1.php"));
             exit;
             }else{
                 // エラーを返す
