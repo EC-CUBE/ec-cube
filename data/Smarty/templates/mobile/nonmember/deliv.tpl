@@ -36,7 +36,7 @@
 <br>
 
 ■その他のお届け先を指定<br>
-<form method="POST" action="deliv_addr.php">
+<form method="get" action="deliv_addr.php">
 <input type="hidden" name="mode" value="other_addr">
 <center><input type="submit" value="新規登録"></center>
 </form>
