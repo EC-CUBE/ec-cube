@@ -24,6 +24,10 @@ $objConn = new SC_DBConn();
 $objSiteSess = new SC_SiteSession();
 $objCartSess = new SC_CartSession();
 
+$objCartSess->setValue("test","test");
+
+sfprintr($objCartSess);
+
 $objPage->arrForm = $_POST;
 $objPage->arrPref = $arrPref;
 
@@ -117,7 +121,7 @@ switch ($_POST['mode']){
 		if (count($objPage->arrErr) == 0) {
             // 登録
 			$other_deliv_id = lfRegistData($_POST,$arrRegistColumn,$uniqid);
-            $objCartSess->setValue("mobile",$_POST);
+            
 			// 登録済みの別のお届け先を受注一時テーブルに書き込む
 			lfRegistOtherDelivData($uniqid, $objCustomer, $other_deliv_id);
 
