@@ -10,7 +10,7 @@
 <hr>
 
 <form method="post" action="<!--{$smarty.server.PHP_SELF|escape}-->">
-<input type="hidden" name="mode" value="confirm">
+<input type="text" name="mode" value="confirm">
 <input type="hidden" name="uniqid" value="<!--{$tpl_uniqid}-->">
 <input type="hidden" name="payment_id" value="<!--{$arrForm.payment_id.value}-->">
 <input type="hidden" name="zip01" value="<!--{$arrAddr[0].zip01}-->">
