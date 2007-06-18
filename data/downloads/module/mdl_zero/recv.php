@@ -62,22 +62,22 @@ function lfDoComplete($objQuery, $arrResult) {
     
     // 加盟店コードが違う場合にはエラー
     if(count($arrResult)){
-        if(in_array($arrResult["clientip"], $arrCrilentIP)) return "加盟店コードが違います。";
+        if(in_array($arrResult["clientip"], $arrCrilentIP)) return "111加盟店コードが違います。";
     }else{
-        return "加盟店コードが違います。";
+        return "222加盟店コードが違います。";
     }
     
 	// 一時受注テーブルの読込
 	$arrData = sfGetOrderTemp($uniqid);
     
     // 一時受注テーブルからデータが取得できなければ、エラー
-    if(count($arrData) <= 0) return "受注一時テーブルに指定したIDのデータがありません。";
+    if(count($arrData) <= 0) return "333受注一時テーブルに指定したIDのデータがありません。";
     
     // 決済完了済みであればエラー
-    if($arrData["del_flg"] == 1) return "指定したIDのデータは決済完了済みです。";
+    if($arrData["del_flg"] == 1) return "444指定したIDのデータは決済完了済みです。";
     
     // 一時受注テーブルのお支払い合計と、ゼロから返ってきた金額とが違う場合はエラー
-    if($arrData["payment_total"] != $money) return "お支払い金額が違います。";
+    if($arrData["payment_total"] != $money) return "555お支払い金額が違います。";
     
     // セッション情報の復帰
     $_SESSION = unserialize($arrData["session"]);
