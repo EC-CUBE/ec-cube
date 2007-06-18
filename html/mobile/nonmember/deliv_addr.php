@@ -51,7 +51,7 @@ foreach($_POST as $key => $val) {
 }
 
 // ユーザユニークIDの取得と購入状態の正当性をチェック
-//$uniqid = sfCheckNormalAccess($objSiteSess, $objCartSess);
+$uniqid = sfCheckNormalAccess($objSiteSess, $objCartSess);
 
                       
  //-- 入力データの変換
