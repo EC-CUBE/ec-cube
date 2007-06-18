@@ -43,6 +43,8 @@ $arrRegistColumn = array(
                              array(  "column" => "tel03",       "convert" => "n" ),
                         );
 
+print("test");
+
 //-- データ設定
 foreach($_POST as $key => $val) {
 	if ($key != "mode" && $key != "return" && $key != "submit" && $key != session_name()) {
