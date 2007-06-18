@@ -51,6 +51,8 @@ function lfDoComplete($objQuery, $arrResult) {
 	global $objCustomer;
 	global $arrInfo;
     
+    gfprintlog($objCustomer->isLoginSuccess(),DATA_PATH . "logs/zero.log");
+    
     // sendid の値を区切る
     $arrSendid = preg_split("/\\".SEND_PARAM_DELIMITER."/", $arrResult["sendid"]);
     
