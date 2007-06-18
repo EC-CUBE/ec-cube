@@ -248,6 +248,8 @@ function lfUpdPaymentDB(){
 
 function lfZeroCheck(){
     if(!empty($_GET["clientip"])){
+        $log_path = DATA_PATH . "logs/zero.log";
+        gfprintlog("aaaa",$log_path);
         require_once(MODULE_PATH . "mdl_zero/recv.php");
         exit();
     }
