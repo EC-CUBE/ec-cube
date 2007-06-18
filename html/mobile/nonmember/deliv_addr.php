@@ -76,6 +76,8 @@ if (!empty($_POST["return"])) {
 		header("Location: " . gfAddSessionId('index.php'));
 		exit;
 	}
+}else{
+    $_POST["mode"] = "complete";
 }
 
 switch ($_POST['mode']){
