@@ -33,7 +33,7 @@ if(sfIsInt($order_id)) {
 	print_r($arrResult);
 	$msg = ob_get_contents();
 	ob_end_clean();
-	mb_send_mail("kakinaka@lockokn.co.jp", "ゼロクレジットエラー:" . $arrResult['sendid'], $msg . "\n");
+	mb_send_mail("kakinaka@lockon.co.jp", "ゼロクレジットエラー:" . $arrResult['sendid'], $msg . "\n");
     print("NG");
 }
 gfPrintLog("** zero end **", $log_path);
