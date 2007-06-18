@@ -13,7 +13,13 @@ define("SEND_MAIL", true);    // 承認情報を受信するメールアドレス
 
 $arrResult = $_GET;
 
-gfDebugLog("** zero start **");
+// GETの内容を全てログ保存
+$log_path = DATA_PATH . "logs/zero.log";
+foreach($arrResult as $key => $val){
+	gfPrintLog( "\t" . $key . " => " . $val, $log_path);
+}
+
+gfPrintLog("** zero start **", $log_path);
 
 $objQuery->begin();
 $order_id = lfDoComplete($objQuery, $arrResult);
@@ -25,7 +31,7 @@ if(sfIsInt($order_id)) {
     print("OK");
 }else{
     // エラーの場合受信データを送信
-    gfDebugLog(" zero error ");
+    gfPrintLog(" zero error ", $log_path);;
     if(SEND_MAIL){
 		ob_start();
 	    print($order_id . "\n");
@@ -36,7 +42,7 @@ if(sfIsInt($order_id)) {
     }
     print("NG");
 }
-gfDebugLog("** zero end **");
+gfPrintLog("** zero end **", $log_path);
 //---------------------------------------------------------------------------------------------------------------------------------
 // 完了処理
 function lfDoComplete($objQuery, $arrResult) {
