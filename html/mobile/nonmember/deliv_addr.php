@@ -62,7 +62,7 @@ sfprintr($_SESSION);
 if($_SESSION['deliv_info']){
     
     foreach($_SESSION['deliv_info'] as $key => $val){
-        $arrForm[$key] = $val;
+        $objPage->arrForm[$key] = $val;
     }
     
 }
