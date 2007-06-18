@@ -8,8 +8,8 @@ $objCustomer = new SC_Customer();
 $objSiteInfo = $objView->objSiteInfo;
 $arrInfo = $objSiteInfo->data;
 
-define("RECV_APPROVE_MAIL", $arrInfo["email03"]);    // 承認情報を受信するメールアドレス
-define("SEND_MAIL", true);    // 承認情報を受信するメールアドレス
+define("ZERO_RECV_APPROVE_MAIL", $arrInfo["email03"]);    // 承認情報を受信するメールアドレス
+define("ZERO_SEND_MAIL", true);    // 承認情報を受信するメールアドレス
 
 $log_path = DATA_PATH . "logs/zero.log";
 gfPrintLog("** zero start **", $log_path);
@@ -31,13 +31,13 @@ if(sfIsInt($order_id)) {
 }else{
     // エラーの場合受信データを送信
     gfPrintLog(" zero error ", $log_path);;
-    if(SEND_MAIL){
+    if(ZERO_SEND_MAIL){
 		ob_start();
 	    print($order_id . "\n");
 		print_r($arrResult);
 		$msg = ob_get_contents();
 		ob_end_clean();
-		mb_send_mail(RECV_APPROVE_MAIL, "ゼロクレジットエラー:" . $arrResult['sendid'], $msg . "\n");
+		mb_send_mail(ZERO_RECV_APPROVE_MAIL, "ゼロクレジットエラー:" . $arrResult['sendid'], $msg . "\n");
     }
     print("NG");
 }
