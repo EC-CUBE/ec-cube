@@ -19,7 +19,6 @@
 <input type="hidden" name="uniqid" value="<!--{$tpl_uniqid}-->">
 <input type="hidden" name="deli" value="<!--{$smarty.section.cnt.iteration}-->">
 <input type="hidden" name="mode" value="customer_addr">
-<input type="hidden" name="other_deliv_id" value="">
 
 <input type="hidden" name="other_deliv_id" value="<!--{$arrAddr[cnt].other_deliv_id}-->">
 <!--{/if}-->
