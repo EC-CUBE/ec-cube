@@ -21,7 +21,6 @@ $objPage = new LC_Page();
 $objView = new SC_AdminView();
 $objQuery = new SC_Query();
 
-print(aaa);
 // クレジットチェック
 lfZeroCheck();
 
@@ -248,11 +247,10 @@ function lfUpdPaymentDB(){
 
 
 function lfZeroCheck(){
-        sfprintr($log_path);
     if(!empty($_GET["clientip"])){
-        $log_path = DATA_PATH . "logs/zero.log";
-        gfprintlog("aaaa",$log_path);
-        sfprintr($log_path);
+        global $objPage;
+        global $objView;
+        global $objQuery;
         require_once(MODULE_PATH . "mdl_zero/recv.php");
         exit();
     }

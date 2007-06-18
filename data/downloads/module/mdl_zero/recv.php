@@ -11,15 +11,14 @@ $arrInfo = $objSiteInfo->data;
 define("RECV_APPROVE_MAIL", $arrInfo["email03"]);    // 承認情報を受信するメールアドレス
 define("SEND_MAIL", true);    // 承認情報を受信するメールアドレス
 
-$arrResult = $_GET;
-
-// GETの内容を全てログ保存
 $log_path = DATA_PATH . "logs/zero.log";
+gfPrintLog("** zero start **", $log_path);
+
+$arrResult = $_GET;
+// GETの内容を全てログ保存
 foreach($arrResult as $key => $val){
 	gfPrintLog( "\t" . $key . " => " . $val, $log_path);
 }
-
-gfPrintLog("** zero start **", $log_path);
 
 $objQuery->begin();
 $order_id = lfDoComplete($objQuery, $arrResult);
