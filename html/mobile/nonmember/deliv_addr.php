@@ -24,8 +24,8 @@ $objConn = new SC_DBConn();
 $objSiteSess = new SC_SiteSession();
 $objCartSess = new SC_CartSession();
 
-$objCartSess->test;
-$objCartSess->setValue("test","test");
+$objCartSess->
+$objCartSess->setValue("key_tmp","test");
 
 sfprintr($objCartSess);
 
