@@ -52,7 +52,7 @@ foreach($_POST as $key => $val) {
 
 // ユーザユニークIDの取得と購入状態の正当性をチェック
 $uniqid = sfCheckNormalAccess($objSiteSess, $objCartSess);
-
+sfprintr($objSiteSess);
                       
  //-- 入力データの変換
     $objPage->arrForm = lfConvertParam($objPage->arrForm, $arrRegistColumn);                        
