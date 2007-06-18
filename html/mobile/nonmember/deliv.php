@@ -42,7 +42,6 @@ $uniqid = sfCheckNormalAccess($objSiteSess, $objCartSess);
 // ユニークIDを引き継ぐ
 $objPage->tpl_uniqid = $uniqid;
 
-sfprintr($_POST);
 
 //前のページからの遷移によって分岐
 if(!empty($_POST["mode2"]) ){
