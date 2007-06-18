@@ -21,6 +21,7 @@ $objPage = new LC_Page();
 $objView = new SC_AdminView();
 $objQuery = new SC_Query();
 
+print(aaa);
 // クレジットチェック
 lfZeroCheck();
 
