@@ -215,6 +215,7 @@ function lfRegistPreCustomer($arrData, $arrInfo) {
 
 // 受注テーブルへ登録
 function lfRegistOrder($objQuery, $arrData, $objCampaignSess) {
+    global $objCampaignSess;
 	$sqlval = $arrData;
 
 	// 受注テーブルに書き込まない列を除去
