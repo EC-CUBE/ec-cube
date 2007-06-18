@@ -69,6 +69,7 @@ if (!empty($_POST["return"])) {
 	default:
         $_POST["return"] = "";
 		$_POST["mode"] = "set1";
+        sfprintr($_POST);exit;
         break;
 	}
 }
