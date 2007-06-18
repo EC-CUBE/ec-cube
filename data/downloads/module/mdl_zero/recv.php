@@ -8,8 +8,8 @@ $objCustomer = new SC_Customer();
 $objSiteInfo = $objView->objSiteInfo;
 $arrInfo = $objSiteInfo->data;
 
-define("ZERO_RECV_APPROVE_MAIL", $arrInfo["email03"]);    // 承認情報を受信するメールアドレス
-define("ZERO_SEND_MAIL", true);    // 承認情報を受信するメールアドレス
+define("ZERO_RECV_APPROVE_MAIL", $arrInfo["email03"]);    // メール送信先
+define("ZERO_SEND_MAIL", true);    // メール送信
 
 $log_path = DATA_PATH . "logs/zero.log";
 gfPrintLog("** zero start **", $log_path);
@@ -20,7 +20,7 @@ foreach($arrResult as $key => $val){
 	gfPrintLog( "\t" . $key . " => " . $val, $log_path);
 }
 
-sfprintr($arrInfo["email03"]);
+sfprintr($objSiteInfo);
 
 $objQuery->begin();
 $order_id = lfDoComplete($objQuery, $arrResult);
