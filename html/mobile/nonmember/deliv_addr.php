@@ -52,7 +52,7 @@ foreach($_POST as $key => $val) {
 
 // ユーザユニークIDの取得と購入状態の正当性をチェック
 $uniqid = sfCheckNormalAccess($objSiteSess, $objCartSess);
-sfprintr($objCartSess->key);
+sfprintr($objSiteSess);
                       
  //-- 入力データの変換
     $objPage->arrForm = lfConvertParam($objPage->arrForm, $arrRegistColumn);                        
@@ -117,7 +117,7 @@ switch ($_POST['mode']){
 		if (count($objPage->arrErr) == 0) {
             // 登録
 			$other_deliv_id = lfRegistData($_POST,$arrRegistColumn,$uniqid);
-
+            $objSiteSess->arrForm = $_POST;
 			// 登録済みの別のお届け先を受注一時テーブルに書き込む
 			lfRegistOtherDelivData($uniqid, $objCustomer, $other_deliv_id);
 
