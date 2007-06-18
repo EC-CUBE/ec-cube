@@ -1722,7 +1722,7 @@ function sfSendOrderMail($order_id, $template_id, $subject = "", $body, $send = 
 	$objMailView = new SC_SiteView();
 	// メール本文の取得
 	$objMailView->assignobj($objPage);
-    $name = $objPage->arrOrder['name01']." ".$objPage->arrOrder['name02'];
+    $name = $objPage->arrOrder['order_name01']." ".$objPage->arrOrder['order_name02'];
     $objPage->tpl_body = ereg_replace( "(\{name\})", $name ,  $objPage->tpl_body );
     $tmp_subject = ereg_replace( "(\{name\})", $name ,  $tmp_subject );
     
