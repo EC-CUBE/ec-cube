@@ -73,7 +73,7 @@ if (!empty($_POST["return"])) {
 		break;
 	default:
         
-		header("Location: " . gfAddSessionId('index.php'));
+		header("Location: " . gfAddSessionId('deliv_addr.php'));
 		exit;
 	}
 }
