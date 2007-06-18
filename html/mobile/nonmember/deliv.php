@@ -44,6 +44,7 @@ $objPage->tpl_uniqid = $uniqid;
 
 sfprintr($_POST);
 
+//前のページからの遷移によって分岐
 if(!empty($_POST["mode2"]) ){
     if ($_POST["mode2"] == "deliv") {
             
@@ -78,7 +79,7 @@ if(!empty($_POST["mode2"]) ){
         if ($_POST["mode2"] == "customer_addr") {
             //print_r($_POST);
             if ($_POST['deli'] != "") {
-                header("Location:" . gfAddSessionId("./payment1.php"));
+                header("Location:" . gfAddSessionId("./payment.php"));
             exit;
             }else{
                 // エラーを返す
@@ -102,6 +103,9 @@ if(!empty($_POST["mode2"]) ){
     $objView->assignobj($objPage);
     $objView->display(SITE_FRAME);
 }
+
+
+
 
 /**
  *入力された情報をデータベースdtb_order_tempに格納する
