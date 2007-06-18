@@ -67,10 +67,8 @@ if (!empty($_POST["return"])) {
 		$_POST["mode"] = "set1";
 		break;
 	default:
-        $_POST["return"] = "";
-		$_POST["mode"] = "set1";
-        sfprintr($_POST);exit;
-        break;
+        header("Location: " . gfAddSessionId('index.php'));
+        exit;
 	}
 }
 
