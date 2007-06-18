@@ -27,7 +27,7 @@ if(sfIsInt($order_id)) {
     print("OK");
 }else{
     // エラーの場合受信データを送信
-    gfPrintLog(" zero error ", $log_path);
+    gfPrintLog(" zero error " . $order_id, $log_path);
     gfPrintLog($order_id, $log_path);
     
     ob_start();
