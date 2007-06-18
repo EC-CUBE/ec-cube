@@ -117,7 +117,7 @@ switch ($_POST['mode']){
 		if (count($objPage->arrErr) == 0) {
             // 登録
 			$other_deliv_id = lfRegistData($_POST,$arrRegistColumn,$uniqid);
-            $objCartSess->mobile = $_POST;
+            $objCartSess->setValue("mobile",$_POST);
 			// 登録済みの別のお届け先を受注一時テーブルに書き込む
 			lfRegistOtherDelivData($uniqid, $objCustomer, $other_deliv_id);
 
