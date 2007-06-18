@@ -20,6 +20,8 @@ foreach($arrResult as $key => $val){
 	gfPrintLog( "\t" . $key . " => " . $val, $log_path);
 }
 
+sfprintr($arrInfo["email03"]);
+
 $objQuery->begin();
 $order_id = lfDoComplete($objQuery, $arrResult);
 $objQuery->commit();
