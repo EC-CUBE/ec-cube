@@ -47,8 +47,8 @@ gfPrintLog("** zero end **", $log_path);
 function lfDoComplete($objQuery, $arrResult) {
 	global $objCartSess;
 	global $objSiteSess;
-	global $objCampaignSess;
-	$objCustomer = new SC_Customer();
+    $objCampaignSess = new SC_CampaignSession();
+    $objCustomer = new SC_Customer();
 	global $arrInfo;
     
     gfprintlog($objCustomer->isLoginSuccess(),DATA_PATH . "logs/zero.log");
