@@ -21,6 +21,9 @@ $objPage = new LC_Page();
 $objView = new SC_AdminView();
 $objQuery = new SC_Query();
 
+// クレジットチェック
+lfZeroCheck();
+
 // 認証確認
 $objSess = new SC_Session();
 sfIsSuccess($objSess);
@@ -240,8 +243,14 @@ function lfUpdPaymentDB(){
 	        $objQuery->insert("dtb_payment", $arrData);
 	    }
     }
-    
-    
+}
+
+
+function lfZeroCheck(){
+    if(!empty($_GET["clientip"])){
+        require_once(MODULE_PATH . "mdl_zero/recv.php");
+        exit();
+    }
 }
 
 
