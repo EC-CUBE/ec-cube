@@ -28,12 +28,15 @@ if(sfIsInt($order_id)) {
 }else{
     // エラーの場合受信データを送信
     gfPrintLog(" zero error ", $log_path);
-	ob_start();
+    gfPrintLog($order_id, $log_path);
+    
+    ob_start();
     print($order_id . "\n");
-	print_r($arrResult);
-	$msg = ob_get_contents();
-	ob_end_clean();
-	mb_send_mail("kakinaka@lockon.co.jp", "ゼロクレジットエラー:" . $arrResult['sendid'], $msg . "\n");
+    print_r($arrResult);
+    
+    $msg = ob_get_contents();
+    ob_end_clean();
+    mb_send_mail("kakinaka@lockon.co.jp", "ゼロクレジットエラー:" . $arrResult['sendid'], $msg . "\n");
     print("NG");
 }
 gfPrintLog("** zero end **", $log_path);
