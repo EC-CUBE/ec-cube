@@ -24,8 +24,6 @@ $objConn = new SC_DBConn();
 $objSiteSess = new SC_SiteSession();
 $objCartSess = new SC_CartSession();
 
-sfprintr($_SESSION);
-
 $objPage->arrForm = $_POST;
 $objPage->arrPref = $arrPref;
 
@@ -54,9 +52,11 @@ foreach($_POST as $key => $val) {
 
 // ユーザユニークIDの取得と購入状態の正当性をチェック
 $uniqid = sfCheckNormalAccess($objSiteSess, $objCartSess);
+
                       
  //-- 入力データの変換
     $objPage->arrForm = lfConvertParam($objPage->arrForm, $arrRegistColumn);                        
+sfprintr($_POST);
 // 戻るボタン用処理
 if (!empty($_POST["return"])) {
 	switch ($_POST["mode"]) {
@@ -67,12 +67,12 @@ if (!empty($_POST["return"])) {
 		$_POST["mode"] = "set1";
 		break;
 	default:
-        //header("Location: " . gfAddSessionId('index.php'));
-        //exit;
+        header("Location: " . gfAddSessionId('index.php'));
+        exit;
 
 	}
 }else{
-    $objPage->arrForm = $_SESSION['cart']['mobile'];
+    $_POST["mode"] = "set1";
 }
 
 switch ($_POST['mode']){
@@ -118,14 +118,14 @@ switch ($_POST['mode']){
 		if (count($objPage->arrErr) == 0) {
             // 登録
 			$other_deliv_id = lfRegistData($_POST,$arrRegistColumn,$uniqid);
-            
+
 			// 登録済みの別のお届け先を受注一時テーブルに書き込む
 			lfRegistOtherDelivData($uniqid, $objCustomer, $other_deliv_id);
 
 			// 正常に登録されたことを記録しておく
 			$objSiteSess->setRegistFlag();
 			// お支払い方法選択ページへ移動
-			header("Location: " . gfAddSessionId('./payment2.php'));
+			header("Location: " . gfAddSessionId('./payment.php'));
 			exit;
 		} else {
 			sfDispSiteError(CUSTOMER_ERROR, "", false, "", true);

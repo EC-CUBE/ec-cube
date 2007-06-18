@@ -55,7 +55,6 @@ $objPage->tpl_uniqid = $uniqid;
 $objPage = sfTotalCart($objPage, $objCartSess, $arrInfo);
 // 一時受注テーブルの読込
 $arrData = sfGetOrderTemp($uniqid);
-sfprintr($arrData);
 // カート集計を元に最終計算
 $arrData = sfTotalConfirm($arrData, $objPage, $objCartSess, $arrInfo, $objCustomer);
 

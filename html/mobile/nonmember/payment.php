@@ -51,12 +51,11 @@ if($objCustomer->isLoginSuccess()) {
 	$objPage->tpl_user_point = $objCustomer->getValue('point');
 }
 
-
 // 金額の取得 (購入途中で売り切れた場合にはこの関数内にてその商品の個数が０になる)
 $objPage = sfTotalCart($objPage, $objCartSess, $arrInfo);
 $objPage->arrData = sfTotalConfirm($arrData, $objPage, $objCartSess, $arrInfo);
 
-// カート内の商品の売り切れチェック
+// カー都内の商品の売り切れチェック
 $objCartSess->chkSoldOut($objCartSess->getCartList(), true);
 
 // 戻るボタンの処理
@@ -69,7 +68,7 @@ if (!empty($_POST['return'])) {
 		// 正常な推移であることを記録しておく
 		$objSiteSess->setRegistFlag();
 		//header("Location: " . gfAddSessionId(MOBILE_URL_SHOP_TOP));
-        header("Location: " . gfAddSessionId('../nonmember/index.php'));
+        header("Location: " . gfAddSessionId('../nonmember/deliv.php'));
 		exit;
 //        $_POST['mode'] = "deliv_date";
 	}

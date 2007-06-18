@@ -76,7 +76,7 @@ if(!empty($_POST["mode2"]) ){
         if ($_POST["mode2"] == "customer_addr") {
             //print_r($_POST);
             if ($_POST['deli'] != "") {
-                header("Location:" . gfAddSessionId("./payment1.php"));
+                header("Location:" . gfAddSessionId("./payment.php"));
             exit;
             }else{
                 // エラーを返す
