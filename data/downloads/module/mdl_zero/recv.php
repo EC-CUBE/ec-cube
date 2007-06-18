@@ -20,7 +20,7 @@ foreach($arrResult as $key => $val){
 	gfPrintLog( "\t" . $key . " => " . $val, $log_path);
 }
 
-sfprintr($objSiteInfo);
+sfprintr($objSiteSess);
 
 $objQuery->begin();
 $order_id = lfDoComplete($objQuery, $arrResult);
