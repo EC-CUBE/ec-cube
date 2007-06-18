@@ -43,8 +43,6 @@ $arrRegistColumn = array(
                              array(  "column" => "tel03",       "convert" => "n" ),
                         );
 
-print("test");
-
 //-- データ設定
 foreach($_POST as $key => $val) {
 	if ($key != "mode" && $key != "return" && $key != "submit" && $key != session_name()) {
@@ -52,11 +50,9 @@ foreach($_POST as $key => $val) {
 	}
 }
 
-if(empty($_POST["return"])){
-sfprintr($_POST);exit;
 // ユーザユニークIDの取得と購入状態の正当性をチェック
 $uniqid = sfCheckNormalAccess($objSiteSess, $objCartSess);
-}
+
                       
  //-- 入力データの変換
     $objPage->arrForm = lfConvertParam($objPage->arrForm, $arrRegistColumn);                        
