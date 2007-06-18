@@ -114,7 +114,7 @@ function lfDoComplete($objQuery, $arrResult) {
 	}
 
 	// 一時テーブルを受注テーブルに格納する
-	$order_id = lfRegistOrder($objQuery, $arrData, $objCampaignSess);
+	$order_id = lfRegistOrder($objQuery, $arrData);
 	// カート商品を受注詳細テーブルに格納する
 	lfRegistOrderDetail($objQuery, $order_id, $objCartSess);
 	// 受注一時テーブルの情報を削除する。
@@ -214,7 +214,7 @@ function lfRegistPreCustomer($arrData, $arrInfo) {
 }
 
 // 受注テーブルへ登録
-function lfRegistOrder($objQuery, $arrData, $objCampaignSess) {
+function lfRegistOrder($objQuery, $arrData) {
     $objCampaignSess = new SC_CampaignSession();
 	$sqlval = $arrData;
 
@@ -266,7 +266,9 @@ function lfRegistOrder($objQuery, $arrData, $objCampaignSess) {
 }
 
 // 受注詳細テーブルへ登録
-function lfRegistOrderDetail($objQuery, $order_id, $objCartSess) {
+function lfRegistOrderDetail($objQuery, $order_id) {
+    $objCartSess = new SC_CartSession();
+    
 	// カート内情報の取得
 	$arrCart = $objCartSess->getCartList();
 	$max = count($arrCart);
