@@ -697,7 +697,8 @@ CREATE TABLE dtb_order_temp (
     memo07 text,
     memo08 text,
     memo09 text,
-    memo10 text
+    memo10 text,
+    session text
 ) TYPE=InnoDB ;
 
 CREATE TABLE dtb_other_deliv (
