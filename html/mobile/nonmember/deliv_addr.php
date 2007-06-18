@@ -24,9 +24,8 @@ $objConn = new SC_DBConn();
 $objSiteSess = new SC_SiteSession();
 $objCartSess = new SC_CartSession();
 
-$objCartSess->setValue("key_tmp","test");
-
-sfprintr($objCartSess);
+$_SESSION["test"]= "test";
+sfprintr($_SESSION);
 
 $objPage->arrForm = $_POST;
 $objPage->arrPref = $arrPref;
