@@ -342,7 +342,7 @@
 							<td width="120"><span class="white">顧客名</span></td>
 							<td width="75"><span class="white">支払方法</span></td>
 							<td width="80"><span class="white">購入金額(円)</span></td>
-							<td width="130"><span class="white">全商品発送日</span></td>
+							<td width="130"><span class="white">発送日</span></td>
 							<td width="75"><span class="white">対応状況</span></td>
 							<td width="50"><span class="white">編集</span></td>
 							<td width="50"><span class="white">メール</span></td>
