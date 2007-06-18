@@ -59,6 +59,14 @@ $uniqid = sfCheckNormalAccess($objSiteSess, $objCartSess);
 
 sfprintr($_SESSION);
 
+if($_SESSION['deliv_info']){
+    
+    foreach($_SESSION['deliv_info'] as $key => $val){
+        $arrForm[$key] = $val;
+    }
+    
+}
+
 // 戻るボタン用処理
 if (!empty($_POST["return"])) {
 	switch ($_POST["mode"]) {
