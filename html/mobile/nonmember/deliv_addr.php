@@ -67,6 +67,8 @@ if($_SESSION['deliv_info']){
     
 }
 
+sfprintr($arrForm);
+
 // 戻るボタン用処理
 if (!empty($_POST["return"])) {
 	switch ($_POST["mode"]) {
