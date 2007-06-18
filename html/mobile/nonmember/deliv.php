@@ -87,7 +87,7 @@ if(!empty($_POST["mode2"]) ){
             }
         }
 //戻るボタン用処理        
-}elseif(!empty($_POST["mode"]) && $_POST["mode"]!="nonmember"){  
+}elseif($_POST["mode"]!="nonmember"){  
     //uniqidからデータベースのデータを読み込み表示する
     $objQuery = new SC_Query();
     $where = "order_temp_id = ?";
