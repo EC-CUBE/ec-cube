@@ -48,7 +48,7 @@ function lfDoComplete($objQuery, $arrResult) {
 	global $objCartSess;
 	global $objSiteSess;
 	global $objCampaignSess;
-	global $objCustomer;
+	$objCustomer = new SC_Customer();
 	global $arrInfo;
     
     gfprintlog($objCustomer->isLoginSuccess(),DATA_PATH . "logs/zero.log");
