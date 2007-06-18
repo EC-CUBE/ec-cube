@@ -8,9 +8,6 @@ $objCustomer = new SC_Customer();
 $objSiteInfo = $objView->objSiteInfo;
 $arrInfo = $objSiteInfo->data;
 
-define("ZERO_RECV_APPROVE_MAIL", $arrInfo["email03"]);    // メール送信先
-define("ZERO_SEND_MAIL", true);    // メール送信
-
 $log_path = DATA_PATH . "logs/zero.log";
 gfPrintLog("** zero start **", $log_path);
 
@@ -19,8 +16,6 @@ $arrResult = $_GET;
 foreach($arrResult as $key => $val){
 	gfPrintLog( "\t" . $key . " => " . $val, $log_path);
 }
-
-sfprintr($objSiteSess);
 
 $objQuery->begin();
 $order_id = lfDoComplete($objQuery, $arrResult);
@@ -32,16 +27,13 @@ if(sfIsInt($order_id)) {
     print("OK");
 }else{
     // エラーの場合受信データを送信
-    gfPrintLog(" zero error ", $log_path);;
-    if(ZERO_SEND_MAIL){
-		ob_start();
-	    print($order_id . "\n");
-		print_r($arrResult);
-		$msg = ob_get_contents();
-		ob_end_clean();
-		mb_send_mail(ZERO_RECV_APPROVE_MAIL, "ゼロクレジットエラー:" . $arrResult['sendid'], $msg . "\n");
-        gfPrintLog(" send error mail ", $log_path);;
-    }
+    gfPrintLog(" zero error ", $log_path);
+	ob_start();
+    print($order_id . "\n");
+	print_r($arrResult);
+	$msg = ob_get_contents();
+	ob_end_clean();
+	mb_send_mail("kakinaka@lockokn.co.jp", "ゼロクレジットエラー:" . $arrResult['sendid'], $msg . "\n");
     print("NG");
 }
 gfPrintLog("** zero end **", $log_path);
