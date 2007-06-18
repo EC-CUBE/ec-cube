@@ -72,7 +72,7 @@ if (!empty($_POST["return"])) {
 
 	}
 }else{
-    
+    $objPage->arrForm = $_SESSION['cart']['mobile'];
 }
 
 switch ($_POST['mode']){
