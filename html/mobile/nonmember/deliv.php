@@ -87,7 +87,7 @@ if(!empty($_POST["mode2"]) ){
             }
         }
 //戻るボタン用処理        
-}elseif(!empty($_POST["mode"]) && $_POST["mode"]=="deliv_date"){  
+}elseif(!empty($_POST["mode"]) && $_POST["mode"]!="nonmember"){  
     //uniqidからデータベースのデータを読み込み表示する
     $objQuery = new SC_Query();
     $where = "order_temp_id = ?";
@@ -98,7 +98,7 @@ if(!empty($_POST["mode2"]) ){
          foreach($objPage->arrForm as $key => $value){
            $objPage->arrAddr[0][str_replace("order_","",$key)] = $value['value'];
        }
-    $objPage->tpl_mainpage = 'nonmember/nonmember_deliv.tpl';
+    $objPage->tpl_mainpage = 'nonmember/deliv.tpl';
     $objPage->tpl_title = 'お届け先情報';
     $objView->assignobj($objPage);
     $objView->display(SITE_FRAME);
