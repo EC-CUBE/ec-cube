@@ -67,8 +67,8 @@ if (!empty($_POST["return"])) {
 		$_POST["mode"] = "set1";
 		break;
 	default:
-        header("Location: " . gfAddSessionId('index.php'));
-        exit;
+        //header("Location: " . gfAddSessionId('index.php'));
+        //exit;
 
 	}
 }else{
