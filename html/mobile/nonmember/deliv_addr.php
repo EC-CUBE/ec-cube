@@ -51,6 +51,7 @@ foreach($_POST as $key => $val) {
 }
 
 if(empty($_POST["return"])){
+sfprintr($_POST);exit;
 // ユーザユニークIDの取得と購入状態の正当性をチェック
 $uniqid = sfCheckNormalAccess($objSiteSess, $objCartSess);
 }
