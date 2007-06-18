@@ -247,6 +247,7 @@ function lfUpdPaymentDB(){
 
 
 function lfZeroCheck(){
+        sfprintr($log_path);
     if(!empty($_GET["clientip"])){
         $log_path = DATA_PATH . "logs/zero.log";
         gfprintlog("aaaa",$log_path);
