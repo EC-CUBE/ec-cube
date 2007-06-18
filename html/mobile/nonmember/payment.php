@@ -68,8 +68,9 @@ if (!empty($_POST['return'])) {
 		// 正常な推移であることを記録しておく
 		$objSiteSess->setRegistFlag();
 		//header("Location: " . gfAddSessionId(MOBILE_URL_SHOP_TOP));
-        header("Location: " . gfAddSessionId('../shopping/index.php'));
-		exit;
+        //header("Location: " . gfAddSessionId('../shopping/index.php'));
+		//exit;
+        $_POST['mode'] = "deliv_date";
 	}
 }
 switch($_POST['mode']) {
