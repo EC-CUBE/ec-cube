@@ -100,6 +100,8 @@ function lfCheckError(){
     
     // 接続チェックを行う
     if(count($arrErr) == 0) $arrErr = lfChkConnect();
+    
+    sfprintr($arrErr);
 
     return $arrErr;
 }
