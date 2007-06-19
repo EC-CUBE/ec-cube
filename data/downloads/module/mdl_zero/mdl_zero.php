@@ -120,6 +120,7 @@ function lfChkConnect(){
         
         // データ送信
         $arrResponse = sfPostPaymentData(SEND_PARAM_PC_URL, $arrSendData, false);
+        sfprintr($arrResponse);
         
         // エラーがあるかチェックする
         if(!ereg("^<HTML>",$arrResponse )){
