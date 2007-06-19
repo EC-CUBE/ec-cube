@@ -48,7 +48,6 @@ if ($uniqid != "") {
 	
 	// 完了処理
 	$objQuery = new SC_Query();
-    $objSendMail = new GC_SendMail();
 	$objQuery->begin();
 	$order_id = lfDoComplete($objQuery, $uniqid);
 	$objQuery->commit();
@@ -60,9 +59,12 @@ if ($uniqid != "") {
 	if($order_id != "") {
 		$order_email = $objQuery->select("order_email", "dtb_order", "order_id = ?", array($order_id));
     
-        //登録されているメールアドレスが携帯かPCかに応じて注文完了メールのテンプレートを変える
-        $template_id = $objSendMail->chkDomain($order_email[0]['order_email']);
-        sfSendOrderMail($order_id, $template_id,"","");
+    //登録されているメールアドレスが携帯かPCかに応じて注文完了メールのテンプレートを変える
+    if(ereg("(ezweb.ne.jp$|docomo.ne.jp$|softbank.ne.jp$|vodafone.ne.jp$)",$order_email[0]['order_email'])){
+              sfSendOrderMail($order_id, '1',"","");
+        }else{
+              sfSendOrderMail($order_id, '0',"","");
+        }
 	}
 
 	// その他情報の取得

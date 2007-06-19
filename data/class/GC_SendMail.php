@@ -100,25 +100,6 @@ class GC_SendMail {
 		}
 		return false;
 	}
-    
-    /**
-     * メールアドレスが携帯かPCかを判定する
-     * 
-     * @param string $address 判定するメールアドレス
-     * @return integer 0:PC 1:携帯 
-     */
-    function chkDomain($address){
-        $ret = "";
-        
-        if(ereg("(ezweb.ne.jp$|docomo.ne.jp$|softbank.ne.jp$|vodafone.ne.jp$)",$address)){
-            $ret = 1;
-        }else{
-            $ret = 0;
-        }
-        
-        return $ret;
-    }
-    
 }
 
 ?>
