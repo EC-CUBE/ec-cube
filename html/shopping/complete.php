@@ -61,7 +61,7 @@ if ($uniqid != "") {
 		$order_email = $objQuery->select("order_email", "dtb_order", "order_id = ?", array($order_id));
     
         //登録されているメールアドレスが携帯かPCかに応じて注文完了メールのテンプレートを変える
-        $template_id = objSendMail->chkDomain($order_email[0]['order_email']);
+        $template_id = $objSendMail->chkDomain($order_email[0]['order_email']);
         sfSendOrderMail($order_id, $template_id,"","");
 	}
 
