@@ -146,7 +146,6 @@ function lfChkConnect(){
             $arrRet["mobile_clientip"] = "入力データが正しくありません<br>";
         }
     }
-
     
     return $arrRet;    
 }
