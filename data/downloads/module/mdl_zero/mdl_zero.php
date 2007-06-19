@@ -120,11 +120,10 @@ function lfChkConnect(){
         
         // データ送信
         $arrResponse = sfPostPaymentData(SEND_PARAM_PC_URL, $arrSendData, false);
-        sfprintr($arrResponse);
         
         // エラーがあるかチェックする
         if(!ereg("^<HTML>",$arrResponse )){
-            $arrRet["pc_clientip"] = "入力データが正しくありません";
+            $arrRet["pc_clientip"] = "入力データが正しくありません<br>";
         }
     }
 
@@ -142,7 +141,7 @@ function lfChkConnect(){
         
         // エラーがあるかチェックする
         if(!ereg("^<HTML>",$arrResponse )){
-            $arrRet["mobile_clientip"] = "入力データが正しくありません";
+            $arrRet["mobile_clientip"] = "入力データが正しくありません<br>";
         }
     }
 
