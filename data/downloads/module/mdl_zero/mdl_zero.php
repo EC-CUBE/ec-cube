@@ -237,6 +237,7 @@ function lfUpdPaymentDB(){
 	    
 	    // データが存在していればUPDATE、無ければINSERT
 	    if(count($arrPaymentData) > 0){
+            $objQuery->update("dtb_payment", array("memo01"=>"","memo02"=>"","memo03"=>"","memo04"=>"","memo05"=>""), " module_id = '" . MDL_ZERO_ID . "'");
 	        $objQuery->update("dtb_payment", $arrData, " module_id = '" . MDL_ZERO_ID . "'");
 	    }else{
 	        $arrData["rank"] = $max_rank + 1;
