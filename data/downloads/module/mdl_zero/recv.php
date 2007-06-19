@@ -9,7 +9,7 @@ $objSiteInfo = $objView->objSiteInfo;
 $arrInfo = $objSiteInfo->data;
 
 $log_path = DATA_PATH . "logs/zero.log";
-gfPrintLog("** zero start **", $log_path);
+gfPrintLog("**************************************** zero start ****************************************", $log_path);
 
 $arrResult = $_GET;
 // GETの内容を全てログ保存
@@ -35,19 +35,16 @@ if(sfIsInt($order_id)) {
     print("OK");
 }else{
     // エラーの場合受信データを送信
-    gfPrintLog(" zero error " . $order_id, $log_path);
-    gfPrintLog($order_id, $log_path);
-    
+    gfPrintLog("!!!!!!!!!!!! zero error !!!!!!!!!!!!!!", $log_path);
     ob_start();
     print($order_id . "\n");
     print_r($arrResult);
-    
     $msg = ob_get_contents();
     ob_end_clean();
     mb_send_mail("kakinaka@lockon.co.jp", "ゼロクレジットエラー:" . $arrResult['sendid'], $msg . "\n");
     print("NG");
 }
-gfPrintLog("** zero end **", $log_path);
+gfPrintLog("**************************************** zero end ****************************************", $log_path);
 //---------------------------------------------------------------------------------------------------------------------------------
 // 完了処理
 function lfDoComplete($objQuery, $arrResult) {
@@ -70,19 +67,19 @@ function lfDoComplete($objQuery, $arrResult) {
     
     // 加盟店コードが違う場合にはエラー
     if(count($arrResult)){
-        if(in_array($arrResult["clientip"], $arrCrilentIP)) return "111加盟店コードが違います。";
+        if(in_array($arrResult["clientip"], $arrCrilentIP)) return "加盟店コードが違います。";
     }else{
-        return "222加盟店コードが違います。";
+        return "加盟店コードが違います。";
     }
     
 	// 一時受注テーブルの読込
 	$arrData = sfGetOrderTemp($uniqid);
     
     // 一時受注テーブルからデータが取得できなければ、エラー
-    if(count($arrData) <= 0) return "333受注一時テーブルに指定したIDのデータがありません。";
+    if(count($arrData) <= 0) return "受注一時テーブルに指定したIDのデータがありません。";
     
     // 決済完了済みであればエラー
-    if($arrData["del_flg"] == 1) return "444指定したIDのデータは決済完了済みです。";
+    if($arrData["del_flg"] == 1) return "指定したIDのデータは決済完了済みです。";
     
     // 一時受注テーブルのお支払い合計と、ゼロから返ってきた金額とが違う場合はエラー
     if($arrData["payment_total"] != $money) return "555お支払い金額が違います。";
