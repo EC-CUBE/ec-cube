@@ -137,7 +137,7 @@ function lfChkConnect(){
             'act' => SEND_PARAM_ACT,                    // imode固定
             'money' => 0                                // 金額
         );
-        
+         
         // データ送信
         $arrResponse = sfPostPaymentData(SEND_PARAM_MOBILE_URL, $arrSendData, false);
         
