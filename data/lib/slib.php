@@ -1660,7 +1660,7 @@ function sfSendTemplateMail($to, $to_name, $template_id, $objPage) {
 /** 受注完了メール送信
  *  $template_id が 1：携帯用テンプレート、0：PC用テンプレート
  */
-function sfSendOrderMail($order_id, $template_id, $subject = "", $body, $send = true) {
+function sfSendOrderMail($order_id, $template_id, $subject = "", $body = "", $send = true) {
 	global $arrMAILTPLPATH;
 	
 	$objPage = new LC_Page();
