@@ -84,8 +84,8 @@ if(!empty($_POST["mode2"]) ){
                 // エラーを返す
                 $arrErr['deli'] = '※ お届け先を選択してください。';
             }
-        }
-//戻るボタン用処理        
+        }     
+//戻るボタン用処理   
 }elseif($_POST["mode"]!="nonmember"){  
     //uniqidからデータベースのデータを読み込み表示する
     $objQuery = new SC_Query();
@@ -102,8 +102,6 @@ if(!empty($_POST["mode2"]) ){
     $objView->assignobj($objPage);
     $objView->display(SITE_FRAME);
 }
-
-
 
 
 /**
