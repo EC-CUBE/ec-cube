@@ -287,11 +287,13 @@ function lfRegistData($order_id) {
 	// 受注ステータスの判定
 	if ($sqlval['status'] == ODERSTATUS_COMMIT) {
 		// 受注テーブルの発送済み日を更新する
-		$addcol['commit_date'] = "Now()";
+		$sqlval['commit_date'] = "Now()";
 	}
+    
+    $sqlval['update_date'] = "Now()";
 	
 	// 受注テーブルの更新
-	$objQuery->update("dtb_order", $sqlval, $where, array($order_id), $addcol);
+	$objQuery->update("dtb_order", $sqlval, $where, array($order_id));
 
 	$sql = "";
 	$sql .= " UPDATE";
