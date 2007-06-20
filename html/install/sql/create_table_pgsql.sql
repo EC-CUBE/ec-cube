@@ -611,8 +611,7 @@ CREATE TABLE dtb_order (
     memo08 text,
     memo09 text,
     memo10 text,
-    campaign_id int4,
-    session text
+    campaign_id int4
 );
 
 CREATE TABLE dtb_order_temp (
@@ -695,7 +694,8 @@ CREATE TABLE dtb_order_temp (
     memo07 text,
     memo08 text,
     memo09 text,
-    memo10 text
+    memo10 text,
+    session text
 );
 
 CREATE TABLE dtb_other_deliv (
