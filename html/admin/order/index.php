@@ -171,13 +171,23 @@ case 'search':
 					$where .= " AND total <= ?";
 					$arrval[] = $val;
 					break;
-				case 'search_startyear':
-					$date = sfGetTimestamp($_POST['search_startyear'], $_POST['search_startmonth'], $_POST['search_startday']);
+				case 'search_startyear_c':
+					$date = sfGetTimestamp($_POST['search_startyear_c'], $_POST['search_startmonth_c'], $_POST['search_startday_c']);
+					$where.= " AND create_date >= ?";
+					$arrval[] = $date;
+					break;
+				case 'search_endyear_c':
+					$date = sfGetTimestamp($_POST['search_endyear_c'], $_POST['search_endmonth_c'], $_POST['search_endday_c'], true);
+					$where.= " AND create_date <= ?";
+					$arrval[] = $date;
+					break;
+                case 'search_startyear_u':
+					$date = sfGetTimestamp($_POST['search_startyear_u'], $_POST['search_startmonth_u'], $_POST['search_startday_u']);
 					$where.= " AND update_date >= ?";
 					$arrval[] = $date;
 					break;
-				case 'search_endyear':
-					$date = sfGetTimestamp($_POST['search_endyear'], $_POST['search_endmonth'], $_POST['search_endday'], true);
+				case 'search_endyear_u':
+					$date = sfGetTimestamp($_POST['search_endyear_u'], $_POST['search_endmonth_u'], $_POST['search_endday_u'], true);
 					$where.= " AND update_date <= ?";
 					$arrval[] = $date;
 					break;
@@ -302,12 +312,18 @@ function lfInitParam() {
 	$objFormParam->addParam("購入金額1", "search_total1", INT_LEN, "n", array("MAX_LENGTH_CHECK", "NUM_CHECK"));
 	$objFormParam->addParam("購入金額2", "search_total2", INT_LEN, "n", array("MAX_LENGTH_CHECK", "NUM_CHECK"));
 	$objFormParam->addParam("表示件数", "search_page_max", INT_LEN, "n", array("MAX_LENGTH_CHECK", "NUM_CHECK"));
-	$objFormParam->addParam("開始日", "search_startyear", INT_LEN, "n", array("MAX_LENGTH_CHECK", "NUM_CHECK"));
-	$objFormParam->addParam("開始日", "search_startmonth", INT_LEN, "n", array("MAX_LENGTH_CHECK", "NUM_CHECK"));
-	$objFormParam->addParam("開始日", "search_startday", INT_LEN, "n", array("MAX_LENGTH_CHECK", "NUM_CHECK"));
-	$objFormParam->addParam("終了日", "search_endyear", INT_LEN, "n", array("MAX_LENGTH_CHECK", "NUM_CHECK"));
-	$objFormParam->addParam("終了日", "search_endmonth", INT_LEN, "n", array("MAX_LENGTH_CHECK", "NUM_CHECK"));
-	$objFormParam->addParam("終了日", "search_endday", INT_LEN, "n", array("MAX_LENGTH_CHECK", "NUM_CHECK"));
+	$objFormParam->addParam("受注日", "search_startyear_c", INT_LEN, "n", array("MAX_LENGTH_CHECK", "NUM_CHECK"));
+	$objFormParam->addParam("受注日", "search_startmonth_c", INT_LEN, "n", array("MAX_LENGTH_CHECK", "NUM_CHECK"));
+	$objFormParam->addParam("受注日", "search_startday_c", INT_LEN, "n", array("MAX_LENGTH_CHECK", "NUM_CHECK"));
+	$objFormParam->addParam("受注日", "search_endyear_c", INT_LEN, "n", array("MAX_LENGTH_CHECK", "NUM_CHECK"));
+	$objFormParam->addParam("受注日", "search_endmonth_c", INT_LEN, "n", array("MAX_LENGTH_CHECK", "NUM_CHECK"));
+	$objFormParam->addParam("受注日", "search_endday_c", INT_LEN, "n", array("MAX_LENGTH_CHECK", "NUM_CHECK"));
+    $objFormParam->addParam("変更日", "search_startyear_u", INT_LEN, "n", array("MAX_LENGTH_CHECK", "NUM_CHECK"));
+	$objFormParam->addParam("変更日", "search_startmonth_u", INT_LEN, "n", array("MAX_LENGTH_CHECK", "NUM_CHECK"));
+	$objFormParam->addParam("変更日", "search_startday_u", INT_LEN, "n", array("MAX_LENGTH_CHECK", "NUM_CHECK"));
+	$objFormParam->addParam("変更日", "search_endyear_u", INT_LEN, "n", array("MAX_LENGTH_CHECK", "NUM_CHECK"));
+	$objFormParam->addParam("変更日", "search_endmonth_u", INT_LEN, "n", array("MAX_LENGTH_CHECK", "NUM_CHECK"));
+	$objFormParam->addParam("変更日", "search_endday_u", INT_LEN, "n", array("MAX_LENGTH_CHECK", "NUM_CHECK"));
 	$objFormParam->addParam("開始日", "search_sbirthyear", INT_LEN, "n", array("MAX_LENGTH_CHECK", "NUM_CHECK"));
 	$objFormParam->addParam("開始日", "search_sbirthmonth", INT_LEN, "n", array("MAX_LENGTH_CHECK", "NUM_CHECK"));
 	$objFormParam->addParam("開始日", "search_sbirthday", INT_LEN, "n", array("MAX_LENGTH_CHECK", "NUM_CHECK"));
