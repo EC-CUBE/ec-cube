@@ -611,7 +611,8 @@ CREATE TABLE dtb_order (
     memo08 text,
     memo09 text,
     memo10 text,
-    campaign_id int
+    campaign_id int,
+    session text
 ) TYPE=InnoDB ;
 
 CREATE TABLE dtb_order_temp (

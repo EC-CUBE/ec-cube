@@ -104,6 +104,9 @@ case 'confirm':
 		$order_id = $objQuery->get_auto_increment("dtb_order");
 	}
 	$arrData["order_id"] = $order_id;
+    
+    // セッション情報を保持
+    $arrData['session'] = serialize($_SESSION);
 	
 	// 集計結果を受注一時テーブルに反映
 	sfRegistTempOrder($uniqid, $arrData);

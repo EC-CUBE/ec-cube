@@ -310,6 +310,7 @@ function lfRegistOrder($objQuery, $arrData, $objCampaignSess) {
 	unset($sqlval['reminder']);			// リマインダー質問
 	unset($sqlval['reminder_answer']);	// リマインダー答え
 	unset($sqlval['mail_flag']);		// メールフラグ
+	unset($sqlval['session']);		    // セッション情報
 	
 	// 注文ステータス:指定が無ければ新規受付に設定
 	if($sqlval["status"] == ""){

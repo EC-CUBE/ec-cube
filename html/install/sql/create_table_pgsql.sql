@@ -611,7 +611,8 @@ CREATE TABLE dtb_order (
     memo08 text,
     memo09 text,
     memo10 text,
-    campaign_id int4
+    campaign_id int4,
+    session text
 );
 
 CREATE TABLE dtb_order_temp (
