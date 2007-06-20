@@ -188,7 +188,7 @@ define("REVIEW_REGIST_MAX", 5);
  * サイト定義定数
  */
 /* システム関連 */
-define ('DEBUG_MODE', true);                           // デバッグモード(true：sfPrintRやDBのエラーメッセージを出力する、false：出力しない)
+define ('DEBUG_MODE', false);                           // デバッグモード(true：sfPrintRやDBのエラーメッセージを出力する、false：出力しない)
 define ("ADMIN_ID", "1");								// 管理ユーザID(メンテナンス用表示されない。)
 define ("CUSTOMER_CONFIRM_MAIL", false);				// 会員登録時に仮会員確認メールを送信するか（true:仮会員、false:本会員）
 define ("MELMAGA_SEND", true);							// メルマガ配信抑制(false:OFF、true:ON)
