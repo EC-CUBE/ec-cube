@@ -79,7 +79,8 @@ class SC_SelectSql {
 		// TO
 		$date2 = mktime (0, 0, 0, $to_month, $to_day,  $to_year);
 		$date2 = $date2 + 86400;
-		$date2 = date('y/m/d', $date2);
+		// SQL文のdate関数に与えるフォーマットは、yyyy/mm/ddで指定する。
+		$date2 = date('Y/m/d', $date2);
 		
 		// 開始期間だけ指定の場合
 		if( ( $from_year != "" ) && ( $from_month != "" ) && ( $from_day != "" ) &&	( $to_year == "" ) && ( $to_month == "" ) && ( $to_day == "" ) ) {
