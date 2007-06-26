@@ -222,15 +222,11 @@ function lfInitParam() {
 	
 	$objFormParam->addParam("発送日目安", "deliv_date_id", INT_LEN, "n", array("MAX_LENGTH_CHECK","NUM_CHECK"));
 	
-	$objFormParam->addParam("おすすめ商品(1)", "recommend_product_id1", INT_LEN, "n", array("MAX_LENGTH_CHECK","NUM_CHECK"));
-	$objFormParam->addParam("詳細-サブコメント(1)", "recommend_comment1", LTEXT_LEN, "KVa", array("SPTAB_CHECK","MAX_LENGTH_CHECK"));
-	$objFormParam->addParam("おすすめ商品(2)", "recommend_product_id2", INT_LEN, "n", array("MAX_LENGTH_CHECK","NUM_CHECK"));
-	$objFormParam->addParam("詳細-サブコメント(2)", "recommend_comment2", LTEXT_LEN, "KVa", array("SPTAB_CHECK","MAX_LENGTH_CHECK"));
-	$objFormParam->addParam("おすすめ商品(3)", "recommend_product_id3", INT_LEN, "n", array("MAX_LENGTH_CHECK","NUM_CHECK"));
-	$objFormParam->addParam("詳細-サブコメント(3)", "recommend_comment3", LTEXT_LEN, "KVa", array("SPTAB_CHECK","MAX_LENGTH_CHECK"));
-	$objFormParam->addParam("おすすめ商品(4)", "recommend_product_id4", INT_LEN, "n", array("MAX_LENGTH_CHECK","NUM_CHECK"));
-	$objFormParam->addParam("詳細-サブコメント(4)", "recommend_comment4", LTEXT_LEN, "KVa", array("SPTAB_CHECK","MAX_LENGTH_CHECK"));
-
+    for ($cnt = 1; $cnt <= RECOMMEND_PRODUCT_MAX; $cnt++) {
+        $objFormParam->addParam("おすすめ商品($cnt)", "recommend_product_id$cnt", INT_LEN, "n", array("MAX_LENGTH_CHECK","NUM_CHECK"));
+        $objFormParam->addParam("詳細-サブコメント($cnt)", "recommend_comment$cnt", LTEXT_LEN, "KVa", array("SPTAB_CHECK","MAX_LENGTH_CHECK"));
+    }
+    
 	$objFormParam->addParam("商品カテゴリ", "category_id", STEXT_LEN, "n", array("EXIST_CHECK", "SPTAB_CHECK", "MAX_LENGTH_CHECK"));
 }
 
