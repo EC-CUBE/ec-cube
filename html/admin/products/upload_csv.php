@@ -250,7 +250,9 @@ function lfRegistProduct($objQuery, $line = "") {
 		case 'recommend_product_id1':
 		case 'recommend_product_id2':
 		case 'recommend_product_id3':
-		case 'recommend_product_id4':
+        case 'recommend_product_id4':
+        case 'recommend_product_id5':
+        case 'recommend_product_id6':
 		case 'recommend_comment1':
 		case 'recommend_comment2':
 		case 'recommend_comment3':
