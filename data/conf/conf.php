@@ -188,7 +188,7 @@ define("REVIEW_REGIST_MAX", 5);
  * サイト定義定数
  */
 /* システム関連 */
-define ('DEBUG_MODE', true);                           // デバッグモード(true：sfPrintRやDBのエラーメッセージを出力する、false：出力しない)
+define ('DEBUG_MODE', false);                           // デバッグモード(true：sfPrintRやDBのエラーメッセージを出力する、false：出力しない)
 define ("ADMIN_ID", "1");								// 管理ユーザID(メンテナンス用表示されない。)
 define ("CUSTOMER_CONFIRM_MAIL", false);				// 会員登録時に仮会員確認メールを送信するか（true:仮会員、false:本会員）
 define ("MELMAGA_SEND", true);							// メルマガ配信抑制(false:OFF、true:ON)
@@ -338,7 +338,7 @@ define ("PRODUCTS_LIST_MAX", 15);	// 商品一覧表示数
 define ("MEMBER_PMAX", 10);			// メンバー管理ページ表示行数
 define ("SEARCH_PMAX", 10);			// 検索ページ表示行数
 define ("NAVI_PMAX", 5);			// ページ番号の最大表示個数
-define ("PRODUCTSUB_MAX", 8);		// 商品サブ情報最大数
+define ("PRODUCTSUB_MAX", 5);		// 商品サブ情報最大数
 define ("DELIVTIME_MAX", 16);		// 配送時間の最大表示数
 define ("DELIVFEE_MAX", 47);		// 配送料金の最大表示数
 
