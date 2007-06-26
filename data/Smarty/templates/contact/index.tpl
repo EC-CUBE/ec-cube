@@ -124,7 +124,7 @@
 						<span class="mini">（全角<!--{$smarty.const.MLTEXT_LEN}-->字以下）</span></td>
 						<td bgcolor="#ffffff" class="fs12n">
 							<span class="red"><!--{$arrErr.contents}--></span>
-							<textarea name="contents" cols="60" rows="20" class="area60" wrap="hard" maxlength="<!--{$smarty.const.LTEXT_LEN}-->" style="<!--{$arrErr.contents|sfGetErrorColor}-->"><!--{$contents}--></textarea>
+							<textarea name="contents" cols="60" rows="20" class="area60" wrap="hard" maxlength="<!--{$smarty.const.LTEXT_LEN}-->" style="<!--{$arrErr.contents|sfGetErrorColor}-->"><!--{$contents|escape}--></textarea>
 						</td>
 					</tr>
 				</table>
