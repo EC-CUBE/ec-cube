@@ -297,8 +297,12 @@ function lfRegistProduct($objQuery, $line = "") {
 		$objQuery->update("dtb_products", $sqlval, $where, array($sqlval['product_id']));
 	} else {
 
-		// 新規登録
-		$product_id = $objQuery->nextval("dtb_products", "product_id");
+        // postgresqlとmysqlとで処理を分ける
+        if (DB_TYPE == "pgsql") {
+            $product_id = $objQuery->nextval("dtb_products","product_id");
+        }elseif (DB_TYPE == "mysql") {
+            $product_id = $objQuery->get_auto_increment("dtb_products");
+        }
 		$sqlval['product_id'] = $product_id;
 		$sqlval['create_date'] = $time;
 		
