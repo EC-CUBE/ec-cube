@@ -418,23 +418,23 @@ class SC_Query {
 		return $result;
 	}
 	
-	// auto_incrementを取得する
-	function get_auto_increment($table_name){
-		// ロックする
-		$this->BEGIN();
-		
-		// 次のIncrementを取得
-		$arrRet = $this->getAll("SHOW TABLE STATUS LIKE ?", array($table_name));
-		$auto_inc_no = $arrRet[0]["Auto_increment"];
-		
-		// 値をカウントアップしておく
-		$this->conn->query("ALTER TABLE $table_name AUTO_INCREMENT=?" , $auto_inc_no + 1);
-		
-		// 解除する
-		$this->COMMIT();
-		
-		return $auto_inc_no;
-	}
+    // auto_incrementを取得する
+    function get_auto_increment($table_name){
+        // ロックする
+        $this->query("LOCK TABLES $table_name WRITE");
+        
+        // 次のIncrementを取得
+        $arrRet = $this->getAll("SHOW TABLE STATUS LIKE ?", array($table_name));
+        $auto_inc_no = $arrRet[0]["Auto_increment"];
+        
+        // 値をカウントアップしておく
+        $this->conn->query("ALTER TABLE $table_name AUTO_INCREMENT=?" , $auto_inc_no + 1);
+        
+        // 解除する
+        $this->query('UNLOCK TABLES');
+        
+        return $auto_inc_no;
+    }
 }
 
 ?>

@@ -171,7 +171,7 @@ define("TV_PRODUCTS_MAX",10);		//TV連動商品最大登録数
 //会員登録変更(マイページ)パスワード用
 define("DEFAULT_PASSWORD", "UAhgGR3L");
 //おすすめ商品数
-define ("RECOMMEND_PRODUCT_MAX", 5);
+define ("RECOMMEND_PRODUCT_MAX", 6);
 
 //別のお届け先最大登録数
 define("DELIV_ADDR_MAX", 20);
