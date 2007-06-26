@@ -257,6 +257,8 @@ function lfRegistProduct($objQuery, $line = "") {
 		case 'recommend_comment2':
 		case 'recommend_comment3':
 		case 'recommend_comment4':
+        case 'recommend_comment5':
+        case 'recommend_comment6':
 			break;
 		default:
 			if(!ereg("^dummy", $key)) {
