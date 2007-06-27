@@ -332,6 +332,7 @@ define ("SUCCESS", 0);			// アクセス成功
 define ("LOGIN_ERROR", 1);		// ログイン失敗
 define ("ACCESS_ERROR", 2);		// アクセス失敗（タイムアウト等）
 define ("AUTH_ERROR", 3);		// アクセス権限違反
+define ("INVALID_MOVE_ERRORR", 4); // 不正な遷移エラー
 
 /* 表示数制限 */
 define ("PRODUCTS_LIST_MAX", 15);	// 商品一覧表示数
