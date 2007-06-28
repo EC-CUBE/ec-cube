@@ -132,7 +132,7 @@ $objPage->arrDay = $objDate->getDay();
 
 // 入力値の取得
 $objPage->arrForm = $objFormParam->getFormParamList();
-sfprintr($objPage->arrForm);
+sfprintr($_SESSION);
 //objPageの情報をobjViewに格納
 $objView->assignobj($objPage);
 $objView->display(SITE_FRAME);
