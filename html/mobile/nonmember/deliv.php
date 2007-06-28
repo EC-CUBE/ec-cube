@@ -44,15 +44,15 @@ $objPage->tpl_uniqid = $uniqid;
 
 
 //前のページからの遷移によって分岐
-if(!empty($_POST["mode2"]) ){
+if(!empty($_POST["mode2"]) || $_SESSION['user_info'] ){
     if ($_POST["mode2"] == "deliv") {
             
+            sfprintr($_SESSION['user_info']);
             $objFormParam = new SC_FormParam();
             // パラメータ情報の初期化
            
             // POST値の取得
             $objFormParam->setParam($_SESSION['user_info']);
-            sfprintr($_SESSION['user_info']);
             $arrRet = $objFormParam->getHashArray();
             $sqlval = $objFormParam->getDbArray();
             
