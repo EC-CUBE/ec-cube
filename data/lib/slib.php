@@ -340,7 +340,7 @@ function sfDispError($type) {
 		case AUTH_ERROR:
 			$objPage->tpl_error="このファイルにはアクセス権限がありません。<br />もう一度ご確認のうえ、再度ログインしてください。";
 			break;
-		case PAGE_ERROR:
+		case INVALID_MOVE_ERRORR:
 			$objPage->tpl_error="不正なページ移動です。<br />もう一度ご確認のうえ、再度入力してください。";
 			break;
 		default:
@@ -473,7 +473,39 @@ function sfIsSuccess($objSess, $disp_error = true) {
 		}
 		return false;
 	}
-	return true;		
+    // リファラーチェック(CSRFの暫定的な対策)
+    // 「リファラ無」 の場合はスルー
+    // 「リファラ有」 かつ 「管理画面からの遷移でない」 場合にエラー画面を表示する
+    if ( empty($_SERVER['HTTP_REFERER']) ) {
+        // 警告表示させる？
+        // sfErrorHeader('>> referrerが無効になっています。');
+    } else {
+        $domain  = sfIsHTTPS() ? SSL_URL : SITE_URL;
+        $pattern = sprintf('|^%s.*|', $domain . 'admin/');
+        $referer = $_SERVER['HTTP_REFERER'];
+
+        // 管理画面から以外の遷移の場合はエラー画面を表示
+        if (!preg_match($pattern, $referer)) {
+            if ($disp_error) sfDispError(INVALID_MOVE_ERRORR);
+            return false;
+        }
+    }
+    return true;
+}
+
+/**
+ * HTTPSかどうかを判定
+ * 
+ * @return bool
+ */
+function sfIsHTTPS () {
+    // HTTPS時には$_SERVER['HTTPS']には空でない値が入る
+    // $_SERVER['HTTPS'] != 'off' はIIS用
+    if (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] != 'off') {
+        return true;
+    } else {
+        return false;
+    }
 }
 
 /* 前のページで正しく登録が行われたか判定 */
