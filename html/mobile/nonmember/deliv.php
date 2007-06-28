@@ -45,8 +45,7 @@ $objPage->tpl_uniqid = $uniqid;
 
 //前のページからの遷移によって分岐
 if(!empty($_POST["mode2"]) || $_SESSION['user_info'] ){
-     sfprintr($_SESSION['user_info']);exit;
-    if ($_POST["mode2"] == "deliv") {
+    if ($_POST["mode2"] == "deliv" || $_SESSION['user_info']["mode2"] == "deliv") {
             
            
             $objFormParam = new SC_FormParam();
