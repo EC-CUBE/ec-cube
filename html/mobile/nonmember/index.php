@@ -275,7 +275,7 @@ $arrRejectRegistColumn = array("year", "month", "day", "email02", "email_mobile0
         } elseif ($_POST["mode2"] == "set3") {
             $checkVal = array("pref", "addr01", "addr02", "tel01", "tel02", "tel03", "mail_flag");
         } else {
-            $checkVal = array("pref", "addr01", "addr02", "tel01", "tel02", "tel03", "mail_flag");
+            $checkVal = array();
         }
 
         //$objPage->arrFormフォームの値をlistに格納
