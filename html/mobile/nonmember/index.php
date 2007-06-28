@@ -269,7 +269,7 @@ $arrRejectRegistColumn = array("year", "month", "day", "email02", "email_mobile0
                 $objPage->addr01 = @$address[0]['city'] . @$address[0]['town'];
             }
         }
-
+        printr($objPage);exit;
         //-- データ設定
         unset($objPage->list_data);
         if ($_POST["mode2"] == "set2") {
