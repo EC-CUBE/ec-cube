@@ -838,6 +838,18 @@ $arrTarget = array(
 	5 => "Unused"
 );
 
+/*--------- ▲商品レビュー用 ---------*/
+// 商品レビューでURL書き込みを許可するか否か
+define ('REVIEW_ALLOW_URL', false);
+
+// 書き込み不可のURL文字列
+$arrReviewDenyURL = array(
+    'http://',
+    'https://',
+    'ttp://',
+    'ttps://',
+);
+
 /*--------- ▲トラックバック用 ---------*/
 
 define ("TRACKBACK_STATUS_VIEW", 1);		// 表示
