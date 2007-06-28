@@ -87,14 +87,14 @@ default:
     }
     // ユーザユニークIDの取得
     $uniqid = $objSiteSess->getUniqId();
-    $objQuery = new SC_Query();
-    $where = "order_temp_id = ?";
-    //$arrRet = $objQuery->select("*", "dtb_order_temp", $where, array($uniqid));
-    sfprintr($arrRet);
-    // DB値の取得
-    $objFormParam->setParam($arrRet[0]);
-    $objFormParam->setValue('order_email_check', $arrRet[0]['order_email']);
-    $objFormParam->setDBDate($arrRet[0]['order_birth']);
+//    $objQuery = new SC_Query();
+//    $where = "order_temp_id = ?";
+//    $arrRet = $objQuery->select("*", "dtb_order_temp", $where, array($uniqid));
+//    sfprintr($arrRet);
+//    // DB値の取得
+//    $objFormParam->setParam($arrRet[0]);
+//    $objFormParam->setValue('order_email_check', $arrRet[0]['order_email']);
+//    $objFormParam->setDBDate($arrRet[0]['order_birth']);
     break;
 }
 
