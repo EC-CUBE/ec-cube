@@ -51,7 +51,7 @@ if(!empty($_POST["mode2"]) ){
             // パラメータ情報の初期化
            
             // POST値の取得
-            $objFormParam->setParam($_POST);
+            $objFormParam->setParam($_SESSION['user_info']);
             $arrRet = $objFormParam->getHashArray();
             $sqlval = $objFormParam->getDbArray();
             
