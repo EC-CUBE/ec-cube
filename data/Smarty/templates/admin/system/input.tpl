@@ -41,6 +41,7 @@ self.moveTo(20,20);self.focus();
 <input type="hidden" name="member_id" value="<!--{$tpl_member_id}-->">
 <input type="hidden" name="pageno" value="<!--{$tpl_pageno}-->">
 <input type="hidden" name="old_login_id" value="<!--{$tpl_old_login_id}-->">
+<input type="hidden" name="uniqid" value="<!--{$tpl_uniqid}-->">
 	<tr valign="top">
 		<td class="mainbg">
 			<!--▼登録テーブルここから-->

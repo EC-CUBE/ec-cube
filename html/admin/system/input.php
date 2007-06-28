@@ -48,6 +48,8 @@ if(sfIsInt($_GET['id'])) {
 	$objPage->arrForm['password'] = DUMMY_PASS;
 	// ログインIDを保管しておく。
 	$objPage->tpl_old_login_id = $data_list[0]['login_id'];
+    
+    $objPage->tpl_uniqid = $objSess->getUniqId();
 } else {
 	// 新規作成モード
 	$objPage->tpl_mode = "new";
@@ -56,7 +58,11 @@ if(sfIsInt($_GET['id'])) {
 
 // 新規作成モード or 編集モード
 if( $_POST['mode'] == 'new' || $_POST['mode'] == 'edit') {
-	// 入力エラーチェック
+    // 画面遷移の正当性チェック
+	if (sfIsValidTransition($objSess) == false) {
+        sfDispError(INVALID_MOVE_ERRORR);
+    }
+    // 入力エラーチェック
 	$objPage->arrErr = fnErrorCheck($conn);
 	
 	// 入力が正常であった場合は、DBに書き込む
@@ -97,6 +103,9 @@ if( $_GET['mode'] == 'reload') {
 	$url = URL_SYSTEM_TOP;
 	$objPage->tpl_onload="fnUpdateParent('".$url."')";
 }
+
+// 画面遷移の正当性チェック用にuniqidを埋め込む
+$objPage->tpl_uniqid = $objSess->getUniqId();
 
 // テンプレート用変数の割り当て
 $objView->assignobj($objPage);
