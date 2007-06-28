@@ -108,7 +108,7 @@ default:
     }
     // ユーザユニークIDの取得
     $uniqid = $objSiteSess->getUniqId();
-    sfprintr($uniqid);exit;
+    sfprintr($uniqid);
     $objQuery = new SC_Query();
     $where = "order_temp_id = ?";
     $arrRet = $objQuery->select("*", "dtb_order_temp", $where, array($uniqid));
