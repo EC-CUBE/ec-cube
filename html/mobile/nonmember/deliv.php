@@ -52,6 +52,7 @@ if(!empty($_POST["mode2"]) ){
            
             // POST値の取得
             $objFormParam->setParam($_SESSION['user_info']);
+            sfprintr($_SESSION['user_info']);
             $arrRet = $objFormParam->getHashArray();
             $sqlval = $objFormParam->getDbArray();
             
