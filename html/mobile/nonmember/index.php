@@ -80,7 +80,7 @@ case 'confirm':
     $objFormParam->convParam();
     $objFormParam->toLower('order_mail');
     $objFormParam->toLower('order_mail_check');
-    $objPage->arrErr = lfCheckError3();
+    $objPage->arrErr = lfCheckError();
     // 入力エラーなし
     if(count($objPage->arrErr) == 0) {
         // DBへのデータ登録
@@ -236,7 +236,7 @@ $arrRejectRegistColumn = array("year", "month", "day", "email02", "email_mobile0
 
         // 入力エラーのチェック
     if ($objPage->arrErr || !empty($_POST["return"])) {     
-
+        sfprintr($objPage->arrForm);exit;
         //-- データの設定
         if ($_POST["mode2"] == "set2") {
             $checkVal = array("email", "name01", "name02", "kana01", "kana02");
@@ -277,7 +277,7 @@ $arrRejectRegistColumn = array("year", "month", "day", "email02", "email_mobile0
         } elseif ($_POST["mode2"] == "set3") {
             $checkVal = array("pref", "addr01", "addr02", "tel01", "tel02", "tel03", "mail_flag");
         } else {
-            $checkVal = array("pref", "addr01", "addr02", "tel01", "tel02", "tel03", "mail_flag");
+            $checkVal = array();
         }
 
         //$objPage->arrFormフォームの値をlistに格納
