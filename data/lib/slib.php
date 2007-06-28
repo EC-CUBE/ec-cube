@@ -464,7 +464,7 @@ function sfDispSiteError($type, $objSiteSess = "", $return_top = false, $err_msg
 }
 
 /* 認証の可否判定 */
-function sfIsSuccess($objSess, $disp_error = true) { 
+function sfIsSuccess($objSess, $disp_error = true) {
 	$ret = $objSess->IsSuccess();
 	if($ret != SUCCESS) {
 		if($disp_error) {
@@ -502,6 +502,22 @@ function sfIsHTTPS () {
     // HTTPS時には$_SERVER['HTTPS']には空でない値が入る
     // $_SERVER['HTTPS'] != 'off' はIIS用
     if (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] != 'off') {
+        return true;
+    } else {
+        return false;
+    }
+}
+
+/**
+ *  正規の遷移がされているかを判定
+ *  前画面でuniqidを埋め込んでおく必要がある
+ *  @param  obj  SC_Session, SC_SiteSession
+ *  @return bool
+ */
+function sfIsValidTransition($objSess) {
+    // 前画面からPOSTされるuniqidが正しいものかどうかをチェック
+    $uniqid = $objSess->getUniqId();
+    if ( !empty($_POST['uniqid']) && ($_POST['uniqid'] === $uniqid) ) {
         return true;
     } else {
         return false;
