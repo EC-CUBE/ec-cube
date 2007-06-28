@@ -77,7 +77,7 @@ if(!empty($_POST["mode2"]) || $_SESSION['user_info'] ){
         }
         
         if ($_POST["mode2"] == "customer_addr") {
-            //print_r($_POST);
+
             if ($_POST['deli'] != "") {
                 header("Location:" . gfAddSessionId("./payment.php"));
             exit;
