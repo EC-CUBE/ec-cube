@@ -18,7 +18,7 @@ echo $auto_inc_no;
 
 
 // 値をカウントアップしておく
-//$objQuery->conn->query("ALTER TABLE dtb_order AUTO_INCREMENT=?" , $auto_inc_no + 1);
+$objQuery->conn->query("ALTER TABLE dtb_order AUTO_INCREMENT=?" , $auto_inc_no + 1);
 
 
 for($i=0; $i < 5; $i++) {
