@@ -285,7 +285,7 @@ $arrRejectRegistColumn = array("year", "month", "day", "email02", "email_mobile0
                 $_SESSION['user_info'][$key] = $val;
             }
         }
-        
+        sfprintr($_SESSION['user_info']);
         exit;
         header("Location:" . gfAddSessionId("./deliv.php"));
         
