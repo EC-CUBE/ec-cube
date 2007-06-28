@@ -223,6 +223,7 @@ $arrRejectRegistColumn = array("year", "month", "day", "email02", "email_mobile0
             $objPage->tpl_mainpage = 'nonmember/nonmember_set2.tpl';
             $objPage->tpl_title = 'お客様情報入力(2/3)';
         } else{
+            print('お客様情報入力(3/3)');
             sfprintr($objPage->arrForm);
             $objPage->arrErr = lfErrorCheck3($objPage->arrForm);
             $objPage->tpl_mainpage = 'nonmember/nonmember_set3.tpl';
