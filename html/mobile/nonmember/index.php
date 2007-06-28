@@ -75,23 +75,23 @@ switch($_POST['mode']) {
 case 'nonmember_confirm':
     $objPage = lfSetNonMember($objPage);
     // ※breakなし
-case 'confirm':
-    // 入力値の変換
-    $objFormParam->convParam();
-    $objFormParam->toLower('order_mail');
-    $objFormParam->toLower('order_mail_check');
-    $objPage->arrErr = lfCheckError();
-    // 入力エラーなし
-    if(count($objPage->arrErr) == 0) {
-        // DBへのデータ登録
-        lfRegistData($uniqid);
-        // 正常に登録されたことを記録しておく
-        $objSiteSess->setRegistFlag();
-        // お支払い方法選択ページへ移動
-        header("Location: " . gfAddSessionId(MOBILE_URL_SHOP_PAYMENT));
-        exit;       
-    }
-    
+//case 'confirm':
+//    // 入力値の変換
+//    $objFormParam->convParam();
+//    $objFormParam->toLower('order_mail');
+//    $objFormParam->toLower('order_mail_check');
+//    $objPage->arrErr = lfCheckError();
+//    // 入力エラーなし
+//    if(count($objPage->arrErr) == 0) {
+//        // DBへのデータ登録
+//        lfRegistData($uniqid);
+//        // 正常に登録されたことを記録しておく
+//        $objSiteSess->setRegistFlag();
+//        // お支払い方法選択ページへ移動
+//        header("Location: " . gfAddSessionId(MOBILE_URL_SHOP_PAYMENT));
+//        exit;       
+//    }
+//    
     break;
 // 前のページに戻る
 case 'return':
@@ -172,7 +172,6 @@ function lfSetNonMember($objPage) {
                          );
 
 //---- 登録除外用カラム配列
-//$arrRejectRegistColumn = array("year", "month", "day", "email02", "email_mobile02","password","password02","reminder","reminder_answer");
 $arrRejectRegistColumn = array("year", "month", "day", "email02", "email_mobile02", "password02");
         
     $objPage->tpl_mainpage = 'nonmember/nonmember_set1.tpl';
@@ -286,8 +285,6 @@ $arrRejectRegistColumn = array("year", "month", "day", "email02", "email_mobile0
             }
         }
         sfprintr($_SESSION['user_info']);
-       
-       
        if($_POST["mode2"] == "deliv"){
             $_SESSION['user_info']['mode2'] = "deliv"; 
             header("Location:" . gfAddSessionId("./deliv.php"));
