@@ -110,7 +110,7 @@ default:
     $uniqid = $objSiteSess->getUniqId();
     $objQuery = new SC_Query();
     $where = "order_temp_id = ?";
-    $arrRet = $objQuery->select("*", "dtb_order_temp", $where, array($uniqid));
+    //$arrRet = $objQuery->select("*", "dtb_order_temp", $where, array($uniqid));
     sfprintr($arrRet);
     // DB値の取得
     $objFormParam->setParam($arrRet[0]);
@@ -254,7 +254,6 @@ $arrRejectRegistColumn = array("year", "month", "day", "email02", "email_mobile0
 
         //--　テンプレート設定
         if ($_POST["mode2"] == "set2") {
-            
             $objPage->tpl_mainpage = 'nonmember/nonmember_set2.tpl';
             $objPage->tpl_title = 'お客様情報入力(2/3)';
         } elseif ($_POST["mode2"] == "set3") {
@@ -327,7 +326,6 @@ function lfRegistData($uniqid) {
         $objQuery->update("dtb_order_temp", $sqlval, $where, array($uniqid));
     }
 }
-
 
 /* パラメータ情報の初期化 */
 function lfInitParam() {
