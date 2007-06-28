@@ -287,8 +287,11 @@ $arrRejectRegistColumn = array("year", "month", "day", "email02", "email_mobile0
         }
         sfprintr($_SESSION['user_info']);
        
-        header("Location:" . gfAddSessionId("./deliv.php"));
-        
+       
+       if($_POST["mode2"] == "deliv"){
+            exit;
+            header("Location:" . gfAddSessionId("./deliv.php"));
+       }
     }
     return $objPage;
 }
