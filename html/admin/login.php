@@ -60,6 +60,7 @@ function fnSetLoginSession($member_id,$authority,$login_date, $login_name = '') 
 	$osess->SetSession('authority', $authority);
 	$osess->SetSession('member_id', $member_id);
 	$osess->SetSession('login_name', $login_name);
+    $osess->SetSession('uniqid', $osess->getUniqId());
 	
 	if(strlen($login_date) > 0) {
 		$osess->SetSession('last_login', $login_date);
