@@ -12,7 +12,8 @@ class SC_Session {
 	var $cert;			// 認証文字列(認証成功の判定に使用)
 	var $sid;			// セッションID
 	var $member_id;		// ログインユーザの主キー
-
+    var $uniqid;         // ページ遷移の正当性チェックに使用
+    
 	/* コンストラクタ */
 	function SC_Session() {
 		// セッション開始
@@ -22,9 +23,11 @@ class SC_Session {
 		if(isset($_SESSION['cert'])) {
 			$this->sid = session_id();
 			$this->cert = $_SESSION['cert'];
-			$this->login_id = $_SESSION['login_id'];
+			$this->login_id  = $_SESSION['login_id'];
 			$this->authority = $_SESSION['authority'];	// 管理者:0, 一般:1, 閲覧:2
 			$this->member_id = $_SESSION['member_id'];
+            $this->uniqid    = $_SESSION['uniq_id'];
+            
 			// ログに記録する
 			gfPrintLog("access : user=".$this->login_id." auth=".$this->authority." sid=".$this->sid);
 		} else {
@@ -63,6 +66,21 @@ class SC_Session {
 		return $this->sid;
 	}
 	
+    /** ユニークIDの取得 **/ 
+    function getUniqId() {
+        // ユニークIDがセットされていない場合はセットする。
+        if( empty($_SESSION['uniqid']) ) {
+            $this->setUniqId();
+        }
+        return $this->GetSession('uniqid');
+    }
+    
+    /** ユニークIDのセット **/ 
+    function setUniqId() {
+        // 予測されないようにランダム文字列を付与する。
+        $this->SetSession('uniqid', sfGetUniqRandomId());
+    }
+    
 	/* セッションの破棄 */
 	function EndSession() {
 		// デフォルトは、「PHPSESSID」
@@ -86,6 +104,7 @@ class SC_Session {
 		unset($_SESSION['login_id']);
 		unset($_SESSION['authority']);
 		unset($_SESSION['member_id']);
+        unset($_SESSION['uniqid']);
 		// ログに記録する
 		gfPrintLog("logout : user=".$this->login_id." auth=".$this->authority." sid=".$this->sid);
 	}
