@@ -7,6 +7,7 @@
 <table width="" border="0" cellspacing="0" cellpadding="0" summary=" ">
 <form name="form1" method="post" action="<!--{$smarty.server.PHP_SELF|escape}-->">
 <input type="hidden" name="mode" value="complete">
+<input type="hidden" name="uniqid" value="<!--{$tpl_uniqid}-->">
 	<tr>
 		<td align="center" bgcolor="#ffffff">
 		<!--¢§MAIN ONTENTS-->

@@ -21,6 +21,7 @@ $objPage = new LC_Page();
 $objView = new SC_SiteView();
 $objCustomer = new SC_Customer();
 $objQuery = new SC_Query();
+$objSiteSess = new SC_SiteSession();
 
 //ログイン判定
 if (!$objCustomer->isLoginSuccess()){
@@ -38,12 +39,21 @@ $objPage = sfGetPageLayout($objPage, false, "mypage/index.php");
 
 switch ($_POST['mode']){
 	case 'confirm':
+    
 	$objPage->tpl_mainpage = USER_PATH . 'templates/mypage/refusal_confirm.tpl';
 	$objPage->tpl_title = "MYページ/退会手続き(確認ページ)";
-
+    
+    // 確認ページを経由したことを登録
+    $objSiteSess->setRegistFlag();
+    // hiddenにuniqidを埋め込む
+    $objPage->tpl_uniqid = $objSiteSess->getUniqId();
+    
 	break;
 	
 	case 'complete':
+    // 正しい遷移かどうかをチェック
+    lfIsValidMovement($objSiteSess);
+    
 	//会員削除
 	$objQuery->exec("UPDATE dtb_customer SET del_flg=1, update_date=now() WHERE customer_id=?", array($objCustomer->getValue('customer_id')));
 
@@ -56,4 +66,17 @@ switch ($_POST['mode']){
 $objView->assignobj($objPage);
 $objView->display(SITE_FRAME);
 
+// 正しい遷移かどうかをチェック
+function lfIsValidMovement($objSiteSess) {
+    // 確認ページからの遷移かどうかをチェック
+    sfIsPrePage($objSiteSess);
+    
+    // uniqid がPOSTされているかをチェック
+    $uniqid = $objSiteSess->getUniqId();
+    if ( !empty($_POST['uniqid']) && ($_POST['uniqid'] === $uniqid) ) {
+        return;
+    } else {
+        sfDispSiteError(PAGE_ERROR, $objSiteSess);
+    }
+}
 ?>
