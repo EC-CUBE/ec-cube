@@ -306,7 +306,7 @@ function lfRegistData($uniqid) {
     global $objFormParam;
     $arrRet = $objFormParam->getHashArray();
     $sqlval = $objFormParam->getDbArray();
-    
+    sfprintr($arrRet);exit;
     // 登録データの作成
     $sqlval['order_temp_id'] = $uniqid;
     $sqlval['order_birth'] = sfGetTimestamp($arrRet['year'], $arrRet['month'], $arrRet['day']);
