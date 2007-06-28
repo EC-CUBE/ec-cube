@@ -72,27 +72,6 @@ $uniqid = sfCheckNormalAccess($objSiteSess, $objCartSess);
 $objPage->tpl_uniqid = $uniqid;
 
 switch($_POST['mode']) {
-case 'nonmember_confirm':
-    $objPage = lfSetNonMember($objPage);
-    // ※breakなし
-//case 'confirm':
-//    // 入力値の変換
-//    $objFormParam->convParam();
-//    $objFormParam->toLower('order_mail');
-//    $objFormParam->toLower('order_mail_check');
-//    $objPage->arrErr = lfCheckError();
-//    // 入力エラーなし
-//    if(count($objPage->arrErr) == 0) {
-//        // DBへのデータ登録
-//        lfRegistData($uniqid);
-//        // 正常に登録されたことを記録しておく
-//        $objSiteSess->setRegistFlag();
-//        // お支払い方法選択ページへ移動
-//        header("Location: " . gfAddSessionId(MOBILE_URL_SHOP_PAYMENT));
-//        exit;       
-//    }
-//    
-    break;
 // 前のページに戻る
 case 'return':
     // 確認ページへ移動
