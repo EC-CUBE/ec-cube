@@ -238,7 +238,7 @@ $arrRejectRegistColumn = array("year", "month", "day", "email02", "email_mobile0
 
         // 入力エラーのチェック
     if ($objPage->arrErr || !empty($_POST["return"])) {     
-        sfprintr($objPage->arrForm);exit;
+        sfprintr($objPage->arrForm);
         //-- データの設定
         if ($_POST["mode2"] == "set2") {
             $checkVal = array("email", "name01", "name02", "kana01", "kana02");
