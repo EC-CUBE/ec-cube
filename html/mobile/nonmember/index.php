@@ -133,7 +133,7 @@ $objPage->arrDay = $objDate->getDay();
 
 // 入力値の取得
 $objPage->arrForm = $objFormParam->getFormParamList();
-
+sfprintr($objPage->arrForm);
 //objPageの情報をobjViewに格納
 $objView->assignobj($objPage);
 $objView->display(SITE_FRAME);
@@ -369,8 +369,6 @@ function lfInitParam() {
     $objFormParam->addParam("電話番号3", "deliv_tel03", TEL_ITEM_LEN, "n", array("MAX_LENGTH_CHECK" ,"NUM_CHECK"));
     $objFormParam->addParam("メールマガジン", "mail_flag", INT_LEN, "n", array("MAX_LENGTH_CHECK", "NUM_CHECK"), 1);
 }
-
-/* DBへデータの登録 */
 
 /* 入力内容のチェック */
 function lfCheckError() {
