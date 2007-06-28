@@ -286,7 +286,7 @@ $arrRejectRegistColumn = array("year", "month", "day", "email02", "email_mobile0
             }
         }
         
-        
+        exit;
         header("Location:" . gfAddSessionId("./deliv.php"));
         
     }
