@@ -4,7 +4,7 @@ require_once("../../require.php");
 $objQuery = new SC_Query();
 
 // ロックする
-$objQuery->query('LOCK TABLES dtb_order READ');
+$objQuery->query('LOCK TABLES dtb_order READ LOCAL');
 
 for($i=0; $i < 5; $i++) {
     sleep(3);
