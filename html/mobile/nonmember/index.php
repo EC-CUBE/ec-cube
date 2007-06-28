@@ -80,7 +80,7 @@ case 'confirm':
     $objFormParam->convParam();
     $objFormParam->toLower('order_mail');
     $objFormParam->toLower('order_mail_check');
-    $objPage->arrErr = lfCheckError();
+    $objPage->arrErr = lfCheckError3();
     // 入力エラーなし
     if(count($objPage->arrErr) == 0) {
         // DBへのデータ登録
@@ -221,7 +221,7 @@ $arrRejectRegistColumn = array("year", "month", "day", "email02", "email_mobile0
             $objPage->arrErr = lfErrorCheck2($objPage->arrForm);
             $objPage->tpl_mainpage = 'nonmember/nonmember_set2.tpl';
             $objPage->tpl_title = 'お客様情報入力(2/3)';
-        } elseif ($_POST["mode2"] == "deliv"){
+        } else{
             sfprintr($objPage->arrForm);exit;
             $objPage->arrErr = lfErrorCheck3($objPage->arrForm);
             $objPage->tpl_mainpage = 'nonmember/nonmember_set3.tpl';
