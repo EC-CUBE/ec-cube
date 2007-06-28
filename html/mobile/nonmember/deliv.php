@@ -59,14 +59,14 @@ if(!empty($_POST["mode2"]) ){
             $objPage->arrForm = $objFormParam->getFormParamList();
             $objPage->arrErr = $arrErr;
             
-           foreach($_POST as $key => $value){
+           foreach($_SESSION['user_info'] as $key => $value){
                $objPage->arrAddr[0][$key] = $value;
            }
             
             //データベースの一時保存用テーブルdtb_order_tempにデータを格納する
             lfRegistDataTemp($objPage->arrAddr[0]['uniqid'],$objPage->arrAddr[0]); 
             
-            lfCopyDeliv($objPage->tpl_uniqid, $_POST);
+            lfCopyDeliv($objPage->tpl_uniqid, $_SESSION['user_info']);
            
             $objPage->tpl_mainpage = 'nonmember/nonmember_deliv.tpl';
             $objPage->tpl_title = 'お届け先情報';
