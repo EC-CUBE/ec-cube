@@ -75,24 +75,24 @@ switch($_POST['mode']) {
 case 'nonmember_confirm':
     $objPage = lfSetNonMember($objPage);
     // ※breakなし
-case 'confirm':
-    // 入力値の変換
-    $objFormParam->convParam();
-    $objFormParam->toLower('order_mail');
-    $objFormParam->toLower('order_mail_check');
-    $objPage->arrErr = lfCheckError();
-    // 入力エラーなし
-    if(count($objPage->arrErr) == 0) {
-        // DBへのデータ登録
-        lfRegistData($uniqid);
-        // 正常に登録されたことを記録しておく
-        $objSiteSess->setRegistFlag();
-        // お支払い方法選択ページへ移動
-        header("Location: " . gfAddSessionId(MOBILE_URL_SHOP_PAYMENT));
-        exit;       
-    }
-    
-    break;
+//case 'confirm':
+//    // 入力値の変換
+//    $objFormParam->convParam();
+//    $objFormParam->toLower('order_mail');
+//    $objFormParam->toLower('order_mail_check');
+//    $objPage->arrErr = lfCheckError();
+//    // 入力エラーなし
+//    if(count($objPage->arrErr) == 0) {
+//        // DBへのデータ登録
+//        lfRegistData($uniqid);
+//        // 正常に登録されたことを記録しておく
+//        $objSiteSess->setRegistFlag();
+//        // お支払い方法選択ページへ移動
+//        header("Location: " . gfAddSessionId(MOBILE_URL_SHOP_PAYMENT));
+//        exit;       
+//    }
+//    
+//    break;
 // 前のページに戻る
 case 'return':
     // 確認ページへ移動
@@ -108,6 +108,7 @@ default:
     }
     // ユーザユニークIDの取得
     $uniqid = $objSiteSess->getUniqId();
+    sfprintr($uniqid);exit;
     $objQuery = new SC_Query();
     $where = "order_temp_id = ?";
     $arrRet = $objQuery->select("*", "dtb_order_temp", $where, array($uniqid));
@@ -186,7 +187,7 @@ $arrRejectRegistColumn = array("year", "month", "day", "email02", "email_mobile0
         $objPage->arrForm['year'] = '';
     }
     
-    //$objPage->arrForm['email'] = strtolower($objPage->arrForm['email']);        // emailはすべて小文字で処理
+    $objPage->arrForm['email'] = strtolower($objPage->arrForm['email']);        // emailはすべて小文字で処理
     
     //-- 入力データの変換
     $objPage->arrForm = lfConvertParam($objPage->arrForm, $arrRegistColumn);
@@ -302,30 +303,30 @@ $arrRejectRegistColumn = array("year", "month", "day", "email02", "email_mobile0
  * 
  */
  //データの登録を行う
-function lfRegistData($uniqid) {
-    global $objFormParam;
-    $arrRet = $objFormParam->getHashArray();
-    $sqlval = $objFormParam->getDbArray();
-    sfprintr($arrRet);exit;
-    // 登録データの作成
-    $sqlval['order_temp_id'] = $uniqid;
-    $sqlval['order_birth'] = sfGetTimestamp($arrRet['year'], $arrRet['month'], $arrRet['day']);
-    $sqlval['update_date'] = 'Now()';
-    $sqlval['customer_id'] = '0';
-    $sqlval['order_name01'] = $objPage->arrAddr[0]['name01'];
-          
-    // 既存データのチェック
-    $objQuery = new SC_Query();
-    $where = "order_temp_id = ?";
-    $cnt = $objQuery->count("dtb_order_temp", $where, array($uniqid));
-    // 既存データがない場合
-    if ($cnt == 0) {
-        $sqlval['create_date'] = 'Now()';
-        $objQuery->insert("dtb_order_temp", $sqlval);
-    } else {
-        $objQuery->update("dtb_order_temp", $sqlval, $where, array($uniqid));
-    }
-}
+//function lfRegistData($uniqid) {
+//    global $objFormParam;
+//    $arrRet = $objFormParam->getHashArray();
+//    $sqlval = $objFormParam->getDbArray();
+//    sfprintr($arrRet);exit;
+//    // 登録データの作成
+//    $sqlval['order_temp_id'] = $uniqid;
+//    $sqlval['order_birth'] = sfGetTimestamp($arrRet['year'], $arrRet['month'], $arrRet['day']);
+//    $sqlval['update_date'] = 'Now()';
+//    $sqlval['customer_id'] = '0';
+//    $sqlval['order_name01'] = $objPage->arrAddr[0]['name01'];
+//          
+//    // 既存データのチェック
+//    $objQuery = new SC_Query();
+//    $where = "order_temp_id = ?";
+//    $cnt = $objQuery->count("dtb_order_temp", $where, array($uniqid));
+//    // 既存データがない場合
+//    if ($cnt == 0) {
+//        $sqlval['create_date'] = 'Now()';
+//        $objQuery->insert("dtb_order_temp", $sqlval);
+//    } else {
+//        $objQuery->update("dtb_order_temp", $sqlval, $where, array($uniqid));
+//    }
+//}
 
 
 /* パラメータ情報の初期化 */
