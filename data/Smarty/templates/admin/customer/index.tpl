@@ -163,27 +163,27 @@
 								<td bgcolor="#ffffff" width="499" colspan="3">
 									<!--{if $arrErr.start_year || $arrErr.end_year}--><span class="red12"><!--{$arrErr.start_year}--><!--{$arrErr.end_year}--></span><br><!--{/if}-->
 									<select name="start_year" <!--{if $arrErr.start_year || $arrErr.end_year}--><!--{sfSetErrorStyle}--><!--{/if}-->>
-										<option value="" selected="selected">------</option>
+										<option value="" selected="selected">----</option>
 										<!--{html_options options=$arrYear selected=$arrForm.start_year}-->
 									</select>年
 									<select name="start_month" <!--{if $arrErr.start_year || $arrErr.end_year}--><!--{sfSetErrorStyle}--><!--{/if}-->>
-										<option value="" selected="selected">----</option>
+										<option value="" selected="selected">--</option>
 										<!--{html_options options=$arrMonth selected=$arrForm.start_month}-->
 									</select>月
 									<select name="start_day" <!--{if $arrErr.start_year || $arrErr.end_year}--><!--{sfSetErrorStyle}--><!--{/if}-->>
-										<option value="" selected="selected">----</option>
+										<option value="" selected="selected">--</option>
 										<!--{html_options options=$arrDay selected=$arrForm.start_day}-->
 									</select>日〜
 									<select name="end_year" <!--{if $arrErr.start_year || $arrErr.end_year}--><!--{sfSetErrorStyle}--><!--{/if}-->>
-										<option value="" selected="selected">------</option>
+										<option value="" selected="selected">----</option>
 										<!--{html_options options=$arrYear selected=$arrForm.end_year}-->
 									</select>年
 									<select name="end_month" <!--{if $arrErr.start_year || $arrErr.end_year}--><!--{sfSetErrorStyle}--><!--{/if}-->>
-										<option value="" selected="selected">----</option>
+										<option value="" selected="selected">--</option>
 										<!--{html_options options=$arrMonth selected=$arrForm.end_month}-->
 									</select>月
 									<select name="end_day" <!--{if $arrErr.start_year || $arrErr.end_year}--><!--{sfSetErrorStyle}--><!--{/if}-->>
-										<option value="" selected="selected">----</option>
+										<option value="" selected="selected">--</option>
 										<!--{html_options options=$arrDay selected=$arrForm.end_day}-->
 									</select>日
 								</td>
@@ -194,27 +194,27 @@
 								<td bgcolor="#ffffff" width="499" colspan="3">
 									<!--{if $arrErr.buy_start_year || $arrErr.buy_end_year}--><span class="red12"><!--{$arrErr.buy_start_year}--><!--{$arrErr.buy_end_year}--></span><br><!--{/if}-->
 									<select name="buy_start_year" style="<!--{$arrErr.buy_start_year|sfGetErrorColor}-->">
-										<option value="" selected="selected">------</option>
+										<option value="" selected="selected">----</option>
 										<!--{html_options options=$objDate->getYear($smarty.const.RELEASE_YEAR)  selected=$arrForm.buy_start_year}-->
 									</select>年
 									<select name="buy_start_month" style="<!--{$arrErr.buy_start_year|sfGetErrorColor}-->">
-										<option value="" selected="selected">----</option>
+										<option value="" selected="selected">--</option>
 										<!--{html_options options=$arrMonth selected=$arrForm.buy_start_month}-->
 									</select>月
 									<select name="buy_start_day" style="<!--{$arrErr.buy_start_year|sfGetErrorColor}-->">
-										<option value="" selected="selected">----</option>
+										<option value="" selected="selected">--</option>
 										<!--{html_options options=$arrDay selected=$arrForm.buy_start_day}-->
 									</select>日〜
 									<select name="buy_end_year" style="<!--{$arrErr.buy_end_year|sfGetErrorColor}-->">
-										<option value="" selected="selected">------</option>
+										<option value="" selected="selected">----</option>
 										<!--{html_options options=$objDate->getYear($smarty.const.RELEASE_YEAR)  selected=$arrForm.buy_end_year}-->
 									</select>年
 									<select name="buy_end_month" style="<!--{$arrErr.buy_end_year|sfGetErrorColor}-->">
-										<option value="" selected="selected">----</option>
+										<option value="" selected="selected">--</option>
 										<!--{html_options options=$arrMonth selected=$arrForm.buy_end_month}-->
 									</select>月
 									<select name="buy_end_day" style="<!--{$arrErr.buy_end_year|sfGetErrorColor}-->">
-										<option value="" selected="selected">----</option>
+										<option value="" selected="selected">--</option>
 										<!--{html_options options=$arrDay selected=$arrForm.buy_end_day}-->
 									</select>日
 								</td>
