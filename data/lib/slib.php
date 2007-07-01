@@ -242,7 +242,7 @@ function sfGetColumnList($table_name, $objQuery = "", $db_type = DB_TYPE){
 	
 	// postgresqlとmysqlとで処理を分ける
 	if ($db_type == "pgsql") {
-		$sql = "SELECT a.attname FROM pg_class c, pg_attribute a WHERE c.relname=? AND c.oid=a.attrelid AND a.attnum > 0 ORDER BY a.attnum";
+		$sql = "SELECT a.attname FROM pg_class c, pg_attribute a WHERE c.relname=? AND c.oid=a.attrelid AND a.attnum > 0 AND not a.attname like '........pg.dropped.%........' ORDER BY a.attnum";
 		$arrColList = $objQuery->getAll($sql, array($table_name));
 		$arrColList = sfswaparray($arrColList);
 		$arrRet = $arrColList["attname"];
