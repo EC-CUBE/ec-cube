@@ -32,7 +32,7 @@ $objSess = new SC_Session();
 // 認証可否の判定
 sfIsSuccess($objSess);
 
-$objPage->arrSendType = array("パソコン","携帯");
+$objPage->arrSendType = array("","パソコン","携帯");
 $objPage->mode = "regist";
 
 // idが指定されているときは「編集」表示
@@ -47,13 +47,11 @@ if ( $_POST['mode'] == 'regist' ) {
 	
 	// 新規登録
 	$objPage->arrForm = lfConvData( $_POST );
-	//print_r($objPage->arrForm);print("<br>");
     $objPage->arrErr = lfErrorCheck($objPage->arrForm);
 	
 	if ( ! $objPage->arrErr ){
 		// エラーが無いときは登録・編集
 		lfRegistData( $objPage->arrForm, $_POST['template_id']);	
-		//sfReload("mode=complete");	// 自分を再読込して、完了画面へ遷移
 	}
 } 
 
