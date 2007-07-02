@@ -13,7 +13,7 @@ class LC_Page {
 	var $objDate;
 	var $arrForm;
 	var $mode;
-	var $arrSendType;
+	var $arrMagazineType;
 	var $title;
 	
 	function LC_Page() {
@@ -32,7 +32,7 @@ $objSess = new SC_Session();
 // 認証可否の判定
 sfIsSuccess($objSess);
 
-$objPage->arrSendType = array("","パソコン","携帯");
+$objPage->arrSendType = array("パソコン","携帯");
 $objPage->mode = "regist";
 
 // idが指定されているときは「編集」表示
