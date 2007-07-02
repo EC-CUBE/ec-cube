@@ -13,7 +13,7 @@ class LC_Page {
 	var $objDate;
 	var $arrForm;
 	var $mode;
-	var $arrMagazineType;
+	var $arrSendType;
 	var $title;
 	
 	function LC_Page() {
