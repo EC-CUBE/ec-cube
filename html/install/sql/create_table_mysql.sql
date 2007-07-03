@@ -176,7 +176,7 @@ CREATE TABLE dtb_payment (
 ) TYPE=InnoDB ;
 
 CREATE TABLE dtb_mailtemplate (
-    template_id int NOT NULL,
+    template_id int auto_increment primary key NOT NULL UNIQUE,
     subject text,
     header text,
     footer text,
