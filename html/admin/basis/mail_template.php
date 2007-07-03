@@ -14,7 +14,7 @@ class LC_Page {
     var $arrMagazineType;
     
     function LC_Page() {
-        $this->tpl_mainpage = 'basis/mail_list.tpl';
+        $this->tpl_mainpage = 'basis/template.tpl';
         $this->tpl_mainno = 'basis';
         $this->tpl_subnavi = 'basis/subnavi.tpl';
         $this->tpl_subno = 'mail';
