@@ -62,7 +62,7 @@
 										<td width="70" align="center"><!--{if $list_data[data].send_type eq 0}-->パソコン<!--{else}-->携帯<!--{/if}--></td>
 										<td width="40" align="center"><a href="./mail.php?mode=edit&template_id=<!--{$list_data[data].template_id}-->">編集</a></td>
 										<td width="40" align="center">
-										<!--{if $list_data[data].template_id > 1}-->
+										<!--{if $list_data[data].template_id > 2}-->
 										<a href="" onclick="fnDelete('<!--{$smarty.server.PHP_SELF|escape}-->?mode=delete&id=<!--{$list_data[data].template_id}-->'); return false;">削除</a>
 										<!--{else}-->(固定)<!--{/if}-->
 										</td>
