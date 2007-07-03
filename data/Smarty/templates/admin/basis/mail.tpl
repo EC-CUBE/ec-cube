@@ -112,7 +112,7 @@ function lfnCheckSubmit(){
 											<input type="radio" name="send_type" value="1" id="send_type_1" checked="checked" /><label for="send_type_1">·ÈÂÓ</label>&nbsp;
 										<!--{else}-->
 											<!--{html_radios_ex name="send_type" options=$arrSendType separator="&nbsp;" selected=$arrForm[$key]}-->
-										</if>
+										<!--{/if}-->
 										</td>
 									</tr>
 									<tr>
