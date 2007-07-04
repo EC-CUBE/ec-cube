@@ -123,7 +123,13 @@ function lfErrorCheck() {
 	$objErr->doFunc(array("おすすめレベル", "recommend_level"), array("SELECT_CHECK"));
 	$objErr->doFunc(array("タイトル", "title", STEXT_LEN), array("EXIST_CHECK", "SPTAB_CHECK", "MAX_LENGTH_CHECK"));
 	$objErr->doFunc(array("コメント", "comment", LTEXT_LEN), array("EXIST_CHECK", "SPTAB_CHECK", "MAX_LENGTH_CHECK"));
-
+    
+    if (REVIEW_ALLOW_URL == false) {
+        // コメント欄へのURLの入力を禁止
+        global $arrReviewDenyURL;
+        $objErr->doFunc(array("URL", "comment", $arrReviewDenyURL), array("PROHIBITED_STR_CHECK"));
+    }
+    
 	return $objErr->arrErr;
 }
 
