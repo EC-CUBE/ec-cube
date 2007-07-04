@@ -137,7 +137,7 @@ if ( $_GET['mode'] == 'regist' ){
 } elseif ( ( $_GET['mode'] == 'csv' ) && ( sfCheckNumLength($_GET['question_id']) ) ){ 
 
 			$head = sfGetCSVList($arrCVSTITLE);
-			$list_data = $conn->getAll("SELECT result_id,question_id,question_date,question_name,name01,name02,kana01,kana02,zip01,zip02,pref,addr01,addr02,tel01,tel02,tel03,mail01,question01,question02,question03,question04,question05,question06 FROM dtb_question_result WHERE del_flg = 0 ORDER BY result_id ASC");
+			$list_data = $conn->getAll("SELECT result_id,question_id,question_date,question_name,name01,name02,kana01,kana02,zip01,zip02,pref,addr01,addr02,tel01,tel02,tel03,mail01,question01,question02,question03,question04,question05,question06 FROM dtb_question_result WHERE del_flg = 0 AND question_id = ? ORDER BY result_id ASC",array($_GET['question_id']));
 			$data = "";
 			for($i = 0; $i < count($list_data); $i++) {
 				// 各項目をCSV出力用に変換する。
