@@ -811,6 +811,26 @@ class SC_CheckError {
 		if(strlen($this->arrParam[$value[1]]) > 0 && !gfIsMobileMailAddress($this->arrParam[$value[1]])) {
 			$this->arrErr[$value[1]] = "※ " . $value[0] . "は携帯電話のものではありません。<br />";
 		}
-	}		
+	}
+    /**
+     * 禁止文字列のチェック
+     * value[0] = 項目名 value[1] = 判定対象文字列
+     * value[2] = 入力を禁止する文字列(配列)
+     * 
+     * @example $objErr->doFunc(array("URL", "contents", $arrReviewDenyURL), array("PROHIBITED_STR_CHECK"));
+     */ 
+    function PROHIBITED_STR_CHECK( $value ) {
+        if( isset($this->arrErr[$value[1]]) || empty($this->arrParam[$value[1]]) ) {
+            return;
+        }
+        
+        $targetStr     = $this->arrParam[$value[1]];
+        $prohibitedStr = str_replace(array('|', '/'), array('\|', '\/'), $value[2]);
+        
+        $pattern = '/' . join('|', $prohibitedStr) . '/i';
+        if(preg_match_all($pattern, $this->arrParam[$value[1]], $matches)) {
+            $this->arrErr[$value[1]] = "※ " . $value[0] . "は入力できません。<br />";
+        }
+    }
 }
 ?>

@@ -110,8 +110,7 @@ $objCampaignSess->pageView($objView);
 
 //エラーチェック処理部
 function lfErrorCheck($array) {
-
-	$objErr = new SC_CheckError($array);
+    $objErr = new SC_CheckError($array);
 	$objErr->doFunc(array("お名前(姓)", 'name01', STEXT_LEN), array("EXIST_CHECK","SPTAB_CHECK","MAX_LENGTH_CHECK"));
 	$objErr->doFunc(array("お名前(名)", 'name02', STEXT_LEN), array("EXIST_CHECK","SPTAB_CHECK","MAX_LENGTH_CHECK"));
 	$objErr->doFunc(array("フリガナ(セイ)", 'kana01', STEXT_LEN), array("EXIST_CHECK","SPTAB_CHECK","MAX_LENGTH_CHECK", "KANA_CHECK"));
@@ -128,9 +127,13 @@ function lfErrorCheck($array) {
 	$objErr->doFunc(array("お電話番号2", 'tel02', TEL_ITEM_LEN), array("NUM_CHECK", "MAX_LENGTH_CHECK"));
 	$objErr->doFunc(array("お電話番号3", 'tel03', TEL_ITEM_LEN), array("NUM_CHECK", "MAX_LENGTH_CHECK"));
 	
-
+    if (REVIEW_ALLOW_URL == false) {
+        // URLの入力を禁止
+        global $arrReviewDenyURL;
+        $objErr->doFunc(array("URL", "contents", $arrReviewDenyURL), array("PROHIBITED_STR_CHECK"));
+    }
+    
 	return $objErr->arrErr;
-
 }
 
 //----　取得文字列の変換
