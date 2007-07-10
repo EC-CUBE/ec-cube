@@ -14,7 +14,7 @@
 	<tr valign="top">
 		<td>
 		
-		<!--{if $arrBestProducts[cnt].main_list_image != ""}--><!--{assign var=image_path value="`$smarty.const.IMAGE_SAVE_DIR`/`$arrBestProducts[cnt].main_list_image`"}--><!--{else}--><!--{assign var=image_path value="`$smarty.const.NO_IMAGE_DIR`"}--><!--{/if}-->
+		<!--{if $arrBestProducts[cnt].main_list_image != ""}--><!--{assign var=image_path value="`$arrBestProducts[cnt].main_list_image`"}--><!--{else}--><!--{assign var=image_path value="`$smarty.const.NO_IMAGE_DIR`"}--><!--{/if}-->
 		
 		<table width="190" border="0" cellspacing="0" cellpadding="0" summary=" ">
 			<tr valign="top">
@@ -47,7 +47,7 @@
 		
 		<!--{assign var=cnt2 value=`$smarty.section.cnt.iteration*$smarty.section.cnt.step-1` }-->
 		<!--{if $arrBestProducts[$cnt2]|count > 0}-->
-			<!--{if $arrBestProducts[$cnt2].main_list_image != ""}--><!--{assign var=image_path value="`$smarty.const.IMAGE_SAVE_DIR`/`$arrBestProducts[$cnt2].main_list_image`"}--><!--{else}--><!--{assign var=image_path value="`$smarty.const.NO_IMAGE_DIR`"}--><!--{/if}-->
+			<!--{if $arrBestProducts[$cnt2].main_list_image != ""}--><!--{assign var=image_path value="`$arrBestProducts[$cnt2].main_list_image`"}--><!--{else}--><!--{assign var=image_path value="`$smarty.const.NO_IMAGE_DIR`"}--><!--{/if}-->
 			<table width="190" border="0" cellspacing="0" cellpadding="0" summary=" ">
 				<tr valign="top">
 					<td align="center" valign="middle"><a href="<!--{$smarty.const.URL_DIR}-->products/detail.php?product_id=<!--{$arrBestProducts[$cnt2].product_id}-->"><img src="<!--{$smarty.const.SITE_URL}-->resize_image.php?image=<!--{$image_path|sfRmDupSlash}-->&width=48&height=48" alt="<!--{$arrBestProducts[$cnt2].name|escape}-->"></a></td>

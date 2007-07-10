@@ -123,7 +123,7 @@
 											<td width="100" align="center">
 												<!--{* ¾¦ÉÊ²èÁü *}-->
 												<!--{if $arrProductsList[cnt].main_list_image != ""}-->
-													<!--{assign var=image_path value=`$smarty.const.IMAGE_SAVE_DIR`/`$arrProductsList[cnt].main_list_image`}-->
+													<!--{assign var=image_path value=`$arrProductsList[cnt].main_list_image`}-->
 												<!--{else}-->
 													<!--{assign var=image_path value=$smarty.const.NO_IMAGE_URL}-->
 												<!--{/if}-->

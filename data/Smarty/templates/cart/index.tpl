@@ -78,7 +78,7 @@
 						<tr bgcolor="#ffffff" class="fs12n">
 							<td align="center"><a href="<!--{$smarty.server.PHP_SELF|escape}-->" onclick="fnChangeAction('<!--{$smarty.server.PHP_SELF|escape}-->'); fnModeSubmit('delete', 'cart_no', '<!--{$arrProductsClass[cnt].cart_no}-->'); return false;">ºï½ü</a></td>
 							<td ><a href="<!--{$smarty.server.PHP_SELF|escape}-->" onclick="win01('../products/detail_image.php?product_id=<!--{$arrProductsClass[cnt].product_id}-->&image=main_image','detail_image','<!--{$arrProductsClass[cnt].tpl_image_width}-->','<!--{$arrProductsClass[cnt].tpl_image_height}-->'); return false;" target="_blank">
-								<img src="<!--{$smarty.const.URL_DIR}-->resize_image.php?image=<!--{$smarty.const.IMAGE_SAVE_DIR}-->/<!--{$arrProductsClass[cnt].main_list_image}-->&width=65&height=65" alt="<!--{$arrProductsClass[cnt].name|escape}-->">
+								<img src="<!--{$smarty.const.URL_DIR}-->resize_image.php?image=<!--{$arrProductsClass[cnt].main_list_image}-->&width=65&height=65" alt="<!--{$arrProductsClass[cnt].name|escape}-->">
 							</a></td>
 							<td ><!--{* ¾¦ÉÊÌ¾ *}--><strong><!--{$arrProductsClass[cnt].name|escape}--></storng><br />
 							<!--{if $arrProductsClass[cnt].classcategory_name1 != ""}-->

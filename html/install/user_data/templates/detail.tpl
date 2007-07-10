@@ -377,11 +377,12 @@ function lnSetSelect(form, name1, name2, val) {
 								<tr valign="top">
 									<td align="center" valign="middle"><a href="<!--{$smarty.const.DETAIL_P_HTML}--><!--{$arrRecommend[cnt].product_id}-->">
 									<!--{if $arrRecommend[cnt].main_list_image != ""}-->
-										<!--{assign var=image_path value="`$smarty.const.IMAGE_SAVE_DIR`/`$arrRecommend[cnt].main_list_image`"}-->
+										<!--{assign var=image_path value="`$arrRecommend[cnt].main_list_image`"}-->
 									<!--{else}-->
 										<!--{assign var=image_path value="`$smarty.const.NO_IMAGE_DIR`"}-->
 									<!--{/if}-->
-									<img src="<!--{$smarty.const.SITE_URL}-->resize_image.php?image=<!--{$image_path|sfRmDupSlash}-->&width=65&height=65" alt="<!--{$arrRecommend[cnt].name|escape}-->"></a></td>
+									<img src="<!--{$smarty.const.SITE_URL}-->resize_image.php?image=<!--{$image_path|sfRmDupSlash}-->&width=65&height=65" alt="<!--{$arrRecommend[cnt].name|escape}-->"></a>
+									</td>
 									<td align="right">
 									<table width="145" border="0" cellspacing="0" cellpadding="0" summary=" ">
 										<tr>
@@ -418,7 +419,7 @@ function lnSetSelect(form, name1, name2, val) {
 								<tr valign="top">
 									<td align="center" valign="middle"><a href="<!--{$smarty.const.DETAIL_P_HTML}--><!--{$arrRecommend[$nextCnt].product_id}-->">
 									<!--{if $arrRecommend[$nextCnt].main_list_image != ""}-->
-										<!--{assign var=image_path value="`$smarty.const.IMAGE_SAVE_DIR`/`$arrRecommend[$nextCnt].main_list_image`"}-->
+										<!--{assign var=image_path value="`$arrRecommend[$nextCnt].main_list_image`"}-->
 									<!--{else}-->
 										<!--{assign var=image_path value="`$smarty.const.NO_IMAGE_DIR`"}-->
 									<!--{/if}-->

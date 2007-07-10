@@ -353,7 +353,7 @@ function lfDispSwitch(id){
 										<!--{assign var=anckey value="recommend_no`$smarty.section.cnt.iteration`"}-->
 										<td bgcolor="#f2f1ec" width="160" class="fs12n">¥ÿœ¢æ¶… (<!--{$smarty.section.cnt.iteration}-->)<br>
 										<!--{if $arrRecommend[$recommend_no].main_list_image != ""}-->
-											<!--{assign var=image_path value="`$smarty.const.IMAGE_SAVE_DIR`/`$arrRecommend[$recommend_no].main_list_image`"}-->
+											<!--{assign var=image_path value="`$arrRecommend[$recommend_no].main_list_image`"}-->
 										<!--{else}-->
 											<!--{assign var=image_path value="`$smarty.const.NO_IMAGE_DIR`"}-->
 										<!--{/if}-->

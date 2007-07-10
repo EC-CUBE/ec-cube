@@ -99,7 +99,7 @@ function func_submit( id ){
 		<tr bgcolor="#FFFFFF" class="fs12n">
 			<td width="90" align="center">
 			<!--{if $arrProducts[cnt].main_list_image != ""}-->
-				<!--{assign var=image_path value="`$smarty.const.IMAGE_SAVE_DIR`/`$arrProducts[cnt].main_list_image`"}-->
+				<!--{assign var=image_path value="`$arrProducts[cnt].main_list_image`"}-->
 			<!--{else}-->
 				<!--{assign var=image_path value="`$smarty.const.NO_IMAGE_DIR`"}-->
 			<!--{/if}-->
