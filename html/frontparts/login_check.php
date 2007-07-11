@@ -80,6 +80,7 @@ function lfInitParam() {
 
 /* POSTされるURLが自ドメインのものかチェック*/
 function lfIsValidURL() {
+    $site_url  = sfIsHTTPS() ? SSL_URL : SITE_URL;
     $check_url = trim($_POST['url']);
     
     // ドメインチェック
