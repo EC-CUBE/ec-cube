@@ -4,6 +4,7 @@ $include_dir = realpath(dirname( __FILE__));
 require_once($include_dir . "/define.php");
 
 require_once($include_dir . HTML2DATA_DIR. "lib/gdthumb.php");
+require_once($include_dir . HTML2DATA_DIR. "lib/glib.php");
 require_once($include_dir . HTML2DATA_DIR. "conf/conf.php");
 
 $objThumb = new gdthumb();
@@ -13,12 +14,12 @@ $file = NO_IMAGE_DIR;
 // NO_IMAGE_DIR以外のファイル名が渡された場合、ファイル名のチェックを行う
 if ( isset($_GET['image']) && $_GET['image'] !== NO_IMAGE_DIR) {
     
-    //不正なファイル名が渡された場合は終了させる
-    if ( lfCheckFileName() !== true ) {
-        exit();
+    // ファイル名が正しい場合だけ、$fileを設定
+    if ( lfCheckFileName() === true ) {
+        $file = IMAGE_SAVE_DIR . $_GET['image'];
+    } else {
+        gfPrintLog('invalid access :resize_image.php $_GET["image"]=' . $_GET['image']);
     }
-    
-    $file = IMAGE_SAVE_DIR . $_GET['image'];
 }
 
 if(file_exists($file)){
@@ -30,7 +31,7 @@ if(file_exists($file)){
 // ファイル名の形式をチェック
 function lfCheckFileName() {
     //$pattern = '|^[0-9]+_[0-9a-z]+\.[a-z]{3}$|';
-    $pattern = '|\.\./|';
+    $pattern = '|\./|';
     $file    = trim($_GET["image"]);
     if ( preg_match_all($pattern, $file, $matches) ) {
         return false;

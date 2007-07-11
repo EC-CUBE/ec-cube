@@ -8,7 +8,7 @@ require_once("../require.php");
 
 // 不正なURLがPOSTされた場合はエラー表示
 if (isset($_POST['url']) && lfIsValidURL() !== true) {
-    gfDebugLog("login_check.php debug \n" . $POST['url']);
+    gfPrintLog('invalid access :login_check.php $POST["url"]=' . $POST['url']);
     sfDispSiteError(PAGE_ERROR);
 }
 
