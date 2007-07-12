@@ -17,4 +17,6 @@ CREATE TABLE dtb_module (
     module_x int,
     module_y int,
     eccube_version text
+    icon text,
+    url text
 ) TYPE=InnoDB;

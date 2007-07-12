@@ -16,5 +16,7 @@ CREATE TABLE dtb_module (
     sub_data text,
     module_x int4,
     module_y int4,
-    eccube_version text
+    eccube_version text,
+    icon text,
+    url text
 );
