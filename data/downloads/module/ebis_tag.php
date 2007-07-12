@@ -65,7 +65,7 @@ case 'csv':
     //    sfDispError(INVALID_MOVE_ERRORR);
     //}
     $csv = lgGetCsvData();
-    sfCSVDownload($csv);
+    sfCSVDownload($csv, 'ebis_tag_');
     exit;
 default:
 	$arrRet = $objQuery->select("sub_data", "dtb_module", "module_id = ?", array(EBIS_TAG_MID));
