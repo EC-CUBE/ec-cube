@@ -1,8 +1,8 @@
 <?php
 /**
  * 
- * @copyright	2000-2006 LOCKON CO.,LTD. All Rights Reserved.
- * @version	CVS: $Id: ebis_tag.php,v 1.29 2006/10/26 04:02:40 naka Exp $
+ * @copyright	2000-2007 LOCKON CO.,LTD. All Rights Reserved.
+ * @version	CVS: $Id: ebis_tag.php,v 1.30 2007/07/18 04:02:40 adachi Exp $
  * @link		http://www.lockon.co.jp/
  *
  */
