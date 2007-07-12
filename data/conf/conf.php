@@ -88,7 +88,7 @@ define("UPDATE_PATH", DATA_PATH . UPDATE_DIR);
 //--------------------------------------------------------------------------------------------------------
 /** アップデート管理用 **/
 // アップデート管理用ファイル格納場所　
-define("UPDATE_HTTP", "http://www.lockon.co.jp/test/");
+define("UPDATE_HTTP", "http://www.lockon.co.jp/share/");
 // アップデート管理用CSV1行辺りの最大文字数
 define("UPDATE_CSV_LINE_MAX", 4096);
 // アップデート管理用CSVカラム数
@@ -903,6 +903,55 @@ $arrSiteControlTrackBack = array(
 $arrSiteControlAffiliate = array(
 	1 => "有効",
 	2 => "無効"
+);
+
+/*--------- ▲エビスタグモジュール用 ---------*/
+/* 任意項目を増やす場合の依存関係：
+ * 属性情報の定数、EBiS_TAG_OPTIONS_MAX
+ * $arrEBiSTagOptions、$arrEBiSTagAttrTagName
+ * module.incのsfPrintEbisTag()のswitch文に処理を追加
+*/
+// 属性情報
+define('EBiS_TAG_ATTR_NOTHING',     '0'); // 取得しない
+define('EBiS_TAG_ATTR_CUSTOMER_ID', '1'); // 顧客ID
+define('EBiS_TAG_ATTR_PAYMENT',     '2'); // 購入金額
+define('EBiS_TAG_ATTR_JOB',         '3'); // 職業
+define('EBiS_TAG_ATTR_SEX',         '4'); // 性別
+
+// 顧客IDのradio button用配列
+$arrEBiSTagCustomerId = array(
+    EBiS_TAG_ATTR_CUSTOMER_ID => '取得する',
+    EBiS_TAG_ATTR_NOTHING     => '取得しない',
+);
+
+// 購入金額のradio button用配列
+$arrEBiSTagPayment = array(
+    EBiS_TAG_ATTR_PAYMENT => '取得する',
+    EBiS_TAG_ATTR_NOTHING => '取得しない',
+);
+
+// 任意項目の数
+define('EBiS_TAG_OPTIONS_MAX', 5);
+
+// 任意項目のoptions用配列
+$arrEBiSTagOptions = array(
+    EBiS_TAG_ATTR_NOTHING => '取得しない',
+    EBiS_TAG_ATTR_JOB     => '職業',
+    EBiS_TAG_ATTR_SEX     => '性別',
+);
+
+// 属性情報に対応する$_SESSIONのキー名
+$arrEBiSTagAttrKeys = array(
+    EBiS_TAG_ATTR_CUSTOMER_ID => 'customer_id',
+    EBiS_TAG_ATTR_PAYMENT     => 'buy_total',
+    EBiS_TAG_ATTR_JOB         => 'job',
+    EBiS_TAG_ATTR_SEX         => 'sex',
+);
+
+// エビスタグ名
+$arrEBiSTagAttrTagName = array(
+    'm1id', 'a1id',
+    'o1id', 'o2id', 'o3id', 'o4id', 'o5id',
 );
 
 /*--------- ▲View管理用 ---------*/

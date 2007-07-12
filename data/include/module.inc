@@ -1,40 +1,36 @@
 <?php
 
-// タグ出力用クラス
+// エビスタグ出力用クラス
 class LC_EbisPage {
-	function LC_EbisPage() {
-		$this->tpl_mainpage = MODULE_PATH . "ebis_tag_text.tpl";
-	}
+    function LC_EbisPage() {
+        $this->tpl_mainpage = MODULE_PATH . "ebis_tag_text.tpl";
+    }
 }
 
 // エビスタグの発行
 function sfPrintEbisTag($pid = "") {
 	$objQuery = new SC_Query();
-	$arrRet = $objQuery->select("sub_data", "dtb_module", "module_id = ?", array(EBIS_TAG_MID));
+	$arrRet   = $objQuery->select("sub_data", "dtb_module", "module_id = ?", array(EBIS_TAG_MID));
 	$arrSubData = unserialize($arrRet[0]['sub_data']);
-	$arrEbis = array();
-	
-	if($arrSubData['cid'] != "") {
-		$arrEbis['cid'] = $arrSubData['cid'];
-	} else {
-		return;
-	}
-	
-	// 「/」が重複しているものへの対応
-	$php_self = ereg_replace("[/]+", "/", $_SERVER['PHP_SELF']);
-	// PHPファイルの後ろに「/」がついてしまっているものへの対応
-	$php_self = ereg_replace(".php[/]+$", ".php", $php_self);
-	
+    
+    if ( empty($arrSubData['cid']) ) return;
+    
+    $arrEbis = array(
+        'cid'       => $arrSubData['cid'],
+        'login_url' => $arrSubData['login_url'],
+    );
+    
 	if(!is_array($pid) && $pid != "") {
 		if(!ereg(".tpl$", $pid)) {
 			// ページIDを上書きする
 			$arrEbis['pid'] = $pid;
 		} else {
 			// テンプレートのパスが与えられている場合
-			$temp_id = ereg_replace(HTML_PATH,"",$pid);			
-			$temp_id = ereg_replace("^[/]+","",$temp_id);
-			$temp_id = ereg_replace(".tpl$","",$temp_id);
-			$temp_id = ereg_replace("[\./]","_",$temp_id);
+            $temp_id = str_replace(USER_TEMPLATE_PATH, '', $pid);
+            $temp_id = str_replace(HTML_PATH,   '',  $temp_id);
+            $temp_id = preg_replace('|^/+|',    '',  $temp_id);
+            $temp_id = preg_replace('|\.tpl$|', '',  $temp_id);
+            $temp_id = preg_replace('|[\./]|',  '_', $temp_id);
 			$arrEbis['pid'] = $temp_id;
 		}
 	}	
@@ -50,7 +46,57 @@ function sfPrintEbisTag($pid = "") {
 		$filename = basename($_SERVER["REQUEST_URI"]);
 		$arrEbis['pid'] = ereg_replace("detail.php\?product_id=", "detail-p", $filename);
 	}
-	
+
+    // 購入完了ページ(thanksページ)は特殊IDを発行
+    if(preg_match("|/shopping/complete.php$|", $_SERVER["REQUEST_URI"])) {
+        global $arrEBiSTagAttrKeys;
+        global $arrEBiSTagAttrTagName;
+        global $arrJob;
+        global $arrSex;
+        
+        $arrEbis['pid']  = 'thanks'; // ページIDをセット
+        $customerInfo    = $_SESSION['customer'];
+        
+        /**
+         * $arrSubData == Array (
+         *      [user] => username
+         *      [pass] => password
+         *      [login_url] => http://login_url/
+         *      [cid] => ebis_parameter
+         *      [m1id] => 1
+         *      [a1id] => 2
+         *      [o1id] => 3
+         *      [o2id] => 4
+         *      [o3id] => 0
+         *      [o4id] => 0
+         *      [o5id] => 0
+         * )
+         **/
+        
+        foreach ($arrSubData as $key => $value) {
+            if (!in_array($key , $arrEBiSTagAttrTagName)) continue;
+            if (empty($arrEBiSTagAttrKeys[$value])) continue;
+            
+            // 属性情報をセット
+            switch ($value) {
+            case EBiS_TAG_ATTR_CUSTOMER_ID:
+            case EBiS_TAG_ATTR_PAYMENT:
+                $tmp_key       = $arrEBiSTagAttrKeys[$value];
+                $arrEbis[$key] = $customerInfo[$tmp_key];
+                break;
+            case EBiS_TAG_ATTR_JOB:
+                $tmp_key       = $arrEBiSTagAttrKeys[$value];
+                $arrEbis[$key] = $arrJob[$customerInfo[$tmp_key]];
+                break;
+            case EBiS_TAG_ATTR_SEX:
+                $tmp_key       = $arrEBiSTagAttrKeys[$value];
+                $arrEbis[$key] = $arrSex[$customerInfo[$tmp_key]];
+                break;
+            default:
+            }
+        }
+    }
+    
 	// ID割り当てされていないページは、自動的に生成する。
 	if($arrEbis['pid'] == "") {				
 		$temp_id = ereg_replace("^[/]+","",$_SERVER['PHP_SELF']);
@@ -58,7 +104,7 @@ function sfPrintEbisTag($pid = "") {
 		$temp_id = ereg_replace("[\./]","_",$temp_id);
 		$arrEbis['pid'] = $temp_id;
 	}
-			
+
 	// ページIDが登録されている場合のみタグを出力する。
 	if($arrEbis['pid'] != "") {
 		$objSubPage = new LC_EbisPage();
