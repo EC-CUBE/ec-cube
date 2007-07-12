@@ -88,13 +88,13 @@ define("UPDATE_PATH", DATA_PATH . UPDATE_DIR);
 //--------------------------------------------------------------------------------------------------------
 /** アップデート管理用 **/
 // アップデート管理用ファイル格納場所　
-define("UPDATE_HTTP", "http://www.lockon.co.jp/share/");
+define("UPDATE_HTTP", "http://www.lockon.co.jp/test/");
 // アップデート管理用CSV1行辺りの最大文字数
 define("UPDATE_CSV_LINE_MAX", 4096);
 // アップデート管理用CSVカラム数
 define("UPDATE_CSV_COL_MAX", 13);
 // モジュール管理用CSVカラム数
-define("MODULE_CSV_COL_MAX", 16);
+define("MODULE_CSV_COL_MAX", 18);
 // モジュール管理用CSVファイル
 define("MODULE_CSV", "module.txt");
 //--------------------------------------------------------------------------------------------------------
@@ -119,7 +119,7 @@ define("CREDIT_HTTP_ANALYZE_URL", CREDIT_HTTP_DOMAIN . CREDIT_HTTP_ANALYZE_PROGR
 define("CHAR_CODE", "EUC-JP");
 
 // EC-CUBEバージョン情報
-define("ECCUBE_VERSION", "1.4.0a-beta");
+define("ECCUBE_VERSION", "1.4.2-beta");
 
 // 決済モジュール付与文言
 define("ECCUBE_PAYMENT", "EC-CUBE");

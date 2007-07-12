@@ -51,16 +51,26 @@
 								<!--{if count($arrUpdate) > 0 }-->
 								<table width="678" border="0" cellspacing="1" cellpadding="4" summary=" ">
 									<tr bgcolor="#f2f1ec" align="center" class="fs12n">
-										<td width="170">機能名</td>
-										<td width="300">説明</td>
-										<td width="50">現状</td>										
-										<td width="50">最新</td>										
-										<td width="80">リリース日</td>
-										<td width="50">設定</td>
-										<td width="50">実行</td>
+										<td width="50">ロゴ</td>
+										<td width="160">機能名</td>
+										<td width="290">説明</td>
+										<td width="45">現状</td>
+										<td width="45">最新</td>
+										<td width="70">リリース日</td>
+										<td width="45">設定</td>
+										<td width="45">実行</td>
 									</tr>
 									<!--{section name=cnt loop=$arrUpdate}-->
 									<tr bgcolor="#ffffff" class="fs12">
+										<!--{if $arrUpdate[cnt].url}-->
+										<td align="center">
+										<a href="<!--{$arrUpdate[cnt].url}-->" target="_blank"><img src="resize_image.php?image=<!--{$arrUpdate[cnt].icon}-->&width=50&height=50"></a>
+										</td>
+										<!--{else}-->
+										<td align="center">
+										<img src="resize_image.php?image=<!--{$arrUpdate[cnt].icon}-->&width=50&height=50">
+										</td>
+										<!--{/if}-->
 										<td ><!--{$arrUpdate[cnt].module_name}--></td>
 										<td ><!--{$arrUpdate[cnt].module_explain}-->(<!--{$arrUpdate[cnt].eccube_version}-->以降に対応)</td>
 										<td align="center"><!--{$arrUpdate[cnt].now_version|default:"-"}--></td>
