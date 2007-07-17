@@ -78,18 +78,18 @@ function lfInitParam() {
 	$objFormParam->addParam("パスワード", "login_pass", STEXT_LEN, "", array("EXIST_CHECK", "MAX_LENGTH_CHECK"));
 }
 
-/* POSTされるURLが自ドメインのものかチェック*/
+/* POSTされるURLのチェック*/
 function lfIsValidURL() {
-    $site_url  = sfIsHTTPS() ? SSL_URL : SITE_URL;
+    //$site_url  = sfIsHTTPS() ? SSL_URL : SITE_URL;
     $check_url = trim($_POST['url']);
     
     // ドメインチェック
-    $pattern = "|^$site_url|";
-    if (!preg_match($pattern, $check_url)) {
-        return false;
-    }
+    //$pattern = "|^$site_url|";
+    //if (!preg_match($pattern, $check_url)) {
+    //    return false;
+    //}
 
-    // CRLFチェック
+    // 改行コード(CR・LF)チェック
     $pattern = '/\r|\n|%0D|%0A/';
     if (preg_match_all($pattern, $check_url, $matches)) {
         return false;
