@@ -43,6 +43,7 @@ class SC_View {
 		$this->_smarty->register_function("str_replace","str_replace");
 		$this->_smarty->register_function("sfPrintEbisTag","sfPrintEbisTag");
 		$this->_smarty->register_function("sfPrintAffTag","sfPrintAffTag");
+        $this->_smarty->register_function("sfIsHTTPS","sfIsHTTPS");
         $this->_smarty->default_modifiers = array('script_escape');
         
 		if(ADMIN_MODE == '1') {		

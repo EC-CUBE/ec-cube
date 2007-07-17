@@ -80,17 +80,17 @@ function lfInitParam() {
 
 /* POSTされるURLのチェック*/
 function lfIsValidURL() {
-    //$site_url  = sfIsHTTPS() ? SSL_URL : SITE_URL;
+    $site_url  = sfIsHTTPS() ? SSL_URL : SITE_URL;
     $check_url = trim($_POST['url']);
     
     // ドメインチェック
-    //$pattern = "|^$site_url|";
-    //if (!preg_match($pattern, $check_url)) {
-    //    return false;
-    //}
+    $pattern = "|^$site_url|";
+    if (!preg_match($pattern, $check_url)) {
+        return false;
+    }
 
-    // 改行コード(CR・LF)チェック
-    $pattern = '/\r|\n|%0D|%0A/';
+    // 改行コード(CR・LF)・NULLバイトチェック
+    $pattern = '/\r|\n|\0|%0D|%0A|%00/';
     if (preg_match_all($pattern, $check_url, $matches)) {
         return false;
     }

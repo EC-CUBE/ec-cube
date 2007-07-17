@@ -5,7 +5,11 @@
  *}-->
 <!--▼ログインここから-->
 <!--{if $smarty.post.url == ""}-->
-	<!--{assign var=url value="`$smarty.server.REQUEST_URI`"}-->
+	<!--{if sfIsHTTPS()}-->
+		<!--{assign var=url value="https://`$smarty.server.HTTP_HOST``$smarty.server.REQUEST_URI`"}-->
+	<!--else}-->
+		<!--{assign var=url value="http://`$smarty.server.HTTP_HOST``$smarty.server.REQUEST_URI`"}-->
+	<!--{/if}-->
 <!--{else}-->
 	<!--{assign var=url value="`$smarty.post.url`"}-->
 <!--{/if}-->
