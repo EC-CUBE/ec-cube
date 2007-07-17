@@ -906,17 +906,19 @@ $arrSiteControlAffiliate = array(
 );
 
 /*--------- ▲エビスタグモジュール用 ---------*/
-/* 任意項目を増やす場合の依存関係：
- * 属性情報の定数、EBiS_TAG_OPTIONS_MAX
- * $arrEBiSTagOptions、$arrEBiSTagAttrTagName
- * module.incのsfPrintEbisTag()のswitch文に処理を追加
-*/
+/** 
+ * 項目を変更する場合の依存関係：
+ * 属性情報の定数、$arrEBiSTagOptions
+ * module.incのlfThanksPageTag()のswitch文に処理を追加
+ */
 // 属性情報
 define('EBiS_TAG_ATTR_NOTHING',     '0'); // 取得しない
 define('EBiS_TAG_ATTR_CUSTOMER_ID', '1'); // 顧客ID
 define('EBiS_TAG_ATTR_PAYMENT',     '2'); // 購入金額
 define('EBiS_TAG_ATTR_JOB',         '3'); // 職業
 define('EBiS_TAG_ATTR_SEX',         '4'); // 性別
+define('EBiS_TAG_ATTR_AGE',         '5'); // 年齢
+define('EBiS_TAG_ATTR_IS_CUSTOMER', '6'); // 会員・非会員
 
 // 顧客IDのradio button用配列
 $arrEBiSTagCustomerId = array(
@@ -938,20 +940,42 @@ $arrEBiSTagOptions = array(
     EBiS_TAG_ATTR_NOTHING => '取得しない',
     EBiS_TAG_ATTR_JOB     => '職業',
     EBiS_TAG_ATTR_SEX     => '性別',
-);
-
-// 属性情報に対応する$_SESSIONのキー名
-$arrEBiSTagAttrKeys = array(
-    EBiS_TAG_ATTR_CUSTOMER_ID => 'customer_id',
-    EBiS_TAG_ATTR_PAYMENT     => 'buy_total',
-    EBiS_TAG_ATTR_JOB         => 'job',
-    EBiS_TAG_ATTR_SEX         => 'sex',
+    EBiS_TAG_ATTR_AGE     => '年齢',
+    EBiS_TAG_ATTR_IS_CUSTOMER => '会員・非会員'
 );
 
 // エビスタグ名
 $arrEBiSTagAttrTagName = array(
     'm1id', 'a1id',
     'o1id', 'o2id', 'o3id', 'o4id', 'o5id',
+);
+
+// 性別(英語)
+$arrSexEN = array(
+    1 => 'male',
+    2 => 'female',
+);
+
+// 職業(英語)
+$arrJobEN = array(
+    1 => "Public Service",    // 公務員
+    2 => "Consultant",        // コンサルタント
+    3 => "Computers",         // コンピュータ関連技術職
+    4 => "Electronics",       // コンピュータ関連以外の技術職
+    5 => "Finance",           // 金融関係
+    6 => "Doctor",            // 医師
+    7 => "Lawyer",            // 弁護士
+    8 => "General",           // 総務・人事・事務
+    9 => "Sales",             // 営業・販売
+    10 => "Research/Develop", // 研究・開発
+    11 => "Advertising",      // 広報・宣伝
+    12 => "Marketing/PR",     // 企画・マーケティング
+    13 => "Design",           // デザイン関係
+    14 => "Management",       // 会社経営・役員
+    15 => "Publishing/Media", // 出版・マスコミ
+    16 => "Students",         // 学生・フリーター
+    17 => "Housewife",        // 主婦
+    18 => "Other"             // その他
 );
 
 /*--------- ▲View管理用 ---------*/

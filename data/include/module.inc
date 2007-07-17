@@ -48,55 +48,8 @@ function sfPrintEbisTag($pid = "") {
 	}
 
     // 購入完了ページ(thanksページ)は特殊IDを発行
-    if(preg_match("|/shopping/complete.php$|", $_SERVER["REQUEST_URI"])) {
-        global $arrEBiSTagAttrKeys;
-        global $arrEBiSTagAttrTagName;
-        global $arrJob;
-        global $arrSex;
-        
-        $arrEbis['pid']  = 'thanks'; // ページIDをセット
-        $customerInfo    = $_SESSION['customer'];
-        
-        /**
-         * $arrSubData == Array (
-         *      [user] => username
-         *      [pass] => password
-         *      [login_url] => http://login_url/
-         *      [cid] => ebis_parameter
-         *      [m1id] => 1
-         *      [a1id] => 2
-         *      [o1id] => 3
-         *      [o2id] => 4
-         *      [o3id] => 0
-         *      [o4id] => 0
-         *      [o5id] => 0
-         * )
-         **/
-        
-        foreach ($arrSubData as $key => $value) {
-            if (!in_array($key , $arrEBiSTagAttrTagName)) continue;
-            if (empty($arrEBiSTagAttrKeys[$value])) continue;
-            
-            // 属性情報をセット
-            switch ($value) {
-            case EBiS_TAG_ATTR_CUSTOMER_ID:
-            case EBiS_TAG_ATTR_PAYMENT:
-                $tmp_key       = $arrEBiSTagAttrKeys[$value];
-                $arrEbis[$key] = $customerInfo[$tmp_key];
-                break;
-            case EBiS_TAG_ATTR_JOB:
-                $tmp_key       = $arrEBiSTagAttrKeys[$value];
-                $arrEbis[$key] = $arrJob[$customerInfo[$tmp_key]];
-                break;
-            case EBiS_TAG_ATTR_SEX:
-                $tmp_key       = $arrEBiSTagAttrKeys[$value];
-                $arrEbis[$key] = $arrSex[$customerInfo[$tmp_key]];
-                break;
-            default:
-            }
-        }
-    }
-    
+    lfSetThanksPegeTag($arrEbis, $arrSubData);
+
 	// ID割り当てされていないページは、自動的に生成する。
 	if($arrEbis['pid'] == "") {				
 		$temp_id = ereg_replace("^[/]+","",$_SERVER['PHP_SELF']);
@@ -113,6 +66,77 @@ function sfPrintEbisTag($pid = "") {
 		$objSubView->assignobj($objSubPage);
 		$objSubView->display($objSubPage->tpl_mainpage);
 	}
+}
+
+function lfSetThanksPegeTag(&$arrEbis, $arrSubData){
+    $pattern = "|/shopping/complete.php$|";
+    $target  = $_SERVER["REQUEST_URI"];
+    if( !preg_match($pattern, $target) ) return;
+    
+    global $arrEBiSTagAttrTagName;
+    global $arrJobEN;
+    global $arrSexEN;
+    global $order_id;
+    
+    $objQuery = new SC_Query();
+    $arrRet   = $objQuery->select('*', 'dtb_order', 'order_id = ?', array($order_id));
+    $arrCustomerInfo = $arrRet[0];
+    $arrEbis['pid']  = 'thanks'; // ページIDをセット
+    
+    /**
+     * $arrSubData == Array (
+     *      [user] => username
+     *      [pass] => password
+     *      [login_url] => http://login_url/
+     *      [cid] => ebis_parameter
+     *      [m1id] => 1
+     *      [a1id] => 2
+     *      [o1id] => 3
+     *      [o2id] => 4
+     *      [o3id] => 0
+     *      [o4id] => 0
+     *      [o5id] => 0
+     * )
+     * $arrEBiSTagAttrTagName == Array(
+     *      'm1id', 'a1id', 'o1id', 'o2id'
+     *      'o3id', 'o4id', 'o5id'
+     * )
+     **/
+    
+    foreach ($arrEBiSTagAttrTagName as $tagname) {
+        if ( empty($arrSubData[$tagname]) ) continue;
+        
+        $value = $arrSubData[$tagname];
+        
+        // 属性情報をセット
+        switch ($value) {
+        case EBiS_TAG_ATTR_CUSTOMER_ID:
+            $arrEbis[$tagname] = $arrCustomerInfo['customer_id'];
+            break;
+        case EBiS_TAG_ATTR_PAYMENT:
+            $arrEbis[$tagname] = $arrCustomerInfo['payment_total'];
+            break;
+        case EBiS_TAG_ATTR_JOB:
+            if ( empty($arrCustomerInfo['order_job']) ) break;
+            $arrEbis[$tagname] = $arrJobEN[$arrCustomerInfo['order_job']];
+            break;
+        case EBiS_TAG_ATTR_SEX:
+            $arrEbis[$tagname] = $arrSexEN[$arrCustomerInfo['order_sex']];
+            break;
+        case EBiS_TAG_ATTR_AGE:
+            if ( empty($arrCustomerInfo['order_birth']) ) break;
+            $arrEbis[$tagname] = gfGetAge($arrCustomerInfo['order_birth']);
+            break;
+        case EBiS_TAG_ATTR_IS_CUSTOMER:
+            if ( $arrCustomerInfo['customer_id'] == '0' ) {
+                $arrEbis[$tagname] = '0';
+            } else {
+                $arrEbis[$tagname] = '1';
+            }
+            break;
+        default:
+        }
+    }
 }
 
 // コンバージョンタグの発行
