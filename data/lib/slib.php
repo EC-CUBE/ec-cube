@@ -481,7 +481,7 @@ function sfIsSuccess($objSess, $disp_error = true) {
         // sfErrorHeader('>> referrerが無効になっています。');
     } else {
         $domain  = sfIsHTTPS() ? SSL_URL : SITE_URL;
-        $pattern = sprintf('|^%s.*|', $domain . 'admin/');
+        $pattern = sprintf('|^%s.*|', $domain);
         $referer = $_SERVER['HTTP_REFERER'];
 
         // 管理画面から以外の遷移の場合はエラー画面を表示
