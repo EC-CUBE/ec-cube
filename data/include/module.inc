@@ -3,7 +3,7 @@
 // エビスタグ出力用クラス
 class LC_EbisPage {
     function LC_EbisPage() {
-        $this->tpl_mainpage = MODULE_PATH . "ebis_tag_text.tpl";
+        $this->tpl_mainpage = MODULE_PATH . "mdl_ebis_tag/ebis_tag_text.tpl";
     }
 }
 
@@ -68,6 +68,7 @@ function sfPrintEbisTag($pid = "") {
 	}
 }
 
+// 購入完了画面のエビスタグを設定
 function lfSetThanksPegeTag(&$arrEbis, $arrSubData){
     $pattern = "|/shopping/complete.php$|";
     $target  = $_SERVER["REQUEST_URI"];
