@@ -83,15 +83,18 @@ function lfIsValidURL() {
     $site_url  = sfIsHTTPS() ? SSL_URL : SITE_URL;
     $check_url = trim($_POST['url']);
     
-    // ドメインチェック
+    print($check_url);
+    exit;
+    
+    // ローカルチェック
     $pattern = "|^$site_url|";
     if (!preg_match($pattern, $check_url)) {
         return false;
     }
-
+    
     // 改行コード(CR・LF)・NULLバイトチェック
     $pattern = '/\r|\n|\0|%0D|%0A|%00/';
-    if (preg_match_all($pattern, $check_url, $matches)) {
+    if (preg_match_all($pattern, $check_url, $matches) > 0) {
         return false;
     }
     
