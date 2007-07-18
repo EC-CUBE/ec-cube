@@ -85,7 +85,7 @@ $objView->display($objPage->tpl_mainpage);		//テンプレートの出力
 function lfInitParam($objFormParam) {
 	$objFormParam->addParam("ユーザID", "user", STEXT_LEN, "KVa", array("EXIST_CHECK", "MAX_LENGTH_CHECK"));
 	$objFormParam->addParam("パスワード", "pass", STEXT_LEN, "KVa", array("EXIST_CHECK", "MAX_LENGTH_CHECK"));
-    $objFormParam->addParam("ログインURL", "login_url", STEXT_LEN, "KVa", array("EXIST_CHECK", "MAX_LENGTH_CHECK"));
+    $objFormParam->addParam("ログインURL", "login_url", STEXT_LEN, "KVa", array("EXIST_CHECK", "MAX_LENGTH_CHECK", "URL_CHECK"));
     $objFormParam->addParam("EBiS引数", "cid", STEXT_LEN, "KVa", array("EXIST_CHECK", "MAX_LENGTH_CHECK"));
     
     $objFormParam->addParam("顧客ID", "m1id", INT_LEN, "", array("MAX_LENGTH_CHECK", 'NUM_CHECK'));
