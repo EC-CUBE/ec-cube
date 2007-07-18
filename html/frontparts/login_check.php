@@ -6,6 +6,12 @@
  */
 require_once("../require.php");
 
+// 不正なURLがPOSTされた場合はエラー表示
+if (isset($_POST['url']) && lfIsValidURL() !== true) {
+    gfPrintLog('invalid access :login_check.php $POST["url"]=' . $_POST['url']);
+    sfDispSiteError(PAGE_ERROR);
+}
+
 $objCustomer = new SC_Customer();
 // クッキー管理クラス
 $objCookie = new SC_Cookie(COOKIE_EXPIRE);
@@ -21,7 +27,6 @@ case 'login':
 	$objFormParam->toLower('login_email');
 	$arrErr = $objFormParam->checkError();
 	$arrForm =  $objFormParam->getHashArray();
-	
 	// クッキー保存判定
 	if ($arrForm['login_memory'] == "1" && $arrForm['login_email'] != "") {
 		$objCookie->setCookie('login_email', $_POST['login_email']);
@@ -72,4 +77,25 @@ function lfInitParam() {
 	$objFormParam->addParam("メールアドレス", "login_email", STEXT_LEN, "a", array("EXIST_CHECK", "MAX_LENGTH_CHECK"));
 	$objFormParam->addParam("パスワード", "login_pass", STEXT_LEN, "", array("EXIST_CHECK", "MAX_LENGTH_CHECK"));
 }
+
+/* POSTされるURLのチェック*/
+function lfIsValidURL() {
+    $site_url  = sfIsHTTPS() ? SSL_URL : SITE_URL;
+    $check_url = trim($_POST['url']);
+    
+    // ドメインチェック
+    $pattern = "|^$site_url|";
+    if (!preg_match($pattern, $check_url)) {
+        return false;
+    }
+
+    // 改行コード(CR・LF)・NULLバイトチェック
+    $pattern = '/\r|\n|\0|%0D|%0A|%00/';
+    if (preg_match_all($pattern, $check_url, $matches)) {
+        return false;
+    }
+    
+    return true;
+}
+
 ?>

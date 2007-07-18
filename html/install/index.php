@@ -18,7 +18,7 @@ class LC_Page {
 		$this->arrDB_PORT = array(
 			'pgsql' => '',
 			'mysql' => ''	
-		);    
+		);
 	}
 }
 

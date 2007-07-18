@@ -343,6 +343,5 @@ class SC_CartSession {
 		return false;
 	}
     
-
 }
 ?>

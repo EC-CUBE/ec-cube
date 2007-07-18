@@ -179,7 +179,7 @@
 									<tr><td height="15"></td></tr>
 									<!--{/if}-->
 								</table>
-								<!--{* グラフ表示 *}-->		
+								<!--{* グラフ表示 *}-->			
 								<table width="840" border="0" cellspacing="0" cellpadding="0" summary=" ">
 									<tr>
 										<td bgcolor="#cccccc">

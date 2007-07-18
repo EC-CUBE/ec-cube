@@ -185,7 +185,7 @@ define("ORDER_STATUS_MAX", 50);
 //フロントレビュー書き込み最大数
 define("REVIEW_REGIST_MAX", 5);
 
-/*F
+/*
  * サイト定義定数
  */
 /* システム関連 */
@@ -341,6 +341,7 @@ define ("SUCCESS", 0);			// アクセス成功
 define ("LOGIN_ERROR", 1);		// ログイン失敗
 define ("ACCESS_ERROR", 2);		// アクセス失敗（タイムアウト等）
 define ("AUTH_ERROR", 3);		// アクセス権限違反
+define ("INVALID_MOVE_ERRORR", 4); // 不正な遷移エラー
 
 /* 表示数制限 */
 define ("PRODUCTS_LIST_MAX", 15);	// 商品一覧表示数
@@ -871,6 +872,18 @@ $arrTarget = array(
 	3 => "RightNavi",
 	4 => "MainFoot",
 	5 => "Unused"
+);
+
+/*--------- ▲商品レビュー用 ---------*/
+// 商品レビューでURL書き込みを許可するか否か
+define ('REVIEW_ALLOW_URL', false);
+
+// 書き込み不可のURL文字列
+$arrReviewDenyURL = array(
+    'http://',
+    'https://',
+    'ttp://',
+    'ttps://',
 );
 
 /*--------- ▲トラックバック用 ---------*/

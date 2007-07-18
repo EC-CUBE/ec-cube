@@ -67,6 +67,7 @@ $objPage->arrOrder = $objQuery->select($col, $from, $where, $arrval);
 // 支払い方法の取得
 $objPage->arrPayment = sfGetIDValueList("dtb_payment", "payment_id", "payment_method");
 
+
 $objView->assignobj($objPage);				//$objpage内の全てのテンプレート変数をsmartyに格納
 $objView->display(SITE_FRAME);				//パスとテンプレート変数の呼び出し、実行
 
