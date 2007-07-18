@@ -14,16 +14,16 @@
         </ul>
       </div>
       <!-- /breadcrumb -->
-      <h2><img src="images/h2_sendpwd.gif" alt="Send Password｜パスワードを忘れた方" width="800" height="180" /></h2>
+      <h2><img src="<!--{$smarty.const.URL_DIR}-->img/contact/h2_sendpwd.gif" alt="Send Password｜パスワードを忘れた方" width="800" height="180" /></h2>
       <!-- oneColumn -->
       <div id="oneColumn">
         <!-- columnB -->
         <div class="columnB">
-          <h3><img src="images/h3_complete.gif" alt="Complete" width="110" height="23" /></h3>
+          <h3><img src="<!--{$smarty.const.URL_DIR}-->img/contact/h3_complete.gif" alt="Complete" width="110" height="23" /></h3>
           <br />
-          <h4><img src="images/h4_pwd.gif" alt="パスワードの送信が完了しました。" width="188" height="14" /></h4>
+          <h4><img src="<!--{$smarty.const.URL_DIR}-->img/contact/h4_pwd.gif" alt="パスワードの送信が完了しました。" width="188" height="14" /></h4>
           <p>ご記入頂きましたEメールアドレスへ、新しいパスワードを送信しました。ご確認ください。</p>
-          <p><a href="../index.html"><img class="rollover" src="images/btn_home.gif" alt="HOME" width="161" height="21" /></a></p>
+          <p><a href="../index.html"><img class="rollover" src="<!--{$smarty.const.URL_DIR}-->img/contact/btn_home.gif" alt="HOME" width="161" height="21" /></a></p>
         </div>
         <!-- /columnB -->
         <br />
@@ -42,19 +42,19 @@
       <!-- /breadcrumb -->
     </div>
     <!-- /contents -->
-    <p class="pagetop"><a href="#wrapper"><img class="rollover" src="../images/common/btn_pagetop_wh.gif" alt="Page Top" width="50" height="16" /></a></p>
+    <p class="pagetop"><a href="#wrapper"><img class="rollover" src="<!--{$smarty.const.URL_DIR}-->img/common/btn_pagetop_wh.gif" alt="Page Top" width="50" height="16" /></a></p>
   </div>
   <!-- /wrapper-inner -->
   <!-- cart -->
   <div id="cart">
     <dl class="first">
-      <dt><img src="../images/common/cart_nickname.gif" alt="Nickname" width="65" height="5" /><br />
+      <dt><img src="<!--{$smarty.const.URL_DIR}-->img/common/cart_nickname.gif" alt="Nickname" width="65" height="5" /><br />
         AKIHIRO</dt>
     </dl>
     <dl class="last">
-      <dt class="first"><img src="../images/common/cart_item.gif" alt="Item" width="65" height="5" /><br />
+      <dt class="first"><img src="<!--{$smarty.const.URL_DIR}-->img/common/cart_item.gif" alt="Item" width="65" height="5" /><br />
         02</dt>
-      <dt><img src="../images/common/cart_subtotal.gif" alt="Subtotal" width="65" height="5" /><br />
+      <dt><img src="<!--{$smarty.const.URL_DIR}-->img/common/cart_subtotal.gif" alt="Subtotal" width="65" height="5" /><br />
         53,400yen</dt>
     </dl>
     <div id="userTraffic">
