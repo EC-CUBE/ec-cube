@@ -83,9 +83,8 @@ function lfIsValidURL() {
     $site_url  = sfIsHTTPS() ? SSL_URL : SITE_URL;
     $check_url = trim($_POST['url']);
 
-    // ローカルチェック
-    $pattern = "|^$site_url|";
-    if (!preg_match($pattern, $check_url)) {
+    // ローカルドメインチェック
+    if (!preg_match("|^$site_url|", $check_url) && !preg_match("|^/|", $check_url)) {
         return false;
     }
     
