@@ -126,7 +126,7 @@ function lnSetSelect(form, name1, name2, val) {
 									<!--{assign var=codecnt value=$arrProductCode|@count}-->
 									<!--{assign var=codemax value=`$codecnt-1`}-->
 									<!--{if $codecnt > 1}-->
-										<!--{$arrProductCode.0}-->è¢∑<!--{$arrProductCode[$codemax]}-->
+										<!--{$arrProductCode.0}-->°¡<!--{$arrProductCode[$codemax]}-->
 									<!--{else}-->
 										<!--{$arrProductCode.0}-->
 									<!--{/if}-->
@@ -136,7 +136,7 @@ function lnSetSelect(form, name1, name2, val) {
 									<!--{if $arrProduct.price02_min == $arrProduct.price02_max}-->				
 										<!--{$arrProduct.price02_min|sfPreTax:$arrSiteInfo.tax:$arrSiteInfo.tax_rule|number_format}-->
 									<!--{else}-->
-										<!--{$arrProduct.price02_min|sfPreTax:$arrSiteInfo.tax:$arrSiteInfo.tax_rule|number_format}-->è¢∑<!--{$arrProduct.price02_max|sfPreTax:$arrSiteInfo.tax:$arrSiteInfo.tax_rule|number_format}-->
+										<!--{$arrProduct.price02_min|sfPreTax:$arrSiteInfo.tax:$arrSiteInfo.tax_rule|number_format}-->°¡<!--{$arrProduct.price02_max|sfPreTax:$arrSiteInfo.tax:$arrSiteInfo.tax_rule|number_format}-->
 									<!--{/if}-->
 									±ﬂ</span></span><br/>
 									
@@ -145,7 +145,7 @@ function lnSetSelect(form, name1, name2, val) {
 										<!--{if $arrProduct.price01_min == $arrProduct.price01_max}-->				
 											<!--{$arrProduct.price01_min|number_format}-->
 										<!--{else}-->
-											<!--{$arrProduct.price01_min|number_format}-->è¢∑<!--{$arrProduct.price01_max|number_format}-->
+											<!--{$arrProduct.price01_min|number_format}-->°¡<!--{$arrProduct.price01_max|number_format}-->
 										<!--{/if}-->
 										±ﬂ
 										</span></span><br/>
@@ -158,7 +158,7 @@ function lnSetSelect(form, name1, name2, val) {
 									<!--{if $arrProduct.price02_min|sfPrePoint:$arrProduct.point_rate:$smarty.const.POINT_RULE:$arrProduct.product_id == $arrProduct.price02_max|sfPrePoint:$arrProduct.point_rate:$smarty.const.POINT_RULE:$arrProduct.product_id}-->
 										<!--{$arrProduct.price02_min|sfPrePoint:$arrProduct.point_rate:$smarty.const.POINT_RULE:$arrProduct.product_id}-->
 									<!--{else}-->
-										<!--{$arrProduct.price02_min|sfPrePoint:$arrProduct.point_rate:$smarty.const.POINT_RULE:$arrProduct.product_id}-->è¢∑<!--{$arrProduct.price02_max|sfPrePoint:$arrProduct.point_rate:$smarty.const.POINT_RULE:$arrProduct.product_id}-->
+										<!--{$arrProduct.price02_min|sfPrePoint:$arrProduct.point_rate:$smarty.const.POINT_RULE:$arrProduct.product_id}-->°¡<!--{$arrProduct.price02_max|sfPrePoint:$arrProduct.point_rate:$smarty.const.POINT_RULE:$arrProduct.product_id}-->
 									<!--{/if}-->
 								<!--{/if}-->
 								Pt</span></span>
@@ -393,7 +393,7 @@ function lnSetSelect(form, name1, name2, val) {
 											<!--{if $price02_min == $price02_max}-->
 												<!--{$price02_min|sfPreTax:$arrSiteInfo.tax:$arrSiteInfo.tax_rule|number_format}-->
 											<!--{else}-->
-												<!--{$price02_min|sfPreTax:$arrSiteInfo.tax:$arrSiteInfo.tax_rule|number_format}-->è¢∑<!--{$price02_max|sfPreTax:$arrSiteInfo.tax:$arrSiteInfo.tax_rule|number_format}-->
+												<!--{$price02_min|sfPreTax:$arrSiteInfo.tax:$arrSiteInfo.tax_rule|number_format}-->°¡<!--{$price02_max|sfPreTax:$arrSiteInfo.tax:$arrSiteInfo.tax_rule|number_format}-->
 											<!--{/if}-->
 											±ﬂ</span></span></td>
 										</tr>
@@ -434,7 +434,7 @@ function lnSetSelect(form, name1, name2, val) {
 											<!--{if $price02_min == $price02_max}-->
 												<!--{$price02_min|sfPreTax:$arrSiteInfo.tax:$arrSiteInfo.tax_rule|number_format}-->
 											<!--{else}-->
-												<!--{$price02_min|sfPreTax:$arrSiteInfo.tax:$arrSiteInfo.tax_rule|number_format}-->è¢∑<!--{$price02_max|sfPreTax:$arrSiteInfo.tax:$arrSiteInfo.tax_rule|number_format}-->
+												<!--{$price02_min|sfPreTax:$arrSiteInfo.tax:$arrSiteInfo.tax_rule|number_format}-->°¡<!--{$price02_max|sfPreTax:$arrSiteInfo.tax:$arrSiteInfo.tax_rule|number_format}-->
 											<!--{/if}-->
 											±ﬂ</span></span></td>
 										</tr>
