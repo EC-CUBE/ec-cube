@@ -180,7 +180,6 @@ function lfGetFrontPageCSV() {
         array('page_id' => 'regist_complete', 'page_title' => '', 'url' => 'entry/complete.php'),
         array('page_id' => 'products_favorite'),
         array('page_id' => 'shopping_deliv'),
-        array('page_id' => 'shopping_deliv'),
         array('page_id' => 'shopping_payment'),
         array('page_id' => 'shopping_confirm'),
         array('page_id' => 'thanks', 'page_title' => '', 'url' => 'shopping/complete.php'),
@@ -196,10 +195,11 @@ function lfGetFrontPageCSV() {
         }
         
         if ( empty($arrList[$key]['url']) ) {
-            $arrList[$key]['url'] = $arrList[$key]['page_id'] . '.php';
+            $url = SITE_URL . str_replace('_', '/', $arrList[$key]['url']);
+            $arrList[$key]['url'] = $url . '.php';
+        } else {
+            $arrList[$key]['url'] = SITE_URL . $arrList[$key]['url'];
         }
-        
-        $arrList[$key]['url'] = SITE_URL . str_replace('_', '/', $arrList[$key]['url']);
     }
     
     return lfCreateCSV($arrList);
