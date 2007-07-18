@@ -195,7 +195,7 @@ function lfGetFrontPageCSV() {
         }
         
         if ( empty($arrList[$key]['url']) ) {
-            $url = SITE_URL . str_replace('_', '/', $arrList[$key]['url']);
+            $url = SITE_URL . str_replace('_', '/', $arrList[$key]['page_id']);
             $arrList[$key]['url'] = $url . '.php';
         } else {
             $arrList[$key]['url'] = SITE_URL . $arrList[$key]['url'];
