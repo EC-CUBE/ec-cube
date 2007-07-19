@@ -215,7 +215,7 @@ function lfGetFrontPageCSV() {
         array('page_id' => 'shopping_deliv', 'page_title' => '購入（お届け先指定）'),
         array('page_id' => 'shopping_payment', 'page_title' => '購入（お支払い方法指定）'),
         array('page_id' => 'shopping_confirm', 'page_title' => '購入（確認）'),
-        array('page_id' => 'thanks', 'page_title' => '購入（完了', 'url' => 'shopping/complete.php'),
+        array('page_id' => 'thanks', 'page_title' => '購入（完了)', 'url' => 'shopping/complete.php'),
         array('page_id' => 'mypage_index', 'page_title' => 'MYページ（トップ）'),
         array('page_id' => 'mypage_change', 'page_title' => 'MYページ > 会員登録内容変更（入力）'),
         array('page_id' => 'mypage_change_confirm', 'page_title' => 'MYページ > 会員登録内容変更（確認）', 'url' => 'mypage/change.php'),
