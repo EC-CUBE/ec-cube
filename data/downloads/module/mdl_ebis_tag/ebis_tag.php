@@ -7,9 +7,6 @@
  *
  */
 
-//require_once("./require.php");
-//require_once MODULE_PATH . 'ebis_tag_conf.php';
-
 // 認証確認
 $objSess = new SC_Session();
 sfIsSuccess($objSess);
@@ -20,7 +17,7 @@ class LC_Page {
 	function LC_Page() {
 		//メインテンプレートの指定
 		$this->tpl_mainpage  = MODULE_PATH . 'mdl_ebis_tag/ebis_tag.tpl';
-		$this->tpl_subtitle  = 'EBiSタグ埋め込み機能';
+		$this->tpl_subtitle  = 'AD EBiSタグ埋め込み機能';
         $this->tpl_uniqid    = '';
         
         global $arrEBiSTagCustomerId;
@@ -83,8 +80,6 @@ $objView->display($objPage->tpl_mainpage);		//テンプレートの出力
 //-------------------------------------------------------------------------------------------------------
 /* パラメータ情報の初期化 */
 function lfInitParam($objFormParam) {
-	$objFormParam->addParam("ユーザID", "user", STEXT_LEN, "KVa", array("EXIST_CHECK", "MAX_LENGTH_CHECK"));
-	$objFormParam->addParam("パスワード", "pass", STEXT_LEN, "KVa", array("EXIST_CHECK", "MAX_LENGTH_CHECK"));
     $objFormParam->addParam("ログインURL", "login_url", STEXT_LEN, "KVa", array("EXIST_CHECK", "MAX_LENGTH_CHECK", "URL_CHECK"));
     $objFormParam->addParam("EBiS引数", "cid", STEXT_LEN, "KVa", array("EXIST_CHECK", "MAX_LENGTH_CHECK"));
     
@@ -102,37 +97,68 @@ function lfInitParam($objFormParam) {
 	return $objFormParam;
 }
 
-/* CSV取得 */
+/**
+ * カテゴリ文字列を取得(カテゴリ＞カテゴリ＞カテゴリ＞)
+ * 
+ * @param int $category_id カテゴリID
+ * @param str $sep カテゴリの区切り文字
+ * return カテゴリ文字列(カテゴリ＞カテゴリ＞カテゴリ＞)
+ */ 
+function lfGetCategoriesStr($category_id, $sep = ' > ') {
+    $tbl_category = 'dtb_category';
+    
+    // 親カテゴリIDの配列
+    $arrParentsCatId = sfGetParents(null, $tbl_category, 'parent_category_id', 'category_id', $category_id);
+    
+    // WHERE句を構築
+    $where = str_repeat('category_id = ? OR ' , count($arrParentsCatId));
+    $where = preg_replace('/OR $/', '', $where);
+
+    // カテゴリ名を取得
+    $objQuery = new SC_Query();
+    $arrRet   = $objQuery->select('category_name', $tbl_category, $where, $arrParentsCatId);
+    
+    // カテゴリ＞カテゴリ＞カテゴリ...を構築
+    $categories_str = '';
+    foreach($arrRet as $category) {
+        $categories_str .= $category['category_name'] . $sep;
+    }
+    
+    return $categories_str;
+}
+
+/** CSV取得 **/
 function lgGetCsvData() {
-    $csv  = lfGetDetailPageCSV();
+    $csv  = '"ページID","タイトル","URL"' . "\n";
+    $csv .= lfGetDetailPageCSV();
     $csv .= lfGetListPageCSV();
     $csv .= lfGetFrontPageCSV();
     return $csv;
 }
 
-/* 商品詳細ページのCSVを取得 */
+/** 商品詳細ページのCSVを取得 **/
 function lfGetDetailPageCSV() {
     $table    = 'dtb_products';
-    $colmuns  = 'product_id, name';
+    $colmuns  = 'product_id, name, category_id';
     $objQuery = new SC_Query();
     
     $arrRet = $objQuery->select($colmuns, $table);
     
     $arrCSV = array();
-    foreach ($arrRet as $key => $product) {
+    foreach ($arrRet as $index => $product) {
         $id  = $product['product_id'];
         $url = SITE_URL . 'products/detail.php?product_id=';
-        $title = str_replace('"', '\"', $product['name']);
+        $title = lfGetCategoriesStr($product['category_id']) . $product['name'];
         
-        $arrCSV[$key]['page_id']    = '"' . 'detail-p' . $id . '"';
-        $arrCSV[$key]['page_title'] = '"' . $title . '"';
-        $arrCSV[$key]['url']        = '"' . $url . $id . '"';
+        $arrCSV[$index]['page_id']    = 'detail-p' . $id;
+        $arrCSV[$index]['page_title'] = $title;
+        $arrCSV[$index]['url']        = $url . $id;
     }
     
     return lfCreateCSV($arrCSV);
 }
 
-/* 商品一覧ページのCSVを取得 */
+/** 商品一覧ページのCSVを取得 **/
 function lfGetListPageCSV() {
     $table    = 'dtb_category';
     $colmuns  = 'category_id, category_name';
@@ -141,52 +167,59 @@ function lfGetListPageCSV() {
     $arrRet = $objQuery->select($colmuns, $table);
     
     $arrCSV = array();
-    foreach ($arrRet as $key => $category) {
+    foreach ($arrRet as $index => $category) {
         $id  = $category['category_id'];
         $url = SITE_URL . 'products/list.php?category_id=';
-        $title = str_replace('"', '\"', $category['category_name']);
+        $title = $category['category_name'];
         
-        $arrCSV[$key]['page_id']    = '"' . 'list-c' . $id . '"';
-        $arrCSV[$key]['page_title'] = '"' . $title . '"';
-        $arrCSV[$key]['url']        = '"' . $url . $id . '"';
+        $arrCSV[$index]['page_id']    = 'list-c' . $id;
+        $arrCSV[$index]['page_title'] = $title;
+        $arrCSV[$index]['url']        = $url . $id;
     }
     return lfCreateCSV($arrCSV);
 }
 
 function lfCreateCSV ($arrCSV) {
     $csv_str = '';
-    foreach ($arrCSV as $csv) {
-        $csv_str .= join(',', $csv) . "\n";
+    $max = count($arrCSV);
+    for ($i=0; $i < $max; $i++) {
+        foreach (array('page_id', 'page_title', 'url') as $key) {
+            $arrCSV[$i][$key] = sprintf(
+                '"%s"',
+                str_replace('"', '""', $arrCSV[$i][$key])
+            );
+        }
+        $csv_str .= join(',', $arrCSV[$i]) . "\n";
     }
+    
     return $csv_str;
 }
 
-/* その他ページのCSVを取得 */
+/** その他ページのCSVを取得 **/
 function lfGetFrontPageCSV() {
     // 項目追加の際は下記連想配列を追加。
     // page_title,urlは任意、ない場合はpage_idから自動生成される
-    // 'page_id' => 'top', 'page_title' => '' , 'url' => 'index.php'
+    // 'page_id' => 'top', 'page_title' => 'トップ' , 'url' => 'index.php'
     $arrList = array(
-        array('page_id' => 'top', 'page_title' => '' , 'url' => 'index.php'),
-        array('page_id' => 'abouts_index'),
-        array('page_id' => 'cart_index'),
-        array('page_id' => 'contact_index'),
-        array('page_id' => 'contact_confirm', 'page_title' => '', 'url' => 'contact/index.php'),
-        array('page_id' => 'contact_complete'),
-        array('page_id' => 'order_index'),
-        array('page_id' => 'entry_kiyaku'),
-        array('page_id' => 'entry_index'),
-        array('page_id' => 'entry_confirm', 'page_title' => '', 'url' => 'entry/index.php'),
-        array('page_id' => 'regist_complete', 'page_title' => '', 'url' => 'entry/complete.php'),
-        array('page_id' => 'products_favorite'),
-        array('page_id' => 'shopping_deliv'),
-        array('page_id' => 'shopping_payment'),
-        array('page_id' => 'shopping_confirm'),
-        array('page_id' => 'thanks', 'page_title' => '', 'url' => 'shopping/complete.php'),
-        array('page_id' => 'mypage_index'),
-        array('page_id' => 'mypage_change'),
-        array('page_id' => 'mypage_change_confirm', 'page_title' => '', 'url' => 'mypage/change.php'),
-        array('page_id' => 'mypage_change_complete', 'page_title' => '', 'url' => 'mypage/change_complete.php'),
+        array('page_id' => 'top', 'page_title' => 'トップ' , 'url' => 'index.php'),
+        array('page_id' => 'abouts_index', 'page_title' => '当サイトについて'),
+        array('page_id' => 'cart_index', 'page_title' => '買い物かご（トップ）'),
+        array('page_id' => 'contact_index', 'page_title' => 'お問い合わせ（入力）'),
+        array('page_id' => 'contact_confirm', 'page_title' => 'お問い合わせ（確認）', 'url' => 'contact/index.php'),
+        array('page_id' => 'contact_complete', 'page_title' => 'お問い合わせ（完了）'),
+        array('page_id' => 'order_index', 'page_title' => '購入（入力）'),
+        array('page_id' => 'entry_kiyaku', 'page_title' => 'ご利用規約'),
+        array('page_id' => 'entry_index', 'page_title' => '会員登録（入力'),
+        array('page_id' => 'entry_confirm', 'page_title' => '会員登録（確認）', 'url' => 'entry/index.php'),
+        array('page_id' => 'regist_complete', 'page_title' => '会員登録（完了）', 'url' => 'entry/complete.php'),
+        array('page_id' => 'shopping_deliv', 'page_title' => '購入（お届け先指定）'),
+        array('page_id' => 'shopping_payment', 'page_title' => '購入（お支払い方法指定）'),
+        array('page_id' => 'shopping_confirm', 'page_title' => '購入（確認）'),
+        array('page_id' => 'thanks', 'page_title' => '購入（完了', 'url' => 'shopping/complete.php'),
+        array('page_id' => 'mypage_index', 'page_title' => 'MYページ（トップ）'),
+        array('page_id' => 'mypage_change', 'page_title' => 'MYページ > 会員登録内容変更（入力）'),
+        array('page_id' => 'mypage_change_confirm', 'page_title' => 'MYページ > 会員登録内容変更（確認）', 'url' => 'mypage/change.php'),
+        array('page_id' => 'mypage_change_complete', 'page_title' => 'MYページ > 会員登録内容変更（完了）', 'url' => 'mypage/change_complete.php'),
     );
     
     foreach ($arrList as $key => $list) {
@@ -204,4 +237,5 @@ function lfGetFrontPageCSV() {
     
     return lfCreateCSV($arrList);
 }
+
 ?>

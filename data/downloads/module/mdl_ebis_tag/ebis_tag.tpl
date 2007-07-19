@@ -75,20 +75,6 @@ self.moveTo(20,20);self.focus();
 									
 									<table width="440" border="0" cellspacing="1" cellpadding="8" summary=" ">
 										<tr class="fs12n">
-											<td width="90" bgcolor="#f3f3f3">ユーザID<span class="red">※</span></td>
-											<td width="337" bgcolor="#ffffff">
-											<span class="red"><!--{$arrErr.user}--></span>
-											<input type="text" name="user" size="30" style="<!--{$arrErr.user|sfGetErrorColor}-->" value="<!--{$arrForm.user.value}-->" class="box30" maxlength="50"/>
-											</td>
-										</tr>	
-										<tr class="fs12n">
-											<td width="90" bgcolor="#f3f3f3">パスワード<span class="red">※</span></td>
-											<td width="337" bgcolor="#ffffff">
-											<span class="red"><!--{$arrErr.pass}--></span>
-											<input type="password" name="pass" size="30" style="<!--{$arrErr.pass|sfGetErrorColor}-->" value="<!--{$arrForm.pass.value}-->" class="box30" maxlength="50"/>
-											</td>
-										</tr>
-										<tr class="fs12n">
 											<td width="90" bgcolor="#f3f3f3">ログインURL<span class="red">※</span></td>
 											<td width="337" bgcolor="#ffffff">
 											<span class="red"><!--{$arrErr.login_url}--></span>
