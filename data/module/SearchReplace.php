@@ -32,7 +32,7 @@
 // | Author: Richard Heyes <richard@phpguru.org>                           |
 // +-----------------------------------------------------------------------+
 //
-// $Id: SearchReplace.php,v 1.14 2006/07/12 09:35:09 techtonik Exp $
+// $Id$
 //
 // Search and Replace Utility
 //

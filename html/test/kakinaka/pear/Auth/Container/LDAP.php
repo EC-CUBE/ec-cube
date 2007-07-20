@@ -19,7 +19,7 @@
  * @author     Hugues Peeters <hugues.peeters@claroline.net>
  * @copyright  2001-2006 The PHP Group
  * @license    http://www.php.net/license/3_01.txt  PHP License 3.01
- * @version    CVS: $Id: LDAP.php 8713 2006-12-01 05:08:34Z kakinaka $
+ * @version    CVS: $Id$
  * @link       http://pear.php.net/package/Auth
  */
 

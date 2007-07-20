@@ -21,7 +21,7 @@
  * @author     Daniel Convissor <danielc@php.net>
  * @copyright  1997-2005 The PHP Group
  * @license    http://www.php.net/license/3_0.txt  PHP License 3.0 3.0
- * @version    CVS: $Id: sqlite.php 3 2006-08-23 03:04:20Z naka $
+ * @version    CVS: $Id$
  * @link       http://pear.php.net/package/DB
  */
 

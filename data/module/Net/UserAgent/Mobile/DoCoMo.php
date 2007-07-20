@@ -15,7 +15,7 @@
  * @author     KUBO Atsuhiro <iteman@users.sourceforge.net>
  * @copyright  2003-2007 KUBO Atsuhiro <iteman@users.sourceforge.net>
  * @license    http://www.php.net/license/3_0.txt  PHP License 3.0
- * @version    CVS: $Id: DoCoMo.php,v 1.35 2007/02/20 18:41:04 kuboa Exp $
+ * @version    CVS: $Id$
  * @link       http://www.nttdocomo.co.jp/service/imode/make/content/spec/useragent/index.html
  * @see        Net_UserAgent_Mobile_Common
  * @since      File available since Release 0.1

@@ -5,7 +5,7 @@
  *
  * @author  Kentaro Ohkouchi<ohkouchi@loop-az.jp>
  * @since   PHP4.3.0(cli)
- * @version $Id$
+ * @version $Id:convert.php 15079 2007-07-20 07:20:36Z nanasess $
  */
 
 /**

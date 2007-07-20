@@ -18,7 +18,7 @@
 // |          David Costa  <gurugeek@php.net>                             |
 // +----------------------------------------------------------------------+
 //
-//  $Id: Auth_HTTP.php 8719 2006-12-01 05:18:47Z kakinaka $ 
+//  $Id$ 
 //
 
 require_once "Auth.php";
