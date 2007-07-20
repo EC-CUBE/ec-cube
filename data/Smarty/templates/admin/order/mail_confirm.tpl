@@ -5,7 +5,7 @@
  * http://www.lockon.co.jp/
  */
 *}-->
-<!--°˙°˙•·•§•Û•≥•Û•∆•Û•ƒ°˙°˙-->
+<!--‚òÖ‚òÖ„É°„Ç§„É≥„Ç≥„É≥„ÉÜ„É≥„ÉÑ‚òÖ‚òÖ-->
 <table width="878" border="0" cellspacing="0" cellpadding="0" summary=" ">
 <form name="form1" id="form1" method="post" action="<!--{$smarty.server.PHP_SELF|escape}-->">
 <input type="hidden" name="mode" value="send">
@@ -18,13 +18,13 @@
 <!--{/foreach}-->
 	<tr valign="top">
 		<td background="<!--{$smarty.const.URL_DIR}-->img/contents/navi_bg.gif" height="402">
-			<!--¢ßSUB NAVI-->
+			<!--‚ñºSUB NAVI-->
 			<!--{include file=$tpl_subnavi}-->
-			<!--¢•SUB NAVI-->
+			<!--‚ñ≤SUB NAVI-->
 		</td>
 		<td class="mainbg" >
 		<table width="737" border="0" cellspacing="0" cellpadding="0" summary=" ">
-			<!--•·•§•Û•®•Í•¢-->
+			<!--„É°„Ç§„É≥„Ç®„É™„Ç¢-->
 			<tr>
 				<td align="center">
 				<table width="706" border="0" cellspacing="0" cellpadding="0" summary=" ">
@@ -37,14 +37,14 @@
 						<td background="<!--{$smarty.const.URL_DIR}-->img/contents/main_left.jpg"><img src="<!--{$smarty.const.URL_DIR}-->img/common/_.gif" width="14" height="1" alt=""></td>
 						<td bgcolor="#cccccc">
 						
-						<!--≈–œø•∆°º•÷•Î§≥§≥§´§È-->
+						<!--ÁôªÈå≤„ÉÜ„Éº„Éñ„É´„Åì„Åì„Åã„Çâ-->
 						<table width="678" border="0" cellspacing="0" cellpadding="0" summary=" ">
 							<tr>
 								<td colspan="3"><img src="<!--{$smarty.const.URL_DIR}-->img/contents/contents_title_top.gif" width="678" height="7" alt=""></td>
 							</tr>
 							<tr>
 								<td background="<!--{$smarty.const.URL_DIR}-->img/contents/contents_title_left_bg.gif"><img src="<!--{$smarty.const.URL_DIR}-->img/contents/contents_title_left.gif" width="22" height="12" alt=""></td>
-								<td bgcolor="#636469" width="638" class="fs14n"><span class="white"><!--•≥•Û•∆•Û•ƒ•ø•§•»•Î-->•·°º•Î«€øÆ</span></td>
+								<td bgcolor="#636469" width="638" class="fs14n"><span class="white"><!--„Ç≥„É≥„ÉÜ„É≥„ÉÑ„Çø„Ç§„Éà„É´-->„É°„Éº„É´ÈÖç‰ø°</span></td>
 								<td background="<!--{$smarty.const.URL_DIR}-->img/contents/contents_title_right_bg.gif"><img src="<!--{$smarty.const.URL_DIR}-->img/common/_.gif" width="18" height="1" alt=""></td>
 							</tr>
 							<tr>
@@ -57,11 +57,11 @@
 
 						<table width="678" border="0" cellspacing="1" cellpadding="8" summary=" ">
 							<tr align="center">
-								<td bgcolor="#f2f1ec" width="50" class="fs12n">∑ÔÃæ</td>
+								<td bgcolor="#f2f1ec" width="50" class="fs12n">‰ª∂Âêç</td>
 								<td bgcolor="#ffffff" width="500" class="fs12n"><!--{$tpl_subject|escape}--></td>
 							</tr>
 							<tr>
-								<td align="center" bgcolor="#f2f1ec" width="50" class="fs12n">À‹ ∏</td>
+								<td align="center" bgcolor="#f2f1ec" width="50" class="fs12n">Êú¨Êñá</td>
 								<td align="left" bgcolor="#ffffff" width="500" class="fs12n"><!--{$tpl_body|escape|nl2br}--></td>
 							</tr>
 						</table>
@@ -78,8 +78,8 @@
 								<table border="0" cellspacing="0" cellpadding="0" summary=" ">
 									<tr>
 										<td>
-											<input type="button" name="return" value="¡∞§Œ•⁄°º•∏§ÿÃ·§Î" onclick="fnModeSubmit('return', '', '');"/>
-											<input type="submit" name="subm" value="•·°º•Î¡˜øÆ" onclick="return confirm('§≥§Œ∆‚Õ∆§«•·°º•Î§Ú¡˜øÆ§∑§∆§‚µπ§∑§§§«§π§´');"/>
+											<input type="button" name="return" value="Ââç„ÅÆ„Éö„Éº„Ç∏„Å∏Êàª„Çã" onclick="fnModeSubmit('return', '', '');"/>
+											<input type="submit" name="subm" value="„É°„Éº„É´ÈÄÅ‰ø°" onclick="return confirm('„Åì„ÅÆÂÜÖÂÆπ„Åß„É°„Éº„É´„ÇíÈÄÅ‰ø°„Åó„Å¶„ÇÇÂÆú„Åó„ÅÑ„Åß„Åô„Åã');"/>
 										</td>
 									</tr>
 								</table>
@@ -91,7 +91,7 @@
 							</tr>
 						</table>
 
-						<!--≈–œø•∆°º•÷•Î§≥§≥§ﬁ§«-->
+						<!--ÁôªÈå≤„ÉÜ„Éº„Éñ„É´„Åì„Åì„Åæ„Åß-->
 						</td>
 						<td background="<!--{$smarty.const.URL_DIR}-->img/contents/main_right.jpg"><img src="<!--{$smarty.const.URL_DIR}-->img/common/_.gif" width="14" height="1" alt=""></td>
 					</tr>
@@ -103,11 +103,11 @@
 				</table>
 				</td>
 			</tr>
-			<!--•·•§•Û•®•Í•¢-->
+			<!--„É°„Ç§„É≥„Ç®„É™„Ç¢-->
 		</table>
 		</td>
 	</tr>
 </form>
 </table>
-<!--°˙°˙•·•§•Û•≥•Û•∆•Û•ƒ°˙°˙-->		
+<!--‚òÖ‚òÖ„É°„Ç§„É≥„Ç≥„É≥„ÉÜ„É≥„ÉÑ‚òÖ‚òÖ-->		
 

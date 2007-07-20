@@ -26,14 +26,14 @@ function lfnChangePort(db_type) {
 <!--{/foreach}-->
 
 <tr><td height="30"></td></tr>
-<tr><td align="left" class="fs12st">¢£¥Ç¡¼¥¿¥Ù¡¼¥¹¤ÎÀßÄê</td></tr>
-<tr><td align="left" class="fs12">¢¨¥¤¥ó¥¹¥È¡¼¥ë¤ÎÁ°¤Ë¿·¤·¤¯DB¤òºîÀ®¤·¤Æ¤ª¤¯É¬Í×¤¬¤¢¤ê¤Þ¤¹¡£</td></tr>
+<tr><td align="left" class="fs12st">â– ãƒ‡ãƒ¼ã‚¿ãƒ™ãƒ¼ã‚¹ã®è¨­å®š</td></tr>
+<tr><td align="left" class="fs12">â€»ã‚¤ãƒ³ã‚¹ãƒˆãƒ¼ãƒ«ã®å‰ã«æ–°ã—ãDBã‚’ä½œæˆã—ã¦ãŠãå¿…è¦ãŒã‚ã‚Šã¾ã™ã€‚</td></tr>
 <tr><td align="left" class="red12"><!--{$arrErr.all}--></td></tr>
 <tr>
 	<td bgcolor="#cccccc">
 	<table width="500" border="0" cellspacing="1" cellpadding="8" summary=" ">
 		<tr>
-			<td bgcolor="#f2f1ec" width="150" class="fs12n">DB¤Î¼ïÎà<span class="red">¢¨</span></td>
+			<td bgcolor="#f2f1ec" width="150" class="fs12n">DBã®ç¨®é¡ž<span class="red">â€»</span></td>
 			<td bgcolor="#ffffff" width="332" class="fs12">
 			<!--{assign var=key value="db_type"}-->
 			<span class="red"><!--{$arrErr[$key]}--></span>
@@ -43,7 +43,7 @@ function lfnChangePort(db_type) {
 			</td>
 		</tr>
 		<tr>
-			<td bgcolor="#f2f1ec" width="150" class="fs12n">DB¥µ¡¼¥Ð<span class="red">¢¨</span></td>
+			<td bgcolor="#f2f1ec" width="150" class="fs12n">DBã‚µãƒ¼ãƒ<span class="red">â€»</span></td>
 			<td bgcolor="#ffffff" width="332" class="fs12">
 			<!--{assign var=key value="db_server"}-->
 			<span class="red"><!--{$arrErr[$key]}--></span>
@@ -51,7 +51,7 @@ function lfnChangePort(db_type) {
 			</td>
 		</tr>
 		<tr>
-			<td bgcolor="#f2f1ec" width="150" class="fs12n">¥Ý¡¼¥È</td>
+			<td bgcolor="#f2f1ec" width="150" class="fs12n">ãƒãƒ¼ãƒˆ</td>
 			<td bgcolor="#ffffff" width="332">
 			<!--{assign var=key value="db_port"}-->
 			<span class="red"><span class="fs12n"><!--{$arrErr[$key]}--></span></span>
@@ -59,7 +59,7 @@ function lfnChangePort(db_type) {
 			</td>
 		</tr>
 		<tr>
-			<td bgcolor="#f2f1ec" width="150" class="fs12n">DBÌ¾<span class="red">¢¨</span></td>
+			<td bgcolor="#f2f1ec" width="150" class="fs12n">DBå<span class="red">â€»</span></td>
 			<td bgcolor="#ffffff" width="332" class="fs12">
 			<!--{assign var=key value="db_name"}-->
 			<span class="red"><span class="fs12n"><!--{$arrErr[$key]}--></span></span>
@@ -67,7 +67,7 @@ function lfnChangePort(db_type) {
 			</td>
 		</tr>
 		<tr>
-			<td bgcolor="#f2f1ec" width="150" class="fs12n">DB¥æ¡¼¥¶<span class="red">¢¨</span></td>
+			<td bgcolor="#f2f1ec" width="150" class="fs12n">DBãƒ¦ãƒ¼ã‚¶<span class="red">â€»</span></td>
 			<td bgcolor="#ffffff" width="332" class="fs12">
 			<!--{assign var=key value="db_user"}-->
 			<span class="red"><!--{$arrErr[$key]}--></span>
@@ -75,7 +75,7 @@ function lfnChangePort(db_type) {
 			</td>
 		</tr>
 		<tr>
-			<td bgcolor="#f2f1ec" width="150" class="fs12n">DB¥Ñ¥¹¥ï¡¼¥É<span class="red">¢¨</span></td>
+			<td bgcolor="#f2f1ec" width="150" class="fs12n">DBãƒ‘ã‚¹ãƒ¯ãƒ¼ãƒ‰<span class="red">â€»</span></td>
 			<td bgcolor="#ffffff" width="332" class="fs12">
 			<!--{assign var=key value="db_password"}-->
 			<span class="red"><!--{$arrErr[$key]}--></span>
@@ -91,8 +91,8 @@ function lfnChangePort(db_type) {
 	<tr><td height="20"></td></tr>
 	<tr>
 		<td align="center">
-		<a href="#" onmouseover="chgImg('../img/install/back_on.jpg','back')" onmouseout="chgImg('../img/install/back.jpg','back')" onclick="document.form1['mode'].value='return_step1';document.form1.submit();return false;" /><img  width="105" src="../img/install/back.jpg"  height="24" alt="Á°¤ØÌá¤ë" border="0" name="back"></a>
-		<input type="image" onMouseover="chgImgImageSubmit('../img/install/next_on.jpg',this)" onMouseout="chgImgImageSubmit('../img/install/next.jpg',this)" src="../img/install/next.jpg" width="105" height="24" alt="¼¡¤Ø¿Ê¤à" border="0" name="next">
+		<a href="#" onmouseover="chgImg('../img/install/back_on.jpg','back')" onmouseout="chgImg('../img/install/back.jpg','back')" onclick="document.form1['mode'].value='return_step1';document.form1.submit();return false;" /><img  width="105" src="../img/install/back.jpg"  height="24" alt="å‰ã¸æˆ»ã‚‹" border="0" name="back"></a>
+		<input type="image" onMouseover="chgImgImageSubmit('../img/install/next_on.jpg',this)" onMouseout="chgImgImageSubmit('../img/install/next.jpg',this)" src="../img/install/next.jpg" width="105" height="24" alt="æ¬¡ã¸é€²ã‚€" border="0" name="next">
 		</td>
 	</tr>
 	<tr><td height="30"></td></tr>

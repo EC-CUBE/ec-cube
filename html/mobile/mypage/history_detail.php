@@ -6,7 +6,7 @@
  * http://www.lockon.co.jp/
  * 
  *
- * ÍúÎò
+ * å±¥æ­´
  */
 
 require_once("../require.php");
@@ -14,7 +14,7 @@ require_once("../require.php");
 class LC_Page {
 	function LC_Page() {
 		$this->tpl_mainpage = 'mypage/history_detail.tpl';
-		$this->tpl_title = "MY¥Ú¡¼¥¸/¹ØÆşÍúÎò¾ÜºÙ";
+		$this->tpl_title = "MYãƒšãƒ¼ã‚¸/è³¼å…¥å±¥æ­´è©³ç´°";
 		session_cache_limiter('private-no-expire');
 	}
 }
@@ -24,29 +24,29 @@ $objView = new SC_MobileView();
 $objQuery = new SC_Query();
 $objCustomer = new SC_Customer();
 
-// ¥ì¥¤¥¢¥¦¥È¥Ç¥¶¥¤¥ó¤ò¼èÆÀ
+// ãƒ¬ã‚¤ã‚¢ã‚¦ãƒˆãƒ‡ã‚¶ã‚¤ãƒ³ã‚’å–å¾—
 $objPage = sfGetPageLayout($objPage, false, "mypage/index.php");
 
-//ÉÔÀµ¥¢¥¯¥»¥¹È½Äê
+//ä¸æ­£ã‚¢ã‚¯ã‚»ã‚¹åˆ¤å®š
 $from = "dtb_order";
 $where = "del_flg = 0 AND customer_id = ? AND order_id = ? ";
 $arrval = array($objCustomer->getValue('customer_id'), $_POST['order_id']);
-//DB¤Ë¾ğÊó¤¬¤¢¤ë¤«È½Äê
+//DBã«æƒ…å ±ãŒã‚ã‚‹ã‹åˆ¤å®š
 $cnt = $objQuery->count($from, $where, $arrval);
 
-//¥í¥°¥¤¥ó¤·¤Æ¤¤¤Ê¤¤¡¢¤Ş¤¿¤ÏDB¤Ë¾ğÊó¤¬Ìµ¤¤¾ì¹ç
+//ãƒ­ã‚°ã‚¤ãƒ³ã—ã¦ã„ãªã„ã€ã¾ãŸã¯DBã«æƒ…å ±ãŒç„¡ã„å ´åˆ
 if (!$objCustomer->isLoginSuccess() or $cnt == 0){
 	sfDispSiteError(CUSTOMER_ERROR, "", false, "", true);
 } else {
-	//¼õÃí¾ÜºÙ¥Ç¡¼¥¿¤Î¼èÆÀ
+	//å—æ³¨è©³ç´°ãƒ‡ãƒ¼ã‚¿ã®å–å¾—
 	$objPage->arrDisp = lfGetOrderData($_POST['order_id']);
-	// »ÙÊ§¤¤ÊıË¡¤Î¼èÆÀ
+	// æ”¯æ‰•ã„æ–¹æ³•ã®å–å¾—
 	$objPage->arrPayment = sfGetIDValueList("dtb_payment", "payment_id", "payment_method");
-	// ÇÛÁ÷»ş´Ö¤Î¼èÆÀ
+	// é…é€æ™‚é–“ã®å–å¾—
 	$arrRet = sfGetDelivTime($objPage->arrDisp['payment_id']);
 	$objPage->arrDelivTime = sfArrKeyValue($arrRet, 'time_id', 'deliv_time');
 
-	//¥Ş¥¤¥Ú¡¼¥¸¥È¥Ã¥×¸ÜµÒ¾ğÊóÉ½¼¨ÍÑ
+	//ãƒã‚¤ãƒšãƒ¼ã‚¸ãƒˆãƒƒãƒ—é¡§å®¢æƒ…å ±è¡¨ç¤ºç”¨
 	$objPage->CustomerName1 = $objCustomer->getvalue('name01');
 	$objPage->CustomerName2 = $objCustomer->getvalue('name02');
 	$objPage->CustomerPoint = $objCustomer->getvalue('point');
@@ -56,11 +56,11 @@ $objView->assignobj($objPage);
 $objView->display(SITE_FRAME);
 //-----------------------------------------------------------------------------------------------------------------------------------
 
-//¼õÃí¾ÜºÙ¥Ç¡¼¥¿¤Î¼èÆÀ
+//å—æ³¨è©³ç´°ãƒ‡ãƒ¼ã‚¿ã®å–å¾—
 function lfGetOrderData($order_id) {
-	//¼õÃíÈÖ¹æ¤¬¿ô»ú¤Ç¤¢¤ì¤Ğ
+	//å—æ³¨ç•ªå·ãŒæ•°å­—ã§ã‚ã‚Œã°
 	if(sfIsInt($order_id)) {
-		// DB¤«¤é¼õÃí¾ğÊó¤òÆÉ¤ß¹ş¤à
+		// DBã‹ã‚‰å—æ³¨æƒ…å ±ã‚’èª­ã¿è¾¼ã‚€
 		$objQuery = new SC_Query();
 		$col = "order_id, create_date, payment_id, subtotal, tax, use_point, add_point, discount, ";
 		$col .= "deliv_fee, charge, payment_total, deliv_name01, deliv_name02, deliv_kana01, deliv_kana02, ";
@@ -69,7 +69,7 @@ function lfGetOrderData($order_id) {
 		$where = "order_id = ?";
 		$arrRet = $objQuery->select($col, $from, $where, array($order_id));
 		$arrOrder = $arrRet[0];
-		// ¼õÃí¾ÜºÙ¥Ç¡¼¥¿¤Î¼èÆÀ
+		// å—æ³¨è©³ç´°ãƒ‡ãƒ¼ã‚¿ã®å–å¾—
 		$arrRet = lfGetOrderDetail($order_id);
 		$arrOrderDetail = sfSwapArray($arrRet);
 		$arrData = array_merge($arrOrder, $arrOrderDetail);
@@ -77,7 +77,7 @@ function lfGetOrderData($order_id) {
 	return $arrData;
 }
 
-// ¼õÃí¾ÜºÙ¥Ç¡¼¥¿¤Î¼èÆÀ
+// å—æ³¨è©³ç´°ãƒ‡ãƒ¼ã‚¿ã®å–å¾—
 function lfGetOrderDetail($order_id) {
 	$objQuery = new SC_Query();
 	$col = "product_id, product_code, product_name, classcategory_name1, classcategory_name2, price, quantity, point_rate";

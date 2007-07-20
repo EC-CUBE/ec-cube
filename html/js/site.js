@@ -3,7 +3,7 @@
  *
  * http://www.lockon.co.jp/
  */
-// �ƥ�����ɥ���¸�߳�ǧ.
+// 親ウィンドウの存在確認.
 function fnIsopener() {
     var ua = navigator.userAgent;
     if( !!window.opener ) {
@@ -17,7 +17,7 @@ function fnIsopener() {
 	}
 }
 
-// ͹���ֹ����ϸƤӽФ�.
+// 郵便番号入力呼び出し.
 function fnCallAddress(php_url, tagname1, tagname2, input1, input2) {
 	zip1 = document.form1[tagname1].value;
 	zip2 = document.form1[tagname2].value;
@@ -26,16 +26,16 @@ function fnCallAddress(php_url, tagname1, tagname2, input1, input2) {
 		url = php_url + "?zip1=" + zip1 + "&zip2=" + zip2 + "&input1=" + input1 + "&input2=" + input2;
 		window.open(url,"nomenu","width=500,height=350,scrollbars=yes,resizable=yes,toolbar=no,location=no,directories=no,status=no");
 	} else {
-		alert("͹���ֹ�����������Ϥ��Ʋ�������");
+		alert("郵便番号を正しく入力して下さい。");
 	}
 }
 
-// ͹���ֹ椫�鸡������������Ϥ�.
+// 郵便番号から検索した住所を渡す.
 function fnPutAddress(input1, input2) {
-	// �ƥ�����ɥ���¸�߳�ǧ��.
+	// 親ウィンドウの存在確認。.
 	if(fnIsopener()) {
 		if(document.form1['state'].value != "") {
-			// ���ܤ��ͤ����Ϥ���.
+			// 項目に値を入力する.
 			state_id = document.form1['state'].value;
 			town = document.form1['city'].value + document.form1['town'].value;
 			window.opener.document.form1[input1].selectedIndex = state_id;
@@ -60,7 +60,7 @@ function fnSetFocus(name) {
 	}
 }
 
-// ���쥯�ȥܥå����˹��ܤ������Ƥ�.
+// セレクトボックスに項目を割り当てる.
 function fnSetSelect(name1, name2, val) {
 	sele1 = document.form1[name1]; 
 	sele2 = document.form1[name2];
@@ -68,13 +68,13 @@ function fnSetSelect(name1, name2, val) {
 	if(sele1 && sele2) {
 		index=sele1.selectedIndex;
 		
-		// ���쥯�ȥܥå����Υ��ꥢ	
+		// セレクトボックスのクリア	
 		count=sele2.options.length
 		for(i = count; i >= 0; i--) {
 			sele2.options[i]=null;
 		}
 		
-		// ���쥯�ȥܥå������ͤ������Ƥ롣
+		// セレクトボックスに値を割り当てる。
 		len = lists[index].length
 		for(i = 0; i < len; i++) {
 			sele2.options[i]=new Option(lists[index][i], vals[index][i]);
@@ -85,7 +85,7 @@ function fnSetSelect(name1, name2, val) {
 	}
 }
 
-// Enter�������Ϥ򥭥�󥻥뤹�롣(IE���б�)
+// Enterキー入力をキャンセルする。(IEに対応)
 function fnCancelEnter()
 {
 	if (gCssUA.indexOf("WIN") != -1 && gCssUA.indexOf("MSIE") != -1) {
@@ -97,26 +97,26 @@ function fnCancelEnter()
 	return true;
 }
 
-// �⡼�ɤȥ�������ꤷ��SUBMIT��Ԥ���
+// モードとキーを指定してSUBMITを行う。
 function fnModeSubmit(mode, keyname, keyid) {
 	switch(mode) {
 	case 'delete_category':
-		if(!window.confirm('���򤷤����ƥ���ȥ��ƥ�����Τ��٤ƤΥ��ƥ���������ޤ�')){
+		if(!window.confirm('選択したカテゴリとカテゴリ内のすべてのカテゴリを削除します')){
 			return;
 		}
 		break;
 	case 'delete':
-		if(!window.confirm('���ٺ�������ǡ����ϡ������᤻�ޤ���\n������Ƥ⵹�����Ǥ�����')){
+		if(!window.confirm('一度削除したデータは、元に戻せません。\n削除しても宜しいですか？')){
 			return;
 		}
 		break;
 	case 'confirm':
-		if(!window.confirm('��Ͽ���Ƥ⵹�����Ǥ���')){
+		if(!window.confirm('登録しても宜しいですか')){
 			return;
 		}
 		break;
 	case 'delete_all':
-		if(!window.confirm('������̤򤹤٤ƺ�����Ƥ⵹�����Ǥ���')){
+		if(!window.confirm('検索結果をすべて削除しても宜しいですか')){
 			return;
 		}
 		break;
@@ -133,17 +133,17 @@ function fnModeSubmit(mode, keyname, keyid) {
 function fnFormModeSubmit(form, mode, keyname, keyid) {
 	switch(mode) {
 	case 'delete':
-		if(!window.confirm('���ٺ�������ǡ����ϡ������᤻�ޤ���\n������Ƥ⵹�����Ǥ�����')){
+		if(!window.confirm('一度削除したデータは、元に戻せません。\n削除しても宜しいですか？')){
 			return;
 		}
 		break;
 	case 'confirm':
-		if(!window.confirm('��Ͽ���Ƥ⵹�����Ǥ���')){
+		if(!window.confirm('登録しても宜しいですか')){
 			return;
 		}
 		break;
 	case 'regist':
-		if(!window.confirm('��Ͽ���Ƥ⵹�����Ǥ���')){
+		if(!window.confirm('登録しても宜しいですか')){
 			return;
 		}
 		break;		
@@ -171,7 +171,7 @@ function fnChangeAction(url) {
 	document.form1.action = url;
 }
 
-// �ڡ����ʥӤǻ��Ѥ��롣
+// ページナビで使用する。
 function fnNaviPage(pageno) {
 	document.form1['pageno'].value = pageno;
 	document.form1.submit();
@@ -187,7 +187,7 @@ function fnSearchPageNavi(pageno) {
 	document.form1.submit();
 }
 
-// �ݥ�����������¡�
+// ポイント入力制限。
 function fnCheckInputPoint() {
 	if(document.form1['point_check']) {
 		list = new Array(
@@ -212,7 +212,7 @@ function fnCheckInputPoint() {
 	}
 }
 
-// �̤Τ��Ϥ����������¡�
+// 別のお届け先入力制限。
 function fnCheckInputDeliv() {
 	if(!document.form1) {
 		return;
@@ -242,7 +242,7 @@ function fnCheckInputDeliv() {
 }
 
 
-// �����������Ͽ�������¡�
+// 購入時会員登録入力制限。
 function fnCheckInputMember() {
 	if(document.form1['member_check']) {
 		list = new Array(
@@ -260,7 +260,7 @@ function fnCheckInputMember() {
 	}
 }
 
-// �ǽ�����ꤵ��Ƥ���������¸���Ƥ�����
+// 最初に設定されていた色を保存しておく。
 var g_savecolor = new Array();
 
 function fnChangeDisabled(list, color) {
@@ -269,11 +269,11 @@ function fnChangeDisabled(list, color) {
 	for(i = 0; i < len; i++) {
 		if(document.form1[list[i]]) {
 			if(color == "") {
-				// ͭ���ˤ��롣
+				// 有効にする。
 				document.form1[list[i]].disabled = false;
 				document.form1[list[i]].style.backgroundColor = g_savecolor[list[i]];
 			} else {
-				// ̵���ˤ��롣
+				// 無効にする。
 				document.form1[list[i]].disabled = true;
 				g_savecolor[list[i]] = document.form1[list[i]].style.backgroundColor;
 				document.form1[list[i]].style.backgroundColor = color;//"#f0f0f0";	
@@ -283,7 +283,7 @@ function fnChangeDisabled(list, color) {
 }
 
 
-// ��������������ϥ����å�
+// ログイン時の入力チェック
 function fnCheckLogin(formname) {
 	var lstitem = new Array();
 	
@@ -298,7 +298,7 @@ function fnCheckLogin(formname) {
 	var errflg = false;
 	var cnt = 0;
 	
-	//��ɬ�ܹ��ܤΥ����å�
+	//　必須項目のチェック
 	for(cnt = 0; cnt < max; cnt++) {
 		if(document.forms[formname][lstitem[cnt]].value == "") {
 			errflg = true;
@@ -306,14 +306,14 @@ function fnCheckLogin(formname) {
 		}
 	}
 	
-	// ɬ�ܹ��ܤ����Ϥ���Ƥ��ʤ����	
+	// 必須項目が入力されていない場合	
 	if(errflg == true) {
-		alert('�᡼�륢�ɥ쥹/�ѥ���ɤ����Ϥ��Ʋ�������');
+		alert('メールアドレス/パスワードを入力して下さい。');
 		return false;
 	}
 }
 	
-// ���֤η�¬.
+// 時間の計測.
 function fnPassTime(){
 	end_time = new Date();
 	time = end_time.getTime() - start_time.getTime();
@@ -321,9 +321,9 @@ function fnPassTime(){
 }
 start_time = new Date();
 
-//�ƥ�����ɥ��Υڡ������ѹ�����.
+//親ウィンドウのページを変更する.
 function fnUpdateParent(url) {
-	// �ƥ�����ɥ���¸�߳�ǧ
+	// 親ウィンドウの存在確認
 	if(fnIsopener()) {
 		window.opener.location.href = url;
 	} else {
@@ -331,7 +331,7 @@ function fnUpdateParent(url) {
 	}		
 }
 
-//����Υ�����SUBMIT����.
+//特定のキーをSUBMITする.
 function fnKeySubmit(keyname, keyid) {
 	if(keyname != "" && keyid != "") {
 		document.form1[keyname].value = keyid;
@@ -339,22 +339,22 @@ function fnKeySubmit(keyname, keyid) {
 	document.form1.submit();
 }
 
-//ʸ�����򥫥���Ȥ��롣
-//����1���ե�����̾��
-//����2��ʸ������������о�
-//����3��������ȷ�̳�Ǽ�о�
+//文字数をカウントする。
+//引数1：フォーム名称
+//引数2：文字数カウント対象
+//引数3：カウント結果格納対象
 function fnCharCount(form,sch,cnt) {
 	document.forms[form][cnt].value= document.forms[form][sch].value.length;
 }
 
 
-// �ƥ����ȥ��ꥢ�Υ��������ѹ�����.
+// テキストエリアのサイズを変更する.
 function ChangeSize(button, TextArea, Max, Min, row_tmp){
 	
 	if(TextArea.rows <= Min){
-		TextArea.rows=Max; button.value="����������"; row_tmp.value=Max;
+		TextArea.rows=Max; button.value="小さくする"; row_tmp.value=Max;
 	}else{
-		TextArea.rows =Min; button.value="�礭������"; row_tmp.value=Min;
+		TextArea.rows =Min; button.value="大きくする"; row_tmp.value=Min;
 	}
 }
 

@@ -8,29 +8,29 @@
 $SC_UPLOADFILE_DIR = realpath(dirname( __FILE__));
 require_once($SC_UPLOADFILE_DIR . "/../lib/gdthumb.php");	
 
-/* ¥¢¥Ã¥×¥í¡¼¥É¥Õ¥¡¥¤¥ë´ÉÍı¥¯¥é¥¹ */
+/* ã‚¢ãƒƒãƒ—ãƒ­ãƒ¼ãƒ‰ãƒ•ã‚¡ã‚¤ãƒ«ç®¡ç†ã‚¯ãƒ©ã‚¹ */
 class SC_UploadFile {
 	var $temp_dir;
 	var $save_dir;
-	var $keyname;	// ¥Õ¥¡¥¤¥ëinput¥¿¥°¤Îname
-	var $width;		// ²£¥µ¥¤¥º
-	var $height;	// ½Ä¥µ¥¤¥º
-	var $arrExt;	// »ØÄê¤¹¤ë³ÈÄ¥»Ò
-	var $temp_file;	// ÊİÂ¸¤µ¤ì¤¿¥Õ¥¡¥¤¥ëÌ¾
-	var $save_file; // DB¤«¤éÆÉ¤ß½Ğ¤·¤¿¥Õ¥¡¥¤¥ëÌ¾
-	var $disp_name;	// ¹àÌÜÌ¾
-	var $size;		// À©¸Â¥µ¥¤¥º
-	var $necessary; // É¬¿Ü¤Î¾ì¹ç:true
-	var $image;		// ²èÁü¤Î¾ì¹ç:true
+	var $keyname;	// ãƒ•ã‚¡ã‚¤ãƒ«inputã‚¿ã‚°ã®name
+	var $width;		// æ¨ªã‚µã‚¤ã‚º
+	var $height;	// ç¸¦ã‚µã‚¤ã‚º
+	var $arrExt;	// æŒ‡å®šã™ã‚‹æ‹¡å¼µå­
+	var $temp_file;	// ä¿å­˜ã•ã‚ŒãŸãƒ•ã‚¡ã‚¤ãƒ«å
+	var $save_file; // DBã‹ã‚‰èª­ã¿å‡ºã—ãŸãƒ•ã‚¡ã‚¤ãƒ«å
+	var $disp_name;	// é …ç›®å
+	var $size;		// åˆ¶é™ã‚µã‚¤ã‚º
+	var $necessary; // å¿…é ˆã®å ´åˆ:true
+	var $image;		// ç”»åƒã®å ´åˆ:true
 	
-	// ¥Õ¥¡¥¤¥ë´ÉÍı¥¯¥é¥¹
+	// ãƒ•ã‚¡ã‚¤ãƒ«ç®¡ç†ã‚¯ãƒ©ã‚¹
 	function SC_UploadFile($temp_dir, $save_dir) {
 		$this->temp_dir = $temp_dir;
 		$this->save_dir = $save_dir;
 		$this->file_max = 0;
 	}
 
-	// ¥Õ¥¡¥¤¥ë¾ğÊóÄÉ²Ã
+	// ãƒ•ã‚¡ã‚¤ãƒ«æƒ…å ±è¿½åŠ 
 	function addFile($disp_name, $keyname, $arrExt, $size, $necessary=false, $width=0, $height=0, $image=true) {
 		$this->disp_name[] = $disp_name;
 		$this->keyname[] = $keyname;
@@ -41,9 +41,9 @@ class SC_UploadFile {
 		$this->necessary[] = $necessary;
 		$this->image[] = $image;
 	}
-	// ¥µ¥à¥Í¥¤¥ë²èÁü¤ÎºîÀ®
+	// ã‚µãƒ ãƒã‚¤ãƒ«ç”»åƒã®ä½œæˆ
 	function makeThumb($src_file, $width, $height) {
-		// °ì°Õ¤ÊID¤ò¼èÆÀ¤¹¤ë¡£
+		// ä¸€æ„ãªIDã‚’å–å¾—ã™ã‚‹ã€‚
 		$uniqname = date("mdHi") . "_" . uniqid("");
 		
 		$dst_file = $this->temp_dir . $uniqname;
@@ -52,7 +52,7 @@ class SC_UploadFile {
 		$ret = $objThumb->Main($src_file, $width, $height, $dst_file);
 		
 		if($ret[0] != 1) {
-			// ¥¨¥é¡¼¥á¥Ã¥»¡¼¥¸¤ÎÉ½¼¨
+			// ã‚¨ãƒ©ãƒ¼ãƒ¡ãƒƒã‚»ãƒ¼ã‚¸ã®è¡¨ç¤º
 			print($ret[1]);
 			exit;
 		}
@@ -60,30 +60,30 @@ class SC_UploadFile {
 		return basename($ret[1]);
 	}
 		
-	// ¥¢¥Ã¥×¥í¡¼¥É¤µ¤ì¤¿¥Õ¥¡¥¤¥ë¤òÊİÂ¸¤¹¤ë¡£
+	// ã‚¢ãƒƒãƒ—ãƒ­ãƒ¼ãƒ‰ã•ã‚ŒãŸãƒ•ã‚¡ã‚¤ãƒ«ã‚’ä¿å­˜ã™ã‚‹ã€‚
 	function makeTempFile($keyname, $rename = true) {
 		$objErr = new SC_CheckError();
 		$cnt = 0;
 		$arrKeyname = array_flip($this->keyname);
 		
 		if(!($_FILES[$keyname]['size'] > 0)) {
-			$objErr->arrErr[$keyname] = "¢¨ " . $this->disp_name[$arrKeyname[$keyname]] . "¤¬¥¢¥Ã¥×¥í¡¼¥É¤µ¤ì¤Æ¤¤¤Ş¤»¤ó¡£<br />";
+			$objErr->arrErr[$keyname] = "â€» " . $this->disp_name[$arrKeyname[$keyname]] . "ãŒã‚¢ãƒƒãƒ—ãƒ­ãƒ¼ãƒ‰ã•ã‚Œã¦ã„ã¾ã›ã‚“ã€‚<br />";
 		} else {
 			foreach($this->keyname as $val) {
-				// °ìÃ×¤·¤¿¥­¡¼¤Î¥Õ¥¡¥¤¥ë¤Ë¾ğÊó¤òÊİÂ¸¤¹¤ë¡£
+				// ä¸€è‡´ã—ãŸã‚­ãƒ¼ã®ãƒ•ã‚¡ã‚¤ãƒ«ã«æƒ…å ±ã‚’ä¿å­˜ã™ã‚‹ã€‚
 				if ($val == $keyname) {
-					// ³ÈÄ¥»Ò¥Á¥§¥Ã¥¯
+					// æ‹¡å¼µå­ãƒã‚§ãƒƒã‚¯
 					$objErr->doFunc(array($this->disp_name[$cnt], $keyname, $this->arrExt[$cnt]), array("FILE_EXT_CHECK"));
-					// ¥Õ¥¡¥¤¥ë¥µ¥¤¥º¥Á¥§¥Ã¥¯
+					// ãƒ•ã‚¡ã‚¤ãƒ«ã‚µã‚¤ã‚ºãƒã‚§ãƒƒã‚¯
 					$objErr->doFunc(array($this->disp_name[$cnt], $keyname, $this->size[$cnt]), array("FILE_SIZE_CHECK"));
-					// ¥¨¥é¡¼¤¬¤Ê¤¤¾ì¹ç
+					// ã‚¨ãƒ©ãƒ¼ãŒãªã„å ´åˆ
 					if(!isset($objErr->arrErr[$keyname])) {
-						// ²èÁü¥Õ¥¡¥¤¥ë¤Î¾ì¹ç
+						// ç”»åƒãƒ•ã‚¡ã‚¤ãƒ«ã®å ´åˆ
 						if($this->image[$cnt]) {
 							$this->temp_file[$cnt] = $this->makeThumb($_FILES[$keyname]['tmp_name'], $this->width[$cnt], $this->height[$cnt]);
-						// ²èÁü¥Õ¥¡¥¤¥ë°Ê³°¤Î¾ì¹ç
+						// ç”»åƒãƒ•ã‚¡ã‚¤ãƒ«ä»¥å¤–ã®å ´åˆ
 						} else {
-							// °ì°Õ¤Ê¥Õ¥¡¥¤¥ëÌ¾¤òºîÀ®¤¹¤ë¡£
+							// ä¸€æ„ãªãƒ•ã‚¡ã‚¤ãƒ«åã‚’ä½œæˆã™ã‚‹ã€‚
 							if($rename) {
 								$uniqname = date("mdHi") . "_" . uniqid("").".";
 								$this->temp_file[$cnt] = ereg_replace("^.*\.",$uniqname, $_FILES[$keyname]['name']);
@@ -101,13 +101,13 @@ class SC_UploadFile {
 		return $objErr->arrErr[$keyname];
 	}
 
-	// ²èÁü¤òºï½ü¤¹¤ë¡£
+	// ç”»åƒã‚’å‰Šé™¤ã™ã‚‹ã€‚
 	function deleteFile($keyname) {
 		$objImage = new SC_Image($this->temp_dir);
 		$cnt = 0;
 		foreach($this->keyname as $val) {
 			if ($val == $keyname) {
-				// °ì»ş¥Õ¥¡¥¤¥ë¤Î¾ì¹çºï½ü¤¹¤ë¡£
+				// ä¸€æ™‚ãƒ•ã‚¡ã‚¤ãƒ«ã®å ´åˆå‰Šé™¤ã™ã‚‹ã€‚
 				if($this->temp_file[$cnt] != "") {
 					$objImage->deleteImage($this->temp_file[$cnt], $this->save_dir);
 				}
@@ -118,7 +118,7 @@ class SC_UploadFile {
 		}
 	}
 	
-	// °ì»ş¥Õ¥¡¥¤¥ë¥Ñ¥¹¤ò¼èÆÀ¤¹¤ë¡£
+	// ä¸€æ™‚ãƒ•ã‚¡ã‚¤ãƒ«ãƒ‘ã‚¹ã‚’å–å¾—ã™ã‚‹ã€‚
 	function getTempFilePath($keyname) {
 		$cnt = 0;
 		$filepath = "";
@@ -133,7 +133,7 @@ class SC_UploadFile {
 		return $filepath;
 	}
 	
-	// °ì»ş¥Õ¥¡¥¤¥ë¤òÊİÂ¸¥Ç¥£¥ì¥¯¥È¥ê¤Ë°Ü¤¹
+	// ä¸€æ™‚ãƒ•ã‚¡ã‚¤ãƒ«ã‚’ä¿å­˜ãƒ‡ã‚£ãƒ¬ã‚¯ãƒˆãƒªã«ç§»ã™
 	function moveTempFile() {
 		$cnt = 0;
 		$objImage = new SC_Image($this->temp_dir);
@@ -142,7 +142,7 @@ class SC_UploadFile {
 			if($this->temp_file[$cnt] != "") {
 													
 				$objImage->moveTempImage($this->temp_file[$cnt], $this->save_dir);
-				// ¤¹¤Ç¤ËÊİÂ¸¥Õ¥¡¥¤¥ë¤¬¤¢¤Ã¤¿¾ì¹ç¤Ïºï½ü¤¹¤ë¡£
+				// ã™ã§ã«ä¿å­˜ãƒ•ã‚¡ã‚¤ãƒ«ãŒã‚ã£ãŸå ´åˆã¯å‰Šé™¤ã™ã‚‹ã€‚
 				if($this->save_file[$cnt] != "" && !ereg("^sub/", $this->save_file[$cnt])) {
 					$objImage->deleteImage($this->save_file[$cnt], $this->save_dir);
 				}
@@ -151,7 +151,7 @@ class SC_UploadFile {
 		}
 	}
 	
-	// HIDDENÍÑ¤Î¥Õ¥¡¥¤¥ëÌ¾ÇÛÎó¤òÊÖ¤¹
+	// HIDDENç”¨ã®ãƒ•ã‚¡ã‚¤ãƒ«åé…åˆ—ã‚’è¿”ã™
 	function getHiddenFileList() {
 		$cnt = 0;
 		foreach($this->keyname as $val) {
@@ -166,7 +166,7 @@ class SC_UploadFile {
 		return $arrRet;
 	}
 	
-	// HIDDEN¤ÇÁ÷¤é¤ì¤Æ¤­¤¿¥Õ¥¡¥¤¥ëÌ¾¤ò¼èÆÀ¤¹¤ë
+	// HIDDENã§é€ã‚‰ã‚Œã¦ããŸãƒ•ã‚¡ã‚¤ãƒ«åã‚’å–å¾—ã™ã‚‹
 	function setHiddenFileList($arrPOST) {
 		$cnt = 0;
 		foreach($this->keyname as $val) {
@@ -182,13 +182,13 @@ class SC_UploadFile {
 		}
 	}
 	
-	// ¥Õ¥©¡¼¥à¤ËÅÏ¤¹ÍÑ¤Î¥Õ¥¡¥¤¥ë¾ğÊóÇÛÎó¤òÊÖ¤¹
+	// ãƒ•ã‚©ãƒ¼ãƒ ã«æ¸¡ã™ç”¨ã®ãƒ•ã‚¡ã‚¤ãƒ«æƒ…å ±é…åˆ—ã‚’è¿”ã™
 	function getFormFileList($temp_url, $save_url, $real_size = false) {
 
 		$cnt = 0;
 		foreach($this->keyname as $val) {
 			if($this->temp_file[$cnt] != "") {
-				// ¥Õ¥¡¥¤¥ë¥Ñ¥¹¥Á¥§¥Ã¥¯(¥Ñ¥¹¤Î¥¹¥é¥Ã¥·¥å/¤¬Ï¢Â³¤·¤Ê¤¤¤è¤¦¤Ë¤¹¤ë¡£)
+				// ãƒ•ã‚¡ã‚¤ãƒ«ãƒ‘ã‚¹ãƒã‚§ãƒƒã‚¯(ãƒ‘ã‚¹ã®ã‚¹ãƒ©ãƒƒã‚·ãƒ¥/ãŒé€£ç¶šã—ãªã„ã‚ˆã†ã«ã™ã‚‹ã€‚)
 				if(ereg("/$", $temp_url)) {
 					$arrRet[$val]['filepath'] = $temp_url . $this->temp_file[$cnt];
 				} else {
@@ -196,7 +196,7 @@ class SC_UploadFile {
 				}
 				$arrRet[$val]['real_filepath'] = $this->temp_dir . $this->temp_file[$cnt];
 			} elseif ($this->save_file[$cnt] != "") {
-				// ¥Õ¥¡¥¤¥ë¥Ñ¥¹¥Á¥§¥Ã¥¯(¥Ñ¥¹¤Î¥¹¥é¥Ã¥·¥å/¤¬Ï¢Â³¤·¤Ê¤¤¤è¤¦¤Ë¤¹¤ë¡£)
+				// ãƒ•ã‚¡ã‚¤ãƒ«ãƒ‘ã‚¹ãƒã‚§ãƒƒã‚¯(ãƒ‘ã‚¹ã®ã‚¹ãƒ©ãƒƒã‚·ãƒ¥/ãŒé€£ç¶šã—ãªã„ã‚ˆã†ã«ã™ã‚‹ã€‚)
 				if(ereg("/$", $save_url)) {
 					$arrRet[$val]['filepath'] = $save_url . $this->save_file[$cnt];
 				} else {
@@ -209,17 +209,17 @@ class SC_UploadFile {
 					if(is_file($arrRet[$val]['real_filepath'])) {
 						list($width, $height) = getimagesize($arrRet[$val]['real_filepath']);
 					}
-					// ¥Õ¥¡¥¤¥ë²£Éı
+					// ãƒ•ã‚¡ã‚¤ãƒ«æ¨ªå¹…
 					$arrRet[$val]['width'] = $width;
-					// ¥Õ¥¡¥¤¥ë½ÄÉı
+					// ãƒ•ã‚¡ã‚¤ãƒ«ç¸¦å¹…
 					$arrRet[$val]['height'] = $height;
 				}else{
-					// ¥Õ¥¡¥¤¥ë²£Éı
+					// ãƒ•ã‚¡ã‚¤ãƒ«æ¨ªå¹…
 					$arrRet[$val]['width'] = $this->width[$cnt];
-					// ¥Õ¥¡¥¤¥ë½ÄÉı
+					// ãƒ•ã‚¡ã‚¤ãƒ«ç¸¦å¹…
 					$arrRet[$val]['height'] = $this->height[$cnt];
 				}
-				// É½¼¨Ì¾
+				// è¡¨ç¤ºå
 				$arrRet[$val]['disp_name'] = $this->disp_name[$cnt];
 			}
 			$cnt++;
@@ -227,7 +227,7 @@ class SC_UploadFile {
 		return $arrRet;
 	}
 	
-	// DBÊİÂ¸ÍÑ¤Î¥Õ¥¡¥¤¥ëÌ¾ÇÛÎó¤òÊÖ¤¹
+	// DBä¿å­˜ç”¨ã®ãƒ•ã‚¡ã‚¤ãƒ«åé…åˆ—ã‚’è¿”ã™
 	function getDBFileList() {
 		$cnt = 0;
 		foreach($this->keyname as $val) {
@@ -241,7 +241,7 @@ class SC_UploadFile {
 		return $arrRet;
 	}
 	
-	// DB¤ÇÊİÂ¸¤µ¤ì¤¿¥Õ¥¡¥¤¥ëÌ¾ÇÛÎó¤ò¥»¥Ã¥È¤¹¤ë
+	// DBã§ä¿å­˜ã•ã‚ŒãŸãƒ•ã‚¡ã‚¤ãƒ«åé…åˆ—ã‚’ã‚»ãƒƒãƒˆã™ã‚‹
 	function setDBFileList($arrVal) {
 		$cnt = 0;
 		foreach($this->keyname as $val) {
@@ -252,7 +252,7 @@ class SC_UploadFile {
 		}
 	}
 	
-	// ²èÁü¤ò¥»¥Ã¥È¤¹¤ë
+	// ç”»åƒã‚’ã‚»ãƒƒãƒˆã™ã‚‹
 	function setDBImageList($arrVal) {
 		$cnt = 0;
 		foreach($this->keyname as $val) {
@@ -263,7 +263,7 @@ class SC_UploadFile {
 		}
 	}
 	
-	// DB¾å¤Î¥Õ¥¡¥¤¥ë¤ÎÆâºï½üÍ×µá¤¬¤¢¤Ã¤¿¥Õ¥¡¥¤¥ë¤òºï½ü¤¹¤ë¡£ 
+	// DBä¸Šã®ãƒ•ã‚¡ã‚¤ãƒ«ã®å†…å‰Šé™¤è¦æ±‚ãŒã‚ã£ãŸãƒ•ã‚¡ã‚¤ãƒ«ã‚’å‰Šé™¤ã™ã‚‹ã€‚ 
 	function deleteDBFile($arrVal) {
 		$objImage = new SC_Image($this->temp_dir);
 		$cnt = 0;
@@ -277,16 +277,16 @@ class SC_UploadFile {
 		}
 	}
 	
-	// É¬¿ÜÈ½Äê
+	// å¿…é ˆåˆ¤å®š
 	function checkEXISTS($keyname = "") {
 		$cnt = 0;
 		$arrRet = array();
 		foreach($this->keyname as $val) {
 			if($val == $keyname || $keyname == "") {
-				// É¬¿Ü¤Ç¤¢¤ì¤Ğ¥¨¥é¡¼¥Á¥§¥Ã¥¯
+				// å¿…é ˆã§ã‚ã‚Œã°ã‚¨ãƒ©ãƒ¼ãƒã‚§ãƒƒã‚¯
 				if ($this->necessary[$cnt] == true) {
 					if($this->save_file[$cnt] == "" && $this->temp_file[$cnt] == "") {
-						$arrRet[$val] = "¢¨ " . $this->disp_name[$cnt] . "¤¬¥¢¥Ã¥×¥í¡¼¥É¤µ¤ì¤Æ¤¤¤Ş¤»¤ó¡£<br>";
+						$arrRet[$val] = "â€» " . $this->disp_name[$cnt] . "ãŒã‚¢ãƒƒãƒ—ãƒ­ãƒ¼ãƒ‰ã•ã‚Œã¦ã„ã¾ã›ã‚“ã€‚<br>";
 					}
 				}
 			}
@@ -295,18 +295,18 @@ class SC_UploadFile {
 		return $arrRet;
 	}
 		
-	// ³ÈÂçÎ¨¤ò»ØÄê¤·¤Æ²èÁüÊİÂ¸
+	// æ‹¡å¤§ç‡ã‚’æŒ‡å®šã—ã¦ç”»åƒä¿å­˜
 	function saveResizeImage($keyname, $to_w, $to_h) {
 		$path = "";
 		
-		// keyname¤ÎÅºÉÕ¥Õ¥¡¥¤¥ë¤ò¼èÆÀ
+		// keynameã®æ·»ä»˜ãƒ•ã‚¡ã‚¤ãƒ«ã‚’å–å¾—
 		$arrImageKey = array_flip($this->keyname);
 		$file = $this->temp_file[$arrImageKey[$keyname]];
 		$filepath = $this->temp_dir . $file;
 		
 		$path = $this->makeThumb($filepath, $to_w, $to_h);
 		
-		// ¥Õ¥¡¥¤¥ëÌ¾¤À¤±ÊÖ¤¹
+		// ãƒ•ã‚¡ã‚¤ãƒ«åã ã‘è¿”ã™
 		return basename($path);
 	}
 }

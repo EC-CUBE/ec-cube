@@ -84,17 +84,17 @@
 	}
 	
 	
-// ¥Ä¥ê¡¼¥Ç¡¼¥¿
+// ãƒ„ãƒªãƒ¼ãƒ‡ãƒ¼ã‚¿
 var data = <!--{$data}-->
 
-//¤³¤³¤«¤é²¼¤Ï¿¨¤é¤Ê¤¯¤Æ¤âOK
-//(namespace¤Ï»È¤ï¤Ê¤¯¤Æ¤âÆ°ºî¤·¤Ş¤¹)
-YAHOO.namespace('treefolder');//¥«¥¹¥¿¥Ş¥¤¥º¤·¤¿´Ø¿ô¤Ê¤ÉÍÑ¤ËÌ¾Á°¶õ´Ö¤òÍÑ°Õ¤·¤Æ¤ª¤­¤Ş¤¹
+//ã“ã“ã‹ã‚‰ä¸‹ã¯è§¦ã‚‰ãªãã¦ã‚‚OK
+//(namespaceã¯ä½¿ã‚ãªãã¦ã‚‚å‹•ä½œã—ã¾ã™)
+YAHOO.namespace('treefolder');//ã‚«ã‚¹ã‚¿ãƒã‚¤ã‚ºã—ãŸé–¢æ•°ãªã©ç”¨ã«åå‰ç©ºé–“ã‚’ç”¨æ„ã—ã¦ãŠãã¾ã™
 YAHOO.treefolder.tree = function(tree,data) {
 	this.data = data;
 	this.tree = tree;
 
-	//TreeÉÁ²è 
+	//Treeæç”» 
 	this.mkTree = function (oj,node){
 		for(var i in oj){
 			if(typeof oj[i] != "number" && i != "_href"){
@@ -116,15 +116,15 @@ YAHOO.treefolder.tree = function(tree,data) {
 	}
 }
 
-//½é´ü²½
+//åˆæœŸåŒ–
 YAHOO.treefolder.treeIni = function(){
 
-	var tree = new YAHOO.widget.TreeView("treeDiv1");//treeDiv1¤ÏÉ½¼¨¤¹¤ëDIV¤ÎIDÌ¾¤Ç¤¹
-	test1 = new YAHOO.treefolder.tree(tree,data);//¤³¤³¤ÇTree¥Ç¡¼¥¿¤òÅÏ¤·¤Ş¤¹
+	var tree = new YAHOO.widget.TreeView("treeDiv1");//treeDiv1ã¯è¡¨ç¤ºã™ã‚‹DIVã®IDåã§ã™
+	test1 = new YAHOO.treefolder.tree(tree,data);//ã“ã“ã§Treeãƒ‡ãƒ¼ã‚¿ã‚’æ¸¡ã—ã¾ã™
 	test1.mkTree(test1.data, tree.getRoot());
 }
 
-//¥Ú¡¼¥¸ÆÉ¤ß¹ş¤ß¸å¤Ë¥«¥¹¥¿¥Ş¥¤¥º´Ø¿ôYAHOO.treefolder.treeIni()¤òµ¯Æ°¤·¤Ş¤¹
+//ãƒšãƒ¼ã‚¸èª­ã¿è¾¼ã¿å¾Œã«ã‚«ã‚¹ã‚¿ãƒã‚¤ã‚ºé–¢æ•°YAHOO.treefolder.treeIni()ã‚’èµ·å‹•ã—ã¾ã™
 YAHOO.util.Event.addListener(window, 'load', YAHOO.treefolder.treeIni);
 
 </script>

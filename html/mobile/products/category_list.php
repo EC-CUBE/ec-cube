@@ -6,26 +6,26 @@
  * http://www.lockon.co.jp/
  * 
  *
- * ¥â¥Ğ¥¤¥ë¥µ¥¤¥È/¥«¥Æ¥´¥ê¡¼°ìÍ÷
+ * ãƒ¢ãƒã‚¤ãƒ«ã‚µã‚¤ãƒˆ/ã‚«ãƒ†ã‚´ãƒªãƒ¼ä¸€è¦§
  */
 
 require_once('../require.php');
 
 class LC_Page {
 	function LC_Page() {
-		/** É¬¤º»ØÄê¤¹¤ë **/
-		$this->tpl_mainpage = 'products/category_list.tpl';			// ¥á¥¤¥ó¥Æ¥ó¥×¥ì¡¼¥È
-		$this->tpl_title = '¥«¥Æ¥´¥ê°ìÍ÷¥Ú¡¼¥¸';
+		/** å¿…ãšæŒ‡å®šã™ã‚‹ **/
+		$this->tpl_mainpage = 'products/category_list.tpl';			// ãƒ¡ã‚¤ãƒ³ãƒ†ãƒ³ãƒ—ãƒ¬ãƒ¼ãƒˆ
+		$this->tpl_title = 'ã‚«ãƒ†ã‚´ãƒªä¸€è¦§ãƒšãƒ¼ã‚¸';
 	}
 }
 
 $objPage = new LC_Page();
 $objView = new SC_MobileView();
 
-// ¥ì¥¤¥¢¥¦¥È¥Ç¥¶¥¤¥ó¤ò¼èÆÀ
+// ãƒ¬ã‚¤ã‚¢ã‚¦ãƒˆãƒ‡ã‚¶ã‚¤ãƒ³ã‚’å–å¾—
 $objPage = sfGetPageLayout($objPage, false, DEF_LAYOUT);
 
-// ¥«¥Æ¥´¥ê¡¼¾ğÊó¤ò¼èÆÀ¤¹¤ë¡£
+// ã‚«ãƒ†ã‚´ãƒªãƒ¼æƒ…å ±ã‚’å–å¾—ã™ã‚‹ã€‚
 lfGetCategories(@$_GET['category_id'], true, $objPage);
 
 $objView->assignobj($objPage);
@@ -34,38 +34,38 @@ $objView->display(SITE_FRAME);
 //-----------------------------------------------------------------------------------------------------------------------------------
 
 /**
- * ÁªÂò¤µ¤ì¤¿¥«¥Æ¥´¥ê¡¼¤È¤½¤Î»Ò¥«¥Æ¥´¥ê¡¼¤Î¾ğÊó¤ò¼èÆÀ¤·¡¢
- * ¥Ú¡¼¥¸¥ª¥Ö¥¸¥§¥¯¥È¤Ë³ÊÇ¼¤¹¤ë¡£
+ * é¸æŠã•ã‚ŒãŸã‚«ãƒ†ã‚´ãƒªãƒ¼ã¨ãã®å­ã‚«ãƒ†ã‚´ãƒªãƒ¼ã®æƒ…å ±ã‚’å–å¾—ã—ã€
+ * ãƒšãƒ¼ã‚¸ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã«æ ¼ç´ã™ã‚‹ã€‚
  *
- * @param string $category_id ¥«¥Æ¥´¥ê¡¼ID
- * @param boolean $count_check Í­¸ú¤Ê¾¦ÉÊ¤¬¤Ê¤¤¥«¥Æ¥´¥ê¡¼¤ò½ü¤¯¤«¤É¤¦¤«
- * @param object &$objPage ¥Ú¡¼¥¸¥ª¥Ö¥¸¥§¥¯¥È
+ * @param string $category_id ã‚«ãƒ†ã‚´ãƒªãƒ¼ID
+ * @param boolean $count_check æœ‰åŠ¹ãªå•†å“ãŒãªã„ã‚«ãƒ†ã‚´ãƒªãƒ¼ã‚’é™¤ãã‹ã©ã†ã‹
+ * @param object &$objPage ãƒšãƒ¼ã‚¸ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆ
  * @return void
  */
 function lfGetCategories($category_id, $count_check = false, &$objPage) {
-	// ¥«¥Æ¥´¥ê¡¼¤ÎÀµ¤·¤¤ID¤ò¼èÆÀ¤¹¤ë¡£
+	// ã‚«ãƒ†ã‚´ãƒªãƒ¼ã®æ­£ã—ã„IDã‚’å–å¾—ã™ã‚‹ã€‚
 	$category_id = sfGetCategoryId('', $category_id);
 	if ($category_id == 0) {
 		sfDispSiteError(CATEGORY_NOT_FOUND, "", false, "", true);
 	}
 
-	$arrCategory = null;	// ÁªÂò¤µ¤ì¤¿¥«¥Æ¥´¥ê¡¼
-	$arrChildren = array();	// »Ò¥«¥Æ¥´¥ê¡¼
+	$arrCategory = null;	// é¸æŠã•ã‚ŒãŸã‚«ãƒ†ã‚´ãƒªãƒ¼
+	$arrChildren = array();	// å­ã‚«ãƒ†ã‚´ãƒªãƒ¼
 
 	$arrAll = sfGetCatTree($category_id, $count_check);
 	foreach ($arrAll as $category) {
-		// ÁªÂò¤µ¤ì¤¿¥«¥Æ¥´¥ê¡¼¤Î¾ì¹ç
+		// é¸æŠã•ã‚ŒãŸã‚«ãƒ†ã‚´ãƒªãƒ¼ã®å ´åˆ
 		if ($category['category_id'] == $category_id) {
 			$arrCategory = $category;
 			continue;
 		}
 
-		// ´Ø·¸¤Î¤Ê¤¤¥«¥Æ¥´¥ê¡¼¤Ï¥¹¥­¥Ã¥×¤¹¤ë¡£
+		// é–¢ä¿‚ã®ãªã„ã‚«ãƒ†ã‚´ãƒªãƒ¼ã¯ã‚¹ã‚­ãƒƒãƒ—ã™ã‚‹ã€‚
 		if ($category['parent_category_id'] != $category_id) {
 			continue;
 		}
 
-		// »Ò¥«¥Æ¥´¥ê¡¼¤Î¾ì¹ç¤Ï¡¢Â¹¥«¥Æ¥´¥ê¡¼¤¬Â¸ºß¤¹¤ë¤«¤É¤¦¤«¤òÄ´¤Ù¤ë¡£
+		// å­ã‚«ãƒ†ã‚´ãƒªãƒ¼ã®å ´åˆã¯ã€å­«ã‚«ãƒ†ã‚´ãƒªãƒ¼ãŒå­˜åœ¨ã™ã‚‹ã‹ã©ã†ã‹ã‚’èª¿ã¹ã‚‹ã€‚
 		$arrGrandchildrenID = sfGetUnderChildrenArray($arrAll, 'parent_category_id', 'category_id', $category['category_id']);
 		$category['has_children'] = count($arrGrandchildrenID) > 0;
 		$arrChildren[] = $category;
@@ -75,20 +75,20 @@ function lfGetCategories($category_id, $count_check = false, &$objPage) {
 		sfDispSiteError(CATEGORY_NOT_FOUND, "", false, "", true);
 	}
 
-	// »Ò¥«¥Æ¥´¥ê¡¼¤Î¾¦ÉÊ¿ô¤ò¹ç·×¤¹¤ë¡£
+	// å­ã‚«ãƒ†ã‚´ãƒªãƒ¼ã®å•†å“æ•°ã‚’åˆè¨ˆã™ã‚‹ã€‚
 	$children_product_count = 0;
 	foreach ($arrChildren as $category) {
 		$children_product_count += $category['product_count'];
 	}
 
-	// ÁªÂò¤µ¤ì¤¿¥«¥Æ¥´¥ê¡¼¤ËÄ¾Â°¤Î¾¦ÉÊ¤¬¤¢¤ë¾ì¹ç¤Ï¡¢»Ò¥«¥Æ¥´¥ê¡¼¤ÎÀèÆ¬¤ËÄÉ²Ã¤¹¤ë¡£
+	// é¸æŠã•ã‚ŒãŸã‚«ãƒ†ã‚´ãƒªãƒ¼ã«ç›´å±ã®å•†å“ãŒã‚ã‚‹å ´åˆã¯ã€å­ã‚«ãƒ†ã‚´ãƒªãƒ¼ã®å…ˆé ­ã«è¿½åŠ ã™ã‚‹ã€‚
 	if ($arrCategory['product_count'] > $children_product_count) {
-		$arrCategory['product_count'] -= $children_product_count;	// »Ò¥«¥Æ¥´¥ê¡¼¤Î¾¦ÉÊ¿ô¤ò½ü¤¯¡£
-		$arrCategory['has_children'] = false;	// ¾¦ÉÊ°ìÍ÷¥Ú¡¼¥¸¤ËÁ«°Ü¤µ¤»¤ë¤¿¤á¡£
+		$arrCategory['product_count'] -= $children_product_count;	// å­ã‚«ãƒ†ã‚´ãƒªãƒ¼ã®å•†å“æ•°ã‚’é™¤ãã€‚
+		$arrCategory['has_children'] = false;	// å•†å“ä¸€è¦§ãƒšãƒ¼ã‚¸ã«é·ç§»ã•ã›ã‚‹ãŸã‚ã€‚
 		array_unshift($arrChildren, $arrCategory);
 	}
 
-	// ·ë²Ì¤ò³ÊÇ¼¤¹¤ë¡£
+	// çµæœã‚’æ ¼ç´ã™ã‚‹ã€‚
 	$objPage->arrCategory = $arrCategory;
 	$objPage->arrChildren = $arrChildren;
 }

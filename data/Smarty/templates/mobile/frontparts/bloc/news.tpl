@@ -7,12 +7,12 @@
 *}-->
 <!--{if count($arrNews) > 0}-->
 <center>
-¡½¡½¡½¡½¡½¡½¡½¡½¡½<br>
+â€•â€•â€•â€•â€•â€•â€•â€•â€•<br>
 <!--{marquee}-->
 <!--{if $arrNews[0].news_url}--><a href="<!--{$arrNews[0].news_url|escape}-->"><!--{/if}-->
 <!--{$arrNews[0].news_title|escape}-->
 <!--{if $arrNews[0].news_url}--></a><!--{/if}-->
 <!--{/marquee}-->
-¡½¡½¡½¡½¡½¡½¡½¡½¡½<br>
+â€•â€•â€•â€•â€•â€•â€•â€•â€•<br>
 </center>
 <!--{/if}-->

@@ -5,65 +5,65 @@
  * http://www.lockon.co.jp/
  */
 *}-->
-<!-- ╒╖╔©╔╓╔х╔К ╓Ё╓Ё╓╚╓И -->
+<!-- Б√╪Ц┌©Ц┌╓Ц┐┬Ц┐╚ Ц│⌠Ц│⌠Ц│▀Ц┌┴ -->
 <center><!--{$tpl_subtitle|escape}--></center>
-<!-- ╒╔╔©╔╓╔х╔К ╓Ё╓Ё╓ч╓г -->
+<!-- Б√╡Ц┌©Ц┌╓Ц┐┬Ц┐╚ Ц│⌠Ц│⌠Ц│╬Ц│╖ -->
 
 <hr>
 
 <!--{if isset($tpl_previous_page|smarty:nodefaults) || isset($tpl_next_page|smarty:nodefaults)}-->
 <!--{if isset($tpl_previous_page|smarty:nodefaults)}-->
-<a href="<!--{$tpl_previous_page|escape}-->">а╟╓ь</a>
+<a href="<!--{$tpl_previous_page|escape}-->">Е┴█Ц│╦</a>
 <!--{/if}-->
 <!--{if isset($tpl_previous_page|smarty:nodefaults) && isset($tpl_next_page|smarty:nodefaults)}-->
-║ц
+О╫°
 <!--{/if}-->
 <!--{if isset($tpl_next_page|smarty:nodefaults)}-->
-<a href="<!--{$tpl_next_page|escape}-->">╪║╓ь</a>
+<a href="<!--{$tpl_next_page|escape}-->">Ф╛║Ц│╦</a>
 <!--{/if}-->
 <br><br>
 <!--{/if}-->
 
 <!--{foreach from=$arrProducts key=i item=arrProduct}-->
-<!-- ╒╖╬╕ий ╓Ё╓Ё╓╚╓И -->
+<!-- Б√╪Е∙├Е⌠│ Ц│⌠Ц│⌠Ц│▀Ц┌┴ -->
 <!--{if $i+1<9}--><!--{$i+1|numeric_emoji}--><!--{else}-->[<!--{$i+1}-->]<!--{/if}-->
-<!-- ╬╕ийл╬ --><!--{$arrProduct.name|escape}--><br>
+<!-- Е∙├Е⌠│Е░█ --><!--{$arrProduct.name|escape}--><br>
 
-╡аЁй║╖
+Д╬║Ф═╪О╪ 
 <!--{if $arrProduct.price02_min == $arrProduct.price02_max}-->
-║О<!--{$arrProduct.price02_min|sfPreTax:$arrSiteInfo.tax:$arrSiteInfo.tax_rule|number_format}-->
+О©╔<!--{$arrProduct.price02_min|sfPreTax:$arrSiteInfo.tax:$arrSiteInfo.tax_rule|number_format}-->
 <!--{else}-->
-║О<!--{$arrProduct.price02_min|sfPreTax:$arrSiteInfo.tax:$arrSiteInfo.tax_rule|number_format}-->║а║О<!--{$arrProduct.price02_max|sfPreTax:$arrSiteInfo.tax:$arrSiteInfo.tax_rule|number_format}-->
+О©╔<!--{$arrProduct.price02_min|sfPreTax:$arrSiteInfo.tax:$arrSiteInfo.tax_rule|number_format}-->Ц─°О©╔<!--{$arrProduct.price02_max|sfPreTax:$arrSiteInfo.tax:$arrSiteInfo.tax_rule|number_format}-->
 <!--{/if}-->
 <br>
 
 <div align="right">
 <!--{if $i+1<9}-->
-<a href="<!--{$smarty.const.MOBILE_DETAIL_P_HTML}--><!--{$arrProduct.product_id}-->" accesskey="<!--{$i+1}-->">╬╕ий╬э╨ы╓ь╒╙</a>
+<a href="<!--{$smarty.const.MOBILE_DETAIL_P_HTML}--><!--{$arrProduct.product_id}-->" accesskey="<!--{$i+1}-->">Е∙├Е⌠│Х╘ЁГ╢╟Ц│╦Б├▓</a>
 <!--{else}-->
-<a href="<!--{$smarty.const.MOBILE_DETAIL_P_HTML}--><!--{$arrProduct.product_id}-->">╬╕ий╬э╨ы╓ь╒╙</a>
+<a href="<!--{$smarty.const.MOBILE_DETAIL_P_HTML}--><!--{$arrProduct.product_id}-->">Е∙├Е⌠│Х╘ЁГ╢╟Ц│╦Б├▓</a>
 <!--{/if}-->
 </div>
 
 <br>
-<!-- ╒╔╬╕ий ╓Ё╓Ё╓ч╓г -->
+<!-- Б√╡Е∙├Е⌠│ Ц│⌠Ц│⌠Ц│╬Ц│╖ -->
 <!--{foreachelse}-->
 <!--{if $tpl_search_mode}-->
-Ё╨еЖ╥О©Т0╥О╓г╓╧║ёб╬╓н╦║╨В╔╜║╪╔О║╪╔и╓Х╓Й╨феы╦║╨В╓Р╓╥╓ф╓╞╓ю╓╣╓╓║ё<br>
+Х╘╡Е╫⌠Д╩╤Ф∙╟0Д╩╤Ц│╖Ц│≥Ц─┌Д╩√Ц│╝Ф╓°Г╢╒Ц┌╜Ц┐╪Ц┐╞Ц┐╪Ц┐┴Ц┌┬Ц┌┼Е├█Е╨╕Ф╓°Г╢╒Ц┌▓Ц│≈Ц│╕Ц│▐Ц│═Ц│∙Ц│└Ц─┌<br>
 <!--{else}-->
-╬╕ий╓╛╓╒╓Й╓ч╓╩╓С║ё<br>
+Е∙├Е⌠│Ц│▄Ц│┌Ц┌┼Ц│╬Ц│⌡Ц┌⌠Ц─┌<br>
 <!--{/if}-->
 <!--{/foreach}-->
 
 <!--{if isset($tpl_previous_page|smarty:nodefaults) || isset($tpl_next_page|smarty:nodefaults)}-->
 <!--{if isset($tpl_previous_page|smarty:nodefaults)}-->
-<a href="<!--{$tpl_previous_page|escape}-->">а╟╓ь</a>
+<a href="<!--{$tpl_previous_page|escape}-->">Е┴█Ц│╦</a>
 <!--{/if}-->
 <!--{if isset($tpl_previous_page|smarty:nodefaults) && isset($tpl_next_page|smarty:nodefaults)}-->
-║ц
+О╫°
 <!--{/if}-->
 <!--{if isset($tpl_next_page|smarty:nodefaults)}-->
-<a href="<!--{$tpl_next_page|escape}-->">╪║╓ь</a>
+<a href="<!--{$tpl_next_page|escape}-->">Ф╛║Ц│╦</a>
 <!--{/if}-->
 <br>
 <!--{/if}-->
@@ -71,11 +71,11 @@
 <br>
 <hr>
 
-<a href="<!--{$smarty.const.MOBILE_URL_CART_TOP}-->" accesskey="9"><!--{9|numeric_emoji}-->╓╚╓╢╓Р╦╚╓К</a><br>
-<a href="<!--{$smarty.const.MOBILE_URL_SITE_TOP}-->" accesskey="0"><!--{0|numeric_emoji}-->TOP╔з║╪╔╦╓ь</a><br>
+<a href="<!--{$smarty.const.MOBILE_URL_CART_TOP}-->" accesskey="9"><!--{9|numeric_emoji}-->Ц│▀Ц│■Ц┌▓Х╕▀Ц┌▀</a><br>
+<a href="<!--{$smarty.const.MOBILE_URL_SITE_TOP}-->" accesskey="0"><!--{0|numeric_emoji}-->TOPЦ┐ Ц┐╪Ц┌╦Ц│╦</a><br>
 
 <br>
 
-<!-- ╒╖╔у╔ц╔©║╪ ╓Ё╓Ё╓╚╓И -->
+<!-- Б√╪Ц┐∙Ц┐┐Ц┌©Ц┐╪ Ц│⌠Ц│⌠Ц│▀Ц┌┴ -->
 <!--{include file='footer.tpl'}-->
-<!-- ╒╔╔у╔ц╔©║╪ ╓Ё╓Ё╓ч╓г -->
+<!-- Б√╡Ц┐∙Ц┐┐Ц┌©Ц┐╪ Ц│⌠Ц│⌠Ц│╬Ц│╖ -->

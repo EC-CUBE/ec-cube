@@ -16,40 +16,40 @@ class LC_Page {
 	}
 }
 
-//---- ¥Ú¡¼¥¸½é´üÀßÄê
+//---- ãƒšãƒ¼ã‚¸åˆæœŸè¨­å®š
 $conn = new SC_DBConn();
 $objPage = new LC_Page();
 $objView = new SC_AdminView();
 $objSess = new SC_Session();
 $objDate = new SC_Date();
 
-// Ç§¾Ú²ÄÈÝ¤ÎÈ½Äê
+// èªè¨¼å¯å¦ã®åˆ¤å®š
 sfIsSuccess($objSess);
 
 
 if ( $_POST['body'] ){
 	$objPage->body = $_POST['body'];
 
-// HTML¥á¡¼¥ë¥Æ¥ó¥×¥ì¡¼¥È¤Î¥×¥ì¥Ó¥å¡¼
+// HTMLãƒ¡ãƒ¼ãƒ«ãƒ†ãƒ³ãƒ—ãƒ¬ãƒ¼ãƒˆã®ãƒ—ãƒ¬ãƒ“ãƒ¥ãƒ¼
 } elseif ($_REQUEST["method"] == "template" && sfCheckNumLength($_REQUEST['id'])) {
 
 	$sql = "SELECT * FROM dtb_mailmaga_template WHERE template_id = ?";
 	$result = $conn->getAll($sql, array($_REQUEST["id"]));
 	$objPage->list_data = $result[0];
 	
-	//¥á¡¼¥ëÃ´Åö¼Ì¿¿¤ÎÉ½¼¨
+	//ãƒ¡ãƒ¼ãƒ«æ‹…å½“å†™çœŸã®è¡¨ç¤º
 	$objUpFile = new SC_UploadFile(IMAGE_TEMP_URL, IMAGE_SAVE_URL);
-	$objUpFile->addFile("¥á¡¼¥ëÃ´Åö¼Ì¿¿", 'charge_image', array('jpg'), IMAGE_SIZE, true, SMALL_IMAGE_WIDTH, SMALL_IMAGE_HEIGHT);
+	$objUpFile->addFile("ãƒ¡ãƒ¼ãƒ«æ‹…å½“å†™çœŸ", 'charge_image', array('jpg'), IMAGE_SIZE, true, SMALL_IMAGE_WIDTH, SMALL_IMAGE_HEIGHT);
 	$objUpFile->setDBFileList($objPage->list_data);
-	// FormÍÑÇÛÎó¤òÅÏ¤¹¡£
+	// Formç”¨é…åˆ—ã‚’æ¸¡ã™ã€‚
 	$objPage->arrFile = $objUpFile->getFormFileList(IMAGE_TEMP_URL, IMAGE_SAVE_URL);
 	
-	// ¥á¥¤¥ó¾¦ÉÊ¤Î¾ðÊó¼èÆÀ
+	// ãƒ¡ã‚¤ãƒ³å•†å“ã®æƒ…å ±å–å¾—
 	$sql = "SELECT name, main_image, point_rate, deliv_fee, price01_min, price01_max, price02_min, price02_max FROM vw_products_allclass AS allcls WHERE product_id = ?";
 	$main = $conn->getAll($sql, array($objPage->list_data["main_product_id"]));
 	$objPage->list_data["main"] = $main[0];
 
-	// ¥µ¥Ö¾¦ÉÊ¤Î¾ðÊó¼èÆÀ
+	// ã‚µãƒ–å•†å“ã®æƒ…å ±å–å¾—
 	$sql = "SELECT product_id, name, main_list_image, price01_min, price01_max, price02_min, price02_max FROM vw_products_allclass WHERE product_id = ?";
 	$k = 0;
 	$l = 0;
@@ -67,7 +67,7 @@ if ( $_POST['body'] ){
 		if (is_numeric($objPage->list_data["sub_product_id" .$j])) {
 			$result = $conn->getAll($sql, array($objPage->list_data["sub_product_id" .$j]));
 			$objPage->list_data["sub"][$k][$l] = $result[0];
-			$objPage->list_data["sub"][$k]["data_exists"] = "OK";	//Åö³ºÃÊ¤Ë¥Ç¡¼¥¿¤¬£±¤Ä°Ê¾åÂ¸ºß¤¹¤ë¥Õ¥é¥°
+			$objPage->list_data["sub"][$k]["data_exists"] = "OK";	//å½“è©²æ®µã«ãƒ‡ãƒ¼ã‚¿ãŒï¼‘ã¤ä»¥ä¸Šå­˜åœ¨ã™ã‚‹ãƒ•ãƒ©ã‚°
 		}
 		$l ++;
 	}
@@ -86,7 +86,7 @@ if ( $_POST['body'] ){
 	
 	if ( $result ){
 		if ( $result[0]["mail_method"] == 2 ){
-			// ¥Æ¥­¥¹¥È·Á¼°¤Î»þ¤Ï¥¿¥°Ê¸»ú¤ò¥¨¥¹¥±¡¼¥×
+			// ãƒ†ã‚­ã‚¹ãƒˆå½¢å¼ã®æ™‚ã¯ã‚¿ã‚°æ–‡å­—ã‚’ã‚¨ã‚¹ã‚±ãƒ¼ãƒ—
 			$objPage->escape_flag = 1;
 		}
 		$objPage->body = $result[0]["body"];

@@ -10,13 +10,13 @@ require_once(MODULE_PATH . "mdl_remise/mdl_remise.inc");
 
 class LC_Page {
 	function LC_Page() {
-		/** É¬¤º»ØÄê¤¹¤ë **/
-		$this->tpl_mainpage = MODULE_PATH . 'mdl_remise/card.tpl';			// ¥á¥¤¥ó¥Æ¥ó¥×¥ì¡¼¥È
-		$this->tpl_title = "¥«¡¼¥É·èºÑ";
+		/** å¿…ãšæŒ‡å®šã™ã‚‹ **/
+		$this->tpl_mainpage = MODULE_PATH . 'mdl_remise/card.tpl';			// ãƒ¡ã‚¤ãƒ³ãƒ†ãƒ³ãƒ—ãƒ¬ãƒ¼ãƒˆ
+		$this->tpl_title = "ã‚«ãƒ¼ãƒ‰æ±ºæ¸ˆ";
 		/*
-		 session_start»ş¤Îno-cache¥Ø¥Ã¥À¡¼¤òÍŞÀ©¤¹¤ë¤³¤È¤Ç
-		 ¡ÖÌá¤ë¡×¥Ü¥¿¥ó»ÈÍÑ»ş¤ÎÍ­¸ú´ü¸ÂÀÚ¤ìÉ½¼¨¤òÍŞÀ©¤¹¤ë¡£
-		 private-no-expire:¥¯¥é¥¤¥¢¥ó¥È¤Î¥­¥ã¥Ã¥·¥å¤òµö²Ä¤¹¤ë¡£
+		 session_startæ™‚ã®no-cacheãƒ˜ãƒƒãƒ€ãƒ¼ã‚’æŠ‘åˆ¶ã™ã‚‹ã“ã¨ã§
+		 ã€Œæˆ»ã‚‹ã€ãƒœã‚¿ãƒ³ä½¿ç”¨æ™‚ã®æœ‰åŠ¹æœŸé™åˆ‡ã‚Œè¡¨ç¤ºã‚’æŠ‘åˆ¶ã™ã‚‹ã€‚
+		 private-no-expire:ã‚¯ãƒ©ã‚¤ã‚¢ãƒ³ãƒˆã®ã‚­ãƒ£ãƒƒã‚·ãƒ¥ã‚’è¨±å¯ã™ã‚‹ã€‚
 		*/
 		session_cache_limiter('private-no-expire');		
 	}
@@ -27,54 +27,54 @@ $objView = new SC_SiteView();
 $objSiteInfo = $objView->objSiteInfo;
 $arrInfo = $objSiteInfo->data;
 
-// ¥Ñ¥é¥á¡¼¥¿´ÉÍı¥¯¥é¥¹
+// ãƒ‘ãƒ©ãƒ¡ãƒ¼ã‚¿ç®¡ç†ã‚¯ãƒ©ã‚¹
 $objFormParam = new SC_FormParam();
-// ¥Ñ¥é¥á¡¼¥¿¾ğÊó¤Î½é´ü²½
+// ãƒ‘ãƒ©ãƒ¡ãƒ¼ã‚¿æƒ…å ±ã®åˆæœŸåŒ–
 lfInitParam();
-// POSTÃÍ¤Î¼èÆÀ
+// POSTå€¤ã®å–å¾—
 $objFormParam->setParam($_POST);
 
-// ¥æ¡¼¥¶¥æ¥Ë¡¼¥¯ID¤Î¼èÆÀ¤È¹ØÆş¾õÂÖ¤ÎÀµÅöÀ­¤ò¥Á¥§¥Ã¥¯
+// ãƒ¦ãƒ¼ã‚¶ãƒ¦ãƒ‹ãƒ¼ã‚¯IDã®å–å¾—ã¨è³¼å…¥çŠ¶æ…‹ã®æ­£å½“æ€§ã‚’ãƒã‚§ãƒƒã‚¯
 $uniqid = sfCheckNormalAccess($objSiteSess, $objCartSess);
 
-// ¥«¡¼¥È½¸·×½èÍı
+// ã‚«ãƒ¼ãƒˆé›†è¨ˆå‡¦ç†
 $objPage = sfTotalCart($objPage, $objCartSess, $arrInfo);
 
-// °ì»ş¼õÃí¥Æ¡¼¥Ö¥ë¤ÎÆÉ¹ş
+// ä¸€æ™‚å—æ³¨ãƒ†ãƒ¼ãƒ–ãƒ«ã®èª­è¾¼
 $arrData = sfGetOrderTemp($uniqid);
 
-// ¥«¡¼¥È½¸·×¤ò¸µ¤ËºÇ½ª·×»»
+// ã‚«ãƒ¼ãƒˆé›†è¨ˆã‚’å…ƒã«æœ€çµ‚è¨ˆç®—
 $arrData = sfTotalConfirm($arrData, $objPage, $objCartSess, $arrInfo);
 
 $sql = "SELECT module_id, memo01, memo02, memo03, memo04, memo05, memo06, memo07, memo08, memo09, memo10 ".
 	"FROM dtb_payment WHERE payment_id = ? ";
 
-// »ÙÊ§¤¤¾ğÊó¤ò¼èÆÀ
+// æ”¯æ‰•ã„æƒ…å ±ã‚’å–å¾—
 $arrPayment = $objQuery->getall($sql, array($arrData["payment_id"]));
 
-// ²èÌÌÁ«°ÜÈ½Äê
+// ç”»é¢é·ç§»åˆ¤å®š
 switch($_POST["mode"]){
-	//Ìá¤ë
+	//æˆ»ã‚‹
 	case 'return':
-		// Àµ¾ï¤ËÅĞÏ¿¤µ¤ì¤¿¤³¤È¤òµ­Ï¿¤·¤Æ¤ª¤¯
+		// æ­£å¸¸ã«ç™»éŒ²ã•ã‚ŒãŸã“ã¨ã‚’è¨˜éŒ²ã—ã¦ãŠã
 		$objSiteSess->setRegistFlag();
-		// ³ÎÇ§¥Ú¡¼¥¸¤Ø°ÜÆ°
+		// ç¢ºèªãƒšãƒ¼ã‚¸ã¸ç§»å‹•
 		header("Location: " . URL_SHOP_CONFIRM);
 		exit;
 		break;
 }
 
-// ¥ë¥ß¡¼¥º¤«¤é¤ÎÊÖ¿®¤¬¤¢¤Ã¤¿¾ì¹ç
+// ãƒ«ãƒŸãƒ¼ã‚ºã‹ã‚‰ã®è¿”ä¿¡ãŒã‚ã£ãŸå ´åˆ
 if (isset($_POST["X-R_CODE"])) {
 	
 	$err_detail = "";
 	
-	// ÄÌ¿®»ş¥¨¥é¡¼
+	// é€šä¿¡æ™‚ã‚¨ãƒ©ãƒ¼
 	if ($_POST["X-R_CODE"] != $arrRemiseErrorWord["OK"]) {
 		$err_detail = $_POST["X-R_CODE"];
-		sfDispSiteError(FREE_ERROR_MSG, "", false, "¹ØÆş½èÍıÃæ¤Ë°Ê²¼¤Î¥¨¥é¡¼¤¬È¯À¸¤·¤Ş¤·¤¿¡£<br /><br /><br />¡¦" . $err_detail);
+		sfDispSiteError(FREE_ERROR_MSG, "", false, "è³¼å…¥å‡¦ç†ä¸­ã«ä»¥ä¸‹ã®ã‚¨ãƒ©ãƒ¼ãŒç™ºç”Ÿã—ã¾ã—ãŸã€‚<br /><br /><br />ãƒ»" . $err_detail);
 		
-	// ÄÌ¿®·ë²ÌÀµ¾ï
+	// é€šä¿¡çµæœæ­£å¸¸
 	} else {
 		
 		$log_path = DATA_PATH . "logs/remise_card_finish.log";
@@ -84,60 +84,60 @@ if (isset($_POST["X-R_CODE"])) {
 		}
 		gfPrintLog("remise card finish end  ----------", $log_path);
 	
-		// ¶â³Û¤ÎÀ°¹çÀ­¥Á¥§¥Ã¥¯
+		// é‡‘é¡ã®æ•´åˆæ€§ãƒã‚§ãƒƒã‚¯
 		if ($arrData["payment_total"] != $_POST["X-TOTAL"] && $arrData["credit_result"] != $_POST["X-TRANID"]) {
-			sfDispSiteError(FREE_ERROR_MSG, "", false, "¹ØÆş½èÍıÃæ¤Ë°Ê²¼¤Î¥¨¥é¡¼¤¬È¯À¸¤·¤Ş¤·¤¿¡£<br /><br /><br />¡¦ÀÁµá¶â³Û¤È»ÙÊ§¤¤¶â³Û¤¬°ã¤¤¤Ş¤¹¡£");
+			sfDispSiteError(FREE_ERROR_MSG, "", false, "è³¼å…¥å‡¦ç†ä¸­ã«ä»¥ä¸‹ã®ã‚¨ãƒ©ãƒ¼ãŒç™ºç”Ÿã—ã¾ã—ãŸã€‚<br /><br /><br />ãƒ»è«‹æ±‚é‡‘é¡ã¨æ”¯æ‰•ã„é‡‘é¡ãŒé•ã„ã¾ã™ã€‚");
 		}
 		
-		// Àµ¾ï¤Ê¿ä°Ü¤Ç¤¢¤ë¤³¤È¤òµ­Ï¿¤·¤Æ¤ª¤¯
+		// æ­£å¸¸ãªæ¨ç§»ã§ã‚ã‚‹ã“ã¨ã‚’è¨˜éŒ²ã—ã¦ãŠã
 		$objSiteSess->setRegistFlag();
 		
-		// POST¥Ç¡¼¥¿¤òÊİÂ¸
+		// POSTãƒ‡ãƒ¼ã‚¿ã‚’ä¿å­˜
 		$arrVal["credit_result"] = $_POST["X-TRANID"];
 		$arrVal["memo01"] = PAYMENT_CREDIT_ID;
 		$arrVal["memo03"] = $arrPayment[0]["module_id"];
 		$arrVal["memo04"] = $_POST["X-TRANID"];
 		
-		// ¥È¥é¥ó¥¶¥¯¥·¥ç¥ó¥³¡¼¥É
-		$arrMemo["trans_code"] = array("name"=>"Remise¥È¥é¥ó¥¶¥¯¥·¥ç¥ó¥³¡¼¥É", "value" => $_POST["X-TRANID"]);
+		// ãƒˆãƒ©ãƒ³ã‚¶ã‚¯ã‚·ãƒ§ãƒ³ã‚³ãƒ¼ãƒ‰
+		$arrMemo["trans_code"] = array("name"=>"Remiseãƒˆãƒ©ãƒ³ã‚¶ã‚¯ã‚·ãƒ§ãƒ³ã‚³ãƒ¼ãƒ‰", "value" => $_POST["X-TRANID"]);
 		$arrVal["memo02"] = serialize($arrMemo);
 		
-		// ·èºÑÁ÷¿®¥Ç¡¼¥¿ºîÀ®
+		// æ±ºæ¸ˆé€ä¿¡ãƒ‡ãƒ¼ã‚¿ä½œæˆ
 		$arrModule['module_id'] = MDL_REMISE_ID;
 		$arrModule['payment_total'] = $arrData["payment_total"];
 		$arrModule['payment_id'] = PAYMENT_CREDIT_ID;
 		$arrVal['memo05'] = serialize($arrModule);
 		
-		// ¼õÃí°ì»ş¥Æ¡¼¥Ö¥ë¤Ë¹¹¿·
+		// å—æ³¨ä¸€æ™‚ãƒ†ãƒ¼ãƒ–ãƒ«ã«æ›´æ–°
 		sfRegistTempOrder($uniqid, $arrVal);
 
-		// ´°Î»²èÌÌ¤Ø
+		// å®Œäº†ç”»é¢ã¸
 		header("Location: " .  URL_SHOP_COMPLETE);
 	}
 }
 
-// EC-CUBEÂ¦¤ÎÄÌÃÎÍÑURL
+// EC-CUBEå´ã®é€šçŸ¥ç”¨URL
 $retUrl = SITE_URL . 'shopping/load_payment_module.php?module_id=' . MDL_REMISE_ID;
 $exitUrl = SITE_URL . 'shopping/load_payment_module.php';
 
 $arrSendData = array(
-	'SEND_URL' => $arrPayment[0]["memo04"],	// ÀÜÂ³ÀèURL
-	'S_TORIHIKI_NO' => $arrData["order_id"],	// ¥ª¡¼¥À¡¼ÈÖ¹æ
-	'MAIL' => $arrData["order_email"],			// ¥á¡¼¥ë¥¢¥É¥ì¥¹
-	'AMOUNT' => $arrData["subtotal"],			// ¶â³Û
-	'TAX' => $arrData["deliv_fee"],				// Á÷ÎÁ + ÀÇ
-	'TOTAL' => $arrData["payment_total"],		// ¹ç·×¶â³Û
-	'SHOPCO' => $arrPayment[0]["memo01"],		// Å¹ÊŞ¥³¡¼¥É
-	'HOSTID' => $arrPayment[0]["memo02"],		// ¥Û¥¹¥ÈID
-	'JOB' => REMISE_PAYMENT_JOB_CODE,			// ¥¸¥ç¥Ö¥³¡¼¥É 
-	'ITEM' => '0000120',						// ¾¦ÉÊ¥³¡¼¥É(¥ë¥ß¡¼¥º¸ÇÄê)
-	'RETURL' => $retUrl,						// ´°Î»ÄÌÃÎURL
-	'NG_RETURL' => $retUrl,					// NG´°Î»ÄÌÃÎURL
-	'EXITURL' => $exitUrl,						// Ìá¤êÀèURL
+	'SEND_URL' => $arrPayment[0]["memo04"],	// æ¥ç¶šå…ˆURL
+	'S_TORIHIKI_NO' => $arrData["order_id"],	// ã‚ªãƒ¼ãƒ€ãƒ¼ç•ªå·
+	'MAIL' => $arrData["order_email"],			// ãƒ¡ãƒ¼ãƒ«ã‚¢ãƒ‰ãƒ¬ã‚¹
+	'AMOUNT' => $arrData["subtotal"],			// é‡‘é¡
+	'TAX' => $arrData["deliv_fee"],				// é€æ–™ + ç¨
+	'TOTAL' => $arrData["payment_total"],		// åˆè¨ˆé‡‘é¡
+	'SHOPCO' => $arrPayment[0]["memo01"],		// åº—èˆ—ã‚³ãƒ¼ãƒ‰
+	'HOSTID' => $arrPayment[0]["memo02"],		// ãƒ›ã‚¹ãƒˆID
+	'JOB' => REMISE_PAYMENT_JOB_CODE,			// ã‚¸ãƒ§ãƒ–ã‚³ãƒ¼ãƒ‰ 
+	'ITEM' => '0000120',						// å•†å“ã‚³ãƒ¼ãƒ‰(ãƒ«ãƒŸãƒ¼ã‚ºå›ºå®š)
+	'RETURL' => $retUrl,						// å®Œäº†é€šçŸ¥URL
+	'NG_RETURL' => $retUrl,					// NGå®Œäº†é€šçŸ¥URL
+	'EXITURL' => $exitUrl,						// æˆ»ã‚Šå…ˆURL
 	'REMARKS3' => MDL_REMISE_POST_VALUE
 );
 
-// »ÙÊ§¤¤ÊıË¡É½¼¨½èÍı
+// æ”¯æ‰•ã„æ–¹æ³•è¡¨ç¤ºå‡¦ç†
 $objFormParam->setValue("credit_method", $arrPayment[0]["memo08"]);
 $objFormParam->splitParamCheckBoxes("credit_method");
 $arrUseCreMet = $objFormParam->getValue("credit_method");
@@ -146,7 +146,7 @@ foreach($arrUseCreMet as $key => $val) {
 	$arrCreMet[$val] = $arrCredit[$val];
 }
 
-// Ê¬³ä²ó¿ôÉ½¼¨½èÍı(´ÉÍı²èÌÌ¤Ç¤ÎÀßÄê²ó¿ô°ÊÆâ¤Ş¤ÇÉ½¼¨)
+// åˆ†å‰²å›æ•°è¡¨ç¤ºå‡¦ç†(ç®¡ç†ç”»é¢ã§ã®è¨­å®šå›æ•°ä»¥å†…ã¾ã§è¡¨ç¤º)
 foreach($arrCreditDivide as $key => $val) {
 	if ($arrPayment[0]["memo09"] >= $val) {
 		$arrCreDiv[$val] = $val;
@@ -159,16 +159,16 @@ $objPage->arrSendData = $arrSendData;
 
 $objView->assignobj($objPage);
 
-// ½ĞÎÏÆâÍÆ¤òSJIS¤Ë¤¹¤ë(¥ë¥ß¡¼¥ºÂĞ±ş)
+// å‡ºåŠ›å†…å®¹ã‚’SJISã«ã™ã‚‹(ãƒ«ãƒŸãƒ¼ã‚ºå¯¾å¿œ)
 mb_http_output(REMISE_SEND_ENCODE);
 $objView->display(MODULE_PATH . "mdl_remise/card.tpl");
 
 //---------------------------------------------------------------------------------------------------------------------------------------------------------
 
-//¥Ñ¥é¥á¡¼¥¿¤Î½é´ü²½
+//ãƒ‘ãƒ©ãƒ¡ãƒ¼ã‚¿ã®åˆæœŸåŒ–
 function lfInitParam() {
 	global $objFormParam;
-	$objFormParam->addParam("»ÙÊ§¤¤ÊıË¡", "credit_method");
+	$objFormParam->addParam("æ”¯æ‰•ã„æ–¹æ³•", "credit_method");
 }
 
 ?>

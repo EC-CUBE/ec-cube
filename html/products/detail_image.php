@@ -9,8 +9,8 @@ require_once("../require.php");
 
 class LC_Page {
 	function LC_Page() {
-		/** É¬¤º»ØÄê¤¹¤ë **/
-		$this->tpl_mainpage = 'products/detail_image.tpl';			// ¥á¥¤¥ó¥Æ¥ó¥×¥ì¡¼¥È
+		/** å¿…ãšæŒ‡å®šã™ã‚‹ **/
+		$this->tpl_mainpage = 'products/detail_image.tpl';			// ãƒ¡ã‚¤ãƒ³ãƒ†ãƒ³ãƒ—ãƒ¬ãƒ¼ãƒˆ
 	}
 }
 
@@ -18,14 +18,14 @@ $objPage = new LC_Page();
 $objView = new SC_SiteView();
 $objCartSess = new SC_CartSession("", false);
 
-// ´ÉÍı¥Ú¡¼¥¸¤«¤é¤Î³ÎÇ§¤Î¾ì¹ç¤Ï¡¢Èó¸ø³«¤Î¾¦ÉÊ¤âÉ½¼¨¤¹¤ë¡£
+// ç®¡ç†ãƒšãƒ¼ã‚¸ã‹ã‚‰ã®ç¢ºèªã®å ´åˆã¯ã€éå…¬é–‹ã®å•†å“ã‚‚è¡¨ç¤ºã™ã‚‹ã€‚
 if($_GET['admin'] == 'on') {
 	$where = "del_flg = 0";
 } else {
 	$where = "del_flg = 0 AND status = 1";
 }
 
-// ÃÍ¤ÎÀµÅöÀ­¥Á¥§¥Ã¥¯
+// å€¤ã®æ­£å½“æ€§ãƒã‚§ãƒƒã‚¯
 if(!sfIsInt($_GET['product_id']) || !sfIsRecord("dtb_products", "product_id", $_GET['product_id'], $where)) {
 	sfDispSiteError(PRODUCT_NOT_FOUND);
 }

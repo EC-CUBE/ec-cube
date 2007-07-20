@@ -6,16 +6,16 @@
  * http://www.lockon.co.jp/
  * 
  *
- * ¥á¥ë¥Ş¥¬³ÎÇ§
+ * ãƒ¡ãƒ«ãƒã‚¬ç¢ºèª
  */
 
 require_once('../require.php');
 
 class LC_Page {
 	function LC_Page() {
-		/** É¬¤ºÊÑ¹¹¤¹¤ë **/
+		/** å¿…ãšå¤‰æ›´ã™ã‚‹ **/
 		$this->tpl_mainpage = 'magazine/confirm.tpl';
-		$this->tpl_title .= '¥á¥ë¥Ş¥¬³ÎÇ§';
+		$this->tpl_title .= 'ãƒ¡ãƒ«ãƒã‚¬ç¢ºèª';
 	}
 }
 
@@ -23,45 +23,45 @@ $objPage = new LC_Page();
 $objConn = new SC_DbConn();
 $objPage->arrForm = $_POST;
 
-// ÅĞÏ¿
+// ç™»éŒ²
 if (isset($_REQUEST['btnRegist'])) {
 	$objPage->arrErr = lfMailErrorCheck($objPage->arrForm, "regist");
 
-	// ¥¨¥é¡¼¤¬¤Ê¤±¤ì¤Ğ
+	// ã‚¨ãƒ©ãƒ¼ãŒãªã‘ã‚Œã°
 	if (count($objPage->arrErr) == 0) {
-		// ³ÎÇ§
-		$objPage->arrForm['kind'] = '¥á¥ë¥Ş¥¬ÅĞÏ¿';
+		// ç¢ºèª
+		$objPage->arrForm['kind'] = 'ãƒ¡ãƒ«ãƒã‚¬ç™»éŒ²';
 		$objPage->arrForm['type'] = 'regist';
 		$objPage->arrForm['mail'] = $objPage->arrForm['regist'];
 	} else {
 		$objPage->tpl_mainpage = 'magazine/index.tpl';
-		$objPage->tpl_title = '¥á¥ë¥Ş¥¬ÅĞÏ¿¡¦²ò½ü';
+		$objPage->tpl_title = 'ãƒ¡ãƒ«ãƒã‚¬ç™»éŒ²ãƒ»è§£é™¤';
 	}
-// ²ò½ü
+// è§£é™¤
 } elseif (isset($_REQUEST['btnCancel'])) {
 	$objPage->arrErr = lfMailErrorCheck($objPage->arrForm, "cancel");
 
-	// ¥¨¥é¡¼¤¬¤Ê¤±¤ì¤Ğ
+	// ã‚¨ãƒ©ãƒ¼ãŒãªã‘ã‚Œã°
 	if (count($objPage->arrErr) == 0) {
-		// ³ÎÇ§
-		$objPage->arrForm['kind'] = '¥á¥ë¥Ş¥¬²ò½ü';
+		// ç¢ºèª
+		$objPage->arrForm['kind'] = 'ãƒ¡ãƒ«ãƒã‚¬è§£é™¤';
 		$objPage->arrForm['type'] = 'cancel';
 		$objPage->arrForm['mail'] = $objPage->arrForm['cancel'];
 	} else {
 		$objPage->tpl_mainpage = 'magazine/index.tpl';
-		$objPage->tpl_title = '¥á¥ë¥Ş¥¬ÅĞÏ¿¡¦²ò½ü';
+		$objPage->tpl_title = 'ãƒ¡ãƒ«ãƒã‚¬ç™»éŒ²ãƒ»è§£é™¤';
 	}
-// ´°Î»
+// å®Œäº†
 } elseif ($_REQUEST['mode'] == 'regist' or $_REQUEST['mode'] == 'cancel') {
 
-	//¡¡ÅĞÏ¿
+	//ã€€ç™»éŒ²
 	if ($_REQUEST['mode'] == 'regist') {
 		$uniqId = lfRegistData($_POST["email"]);
-		$subject = sfMakesubject('¥á¥ë¥Ş¥¬ÅĞÏ¿¤Î¤´³ÎÇ§');
-	//¡¡²ò½ü
+		$subject = sfMakesubject('ãƒ¡ãƒ«ãƒã‚¬ç™»éŒ²ã®ã”ç¢ºèª');
+	//ã€€è§£é™¤
 	} elseif ($_REQUEST['mode'] == 'cancel') {
 		$uniqId = lfGetSecretKey($_POST["email"]);
-		$subject = sfMakesubject('¥á¥ë¥Ş¥¬²ò½ü¤Î¤´³ÎÇ§');
+		$subject = sfMakesubject('ãƒ¡ãƒ«ãƒã‚¬è§£é™¤ã®ã”ç¢ºèª');
 	}
 	$CONF = sf_getBasisData();
 	$objPage->CONF = $CONF;
@@ -72,28 +72,28 @@ if (isset($_REQUEST['btnRegist'])) {
 	$toCustomerMail = $objMailText->fetch("mail_templates/mailmagazine_" . $_REQUEST['mode'] . ".tpl");
 	$objMail = new GC_SendMail();
 	$objMail->setItem(
-						''									//¡¡°¸Àè
-						, $subject							//¡¡¥µ¥Ö¥¸¥§¥¯¥È
-						, $toCustomerMail					//¡¡ËÜÊ¸
-						, $CONF["email03"]					//¡¡ÇÛÁ÷¸µ¥¢¥É¥ì¥¹
-						, $CONF["shop_name"]				//¡¡ÇÛÁ÷¸µ¡¡Ì¾Á°
-						, $CONF["email03"]					//¡¡reply_to
-						, $CONF["email04"]					//¡¡return_path
+						''									//ã€€å®›å…ˆ
+						, $subject							//ã€€ã‚µãƒ–ã‚¸ã‚§ã‚¯ãƒˆ
+						, $toCustomerMail					//ã€€æœ¬æ–‡
+						, $CONF["email03"]					//ã€€é…é€å…ƒã‚¢ãƒ‰ãƒ¬ã‚¹
+						, $CONF["shop_name"]				//ã€€é…é€å…ƒã€€åå‰
+						, $CONF["email03"]					//ã€€reply_to
+						, $CONF["email04"]					//ã€€return_path
 						, $CONF["email04"]					//  Errors_to
 						, $CONF["email01"]					//  Bcc
 														);
-	// °¸Àè¤ÎÀßÄê
+	// å®›å…ˆã®è¨­å®š
 	$objMail->setTo($_POST["email"], $_POST["email"]);
 	$objMail->sendMail();
 
-	// ´°Î»¥Ú¡¼¥¸¤Ë°ÜÆ°¤µ¤»¤ë¡£
+	// å®Œäº†ãƒšãƒ¼ã‚¸ã«ç§»å‹•ã•ã›ã‚‹ã€‚
 	header("Location:" . gfAddSessionId("./complete.php"));
 	exit;
 } else {
 	sfDispSiteError(CUSTOMER_ERROR, "", false, "", true);
 }
 
-// ¥ì¥¤¥¢¥¦¥È¥Ç¥¶¥¤¥ó¤ò¼èÆÀ
+// ãƒ¬ã‚¤ã‚¢ã‚¦ãƒˆãƒ‡ã‚¶ã‚¤ãƒ³ã‚’å–å¾—
 $objPage = sfGetPageLayout($objPage, false, DEF_LAYOUT);
 
 $objView = new SC_MobileView();
@@ -103,25 +103,25 @@ $objView->display(SITE_FRAME);
 //-----------------------------------------------------------------------------------------------------------------------------------
 
 
-//---- ÆşÎÏ¥¨¥é¡¼¥Á¥§¥Ã¥¯
+//---- å…¥åŠ›ã‚¨ãƒ©ãƒ¼ãƒã‚§ãƒƒã‚¯
 function lfMailErrorCheck($array, $dataName) {
 	$objErr = new SC_CheckError($array);
 	$objErr->doFunc(
-				array('¥á¡¼¥ë¥¢¥É¥ì¥¹', $dataName, MTEXT_LEN) ,
+				array('ãƒ¡ãƒ¼ãƒ«ã‚¢ãƒ‰ãƒ¬ã‚¹', $dataName, MTEXT_LEN) ,
 				array("NO_SPTAB", "EXIST_CHECK", "EMAIL_CHECK", 
 					"SPTAB_CHECK" ,"EMAIL_CHAR_CHECK", "MAX_LENGTH_CHECK", "MOBILE_EMAIL_CHECK"));
 
-	// ÆşÎÏ¥¨¥é¡¼¤¬¤Ê¤±¤ì¤Ğ
+	// å…¥åŠ›ã‚¨ãƒ©ãƒ¼ãŒãªã‘ã‚Œã°
 	if (count($objErr->arrErr) == 0) {
-		// ¥á¥ë¥Ş¥¬¤ÎÅĞÏ¿Í­Ìµ
+		// ãƒ¡ãƒ«ãƒã‚¬ã®ç™»éŒ²æœ‰ç„¡
 		$flg = lfIsRegistData($array[$dataName]);
 
-		// ÅĞÏ¿¤Î»ş
+		// ç™»éŒ²ã®æ™‚
 		if ($dataName == 'regist' and $flg == true) {
-			$objErr->arrErr[$dataName] = "´û¤ËÅĞÏ¿¤µ¤ì¤Æ¤¤¤Ş¤¹¡£<br>";
-		// ²ò½ü¤Î»ş
+			$objErr->arrErr[$dataName] = "æ—¢ã«ç™»éŒ²ã•ã‚Œã¦ã„ã¾ã™ã€‚<br>";
+		// è§£é™¤ã®æ™‚
 		} elseif ($dataName == 'cancel' and $flg == false) {
-			$objErr->arrErr[$dataName] = "¥á¥ë¥Ş¥¬ÅĞÏ¿¤¬¤µ¤ì¤Æ¤¤¤Ş¤»¤ó¡£<br>";
+			$objErr->arrErr[$dataName] = "ãƒ¡ãƒ«ãƒã‚¬ç™»éŒ²ãŒã•ã‚Œã¦ã„ã¾ã›ã‚“ã€‚<br>";
 		}
 	}
 
@@ -129,7 +129,7 @@ function lfMailErrorCheck($array, $dataName) {
 }
 
 
-//---- ¥á¥ë¥Ş¥¬ÅĞÏ¿
+//---- ãƒ¡ãƒ«ãƒã‚¬ç™»éŒ²
 function lfRegistData ($email) {
 	global $objConn;
 
@@ -139,18 +139,18 @@ function lfRegistData ($email) {
 		$count = $objConn->getOne("SELECT COUNT(*) FROM dtb_customer_mail WHERE secret_key = ?", array($uniqid));
 	}
 	
-	$arrRegist["email"] = $email;			// ¥á¡¼¥ë¥¢¥É¥ì¥¹
-	$arrRegist["mail_flag"] = 5;			// ÅĞÏ¿¾õÂÖ
-	$arrRegist["secret_key"] = $uniqid;		// IDÈ¯¹Ô
-	$arrRegist["create_date"] = "now()"; 	// ºîÀ®Æü
-	$arrRegist["update_date"] = "now()"; 	// ¹¹¿·Æü
+	$arrRegist["email"] = $email;			// ãƒ¡ãƒ¼ãƒ«ã‚¢ãƒ‰ãƒ¬ã‚¹
+	$arrRegist["mail_flag"] = 5;			// ç™»éŒ²çŠ¶æ…‹
+	$arrRegist["secret_key"] = $uniqid;		// IDç™ºè¡Œ
+	$arrRegist["create_date"] = "now()"; 	// ä½œæˆæ—¥
+	$arrRegist["update_date"] = "now()"; 	// æ›´æ–°æ—¥
 
-	//-- ²¾ÅĞÏ¿¼Â¹Ô
+	//-- ä»®ç™»éŒ²å®Ÿè¡Œ
 	$objConn->query("BEGIN");
 
 	$objQuery = new SC_Query();
 
-	//--¡¡´û¤Ë¥á¥ë¥Ş¥¬ÅĞÏ¿¤·¤Æ¤¤¤ë¤«¤ÎÈ½Äê
+	//--ã€€æ—¢ã«ãƒ¡ãƒ«ãƒã‚¬ç™»éŒ²ã—ã¦ã„ã‚‹ã‹ã®åˆ¤å®š
 	$sql = "SELECT count(*) FROM dtb_customer_mail WHERE email = ?";
 	$mailResult = $objConn->getOne($sql, array($arrRegist["email"]));
 
@@ -164,7 +164,7 @@ function lfRegistData ($email) {
 	return $uniqid;
 }
 
-// ÅĞÏ¿¤µ¤ì¤Æ¤¤¤ë¥­¡¼¤Î¼èÆÀ
+// ç™»éŒ²ã•ã‚Œã¦ã„ã‚‹ã‚­ãƒ¼ã®å–å¾—
 function lfGetSecretKey ($email) {
 	global $objConn;
 
@@ -185,14 +185,14 @@ function lfGetSecretKey ($email) {
 	return $uniqid;
 }
 
-// ´û¤ËÅĞÏ¿¤µ¤ì¤Æ¤¤¤ë¤«¤É¤¦¤«
+// æ—¢ã«ç™»éŒ²ã•ã‚Œã¦ã„ã‚‹ã‹ã©ã†ã‹
 function lfIsRegistData ($email) {
 	global $objConn;
 
 	$sql = "SELECT email, mail_flag FROM dtb_customer_mail WHERE email = ?";
 	$mailResult = $objConn->getRow($sql, array($email));
 
-	// NULL¤â¹ØÆÉ¤È¤ß¤Ê¤¹
+	// NULLã‚‚è³¼èª­ã¨ã¿ãªã™
 	if (count($mailResult) == 0 or ($mailResult[1] != null and $mailResult[1] != 2 )) {
 		return false;
 	} else {

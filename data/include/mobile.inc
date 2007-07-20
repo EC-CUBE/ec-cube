@@ -1,6 +1,6 @@
 <?php
 /**
- * ��Х��륵���ȶ�ͭ�ؿ��ե�����
+ * モバイルサイト共有関数ファイル
  */
 
 require_once DATA_PATH . 'module/Net/URL.php';
@@ -8,8 +8,8 @@ require_once DATA_PATH . 'class/SC_DbConn.php';
 require_once DATA_PATH . 'class/SC_Query.php';
 
 /**
- * EC-CUBE �����ݡ��Ȥ������ü�����ɤ���������å����롣
- * ���б�ü���ξ��� unsupported/index.php �إ�����쥯�Ȥ��롣
+ * EC-CUBE がサポートする携帯端末かどうかをチェックする。
+ * 非対応端末の場合は unsupported/index.php へリダイレクトする。
  *
  * @return void
  */
@@ -21,22 +21,22 @@ function lfMobileCheckCompatibility() {
 }
 
 /**
- * ���ϥǡ������������󥳡��ǥ��󥰤��Ѵ�������ʸ�������롣
+ * 入力データを内部エンコーディングに変換し、絵文字を除去する。
  *
- * @param string &$value ���ϥǡ����ؤλ���
+ * @param string &$value 入力データへの参照
  * @return void
  */
 function lfMobileConvertInputValue(&$value) {
-	// Shift JIS �����������󥳡��ǥ��󥰤��Ѵ����롣
-	// SoftBank �ʳ��γ�ʸ���ϳ����ΰ�˴ޤޤ�뤿�ᡢ�����ʳ��ǽ����롣
+	// Shift JIS から内部エンコーディングに変換する。
+	// SoftBank 以外の絵文字は外字領域に含まれるため、この段階で除去される。
 	$value = mb_convert_encoding($value, CHAR_CODE, 'SJIS');
 
-	// SoftBank �γ�ʸ�������롣
+	// SoftBank の絵文字を除去する。
 	$value = preg_replace('/\\x1b\\$[^\\x0f]*\\x0f/', '', $value);
 }
 
 /**
- * ��Х��륵�����Ѥ����Ϥν��������Ԥ���
+ * モバイルサイト用の入力の初期処理を行う。
  *
  * @return void
  */
@@ -47,10 +47,10 @@ function lfMobileInitInput() {
 }
 
 /**
- * dtb_mobile_ext_session_id �ơ��֥�򸡺����ƥ��å����ID��������롣
+ * dtb_mobile_ext_session_id テーブルを検索してセッションIDを取得する。
  *
- * @return string|null �����������å����ID���֤���
- *                     �����Ǥ��ʤ��ä����� null ���֤���
+ * @return string|null 取得したセッションIDを返す。
+ *                     取得できなかった場合は null を返す。
  */
 function lfMobileGetExtSessionId() {
 	if (!preg_match('|^' . URL_DIR . '(.*)$|', $_SERVER['SCRIPT_NAME'], $matches)) {
@@ -74,13 +74,13 @@ function lfMobileGetExtSessionId() {
 }
 
 /**
- * �ѥ�᡼��������ͭ���ʥ��å����ID��������롣
+ * パラメーターから有効なセッションIDを取得する。
  *
- * @return string|false ��������ͭ���ʥ��å����ID���֤���
- *                      �����Ǥ��ʤ��ä����� false ���֤���
+ * @return string|false 取得した有効なセッションIDを返す。
+ *                      取得できなかった場合は false を返す。
  */
 function lfMobileGetSessionId() {
-	// �ѥ�᡼�������饻�å����ID��������롣
+	// パラメーターからセッションIDを取得する。
 	$sessionId = @$_POST[session_name()];
 	if (!isset($sessionId)) {
 		$sessionId = @$_GET[session_name()];
@@ -92,13 +92,13 @@ function lfMobileGetSessionId() {
 		return false;
 	}
 
-	// ���å����ID�Υե����ޥåȤ�����å����롣
+	// セッションIDのフォーマットをチェックする。
 	if (preg_match('/^[0-9a-zA-Z,-]{32,}$/', $sessionId) < 1) {
 		gfPrintLog("Invalid session id : sid=$sessionId");
 		return false;
 	}
 
-	// ���å����ID��¸�ߤ�����å����롣
+	// セッションIDの存在をチェックする。
 	if (sfSessRead($sessionId) === null) {
 		gfPrintLog("Non-existent session id : sid=$sessionId");
 		return false;
@@ -108,17 +108,17 @@ function lfMobileGetSessionId() {
 }
 
 /**
- * ���å����ǡ�����ͭ�����ɤ���������å����롣
+ * セッションデータが有効かどうかをチェックする。
  *
- * @return boolean ���å����ǡ�����ͭ���ʾ��� true��̵���ʾ��� false ���֤���
+ * @return boolean セッションデータが有効な場合は true、無効な場合は false を返す。
  */
 function lfMobileValidateSession() {
-	// ���� mobile ����Ͽ����Ƥ��뤫�ɤ���������å����롣
+	// 配列 mobile が登録されているかどうかをチェックする。
 	if (!is_array(@$_SESSION['mobile'])) {
 		return false;
 	}
 
-	// ͭ�����¤�᤮�Ƥ��ʤ����ɤ���������å����롣
+	// 有効期限を過ぎていないかどうかをチェックする。
 	if (intval(@$_SESSION['mobile']['expires']) < time()) {
 		gfPrintLog("Session expired at " .
 		           date('Y/m/d H:i:s', @$_SESSION['mobile']['expires']) .
@@ -127,7 +127,7 @@ function lfMobileValidateSession() {
 		return false;
 	}
 
-	// ����ü���ε��郎���פ��뤫�ɤ���������å����롣
+	// 携帯端末の機種が一致するかどうかをチェックする。
 	$model = GC_MobileUserAgent::getModel();
 	if (@$_SESSION['mobile']['model'] != $model) {
 		gfPrintLog("User agent model mismatch : " .
@@ -140,83 +140,83 @@ function lfMobileValidateSession() {
 }
 
 /**
- * ��Х��륵�����ѤΥ��å�����Ϣ�ν��������Ԥ���
+ * モバイルサイト用のセッション関連の初期処理を行う。
  *
  * @return void
  */
 function lfMobileInitSession() {
-	// ���å����ID�μ����Ϥ��˥��å�������Ѥ��ʤ���
+	// セッションIDの受け渡しにクッキーを使用しない。
 	ini_set('session.use_cookies', '0');
 
-	// �ѥ�᡼��������ͭ���ʥ��å����ID��������롣
+	// パラメーターから有効なセッションIDを取得する。
 	$sessionId = lfMobileGetSessionId();
 
 	session_start();
 
-	// ���å����ID�ޤ��ϥ��å����ǡ�����̵���ʾ��ϡ����å����ID�������
-	// �������å����ǡ������������롣
+	// セッションIDまたはセッションデータが無効な場合は、セッションIDを再生成
+	// し、セッションデータを初期化する。
 	if ($sessionId === false || !lfMobileValidateSession()) {
 		session_regenerate_id();
 		$_SESSION = array('mobile' => array('model'    => GC_MobileUserAgent::getModel(),
 		                                    'phone_id' => GC_MobileUserAgent::getId(),
 		                                    'expires'  => time() + MOBILE_SESSION_LIFETIME));
 
-		// ���������å����ID���ղä��ƥ�����쥯�Ȥ��롣
+		// 新しいセッションIDを付加してリダイレクトする。
 		if ($_SERVER['REQUEST_METHOD'] == 'GET') {
-			// GET �ξ���Ʊ���ڡ����˥�����쥯�Ȥ��롣
+			// GET の場合は同じページにリダイレクトする。
 			header('Location: ' . gfAddSessionId());
 		} else {
-			// GET �ʳ��ξ��ϥȥåץڡ����إ�����쥯�Ȥ��롣
+			// GET 以外の場合はトップページへリダイレクトする。
 			header('Location: ' . URL_SITE_TOP . '?' . SID);
 		}
 		exit;
 	}
 
-	// ����ü��ID������Ǥ������ϥ��å����ǡ�������¸���롣
+	// 携帯端末IDを取得できた場合はセッションデータに保存する。
 	$phoneId = GC_MobileUserAgent::getId();
 	if ($phoneId !== false) {
 		$_SESSION['mobile']['phone_id'] = $phoneId;
 	}
 
-	// ���å�����ͭ�����¤򹹿����롣
+	// セッションの有効期限を更新する。
 	$_SESSION['mobile']['expires'] = time() + MOBILE_SESSION_LIFETIME;
 }
 
 /**
- * ��Х��륵�����Ѥν��Ϥν��������Ԥ���
+ * モバイルサイト用の出力の初期処理を行う。
  *
- * ���Ϥ�ή��
+ * 出力の流れ
  * 1. Smarty
- * 2. �������󥳡��ǥ��󥰤��� Shift JIS ���Ѵ����롣
- * 3. ���ѥ������ʤ�Ⱦ�ѥ������ʤ��Ѵ����롣
- * 4. �����ѤΥ�����Ĵ�����롣
- * 5. ��ʸ��������ʸ�������ɤ��Ѵ����롣
- * 6. ����
+ * 2. 内部エンコーディングから Shift JIS に変換する。
+ * 3. 全角カタカナを半角カタカナに変換する。
+ * 4. 画像用のタグを調整する。
+ * 5. 絵文字タグを絵文字コードに変換する。
+ * 6. 出力
  *
  * @return void
  */
 function lfMobileInitOutput() {
-	// Smarty �ѤΥǥ��쥯�ȥ꡼��������롣
+	// Smarty 用のディレクトリーを作成する。
 	@mkdir(COMPILE_DIR);
 
-	// �����ѤΥ��󥳡��ǥ��󥰤� Shift JIS �˸��ꤹ�롣
+	// 出力用のエンコーディングを Shift JIS に固定する。
 	mb_http_output('SJIS-win');
 
-	// ��ʸ��������ʸ�������ɤ��Ѵ����롣
+	// 絵文字タグを絵文字コードに変換する。
 	ob_start(array('GC_MobileEmoji', 'handler'));
 
-	// ü���˹�碌�Ʋ������������Ѵ����롣
+	// 端末に合わせて画像サイズを変換する。
 	ob_start(array('GC_MobileImage', 'handler'));
 
-	// ���ѥ������ʤ�Ⱦ�ѥ������ʤ��Ѵ����롣
+	// 全角カタカナを半角カタカナに変換する。
 	ob_start(create_function('$buffer', 'return mb_convert_kana($buffer, "k", "SJIS-win");'));
 
-	// �������󥳡��ǥ��󥰤��� Shift JIS ���Ѵ����롣
+	// 内部エンコーディングから Shift JIS に変換する。
 	ob_start('mb_output_handler');
 }
 
 /**
- * ��Х��륵�����Ѥν��������Ԥ���
+ * モバイルサイト用の初期処理を行う。
  *
  * @return void
  */
@@ -232,7 +232,7 @@ function sfMobileInit() {
 }
 
 /**
- * Location���ǥ��å����ID���ղä���ɬ�פ�����URL�˥��å����ID���ղä��롣
+ * Location等でセッションIDを付加する必要があるURLにセッションIDを付加する。
  *
  * @return String
  */
@@ -243,9 +243,9 @@ function gfAddSessionId($url = null) {
 }
 
 /**
- * ���᡼���ѤΥȡ�������������롣
+ * 空メール用のトークンを生成する。
  *
- * @return string ���������ȡ�������֤���
+ * @return string 生成したトークンを返す。
  */
 function lfGenerateKaraMailToken() {
 	$token_chars = '0123456789abcdefghijklmnopqrstuvwxyz';
@@ -262,11 +262,11 @@ function lfGenerateKaraMailToken() {
 }
 
 /**
- * ���᡼������ơ��֥�˿�������ȥ꡼����Ͽ�����ȡ�������֤���
+ * 空メール管理テーブルに新規エントリーを登録し、トークンを返す。
  *
- * @param string $next_url ���᡼������դ�������ܤ�����ڡ��� (��Х��륵���ȥȥåפ��������URL)
- * @param string $session_id ���å����ID (��ά�������ϸ��ߤΥ��å����ID)
- * @return string|false �ȡ�������֤������顼��ȯ����������false���֤���
+ * @param string $next_url 空メール受け付け後に遷移させるページ (モバイルサイトトップからの相対URL)
+ * @param string $session_id セッションID (省略した場合は現在のセッションID)
+ * @return string|false トークンを返す。エラーが発生した場合はfalseを返す。
  */
 function gfPrepareKaraMail($next_url, $session_id = null) {
 	if (!isset($session_id)) {
@@ -305,11 +305,11 @@ function gfPrepareKaraMail($next_url, $session_id = null) {
 }
 
 /**
- * ���᡼�뤫����������᡼�륢�ɥ쥹����᡼������ơ��֥����Ͽ���롣
+ * 空メールから取得したメールアドレスを空メール管理テーブルに登録する。
  *
- * @param string $token �ȡ�����
- * @param string $email �᡼�륢�ɥ쥹
- * @return boolean ������������true�����Ԥ�������false���֤���
+ * @param string $token トークン
+ * @param string $email メールアドレス
+ * @return boolean 成功した場合はtrue、失敗した場合はfalseを返す。
  */
 function gfRegisterKaraMail($token, $email) {
 	$objQuery = new SC_Query;
@@ -333,13 +333,13 @@ function gfRegisterKaraMail($token, $email) {
 }
 
 /**
- * ���᡼������ơ��֥뤫��ȡ����󤬰��פ���Ԥ�������
- * �������ܤ�����ڡ�����URL���֤�����
+ * 空メール管理テーブルからトークンが一致する行を削除し、
+ * 次に遷移させるページのURLを返す。　
  *
- * �᡼�륢�ɥ쥹�� $_SESSION['mobile']['kara_mail_from'] ����Ͽ����롣
+ * メールアドレスは $_SESSION['mobile']['kara_mail_from'] に登録される。
  *
- * @param string $token �ȡ�����
- * @return string|false URL���֤������顼��ȯ����������false���֤���
+ * @param string $token トークン
+ * @return string|false URLを返す。エラーが発生した場合はfalseを返す。
  */
 function gfFinishKaraMail($token) {
 	$objQuery = new SC_Query;
@@ -367,10 +367,10 @@ function gfFinishKaraMail($token) {
 }
 
 /**
- * ����������Ϣ���Ѥ˥��å����ID�ȥѥ�᡼�������Ȥ߹�碌����¸���롣
+ * 外部サイト連携用にセッションIDとパラメーターの組み合わせを保存する。
  *
- * @param string $param_key �ѥ�᡼����̾
- * @param string $param_value �ѥ�᡼������
+ * @param string $param_key パラメーター名
+ * @param string $param_value パラメーター値
  * @param string $url URL
  * @return void
  */
@@ -390,13 +390,13 @@ function sfMobileSetExtSessionId($param_key, $param_value, $url) {
 }
 
 /**
- * �᡼�륢�ɥ쥹�����ӤΤ�Τ��ɤ�����Ƚ�̤��롣
+ * メールアドレスが携帯のものかどうかを判別する。
  *
- * @param string $address �᡼�륢�ɥ쥹
- * @return boolean ���ӤΥ᡼�륢�ɥ쥹�ξ���true������ʳ��ξ���false���֤���
+ * @param string $address メールアドレス
+ * @return boolean 携帯のメールアドレスの場合はtrue、それ以外の場合はfalseを返す。
  */
 function gfIsMobileMailAddress($address) {
-    // pdx.ne.jp(�����륳��)�ɲ�
+    // pdx.ne.jp(ウィルコム)追加
 	$arrMobileMailDomains = array('docomo.ne.jp', 'ezweb.ne.jp', 'softbank.ne.jp', 'vodafone.ne.jp', 'pdx.ne.jp');
 
 	if (defined('MOBILE_ADDITIONAL_MAIL_DOMAINS')) {

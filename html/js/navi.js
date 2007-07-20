@@ -32,7 +32,7 @@
 	imgObj.src = fileName;
 	}
 	
-	// ¥µ¥Ö¥Ê¥Ó¤ÎÉ½¼¨ÀÚÂØ
+	// ã‚µãƒ–ãƒŠãƒ“ã®è¡¨ç¤ºåˆ‡æ›¿
 	function naviStyleChange(ids, bcColor, color){
 		document.getElementById(ids).style.backgroundColor = bcColor;
 	}	

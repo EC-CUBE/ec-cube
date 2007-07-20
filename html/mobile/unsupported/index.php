@@ -10,10 +10,10 @@ require_once("../require.php");
 
 class LC_Page {
 	function LC_Page() {
-		/** É¬¤º»ØÄê¤¹¤ë **/
-		$this->tpl_css = '';			// ¥á¥¤¥óCSS¥Ñ¥¹
-		/** É¬¤º»ØÄê¤¹¤ë **/
-		// ¥á¥¤¥ó¥Æ¥ó¥×¥ì¡¼¥È
+		/** å¿…ãšæŒ‡å®šã™ã‚‹ **/
+		$this->tpl_css = '';			// ãƒ¡ã‚¤ãƒ³CSSãƒ‘ã‚¹
+		/** å¿…ãšæŒ‡å®šã™ã‚‹ **/
+		// ãƒ¡ã‚¤ãƒ³ãƒ†ãƒ³ãƒ—ãƒ¬ãƒ¼ãƒˆ
 		$this->tpl_mainpage = 'unsupported/index.tpl';
 	}
 }
@@ -21,7 +21,7 @@ class LC_Page {
 $objPage = new LC_Page();
 $objView = new SC_MobileView();
 
-// ¥ì¥¤¥¢¥¦¥È¥Ç¥¶¥¤¥ó¤ò¼èÆÀ
+// ãƒ¬ã‚¤ã‚¢ã‚¦ãƒˆãƒ‡ã‚¶ã‚¤ãƒ³ã‚’å–å¾—
 $objPage = sfGetPageLayout($objPage, false, DEF_LAYOUT);
 
 $objView->assignobj($objPage);

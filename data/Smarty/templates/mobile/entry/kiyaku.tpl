@@ -5,26 +5,26 @@
  * http://www.lockon.co.jp/
  */
 *}-->
-<div align="center">¤´ÍøÍÑµ¬Ìó</div>
+<div align="center">ã”åˆ©ç”¨è¦ç´„</div>
 <hr>
 <!--{$tpl_kiyaku_text}--><br>
 
 <BR>
 <!--{if $offset != -1}-->
-	<a href="kiyaku.php?offset=<!--{$offset}-->">¼¡¤Ø¢ª</a><br><br>
+	<a href="kiyaku.php?offset=<!--{$offset}-->">æ¬¡ã¸â†’</a><br><br>
 <!--{/if}-->
 
-<a href="index.php" accesskey="1"><!--{1|numeric_emoji}-->Æ±°Õ¤·¤ÆÅÐÏ¿¤Ø</a><br>
-<a href="<!--{$smarty.const.MOBILE_URL_SITE_TOP}-->" accesskey="2"><!--{2|numeric_emoji}-->Æ±°Õ¤·¤Ê¤¤</a><br>
+<a href="index.php" accesskey="1"><!--{1|numeric_emoji}-->åŒæ„ã—ã¦ç™»éŒ²ã¸</a><br>
+<a href="<!--{$smarty.const.MOBILE_URL_SITE_TOP}-->" accesskey="2"><!--{2|numeric_emoji}-->åŒæ„ã—ãªã„</a><br>
 
 <br>
 <hr>
 
-<a href="<!--{$smarty.const.MOBILE_URL_CART_TOP}-->" accesskey="9"><!--{9|numeric_emoji}-->¤«¤´¤ò¸«¤ë</a><br>
-<a href="<!--{$smarty.const.MOBILE_URL_SITE_TOP}-->" accesskey="0"><!--{0|numeric_emoji}-->TOP¥Ú¡¼¥¸¤Ø</a><br>
+<a href="<!--{$smarty.const.MOBILE_URL_CART_TOP}-->" accesskey="9"><!--{9|numeric_emoji}-->ã‹ã”ã‚’è¦‹ã‚‹</a><br>
+<a href="<!--{$smarty.const.MOBILE_URL_SITE_TOP}-->" accesskey="0"><!--{0|numeric_emoji}-->TOPãƒšãƒ¼ã‚¸ã¸</a><br>
 
 <br>
 
-<!-- ¢§¥Õ¥Ã¥¿¡¼ ¤³¤³¤«¤é -->
+<!-- â–¼ãƒ•ãƒƒã‚¿ãƒ¼ ã“ã“ã‹ã‚‰ -->
 <!--{include file='footer.tpl'}-->
-<!-- ¢¥¥Õ¥Ã¥¿¡¼ ¤³¤³¤Þ¤Ç -->
+<!-- â–²ãƒ•ãƒƒã‚¿ãƒ¼ ã“ã“ã¾ã§ -->

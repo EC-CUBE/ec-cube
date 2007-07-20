@@ -28,21 +28,21 @@
 </script>
 </head>
 
-<!-- ¢§ £Â£Ï£Ä£ÙÉô ¥¹¥¿¡¼¥È -->
+<!-- â–¼ ï¼¢ï¼¯ï¼¤ï¼¹éƒ¨ ã‚¹ã‚¿ãƒ¼ãƒˆ -->
 <body bgcolor="#ffe9e6" text="#555555" link="#3a75af" vlink="#3a75af" alink="#3a75af" leftmargin="0" topmargin="0" marginwidth="0" marginheight="0" onLoad="preLoadImg('<!--{$smarty.const.URL_DIR}-->'); <!--{$tpl_onload}-->">
 <noscript>
 <link rel="stylesheet" href="<!--{$smarty.const.URL_DIR}-->css/common.css" type="text/css" />
 </noscript>
-<!--¢§CONTENTS-->
+<!--â–¼CONTENTS-->
 <table width="" cellspacing="0" cellpadding="0" summary=" ">
 	<tr>
 		<td bgcolor="#ffffff" align="left">
-			<img src="<!--{$smarty.const.SITE_URL}-->resize_image.php?image=<!--{$smarty.const.IMAGE_TEMP_DIR}-->kaki.jpg" alt="¥°¥é¥Õ">
+			<img src="<!--{$smarty.const.SITE_URL}-->resize_image.php?image=<!--{$smarty.const.IMAGE_TEMP_DIR}-->kaki.jpg" alt="ã‚°ãƒ©ãƒ•">
 		</td>
 	</tr>
 </table>
-<!--¢¥CONTENTS-->
+<!--â–²CONTENTS-->
 </body>
-<!-- ¢¥ £Â£Ï£Ä£ÙÉô ¥¨¥ó¥É -->
+<!-- â–² ï¼¢ï¼¯ï¼¤ï¼¹éƒ¨ ã‚¨ãƒ³ãƒ‰ -->
 
 </html>

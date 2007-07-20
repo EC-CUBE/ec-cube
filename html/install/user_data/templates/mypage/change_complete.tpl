@@ -3,28 +3,28 @@
  *
  * http://www.lockon.co.jp/
  *}-->
-<!--¢§CONTENTS-->
+<!--â–¼CONTENTS-->
 <table width="" border="0" cellspacing="0" cellpadding="0" summary=" ">
 	<tr>
 		<td align="center" bgcolor="#ffffff">
-		<!--¢§MAIN ONTENTS-->
+		<!--â–¼MAIN ONTENTS-->
 		<table width="100%" border="0" cellspacing="0" cellpadding="0" summary=" ">
 			<tr>
-				<td><img src="<!--{$smarty.const.URL_DIR}-->img/mypage/title.jpg" width="700" height="40" alt="MY¥Ú¡¼¥¸"></td>
+				<td><img src="<!--{$smarty.const.URL_DIR}-->img/mypage/title.jpg" width="700" height="40" alt="MYãƒšãƒ¼ã‚¸"></td>
 			</tr>
 			<tr><td height="15"></td></tr>
 		</table>
 		<table width="100%" border="0" cellspacing="0" cellpadding="0" summary=" ">
 			<tr valign="top">
 				<td>
-				<!--¢§NAVI-->
+				<!--â–¼NAVI-->
 					<!--{include file=$tpl_navi}-->
-				<!--¢¥NAVI-->
+				<!--â–²NAVI-->
 				</td>
 				<td align="right">
 				<table width="515" border="0" cellspacing="0" cellpadding="0" summary=" ">
 					<tr>
-						<td><!--¡ú¥¿¥¤¥È¥ë--><img src="<!--{$smarty.const.URL_DIR}-->img/mypage/subtitle02.gif" width="515" height="32" alt="²ñ°÷ÅĞÏ¿ÆâÍÆÊÑ¹¹"></td>
+						<td><!--â˜…ã‚¿ã‚¤ãƒˆãƒ«--><img src="<!--{$smarty.const.URL_DIR}-->img/mypage/subtitle02.gif" width="515" height="32" alt="ä¼šå“¡ç™»éŒ²å†…å®¹å¤‰æ›´"></td>
 					</tr>
 					<tr><td height="15"></td></tr>
 					<tr>
@@ -32,8 +32,8 @@
 						<table width="505" border="0" cellspacing="0" cellpadding="0" summary=" ">
 							<tr><td height="5"></td></tr>
 							<tr>
-								<td align="center" height="200" bgcolor="#ffffff"><span class="fs14"><span class="redst">²ñ°÷ÅĞÏ¿ÆâÍÆ¤ÎÊÑ¹¹¤¬´°Î»¤¤¤¿¤·¤Ş¤·¤¿¡£</span></span><br>
-								<span class="fs12">º£¸å¤È¤â¤´°¦¸Ü»ò¤ê¤Ş¤¹¤è¤¦¤è¤í¤·¤¯¤ª´ê¤¤¿½¤·¾å¤²¤Ş¤¹¡£</span></td>
+								<td align="center" height="200" bgcolor="#ffffff"><span class="fs14"><span class="redst">ä¼šå“¡ç™»éŒ²å†…å®¹ã®å¤‰æ›´ãŒå®Œäº†ã„ãŸã—ã¾ã—ãŸã€‚</span></span><br>
+								<span class="fs12">ä»Šå¾Œã¨ã‚‚ã”æ„›é¡§è³œã‚Šã¾ã™ã‚ˆã†ã‚ˆã‚ã—ããŠé¡˜ã„ç”³ã—ä¸Šã’ã¾ã™ã€‚</span></td>
 							</tr>
 							<tr><td height="5"></td></tr>
 						</table>
@@ -42,15 +42,15 @@
 					<tr><td height="20"></td></tr>
 					<tr>
 						<td align="center">
-							<a href="<!--{$smarty.const.URL_DIR}-->index.php" onmouseover="chgImg('<!--{$smarty.const.URL_DIR}-->img/common/b_back_on.gif','fortop');" onmouseout="chgImg('<!--{$smarty.const.URL_DIR}-->img/common/b_back.gif','fortop');"><img src="<!--{$smarty.const.URL_DIR}-->img/common/b_back.gif" width="150" height="30" alt="TOP¥Ú¡¼¥¸¤Ø" name="fortop" id="fortop" /></a>
+							<a href="<!--{$smarty.const.URL_DIR}-->index.php" onmouseover="chgImg('<!--{$smarty.const.URL_DIR}-->img/common/b_back_on.gif','fortop');" onmouseout="chgImg('<!--{$smarty.const.URL_DIR}-->img/common/b_back.gif','fortop');"><img src="<!--{$smarty.const.URL_DIR}-->img/common/b_back.gif" width="150" height="30" alt="TOPãƒšãƒ¼ã‚¸ã¸" name="fortop" id="fortop" /></a>
 						</td>
 					</tr>
 				</table>
 				</td>
 			</tr>
 		</table>
-		<!--¢¥MAIN ONTENTS-->
+		<!--â–²MAIN ONTENTS-->
 		</td>
 	</tr>
 </table>
-<!--¢¥CONTENTS-->
+<!--â–²CONTENTS-->

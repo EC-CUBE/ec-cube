@@ -10,15 +10,15 @@ require_once("../require.php");
 
 class LC_Page {
 	function LC_Page() {
-		$this->tpl_mainpage = 'magazine/complete.tpl';		// ¥á¥¤¥ó¥Æ¥ó¥×¥ì¡¼¥È
-		$this->tpl_title .= '¥á¥ë¥Þ¥¬ÅÐÏ¿(´°Î»¥Ú¡¼¥¸)';			//¡¡¥Ú¡¼¥¸¥¿¥¤¥È¥ë
+		$this->tpl_mainpage = 'magazine/complete.tpl';		// ãƒ¡ã‚¤ãƒ³ãƒ†ãƒ³ãƒ—ãƒ¬ãƒ¼ãƒˆ
+		$this->tpl_title .= 'ãƒ¡ãƒ«ãƒžã‚¬ç™»éŒ²(å®Œäº†ãƒšãƒ¼ã‚¸)';			//ã€€ãƒšãƒ¼ã‚¸ã‚¿ã‚¤ãƒˆãƒ«
 	}
 }
 
 $objPage = new LC_Page();
 $objView = new SC_MobileView();
 
-//----¡¡¥Ú¡¼¥¸É½¼¨
+//----ã€€ãƒšãƒ¼ã‚¸è¡¨ç¤º
 $objView->assignobj($objPage);
 $objView->display(SITE_FRAME);
 

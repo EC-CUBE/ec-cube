@@ -21,7 +21,7 @@ class LC_Page {
 		$this->tpl_subnavi = 'products/subnavi.tpl';
 		$this->tpl_mainno = 'products';		
 		$this->tpl_subno = 'product';
-		$this->tpl_subtitle = '¾¦ÉÊÅÐÏ¿';
+		$this->tpl_subtitle = 'å•†å“ç™»éŒ²';
 		global $arrSRANK;
 		$this->arrSRANK = $arrSRANK;
 		global $arrDISP;
@@ -36,11 +36,11 @@ class LC_Page {
 
 $objPage = new LC_Page();
 $objView = new SC_AdminView();
-// Ç§¾Ú²ÄÈÝ¤ÎÈ½Äê
+// èªè¨¼å¯å¦ã®åˆ¤å®š
 $objSess = new SC_Session();
 sfIsSuccess($objSess);
 
-// ¸¡º÷¥Ñ¥é¥á¡¼¥¿¤Î°ú¤­·Ñ¤®
+// æ¤œç´¢ãƒ‘ãƒ©ãƒ¡ãƒ¼ã‚¿ã®å¼•ãç¶™ãŽ
 foreach ($_POST as $key => $val) {
 	if (ereg("^search_", $key)) {
 		$objPage->arrSearchHidden[$key] = $val;	
@@ -51,7 +51,7 @@ $objPage->tpl_product_id = $_POST['product_id'];
 $objPage->tpl_pageno = $_POST['pageno'];
 
 switch($_POST['mode']) {
-// µ¬³Êºï½üÍ×µá
+// è¦æ ¼å‰Šé™¤è¦æ±‚
 case 'delete':
 	$objQuery = new SC_Query();
 	
@@ -81,78 +81,78 @@ case 'delete':
 		$objQuery->commit();
 	}
 	
-	lfProductClassPage();	// µ¬³ÊÅÐÏ¿¥Ú¡¼¥¸	
+	lfProductClassPage();	// è¦æ ¼ç™»éŒ²ãƒšãƒ¼ã‚¸	
 	break;
 	
-// ÊÔ½¸Í×µá
+// ç·¨é›†è¦æ±‚
 case 'pre_edit':
 	$objQuery = new SC_Query();
 	$where = "product_id = ? AND NOT(classcategory_id1 = 0 AND classcategory_id2 = 0) ";
 	$ret = $objQuery->count("dtb_products_class", $where, array($_POST['product_id']));
 	
 	if($ret > 0) {
-		// µ¬³ÊÁÈ¤ß¹ç¤ï¤»°ìÍ÷¤Î¼èÆÀ(DB¤ÎÃÍ¤òÍ¥Àè¤¹¤ë¡£)
+		// è¦æ ¼çµ„ã¿åˆã‚ã›ä¸€è¦§ã®å–å¾—(DBã®å€¤ã‚’å„ªå…ˆã™ã‚‹ã€‚)
 		$objPage->arrClassCat = lfGetClassCatListEdit($_POST['product_id']);	
 	}
 	
-	lfProductClassPage();	// µ¬³ÊÅÐÏ¿¥Ú¡¼¥¸
+	lfProductClassPage();	// è¦æ ¼ç™»éŒ²ãƒšãƒ¼ã‚¸
 	break;
-// µ¬³ÊÁÈ¤ß¹ç¤ï¤»É½¼¨
+// è¦æ ¼çµ„ã¿åˆã‚ã›è¡¨ç¤º
 case 'disp':
 	$objPage->arrForm['select_class_id1'] = $_POST['select_class_id1'];
 	$objPage->arrForm['select_class_id2'] = $_POST['select_class_id2'];
 
 	$objPage->arrErr = lfClassError();
 	if (count($objPage->arrErr) == 0) {
-		// µ¬³ÊÁÈ¤ß¹ç¤ï¤»°ìÍ÷¤Î¼èÆÀ
+		// è¦æ ¼çµ„ã¿åˆã‚ã›ä¸€è¦§ã®å–å¾—
 		$objPage->arrClassCat = lfGetClassCatListDisp($_POST['select_class_id1'], $_POST['select_class_id2']);
 	}
 	
-	lfProductClassPage();	// µ¬³ÊÅÐÏ¿¥Ú¡¼¥¸
+	lfProductClassPage();	// è¦æ ¼ç™»éŒ²ãƒšãƒ¼ã‚¸
 	break;
-// µ¬³ÊÅÐÏ¿Í×µá
+// è¦æ ¼ç™»éŒ²è¦æ±‚
 case 'edit':
-	// ÆþÎÏÃÍ¤ÎÊÑ´¹
+	// å…¥åŠ›å€¤ã®å¤‰æ›
 	$objPage->arrForm = lfConvertParam($_POST);
-	// ¥¨¥é¡¼¥Á¥§¥Ã¥¯
+	// ã‚¨ãƒ©ãƒ¼ãƒã‚§ãƒƒã‚¯
 	$objPage->arrErr = lfProductClassError($objPage->arrForm);
 	
 	if(count($objPage->arrErr) == 0) {
-		// ³ÎÇ§¥Ú¡¼¥¸ÀßÄê
+		// ç¢ºèªãƒšãƒ¼ã‚¸è¨­å®š
 		$objPage->tpl_mainpage = 'products/product_class_confirm.tpl';
-		lfProductConfirmPage(); // ³ÎÇ§¥Ú¡¼¥¸É½¼¨
+		lfProductConfirmPage(); // ç¢ºèªãƒšãƒ¼ã‚¸è¡¨ç¤º
 	} else {
-		// µ¬³ÊÁÈ¤ß¹ç¤ï¤»°ìÍ÷¤Î¼èÆÀ
+		// è¦æ ¼çµ„ã¿åˆã‚ã›ä¸€è¦§ã®å–å¾—
 		$objPage->arrClassCat = lfGetClassCatListDisp($_POST['class_id1'], $_POST['class_id2'], false);
-		lfProductClassPage();	// µ¬³ÊÅÐÏ¿¥Ú¡¼¥¸
+		lfProductClassPage();	// è¦æ ¼ç™»éŒ²ãƒšãƒ¼ã‚¸
 	}
 	break;
-// ³ÎÇ§¥Ú¡¼¥¸¤«¤é¤ÎÌá¤ê
+// ç¢ºèªãƒšãƒ¼ã‚¸ã‹ã‚‰ã®æˆ»ã‚Š
 case 'confirm_return':
-	// ¥Õ¥©¡¼¥à¥Ñ¥é¥á¡¼¥¿¤Î°ú¤­·Ñ¤®
+	// ãƒ•ã‚©ãƒ¼ãƒ ãƒ‘ãƒ©ãƒ¡ãƒ¼ã‚¿ã®å¼•ãç¶™ãŽ
 	$objPage->arrForm = $_POST;
-	// µ¬³Ê¤ÎÁªÂò¾ðÊó¤Ï°ú¤­·Ñ¤¬¤Ê¤¤¡£
+	// è¦æ ¼ã®é¸æŠžæƒ…å ±ã¯å¼•ãç¶™ãŒãªã„ã€‚
 	$objPage->arrForm['select_class_id1'] = "";
 	$objPage->arrForm['select_class_id2'] = "";
-	// µ¬³ÊÁÈ¤ß¹ç¤ï¤»°ìÍ÷¤Î¼èÆÀ(¥Ç¥Õ¥©¥ë¥ÈÃÍ¤Ï½ÐÎÏ¤·¤Ê¤¤)
+	// è¦æ ¼çµ„ã¿åˆã‚ã›ä¸€è¦§ã®å–å¾—(ãƒ‡ãƒ•ã‚©ãƒ«ãƒˆå€¤ã¯å‡ºåŠ›ã—ãªã„)
 	$objPage->arrClassCat = lfGetClassCatListDisp($_POST['class_id1'], $_POST['class_id2'], false);
-	lfProductClassPage();	// µ¬³ÊÅÐÏ¿¥Ú¡¼¥¸
+	lfProductClassPage();	// è¦æ ¼ç™»éŒ²ãƒšãƒ¼ã‚¸
 	break;
 case 'complete':
-	// ´°Î»¥Ú¡¼¥¸ÀßÄê	
+	// å®Œäº†ãƒšãƒ¼ã‚¸è¨­å®š	
 	$objPage->tpl_mainpage = 'products/product_class_complete.tpl';
-	// ¾¦ÉÊµ¬³Ê¤ÎÅÐÏ¿
+	// å•†å“è¦æ ¼ã®ç™»éŒ²
 	lfInsertProductClass($_POST, $_POST['product_id']);
 	break;
 default:
-	lfProductClassPage();	// µ¬³ÊÅÐÏ¿¥Ú¡¼¥¸
+	lfProductClassPage();	// è¦æ ¼ç™»éŒ²ãƒšãƒ¼ã‚¸
 	break;
 }
 
 $objView->assignobj($objPage);
 $objView->display(MAIN_FRAME);
 //-----------------------------------------------------------------------------------------------------------------------------
-/* µ¬³ÊÅÐÏ¿¥Ú¡¼¥¸É½¼¨ÍÑ */
+/* è¦æ ¼ç™»éŒ²ãƒšãƒ¼ã‚¸è¡¨ç¤ºç”¨ */
 function lfProductClassPage() {
 	global $objPage;
 	$objPage->arrHidden = $_POST;
@@ -160,7 +160,7 @@ function lfProductClassPage() {
 	$objPage->arrHidden['select_class_id2'] = "";
 	$arrClass = sfGetIDValueList("dtb_class", 'class_id', 'name');
 	
-	// µ¬³ÊÊ¬Îà¤¬ÅÐÏ¿¤µ¤ì¤Æ¤¤¤Ê¤¤µ¬³Ê¤ÏÉ½¼¨¤·¤Ê¤¤¤è¤¦¤Ë¤¹¤ë¡£
+	// è¦æ ¼åˆ†é¡žãŒç™»éŒ²ã•ã‚Œã¦ã„ãªã„è¦æ ¼ã¯è¡¨ç¤ºã—ãªã„ã‚ˆã†ã«ã™ã‚‹ã€‚
 	$arrClassCatCount = sfGetClassCatCount();
 	
 	foreach($arrClass as $key => $val) {
@@ -169,7 +169,7 @@ function lfProductClassPage() {
 		}
 	}
 	
-	// ¾¦ÉÊÌ¾¤ò¼èÆÀ
+	// å•†å“åã‚’å–å¾—
 	$objQuery = new SC_Query();
 	$product_name = $objQuery->getOne("SELECT name FROM dtb_products WHERE product_id = ?", array($_POST['product_id']));
 	$objPage->arrForm['product_name'] = $product_name;
@@ -178,7 +178,7 @@ function lfProductClassPage() {
 function lfSetDefaultClassCat($objQuery, $product_id, $max) {
 	global $objPage;
 	
-	// ¥Ç¥Õ¥©¥ë¥ÈÃÍ¤ÎÆÉ¹þ
+	// ãƒ‡ãƒ•ã‚©ãƒ«ãƒˆå€¤ã®èª­è¾¼
 	$col = "product_code, price01, price02, stock, stock_unlimited";
 	$arrRet = $objQuery->select($col, "dtb_products_class", "product_id = ? AND classcategory_id1 = 0 AND classcategory_id2 = 0", array($product_id));;
 	
@@ -195,19 +195,19 @@ function lfSetDefaultClassCat($objQuery, $product_id, $max) {
 	}
 }
 
-/* µ¬³ÊÁÈ¤ß¹ç¤ï¤»°ìÍ÷¤Î¼èÆÀ */
+/* è¦æ ¼çµ„ã¿åˆã‚ã›ä¸€è¦§ã®å–å¾— */
 function lfGetClassCatListDisp($class_id1, $class_id2, $default = true) {
 	global $objPage;
 	$objQuery = new SC_Query();
 		
 	if($class_id2 != "") {
-		// µ¬³Ê1¤Èµ¬³Ê2
+		// è¦æ ¼1ã¨è¦æ ¼2
 		$sql = "SELECT * ";
 		$sql.= "FROM vw_cross_class AS crs_cls ";
 		$sql.= "WHERE class_id1 = ? AND class_id2 = ? ORDER BY rank1 DESC, rank2 DESC;";
 		$arrRet = $objQuery->getall($sql, array($class_id1, $class_id2));
 	} else {
-		// µ¬³Ê1¤Î¤ß
+		// è¦æ ¼1ã®ã¿
 		$sql = "SELECT * ";
 		$sql.= "FROM vw_cross_class AS crs_cls ";
 		$sql.= "WHERE class_id1 = ? AND class_id2 = 0 ORDER BY rank1 DESC;";
@@ -218,7 +218,7 @@ function lfGetClassCatListDisp($class_id1, $class_id2, $default = true) {
 	$max = count($arrRet);
 	
 	if($default) {
-		// ¥Ç¥Õ¥©¥ë¥ÈÃÍ¤òÀßÄê
+		// ãƒ‡ãƒ•ã‚©ãƒ«ãƒˆå€¤ã‚’è¨­å®š
 		lfSetDefaultClassCat($objQuery, $_POST['product_id'], $max);
 	}
 	
@@ -229,10 +229,10 @@ function lfGetClassCatListDisp($class_id1, $class_id2, $default = true) {
 	return $arrRet;
 }
 
-/* µ¬³ÊÁÈ¤ß¹ç¤ï¤»°ìÍ÷¤Î¼èÆÀ(ÊÔ½¸²èÌÌ) */
+/* è¦æ ¼çµ„ã¿åˆã‚ã›ä¸€è¦§ã®å–å¾—(ç·¨é›†ç”»é¢) */
 function lfGetClassCatListEdit($product_id) {
 	global $objPage;
-	// ´ûÂ¸ÊÔ½¸¤Î¾ì¹ç
+	// æ—¢å­˜ç·¨é›†ã®å ´åˆ
 	$objQuery = new SC_Query();
 	
 	$col = "class_id1, class_id2, name1, name2, rank1, rank2, ";
@@ -257,7 +257,7 @@ function lfGetClassCatListEdit($product_id) {
 	
 	$max = count($arrList);
 	
-	// ¥Ç¥Õ¥©¥ë¥ÈÃÍ¤òÀßÄê
+	// ãƒ‡ãƒ•ã‚©ãƒ«ãƒˆå€¤ã‚’è¨­å®š
 	lfSetDefaultClassCat($objQuery, $product_id, $max);
 	
 	$no = 1;
@@ -271,7 +271,7 @@ function lfGetClassCatListEdit($product_id) {
 			$objPage->arrForm['stock_unlimited:'.$no] = $arrList[$cnt]['stock_unlimited'];
 			$objPage->arrForm['price01:'.$no] = $arrList[$cnt]['price01'];
 			$objPage->arrForm['price02:'.$no] = $arrList[$cnt]['price02'];
-			// JavaScript½é´ü²½ÍÑÊ¸»úÎó
+			// JavaScriptåˆæœŸåŒ–ç”¨æ–‡å­—åˆ—
 			$line.= "'check:".$no."',";			
 		}
 		$no++;
@@ -285,18 +285,18 @@ function lfGetClassCatListEdit($product_id) {
 	return $arrList;
 }
 
-/* µ¬³Ê¤ÎÅÐÏ¿ */
+/* è¦æ ¼ã®ç™»éŒ² */
 function lfInsertProductClass($arrList, $product_id) {
 	$objQuery = new SC_Query();
 	
 	$objQuery->begin();
 		
-	// ´ûÂ¸µ¬³Ê¤Îºï½ü
+	// æ—¢å­˜è¦æ ¼ã®å‰Šé™¤
 	$where = "product_id = ?";
 	$objQuery->delete("dtb_products_class", $where, array($product_id));
 	
 	$cnt = 1;
-	// ¤¹¤Ù¤Æ¤Îµ¬³Ê¤òÅÐÏ¿¤¹¤ë¡£
+	// ã™ã¹ã¦ã®è¦æ ¼ã‚’ç™»éŒ²ã™ã‚‹ã€‚
 	while($arrList["classcategory_id1:".$cnt] != "") {
 		if($arrList["check:".$cnt] == 1) {
 			$sqlval['product_id'] = $product_id;
@@ -310,7 +310,7 @@ function lfInsertProductClass($arrList, $product_id) {
 			$sqlval['creator_id'] = $_SESSION['member_id'];
 			$sqlval['create_date'] = "now()";
 			$sqlval['update_date'] = "now()";
-			// INSERT¤Î¼Â¹Ô
+			// INSERTã®å®Ÿè¡Œ
 			$objQuery->insert("dtb_products_class", $sqlval);
 		}
 		$cnt++;
@@ -319,23 +319,23 @@ function lfInsertProductClass($arrList, $product_id) {
 	$objQuery->commit();
 }
 
-// µ¬³ÊÁªÂò¥¨¥é¡¼¥Á¥§¥Ã¥¯
+// è¦æ ¼é¸æŠžã‚¨ãƒ©ãƒ¼ãƒã‚§ãƒƒã‚¯
 function lfClassError() {
 	$objErr = new SC_CheckError();
-	$objErr->doFunc(array("µ¬³Ê1", "select_class_id1"), array("EXIST_CHECK"));
-	$objErr->doFunc(array("µ¬³Ê", "select_class_id1", "select_class_id2"), array("TOP_EXIST_CHECK"));
-	$objErr->doFunc(array("µ¬³Ê1", "µ¬³Ê2", "select_class_id1", "select_class_id2"), array("DIFFERENT_CHECK"));
+	$objErr->doFunc(array("è¦æ ¼1", "select_class_id1"), array("EXIST_CHECK"));
+	$objErr->doFunc(array("è¦æ ¼", "select_class_id1", "select_class_id2"), array("TOP_EXIST_CHECK"));
+	$objErr->doFunc(array("è¦æ ¼1", "è¦æ ¼2", "select_class_id1", "select_class_id2"), array("DIFFERENT_CHECK"));
 	return $objErr->arrErr;
 }
 
-/* ¼èÆÀÊ¸»úÎó¤ÎÊÑ´¹ */
+/* å–å¾—æ–‡å­—åˆ—ã®å¤‰æ› */
 function lfConvertParam($array) {
 	/*
-	 *	Ê¸»úÎó¤ÎÊÑ´¹
-	 *	K :  ¡ÖÈ¾³Ñ(ŽÊŽÝŽ¶Ž¸)ÊÒ²¾Ì¾¡×¤ò¡ÖÁ´³ÑÊÒ²¾Ì¾¡×¤ËÊÑ´¹
-	 *	C :  ¡ÖÁ´³Ñ¤Ò¤é²¾Ì¾¡×¤ò¡ÖÁ´³Ñ¤«¤¿²¾Ì¾¡×¤ËÊÑ´¹
-	 *	V :  ÂùÅÀÉÕ¤­¤ÎÊ¸»ú¤ò°ìÊ¸»ú¤ËÊÑ´¹¡£"K","H"¤È¶¦¤Ë»ÈÍÑ¤·¤Þ¤¹	
-	 *	n :  ¡ÖÁ´³Ñ¡×¿ô»ú¤ò¡ÖÈ¾³Ñ(ŽÊŽÝŽ¶Ž¸)¡×¤ËÊÑ´¹
+	 *	æ–‡å­—åˆ—ã®å¤‰æ›
+	 *	K :  ã€ŒåŠè§’(ï¾Šï¾ï½¶ï½¸)ç‰‡ä»®åã€ã‚’ã€Œå…¨è§’ç‰‡ä»®åã€ã«å¤‰æ›
+	 *	C :  ã€Œå…¨è§’ã²ã‚‰ä»®åã€ã‚’ã€Œå…¨è§’ã‹ãŸä»®åã€ã«å¤‰æ›
+	 *	V :  æ¿ç‚¹ä»˜ãã®æ–‡å­—ã‚’ä¸€æ–‡å­—ã«å¤‰æ›ã€‚"K","H"ã¨å…±ã«ä½¿ç”¨ã—ã¾ã™	
+	 *	n :  ã€Œå…¨è§’ã€æ•°å­—ã‚’ã€ŒåŠè§’(ï¾Šï¾ï½¶ï½¸)ã€ã«å¤‰æ›
 	 */
 
 	$no = 1;
@@ -347,9 +347,9 @@ function lfConvertParam($array) {
 		$no++;
 	}
 	
-	// Ê¸»úÊÑ´¹
+	// æ–‡å­—å¤‰æ›
 	foreach ($arrConvList as $key => $val) {
-		// POST¤µ¤ì¤Æ¤­¤¿ÃÍ¤Î¤ßÊÑ´¹¤¹¤ë¡£
+		// POSTã•ã‚Œã¦ããŸå€¤ã®ã¿å¤‰æ›ã™ã‚‹ã€‚
 		if(isset($array[$key])) {
 			$array[$key] = mb_convert_kana($array[$key] ,$val);
 		}
@@ -357,19 +357,19 @@ function lfConvertParam($array) {
 	return $array;
 }
 
-// ¾¦ÉÊµ¬³Ê¥¨¥é¡¼¥Á¥§¥Ã¥¯
+// å•†å“è¦æ ¼ã‚¨ãƒ©ãƒ¼ãƒã‚§ãƒƒã‚¯
 function lfProductClassError($array) {
 	$objErr = new SC_CheckError($array);
 	$no = 1;
 		
 	while($array["classcategory_id1:".$no] != "") {
 		if($array["check:".$no] == 1) {
-			$objErr->doFunc(array("¾¦ÉÊ¥³¡¼¥É", "product_code:".$no, STEXT_LEN), array("MAX_LENGTH_CHECK"));
+			$objErr->doFunc(array("å•†å“ã‚³ãƒ¼ãƒ‰", "product_code:".$no, STEXT_LEN), array("MAX_LENGTH_CHECK"));
 			$objErr->doFunc(array(NORMAL_PRICE_TITLE, "price01:".$no, PRICE_LEN), array("ZERO_CHECK", "NUM_CHECK", "MAX_LENGTH_CHECK"));
 			$objErr->doFunc(array(SALE_PRICE_TITLE, "price02:".$no, PRICE_LEN), array("EXIST_CHECK", "ZERO_CHECK", "NUM_CHECK", "MAX_LENGTH_CHECK"));
 
 			if($array["stock_unlimited:".$no] != '1') {
-				$objErr->doFunc(array("ºß¸Ë¿ô", "stock:".$no, AMOUNT_LEN), array("EXIST_CHECK", "NUM_CHECK", "MAX_LENGTH_CHECK"));
+				$objErr->doFunc(array("åœ¨åº«æ•°", "stock:".$no, AMOUNT_LEN), array("EXIST_CHECK", "NUM_CHECK", "MAX_LENGTH_CHECK"));
 			}
 		}
 		if(count($objErr->arrErr) > 0) {
@@ -383,7 +383,7 @@ function lfProductClassError($array) {
 	return $objErr->arrErr;
 }
 
-/* ³ÎÇ§¥Ú¡¼¥¸É½¼¨ÍÑ */
+/* ç¢ºèªãƒšãƒ¼ã‚¸è¡¨ç¤ºç”¨ */
 function lfProductConfirmPage() {
 	global $objPage;
 	$objPage->arrForm['mode'] = 'complete';

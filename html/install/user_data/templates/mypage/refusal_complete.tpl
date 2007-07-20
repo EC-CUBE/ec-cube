@@ -3,28 +3,28 @@
  *
  * http://www.lockon.co.jp/
  *}-->
-<!--¢§CONTENTS-->
+<!--â–¼CONTENTS-->
 <table width="" border="0" cellspacing="0" cellpadding="0" summary=" ">
 	<tr>
 		<td align="center" bgcolor="#ffffff">
-		<!--¢§MAIN ONTENTS-->
+		<!--â–¼MAIN ONTENTS-->
 		<table width="100%" border="0" cellspacing="0" cellpadding="0" summary=" ">
 			<tr>
-				<td><img src="<!--{$smarty.const.URL_DIR}-->img/mypage/title.jpg" width="700" height="40" alt="MY¥Ú¡¼¥¸"></td>
+				<td><img src="<!--{$smarty.const.URL_DIR}-->img/mypage/title.jpg" width="700" height="40" alt="MYãƒšãƒ¼ã‚¸"></td>
 			</tr>
 			<tr><td height="15"></td></tr>
 		</table>
 		<table width="100%" border="0" cellspacing="0" cellpadding="0" summary=" ">
 			<tr valign="top">
 				<td>
-				<!--¢§NAVI-->
+				<!--â–¼NAVI-->
 					<!--{include file = $tpl_navi}-->
-				<!--¢¥NAVI-->
+				<!--â–²NAVI-->
 				</td>
 				<td align="right">
 				<table width="515" border="0" cellspacing="0" cellpadding="0" summary=" ">
 					<tr>
-						<td><!--¡ú¥¿¥¤¥È¥ë--><img src="<!--{$smarty.const.URL_DIR}-->img/mypage/subtitle04.gif" width="515" height="32" alt="Âà²ñ¼êÂ³¤­"></td>
+						<td><!--â˜…ã‚¿ã‚¤ãƒˆãƒ«--><img src="<!--{$smarty.const.URL_DIR}-->img/mypage/subtitle04.gif" width="515" height="32" alt="é€€ä¼šæ‰‹ç¶šã"></td>
 					</tr>
 					<tr><td height="15"></td></tr>
 					<tr>
@@ -33,13 +33,13 @@
 							<tr><td height="5"></td></tr>
 							<tr>
 								<td align="center" bgcolor="#ffffff">
-								<!--É½¼¨¤³¤³¤«¤é-->
+								<!--è¡¨ç¤ºã“ã“ã‹ã‚‰-->
 								<table width="465" border="0" cellspacing="0" cellpadding="0" summary=" ">
 									<tr><td height="30"></td></tr>
 									<tr>
-										<td><span class="fs14"><span class="redst">Âà²ñ¼êÂ³¤­¤¬´°Î»¤¤¤¿¤·¤Þ¤·¤¿¡£</span></span><br>
-										<span class="fs12">MY¥Ú¡¼¥¸¤ò¤´ÍøÍÑ¤¤¤¿¤À¤­À¿¤Ë¤¢¤ê¤¬¤È¤¦¤´¤¶¤¤¤Þ¤·¤¿¡£<br>
-										¤Þ¤¿¤Î¤´ÍøÍÑ¤ò¿´¤è¤ê¤ªÂÔ¤Á¿½¤·¾å¤²¤Þ¤¹¡£</span></td>
+										<td><span class="fs14"><span class="redst">é€€ä¼šæ‰‹ç¶šããŒå®Œäº†ã„ãŸã—ã¾ã—ãŸã€‚</span></span><br>
+										<span class="fs12">MYãƒšãƒ¼ã‚¸ã‚’ã”åˆ©ç”¨ã„ãŸã ãèª ã«ã‚ã‚ŠãŒã¨ã†ã”ã–ã„ã¾ã—ãŸã€‚<br>
+										ã¾ãŸã®ã”åˆ©ç”¨ã‚’å¿ƒã‚ˆã‚ŠãŠå¾…ã¡ç”³ã—ä¸Šã’ã¾ã™ã€‚</span></td>
 									</tr>
 									<tr><td height="15"></td></tr>
 									<tr>
@@ -48,8 +48,8 @@
 											<tr><td height="10"></td></tr>
 											<tr>
 												<td class="fs12"><!--{$arrSiteInfo.company_name|escape}--><br>
-												TEL¡§<!--{$arrSiteInfo.tel01}-->-<!--{$arrSiteInfo.tel02}-->-<!--{$arrSiteInfo.tel03}--> <!--{if $arrSiteInfo.business_hour != ""}-->¡Ê¼õÉÕ»þ´Ö/<!--{$arrSiteInfo.business_hour}-->¡Ë<!--{/if}--><br>
-												E-mail¡§<a href="mailto:<!--{$arrSiteInfo.email02|escape}-->"><!--{$arrSiteInfo.email02|escape}--></a></td>
+												TELï¼š<!--{$arrSiteInfo.tel01}-->-<!--{$arrSiteInfo.tel02}-->-<!--{$arrSiteInfo.tel03}--> <!--{if $arrSiteInfo.business_hour != ""}-->ï¼ˆå—ä»˜æ™‚é–“/<!--{$arrSiteInfo.business_hour}-->ï¼‰<!--{/if}--><br>
+												E-mailï¼š<a href="mailto:<!--{$arrSiteInfo.email02|escape}-->"><!--{$arrSiteInfo.email02|escape}--></a></td>
 											</tr>
 											<tr><td height="10"></td></tr>
 										</table>
@@ -57,7 +57,7 @@
 									</tr>
 									<tr><td height="30"></td></tr>
 								</table>
-								<!--É½¼¨¤³¤³¤Þ¤Ç-->
+								<!--è¡¨ç¤ºã“ã“ã¾ã§-->
 								</td>
 							</tr>
 							<tr><td height="5"></td></tr>
@@ -66,14 +66,14 @@
 					</tr>
 					<tr><td height="20"></td></tr>
 					<tr>
-						<td align="center"><a href="<!--{$smarty.const.URL_DIR}-->index.php" onmouseover="chgImg('<!--{$smarty.const.URL_DIR}-->img/common/b_toppage_on.gif','toppage');" onmouseout="chgImg('<!--{$smarty.const.URL_DIR}-->img/common/b_toppage.gif','toppage');"><img src="<!--{$smarty.const.URL_DIR}-->img/common/b_toppage.gif" width="150" height="30" alt="¥È¥Ã¥×¥Ú¡¼¥¸¤Ø" border="0" name="toppage"></a></td>
+						<td align="center"><a href="<!--{$smarty.const.URL_DIR}-->index.php" onmouseover="chgImg('<!--{$smarty.const.URL_DIR}-->img/common/b_toppage_on.gif','toppage');" onmouseout="chgImg('<!--{$smarty.const.URL_DIR}-->img/common/b_toppage.gif','toppage');"><img src="<!--{$smarty.const.URL_DIR}-->img/common/b_toppage.gif" width="150" height="30" alt="ãƒˆãƒƒãƒ—ãƒšãƒ¼ã‚¸ã¸" border="0" name="toppage"></a></td>
 					</tr>
 				</table>
 				</td>
 			</tr>
 		</table>
-		<!--¢¥MAIN ONTENTS-->
+		<!--â–²MAIN ONTENTS-->
 		</td>
 	</tr>
 </table>
-<!--¢¥CONTENTS-->
+<!--â–²CONTENTS-->

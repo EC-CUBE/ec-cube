@@ -27,16 +27,16 @@ arrTree = new Array();
 </head>
 <body onload="fnTreeView('tree', arrTree, '<!--{$tpl_now_file}-->');<!--{$tpl_onload}-->">
 
-¢£•®•È°º
+‚ñ†„Ç®„É©„Éº
 <!--{foreach key=key item=item from=$arrErr}-->
-	<!--{$key}-->°ß<!--{$item}--><br/>
+	<!--{$key}-->Ôºö<!--{$item}--><br/>
 <!--{/foreach}--><br/><br/>
 
 
 <table>
 	<tr>
 		<td valign="top">
-		¢£•ƒ•Í°º
+		‚ñ†„ÉÑ„É™„Éº
 		<div id="tree"></div>
 		</td>
 		<td valign="top">
@@ -46,7 +46,7 @@ arrTree = new Array();
 		<input type="hidden" name="tree_select_file" value="">
 		<input type="hidden" name="tree_status" value="">
 		<input type="hidden" name="select_file" value="">		
-		¢£•’•°•§•Î
+		‚ñ†„Éï„Ç°„Ç§„É´
 		<div id="file_view">
 			<table>
 				<!--{section name=cnt loop=$arrFileList}-->
@@ -59,16 +59,16 @@ arrTree = new Array();
 				<!--{/section}-->
 			</table>
 		</div>
-		<input type="button" onclick="setTreeStatus('tree_status');fnModeSubmit('view','',''); return false;" value="…Ωº®">
-		<input type="button" onclick="setTreeStatus('tree_status');fnModeSubmit('download','',''); return false;" value="•¿•¶•Û•Ì°º•…">
-		<input type="button" onclick="setTreeStatus('tree_status');fnModeSubmit('delete','',''); return false;" value="∫ÔΩ¸">
+		<input type="button" onclick="setTreeStatus('tree_status');fnModeSubmit('view','',''); return false;" value="Ë°®Á§∫">
+		<input type="button" onclick="setTreeStatus('tree_status');fnModeSubmit('download','',''); return false;" value="„ÉÄ„Ç¶„É≥„É≠„Éº„Éâ">
+		<input type="button" onclick="setTreeStatus('tree_status');fnModeSubmit('delete','',''); return false;" value="ÂâäÈô§">
 		</td>
 	</tr>
 </table>
-¢£•’•©•Î•¿∫Ó¿Æ<br />
+‚ñ†„Éï„Ç©„É´„ÉÄ‰ΩúÊàê<br />
 
-	<input type="file" name="upload_file"><input type="button" onclick="setTreeStatus('tree_status');fnModeSubmit('upload','',''); return false;" value="•¢•√•◊•Ì°º•…"><br/>
-	<input type="text" name="create_file" value=""><input type="button" onclick="setTreeStatus('tree_status');fnModeSubmit('create','',''); return false;" value="∫Ó¿Æ">
+	<input type="file" name="upload_file"><input type="button" onclick="setTreeStatus('tree_status');fnModeSubmit('upload','',''); return false;" value="„Ç¢„ÉÉ„Éó„É≠„Éº„Éâ"><br/>
+	<input type="text" name="create_file" value=""><input type="button" onclick="setTreeStatus('tree_status');fnModeSubmit('create','',''); return false;" value="‰ΩúÊàê">
 </form>
 
 

@@ -9,19 +9,19 @@
 require_once(dirname(__FILE__) . '/../module/Net/UserAgent/Mobile.php');
 
 /**
- * ����ü���ξ���򰷤����饹
+ * 携帯端末の情報を扱うクラス
  *
- * �оݤȤ������ü���� $_SERVER ������ꤹ�롣
- * ���٤ƤΥ᥽�åɤϥ��饹�᥽�åɡ�
+ * 対象とする携帯端末は $_SERVER から決定する。
+ * すべてのメソッドはクラスメソッド。
  */
 class GC_MobileUserAgent {
 	/**
-	 * ����ü���Υ���ꥢ��ɽ��ʸ�����������롣
+	 * 携帯端末のキャリアを表す文字列を取得する。
 	 *
-	 * ʸ����� docomo, ezweb, softbank �Τ����줫��
+	 * 文字列は docomo, ezweb, softbank のいずれか。
 	 *
-	 * @return string|false ����ü���Υ���ꥢ��ɽ��ʸ������֤���
-	 *                      ����ü���ǤϤʤ����� false ���֤���
+	 * @return string|false 携帯端末のキャリアを表す文字列を返す。
+	 *                      携帯端末ではない場合は false を返す。
 	 */
 	function getCarrier() {
 		$objAgent =& Net_UserAgent_Mobile::singleton();
@@ -42,14 +42,14 @@ class GC_MobileUserAgent {
 	}
 
 	/**
-	 * ���ꥵ���Ȥ����Ѳ�ǽ�ʷ���ü��/���ѼԤ�ID��������롣
+	 * 勝手サイトで利用可能な携帯端末/利用者のIDを取得する。
 	 *
-	 * �ƥ���ꥢ�ǻ��Ѥ���ID�μ���:
+	 * 各キャリアで使用するIDの種類:
 	 * + docomo   ... UTN
-	 * + ezweb    ... EZ�ֹ�
-	 * + softbank ... ü�����ꥢ���ֹ�
+	 * + ezweb    ... EZ番号
+	 * + softbank ... 端末シリアル番号
 	 *
-	 * @return string|false ��������ID���֤��������Ǥ��ʤ��ä����� false ���֤���
+	 * @return string|false 取得したIDを返す。取得できなかった場合は false を返す。
 	 */
 	function getId() {
 		$objAgent =& Net_UserAgent_Mobile::singleton();
@@ -64,10 +64,10 @@ class GC_MobileUserAgent {
 	}
 
 	/**
-	 * ����ü���ε����ɽ��ʸ�����������롣
-	 * ����ü���ǤϤʤ����ϥ桼��������������Ȥ�̾����������롣(��: "Mozilla")
+	 * 携帯端末の機種を表す文字列を取得する。
+	 * 携帯端末ではない場合はユーザーエージェントの名前を取得する。(例: "Mozilla")
 	 *
-	 * @return string ����ü���Υ�ǥ��ɽ��ʸ������֤���
+	 * @return string 携帯端末のモデルを表す文字列を返す。
 	 */
 	function getModel() {
 		$objAgent =& Net_UserAgent_Mobile::singleton();
@@ -81,9 +81,9 @@ class GC_MobileUserAgent {
 	}
 
 	/**
-	 * EC-CUBE �����ݡ��Ȥ�����ӥ���ꥢ���ɤ�����Ƚ�̤��롣
+	 * EC-CUBE がサポートする携帯キャリアかどうかを判別する。
 	 *
-	 * @return boolean ���ݡ��Ȥ��Ƥ������ true������ʳ��ξ��� false ���֤���
+	 * @return boolean サポートしている場合は true、それ以外の場合は false を返す。
 	 */
 	function isMobile() {
 		$objAgent =& Net_UserAgent_Mobile::singleton();
@@ -95,23 +95,23 @@ class GC_MobileUserAgent {
 	}
 
 	/**
-	 * EC-CUBE �����ݡ��Ȥ�����ӥ���ꥢ���ɤ�����Ƚ�̤��롣
+	 * EC-CUBE がサポートする携帯キャリアかどうかを判別する。
 	 *
-	 * @return boolean ����ü���ǤϤʤ����� true������ʳ��ξ��� false ���֤���
+	 * @return boolean 携帯端末ではない場合は true、それ以外の場合は false を返す。
 	 */
 	function isNonMobile() {
 		return !GC_MobileUserAgent::isMobile();
 	}
 
 	/**
-	 * EC-CUBE �����ݡ��Ȥ������ü�����ɤ�����Ƚ�̤��롣
+	 * EC-CUBE がサポートする携帯端末かどうかを判別する。
 	 *
-	 * @return boolean ���ݡ��Ȥ��Ƥ������ true������ʳ��ξ��� false ���֤���
+	 * @return boolean サポートしている場合は true、それ以外の場合は false を返す。
 	 */
 	function isSupported() {
 		$objAgent =& Net_UserAgent_Mobile::singleton();
 
-		// ����ü������ǧ�����줿����User-Agent �η�����̤�Τξ��
+		// 携帯端末だと認識されたが、User-Agent の形式が未知の場合
 		if (Net_UserAgent_Mobile::isError($objAgent)) {
 			gfPrintLog($objAgent->toString());
 			return false;
@@ -126,7 +126,7 @@ class GC_MobileUserAgent {
 		} elseif ($objAgent->isVodafone()) {
 			return $objAgent->isPacketCompliant();
 		} else {
-			// ����ü���ǤϤʤ����ϥ��ݡ��Ȥ��Ƥ��뤳�Ȥˤ��롣
+			// 携帯端末ではない場合はサポートしていることにする。
 			return true;
 		}
 	}

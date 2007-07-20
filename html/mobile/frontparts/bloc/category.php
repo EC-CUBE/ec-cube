@@ -5,13 +5,13 @@
  *
  * http://www.lockon.co.jp/
  * 
- * ¥â¥Ğ¥¤¥ë¥µ¥¤¥È/¥á¥¤¥ó¥«¥Æ¥´¥ê¡¼
+ * ãƒ¢ãƒã‚¤ãƒ«ã‚µã‚¤ãƒˆ/ãƒ¡ã‚¤ãƒ³ã‚«ãƒ†ã‚´ãƒªãƒ¼
  */
 
 class LC_CatPage {
 	function LC_CatPage() {
-		/** É¬¤ºÊÑ¹¹¤¹¤ë **/
-		$this->tpl_mainpage = 'frontparts/bloc/category.tpl';	// ¥á¥¤¥ó¥Æ¥ó¥×¥ì¡¼¥È
+		/** å¿…ãšå¤‰æ›´ã™ã‚‹ **/
+		$this->tpl_mainpage = 'frontparts/bloc/category.tpl';	// ãƒ¡ã‚¤ãƒ³ãƒ†ãƒ³ãƒ—ãƒ¬ãƒ¼ãƒˆ
 	}
 }
 
@@ -25,28 +25,28 @@ $objSubView->display($objSubPage->tpl_mainpage);
 
 //-----------------------------------------------------------------------------------------------------------------------------------
 
-// ¥á¥¤¥ó¥«¥Æ¥´¥ê¡¼¤Î¼èÆÀ
+// ãƒ¡ã‚¤ãƒ³ã‚«ãƒ†ã‚´ãƒªãƒ¼ã®å–å¾—
 function lfGetMainCat($count_check = false, $objSubPage) {
 	$objQuery = new SC_Query();
 	$col = "*";
 	$from = "dtb_category left join dtb_category_total_count using (category_id)";
-	// ¥á¥¤¥ó¥«¥Æ¥´¥ê¡¼¤È¤½¤ÎÄ¾²¼¤Î¥«¥Æ¥´¥ê¡¼¤ò¼èÆÀ¤¹¤ë¡£
+	// ãƒ¡ã‚¤ãƒ³ã‚«ãƒ†ã‚´ãƒªãƒ¼ã¨ãã®ç›´ä¸‹ã®ã‚«ãƒ†ã‚´ãƒªãƒ¼ã‚’å–å¾—ã™ã‚‹ã€‚
 	$where = 'level <= 2 AND del_flg = 0';
-	// ÅĞÏ¿¾¦ÉÊ¿ô¤Î¥Á¥§¥Ã¥¯
+	// ç™»éŒ²å•†å“æ•°ã®ãƒã‚§ãƒƒã‚¯
 	if($count_check) {
 		$where .= " AND product_count > 0";
 	}
 	$objQuery->setoption("ORDER BY rank DESC");
 	$arrRet = $objQuery->select($col, $from, $where);
 
-	// ¥á¥¤¥ó¥«¥Æ¥´¥ê¡¼¤òÃê½Ğ¤¹¤ë¡£
+	// ãƒ¡ã‚¤ãƒ³ã‚«ãƒ†ã‚´ãƒªãƒ¼ã‚’æŠ½å‡ºã™ã‚‹ã€‚
 	$arrMainCat = array();
 	foreach ($arrRet as $cat) {
 		if ($cat['level'] != 1) {
 			continue;
 		}
 
-		// »Ò¥«¥Æ¥´¥ê¡¼¤ò»ı¤Ä¤«¤É¤¦¤«¤òÄ´¤Ù¤ë¡£
+		// å­ã‚«ãƒ†ã‚´ãƒªãƒ¼ã‚’æŒã¤ã‹ã©ã†ã‹ã‚’èª¿ã¹ã‚‹ã€‚
 		$arrChildrenID = sfGetUnderChildrenArray($arrRet, 'parent_category_id', 'category_id', $cat['category_id']);
 		$cat['has_children'] = count($arrChildrenID) > 0;
 		$arrMainCat[] = $cat;

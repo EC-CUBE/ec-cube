@@ -157,7 +157,7 @@ function smarty_function_html_radios_output_ex($name, $value, $output, $selected
       }
     }
 	
-	// ÃÍ¤òÁŞÆş
+	// å€¤ã‚’æŒ¿å…¥
 	$_output .= $output;
 	
 	$_output .= $tags[1];

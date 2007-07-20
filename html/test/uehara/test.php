@@ -1,6 +1,6 @@
 <?php
 
-test('エコー');
+test('???潟??);
 
 function test($echo) {
 	echo $echo;

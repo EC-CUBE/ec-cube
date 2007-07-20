@@ -5,21 +5,21 @@
  * http://www.lockon.co.jp/
  */
 *}-->
-<!--¡ú¡ú¥á¥¤¥ó¥³¥ó¥Æ¥ó¥Ä¡ú¡ú-->
+<!--â˜…â˜…ãƒ¡ã‚¤ãƒ³ã‚³ãƒ³ãƒ†ãƒ³ãƒ„â˜…â˜…-->
 <table width="878" border="0" cellspacing="0" cellpadding="0" summary=" ">
 <form name="form_css" method="post" action="<!--{$smarty.server.PHP_SELF|escape}-->" >
 <input type="hidden" name="mode" value="">
 <input type="hidden" name="area_row" value=<!--{$area_row}-->>
 	<tr valign="top">
 		<td background="<!--{$smarty.const.URL_DIR}-->img/contents/navi_bg.gif" height="402">
-			<!--¢§SUB NAVI-->
+			<!--â–¼SUB NAVI-->
 			<!--{include file=$tpl_subnavi}-->
-			<!--¢¥SUB NAVI-->
+			<!--â–²SUB NAVI-->
 		</td>
 		<td class="mainbg">
-			<!--¢§ÅĞÏ¿¥Æ¡¼¥Ö¥ë¤³¤³¤«¤é-->
+			<!--â–¼ç™»éŒ²ãƒ†ãƒ¼ãƒ–ãƒ«ã“ã“ã‹ã‚‰-->
 			<table width="737" border="0" cellspacing="0" cellpadding="0" summary=" ">
-				<!--¥á¥¤¥ó¥¨¥ê¥¢-->
+				<!--ãƒ¡ã‚¤ãƒ³ã‚¨ãƒªã‚¢-->
 				<tr>
 					<td align="center">
 						<table width="706" border="0" cellspacing="0" cellpadding="0" summary=" ">
@@ -36,7 +36,7 @@
 									</tr>
 									<tr>
 										<td background="<!--{$smarty.const.URL_DIR}-->img/contents/contents_title_left_bg.gif"><img src="<!--{$smarty.const.URL_DIR}-->img/contents/contents_title_left.gif" width="22" height="12" alt=""></td>
-										<td bgcolor="#636469" width="638" class="fs14n"><span class="white"><!--¥³¥ó¥Æ¥ó¥Ä¥¿¥¤¥È¥ë-->CSSÊÔ½¸</span></td>
+										<td bgcolor="#636469" width="638" class="fs14n"><span class="white"><!--ã‚³ãƒ³ãƒ†ãƒ³ãƒ„ã‚¿ã‚¤ãƒˆãƒ«-->CSSç·¨é›†</span></td>
 										<td background="<!--{$smarty.const.URL_DIR}-->img/contents/contents_title_right_bg.gif"><img src="<!--{$smarty.const.URL_DIR}-->img/common/_.gif" width="18" height="1" alt=""></td>
 									</tr>
 									<tr>
@@ -47,38 +47,38 @@
 									</tr>
 								</table>
 								
-								<!--¢§Ãí°Õ½ñ¤­¡¡¤³¤³¤«¤é-->
+								<!--â–¼æ³¨æ„æ›¸ãã€€ã“ã“ã‹ã‚‰-->
 								<table width="678" border="0" cellspacing="1" cellpadding="8" summary=" ">
 									<tr class="fs12n">
 										<td bgcolor="#ffffff" align="left">
-											²¼¤Î¥Æ¥­¥¹¥È¥¨¥ê¥¢¤ËÆÈ¼«¤ÎCSS¤òÄêµÁ¤¹¤ë¤³¤È¤¬¤Ç¤­¤Ş¤¹¡£<br/>
-											¤³¤³¤ÇÄêµÁ¤·¤¿¤â¤Î¤ÏÁ´¥Ú¡¼¥¸¤ËÈ¿±Ç¤µ¤ì¤Ş¤¹¡£
+											ä¸‹ã®ãƒ†ã‚­ã‚¹ãƒˆã‚¨ãƒªã‚¢ã«ç‹¬è‡ªã®CSSã‚’å®šç¾©ã™ã‚‹ã“ã¨ãŒã§ãã¾ã™ã€‚<br/>
+											ã“ã“ã§å®šç¾©ã—ãŸã‚‚ã®ã¯å…¨ãƒšãƒ¼ã‚¸ã«åæ˜ ã•ã‚Œã¾ã™ã€‚
 										</td>
 									</tr>
 								</table>
-								<!--¢¥Ãí°Õ½ñ¤­¡¡¤³¤³¤Ş¤Ç-->
+								<!--â–²æ³¨æ„æ›¸ãã€€ã“ã“ã¾ã§-->
 
 								<table width="678" border="0" cellspacing="0" cellpadding="0" summary=" ">
 									<tr><td colspan="3"><img src="<!--{$smarty.const.URL_DIR}-->img/contents/main_bar.jpg" width="678" height="10" alt=""></td></tr>
 								</table>
 
-								<!--¢§CSSÊÔ½¸¡¡¤³¤³¤«¤é-->
+								<!--â–¼CSSç·¨é›†ã€€ã“ã“ã‹ã‚‰-->
 								<table width="678" border="0" cellspacing="1" cellpadding="8" summary=" ">
 									<tr class="fs12n">
 										<td bgcolor="#f2f1ec" align="center">
 											<textarea name="css" cols=90 rows=<!--{$area_row}--> align="left" wrap=off style="width: 650px;"><!--{$css_data}--></textarea>
 											<div align="right">
-											<input type="button" value="Âç¤­¤¯¤¹¤ë" onClick="ChangeSize(this, css, 50, 30, area_row)">
+											<input type="button" value="å¤§ããã™ã‚‹" onClick="ChangeSize(this, css, 50, 30, area_row)">
 											</div>
 										</td>
 									</tr>
 									<tr class="fs12n">
 										<td bgcolor="#f2f1ec" align="center">
-											<input type="image" onMouseover="chgImgImageSubmit('<!--{$smarty.const.URL_DIR}-->img/contents/btn_regist_on.jpg',this)" onMouseout="chgImgImageSubmit('<!--{$smarty.const.URL_DIR}-->img/contents/btn_regist.jpg',this)" onclick="fnFormModeSubmit('form_css','confirm','','');" src="<!--{$smarty.const.URL_DIR}-->img/contents/btn_regist.jpg" width="123" height="24" alt="¤³¤ÎÆâÍÆ¤ÇÅĞÏ¿¤¹¤ë" border="0" name="subm" >
+											<input type="image" onMouseover="chgImgImageSubmit('<!--{$smarty.const.URL_DIR}-->img/contents/btn_regist_on.jpg',this)" onMouseout="chgImgImageSubmit('<!--{$smarty.const.URL_DIR}-->img/contents/btn_regist.jpg',this)" onclick="fnFormModeSubmit('form_css','confirm','','');" src="<!--{$smarty.const.URL_DIR}-->img/contents/btn_regist.jpg" width="123" height="24" alt="ã“ã®å†…å®¹ã§ç™»éŒ²ã™ã‚‹" border="0" name="subm" >
 										</td>
 									</tr>
 								</table>
-								<!--¢¥CSSÊÔ½¸¡¡¤³¤³¤Ş¤Ç-->
+								<!--â–²CSSç·¨é›†ã€€ã“ã“ã¾ã§-->
 								</td>
 								<td background="<!--{$smarty.const.URL_DIR}-->img/contents/main_right.jpg"><img src="<!--{$smarty.const.URL_DIR}-->img/common/_.gif" width="14" height="1" alt=""></td>
 							</tr>
@@ -89,21 +89,21 @@
 						</table>
 					</td>
 				</tr>
-				<!--¥á¥¤¥ó¥¨¥ê¥¢-->
+				<!--ãƒ¡ã‚¤ãƒ³ã‚¨ãƒªã‚¢-->
 			</table>
-			<!--¢¥ÅĞÏ¿¥Æ¡¼¥Ö¥ë¤³¤³¤Ş¤Ç-->
+			<!--â–²ç™»éŒ²ãƒ†ãƒ¼ãƒ–ãƒ«ã“ã“ã¾ã§-->
 		</td>
 	</tr>
 </form>
 </table>
-<!--¡ú¡ú¥á¥¤¥ó¥³¥ó¥Æ¥ó¥Ä¡ú¡ú-->
+<!--â˜…â˜…ãƒ¡ã‚¤ãƒ³ã‚³ãƒ³ãƒ†ãƒ³ãƒ„â˜…â˜…-->
 
 <script type="text/javascript">
 	function ChangeSize(button, TextArea, Max, Min, row_tmp){
 		if(TextArea.rows <= Min){
-			TextArea.rows=Max; button.value="¾®¤µ¤¯¤¹¤ë"; row_tmp.value=Max;
+			TextArea.rows=Max; button.value="å°ã•ãã™ã‚‹"; row_tmp.value=Max;
 		}else{
-			TextArea.rows =Min; button.value="Âç¤­¤¯¤¹¤ë"; row_tmp.value=Min;
+			TextArea.rows =Min; button.value="å¤§ããã™ã‚‹"; row_tmp.value=Min;
 		}
 	}
 </script>

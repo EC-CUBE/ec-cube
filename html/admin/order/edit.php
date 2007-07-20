@@ -12,7 +12,7 @@ class LC_Page {
 		$this->tpl_subnavi = 'order/subnavi.tpl';
 		$this->tpl_mainno = 'order';		
 		$this->tpl_subno = 'index';
-		$this->tpl_subtitle = '¼õÃí´ÉÍı';
+		$this->tpl_subtitle = 'å—æ³¨ç®¡ç†';
 		global $arrPref;
 		$this->arrPref = $arrPref;
 		global $arrORDERSTATUS;
@@ -27,22 +27,22 @@ $objSess = new SC_Session();
 $objSiteInfo = new SC_SiteInfo();
 $arrInfo = $objSiteInfo->data;
 
-// ¥Ñ¥é¥á¡¼¥¿´ÉÍı¥¯¥é¥¹
+// ãƒ‘ãƒ©ãƒ¡ãƒ¼ã‚¿ç®¡ç†ã‚¯ãƒ©ã‚¹
 $objFormParam = new SC_FormParam();
-// ¥Ñ¥é¥á¡¼¥¿¾ğÊó¤Î½é´ü²½
+// ãƒ‘ãƒ©ãƒ¡ãƒ¼ã‚¿æƒ…å ±ã®åˆæœŸåŒ–
 lfInitParam();
 
-// Ç§¾Ú²ÄÈİ¤ÎÈ½Äê
+// èªè¨¼å¯å¦ã®åˆ¤å®š
 sfIsSuccess($objSess);
 
-// ¸¡º÷¥Ñ¥é¥á¡¼¥¿¤Î°ú¤­·Ñ¤®
+// æ¤œç´¢ãƒ‘ãƒ©ãƒ¡ãƒ¼ã‚¿ã®å¼•ãç¶™ã
 foreach ($_POST as $key => $val) {
 	if (ereg("^search_", $key)) {
 		$objPage->arrSearchHidden[$key] = $val;
 	}
 }
 
-// É½¼¨¥â¡¼¥ÉÈ½Äê
+// è¡¨ç¤ºãƒ¢ãƒ¼ãƒ‰åˆ¤å®š
 if(sfIsInt($_GET['order_id'])) {
 	$objPage->disp_mode = true;
 	$order_id = $_GET['order_id'];
@@ -51,7 +51,7 @@ if(sfIsInt($_GET['order_id'])) {
 }
 $objPage->tpl_order_id = $order_id;
 
-// DB¤«¤é¼õÃí¾ğÊó¤òÆÉ¤ß¹ş¤à
+// DBã‹ã‚‰å—æ³¨æƒ…å ±ã‚’èª­ã¿è¾¼ã‚€
 lfGetOrderData($order_id);
 
 switch($_POST['mode']) {
@@ -59,27 +59,27 @@ case 'pre_edit':
 case 'order_id':
 	break;
 case 'edit':
-	// POST¾ğÊó¤Ç¾å½ñ¤­
+	// POSTæƒ…å ±ã§ä¸Šæ›¸ã
 	$objFormParam->setParam($_POST);
 	
-	// ÆşÎÏÃÍ¤ÎÊÑ´¹
+	// å…¥åŠ›å€¤ã®å¤‰æ›
 	$objFormParam->convParam();
 	$objPage->arrErr = lfCheckError($arrRet);
 	if(count($objPage->arrErr) == 0) {
 		$objPage->arrErr = lfCheek($arrInfo);
 		if(count($objPage->arrErr) == 0) {
 			lfRegistData($_POST['order_id']);
-			// DB¤«¤é¼õÃí¾ğÊó¤òºÆÆÉ¹ş
+			// DBã‹ã‚‰å—æ³¨æƒ…å ±ã‚’å†èª­è¾¼
 			lfGetOrderData($order_id);
-			$objPage->tpl_onload = "window.alert('¼õÃíÍúÎò¤òÊÔ½¸¤·¤Ş¤·¤¿¡£');";
+			$objPage->tpl_onload = "window.alert('å—æ³¨å±¥æ­´ã‚’ç·¨é›†ã—ã¾ã—ãŸã€‚');";
 		}
 	}
 	break;
-// ºÆ·×»»
+// å†è¨ˆç®—
 case 'cheek':
-	// POST¾ğÊó¤Ç¾å½ñ¤­
+	// POSTæƒ…å ±ã§ä¸Šæ›¸ã
 	$objFormParam->setParam($_POST);
-	// ÆşÎÏÃÍ¤ÎÊÑ´¹
+	// å…¥åŠ›å€¤ã®å¤‰æ›
 	$objFormParam->convParam();
 	$objPage->arrErr = lfCheckError($arrRet);
 	if(count($objPage->arrErr) == 0) {
@@ -90,9 +90,9 @@ default:
 	break;
 }
 
-// »ÙÊ§¤¤ÊıË¡¤Î¼èÆÀ
+// æ”¯æ‰•ã„æ–¹æ³•ã®å–å¾—
 $objPage->arrPayment = sfGetIDValueList("dtb_payment", "payment_id", "payment_method");
-// ÇÛÁ÷»ş´Ö¤Î¼èÆÀ
+// é…é€æ™‚é–“ã®å–å¾—
 $arrRet = sfGetDelivTime($objFormParam->getValue('payment_id'));
 $objPage->arrDelivTime = sfArrKeyValue($arrRet, 'time_id', 'deliv_time');
 
@@ -101,70 +101,70 @@ $objPage->arrForm = $objFormParam->getFormParamList();
 $objPage->arrInfo = $arrInfo;
 
 $objView->assignobj($objPage);
-// É½¼¨¥â¡¼¥ÉÈ½Äê
+// è¡¨ç¤ºãƒ¢ãƒ¼ãƒ‰åˆ¤å®š
 if(!$objPage->disp_mode) {
 	$objView->display(MAIN_FRAME);
 } else {
 	$objView->display('order/disp.tpl');
 }
 //-----------------------------------------------------------------------------------------------------------------------------------
-/* ¥Ñ¥é¥á¡¼¥¿¾ğÊó¤Î½é´ü²½ */
+/* ãƒ‘ãƒ©ãƒ¡ãƒ¼ã‚¿æƒ…å ±ã®åˆæœŸåŒ– */
 function lfInitParam() {
 	global $objFormParam;
-	// ÇÛÁ÷Àè¾ğÊó
-	$objFormParam->addParam("¤ªÌ¾Á°1", "deliv_name01", STEXT_LEN, "KVa", array("EXIST_CHECK", "SPTAB_CHECK", "MAX_LENGTH_CHECK"));
-	$objFormParam->addParam("¤ªÌ¾Á°2", "deliv_name02", STEXT_LEN, "KVa", array("EXIST_CHECK", "SPTAB_CHECK", "MAX_LENGTH_CHECK"));
-	$objFormParam->addParam("¥Õ¥ê¥¬¥Ê1", "deliv_kana01", STEXT_LEN, "KVCa", array("EXIST_CHECK", "SPTAB_CHECK", "MAX_LENGTH_CHECK"));
-	$objFormParam->addParam("¥Õ¥ê¥¬¥Ê2", "deliv_kana02", STEXT_LEN, "KVCa", array("EXIST_CHECK", "SPTAB_CHECK", "MAX_LENGTH_CHECK"));
-	$objFormParam->addParam("Í¹ÊØÈÖ¹æ1", "deliv_zip01", ZIP01_LEN, "n", array("EXIST_CHECK", "NUM_CHECK", "NUM_COUNT_CHECK"));
-	$objFormParam->addParam("Í¹ÊØÈÖ¹æ2", "deliv_zip02", ZIP02_LEN, "n", array("EXIST_CHECK", "NUM_CHECK", "NUM_COUNT_CHECK"));
-	$objFormParam->addParam("ÅÔÆ»ÉÜ¸©", "deliv_pref", INT_LEN, "n", array("EXIST_CHECK", "MAX_LENGTH_CHECK", "NUM_CHECK"));
-	$objFormParam->addParam("½»½ê1", "deliv_addr01", STEXT_LEN, "KVa", array("EXIST_CHECK", "SPTAB_CHECK", "MAX_LENGTH_CHECK"));
-	$objFormParam->addParam("½»½ê2", "deliv_addr02", STEXT_LEN, "KVa", array("EXIST_CHECK", "SPTAB_CHECK", "MAX_LENGTH_CHECK"));
-	$objFormParam->addParam("ÅÅÏÃÈÖ¹æ1", "deliv_tel01", TEL_ITEM_LEN, "n", array("EXIST_CHECK", "MAX_LENGTH_CHECK" ,"NUM_CHECK"));
-	$objFormParam->addParam("ÅÅÏÃÈÖ¹æ2", "deliv_tel02", TEL_ITEM_LEN, "n", array("EXIST_CHECK", "MAX_LENGTH_CHECK" ,"NUM_CHECK"));
-	$objFormParam->addParam("ÅÅÏÃÈÖ¹æ3", "deliv_tel03", TEL_ITEM_LEN, "n", array("EXIST_CHECK", "MAX_LENGTH_CHECK" ,"NUM_CHECK"));
-	// ¼õÃí¾¦ÉÊ¾ğÊó
-	$objFormParam->addParam("ÃÍ°ú¤­", "discount", INT_LEN, "n", array("EXIST_CHECK", "MAX_LENGTH_CHECK", "NUM_CHECK"), '0');
-	$objFormParam->addParam("Á÷ÎÁ", "deliv_fee", INT_LEN, "n", array("EXIST_CHECK", "MAX_LENGTH_CHECK", "NUM_CHECK"), '0');
-	$objFormParam->addParam("¼ê¿ôÎÁ", "charge", INT_LEN, "n", array("EXIST_CHECK", "MAX_LENGTH_CHECK", "NUM_CHECK"));
-	$objFormParam->addParam("ÍøÍÑ¥İ¥¤¥ó¥È", "use_point", INT_LEN, "n", array("EXIST_CHECK", "MAX_LENGTH_CHECK", "NUM_CHECK"));
-	$objFormParam->addParam("¤ª»ÙÊ§¤¤ÊıË¡", "payment_id", INT_LEN, "n", array("EXIST_CHECK", "MAX_LENGTH_CHECK", "NUM_CHECK"));
-	$objFormParam->addParam("ÇÛÁ÷»ş´ÖID", "deliv_time_id", INT_LEN, "n", array("MAX_LENGTH_CHECK", "NUM_CHECK"));
-	$objFormParam->addParam("ÂĞ±ş¾õ¶·", "status", INT_LEN, "n", array("EXIST_CHECK", "MAX_LENGTH_CHECK", "NUM_CHECK"));
-	$objFormParam->addParam("ÇÛÃ£Æü", "deliv_date", STEXT_LEN, "KVa", array("MAX_LENGTH_CHECK"));
-	$objFormParam->addParam("¤ª»ÙÊ§ÊıË¡Ì¾¾Î", "payment_method");
-	$objFormParam->addParam("ÇÛÁ÷»ş´Ö", "deliv_time");
+	// é…é€å…ˆæƒ…å ±
+	$objFormParam->addParam("ãŠåå‰1", "deliv_name01", STEXT_LEN, "KVa", array("EXIST_CHECK", "SPTAB_CHECK", "MAX_LENGTH_CHECK"));
+	$objFormParam->addParam("ãŠåå‰2", "deliv_name02", STEXT_LEN, "KVa", array("EXIST_CHECK", "SPTAB_CHECK", "MAX_LENGTH_CHECK"));
+	$objFormParam->addParam("ãƒ•ãƒªã‚¬ãƒŠ1", "deliv_kana01", STEXT_LEN, "KVCa", array("EXIST_CHECK", "SPTAB_CHECK", "MAX_LENGTH_CHECK"));
+	$objFormParam->addParam("ãƒ•ãƒªã‚¬ãƒŠ2", "deliv_kana02", STEXT_LEN, "KVCa", array("EXIST_CHECK", "SPTAB_CHECK", "MAX_LENGTH_CHECK"));
+	$objFormParam->addParam("éƒµä¾¿ç•ªå·1", "deliv_zip01", ZIP01_LEN, "n", array("EXIST_CHECK", "NUM_CHECK", "NUM_COUNT_CHECK"));
+	$objFormParam->addParam("éƒµä¾¿ç•ªå·2", "deliv_zip02", ZIP02_LEN, "n", array("EXIST_CHECK", "NUM_CHECK", "NUM_COUNT_CHECK"));
+	$objFormParam->addParam("éƒ½é“åºœçœŒ", "deliv_pref", INT_LEN, "n", array("EXIST_CHECK", "MAX_LENGTH_CHECK", "NUM_CHECK"));
+	$objFormParam->addParam("ä½æ‰€1", "deliv_addr01", STEXT_LEN, "KVa", array("EXIST_CHECK", "SPTAB_CHECK", "MAX_LENGTH_CHECK"));
+	$objFormParam->addParam("ä½æ‰€2", "deliv_addr02", STEXT_LEN, "KVa", array("EXIST_CHECK", "SPTAB_CHECK", "MAX_LENGTH_CHECK"));
+	$objFormParam->addParam("é›»è©±ç•ªå·1", "deliv_tel01", TEL_ITEM_LEN, "n", array("EXIST_CHECK", "MAX_LENGTH_CHECK" ,"NUM_CHECK"));
+	$objFormParam->addParam("é›»è©±ç•ªå·2", "deliv_tel02", TEL_ITEM_LEN, "n", array("EXIST_CHECK", "MAX_LENGTH_CHECK" ,"NUM_CHECK"));
+	$objFormParam->addParam("é›»è©±ç•ªå·3", "deliv_tel03", TEL_ITEM_LEN, "n", array("EXIST_CHECK", "MAX_LENGTH_CHECK" ,"NUM_CHECK"));
+	// å—æ³¨å•†å“æƒ…å ±
+	$objFormParam->addParam("å€¤å¼•ã", "discount", INT_LEN, "n", array("EXIST_CHECK", "MAX_LENGTH_CHECK", "NUM_CHECK"), '0');
+	$objFormParam->addParam("é€æ–™", "deliv_fee", INT_LEN, "n", array("EXIST_CHECK", "MAX_LENGTH_CHECK", "NUM_CHECK"), '0');
+	$objFormParam->addParam("æ‰‹æ•°æ–™", "charge", INT_LEN, "n", array("EXIST_CHECK", "MAX_LENGTH_CHECK", "NUM_CHECK"));
+	$objFormParam->addParam("åˆ©ç”¨ãƒã‚¤ãƒ³ãƒˆ", "use_point", INT_LEN, "n", array("EXIST_CHECK", "MAX_LENGTH_CHECK", "NUM_CHECK"));
+	$objFormParam->addParam("ãŠæ”¯æ‰•ã„æ–¹æ³•", "payment_id", INT_LEN, "n", array("EXIST_CHECK", "MAX_LENGTH_CHECK", "NUM_CHECK"));
+	$objFormParam->addParam("é…é€æ™‚é–“ID", "deliv_time_id", INT_LEN, "n", array("MAX_LENGTH_CHECK", "NUM_CHECK"));
+	$objFormParam->addParam("å¯¾å¿œçŠ¶æ³", "status", INT_LEN, "n", array("EXIST_CHECK", "MAX_LENGTH_CHECK", "NUM_CHECK"));
+	$objFormParam->addParam("é…é”æ—¥", "deliv_date", STEXT_LEN, "KVa", array("MAX_LENGTH_CHECK"));
+	$objFormParam->addParam("ãŠæ”¯æ‰•æ–¹æ³•åç§°", "payment_method");
+	$objFormParam->addParam("é…é€æ™‚é–“", "deliv_time");
 	
-	// ¼õÃí¾ÜºÙ¾ğÊó
-	$objFormParam->addParam("Ã±²Á", "price", INT_LEN, "n", array("EXIST_CHECK", "MAX_LENGTH_CHECK", "NUM_CHECK"), '0');
-	$objFormParam->addParam("¸Ä¿ô", "quantity", INT_LEN, "n", array("EXIST_CHECK", "MAX_LENGTH_CHECK", "NUM_CHECK"), '0');
-	$objFormParam->addParam("¾¦ÉÊID", "product_id", INT_LEN, "n", array("EXIST_CHECK", "MAX_LENGTH_CHECK", "NUM_CHECK"), '0');
-	$objFormParam->addParam("¥İ¥¤¥ó¥ÈÉÕÍ¿Î¨", "point_rate");
-	$objFormParam->addParam("¾¦ÉÊ¥³¡¼¥É", "product_code");
-	$objFormParam->addParam("¾¦ÉÊÌ¾", "product_name");
-	$objFormParam->addParam("µ¬³Ê1", "classcategory_id1");
-	$objFormParam->addParam("µ¬³Ê2", "classcategory_id2");
-	$objFormParam->addParam("µ¬³ÊÌ¾1", "classcategory_name1");
-	$objFormParam->addParam("µ¬³ÊÌ¾2", "classcategory_name2");
-	$objFormParam->addParam("¥á¥â", "note", MTEXT_LEN, "KVa", array("MAX_LENGTH_CHECK"));
-	// DBÆÉ¹şÍÑ
-	$objFormParam->addParam("¾®·×", "subtotal");
-	$objFormParam->addParam("¹ç·×", "total");
-	$objFormParam->addParam("»ÙÊ§¤¤¹ç·×", "payment_total");
-	$objFormParam->addParam("²Ã»»¥İ¥¤¥ó¥È", "add_point");
-	$objFormParam->addParam("¤ªÃÂÀ¸Æü¥İ¥¤¥ó¥È", "birth_point");
-	$objFormParam->addParam("¾ÃÈñÀÇ¹ç·×", "tax");
-	$objFormParam->addParam("ºÇ½ªÊİ»ı¥İ¥¤¥ó¥È", "total_point");
-	$objFormParam->addParam("¸ÜµÒID", "customer_id");
-	$objFormParam->addParam("¸½ºß¤Î¥İ¥¤¥ó¥È", "point");
+	// å—æ³¨è©³ç´°æƒ…å ±
+	$objFormParam->addParam("å˜ä¾¡", "price", INT_LEN, "n", array("EXIST_CHECK", "MAX_LENGTH_CHECK", "NUM_CHECK"), '0');
+	$objFormParam->addParam("å€‹æ•°", "quantity", INT_LEN, "n", array("EXIST_CHECK", "MAX_LENGTH_CHECK", "NUM_CHECK"), '0');
+	$objFormParam->addParam("å•†å“ID", "product_id", INT_LEN, "n", array("EXIST_CHECK", "MAX_LENGTH_CHECK", "NUM_CHECK"), '0');
+	$objFormParam->addParam("ãƒã‚¤ãƒ³ãƒˆä»˜ä¸ç‡", "point_rate");
+	$objFormParam->addParam("å•†å“ã‚³ãƒ¼ãƒ‰", "product_code");
+	$objFormParam->addParam("å•†å“å", "product_name");
+	$objFormParam->addParam("è¦æ ¼1", "classcategory_id1");
+	$objFormParam->addParam("è¦æ ¼2", "classcategory_id2");
+	$objFormParam->addParam("è¦æ ¼å1", "classcategory_name1");
+	$objFormParam->addParam("è¦æ ¼å2", "classcategory_name2");
+	$objFormParam->addParam("ãƒ¡ãƒ¢", "note", MTEXT_LEN, "KVa", array("MAX_LENGTH_CHECK"));
+	// DBèª­è¾¼ç”¨
+	$objFormParam->addParam("å°è¨ˆ", "subtotal");
+	$objFormParam->addParam("åˆè¨ˆ", "total");
+	$objFormParam->addParam("æ”¯æ‰•ã„åˆè¨ˆ", "payment_total");
+	$objFormParam->addParam("åŠ ç®—ãƒã‚¤ãƒ³ãƒˆ", "add_point");
+	$objFormParam->addParam("ãŠèª•ç”Ÿæ—¥ãƒã‚¤ãƒ³ãƒˆ", "birth_point");
+	$objFormParam->addParam("æ¶ˆè²»ç¨åˆè¨ˆ", "tax");
+	$objFormParam->addParam("æœ€çµ‚ä¿æŒãƒã‚¤ãƒ³ãƒˆ", "total_point");
+	$objFormParam->addParam("é¡§å®¢ID", "customer_id");
+	$objFormParam->addParam("ç¾åœ¨ã®ãƒã‚¤ãƒ³ãƒˆ", "point");
 }
 
 function lfGetOrderData($order_id) {
 	global $objFormParam;
 	global $objPage;
 	if(sfIsInt($order_id)) {
-		// DB¤«¤é¼õÃí¾ğÊó¤òÆÉ¤ß¹ş¤à
+		// DBã‹ã‚‰å—æ³¨æƒ…å ±ã‚’èª­ã¿è¾¼ã‚€
 		$objQuery = new SC_Query();
 		$where = "order_id = ?";
 		$arrRet = $objQuery->select("*", "dtb_order", $where, array($order_id));
@@ -173,25 +173,25 @@ function lfGetOrderData($order_id) {
 		$objFormParam->setValue('total_point', $total_point);
 		$objFormParam->setValue('point', $point);
 		$objPage->arrDisp = $arrRet[0];
-		// ¼õÃí¾ÜºÙ¥Ç¡¼¥¿¤Î¼èÆÀ
+		// å—æ³¨è©³ç´°ãƒ‡ãƒ¼ã‚¿ã®å–å¾—
 		$arrRet = lfGetOrderDetail($order_id);
 		$arrRet = sfSwapArray($arrRet);
 		$objPage->arrDisp = array_merge($objPage->arrDisp, $arrRet);
 		$objFormParam->setParam($arrRet);
 		
-		// ¤½¤ÎÂ¾»ÙÊ§¤¤¾ğÊó¤òÉ½¼¨
+		// ãã®ä»–æ”¯æ‰•ã„æƒ…å ±ã‚’è¡¨ç¤º
 		if($objPage->arrDisp["memo02"] != "") $objPage->arrDisp["payment_info"] = unserialize($objPage->arrDisp["memo02"]);
 		if($objPage->arrDisp["memo01"] == PAYMENT_CREDIT_ID){
-			$objPage->arrDisp["payment_type"] = "¥¯¥ì¥¸¥Ã¥È·èºÑ";
+			$objPage->arrDisp["payment_type"] = "ã‚¯ãƒ¬ã‚¸ãƒƒãƒˆæ±ºæ¸ˆ";
 		}elseif($objPage->arrDisp["memo01"] == PAYMENT_CONVENIENCE_ID){
-			$objPage->arrDisp["payment_type"] = "¥³¥ó¥Ó¥Ë·èºÑ";
+			$objPage->arrDisp["payment_type"] = "ã‚³ãƒ³ãƒ“ãƒ‹æ±ºæ¸ˆ";
 		}else{
-			$objPage->arrDisp["payment_type"] = "¤ª»ÙÊ§¤¤";
+			$objPage->arrDisp["payment_type"] = "ãŠæ”¯æ‰•ã„";
 		}
 	}
 }
 
-// ¼õÃí¾ÜºÙ¥Ç¡¼¥¿¤Î¼èÆÀ
+// å—æ³¨è©³ç´°ãƒ‡ãƒ¼ã‚¿ã®å–å¾—
 function lfGetOrderDetail($order_id) {
 	$objQuery = new SC_Query();
 	$col = "product_id, classcategory_id1, classcategory_id2, product_code, product_name, classcategory_name1, classcategory_name2, price, quantity, point_rate";
@@ -201,10 +201,10 @@ function lfGetOrderDetail($order_id) {
 	return $arrRet;
 }
 
-/* ÆşÎÏÆâÍÆ¤Î¥Á¥§¥Ã¥¯ */
+/* å…¥åŠ›å†…å®¹ã®ãƒã‚§ãƒƒã‚¯ */
 function lfCheckError() {
 	global $objFormParam;
-	// ÆşÎÏ¥Ç¡¼¥¿¤òÅÏ¤¹¡£
+	// å…¥åŠ›ãƒ‡ãƒ¼ã‚¿ã‚’æ¸¡ã™ã€‚
 	$arrRet =  $objFormParam->getHashArray();
 	$objErr = new SC_CheckError($arrRet);
 	$objErr->arrErr = $objFormParam->checkError();
@@ -212,68 +212,68 @@ function lfCheckError() {
 	return $objErr->arrErr;
 }
 
-/* ·×»»½èÍı */
+/* è¨ˆç®—å‡¦ç† */
 function lfCheek($arrInfo) {
 	global $objFormParam;
 		
 	$arrVal = $objFormParam->getHashArray();
 			
-	// ¾¦ÉÊ¤Î¼ïÎà¿ô
+	// å•†å“ã®ç¨®é¡æ•°
 	$max = count($arrVal['quantity']);
 	$subtotal = 0;
 	$totalpoint = 0;
 	$totaltax = 0;
 	for($i = 0; $i < $max; $i++) {
-		// ¾®·×¤Î·×»»
+		// å°è¨ˆã®è¨ˆç®—
 		$subtotal += sfPreTax($arrVal['price'][$i], $arrInfo['tax'], $arrInfo['tax_rule']) * $arrVal['quantity'][$i];
-		// ¾®·×¤Î·×»»
+		// å°è¨ˆã®è¨ˆç®—
 		$totaltax += sfTax($arrVal['price'][$i], $arrInfo['tax'], $arrInfo['tax_rule']) * $arrVal['quantity'][$i];
-		// ²Ã»»¥İ¥¤¥ó¥È¤Î·×»»
+		// åŠ ç®—ãƒã‚¤ãƒ³ãƒˆã®è¨ˆç®—
 		$totalpoint += sfPrePoint($arrVal['price'][$i], $arrVal['point_rate'][$i]) * $arrVal['quantity'][$i];
 	}
 	
-	// ¾ÃÈñÀÇ
+	// æ¶ˆè²»ç¨
 	$arrVal['tax'] = $totaltax;	
-	// ¾®·×
+	// å°è¨ˆ
 	$arrVal['subtotal'] = $subtotal;
-	// ¹ç·×
+	// åˆè¨ˆ
 	$arrVal['total'] = $subtotal - $arrVal['discount'] + $arrVal['deliv_fee'] + $arrVal['charge'];
-	// ¤ª»ÙÊ§¤¤¹ç·×
+	// ãŠæ”¯æ‰•ã„åˆè¨ˆ
 	$arrVal['payment_total'] = $arrVal['total'] - ($arrVal['use_point'] * POINT_VALUE);
 	
-	// ²Ã»»¥İ¥¤¥ó¥È
+	// åŠ ç®—ãƒã‚¤ãƒ³ãƒˆ
 	$arrVal['add_point'] = sfGetAddPoint($totalpoint, $arrVal['use_point'], $arrInfo);
 		
 	list($arrVal['point'], $arrVal['total_point']) = sfGetCustomerPoint($_POST['order_id'], $arrVal['use_point'], $arrVal['add_point']);
 		
 	if($arrVal['total'] < 0) {
-		$arrErr['total'] = '¹ç·×³Û¤¬¥Ş¥¤¥Ê¥¹É½¼¨¤Ë¤Ê¤é¤Ê¤¤¤è¤¦¤ËÄ´À°¤·¤Æ²¼¤µ¤¤¡£<br />';
+		$arrErr['total'] = 'åˆè¨ˆé¡ãŒãƒã‚¤ãƒŠã‚¹è¡¨ç¤ºã«ãªã‚‰ãªã„ã‚ˆã†ã«èª¿æ•´ã—ã¦ä¸‹ã•ã„ã€‚<br />';
 	}
 	
 	if($arrVal['payment_total'] < 0) {
-		$arrErr['payment_total'] = '¤ª»ÙÊ§¤¤¹ç·×³Û¤¬¥Ş¥¤¥Ê¥¹É½¼¨¤Ë¤Ê¤é¤Ê¤¤¤è¤¦¤ËÄ´À°¤·¤Æ²¼¤µ¤¤¡£<br />';
+		$arrErr['payment_total'] = 'ãŠæ”¯æ‰•ã„åˆè¨ˆé¡ãŒãƒã‚¤ãƒŠã‚¹è¡¨ç¤ºã«ãªã‚‰ãªã„ã‚ˆã†ã«èª¿æ•´ã—ã¦ä¸‹ã•ã„ã€‚<br />';
 	}
 
 	if($arrVal['total_point'] < 0) {
-		$arrErr['total_point'] = 'ºÇ½ªÊİ»ı¥İ¥¤¥ó¥È¤¬¥Ş¥¤¥Ê¥¹É½¼¨¤Ë¤Ê¤é¤Ê¤¤¤è¤¦¤ËÄ´À°¤·¤Æ²¼¤µ¤¤¡£<br />';
+		$arrErr['total_point'] = 'æœ€çµ‚ä¿æŒãƒã‚¤ãƒ³ãƒˆãŒãƒã‚¤ãƒŠã‚¹è¡¨ç¤ºã«ãªã‚‰ãªã„ã‚ˆã†ã«èª¿æ•´ã—ã¦ä¸‹ã•ã„ã€‚<br />';
 	}
 
 	$objFormParam->setParam($arrVal);
 	return $arrErr;
 }
 
-/* DBÅĞÏ¿½èÍı */
+/* DBç™»éŒ²å‡¦ç† */
 function lfRegistData($order_id) {
 	global $objFormParam;
 	$objQuery = new SC_Query();
 	
 	$objQuery->begin();
 
-	// ÆşÎÏ¥Ç¡¼¥¿¤òÅÏ¤¹¡£
+	// å…¥åŠ›ãƒ‡ãƒ¼ã‚¿ã‚’æ¸¡ã™ã€‚
 	$arrRet =  $objFormParam->getHashArray();
 	
 	foreach($arrRet as $key => $val) {
-		// ÇÛÎó¤ÏÅĞÏ¿¤·¤Ê¤¤
+		// é…åˆ—ã¯ç™»éŒ²ã—ãªã„
 		if(!is_array($val)) {
 			$sqlval[$key] = $val;
 		}
@@ -284,13 +284,13 @@ function lfRegistData($order_id) {
 			
 	$where = "order_id = ?";
 	
-	// ¼õÃí¥¹¥Æ¡¼¥¿¥¹¤ÎÈ½Äê
+	// å—æ³¨ã‚¹ãƒ†ãƒ¼ã‚¿ã‚¹ã®åˆ¤å®š
 	if ($sqlval['status'] == ODERSTATUS_COMMIT) {
-		// ¼õÃí¥Æ¡¼¥Ö¥ë¤ÎÈ¯Á÷ºÑ¤ßÆü¤ò¹¹¿·¤¹¤ë
+		// å—æ³¨ãƒ†ãƒ¼ãƒ–ãƒ«ã®ç™ºé€æ¸ˆã¿æ—¥ã‚’æ›´æ–°ã™ã‚‹
 		$addcol['commit_date'] = "Now()";
 	}
 	
-	// ¼õÃí¥Æ¡¼¥Ö¥ë¤Î¹¹¿·
+	// å—æ³¨ãƒ†ãƒ¼ãƒ–ãƒ«ã®æ›´æ–°
 	$objQuery->update("dtb_order", $sqlval, $where, array($order_id), $addcol);
 
 	$sql = "";
@@ -309,7 +309,7 @@ function lfRegistData($order_id) {
 	$arrUpdData = array($arrRet['payment_id'], $deliv_time_id, $arrRet['payment_id'], $order_id);
 	$objQuery->query($sql, $arrUpdData);
 
-	// ¼õÃí¾ÜºÙ¥Ç¡¼¥¿¤Î¹¹¿·
+	// å—æ³¨è©³ç´°ãƒ‡ãƒ¼ã‚¿ã®æ›´æ–°
 	$arrDetail = $objFormParam->getSwapArray(array("product_id", "product_code", "product_name", "price", "quantity", "point_rate", "classcategory_id1", "classcategory_id2", "classcategory_name1", "classcategory_name2"));
 	$objQuery->delete("dtb_order_detail", $where, array($order_id));
 	

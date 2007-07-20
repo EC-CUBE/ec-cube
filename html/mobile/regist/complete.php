@@ -11,18 +11,18 @@ class LC_Page{
 	function LC_Page(){
 		$this->tpl_mainpage = 'regist/complete.tpl';
 		$this->tpl_css = '/css/layout/regist/complete.css';
-		$this->tpl_title = '²ñ°÷ÅÐÏ¿(´°Î»¥Ú¡¼¥¸)';
+		$this->tpl_title = 'ä¼šå“¡ç™»éŒ²(å®Œäº†ãƒšãƒ¼ã‚¸)';
 	}
 }
 
 $objPage = new LC_Page();
 $objView = new SC_MobileView();
 
-// ¥«¡¼¥È¤¬¶õ¤«¤É¤¦¤«¤ò³ÎÇ§¤¹¤ë¡£
+// ã‚«ãƒ¼ãƒˆãŒç©ºã‹ã©ã†ã‹ã‚’ç¢ºèªã™ã‚‹ã€‚
 $objCartSess = new SC_CartSession("", false);
 $objPage->tpl_cart_empty = count($objCartSess->getCartList()) < 1;
 
-// ¥ì¥¤¥¢¥¦¥È¥Ç¥¶¥¤¥ó¤ò¼èÆÀ
+// ãƒ¬ã‚¤ã‚¢ã‚¦ãƒˆãƒ‡ã‚¶ã‚¤ãƒ³ã‚’å–å¾—
 $objPage = sfGetPageLayout($objPage, false, DEF_LAYOUT);
 
 $objView->assignobj($objPage);

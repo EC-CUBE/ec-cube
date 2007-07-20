@@ -5,25 +5,25 @@
  * http://www.lockon.co.jp/
  */
 *}-->
-<center>�̿����ˤĤ���</center>
+<center>通信料について</center>
 
 <hr>
 
-<!-- ����ʸ �������� -->
-�������ȤΥ���ƥ�Ĥϡ��������ջ�����ɤߤˤʤꡢ��λ���������������ˤ��Ȥ�ĺ���ޤ���<br>
+<!-- ▼本文 ここから -->
+当サイトのコンテンツは、下記免責事項をお読みになり、ご了承いただいた方にお使い頂けます。<br>
 <br>
-�ѥ��å��̿��ˤϷ��ӥ���ꥢ������̿�����ȯ�����ޤ���<br>
-���Ⱦ����ʤɤˤ�ꡢ�ѥ��å��̿�����ľ����礬����ޤ���<br>
-<!-- ����ʸ �����ޤ� -->
+パケット通信には携帯キャリア指定の通信料が発生します。<br>
+電波状況などにより、パケット通信をやり直す場合があります。<br>
+<!-- ▲本文 ここまで -->
 
 <br>
 <hr>
 
-<a href="<!--{$smarty.const.MOBILE_URL_CART_TOP}-->" accesskey="9"><!--{9|numeric_emoji}-->�����򸫤�</a><br>
-<a href="<!--{$smarty.const.MOBILE_URL_SITE_TOP}-->" accesskey="0"><!--{0|numeric_emoji}-->TOP�ڡ�����</a><br>
+<a href="<!--{$smarty.const.MOBILE_URL_CART_TOP}-->" accesskey="9"><!--{9|numeric_emoji}-->かごを見る</a><br>
+<a href="<!--{$smarty.const.MOBILE_URL_SITE_TOP}-->" accesskey="0"><!--{0|numeric_emoji}-->TOPページへ</a><br>
 
 <br>
 
-<!-- ���եå��� �������� -->
+<!-- ▼フッター ここから -->
 <!--{include file='footer.tpl'}-->
-<!-- ���եå��� �����ޤ� -->
+<!-- ▲フッター ここまで -->

@@ -4,21 +4,21 @@
  * http://www.lockon.co.jp/
  */
 
-// **************  └▀─ъ╔Ї╩м *******************
+// **************  шинхоЪщГихИЖ *******************
 
-	// Flashе╒ебедеыд╪д╬┴ъ┬╨е╤е╣
+	// FlashуГХуВбуВдуГлуБ╕уБочЫ╕хп╛уГСуВ╣
 	var flashFilePath = "swf/index.swf";
 
-	// Flash▓г╔¤
+	// Flashцикх╣Е
 	var flashWidth = "400";
 
-	// Flash╜─╔¤
+	// Flashч╕жх╣Е
 	var flashHeight = "279";
 
-	// Flashд╬╔м═╫е╨б╝е╕ечеє
+	// FlashуБох┐ЕшжБуГРуГ╝уВ╕уГзуГ│
 	var reqVersion = 6;
 
-	// Flashдмедеєе╣е╚б╝еыд╡дьд╞ддд╩ддд╚днд╦╔╜╝ид╣дыесе├е╗б╝е╕
+	// FlashуБМуВдуГ│уВ╣уГИуГ╝уГлуБХуВМуБжуБДуБкуБДуБиуБНуБлшбичд║уБЩуВЛуГбуГГуВ╗уГ╝уВ╕
 	var noFlashMsg =
 		"<table width=\"400\" border=\"0\" cellspacing=\"0\" cellpadding=\"0\" summary=\" \">"
 		+"<tr><td colspan=\"3\"><img src=\"./img/flash/image_flash01.jpg\" width=\"400\" height=\"174\" alt=\"\"></td></tr>"
@@ -31,7 +31,7 @@
 		+"</table>";
 
 
-// ************** еседеє *********************
+// ************** уГбуВдуГ│ *********************
 
 	var maxVersion = 7;
 	var actualVersion = 0;

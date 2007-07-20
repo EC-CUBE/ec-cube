@@ -17,21 +17,21 @@ class LC_Page {
 		$this->text_row = 13;
 		$this->tpl_subno = "bloc";	
 		$this->tpl_mainno = "design";
-		$this->tpl_subtitle = '�֥��å��Խ�';
+		$this->tpl_subtitle = 'ブロック編集';
 	}
 }
 
 $objPage = new LC_Page();
 $objView = new SC_AdminView();
 
-// ǧ�ڲ��ݤ�Ƚ��
+// 認証可否の判定
 $objSess = new SC_Session();
 sfIsSuccess($objSess);
 
-// �֥��å����������
+// ブロック一覧を取得
 $objPage->arrBlocList = lfgetBlocData();
 
-// �֥��å�ID�����
+// ブロックIDを取得
 if (isset($_POST['bloc_id'])) {
 	$bloc_id = $_POST['bloc_id'];
 }else if ($_GET['bloc_id']){
@@ -41,31 +41,31 @@ if (isset($_POST['bloc_id'])) {
 }
 $objPage->bloc_id = $bloc_id;
 
-// bloc_id �����ꤵ��Ƥ�����ˤϥ֥��å��ǡ����μ���
+// bloc_id が指定されている場合にはブロックデータの取得
 if ($bloc_id != '') {
 	$arrBlocData = lfgetBlocData(" bloc_id = ? " , array($bloc_id));
 	$arrBlocData[0]['tpl_path'] = USER_PATH . $arrBlocData[0]['tpl_path'];
 
-	// �ƥ�ץ졼�ȥե�������ɤ߹���
+	// テンプレートファイルの読み込み
 	$arrBlocData[0]['tpl_data'] = file_get_contents($arrBlocData[0]['tpl_path']);
 	$objPage->arrBlocData = $arrBlocData[0];
 }
 
-// ��å�����ɽ��
+// メッセージ表示
 if ($_GET['msg'] == "on") {
-	// ��λ��å�����
-	$objPage->tpl_onload="alert('��Ͽ����λ���ޤ�����');";
+	// 完了メッセージ
+	$objPage->tpl_onload="alert('登録が完了しました。');";
 }
 
-// �ץ�ӥ塼ɽ��
+// プレビュー表示
 if ($_POST['mode'] == "preview") {
-	// �ץ�ӥ塼�ե��������
+	// プレビューファイル作成
 	$prev_path = USER_INC_PATH . 'preview/bloc_preview.tpl';
 	$fp = fopen($prev_path,"w");
 	fwrite($fp, $_POST['bloc_html']);
 	fclose($fp);
 	
-	// �ץ�ӥ塼�ǡ���ɽ��
+	// プレビューデータ表示
 	$objPage->preview = "on";
 	$objPage->arrBlocData['tpl_data'] = $_POST['bloc_html'];
 	$objPage->arrBlocData['tpl_path'] = $prev_path;
@@ -76,24 +76,24 @@ if ($_POST['mode'] == "preview") {
 	$objPage->preview = "off";
 }
 
-// �ǡ�����Ͽ����
+// データ登録処理
 if ($_POST['mode'] == 'confirm') {
 	
-	// ���顼�����å�
+	// エラーチェック
 	$objPage->arrErr = lfErrorCheck($_POST);
 
-	// ���顼���ʤ���й���������Ԥ�	
+	// エラーがなければ更新処理を行う	
 	if (count($objPage->arrErr) == 0) {
-		// DB�إǡ����򹹿�����
+		// DBへデータを更新する
 		lfEntryBlocData($_POST);
 		
-		// �ե�����κ��
+		// ファイルの削除
 		$del_file=BLOC_PATH . $arrBlocData[0]['filename']. '.tpl';
 		if (file_exists($del_file)) {
 			unlink($del_file);
 		}
 		
-		// �ե��������
+		// ファイル作成
 		$fp = fopen(BLOC_PATH . $_POST['filename'] . '.tpl',"w");
 		fwrite($fp, $_POST['bloc_html']);
 		fclose($fp);
@@ -103,36 +103,36 @@ if ($_POST['mode'] == 'confirm') {
 		$bloc_id = $arrBlocData[0]['bloc_id'];	
 		header("location: ./bloc.php?bloc_id=$bloc_id&msg=on");
 	}else{
-		// ���顼����������ϻ��Υǡ�����ɽ������
+		// エラーがあれば入力時のデータを表示する
 		$objPage->arrBlocData = $_POST;
 	}
 }
 
-// �ǡ����������
+// データ削除処理
 if ($_POST['mode'] == 'delete') {
 	
-	// DB�إǡ����򹹿�����
-	$objDBConn = new SC_DbConn;		// DB���֥�������
-	$sql = "";						// �ǡ�������SQL������
-	$ret = ""; 						// �ǡ���������̳�Ǽ��
-	$arrDelData = array();			// �����ǡ���������
+	// DBへデータを更新する
+	$objDBConn = new SC_DbConn;		// DB操作オブジェクト
+	$sql = "";						// データ更新SQL生成用
+	$ret = ""; 						// データ更新結果格納用
+	$arrDelData = array();			// 更新データ生成用
 	
-	// �����ǡ�������
+	// 更新データ生成
 	$arrUpdData = array($arrData['bloc_name'], BLOC_DIR . $arrData['filename'] . '.tpl', $arrData['filename']);
 	
-	// bloc_id �����Ǥʤ����ˤ�delete��¹�
+	// bloc_id が空でない場合にはdeleteを実行
 	if ($_POST['bloc_id'] !== '') {
-		// SQL����
+		// SQL生成
 		$sql = " DELETE FROM dtb_bloc WHERE bloc_id = ?";
-		// SQL�¹�
+		// SQL実行
 		$ret = $objDBConn->query($sql,array($_POST['bloc_id']));
 		
-		// �ڡ��������֤���Ƥ���ǡ�����������
+		// ページに配置されているデータも削除する
 		$sql = "DELETE FROM dtb_blocposition WHERE bloc_id = ?";
-		// SQL�¹�
+		// SQL実行
 		$ret = $objDBConn->query($sql,array($_POST['bloc_id']));
 	
-		// �ե�����κ��
+		// ファイルの削除
 		$del_file = BLOC_PATH . $arrBlocData[0]['filename']. '.tpl';
 		if(file_exists($del_file)){
 			unlink($del_file);
@@ -143,25 +143,25 @@ if ($_POST['mode'] == 'delete') {
 }
 
 
-// ���̤�ɽ��
+// 画面の表示
 $objView->assignobj($objPage);
 $objView->display(MAIN_FRAME);
 
 //---------------------------------------------------------------------------------------------------------------------------------------------------------
 
 /**************************************************************************************************************
- * �ؿ�̾	��lfgetBlocData
- * ��������	���֥��å�������������
- * ����1	��$where  ������ Where��ʸ
- * ����2	��$arrVal ������ Where��ιʹ������
- * �����	���֥��å�����
+ * 関数名	：lfgetBlocData
+ * 処理内容	：ブロック情報を取得する
+ * 引数1	：$where  ･･･ Where句文
+ * 引数2	：$arrVal ･･･ Where句の絞込条件値
+ * 戻り値	：ブロック情報
  **************************************************************************************************************/
 function lfgetBlocData($where = '', $arrVal = ''){
-	$objDBConn = new SC_DbConn;		// DB���֥�������
-	$sql = "";						// �ǡ�������SQL������
-	$arrRet = array();				// �ǡ���������
+	$objDBConn = new SC_DbConn;		// DB操作オブジェクト
+	$sql = "";						// データ取得SQL生成用
+	$arrRet = array();				// データ取得用
 	
-	// SQL����
+	// SQL生成
 	$sql = " SELECT ";
 	$sql .= "	bloc_id";
 	$sql .= "	,bloc_name";
@@ -174,7 +174,7 @@ function lfgetBlocData($where = '', $arrVal = ''){
 	$sql .= " FROM ";
 	$sql .= " 	dtb_bloc";
 
-	// where��λ��꤬������ɲ�	
+	// where句の指定があれば追加	
 	if ($where != '') {
 		$sql .= " WHERE " . $where;
 	}
@@ -187,55 +187,55 @@ function lfgetBlocData($where = '', $arrVal = ''){
 }
 
 /**************************************************************************************************************
- * �ؿ�̾	��lfEntryBlocData
- * ��������	���֥��å�����򹹿�����
- * ����1	��$arrData  ������ �����ǡ���
- * �����	���������
+ * 関数名	：lfEntryBlocData
+ * 処理内容	：ブロック情報を更新する
+ * 引数1	：$arrData  ･･･ 更新データ
+ * 戻り値	：更新結果
  **************************************************************************************************************/
 function lfEntryBlocData($arrData){
-	$objDBConn = new SC_DbConn;		// DB���֥�������
-	$sql = "";						// �ǡ�������SQL������
-	$ret = ""; 						// �ǡ���������̳�Ǽ��
-	$arrUpdData = array();			// �����ǡ���������
-	$arrChk = array();				// ��¾�����å���
+	$objDBConn = new SC_DbConn;		// DB操作オブジェクト
+	$sql = "";						// データ更新SQL生成用
+	$ret = ""; 						// データ更新結果格納用
+	$arrUpdData = array();			// 更新データ生成用
+	$arrChk = array();				// 排他チェック用
 	
-	// �����ǡ�������
+	// 更新データ生成
 	$arrUpdData = array($arrData['bloc_name'], BLOC_DIR . $arrData['filename'] . '.tpl', $arrData['filename']);
 	
-	// �ǡ�����¸�ߤ��Ƥ��뤫�����å���Ԥ�
+	// データが存在しているかチェックを行う
 	if($arrData['bloc_id'] !== ''){
 		$arrChk = lfgetBlocData("bloc_id = ?", array($arrData['bloc_id']));
 	}
 	
-	// bloc_id ���� �㤷���� �ǡ�����¸�ߤ��Ƥ��ʤ����ˤ�INSERT��Ԥ�
+	// bloc_id が空 若しくは データが存在していない場合にはINSERTを行う
 	if ($arrData['bloc_id'] === '' or !isset($arrChk[0])) {
-		// SQL����
+		// SQL生成
 		$sql = " INSERT INTO dtb_bloc";
 		$sql .= " ( ";
-		$sql .= "     bloc_name ";		// �֥��å�̾��
-		$sql .= "     ,tpl_path ";		// �ƥ�ץ졼����¸��
-		$sql .= "     ,filename ";		// �ե�����̾��
-		$sql .= "     ,create_date ";	// ������
-		$sql .= "     ,update_date ";	// ������
+		$sql .= "     bloc_name ";		// ブロック名称
+		$sql .= "     ,tpl_path ";		// テンプレート保存先
+		$sql .= "     ,filename ";		// ファイル名称
+		$sql .= "     ,create_date ";	// 作成日
+		$sql .= "     ,update_date ";	// 更新日
 		$sql .= " ) VALUES ( ?,?,?,now(),now() )";
 		$sql .= " ";
 	}else{
-		// �ǡ�����¸�ߤ��Ƥ���ˤϥ��åץǡ��Ȥ�Ԥ�
-		// SQL����
+		// データが存在してる場合にはアップデートを行う
+		// SQL生成
 		$sql = " UPDATE dtb_bloc";
 		$sql .= " SET";
-		$sql .= "     bloc_name = ? ";	// �֥��å�̾��
-		$sql .= "     ,tpl_path = ? ";	// �ƥ�ץ졼����¸��
-		$sql .= "     ,filename = ? ";	// �ƥ�ץ졼�ȥե�����̾
+		$sql .= "     bloc_name = ? ";	// ブロック名称
+		$sql .= "     ,tpl_path = ? ";	// テンプレート保存先
+		$sql .= "     ,filename = ? ";	// テンプレートファイル名
 		$sql .= "     ,update_date = now()";
 		$sql .= " WHERE bloc_id = ?";
 		$sql .= " ";
 		
-		// �����ǡ����˥֥��å�ID���ɲ�
+		// 更新データにブロックIDを追加
 		array_push($arrUpdData, $arrData['bloc_id']);
 	}
 	
-	// SQL�¹�
+	// SQL実行
 	$ret = $objDBConn->query($sql,$arrUpdData);
 	
 	return $ret;
@@ -243,24 +243,24 @@ function lfEntryBlocData($arrData){
 }
 
 /**************************************************************************************************************
- * �ؿ�̾	��lfErrorCheck
- * ��������	�����Ϲ��ܤΥ��顼�����å���Ԥ�
- * ����1	��$arrData  ������ ���ϥǡ���
- * �����	�����顼����
+ * 関数名	：lfErrorCheck
+ * 処理内容	：入力項目のエラーチェックを行う
+ * 引数1	：$arrData  ･･･ 入力データ
+ * 戻り値	：エラー情報
  **************************************************************************************************************/
 function lfErrorCheck($array) {
 	global $objPage;
 	$objErr = new SC_CheckError($array);
 	
-	$objErr->doFunc(array("�֥��å�̾", "bloc_name", STEXT_LEN), array("EXIST_CHECK", "SPTAB_CHECK", "MAX_LENGTH_CHECK"));
-	$objErr->doFunc(array("�ե�����̾", "filename", STEXT_LEN), array("EXIST_CHECK", "NO_SPTAB", "MAX_LENGTH_CHECK","FILE_NAME_CHECK"));
+	$objErr->doFunc(array("ブロック名", "bloc_name", STEXT_LEN), array("EXIST_CHECK", "SPTAB_CHECK", "MAX_LENGTH_CHECK"));
+	$objErr->doFunc(array("ファイル名", "filename", STEXT_LEN), array("EXIST_CHECK", "NO_SPTAB", "MAX_LENGTH_CHECK","FILE_NAME_CHECK"));
 	
-	// Ʊ��Υե�����̾��¸�ߤ��Ƥ�����ˤϥ��顼
+	// 同一のファイル名が存在している場合にはエラー
 	if(!isset($objErr->arrErr['filename']) and $array['filename'] !== ''){
 		$arrChk = lfgetBlocData("filename = ?", array($array['filename']));
 		
 		if (count($arrChk[0]) >= 1 and $arrChk[0]['bloc_id'] != $array['bloc_id']) {
-			$objErr->arrErr['filename'] = '�� Ʊ���ե�����̾�Υǡ�����¸�ߤ��Ƥ��ޤ����̤�̾�Τ��դ��Ƥ���������';
+			$objErr->arrErr['filename'] = '※ 同じファイル名のデータが存在しています。別の名称を付けてください。';
 		}
 	}
 	

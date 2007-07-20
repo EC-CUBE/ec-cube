@@ -5,21 +5,21 @@
  * http://www.lockon.co.jp/
  */
 *}-->
-<center>¤´ÃíÊ¸´°Î»</center>
+<center>ã”æ³¨æ–‡å®Œäº†</center>
 
 <hr>
 
-¤´ÃíÊ¸¡¢Í­¤êÆñ¤¦¤´¤¶¤¤¤Þ¤·¤¿¡£<br>
-¾¦ÉÊÅþÃå¤ò¤ª³Ú¤·¤ß¤Ë¤ªÂÔ¤Á²¼¤µ¤¤¤Þ¤»¡£<br>
-¤É¤¦¤¾¡¢º£¸å¤È¤â¡¢<!--{$arrInfo.shop_name|escape}-->¤ò¤è¤í¤·¤¯¤ª´ê¤¤¤·¤Þ¤¹¡£<br>
+ã”æ³¨æ–‡ã€æœ‰ã‚Šé›£ã†ã”ã–ã„ã¾ã—ãŸã€‚<br>
+å•†å“åˆ°ç€ã‚’ãŠæ¥½ã—ã¿ã«ãŠå¾…ã¡ä¸‹ã•ã„ã¾ã›ã€‚<br>
+ã©ã†ãžã€ä»Šå¾Œã¨ã‚‚ã€<!--{$arrInfo.shop_name|escape}-->ã‚’ã‚ˆã‚ã—ããŠé¡˜ã„ã—ã¾ã™ã€‚<br>
 
 <br>
 
-<a href="<!--{$smarty.const.MOBILE_URL_SITE_TOP}-->" accesskey="0"><!--{0|numeric_emoji}-->TOP¥Ú¡¼¥¸¤ËÌá¤ë</a><br>
+<a href="<!--{$smarty.const.MOBILE_URL_SITE_TOP}-->" accesskey="0"><!--{0|numeric_emoji}-->TOPãƒšãƒ¼ã‚¸ã«æˆ»ã‚‹</a><br>
 
 <br>
 <hr>
 
-<!-- ¢§¥Õ¥Ã¥¿¡¼ ¤³¤³¤«¤é -->
+<!-- â–¼ãƒ•ãƒƒã‚¿ãƒ¼ ã“ã“ã‹ã‚‰ -->
 <center>LOCKON CO.,LTD.</center>
-<!-- ¢¥¥Õ¥Ã¥¿¡¼ ¤³¤³¤Þ¤Ç -->
+<!-- â–²ãƒ•ãƒƒã‚¿ãƒ¼ ã“ã“ã¾ã§ -->

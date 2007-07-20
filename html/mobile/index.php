@@ -6,15 +6,15 @@
  * http://www.lockon.co.jp/
  * 
  *
- * ¥â¥Ğ¥¤¥ë¥µ¥¤¥È/¥È¥Ã¥×¥Ú¡¼¥¸
+ * ãƒ¢ãƒã‚¤ãƒ«ã‚µã‚¤ãƒˆ/ãƒˆãƒƒãƒ—ãƒšãƒ¼ã‚¸
  */
 
 require_once('./require.php');
 
 class LC_Page {
 	function LC_Page() {
-		/** É¬¤ºÊÑ¹¹¤¹¤ë **/
-		$this->tpl_mainpage = 'top.tpl';	// ¥á¥¤¥ó¥Æ¥ó¥×¥ì¡¼¥È
+		/** å¿…ãšå¤‰æ›´ã™ã‚‹ **/
+		$this->tpl_mainpage = 'top.tpl';	// ãƒ¡ã‚¤ãƒ³ãƒ†ãƒ³ãƒ—ãƒ¬ãƒ¼ãƒˆ
 	}
 }
 
@@ -22,7 +22,7 @@ $objPage = new LC_Page();
 $conn = new SC_DBConn();
 $objCustomer = new SC_Customer();
 
-// ¥ì¥¤¥¢¥¦¥È¥Ç¥¶¥¤¥ó¤ò¼èÆÀ
+// ãƒ¬ã‚¤ã‚¢ã‚¦ãƒˆãƒ‡ã‚¶ã‚¤ãƒ³ã‚’å–å¾—
 //$objPage = sfGetPageLayout($objPage, false, 'index.php');
 
 $objView = new SC_MobileView();

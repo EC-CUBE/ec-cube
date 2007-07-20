@@ -10,9 +10,9 @@ require_once("../require.php");
 
 class LC_Page {
 	function LC_Page() {
-		$this->tpl_css = '/css/layout/contact/index.css';	// ¥á¥¤¥óCSS¥Ñ¥¹
+		$this->tpl_css = '/css/layout/contact/index.css';	// ãƒ¡ã‚¤ãƒ³CSSãƒ‘ã‚¹
 		$this->tpl_mainpage = 'contact/index.tpl';
-		$this->tpl_title = '¤ªÌä¤¤¹ç¤ï¤»(ÆþÎÏ¥Ú¡¼¥¸)';
+		$this->tpl_title = 'ãŠå•ã„åˆã‚ã›(å…¥åŠ›ãƒšãƒ¼ã‚¸)';
 		$this->tpl_page_category = 'contact';
 		global $arrPref;
 		$this->arrPref = $arrPref;
@@ -22,9 +22,9 @@ class LC_Page {
 $conn = new SC_DBConn();
 $objPage = new LC_Page();
 $objView = new SC_MobileView();
-$CONF = sf_getBasisData();			// Å¹ÊÞ´ðËÜ¾ðÊó
+$CONF = sf_getBasisData();			// åº—èˆ—åŸºæœ¬æƒ…å ±
 
-//----¡¡¥Ú¡¼¥¸É½¼¨
+//----ã€€ãƒšãƒ¼ã‚¸è¡¨ç¤º
 $objView->assignobj($objPage);
 $objView->assignarray($CONF);
 $objView->display(SITE_FRAME);

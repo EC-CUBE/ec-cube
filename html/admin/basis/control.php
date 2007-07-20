@@ -14,7 +14,7 @@ class LC_Page {
 		$this->tpl_subnavi = 'basis/subnavi.tpl';
 		$this->tpl_mainno = 'basis';
 		$this->tpl_subno = 'control';
-		$this->tpl_subtitle = '¥µ¥¤¥È´ÉÍıÀßÄê';
+		$this->tpl_subtitle = 'ã‚µã‚¤ãƒˆç®¡ç†è¨­å®š';
 	}
 }
 $conn = new SC_DBConn();
@@ -22,27 +22,27 @@ $objPage = new LC_Page();
 $objView = new SC_AdminView();
 $objSess = new SC_Session();
 
-// Ç§¾Ú²ÄÈİ¤ÎÈ½Äê
+// èªè¨¼å¯å¦ã®åˆ¤å®š
 sfIsSuccess($objSess);
 
-// ¥Ñ¥é¥á¡¼¥¿´ÉÍı¥¯¥é¥¹
+// ãƒ‘ãƒ©ãƒ¡ãƒ¼ã‚¿ç®¡ç†ã‚¯ãƒ©ã‚¹
 $objFormParam = new SC_FormParam();
-// ¥Ñ¥é¥á¡¼¥¿¾ğÊó¤Î½é´ü²½
+// ãƒ‘ãƒ©ãƒ¡ãƒ¼ã‚¿æƒ…å ±ã®åˆæœŸåŒ–
 lfInitParam();
-// POSTÃÍ¤Î¼èÆÀ
+// POSTå€¤ã®å–å¾—
 $objFormParam->setParam($_POST);
 
 switch($_POST['mode']) {
 	case 'edit':
-		// ÆşÎÏÃÍ¤ÎÊÑ´¹
+		// å…¥åŠ›å€¤ã®å¤‰æ›
 		$objFormParam->convParam();
 	
-		// ¥¨¥é¡¼¥Á¥§¥Ã¥¯
+		// ã‚¨ãƒ©ãƒ¼ãƒã‚§ãƒƒã‚¯
 		$objPage->arrErr = lfCheckError();
 		if(count($objPage->arrErr) == 0) {
 			lfSiteControlData($_POST['control_id']);
-			// javascript¼Â¹Ô
-			$objPage->tpl_onload = "alert('¹¹¿·¤¬´°Î»¤·¤Ş¤·¤¿¡£');";
+			// javascriptå®Ÿè¡Œ
+			$objPage->tpl_onload = "alert('æ›´æ–°ãŒå®Œäº†ã—ã¾ã—ãŸã€‚');";
 		}
 		
 		break;
@@ -50,17 +50,17 @@ switch($_POST['mode']) {
 		break;
 }
 
-// ¥µ¥¤¥È´ÉÍı¾ğÊó¤Î¼èÆÀ
+// ã‚µã‚¤ãƒˆç®¡ç†æƒ…å ±ã®å–å¾—
 $arrSiteControlList = lfGetControlList();
 
-// ¥×¥ë¥À¥¦¥ó¤ÎºîÀ®
+// ãƒ—ãƒ«ãƒ€ã‚¦ãƒ³ã®ä½œæˆ
 for ($i = 0; $i < count($arrSiteControlList); $i++) {	
 	switch ($arrSiteControlList[$i]["control_id"]) {
-		// ¥È¥é¥Ã¥¯¥Ğ¥Ã¥¯
+		// ãƒˆãƒ©ãƒƒã‚¯ãƒãƒƒã‚¯
 		case SITE_CONTROL_TRACKBACK:
 			$arrSiteControlList[$i]["control_area"] = $arrSiteControlTrackBack;
 			break;
-		// ¥¢¥Õ¥£¥ê¥¨¥¤¥È
+		// ã‚¢ãƒ•ã‚£ãƒªã‚¨ã‚¤ãƒˆ
 		case SITE_CONTROL_AFFILIATE:
 			$arrSiteControlList[$i]["control_area"] = $arrSiteControlAffiliate;
 			break;
@@ -73,27 +73,27 @@ $objPage->arrControlList = $arrSiteControlList;
 $objView->assignobj($objPage);
 $objView->display(MAIN_FRAME);
 //-----------------------------------------------------------------------------------------------------------------------------------
-// ¥µ¥¤¥È´ÉÍı¾ğÊó¤Î¼èÆÀ
+// ã‚µã‚¤ãƒˆç®¡ç†æƒ…å ±ã®å–å¾—
 function lfGetControlList() {
 	$objQuery = new SC_Query();
-	// ¥µ¥¤¥È´ÉÍı¾ğÊó¤Î¼èÆÀ
+	// ã‚µã‚¤ãƒˆç®¡ç†æƒ…å ±ã®å–å¾—
 	$sql = "SELECT * FROM dtb_site_control ";
 	$sql .= "WHERE del_flg = 0";
 	$arrRet = $objQuery->getall($sql);
 	return $arrRet;
 }
 
-/* ¥Ñ¥é¥á¡¼¥¿¾ğÊó¤Î½é´ü²½ */
+/* ãƒ‘ãƒ©ãƒ¡ãƒ¼ã‚¿æƒ…å ±ã®åˆæœŸåŒ– */
 function lfInitParam() {
 	global $objFormParam;
-	$objFormParam->addParam("ÀßÄê¾õ¶·", "control_flg", INT_LEN, "n", array("EXIST_CHECK", "NUM_CHECK", "MAX_LENGTH_CHECK"));
+	$objFormParam->addParam("è¨­å®šçŠ¶æ³", "control_flg", INT_LEN, "n", array("EXIST_CHECK", "NUM_CHECK", "MAX_LENGTH_CHECK"));
 }
 
-/* ÆşÎÏÆâÍÆ¤Î¥Á¥§¥Ã¥¯ */
+/* å…¥åŠ›å†…å®¹ã®ãƒã‚§ãƒƒã‚¯ */
 function lfCheckError() {
 	global $objFormParam;
 	
-	// ÆşÎÏ¥Ç¡¼¥¿¤òÅÏ¤¹¡£
+	// å…¥åŠ›ãƒ‡ãƒ¼ã‚¿ã‚’æ¸¡ã™ã€‚
 	$arrRet =  $objFormParam->getHashArray();
 	$objErr = new SC_CheckError($arrRet);
 	$objErr->arrErr = $objFormParam->checkError();
@@ -101,7 +101,7 @@ function lfCheckError() {
 	return $objErr->arrErr;
 }
 
-/* DB¤Ø¥Ç¡¼¥¿¤òÅĞÏ¿¤¹¤ë */
+/* DBã¸ãƒ‡ãƒ¼ã‚¿ã‚’ç™»éŒ²ã™ã‚‹ */
 function lfSiteControlData($control_id = "") {
 	global $objFormParam;
 	
@@ -109,13 +109,13 @@ function lfSiteControlData($control_id = "") {
 	$sqlval = $objFormParam->getHashArray();	
 	$sqlval['update_date'] = 'Now()';
 	
-	// ¿·µ¬ÅĞÏ¿
+	// æ–°è¦ç™»éŒ²
 	if($control_id == "") {
-		// INSERT¤Î¼Â¹Ô
+		// INSERTã®å®Ÿè¡Œ
 		//$sqlval['creator_id'] = $_SESSION['member_id'];
 		$sqlval['create_date'] = 'Now()';
 		$objQuery->insert("dtb_site_control", $sqlval);
-	// ´ûÂ¸ÊÔ½¸
+	// æ—¢å­˜ç·¨é›†
 	} else {
 		$where = "control_id = ?";
 		$objQuery->update("dtb_site_control", $sqlval, $where, array($control_id));

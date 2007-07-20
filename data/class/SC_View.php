@@ -8,181 +8,182 @@
 $SC_VIEW_PHP_DIR = realpath(dirname(__FILE__));
 require_once($SC_VIEW_PHP_DIR . "/../module/Smarty/libs/Smarty.class.php");
 require_once($SC_VIEW_PHP_DIR . "/../include/php_ini.inc");
+//require_once(CLASS_PATH . "util_extends/SC_Utils_Ex.php");
 
 class SC_View {
-	
+
     var $_smarty;
-	var $objSiteInfo; // ¥µ¥¤¥È¾ğÊó
-	
-    // ¥³¥ó¥¹¥È¥é¥¯¥¿
+    var $objSiteInfo; // ã‚µã‚¤ãƒˆæƒ…å ±
+
+    // ã‚³ãƒ³ã‚¹ãƒˆãƒ©ã‚¯ã‚¿
     function SC_View($siteinfo = true) {
-		global $SC_VIEW_PHP_DIR;
+        global $SC_VIEW_PHP_DIR;
 
-    	$this->_smarty = new Smarty;
-		$this->_smarty->left_delimiter = '<!--{';
-		$this->_smarty->right_delimiter = '}-->';
-		$this->_smarty->register_modifier("sfDispDBDate","sfDispDBDate");
-		$this->_smarty->register_modifier("sfConvSendDateToDisp","sfConvSendDateToDisp");
-		$this->_smarty->register_modifier("sfConvSendWdayToDisp","sfConvSendWdayToDisp");
-		$this->_smarty->register_modifier("sfGetVal", "sfGetVal");
-		$this->_smarty->register_function("sfSetErrorStyle","sfSetErrorStyle");
-		$this->_smarty->register_function("sfGetErrorColor","sfGetErrorColor");
-		$this->_smarty->register_function("sfTrim", "sfTrim");
-		$this->_smarty->register_function("sfPreTax", "sfPreTax");
-		$this->_smarty->register_function("sfPrePoint", "sfPrePoint");
-		$this->_smarty->register_function("sfGetChecked", "sfGetChecked");
-		$this->_smarty->register_function("sfTrimURL", "sfTrimURL");
-		$this->_smarty->register_function("sfMultiply", "sfMultiply");
-		$this->_smarty->register_function("sfPutBR", "sfPutBR");
-		$this->_smarty->register_function("sfRmDupSlash", "sfRmDupSlash");
-		$this->_smarty->register_function("sfCutString", "sfCutString");
-		$this->_smarty->plugins_dir=array("plugins", $SC_VIEW_PHP_DIR . "/../smarty_extends");
-		$this->_smarty->register_function("sf_mb_convert_encoding","sf_mb_convert_encoding");
-		$this->_smarty->register_function("sf_mktime","sf_mktime");
-		$this->_smarty->register_function("sf_date","sf_date");
-		$this->_smarty->register_function("str_replace","str_replace");
-		$this->_smarty->register_function("sfPrintEbisTag","sfPrintEbisTag");
-		$this->_smarty->register_function("sfPrintAffTag","sfPrintAffTag");
-        $this->_smarty->register_function("sfIsHTTPS","sfIsHTTPS");
+        $this->_smarty = new Smarty;
+        $this->_smarty->left_delimiter = '<!--{';
+        $this->_smarty->right_delimiter = '}-->';
+        $this->_smarty->register_modifier("sfDispDBDate", array("SC_Utils_Ex", "sfDispDBDate"));
+        $this->_smarty->register_modifier("sfConvSendDateToDisp", array("SC_Utils_Ex", "sfConvSendDateToDisp"));
+        $this->_smarty->register_modifier("sfConvSendWdayToDisp", array("SC_Utils_Ex", "sfConvSendWdayToDisp"));
+        $this->_smarty->register_modifier("sfGetVal", array("SC_Utils_Ex", "sfGetVal"));
+        $this->_smarty->register_function("sfSetErrorStyle", array("SC_Utils_Ex", "sfSetErrorStyle"));
+        $this->_smarty->register_function("sfGetErrorColor", array("SC_Utils_Ex", "sfGetErrorColor"));
+        $this->_smarty->register_function("sfTrim", array("SC_Utils_Ex", "sfTrim"));
+        $this->_smarty->register_function("sfPreTax", array("SC_Utils_Ex", "sfPreTax"));
+        $this->_smarty->register_function("sfPrePoint", array("SC_Utils_Ex", "sfPrePoint"));
+        $this->_smarty->register_function("sfGetChecked",array("SC_Utils_Ex", "sfGetChecked"));
+        $this->_smarty->register_function("sfTrimURL", array("SC_Utils_Ex", "sfTrimURL"));
+        $this->_smarty->register_function("sfMultiply", array("SC_Utils_Ex", "sfMultiply"));
+        $this->_smarty->register_function("sfPutBR", array("SC_Utils_Ex", "sfPutBR"));
+        $this->_smarty->register_function("sfRmDupSlash", array("SC_Utils_Ex", "sfRmDupSlash"));
+        $this->_smarty->register_function("sfCutString", array("SC_Utils_Ex", "sfCutString"));
+        $this->_smarty->plugins_dir=array("plugins", $SC_VIEW_PHP_DIR . "/../smarty_extends");
+        $this->_smarty->register_function("sf_mb_convert_encoding", array("SC_Utils_Ex", "sf_mb_convert_encoding"));
+        $this->_smarty->register_function("sf_mktime", array("SC_Utils_Ex", "sf_mktime"));
+        $this->_smarty->register_function("sf_date", array("SC_Utils_Ex", "sf_date"));
+        $this->_smarty->register_function("str_replace", array("SC_Utils_Ex", "str_replace"));
+        $this->_smarty->register_function("sfPrintEbisTag", array("SC_Utils_Ex", "sfPrintEbisTag"));
+        $this->_smarty->register_function("sfPrintAffTag", array("SC_Utils_Ex", "sfPrintAffTag"));
+        $this->_smarty->register_function("sfIsHTTPS", array("SC_Utils_Ex", "sfIsHTTPS"));
         $this->_smarty->default_modifiers = array('script_escape');
-        
-		if(ADMIN_MODE == '1') {		
-			$this->time_start = time();
-		}
 
-		// ¥µ¥¤¥È¾ğÊó¤ò¼èÆÀ¤¹¤ë
-		if($siteinfo) {
-			if(!defined('LOAD_SITEINFO')) {
-				$this->objSiteInfo = new SC_SiteInfo();
-				$arrInfo['arrSiteInfo'] = $this->objSiteInfo->data;
-				
-				// ÅÔÆ»ÉÜ¸©Ì¾¤òÊÑ´¹
-				global $arrPref;
-				$arrInfo['arrSiteInfo']['pref'] = $arrPref[$arrInfo['arrSiteInfo']['pref']];
-				
-	 			// ¥µ¥¤¥È¾ğÊó¤ò³ä¤êÅö¤Æ¤ë
-				foreach ($arrInfo as $key => $value){
-					$this->_smarty->assign($key, $value);
-				}
-				
-				define('LOAD_SITEINFO', 1);
-			}
-		}
-	}
-    
-    // ¥Æ¥ó¥×¥ì¡¼¥È¤ËÃÍ¤ò³ä¤êÅö¤Æ¤ë
+        if(ADMIN_MODE == '1') {
+            $this->time_start = time();
+        }
+
+        // ã‚µã‚¤ãƒˆæƒ…å ±ã‚’å–å¾—ã™ã‚‹
+        if($siteinfo) {
+            if(!defined('LOAD_SITEINFO')) {
+                $this->objSiteInfo = new SC_SiteInfo();
+                $arrInfo['arrSiteInfo'] = $this->objSiteInfo->data;
+
+                // éƒ½é“åºœçœŒåã‚’å¤‰æ›
+                global $arrPref;
+                $arrInfo['arrSiteInfo']['pref'] = $arrPref[$arrInfo['arrSiteInfo']['pref']];
+
+                 // ã‚µã‚¤ãƒˆæƒ…å ±ã‚’å‰²ã‚Šå½“ã¦ã‚‹
+                foreach ($arrInfo as $key => $value){
+                    $this->_smarty->assign($key, $value);
+                }
+
+                define('LOAD_SITEINFO', 1);
+            }
+        }
+    }
+
+    // ãƒ†ãƒ³ãƒ—ãƒ¬ãƒ¼ãƒˆã«å€¤ã‚’å‰²ã‚Šå½“ã¦ã‚‹
     function assign($val1, $val2) {
         $this->_smarty->assign($val1, $val2);
     }
-    
-    // ¥Æ¥ó¥×¥ì¡¼¥È¤Î½èÍı·ë²Ì¤ò¼èÆÀ
+
+    // ãƒ†ãƒ³ãƒ—ãƒ¬ãƒ¼ãƒˆã®å‡¦ç†çµæœã‚’å–å¾—
     function fetch($template) {
         return $this->_smarty->fetch($template);
     }
-    
-    // ¥Æ¥ó¥×¥ì¡¼¥È¤Î½èÍı·ë²Ì¤òÉ½¼¨
-    function display($template, $no_error = false) {
-		if(!$no_error) {
-			global $GLOBAL_ERR;
-			if(!defined('OUTPUT_ERR')) {
-				print($GLOBAL_ERR);
-				define('OUTPUT_ERR','ON');
-			}
-		}
-		
-		$this->_smarty->display($template);
-		if(ADMIN_MODE == '1') {
-			$time_end = time();
-			$time = $time_end - $this->time_start;
-			print("½èÍı»ş´Ö:" . $time . "ÉÃ");
-		}
-	}
-  	
-  	// ¥ª¥Ö¥¸¥§¥¯¥ÈÆâ¤ÎÊÑ¿ô¤ò¤¹¤Ù¤Æ³ä¤êÅö¤Æ¤ë¡£
-  	function assignobj($obj) {
-		$data = get_object_vars($obj);
-		
-		foreach ($data as $key => $value){
-			$this->_smarty->assign($key, $value);
-		}
-  	}
-  	
-  	// Ï¢ÁÛÇÛÎóÆâ¤ÎÊÑ¿ô¤ò¤¹¤Ù¤Æ³ä¤êÅö¤Æ¤ë¡£
-  	function assignarray($array) {
-  		foreach ($array as $key => $val) {
-  			$this->_smarty->assign($key, $val);
-  		}
-  	}
 
-	/* ¥µ¥¤¥È½é´üÀßÄê */
-	function initpath() {
-		global $SC_VIEW_PHP_DIR;
-		
-		$array['tpl_mainnavi'] = $SC_VIEW_PHP_DIR . '/../Smarty/templates/frontparts/mainnavi.tpl';
-		$array['tpl_root_id'] = sfGetRootId();
-		$this->assignarray($array);
-	}
-	
-	// ¥Ç¥Ğ¥Ã¥°
-	function debug($var = true){
-		$this->_smarty->debugging = $var;
-	}	
+    // ãƒ†ãƒ³ãƒ—ãƒ¬ãƒ¼ãƒˆã®å‡¦ç†çµæœã‚’è¡¨ç¤º
+    function display($template, $no_error = false) {
+        if(!$no_error) {
+            global $GLOBAL_ERR;
+            if(!defined('OUTPUT_ERR')) {
+                print($GLOBAL_ERR);
+                define('OUTPUT_ERR','ON');
+            }
+        }
+
+        $this->_smarty->display($template);
+        if(ADMIN_MODE == '1') {
+            $time_end = time();
+            $time = $time_end - $this->time_start;
+            print("å‡¦ç†æ™‚é–“:" . $time . "ç§’");
+        }
+    }
+
+      // ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆå†…ã®å¤‰æ•°ã‚’ã™ã¹ã¦å‰²ã‚Šå½“ã¦ã‚‹ã€‚
+      function assignobj($obj) {
+        $data = get_object_vars($obj);
+
+        foreach ($data as $key => $value){
+            $this->_smarty->assign($key, $value);
+        }
+      }
+
+      // é€£æƒ³é…åˆ—å†…ã®å¤‰æ•°ã‚’ã™ã¹ã¦å‰²ã‚Šå½“ã¦ã‚‹ã€‚
+      function assignarray($array) {
+          foreach ($array as $key => $val) {
+              $this->_smarty->assign($key, $val);
+          }
+      }
+
+    /* ã‚µã‚¤ãƒˆåˆæœŸè¨­å®š */
+    function initpath() {
+        global $SC_VIEW_PHP_DIR;
+
+        $array['tpl_mainnavi'] = $SC_VIEW_PHP_DIR . '/../Smarty/templates/frontparts/mainnavi.tpl';
+        $array['tpl_root_id'] = SC_Utils::sfGetRootId();
+        $this->assignarray($array);
+    }
+
+    // ãƒ‡ãƒãƒƒã‚°
+    function debug($var = true){
+        $this->_smarty->debugging = $var;
+    }
 }
 
 class SC_AdminView extends SC_View{
     function SC_AdminView() {
-    	parent::SC_View(false);
-		$this->_smarty->template_dir = TEMPLATE_ADMIN_DIR;
-		$this->_smarty->compile_dir = COMPILE_ADMIN_DIR;
-		$this->initpath();
-	}
+        parent::SC_View(false);
+        $this->_smarty->template_dir = TEMPLATE_ADMIN_DIR;
+        $this->_smarty->compile_dir = COMPILE_ADMIN_DIR;
+        $this->initpath();
+    }
 
-	function printr($data){
-		print_r($data);
-	}
+    function printr($data){
+        print_r($data);
+    }
 }
 
 class SC_SiteView extends SC_View{
     function SC_SiteView($cart = true) {
-    	parent::SC_View();
-		
-		$this->_smarty->template_dir = TEMPLATE_DIR;
-		$this->_smarty->compile_dir = COMPILE_DIR;
-		$this->initpath();
-		
-		// PHP5¤Ç¤Ïsession¤ò¥¹¥¿¡¼¥È¤¹¤ëÁ°¤Ë¥Ø¥Ã¥À¡¼¾ğÊó¤òÁ÷¿®¤·¤Æ¤¤¤ë¤È·Ù¹ğ¤¬½Ğ¤ë¤¿¤á¡¢Àè¤Ë¥»¥Ã¥·¥ç¥ó¤ò¥¹¥¿¡¼¥È¤¹¤ë¤è¤¦¤ËÊÑ¹¹
-		sfDomainSessionStart();
-		
-		if($cart){
-			$include_dir = realpath(dirname( __FILE__));
-			require_once($include_dir . "/SC_CartSession.php");
-			$objCartSess = new SC_CartSession();
-			$objCartSess->setPrevURL($_SERVER['REQUEST_URI']);
-		}
-	}
+        parent::SC_View();
+
+        $this->_smarty->template_dir = TEMPLATE_DIR;
+        $this->_smarty->compile_dir = COMPILE_DIR;
+        $this->initpath();
+
+        // PHP5ã§ã¯sessionã‚’ã‚¹ã‚¿ãƒ¼ãƒˆã™ã‚‹å‰ã«ãƒ˜ãƒƒãƒ€ãƒ¼æƒ…å ±ã‚’é€ä¿¡ã—ã¦ã„ã‚‹ã¨è­¦å‘ŠãŒå‡ºã‚‹ãŸã‚ã€å…ˆã«ã‚»ãƒƒã‚·ãƒ§ãƒ³ã‚’ã‚¹ã‚¿ãƒ¼ãƒˆã™ã‚‹ã‚ˆã†ã«å¤‰æ›´
+        SC_Utils::sfDomainSessionStart();
+
+        if($cart){
+            $include_dir = realpath(dirname( __FILE__));
+            require_once($include_dir . "/SC_CartSession.php");
+            $objCartSess = new SC_CartSession();
+            $objCartSess->setPrevURL($_SERVER['REQUEST_URI']);
+        }
+    }
 }
 
 class SC_UserView extends SC_SiteView{
     function SC_UserView($template_dir, $compile_dir = COMPILE_DIR) {
-    	parent::SC_SiteView();
-		$this->_smarty->template_dir = $template_dir;
-		$this->_smarty->compile_dir = $compile_dir;
-	}
+        parent::SC_SiteView();
+        $this->_smarty->template_dir = $template_dir;
+        $this->_smarty->compile_dir = $compile_dir;
+    }
 }
 
 class SC_InstallView extends SC_View{
     function SC_InstallView($template_dir, $compile_dir = COMPILE_DIR) {
-    	parent::SC_View(false);
-		$this->_smarty->template_dir = $template_dir;
-		$this->_smarty->compile_dir = $compile_dir;
-	}
+        parent::SC_View(false);
+        $this->_smarty->template_dir = $template_dir;
+        $this->_smarty->compile_dir = $compile_dir;
+    }
 }
 
 class SC_MobileView extends SC_SiteView {
     function SC_MobileView() {
-    	parent::SC_SiteView();
-		$this->_smarty->template_dir = MOBILE_TEMPLATE_DIR;
-		$this->_smarty->compile_dir = MOBILE_COMPILE_DIR;
-	}	
+        parent::SC_SiteView();
+        $this->_smarty->template_dir = MOBILE_TEMPLATE_DIR;
+        $this->_smarty->compile_dir = MOBILE_COMPILE_DIR;
+    }
 }
 ?>

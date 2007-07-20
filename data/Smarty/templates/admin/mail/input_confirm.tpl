@@ -5,7 +5,7 @@
  * http://www.lockon.co.jp/
  */
 *}-->
-<!--�����ᥤ�󥳥�ƥ�ġ���-->
+<!--★★メインコンテンツ★★-->
 <table width="878" border="0" cellspacing="0" cellpadding="0" summary=" ">
 <form name="form1" id="form1" method="post" action="<!--{$smarty.server.PHP_SELF|escape}-->">
 <!--{foreach key=key item=val from=$arrHidden}-->	
@@ -13,14 +13,14 @@
 <!--{/foreach}-->
 	<tr valign="top">
 		<td background="<!--{$smarty.const.URL_DIR}-->img/contents/navi_bg.gif" height="402">
-			<!--��SUB NAVI-->
+			<!--▼SUB NAVI-->
 			<!--{include file=$tpl_subnavi}-->
-			<!--��SUB NAVI-->
+			<!--▲SUB NAVI-->
 		</td>
 		<td class="mainbg">
-			<!--����Ͽ�ơ��֥뤳������-->
+			<!--▼登録テーブルここから-->
 			<table width="737" border="0" cellspacing="0" cellpadding="0" summary=" ">
-				<!--�ᥤ�󥨥ꥢ-->
+				<!--メインエリア-->
 				<tr>
 					<td align="center">
 						<table width="706" border="0" cellspacing="0" cellpadding="0" summary=" ">
@@ -37,7 +37,7 @@
 									</tr>
 									<tr>
 										<td background="<!--{$smarty.const.URL_DIR}-->img/contents/contents_title_left_bg.gif"><img src="<!--{$smarty.const.URL_DIR}-->img/contents/contents_title_left.gif" width="22" height="12" alt=""></td>
-										<td bgcolor="#636469" width="638" class="fs14n"><span class="white"><!--����ƥ�ĥ����ȥ�-->�ۿ����ꡧ�ۿ���������</span></td>
+										<td bgcolor="#636469" width="638" class="fs14n"><span class="white"><!--コンテンツタイトル-->配信設定：配信内容設定</span></td>
 										<td background="<!--{$smarty.const.URL_DIR}-->img/contents/contents_title_right_bg.gif"><img src="<!--{$smarty.const.URL_DIR}-->img/common/_.gif" width="18" height="1" alt=""></td>
 									</tr>
 									<tr>
@@ -51,14 +51,14 @@
 								<table width="678" border="0" cellspacing="1" cellpadding="8" summary=" ">
 									<!--{if $smarty.const.MELMAGA_BATCH_MODE}-->
 									<tr class="fs12n">
-										<td bgcolor="#f2f1ec">�ۿ���������<span class="red"> *</span></td>
+										<td bgcolor="#f2f1ec">配信時間設定<span class="red"> *</span></td>
 										<td bgcolor="#ffffff">
-										<!--{$list_data.send_year}-->ǯ<!--{$list_data.send_month}-->��<!--{$list_data.send_day}-->��
-										<!--{$list_data.send_hour}-->��<!--{$list_data.send_minutes}-->ʬ
+										<!--{$list_data.send_year}-->年<!--{$list_data.send_month}-->月<!--{$list_data.send_day}-->日
+										<!--{$list_data.send_hour}-->時<!--{$list_data.send_minutes}-->分
 										</td>
 									</tr>
 									<!--{/if}-->
-									<!--�����󥯥롼�ɤ�������-->
+									<!--▼インクルードここから-->
 									<!--{if $list_data.template_id}-->
 									<tr>
 										<td bgcolor="#f2f1ec" class="fs12n">Subject<span class="red"> *</span></td>
@@ -66,19 +66,19 @@
 									</tr>
 									<!--{if $list_data.mail_method ne 2}-->
 									<tr>
-										<td bgcolor="#ffffff" colspan="2" class="fs10n"><a href="#" onClick="return document.form2.submit();">HTML�ǳ�ǧ</a></td>
+										<td bgcolor="#ffffff" colspan="2" class="fs10n"><a href="#" onClick="return document.form2.submit();">HTMLで確認</a></td>
 									</tr>
 									<!--{/if}-->
 									<!--{if $smarty.post.template_mode ne "html_template"}-->
 									<tr>
-										<td bgcolor="#f2f1ec" colspan="2" class="fs10n">��ʸ<span class="red"> *</span>��̾���������߻��� {name} �Ȥ���Ƥ���������</td>
+										<td bgcolor="#f2f1ec" colspan="2" class="fs10n">本文<span class="red"> *</span>（名前差し込み時は {name} といれてください）</td>
 									</tr>
 									<tr>
 										<td bgcolor="#ffffff" colspan="2" class="fs10n"><!--{$list_data.body|escape|nl2br}--></td>
 									</tr>
 									<!--{/if}-->
 									<!--{/if}-->
-									<!--�����󥯥롼�ɤ����ޤ�-->
+									<!--▲インクルードここまで-->
 								</table>
 
 								<table width="678" border="0" cellspacing="0" cellpadding="0" summary=" ">
@@ -94,11 +94,11 @@
 											<tr>
 												<td>
 													<input type="hidden" name="mode" value="template">
-													<input type="button" name="subm02" onClick="return fnInsertValAndSubmit( document.form1, 'mode', 'regist_back', '' )" value="�ƥ�ץ졼��������̤����" />
+													<input type="button" name="subm02" onClick="return fnInsertValAndSubmit( document.form1, 'mode', 'regist_back', '' )" value="テンプレート設定画面へ戻る" />
 													<!--{if $smarty.const.MELMAGA_BATCH_MODE}-->
-													<input type="button" name="subm03" onClick="return fnInsertValAndSubmit( document.form1, 'mode', 'regist_complete', '' )" value="�ۿ���ͽ�󤹤�" <!--{$list_data.template_id|sfGetEnabled}-->/>
+													<input type="button" name="subm03" onClick="return fnInsertValAndSubmit( document.form1, 'mode', 'regist_complete', '' )" value="配信を予約する" <!--{$list_data.template_id|sfGetEnabled}-->/>
 													<!--{else}-->
-													<input type="button" name="subm03" onClick="return fnInsertValAndSubmit( document.form1, 'mode', 'regist_complete', '' )" value="�ۿ�����" <!--{$list_data.template_id|sfGetEnabled}-->/>
+													<input type="button" name="subm03" onClick="return fnInsertValAndSubmit( document.form1, 'mode', 'regist_complete', '' )" value="配信する" <!--{$list_data.template_id|sfGetEnabled}-->/>
 													<!--{/if}-->
 													</form>
 													<form name="form2" id="form2" method="post" action="./preview.php" target="_blank">
@@ -125,10 +125,10 @@
 						</table>
 					</td>
 				</tr>
-				<!--�ᥤ�󥨥ꥢ-->
+				<!--メインエリア-->
 			</table>
-			<!--����Ͽ�ơ��֥뤳���ޤ�-->
+			<!--▲登録テーブルここまで-->
 		</td>
 	</tr>
 </table>
-<!--�����ᥤ�󥳥�ƥ�ġ���-->
+<!--★★メインコンテンツ★★-->

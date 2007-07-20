@@ -11,13 +11,13 @@ gfprintlog($HTTP_USER_AGENT);
 
 $objQuery = new SC_Query();
 /*
-// trans_code ¤ò»ØÄê¤µ¤ì¤Æ¤¤¤Æ³î¤Ä¡¢Æş¶âºÑ¤ß¤Î¾ì¹ç
+// trans_code ã‚’æŒ‡å®šã•ã‚Œã¦ã„ã¦ä¸”ã¤ã€å…¥é‡‘æ¸ˆã¿ã®å ´åˆ
 if($_POST["trans_code"] != "" and $_POST["paid"] == 1 and $_POST["order_number"] != ""){
-	// ¥¹¥Æ¡¼¥¿¥¹¤òÆş¶âºÑ¤ß¤ËÊÑ¹¹¤¹¤ë
+	// ã‚¹ãƒ†ãƒ¼ã‚¿ã‚¹ã‚’å…¥é‡‘æ¸ˆã¿ã«å¤‰æ›´ã™ã‚‹
 	$sql = "UPDATE dtb_order SET status = 6, update_date = now() WHERE order_id = ? AND memo04 = ? ";
 	$objQuery->query($sql, array($_POST["order_number"], $_POST["trans_code"]));
 	
-	// POST¤ÎÆâÍÆ¤òÁ´¤Æ¥í¥°ÊİÂ¸
+	// POSTã®å†…å®¹ã‚’å…¨ã¦ãƒ­ã‚°ä¿å­˜
 	$log_path = DATA_PATH . "logs/epsilon.log";
 	gfPrintLog("epsilon conveni start---------------------------------------------------------", $log_path);
 	foreach($_POST as $key => $val){
@@ -26,7 +26,7 @@ if($_POST["trans_code"] != "" and $_POST["paid"] == 1 and $_POST["order_number"]
 	gfPrintLog("epsilon conveni end-----------------------------------------------------------", $log_path);
 */
 
-    // URI¤«¤é³Æ¾ğÊó¤ò¼èÆÀ
+    // URIã‹ã‚‰å„æƒ…å ±ã‚’å–å¾—
     $info = parse_url( $_SERVER["REQUEST_URI"] );
     $scheme = $info['scheme'];
     $host = $info['host'];

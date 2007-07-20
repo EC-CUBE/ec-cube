@@ -5,7 +5,7 @@
  * http://www.lockon.co.jp/
  */
 *}-->
-<center>¤´ÃíÊ¸ÆâÍÆ³ÎÇ§</center>
+<center>ã”æ³¨æ–‡å†…å®¹ç¢ºèª</center>
 
 <hr>
 
@@ -13,51 +13,51 @@
 <input type="hidden" name="mode" value="confirm">
 <input type="hidden" name="uniqid" value="<!--{$tpl_uniqid}-->">
 
-²¼µ­¤Î¤´ÃíÊ¸ÆâÍÆ¤Ë´Ö°ã¤¤¤Ï¤´¤¶¤¤¤Þ¤»¤ó¤«¡©<br>
+ä¸‹è¨˜ã®ã”æ³¨æ–‡å†…å®¹ã«é–“é•ã„ã¯ã”ã–ã„ã¾ã›ã‚“ã‹ï¼Ÿ<br>
 
 <br>
 
-¡ÚÇÛÁ÷Àè¡Û<br>
+ã€é…é€å…ˆã€‘<br>
 <!--{if $arrData.deliv_check == 1}-->
 <!--{$arrData.deliv_name01|escape}--> <!--{$arrData.deliv_name02|escape}--><br>
-¢©<!--{$arrData.deliv_zip01|escape}-->-<!--{$arrData.deliv_zip02|escape}--><br>
+ã€’<!--{$arrData.deliv_zip01|escape}-->-<!--{$arrData.deliv_zip02|escape}--><br>
 <!--{$arrPref[$arrData.deliv_pref]}--><!--{$arrData.deliv_addr01|escape}--><!--{$arrData.deliv_addr02|escape}--><br>
 <!--{else}-->
 <!--{$arrData.order_name01|escape}--> <!--{$arrData.order_name02|escape}--><br>
-¢©<!--{$arrData.order_zip01|escape}-->-<!--{$arrData.order_zip02|escape}--><br>
+ã€’<!--{$arrData.order_zip01|escape}-->-<!--{$arrData.order_zip02|escape}--><br>
 <!--{$arrPref[$arrData.order_pref]}--><!--{$arrData.order_addr01|escape}--><!--{$arrData.order_addr02|escape}--><br>
 <!--{/if}-->
 
 <br>
 
-¡ÚÇÛÁ÷Æü»þ»ØÄê¡Û<br>
-Æü¡§<!--{$arrData.deliv_date|escape|default:"»ØÄê¤Ê¤·"}--><br>
-»þ´Ö¡§<!--{$arrData.deliv_time|escape|default:"»ØÄê¤Ê¤·"}--><br>
+ã€é…é€æ—¥æ™‚æŒ‡å®šã€‘<br>
+æ—¥ï¼š<!--{$arrData.deliv_date|escape|default:"æŒ‡å®šãªã—"}--><br>
+æ™‚é–“ï¼š<!--{$arrData.deliv_time|escape|default:"æŒ‡å®šãªã—"}--><br>
 
 <br>
 
-¡Ú¤ª»ÙÊ§¤¤ÊýË¡¡Û<br>
+ã€ãŠæ”¯æ‰•ã„æ–¹æ³•ã€‘<br>
 <!--{$arrData.payment_method|escape}--><br>
 
 <br>
 
-¡Ú¤´ÃíÊ¸ÆâÍÆ¡Û<br>
+ã€ã”æ³¨æ–‡å†…å®¹ã€‘<br>
 <!--{section name=cnt loop=$arrProductsClass}-->
-<!--{$arrProductsClass[cnt].name}--> <!--{$arrProductsClass[cnt].quantity|number_format}-->¸Ä<br>
+<!--{$arrProductsClass[cnt].name}--> <!--{$arrProductsClass[cnt].quantity|number_format}-->å€‹<br>
 <!--{/section}-->
 
 <br>
 
-¡Ú¹ØÆþ¶â³Û¡Û<br>
-¾¦ÉÊ¹ç·×¡§<!--{$tpl_total_pretax|number_format}--><br>
-Á÷ÎÁ¡§<!--{$arrData.deliv_fee|number_format}--><br>
-<!--{if $arrData.charge > 0}-->¼ê¿ôÎÁ¡§<!--{$arrData.charge|number_format}--><br><!--{/if}-->
-¹ç·×¡§<!--{$arrData.payment_total|number_format}--><br>
-(Æâ¾ÃÈñÀÇ¡§<!--{$arrData.tax|number_format}-->)<br>
+ã€è³¼å…¥é‡‘é¡ã€‘<br>
+å•†å“åˆè¨ˆï¼š<!--{$tpl_total_pretax|number_format}--><br>
+é€æ–™ï¼š<!--{$arrData.deliv_fee|number_format}--><br>
+<!--{if $arrData.charge > 0}-->æ‰‹æ•°æ–™ï¼š<!--{$arrData.charge|number_format}--><br><!--{/if}-->
+åˆè¨ˆï¼š<!--{$arrData.payment_total|number_format}--><br>
+(å†…æ¶ˆè²»ç¨Žï¼š<!--{$arrData.tax|number_format}-->)<br>
 
 <br>
 
-<center><input type="submit" value="ÃíÊ¸"></center>
+<center><input type="submit" value="æ³¨æ–‡"></center>
 </form>
 <form action="<!--{$smarty.const.MOBILE_URL_SHOP_PAYMENT}-->" method="post">
 <input type="hidden" name="mode" value="deliv_date">
@@ -65,17 +65,17 @@
 <input type="hidden" name="payment_id" value="<!--{$arrData.payment_id}-->">
 <input type="hidden" name="deliv_date" value="<!--{$arrData.deliv_date}-->">
 <input type="hidden" name="deliv_time_id" value="<!--{$arrData.deliv_time_id}-->">
-<center><input type="submit" value="Ìá¤ë"></center>
+<center><input type="submit" value="æˆ»ã‚‹"></center>
 </form>
 
 <br>
 <hr>
 
-<a href="<!--{$smarty.const.MOBILE_URL_CART_TOP}-->" accesskey="9"><!--{9|numeric_emoji}-->¤«¤´¤ò¸«¤ë</a><br>
-<a href="<!--{$smarty.const.MOBILE_URL_SITE_TOP}-->" accesskey="0"><!--{0|numeric_emoji}-->TOP¥Ú¡¼¥¸¤Ø</a><br>
+<a href="<!--{$smarty.const.MOBILE_URL_CART_TOP}-->" accesskey="9"><!--{9|numeric_emoji}-->ã‹ã”ã‚’è¦‹ã‚‹</a><br>
+<a href="<!--{$smarty.const.MOBILE_URL_SITE_TOP}-->" accesskey="0"><!--{0|numeric_emoji}-->TOPãƒšãƒ¼ã‚¸ã¸</a><br>
 
 <br>
 
-<!-- ¢§¥Õ¥Ã¥¿¡¼ ¤³¤³¤«¤é -->
+<!-- â–¼ãƒ•ãƒƒã‚¿ãƒ¼ ã“ã“ã‹ã‚‰ -->
 <center>LOCKON CO.,LTD.</center>
-<!-- ¢¥¥Õ¥Ã¥¿¡¼ ¤³¤³¤Þ¤Ç -->
+<!-- â–²ãƒ•ãƒƒã‚¿ãƒ¼ ã“ã“ã¾ã§ -->

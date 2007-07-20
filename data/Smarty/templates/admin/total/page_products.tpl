@@ -7,44 +7,44 @@
 *}-->
 <table width="840" border="0" cellspacing="1" cellpadding="5" summary=" ">
 	<tr bgcolor="#636469" align="center" class="fs12n">
-		<td width="40"><span class="white">½ç°Ì</span></td>
-		<td width="80"><span class="white">¾¦ÉÊÈÖ¹æ</span></td>
-		<td width="300"><span class="white">¾¦ÉÊÌ¾</span></td>				
-		<td width="80"><span class="white">¹ØÆþ·ï¿ô</span></td>
-		<td width="80"><span class="white">ÅÀ¿ô</span></td>
-		<td width="80"><span class="white">Ã±²Á</span></td>
-		<td width="80"><span class="white">¶â³Û</span></td>
+		<td width="40"><span class="white">é †ä½</span></td>
+		<td width="80"><span class="white">å•†å“ç•ªå·</span></td>
+		<td width="300"><span class="white">å•†å“å</span></td>				
+		<td width="80"><span class="white">è³¼å…¥ä»¶æ•°</span></td>
+		<td width="80"><span class="white">ç‚¹æ•°</span></td>
+		<td width="80"><span class="white">å˜ä¾¡</span></td>
+		<td width="80"><span class="white">é‡‘é¡</span></td>
 	</tr>
 	
 	<!--{section name=cnt loop=$arrResults}-->
-	<!--{* ¿§Ê¬¤±È½Äê *}-->
+	<!--{* è‰²åˆ†ã‘åˆ¤å®š *}-->
 	<!--{assign var=type value="`$smarty.section.cnt.index%2`"}-->
 	<!--{if $type == 0}-->
-		<!--{* ¶ö¿ô¹Ô *}-->
+		<!--{* å¶æ•°è¡Œ *}-->
 		<!--{assign var=color value="#FFFFFF"}-->
 	<!--{else}-->
-		<!--{* ´ñ¿ô¹Ô *}-->
+		<!--{* å¥‡æ•°è¡Œ *}-->
 		<!--{assign var=color value="#D1DEFE"}-->
 	<!--{/if}-->
 
 	<tr bgcolor="<!--{$color}-->" class="fs12">
-		<td align="center"><!--{*½ç°Ì*}--><!--{$smarty.section.cnt.iteration}--></td>
-		<td align="right"><!--{*¾¦ÉÊÈÖ¹æ*}--><!--{$arrResults[cnt].product_code|escape}--></td>
-		<td align="left"><!--{*¾¦ÉÊÌ¾*}--><!--{$arrResults[cnt].product_name|sfCutString:40|escape}--></td>
-		<td align="right"><!--{*¹ØÆþ·ï¿ô*}--><!--{$arrResults[cnt].order_count}-->·ï</td>
-		<td align="right"><!--{*ÅÀ¿ô*}--><!--{$arrResults[cnt].products_count}--></td>
-		<td align="right"><!--{*Ã±²Á*}--><!--{$arrResults[cnt].price|number_format}-->±ß</td>
-		<td align="right"><!--{*¶â³Û*}--><!--{$arrResults[cnt].total|number_format}-->±ß</td>
+		<td align="center"><!--{*é †ä½*}--><!--{$smarty.section.cnt.iteration}--></td>
+		<td align="right"><!--{*å•†å“ç•ªå·*}--><!--{$arrResults[cnt].product_code|escape}--></td>
+		<td align="left"><!--{*å•†å“å*}--><!--{$arrResults[cnt].product_name|sfCutString:40|escape}--></td>
+		<td align="right"><!--{*è³¼å…¥ä»¶æ•°*}--><!--{$arrResults[cnt].order_count}-->ä»¶</td>
+		<td align="right"><!--{*ç‚¹æ•°*}--><!--{$arrResults[cnt].products_count}--></td>
+		<td align="right"><!--{*å˜ä¾¡*}--><!--{$arrResults[cnt].price|number_format}-->å††</td>
+		<td align="right"><!--{*é‡‘é¡*}--><!--{$arrResults[cnt].total|number_format}-->å††</td>
 	</tr>
 	<!--{/section}-->
 	
 	<tr bgcolor="#636469" align="center" class="fs12n">
-		<td width="40"><span class="white">½ç°Ì</span></td>
-		<td width="80"><span class="white">¾¦ÉÊÈÖ¹æ</span></td>
-		<td width="300"><span class="white">¾¦ÉÊÌ¾</span></td>				
-		<td width="80"><span class="white">¹ØÆþ·ï¿ô</span></td>				
-		<td width="80"><span class="white">ÅÀ¿ô</span></td>
-		<td width="80"><span class="white">Ã±²Á</span></td>
-		<td width="80"><span class="white">¶â³Û</span></td>
+		<td width="40"><span class="white">é †ä½</span></td>
+		<td width="80"><span class="white">å•†å“ç•ªå·</span></td>
+		<td width="300"><span class="white">å•†å“å</span></td>				
+		<td width="80"><span class="white">è³¼å…¥ä»¶æ•°</span></td>				
+		<td width="80"><span class="white">ç‚¹æ•°</span></td>
+		<td width="80"><span class="white">å˜ä¾¡</span></td>
+		<td width="80"><span class="white">é‡‘é¡</span></td>
 	</tr>
 </table>

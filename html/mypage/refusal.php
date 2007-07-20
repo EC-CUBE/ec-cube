@@ -9,7 +9,7 @@ require_once("../require.php");
 class LC_Page{
 	function LC_Page(){
 		$this->tpl_mainpage = USER_PATH . 'templates/mypage/refusal.tpl';
-		$this->tpl_title = "MY¥Ú¡¼¥¸/Âà²ñ¼êÂ³¤­(ÆþÎÏ¥Ú¡¼¥¸)";
+		$this->tpl_title = "MYãƒšãƒ¼ã‚¸/é€€ä¼šæ‰‹ç¶šã(å…¥åŠ›ãƒšãƒ¼ã‚¸)";
 		$this->tpl_navi = USER_PATH . 'templates/mypage/navi.tpl';
 		$this->tpl_mainno = 'mypage';
 		$this->tpl_mypageno = 'refusal';
@@ -23,42 +23,42 @@ $objCustomer = new SC_Customer();
 $objQuery = new SC_Query();
 $objSiteSess = new SC_SiteSession();
 
-//¥í¥°¥¤¥óÈ½Äê
+//ãƒ­ã‚°ã‚¤ãƒ³åˆ¤å®š
 if (!$objCustomer->isLoginSuccess()){
 	sfDispSiteError(CUSTOMER_ERROR);
 }else {
-	//¥Þ¥¤¥Ú¡¼¥¸¥È¥Ã¥×¸ÜµÒ¾ðÊóÉ½¼¨ÍÑ
+	//ãƒžã‚¤ãƒšãƒ¼ã‚¸ãƒˆãƒƒãƒ—é¡§å®¢æƒ…å ±è¡¨ç¤ºç”¨
 	$objPage->CustomerName1 = $objCustomer->getvalue('name01');
 	$objPage->CustomerName2 = $objCustomer->getvalue('name02');
 	$objPage->CustomerPoint = $objCustomer->getvalue('point');
 }
 
 
-// ¥ì¥¤¥¢¥¦¥È¥Ç¥¶¥¤¥ó¤ò¼èÆÀ
+// ãƒ¬ã‚¤ã‚¢ã‚¦ãƒˆãƒ‡ã‚¶ã‚¤ãƒ³ã‚’å–å¾—
 $objPage = sfGetPageLayout($objPage, false, "mypage/index.php");
 
 switch ($_POST['mode']){
 	case 'confirm':
     
 	$objPage->tpl_mainpage = USER_PATH . 'templates/mypage/refusal_confirm.tpl';
-	$objPage->tpl_title = "MY¥Ú¡¼¥¸/Âà²ñ¼êÂ³¤­(³ÎÇ§¥Ú¡¼¥¸)";
+	$objPage->tpl_title = "MYãƒšãƒ¼ã‚¸/é€€ä¼šæ‰‹ç¶šã(ç¢ºèªãƒšãƒ¼ã‚¸)";
     
-    // ³ÎÇ§¥Ú¡¼¥¸¤ò·ÐÍ³¤·¤¿¤³¤È¤òÅÐÏ¿
+    // ç¢ºèªãƒšãƒ¼ã‚¸ã‚’çµŒç”±ã—ãŸã“ã¨ã‚’ç™»éŒ²
     $objSiteSess->setRegistFlag();
-    // hidden¤Ëuniqid¤òËä¤á¹þ¤à
+    // hiddenã«uniqidã‚’åŸ‹ã‚è¾¼ã‚€
     $objPage->tpl_uniqid = $objSiteSess->getUniqId();
     
 	break;
 	
 	case 'complete':
-    // Àµ¤·¤¤Á«°Ü¤«¤É¤¦¤«¤ò¥Á¥§¥Ã¥¯
+    // æ­£ã—ã„é·ç§»ã‹ã©ã†ã‹ã‚’ãƒã‚§ãƒƒã‚¯
     lfIsValidMovement($objSiteSess);
     
-	//²ñ°÷ºï½ü
+	//ä¼šå“¡å‰Šé™¤
 	$objQuery->exec("UPDATE dtb_customer SET del_flg=1, update_date=now() WHERE customer_id=?", array($objCustomer->getValue('customer_id')));
 
 	$objCustomer->EndSession();
-	//´°Î»¥Ú¡¼¥¸¤Ø
+	//å®Œäº†ãƒšãƒ¼ã‚¸ã¸
 	header("Location: ./refusal_complete.php");
 	exit;
 }
@@ -66,12 +66,12 @@ switch ($_POST['mode']){
 $objView->assignobj($objPage);
 $objView->display(SITE_FRAME);
 
-// Àµ¤·¤¤Á«°Ü¤«¤É¤¦¤«¤ò¥Á¥§¥Ã¥¯
+// æ­£ã—ã„é·ç§»ã‹ã©ã†ã‹ã‚’ãƒã‚§ãƒƒã‚¯
 function lfIsValidMovement($objSiteSess) {
-    // ³ÎÇ§¥Ú¡¼¥¸¤«¤é¤ÎÁ«°Ü¤«¤É¤¦¤«¤ò¥Á¥§¥Ã¥¯
+    // ç¢ºèªãƒšãƒ¼ã‚¸ã‹ã‚‰ã®é·ç§»ã‹ã©ã†ã‹ã‚’ãƒã‚§ãƒƒã‚¯
     sfIsPrePage($objSiteSess);
     
-    // uniqid ¤¬POST¤µ¤ì¤Æ¤¤¤ë¤«¤ò¥Á¥§¥Ã¥¯
+    // uniqid ãŒPOSTã•ã‚Œã¦ã„ã‚‹ã‹ã‚’ãƒã‚§ãƒƒã‚¯
     $uniqid = $objSiteSess->getUniqId();
     if ( !empty($_POST['uniqid']) && ($_POST['uniqid'] === $uniqid) ) {
         return;

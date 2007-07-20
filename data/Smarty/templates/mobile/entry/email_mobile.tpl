@@ -5,37 +5,37 @@
  * http://www.lockon.co.jp/
  */
 *}-->
-<center>���ӥ᡼����Ͽ</center>
+<center>携帯メール登録</center>
 
 <hr>
 
-<!--{$tpl_name|escape}-->��<br>
-���Ĥ⤴���Ѥ����������꤬�Ȥ��������ޤ��������Ѥη������äΥ᡼�륢�ɥ쥹����Ͽ��������<br>
+<!--{$tpl_name|escape}-->様<br>
+いつもご利用いただきありがとうございます。ご使用の携帯電話のメールアドレスをご登録下さい。<br>
 
 <br>
 
 <!--{assign var=key value='email_mobile'}-->
 <!--{if @$tpl_kara_mail_to != ''}-->
 <font color="#ff0000"><!--{$arrErr[$key]|default:''}--></font>
-���Υ�󥯤򥯥�å����ƶ��᡼����������Ƥ���������<br>
-<center><a href="mailto:<!--{$tpl_kara_mail_to|escape:'url'}-->">�᡼������</a></center>
+次のリンクをクリックして空メールを送信してください。<br>
+<center><a href="mailto:<!--{$tpl_kara_mail_to|escape:'url'}-->">メール送信</a></center>
 <!--{else}-->
 <form method="post" action="<!--{$smarty.server.PHP_SELF|escape}-->">
-���᡼�륢�ɥ쥹<br>
+▼メールアドレス<br>
 <font color="#ff0000"><!--{$arrErr[$key]|default:''}--></font>
 <input type="text" name="email_mobile" value="<!--{$arrForm[$key].value|escape}-->" size="40" maxlength="<!--{$arrForm[$key].length}-->" istyle="3"><br>
-<center><input type="submit" value="����"></center>
+<center><input type="submit" value="送信"></center>
 </form>
 <!--{/if}-->
 
 <br>
 <hr>
 
-<a href="<!--{$smarty.const.MOBILE_URL_CART_TOP}-->" accesskey="9"><!--{9|numeric_emoji}-->�����򸫤�</a><br>
-<a href="<!--{$smarty.const.MOBILE_URL_SITE_TOP}-->" accesskey="0"><!--{0|numeric_emoji}-->TOP�ڡ�����</a><br>
+<a href="<!--{$smarty.const.MOBILE_URL_CART_TOP}-->" accesskey="9"><!--{9|numeric_emoji}-->かごを見る</a><br>
+<a href="<!--{$smarty.const.MOBILE_URL_SITE_TOP}-->" accesskey="0"><!--{0|numeric_emoji}-->TOPページへ</a><br>
 
 <br>
 
-<!-- ���եå��� �������� -->
+<!-- ▼フッター ここから -->
 <!--{include file='footer.tpl'}-->
-<!-- ���եå��� �����ޤ� -->
+<!-- ▲フッター ここまで -->

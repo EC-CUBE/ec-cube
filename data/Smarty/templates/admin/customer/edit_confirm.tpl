@@ -16,7 +16,7 @@ function func_return(){
 //-->
 </script>
 
-<!--¡ú¡ú¥á¥¤¥ó¥³¥ó¥Æ¥ó¥Ä¡ú¡ú-->
+<!--â˜…â˜…ãƒ¡ã‚¤ãƒ³ã‚³ãƒ³ãƒ†ãƒ³ãƒ„â˜…â˜…-->
 <table width="878" border="0" cellspacing="0" cellpadding="0" summary=" ">
 <form name="form1" id="form1" method="post" action="<!--{$smarty.server.PHP_SELF|escape}-->">
 <input type="hidden" name="mode" value="complete">
@@ -25,7 +25,7 @@ function func_return(){
 	<input type="hidden" name="<!--{$key|escape}-->" value="<!--{$item|escape}-->">
 	<!--{/if}-->
 <!--{/foreach}-->
-<!-- ¸¡º÷¾ò·ï¤ÎÊİ»ı -->
+<!-- æ¤œç´¢æ¡ä»¶ã®ä¿æŒ -->
 <!--{foreach from=$arrSearchData key="key" item="item"}-->
 	<!--{if $key ne "job" && $key ne "sex"}--><input type="hidden" name="search_data[<!--{$key|escape}-->]" value="<!--{$item|escape}-->"><!--{/if}-->
 <!--{/foreach}-->
@@ -37,14 +37,14 @@ function func_return(){
 <!--{/foreach}-->
 	<tr valign="top">
 		<td background="<!--{$smarty.const.URL_DIR}-->img/contents/navi_bg.gif" height="402">
-			<!--¢§SUB NAVI-->
+			<!--â–¼SUB NAVI-->
 			<!--{include file=$tpl_subnavi}-->
-			<!--¢¥SUB NAVI-->
+			<!--â–²SUB NAVI-->
 		</td>
 		<td class="mainbg">
-			<!--¢§ÅĞÏ¿¥Æ¡¼¥Ö¥ë¤³¤³¤«¤é-->
+			<!--â–¼ç™»éŒ²ãƒ†ãƒ¼ãƒ–ãƒ«ã“ã“ã‹ã‚‰-->
 			<table width="737" border="0" cellspacing="0" cellpadding="0" summary=" ">
-				<!--¥á¥¤¥ó¥¨¥ê¥¢-->
+				<!--ãƒ¡ã‚¤ãƒ³ã‚¨ãƒªã‚¢-->
 				<tr>
 					<td align="center">
 						<table width="706" border="0" cellspacing="0" cellpadding="0" summary=" ">
@@ -61,7 +61,7 @@ function func_return(){
 									</tr>
 									<tr>
 										<td background="<!--{$smarty.const.URL_DIR}-->img/contents/contents_title_left_bg.gif"><img src="<!--{$smarty.const.URL_DIR}-->img/contents/contents_title_left.gif" width="22" height="12" alt=""></td>
-										<td bgcolor="#636469" width="638" class="fs14n"><span class="white"><!--¥³¥ó¥Æ¥ó¥Ä¥¿¥¤¥È¥ë-->¸ÜµÒÊÔ½¸</span></td>
+										<td bgcolor="#636469" width="638" class="fs14n"><span class="white"><!--ã‚³ãƒ³ãƒ†ãƒ³ãƒ„ã‚¿ã‚¤ãƒˆãƒ«-->é¡§å®¢ç·¨é›†</span></td>
 										<td background="<!--{$smarty.const.URL_DIR}-->img/contents/contents_title_right_bg.gif"><img src="<!--{$smarty.const.URL_DIR}-->img/common/_.gif" width="18" height="1" alt=""></td>
 									</tr>
 									<tr>
@@ -74,84 +74,84 @@ function func_return(){
 
 								<table width="678" border="0" cellspacing="1" cellpadding="8" summary=" ">
 									<tr class="fs12n">
-										<td bgcolor="#f2f1ec" width="190">¸ÜµÒID<span class="red"> *</span></td>
+										<td bgcolor="#f2f1ec" width="190">é¡§å®¢ID<span class="red"> *</span></td>
 										<td bgcolor="#ffffff" width="527"><!--{$arrForm.customer_id|escape}--></td>
 									</tr>
 									<tr class="fs12n">
-										<td bgcolor="#f2f1ec" width="190">²ñ°÷¾õÂÖ<span class="red"> *</span></td>
-										<td bgcolor="#ffffff" width="527"><!--{if $arrForm.status == 1}-->²¾²ñ°÷<!--{else}-->ËÜ²ñ°÷<!--{/if}--></td>
+										<td bgcolor="#f2f1ec" width="190">ä¼šå“¡çŠ¶æ…‹<span class="red"> *</span></td>
+										<td bgcolor="#ffffff" width="527"><!--{if $arrForm.status == 1}-->ä»®ä¼šå“¡<!--{else}-->æœ¬ä¼šå“¡<!--{/if}--></td>
 									</tr>
 									<tr class="fs12n">
-										<td bgcolor="#f2f1ec" width="190">¤ªÌ¾Á°<span class="red"> *</span></td>
-										<td bgcolor="#ffffff" width="527"><!--{$arrForm.name01|escape}--><!--{$arrForm.name02|escape}-->¡¡ÍÍ</td>
+										<td bgcolor="#f2f1ec" width="190">ãŠåå‰<span class="red"> *</span></td>
+										<td bgcolor="#ffffff" width="527"><!--{$arrForm.name01|escape}--><!--{$arrForm.name02|escape}-->ã€€æ§˜</td>
 									</tr>
 									<tr class="fs12n">
-										<td bgcolor="#f2f1ec" width="190">¥Õ¥ê¥¬¥Ê<span class="red"> *</span></td>
-										<td bgcolor="#ffffff" width="527"><!--{$arrForm.kana01|escape}--><!--{$arrForm.kana02|escape}-->¡¡ÍÍ</td>
+										<td bgcolor="#f2f1ec" width="190">ãƒ•ãƒªã‚¬ãƒŠ<span class="red"> *</span></td>
+										<td bgcolor="#ffffff" width="527"><!--{$arrForm.kana01|escape}--><!--{$arrForm.kana02|escape}-->ã€€æ§˜</td>
 									</tr>
 									<tr class="fs12n">
-										<td bgcolor="#f2f1ec" width="190">Í¹ÊØÈÖ¹æ<span class="red"> *</span></td>
-										<td bgcolor="#ffffff" width="527">¢© <!--{$arrForm.zip01|escape}--> - <!--{$arrForm.zip02|escape}--></td>
+										<td bgcolor="#f2f1ec" width="190">éƒµä¾¿ç•ªå·<span class="red"> *</span></td>
+										<td bgcolor="#ffffff" width="527">ã€’ <!--{$arrForm.zip01|escape}--> - <!--{$arrForm.zip02|escape}--></td>
 									</tr>
 									<tr class="fs12n">
-										<td bgcolor="#f2f1ec" width="190" class="fs12">¤´½»½ê<span class="red"> *</span></td>
+										<td bgcolor="#f2f1ec" width="190" class="fs12">ã”ä½æ‰€<span class="red"> *</span></td>
 										<td bgcolor="#ffffff" width="527"><!--{$arrPref[$arrForm.pref]|escape}--><!--{$arrForm.addr01|escape}--><!--{$arrForm.addr02|escape}--></td>
 									</tr>
 									<tr class="fs12n">
-										<td bgcolor="#f2f1ec" width="190">¥á¡¼¥ë¥¢¥É¥ì¥¹<span class="red"> *</span></td>
+										<td bgcolor="#f2f1ec" width="190">ãƒ¡ãƒ¼ãƒ«ã‚¢ãƒ‰ãƒ¬ã‚¹<span class="red"> *</span></td>
 										<td bgcolor="#ffffff" width="527"><!--{$arrForm.email|escape}--></td>
 									</tr>
 									<tr class="fs12n">
-										<td bgcolor="#f2f1ec" width="190">¥á¡¼¥ë¥¢¥É¥ì¥¹(¥â¥Ğ¥¤¥ë)</td>
+										<td bgcolor="#f2f1ec" width="190">ãƒ¡ãƒ¼ãƒ«ã‚¢ãƒ‰ãƒ¬ã‚¹(ãƒ¢ãƒã‚¤ãƒ«)</td>
 										<td bgcolor="#ffffff" width="527"><!--{$arrForm.email_mobile|escape}--></td>
 									</tr>
 									<tr class="fs12n">
-										<td bgcolor="#f2f1ec" width="190">¤ªÅÅÏÃÈÖ¹æ<span class="red"> *</span></td>
+										<td bgcolor="#f2f1ec" width="190">ãŠé›»è©±ç•ªå·<span class="red"> *</span></td>
 										<td bgcolor="#ffffff" width="527"><!--{$arrForm.tel01|escape}--> - <!--{$arrForm.tel02|escape}--> - <!--{$arrForm.tel03|escape}--></td>
 									</tr>
 									<tr class="fs12n">
 										<td bgcolor="#f2f1ec" width="190">FAX</td>
-										<td bgcolor="#ffffff" width="527"><!--{if strlen($arrForm.fax01) > 0}--><!--{$arrForm.fax01|escape}--> - <!--{$arrForm.fax02|escape}--> - <!--{$arrForm.fax03|escape}--><!--{else}-->Ì¤ÅĞÏ¿<!--{/if}--></td>
+										<td bgcolor="#ffffff" width="527"><!--{if strlen($arrForm.fax01) > 0}--><!--{$arrForm.fax01|escape}--> - <!--{$arrForm.fax02|escape}--> - <!--{$arrForm.fax03|escape}--><!--{else}-->æœªç™»éŒ²<!--{/if}--></td>
 									</tr>
 									<tr class="fs12n">
-										<td bgcolor="#f2f1ec" width="190">¤´À­ÊÌ<span class="red"> *</span></td>
-										<td bgcolor="#ffffff" width="527"><!--{if $arrForm.sex eq 1}-->ÃËÀ­<!--{else}-->½÷À­<!--{/if}--></td>
+										<td bgcolor="#f2f1ec" width="190">ã”æ€§åˆ¥<span class="red"> *</span></td>
+										<td bgcolor="#ffffff" width="527"><!--{if $arrForm.sex eq 1}-->ç”·æ€§<!--{else}-->å¥³æ€§<!--{/if}--></td>
 									</tr>
 									<tr class="fs12n">
-										<td bgcolor="#f2f1ec" width="190">¤´¿¦¶È</td>
-										<td bgcolor="#ffffff" width="527"><!--{$arrJob[$arrForm.job]|escape|default:"Ì¤ÅĞÏ¿"}--></td>
+										<td bgcolor="#f2f1ec" width="190">ã”è·æ¥­</td>
+										<td bgcolor="#ffffff" width="527"><!--{$arrJob[$arrForm.job]|escape|default:"æœªç™»éŒ²"}--></td>
 									</tr>
 									<tr class="fs12n">
-										<td bgcolor="#f2f1ec" width="190">À¸Ç¯·îÆü</td>
-										<td bgcolor="#ffffff" width="527"><!--{if strlen($arrForm.year) > 0 && strlen($arrForm.month) > 0 && strlen($arrForm.day) > 0}--><!--{$arrForm.year|escape}-->Ç¯<!--{$arrForm.month|escape}-->·î<!--{$arrForm.day|escape}-->Æü<!--{else}-->Ì¤ÅĞÏ¿<!--{/if}--></td>
+										<td bgcolor="#f2f1ec" width="190">ç”Ÿå¹´æœˆæ—¥</td>
+										<td bgcolor="#ffffff" width="527"><!--{if strlen($arrForm.year) > 0 && strlen($arrForm.month) > 0 && strlen($arrForm.day) > 0}--><!--{$arrForm.year|escape}-->å¹´<!--{$arrForm.month|escape}-->æœˆ<!--{$arrForm.day|escape}-->æ—¥<!--{else}-->æœªç™»éŒ²<!--{/if}--></td>
 									</tr>
 									<tr class="fs12n">
-										<td bgcolor="#f2f1ec" width="190">¥Ñ¥¹¥ï¡¼¥É<span class="red"> *</span></td>
+										<td bgcolor="#f2f1ec" width="190">ãƒ‘ã‚¹ãƒ¯ãƒ¼ãƒ‰<span class="red"> *</span></td>
 										<td bgcolor="#ffffff" width="527"><!--{$passlen}--></td>
 									</tr>
 									<tr>
-										<td bgcolor="#f2f1ec" width="190" class="fs12n">¥Ñ¥¹¥ï¡¼¥É¤òËº¤ì¤¿¤È¤­¤Î¥Ò¥ó¥È<span class="red"> *</span></td>
+										<td bgcolor="#f2f1ec" width="190" class="fs12n">ãƒ‘ã‚¹ãƒ¯ãƒ¼ãƒ‰ã‚’å¿˜ã‚ŒãŸã¨ãã®ãƒ’ãƒ³ãƒˆ<span class="red"> *</span></td>
 										<td bgcolor="#ffffff" width="527">
 										<table width="527" border="0" cellspacing="0" cellpadding="0" summary=" ">
 											<tr>
-												<td class="fs12n">¼ÁÌä¡§ <!--{$arrReminder[$arrForm.reminder]|escape}--></td>
+												<td class="fs12n">è³ªå•ï¼š <!--{$arrReminder[$arrForm.reminder]|escape}--></td>
 											</tr>
 											<tr><td height="5"></td></tr>
-											<tr><td class="fs12n">Åú¤¨¡§ <!--{$arrForm.reminder_answer|escape}--></td>
+											<tr><td class="fs12n">ç­”ãˆï¼š <!--{$arrForm.reminder_answer|escape}--></td>
 											</tr>
 										</table>
 										</td>
 									</tr>
 									<tr class="fs12n">
-										<td bgcolor="#f2f1ec" width="190">¥á¡¼¥ë¥Ş¥¬¥¸¥ó<span class="red"> *</span></td>
-										<td bgcolor="#ffffff" width="527"><!--{if $arrForm.mailmaga_flg eq 1}-->HTML<!--{elseif $arrForm.mailmaga_flg eq 2}-->¥Æ¥­¥¹¥È<!--{else}-->´õË¾¤·¤Ê¤¤<!--{/if}--></td>
+										<td bgcolor="#f2f1ec" width="190">ãƒ¡ãƒ¼ãƒ«ãƒã‚¬ã‚¸ãƒ³<span class="red"> *</span></td>
+										<td bgcolor="#ffffff" width="527"><!--{if $arrForm.mailmaga_flg eq 1}-->HTML<!--{elseif $arrForm.mailmaga_flg eq 2}-->ãƒ†ã‚­ã‚¹ãƒˆ<!--{else}-->å¸Œæœ›ã—ãªã„<!--{/if}--></td>
 									</tr>
 									<tr class="fs12n">
-										<td bgcolor="#f2f1ec" width="960">SHOPÍÑ¥á¥â</td>
-										<td bgcolor="#ffffff" width="527"><!--{$arrForm.note|escape|nl2br|default:"Ì¤ÅĞÏ¿"}--></td>
+										<td bgcolor="#f2f1ec" width="960">SHOPç”¨ãƒ¡ãƒ¢</td>
+										<td bgcolor="#ffffff" width="527"><!--{$arrForm.note|escape|nl2br|default:"æœªç™»éŒ²"}--></td>
 									</tr>
 									<tr class="fs12n">
-										<td bgcolor="#f2f1ec" width="190">½ê»ı¥İ¥¤¥ó¥È</td>
+										<td bgcolor="#f2f1ec" width="190">æ‰€æŒãƒã‚¤ãƒ³ãƒˆ</td>
 										<td bgcolor="#ffffff" width="527"><!--{$arrForm.point|escape|default:"0"}--> pt</td>
 									</tr>
 								</table>
@@ -168,8 +168,8 @@ function func_return(){
 										<table border="0" cellspacing="0" cellpadding="0" summary=" ">
 											<tr>
 												<td>
-													<a href="#" onmouseover="chgImg('<!--{$smarty.const.URL_DIR}-->img/contents/btn_back_on.jpg','back');" onmouseout="chgImg('<!--{$smarty.const.URL_DIR}-->img/contents/btn_back.jpg','back');"  onclick="func_return(); return false;"><img src="<!--{$smarty.const.URL_DIR}-->img/contents/btn_back.jpg" width="123" height="24" alt="¸¡º÷²èÌÌ¤ËÌá¤ë" border="0" name="back"></a>
-													<input type="image" onMouseover="chgImgImageSubmit('<!--{$smarty.const.URL_DIR}-->img/contents/btn_regist_on.jpg',this)" onMouseout="chgImgImageSubmit('<!--{$smarty.const.URL_DIR}-->img/contents/btn_regist.jpg',this)" src="<!--{$smarty.const.URL_DIR}-->img/contents/btn_regist.jpg" width="123" height="24" alt="¤³¤ÎÆâÍÆ¤ÇÅĞÏ¿¤¹¤ë" border="0" name="subm" >
+													<a href="#" onmouseover="chgImg('<!--{$smarty.const.URL_DIR}-->img/contents/btn_back_on.jpg','back');" onmouseout="chgImg('<!--{$smarty.const.URL_DIR}-->img/contents/btn_back.jpg','back');"  onclick="func_return(); return false;"><img src="<!--{$smarty.const.URL_DIR}-->img/contents/btn_back.jpg" width="123" height="24" alt="æ¤œç´¢ç”»é¢ã«æˆ»ã‚‹" border="0" name="back"></a>
+													<input type="image" onMouseover="chgImgImageSubmit('<!--{$smarty.const.URL_DIR}-->img/contents/btn_regist_on.jpg',this)" onMouseout="chgImgImageSubmit('<!--{$smarty.const.URL_DIR}-->img/contents/btn_regist.jpg',this)" src="<!--{$smarty.const.URL_DIR}-->img/contents/btn_regist.jpg" width="123" height="24" alt="ã“ã®å†…å®¹ã§ç™»éŒ²ã™ã‚‹" border="0" name="subm" >
 												</td>
 											</tr>
 										</table>
@@ -190,11 +190,11 @@ function func_return(){
 						</table>
 					</td>
 				</tr>
-				<!--¥á¥¤¥ó¥¨¥ê¥¢-->
+				<!--ãƒ¡ã‚¤ãƒ³ã‚¨ãƒªã‚¢-->
 			</table>
-			<!--¢¥ÅĞÏ¿¥Æ¡¼¥Ö¥ë¤³¤³¤Ş¤Ç-->
+			<!--â–²ç™»éŒ²ãƒ†ãƒ¼ãƒ–ãƒ«ã“ã“ã¾ã§-->
 		</td>
 	</tr>
 </form>
 </table>
-<!--¡ú¡ú¥á¥¤¥ó¥³¥ó¥Æ¥ó¥Ä¡ú¡ú-->
+<!--â˜…â˜…ãƒ¡ã‚¤ãƒ³ã‚³ãƒ³ãƒ†ãƒ³ãƒ„â˜…â˜…-->

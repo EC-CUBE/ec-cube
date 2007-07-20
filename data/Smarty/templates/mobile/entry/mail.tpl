@@ -5,27 +5,27 @@
  * http://www.lockon.co.jp/
  */
 *}-->
-<center>�᡼�륢�ɥ쥹��Ͽ</center>
+<center>メールアドレス登録</center>
 
 <hr>
 
-���Υ�󥯤򥯥�å����ƶ��᡼����������Ƥ���������
-�����ˤ�����Υ᡼�뤬��������ޤ��Τǡ��᡼����Υ�󥯤򥯥�å����Ʋ����������Ϥ˿ʤ�Ǥ���������<br>
-<font color="#ff0000">���ɥᥤ����������ǽ�����Ѥ���Ƥ������ϡ��᡼���������������ɬ����<!--{$tpl_from_address|escape}-->�פ���Υ᡼�뤬�����Ǥ���褦�����ꤷ�Ƥ����Ƥ���������</font><br>
+次のリンクをクリックして空メールを送信してください。
+すぐにご案内のメールが送信されますので、メール内のリンクをクリックして会員情報の入力に進んでください。<br>
+<font color="#ff0000">※ドメイン指定受信機能を利用されている方は、メールを送信する前に必ず「<!--{$tpl_from_address|escape}-->」からのメールが受信できるように設定しておいてください。</font><br>
 <br>
 
 <br>
 
-<center><a href="mailto:<!--{$tpl_kara_mail_to|escape:'url'}-->">�᡼������</a></center>
+<center><a href="mailto:<!--{$tpl_kara_mail_to|escape:'url'}-->">メール送信</a></center>
 
 <br>
 <hr>
 
-<a href="<!--{$smarty.const.MOBILE_URL_CART_TOP}-->" accesskey="9"><!--{9|numeric_emoji}-->�����򸫤�</a><br>
-<a href="<!--{$smarty.const.MOBILE_URL_SITE_TOP}-->" accesskey="0"><!--{0|numeric_emoji}-->TOP�ڡ�����</a><br>
+<a href="<!--{$smarty.const.MOBILE_URL_CART_TOP}-->" accesskey="9"><!--{9|numeric_emoji}-->かごを見る</a><br>
+<a href="<!--{$smarty.const.MOBILE_URL_SITE_TOP}-->" accesskey="0"><!--{0|numeric_emoji}-->TOPページへ</a><br>
 
 <br>
 
-<!-- ���եå��� �������� -->
+<!-- ▼フッター ここから -->
 <!--{include file='footer.tpl'}-->
-<!-- ���եå��� �����ޤ� -->
+<!-- ▲フッター ここまで -->

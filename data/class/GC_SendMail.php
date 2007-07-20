@@ -5,35 +5,35 @@
  * http://www.lockon.co.jp/
  */
 
-//--- ¥Æ¥­¥¹¥È/HTML¡¡¥á¡¼¥ëÁ÷¿®
+//--- ãƒ†ã‚­ã‚¹ãƒˆ/HTMLã€€ãƒ¡ãƒ¼ãƒ«é€ä¿¡
 class GC_SendMail {
 
-	var	$html;			//	HTML ¥á¡¼¥ë¥Ø¥Ã¥À¡¼
-	var $to;			//	Á÷¿®Àè
-	var $subject;		//	ÂêÌ¾
-	var $body;			//	ËÜÊ¸
-	var $header;		//	¥Ø¥Ã¥À¡¼
-	var $return_path;	//¡¡return path
+	var	$html;			//	HTML ãƒ¡ãƒ¼ãƒ«ãƒ˜ãƒƒãƒ€ãƒ¼
+	var $to;			//	é€ä¿¡å…ˆ
+	var $subject;		//	é¡Œå
+	var $body;			//	æœ¬æ–‡
+	var $header;		//	ãƒ˜ãƒƒãƒ€ãƒ¼
+	var $return_path;	//ã€€return path
 	var $mailer;
 
-	/*	¥Ø¥Ã¥ÀÅù¤ò³ÊÇ¼
-		 $to			-> Á÷¿®Àè¥á¡¼¥ë¥¢¥É¥ì¥¹
-		 $subject		-> ¥á¡¼¥ë¤Î¥¿¥¤¥È¥ë
-		 $body			-> ¥á¡¼¥ëËÜÊ¸
-		 $fromaddress	-> Á÷¿®¸µ¤Î¥á¡¼¥ë¥¢¥É¥ì¥¹
-		 $header		-> ¥Ø¥Ã¥À¡¼
-		 $from_name		-> Á÷¿®¸µ¤ÎÌ¾Á°¡ÊÁ´³ÑOK¡Ë
-		 $reply_to		-> reply_toÀßÄê
-		 $return_path	-> return-path¥¢¥É¥ì¥¹ÀßÄê¡Ê¥¨¥é¡¼¥á¡¼¥ëÊÖÁ÷ÍÑ¡Ë
-		 $cc			-> ¥«¡¼¥Ü¥ó¥³¥Ô¡¼
-		 $bcc			-> ¥Ö¥é¥¤¥ó¥É¥«¡¼¥Ü¥ó¥³¥Ô¡¼
+	/*	ãƒ˜ãƒƒãƒ€ç­‰ã‚’æ ¼ç´
+		 $to			-> é€ä¿¡å…ˆãƒ¡ãƒ¼ãƒ«ã‚¢ãƒ‰ãƒ¬ã‚¹
+		 $subject		-> ãƒ¡ãƒ¼ãƒ«ã®ã‚¿ã‚¤ãƒˆãƒ«
+		 $body			-> ãƒ¡ãƒ¼ãƒ«æœ¬æ–‡
+		 $fromaddress	-> é€ä¿¡å…ƒã®ãƒ¡ãƒ¼ãƒ«ã‚¢ãƒ‰ãƒ¬ã‚¹
+		 $header		-> ãƒ˜ãƒƒãƒ€ãƒ¼
+		 $from_name		-> é€ä¿¡å…ƒã®åå‰ï¼ˆå…¨è§’OKï¼‰
+		 $reply_to		-> reply_toè¨­å®š
+		 $return_path	-> return-pathã‚¢ãƒ‰ãƒ¬ã‚¹è¨­å®šï¼ˆã‚¨ãƒ©ãƒ¼ãƒ¡ãƒ¼ãƒ«è¿”é€ç”¨ï¼‰
+		 $cc			-> ã‚«ãƒ¼ãƒœãƒ³ã‚³ãƒ”ãƒ¼
+		 $bcc			-> ãƒ–ãƒ©ã‚¤ãƒ³ãƒ‰ã‚«ãƒ¼ãƒœãƒ³ã‚³ãƒ”ãƒ¼
 	*/	
 	
 	
 	function setTo($to, $to_name = "") {
 		if($to_name != "") {
-			$name = ereg_replace("<","¡ã", $to_name);
-			$name = ereg_replace(">","¡ä", $name);
+			$name = ereg_replace("<","ï¼œ", $to_name);
+			$name = ereg_replace(">","ï¼", $name);
 			$name = mb_encode_mimeheader(mb_convert_encoding($name, "JIS", CHAR_CODE));
 			$this->to = $name . "<" . $to . ">";
 		} else {
@@ -46,12 +46,12 @@ class GC_SendMail {
 		$this->to			 = $to;
 		$this->subject		 = $subject;
 
-		// iso-2022-jp¤À¤ÈÆÃ¼ìÊ¸»ú¤¬¡©¤ÇÁ÷¿®¤µ¤ì¤ë¤Î¤ÇJIS¤ò»ÈÍÑ¤¹¤ë¡£
+		// iso-2022-jpã ã¨ç‰¹æ®Šæ–‡å­—ãŒï¼Ÿã§é€ä¿¡ã•ã‚Œã‚‹ã®ã§JISã‚’ä½¿ç”¨ã™ã‚‹ã€‚
 		$this->body			 = mb_convert_encoding( $body, "JIS", CHAR_CODE);
 
-		// ¥Ø¥Ã¥À¡¼¤ËÆüËÜ¸ì¤ò»ÈÍÑ¤¹¤ë¾ì¹ç¤ÏMb_encode_mimeheader¤Ç¥¨¥ó¥³¡¼¥É¤¹¤ë¡£
-		$from_name = ereg_replace("<","¡ã", $from_name);
-		$from_name = ereg_replace(">","¡ä", $from_name);
+		// ãƒ˜ãƒƒãƒ€ãƒ¼ã«æ—¥æœ¬èªã‚’ä½¿ç”¨ã™ã‚‹å ´åˆã¯Mb_encode_mimeheaderã§ã‚¨ãƒ³ã‚³ãƒ¼ãƒ‰ã™ã‚‹ã€‚
+		$from_name = ereg_replace("<","ï¼œ", $from_name);
+		$from_name = ereg_replace(">","ï¼", $from_name);
 		$from_name = mb_convert_encoding($from_name,"JIS",CHAR_CODE); 
 		$this->header		 = "From: ". Mb_encode_mimeheader( $from_name )."<".$fromaddress.">\n";
 		$this->header		.= "Reply-To: ". $reply_to . "\n";
@@ -78,12 +78,12 @@ class GC_SendMail {
 		$this->return_path   = $return_path;
 	}
 
-	//	¥á¡¼¥ëÁ÷¿®¤ò¼Â¹Ô¤¹¤ë
+	//	ãƒ¡ãƒ¼ãƒ«é€ä¿¡ã‚’å®Ÿè¡Œã™ã‚‹
 	function sendMail() {
 
 		Mb_language( "Japanese" );
 		
-		//¡¡¥á¡¼¥ëÁ÷¿®
+		//ã€€ãƒ¡ãƒ¼ãƒ«é€ä¿¡
 		if( mb_send_mail( $this->to, $this->subject, $this->body, $this->header) ) {
 			return true;
 		}
@@ -94,7 +94,7 @@ class GC_SendMail {
 
 		Mb_language( "Japanese" );	
 		
-		//¡¡¥á¡¼¥ëÁ÷¿®
+		//ã€€ãƒ¡ãƒ¼ãƒ«é€ä¿¡
 		if( mail( $this->to, $this->subject, $this->body, $this->header) ) {
 			return true;
 		}

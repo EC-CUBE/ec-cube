@@ -9,11 +9,11 @@
 <center>
 <!--{foreach from=$arrBestProducts item=arrProduct name=best_products}-->
 
-<!-- ¢§¥ª¥¹¥¹¥á¥³¥á¥ó¥È ¤³¤³¤«¤é -->
+<!-- â–¼ã‚ªã‚¹ã‚¹ãƒ¡ã‚³ãƒ¡ãƒ³ãƒˆ ã“ã“ã‹ã‚‰ -->
 <a href="<!--{$smarty.const.MOBILE_DETAIL_P_HTML}--><!--{$arrProduct.product_id}-->">
 <!--{$arrProduct.comment|escape|nl2br}-->
 </a>
-<!-- ¢¥¥ª¥¹¥¹¥á¥³¥á¥ó¥È ¤³¤³¤Þ¤Ç -->
+<!-- â–²ã‚ªã‚¹ã‚¹ãƒ¡ã‚³ãƒ¡ãƒ³ãƒˆ ã“ã“ã¾ã§ -->
 
 <!--{if !$smarty.foreach.best_products.last}--><br><br><!--{/if}-->
 <!--{/foreach}-->

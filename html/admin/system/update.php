@@ -6,16 +6,16 @@
  */
 require_once("../require.php");
 
-//�ڡ����������饹
+//ページ管理クラス
 class LC_Page {
-	//���󥹥ȥ饯��
+	//コンストラクタ
 	function LC_Page() {
-		//�ᥤ��ƥ�ץ졼�Ȥλ���
+		//メインテンプレートの指定
 		$this->tpl_mainpage = 'system/update.tpl';
 		$this->tpl_subnavi = 'system/subnavi.tpl';
 		$this->tpl_mainno = 'system';		
 		$this->tpl_subno = 'update';
-		$this->tpl_subtitle = '���åץǡ��ȴ���';
+		$this->tpl_subtitle = 'アップデート管理';
 	}
 }
 
@@ -23,29 +23,29 @@ $objPage = new LC_Page();
 $objView = new SC_AdminView();
 $objQuery = new SC_Query();
 
-// ���å���󥯥饹
+// セッションクラス
 $objSess = new SC_Session();
-// ǧ�ڲ��ݤ�Ƚ��
+// 認証可否の判定
 sfIsSuccess($objSess);
 
 switch($_POST['mode']) {
-// ���åץǡ��Ⱦ���ե���������
+// アップデート情報ファイルを取得
 case 'edit':
-	// ���������ǿ��ˤ���
+	// 更新情報を最新にする
 	lfLoadUpdateList();
 	break;
-// ���󥹥ȡ���
+// インストール
 case 'install':
-	// ���������ǿ��ˤ���
+	// 更新情報を最新にする
 	lfLoadUpdateList();
-	// �⥸�塼�뷴�Υ��󥹥ȡ���
+	// モジュール郡のインストール
 	lfInstallModule();
 	break;
-// ���󥤥󥹥ȡ���
+// アンインストール
 case 'uninstall':
-	// ���������ǿ��ˤ���
+	// 更新情報を最新にする
 	lfLoadUpdateList();
-	// �⥸�塼�뷴�Υ��󥹥ȡ���	
+	// モジュール郡のインストール	
 	lfUninstallModule();
 	break;
 default:
@@ -56,36 +56,36 @@ $col = "module_id, module_name, now_version, latest_version, module_explain, cre
 $objQuery->setorder("module_id");
 $objPage->arrUpdate = $objQuery->select($col, "dtb_update");
 
-$objView->assignobj($objPage);		//�ѿ���ƥ�ץ졼�Ȥ˥������󤹤�
-$objView->display(MAIN_FRAME);		//�ƥ�ץ졼�Ȥν���
+$objView->assignobj($objPage);		//変数をテンプレートにアサインする
+$objView->display(MAIN_FRAME);		//テンプレートの出力
 //-------------------------------------------------------------------------------------------------------
-// �����ե�����μ���
+// 更新ファイルの取得
 function lfCopyUpdateFile($file) {
 	global $objPage;
 	
 	$src_path = sfRmDupSlash(UPDATE_HTTP . $file . ".txt");
 	$dst_path = sfRmDupSlash(UPDATE_PATH . $file);
-	$flg_ok = true;	// ����������Ƚ��
+	$flg_ok = true;	// 処理の成功判定
 	
 	$src_fp = @fopen($src_path, "rb");
 	
 	if(!$src_fp) {
-		sfErrorHeader(">> " . $src_path . "�μ����˼��Ԥ��ޤ�����");
+		sfErrorHeader(">> " . $src_path . "の取得に失敗しました。");
 		$flg_ok = false;
 	} else {
-		// �ե�����򤹤٤��ɤ߹���
+		// ファイルをすべて読み込む
 		$contents = '';
 		while (!feof($src_fp)) {
 			$contents .= fread($src_fp, 1024);
 		}
 		fclose($src_fp);
 		
-		// �ǥ��쥯�ȥ�������ߤ�
+		// ディレクトリ作成を試みる
 		lfMakeDirectory($dst_path);
-		// �ե���������		
+		// ファイル書込み		
 		$dst_fp = @fopen($dst_path, "wb");
 		if(!$dst_fp) {
-			sfErrorHeader(">> " . $dst_path . "�򥪡��ץ�Ǥ��ޤ���");
+			sfErrorHeader(">> " . $dst_path . "をオープンできません。");
 			$flg_ok = false;
 		} else {
 			fwrite($dst_fp, $contents);
@@ -94,46 +94,46 @@ function lfCopyUpdateFile($file) {
 	}
 	
 	if($flg_ok) {
-		$objPage->update_mess.= ">> " . $dst_path . "�����ԡ�����<br>";
+		$objPage->update_mess.= ">> " . $dst_path . "：コピー成功<br>";
 	} else {
-		$objPage->update_mess.= ">> " . $dst_path . "�����ԡ�����<br>";		
+		$objPage->update_mess.= ">> " . $dst_path . "：コピー失敗<br>";		
 	}
 	
 	return $flg_ok;
 }
 
-// ���٤ƤΥѥ��Υǥ��쥯�ȥ���������
+// すべてのパスのディレクトリを作成する
 function lfMakeDirectory($path) {
 	$pos = 0;
-	$cnt = 0;				// ̵�¥롼���к�
-	$len = strlen($path);	// ̵�¥롼���к�
+	$cnt = 0;				// 無限ループ対策
+	$len = strlen($path);	// 無限ループ対策
 	
 	while($cnt <= $len) {
 		$pos = strpos($path, "/", $pos);
-		// �����Ǥ�Ƚ��ϡ�����3�Ĥ����
+		// ここでの判定は、等号3つを使用
 		if($pos === false) {
-			// ����å��夬���Ĥ���ʤ����ϥ롼�פ���ȴ����
+			// スラッシュが見つからない場合はループから抜ける
 			break;
 		}
-		$pos++; // ʸ��ȯ�����֤��ʸ���ʤ��
+		$pos++; // 文字発見位置を一文字進める
 		$dir = substr($path, 0, $pos);
 		
-		// ���Ǥ�¸�ߤ��뤫�ɤ���Ĵ�٤�
+		// すでに存在するかどうか調べる
 		if(!file_exists($dir)) {
 			mkdir($dir);
 		}
-		$cnt++; // ̵�¥롼���к�
+		$cnt++; // 無限ループ対策
 	}
 }
 
-// ���������ǿ��ˤ���
+// 更新情報を最新にする
 function lfLoadUpdateList() {
 	$objQuery = new SC_Query();
 	$path = UPDATE_HTTP . "update.txt";
 	$fp = @fopen($path, "rb");
 	
 	if(!$fp) {
-		sfErrorHeader(">> " . $path . "�μ����˼��Ԥ��ޤ�����");
+		sfErrorHeader(">> " . $path . "の取得に失敗しました。");
 	} else {
 		while (!feof($fp)) {
 			$arrCSV = fgetcsv($fp, UPDATE_CSV_LINE_MAX);
@@ -142,9 +142,9 @@ function lfLoadUpdateList() {
 				continue;
 			}
 						
-			// ������������Ǥ��ä����Τ�
+			// カラム数が正常であった場合のみ
 			if(count($arrCSV) == UPDATE_CSV_COL_MAX) {
-				// �����������åץǡ��Ⱦ����DB�˽񤭹���
+				// 取得したアップデート情報をDBに書き込む
 				$sqlval['module_id'] = $arrCSV[0];
 				$sqlval['module_name'] = $arrCSV[1];
 				$sqlval['latest_version'] = $arrCSV[3];
@@ -157,13 +157,13 @@ function lfLoadUpdateList() {
 				$sqlval['del_flg'] = $arrCSV[10];
 				$sqlval['update_date'] = "now()";
 				$sqlval['release_date'] = $arrCSV[12];
-				// ��¸�쥳���ɤΥ����å�
+				// 既存レコードのチェック
 				$cnt = $objQuery->count("dtb_update", "module_id = ?", array($sqlval['module_id']));
 				if($cnt > 0) {
-					// ���Ǥ˼�������Ƥ�����Ϲ������롣	
+					// すでに取得されている場合は更新する。	
 					$objQuery->update("dtb_update", $sqlval, "module_id = ?", array($sqlval['module_id']));
 				} else {
-					// �����쥳���ɤ��ɲ�
+					// 新規レコードの追加
 					$sqlval['create_date'] = "now()";
 					$objQuery->insert("dtb_update", $sqlval);
 				}
@@ -173,13 +173,13 @@ function lfLoadUpdateList() {
 	}
 }
 
-// ���󥹥ȡ������
+// インストール処理
 function lfInstallModule() {
 	global $objPage;
 	
 	$objQuery = new SC_Query();
 	$arrRet = $objQuery->select("module_id, extern_php, other_files, install_sql, latest_version", "dtb_update", "module_id = ?", array($_POST['module_id']));
-	$flg_ok = true;	// ����������Ƚ��
+	$flg_ok = true;	// 処理の成功判定
 	
 	if(count($arrRet) > 0) {
 		$arrFiles = array();
@@ -188,20 +188,20 @@ function lfInstallModule() {
 		}
 		$arrFiles[] = $arrRet[0]['extern_php'];
 		foreach($arrFiles as $val) {
-			// �����ե�����μ���
+			// 更新ファイルの取得
 			$ret=lfCopyUpdateFile($val);
 			if(!$ret) {
 				$flg_ok = false;
 			}
 		}
 	} else {
-		sfErrorHeader(">> �оݤε�ǽ�ϡ����ۤ�λ���Ƥ���ޤ���");
+		sfErrorHeader(">> 対象の機能は、配布を終了しております。");
 		$flg_ok = false;
 	}
 	
-	// ɬ�פ�SQLʸ�μ¹�
+	// 必要なSQL文の実行
 	if($arrRet[0]['install_sql'] != "") {
-		// SQLʸ�¹ԡ��ѥ顼�᡼���ʤ������顼̵��
+		// SQL文実行、パラーメータなし、エラー無視
 		$arrInstallSql = split(";",$arrRet[0]['install_sql']);
 		foreach($arrInstallSql as $key => $val){
 			if (trim($val) != ""){
@@ -209,13 +209,13 @@ function lfInstallModule() {
 			}
 		}
 		if(DB::isError($ret)) {
-			// ���顼ʸ���������
+			// エラー文を取得する
 			ereg("\[(.*)\]", $ret->userinfo, $arrKey);
-			$objPage->update_mess.=">> �ơ��֥빽�����ѹ��˼��Ԥ��ޤ�����<br>";
+			$objPage->update_mess.=">> テーブル構成の変更に失敗しました。<br>";
 			$objPage->update_mess.= $arrKey[0] . "<br>";
 			$flg_ok = false;
 		} else {
-			$objPage->update_mess.=">> �ơ��֥빽�����ѹ���Ԥ��ޤ�����<br>";
+			$objPage->update_mess.=">> テーブル構成の変更を行いました。<br>";
 		}
 	}
 	
@@ -226,13 +226,13 @@ function lfInstallModule() {
 	}
 }
 
-// ���󥤥󥹥ȡ������
+// アンインストール処理
 function lfUninstallModule() {
 	global $objPage;
 	
 	$objQuery = new SC_Query();
 	$arrRet = $objQuery->select("module_id, extern_php, other_files, install_sql, uninstall_sql, latest_version", "dtb_update", "module_id = ?", array($_POST['module_id']));
-	$flg_ok = true;	// ����������Ƚ��
+	$flg_ok = true;	// 処理の成功判定
 	
 	if(count($arrRet) > 0) {
 		$arrFiles = array();
@@ -243,35 +243,35 @@ function lfUninstallModule() {
 		foreach($arrFiles as $val) {
 			$path = DATA_PATH . $val;
 			if(file_exists($path)) {
-				// �ե������������
+				// ファイルを削除する
 				if(unlink($path)) {
-					$objPage->update_mess.= ">> " . $path . "���������<br>";
+					$objPage->update_mess.= ">> " . $path . "：削除成功<br>";
 				} else {
-					$objPage->update_mess.= ">> " . $path . "���������<br>";
+					$objPage->update_mess.= ">> " . $path . "：削除失敗<br>";
 				}
 			}
 		}
 		
-		// ɬ�פ�SQLʸ�μ¹�
+		// 必要なSQL文の実行
 		if($arrRet[0]['uninstall_sql'] != "") {
-			// SQLʸ�¹ԡ��ѥ顼�᡼���ʤ������顼̵��
+			// SQL文実行、パラーメータなし、エラー無視
 			$ret = $objQuery->query($arrRet[0]['uninstall_sql'],"",true);
 			if(DB::isError($ret)) {
-				// ���顼ʸ���������
+				// エラー文を取得する
 				ereg("\[(.*)\]", $ret->userinfo, $arrKey);
-				$objPage->update_mess.=">> �ơ��֥빽�����ѹ��˼��Ԥ��ޤ�����<br>";
+				$objPage->update_mess.=">> テーブル構成の変更に失敗しました。<br>";
 				$objPage->update_mess.= $arrKey[0] . "<br>";
 				$flg_ok = false;
 			} else {
-				$objPage->update_mess.=">> �ơ��֥빽�����ѹ���Ԥ��ޤ�����<br>";
+				$objPage->update_mess.=">> テーブル構成の変更を行いました。<br>";
 			}
 		}		
 	} else {
-		sfErrorHeader(">> �оݤε�ǽ�ϡ����ۤ�λ���Ƥ���ޤ���");
+		sfErrorHeader(">> 対象の機能は、配布を終了しております。");
 	}
 	
 	if($flg_ok) {
-		// �С���������������롣
+		// バージョン情報を削除する。
 		$sqlval['now_version'] = "";
 		$sqlval['update_date'] = "now()";
 		$objQuery->update("dtb_update", $sqlval, "module_id = ?", array($arrRet[0]['module_id']));

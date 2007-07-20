@@ -9,7 +9,7 @@
 <!--
 
 function func_regist(url) {
-	res = confirm('¤³¤ÎÆâÍÆ¤Ç<!--{if $edit_mode eq "on"}-->ÊÔ½¸<!--{else}-->ÅĞÏ¿<!--{/if}-->¤·¤Æ¤âµ¹¤·¤¤¤Ç¤¹¤«¡©');
+	res = confirm('ã“ã®å†…å®¹ã§<!--{if $edit_mode eq "on"}-->ç·¨é›†<!--{else}-->ç™»éŒ²<!--{/if}-->ã—ã¦ã‚‚å®œã—ã„ã§ã™ã‹ï¼Ÿ');
 	if(res == true) {
 		document.form1.mode.value = 'regist';
 		document.form1.submit();
@@ -25,7 +25,7 @@ function func_edit(news_id) {
 }
 
 function func_del(news_id) {
-	res = confirm('¤³¤Î¿·Ãå¾ğÊó¤òºï½ü¤·¤Æ¤âµ¹¤·¤¤¤Ç¤¹¤«¡©');
+	res = confirm('ã“ã®æ–°ç€æƒ…å ±ã‚’å‰Šé™¤ã—ã¦ã‚‚å®œã—ã„ã§ã™ã‹ï¼Ÿ');
 	if(res == true) {
 		document.form1.mode.value = "delete";
 		document.form1.news_id.value = news_id;
@@ -58,25 +58,25 @@ function moving(news_id,rank, max_rank) {
 	}
 	
 	if ( j > 1) {
-		alert( '°ÜÆ°½ç°Ì¤Ï£±¤Ä¤À¤±ÆşÎÏ¤·¤Æ¤¯¤À¤µ¤¤¡£' );
+		alert( 'ç§»å‹•é †ä½ã¯ï¼‘ã¤ã ã‘å…¥åŠ›ã—ã¦ãã ã•ã„ã€‚' );
 		return false;
 	} else if( ! val ) {
-		alert( '°ÜÆ°½ç°Ì¤òÆşÎÏ¤·¤Æ¤¯¤À¤µ¤¤¡£' );
+		alert( 'ç§»å‹•é †ä½ã‚’å…¥åŠ›ã—ã¦ãã ã•ã„ã€‚' );
 		return false;
 	} else if( val.length > 4){
-		alert( '°ÜÆ°½ç°Ì¤Ï4·å°ÊÆâ¤ÇÆşÎÏ¤·¤Æ¤¯¤À¤µ¤¤¡£' );
+		alert( 'ç§»å‹•é †ä½ã¯4æ¡ä»¥å†…ã§å…¥åŠ›ã—ã¦ãã ã•ã„ã€‚' );
 		return false;
 	} else if( val.match(/[0-9]+/g) != val){
-		alert( '°ÜÆ°½ç°Ì¤Ï¿ô»ú¤ÇÆşÎÏ¤·¤Æ¤¯¤À¤µ¤¤¡£' );
+		alert( 'ç§»å‹•é †ä½ã¯æ•°å­—ã§å…¥åŠ›ã—ã¦ãã ã•ã„ã€‚' );
 		return false;
 	} else if( val == rank ){
-		alert( '°ÜÆ°¤µ¤»¤ëÈÖ¹æ¤¬½ÅÊ£¤·¤Æ¤¤¤Ş¤¹¡£' );
+		alert( 'ç§»å‹•ã•ã›ã‚‹ç•ªå·ãŒé‡è¤‡ã—ã¦ã„ã¾ã™ã€‚' );
 		return false;
 	} else if( val == 0 ){
-		alert( '°ÜÆ°½ç°Ì¤Ï0°Ê¾å¤ÇÆşÎÏ¤·¤Æ¤¯¤À¤µ¤¤¡£' );
+		alert( 'ç§»å‹•é †ä½ã¯0ä»¥ä¸Šã§å…¥åŠ›ã—ã¦ãã ã•ã„ã€‚' );
 		return false;
 	} else if( val > max_rank ){
-		alert( 'ÆşÎÏ¤µ¤ì¤¿½ç°Ì¤Ï¡¢ÅĞÏ¿¿ô¤ÎºÇÂçÃÍ¤òÄ¶¤¨¤Æ¤¤¤Ş¤¹¡£' );
+		alert( 'å…¥åŠ›ã•ã‚ŒãŸé †ä½ã¯ã€ç™»éŒ²æ•°ã®æœ€å¤§å€¤ã‚’è¶…ãˆã¦ã„ã¾ã™ã€‚' );
 		return false;	
 	} else {
 		ml.moveposition.value = val;
@@ -90,7 +90,7 @@ function moving(news_id,rank, max_rank) {
 //-->
 </script>
 
-<!--¡ú¡ú¥á¥¤¥ó¥³¥ó¥Æ¥ó¥Ä¡ú¡ú-->
+<!--â˜…â˜…ãƒ¡ã‚¤ãƒ³ã‚³ãƒ³ãƒ†ãƒ³ãƒ„â˜…â˜…-->
 <table width="878" border="0" cellspacing="0" cellpadding="0" summary=" ">
 <form name="form1" id="form1" method="post" action="<!--{$smarty.server.PHP_SELF|escape}-->">
 <input type="hidden" name="mode" value="">
@@ -98,14 +98,14 @@ function moving(news_id,rank, max_rank) {
 <input type="hidden" name="term" value="">
 	<tr valign="top">
 		<td background="<!--{$smarty.const.URL_DIR}-->img/contents/navi_bg.gif" height="402">
-			<!--¢§SUB NAVI-->
+			<!--â–¼SUB NAVI-->
 			<!--{include file=$tpl_subnavi}-->
-			<!--¢¥SUB NAVI-->
+			<!--â–²SUB NAVI-->
 		</td>
 		<td class="mainbg">
-			<!--¢§ÅĞÏ¿¥Æ¡¼¥Ö¥ë¤³¤³¤«¤é-->
+			<!--â–¼ç™»éŒ²ãƒ†ãƒ¼ãƒ–ãƒ«ã“ã“ã‹ã‚‰-->
 			<table width="737" border="0" cellspacing="0" cellpadding="0" summary=" ">
-				<!--¥á¥¤¥ó¥¨¥ê¥¢-->
+				<!--ãƒ¡ã‚¤ãƒ³ã‚¨ãƒªã‚¢-->
 				<tr>
 					<td align="center">
 						<table width="706" border="0" cellspacing="0" cellpadding="0" summary=" ">
@@ -123,7 +123,7 @@ function moving(news_id,rank, max_rank) {
 									</tr>
 									<tr>
 										<td background="<!--{$smarty.const.URL_DIR}-->img/contents/contents_title_left_bg.gif"><img src="<!--{$smarty.const.URL_DIR}-->img/contents/contents_title_left.gif" width="22" height="12" alt=""></td>
-										<td bgcolor="#636469" width="638" class="fs14n"><span class="white"><!--¥³¥ó¥Æ¥ó¥Ä¥¿¥¤¥È¥ë-->¿·µ¬ÅĞÏ¿</span></td>
+										<td bgcolor="#636469" width="638" class="fs14n"><span class="white"><!--ã‚³ãƒ³ãƒ†ãƒ³ãƒ„ã‚¿ã‚¤ãƒˆãƒ«-->æ–°è¦ç™»éŒ²</span></td>
 										<td background="<!--{$smarty.const.URL_DIR}-->img/contents/contents_title_right_bg.gif"><img src="<!--{$smarty.const.URL_DIR}-->img/common/_.gif" width="18" height="1" alt=""></td>
 									</tr>
 									<tr>
@@ -134,51 +134,51 @@ function moving(news_id,rank, max_rank) {
 									</tr>
 								</table>
 
-								<!--¢§ÅĞÏ¿¥Æ¡¼¥Ö¥ë¤³¤³¤«¤é-->
+								<!--â–¼ç™»éŒ²ãƒ†ãƒ¼ãƒ–ãƒ«ã“ã“ã‹ã‚‰-->
 								<table width="678" border="0" cellspacing="1" cellpadding="8" summary=" ">	
 									<thead>
 									<tr class="fs12n">
-										<td bgcolor="#f2f1ec" width="78">ÆüÉÕ<span class="red"> *</span></td>
+										<td bgcolor="#f2f1ec" width="78">æ—¥ä»˜<span class="red"> *</span></td>
 										<td bgcolor="#ffffff" width="600"><span class="red"><!--{$arrErr.year}--><!--{$arrErr.month}--><!--{$arrErr.day}--></span>
 											<select name="year" <!--{if $arrErr.year}-->style="background-color:<!--{$smarty.const.ERR_COLOR|escape}-->"<!--{/if}-->>
 												<option value="" selected>----</option>
 												<!--{html_options options=$arrYear selected=$selected_year}-->
-											</select>Ç¯
+											</select>å¹´
 											<select name="month" <!--{if $arrErr.month}-->style="background-color:<!--{$smarty.const.ERR_COLOR|escape}-->"<!--{/if}-->>
 												<option value="" selected>--</option>
 												<!--{html_options options=$arrMonth selected=$selected_month}-->
-											</select>·î
+											</select>æœˆ
 											<select name="day" <!--{if $arrErr.day}-->style="background-color:<!--{$smarty.const.ERR_COLOR|escape}-->"<!--{/if}-->>
 												<option value="" selected>--</option>
 												<!--{html_options options=$arrDay selected=$selected_day}-->
-											</select>Æü
+											</select>æ—¥
 										</td>
 									</tr>
 									<tr>
-										<td bgcolor="#f2f1ec" width="" class="fs12n">¥¿¥¤¥È¥ë<span class="red"> *</span></td>
+										<td bgcolor="#f2f1ec" width="" class="fs12n">ã‚¿ã‚¤ãƒˆãƒ«<span class="red"> *</span></td>
 										<td bgcolor="#ffffff" width="" class="fs12n"><!--{if $arrErr.news_title}--><span class="red"><!--{$arrErr.news_title}--></span><!--{/if}-->
-										<textarea name="news_title" cols="60" rows="8" class="area60" maxlength="<!--{$smarty.const.MTEXT_LEN}-->" <!--{if $arrErr.news_title}-->style="background-color:<!--{$smarty.const.ERR_COLOR|escape}-->"<!--{/if}-->><!--{$news_title|escape}--></textarea><br/><span class="red"> ¡Ê¾å¸Â<!--{$smarty.const.MTEXT_LEN}-->Ê¸»ú¡Ë</span>
+										<textarea name="news_title" cols="60" rows="8" class="area60" maxlength="<!--{$smarty.const.MTEXT_LEN}-->" <!--{if $arrErr.news_title}-->style="background-color:<!--{$smarty.const.ERR_COLOR|escape}-->"<!--{/if}-->><!--{$news_title|escape}--></textarea><br/><span class="red"> ï¼ˆä¸Šé™<!--{$smarty.const.MTEXT_LEN}-->æ–‡å­—ï¼‰</span>
 										</td>
 									</tr>
 									</thead>
 									<tfoot>
 									<tr>
 										<td bgcolor="#f2f1ec" width="38" class="fs12n">URL</td>
-										<td bgcolor="#ffffff" width="600" class="fs12n"><span class="red"><!--{$arrErr.news_url}--></span><input type="text" name="news_url" size="60" class="box60"  value="<!--{$news_url|escape}-->" <!--{if $arrErr.news_url}-->style="background-color:<!--{$smarty.const.ERR_COLOR|escape}-->"<!--{/if}--> maxlength="<!--{$smarty.const.URL_LEN}-->"/><span class="red"> ¡Ê¾å¸Â<!--{$smarty.const.URL_LEN}-->Ê¸»ú¡Ë</span>
+										<td bgcolor="#ffffff" width="600" class="fs12n"><span class="red"><!--{$arrErr.news_url}--></span><input type="text" name="news_url" size="60" class="box60"  value="<!--{$news_url|escape}-->" <!--{if $arrErr.news_url}-->style="background-color:<!--{$smarty.const.ERR_COLOR|escape}-->"<!--{/if}--> maxlength="<!--{$smarty.const.URL_LEN}-->"/><span class="red"> ï¼ˆä¸Šé™<!--{$smarty.const.URL_LEN}-->æ–‡å­—ï¼‰</span>
 										</td>
 									</tr>
 									<tr class="fs12n">
-										<td bgcolor="#f2f1ec" width="78">¥ê¥ó¥¯</td>
-										<td bgcolor="#ffffff" width="600"><input type="checkbox" name="link_method" value="2" <!--{if $link_method eq 2}--> checked <!--{/if}--> >ÊÌ¥¦¥£¥ó¥É¥¦¤Ç³«¤¯</td>
+										<td bgcolor="#f2f1ec" width="78">ãƒªãƒ³ã‚¯</td>
+										<td bgcolor="#ffffff" width="600"><input type="checkbox" name="link_method" value="2" <!--{if $link_method eq 2}--> checked <!--{/if}--> >åˆ¥ã‚¦ã‚£ãƒ³ãƒ‰ã‚¦ã§é–‹ã</td>
 									</tr>
 									<tr>
-										<td bgcolor="#f2f1ec" width="38" class="fs12n">ËÜÊ¸ºîÀ®</td>
-										<td bgcolor="#ffffff" width="600" class="fs12n"><!--{if $arrErr.news_comment}--><span class="red"><!--{$arrErr.news_comment}--></span><!--{/if}--><textarea name="news_comment" cols="60" rows="8" wrap="soft" class="area60" maxlength="<!--{$smarty.const.LTEXT_LEN}-->" style="background-color:<!--{if $arrErr.news_comment}--><!--{$smarty.const.ERR_COLOR|escape}--><!--{/if}-->"><!--{$news_comment|escape}--></textarea><br/><span class="red"> ¡Ê¾å¸Â3000Ê¸»ú¡Ë</span>
+										<td bgcolor="#f2f1ec" width="38" class="fs12n">æœ¬æ–‡ä½œæˆ</td>
+										<td bgcolor="#ffffff" width="600" class="fs12n"><!--{if $arrErr.news_comment}--><span class="red"><!--{$arrErr.news_comment}--></span><!--{/if}--><textarea name="news_comment" cols="60" rows="8" wrap="soft" class="area60" maxlength="<!--{$smarty.const.LTEXT_LEN}-->" style="background-color:<!--{if $arrErr.news_comment}--><!--{$smarty.const.ERR_COLOR|escape}--><!--{/if}-->"><!--{$news_comment|escape}--></textarea><br/><span class="red"> ï¼ˆä¸Šé™3000æ–‡å­—ï¼‰</span>
 										</td>
 									</tr>
 									</tfoot>
 								</table>
-								<!--¢¥ÅĞÏ¿¥Æ¡¼¥Ö¥ë¤³¤³¤Ş¤Ç-->
+								<!--â–²ç™»éŒ²ãƒ†ãƒ¼ãƒ–ãƒ«ã“ã“ã¾ã§-->
 								
 								<table width="678" border="0" cellspacing="0" cellpadding="0" summary=" ">
 									<tr>
@@ -191,7 +191,7 @@ function moving(news_id,rank, max_rank) {
 										<td bgcolor="#e9e7de" align="center">
 										<table border="0" cellspacing="0" cellpadding="0" summary=" ">
 											<tr>
-												<td><input type="image" onMouseover="chgImgImageSubmit('<!--{$smarty.const.URL_DIR}-->img/contents/btn_regist_on.jpg',this)" onMouseout="chgImgImageSubmit('<!--{$smarty.const.URL_DIR}-->img/contents/btn_regist.jpg',this)" src="<!--{$smarty.const.URL_DIR}-->img/contents/btn_regist.jpg" width="123" height="24" alt="¤³¤ÎÆâÍÆ¤ÇÅĞÏ¿¤¹¤ë" border="0" name="subm" onclick="return func_regist();"></td>
+												<td><input type="image" onMouseover="chgImgImageSubmit('<!--{$smarty.const.URL_DIR}-->img/contents/btn_regist_on.jpg',this)" onMouseout="chgImgImageSubmit('<!--{$smarty.const.URL_DIR}-->img/contents/btn_regist.jpg',this)" src="<!--{$smarty.const.URL_DIR}-->img/contents/btn_regist.jpg" width="123" height="24" alt="ã“ã®å†…å®¹ã§ç™»éŒ²ã™ã‚‹" border="0" name="subm" onclick="return func_regist();"></td>
 											</tr>
 										</table>
 										</td>
@@ -213,7 +213,7 @@ function moving(news_id,rank, max_rank) {
 									</tr>
 									<tr>
 										<td background="<!--{$smarty.const.URL_DIR}-->img/contents/contents_title_left_bg.gif"><img src="<!--{$smarty.const.URL_DIR}-->img/contents/contents_title_left.gif" width="22" height="12" alt=""></td>
-										<td bgcolor="#636469" width="638" class="fs14n"><span class="white"><!--¥³¥ó¥Æ¥ó¥Ä¥¿¥¤¥È¥ë-->ÅĞÏ¿ºÑ¤ß¿·Ãå¾ğÊó</span></td>
+										<td bgcolor="#636469" width="638" class="fs14n"><span class="white"><!--ã‚³ãƒ³ãƒ†ãƒ³ãƒ„ã‚¿ã‚¤ãƒˆãƒ«-->ç™»éŒ²æ¸ˆã¿æ–°ç€æƒ…å ±</span></td>
 										<td background="<!--{$smarty.const.URL_DIR}-->img/contents/contents_title_right_bg.gif"><img src="<!--{$smarty.const.URL_DIR}-->img/common/_.gif" width="18" height="1" alt=""></td>
 									</tr>
 									<tr>
@@ -224,7 +224,7 @@ function moving(news_id,rank, max_rank) {
 									</tr>
 								</table>
 
-								<!--¢§°ìÍ÷É½¼¨¥¨¥ê¥¢¤³¤³¤«¤é-->
+								<!--â–¼ä¸€è¦§è¡¨ç¤ºã‚¨ãƒªã‚¢ã“ã“ã‹ã‚‰-->
 								<table width="678" border="0" cellspacing="1" cellpadding="8" summary=" ">
 								<form name="move" id="move" method="post" action="<!--{$smarty.server.PHP_SELF|escape}-->">
 								<input type="hidden" name="mode" value="moveRankSet">
@@ -233,12 +233,12 @@ function moving(news_id,rank, max_rank) {
 								<input type="hidden" name="moveposition" value="">
 								<input type="hidden" name="rank" value="">
 									<tr bgcolor="#f2f1ec" align="center" class="fs12n">
-										<td width="30">½ç°Ì</td>
-										<td width="76">ÆüÉÕ</td>
-										<td width="269">¥¿¥¤¥È¥ë</td>
-										<td width="50">ÊÔ½¸</td>
-										<td width="50">ºï½ü</td>
-										<td width="100">°ÜÆ°</td>
+										<td width="30">é †ä½</td>
+										<td width="76">æ—¥ä»˜</td>
+										<td width="269">ã‚¿ã‚¤ãƒˆãƒ«</td>
+										<td width="50">ç·¨é›†</td>
+										<td width="50">å‰Šé™¤</td>
+										<td width="100">ç§»å‹•</td>
 									</tr>
 									<!--{if $arrErr.moveposition}-->
 									<tr bgcolor="#ffffff" class="fs12n"><td bgcolor="#ffffff" colspan="6"><span class="red"><!--{$arrErr.moveposition}--></span></td></tr>
@@ -256,23 +256,23 @@ function moving(news_id,rank, max_rank) {
 											<!--{else}--><!--{$list_data[data].news_title|escape|nl2br}-->
 											<!--{/if}-->
 										</td>
-										<td width="" align="center"><a href="#" onclick="return func_edit('<!--{$list_data[data].news_id|escape}-->');">ÊÔ½¸</a></td>
-										<td width="" align="center"><a href="#" onclick="return func_del('<!--{$list_data[data].news_id|escape}-->');">ºï½ü</a></td>
+										<td width="" align="center"><a href="#" onclick="return func_edit('<!--{$list_data[data].news_id|escape}-->');">ç·¨é›†</a></td>
+										<td width="" align="center"><a href="#" onclick="return func_del('<!--{$list_data[data].news_id|escape}-->');">å‰Šé™¤</a></td>
 										<td width="" align="center">
 										<!--{if count($list_data) != 1}-->
-										<input type="text" name="pos-<!--{$list_data[data].news_id}-->" size="3" class="box3" />ÈÖÌÜ¤Ø<a href="<!--{$smarty.server.PHP_SELF|escape}-->" onclick="fnFormModeSubmit('move', 'moveRankSet','news_id', '<!--{$list_data[data].news_id}-->'); return false;">°ÜÆ°</a><br />
+										<input type="text" name="pos-<!--{$list_data[data].news_id}-->" size="3" class="box3" />ç•ªç›®ã¸<a href="<!--{$smarty.server.PHP_SELF|escape}-->" onclick="fnFormModeSubmit('move', 'moveRankSet','news_id', '<!--{$list_data[data].news_id}-->'); return false;">ç§»å‹•</a><br />
 										<!--{/if}-->
-										<!--{if $list_data[data].rank ne $max_rank}--><a href="#" onclick="return func_rankMove('up', '<!--{$list_data[data].news_id|escape}-->', '<!--{$max_rank|escape}-->');">¾å¤Ø</a><!--{/if}-->¡¡<!--{if $list_data[data].rank ne 1}--><a href="#" onclick="return func_rankMove('down', '<!--{$list_data[data].news_id|escape}-->', '<!--{$max_rank|escape}-->');">²¼¤Ø</a><!--{/if}-->
+										<!--{if $list_data[data].rank ne $max_rank}--><a href="#" onclick="return func_rankMove('up', '<!--{$list_data[data].news_id|escape}-->', '<!--{$max_rank|escape}-->');">ä¸Šã¸</a><!--{/if}-->ã€€<!--{if $list_data[data].rank ne 1}--><a href="#" onclick="return func_rankMove('down', '<!--{$list_data[data].news_id|escape}-->', '<!--{$max_rank|escape}-->');">ä¸‹ã¸</a><!--{/if}-->
 										</td>
 									</tr>
 									<!--{sectionelse}-->
 									<tr bgcolor="#ffffff" class="fs12n">
-										<td colspan="6">¸½ºß¥Ç¡¼¥¿¤Ï¤¢¤ê¤Ş¤»¤ó¡£</td>
+										<td colspan="6">ç¾åœ¨ãƒ‡ãƒ¼ã‚¿ã¯ã‚ã‚Šã¾ã›ã‚“ã€‚</td>
 									</tr>
 									<!--{/section}-->								
 								</form>
 								</table>
-								<!--¢¥°ìÍ÷É½¼¨¥¨¥ê¥¢¤³¤³¤Ş¤Ç-->
+								<!--â–²ä¸€è¦§è¡¨ç¤ºã‚¨ãƒªã‚¢ã“ã“ã¾ã§-->
 									
 								</td>
 								<td background="<!--{$smarty.const.URL_DIR}-->img/contents/main_right.jpg"><img src="<!--{$smarty.const.URL_DIR}-->img/common/_.gif" width="14" height="1" alt=""></td>
@@ -284,10 +284,10 @@ function moving(news_id,rank, max_rank) {
 						</table>
 					</td>
 				</tr>
-				<!--¥á¥¤¥ó¥¨¥ê¥¢-->
+				<!--ãƒ¡ã‚¤ãƒ³ã‚¨ãƒªã‚¢-->
 			</table>
-			<!--¢¥ÅĞÏ¿¥Æ¡¼¥Ö¥ë¤³¤³¤Ş¤Ç-->
+			<!--â–²ç™»éŒ²ãƒ†ãƒ¼ãƒ–ãƒ«ã“ã“ã¾ã§-->
 		</td>
 	</tr>
 </table>
-<!--¡ú¡ú¥á¥¤¥ó¥³¥ó¥Æ¥ó¥Ä¡ú¡ú-->
+<!--â˜…â˜…ãƒ¡ã‚¤ãƒ³ã‚³ãƒ³ãƒ†ãƒ³ãƒ„â˜…â˜…-->

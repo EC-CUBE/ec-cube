@@ -9,7 +9,7 @@ require_once("../require.php");
 class LC_Page {
 	function LC_Page() {
 		$this->tpl_mainpage = 'entry/kiyaku.tpl';
-		$this->tpl_title="¤´ÍøÍÑµ¬Ìó";
+		$this->tpl_title="ã”åˆ©ç”¨è¦ç´„";
 	}
 }
 
@@ -20,10 +20,10 @@ $objCustomer = new SC_Customer();
 $offset = isset($_REQUEST['offset']) ? $_REQUEST['offset'] : 0;
 $next = $offset;
 
-// ¥ì¥¤¥¢¥¦¥È¥Ç¥¶¥¤¥ó¤ò¼èÆÀ
+// ãƒ¬ã‚¤ã‚¢ã‚¦ãƒˆãƒ‡ã‚¶ã‚¤ãƒ³ã‚’å–å¾—
 $objPage = sfGetPageLayout($objPage, false, DEF_LAYOUT);
 
-// µ¬ÌóÆâÍÆ¤Î¼èÆÀ
+// è¦ç´„å†…å®¹ã®å–å¾—
 $objQuery = new SC_Query();
 $count = $objQuery->count("dtb_kiyaku", "del_flg <> 1");
 $objQuery->setorder("rank DESC");

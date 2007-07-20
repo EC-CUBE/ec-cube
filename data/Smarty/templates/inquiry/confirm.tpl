@@ -12,7 +12,7 @@
 <script type="text/javascript" src="<!--{$smarty.const.URL_DIR}-->js/navi.js"></script>
 <script type="text/javascript" src="<!--{$smarty.const.URL_DIR}-->js/site.js"></script>
 <script type="text/javascript" src="<!--{$smarty.const.URL_DIR}-->js/win_op.js"></script>
-<title><!--{$arrSiteInfo.shop_name}-->/¥¢¥ó¥±¡¼¥È¡¡<!--{$QUESTION.title|escape}-->/³ÎÇ§²èÌÌ</title>
+<title><!--{$arrSiteInfo.shop_name}-->/ã‚¢ãƒ³ã‚±ãƒ¼ãƒˆã€€<!--{$QUESTION.title|escape}-->/ç¢ºèªç”»é¢</title>
 <script type="text/javascript">
 <!--
 
@@ -27,7 +27,7 @@ function func_return(){
 <body bgcolor="#ffffff" text="#555555" link="#0099cc" vlink="#CC0000" alink="#993399" leftmargin="0" topmargin="0" marginwidth="0" marginheight="0">
 
 
-<!--¢¥TITLE-->
+<!--â–²TITLE-->
 <table width="760" border="0" cellspacing="0" cellpadding="0" summary=" ">
 	<tr>
 		<td height="40" bgcolor="#f6f6f6" align="center">
@@ -52,14 +52,14 @@ function func_return(){
 				</td>
 			</tr>
 			<tr><td height="10"></td></tr>
-			<!--{if $errmsg}--><tr><td class="fs12n"><span class="red"><br>ÆþÎÏ¥¨¥é¡¼¤¬È¯À¸Ã×¤·¤Þ¤·¤¿¡£³Æ¹àÌÜ¤Î¥¨¥é¡¼¥á¥Ã¥»¡¼¥¸¤ò¤´³ÎÇ§¤Î¾å¡¢Àµ¤·¤¯ÆþÎÏ¤·¤Æ¤¯¤À¤µ¤¤¡£</span></td></tr><!--{/if}-->	
+			<!--{if $errmsg}--><tr><td class="fs12n"><span class="red"><br>å…¥åŠ›ã‚¨ãƒ©ãƒ¼ãŒç™ºç”Ÿè‡´ã—ã¾ã—ãŸã€‚å„é …ç›®ã®ã‚¨ãƒ©ãƒ¼ãƒ¡ãƒƒã‚»ãƒ¼ã‚¸ã‚’ã”ç¢ºèªã®ä¸Šã€æ­£ã—ãå…¥åŠ›ã—ã¦ãã ã•ã„ã€‚</span></td></tr><!--{/if}-->	
 			<tr>
 				<td bgcolor="#cccccc">
 				<table width="600" border="0" cellspacing="1" cellpadding="10" summary=" ">
 				<!--{section name=question loop=$QUESTION.question}-->
 				<!--{if $QUESTION.question[question].kind ne '0' }-->
 					<tr>
-						<td colspan="2" bgcolor="#edf6ff" class="fs12n">¼ÁÌä<!--{$smarty.section.question.iteration}-->¡§<!--{$QUESTION.question[question].name|escape}--></td>
+						<td colspan="2" bgcolor="#edf6ff" class="fs12n">è³ªå•<!--{$smarty.section.question.iteration}-->ï¼š<!--{$QUESTION.question[question].name|escape}--></td>
 					</tr>
 					<!--{if $QUESTION.question[question].kind eq 1}-->
 					<tr>
@@ -97,7 +97,7 @@ function func_return(){
 			</tr>
 			<tr><td height="30"></td></tr>
 			<tr>
-				<td class="fs12n"><span class="red">¢¨</span>°õ¤ÏÆþÎÏÉ¬¿Ü¹àÌÜ¤Ç¤¹¡£</td>
+				<td class="fs12n"><span class="red">â€»</span>å°ã¯å…¥åŠ›å¿…é ˆé …ç›®ã§ã™ã€‚</td>
 			</tr>
 			<tr><td height="5"></td></tr>
 			<form name="form1" method="post" action="<!--{$smarty.server.PHP_SELF|escape}-->">
@@ -110,7 +110,7 @@ function func_return(){
 				<table width="600" border="0" cellspacing="1" cellpadding="10">
 					
 					<tr>
-						<td class="fs12n" bgcolor="#ebf9ff" width="150"><span class="red">¢¨</span>¤ªÌ¾Á°</td>
+						<td class="fs12n" bgcolor="#ebf9ff" width="150"><span class="red">â€»</span>ãŠåå‰</td>
 						<td class="fs12"bgcolor="#ffffff" width="407" class="fs12n">
 							<!--{$arrForm.name01|escape}-->&nbsp;<!--{$arrForm.name02|escape}-->
 							<input type="hidden" name="name01" value="<!--{$arrForm.name01|escape}-->" />
@@ -118,7 +118,7 @@ function func_return(){
 						</td>
 					</tr>
 					<tr>
-						<td class="fs12n" bgcolor="#ebf9ff" width="150"><span class="red">¢¨</span>¥Õ¥ê¥¬¥Ê</td>
+						<td class="fs12n" bgcolor="#ebf9ff" width="150"><span class="red">â€»</span>ãƒ•ãƒªã‚¬ãƒŠ</td>
 						<td class="fs12n" bgcolor="#ffffff" width="407">
 							<!--{$arrForm.kana01|escape}-->&nbsp;<!--{$arrForm.kana02|escape}-->
 							<input type="hidden" name="kana01" value="<!--{$arrForm.kana01|escape}-->"/>
@@ -126,16 +126,16 @@ function func_return(){
 						</td>
 					</tr>
 					<tr>
-						<td class="fs12n" bgcolor="#ebf9ff" width="150"><span class="red">¢¨</span>Í¹ÊØÈÖ¹æ</td>
+						<td class="fs12n" bgcolor="#ebf9ff" width="150"><span class="red">â€»</span>éƒµä¾¿ç•ªå·</td>
 						<td class="fs12n" bgcolor="#ffffff" width="407">
-							¢©<!--{$arrForm.zip01|escape}-->-<!--{$arrForm.zip02|escape}-->
+							ã€’<!--{$arrForm.zip01|escape}-->-<!--{$arrForm.zip02|escape}-->
 							<input type="hidden" name="zip01" value="<!--{$arrForm.zip01|escape}-->" />
 							<input type="hidden" name="zip02" value="<!--{$arrForm.zip02|escape}-->" />
-							<!--{* <input type="button" name="address_input" value="½»½êÆþÎÏ" onclick="fnCallAddress('<!--{$smarty.const.URL_INPUT_ZIP}-->', 'zip01', 'zip02', 'pref', 'addr01');" /> *}-->
+							<!--{* <input type="button" name="address_input" value="ä½æ‰€å…¥åŠ›" onclick="fnCallAddress('<!--{$smarty.const.URL_INPUT_ZIP}-->', 'zip01', 'zip02', 'pref', 'addr01');" /> *}-->
 						</td>
 					</tr>
 					<tr>
-						<td class="fs12n" bgcolor="#ebf9ff" width="150"><span class="red">¢¨</span>¤´½»½ê</td>
+						<td class="fs12n" bgcolor="#ebf9ff" width="150"><span class="red">â€»</span>ã”ä½æ‰€</td>
 						<td bgcolor="#ffffff" class="fs12n">
 							<input type="hidden" name="pref" value="<!--{$arrForm.pref|escape}-->" />
 							<input type="hidden" name="addr01" value="<!--{$arrForm.addr01|escape}-->" />
@@ -144,7 +144,7 @@ function func_return(){
 						</td>
 					</tr>
 					<tr>
-						<td class="fs12n" bgcolor="#ebf9ff" width="150"><span class="red">¢¨</span>¤ªÅÅÏÃÈÖ¹æ</td>
+						<td class="fs12n" bgcolor="#ebf9ff" width="150"><span class="red">â€»</span>ãŠé›»è©±ç•ªå·</td>
 						<td class="fs12n" bgcolor="#ffffff" width="407">
 							<!--{$arrForm.tel01|escape}-->-<!--{$arrForm.tel02|escape}-->-<!--{$arrForm.tel03|escape}-->
 							<input type="hidden" name="tel01" value="<!--{$arrForm.tel01|escape}-->" />
@@ -153,7 +153,7 @@ function func_return(){
 						</td>
 					</tr>
 					<tr>
-						<td class="fs12n" bgcolor="#ebf9ff" width="150"><span class="red">¢¨</span>¥á¡¼¥ë¥¢¥É¥ì¥¹</td>
+						<td class="fs12n" bgcolor="#ebf9ff" width="150"><span class="red">â€»</span>ãƒ¡ãƒ¼ãƒ«ã‚¢ãƒ‰ãƒ¬ã‚¹</td>
 						<td class="fs12n" bgcolor="#ffffff" width="407">
 							<!--{$arrForm.email|escape}-->
 							<input type="hidden" name="email" value="<!--{$arrForm.email|escape}-->" />
@@ -165,7 +165,7 @@ function func_return(){
 			</tr>
 			<tr><td height="15"></td></tr>
 			<tr>
-				<td align="center"><input type="button" name="subm1" onclick="return func_return();"value="Ìá¤ë">¡¡<input type="submit" name="subm2" value="Á÷¿®"></td>
+				<td align="center"><input type="button" name="subm1" onclick="return func_return();"value="æˆ»ã‚‹">ã€€<input type="submit" name="subm2" value="é€ä¿¡"></td>
 			</tr>
 			</form>
 		</table>

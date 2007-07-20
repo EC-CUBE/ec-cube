@@ -16,7 +16,7 @@
 <script type="text/javascript" src="<!--{$smarty.const.URL_DIR}-->js/navi.js"></script>
 <script type="text/javascript" src="<!--{$smarty.const.URL_DIR}-->js/win_op.js"></script>
 <script type="text/javascript" src="<!--{$smarty.const.URL_DIR}-->js/site.js"></script>
-<title><!--{$arrSiteInfo.shop_name}-->/¥¨¥é¡¼</title>
+<title><!--{$arrSiteInfo.shop_name}-->/ã‚¨ãƒ©ãƒ¼</title>
 </head>
 
 <body onload="preLoadImg('<!--{$smarty.const.URL_DIR}-->')">
@@ -26,16 +26,16 @@
 
 <div align="center">
 
-<!--¢§CONTENTS-->
-<!--¢§MAINN ONTENTS-->
+<!--â–¼CONTENTS-->
+<!--â–¼MAINN ONTENTS-->
 <div id="compbox">
 <span class="red"><!--{$tpl_error}--></span><br />
 </div>
 
 <div class="button">
-<a href="javascript:window.close()" onmouseOver="chgImg('<!--{$smarty.const.URL_DIR}-->img/button/close_on.jpg','close');" onmouseout="chgImg('<!--{$smarty.const.URL_DIR}-->img/button/close.jpg','close');"><img src="<!--{$smarty.const.URL_DIR}-->img/button/close.jpg" width="129" height="32" alt="ÊÄ¤¸¤ë" name="close" id="close" /></a></div>
-<!--¢¥MAIN CONTENTS-->
-<!--¢¥CONTENTS-->
+<a href="javascript:window.close()" onmouseOver="chgImg('<!--{$smarty.const.URL_DIR}-->img/button/close_on.jpg','close');" onmouseout="chgImg('<!--{$smarty.const.URL_DIR}-->img/button/close.jpg','close');"><img src="<!--{$smarty.const.URL_DIR}-->img/button/close.jpg" width="129" height="32" alt="é–‰ã˜ã‚‹" name="close" id="close" /></a></div>
+<!--â–²MAIN CONTENTS-->
+<!--â–²CONTENTS-->
 </div>
 
 </body>

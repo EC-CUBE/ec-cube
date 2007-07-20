@@ -25,11 +25,11 @@
 <br>
 <hr>
 
-<a href="<!--{$smarty.const.MOBILE_URL_CART_TOP}-->" accesskey="9"><!--{9|numeric_emoji}-->¤«¤´¤ò¸«¤ë</a><br>
-<a href="<!--{$smarty.const.MOBILE_URL_SITE_TOP}-->" accesskey="0"><!--{0|numeric_emoji}-->TOP¥Ú¡¼¥¸¤Ø</a><br>
+<a href="<!--{$smarty.const.MOBILE_URL_CART_TOP}-->" accesskey="9"><!--{9|numeric_emoji}-->ã‹ã”ã‚’è¦‹ã‚‹</a><br>
+<a href="<!--{$smarty.const.MOBILE_URL_SITE_TOP}-->" accesskey="0"><!--{0|numeric_emoji}-->TOPãƒšãƒ¼ã‚¸ã¸</a><br>
 
 <br>
 
-<!-- ¢§¥Õ¥Ã¥¿¡¼ ¤³¤³¤«¤é -->
+<!-- â–¼ãƒ•ãƒƒã‚¿ãƒ¼ ã“ã“ã‹ã‚‰ -->
 <!--{include file='footer.tpl'}-->
-<!-- ¢¥¥Õ¥Ã¥¿¡¼ ¤³¤³¤Þ¤Ç -->
+<!-- â–²ãƒ•ãƒƒã‚¿ãƒ¼ ã“ã“ã¾ã§ -->

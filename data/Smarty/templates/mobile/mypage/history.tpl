@@ -5,19 +5,19 @@
  * http://www.lockon.co.jp/
  */
 *}-->
-<div align="center">¹ØÆþÍúÎò</div>
+<div align="center">è³¼å…¥å±¥æ­´</div>
 <hr>
 
 <!--{section name=cnt loop=$arrOrder}-->
-	¢£<!--{$arrOrder[cnt].create_date|sfDispDBDate}--><br>
-	ÃíÊ¸ÈÖ¹æ:<!--{$arrOrder[cnt].order_id}--><br>
+	â– <!--{$arrOrder[cnt].create_date|sfDispDBDate}--><br>
+	æ³¨æ–‡ç•ªå·:<!--{$arrOrder[cnt].order_id}--><br>
 	<!--{assign var=payment_id value="`$arrOrder[cnt].payment_id`"}-->
-	¹ç·×¶â³Û:<!--{$arrOrder[cnt].payment_total|number_format}-->±ß<br>
+	åˆè¨ˆé‡‘é¡:<!--{$arrOrder[cnt].payment_total|number_format}-->å††<br>
 
 	<div align="center">
 	<form name="form1" method="post" action="history_detail.php">
 		<input type="hidden" name="order_id" value="<!--{$arrOrder[cnt].order_id}-->">
-		<input type="submit" name="submit" value="¾ÜºÙ¤ò¸«¤ë">
+		<input type="submit" name="submit" value="è©³ç´°ã‚’è¦‹ã‚‹">
 	</form>
 	</div>
 	<br>
@@ -28,11 +28,11 @@
 
 <hr>
 
-<a href="<!--{$smarty.const.MOBILE_URL_CART_TOP}-->" accesskey="9"><!--{9|numeric_emoji}-->¤«¤´¤ò¸«¤ë</a><br>
-<a href="<!--{$smarty.const.MOBILE_URL_SITE_TOP}-->" accesskey="0"><!--{0|numeric_emoji}-->TOP¥Ú¡¼¥¸¤Ø</a><br>
+<a href="<!--{$smarty.const.MOBILE_URL_CART_TOP}-->" accesskey="9"><!--{9|numeric_emoji}-->ã‹ã”ã‚’è¦‹ã‚‹</a><br>
+<a href="<!--{$smarty.const.MOBILE_URL_SITE_TOP}-->" accesskey="0"><!--{0|numeric_emoji}-->TOPãƒšãƒ¼ã‚¸ã¸</a><br>
 
 <br>
 
-<!-- ¢§¥Õ¥Ã¥¿¡¼ ¤³¤³¤«¤é -->
+<!-- â–¼ãƒ•ãƒƒã‚¿ãƒ¼ ã“ã“ã‹ã‚‰ -->
 <!--{include file='footer.tpl'}-->
-<!-- ¢¥¥Õ¥Ã¥¿¡¼ ¤³¤³¤Þ¤Ç -->
+<!-- â–²ãƒ•ãƒƒã‚¿ãƒ¼ ã“ã“ã¾ã§ -->

@@ -5,19 +5,19 @@
  * http://www.lockon.co.jp/
  */
 *}-->
-<!--¡ú¡ú¥á¥¤¥ó¥³¥ó¥Æ¥ó¥Ä¡ú¡ú-->
+<!--â˜…â˜…ãƒ¡ã‚¤ãƒ³ã‚³ãƒ³ãƒ†ãƒ³ãƒ„â˜…â˜…-->
 <table width="878" border="0" cellspacing="0" cellpadding="0" summary=" ">
 <form name="form1" id="form1" method="post" action="">
 	<tr valign="top">
 		<td background="<!--{$smarty.const.URL_DIR}-->img/contents/navi_bg.gif" height="402">
-			<!--¢§SUB NAVI-->
+			<!--â–¼SUB NAVI-->
 			<!--{include file=$tpl_subnavi}-->
-			<!--¢¥SUB NAVI-->
+			<!--â–²SUB NAVI-->
 		</td>
 		<td class="mainbg">
-			<!--¢§ÅĞÏ¿¥Æ¡¼¥Ö¥ë¤³¤³¤«¤é-->
+			<!--â–¼ç™»éŒ²ãƒ†ãƒ¼ãƒ–ãƒ«ã“ã“ã‹ã‚‰-->
 			<table width="737" border="0" cellspacing="0" cellpadding="0" summary=" ">
-				<!--¥á¥¤¥ó¥¨¥ê¥¢-->
+				<!--ãƒ¡ã‚¤ãƒ³ã‚¨ãƒªã‚¢-->
 				<tr>
 					<td align="center">
 						<table width="706" border="0" cellspacing="0" cellpadding="0" summary=" ">
@@ -34,7 +34,7 @@
 									</tr>
 									<tr>
 										<td background="<!--{$smarty.const.URL_DIR}-->img/contents/contents_title_left_bg.gif"><img src="<!--{$smarty.const.URL_DIR}-->img/contents/contents_title_left.gif" width="22" height="12" alt=""></td>
-										<td bgcolor="#636469" width="638" class="fs14n"><span class="white"><!--¥³¥ó¥Æ¥ó¥Ä¥¿¥¤¥È¥ë-->¥á¥ó¥Ğ¡¼´ÉÍı</span></td>
+										<td bgcolor="#636469" width="638" class="fs14n"><span class="white"><!--ã‚³ãƒ³ãƒ†ãƒ³ãƒ„ã‚¿ã‚¤ãƒˆãƒ«-->ãƒ¡ãƒ³ãƒãƒ¼ç®¡ç†</span></td>
 										<td background="<!--{$smarty.const.URL_DIR}-->img/contents/contents_title_right_bg.gif"><img src="<!--{$smarty.const.URL_DIR}-->img/common/_.gif" width="18" height="1" alt=""></td>
 									</tr>
 									<tr>
@@ -50,51 +50,51 @@
 										<table width="650" border="0" cellspacing="0" cellpadding="0" summary=" ">
 											<tr bgcolor="#ffffff" class="fs12n">
 												<td align="center">
-												<!--¢§¥Ú¡¼¥¸Á÷¤ê-->
+												<!--â–¼ãƒšãƒ¼ã‚¸é€ã‚Š-->
 												<!--{$tpl_strnavi}-->
-												<!--¢¥¥Ú¡¼¥¸Á÷¤ê-->
+												<!--â–²ãƒšãƒ¼ã‚¸é€ã‚Š-->
 												</td>
 											</tr>
 											<tr><td height="10"></td></tr>
 										</table>
 								
-										<!--¢§¥á¥ó¥Ğ¡¼°ìÍ÷¤³¤³¤«¤é-->
+										<!--â–¼ãƒ¡ãƒ³ãƒãƒ¼ä¸€è¦§ã“ã“ã‹ã‚‰-->
 										<table width="650" bgcolor="#cccccc" border="0" cellspacing="1" cellpadding="5" summary=" ">
 											<tr bgcolor="#f2f1ec" align="center" class="fs12n">
-												<td width="65">¸¢¸Â</td>
-												<td width="155">Ì¾Á°</td>
-												<td width="155">½êÂ°</td>
-												<td width="30">²ÔÆ°</td>
-												<td width="60">Èó²ÔÆ°</td>
-												<td width="50">ÊÔ½¸</td>
-												<td width="50">ºï½ü</td>
-												<td width="80">°ÜÆ°</td>
+												<td width="65">æ¨©é™</td>
+												<td width="155">åå‰</td>
+												<td width="155">æ‰€å±</td>
+												<td width="30">ç¨¼å‹•</td>
+												<td width="60">éç¨¼å‹•</td>
+												<td width="50">ç·¨é›†</td>
+												<td width="50">å‰Šé™¤</td>
+												<td width="80">ç§»å‹•</td>
 											</tr>
-											<!--{section name=data loop=$list_data}--><!--¢§¥á¥ó¥Ğ¡¼<!--{$smarty.section.data.iteration}-->-->
+											<!--{section name=data loop=$list_data}--><!--â–¼ãƒ¡ãƒ³ãƒãƒ¼<!--{$smarty.section.data.iteration}-->-->
 											<tr bgcolor="#ffffff" class="fs12">
 												<!--{assign var="auth" value=$list_data[data].authority}--><td width="65" align="center"><!--{$arrAUTHORITY[$auth]|escape}--></td>
 												<td width=""><!--{$list_data[data].name|escape}--></td>
 												<td width=""><!--{$list_data[data].department|escape}--></td>
-												<td width="" align="center"><!--{if $list_data[data].work eq 1}--><input type="radio" name="radio<!--{$smarty.section.data.iteration}-->" value="²ÔÆ°" onclick="fnChangeRadio(this.name, 1, <!--{$list_data[data].member_id}-->, <!--{$tpl_disppage}-->);" checked /><!--{else}--><input type="radio" name="radio<!--{$smarty.section.data.iteration}-->" value="²ÔÆ°" onclick="fnChangeRadio(this.name, 1, <!--{$list_data[data].member_id}-->, <!--{$tpl_disppage}-->);"/><!--{/if}--></td>
-												<td width="" align="center"><!--{if $list_data[data].work eq 0}--><input type="radio" name="radio<!--{$smarty.section.data.iteration}-->" value="Èó²ÔÆ°"  onclick="fnChangeRadio(this.name, 0, <!--{$list_data[data].member_id}-->, <!--{$tpl_disppage}-->);" checked /><!--{else}--><input type="radio" name="radio<!--{$smarty.section.data.iteration}-->" value="Èó²ÔÆ°" onclick="fnChangeRadio(this.name, 0, <!--{$list_data[data].member_id}-->, <!--{$tpl_disppage}-->);" <!--{if $workmax <= 1 }-->disabled<!--{/if}-->  /><!--{/if}--></td>
-												<td width="" align="center"><a href="./" onClick="win01('./input.php?id=<!--{$list_data[data].member_id}-->&pageno=<!--{$tpl_disppage}-->','member_edit','500','420'); return false;">ÊÔ½¸</a></td>
-												<td width="" align="center"><!--{if $workmax > 1 }--><a href="./" onClick="fnDeleteMember(<!--{$list_data[data].member_id}-->,<!--{$tpl_disppage}-->); return false;">ºï½ü</a><!--{else}-->-<!--{/if}--></td>
+												<td width="" align="center"><!--{if $list_data[data].work eq 1}--><input type="radio" name="radio<!--{$smarty.section.data.iteration}-->" value="ç¨¼å‹•" onclick="fnChangeRadio(this.name, 1, <!--{$list_data[data].member_id}-->, <!--{$tpl_disppage}-->);" checked /><!--{else}--><input type="radio" name="radio<!--{$smarty.section.data.iteration}-->" value="ç¨¼å‹•" onclick="fnChangeRadio(this.name, 1, <!--{$list_data[data].member_id}-->, <!--{$tpl_disppage}-->);"/><!--{/if}--></td>
+												<td width="" align="center"><!--{if $list_data[data].work eq 0}--><input type="radio" name="radio<!--{$smarty.section.data.iteration}-->" value="éç¨¼å‹•"  onclick="fnChangeRadio(this.name, 0, <!--{$list_data[data].member_id}-->, <!--{$tpl_disppage}-->);" checked /><!--{else}--><input type="radio" name="radio<!--{$smarty.section.data.iteration}-->" value="éç¨¼å‹•" onclick="fnChangeRadio(this.name, 0, <!--{$list_data[data].member_id}-->, <!--{$tpl_disppage}-->);" <!--{if $workmax <= 1 }-->disabled<!--{/if}-->  /><!--{/if}--></td>
+												<td width="" align="center"><a href="./" onClick="win01('./input.php?id=<!--{$list_data[data].member_id}-->&pageno=<!--{$tpl_disppage}-->','member_edit','500','420'); return false;">ç·¨é›†</a></td>
+												<td width="" align="center"><!--{if $workmax > 1 }--><a href="./" onClick="fnDeleteMember(<!--{$list_data[data].member_id}-->,<!--{$tpl_disppage}-->); return false;">å‰Šé™¤</a><!--{else}-->-<!--{/if}--></td>
 												<td width="" align="center">
 												<!--{$tpl_nomove}-->
-												<!--{if !($smarty.section.data.first && $tpl_disppage eq 1) }--><a href="./rank.php?id=<!--{$list_data[data].member_id}-->&move=up&pageno=<!--{$tpl_disppage}-->">¾å¤Ø</a><!--{/if}-->
-												<!--{if !($smarty.section.data.last && $tpl_disppage eq $tpl_pagemax) }--><a href="./rank.php?id=<!--{$list_data[data].member_id}-->&move=down&pageno=<!--{$tpl_disppage}-->">²¼¤Ø</a><!--{/if}-->
+												<!--{if !($smarty.section.data.first && $tpl_disppage eq 1) }--><a href="./rank.php?id=<!--{$list_data[data].member_id}-->&move=up&pageno=<!--{$tpl_disppage}-->">ä¸Šã¸</a><!--{/if}-->
+												<!--{if !($smarty.section.data.last && $tpl_disppage eq $tpl_pagemax) }--><a href="./rank.php?id=<!--{$list_data[data].member_id}-->&move=down&pageno=<!--{$tpl_disppage}-->">ä¸‹ã¸</a><!--{/if}-->
 												</td>
 											</tr>
-											<!--¢¥¥á¥ó¥Ğ¡¼<!--{$smarty.section.data.iteration}-->-->
+											<!--â–²ãƒ¡ãƒ³ãƒãƒ¼<!--{$smarty.section.data.iteration}-->-->
 											<!--{/section}-->
 										</table>
 										<table width="650" border="0" cellspacing="0" cellpadding="0" summary=" ">
 											<tr><td height="10"></td></tr>
 											<tr bgcolor="#ffffff" class="fs12n">
 												<td align="center">
-												<!--¢§¥Ú¡¼¥¸Á÷¤ê-->
+												<!--â–¼ãƒšãƒ¼ã‚¸é€ã‚Š-->
 												<!--{$tpl_strnavi}-->
-												<!--¢¥¥Ú¡¼¥¸Á÷¤ê-->
+												<!--â–²ãƒšãƒ¼ã‚¸é€ã‚Š-->
 								
 												</td>
 											</tr>
@@ -115,7 +115,7 @@
 										<td bgcolor="#e9e7de" align="center">
 										<table border="0" cellspacing="0" cellpadding="0" summary=" ">
 											<tr>
-												<td><input type="button" name="new" value="¥á¥ó¥Ğ¡¼¿·µ¬ÅĞÏ¿" onclick="win01('./input.php','input','500','420');" /></td>
+												<td><input type="button" name="new" value="ãƒ¡ãƒ³ãƒãƒ¼æ–°è¦ç™»éŒ²" onclick="win01('./input.php','input','500','420');" /></td>
 											</tr>
 										</table>
 										</td>
@@ -135,11 +135,11 @@
 						</table>
 					</td>
 				</tr>
-				<!--¥á¥¤¥ó¥¨¥ê¥¢-->
+				<!--ãƒ¡ã‚¤ãƒ³ã‚¨ãƒªã‚¢-->
 			</table>
-			<!--¢¥ÅĞÏ¿¥Æ¡¼¥Ö¥ë¤³¤³¤Ş¤Ç-->
+			<!--â–²ç™»éŒ²ãƒ†ãƒ¼ãƒ–ãƒ«ã“ã“ã¾ã§-->
 		</td>
 	</tr>
 </form>
 </table>
-<!--¡ú¡ú¥á¥¤¥ó¥³¥ó¥Æ¥ó¥Ä¡ú¡ú-->
+<!--â˜…â˜…ãƒ¡ã‚¤ãƒ³ã‚³ãƒ³ãƒ†ãƒ³ãƒ„â˜…â˜…-->

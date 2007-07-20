@@ -4,26 +4,15 @@
  *
  * http://www.lockon.co.jp/
  */
-
+// {{{ requires
 require_once("./require.php");
+require_once(CLASS_PATH . "page_extends/LC_Page_Index_Ex.php");
 
-class LC_Page {
-	function LC_Page() {
-		/** 必ず変更する **/
-		$this->tpl_css = URL_DIR.'css/layout/index.css';						// メインCSSパス
-		/** 必ず変更する **/
-		$this->tpl_mainpage = HTML_PATH . "user_data/templates/top.tpl";		// メインテンプレート
-	}
-}
+// }}}
+// {{{ generate page
 
-$objPage = new LC_Page();
-$conn = new SC_DBConn();
-
-// レイアウトデザインを取得
-$objPage = sfGetPageLayout($objPage, false, "index.php");
-
-$objView = new SC_SiteView();
-$objView->assignobj($objPage);
-$objView->display(SITE_FRAME);
-//-----------------------------------------------------------------------------------------------------------------------------------
+$objPage = new LC_Page_Index_Ex();
+$objPage->init();
+$objPage->process();
+register_shutdown_function(array($objPage, "destroy"));
 ?>

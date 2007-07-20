@@ -9,26 +9,26 @@
 <hr>
 
 <!--{if $arrErr.classcategory_id1 != ""}-->
-	<font color="#FF0000">¢¨<!--{$tpl_class_name1}-->¤òÆþÎÏ¤·¤Æ²¼¤µ¤¤Ž¡</font><br>
+	<font color="#FF0000">â€»<!--{$tpl_class_name1}-->ã‚’å…¥åŠ›ã—ã¦ä¸‹ã•ã„ï½¡</font><br>
 <!--{/if}-->
 <form method="post" action="<!--{$smarty.server.REQUEST_URI|escape}-->">
 	<select name="classcategory_id1">
-		<option value="">ÁªÂò¤·¤Æ¤¯¤À¤µ¤¤</option>
+		<option value="">é¸æŠžã—ã¦ãã ã•ã„</option>
 		<!--{html_options options=$arrClassCat1 selected=$arrForm.classcategory_id1.value}-->
 	</select><br>
 	<input type="hidden" name="mode" value="select2">
 	<input type="hidden" name="product_id" value="<!--{$tpl_product_id}-->">
-	<center><input type="submit" name="submit" value="¼¡¤Ø"></center>
+	<center><input type="submit" name="submit" value="æ¬¡ã¸"></center>
 </form>
 
 <br>
 <hr>
 
-<a href="<!--{$smarty.const.MOBILE_URL_CART_TOP}-->" accesskey="9"><!--{9|numeric_emoji}-->¤«¤´¤ò¸«¤ë</a><br>
-<a href="<!--{$smarty.const.MOBILE_URL_SITE_TOP}-->" accesskey="0"><!--{0|numeric_emoji}-->TOP¥Ú¡¼¥¸¤Ø</a><br>
+<a href="<!--{$smarty.const.MOBILE_URL_CART_TOP}-->" accesskey="9"><!--{9|numeric_emoji}-->ã‹ã”ã‚’è¦‹ã‚‹</a><br>
+<a href="<!--{$smarty.const.MOBILE_URL_SITE_TOP}-->" accesskey="0"><!--{0|numeric_emoji}-->TOPãƒšãƒ¼ã‚¸ã¸</a><br>
 
 <br>
 
-<!-- ¢§¥Õ¥Ã¥¿¡¼ ¤³¤³¤«¤é -->
+<!-- â–¼ãƒ•ãƒƒã‚¿ãƒ¼ ã“ã“ã‹ã‚‰ -->
 <!--{include file='footer.tpl'}-->
-<!-- ¢¥¥Õ¥Ã¥¿¡¼ ¤³¤³¤Þ¤Ç -->
+<!-- â–²ãƒ•ãƒƒã‚¿ãƒ¼ ã“ã“ã¾ã§ -->

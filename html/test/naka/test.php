@@ -8,9 +8,9 @@
 <table>
 <form name="form1" action="test.php" method="POST">
 <tr>
-	<td>Ê¸»ú¤òÆþÎÏ¤·¤Æ¤¯¤À¤µ¤¤</td>
+	<td>æ–‡å­—ã‚’å…¥åŠ›ã—ã¦ãã ã•ã„</td>
 	<td><input type="text" name="string"></td>
-	<td><input type="submit" value="Á÷¿®"></td>
+	<td><input type="submit" value="é€ä¿¡"></td>
 </tr>
 </form>
 </table>

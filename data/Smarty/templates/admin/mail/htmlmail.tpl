@@ -18,7 +18,7 @@ function lfc_del_product( pname ){
 //-->
 </script>
 
-<!--¡ú¡ú¥á¥¤¥ó¥³¥ó¥Æ¥ó¥Ä¡ú¡ú-->
+<!--â˜…â˜…ãƒ¡ã‚¤ãƒ³ã‚³ãƒ³ãƒ†ãƒ³ãƒ„â˜…â˜…-->
 <table width="878" border="0" cellspacing="0" cellpadding="0" summary=" ">
 <form name="form1" id="form1" method="post" action="<!--{$smarty.server.PHP_SELF|escape}-->" enctype="multipart/form-data">
 <input type="hidden" name="template_id" value="<!--{$arrForm.template_id|escape}-->">
@@ -34,14 +34,14 @@ function lfc_del_product( pname ){
 <!--{/foreach}-->
 	<tr valign="top">
 		<td background="<!--{$smarty.const.URL_DIR}-->img/contents/navi_bg.gif" height="402">
-			<!--¢§SUB NAVI-->
+			<!--â–¼SUB NAVI-->
 			<!--{include file=$tpl_subnavi}-->
-			<!--¢¥SUB NAVI-->
+			<!--â–²SUB NAVI-->
 		</td>
 		<td class="mainbg">
-			<!--¢§ÅĞÏ¿¥Æ¡¼¥Ö¥ë¤³¤³¤«¤é-->
+			<!--â–¼ç™»éŒ²ãƒ†ãƒ¼ãƒ–ãƒ«ã“ã“ã‹ã‚‰-->
 			<table width="737" border="0" cellspacing="0" cellpadding="0" summary=" ">
-				<!--¥á¥¤¥ó¥¨¥ê¥¢-->
+				<!--ãƒ¡ã‚¤ãƒ³ã‚¨ãƒªã‚¢-->
 				<tr>
 					<td align="center">
 						<table width="706" border="0" cellspacing="0" cellpadding="0" summary=" ">
@@ -58,7 +58,7 @@ function lfc_del_product( pname ){
 									</tr>
 									<tr>
 										<td background="<!--{$smarty.const.URL_DIR}-->img/contents/contents_title_left_bg.gif"><img src="<!--{$smarty.const.URL_DIR}-->img/contents/contents_title_left.gif" width="22" height="12" alt=""></td>
-										<td bgcolor="#636469" width="638" class="fs14n"><span class="white"><!--¥³¥ó¥Æ¥ó¥Ä¥¿¥¤¥È¥ë-->HTML¥á¡¼¥ëºîÀ®</span></td>
+										<td bgcolor="#636469" width="638" class="fs14n"><span class="white"><!--ã‚³ãƒ³ãƒ†ãƒ³ãƒ„ã‚¿ã‚¤ãƒˆãƒ«-->HTMLãƒ¡ãƒ¼ãƒ«ä½œæˆ</span></td>
 										<td background="<!--{$smarty.const.URL_DIR}-->img/contents/contents_title_right_bg.gif"><img src="<!--{$smarty.const.URL_DIR}-->img/common/_.gif" width="18" height="1" alt=""></td>
 									</tr>
 									<tr>
@@ -77,38 +77,38 @@ function lfc_del_product( pname ){
 										</td>
 									</tr>
 									<tr>
-										<td bgcolor="#f2f1ec" width="160" class="fs12n">¥á¡¼¥ëÃ´Åö¼Ì¿¿<span class="red"> *</span><br />[130¡ß130]</td>
+										<td bgcolor="#f2f1ec" width="160" class="fs12n">ãƒ¡ãƒ¼ãƒ«æ‹…å½“å†™çœŸ<span class="red"> *</span><br />[130Ã—130]</td>
 										<!--{assign var=key value="charge_image"}-->
 										<td bgcolor="#ffffff" width="547" class="fs12n">
 										<!--{if $arrFile[$key].filepath != ""}-->
-										<img src="<!--{$arrFile[$key].filepath}-->" alt="¥á¡¼¥ëÃ´Åö¼Ì¿¿" width="<!--{$arrFile[$key].width}-->" height="<!--{$arrFile[$key].height}-->"><br/><br />
+										<img src="<!--{$arrFile[$key].filepath}-->" alt="ãƒ¡ãƒ¼ãƒ«æ‹…å½“å†™çœŸ" width="<!--{$arrFile[$key].width}-->" height="<!--{$arrFile[$key].height}-->"><br/><br />
 										<!--{/if}-->
 										<!--{if $arrErr[$key]}--><span class="red"><!--{$arrErr[$key]}--></span><!--{/if}-->
-										<input type="file" name="<!--{$key}-->" size="45" class="box45"¡¡style="<!--{$arrErr[$key]|sfGetErrorColor}-->" />
-										<input type="button" name="btn" value="¥¢¥Ã¥×¥í¡¼¥É" onclick="fnModeSubmit('upload_image','image_key','<!--{$key}-->');" />
+										<input type="file" name="<!--{$key}-->" size="45" class="box45"ã€€style="<!--{$arrErr[$key]|sfGetErrorColor}-->" />
+										<input type="button" name="btn" value="ã‚¢ãƒƒãƒ—ãƒ­ãƒ¼ãƒ‰" onclick="fnModeSubmit('upload_image','image_key','<!--{$key}-->');" />
 										</td>
 									</tr>
 									<tr>
-										<td bgcolor="#f2f1ec" width="160" class="fs12n">¥Ø¥Ã¥À¡¼¥Æ¥­¥¹¥È<span class="red"> *</span></td>
+										<td bgcolor="#f2f1ec" width="160" class="fs12n">ãƒ˜ãƒƒãƒ€ãƒ¼ãƒ†ã‚­ã‚¹ãƒˆ<span class="red"> *</span></td>
 										<td bgcolor="#ffffff" width="547" class="fs12n"><textarea name="header" cols="70" rows="8" class="area70" <!--{if $arrErr.header}--><!--{sfSetErrorStyle}--><!--{/if}-->><!--{$arrForm.header|escape}--></textarea>
 										<!--{if $arrErr.header}--><br><span class="red"><!--{$arrErr.header}--></span><!--{/if}-->
 										</td>
 									</tr>
 									<tr>
-										<td bgcolor="#f2f1ec" width="160" class="fs12n">¥á¥¤¥ó¾¦ÉÊ¥¿¥¤¥È¥ë<span class="red"> *</span></td>
+										<td bgcolor="#f2f1ec" width="160" class="fs12n">ãƒ¡ã‚¤ãƒ³å•†å“ã‚¿ã‚¤ãƒˆãƒ«<span class="red"> *</span></td>
 										<td bgcolor="#ffffff" width="547" class="fs12n"><input type="text" name="main_title" size="65" class="box65"  <!--{if $arrErr.main_title}--><!--{sfSetErrorStyle}--><!--{/if}--> value="<!--{$arrForm.main_title|escape}-->"/>
 										<!--{if $arrErr.main_title}--><br><span class="red"><!--{$arrErr.main_title}--></span><!--{/if}-->
 										</td>
 									</tr>
 									<tr>
-										<td bgcolor="#f2f1ec" width="160" class="fs12n">¥á¥¤¥ó¾¦ÉÊ¥³¥á¥ó¥È<span class="red"> *</span></td>
+										<td bgcolor="#f2f1ec" width="160" class="fs12n">ãƒ¡ã‚¤ãƒ³å•†å“ã‚³ãƒ¡ãƒ³ãƒˆ<span class="red"> *</span></td>
 										<td bgcolor="#ffffff" width="547" class="fs12n"><textarea name="main_comment" cols="70" rows="8" class="area70" <!--{if $arrErr.main_comment}--><!--{sfSetErrorStyle}--><!--{/if}-->><!--{$arrForm.main_comment|escape}--></textarea>
 										<!--{if $arrErr.main_comment}--><br><span class="red"><!--{$arrErr.main_comment}--></span><!--{/if}-->
 										</td>
 									</tr>
 									<tr>
-										<td bgcolor="#f2f1ec" width="160" class="fs12n">¥á¥¤¥ó¾¦ÉÊÁªÂò<span class="red"> *</span><br />
-										[110¡ß120]</td>
+										<td bgcolor="#f2f1ec" width="160" class="fs12n">ãƒ¡ã‚¤ãƒ³å•†å“é¸æŠ<span class="red"> *</span><br />
+										[110Ã—120]</td>
 										<td bgcolor="#ffffff" width="547" class="fs12n">
 											<!--{if is_numeric($arrForm.template_id)}-->
 												<!--{assign var=image_path value="`$smarty.const.IMAGE_SAVE_URL`/`$arrFileName[0].main_image`"}-->
@@ -117,21 +117,21 @@ function lfc_del_product( pname ){
 											<!--{else}-->
 												<!--{assign var=image_path value="`$smarty.const.NO_IMAGE_URL`"}-->
 											<!--{/if}-->
-											<img src="<!--{$image_path}-->" width="<!--{$smarty.const.SMALL_IMAGE_WIDTH}-->" height="<!--{$smarty.const.SMALL_IMAGE_HEIGHT}-->" alt="¾¦ÉÊ²èÁümain" />
+											<img src="<!--{$image_path}-->" width="<!--{$smarty.const.SMALL_IMAGE_WIDTH}-->" height="<!--{$smarty.const.SMALL_IMAGE_HEIGHT}-->" alt="å•†å“ç”»åƒmain" />
 											<input type="hidden" name="main_product_id" value="<!--{$arrForm.main_product_id}-->"/>
-											¡¡<a href="#" onclick="win03('./htmlmail_select.php?name=main_product_id','select','450','300'); return false;" target="_blank">¾¦ÉÊÁªÂò</a><br />
+											ã€€<a href="#" onclick="win03('./htmlmail_select.php?name=main_product_id','select','450','300'); return false;" target="_blank">å•†å“é¸æŠ</a><br />
 											<!--{if $arrErr.main_product_id}--><br><span class="red"><!--{$arrErr.main_product_id}--></span><!--{/if}-->
 											<input type="text" name="name_main_product_id" value="<!--{$arrFileName[0].name|escape}-->" disabled="disabled" size="65" class="box65" style="background:#FFF;border-style:solid;border-color:#FFFFFF;"/>
 										</td>
 									</tr>
 									<tr>
-										<td bgcolor="#f2f1ec" width="160" class="fs12n">¥µ¥Ö¾¦ÉÊ·²¥¿¥¤¥È¥ë<span class="red"> *</span></td>
+										<td bgcolor="#f2f1ec" width="160" class="fs12n">ã‚µãƒ–å•†å“ç¾¤ã‚¿ã‚¤ãƒˆãƒ«<span class="red"> *</span></td>
 										<td bgcolor="#ffffff" width="547" class="fs12n"><input type="text" name="sub_title" size="65" class="box65" <!--{if $arrErr.sub_title}--><!--{sfSetErrorStyle}--><!--{/if}--> value="<!--{$arrForm.sub_title|escape}-->"/>
 										<!--{if $arrErr.sub_title}--><br><span class="red"><!--{$arrErr.sub_title}--></span><!--{/if}-->
 										</td>
 									</tr>
 									<tr>
-										<td bgcolor="#f2f1ec" width="160" class="fs12n">¥µ¥Ö¾¦ÉÊ·²¥³¥á¥ó¥È<span class="red"> *</span></td>
+										<td bgcolor="#f2f1ec" width="160" class="fs12n">ã‚µãƒ–å•†å“ç¾¤ã‚³ãƒ¡ãƒ³ãƒˆ<span class="red"> *</span></td>
 										<td bgcolor="#ffffff" width="547" class="fs12n"><textarea name="sub_comment" cols="70" rows="8" class="area70" <!--{if $arrErr.sub_comment}--><!--{sfSetErrorStyle}--><!--{/if}-->><!--{$arrForm.sub_comment|escape}--></textarea>
 										<!--{if $arrErr.sub_comment}--><br><span class="red"><!--{$arrErr.sub_comment}--></span><!--{/if}-->
 										</td>
@@ -139,7 +139,7 @@ function lfc_del_product( pname ){
 									<!--{section name=cnt loop=$smarty.const.HTML_TEMPLATE_SUB_MAX}-->
 									<!--{assign var=subProductNum value=`$smarty.section.cnt.iteration`}-->
 									<tr class="fs12n">
-										<td bgcolor="#f2f1ec" width="160">¾¦ÉÊ²èÁü¡Ê<!--{$subProductNum}-->¡Ë</td>
+										<td bgcolor="#f2f1ec" width="160">å•†å“ç”»åƒï¼ˆ<!--{$subProductNum}-->ï¼‰</td>
 										<td bgcolor="#ffffff" width="547">
 											<!--{if is_numeric($arrForm.template_id)}-->
 												<!--{if strlen($arrFileName[$smarty.section.cnt.iteration].main_image) > 0}--><!--{assign var=image_path value="`$smarty.const.IMAGE_SAVE_URL`/`$arrFileName[$smarty.section.cnt.iteration].main_image`"}--><!--{else}--><!--{assign var=image_path value="`$smarty.const.NO_IMAGE_URL`"}--><!--{/if}-->
@@ -153,11 +153,11 @@ function lfc_del_product( pname ){
 											<!--{else}-->
 											<!--{assign var=sub_product_id value="sub_product_id`$smarty.section.cnt.iteration`"}-->
 											<!--{/if}-->
-											<img src="<!--{$image_path}-->" width="<!--{$smarty.const.SMALL_IMAGE_WIDTH}-->" height="<!--{$smarty.const.SMALL_IMAGE_HEIGHT}-->" alt="¾¦ÉÊ²èÁü<!--{$subProductNum}-->" />¡¡
+											<img src="<!--{$image_path}-->" width="<!--{$smarty.const.SMALL_IMAGE_WIDTH}-->" height="<!--{$smarty.const.SMALL_IMAGE_HEIGHT}-->" alt="å•†å“ç”»åƒ<!--{$subProductNum}-->" />ã€€
 											<input type="hidden" name="<!--{$sub_product_id}-->" value="<!--{$arrFileName[$smarty.section.cnt.iteration].product_id|escape}-->"/>
-											¡¡<a href="#" onclick="win03('./htmlmail_select.php?name=<!--{$sub_product_id}-->' ,'select','450','300'); return false;" target="_blank">¾¦ÉÊÁªÂò</a>
+											ã€€<a href="#" onclick="win03('./htmlmail_select.php?name=<!--{$sub_product_id}-->' ,'select','450','300'); return false;" target="_blank">å•†å“é¸æŠ</a>
 												<!--{assign var=sub_box value="delete_sub`$smarty.section.cnt.iteration`"}-->
-											¡¡<!--{if $arrForm[$sub_product_id]}--><input type="checkbox" name="delete_sub<!--{$smarty.section.cnt.iteration}-->" value="1" <!--{if $arrForm[$sub_box] == '1'}-->checked<!--{/if}-->>¾¦ÉÊºï½ü<br /><!--{/if}-->
+											ã€€<!--{if $arrForm[$sub_product_id]}--><input type="checkbox" name="delete_sub<!--{$smarty.section.cnt.iteration}-->" value="1" <!--{if $arrForm[$sub_box] == '1'}-->checked<!--{/if}-->>å•†å“å‰Šé™¤<br /><!--{/if}-->
 											<input type="text" name="name_sub_product" value="<!--{$arrFileName[$smarty.section.cnt.iteration].name|escape}-->" disabled="disabled"  size="65" class="box65" style="background:#FFF;border-style:solid;border-color:#FFF;"/>
 										</td>
 									</tr>
@@ -176,7 +176,7 @@ function lfc_del_product( pname ){
 										<table border="0" cellspacing="0" cellpadding="0" summary=" ">
 											<tr>
 												<td>
-													<input type="image" onMouseover="chgImgImageSubmit('<!--{$smarty.const.URL_DIR}-->img/contents/btn_confirm_on.jpg',this)" onMouseout="chgImgImageSubmit('<!--{$smarty.const.URL_DIR}-->img/contents/btn_confirm.jpg',this)" src="<!--{$smarty.const.URL_DIR}-->img/contents/btn_confirm.jpg" width="123" height="24" alt="³ÎÇ§¥Ú¡¼¥¸¤Ø" border="0" name="subm" >
+													<input type="image" onMouseover="chgImgImageSubmit('<!--{$smarty.const.URL_DIR}-->img/contents/btn_confirm_on.jpg',this)" onMouseout="chgImgImageSubmit('<!--{$smarty.const.URL_DIR}-->img/contents/btn_confirm.jpg',this)" src="<!--{$smarty.const.URL_DIR}-->img/contents/btn_confirm.jpg" width="123" height="24" alt="ç¢ºèªãƒšãƒ¼ã‚¸ã¸" border="0" name="subm" >
 												</td>
 											</tr>
 										</table>
@@ -197,11 +197,11 @@ function lfc_del_product( pname ){
 						</table>
 					</td>
 				</tr>
-				<!--¥á¥¤¥ó¥¨¥ê¥¢-->
+				<!--ãƒ¡ã‚¤ãƒ³ã‚¨ãƒªã‚¢-->
 			</table>
-			<!--¢¥ÅĞÏ¿¥Æ¡¼¥Ö¥ë¤³¤³¤Ş¤Ç-->
+			<!--â–²ç™»éŒ²ãƒ†ãƒ¼ãƒ–ãƒ«ã“ã“ã¾ã§-->
 		</td>
 	</tr>
 </form>
 </table>
-<!--¡ú¡ú¥á¥¤¥ó¥³¥ó¥Æ¥ó¥Ä¡ú¡ú-->
+<!--â˜…â˜…ãƒ¡ã‚¤ãƒ³ã‚³ãƒ³ãƒ†ãƒ³ãƒ„â˜…â˜…-->

@@ -6,7 +6,7 @@
  * http://www.lockon.co.jp/
  * 
  * 
- * ��Х��륵����/�ѥ���ɤ�˺�줿��
+ * モバイルサイト/パスワードを忘れた方
  */
 
 require_once('../require.php');
@@ -18,7 +18,7 @@ class LC_Page {
 
 	function LC_Page() {
 		$this->tpl_mainpage = 'forgot/index.tpl';
-		$this->tpl_title = '�ѥ���ɤ�˺�줿��';
+		$this->tpl_title = 'パスワードを忘れた方';
 		$this->tpl_mainno = '';
 	}
 }
@@ -28,8 +28,8 @@ $objPage = new LC_Page();
 $objPage = sfGetPageLayout($objPage, false, DEF_LAYOUT);
 $objView = new SC_MobileView();
 $objSess = new SC_Session();
-$CONF = sf_getBasisData();					// Ź�޴��ܾ���
-// ���å����������饹
+$CONF = sf_getBasisData();					// 店舗基本情報
+// クッキー管理クラス
 $objCookie = new SC_Cookie(COOKIE_EXPIRE);
 
 if (isset($_SESSION['mobile']['kara_mail_from'])) {
@@ -40,86 +40,86 @@ if (isset($_SESSION['mobile']['kara_mail_from'])) {
 }
 
 if ( $_POST['mode'] == 'mail_check' ){
-	//�ᥢ�����ϻ�
+	//メアド入力時
 	$_POST['email'] = strtolower($_POST['email']);
 	$sql = "SELECT * FROM dtb_customer WHERE (email ILIKE ? OR email_mobile ILIKE ?) AND status = 2 AND del_flg = 0";
 	$result = $conn->getAll($sql, array($_POST['email'], $_POST['email']) );
 	
-	if ( $result[0]['reminder'] ){		// �ܲ����Ͽ�Ѥߤξ��
-		// ����email��¸�ߤ���		
+	if ( $result[0]['reminder'] ){		// 本会員登録済みの場合
+		// 入力emailが存在する		
 		$_SESSION['forgot']['email'] = $_POST['email'];
 		$_SESSION['forgot']['reminder'] = $result[0]['reminder'];
-		// �ҥߥĤ��������ϲ���
+		// ヒミツの答え入力画面
 		$objPage->Reminder = $arrReminder[$_SESSION['forgot']['reminder']];
 		$objPage->tpl_mainpage = 'forgot/secret.tpl';
 	} else {
-		$sql = "SELECT customer_id FROM dtb_customer WHERE email ILIKE ? AND status = 1 AND del_flg = 0";	//����Ͽ��γ�ǧ
+		$sql = "SELECT customer_id FROM dtb_customer WHERE email ILIKE ? AND status = 1 AND del_flg = 0";	//仮登録中の確認
 		$result = $conn->getAll($sql, array($_POST['email']) );
 		if ($result) {
-			$objPage->errmsg = "�����Ϥ�email���ɥ쥹�ϸ��߲���Ͽ��Ǥ���<br>��Ͽ�κݤˤ����ꤷ���᡼���URL�˥�����������<br>�ܲ����Ͽ�򤪴ꤤ���ޤ���";
-		} else {		//����Ͽ���Ƥ��ʤ����
-			$objPage->errmsg = "�����Ϥ�email���ɥ쥹����Ͽ����Ƥ��ޤ���";
+			$objPage->errmsg = "ご入力のemailアドレスは現在仮登録中です。<br>登録の際にお送りしたメールのURLにアクセスし、<br>本会員登録をお願いします。";
+		} else {		//　登録していない場合
+			$objPage->errmsg = "ご入力のemailアドレスは登録されていません";
 		}
 	}
 	
 } elseif( $_POST['mode'] == 'secret_check' ){
-	//�ҥߥĤ��������ϻ�
+	//ヒミツの答え入力時
 	
 	if ( $_SESSION['forgot']['email'] ) {
-		// �ҥߥĤ������β������������������å�
+		// ヒミツの答えの回答が正しいかチェック
 		
 		$sql = "SELECT * FROM dtb_customer WHERE (email ILIKE ? OR email_mobile ILIKE ?) AND del_flg = 0";
 		$result = $conn->getAll($sql, array($_SESSION['forgot']['email'], $_SESSION['forgot']['email']) );
 		$data = $result[0];
 		
 		if ( $data['reminder_answer'] === $_POST['input_reminder'] ){
-			// �ҥߥĤ�������������
+			// ヒミツの答えが正しい
 						
-			// �������ѥ���ɤ����ꤹ��
+			// 新しいパスワードを設定する
 			$objPage->temp_password = gfMakePassword(8);
 						
 			if(FORGOT_MAIL == 1) {
-				// �᡼����ѹ����Τ򤹤�
+				// メールで変更通知をする
 				lfSendMail($CONF, $_SESSION['forgot']['email'], $data['name01'], $objPage->temp_password);
 			}
 			
-			// DB��񤭴�����
+			// DBを書き換える
 			$sql = "UPDATE dtb_customer SET password = ?, update_date = now() WHERE customer_id = ?";
 			$conn->query( $sql, array( sha1($objPage->temp_password . ":" . AUTH_MAGIC) ,$data['customer_id']) );
 			
-			// ��λ���̤�ɽ��
+			// 完了画面の表示
 			$objPage->tpl_mainpage = 'forgot/complete.tpl';
 			
-			// ���å�����ѿ��β���
+			// セッション変数の解放
 			$_SESSION['forgot'] = array();
 			unset($_SESSION['forgot']);
 			
 		} else {
-			// �ҥߥĤ��������������ʤ�
+			// ヒミツの答えが正しくない
 			
 			$objPage->Reminder = $arrReminder[$_SESSION['forgot']['reminder']];
-			$objPage->errmsg = "�ѥ���ɤ�˺�줿�Ȥ��μ�����Ф������������������ޤ���";
+			$objPage->errmsg = "パスワードを忘れたときの質問に対する回答が正しくありません";
 			$objPage->tpl_mainpage = 'forgot/secret.tpl';
 
 		}
 	
 		
 	} else {
-		// �����������������ޤ��ϡ����å�����ݻ����֤��ڤ�Ƥ���
-		$objPage->errmsg = "email���ɥ쥹�������Ͽ���Ƥ���������<br />��������Ϥ�����֤��ФäƤ��ޤ��ȡ��ܥ�å�������ɽ��������ǽ��������ޤ���";
+		// アクセス元が不正または、セッション保持期間が切れている
+		$objPage->errmsg = "emailアドレスを再度登録してください。<br />前回の入力から時間が経っていますと、本メッセージが表示される可能性があります。";
 	}
 }
 
-// �ǥե��������
+// デフォルト入力
 if($_POST['email'] != "") {
-	// POST�ͤ�����
+	// POST値を入力
 	$objPage->tpl_login_email = $_POST['email'];
 } else {
-	// ���å����ͤ�����
+	// クッキー値を入力
 	$objPage->tpl_login_email = $objCookie->getCookie('login_email');
 }
 
-// ���᡼���ѤΥȡ�����������
+// 空メール用のトークンを作成。
 if (MOBILE_USE_KARA_MAIL) {
 	$token = gfPrepareKaraMail('forgot/index.php');
 	if ($token !== false) {
@@ -127,14 +127,14 @@ if (MOBILE_USE_KARA_MAIL) {
 	}
 }
 
-//----���ڡ���ɽ��
+//----　ページ表示
 $objView->assignobj($objPage);
 $objView->display(SITE_FRAME);
 
 //-----------------------------------------------------------------------------------------------------------------------------------
 
 function lfSendMail($CONF, $email, $customer_name, $temp_password){
-	//���ѥ�����ѹ����Τ餻�᡼������
+	//　パスワード変更お知らせメール送信
 	
 	$objPage = new LC_Page();
 	$objPage->customer_name = $customer_name;
@@ -146,17 +146,17 @@ function lfSendMail($CONF, $email, $customer_name, $temp_password){
 	$objMail = new GC_SendMail();
 	
 	$objMail->setItem(
-						  ''								//������
-						, "�ѥ���ɤ��ѹ�����ޤ���" ."��" .$CONF["shop_name"]. "��"		//�����֥�������
-						, $toCustomerMail					//����ʸ
-						, $CONF["email03"]					//�����������ɥ쥹
-						, $CONF["shop_name"]				//����������̾��
-						, $CONF["email03"]					//��reply_to
-						, $CONF["email04"]					//��return_path
+						  ''								//　宛先
+						, "パスワードが変更されました" ."【" .$CONF["shop_name"]. "】"		//　サブジェクト
+						, $toCustomerMail					//　本文
+						, $CONF["email03"]					//　配送元アドレス
+						, $CONF["shop_name"]				//　配送元　名前
+						, $CONF["email03"]					//　reply_to
+						, $CONF["email04"]					//　return_path
 						, $CONF["email04"]					//  Errors_to
 
 														);
-	$objMail->setTo($email, $customer_name ." ��");
+	$objMail->setTo($email, $customer_name ." 様");
 	$objMail->sendMail();	
 	
 }

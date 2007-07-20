@@ -5,7 +5,7 @@
  * http://www.lockon.co.jp/
  */
 *}-->
-<!--¡ú¡ú¥á¥¤¥ó¥³¥ó¥Æ¥ó¥Ä¡ú¡ú-->
+<!--â˜…â˜…ãƒ¡ã‚¤ãƒ³ã‚³ãƒ³ãƒ†ãƒ³ãƒ„â˜…â˜…-->
 <table width="878" border="0" cellspacing="0" cellpadding="0" summary=" ">
 <form name="form1" id="form1" method="post" action="">
 <input type="hidden" name="mode" value="edit">
@@ -15,13 +15,13 @@
 <!--{/foreach}-->
 	<tr valign="top">
 		<td background="<!--{$smarty.const.URL_DIR}-->img/contents/navi_bg.gif" height="402">
-			<!--¢§SUB NAVI-->
+			<!--â–¼SUB NAVI-->
 			<!--{include file=$tpl_subnavi}-->
-			<!--¢¥SUB NAVI-->
+			<!--â–²SUB NAVI-->
 		</td>
 		<td class="mainbg" >
 		<table width="737" border="0" cellspacing="0" cellpadding="0" summary=" ">
-			<!--¥á¥¤¥ó¥¨¥ê¥¢-->
+			<!--ãƒ¡ã‚¤ãƒ³ã‚¨ãƒªã‚¢-->
 			<tr>
 				<td align="center">
 				<table width="706" border="0" cellspacing="0" cellpadding="0" summary=" ">
@@ -34,14 +34,14 @@
 						<td background="<!--{$smarty.const.URL_DIR}-->img/contents/main_left.jpg"><img src="<!--{$smarty.const.URL_DIR}-->img/common/_.gif" width="14" height="1" alt=""></td>
 						<td bgcolor="#cccccc">
 						
-						<!--ÅĞÏ¿¥Æ¡¼¥Ö¥ë¤³¤³¤«¤é-->
+						<!--ç™»éŒ²ãƒ†ãƒ¼ãƒ–ãƒ«ã“ã“ã‹ã‚‰-->
 						<table width="678" border="0" cellspacing="0" cellpadding="0" summary=" ">
 							<tr>
 								<td colspan="3"><img src="<!--{$smarty.const.URL_DIR}-->img/contents/contents_title_top.gif" width="678" height="7" alt=""></td>
 							</tr>
 							<tr>
 								<td background="<!--{$smarty.const.URL_DIR}-->img/contents/contents_title_left_bg.gif"><img src="<!--{$smarty.const.URL_DIR}-->img/contents/contents_title_left.gif" width="22" height="12" alt=""></td>
-								<td bgcolor="#636469" width="638" class="fs14n"><span class="white"><!--¥³¥ó¥Æ¥ó¥Ä¥¿¥¤¥È¥ë-->µ¬³ÊÅĞÏ¿</span></td>
+								<td bgcolor="#636469" width="638" class="fs14n"><span class="white"><!--ã‚³ãƒ³ãƒ†ãƒ³ãƒ„ã‚¿ã‚¤ãƒˆãƒ«-->è¦æ ¼ç™»éŒ²</span></td>
 								<td background="<!--{$smarty.const.URL_DIR}-->img/contents/contents_title_right_bg.gif"><img src="<!--{$smarty.const.URL_DIR}-->img/common/_.gif" width="18" height="1" alt=""></td>
 							</tr>
 							<tr>
@@ -54,15 +54,15 @@
 
 						<table width="678" border="0" cellspacing="1" cellpadding="5" summary=" " bgcolor="#cccccc">
 							<tr>
-								<td bgcolor="#f2f1ec" width="160" class="fs12n">µ¬³ÊÌ¾</td>
+								<td bgcolor="#f2f1ec" width="160" class="fs12n">è¦æ ¼å</td>
 								<td bgcolor="#ffffff" width="557" class="fs12n" colspan=2><!--{$tpl_class_name}--></td>
 							</tr>
 							<tr>
-								<td bgcolor="#f2f1ec" width="160" class="fs12n">Ê¬ÎàÌ¾<span class="red"> *</span></td>
+								<td bgcolor="#f2f1ec" width="160" class="fs12n">åˆ†é¡å<span class="red"> *</span></td>
 								<td bgcolor="#ffffff" width="557" class="fs12n" colspan=2>
 									<span class="red12"><!--{$arrErr.name}--></span>
 									<input type="text" name="name" value="<!--{$arrForm.name|escape}-->" maxlength="<!--{$smarty.const.STEXT_LEN}-->" style="" size="30" class="box30"/>
-									<span class="red"> ¡Ê¾å¸Â<!--{$smarty.const.STEXT_LEN}-->Ê¸»ú¡Ë</span>
+									<span class="red"> ï¼ˆä¸Šé™<!--{$smarty.const.STEXT_LEN}-->æ–‡å­—ï¼‰</span>
 								</td>
 							</tr>
 						</table>
@@ -78,7 +78,7 @@
 								<table border="0" cellspacing="0" cellpadding="0" summary=" ">
 									<tr>
 										<td>
-											<input type="image" onMouseover="chgImgImageSubmit('<!--{$smarty.const.URL_DIR}-->img/contents/btn_regist_on.jpg',this)" onMouseout="chgImgImageSubmit('<!--{$smarty.const.URL_DIR}-->img/contents/btn_regist.jpg',this)" src="<!--{$smarty.const.URL_DIR}-->img/contents/btn_regist.jpg" width="123" height="24" alt="¤³¤ÎÆâÍÆ¤ÇÅĞÏ¿¤¹¤ë" border="0" name="subm" >
+											<input type="image" onMouseover="chgImgImageSubmit('<!--{$smarty.const.URL_DIR}-->img/contents/btn_regist_on.jpg',this)" onMouseout="chgImgImageSubmit('<!--{$smarty.const.URL_DIR}-->img/contents/btn_regist.jpg',this)" src="<!--{$smarty.const.URL_DIR}-->img/contents/btn_regist.jpg" width="123" height="24" alt="ã“ã®å†…å®¹ã§ç™»éŒ²ã™ã‚‹" border="0" name="subm" >
 										</td>
 									</tr>
 								</table>
@@ -96,30 +96,30 @@
 
 						<table width="678" border="0" cellspacing="1" cellpadding="8" summary=" " bgcolor="#cccccc">
 							<tr bgcolor="#f2f1ec" align="center" class="fs12n">
-								<td width="439">µ¬³ÊÌ¾</td>
-								<td width="50">ÊÔ½¸</td>
-								<td width="50">ºï½ü</td>
-								<td width="70">°ÜÆ°</td>
+								<td width="439">è¦æ ¼å</td>
+								<td width="50">ç·¨é›†</td>
+								<td width="50">å‰Šé™¤</td>
+								<td width="70">ç§»å‹•</td>
 							</tr>
 							<!--{section name=cnt loop=$arrClassCat}-->
 							<tr  bgcolor="<!--{if $tpl_classcategory_id != $arrClassCat[cnt].classcategory_id}-->#ffffff<!--{else}--><!--{$smarty.const.SELECT_RGB}--><!--{/if}-->" class="fs12">
-								<td><!--{* µ¬³ÊÌ¾ *}--><!--{$arrClassCat[cnt].name|escape}--></td>
+								<td><!--{* è¦æ ¼å *}--><!--{$arrClassCat[cnt].name|escape}--></td>
 								<td align="center" >
 								<!--{if $tpl_classcategory_id != $arrClassCat[cnt].classcategory_id}-->
-								<a href="<!--{$smarty.server.PHP_SELF|escape}-->" onclick="fnModeSubmit('pre_edit','classcategory_id', <!--{$arrClassCat[cnt].classcategory_id}-->); return false;">ÊÔ½¸</a>
+								<a href="<!--{$smarty.server.PHP_SELF|escape}-->" onclick="fnModeSubmit('pre_edit','classcategory_id', <!--{$arrClassCat[cnt].classcategory_id}-->); return false;">ç·¨é›†</a>
 								<!--{else}-->
-								ÊÔ½¸Ãæ
+								ç·¨é›†ä¸­
 								<!--{/if}-->
 								</td>
 								<td align="center">
-								<a href="<!--{$smarty.server.PHP_SELF|escape}-->" onclick="fnModeSubmit('delete','classcategory_id', <!--{$arrClassCat[cnt].classcategory_id}-->); return false;">ºï½ü</a>
+								<a href="<!--{$smarty.server.PHP_SELF|escape}-->" onclick="fnModeSubmit('delete','classcategory_id', <!--{$arrClassCat[cnt].classcategory_id}-->); return false;">å‰Šé™¤</a>
 								</td>
 								<td align="center">
 								<!--{if $smarty.section.cnt.iteration != 1}-->
-								<a href="<!--{$smarty.server.PHP_SELF|escape}-->" onclick="fnModeSubmit('up','classcategory_id', <!--{$arrClassCat[cnt].classcategory_id}-->); return false;">¾å¤Ø</a>
+								<a href="<!--{$smarty.server.PHP_SELF|escape}-->" onclick="fnModeSubmit('up','classcategory_id', <!--{$arrClassCat[cnt].classcategory_id}-->); return false;">ä¸Šã¸</a>
 								<!--{/if}-->
 								<!--{if $smarty.section.cnt.iteration != $smarty.section.cnt.last}-->
-								<a href="<!--{$smarty.server.PHP_SELF|escape}-->" onclick="fnModeSubmit('down','classcategory_id', <!--{$arrClassCat[cnt].classcategory_id}-->); return false;">²¼¤Ø</a>
+								<a href="<!--{$smarty.server.PHP_SELF|escape}-->" onclick="fnModeSubmit('down','classcategory_id', <!--{$arrClassCat[cnt].classcategory_id}-->); return false;">ä¸‹ã¸</a>
 								<!--{/if}-->
 								</td>
 							</tr>
@@ -138,7 +138,7 @@
 								<table border="0" cellspacing="0" cellpadding="0" summary=" ">
 									<tr>
 										<td>
-											<a href="./class.php" onmouseover="chgImg('<!--{$smarty.const.URL_DIR}-->img/contents/btn_back_on.jpg','back');" onmouseout="chgImg('<!--{$smarty.const.URL_DIR}-->img/contents/btn_back.jpg','back');"><img src="<!--{$smarty.const.URL_DIR}-->img/contents/btn_back.jpg" width="123" height="24" alt="Á°¤Î¥Ú¡¼¥¸¤ËÌá¤ë" border="0" name="back"></a>
+											<a href="./class.php" onmouseover="chgImg('<!--{$smarty.const.URL_DIR}-->img/contents/btn_back_on.jpg','back');" onmouseout="chgImg('<!--{$smarty.const.URL_DIR}-->img/contents/btn_back.jpg','back');"><img src="<!--{$smarty.const.URL_DIR}-->img/contents/btn_back.jpg" width="123" height="24" alt="å‰ã®ãƒšãƒ¼ã‚¸ã«æˆ»ã‚‹" border="0" name="back"></a>
 										</td>
 									</tr>
 								</table>
@@ -149,7 +149,7 @@
 								<td colspan="3"><img src="<!--{$smarty.const.URL_DIR}-->img/contents/tbl_bottom.gif" width="678" height="8" alt=""></td>
 							</tr>
 						</table>
-						<!--ÅĞÏ¿¥Æ¡¼¥Ö¥ë¤³¤³¤Ş¤Ç-->
+						<!--ç™»éŒ²ãƒ†ãƒ¼ãƒ–ãƒ«ã“ã“ã¾ã§-->
 
 						</td>
 						<td background="<!--{$smarty.const.URL_DIR}-->img/contents/main_right.jpg"><img src="<!--{$smarty.const.URL_DIR}-->img/common/_.gif" width="14" height="1" alt=""></td>
@@ -162,10 +162,10 @@
 				</table>
 				</td>
 			</tr>
-			<!--¥á¥¤¥ó¥¨¥ê¥¢-->
+			<!--ãƒ¡ã‚¤ãƒ³ã‚¨ãƒªã‚¢-->
 		</table>
 		</td>
 	</tr>
 </form>
 </table>
-<!--¡ú¡ú¥á¥¤¥ó¥³¥ó¥Æ¥ó¥Ä¡ú¡ú-->	
+<!--â˜…â˜…ãƒ¡ã‚¤ãƒ³ã‚³ãƒ³ãƒ†ãƒ³ãƒ„â˜…â˜…-->	

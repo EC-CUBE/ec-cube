@@ -11,7 +11,7 @@ class LC_Page{
 	function LC_Page(){
 		$this->tpl_mainpage = 'regist/complete.tpl';
 		$this->tpl_css = URL_DIR.'css/layout/regist/complete.css';
-		$this->tpl_title = '²ñ°÷ÅÐÏ¿(´°Î»¥Ú¡¼¥¸)';
+		$this->tpl_title = 'ä¼šå“¡ç™»éŒ²(å®Œäº†ãƒšãƒ¼ã‚¸)';
 	}
 }
 
@@ -20,20 +20,20 @@ $objView = new SC_SiteView();
 $objQuery = new SC_Query();
 $objCampaignSess = new SC_CampaignSession();
 
-// ¥­¥ã¥ó¥Ú¡¼¥ó¤«¤é¤ÎÅÐÏ¿¤Î¾ì¹ç¤Î½èÍý
+// ã‚­ãƒ£ãƒ³ãƒšãƒ¼ãƒ³ã‹ã‚‰ã®ç™»éŒ²ã®å ´åˆã®å‡¦ç†
 if($_GET["cp"] != "") {
 	$arrCampaign= $objQuery->select("directory_name", "dtb_campaign", "campaign_id = ?", array($_GET["cp"]));
-	// ¥­¥ã¥ó¥Ú¡¼¥ó¥Ç¥£¥ì¥¯¥È¥êÌ¾¤òÊÝ»ý
+	// ã‚­ãƒ£ãƒ³ãƒšãƒ¼ãƒ³ãƒ‡ã‚£ãƒ¬ã‚¯ãƒˆãƒªåã‚’ä¿æŒ
 	$dir_name = $arrCampaign[0]['directory_name'];
 } else {
 	$dir_name = "";
 }
 
-// ¥ì¥¤¥¢¥¦¥È¥Ç¥¶¥¤¥ó¤ò¼èÆÀ
+// ãƒ¬ã‚¤ã‚¢ã‚¦ãƒˆãƒ‡ã‚¶ã‚¤ãƒ³ã‚’å–å¾—
 $objPage = sfGetPageLayout($objPage, false, DEF_LAYOUT);
 
 $objView->assignobj($objPage);
-// ¥Õ¥ì¡¼¥à¤òÁªÂò(¥­¥ã¥ó¥Ú¡¼¥ó¥Ú¡¼¥¸¤«¤éÁ«°Ü¤Ê¤éÊÑ¹¹)
+// ãƒ•ãƒ¬ãƒ¼ãƒ ã‚’é¸æŠž(ã‚­ãƒ£ãƒ³ãƒšãƒ¼ãƒ³ãƒšãƒ¼ã‚¸ã‹ã‚‰é·ç§»ãªã‚‰å¤‰æ›´)
 if($objPage->dir_name != "") {
 	$objView->display(CAMPAIGN_TEMPLATE_PATH . $dir_name  . "/active/site_frame.tpl");
 	$objCampaignSess->delCampaign();

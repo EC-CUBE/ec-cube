@@ -5,18 +5,18 @@
  * http://www.lockon.co.jp/
  */
 *}-->
-<!--¡ú¡ú¥á¥¤¥ó¥³¥ó¥Æ¥ó¥Ä¡ú¡ú-->
+<!--â˜…â˜…ãƒ¡ã‚¤ãƒ³ã‚³ãƒ³ãƒ†ãƒ³ãƒ„â˜…â˜…-->
 <table width="878" border="0" cellspacing="0" cellpadding="0" summary=" ">
 	<tr valign="top">
 		<td background="<!--{$smarty.const.URL_DIR}-->img/contents/navi_bg.gif" height="402">
-			<!--¢§SUB NAVI-->
+			<!--â–¼SUB NAVI-->
 			<!--{include file=$tpl_subnavi}-->
-			<!--¢¥SUB NAVI-->
+			<!--â–²SUB NAVI-->
 		</td>
 		<td class="mainbg">
-			<!--¢§ÅĞÏ¿¥Æ¡¼¥Ö¥ë¤³¤³¤«¤é-->
+			<!--â–¼ç™»éŒ²ãƒ†ãƒ¼ãƒ–ãƒ«ã“ã“ã‹ã‚‰-->
 			<table width="737" border="0" cellspacing="0" cellpadding="0" summary=" ">
-				<!--¥á¥¤¥ó¥¨¥ê¥¢-->
+				<!--ãƒ¡ã‚¤ãƒ³ã‚¨ãƒªã‚¢-->
 				<tr>
 					<td align="center">
 						<table width="706" border="0" cellspacing="0" cellpadding="0" summary=" ">
@@ -40,7 +40,7 @@
 									</tr>
 									<tr>
 										<td background="<!--{$smarty.const.URL_DIR}-->img/contents/contents_title_left_bg.gif"><img src="<!--{$smarty.const.URL_DIR}-->img/contents/contents_title_left.gif" width="22" height="12" alt=""></td>
-										<td bgcolor="#636469" width="638" class="fs14n"><span class="white"><!--¥³¥ó¥Æ¥ó¥Ä¥¿¥¤¥È¥ë-->µ¬³ÊÅĞÏ¿</span></td>
+										<td bgcolor="#636469" width="638" class="fs14n"><span class="white"><!--ã‚³ãƒ³ãƒ†ãƒ³ãƒ„ã‚¿ã‚¤ãƒˆãƒ«-->è¦æ ¼ç™»éŒ²</span></td>
 										<td background="<!--{$smarty.const.URL_DIR}-->img/contents/contents_title_right_bg.gif"><img src="<!--{$smarty.const.URL_DIR}-->img/common/_.gif" width="18" height="1" alt=""></td>
 									</tr>
 									<tr>
@@ -53,35 +53,35 @@
 
 								<table width="678" border="0" cellspacing="1" cellpadding="8" summary=" ">
 									<tr>
-										<td bgcolor="#f2f1ec" width="160" class="fs12n">¾¦ÉÊÌ¾</td>
+										<td bgcolor="#f2f1ec" width="160" class="fs12n">å•†å“å</td>
 										<td bgcolor="#ffffff" width="557" class="fs12n"><!--{$arrForm.product_name|escape}--></td>
 									</tr>
 									<tr>
-										<td bgcolor="#f2f1ec" width="160" class="fs12n">µ¬³Ê1<span class="red">*</span></td>
+										<td bgcolor="#f2f1ec" width="160" class="fs12n">è¦æ ¼1<span class="red">*</span></td>
 										<td bgcolor="#ffffff" width="557" class="fs12n">
 										<span class="red12"><!--{$arrErr.select_class_id1}--></span>
 										<select name="select_class_id1">
-											<option value="">ÁªÂò¤·¤Æ¤¯¤À¤µ¤¤</option>
+											<option value="">é¸æŠã—ã¦ãã ã•ã„</option>
 											<!--{html_options options=$arrClass selected=$arrForm.select_class_id1}-->
 										</select>
 										</td>
 									</tr>
 									<tr>
-									<td bgcolor="#f2f1ec" width="160" class="fs12n">µ¬³Ê2</td>
+									<td bgcolor="#f2f1ec" width="160" class="fs12n">è¦æ ¼2</td>
 									<td bgcolor="#ffffff" width="557" class="fs12n">
 									<span class="red12"><!--{$arrErr.select_class_id2}--></span>
 									<select name="select_class_id2">
-										<option value="">ÁªÂò¤·¤Æ¤¯¤À¤µ¤¤</option>
+										<option value="">é¸æŠã—ã¦ãã ã•ã„</option>
 										<!--{html_options options=$arrClass selected=$arrForm.select_class_id2}-->
 									</select>
 									</td>
 									</tr>
 									<tr>
 										<td align="center" bgcolor="#f2f1ec" colspan=2>
-											<input type="button" value="¸¡º÷·ë²Ì¤ØÌá¤ë" onclick="fnChangeAction('<!--{$smarty.const.URL_SEARCH_TOP}-->'); fnModeSubmit('search','',''); return false;" >
-											<input type="button" name="btn" value="É½¼¨¤¹¤ë" onclick="fnModeSubmit('disp','','')">
+											<input type="button" value="æ¤œç´¢çµæœã¸æˆ»ã‚‹" onclick="fnChangeAction('<!--{$smarty.const.URL_SEARCH_TOP}-->'); fnModeSubmit('search','',''); return false;" >
+											<input type="button" name="btn" value="è¡¨ç¤ºã™ã‚‹" onclick="fnModeSubmit('disp','','')">
 											<!--{if count($arrClassCat) > 0}-->
-											<input type="button" name="btn" value="ºï½ü¤¹¤ë" onclick="fnModeSubmit('delete','','');">
+											<input type="button" name="btn" value="å‰Šé™¤ã™ã‚‹" onclick="fnModeSubmit('delete','','');">
 											<!--{/if}-->
 										</td>
 									</tr>
@@ -102,9 +102,9 @@
 									<table width="678" border="0" cellspacing="1" cellpadding="8" summary=" ">
 										<tr bgcolor="#f2f1ec">
 											<td class="fs12n" align="left">
-												<a href="<!--{$smarty.const.URL_DIR}-->" onclick="fnAllCheck(); return false;">Á´ÁªÂò</a>¡¡
-												<a href="<!--{$smarty.const.URL_DIR}-->" onclick="fnAllUnCheck(); return false;">Á´²ò½ü</a>¡¡
-												<a href="<!--{$smarty.const.URL_DIR}-->" onclick="fnCopyValue('<!--{$cnt}-->', '<!--{$smarty.const.DISABLED_RGB}-->'); return false;">°ì¹ÔÌÜ¤Î¥Ç¡¼¥¿¤ò¥³¥Ô¡¼¤¹¤ë</a></td>
+												<a href="<!--{$smarty.const.URL_DIR}-->" onclick="fnAllCheck(); return false;">å…¨é¸æŠ</a>ã€€
+												<a href="<!--{$smarty.const.URL_DIR}-->" onclick="fnAllUnCheck(); return false;">å…¨è§£é™¤</a>ã€€
+												<a href="<!--{$smarty.const.URL_DIR}-->" onclick="fnCopyValue('<!--{$cnt}-->', '<!--{$smarty.const.DISABLED_RGB}-->'); return false;">ä¸€è¡Œç›®ã®ãƒ‡ãƒ¼ã‚¿ã‚’ã‚³ãƒ”ãƒ¼ã™ã‚‹</a></td>
 										</tr>
 									</table>
 
@@ -114,13 +114,13 @@
 										<input type="hidden" name="class_id1" value="<!--{$class_id1}-->">
 										<input type="hidden" name="class_id2" value="<!--{$class_id2}-->">
 										<tr bgcolor="#f2f1ec" align="center" class="fs12n">
-											<td width="30">ÅĞÏ¿</td>
-											<td width="100">µ¬³Ê1(<!--{$arrClass[$class_id1]|default:"Ì¤ÁªÂò"}-->)</td>
-											<td width="100">µ¬³Ê2(<!--{$arrClass[$class_id2]|default:"Ì¤ÁªÂò"}-->)</td>
-											<td width="80">¾¦ÉÊ¥³¡¼¥É</td>
-											<td width="160">ºß¸Ë(¸Ä)<span class="red">*</span></td>
-											<td width="100"><!--{$smarty.const.NORMAL_PRICE_TITLE}-->(±ß)</td>
-											<td width="100"><!--{$smarty.const.SALE_PRICE_TITLE}-->(±ß)<span class="red">*</span></td>
+											<td width="30">ç™»éŒ²</td>
+											<td width="100">è¦æ ¼1(<!--{$arrClass[$class_id1]|default:"æœªé¸æŠ"}-->)</td>
+											<td width="100">è¦æ ¼2(<!--{$arrClass[$class_id2]|default:"æœªé¸æŠ"}-->)</td>
+											<td width="80">å•†å“ã‚³ãƒ¼ãƒ‰</td>
+											<td width="160">åœ¨åº«(å€‹)<span class="red">*</span></td>
+											<td width="100"><!--{$smarty.const.NORMAL_PRICE_TITLE}-->(å††)</td>
+											<td width="100"><!--{$smarty.const.SALE_PRICE_TITLE}-->(å††)<span class="red">*</span></td>
 										</tr>
 										<!--{section name=cnt loop=$arrClassCat}-->
 										<!--{assign var=key value="error:`$smarty.section.cnt.iteration`"}-->
@@ -145,7 +145,7 @@
 											<td align="center">
 											<input type="text" name="<!--{$key}-->" value="<!--{$arrForm[$key]}-->" size="6" class="box6" maxlength="<!--{$smarty.const.AMOUNT_LEN}-->" <!--{if $arrErr[$key] != ""}--><!--{sfSetErrorStyle}--><!--{/if}-->>
 											<!--{assign var=key value="stock_unlimited:`$smarty.section.cnt.iteration`"}-->
-											<input type="checkbox" name="<!--{$key}-->" value="1" <!--{if $arrForm[$key] == "1"}-->checked<!--{/if}--> onClick="fnCheckStockNoLimit('<!--{$smarty.section.cnt.iteration}-->','<!--{$smarty.const.DISABLED_RGB}-->');"/>ÌµÀ©¸Â</td>
+											<input type="checkbox" name="<!--{$key}-->" value="1" <!--{if $arrForm[$key] == "1"}-->checked<!--{/if}--> onClick="fnCheckStockNoLimit('<!--{$smarty.section.cnt.iteration}-->','<!--{$smarty.const.DISABLED_RGB}-->');"/>ç„¡åˆ¶é™</td>
 											</td>
 											<!--{assign var=key value="price01:`$smarty.section.cnt.iteration`"}-->
 											<td align="center"><input type="text" name="<!--{$key}-->" value="<!--{$arrForm[$key]}-->" size="6" class="box6" maxlength="<!--{$smarty.const.PRICE_LEN}-->" <!--{if $arrErr[$key] != ""}--><!--{sfSetErrorStyle}--><!--{/if}-->></td>
@@ -166,7 +166,7 @@
 										<td bgcolor="#e9e7de" align="center">
 										<table border="0" cellspacing="0" cellpadding="0" summary=" ">
 											<tr>
-												<td><input type="image" onMouseover="chgImgImageSubmit('<!--{$smarty.const.URL_DIR}-->img/contents/btn_regist_on.jpg',this)" onMouseout="chgImgImageSubmit('<!--{$smarty.const.URL_DIR}-->img/contents/btn_regist.jpg',this)" src="<!--{$smarty.const.URL_DIR}-->img/contents/btn_regist.jpg" width="123" height="24" alt="¤³¤ÎÆâÍÆ¤ÇÅĞÏ¿¤¹¤ë" border="0" name="subm" ></td>
+												<td><input type="image" onMouseover="chgImgImageSubmit('<!--{$smarty.const.URL_DIR}-->img/contents/btn_regist_on.jpg',this)" onMouseout="chgImgImageSubmit('<!--{$smarty.const.URL_DIR}-->img/contents/btn_regist.jpg',this)" src="<!--{$smarty.const.URL_DIR}-->img/contents/btn_regist.jpg" width="123" height="24" alt="ã“ã®å†…å®¹ã§ç™»éŒ²ã™ã‚‹" border="0" name="subm" ></td>
 											</tr>
 										</table>
 										</td>
@@ -189,11 +189,11 @@
 						</table>
 					</td>
 				</tr>
-				<!--¥á¥¤¥ó¥¨¥ê¥¢-->
+				<!--ãƒ¡ã‚¤ãƒ³ã‚¨ãƒªã‚¢-->
 			</table>
-			<!--¢¥ÅĞÏ¿¥Æ¡¼¥Ö¥ë¤³¤³¤Ş¤Ç-->
+			<!--â–²ç™»éŒ²ãƒ†ãƒ¼ãƒ–ãƒ«ã“ã“ã¾ã§-->
 		</td>
 	</tr>
 </form>
 </table>
-<!--¡ú¡ú¥á¥¤¥ó¥³¥ó¥Æ¥ó¥Ä¡ú¡ú-->
+<!--â˜…â˜…ãƒ¡ã‚¤ãƒ³ã‚³ãƒ³ãƒ†ãƒ³ãƒ„â˜…â˜…-->

@@ -5,19 +5,19 @@
  * http://www.lockon.co.jp/
  */
 *}-->
-<div align="center">���λ</div>
+<div align="center">退会完了</div>
 <hr>
 
-����³������λ�פ��ޤ������ޤ��Τ����Ѥ򤪤ޤ����Ƥ���ޤ���<br>
+退会手続きが完了致しました。またのご利用をおまちしております。<br>
 <br>
 
-<a href="<!--{$smarty.const.MOBILE_URL_SITE_TOP}-->" accesskey="0"><!--{0|numeric_emoji}-->TOP�ڡ�����</a><br>
+<a href="<!--{$smarty.const.MOBILE_URL_SITE_TOP}-->" accesskey="0"><!--{0|numeric_emoji}-->TOPページへ</a><br>
 
 <hr>
 
-<!-- ���եå��� �������� -->
+<!-- ▼フッター ここから -->
 <!--{include file='footer.tpl'}-->
-<!-- ���եå��� �����ޤ� -->
+<!-- ▲フッター ここまで -->
 
 
 

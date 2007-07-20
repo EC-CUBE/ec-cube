@@ -8,14 +8,14 @@ require_once("../require.php");
 
 class LC_Page {
 	function LC_Page() {
-		$this->tpl_css = URL_DIR.'css/layout/entry/index.css';	// �ᥤ��CSS�ѥ�
-		$this->tpl_mainpage = 'entry/index.tpl';		// �ᥤ��ƥ�ץ졼��
-		$this->tpl_title .= '�����Ͽ(���ϥڡ���)';			//���ڡ��������ȥ�
+		$this->tpl_css = URL_DIR.'css/layout/entry/index.css';	// メインCSSパス
+		$this->tpl_mainpage = 'entry/index.tpl';		// メインテンプレート
+		$this->tpl_title .= '会員登録(入力ページ)';			//　ページタイトル
 	}
 }
 
-//---- �ڡ����������
-$CONF = sf_getBasisData();					// Ź�޴��ܾ���
+//---- ページ初期設定
+$CONF = sf_getBasisData();					// 店舗基本情報
 $objConn = new SC_DbConn();
 $objPage = new LC_Page();
 $objView = new SC_SiteView();
@@ -25,11 +25,11 @@ $objDate = new SC_Date(START_BIRTH_YEAR, date("Y",strtotime("now")));
 $objPage->arrPref = $arrPref;
 $objPage->arrJob = $arrJob;
 $objPage->arrReminder = $arrReminder;
-$objPage->arrYear = $objDate->getYear('', 1950);	//�����եץ����������
+$objPage->arrYear = $objDate->getYear('', 1950);	//　日付プルダウン設定
 $objPage->arrMonth = $objDate->getMonth();
 $objPage->arrDay = $objDate->getDay();
 
-//SSLURLȽ��
+//SSLURL判定
 if (SSLURL_CHECK == 1){
 	$ssl_url= sfRmDupSlash(SSL_URL.$_SERVER['REQUEST_URI']);
 	if (!ereg("^https://", $non_ssl_url)){
@@ -37,10 +37,10 @@ if (SSLURL_CHECK == 1){
 	}
 }
 
-// �쥤�����ȥǥ���������
+// レイアウトデザインを取得
 $objPage = sfGetPageLayout($objPage, false, DEF_LAYOUT);
 
-//---- ��Ͽ�ѥ��������
+//---- 登録用カラム配列
 $arrRegistColumn = array(
 							 array(  "column" => "name01", "convert" => "aKV" ),
 							 array(  "column" => "name02", "convert" => "aKV" ),
@@ -71,98 +71,98 @@ $arrRegistColumn = array(
 							 array(  "column" => "mailmaga_flg", "convert" => "n" ),
 						 );
 
-//---- ��Ͽ�����ѥ��������
+//---- 登録除外用カラム配列
 $arrRejectRegistColumn = array("year", "month", "day", "email02", "email_mobile02", "password02");
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
-	//-- POST�ǡ����ΰ����Ѥ�
+	//-- POSTデータの引き継ぎ
 	$objPage->arrForm = $_POST;
 	
 	if($objPage->arrForm['year'] == '----') {
 		$objPage->arrForm['year'] = '';
 	}
 	
-	$objPage->arrForm['email'] = strtolower($objPage->arrForm['email']);		// email�Ϥ��٤ƾ�ʸ���ǽ���
-	$objPage->arrForm['email02'] = strtolower($objPage->arrForm['email02']);	// email�Ϥ��٤ƾ�ʸ���ǽ���
+	$objPage->arrForm['email'] = strtolower($objPage->arrForm['email']);		// emailはすべて小文字で処理
+	$objPage->arrForm['email02'] = strtolower($objPage->arrForm['email02']);	// emailはすべて小文字で処理
 	
-	//-- ���ϥǡ������Ѵ�
+	//-- 入力データの変換
 	$objPage->arrForm = lfConvertParam($objPage->arrForm, $arrRegistColumn);
 		
-	//--�����ϥ��顼�����å�
+	//--　入力エラーチェック
 	$objPage->arrErr = lfErrorCheck($objPage->arrForm);
 
-	if ($objPage->arrErr || $_POST["mode"] == "return") {		// ���ϥ��顼�Υ����å�
+	if ($objPage->arrErr || $_POST["mode"] == "return") {		// 入力エラーのチェック
 		foreach($objPage->arrForm as $key => $val) {
 			$objPage->$key = $val;
 		}
 
 	} else {
 
-		//--����ǧ
+		//--　確認
 		if ($_POST["mode"] == "confirm") {
 			foreach($objPage->arrForm as $key => $val) {
 				if ($key != "mode" && $key != "subm") $objPage->list_data[ $key ] = $val;
 			}
-			//�ѥ����ɽ��
+			//パスワード表示
 			$passlen = strlen($objPage->arrForm['password']);
 			$objPage->passlen = lfPassLen($passlen);
 			
 			$objPage->tpl_css = '/css/layout/entry/confirm.css';
 			$objPage->tpl_mainpage = 'entry/confirm.tpl';
-			$objPage->tpl_title = '�����Ͽ(��ǧ�ڡ���)';
+			$objPage->tpl_title = '会員登録(確認ページ)';
 
 		}
 
-		//--�������Ͽ�ȴ�λ����
+		//--　会員登録と完了画面
 		if ($_POST["mode"] == "complete") {
-			// �����ڡ��󤫤�����ܤλ��Ѥ���
+			// キャンペーンからの遷移の時用の値
 			if($objCampaignSess->getIsCampaign()) {
 				$objPage->etc_value = "&cp=".$objCampaignSess->getCampaignId();
 			}
 			
-			// ����������Ͽ
+			// 会員情報の登録
 			$objPage->uniqid = lfRegistData ($objPage->arrForm, $arrRegistColumn, $arrRejectRegistColumn, CUSTOMER_CONFIRM_MAIL);
 			
 			$objPage->tpl_css = '/css/layout/entry/complete.css';
 			$objPage->tpl_mainpage = 'entry/complete.tpl';
-			$objPage->tpl_title = '�����Ͽ(��λ�ڡ���)';
+			$objPage->tpl_title = '会員登録(完了ページ)';
 
-			//����λ�᡼������
+			//　完了メール送信
 			$objPage->CONF = $CONF;
 			$objPage->name01 = $_POST['name01'];
 			$objPage->name02 = $_POST['name02'];
 			$objMailText = new SC_SiteView();
 			$objMailText->assignobj($objPage);
 			
-			// �������ͭ���ξ��
+			// 仮会員が有効の場合
 			if(CUSTOMER_CONFIRM_MAIL == true) {
-				$subject = sfMakesubject('�����Ͽ�Τ���ǧ');
+				$subject = sfMakesubject('会員登録のご確認');
 				$toCustomerMail = $objMailText->fetch("mail_templates/customer_mail.tpl");
 			} else {
-				$subject = sfMakesubject('�����Ͽ�Τ���λ');
+				$subject = sfMakesubject('会員登録のご完了');
 				$toCustomerMail = $objMailText->fetch("mail_templates/customer_regist_mail.tpl");
-				// ����������֤ˤ���
+				// ログイン状態にする
 				$objCustomer->setLogin($_POST["email"]);
 			}
 			
 			$objMail = new GC_SendMail();
 			$objMail->setItem(
-								''									//������
-								, $subject							//�����֥�������
-								, $toCustomerMail					//����ʸ
-								, $CONF["email03"]					//�����������ɥ쥹
-								, $CONF["shop_name"]				//����������̾��
-								, $CONF["email03"]					//��reply_to
-								, $CONF["email04"]					//��return_path
+								''									//　宛先
+								, $subject							//　サブジェクト
+								, $toCustomerMail					//　本文
+								, $CONF["email03"]					//　配送元アドレス
+								, $CONF["shop_name"]				//　配送元　名前
+								, $CONF["email03"]					//　reply_to
+								, $CONF["email04"]					//　return_path
 								, $CONF["email04"]					//  Errors_to
 							);
-			// ���������
-			$name = $_POST["name01"] . $_POST["name02"] ." ��";
+			// 宛先の設定
+			$name = $_POST["name01"] . $_POST["name02"] ." 様";
 			$objMail->setTo($_POST["email"], $name);
 			$objMail->sendMail();
 
-			// ��λ�ڡ����˰�ư�����롣
+			// 完了ページに移動させる。
 			header("Location: ./complete.php");
 			exit;
 		}
@@ -173,34 +173,34 @@ if($objPage->year == '') {
 	$objPage->year = '----';
 }
 
-//----���ڡ���ɽ��
+//----　ページ表示
 $objView->assignobj($objPage);
-// �ե졼�������(�����ڡ���ڡ����������ܤʤ��ѹ�)
+// フレームを選択(キャンペーンページから遷移なら変更)
 $objCampaignSess->pageView($objView);
 
 //----------------------------------------------------------------------------------------------------------------------
-// ����������Ͽ
+// 会員情報の登録
 function lfRegistData ($array, $arrRegistColumn, $arrRejectRegistColumn, $confirm_flg) {
 	global $objConn;
 	
-	// ��Ͽ�ǡ���������
+	// 登録データの生成
 	foreach ($arrRegistColumn as $data) {
 		if (strlen($array[ $data["column"] ]) > 0 && ! in_array($data["column"], $arrRejectRegistColumn)) {
 			$arrRegist[ $data["column"] ] = $array[ $data["column"] ];
 		}
 	}
 		
-	// �����������Ϥ���Ƥ�����
+	// 誕生日が入力されている場合
 	if (strlen($array["year"]) > 0 ) {
 		$arrRegist["birth"] = $array["year"] ."/". $array["month"] ."/". $array["day"] ." 00:00:00";
 	}
 	
-	// �ѥ���ɤΰŹ沽
+	// パスワードの暗号化
 	$arrRegist["password"] = sha1($arrRegist["password"] . ":" . AUTH_MAGIC);
 	
-	// �������Ͽ�ξ��
+	// 仮会員登録の場合
 	if($confirm_flg == true) {
-		// ��ʣ���ʤ������Ͽ������ȯ�Ԥ��롣
+		// 重複しない会員登録キーを発行する。
 		$count = 1;
 		while ($count != 0) {
 			$uniqid = sfGetUniqRandomId("t");
@@ -218,41 +218,41 @@ function lfRegistData ($array, $arrRegistColumn, $arrRejectRegistColumn, $confir
 				break;
 		}
 		
-		$arrRegist["status"] = "1";				// �����
+		$arrRegist["status"] = "1";				// 仮会員
 	} else {
-		// ��ʣ���ʤ������Ͽ������ȯ�Ԥ��롣
+		// 重複しない会員登録キーを発行する。
 		$count = 1;
 		while ($count != 0) {
 			$uniqid = sfGetUniqRandomId("r");
 			$count = $objConn->getOne("SELECT COUNT(*) FROM dtb_customer WHERE secret_key = ?", array($uniqid));
 		}
-		$arrRegist["status"] = "2";				// �ܲ��
+		$arrRegist["status"] = "2";				// 本会員
 	}
 	
 	/*
-	  secret_key�ϡ��ơ��֥�ǽ�ʣ���Ĥ���Ƥ��ʤ���礬����Τǡ�
-      �ܲ����Ͽ�Ǥ����Ѥ���ʤ������åȤ��Ƥ�����
+	  secret_keyは、テーブルで重複許可されていない場合があるので、
+      本会員登録では利用されないがセットしておく。
     */
-	$arrRegist["secret_key"] = $uniqid;		// �����Ͽ����
-	$arrRegist["create_date"] = "now()"; 	// ������
-	$arrRegist["update_date"] = "now()"; 	// ������
-	$arrRegist["first_buy_date"] = "";	 	// �ǽ�ι�����
+	$arrRegist["secret_key"] = $uniqid;		// 会員登録キー
+	$arrRegist["create_date"] = "now()"; 	// 作成日
+	$arrRegist["update_date"] = "now()"; 	// 更新日
+	$arrRegist["first_buy_date"] = "";	 	// 最初の購入日
 	
-	//-- ����Ͽ�¹�
+	//-- 仮登録実行
 	$objConn->query("BEGIN");
 
 	$objQuery = new SC_Query();
 	$objQuery->insert("dtb_customer", $arrRegist);
 
 
-/* ���ޥ������ǽ�ϸ�������桡2007/03/07
+/* メルマガ会員機能は現在停止中　2007/03/07
 
 
-	//--�������ǥ��ޥ���Ͽ���Ƥ��뤫��Ƚ��
+	//--　非会員でメルマガ登録しているかの判定
 	$sql = "SELECT count(*) FROM dtb_customer_mail WHERE email = ?";
 	$mailResult = $objConn->getOne($sql, array($arrRegist["email"]));
 
-	//--�����ޥ�����Ͽ�¹�
+	//--　メルマガ仮登録実行
 	$arrRegistMail["email"] = $arrRegist["email"];	
 	if ($array["mailmaga_flg"] == 1) {
 		$arrRegistMail["mailmaga_flg"] = 4; 
@@ -263,10 +263,10 @@ function lfRegistData ($array, $arrRegistColumn, $arrRejectRegistColumn, $confir
 	}
 	$arrRegistMail["update_date"] = "now()";
 	
-	// �����ǥ��ޥ���Ͽ���Ƥ�����
+	// 非会員でメルマガ登録している場合
 	if ($mailResult == 1) {		
 		$objQuery->update("dtb_customer_mail", $arrRegistMail, "email = '" .addslashes($arrRegistMail["email"]). "'");			
-	} else {				//��������Ͽ�ξ��
+	} else {				//　新規登録の場合
 		$arrRegistMail["create_date"] = "now()";
 		$objQuery->insert("dtb_customer_mail", $arrRegistMail);		
 	}
@@ -276,23 +276,23 @@ function lfRegistData ($array, $arrRegistColumn, $arrRejectRegistColumn, $confir
 	return $uniqid;
 }
 
-//----������ʸ������Ѵ�
+//----　取得文字列の変換
 function lfConvertParam($array, $arrRegistColumn) {
 	/*
-	 *	ʸ������Ѵ�
-	 *	K :  ��Ⱦ��(�ʎݎ���)�Ҳ�̾�פ�������Ҳ�̾�פ��Ѵ�
-	 *	C :  �����ѤҤ鲾̾�פ�����Ѥ�����̾�פ��Ѵ�
-	 *	V :  �����դ���ʸ�����ʸ�����Ѵ���"K","H"�ȶ��˻��Ѥ��ޤ�	
-	 *	n :  �����ѡ׿������Ⱦ��(�ʎݎ���)�פ��Ѵ�
-	 *  a :  ���ѱѿ�����Ⱦ�ѱѿ������Ѵ�����
+	 *	文字列の変換
+	 *	K :  「半角(ﾊﾝｶｸ)片仮名」を「全角片仮名」に変換
+	 *	C :  「全角ひら仮名」を「全角かた仮名」に変換
+	 *	V :  濁点付きの文字を一文字に変換。"K","H"と共に使用します	
+	 *	n :  「全角」数字を「半角(ﾊﾝｶｸ)」に変換
+	 *  a :  全角英数字を半角英数字に変換する
 	 */
-	// �����̾�ȥ���С��Ⱦ���
+	// カラム名とコンバート情報
 	foreach ($arrRegistColumn as $data) {
 		$arrConvList[ $data["column"] ] = $data["convert"];
 	}
-	// ʸ���Ѵ�
+	// 文字変換
 	foreach ($arrConvList as $key => $val) {
-		// POST����Ƥ����ͤΤ��Ѵ����롣
+		// POSTされてきた値のみ変換する。
 		if(strlen(($array[$key])) > 0) {
 			$array[$key] = mb_convert_kana($array[$key] ,$val);
 		}
@@ -300,72 +300,72 @@ function lfConvertParam($array, $arrRegistColumn) {
 	return $array;
 }
 
-//---- ���ϥ��顼�����å�
+//---- 入力エラーチェック
 function lfErrorCheck($array) {
 
 	global $objConn;
 	$objErr = new SC_CheckError($array);
 	
-	$objErr->doFunc(array("��̾��������", 'name01', STEXT_LEN), array("EXIST_CHECK", "NO_SPTAB", "SPTAB_CHECK" ,"MAX_LENGTH_CHECK"));
-	$objErr->doFunc(array("��̾����̾��", 'name02', STEXT_LEN), array("EXIST_CHECK", "NO_SPTAB", "SPTAB_CHECK" , "MAX_LENGTH_CHECK"));
-	$objErr->doFunc(array("�եꥬ�ʡʥ�����", 'kana01', STEXT_LEN), array("EXIST_CHECK", "NO_SPTAB", "SPTAB_CHECK" ,"MAX_LENGTH_CHECK", "KANA_CHECK"));
-	$objErr->doFunc(array("�եꥬ�ʡʥᥤ��", 'kana02', STEXT_LEN), array("EXIST_CHECK", "NO_SPTAB", "SPTAB_CHECK" ,"MAX_LENGTH_CHECK", "KANA_CHECK"));
-	$objErr->doFunc(array("͹���ֹ�1", "zip01", ZIP01_LEN ) ,array("EXIST_CHECK", "SPTAB_CHECK" ,"NUM_CHECK", "NUM_COUNT_CHECK"));
-	$objErr->doFunc(array("͹���ֹ�2", "zip02", ZIP02_LEN ) ,array("EXIST_CHECK", "SPTAB_CHECK" ,"NUM_CHECK", "NUM_COUNT_CHECK")); 
-	$objErr->doFunc(array("͹���ֹ�", "zip01", "zip02"), array("ALL_EXIST_CHECK"));
-	$objErr->doFunc(array("��ƻ�ܸ�", 'pref'), array("SELECT_CHECK","NUM_CHECK"));
-	$objErr->doFunc(array("������1", "addr01", MTEXT_LEN), array("EXIST_CHECK","SPTAB_CHECK" ,"MAX_LENGTH_CHECK"));
-	$objErr->doFunc(array("������2", "addr02", MTEXT_LEN), array("EXIST_CHECK","SPTAB_CHECK" ,"MAX_LENGTH_CHECK"));
-	$objErr->doFunc(array('�᡼�륢�ɥ쥹', "email", MTEXT_LEN) ,array("NO_SPTAB", "EXIST_CHECK", "EMAIL_CHECK", "SPTAB_CHECK" ,"EMAIL_CHAR_CHECK", "MAX_LENGTH_CHECK"));
-	$objErr->doFunc(array('�᡼�륢�ɥ쥹(��ǧ)', "email02", MTEXT_LEN) ,array("NO_SPTAB", "EXIST_CHECK", "EMAIL_CHECK","SPTAB_CHECK" , "EMAIL_CHAR_CHECK", "MAX_LENGTH_CHECK"));
-	$objErr->doFunc(array('�᡼�륢�ɥ쥹', '�᡼�륢�ɥ쥹(��ǧ)', "email", "email02") ,array("EQUAL_CHECK"));
+	$objErr->doFunc(array("お名前（姓）", 'name01', STEXT_LEN), array("EXIST_CHECK", "NO_SPTAB", "SPTAB_CHECK" ,"MAX_LENGTH_CHECK"));
+	$objErr->doFunc(array("お名前（名）", 'name02', STEXT_LEN), array("EXIST_CHECK", "NO_SPTAB", "SPTAB_CHECK" , "MAX_LENGTH_CHECK"));
+	$objErr->doFunc(array("フリガナ（セイ）", 'kana01', STEXT_LEN), array("EXIST_CHECK", "NO_SPTAB", "SPTAB_CHECK" ,"MAX_LENGTH_CHECK", "KANA_CHECK"));
+	$objErr->doFunc(array("フリガナ（メイ）", 'kana02', STEXT_LEN), array("EXIST_CHECK", "NO_SPTAB", "SPTAB_CHECK" ,"MAX_LENGTH_CHECK", "KANA_CHECK"));
+	$objErr->doFunc(array("郵便番号1", "zip01", ZIP01_LEN ) ,array("EXIST_CHECK", "SPTAB_CHECK" ,"NUM_CHECK", "NUM_COUNT_CHECK"));
+	$objErr->doFunc(array("郵便番号2", "zip02", ZIP02_LEN ) ,array("EXIST_CHECK", "SPTAB_CHECK" ,"NUM_CHECK", "NUM_COUNT_CHECK")); 
+	$objErr->doFunc(array("郵便番号", "zip01", "zip02"), array("ALL_EXIST_CHECK"));
+	$objErr->doFunc(array("都道府県", 'pref'), array("SELECT_CHECK","NUM_CHECK"));
+	$objErr->doFunc(array("ご住所1", "addr01", MTEXT_LEN), array("EXIST_CHECK","SPTAB_CHECK" ,"MAX_LENGTH_CHECK"));
+	$objErr->doFunc(array("ご住所2", "addr02", MTEXT_LEN), array("EXIST_CHECK","SPTAB_CHECK" ,"MAX_LENGTH_CHECK"));
+	$objErr->doFunc(array('メールアドレス', "email", MTEXT_LEN) ,array("NO_SPTAB", "EXIST_CHECK", "EMAIL_CHECK", "SPTAB_CHECK" ,"EMAIL_CHAR_CHECK", "MAX_LENGTH_CHECK"));
+	$objErr->doFunc(array('メールアドレス(確認)', "email02", MTEXT_LEN) ,array("NO_SPTAB", "EXIST_CHECK", "EMAIL_CHECK","SPTAB_CHECK" , "EMAIL_CHAR_CHECK", "MAX_LENGTH_CHECK"));
+	$objErr->doFunc(array('メールアドレス', 'メールアドレス(確認)', "email", "email02") ,array("EQUAL_CHECK"));
 
-	//�������Ƚ�� ����������⤷���ϲ���Ͽ��ϡ��ᥢ�ɰ�դ�����ˤʤäƤ�Τ�Ʊ���ᥢ�ɤ���Ͽ�Բ�
+	//現会員の判定 →　現会員もしくは仮登録中は、メアド一意が前提になってるので同じメアドで登録不可
 	if (strlen($array["email"]) > 0) {
 		$objQuery = new SC_Query();
 		$arrRet = $objQuery->select("email, update_date, del_flg", "dtb_customer","email ILIKE ? ORDER BY del_flg", array($array["email"]));
 				
 		if(count($arrRet) > 0) {
 			if($arrRet[0]['del_flg'] != '1') {
-				// ����Ǥ�����
-				$objErr->arrErr["email"] .= "�� ���Ǥ˲����Ͽ�ǻ��Ѥ���Ƥ���᡼�륢�ɥ쥹�Ǥ���<br />";
+				// 会員である場合
+				$objErr->arrErr["email"] .= "※ すでに会員登録で使用されているメールアドレスです。<br />";
 			} else {
-				// ��񤷤�����Ǥ�����
+				// 退会した会員である場合
 				$leave_time = sfDBDatetoTime($arrRet[0]['update_date']);
 				$now_time = time();
 				$pass_time = $now_time - $leave_time;
-				// ��񤫤鲿����-�вᤷ�Ƥ��뤫Ƚ�ꤹ�롣
+				// 退会から何時間-経過しているか判定する。
 				$limit_time = ENTRY_LIMIT_HOUR * 3600;						
 				if($pass_time < $limit_time) {
-					$objErr->arrErr["email"] .= "�� ��񤫤������֤δ֤ϡ�Ʊ���᡼�륢�ɥ쥹����Ѥ��뤳�ȤϤǤ��ޤ���<br />";
+					$objErr->arrErr["email"] .= "※ 退会から一定期間の間は、同じメールアドレスを使用することはできません。<br />";
 				}
 			}
 		}
 	}
 
-	$objErr->doFunc(array("�������ֹ�1", 'tel01'), array("EXIST_CHECK","SPTAB_CHECK" ));
-	$objErr->doFunc(array("�������ֹ�2", 'tel02'), array("EXIST_CHECK","SPTAB_CHECK" ));
-	$objErr->doFunc(array("�������ֹ�3", 'tel03'), array("EXIST_CHECK","SPTAB_CHECK" ));
-	$objErr->doFunc(array("�������ֹ�", "tel01", "tel02", "tel03",TEL_ITEM_LEN) ,array("TEL_CHECK"));
-	$objErr->doFunc(array("FAX�ֹ�1", 'fax01'), array("SPTAB_CHECK"));
-	$objErr->doFunc(array("FAX�ֹ�2", 'fax02'), array("SPTAB_CHECK"));
-	$objErr->doFunc(array("FAX�ֹ�3", 'fax03'), array("SPTAB_CHECK"));
-	$objErr->doFunc(array("FAX�ֹ�", "fax01", "fax02", "fax03", TEL_ITEM_LEN) ,array("TEL_CHECK"));
-	$objErr->doFunc(array("������", "sex") ,array("SELECT_CHECK", "NUM_CHECK")); 
-	$objErr->doFunc(array("�ѥ����", 'password', PASSWORD_LEN1, PASSWORD_LEN2), array("EXIST_CHECK", "SPTAB_CHECK" ,"ALNUM_CHECK", "NUM_RANGE_CHECK"));
-	$objErr->doFunc(array("�ѥ����(��ǧ)", 'password02', PASSWORD_LEN1, PASSWORD_LEN2), array("EXIST_CHECK", "SPTAB_CHECK" ,"ALNUM_CHECK", "NUM_RANGE_CHECK"));
-	$objErr->doFunc(array('�ѥ����', '�ѥ����(��ǧ)', "password", "password02") ,array("EQUAL_CHECK"));
-	$objErr->doFunc(array("�ѥ���ɤ�˺�줿�Ȥ��Υҥ�� ����", "reminder") ,array("SELECT_CHECK", "NUM_CHECK")); 
-	$objErr->doFunc(array("�ѥ���ɤ�˺�줿�Ȥ��Υҥ�� ����", "reminder_answer", STEXT_LEN) ,array("EXIST_CHECK","SPTAB_CHECK" , "MAX_LENGTH_CHECK"));
-	$objErr->doFunc(array("�᡼��ޥ�����", "mailmaga_flg") ,array("SELECT_CHECK", "NUM_CHECK"));
+	$objErr->doFunc(array("お電話番号1", 'tel01'), array("EXIST_CHECK","SPTAB_CHECK" ));
+	$objErr->doFunc(array("お電話番号2", 'tel02'), array("EXIST_CHECK","SPTAB_CHECK" ));
+	$objErr->doFunc(array("お電話番号3", 'tel03'), array("EXIST_CHECK","SPTAB_CHECK" ));
+	$objErr->doFunc(array("お電話番号", "tel01", "tel02", "tel03",TEL_ITEM_LEN) ,array("TEL_CHECK"));
+	$objErr->doFunc(array("FAX番号1", 'fax01'), array("SPTAB_CHECK"));
+	$objErr->doFunc(array("FAX番号2", 'fax02'), array("SPTAB_CHECK"));
+	$objErr->doFunc(array("FAX番号3", 'fax03'), array("SPTAB_CHECK"));
+	$objErr->doFunc(array("FAX番号", "fax01", "fax02", "fax03", TEL_ITEM_LEN) ,array("TEL_CHECK"));
+	$objErr->doFunc(array("ご性別", "sex") ,array("SELECT_CHECK", "NUM_CHECK")); 
+	$objErr->doFunc(array("パスワード", 'password', PASSWORD_LEN1, PASSWORD_LEN2), array("EXIST_CHECK", "SPTAB_CHECK" ,"ALNUM_CHECK", "NUM_RANGE_CHECK"));
+	$objErr->doFunc(array("パスワード(確認)", 'password02', PASSWORD_LEN1, PASSWORD_LEN2), array("EXIST_CHECK", "SPTAB_CHECK" ,"ALNUM_CHECK", "NUM_RANGE_CHECK"));
+	$objErr->doFunc(array('パスワード', 'パスワード(確認)', "password", "password02") ,array("EQUAL_CHECK"));
+	$objErr->doFunc(array("パスワードを忘れたときのヒント 質問", "reminder") ,array("SELECT_CHECK", "NUM_CHECK")); 
+	$objErr->doFunc(array("パスワードを忘れたときのヒント 答え", "reminder_answer", STEXT_LEN) ,array("EXIST_CHECK","SPTAB_CHECK" , "MAX_LENGTH_CHECK"));
+	$objErr->doFunc(array("メールマガジン", "mailmaga_flg") ,array("SELECT_CHECK", "NUM_CHECK"));
 	
-	$objErr->doFunc(array("��ǯ����", "year", "month", "day"), array("CHECK_DATE"));
-	$objErr->doFunc(array("�᡼��ޥ�����", 'mailmaga_flg'), array("SELECT_CHECK"));
+	$objErr->doFunc(array("生年月日", "year", "month", "day"), array("CHECK_DATE"));
+	$objErr->doFunc(array("メールマガジン", 'mailmaga_flg'), array("SELECT_CHECK"));
 	
 	return $objErr->arrErr;
 }
 
-//��ǧ�ڡ����ѥѥ����ɽ����
+//確認ページ用パスワード表示用
 
 function lfPassLen($passlen){
 	$ret = "";

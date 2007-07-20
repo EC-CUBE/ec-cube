@@ -5,7 +5,7 @@
  * http://www.lockon.co.jp/
  */
 *}-->
-<!--¡ú¡ú¥á¥¤¥ó¥³¥ó¥Æ¥ó¥Ä¡ú¡ú-->
+<!--â˜…â˜…ãƒ¡ã‚¤ãƒ³ã‚³ãƒ³ãƒ†ãƒ³ãƒ„â˜…â˜…-->
 <table width="878" border="0" cellspacing="0" cellpadding="0" summary=" ">
 <form name="form1" id="form1" method="post" action="<!--{$smarty.server.PHP_SELF|escape}-->" onsubmit="return lfnModeSubmit('confirm')">
 <!--{foreach from=$smarty.post key="key" item="item"}-->
@@ -16,14 +16,14 @@
 <input type="hidden" name="tpl_subno_template" value="<!--{$tpl_subno_template}-->">
 	<tr valign="top">
 		<td background="<!--{$smarty.const.URL_DIR}-->img/contents/navi_bg.gif" height="402">
-			<!--¢§SUB NAVI-->
+			<!--â–¼SUB NAVI-->
 			<!--{include file=$tpl_subnavi}-->
-			<!--¢¥SUB NAVI-->
+			<!--â–²SUB NAVI-->
 		</td>
 		<td class="mainbg">
-			<!--¢§ÅĞÏ¿¥Æ¡¼¥Ö¥ë¤³¤³¤«¤é-->
+			<!--â–¼ç™»éŒ²ãƒ†ãƒ¼ãƒ–ãƒ«ã“ã“ã‹ã‚‰-->
 			<table width="737" border="0" cellspacing="0" cellpadding="0" summary=" ">
-				<!--¥á¥¤¥ó¥¨¥ê¥¢-->
+				<!--ãƒ¡ã‚¤ãƒ³ã‚¨ãƒªã‚¢-->
 				<tr>
 					<td align="center">
 						<table width="706" border="0" cellspacing="0" cellpadding="0" summary=" ">
@@ -40,7 +40,7 @@
 									</tr>
 									<tr>
 										<td background="<!--{$smarty.const.URL_DIR}-->img/contents/contents_title_left_bg.gif"><img src="<!--{$smarty.const.URL_DIR}-->img/contents/contents_title_left.gif" width="22" height="12" alt=""></td>
-										<td bgcolor="#636469" width="638" class="fs14n"><span class="white"><!--¥³¥ó¥Æ¥ó¥Ä¥¿¥¤¥È¥ë--><!--{$template_name}--></span></td>
+										<td bgcolor="#636469" width="638" class="fs14n"><span class="white"><!--ã‚³ãƒ³ãƒ†ãƒ³ãƒ„ã‚¿ã‚¤ãƒˆãƒ«--><!--{$template_name}--></span></td>
 										<td background="<!--{$smarty.const.URL_DIR}-->img/contents/contents_title_right_bg.gif"><img src="<!--{$smarty.const.URL_DIR}-->img/common/_.gif" width="18" height="1" alt=""></td>
 									</tr>
 									<tr>
@@ -53,7 +53,7 @@
 
 								<table width="678" border="0" cellspacing="1" cellpadding="8" summary=" ">
 									<tr class="fs12n">
-										<td bgcolor="#f2f1ec" align="center"><strong>¸½ºß¤Î¥Æ¥ó¥×¥ì¡¼¥È</strong></td>
+										<td bgcolor="#f2f1ec" align="center"><strong>ç¾åœ¨ã®ãƒ†ãƒ³ãƒ—ãƒ¬ãƒ¼ãƒˆ</strong></td>
 									</tr>
 									<tr class="fs12n">
 										<td bgcolor="#ffffff" align="center"><img height=500 width=400 src="<!--{$smarty.const.URL_DIR}--><!--{$arrTemplate.image[$MainImage]}-->" name="main_img" ></td>
@@ -66,7 +66,7 @@
 								
 								<table width="678" border="0" cellspacing="1" cellpadding="8" summary=" ">
 									<tr class="fs12n">
-										<td bgcolor="#f2f1ec" align="center" colspan="3"><strong>¥Æ¥ó¥×¥ì¡¼¥È°ìÍ÷</strong></td>
+										<td bgcolor="#f2f1ec" align="center" colspan="3"><strong>ãƒ†ãƒ³ãƒ—ãƒ¬ãƒ¼ãƒˆä¸€è¦§</strong></td>
 									</tr>
 									
 									<!--{section name=template loop=$arrTemplate.image step=3}-->
@@ -77,9 +77,9 @@
 										<!--{assign var=code value=$arrTemplate.code[$key]}-->
 										<!--{assign var=image value=$arrTemplate.image[$code]}-->
 										<td bgcolor="#ffffff" align="center"><!--{$arrTemplate[template]}-->
-											<span class="fs12">¡Ú<!--{$code}-->¡Û</span><br/>
+											<span class="fs12">ã€<!--{$code}-->ã€‘</span><br/>
 											<label for="radio<!--{$key}-->"><img src="<!--{$smarty.const.URL_DIR}--><!--{$image}-->" width="160" height="200" name="<!--{$key}-->" alt="<!--{$code}-->"></label><br>
-											<span class="fs10n"><label for="radio<!--{$key}-->"><input type="radio" name="check_template" value="<!--{$code}-->" id="radio<!--{$key}-->" onClick="ChangeImage('<!--{$smarty.const.URL_DIR}--><!--{$image}-->');" <!--{if $arrTemplate.check[$code] != ""}-->checked<!--{/if}-->>ÁªÂò</label></span>
+											<span class="fs10n"><label for="radio<!--{$key}-->"><input type="radio" name="check_template" value="<!--{$code}-->" id="radio<!--{$key}-->" onClick="ChangeImage('<!--{$smarty.const.URL_DIR}--><!--{$image}-->');" <!--{if $arrTemplate.check[$code] != ""}-->checked<!--{/if}-->>é¸æŠ</label></span>
 										</td>
 										<!--{assign var=cnt value=$smarty.section.template.iteration-1}-->
 										<!--{assign var=key value=$cnt*$smarty.section.template.step+1}-->
@@ -87,9 +87,9 @@
 										<!--{assign var=image value=$arrTemplate.image[$code]}-->
 										<!--{if $image != ""}-->
 										<td bgcolor="#ffffff" align="center"><!--{$arrTemplate[template]}-->
-											<span class="fs12">¡Ú<!--{$code}-->¡Û</span><br/>
+											<span class="fs12">ã€<!--{$code}-->ã€‘</span><br/>
 											<label for="radio<!--{$key}-->"><img src="<!--{$smarty.const.URL_DIR}--><!--{$image}-->" width="160" height="200" name="<!--{$key}-->" alt="<!--{$code}-->></label><br>
-											<span class="fs10n"><label for="radio<!--{$key}-->"><input type="radio" name="check_template" value="<!--{$code}-->" id="radio<!--{$key}-->" onClick="ChangeImage('<!--{$smarty.const.URL_DIR}--><!--{$image}-->');" <!--{if $arrTemplate.check[$code] != ""}-->checked<!--{/if}-->>ÁªÂò</label></span>
+											<span class="fs10n"><label for="radio<!--{$key}-->"><input type="radio" name="check_template" value="<!--{$code}-->" id="radio<!--{$key}-->" onClick="ChangeImage('<!--{$smarty.const.URL_DIR}--><!--{$image}-->');" <!--{if $arrTemplate.check[$code] != ""}-->checked<!--{/if}-->>é¸æŠ</label></span>
 										</td>
 										<!--{/if}-->
 										<!--{assign var=cnt value=$smarty.section.template.iteration-1}-->
@@ -98,9 +98,9 @@
 										<!--{assign var=image value=$arrTemplate.image[$code]}-->
 										<!--{if $image != ""}-->
 										<td bgcolor="#ffffff" align="center"><!--{$arrTemplate[template]}-->
-											<span class="fs12">¡Ú<!--{$code}-->¡Û</span><br/>
+											<span class="fs12">ã€<!--{$code}-->ã€‘</span><br/>
 											<label for="radio<!--{$key}-->"><img src="<!--{$smarty.const.URL_DIR}--><!--{$image}-->" width="160" height="200" name="<!--{$key}-->" alt="<!--{$code}-->></label><br>
-											<span class="fs10n"><label for="radio<!--{$key}-->"><input type="radio" name="check_template" value="<!--{$code}-->" id="radio<!--{$key}-->" onClick="ChangeImage('<!--{$smarty.const.URL_DIR}--><!--{$image}-->');" <!--{if $arrTemplate.check[$code] != ""}-->checked<!--{/if}-->>ÁªÂò</label></span>
+											<span class="fs10n"><label for="radio<!--{$key}-->"><input type="radio" name="check_template" value="<!--{$code}-->" id="radio<!--{$key}-->" onClick="ChangeImage('<!--{$smarty.const.URL_DIR}--><!--{$image}-->');" <!--{if $arrTemplate.check[$code] != ""}-->checked<!--{/if}-->>é¸æŠ</label></span>
 										</td>
 										<!--{/if}-->
 
@@ -120,8 +120,8 @@
 										<table border="0" cellspacing="0" cellpadding="0" summary=" ">
 											<tr>
 												<td>
-													<a href="javascript:fnModeSubmit('download', '', '');"><img onMouseover="chgImgImageSubmit('<!--{$smarty.const.URL_DIR}-->img/contents/btn_download_on.jpg',this)" onMouseout="chgImgImageSubmit('<!--{$smarty.const.URL_DIR}-->img/contents/btn_download.jpg',this)" src="<!--{$smarty.const.URL_DIR}-->img/contents/btn_download.jpg" width="123" height="24" alt="¥À¥¦¥ó¥í¡¼¥É" border="0" name="subm"></a>
-													<input type="image" onMouseover="chgImgImageSubmit('<!--{$smarty.const.URL_DIR}-->img/contents/btn_regist_on.jpg',this)" onMouseout="chgImgImageSubmit('<!--{$smarty.const.URL_DIR}-->img/contents/btn_regist.jpg',this)" src="<!--{$smarty.const.URL_DIR}-->img/contents/btn_regist.jpg" width="123" height="24" alt="¤³¤ÎÆâÍÆ¤ÇÅĞÏ¿¤¹¤ë" border="0" name="subm">
+													<a href="javascript:fnModeSubmit('download', '', '');"><img onMouseover="chgImgImageSubmit('<!--{$smarty.const.URL_DIR}-->img/contents/btn_download_on.jpg',this)" onMouseout="chgImgImageSubmit('<!--{$smarty.const.URL_DIR}-->img/contents/btn_download.jpg',this)" src="<!--{$smarty.const.URL_DIR}-->img/contents/btn_download.jpg" width="123" height="24" alt="ãƒ€ã‚¦ãƒ³ãƒ­ãƒ¼ãƒ‰" border="0" name="subm"></a>
+													<input type="image" onMouseover="chgImgImageSubmit('<!--{$smarty.const.URL_DIR}-->img/contents/btn_regist_on.jpg',this)" onMouseout="chgImgImageSubmit('<!--{$smarty.const.URL_DIR}-->img/contents/btn_regist.jpg',this)" src="<!--{$smarty.const.URL_DIR}-->img/contents/btn_regist.jpg" width="123" height="24" alt="ã“ã®å†…å®¹ã§ç™»éŒ²ã™ã‚‹" border="0" name="subm">
 												</td>
 											</tr>
 										</table>
@@ -142,14 +142,14 @@
 						</table>
 					</td>
 				</tr>
-				<!--¥á¥¤¥ó¥¨¥ê¥¢-->
+				<!--ãƒ¡ã‚¤ãƒ³ã‚¨ãƒªã‚¢-->
 			</table>
-			<!--¢¥ÅĞÏ¿¥Æ¡¼¥Ö¥ë¤³¤³¤Ş¤Ç-->
+			<!--â–²ç™»éŒ²ãƒ†ãƒ¼ãƒ–ãƒ«ã“ã“ã¾ã§-->
 		</td>
 	</tr>
 </form>
 </table>
-<!--¡ú¡ú¥á¥¤¥ó¥³¥ó¥Æ¥ó¥Ä¡ú¡ú-->
+<!--â˜…â˜…ãƒ¡ã‚¤ãƒ³ã‚³ãƒ³ãƒ†ãƒ³ãƒ„â˜…â˜…-->
 
 <script type="text/javascript">
 function ChangeImage(strUrl)
@@ -157,9 +157,9 @@ function ChangeImage(strUrl)
 	document.main_img.src=strUrl;
 }
 
-// ¥â¡¼¥É¤È¥­¡¼¤ò»ØÄê¤·¤ÆSUBMIT¤ò¹Ô¤¦¡£
+// ãƒ¢ãƒ¼ãƒ‰ã¨ã‚­ãƒ¼ã‚’æŒ‡å®šã—ã¦SUBMITã‚’è¡Œã†ã€‚
 function lfnModeSubmit(mode) {
-	if(!window.confirm('ÅĞÏ¿¤·¤Æ¤âµ¹¤·¤¤¤Ç¤¹¤«?')){
+	if(!window.confirm('ç™»éŒ²ã—ã¦ã‚‚å®œã—ã„ã§ã™ã‹?')){
 		return false;
 	}
 	document.form1['mode'].value = mode;

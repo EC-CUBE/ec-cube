@@ -5,30 +5,30 @@
  * http://www.lockon.co.jp/
  */
 *}-->
-<div align="center">¤ªÆÏ¤±ÀèÅÐÏ¿</div>
+<div align="center">ãŠå±Šã‘å…ˆç™»éŒ²</div>
 <hr>
 <form name="form1" method="post" action="<!--{$smarty.server.PHP_SELF|escape}-->">
 	<input type="hidden" name="mode" value="set2">
 
-	<font color="#FF0000">*¤ÏÉ¬¿Ü¹àÌÜ¤Ç¤¹¡£</font><br>
+	<font color="#FF0000">*ã¯å¿…é ˆé …ç›®ã§ã™ã€‚</font><br>
 	<br>
 
-	¡ÚÅÔÆ»ÉÜ¸©¡Û<font color="#FF0000">*</font><br>
+	ã€éƒ½é“åºœçœŒã€‘<font color="#FF0000">*</font><br>
 	<font color="#FF0000"><!--{$arrErr.pref}--></font>
 	<select name="pref">
-		<option value="">ÅÔÆ»ÉÜ¸©¤òÁªÂò</option>
+		<option value="">éƒ½é“åºœçœŒã‚’é¸æŠž</option>
 		<!--{html_options options=$arrPref selected=$arrForm.pref}-->
 	</select><br>
 
-	¡Ú»Ô¶èÄ®Â¼¡Û<font color="#FF0000">*</font><br>
+	ã€å¸‚åŒºç”ºæ‘ã€‘<font color="#FF0000">*</font><br>
 	<font color="#FF0000"><!--{$arrErr.addr01}--></font>
 	<input type="text" name="addr01" value="<!--{$arrForm.addr01|escape}-->" istyle="1"><br>
 
-	¡ÚÈÖÃÏ¡Û<font color="#FF0000">*</font><br>
+	ã€ç•ªåœ°ã€‘<font color="#FF0000">*</font><br>
 	<font color="#FF0000"><!--{$arrErr.addr02}--></font>
 	<input type="text" name="addr02" value="<!--{$arrForm.addr02|escape}-->" istyle="1"><br>
 
-	¡ÚÅÅÏÃÈÖ¹æ¡Û<font color="#FF0000">*</font><br>
+	ã€é›»è©±ç•ªå·ã€‘<font color="#FF0000">*</font><br>
 	<font color="#FF0000"><!--{$arrErr.tel01}--><!--{$arrErr.tel02}--><!--{$arrErr.tel03}--></font>
 	<!--{assign var="size" value="`$smarty.const.TEL_ITEM_LEN+2`"}-->
 	<input type="text" size="<!--{$size}-->" name="tel01" value="<!--{$arrForm.tel01|escape}-->" maxlength="<!--{$smarty.const.TEL_ITEM_LEN}-->" istyle="4">
@@ -39,8 +39,8 @@
 
 	<br>
 
-	<div align="center"><input type="submit" name="submit" value="¼¡¤Ø"></div>
-	<div align="center"><input type="submit" name="return" value="Ìá¤ë"></div>
+	<div align="center"><input type="submit" name="submit" value="æ¬¡ã¸"></div>
+	<div align="center"><input type="submit" name="return" value="æˆ»ã‚‹"></div>
 
 	<!--{foreach from=$list_data key=key item=item}-->
 		<input type="hidden" name="<!--{$key|escape}-->" value="<!--{$item|escape}-->">
@@ -50,11 +50,11 @@
 <br>
 <hr>
 
-<a href="<!--{$smarty.const.MOBILE_URL_CART_TOP}-->" accesskey="9"><!--{9|numeric_emoji}-->¤«¤´¤ò¸«¤ë</a><br>
-<a href="<!--{$smarty.const.MOBILE_URL_SITE_TOP}-->" accesskey="0"><!--{0|numeric_emoji}-->TOP¥Ú¡¼¥¸¤Ø</a><br>
+<a href="<!--{$smarty.const.MOBILE_URL_CART_TOP}-->" accesskey="9"><!--{9|numeric_emoji}-->ã‹ã”ã‚’è¦‹ã‚‹</a><br>
+<a href="<!--{$smarty.const.MOBILE_URL_SITE_TOP}-->" accesskey="0"><!--{0|numeric_emoji}-->TOPãƒšãƒ¼ã‚¸ã¸</a><br>
 
 <br>
 
-<!-- ¢§¥Õ¥Ã¥¿¡¼ ¤³¤³¤«¤é -->
+<!-- â–¼ãƒ•ãƒƒã‚¿ãƒ¼ ã“ã“ã‹ã‚‰ -->
 <!--{include file='footer.tpl'}-->
-<!-- ¢¥¥Õ¥Ã¥¿¡¼ ¤³¤³¤Þ¤Ç -->
+<!-- â–²ãƒ•ãƒƒã‚¿ãƒ¼ ã“ã“ã¾ã§ -->

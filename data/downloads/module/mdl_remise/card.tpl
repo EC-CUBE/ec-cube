@@ -57,7 +57,7 @@
 </script>
 </head>
 
-<!-- ¢§ £Â£Ï£Ä£ÙÉô ¥¹¥¿¡¼¥È -->
+<!-- â–¼ ï¼¢ï¼¯ï¼¤ï¼¹éƒ¨ ã‚¹ã‚¿ãƒ¼ãƒˆ -->
 <body bgcolor="#ffe9e6" text="#555555" link="#3a75af" vlink="#3a75af" alink="#3a75af" leftmargin="0" topmargin="0" marginwidth="0" marginheight="0" onLoad="preLoadImg('/'); ">
 <noscript>
 <link rel="stylesheet" href="/css/common.css" type="text/css" />
@@ -66,14 +66,14 @@
 <div align="center">
 <a name="top" id="top"></a>
 
-<!--¢§HEADER-->
+<!--â–¼HEADER-->
 <!--{if $arrPageLayout.header_chk != 2}--> 
 <!--{assign var=header_dir value="`$smarty.const.HTML_PATH`user_data/include/header.tpl"}-->
 <!--{include file= $header_dir}-->
 <!--{/if}-->
-<!--¢¥HEADER-->
+<!--â–²HEADER-->
 
-<!--¢§MAIN-->
+<!--â–¼MAIN-->
 <div id="base">
 <table width="780" border="0" cellspacing="0" cellpadding="0" summary=" ">
 	<tr>
@@ -85,39 +85,39 @@
 		<table width="100%" border="0" cellspacing="0" cellpadding="0" summary=" ">
 
 			<tr valign="top">
-				<!--¢§º¸¥Ê¥Ó-->
-								<!--¢¥º¸¥Ê¥Ó-->
+				<!--â–¼å·¦ãƒŠãƒ“-->
+								<!--â–²å·¦ãƒŠãƒ“-->
 			
 				<td align="center" width=100%>
 			        <table border="0" cellspacing="0" cellpadding="0" summary=" ">
 			        
-					<!--¢§¥á¥¤¥ó¾åÉô-->
-										<!--¢¥¥á¥¤¥ó¾åÉô-->
+					<!--â–¼ãƒ¡ã‚¤ãƒ³ä¸Šéƒ¨-->
+										<!--â–²ãƒ¡ã‚¤ãƒ³ä¸Šéƒ¨-->
 					
 					<tr><td align="center">
-<!--¢§CONTENTS-->
+<!--â–¼CONTENTS-->
 <table width="760" border="0" cellspacing="0" cellpadding="0" summary=" ">
 	<tr>
 		<td align="center" bgcolor="#ffffff">
-		<!--¢§MAIN ONTENTS-->
-		<!--{*¹ØÆş¼êÂ³¤­¤ÎÎ®¤ì-->
+		<!--â–¼MAIN ONTENTS-->
+		<!--{*è³¼å…¥æ‰‹ç¶šãã®æµã‚Œ-->
 		<table width="700" border="0" cellspacing="0" cellpadding="0" summary=" ">
 			<tr>
-				<td><img src="<!--{$smarty.const.URL_DIR}-->img/shopping/flow03.gif" width="700" height="36" alt="¹ØÆş¼êÂ³¤­¤ÎÎ®¤ì"></td>
+				<td><img src="<!--{$smarty.const.URL_DIR}-->img/shopping/flow03.gif" width="700" height="36" alt="è³¼å…¥æ‰‹ç¶šãã®æµã‚Œ"></td>
 			</tr>
 			<tr><td height="15"></td></tr>
 		</table>
-		<!--¹ØÆş¼êÂ³¤­¤ÎÎ®¤ì*}-->
+		<!--è³¼å…¥æ‰‹ç¶šãã®æµã‚Œ*}-->
 		
 		<table width="700" border="0" cellspacing="0" cellpadding="0" summary=" ">
 			<tr>
-				<td><img src="<!--{$smarty.const.URL_DIR}-->img/shopping/credit_title.jpg" width="700" height="40" alt="¥¯¥ì¥¸¥Ã¥È·èºÑ"></td>
+				<td><img src="<!--{$smarty.const.URL_DIR}-->img/shopping/credit_title.jpg" width="700" height="40" alt="ã‚¯ãƒ¬ã‚¸ãƒƒãƒˆæ±ºæ¸ˆ"></td>
 			</tr>
 			<tr><td height="15"></td></tr>
 			<tr>
-				<td class="fs12">²¼µ­¤«¤é¡¢»ÙÊ§¤¤ÊıË¡¤ò¤´ÁªÂò¤·¤Æ¤¯¤À¤µ¤¤¡£<br />
-				°ì³çÊ§¤¤¡¢¥ê¥Ü¥ë¥Ó¥ó¥°Ê§¤¤¤òÁªÂò¤·¤¿¾ì¹ç¤Ï¡¢Ê¬³ä²ó¿ô¤òÁªÂò¤¹¤ëÉ¬Í×¤Ï¤¢¤ê¤Ş¤»¤ó¡£<br />
-				Ê¬³äÊ§¤¤¤òÁªÂò¤·¤¿¾ì¹ç¤Ï¡¢Ê¬³ä²ó¿ô¤òÁªÂò¤·¡¢°ìÈÖ²¼¤Î¡Ö¤´ÃíÊ¸´°Î»¥Ú¡¼¥¸¤Ø¡×¥Ü¥¿¥ó¤ò¥¯¥ê¥Ã¥¯¤·¤Æ¤¯¤À¤µ¤¤¡£</td>
+				<td class="fs12">ä¸‹è¨˜ã‹ã‚‰ã€æ”¯æ‰•ã„æ–¹æ³•ã‚’ã”é¸æŠã—ã¦ãã ã•ã„ã€‚<br />
+				ä¸€æ‹¬æ‰•ã„ã€ãƒªãƒœãƒ«ãƒ“ãƒ³ã‚°æ‰•ã„ã‚’é¸æŠã—ãŸå ´åˆã¯ã€åˆ†å‰²å›æ•°ã‚’é¸æŠã™ã‚‹å¿…è¦ã¯ã‚ã‚Šã¾ã›ã‚“ã€‚<br />
+				åˆ†å‰²æ‰•ã„ã‚’é¸æŠã—ãŸå ´åˆã¯ã€åˆ†å‰²å›æ•°ã‚’é¸æŠã—ã€ä¸€ç•ªä¸‹ã®ã€Œã”æ³¨æ–‡å®Œäº†ãƒšãƒ¼ã‚¸ã¸ã€ãƒœã‚¿ãƒ³ã‚’ã‚¯ãƒªãƒƒã‚¯ã—ã¦ãã ã•ã„ã€‚</td>
 			</tr>
 			<tr><td height="20"></td></tr>
 			<form name="form2" id="form2" method="post" action="<!--{$smarty.server.PHP_SELF|escape}-->">
@@ -139,11 +139,11 @@
 			<input type="hidden" name="REMARKS3" value="<!--{$arrSendData.REMARKS3|escape}-->">
 			<tr>
 				<td bgcolor="#cccccc">
-				<!--¤ª»ÙÊ§ÊıË¡¡¦¤ªÆÏ¤±»ş´Ö¤Î»ØÄê¡¦¤½¤ÎÂ¾¤ªÌä¤¤¹ç¤ï¤»¤³¤³¤«¤é-->
+				<!--ãŠæ”¯æ‰•æ–¹æ³•ãƒ»ãŠå±Šã‘æ™‚é–“ã®æŒ‡å®šãƒ»ãã®ä»–ãŠå•ã„åˆã‚ã›ã“ã“ã‹ã‚‰-->
 				<table width="700" border="0" cellspacing="1" cellpadding="10" summary=" ">
 					<tr>
-						<td width="10%" align="center" bgcolor="#f0f0f0" class="fs12">ÁªÂò</td>
-						<td width="90%" bgcolor="#f0f0f0" class="fs12">»ÙÊ§¤¤ÊıË¡</td>
+						<td width="10%" align="center" bgcolor="#f0f0f0" class="fs12">é¸æŠ</td>
+						<td width="90%" bgcolor="#f0f0f0" class="fs12">æ”¯æ‰•ã„æ–¹æ³•</td>
 					</tr>
 					<!--{foreach key=key item=item from=$arrCreMet}-->
 					<tr>
@@ -152,7 +152,7 @@
 					</tr>
 					<!--{/foreach}-->
 				</table>
-				<!--¤ª»ÙÊ§ÊıË¡¡¦¤ªÆÏ¤±»ş´Ö¤Î»ØÄê¡¦¤½¤ÎÂ¾¤ªÌä¤¤¹ç¤ï¤»¤³¤³¤Ş¤Ç-->
+				<!--ãŠæ”¯æ‰•æ–¹æ³•ãƒ»ãŠå±Šã‘æ™‚é–“ã®æŒ‡å®šãƒ»ãã®ä»–ãŠå•ã„åˆã‚ã›ã“ã“ã¾ã§-->
 				</td>
 			</tr>
 
@@ -160,20 +160,20 @@
 
 			<tr>
 				<td bgcolor="#cccccc">
-				<!--Ê¬³ä²ó¿ô¤³¤³¤«¤é-->		
+				<!--åˆ†å‰²å›æ•°ã“ã“ã‹ã‚‰-->		
 				<table width="700" border="0" cellspacing="1" cellpadding="10" summary=" ">
 					<tr>
-						<td width="20%" bgcolor="#f0f0f0" class="fs12n">Ê¬³ä²ó¿ô</td>
+						<td width="20%" bgcolor="#f0f0f0" class="fs12n">åˆ†å‰²å›æ•°</td>
 						<td width="80%" bgcolor="#ffffff" class="fs12n">
 						<!--{assign var=key value="PTIMES"}-->
 						<span class="red"><!--{$arrErr[$key]}--></span>
 						<select name="<!--{$key}-->" style="<!--{$arrErr[$key]|sfGetErrorColor}-->">
-						<option value="1" selected="">»ØÄê¤Ê¤·</option>
+						<option value="1" selected="">æŒ‡å®šãªã—</option>
 						<!--{html_options options=$arrCreDiv selected=$arrForm[$key].value}-->
 						</select></td>
 					</tr>
 				</table>
-				<!--Ê¬³ä²ó¿ô¤³¤³¤Ş¤Ç-->
+				<!--åˆ†å‰²å›æ•°ã“ã“ã¾ã§-->
 				</td>
 			</tr>
 			
@@ -181,30 +181,30 @@
 
 			<tr>
 				<td align="center">
-					<a href="<!--{$smarty.const.URL_DIR}-->" onclick="fnFormModeSubmit('form2', 'return', '', '');return false;" onmouseover="chgImgImageSubmit('<!--{$smarty.const.URL_DIR}-->img/common/b_back_on.gif',back03)" onmouseout="chgImgImageSubmit('<!--{$smarty.const.URL_DIR}-->img/common/b_back.gif',back03)"><img src="<!--{$smarty.const.URL_DIR}-->img/common/b_back.gif" width="150" height="30" alt="Ìá¤ë" border="0" name="back03" id="back03" /></a>
+					<a href="<!--{$smarty.const.URL_DIR}-->" onclick="fnFormModeSubmit('form2', 'return', '', '');return false;" onmouseover="chgImgImageSubmit('<!--{$smarty.const.URL_DIR}-->img/common/b_back_on.gif',back03)" onmouseout="chgImgImageSubmit('<!--{$smarty.const.URL_DIR}-->img/common/b_back.gif',back03)"><img src="<!--{$smarty.const.URL_DIR}-->img/common/b_back.gif" width="150" height="30" alt="æˆ»ã‚‹" border="0" name="back03" id="back03" /></a>
 					<img src="<!--{$smarty.const.URL_DIR}-->img/_.gif" width="20" height="" alt="" />
-					<input type="image" onmouseover="chgImgImageSubmit('<!--{$smarty.const.URL_DIR}-->img/shopping/b_ordercomp_on.gif',this)" onmouseout="chgImgImageSubmit('<!--{$smarty.const.URL_DIR}-->img/shopping/b_ordercomp.gif',this)" src="<!--{$smarty.const.URL_DIR}-->img/shopping/b_ordercomp.gif" width="150" height="30" alt="¤´ÃíÊ¸´°Î»¥Ú¡¼¥¸¤Ø" border="0" name="next" id="next" />
+					<input type="image" onmouseover="chgImgImageSubmit('<!--{$smarty.const.URL_DIR}-->img/shopping/b_ordercomp_on.gif',this)" onmouseout="chgImgImageSubmit('<!--{$smarty.const.URL_DIR}-->img/shopping/b_ordercomp.gif',this)" src="<!--{$smarty.const.URL_DIR}-->img/shopping/b_ordercomp.gif" width="150" height="30" alt="ã”æ³¨æ–‡å®Œäº†ãƒšãƒ¼ã‚¸ã¸" border="0" name="next" id="next" />
 				</td>
 			</tr>
 			</form>
 		</table>
-		<!--¢¥MAIN ONTENTS-->
+		<!--â–²MAIN ONTENTS-->
 		</td>
 	</tr>
 </table>
-<!--¢¥CONTENTS-->
+<!--â–²CONTENTS-->
 </td></tr>
 					
-					<!--¢§¥á¥¤¥ó²¼Éô-->
+					<!--â–¼ãƒ¡ã‚¤ãƒ³ä¸‹éƒ¨-->
 					<tr><td align="center">
 										</td><tr>
-					<!--¢¥¥á¥¤¥ó²¼Éô-->					
+					<!--â–²ãƒ¡ã‚¤ãƒ³ä¸‹éƒ¨-->					
 	
 					</table>
 				</td>
 
-				<!--¢§±¦¥Ê¥Ó-->
-								<!--¢¥±¦¥Ê¥Ó-->
+				<!--â–¼å³ãƒŠãƒ“-->
+								<!--â–²å³ãƒŠãƒ“-->
 
 			</tr>
 		</table>
@@ -215,20 +215,20 @@
 </table>
 
 </div>
-<!--¢¥MAIN-->
+<!--â–²MAIN-->
 
-<!--¢§FOTTER-->
+<!--â–¼FOTTER-->
 <!--{if $arrPageLayout.footer_chk != 2}--> 
 <!--{include file="`$smarty.const.HTML_PATH`user_data/include/footer.tpl"}-->
 <!--{/if}-->
-<!--¢¥FOTTER-->
+<!--â–²FOTTER-->
 </div>
-<!--{* EBiS¥¿¥°É½¼¨ÍÑ *}-->
+<!--{* EBiSã‚¿ã‚°è¡¨ç¤ºç”¨ *}-->
 <!--{$tpl_mainpage|sfPrintEbisTag}-->
-<!--{* ¥¢¥Õ¥£¥ê¥¨¥¤¥È¥¿¥°É½¼¨ÍÑ *}-->
+<!--{* ã‚¢ãƒ•ã‚£ãƒªã‚¨ã‚¤ãƒˆã‚¿ã‚°è¡¨ç¤ºç”¨ *}-->
 <!--{$tpl_conv_page|sfPrintAffTag:$tpl_aff_option}-->
 
 
-</body><!-- ¢¥ £Â£Ï£Ä£ÙÉô ¥¨¥ó¥É -->
+</body><!-- â–² ï¼¢ï¼¯ï¼¤ï¼¹éƒ¨ ã‚¨ãƒ³ãƒ‰ -->
 
 </html>

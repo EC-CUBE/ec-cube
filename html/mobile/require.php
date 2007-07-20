@@ -39,10 +39,10 @@ require_once($include_dir . "/.." . HTML2DATA_DIR . "class/GC_MobileEmoji.php");
 require_once($include_dir . "/.." . HTML2DATA_DIR . "class/GC_MobileImage.php");
 require_once($include_dir . "/.." . HTML2DATA_DIR . "include/page_layout.inc");
 
-// ¥¢¥Ã¥×¥Ç¡¼¥È¤Ç¼èÆÀ¤·¤¿PHP¤òÆÉ¤ß½Ğ¤¹
+// ã‚¢ãƒƒãƒ—ãƒ‡ãƒ¼ãƒˆã§å–å¾—ã—ãŸPHPã‚’èª­ã¿å‡ºã™
 sfLoadUpdateModule();
 
-// ¥â¥Ğ¥¤¥ë¥µ¥¤¥ÈÍÑ¤Î½é´ü½èÍı¤ò¼Â¹Ô¤¹¤ë¡£
+// ãƒ¢ãƒã‚¤ãƒ«ã‚µã‚¤ãƒˆç”¨ã®åˆæœŸå‡¦ç†ã‚’å®Ÿè¡Œã™ã‚‹ã€‚
 if (!defined('SKIP_MOBILE_INIT')) {
 	sfMobileInit();
 }

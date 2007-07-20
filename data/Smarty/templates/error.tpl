@@ -3,11 +3,11 @@
  *
  * http://www.lockon.co.jp/
  *}-->
- <!--¢§CONTENTS-->
+ <!--â–¼CONTENTS-->
 <table width=760 border="0" cellspacing="0" cellpadding="0" summary=" ">
 	<tr valign="top">
 		<td align="center" bgcolor="#ffffff">
-		<!--¢§MAIN ONTENTS-->
+		<!--â–¼MAIN ONTENTS-->
 		<table width="700" border="0" cellspacing="0" cellpadding="0" summary=" ">
 			<tr><td height="20"></td></tr>
 			<tr>
@@ -15,7 +15,7 @@
 				<table width="690" border="0" cellspacing="0" cellpadding="3" summary=" ">
 					<tr><td height="5"></td></tr>
 					<tr>
-						<td align="center" height="250" bgcolor="#ffffff" class="fs12"><!--¡ú¥¨¥é¡¼¥á¥Ã¥»¡¼¥¸--><!--{$tpl_error}--></td>
+						<td align="center" height="250" bgcolor="#ffffff" class="fs12"><!--â˜…ã‚¨ãƒ©ãƒ¼ãƒ¡ãƒƒã‚»ãƒ¼ã‚¸--><!--{$tpl_error}--></td>
 					</tr>
 					<tr><td height="5"></td></tr>
 				</table>
@@ -26,16 +26,16 @@
 				<td>
 					<div id="button">
 						<!--{if $return_top}-->
-							<a href="<!--{$smarty.const.URL_DIR}-->index.php" onmouseover="chgImg('<!--{$smarty.const.URL_DIR}-->img/common/b_toppage_on.gif','b_toppage');" onmouseout="chgImg('<!--{$smarty.const.URL_DIR}-->img/common/b_toppage.gif','b_toppage');"><img src="<!--{$smarty.const.URL_DIR}-->img/common/b_toppage.gif" width="150" height="30" alt="¥È¥Ã¥×¥Ú¡¼¥¸¤Ø" border="0" name="b_toppage"></a>
+							<a href="<!--{$smarty.const.URL_DIR}-->index.php" onmouseover="chgImg('<!--{$smarty.const.URL_DIR}-->img/common/b_toppage_on.gif','b_toppage');" onmouseout="chgImg('<!--{$smarty.const.URL_DIR}-->img/common/b_toppage.gif','b_toppage');"><img src="<!--{$smarty.const.URL_DIR}-->img/common/b_toppage.gif" width="150" height="30" alt="ãƒˆãƒƒãƒ—ãƒšãƒ¼ã‚¸ã¸" border="0" name="b_toppage"></a>
 						<!--{else}-->
-							<a href="javascript:history.back()" onmouseOver="chgImg('<!--{$smarty.const.URL_DIR}-->img/common/b_back_on.gif','b_back');" onmouseOut="chgImg('<!--{$smarty.const.URL_DIR}-->img/common/b_back.gif','b_back');"><img src="<!--{$smarty.const.URL_DIR}-->img/common/b_back.gif" width="150" height="30" alt="Ìá¤ë" name="b_back" id="b_back" /></a>
+							<a href="javascript:history.back()" onmouseOver="chgImg('<!--{$smarty.const.URL_DIR}-->img/common/b_back_on.gif','b_back');" onmouseOut="chgImg('<!--{$smarty.const.URL_DIR}-->img/common/b_back.gif','b_back');"><img src="<!--{$smarty.const.URL_DIR}-->img/common/b_back.gif" width="150" height="30" alt="æˆ»ã‚‹" name="b_back" id="b_back" /></a>
 						<!--{/if}-->
 					</div>
 				</td>
 			</tr>
 		</table>
-		<!--¢¥MAIN ONTENTS-->
+		<!--â–²MAIN ONTENTS-->
 		</td>
 	</tr>
 </table>
-<!--¢¥CONTENTS-->
+<!--â–²CONTENTS-->

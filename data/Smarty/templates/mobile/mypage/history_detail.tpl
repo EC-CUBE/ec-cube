@@ -5,57 +5,57 @@
  * http://www.lockon.co.jp/
  */
 *}-->
-<div align="center">¹ØÆþÍúÎò¾ÜºÙ</div>
+<div align="center">è³¼å…¥å±¥æ­´è©³ç´°</div>
 <hr>
 
-¢£<!--{$arrDisp.create_date|sfDispDBDate}--><br>
-ÃíÊ¸ÈÖ¹æ:<!--{$arrDisp.order_id}--><br>
+â– <!--{$arrDisp.create_date|sfDispDBDate}--><br>
+æ³¨æ–‡ç•ªå·:<!--{$arrDisp.order_id}--><br>
 <br>
-¡ÚÇÛÁ÷Àè¡Û<br>
+ã€é…é€å…ˆã€‘<br>
 	<!--{assign var=key1 value="deliv_name01"}--><!--{assign var=key2 value="deliv_name02"}-->
 	<!--{$arrDisp[$key1]|escape}-->&nbsp;<!--{$arrDisp[$key2]|escape}--><br>
 	<!--{assign var=key1 value="deliv_zip01"}--><!--{assign var=key2 value="deliv_zip02"}-->
-	¢©<!--{$arrDisp[$key1]}-->-<!--{$arrDisp[$key2]}--><br>
+	ã€’<!--{$arrDisp[$key1]}-->-<!--{$arrDisp[$key2]}--><br>
 	<!--{assign var=pref value=`$arrDisp.deliv_pref`}--><!--{$arrPref[$pref]}-->
 	<!--{assign var=key value="deliv_addr01"}--><!--{$arrDisp[$key]|escape}-->
 	<!--{assign var=key value="deliv_addr02"}--><!--{$arrDisp[$key]|escape}--><br>
 <br>
-¡ÚÇÛÁ÷Æü»þ»ØÄê¡Û<br>
+ã€é…é€æ—¥æ™‚æŒ‡å®šã€‘<br>
 <!--{if $arrDisp.deliv_date eq "" and $arrDelivTime[$arrDisp.deliv_time_id] eq ""}-->
-	»ØÄê¤Ê¤·<br>
+	æŒ‡å®šãªã—<br>
 <!--{else}-->
 	<!--{$arrDisp.deliv_date|escape}--> <!--{$arrDelivTime[$arrDisp.deliv_time_id]|escape}--><br>
 <!--{/if}-->
 <br>
-¡Ú¤ª»ÙÊ§¤¤ÊýË¡¡Û<br>
+ã€ãŠæ”¯æ‰•ã„æ–¹æ³•ã€‘<br>
 <!--{$arrPayment[$arrDisp.payment_id]|escape}--><br>
 <br>
-¡Ú¤´ÃíÊ¸ÆâÍÆ¡Û<br>
+ã€ã”æ³¨æ–‡å†…å®¹ã€‘<br>
 <!--{section name=cnt loop=$arrDisp.quantity}-->
 <!--{$arrDisp.product_name[cnt]|escape}--><br>
-<a href="<!--{$smarty.const.MOBILE_URL_DIR}-->products/detail.php?product_id=<!--{$arrDisp.product_id[cnt]}-->">¾¦ÉÊ¹ØÆþ¾ÜºÙ¢ª</a><br>
+<a href="<!--{$smarty.const.MOBILE_URL_DIR}-->products/detail.php?product_id=<!--{$arrDisp.product_id[cnt]}-->">å•†å“è³¼å…¥è©³ç´°â†’</a><br>
 <!--{/section}-->
 <br>
-¡Ú¹ØÆþ¶â³Û¡Û<br>
-¾¦ÉÊ¹ç·×:<!--{$arrDisp.subtotal|number_format}-->±ß<br>
-Á÷ÎÁ:<!--{assign var=key value="deliv_fee"}--><!--{$arrDisp[$key]|escape|number_format}-->±ß<br>
-¹ç·×:<!--{$arrDisp.payment_total|number_format}-->±ß<br>
+ã€è³¼å…¥é‡‘é¡ã€‘<br>
+å•†å“åˆè¨ˆ:<!--{$arrDisp.subtotal|number_format}-->å††<br>
+é€æ–™:<!--{assign var=key value="deliv_fee"}--><!--{$arrDisp[$key]|escape|number_format}-->å††<br>
+åˆè¨ˆ:<!--{$arrDisp.payment_total|number_format}-->å††<br>
 <br>
 
 <form action="order.php" method="post">
 	<input type="hidden" name="order_id" value="<!--{$arrDisp.order_id}-->">
-	<div align="center"><input type="submit" name="submit" value="ºÆÃíÊ¸"></div>
+	<div align="center"><input type="submit" name="submit" value="å†æ³¨æ–‡"></div>
 </form>
 
 <br>
 
 <hr>
 
-<a href="<!--{$smarty.const.MOBILE_URL_CART_TOP}-->" accesskey="9"><!--{9|numeric_emoji}-->¤«¤´¤ò¸«¤ë</a><br>
-<a href="<!--{$smarty.const.MOBILE_URL_SITE_TOP}-->" accesskey="0"><!--{0|numeric_emoji}-->TOP¥Ú¡¼¥¸¤Ø</a><br>
+<a href="<!--{$smarty.const.MOBILE_URL_CART_TOP}-->" accesskey="9"><!--{9|numeric_emoji}-->ã‹ã”ã‚’è¦‹ã‚‹</a><br>
+<a href="<!--{$smarty.const.MOBILE_URL_SITE_TOP}-->" accesskey="0"><!--{0|numeric_emoji}-->TOPãƒšãƒ¼ã‚¸ã¸</a><br>
 
 <br>
 
-<!-- ¢§¥Õ¥Ã¥¿¡¼ ¤³¤³¤«¤é -->
+<!-- â–¼ãƒ•ãƒƒã‚¿ãƒ¼ ã“ã“ã‹ã‚‰ -->
 <!--{include file='footer.tpl'}-->
-<!-- ¢¥¥Õ¥Ã¥¿¡¼ ¤³¤³¤Þ¤Ç -->
+<!-- â–²ãƒ•ãƒƒã‚¿ãƒ¼ ã“ã“ã¾ã§ -->

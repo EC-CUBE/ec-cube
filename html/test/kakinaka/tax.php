@@ -3,7 +3,7 @@
 require_once("../../require.php");
 
 
-echo "»Í¼Î¸ŞÆş¡§" . sfRound(5.499599,5) . "<br>";
+echo "å››æ¨äº”å…¥ï¼š" . sfRound(5.499599,5) . "<br>";
 
 
 ?>

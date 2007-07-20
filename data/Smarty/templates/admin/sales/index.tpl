@@ -5,98 +5,98 @@
  * http://www.lockon.co.jp/
  */
 *}-->
-<!--¢§CONTENTS-->
+<!--â–¼CONTENTS-->
 <table width="780" border="0" cellspacing="0" cellpadding="0" summary=" ">
 	<tr>
 		<td bgcolor="#ffffff" align="center" valign="top" height="400">
 		<table width="740" border="0" cellspacing="0" cellpadding="0" summary=" ">
 			<tr>
-				<!--¢§SUB NAVI-->
-				<td class="fs12n"><span class="over">¢£Çä¾å½¸·×</span></td>
-				<!--¢¥SUB NAVI-->
+				<!--â–¼SUB NAVI-->
+				<td class="fs12n"><span class="over">â– å£²ä¸Šé›†è¨ˆ</span></td>
+				<!--â–²SUB NAVI-->
 			</tr><tr><td height="25"></td></tr>
 		</table>
 		
-		<!--¢§MAIN CONTENTS-->
+		<!--â–¼MAIN CONTENTS-->
 		<table width="740" border="0" cellspacing="0" cellpadding="0" summary=" ">
 			<tr>
-				<td class="fs14n"><strong>¢£Çä¾å½¸·×</strong></td>
+				<td class="fs14n"><strong>â– å£²ä¸Šé›†è¨ˆ</strong></td>
 			</tr>
 			<tr><td height="10"></td></tr>
 		</table>
 		
-		<!--¢§¸¡º÷¥Æ¡¼¥Ö¥ë¤³¤³¤«¤é-->
+		<!--â–¼æ¤œç´¢ãƒ†ãƒ¼ãƒ–ãƒ«ã“ã“ã‹ã‚‰-->
 		<form name="form1" id="form1" method="post" action="">
 		<table bgcolor="#cccccc" width="730" border="0" cellspacing="1" cellpadding="5" summary=" ">
 			<tr class="fs12n">
 				<td bgcolor="#ffffff">
-				<input type="radio" value="Ç¯ÅÙ»ØÄê" name="search" checked="checked">¡¡
+				<input type="radio" value="å¹´åº¦æŒ‡å®š" name="search" checked="checked">ã€€
 				<select name="year">
 				<option selected="selected">--</option>
-				</select>Ç¯
+				</select>å¹´
 				<select name="month">
 				<option selected="selected">--</option>
-				</select>·îÅÙ¡Ê30ÆüÄù¤á¤Ç¤¹¡Ë
+				</select>æœˆåº¦ï¼ˆ30æ—¥ç· ã‚ã§ã™ï¼‰
 				</td>
 			</tr>
 			<tr class="fs12n">
 				<td bgcolor="#ffffff">
-				<input type="radio" value="´ü´Ö»ØÄê" name="search">¡¡
+				<input type="radio" value="æœŸé–“æŒ‡å®š" name="search">ã€€
 				<select name="year_from">
 				<option selected="selected">--</option>
-				</select>Ç¯
+				</select>å¹´
 				<select name="month_from">
 				<option selected="selected">--</option>
-				</select>·î
+				</select>æœˆ
 				<select name="day_from">
 				<option selected="selected">--</option>
-				</select>Æü¡Á
+				</select>æ—¥ã€œ
 				<select name="year_to">
 				<option selected="selected">--</option>
-				</select>Ç¯
+				</select>å¹´
 				<select name="month_to">
 				<option selected="selected">--</option>
-				</select>·î
+				</select>æœˆ
 				<select name="day_to">
 				<option selected="selected">--</option>
-				</select>Æü
+				</select>æ—¥
 				</td>
 			</tr>
 			<tr class="fs12n">
 				<td bgcolor="#ffffff">
 				<select name="data">
-				<option selected="selected">ÁªÂò¤·¤Æ¤¯¤À¤µ¤¤</option>
-				<option value="·îÊÌ/´ü´ÖÊÌ">·îÊÌ/´ü´ÖÊÌ</option>
-				<option value="Çä¤ì¶Ú¾¦ÉÊBEST10">Çä¤ì¶Ú¾¦ÉÊBEST10</option>
-				<option value="Ç¯ÎðBEST10">Ç¯ÎðBEST10</option>
-				<option value="¿¦¶ÈBEST10">¿¦¶ÈBEST10</option>
-				<option value="Çä¾åÆâÌõ¡Ê°ìÈÌ/²ñ°÷¡Ë">Çä¾åÆâÌõ¡Ê°ìÈÌ/²ñ°÷¡Ë</option>
-				<option value="¾¦ÉÊBEST¡Ê°ìÈÌ¡Ë">¾¦ÉÊBEST¡Ê°ìÈÌ¡Ë</option>
-				<option value="¾¦ÉÊBEST¡Ê²ñ°÷¡Ë">¾¦ÉÊBEST¡Ê²ñ°÷¡Ë</option>
+				<option selected="selected">é¸æŠžã—ã¦ãã ã•ã„</option>
+				<option value="æœˆåˆ¥/æœŸé–“åˆ¥">æœˆåˆ¥/æœŸé–“åˆ¥</option>
+				<option value="å£²ã‚Œç­‹å•†å“BEST10">å£²ã‚Œç­‹å•†å“BEST10</option>
+				<option value="å¹´é½¢BEST10">å¹´é½¢BEST10</option>
+				<option value="è·æ¥­BEST10">è·æ¥­BEST10</option>
+				<option value="å£²ä¸Šå†…è¨³ï¼ˆä¸€èˆ¬/ä¼šå“¡ï¼‰">å£²ä¸Šå†…è¨³ï¼ˆä¸€èˆ¬/ä¼šå“¡ï¼‰</option>
+				<option value="å•†å“BESTï¼ˆä¸€èˆ¬ï¼‰">å•†å“BESTï¼ˆä¸€èˆ¬ï¼‰</option>
+				<option value="å•†å“BESTï¼ˆä¼šå“¡ï¼‰">å•†å“BESTï¼ˆä¼šå“¡ï¼‰</option>
 				</select>
 				</td>
 			</tr>
 		</table>
-		<!--¢¥¸¡º÷¥Æ¡¼¥Ö¥ë¤³¤³¤Þ¤Ç-->
+		<!--â–²æ¤œç´¢ãƒ†ãƒ¼ãƒ–ãƒ«ã“ã“ã¾ã§-->
 		
 		<br />
-		<input type="button" name="subm" value="¤³¤ÎÆâÍÆ¤Ç¸¡º÷¤¹¤ë" />
+		<input type="button" name="subm" value="ã“ã®å†…å®¹ã§æ¤œç´¢ã™ã‚‹" />
 		</form>
 		
-		<!--¢§¸¡º÷·ë²ÌÉ½¼¨¥¨¥ê¥¢¤³¤³¤«¤é-->
+		<!--â–¼æ¤œç´¢çµæžœè¡¨ç¤ºã‚¨ãƒªã‚¢ã“ã“ã‹ã‚‰-->
 		<hr noshade size="1" color="#cccccc" />
 		
 		<table width="740" border="0" cellspacing="0" cellpadding="0" summary=" ">
 			<tr><td height="15"></td></tr>
 			<tr class="fs12">
-				<td align="center">ÊÝÎ±</td>
+				<td align="center">ä¿ç•™</td>
 			</tr>
 			<tr><td height="5"></td></tr>
 		</table>
-		<!--¢¥¸¡º÷·ë²ÌÉ½¼¨¥¨¥ê¥¢¤³¤³¤Þ¤Ç-->
+		<!--â–²æ¤œç´¢çµæžœè¡¨ç¤ºã‚¨ãƒªã‚¢ã“ã“ã¾ã§-->
 		
-		<!--¢¥MAIN CONTENTS-->
+		<!--â–²MAIN CONTENTS-->
 		</td>
 	</tr>
 </table>
-<!--¢¥CONTENTS-->
+<!--â–²CONTENTS-->

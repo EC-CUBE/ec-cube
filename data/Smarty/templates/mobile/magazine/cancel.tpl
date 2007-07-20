@@ -5,20 +5,20 @@
  * http://www.lockon.co.jp/
  */
 *}-->
-<div align="center">�����λ</div>
+<div align="center">解除完了</div>
 <hr>
 
-�᡼��ޥ�����β������λ�פ��ޤ�����<br>
-����Ȥ⤴���ܻ��ޤ��褦����������ꤤ�����夲�ޤ���<br>
+メールマガジンの解除が完了致しました。<br>
+今後ともご愛顧賜りますようよろしくお願い申し上げます。<br>
 <br>
 
 <hr>
 
-<a href="<!--{$smarty.const.MOBILE_URL_CART_TOP}-->" accesskey="9"><!--{9|numeric_emoji}-->�����򸫤�</a><br>
-<a href="<!--{$smarty.const.MOBILE_URL_SITE_TOP}-->" accesskey="0"><!--{0|numeric_emoji}-->TOP�ڡ�����</a><br>
+<a href="<!--{$smarty.const.MOBILE_URL_CART_TOP}-->" accesskey="9"><!--{9|numeric_emoji}-->かごを見る</a><br>
+<a href="<!--{$smarty.const.MOBILE_URL_SITE_TOP}-->" accesskey="0"><!--{0|numeric_emoji}-->TOPページへ</a><br>
 
 <br>
 
-<!-- ���եå��� �������� -->
+<!-- ▼フッター ここから -->
 <!--{include file='footer.tpl'}-->
-<!-- ���եå��� �����ޤ� -->
+<!-- ▲フッター ここまで -->

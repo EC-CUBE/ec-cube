@@ -5,7 +5,7 @@
  * http://www.lockon.co.jp/
  */
 *}-->
-<!--¡ú¡ú¥á¥¤¥ó¥³¥ó¥Æ¥ó¥Ä¡ú¡ú-->
+<!--â˜…â˜…ãƒ¡ã‚¤ãƒ³ã‚³ãƒ³ãƒ†ãƒ³ãƒ„â˜…â˜…-->
 <table width="878" border="0" cellspacing="0" cellpadding="0" summary=" ">
 <form name="form1" id="form1" method="post" action="<!--{$smarty.server.PHP_SELF|escape}-->">
 <!--{foreach key=key item=val from=$arrHidden}-->	
@@ -13,14 +13,14 @@
 <!--{/foreach}-->
 	<tr valign="top">
 		<td background="<!--{$smarty.const.URL_DIR}-->img/contents/navi_bg.gif" height="402">
-			<!--¢§SUB NAVI-->
+			<!--â–¼SUB NAVI-->
 			<!--{include file=$tpl_subnavi}-->
-			<!--¢¥SUB NAVI-->
+			<!--â–²SUB NAVI-->
 		</td>
 		<td class="mainbg">
-			<!--¢§ÅĞÏ¿¥Æ¡¼¥Ö¥ë¤³¤³¤«¤é-->
+			<!--â–¼ç™»éŒ²ãƒ†ãƒ¼ãƒ–ãƒ«ã“ã“ã‹ã‚‰-->
 			<table width="737" border="0" cellspacing="0" cellpadding="0" summary=" ">
-				<!--¥á¥¤¥ó¥¨¥ê¥¢-->
+				<!--ãƒ¡ã‚¤ãƒ³ã‚¨ãƒªã‚¢-->
 				<tr>
 					<td align="center">
 						<table width="706" border="0" cellspacing="0" cellpadding="0" summary=" ">
@@ -37,7 +37,7 @@
 									</tr>
 									<tr>
 										<td background="<!--{$smarty.const.URL_DIR}-->img/contents/contents_title_left_bg.gif"><img src="<!--{$smarty.const.URL_DIR}-->img/contents/contents_title_left.gif" width="22" height="12" alt=""></td>
-										<td bgcolor="#636469" width="638" class="fs14n"><span class="white"><!--¥³¥ó¥Æ¥ó¥Ä¥¿¥¤¥È¥ë-->ÇÛ¿®ÀßÄê¡§ÇÛ¿®ÆâÍÆÀßÄê</span></td>
+										<td bgcolor="#636469" width="638" class="fs14n"><span class="white"><!--ã‚³ãƒ³ãƒ†ãƒ³ãƒ„ã‚¿ã‚¤ãƒˆãƒ«-->é…ä¿¡è¨­å®šï¼šé…ä¿¡å†…å®¹è¨­å®š</span></td>
 										<td background="<!--{$smarty.const.URL_DIR}-->img/contents/contents_title_right_bg.gif"><img src="<!--{$smarty.const.URL_DIR}-->img/common/_.gif" width="18" height="1" alt=""></td>
 									</tr>
 									<tr>
@@ -50,36 +50,36 @@
 
 								<table width="678" border="0" cellspacing="1" cellpadding="8" summary=" ">
 									<tr class="fs12n">
-										<td bgcolor="#f2f1ec" width="200">¥Æ¥ó¥×¥ì¡¼¥ÈÁªÂò<span class="red"> *</span></td>
+										<td bgcolor="#f2f1ec" width="200">ãƒ†ãƒ³ãƒ—ãƒ¬ãƒ¼ãƒˆé¸æŠ<span class="red"> *</span></td>
 										<td bgcolor="#ffffff" width="507">
 										<!--{if $arrErr.template_id}--><span class="red12"><!--{$arrErr.template_id}--></span><!--{/if}-->
 										<select name="template_id" onchange="return fnInsertValAndSubmit( document.form1, 'mode', 'template', '' ) " style="<!--{$arrErr.template_id|sfGetErrorColor}-->">
-										<option value="" selected="selected">ÁªÂò¤·¤Æ¤¯¤À¤µ¤¤</option>
+										<option value="" selected="selected">é¸æŠã—ã¦ãã ã•ã„</option>
 										<!--{html_options options=$arrTemplate selected=$list_data.template_id}-->
 										</select>
 										</td>
 									
-									<!--{* ¥Ğ¥Ã¥Á¥â¡¼¥É¤Î¾ì¹ç¤Î¤ßÉ½¼¨ *}-->
+									<!--{* ãƒãƒƒãƒãƒ¢ãƒ¼ãƒ‰ã®å ´åˆã®ã¿è¡¨ç¤º *}-->
 									<!--{if $smarty.const.MELMAGA_BATCH_MODE}-->
 									<tr class="fs12n">
-										<td bgcolor="#f2f1ec">ÇÛ¿®»ş´ÖÀßÄê<span class="red"> *</span></td>
+										<td bgcolor="#f2f1ec">é…ä¿¡æ™‚é–“è¨­å®š<span class="red"> *</span></td>
 										<td bgcolor="#ffffff">
 										<!--{if $arrErr.send_year || $arrErr.send_month || $arrErr.send_day || $arrErr.send_hour || $arrErr.send_minutes}--><span class="red12"><!--{$arrErr.send_year}--><!--{$arrErr.send_month}--><!--{$arrErr.send_day}--><!--{$arrErr.send_hour}--><!--{$arrErr.send_minutes}--></span><br><!--{/if}-->
 										<select name="send_year" style="<!--{$arrErr.send_year|sfGetErrorColor}-->">
 										<!--{html_options options=$arrYear selected=$arrNowDate.year}-->
-										</select>Ç¯
+										</select>å¹´
 										<select name="send_month" style="<!--{$arrErr.send_month|sfGetErrorColor}-->">
 										<!--{html_options options=$objDate->getMonth() selected=$arrNowDate.month}-->
-										</select>·î
+										</select>æœˆ
 										<select name="send_day" style="<!--{$arrErr.send_day|sfGetErrorColor}-->">
 										<!--{html_options options=$objDate->getDay() selected=$arrNowDate.day}-->
-										</select>Æü
+										</select>æ—¥
 										<select name="send_hour" style="<!--{$arrErr.send_hour|sfGetErrorColor}-->">
 										<!--{html_options options=$objDate->getHour() selected=$arrNowDate.hour}-->
-										</select>»ş
+										</select>æ™‚
 										<select name="send_minutes" style="<!--{$arrErr.send_minutes|sfGetErrorColor}-->">
 										<!--{html_options options=$objDate->getMinutesInterval() selected=$arrNowDate.minutes}-->
-										</select>Ê¬</td>
+										</select>åˆ†</td>
 									</tr>
 									<!--{/if}-->
 								</table>
@@ -99,7 +99,7 @@
 											</td>
 										</tr>
 										<tr>
-											<td bgcolor="#f2f1ec" colspan="2" class="fs12n">ËÜÊ¸<span class="red"> *</span>¡ÊÌ¾Á°º¹¤·¹ş¤ß»ş¤Ï {name} ¤È¤¤¤ì¤Æ¤¯¤À¤µ¤¤¡Ë</td>
+											<td bgcolor="#f2f1ec" colspan="2" class="fs12n">æœ¬æ–‡<span class="red"> *</span>ï¼ˆåå‰å·®ã—è¾¼ã¿æ™‚ã¯ {name} ã¨ã„ã‚Œã¦ãã ã•ã„ï¼‰</td>
 										</tr>
 										<tr>
 											<td bgcolor="#ffffff" colspan="2" class="fs12n">
@@ -125,8 +125,8 @@
 													<input type="hidden" name="mode" value="template">
 													<input type="hidden" name="mail_method" value="<!--{$list_data.mail_method}-->">
 
-													<input type="image" onMouseover="chgImgImageSubmit('<!--{$smarty.const.URL_DIR}-->img/contents/btn_search_back_on.jpg',this)" onMouseout="chgImgImageSubmit('<!--{$smarty.const.URL_DIR}-->img/contents/btn_search_back.jpg',this)" src="<!--{$smarty.const.URL_DIR}-->img/contents/btn_search_back.jpg" width="123" height="24" alt="¸¡º÷²èÌÌ¤ËÌá¤ë" border="0" name="subm02" onClick="return fnInsertValAndSubmit( document.form1, 'mode', 'back', '' )">
-													<input type="image" onMouseover="chgImgImageSubmit('<!--{$smarty.const.URL_DIR}-->img/contents/btn_confirm_on.jpg',this)" onMouseout="chgImgImageSubmit('<!--{$smarty.const.URL_DIR}-->img/contents/btn_confirm.jpg',this)" src="<!--{$smarty.const.URL_DIR}-->img/contents/btn_confirm.jpg" width="123" height="24" alt="³ÎÇ§¥Ú¡¼¥¸¤Ø" border="0" name="subm03" onClick="return fnInsertValAndSubmit( document.form1, 'mode', 'regist_confirm', '' )" >
+													<input type="image" onMouseover="chgImgImageSubmit('<!--{$smarty.const.URL_DIR}-->img/contents/btn_search_back_on.jpg',this)" onMouseout="chgImgImageSubmit('<!--{$smarty.const.URL_DIR}-->img/contents/btn_search_back.jpg',this)" src="<!--{$smarty.const.URL_DIR}-->img/contents/btn_search_back.jpg" width="123" height="24" alt="æ¤œç´¢ç”»é¢ã«æˆ»ã‚‹" border="0" name="subm02" onClick="return fnInsertValAndSubmit( document.form1, 'mode', 'back', '' )">
+													<input type="image" onMouseover="chgImgImageSubmit('<!--{$smarty.const.URL_DIR}-->img/contents/btn_confirm_on.jpg',this)" onMouseout="chgImgImageSubmit('<!--{$smarty.const.URL_DIR}-->img/contents/btn_confirm.jpg',this)" src="<!--{$smarty.const.URL_DIR}-->img/contents/btn_confirm.jpg" width="123" height="24" alt="ç¢ºèªãƒšãƒ¼ã‚¸ã¸" border="0" name="subm03" onClick="return fnInsertValAndSubmit( document.form1, 'mode', 'regist_confirm', '' )" >
 												</td>
 											</tr>
 										</table>
@@ -147,11 +147,11 @@
 						</table>
 					</td>
 				</tr>
-				<!--¥á¥¤¥ó¥¨¥ê¥¢-->
+				<!--ãƒ¡ã‚¤ãƒ³ã‚¨ãƒªã‚¢-->
 			</table>
-			<!--¢¥ÅĞÏ¿¥Æ¡¼¥Ö¥ë¤³¤³¤Ş¤Ç-->
+			<!--â–²ç™»éŒ²ãƒ†ãƒ¼ãƒ–ãƒ«ã“ã“ã¾ã§-->
 		</td>
 	</tr>
 </form>
 </table>
-<!--¡ú¡ú¥á¥¤¥ó¥³¥ó¥Æ¥ó¥Ä¡ú¡ú-->
+<!--â˜…â˜…ãƒ¡ã‚¤ãƒ³ã‚³ãƒ³ãƒ†ãƒ³ãƒ„â˜…â˜…-->

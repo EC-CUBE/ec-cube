@@ -7,14 +7,14 @@
 require_once("../require.php");
 
 class LC_Page {
-	var $arrErr;		// ¥¨¥é¡¼¥á¥Ã¥»¡¼¥¸½ĞÎÏÍÑ
-	var $tpl_recv;		// ÆşÎÏ¾ğÊóPOSTÀè
-	var $tpl_onload;	// ¥Ú¡¼¥¸ÆÉ¤ß¹ş¤ß»ş¤Î¥¤¥Ù¥ó¥È
-	var $arrForm;		// ¥Õ¥©¡¼¥à½ĞÎÏÍÑ
-	var $tpl_mode;		// ¿·µ¬ºîÀ®:new or ÊÔ½¸:edit
-	var $tpl_member_id; // ÊÔ½¸»ş¤Ë»ÈÍÑ¤¹¤ë¡£
+	var $arrErr;		// ã‚¨ãƒ©ãƒ¼ãƒ¡ãƒƒã‚»ãƒ¼ã‚¸å‡ºåŠ›ç”¨
+	var $tpl_recv;		// å…¥åŠ›æƒ…å ±POSTå…ˆ
+	var $tpl_onload;	// ãƒšãƒ¼ã‚¸èª­ã¿è¾¼ã¿æ™‚ã®ã‚¤ãƒ™ãƒ³ãƒˆ
+	var $arrForm;		// ãƒ•ã‚©ãƒ¼ãƒ å‡ºåŠ›ç”¨
+	var $tpl_mode;		// æ–°è¦ä½œæˆ:new or ç·¨é›†:edit
+	var $tpl_member_id; // ç·¨é›†æ™‚ã«ä½¿ç”¨ã™ã‚‹ã€‚
 	var $tpl_pageno;
-	var $tpl_onfocus;	// ¥Ñ¥¹¥ï¡¼¥É¹àÌÜÁªÂò»ş¤Î¥¤¥Ù¥ó¥ÈÍÑ
+	var $tpl_onfocus;	// ãƒ‘ã‚¹ãƒ¯ãƒ¼ãƒ‰é …ç›®é¸æŠæ™‚ã®ã‚¤ãƒ™ãƒ³ãƒˆç”¨
 	var $tpl_old_login_id;
 	function LC_Page() {
 		$this->tpl_recv =  'input.php';
@@ -31,87 +31,87 @@ $conn = new SC_DbConn();
 $objPage = new LC_Page();
 $objView = new SC_AdminView();
 
-// Ç§¾Ú²ÄÈİ¤ÎÈ½Äê
+// èªè¨¼å¯å¦ã®åˆ¤å®š
 $objSess = new SC_Session();
 sfIsSuccess($objSess);
 
-// member_id¤¬»ØÄê¤µ¤ì¤Æ¤¤¤¿¾ì¹ç¡¢ÊÔ½¸¥â¡¼¥É¤È¤¹¤ë¡£
+// member_idãŒæŒ‡å®šã•ã‚Œã¦ã„ãŸå ´åˆã€ç·¨é›†ãƒ¢ãƒ¼ãƒ‰ã¨ã™ã‚‹ã€‚
 if(sfIsInt($_GET['id'])) {
 	$objPage->tpl_mode = 'edit';
 	$objPage->tpl_member_id = $_GET['id'];
 	$objPage->tpl_onfocus = "fnClearText(this.name);";
-	// DB¤Î¥á¥ó¥Ğ¡¼¾ğÊó¤òÆÉ¤ß½Ğ¤¹
+	// DBã®ãƒ¡ãƒ³ãƒãƒ¼æƒ…å ±ã‚’èª­ã¿å‡ºã™
 	$data_list = fnGetMember($conn, $_GET['id']);
-	// ³ºÅö¥æ¡¼¥¶¤òÉ½¼¨¤µ¤»¤ë
+	// è©²å½“ãƒ¦ãƒ¼ã‚¶ã‚’è¡¨ç¤ºã•ã›ã‚‹
 	$objPage->arrForm = $data_list[0];
-	// ¥À¥ß¡¼¤Î¥Ñ¥¹¥ï¡¼¥É¤ò¥»¥Ã¥È¤·¤Æ¤ª¤¯¡£
+	// ãƒ€ãƒŸãƒ¼ã®ãƒ‘ã‚¹ãƒ¯ãƒ¼ãƒ‰ã‚’ã‚»ãƒƒãƒˆã—ã¦ãŠãã€‚
 	$objPage->arrForm['password'] = DUMMY_PASS;
-	// ¥í¥°¥¤¥óID¤òÊİ´É¤·¤Æ¤ª¤¯¡£
+	// ãƒ­ã‚°ã‚¤ãƒ³IDã‚’ä¿ç®¡ã—ã¦ãŠãã€‚
 	$objPage->tpl_old_login_id = $data_list[0]['login_id'];
     
     $objPage->tpl_uniqid = $objSess->getUniqId();
 } else {
-	// ¿·µ¬ºîÀ®¥â¡¼¥É
+	// æ–°è¦ä½œæˆãƒ¢ãƒ¼ãƒ‰
 	$objPage->tpl_mode = "new";
 	$objPage->arrForm['authority'] = -1;
 }
 
-// ¿·µ¬ºîÀ®¥â¡¼¥É or ÊÔ½¸¥â¡¼¥É
+// æ–°è¦ä½œæˆãƒ¢ãƒ¼ãƒ‰ or ç·¨é›†ãƒ¢ãƒ¼ãƒ‰
 if( $_POST['mode'] == 'new' || $_POST['mode'] == 'edit') {
-    // ²èÌÌÁ«°Ü¤ÎÀµÅöÀ­¥Á¥§¥Ã¥¯
+    // ç”»é¢é·ç§»ã®æ­£å½“æ€§ãƒã‚§ãƒƒã‚¯
 	if (sfIsValidTransition($objSess) == false) {
         sfDispError(INVALID_MOVE_ERRORR);
     }
-    // ÆşÎÏ¥¨¥é¡¼¥Á¥§¥Ã¥¯
+    // å…¥åŠ›ã‚¨ãƒ©ãƒ¼ãƒã‚§ãƒƒã‚¯
 	$objPage->arrErr = fnErrorCheck($conn);
 	
-	// ÆşÎÏ¤¬Àµ¾ï¤Ç¤¢¤Ã¤¿¾ì¹ç¤Ï¡¢DB¤Ë½ñ¤­¹ş¤à
+	// å…¥åŠ›ãŒæ­£å¸¸ã§ã‚ã£ãŸå ´åˆã¯ã€DBã«æ›¸ãè¾¼ã‚€
 	if(count($objPage->arrErr) == 0) {
 		if($_POST['mode'] == 'new') {
-			// ¥á¥ó¥Ğ¡¼¤ÎÄÉ²Ã
+			// ãƒ¡ãƒ³ãƒãƒ¼ã®è¿½åŠ 
 			fnInsertMember();
-			// ¥ê¥í¡¼¥É¤Ë¤è¤ëÆó½ÅÅĞÏ¿ÂĞºö¤Î¤¿¤á¡¢Æ±¤¸¥Ú¡¼¥¸¤ËÈô¤Ğ¤¹¡£
+			// ãƒªãƒ­ãƒ¼ãƒ‰ã«ã‚ˆã‚‹äºŒé‡ç™»éŒ²å¯¾ç­–ã®ãŸã‚ã€åŒã˜ãƒšãƒ¼ã‚¸ã«é£›ã°ã™ã€‚
 			header("Location: ". $_SERVER['PHP_SELF'] . "?mode=reload");	
 			exit;
 		}
 		if($_POST['mode'] == 'edit') {
-			// ¥á¥ó¥Ğ¡¼¤ÎÄÉ²Ã
+			// ãƒ¡ãƒ³ãƒãƒ¼ã®è¿½åŠ 
 			if(fnUpdateMember($_POST['member_id'])) {
-				// ¿Æ¥¦¥£¥ó¥É¥¦¤ò¹¹¿·¸å¡¢¼«¥¦¥£¥ó¥É¥¦¤òÊÄ¤¸¤ë¡£
+				// è¦ªã‚¦ã‚£ãƒ³ãƒ‰ã‚¦ã‚’æ›´æ–°å¾Œã€è‡ªã‚¦ã‚£ãƒ³ãƒ‰ã‚¦ã‚’é–‰ã˜ã‚‹ã€‚
 				$url = URL_SYSTEM_TOP . "?pageno=".$_POST['pageno'];
 				$objPage->tpl_onload="fnUpdateParent('".$url."'); window.close();";
 			}
 		}
-	// ÆşÎÏ¥¨¥é¡¼¤¬È¯À¸¤·¤¿¾ì¹ç
+	// å…¥åŠ›ã‚¨ãƒ©ãƒ¼ãŒç™ºç”Ÿã—ãŸå ´åˆ
 	} else {
-		// ¥â¡¼¥É¤ÎÀßÄê
+		// ãƒ¢ãƒ¼ãƒ‰ã®è¨­å®š
 		$objPage->tpl_mode = $_POST['mode'];
 		$objPage->tpl_member_id = $_POST['member_id'];
 		$objPage->tpl_old_login_id = $_POST['old_login_id'];
-		// ¤¹¤Ç¤ËÆşÎÏ¤·¤¿ÃÍ¤òÉ½¼¨¤¹¤ë¡£
+		// ã™ã§ã«å…¥åŠ›ã—ãŸå€¤ã‚’è¡¨ç¤ºã™ã‚‹ã€‚
 		$objPage->arrForm = $_POST;
-		// ÄÌ¾ïÆşÎÏ¤Î¥Ñ¥¹¥ï¡¼¥É¤Ï°ú¤­·Ñ¤¬¤Ê¤¤¡£
+		// é€šå¸¸å…¥åŠ›ã®ãƒ‘ã‚¹ãƒ¯ãƒ¼ãƒ‰ã¯å¼•ãç¶™ãŒãªã„ã€‚
 		if($objPage->arrForm['password'] != DUMMY_PASS) {
 			$objPage->arrForm['password'] = '';
 		}
 	}
 }
 
-// ¥ê¥í¡¼¥É¤Î»ØÄê¤¬¤¢¤Ã¤¿¾ì¹ç
+// ãƒªãƒ­ãƒ¼ãƒ‰ã®æŒ‡å®šãŒã‚ã£ãŸå ´åˆ
 if( $_GET['mode'] == 'reload') {
-	// ¿Æ¥¦¥£¥ó¥É¥¦¤ò¹¹¿·¤¹¤ë¤è¤¦¤Ë¥»¥Ã¥È¤¹¤ë¡£
+	// è¦ªã‚¦ã‚£ãƒ³ãƒ‰ã‚¦ã‚’æ›´æ–°ã™ã‚‹ã‚ˆã†ã«ã‚»ãƒƒãƒˆã™ã‚‹ã€‚
 	$url = URL_SYSTEM_TOP;
 	$objPage->tpl_onload="fnUpdateParent('".$url."')";
 }
 
-// ²èÌÌÁ«°Ü¤ÎÀµÅöÀ­¥Á¥§¥Ã¥¯ÍÑ¤Ëuniqid¤òËä¤á¹ş¤à
+// ç”»é¢é·ç§»ã®æ­£å½“æ€§ãƒã‚§ãƒƒã‚¯ç”¨ã«uniqidã‚’åŸ‹ã‚è¾¼ã‚€
 $objPage->tpl_uniqid = $objSess->getUniqId();
 
-// ¥Æ¥ó¥×¥ì¡¼¥ÈÍÑÊÑ¿ô¤Î³ä¤êÅö¤Æ
+// ãƒ†ãƒ³ãƒ—ãƒ¬ãƒ¼ãƒˆç”¨å¤‰æ•°ã®å‰²ã‚Šå½“ã¦
 $objView->assignobj($objPage);
 $objView->display('system/input.tpl');
 
-/* ÆşÎÏ¥¨¥é¡¼¤Î¥Á¥§¥Ã¥¯ */
+/* å…¥åŠ›ã‚¨ãƒ©ãƒ¼ã®ãƒã‚§ãƒƒã‚¯ */
 function fnErrorCheck($conn) {
 	
 	$objErr = new SC_CheckError();
@@ -119,72 +119,72 @@ function fnErrorCheck($conn) {
 	$_POST["name"] = mb_convert_kana($_POST["name"] ,"KV");
 	$_POST["department"] = mb_convert_kana($_POST["department"] ,"KV");
 	
-	// Ì¾Á°¥Á¥§¥Ã¥¯
-	$objErr->doFunc(array("Ì¾Á°",'name'), array("EXIST_CHECK"));
-	$objErr->doFunc(array("Ì¾Á°",'name',STEXT_LEN,"BIG"), array("MAX_LENGTH_CHECK"));
+	// åå‰ãƒã‚§ãƒƒã‚¯
+	$objErr->doFunc(array("åå‰",'name'), array("EXIST_CHECK"));
+	$objErr->doFunc(array("åå‰",'name',STEXT_LEN,"BIG"), array("MAX_LENGTH_CHECK"));
 	
-	// ÊÔ½¸¥â¡¼¥É¤Ç¤Ê¤¤¾ì¹ç¤Ï¡¢½ÅÊ£¥Á¥§¥Ã¥¯
+	// ç·¨é›†ãƒ¢ãƒ¼ãƒ‰ã§ãªã„å ´åˆã¯ã€é‡è¤‡ãƒã‚§ãƒƒã‚¯
 	if (!isset($objErr->arrErr['name']) && $_POST['mode'] != 'edit') {
 		$sql = "SELECT name FROM dtb_member WHERE del_flg <> 1 AND name = ?";
 		$result = $conn->getOne($sql, array($_POST['name'])); 
 		if ( $result ) {
-			$objErr->arrErr['name'] = "´û¤ËÅĞÏ¿¤µ¤ì¤Æ¤¤¤ëÌ¾Á°¤Ê¤Î¤ÇÍøÍÑ¤Ç¤­¤Ş¤»¤ó¡£<br>";
+			$objErr->arrErr['name'] = "æ—¢ã«ç™»éŒ²ã•ã‚Œã¦ã„ã‚‹åå‰ãªã®ã§åˆ©ç”¨ã§ãã¾ã›ã‚“ã€‚<br>";
 		}
 	}
 		
-	// ¥í¥°¥¤¥óID¥Á¥§¥Ã¥¯
-	$objErr->doFunc(array("¥í¥°¥¤¥óID",'login_id'), array("EXIST_CHECK", "ALNUM_CHECK"));
-	$objErr->doFunc(array("¥í¥°¥¤¥óID",'login_id',ID_MIN_LEN , ID_MAX_LEN) ,array("NUM_RANGE_CHECK"));
+	// ãƒ­ã‚°ã‚¤ãƒ³IDãƒã‚§ãƒƒã‚¯
+	$objErr->doFunc(array("ãƒ­ã‚°ã‚¤ãƒ³ID",'login_id'), array("EXIST_CHECK", "ALNUM_CHECK"));
+	$objErr->doFunc(array("ãƒ­ã‚°ã‚¤ãƒ³ID",'login_id',ID_MIN_LEN , ID_MAX_LEN) ,array("NUM_RANGE_CHECK"));
 
-	// ¿·µ¬¥â¡¼¥É¤â¤·¤¯¤Ï¡¢ÊÔ½¸¥â¡¼¥É¤Ç¥í¥°¥¤¥óID¤¬ÊÑ¹¹¤µ¤ì¤Æ¤¤¤ë¾ì¹ç¤Ï¥Á¥§¥Ã¥¯¤¹¤ë¡£
+	// æ–°è¦ãƒ¢ãƒ¼ãƒ‰ã‚‚ã—ãã¯ã€ç·¨é›†ãƒ¢ãƒ¼ãƒ‰ã§ãƒ­ã‚°ã‚¤ãƒ³IDãŒå¤‰æ›´ã•ã‚Œã¦ã„ã‚‹å ´åˆã¯ãƒã‚§ãƒƒã‚¯ã™ã‚‹ã€‚
 	if (!isset($objErr->arrErr['login_id']) && $_POST['mode'] != 'edit' || ($_POST['mode'] == 'edit' && $_POST['login_id'] != $_POST['old_login_id'])) {
 		$sql = "SELECT login_id FROM dtb_member WHERE del_flg <> 1 AND login_id = ?";
 		$result = $conn->getOne($sql, array($_POST['login_id'])); 
 		if ( $result != "" ) {
-			$objErr->arrErr['login_id'] = "´û¤ËÅĞÏ¿¤µ¤ì¤Æ¤¤¤ëID¤Ê¤Î¤ÇÍøÍÑ¤Ç¤­¤Ş¤»¤ó¡£<br>";
+			$objErr->arrErr['login_id'] = "æ—¢ã«ç™»éŒ²ã•ã‚Œã¦ã„ã‚‹IDãªã®ã§åˆ©ç”¨ã§ãã¾ã›ã‚“ã€‚<br>";
 		}
 	}
 	
-	// ¥Ñ¥¹¥ï¡¼¥É¥Á¥§¥Ã¥¯(ÊÔ½¸¥â¡¼¥É¤ÇDUMMY_PASS¤¬ÆşÎÏ¤µ¤ì¤Æ¤¤¤ë¾ì¹ç¤Ï¡¢¥¹¥ë¡¼¤¹¤ë)
+	// ãƒ‘ã‚¹ãƒ¯ãƒ¼ãƒ‰ãƒã‚§ãƒƒã‚¯(ç·¨é›†ãƒ¢ãƒ¼ãƒ‰ã§DUMMY_PASSãŒå…¥åŠ›ã•ã‚Œã¦ã„ã‚‹å ´åˆã¯ã€ã‚¹ãƒ«ãƒ¼ã™ã‚‹)
 	if(!($_POST['mode'] == 'edit' && $_POST['password'] == DUMMY_PASS)) { 
-		$objErr->doFunc(array("¥Ñ¥¹¥ï¡¼¥É",'password'), array("EXIST_CHECK", "ALNUM_CHECK"));
+		$objErr->doFunc(array("ãƒ‘ã‚¹ãƒ¯ãƒ¼ãƒ‰",'password'), array("EXIST_CHECK", "ALNUM_CHECK"));
 		if (!$arrErr['password']) {
-			// ¥Ñ¥¹¥ï¡¼¥É¤Î¥Á¥§¥Ã¥¯
-			$objErr->doFunc( array("¥Ñ¥¹¥ï¡¼¥É",'password',4 ,15 ) ,array( "NUM_RANGE_CHECK" ) );	
+			// ãƒ‘ã‚¹ãƒ¯ãƒ¼ãƒ‰ã®ãƒã‚§ãƒƒã‚¯
+			$objErr->doFunc( array("ãƒ‘ã‚¹ãƒ¯ãƒ¼ãƒ‰",'password',4 ,15 ) ,array( "NUM_RANGE_CHECK" ) );	
 		}
 	}
 	
-	// ¸¢¸Â¥Á¥§¥Ã¥¯
-	$objErr->doFunc(array("¸¢¸Â",'authority'),array("EXIST_CHECK"));
+	// æ¨©é™ãƒã‚§ãƒƒã‚¯
+	$objErr->doFunc(array("æ¨©é™",'authority'),array("EXIST_CHECK"));
 	return $objErr->arrErr;
 }
 
-/* DB¤Ø¤Î¥Ç¡¼¥¿ÁŞÆş */
+/* DBã¸ã®ãƒ‡ãƒ¼ã‚¿æŒ¿å…¥ */
 function fnInsertMember() {
-	// ¥¯¥¨¥ê¡¼¥¯¥é¥¹¤ÎÀë¸À
+	// ã‚¯ã‚¨ãƒªãƒ¼ã‚¯ãƒ©ã‚¹ã®å®£è¨€
 	$oquery = new SC_Query();
-	// INSERT¤¹¤ëÃÍ¤òºîÀ®¤¹¤ë¡£
+	// INSERTã™ã‚‹å€¤ã‚’ä½œæˆã™ã‚‹ã€‚
 	$sqlval['name'] = $_POST['name'];
 	$sqlval['department'] = $_POST['department'];
 	$sqlval['login_id'] = $_POST['login_id'];
 	$sqlval['password'] = sha1($_POST['password'] . ":" . AUTH_MAGIC);
 	$sqlval['authority'] = $_POST['authority'];
 	$sqlval['rank']=  $oquery->max("dtb_member", "rank") + 1;
-	$sqlval['work'] = "1"; // ²ÔÆ¯¤ËÀßÄê
-	$sqlval['del_flg'] = "0";	// ºï½ü¥Õ¥é¥°¤òOFF¤ËÀßÄê
+	$sqlval['work'] = "1"; // ç¨¼åƒã«è¨­å®š
+	$sqlval['del_flg'] = "0";	// å‰Šé™¤ãƒ•ãƒ©ã‚°ã‚’OFFã«è¨­å®š
 	$sqlval['creator_id'] = $_SESSION['member_id'];
 	$sqlval['create_date'] = "now()";
 	$sqlval['update_date'] = "now()";
-	// INSERT¤Î¼Â¹Ô
+	// INSERTã®å®Ÿè¡Œ
 	$ret = $oquery->insert("dtb_member", $sqlval);
 	return $ret;
 }
 
-/* DB¤Ø¤Î¥Ç¡¼¥¿¹¹¿· */
+/* DBã¸ã®ãƒ‡ãƒ¼ã‚¿æ›´æ–° */
 function fnUpdateMember($id) {
-	// ¥¯¥¨¥ê¡¼¥¯¥é¥¹¤ÎÀë¸À
+	// ã‚¯ã‚¨ãƒªãƒ¼ã‚¯ãƒ©ã‚¹ã®å®£è¨€
 	$oquery = new SC_Query();
-	// INSERT¤¹¤ëÃÍ¤òºîÀ®¤¹¤ë¡£
+	// INSERTã™ã‚‹å€¤ã‚’ä½œæˆã™ã‚‹ã€‚
 	$sqlval['name'] = $_POST['name'];
 	$sqlval['department'] = $_POST['department'];
 	$sqlval['login_id'] = $_POST['login_id'];
@@ -193,13 +193,13 @@ function fnUpdateMember($id) {
 	}
 	$sqlval['authority'] = $_POST['authority'];
 	$sqlval['update_date'] = "now()";
-	// UPDATE¤Î¼Â¹Ô
+	// UPDATEã®å®Ÿè¡Œ
 	$where = "member_id = " . $id;
 	$ret = $oquery->update("dtb_member", $sqlval, $where);
 	return $ret;
 }
 
-/* DB¤«¤é¥Ç¡¼¥¿¤ÎÆÉ¤ß¹ş¤ß */
+/* DBã‹ã‚‰ãƒ‡ãƒ¼ã‚¿ã®èª­ã¿è¾¼ã¿ */
 function fnGetMember($conn, $id) {
 	$sqlse = "SELECT name,department,login_id,authority FROM dtb_member WHERE member_id = ?";
 	$ret = $conn->getAll($sqlse, Array($id));

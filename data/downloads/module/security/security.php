@@ -7,13 +7,13 @@
  *
  */
  
-//¥Ú¡¼¥¸´ÉÍı¥¯¥é¥¹
+//ãƒšãƒ¼ã‚¸ç®¡ç†ã‚¯ãƒ©ã‚¹
 class LC_Page {
-	//¥³¥ó¥¹¥È¥é¥¯¥¿
+	//ã‚³ãƒ³ã‚¹ãƒˆãƒ©ã‚¯ã‚¿
 	function LC_Page() {
-		//¥á¥¤¥ó¥Æ¥ó¥×¥ì¡¼¥È¤Î»ØÄê
+		//ãƒ¡ã‚¤ãƒ³ãƒ†ãƒ³ãƒ—ãƒ¬ãƒ¼ãƒˆã®æŒ‡å®š
 		$this->tpl_mainpage = MODULE_PATH . 'security/security.tpl';
-		$this->tpl_subtitle = '¥»¥­¥å¥ê¥Æ¥£¥Á¥§¥Ã¥¯';
+		$this->tpl_subtitle = 'ã‚»ã‚­ãƒ¥ãƒªãƒ†ã‚£ãƒã‚§ãƒƒã‚¯';
 	}
 }
 
@@ -23,7 +23,7 @@ $objView = new SC_AdminView();
 switch($_POST['mode']) {
 case 'edit':
     $inst_inc = DATA_PATH . 'install.php';
-    // install.php¤Î±£ÊÃ
+    // install.phpã®éš è”½
     $hidden_inc = MODULE_PATH . 'security/install_inc.php';
     if(sfIsNormalInstallInc()) {
         if(copy($inst_inc, $hidden_inc)) {
@@ -50,91 +50,91 @@ $arrList[] = sfCheckInstallInc();
 
 $objPage->arrList = $arrList;
 
-$objView->assignobj($objPage);					//ÊÑ¿ô¤ò¥Æ¥ó¥×¥ì¡¼¥È¤Ë¥¢¥µ¥¤¥ó¤¹¤ë
-$objView->display($objPage->tpl_mainpage);		//¥Æ¥ó¥×¥ì¡¼¥È¤Î½ĞÎÏ
+$objView->assignobj($objPage);					//å¤‰æ•°ã‚’ãƒ†ãƒ³ãƒ—ãƒ¬ãƒ¼ãƒˆã«ã‚¢ã‚µã‚¤ãƒ³ã™ã‚‹
+$objView->display($objPage->tpl_mainpage);		//ãƒ†ãƒ³ãƒ—ãƒ¬ãƒ¼ãƒˆã®å‡ºåŠ›
 //-------------------------------------------------------------------------------------------------------
-// ÀßÄê¥Õ¥¡¥¤¥ë(data)¤Î¥Ñ¥¹¤¬¸ø³«¥Ñ¥¹¤Ç¤Ê¤¤¤«³ÎÇ§¤¹¤ë
+// è¨­å®šãƒ•ã‚¡ã‚¤ãƒ«(data)ã®ãƒ‘ã‚¹ãŒå…¬é–‹ãƒ‘ã‚¹ã§ãªã„ã‹ç¢ºèªã™ã‚‹
 function sfCheckOpenData() {
-    // ¥É¥­¥å¥á¥ó¥È¥ë¡¼¥È¤Î¥Ñ¥¹¤ò¿äÂ¬¤¹¤ë¡£
+    // ãƒ‰ã‚­ãƒ¥ãƒ¡ãƒ³ãƒˆãƒ«ãƒ¼ãƒˆã®ãƒ‘ã‚¹ã‚’æ¨æ¸¬ã™ã‚‹ã€‚
     $doc_root = ereg_replace(URL_DIR . "$","/",HTML_PATH);
     $data_path = realpath(DATA_PATH);
     
-    // data¤Î¥Ñ¥¹¤¬¥É¥­¥å¥á¥ó¥È¥ë¡¼¥È°Ê²¼¤Ë¤¢¤ë¤«È½Äê
+    // dataã®ãƒ‘ã‚¹ãŒãƒ‰ã‚­ãƒ¥ãƒ¡ãƒ³ãƒˆãƒ«ãƒ¼ãƒˆä»¥ä¸‹ã«ã‚ã‚‹ã‹åˆ¤å®š
     if(ereg("^".$doc_root, $data_path)) {
-        $arrResult['result'] = "¡ß";
-        $arrResult['detail'] = "ÀßÄê¥Õ¥¡¥¤¥ë¤¬¡¢¸ø³«¤µ¤ì¤Æ¤¤¤ë²ÄÇ½À­¤¬¤¢¤ê¤Ş¤¹¡£<br>";
-        $arrResult['detail'].= "/data/¥Ç¥£¥ì¥¯¥È¥ê¤Ï¡¢Èó¸ø³«¤Î¥Ñ¥¹¤ËÀßÃÖ¤·¤Æ²¼¤µ¤¤¡£";
+        $arrResult['result'] = "Ã—";
+        $arrResult['detail'] = "è¨­å®šãƒ•ã‚¡ã‚¤ãƒ«ãŒã€å…¬é–‹ã•ã‚Œã¦ã„ã‚‹å¯èƒ½æ€§ãŒã‚ã‚Šã¾ã™ã€‚<br>";
+        $arrResult['detail'].= "/data/ãƒ‡ã‚£ãƒ¬ã‚¯ãƒˆãƒªã¯ã€éå…¬é–‹ã®ãƒ‘ã‚¹ã«è¨­ç½®ã—ã¦ä¸‹ã•ã„ã€‚";
     } else {
-        $arrResult['result'] = "¡û";
-        $arrResult['detail'] = "ÀßÄê¥Õ¥¡¥¤¥ë¤Ï¡¢¸ø³«¥Ñ¥¹ÇÛ²¼¤ËÂ¸ºß¤·¤Ş¤»¤ó¡£";        
+        $arrResult['result'] = "â—‹";
+        $arrResult['detail'] = "è¨­å®šãƒ•ã‚¡ã‚¤ãƒ«ã¯ã€å…¬é–‹ãƒ‘ã‚¹é…ä¸‹ã«å­˜åœ¨ã—ã¾ã›ã‚“ã€‚";        
     }
     
-    $arrResult['title'] = "ÀßÄê¥Õ¥¡¥¤¥ë¤ÎÊİÂ¸¥Ñ¥¹";
+    $arrResult['title'] = "è¨­å®šãƒ•ã‚¡ã‚¤ãƒ«ã®ä¿å­˜ãƒ‘ã‚¹";
     return $arrResult;
 }
 
-// ¥¤¥ó¥¹¥È¡¼¥ë¥Õ¥¡¥¤¥ë¤¬Â¸ºß¤¹¤ë¤«³ÎÇ§¤¹¤ë
+// ã‚¤ãƒ³ã‚¹ãƒˆãƒ¼ãƒ«ãƒ•ã‚¡ã‚¤ãƒ«ãŒå­˜åœ¨ã™ã‚‹ã‹ç¢ºèªã™ã‚‹
 function sfCheckInstall() {
-    // ¥¤¥ó¥¹¥È¡¼¥ë¥Õ¥¡¥¤¥ë¤ÎÂ¸ºß¥Á¥§¥Ã¥¯
+    // ã‚¤ãƒ³ã‚¹ãƒˆãƒ¼ãƒ«ãƒ•ã‚¡ã‚¤ãƒ«ã®å­˜åœ¨ãƒã‚§ãƒƒã‚¯
     $inst_path = HTML_PATH . "install/index.php";
     
     if(file_exists($inst_path)) {
-        $arrResult['result'] = "¡ß";
-        $arrResult['detail'] = "/install/index.php¤Ï¡¢¥¤¥ó¥¹¥È¡¼¥ë´°Î»¸å¤Ë¥Õ¥¡¥¤¥ë¤òºï½ü¤·¤Æ¤¯¤À¤µ¤¤¡£";            
+        $arrResult['result'] = "Ã—";
+        $arrResult['detail'] = "/install/index.phpã¯ã€ã‚¤ãƒ³ã‚¹ãƒˆãƒ¼ãƒ«å®Œäº†å¾Œã«ãƒ•ã‚¡ã‚¤ãƒ«ã‚’å‰Šé™¤ã—ã¦ãã ã•ã„ã€‚";            
     } else {
-        $arrResult['result'] = "¡û";
-        $arrResult['detail'] = "/install/index.php¤Ï¡¢¸«¤Ä¤«¤ê¤Ş¤»¤ó¤Ç¤·¤¿¡£";    
+        $arrResult['result'] = "â—‹";
+        $arrResult['detail'] = "/install/index.phpã¯ã€è¦‹ã¤ã‹ã‚Šã¾ã›ã‚“ã§ã—ãŸã€‚";    
     }
     
-    $arrResult['title'] = "¥¤¥ó¥¹¥È¡¼¥ë¥Õ¥¡¥¤¥ë¤Î¥Á¥§¥Ã¥¯";
+    $arrResult['title'] = "ã‚¤ãƒ³ã‚¹ãƒˆãƒ¼ãƒ«ãƒ•ã‚¡ã‚¤ãƒ«ã®ãƒã‚§ãƒƒã‚¯";
     return $arrResult;
 }
 
-// ´ÉÍı¼Ô¥æ¡¼¥¶¤ÎID/¥Ñ¥¹¥ï¡¼¥É¥Á¥§¥Ã¥¯
+// ç®¡ç†è€…ãƒ¦ãƒ¼ã‚¶ã®ID/ãƒ‘ã‚¹ãƒ¯ãƒ¼ãƒ‰ãƒã‚§ãƒƒã‚¯
 function sfCheckIDPass($user, $password) {
     $objQuery = new SC_Query();
     $sql = "SELECT password FROM dtb_member WHERE login_id = ? AND del_flg = 0";
-	// DB¤«¤é°Å¹æ²½¥Ñ¥¹¥ï¡¼¥É¤ò¼èÆÀ¤¹¤ë¡£
+	// DBã‹ã‚‰æš—å·åŒ–ãƒ‘ã‚¹ãƒ¯ãƒ¼ãƒ‰ã‚’å–å¾—ã™ã‚‹ã€‚
 	$arrRet = $objQuery->getAll($sql, array($user));
-	// ¥æ¡¼¥¶ÆşÎÏ¥Ñ¥¹¥ï¡¼¥É¤ÎÈ½Äê
+	// ãƒ¦ãƒ¼ã‚¶å…¥åŠ›ãƒ‘ã‚¹ãƒ¯ãƒ¼ãƒ‰ã®åˆ¤å®š
 	$ret = sha1($password . ":" . AUTH_MAGIC);
     
     if($ret == $arrRet[0]['password']) {
-        $arrResult['result'] = "¡ß";
-        $arrResult['detail'] = "Èó¾ï¤Ë¿äÂ¬¤Î¤·¤ä¤¹¤¤´ÉÍı¼ÔID¤È¤Ê¤Ã¤Æ¤¤¤Ş¤¹¡£¸Ä¿Í¾ğÊóÏ³±Ì¤Î´í¸±À­¤¬¤¢¤ê¤Ş¤¹¡£";       
+        $arrResult['result'] = "Ã—";
+        $arrResult['detail'] = "éå¸¸ã«æ¨æ¸¬ã®ã—ã‚„ã™ã„ç®¡ç†è€…IDã¨ãªã£ã¦ã„ã¾ã™ã€‚å€‹äººæƒ…å ±æ¼æ´©ã®å±é™ºæ€§ãŒã‚ã‚Šã¾ã™ã€‚";       
     } else {
         if(count($arrRet) > 0) {
-	        $arrResult['result'] = "¢¤";
-	        $arrResult['detail'] = "´ÉÍı¼ÔÌ¾¤Ë¡Öadmin¡×¤òÍøÍÑ¤·¤Ê¤¤¤è¤¦¤Ë¤·¤Æ²¼¤µ¤¤¡£";               
+	        $arrResult['result'] = "â–³";
+	        $arrResult['detail'] = "ç®¡ç†è€…åã«ã€Œadminã€ã‚’åˆ©ç”¨ã—ãªã„ã‚ˆã†ã«ã—ã¦ä¸‹ã•ã„ã€‚";               
         } else {
-            $arrResult['result'] = "¡û";
-            $arrResult['detail'] = "ÆÈ¼«¤ÎID¡¢¥Ñ¥¹¥ï¡¼¥É¤¬ÀßÄê¤µ¤ì¤Æ¤¤¤ë¤è¤¦¤Ç¤¹¡£";               
+            $arrResult['result'] = "â—‹";
+            $arrResult['detail'] = "ç‹¬è‡ªã®IDã€ãƒ‘ã‚¹ãƒ¯ãƒ¼ãƒ‰ãŒè¨­å®šã•ã‚Œã¦ã„ã‚‹ã‚ˆã†ã§ã™ã€‚";               
         }
     }
     
-    $arrResult['title'] = "ID/¥Ñ¥¹¥ï¡¼¥É¤Î¥Á¥§¥Ã¥¯";
+    $arrResult['title'] = "ID/ãƒ‘ã‚¹ãƒ¯ãƒ¼ãƒ‰ã®ãƒã‚§ãƒƒã‚¯";
     return $arrResult;
 }
 
 
-// install.php¤Î¥Õ¥¡¥¤¥ë¤ò¥Á¥§¥Ã¥¯¤¹¤ë
+// install.phpã®ãƒ•ã‚¡ã‚¤ãƒ«ã‚’ãƒã‚§ãƒƒã‚¯ã™ã‚‹
 function sfCheckInstallInc() {
-    // install.php¤¬±£ÊÃ¸å¤Î¤â¤Î¤«È½Äê¤¹¤ë
+    // install.phpãŒéš è”½å¾Œã®ã‚‚ã®ã‹åˆ¤å®šã™ã‚‹
     if(sfIsNormalInstallInc()) {
-        $arrResult['result'] = "¡ß";
-        $arrResult['detail'] = "install.php¤ò´ÊÃ±¤ËÉ½¼¨¤Ç¤­¤Ê¤¯¤¹¤ë¤³¤È¤¬¤Ç¤­¤Ş¤¹¡£ÆâÍÆ¤ò±£ÊÃ¤·¤Ş¤¹¤«¡©";
-        $arrResult['detail'].= "<input type='submit' value='±£ÊÃ¤¹¤ë'>";        
+        $arrResult['result'] = "Ã—";
+        $arrResult['detail'] = "install.phpã‚’ç°¡å˜ã«è¡¨ç¤ºã§ããªãã™ã‚‹ã“ã¨ãŒã§ãã¾ã™ã€‚å†…å®¹ã‚’éš è”½ã—ã¾ã™ã‹ï¼Ÿ";
+        $arrResult['detail'].= "<input type='submit' value='éš è”½ã™ã‚‹'>";        
     } else {
-        $arrResult['result'] = "¡û";
-        $arrResult['detail'] = "install.php¤Î±£ÊÃÂĞºö¤¬¤È¤é¤ì¤Æ¤¤¤Ş¤¹¡£";                       
+        $arrResult['result'] = "â—‹";
+        $arrResult['detail'] = "install.phpã®éš è”½å¯¾ç­–ãŒã¨ã‚‰ã‚Œã¦ã„ã¾ã™ã€‚";                       
     }
-    $arrResult['title'] = "install.php¤Î²ÄÆÉÀ­¥Á¥§¥Ã¥¯";
+    $arrResult['title'] = "install.phpã®å¯èª­æ€§ãƒã‚§ãƒƒã‚¯";
     return $arrResult;
 }
 
-// install.php¤¬±£ÊÃ¸å¤Î¤â¤Î¤«È½Äê¤¹¤ë
+// install.phpãŒéš è”½å¾Œã®ã‚‚ã®ã‹åˆ¤å®šã™ã‚‹
 function sfIsNormalInstallInc() {
-    // install.php¤Î¥Ñ¥¹¤ò¼èÆÀ¤¹¤ë
+    // install.phpã®ãƒ‘ã‚¹ã‚’å–å¾—ã™ã‚‹
     $inst_inc = DATA_PATH . 'install.php';
     if(file_exists($inst_inc)) {
         if($fp = fopen($inst_inc, "r")) {

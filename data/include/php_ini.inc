@@ -9,7 +9,7 @@ ini_set("mbstring.internal_encoding", CHAR_CODE);
 ini_set("mbstring.detect_order", "auto");
 ini_set("mbstring.substitute_character", "none");
 
-// °Ü¹Ô¤ÏINI_SET¤ÇÊÑ¹¹²ÄÇ½¤«¤É¤¦¤«¤¬ÈùÌ¯¤Ê¤Î¤Ç .htaccess ¤ÇÊÑ¹¹¤¹¤ë
+// ç§»è¡Œã¯INI_SETã§å¤‰æ›´å¯èƒ½ã‹ã©ã†ã‹ãŒå¾®å¦™ãªã®ã§ .htaccess ã§å¤‰æ›´ã™ã‚‹
 /*
 ini_set("mbstring.language", "Japanese");
 ini_set("output_handler", "mb_output_handler");

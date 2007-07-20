@@ -6,15 +6,15 @@
  */
 class LC_NewsPage {
 	function LC_NewsPage() {
-		/** É¬¤ºÊÑ¹¹¤¹¤ë **/
-		$this->tpl_mainpage = 'frontparts/bloc/news.tpl';	// ¥á¥¤¥ó
+		/** å¿…ãšå¤‰æ›´ã™ã‚‹ **/
+		$this->tpl_mainpage = 'frontparts/bloc/news.tpl';	// ãƒ¡ã‚¤ãƒ³
 	}
 }
 
 $objSubPage = new LC_NewsPage();
 $objSubView = new SC_MobileView();
 
-//¿·Ãå¾ðÊó¼èÆÀ
+//æ–°ç€æƒ…å ±å–å¾—
 $objSubPage->arrNews = lfGetNews();
 
 $objSubView->assignobj($objSubPage);

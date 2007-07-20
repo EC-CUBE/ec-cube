@@ -5,7 +5,7 @@
  * http://www.lockon.co.jp/
  */
 *}-->
-<center>ÇÛÁ÷Àè»ØÄê</center>
+<center>é…é€å…ˆæŒ‡å®š</center>
 
 <hr>
 
@@ -13,7 +13,7 @@
 <font color="#ff0000"><!--{$arrErr.deli}--></font>
 <!--{/if}-->
 
-<!--¢§CONTENTS-->
+<!--â–¼CONTENTS-->
 <!--{section name=cnt loop=$arrAddr}-->
 <form method="post" action="<!--{$smarty.server.PHP_SELF|escape}-->">
 <input type="hidden" name="uniqid" value="<!--{$tpl_uniqid}-->">
@@ -25,32 +25,32 @@
 <input type="hidden" name="mode" value="other_addr">
 <input type="hidden" name="other_deliv_id" value="<!--{$arrAddr[cnt].other_deliv_id}-->">
 <!--{/if}-->
-¢£ÇÛÁ÷Àè<!--{$smarty.section.cnt.iteration}--><br>
-¢©<!--{$arrAddr[cnt].zip01}-->-<!--{$arrAddr[cnt].zip02}--><br>
+â– é…é€å…ˆ<!--{$smarty.section.cnt.iteration}--><br>
+ã€’<!--{$arrAddr[cnt].zip01}-->-<!--{$arrAddr[cnt].zip02}--><br>
 <!--{assign var=key value=$arrAddr[cnt].pref}--><!--{$arrPref[$key]}--><!--{$arrAddr[cnt].addr01|escape}--><br>
 <!--{if $arrAddr[cnt].addr02 != ""}-->
 <!--{$arrAddr[cnt].addr02|escape}--><br>
 <!--{/if}-->
-<center><input type="submit" value="¤³¤³¤ËÁ÷¤ë"></center>
+<center><input type="submit" value="ã“ã“ã«é€ã‚‹"></center>
 </form>
 <!--{/section}-->
 
 <br>
 
-¢£¤½¤ÎÂ¾¤Î¤ªÆÏ¤±Àè¤ò»ØÄê<br>
+â– ãã®ä»–ã®ãŠå±Šã‘å…ˆã‚’æŒ‡å®š<br>
 <form method="get" action="deliv_addr.php">
-<center><input type="submit" value="¿·µ¬ÅÐÏ¿"></center>
+<center><input type="submit" value="æ–°è¦ç™»éŒ²"></center>
 </form>
-<!--¢¥CONTENTS-->
+<!--â–²CONTENTS-->
 
 <br>
 <hr>
 
-<a href="<!--{$smarty.const.MOBILE_URL_CART_TOP}-->" accesskey="9"><!--{9|numeric_emoji}-->¤«¤´¤ò¸«¤ë</a><br>
-<a href="<!--{$smarty.const.MOBILE_URL_SITE_TOP}-->" accesskey="0"><!--{0|numeric_emoji}-->TOP¥Ú¡¼¥¸¤Ø</a><br>
+<a href="<!--{$smarty.const.MOBILE_URL_CART_TOP}-->" accesskey="9"><!--{9|numeric_emoji}-->ã‹ã”ã‚’è¦‹ã‚‹</a><br>
+<a href="<!--{$smarty.const.MOBILE_URL_SITE_TOP}-->" accesskey="0"><!--{0|numeric_emoji}-->TOPãƒšãƒ¼ã‚¸ã¸</a><br>
 
 <br>
 
-<!-- ¢§¥Õ¥Ã¥¿¡¼ ¤³¤³¤«¤é -->
+<!-- â–¼ãƒ•ãƒƒã‚¿ãƒ¼ ã“ã“ã‹ã‚‰ -->
 <center>LOCKON CO.,LTD.</center>
-<!-- ¢¥¥Õ¥Ã¥¿¡¼ ¤³¤³¤Þ¤Ç -->
+<!-- â–²ãƒ•ãƒƒã‚¿ãƒ¼ ã“ã“ã¾ã§ -->

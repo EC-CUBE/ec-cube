@@ -5,19 +5,19 @@
  * http://www.lockon.co.jp/
  */
 
-/* ¥«¡¼¥È¥»¥Ã¥·¥ç¥ó´ÉÍı¥¯¥é¥¹ */
+/* ã‚«ãƒ¼ãƒˆã‚»ãƒƒã‚·ãƒ§ãƒ³ç®¡ç†ã‚¯ãƒ©ã‚¹ */
 class SC_SiteSession {
-	/* ¥³¥ó¥¹¥È¥é¥¯¥¿ */
+	/* ã‚³ãƒ³ã‚¹ãƒˆãƒ©ã‚¯ã‚¿ */
 	function SC_SiteSession() {
 		sfDomainSessionStart();
-		// Á°¥Ú¡¼¥¸¤Ç¤ÎÅĞÏ¿À®¸ùÈ½Äê¤ò°ú¤­·Ñ¤°
+		// å‰ãƒšãƒ¼ã‚¸ã§ã®ç™»éŒ²æˆåŠŸåˆ¤å®šã‚’å¼•ãç¶™ã
 		$_SESSION['site']['pre_regist_success'] = $_SESSION['site']['regist_success'];
 		$_SESSION['site']['regist_success'] = false;
 		$_SESSION['site']['pre_page'] = $_SESSION['site']['now_page'];
 		$_SESSION['site']['now_page'] = $_SERVER['PHP_SELF'];
 	}
 	
-	/* Á°¥Ú¡¼¥¸¤¬ÀµÅö¤Ç¤¢¤ë¤«¤ÎÈ½Äê */
+	/* å‰ãƒšãƒ¼ã‚¸ãŒæ­£å½“ã§ã‚ã‚‹ã‹ã®åˆ¤å®š */
 	function isPrePage() {
 		if($_SESSION['site']['pre_page'] != "" && $_SESSION['site']['now_page'] != "") {
 			if($_SESSION['site']['pre_regist_success'] || $_SESSION['site']['pre_page'] == $_SESSION['site']['now_page']) {
@@ -31,27 +31,27 @@ class SC_SiteSession {
 		$_SESSION['site']['now_page'] = $path;
 	}
 	
-	/* ÃÍ¤Î¼èÆÀ */
+	/* å€¤ã®å–å¾— */
 	function getValue($keyname) {
 		return $_SESSION['site'][$keyname];
 	}
 	
-	/* ¥æ¥Ë¡¼¥¯ID¤Î¼èÆÀ */
+	/* ãƒ¦ãƒ‹ãƒ¼ã‚¯IDã®å–å¾— */
 	function getUniqId() {
-		// ¥æ¥Ë¡¼¥¯ID¤¬¥»¥Ã¥È¤µ¤ì¤Æ¤¤¤Ê¤¤¾ì¹ç¤Ï¥»¥Ã¥È¤¹¤ë¡£
+		// ãƒ¦ãƒ‹ãƒ¼ã‚¯IDãŒã‚»ãƒƒãƒˆã•ã‚Œã¦ã„ãªã„å ´åˆã¯ã‚»ãƒƒãƒˆã™ã‚‹ã€‚
 		if(!isset($_SESSION['site']['uniqid']) || $_SESSION['site']['uniqid'] == "") {
 			$this->setUniqId();
 		}
 		return $_SESSION['site']['uniqid'];
 	}
 	
-	/* ¥æ¥Ë¡¼¥¯ID¤Î¥»¥Ã¥È */
+	/* ãƒ¦ãƒ‹ãƒ¼ã‚¯IDã®ã‚»ãƒƒãƒˆ */
 	function setUniqId() {
-		// Í½Â¬¤µ¤ì¤Ê¤¤¤è¤¦¤Ë¥é¥ó¥À¥àÊ¸»úÎó¤òÉÕÍ¿¤¹¤ë¡£
+		// äºˆæ¸¬ã•ã‚Œãªã„ã‚ˆã†ã«ãƒ©ãƒ³ãƒ€ãƒ æ–‡å­—åˆ—ã‚’ä»˜ä¸ã™ã‚‹ã€‚
 		$_SESSION['site']['uniqid'] = sfGetUniqRandomId();
 	}
 	
-	/* ¥æ¥Ë¡¼¥¯ID¤Î¥Á¥§¥Ã¥¯ */
+	/* ãƒ¦ãƒ‹ãƒ¼ã‚¯IDã®ãƒã‚§ãƒƒã‚¯ */
 	function checkUniqId() {
 		if($_POST['uniqid'] != "") {
 			if($_POST['uniqid'] != $_SESSION['site']['uniqid']) {
@@ -61,12 +61,12 @@ class SC_SiteSession {
 		return true;
 	}
 	
-	/* ¥æ¥Ë¡¼¥¯ID¤Î²ò½ü */
+	/* ãƒ¦ãƒ‹ãƒ¼ã‚¯IDã®è§£é™¤ */
 	function unsetUniqId() {
 		$_SESSION['site']['uniqid'] = "";
 	}
 	
-	/* ÅĞÏ¿À®¸ù¤òµ­Ï¿ */
+	/* ç™»éŒ²æˆåŠŸã‚’è¨˜éŒ² */
 	function setRegistFlag() {
 		$_SESSION['site']['regist_success'] = true;
 	}

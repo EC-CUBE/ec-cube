@@ -5,7 +5,7 @@
  * http://www.lockon.co.jp/
  */
 *}-->
-<!--¡ú¡ú¥á¥¤¥ó¥³¥ó¥Æ¥ó¥Ä¡ú¡ú-->
+<!--â˜…â˜…ãƒ¡ã‚¤ãƒ³ã‚³ãƒ³ãƒ†ãƒ³ãƒ„â˜…â˜…-->
 <table width="878" border="0" cellspacing="0" cellpadding="0" summary=" ">
 <form name="form1" id="form1" method="post" action="<!--{$smarty.server.PHP_SELF|escape}-->" >
 <input type="hidden" name="mode" value="complete">
@@ -19,13 +19,13 @@
 <!--{/foreach}-->
 	<tr valign="top">
 		<td background="<!--{$smarty.const.URL_DIR}-->img/contents/navi_bg.gif" height="402">
-			<!--¢§SUB NAVI-->
+			<!--â–¼SUB NAVI-->
 			<!--{include file=$tpl_subnavi}-->
-			<!--¢¥SUB NAVI-->
+			<!--â–²SUB NAVI-->
 		</td>
 		<td class="mainbg" >
 		<table width="737" border="0" cellspacing="0" cellpadding="0" summary=" ">
-			<!--¥á¥¤¥ó¥¨¥ê¥¢-->
+			<!--ãƒ¡ã‚¤ãƒ³ã‚¨ãƒªã‚¢-->
 			<tr>
 				<td align="center">
 				<table width="706" border="0" cellspacing="0" cellpadding="0" summary=" ">
@@ -38,14 +38,14 @@
 						<td background="<!--{$smarty.const.URL_DIR}-->img/contents/main_left.jpg"><img src="<!--{$smarty.const.URL_DIR}-->img/common/_.gif" width="14" height="1" alt=""></td>
 						<td bgcolor="#cccccc">
 						
-							<!--¢§ÅĞÏ¿¥Æ¡¼¥Ö¥ë¤³¤³¤«¤é-->
+							<!--â–¼ç™»éŒ²ãƒ†ãƒ¼ãƒ–ãƒ«ã“ã“ã‹ã‚‰-->
 							<table width="678" border="0" cellspacing="0" cellpadding="0" summary=" ">
 								<tr>
 									<td colspan="3"><img src="<!--{$smarty.const.URL_DIR}-->img/contents/contents_title_top.gif" width="678" height="7" alt=""></td>
 								</tr>
 								<tr>
 									<td background="<!--{$smarty.const.URL_DIR}-->img/contents/contents_title_left_bg.gif"><img src="<!--{$smarty.const.URL_DIR}-->img/contents/contents_title_left.gif" width="22" height="12" alt=""></td>
-									<td bgcolor="#636469" width="638" class="fs14n"><span class="white"><!--¥³¥ó¥Æ¥ó¥Ä¥¿¥¤¥È¥ë-->¥È¥é¥Ã¥¯¥Ğ¥Ã¥¯ÀßÄê</span></td>
+									<td bgcolor="#636469" width="638" class="fs14n"><span class="white"><!--ã‚³ãƒ³ãƒ†ãƒ³ãƒ„ã‚¿ã‚¤ãƒˆãƒ«-->ãƒˆãƒ©ãƒƒã‚¯ãƒãƒƒã‚¯è¨­å®š</span></td>
 									<td background="<!--{$smarty.const.URL_DIR}-->img/contents/contents_title_right_bg.gif"><img src="<!--{$smarty.const.URL_DIR}-->img/common/_.gif" width="18" height="1" alt=""></td>
 								</tr>
 								<tr>
@@ -57,45 +57,45 @@
 							</table>
 
 
-							<!--¢§ÊÔ½¸¥Æ¡¼¥Ö¥ë¤³¤³¤«¤é-->
+							<!--â–¼ç·¨é›†ãƒ†ãƒ¼ãƒ–ãƒ«ã“ã“ã‹ã‚‰-->
 							<table width="678" border="0" cellspacing="1" cellpadding="8" summary=" " bgcolor="#cccccc">
 								<tr class="fs12n">
-									<td bgcolor="#f2f1ec" width="160">¾¦ÉÊÌ¾</td>
+									<td bgcolor="#f2f1ec" width="160">å•†å“å</td>
 									<td bgcolor="#ffffff" width="483"><!--{$arrTrackback.name|escape}--></td>
 								</tr>
 								<tr class="fs12n">
-									<td bgcolor="#f2f1ec" width="160">¥Ö¥í¥°Ì¾</td>
+									<td bgcolor="#f2f1ec" width="160">ãƒ–ãƒ­ã‚°å</td>
 									<td bgcolor="#ffffff" width="483"><!--{$arrTrackback.blog_name|escape}--></td>
 								</tr>
 								<tr class="fs12n">
-									<td bgcolor="#f2f1ec" width="160">¥Ö¥í¥°µ­»ö¥¿¥¤¥È¥ë</td>
+									<td bgcolor="#f2f1ec" width="160">ãƒ–ãƒ­ã‚°è¨˜äº‹ã‚¿ã‚¤ãƒˆãƒ«</td>
 									<td bgcolor="#ffffff" width="483"><!--{$arrTrackback.title|escape}--></td>
 								</tr>
 								<tr class="fs12n">
-									<td bgcolor="#f2f1ec" width="160">¥Ö¥í¥°µ­»öÆâÍÆ</td>
+									<td bgcolor="#f2f1ec" width="160">ãƒ–ãƒ­ã‚°è¨˜äº‹å†…å®¹</td>
 									<td bgcolor="#ffffff" width="483"><!--{$arrTrackback.excerpt|escape}--></td>
 								</tr>
 								<tr class="fs12n">
-									<td bgcolor="#f2f1ec" width="160">¥Ö¥í¥°URL</td>
+									<td bgcolor="#f2f1ec" width="160">ãƒ–ãƒ­ã‚°URL</td>
 									<td bgcolor="#ffffff" width="483"><!--{$arrTrackback.url|escape}--></td>
 								</tr>
 								<tr class="fs12n">
-									<td bgcolor="#f2f1ec">Åê¹ÆÆü</td>
+									<td bgcolor="#f2f1ec">æŠ•ç¨¿æ—¥</td>
 									<td bgcolor="#ffffff"><!--{$arrTrackback.create_date|sfDispDBDate}--></td>
 								</tr>
 								<tr class="fs12n">
-									<td bgcolor="#f2f1ec">¾õÂÖ</td>
+									<td bgcolor="#f2f1ec">çŠ¶æ…‹</td>
 									<td bgcolor="#ffffff">
 									<!--{assign var=key value="status"}-->
 									<span class="red12"><!--{$arrErr.status}--></span>
 									<select name="<!--{$key}-->" style="<!--{$arrErr.status|sfGetErrorColor}-->" >
-									<option value="">ÁªÂò¤·¤Æ¤¯¤À¤µ¤¤</option>
+									<option value="">é¸æŠã—ã¦ãã ã•ã„</option>
 									<!--{html_options options=$arrTrackBackStatus selected=$arrTrackback[$key]}-->
 									</select>
 									</td>
 								</tr>
 							</table>
-							<!--¢¥ÊÔ½¸¥Æ¡¼¥Ö¥ë¤³¤³¤Ş¤Ç-->
+							<!--â–²ç·¨é›†ãƒ†ãƒ¼ãƒ–ãƒ«ã“ã“ã¾ã§-->
 							<table width="678" border="0" cellspacing="0" cellpadding="0" summary=" ">
 								<tr>
 									<td bgcolor="#cccccc"><img src="<!--{$smarty.const.URL_DIR}-->img/common/_.gif" width="1" height="5" alt=""></td>
@@ -108,8 +108,8 @@
 									<table border="0" cellspacing="0" cellpadding="0" summary=" ">
 										<tr>
 											<td>
-												<input type="image" onmouseover="chgImgImageSubmit('<!--{$smarty.const.URL_DIR}-->img/contents/btn_search_back_on.jpg',this);" onmouseout="chgImgImageSubmit('<!--{$smarty.const.URL_DIR}-->img/contents/btn_search_back.jpg',this);" src="<!--{$smarty.const.URL_DIR}-->img/contents/btn_search_back.jpg" width="123" height="24" alt="¸¡º÷²èÌÌ¤ËÌá¤ë" border="0" name="back" onclick="document.form1.action='./trackback.php'; fnModeSubmit('search','','');" ></a>
-												<input type="image" onMouseover="chgImgImageSubmit('<!--{$smarty.const.URL_DIR}-->img/contents/btn_regist_on.jpg',this)" onMouseout="chgImgImageSubmit('<!--{$smarty.const.URL_DIR}-->img/contents/btn_regist.jpg',this)" src="<!--{$smarty.const.URL_DIR}-->img/contents/btn_regist.jpg" width="123" height="24" alt="¤³¤ÎÆâÍÆ¤ÇÅĞÏ¿¤¹¤ë" border="0" name="subm" onclick="fnModeSubmit('complete','','');" />
+												<input type="image" onmouseover="chgImgImageSubmit('<!--{$smarty.const.URL_DIR}-->img/contents/btn_search_back_on.jpg',this);" onmouseout="chgImgImageSubmit('<!--{$smarty.const.URL_DIR}-->img/contents/btn_search_back.jpg',this);" src="<!--{$smarty.const.URL_DIR}-->img/contents/btn_search_back.jpg" width="123" height="24" alt="æ¤œç´¢ç”»é¢ã«æˆ»ã‚‹" border="0" name="back" onclick="document.form1.action='./trackback.php'; fnModeSubmit('search','','');" ></a>
+												<input type="image" onMouseover="chgImgImageSubmit('<!--{$smarty.const.URL_DIR}-->img/contents/btn_regist_on.jpg',this)" onMouseout="chgImgImageSubmit('<!--{$smarty.const.URL_DIR}-->img/contents/btn_regist.jpg',this)" src="<!--{$smarty.const.URL_DIR}-->img/contents/btn_regist.jpg" width="123" height="24" alt="ã“ã®å†…å®¹ã§ç™»éŒ²ã™ã‚‹" border="0" name="subm" onclick="fnModeSubmit('complete','','');" />
 											</td>
 										</tr>
 									</table>
@@ -120,7 +120,7 @@
 									<td colspan="3"><img src="<!--{$smarty.const.URL_DIR}-->img/contents/tbl_bottom.gif" width="678" height="8" alt=""></td>
 								</tr>
 							</table>
-							<!-- ¢¥ÅĞÏ¿¥Æ¡¼¥Ö¥ë¤³¤³¤Ş¤Ç -->
+							<!-- â–²ç™»éŒ²ãƒ†ãƒ¼ãƒ–ãƒ«ã“ã“ã¾ã§ -->
 
 						</td>
 						<td background="<!--{$smarty.const.URL_DIR}-->img/contents/main_right.jpg"><img src="<!--{$smarty.const.URL_DIR}-->img/common/_.gif" width="14" height="1" alt=""></td>
@@ -132,10 +132,10 @@
 				</table>
 				</td>
 			</tr>
-			<!--¥á¥¤¥ó¥¨¥ê¥¢-->
+			<!--ãƒ¡ã‚¤ãƒ³ã‚¨ãƒªã‚¢-->
 		</table>
 		</td>
 	</tr>
 </form>
 </table>
-<!--¡ú¡ú¥á¥¤¥ó¥³¥ó¥Æ¥ó¥Ä¡ú¡ú-->		
+<!--â˜…â˜…ãƒ¡ã‚¤ãƒ³ã‚³ãƒ³ãƒ†ãƒ³ãƒ„â˜…â˜…-->		

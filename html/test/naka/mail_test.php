@@ -1,7 +1,7 @@
 <?php
 
 $to = "naka@tokado.jp";
-$body = "�ƥ��ȤǤ��ͤ�";
+$body = "テストですねん。";
 $body = mb_convert_encoding($body, 'JIS', "EUC-JP");
 
 if(mb_send_mail($to, "test", $body)){

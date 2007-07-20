@@ -6,21 +6,21 @@
  */
 class LC_SearchProductsPage {
 	function LC_SearchProductsPage() {
-		/** É¬¤ºÊÑ¹¹¤¹¤ë **/
-		$this->tpl_mainpage = BLOC_PATH . 'search_products.tpl';	// ¥á¥¤¥ó
+		/** å¿…ãšå¤‰æ›´ã™ã‚‹ **/
+		$this->tpl_mainpage = BLOC_PATH . 'search_products.tpl';	// ãƒ¡ã‚¤ãƒ³
 	}
 }
 
 $objSubPage = new LC_SearchProductsPage();
-$arrSearch = array();	// ¸¡º÷¹àÌÜÉ½¼¨ÍÑ
+$arrSearch = array();	// æ¤œç´¢é …ç›®è¡¨ç¤ºç”¨
 
-// ÁªÂòÃæ¤Î¥«¥Æ¥´¥êID¤òÈ½Äê¤¹¤ë
+// é¸æŠžä¸­ã®ã‚«ãƒ†ã‚´ãƒªIDã‚’åˆ¤å®šã™ã‚‹
 $objSubPage->category_id = sfGetCategoryId($_GET['product_id'], $_GET['category_id']);
-// ¥«¥Æ¥´¥ê¸¡º÷ÍÑÁªÂò¥ê¥¹¥È
-$arrRet = sfGetCategoryList('', true, '¡¡');
+// ã‚«ãƒ†ã‚´ãƒªæ¤œç´¢ç”¨é¸æŠžãƒªã‚¹ãƒˆ
+$arrRet = sfGetCategoryList('', true, 'ã€€');
 
 if(is_array($arrRet)) {
-	// Ê¸»ú¥µ¥¤¥º¤òÀ©¸Â¤¹¤ë
+	// æ–‡å­—ã‚µã‚¤ã‚ºã‚’åˆ¶é™ã™ã‚‹
 	foreach($arrRet as $key => $val) {
 		$arrRet[$key] = sfCutString($val, SEARCH_CATEGORY_LEN);
 	}

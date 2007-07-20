@@ -35,12 +35,12 @@ class LC_Products{
 		$DB_class_name = "SC_DbConn";
 		if ( is_object($conn)){
 			if ( is_a($conn, $DB_class_name)){
-				// $conn��$DB_class_name�Υ��󥹥��󥹤Ǥ���
+				// $connが$DB_class_nameのインスタンスである
 				$this->conn = $conn;
 			}
 		} else {
 			if (class_exists($DB_class_name)){
-				//$DB_class_name�Υ��󥹥��󥹤��������
+				//$DB_class_nameのインスタンスを作成する
 				$this->conn = new SC_DbConn();			
 			}
 		}
@@ -60,7 +60,7 @@ class LC_Products{
 	
 	function getProductData($id){
 		$conn = $this->conn;
-		// ���ʾ�����������
+		// 商品情報を取得する
 		$sql = "SELECT * FROM dtb_products WHERE product_id = ?";
 		$result = $conn->getAll($sql, array($id));
 		if ( is_array($result) ){
@@ -71,7 +71,7 @@ class LC_Products{
 
 	function getProductImageData($id){
 		$conn = $this->conn;
-		// ���ʲ���������������
+		// 商品画像情報を取得する
 		$sql = "SELECT main_image FROM dtb_products WHERE product_id = ?";
 		$result = $conn->getAll($sql, array($id));
 		if ( is_array($result) ){
@@ -89,14 +89,14 @@ class LC_Products{
 	}
 }
 
-// ��Ͽ�����
+// 登録カラム
 $arrRegist = array(
 					  "subject", "charge_image", "mail_method", "header", "main_title", "main_comment", "main_product_id", "sub_title", "sub_comment"
 					, "sub_product_id01", "sub_product_id02", "sub_product_id03", "sub_product_id04", "sub_product_id05", "sub_product_id06", "sub_product_id07"
 					, "sub_product_id08", "sub_product_id09", "sub_product_id10", "sub_product_id11", "sub_product_id12"
 					);
 					
-// ��¸����Ͽ�Ѥ߾��ʤ������ɽ����ɬ�פȤ�����ܥꥹ��					
+// 既存の登録済み商品から画像表示を必要とする項目リスト					
 $arrFileList = array(
 						"main_product_id", "sub_product_id01", "sub_product_id02", "sub_product_id03", "sub_product_id04", "sub_product_id05"
 						, "sub_product_id06", "sub_product_id07", "sub_product_id08", "sub_product_id09", "sub_product_id10", "sub_product_id11", "sub_product_id12"
@@ -108,41 +108,41 @@ $objView = new SC_AdminView();
 $objSess = new SC_Session();
 $objQuery = new SC_Query();
 
-// ǧ�ڲ��ݤ�Ƚ��
+// 認証可否の判定
 sfIsSuccess($objSess);
 
 
-// �����������饹����
+// 画像処理クラス設定
 $objUpFile = new SC_UploadFile(IMAGE_TEMP_DIR, IMAGE_SAVE_DIR);
-$objUpFile->addFile("�᡼��ô���̿�", 'charge_image', array('jpg'),IMAGE_SIZE, true, HTMLMAIL_IMAGE_WIDTH, HTMLMAIL_IMAGE_HEIGHT);
+$objUpFile->addFile("メール担当写真", 'charge_image', array('jpg'),IMAGE_SIZE, true, HTMLMAIL_IMAGE_WIDTH, HTMLMAIL_IMAGE_HEIGHT);
 
-// POST�ͤΰ��Ѥ�&�����ͤ��Ѵ�
+// POST値の引継ぎ&入力値の変換
 $objPage->arrForm = lfConvData($_POST);
 
-// Hidden����Υǡ���������Ѥ�
+// Hiddenからのデータを引き継ぐ
 $objUpFile->setHiddenFileList($_POST);
 
 switch ($_POST['mode']){
 	
-	//�������åץ�����
+	//画像アップロード
 	case 'upload_image':
-	// ������¸����
+	// 画像保存処理
 	$objPage->arrErr[$_POST['image_key']] = $objUpFile->makeTempFile($_POST['image_key']);
 	break;
 	
-	//��ǧ
+	//確認
 	case 'confirm':
 	
-	// ���顼�����å�
+	// エラーチェック
 	$objPage->arrErr = lfErrorCheck($objPage->arrForm);
-	//�ե�����¸�ߥ����å�
+	//ファイル存在チェック
 	$objPage->arrErr = array_merge((array)$objPage->arrErr, (array)$objUpFile->checkEXISTS());
 		
-	//���顼�ʤ��ξ�硢��ǧ�ڡ�����
+	//エラーなしの場合、確認ページへ
 	 if (!$objPage->arrErr){
-		// 	���åץ����ɥե��������������Ϥ���
+		// 	アップロードファイル情報配列を渡す。
 		$objPage->arrFile = $objUpFile->getFormFileList(IMAGE_TEMP_URL, IMAGE_SAVE_URL);
-		//����׵�Τ��ä�������ɽ�����ʤ�
+		//削除要求のあった画像を表示しない
 		for($i = 1; $i <= HTML_TEMPLATE_SUB_MAX; $i++) {
 			if($_POST['delete_sub'.$i] == "1") {
 				$arrSub['delete'][$i] = "on";
@@ -155,21 +155,21 @@ switch ($_POST['mode']){
 	 }
 	break;
 	
-	// ��ǧ�ڡ�����������
+	// 確認ページからの戻り
 	case 'return':
 	break;
 	
-	//���ƥ�ץ졼����Ͽ
+	//　テンプレート登録
 	case 'complete':
-	// �����ͤ��Ѵ�
+	// 入力値の変換
 	$objPage->arrForm = lfConvData($_POST);
-	$objPage->arrErr = lfErrorCheck($objPage->arrForm);	// ���ϥ��顼�����å�
+	$objPage->arrErr = lfErrorCheck($objPage->arrForm);	// 入力エラーチェック
 
-	// ���åץ����ɲ����򥻡��֥ǥ��쥯�ȥ�˰ܹ�
+	// アップロード画像をセーブディレクトリに移行
 	$objUpFile->moveTempFile();
 
-	// DB��Ͽ
-	if (is_numeric($objPage->arrForm["template_id"])) {	//���Խ���
+	// DB登録
+	if (is_numeric($objPage->arrForm["template_id"])) {	//　編集時
 		lfUpdateData($arrRegist);
 	} else {
 		ifRegistData($arrRegist);
@@ -178,24 +178,24 @@ switch ($_POST['mode']){
 	break;
 }
 
-// ������̤�����Խ���
+// 検索結果からの編集時
 if ($_GET["mode"] == "edit" && is_numeric($_GET["template_id"])) {
 	$objPage->edit_mode = "on";
-	//�ƥ�ץ졼�Ⱦ����ɤ߹���
+	//テンプレート情報読み込み
 	lfSetRegistData($_GET["template_id"]);
-	// DB�ǡ�����������ե�����̾���ɹ�
+	// DBデータから画像ファイル名の読込
 	$objUpFile->setDBFileList($objPage->arrForm);
 
 }
 
 if ($_GET['mode'] != 'edit'){
-//��Ͽ������ɤ߹���
+//登録情報の読み込み
 $objPage->arrFileName = lfGetProducts();
 }
 
-// HIDDEN�Ѥ�������Ϥ���
+// HIDDEN用に配列を渡す。
 $objPage->arrHidden = array_merge((array)$objPage->arrHidden, (array)$objUpFile->getHiddenFileList());
-// ���åץ����ɥե��������������Ϥ���
+// アップロードファイル情報配列を渡す。
 $objPage->arrFile = $objUpFile->getFormFileList(IMAGE_TEMP_URL, IMAGE_SAVE_URL);
 
 $objView->assignobj($objPage);
@@ -203,7 +203,7 @@ $objView->display(MAIN_FRAME);
 
 //-------------------------------------------------------------------------------------------------------------------------
 
-/* ���ʲ������ɤ߹��� */
+/* 商品画像の読み込み */
 function lfGetProducts() {
 	global $objQuery;
 	
@@ -221,13 +221,13 @@ function lfGetProducts() {
 	return $arrFileName;
 }
 
-/* ��Ͽ�Ѥߥǡ����ɤ߹��� */
+/* 登録済みデータ読み込み */
 function lfSetRegistData($template_id) {
 	global $objQuery;
 	global $objPage;
 	$arrRet = $objQuery->select("*", "dtb_mailmaga_template", "template_id=?", array($template_id));
 	$arrProductid = $arrRet[0];
-	//�����ʳ��ξ������
+	//画像以外の情報取得
 	$objPage->arrForm = $arrRet[0];
 		if ($arrProductid['main_product_id'] != ""){
 			$MainFile = $objQuery->select("main_image, name, product_id", "dtb_products", "product_id=?", array($arrProductid['main_product_id']));
@@ -239,21 +239,21 @@ function lfSetRegistData($template_id) {
 			$arrFileName[$i] = $arrSubFile[0];
 		}
 	}
-	//�����ξ������
+	//画像の情報取得
 	$objPage->arrFileName = $arrFileName;
 	
 	return $objPage;
 }
 
-// �Խ��ǡ�������
+// 編集データ取得
 function lfGetEditData($id, $arrIdData) {
 	global $conn;
 
-	// DB��Ͽ����
+	// DB登録情報
 	$sql = "SELECT * FROM dtb_mailmaga_template WHERE template_id = ? AND del_flg = 0";
 	$result = $conn->getAll($sql, array($id));
 
-	//�������ե�����̾
+	//　画像ファイル名
 	for ($i = 0; $i < count($arrIdData); $i ++) {
 		$data = "";
 		if (is_numeric($result[0][ $arrIdData[$i] ]) ) {
@@ -266,10 +266,10 @@ function lfGetEditData($id, $arrIdData) {
 	return array($result[0], $arrFileName);
 }
 
-// ��ǧ�ǡ�������
+// 確認データ取得
 function lfGetConfirmData($arrPOST, $arrIdData) {
 	global $conn;
-	//�������ե�����̾
+	//　画像ファイル名
 	for ($i = 0; $i < count($arrIdData); $i ++) {
 		$data = "";
 		if (is_numeric($arrPOST[ $arrIdData[$i] ]) ) {
@@ -281,7 +281,7 @@ function lfGetConfirmData($arrPOST, $arrIdData) {
  	return array($arrPOST, $arrFileName);
 }
 
-// �ǡ����١�����Ͽ
+// データベース登録
 function ifRegistData($arrRegist) {
 	global $conn;
 	global $objUpFile;
@@ -291,9 +291,9 @@ function ifRegistData($arrRegist) {
 			$arrRegistValue[$data] = $_POST[$data];
 		}
 	}
-	$arrRegistValue["creator_id"] = $_SESSION["member_id"];		// ��Ͽ��ID�ʴ������̡�
+	$arrRegistValue["creator_id"] = $_SESSION["member_id"];		// 登録者ID（管理画面）
 	$uploadfile = $objUpFile->getDBFileList();
-	//����׵�Τ��ä����ʤ�������
+	//削除要求のあった商品を削除する
 	for ($i = 1; $i <= HTML_TEMPLATE_SUB_MAX; $i++){
 		if ($_POST['delete_sub'.$i] == '1'){
 			$arrRegistValue['sub_product_id'.sprintf("%02d", $i)] = NULL;
@@ -303,7 +303,7 @@ function ifRegistData($arrRegist) {
 	$conn->autoExecute("dtb_mailmaga_template", $arrRegistValue);
 }
 
-// �ǡ�������
+// データ更新
 function lfUpdateData($arrRegist) {
 	global $conn;
 	global $objUpFile;
@@ -316,7 +316,7 @@ function lfUpdateData($arrRegist) {
 	$arrRegistValue["creator_id"] = $_SESSION["member_id"];	
 	$arrRegistValue["update_date"] = "NOW()";
 	$uploadfile = $objUpFile->getDBFileList();
-	//����׵�Τ��ä����ʤ�������
+	//削除要求のあった商品を削除する
 	for ($i = 1; $i <= HTML_TEMPLATE_SUB_MAX; $i++){
 		if ($_POST['delete_sub'.$i] == '1'){
 			$arrRegistValue['sub_product_id'.sprintf("%02d", $i)] = NULL;
@@ -327,10 +327,10 @@ function lfUpdateData($arrRegist) {
 	$conn->autoExecute("dtb_mailmaga_template", $arrRegistValue, "template_id = ". addslashes($_POST["template_id"]));
 }
 
-// �������Ѵ�
+// 入力値変換
 function lfConvData( $data ){
 	
-	 // ʸ������Ѵ���mb_convert_kana���Ѵ����ץ�����							
+	 // 文字列の変換（mb_convert_kanaの変換オプション）							
 	$arrFlag = array(
 					  "header" => "aKV"
 					 ,"subject" => "aKV"
@@ -350,18 +350,18 @@ function lfConvData( $data ){
 	return $data;
 }
 
-// ���ϥ��顼�����å�
+// 入力エラーチェック
 function lfErrorCheck($array) {
 	$objErr = new SC_CheckError($array);
 	
-	$objErr->doFunc(array("�᡼�����", "mail_method"), array("EXIST_CHECK", "ALNUM_CHECK"));
+	$objErr->doFunc(array("メール形式", "mail_method"), array("EXIST_CHECK", "ALNUM_CHECK"));
 	$objErr->doFunc(array("Subject", "subject", STEXT_LEN), array("EXIST_CHECK","MAX_LENGTH_CHECK"));
-	$objErr->doFunc(array("�إå����ƥ�����", 'header', LTEXT_LEN), array("EXIST_CHECK","MAX_LENGTH_CHECK") );
-	$objErr->doFunc(array("�ᥤ���ʥ����ȥ�", 'main_title', STEXT_LEN), array("EXIST_CHECK","MAX_LENGTH_CHECK") );
-	$objErr->doFunc(array("�ᥤ���ʥ�����", 'main_comment', LTEXT_LEN), array("EXIST_CHECK","MAX_LENGTH_CHECK"));
-	$objErr->doFunc(array("�ᥤ���ʲ���", "main_product_id"), array("EXIST_CHECK"));
-	$objErr->doFunc(array("���־��ʷ������ȥ�", "sub_title", STEXT_LEN), array("EXIST_CHECK","MAX_LENGTH_CHECK"));
-	$objErr->doFunc(array("���־��ʷ�������", "sub_comment", LTEXT_LEN), array("EXIST_CHECK","MAX_LENGTH_CHECK"));
+	$objErr->doFunc(array("ヘッダーテキスト", 'header', LTEXT_LEN), array("EXIST_CHECK","MAX_LENGTH_CHECK") );
+	$objErr->doFunc(array("メイン商品タイトル", 'main_title', STEXT_LEN), array("EXIST_CHECK","MAX_LENGTH_CHECK") );
+	$objErr->doFunc(array("メイン商品コメント", 'main_comment', LTEXT_LEN), array("EXIST_CHECK","MAX_LENGTH_CHECK"));
+	$objErr->doFunc(array("メイン商品画像", "main_product_id"), array("EXIST_CHECK"));
+	$objErr->doFunc(array("サブ商品群タイトル", "sub_title", STEXT_LEN), array("EXIST_CHECK","MAX_LENGTH_CHECK"));
+	$objErr->doFunc(array("サブ商品群コメント", "sub_comment", LTEXT_LEN), array("EXIST_CHECK","MAX_LENGTH_CHECK"));
 	
 	return $objErr->arrErr;
 }

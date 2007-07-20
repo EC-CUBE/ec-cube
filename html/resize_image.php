@@ -11,10 +11,10 @@ $objThumb = new gdthumb();
 
 $file = NO_IMAGE_DIR;
 
-// NO_IMAGE_DIR°Ê³°¤Î¥Õ¥¡¥¤¥ëÌ¾¤¬ÅÏ¤µ¤ì¤¿¾ì¹ç¡¢¥Õ¥¡¥¤¥ëÌ¾¤Î¥Á¥§¥Ã¥¯¤ò¹Ô¤¦
+// NO_IMAGE_DIRä»¥å¤–ã®ãƒ•ã‚¡ã‚¤ãƒ«åãŒæ¸¡ã•ã‚ŒãŸå ´åˆã€ãƒ•ã‚¡ã‚¤ãƒ«åã®ãƒã‚§ãƒƒã‚¯ã‚’è¡Œã†
 if ( isset($_GET['image']) && $_GET['image'] !== NO_IMAGE_DIR) {
     
-    // ¥Õ¥¡¥¤¥ëÌ¾¤¬Àµ¤·¤¤¾ì¹ç¤À¤±¡¢$file¤òÀßÄê
+    // ãƒ•ã‚¡ã‚¤ãƒ«åãŒæ­£ã—ã„å ´åˆã ã‘ã€$fileã‚’è¨­å®š
     if ( lfCheckFileName() === true ) {
         $file = IMAGE_SAVE_DIR . $_GET['image'];
     } else {
@@ -28,7 +28,7 @@ if(file_exists($file)){
     $objThumb->Main(NO_IMAGE_DIR, $_GET["width"], $_GET["height"], "", true);
 }
 
-// ¥Õ¥¡¥¤¥ëÌ¾¤Î·Á¼°¤ò¥Á¥§¥Ã¥¯
+// ãƒ•ã‚¡ã‚¤ãƒ«åã®å½¢å¼ã‚’ãƒã‚§ãƒƒã‚¯
 function lfCheckFileName() {
     //$pattern = '|^[0-9]+_[0-9a-z]+\.[a-z]{3}$|';
     $pattern = '|\./|';

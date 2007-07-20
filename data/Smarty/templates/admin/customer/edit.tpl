@@ -25,7 +25,7 @@
 //-->
 </script>
 
-<!--¡ú¡ú¥á¥¤¥ó¥³¥ó¥Æ¥ó¥Ä¡ú¡ú-->
+<!--â˜…â˜…ãƒ¡ã‚¤ãƒ³ã‚³ãƒ³ãƒ†ãƒ³ãƒ„â˜…â˜…-->
 <table width="878" border="0" cellspacing="0" cellpadding="0" summary=" ">
 <form name="form_search" method="post" action="">
 <input type="hidden" name="mode" value="search">
@@ -45,7 +45,7 @@
 <input type="hidden" name="edit_email" value="<!--{$tpl_edit_email}-->">
 <input type="hidden" name="customer_id" value="<!--{$list_data.customer_id|escape}-->">
 
-<!-- ¸¡º÷¾ò·ï¤ÎÊİ»ı -->
+<!-- æ¤œç´¢æ¡ä»¶ã®ä¿æŒ -->
 <!--{foreach from=$arrSearchData key="key" item="item"}-->
 	<!--{if $key ne "job" && $key ne "sex"}--><input type="hidden" name="search_data[<!--{$key|escape}-->]" value="<!--{$item|escape}-->"><!--{/if}-->
 <!--{/foreach}-->
@@ -58,14 +58,14 @@
 
 	<tr valign="top">
 		<td background="<!--{$smarty.const.URL_DIR}-->img/contents/navi_bg.gif" height="402">
-			<!--¢§SUB NAVI-->
+			<!--â–¼SUB NAVI-->
 			<!--{include file=$tpl_subnavi}-->
-			<!--¢¥SUB NAVI-->
+			<!--â–²SUB NAVI-->
 		</td>
 		<td class="mainbg">
-			<!--¢§ÅĞÏ¿¥Æ¡¼¥Ö¥ë¤³¤³¤«¤é-->
+			<!--â–¼ç™»éŒ²ãƒ†ãƒ¼ãƒ–ãƒ«ã“ã“ã‹ã‚‰-->
 			<table width="737" border="0" cellspacing="0" cellpadding="0" summary=" ">
-				<!--¥á¥¤¥ó¥¨¥ê¥¢-->
+				<!--ãƒ¡ã‚¤ãƒ³ã‚¨ãƒªã‚¢-->
 				<tr>
 					<td align="center">
 						<table width="706" border="0" cellspacing="0" cellpadding="0" summary=" ">
@@ -82,7 +82,7 @@
 									</tr>
 									<tr>
 										<td background="<!--{$smarty.const.URL_DIR}-->img/contents/contents_title_left_bg.gif"><img src="<!--{$smarty.const.URL_DIR}-->img/contents/contents_title_left.gif" width="22" height="12" alt=""></td>
-										<td bgcolor="#636469" width="638" class="fs14n"><span class="white"><!--¥³¥ó¥Æ¥ó¥Ä¥¿¥¤¥È¥ë-->¸ÜµÒÊÔ½¸</span></td>
+										<td bgcolor="#636469" width="638" class="fs14n"><span class="white"><!--ã‚³ãƒ³ãƒ†ãƒ³ãƒ„ã‚¿ã‚¤ãƒˆãƒ«-->é¡§å®¢ç·¨é›†</span></td>
 										<td background="<!--{$smarty.const.URL_DIR}-->img/contents/contents_title_right_bg.gif"><img src="<!--{$smarty.const.URL_DIR}-->img/common/_.gif" width="18" height="1" alt=""></td>
 									</tr>
 									<tr>
@@ -96,39 +96,39 @@
 								<table width="678" border="0" cellspacing="1" cellpadding="8" summary=" ">
 
 									<tr class="fs12n">
-										<td bgcolor="#f2f1ec" width="190">¸ÜµÒID<span class="red"> *</span></td>
+										<td bgcolor="#f2f1ec" width="190">é¡§å®¢ID<span class="red"> *</span></td>
 										<td bgcolor="#ffffff" width="527"><!--{$list_data.customer_id|escape}--></td>
 									</tr>
 									<tr class="fs12n">
-										<td bgcolor="#f2f1ec" width="190">²ñ°÷¾õÂÖ<span class="red"> *</span></td>
+										<td bgcolor="#f2f1ec" width="190">ä¼šå“¡çŠ¶æ…‹<span class="red"> *</span></td>
 										<td bgcolor="#ffffff" width="527">
 											<span class="red12"><!--{$arrErr.status}--></span>
-											<input type="radio" name="status"value=1 id="no_mem" <!--{if $list_data.status == 1}--> checked="checked" <!--{/if}--> <!--{if $list_data.status == 2}-->disabled<!--{/if}-->><label for="no_mem">²¾²ñ°÷</label>
-											<input type="radio" name="status"value=2 id="mem"<!--{if $list_data.status == 2}--> checked="checked" <!--{/if}-->><label for="mem">ËÜ²ñ°÷</label>
+											<input type="radio" name="status"value=1 id="no_mem" <!--{if $list_data.status == 1}--> checked="checked" <!--{/if}--> <!--{if $list_data.status == 2}-->disabled<!--{/if}-->><label for="no_mem">ä»®ä¼šå“¡</label>
+											<input type="radio" name="status"value=2 id="mem"<!--{if $list_data.status == 2}--> checked="checked" <!--{/if}-->><label for="mem">æœ¬ä¼šå“¡</label>
 										</td>
 									</tr>
 									<tr class="fs12n">
-										<td bgcolor="#f2f1ec" width="190">¤ªÌ¾Á°<span class="red"> *</span></td>
+										<td bgcolor="#f2f1ec" width="190">ãŠåå‰<span class="red"> *</span></td>
 										<td bgcolor="#ffffff" width="527"><span class="red12"><!--{$arrErr.name01}--><!--{$arrErr.name02}--></span><input type="text" name="name01" value="<!--{$list_data.name01|escape}-->" maxlength="<!--{$smarty.const.STEXT_LEN}-->" size="30" class="box30" <!--{if $arrErr.name01 != ""}--><!--{sfSetErrorStyle}--><!--{/if}--> />&nbsp;&nbsp;<input type="text" name="name02" value="<!--{$list_data.name02|escape}-->" maxlength="<!--{$smarty.const.STEXT_LEN}-->" size="30" class="box30" <!--{if $arrErr.name02 != ""}--><!--{sfSetErrorStyle}--><!--{/if}--> /></td>
 									</tr>
 									<tr class="fs12n">
-										<td bgcolor="#f2f1ec" width="190">¥Õ¥ê¥¬¥Ê<span class="red"> *</span></td>
+										<td bgcolor="#f2f1ec" width="190">ãƒ•ãƒªã‚¬ãƒŠ<span class="red"> *</span></td>
 										<td bgcolor="#ffffff" width="527"><span class="red12"><!--{$arrErr.kana01}--><!--{$arrErr.kana02}--></span><input type="text" name="kana01" value="<!--{$list_data.kana01|escape}-->" maxlength="<!--{$smarty.const.STEXT_LEN}-->" size="30" class="box30"  <!--{if $arrErr.kana01 != ""}--><!--{sfSetErrorStyle}--><!--{/if}--> />&nbsp;&nbsp;<input type="text" name="kana02" value="<!--{$list_data.kana02|escape}-->" maxlength="<!--{$smarty.const.STEXT_LEN}-->" size="30" class="box30"  <!--{if $arrErr.kana02 != ""}--><!--{sfSetErrorStyle}--><!--{/if}--> /></td>
 									</tr>
 									<tr class="fs12n">
-										<td bgcolor="#f2f1ec" width="190">Í¹ÊØÈÖ¹æ<span class="red"> *</span></td>
-										<td bgcolor="#ffffff" width="527"><span class="red12"><!--{$arrErr.zip01}--><!--{$arrErr.zip02}--></span>¢© <input type="text" name="zip01" value="<!--{$list_data.zip01|escape}-->" maxlength="<!--{$smarty.const.ZIP01_LEN}-->" size="6" class="box6" maxlength="3"  <!--{if $arrErr.zip01 != ""}--><!--{sfSetErrorStyle}--><!--{/if}--> /> - <input type="text" name="zip02" value="<!--{$list_data.zip02|escape}-->" maxlength="<!--{$smarty.const.ZIP02_LEN}-->" size="6" class="box6" maxlength="4"  <!--{if $arrErr.zip02 != ""}--><!--{sfSetErrorStyle}--><!--{/if}--> />
-										<input type="button" name="address_input" value="½»½êÆşÎÏ" onclick="fnCallAddress('<!--{$smarty.const.URL_INPUT_ZIP}-->', 'zip01', 'zip02', 'pref', 'addr01');" /></td>
+										<td bgcolor="#f2f1ec" width="190">éƒµä¾¿ç•ªå·<span class="red"> *</span></td>
+										<td bgcolor="#ffffff" width="527"><span class="red12"><!--{$arrErr.zip01}--><!--{$arrErr.zip02}--></span>ã€’ <input type="text" name="zip01" value="<!--{$list_data.zip01|escape}-->" maxlength="<!--{$smarty.const.ZIP01_LEN}-->" size="6" class="box6" maxlength="3"  <!--{if $arrErr.zip01 != ""}--><!--{sfSetErrorStyle}--><!--{/if}--> /> - <input type="text" name="zip02" value="<!--{$list_data.zip02|escape}-->" maxlength="<!--{$smarty.const.ZIP02_LEN}-->" size="6" class="box6" maxlength="4"  <!--{if $arrErr.zip02 != ""}--><!--{sfSetErrorStyle}--><!--{/if}--> />
+										<input type="button" name="address_input" value="ä½æ‰€å…¥åŠ›" onclick="fnCallAddress('<!--{$smarty.const.URL_INPUT_ZIP}-->', 'zip01', 'zip02', 'pref', 'addr01');" /></td>
 									</tr>
 									<tr>
-										<td bgcolor="#f2f1ec" width="190" class="fs12">¤´½»½ê<span class="red"> *</span></td>
+										<td bgcolor="#f2f1ec" width="190" class="fs12">ã”ä½æ‰€<span class="red"> *</span></td>
 										<td bgcolor="#ffffff" width="527">
 										<table width="527" border="0" cellspacing="0" cellpadding="0" summary=" ">
 											<tr>
 												<td>
 													<span class="red12"><!--{$arrErr.pref}--><!--{$arrErr.addr01}--><!--{$arrErr.addr02}--></span>
 													<select name="pref"  <!--{if $arrErr.pref != ""}--><!--{sfSetErrorStyle}--><!--{/if}-->>
-													<option value="" selected="selected">ÅÔÆ»ÉÜ¸©¤òÁªÂò</option>
+													<option value="" selected="selected">éƒ½é“åºœçœŒã‚’é¸æŠ</option>
 													<!--{html_options options=$arrPref selected=$list_data.pref}-->
 													</select>
 												</td>
@@ -147,15 +147,15 @@
 										</td>
 									</tr>
 									<tr>
-										<td bgcolor="#f2f1ec" width="190" class="fs12n">¥á¡¼¥ë¥¢¥É¥ì¥¹<span class="red"> *</span></td>
+										<td bgcolor="#f2f1ec" width="190" class="fs12n">ãƒ¡ãƒ¼ãƒ«ã‚¢ãƒ‰ãƒ¬ã‚¹<span class="red"> *</span></td>
 										<td bgcolor="#ffffff" width="527" class="fs10n"><span class="red12"><!--{$arrErr.email}--></span><input type="text" name="email" value="<!--{$list_data.email|escape}-->" size="60" class="box60" <!--{if $arrErr.email != ""}--><!--{sfSetErrorStyle}--><!--{/if}--> /></td>
 									</tr>
 									<tr>
-										<td bgcolor="#f2f1ec" width="190" class="fs12n">¥á¡¼¥ë¥¢¥É¥ì¥¹(¥â¥Ğ¥¤¥ë)</td>
+										<td bgcolor="#f2f1ec" width="190" class="fs12n">ãƒ¡ãƒ¼ãƒ«ã‚¢ãƒ‰ãƒ¬ã‚¹(ãƒ¢ãƒã‚¤ãƒ«)</td>
 										<td bgcolor="#ffffff" width="527" class="fs10n"><span class="red12"><!--{$arrErr.email_mobile}--></span><input type="text" name="email_mobile" value="<!--{$list_data.email_mobile|escape}-->" size="60" class="box60" <!--{if $arrErr.email_mobile != ""}--><!--{sfSetErrorStyle}--><!--{/if}--> /></td>
 									</tr>
 									<tr class="fs12n">
-										<td bgcolor="#f2f1ec" width="190">ÅÅÏÃÈÖ¹æ<span class="red"> *</span></td>
+										<td bgcolor="#f2f1ec" width="190">é›»è©±ç•ªå·<span class="red"> *</span></td>
 										<td bgcolor="#ffffff" width="527"><span class="red12"><!--{$arrErr.tel01}--><!--{$arrErr.tel02}--><!--{$arrErr.tel03}--></span><input type="text" name="tel01" value="<!--{$list_data.tel01|escape}-->" maxlength="<!--{$smarty.const.TEL_ITEM_LEN}-->" size="6" class="box6" <!--{if $arrErr.tel01 != ""}--><!--{sfSetErrorStyle}--><!--{/if}--> /> - <input type="text" name="tel02" value="<!--{$list_data.tel02|escape}-->" maxlength="<!--{$smarty.const.TEL_ITEM_LEN}-->" size="6" class="box6" <!--{if $arrErr.tel01 != "" || $arrErr.tel02 != ""}--><!--{sfSetErrorStyle}--><!--{/if}--> /> - <input type="text" name="tel03" value="<!--{$list_data.tel03|escape}-->" maxlength="<!--{$smarty.const.TEL_ITEM_LEN}-->" size="6" class="box6" <!--{if $arrErr.tel01 != "" || $arrErr.tel03 != ""}--><!--{sfSetErrorStyle}--><!--{/if}--> /></td>
 									</tr>
 									<tr class="fs12n">
@@ -163,70 +163,70 @@
 										<td bgcolor="#ffffff" width="527"><span class="red12"><!--{$arrErr.fax01}--><!--{$arrErr.fax02}--><!--{$arrErr.fax03}--></span><input type="text" name="fax01" value="<!--{$list_data.fax01|escape}-->" maxlength="<!--{$smarty.const.TEL_ITEM_LEN}-->" size="6" class="box6" <!--{if $arrErr.fax01 != ""}--><!--{sfSetErrorStyle}--><!--{/if}--> /> - <input type="text" name="fax02" value="<!--{$list_data.fax02|escape}-->" maxlength="<!--{$smarty.const.TEL_ITEM_LEN}-->" size="6" class="box6" <!--{if $arrErr.fax01 != "" || $arrErr.tel02 != ""}--><!--{sfSetErrorStyle}--><!--{/if}--> /> - <input type="text" name="fax03" value="<!--{$list_data.fax03|escape}-->" maxlength="<!--{$smarty.const.TEL_ITEM_LEN}-->" size="6" class="box6" <!--{if $arrErr.fax01 != "" || $arrErr.fax03 != ""}--><!--{sfSetErrorStyle}--><!--{/if}--> /></td>
 									</tr>
 									<tr class="fs12n">
-										<td bgcolor="#f2f1ec" width="190">¤´À­ÊÌ<span class="red"> *</span></td>
-										<td bgcolor="#ffffff" width="527"><span class="red12"><!--{$arrErr.sex}--></span><input type="radio" name="sex" value="1" <!--{if $arrErr.sex != ""}--><!--{sfSetErrorStyle}--><!--{/if}--> <!--{if $list_data.sex eq 1}-->checked<!--{/if}--> />ÃËÀ­ <input type="radio" name="sex" value="2" <!--{if $arrErr.sex != ""}--><!--{sfSetErrorStyle}--><!--{/if}--> <!--{if $list_data.sex eq 2}-->checked<!--{/if}--> />½÷À­</td>
+										<td bgcolor="#f2f1ec" width="190">ã”æ€§åˆ¥<span class="red"> *</span></td>
+										<td bgcolor="#ffffff" width="527"><span class="red12"><!--{$arrErr.sex}--></span><input type="radio" name="sex" value="1" <!--{if $arrErr.sex != ""}--><!--{sfSetErrorStyle}--><!--{/if}--> <!--{if $list_data.sex eq 1}-->checked<!--{/if}--> />ç”·æ€§ <input type="radio" name="sex" value="2" <!--{if $arrErr.sex != ""}--><!--{sfSetErrorStyle}--><!--{/if}--> <!--{if $list_data.sex eq 2}-->checked<!--{/if}--> />å¥³æ€§</td>
 									</tr>
 									<tr class="fs12n">
-										<td bgcolor="#f2f1ec" width="190">¤´¿¦¶È</td>
+										<td bgcolor="#f2f1ec" width="190">ã”è·æ¥­</td>
 										<td bgcolor="#ffffff" width="527"><span class="red12"><!--{$arrErr.job}--></span>
 											<select name="job" <!--{if $arrErr.job != ""}--><!--{sfSetErrorStyle}--><!--{/if}--> >
-											<option value="" selected="selected">ÁªÂò¤·¤Æ¤¯¤À¤µ¤¤</option>
+											<option value="" selected="selected">é¸æŠã—ã¦ãã ã•ã„</option>
 											<!--{html_options options=$arrJob selected=$list_data.job}-->
 											</select>
 										</td>
 									</tr>
 									<tr class="fs12n">
-										<td bgcolor="#f2f1ec" width="190">À¸Ç¯·îÆü</td>
+										<td bgcolor="#f2f1ec" width="190">ç”Ÿå¹´æœˆæ—¥</td>
 										<td bgcolor="#ffffff" width="527"><span class="red12"><!--{$arrErr.year}--></span>
 											<select name="year" <!--{if $arrErr.year != ""}--><!--{sfSetErrorStyle}--><!--{/if}--> >
 												<option value="" selected="selected">------</option>
 												<!--{html_options options=$arrYear selected=$list_data.year}-->
-											</select>Ç¯
+											</select>å¹´
 											<select name="month" <!--{if $arrErr.year != ""}--><!--{sfSetErrorStyle}--><!--{/if}--> >
 												<option value="" selected="selected">----</option>
 												<!--{html_options options=$arrMonth selected=$list_data.month}-->
-											</select>·î
+											</select>æœˆ
 											<select name="day" <!--{if $arrErr.year != ""}--><!--{sfSetErrorStyle}--><!--{/if}--> >
 												<option value="" selected="selected">----</option>
 												<!--{html_options options=$arrDay selected=$list_data.day"}-->		
-											</select>Æü
+											</select>æ—¥
 										</td>
 									</tr>
 									<tr class="fs12n">
-										<td bgcolor="#f2f1ec" width="190">¥Ñ¥¹¥ï¡¼¥É<span class="red"> *</span></td>
-										<td class="red10" bgcolor="#ffffff" width="527"><span class="red12"><!--{$arrErr.password}--></span><input type="password" name="password" value="<!--{$list_data.password|escape}-->" size="30" class="box30" <!--{if $arrErr.password != ""}--><!--{sfSetErrorStyle}--><!--{/if}--> />¡¡È¾³Ñ±Ñ¿ô¾®Ê¸»ú4¡Á10Ê¸»ú¡Êµ­¹æÉÔ²Ä¡Ë</td>
+										<td bgcolor="#f2f1ec" width="190">ãƒ‘ã‚¹ãƒ¯ãƒ¼ãƒ‰<span class="red"> *</span></td>
+										<td class="red10" bgcolor="#ffffff" width="527"><span class="red12"><!--{$arrErr.password}--></span><input type="password" name="password" value="<!--{$list_data.password|escape}-->" size="30" class="box30" <!--{if $arrErr.password != ""}--><!--{sfSetErrorStyle}--><!--{/if}--> />ã€€åŠè§’è‹±æ•°å°æ–‡å­—4ã€œ10æ–‡å­—ï¼ˆè¨˜å·ä¸å¯ï¼‰</td>
 									</tr>
 									<tr>
-										<td bgcolor="#f2f1ec" width="190" class="fs12">¥Ñ¥¹¥ï¡¼¥É¤òËº¤ì¤¿¤È¤­¤Î¥Ò¥ó¥È<span class="red"> *</span></td>
+										<td bgcolor="#f2f1ec" width="190" class="fs12">ãƒ‘ã‚¹ãƒ¯ãƒ¼ãƒ‰ã‚’å¿˜ã‚ŒãŸã¨ãã®ãƒ’ãƒ³ãƒˆ<span class="red"> *</span></td>
 										<td bgcolor="#ffffff" width="527">
 										<table width="527" border="0" cellspacing="0" cellpadding="0" summary=" ">
 											<tr class="fs12n">
-												<td><span class="red12"><!--{$arrErr.reminder}--><!--{$arrErr.reminder_answer}--></span>¼ÁÌä¡§ <select name="reminder" <!--{if $arrErr.reminder != ""}--><!--{sfSetErrorStyle}--><!--{/if}--> >
-												<option value="" selected="selected">ÁªÂò¤·¤Æ¤¯¤À¤µ¤¤</option>
+												<td><span class="red12"><!--{$arrErr.reminder}--><!--{$arrErr.reminder_answer}--></span>è³ªå•ï¼š <select name="reminder" <!--{if $arrErr.reminder != ""}--><!--{sfSetErrorStyle}--><!--{/if}--> >
+												<option value="" selected="selected">é¸æŠã—ã¦ãã ã•ã„</option>
 												<!--{html_options options=$arrReminder selected=$list_data.reminder}-->
 												</select>
 												</td>
 											</tr>
 											<tr><td height="5"></td></tr>
 											<tr class="fs12n">
-												<td>Åú¤¨¡§ <input type="text" name="reminder_answer" value="<!--{$list_data.reminder_answer|escape}-->" size="30" class="box30" <!--{if $arrErr.reminder_answer != ""}--><!--{sfSetErrorStyle}--><!--{/if}--> /></td>
+												<td>ç­”ãˆï¼š <input type="text" name="reminder_answer" value="<!--{$list_data.reminder_answer|escape}-->" size="30" class="box30" <!--{if $arrErr.reminder_answer != ""}--><!--{sfSetErrorStyle}--><!--{/if}--> /></td>
 											</tr>
 										</table>
 										</td>
 									</tr>
 									<tr class="fs12n">
-										<td bgcolor="#f2f1ec" width="190">¥á¡¼¥ë¥Ş¥¬¥¸¥ó<span class="red"> *</span></td>
+										<td bgcolor="#f2f1ec" width="190">ãƒ¡ãƒ¼ãƒ«ãƒã‚¬ã‚¸ãƒ³<span class="red"> *</span></td>
 										<td bgcolor="#ffffff" width="527"><span class="red12"><!--{$arrErr.mailmaga_flg}--></span>
-											<input type="radio" name="mailmaga_flg" value="1" <!--{if $arrErr.mailmaga_flg != ""}--><!--{sfSetErrorStyle}--><!--{/if}--> <!--{if $list_data.mailmaga_flg eq 1 or $list_data.mailmaga_flg eq 4}-->checked<!--{/if}--> />HTML¡¡
-											<input type="radio" name="mailmaga_flg" value="2" <!--{if $arrErr.mailmaga_flg != ""}--><!--{sfSetErrorStyle}--><!--{/if}--> <!--{if $list_data.mailmaga_flg eq 2 or $list_data.mailmaga_flg eq 5}-->checked<!--{/if}--> />¥Æ¥­¥¹¥È¡¡
-											<input type="radio" name="mailmaga_flg" value="3" <!--{if $arrErr.mailmaga_flg != ""}--><!--{sfSetErrorStyle}--><!--{/if}--> <!--{if $list_data.mailmaga_flg eq "" or $list_data.mailmaga_flg eq 3 or $list_data.mailmaga_flg eq 6}-->checked<!--{/if}--> />´õË¾¤·¤Ê¤¤</td>
+											<input type="radio" name="mailmaga_flg" value="1" <!--{if $arrErr.mailmaga_flg != ""}--><!--{sfSetErrorStyle}--><!--{/if}--> <!--{if $list_data.mailmaga_flg eq 1 or $list_data.mailmaga_flg eq 4}-->checked<!--{/if}--> />HTMLã€€
+											<input type="radio" name="mailmaga_flg" value="2" <!--{if $arrErr.mailmaga_flg != ""}--><!--{sfSetErrorStyle}--><!--{/if}--> <!--{if $list_data.mailmaga_flg eq 2 or $list_data.mailmaga_flg eq 5}-->checked<!--{/if}--> />ãƒ†ã‚­ã‚¹ãƒˆã€€
+											<input type="radio" name="mailmaga_flg" value="3" <!--{if $arrErr.mailmaga_flg != ""}--><!--{sfSetErrorStyle}--><!--{/if}--> <!--{if $list_data.mailmaga_flg eq "" or $list_data.mailmaga_flg eq 3 or $list_data.mailmaga_flg eq 6}-->checked<!--{/if}--> />å¸Œæœ›ã—ãªã„</td>
 									</tr>
 									<tr>
-										<td bgcolor="#f2f1ec" width="960" class="fs12n">SHOPÍÑ¥á¥â</td>
+										<td bgcolor="#f2f1ec" width="960" class="fs12n">SHOPç”¨ãƒ¡ãƒ¢</td>
 										<td bgcolor="#ffffff" width="527" class="fs10n"><span class="red12"><!--{$arrErr.note}--></span><textarea name="note" maxlength="<!--{$smarty.const.LTEXT_LEN}-->" <!--{if $arrErr.note != ""}--><!--{sfSetErrorStyle}--><!--{/if}--> cols="60" rows="8" class="area60"><!--{$list_data.note|escape}--></textarea></td>
 									</tr>
 									<tr class="fs12n">
-										<td bgcolor="#f2f1ec" width="190">½ê»ı¥İ¥¤¥ó¥È</td>
+										<td bgcolor="#f2f1ec" width="190">æ‰€æŒãƒã‚¤ãƒ³ãƒˆ</td>
 										<td bgcolor="#ffffff" width="527"><span class="red12"><!--{$arrErr.point}--></span><input type="text" name="point" value="<!--{$list_data.point|escape}-->" maxlength="<!--{$smarty.const.TEL_LEN}-->" <!--{if $arrErr.point != ""}--><!--{sfSetErrorStyle}--><!--{/if}--> size="6" class="box6" <!--{if $arrErr.point != ""}--><!--{sfSetErrorStyle}--><!--{/if}--> /> pt</td>
 									</tr>
 
@@ -244,10 +244,10 @@
 										<table border="0" cellspacing="0" cellpadding="0" summary=" ">
 											<tr>
 												<td>
-												<!--¢§¸¡º÷·ë²Ì¤ØÌá¤ë-->
-													<a href="#" onmouseover="chgImg('<!--{$smarty.const.URL_DIR}-->img/contents/btn_search_back_on.jpg','back');" onmouseout="chgImg('<!--{$smarty.const.URL_DIR}-->img/contents/btn_search_back.jpg','back');" onclick="return fnReturn();"><img src="<!--{$smarty.const.URL_DIR}-->img/contents/btn_search_back.jpg" width="123" height="24" alt="¸¡º÷²èÌÌ¤ËÌá¤ë" border="0" name="back"></a>
-												<!--¢¥¸¡º÷·ë²Ì¤ØÌá¤ë-->
-													<input type="image" onMouseover="chgImgImageSubmit('<!--{$smarty.const.URL_DIR}-->img/contents/btn_confirm_on.jpg',this)" onMouseout="chgImgImageSubmit('<!--{$smarty.const.URL_DIR}-->img/contents/btn_confirm.jpg',this)" src="<!--{$smarty.const.URL_DIR}-->img/contents/btn_confirm.jpg" width="123" height="24" alt="³ÎÇ§¥Ú¡¼¥¸¤Ø" border="0" name="subm" >
+												<!--â–¼æ¤œç´¢çµæœã¸æˆ»ã‚‹-->
+													<a href="#" onmouseover="chgImg('<!--{$smarty.const.URL_DIR}-->img/contents/btn_search_back_on.jpg','back');" onmouseout="chgImg('<!--{$smarty.const.URL_DIR}-->img/contents/btn_search_back.jpg','back');" onclick="return fnReturn();"><img src="<!--{$smarty.const.URL_DIR}-->img/contents/btn_search_back.jpg" width="123" height="24" alt="æ¤œç´¢ç”»é¢ã«æˆ»ã‚‹" border="0" name="back"></a>
+												<!--â–²æ¤œç´¢çµæœã¸æˆ»ã‚‹-->
+													<input type="image" onMouseover="chgImgImageSubmit('<!--{$smarty.const.URL_DIR}-->img/contents/btn_confirm_on.jpg',this)" onMouseout="chgImgImageSubmit('<!--{$smarty.const.URL_DIR}-->img/contents/btn_confirm.jpg',this)" src="<!--{$smarty.const.URL_DIR}-->img/contents/btn_confirm.jpg" width="123" height="24" alt="ç¢ºèªãƒšãƒ¼ã‚¸ã¸" border="0" name="subm" >
 												</td>
 											</tr>
 										</table>
@@ -269,15 +269,15 @@
 						</table>
 					</td>
 				</tr>
-				<!--¥á¥¤¥ó¥¨¥ê¥¢-->
+				<!--ãƒ¡ã‚¤ãƒ³ã‚¨ãƒªã‚¢-->
 			</table>
-			<!--¢¥ÅĞÏ¿¥Æ¡¼¥Ö¥ë¤³¤³¤Ş¤Ç-->
+			<!--â–²ç™»éŒ²ãƒ†ãƒ¼ãƒ–ãƒ«ã“ã“ã¾ã§-->
 		</td>
 	</tr>
 </table>
-<!--¡ú¡ú¥á¥¤¥ó¥³¥ó¥Æ¥ó¥Ä¡ú¡ú-->
+<!--â˜…â˜…ãƒ¡ã‚¤ãƒ³ã‚³ãƒ³ãƒ†ãƒ³ãƒ„â˜…â˜…-->
 
-<!--¡ú¡ú¹ØÆşÍúÎò°ìÍ÷¡ú¡ú-->
+<!--â˜…â˜…è³¼å…¥å±¥æ­´ä¸€è¦§â˜…â˜…-->
 <table width="878" border="0" cellspacing="0" cellpadding="0" summary=" ">
 <input type="hidden" name="order_id" value="">
 <input type="hidden" name="search_pageno" value="<!--{$tpl_pageno}-->">
@@ -290,7 +290,7 @@
 			<tr>
 				<td><img src="<!--{$smarty.const.URL_DIR}-->img/contents/search_left.gif" width="19" height="22" alt=""></td>
 				<td>
-				<!--¹ØÆşÍúÎò°ìÍ÷-->
+				<!--è³¼å…¥å±¥æ­´ä¸€è¦§-->
 				<table border="0" cellspacing="0" cellpadding="0" summary=" ">
 					<tr>
 						<td><img src="<!--{$smarty.const.URL_DIR}-->img/contents/reselt_left_top.gif" width="22" height="5" alt=""></td>
@@ -299,7 +299,7 @@
 					</tr>
 					<tr>
 						<td background="<!--{$smarty.const.URL_DIR}-->img/contents/reselt_left_bg.gif"><img src="<!--{$smarty.const.URL_DIR}-->img/contents/reselt_left_middle.gif" width="22" height="12" alt=""></td>
-						<td bgcolor="#393a48" class="white10">¹ØÆşÍúÎò°ìÍ÷¡¡<span class="reselt"><!--¹ØÆşÍúÎò°ìÍ÷--><!--{$tpl_linemax}-->·ï</span>&nbsp;¤¬³ºÅö¤·¤Ş¤·¤¿¡£</td>
+						<td bgcolor="#393a48" class="white10">è³¼å…¥å±¥æ­´ä¸€è¦§ã€€<span class="reselt"><!--è³¼å…¥å±¥æ­´ä¸€è¦§--><!--{$tpl_linemax}-->ä»¶</span>&nbsp;ãŒè©²å½“ã—ã¾ã—ãŸã€‚</td>
 						<td background="<!--{$smarty.const.URL_DIR}-->img/contents/reselt_right_bg.gif"><img src="<!--{$smarty.const.URL_DIR}-->img/common/_.gif" width="22" height="8" alt=""></td>
 					</tr>
 					<tr>
@@ -308,7 +308,7 @@
 						<td><img src="<!--{$smarty.const.URL_DIR}-->img/contents/reselt_right_bottom.gif" width="22" height="5" alt=""></td>
 					</tr>
 				</table>
-				<!--¹ØÆşÍúÎò°ìÍ÷-->
+				<!--è³¼å…¥å±¥æ­´ä¸€è¦§-->
 				</td>
 				<td><img src="<!--{$smarty.const.URL_DIR}-->img/common/_.gif" width="8" height="1" alt=""></td>
 			</tr>
@@ -328,30 +328,30 @@
 				<tr>
 					<!--{if $tpl_linemax > 0}-->
 					<td bgcolor="#cccccc">
-					<!--¹ØÆşÍúÎò°ìÍ÷É½¼¨¥Æ¡¼¥Ö¥ë-->
+					<!--è³¼å…¥å±¥æ­´ä¸€è¦§è¡¨ç¤ºãƒ†ãƒ¼ãƒ–ãƒ«-->
 					<table width="840" border="0" cellspacing="1" cellpadding="5" summary=" ">
 						<tr bgcolor="#636469" align="center" class="fs10n">
-							<td width="160"><span class="white">ÆüÉÕ</span></td>
-							<td width="140"><span class="white">¼õÃíÈÖ¹æ</span></td>
-							<td width="140"><span class="white">¹ØÆş¶â³Û</span></td>
-							<td width="160"><span class="white">È¯Á÷Æü</span></td>
-							<td width="140"><span class="white">»ÙÊ§ÊıË¡</span></td>
+							<td width="160"><span class="white">æ—¥ä»˜</span></td>
+							<td width="140"><span class="white">å—æ³¨ç•ªå·</span></td>
+							<td width="140"><span class="white">è³¼å…¥é‡‘é¡</span></td>
+							<td width="160"><span class="white">ç™ºé€æ—¥</span></td>
+							<td width="140"><span class="white">æ”¯æ‰•æ–¹æ³•</span></td>
 						</tr>
 						<!--{section name=cnt loop=$arrPurchaseHistory}-->
 						<tr bgcolor="#ffffff" align="center" class="fs12">
 						<td width=""><!--{$arrPurchaseHistory[cnt].create_date|sfDispDBDate}--></td>
 						<td width=""><a href="#" onclick="fnOpenWindow('../order/edit.php?order_id=<!--{$arrPurchaseHistory[cnt].order_id}-->','order_disp','800','900'); return false;" ><!--{$arrPurchaseHistory[cnt].order_id}--></a></td>
-						<td width=""><!--{$arrPurchaseHistory[cnt].payment_total|number_format}-->±ß</td>
-						<td width=""><!--{if $arrPurchaseHistory[cnt].status eq 5}--><!--{$arrPurchaseHistory[cnt].commit_date|sfDispDBDate}--><!--{else}-->Ì¤È¯Á÷<!--{ /if }--></td>
+						<td width=""><!--{$arrPurchaseHistory[cnt].payment_total|number_format}-->å††</td>
+						<td width=""><!--{if $arrPurchaseHistory[cnt].status eq 5}--><!--{$arrPurchaseHistory[cnt].commit_date|sfDispDBDate}--><!--{else}-->æœªç™ºé€<!--{ /if }--></td>
 						<!--{assign var=payment_id value="`$arrPurchaseHistory[cnt].payment_id`"}-->
 						<td width=""><!--{$arrPayment[$payment_id]|escape}--></td>
 						</tr>
 						<!--{/section}-->
 					</table>
-					<!--¹ØÆşÍúÎò°ìÍ÷É½¼¨¥Æ¡¼¥Ö¥ë-->
+					<!--è³¼å…¥å±¥æ­´ä¸€è¦§è¡¨ç¤ºãƒ†ãƒ¼ãƒ–ãƒ«-->
 					</td>
 					<!--{else}-->
-					<td align="center" class="fs12">¹ØÆşÍúÎò¤Ï¤¢¤ê¤Ş¤»¤ó¡£</td>
+					<td align="center" class="fs12">è³¼å…¥å±¥æ­´ã¯ã‚ã‚Šã¾ã›ã‚“ã€‚</td>
 					<!--{/if}-->
 				</tr>
 			</table>
@@ -359,5 +359,5 @@
 	</tr>
 </form>
 </table>		
-<!--¡ú¡ú¸¡º÷·ë²Ì°ìÍ÷¡ú¡ú-->		
+<!--â˜…â˜…æ¤œç´¢çµæœä¸€è¦§â˜…â˜…-->		
 

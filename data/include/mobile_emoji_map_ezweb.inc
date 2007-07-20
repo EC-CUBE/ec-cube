@@ -1,6 +1,6 @@
 <?php
 /**
- * EZwebÍÑ³¨Ê¸»ú¥³¡¼¥É (Shift JIS)
+ * EZwebç”¨çµµæ–‡å­—ã‚³ãƒ¼ãƒ‰ (Shift JIS)
  */
 
 return array(
@@ -102,7 +102,7 @@ return array(
 	'96'  => '<img localsrc="322">',
 	'97'  => '<img localsrc="323">',
 	'98'  => '<img localsrc="15">',
-	'99'  => "\x81\x9b", // ¡û
+	'99'  => "\x81\x9b", // â—‹
 	'100' => '<img localsrc="134">',
 	'101' => '<img localsrc="251">',
 	'102' => '<img localsrc="169">',
@@ -111,11 +111,11 @@ return array(
 	'105' => '<img localsrc="513">',
 	'106' => '<img localsrc="784">',
 	'107' => '<img localsrc="166">',
-	'108' => "[i\xd3\xb0\xc4\xde]", // [i¥â¡¼¥É]
-	'109' => "[i\xd3\xb0\xc4\xde]", // [i¥â¡¼¥É]
+	'108' => "[i\xd3\xb0\xc4\xde]", // [iãƒ¢ãƒ¼ãƒ‰]
+	'109' => "[i\xd3\xb0\xc4\xde]", // [iãƒ¢ãƒ¼ãƒ‰]
 	'110' => '<img localsrc="108">',
-	'111' => "[\xc4\xde\xba\xd3]", // [¥É¥³¥â]
-	'112' => "[\xc4\xde\xba\xd3\xce\xdf\xb2\xdd\xc4]", // [¥É¥³¥â¥Ý¥¤¥ó¥È]
+	'111' => "[\xc4\xde\xba\xd3]", // [ãƒ‰ã‚³ãƒ¢]
+	'112' => "[\xc4\xde\xba\xd3\xce\xdf\xb2\xdd\xc4]", // [ãƒ‰ã‚³ãƒ¢ãƒã‚¤ãƒ³ãƒˆ]
 	'113' => '<img localsrc="109">',
 	'114' => '<img localsrc="299">',
 	'115' => '<img localsrc="385">',
@@ -125,7 +125,7 @@ return array(
 	'119' => '<img localsrc="119">',
 	'120' => '<img localsrc="334">',
 	'121' => '<img localsrc="730">',
-	'122' => "[\xcc\xd8\xb0\xc0\xde\xb2\xd4\xd9]", // [¥Õ¥ê¡¼¥À¥¤¥ä¥ë]
+	'122' => "[\xcc\xd8\xb0\xc0\xde\xb2\xd4\xd9]", // [ãƒ•ãƒªãƒ¼ãƒ€ã‚¤ãƒ¤ãƒ«]
 	'123' => '<img localsrc="818">',
 	'124' => '<img localsrc="4">',
 	'125' => '<img localsrc="180">',
@@ -171,24 +171,24 @@ return array(
 	'165' => null,
 	'166' => '<img localsrc="735">',
 	'167' => '<img localsrc="226">',
-	'168' => "[\x82\xd3\x82\xad\x82\xeb]", // [¤Õ¤¯¤í]
+	'168' => "[\x82\xd3\x82\xad\x82\xeb]", // [ãµãã‚]
 	'169' => '<img localsrc="508">',
 	'170' => null,
-	'171' => "[\x82\xa2\x82\xb7]", // [¤¤¤¹]
+	'171' => "[\x82\xa2\x82\xb7]", // [ã„ã™]
 	'172' => '<img localsrc="490">',
 	'173' => '[SOON]',
 	'174' => '[ON]',
 	'175' => '[end]',
 	'176' => '<img localsrc="46">',
-	'e1'  => "[i\xb1\xcc\xdf\xd8]", // [i¥¢¥×¥ê]
-	'e2'  => "[i\xb1\xcc\xdf\xd8]", // [i¥¢¥×¥ê]
+	'e1'  => "[i\xb1\xcc\xdf\xd8]", // [iã‚¢ãƒ—ãƒª]
+	'e2'  => "[i\xb1\xcc\xdf\xd8]", // [iã‚¢ãƒ—ãƒª]
 	'e3'  => '<img localsrc="335">',
 	'e4'  => '<img localsrc="290">',
 	'e5'  => '<img localsrc="295">',
 	'e6'  => '<img localsrc="805">',
 	'e7'  => '<img localsrc="221">',
 	'e8'  => '<img localsrc="48">',
-	'e9'  => "[\xc4\xde\xb1]", // [¥É¥¢]
+	'e9'  => "[\xc4\xde\xb1]", // [ãƒ‰ã‚¢]
 	'e10' => '<img localsrc="233">',
 	'e11' => '<img localsrc="337">',
 	'e12' => '<img localsrc="806">',
@@ -224,9 +224,9 @@ return array(
 	'e42' => '<img localsrc="807">',
 	'e43' => '<img localsrc="82">',
 	'e44' => '<img localsrc="1">',
-	'e45' => "[\x8b\xd6]", // [¶Ø]
+	'e45' => "[\x8b\xd6]", // [ç¦]
 	'e46' => '<img localsrc="387">',
-	'e47' => "[\x8d\x87]", // [¹ç]
+	'e47' => "[\x8d\x87]", // [åˆ]
 	'e48' => '<img localsrc="386">',
 	'e49' => '<img localsrc="808">',
 	'e50' => '<img localsrc="809">',

@@ -16,15 +16,15 @@ class LC_Page {
 	var $tpl_total_point;
 	var $tpl_message;
 	function LC_Page() {
-		/** É¬¤º»ØÄê¤¹¤ë **/
-		$this->tpl_css = '/css/layout/cartin/index.css';	// ¥á¥¤¥óCSS¥Ñ¥¹
-		/** É¬¤º»ØÄê¤¹¤ë **/
-		$this->tpl_mainpage = 'cart/index.tpl';		// ¥á¥¤¥ó¥Æ¥ó¥×¥ì¡¼¥È
-		$this->tpl_title = "Ž¶ŽºŽÞ¤ÎÃæ¤ò¸«¤ë";
+		/** å¿…ãšæŒ‡å®šã™ã‚‹ **/
+		$this->tpl_css = '/css/layout/cartin/index.css';	// ãƒ¡ã‚¤ãƒ³CSSãƒ‘ã‚¹
+		/** å¿…ãšæŒ‡å®šã™ã‚‹ **/
+		$this->tpl_mainpage = 'cart/index.tpl';		// ãƒ¡ã‚¤ãƒ³ãƒ†ãƒ³ãƒ—ãƒ¬ãƒ¼ãƒˆ
+		$this->tpl_title = "ï½¶ï½ºï¾žã®ä¸­ã‚’è¦‹ã‚‹";
 	}
 }
 
-// Çã¤¤Êª¤òÂ³¤±¤ë¾ì¹ç
+// è²·ã„ç‰©ã‚’ç¶šã‘ã‚‹å ´åˆ
 if($_REQUEST['continue']) {
 	header("Location: " . gfAddSessionId(MOBILE_URL_SITE_TOP) );
 	exit;
@@ -36,46 +36,46 @@ $objCartSess = new SC_CartSession("", false);
 $objSiteSess = new SC_SiteSession();
 $objSiteInfo = $objView->objSiteInfo;
 $objCustomer = new SC_Customer();
-// ´ðËÜ¾ðÊó¤Î¼èÆÀ
+// åŸºæœ¬æƒ…å ±ã®å–å¾—
 $arrInfo = $objSiteInfo->data;
 
-// ¾¦ÉÊ¹ØÆþÃæ¤Ë¥«¡¼¥ÈÆâÍÆ¤¬ÊÑ¹¹¤µ¤ì¤¿¡£
+// å•†å“è³¼å…¥ä¸­ã«ã‚«ãƒ¼ãƒˆå†…å®¹ãŒå¤‰æ›´ã•ã‚ŒãŸã€‚
 if($objCartSess->getCancelPurchase()) {
-	$objPage->tpl_message = "¾¦ÉÊ¹ØÆþÃæ¤ËŽ¶Ž°ŽÄÆâÍÆ¤¬ÊÑ¹¹¤µ¤ì¤Þ¤·¤¿¤Î¤ÇŽ¤¤ª¼ê¿ô¤Ç¤¹¤¬¹ØÆþ¼êÂ³¤­¤ò¤ä¤êÄ¾¤·¤Æ²¼¤µ¤¤Ž¡";
+	$objPage->tpl_message = "å•†å“è³¼å…¥ä¸­ã«ï½¶ï½°ï¾„å†…å®¹ãŒå¤‰æ›´ã•ã‚Œã¾ã—ãŸã®ã§ï½¤ãŠæ‰‹æ•°ã§ã™ãŒè³¼å…¥æ‰‹ç¶šãã‚’ã‚„ã‚Šç›´ã—ã¦ä¸‹ã•ã„ï½¡";
 }
 
 switch($_POST['mode']) {
 case 'confirm':
-	// ¥«¡¼¥ÈÆâ¾ðÊó¤Î¼èÆÀ
+	// ã‚«ãƒ¼ãƒˆå†…æƒ…å ±ã®å–å¾—
 	$arrRet = $objCartSess->getCartList();
 	$max = count($arrRet);
 	$cnt = 0;
 	for ($i = 0; $i < $max; $i++) {
-		// ¾¦ÉÊµ¬³Ê¾ðÊó¤Î¼èÆÀ
+		// å•†å“è¦æ ¼æƒ…å ±ã®å–å¾—
 		$arrData = sfGetProductsClass($arrRet[$i]['id']);
-		// DB¤ËÂ¸ºß¤¹¤ë¾¦ÉÊ
+		// DBã«å­˜åœ¨ã™ã‚‹å•†å“
 		if($arrData != "") {
 			$cnt++;
 		}
 	}
-	// ¥«¡¼¥È¾¦ÉÊ¤¬1·ï°Ê¾åÂ¸ºß¤¹¤ë¾ì¹ç
+	// ã‚«ãƒ¼ãƒˆå•†å“ãŒ1ä»¶ä»¥ä¸Šå­˜åœ¨ã™ã‚‹å ´åˆ
 	if($cnt > 0) {
-		// Àµ¾ï¤ËÅÐÏ¿¤µ¤ì¤¿¤³¤È¤òµ­Ï¿¤·¤Æ¤ª¤¯
+		// æ­£å¸¸ã«ç™»éŒ²ã•ã‚ŒãŸã“ã¨ã‚’è¨˜éŒ²ã—ã¦ãŠã
 		$objSiteSess->setRegistFlag();
 		$pre_uniqid = $objSiteSess->getUniqId();
-		// ÃíÊ¸°ì»þID¤ÎÈ¯¹Ô
+		// æ³¨æ–‡ä¸€æ™‚IDã®ç™ºè¡Œ
 		$objSiteSess->setUniqId();
 		$uniqid = $objSiteSess->getUniqId();
-		// ¥¨¥é¡¼¥ê¥È¥é¥¤¤Ê¤É¤Ç´û¤Ëuniqid¤¬Â¸ºß¤¹¤ë¾ì¹ç¤Ï¡¢ÀßÄê¤ò°ú¤­·Ñ¤°
+		// ã‚¨ãƒ©ãƒ¼ãƒªãƒˆãƒ©ã‚¤ãªã©ã§æ—¢ã«uniqidãŒå­˜åœ¨ã™ã‚‹å ´åˆã¯ã€è¨­å®šã‚’å¼•ãç¶™ã
 		if($pre_uniqid != "") {
 			$sqlval['order_temp_id'] = $uniqid;
 			$where = "order_temp_id = ?";
 			$objQuery = new SC_Query();
 			$objQuery->update("dtb_order_temp", $sqlval, $where, array($pre_uniqid));
 		}
-		// ¥«¡¼¥È¤ò¹ØÆþ¥â¡¼¥É¤ËÀßÄê
+		// ã‚«ãƒ¼ãƒˆã‚’è³¼å…¥ãƒ¢ãƒ¼ãƒ‰ã«è¨­å®š
 		$objCartSess->saveCurrentCart($uniqid);
-		// ¹ØÆþ¥Ú¡¼¥¸¤Ø
+		// è³¼å…¥ãƒšãƒ¼ã‚¸ã¸
 		header("Location: " . gfAddSessionId(MOBILE_URL_SHOP_TOP));
 		exit;
 	}
@@ -99,24 +99,24 @@ case 'delete':
 	break;
 }
 
-// ¥«¡¼¥È½¸·×½èÍý
+// ã‚«ãƒ¼ãƒˆé›†è¨ˆå‡¦ç†
 $objPage = sfTotalCart($objPage, $objCartSess, $arrInfo);
 $objPage->arrData = sfTotalConfirm($arrData, $objPage, $objCartSess, $arrInfo, $objCustomer);
 
 $objPage->arrInfo = $arrInfo;
 
-// ¥í¥°¥¤¥óÈ½Äê
+// ãƒ­ã‚°ã‚¤ãƒ³åˆ¤å®š
 if($objCustomer->isLoginSuccess()) {
 	$objPage->tpl_login = true;
 	$objPage->tpl_user_point = $objCustomer->getValue('point');
 	$objPage->tpl_name = $objCustomer->getValue('name01');
 }
 
-// Á÷ÎÁÌµÎÁ¤Þ¤Ç¤Î¶â³Û¤ò·×»»
+// é€æ–™ç„¡æ–™ã¾ã§ã®é‡‘é¡ã‚’è¨ˆç®—
 $tpl_deliv_free = $objPage->arrInfo['free_rule'] - $objPage->tpl_total_pretax;
 $objPage->tpl_deliv_free = $tpl_deliv_free;
 
-// Á°ÊÇ¤ÎURL¤ò¼èÆÀ
+// å‰é ã®URLã‚’å–å¾—
 $objPage->tpl_prev_url = $objCartSess->getPrevURL();
 
 $objView->assignobj($objPage);

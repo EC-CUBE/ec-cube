@@ -5,9 +5,9 @@
  */
 @charset "<!--{$smarty.const.CHAR_CODE}-->";
 
-/***ËÜÅÐÏ¿´°Î»£Ã£Ó£Ó***/
+/***æœ¬ç™»éŒ²å®Œäº†ï¼£ï¼³ï¼³***/
 
-/***¥³¥ó¥Æ¥ó¥Ä***/
+/***ã‚³ãƒ³ãƒ†ãƒ³ãƒ„***/
 #containerfull #maintitle{
 border: 0;
 margin: 0 0 30px 0;
@@ -23,8 +23,8 @@ width: 700px;
 text-align: center;
 }
 
-/**¥Æ¡¼¥Ö¥ë**/
-/*ÏÈ*/
+/**ãƒ†ãƒ¼ãƒ–ãƒ«**/
+/*æž */
 #containerfull #frame{
 border: 0;
 margin: 0 100px;
@@ -33,7 +33,7 @@ width: 500px;
 background: #ccc;
 }
 
-/*¥¿¥¤¥È¥ë¹Ô*/
+/*ã‚¿ã‚¤ãƒˆãƒ«è¡Œ*/
 #containerfull #frame #left{
 width: 150px;
 background: #ecf5ff;
@@ -45,7 +45,7 @@ background: #fff;
 }
 
 
-/*¥Ü¥¿¥ó*/
+/*ãƒœã‚¿ãƒ³*/
 #containerfull #button{
 border: 0;
 margin: 40px 0 20px 0;

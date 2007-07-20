@@ -5,20 +5,20 @@
  * http://www.lockon.co.jp/
  */
 *}-->
-<!--¡ú¡ú¥á¥¤¥ó¥³¥ó¥Æ¥ó¥Ä¡ú¡ú-->
+<!--â˜…â˜…ãƒ¡ã‚¤ãƒ³ã‚³ãƒ³ãƒ†ãƒ³ãƒ„â˜…â˜…-->
 <table width="878" border="0" cellspacing="0" cellpadding="0" summary=" ">
 <form name="form1" id="form1" method="post" action="./index.php">
 <input type="hidden" name="mode" value="<!--{$tpl_mode}-->">
 	<tr valign="top">
 		<td background="<!--{$smarty.const.URL_DIR}-->img/contents/navi_bg.gif" height="402">
-			<!--¢§SUB NAVI-->
+			<!--â–¼SUB NAVI-->
 			<!--{include file=$tpl_subnavi}-->
-			<!--¢¥SUB NAVI-->
+			<!--â–²SUB NAVI-->
 		</td>
 		<td class="mainbg">
-			<!--¢§ÅĞÏ¿¥Æ¡¼¥Ö¥ë¤³¤³¤«¤é-->
+			<!--â–¼ç™»éŒ²ãƒ†ãƒ¼ãƒ–ãƒ«ã“ã“ã‹ã‚‰-->
 			<table width="737" border="0" cellspacing="0" cellpadding="0" summary=" ">
-				<!--¥á¥¤¥ó¥¨¥ê¥¢-->
+				<!--ãƒ¡ã‚¤ãƒ³ã‚¨ãƒªã‚¢-->
 				<tr>
 					<td align="center">
 						<table width="706" border="0" cellspacing="0" cellpadding="0" summary=" ">
@@ -35,7 +35,7 @@
 									</tr>
 									<tr>
 										<td background="<!--{$smarty.const.URL_DIR}-->img/contents/contents_title_left_bg.gif"><img src="<!--{$smarty.const.URL_DIR}-->img/contents/contents_title_left.gif" width="22" height="12" alt=""></td>
-										<td bgcolor="#636469" width="638" class="fs14n"><span class="white"><!--¥³¥ó¥Æ¥ó¥Ä¥¿¥¤¥È¥ë-->SHOP¥Ş¥¹¥¿ÅĞÏ¿</span></td>
+										<td bgcolor="#636469" width="638" class="fs14n"><span class="white"><!--ã‚³ãƒ³ãƒ†ãƒ³ãƒ„ã‚¿ã‚¤ãƒˆãƒ«-->SHOPãƒã‚¹ã‚¿ç™»éŒ²</span></td>
 										<td background="<!--{$smarty.const.URL_DIR}-->img/contents/contents_title_right_bg.gif"><img src="<!--{$smarty.const.URL_DIR}-->img/common/_.gif" width="18" height="1" alt=""></td>
 									</tr>
 									<tr>
@@ -48,50 +48,50 @@
 
 								<table width="678" border="0" cellspacing="1" cellpadding="8" summary=" ">
 									<tr>
-										<td bgcolor="#f2f1ec" colspan="2" class="fs12n">¢§´ğËÜ¾ğÊó</td>
+										<td bgcolor="#f2f1ec" colspan="2" class="fs12n">â–¼åŸºæœ¬æƒ…å ±</td>
 									</tr>
 									<tr>
-										<td bgcolor="#f2f1ec" width="180" class="fs12n">²ñ¼ÒÌ¾</td>
+										<td bgcolor="#f2f1ec" width="180" class="fs12n">ä¼šç¤¾å</td>
 										<td bgcolor="#ffffff" width="537" class="fs10n">
 										<span class="red12"><!--{$arrErr.company_name}--></span>
-										<input type="text" name="company_name" value="<!--{$arrForm.company_name|escape}-->" maxlength="<!--{$smarty.const.STEXT_LEN}-->" size="60" class="box60" style="<!--{if $arrErr.company_name != ""}-->background-color: <!--{$smarty.const.ERR_COLOR}--><!--{/if}-->" /><span class="red"> ¡Ê¾å¸Â<!--{$smarty.const.STEXT_LEN}-->Ê¸»ú¡Ë</span></td>
+										<input type="text" name="company_name" value="<!--{$arrForm.company_name|escape}-->" maxlength="<!--{$smarty.const.STEXT_LEN}-->" size="60" class="box60" style="<!--{if $arrErr.company_name != ""}-->background-color: <!--{$smarty.const.ERR_COLOR}--><!--{/if}-->" /><span class="red"> ï¼ˆä¸Šé™<!--{$smarty.const.STEXT_LEN}-->æ–‡å­—ï¼‰</span></td>
 									</tr>
 									<tr>
-										<td bgcolor="#f2f1ec" width="180" class="fs12n">²ñ¼ÒÌ¾¡Ê¥«¥Ê¡Ë</td>
+										<td bgcolor="#f2f1ec" width="180" class="fs12n">ä¼šç¤¾åï¼ˆã‚«ãƒŠï¼‰</td>
 										<td bgcolor="#ffffff" width="537" class="fs10n">
 										<span class="red12"><!--{$arrErr.company_kana}--></span>
-										<input type="text" name="company_kana" value="<!--{$arrForm.company_kana|escape}-->" maxlength="<!--{$smarty.const.STEXT_LEN}-->" size="60" class="box60" style="<!--{if $arrErr.company_kana != ""}-->background-color: <!--{$smarty.const.ERR_COLOR}--><!--{/if}-->" /><span class="red"> ¡Ê¾å¸Â<!--{$smarty.const.STEXT_LEN}-->Ê¸»ú¡Ë</span></td>
+										<input type="text" name="company_kana" value="<!--{$arrForm.company_kana|escape}-->" maxlength="<!--{$smarty.const.STEXT_LEN}-->" size="60" class="box60" style="<!--{if $arrErr.company_kana != ""}-->background-color: <!--{$smarty.const.ERR_COLOR}--><!--{/if}-->" /><span class="red"> ï¼ˆä¸Šé™<!--{$smarty.const.STEXT_LEN}-->æ–‡å­—ï¼‰</span></td>
 									</tr>
 									<tr>
-										<td bgcolor="#f2f1ec" width="180" class="fs12n">Å¹Ì¾<span class="red"> *</span></td>
+										<td bgcolor="#f2f1ec" width="180" class="fs12n">åº—å<span class="red"> *</span></td>
 										<td bgcolor="#ffffff" width="537" class="fs10n">
 										<span class="red12"><!--{$arrErr.shop_name}--></span>
-										<input type="text" name="shop_name" value="<!--{$arrForm.shop_name|escape}-->" maxlength="<!--{$smarty.const.STEXT_LEN}-->" size="60" class="box60" style="<!--{if $arrErr.shop_name != ""}-->background-color: <!--{$smarty.const.ERR_COLOR}--><!--{/if}-->" /><span class="red"> ¡Ê¾å¸Â<!--{$smarty.const.STEXT_LEN}-->Ê¸»ú¡Ë</span></td>
+										<input type="text" name="shop_name" value="<!--{$arrForm.shop_name|escape}-->" maxlength="<!--{$smarty.const.STEXT_LEN}-->" size="60" class="box60" style="<!--{if $arrErr.shop_name != ""}-->background-color: <!--{$smarty.const.ERR_COLOR}--><!--{/if}-->" /><span class="red"> ï¼ˆä¸Šé™<!--{$smarty.const.STEXT_LEN}-->æ–‡å­—ï¼‰</span></td>
 									</tr>
 									<tr>
-										<td bgcolor="#f2f1ec" width="180" class="fs12n">Å¹Ì¾¡Ê¥«¥Ê¡Ë</td>
+										<td bgcolor="#f2f1ec" width="180" class="fs12n">åº—åï¼ˆã‚«ãƒŠï¼‰</td>
 										<td bgcolor="#ffffff" width="537" class="fs10n">
 										<span class="red12"><!--{$arrErr.shop_kana}--></span>
-										<input type="text" name="shop_kana" value="<!--{$arrForm.shop_kana|escape}-->" maxlength="<!--{$smarty.const.STEXT_LEN}-->" size="60" class="box60" style="<!--{if $arrErr.shop_kana != ""}-->background-color: <!--{$smarty.const.ERR_COLOR}--><!--{/if}-->" /><span class="red"> ¡Ê¾å¸Â<!--{$smarty.const.STEXT_LEN}-->Ê¸»ú¡Ë</span></td>
+										<input type="text" name="shop_kana" value="<!--{$arrForm.shop_kana|escape}-->" maxlength="<!--{$smarty.const.STEXT_LEN}-->" size="60" class="box60" style="<!--{if $arrErr.shop_kana != ""}-->background-color: <!--{$smarty.const.ERR_COLOR}--><!--{/if}-->" /><span class="red"> ï¼ˆä¸Šé™<!--{$smarty.const.STEXT_LEN}-->æ–‡å­—ï¼‰</span></td>
 									</tr>
 									<tr class="fs12n">
-										<td bgcolor="#f2f1ec" width="160">Í¹ÊØÈÖ¹æ<span class="red"> *</span></td>
+										<td bgcolor="#f2f1ec" width="160">éƒµä¾¿ç•ªå·<span class="red"> *</span></td>
 										<td bgcolor="#ffffff" width="537">
 										<span class="red12"><!--{$arrErr.zip01}--></span>
 										<span class="red12"><!--{$arrErr.zip02}--></span>
-										¢© <input type="text" name="zip01" value="<!--{$arrForm.zip01|escape}-->" maxlength="3" size="6" class="box6" style="<!--{if $arrErr.zip01 != ""}-->background-color: <!--{$smarty.const.ERR_COLOR}--><!--{/if}-->" /> - <input type="text" name="zip02" value="<!--{$arrForm.zip02|escape}-->" maxlength="4"  size="6" class="box6" style="<!--{if $arrErr.zip02 != ""}-->background-color: <!--{$smarty.const.ERR_COLOR}--><!--{/if}-->" />
-										<input type="button" name="address_input" value="½»½êÆşÎÏ" onclick="fnCallAddress('<!--{$smarty.const.URL_INPUT_ZIP}-->', 'zip01', 'zip02', 'pref', 'addr01');" />
+										ã€’ <input type="text" name="zip01" value="<!--{$arrForm.zip01|escape}-->" maxlength="3" size="6" class="box6" style="<!--{if $arrErr.zip01 != ""}-->background-color: <!--{$smarty.const.ERR_COLOR}--><!--{/if}-->" /> - <input type="text" name="zip02" value="<!--{$arrForm.zip02|escape}-->" maxlength="4"  size="6" class="box6" style="<!--{if $arrErr.zip02 != ""}-->background-color: <!--{$smarty.const.ERR_COLOR}--><!--{/if}-->" />
+										<input type="button" name="address_input" value="ä½æ‰€å…¥åŠ›" onclick="fnCallAddress('<!--{$smarty.const.URL_INPUT_ZIP}-->', 'zip01', 'zip02', 'pref', 'addr01');" />
 										</td>
 									</tr>
 									<tr>
-										<td bgcolor="#f2f1ec" width="180" class="fs12">SHOP½»½ê<span class="red"> *</span></td>
+										<td bgcolor="#f2f1ec" width="180" class="fs12">SHOPä½æ‰€<span class="red"> *</span></td>
 										<td bgcolor="#ffffff" width="537">
 										<table width="537" border="0" cellspacing="0" cellpadding="0" summary=" ">
 											<tr>
 												<td>
 													<span class="red12"><!--{$arrErr.pref}--></span>
 													<select name="pref" style="<!--{if $arrErr.pref != ""}-->background-color: <!--{$smarty.const.ERR_COLOR}--><!--{/if}-->" >							
-													<option value="" selected="selected">ÅÔÆ»ÉÜ¸©¤òÁªÂò</option>
+													<option value="" selected="selected">éƒ½é“åºœçœŒã‚’é¸æŠ</option>
 													<!--{html_options options=$arrPref selected=$arrForm.pref}-->
 													</select>
 												</td>
@@ -100,14 +100,14 @@
 											<tr class="fs10n">
 												<td>
 												<span class="red12"><!--{$arrErr.addr01}--></span>
-												<input type="text" name="addr01" value="<!--{$arrForm.addr01|escape}-->" maxlength="<!--{$smarty.const.STEXT_LEN}-->" size="60" class="box60" style="<!--{if $arrErr.addr01 != ""}-->background-color: <!--{$smarty.const.ERR_COLOR}--><!--{/if}-->" /><span class="red"> ¡Ê¾å¸Â<!--{$smarty.const.STEXT_LEN}-->Ê¸»ú¡Ë</span><br />
+												<input type="text" name="addr01" value="<!--{$arrForm.addr01|escape}-->" maxlength="<!--{$smarty.const.STEXT_LEN}-->" size="60" class="box60" style="<!--{if $arrErr.addr01 != ""}-->background-color: <!--{$smarty.const.ERR_COLOR}--><!--{/if}-->" /><span class="red"> ï¼ˆä¸Šé™<!--{$smarty.const.STEXT_LEN}-->æ–‡å­—ï¼‰</span><br />
 												<!--{$smarty.const.SAMPLE_ADDRESS1}--></td>
 											</tr>
 											<tr><td height="5"></td></tr>
 											<tr class="fs10n">
 												<td>
 												<span class="red12"><!--{$arrErr.addr02}--></span>
-												<input type="text" name="addr02" value="<!--{$arrForm.addr02|escape}-->"  maxlength="<!--{$smarty.const.STEXT_LEN}-->" size="60" class="box60" style="<!--{if $arrErr.addr02 != ""}-->background-color: <!--{$smarty.const.ERR_COLOR}--><!--{/if}-->" /><span class="red"> ¡Ê¾å¸Â<!--{$smarty.const.STEXT_LEN}-->Ê¸»ú¡Ë</span><br />
+												<input type="text" name="addr02" value="<!--{$arrForm.addr02|escape}-->"  maxlength="<!--{$smarty.const.STEXT_LEN}-->" size="60" class="box60" style="<!--{if $arrErr.addr02 != ""}-->background-color: <!--{$smarty.const.ERR_COLOR}--><!--{/if}-->" /><span class="red"> ï¼ˆä¸Šé™<!--{$smarty.const.STEXT_LEN}-->æ–‡å­—ï¼‰</span><br />
 												<!--{$smarty.const.SAMPLE_ADDRESS2}--></td>
 											</tr>
 										</table>
@@ -130,70 +130,70 @@
 										<input type="text" name="fax03" value="<!--{$arrForm.fax03}-->" maxlength="6" size="6" class="box6" style="<!--{if $arrErr.fax03 != ""}-->background-color: <!--{$smarty.const.ERR_COLOR}--><!--{/if}-->"/></td>
 									</tr>
 									<tr>
-										<td bgcolor="#f2f1ec" width="180" class="fs12n">Å¹ÊŞ±Ä¶È»ş´Ö</td>
+										<td bgcolor="#f2f1ec" width="180" class="fs12n">åº—èˆ—å–¶æ¥­æ™‚é–“</td>
 										<td bgcolor="#ffffff" width="537" class="fs10n">
 										<span class="red12"><!--{$arrErr.business_hour}--></span>
-										<input type="text" name="business_hour" value="<!--{$arrForm.business_hour|escape}-->" maxlength="<!--{$smarty.const.STEXT_LEN}-->" size="60" class="box60" style="<!--{if $arrErr.business_hour != ""}-->background-color: <!--{$smarty.const.ERR_COLOR}--><!--{/if}-->" /><span class="red"> ¡Ê¾å¸Â<!--{$smarty.const.STEXT_LEN}-->Ê¸»ú¡Ë</span></td>
+										<input type="text" name="business_hour" value="<!--{$arrForm.business_hour|escape}-->" maxlength="<!--{$smarty.const.STEXT_LEN}-->" size="60" class="box60" style="<!--{if $arrErr.business_hour != ""}-->background-color: <!--{$smarty.const.ERR_COLOR}--><!--{/if}-->" /><span class="red"> ï¼ˆä¸Šé™<!--{$smarty.const.STEXT_LEN}-->æ–‡å­—ï¼‰</span></td>
 									</tr>
 									<tr>
-										<td bgcolor="#f2f1ec" width="180" class="fs12n">¾¦ÉÊÃíÊ¸¼õÉÕ<br>¥á¡¼¥ë¥¢¥É¥ì¥¹<span class="red"> *</span></td>
+										<td bgcolor="#f2f1ec" width="180" class="fs12n">å•†å“æ³¨æ–‡å—ä»˜<br>ãƒ¡ãƒ¼ãƒ«ã‚¢ãƒ‰ãƒ¬ã‚¹<span class="red"> *</span></td>
 										<td bgcolor="#ffffff" width="537" class="fs10n">
 										<span class="red12"><!--{$arrErr.email01}--></span>
-										<input type="text" name="email01" value="<!--{$arrForm.email01|escape}-->" maxlength="<!--{$smarty.const.STEXT_LEN}-->" size="60" class="box60" style="<!--{if $arrErr.email01 != ""}-->background-color: <!--{$smarty.const.ERR_COLOR}--><!--{/if}-->" /><span class="red"> ¡Ê¾å¸Â<!--{$smarty.const.STEXT_LEN}-->Ê¸»ú¡Ë</span></td>
+										<input type="text" name="email01" value="<!--{$arrForm.email01|escape}-->" maxlength="<!--{$smarty.const.STEXT_LEN}-->" size="60" class="box60" style="<!--{if $arrErr.email01 != ""}-->background-color: <!--{$smarty.const.ERR_COLOR}--><!--{/if}-->" /><span class="red"> ï¼ˆä¸Šé™<!--{$smarty.const.STEXT_LEN}-->æ–‡å­—ï¼‰</span></td>
 									</tr>
 									<tr>
-										<td bgcolor="#f2f1ec" width="180" class="fs12n">Ìä¤¤¹ç¤ï¤»¼õÉÕ<br>¥á¡¼¥ë¥¢¥É¥ì¥¹<span class="red"> *</span></td>
+										<td bgcolor="#f2f1ec" width="180" class="fs12n">å•ã„åˆã‚ã›å—ä»˜<br>ãƒ¡ãƒ¼ãƒ«ã‚¢ãƒ‰ãƒ¬ã‚¹<span class="red"> *</span></td>
 										<td bgcolor="#ffffff" width="537" class="fs10n">
 										<span class="red12"><!--{$arrErr.email02}--></span>
-										<input type="text" name="email02" value="<!--{$arrForm.email02|escape}-->" maxlength="<!--{$smarty.const.STEXT_LEN}-->" size="60" class="box60" style="<!--{if $arrErr.email02 != ""}-->background-color: <!--{$smarty.const.ERR_COLOR}--><!--{/if}-->"/><span class="red"> ¡Ê¾å¸Â<!--{$smarty.const.STEXT_LEN}-->Ê¸»ú¡Ë</span></td>
+										<input type="text" name="email02" value="<!--{$arrForm.email02|escape}-->" maxlength="<!--{$smarty.const.STEXT_LEN}-->" size="60" class="box60" style="<!--{if $arrErr.email02 != ""}-->background-color: <!--{$smarty.const.ERR_COLOR}--><!--{/if}-->"/><span class="red"> ï¼ˆä¸Šé™<!--{$smarty.const.STEXT_LEN}-->æ–‡å­—ï¼‰</span></td>
 									</tr>
 									<tr>
-										<td bgcolor="#f2f1ec" width="180" class="fs12n">¥á¡¼¥ëÁ÷¿®¸µ<br>¥á¡¼¥ë¥¢¥É¥ì¥¹<span class="red"> *</span></td>
+										<td bgcolor="#f2f1ec" width="180" class="fs12n">ãƒ¡ãƒ¼ãƒ«é€ä¿¡å…ƒ<br>ãƒ¡ãƒ¼ãƒ«ã‚¢ãƒ‰ãƒ¬ã‚¹<span class="red"> *</span></td>
 										<td bgcolor="#ffffff" width="537" class="fs10n">
 										<span class="red12"><!--{$arrErr.email03}--></span>
-										<input type="text" name="email03" value="<!--{$arrForm.email03|escape}-->" maxlength="<!--{$smarty.const.STEXT_LEN}-->" size="60" class="box60" style="<!--{if $arrErr.email03 != ""}-->background-color: <!--{$smarty.const.ERR_COLOR}--><!--{/if}-->"/><span class="red"> ¡Ê¾å¸Â<!--{$smarty.const.STEXT_LEN}-->Ê¸»ú¡Ë</span></td>
+										<input type="text" name="email03" value="<!--{$arrForm.email03|escape}-->" maxlength="<!--{$smarty.const.STEXT_LEN}-->" size="60" class="box60" style="<!--{if $arrErr.email03 != ""}-->background-color: <!--{$smarty.const.ERR_COLOR}--><!--{/if}-->"/><span class="red"> ï¼ˆä¸Šé™<!--{$smarty.const.STEXT_LEN}-->æ–‡å­—ï¼‰</span></td>
 									</tr>
 									<tr>
-										<td bgcolor="#f2f1ec" width="180" class="fs12n">Á÷¿®¥¨¥é¡¼¼õÉÕ<br>¥á¡¼¥ë¥¢¥É¥ì¥¹<span class="red"> *</span></td>
+										<td bgcolor="#f2f1ec" width="180" class="fs12n">é€ä¿¡ã‚¨ãƒ©ãƒ¼å—ä»˜<br>ãƒ¡ãƒ¼ãƒ«ã‚¢ãƒ‰ãƒ¬ã‚¹<span class="red"> *</span></td>
 										<td bgcolor="#ffffff" width="537" class="fs10n">
 										<span class="red12"><!--{$arrErr.email04}--></span>
-										<input type="text" name="email04" value="<!--{$arrForm.email04|escape}-->" maxlength="<!--{$smarty.const.STEXT_LEN}-->" size="60" class="box60" style="<!--{if $arrErr.email04 != ""}-->background-color: <!--{$smarty.const.ERR_COLOR}--><!--{/if}-->"/><span class="red"> ¡Ê¾å¸Â<!--{$smarty.const.STEXT_LEN}-->Ê¸»ú¡Ë</span></td>
+										<input type="text" name="email04" value="<!--{$arrForm.email04|escape}-->" maxlength="<!--{$smarty.const.STEXT_LEN}-->" size="60" class="box60" style="<!--{if $arrErr.email04 != ""}-->background-color: <!--{$smarty.const.ERR_COLOR}--><!--{/if}-->"/><span class="red"> ï¼ˆä¸Šé™<!--{$smarty.const.STEXT_LEN}-->æ–‡å­—ï¼‰</span></td>
 									</tr>
 									<tr>
-										<td bgcolor="#f2f1ec" width="180" class="fs12n">¼è°·¾¦ÉÊ</td>
+										<td bgcolor="#f2f1ec" width="180" class="fs12n">å–æ‰±å•†å“</td>
 										<td bgcolor="#ffffff" width="537" class="fs10n">
 										<!--{assign var=key value="good_traded"}-->
 										<span class="red12"><!--{$arrErr[$key]}--></span>
-										<textarea name="<!--{$key}-->" maxlength="<!--{$smarty.const.LLTEXT_LEN}-->" cols="60" rows="8" class="area60" style="<!--{$arrErr[$key]|sfGetErrorColor}-->" ><!--{$arrForm[$key]|escape}--></textarea><span class="red"> ¡Ê¾å¸Â<!--{$smarty.const.LLTEXT_LEN}-->Ê¸»ú¡Ë</span>
+										<textarea name="<!--{$key}-->" maxlength="<!--{$smarty.const.LLTEXT_LEN}-->" cols="60" rows="8" class="area60" style="<!--{$arrErr[$key]|sfGetErrorColor}-->" ><!--{$arrForm[$key]|escape}--></textarea><span class="red"> ï¼ˆä¸Šé™<!--{$smarty.const.LLTEXT_LEN}-->æ–‡å­—ï¼‰</span>
 									</tr>
 									<tr>
-										<td bgcolor="#f2f1ec" width="180" class="fs12n">¥á¥Ã¥»¡¼¥¸</td>
+										<td bgcolor="#f2f1ec" width="180" class="fs12n">ãƒ¡ãƒƒã‚»ãƒ¼ã‚¸</td>
 										<td bgcolor="#ffffff" width="537" class="fs10n">
 										<!--{assign var=key value="message"}-->
 										<span class="red12"><!--{$arrErr[$key]}--></span>
-										<textarea name="<!--{$key}-->" maxlength="<!--{$smarty.const.LLTEXT_LEN}-->" cols="60" rows="8" class="area60" style="<!--{$arrErr[$key]|sfGetErrorColor}-->" ><!--{$arrForm[$key]|escape}--></textarea><span class="red"> ¡Ê¾å¸Â<!--{$smarty.const.LLTEXT_LEN}-->Ê¸»ú¡Ë</span>
+										<textarea name="<!--{$key}-->" maxlength="<!--{$smarty.const.LLTEXT_LEN}-->" cols="60" rows="8" class="area60" style="<!--{$arrErr[$key]|sfGetErrorColor}-->" ><!--{$arrForm[$key]|escape}--></textarea><span class="red"> ï¼ˆä¸Šé™<!--{$smarty.const.LLTEXT_LEN}-->æ–‡å­—ï¼‰</span>
 									</tr>
 									<tr class="fs12n">
-										<td bgcolor="#f2f1ec" colspan="2">¢§SHOPµ¡Ç½</td>
+										<td bgcolor="#f2f1ec" colspan="2">â–¼SHOPæ©Ÿèƒ½</td>
 									</tr>
 									<tr class="fs12n">
-										<td bgcolor="#f2f1ec" width="180">¾ÃÈñÀÇÎ¨<span class="red"> *</span></td>
+										<td bgcolor="#f2f1ec" width="180">æ¶ˆè²»ç¨ç‡<span class="red"> *</span></td>
 										<td bgcolor="#ffffff" width="537">
 										<span class="red12"><!--{$arrErr.tax}--></span>
-										<input type="text" name="tax" value="<!--{$arrForm.tax|escape}-->" maxlength="<!--{$smarty.const.PERCENTAGE_LEN}-->" size="6" class="box6" style="<!--{if $arrErr.tax != ""}-->background-color: <!--{$smarty.const.ERR_COLOR}--><!--{/if}-->" /> ¡ó</td>
+										<input type="text" name="tax" value="<!--{$arrForm.tax|escape}-->" maxlength="<!--{$smarty.const.PERCENTAGE_LEN}-->" size="6" class="box6" style="<!--{if $arrErr.tax != ""}-->background-color: <!--{$smarty.const.ERR_COLOR}--><!--{/if}-->" /> ï¼…</td>
 									</tr>
 									<tr class="fs12n">
-										<td bgcolor="#f2f1ec" width="180">²İÀÇµ¬Â§<span class="red"> *</span></td>
+										<td bgcolor="#f2f1ec" width="180">èª²ç¨è¦å‰‡<span class="red"> *</span></td>
 										<td bgcolor="#ffffff" width="537">
 										<span class="red12"><!--{$arrErr.tax_rule}--></span>
 										<!--{html_radios name="tax_rule" options=$arrTAXRULE selected=$arrForm.tax_rule}-->
 										</td>
 									</tr>
 									<tr class="fs12n">
-										<td bgcolor="#f2f1ec" width="180">Á÷ÎÁÌµÎÁ¾ò·ï</td>
+										<td bgcolor="#f2f1ec" width="180">é€æ–™ç„¡æ–™æ¡ä»¶</td>
 										<td bgcolor="#ffffff" width="537">
 										<span class="red12"><!--{$arrErr.free_rule}--></span>
-										<input type="text" name="free_rule" value="<!--{$arrForm.free_rule|escape}-->" maxlength="<!--{$smarty.const.PRICE_LEN}-->" size="6" class="box6" style="<!--{if $arrErr.free_rule != ""}-->background-color: <!--{$smarty.const.ERR_COLOR}--><!--{/if}-->" /> ±ß°Ê¾å¹ØÆş»şÌµÎÁ</td>
+										<input type="text" name="free_rule" value="<!--{$arrForm.free_rule|escape}-->" maxlength="<!--{$smarty.const.PRICE_LEN}-->" size="6" class="box6" style="<!--{if $arrErr.free_rule != ""}-->background-color: <!--{$smarty.const.ERR_COLOR}--><!--{/if}-->" /> å††ä»¥ä¸Šè³¼å…¥æ™‚ç„¡æ–™</td>
 									</tr>
 								</table>
 
@@ -208,7 +208,7 @@
 										<td bgcolor="#e9e7de" align="center">
 										<table border="0" cellspacing="0" cellpadding="0" summary=" ">
 											<tr>
-												<td><input type="image" onMouseover="chgImgImageSubmit('<!--{$smarty.const.URL_DIR}-->img/contents/btn_regist_on.jpg',this)" onMouseout="chgImgImageSubmit('<!--{$smarty.const.URL_DIR}-->img/contents/btn_regist.jpg',this)" src="<!--{$smarty.const.URL_DIR}-->img/contents/btn_regist.jpg" width="123" height="24" alt="¤³¤ÎÆâÍÆ¤ÇÅĞÏ¿¤¹¤ë" border="0" name="subm" ></td>
+												<td><input type="image" onMouseover="chgImgImageSubmit('<!--{$smarty.const.URL_DIR}-->img/contents/btn_regist_on.jpg',this)" onMouseout="chgImgImageSubmit('<!--{$smarty.const.URL_DIR}-->img/contents/btn_regist.jpg',this)" src="<!--{$smarty.const.URL_DIR}-->img/contents/btn_regist.jpg" width="123" height="24" alt="ã“ã®å†…å®¹ã§ç™»éŒ²ã™ã‚‹" border="0" name="subm" ></td>
 											</tr>
 										</table>
 										</td>
@@ -228,11 +228,11 @@
 						</table>
 					</td>
 				</tr>
-				<!--¥á¥¤¥ó¥¨¥ê¥¢-->
+				<!--ãƒ¡ã‚¤ãƒ³ã‚¨ãƒªã‚¢-->
 			</table>
-			<!--¢¥ÅĞÏ¿¥Æ¡¼¥Ö¥ë¤³¤³¤Ş¤Ç-->
+			<!--â–²ç™»éŒ²ãƒ†ãƒ¼ãƒ–ãƒ«ã“ã“ã¾ã§-->
 		</td>
 	</tr>
 </form>
 </table>
-<!--¡ú¡ú¥á¥¤¥ó¥³¥ó¥Æ¥ó¥Ä¡ú¡ú-->
+<!--â˜…â˜…ãƒ¡ã‚¤ãƒ³ã‚³ãƒ³ãƒ†ãƒ³ãƒ„â˜…â˜…-->

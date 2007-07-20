@@ -12,7 +12,7 @@ class LC_Page {
 		$this->tpl_subnavi = 'order/subnavi.tpl';
 		$this->tpl_mainno = 'order';		
 		$this->tpl_subno = 'index';
-		$this->tpl_subtitle = '¼õÃí´ÉÍý';
+		$this->tpl_subtitle = 'å—æ³¨ç®¡ç†';
 		global $arrMAILTEMPLATE;
 		$this->arrMAILTEMPLATE = $arrMAILTEMPLATE;
 	}
@@ -23,7 +23,7 @@ $objView = new SC_AdminView();
 $objSess = new SC_Session();
 sfIsSuccess($objSess);
 
-// ¸¡º÷¥Ñ¥é¥á¡¼¥¿¤Î°ú¤­·Ñ¤®
+// æ¤œç´¢ãƒ‘ãƒ©ãƒ¡ãƒ¼ã‚¿ã®å¼•ãç¶™ãŽ
 foreach ($_POST as $key => $val) {
 	if (ereg("^search_", $key)) {
 		$objPage->arrSearchHidden[$key] = $val;	
@@ -32,45 +32,45 @@ foreach ($_POST as $key => $val) {
 
 $objPage->tpl_order_id = $_POST['order_id'];
 
-// ¥Ñ¥é¥á¡¼¥¿´ÉÍý¥¯¥é¥¹
+// ãƒ‘ãƒ©ãƒ¡ãƒ¼ã‚¿ç®¡ç†ã‚¯ãƒ©ã‚¹
 $objFormParam = new SC_FormParam();
-// ¥Ñ¥é¥á¡¼¥¿¾ðÊó¤Î½é´ü²½
+// ãƒ‘ãƒ©ãƒ¡ãƒ¼ã‚¿æƒ…å ±ã®åˆæœŸåŒ–
 lfInitParam();
 
 switch($_POST['mode']) {
 case 'pre_edit':
 	break;
 case 'return':
-	// POSTÃÍ¤Î¼èÆÀ
+	// POSTå€¤ã®å–å¾—
 	$objFormParam->setParam($_POST);
 	break;
 case 'send':
-	// POSTÃÍ¤Î¼èÆÀ
+	// POSTå€¤ã®å–å¾—
 	$objFormParam->setParam($_POST);
-	// ÆþÎÏÃÍ¤ÎÊÑ´¹
+	// å…¥åŠ›å€¤ã®å¤‰æ›
 	$objFormParam->convParam();
 	$objPage->arrErr = $objFormParam->checkerror();
-	// ¥á¡¼¥ë¤ÎÁ÷¿®
+	// ãƒ¡ãƒ¼ãƒ«ã®é€ä¿¡
 	if (count($objPage->arrErr) == 0) {
-		// ÃíÊ¸¼õÉÕ¥á¡¼¥ë
+		// æ³¨æ–‡å—ä»˜ãƒ¡ãƒ¼ãƒ«
 		sfSendOrderMail($_POST['order_id'], $_POST['template_id'], $_POST['subject'], $_POST['header'], $_POST['footer']);
 	}
 	header("Location: " . URL_SEARCH_ORDER);
 	exit;
 	break;	
 case 'confirm':
-	// POSTÃÍ¤Î¼èÆÀ
+	// POSTå€¤ã®å–å¾—
 	$objFormParam->setParam($_POST);
-	// ÆþÎÏÃÍ¤ÎÊÑ´¹
+	// å…¥åŠ›å€¤ã®å¤‰æ›
 	$objFormParam->convParam();
-	// ÆþÎÏÃÍ¤Î°ú¤­·Ñ¤®
+	// å…¥åŠ›å€¤ã®å¼•ãç¶™ãŽ
 	$objPage->arrHidden = $objFormParam->getHashArray();
 	$objPage->arrErr = $objFormParam->checkerror();
-	// ¥á¡¼¥ë¤ÎÁ÷¿®
+	// ãƒ¡ãƒ¼ãƒ«ã®é€ä¿¡
 	if (count($objPage->arrErr) == 0) {
-		// ÃíÊ¸¼õÉÕ¥á¡¼¥ë(Á÷¿®¤Ê¤·)
+		// æ³¨æ–‡å—ä»˜ãƒ¡ãƒ¼ãƒ«(é€ä¿¡ãªã—)
 		$objSendMail = sfSendOrderMail($_POST['order_id'], $_POST['template_id'], $_POST['subject'], $_POST['header'], $_POST['footer'], false);
-		// ³ÎÇ§¥Ú¡¼¥¸¤ÎÉ½¼¨
+		// ç¢ºèªãƒšãƒ¼ã‚¸ã®è¡¨ç¤º
 		$objPage->tpl_subject = $objSendMail->subject;
 		$objPage->tpl_body = mb_convert_encoding( $objSendMail->body, "EUC-JP", "auto" );		
 		$objPage->tpl_to = $objSendMail->tpl_to;
@@ -83,7 +83,7 @@ case 'confirm':
 	}
 	break;
 case 'change':
-	// POSTÃÍ¤Î¼èÆÀ
+	// POSTå€¤ã®å–å¾—
 	$objFormParam->setValue('template_id', $_POST['template_id']);
 	if(sfIsInt($_POST['template_id'])) {
 		$objQuery = new SC_Query();
@@ -107,11 +107,11 @@ $objPage->arrForm = $objFormParam->getFormParamList();
 $objView->assignobj($objPage);
 $objView->display(MAIN_FRAME);
 //-----------------------------------------------------------------------------------------------------------------------------------
-/* ¥Ñ¥é¥á¡¼¥¿¾ðÊó¤Î½é´ü²½ */
+/* ãƒ‘ãƒ©ãƒ¡ãƒ¼ã‚¿æƒ…å ±ã®åˆæœŸåŒ– */
 function lfInitParam() {
 	global $objFormParam;
-	$objFormParam->addParam("¥Æ¥ó¥×¥ì¡¼¥È", "template_id", INT_LEN, "n", array("EXIST_CHECK", "MAX_LENGTH_CHECK", "NUM_CHECK"));
-	$objFormParam->addParam("¥á¡¼¥ë¥¿¥¤¥È¥ë", "subject", STEXT_LEN, "KVa",  array("EXIST_CHECK", "MAX_LENGTH_CHECK", "SPTAB_CHECK"));
-	$objFormParam->addParam("¥Ø¥Ã¥À¡¼", "header", LTEXT_LEN, "KVa", array("EXIST_CHECK", "MAX_LENGTH_CHECK", "SPTAB_CHECK"));
-	$objFormParam->addParam("¥Õ¥Ã¥¿¡¼", "footer", LTEXT_LEN, "KVa", array("EXIST_CHECK", "MAX_LENGTH_CHECK", "SPTAB_CHECK"));
+	$objFormParam->addParam("ãƒ†ãƒ³ãƒ—ãƒ¬ãƒ¼ãƒˆ", "template_id", INT_LEN, "n", array("EXIST_CHECK", "MAX_LENGTH_CHECK", "NUM_CHECK"));
+	$objFormParam->addParam("ãƒ¡ãƒ¼ãƒ«ã‚¿ã‚¤ãƒˆãƒ«", "subject", STEXT_LEN, "KVa",  array("EXIST_CHECK", "MAX_LENGTH_CHECK", "SPTAB_CHECK"));
+	$objFormParam->addParam("ãƒ˜ãƒƒãƒ€ãƒ¼", "header", LTEXT_LEN, "KVa", array("EXIST_CHECK", "MAX_LENGTH_CHECK", "SPTAB_CHECK"));
+	$objFormParam->addParam("ãƒ•ãƒƒã‚¿ãƒ¼", "footer", LTEXT_LEN, "KVa", array("EXIST_CHECK", "MAX_LENGTH_CHECK", "SPTAB_CHECK"));
 }

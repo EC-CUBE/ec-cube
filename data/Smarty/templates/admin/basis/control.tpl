@@ -5,19 +5,19 @@
  * http://www.lockon.co.jp/
  */
 *}-->
-<!--�����ᥤ�󥳥�ƥ�ġ���-->
+<!--★★メインコンテンツ★★-->
 <table width="878" border="0" cellspacing="0" cellpadding="0" summary=" ">
 
 	<tr valign="top">
 		<td background="<!--{$smarty.const.URL_DIR}-->img/contents/navi_bg.gif" height="402">
-			<!--��SUB NAVI-->
+			<!--▼SUB NAVI-->
 			<!--{include file=$tpl_subnavi}-->
-			<!--��SUB NAVI-->
+			<!--▲SUB NAVI-->
 		</td>
 		<td class="mainbg">
-			<!--����Ͽ�ơ��֥뤳������-->
+			<!--▼登録テーブルここから-->
 			<table width="737" border="0" cellspacing="0" cellpadding="0" summary=" ">
-				<!--�ᥤ�󥨥ꥢ-->
+				<!--メインエリア-->
 				<tr>
 					<td align="center">
 						<table width="706" border="0" cellspacing="0" cellpadding="0" summary=" ">
@@ -34,7 +34,7 @@
 									</tr>
 									<tr>
 										<td background="<!--{$smarty.const.URL_DIR}-->img/contents/contents_title_left_bg.gif"><img src="<!--{$smarty.const.URL_DIR}-->img/contents/contents_title_left.gif" width="22" height="12" alt=""></td>
-										<td bgcolor="#636469" width="638" class="fs14n"><span class="white"><!--����ƥ�ĥ����ȥ�-->�����ȴ�������</span></td>
+										<td bgcolor="#636469" width="638" class="fs14n"><span class="white"><!--コンテンツタイトル-->サイト管理設定</span></td>
 										<td background="<!--{$smarty.const.URL_DIR}-->img/contents/contents_title_right_bg.gif"><img src="<!--{$smarty.const.URL_DIR}-->img/common/_.gif" width="18" height="1" alt=""></td>
 									</tr>
 									<tr>
@@ -47,9 +47,9 @@
 
 								<table width="678" border="0" cellspacing="1" cellpadding="8" summary=" ">
 									<tr align="center" bgcolor="#f2f1ec" class="fs12n">
-										<td width="396">���������ȥ�/��������</td>
-										<td width="128">�������</td>
-										<td width="44">�Խ�</td>
+										<td width="396">管理タイトル/管理内容</td>
+										<td width="128">選択項目</td>
+										<td width="44">編集</td>
 									</tr>
 									<!--{section name=cnt loop=$arrControlList}-->
 									<tr bgcolor="#ffffff" class="fs12n">
@@ -63,7 +63,7 @@
 										<input type="hidden" name="mode" value="edit">
 										<input type="hidden" name="control_id" value="<!--{$arrControlList[cnt].control_id}-->">
 										<td align="center">
-											<input type="submit" value="�Խ�" name="subm">
+											<input type="submit" value="編集" name="subm">
 										</td>
 										</form>
 									</tr>
@@ -80,11 +80,11 @@
 						</table>
 					</td>
 				</tr>
-				<!--�ᥤ�󥨥ꥢ-->
+				<!--メインエリア-->
 			</table>
-			<!--����Ͽ�ơ��֥뤳���ޤ�-->
+			<!--▲登録テーブルここまで-->
 		</td>
 	</tr>
 
 </table>
-<!--�����ᥤ�󥳥�ƥ�ġ���-->
+<!--★★メインコンテンツ★★-->

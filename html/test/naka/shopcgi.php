@@ -5,21 +5,21 @@ require_once(DATA_PATH . "module/Request.php");
 
 $entry_url = "http://mod-i.ccsware.net/ohayou/EntryTran.php";
 $exec_url = "https://mod-i.ccsware.net/ohayou/ExecTran.php";
-// ¼õÃíÈÖ¹æ¤Î¼èÆÀ
+// å—æ³¨ç•ªå·ã®å–å¾—
 $order_id = sfGetUniqRandomId();
 
-// Å¹ÊÞ¾ðÊó¤ÎÁ÷¿®
+// åº—èˆ—æƒ…å ±ã®é€ä¿¡
 $arrData = array(
-	'OrderId' => $order_id,		// Å¹ÊÞ¤´¤È¤Ë°ì°Õ¤ÊÃíÊ¸ID¤òÁ÷¿®¤¹¤ë¡£
-	'TdTenantName' => '',		// 3DÇ§¾Ú»þÉ½¼¨ÍÑÅ¹ÊÞÌ¾
-	'TdFlag' => '',				// 3D¥Õ¥é¥°
-	'ShopId' => 'test000003087',// ¥·¥ç¥Ã¥×ID
-	'ShopPass' => 'lockon',		// ¥·¥ç¥Ã¥×¥Ñ¥¹¥ï¡¼¥É
-	'Currency' => 'JPN',		// ÄÌ²ß¥³¡¼¥É
-	'Amount' => '1000',			// ¶â³Û
-	'Tax' => '50',				// ¾ÃÈñÀÇ
-	'JobCd' => 'CHECK',			// ½èÍý¶èÊ¬
-	'TenantNo' => '111111111',	// cgi-4¤ÇºîÀ®¤·¤¿Å¹ÊÞID¤òÁ÷¿®¤¹¤ë¡£
+	'OrderId' => $order_id,		// åº—èˆ—ã”ã¨ã«ä¸€æ„ãªæ³¨æ–‡IDã‚’é€ä¿¡ã™ã‚‹ã€‚
+	'TdTenantName' => '',		// 3Dèªè¨¼æ™‚è¡¨ç¤ºç”¨åº—èˆ—å
+	'TdFlag' => '',				// 3Dãƒ•ãƒ©ã‚°
+	'ShopId' => 'test000003087',// ã‚·ãƒ§ãƒƒãƒ—ID
+	'ShopPass' => 'lockon',		// ã‚·ãƒ§ãƒƒãƒ—ãƒ‘ã‚¹ãƒ¯ãƒ¼ãƒ‰
+	'Currency' => 'JPN',		// é€šè²¨ã‚³ãƒ¼ãƒ‰
+	'Amount' => '1000',			// é‡‘é¡
+	'Tax' => '50',				// æ¶ˆè²»ç¨Ž
+	'JobCd' => 'CHECK',			// å‡¦ç†åŒºåˆ†
+	'TenantNo' => '111111111',	// cgi-4ã§ä½œæˆã—ãŸåº—èˆ—IDã‚’é€ä¿¡ã™ã‚‹ã€‚
 );
 
 $req = new HTTP_Request($entry_url);
@@ -37,24 +37,24 @@ $arrRet = lfGetPostArray($response);
 
 sfPrintR($arrRet);
 
-// ·èºÑ¾ðÊó¤ÎÁ÷¿®
+// æ±ºæ¸ˆæƒ…å ±ã®é€ä¿¡
 $arrData = array(
 	'AccessId' => $arrRet['ACCESS_ID'],
 	'AccessPass' => $arrRet['ACCESS_PASS'],
 	'OrderId' => $order_id,
 	'RetURL' => 'http://test.ec-cube.net/ec-cube/test/naka/recv.php',
-	// ¥×¥í¥Ñ¡¼¥«¡¼¥É¤ò°·¤ï¤Ê¤¤¾ì¹ç¤ÏVISA¸ÇÄê¤ÇOK
+	// ãƒ—ãƒ­ãƒ‘ãƒ¼ã‚«ãƒ¼ãƒ‰ã‚’æ‰±ã‚ãªã„å ´åˆã¯VISAå›ºå®šã§OK
 	'CardType' => 'VISA, 11111, 111111111111111111111111111111111111, 1111111111',
-	// »ÙÊ§¤¤ÊýË¡
+	// æ”¯æ‰•ã„æ–¹æ³•
 	/*
-		1:°ì³ç
-		2:Ê¬³ä
-		3:¥Ü¡¼¥Ê¥¹°ì³ç
-		4:¥Ü¡¼¥Ê¥¹Ê¬³ä
-		5:¥ê¥ÜÊ§¤¤
+		1:ä¸€æ‹¬
+		2:åˆ†å‰²
+		3:ãƒœãƒ¼ãƒŠã‚¹ä¸€æ‹¬
+		4:ãƒœãƒ¼ãƒŠã‚¹åˆ†å‰²
+		5:ãƒªãƒœæ‰•ã„
 	 */
 	'Method' => '2',
-	// »ÙÊ§²ó¿ô
+	// æ”¯æ‰•å›žæ•°
 	'PayTimes' => '4',
 	'CardNo1' => '4444',
 	'CardNo2' => '4444',
@@ -62,12 +62,12 @@ $arrData = array(
 	'CardNo4' => '5780',
     'ExpireMM' => '06',
     'ExpireYY' => '07',
-	// ²ÃÌÁÅ¹¼«Í³¹àÌÜÊÖµÑ¥Õ¥é¥°
+	// åŠ ç›Ÿåº—è‡ªç”±é …ç›®è¿”å´ãƒ•ãƒ©ã‚°
     'ClientFieldFlag' => '1',
     'ClientField1' => 'f1',
     'ClientField2' => 'f2',
     'ClientField3' => 'f3',
-	// ¥ê¥À¥¤¥ì¥¯¥È¥Ú¡¼¥¸¤Ç¤Î±þÅú¤ò¼õ¤±¼è¤é¤Ê¤¤
+	// ãƒªãƒ€ã‚¤ãƒ¬ã‚¯ãƒˆãƒšãƒ¼ã‚¸ã§ã®å¿œç­”ã‚’å—ã‘å–ã‚‰ãªã„
 	'ModiFlag' => '1',	
 );
 

@@ -6,7 +6,7 @@
  */
 require_once("../../require.php");
 
-//---- ¥Ú¡¼¥¸É½¼¨¥¯¥é¥¹
+//---- ãƒšãƒ¼ã‚¸è¡¨ç¤ºã‚¯ãƒ©ã‚¹
 class LC_Page {
 	
 	function LC_Page() {
@@ -19,19 +19,19 @@ $objView = new SC_SiteView();
 $objQuery = new SC_Query();
 $objCampaignSess = new SC_CampaignSession();
 
-// ¥­¥ã¥ó¥Ú¡¼¥ó¥Ú¡¼¥¸¤«¤é¤ÎÁ«°Ü¤ÇÌµ¤¤¾ì¹ç¤ÏTOP¥Ú¡¼¥¸¤Ø
+// ã‚­ãƒ£ãƒ³ãƒšãƒ¼ãƒ³ãƒšãƒ¼ã‚¸ã‹ã‚‰ã®é·ç§»ã§ç„¡ã„å ´åˆã¯TOPãƒšãƒ¼ã‚¸ã¸
 if(!$objCampaignSess->getIsCampaign()) {
 	header("location: ". URL_DIR);
 }
 
-// ÆþÎÏ¾ðÊó¤òÅÏ¤¹
+// å…¥åŠ›æƒ…å ±ã‚’æ¸¡ã™
 $objPage->arrForm = $_POST;
 $objPage->campaign_name = $objQuery->get("dtb_campaign", "campaign_name", "campaign_id = ?", array($objCampaignSess->getCampaignId()));
 $site_frame = CAMPAIGN_TEMPLATE_PATH . $objCampaignSess->getCampaignDir()  . "/active/site_frame.tpl";
 
-//----¡¡¥Ú¡¼¥¸É½¼¨
+//----ã€€ãƒšãƒ¼ã‚¸è¡¨ç¤º
 $objView->assignobj($objPage);
 $objView->display($site_frame);
-// ¥»¥Ã¥·¥ç¥ó¤Î³«Êü
+// ã‚»ãƒƒã‚·ãƒ§ãƒ³ã®é–‹æ”¾
 $objCampaignSess->delCampaign();
 ?>

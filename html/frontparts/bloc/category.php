@@ -5,57 +5,57 @@
  * http://www.lockon.co.jp/
  */
 class LC_CatPage {
-	function LC_CatPage() {
-		/** É¬¤ºÊÑ¹¹¤¹¤ë **/
-		$this->tpl_mainpage = BLOC_PATH . 'category.tpl';	// ¥á¥¤¥ó
-	}
+    function LC_CatPage() {
+        /** å¿…ãšå¤‰æ›´ã™ã‚‹ **/
+        $this->tpl_mainpage = BLOC_PATH . 'category.tpl';	// ãƒ¡ã‚¤ãƒ³
+    }
 }
 
 $objSubPage = new LC_CatPage();
 $objSubView = new SC_SiteView();
 
-// ÁªÂòÃæ¤Î¥«¥Æ¥´¥êID¤òÈ½Äê¤¹¤ë
-$category_id = sfGetCategoryId($_GET['product_id'], $_GET['category_id']);
+// é¸æŠžä¸­ã®ã‚«ãƒ†ã‚´ãƒªIDã‚’åˆ¤å®šã™ã‚‹
+$category_id = SC_Utils::sfGetCategoryId($_GET['product_id'], $_GET['category_id']);
 
-// ÁªÂòÃæ¤Î¥«¥Æ¥´¥êID
+// é¸æŠžä¸­ã®ã‚«ãƒ†ã‚´ãƒªID
 $objSubPage->tpl_category_id = $category_id;
 $objSubPage = lfGetCatTree($category_id, true, $objSubPage);
 
 $objSubView->assignobj($objSubPage);
 $objSubView->display($objSubPage->tpl_mainpage);
 //-----------------------------------------------------------------------------------------------------------------------------------
-// ¥«¥Æ¥´¥ê¥Ä¥ê¡¼¤Î¼èÆÀ
+// ã‚«ãƒ†ã‚´ãƒªãƒ„ãƒªãƒ¼ã®å–å¾—
 function lfGetCatTree($parent_category_id, $count_check = false, $objSubPage) {
-	$objQuery = new SC_Query();
-	$col = "*";
-	$from = "dtb_category left join dtb_category_total_count using (category_id)";
-	// ÅÐÏ¿¾¦ÉÊ¿ô¤Î¥Á¥§¥Ã¥¯
-	if($count_check) {
-		$where = "del_flg = 0 AND product_count > 0";
-	} else {
-		$where = "del_flg = 0";
-	}
-	$objQuery->setoption("ORDER BY rank DESC");
-	$arrRet = $objQuery->select($col, $from, $where);
-	
-	$arrParentID = sfGetParents($objQuery, 'dtb_category', 'parent_category_id', 'category_id', $parent_category_id);
-	$arrBrothersID = sfGetBrothersArray($arrRet, 'parent_category_id', 'category_id', $arrParentID);
-	$arrChildrenID = sfGetUnderChildrenArray($arrRet, 'parent_category_id', 'category_id', $parent_category_id);
-	
-	$objSubPage->root_parent_id = $arrParentID[0];
-	
-	$arrDispID = array_merge($arrBrothersID, $arrChildrenID);
-	
-	foreach($arrRet as $key => $array) {
-		foreach($arrDispID as $val) {
-			if($array['category_id'] == $val) {
-				$arrRet[$key]['display'] = 1;
-				break;
-			}
-		}
-	}
-	
-	$objSubPage->arrTree = $arrRet;
-	return $objSubPage;
+    $objQuery = new SC_Query();
+    $col = "*";
+    $from = "dtb_category left join dtb_category_total_count using (category_id)";
+    // ç™»éŒ²å•†å“æ•°ã®ãƒã‚§ãƒƒã‚¯
+    if($count_check) {
+        $where = "del_flg = 0 AND product_count > 0";
+    } else {
+        $where = "del_flg = 0";
+    }
+    $objQuery->setoption("ORDER BY rank DESC");
+    $arrRet = $objQuery->select($col, $from, $where);
+
+    $arrParentID = SC_Utils::sfGetParents($objQuery, 'dtb_category', 'parent_category_id', 'category_id', $parent_category_id);
+    $arrBrothersID = SC_Utils::sfGetBrothersArray($arrRet, 'parent_category_id', 'category_id', $arrParentID);
+    $arrChildrenID = SC_Utils::sfGetUnderChildrenArray($arrRet, 'parent_category_id', 'category_id', $parent_category_id);
+
+    $objSubPage->root_parent_id = $arrParentID[0];
+
+    $arrDispID = array_merge($arrBrothersID, $arrChildrenID);
+
+    foreach($arrRet as $key => $array) {
+        foreach($arrDispID as $val) {
+            if($array['category_id'] == $val) {
+                $arrRet[$key]['display'] = 1;
+                break;
+            }
+        }
+    }
+
+    $objSubPage->arrTree = $arrRet;
+    return $objSubPage;
 }
 ?>

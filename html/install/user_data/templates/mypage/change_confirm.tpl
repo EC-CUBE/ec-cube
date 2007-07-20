@@ -3,14 +3,14 @@
  *
  * http://www.lockon.co.jp/
  *}-->
-<!--¢§CONTENTS-->
+<!--â–¼CONTENTS-->
 <table width="" border="0" cellspacing="0" cellpadding="0" summary=" ">
 	<tr>
 		<td align="center" bgcolor="#ffffff">
-		<!--¢§MAIN ONTENTS-->
+		<!--â–¼MAIN ONTENTS-->
 		<table width="100%" border="0" cellspacing="0" cellpadding="0" summary=" ">
 			<tr>
-				<td><img src="<!--{$smarty.const.URL_DIR}-->img/mypage/title.jpg" width="700" height="40" alt="MY¥Ú¡¼¥¸"></td>
+				<td><img src="<!--{$smarty.const.URL_DIR}-->img/mypage/title.jpg" width="700" height="40" alt="MYãƒšãƒ¼ã‚¸"></td>
 			</tr>
 			<tr><td height="15"></td></tr>
 		</table>
@@ -28,82 +28,82 @@
 				<!--{if $key ne "mode" && $key ne "subm"}--><input type="hidden" name="<!--{$key|escape}-->" value="<!--{$item|escape}-->"><!--{/if}-->
 				<!--{/foreach}-->
 					<tr>
-						<td><!--¡ú¥¿¥¤¥È¥ë--><img src="<!--{$smarty.const.URL_DIR}-->img/mypage/subtitle02.gif" width="515" height="32" alt="²ñ°÷ÅĞÏ¿ÆâÍÆÊÑ¹¹"></td>
+						<td><!--â˜…ã‚¿ã‚¤ãƒˆãƒ«--><img src="<!--{$smarty.const.URL_DIR}-->img/mypage/subtitle02.gif" width="515" height="32" alt="ä¼šå“¡ç™»éŒ²å†…å®¹å¤‰æ›´"></td>
 					</tr>
 					<tr><td height="15"></td></tr>
 					<tr>
-						<td class="fs12">²¼µ­¤ÎÆâÍÆ¤ÇÁ÷¿®¤·¤Æ¤â¤è¤í¤·¤¤¤Ç¤·¤ç¤¦¤«¡©<br>
-						¤è¤í¤·¤±¤ì¤Ğ¡¢°ìÈÖ²¼¤Î¡Ö²ñ°÷ÅĞÏ¿´°Î»¤Ø¡×¥Ü¥¿¥ó¤ò¥¯¥ê¥Ã¥¯¤·¤Æ¤¯¤À¤µ¤¤¡£</td>
+						<td class="fs12">ä¸‹è¨˜ã®å†…å®¹ã§é€ä¿¡ã—ã¦ã‚‚ã‚ˆã‚ã—ã„ã§ã—ã‚‡ã†ã‹ï¼Ÿ<br>
+						ã‚ˆã‚ã—ã‘ã‚Œã°ã€ä¸€ç•ªä¸‹ã®ã€Œä¼šå“¡ç™»éŒ²å®Œäº†ã¸ã€ãƒœã‚¿ãƒ³ã‚’ã‚¯ãƒªãƒƒã‚¯ã—ã¦ãã ã•ã„ã€‚</td>
 					</tr>
 					<tr><td height="10"></td></tr>
 					<tr>
 						<td bgcolor="#cccccc" align="center">
-						<!--ÆşÎÏ¥Õ¥©¡¼¥à¤³¤³¤«¤é-->
+						<!--å…¥åŠ›ãƒ•ã‚©ãƒ¼ãƒ ã“ã“ã‹ã‚‰-->
 						<table width="515" border="0" cellspacing="1" cellpadding="10" summary=" ">
 							<tr>
-								<td width="122" bgcolor="#f0f0f0" class="fs12n">¤ªÌ¾Á°<span class="red">¢¨</span></td>
-								<td width="350" bgcolor="#ffffff" class="fs12n"><!--{$arrForm.name01|escape}-->¡¡<!--{$arrForm.name02|escape}--></td>
+								<td width="122" bgcolor="#f0f0f0" class="fs12n">ãŠåå‰<span class="red">â€»</span></td>
+								<td width="350" bgcolor="#ffffff" class="fs12n"><!--{$arrForm.name01|escape}-->ã€€<!--{$arrForm.name02|escape}--></td>
 							</tr>
 							<tr>
-								<td bgcolor="#f0f0f0" class="fs12n">¤ªÌ¾Á°¡Ê¥Õ¥ê¥¬¥Ê¡Ë<span class="red">¢¨</span></td>
-								<td bgcolor="#ffffff" class="fs12n"><!--{$arrForm.kana01|escape}-->¡¡<!--{$arrForm.kana02|escape}--></td>
+								<td bgcolor="#f0f0f0" class="fs12n">ãŠåå‰ï¼ˆãƒ•ãƒªã‚¬ãƒŠï¼‰<span class="red">â€»</span></td>
+								<td bgcolor="#ffffff" class="fs12n"><!--{$arrForm.kana01|escape}-->ã€€<!--{$arrForm.kana02|escape}--></td>
 							</tr>
 							<tr>
-								<td bgcolor="#f0f0f0" class="fs12n">Í¹ÊØÈÖ¹æ<span class="red">¢¨</span></td>
-								<td bgcolor="#ffffff" class="fs12n">¢©<!--{$arrForm.zip01}-->-<!--{$arrForm.zip02}--></td>
+								<td bgcolor="#f0f0f0" class="fs12n">éƒµä¾¿ç•ªå·<span class="red">â€»</span></td>
+								<td bgcolor="#ffffff" class="fs12n">ã€’<!--{$arrForm.zip01}-->-<!--{$arrForm.zip02}--></td>
 							</tr>
 							<tr>
-								<td bgcolor="#f0f0f0" class="fs12">½»½ê<span class="red">¢¨</span></td>
+								<td bgcolor="#f0f0f0" class="fs12">ä½æ‰€<span class="red">â€»</span></td>
 								<td bgcolor="#ffffff" class="fs12"><!--{$arrPref[$arrForm.pref]}--><!--{$arrForm.addr01|escape}--><!--{$arrForm.addr02|escape}--></td>
 							</tr>
 							<tr>
-								<td bgcolor="#f0f0f0" class="fs12n">ÅÅÏÃÈÖ¹æ<span class="red">¢¨</span></td>
+								<td bgcolor="#f0f0f0" class="fs12n">é›»è©±ç•ªå·<span class="red">â€»</span></td>
 								<td bgcolor="#ffffff" class="fs12n"><!--{$arrForm.tel01|escape}-->-<!--{$arrForm.tel02}-->-<!--{$arrForm.tel03}--></td>
 							</tr>
 							<tr>
 								<td bgcolor="#f0f0f0" class="fs12n">FAX</td>
-								<td bgcolor="#ffffff" class="fs12n"><!--{if strlen($arrForm.fax01) > 0}--><!--{$arrForm.fax01}-->-<!--{$arrForm.fax02}-->-<!--{$arrForm.fax03}--><!--{else}-->Ì¤ÅĞÏ¿<!--{/if}--></td>
+								<td bgcolor="#ffffff" class="fs12n"><!--{if strlen($arrForm.fax01) > 0}--><!--{$arrForm.fax01}-->-<!--{$arrForm.fax02}-->-<!--{$arrForm.fax03}--><!--{else}-->æœªç™»éŒ²<!--{/if}--></td>
 							</tr>
 							<tr>
-								<td bgcolor="#f0f0f0" class="fs12">¥á¡¼¥ë¥¢¥É¥ì¥¹<span class="red">¢¨</span></td>
+								<td bgcolor="#f0f0f0" class="fs12">ãƒ¡ãƒ¼ãƒ«ã‚¢ãƒ‰ãƒ¬ã‚¹<span class="red">â€»</span></td>
 								<td bgcolor="#ffffff" class="fs12"><a href="<!--{$arrForm.email|escape}-->"><!--{$arrForm.email|escape}--></a></td>
 							</tr>
 							<tr>
-								<td bgcolor="#f0f0f0" class="fs12n">À­ÊÌ<span class="red">¢¨</span></td>
+								<td bgcolor="#f0f0f0" class="fs12n">æ€§åˆ¥<span class="red">â€»</span></td>
 								<td bgcolor="#ffffff" class="fs12n"><!--{$arrSex[$arrForm.sex]}--></td>
 							</tr>
 							<tr>
-								<td bgcolor="#f0f0f0" class="fs12n">¿¦¶È</td>
-								<td bgcolor="#ffffff" class="fs12n"><!--{$arrJob[$arrForm.job]|escape|default:"Ì¤ÅĞÏ¿"}--></td>
+								<td bgcolor="#f0f0f0" class="fs12n">è·æ¥­</td>
+								<td bgcolor="#ffffff" class="fs12n"><!--{$arrJob[$arrForm.job]|escape|default:"æœªç™»éŒ²"}--></td>
 							</tr>
 							<tr>
-								<td bgcolor="#f0f0f0" class="fs12n">À¸Ç¯·îÆü</td>
-								<td bgcolor="#ffffff" class="fs12n"><!--{if strlen($arrForm.year) > 0 && strlen($arrForm.month) > 0 && strlen($arrForm.day) > 0}--><!--{$arrForm.year|escape}-->Ç¯<!--{$arrForm.month|escape}-->·î<!--{$arrForm.day|escape}-->Æü<!--{else}-->Ì¤ÅĞÏ¿<!--{/if}--></td>
+								<td bgcolor="#f0f0f0" class="fs12n">ç”Ÿå¹´æœˆæ—¥</td>
+								<td bgcolor="#ffffff" class="fs12n"><!--{if strlen($arrForm.year) > 0 && strlen($arrForm.month) > 0 && strlen($arrForm.day) > 0}--><!--{$arrForm.year|escape}-->å¹´<!--{$arrForm.month|escape}-->æœˆ<!--{$arrForm.day|escape}-->æ—¥<!--{else}-->æœªç™»éŒ²<!--{/if}--></td>
 							</tr>
 							<tr>
-								<td bgcolor="#f0f0f0"><span class="fs12">´õË¾¤¹¤ë¥Ñ¥¹¥ï¡¼¥É<span class="red">¢¨</span></span><br>
-								<span class="fs10">¥Ñ¥¹¥ï¡¼¥É¤Ï¹ØÆş»ş¤ËÉ¬Í×¤Ç¤¹</span></td>
+								<td bgcolor="#f0f0f0"><span class="fs12">å¸Œæœ›ã™ã‚‹ãƒ‘ã‚¹ãƒ¯ãƒ¼ãƒ‰<span class="red">â€»</span></span><br>
+								<span class="fs10">ãƒ‘ã‚¹ãƒ¯ãƒ¼ãƒ‰ã¯è³¼å…¥æ™‚ã«å¿…è¦ã§ã™</span></td>
 								<td bgcolor="#ffffff" class="fs12"><!--{$passlen}--></td>
 							</tr>
 							<tr>
-								<td bgcolor="#f0f0f0" class="fs12">¥Ñ¥¹¥ï¡¼¥É¤òËº¤ì¤¿»ş¤Î¥Ò¥ó¥È<span class="red">¢¨</span></td>
-								<td bgcolor="#ffffff" class="fs12">¼ÁÌä¡§&nbsp;<!--{$arrReminder[$arrForm.reminder]|escape}--><br>
-								Åú¤¨¡§&nbsp;<!--{$arrForm.reminder_answer|escape}--></td>
+								<td bgcolor="#f0f0f0" class="fs12">ãƒ‘ã‚¹ãƒ¯ãƒ¼ãƒ‰ã‚’å¿˜ã‚ŒãŸæ™‚ã®ãƒ’ãƒ³ãƒˆ<span class="red">â€»</span></td>
+								<td bgcolor="#ffffff" class="fs12">è³ªå•ï¼š&nbsp;<!--{$arrReminder[$arrForm.reminder]|escape}--><br>
+								ç­”ãˆï¼š&nbsp;<!--{$arrForm.reminder_answer|escape}--></td>
 							</tr>
 							<tr>
-								<td bgcolor="#f0f0f0" class="fs12n">¥á¡¼¥ë¥Ş¥¬¥¸¥óÁ÷ÉÕ¤Ë¤Ä¤¤¤Æ<span class="red">¢¨</span></td>
+								<td bgcolor="#f0f0f0" class="fs12n">ãƒ¡ãƒ¼ãƒ«ãƒã‚¬ã‚¸ãƒ³é€ä»˜ã«ã¤ã„ã¦<span class="red">â€»</span></td>
 								<td bgcolor="#ffffff" class="fs12n"><!--{$arrMAILMAGATYPE[$arrForm.mailmaga_flg]}--></td>
 							</tr>
 						</table>
-						<!--ÆşÎÏ¥Õ¥©¡¼¥à¤³¤³¤Ş¤Ç-->
+						<!--å…¥åŠ›ãƒ•ã‚©ãƒ¼ãƒ ã“ã“ã¾ã§-->
 						</td>
 					</tr>
 					<tr><td height="20"></td></tr>
 					<tr>
 						<td align="center">
-							<a href="<!--{$smarty.server.PHP_SELF|escape}-->" onclick="fnModeSubmit('return', '', ''); return false;" onmouseover="chgImg('<!--{$smarty.const.URL_DIR}-->img/common/b_back_on.gif','back');" onmouseout="chgImg('<!--{$smarty.const.URL_DIR}-->img/common/b_back.gif','back');"><img src="<!--{$smarty.const.URL_DIR}-->img/common/b_back.gif" width="150" height="30" alt="Ìá¤ë" name="back" id="back" /></a>
+							<a href="<!--{$smarty.server.PHP_SELF|escape}-->" onclick="fnModeSubmit('return', '', ''); return false;" onmouseover="chgImg('<!--{$smarty.const.URL_DIR}-->img/common/b_back_on.gif','back');" onmouseout="chgImg('<!--{$smarty.const.URL_DIR}-->img/common/b_back.gif','back');"><img src="<!--{$smarty.const.URL_DIR}-->img/common/b_back.gif" width="150" height="30" alt="æˆ»ã‚‹" name="back" id="back" /></a>
 							<img src="<!--{$smarty.const.URL_DIR}-->img/_.gif" width="20" height="" alt="" />
-							<input type="image" onmouseover="chgImgImageSubmit('<!--{$smarty.const.URL_DIR}-->img/common/b_send_on.gif',this)" onmouseout="chgImgImageSubmit('<!--{$smarty.const.URL_DIR}-->img/common/b_send.gif',this)" src="<!--{$smarty.const.URL_DIR}-->img/common/b_send.gif" width="150" height="30" alt="Á÷¿®" name="complete" id="complete" />
+							<input type="image" onmouseover="chgImgImageSubmit('<!--{$smarty.const.URL_DIR}-->img/common/b_send_on.gif',this)" onmouseout="chgImgImageSubmit('<!--{$smarty.const.URL_DIR}-->img/common/b_send.gif',this)" src="<!--{$smarty.const.URL_DIR}-->img/common/b_send.gif" width="150" height="30" alt="é€ä¿¡" name="complete" id="complete" />
 						</td>
 					</tr>
 				</form>
@@ -111,9 +111,9 @@
 				</td>
 			</tr>
 		</table>
-		<!--¢¥MAIN ONTENTS-->
+		<!--â–²MAIN ONTENTS-->
 		</td>
 	</tr>
 </table>
-<!--¢¥CONTENTS-->
+<!--â–²CONTENTS-->
 

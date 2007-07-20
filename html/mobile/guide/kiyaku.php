@@ -6,25 +6,25 @@
  * http://www.lockon.co.jp/
  * 
  *
- * ¥â¥Ğ¥¤¥ë¥µ¥¤¥È/¤´ÍøÍÑµ¬Ìó
+ * ãƒ¢ãƒã‚¤ãƒ«ã‚µã‚¤ãƒˆ/ã”åˆ©ç”¨è¦ç´„
  */
 
 require_once('../require.php');
 
 class LC_Page {
 	function LC_Page() {
-		/** É¬¤ºÊÑ¹¹¤¹¤ë **/
-		$this->tpl_mainpage = 'guide/kiyaku.tpl';	// ¥á¥¤¥ó¥Æ¥ó¥×¥ì¡¼¥È
-		$this->tpl_title = '¤´ÍøÍÑµ¬Ìó';
+		/** å¿…ãšå¤‰æ›´ã™ã‚‹ **/
+		$this->tpl_mainpage = 'guide/kiyaku.tpl';	// ãƒ¡ã‚¤ãƒ³ãƒ†ãƒ³ãƒ—ãƒ¬ãƒ¼ãƒˆ
+		$this->tpl_title = 'ã”åˆ©ç”¨è¦ç´„';
 	}
 }
 
 $objPage = new LC_Page();
 
-// ¥ì¥¤¥¢¥¦¥È¥Ç¥¶¥¤¥ó¤ò¼èÆÀ
+// ãƒ¬ã‚¤ã‚¢ã‚¦ãƒˆãƒ‡ã‚¶ã‚¤ãƒ³ã‚’å–å¾—
 $objPage = sfGetPageLayout($objPage, false, DEF_LAYOUT);
 
-// ÍøÍÑµ¬Ìó¤ò¼èÆÀ¤¹¤ë¡£
+// åˆ©ç”¨è¦ç´„ã‚’å–å¾—ã™ã‚‹ã€‚
 lfGetKiyaku(intval(@$_GET['page']), $objPage);
 
 $objView = new SC_MobileView();
@@ -34,10 +34,10 @@ $objView->display(SITE_FRAME);
 //-----------------------------------------------------------------------------------------------------------------------------------
 
 /**
- * ÍøÍÑµ¬Ìó¤ò¼èÆÀ¤·¡¢¥Ú¡¼¥¸¥ª¥Ö¥¸¥§¥¯¥È¤Ë³ÊÇ¼¤¹¤ë¡£
+ * åˆ©ç”¨è¦ç´„ã‚’å–å¾—ã—ã€ãƒšãƒ¼ã‚¸ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã«æ ¼ç´ã™ã‚‹ã€‚
  *
- * @param integer $index µ¬Ìó¤Î¥¤¥ó¥Ç¥Ã¥¯¥¹
- * @param object &$objPage ¥Ú¡¼¥¸¥ª¥Ö¥¸¥§¥¯¥È
+ * @param integer $index è¦ç´„ã®ã‚¤ãƒ³ãƒ‡ãƒƒã‚¯ã‚¹
+ * @param object &$objPage ãƒšãƒ¼ã‚¸ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆ
  * @return void
  */
 function lfGetKiyaku($index, &$objPage)

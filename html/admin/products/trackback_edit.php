@@ -13,7 +13,7 @@ class LC_Page {
 		$this->tpl_subnavi = 'products/subnavi.tpl';
 		$this->tpl_mainno = 'products';		
 		$this->tpl_subno = 'trackback';
-		$this->tpl_subtitle = '¥È¥é¥Ã¥¯¥Ð¥Ã¥¯´ÉÍý';
+		$this->tpl_subtitle = 'ãƒˆãƒ©ãƒƒã‚¯ãƒãƒƒã‚¯ç®¡ç†';
 	}
 }
 
@@ -22,20 +22,20 @@ $objView = new SC_AdminView();
 $objSess = new SC_Session();
 $objQuery = new SC_Query();
 
-// Ç§¾Ú²ÄÈÝ¤ÎÈ½Äê
+// èªè¨¼å¯å¦ã®åˆ¤å®š
 sfIsSuccess($objSess);
 
-//¸¡º÷¥ï¡¼¥É¤Î°ú·Ñ¤®
+//æ¤œç´¢ãƒ¯ãƒ¼ãƒ‰ã®å¼•ç¶™ãŽ
 foreach ($_POST as $key => $val){
 	if (ereg("^search_", $key)){
 		$objPage->arrSearchHidden[$key] = $val;
 	}
 }
 
-// ¾õÂÖ¤ÎÀßÄê
+// çŠ¶æ…‹ã®è¨­å®š
 $objPage->arrTrackBackStatus = $arrTrackBackStatus;
 
-//¼èÆÀÊ¸»úÎó¤ÎÊÑ´¹ÍÑ¥«¥é¥à
+//å–å¾—æ–‡å­—åˆ—ã®å¤‰æ›ç”¨ã‚«ãƒ©ãƒ 
 $arrRegistColumn = array (		
 						array( "column" => "update_date"),
 						array( "column" => "status"),
@@ -46,29 +46,29 @@ $arrRegistColumn = array (
 						array(	"column" => "del_flg","convert" => "n")
 					);
 
-// ¥È¥é¥Ã¥¯¥Ð¥Ã¥¯ID¤òÅÏ¤¹
+// ãƒˆãƒ©ãƒƒã‚¯ãƒãƒƒã‚¯IDã‚’æ¸¡ã™
 $objPage->tpl_trackback_id = $_POST['trackback_id'];
-// ¥È¥é¥Ã¥¯¥Ð¥Ã¥¯¾ðÊó¤Î¥«¥é¥à¤Î¼èÆÀ
+// ãƒˆãƒ©ãƒƒã‚¯ãƒãƒƒã‚¯æƒ…å ±ã®ã‚«ãƒ©ãƒ ã®å–å¾—
 $objPage->arrTrackback = lfGetTrackbackData($_POST['trackback_id']);
 
-// ¾¦ÉÊ¤´¤È¤Î¥È¥é¥Ã¥¯¥Ð¥Ã¥¯É½¼¨¿ô¼èÆÀ
+// å•†å“ã”ã¨ã®ãƒˆãƒ©ãƒƒã‚¯ãƒãƒƒã‚¯è¡¨ç¤ºæ•°å–å¾—
 $count = $objQuery->count("dtb_trackback", "del_flg = 0 AND product_id = ?", array($objPage->arrTrackback['product_id']));
-// Î¾ÊýÁªÂò²ÄÇ½
+// ä¸¡æ–¹é¸æŠžå¯èƒ½
 $objPage->tpl_status_change = true;
 
 switch($_POST['mode']) {
-	// ÅÐÏ¿
+	// ç™»éŒ²
 	case 'complete':
-		//¥Õ¥©¡¼¥àÃÍ¤ÎÊÑ´¹
+		//ãƒ•ã‚©ãƒ¼ãƒ å€¤ã®å¤‰æ›
 		$arrTrackback = lfConvertParam($_POST, $arrRegistColumn);
 		$objPage->arrErr = lfCheckError($arrTrackback);
-		//¥¨¥é¡¼Ìµ¤·
+		//ã‚¨ãƒ©ãƒ¼ç„¡ã—
 
 		if (!$objPage->arrErr) {
-			//¥ì¥Ó¥å¡¼¾ðÊó¤ÎÊÔ½¸ÅÐÏ¿
+			//ãƒ¬ãƒ“ãƒ¥ãƒ¼æƒ…å ±ã®ç·¨é›†ç™»éŒ²
 			lfRegistTrackbackData($arrTrackback, $arrRegistColumn);
 			$objPage->arrTrackback = $arrTrackback;
-			$objPage->tpl_onload = "confirm('ÅÐÏ¿¤¬´°Î»¤·¤Þ¤·¤¿¡£');";
+			$objPage->tpl_onload = "confirm('ç™»éŒ²ãŒå®Œäº†ã—ã¾ã—ãŸã€‚');";
 		}
 		break;
 
@@ -81,35 +81,35 @@ $objView->display(MAIN_FRAME);
 
 //------------------------------------------------------------------------------------------------------------------------------------
 
-// ÆþÎÏ¥¨¥é¡¼¥Á¥§¥Ã¥¯
+// å…¥åŠ›ã‚¨ãƒ©ãƒ¼ãƒã‚§ãƒƒã‚¯
 function lfCheckError($array) {
 	$objErr = new SC_CheckError($array);
-	$objErr->doFunc(array("¥Ö¥í¥°Ì¾", "blog_name", STEXT_LEN), array("EXIST_CHECK", "SPTAB_CHECK", "MAX_LENGTH_CHECK"));
-	$objErr->doFunc(array("¥Ö¥í¥°µ­»ö¥¿¥¤¥È¥ë", "title", STEXT_LEN), array("EXIST_CHECK", "SPTAB_CHECK", "MAX_LENGTH_CHECK"));
-	$objErr->doFunc(array("¥Ö¥í¥°µ­»öÆâÍÆ", "excerpt", LTEXT_LEN), array("EXIST_CHECK", "SPTAB_CHECK", "MAX_LENGTH_CHECK"));
-	$objErr->doFunc(array("¥Ö¥í¥°URL", "url", URL_LEN), array("SPTAB_CHECK", "MAX_LENGTH_CHECK"));
-	$objErr->doFunc(array("¾õÂÖ", "status"), array("SELECT_CHECK"));
+	$objErr->doFunc(array("ãƒ–ãƒ­ã‚°å", "blog_name", STEXT_LEN), array("EXIST_CHECK", "SPTAB_CHECK", "MAX_LENGTH_CHECK"));
+	$objErr->doFunc(array("ãƒ–ãƒ­ã‚°è¨˜äº‹ã‚¿ã‚¤ãƒˆãƒ«", "title", STEXT_LEN), array("EXIST_CHECK", "SPTAB_CHECK", "MAX_LENGTH_CHECK"));
+	$objErr->doFunc(array("ãƒ–ãƒ­ã‚°è¨˜äº‹å†…å®¹", "excerpt", LTEXT_LEN), array("EXIST_CHECK", "SPTAB_CHECK", "MAX_LENGTH_CHECK"));
+	$objErr->doFunc(array("ãƒ–ãƒ­ã‚°URL", "url", URL_LEN), array("SPTAB_CHECK", "MAX_LENGTH_CHECK"));
+	$objErr->doFunc(array("çŠ¶æ…‹", "status"), array("SELECT_CHECK"));
 	return $objErr->arrErr;
 }
 
-//----¡¡¼èÆÀÊ¸»úÎó¤ÎÊÑ´¹
+//----ã€€å–å¾—æ–‡å­—åˆ—ã®å¤‰æ›
 function lfConvertParam($array, $arrRegistColumn) {
 	/*
-	 *	Ê¸»úÎó¤ÎÊÑ´¹
-	 *	K :  ¡ÖÈ¾³Ñ(ŽÊŽÝŽ¶Ž¸)ÊÒ²¾Ì¾¡×¤ò¡ÖÁ´³ÑÊÒ²¾Ì¾¡×¤ËÊÑ´¹
-	 *	C :  ¡ÖÁ´³Ñ¤Ò¤é²¾Ì¾¡×¤ò¡ÖÁ´³Ñ¤«¤¿²¾Ì¾¡×¤ËÊÑ´¹
-	 *	V :  ÂùÅÀÉÕ¤­¤ÎÊ¸»ú¤ò°ìÊ¸»ú¤ËÊÑ´¹¡£"K","H"¤È¶¦¤Ë»ÈÍÑ¤·¤Þ¤¹	
-	 *	n :  ¡ÖÁ´³Ñ¡×¿ô»ú¤ò¡ÖÈ¾³Ñ(ŽÊŽÝŽ¶Ž¸)¡×¤ËÊÑ´¹
-	 *  a :  Á´³Ñ±Ñ¿ô»ú¤òÈ¾³Ñ±Ñ¿ô»ú¤ËÊÑ´¹¤¹¤ë
+	 *	æ–‡å­—åˆ—ã®å¤‰æ›
+	 *	K :  ã€ŒåŠè§’(ï¾Šï¾ï½¶ï½¸)ç‰‡ä»®åã€ã‚’ã€Œå…¨è§’ç‰‡ä»®åã€ã«å¤‰æ›
+	 *	C :  ã€Œå…¨è§’ã²ã‚‰ä»®åã€ã‚’ã€Œå…¨è§’ã‹ãŸä»®åã€ã«å¤‰æ›
+	 *	V :  æ¿ç‚¹ä»˜ãã®æ–‡å­—ã‚’ä¸€æ–‡å­—ã«å¤‰æ›ã€‚"K","H"ã¨å…±ã«ä½¿ç”¨ã—ã¾ã™	
+	 *	n :  ã€Œå…¨è§’ã€æ•°å­—ã‚’ã€ŒåŠè§’(ï¾Šï¾ï½¶ï½¸)ã€ã«å¤‰æ›
+	 *  a :  å…¨è§’è‹±æ•°å­—ã‚’åŠè§’è‹±æ•°å­—ã«å¤‰æ›ã™ã‚‹
 	 */
-	// ¥«¥é¥àÌ¾¤È¥³¥ó¥Ð¡¼¥È¾ðÊó
+	// ã‚«ãƒ©ãƒ åã¨ã‚³ãƒ³ãƒãƒ¼ãƒˆæƒ…å ±
 	foreach ($arrRegistColumn as $data) {
 		$arrConvList[ $data["column"] ] = $data["convert"];
 	}
 	
-	// Ê¸»úÊÑ´¹
+	// æ–‡å­—å¤‰æ›
 	foreach ($arrConvList as $key => $val) {
-		// POST¤µ¤ì¤Æ¤­¤¿ÃÍ¤Î¤ßÊÑ´¹¤¹¤ë¡£
+		// POSTã•ã‚Œã¦ããŸå€¤ã®ã¿å¤‰æ›ã™ã‚‹ã€‚
 		if(strlen(($array[$key])) > 0) {
 			$array[$key] = mb_convert_kana($array[$key] ,$val);
 		}
@@ -117,7 +117,7 @@ function lfConvertParam($array, $arrRegistColumn) {
 	return $array;
 }
 
-// ¥È¥é¥Ã¥¯¥Ð¥Ã¥¯¾ðÊó¤Î¼èÆÀ
+// ãƒˆãƒ©ãƒƒã‚¯ãƒãƒƒã‚¯æƒ…å ±ã®å–å¾—
 function lfGetTrackbackData($trackback_id) {
 	global $objPage;
 	global $objQuery;
@@ -134,7 +134,7 @@ function lfGetTrackbackData($trackback_id) {
 	return $objPage->arrTrackback;
 }
 
-// ¥È¥é¥Ã¥¯¥Ð¥Ã¥¯¾ðÊó¤ÎÊÔ½¸ÅÐÏ¿
+// ãƒˆãƒ©ãƒƒã‚¯ãƒãƒƒã‚¯æƒ…å ±ã®ç·¨é›†ç™»éŒ²
 function lfRegistTrackbackData($array, $arrRegistColumn) {
 	global $objQuery;
 
@@ -146,7 +146,7 @@ function lfRegistTrackbackData($array, $arrRegistColumn) {
 			$arrRegist['update_date'] = 'now()';
 		}
 	}
-	//ÅÐÏ¿¼Â¹Ô
+	//ç™»éŒ²å®Ÿè¡Œ
 	$objQuery->begin();
 	$objQuery->update("dtb_trackback", $arrRegist, "trackback_id = '".$_POST['trackback_id']."'");
 	$objQuery->commit();

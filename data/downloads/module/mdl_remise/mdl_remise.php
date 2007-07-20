@@ -8,13 +8,13 @@
  */
 require_once(MODULE_PATH . "mdl_remise/mdl_remise.inc");
 
-//�ڡ����������饹
+//ページ管理クラス
 class LC_Page {
-	//���󥹥ȥ饯��
+	//コンストラクタ
 	function LC_Page() {
-		//�ᥤ��ƥ�ץ졼�Ȥλ���
+		//メインテンプレートの指定
 		$this->tpl_mainpage = MODULE_PATH . 'mdl_remise/mdl_remise.tpl';
-		$this->tpl_subtitle = '��ߡ�����ѥ⥸�塼��';
+		$this->tpl_subtitle = 'ルミーズ決済モジュール';
 		global $arrPayment;
 		$this->arrPayment = $arrPayment;
 		global $arrCredit;
@@ -27,24 +27,24 @@ $objPage = new LC_Page();
 $objView = new SC_AdminView();
 $objQuery = new SC_Query();
 
-// ��ߡ��������ɥ��쥸�åȷ�ѷ�����ν���
+// ルミーズカードクレジット決済結果通知処理
 lfRemiseCreditResultCheck();
 
-// ����ӥ���������å�
+// コンビニ入金チェック
 lfRemiseConveniCheck();
 
-// ǧ�ڳ�ǧ
+// 認証確認
 $objSess = new SC_Session();
 sfIsSuccess($objSess);
 
-// �ѥ�᡼���������饹
+// パラメータ管理クラス
 $objFormParam = new SC_FormParam();
 $objFormParam = lfInitParam($objFormParam);
 
-// POST�ͤμ���
+// POST値の取得
 $objFormParam->setParam($_POST);
 
-// ���ѹ��ܤ��ɲ�(ɬ�ܡ���)
+// 汎用項目を追加(必須！！)
 sfAlterMemo();
 
 $mode = "";
@@ -54,89 +54,89 @@ if (isset($_POST['mode'])) {
 
 switch($mode) {
 	case 'edit':
-		// ���ϥ��顼Ƚ��
+		// 入力エラー判定
 		$objPage->arrErr = lfCheckError();
 
-		// ���顼�ʤ��ξ��ˤϥǡ����򹹿�	
+		// エラーなしの場合にはデータを更新	
 		if (count($objPage->arrErr) == 0) {
-			// �ǡ�������
+			// データ更新
 			lfUpdPaymentDB();
 			
-			// javascript�¹�
-			$objPage->tpl_onload = 'alert("��Ͽ��λ���ޤ�����\n���ܾ�����ʧ��ˡ������ܺ�����򤷤Ƥ���������"); window.close();';
+			// javascript実行
+			$objPage->tpl_onload = 'alert("登録完了しました。\n基本情報＞支払方法設定より詳細設定をしてください。"); window.close();';
 		}
 		break;
 	case 'module_del':
-		// ���ѹ��ܤ�¸�ߥ����å�
+		// 汎用項目の存在チェック
 		if (sfColumnExists("dtb_payment", "memo01")) {
-			// �ǡ����κ���ե饰�򤿤Ƥ�
+			// データの削除フラグをたてる
 			$objQuery->query("UPDATE dtb_payment SET del_flg = 1 WHERE module_id = ?", array(MDL_REMISE_ID));
 		}
 		break;
 	default:
-		// �ǡ����Υ�����
+		// データのロード
 		lfLoadData();
 		break;
 }
 
 $objPage->arrForm = $objFormParam->getFormParamList();
 
-$objView->assignobj($objPage);					//�ѿ���ƥ�ץ졼�Ȥ˥������󤹤�
-$objView->display($objPage->tpl_mainpage);		//�ƥ�ץ졼�Ȥν���
+$objView->assignobj($objPage);					//変数をテンプレートにアサインする
+$objView->display($objPage->tpl_mainpage);		//テンプレートの出力
 //-------------------------------------------------------------------------------------------------------
-/* �ѥ�᡼������ν���� */
+/* パラメータ情報の初期化 */
 function lfInitParam($objFormParam) {
-	$objFormParam->addParam("����Ź������", "code", INT_LEN, "KVa", array("EXIST_CHECK", "MAX_LENGTH_CHECK"));
-	$objFormParam->addParam("�ۥ����ֹ�", "host_id", INT_LEN, "KVa", array("EXIST_CHECK", "MAX_LENGTH_CHECK", "NUM_CHECK"));
-	$objFormParam->addParam("���쥸�å���³��URL(PC)", "credit_url", URL_LEN, "KVa", array("EXIST_CHECK", "MAX_LENGTH_CHECK", "URL_CHECK"));
-	$objFormParam->addParam("���쥸�å���³��URL(��Х���)", "mobile_credit_url");
-	$objFormParam->addParam("��ʧ����ˡ", "credit_method");
-	$objFormParam->addParam("���ץ����", "payment");
-	$objFormParam->addParam("����ӥ���³��URL(PC)", "convenience_url");
-	$objFormParam->addParam("����ӥ���³��URL(��Х���)", "mobile_convenience_url");
+	$objFormParam->addParam("加盟店コード", "code", INT_LEN, "KVa", array("EXIST_CHECK", "MAX_LENGTH_CHECK"));
+	$objFormParam->addParam("ホスト番号", "host_id", INT_LEN, "KVa", array("EXIST_CHECK", "MAX_LENGTH_CHECK", "NUM_CHECK"));
+	$objFormParam->addParam("クレジット接続先URL(PC)", "credit_url", URL_LEN, "KVa", array("EXIST_CHECK", "MAX_LENGTH_CHECK", "URL_CHECK"));
+	$objFormParam->addParam("クレジット接続先URL(モバイル)", "mobile_credit_url");
+	$objFormParam->addParam("支払い方法", "credit_method");
+	$objFormParam->addParam("オプション", "payment");
+	$objFormParam->addParam("コンビニ接続先URL(PC)", "convenience_url");
+	$objFormParam->addParam("コンビニ接続先URL(モバイル)", "mobile_convenience_url");
 	return $objFormParam;
 }
 
-// ���顼�����å���Ԥ�
+// エラーチェックを行う
 function lfCheckError(){
 	global $objFormParam;
 	
 	$arrErr = $objFormParam->checkError();
 	
-	// ���ѥ��쥸�åȡ����ѥ���ӥˤΥ��顼�����å�
+	// 利用クレジット、利用コンビニのエラーチェック
 	$arrChkPay = $_POST["payment"];
 
-	// ���쥸�åȤλ�ʧ����ˡ
+	// クレジットの支払い方法
 	if (count($_POST["credit_method"]) <= 0) {
-		$arrErr["credit_method"] = "��ʧ����ˡ�����򤵤�Ƥ��ޤ���<br />";
+		$arrErr["credit_method"] = "支払い方法が選択されていません。<br />";
 	}
 
-	// ���ѥ���ӥ�
+	// 利用コンビニ
 	if (isset($arrChkPay)) {
 		if ($_POST["convenience_url"] == "" && $_POST["mobile_convenience_url"] == "") {
-			$arrErr["convenience_url"] = "����ӥ���³��URL(PC)�ޤ��ϥ���ӥ���³��URL(��Х���)�����Ϥ���Ƥ��ޤ���<br />";
+			$arrErr["convenience_url"] = "コンビニ接続先URL(PC)またはコンビニ接続先URL(モバイル)が入力されていません。<br />";
 		}
 	}
 
 	return $arrErr;
 }
 
-// ��Ͽ�ǡ������ɤ߹���
+// 登録データを読み込む
 function lfLoadData(){
 	global $objFormParam;
 	
-	//�ǡ��������
+	//データを取得
 	$arrRet = lfGetPaymentDB(" AND del_flg = '0'");
 
-	// �ͤ򥻥å�
+	// 値をセット
 	$objFormParam->setParam($arrRet[0]);
 
-	// ����ɽ���Ѥ˥ǡ������Ѵ�
+	// 画面表示用にデータを変換
 	$arrDisp = array();
 	$arrDisp["payment"][0] = 0;
 
 	foreach($arrRet as $key => $val) {
-		// ���쥸�åȤη�Ѷ�ʬ�����
+		// クレジットの決済区分を取得
 		if($val["payment"] == 1) {
 			$credit = $val["payment_code"];
 			$arrDisp["credit_url"] = $val["credit_url"];
@@ -144,7 +144,7 @@ function lfLoadData(){
 			$arrDisp["credit_method"] = $val["credit_method"];
 		}
 
-		// ����ӥˤη�Ѷ�ʬ�����
+		// コンビニの決済区分を取得
 		if($val["payment"] == 2) {
 			$arrDisp["convenience"] = $val["convenience"];
 			$arrDisp["payment"][0] = 1;
@@ -156,11 +156,11 @@ function lfLoadData(){
 	$objFormParam->setParam($arrDisp);
 	$objFormParam->splitParamCheckBoxes("credit_method");
 	
-	// ���쥸�åȻ�ʧ����ʬ
+	// クレジット支払い区分
 	//$objFormParam->splitParamCheckBoxes("credit_method");
 }
 
-// DB����ǡ������������
+// DBからデータを取得する
 function lfGetPaymentDB($where = "", $arrWhereVal = array()){
 	global $objQuery;
 	
@@ -186,12 +186,12 @@ function lfGetPaymentDB($where = "", $arrWhereVal = array()){
 }
 
 
-// �ǡ����ι�������
+// データの更新処理
 function lfUpdPaymentDB(){
 	global $objQuery;
 	global $objSess;
 	
-	// ��ʧ����ˡ�˥����å������äƤ�����ϡ��ϥ��ե���ڤ���Խ�����
+	// 支払い方法にチェックが入っている場合は、ハイフン区切りに編集する
 	$convCnt = count($_POST["credit_method"]);
 	if ($convCnt > 0) {
 		$credit_method = $_POST["credit_method"][0];
@@ -200,7 +200,7 @@ function lfUpdPaymentDB(){
 		}
 	}
 
-	// del_flg�����ˤ��Ƥ���
+	// del_flgを削除にしておく
 	$del_sql = "UPDATE dtb_payment SET del_flg = 1 WHERE module_id = ? ";
 	$arrDel = array(MDL_REMISE_ID);
 	$objQuery->query($del_sql, $arrDel);
@@ -212,17 +212,17 @@ function lfUpdPaymentDB(){
 	}
 
 	foreach($arrEntry as $key => $val){
-		// ��󥯤κ����ͤ��������
+		// ランクの最大値を取得する
 		$max_rank = $objQuery->getone("SELECT max(rank) FROM dtb_payment");
 
-		// ��ʧ��ˡ�ǡ��������			
+		// 支払方法データを取得			
 		$arrPaymentData = lfGetPaymentDB("AND memo03 = ?", array($val));
 
-		// ���쥸�åȷ����Ͽ
+		// クレジット決済登録
 		if($val == 1) {
 
 			$arrData = array(
-				"payment_method" => "remise���쥸�å�"
+				"payment_method" => "remiseクレジット"
 				,"fix" => 3
 				,"creator_id" => $objSess->member_id
 				,"create_date" => "now()"
@@ -243,11 +243,11 @@ function lfUpdPaymentDB(){
 			);
 		}
 
-		// ����ӥˤ˥����å������äƤ���Х���ӥˤ���Ͽ����
+		// コンビニにチェックが入っていればコンビニを登録する
 		if($val == 2) {
 			
 			$arrData = array(
-				"payment_method" => "remise����ӥ�"
+				"payment_method" => "remiseコンビニ"
 				,"fix" => 3
 				,"creator_id" => $objSess->member_id
 				,"create_date" => "now()"
@@ -267,7 +267,7 @@ function lfUpdPaymentDB(){
 			);
 		}
 
-		// �ǡ�����¸�ߤ��Ƥ����UPDATE��̵�����INSERT
+		// データが存在していればUPDATE、無ければINSERT
 		if (count($arrPaymentData) > 0) {
 			$objQuery->update("dtb_payment", $arrData, " module_id = '" . MDL_REMISE_ID . "' AND memo03 = '" . $val ."'");
 		} else {
@@ -277,14 +277,14 @@ function lfUpdPaymentDB(){
 	}
 }
 
-// ��ߡ��������ɥ��쥸�åȷ�ѷ�����ν���
+// ルミーズカードクレジット決済結果通知処理
 function lfRemiseCreditResultCheck(){
 	global $objQuery;
 	
 	$log_path = DATA_PATH . "logs/remise_card_result.log";
 	gfPrintLog("remise card result : ".$_POST["X-TRANID"] , $log_path);
 	
-	// TRAN_ID ����ꤵ��Ƥ��ơ������ɾ��󤬤�����
+	// TRAN_ID を指定されていて、カード情報がある場合
 	if (isset($_POST["X-TRANID"]) && isset($_POST["X-PARTOFCARD"])) {
 		
 		$errFlg = FALSE;
@@ -295,7 +295,7 @@ function lfRemiseCreditResultCheck(){
 		}
 		gfPrintLog("remise credit result end  ----------", $log_path);
 
-		// IP���ɥ쥹���椹����
+		// IPアドレス制御する場合
 		if (REMISE_IP_ADDRESS_DENY == 1) {
 			gfPrintLog("remise remoto ip address : ".$_SERVER["REMOTE_HOST"]."-".$_SERVER["REMOTE_ADDR"], $log_path);
 			if (!isset($_SERVER["REMOTE_ADDR"]) || !lfIpAddressDenyCheck($_SERVER["REMOTE_ADDR"])) {
@@ -304,7 +304,7 @@ function lfRemiseCreditResultCheck(){
 			}
 		}
 		
-		// �����ֹ�ȶ�ۤμ���
+		// 請求番号と金額の取得
 		$order_id = 0;
 		$payment_total = 0;
 		
@@ -319,10 +319,10 @@ function lfRemiseCreditResultCheck(){
 		gfPrintLog("order_id : ".$order_id, $log_path);
 		gfPrintLog("payment_total : ".$payment_total, $log_path);
 
-		// ��ʸ�ǡ�������
+		// 注文データ取得
 		$arrTempOrder = $objQuery->getall("SELECT payment_total FROM dtb_order_temp WHERE order_id = ? ", array($order_id));
 
-		// ��ۤ����
+		// 金額の相違
 		if (count($arrTempOrder) > 0) {
 			gfPrintLog("ORDER payment_total : ".$arrTempOrder[0]['payment_total'], $log_path);
 			if ($arrTempOrder[0]['payment_total'] == $payment_total) {
@@ -339,28 +339,28 @@ function lfRemiseCreditResultCheck(){
 	}
 }
 
-// ����ӥ������ǧ����
+// コンビニ入金確認処理
 function lfRemiseConveniCheck(){
 	global $objQuery;
 	
 	$log_path = DATA_PATH . "logs/remise_cv_charge.log";
 	gfPrintLog("remise conveni result : ".$_POST["JOB_ID"] , $log_path);
 	
-	// ɬ�פʥǡ�������������Ƥ��ơ���Ǽ���Τμ�ư��������Ĥ��Ƥ�����
+	// 必要なデータが送信されていて、収納通知の自動受信を許可している場合
 	if(isset($_POST["JOB_ID"]) && isset($_POST["REC_FLG"]) && REMISE_CONVENIENCE_RECIVE == 1){
 		
 		$errFlg = FALSE;
 			
-		// ��Ǽ�Ѥߤξ��
+		// 収納済みの場合
 		if ($_POST["REC_FLG"] == REMISE_CONVENIENCE_CHARGE) {
-			// POST�����Ƥ����ƥ�����¸
+			// POSTの内容を全てログ保存
 			gfPrintLog("remise conveni charge start----------", $log_path);
 			foreach($_POST as $key => $val){
 				gfPrintLog( "\t" . $key . " => " . $val, $log_path);
 			}
 			gfPrintLog("remise conveni charge end  ----------", $log_path);
 
-			// IP���ɥ쥹���椹����
+			// IPアドレス制御する場合
 			if (REMISE_IP_ADDRESS_DENY == 1) {
 				gfPrintLog("remise remoto ip address : ".$_SERVER["REMOTE_HOST"]."-".$_SERVER["REMOTE_ADDR"], $log_path);
 				if (!isset($_SERVER["REMOTE_ADDR"]) || !lfIpAddressDenyCheck($_SERVER["REMOTE_ADDR"])) {
@@ -369,7 +369,7 @@ function lfRemiseConveniCheck(){
 				}
 			}
 			
-			// �����ֹ�ȶ�ۤμ���
+			// 請求番号と金額の取得
 			$order_id = 0;
 			$payment_total = 0;
 			
@@ -384,10 +384,10 @@ function lfRemiseConveniCheck(){
 			gfPrintLog("order_id : ".$order_id, $log_path);
 			gfPrintLog("payment_total : ".$payment_total, $log_path);
 			
-			// ��ʸ�ǡ�������
+			// 注文データ取得
 			$arrTempOrder = $objQuery->getall("SELECT payment_total FROM dtb_order_temp WHERE order_id = ? ", array($order_id));
 
-			// ��ۤ����
+			// 金額の相違
 			if (count($arrTempOrder) > 0) {
 				gfPrintLog("ORDER payment_total : ".$arrTempOrder[0]['payment_total'], $log_path);
 				if ($arrTempOrder[0]['payment_total'] == $payment_total) {
@@ -395,13 +395,13 @@ function lfRemiseConveniCheck(){
 				}
 			}
 			
-			// JOB_ID�������ֹ档�����ۤ����פ�����Τߡ����ơ�����������Ѥߤ��ѹ�����
+			// JOB_IDと請求番号。入金金額が一致する場合のみ、ステータスを入金済みに変更する
 			if ($errFlg) {
 				$sql = "UPDATE dtb_order SET status = 6, update_date = now() ".
 					"WHERE order_id = ? AND memo04 = ? ";
 				$objQuery->query($sql, array($order_id, $_POST["JOB_ID"]));
 			
-				//������̤�ɽ��
+				//応答結果を表示
 				print(REMISE_CONVENIENCE_CHARGE_OK);
 				exit;
 			}
@@ -412,13 +412,13 @@ function lfRemiseConveniCheck(){
 }
 
 /**
- * IP���ɥ쥹�Ӱ�����å�
- * @param $ip IP���ɥ쥹
+ * IPアドレス帯域チェック
+ * @param $ip IPアドレス
  * @return boolean
  */
 function lfIpAddressDenyCheck($ip) {
 	
-	// IP���ɥ쥹�ϰϤ����äƤʤ����
+	// IPアドレス範囲に入ってない場合
 	if (ip2long(REMISE_IP_ADDRESS_S) > ip2long($ip) || 
 		ip2long(REMISE_IP_ADDRESS_E) < ip2long($ip)) {
 		return FALSE;

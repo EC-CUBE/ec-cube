@@ -14,7 +14,7 @@ require_once("../require.php");
 class LC_Page{
 	function LC_Page() {
 		$this->tpl_mainpage = 'mypage/index.tpl';
-		$this->tpl_title = 'MY¥Ú¡¼¥¸/¹ØÆþÍúÎò°ìÍ÷';
+		$this->tpl_title = 'MYãƒšãƒ¼ã‚¸/è³¼å…¥å±¥æ­´ä¸€è¦§';
 		session_cache_limiter('private-no-expire');
 	}
 }
@@ -23,28 +23,28 @@ $objPage = new LC_Page();
 $objView = new SC_MobileView();
 $objQuery = new SC_Query();
 $objCustomer = new SC_Customer();
-// ¥¯¥Ã¥­¡¼´ÉÍý¥¯¥é¥¹
+// ã‚¯ãƒƒã‚­ãƒ¼ç®¡ç†ã‚¯ãƒ©ã‚¹
 $objCookie = new SC_Cookie(COOKIE_EXPIRE);
-// ¥Ñ¥é¥á¡¼¥¿´ÉÍý¥¯¥é¥¹
+// ãƒ‘ãƒ©ãƒ¡ãƒ¼ã‚¿ç®¡ç†ã‚¯ãƒ©ã‚¹
 $objFormParam = new SC_FormParam();
-// ¥Ñ¥é¥á¡¼¥¿¾ðÊó¤Î½é´ü²½
+// ãƒ‘ãƒ©ãƒ¡ãƒ¼ã‚¿æƒ…å ±ã®åˆæœŸåŒ–
 lfInitParam();
-// POSTÃÍ¤Î¼èÆÀ
+// POSTå€¤ã®å–å¾—
 $objFormParam->setParam($_POST);
 
-// ¥ì¥¤¥¢¥¦¥È¥Ç¥¶¥¤¥ó¤ò¼èÆÀ
+// ãƒ¬ã‚¤ã‚¢ã‚¦ãƒˆãƒ‡ã‚¶ã‚¤ãƒ³ã‚’å–å¾—
 $objPage = sfGetPageLayout($objPage, false, "mypage/index.php");
 
-// ·ÈÂÓÃ¼ËöID¤¬°ìÃ×¤¹¤ë²ñ°÷¤¬Â¸ºß¤¹¤ë¤«¤É¤¦¤«¤ò¥Á¥§¥Ã¥¯¤¹¤ë¡£
+// æºå¸¯ç«¯æœ«IDãŒä¸€è‡´ã™ã‚‹ä¼šå“¡ãŒå­˜åœ¨ã™ã‚‹ã‹ã©ã†ã‹ã‚’ãƒã‚§ãƒƒã‚¯ã™ã‚‹ã€‚
 $objPage->tpl_valid_phone_id = $objCustomer->checkMobilePhoneId();
 
-// ¥í¥°¥¤¥ó½èÍý
+// ãƒ­ã‚°ã‚¤ãƒ³å‡¦ç†
 if($_POST['mode'] == 'login') {
 	$objFormParam->toLower('login_email');
 	$arrErr = $objFormParam->checkError();
 	$arrForm =  $objFormParam->getHashArray();
 	
-	// ¥¯¥Ã¥­¡¼ÊÝÂ¸È½Äê
+	// ã‚¯ãƒƒã‚­ãƒ¼ä¿å­˜åˆ¤å®š
 	if ($arrForm['login_memory'] == "1" && $arrForm['login_email'] != "") {
 		$objCookie->setCookie('login_email', $_POST['login_email']);
 	} else {
@@ -54,13 +54,13 @@ if($_POST['mode'] == 'login') {
 	if (count($arrErr) == 0){
 		if($objCustomer->getCustomerDataFromMobilePhoneIdPass($arrForm['login_pass']) ||
 		   $objCustomer->getCustomerDataFromEmailPass($arrForm['login_pass'], $arrForm['login_email'], true)) {
-			// ¥í¥°¥¤¥ó¤¬À®¸ù¤·¤¿¾ì¹ç¤Ï·ÈÂÓÃ¼ËöID¤òÊÝÂ¸¤¹¤ë¡£
+			// ãƒ­ã‚°ã‚¤ãƒ³ãŒæˆåŠŸã—ãŸå ´åˆã¯æºå¸¯ç«¯æœ«IDã‚’ä¿å­˜ã™ã‚‹ã€‚
 			$objCustomer->updateMobilePhoneId();
 
-			// ·ÈÂÓ¤Î¥á¡¼¥ë¥¢¥É¥ì¥¹¤ò¥³¥Ô¡¼¤¹¤ë¡£
+			// æºå¸¯ã®ãƒ¡ãƒ¼ãƒ«ã‚¢ãƒ‰ãƒ¬ã‚¹ã‚’ã‚³ãƒ”ãƒ¼ã™ã‚‹ã€‚
 			$objCustomer->updateEmailMobile();
 
-			// ·ÈÂÓ¤Î¥á¡¼¥ë¥¢¥É¥ì¥¹¤¬ÅÐÏ¿¤µ¤ì¤Æ¤¤¤Ê¤¤¾ì¹ç
+			// æºå¸¯ã®ãƒ¡ãƒ¼ãƒ«ã‚¢ãƒ‰ãƒ¬ã‚¹ãŒç™»éŒ²ã•ã‚Œã¦ã„ãªã„å ´åˆ
 			if (!$objCustomer->hasValue('email_mobile')) {
 				header('Location: ' . gfAddSessionId('../entry/email_mobile.php'));
 				exit;
@@ -80,26 +80,26 @@ if($_POST['mode'] == 'login') {
 }
 
 
-// ¥í¥°¥¤¥ó¥Á¥§¥Ã¥¯
+// ãƒ­ã‚°ã‚¤ãƒ³ãƒã‚§ãƒƒã‚¯
 if(!$objCustomer->isLoginSuccess()) {
 	$objPage->tpl_mainpage = 'mypage/login.tpl';
 	$objView->assignArray($objFormParam->getHashArray());
 	$objView->assignArray(array("arrErr" => $arrErr));
 }else {
-	//¥Þ¥¤¥Ú¡¼¥¸¥È¥Ã¥×¸ÜµÒ¾ðÊóÉ½¼¨ÍÑ
+	//ãƒžã‚¤ãƒšãƒ¼ã‚¸ãƒˆãƒƒãƒ—é¡§å®¢æƒ…å ±è¡¨ç¤ºç”¨
 	$objPage->CustomerName1 = $objCustomer->getvalue('name01');
 	$objPage->CustomerName2 = $objCustomer->getvalue('name02');
 }
 
-$objView->assignobj($objPage);				//$objpageÆâ¤ÎÁ´¤Æ¤Î¥Æ¥ó¥×¥ì¡¼¥ÈÊÑ¿ô¤òsmarty¤Ë³ÊÇ¼
-$objView->display(SITE_FRAME);				//¥Ñ¥¹¤È¥Æ¥ó¥×¥ì¡¼¥ÈÊÑ¿ô¤Î¸Æ¤Ó½Ð¤·¡¢¼Â¹Ô
+$objView->assignobj($objPage);				//$objpageå†…ã®å…¨ã¦ã®ãƒ†ãƒ³ãƒ—ãƒ¬ãƒ¼ãƒˆå¤‰æ•°ã‚’smartyã«æ ¼ç´
+$objView->display(SITE_FRAME);				//ãƒ‘ã‚¹ã¨ãƒ†ãƒ³ãƒ—ãƒ¬ãƒ¼ãƒˆå¤‰æ•°ã®å‘¼ã³å‡ºã—ã€å®Ÿè¡Œ
 
 //-------------------------------------------------------------------------------------------------------------------------
-/* ¥Ñ¥é¥á¡¼¥¿¾ðÊó¤Î½é´ü²½ */
+/* ãƒ‘ãƒ©ãƒ¡ãƒ¼ã‚¿æƒ…å ±ã®åˆæœŸåŒ– */
 function lfInitParam() {
 	global $objFormParam;
-	$objFormParam->addParam("µ­²±¤¹¤ë", "login_memory", INT_LEN, "n", array("MAX_LENGTH_CHECK", "NUM_CHECK"));
-	$objFormParam->addParam("¥á¡¼¥ë¥¢¥É¥ì¥¹", "login_email", STEXT_LEN, "KVa", array("EXIST_CHECK", "MAX_LENGTH_CHECK"));
-	$objFormParam->addParam("¥Ñ¥¹¥ï¡¼¥É", "login_pass", STEXT_LEN, "KVa", array("EXIST_CHECK", "MAX_LENGTH_CHECK"));
+	$objFormParam->addParam("è¨˜æ†¶ã™ã‚‹", "login_memory", INT_LEN, "n", array("MAX_LENGTH_CHECK", "NUM_CHECK"));
+	$objFormParam->addParam("ãƒ¡ãƒ¼ãƒ«ã‚¢ãƒ‰ãƒ¬ã‚¹", "login_email", STEXT_LEN, "KVa", array("EXIST_CHECK", "MAX_LENGTH_CHECK"));
+	$objFormParam->addParam("ãƒ‘ã‚¹ãƒ¯ãƒ¼ãƒ‰", "login_pass", STEXT_LEN, "KVa", array("EXIST_CHECK", "MAX_LENGTH_CHECK"));
 }
 ?>

@@ -5,7 +5,7 @@
  *
  * http://www.lockon.co.jp/
  * 
- * ете╨едеые╡еде╚/╖╚┬╙есб╝еы┼╨╧┐
+ * уГвуГРуВдуГлуВ╡уВдуГИ/цР║х╕пуГбуГ╝уГлчЩ╗щМ▓
  */
 
 require_once('../require.php');
@@ -13,11 +13,11 @@ require_once('../require.php');
 class LC_Page {
 	function LC_Page() {
 		$this->tpl_mainpage = 'entry/email_mobile.tpl';
-		$this->tpl_title = '╖╚┬╙есб╝еы┼╨╧┐';
+		$this->tpl_title = 'цР║х╕пуГбуГ╝уГлчЩ╗щМ▓';
 		/*
-		 session_start╗■д╬no-cacheе╪е├е└б╝дЄ═▐└йд╣дыд│д╚д╟
-		 б╓╠сдыб╫е▄е┐еє╗╚═╤╗■д╬═н╕·┤№╕┬└┌дь╔╜╝идЄ═▐└йд╣дыбг
-		 private-no-expire:епещедевеєе╚д╬енеуе├е╖ехдЄ╡Ў▓─д╣дыбг
+		 session_startцЩВуБоno-cacheуГШуГГуГАуГ╝уВТцКСхИ╢уБЩуВЛуБУуБиуБз
+		 уАМцИ╗уВЛуАНуГЬуВ┐уГ│ф╜┐чФицЩВуБоцЬЙхК╣цЬЯщЩРхИЗуВМшбичд║уВТцКСхИ╢уБЩуВЛуАВ
+		 private-no-expire:уВпуГйуВдуВвуГ│уГИуБоуВнуГгуГГуВ╖уГеуВТши▒хПпуБЩуВЛуАВ
 		*/
 		session_cache_limiter('private-no-expire');		
 	}
@@ -43,11 +43,11 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 	if (empty($objPage->arrErr)) {
 		lfRegister($objFormParam, $objCustomer);
 		$objPage->tpl_mainpage = 'entry/email_mobile_complete.tpl';
-		$objPage->tpl_title = '╖╚┬╙есб╝еы┼╨╧┐┤░╬╗';
+		$objPage->tpl_title = 'цР║х╕пуГбуГ╝уГлчЩ╗щМ▓хоМф║Ж';
 	}
 }
 
-// ╢їесб╝еы═╤д╬е╚б╝епеєдЄ║ю└од╣дыбг
+// чй║уГбуГ╝уГлчФиуБоуГИуГ╝уВпуГ│уВТф╜ЬцИРуБЩуВЛуАВ
 if (MOBILE_USE_KARA_MAIL) {
 	$token = gfPrepareKaraMail('entry/email_mobile.php');
 	if ($token !== false) {
@@ -64,7 +64,7 @@ $objView->display(SITE_FRAME);
 //-----------------------------------------------------------------------------------------------------------------------------------
 
 function lfInitParam(&$objFormParam) {
-	$objFormParam->addParam('есб╝еыеве╔еье╣', 'email_mobile', MTEXT_LEN, 'a',
+	$objFormParam->addParam('уГбуГ╝уГлуВвуГЙуГмуВ╣', 'email_mobile', MTEXT_LEN, 'a',
 		array('NO_SPTAB', 'EXIST_CHECK', 'MAX_LENGTH_CHECK', 'CHANGE_LOWER', 'EMAIL_CHAR_CHECK', 'MOBILE_EMAIL_CHECK'));
 }
 
@@ -84,17 +84,17 @@ function lfCheckError(&$objFormParam, &$objCustomer) {
 
 	if (count($arrRet) > 0) {
 		if ($arrRet[0]['del_flg'] != '1') {
-			// ▓ё░ўд╟двды╛ь╣ч
-			$objErr->arrErr['email_mobile'] .= 'ви д╣д╟д╦┼╨╧┐д╡дьд╞дддыесб╝еыеве╔еье╣д╟д╣бг<br>';
+			// ф╝ЪхУбуБзуБВуВЛха┤хРИ
+			$objErr->arrErr['email_mobile'] .= 'тА╗ уБЩуБзуБлчЩ╗щМ▓уБХуВМуБжуБДуВЛуГбуГ╝уГлуВвуГЙуГмуВ╣уБзуБЩуАВ<br>';
 		} else {
-			// ┬р▓ёд╖д┐▓ё░ўд╟двды╛ь╣ч
+			// щААф╝ЪуБЧуБЯф╝ЪхУбуБзуБВуВЛха┤хРИ
 			$leave_time = sfDBDatetoTime($arrRet[0]['update_date']);
 			$now_time = time();
 			$pass_time = $now_time - $leave_time;
-			// ┬р▓ёдлдщ▓┐╗■┤╓-╖╨▓сд╖д╞дддыдл╚╜─ъд╣дыбг
+			// щААф╝ЪуБЛуВЙф╜ХцЩВщЦУ-ч╡МщБОуБЧуБжуБДуВЛуБЛхИдхоЪуБЩуВЛуАВ
 			$limit_time = ENTRY_LIMIT_HOUR * 3600;
 			if ($pass_time < $limit_time) {
-				$objErr->arrErr['email_mobile'] .= 'ви ┬р▓ёдлдщ░ь─ъ┤№┤╓д╬┤╓д╧бв╞▒д╕есб╝еыеве╔еье╣дЄ╗╚═╤д╣дыд│д╚д╧д╟днд▐д╗дєбг<br>';
+				$objErr->arrErr['email_mobile'] .= 'тА╗ щААф╝ЪуБЛуВЙф╕АхоЪцЬЯщЦУуБощЦУуБпуАБхРМуБШуГбуГ╝уГлуВвуГЙуГмуВ╣уВТф╜┐чФиуБЩуВЛуБУуБиуБпуБзуБНуБ╛уБЫуВУуАВ<br>';
 			}
 		}
 	}

@@ -7,37 +7,37 @@
  * 
  *
  *
- * Ã¼Ëö¤Î²èÌÌ²òÁüÅÙ¤Ë¤¢¤ï¤»¤Æ²èÁü¤òÊÑ´¹¤¹¤ë
+ * ç«¯æœ«ã®ç”»é¢è§£åƒåº¦ã«ã‚ã‚ã›ã¦ç”»åƒã‚’å¤‰æ›ã™ã‚‹
  */
 
 define("MOBILE_IMAGE_INC_PATH", realpath(dirname( __FILE__)) . "/../include");
 require_once(MOBILE_IMAGE_INC_PATH . "/image_converter.inc");
 
 /**
- * ²èÁüÊÑ´¹¥¯¥é¥¹
+ * ç”»åƒå¤‰æ›ã‚¯ãƒ©ã‚¹
  */
 class GC_MobileImage {
 	/**
-	 * ²èÁü¤òÃ¼Ëö¤Î²òÁüÅÙ¤Ë¹ç¤ï¤»¤ÆÊÑ´¹¤¹¤ë
-	 * output buffering ÍÑ¥³¡¼¥ë¥Ğ¥Ã¥¯´Ø¿ô
+	 * ç”»åƒã‚’ç«¯æœ«ã®è§£åƒåº¦ã«åˆã‚ã›ã¦å¤‰æ›ã™ã‚‹
+	 * output buffering ç”¨ã‚³ãƒ¼ãƒ«ãƒãƒƒã‚¯é–¢æ•°
 	 *
-	 * @param string ÆşÎÏ
-	 * @return string ½ĞÎÏ
+	 * @param string å…¥åŠ›
+	 * @return string å‡ºåŠ›
 	 */
 	function handler($buffer) {
 
-		// Ã¼Ëö¾ğÊó¤ò¼èÆÀ¤¹¤ë
+		// ç«¯æœ«æƒ…å ±ã‚’å–å¾—ã™ã‚‹
 		$carrier = GC_MobileUserAgent::getCarrier();
 		$model   = GC_MobileUserAgent::getModel();
 
-		// ·ÈÂÓÅÅÏÃ¤Î¾ì¹ç¤Î¤ß½èÍı¤ò¹Ô¤¦
+		// æºå¸¯é›»è©±ã®å ´åˆã®ã¿å‡¦ç†ã‚’è¡Œã†
 		if ($carrier !== FALSE) {
 
-			// HTMLÃæ¤ÎIMG¥¿¥°¤ò¼èÆÀ¤¹¤ë
+			// HTMLä¸­ã®IMGã‚¿ã‚°ã‚’å–å¾—ã™ã‚‹
 			$pattern = '/<img\s+src=[\'"]([^>"]+)[\'"]\s*\/*>/i';
 			$result = preg_match_all($pattern, $buffer, $images);
 
-			// Ã¼Ëö¤Î¾ğÊó¤ò¼èÆÀ¤¹¤ë
+			// ç«¯æœ«ã®æƒ…å ±ã‚’å–å¾—ã™ã‚‹
 			$fp = fopen(MOBILE_IMAGE_INC_PATH . "/mobile_image_map_$carrier.csv", "r");
 			while (($data = fgetcsv($fp, 1000, ",")) !== FALSE) {
 				if ($data[1] == $model || $data[1] == '*') {
@@ -50,25 +50,25 @@ class GC_MobileImage {
 			}
 			fclose($fp);
 
-			// docomo¤Èsoftbank¤Î¾ì¹ç¤Ï²èÁü¥Õ¥¡¥¤¥ë°ì¤Ä¤ËÍøÍÑ²ÄÇ½¤Ê¥µ¥¤¥º¤Î¾å¸Â¤ò·×»»¤¹¤ë
-			// au¤ÏHTML¤Îbyte¿ô¾å¸Â¤Ë²èÁü¥Õ¥¡¥¤¥ë¥µ¥¤¥º¤¬´Ş¤Ş¤ì¤Ê¤¤¤Î¤ÇimageFileSize¤Î¤Ş¤Ş¡£
+			// docomoã¨softbankã®å ´åˆã¯ç”»åƒãƒ•ã‚¡ã‚¤ãƒ«ä¸€ã¤ã«åˆ©ç”¨å¯èƒ½ãªã‚µã‚¤ã‚ºã®ä¸Šé™ã‚’è¨ˆç®—ã™ã‚‹
+			// auã¯HTMLã®byteæ•°ä¸Šé™ã«ç”»åƒãƒ•ã‚¡ã‚¤ãƒ«ã‚µã‚¤ã‚ºãŒå«ã¾ã‚Œãªã„ã®ã§imageFileSizeã®ã¾ã¾ã€‚
 			if ($carrier == "docomo" or $carrier == "softbank") {
-				// ·×»»¼°¡§(ÍøÍÑÃ¼Ëö¤ÇÉ½¼¨²ÄÇ½¤Êcache¥µ¥¤¥º - HTML¤Î¥Ğ¥¤¥È¿ô - ÊÑ´¹¸å¤Î²èÁüÌ¾¤Î¥Ğ¥¤¥È¿ô(ÌÜ°ÂÃÍ) ) / HTMLÃæ¤Î²èÁü¿ô
+				// è¨ˆç®—å¼ï¼š(åˆ©ç”¨ç«¯æœ«ã§è¡¨ç¤ºå¯èƒ½ãªcacheã‚µã‚¤ã‚º - HTMLã®ãƒã‚¤ãƒˆæ•° - å¤‰æ›å¾Œã®ç”»åƒåã®ãƒã‚¤ãƒˆæ•°(ç›®å®‰å€¤) ) / HTMLä¸­ã®ç”»åƒæ•°
 				$temp_imagefilesize = ($cacheSize - strlen($buffer) - (140 * $result) ) / $result;
-				// ·×»»·ë²Ì¤¬Ã¼Ëö¤ÎÉ½¼¨²ÄÇ½¥Õ¥¡¥¤¥ë¥µ¥¤¥º¾å¸Â¤è¤ê¾®¤µ¤¤¾ì¹ç¤Ï·×»»·ë²Ì¤ÎÃÍ¤òÍ­¸ú¤Ë¤¹¤ë
+				// è¨ˆç®—çµæœãŒç«¯æœ«ã®è¡¨ç¤ºå¯èƒ½ãƒ•ã‚¡ã‚¤ãƒ«ã‚µã‚¤ã‚ºä¸Šé™ã‚ˆã‚Šå°ã•ã„å ´åˆã¯è¨ˆç®—çµæœã®å€¤ã‚’æœ‰åŠ¹ã«ã™ã‚‹
 				if ($temp_imagefilesize < $imageFileSize) {
 					$imageFileSize = $temp_imagefilesize;
 				}
 			}
 
-			// ²èÁüÊÑ´¹¤Î¾ğÊó¤ò¥»¥Ã¥È¤¹¤ë
+			// ç”»åƒå¤‰æ›ã®æƒ…å ±ã‚’ã‚»ãƒƒãƒˆã™ã‚‹
 			$imageConverter = New ImageConverter();
 			$imageConverter->setOutputDir(MOBILE_IMAGE_DIR);
 			$imageConverter->setImageType($imageType);
 			$imageConverter->setImageWidth($imageWidth);
 			$imageConverter->setFileSize($imageFileSize);
 
-			// HTMLÃæ¤ÎIMG¥¿¥°¤òÊÑ´¹¸å¤Î¥Õ¥¡¥¤¥ë¥Ñ¥¹¤ËÃÖ´¹¤¹¤ë
+			// HTMLä¸­ã®IMGã‚¿ã‚°ã‚’å¤‰æ›å¾Œã®ãƒ•ã‚¡ã‚¤ãƒ«ãƒ‘ã‚¹ã«ç½®æ›ã™ã‚‹
 			foreach ($images[1] as $key => $value) {
 				$converted = $imageConverter->execute(preg_replace('|^' . URL_DIR . '|', HTML_PATH, $value));
 				if (isset($converted['outputImageName'])) {

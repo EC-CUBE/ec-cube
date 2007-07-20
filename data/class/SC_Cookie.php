@@ -5,23 +5,23 @@
  * http://www.lockon.co.jp/
  */
 
-/*¡¡Æü»şÉ½¼¨ÍÑ¥¯¥é¥¹ */
+/*ã€€æ—¥æ™‚è¡¨ç¤ºç”¨ã‚¯ãƒ©ã‚¹ */
 class SC_Cookie {
 	
 	var $expire;
 	
-	// ¥³¥ó¥¹¥È¥é¥¯¥¿
+	// ã‚³ãƒ³ã‚¹ãƒˆãƒ©ã‚¯ã‚¿
 	function SC_Cookie($day = 365) {
-		// Í­¸ú´ü¸Â
+		// æœ‰åŠ¹æœŸé™
 		$this->expire = time() + ($day * 24 * 3600);
 	}
 	
-	// ¥¯¥Ã¥­¡¼½ñ¤­¹ş¤ß
+	// ã‚¯ãƒƒã‚­ãƒ¼æ›¸ãè¾¼ã¿
 	function setCookie($key, $val) {
 		setcookie($key, $val, $this->expire, "/", DOMAIN_NAME);
 	}
 	
-	// ¥¯¥Ã¥­¡¼¼èÆÀ
+	// ã‚¯ãƒƒã‚­ãƒ¼å–å¾—
 	function getCookie($key) {
 		return $_COOKIE[$key];
 	}

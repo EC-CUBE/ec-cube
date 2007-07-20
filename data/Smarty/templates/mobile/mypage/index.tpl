@@ -5,23 +5,23 @@
  * http://www.lockon.co.jp/
  */
 *}-->
-<div align="center">MY¥Ú¡¼¥¸TOP</div>
+<div align="center">MYãƒšãƒ¼ã‚¸TOP</div>
 <hr>
 
-<!--{$CustomerName1|escape}--> <!--{$CustomerName2|escape}-->ÍÍ<br>
-¤¤¤Ä¤â¤´ÍøÍÑ¤¤¤¿¤À¤­¤¢¤ê¤¬¤È¤¦¤´¤¶¤¤¤Þ¤¹¡£<br>
+<!--{$CustomerName1|escape}--> <!--{$CustomerName2|escape}-->æ§˜<br>
+ã„ã¤ã‚‚ã”åˆ©ç”¨ã„ãŸã ãã‚ã‚ŠãŒã¨ã†ã”ã–ã„ã¾ã™ã€‚<br>
 <br>
-<a href="history.php" accesskey="1"><!--{1|numeric_emoji}-->¹ØÆþÍúÎò</a><br>
-<a href="change.php" accesskey="2"><!--{2|numeric_emoji}-->ÅÐÏ¿ÆâÍÆÊÑ¹¹</a><br>
-<a href="refusal.php" accesskey="3"><!--{3|numeric_emoji}-->Âà²ñ</a><br>
+<a href="history.php" accesskey="1"><!--{1|numeric_emoji}-->è³¼å…¥å±¥æ­´</a><br>
+<a href="change.php" accesskey="2"><!--{2|numeric_emoji}-->ç™»éŒ²å†…å®¹å¤‰æ›´</a><br>
+<a href="refusal.php" accesskey="3"><!--{3|numeric_emoji}-->é€€ä¼š</a><br>
 
 <hr>
 
-<a href="<!--{$smarty.const.MOBILE_URL_CART_TOP}-->" accesskey="9"><!--{9|numeric_emoji}-->¤«¤´¤ò¸«¤ë</a><br>
-<a href="<!--{$smarty.const.MOBILE_URL_SITE_TOP}-->" accesskey="0"><!--{0|numeric_emoji}-->TOP¥Ú¡¼¥¸¤Ø</a><br>
+<a href="<!--{$smarty.const.MOBILE_URL_CART_TOP}-->" accesskey="9"><!--{9|numeric_emoji}-->ã‹ã”ã‚’è¦‹ã‚‹</a><br>
+<a href="<!--{$smarty.const.MOBILE_URL_SITE_TOP}-->" accesskey="0"><!--{0|numeric_emoji}-->TOPãƒšãƒ¼ã‚¸ã¸</a><br>
 
 <br>
 
-<!-- ¢§¥Õ¥Ã¥¿¡¼ ¤³¤³¤«¤é -->
+<!-- â–¼ãƒ•ãƒƒã‚¿ãƒ¼ ã“ã“ã‹ã‚‰ -->
 <!--{include file='footer.tpl'}-->
-<!-- ¢¥¥Õ¥Ã¥¿¡¼ ¤³¤³¤Þ¤Ç -->
+<!-- â–²ãƒ•ãƒƒã‚¿ãƒ¼ ã“ã“ã¾ã§ -->

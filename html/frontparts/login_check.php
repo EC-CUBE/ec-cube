@@ -61,9 +61,9 @@ case 'logout':
 	$mypage_url_search = strpos('.'.$_POST['url'], "mypage");
 	//マイページログイン中はログイン画面へ移行
 	if ($mypage_url_search == 2){
-	header("Location: /mypage/login.php");
+        header("Location: /mypage/login.php");
 	}else{
-	header("Location: " . $_POST['url']);	
+        header("Location: " . $_POST['url']);	
 	}
 	exit;
 	break;
@@ -82,16 +82,15 @@ function lfInitParam() {
 function lfIsValidURL() {
     $site_url  = sfIsHTTPS() ? SSL_URL : SITE_URL;
     $check_url = trim($_POST['url']);
-    
-    // ドメインチェック
-    $pattern = "|^$site_url|";
-    if (!preg_match($pattern, $check_url)) {
+
+    // ローカルドメインチェック
+    if (!preg_match("|^$site_url|", $check_url) && !preg_match("|^/|", $check_url)) {
         return false;
     }
-
+    
     // 改行コード(CR・LF)・NULLバイトチェック
     $pattern = '/\r|\n|\0|%0D|%0A|%00/';
-    if (preg_match_all($pattern, $check_url, $matches)) {
+    if (preg_match_all($pattern, $check_url, $matches) > 0) {
         return false;
     }
     

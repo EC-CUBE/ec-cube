@@ -1,31 +1,31 @@
 <?php  
-require_once($include_dir . "/pear/Auth_HTTP.php");	// PEAR¤ÎAuth_HTTP¥Õ¥¡¥¤¥ë¤ÎÆÉ¤ß¹þ¤ß
+require_once($include_dir . "/pear/Auth_HTTP.php");	// PEARã®Auth_HTTPãƒ•ã‚¡ã‚¤ãƒ«ã®èª­ã¿è¾¼ã¿
 
 //define("DSN", "pgsql://kakinaka_db_user:password@kakinaka.ec-cube.net/kakinaka_db");
 define("DSN", "mysql://eccube_db_user:password@210.18.212.165:3308/eccube_db");
 
-// ¥Ç¡¼¥¿¥Ù¡¼¥¹ÀÜÂ³¥ª¥×¥·¥ç¥ó¤ÎÀßÄê
+// ãƒ‡ãƒ¼ã‚¿ãƒ™ãƒ¼ã‚¹æŽ¥ç¶šã‚ªãƒ—ã‚·ãƒ§ãƒ³ã®è¨­å®š
 $arrDbConn = array(
 	'dsn'=>DSN,
-	'table'=>"dtb_member",              // ¥Æ¡¼¥Ö¥ëÌ¾ 
-	'usernamecol'=>"login_id",			// ¥æ¡¼¥¶Ì¾¤Î¥«¥é¥à
-	'passwordcol'=>"password",			// ¥Ñ¥¹¥ï¡¼¥É¤Î¥«¥é¥à
-	'cryptType'=>"none",				// ¥Ñ¥¹¥ï¡¼¥É¤Î°Å¹æ²½·Á¼°(°Å¹æ²½¤Ê¤·¤Î¤È¤­¤Ïnone)
-	'db_fields'=>"*",					// ¤½¤ÎÂ¾¤Î¥«¥é¥à¤ò¼èÆÀ¤¹¤ë¾ì¹ç¤Ë¤Ï¥«¥é¥à¤ò»ØÄê¤¹¤ë
+	'table'=>"dtb_member",              // ãƒ†ãƒ¼ãƒ–ãƒ«å 
+	'usernamecol'=>"login_id",			// ãƒ¦ãƒ¼ã‚¶åã®ã‚«ãƒ©ãƒ 
+	'passwordcol'=>"password",			// ãƒ‘ã‚¹ãƒ¯ãƒ¼ãƒ‰ã®ã‚«ãƒ©ãƒ 
+	'cryptType'=>"none",				// ãƒ‘ã‚¹ãƒ¯ãƒ¼ãƒ‰ã®æš—å·åŒ–å½¢å¼(æš—å·åŒ–ãªã—ã®ã¨ãã¯none)
+	'db_fields'=>"*",					// ãã®ä»–ã®ã‚«ãƒ©ãƒ ã‚’å–å¾—ã™ã‚‹å ´åˆã«ã¯ã‚«ãƒ©ãƒ ã‚’æŒ‡å®šã™ã‚‹
 );
 
-$objAuthHttp = new Auth_HTTP("DB", $arrDbConn);		// ¥ª¥Ö¥¸¥§¥¯¥ÈÀ¸À®
+$objAuthHttp = new Auth_HTTP("DB", $arrDbConn);		// ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆç”Ÿæˆ
 
-$objAuthHttp->setRealm('user realm');				// ÎÎ°è (realm) Ì¾
-$objAuthHttp->setCancelText('ÀÜÂ³¥¨¥é¡¼'); 		   	// Ç§¾Ú¼ºÇÔ»þ¡¢É½¼¨¤µ¤ì¤ë¥á¥Ã¥»¡¼¥¸
+$objAuthHttp->setRealm('user realm');				// é ˜åŸŸ (realm) å
+$objAuthHttp->setCancelText('æŽ¥ç¶šã‚¨ãƒ©ãƒ¼'); 		   	// èªè¨¼å¤±æ•—æ™‚ã€è¡¨ç¤ºã•ã‚Œã‚‹ãƒ¡ãƒƒã‚»ãƒ¼ã‚¸
 
-$objAuthHttp->start();								// Ç§¾Ú³«»Ï
+$objAuthHttp->start();								// èªè¨¼é–‹å§‹
 
-// Ç§¾Ú¥Á¥§¥Ã¥¯(À®¸ù¡§TRUE¡¡¼ºÇÔ¡§FALSE)
+// èªè¨¼ãƒã‚§ãƒƒã‚¯(æˆåŠŸï¼šTRUEã€€å¤±æ•—ï¼šFALSE)
 if($objAuthHttp->getAuth())				
 {
-	echo "Ç§¾ÚÀ®¸ù";
-	echo "¤è¤¦¤³¤½ " . $objAuthHttp->getAuthData('name') . "¤µ¤ó";	// ¼èÆÀ¤·¤¿¥Ç¡¼¥¿¤ò»ÈÍÑ¤¹¤ë
+	echo "èªè¨¼æˆåŠŸ";
+	echo "ã‚ˆã†ã“ã " . $objAuthHttp->getAuthData('name') . "ã•ã‚“";	// å–å¾—ã—ãŸãƒ‡ãƒ¼ã‚¿ã‚’ä½¿ç”¨ã™ã‚‹
 }
 
 ?>

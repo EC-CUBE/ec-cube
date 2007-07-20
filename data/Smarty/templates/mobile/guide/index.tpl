@@ -5,26 +5,26 @@
  * http://www.lockon.co.jp/
  */
 *}-->
-<center>�����ѥ�����</center>
+<center>ご利用ガイド</center>
 
 <hr>
 
-<!-- ����˥塼 �������� -->
-<a href="usage.php" accesskey="1"><!--{1|numeric_emoji}-->��������ˡ</a><br>
-<a href="privacy.php" accesskey="2"><!--{2|numeric_emoji}-->�ץ饤�Х����ݥꥷ��</a><br>
-<a href="charge.php" accesskey="3"><!--{3|numeric_emoji}-->�̿����ˤĤ���</a><br>
-<a href="kiyaku.php" accesskey="4"><!--{4|numeric_emoji}-->�����ѵ���</a><br>
-<a href="about.php" accesskey="5"><!--{5|numeric_emoji}-->���Ĳ�ҾҲ�</a><br>
-<!-- ����˥塼 �����ޤ� -->
+<!-- ▼メニュー ここから -->
+<a href="usage.php" accesskey="1"><!--{1|numeric_emoji}-->ご利用方法</a><br>
+<a href="privacy.php" accesskey="2"><!--{2|numeric_emoji}-->プライバシーポリシー</a><br>
+<a href="charge.php" accesskey="3"><!--{3|numeric_emoji}-->通信料について</a><br>
+<a href="kiyaku.php" accesskey="4"><!--{4|numeric_emoji}-->ご利用規約</a><br>
+<a href="about.php" accesskey="5"><!--{5|numeric_emoji}-->運営会社紹介</a><br>
+<!-- ▲メニュー ここまで -->
 
 <br>
 <hr>
 
-<a href="<!--{$smarty.const.MOBILE_URL_CART_TOP}-->" accesskey="9"><!--{9|numeric_emoji}-->�����򸫤�</a><br>
-<a href="<!--{$smarty.const.MOBILE_URL_SITE_TOP}-->" accesskey="0"><!--{0|numeric_emoji}-->TOP�ڡ�����</a><br>
+<a href="<!--{$smarty.const.MOBILE_URL_CART_TOP}-->" accesskey="9"><!--{9|numeric_emoji}-->かごを見る</a><br>
+<a href="<!--{$smarty.const.MOBILE_URL_SITE_TOP}-->" accesskey="0"><!--{0|numeric_emoji}-->TOPページへ</a><br>
 
 <br>
 
-<!-- ���եå��� �������� -->
+<!-- ▼フッター ここから -->
 <!--{include file='footer.tpl'}-->
-<!-- ���եå��� �����ޤ� -->
+<!-- ▲フッター ここまで -->

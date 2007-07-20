@@ -14,7 +14,7 @@ class LC_Page {
 	var $tpl_onload;
 	var $tpl_message;
 	function CPage() {
-		$this->tpl_message = "½»½ê¤ò¸¡º÷¤·¤Æ¤¤¤Þ¤¹¡£";
+		$this->tpl_message = "ä½æ‰€ã‚’æ¤œç´¢ã—ã¦ã„ã¾ã™ã€‚";
 	}
 }
 
@@ -22,58 +22,58 @@ $conn = new SC_DBconn(ZIP_DSN);
 $objPage = new LC_Page();
 $objView = new SC_SiteView(false);
 
-// ÆþÎÏ¥¨¥é¡¼¥Á¥§¥Ã¥¯
+// å…¥åŠ›ã‚¨ãƒ©ãƒ¼ãƒã‚§ãƒƒã‚¯
 $arrErr = fnErrorCheck();
 
-// ÆþÎÏ¥¨¥é¡¼¤Î¾ì¹ç¤Ï½ªÎ»
+// å…¥åŠ›ã‚¨ãƒ©ãƒ¼ã®å ´åˆã¯çµ‚äº†
 if(count($arrErr) > 0) {
 	$objPage->tpl_start = "window.close();";
 }
 
-// Í¹ÊØÈÖ¹æ¸¡º÷Ê¸ºîÀ®
+// éƒµä¾¿ç•ªå·æ¤œç´¢æ–‡ä½œæˆ
 $zipcode = $_GET['zip1'].$_GET['zip2'];
 $zipcode = mb_convert_kana($zipcode ,"n");
 $sqlse = "SELECT state, city, town FROM mtb_zip WHERE zipcode = ?";
 
 $data_list = $conn->getAll($sqlse, array($zipcode));
 
-// ¥¤¥ó¥Ç¥Ã¥¯¥¹¤ÈÃÍ¤òÈ¿Å¾¤µ¤»¤ë¡£
+// ã‚¤ãƒ³ãƒ‡ãƒƒã‚¯ã‚¹ã¨å€¤ã‚’åè»¢ã•ã›ã‚‹ã€‚
 $arrREV_PREF = array_flip($arrPref);
 
 $objPage->tpl_state = $arrREV_PREF[$data_list[0]['state']];
 $objPage->tpl_city = $data_list[0]['city'];
 $town =  $data_list[0]['town'];
 /*
-	ÁíÌ³¾Ê¤«¤é¥À¥¦¥ó¥í¡¼¥É¤·¤¿¥Ç¡¼¥¿¤ò¤½¤Î¤Þ¤Þ¥¤¥ó¥Ý¡¼¥È¤¹¤ë¤È
-	°Ê²¼¤Î¤è¤¦¤ÊÊ¸»úÎó¤¬Æþ¤Ã¤Æ¤¤¤ë¤Î¤Ç	ÂÐºö¤¹¤ë¡£
-	¡¦¡Ê£±¢·£±£¹ÃúÌÜ¡Ë
-	¡¦°Ê²¼¤Ë·ÇºÜ¤¬¤Ê¤¤¾ì¹ç
+	ç·å‹™çœã‹ã‚‰ãƒ€ã‚¦ãƒ³ãƒ­ãƒ¼ãƒ‰ã—ãŸãƒ‡ãƒ¼ã‚¿ã‚’ãã®ã¾ã¾ã‚¤ãƒ³ãƒãƒ¼ãƒˆã™ã‚‹ã¨
+	ä»¥ä¸‹ã®ã‚ˆã†ãªæ–‡å­—åˆ—ãŒå…¥ã£ã¦ã„ã‚‹ã®ã§	å¯¾ç­–ã™ã‚‹ã€‚
+	ãƒ»ï¼ˆï¼‘~ï¼‘ï¼™ä¸ç›®ï¼‰
+	ãƒ»ä»¥ä¸‹ã«æŽ²è¼‰ãŒãªã„å ´åˆ
 */
-$town = ereg_replace("¡Ê.*¡Ë$","",$town);
-$town = ereg_replace("°Ê²¼¤Ë·ÇºÜ¤¬¤Ê¤¤¾ì¹ç","",$town);
+$town = ereg_replace("ï¼ˆ.*ï¼‰$","",$town);
+$town = ereg_replace("ä»¥ä¸‹ã«æŽ²è¼‰ãŒãªã„å ´åˆ","",$town);
 $objPage->tpl_town = $town;
 
-// Í¹ÊØÈÖ¹æ¤¬È¯¸«¤µ¤ì¤¿¾ì¹ç
+// éƒµä¾¿ç•ªå·ãŒç™ºè¦‹ã•ã‚ŒãŸå ´åˆ
 if(count($data_list) > 0) {
 	$func = "fnPutAddress('" . $_GET['input1'] . "','" . $_GET['input2']. "');";
 	$objPage->tpl_onload = "$func";
 	$objPage->tpl_start = "window.close();";
 } else {
-	$objPage->tpl_message = "³ºÅö¤¹¤ë½»½ê¤¬¸«¤Ä¤«¤ê¤Þ¤»¤ó¤Ç¤·¤¿¡£";
+	$objPage->tpl_message = "è©²å½“ã™ã‚‹ä½æ‰€ãŒè¦‹ã¤ã‹ã‚Šã¾ã›ã‚“ã§ã—ãŸã€‚";
 }
 
-/* ¥Ú¡¼¥¸¤ÎÉ½¼¨¡¡*/
+/* ãƒšãƒ¼ã‚¸ã®è¡¨ç¤ºã€€*/
 $objView->assignobj($objPage);
 $objView->display("input_zip.tpl");
 
-/* ÆþÎÏ¥¨¥é¡¼¤Î¥Á¥§¥Ã¥¯ */
+/* å…¥åŠ›ã‚¨ãƒ©ãƒ¼ã®ãƒã‚§ãƒƒã‚¯ */
 function fnErrorCheck() {
-	// ¥¨¥é¡¼¥á¥Ã¥»¡¼¥¸ÇÛÎó¤Î½é´ü²½
+	// ã‚¨ãƒ©ãƒ¼ãƒ¡ãƒƒã‚»ãƒ¼ã‚¸é…åˆ—ã®åˆæœŸåŒ–
 	$objErr = new SC_CheckError();
 	
-	// Í¹ÊØÈÖ¹æ
-	$objErr->doFunc( array("Í¹ÊØÈÖ¹æ1",'zip1',ZIP01_LEN ) ,array( "NUM_COUNT_CHECK" ) );
-	$objErr->doFunc( array("Í¹ÊØÈÖ¹æ2",'zip2',ZIP02_LEN ) ,array( "NUM_COUNT_CHECK" ) );
+	// éƒµä¾¿ç•ªå·
+	$objErr->doFunc( array("éƒµä¾¿ç•ªå·1",'zip1',ZIP01_LEN ) ,array( "NUM_COUNT_CHECK" ) );
+	$objErr->doFunc( array("éƒµä¾¿ç•ªå·2",'zip2',ZIP02_LEN ) ,array( "NUM_COUNT_CHECK" ) );
 	
 	return $objErr->arrErr;
 }

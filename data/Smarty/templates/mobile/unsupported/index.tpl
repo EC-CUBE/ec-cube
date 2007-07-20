@@ -5,8 +5,8 @@
  * http://www.lockon.co.jp/
  */
 *}-->
-<!--¢§CONTENTS-->
-<!--¢§MAIN ONTENTS-->
-ÈóÂÐ±þµ¡¼ï¤Ç¤¹¡£
-<!--¢¥MAIN ONTENTS-->
-<!--¢¥CONTENTS-->
+<!--â–¼CONTENTS-->
+<!--â–¼MAIN ONTENTS-->
+éžå¯¾å¿œæ©Ÿç¨®ã§ã™ã€‚
+<!--â–²MAIN ONTENTS-->
+<!--â–²CONTENTS-->

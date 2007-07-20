@@ -5,7 +5,7 @@
  * http://www.lockon.co.jp/
  */
 *}-->
-<!--¡¡-->
+<!--ã€€-->
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="ja" lang="ja">
 
@@ -20,7 +20,7 @@
 <script type="text/javascript" src="<!--{$smarty.const.URL_DIR}-->js/site.js"></script>
 <script type="text/javascript" src="<!--{$smarty.const.URL_DIR}-->js/admin.js"></script>
 <!--{include file='css/contents.tpl'}-->
-<title>EC¥µ¥¤¥È´ÉÍı¼Ô¥Ú¡¼¥¸</title>
+<title>ECã‚µã‚¤ãƒˆç®¡ç†è€…ãƒšãƒ¼ã‚¸</title>
 <script type="text/javascript">
 <!--
 self.moveTo(20,20);self.focus();
@@ -34,7 +34,7 @@ self.moveTo(20,20);self.focus();
 </noscript>
 
 <div align="center">
-<!--¡ú¡ú¥á¥¤¥ó¥³¥ó¥Æ¥ó¥Ä¡ú¡ú-->
+<!--â˜…â˜…ãƒ¡ã‚¤ãƒ³ã‚³ãƒ³ãƒ†ãƒ³ãƒ„â˜…â˜…-->
 <table width="500" border="0" cellspacing="0" cellpadding="0" summary=" ">
 <form name="form1" id="form1" method="post" action="" enctype="multipart/form-data">
 <input type="hidden" name="mode" value="edit">
@@ -47,9 +47,9 @@ self.moveTo(20,20);self.focus();
 <input type="hidden" name="charge_flg" value="<!--{$charge_flg}-->">
 	<tr valign="top">
 		<td class="mainbg">
-			<!--¢§ÅĞÏ¿¥Æ¡¼¥Ö¥ë¤³¤³¤«¤é-->
+			<!--â–¼ç™»éŒ²ãƒ†ãƒ¼ãƒ–ãƒ«ã“ã“ã‹ã‚‰-->
 			<table width="500" border="0" cellspacing="0" cellpadding="0" summary=" ">
-				<!--¥á¥¤¥ó¥¨¥ê¥¢-->
+				<!--ãƒ¡ã‚¤ãƒ³ã‚¨ãƒªã‚¢-->
 				<tr>
 					<td align="center">
 						<table width="470" border="0" cellspacing="0" cellpadding="0" summary=" ">
@@ -67,7 +67,7 @@ self.moveTo(20,20);self.focus();
 										</tr>
 										<tr>
 											<td background="<!--{$smarty.const.URL_DIR}-->img/contents/contents_title_left_bg.gif"><img src="<!--{$smarty.const.URL_DIR}-->img/contents/contents_title_left.gif" width="22" height="12" alt=""></td>
-											<td bgcolor="#636469" width="400" class="fs14n"><span class="white"><!--¥³¥ó¥Æ¥ó¥Ä¥¿¥¤¥È¥ë-->»ÙÊ§ÊıË¡ÅĞÏ¿¡¦ÊÔ½¸</span></td>
+											<td bgcolor="#636469" width="400" class="fs14n"><span class="white"><!--ã‚³ãƒ³ãƒ†ãƒ³ãƒ„ã‚¿ã‚¤ãƒˆãƒ«-->æ”¯æ‰•æ–¹æ³•ç™»éŒ²ãƒ»ç·¨é›†</span></td>
 											<td background="<!--{$smarty.const.URL_DIR}-->img/contents/contents_title_right_bg.gif"><img src="<!--{$smarty.const.URL_DIR}-->img/common/_.gif" width="18" height="1" alt=""></td>
 										</tr>
 										<tr>
@@ -80,7 +80,7 @@ self.moveTo(20,20);self.focus();
 	
 									<table width="440" border="0" cellspacing="1" cellpadding="8" summary=" ">
 										<tr class="fs12n">
-											<td width="100" bgcolor="#f0f0f0">»ÙÊ§ÊıË¡<span class="red"> *</span></td>
+											<td width="100" bgcolor="#f0f0f0">æ”¯æ‰•æ–¹æ³•<span class="red"> *</span></td>
 											<td width="340" bgcolor="#ffffff">
 											<!--{assign var=key value="payment_method"}-->
 											<span class="red12"><!--{$arrErr[$key]}--></span>
@@ -88,51 +88,51 @@ self.moveTo(20,20);self.focus();
 											</td>
 										</tr>
 										<tr class="fs12n">
-											<td width="100" bgcolor="#f0f0f0">¼ê¿ôÎÁ<span class="red"> *</span></td>
+											<td width="100" bgcolor="#f0f0f0">æ‰‹æ•°æ–™<span class="red"> *</span></td>
 											<td width="340" bgcolor="#ffffff">
 											<!--{if $charge_flg == 2}-->
-											ÀßÄê¤Ç¤­¤Ş¤»¤ó
+											è¨­å®šã§ãã¾ã›ã‚“
 											<!--{else}-->
 											<!--{assign var=key value="charge"}-->
 											<span class="red12"><!--{$arrErr[$key]}--></span>
 											<input type="text" name="<!--{$arrForm[$key].keyname}-->" value="<!--{$arrForm[$key].value|escape}-->" size="10" class="box10" maxlength="<!--{$arrForm[$key].length}-->" style="<!--{$arrErr[$key]|sfGetErrorColor}-->" />
-											 ±ß
+											 å††
 											<!--{/if}-->
 											</td>
 										</tr>
 										<tr class="fs12n">
-											<td width="100" bgcolor="#f0f0f0">ÍøÍÑ¾ò·ï(±ß)</td>
+											<td width="100" bgcolor="#f0f0f0">åˆ©ç”¨æ¡ä»¶(å††)</td>
 											<td width="340" bgcolor="#ffffff">
 											<!--{assign var=key_from value="rule"}-->
 											<!--{assign var=key_to value="upper_rule"}-->
 											<span class="red12"><!--{$arrErr[$key_from]}--></span>
 											<span class="red12"><!--{$arrErr[$key_to]}--></span>
 											<input type="text" name="<!--{$arrForm[$key_from].keyname}-->" value="<!--{$arrForm[$key_from].value|escape}-->" size="10" class="box10" maxlength="<!--{$arrForm[$key_from].length}-->" style="<!--{$arrErr[$key_from]|sfGetErrorColor}-->" />
-											 ±ß
-											¡Á
+											 å††
+											ã€œ
 											<input type="text" name="<!--{$arrForm[$key_to].keyname}-->" value="<!--{$arrForm[$key_to].value|escape}-->" size="10" class="box10" maxlength="<!--{$arrForm[$key_to].length}-->" style="<!--{$arrErr[$key_to]|sfGetErrorColor}-->" />
-											 ±ß</td>
+											 å††</td>
 										</tr>
 										<tr class="fs12n">
-											<td width="100" bgcolor="#f0f0f0">ÇÛÁ÷¥µ¡¼¥Ó¥¹<span class="red"> *</span></td>
+											<td width="100" bgcolor="#f0f0f0">é…é€ã‚µãƒ¼ãƒ“ã‚¹<span class="red"> *</span></td>
 											<td width="340" bgcolor="#ffffff">
 											<!--{assign var=key value="deliv_id"}-->
 											<span class="red12"><!--{$arrErr[$key]}--></span>
 											<select name="deliv_id" style="<!--{$arrErr[$key]|sfGetErrorColor}-->">
-											<option value="">»ØÄê¤·¤Ê¤¤</option>
+											<option value="">æŒ‡å®šã—ãªã„</option>
 											<!--{html_options options=$arrDelivList selected=$arrForm[$key].value}-->
 											</select></td>
 										</tr>
 										<tr class="fs12n">
-											<td width="100" bgcolor="#f0f0f0">¥í¥´²èÁü</td>
+											<td width="100" bgcolor="#f0f0f0">ãƒ­ã‚´ç”»åƒ</td>
 											<td width="340" bgcolor="#ffffff">
 											<!--{assign var=key value="payment_image"}-->
 											<span class="red12"><!--{$arrErr[$key]}--></span>
 											<!--{if $arrFile[$key].filepath != ""}-->
-											<img src="<!--{$arrFile[$key].filepath}-->" alt="<!--{$arrForm.name|escape}-->">¡¡<a href="" onclick="fnModeSubmit('delete_image', 'image_key', '<!--{$key}-->'); return false;">[²èÁü¤Î¼è¤ê¾Ã¤·]</a><br>
+											<img src="<!--{$arrFile[$key].filepath}-->" alt="<!--{$arrForm.name|escape}-->">ã€€<a href="" onclick="fnModeSubmit('delete_image', 'image_key', '<!--{$key}-->'); return false;">[ç”»åƒã®å–ã‚Šæ¶ˆã—]</a><br>
 											<!--{/if}-->
 											<input type="file" name="<!--{$key}-->" size="25" class="box25" style="<!--{$arrErr[$key]|sfGetErrorColor}-->" />
-											<input type="button" name="btn" onclick="fnModeSubmit('upload_image', 'image_key', '<!--{$key}-->')" value="¥¢¥Ã¥×¥í¡¼¥É"></td>
+											<input type="button" name="btn" onclick="fnModeSubmit('upload_image', 'image_key', '<!--{$key}-->')" value="ã‚¢ãƒƒãƒ—ãƒ­ãƒ¼ãƒ‰"></td>
 										</tr>						
 									</table>
 	
@@ -147,7 +147,7 @@ self.moveTo(20,20);self.focus();
 											<td bgcolor="#e9e7de" align="center">
 											<table border="0" cellspacing="0" cellpadding="0" summary=" ">
 												<tr>
-													<td><input type="image" onMouseover="chgImgImageSubmit('<!--{$smarty.const.URL_DIR}-->img/contents/btn_regist_on.jpg',this)" onMouseout="chgImgImageSubmit('<!--{$smarty.const.URL_DIR}-->img/contents/btn_regist.jpg',this)" src="<!--{$smarty.const.URL_DIR}-->img/contents/btn_regist.jpg" width="123" height="24" alt="¤³¤ÎÆâÍÆ¤ÇÅĞÏ¿¤¹¤ë" border="0" name="subm" ></td>
+													<td><input type="image" onMouseover="chgImgImageSubmit('<!--{$smarty.const.URL_DIR}-->img/contents/btn_regist_on.jpg',this)" onMouseout="chgImgImageSubmit('<!--{$smarty.const.URL_DIR}-->img/contents/btn_regist.jpg',this)" src="<!--{$smarty.const.URL_DIR}-->img/contents/btn_regist.jpg" width="123" height="24" alt="ã“ã®å†…å®¹ã§ç™»éŒ²ã™ã‚‹" border="0" name="subm" ></td>
 												</tr>
 											</table>
 											</td>
@@ -168,14 +168,14 @@ self.moveTo(20,20);self.focus();
 						</table>
 					</td>
 				</tr>
-				<!--¥á¥¤¥ó¥¨¥ê¥¢-->
+				<!--ãƒ¡ã‚¤ãƒ³ã‚¨ãƒªã‚¢-->
 			</table>
-			<!--¢¥ÅĞÏ¿¥Æ¡¼¥Ö¥ë¤³¤³¤Ş¤Ç-->
+			<!--â–²ç™»éŒ²ãƒ†ãƒ¼ãƒ–ãƒ«ã“ã“ã¾ã§-->
 		</td>
 	</tr>
 </form>
 </table>
-<!--¡ú¡ú¥á¥¤¥ó¥³¥ó¥Æ¥ó¥Ä¡ú¡ú-->
+<!--â˜…â˜…ãƒ¡ã‚¤ãƒ³ã‚³ãƒ³ãƒ†ãƒ³ãƒ„â˜…â˜…-->
 </div>
 
 </body>

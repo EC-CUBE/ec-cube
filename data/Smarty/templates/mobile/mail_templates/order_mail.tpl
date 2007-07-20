@@ -5,24 +5,24 @@
  * http://www.lockon.co.jp/
  */
 *}-->
-<!--{$arrOrder.order_name01}--> <!--{$arrOrder.order_name02}--> ÍÍ
+<!--{$arrOrder.order_name01}--> <!--{$arrOrder.order_name02}--> æ§˜
 
-¢£ÇÛÁ÷¾ðÊó¤È¤´ÀÁµá¶â³Û
-¤´ÃíÊ¸ÈÖ¹æ¡§<!--{$arrOrder.order_id}-->
-¤ª»ÙÊ§¹ç·×¡§¡ï <!--{$arrOrder.payment_total|number_format|default:0}-->
-¤´·èºÑÊýË¡¡§<!--{$arrOrder.payment_method}-->
-¡¡¤ªÆÏ¤±Æü¡§<!--{$arrOrder.deliv_date|default:"»ØÄê¤Ê¤·"}-->
-¤ªÆÏ¤±»þ´Ö¡§<!--{$arrOrder.deliv_time|default:"»ØÄê¤Ê¤·"}-->
-¡ý¤ªÆÏ¤±Àè
-¡¡¤ªÌ¾Á°¡¡¡§<!--{$arrOrder.deliv_name01}--> <!--{$arrOrder.deliv_name02}-->¡¡ÍÍ
-¡¡Í¹ÊØÈÖ¹æ¡§¢©<!--{$arrOrder.deliv_zip01}-->-<!--{$arrOrder.deliv_zip02}-->
-¡¡¤´½»½ê¡¡¡§<!--{$arrOrder.deliv_pref}--><!--{$arrOrder.deliv_addr01}--><!--{$arrOrder.deliv_addr02}-->
-¡¡ÅÅÏÃÈÖ¹æ¡§<!--{$arrOrder.deliv_tel01}-->-<!--{$arrOrder.deliv_tel02}-->-<!--{$arrOrder.deliv_tel03}-->
+â– é…é€æƒ…å ±ã¨ã”è«‹æ±‚é‡‘é¡
+ã”æ³¨æ–‡ç•ªå·ï¼š<!--{$arrOrder.order_id}-->
+ãŠæ”¯æ‰•åˆè¨ˆï¼šï¿¥ <!--{$arrOrder.payment_total|number_format|default:0}-->
+ã”æ±ºæ¸ˆæ–¹æ³•ï¼š<!--{$arrOrder.payment_method}-->
+ã€€ãŠå±Šã‘æ—¥ï¼š<!--{$arrOrder.deliv_date|default:"æŒ‡å®šãªã—"}-->
+ãŠå±Šã‘æ™‚é–“ï¼š<!--{$arrOrder.deliv_time|default:"æŒ‡å®šãªã—"}-->
+â—ŽãŠå±Šã‘å…ˆ
+ã€€ãŠåå‰ã€€ï¼š<!--{$arrOrder.deliv_name01}--> <!--{$arrOrder.deliv_name02}-->ã€€æ§˜
+ã€€éƒµä¾¿ç•ªå·ï¼šã€’<!--{$arrOrder.deliv_zip01}-->-<!--{$arrOrder.deliv_zip02}-->
+ã€€ã”ä½æ‰€ã€€ï¼š<!--{$arrOrder.deliv_pref}--><!--{$arrOrder.deliv_addr01}--><!--{$arrOrder.deliv_addr02}-->
+ã€€é›»è©±ç•ªå·ï¼š<!--{$arrOrder.deliv_tel01}-->-<!--{$arrOrder.deliv_tel02}-->-<!--{$arrOrder.deliv_tel03}-->
 
-¢£¤´ÃíÊ¸¾¦ÉÊÌÀºÙ
+â– ã”æ³¨æ–‡å•†å“æ˜Žç´°
 <!--{section name=cnt loop=$arrOrderDetail}-->
-¾¦ÉÊÌ¾: <!--{$arrOrderDetail[cnt].product_name}--> <!--{$arrOrderDetail[cnt].classcategory_name1}--> <!--{$arrOrderDetail[cnt].classcategory_name2}-->
-¿ôÎÌ¡§<!--{$arrOrderDetail[cnt].quantity}--> ¸Ä
-¶â³Û¡§¡ï <!--{$arrOrderDetail[cnt].price|sfPreTax:$arrInfo.tax:$arrInfo.tax_rule|number_format}-->
+å•†å“å: <!--{$arrOrderDetail[cnt].product_name}--> <!--{$arrOrderDetail[cnt].classcategory_name1}--> <!--{$arrOrderDetail[cnt].classcategory_name2}-->
+æ•°é‡ï¼š<!--{$arrOrderDetail[cnt].quantity}--> å€‹
+é‡‘é¡ï¼šï¿¥ <!--{$arrOrderDetail[cnt].price|sfPreTax:$arrInfo.tax:$arrInfo.tax_rule|number_format}-->
 
 <!--{/section}-->

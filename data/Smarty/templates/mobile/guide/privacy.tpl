@@ -5,24 +5,24 @@
  * http://www.lockon.co.jp/
  */
 *}-->
-<center>�ץ饤�Х����ݥꥷ��</center>
+<center>プライバシーポリシー</center>
 
 <hr>
 
-<!-- ����ʸ �������� -->
-<!--{$arrSiteInfo.company_name|escape}-->�ϡ��Ŀ;����ݸ�ν������˴դߡ��ָĿ;�����ݸ�˴ؤ���ˡΧ�׵ڤ��ܥץ饤�Х����ݥꥷ�����餷�����Ҥ��ޤΥץ饤�Х����ݸ���ؤ�ޤ���<br>
-���Ŀ;�������<br>
-���Ҥ��޸Ŀͤ˴ؤ������(�ʲ��ָĿ;���פȤ����ޤ�)�Ǥ��äơ����Ҥ��ޤΤ�̾���������ꡢ�����ֹ�ʤ��������Ҥ��޸Ŀͤ��̤��뤳�Ȥ��Ǥ������򤵤��ޤ���¾�ξ�����Ȥ߹�碌�ƾȹ礹�뤳�Ȥˤ��Ŀͤ��̤��뤳�Ȥ��Ǥ�������ޤޤ�ޤ���<br>
-<!-- ����ʸ �����ޤ� -->
+<!-- ▼本文 ここから -->
+<!--{$arrSiteInfo.company_name|escape}-->は、個人情報保護の重要性に鑑み、「個人情報の保護に関する法律」及び本プライバシーポリシーを遵守し、お客さまのプライバシー保護に努めます。<br>
+　個人情報の定義<br>
+お客さま個人に関する情報(以下「個人情報」といいます)であって、お客さまのお名前、ご住所、電話番号など当該お客さま個人を識別することができる情報をさします。他の情報と組み合わせて照合することにより個人を識別することができる情報も含まれます。<br>
+<!-- ▲本文 ここまで -->
 
 <br>
 <hr>
 
-<a href="<!--{$smarty.const.MOBILE_URL_CART_TOP}-->" accesskey="9"><!--{9|numeric_emoji}-->�����򸫤�</a><br>
-<a href="<!--{$smarty.const.MOBILE_URL_SITE_TOP}-->" accesskey="0"><!--{0|numeric_emoji}-->TOP�ڡ�����</a><br>
+<a href="<!--{$smarty.const.MOBILE_URL_CART_TOP}-->" accesskey="9"><!--{9|numeric_emoji}-->かごを見る</a><br>
+<a href="<!--{$smarty.const.MOBILE_URL_SITE_TOP}-->" accesskey="0"><!--{0|numeric_emoji}-->TOPページへ</a><br>
 
 <br>
 
-<!-- ���եå��� �������� -->
+<!-- ▼フッター ここから -->
 <!--{include file='footer.tpl'}-->
-<!-- ���եå��� �����ޤ� -->
+<!-- ▲フッター ここまで -->

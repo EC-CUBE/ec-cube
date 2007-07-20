@@ -5,58 +5,58 @@
  * http://www.lockon.co.jp/
  */
 *}-->
-<!--¢§CONTENTS-->
-<!--¢§MAIN CONTENTS-->
-<!--ŽÀŽ²ŽÄŽÙ¤³¤³¤«¤é-->
-<!--¡ú¾¦ÉÊÌ¾¡ú-->
+<!--â–¼CONTENTS-->
+<!--â–¼MAIN CONTENTS-->
+<!--ï¾€ï½²ï¾„ï¾™ã“ã“ã‹ã‚‰-->
+<!--â˜…å•†å“åâ˜…-->
 <div align="center"><!--{$arrProduct.name|escape}--></div>
 <hr>
-<!--ŽÀŽ²ŽÄŽÙ¤³¤³¤Þ¤Ç-->
-<!--¾ÜºÙ¤³¤³¤«¤é-->
+<!--ï¾€ï½²ï¾„ï¾™ã“ã“ã¾ã§-->
+<!--è©³ç´°ã“ã“ã‹ã‚‰-->
 <!--{assign var=key value="main_image"}-->
 <img src="<!--{$arrFile[$key].filepath}-->"><br>
-<!--¡ú¾ÜºÙŽÒŽ²ŽÝŽºŽÒŽÝŽÄ¡ú-->
+<!--â˜…è©³ç´°ï¾’ï½²ï¾ï½ºï¾’ï¾ï¾„â˜…-->
 [emoji:76]<!--{$arrProduct.main_comment|nl2br}--><br>
 <br>
-<!--Ž±Ž²ŽºŽÝ-->
-<!--¡ú²Á³Ê¡ú-->
-<font color="#FF0000">²Á³Ê(ÀÇ¹þ):
+<!--ï½±ï½²ï½ºï¾-->
+<!--â˜…ä¾¡æ ¼â˜…-->
+<font color="#FF0000">ä¾¡æ ¼(ç¨Žè¾¼):
 <!--{if $arrProduct.price02_min == $arrProduct.price02_max}-->
 	<!--{$arrProduct.price02_min|sfPreTax:$arrSiteInfo.tax:$arrSiteInfo.tax_rule|number_format}-->
 <!--{else}-->
-	<!--{$arrProduct.price02_min|sfPreTax:$arrSiteInfo.tax:$arrSiteInfo.tax_rule|number_format}-->Ž¥<!--{$arrProduct.price02_max|sfPreTax:$arrSiteInfo.tax:$arrSiteInfo.tax_rule|number_format}-->
+	<!--{$arrProduct.price02_min|sfPreTax:$arrSiteInfo.tax:$arrSiteInfo.tax_rule|number_format}-->ï½¥<!--{$arrProduct.price02_max|sfPreTax:$arrSiteInfo.tax:$arrSiteInfo.tax_rule|number_format}-->
 <!--{/if}-->
-±ß</font><br/>
+å††</font><br/>
 <!--{if $arrProduct.price01_max > 0}-->
-<font color="#FF0000">»²¹Í»Ô¾ì²Á³Ê:
+<font color="#FF0000">å‚è€ƒå¸‚å ´ä¾¡æ ¼:
 <!--{if $arrProduct.price01_min == $arrProduct.price01_max}-->
 <!--{$arrProduct.price01_min|number_format}-->
 <!--{else}-->
-<!--{$arrProduct.price01_min|number_format}-->Ž¥<!--{$arrProduct.price01_max|number_format}-->
+<!--{$arrProduct.price01_min|number_format}-->ï½¥<!--{$arrProduct.price01_max|number_format}-->
 <!--{/if}-->
-±ß</font><br>
+å††</font><br>
 <!--{/if}-->
 <form name="form1" method="post" action="<!--{$smarty.server.REQUEST_URI|escape}-->">
 	<input type="hidden" name="mode" value="select">
 	<input type="hidden" name="product_id" value="<!--{$tpl_product_id}-->">
 <!--{if $tpl_stock_find}-->
-	<!--¡ú¾¦ÉÊ¤òÁª¤Ö¡ú-->
-	<center><input type="submit" name="select" id="cart" value="¤³¤Î¾¦ÉÊ¤òÁª¤Ö"></center>
+	<!--â˜…å•†å“ã‚’é¸ã¶â˜…-->
+	<center><input type="submit" name="select" id="cart" value="ã“ã®å•†å“ã‚’é¸ã¶"></center>
 <!--{else}-->
-	<font color="#FF0000">¿½¤·Ìõ¤´¤¶¤¤¤Þ¤»¤ó¤¬Ž¤Âþº£ÉÊÀÚ¤ìÃæ¤Ç¤¹Ž¡</font>
+	<font color="#FF0000">ç”³ã—è¨³ã”ã–ã„ã¾ã›ã‚“ãŒï½¤åªä»Šå“åˆ‡ã‚Œä¸­ã§ã™ï½¡</font>
 <!--{/if}-->
 </form>
-<!--¾ÜºÙ¤³¤³¤Þ¤Ç-->
-<!--¢¥CONTENTS-->
+<!--è©³ç´°ã“ã“ã¾ã§-->
+<!--â–²CONTENTS-->
 
 <br>
 <hr>
 
-<a href="<!--{$smarty.const.MOBILE_URL_CART_TOP}-->" accesskey="9"><!--{9|numeric_emoji}-->¤«¤´¤ò¸«¤ë</a><br>
-<a href="<!--{$smarty.const.MOBILE_URL_SITE_TOP}-->" accesskey="0"><!--{0|numeric_emoji}-->TOP¥Ú¡¼¥¸¤Ø</a><br>
+<a href="<!--{$smarty.const.MOBILE_URL_CART_TOP}-->" accesskey="9"><!--{9|numeric_emoji}-->ã‹ã”ã‚’è¦‹ã‚‹</a><br>
+<a href="<!--{$smarty.const.MOBILE_URL_SITE_TOP}-->" accesskey="0"><!--{0|numeric_emoji}-->TOPãƒšãƒ¼ã‚¸ã¸</a><br>
 
 <br>
 
-<!-- ¢§¥Õ¥Ã¥¿¡¼ ¤³¤³¤«¤é -->
+<!-- â–¼ãƒ•ãƒƒã‚¿ãƒ¼ ã“ã“ã‹ã‚‰ -->
 <!--{include file='footer.tpl'}-->
-<!-- ¢¥¥Õ¥Ã¥¿¡¼ ¤³¤³¤Þ¤Ç -->
+<!-- â–²ãƒ•ãƒƒã‚¿ãƒ¼ ã“ã“ã¾ã§ -->

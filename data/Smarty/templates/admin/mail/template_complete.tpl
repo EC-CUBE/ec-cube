@@ -5,19 +5,19 @@
  * http://www.lockon.co.jp/
  */
 *}-->
-<!--║З║З╔А╔╓╔С╔Ё╔С╔ф╔С╔д║З║З-->
+<!--Б≤┘Б≤┘Ц┐║Ц┌╓Ц┐ЁЦ┌ЁЦ┐ЁЦ┐├Ц┐ЁЦ┐└Б≤┘Б≤┘-->
 <table width="878" border="0" cellspacing="0" cellpadding="0" summary=" ">
 <form name="form1" id="form1" method="post" action="./product_class.php">
 <input type="hidden" name="mode" value="">
 <input type="hidden" name="product_id" value="">
 	<tr valign="top">
 		<td background="<!--{$smarty.const.URL_DIR}-->img/contents/navi_bg.gif" height="402">
-			<!-- ╔╣╔ж╔й╔с -->
+			<!-- Ц┌╣Ц┐√Ц┐┼Ц┐⌠ -->
 			<!--{include file=$tpl_subnavi}-->
 		</td>
 		<td class="mainbg" >
 		<table width="737" border="0" cellspacing="0" cellpadding="0" summary=" ">
-			<!--╔А╔╓╔С╔╗╔Й╔╒-->
+			<!--Ц┐║Ц┌╓Ц┐ЁЦ┌╗Ц┐╙Ц┌╒-->
 			<tr>
 				<td align="center">
 				<table width="706" border="0" cellspacing="0" cellpadding="0" summary=" ">
@@ -29,14 +29,14 @@
 					<tr>
 						<td background="<!--{$smarty.const.URL_DIR}-->img/contents/main_left.jpg"><img src="<!--{$smarty.const.URL_DIR}-->img/common/_.gif" width="14" height="1" alt=""></td>
 						<td bgcolor="#f2f1ec">
-						<!--╢╟н╩╔А╔ц╔╩║╪╔╦╔ф║╪╔ж╔К╓Ё╓Ё╓╚╓И-->
+						<!--Е╝▄Д╨├Ц┐║Ц┐┐Ц┌╩Ц┐╪Ц┌╦Ц┐├Ц┐╪Ц┐√Ц┐╚Ц│⌠Ц│⌠Ц│▀Ц┌┴-->
 						<table width="678" border="0" cellspacing="1" cellpadding="8" summary=" " height="402">
 							<tr class="fs12n" height="400">
-								<td bgcolor="#ffffff" align="center">╔ф╔С╔в╔Л║╪╔х╓непо©║╕йт╫╦╓╛╢╟н╩╓╥╓ч╓╥╓©
-								<br/><br/><a href="./template.php">╔ф╔С╔в╔Л║╪╔х╟ЛмВ╓клА╓К</a></td>								
+								<td bgcolor="#ffffff" align="center">Ц┐├Ц┐ЁЦ┐≈Ц┐╛Ц┐╪Ц┐┬Ц│╝Г≥╩И▄╡Ц┐╩Г╥╗И⌡├Ц│▄Е╝▄Д╨├Ц│≈Ц│╬Ц│≈Ц│÷
+								<br/><br/><a href="./template.php">Ц┐├Ц┐ЁЦ┐≈Ц┐╛Ц┐╪Ц┐┬Д╦─Х╕╖Ц│╚Ф┬╩Ц┌▀</a></td>								
 							</tr>
 						</table>
-						<!--╢╟н╩╔А╔ц╔╩║╪╔╦╔ф║╪╔ж╔К╓Ё╓Ё╓ч╓г-->
+						<!--Е╝▄Д╨├Ц┐║Ц┐┐Ц┌╩Ц┐╪Ц┌╦Ц┐├Ц┐╪Ц┐√Ц┐╚Ц│⌠Ц│⌠Ц│╬Ц│╖-->
 						</td>
 						<td background="<!--{$smarty.const.URL_DIR}-->img/contents/main_right.jpg"><img src="<!--{$smarty.const.URL_DIR}-->img/common/_.gif" width="14" height="1" alt=""></td>
 					</tr>
@@ -48,11 +48,11 @@
 				</table>
 				</td>
 			</tr>
-			<!--╔А╔╓╔С╔╗╔Й╔╒-->
+			<!--Ц┐║Ц┌╓Ц┐ЁЦ┌╗Ц┐╙Ц┌╒-->
 		</table>
 		</td>
 	</tr>
 </form>
 </table>
-<!--║З║З╔А╔╓╔С╔Ё╔С╔ф╔С╔д║З║З-->		
+<!--Б≤┘Б≤┘Ц┐║Ц┌╓Ц┐ЁЦ┌ЁЦ┐ЁЦ┐├Ц┐ЁЦ┐└Б≤┘Б≤┘-->		
 

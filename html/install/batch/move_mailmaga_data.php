@@ -19,6 +19,6 @@ WHERE dtb_customer.email = dtb_customer_mail.email
 )");
 $objQuery->commit();
 
-echo "Àµ¾ï¤Ë°Ü¹Ô¤¬´°Î»Ã×¤·¤Þ¤·¤¿¡£";
+echo "æ­£å¸¸ã«ç§»è¡ŒãŒå®Œäº†è‡´ã—ã¾ã—ãŸã€‚";
 
 ?>

@@ -16,7 +16,7 @@
 <script type="text/javascript" src="<!--{$smarty.const.URL_DIR}-->js/navi.js"></script>
 <script type="text/javascript" src="<!--{$smarty.const.URL_DIR}-->js/win_op.js"></script>
 <script type="text/javascript" src="<!--{$smarty.const.URL_DIR}-->js/site.js"></script>
-<title><!--{$arrSiteInfo.shop_name}-->/¤ªµÒÍÍ¤ÎÀ¼½ñ¤­¹ş¤ß¡Ê³ÎÇ§¥Ú¡¼¥¸¡Ë</title>
+<title><!--{$arrSiteInfo.shop_name}-->/ãŠå®¢æ§˜ã®å£°æ›¸ãè¾¼ã¿ï¼ˆç¢ºèªãƒšãƒ¼ã‚¸ï¼‰</title>
 </head>
 
 <body bgcolor="#ffe9e6" text="#555555" link="#3a75af" vlink="#3a75af" alink="#3a75af" leftmargin="0" topmargin="0" marginwidth="0" marginheight="0" onLoad="preLoadImg('<!--{$smarty.const.URL_DIR}-->')">
@@ -38,38 +38,38 @@
 		<!--{/foreach}-->
 			<tr><td height="15"></td></tr>
 			<tr>
-				<td><img src="<!--{$smarty.const.URL_DIR}-->img/products/review_title.jpg" width="500" height="40" alt="¤ªµÒÍÍ¤ÎÀ¼½ñ¤­¹ş¤ß"></td>
+				<td><img src="<!--{$smarty.const.URL_DIR}-->img/products/review_title.jpg" width="500" height="40" alt="ãŠå®¢æ§˜ã®å£°æ›¸ãè¾¼ã¿"></td>
 			</tr>
 			<tr><td height="15"></td></tr>
 			<tr>
 				<td bgcolor="#cccccc">
 				<table width="500" border="0" cellspacing="1" cellpadding="10" summary=" ">
 					<tr>
-						<td width="107" bgcolor="#f0f0f0" class="fs12n">¾¦ÉÊÌ¾</td>
+						<td width="107" bgcolor="#f0f0f0" class="fs12n">å•†å“å</td>
 						<td width="350" bgcolor="#ffffff" class="fs12n"><!--{$arrForm.name|escape}--></td>
 					</tr>
 					<tr>
-						<td bgcolor="#f0f0f0" class="fs12n">Åê¹Æ¼ÔÌ¾<span class="red">¢¨</span></td>
+						<td bgcolor="#f0f0f0" class="fs12n">æŠ•ç¨¿è€…å<span class="red">â€»</span></td>
 						<td bgcolor="#ffffff" class="fs12n"><!--{$arrForm.reviewer_name|escape}--></td>
 					</tr>
 					<tr>
-						<td bgcolor="#f0f0f0" class="fs12n">¥Û¡¼¥à¥Ú¡¼¥¸¥¢¥É¥ì¥¹</td>
+						<td bgcolor="#f0f0f0" class="fs12n">ãƒ›ãƒ¼ãƒ ãƒšãƒ¼ã‚¸ã‚¢ãƒ‰ãƒ¬ã‚¹</td>
 						<td bgcolor="#ffffff" class="fs12n"><!--{$arrForm.reviewer_url}--></td>
 					</tr>
 					<tr>
-						<td bgcolor="#f0f0f0" class="fs12n">À­ÊÌ</td>
-						<td bgcolor="#ffffff" class="fs12n"><!--{if $arrForm.sex eq 1 }-->ÃËÀ­<!--{elseif $arrForm.sex eq 2 }-->½÷À­<!--{/if}--></td>
+						<td bgcolor="#f0f0f0" class="fs12n">æ€§åˆ¥</td>
+						<td bgcolor="#ffffff" class="fs12n"><!--{if $arrForm.sex eq 1 }-->ç”·æ€§<!--{elseif $arrForm.sex eq 2 }-->å¥³æ€§<!--{/if}--></td>
 					</tr>
 					<tr>
-						<td bgcolor="#f0f0f0" class="fs12n">¤ª¤¹¤¹¤á¥ì¥Ù¥ë<span class="red">¢¨</span></td>
+						<td bgcolor="#f0f0f0" class="fs12n">ãŠã™ã™ã‚ãƒ¬ãƒ™ãƒ«<span class="red">â€»</span></td>
 						<td bgcolor="#ffffff" class="fs12n"><span class="red"><!--{$arrRECOMMEND[$arrForm.recommend_level]}--></span></td>
 					</tr>
 					<tr>
-						<td bgcolor="#f0f0f0" class="fs12">¥¿¥¤¥È¥ë<span class="red">¢¨</span></td>
+						<td bgcolor="#f0f0f0" class="fs12">ã‚¿ã‚¤ãƒˆãƒ«<span class="red">â€»</span></td>
 						<td bgcolor="#ffffff" class="fs12"><!--{$arrForm.title|escape}--></td>
 					</tr>
 					<tr>
-						<td bgcolor="#f0f0f0" class="fs12">¥³¥á¥ó¥È<span class="red">¢¨</span></td>
+						<td bgcolor="#f0f0f0" class="fs12">ã‚³ãƒ¡ãƒ³ãƒˆ<span class="red">â€»</span></td>
 						<td bgcolor="#ffffff" class="fs12"><!--{$arrForm.comment|escape|nl2br}--></td>
 					</tr>
 				</table>
@@ -78,8 +78,8 @@
 			<tr><td height="15"></td></tr>
 			<tr>
 				<td align="center">
-					<input type="image" onclick=" mode.value='return';" onmouseover="chgImgImageSubmit('<!--{$smarty.const.URL_DIR}-->img/common/b_back_on.gif',this)" onmouseout="chgImgImageSubmit('<!--{$smarty.const.URL_DIR}-->img/common/b_back.gif',this)" src="<!--{$smarty.const.URL_DIR}-->img/common/b_back.gif" width="150" height="30" alt="Ìá¤ë"  name="back" id="back" />
-					<input type="image" onmouseover="chgImgImageSubmit('<!--{$smarty.const.URL_DIR}-->img/common/b_send_on.gif',this)" onmouseout="chgImgImageSubmit('<!--{$smarty.const.URL_DIR}-->img/common/b_send.gif',this)" src="<!--{$smarty.const.URL_DIR}-->img/common/b_send.gif" width="150" height="30" alt="Á÷¿®"  name="send" id="send" />
+					<input type="image" onclick=" mode.value='return';" onmouseover="chgImgImageSubmit('<!--{$smarty.const.URL_DIR}-->img/common/b_back_on.gif',this)" onmouseout="chgImgImageSubmit('<!--{$smarty.const.URL_DIR}-->img/common/b_back.gif',this)" src="<!--{$smarty.const.URL_DIR}-->img/common/b_back.gif" width="150" height="30" alt="æˆ»ã‚‹"  name="back" id="back" />
+					<input type="image" onmouseover="chgImgImageSubmit('<!--{$smarty.const.URL_DIR}-->img/common/b_send_on.gif',this)" onmouseout="chgImgImageSubmit('<!--{$smarty.const.URL_DIR}-->img/common/b_send.gif',this)" src="<!--{$smarty.const.URL_DIR}-->img/common/b_send.gif" width="150" height="30" alt="é€ä¿¡"  name="send" id="send" />
 				</td>
 			</tr>
 			<tr><td height="30"></td></tr>

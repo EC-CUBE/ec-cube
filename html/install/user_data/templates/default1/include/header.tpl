@@ -3,7 +3,7 @@
  *
  * http://www.lockon.co.jp/
  *}-->
-<!--¢§HEADER-->
+<!--â–¼HEADER-->
 <table width="780" border="0" cellspacing="0" cellpadding="0" summary=" ">
 	<tr align="center">
 		<td bgcolor="#cccccc"><img src="<!--{$smarty.const.URL_DIR}-->img/common/_.gif" width="1" height="10" alt=""></td>
@@ -14,22 +14,22 @@
 		</table>
 		<table width="762" border="0" cellspacing="0" cellpadding="0" summary=" ">
 			<tr>
-				<td><a href="<!--{$smarty.const.SITE_URL}-->index.php"><img src="<!--{$smarty.const.URL_DIR}-->img/header/logo.gif" width="302" height="81" alt="¤ª¤Õ¤È¤ó¤Î¥¤¥ó¥¿¡¼¥Í¥Ã¥È¥·¥ç¥Ã¥Ô¥ó¥° ¤Õ¤È¤ó²°¥µ¥ó" border="0"></a></td>
+				<td><a href="<!--{$smarty.const.SITE_URL}-->index.php"><img src="<!--{$smarty.const.URL_DIR}-->img/header/logo.gif" width="302" height="81" alt="ãŠãµã¨ã‚“ã®ã‚¤ãƒ³ã‚¿ãƒ¼ãƒãƒƒãƒˆã‚·ãƒ§ãƒƒãƒ”ãƒ³ã‚° ãµã¨ã‚“å±‹ã‚µãƒ³" border="0"></a></td>
 				<td>
 				<table width="460" border="0" cellspacing="0" cellpadding="0" summary=" ">
 					<tr><td height="9"></td></tr>
 					<tr>
-						<td colspan="2"><img src="<!--{$smarty.const.URL_DIR}-->img/header/tell.gif" width="460" height="34" alt="¤ªÅÅÏÃ¤Ç¤Î¤´ÃíÊ¸¤Ï0120-000-000 FAX¤Ç¤Î¤´ÃíÊ¸¤Ï0120-00-0000"></td>
+						<td colspan="2"><img src="<!--{$smarty.const.URL_DIR}-->img/header/tell.gif" width="460" height="34" alt="ãŠé›»è©±ã§ã®ã”æ³¨æ–‡ã¯0120-000-000 FAXã§ã®ã”æ³¨æ–‡ã¯0120-00-0000"></td>
 					</tr>
 					<tr>
-						<td><img src="<!--{$smarty.const.URL_DIR}-->img/header/time.gif" width="160" height="38" alt="¼õÉÕ»þ´Ö¡§Ä«9:00¡ÁÌë7:00 ÅÚÍËÆü¸á¸å6»þËø"></td>
+						<td><img src="<!--{$smarty.const.URL_DIR}-->img/header/time.gif" width="160" height="38" alt="å—ä»˜æ™‚é–“ï¼šæœ9:00ã€œå¤œ7:00 åœŸæ›œæ—¥åˆå¾Œ6æ™‚è¿„"></td>
 						<td>
 						<!--BUTTON-->
 						<table width="300" border="0" cellspacing="0" cellpadding="0" summary=" ">
 							<tr>
-								<td><a href="<!--{$smarty.const.URL_DIR}-->mypage/login.php" onmouseover="chgImg('<!--{$smarty.const.URL_DIR}-->img/header/mypage_on.gif','mypage');" onmouseout="chgImg('<!--{$smarty.const.URL_DIR}-->img/header/mypage.gif','mypage');"><img src="<!--{$smarty.const.URL_DIR}-->img/header/mypage.gif" width="95" height="20" alt="¥í¥°¥¤¥ó¾ðÊóÊÑ¹¹" border="0" name="mypage"></a></td>
-								<td align="center"><a href="<!--{$smarty.const.URL_DIR}-->entry/kiyaku.php" onmouseover="chgImg('<!--{$smarty.const.URL_DIR}-->img/header/member_on.gif','member');" onmouseout="chgImg('<!--{$smarty.const.URL_DIR}-->img/header/member.gif','member');"><img src="<!--{$smarty.const.URL_DIR}-->img/header/member.gif" width="95" height="20" alt="²ñ°÷ÅÐÏ¿" border="0" name="member"></a></td>
-								<td align="right"><a href="<!--{$smarty.const.URL_DIR}-->cart/index.php" onmouseover="chgImg('<!--{$smarty.const.URL_DIR}-->img/header/cartin_on.gif','cartin');" onmouseout="chgImg('<!--{$smarty.const.URL_DIR}-->img/header/cartin.gif','cartin');"><img src="<!--{$smarty.const.URL_DIR}-->img/header/cartin.gif" width="95" height="20" alt="¥«¥´¤ÎÃæ¤ò¸«¤ë" border="0" name="cartin"></a></td>
+								<td><a href="<!--{$smarty.const.URL_DIR}-->mypage/login.php" onmouseover="chgImg('<!--{$smarty.const.URL_DIR}-->img/header/mypage_on.gif','mypage');" onmouseout="chgImg('<!--{$smarty.const.URL_DIR}-->img/header/mypage.gif','mypage');"><img src="<!--{$smarty.const.URL_DIR}-->img/header/mypage.gif" width="95" height="20" alt="ãƒ­ã‚°ã‚¤ãƒ³æƒ…å ±å¤‰æ›´" border="0" name="mypage"></a></td>
+								<td align="center"><a href="<!--{$smarty.const.URL_DIR}-->entry/kiyaku.php" onmouseover="chgImg('<!--{$smarty.const.URL_DIR}-->img/header/member_on.gif','member');" onmouseout="chgImg('<!--{$smarty.const.URL_DIR}-->img/header/member.gif','member');"><img src="<!--{$smarty.const.URL_DIR}-->img/header/member.gif" width="95" height="20" alt="ä¼šå“¡ç™»éŒ²" border="0" name="member"></a></td>
+								<td align="right"><a href="<!--{$smarty.const.URL_DIR}-->cart/index.php" onmouseover="chgImg('<!--{$smarty.const.URL_DIR}-->img/header/cartin_on.gif','cartin');" onmouseout="chgImg('<!--{$smarty.const.URL_DIR}-->img/header/cartin.gif','cartin');"><img src="<!--{$smarty.const.URL_DIR}-->img/header/cartin.gif" width="95" height="20" alt="ã‚«ã‚´ã®ä¸­ã‚’è¦‹ã‚‹" border="0" name="cartin"></a></td>
 							</tr>
 						</table>
 						<!--BUTTON-->
@@ -54,4 +54,4 @@
 	</tr>
 </table>
 
-<!--¢¥HEADER-->
+<!--â–²HEADER-->

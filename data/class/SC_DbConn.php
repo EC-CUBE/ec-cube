@@ -20,13 +20,13 @@ class SC_DbConn{
 	var $dsn;
 	var $err_disp = true;
 	
-	// ¥³¥ó¥¹¥È¥é¥¯¥¿
+	// ã‚³ãƒ³ã‚¹ãƒˆãƒ©ã‚¯ã‚¿
 	function SC_DbConn($dsn = "", $err_disp = true, $new = false){
 		global $objDbConn;
 		
-		// Debug¥â¡¼¥É»ØÄê
+		// Debugãƒ¢ãƒ¼ãƒ‰æŒ‡å®š
 		$options['debug'] = PEAR_DB_DEBUG;
-		// ´û¤ËÀÜÂ³¤µ¤ì¤Æ¤¤¤Ê¤¤¤«¡¢¿·µ¬ÀÜÂ³Í×Ë¾¤Î¾ì¹ç¤ÏÀÜÂ³¤¹¤ë¡£
+		// æ—¢ã«æ¥ç¶šã•ã‚Œã¦ã„ãªã„ã‹ã€æ–°è¦æ¥ç¶šè¦æœ›ã®å ´åˆã¯æ¥ç¶šã™ã‚‹ã€‚
 		if(!isset($objDbConn->connection) || $new) {
 			if($dsn != "") {
 				$objDbConn = DB::connect($dsn, $options);
@@ -46,9 +46,9 @@ class SC_DbConn{
 		$this->err_disp = $err_disp;
 	}
 	
-	// ¥¯¥¨¥ê¤Î¼Â¹Ô
+	// ã‚¯ã‚¨ãƒªã®å®Ÿè¡Œ
 	function query($n ,$arr = "", $ignore_err = false){
-		// mysql¤Î¾ì¹ç¤Ë¤Ï¥Ó¥å¡¼É½¤òÊÑ´¹¤¹¤ë
+		// mysqlã®å ´åˆã«ã¯ãƒ“ãƒ¥ãƒ¼è¡¨ã‚’å¤‰æ›ã™ã‚‹
 		if (DB_TYPE == "mysql") $n = sfChangeMySQL($n);
 
 		if ( $arr ) {
@@ -65,10 +65,10 @@ class SC_DbConn{
 		return $this->result;
 	}
 
-	// °ì·ï¤Î¤ß¼èÆÀ
+	// ä¸€ä»¶ã®ã¿å–å¾—
 	function getOne($n, $arr = ""){
 		
-		// mysql¤Î¾ì¹ç¤Ë¤Ï¥Ó¥å¡¼É½¤òÊÑ´¹¤¹¤ë
+		// mysqlã®å ´åˆã«ã¯ãƒ“ãƒ¥ãƒ¼è¡¨ã‚’å¤‰æ›ã™ã‚‹
 		if (DB_TYPE == "mysql") $n = sfChangeMySQL($n);
 		
 		if ( $arr ) {
@@ -86,7 +86,7 @@ class SC_DbConn{
 	
 	function getRow($n, $arr = ""){
 
-		// mysql¤Î¾ì¹ç¤Ë¤Ï¥Ó¥å¡¼É½¤òÊÑ´¹¤¹¤ë
+		// mysqlã®å ´åˆã«ã¯ãƒ“ãƒ¥ãƒ¼è¡¨ã‚’å¤‰æ›ã™ã‚‹
 		if (DB_TYPE == "mysql") $n = sfChangeMySQL($n);
 
 		if ( $arr ) {
@@ -101,17 +101,17 @@ class SC_DbConn{
 		return $this->result;
 	}
 
-	// SELECTÊ¸¤Î¼Â¹Ô·ë²Ì¤òÁ´¤Æ¼èÆÀ
+	// SELECTæ–‡ã®å®Ÿè¡Œçµæœã‚’å…¨ã¦å–å¾—
 	function getAll($n, $arr = ""){
 
-		// mysql¤Î¾ì¹ç¤Ë¤Ï¥Ó¥å¡¼É½¤òÊÑ´¹¤¹¤ë
+		// mysqlã®å ´åˆã«ã¯ãƒ“ãƒ¥ãƒ¼è¡¨ã‚’å¤‰æ›ã™ã‚‹
 		if (DB_TYPE == "mysql") $n = sfChangeMySQL($n);
 		
 		if(PEAR::isError($this->conn)) {
 			if(ADMIN_MODE){
-				sfErrorHeader("DB¤Ø¤ÎÀÜÂ³¤Ë¼ºÇÔ¤·¤Ş¤·¤¿¡£:" . $this->dsn);
+				sfErrorHeader("DBã¸ã®æ¥ç¶šã«å¤±æ•—ã—ã¾ã—ãŸã€‚:" . $this->dsn);
 			}else{
-				sfErrorHeader("DB¤Ø¤ÎÀÜÂ³¤Ë¼ºÇÔ¤·¤Ş¤·¤¿¡£:");
+				sfErrorHeader("DBã¸ã®æ¥ç¶šã«å¤±æ•—ã—ã¾ã—ãŸã€‚:");
 			}
 			return 0;
 		}

@@ -1,15 +1,15 @@
 <?php
 /**
- * ²èÁü¥Õ¥¡¥¤¥ë¤ÎÊÑ´¹¤ò¹Ô¤¦
+ * ç”»åƒãƒ•ã‚¡ã‚¤ãƒ«ã®å¤‰æ›ã‚’è¡Œã†
  */
 class ImageConverter {
-	var $outputImageDir;		// ÊÑ´¹¸å¤Î²èÁü¤ÎÊİÂ¸Àè
-	var $outputImageType;		// ÊÑ´¹¸å¤Î²èÁü¤Î·Á¼°
-	var $outputImageWidth;		// ÊÑ´¹¸å¤Î²èÁü¤Î²£Éı
-	var $outputImageHeight;		// ÊÑ´¹¸å¤Î²èÁü¤Î¹â¤µ
-	var $outputImageFileSize;	// ÊÑ´¹¸å¤Î²èÁü¤Î¥Õ¥¡¥¤¥ë¥µ¥¤¥º
+	var $outputImageDir;		// å¤‰æ›å¾Œã®ç”»åƒã®ä¿å­˜å…ˆ
+	var $outputImageType;		// å¤‰æ›å¾Œã®ç”»åƒã®å½¢å¼
+	var $outputImageWidth;		// å¤‰æ›å¾Œã®ç”»åƒã®æ¨ªå¹…
+	var $outputImageHeight;		// å¤‰æ›å¾Œã®ç”»åƒã®é«˜ã•
+	var $outputImageFileSize;	// å¤‰æ›å¾Œã®ç”»åƒã®ãƒ•ã‚¡ã‚¤ãƒ«ã‚µã‚¤ã‚º
 
-	// ¥³¥ó¥¹¥È¥é¥¯¥¿
+	// ã‚³ãƒ³ã‚¹ãƒˆãƒ©ã‚¯ã‚¿
 	function ImageConverter() {
 		$this->outputImageDir    = realpath(realpath(dirname(__FILE__)));
 		$this->outputImageType   = 'jpeg';
@@ -18,9 +18,9 @@ class ImageConverter {
 		$this->outputFileSize    = 20000;
 	}
 
-	// ÊÑ´¹¼Â¹Ô
+	// å¤‰æ›å®Ÿè¡Œ
 	function execute($inputImagePath) {
-		// Á°½èÍı
+		// å‰å‡¦ç†
 		$filestat         = @stat($inputImagePath);
 		$imagesize        = getimagesize($inputImagePath);
 		$inputImageWidth  = $imagesize[0];
@@ -29,16 +29,16 @@ class ImageConverter {
 		$outputImageName  = sha1($inputImagePath . '_' . $this->outputImageWidth . '_' . $this->outputFileSize . '_' . $filestat['mtime']) . '.' . $this->outputImageType;
 		$outputImagePath  = $this->outputImageDir . '/' . $outputImageName;
 
-		// ÊÑ´¹¸å¤Î²èÁü¤Î¹â¤µ¤¬»ØÄê¤µ¤ì¤Æ¤¤¤Ê¤¤¾ì¹ç¡¢ÊÑ´¹¸å¤Î²èÁü¤Î²£Éı¤«¤éµá¤á¤ë
+		// å¤‰æ›å¾Œã®ç”»åƒã®é«˜ã•ãŒæŒ‡å®šã•ã‚Œã¦ã„ãªã„å ´åˆã€å¤‰æ›å¾Œã®ç”»åƒã®æ¨ªå¹…ã‹ã‚‰æ±‚ã‚ã‚‹
 		if (is_null($this->outputImageHeight)) {
 			$this->outputImageHeight = $inputImageHeight * ($this->outputImageWidth / $inputImageWidth);
 		}
 
-		// ¥Õ¥¡¥¤¥ë¤¬Â¸ºß¤¹¤ë¤«³ÎÇ§¤·¡¢Â¸ºß¤·¤Ê¤¤¾ì¹ç¤Î¤ßºîÀ®¤¹¤ë
+		// ãƒ•ã‚¡ã‚¤ãƒ«ãŒå­˜åœ¨ã™ã‚‹ã‹ç¢ºèªã—ã€å­˜åœ¨ã—ãªã„å ´åˆã®ã¿ä½œæˆã™ã‚‹
 		if (file_exists($outputImagePath)) {
 			$info['convert'] = FALSE;
 		} else {
-			// ¸µ¥Õ¥¡¥¤¥ëºîÀ®
+			// å…ƒãƒ•ã‚¡ã‚¤ãƒ«ä½œæˆ
 			switch($inputImageType) {
 			case 1:
 				// gif
@@ -65,11 +65,11 @@ class ImageConverter {
 			$scale = 1.0;
 			$outputImagePathTemp = $outputImagePath . '.tmp-' . rand();
 			do {
-				// ¶õ¥Õ¥¡¥¤¥ëºîÀ®
+				// ç©ºãƒ•ã‚¡ã‚¤ãƒ«ä½œæˆ
 				$outputImage = ImageCreateTruecolor($this->outputImageWidth * $scale, $this->outputImageHeight * $scale);
 				ImageCopyResampled($outputImage, $tempImage, 0, 0, 0, 0, $this->outputImageWidth * $scale, $this->outputImageHeight * $scale, $inputImageWidth, $inputImageHeight);
 
-				// ¥Õ¥¡¥¤¥ë½ĞÎÏ
+				// ãƒ•ã‚¡ã‚¤ãƒ«å‡ºåŠ›
 
 				@unlink($outputImagePathTemp);
 
@@ -83,7 +83,7 @@ class ImageConverter {
 				case 'jpg':
 				case 'jpeg':
 					$quality = 75;
-					// É½¼¨²ÄÇ½¤Ê¥Õ¥¡¥¤¥ë¥µ¥¤¥º°Ê²¼¤Ë¤Ê¤ë¤Ş¤Ç¡¢10%¤º¤Ä¥¯¥ª¥ê¥Æ¥£¤òÄ´À°¤¹¤ë
+					// è¡¨ç¤ºå¯èƒ½ãªãƒ•ã‚¡ã‚¤ãƒ«ã‚µã‚¤ã‚ºä»¥ä¸‹ã«ãªã‚‹ã¾ã§ã€10%ãšã¤ã‚¯ã‚ªãƒªãƒ†ã‚£ã‚’èª¿æ•´ã™ã‚‹
 					do {
 						@unlink($outputImagePathTemp);
 						imagejpeg($outputImage, $outputImagePathTemp, $quality);
@@ -101,7 +101,7 @@ class ImageConverter {
 					break;
 				}
 
-				// ¥á¥â¥ê³«Êü
+				// ãƒ¡ãƒ¢ãƒªé–‹æ”¾
 				imagedestroy($outputImage);
 
 				$scale -= 0.1;
@@ -110,7 +110,7 @@ class ImageConverter {
 
 			rename($outputImagePathTemp, $outputImagePath);
 
-			// ¥á¥â¥ê³«Êü
+			// ãƒ¡ãƒ¢ãƒªé–‹æ”¾
 			imagedestroy($tempImage);
 
 			$info['convert'] = TRUE;

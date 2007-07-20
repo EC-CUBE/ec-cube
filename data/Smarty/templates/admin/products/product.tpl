@@ -6,7 +6,7 @@
  */
 *}-->
 <script type="text/javascript">
-// URL¤ÎÉ½¼¨ÈóÉ½¼¨ÀÚ¤êÂØ¤¨
+// URLã®è¡¨ç¤ºéè¡¨ç¤ºåˆ‡ã‚Šæ›¿ãˆ
 function lfDispSwitch(id){
 	var obj = document.getElementById(id);
 	if (obj.style.display == 'none') {
@@ -16,18 +16,18 @@ function lfDispSwitch(id){
 	}
 }
 </script>
-<!--¡ú¡ú¥á¥¤¥ó¥³¥ó¥Æ¥ó¥Ä¡ú¡ú-->
+<!--â˜…â˜…ãƒ¡ã‚¤ãƒ³ã‚³ãƒ³ãƒ†ãƒ³ãƒ„â˜…â˜…-->
 <table width="878" border="0" cellspacing="0" cellpadding="0" summary=" ">
 	<tr valign="top">
 		<td background="<!--{$smarty.const.URL_DIR}-->img/contents/navi_bg.gif" height="402">
-			<!--¢§SUB NAVI-->
+			<!--â–¼SUB NAVI-->
 			<!--{include file=$tpl_subnavi}-->
-			<!--¢¥SUB NAVI-->
+			<!--â–²SUB NAVI-->
 		</td>
 		<td class="mainbg">
-			<!--¢§ÅĞÏ¿¥Æ¡¼¥Ö¥ë¤³¤³¤«¤é-->
+			<!--â–¼ç™»éŒ²ãƒ†ãƒ¼ãƒ–ãƒ«ã“ã“ã‹ã‚‰-->
 			<table width="737" border="0" cellspacing="0" cellpadding="0" summary=" ">
-				<!--¥á¥¤¥ó¥¨¥ê¥¢-->
+				<!--ãƒ¡ã‚¤ãƒ³ã‚¨ãƒªã‚¢-->
 				<tr>
 					<td align="center">
 						<table width="706" border="0" cellspacing="0" cellpadding="0" summary=" ">
@@ -56,7 +56,7 @@ function lfDispSwitch(id){
 									</tr>
 									<tr>
 										<td background="<!--{$smarty.const.URL_DIR}-->img/contents/contents_title_left_bg.gif"><img src="<!--{$smarty.const.URL_DIR}-->img/contents/contents_title_left.gif" width="22" height="12" alt=""></td>
-										<td bgcolor="#636469" width="638" class="fs14n"><span class="white"><!--¥³¥ó¥Æ¥ó¥Ä¥¿¥¤¥È¥ë-->¾¦ÉÊÅĞÏ¿</span></td>
+										<td bgcolor="#636469" width="638" class="fs14n"><span class="white"><!--ã‚³ãƒ³ãƒ†ãƒ³ãƒ„ã‚¿ã‚¤ãƒˆãƒ«-->å•†å“ç™»éŒ²</span></td>
 										<td background="<!--{$smarty.const.URL_DIR}-->img/contents/contents_title_right_bg.gif"><img src="<!--{$smarty.const.URL_DIR}-->img/common/_.gif" width="18" height="1" alt=""></td>
 									</tr>
 									<tr>
@@ -69,31 +69,31 @@ function lfDispSwitch(id){
 
 								<table width="678" border="0" cellspacing="1" cellpadding="8" summary=" ">
 									<tr>
-										<td bgcolor="#f2f1ec" width="160" class="fs12n">¾¦ÉÊID</td>
+										<td bgcolor="#f2f1ec" width="160" class="fs12n">å•†å“ID</td>
 										<td bgcolor="#ffffff" width="557" class="fs10n"><!--{$arrForm.product_id}--></td>
 									</tr>
 									<tr>
-										<td bgcolor="#f2f1ec" width="160" class="fs12n">¾¦ÉÊÌ¾<span class="red"> *</span></td>
+										<td bgcolor="#f2f1ec" width="160" class="fs12n">å•†å“å<span class="red"> *</span></td>
 										<td bgcolor="#ffffff" width="557" class="fs10n">
 										<span class="red12"><!--{$arrErr.name}--></span>
-										<input type="text" name="name" value="<!--{$arrForm.name|escape}-->" maxlength="<!--{$smarty.const.STEXT_LEN}-->" style="<!--{if $arrErr.name != ""}-->background-color: <!--{$smarty.const.ERR_COLOR}--><!--{/if}-->" size="60" class="box60" /><span class="red"> ¡Ê¾å¸Â<!--{$smarty.const.STEXT_LEN}-->Ê¸»ú¡Ë</span>
+										<input type="text" name="name" value="<!--{$arrForm.name|escape}-->" maxlength="<!--{$smarty.const.STEXT_LEN}-->" style="<!--{if $arrErr.name != ""}-->background-color: <!--{$smarty.const.ERR_COLOR}--><!--{/if}-->" size="60" class="box60" /><span class="red"> ï¼ˆä¸Šé™<!--{$smarty.const.STEXT_LEN}-->æ–‡å­—ï¼‰</span>
 										</td>
 									</tr>
 									<tr>
-										<td bgcolor="#f2f1ec" width="160" class="fs12n">¾¦ÉÊ¥«¥Æ¥´¥ê<span class="red"> *</span></td>
+										<td bgcolor="#f2f1ec" width="160" class="fs12n">å•†å“ã‚«ãƒ†ã‚´ãƒª<span class="red"> *</span></td>
 										<td bgcolor="#ffffff" width="557">
 										<span class="red12"><!--{$arrErr.category_id}--></span>
 										<select name="category_id" style="<!--{if $arrErr.category_id != ""}-->background-color: <!--{$smarty.const.ERR_COLOR}--><!--{/if}-->" onchange="">
-										<option value="">ÁªÂò¤·¤Æ¤¯¤À¤µ¤¤</option>
+										<option value="">é¸æŠã—ã¦ãã ã•ã„</option>
 										<!--{html_options values=$arrCatVal output=$arrCatOut selected=$arrForm.category_id}-->
 										</select></td>
 									</tr>
 									<tr>
-										<td bgcolor="#f2f1ec" width="160" class="fs12n">¸ø³«¡¦Èó¸ø³«<span class="red"> *</span></td>
-										<td bgcolor="#ffffff" width="557" class="fs12n"><input type="radio" name="status" value="1" <!--{if $arrForm.status == "1"}-->checked<!--{/if}-->/>¸ø³«¡¡<input type="radio" name="status" value="2" <!--{if $arrForm.status == "2"}-->checked<!--{/if}--> />Èó¸ø³«</td>
+										<td bgcolor="#f2f1ec" width="160" class="fs12n">å…¬é–‹ãƒ»éå…¬é–‹<span class="red"> *</span></td>
+										<td bgcolor="#ffffff" width="557" class="fs12n"><input type="radio" name="status" value="1" <!--{if $arrForm.status == "1"}-->checked<!--{/if}-->/>å…¬é–‹ã€€<input type="radio" name="status" value="2" <!--{if $arrForm.status == "2"}-->checked<!--{/if}--> />éå…¬é–‹</td>
 									</tr>
 									<tr class="fs12n">
-										<td bgcolor="#f2f1ec" width="160">¾¦ÉÊ¥¹¥Æ¡¼¥¿¥¹</td>
+										<td bgcolor="#f2f1ec" width="160">å•†å“ã‚¹ãƒ†ãƒ¼ã‚¿ã‚¹</td>
 										<td bgcolor="#ffffff" width="557">
 										<!--{html_checkboxes name="product_flag" options=$arrSTATUS selected=$arrForm.product_flag}-->
 										</td>
@@ -101,160 +101,160 @@ function lfDispSwitch(id){
 									
 									<!--{if $tpl_nonclass == true}-->
 									<tr>
-										<td bgcolor="#f2f1ec" width="160" class="fs12n">¾¦ÉÊ¥³¡¼¥É<span class="red"> *</span></td>
+										<td bgcolor="#f2f1ec" width="160" class="fs12n">å•†å“ã‚³ãƒ¼ãƒ‰<span class="red"> *</span></td>
 										<td bgcolor="#ffffff" width="557" class="fs10n">
 										<span class="red12"><!--{$arrErr.product_code}--></span>
-										<input type="text" name="product_code" value="<!--{$arrForm.product_code|escape}-->" maxlength="<!--{$smarty.const.STEXT_LEN}-->" style="<!--{if $arrErr.product_code != ""}-->background-color: <!--{$smarty.const.ERR_COLOR}--><!--{/if}-->" size="60" class="box60" /><span class="red"> ¡Ê¾å¸Â<!--{$smarty.const.STEXT_LEN}-->Ê¸»ú¡Ë</span></td>
+										<input type="text" name="product_code" value="<!--{$arrForm.product_code|escape}-->" maxlength="<!--{$smarty.const.STEXT_LEN}-->" style="<!--{if $arrErr.product_code != ""}-->background-color: <!--{$smarty.const.ERR_COLOR}--><!--{/if}-->" size="60" class="box60" /><span class="red"> ï¼ˆä¸Šé™<!--{$smarty.const.STEXT_LEN}-->æ–‡å­—ï¼‰</span></td>
 									</tr>
 									<tr class="fs12n">
 										<td bgcolor="#f2f1ec" width="160"><!--{$smarty.const.NORMAL_PRICE_TITLE}--></td>
 										<td bgcolor="#ffffff" width="557">
 										<span class="red12"><!--{$arrErr.price01}--></span>
-										<input type="text" name="price01" value="<!--{$arrForm.price01|escape}-->" size="6" class="box6" maxlength="<!--{$smarty.const.PRICE_LEN}-->" style="<!--{if $arrErr.price01 != ""}-->background-color: <!--{$smarty.const.ERR_COLOR}--><!--{/if}-->"/>±ß<span class="red10"> ¡ÊÈ¾³Ñ¿ô»ú¤ÇÆşÎÏ¡Ë</span></td>
+										<input type="text" name="price01" value="<!--{$arrForm.price01|escape}-->" size="6" class="box6" maxlength="<!--{$smarty.const.PRICE_LEN}-->" style="<!--{if $arrErr.price01 != ""}-->background-color: <!--{$smarty.const.ERR_COLOR}--><!--{/if}-->"/>å††<span class="red10"> ï¼ˆåŠè§’æ•°å­—ã§å…¥åŠ›ï¼‰</span></td>
 									</tr>
 									<tr class="fs12n">
 										<td bgcolor="#f2f1ec" width="160"><!--{$smarty.const.SALE_PRICE_TITLE}--><span class="red"> *</span></td>
 										<td bgcolor="#ffffff" width="557">
 										<span class="red12"><!--{$arrErr.price02}--></span>
-										<input type="text" name="price02" value="<!--{$arrForm.price02|escape}-->" size="6" class="box6" maxlength="<!--{$smarty.const.PRICE_LEN}-->" style="<!--{if $arrErr.price02 != ""}-->background-color: <!--{$smarty.const.ERR_COLOR}--><!--{/if}-->"/>±ß<span class="red10"> ¡ÊÈ¾³Ñ¿ô»ú¤ÇÆşÎÏ¡Ë</span></td>
+										<input type="text" name="price02" value="<!--{$arrForm.price02|escape}-->" size="6" class="box6" maxlength="<!--{$smarty.const.PRICE_LEN}-->" style="<!--{if $arrErr.price02 != ""}-->background-color: <!--{$smarty.const.ERR_COLOR}--><!--{/if}-->"/>å††<span class="red10"> ï¼ˆåŠè§’æ•°å­—ã§å…¥åŠ›ï¼‰</span></td>
 									</tr>
 									<tr class="fs12n">
-										<td bgcolor="#f2f1ec" width="160">ºß¸Ë¿ô<span class="red"> *</span></td>
+										<td bgcolor="#f2f1ec" width="160">åœ¨åº«æ•°<span class="red"> *</span></td>
 										<td bgcolor="#ffffff" width="557">
 										<span class="red12"><!--{$arrErr.stock}--></span>
-										<input type="text" name="stock" value="<!--{$arrForm.stock|escape}-->" size="6" class="box6" maxlength="<!--{$smarty.const.AMOUNT_LEN}-->" style="<!--{if $arrErr.stock != ""}-->background-color: <!--{$smarty.const.ERR_COLOR}--><!--{/if}-->"/>¸Ä
-										<input type="checkbox" name="stock_unlimited" value="1" <!--{if $arrForm.stock_unlimited == "1"}-->checked<!--{/if}--> onclick="fnCheckStockLimit('<!--{$smarty.const.DISABLED_RGB}-->');"/>ÌµÀ©¸Â</td>
+										<input type="text" name="stock" value="<!--{$arrForm.stock|escape}-->" size="6" class="box6" maxlength="<!--{$smarty.const.AMOUNT_LEN}-->" style="<!--{if $arrErr.stock != ""}-->background-color: <!--{$smarty.const.ERR_COLOR}--><!--{/if}-->"/>å€‹
+										<input type="checkbox" name="stock_unlimited" value="1" <!--{if $arrForm.stock_unlimited == "1"}-->checked<!--{/if}--> onclick="fnCheckStockLimit('<!--{$smarty.const.DISABLED_RGB}-->');"/>ç„¡åˆ¶é™</td>
 										</td>
 									</tr>
 									<!--{/if}-->
 									
-									<!--{* Á÷ÎÁ¤Î¸ÄÊÌ»ØÄê¤Ï¼¡´ü³«È¯¤ÇÄÉ²ÃÍ½Äê
+									<!--{* é€æ–™ã®å€‹åˆ¥æŒ‡å®šã¯æ¬¡æœŸé–‹ç™ºã§è¿½åŠ äºˆå®š
 									<tr class="fs12n">
-										<td bgcolor="#f2f1ec" width="160">¾¦ÉÊÁ÷ÎÁ</td>
+										<td bgcolor="#f2f1ec" width="160">å•†å“é€æ–™</td>
 										<td bgcolor="#ffffff" width="557">
 										<span class="red12"><!--{$arrErr.deliv_fee}--></span>
-										<input type="text" name="deliv_fee" value="<!--{$arrForm.deliv_fee|escape}-->" size="6" class="box6" maxlength="<!--{$smarty.const.PRICE_LEN}-->" style="<!--{if $arrErr.deliv_fee != ""}-->background-color: <!--{$smarty.const.ERR_COLOR}--><!--{/if}-->"/>±ß<span class="red10"> ¡ÊÈ¾³Ñ¿ô»ú¤ÇÆşÎÏ¡Ë</span></td>
+										<input type="text" name="deliv_fee" value="<!--{$arrForm.deliv_fee|escape}-->" size="6" class="box6" maxlength="<!--{$smarty.const.PRICE_LEN}-->" style="<!--{if $arrErr.deliv_fee != ""}-->background-color: <!--{$smarty.const.ERR_COLOR}--><!--{/if}-->"/>å††<span class="red10"> ï¼ˆåŠè§’æ•°å­—ã§å…¥åŠ›ï¼‰</span></td>
 										</td>
 									</tr>
 									*}-->
 									
 									<tr class="fs12n">
-										<td bgcolor="#f2f1ec" width="160">¥İ¥¤¥ó¥ÈÉÕÍ¿Î¨<span class="red"> *</span></td>
+										<td bgcolor="#f2f1ec" width="160">ãƒã‚¤ãƒ³ãƒˆä»˜ä¸ç‡<span class="red"> *</span></td>
 										<td bgcolor="#ffffff" width="557">
 										<span class="red12"><!--{$arrErr.point_rate}--></span>
-										<input type="text" name="point_rate" value="<!--{$arrForm.point_rate|escape|default:$arrInfo.point_rate}-->" size="6" class="box6" maxlength="<!--{$smarty.const.PERCENTAGE_LEN}-->" style="<!--{if $arrErr.point_rate != ""}-->background-color: <!--{$smarty.const.ERR_COLOR}--><!--{/if}-->"/>¡ó<span class="red10"> ¡ÊÈ¾³Ñ¿ô»ú¤ÇÆşÎÏ¡Ë</span></td>
+										<input type="text" name="point_rate" value="<!--{$arrForm.point_rate|escape|default:$arrInfo.point_rate}-->" size="6" class="box6" maxlength="<!--{$smarty.const.PERCENTAGE_LEN}-->" style="<!--{if $arrErr.point_rate != ""}-->background-color: <!--{$smarty.const.ERR_COLOR}--><!--{/if}-->"/>ï¼…<span class="red10"> ï¼ˆåŠè§’æ•°å­—ã§å…¥åŠ›ï¼‰</span></td>
 									</tr>
 									<tr class="fs12n">
-										<td bgcolor="#f2f1ec" width="160">È¯Á÷ÆüÌÜ°Â</td>
+										<td bgcolor="#f2f1ec" width="160">ç™ºé€æ—¥ç›®å®‰</td>
 										<td bgcolor="#ffffff" width="557">
 										<span class="red12"><!--{$arrErr.deliv_date_id}--></span>
 										<select name="deliv_date_id" style="<!--{$arrErr.deliv_date_id|sfGetErrorColor}-->">
-										<option value="">ÁªÂò¤·¤Æ¤¯¤À¤µ¤¤</option>
+										<option value="">é¸æŠã—ã¦ãã ã•ã„</option>
 										<!--{html_options options=$arrDELIVERYDATE selected=$arrForm.deliv_date_id}-->
 										</select>
 										</td>
 									</tr>
 									<tr class="fs12n">
-										<td bgcolor="#f2f1ec" width="160">¹ØÆşÀ©¸Â<span class="red"> *</span></td>
+										<td bgcolor="#f2f1ec" width="160">è³¼å…¥åˆ¶é™<span class="red"> *</span></td>
 										<td bgcolor="#ffffff" width="557">
 										<span class="red12"><!--{$arrErr.sale_limit}--></span>
-										<input type="text" name="sale_limit" value="<!--{$arrForm.sale_limit|escape}-->" size="6" class="box6" maxlength="<!--{$smarty.const.AMOUNT_LEN}-->" style="<!--{if $arrErr.sale_limit != ""}-->background-color: <!--{$smarty.const.ERR_COLOR}--><!--{/if}-->"/>¸Ä
-										<input type="checkbox" name="sale_unlimited" value="1" <!--{if $arrForm.sale_unlimited == "1"}-->checked<!--{/if}--> onclick="fnCheckSaleLimit('<!--{$smarty.const.DISABLED_RGB}-->');"/>ÌµÀ©¸Â</td>
+										<input type="text" name="sale_limit" value="<!--{$arrForm.sale_limit|escape}-->" size="6" class="box6" maxlength="<!--{$smarty.const.AMOUNT_LEN}-->" style="<!--{if $arrErr.sale_limit != ""}-->background-color: <!--{$smarty.const.ERR_COLOR}--><!--{/if}-->"/>å€‹
+										<input type="checkbox" name="sale_unlimited" value="1" <!--{if $arrForm.sale_unlimited == "1"}-->checked<!--{/if}--> onclick="fnCheckSaleLimit('<!--{$smarty.const.DISABLED_RGB}-->');"/>ç„¡åˆ¶é™</td>
 										</td>
 									</tr>
 									<tr>
-										<td bgcolor="#f2f1ec" width="160" class="fs12n">¥á¡¼¥«¡¼URL</td>
+										<td bgcolor="#f2f1ec" width="160" class="fs12n">ãƒ¡ãƒ¼ã‚«ãƒ¼URL</td>
 										<td bgcolor="#ffffff" width="557" class="fs10n">
 										<span class="red12"><!--{$arrErr.comment1}--></span>
-										<input type="text" name="comment1" value="<!--{$arrForm.comment1|escape}-->" maxlength="<!--{$smarty.const.URL_LEN}-->" size="60" class="box60" style="<!--{$arrErr.comment1|sfGetErrorColor}-->" /><span class="red"> ¡Ê¾å¸Â<!--{$smarty.const.URL_LEN}-->Ê¸»ú¡Ë</span></td>
+										<input type="text" name="comment1" value="<!--{$arrForm.comment1|escape}-->" maxlength="<!--{$smarty.const.URL_LEN}-->" size="60" class="box60" style="<!--{$arrErr.comment1|sfGetErrorColor}-->" /><span class="red"> ï¼ˆä¸Šé™<!--{$smarty.const.URL_LEN}-->æ–‡å­—ï¼‰</span></td>
 									</tr>
 									<!--{*
 									<tr>
-										<td bgcolor="#f2f1ec" width="160" class="fs12n">À®Ê¬</td>
-										<td bgcolor="#ffffff" width="557" class="fs10n"><textarea name="comment2" cols="60" rows="8" class="area60" maxlength="<!--{$smarty.const.STEXT_LEN}-->"><!--{$arrForm.comment2|escape}--></textarea><span class="red"> ¡Ê¾å¸Â<!--{$smarty.const.LTEXT_LEN}-->Ê¸»ú¡Ë</span></td>
+										<td bgcolor="#f2f1ec" width="160" class="fs12n">æˆåˆ†</td>
+										<td bgcolor="#ffffff" width="557" class="fs10n"><textarea name="comment2" cols="60" rows="8" class="area60" maxlength="<!--{$smarty.const.STEXT_LEN}-->"><!--{$arrForm.comment2|escape}--></textarea><span class="red"> ï¼ˆä¸Šé™<!--{$smarty.const.LTEXT_LEN}-->æ–‡å­—ï¼‰</span></td>
 									</tr>
 									*}-->
 									<tr>
-										<td bgcolor="#f2f1ec" width="160" class="fs12n">¸¡º÷¥ï¡¼¥É<br />¢¨Ê£¿ô¤Î¾ì¹ç¤Ï¡¢¥«¥ó¥Ş( , )¶èÀÚ¤ê¤ÇÆşÎÏ¤·¤Æ²¼¤µ¤¤</td>
+										<td bgcolor="#f2f1ec" width="160" class="fs12n">æ¤œç´¢ãƒ¯ãƒ¼ãƒ‰<br />â€»è¤‡æ•°ã®å ´åˆã¯ã€ã‚«ãƒ³ãƒ( , )åŒºåˆ‡ã‚Šã§å…¥åŠ›ã—ã¦ä¸‹ã•ã„</td>
 										<td bgcolor="#ffffff" width="557" class="fs10n">
 										<span class="red12"><!--{$arrErr.comment3}--></span>
-										<textarea name="comment3" cols="60" rows="8" class="area60" maxlength="<!--{$smarty.const.LLTEXT_LEN}-->" style="<!--{$arrErr.comment3|sfGetErrorColor}-->"><!--{$arrForm.comment3|escape}--></textarea><br /><span class="red"> ¡Ê¾å¸Â<!--{$smarty.const.LLTEXT_LEN}-->Ê¸»ú¡Ë</span></td>
+										<textarea name="comment3" cols="60" rows="8" class="area60" maxlength="<!--{$smarty.const.LLTEXT_LEN}-->" style="<!--{$arrErr.comment3|sfGetErrorColor}-->"><!--{$arrForm.comment3|escape}--></textarea><br /><span class="red"> ï¼ˆä¸Šé™<!--{$smarty.const.LLTEXT_LEN}-->æ–‡å­—ï¼‰</span></td>
 									</tr>
 									<tr>
-										<td bgcolor="#f2f1ec" width="160" class="fs12n">°ìÍ÷-¥á¥¤¥ó¥³¥á¥ó¥È<span class="red"> *</span></td>
+										<td bgcolor="#f2f1ec" width="160" class="fs12n">ä¸€è¦§-ãƒ¡ã‚¤ãƒ³ã‚³ãƒ¡ãƒ³ãƒˆ<span class="red"> *</span></td>
 										<td bgcolor="#ffffff" width="557" class="fs10n">
 										<span class="red12"><!--{$arrErr.main_list_comment}--></span>
-										<textarea name="main_list_comment" maxlength="<!--{$smarty.const.MTEXT_LEN}-->" style="<!--{if $arrErr.main_list_comment != ""}-->background-color: <!--{$smarty.const.ERR_COLOR}--><!--{/if}-->" cols="60" rows="8" class="area60"><!--{$arrForm.main_list_comment|escape}--></textarea><br /><span class="red"> ¡Ê¾å¸Â<!--{$smarty.const.MTEXT_LEN}-->Ê¸»ú¡Ë</span></td>
+										<textarea name="main_list_comment" maxlength="<!--{$smarty.const.MTEXT_LEN}-->" style="<!--{if $arrErr.main_list_comment != ""}-->background-color: <!--{$smarty.const.ERR_COLOR}--><!--{/if}-->" cols="60" rows="8" class="area60"><!--{$arrForm.main_list_comment|escape}--></textarea><br /><span class="red"> ï¼ˆä¸Šé™<!--{$smarty.const.MTEXT_LEN}-->æ–‡å­—ï¼‰</span></td>
 									</tr>
 									<tr>
-										<td bgcolor="#f2f1ec" width="160" class="fs12n">¾ÜºÙ-¥á¥¤¥ó¥³¥á¥ó¥È<span class="red">(¥¿¥°µö²Ä)*</span></td>
+										<td bgcolor="#f2f1ec" width="160" class="fs12n">è©³ç´°-ãƒ¡ã‚¤ãƒ³ã‚³ãƒ¡ãƒ³ãƒˆ<span class="red">(ã‚¿ã‚°è¨±å¯)*</span></td>
 										<td bgcolor="#ffffff" width="557" class="fs10n">
 										<span class="red12"><!--{$arrErr.main_comment}--></span>
-										<textarea name="main_comment" value="<!--{$arrForm.main_comment|escape}-->" maxlength="<!--{$smarty.const.LLTEXT_LEN}-->" style="<!--{if $arrErr.main_comment != ""}-->background-color: <!--{$smarty.const.ERR_COLOR}--><!--{/if}-->"  cols="60" rows="8" class="area60"><!--{$arrForm.main_comment|escape}--></textarea><br /><span class="red"> ¡Ê¾å¸Â<!--{$smarty.const.LLTEXT_LEN}-->Ê¸»ú¡Ë</span></td>
+										<textarea name="main_comment" value="<!--{$arrForm.main_comment|escape}-->" maxlength="<!--{$smarty.const.LLTEXT_LEN}-->" style="<!--{if $arrErr.main_comment != ""}-->background-color: <!--{$smarty.const.ERR_COLOR}--><!--{/if}-->"  cols="60" rows="8" class="area60"><!--{$arrForm.main_comment|escape}--></textarea><br /><span class="red"> ï¼ˆä¸Šé™<!--{$smarty.const.LLTEXT_LEN}-->æ–‡å­—ï¼‰</span></td>
 									</tr>
 									<tr>
 										<!--{assign var=key value="main_list_image"}-->
-										<td bgcolor="#f2f1ec" width="160" class="fs12n">°ìÍ÷-¥á¥¤¥ó²èÁü<span class="red"> *</span><br />[<!--{$smarty.const.SMALL_IMAGE_WIDTH}-->¡ß<!--{$smarty.const.SMALL_IMAGE_HEIGHT}-->]</td>
+										<td bgcolor="#f2f1ec" width="160" class="fs12n">ä¸€è¦§-ãƒ¡ã‚¤ãƒ³ç”»åƒ<span class="red"> *</span><br />[<!--{$smarty.const.SMALL_IMAGE_WIDTH}-->Ã—<!--{$smarty.const.SMALL_IMAGE_HEIGHT}-->]</td>
 										<td bgcolor="#ffffff" width="557" class="fs12n">
 										<a name="<!--{$key}-->"></a>
 										<a name="main_image"></a>
 										<a name="main_large_image"></a>
 										<span class="red12"><!--{$arrErr[$key]}--></span>
 										<!--{if $arrFile[$key].filepath != ""}-->
-										<img src="<!--{$arrFile[$key].filepath}-->" alt="<!--{$arrForm.name|escape}-->" />¡¡<a href="" onclick="fnModeSubmit('delete_image', 'image_key', '<!--{$key}-->'); return false;">[²èÁü¤Î¼è¤ê¾Ã¤·]</a><br>
+										<img src="<!--{$arrFile[$key].filepath}-->" alt="<!--{$arrForm.name|escape}-->" />ã€€<a href="" onclick="fnModeSubmit('delete_image', 'image_key', '<!--{$key}-->'); return false;">[ç”»åƒã®å–ã‚Šæ¶ˆã—]</a><br>
 										<!--{/if}-->
 										<input type="file" name="main_list_image" size="50" class="box50" style="<!--{$arrErr[$key]|sfGetErrorColor}-->" />
-										<input type="button" name="btn" onclick="fnModeSubmit('upload_image', 'image_key', '<!--{$key}-->')" value="¥¢¥Ã¥×¥í¡¼¥É">
+										<input type="button" name="btn" onclick="fnModeSubmit('upload_image', 'image_key', '<!--{$key}-->')" value="ã‚¢ãƒƒãƒ—ãƒ­ãƒ¼ãƒ‰">
 										</td>
 									</tr>
 									<tr>
 										<!--{assign var=key value="main_image"}-->
-										<td bgcolor="#f2f1ec" width="160" class="fs12n">¾ÜºÙ-¥á¥¤¥ó²èÁü<span class="red"> *</span><br />[<!--{$smarty.const.NORMAL_IMAGE_WIDTH}-->¡ß<!--{$smarty.const.NORMAL_IMAGE_HEIGHT}-->]</td>
+										<td bgcolor="#f2f1ec" width="160" class="fs12n">è©³ç´°-ãƒ¡ã‚¤ãƒ³ç”»åƒ<span class="red"> *</span><br />[<!--{$smarty.const.NORMAL_IMAGE_WIDTH}-->Ã—<!--{$smarty.const.NORMAL_IMAGE_HEIGHT}-->]</td>
 										<td bgcolor="#ffffff" width="557" class="fs12n">
 										<span class="red12"><!--{$arrErr[$key]}--></span>
 										<!--{if $arrFile[$key].filepath != ""}-->
-										<img src="<!--{$arrFile[$key].filepath}-->" alt="<!--{$arrForm.name|escape}-->" />¡¡<a href="" onclick="fnModeSubmit('delete_image', 'image_key', '<!--{$key}-->'); return false;">[²èÁü¤Î¼è¤ê¾Ã¤·]</a><br>
+										<img src="<!--{$arrFile[$key].filepath}-->" alt="<!--{$arrForm.name|escape}-->" />ã€€<a href="" onclick="fnModeSubmit('delete_image', 'image_key', '<!--{$key}-->'); return false;">[ç”»åƒã®å–ã‚Šæ¶ˆã—]</a><br>
 										<!--{/if}-->
 										<input type="file" name="main_image" size="50" class="box50" style="<!--{$arrErr[$key]|sfGetErrorColor}-->" />
-										<input type="button" name="btn" onclick="fnModeSubmit('upload_image', 'image_key', '<!--{$key}-->')" value="¥¢¥Ã¥×¥í¡¼¥É">
+										<input type="button" name="btn" onclick="fnModeSubmit('upload_image', 'image_key', '<!--{$key}-->')" value="ã‚¢ãƒƒãƒ—ãƒ­ãƒ¼ãƒ‰">
 										</td>
 									</tr>
 									<tr>
 										<!--{assign var=key value="main_large_image"}-->
-										<td bgcolor="#f2f1ec" width="160" class="fs12n">¾ÜºÙ-¥á¥¤¥ó³ÈÂç²èÁü<br />[<!--{$smarty.const.LARGE_IMAGE_WIDTH}-->¡ß<!--{$smarty.const.LARGE_IMAGE_HEIGHT}-->]</td>
+										<td bgcolor="#f2f1ec" width="160" class="fs12n">è©³ç´°-ãƒ¡ã‚¤ãƒ³æ‹¡å¤§ç”»åƒ<br />[<!--{$smarty.const.LARGE_IMAGE_WIDTH}-->Ã—<!--{$smarty.const.LARGE_IMAGE_HEIGHT}-->]</td>
 										<td bgcolor="#ffffff" width="557" class="fs12n">
 										<span class="red12"><!--{$arrErr[$key]}--></span>
 										<!--{if $arrFile[$key].filepath != ""}-->
-										<img src="<!--{$arrFile[$key].filepath}-->" alt="<!--{$arrForm.name|escape}-->" />¡¡<a href="" onclick="fnModeSubmit('delete_image', 'image_key', '<!--{$key}-->'); return false;">[²èÁü¤Î¼è¤ê¾Ã¤·]</a><br>
+										<img src="<!--{$arrFile[$key].filepath}-->" alt="<!--{$arrForm.name|escape}-->" />ã€€<a href="" onclick="fnModeSubmit('delete_image', 'image_key', '<!--{$key}-->'); return false;">[ç”»åƒã®å–ã‚Šæ¶ˆã—]</a><br>
 										<!--{/if}-->
 										<input type="file" name="<!--{$key}-->" size="50" class="box50" style="<!--{$arrErr[$key]|sfGetErrorColor}-->" />
-										<input type="button" name="btn" onclick="fnModeSubmit('upload_image', 'image_key', '<!--{$key}-->')" value="¥¢¥Ã¥×¥í¡¼¥É">
+										<input type="button" name="btn" onclick="fnModeSubmit('upload_image', 'image_key', '<!--{$key}-->')" value="ã‚¢ãƒƒãƒ—ãƒ­ãƒ¼ãƒ‰">
 										</td>
 									</tr>
-									<!--{*¡¡¥«¥é¡¼Èæ³Ó²èÁü¡¢¾¦ÉÊ¾ÜºÙ¥Õ¥¡¥¤¥ë¤ÏÈóÂĞ±ş 
+									<!--{*ã€€ã‚«ãƒ©ãƒ¼æ¯”è¼ƒç”»åƒã€å•†å“è©³ç´°ãƒ•ã‚¡ã‚¤ãƒ«ã¯éå¯¾å¿œ 
 									<tr>
-										<td bgcolor="#f2f1ec" width="160" class="fs12n">¥«¥é¡¼Èæ³Ó²èÁü<br />[500¡ß500]</td>
+										<td bgcolor="#f2f1ec" width="160" class="fs12n">ã‚«ãƒ©ãƒ¼æ¯”è¼ƒç”»åƒ<br />[500Ã—500]</td>
 										<td bgcolor="#ffffff" width="557" class="fs12n">
 										<!--{assign var=key value="file1"}-->
 										<span class="red12"><!--{$arrErr[$key]}--></span>
 										<!--{if $arrFile[$key].filepath != ""}-->
-										<img src="<!--{$arrFile[$key].filepath}-->" alt="<!--{$arrForm.name|escape}-->" width="<!--{$arrFile[$key].width}-->" height="<!--{$arrFile[$key].height}-->" />¡¡<a href="" onclick="fnModeSubmit('delete_image', 'image_key', '<!--{$key}-->'); return false;">[²èÁü¤Î¼è¤ê¾Ã¤·]</a><br>
+										<img src="<!--{$arrFile[$key].filepath}-->" alt="<!--{$arrForm.name|escape}-->" width="<!--{$arrFile[$key].width}-->" height="<!--{$arrFile[$key].height}-->" />ã€€<a href="" onclick="fnModeSubmit('delete_image', 'image_key', '<!--{$key}-->'); return false;">[ç”»åƒã®å–ã‚Šæ¶ˆã—]</a><br>
 										<!--{/if}-->
 										<input type="file" name="<!--{$key}-->" size="50" class="box50" />
-										<input type="button" name="btn" onclick="fnModeSubmit('upload_image', 'image_key', '<!--{$key}-->')" value="¥¢¥Ã¥×¥í¡¼¥É">
+										<input type="button" name="btn" onclick="fnModeSubmit('upload_image', 'image_key', '<!--{$key}-->')" value="ã‚¢ãƒƒãƒ—ãƒ­ãƒ¼ãƒ‰">
 										</td>
 									</tr>
 									<tr>
-										<td bgcolor="#f2f1ec" width="160" class="fs12n">¾¦ÉÊ¾ÜºÙ¥Õ¥¡¥¤¥ë</td>
+										<td bgcolor="#f2f1ec" width="160" class="fs12n">å•†å“è©³ç´°ãƒ•ã‚¡ã‚¤ãƒ«</td>
 										<td bgcolor="#ffffff" width="557" class="fs10n">
 										<!--{assign var=key value="file2"}-->
 										<span class="red12"><!--{$arrErr[$key]}--></span>
 										<!--{if $arrFile[$key].filepath != ""}-->
-										<input type="button" name="pdf" value="¥Õ¥¡¥¤¥ë³ÎÇ§" onclick="fnOpenNoMenu('<!--{$arrFile[$key].filepath}-->')"/>
-										<a href="" onclick="fnModeSubmit('delete_image', 'image_key', '<!--{$key}-->'); return false;">[¥Õ¥¡¥¤¥ë¤Î¼è¤ê¾Ã¤·]</a><br>
+										<input type="button" name="pdf" value="ãƒ•ã‚¡ã‚¤ãƒ«ç¢ºèª" onclick="fnOpenNoMenu('<!--{$arrFile[$key].filepath}-->')"/>
+										<a href="" onclick="fnModeSubmit('delete_image', 'image_key', '<!--{$key}-->'); return false;">[ãƒ•ã‚¡ã‚¤ãƒ«ã®å–ã‚Šæ¶ˆã—]</a><br>
 										<!--{/if}-->
 										<input type="file" name="<!--{$key}-->" size="50" class="box50" />
-										<input type="button" name="btn" onclick="fnModeSubmit('upload_image', 'image_key', '<!--{$key}-->')" value="¥¢¥Ã¥×¥í¡¼¥É">
+										<input type="button" name="btn" onclick="fnModeSubmit('upload_image', 'image_key', '<!--{$key}-->')" value="ã‚¢ãƒƒãƒ—ãƒ­ãƒ¼ãƒ‰">
 										</td>
 									</tr>		
 									*}-->
@@ -263,7 +263,7 @@ function lfDispSwitch(id){
 								<table width="678" border="0" cellspacing="0" cellpadding="0" summary=" ">
 									<tr height="36" align="center">
 										<td bgcolor="#cccccc"><img src="<!--{$smarty.const.URL_DIR}-->img/common/_.gif" width="1" height="10" alt=""></td>
-										<td bgcolor="#f2f1ec" width="676"><input type="button" name="btn" onclick="lfDispSwitch('sub_detail');" value="¥µ¥Ö¾ğÊóÉ½¼¨/ÈóÉ½¼¨"></td>
+										<td bgcolor="#f2f1ec" width="676"><input type="button" name="btn" onclick="lfDispSwitch('sub_detail');" value="ã‚µãƒ–æƒ…å ±è¡¨ç¤º/éè¡¨ç¤º"></td>
 										<td bgcolor="#cccccc"><img src="<!--{$smarty.const.URL_DIR}-->img/common/_.gif" width="1" height="10" alt=""></td>
 									</tr>
 									<tr height="1" align="center">
@@ -278,50 +278,50 @@ function lfDispSwitch(id){
 								<!--{/if}-->
 								<table width="678" border="0" cellspacing="1" cellpadding="8" summary=" ">
 									<!--{section name=cnt loop=$smarty.const.PRODUCTSUB_MAX}-->
-									<!--¢§¾¦ÉÊ<!--{$smarty.section.cnt.iteration}-->-->
+									<!--â–¼å•†å“<!--{$smarty.section.cnt.iteration}-->-->
 									<tr>
-										<td bgcolor="#f2f1ec" width="160" class="fs12n">¾ÜºÙ-¥µ¥Ö¥¿¥¤¥È¥ë¡Ê<!--{$smarty.section.cnt.iteration}-->¡Ë</td>
+										<td bgcolor="#f2f1ec" width="160" class="fs12n">è©³ç´°-ã‚µãƒ–ã‚¿ã‚¤ãƒˆãƒ«ï¼ˆ<!--{$smarty.section.cnt.iteration}-->ï¼‰</td>
 										<!--{assign var=key value="sub_title`$smarty.section.cnt.iteration`"}-->
 										<td bgcolor="#ffffff" width="557" class="fs12n">
 										<span class="red12"><!--{$arrErr[$key]}--></span>
-										<input type="text" name="sub_title<!--{$smarty.section.cnt.iteration}-->" value="<!--{$arrForm[$key]|escape}-->" size="60" class="box60" maxlength="<!--{$smarty.const.STEXT_LEN}-->" style="<!--{$arrErr[$key]|sfGetErrorColor}-->"/><span class="red10"> ¡Ê¾å¸Â<!--{$smarty.const.STEXT_LEN}-->Ê¸»ú¡Ë</span>
+										<input type="text" name="sub_title<!--{$smarty.section.cnt.iteration}-->" value="<!--{$arrForm[$key]|escape}-->" size="60" class="box60" maxlength="<!--{$smarty.const.STEXT_LEN}-->" style="<!--{$arrErr[$key]|sfGetErrorColor}-->"/><span class="red10"> ï¼ˆä¸Šé™<!--{$smarty.const.STEXT_LEN}-->æ–‡å­—ï¼‰</span>
 										</td>
 									</tr>
 									<tr>
-										<td bgcolor="#f2f1ec" width="160" class="fs12n">¾ÜºÙ-¥µ¥Ö¥³¥á¥ó¥È¡Ê<!--{$smarty.section.cnt.iteration}-->¡Ë<span class="red">(¥¿¥°µö²Ä)</span></td>
+										<td bgcolor="#f2f1ec" width="160" class="fs12n">è©³ç´°-ã‚µãƒ–ã‚³ãƒ¡ãƒ³ãƒˆï¼ˆ<!--{$smarty.section.cnt.iteration}-->ï¼‰<span class="red">(ã‚¿ã‚°è¨±å¯)</span></td>
 										<!--{assign var=key value="sub_comment`$smarty.section.cnt.iteration`"}-->
 										<td bgcolor="#ffffff" width="557" class="fs10n">
 										<span class="red12"><!--{$arrErr[$key]}--></span>
-										<textarea name="sub_comment<!--{$smarty.section.cnt.iteration}-->" cols="60" rows="8" class="area60" maxlength="<!--{$smarty.const.LLTEXT_LEN}-->" style="<!--{$arrErr[$key]|sfGetErrorColor}-->"><!--{$arrForm[$key]|escape}--></textarea><br /><span class="red10"> ¡Ê¾å¸Â<!--{$smarty.const.LLTEXT_LEN}-->Ê¸»ú¡Ë</span></td>
+										<textarea name="sub_comment<!--{$smarty.section.cnt.iteration}-->" cols="60" rows="8" class="area60" maxlength="<!--{$smarty.const.LLTEXT_LEN}-->" style="<!--{$arrErr[$key]|sfGetErrorColor}-->"><!--{$arrForm[$key]|escape}--></textarea><br /><span class="red10"> ï¼ˆä¸Šé™<!--{$smarty.const.LLTEXT_LEN}-->æ–‡å­—ï¼‰</span></td>
 									</tr>
 									<tr>
 										<!--{assign var=key value="sub_image`$smarty.section.cnt.iteration`"}-->
-										<td bgcolor="#f2f1ec" width="160" class="fs12n">¾ÜºÙ-¥µ¥Ö²èÁü¡Ê<!--{$smarty.section.cnt.iteration}-->¡Ë<br />[<!--{$smarty.const.NORMAL_SUBIMAGE_WIDTH}-->¡ß<!--{$smarty.const.NORMAL_SUBIMAGE_HEIGHT}-->]</td>
+										<td bgcolor="#f2f1ec" width="160" class="fs12n">è©³ç´°-ã‚µãƒ–ç”»åƒï¼ˆ<!--{$smarty.section.cnt.iteration}-->ï¼‰<br />[<!--{$smarty.const.NORMAL_SUBIMAGE_WIDTH}-->Ã—<!--{$smarty.const.NORMAL_SUBIMAGE_HEIGHT}-->]</td>
 										<td bgcolor="#ffffff" width="557" class="fs12n">
 										<a name="<!--{$key}-->"></a>
 										<!--{assign var=largekey value="sub_large_image`$smarty.section.cnt.iteration`"}-->
 										<a name="<!--{$largekey}-->"></a>
 										<span class="red12"><!--{$arrErr[$key]}--></span>
 										<!--{if $arrFile[$key].filepath != ""}-->
-										<img src="<!--{$arrFile[$key].filepath}-->" alt="<!--{$arrForm.name|escape}-->" />¡¡<a href="" onclick="fnModeSubmit('delete_image', 'image_key', '<!--{$key}-->'); return false;">[²èÁü¤Î¼è¤ê¾Ã¤·]</a><br>
+										<img src="<!--{$arrFile[$key].filepath}-->" alt="<!--{$arrForm.name|escape}-->" />ã€€<a href="" onclick="fnModeSubmit('delete_image', 'image_key', '<!--{$key}-->'); return false;">[ç”»åƒã®å–ã‚Šæ¶ˆã—]</a><br>
 										<!--{/if}-->
 										<input type="file" name="<!--{$key}-->" size="50" class="box50" style="<!--{$arrErr[$key]|sfGetErrorColor}-->"/>
-										<input type="button" name="btn" onclick="fnModeSubmit('upload_image', 'image_key', '<!--{$key}-->')" value="¥¢¥Ã¥×¥í¡¼¥É">
+										<input type="button" name="btn" onclick="fnModeSubmit('upload_image', 'image_key', '<!--{$key}-->')" value="ã‚¢ãƒƒãƒ—ãƒ­ãƒ¼ãƒ‰">
 										</td>
 									</tr>
 									<tr>
 										<!--{assign var=key value="sub_large_image`$smarty.section.cnt.iteration`"}-->
-										<td bgcolor="#f2f1ec" width="160" class="fs12n">¾ÜºÙ-¥µ¥Ö³ÈÂç²èÁü¡Ê<!--{$smarty.section.cnt.iteration}-->¡Ë<br />[<!--{$smarty.const.LARGE_SUBIMAGE_WIDTH}-->¡ß<!--{$smarty.const.LARGE_SUBIMAGE_HEIGHT}-->]</td>
+										<td bgcolor="#f2f1ec" width="160" class="fs12n">è©³ç´°-ã‚µãƒ–æ‹¡å¤§ç”»åƒï¼ˆ<!--{$smarty.section.cnt.iteration}-->ï¼‰<br />[<!--{$smarty.const.LARGE_SUBIMAGE_WIDTH}-->Ã—<!--{$smarty.const.LARGE_SUBIMAGE_HEIGHT}-->]</td>
 										<td bgcolor="#ffffff" width="557" class="fs12n">
 										<span class="red12"><!--{$arrErr[$key]}--></span>
 										<!--{if $arrFile[$key].filepath != ""}-->
-										<img src="<!--{$arrFile[$key].filepath}-->" alt="<!--{$arrForm.name|escape}-->" />¡¡<a href="" onclick="fnModeSubmit('delete_image', 'image_key', '<!--{$key}-->'); return false;">[²èÁü¤Î¼è¤ê¾Ã¤·]</a><br>
+										<img src="<!--{$arrFile[$key].filepath}-->" alt="<!--{$arrForm.name|escape}-->" />ã€€<a href="" onclick="fnModeSubmit('delete_image', 'image_key', '<!--{$key}-->'); return false;">[ç”»åƒã®å–ã‚Šæ¶ˆã—]</a><br>
 										<!--{/if}-->
 										<input type="file" name="<!--{$key}-->" size="50" class="box50" style="<!--{$arrErr[$key]|sfGetErrorColor}-->"/>
-										<input type="button" name="btn" onclick="fnModeSubmit('upload_image', 'image_key', '<!--{$key}-->')" value="¥¢¥Ã¥×¥í¡¼¥É">
+										<input type="button" name="btn" onclick="fnModeSubmit('upload_image', 'image_key', '<!--{$key}-->')" value="ã‚¢ãƒƒãƒ—ãƒ­ãƒ¼ãƒ‰">
 										</td>
 									</tr>
-									<!--¢¥¾¦ÉÊ<!--{$smarty.section.cnt.iteration}-->-->
+									<!--â–²å•†å“<!--{$smarty.section.cnt.iteration}-->-->
 									<!--{/section}-->
 								</table>
 								</div>
@@ -330,7 +330,7 @@ function lfDispSwitch(id){
 								<table width="678" border="0" cellspacing="0" cellpadding="0" summary=" ">
 									<tr height="36" align="center">
 										<td bgcolor="#cccccc"><img src="<!--{$smarty.const.URL_DIR}-->img/common/_.gif" width="1" height="10" alt=""></td>
-										<td bgcolor="#f2f1ec" width="676"><input type="button" name="btn" onclick="lfDispSwitch('recommend_select');" value="´ØÏ¢¾¦ÉÊÉ½¼¨/ÈóÉ½¼¨"></td>
+										<td bgcolor="#f2f1ec" width="676"><input type="button" name="btn" onclick="lfDispSwitch('recommend_select');" value="é–¢é€£å•†å“è¡¨ç¤º/éè¡¨ç¤º"></td>
 										<td bgcolor="#cccccc"><img src="<!--{$smarty.const.URL_DIR}-->img/common/_.gif" width="1" height="10" alt=""></td>
 									</tr>
 									<tr height="1" align="center">
@@ -345,13 +345,13 @@ function lfDispSwitch(id){
 								<!--{/if}-->								
 								<table width="678" border="0" cellspacing="1" cellpadding="8" summary=" ">
 									<!--{if $smarty.const.OPTION_RECOMMEND == 1}-->			
-									<!--¢§´ØÏ¢¾¦ÉÊ-->
+									<!--â–¼é–¢é€£å•†å“-->
 									<!--{section name=cnt loop=$smarty.const.RECOMMEND_PRODUCT_MAX}-->			
 									<!--{assign var=recommend_no value="`$smarty.section.cnt.iteration`"}-->
 									<tr>
 										<!--{assign var=key value="recommend_id`$smarty.section.cnt.iteration`"}-->
 										<!--{assign var=anckey value="recommend_no`$smarty.section.cnt.iteration`"}-->
-										<td bgcolor="#f2f1ec" width="160" class="fs12n">´ØÏ¢¾¦ÉÊ(<!--{$smarty.section.cnt.iteration}-->)<br>
+										<td bgcolor="#f2f1ec" width="160" class="fs12n">é–¢é€£å•†å“(<!--{$smarty.section.cnt.iteration}-->)<br>
 										<!--{if $arrRecommend[$recommend_no].main_list_image != ""}-->
 											<!--{assign var=image_path value="`$arrRecommend[$recommend_no].main_list_image`"}-->
 										<!--{else}-->
@@ -362,18 +362,18 @@ function lfDispSwitch(id){
 										<td bgcolor="#ffffff" width="557" class="fs12">
 										<a name="<!--{$anckey}-->"></a>
 										<input type="hidden" name="<!--{$key}-->" value="<!--{$arrRecommend[$recommend_no].product_id|escape}-->">
-										<input type="button" name="change" value="ÊÑ¹¹" onclick="win03('./product_select.php?no=<!--{$smarty.section.cnt.iteration}-->', 'search', '500', '500'); " >
+										<input type="button" name="change" value="å¤‰æ›´" onclick="win03('./product_select.php?no=<!--{$smarty.section.cnt.iteration}-->', 'search', '500', '500'); " >
 										<!--{assign var=key value="recommend_delete`$smarty.section.cnt.iteration`"}-->
-										<input type="checkbox" name="<!--{$key}-->" value="1">ºï½ü<br>
-										¾¦ÉÊ¥³¡¼¥É:<!--{$arrRecommend[$recommend_no].product_code_min}--><br>
-										¾¦ÉÊÌ¾:<!--{$arrRecommend[$recommend_no].name|escape}--><br>
+										<input type="checkbox" name="<!--{$key}-->" value="1">å‰Šé™¤<br>
+										å•†å“ã‚³ãƒ¼ãƒ‰:<!--{$arrRecommend[$recommend_no].product_code_min}--><br>
+										å•†å“å:<!--{$arrRecommend[$recommend_no].name|escape}--><br>
 										<!--{assign var=key value="recommend_comment`$smarty.section.cnt.iteration`"}-->
 										<span class="red12"><!--{$arrErr[$key]}--></span>
-										<textarea name="<!--{$key}-->" cols="60" rows="8" class="area60" style="<!--{$arrErr[$key]|sfGetErrorColor}-->" ><!--{$arrRecommend[$recommend_no].comment|escape}--></textarea><br /><span class="red10"> ¡Ê¾å¸Â<!--{$smarty.const.LTEXT_LEN}-->Ê¸»ú¡Ë</span></td>
+										<textarea name="<!--{$key}-->" cols="60" rows="8" class="area60" style="<!--{$arrErr[$key]|sfGetErrorColor}-->" ><!--{$arrRecommend[$recommend_no].comment|escape}--></textarea><br /><span class="red10"> ï¼ˆä¸Šé™<!--{$smarty.const.LTEXT_LEN}-->æ–‡å­—ï¼‰</span></td>
 										</td>
 									</tr>
 									<!--{/section}-->
-									<!--¢¥´ØÏ¢¾¦ÉÊ-->
+									<!--â–²é–¢é€£å•†å“-->
 									<!--{/if}-->
 								</table>
 								</div>
@@ -391,11 +391,11 @@ function lfDispSwitch(id){
 											<tr>
 											<td>
 												<!--{if count($arrSearchHidden) > 0}-->
-												<!--¢§¸¡º÷·ë²Ì¤ØÌá¤ë-->
-													<a href="#" onmouseover="chgImg('<!--{$smarty.const.URL_DIR}-->img/contents/btn_search_back_on.jpg','back');" onmouseout="chgImg('<!--{$smarty.const.URL_DIR}-->img/contents/btn_search_back.jpg','back');" onClick="fnChangeAction('<!--{$smarty.const.URL_SEARCH_TOP}-->'); fnModeSubmit('search','',''); return false;"><img src="<!--{$smarty.const.URL_DIR}-->img/contents/btn_search_back.jpg" width="123" height="24" alt="¸¡º÷²èÌÌ¤ËÌá¤ë" border="0" name="back"></a>
-												<!--¢¥¸¡º÷·ë²Ì¤ØÌá¤ë-->
+												<!--â–¼æ¤œç´¢çµæœã¸æˆ»ã‚‹-->
+													<a href="#" onmouseover="chgImg('<!--{$smarty.const.URL_DIR}-->img/contents/btn_search_back_on.jpg','back');" onmouseout="chgImg('<!--{$smarty.const.URL_DIR}-->img/contents/btn_search_back.jpg','back');" onClick="fnChangeAction('<!--{$smarty.const.URL_SEARCH_TOP}-->'); fnModeSubmit('search','',''); return false;"><img src="<!--{$smarty.const.URL_DIR}-->img/contents/btn_search_back.jpg" width="123" height="24" alt="æ¤œç´¢ç”»é¢ã«æˆ»ã‚‹" border="0" name="back"></a>
+												<!--â–²æ¤œç´¢çµæœã¸æˆ»ã‚‹-->
 												<!--{/if}-->
-												<input type="image" onMouseover="chgImgImageSubmit('<!--{$smarty.const.URL_DIR}-->img/contents/btn_confirm_on.jpg',this)" onMouseout="chgImgImageSubmit('<!--{$smarty.const.URL_DIR}-->img/contents/btn_confirm.jpg',this)" src="<!--{$smarty.const.URL_DIR}-->img/contents/btn_confirm.jpg" width="123" height="24" alt="³ÎÇ§¥Ú¡¼¥¸¤Ø" border="0" name="subm" >
+												<input type="image" onMouseover="chgImgImageSubmit('<!--{$smarty.const.URL_DIR}-->img/contents/btn_confirm_on.jpg',this)" onMouseout="chgImgImageSubmit('<!--{$smarty.const.URL_DIR}-->img/contents/btn_confirm.jpg',this)" src="<!--{$smarty.const.URL_DIR}-->img/contents/btn_confirm.jpg" width="123" height="24" alt="ç¢ºèªãƒšãƒ¼ã‚¸ã¸" border="0" name="subm" >
 											</td>
 											</tr>
 										</table>
@@ -417,11 +417,11 @@ function lfDispSwitch(id){
 						</table>
 					</td>
 				</tr>
-				<!--¥á¥¤¥ó¥¨¥ê¥¢-->
+				<!--ãƒ¡ã‚¤ãƒ³ã‚¨ãƒªã‚¢-->
 			</table>
-			<!--¢¥ÅĞÏ¿¥Æ¡¼¥Ö¥ë¤³¤³¤Ş¤Ç-->
+			<!--â–²ç™»éŒ²ãƒ†ãƒ¼ãƒ–ãƒ«ã“ã“ã¾ã§-->
 		</td>
 	</tr>
 </form>
 </table>
-<!--¡ú¡ú¥á¥¤¥ó¥³¥ó¥Æ¥ó¥Ä¡ú¡ú-->
+<!--â˜…â˜…ãƒ¡ã‚¤ãƒ³ã‚³ãƒ³ãƒ†ãƒ³ãƒ„â˜…â˜…-->

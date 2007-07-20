@@ -18,23 +18,23 @@ $arrREVIEW_CVSCOL = array(
 						);
 						
 $arrREVIEW_CVSTITLE = array(
-						'¾¦ÉÊÌ¾',
-						'¥ì¥Ó¥å¡¼É½¼¨',
-						'Åê¹ÆÆü',
-						'Åê¹Æ¼ÔÌ¾',
-						'À­ÊÌ',
-						'¤ª¤¹¤¹¤á¥ì¥Ù¥ë',
-						'¥¿¥¤¥È¥ë',
-						'¥³¥á¥ó¥È'
+						'å•†å“å',
+						'ãƒ¬ãƒ“ãƒ¥ãƒ¼è¡¨ç¤º',
+						'æŠ•ç¨¿æ—¥',
+						'æŠ•ç¨¿è€…å',
+						'æ€§åˆ¥',
+						'ãŠã™ã™ã‚ãƒ¬ãƒ™ãƒ«',
+						'ã‚¿ã‚¤ãƒˆãƒ«',
+						'ã‚³ãƒ¡ãƒ³ãƒˆ'
 						);
 
 $arrTRACKBACK_CVSTITLE = array(
-						'¾¦ÉÊÌ¾',
-						'¥Ö¥í¥°Ì¾',
-						'¥Ö¥í¥°µ­»ö¥¿¥¤¥È¥ë',
-						'¥Ö¥í¥°µ­»öÆâÍÆ',
-						'¾õÂÖ',
-						'Åê¹ÆÆü'
+						'å•†å“å',
+						'ãƒ–ãƒ­ã‚°å',
+						'ãƒ–ãƒ­ã‚°è¨˜äº‹ã‚¿ã‚¤ãƒˆãƒ«',
+						'ãƒ–ãƒ­ã‚°è¨˜äº‹å†…å®¹',
+						'çŠ¶æ…‹',
+						'æŠ•ç¨¿æ—¥'
 						);
 
 $arrTRACKBACK_CVSCOL = array( 
@@ -46,7 +46,7 @@ $arrTRACKBACK_CVSCOL = array(
 						'A.create_date'
 						);
 
-// CSV½ĞÎÏ¥Ç¡¼¥¿¤òºîÀ®¤¹¤ë¡£(¾¦ÉÊ)
+// CSVå‡ºåŠ›ãƒ‡ãƒ¼ã‚¿ã‚’ä½œæˆã™ã‚‹ã€‚(å•†å“)
 function lfGetProductsCSV($where, $option, $arrval, $arrOutputCols) {
 	global $arrPRODUCTS_CVSCOL;
 
@@ -59,21 +59,21 @@ function lfGetProductsCSV($where, $option, $arrval, $arrOutputCols) {
 	$list_data = $objQuery->select($cols, $from, $where, $arrval);
 	$max = count($list_data);
 	
-	// µ¬³ÊÊ¬ÎàÌ¾°ìÍ÷
+	// è¦æ ¼åˆ†é¡åä¸€è¦§
 	$arrClassCatName = sfGetIDValueList("dtb_classcategory", "classcategory_id", "name");
 	
 	for($i = 0; $i < $max; $i++) {
-		// ´ØÏ¢¾¦ÉÊ¾ğÊó¤ÎÉÕÍ¿
+		// é–¢é€£å•†å“æƒ…å ±ã®ä»˜ä¸
 		$list_data[$i]['classcategory_id1'] = $arrClassCatName[$list_data[$i]['classcategory_id1']];
 		$list_data[$i]['classcategory_id2'] = $arrClassCatName[$list_data[$i]['classcategory_id2']];
 		
-		// ³Æ¹àÌÜ¤òCSV½ĞÎÏÍÑ¤ËÊÑ´¹¤¹¤ë¡£
+		// å„é …ç›®ã‚’CSVå‡ºåŠ›ç”¨ã«å¤‰æ›ã™ã‚‹ã€‚
 		$data .= lfMakeProductsCSV($list_data[$i]);	
 	}
 	return $data;
 }
 
-// CSV½ĞÎÏ¥Ç¡¼¥¿¤òºîÀ®¤¹¤ë¡£(¥ì¥Ó¥å¡¼)
+// CSVå‡ºåŠ›ãƒ‡ãƒ¼ã‚¿ã‚’ä½œæˆã™ã‚‹ã€‚(ãƒ¬ãƒ“ãƒ¥ãƒ¼)
 function lfGetReviewCSV($where, $option, $arrval) {
 	global $arrREVIEW_CVSCOL;
 
@@ -87,13 +87,13 @@ function lfGetReviewCSV($where, $option, $arrval) {
 
 	$max = count($list_data);
 	for($i = 0; $i < $max; $i++) {
-		// ³Æ¹àÌÜ¤òCSV½ĞÎÏÍÑ¤ËÊÑ´¹¤¹¤ë¡£
+		// å„é …ç›®ã‚’CSVå‡ºåŠ›ç”¨ã«å¤‰æ›ã™ã‚‹ã€‚
 		$data .= lfMakeReviewCSV($list_data[$i]);
 	}
 	return $data;
 }
 
-// CSV½ĞÎÏ¥Ç¡¼¥¿¤òºîÀ®¤¹¤ë¡£(¥È¥é¥Ã¥¯¥Ğ¥Ã¥¯)
+// CSVå‡ºåŠ›ãƒ‡ãƒ¼ã‚¿ã‚’ä½œæˆã™ã‚‹ã€‚(ãƒˆãƒ©ãƒƒã‚¯ãƒãƒƒã‚¯)
 function lfGetTrackbackCSV($where, $option, $arrval) {
 	global $arrTRACKBACK_CVSCOL;
 
@@ -107,13 +107,13 @@ function lfGetTrackbackCSV($where, $option, $arrval) {
 
 	$max = count($list_data);
 	for($i = 0; $i < $max; $i++) {
-		// ³Æ¹àÌÜ¤òCSV½ĞÎÏÍÑ¤ËÊÑ´¹¤¹¤ë¡£
+		// å„é …ç›®ã‚’CSVå‡ºåŠ›ç”¨ã«å¤‰æ›ã™ã‚‹ã€‚
 		$data .= lfMakeTrackbackCSV($list_data[$i]);
 	}
 	return $data;
 }
 
-// ³Æ¹àÌÜ¤òCSV½ĞÎÏÍÑ¤ËÊÑ´¹¤¹¤ë¡£(¾¦ÉÊ)
+// å„é …ç›®ã‚’CSVå‡ºåŠ›ç”¨ã«å¤‰æ›ã™ã‚‹ã€‚(å•†å“)
 function lfMakeProductsCSV($list) {
 	global $arrDISP;
 	$line = "";
@@ -136,14 +136,14 @@ function lfMakeProductsCSV($list) {
 			$tmp = str_replace("\"", "\\\"", $tmp);
 			$line .= "\"".$tmp."\",";
 		}
-		// Ê¸Ëö¤Î","¤òÊÑ´¹
+		// æ–‡æœ«ã®","ã‚’å¤‰æ›
 		$line = ereg_replace(",$", "\n", $line);
 	}
 	return $line;
 }
 
 
-// ³Æ¹àÌÜ¤òCSV½ĞÎÏÍÑ¤ËÊÑ´¹¤¹¤ë¡£(¥ì¥Ó¥å¡¼)
+// å„é …ç›®ã‚’CSVå‡ºåŠ›ç”¨ã«å¤‰æ›ã™ã‚‹ã€‚(ãƒ¬ãƒ“ãƒ¥ãƒ¼)
 function lfMakeReviewCSV($list) {
 	global $arrSex;
 	global $arrRECOMMEND;
@@ -171,12 +171,12 @@ function lfMakeReviewCSV($list) {
 		$tmp = ereg_replace("[\",]", " ", $tmp);
 		$line .= "\"".$tmp."\",";
 	}
-	// Ê¸Ëö¤Î","¤òÊÑ´¹
+	// æ–‡æœ«ã®","ã‚’å¤‰æ›
 	$line = ereg_replace(",$", "\n", $line);
 	return $line;
 }
 
-// ³Æ¹àÌÜ¤òCSV½ĞÎÏÍÑ¤ËÊÑ´¹¤¹¤ë¡£(¥È¥é¥Ã¥¯¥Ğ¥Ã¥¯)
+// å„é …ç›®ã‚’CSVå‡ºåŠ›ç”¨ã«å¤‰æ›ã™ã‚‹ã€‚(ãƒˆãƒ©ãƒƒã‚¯ãƒãƒƒã‚¯)
 function lfMakeTrackbackCSV($list) {
 	global $arrTrackBackStatus;
 	global $arrDISP;
@@ -197,7 +197,7 @@ function lfMakeTrackbackCSV($list) {
 		$tmp = ereg_replace("[\",]", " ", $tmp);
 		$line .= "\"".$tmp."\",";
 	}
-	// Ê¸Ëö¤Î","¤òÊÑ´¹
+	// æ–‡æœ«ã®","ã‚’å¤‰æ›
 	$line = ereg_replace(",$", "\n", $line);
 	return $line;
 }

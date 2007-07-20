@@ -6,23 +6,23 @@
  * http://www.lockon.co.jp/
  * 
  *
- * ╔А╔К╔ч╔╛епо©║╕╡Р╫Э║║╔х╔ц╔в╔з║╪╔╦
+ * Ц┐║Ц┐╚Ц┐·Ц┌╛Г≥╩И▄╡Ц┐╩Х╖ёИ≥╓Ц──Ц┐┬Ц┐┐Ц┐≈Ц┐ Ц┐╪Ц┌╦
  */
 
 require_once('../require.php');
 
 class LC_Page {
 	function LC_Page() {
-		/** и╛╓╨йя╧╧╓╧╓К **/
+		/** Е©┘Ц│ Е╓┴Ф⌡╢Ц│≥Ц┌▀ **/
 		$this->tpl_mainpage = 'magazine/index.tpl';
-		$this->tpl_title .= '╔А╔К╔ч╔╛епо©║╕╡Р╫Э';
+		$this->tpl_title .= 'Ц┐║Ц┐╚Ц┐·Ц┌╛Г≥╩И▄╡Ц┐╩Х╖ёИ≥╓';
 	}
 }
 
 $objPage = new LC_Page();
 $objPage->arrForm = $_POST;
 
-// ╔Л╔╓╔╒╔╕╔х╔г╔╤╔╓╔С╓Р╪Хфю
+// Ц┐╛Ц┌╓Ц┌╒Ц┌╕Ц┐┬Ц┐┤Ц┌╤Ц┌╓Ц┐ЁЦ┌▓Е▐√Е╬≈
 $objPage = sfGetPageLayout($objPage, false, DEF_LAYOUT);
 
 $objView = new SC_MobileView();

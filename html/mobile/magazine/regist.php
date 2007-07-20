@@ -6,23 +6,23 @@
  * http://www.lockon.co.jp/
  * 
  *
- * ¥á¥ë¥Ş¥¬ÅĞÏ¿
+ * ãƒ¡ãƒ«ãƒã‚¬ç™»éŒ²
  */
 
 require_once('../require.php');
 
 class LC_Page {
 	function LC_Page() {
-		/** É¬¤ºÊÑ¹¹¤¹¤ë **/
+		/** å¿…ãšå¤‰æ›´ã™ã‚‹ **/
 		$this->tpl_mainpage = 'magazine/regist.tpl';
-		$this->tpl_title .= '¥á¥ë¥Ş¥¬ÅĞÏ¿´°Î»';
+		$this->tpl_title .= 'ãƒ¡ãƒ«ãƒã‚¬ç™»éŒ²å®Œäº†';
 	}
 }
 
 $objPage = new LC_Page();
 $objQuery = new SC_Query();
 
-// secret_key¤Î¼èÆÀ
+// secret_keyã®å–å¾—
 $key = $_GET['id'];
 
 if (empty($key) or !lfExistKey($key))  {
@@ -37,7 +37,7 @@ $objView->display(SITE_FRAME);
 
 //-----------------------------------------------------------------------------------------------------------------------------------
 
-// ¥á¥ë¥Ş¥¬¤ÎÅĞÏ¿¤ò´°Î»¤µ¤»¤ë
+// ãƒ¡ãƒ«ãƒã‚¬ã®ç™»éŒ²ã‚’å®Œäº†ã•ã›ã‚‹
 function lfChangeData($key) {
 	global $objQuery;
 
@@ -46,7 +46,7 @@ function lfChangeData($key) {
 	$result = $objQuery->update("dtb_customer_mail", $arrUpdate, "secret_key = '" .addslashes($key). "'");
 }
 
-// ¥­¡¼¤¬Â¸ºß¤¹¤ë¤«¤É¤¦¤«
+// ã‚­ãƒ¼ãŒå­˜åœ¨ã™ã‚‹ã‹ã©ã†ã‹
 function lfExistKey($key) {
 	global $objQuery;
 

@@ -5,23 +5,23 @@
  * http://www.lockon.co.jp/
  */
 *}-->
-<!--¡ú¡ú¥á¥¤¥ó¥³¥ó¥Æ¥ó¥Ä¡ú¡ú-->
+<!--â˜…â˜…ãƒ¡ã‚¤ãƒ³ã‚³ãƒ³ãƒ†ãƒ³ãƒ„â˜…â˜…-->
 <table width="878" border="0" cellspacing="0" cellpadding="0" summary=" ">
 	<tr valign="top">
 		<td background="<!--{$smarty.const.URL_DIR}-->img/contents/navi_bg.gif" height="402">
-			<!--¢§SUB NAVI-->
+			<!--â–¼SUB NAVI-->
 			<!--{include file=$tpl_subnavi}-->
-			<!--¢¥SUB NAVI-->
+			<!--â–²SUB NAVI-->
 		</td>
 		<td class="mainbg">
-			<!--¢§CONTENTS-->
+			<!--â–¼CONTENTS-->
 			<table width="737" border="0" cellspacing="0" cellpadding="0" summary=" ">
-				<!--¥á¥¤¥ó¥¨¥ê¥¢-->
+				<!--ãƒ¡ã‚¤ãƒ³ã‚¨ãƒªã‚¢-->
 				<tr>
 					<td align="center">
-					<!--¢§MAIN CONTENTS-->
+					<!--â–¼MAIN CONTENTS-->
 						<table width="706" border="0" cellspacing="0" cellpadding="0" summary=" ">
-						<!--¢§ÅÐÏ¿¥Æ¡¼¥Ö¥ë¤³¤³¤«¤é-->
+						<!--â–¼ç™»éŒ²ãƒ†ãƒ¼ãƒ–ãƒ«ã“ã“ã‹ã‚‰-->
 						<form name="form1" id="form1" method="post" action="<!--{$smarty.server.PHP_SELF|escape}-->" enctype="multipart/form-data">
 						<!--{foreach key=key item=item from=$arrForm}-->
 						<input type="hidden" name="<!--{$key}-->" value="<!--{$item|escape}-->">
@@ -39,7 +39,7 @@
 								</tr>
 								<tr>
 									<td background="<!--{$smarty.const.URL_DIR}-->img/contents/contents_title_left_bg.gif"><img src="<!--{$smarty.const.URL_DIR}-->img/contents/contents_title_left.gif" width="22" height="12" alt=""></td>
-									<td bgcolor="#636469" width="638" class="fs14n"><span class="white"><!--¥³¥ó¥Æ¥ó¥Ä¥¿¥¤¥È¥ë-->¾¦ÉÊÅÐÏ¿</span></td>
+									<td bgcolor="#636469" width="638" class="fs14n"><span class="white"><!--ã‚³ãƒ³ãƒ†ãƒ³ãƒ„ã‚¿ã‚¤ãƒˆãƒ«-->å•†å“ç™»éŒ²</span></td>
 									<td background="<!--{$smarty.const.URL_DIR}-->img/contents/contents_title_right_bg.gif"><img src="<!--{$smarty.const.URL_DIR}-->img/common/_.gif" width="18" height="1" alt=""></td>
 								</tr>
 								<tr>
@@ -51,26 +51,26 @@
 							</table>
 							<table width="678" border="0" cellspacing="1" cellpadding="8" summary=" ">				
 								<tr>
-									<td bgcolor="#f2f1ec" width="160" class="fs12n">¾¦ÉÊÌ¾</td>
+									<td bgcolor="#f2f1ec" width="160" class="fs12n">å•†å“å</td>
 									<td bgcolor="#ffffff" width="557" class="fs12n">
 									<!--{$arrForm.name|escape}-->
 									</td>
 								</tr>
 								<tr>
-									<td bgcolor="#f2f1ec" width="160" class="fs12n">¾¦ÉÊ¥«¥Æ¥´¥ê</td>
+									<td bgcolor="#f2f1ec" width="160" class="fs12n">å•†å“ã‚«ãƒ†ã‚´ãƒª</td>
 									<td bgcolor="#ffffff" width="557" class="fs12n">
 									<!--{assign var=key value=$arrForm.category_id}-->
 									<!--{$arrCatList[$key]|strip|sfTrim}-->
 									</td>
 								</tr>
 								<tr>
-									<td bgcolor="#f2f1ec" width="160" class="fs12n">¸ø³«¡¦Èó¸ø³«</td>
+									<td bgcolor="#f2f1ec" width="160" class="fs12n">å…¬é–‹ãƒ»éžå…¬é–‹</td>
 									<td bgcolor="#ffffff" width="557" class="fs12n">
 									<!--{$arrDISP[$arrForm.status]}-->
 									</td>
 								</tr>
 								<tr>
-									<td bgcolor="#f2f1ec" width="160" class="fs12n">¾¦ÉÊ¥¹¥Æ¡¼¥¿¥¹</td>
+									<td bgcolor="#f2f1ec" width="160" class="fs12n">å•†å“ã‚¹ãƒ†ãƒ¼ã‚¿ã‚¹</td>
 									<td bgcolor="#ffffff" width="557" class="fs12n">
 									<!--{section name=cnt loop=$arrForm.product_flag|count_characters}-->
 										<!--{if $arrForm.product_flag[cnt] == "1"}--><!--{assign var=key value="`$smarty.section.cnt.iteration`"}--><img src="<!--{$arrSTATUS_IMAGE[$key]}-->"><!--{/if}-->
@@ -80,7 +80,7 @@
 								
 								<!--{if $tpl_nonclass == true}-->
 								<tr>
-									<td bgcolor="#f2f1ec" width="160" class="fs12n">¾¦ÉÊ¥³¡¼¥É</td>
+									<td bgcolor="#f2f1ec" width="160" class="fs12n">å•†å“ã‚³ãƒ¼ãƒ‰</td>
 									<td bgcolor="#ffffff" width="557" class="fs12n">
 									<!--{$arrForm.product_code|escape}-->
 									</td>
@@ -89,81 +89,81 @@
 									<td bgcolor="#f2f1ec" width="160" class="fs12n"><!--{$smarty.const.NORMAL_PRICE_TITLE}--></td>
 									<td bgcolor="#ffffff" width="557" class="fs12n">
 									<!--{$arrForm.price01|escape}-->
-									±ß</td>
+									å††</td>
 								</tr>
 								<tr>
 									<td bgcolor="#f2f1ec" width="160" class="fs12n"><!--{$smarty.const.SALE_PRICE_TITLE}--></td>
 									<td bgcolor="#ffffff" width="557" class="fs12n">
 									<!--{$arrForm.price02|escape}-->
-									±ß</td>
+									å††</td>
 								</tr>
 								<tr>
-									<td bgcolor="#f2f1ec" width="160" class="fs12n">ºß¸Ë¿ô</td>
+									<td bgcolor="#f2f1ec" width="160" class="fs12n">åœ¨åº«æ•°</td>
 									<td bgcolor="#ffffff" width="557" class="fs12n">
 									<!--{if $arrForm.stock_unlimited == 1}-->
-									ÌµÀ©¸Â
+									ç„¡åˆ¶é™
 									<!--{else}-->
 									<!--{$arrForm.stock|escape}-->
-									¸Ä<!--{/if}-->
+									å€‹<!--{/if}-->
 									</td>
 								</tr>
 								<!--{/if}-->
 								<tr>
-									<td bgcolor="#f2f1ec" width="160" class="fs12n">¥Ý¥¤¥ó¥ÈÉÕÍ¿Î¨</td>
+									<td bgcolor="#f2f1ec" width="160" class="fs12n">ãƒã‚¤ãƒ³ãƒˆä»˜ä¸ŽçŽ‡</td>
 									<td bgcolor="#ffffff" width="557" class="fs12n">
 									<!--{$arrForm.point_rate|escape}-->
-									¡ó</td>
+									ï¼…</td>
 								</tr>
 								<tr>
-									<td bgcolor="#f2f1ec" width="160" class="fs12n">È¯Á÷ÆüÌÜ°Â</td>
+									<td bgcolor="#f2f1ec" width="160" class="fs12n">ç™ºé€æ—¥ç›®å®‰</td>
 									<td bgcolor="#ffffff" width="557" class="fs12n">
 									<!--{$arrDELIVERYDATE[$arrForm.deliv_date_id]|escape}-->
 									</td>
 								</tr>			
 								<tr>
-									<td bgcolor="#f2f1ec" width="160" class="fs12n">¹ØÆþÀ©¸Â</td>
+									<td bgcolor="#f2f1ec" width="160" class="fs12n">è³¼å…¥åˆ¶é™</td>
 									<td bgcolor="#ffffff" width="557" class="fs12n">
 									<!--{if $arrForm.sale_unlimited == 1}-->
-									ÌµÀ©¸Â
+									ç„¡åˆ¶é™
 									<!--{else}-->
 									<!--{$arrForm.sale_limit|escape}-->
-									¸Ä<!--{/if}-->
+									å€‹<!--{/if}-->
 									</td>
 								</tr>
 								<tr>
-									<td bgcolor="#f2f1ec" width="160" class="fs12n">¥á¡¼¥«¡¼URL</td>
+									<td bgcolor="#f2f1ec" width="160" class="fs12n">ãƒ¡ãƒ¼ã‚«ãƒ¼URL</td>
 									<td bgcolor="#ffffff" width="557" class="fs12n">
 									<!--{$arrForm.comment1|escape|sfPutBR:$smarty.const.LINE_LIMIT_SIZE}-->
 									</td>
 								</tr>
 								<!--{*
 								<tr>
-									<td bgcolor="#f2f1ec" width="160" class="fs12n">À®Ê¬</td>
+									<td bgcolor="#f2f1ec" width="160" class="fs12n">æˆåˆ†</td>
 									<td bgcolor="#ffffff" width="557" class="fs12n">
 									<!--{$arrForm.comment2|escape}-->
 									</td>
 								</tr>
 								*}-->
 								<tr>
-									<td bgcolor="#f2f1ec" width="160" class="fs12n">¸¡º÷¥ï¡¼¥É</td>
+									<td bgcolor="#f2f1ec" width="160" class="fs12n">æ¤œç´¢ãƒ¯ãƒ¼ãƒ‰</td>
 									<td bgcolor="#ffffff" width="557" class="fs12n">
 									<!--{$arrForm.comment3|escape}-->
 									</td>
 								</tr>
 								<tr>
-									<td bgcolor="#f2f1ec" width="160" class="fs12n">°ìÍ÷-¥á¥¤¥ó¥³¥á¥ó¥È</td>
+									<td bgcolor="#f2f1ec" width="160" class="fs12n">ä¸€è¦§-ãƒ¡ã‚¤ãƒ³ã‚³ãƒ¡ãƒ³ãƒˆ</td>
 									<td bgcolor="#ffffff" width="557" class="fs12n">
 									<!--{$arrForm.main_list_comment|escape|nl2br}-->
 									</td>
 								</tr>
 								<tr>
-									<td bgcolor="#f2f1ec" width="160" class="fs12n">¾ÜºÙ-¥á¥¤¥ó¥³¥á¥ó¥È</td>
+									<td bgcolor="#f2f1ec" width="160" class="fs12n">è©³ç´°-ãƒ¡ã‚¤ãƒ³ã‚³ãƒ¡ãƒ³ãƒˆ</td>
 									<td bgcolor="#ffffff" width="557" class="fs12n">
 									<!--{$arrForm.main_comment|nl2br}-->
 									</td>
 								</tr>
 								<tr>
-									<td bgcolor="#f2f1ec" width="160" class="fs12n">°ìÍ÷-¥á¥¤¥ó²èÁü</td>
+									<td bgcolor="#f2f1ec" width="160" class="fs12n">ä¸€è¦§-ãƒ¡ã‚¤ãƒ³ç”»åƒ</td>
 									<td bgcolor="#ffffff" width="557">
 									<!--{assign var=key value="main_list_image"}-->
 									<!--{if $arrFile[$key].filepath != ""}-->
@@ -172,7 +172,7 @@
 									</td>
 								</tr>
 								<tr>
-									<td bgcolor="#f2f1ec" width="160" class="fs12n">¾ÜºÙ-¥á¥¤¥ó²èÁü</td>
+									<td bgcolor="#f2f1ec" width="160" class="fs12n">è©³ç´°-ãƒ¡ã‚¤ãƒ³ç”»åƒ</td>
 									<td bgcolor="#ffffff" width="557">
 									<!--{assign var=key value="main_image"}-->
 									<!--{if $arrFile[$key].filepath != ""}-->
@@ -181,7 +181,7 @@
 									</td>
 								</tr>
 								<tr>
-									<td bgcolor="#f2f1ec" width="160" class="fs12n">¾ÜºÙ-¥á¥¤¥ó³ÈÂç²èÁü</td>
+									<td bgcolor="#f2f1ec" width="160" class="fs12n">è©³ç´°-ãƒ¡ã‚¤ãƒ³æ‹¡å¤§ç”»åƒ</td>
 									<td bgcolor="#ffffff" width="557">
 									<!--{assign var=key value="main_large_image"}-->
 									<!--{if $arrFile[$key].filepath != ""}-->
@@ -190,23 +190,23 @@
 									</td>
 								</tr>
 								<!--{section name=cnt loop=$smarty.const.PRODUCTSUB_MAX}-->
-								<!--¢§¾¦ÉÊ<!--{$smarty.section.cnt.iteration}-->-->
+								<!--â–¼å•†å“<!--{$smarty.section.cnt.iteration}-->-->
 								<tr>
-									<td bgcolor="#f2f1ec" width="160" class="fs12n">¾ÜºÙ-¥µ¥Ö¥¿¥¤¥È¥ë¡Ê<!--{$smarty.section.cnt.iteration}-->¡Ë</td>
+									<td bgcolor="#f2f1ec" width="160" class="fs12n">è©³ç´°-ã‚µãƒ–ã‚¿ã‚¤ãƒˆãƒ«ï¼ˆ<!--{$smarty.section.cnt.iteration}-->ï¼‰</td>
 									<td bgcolor="#ffffff" width="557" class="fs12n">
 									<!--{assign var=key value="sub_title`$smarty.section.cnt.iteration`"}-->
 									<!--{$arrForm[$key]|escape}-->
 									</td>
 								</tr>
 								<tr>
-									<td bgcolor="#f2f1ec" width="160" class="fs12n">¾ÜºÙ-¥µ¥Ö¥³¥á¥ó¥È¡Ê<!--{$smarty.section.cnt.iteration}-->¡Ë</td>
+									<td bgcolor="#f2f1ec" width="160" class="fs12n">è©³ç´°-ã‚µãƒ–ã‚³ãƒ¡ãƒ³ãƒˆï¼ˆ<!--{$smarty.section.cnt.iteration}-->ï¼‰</td>
 									<td bgcolor="#ffffff" width="557" class="fs12n">
 									<!--{assign var=key value="sub_comment`$smarty.section.cnt.iteration`"}-->
 									<!--{$arrForm[$key]|nl2br}-->
 									</td>
 								</tr>
 								<tr>
-									<td bgcolor="#f2f1ec" width="160" class="fs12n">¾ÜºÙ-¥µ¥Ö²èÁü¡Ê<!--{$smarty.section.cnt.iteration}-->¡Ë</td>
+									<td bgcolor="#f2f1ec" width="160" class="fs12n">è©³ç´°-ã‚µãƒ–ç”»åƒï¼ˆ<!--{$smarty.section.cnt.iteration}-->ï¼‰</td>
 									<td bgcolor="#ffffff" width="557" class="fs12n">
 									<!--{assign var=key value="sub_image`$smarty.section.cnt.iteration`"}-->
 									<!--{if $arrFile[$key].filepath != ""}-->
@@ -215,7 +215,7 @@
 									</td>
 								</tr>
 								<tr>
-									<td bgcolor="#f2f1ec" width="160" class="fs12n">¾ÜºÙ-¥µ¥Ö³ÈÂç²èÁü¡Ê<!--{$smarty.section.cnt.iteration}-->¡Ë</td>
+									<td bgcolor="#f2f1ec" width="160" class="fs12n">è©³ç´°-ã‚µãƒ–æ‹¡å¤§ç”»åƒï¼ˆ<!--{$smarty.section.cnt.iteration}-->ï¼‰</td>
 									<td bgcolor="#ffffff" width="557" class="fs12n">
 									<!--{assign var=key value="sub_large_image`$smarty.section.cnt.iteration`"}-->
 									<!--{if $arrFile[$key].filepath != ""}-->
@@ -223,15 +223,15 @@
 									<!--{/if}-->
 									</td>
 								</tr>
-								<!--¢¥¾¦ÉÊ<!--{$smarty.section.cnt.iteration}-->-->
+								<!--â–²å•†å“<!--{$smarty.section.cnt.iteration}-->-->
 								<!--{/section}-->
 								
 								<!--{if $smarty.const.OPTION_RECOMMEND == 1}-->	
-								<!--¢§´ØÏ¢¾¦ÉÊ-->
+								<!--â–¼é–¢é€£å•†å“-->
 								<!--{section name=cnt loop=$smarty.const.RECOMMEND_PRODUCT_MAX}-->			
 								<!--{assign var=recommend_no value="`$smarty.section.cnt.iteration`"}-->
 								<tr>
-									<td bgcolor="#f2f1ec" width="160" class="fs12n">´ØÏ¢¾¦ÉÊ(<!--{$smarty.section.cnt.iteration}-->)<br>
+									<td bgcolor="#f2f1ec" width="160" class="fs12n">é–¢é€£å•†å“(<!--{$smarty.section.cnt.iteration}-->)<br>
 									<!--{if $arrRecommend[$recommend_no].main_list_image != ""}-->
 										<!--{assign var=image_path value="`$arrRecommend[$recommend_no].main_list_image`"}-->
 									<!--{else}-->
@@ -241,15 +241,15 @@
 									</td>
 									<td bgcolor="#ffffff" width="557" class="fs12n">
 									<!--{if $arrRecommend[$recommend_no].name != ""}-->
-									¾¦ÉÊ¥³¡¼¥É:<!--{$arrRecommend[$recommend_no].product_code_min}--><br>
-									¾¦ÉÊÌ¾:<!--{$arrRecommend[$recommend_no].name|escape}--><br>
-									¥³¥á¥ó¥È:<br>
+									å•†å“ã‚³ãƒ¼ãƒ‰:<!--{$arrRecommend[$recommend_no].product_code_min}--><br>
+									å•†å“å:<!--{$arrRecommend[$recommend_no].name|escape}--><br>
+									ã‚³ãƒ¡ãƒ³ãƒˆ:<br>
 									<!--{$arrRecommend[$recommend_no].comment|escape}-->
 									<!--{/if}-->
 									</td>
 								</tr>
 								<!--{/section}-->
-								<!--¢¥´ØÏ¢¾¦ÉÊ-->
+								<!--â–²é–¢é€£å•†å“-->
 								<!--{/if}-->
 							</table>
 							<table width="678" border="0" cellspacing="0" cellpadding="0" summary=" ">
@@ -264,8 +264,8 @@
 									<table border="0" cellspacing="0" cellpadding="0" summary=" ">
 										<tr>
 											<td>
-												<a href="#" onMouseover="chgImg('<!--{$smarty.const.URL_DIR}-->img/contents/btn_back_on.jpg','back')" onMouseout="chgImg('<!--{$smarty.const.URL_DIR}-->img/contents/btn_back.jpg','back');" onclick="fnModeSubmit('confirm_return','',''); return false;"><img src="<!--{$smarty.const.URL_DIR}-->img/contents/btn_back.jpg" width="123" height="24" alt="Á°¤Î¥Ú¡¼¥¸¤ËÌá¤ë" border="0" name="back"></a>
-												<input type="image" onMouseover="chgImgImageSubmit('<!--{$smarty.const.URL_DIR}-->img/contents/btn_regist_on.jpg',this)" onMouseout="chgImgImageSubmit('<!--{$smarty.const.URL_DIR}-->img/contents/btn_regist.jpg',this)" src="<!--{$smarty.const.URL_DIR}-->img/contents/btn_regist.jpg" width="123" height="24" alt="¤³¤ÎÆâÍÆ¤ÇÅÐÏ¿¤¹¤ë" border="0" name="subm" >
+												<a href="#" onMouseover="chgImg('<!--{$smarty.const.URL_DIR}-->img/contents/btn_back_on.jpg','back')" onMouseout="chgImg('<!--{$smarty.const.URL_DIR}-->img/contents/btn_back.jpg','back');" onclick="fnModeSubmit('confirm_return','',''); return false;"><img src="<!--{$smarty.const.URL_DIR}-->img/contents/btn_back.jpg" width="123" height="24" alt="å‰ã®ãƒšãƒ¼ã‚¸ã«æˆ»ã‚‹" border="0" name="back"></a>
+												<input type="image" onMouseover="chgImgImageSubmit('<!--{$smarty.const.URL_DIR}-->img/contents/btn_regist_on.jpg',this)" onMouseout="chgImgImageSubmit('<!--{$smarty.const.URL_DIR}-->img/contents/btn_regist.jpg',this)" src="<!--{$smarty.const.URL_DIR}-->img/contents/btn_regist.jpg" width="123" height="24" alt="ã“ã®å†…å®¹ã§ç™»éŒ²ã™ã‚‹" border="0" name="subm" >
 											</td>
 										</tr>
 									</table>
@@ -286,14 +286,14 @@
 			
 					</table>
 						
-					<!--¢¥ÅÐÏ¿¥Æ¡¼¥Ö¥ë¤³¤³¤Þ¤Ç-->
+					<!--â–²ç™»éŒ²ãƒ†ãƒ¼ãƒ–ãƒ«ã“ã“ã¾ã§-->
 					</form>
-					<!--¢¥MAIN CONTENTS-->
+					<!--â–²MAIN CONTENTS-->
 					</td>
 				</tr>
 			</table>
-			<!--¢¥CONTENTS-->
+			<!--â–²CONTENTS-->
 		</td>
 	</tr>
 </table>
-<!--¡ú¡ú¥á¥¤¥ó¥³¥ó¥Æ¥ó¥Ä¡ú¡ú-->
+<!--â˜…â˜…ãƒ¡ã‚¤ãƒ³ã‚³ãƒ³ãƒ†ãƒ³ãƒ„â˜…â˜…-->

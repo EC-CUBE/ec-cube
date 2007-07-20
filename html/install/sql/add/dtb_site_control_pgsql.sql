@@ -9,4 +9,4 @@ CREATE TABLE dtb_site_control (
     update_date timestamp NOT NULL DEFAULT now()
 );
 
-INSERT INTO dtb_site_control (control_title, control_text) VALUES('¥È¥é¥Ã¥¯¥Ğ¥Ã¥¯µ¡Ç½', '¥È¥é¥Ã¥¯¥Ğ¥Ã¥¯µ¡Ç½¤ò»ÈÍÑ¤¹¤ë¤«¤É¤¦¤«¤ò·èÄê¤·¤Ş¤¹¡£');
+INSERT INTO dtb_site_control (control_title, control_text) VALUES('ãƒˆãƒ©ãƒƒã‚¯ãƒãƒƒã‚¯æ©Ÿèƒ½', 'ãƒˆãƒ©ãƒƒã‚¯ãƒãƒƒã‚¯æ©Ÿèƒ½ã‚’ä½¿ç”¨ã™ã‚‹ã‹ã©ã†ã‹ã‚’æ±ºå®šã—ã¾ã™ã€‚');

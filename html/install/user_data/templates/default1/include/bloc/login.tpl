@@ -3,7 +3,7 @@
  *
  * http://www.lockon.co.jp/
  *}-->
-<!--¢§¥í¥°¥¤¥ó¤³¤³¤«¤é-->
+<!--â–¼ãƒ­ã‚°ã‚¤ãƒ³ã“ã“ã‹ã‚‰-->
 <!--{if $smarty.post.url == ""}-->
 	<!--{if sfIsHTTPS()}-->
 		<!--{assign var=url value="https://`$smarty.server.HTTP_HOST``$smarty.server.REQUEST_URI`"}-->
@@ -18,12 +18,12 @@
 <input type="hidden" name="mode" value="login">
 <input type="hidden" name="url" value="<!--{$url|escape}-->">
 	<tr>
-		<td colspan="3"><img src="<!--{$smarty.const.URL_DIR}-->img/side/title_login.jpg" width="166" height="35" alt="¥í¥°¥¤¥ó"></td>
+		<td colspan="3"><img src="<!--{$smarty.const.URL_DIR}-->img/side/title_login.jpg" width="166" height="35" alt="ãƒ­ã‚°ã‚¤ãƒ³"></td>
 	</tr>
 	<tr>
 		<td bgcolor="#cccccc"><img src="<!--{$smarty.const.URL_DIR}-->img/common/_.gif" width="1" height="10" alt=""></td>
 		<td align="center" bgcolor="#ffffff">
-		<!--¥í¥°¥¤¥ó¥Õ¥©¡¼¥à-->
+		<!--ãƒ­ã‚°ã‚¤ãƒ³ãƒ•ã‚©ãƒ¼ãƒ -->
 		<table width="146" border="0" cellspacing="0" cellpadding="0" summary=" ">
 			<tr>
 				<td height="10"><img src="<!--{$smarty.const.URL_DIR}-->img/common/_.gif" width="50" height="1" alt=""></td>
@@ -31,36 +31,36 @@
 			</tr>
 			<!--{if $tpl_login}-->
 				<tr>
-					<td align="center" colspan="3" class="fs12">¤è¤¦¤³¤½ <br> <!--{$tpl_name1|escape}-->¡¡<!--{$tpl_name2|escape}--> ÍÍ<br />
-					½ê»ı¥İ¥¤¥ó¥È¡§<span class="redst"> <!--{$tpl_user_point|number_format|default:0}--> pt</span></td>
+					<td align="center" colspan="3" class="fs12">ã‚ˆã†ã“ã <br> <!--{$tpl_name1|escape}-->ã€€<!--{$tpl_name2|escape}--> æ§˜<br />
+					æ‰€æŒãƒã‚¤ãƒ³ãƒˆï¼š<span class="redst"> <!--{$tpl_user_point|number_format|default:0}--> pt</span></td>
 				</tr>
 				<!--{if !$tpl_disable_logout}-->
 				<tr>
-					<td colspan="3" align="center"><a href="<!--{$smarty.server.PHP_SELF|escape}-->" onclick="fnFormModeSubmit('login_form', 'logout', '', ''); return false;"><img src="<!--{$smarty.const.URL_DIR}-->img/header/logout.gif" width="44" height="21" alt="¥í¥°¥¢¥¦¥È" /></a></td>
+					<td colspan="3" align="center"><a href="<!--{$smarty.server.PHP_SELF|escape}-->" onclick="fnFormModeSubmit('login_form', 'logout', '', ''); return false;"><img src="<!--{$smarty.const.URL_DIR}-->img/header/logout.gif" width="44" height="21" alt="ãƒ­ã‚°ã‚¢ã‚¦ãƒˆ" /></a></td>
 				</tr>
 				<!--{/if}-->
 			<!--{else}-->
 				<tr>
-					<td><img src="<!--{$smarty.const.URL_DIR}-->img/side/icon_mail.gif" width="40" height="21" alt="¥á¡¼¥ë¥¢¥É¥ì¥¹"></td>
+					<td><img src="<!--{$smarty.const.URL_DIR}-->img/side/icon_mail.gif" width="40" height="21" alt="ãƒ¡ãƒ¼ãƒ«ã‚¢ãƒ‰ãƒ¬ã‚¹"></td>
 					<td><input type="text" name="login_email" value="<!--{$tpl_login_email|escape}-->" size="10" class="box10" /></td>
 				</tr>
 				<tr><td height="5"></td></tr>
 				<tr>
-					<td><img src="<!--{$smarty.const.URL_DIR}-->img/side/icon_pw.gif" width="40" height="22" alt="¥Ñ¥¹¥ï¡¼¥É"></td>
+					<td><img src="<!--{$smarty.const.URL_DIR}-->img/side/icon_pw.gif" width="40" height="22" alt="ãƒ‘ã‚¹ãƒ¯ãƒ¼ãƒ‰"></td>
 					<td><input type="password" name="login_pass" size="12" class="box12" /></td>
 				</tr>
 				<tr><td height="5"></td></tr>
 				<tr>
-					<td colspan="2" class="fs10n" align="right"><a href="<!--{$smarty.const.SSL_URL|sfTrimURL}-->/forgot/index.php" onclick="win01('<!--{$smarty.const.SSL_URL|sfTrimURL}-->/forgot/index.php','forget','600','400'); return false;" target="_blank">¥Ñ¥¹¥ï¡¼¥É¤òËº¤ì¤¿Êı¤Ï¤³¤Á¤é</a></td>
+					<td colspan="2" class="fs10n" align="right"><a href="<!--{$smarty.const.SSL_URL|sfTrimURL}-->/forgot/index.php" onclick="win01('<!--{$smarty.const.SSL_URL|sfTrimURL}-->/forgot/index.php','forget','600','400'); return false;" target="_blank">ãƒ‘ã‚¹ãƒ¯ãƒ¼ãƒ‰ã‚’å¿˜ã‚ŒãŸæ–¹ã¯ã“ã¡ã‚‰</a></td>
 				</tr>
 				<tr><td height="10"></td></tr>
 				<tr>
-					<td width="50"><input type="checkbox" name="login_memory" value="1" <!--{$tpl_login_memory|sfGetChecked:1}-->/><img src="<!--{$smarty.const.URL_DIR}-->img/header/memory.gif" width="18" height="9" alt="µ­²±" /></td>
-					<td align="center"><input type="image" onMouseover="chgImgImageSubmit('<!--{$smarty.const.URL_DIR}-->img/side/button_login_on.gif',this)" onMouseout="chgImgImageSubmit('<!--{$smarty.const.URL_DIR}-->img/side/button_login.gif',this)" src="<!--{$smarty.const.URL_DIR}-->img/side/button_login.gif" width="51" height="22" alt="¥í¥°¥¤¥ó" border="0" name="subm"></td>
+					<td width="50"><input type="checkbox" name="login_memory" value="1" <!--{$tpl_login_memory|sfGetChecked:1}-->/><img src="<!--{$smarty.const.URL_DIR}-->img/header/memory.gif" width="18" height="9" alt="è¨˜æ†¶" /></td>
+					<td align="center"><input type="image" onMouseover="chgImgImageSubmit('<!--{$smarty.const.URL_DIR}-->img/side/button_login_on.gif',this)" onMouseout="chgImgImageSubmit('<!--{$smarty.const.URL_DIR}-->img/side/button_login.gif',this)" src="<!--{$smarty.const.URL_DIR}-->img/side/button_login.gif" width="51" height="22" alt="ãƒ­ã‚°ã‚¤ãƒ³" border="0" name="subm"></td>
 				</tr>
 			<!--{/if}-->
 		</table>
-		<!--¥í¥°¥¤¥ó¥Õ¥©¡¼¥à-->
+		<!--ãƒ­ã‚°ã‚¤ãƒ³ãƒ•ã‚©ãƒ¼ãƒ -->
 		</td>
 		<td bgcolor="#cccccc"><img src="<!--{$smarty.const.URL_DIR}-->img/common/_.gif" width="1" height="10" alt=""></td>
 	</tr>
@@ -70,4 +70,4 @@
 	<tr><td height="10"></td></tr>
 </form>
 </table>
-<!--¢¥¥í¥°¥¤¥ó¤³¤³¤Ş¤Ç-->
+<!--â–²ãƒ­ã‚°ã‚¤ãƒ³ã“ã“ã¾ã§-->

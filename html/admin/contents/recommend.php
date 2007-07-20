@@ -13,7 +13,7 @@ class LC_Page {
 		$this->tpl_mainno = 'contents';
 		$this->tpl_subnavi = 'contents/subnavi.tpl';
 		$this->tpl_subno = "recommend";
-		$this->tpl_subtitle = '¥ª¥¹¥¹¥á´ÉÍý';
+		$this->tpl_subtitle = 'ã‚ªã‚¹ã‚¹ãƒ¡ç®¡ç†';
 	}
 }
 
@@ -30,26 +30,26 @@ $arrRegistColumn = array(
 							 array(  "column" => "comment", "convert" => "aKV" ),
 						);
 
-// Ç§¾Ú²ÄÈÝ¤ÎÈ½Äê
+// èªè¨¼å¯å¦ã®åˆ¤å®š
 sfIsSuccess($objSess);
 
-//ºÇÂçÅÐÏ¿¿ô¤ÎÉ½¼¨
+//æœ€å¤§ç™»éŒ²æ•°ã®è¡¨ç¤º
 $objPage->tpl_disp_max = RECOMMEND_NUM;
 
-// ÅÐÏ¿»þ
+// ç™»éŒ²æ™‚
 if ( $_POST['mode'] == 'regist' ){
 		
-	// ÆþÎÏÊ¸»ú¤Î¶¯À©ÊÑ´¹
+	// å…¥åŠ›æ–‡å­—ã®å¼·åˆ¶å¤‰æ›
 	$objPage->arrForm = $_POST;	
 	$objPage->arrForm = lfConvertParam($objPage->arrForm, $arrRegistColumn);
-	// ¥¨¥é¡¼¥Á¥§¥Ã¥¯
+	// ã‚¨ãƒ©ãƒ¼ãƒã‚§ãƒƒã‚¯
 	$objPage->arrErr[$objPage->arrForm['rank']] = lfErrorCheck();
 	if ( ! $objPage->arrErr[$objPage->arrForm['rank']]) {
-		// ¸Å¤¤¤Î¤ò¾Ã¤¹
+		// å¤ã„ã®ã‚’æ¶ˆã™
 		$sql = "DELETE FROM dtb_best_products WHERE category_id = ? AND rank = ?";
 		$conn->query($sql, array($objPage->arrForm['category_id'] ,$objPage->arrForm['rank']));
 	
-		// £Ä£ÂÅÐÏ¿
+		// ï¼¤ï¼¢ç™»éŒ²
 		$objPage->arrForm['creator_id'] = $_SESSION['member_id'];
 		$objPage->arrForm['update_date'] = "NOW()";
 		$objPage->arrForm['create_date'] = "NOW()";
@@ -60,21 +60,21 @@ if ( $_POST['mode'] == 'regist' ){
 	}	
 
 } elseif ( $_POST['mode'] == 'delete' ){
-// ºï½ü»þ
+// å‰Šé™¤æ™‚
 
 	$sql = "DELETE FROM dtb_best_products WHERE category_id = ? AND rank = ?";
 	$conn->query($sql, array($_POST['category_id'] ,$_POST['rank']));
 	
 }
 
-// ¥«¥Æ¥´¥êID¼èÆÀ Ìµ¤¤¤È¤­¤Ï¥È¥Ã¥×¥Ú¡¼¥¸
+// ã‚«ãƒ†ã‚´ãƒªIDå–å¾— ç„¡ã„ã¨ãã¯ãƒˆãƒƒãƒ—ãƒšãƒ¼ã‚¸
 if ( sfCheckNumLength($_POST['category_id']) ){
 	$objPage->category_id = $_POST['category_id'];
 } else {
 	$objPage->category_id = 0;
 }
 
-// ´û¤ËÅÐÏ¿¤µ¤ì¤Æ¤¤¤ëÆâÍÆ¤ò¼èÆÀ¤¹¤ë
+// æ—¢ã«ç™»éŒ²ã•ã‚Œã¦ã„ã‚‹å†…å®¹ã‚’å–å¾—ã™ã‚‹
 $sql = "SELECT B.name, B.main_list_image, A.* FROM dtb_best_products as A INNER JOIN dtb_products as B USING (product_id)
 		 WHERE A.del_flg = 0 ORDER BY rank";
 $arrItems = $conn->getAll($sql);
@@ -82,7 +82,7 @@ foreach( $arrItems as $data ){
 	$objPage->arrItems[$data['rank']] = $data;
 }
 
-// ¾¦ÉÊÊÑ¹¹»þ¤Ï¡¢ÁªÂò¤µ¤ì¤¿¾¦ÉÊ¤Ë°ì»þÅª¤ËÃÖ¤­´¹¤¨¤ë
+// å•†å“å¤‰æ›´æ™‚ã¯ã€é¸æŠžã•ã‚ŒãŸå•†å“ã«ä¸€æ™‚çš„ã«ç½®ãæ›ãˆã‚‹
 if ( $_POST['mode'] == 'set_item'){
 	$sql = "SELECT product_id, name, main_list_image FROM dtb_products WHERE product_id = ? AND del_flg = 0";
 	$result = $conn->getAll($sql, array($_POST['product_id']));
@@ -96,28 +96,28 @@ if ( $_POST['mode'] == 'set_item'){
 	$objPage->checkRank = $_POST['rank'];
 }
 
-//³Æ¥Ú¡¼¥¸¶¦ÄÌ
+//å„ãƒšãƒ¼ã‚¸å…±é€š
 $objPage->cnt_question = 6;
 $objPage->arrActive = $arrActive;
 $objPage->arrQuestion = $arrQuestion;
 
-// ¥«¥Æ¥´¥ê¼èÆÀ
+// ã‚«ãƒ†ã‚´ãƒªå–å¾—
 $objPage->arrCatList = sfGetCategoryList("level = 1");
 
-//----¡¡¥Ú¡¼¥¸É½¼¨
+//----ã€€ãƒšãƒ¼ã‚¸è¡¨ç¤º
 $objView->assignobj($objPage);
 $objView->display(MAIN_FRAME);
 
 
 //---------------------------------------------------------------------------------------------------------------------------------------------------------
-//----¡¡¼èÆÀÊ¸»úÎó¤ÎÊÑ´¹
+//----ã€€å–å¾—æ–‡å­—åˆ—ã®å¤‰æ›
 function lfConvertParam($array, $arrRegistColumn) {
 
-	// ¥«¥é¥àÌ¾¤È¥³¥ó¥Ð¡¼¥È¾ðÊó
+	// ã‚«ãƒ©ãƒ åã¨ã‚³ãƒ³ãƒãƒ¼ãƒˆæƒ…å ±
 	foreach ($arrRegistColumn as $data) {
 		$arrConvList[ $data["column"] ] = $data["convert"];
 	}
-	// Ê¸»úÊÑ´¹
+	// æ–‡å­—å¤‰æ›
 	$new_array = array();
 	foreach ($arrConvList as $key => $val) {
 		$new_array[$key] = $array[$key];
@@ -129,13 +129,13 @@ function lfConvertParam($array, $arrRegistColumn) {
 	
 }
 
-/* ÆþÎÏ¥¨¥é¡¼¥Á¥§¥Ã¥¯ */
+/* å…¥åŠ›ã‚¨ãƒ©ãƒ¼ãƒã‚§ãƒƒã‚¯ */
 function lfErrorCheck() {
 	$objQuery = new SC_Query;
 	$objErr = new SC_CheckError();
 	
-	$objErr->doFunc(array("¸«½Ð¤·¥³¥á¥ó¥È", "title", STEXT_LEN), array("MAX_LENGTH_CHECK"));
-	$objErr->doFunc(array("¥ª¥¹¥¹¥á¥³¥á¥ó¥È", "comment", LTEXT_LEN), array("EXIST_CHECK","MAX_LENGTH_CHECK"));
+	$objErr->doFunc(array("è¦‹å‡ºã—ã‚³ãƒ¡ãƒ³ãƒˆ", "title", STEXT_LEN), array("MAX_LENGTH_CHECK"));
+	$objErr->doFunc(array("ã‚ªã‚¹ã‚¹ãƒ¡ã‚³ãƒ¡ãƒ³ãƒˆ", "comment", LTEXT_LEN), array("EXIST_CHECK","MAX_LENGTH_CHECK"));
 	
 	return $objErr->arrErr;
 }

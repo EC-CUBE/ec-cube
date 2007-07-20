@@ -5,7 +5,7 @@
  * http://www.lockon.co.jp/
  */
 *}-->
-<!--¢§¾¦ÉÊ¥«¥Æ¥´¥ê¡¼¤³¤³¤«¤é-->
+<!--â–¼å•†å“ã‚«ãƒ†ã‚´ãƒªãƒ¼ã“ã“ã‹ã‚‰-->
 <!--{section name=cnt loop=$arrCat}-->
 <!--{assign var=disp_name value="`$arrCat[cnt].category_name`"}-->
 <!--{if $arrCat[cnt].has_children}-->
@@ -13,6 +13,6 @@
 <!--{else}-->
 <!--{assign var=path value="`$smarty.const.MOBILE_URL_DIR`products/list.php"}-->
 <!--{/if}-->
-¡¡<font color="<!--{cycle values="#000000,#880000,#8888ff,#88ff88,#ff0000"}-->">¢£</font><a href="<!--{$path}-->?category_id=<!--{$arrCat[cnt].category_id}-->"><!--{$disp_name|sfCutString:20|escape}--></a><br>
+ã€€<font color="<!--{cycle values="#000000,#880000,#8888ff,#88ff88,#ff0000"}-->">â– </font><a href="<!--{$path}-->?category_id=<!--{$arrCat[cnt].category_id}-->"><!--{$disp_name|sfCutString:20|escape}--></a><br>
 <!--{/section}-->
-<!--¢¥¾¦ÉÊ¥«¥Æ¥´¥ê¡¼¤³¤³¤Þ¤Ç-->
+<!--â–²å•†å“ã‚«ãƒ†ã‚´ãƒªãƒ¼ã“ã“ã¾ã§-->

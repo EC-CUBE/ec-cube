@@ -5,7 +5,7 @@
  * http://www.lockon.co.jp/
  */
 *}-->
-<!--¡¡-->
+<!--ã€€-->
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="ja" lang="ja">
 <head>
@@ -23,7 +23,7 @@ body {
 }
 </style>
 
-<title>EC CUBE ´ÉÍý¼Ô²èÌÌ</title>
+<title>EC CUBE ç®¡ç†è€…ç”»é¢</title>
 </head>
 
 <body bgcolor="#ffffff" text="#494E5F" link="#006699" vlink="#006699" alink="#006699" leftmargin="0" topmargin="0" marginwidth="0" marginheight="0" onLoad="preLoadImg('<!--{$smarty.const.URL_DIR}-->')">
@@ -32,7 +32,7 @@ body {
 </noscript>
 <div align="center">
 
-<!--¢§CONTENTS-->
+<!--â–¼CONTENTS-->
 <table width="556" border="0" cellspacing="0" cellpadding="0" summary=" ">
 	<tr><td height="15"></td></tr>
 	<tr>
@@ -46,15 +46,15 @@ body {
 				<td bgcolor="#cccccc" align="center">
 				<table width="" border="0" cellspacing="1" cellpadding="5" summary=" ">
 					<tr align="left">
-						<td bgcolor="#f2f1ec" width="84" align="center" class="fs12n">SQLÊ¸</td>
+						<td bgcolor="#f2f1ec" width="84" align="center" class="fs12n">SQLæ–‡</td>
 						<td bgcolor="#ffffff" width="450" height="300" valign="top" class="fs12n"><strong><!--{$sql|escape|nl2br}--></strong></td>
 					</tr>
 					<tr align="left">
-						<td bgcolor="#f2f1ec" width="84" align="center" class="fs12n">¥¨¥é¡¼ÆâÍÆ</td>
+						<td bgcolor="#f2f1ec" width="84" align="center" class="fs12n">ã‚¨ãƒ©ãƒ¼å†…å®¹</td>
 						<td bgcolor="#ffffff" width="450" height="100" valign="top" class="fs12n"><strong>
 						<!--{if $sqlerr != "" }-->
 							<!--{$sqlerr|escape|nl2br}-->
-						<!--{else}-->¥¨¥é¡¼¤Ï¤¢¤ê¤Þ¤»¤ó
+						<!--{else}-->ã‚¨ãƒ©ãƒ¼ã¯ã‚ã‚Šã¾ã›ã‚“
 						<!--{/if}--></strong></td>
 					</tr>
 				</table>
@@ -69,7 +69,7 @@ body {
 	</tr>
 	<tr><td height="2"></td></tr>
 </table>
-<!--¢¥CONTENTS-->
+<!--â–²CONTENTS-->
 
 </body>
 </html>

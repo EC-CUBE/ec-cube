@@ -14,11 +14,11 @@ if(MELMAGA_SEND != true) {
 }
 
 if($_GET['mode'] == 'now') {
-	//----¡¡Ì¤Á÷¿®¥Ç¡¼¥¿¤ò¼èÆÀ¤¹¤ë
+	//----ã€€æœªé€ä¿¡ãƒ‡ãƒ¼ã‚¿ã‚’å–å¾—ã™ã‚‹
 	$time_data = $conn->getAll( "SELECT send_id FROM dtb_send_history  WHERE complete_count = 0 AND del_flg = 0 ORDER BY send_id ASC, start_date ASC" );
 } else {
 	
-	// postgresql ¤È mysql ¤È¤ÇSQL¤ò¤ï¤±¤ë
+	// postgresql ã¨ mysql ã¨ã§SQLã‚’ã‚ã‘ã‚‹
 	if (DB_TYPE == "pgsql") {
 		$sql = "SELECT send_id FROM dtb_send_history  ";
 		$sql.= "WHERE start_date  BETWEEN current_timestamp + '- 5 minutes' AND current_timestamp + '5 minutes' AND del_flg = 0 ORDER BY send_id ASC, start_date ASC";
@@ -26,7 +26,7 @@ if($_GET['mode'] == 'now') {
 		$sql = "SELECT send_id FROM dtb_send_history  ";
 		$sql.= "WHERE start_date  BETWEEN date_add(now(),INTERVAL -5 minute) AND date_add(now(),INTERVAL 5 minute) AND del_flg = 0 ORDER BY send_id ASC, start_date ASC";
 	}	
-	//----¡¡30Ê¬Ëè¤ËCron¤¬Á÷¿®»ş´Ö¥Ç¡¼¥¿³ÎÇ§
+	//----ã€€30åˆ†æ¯ã«CronãŒé€ä¿¡æ™‚é–“ãƒ‡ãƒ¼ã‚¿ç¢ºèª
 	$time_data = $conn->getAll($sql);
 }
 
@@ -39,7 +39,7 @@ if( $count > 0 ){
 	exit;
 }
 
-//---- ¥á¡¼¥ëÁ÷¿®
+//---- ãƒ¡ãƒ¼ãƒ«é€ä¿¡
 for( $i = 0; $i < count( $time_data ); $i++ ) {
 
 	$sql = "SELECT * FROM dtb_send_customer WHERE send_id = ? AND (send_flag = 2 OR send_flag IS NULL)";
@@ -50,11 +50,11 @@ for( $i = 0; $i < count( $time_data ); $i++ ) {
 
 }
 
-//---- Á÷¿®·ë²Ì¥Õ¥é¥°ÍÑSQL
+//---- é€ä¿¡çµæœãƒ•ãƒ©ã‚°ç”¨SQL
 $sql_flag ="UPDATE dtb_send_customer SET send_flag = ? WHERE send_id = ? AND customer_id = ?";
 $objMail = new GC_SendMail();
 
-//----¡¡¥á¡¼¥ëÀ¸À®¤ÈÁ÷¿®
+//----ã€€ãƒ¡ãƒ¼ãƒ«ç”Ÿæˆã¨é€ä¿¡
 for( $i = 0; $i < count( $time_data ); $i++ ) {
 
 	for( $j = 0; $j < count( $list_data[$i] ); $j ++ ) {
@@ -63,53 +63,53 @@ for( $i = 0; $i < count( $time_data ); $i++ ) {
 		$mailBody = "";
 		$sendFlag = "";
 
-		//-- ¸ÜµÒÌ¾¤ÎÊÑ´¹
+		//-- é¡§å®¢åã®å¤‰æ›
 		$name = trim($list_data[$i][$j]["name"]);
 		
 		if ($name == "") {
-			$name = "¤ªµÒ";
+			$name = "ãŠå®¢";
 		}
 		
 		$customerName = htmlspecialchars($name);
 		$subjectBody = ereg_replace( "{name}", $customerName , $mail_data[$i][0]["subject"] );
 		$mailBody = ereg_replace( "{name}", $customerName ,  $mail_data[$i][0]["body"] );
 
-		//-- ¥Æ¥­¥¹¥È¥á¡¼¥ëÇÛ¿®¤Î¾ì¹ç	
+		//-- ãƒ†ã‚­ã‚¹ãƒˆãƒ¡ãƒ¼ãƒ«é…ä¿¡ã®å ´åˆ	
 		if( $mail_data[$i][0]["mail_method"] == 2 ) {
 
 			$sendResut = MAIL_SENDING(
-										 $list_data[$i][$j]["email"]				//¡¡¸ÜµÒ°¸Àè
-										,$subjectBody								//¡¡Subject
-										,$mailBody									//¡¡¥á¡¼¥ëËÜÊ¸
-										,$objSite->data["email03"]					//¡¡Á÷¿®¸µ¥á¡¼¥ë¥¢¥É¥ì¥¹
-										,$objSite->data["company_name"]				//¡¡Á÷¿®¸µÌ¾
-										,$objSite->data["email03"]					//¡¡reply_to
-										,$objSite->data["email04"]					//¡¡return_path
-										,$objSite->data["email04"]					//¡¡errors_to
+										 $list_data[$i][$j]["email"]				//ã€€é¡§å®¢å®›å…ˆ
+										,$subjectBody								//ã€€Subject
+										,$mailBody									//ã€€ãƒ¡ãƒ¼ãƒ«æœ¬æ–‡
+										,$objSite->data["email03"]					//ã€€é€ä¿¡å…ƒãƒ¡ãƒ¼ãƒ«ã‚¢ãƒ‰ãƒ¬ã‚¹
+										,$objSite->data["company_name"]				//ã€€é€ä¿¡å…ƒå
+										,$objSite->data["email03"]					//ã€€reply_to
+										,$objSite->data["email04"]					//ã€€return_path
+										,$objSite->data["email04"]					//ã€€errors_to
 																			 );
 
-		//--  HTML¥á¡¼¥ëÇÛ¿®¤Î¾ì¹ç	
+		//--  HTMLãƒ¡ãƒ¼ãƒ«é…ä¿¡ã®å ´åˆ	
 		} elseif( $mail_data[$i][0]["mail_method"] == 1 || $mail_data[$i][0]["mail_method"] == 3) {
 			
 			$sendResut = HTML_MAIL_SENDING(
 											 $list_data[$i][$j]["email"]
 											,$subjectBody
 											,$mailBody
-											,$objSite->data["email03"]					//¡¡Á÷¿®¸µ¥á¡¼¥ë¥¢¥É¥ì¥¹
-											,$objSite->data["company_name"]				//¡¡Á÷¿®¸µÌ¾
-											,$objSite->data["email03"]					//¡¡reply_to
-											,$objSite->data["email04"]					//¡¡return_path
-											,$objSite->data["email04"]					//¡¡errors_to
+											,$objSite->data["email03"]					//ã€€é€ä¿¡å…ƒãƒ¡ãƒ¼ãƒ«ã‚¢ãƒ‰ãƒ¬ã‚¹
+											,$objSite->data["company_name"]				//ã€€é€ä¿¡å…ƒå
+											,$objSite->data["email03"]					//ã€€reply_to
+											,$objSite->data["email04"]					//ã€€return_path
+											,$objSite->data["email04"]					//ã€€errors_to
 																	 );
 		}
 	
-		//-- Á÷¿®´°Î»¤Ê¤é1¡¢¼ºÇÔ¤Ê¤é0¤ò¥á¡¼¥ëÁ÷¿®·ë²Ì¥Õ¥é¥°¤È¤·¤ÆDB¤ËÁŞÆş
+		//-- é€ä¿¡å®Œäº†ãªã‚‰1ã€å¤±æ•—ãªã‚‰0ã‚’ãƒ¡ãƒ¼ãƒ«é€ä¿¡çµæœãƒ•ãƒ©ã‚°ã¨ã—ã¦DBã«æŒ¿å…¥
 		if( ! $sendResut ){
 			 $sendFlag = "-1";
 		} else {
 			$sendFlag = "1";
 			
-			// ´°Î»¤ò1¤³Áı¤ä¤¹
+			// å®Œäº†ã‚’1ã“å¢—ã‚„ã™
 			$sql = "UPDATE dtb_send_history SET complete_count = complete_count + 1 WHERE send_id = ?";
 			$conn->query( $sql, array($mail_data[$i][0]["send_id"]) );
 		}
@@ -120,22 +120,22 @@ for( $i = 0; $i < count( $time_data ); $i++ ) {
 
 	}
 
-	//--- ¥á¡¼¥ëÁ´·ïÁ÷¿®´°Î»¸å¤Î½èÍı
+	//--- ãƒ¡ãƒ¼ãƒ«å…¨ä»¶é€ä¿¡å®Œäº†å¾Œã®å‡¦ç†
 	$completeSql = "UPDATE dtb_send_history SET end_date = now() WHERE send_id = ?";
 	$conn->query( $completeSql, array( $time_data[$i]["send_id"] ) );
 
-	//---¡¡Á÷¿®´°Î»¡¡Êó¹ğ¥á¡¼¥ë
-	$compData =  date("YÇ¯m·îdÆüH»şiÊ¬" . "  ²¼µ­¥á¡¼¥ë¤ÎÇÛ¿®¤¬´°Î»¤·¤Ş¤·¤¿¡£" );
+	//---ã€€é€ä¿¡å®Œäº†ã€€å ±å‘Šãƒ¡ãƒ¼ãƒ«
+	$compData =  date("Yå¹´mæœˆdæ—¥Hæ™‚iåˆ†" . "  ä¸‹è¨˜ãƒ¡ãƒ¼ãƒ«ã®é…ä¿¡ãŒå®Œäº†ã—ã¾ã—ãŸã€‚" );
 
 	HTML_MAIL_SENDING(
 					 $objSite->data["email03"]	
 					,$compData
 					,$mail_data[$i][0]["body"]
-					,$objSite->data["email03"]					//¡¡Á÷¿®¸µ¥á¡¼¥ë¥¢¥É¥ì¥¹
-					,$objSite->data["company_name"]				//¡¡Á÷¿®¸µÌ¾
-					,$objSite->data["email03"]					//¡¡reply_to
-					,$objSite->data["email04"]					//¡¡return_path
-					,$objSite->data["email04"]					//¡¡errors_to
+					,$objSite->data["email03"]					//ã€€é€ä¿¡å…ƒãƒ¡ãƒ¼ãƒ«ã‚¢ãƒ‰ãƒ¬ã‚¹
+					,$objSite->data["company_name"]				//ã€€é€ä¿¡å…ƒå
+					,$objSite->data["email03"]					//ã€€reply_to
+					,$objSite->data["email04"]					//ã€€return_path
+					,$objSite->data["email04"]					//ã€€errors_to
 				 );
 				 
 	if ($_GET['mode'] = "now") {
@@ -146,7 +146,7 @@ for( $i = 0; $i < count( $time_data ); $i++ ) {
 }
 
 
-//--- ¥Æ¥­¥¹¥È¥á¡¼¥ëÇÛ¿®
+//--- ãƒ†ã‚­ã‚¹ãƒˆãƒ¡ãƒ¼ãƒ«é…ä¿¡
 function MAIL_SENDING( $to, $subject, $body, $fromaddress, $from_name, $reply_to, $return_path, $errors_to="", $bcc="", $cc ="" ) {
 
 
@@ -159,7 +159,7 @@ function MAIL_SENDING( $to, $subject, $body, $fromaddress, $from_name, $reply_to
 	
 }
 
-//--- HTML¥á¡¼¥ëÇÛ¿®
+//--- HTMLãƒ¡ãƒ¼ãƒ«é…ä¿¡
 function HTML_MAIL_SENDING( $to, $subject, $body, $fromaddress, $from_name, $reply_to, $return_path, $errors_to="", $bcc="", $cc ="" ) {
 
 

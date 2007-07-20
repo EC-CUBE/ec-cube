@@ -9,19 +9,19 @@ require_once("../require.php");
 ini_set("max_execution_time", 600);
 
 define("ZIP_CSV_LINE_MAX", 8192);
-define("IMAGE_MAX", 680);	// ²èÁü¤ÎÉ½¼¨¸Ä¿ô
+define("IMAGE_MAX", 680);	// ç”»åƒã®è¡¨ç¤ºå€‹æ•°
 
 $path = HTML_PATH . "admin/basis/KEN_ALL.CSV";
 
 $objQuery = new SC_Query();
 $objSess = new SC_Session();
 
-// Ç§¾Ú²ÄÈİ¤ÎÈ½Äê
+// èªè¨¼å¯å¦ã®åˆ¤å®š
 sfIsSuccess($objSess);
 
 $fp = fopen($path, "r");
 
-// °ìÉô¤ÎIE¤Ï256¥Ğ¥¤¥È°Ê¾å¼õ¤±¼è¤Ã¤Æ¤«¤éÉ½¼¨¤ò³«»Ï¤¹¤ë¡£
+// ä¸€éƒ¨ã®IEã¯256ãƒã‚¤ãƒˆä»¥ä¸Šå—ã‘å–ã£ã¦ã‹ã‚‰è¡¨ç¤ºã‚’é–‹å§‹ã™ã‚‹ã€‚
 for($i = 0; $i < 256; $i++) {
 	print(" ");
 }
@@ -29,12 +29,12 @@ print("\n");
 MyFlush();
 
 if(!$fp) {
-	sfErrorHeader(">> " . $path . "¤Î¼èÆÀ¤Ë¼ºÇÔ¤·¤Ş¤·¤¿¡£");
+	sfErrorHeader(">> " . $path . "ã®å–å¾—ã«å¤±æ•—ã—ã¾ã—ãŸã€‚");
 } else {
 	print("<img src='".URL_DIR."img/install/main_w.jpg'><br>");
 	MyFlush();
 	
-	// CSV¤Î·ï¿ô¤ò¿ô¤¨¤ë
+	// CSVã®ä»¶æ•°ã‚’æ•°ãˆã‚‹
 	$line = 0;
 	while(!feof($fp)) {
 		fgets($fp, ZIP_CSV_LINE_MAX);
@@ -44,20 +44,20 @@ if(!$fp) {
 	print("<img src='".URL_DIR."img/install/space_w.gif'>");
 	MyFlush();
 		
-	// ¥Õ¥¡¥¤¥ë¥İ¥¤¥ó¥¿¤òÌá¤¹
+	// ãƒ•ã‚¡ã‚¤ãƒ«ãƒã‚¤ãƒ³ã‚¿ã‚’æˆ»ã™
 	fseek($fp, 0);
 	
-	// ²èÁü¤ò°ì¸ÄÉ½¼¨¤¹¤ë·ï¿ô¤òµá¤á¤ë¡£
+	// ç”»åƒã‚’ä¸€å€‹è¡¨ç¤ºã™ã‚‹ä»¶æ•°ã‚’æ±‚ã‚ã‚‹ã€‚
 	$disp_line = intval($line / IMAGE_MAX);
 	
-	// ´û¤Ë½ñ¤­¹ş¤Ş¤ì¤¿¥Ç¡¼¥¿¤ò¿ô¤¨¤ë
+	// æ—¢ã«æ›¸ãè¾¼ã¾ã‚ŒãŸãƒ‡ãƒ¼ã‚¿ã‚’æ•°ãˆã‚‹
 	$end_cnt = $objQuery->count("mtb_zip");
 	$cnt = 1;
 	$img_cnt = 0;
 	while (!feof($fp)) {
 		$arrCSV = fgetcsv($fp, ZIP_CSV_LINE_MAX);
 		
-		// ¤¹¤Ç¤Ë½ñ¤­¹ş¤Ş¤ì¤¿¥Ç¡¼¥¿¤òÈô¤Ğ¤¹¡£
+		// ã™ã§ã«æ›¸ãè¾¼ã¾ã‚ŒãŸãƒ‡ãƒ¼ã‚¿ã‚’é£›ã°ã™ã€‚
 		if($cnt > $end_cnt) {
 			$sqlval['code'] = $arrCSV[0];
 			$sqlval['old_zipcode'] = $arrCSV[1];
@@ -78,7 +78,7 @@ if(!$fp) {
 		}
 		
 		$cnt++;
-		// $disp_line·ï¤´¤È¤Ë¿ÊÄ½É½¼¨¤¹¤ë
+		// $disp_lineä»¶ã”ã¨ã«é€²æ—è¡¨ç¤ºã™ã‚‹
 		if($cnt % $disp_line == 0 && $img_cnt < IMAGE_MAX) {
 			print("<img src='".URL_DIR."img/install/graph_1_w.gif'>");
 			MyFlush();

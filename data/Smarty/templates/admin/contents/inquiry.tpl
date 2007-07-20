@@ -8,7 +8,7 @@
 <script type="text/javascript">
 <!--
 	function func_check() {
-		res = confirm('≈–œø§∑§ﬁ§π°£µπ§∑§§§«§π§´°©');
+		res = confirm('ÁôªÈå≤„Åó„Åæ„Åô„ÄÇÂÆú„Åó„ÅÑ„Åß„Åô„ÅãÔºü');
 		if( res == true ) {
 			return true;
 		}
@@ -45,7 +45,7 @@
 	}
 	
 	function delete_check() {
-		res = confirm('•¢•Û•±°º•»§Ú∫ÔΩ¸§∑§∆§‚µπ§∑§§§«§π§´°©');
+		res = confirm('„Ç¢„É≥„Ç±„Éº„Éà„ÇíÂâäÈô§„Åó„Å¶„ÇÇÂÆú„Åó„ÅÑ„Åß„Åô„ÅãÔºü');
 		if(res == true) {
 			return true;
 		}
@@ -54,17 +54,17 @@
 // -->
 </script>
 
-<!--°˙°˙•·•§•Û•≥•Û•∆•Û•ƒ°˙°˙-->
+<!--‚òÖ‚òÖ„É°„Ç§„É≥„Ç≥„É≥„ÉÜ„É≥„ÉÑ‚òÖ‚òÖ-->
 <table width="878" border="0" cellspacing="0" cellpadding="0" summary=" ">
 	<tr valign="top">
 		<td background="<!--{$smarty.const.URL_DIR}-->img/contents/navi_bg.gif" height="402">
-			<!--¢ßSUB NAVI-->
+			<!--‚ñºSUB NAVI-->
 			<!--{include file=$tpl_subnavi}-->
-			<!--¢•SUB NAVI-->
+			<!--‚ñ≤SUB NAVI-->
 		</td>
 		<td class="mainbg" >
 		<table width="737" border="0" cellspacing="0" cellpadding="0" summary=" ">
-			<!--•·•§•Û•®•Í•¢-->
+			<!--„É°„Ç§„É≥„Ç®„É™„Ç¢-->
 			<tr>
 				<td align="center">
 				<table width="706" border="0" cellspacing="0" cellpadding="0" summary=" ">
@@ -77,14 +77,14 @@
 						<td background="<!--{$smarty.const.URL_DIR}-->img/contents/main_left.jpg"><img src="<!--{$smarty.const.URL_DIR}-->img/common/_.gif" width="14" height="1" alt=""></td>
 						<td bgcolor="#cccccc">
 						
-						<!--≈–œø•∆°º•÷•Î§≥§≥§´§È-->
+						<!--ÁôªÈå≤„ÉÜ„Éº„Éñ„É´„Åì„Åì„Åã„Çâ-->
 						<table width="678" border="0" cellspacing="0" cellpadding="0" summary=" ">
 							<tr>
 								<td colspan="3"><img src="<!--{$smarty.const.URL_DIR}-->img/contents/contents_title_top.gif" width="678" height="7" alt=""></td>
 							</tr>
 							<tr>
 								<td background="<!--{$smarty.const.URL_DIR}-->img/contents/contents_title_left_bg.gif"><img src="<!--{$smarty.const.URL_DIR}-->img/contents/contents_title_left.gif" width="22" height="12" alt=""></td>
-								<td bgcolor="#636469" width="638" class="fs14n"><span class="white"><!--•≥•Û•∆•Û•ƒ•ø•§•»•Î--><!--{if $QUESTION_ID}-->Ω§¿µ<!--{else}-->ø∑µ¨<!--{/if}-->≈–œø</span></td>
+								<td bgcolor="#636469" width="638" class="fs14n"><span class="white"><!--„Ç≥„É≥„ÉÜ„É≥„ÉÑ„Çø„Ç§„Éà„É´--><!--{if $QUESTION_ID}-->‰øÆÊ≠£<!--{else}-->Êñ∞Ë¶è<!--{/if}-->ÁôªÈå≤</span></td>
 								<td background="<!--{$smarty.const.URL_DIR}-->img/contents/contents_title_right_bg.gif"><img src="<!--{$smarty.const.URL_DIR}-->img/common/_.gif" width="18" height="1" alt=""></td>
 							</tr>
 							<tr>
@@ -95,7 +95,7 @@
 							</tr>
 						</table>
 						
-						<!--¢ßFORM-->
+						<!--‚ñºFORM-->
 						<table width="678" border="0" cellspacing="1" cellpadding="8" summary=" ">
 						<form name="form1" method="post" action="<!--{$smarty.server.PHP_SELF|escape}-->?mode=regist" onSubmit="return func_check(); false;">
 						<input type="hidden" name="question_id" value="<!--{$QUESTION_ID}-->">
@@ -108,7 +108,7 @@
 							</tr>
 							<!--{/if}-->
 							<tr class="fs12n">
-								<td width="140" bgcolor="#f2f1ec">≤‘∆Ø°¶»Û≤‘∆Ø</td>
+								<td width="140" bgcolor="#f2f1ec">Á®ºÂÉç„ÉªÈùûÁ®ºÂÉç</td>
 								<td width="637" bgcolor="#ffffff">
 								<span <!--{if $ERROR.active}--><!--{sfSetErrorStyle}--><!--{/if}-->>
 								<!--{html_radios name="active" options=$arrActive selected=$smarty.post.active}-->
@@ -117,19 +117,19 @@
 								</td>
 							</tr>
 							<tr class="fs12n">
-								<td width="140" bgcolor="#f2f1ec">•¢•Û•±°º•»•ø•§•»•Î<span class="red">*</span></td>
+								<td width="140" bgcolor="#f2f1ec">„Ç¢„É≥„Ç±„Éº„Éà„Çø„Ç§„Éà„É´<span class="red">*</span></td>
 								<td width="637" bgcolor="#ffffff"><input type="text" name="title" size="70" class="box70"  maxlength="<!--{$smarty.const.STEXT_LEN}-->" value="<!--{$smarty.post.title|escape}-->" <!--{if $ERROR.title}--><!--{sfSetErrorStyle}--><!--{/if}-->>
 									<!--{if $ERROR.title}--><br><span class="red"><!--{$ERROR.title}--></span><!--{/if}-->
 								</td>
 							</tr>
 								<tr class="fs12n">
-								<td width="140" bgcolor="#f2f1ec">•¢•Û•±°º•»∆‚Õ∆</td>
+								<td width="140" bgcolor="#f2f1ec">„Ç¢„É≥„Ç±„Éº„ÉàÂÜÖÂÆπ</td>
 								<td width="637" bgcolor="#ffffff"><textarea name="contents" cols="60" rows="4" class="area60" wrap="physical" <!--{if $ERROR.contents}--><!--{sfSetErrorStyle}--><!--{/if}-->><!--{$smarty.post.contents}--></textarea>
 								<!--{if $ERROR.contents}--><br><span class="red"><!--{$ERROR.contents}--></span><!--{/if}--></td>
 							</tr>		
 							<!--{section name=question loop=$cnt_question}-->
 							<tr class="fs12n">
-								<td width="140" bgcolor="#f2f1ec">º¡Ã‰<!--{if $smarty.section.question.iteration eq 1}--><span class="red">*</span><!--{/if}--><!--{$smarty.section.question.iteration}--></td>
+								<td width="140" bgcolor="#f2f1ec">Ë≥™Âïè<!--{if $smarty.section.question.iteration eq 1}--><span class="red">*</span><!--{/if}--><!--{$smarty.section.question.iteration}--></td>
 								<td width="637" bgcolor="#ffffff">
 								<input type="text" name="question[<!--{$smarty.section.question.index}-->][name]" size="70" class="box70" maxlength="<!--{$smarty.const.STEXT_LEN}-->" value="<!--{$smarty.post.question[$smarty.section.question.index].name|escape}-->" <!--{if $ERROR.question[$smarty.section.question.index].name}--><!--{sfSetErrorStyle}--><!--{/if}-->>
 								<!--{if $ERROR.question[$smarty.section.question.index].name}--><br><span class="red"><!--{$ERROR.question[$smarty.section.question.index].name}--></span><!--{/if}-->
@@ -146,22 +146,22 @@
 							<tr class="fs12n" bgcolor="#ffffff"><td colspan="2">
 								<table id="TD<!--{$smarty.section.question.index}-->">
 								<tr class="fs12n" bgcolor="#ffffff">
-									<td colspan="2">1 <input type="text" name="question[<!--{$smarty.section.question.index}-->][option][0]" size="40" class="box40" maxlength="<!--{$smarty.const.STEXT_LEN}-->" value="<!--{$smarty.post.question[$smarty.section.question.index].option.0|escape}-->" <!--{if $ERROR.question[$smarty.section.question.index].kind}--><!--{sfSetErrorStyle}--><!--{/if}-->>°°2 <input type="text" name="question[<!--{$smarty.section.question.index}-->][option][1]" size="40" class="box40" value="<!--{$smarty.post.question[$smarty.section.question.index].option.1|escape}-->" <!--{if $ERROR.question[$smarty.section.question.index].kind}--><!--{sfSetErrorStyle}--><!--{/if}-->></td>
+									<td colspan="2">1 <input type="text" name="question[<!--{$smarty.section.question.index}-->][option][0]" size="40" class="box40" maxlength="<!--{$smarty.const.STEXT_LEN}-->" value="<!--{$smarty.post.question[$smarty.section.question.index].option.0|escape}-->" <!--{if $ERROR.question[$smarty.section.question.index].kind}--><!--{sfSetErrorStyle}--><!--{/if}-->>„ÄÄ2 <input type="text" name="question[<!--{$smarty.section.question.index}-->][option][1]" size="40" class="box40" value="<!--{$smarty.post.question[$smarty.section.question.index].option.1|escape}-->" <!--{if $ERROR.question[$smarty.section.question.index].kind}--><!--{sfSetErrorStyle}--><!--{/if}-->></td>
 								</tr>
 								<tr class="fs12n" bgcolor="#ffffff">
-									<td colspan="2">3 <input type="text" name="question[<!--{$smarty.section.question.index}-->][option][2]" size="40" class="box40" maxlength="<!--{$smarty.const.STEXT_LEN}-->" value="<!--{$smarty.post.question[$smarty.section.question.index].option.2|escape}-->">°°4 <input type="text" name="question[<!--{$smarty.section.question.index}-->][option][3]" size="40" class="box40" value="<!--{$smarty.post.question[$smarty.section.question.index].option.3|escape}-->"></td>
+									<td colspan="2">3 <input type="text" name="question[<!--{$smarty.section.question.index}-->][option][2]" size="40" class="box40" maxlength="<!--{$smarty.const.STEXT_LEN}-->" value="<!--{$smarty.post.question[$smarty.section.question.index].option.2|escape}-->">„ÄÄ4 <input type="text" name="question[<!--{$smarty.section.question.index}-->][option][3]" size="40" class="box40" value="<!--{$smarty.post.question[$smarty.section.question.index].option.3|escape}-->"></td>
 								</tr>
 								<tr class="fs12n" bgcolor="#ffffff">
-									<td colspan="2">5 <input type="text" name="question[<!--{$smarty.section.question.index}-->][option][4]" size="40" class="box40" maxlength="<!--{$smarty.const.STEXT_LEN}-->" value="<!--{$smarty.post.question[$smarty.section.question.index].option.4|escape}-->">°°6 <input type="text" name="question[<!--{$smarty.section.question.index}-->][option][5]" size="40" class="box40" value="<!--{$smarty.post.question[$smarty.section.question.index].option.5|escape}-->"></td>
+									<td colspan="2">5 <input type="text" name="question[<!--{$smarty.section.question.index}-->][option][4]" size="40" class="box40" maxlength="<!--{$smarty.const.STEXT_LEN}-->" value="<!--{$smarty.post.question[$smarty.section.question.index].option.4|escape}-->">„ÄÄ6 <input type="text" name="question[<!--{$smarty.section.question.index}-->][option][5]" size="40" class="box40" value="<!--{$smarty.post.question[$smarty.section.question.index].option.5|escape}-->"></td>
 								</tr>
 								<tr class="fs12n" bgcolor="#ffffff">
-									<td colspan="2">7 <input type="text" name="question[<!--{$smarty.section.question.index}-->][option][6]" size="40" class="box40" maxlength="<!--{$smarty.const.STEXT_LEN}-->" value="<!--{$smarty.post.question[$smarty.section.question.index].option.6|escape}-->">°°8 <input type="text" name="question[<!--{$smarty.section.question.index}-->][option][7]" size="40" class="box40" value="<!--{$smarty.post.question[$smarty.section.question.index].option.7|escape}-->"></td>
+									<td colspan="2">7 <input type="text" name="question[<!--{$smarty.section.question.index}-->][option][6]" size="40" class="box40" maxlength="<!--{$smarty.const.STEXT_LEN}-->" value="<!--{$smarty.post.question[$smarty.section.question.index].option.6|escape}-->">„ÄÄ8 <input type="text" name="question[<!--{$smarty.section.question.index}-->][option][7]" size="40" class="box40" value="<!--{$smarty.post.question[$smarty.section.question.index].option.7|escape}-->"></td>
 								</tr>
 								</table>
 							</td></tr>
 							<!--{/section}-->
 						</table>
-						<!--¢•FORM-->
+						<!--‚ñ≤FORM-->
 						
 						<table width="678" border="0" cellspacing="0" cellpadding="0" summary=" ">
 							<tr>
@@ -175,7 +175,7 @@
 								<table border="0" cellspacing="0" cellpadding="0" summary=" ">
 									<tr>
 										<td>
-											<input type="submit" name="subm1" value="•¢•Û•±°º•»§Ú<!--{if $QUESTION_ID}-->Ω§¿µ<!--{else}-->∫Ó¿Æ<!--{/if}-->" />&nbsp;&nbsp;<input type="reset" value="∆‚Õ∆§Ú•Ø•Í•¢" />
+											<input type="submit" name="subm1" value="„Ç¢„É≥„Ç±„Éº„Éà„Çí<!--{if $QUESTION_ID}-->‰øÆÊ≠£<!--{else}-->‰ΩúÊàê<!--{/if}-->" />&nbsp;&nbsp;<input type="reset" value="ÂÜÖÂÆπ„Çí„ÇØ„É™„Ç¢" />
 										</td>
 									</tr>
 								</table>
@@ -197,7 +197,7 @@
 							</tr>
 							<tr>
 								<td background="<!--{$smarty.const.URL_DIR}-->img/contents/contents_title_left_bg.gif"><img src="<!--{$smarty.const.URL_DIR}-->img/contents/contents_title_left.gif" width="22" height="12" alt=""></td>
-								<td bgcolor="#636469" width="638" class="fs14n"><span class="white"><!--•≥•Û•∆•Û•ƒ•ø•§•»•Î-->≈–œø∫—§ﬂ•¢•Û•±°º•»</span></td>
+								<td bgcolor="#636469" width="638" class="fs14n"><span class="white"><!--„Ç≥„É≥„ÉÜ„É≥„ÉÑ„Çø„Ç§„Éà„É´-->ÁôªÈå≤Ê∏à„Åø„Ç¢„É≥„Ç±„Éº„Éà</span></td>
 								<td background="<!--{$smarty.const.URL_DIR}-->img/contents/contents_title_right_bg.gif"><img src="<!--{$smarty.const.URL_DIR}-->img/common/_.gif" width="18" height="1" alt=""></td>
 							</tr>
 							<tr>
@@ -208,32 +208,32 @@
 							</tr>
 						</table>
 
-						<!--¢ßFORM-->
+						<!--‚ñºFORM-->
 						<table width="678" border="0" cellspacing="1" cellpadding="8" summary=" ">
 						<form name="form2" method="post" action="<!--{$smaryt.server.PHP_SELF|escape}-->">
 							<tr class="fs12n" bgcolor="#f2f1ec" align="center">
-								<td width="42"> ‘Ω∏</td>
-								<td width="80">≈–œø∆¸</td>
-								<td width="280">•¢•Û•±°º•»•ø•§•»•Î</td>
-								<td width="80">•⁄°º•∏ª≤æ»</td>
-								<td width="80">∑Î≤ÃºË∆¿</td>
-								<td width="42">∫ÔΩ¸</td>
+								<td width="42">Á∑®ÈõÜ</td>
+								<td width="80">ÁôªÈå≤Êó•</td>
+								<td width="280">„Ç¢„É≥„Ç±„Éº„Éà„Çø„Ç§„Éà„É´</td>
+								<td width="80">„Éö„Éº„Ç∏ÂèÇÁÖß</td>
+								<td width="80">ÁµêÊûúÂèñÂæó</td>
+								<td width="42">ÂâäÈô§</td>
 							</tr>
 							<!--{section name=data loop=$list_data}-->
 							<tr bgcolor="#FFFFFF" class="fs12" <!--{if $list_data[data].question_id eq $smarty.request.question_id}--><!--{sfSetErrorStyle}--><!--{/if}-->>
-								<td align="center" class="main"><a href="<!--{$smarty.server.PHP_SELF|escape}-->?question_id=<!--{$list_data[data].question_id}-->"> ‘Ω∏</a></td>
+								<td align="center" class="main"><a href="<!--{$smarty.server.PHP_SELF|escape}-->?question_id=<!--{$list_data[data].question_id}-->">Á∑®ÈõÜ</a></td>
 								<td align="center"><!--{$list_data[data].disp_date}--></td>
 								<td><!--{$list_data[data].question_name|escape}--></td>
-								<td align="center"><a href="<!--{$smarty.const.SITE_URL}-->inquiry/index.php?question_id=<!--{$list_data[data].question_id}-->" target="_blank">ª≤æ»</a></td>
+								<td align="center"><a href="<!--{$smarty.const.SITE_URL}-->inquiry/index.php?question_id=<!--{$list_data[data].question_id}-->" target="_blank">ÂèÇÁÖß</a></td>
 								<td align="center"><a href="<!--{$smarty.server.PHP_SELF|escape}-->?mode=csv&question_id=<!--{$list_data[data].question_id}-->">download</a></td>
-								<td align="center"><a href="<!--{$smarty.server.PHP_SELF|escape}-->?mode=delete&question_id=<!--{$list_data[data].question_id}-->" onClick="return delete_check()">∫ÔΩ¸</a></td>
+								<td align="center"><a href="<!--{$smarty.server.PHP_SELF|escape}-->?mode=delete&question_id=<!--{$list_data[data].question_id}-->" onClick="return delete_check()">ÂâäÈô§</a></td>
 							</tr>
 							<!--{/section}-->
 						</form>
 						</table>
-						<!--¢•FORM-->
+						<!--‚ñ≤FORM-->
 						
-						<!--≈–œø•∆°º•÷•Î§≥§≥§ﬁ§«-->
+						<!--ÁôªÈå≤„ÉÜ„Éº„Éñ„É´„Åì„Åì„Åæ„Åß-->
 						</td>
 						<td background="<!--{$smarty.const.URL_DIR}-->img/contents/main_right.jpg"><img src="<!--{$smarty.const.URL_DIR}-->img/common/_.gif" width="14" height="1" alt=""></td>
 					</tr>
@@ -245,13 +245,13 @@
 				</table>
 				</td>
 			</tr>
-			<!--•·•§•Û•®•Í•¢-->
+			<!--„É°„Ç§„É≥„Ç®„É™„Ç¢-->
 		</table>
 		</td>
 	</tr>
 </form>
 </table>
-<!--°˙°˙•·•§•Û•≥•Û•∆•Û•ƒ°˙°˙-->		
+<!--‚òÖ‚òÖ„É°„Ç§„É≥„Ç≥„É≥„ÉÜ„É≥„ÉÑ‚òÖ‚òÖ-->		
 				
 <script type="text/javascript">
 <!--

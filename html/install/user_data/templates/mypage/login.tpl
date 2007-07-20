@@ -3,18 +3,18 @@
  *
  * http://www.lockon.co.jp/
  *}-->
-<!--╒╖CONTENTS-->
+<!--Б√╪CONTENTS-->
 <table width="760" border="0" cellspacing="0" cellpadding="0" summary=" ">
 	<tr>
 		<td align="center" bgcolor="#ffffff">
-		<!--╒╖MAIN ONTENTS-->
+		<!--Б√╪MAIN ONTENTS-->
 		<table width="700" border="0" cellspacing="0" cellpadding="0" summary=" ">
 			<tr>
-				<td><img src="<!--{$smarty.const.URL_DIR}-->img/login/title.jpg" width="700" height="40" alt="╔М╔╟╔╓╔С"></td>
+				<td><img src="<!--{$smarty.const.URL_DIR}-->img/login/title.jpg" width="700" height="40" alt="Ц┐╜Ц┌╟Ц┌╓Ц┐Ё"></td>
 			</tr>
 			<tr><td height="20"></td></tr>
 		</table>
-		<!--╒╖╡Я╟Вепо©╓╛╓╙╨я╓ъ╓н╓╙╣рмм-->
+		<!--Б√╪Д╪ Е⌠║Г≥╩И▄╡Ц│▄Ц│┼Ф╦┬Ц│©Ц│╝Ц│┼Е╝╒Ф╖≤-->
 		<table width="640" border="0" cellspacing="0" cellpadding="0" summary=" ">
 			<tr>
 				<td align="center" bgcolor="#cccccc">
@@ -25,16 +25,16 @@
 						<table width="604" border="0" cellspacing="0" cellpadding="0" summary=" ">
 							<tr><td height="13"></td></tr>
 							<tr>
-								<td><img src="<!--{$smarty.const.URL_DIR}-->img/login/member.gif" width="202" height="16" alt="╡Я╟Вепо©╓╛╓╙╨я╓ъ╓н╓╙╣рмм"></td>
+								<td><img src="<!--{$smarty.const.URL_DIR}-->img/login/member.gif" width="202" height="16" alt="Д╪ Е⌠║Г≥╩И▄╡Ц│▄Ц│┼Ф╦┬Ц│©Ц│╝Ц│┼Е╝╒Ф╖≤"></td>
 							</tr>
 							<tr><td height="20"></td></tr>
 						</table>
-						<!--╔М╔╟╔╓╔С╓Ё╓Ё╓╚╓И-->
+						<!--Ц┐╜Ц┌╟Ц┌╓Ц┐ЁЦ│⌠Ц│⌠Ц│▀Ц┌┴-->
 						<table width="530" border="0" cellspacing="0" cellpadding="0" summary=" ">
 						<form name="login_mypage" id="login_mypage" method="post" action="./login_check.php" onsubmit="return fnCheckLogin('login_mypage')">
 						<input type="hidden" name="mode" value="login" >
 							<tr>
-								<td class="fs12">╡Я╟В╓нйЩ╓о║╒епо©╩Ч╓кфЧно╓╣╓Л╓©╔А║╪╔К╔╒╔и╔Л╔╧╓х╔я╔╧╔О║╪╔и╓г╔М╔╟╔╓╔С╓╥╓ф╓╞╓ю╓╣╓╓║ё</td>
+								<td class="fs12">Д╪ Е⌠║Ц│╝Ф√╧Ц│╞Ц─│Г≥╩И▄╡Ф≥┌Ц│╚Е┘╔Е┼⌡Ц│∙Ц┌▄Ц│÷Ц┐║Ц┐╪Ц┐╚Ц┌╒Ц┐┴Ц┐╛Ц┌╧Ц│╗Ц┐▒Ц┌╧Ц┐╞Ц┐╪Ц┐┴Ц│╖Ц┐╜Ц┌╟Ц┌╓Ц┐ЁЦ│≈Ц│╕Ц│▐Ц│═Ц│∙Ц│└Ц─┌</td>
 							</tr>
 							<tr><td height="10"></td></tr>
 							<tr>
@@ -42,7 +42,7 @@
 								<table width="490" border="0" cellspacing="0" cellpadding="0" summary=" ">
 									<tr><td height="20"></td></tr>
 									<tr>
-										<td><img src="<!--{$smarty.const.URL_DIR}-->img/login/mailadress.gif" width="92" height="13" alt="╔А║╪╔К╔╒╔и╔Л╔╧"></td>
+										<td><img src="<!--{$smarty.const.URL_DIR}-->img/login/mailadress.gif" width="92" height="13" alt="Ц┐║Ц┐╪Ц┐╚Ц┌╒Ц┐┴Ц┐╛Ц┌╧"></td>
 										<td>
 											<!--{assign var=key value="mypage_login_email"}-->
 											<input type="text" name="<!--{$key}-->" value="<!--{$tpl_login_email}-->" maxlength="<!--{$smarty.const.STEXT_LEN}-->" style="<!--{$arrErr[$key]|sfGetErrorColor}-->" size="40" class="box40" />
@@ -51,11 +51,11 @@
 									<tr>
 										<td align="right"></td>
 										<!--{assign var=key value="mypage_login_memory"}-->
-										<td class="fs10n"><input type="checkbox" name="<!--{$key}-->" value="1" <!--{$tpl_login_memory|sfGetChecked:1}--> /><label for="memory">╡Я╟В╔А║╪╔К╔╒╔и╔Л╔╧╓Р╔Ё╔С╔т╔Е║╪╔©║╪╓к╣╜╡╠╓╣╓╩╓К</label></td>
+										<td class="fs10n"><input type="checkbox" name="<!--{$key}-->" value="1" <!--{$tpl_login_memory|sfGetChecked:1}--> /><label for="memory">Д╪ Е⌠║Ц┐║Ц┐╪Ц┐╚Ц┌╒Ц┐┴Ц┐╛Ц┌╧Ц┌▓Ц┌ЁЦ┐ЁЦ┐■Ц┐╔Ц┐╪Ц┌©Ц┐╪Ц│╚Х╗≤Ф├╤Ц│∙Ц│⌡Ц┌▀</label></td>
 									</tr>
 									<tr><td height="10"></td></tr>
 									<tr>
-										<td><img src="<!--{$smarty.const.URL_DIR}-->img/login/password.gif" width="92" height="13" alt="╔я╔╧╔О║╪╔и"></td>
+										<td><img src="<!--{$smarty.const.URL_DIR}-->img/login/password.gif" width="92" height="13" alt="Ц┐▒Ц┌╧Ц┐╞Ц┐╪Ц┐┴"></td>
 										<td>
 											<!--{assign var=key value="mypage_login_pass"}-->
 											<input type="password" name="<!--{$key}-->" maxlength="<!--{$smarty.const.PASSWORD_LEN2}-->" style="<!--{$arrErr[$key]|sfGetErrorColor}-->" size="40" class="box40" />
@@ -68,18 +68,18 @@
 							<tr><td height="20"></td></tr>
 							<tr>
 								<td align="center">
-									<input type="image" onmouseover="chgImgImageSubmit('<!--{$smarty.const.URL_DIR}-->img/login/b_login_on.gif',this)" onmouseout="chgImgImageSubmit('<!--{$smarty.const.URL_DIR}-->img/login/b_login.gif',this)" src="<!--{$smarty.const.URL_DIR}-->img/login/b_login.gif" width="140" height="30" alt="╔М╔╟╔╓╔С" name="log" id="log" /></a>
+									<input type="image" onmouseover="chgImgImageSubmit('<!--{$smarty.const.URL_DIR}-->img/login/b_login_on.gif',this)" onmouseout="chgImgImageSubmit('<!--{$smarty.const.URL_DIR}-->img/login/b_login.gif',this)" src="<!--{$smarty.const.URL_DIR}-->img/login/b_login.gif" width="140" height="30" alt="Ц┐╜Ц┌╟Ц┌╓Ц┐Ё" name="log" id="log" /></a>
 								</td>
 							</tr>
 							<tr><td height="15"></td></tr>
 							<tr>
-								<td class="fs10">╔я╔╧╔О║╪╔и╓Рк╨╓Л╓©йЩ╓о<a href="<!--{$smarty.const.URL_DIR}-->forget/index.php" onclick="win01('/forgot/index.php','forget','600','400'); return false;" target="_blank">╓Ё╓а╓И</a>╓╚╓И╔я╔╧╔О║╪╔и╓н╨фх╞╧т╓Р╧т╓ц╓ф╓╞╓ю╓╣╓╓║ё<br>
-								╔А║╪╔К╔╒╔и╔Л╔╧╓Рк╨╓Л╓©йЩ╓о║╒╓╙╪Й©Т╓г╓╧╓╛║╒<a href="<!--{$smarty.const.URL_DIR}-->contact/index.php">╓╙лД╓╓╧Г╓О╓╩╔з║╪╔╦</a>╓╚╓И╓╙лД╓╓╧Г╓О╓╩╓╞╓ю╓╣╓╓║ё</td>
+								<td class="fs10">Ц┐▒Ц┌╧Ц┐╞Ц┐╪Ц┐┴Ц┌▓Е©≤Ц┌▄Ц│÷Ф√╧Ц│╞<a href="<!--{$smarty.const.URL_DIR}-->forget/index.php" onclick="win01('/forgot/index.php','forget','600','400'); return false;" target="_blank">Ц│⌠Ц│║Ц┌┴</a>Ц│▀Ц┌┴Ц┐▒Ц┌╧Ц┐╞Ц┐╪Ц┐┴Ц│╝Е├█Г≥╨Х║▄Ц┌▓Х║▄Ц│ёЦ│╕Ц│▐Ц│═Ц│∙Ц│└Ц─┌<br>
+								Ц┐║Ц┐╪Ц┐╚Ц┌╒Ц┐┴Ц┐╛Ц┌╧Ц┌▓Е©≤Ц┌▄Ц│÷Ф√╧Ц│╞Ц─│Ц│┼Ф┴▀Ф∙╟Ц│╖Ц│≥Ц│▄Ц─│<a href="<!--{$smarty.const.URL_DIR}-->contact/index.php">Ц│┼Е∙▐Ц│└Е░┬Ц┌▐Ц│⌡Ц┐ Ц┐╪Ц┌╦</a>Ц│▀Ц┌┴Ц│┼Е∙▐Ц│└Е░┬Ц┌▐Ц│⌡Ц│▐Ц│═Ц│∙Ц│└Ц─┌</td>
 							</tr>
 							<tr><td height="20"></td></tr>
 						</form>
 						</table>
-						<!--╔М╔╟╔╓╔С╓Ё╓Ё╓ч╓г-->
+						<!--Ц┐╜Ц┌╟Ц┌╓Ц┐ЁЦ│⌠Ц│⌠Ц│╬Ц│╖-->
 						</td>
 					</tr>
 					<tr><td height="5"></td></tr>
@@ -88,8 +88,8 @@
 			</tr>
 			<tr><td height="20"></td></tr>
 		</table>
-		<!--╒╔╡Я╟Вепо©╓╛╓╙╨я╓ъ╓н╓╙╣рмм-->
-		<!--╒╖╓ч╓ю╡Я╟Вепо©╓╣╓Л╓ф╓╓╓й╓╓╓╙╣рмм-->
+		<!--Б√╡Д╪ Е⌠║Г≥╩И▄╡Ц│▄Ц│┼Ф╦┬Ц│©Ц│╝Ц│┼Е╝╒Ф╖≤-->
+		<!--Б√╪Ц│╬Ц│═Д╪ Е⌠║Г≥╩И▄╡Ц│∙Ц┌▄Ц│╕Ц│└Ц│╙Ц│└Ц│┼Е╝╒Ф╖≤-->
 		<table width="640" border="0" cellspacing="0" cellpadding="0" summary=" ">
 			<tr>
 				<td align="center" bgcolor="#cccccc">
@@ -100,15 +100,15 @@
 						<table width="604" border="0" cellspacing="0" cellpadding="0" summary=" ">
 							<tr><td height="13"></td></tr>
 							<tr>
-								<td><img src="<!--{$smarty.const.URL_DIR}-->img/login/guest.gif" width="247" height="16" alt="╓ч╓ю╡Я╟Вепо©╓╣╓Л╓ф╓╓╓й╓╓╓╙╣рмм"></td>
+								<td><img src="<!--{$smarty.const.URL_DIR}-->img/login/guest.gif" width="247" height="16" alt="Ц│╬Ц│═Д╪ Е⌠║Г≥╩И▄╡Ц│∙Ц┌▄Ц│╕Ц│└Ц│╙Ц│└Ц│┼Е╝╒Ф╖≤"></td>
 							</tr>
 							<tr><td height="20"></td></tr>
 						</table>
 						
 						<table width="530" border="0" cellspacing="0" cellpadding="0" summary=" ">
 							<tr>
-								<td class="fs12">╡Я╟Вепо©╓Р╓╧╓К╓хйьмЬ╓йMy╔з║╪╔╦╓Р╓╢мЬмя╓╓╓©╓ю╓╠╓ч╓╧║ё<br>
-								╓ч╓©║╒╔М╔╟╔╓╔С╓╧╓К╓ю╓╠╓г║╒кХ╡С╓╙л╬а╟╓Д╫╩╫Й╓й╓и╓РфЧно╓╧╓К╓Ё╓х╓й╓╞╔╧╔Ю║╪╔╨╓к╓╙гЦ╓╓й╙╓Р╓╙Ёз╓╥╓ъ╓╓╓©╓ю╓╠╓ч╓╧║ё</td>
+								<td class="fs12">Д╪ Е⌠║Г≥╩И▄╡Ц┌▓Ц│≥Ц┌▀Ц│╗Д╬©Е┬╘Ц│╙MyЦ┐ Ц┐╪Ц┌╦Ц┌▓Ц│■Е┬╘Г■╗Ц│└Ц│÷Ц│═Ц│▒Ц│╬Ц│≥Ц─┌<br>
+								Ц│╬Ц│÷Ц─│Ц┐╜Ц┌╟Ц┌╓Ц┐ЁЦ│≥Ц┌▀Ц│═Ц│▒Ц│╖Ц─│Ф╞▌Е⌡·Ц│┼Е░█Е┴█Ц┌└Д╫▐Ф┴─Ц│╙Ц│╘Ц┌▓Е┘╔Е┼⌡Ц│≥Ц┌▀Ц│⌠Ц│╗Ц│╙Ц│▐Ц┌╧Ц┐═Ц┐╪Ц┌╨Ц│╚Ц│┼Х╡╥Ц│└Г┴╘Ц┌▓Ц│┼Ф╔╫Ц│≈Ц│©Ц│└Ц│÷Ц│═Ц│▒Ц│╬Ц│≥Ц─┌</td>
 							</tr>
 							<tr><td height="10"></td></tr>
 							<tr>
@@ -117,7 +117,7 @@
 									<tr><td height="20"></td></tr>
 									<tr>
 										<td align="center">
-											<a href="<!--{$smarty.const.URL_DIR}-->entry/kiyaku.php" onmouseover="chgImg('<!--{$smarty.const.URL_DIR}-->img/login/b_gotoentry_on.gif','b_gotoentry');" onmouseout="chgImg('<!--{$smarty.const.URL_DIR}-->img/login/b_gotoentry.gif','b_gotoentry');"><img src="<!--{$smarty.const.URL_DIR}-->img/login/b_gotoentry.gif" width="130" height="30" alt="╡Я╟Вепо©╓Р╓╧╓К" border="0" name="b_gotoentry"></a>║║
+											<a href="<!--{$smarty.const.URL_DIR}-->entry/kiyaku.php" onmouseover="chgImg('<!--{$smarty.const.URL_DIR}-->img/login/b_gotoentry_on.gif','b_gotoentry');" onmouseout="chgImg('<!--{$smarty.const.URL_DIR}-->img/login/b_gotoentry.gif','b_gotoentry');"><img src="<!--{$smarty.const.URL_DIR}-->img/login/b_gotoentry.gif" width="130" height="30" alt="Д╪ Е⌠║Г≥╩И▄╡Ц┌▓Ц│≥Ц┌▀" border="0" name="b_gotoentry"></a>Ц──
 										</td>
 									</tr>
 									<tr><td height="20"></td></tr>
@@ -133,10 +133,10 @@
 				</td>
 			</tr>
 		</table>
-		<!--╒╔╓ч╓ю╡Я╟Вепо©╓╣╓Л╓ф╓╓╓й╓╓╓╙╣рмм-->
-		<!--╒╔MAIN ONTENTS-->
+		<!--Б√╡Ц│╬Ц│═Д╪ Е⌠║Г≥╩И▄╡Ц│∙Ц┌▄Ц│╕Ц│└Ц│╙Ц│└Ц│┼Е╝╒Ф╖≤-->
+		<!--Б√╡MAIN ONTENTS-->
 		</td>
 	</tr>
 </table>
-<!--╒╔CONTENTS-->
+<!--Б√╡CONTENTS-->
 

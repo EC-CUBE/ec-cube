@@ -6,10 +6,10 @@
  */
 *}-->
 <table width="141" border="0" cellspacing="0" cellpadding="0" summary=" " id="menu_navi">
-	<!--¥Ê¥Ó-->
-	<tr><td class=<!--{if $tpl_subno != 'index'}-->"navi"<!--{else}-->"navi-on"<!--{/if}-->><a href="./index.php" onMouseOver="naviStyleChange('index', '#a5a5a5')" <!--{if $tpl_subno != 'index'}-->onMouseOut="naviStyleChange('index', '#636469')"<!--{/if}--> id="index"><img src="<!--{$smarty.const.URL_DIR}-->img/contents/icon.jpg" width="15" height="9" alt="" border="0"><span class="navi_text">¼õÃí´ÉÍı</span></a></td></tr>
+	<!--ãƒŠãƒ“-->
+	<tr><td class=<!--{if $tpl_subno != 'index'}-->"navi"<!--{else}-->"navi-on"<!--{/if}-->><a href="./index.php" onMouseOver="naviStyleChange('index', '#a5a5a5')" <!--{if $tpl_subno != 'index'}-->onMouseOut="naviStyleChange('index', '#636469')"<!--{/if}--> id="index"><img src="<!--{$smarty.const.URL_DIR}-->img/contents/icon.jpg" width="15" height="9" alt="" border="0"><span class="navi_text">å—æ³¨ç®¡ç†</span></a></td></tr>
 	<tr><td><img src="<!--{$smarty.const.URL_DIR}-->img/contents/navi_line.gif" width="140" height="2" alt=""></td></tr>
-	<tr><td class=<!--{if $tpl_subno != 'status'}-->"navi"<!--{else}-->"navi-on"<!--{/if}-->><a href="./status.php" onMouseOver="naviStyleChange('status', '#a5a5a5')" <!--{if $tpl_subno != 'status'}-->onMouseOut="naviStyleChange('status', '#636469')"<!--{/if}--> id="status"><img src="<!--{$smarty.const.URL_DIR}-->img/contents/icon.jpg" width="15" height="9" alt="" border="0"><span class="navi_text">¥¹¥Æ¡¼¥¿¥¹´ÉÍı</span></a></td></tr>
+	<tr><td class=<!--{if $tpl_subno != 'status'}-->"navi"<!--{else}-->"navi-on"<!--{/if}-->><a href="./status.php" onMouseOver="naviStyleChange('status', '#a5a5a5')" <!--{if $tpl_subno != 'status'}-->onMouseOut="naviStyleChange('status', '#636469')"<!--{/if}--> id="status"><img src="<!--{$smarty.const.URL_DIR}-->img/contents/icon.jpg" width="15" height="9" alt="" border="0"><span class="navi_text">ã‚¹ãƒ†ãƒ¼ã‚¿ã‚¹ç®¡ç†</span></a></td></tr>
 	<tr><td><img src="<!--{$smarty.const.URL_DIR}-->img/contents/navi_line.gif" width="140" height="2" alt=""></td></tr>
 	<!--{if $tpl_subno == 'status'}-->
 		<!--{foreach key=key item=item from=$arrORDERSTATUS}-->
@@ -17,5 +17,5 @@
 			<tr><td><img src="<!--{$smarty.const.URL_DIR}-->img/contents/navi_subline.gif" width="140" height="2" alt=""></td></tr>
 		<!--{/foreach}-->
 	<!--{/if}-->
-	<!--¥Ê¥Ó-->
+	<!--ãƒŠãƒ“-->
 </table>

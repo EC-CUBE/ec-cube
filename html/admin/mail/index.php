@@ -17,12 +17,12 @@ class LC_Page {
 		$this->tpl_subnavi = 'mail/subnavi.tpl';
 		$this->tpl_subno = "index";
 		$this->tpl_pager = DATA_PATH . 'Smarty/templates/admin/pager.tpl';
-		$this->tpl_subtitle = 'ÇÛ¿®ÆâÍÆÀßÄê';
+		$this->tpl_subtitle = 'é…ä¿¡å†…å®¹è¨­å®š';
 		
 		global $arrPref;
 		$this->arrPref = $arrPref;
 		global $arrJob;
-		$arrJob["ÉÔÌÀ"] = "ÉÔÌÀ";
+		$arrJob["ä¸æ˜"] = "ä¸æ˜";
 		$this->arrJob = $arrJob;
 		global $arrSex;		
 		$this->arrSex = $arrSex;
@@ -30,11 +30,11 @@ class LC_Page {
 		$this->arrMailType = $arrMailType;
 		global $arrPageRows;
 		$this->arrPageRows = $arrPageRows;
-		// ¥Ú¡¼¥¸¥Ê¥ÓÍÑ
+		// ãƒšãƒ¼ã‚¸ãƒŠãƒ“ç”¨
 		$this->tpl_pageno = $_POST['search_pageno'];
 		global $arrMAILMAGATYPE;
 		$this->arrMAILMAGATYPE = $arrMAILMAGATYPE;
-		$this->arrHtmlmail[''] = "¤¹¤Ù¤Æ";
+		$this->arrHtmlmail[''] = "ã™ã¹ã¦";
 		$this->arrHtmlmail[1] = $arrMAILMAGATYPE[1];
 		$this->arrHtmlmail[2] = $arrMAILMAGATYPE[2];
 		global $arrCustomerType;
@@ -46,7 +46,7 @@ class LC_HTMLtemplate {
 	var $list_data;
 }
 
-//---- ¥Ú¡¼¥¸½é´üÀßÄê
+//---- ãƒšãƒ¼ã‚¸åˆæœŸè¨­å®š
 $conn = new SC_DBConn();
 $objPage = new LC_Page();
 $objView = new SC_AdminView();
@@ -57,27 +57,27 @@ $objPage->arrTemplate = getTemplateList($conn);
 
 $objSess = new SC_Session();
 
-// Ç§¾Ú²ÄÈİ¤ÎÈ½Äê
+// èªè¨¼å¯å¦ã®åˆ¤å®š
 sfIsSuccess($objSess);
 
 /*
-	query:ÇÛ¿®ÍúÎò¡Ö³ÎÇ§¡×
+	query:é…ä¿¡å±¥æ­´ã€Œç¢ºèªã€
 */
 if ($_GET["mode"] == "query" && sfCheckNumLength($_GET["send_id"])) {
-	// Á÷¿®ÍúÎò¤è¤ê¡¢Á÷¿®¾ò·ï³ÎÇ§²èÌÌ
+	// é€ä¿¡å±¥æ­´ã‚ˆã‚Šã€é€ä¿¡æ¡ä»¶ç¢ºèªç”»é¢
 	$sql = "SELECT search_data FROM dtb_send_history WHERE send_id = ?";
 	$result = $conn->getOne($sql, array($_GET["send_id"]));
 	$tpl_path = "mail/query.tpl";
 		
 	$list_data = unserialize($result);
 	
-	// ÅÔÆ»ÉÜ¸©¤òÊÑ´¹
+	// éƒ½é“åºœçœŒã‚’å¤‰æ›
 	$list_data['pref_disp'] = $objPage->arrPref[$list_data['pref']];
 	
-	// ÇÛ¿®·Á¼°
+	// é…ä¿¡å½¢å¼
 	$list_data['htmlmail_disp'] = $objPage->arrHtmlmail[$list_data['htmlmail']];
 	
-	// À­ÊÌ¤ÎÊÑ´¹
+	// æ€§åˆ¥ã®å¤‰æ›
 	if (count($list_data['sex']) > 0) {
 		foreach($list_data['sex'] as $key => $val){
 			$list_data['sex'][$key] = $objPage->arrSex[$val];
@@ -86,7 +86,7 @@ if ($_GET["mode"] == "query" && sfCheckNumLength($_GET["send_id"])) {
 		$list_data['sex_disp'] = $sex_disp;
 	}
 	
-	// ¿¦¶È¤ÎÊÑ´¹
+	// è·æ¥­ã®å¤‰æ›
 	if (count($list_data['job']) > 0) {
 		foreach($list_data['job'] as $key => $val){
 			$list_data['job'][$key] = $objPage->arrJob[$val];
@@ -95,7 +95,7 @@ if ($_GET["mode"] == "query" && sfCheckNumLength($_GET["send_id"])) {
 		$list_data['job_disp'] = $job_disp;
 	}
 		
-	// ¥«¥Æ¥´¥êÊÑ´¹
+	// ã‚«ãƒ†ã‚´ãƒªå¤‰æ›
 	$arrCatList = sfGetCategoryList();
 	$list_data['category_name'] = $arrCatList[$list_data['category_id']];
 	
@@ -111,94 +111,94 @@ if($_POST['mode'] == 'delete') {
 
 switch($_POST['mode']) {
 /*
-	search:¡Ö¸¡º÷¡×¥Ü¥¿¥ó
-	back:¸¡º÷·ë²Ì²èÌÌ¡ÖÌá¤ë¡×¥Ü¥¿¥ó
+	search:ã€Œæ¤œç´¢ã€ãƒœã‚¿ãƒ³
+	back:æ¤œç´¢çµæœç”»é¢ã€Œæˆ»ã‚‹ã€ãƒœã‚¿ãƒ³
 */
 case 'delete':
 case 'search':
 case 'back':
-	//-- ÆşÎÏÃÍ¥³¥ó¥Ğ¡¼¥È
+	//-- å…¥åŠ›å€¤ã‚³ãƒ³ãƒãƒ¼ãƒˆ
 	$objPage->list_data = lfConvertParam($_POST, $arrSearchColumn);
 		
-	//-- ÆşÎÏ¥¨¥é¡¼¤Î¥Á¥§¥Ã¥¯
+	//-- å…¥åŠ›ã‚¨ãƒ©ãƒ¼ã®ãƒã‚§ãƒƒã‚¯
 	$objPage->arrErr = lfErrorCheck($objPage->list_data);
 
-	//-- ¸¡º÷³«»Ï
+	//-- æ¤œç´¢é–‹å§‹
 	if (!is_array($objPage->arrErr)) {
 		$objPage->list_data['name'] = sfManualEscape($objPage->list_data['name']);
-		// hiddenÍ×ÁÇºîÀ®
+		// hiddenè¦ç´ ä½œæˆ
 		$objPage->arrHidden = lfGetHidden($objPage->list_data);
 
-		//-- ¸¡º÷¥Ç¡¼¥¿¼èÆÀ	
+		//-- æ¤œç´¢ãƒ‡ãƒ¼ã‚¿å–å¾—	
 		$objSelect = new SC_CustomerList($objPage->list_data, "magazine");
-		// À¸À®¤µ¤ì¤¿WHEREÊ¸¤ò¼èÆÀ¤¹¤ë		
+		// ç”Ÿæˆã•ã‚ŒãŸWHEREæ–‡ã‚’å–å¾—ã™ã‚‹		
 		list($where, $arrval) = $objSelect->getWhere();
 	
-		// ¡ÖWHERE¡×ÉôÊ¬¤òºï½ü¤¹¤ë¡£
+		// ã€ŒWHEREã€éƒ¨åˆ†ã‚’å‰Šé™¤ã™ã‚‹ã€‚
 		$where = ereg_replace("^WHERE", "", $where);
 
-		// ¸¡º÷·ë²Ì¤Î¼èÆÀ
+		// æ¤œç´¢çµæœã®å–å¾—
 		$objQuery = new SC_Query();
 		$from = "dtb_customer";
 
-		// ¹Ô¿ô¤Î¼èÆÀ
+		// è¡Œæ•°ã®å–å¾—
 		$linemax = $objQuery->count($from, $where, $arrval);
-		$objPage->tpl_linemax = $linemax;				// ²¿·ï¤¬³ºÅö¤·¤Ş¤·¤¿¡£É½¼¨ÍÑ
+		$objPage->tpl_linemax = $linemax;				// ä½•ä»¶ãŒè©²å½“ã—ã¾ã—ãŸã€‚è¡¨ç¤ºç”¨
 		
-		// ¥Ú¡¼¥¸Á÷¤ê¤Î¼èÆÀ
+		// ãƒšãƒ¼ã‚¸é€ã‚Šã®å–å¾—
 		$objNavi = new SC_PageNavi($_POST['search_pageno'], $linemax, SEARCH_PMAX, "fnResultPageNavi", NAVI_PMAX);
 		$objPage->arrPagenavi = $objNavi->arrPagenavi;	
 		$startno = $objNavi->start_row;
 
-		// ¼èÆÀÈÏ°Ï¤Î»ØÄê(³«»Ï¹ÔÈÖ¹æ¡¢¹Ô¿ô¤Î¥»¥Ã¥È)
+		// å–å¾—ç¯„å›²ã®æŒ‡å®š(é–‹å§‹è¡Œç•ªå·ã€è¡Œæ•°ã®ã‚»ãƒƒãƒˆ)
 		$objQuery->setlimitoffset(SEARCH_PMAX, $startno);
-		// É½¼¨½ç½ø
+		// è¡¨ç¤ºé †åº
 		$objQuery->setorder("customer_id DESC");
 		
-		// ¸¡º÷·ë²Ì¤Î¼èÆÀ	
+		// æ¤œç´¢çµæœã®å–å¾—	
 		$col = $objSelect->getMailMagazineColumn(lfGetIsMobile($_POST['mail_type']));
 		$objPage->arrResults = $objQuery->select($col, $from, $where, $arrval);
-		//¸½ºß»ş¹ï¤Î¼èÆÀ
+		//ç¾åœ¨æ™‚åˆ»ã®å–å¾—
 		$objPage->arrNowDate = lfGetNowDate();
 	}
 	break;
 /*
-	input:¸¡º÷·ë²Ì²èÌÌ¡ÖhtmlmailÆâÍÆÀßÄê¡×¥Ü¥¿¥ó
+	input:æ¤œç´¢çµæœç”»é¢ã€Œhtmlmailå†…å®¹è¨­å®šã€ãƒœã‚¿ãƒ³
 */
 case 'input':
-	//-- ÆşÎÏÃÍ¥³¥ó¥Ğ¡¼¥È
+	//-- å…¥åŠ›å€¤ã‚³ãƒ³ãƒãƒ¼ãƒˆ
 	$objPage->list_data = lfConvertParam($_POST, $arrSearchColumn);
-	//-- ÆşÎÏ¥¨¥é¡¼¤Î¥Á¥§¥Ã¥¯
+	//-- å…¥åŠ›ã‚¨ãƒ©ãƒ¼ã®ãƒã‚§ãƒƒã‚¯
 	$objPage->arrErr = lfErrorCheck($objPage->list_data);
-	//-- ¥¨¥é¡¼¤Ê¤·
+	//-- ã‚¨ãƒ©ãƒ¼ãªã—
 	if (!is_array($objPage->arrErr)) {
-		//-- ¸½ºß»ş¹ï¤Î¼èÆÀ
+		//-- ç¾åœ¨æ™‚åˆ»ã®å–å¾—
 		$objPage->arrNowDate = lfGetNowDate();
-		$objPage->arrHidden = lfGetHidden($objPage->list_data); // hiddenÍ×ÁÇºîÀ®
+		$objPage->arrHidden = lfGetHidden($objPage->list_data); // hiddenè¦ç´ ä½œæˆ
 		$objPage->tpl_mainpage = 'mail/input.tpl';
 	}
 	break;
 /*
-	template:¥Æ¥ó¥×¥ì¡¼¥ÈÁªÂò
+	template:ãƒ†ãƒ³ãƒ—ãƒ¬ãƒ¼ãƒˆé¸æŠ
 */
 case 'template':
-	//-- ÆşÎÏÃÍ¥³¥ó¥Ğ¡¼¥È
+	//-- å…¥åŠ›å€¤ã‚³ãƒ³ãƒãƒ¼ãƒˆ
 	$objPage->list_data = lfConvertParam($_POST, $arrSearchColumn);
 	
-	//-- »ş¹ïÀßÄê¤Î¼èÆÀ
+	//-- æ™‚åˆ»è¨­å®šã®å–å¾—
 	$objPage->arrNowDate['year'] = $_POST['send_year'];
 	$objPage->arrNowDate['month'] = $_POST['send_month'];
 	$objPage->arrNowDate['day'] = $_POST['send_day'];
 	$objPage->arrNowDate['hour'] = $_POST['send_hour'];
 	$objPage->arrNowDate['minutes'] = $_POST['send_minutes'];
 	
-	//-- ÆşÎÏ¥¨¥é¡¼¤Î¥Á¥§¥Ã¥¯
+	//-- å…¥åŠ›ã‚¨ãƒ©ãƒ¼ã®ãƒã‚§ãƒƒã‚¯
 	$objPage->arrErr = lfErrorCheck($objPage->list_data);
 
-	//-- ¸¡º÷³«»Ï
+	//-- æ¤œç´¢é–‹å§‹
 	if ( ! is_array($objPage->arrErr)) {
 		$objPage->list_data['name'] = sfManualEscape($objPage->list_data['name']);
-		$objPage->arrHidden = lfGetHidden($objPage->list_data); // hiddenÍ×ÁÇºîÀ®
+		$objPage->arrHidden = lfGetHidden($objPage->list_data); // hiddenè¦ç´ ä½œæˆ
 	
 		$objPage->tpl_mainpage = 'mail/input.tpl';
 		$template_data = getTemplateData($conn, $_POST['template_id']);
@@ -208,15 +208,15 @@ case 'template':
 			}
 		}
 
-		//-- HTML¥Æ¥ó¥×¥ì¡¼¥È¤ò»ÈÍÑ¤¹¤ë¾ì¹ç¤Ï¡¢HTML¥½¡¼¥¹¤òÀ¸À®¤·¤ÆBODY¤ØÁŞÆş
+		//-- HTMLãƒ†ãƒ³ãƒ—ãƒ¬ãƒ¼ãƒˆã‚’ä½¿ç”¨ã™ã‚‹å ´åˆã¯ã€HTMLã‚½ãƒ¼ã‚¹ã‚’ç”Ÿæˆã—ã¦BODYã¸æŒ¿å…¥
 		if ( $objPage->list_data["mail_method"] == 3) {
 			$objTemplate = new LC_HTMLtemplate;
 			$objTemplate->list_data = lfGetHtmlTemplateData($_POST['template_id']);
 			$objSiteInfo = new SC_SiteInfo();
 			$objTemplate->arrInfo = $objSiteInfo->data;
-			//¥á¡¼¥ëÃ´Åö¼Ì¿¿¤ÎÉ½¼¨
+			//ãƒ¡ãƒ¼ãƒ«æ‹…å½“å†™çœŸã®è¡¨ç¤º
 			$objUpFile = new SC_UploadFile(IMAGE_TEMP_URL, IMAGE_SAVE_URL);
-			$objUpFile->addFile("¥á¡¼¥ëÃ´Åö¼Ì¿¿", 'charge_image', array('jpg'), IMAGE_SIZE, true, SMALL_IMAGE_WIDTH, SMALL_IMAGE_HEIGHT);
+			$objUpFile->addFile("ãƒ¡ãƒ¼ãƒ«æ‹…å½“å†™çœŸ", 'charge_image', array('jpg'), IMAGE_SIZE, true, SMALL_IMAGE_WIDTH, SMALL_IMAGE_HEIGHT);
 			$objUpFile->setDBFileList($objTemplate->list_data);
 			$objTemplate->arrFile = $objUpFile->getFormFileList(IMAGE_TEMP_URL, IMAGE_SAVE_URL);
 			$objMakeTemplate = new SC_AdminView();
@@ -226,26 +226,26 @@ case 'template':
 	}
 	break;
 /*
-	regist_confirm:¡ÖÆşÎÏÆâÍÆ¤ò³ÎÇ§¡×
-	regist_back:¡Ö¥Æ¥ó¥×¥ì¡¼¥ÈÀßÄê²èÌÌ¤ØÌá¤ë¡×
-	regist_complete:¡ÖÅĞÏ¿¡×
+	regist_confirm:ã€Œå…¥åŠ›å†…å®¹ã‚’ç¢ºèªã€
+	regist_back:ã€Œãƒ†ãƒ³ãƒ—ãƒ¬ãƒ¼ãƒˆè¨­å®šç”»é¢ã¸æˆ»ã‚‹ã€
+	regist_complete:ã€Œç™»éŒ²ã€
 */	
 case 'regist_confirm':
 case 'regist_back':
 case 'regist_complete':
-	//-- ÆşÎÏÃÍ¥³¥ó¥Ğ¡¼¥È
+	//-- å…¥åŠ›å€¤ã‚³ãƒ³ãƒãƒ¼ãƒˆ
 	$arrCheckColumn = array_merge( $arrSearchColumn, $arrRegistColumn );
 	$objPage->list_data = lfConvertParam($_POST, $arrCheckColumn);
 	
-	//¸½ºß»ş¹ï¤Î¼èÆÀ
+	//ç¾åœ¨æ™‚åˆ»ã®å–å¾—
 	$objPage->arrNowDate = lfGetNowDate();
 
-	//-- ÆşÎÏ¥¨¥é¡¼¤Î¥Á¥§¥Ã¥¯
+	//-- å…¥åŠ›ã‚¨ãƒ©ãƒ¼ã®ãƒã‚§ãƒƒã‚¯
 	$objPage->arrErr = lfErrorCheck($objPage->list_data, 1);
 	$objPage->tpl_mainpage = 'mail/input.tpl';
-	$objPage->arrHidden = lfGetHidden($objPage->list_data); // hiddenÍ×ÁÇºîÀ®
+	$objPage->arrHidden = lfGetHidden($objPage->list_data); // hiddenè¦ç´ ä½œæˆ
 	
-	//-- ¸¡º÷³«»Ï
+	//-- æ¤œç´¢é–‹å§‹
 	if ( ! is_array($objPage->arrErr)) {
 			$objPage->list_data['name'] = sfManualEscape($objPage->list_data['name']);
 		if ( $_POST['mode'] == 'regist_confirm'){
@@ -260,7 +260,7 @@ case 'regist_complete':
 				}
 				exit;
 			} else {
-				sfErrorHeader(">> ËÜ¥µ¥¤¥È¤Ç¤Ï¥á¥ë¥Ş¥¬ÇÛ¿®¤Ï¹Ô¤¨¤Ş¤»¤ó¡£");
+				sfErrorHeader(">> æœ¬ã‚µã‚¤ãƒˆã§ã¯ãƒ¡ãƒ«ãƒã‚¬é…ä¿¡ã¯è¡Œãˆã¾ã›ã‚“ã€‚");
 			}
 		}
 	}
@@ -270,7 +270,7 @@ default:
 	break;
 }
 
-// ÇÛ¿®»ş´Ö¤ÎÇ¯¤ò¡¢¡Ö¸½ºßÇ¯¢·¸½ºßÇ¯¡Ü£±¡×¤ÎÈÏ°Ï¤ËÀßÄê
+// é…ä¿¡æ™‚é–“ã®å¹´ã‚’ã€ã€Œç¾åœ¨å¹´~ç¾åœ¨å¹´ï¼‹ï¼‘ã€ã®ç¯„å›²ã«è¨­å®š
 for ($year=date("Y"); $year<=date("Y") + 1;$year++){
 	$arrYear[$year] = $year;
 }
@@ -282,13 +282,13 @@ $objPage->arrCatList = sfGetCategoryList();
 
 $objPage->arrCampaignList = lfGetCampaignList();
 
-//----¡¡¥Ú¡¼¥¸É½¼¨
+//----ã€€ãƒšãƒ¼ã‚¸è¡¨ç¤º
 $objView->assignobj($objPage);
 $objView->display(MAIN_FRAME);
 
 //-------------------------------------------------------------------------------------------------------------------------------
 
-// ¾¦ÉÊ¥³¡¼¥É¤Ç¸¡º÷¤µ¤ì¤¿¾ì¹ç¤Ë¥Ò¥Ã¥È¤·¤¿¼õÃíÈÖ¹æ¤ò¼èÆÀ¤¹¤ë¡£
+// å•†å“ã‚³ãƒ¼ãƒ‰ã§æ¤œç´¢ã•ã‚ŒãŸå ´åˆã«ãƒ’ãƒƒãƒˆã—ãŸå—æ³¨ç•ªå·ã‚’å–å¾—ã™ã‚‹ã€‚
 function lfGetCustomerOrderId($keyword) {
 	if($keyword != "") {
 		$col = "dtb_order.customer_id, dtb_order.order_id";
@@ -319,7 +319,7 @@ function lfMakeCsvData( $send_id ){
 	return $return;	
 }
 
-//---- CSV½ĞÎÏÍÑ¥Ç¡¼¥¿¼èÆÀ
+//---- CSVå‡ºåŠ›ç”¨ãƒ‡ãƒ¼ã‚¿å–å¾—
 function lfGetCSVData( $array, $arrayIndex){	
 	
 	for ($i=0; $i<count($array); $i++){
@@ -328,9 +328,9 @@ function lfGetCSVData( $array, $arrayIndex){
 			if ( $j > 0 ) $return .= ",";
 			$return .= "\"";			
 			if ( $arrayIndex ){
-				$return .= mb_ereg_replace("<","¡ã",mb_ereg_replace( "\"","\"\"",$array[$i][$arrayIndex[$j]] )) ."\"";	
+				$return .= mb_ereg_replace("<","ï¼œ",mb_ereg_replace( "\"","\"\"",$array[$i][$arrayIndex[$j]] )) ."\"";	
 			} else {
-				$return .= mb_ereg_replace("<","¡ã",mb_ereg_replace( "\"","\"\"",$array[$i][$j] )) ."\"";
+				$return .= mb_ereg_replace("<","ï¼œ",mb_ereg_replace( "\"","\"\"",$array[$i][$j] )) ."\"";
 			}
 		}
 		$return .= "\n";			
@@ -338,7 +338,7 @@ function lfGetCSVData( $array, $arrayIndex){
 	return $return;
 }
 
-//¸½ºß»ş¹ï¤Î¼èÆÀ¡ÊÇÛ¿®»ş´Ö¥Ç¥Õ¥©¥ë¥ÈÃÍ¡Ë
+//ç¾åœ¨æ™‚åˆ»ã®å–å¾—ï¼ˆé…ä¿¡æ™‚é–“ãƒ‡ãƒ•ã‚©ãƒ«ãƒˆå€¤ï¼‰
 function lfGetNowDate(){
 	$nowdate = date("Y/n/j/G/i");
 	list($year, $month, $day, $hour, $minute) = split("[/]", $nowdate);
@@ -368,7 +368,7 @@ function lfGetNowDate(){
 	return $list_date;
 }
 
-// ÇÛ¿®ÆâÍÆ¤ÈÇÛ¿®¥ê¥¹¥È¤ò½ñ¤­¹ş¤à
+// é…ä¿¡å†…å®¹ã¨é…ä¿¡ãƒªã‚¹ãƒˆã‚’æ›¸ãè¾¼ã‚€
 function lfRegistData($arrData){
 	
 	global $conn;
@@ -416,7 +416,7 @@ function lfRegistData($arrData){
 	}	
 }
 
-// ¥­¥ã¥ó¥Ú¡¼¥ó°ìÍ÷
+// ã‚­ãƒ£ãƒ³ãƒšãƒ¼ãƒ³ä¸€è¦§
 function lfGetCampaignList() {
 	
 	global $objQuery;
@@ -432,7 +432,7 @@ function lfGetCampaignList() {
 }
 
 function lfGetIsMobile($mail_type) {
-	// ¸¡º÷·ë²Ì¤Î¼èÆÀ			
+	// æ¤œç´¢çµæœã®å–å¾—			
 	$is_mobile = false;
 	switch($mail_type) {
 		case 1:

@@ -5,7 +5,7 @@ require_once("../../require.php");
 $objView = new SC_UserView("./templates/");
 $objImage = new SC_Image(IMAGE_TEMP_DIR);
 
-//---- ¥Ú¡¼¥¸É½¼¨ÍÑ¥¯¥é¥¹
+//---- ãƒšãƒ¼ã‚¸è¡¨ç¤ºç”¨ã‚¯ãƒ©ã‚¹
 class LC_Page {
 	function LC_Page() {
 		$this->tpl_mainpage = 'customer/release_set.tpl';
@@ -20,7 +20,7 @@ class LC_Page {
 
 exit();
 
-//---- ¥Ú¡¼¥¸É½¼¨ÍÑ¥¯¥é¥¹
+//---- ãƒšãƒ¼ã‚¸è¡¨ç¤ºç”¨ã‚¯ãƒ©ã‚¹
 class LC_Page {
 	function LC_Page() {
 		$this->tpl_mainpage = 'customer/release_set.tpl';

@@ -8,24 +8,24 @@ require_once(HTML_PATH . "admin/total/class/SC_GraphBar.php");
 		
 		$objGraphPie = new SC_GraphPie(400, 250, 80, 70);
 		
-		/* ¥Ç¥Ğ¥Ã¥°É½¼¨ÍÑ by naka
+		/* ãƒ‡ãƒãƒƒã‚°è¡¨ç¤ºç”¨ by naka
 		foreach($arrList as $key => $val) {
 			$objGraphPie->debugPrint("key:$key val:$val");
 		}
 		*/
 		
 		$arrList = array(
-			'Îı½¬A' => 11,
-			'Îı½¬B' => 32,
-			'Îı½¬C' => 48
+			'ç·´ç¿’A' => 11,
+			'ç·´ç¿’B' => 32,
+			'ç·´ç¿’C' => 48
 		);
 		
-		// ¥Ç¡¼¥¿¤ò¥»¥Ã¥È¤¹¤ë
+		// ãƒ‡ãƒ¼ã‚¿ã‚’ã‚»ãƒƒãƒˆã™ã‚‹
 		$objGraphPie->setData($arrList);
-		// ËŞÎã¤ò¥»¥Ã¥È¤¹¤ë
+		// å‡¡ä¾‹ã‚’ã‚»ãƒƒãƒˆã™ã‚‹
 		$objGraphPie->setLegend(array_keys($arrList));
 		
-		// ±ß¥°¥é¥ÕÉÁ²è
+		// å††ã‚°ãƒ©ãƒ•æç”»
 		//$objGraphPie->drawGraph();
 		
 		$x = $objGraphPie->cx;
@@ -34,36 +34,36 @@ require_once(HTML_PATH . "admin/total/class/SC_GraphBar.php");
 		$h = $objGraphPie->ch;
 		$w = $objGraphPie->cw;
 		
-		// ¥Ç¡¼¥¿¤Î³ÑÅÙ¤ò¼èÆÀ¤¹¤ë
+		// ãƒ‡ãƒ¼ã‚¿ã®è§’åº¦ã‚’å–å¾—ã™ã‚‹
 		$arrRad = $objGraphPie->getCircleData($objGraphPie->arrData);
 		$rd_max = count($arrRad);
 		
-		// ¥Ç¡¼¥¿¤¬Â¸ºß¤·¤Ê¤¤¾ì¹ç
+		// ãƒ‡ãƒ¼ã‚¿ãŒå­˜åœ¨ã—ãªã„å ´åˆ
 		if($rd_max <= 0) {
 			return;
 		}
 		
-		// ±Æ¤ÎÉÁ²è
+		// å½±ã®æç”»
 		if($objGraphPie->shade_on) {
 			$objGraphPie->drawShade();
 		}
 		
-		// ¿§¿ô¤Î¼èÆÀ
+		// è‰²æ•°ã®å–å¾—
 		$c_max = count($objGraphPie->arrColor);
 		$dc_max = count($objGraphPie->arrDarkColor);
 		
-		// Â¦ÌÌ¤ÎÉÁ²è		
+		// å´é¢ã®æç”»		
 		for ($i = ($y + $z - 1); $i >= $y; $i--) {
 			$start = 0;
 			for($j = 0; $j < $rd_max; $j++) {
-				// ³ÑÅÙ¤¬0ÅÙ°Ê¾å¤Î¾ì¹ç¤Î¤ßÂ¦ÌÌ¤òÉÁ²è¤¹¤ë¡£
+				// è§’åº¦ãŒ0åº¦ä»¥ä¸Šã®å ´åˆã®ã¿å´é¢ã‚’æç”»ã™ã‚‹ã€‚
 				if($arrRad[$j] > 0) {
 					$end = $start + $arrRad[$j];
 					if($start == 0 && $end == 360) {
-						// -90¢·270¤Ç»ØÄê¤¹¤ë¤È±ß¤¬ÉÁ²è¤Ç¤­¤Ê¤¤¤Î¤Ç0¢·360¤Ë»ØÄê
+						// -90~270ã§æŒ‡å®šã™ã‚‹ã¨å††ãŒæç”»ã§ããªã„ã®ã§0~360ã«æŒ‡å®š
 						imagearc($objGraphPie->image, $x, $i, $w, $h, 0, 360, $objGraphPie->arrDarkColor[($j % $dc_max)]);
 					} else {
-						// -90¡ë¤Ï12»ş¤Î°ÌÃÖ¤«¤é³«»Ï¤¹¤ë¤è¤¦¤ËÊäÀµ¤·¤Æ¤¤¤ë
+						// -90Â°ã¯12æ™‚ã®ä½ç½®ã‹ã‚‰é–‹å§‹ã™ã‚‹ã‚ˆã†ã«è£œæ­£ã—ã¦ã„ã‚‹
 						imagearc($objGraphPie->image, $x, $i, $w, $h, $start - 90, $end - 90, $objGraphPie->arrDarkColor[($j % $dc_max)]);	
 					}			
 					$start = $end;
@@ -73,37 +73,37 @@ require_once(HTML_PATH . "admin/total/class/SC_GraphBar.php");
 		
 
 		
-		// ¾åÌÌ¤ÎÉÁ²è
+		// ä¸Šé¢ã®æç”»
 		$start = 0;
 		for($i = 0; $i < $rd_max; $i++) {
 			$end = $start + $arrRad[$i];
 			if($start == 0 && $end == 360) {
-				// -90¢·270¤Ç»ØÄê¤¹¤ë¤È±ß¤¬ÉÁ²è¤Ç¤­¤Ê¤¤¤Î¤Ç0¢·360¤Ë»ØÄê
+				// -90~270ã§æŒ‡å®šã™ã‚‹ã¨å††ãŒæç”»ã§ããªã„ã®ã§0~360ã«æŒ‡å®š
 				imagefilledarc($objGraphPie->image, $x, $y, $w, $h, 0, 360, $objGraphPie->arrColor[($i % $c_max)], IMG_ARC_PIE);			
 			} else {
-				// -90¡ë¤Ï12»ş¤Î°ÌÃÖ¤«¤é³«»Ï¤¹¤ë¤è¤¦¤ËÊäÀµ¤·¤Æ¤¤¤ë¡£		
+				// -90Â°ã¯12æ™‚ã®ä½ç½®ã‹ã‚‰é–‹å§‹ã™ã‚‹ã‚ˆã†ã«è£œæ­£ã—ã¦ã„ã‚‹ã€‚		
 				imagefilledarc($objGraphPie->image, $x, $y, $w, $h, $start - 90, $end - 90, $objGraphPie->arrColor[($i % $c_max)], IMG_ARC_PIE);
 			}
 			$start = $end;
 		}
 		/*
-		// ÄìÌÌ¤ÎÉÁ²è
+		// åº•é¢ã®æç”»
 		imagearc($objGraphPie->image, $x, $y + $z, $w, $h, 0, 180 , $objGraphPie->flame_color);
 		
-		// ¾åÌÌ¤Î±ï¼è¤ê
+		// ä¸Šé¢ã®ç¸å–ã‚Š
 		$start = 0;
 		for($i = 0; $i < $rd_max; $i++) {
 			$end = $start + $arrRad[$i];
 			if($start == 0 && $end == 360) {
-				// -90¢·270¤Ç»ØÄê¤¹¤ë¤È±ß¤¬ÉÁ²è¤Ç¤­¤Ê¤¤¤Î¤Ç0¢·360¤Ë»ØÄê
+				// -90~270ã§æŒ‡å®šã™ã‚‹ã¨å††ãŒæç”»ã§ããªã„ã®ã§0~360ã«æŒ‡å®š
 				imagearc($objGraphPie->image, $x, $y, $w, $h, 0, 360 , $objGraphPie->flame_color);
 			}
-			// -90¡ë¤Ï12»ş¤Î°ÌÃÖ¤«¤é³«»Ï¤¹¤ë¤è¤¦¤ËÊäÀµ¤·¤Æ¤¤¤ë¡£
+			// -90Â°ã¯12æ™‚ã®ä½ç½®ã‹ã‚‰é–‹å§‹ã™ã‚‹ã‚ˆã†ã«è£œæ­£ã—ã¦ã„ã‚‹ã€‚
 			imagefilledarc($objGraphPie->image, $x, $y, $w, $h, $start - 90, $end - 90, $objGraphPie->flame_color, IMG_ARC_EDGED|IMG_ARC_NOFILL);
 			$start = $end;
 		}
 		
-		// Â¦ÌÌ¤Î±ï¼è¤ê
+		// å´é¢ã®ç¸å–ã‚Š
 		imageline($objGraphPie->image, $x + ($w / 2), $y, $x + ($w / 2), $y + $z, $objGraphPie->flame_color);
 		imageline($objGraphPie->image, $x - ($w / 2), $y, $x - ($w / 2), $y + $z, $objGraphPie->flame_color);
 		
@@ -111,10 +111,10 @@ require_once(HTML_PATH . "admin/total/class/SC_GraphBar.php");
 		$start = 0;
 		for($i = 0; $i < $rd_max; $i++) {
 			$end = $start + $arrRad[$i];
-			// Á°ÌÌ¤Î¤ß
+			// å‰é¢ã®ã¿
 			if($end > 90 && $end < 270) {
 				list($ax, $ay) = lfGetArcPos($x, $y, $w, $h, $end);
-				// ¥é¥¤¥ó¤Î¤º¤ì¤òÊäÀµ¤¹¤ë
+				// ãƒ©ã‚¤ãƒ³ã®ãšã‚Œã‚’è£œæ­£ã™ã‚‹
 				if($end > 180) {
 					$ax = $ax + 1;
 				}
@@ -123,9 +123,9 @@ require_once(HTML_PATH . "admin/total/class/SC_GraphBar.php");
 			$start = $end;	
 		}
 		
-		// ¥é¥Ù¥ë¤ÎÉÁ²è
+		// ãƒ©ãƒ™ãƒ«ã®æç”»
 		$objGraphPie->drawLabel($arrRad);
-		// ËŞÎã¤ÎÉÁ²è
+		// å‡¡ä¾‹ã®æç”»
 		$objGraphPie->drawLegend(count($objGraphPie->arrData));
 		*/
 		

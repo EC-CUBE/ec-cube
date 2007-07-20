@@ -1,7 +1,7 @@
 #!/usr/bin/env php
 <?php
 /**
- * ¥â¥Ğ¥¤¥ë¥µ¥¤¥È/¶õ¥á¡¼¥ë¼õ¤±ÉÕ¤±¥¹¥¯¥ê¥×¥È
+ * ãƒ¢ãƒã‚¤ãƒ«ã‚µã‚¤ãƒˆ/ç©ºãƒ¡ãƒ¼ãƒ«å—ã‘ä»˜ã‘ã‚¹ã‚¯ãƒªãƒ—ãƒˆ
  */
 
 require_once dirname(__FILE__) . '/../conf/mobile_conf.php';
@@ -19,18 +19,18 @@ $token = $objMail->getToken();
 $sender = $objMail->getSender();
 
 if (gfRegisterKaraMail($token, $sender)) {
-	$subject = '¶õ¥á¡¼¥ë¤ò¼õ¤±ÉÕ¤±¤Ş¤·¤¿';
-	$reply_body = "²¼µ­¤Î¥ê¥ó¥¯¤ò¥¯¥ê¥Ã¥¯¤·¤Æ¡¢¼¡¤Î¼êÂ³¤­¤Ë¿Ê¤ó¤Ç¤¯¤À¤µ¤¤¡£\n" .
+	$subject = 'ç©ºãƒ¡ãƒ¼ãƒ«ã‚’å—ã‘ä»˜ã‘ã¾ã—ãŸ';
+	$reply_body = "ä¸‹è¨˜ã®ãƒªãƒ³ã‚¯ã‚’ã‚¯ãƒªãƒƒã‚¯ã—ã¦ã€æ¬¡ã®æ‰‹ç¶šãã«é€²ã‚“ã§ãã ã•ã„ã€‚\n" .
 	              SITE_URL . "redirect.php?token=$token";
 } else {
-	$subject = '¶õ¥á¡¼¥ë¼êÂ³¤­¤¬¼ºÇÔ¤·¤Ş¤·¤¿';
-	$reply_body = "»ş´ÖÀÚ¤ì¤Ê¤É¤Ë¤è¤ê¡¢¶õ¥á¡¼¥ë¼êÂ³¤­¤ò¹Ô¤¦¤³¤È¤¬¤Ç¤­¤Ş¤»¤ó¤Ç¤·¤¿¡£\n" .
-	              "¥µ¥¤¥È¤Î¥È¥Ã¥×¤ØÌá¤Ã¤Æ¤ä¤êÄ¾¤·¤Æ¤¯¤À¤µ¤¤¡£\n" .
+	$subject = 'ç©ºãƒ¡ãƒ¼ãƒ«æ‰‹ç¶šããŒå¤±æ•—ã—ã¾ã—ãŸ';
+	$reply_body = "æ™‚é–“åˆ‡ã‚Œãªã©ã«ã‚ˆã‚Šã€ç©ºãƒ¡ãƒ¼ãƒ«æ‰‹ç¶šãã‚’è¡Œã†ã“ã¨ãŒã§ãã¾ã›ã‚“ã§ã—ãŸã€‚\n" .
+	              "ã‚µã‚¤ãƒˆã®ãƒˆãƒƒãƒ—ã¸æˆ»ã£ã¦ã‚„ã‚Šç›´ã—ã¦ãã ã•ã„ã€‚\n" .
 	              SITE_URL . "\n";
 }
 
 $objReply = new GC_SendMail;
-$objReply->setItem($sender, "¡Ú{$CONF["shop_name"]}¡Û$subject", $reply_body,
+$objReply->setItem($sender, "ã€{$CONF["shop_name"]}ã€‘$subject", $reply_body,
                    $CONF['email03'], $CONF['shop_name'], $CONF['email03'], $CONF['email04']);
 $objReply->sendMail();
 

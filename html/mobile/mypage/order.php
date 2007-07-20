@@ -6,17 +6,17 @@
  * http://www.lockon.co.jp/
  * 
  *
- * Õ˙ŒÚ§´§È√Ì ∏§ÚºË∆¿°¶≈–œø§∑°¢•´°º•»§À¡´∞‹§π§Î°£
+ * Â±•Ê≠¥„Åã„ÇâÊ≥®Êñá„ÇíÂèñÂæó„ÉªÁôªÈå≤„Åó„ÄÅ„Ç´„Éº„Éà„Å´ÈÅ∑Áßª„Åô„Çã„ÄÇ
  */
 require_once("../require.php");
 
 $objCustomer = new SC_Customer();
 $objCartSess = new SC_CartSession();
 
-//ºı√Ìæ‹∫Ÿ•«°º•ø§ŒºË∆¿
+//ÂèóÊ≥®Ë©≥Á¥∞„Éá„Éº„Çø„ÅÆÂèñÂæó
 $arrDisp = lfGetOrderDetail($_POST['order_id']);
 
-//•Ì•∞•§•Û§∑§∆§§§ §§°¢§ﬁ§ø§œDB§Àæ Û§¨Ãµ§§æÏπÁ
+//„É≠„Ç∞„Ç§„É≥„Åó„Å¶„ÅÑ„Å™„ÅÑ„ÄÅ„Åæ„Åü„ÅØDB„Å´ÊÉÖÂ†±„ÅåÁÑ°„ÅÑÂ†¥Âêà
 if (!$objCustomer->isLoginSuccess() or count($arrDisp) == 0){
 	sfDispSiteError(CUSTOMER_ERROR, "", false, "", true);
 }
@@ -34,7 +34,7 @@ header("Location: " . gfAddSessionId(MOBILE_URL_CART_TOP));
 
 
 //-----------------------------------------------------------------------------------------------------------------------------------
-// ºı√Ìæ‹∫Ÿ•«°º•ø§ŒºË∆¿
+// ÂèóÊ≥®Ë©≥Á¥∞„Éá„Éº„Çø„ÅÆÂèñÂæó
 function lfGetOrderDetail($order_id) {
 	$objQuery = new SC_Query();
 	$col = "product_id, classcategory_id1, classcategory_id2, quantity";

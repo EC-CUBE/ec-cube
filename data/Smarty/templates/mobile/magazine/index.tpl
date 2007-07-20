@@ -5,38 +5,38 @@
  * http://www.lockon.co.jp/
  */
 *}-->
-<div align="center">���ޥ���Ͽ</div>
+<div align="center">メルマガ登録</div>
 <hr>
-����Ͽ���������������ͤؤ�<!--{if $arrSiteInfo.shop_name != ""}--><!--{$arrSiteInfo.shop_name|escape}-->���<!--{/if}-->���ʤ䥭���ڡ�������᡼��Ǥ��Ϥ��������ޤ���<br>
-��<!--{if $arrSiteInfo.shop_name != ""}--><!--{$arrSiteInfo.shop_name|escape}-->�Ǥ�<!--{/if}-->�����ѵ���˽������ѼԤΥ��ɥ쥹���ݸ�Ƥ��ޤ���<br>
+ご登録いただいたお客様へは<!--{if $arrSiteInfo.shop_name != ""}--><!--{$arrSiteInfo.shop_name|escape}-->より<!--{/if}-->商品やキャンペーン情報をメールでお届けいたします。<br>
+※<!--{if $arrSiteInfo.shop_name != ""}--><!--{$arrSiteInfo.shop_name|escape}-->では<!--{/if}-->ご利用規約に従い利用者のアドレスを保護しています。<br>
 <br>
 <form action="confirm.php" method="post">
-	����Ͽ<br>
+	■登録<br>
 	<font color="#FF0000"><!--{$arrErr.regist}--></font>
 	<input type="text" name="regist" value="<!--{$arrForm.regist|escape}-->" istyle="3"><br>
-	<div align="center"><input type="submit" name="btnRegist" value="����"></div>
+	<div align="center"><input type="submit" name="btnRegist" value="次へ"></div>
 	<br>
 
-	�����<br>
+	■解除<br>
 	<font color="#FF0000"><!--{$arrErr.cancel}--></font>
 	<input type="text" name="cancel" value="<!--{$arrForm.cancel|escape}-->" istyle="3"><br>
-	<div align="center"><input type="submit" name="btnCancel" value="����"></div>
+	<div align="center"><input type="submit" name="btnCancel" value="次へ"></div>
 	<br>
 </form>
 <br>
 
-���᡼�륢�ɥ쥹�ѹ�<br>
-�᡼�륢�ɥ쥹�ѹ���˾�����ϰ��١���Ͽ������Ƥ��顢�⤦������Ͽ��ľ���Ƥ���������<br>
+■メールアドレス変更<br>
+メールアドレス変更希望の方は一度、登録解除してから、もう一度登録し直してください。<br>
 
 <br>
 
 <hr>
 
-<a href="<!--{$smarty.const.MOBILE_URL_CART_TOP}-->" accesskey="9"><!--{9|numeric_emoji}-->�����򸫤�</a><br>
-<a href="<!--{$smarty.const.MOBILE_URL_SITE_TOP}-->" accesskey="0"><!--{0|numeric_emoji}-->TOP�ڡ�����</a><br>
+<a href="<!--{$smarty.const.MOBILE_URL_CART_TOP}-->" accesskey="9"><!--{9|numeric_emoji}-->かごを見る</a><br>
+<a href="<!--{$smarty.const.MOBILE_URL_SITE_TOP}-->" accesskey="0"><!--{0|numeric_emoji}-->TOPページへ</a><br>
 
 <br>
 
-<!-- ���եå��� �������� -->
+<!-- ▼フッター ここから -->
 <!--{include file='footer.tpl'}-->
-<!-- ���եå��� �����ޤ� -->
+<!-- ▲フッター ここまで -->

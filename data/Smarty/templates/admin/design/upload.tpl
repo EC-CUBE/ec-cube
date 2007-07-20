@@ -5,20 +5,20 @@
  * http://www.lockon.co.jp/
  */
 *}-->
-<!--¡ú¡ú¥á¥¤¥ó¥³¥ó¥Æ¥ó¥Ä¡ú¡ú-->
+<!--â˜…â˜…ãƒ¡ã‚¤ãƒ³ã‚³ãƒ³ãƒ†ãƒ³ãƒ„â˜…â˜…-->
 <table width="878" border="0" cellspacing="0" cellpadding="0" summary=" ">
 <form name="form1" method="post" action="<!--{$smarty.server.PHP_SELF|escape}-->" enctype="multipart/form-data">
 <input type="hidden" name="mode" value="upload">
 	<tr valign="top">
 		<td background="<!--{$smarty.const.URL_DIR}-->img/contents/navi_bg.gif" height="402">
-			<!--¢§SUB NAVI-->
+			<!--â–¼SUB NAVI-->
 			<!--{include file=$tpl_subnavi}-->
-			<!--¢¥SUB NAVI-->
+			<!--â–²SUB NAVI-->
 		</td>
 		<td class="mainbg">
-			<!--¢§¥¢¥Ã¥×¥í¡¼¥É¥Æ¡¼¥Ö¥ë¤³¤³¤«¤é-->
+			<!--â–¼ã‚¢ãƒƒãƒ—ãƒ­ãƒ¼ãƒ‰ãƒ†ãƒ¼ãƒ–ãƒ«ã“ã“ã‹ã‚‰-->
 			<table width="737" border="0" cellspacing="0" cellpadding="0" summary=" ">
-				<!--¥á¥¤¥ó¥¨¥ê¥¢-->
+				<!--ãƒ¡ã‚¤ãƒ³ã‚¨ãƒªã‚¢-->
 				<tr>
 					<td align="center">
 						<table width="706" border="0" cellspacing="0" cellpadding="0" summary=" ">
@@ -35,7 +35,7 @@
 									</tr>
 									<tr>
 										<td background="<!--{$smarty.const.URL_DIR}-->img/contents/contents_title_left_bg.gif"><img src="<!--{$smarty.const.URL_DIR}-->img/contents/contents_title_left.gif" width="22" height="12" alt=""></td>
-										<td bgcolor="#636469" width="638" class="fs14n"><span class="white"><!--¥³¥ó¥Æ¥ó¥Ä¥¿¥¤¥È¥ë--><!--{$template_name}--></span></td>
+										<td bgcolor="#636469" width="638" class="fs14n"><span class="white"><!--ã‚³ãƒ³ãƒ†ãƒ³ãƒ„ã‚¿ã‚¤ãƒˆãƒ«--><!--{$template_name}--></span></td>
 										<td background="<!--{$smarty.const.URL_DIR}-->img/contents/contents_title_right_bg.gif"><img src="<!--{$smarty.const.URL_DIR}-->img/common/_.gif" width="18" height="1" alt=""></td>
 									</tr>
 									<tr>
@@ -52,17 +52,17 @@
 								<table width="678" border="0" cellspacing="1" cellpadding="8" summary=" ">
 									<!--{assign var=key value="template_code"}-->
 									<tr class="fs12n">
-										<td bgcolor="#f2f1ec">¥Æ¥ó¥×¥ì¡¼¥È¥³¡¼¥É</td>
+										<td bgcolor="#f2f1ec">ãƒ†ãƒ³ãƒ—ãƒ¬ãƒ¼ãƒˆã‚³ãƒ¼ãƒ‰</td>
 										<td bgcolor="#ffffff"><span class="red"><!--{$arrErr[$key]}--></span><input type="text" name="<!--{$arrForm[$key].keyname}-->" value="<!--{$arrForm[$key].value|escape}-->" maxlength="<!--{$arrForm[$key].length}-->" style="<!--{$arrErr[$key]|sfGetErrorColor}-->" class="box54"></td>
 									</tr>
 									<!--{assign var=key value="template_name"}-->
 									<tr class="fs12n">
-										<td bgcolor="#f2f1ec">¥Æ¥ó¥×¥ì¡¼¥ÈÌ¾</td>
+										<td bgcolor="#f2f1ec">ãƒ†ãƒ³ãƒ—ãƒ¬ãƒ¼ãƒˆå</td>
 										<td bgcolor="#ffffff"><span class="red"><!--{$arrErr[$key]}--></span><input type="text" name="<!--{$arrForm[$key].keyname}-->" value="<!--{$arrForm[$key].value|escape}-->" maxlength="<!--{$arrForm[$key].length}-->" style="<!--{$arrErr[$key]|sfGetErrorColor}-->" class="box54"></td>
 									</tr>
 									<!--{assign var=key value="template_file"}-->
 									<tr class="fs12n">
-										<td bgcolor="#f2f1ec">¥Æ¥ó¥×¥ì¡¼¥È¥Õ¥¡¥¤¥ë<br/><span class="red"><span class="fs14n">¢¨¥Õ¥¡¥¤¥ë·Á¼°¤Ï.tar/.tar.gz¤Î¤ß</span></span></td>
+										<td bgcolor="#f2f1ec">ãƒ†ãƒ³ãƒ—ãƒ¬ãƒ¼ãƒˆãƒ•ã‚¡ã‚¤ãƒ«<br/><span class="red"><span class="fs14n">â€»ãƒ•ã‚¡ã‚¤ãƒ«å½¢å¼ã¯.tar/.tar.gzã®ã¿</span></span></td>
 										<td bgcolor="#ffffff"><span class="red"><!--{$arrErr[$key]}--></span><input type="file" name="<!--{$key}-->" style="<!--{$arrErr[$key]|sfGetErrorColor}-->" class="box54" size="64" <!--{if $arrErr.template_file}-->style="background-color:<!--{$smarty.const.ERR_COLOR|escape}-->"<!--{/if}-->></td>
 									</tr>
 								</table>
@@ -78,7 +78,7 @@
 										<td bgcolor="#e9e7de" align="center">
 										<table border="0" cellspacing="0" cellpadding="0" summary=" ">
 											<tr>
-												<td><input type="image" onMouseover="chgImgImageSubmit('<!--{$smarty.const.URL_DIR}-->img/contents/btn_upload_on.jpg',this)" onMouseout="chgImgImageSubmit('<!--{$smarty.const.URL_DIR}-->img/contents/btn_upload.jpg',this)" src="<!--{$smarty.const.URL_DIR}-->img/contents/btn_upload.jpg" width="123" height="24" alt="¥¢¥Ã¥×¥í¡¼¥É" border="0" name="subm"></td>
+												<td><input type="image" onMouseover="chgImgImageSubmit('<!--{$smarty.const.URL_DIR}-->img/contents/btn_upload_on.jpg',this)" onMouseout="chgImgImageSubmit('<!--{$smarty.const.URL_DIR}-->img/contents/btn_upload.jpg',this)" src="<!--{$smarty.const.URL_DIR}-->img/contents/btn_upload.jpg" width="123" height="24" alt="ã‚¢ãƒƒãƒ—ãƒ­ãƒ¼ãƒ‰" border="0" name="subm"></td>
 											</tr>
 										</table>
 										</td>
@@ -100,14 +100,14 @@
 					</td>
 				</tr>
 
-				<!--¥á¥¤¥ó¥¨¥ê¥¢-->
+				<!--ãƒ¡ã‚¤ãƒ³ã‚¨ãƒªã‚¢-->
 			</table>
-			<!--¢¥ÅĞÏ¿¥Æ¡¼¥Ö¥ë¤³¤³¤Ş¤Ç-->
+			<!--â–²ç™»éŒ²ãƒ†ãƒ¼ãƒ–ãƒ«ã“ã“ã¾ã§-->
 		</td>
 	</tr>
 </form>
 </table>
-<!--¡ú¡ú¥á¥¤¥ó¥³¥ó¥Æ¥ó¥Ä¡ú¡ú-->
+<!--â˜…â˜…ãƒ¡ã‚¤ãƒ³ã‚³ãƒ³ãƒ†ãƒ³ãƒ„â˜…â˜…-->
 
 <script type="text/javascript">
 function ChangeImage(strUrl)
@@ -115,9 +115,9 @@ function ChangeImage(strUrl)
 	document.main_img.src=strUrl;
 }
 
-// ¥â¡¼¥É¤È¥­¡¼¤ò»ØÄê¤·¤ÆSUBMIT¤ò¹Ô¤¦¡£
+// ãƒ¢ãƒ¼ãƒ‰ã¨ã‚­ãƒ¼ã‚’æŒ‡å®šã—ã¦SUBMITã‚’è¡Œã†ã€‚
 function lfnModeSubmit(mode) {
-	if(!window.confirm('ÅĞÏ¿¤·¤Æ¤âµ¹¤·¤¤¤Ç¤¹¤«?')){
+	if(!window.confirm('ç™»éŒ²ã—ã¦ã‚‚å®œã—ã„ã§ã™ã‹?')){
 		return false;
 	}
 	document.form1['mode'].value = mode;

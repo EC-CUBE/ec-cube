@@ -6,12 +6,12 @@
  */
 
 /*
- * ¥È¥é¥Ã¥¯¥Ğ¥Ã¥¯¼õ¿®
+ * ãƒˆãƒ©ãƒƒã‚¯ãƒãƒƒã‚¯å—ä¿¡
  * 
- * [1]¤Ê¤ë¤Ù¤¯Â¿¤¯¤Î¥Ö¥í¥°¤ËÂĞ±ş¤Ç¤­¤ë¤è¤¦¤Ë¡¢GET/POST ¤Ë´Ø¤ï¤é¤º¼õ¿®¤¹¤ë
- * [2]RSS¤ÎÍ×µá¤ÏGET¤Ç__mode¥Ñ¥é¥á¡¼¥¿¤¬rss¤Î¾ì¹ç¤Î¤ßÂĞ±ş¤¹¤ë(¾¦ÉÊ¾ğÊó¤òÊÖ¤¹)
- * [3]Ê¸»ú¥³¡¼¥É¤Ï»ØÄê¤¬¤Ê¤±¤ì¤Ğauto¤ÇÂĞ±ş¤¹¤ë
- * [4]¥¹¥Ñ¥à¤Ï¡¢¥ª¥ê¥¸¥Ê¥ë(¹¥¤ß)¤Î¥¢¥ë¥´¥ê¥º¥à¤ÇÂĞ±ş¤Ç¤­¤ë¤è¤¦¤Ë¤·¤Æ¤ª¤¯
+ * [1]ãªã‚‹ã¹ãå¤šãã®ãƒ–ãƒ­ã‚°ã«å¯¾å¿œã§ãã‚‹ã‚ˆã†ã«ã€GET/POST ã«é–¢ã‚ã‚‰ãšå—ä¿¡ã™ã‚‹
+ * [2]RSSã®è¦æ±‚ã¯GETã§__modeãƒ‘ãƒ©ãƒ¡ãƒ¼ã‚¿ãŒrssã®å ´åˆã®ã¿å¯¾å¿œã™ã‚‹(å•†å“æƒ…å ±ã‚’è¿”ã™)
+ * [3]æ–‡å­—ã‚³ãƒ¼ãƒ‰ã¯æŒ‡å®šãŒãªã‘ã‚Œã°autoã§å¯¾å¿œã™ã‚‹
+ * [4]ã‚¹ãƒ‘ãƒ ã¯ã€ã‚ªãƒªã‚¸ãƒŠãƒ«(å¥½ã¿)ã®ã‚¢ãƒ«ã‚´ãƒªã‚ºãƒ ã§å¯¾å¿œã§ãã‚‹ã‚ˆã†ã«ã—ã¦ãŠã
  */
 
 require_once("../require.php");
@@ -19,17 +19,17 @@ require_once("../require.php");
 $objQuery = new SC_Query();
 $objFormParam = new SC_FormParam();
 
-// ¥È¥é¥Ã¥¯¥Ğ¥Ã¥¯µ¡Ç½¤Î²ÔÆ¯¾õ¶·¥Á¥§¥Ã¥¯
+// ãƒˆãƒ©ãƒƒã‚¯ãƒãƒƒã‚¯æ©Ÿèƒ½ã®ç¨¼åƒçŠ¶æ³ãƒã‚§ãƒƒã‚¯
 if (sfGetSiteControlFlg(SITE_CONTROL_TRACKBACK) != 1) {
 	// NG
 	IfResponseNg();
 	exit();
 }
 
-// ¥Ñ¥é¥á¡¼¥¿¾ğÊó¤Î½é´ü²½
+// ãƒ‘ãƒ©ãƒ¡ãƒ¼ã‚¿æƒ…å ±ã®åˆæœŸåŒ–
 lfInitParam();
 
-// ¥¨¥ó¥³¡¼¥ÉÀßÄê(¥µ¡¼¥Ğ´Ä¶­¤Ë¤è¤Ã¤ÆÊÑ¹¹)
+// ã‚¨ãƒ³ã‚³ãƒ¼ãƒ‰è¨­å®š(ã‚µãƒ¼ãƒç’°å¢ƒã«ã‚ˆã£ã¦å¤‰æ›´)
 $beforeEncode = "auto";
 $afterEncode = mb_internal_encoding();
 
@@ -39,24 +39,24 @@ if (isset($_POST["charset"])) {
 	$beforeEncode = $_GET["charset"];
 }
 
-// POST¥Ç¡¼¥¿¤Î¼èÆÀ¤È¥¨¥ó¥³¡¼¥ÉÊÑ´¹
+// POSTãƒ‡ãƒ¼ã‚¿ã®å–å¾—ã¨ã‚¨ãƒ³ã‚³ãƒ¼ãƒ‰å¤‰æ›
 
-// ¥Ö¥í¥°Ì¾
+// ãƒ–ãƒ­ã‚°å
 if (isset($_POST["blog_name"])) {
 	$arrData["blog_name"] = trim(mb_convert_encoding($_POST["blog_name"], $afterEncode, $beforeEncode));
 } else if (isset($_GET["blog_name"])) {
 	$arrData["blog_name"] = trim(mb_convert_encoding($_GET["blog_name"], $afterEncode, $beforeEncode));
 }
 
-// ¥Ö¥í¥°µ­»öURL
+// ãƒ–ãƒ­ã‚°è¨˜äº‹URL
 if (isset($_POST["url"])) {
 	$arrData["url"] = trim(mb_convert_encoding($_POST["url"], $afterEncode, $beforeEncode));
 } else if (isset($_GET["url"])) {
 	$arrData["url"] = trim(mb_convert_encoding($_GET["url"], $afterEncode, $beforeEncode));
 } else {
 	/*
-	 * RSSÌÜÅª¤Ç¤Ï¤Ê¤¤GET¥ê¥¯¥¨¥¹¥È¤òÀ©¸æ(livedoor blog)
-	 * _rss¥Ñ¥é¥á¡¼¥¿¤Ç¤ÎGET¥ê¥¯¥¨¥¹¥È¤òÀ©¸æ(Yahoo blog)
+	 * RSSç›®çš„ã§ã¯ãªã„GETãƒªã‚¯ã‚¨ã‚¹ãƒˆã‚’åˆ¶å¾¡(livedoor blog)
+	 * _rssãƒ‘ãƒ©ãƒ¡ãƒ¼ã‚¿ã§ã®GETãƒªã‚¯ã‚¨ã‚¹ãƒˆã‚’åˆ¶å¾¡(Yahoo blog)
 	 */
 	if (isset($_GET["__mode"]) && isset($_GET["pid"])) {
 		if ($_GET["__mode"] == "rss") {
@@ -66,14 +66,14 @@ if (isset($_POST["url"])) {
 	exit();
 }
 
-// ¥Ö¥í¥°µ­»ö¥¿¥¤¥È¥ë
+// ãƒ–ãƒ­ã‚°è¨˜äº‹ã‚¿ã‚¤ãƒˆãƒ«
 if (isset($_POST["title"])) {
 	$arrData["title"] = trim(mb_convert_encoding($_POST["title"], $afterEncode, $beforeEncode));
 } else if (isset($_GET["title"])) {
 	$arrData["title"] = trim(mb_convert_encoding($_GET["title"], $afterEncode, $beforeEncode));
 }
 
-// ¥Ö¥í¥°µ­»öÆâÍÆ
+// ãƒ–ãƒ­ã‚°è¨˜äº‹å†…å®¹
 if (isset($_POST["excerpt"])) {
 	$arrData["excerpt"] = trim(mb_convert_encoding($_POST["excerpt"], $afterEncode, $beforeEncode));
 } else if (isset($_GET["excerpt"])) {
@@ -89,29 +89,29 @@ gfPrintLog("request data end   -----", $log_path);
 
 $objFormParam->setParam($arrData);
 
-// ÆşÎÏÊ¸»ú¤ÎÊÑ´¹
+// å…¥åŠ›æ–‡å­—ã®å¤‰æ›
 $objFormParam->convParam();
 $arrData = $objFormParam->getHashArray();
 
-// ¥¨¥é¡¼¥Á¥§¥Ã¥¯(¥È¥é¥Ã¥¯¥Ğ¥Ã¥¯¤¬À®¤êÎ©¤¿¤Ê¤¤¤Î¤Ç¡¢URL°Ê³°¤âÉ¬¿Ü¤È¤¹¤ë)
+// ã‚¨ãƒ©ãƒ¼ãƒã‚§ãƒƒã‚¯(ãƒˆãƒ©ãƒƒã‚¯ãƒãƒƒã‚¯ãŒæˆã‚Šç«‹ãŸãªã„ã®ã§ã€URLä»¥å¤–ã‚‚å¿…é ˆã¨ã™ã‚‹)
 $objPage->arrErr = lfCheckError();
 
-// ¥¨¥é¡¼¤¬¤Ê¤¤¾ì¹ç¤Ï¥Ç¡¼¥¿¤ò¹¹¿·
+// ã‚¨ãƒ©ãƒ¼ãŒãªã„å ´åˆã¯ãƒ‡ãƒ¼ã‚¿ã‚’æ›´æ–°
 if(count($objPage->arrErr) == 0) {
 	
-	// ¾¦ÉÊ¥³¡¼¥É¤Î¼èÆÀ(GET)
+	// å•†å“ã‚³ãƒ¼ãƒ‰ã®å–å¾—(GET)
 	if (isset($_GET["pid"])) {
 		$product_id = $_GET["pid"];
 
-		// ¾¦ÉÊ¥Ç¡¼¥¿¤ÎÂ¸ºß³ÎÇ§
+		// å•†å“ãƒ‡ãƒ¼ã‚¿ã®å­˜åœ¨ç¢ºèª
 		$table = "dtb_products";
 		$where = "product_id = ?";
 
-		// ¾¦ÉÊ¥Ç¡¼¥¿¤¬Â¸ºß¤¹¤ë¾ì¹ç¤Ï¥È¥é¥Ã¥¯¥Ğ¥Ã¥¯¥Ç¡¼¥¿¤Î¹¹¿·
+		// å•†å“ãƒ‡ãƒ¼ã‚¿ãŒå­˜åœ¨ã™ã‚‹å ´åˆã¯ãƒˆãƒ©ãƒƒã‚¯ãƒãƒƒã‚¯ãƒ‡ãƒ¼ã‚¿ã®æ›´æ–°
 		if (sfDataExists($table, $where, array($product_id))) {
 			$arrData["product_id"] = $product_id;
 			
-			// ¥Ç¡¼¥¿¤Î¹¹¿·
+			// ãƒ‡ãƒ¼ã‚¿ã®æ›´æ–°
 			if (lfEntryTrackBack($arrData) == 1) {
 				IfResponseOk();
 			}
@@ -128,29 +128,29 @@ exit();
 //----------------------------------------------------------------------------------------------------
 
 /*
- * ¥Ñ¥é¥á¡¼¥¿¾ğÊó¤Î½é´ü²½
+ * ãƒ‘ãƒ©ãƒ¡ãƒ¼ã‚¿æƒ…å ±ã®åˆæœŸåŒ–
  * 
- * @param void ¤Ê¤·
- * @return void ¤Ê¤·
+ * @param void ãªã—
+ * @return void ãªã—
  */
 function lfInitParam() {
 	global $objFormParam;
 	$objFormParam->addParam("URL", "url", URL_LEN, "KVa", array("EXIST_CHECK", "MAX_LENGTH_CHECK"));
-	$objFormParam->addParam("¥Ö¥í¥°¥¿¥¤¥È¥ë", "blog_name", MTEXT_LEN, "KVa", array("EXIST_CHECK", "MAX_LENGTH_CHECK"));
-	$objFormParam->addParam("µ­»ö¥¿¥¤¥È¥ë", "title", MTEXT_LEN, "KVa", array("EXIST_CHECK", "MAX_LENGTH_CHECK"));
-	$objFormParam->addParam("µ­»öÆâÍÆ", "excerpt", MLTEXT_LEN, "KVa", array("EXIST_CHECK", "MAX_LENGTH_CHECK"));
+	$objFormParam->addParam("ãƒ–ãƒ­ã‚°ã‚¿ã‚¤ãƒˆãƒ«", "blog_name", MTEXT_LEN, "KVa", array("EXIST_CHECK", "MAX_LENGTH_CHECK"));
+	$objFormParam->addParam("è¨˜äº‹ã‚¿ã‚¤ãƒˆãƒ«", "title", MTEXT_LEN, "KVa", array("EXIST_CHECK", "MAX_LENGTH_CHECK"));
+	$objFormParam->addParam("è¨˜äº‹å†…å®¹", "excerpt", MLTEXT_LEN, "KVa", array("EXIST_CHECK", "MAX_LENGTH_CHECK"));
 }
 
 /*
- * ÆşÎÏÆâÍÆ¤Î¥Á¥§¥Ã¥¯
+ * å…¥åŠ›å†…å®¹ã®ãƒã‚§ãƒƒã‚¯
  * 
- * @param void ¤Ê¤·
- * @return $objErr->arrErr ¥¨¥é¡¼¥á¥Ã¥»¡¼¥¸
+ * @param void ãªã—
+ * @return $objErr->arrErr ã‚¨ãƒ©ãƒ¼ãƒ¡ãƒƒã‚»ãƒ¼ã‚¸
  */
 function lfCheckError() {
 	global $objFormParam;
 	
-	// ÆşÎÏ¥Ç¡¼¥¿¤òÅÏ¤¹¡£
+	// å…¥åŠ›ãƒ‡ãƒ¼ã‚¿ã‚’æ¸¡ã™ã€‚
 	$arrRet =  $objFormParam->getHashArray();
 	$objErr = new SC_CheckError($arrRet);
 	$objErr->arrErr = $objFormParam->checkError();
@@ -159,18 +159,18 @@ function lfCheckError() {
 }
 
 /*
- * ¹¹¿·½èÍı
+ * æ›´æ–°å‡¦ç†
  * 
- * @param $arrData ¥È¥é¥Ã¥¯¥Ğ¥Ã¥¯¥Ç¡¼¥¿
- * @return $ret ·ë²Ì
+ * @param $arrData ãƒˆãƒ©ãƒƒã‚¯ãƒãƒƒã‚¯ãƒ‡ãƒ¼ã‚¿
+ * @return $ret çµæœ
  */
 function lfEntryTrackBack($arrData) {
 	global $objQuery;
 
-	// ¥í¥°
+	// ãƒ­ã‚°
 	$log_path = DATA_PATH . "logs/tb_result.log";
 
-	// ¥¹¥Ñ¥à¥Õ¥£¥ë¥¿¡¼
+	// ã‚¹ãƒ‘ãƒ ãƒ•ã‚£ãƒ«ã‚¿ãƒ¼
 	if (lfSpamFilter($arrData)) {
 		$arrData["status"] = TRACKBACK_STATUS_NOT_VIEW;
 	} else {
@@ -185,33 +185,33 @@ function lfEntryTrackBack($arrData) {
     }elseif(!isset($arrData['excerpt'])){
         $arrData['excerpt'] = '';
     }
-	// ¥Ç¡¼¥¿¤ÎÅĞÏ¿
+	// ãƒ‡ãƒ¼ã‚¿ã®ç™»éŒ²
 	$table = "dtb_trackback";
 	$ret = $objQuery->insert($table, $arrData);
 	return $ret;
 }
 
 /*
- * ¥¹¥Ñ¥à¥Õ¥£¥ë¥¿¡¼
+ * ã‚¹ãƒ‘ãƒ ãƒ•ã‚£ãƒ«ã‚¿ãƒ¼
  * 
- * @param $arrData ¥È¥é¥Ã¥¯¥Ğ¥Ã¥¯¥Ç¡¼¥¿
- * @param $run ¥Õ¥£¥ë¥¿¡¼¥Õ¥é¥°(true:»ÈÍÑ¤¹¤ë false:»ÈÍÑ¤·¤Ê¤¤)
- * @return $ret ·ë²Ì
+ * @param $arrData ãƒˆãƒ©ãƒƒã‚¯ãƒãƒƒã‚¯ãƒ‡ãƒ¼ã‚¿
+ * @param $run ãƒ•ã‚£ãƒ«ã‚¿ãƒ¼ãƒ•ãƒ©ã‚°(true:ä½¿ç”¨ã™ã‚‹ false:ä½¿ç”¨ã—ãªã„)
+ * @return $ret çµæœ
  */
 function lfSpamFilter($arrData, $run = false) {
 	$ret = true;
 	
-	// ¥Õ¥£¥ë¥¿¡¼½èÍı
+	// ãƒ•ã‚£ãƒ«ã‚¿ãƒ¼å‡¦ç†
 	if ($run) {
 	}
 	return $ret;
 }
 
 /*
- * OK¥ì¥¹¥İ¥ó¥¹¤òÊÖ¤¹
+ * OKãƒ¬ã‚¹ãƒãƒ³ã‚¹ã‚’è¿”ã™
  * 
- * @param void ¤Ê¤·
- * @return void ¤Ê¤·
+ * @param void ãªã—
+ * @return void ãªã—
  */
 function IfResponseOk() {
 	header("Content-type: text/xml");
@@ -223,10 +223,10 @@ function IfResponseOk() {
 }
 
 /*
- * NG¥ì¥¹¥İ¥ó¥¹¤òÊÖ¤¹
+ * NGãƒ¬ã‚¹ãƒãƒ³ã‚¹ã‚’è¿”ã™
  * 
- * @param void ¤Ê¤·
- * @return void ¤Ê¤·
+ * @param void ãªã—
+ * @return void ãªã—
  */
 function IfResponseNg() {
 	header("Content-type: text/xml");
@@ -239,10 +239,10 @@ function IfResponseNg() {
 }
 
 /*
- * ¥È¥é¥Ã¥¯¥Ğ¥Ã¥¯RSS¤òÊÖ¤¹
+ * ãƒˆãƒ©ãƒƒã‚¯ãƒãƒƒã‚¯RSSã‚’è¿”ã™
  * 
- * @param $product_id ¾¦ÉÊ¥³¡¼¥É
- * @return void ¤Ê¤·
+ * @param $product_id å•†å“ã‚³ãƒ¼ãƒ‰
+ * @return void ãªã—
  */
 function IfResponseRss($product_id) {
 	global $objQuery;

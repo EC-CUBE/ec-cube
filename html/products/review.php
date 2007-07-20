@@ -20,7 +20,7 @@ $objPage = new LC_Page();
 $objView = new SC_SiteView();
 $objQuery = new SC_Query(); 
 
-//---- ÅÐÏ¿ÍÑ¥«¥é¥àÇÛÎó
+//---- ç™»éŒ²ç”¨ã‚«ãƒ©ãƒ é…åˆ—
 $arrRegistColumn = array(
 							 array(  "column" => "review_id", "convert" => "aKV" ),
 							 array(  "column" => "product_id", "convert" => "aKV" ),
@@ -37,24 +37,24 @@ switch ($_POST['mode']){
 case 'confirm':
 	$arrForm = lfConvertParam($_POST, $arrRegistColumn);
 	$objPage->arrErr = lfErrorCheck($arrForm);
-	//½ÅÊ£¥á¥Ã¥»¡¼¥¸¤ÎÈ½Äê
+	//é‡è¤‡ãƒ¡ãƒƒã‚»ãƒ¼ã‚¸ã®åˆ¤å®š
 	$flag = $objQuery->count("dtb_review","product_id = ? AND title = ? ", array($arrForm['product_id'], $arrForm['title']));
 
 	if ($flag > 0){
-		$objPage->arrErr['title'] .= "½ÅÊ£¤·¤¿¥¿¥¤¥È¥ë¤ÏÅÐÏ¿¤Ç¤­¤Þ¤»¤ó¡£";
+		$objPage->arrErr['title'] .= "é‡è¤‡ã—ãŸã‚¿ã‚¤ãƒˆãƒ«ã¯ç™»éŒ²ã§ãã¾ã›ã‚“ã€‚";
 	}
 		
-	//¥¨¥é¡¼¥Á¥§¥Ã¥¯
+	//ã‚¨ãƒ©ãƒ¼ãƒã‚§ãƒƒã‚¯
 	if($objPage->arrErr == ""){
-		//½ÅÊ£¥¿¥¤¥È¥ë¤Ç¤Ê¤¤
+		//é‡è¤‡ã‚¿ã‚¤ãƒˆãƒ«ã§ãªã„
 		if($flag == 0){
-			//¾¦ÉÊÌ¾¤Î¼èÆÀ
+			//å•†å“åã®å–å¾—
 			$arrForm['name'] = $objQuery->get("dtb_products", "name", "product_id = ? ", array($arrForm['product_id']));
 			$objPage->arrForm = $arrForm;
 			$objPage->tpl_mainpage = 'products/review_confirm.tpl';
 		}
 	} else {
-		//¾¦ÉÊÌ¾¤Î¼èÆÀ
+		//å•†å“åã®å–å¾—
 		$arrForm['name'] = $objQuery->get("dtb_products", "name", "product_id = ? ", array($arrForm['product_id']));	
 		$objPage->arrForm = $arrForm;
 	}
@@ -65,7 +65,7 @@ case 'return':
 		$objPage->arrForm[ $key ] = $val;
 	}
 	
-	//¾¦ÉÊÌ¾¤Î¼èÆÀ
+	//å•†å“åã®å–å¾—
 	$objPage->arrForm['name'] = $objQuery->get("dtb_products", "name", "product_id = ? ", array($objPage->arrForm['product_id']));
 	if(empty($objPage->arrForm['name'])) {
 		sfDispSiteError(PAGE_ERROR);
@@ -75,15 +75,15 @@ case 'return':
 case 'complete':
 	$arrForm = lfConvertParam($_POST, $arrRegistColumn);
 	$arrErr = lfErrorCheck($arrForm);
-	//½ÅÊ£¥á¥Ã¥»¡¼¥¸¤ÎÈ½Äê
+	//é‡è¤‡ãƒ¡ãƒƒã‚»ãƒ¼ã‚¸ã®åˆ¤å®š
 	$flag = $objQuery->count("dtb_review","product_id = ? AND title = ? ", array($arrForm['product_id'], $arrForm['title']));
-	//¥¨¥é¡¼¥Á¥§¥Ã¥¯
+	//ã‚¨ãƒ©ãƒ¼ãƒã‚§ãƒƒã‚¯
 	if ($arrErr == ""){
-		//½ÅÊ£¥¿¥¤¥È¥ë¤Ç¤Ê¤¤
+		//é‡è¤‡ã‚¿ã‚¤ãƒˆãƒ«ã§ãªã„
 		if($flag == 0) {
-			//ÅÐÏ¿¼Â¹Ô
+			//ç™»éŒ²å®Ÿè¡Œ
 			lfRegistRecommendData($arrForm, $arrRegistColumn);
-			//¥ì¥Ó¥å¡¼½ñ¤­¹þ¤ß´°Î»¥Ú¡¼¥¸¤Ø
+			//ãƒ¬ãƒ“ãƒ¥ãƒ¼æ›¸ãè¾¼ã¿å®Œäº†ãƒšãƒ¼ã‚¸ã¸
 			header("Location: ./review_complete.php");
 			exit;
 		}
@@ -96,7 +96,7 @@ case 'complete':
 
 default:
 	if(sfIsInt($_GET['product_id'])) {
-		//¾¦ÉÊ¾ðÊó¤Î¼èÆÀ
+		//å•†å“æƒ…å ±ã®å–å¾—
 		$arrForm = $objQuery->select("product_id, name", "dtb_products", "del_flg = 0 AND status = 1 AND product_id=?", array($_GET['product_id']));
 		if(empty($arrForm)) {
 			sfDispSiteError(PAGE_ERROR);
@@ -113,19 +113,19 @@ $objView->display($objPage->tpl_mainpage);
 //-----------------------------------------------------------------------------------------------------------------------------------
 
 
-//¥¨¥é¡¼¥Á¥§¥Ã¥¯
+//ã‚¨ãƒ©ãƒ¼ãƒã‚§ãƒƒã‚¯
 
 function lfErrorCheck() {
 	$objErr = new SC_CheckError();
-	$objErr->doFunc(array("¾¦ÉÊID", "product_id", INT_LEN), array("EXIST_CHECK", "MAX_LENGTH_CHECK"));			
-	$objErr->doFunc(array("Åê¹Æ¼ÔÌ¾", "reviewer_name", STEXT_LEN), array("EXIST_CHECK", "SPTAB_CHECK", "MAX_LENGTH_CHECK"));
+	$objErr->doFunc(array("å•†å“ID", "product_id", INT_LEN), array("EXIST_CHECK", "MAX_LENGTH_CHECK"));			
+	$objErr->doFunc(array("æŠ•ç¨¿è€…å", "reviewer_name", STEXT_LEN), array("EXIST_CHECK", "SPTAB_CHECK", "MAX_LENGTH_CHECK"));
 	$objErr->doFunc(array("URL", "reviewer_url", MTEXT_LEN), array("MAX_LENGTH_CHECK", "URL_CHECK"));
-	$objErr->doFunc(array("¤ª¤¹¤¹¤á¥ì¥Ù¥ë", "recommend_level"), array("SELECT_CHECK"));
-	$objErr->doFunc(array("¥¿¥¤¥È¥ë", "title", STEXT_LEN), array("EXIST_CHECK", "SPTAB_CHECK", "MAX_LENGTH_CHECK"));
-	$objErr->doFunc(array("¥³¥á¥ó¥È", "comment", LTEXT_LEN), array("EXIST_CHECK", "SPTAB_CHECK", "MAX_LENGTH_CHECK"));
+	$objErr->doFunc(array("ãŠã™ã™ã‚ãƒ¬ãƒ™ãƒ«", "recommend_level"), array("SELECT_CHECK"));
+	$objErr->doFunc(array("ã‚¿ã‚¤ãƒˆãƒ«", "title", STEXT_LEN), array("EXIST_CHECK", "SPTAB_CHECK", "MAX_LENGTH_CHECK"));
+	$objErr->doFunc(array("ã‚³ãƒ¡ãƒ³ãƒˆ", "comment", LTEXT_LEN), array("EXIST_CHECK", "SPTAB_CHECK", "MAX_LENGTH_CHECK"));
     
     if (REVIEW_ALLOW_URL == false) {
-        // ¥³¥á¥ó¥ÈÍó¤Ø¤ÎURL¤ÎÆþÎÏ¤ò¶Ø»ß
+        // ã‚³ãƒ¡ãƒ³ãƒˆæ¬„ã¸ã®URLã®å…¥åŠ›ã‚’ç¦æ­¢
         global $arrReviewDenyURL;
         $objErr->doFunc(array("URL", "comment", $arrReviewDenyURL), array("PROHIBITED_STR_CHECK"));
     }
@@ -133,23 +133,23 @@ function lfErrorCheck() {
 	return $objErr->arrErr;
 }
 
-//----¡¡¼èÆÀÊ¸»úÎó¤ÎÊÑ´¹
+//----ã€€å–å¾—æ–‡å­—åˆ—ã®å¤‰æ›
 function lfConvertParam($array, $arrRegistColumn) {
 	/*
-	 *	Ê¸»úÎó¤ÎÊÑ´¹
-	 *	K :  ¡ÖÈ¾³Ñ(ŽÊŽÝŽ¶Ž¸)ÊÒ²¾Ì¾¡×¤ò¡ÖÁ´³ÑÊÒ²¾Ì¾¡×¤ËÊÑ´¹
-	 *	C :  ¡ÖÁ´³Ñ¤Ò¤é²¾Ì¾¡×¤ò¡ÖÁ´³Ñ¤«¤¿²¾Ì¾¡×¤ËÊÑ´¹
-	 *	V :  ÂùÅÀÉÕ¤­¤ÎÊ¸»ú¤ò°ìÊ¸»ú¤ËÊÑ´¹¡£"K","H"¤È¶¦¤Ë»ÈÍÑ¤·¤Þ¤¹	
-	 *	n :  ¡ÖÁ´³Ñ¡×¿ô»ú¤ò¡ÖÈ¾³Ñ(ŽÊŽÝŽ¶Ž¸)¡×¤ËÊÑ´¹
-	 *  a :  Á´³Ñ±Ñ¿ô»ú¤òÈ¾³Ñ±Ñ¿ô»ú¤ËÊÑ´¹¤¹¤ë
+	 *	æ–‡å­—åˆ—ã®å¤‰æ›
+	 *	K :  ã€ŒåŠè§’(ï¾Šï¾ï½¶ï½¸)ç‰‡ä»®åã€ã‚’ã€Œå…¨è§’ç‰‡ä»®åã€ã«å¤‰æ›
+	 *	C :  ã€Œå…¨è§’ã²ã‚‰ä»®åã€ã‚’ã€Œå…¨è§’ã‹ãŸä»®åã€ã«å¤‰æ›
+	 *	V :  æ¿ç‚¹ä»˜ãã®æ–‡å­—ã‚’ä¸€æ–‡å­—ã«å¤‰æ›ã€‚"K","H"ã¨å…±ã«ä½¿ç”¨ã—ã¾ã™	
+	 *	n :  ã€Œå…¨è§’ã€æ•°å­—ã‚’ã€ŒåŠè§’(ï¾Šï¾ï½¶ï½¸)ã€ã«å¤‰æ›
+	 *  a :  å…¨è§’è‹±æ•°å­—ã‚’åŠè§’è‹±æ•°å­—ã«å¤‰æ›ã™ã‚‹
 	 */
-	// ¥«¥é¥àÌ¾¤È¥³¥ó¥Ð¡¼¥È¾ðÊó
+	// ã‚«ãƒ©ãƒ åã¨ã‚³ãƒ³ãƒãƒ¼ãƒˆæƒ…å ±
 	foreach ($arrRegistColumn as $data) {
 		$arrConvList[ $data["column"] ] = $data["convert"];
 	}
-	// Ê¸»úÊÑ´¹
+	// æ–‡å­—å¤‰æ›
 	foreach ($arrConvList as $key => $val) {
-		// POST¤µ¤ì¤Æ¤­¤¿ÃÍ¤Î¤ßÊÑ´¹¤¹¤ë¡£
+		// POSTã•ã‚Œã¦ããŸå€¤ã®ã¿å¤‰æ›ã™ã‚‹ã€‚
 		if(strlen(($array[$key])) > 0) {
 			$array[$key] = mb_convert_kana($array[$key] ,$val);
 		}
@@ -157,11 +157,11 @@ function lfConvertParam($array, $arrRegistColumn) {
 	return $array;
 }
 
-//ÅÐÏ¿¼Â¹Ô
+//ç™»éŒ²å®Ÿè¡Œ
 function lfRegistRecommendData ($array, $arrRegistColumn) {
 	global $objQuery;
 	
-	// ²¾ÅÐÏ¿
+	// ä»®ç™»éŒ²
 	foreach ($arrRegistColumn as $data) {
 		if (strlen($array[ $data["column"] ]) > 0 ) {
 			$arrRegist[ $data["column"] ] = $array[ $data["column"] ];
@@ -170,7 +170,7 @@ function lfRegistRecommendData ($array, $arrRegistColumn) {
 	$arrRegist['create_date'] = 'now()';
 	$arrRegist['update_date'] = 'now()';
 	$arrRegist['creator_id'] = '0';
-	//-- ÅÐÏ¿¼Â¹Ô
+	//-- ç™»éŒ²å®Ÿè¡Œ
 	$objQuery->begin();
 	$objQuery->insert("dtb_review", $arrRegist);
 	$objQuery->commit();

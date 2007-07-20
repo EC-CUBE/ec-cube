@@ -9,18 +9,18 @@
 <!--
 function fnMoveOption(sel , moveflg) {
 	var fm = document.form1;
-	var arrChoice = new Array();	// ÁªÂò¤µ¤ì¤Æ¤¤¤ë¹àÌÜ
-	var arrNotChoice = new Array();	// ÁªÂò¤µ¤ì¤Æ¤¤¤Ê¤¤¹àÌÜ
-	var arrNew = new Array();		// °ÜÆ°¸å¤Î¥ê¥¹¥È
+	var arrChoice = new Array();	// é¸æŠã•ã‚Œã¦ã„ã‚‹é …ç›®
+	var arrNotChoice = new Array();	// é¸æŠã•ã‚Œã¦ã„ãªã„é …ç›®
+	var arrNew = new Array();		// ç§»å‹•å¾Œã®ãƒªã‚¹ãƒˆ
 	var arrTmp = new Array();
 	var arrRev = new Array();
 	
-	if(fm[sel].selectedIndex == -1) alert("²¿¤âÁªÂò¤µ¤ì¤Æ¤¤¤Ş¤»¤ó¡£");
+	if(fm[sel].selectedIndex == -1) alert("ä½•ã‚‚é¸æŠã•ã‚Œã¦ã„ã¾ã›ã‚“ã€‚");
 	else {
-		// ²¼¤Ë°ÜÆ°¤¹¤ë¾ì¹ç¤Ë¤Ï¤Ş¤ºOPTION¤òµÕ¤Ë¤¹¤ë
+		// ä¸‹ã«ç§»å‹•ã™ã‚‹å ´åˆã«ã¯ã¾ãšOPTIONã‚’é€†ã«ã™ã‚‹
 		if (moveflg == 'bottom') {
 			for(i=fm[sel].length-1, j=0; i >= 0; i--, j++){
-				fm[sel].options[i].label=i;		// ½çÈÖ¤òlabel¤ËÂàÈò
+				fm[sel].options[i].label=i;		// é †ç•ªã‚’labelã«é€€é¿
 				arrRev[j] = fm[sel].options[i];
 			}
 			for(i=0; i < arrRev.length; i++){
@@ -29,34 +29,34 @@ function fnMoveOption(sel , moveflg) {
 			}
 		}
 
-		// °ìÈÖ²¼¤Ë¶õÇò¤òÄÉ²Ã
+		// ä¸€ç•ªä¸‹ã«ç©ºç™½ã‚’è¿½åŠ 
 		fm[sel].options[fm[sel].length] = new Option('', '');
 		
 		for(i = 0, choiceCnt = 0, notCnt = 0; i < fm[sel].length; i++) {
 			if(!fm[sel].options[i].selected) {
-				// ÁªÂò¤µ¤ì¤Æ¤¤¤Ê¤¤¹àÌÜÇÛÎó¤òÀ¸À®
-				fm[sel].options[i].label=i;		// ½çÈÖ¤òlabel¤ËÂàÈò
+				// é¸æŠã•ã‚Œã¦ã„ãªã„é …ç›®é…åˆ—ã‚’ç”Ÿæˆ
+				fm[sel].options[i].label=i;		// é †ç•ªã‚’labelã«é€€é¿
 				arrNotChoice[choiceCnt] = fm[sel].options[i];
 				choiceCnt++;
 			}else{
-				// ÁªÂò¤µ¤ì¤Æ¤¤¤ë¹àÌÜÇÛÎó¤òÀ¸À®
-				fm[sel].options[i].label=i;		// ½çÈÖ¤òlabel¤ËÂàÈò
+				// é¸æŠã•ã‚Œã¦ã„ã‚‹é …ç›®é…åˆ—ã‚’ç”Ÿæˆ
+				fm[sel].options[i].label=i;		// é †ç•ªã‚’labelã«é€€é¿
 				arrChoice[notCnt] = fm[sel].options[i];
 				notCnt++;
 			}
 		}
 		
-		// ÁªÂò¹àÌÜ¤ò¾å¤Ë°ÜÆ°
+		// é¸æŠé …ç›®ã‚’ä¸Šã«ç§»å‹•
 		for(i = arrChoice.length; i < 1; i--){
 			arrChoice[i].label = arrChoice[i-1].label+1;
 		}
 
-		// ÈóÁªÂò¹àÌÜ¤ò²¼¤Ë°ÜÆ°
+		// éé¸æŠé …ç›®ã‚’ä¸‹ã«ç§»å‹•
 		for(i = 0; i < arrNotChoice.length - 1; i++){
 			arrNotChoice[i].label = arrNotChoice[i+1].label-1;
 		}	
 
-		// ÁªÂò¹àÌÜ¤ÈÈóÁªÂò¹àÌÜ¤ò¥Ş¡¼¥¸¤¹¤ë
+		// é¸æŠé …ç›®ã¨éé¸æŠé …ç›®ã‚’ãƒãƒ¼ã‚¸ã™ã‚‹
 		for(choiceCnt = 0, notCnt = 0, cnt = 0; cnt < fm[sel].length; cnt++){
 			if (choiceCnt >= arrChoice.length) {
 				arrNew[cnt] = arrNotChoice[notCnt];
@@ -75,7 +75,7 @@ function fnMoveOption(sel , moveflg) {
 			}
 		}
 
-		// ²¼¤Ë°ÜÆ°¤¹¤ë¾ì¹ç¤Ë¤ÏµÕ¤Ë¤·¤¿¤â¤Î¤ò¸µ¤ËÌá¤¹
+		// ä¸‹ã«ç§»å‹•ã™ã‚‹å ´åˆã«ã¯é€†ã«ã—ãŸã‚‚ã®ã‚’å…ƒã«æˆ»ã™
 		if (moveflg == 'bottom') {
 			for(i=arrNew.length-2, j=0; i >= 0; i--, j++){
 				arrTmp[j] = arrNew[i];
@@ -84,7 +84,7 @@ function fnMoveOption(sel , moveflg) {
 			arrNew = arrTmp;
 		}
 
-		// option¤òºÆºîÀ®
+		// optionã‚’å†ä½œæˆ
 		fm[sel].length = arrNew.length - 1;
 		for(i=0; i < arrNew.length - 1; i++){
 			fm[sel].options[i] = new Option(arrNew[i].text, arrNew[i].value);
@@ -95,31 +95,31 @@ function fnMoveOption(sel , moveflg) {
 
 function fnReplaceOption(restSel, addSel) {
 	var fm = document.form1;
-	var arrRest = new Array();	// »Ä¤ê¤Î¥ê¥¹¥È
-	var arrAdd	= new Array();	// ÄÉ²Ã¤Î¥ê¥¹¥È
+	var arrRest = new Array();	// æ®‹ã‚Šã®ãƒªã‚¹ãƒˆ
+	var arrAdd	= new Array();	// è¿½åŠ ã®ãƒªã‚¹ãƒˆ
 	
-	if(fm[restSel].selectedIndex == -1) alert("²¿¤âÁªÂò¤µ¤ì¤Æ¤¤¤Ş¤»¤ó¡£");
+	if(fm[restSel].selectedIndex == -1) alert("ä½•ã‚‚é¸æŠã•ã‚Œã¦ã„ã¾ã›ã‚“ã€‚");
 	else {
 		for(i = 0, restCnt = 0, addCnt = 0; i < fm[restSel].length; i++) {
 			if(!fm[restSel].options[i].selected) {
-				// »ÄÍ×ÁÇ¤ÎÇÛÎó¤òÀ¸À®
+				// æ®‹è¦ç´ ã®é…åˆ—ã‚’ç”Ÿæˆ
 				arrRest[restCnt] = fm[restSel].options[i];
 				restCnt++;
 			}else{
-				// ÄÉ²ÃÍ×ÁÇ¤ÎÇÛÎó¤òÀ¸À®
+				// è¿½åŠ è¦ç´ ã®é…åˆ—ã‚’ç”Ÿæˆ
 				arrAdd[addCnt] = fm[restSel].options[i];
 				addCnt++;
 			}
 		}
 
-		// »Ä¥ê¥¹¥ÈÀ¸À®
+		// æ®‹ãƒªã‚¹ãƒˆç”Ÿæˆ
 		fm[restSel].length = arrRest.length;
 		for(i=0; i < arrRest.length; i++)
 		{
 			fm[restSel].options[i] = new Option(arrRest[i].text, arrRest[i].value);
 		}
 
-		// ÄÉ²ÃÀè¤Ë¹àÌÜ¤òÄÉ²Ã
+		// è¿½åŠ å…ˆã«é …ç›®ã‚’è¿½åŠ 
 		//fm[addSel].options[fm[addSel].length] = new Option(fm[sel2].value, fm[sel2].value);
 		
 		for(i=0; i < arrAdd.length; i++)
@@ -130,7 +130,7 @@ function fnReplaceOption(restSel, addSel) {
 	}
 }
 
-// submit¤·¤¿¾ì¹ç¤Ë¡¢½ĞÎÏ¹àÌÜ°ìÍ÷¤òÁªÂò¾õÂÖ¤Ë¤¹¤ë
+// submitã—ãŸå ´åˆã«ã€å‡ºåŠ›é …ç›®ä¸€è¦§ã‚’é¸æŠçŠ¶æ…‹ã«ã™ã‚‹
 function lfnCheckList(sel) {
 	var fm = document.form1;
 	for(i = 0; i < fm[sel].length; i++) {
@@ -138,12 +138,12 @@ function lfnCheckList(sel) {
 	}
 }
 
-// ¥ê¥¹¥È¥Ü¥Ã¥¯¥¹¤Î¥µ¥¤¥ºÊÑ¹¹
+// ãƒªã‚¹ãƒˆãƒœãƒƒã‚¯ã‚¹ã®ã‚µã‚¤ã‚ºå¤‰æ›´
 function ChangeSize(button, TextArea, Max, Min, row_tmp){
 	if(TextArea.rows <= Min){
-		TextArea.rows=Max; button.value="¾®¤µ¤¯¤¹¤ë"; row_tmp.value=Max;
+		TextArea.rows=Max; button.value="å°ã•ãã™ã‚‹"; row_tmp.value=Max;
 	}else{
-		TextArea.rows =Min; button.value="Âç¤­¤¯¤¹¤ë"; row_tmp.value=Min;
+		TextArea.rows =Min; button.value="å¤§ããã™ã‚‹"; row_tmp.value=Min;
 	}
 }
 
@@ -151,21 +151,21 @@ function ChangeSize(button, TextArea, Max, Min, row_tmp){
 </script>
 
 
-<!--¡ú¡ú¥á¥¤¥ó¥³¥ó¥Æ¥ó¥Ä¡ú¡ú-->
+<!--â˜…â˜…ãƒ¡ã‚¤ãƒ³ã‚³ãƒ³ãƒ†ãƒ³ãƒ„â˜…â˜…-->
 <table width="878" border="0" cellspacing="0" cellpadding="0" summary=" ">
 <form name="form1" id="form1" method="post" action="<!--{$smarty.server.PHP_SELF|escape}-->" onsubmit="lfnCheckList('output_list[]')">
 <input type="hidden" name="mode" value="confirm">
 <input type="hidden" name="tpl_subno_csv" value="<!--{$tpl_subno_csv}-->">
 	<tr valign="top">
 		<td background="<!--{$smarty.const.URL_DIR}-->img/contents/navi_bg.gif" height="402">
-			<!--¢§SUB NAVI-->
+			<!--â–¼SUB NAVI-->
 			<!--{include file=$tpl_subnavi}-->
-			<!--¢¥SUB NAVI-->
+			<!--â–²SUB NAVI-->
 		</td>
 		<td class="mainbg">
-			<!--¢§ÅĞÏ¿¥Æ¡¼¥Ö¥ë¤³¤³¤«¤é-->
+			<!--â–¼ç™»éŒ²ãƒ†ãƒ¼ãƒ–ãƒ«ã“ã“ã‹ã‚‰-->
 			<table width="737" border="0" cellspacing="0" cellpadding="0" summary=" ">
-				<!--¥á¥¤¥ó¥¨¥ê¥¢-->
+				<!--ãƒ¡ã‚¤ãƒ³ã‚¨ãƒªã‚¢-->
 				<tr>
 					<td align="center">
 						<table width="706" border="0" cellspacing="0" cellpadding="0" summary=" ">
@@ -182,7 +182,7 @@ function ChangeSize(button, TextArea, Max, Min, row_tmp){
 										</tr>
 										<tr>
 											<td background="<!--{$smarty.const.URL_DIR}-->img/contents/contents_title_left_bg.gif"><img src="<!--{$smarty.const.URL_DIR}-->img/contents/contents_title_left.gif" width="22" height="12" alt=""></td>
-											<td bgcolor="#636469" width="638" class="fs14n"><span class="white"><!--¥³¥ó¥Æ¥ó¥Ä¥¿¥¤¥È¥ë--><!--{$SubnaviName}--></span></td>
+											<td bgcolor="#636469" width="638" class="fs14n"><span class="white"><!--ã‚³ãƒ³ãƒ†ãƒ³ãƒ„ã‚¿ã‚¤ãƒˆãƒ«--><!--{$SubnaviName}--></span></td>
 											<td background="<!--{$smarty.const.URL_DIR}-->img/contents/contents_title_right_bg.gif"><img src="<!--{$smarty.const.URL_DIR}-->img/common/_.gif" width="18" height="1" alt=""></td>
 										</tr>
 										<tr>
@@ -197,13 +197,13 @@ function ChangeSize(button, TextArea, Max, Min, row_tmp){
 									<table width="676" border="0" cellspacing="" cellpadding="3" summary=" ">
 										<tr class="fs12n">
 											<td bgcolor="#ffffff" align="right">
-												<input type="button" value=" ¢¥ " onClick="fnMoveOption('output_list[]', 'top');"><br/><br/><br/>
-												<input type="button" value=" ¢§ " onClick="fnMoveOption('output_list[]', 'bottom');">
+												<input type="button" value=" â–² " onClick="fnMoveOption('output_list[]', 'top');"><br/><br/><br/>
+												<input type="button" value=" â–¼ " onClick="fnMoveOption('output_list[]', 'bottom');">
 											</td>
 											<td bgcolor="#ffffff" align="left">
 												<table width="270" border="1" cellspacing="0" cellpadding="3" summary=" ">
 													<tr class="fs12n">
-														<td bgcolor="#f2f1ec" align="center"><strong>½ĞÎÏ¹àÌÜ°ìÍ÷</strong></td>
+														<td bgcolor="#f2f1ec" align="center"><strong>å‡ºåŠ›é …ç›®ä¸€è¦§</strong></td>
 													</tr>
 													<tr class="fs12n">
 														<td bgcolor="#ffffff" align="center">
@@ -216,13 +216,13 @@ function ChangeSize(button, TextArea, Max, Min, row_tmp){
 												</table>
 											</td>
 											<td bgcolor="#ffffff" align="cneter">
-												<input type="button" value="<< ÄÉ²Ã" onClick="fnReplaceOption('choice_list[]', 'output_list[]');"><br/><br/><br/>
-												<input type="button" value="ºï½ü >>" onClick="fnReplaceOption('output_list[]', 'choice_list[]');">
+												<input type="button" value="<< è¿½åŠ " onClick="fnReplaceOption('choice_list[]', 'output_list[]');"><br/><br/><br/>
+												<input type="button" value="å‰Šé™¤ >>" onClick="fnReplaceOption('output_list[]', 'choice_list[]');">
 											</td>
 											<td bgcolor="#ffffff" align="right">
 												<table width="270" border="1" cellspacing="0" cellpadding="3" summary=" ">
 													<tr class="fs12n">
-														<td bgcolor="#f2f1ec" align="center"><strong>½ĞÎÏ²ÄÇ½¹àÌÜ°ìÍ÷</strong></td>
+														<td bgcolor="#f2f1ec" align="center"><strong>å‡ºåŠ›å¯èƒ½é …ç›®ä¸€è¦§</strong></td>
 													</tr>
 													<tr class="fs12n">
 														<td bgcolor="#ffffff" align="center">
@@ -248,7 +248,7 @@ function ChangeSize(button, TextArea, Max, Min, row_tmp){
 											<td bgcolor="#e9e7de" align="center">
 											<table border="0" cellspacing="0" cellpadding="0" summary=" ">
 												<tr>
-													<td><input type="image" onMouseover="chgImgImageSubmit('<!--{$smarty.const.URL_DIR}-->img/contents/btn_regist_on.jpg',this)" onMouseout="chgImgImageSubmit('<!--{$smarty.const.URL_DIR}-->img/contents/btn_regist.jpg',this)" src="<!--{$smarty.const.URL_DIR}-->img/contents/btn_regist.jpg" width="123" height="24" alt="¤³¤ÎÆâÍÆ¤ÇÅĞÏ¿¤¹¤ë" border="0" name="subm"></td>
+													<td><input type="image" onMouseover="chgImgImageSubmit('<!--{$smarty.const.URL_DIR}-->img/contents/btn_regist_on.jpg',this)" onMouseout="chgImgImageSubmit('<!--{$smarty.const.URL_DIR}-->img/contents/btn_regist.jpg',this)" src="<!--{$smarty.const.URL_DIR}-->img/contents/btn_regist.jpg" width="123" height="24" alt="ã“ã®å†…å®¹ã§ç™»éŒ²ã™ã‚‹" border="0" name="subm"></td>
 												</tr>
 											</table>
 											</td>
@@ -268,14 +268,14 @@ function ChangeSize(button, TextArea, Max, Min, row_tmp){
 						</table>
 					</td>
 				</tr>
-				<!--¥á¥¤¥ó¥¨¥ê¥¢-->
+				<!--ãƒ¡ã‚¤ãƒ³ã‚¨ãƒªã‚¢-->
 			</table>
-			<!--¢¥ÅĞÏ¿¥Æ¡¼¥Ö¥ë¤³¤³¤Ş¤Ç-->
+			<!--â–²ç™»éŒ²ãƒ†ãƒ¼ãƒ–ãƒ«ã“ã“ã¾ã§-->
 		</td>
 	</tr>
 </form>
 </table>
-<!--¡ú¡ú¥á¥¤¥ó¥³¥ó¥Æ¥ó¥Ä¡ú¡ú-->
+<!--â˜…â˜…ãƒ¡ã‚¤ãƒ³ã‚³ãƒ³ãƒ†ãƒ³ãƒ„â˜…â˜…-->
 
 
 </script>

@@ -6,11 +6,11 @@
  */
 require_once("../require.php");
 
-//---- Ç§¾Ú²ÄÈİ¤ÎÈ½Äê
+//---- èªè¨¼å¯å¦ã®åˆ¤å®š
 $objSess = new SC_Session();
 sfIsSuccess($objSess);
 
-//---- ¥Ú¡¼¥¸É½¼¨¥¯¥é¥¹
+//---- ãƒšãƒ¼ã‚¸è¡¨ç¤ºã‚¯ãƒ©ã‚¹
 class LC_Page {
 	
 	var $arrSession;
@@ -39,27 +39,27 @@ class LC_Page {
 		$this->selected_year = date("Y");
 		$this->selected_month = date("n");
 		$this->selected_day = date("j");
-		$this->tpl_subtitle = '¿·Ãå¾ğÊó´ÉÍı';
+		$this->tpl_subtitle = 'æ–°ç€æƒ…å ±ç®¡ç†';
 	}
 }
 
 
-//---- ¥Ú¡¼¥¸½é´üÀßÄê
+//---- ãƒšãƒ¼ã‚¸åˆæœŸè¨­å®š
 $conn = new SC_DbConn();
 $objPage = new LC_Page();
 $objView = new SC_AdminView();
 $objDate = new SC_Date(ADMIN_NEWS_STARTYEAR);
 
-//----¡¡ÆüÉÕ¥×¥ë¥À¥¦¥óÀßÄê
+//----ã€€æ—¥ä»˜ãƒ—ãƒ«ãƒ€ã‚¦ãƒ³è¨­å®š
 $objPage->arrYear = $objDate->getYear();
 $objPage->arrMonth = $objDate->getMonth();
 $objPage->arrDay = $objDate->getDay();
 
-//----¡¡¿·µ¬ÅĞÏ¿/ÊÔ½¸ÅĞÏ¿
+//----ã€€æ–°è¦ç™»éŒ²/ç·¨é›†ç™»éŒ²
 if ( $_POST['mode'] == 'regist'){
 	$_POST = lfConvData($_POST);
 
-	if ($objPage->arrErr = lfErrorCheck()) {		// ÆşÎÏ¥¨¥é¡¼¤Î¥Á¥§¥Ã¥¯
+	if ($objPage->arrErr = lfErrorCheck()) {		// å…¥åŠ›ã‚¨ãƒ©ãƒ¼ã®ãƒã‚§ãƒƒã‚¯
 		foreach($_POST as $key => $val) {
 			$objPage->$key = $val;
 		}
@@ -75,21 +75,21 @@ if ( $_POST['mode'] == 'regist'){
 		
 		$registDate = $_POST['year'] ."/". $_POST['month'] ."/". $_POST['day'];
 
-		//-- ÊÔ½¸ÅĞÏ¿
+		//-- ç·¨é›†ç™»éŒ²
 		if (strlen($_POST["news_id"]) > 0 && is_numeric($_POST["news_id"])) {
 
 			lfNewsUpdate();
 
-		//--¡¡¿·µ¬ÅĞÏ¿
+		//--ã€€æ–°è¦ç™»éŒ²
 		} else {
 			lfNewsInsert();
 		}
 
-		$objPage->tpl_onload = "window.alert('ÊÔ½¸¤¬´°Î»¤·¤Ş¤·¤¿');";
+		$objPage->tpl_onload = "window.alert('ç·¨é›†ãŒå®Œäº†ã—ã¾ã—ãŸ');";
 	}
 }
 
-//----¡¡ÊÔ½¸¥Ç¡¼¥¿¼èÆÀ
+//----ã€€ç·¨é›†ãƒ‡ãƒ¼ã‚¿å–å¾—
 if ($_POST["mode"] == "search" && is_numeric($_POST["news_id"])) {
 	$sql = "SELECT *, cast(substring(news_date,1, 10) as date) as cast_news_date FROM dtb_news WHERE news_id = ? ";
 	$result = $conn->getAll($sql, array($_POST["news_id"]));
@@ -105,13 +105,13 @@ if ($_POST["mode"] == "search" && is_numeric($_POST["news_id"])) {
 	$objPage->edit_mode = "on";
 }
 
-//----¡¡¥Ç¡¼¥¿ºï½ü
+//----ã€€ãƒ‡ãƒ¼ã‚¿å‰Šé™¤
 if ( $_POST['mode'] == 'delete' && is_numeric($_POST["news_id"])) {
 	
-	// rank¤ò¼èÆÀ
+	// rankã‚’å–å¾—
 	$pre_rank = $conn->getone(" SELECT rank FROM dtb_news WHERE del_flg = 0 AND news_id = ? ", array( $_POST['news_id']  ));
 
-	//-- ºï½ü¤¹¤ë¿·Ãå¾ğÊó°Ê¹ß¤Îrank¤ò1¤Ä·«¤ê¾å¤²¤Æ¤ª¤¯
+	//-- å‰Šé™¤ã™ã‚‹æ–°ç€æƒ…å ±ä»¥é™ã®rankã‚’1ã¤ç¹°ã‚Šä¸Šã’ã¦ãŠã
 	$conn->query("BEGIN");
 	$sql = "UPDATE dtb_news SET rank = rank - 1, update_date = NOW() WHERE del_flg = 0 AND rank > ?";
 	$conn->query( $sql, array( $pre_rank  ) );
@@ -120,10 +120,10 @@ if ( $_POST['mode'] == 'delete' && is_numeric($_POST["news_id"])) {
 	$conn->query( $sql, array( $_POST['news_id'] ) );
 	$conn->query("COMMIT");
 
-	sfReload();				//¼«Ê¬¤Ë¥ê¥À¥¤¥ì¥¯¥È¡ÊºÆÆÉ¹ş¤Ë¤è¤ë¸íÆ°ºîËÉ»ß¡Ë
+	sfReload();				//è‡ªåˆ†ã«ãƒªãƒ€ã‚¤ãƒ¬ã‚¯ãƒˆï¼ˆå†èª­è¾¼ã«ã‚ˆã‚‹èª¤å‹•ä½œé˜²æ­¢ï¼‰
 }
 
-//----¡¡É½¼¨½ç°Ì°ÜÆ°
+//----ã€€è¡¨ç¤ºé †ä½ç§»å‹•
 
 if ( $_POST['mode'] == 'move' && is_numeric($_POST["news_id"]) ) {
 	if ($_POST["term"] == "up") {
@@ -135,7 +135,7 @@ if ( $_POST['mode'] == 'move' && is_numeric($_POST["news_id"]) ) {
 	sfReload();
 }
 
-//----¡¡»ØÄêÉ½¼¨½ç°Ì°ÜÆ°
+//----ã€€æŒ‡å®šè¡¨ç¤ºé †ä½ç§»å‹•
 if ($_POST['mode'] == 'moveRankSet') {
 	$key = "pos-".$_POST['news_id'];
 	$input_pos = mb_convert_kana($_POST[$key], "n");
@@ -146,26 +146,26 @@ if ($_POST['mode'] == 'moveRankSet') {
 }
 
 
-//---- Á´¥Ç¡¼¥¿¼èÆÀ
+//---- å…¨ãƒ‡ãƒ¼ã‚¿å–å¾—
 $sql = "SELECT *, cast(substring(news_date,1, 10) as date) as cast_news_date FROM dtb_news WHERE del_flg = '0' ORDER BY rank DESC";
 $objPage->list_data = $conn->getAll($sql);
 $objPage->line_max = count($objPage->list_data);
-$sql = "SELECT MAX(rank) FROM dtb_news WHERE del_flg = '0'";		// rank¤ÎºÇÂçÃÍ¤ò¼èÆÀ
+$sql = "SELECT MAX(rank) FROM dtb_news WHERE del_flg = '0'";		// rankã®æœ€å¤§å€¤ã‚’å–å¾—
 $objPage->max_rank = $conn->getOne($sql);
 
 $objPage->arrForm['news_select'] = 0;
 
-//----¡¡¥Ú¡¼¥¸É½¼¨
+//----ã€€ãƒšãƒ¼ã‚¸è¡¨ç¤º
 $objView->assignobj($objPage);
 $objView->display(MAIN_FRAME);
 
 
 //function --------------------------------------------------------------------------------------------- 
 
-//---- ÆşÎÏÊ¸»úÎó¤òÇÛÎó¤Ø
+//---- å…¥åŠ›æ–‡å­—åˆ—ã‚’é…åˆ—ã¸
 function lfConvData( $data ){
 	
-	 // Ê¸»úÎó¤ÎÊÑ´¹¡Êmb_convert_kana¤ÎÊÑ´¹¥ª¥×¥·¥ç¥ó¡Ë							
+	 // æ–‡å­—åˆ—ã®å¤‰æ›ï¼ˆmb_convert_kanaã®å¤‰æ›ã‚ªãƒ—ã‚·ãƒ§ãƒ³ï¼‰							
 	$arrFlag = array(
 					  "year" => "n"
 					 ,"month" => "n"
@@ -185,64 +185,64 @@ function lfConvData( $data ){
 	return $data;
 }
 
-//----¡¡»ØÄê½ç°Ì¤Ø°ÜÆ°
+//----ã€€æŒ‡å®šé †ä½ã¸ç§»å‹•
 function sf_setRankPosition($conn, $tableName, $keyIdColumn, $keyId, $position) {
 
-	// ¼«¿È¤Î¥é¥ó¥¯¤ò¼èÆÀ¤¹¤ë
+	// è‡ªèº«ã®ãƒ©ãƒ³ã‚¯ã‚’å–å¾—ã™ã‚‹
 	$conn->query("BEGIN");
 	$rank = $conn->getOne("SELECT rank FROM $tableName WHERE $keyIdColumn = ?", array($keyId));	
 
-	if( $position > $rank ) $term = "- 1";	//Æş¤ìÂØ¤¨Àè¤Î½ç°Ì¤¬Æş¤ì´¹¤¨¸µ¤Î½ç°Ì¤è¤êÂç¤­¤¤¾ì¹ç
-	if( $position < $rank ) $term = "+ 1";	//Æş¤ìÂØ¤¨Àè¤Î½ç°Ì¤¬Æş¤ì´¹¤¨¸µ¤Î½ç°Ì¤è¤ê¾®¤µ¤¤¾ì¹ç
+	if( $position > $rank ) $term = "- 1";	//å…¥ã‚Œæ›¿ãˆå…ˆã®é †ä½ãŒå…¥ã‚Œæ›ãˆå…ƒã®é †ä½ã‚ˆã‚Šå¤§ãã„å ´åˆ
+	if( $position < $rank ) $term = "+ 1";	//å…¥ã‚Œæ›¿ãˆå…ˆã®é †ä½ãŒå…¥ã‚Œæ›ãˆå…ƒã®é †ä½ã‚ˆã‚Šå°ã•ã„å ´åˆ
 
-	//--¡¡»ØÄê¤·¤¿½ç°Ì¤Î¾¦ÉÊ¤«¤é°ÜÆ°¤µ¤»¤ë¾¦ÉÊ¤Ş¤Ç¤Îrank¤ò£±¤Ä¤º¤é¤¹
+	//--ã€€æŒ‡å®šã—ãŸé †ä½ã®å•†å“ã‹ã‚‰ç§»å‹•ã•ã›ã‚‹å•†å“ã¾ã§ã®rankã‚’ï¼‘ã¤ãšã‚‰ã™
 	$sql = "UPDATE $tableName SET rank = rank $term, update_date = NOW() WHERE rank BETWEEN ? AND ? AND del_flg = 0";
 	if( $position > $rank ) $conn->query( $sql, array( $rank + 1, $position ) );
 	if( $position < $rank ) $conn->query( $sql, array( $position, $rank - 1 ) );
 
-	//-- »ØÄê¤·¤¿½ç°Ì¤Ørank¤ò½ñ¤­´¹¤¨¤ë¡£
+	//-- æŒ‡å®šã—ãŸé †ä½ã¸rankã‚’æ›¸ãæ›ãˆã‚‹ã€‚
 	$sql  = "UPDATE $tableName SET rank = ?, update_date = NOW() WHERE $keyIdColumn = ? AND del_flg = 0 ";
 	$conn->query( $sql, array( $position, $keyId ) );
 	$conn->query("COMMIT");
 }
 
-//---- ÆşÎÏ¥¨¥é¡¼¥Á¥§¥Ã¥¯¡Ê½ç°Ì°ÜÆ°ÍÑ¡Ë
+//---- å…¥åŠ›ã‚¨ãƒ©ãƒ¼ãƒã‚§ãƒƒã‚¯ï¼ˆé †ä½ç§»å‹•ç”¨ï¼‰
 function sf_errorCheckPosition($conn, $tableName, $position, $keyIdColumn, $keyId) {
 
 	$objErr = new SC_CheckError();
-	$objErr->doFunc( array("°ÜÆ°½ç°Ì", "moveposition", 4 ), array( "ZERO_CHECK", "NUM_CHECK", "EXIST_CHECK", "MAX_LENGTH_CHECK" ) );
+	$objErr->doFunc( array("ç§»å‹•é †ä½", "moveposition", 4 ), array( "ZERO_CHECK", "NUM_CHECK", "EXIST_CHECK", "MAX_LENGTH_CHECK" ) );
 
-	// ¼«¿È¤Î¥é¥ó¥¯¤ò¼èÆÀ¤¹¤ë¡£
+	// è‡ªèº«ã®ãƒ©ãƒ³ã‚¯ã‚’å–å¾—ã™ã‚‹ã€‚
 	$rank = $conn->getOne("SELECT rank FROM $tableName WHERE $keyIdColumn = ?", array($keyId));
-	if ($rank == $position ) $objErr->arrErr["moveposition"] .= "¢¨ »ØÄê¤·¤¿°ÜÆ°½ç°Ì¤Ï¸½ºß¤Î½ç°Ì¤Ç¤¹¡£";
+	if ($rank == $position ) $objErr->arrErr["moveposition"] .= "â€» æŒ‡å®šã—ãŸç§»å‹•é †ä½ã¯ç¾åœ¨ã®é †ä½ã§ã™ã€‚";
 	
-	// rank¤ÎºÇÂçÃÍ°Ê¾å¤ÎÆşÎÏ¤òµöÍÆ¤·¤Ê¤¤											 
+	// rankã®æœ€å¤§å€¤ä»¥ä¸Šã®å…¥åŠ›ã‚’è¨±å®¹ã—ãªã„											 
 	if( ! $objErr->arrErr["position"] ) {								 
 		$sql = "SELECT MAX( rank ) FROM " .$tableName. " WHERE del_flg = 0";
 		$result = $conn->getOne($sql);
-		if( $position > $result ) $objErr->arrErr["moveposition"] .= "¢¨ ÆşÎÏ¤µ¤ì¤¿½ç°Ì¤Ï¡¢ÅĞÏ¿¿ô¤ÎºÇÂçÃÍ¤òÄ¶¤¨¤Æ¤¤¤Ş¤¹¡£";
+		if( $position > $result ) $objErr->arrErr["moveposition"] .= "â€» å…¥åŠ›ã•ã‚ŒãŸé †ä½ã¯ã€ç™»éŒ²æ•°ã®æœ€å¤§å€¤ã‚’è¶…ãˆã¦ã„ã¾ã™ã€‚";
 	}
 
 	return $objErr->arrErr;
 }
 
-//---- ÆşÎÏ¥¨¥é¡¼¥Á¥§¥Ã¥¯
+//---- å…¥åŠ›ã‚¨ãƒ©ãƒ¼ãƒã‚§ãƒƒã‚¯
 function lfErrorCheck(){
 
 	$objErr = new SC_CheckError();
 
-	$objErr->doFunc(array("ÆüÉÕ(Ç¯)", "year"), array("EXIST_CHECK"));
-	$objErr->doFunc(array("ÆüÉÕ(·î)", "month"), array("EXIST_CHECK"));
-	$objErr->doFunc(array("ÆüÉÕ(Æü)", "day"), array("EXIST_CHECK"));
-	$objErr->doFunc(array("ÆüÉÕ", "year", "month", "day"), array("CHECK_DATE"));
-	$objErr->doFunc(array("¥¿¥¤¥È¥ë", 'news_title', MTEXT_LEN), array("EXIST_CHECK","MAX_LENGTH_CHECK"));
-	$objErr->doFunc(array("ËÜÊ¸", 'url', URL_LEN), array("MAX_LENGTH_CHECK"));
-	$objErr->doFunc(array("ËÜÊ¸", 'news_comment', LTEXT_LEN), array("MAX_LENGTH_CHECK"));
+	$objErr->doFunc(array("æ—¥ä»˜(å¹´)", "year"), array("EXIST_CHECK"));
+	$objErr->doFunc(array("æ—¥ä»˜(æœˆ)", "month"), array("EXIST_CHECK"));
+	$objErr->doFunc(array("æ—¥ä»˜(æ—¥)", "day"), array("EXIST_CHECK"));
+	$objErr->doFunc(array("æ—¥ä»˜", "year", "month", "day"), array("CHECK_DATE"));
+	$objErr->doFunc(array("ã‚¿ã‚¤ãƒˆãƒ«", 'news_title', MTEXT_LEN), array("EXIST_CHECK","MAX_LENGTH_CHECK"));
+	$objErr->doFunc(array("æœ¬æ–‡", 'url', URL_LEN), array("MAX_LENGTH_CHECK"));
+	$objErr->doFunc(array("æœ¬æ–‡", 'news_comment', LTEXT_LEN), array("MAX_LENGTH_CHECK"));
 
 	return $objErr->arrErr;
 }
 
-//INSERTÊ¸
+//INSERTæ–‡
 function lfNewsInsert(){
 	global $conn;
 	global $registDate;
@@ -251,7 +251,7 @@ function lfNewsInsert(){
 		$_POST["link_method"] = 1;
 	}
 	
-	//rank¤ÎºÇÂç+1¤ò¼èÆÀ¤¹¤ë
+	//rankã®æœ€å¤§+1ã‚’å–å¾—ã™ã‚‹
 	$rank_max = $conn->getone("SELECT MAX(rank) + 1 FROM dtb_news WHERE del_flg = '0'");
 
 	$sql = "INSERT INTO dtb_news (news_date, news_title, creator_id, news_url, link_method, news_comment, rank, create_date, update_date)
@@ -260,7 +260,7 @@ function lfNewsInsert(){
 
 	$conn->query($sql, $arrRegist);
 	
-	// ºÇ½é¤Î1·ïÌÜ¤ÎÅĞÏ¿¤Ïrank¤ËNULL¤¬Æş¤ë¤Î¤ÇÂĞºö
+	// æœ€åˆã®1ä»¶ç›®ã®ç™»éŒ²ã¯rankã«NULLãŒå…¥ã‚‹ã®ã§å¯¾ç­–
 	$sql = "UPDATE dtb_news SET rank = 1 WHERE del_flg = 0 AND rank IS NULL";
 	$conn->query($sql);
 }

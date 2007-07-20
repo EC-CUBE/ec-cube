@@ -5,7 +5,7 @@
  * http://www.lockon.co.jp/
  */
 *}-->
-<center>кэ╡Я╟Вепо©</center>
+<center>Ф°╛Д╪ Е⌠║Г≥╩И▄╡</center>
 
 <hr>
 
@@ -14,11 +14,11 @@
 <br>
 <hr>
 
-<a href="<!--{$smarty.const.MOBILE_URL_CART_TOP}-->" accesskey="9"><!--{9|numeric_emoji}-->╓╚╓╢╓Р╦╚╓К</a><br>
-<a href="<!--{$smarty.const.MOBILE_URL_SITE_TOP}-->" accesskey="0"><!--{0|numeric_emoji}-->TOP╔з║╪╔╦╓ь</a><br>
+<a href="<!--{$smarty.const.MOBILE_URL_CART_TOP}-->" accesskey="9"><!--{9|numeric_emoji}-->Ц│▀Ц│■Ц┌▓Х╕▀Ц┌▀</a><br>
+<a href="<!--{$smarty.const.MOBILE_URL_SITE_TOP}-->" accesskey="0"><!--{0|numeric_emoji}-->TOPЦ┐ Ц┐╪Ц┌╦Ц│╦</a><br>
 
 <br>
 
-<!-- ╒╖╔у╔ц╔©║╪ ╓Ё╓Ё╓╚╓И -->
+<!-- Б√╪Ц┐∙Ц┐┐Ц┌©Ц┐╪ Ц│⌠Ц│⌠Ц│▀Ц┌┴ -->
 <center>LOCKON CO.,LTD.</center>
-<!-- ╒╔╔у╔ц╔©║╪ ╓Ё╓Ё╓ч╓г -->
+<!-- Б√╡Ц┐∙Ц┐┐Ц┌©Ц┐╪ Ц│⌠Ц│⌠Ц│╬Ц│╖ -->

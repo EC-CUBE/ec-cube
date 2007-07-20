@@ -5,14 +5,14 @@
  * http://www.lockon.co.jp/
  */
 
-//¶¦ÄÌÉôÉÊ¤ÎÆÉ¤ß¹ş¤ß
+//å…±é€šéƒ¨å“ã®èª­ã¿è¾¼ã¿
 require_once("../require.php");
 
 class LC_Page{
 	function LC_Page(){
 		$this->tpl_mainpage = "rss/index.tpl";
 		$this->encode = "UTF-8";
-		$this->description = "¿·Ãå¾ğÊó";
+		$this->description = "æ–°ç€æƒ…å ±";
 	}
 }
 
@@ -20,63 +20,63 @@ $objQuery = new SC_Query();
 $objPage = new LC_Page();
 $objView = new SC_SiteView(false);
 
-//¿·Ãå¾ğÊó¤ò¼èÆÀ
+//æ–°ç€æƒ…å ±ã‚’å–å¾—
 $arrNews = lfGetNews($objQuery);
 
-//¥­¥ã¥Ã¥·¥å¤·¤Ê¤¤(Ç°¤Î¤¿¤á)
+//ã‚­ãƒ£ãƒƒã‚·ãƒ¥ã—ãªã„(å¿µã®ãŸã‚)
 header("pragma: no-cache");
 
-//XML¥Æ¥­¥¹¥È(¤³¤ì¤¬¤Ê¤¤¤ÈÀµ¾ï¤ËRSS¤È¤·¤ÆÇ§¼±¤·¤Æ¤¯¤ì¤Ê¤¤¥Ä¡¼¥ë¤¬¤¢¤ë¤¿¤á)
+//XMLãƒ†ã‚­ã‚¹ãƒˆ(ã“ã‚ŒãŒãªã„ã¨æ­£å¸¸ã«RSSã¨ã—ã¦èªè­˜ã—ã¦ãã‚Œãªã„ãƒ„ãƒ¼ãƒ«ãŒã‚ã‚‹ãŸã‚)
 header("Content-type: application/xml");
 
-//¿·Ãå¾ğÊó¤ò¥»¥Ã¥È
+//æ–°ç€æƒ…å ±ã‚’ã‚»ãƒƒãƒˆ
 $objPage->arrNews = $arrNews;
 $objPage->timestamp = sf_mktime("r", $arrNews[0]['HOUR'], $arrNews[0]['MINUTE'], $arrNews[0]['SECOND'], $arrNews[0]['MONTH'], $arrNews[0]['DAY'], $arrNews[0]['YEAR']);
 
-//Å¹Ì¾¤ò¥»¥Ã¥È
+//åº—åã‚’ã‚»ãƒƒãƒˆ
 $objPage->site_title = $arrNews[0]['shop_name'];
 
-//ÂåÉ½Email¥¢¥É¥ì¥¹¤ò¥»¥Ã¥È
+//ä»£è¡¨Emailã‚¢ãƒ‰ãƒ¬ã‚¹ã‚’ã‚»ãƒƒãƒˆ
 $objPage->email = $arrNews[0]['email'];
 
-//¥»¥Ã¥È¤·¤¿¥Ç¡¼¥¿¤ò¥Æ¥ó¥×¥ì¡¼¥È¥Õ¥¡¥¤¥ë¤Ë½ĞÎÏ
+//ã‚»ãƒƒãƒˆã—ãŸãƒ‡ãƒ¼ã‚¿ã‚’ãƒ†ãƒ³ãƒ—ãƒ¬ãƒ¼ãƒˆãƒ•ã‚¡ã‚¤ãƒ«ã«å‡ºåŠ›
 $objView->assignobj($objPage);
 
-//²èÌÌÉ½¼¨
+//ç”»é¢è¡¨ç¤º
 $objView->display($objPage->tpl_mainpage, true);
 
 //---------------------------------------------------------------------------------------------------------------------
 /***************************************************************************************************************
- * ´Ø¿ôÌ¾:lfGetNews
- * ÀâÌÀ¡¡:¿·Ãå¾ğÊó¤ò¼èÆÀ¤¹¤ë
- * °ú¿ô£±:$objQuery		DBÁàºî¥¯¥é¥¹
- * Ìá¤êÃÍ:$arrNews		¼èÆÀ·ë²Ì¤òÇÛÎó¤ÇÊÖ¤¹
+ * é–¢æ•°å:lfGetNews
+ * èª¬æ˜ã€€:æ–°ç€æƒ…å ±ã‚’å–å¾—ã™ã‚‹
+ * å¼•æ•°ï¼‘:$objQuery		DBæ“ä½œã‚¯ãƒ©ã‚¹
+ * æˆ»ã‚Šå€¤:$arrNews		å–å¾—çµæœã‚’é…åˆ—ã§è¿”ã™
  ***************************************************************************************************************/
 function lfGetNews($objQuery){
 	$col = "";
-	$col .= "     news_id ";								//¿·Ãå¾ğÊóID
-	$col .= "     ,news_title ";							//¿·Ãå¾ğÊó¥¿¥¤¥È¥ë
-	$col .= "     ,news_comment ";							//¿·Ãå¾ğÊóËÜÊ¸
+	$col .= "     news_id ";								//æ–°ç€æƒ…å ±ID
+	$col .= "     ,news_title ";							//æ–°ç€æƒ…å ±ã‚¿ã‚¤ãƒˆãƒ«
+	$col .= "     ,news_comment ";							//æ–°ç€æƒ…å ±æœ¬æ–‡
 	
 	if (DB_TYPE == "pgsql") {
-		$col .= "     ,to_char(news_date, 'YYYY') AS YEAR ";	//ÆüÉÕ(Ç¯)
-		$col .= "     ,to_char(news_date, 'MM') AS MONTH ";		//ÆüÉÕ(·î)
-		$col .= "     ,to_char(news_date, 'DD') AS DAY ";		//ÆüÉÕ(Æü)
-		$col .= "     ,to_char(news_date, 'HH24') AS HOUR ";	//ÆüÉÕ(»ş´Ö)
-		$col .= "     ,to_char(news_date, 'MI') AS MINUTE ";	//ÆüÉÕ(Ê¬)
-		$col .= "     ,to_char(news_date, 'SS') AS SECOND ";	//ÆüÉÕ(ÉÃ)
+		$col .= "     ,to_char(news_date, 'YYYY') AS YEAR ";	//æ—¥ä»˜(å¹´)
+		$col .= "     ,to_char(news_date, 'MM') AS MONTH ";		//æ—¥ä»˜(æœˆ)
+		$col .= "     ,to_char(news_date, 'DD') AS DAY ";		//æ—¥ä»˜(æ—¥)
+		$col .= "     ,to_char(news_date, 'HH24') AS HOUR ";	//æ—¥ä»˜(æ™‚é–“)
+		$col .= "     ,to_char(news_date, 'MI') AS MINUTE ";	//æ—¥ä»˜(åˆ†)
+		$col .= "     ,to_char(news_date, 'SS') AS SECOND ";	//æ—¥ä»˜(ç§’)
 	}else if (DB_TYPE == "mysql") {
-		$col .= "     ,DATE_FORMAT(news_date, '%Y') AS YEAR ";		//ÆüÉÕ(Ç¯)
-		$col .= "     ,DATE_FORMAT(news_date, '%m') AS MONTH ";		//ÆüÉÕ(·î)
-		$col .= "     ,DATE_FORMAT(news_date, '%d') AS DAY ";		//ÆüÉÕ(Æü)
-		$col .= "     ,DATE_FORMAT(news_date, '%H') AS HOUR ";		//ÆüÉÕ(»ş´Ö)
-		$col .= "     ,DATE_FORMAT(news_date, '%i') AS MINUTE ";	//ÆüÉÕ(Ê¬)
-		$col .= "     ,DATE_FORMAT(news_date, '%s') AS SECOND ";	//ÆüÉÕ(ÉÃ)
+		$col .= "     ,DATE_FORMAT(news_date, '%Y') AS YEAR ";		//æ—¥ä»˜(å¹´)
+		$col .= "     ,DATE_FORMAT(news_date, '%m') AS MONTH ";		//æ—¥ä»˜(æœˆ)
+		$col .= "     ,DATE_FORMAT(news_date, '%d') AS DAY ";		//æ—¥ä»˜(æ—¥)
+		$col .= "     ,DATE_FORMAT(news_date, '%H') AS HOUR ";		//æ—¥ä»˜(æ™‚é–“)
+		$col .= "     ,DATE_FORMAT(news_date, '%i') AS MINUTE ";	//æ—¥ä»˜(åˆ†)
+		$col .= "     ,DATE_FORMAT(news_date, '%s') AS SECOND ";	//æ—¥ä»˜(ç§’)
 	}
-	$col .= "     ,news_url ";								//¿·Ãå¾ğÊóURL
-	$col .= "     ,news_select ";							//¿·Ãå¾ğÊó¤Î¶èÊ¬(1:URL¡¢2:ËÜÊ¸)
-	$col .= "     ,(SELECT shop_name FROM dtb_baseinfo limit 1) AS shop_name  ";	//Å¹Ì¾
-	$col .= "     ,(SELECT email04 FROM dtb_baseinfo limit 1) AS email ";			//ÂåÉ½Email¥¢¥É¥ì¥¹
+	$col .= "     ,news_url ";								//æ–°ç€æƒ…å ±URL
+	$col .= "     ,news_select ";							//æ–°ç€æƒ…å ±ã®åŒºåˆ†(1:URLã€2:æœ¬æ–‡)
+	$col .= "     ,(SELECT shop_name FROM dtb_baseinfo limit 1) AS shop_name  ";	//åº—å
+	$col .= "     ,(SELECT email04 FROM dtb_baseinfo limit 1) AS email ";			//ä»£è¡¨Emailã‚¢ãƒ‰ãƒ¬ã‚¹
 	$from = "dtb_news";
 	$where = "del_flg = '0'";
 	$order = "rank DESC";

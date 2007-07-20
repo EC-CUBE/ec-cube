@@ -6,7 +6,7 @@
  *}-->
 <rss version="2.0">
 
-<!--{* channelÍ×ÁÇ *}-->
+<!--{* channelè¦ç´  *}-->
 <channel>
 <title> <!--{$site_title|sf_mb_convert_encoding:$encode}--> </title>
 <link> <!--{$smarty.const.SITE_URL}--> </link>
@@ -21,7 +21,7 @@
 
 	<!--{section name=cnt loop=$arrNews}-->
 		
-		<!--{* £±¤Ä¤ÎitemÍ×ÁÇ¤ò½ÐÎÏ¤¹¤ë *}-->
+		<!--{* ï¼‘ã¤ã®itemè¦ç´ ã‚’å‡ºåŠ›ã™ã‚‹ *}-->
 		<item>
 			<!--{if $arrNews[cnt].news_url == '' }-->
 				<link> <!--{$smarty.const.SITE_URL}--> </link>

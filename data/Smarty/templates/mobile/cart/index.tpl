@@ -5,9 +5,9 @@
  * http://www.lockon.co.jp/
  */
 *}-->
-<!--¢§CONTENTS-->
-<!--¢§MAIN ONTENTS-->
-<div align="center"><font color="#000080">¤«¤´É½¼¨</font></div>
+<!--â–¼CONTENTS-->
+<!--â–¼MAIN ONTENTS-->
+<div align="center"><font color="#000080">ã‹ã”è¡¨ç¤º</font></div>
 <!--{if $tpl_message != ""}-->
 	<!--{$tpl_message}--><br>
 <!--{/if}-->
@@ -15,18 +15,18 @@
 <form name="form1" id="form1" method="post" action="<!--{$smarty.server.PHP_SELF|escape}-->" utn>
 	<input type="hidden" name="mode" value="confirm">
 	<input type="hidden" name="cart_no" value="">
-	<!--¤´ÃíÊ¸ÆâÍÆ¤³¤³¤«¤é-->
+	<!--ã”æ³¨æ–‡å†…å®¹ã“ã“ã‹ã‚‰-->
 	<hr>
 	<!--{section name=cnt loop=$arrProductsClass}-->
-		<!--{* ¾¦ÉÊÌ¾ *}--><!--{$arrProductsClass[cnt].name|escape}--><br>
-		<!--{* ²Á³Ê *}-->
+		<!--{* å•†å“å *}--><!--{$arrProductsClass[cnt].name|escape}--><br>
+		<!--{* ä¾¡æ ¼ *}-->
 		<!--{if $arrProductsClass[cnt].price02 != ""}-->
 			\<!--{$arrProductsClass[cnt].price02|sfPreTax:$arrInfo.tax:$arrInfo.tax_rule|number_format}-->
 		<!--{else}-->
 			\<!--{$arrProductsClass[cnt].price01|sfPreTax:$arrInfo.tax:$arrInfo.tax_rule|number_format}-->
 		<!--{/if}-->
-		¡ß <!--{$arrProductsClass[cnt].quantity}--><br>
-		<!--{* ¾ÜºÙ *}-->
+		Ã— <!--{$arrProductsClass[cnt].quantity}--><br>
+		<!--{* è©³ç´° *}-->
 		<!--{if $arrProductsClass[cnt].classcategory_name1 != ""}-->
 			<!--{$arrProductsClass[cnt].class_name1}-->:<!--{$arrProductsClass[cnt].classcategory_name1}--><br>
 		<!--{/if}-->
@@ -34,42 +34,42 @@
 			<!--{$arrProductsClass[cnt].class_name2}-->:<!--{$arrProductsClass[cnt].classcategory_name2}--><br>
 		<!--{/if}-->
 		<br>
-		<!--{* ¿ôÎÌ *}-->
-		¿ôÎÌ:<!--{$arrProductsClass[cnt].quantity}-->
+		<!--{* æ•°é‡ *}-->
+		æ•°é‡:<!--{$arrProductsClass[cnt].quantity}-->
 		<a href="<!--{$smarty.server.PHP_SELF|escape}-->?mode=up&amp;cart_no=<!--{$arrProductsClass[cnt].cart_no}-->">+</a>
 		<a href="<!--{$smarty.server.PHP_SELF|escape}-->?mode=down&amp;cart_no=<!--{$arrProductsClass[cnt].cart_no}-->">-</a>
-		<a href="<!--{$smarty.server.PHP_SELF|escape}-->?mode=delete&amp;cart_no=<!--{$arrProductsClass[cnt].cart_no}-->">ºï½ü</a><br>
-		<!--{* ¹ç·× *}-->
-		¾®·×:<!--{$arrProductsClass[cnt].total_pretax|number_format}-->±ß<br>
-		<div align="right"><a href="<!--{$smarty.const.MOBILE_DETAIL_P_HTML}--><!--{$arrProductsClass[cnt].product_id}-->">¾¦ÉÊ¹ØÆþ¾ÜºÙ¤Ø¢ª</a></div>
+		<a href="<!--{$smarty.server.PHP_SELF|escape}-->?mode=delete&amp;cart_no=<!--{$arrProductsClass[cnt].cart_no}-->">å‰Šé™¤</a><br>
+		<!--{* åˆè¨ˆ *}-->
+		å°è¨ˆ:<!--{$arrProductsClass[cnt].total_pretax|number_format}-->å††<br>
+		<div align="right"><a href="<!--{$smarty.const.MOBILE_DETAIL_P_HTML}--><!--{$arrProductsClass[cnt].product_id}-->">å•†å“è³¼å…¥è©³ç´°ã¸â†’</a></div>
 		<HR>
 	<!--{/section}-->
-	¾¦ÉÊ¹ç·×:<!--{$tpl_total_pretax|number_format}-->±ß<br>
-	¹ç·×:<!--{$arrData.total-$arrData.deliv_fee|number_format}-->±ß<br>
+	å•†å“åˆè¨ˆ:<!--{$tpl_total_pretax|number_format}-->å††<br>
+	åˆè¨ˆ:<!--{$arrData.total-$arrData.deliv_fee|number_format}-->å††<br>
 	<!--{if $arrData.birth_point > 0}-->
-		¤ªÃÂÀ¸·îŽÎŽßŽ²ŽÝŽÄ<br>
+		ãŠèª•ç”Ÿæœˆï¾Žï¾Ÿï½²ï¾ï¾„<br>
 		<!--{$arrData.birth_point|number_format}-->pt<br>
 	<!--{/if}-->
 	<br>
-	<center><input type="submit" value="ÃíÊ¸¤¹¤ë" name="confirm"></center>
+	<center><input type="submit" value="æ³¨æ–‡ã™ã‚‹" name="confirm"></center>
 </form>
 <form method="post" action="<!--{$smarty.server.PHP_SELF|escape}-->">
-	<center><input type="submit" value="¤ªÇãÊª¤òÂ³¤±¤ë" name="continue"></center>
+	<center><input type="submit" value="ãŠè²·ç‰©ã‚’ç¶šã‘ã‚‹" name="continue"></center>
 </form>
 <!--{else}-->
-	¢¨¸½ºßŽ¶Ž°ŽÄÆâ¤Ë¾¦ÉÊ¤Ï¤´¤¶¤¤¤Þ¤»¤óŽ¡<br>
+	â€»ç¾åœ¨ï½¶ï½°ï¾„å†…ã«å•†å“ã¯ã”ã–ã„ã¾ã›ã‚“ï½¡<br>
 <!--{/if}-->
-<!--¢¥CONTENTS-->
-<!--¢¥MAIN CONTENTS-->
-<!--¢¥CONTENTS-->
+<!--â–²CONTENTS-->
+<!--â–²MAIN CONTENTS-->
+<!--â–²CONTENTS-->
 
 <br>
 <hr>
 
-<a href="<!--{$smarty.const.MOBILE_URL_SITE_TOP}-->" accesskey="0"><!--{0|numeric_emoji}-->TOP¥Ú¡¼¥¸¤Ø</a><br>
+<a href="<!--{$smarty.const.MOBILE_URL_SITE_TOP}-->" accesskey="0"><!--{0|numeric_emoji}-->TOPãƒšãƒ¼ã‚¸ã¸</a><br>
 
 <br>
 
-<!-- ¢§¥Õ¥Ã¥¿¡¼ ¤³¤³¤«¤é -->
+<!-- â–¼ãƒ•ãƒƒã‚¿ãƒ¼ ã“ã“ã‹ã‚‰ -->
 <!--{include file='footer.tpl'}-->
-<!-- ¢¥¥Õ¥Ã¥¿¡¼ ¤³¤³¤Þ¤Ç -->
+<!-- â–²ãƒ•ãƒƒã‚¿ãƒ¼ ã“ã“ã¾ã§ -->

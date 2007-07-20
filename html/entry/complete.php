@@ -8,17 +8,17 @@ require_once("../require.php");
 
 class LC_Page {
 	function LC_Page() {
-		$this->tpl_css = URL_DIR.'css/layout/entry/complete.css';	// ¥á¥¤¥óCSS¥Ñ¥¹
+		$this->tpl_css = URL_DIR.'css/layout/entry/complete.css';	// ãƒ¡ã‚¤ãƒ³CSSãƒ‘ã‚¹
 		
 		if(CUSTOMER_CONFIRM_MAIL == true) {
-			// ²¾²ñ°÷ÅÐÏ¿´°Î»
-			$this->tpl_mainpage = 'entry/complete.tpl';			// ¥á¥¤¥ó¥Æ¥ó¥×¥ì¡¼¥È
+			// ä»®ä¼šå“¡ç™»éŒ²å®Œäº†
+			$this->tpl_mainpage = 'entry/complete.tpl';			// ãƒ¡ã‚¤ãƒ³ãƒ†ãƒ³ãƒ—ãƒ¬ãƒ¼ãƒˆ
 		} else {
-			// ËÜ²ñ°÷ÅÐÏ¿´°Î»
-			$this->tpl_mainpage = 'regist/complete.tpl';		// ¥á¥¤¥ó¥Æ¥ó¥×¥ì¡¼¥È			
+			// æœ¬ä¼šå“¡ç™»éŒ²å®Œäº†
+			$this->tpl_mainpage = 'regist/complete.tpl';		// ãƒ¡ã‚¤ãƒ³ãƒ†ãƒ³ãƒ—ãƒ¬ãƒ¼ãƒˆ			
 		}
 		
-		$this->tpl_title .= '²ñ°÷ÅÐÏ¿(´°Î»¥Ú¡¼¥¸)';			//¡¡¥Ú¡¼¥¸¥¿¥¤¥È¥ë
+		$this->tpl_title .= 'ä¼šå“¡ç™»éŒ²(å®Œäº†ãƒšãƒ¼ã‚¸)';			//ã€€ãƒšãƒ¼ã‚¸ã‚¿ã‚¤ãƒˆãƒ«
 	}
 }
 
@@ -26,15 +26,15 @@ $objPage = new LC_Page();
 $objView = new SC_SiteView();
 $objCampaignSess = new SC_CampaignSession();
 
-// ¥ì¥¤¥¢¥¦¥È¥Ç¥¶¥¤¥ó¤ò¼èÆÀ
+// ãƒ¬ã‚¤ã‚¢ã‚¦ãƒˆãƒ‡ã‚¶ã‚¤ãƒ³ã‚’å–å¾—
 $objPage = sfGetPageLayout($objPage, false, DEF_LAYOUT);
 
-// ¥­¥ã¥ó¥Ú¡¼¥ó¤«¤é¤ÎÁ«°Ü¤¬¥Á¥§¥Ã¥¯
+// ã‚­ãƒ£ãƒ³ãƒšãƒ¼ãƒ³ã‹ã‚‰ã®é·ç§»ãŒãƒã‚§ãƒƒã‚¯
 $objPage->is_campaign = $objCampaignSess->getIsCampaign();
 $objPage->campaign_dir = $objCampaignSess->getCampaignDir();
 
 $objView->assignobj($objPage);
-// ¥Õ¥ì¡¼¥à¤òÁªÂò(¥­¥ã¥ó¥Ú¡¼¥ó¥Ú¡¼¥¸¤«¤éÁ«°Ü¤Ê¤éÊÑ¹¹)
+// ãƒ•ãƒ¬ãƒ¼ãƒ ã‚’é¸æŠž(ã‚­ãƒ£ãƒ³ãƒšãƒ¼ãƒ³ãƒšãƒ¼ã‚¸ã‹ã‚‰é·ç§»ãªã‚‰å¤‰æ›´)
 $objCampaignSess->pageView($objView);
 //----------------------------------------------------------------------------------------------------------------------
 ?>

@@ -5,9 +5,9 @@
  * http://www.lockon.co.jp/
  */
 *}-->
-<center>�ѥ���ɤ�˺�줿��</center>
+<center>パスワードを忘れた方</center>
 
-<font color="#ff0000">���������ѥ���ɤ�ȯ�Ԥ������ޤ��Τǡ���˺��ˤʤä��ѥ���ɤϤ����ѤǤ��ʤ��ʤ�ޤ���</font>
+<font color="#ff0000">※新しくパスワードを発行いたしますので、お忘れになったパスワードはご利用できなくなります。</font>
 
 <hr>
 
@@ -16,32 +16,32 @@
 <!--{/if}-->
 
 <!--{if @$tpl_kara_mail_to != ''}-->
-������Ͽ���Υ᡼�륢�ɥ쥹����᡼�����������ϡ����Υ�󥯤򥯥�å����ƶ��᡼����������Ƥ���������<br>
-<center><a href="mailto:<!--{$tpl_kara_mail_to|escape:'url'}-->">�᡼������</a></center>
+■ご登録時のメールアドレスからメールを送れる方は、次のリンクをクリックして空メールを送信してください。<br>
+<center><a href="mailto:<!--{$tpl_kara_mail_to|escape:'url'}-->">メール送信</a></center>
 
 <br>
 
-���᡼�������ʤ����ϡ�����Ͽ���Υ᡼�륢�ɥ쥹�����Ϥ��ơּ��ءץܥ���򥯥�å����Ƥ���������<br>
+■メールを送れない方は、ご登録時のメールアドレスを入力して「次へ」ボタンをクリックしてください。<br>
 <!--{else}-->
-����Ͽ���Υ᡼�륢�ɥ쥹�����Ϥ��ơּ��ءץܥ���򥯥�å����Ƥ���������<br>
+ご登録時のメールアドレスを入力して「次へ」ボタンをクリックしてください。<br>
 <!--{/if}-->
 
 <form action="<!--{$smarty.server.PHP_SELF|escape}-->" method="post">
 <input type="hidden" name="mode" value="mail_check">
 
-�᡼�륢�ɥ쥹��<input type="text" name="email" value="<!--{$tpl_login_email|escape}-->" size="50" istyle="3"><br>
+メールアドレス：<input type="text" name="email" value="<!--{$tpl_login_email|escape}-->" size="50" istyle="3"><br>
 
-<center><input type="submit" value="����" name="next"></center>
+<center><input type="submit" value="次へ" name="next"></center>
 </form>
 
 <br>
 <hr>
 
-<a href="<!--{$smarty.const.MOBILE_URL_CART_TOP}-->" accesskey="9"><!--{9|numeric_emoji}-->�����򸫤�</a><br>
-<a href="<!--{$smarty.const.MOBILE_URL_SITE_TOP}-->" accesskey="0"><!--{0|numeric_emoji}-->TOP�ڡ�����</a><br>
+<a href="<!--{$smarty.const.MOBILE_URL_CART_TOP}-->" accesskey="9"><!--{9|numeric_emoji}-->かごを見る</a><br>
+<a href="<!--{$smarty.const.MOBILE_URL_SITE_TOP}-->" accesskey="0"><!--{0|numeric_emoji}-->TOPページへ</a><br>
 
 <br>
 
-<!-- ���եå��� �������� -->
+<!-- ▼フッター ここから -->
 <!--{include file='footer.tpl'}-->
-<!-- ���եå��� �����ޤ� -->
+<!-- ▲フッター ここまで -->

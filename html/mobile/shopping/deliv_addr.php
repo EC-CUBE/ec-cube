@@ -5,14 +5,14 @@
  *
  * http://www.lockon.co.jp/
  * 
- * ÇÛÁ÷Àè¤ÎÄÉ²Ã
+ * é…é€å…ˆã®è¿½åŠ 
  */
 require_once("../require.php");
 
 class LC_Page{
 	function LC_Page(){
 		$this->tpl_mainpage = 'shopping/deliv_addr.tpl';
-		$this->tpl_title = "¿·¤·¤¤¤ªÆÏ¤±Àè¤ÎÄÉ²Ã";
+		$this->tpl_title = "æ–°ã—ã„ãŠå±Šã‘å…ˆã®è¿½åŠ ";
 	}
 }
 
@@ -24,23 +24,23 @@ $objConn = new SC_DBConn();
 $objSiteSess = new SC_SiteSession();
 $objCartSess = new SC_CartSession();
 
-//¥í¥°¥¤¥óÈ½Äê
+//ãƒ­ã‚°ã‚¤ãƒ³åˆ¤å®š
 if (!$objCustomer->isLoginSuccess()){
 	sfDispSiteError(CUSTOMER_ERROR, "", false, "", true);
 }
 
 $objPage->arrForm = $_POST;
 $objPage->arrPref = $arrPref;
-//-- ¥Ç¡¼¥¿ÀßÄê
+//-- ãƒ‡ãƒ¼ã‚¿è¨­å®š
 foreach($_POST as $key => $val) {
 	if ($key != "mode" && $key != "return" && $key != "submit" && $key != session_name()) {
 		$objPage->list_data[ $key ] = $val;
 	}
 }
-// ¥æ¡¼¥¶¥æ¥Ë¡¼¥¯ID¤Î¼èÆÀ¤È¹ØÆþ¾õÂÖ¤ÎÀµÅöÀ­¤ò¥Á¥§¥Ã¥¯
+// ãƒ¦ãƒ¼ã‚¶ãƒ¦ãƒ‹ãƒ¼ã‚¯IDã®å–å¾—ã¨è³¼å…¥çŠ¶æ…‹ã®æ­£å½“æ€§ã‚’ãƒã‚§ãƒƒã‚¯
 $uniqid = sfCheckNormalAccess($objSiteSess, $objCartSess);
 
-//ÊÌ¤Î¤ªÆÏ¤±Àè£Ä£ÂÅÐÏ¿ÍÑ¥«¥é¥àÇÛÎó
+//åˆ¥ã®ãŠå±Šã‘å…ˆï¼¤ï¼¢ç™»éŒ²ç”¨ã‚«ãƒ©ãƒ é…åˆ—
 $arrRegistColumn = array(
 							 array(  "column" => "name01",		"convert" => "aKV" ),
 							 array(  "column" => "name02",		"convert" => "aKV" ),
@@ -56,7 +56,7 @@ $arrRegistColumn = array(
 							 array(  "column" => "tel03",		"convert" => "n" ),
 						);
 
-// Ìá¤ë¥Ü¥¿¥óÍÑ½èÍý
+// æˆ»ã‚‹ãƒœã‚¿ãƒ³ç”¨å‡¦ç†
 if (!empty($_POST["return"])) {
 	switch ($_POST["mode"]) {
 	case 'complete':
@@ -82,7 +82,7 @@ switch ($_POST['mode']){
 				unset($objPage->list_data[$key]);
 			}
 
-			// Í¹ÊØÈÖ¹æ¤«¤é½»½ê¤Î¼èÆÀ
+			// éƒµä¾¿ç•ªå·ã‹ã‚‰ä½æ‰€ã®å–å¾—
 			if (@$objPage->arrForm['pref'] == "" && @$objPage->arrForm['addr01'] == "" && @$objPage->arrForm['addr02'] == "") {
 				$address = lfGetAddress($_REQUEST['zip01'].$_REQUEST['zip02']);
 
@@ -112,15 +112,15 @@ switch ($_POST['mode']){
 	case 'complete':
 		$objPage->arrErr = lfErrorCheck($objPage->arrForm);
 		if (count($objPage->arrErr) == 0) {
-			// ÅÐÏ¿
+			// ç™»éŒ²
 			$other_deliv_id = lfRegistData($_POST,$arrRegistColumn);
 
-			// ÅÐÏ¿ºÑ¤ß¤ÎÊÌ¤Î¤ªÆÏ¤±Àè¤ò¼õÃí°ì»þ¥Æ¡¼¥Ö¥ë¤Ë½ñ¤­¹þ¤à
+			// ç™»éŒ²æ¸ˆã¿ã®åˆ¥ã®ãŠå±Šã‘å…ˆã‚’å—æ³¨ä¸€æ™‚ãƒ†ãƒ¼ãƒ–ãƒ«ã«æ›¸ãè¾¼ã‚€
 			lfRegistOtherDelivData($uniqid, $objCustomer, $other_deliv_id);
 
-			// Àµ¾ï¤ËÅÐÏ¿¤µ¤ì¤¿¤³¤È¤òµ­Ï¿¤·¤Æ¤ª¤¯
+			// æ­£å¸¸ã«ç™»éŒ²ã•ã‚ŒãŸã“ã¨ã‚’è¨˜éŒ²ã—ã¦ãŠã
 			$objSiteSess->setRegistFlag();
-			// ¤ª»ÙÊ§¤¤ÊýË¡ÁªÂò¥Ú¡¼¥¸¤Ø°ÜÆ°
+			// ãŠæ”¯æ‰•ã„æ–¹æ³•é¸æŠžãƒšãƒ¼ã‚¸ã¸ç§»å‹•
 			header("Location: " . gfAddSessionId(MOBILE_URL_SHOP_PAYMENT));
 			exit;
 		} else {
@@ -130,7 +130,7 @@ switch ($_POST['mode']){
 	default:
 		$deliv_count = $objQuery->count("dtb_other_deliv", "customer_id=?", array($objCustomer->getValue('customer_id')));
 		if ($deliv_count >= DELIV_ADDR_MAX){
-			sfDispSiteError(FREE_ERROR_MSG, "", false, "ºÇÂçÅÐÏ¿·ï¿ô¤òÄ¶¤¨¤Æ¤¤¤Þ¤¹¡£");
+			sfDispSiteError(FREE_ERROR_MSG, "", false, "æœ€å¤§ç™»éŒ²ä»¶æ•°ã‚’è¶…ãˆã¦ã„ã¾ã™ã€‚");
 		}
 }
 
@@ -139,61 +139,61 @@ $objView->display(SITE_FRAME);
 
 //-------------------------------------------------------------------------------------------------------------
 
-/* ¥¨¥é¡¼¥Á¥§¥Ã¥¯ */
+/* ã‚¨ãƒ©ãƒ¼ãƒã‚§ãƒƒã‚¯ */
 function lfErrorCheck() {
 	$objErr = new SC_CheckError();
 	
-	$objErr->doFunc(array("¤ªÌ¾Á°¡ÊÀ«¡Ë", 'name01', STEXT_LEN), array("EXIST_CHECK","SPTAB_CHECK","MAX_LENGTH_CHECK"));
-	$objErr->doFunc(array("¤ªÌ¾Á°¡ÊÌ¾¡Ë", 'name02', STEXT_LEN), array("EXIST_CHECK","SPTAB_CHECK", "MAX_LENGTH_CHECK"));
-	$objErr->doFunc(array("¤ªÌ¾Á°¡Ê¥«¥Ê/À«¡Ë", 'kana01', STEXT_LEN), array("EXIST_CHECK","SPTAB_CHECK", "MAX_LENGTH_CHECK", "KANA_CHECK"));
-	$objErr->doFunc(array("¤ªÌ¾Á°¡Ê¥«¥Ê/Ì¾¡Ë", 'kana02', STEXT_LEN), array("EXIST_CHECK","SPTAB_CHECK", "MAX_LENGTH_CHECK", "KANA_CHECK"));
-	$objErr->doFunc(array("Í¹ÊØÈÖ¹æ1", "zip01", ZIP01_LEN ) ,array("EXIST_CHECK", "NUM_CHECK", "NUM_COUNT_CHECK"));
-	$objErr->doFunc(array("Í¹ÊØÈÖ¹æ2", "zip02", ZIP02_LEN ) ,array("EXIST_CHECK", "NUM_CHECK", "NUM_COUNT_CHECK")); 
-	$objErr->doFunc(array("Í¹ÊØÈÖ¹æ", "zip01", "zip02"), array("ALL_EXIST_CHECK"));
-	$objErr->doFunc(array("ÅÔÆ»ÉÜ¸©", 'pref'), array("SELECT_CHECK","NUM_CHECK"));
-	$objErr->doFunc(array("»Ô¶èÄ®Â¼", "addr01", MTEXT_LEN), array("EXIST_CHECK","SPTAB_CHECK","MAX_LENGTH_CHECK"));
-	$objErr->doFunc(array("ÈÖÃÏ", "addr02", MTEXT_LEN), array("EXIST_CHECK","SPTAB_CHECK","MAX_LENGTH_CHECK"));
-	$objErr->doFunc(array("ÅÅÏÃÈÖ¹æ1", 'tel01'), array("EXIST_CHECK","NUM_CHECK"));
-	$objErr->doFunc(array("ÅÅÏÃÈÖ¹æ2", 'tel02'), array("EXIST_CHECK","NUM_CHECK"));
-	$objErr->doFunc(array("ÅÅÏÃÈÖ¹æ3", 'tel03'), array("EXIST_CHECK","NUM_CHECK"));
-	$objErr->doFunc(array("ÅÅÏÃÈÖ¹æ", "tel01", "tel02", "tel03", TEL_LEN) ,array("TEL_CHECK"));
+	$objErr->doFunc(array("ãŠåå‰ï¼ˆå§“ï¼‰", 'name01', STEXT_LEN), array("EXIST_CHECK","SPTAB_CHECK","MAX_LENGTH_CHECK"));
+	$objErr->doFunc(array("ãŠåå‰ï¼ˆåï¼‰", 'name02', STEXT_LEN), array("EXIST_CHECK","SPTAB_CHECK", "MAX_LENGTH_CHECK"));
+	$objErr->doFunc(array("ãŠåå‰ï¼ˆã‚«ãƒŠ/å§“ï¼‰", 'kana01', STEXT_LEN), array("EXIST_CHECK","SPTAB_CHECK", "MAX_LENGTH_CHECK", "KANA_CHECK"));
+	$objErr->doFunc(array("ãŠåå‰ï¼ˆã‚«ãƒŠ/åï¼‰", 'kana02', STEXT_LEN), array("EXIST_CHECK","SPTAB_CHECK", "MAX_LENGTH_CHECK", "KANA_CHECK"));
+	$objErr->doFunc(array("éƒµä¾¿ç•ªå·1", "zip01", ZIP01_LEN ) ,array("EXIST_CHECK", "NUM_CHECK", "NUM_COUNT_CHECK"));
+	$objErr->doFunc(array("éƒµä¾¿ç•ªå·2", "zip02", ZIP02_LEN ) ,array("EXIST_CHECK", "NUM_CHECK", "NUM_COUNT_CHECK")); 
+	$objErr->doFunc(array("éƒµä¾¿ç•ªå·", "zip01", "zip02"), array("ALL_EXIST_CHECK"));
+	$objErr->doFunc(array("éƒ½é“åºœçœŒ", 'pref'), array("SELECT_CHECK","NUM_CHECK"));
+	$objErr->doFunc(array("å¸‚åŒºç”ºæ‘", "addr01", MTEXT_LEN), array("EXIST_CHECK","SPTAB_CHECK","MAX_LENGTH_CHECK"));
+	$objErr->doFunc(array("ç•ªåœ°", "addr02", MTEXT_LEN), array("EXIST_CHECK","SPTAB_CHECK","MAX_LENGTH_CHECK"));
+	$objErr->doFunc(array("é›»è©±ç•ªå·1", 'tel01'), array("EXIST_CHECK","NUM_CHECK"));
+	$objErr->doFunc(array("é›»è©±ç•ªå·2", 'tel02'), array("EXIST_CHECK","NUM_CHECK"));
+	$objErr->doFunc(array("é›»è©±ç•ªå·3", 'tel03'), array("EXIST_CHECK","NUM_CHECK"));
+	$objErr->doFunc(array("é›»è©±ç•ªå·", "tel01", "tel02", "tel03", TEL_LEN) ,array("TEL_CHECK"));
 	return $objErr->arrErr;
 	
 }
 
-/* ¥¨¥é¡¼¥Á¥§¥Ã¥¯ */
+/* ã‚¨ãƒ©ãƒ¼ãƒã‚§ãƒƒã‚¯ */
 function lfErrorCheck1() {
 	$objErr = new SC_CheckError();
 	
-	$objErr->doFunc(array("¤ªÌ¾Á°¡ÊÀ«¡Ë", 'name01', STEXT_LEN), array("EXIST_CHECK","SPTAB_CHECK","MAX_LENGTH_CHECK"));
-	$objErr->doFunc(array("¤ªÌ¾Á°¡ÊÌ¾¡Ë", 'name02', STEXT_LEN), array("EXIST_CHECK","SPTAB_CHECK", "MAX_LENGTH_CHECK"));
-	$objErr->doFunc(array("¤ªÌ¾Á°¡Ê¥«¥Ê/À«¡Ë", 'kana01', STEXT_LEN), array("EXIST_CHECK","SPTAB_CHECK", "MAX_LENGTH_CHECK", "KANA_CHECK"));
-	$objErr->doFunc(array("¤ªÌ¾Á°¡Ê¥«¥Ê/Ì¾¡Ë", 'kana02', STEXT_LEN), array("EXIST_CHECK","SPTAB_CHECK", "MAX_LENGTH_CHECK", "KANA_CHECK"));
-	$objErr->doFunc(array("Í¹ÊØÈÖ¹æ1", "zip01", ZIP01_LEN ) ,array("EXIST_CHECK", "NUM_CHECK", "NUM_COUNT_CHECK"));
-	$objErr->doFunc(array("Í¹ÊØÈÖ¹æ2", "zip02", ZIP02_LEN ) ,array("EXIST_CHECK", "NUM_CHECK", "NUM_COUNT_CHECK")); 
-	$objErr->doFunc(array("Í¹ÊØÈÖ¹æ", "zip01", "zip02"), array("ALL_EXIST_CHECK"));
+	$objErr->doFunc(array("ãŠåå‰ï¼ˆå§“ï¼‰", 'name01', STEXT_LEN), array("EXIST_CHECK","SPTAB_CHECK","MAX_LENGTH_CHECK"));
+	$objErr->doFunc(array("ãŠåå‰ï¼ˆåï¼‰", 'name02', STEXT_LEN), array("EXIST_CHECK","SPTAB_CHECK", "MAX_LENGTH_CHECK"));
+	$objErr->doFunc(array("ãŠåå‰ï¼ˆã‚«ãƒŠ/å§“ï¼‰", 'kana01', STEXT_LEN), array("EXIST_CHECK","SPTAB_CHECK", "MAX_LENGTH_CHECK", "KANA_CHECK"));
+	$objErr->doFunc(array("ãŠåå‰ï¼ˆã‚«ãƒŠ/åï¼‰", 'kana02', STEXT_LEN), array("EXIST_CHECK","SPTAB_CHECK", "MAX_LENGTH_CHECK", "KANA_CHECK"));
+	$objErr->doFunc(array("éƒµä¾¿ç•ªå·1", "zip01", ZIP01_LEN ) ,array("EXIST_CHECK", "NUM_CHECK", "NUM_COUNT_CHECK"));
+	$objErr->doFunc(array("éƒµä¾¿ç•ªå·2", "zip02", ZIP02_LEN ) ,array("EXIST_CHECK", "NUM_CHECK", "NUM_COUNT_CHECK")); 
+	$objErr->doFunc(array("éƒµä¾¿ç•ªå·", "zip01", "zip02"), array("ALL_EXIST_CHECK"));
 	return $objErr->arrErr;
 	
 }
 
-/* ¥¨¥é¡¼¥Á¥§¥Ã¥¯ */
+/* ã‚¨ãƒ©ãƒ¼ãƒã‚§ãƒƒã‚¯ */
 function lfErrorCheck2() {
 	$objErr = new SC_CheckError();
 	
-	$objErr->doFunc(array("ÅÔÆ»ÉÜ¸©", 'pref'), array("SELECT_CHECK","NUM_CHECK"));
-	$objErr->doFunc(array("»Ô¶èÄ®Â¼", "addr01", MTEXT_LEN), array("EXIST_CHECK","SPTAB_CHECK","MAX_LENGTH_CHECK"));
-	$objErr->doFunc(array("ÈÖÃÏ", "addr02", MTEXT_LEN), array("EXIST_CHECK","SPTAB_CHECK","MAX_LENGTH_CHECK"));
-	$objErr->doFunc(array("ÅÅÏÃÈÖ¹æ1", 'tel01'), array("EXIST_CHECK","NUM_CHECK"));
-	$objErr->doFunc(array("ÅÅÏÃÈÖ¹æ2", 'tel02'), array("EXIST_CHECK","NUM_CHECK"));
-	$objErr->doFunc(array("ÅÅÏÃÈÖ¹æ3", 'tel03'), array("EXIST_CHECK","NUM_CHECK"));
-	$objErr->doFunc(array("ÅÅÏÃÈÖ¹æ", "tel01", "tel02", "tel03", TEL_LEN) ,array("TEL_CHECK"));
+	$objErr->doFunc(array("éƒ½é“åºœçœŒ", 'pref'), array("SELECT_CHECK","NUM_CHECK"));
+	$objErr->doFunc(array("å¸‚åŒºç”ºæ‘", "addr01", MTEXT_LEN), array("EXIST_CHECK","SPTAB_CHECK","MAX_LENGTH_CHECK"));
+	$objErr->doFunc(array("ç•ªåœ°", "addr02", MTEXT_LEN), array("EXIST_CHECK","SPTAB_CHECK","MAX_LENGTH_CHECK"));
+	$objErr->doFunc(array("é›»è©±ç•ªå·1", 'tel01'), array("EXIST_CHECK","NUM_CHECK"));
+	$objErr->doFunc(array("é›»è©±ç•ªå·2", 'tel02'), array("EXIST_CHECK","NUM_CHECK"));
+	$objErr->doFunc(array("é›»è©±ç•ªå·3", 'tel03'), array("EXIST_CHECK","NUM_CHECK"));
+	$objErr->doFunc(array("é›»è©±ç•ªå·", "tel01", "tel02", "tel03", TEL_LEN) ,array("TEL_CHECK"));
 	return $objErr->arrErr;
 	
 }
 
 
 
-/* ÅÐÏ¿¼Â¹Ô */
+/* ç™»éŒ²å®Ÿè¡Œ */
 function lfRegistData($array, $arrRegistColumn) {
 	global $objConn;
 	global $objCustomer;
@@ -206,7 +206,7 @@ function lfRegistData($array, $arrRegistColumn) {
 	
 	$arrRegist['customer_id'] = $objCustomer->getvalue('customer_id');
 	
-	//-- ÊÔ½¸ÅÐÏ¿¼Â¹Ô
+	//-- ç·¨é›†ç™»éŒ²å®Ÿè¡Œ
 	$objConn->query("BEGIN");
 	if ($array['other_deliv_id'] != ""){
 		$objConn->autoExecute("dtb_other_deliv", $arrRegist, "other_deliv_id='" .addslashes($array["other_deliv_id"]). "'");
@@ -222,24 +222,24 @@ function lfRegistData($array, $arrRegistColumn) {
 	return $array['other_deliv_id'];
 }
 
-//----¡¡¼èÆÀÊ¸»úÎó¤ÎÊÑ´¹
+//----ã€€å–å¾—æ–‡å­—åˆ—ã®å¤‰æ›
 function lfConvertParam($array, $arrRegistColumn) {
 	/*
-	 *	Ê¸»úÎó¤ÎÊÑ´¹
-	 *	K :  ¡ÖÈ¾³Ñ(ŽÊŽÝŽ¶Ž¸)ÊÒ²¾Ì¾¡×¤ò¡ÖÁ´³ÑÊÒ²¾Ì¾¡×¤ËÊÑ´¹
-	 *	C :  ¡ÖÁ´³Ñ¤Ò¤é²¾Ì¾¡×¤ò¡ÖÁ´³Ñ¤«¤¿²¾Ì¾¡×¤ËÊÑ´¹
-	 *	V :  ÂùÅÀÉÕ¤­¤ÎÊ¸»ú¤ò°ìÊ¸»ú¤ËÊÑ´¹¡£"K","H"¤È¶¦¤Ë»ÈÍÑ¤·¤Þ¤¹	
-	 *	n :  ¡ÖÁ´³Ñ¡×¿ô»ú¤ò¡ÖÈ¾³Ñ(ŽÊŽÝŽ¶Ž¸)¡×¤ËÊÑ´¹
-	 *  a :  Á´³Ñ±Ñ¿ô»ú¤òÈ¾³Ñ±Ñ¿ô»ú¤ËÊÑ´¹¤¹¤ë
+	 *	æ–‡å­—åˆ—ã®å¤‰æ›
+	 *	K :  ã€ŒåŠè§’(ï¾Šï¾ï½¶ï½¸)ç‰‡ä»®åã€ã‚’ã€Œå…¨è§’ç‰‡ä»®åã€ã«å¤‰æ›
+	 *	C :  ã€Œå…¨è§’ã²ã‚‰ä»®åã€ã‚’ã€Œå…¨è§’ã‹ãŸä»®åã€ã«å¤‰æ›
+	 *	V :  æ¿ç‚¹ä»˜ãã®æ–‡å­—ã‚’ä¸€æ–‡å­—ã«å¤‰æ›ã€‚"K","H"ã¨å…±ã«ä½¿ç”¨ã—ã¾ã™	
+	 *	n :  ã€Œå…¨è§’ã€æ•°å­—ã‚’ã€ŒåŠè§’(ï¾Šï¾ï½¶ï½¸)ã€ã«å¤‰æ›
+	 *  a :  å…¨è§’è‹±æ•°å­—ã‚’åŠè§’è‹±æ•°å­—ã«å¤‰æ›ã™ã‚‹
 	 */
-	// ¥«¥é¥àÌ¾¤È¥³¥ó¥Ð¡¼¥È¾ðÊó
+	// ã‚«ãƒ©ãƒ åã¨ã‚³ãƒ³ãƒãƒ¼ãƒˆæƒ…å ±
 	foreach ($arrRegistColumn as $data) {
 		$arrConvList[ $data["column"] ] = $data["convert"];
 	}
 	
-	// Ê¸»úÊÑ´¹
+	// æ–‡å­—å¤‰æ›
 	foreach ($arrConvList as $key => $val) {
-		// POST¤µ¤ì¤Æ¤­¤¿ÃÍ¤Î¤ßÊÑ´¹¤¹¤ë¡£
+		// POSTã•ã‚Œã¦ããŸå€¤ã®ã¿å¤‰æ›ã™ã‚‹ã€‚
 		if(strlen(($array[$key])) > 0) {
 			$array[$key] = mb_convert_kana($array[$key] ,$val);
 		}
@@ -247,39 +247,39 @@ function lfConvertParam($array, $arrRegistColumn) {
 	return $array;
 }
 
-// Í¹ÊØÈÖ¹æ¤«¤é½»½ê¤Î¼èÆÀ
+// éƒµä¾¿ç•ªå·ã‹ã‚‰ä½æ‰€ã®å–å¾—
 function lfGetAddress($zipcode) {
 	global $arrPref;
 
 	$conn = new SC_DBconn(ZIP_DSN);
 
-	// Í¹ÊØÈÖ¹æ¸¡º÷Ê¸ºîÀ®
+	// éƒµä¾¿ç•ªå·æ¤œç´¢æ–‡ä½œæˆ
 	$zipcode = mb_convert_kana($zipcode ,"n");
 	$sqlse = "SELECT state, city, town FROM mtb_zip WHERE zipcode = ?";
 
 	$data_list = $conn->getAll($sqlse, array($zipcode));
 
-	// ¥¤¥ó¥Ç¥Ã¥¯¥¹¤ÈÃÍ¤òÈ¿Å¾¤µ¤»¤ë¡£
+	// ã‚¤ãƒ³ãƒ‡ãƒƒã‚¯ã‚¹ã¨å€¤ã‚’åè»¢ã•ã›ã‚‹ã€‚
 	$arrREV_PREF = array_flip($arrPref);
 
 	/*
-		ÁíÌ³¾Ê¤«¤é¥À¥¦¥ó¥í¡¼¥É¤·¤¿¥Ç¡¼¥¿¤ò¤½¤Î¤Þ¤Þ¥¤¥ó¥Ý¡¼¥È¤¹¤ë¤È
-		°Ê²¼¤Î¤è¤¦¤ÊÊ¸»úÎó¤¬Æþ¤Ã¤Æ¤¤¤ë¤Î¤Ç	ÂÐºö¤¹¤ë¡£
-		¡¦¡Ê£±¡¦£±£¹ÃúÌÜ¡Ë
-		¡¦°Ê²¼¤Ë·ÇºÜ¤¬¤Ê¤¤¾ì¹ç
+		ç·å‹™çœã‹ã‚‰ãƒ€ã‚¦ãƒ³ãƒ­ãƒ¼ãƒ‰ã—ãŸãƒ‡ãƒ¼ã‚¿ã‚’ãã®ã¾ã¾ã‚¤ãƒ³ãƒãƒ¼ãƒˆã™ã‚‹ã¨
+		ä»¥ä¸‹ã®ã‚ˆã†ãªæ–‡å­—åˆ—ãŒå…¥ã£ã¦ã„ã‚‹ã®ã§	å¯¾ç­–ã™ã‚‹ã€‚
+		ãƒ»ï¼ˆï¼‘ãƒ»ï¼‘ï¼™ä¸ç›®ï¼‰
+		ãƒ»ä»¥ä¸‹ã«æŽ²è¼‰ãŒãªã„å ´åˆ
 	*/
 	$town =  $data_list[0]['town'];
-	$town = ereg_replace("¡Ê.*¡Ë$","",$town);
-	$town = ereg_replace("°Ê²¼¤Ë·ÇºÜ¤¬¤Ê¤¤¾ì¹ç","",$town);
+	$town = ereg_replace("ï¼ˆ.*ï¼‰$","",$town);
+	$town = ereg_replace("ä»¥ä¸‹ã«æŽ²è¼‰ãŒãªã„å ´åˆ","",$town);
 	$data_list[0]['town'] = $town;
 	$data_list[0]['state'] = $arrREV_PREF[$data_list[0]['state']];
 
 	return $data_list;
 }
 
-/* ÊÌ¤Î¤ªÆÏ¤±Àè½»½ê¤ò°ì»þ¼õÃí¥Æ¡¼¥Ö¥ë¤Ø */
+/* åˆ¥ã®ãŠå±Šã‘å…ˆä½æ‰€ã‚’ä¸€æ™‚å—æ³¨ãƒ†ãƒ¼ãƒ–ãƒ«ã¸ */
 function lfRegistOtherDelivData($uniqid, $objCustomer, $other_deliv_id) {
-	// ÅÐÏ¿¥Ç¡¼¥¿¤ÎºîÀ®
+	// ç™»éŒ²ãƒ‡ãƒ¼ã‚¿ã®ä½œæˆ
 	$sqlval['order_temp_id'] = $uniqid;
 	$sqlval['update_date'] = 'Now()';
 	$sqlval['customer_id'] = $objCustomer->getValue('customer_id');

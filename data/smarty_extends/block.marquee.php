@@ -1,22 +1,22 @@
 <?php
 /**
- * marquee¥¿¥°¤Ç°Ï¤à¡£
+ * marqueeã‚¿ã‚°ã§å›²ã‚€ã€‚
  *
- * DoCoMo¤Î·ÈÂÓÃ¼Ëö¤Î¾ì¹ç¤Ïmarquee¤ò»ÈÍÑ¤·¤Ê¤¤¡£
+ * DoCoMoã®æºå¸¯ç«¯æœ«ã®å ´åˆã¯marqueeã‚’ä½¿ç”¨ã—ãªã„ã€‚
  *
- * @param string $value ÆşÎÏ
- * @return string ½ĞÎÏ
+ * @param string $value å…¥åŠ›
+ * @return string å‡ºåŠ›
  */
 function smarty_block_marquee($params, $content, &$smarty, &$repeat) {
-	// {/marquee}¤Î¾ì¹ç¤Î¤ß½ĞÎÏ¤¹¤ë¡£
+	// {/marquee}ã®å ´åˆã®ã¿å‡ºåŠ›ã™ã‚‹ã€‚
 	if ($repeat || !isset($content)) {
 		return null;
 	}
 
-	// ËöÈø¤Î²ş¹Ô¤Ê¤É¤ò¼è¤ê½ü¤¯¡£
+	// æœ«å°¾ã®æ”¹è¡Œãªã©ã‚’å–ã‚Šé™¤ãã€‚
 	$content = rtrim($content);
 
-	// marquee¥¿¥°¤ò»ÈÍÑ¤·¤Ê¤¤¾ì¹ç
+	// marqueeã‚¿ã‚°ã‚’ä½¿ç”¨ã—ãªã„å ´åˆ
 	if (defined('MOBILE_SITE') && GC_MobileUserAgent::getCarrier() == 'docomo') {
 		return "<div>\n$content\n</div>\n";
 	}

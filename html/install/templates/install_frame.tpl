@@ -13,7 +13,7 @@
 <link rel="stylesheet" href="../admin/css/install.css" type="text/css" >
 <script type="text/javascript" src="../js/css.js"></script>
 <script type="text/javascript" src="../js/navi.js"></script>
-<title>EC CUBE •§•Û•π•»°º•Î≤ËÃÃ</title>
+<title>EC CUBE „Ç§„É≥„Çπ„Éà„Éº„É´ÁîªÈù¢</title>
 </head>
 
 <body bgcolor="#ffffff" text="#000000" link="#006699" vlink="#006699" alink="#006699" leftmargin="0" topmargin="0" marginwidth="0" marginheight="0" onLoad="preLoadImg('<!--{$smarty.const.URL_DIR}-->');<!--{$tpl_onload}-->">
@@ -23,7 +23,7 @@
 <div align="center">
 <a name="top"></a>
 
-<!--¢ßHEADER-->
+<!--‚ñºHEADER-->
 <table width="912" border="0" cellspacing="0" cellpadding="0" summary=" ">
 	<tr valign="top">
 		<td><img src="../img/header/header_left.jpg" width="17" height="50" alt=""></td>
@@ -38,14 +38,14 @@
 		<td><img src="../img/header/header_right.jpg" width="17" height="50" alt=""></td>
 	</tr>
 </table>
-<!--¢•HEADER-->
+<!--‚ñ≤HEADER-->
 
-<!--¢ßCONTENTS-->
+<!--‚ñºCONTENTS-->
 <table width="912" border="0" cellspacing="0" cellpadding="0" summary=" ">
 	<tr valign="top">
 		<td background="../img/common/left_bg.jpg"><img src="../img/common/left.jpg" width="17" height="443" alt=""></td>
 		<td>
-		<!--°˙°˙•·•§•Û•≥•Û•∆•Û•ƒ°˙°˙-->
+		<!--‚òÖ‚òÖ„É°„Ç§„É≥„Ç≥„É≥„ÉÜ„É≥„ÉÑ‚òÖ‚òÖ-->
 		<table width="878" border="0" cellspacing="0" cellpadding="0" summary=" ">
 			<tr valign="top">
 				<td class="mainbg" align="center" height="450">
@@ -57,7 +57,7 @@
 					<tr>
 						<td background="../img/contents/main_left.jpg"><img src="../img/common/_.gif" width="14" height="1" alt=""></td>
 						<td bgcolor="#cccccc">
-						<!--∏°∫˜æÚ∑Ô¿ﬂƒÍ•∆°º•÷•Î§≥§≥§´§È-->
+						<!--Ê§úÁ¥¢Êù°‰ª∂Ë®≠ÂÆö„ÉÜ„Éº„Éñ„É´„Åì„Åì„Åã„Çâ-->
 						<table width="534" border="0" cellspacing="0" cellpadding="0" summary=" ">
 							<tr>
 								<td bgcolor="#ffffff" align="center">
@@ -65,7 +65,7 @@
 								</td>
 							</tr>							
 						</table>
-						<!--∏°∫˜æÚ∑Ô¿ﬂƒÍ•∆°º•÷•Î§≥§≥§ﬁ§«-->
+						<!--Ê§úÁ¥¢Êù°‰ª∂Ë®≠ÂÆö„ÉÜ„Éº„Éñ„É´„Åì„Åì„Åæ„Åß-->
 						</td>
 						<td background="../img/contents/main_right.jpg"><img src="../img/common/_.gif" width="14" height="1" alt=""></td>
 					</tr>
@@ -77,14 +77,14 @@
 				</td>
 			</tr>
 		</table>
-		<!--°˙°˙•·•§•Û•≥•Û•∆•Û•ƒ°˙°˙-->		
+		<!--‚òÖ‚òÖ„É°„Ç§„É≥„Ç≥„É≥„ÉÜ„É≥„ÉÑ‚òÖ‚òÖ-->		
 		</td>
 		<td background="../img/common/right_bg.jpg"><div align="justify"><img src="../img/common/right.jpg" width="17" height="443" alt=""></div></td>
 	</tr>
 </table>
-<!--¢•CONTENTS-->
+<!--‚ñ≤CONTENTS-->
 
-<!--¢ßFOOTER-->
+<!--‚ñºFOOTER-->
 <table width="912" border="0" cellspacing="0" cellpadding="0" summary=" ">
 	<tr valign="top">
 		<td background="../img/common/left_bg.jpg"><img src="../img/common/_.gif" width="17" height="1" alt=""></td>
@@ -113,7 +113,7 @@
 	</tr>
 	<tr><td height="10"></td></tr>
 </table>
-<!--¢•FOOTER-->
+<!--‚ñ≤FOOTER-->
 </div>
 
 </body>

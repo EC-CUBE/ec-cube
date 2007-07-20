@@ -5,7 +5,7 @@
  * http://www.lockon.co.jp/
  */
 *}-->
-<center>¥Ñ¥¹¥ï¡¼¥É¤òËº¤ì¤¿Êý</center>
+<center>ãƒ‘ã‚¹ãƒ¯ãƒ¼ãƒ‰ã‚’å¿˜ã‚ŒãŸæ–¹</center>
 
 <hr>
 
@@ -13,25 +13,25 @@
 <font color="#ff0000"><!--{$errmsg}--></font><br>
 <!--{/if}-->
 
-¤´ÅÐÏ¿»þ¤ËÆþÎÏ¤·¤¿²¼µ­¼ÁÌä¤ÎÅú¤¨¤òÆþÎÏ¤·¤Æ¡Ö¼¡¤Ø¡×¥Ü¥¿¥ó¤ò¥¯¥ê¥Ã¥¯¤·¤Æ¤¯¤À¤µ¤¤¡£<br>
-¢¨²¼µ­¼ÁÌä¤ÎÅú¤¨¤ò¤ªËº¤ì¤Ë¤Ê¤é¤ì¤¿¾ì¹ç¤Ï¡¢<a href="mailto:<!--{$arrSiteInfo.email02|escape}-->"><!--{$arrSiteInfo.email02|escape}--></a>¤Þ¤Ç¤´Ï¢Íí¤¯¤À¤µ¤¤¡£<br>
+ã”ç™»éŒ²æ™‚ã«å…¥åŠ›ã—ãŸä¸‹è¨˜è³ªå•ã®ç­”ãˆã‚’å…¥åŠ›ã—ã¦ã€Œæ¬¡ã¸ã€ãƒœã‚¿ãƒ³ã‚’ã‚¯ãƒªãƒƒã‚¯ã—ã¦ãã ã•ã„ã€‚<br>
+â€»ä¸‹è¨˜è³ªå•ã®ç­”ãˆã‚’ãŠå¿˜ã‚Œã«ãªã‚‰ã‚ŒãŸå ´åˆã¯ã€<a href="mailto:<!--{$arrSiteInfo.email02|escape}-->"><!--{$arrSiteInfo.email02|escape}--></a>ã¾ã§ã”é€£çµ¡ãã ã•ã„ã€‚<br>
 
 <form action="<!--{$smarty.server.PHP_SELF|escape}-->" method="post">
 <input type="hidden" name="mode" value="secret_check">
 
-<!--{$Reminder|escape}-->¡§<input type="text" name="input_reminder" value="" size="40"><br>
+<!--{$Reminder|escape}-->ï¼š<input type="text" name="input_reminder" value="" size="40"><br>
 
-<center><input type="submit" value="¼¡¤Ø" name="next"></center>
+<center><input type="submit" value="æ¬¡ã¸" name="next"></center>
 </form>
 
 <br>
 <hr>
 
-<a href="<!--{$smarty.const.MOBILE_URL_CART_TOP}-->" accesskey="9"><!--{9|numeric_emoji}-->¤«¤´¤ò¸«¤ë</a><br>
-<a href="<!--{$smarty.const.MOBILE_URL_SITE_TOP}-->" accesskey="0"><!--{0|numeric_emoji}-->TOP¥Ú¡¼¥¸¤Ø</a><br>
+<a href="<!--{$smarty.const.MOBILE_URL_CART_TOP}-->" accesskey="9"><!--{9|numeric_emoji}-->ã‹ã”ã‚’è¦‹ã‚‹</a><br>
+<a href="<!--{$smarty.const.MOBILE_URL_SITE_TOP}-->" accesskey="0"><!--{0|numeric_emoji}-->TOPãƒšãƒ¼ã‚¸ã¸</a><br>
 
 <br>
 
-<!-- ¢§¥Õ¥Ã¥¿¡¼ ¤³¤³¤«¤é -->
+<!-- â–¼ãƒ•ãƒƒã‚¿ãƒ¼ ã“ã“ã‹ã‚‰ -->
 <!--{include file='footer.tpl'}-->
-<!-- ¢¥¥Õ¥Ã¥¿¡¼ ¤³¤³¤Þ¤Ç -->
+<!-- â–²ãƒ•ãƒƒã‚¿ãƒ¼ ã“ã“ã¾ã§ -->

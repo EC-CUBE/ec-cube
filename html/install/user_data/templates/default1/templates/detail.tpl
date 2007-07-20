@@ -5,7 +5,7 @@
  *}-->
 <script type="text/javascript">
 <!--
-// •ª•Ï•Ø•»•‹•√•Ø•π§Àπ‡Ã‹§Ú≥‰§Í≈ˆ§∆§Î°£
+// „Çª„É¨„ÇØ„Éà„Éú„ÉÉ„ÇØ„Çπ„Å´È†ÖÁõÆ„ÇíÂâ≤„ÇäÂΩì„Å¶„Çã„ÄÇ
 function lnSetSelect(form, name1, name2, val) {
 	
 	sele11 = document[form][name1];
@@ -14,13 +14,13 @@ function lnSetSelect(form, name1, name2, val) {
 	if(sele11 && sele12) {
 		index = sele11.selectedIndex;
 		
-		// •ª•Ï•Ø•»•‹•√•Ø•π§Œ•Ø•Í•¢
+		// „Çª„É¨„ÇØ„Éà„Éú„ÉÉ„ÇØ„Çπ„ÅÆ„ÇØ„É™„Ç¢
 		count = sele12.options.length;
 		for(i = count; i >= 0; i--) {
 			sele12.options[i] = null;
 		}
 		
-		// •ª•Ï•Ø•»•‹•√•Ø•π§À√Õ§Ú≥‰§Í≈ˆ§∆§Î
+		// „Çª„É¨„ÇØ„Éà„Éú„ÉÉ„ÇØ„Çπ„Å´ÂÄ§„ÇíÂâ≤„ÇäÂΩì„Å¶„Çã
 		len = lists[index].length;
 		for(i = 0; i < len; i++) {
 			sele12.options[i] = new Option(lists[index][i], vals[index][i]);
@@ -43,15 +43,15 @@ function lnSetSelect(form, name1, name2, val) {
 }
 </style>
 
-<!--¢ßCONTENTS-->
+<!--‚ñºCONTENTS-->
 <table width="" cellspacing="0" cellpadding="0" summary=" ">
 	<tr>
 		<td bgcolor="#ffffff" valign="top" align="left">
-		<!--¢ßMAIN CONTENTS-->
+		<!--‚ñºMAIN CONTENTS-->
 		<table cellspacing="0" cellpadding="0" summary=" ">
 			<tr valign="top">
 				<td align="right" bgcolor="#ffffff">
-				<!--•ø•§•»•Î§≥§≥§´§È-->
+				<!--„Çø„Ç§„Éà„É´„Åì„Åì„Åã„Çâ-->
 				<table width="580" border="0" cellspacing="0" cellpadding="0" summary=" ">
 					<tr><td colspan="3"><img src="<!--{$smarty.const.URL_DIR}-->img/products/title_top.gif" width="580" height="8" alt=""></td></tr>
 					<tr bgcolor="#ffebca">
@@ -59,7 +59,7 @@ function lnSetSelect(form, name1, name2, val) {
 						<td>
 						<table width="546" border="0" cellspacing="0" cellpadding="0" summary=" ">
 							<tr valign="top">
-								<td class="fs18"><span class="blackst"><!--°˙•ø•§•»•Î°˙--><!--{$tpl_subtitle|escape}--></span></td>
+								<td class="fs18"><span class="blackst"><!--‚òÖ„Çø„Ç§„Éà„É´‚òÖ--><!--{$tpl_subtitle|escape}--></span></td>
 							</tr>
 						</table>
 						</td>
@@ -68,12 +68,12 @@ function lnSetSelect(form, name1, name2, val) {
 					<tr><td colspan="3"><img src="<!--{$smarty.const.URL_DIR}-->img/products/title_under.gif" width="580" height="8" alt=""></td></tr>
 					<tr><td height="10"></td></tr>
 				</table>
-				<!--•ø•§•»•Î§≥§≥§ﬁ§«-->
+				<!--„Çø„Ç§„Éà„É´„Åì„Åì„Åæ„Åß-->
 
-				<!--æ‹∫Ÿ§≥§≥§´§È-->
+				<!--Ë©≥Á¥∞„Åì„Åì„Åã„Çâ-->
 				<table width="580" border="0" cellspacing="0" cellpadding="0" summary=" ">
 					<tr>
-						<td colspan="2" class="fs12"><!--°˙æ‹∫Ÿ•·•§•Û•≥•·•Û•»°˙--><!--{$arrProduct.main_comment|nl2br}--></td>
+						<td colspan="2" class="fs12"><!--‚òÖË©≥Á¥∞„É°„Ç§„É≥„Ç≥„É°„É≥„Éà‚òÖ--><!--{$arrProduct.main_comment|nl2br}--></td>
 					</tr>
 					<tr><td height="15"></td></tr>
 					<tr valign="top">
@@ -82,9 +82,9 @@ function lnSetSelect(form, name1, name2, val) {
 							<tr>
 								<td align="center" valign="middle" width="<!--{$smarty.const.NORMAL_IMAGE_WIDTH}-->" height="<!--{$smarty.const.NORMAL_IMAGE_HEIGHT}-->">
 								<!--{if $arrProduct.main_large_image != ""}-->
-									<!--•·•§•Û≤Ë¡¸--><!--{assign var=key value="main_image"}--><a href="<!--{$smarty.server.PHP_SELF|escape}-->" onclick="win01('./detail_image.php?product_id=<!--{$arrProduct.product_id}-->&image=main_large_image<!--{if $smarty.get.admin == 'on'}-->&admin=on<!--{/if}-->','detail_image','<!--{$arrFile.main_large_image.width+60}-->', '<!--{$arrFile.main_large_image.height+80}-->'); return false;" target="_blank"><img src="<!--{$arrFile[$key].filepath}-->" alt="<!--{$arrProduct.name|escape}-->" /></a>
+									<!--„É°„Ç§„É≥ÁîªÂÉè--><!--{assign var=key value="main_image"}--><a href="<!--{$smarty.server.PHP_SELF|escape}-->" onclick="win01('./detail_image.php?product_id=<!--{$arrProduct.product_id}-->&image=main_large_image<!--{if $smarty.get.admin == 'on'}-->&admin=on<!--{/if}-->','detail_image','<!--{$arrFile.main_large_image.width+60}-->', '<!--{$arrFile.main_large_image.height+80}-->'); return false;" target="_blank"><img src="<!--{$arrFile[$key].filepath}-->" alt="<!--{$arrProduct.name|escape}-->" /></a>
 								<!--{else}-->
-									<div id="picture"><!--•·•§•Û≤Ë¡¸--><!--{assign var=key value="main_image"}--><img src="<!--{$arrFile[$key].filepath}-->" " alt="<!--{$arrProduct.name|escape}-->" /></div>
+									<div id="picture"><!--„É°„Ç§„É≥ÁîªÂÉè--><!--{assign var=key value="main_image"}--><img src="<!--{$arrFile[$key].filepath}-->" " alt="<!--{$arrProduct.name|escape}-->" /></div>
 								<!--{/if}-->
 								</td>
 							</tr>
@@ -92,7 +92,7 @@ function lnSetSelect(form, name1, name2, val) {
 							<tr>
 								<td>
 								<!--{if $arrProduct.main_large_image != ""}-->
-									<!--°˙≥»¬Á§π§Î°˙--><a href="<!--{$smarty.server.PHP_SELF|escape}-->" onclick="win01('./detail_image.php?product_id=<!--{$arrProduct.product_id}-->&image=main_large_image<!--{if $smarty.get.admin == 'on'}-->&admin=on<!--{/if}-->','detail_image', '<!--{$arrFile.main_large_image.width+60}-->', '<!--{$arrFile.main_large_image.height+80}-->'); return false;" target="_blank"><img src="<!--{$smarty.const.URL_DIR}-->img/products/b_expansion.gif" width="85" height="13" alt="≤Ë¡¸§Ú≥»¬Á§π§Î" /></a>
+									<!--‚òÖÊã°Â§ß„Åô„Çã‚òÖ--><a href="<!--{$smarty.server.PHP_SELF|escape}-->" onclick="win01('./detail_image.php?product_id=<!--{$arrProduct.product_id}-->&image=main_large_image<!--{if $smarty.get.admin == 'on'}-->&admin=on<!--{/if}-->','detail_image', '<!--{$arrFile.main_large_image.width+60}-->', '<!--{$arrFile.main_large_image.height+80}-->'); return false;" target="_blank"><img src="<!--{$smarty.const.URL_DIR}-->img/products/b_expansion.gif" width="85" height="13" alt="ÁîªÂÉè„ÇíÊã°Â§ß„Åô„Çã" /></a>
 								<!--{/if}-->
 								</td>
 							</tr>
@@ -100,7 +100,7 @@ function lnSetSelect(form, name1, name2, val) {
 						</td>
 						<td align="right">
 						<table width="280" border="0" cellspacing="0" cellpadding="0" summary=" ">
-							<!--•¢•§•≥•Û-->
+							<!--„Ç¢„Ç§„Ç≥„É≥-->
 							<tr>
 								<td>
 									<!--{assign var=sts_cnt value=0}-->
@@ -113,52 +113,52 @@ function lnSetSelect(form, name1, name2, val) {
 									<!--{/section}-->
 								</td>
 							</tr>
-							<!--•¢•§•≥•Û-->
+							<!--„Ç¢„Ç§„Ç≥„É≥-->
 							<!--{if $sts_cnt > 0}--><tr><td height="5"></td></tr><!--{/if}-->
 							<tr>
-								<td class="fs18"><span class="orangest"><!--°˙æ¶… Ãæ°˙--><!--{$arrProduct.name|escape}--></span></td>
+								<td class="fs18"><span class="orangest"><!--‚òÖÂïÜÂìÅÂêç‚òÖ--><!--{$arrProduct.name|escape}--></span></td>
 							</tr>
 							<tr><td height="3"></td></tr>
 							<tr>
 								<td><span class="red">
-								<!--°˙æ¶… •≥°º•…°˙-->
-									<span class="fs12">æ¶… •≥°º•…</span><span class="fs10"></span></span><span class="redst"><span class="fs12">°ß
+								<!--‚òÖÂïÜÂìÅ„Ç≥„Éº„Éâ‚òÖ-->
+									<span class="fs12">ÂïÜÂìÅ„Ç≥„Éº„Éâ</span><span class="fs10"></span></span><span class="redst"><span class="fs12">Ôºö
 									<!--{assign var=codecnt value=$arrProductCode|@count}-->
 									<!--{assign var=codemax value=`$codecnt-1`}-->
 									<!--{if $codecnt > 1}-->
-										<!--{$arrProductCode.0}-->°¡<!--{$arrProductCode[$codemax]}-->
+										<!--{$arrProductCode.0}-->„Äú<!--{$arrProductCode[$codemax]}-->
 									<!--{else}-->
 										<!--{$arrProductCode.0}-->
 									<!--{/if}-->
 									</span></span><br/>
-								<!--°˙≤¡≥ °˙-->
-									<span class="red"><span class="fs12"><!--{$smarty.const.SALE_PRICE_TITLE}--></span><span class="fs10">(¿«π˛)</span></span><span class="redst"><span class="fs12">°ß
+								<!--‚òÖ‰æ°Ê†º‚òÖ-->
+									<span class="red"><span class="fs12"><!--{$smarty.const.SALE_PRICE_TITLE}--></span><span class="fs10">(Á®éËæº)</span></span><span class="redst"><span class="fs12">Ôºö
 									<!--{if $arrProduct.price02_min == $arrProduct.price02_max}-->				
 										<!--{$arrProduct.price02_min|sfPreTax:$arrSiteInfo.tax:$arrSiteInfo.tax_rule|number_format}-->
 									<!--{else}-->
-										<!--{$arrProduct.price02_min|sfPreTax:$arrSiteInfo.tax:$arrSiteInfo.tax_rule|number_format}-->°¡<!--{$arrProduct.price02_max|sfPreTax:$arrSiteInfo.tax:$arrSiteInfo.tax_rule|number_format}-->
+										<!--{$arrProduct.price02_min|sfPreTax:$arrSiteInfo.tax:$arrSiteInfo.tax_rule|number_format}-->„Äú<!--{$arrProduct.price02_max|sfPreTax:$arrSiteInfo.tax:$arrSiteInfo.tax_rule|number_format}-->
 									<!--{/if}-->
-									±ﬂ</span></span><br/>
+									ÂÜÜ</span></span><br/>
 									
 									<!--{if $arrProduct.price01_max > 0}-->
-										<span class="fs12"><span class="red"><!--{$smarty.const.NORMAL_PRICE_TITLE}-->°ß</span><span class="redst">
+										<span class="fs12"><span class="red"><!--{$smarty.const.NORMAL_PRICE_TITLE}-->Ôºö</span><span class="redst">
 										<!--{if $arrProduct.price01_min == $arrProduct.price01_max}-->				
 											<!--{$arrProduct.price01_min|number_format}-->
 										<!--{else}-->
-											<!--{$arrProduct.price01_min|number_format}-->°¡<!--{$arrProduct.price01_max|number_format}-->
+											<!--{$arrProduct.price01_min|number_format}-->„Äú<!--{$arrProduct.price01_max|number_format}-->
 										<!--{/if}-->
-										±ﬂ
+										ÂÜÜ
 										</span></span><br/>
 									<!--{/if}-->
-								<!--°˙•›•§•Û•»°˙-->
-									<span class="red"><span class="fs12"> •›•§•Û•»</span></span><span class="redst"><span class="fs12">°ß
+								<!--‚òÖ„Éù„Ç§„É≥„Éà‚òÖ-->
+									<span class="red"><span class="fs12"> „Éù„Ç§„É≥„Éà</span></span><span class="redst"><span class="fs12">Ôºö
 								<!--{if $arrProduct.price02_min == $arrProduct.price02_max}-->
 									<!--{$arrProduct.price02_min|sfPrePoint:$arrProduct.point_rate:$smarty.const.POINT_RULE:$arrProduct.product_id}-->
 								<!--{else}-->
 									<!--{if $arrProduct.price02_min|sfPrePoint:$arrProduct.point_rate:$smarty.const.POINT_RULE:$arrProduct.product_id == $arrProduct.price02_max|sfPrePoint:$arrProduct.point_rate:$smarty.const.POINT_RULE:$arrProduct.product_id}-->
 										<!--{$arrProduct.price02_min|sfPrePoint:$arrProduct.point_rate:$smarty.const.POINT_RULE:$arrProduct.product_id}-->
 									<!--{else}-->
-										<!--{$arrProduct.price02_min|sfPrePoint:$arrProduct.point_rate:$smarty.const.POINT_RULE:$arrProduct.product_id}-->°¡<!--{$arrProduct.price02_max|sfPrePoint:$arrProduct.point_rate:$smarty.const.POINT_RULE:$arrProduct.product_id}-->
+										<!--{$arrProduct.price02_min|sfPrePoint:$arrProduct.point_rate:$smarty.const.POINT_RULE:$arrProduct.product_id}-->„Äú<!--{$arrProduct.price02_max|sfPrePoint:$arrProduct.point_rate:$smarty.const.POINT_RULE:$arrProduct.product_id}-->
 									<!--{/if}-->
 								<!--{/if}-->
 								Pt</span></span>
@@ -169,7 +169,7 @@ function lnSetSelect(form, name1, name2, val) {
 							<input type="hidden" name="product_id" value="<!--{$tpl_product_id}-->">
 							
 							<!--{if $tpl_classcat_find1}-->
-							<tr><td height="5" colspan="2" align="left" class="fs12"><span class="redst"><!--{if $arrErr.classcategory_id1 != ""}-->¢® <!--{$tpl_class_name1}-->§Ú∆˛Œœ§∑§∆≤º§µ§§°£<!--{/if}--></span></td></tr>
+							<tr><td height="5" colspan="2" align="left" class="fs12"><span class="redst"><!--{if $arrErr.classcategory_id1 != ""}-->‚Äª <!--{$tpl_class_name1}-->„ÇíÂÖ•Âäõ„Åó„Å¶‰∏ã„Åï„ÅÑ„ÄÇ<!--{/if}--></span></td></tr>
 							<tr>
 								<td class="fs12"><img src="<!--{$smarty.const.URL_DIR}-->img/common/arrow_gray.gif" width="15" height="10" alt=""><strong><!--{$tpl_class_name1}--></strong></td>
 							</tr>
@@ -177,7 +177,7 @@ function lnSetSelect(form, name1, name2, val) {
 							<tr>
 								<td>
 									<select name="classcategory_id1" style="<!--{$arrErr.classcategory_id1|sfGetErrorColor}-->" onchange="lnSetSelect('form1', 'classcategory_id1', 'classcategory_id2', ''); ">
-									<option value="">¡™¬Ú§∑§∆§Ø§¿§µ§§</option>
+									<option value="">ÈÅ∏Êäû„Åó„Å¶„Åè„Å†„Åï„ÅÑ</option>
 									<!--{html_options options=$arrClassCat1 selected=$arrForm.classcategory_id1.value}-->
 									</select>
 								</td>
@@ -186,7 +186,7 @@ function lnSetSelect(form, name1, name2, val) {
 							<!--{/if}-->
 							<!--{if $tpl_stock_find}-->
 								<!--{if $tpl_classcat_find2}-->
-								<tr><td height="5" colspan="2" align="left" class="fs12"><span class="redst"><!--{if $arrErr.classcategory_id2 != ""}-->¢® <!--{$tpl_class_name2}-->§Ú∆˛Œœ§∑§∆≤º§µ§§°£<!--{/if}--></span></td></tr>
+								<tr><td height="5" colspan="2" align="left" class="fs12"><span class="redst"><!--{if $arrErr.classcategory_id2 != ""}-->‚Äª <!--{$tpl_class_name2}-->„ÇíÂÖ•Âäõ„Åó„Å¶‰∏ã„Åï„ÅÑ„ÄÇ<!--{/if}--></span></td></tr>
 								<tr>
 									<td class="fs12"><img src="<!--{$smarty.const.URL_DIR}-->img/common/arrow_gray.gif" width="15" height="10" alt=""><strong><!--{$tpl_class_name2}--></strong></td>
 								</tr>
@@ -194,14 +194,14 @@ function lnSetSelect(form, name1, name2, val) {
 								<tr>
 									<td>
 										<select name="classcategory_id2" style="<!--{$arrErr.classcategory_id2|sfGetErrorColor}-->">
-										<option value="">¡™¬Ú§∑§∆§Ø§¿§µ§§</option>
+										<option value="">ÈÅ∏Êäû„Åó„Å¶„Åè„Å†„Åï„ÅÑ</option>
 										</select>
 									</td>
 								</tr>
 								<tr><td height="10"></td></tr>
 								<!--{/if}-->
 								<tr>
-									<td class="fs12"><!--{if $arrErr.quantity != ""}--><span class="redst"><!--{$arrErr.quantity}--></span><br/><!--{/if}--><img src="<!--{$smarty.const.URL_DIR}-->img/common/arrow_gray.gif" width="15" height="10" alt=""><strong>∏ƒ°°øÙ</strong>
+									<td class="fs12"><!--{if $arrErr.quantity != ""}--><span class="redst"><!--{$arrErr.quantity}--></span><br/><!--{/if}--><img src="<!--{$smarty.const.URL_DIR}-->img/common/arrow_gray.gif" width="15" height="10" alt=""><strong>ÂÄã„ÄÄÊï∞</strong>
 										<input type="text" name="quantity" size="3" class="box3" value="<!--{$arrForm.quantity.value|default:1}-->" maxlength=<!--{$smarty.const.INT_LEN}--> style="<!--{$arrErr.quantity|sfGetErrorColor}-->" >
 									</td>
 								</tr>
@@ -210,13 +210,13 @@ function lnSetSelect(form, name1, name2, val) {
 							<tr>
 								<td align="center">
 									<!--{if $tpl_stock_find}-->
-										<!--°˙•´•¥§À∆˛§Ï§Î°˙--><a href="<!--{$smarty.server.PHP_SELF|escape}-->" onclick="document.form1.submit(); return false;" onmouseover="chgImg('<!--{$smarty.const.URL_DIR}-->img/products/b_cartin_on.gif','cart');" onmouseout="chgImg('<!--{$smarty.const.URL_DIR}-->img/products/b_cartin.gif','cart');"><img src="<!--{$smarty.const.URL_DIR}-->img/products/b_cartin.gif" width="115" height="25" alt="•´•¥§À∆˛§Ï§Î" name="cart" id="cart" /></a>
+										<!--‚òÖ„Ç´„Ç¥„Å´ÂÖ•„Çå„Çã‚òÖ--><a href="<!--{$smarty.server.PHP_SELF|escape}-->" onclick="document.form1.submit(); return false;" onmouseover="chgImg('<!--{$smarty.const.URL_DIR}-->img/products/b_cartin_on.gif','cart');" onmouseout="chgImg('<!--{$smarty.const.URL_DIR}-->img/products/b_cartin.gif','cart');"><img src="<!--{$smarty.const.URL_DIR}-->img/products/b_cartin.gif" width="115" height="25" alt="„Ç´„Ç¥„Å´ÂÖ•„Çå„Çã" name="cart" id="cart" /></a>
 									<!--{else}-->
 										<table width="285" cellspacing="0" cellpadding="0" summary=" ">
 										<tr><td height="10"></td></tr>
 										<tr>
 											<td align="center" class="fs12">
-											<span class="red">øΩ§∑Ãı§¥§∂§§§ﬁ§ª§Û§¨°¢¬˛∫£… ¿⁄§Ï√Ê§«§π°£</span>
+											<span class="red">Áî≥„ÅóË®≥„Åî„Åñ„ÅÑ„Åæ„Åõ„Çì„Åå„ÄÅÂè™‰ªäÂìÅÂàá„Çå‰∏≠„Åß„Åô„ÄÇ</span>
 											</td>
 										</tr>
 										<tr><td height="10"></td></tr>
@@ -230,15 +230,15 @@ function lnSetSelect(form, name1, name2, val) {
 					</tr>
 					<tr><td height="35"></td></tr>
 				</table>
-				<!--æ‹∫Ÿ§≥§≥§ﬁ§«-->
+				<!--Ë©≥Á¥∞„Åì„Åì„Åæ„Åß-->
 				
-				<!--¢ß•µ•÷•≥•·•Û•»§≥§≥§´§È-->		
+				<!--‚ñº„Çµ„Éñ„Ç≥„É°„É≥„Éà„Åì„Åì„Åã„Çâ-->		
 				<!--{section name=cnt loop=$smarty.const.PRODUCTSUB_MAX}-->
 				<!--{assign var=key value="sub_title`$smarty.section.cnt.iteration`"}-->
 				<!--{if $arrProduct[$key] != ""}-->
 					<table width="580" border="0" cellspacing="0" cellpadding="7" summary=" ">
 						<tr>
-							<td bgcolor="#e4e4e4" class="fs12"><span class="blackst"><!--°˙•µ•÷•ø•§•»•Î°˙--><!--{$arrProduct[$key]|escape}--></span></td>
+							<td bgcolor="#e4e4e4" class="fs12"><span class="blackst"><!--‚òÖ„Çµ„Éñ„Çø„Ç§„Éà„É´‚òÖ--><!--{$arrProduct[$key]|escape}--></span></td>
 						</tr>
 					</table>
 					
@@ -246,8 +246,8 @@ function lnSetSelect(form, name1, name2, val) {
 						<tr><td height="10"></td></tr>
 						<tr valign="top">
 							<!--{assign var=key value="sub_comment`$smarty.section.cnt.iteration`"}-->
-							<td class="fs12" align="left"><!--°˙•µ•÷•∆•≠•π•»°˙--><!--{$arrProduct[$key]|nl2br}--></td>
-							<!--≥»¬ÁºÃøø§¨§¢§ÎæÏπÁ§≥§≥§´§È-->
+							<td class="fs12" align="left"><!--‚òÖ„Çµ„Éñ„ÉÜ„Ç≠„Çπ„Éà‚òÖ--><!--{$arrProduct[$key]|nl2br}--></td>
+							<!--Êã°Â§ßÂÜôÁúü„Åå„ÅÇ„ÇãÂ†¥Âêà„Åì„Åì„Åã„Çâ-->
 							<!--{assign var=key value="sub_image`$smarty.section.cnt.iteration`"}-->
 							<!--{assign var=lkey value="sub_large_image`$smarty.section.cnt.iteration`"}-->
 							<!--{if $arrFile[$key].filepath != ""}-->
@@ -255,7 +255,7 @@ function lnSetSelect(form, name1, name2, val) {
 							<table width="215" border="0" cellspacing="0" cellpadding="0" summary=" ">	
 								<tr>
 									<!--{if $arrFile[$lkey].filepath != ""}-->
-										<td align="center" valign="middle"><div id="picture"><a href="<!--{$smarty.server.PHP_SELF|escape}-->" onclick="win01('./detail_image.php?product_id=<!--{$arrProduct.product_id}-->&image=<!--{$lkey}--><!--{if $smarty.get.admin == 'on'}-->&admin=on<!--{/if}-->','detail_image','<!--{$arrFile[$lkey].width+60}-->','<!--{$arrFile[$lkey].height+80}-->'); return false;" target="_blank"><!--•µ•÷≤Ë¡¸--><img src="<!--{$arrFile[$key].filepath}-->" alt="<!--{$arrProduct.name|escape}-->" /></a></div>
+										<td align="center" valign="middle"><div id="picture"><a href="<!--{$smarty.server.PHP_SELF|escape}-->" onclick="win01('./detail_image.php?product_id=<!--{$arrProduct.product_id}-->&image=<!--{$lkey}--><!--{if $smarty.get.admin == 'on'}-->&admin=on<!--{/if}-->','detail_image','<!--{$arrFile[$lkey].width+60}-->','<!--{$arrFile[$lkey].height+80}-->'); return false;" target="_blank"><!--„Çµ„ÉñÁîªÂÉè--><img src="<!--{$arrFile[$key].filepath}-->" alt="<!--{$arrProduct.name|escape}-->" /></a></div>
 									<!--{else}-->
 										<td align="center" valign="middle"><img src="<!--{$arrFile[$key].filepath}-->" alt="<!--{$arrProduct.name|escape}-->" /></td>
 									<!--{/if}-->
@@ -263,30 +263,30 @@ function lnSetSelect(form, name1, name2, val) {
 								<tr><td height="8"></td></tr>
 								<tr>
 									<!--{if $arrFile[$lkey].filepath != ""}-->
-										<td align="center"><div id="more"><a href="<!--{$smarty.server.PHP_SELF|escape}-->" onclick="win01('./detail_image.php?product_id=<!--{$arrProduct.product_id}-->&image=<!--{$lkey}--><!--{if $smarty.get.admin == 'on'}-->&admin=on<!--{/if}-->','detail_image','<!--{$arrFile[$lkey].width+60}-->','<!--{$arrFile[$lkey].height+80}-->'); return false;" onmouseover="chgImg('../img/products/b_expansion_on.gif','expansion02');" onmouseout="chgImg('../img/products/b_expansion.gif','expansion02');" target="_blank"><img src="<!--{$smarty.const.URL_DIR}-->img/products/b_expansion.gif" width="85" height="13" alt="≤Ë¡¸§Ú≥»¬Á§π§Î" /></a></div></td>
+										<td align="center"><div id="more"><a href="<!--{$smarty.server.PHP_SELF|escape}-->" onclick="win01('./detail_image.php?product_id=<!--{$arrProduct.product_id}-->&image=<!--{$lkey}--><!--{if $smarty.get.admin == 'on'}-->&admin=on<!--{/if}-->','detail_image','<!--{$arrFile[$lkey].width+60}-->','<!--{$arrFile[$lkey].height+80}-->'); return false;" onmouseover="chgImg('../img/products/b_expansion_on.gif','expansion02');" onmouseout="chgImg('../img/products/b_expansion.gif','expansion02');" target="_blank"><img src="<!--{$smarty.const.URL_DIR}-->img/products/b_expansion.gif" width="85" height="13" alt="ÁîªÂÉè„ÇíÊã°Â§ß„Åô„Çã" /></a></div></td>
 									<!--{/if}-->
 								</tr>
 							</table>
 							</td>
 							<!--{/if}-->
-							<!--≥»¬ÁºÃøø§¨§¢§ÎæÏπÁ§≥§≥§ﬁ§«-->
+							<!--Êã°Â§ßÂÜôÁúü„Åå„ÅÇ„ÇãÂ†¥Âêà„Åì„Åì„Åæ„Åß-->
 						</tr>
 						<tr><td height="30"></td></tr>
 					</table>
 				<!--{/if}-->
 				<!--{/section}-->
-				<!--¢••µ•÷•≥•·•Û•»§≥§≥§ﬁ§«-->
+				<!--‚ñ≤„Çµ„Éñ„Ç≥„É°„É≥„Éà„Åì„Åì„Åæ„Åß-->
 				
-				<!--§™µ“ÕÕ§Œ¿º§≥§≥§´§È-->
+				<!--„ÅäÂÆ¢Êßò„ÅÆÂ£∞„Åì„Åì„Åã„Çâ-->
 				<table width="580" border="0" cellspacing="0" cellpadding="0" summary=" ">
 					<tr>
-						<td><img src="<!--{$smarty.const.URL_DIR}-->img/products/title_voice.jpg" width="580" height="30" alt="§≥§Œæ¶… §À¬–§π§Î§™µ“ÕÕ§Œ¿º"></td>
+						<td><img src="<!--{$smarty.const.URL_DIR}-->img/products/title_voice.jpg" width="580" height="30" alt="„Åì„ÅÆÂïÜÂìÅ„Å´ÂØæ„Åô„Çã„ÅäÂÆ¢Êßò„ÅÆÂ£∞"></td>
 					</tr>
 					<tr><td height="10"></td></tr>
 					<tr>
 						<td>
 						<!--{if count($arrReview) < $smarty.const.REVIEW_REGIST_MAX}-->
-							<!--°˙ø∑µ¨•≥•·•Û•»§ÚΩÒ§≠π˛§‡°˙--><a href="./review.php" onClick="win02('./review.php?product_id=<!--{$arrProduct.product_id}-->','review','580','580'); return false;" onMouseOver="chgImg('../img/products/b_comment_on.gif','review');" onMouseOut="chgImg('../img/products/b_comment.gif','review');" target="_blank"><img src="<!--{$smarty.const.URL_DIR}-->img/products/b_comment.gif" width="150" height="22" alt="ø∑µ¨•≥•·•Û•»§ÚΩÒ§≠π˛§‡" name="review" id="review" /></a>
+							<!--‚òÖÊñ∞Ë¶è„Ç≥„É°„É≥„Éà„ÇíÊõ∏„ÅçËæº„ÇÄ‚òÖ--><a href="./review.php" onClick="win02('./review.php?product_id=<!--{$arrProduct.product_id}-->','review','580','580'); return false;" onMouseOver="chgImg('../img/products/b_comment_on.gif','review');" onMouseOut="chgImg('../img/products/b_comment.gif','review');" target="_blank"><img src="<!--{$smarty.const.URL_DIR}-->img/products/b_comment.gif" width="150" height="22" alt="Êñ∞Ë¶è„Ç≥„É°„É≥„Éà„ÇíÊõ∏„ÅçËæº„ÇÄ" name="review" id="review" /></a>
 						<!--{/if}-->
 						</td>
 					</tr>
@@ -294,7 +294,7 @@ function lnSetSelect(form, name1, name2, val) {
 		
 					<!--{section name=cnt loop=$arrReview}-->
 					<tr>
-						<td class="fs12"><strong><!--{$arrReview[cnt].create_date|sfDispDBDate:false}--></strong>°°≈Íπ∆º‘°ß<!--{if $arrReview[cnt].reviewer_url}--><a href="<!--{$arrReview[cnt].reviewer_url}-->" target="_blank"><!--{$arrReview[cnt].reviewer_name|escape}--></a><!--{else}--><!--{$arrReview[cnt].reviewer_name|escape}--><!--{/if}-->°°§™§π§π§·•Ï•Ÿ•Î°ß<span class="red"><!--{assign var=level value=$arrReview[cnt].recommend_level}--><!--{$arrRECOMMEND[$level]|escape}--></span></td>
+						<td class="fs12"><strong><!--{$arrReview[cnt].create_date|sfDispDBDate:false}--></strong>„ÄÄÊäïÁ®øËÄÖÔºö<!--{if $arrReview[cnt].reviewer_url}--><a href="<!--{$arrReview[cnt].reviewer_url}-->" target="_blank"><!--{$arrReview[cnt].reviewer_name|escape}--></a><!--{else}--><!--{$arrReview[cnt].reviewer_name|escape}--><!--{/if}-->„ÄÄ„Åä„Åô„Åô„ÇÅ„É¨„Éô„É´Ôºö<span class="red"><!--{assign var=level value=$arrReview[cnt].recommend_level}--><!--{$arrRECOMMEND[$level]|escape}--></span></td>
 					</tr>
 					<tr><td height="5"></td></tr>
 					<tr>
@@ -313,13 +313,13 @@ function lnSetSelect(form, name1, name2, val) {
 					
 					<tr><td height="30"></td></tr>
 				</table>
-				<!--§™µ“ÕÕ§Œ¿º§≥§≥§ﬁ§«-->
+				<!--„ÅäÂÆ¢Êßò„ÅÆÂ£∞„Åì„Åì„Åæ„Åß-->
 
 				<!--{if $arrRecommend}-->
-				<!--¢ß•™•π•π•·æ¶… §≥§≥§´§È-->
+				<!--‚ñº„Ç™„Çπ„Çπ„É°ÂïÜÂìÅ„Åì„Åì„Åã„Çâ-->
 				<table width="580" border="0" cellspacing="0" cellpadding="0" summary=" ">
 					<tr>
-						<td colspan=3><img src="<!--{$smarty.const.URL_DIR}-->img/products/title_recommend.jpg" width="580" height="30" alt="•™•π•π•·æ¶… " /></td>
+						<td colspan=3><img src="<!--{$smarty.const.URL_DIR}-->img/products/title_recommend.jpg" width="580" height="30" alt="„Ç™„Çπ„Çπ„É°ÂïÜÂìÅ" /></td>
 					</tr>
 					<tr><td colspan=3 height="10"></td></tr>
 					<tr>
@@ -335,7 +335,7 @@ function lnSetSelect(form, name1, name2, val) {
 					
 					<tr valign="top">
 						<td>
-							<!-- ∫∏ŒÛ -->
+							<!-- Â∑¶Âàó -->
 							<table width="220" border="0" cellspacing="0" cellpadding="0" summary=" ">
 								<tr valign="top">
 									<td align="center" valign="middle"><a href="<!--{$smarty.const.DETAIL_P_HTML}--><!--{$arrRecommend[cnt].product_id}-->">
@@ -351,13 +351,13 @@ function lnSetSelect(form, name1, name2, val) {
 											<!--{assign var=price02_min value=`$arrRecommend[cnt].price02_min`}-->
 											<!--{assign var=price02_max value=`$arrRecommend[cnt].price02_max`}-->
 											<td><span class="fs12"><a href="<!--{$smarty.const.DETAIL_P_HTML}--><!--{$arrRecommend[cnt].product_id}-->"><!--{$arrRecommend[cnt].name|escape}--></a></span><br>
-											<span class="red"><span class="fs12">≤¡≥ </span><span class="fs10">(¿«π˛)</span></span><span class="redst"><span class="fs12">°ß
+											<span class="red"><span class="fs12">‰æ°Ê†º</span><span class="fs10">(Á®éËæº)</span></span><span class="redst"><span class="fs12">Ôºö
 											<!--{if $price02_min == $price02_max}-->
 												<!--{$price02_min|sfPreTax:$arrSiteInfo.tax:$arrSiteInfo.tax_rule|number_format}-->
 											<!--{else}-->
-												<!--{$price02_min|sfPreTax:$arrSiteInfo.tax:$arrSiteInfo.tax_rule|number_format}-->°¡<!--{$price02_max|sfPreTax:$arrSiteInfo.tax:$arrSiteInfo.tax_rule|number_format}-->
+												<!--{$price02_min|sfPreTax:$arrSiteInfo.tax:$arrSiteInfo.tax_rule|number_format}-->„Äú<!--{$price02_max|sfPreTax:$arrSiteInfo.tax:$arrSiteInfo.tax_rule|number_format}-->
 											<!--{/if}-->
-											±ﬂ</span></span></td>
+											ÂÜÜ</span></span></td>
 										</tr>
 										<tr><td height="5"></td></tr>
 										<tr>
@@ -367,7 +367,7 @@ function lnSetSelect(form, name1, name2, val) {
 									</td>
 								</tr>
 							</table>
-							<!-- ∫∏ŒÛ -->
+							<!-- Â∑¶Âàó -->
 						</td>
 						<!--{assign var=nextCnt value=$smarty.section.cnt.index+1}-->
 						
@@ -376,7 +376,7 @@ function lnSetSelect(form, name1, name2, val) {
 						<td>
 						<!--{if $arrRecommend[$nextCnt].product_id}-->
 						
-							<!-- ±¶ŒÛ -->
+							<!-- Âè≥Âàó -->
 							<table width="220" border="0" cellspacing="0" cellpadding="0" summary=" ">
 								<tr valign="top">
 									<td align="center" valign="middle"><a href="<!--{$smarty.const.DETAIL_P_HTML}--><!--{$arrRecommend[$nextCnt].product_id}-->">
@@ -392,13 +392,13 @@ function lnSetSelect(form, name1, name2, val) {
 											<!--{assign var=price02_min value=`$arrRecommend[$nextCnt].price02_min`}-->
 											<!--{assign var=price02_max value=`$arrRecommend[$nextCnt].price02_max`}-->
 											<td><span class="fs12"><a href="<!--{$smarty.const.DETAIL_P_HTML}--><!--{$arrRecommend[$nextCnt].product_id}-->"><!--{$arrRecommend[$nextCnt].name|escape}--></a></span><br>
-											<span class="red"><span class="fs12">≤¡≥ </span><span class="fs10">(¿«π˛)</span></span><span class="redst"><span class="fs12">°ß
+											<span class="red"><span class="fs12">‰æ°Ê†º</span><span class="fs10">(Á®éËæº)</span></span><span class="redst"><span class="fs12">Ôºö
 											<!--{if $price02_min == $price02_max}-->
 												<!--{$price02_min|sfPreTax:$arrSiteInfo.tax:$arrSiteInfo.tax_rule|number_format}-->
 											<!--{else}-->
-												<!--{$price02_min|sfPreTax:$arrSiteInfo.tax:$arrSiteInfo.tax_rule|number_format}-->°¡<!--{$price02_max|sfPreTax:$arrSiteInfo.tax:$arrSiteInfo.tax_rule|number_format}-->
+												<!--{$price02_min|sfPreTax:$arrSiteInfo.tax:$arrSiteInfo.tax_rule|number_format}-->„Äú<!--{$price02_max|sfPreTax:$arrSiteInfo.tax:$arrSiteInfo.tax_rule|number_format}-->
 											<!--{/if}-->
-											±ﬂ</span></span></td>
+											ÂÜÜ</span></span></td>
 										</tr>
 										<tr><td height="5"></td></tr>
 										<tr>
@@ -408,7 +408,7 @@ function lnSetSelect(form, name1, name2, val) {
 									</td>
 								</tr>
 							</table>
-							<!-- ±¶ŒÛ -->
+							<!-- Âè≥Âàó -->
 						<!--{/if}-->
 						</td>
 					</tr>
@@ -416,14 +416,14 @@ function lnSetSelect(form, name1, name2, val) {
 					<tr><td colspan=3 height="25"></td></tr>
 				</table>
 				<!--{/if}-->
-				<!--¢••™•π•π•·æ¶… §≥§≥§ﬁ§«-->
+				<!--‚ñ≤„Ç™„Çπ„Çπ„É°ÂïÜÂìÅ„Åì„Åì„Åæ„Åß-->
 				
 				</td>
-				<!--¢•RIGHT CONTENTS-->
+				<!--‚ñ≤RIGHT CONTENTS-->
 			</tr>
 		</table>
-		<!--¢•MAIN CONTENTS-->
+		<!--‚ñ≤MAIN CONTENTS-->
 		</td>
 	</tr>
 </table>
-<!--¢•CONTENTS-->
+<!--‚ñ≤CONTENTS-->

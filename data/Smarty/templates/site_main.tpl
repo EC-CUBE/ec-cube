@@ -11,14 +11,14 @@
 <div align="center">
 <a name="top" id="top"></a>
 
-<!--¢ßHEADER-->
+<!--‚ñºHEADER-->
 <!--{if $arrPageLayout.header_chk != 2}--> 
 <!--{assign var=header_dir value="`$smarty.const.HTML_PATH`user_data/include/header.tpl"}-->
 <!--{include file= $header_dir}-->
 <!--{/if}-->
-<!--¢•HEADER-->
+<!--‚ñ≤HEADER-->
 
-<!--¢ßMAIN-->
+<!--‚ñºMAIN-->
 <div id="base">
 <table width="780" border="0" cellspacing="0" cellpadding="0" summary=" ">
 	<tr>
@@ -26,103 +26,103 @@
 		<td bgcolor="#ffffff" width="1"><img src="<!--{$smarty.const.URL_DIR}-->img/_.gif" width="5" height="1" alt="" /></td>
 		<td bgcolor="#ffffff" align="left" width=100%> 
 
-		<!--{*•—•Û•Ø•∫-->
-		<div id="pan"><span class="fs12n"><a href="<!--{$smarty.const.SITE_URL}-->index.php">•»•√•◊•⁄°º•∏</a> °‰ <span class="redst">§™Ã‰§§πÁ§Ô§ª</span></span></div>
-		<!--•—•Û•Ø•∫*}-->
+		<!--{*„Éë„É≥„ÇØ„Ç∫-->
+		<div id="pan"><span class="fs12n"><a href="<!--{$smarty.const.SITE_URL}-->index.php">„Éà„ÉÉ„Éó„Éö„Éº„Ç∏</a> Ôºû <span class="redst">„ÅäÂïè„ÅÑÂêà„Çè„Åõ</span></span></div>
+		<!--„Éë„É≥„ÇØ„Ç∫*}-->
 
 		<table width="100%" border="0" cellspacing="0" cellpadding="0" summary=" ">
 			<tr valign="top">
-				<!--¢ß∫∏• •”-->
+				<!--‚ñºÂ∑¶„Éä„Éì-->
 				<!--{if $arrPageLayout.LeftNavi|@count > 0}-->
 			        <td align="left">
 			        <table border="0" cellspacing="0" cellpadding="0" summary=" ">
 			        	<!--{foreach key=LeftNaviKey item=LeftNaviItem from=$arrPageLayout.LeftNavi}-->
 				        <tr><td align="center">
-				        <!-- ¢ß<!--{$LeftNaviItem.bloc_name}--> §≥§≥§´§È-->
+				        <!-- ‚ñº<!--{$LeftNaviItem.bloc_name}--> „Åì„Åì„Åã„Çâ-->
 			        	<!--{if $LeftNaviItem.php_path != ""}-->
 							<!--{include_php file=$LeftNaviItem.php_path}-->
 						<!--{else}-->
 							<!--{include file=$LeftNaviItem.tpl_path}-->
 						<!--{/if}-->
-				        <!-- ¢•<!--{$LeftNaviItem.bloc_name}--> §≥§≥§ﬁ§«-->
+				        <!-- ‚ñ≤<!--{$LeftNaviItem.bloc_name}--> „Åì„Åì„Åæ„Åß-->
 				        </td></tr>
 				    <!--{/foreach}-->
 					</table>
 					</td>
 					<td bgcolor="#ffffff" width="5"><img src="<!--{$smarty.const.URL_DIR}-->img/_.gif" width="5" height="1" alt="" /></td>
 				<!--{/if}-->
-				<!--¢•∫∏• •”-->
+				<!--‚ñ≤Â∑¶„Éä„Éì-->
 			
 				<td align="center" width=100%>
 			        <table border="0" cellspacing="0" cellpadding="0" summary=" ">
 			        
-					<!--¢ß•·•§•ÛæÂ…Ù-->
+					<!--‚ñº„É°„Ç§„É≥‰∏äÈÉ®-->
 					<!--{if $arrPageLayout.MainHead|@count > 0}-->
 					<tr><td align="center">
 				        <table border="0" cellspacing="0" cellpadding="0" summary=" ">
 				        <!--{foreach key=MainHeadKey item=MainHeadItem from=$arrPageLayout.MainHead}-->
 					        <tr><td height=3><td></tr>
 					        <tr><td align="center">
-					        <!-- ¢ß<!--{$MainHeadItem.bloc_name}--> §≥§≥§´§È-->
+					        <!-- ‚ñº<!--{$MainHeadItem.bloc_name}--> „Åì„Åì„Åã„Çâ-->
 				        	<!--{if $MainHeadItem.php_path != ""}-->
 								<!--{include_php file=$MainHeadItem.php_path}-->
 							<!--{else}-->
 								<!--{include file=$MainHeadItem.tpl_path}-->
 							<!--{/if}-->
-					        <!-- ¢•<!--{$MainHeadItem.bloc_name}--> §≥§≥§ﬁ§«-->
+					        <!-- ‚ñ≤<!--{$MainHeadItem.bloc_name}--> „Åì„Åì„Åæ„Åß-->
 					        </td></tr>
 						<!--{/foreach}-->
 						</table>
 					</td><tr>
 					<!--{/if}-->
-					<!--¢••·•§•ÛæÂ…Ù-->
+					<!--‚ñ≤„É°„Ç§„É≥‰∏äÈÉ®-->
 					
 					<tr><td align="center"><!--{include file=$tpl_mainpage}--></td></tr>
 					
-					<!--¢ß•·•§•Û≤º…Ù-->
+					<!--‚ñº„É°„Ç§„É≥‰∏ãÈÉ®-->
 					<tr><td align="center">
 					<!--{if $arrPageLayout.MainFoot|@count > 0}-->
 			        <table border="0" cellspacing="0" cellpadding="0" summary=" ">
 				        <!--{foreach key=MainFootKey item=MainFootItem from=$arrPageLayout.MainFoot}-->
 					        <tr><td height=3><td></tr>
 					        <tr><td align="center">
-					        <!-- ¢ß<!--{$MainFootItem.bloc_name}--> §≥§≥§´§È-->
+					        <!-- ‚ñº<!--{$MainFootItem.bloc_name}--> „Åì„Åì„Åã„Çâ-->
 				        	<!--{if $MainFootItem.php_path != ""}-->
 								<!--{include_php file=$MainFootItem.php_path}-->
 							<!--{else}-->
 								<!--{include file=$MainFootItem.tpl_path}-->
 							<!--{/if}-->
-					        <!-- ¢•<!--{$MainFootItem.bloc_name}--> §≥§≥§ﬁ§«-->
+					        <!-- ‚ñ≤<!--{$MainFootItem.bloc_name}--> „Åì„Åì„Åæ„Åß-->
 					        </td></tr>
 						<!--{/foreach}-->
 						</table>
 					<!--{/if}-->
 					</td><tr>
-					<!--¢••·•§•Û≤º…Ù-->					
+					<!--‚ñ≤„É°„Ç§„É≥‰∏ãÈÉ®-->					
 	
 					</table>
 				</td>
 
-				<!--¢ß±¶• •”-->
+				<!--‚ñºÂè≥„Éä„Éì-->
 				<!--{if $arrPageLayout.RightNavi|@count > 0}-->
 					<td bgcolor="#ffffff" width="5"><img src="<!--{$smarty.const.URL_DIR}-->img/_.gif" width="5" height="1" alt="" /></td>
 					<td align="right" bgcolor="#ffffff">
 				        <table border="0" cellspacing="0" cellpadding="0" summary=" ">
 				        <!--{foreach key=RightNaviKey item=RightNaviItem from=$arrPageLayout.RightNavi}-->
 					        <tr><td align="center">
-					        <!-- ¢ß<!--{$RightNaviItem.bloc_name}--> §≥§≥§´§È-->
+					        <!-- ‚ñº<!--{$RightNaviItem.bloc_name}--> „Åì„Åì„Åã„Çâ-->
 				        	<!--{if $RightNaviItem.php_path != ""}-->
 								<!--{include_php file=$RightNaviItem.php_path}-->
 							<!--{else}-->
 								<!--{include file=$RightNaviItem.tpl_path}-->
 							<!--{/if}-->
-					        <!-- ¢•<!--{$RightNaviItem.bloc_name}--> §≥§≥§ﬁ§«-->
+					        <!-- ‚ñ≤<!--{$RightNaviItem.bloc_name}--> „Åì„Åì„Åæ„Åß-->
 					        </td></tr>
 						<!--{/foreach}-->
 						</table>
 					</td>
 				<!--{/if}-->
-				<!--¢•±¶• •”-->
+				<!--‚ñ≤Âè≥„Éä„Éì-->
 			</tr>
 		</table>
 		<td bgcolor="#ffffff"><img src="<!--{$smarty.const.URL_DIR}-->img/_.gif" width="9" height="1" alt="" /></td>
@@ -132,16 +132,16 @@
 </table>
 
 </div>
-<!--¢•MAIN-->
+<!--‚ñ≤MAIN-->
 
-<!--¢ßFOTTER-->
+<!--‚ñºFOTTER-->
 <!--{if $arrPageLayout.footer_chk != 2}--> 
 <!--{include file="`$smarty.const.HTML_PATH`user_data/include/footer.tpl"}-->
 <!--{/if}-->
-<!--¢•FOTTER-->
+<!--‚ñ≤FOTTER-->
 </div>
-<!--{* EBiS•ø•∞…Ωº®Õ— *}-->
+<!--{* EBiS„Çø„Ç∞Ë°®Á§∫Áî® *}-->
 <!--{$tpl_mainpage|sfPrintEbisTag}-->
-<!--{* •¢•’•£•Í•®•§•»•ø•∞…Ωº®Õ— *}-->
+<!--{* „Ç¢„Éï„Ç£„É™„Ç®„Ç§„Éà„Çø„Ç∞Ë°®Á§∫Áî® *}-->
 <!--{$tpl_conv_page|sfPrintAffTag:$tpl_aff_option}-->
 </body>

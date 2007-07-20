@@ -4,34 +4,34 @@
  *
  * http://www.lockon.co.jp/
  */
-// ±ß¤ÎÃæ¿´ÅÀ¤ÈÄ¾·Â¤«¤é¸Ì¤Î½ªÃ¼ºÂÉ¸¤ò»»½Ğ¤¹¤ë¡£
+// å††ã®ä¸­å¿ƒç‚¹ã¨ç›´å¾„ã‹ã‚‰å¼§ã®çµ‚ç«¯åº§æ¨™ã‚’ç®—å‡ºã™ã‚‹ã€‚
 /*
-	$cx	: Ãæ¿´ÅÀXºÂÉ¸
-	$cy	: Ãæ¿´ÅÀYºÂÉ¸
-	$r	: È¾·Â
-	$e	: ³ÑÅÙ
+	$cx	: ä¸­å¿ƒç‚¹Xåº§æ¨™
+	$cy	: ä¸­å¿ƒç‚¹Yåº§æ¨™
+	$r	: åŠå¾„
+	$e	: è§’åº¦
 */
 function lfGetArcPos($cx, $cy, $cw, $ch, $e) {
-	// »°³Ñ´Ø¿ôÍÑ¤Î³ÑÅÙ¤òµá¤á¤ë
+	// ä¸‰è§’é–¢æ•°ç”¨ã®è§’åº¦ã‚’æ±‚ã‚ã‚‹
 	$s = 90 - $e;
 	$r = $cw / 2;
-	// °ÌÃÖ¤òµá¤á¤ë
+	// ä½ç½®ã‚’æ±‚ã‚ã‚‹
 	$x = $cx + ($r * cos(deg2rad($s)));
 	$y = $cy - (($r * sin(deg2rad($s))) * ($ch / $cw));		
 	return array(round($x), round($y));
 }
 
-/* ²èÁü¤Ë¥Æ¥­¥¹¥È¤òÉÁ²è¤¹¤ë */
+/* ç”»åƒã«ãƒ†ã‚­ã‚¹ãƒˆã‚’æç”»ã™ã‚‹ */
 function lfImageText($dst_image, $text, $font_size, $left, $top, $font, $arrRGB) {
 	$color = ImageColorAllocate($dst_image, $arrRGB[0], $arrRGB[1], $arrRGB[2]);
 	$text = mb_convert_encoding($text, "UTF-8", CHAR_CODE);
-	// É½¼¨³ÑÅÙ	
+	// è¡¨ç¤ºè§’åº¦	
 	$angle = 0;
-	// ¥Æ¥­¥¹¥ÈÉÁ²è
+	// ãƒ†ã‚­ã‚¹ãƒˆæç”»
 	ImageTTFText($dst_image, $font_size, $angle, $left, $top, $color, $font, $text);
 }
 
-// É½¼¨¿§¤Î¼èÆÀ
+// è¡¨ç¤ºè‰²ã®å–å¾—
 function lfGetImageColor($image, $array) {
 	if(count($array) != 3) {
 		return NULL;
@@ -40,7 +40,7 @@ function lfGetImageColor($image, $array) {
 	return $ret;
 }
 
-// ±ÆÍÑÉ½¼¨¿§¤Î¼èÆÀ
+// å½±ç”¨è¡¨ç¤ºè‰²ã®å–å¾—
 function lfGetImageDarkColor($image, $array) {
 	if(count($array) != 3) {
 		return NULL;

@@ -7,7 +7,7 @@
 
 require_once("../require.php");
 
-//---- �ڡ���ɽ�����饹
+//---- ページ表示クラス
 class LC_Page {
 	
 	var $arrSession;
@@ -15,7 +15,7 @@ class LC_Page {
 	var $arrPref;
 
 	function LC_Page() {
-		$this->tpl_css = URL_DIR.'css/layout/regist/index.css';	// �ᥤ��CSS�ѥ�
+		$this->tpl_css = URL_DIR.'css/layout/regist/index.css';	// メインCSSパス
 	}
 }
 
@@ -28,48 +28,48 @@ $objCustomer = new SC_Customer();
 $CONF = sf_getBasisData();
 $arrInfo = $objSiteInfo->data;
 
-// �����ڡ��󤫤����Ͽ�ξ��ν���
+// キャンペーンからの登録の場合の処理
 if($_GET["cp"] != "") {
 	$etc_val = "?cp=" . $_GET['cp'];
 }
 
-//--������Ͽ��λ�Τ���˥᡼�뤫����³�������
+//--　本登録完了のためにメールから接続した場合
 if ($_GET["mode"] == "regist") {
 	
-	//-- ���ϥ����å�
+	//-- 入力チェック
 	$objPage->arrErr = lfErrorCheck($_GET);
 	if ($objPage->arrErr) {
 		$objPage->tpl_mainpage = 'regist/error.tpl';
 		$objPage->tpl_css = "/css/layout/regist/error.css";
-		$objPage->tpl_title = '���顼';
+		$objPage->tpl_title = 'エラー';
 
 	} else {
 		//$objPage->tpl_mainpage = 'regist/complete.tpl';
-		//$objPage->tpl_title = ' �����Ͽ(��λ�ڡ���)';
-		$registSecretKey = lfRegistData($_GET);			//�ܲ����Ͽ�ʥե饰�ѹ���
-		lfSendRegistMail($registSecretKey);				//�ܲ����Ͽ��λ�᡼������
+		//$objPage->tpl_title = ' 会員登録(完了ページ)';
+		$registSecretKey = lfRegistData($_GET);			//本会員登録（フラグ変更）
+		lfSendRegistMail($registSecretKey);				//本会員登録完了メール送信
 
-		// ��������Ѥߤξ��֤ˤ��롣
+		// ログイン済みの状態にする。
 		$email = $objQuery->get("dtb_customer", "email", "secret_key = ?", array($registSecretKey));
 		$objCustomer->setLogin($email);
 		header("Location: ./complete.php$etc_val");
 		exit;
 	}
 
-//--������ʳ��Υ���������̵���Ȥ���
+//--　それ以外のアクセスは無効とする
 } else {
-	$objPage->arrErr["id"] = "̵���ʥ��������Ǥ���";
+	$objPage->arrErr["id"] = "無効なアクセスです。";
 	$objPage->tpl_mainpage = 'regist/error.tpl';
 	$objPage->tpl_css = "/css/layout/regist/error.css";
-	$objPage->tpl_title = '���顼';
+	$objPage->tpl_title = 'エラー';
 
 }
 
-//----���ڡ���ɽ��
+//----　ページ表示
 $objView->assignobj($objPage);
 $objView->display(SITE_FRAME);
 
-//---- ��Ͽ
+//---- 登録
 function lfRegistData($array) {
 	global $objQuery;
 	global $objConn;
@@ -83,7 +83,7 @@ function lfRegistData($array) {
 	$email = $objConn->getOne($sql, array($array["id"]));
 
 	$objConn->query("BEGIN");
-	$arrRegist["secret_key"] = $secret;	//������ϿIDȯ��
+	$arrRegist["secret_key"] = $secret;	//　本登録ID発行
 	$arrRegist["status"] = 2;
 	$arrRegist["update_date"] = "NOW()";
 	
@@ -91,19 +91,19 @@ function lfRegistData($array) {
 	$where = "secret_key = ? AND status = 1";
 	
 	$arrRet = $objQuery->select("point", "dtb_customer", $where, array($array["id"]));
-	// �����Ͽ���βû��ݥ����(�����������Ͽ�ξ��ϡ��ݥ���Ȳû���
+	// 会員登録時の加算ポイント(購入時会員登録の場合は、ポイント加算）
 	$arrRegist['point'] = $arrRet[0]['point'] + addslashes($arrInfo['welcome_point']);
 	
 	$objQuery->update("dtb_customer", $arrRegist, $where, array($array["id"]));
 
-	/* �������μ�ư�����Ͽ�ϹԤ�ʤ�����DEL
-	// ��������Ͽ�ξ�硢���β�ι������������Ȥߤʤ���
-	// ���������ɤ߹���
+	/* 購入時の自動会員登録は行わないためDEL
+	// 購入時登録の場合、その回の購入を会員購入とみなす。
+	// 会員情報の読み込み
 	$where1 = "secret_key = ? AND status = 2";
 	$customer = $objQuery->select("*", "dtb_customer", $where1, array($secret));
-	// ������������ɤ߹���
+	// 初回購入情報の読み込み
 	$order_temp_id = $objQuery->get("dtb_order_temp", "order_temp_id");
-	// ��������ι���
+	// 購入情報の更新
 	if ($order_temp_id != null) {
 		$arrCustomer['customer_id'] = $customer[0]['customer_id'];
 		$where3 = "order_temp_id = ?";
@@ -116,15 +116,15 @@ function lfRegistData($array) {
 	$result = $objConn->getOne($sql, array($email));
 	
 	switch($result) {
-	// ��HTML
+	// 仮HTML
 	case '4':
 		$arrRegistMail["mailmaga_flg"] = 1;
 		break;
-	// ��TEXT
+	// 仮TEXT
 	case '5':
 		$arrRegistMail["mailmaga_flg"] = 2;
 		break;
-	// ���ʤ�
+	// 仮なし
 	case '6':
 		$arrRegistMail["mailmaga_flg"] = 3;
 		break;
@@ -136,18 +136,18 @@ function lfRegistData($array) {
 	$objQuery->update("dtb_customer", $arrRegistMail, "email = '" .addslashes($email). "' AND del_flg = 0");
 	$objConn->query("COMMIT");
 		
-	return $secret;		// ����ϿID���֤�
+	return $secret;		// 本登録IDを返す
 }
 
-//---- ���ϥ��顼�����å�
+//---- 入力エラーチェック
 function lfErrorCheck($array) {
 
 	global $objConn;
 	$objErr = new SC_CheckError($array);
 
-	$objErr->doFunc(array("����ϿID", 'id'), array("EXIST_CHECK"));
+	$objErr->doFunc(array("仮登録ID", 'id'), array("EXIST_CHECK"));
 	if (! EregI("^[[:alnum:]]+$",$array["id"] )) {
-		$objErr->arrErr["id"] = "̵����URL�Ǥ����᡼��˵��ܤ���Ƥ����ܲ����Ͽ��URL����٤���ǧ����������";
+		$objErr->arrErr["id"] = "無効なURLです。メールに記載されている本会員登録用URLを再度ご確認ください。";
 	}
 	if (! $objErr->arrErr["id"]) {
 
@@ -155,7 +155,7 @@ function lfErrorCheck($array) {
 		$result = $objConn->getOne($sql, array($array["id"]));
 
 		if (! is_numeric($result)) {
-			$objErr->arrErr["id"] .= "�� ���˲����Ͽ����λ���Ƥ��뤫��̵����URL�Ǥ���<br>";
+			$objErr->arrErr["id"] .= "※ 既に会員登録が完了しているか、無効なURLです。<br>";
 			return $objErr->arrErr;
 
 		}
@@ -164,37 +164,37 @@ function lfErrorCheck($array) {
 	return $objErr->arrErr;
 }
 
-//---- �������Ͽ��λ�᡼������
+//---- 正会員登録完了メール送信
 function lfSendRegistMail($registSecretKey) {
 	global $objConn;
 	global $CONF;
 
-	//-- ��̾�����
+	//-- 姓名を取得
 	$sql = "SELECT email, name01, name02 FROM dtb_customer WHERE secret_key = ?";
 	$result = $objConn->getAll($sql, array($registSecretKey));
 	$data = $result[0];
 	
-	//--���᡼������
+	//--　メール送信
 	$objMailText = new SC_SiteView();
 	$objMailText->assign("CONF", $CONF);
 	$objMailText->assign("name01", $data["name01"]);
 	$objMailText->assign("name02", $data["name02"]);
 	$toCustomerMail = $objMailText->fetch("mail_templates/customer_regist_mail.tpl");
-	$subject = sfMakeSubject('�����Ͽ����λ���ޤ�����');
+	$subject = sfMakeSubject('会員登録が完了しました。');
 	$objMail = new GC_SendMail();
 
 	$objMail->setItem(
-						  ''								//������
-						, $subject//"��" .$CONF["shop_name"]. "��".ENTRY_CUSTOMER_REGIST_SUBJECT 		//�����֥�������
-						, $toCustomerMail					//����ʸ
-						, $CONF["email03"]					//�����������ɥ쥹
-						, $CONF["shop_name"]				//����������̾��
-						, $CONF["email03"]					//��reply_to
-						, $CONF["email04"]					//��return_path
+						  ''								//　宛先
+						, $subject//"【" .$CONF["shop_name"]. "】".ENTRY_CUSTOMER_REGIST_SUBJECT 		//　サブジェクト
+						, $toCustomerMail					//　本文
+						, $CONF["email03"]					//　配送元アドレス
+						, $CONF["shop_name"]				//　配送元　名前
+						, $CONF["email03"]					//　reply_to
+						, $CONF["email04"]					//　return_path
 						, $CONF["email04"]					//  Errors_to
 					);
-	// ���������
-	$name = $data["name01"] . $data["name02"] ." ��";
+	// 宛先の設定
+	$name = $data["name01"] . $data["name02"] ." 様";
 	$objMail->setTo($data["email"], $name);
 	$objMail->sendMail();
 }

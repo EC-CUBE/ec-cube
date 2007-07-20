@@ -12,11 +12,11 @@ require_once(MODULE_PATH . "mdl_remise/mdl_remise.inc");
 class LC_Page {
 	function LC_Page() {
 		$this->tpl_mainpage = MODULE_PATH . "mdl_remise/convenience.tpl";
-		$this->tpl_title = "¥³¥ó¥Ó¥Ë·èºÑ";
+		$this->tpl_title = "ã‚³ãƒ³ãƒ“ãƒ‹æ±ºæ¸ˆ";
 		/*
-		 session_start»ş¤Îno-cache¥Ø¥Ã¥À¡¼¤òÍŞÀ©¤¹¤ë¤³¤È¤Ç
-		 ¡ÖÌá¤ë¡×¥Ü¥¿¥ó»ÈÍÑ»ş¤ÎÍ­¸ú´ü¸ÂÀÚ¤ìÉ½¼¨¤òÍŞÀ©¤¹¤ë¡£
-		 private-no-expire:¥¯¥é¥¤¥¢¥ó¥È¤Î¥­¥ã¥Ã¥·¥å¤òµö²Ä¤¹¤ë¡£
+		 session_startæ™‚ã®no-cacheãƒ˜ãƒƒãƒ€ãƒ¼ã‚’æŠ‘åˆ¶ã™ã‚‹ã“ã¨ã§
+		 ã€Œæˆ»ã‚‹ã€ãƒœã‚¿ãƒ³ä½¿ç”¨æ™‚ã®æœ‰åŠ¹æœŸé™åˆ‡ã‚Œè¡¨ç¤ºã‚’æŠ‘åˆ¶ã™ã‚‹ã€‚
+		 private-no-expire:ã‚¯ãƒ©ã‚¤ã‚¢ãƒ³ãƒˆã®ã‚­ãƒ£ãƒƒã‚·ãƒ¥ã‚’è¨±å¯ã™ã‚‹ã€‚
 		*/
 		session_cache_limiter('private-no-expire');		
 	}
@@ -30,53 +30,53 @@ $objView = new SC_SiteView();
 $objSiteInfo = $objView->objSiteInfo;
 $arrInfo = $objSiteInfo->data;
 
-// ¥Ñ¥é¥á¡¼¥¿´ÉÍı¥¯¥é¥¹
+// ãƒ‘ãƒ©ãƒ¡ãƒ¼ã‚¿ç®¡ç†ã‚¯ãƒ©ã‚¹
 $objFormParam = new SC_FormParam();
 
-// POSTÃÍ¤Î¼èÆÀ
+// POSTå€¤ã®å–å¾—
 $objFormParam->setParam($_POST);
 
-// ¥æ¡¼¥¶¥æ¥Ë¡¼¥¯ID¤Î¼èÆÀ¤È¹ØÆş¾õÂÖ¤ÎÀµÅöÀ­¤ò¥Á¥§¥Ã¥¯
+// ãƒ¦ãƒ¼ã‚¶ãƒ¦ãƒ‹ãƒ¼ã‚¯IDã®å–å¾—ã¨è³¼å…¥çŠ¶æ…‹ã®æ­£å½“æ€§ã‚’ãƒã‚§ãƒƒã‚¯
 $uniqid = sfCheckNormalAccess($objSiteSess, $objCartSess);
 
-// ¥«¡¼¥È½¸·×½èÍı
+// ã‚«ãƒ¼ãƒˆé›†è¨ˆå‡¦ç†
 $objPage = sfTotalCart($objPage, $objCartSess, $arrInfo);
 
-// °ì»ş¼õÃí¥Æ¡¼¥Ö¥ë¤ÎÆÉ¹ş
+// ä¸€æ™‚å—æ³¨ãƒ†ãƒ¼ãƒ–ãƒ«ã®èª­è¾¼
 $arrData = sfGetOrderTemp($uniqid);
 
-// ¥«¡¼¥È½¸·×¤ò¸µ¤ËºÇ½ª·×»»
+// ã‚«ãƒ¼ãƒˆé›†è¨ˆã‚’å…ƒã«æœ€çµ‚è¨ˆç®—
 $arrData = sfTotalConfirm($arrData, $objPage, $objCartSess, $arrInfo);
 
-// ÂåÉ½¾¦ÉÊ¾ğÊó
+// ä»£è¡¨å•†å“æƒ…å ±
 $arrMainProduct = $objPage->arrProductsClass[0];
 
-// »ÙÊ§¤¤¾ğÊó¤ò¼èÆÀ
+// æ”¯æ‰•ã„æƒ…å ±ã‚’å–å¾—
 $arrPayment = $objQuery->getall("SELECT module_id, memo01, memo02, memo03, memo04, memo05, memo06, memo07, memo08, memo09, memo10 FROM dtb_payment WHERE payment_id = ? ", array($arrData["payment_id"]));
 
-// ³ÎÇ§²èÌÌ¤ËÌá¤ë
+// ç¢ºèªç”»é¢ã«æˆ»ã‚‹
 switch($_POST["mode"]){
-	//Ìá¤ë
+	//æˆ»ã‚‹
 	case 'return':
-		// Àµ¾ï¤ËÅĞÏ¿¤µ¤ì¤¿¤³¤È¤òµ­Ï¿¤·¤Æ¤ª¤¯
+		// æ­£å¸¸ã«ç™»éŒ²ã•ã‚ŒãŸã“ã¨ã‚’è¨˜éŒ²ã—ã¦ãŠã
 		$objSiteSess->setRegistFlag();
-		// ³ÎÇ§¥Ú¡¼¥¸¤Ø°ÜÆ°
+		// ç¢ºèªãƒšãƒ¼ã‚¸ã¸ç§»å‹•
 		header("Location: " . URL_SHOP_CONFIRM);
 		exit;
 		break;
 }
 
-// ¥ë¥ß¡¼¥º¤«¤é¤ÎÊÖ¿®¤¬¤¢¤Ã¤¿¾ì¹ç
+// ãƒ«ãƒŸãƒ¼ã‚ºã‹ã‚‰ã®è¿”ä¿¡ãŒã‚ã£ãŸå ´åˆ
 if (isset($_POST["X-R_CODE"])) {
 
 	$err_detail = "";
 	
-	// ÄÌ¿®»ş¥¨¥é¡¼
+	// é€šä¿¡æ™‚ã‚¨ãƒ©ãƒ¼
 	if ($_POST["X-R_CODE"] != $arrRemiseErrorWord["OK"]) {
 		$err_detail = $_POST["X-R_CODE"];
-		sfDispSiteError(FREE_ERROR_MSG, "", false, "¹ØÆş½èÍıÃæ¤Ë°Ê²¼¤Î¥¨¥é¡¼¤¬È¯À¸¤·¤Ş¤·¤¿¡£<br /><br /><br />¡¦" . $err_detail);
+		sfDispSiteError(FREE_ERROR_MSG, "", false, "è³¼å…¥å‡¦ç†ä¸­ã«ä»¥ä¸‹ã®ã‚¨ãƒ©ãƒ¼ãŒç™ºç”Ÿã—ã¾ã—ãŸã€‚<br /><br /><br />ãƒ»" . $err_detail);
 	
-	// ÄÌ¿®·ë²ÌÀµ¾ï
+	// é€šä¿¡çµæœæ­£å¸¸
 	} else {
 
 		$log_path = DATA_PATH . "logs/remise_cv_finish.log";
@@ -86,43 +86,43 @@ if (isset($_POST["X-R_CODE"])) {
 		}
 		gfPrintLog("remise conveni finish end  ----------", $log_path);
 
-		// ¶â³Û¤ÎÀ°¹çÀ­¥Á¥§¥Ã¥¯
+		// é‡‘é¡ã®æ•´åˆæ€§ãƒã‚§ãƒƒã‚¯
 		if ($arrData["payment_total"] != $_POST["X-TOTAL"]) {
-			sfDispSiteError(FREE_ERROR_MSG, "", false, "¹ØÆş½èÍıÃæ¤Ë°Ê²¼¤Î¥¨¥é¡¼¤¬È¯À¸¤·¤Ş¤·¤¿¡£<br /><br /><br />¡¦ÀÁµá¶â³Û¤È»ÙÊ§¤¤¶â³Û¤¬°ã¤¤¤Ş¤¹¡£");
+			sfDispSiteError(FREE_ERROR_MSG, "", false, "è³¼å…¥å‡¦ç†ä¸­ã«ä»¥ä¸‹ã®ã‚¨ãƒ©ãƒ¼ãŒç™ºç”Ÿã—ã¾ã—ãŸã€‚<br /><br /><br />ãƒ»è«‹æ±‚é‡‘é¡ã¨æ”¯æ‰•ã„é‡‘é¡ãŒé•ã„ã¾ã™ã€‚");
 		}
 		
-		// Àµ¾ï¤Ê¿ä°Ü¤Ç¤¢¤ë¤³¤È¤òµ­Ï¿¤·¤Æ¤ª¤¯
+		// æ­£å¸¸ãªæ¨ç§»ã§ã‚ã‚‹ã“ã¨ã‚’è¨˜éŒ²ã—ã¦ãŠã
 		$objSiteSess->setRegistFlag();
 		
-		// ¥ë¥ß¡¼¥º¤«¤é¤ÎÃÍ¤Î¼èÆÀ
-		$job_id = lfSetConvMSG("¥¸¥ç¥ÖID(REMISE)", $_POST["X-JOB_ID"]);
-		$payment_limit = lfSetConvMSG("»ÙÊ§¤¤´ü¸Â", $_POST["X-PAYDATE"]);
-		$conveni_type = lfSetConvMSG("»ÙÊ§¤¤¥³¥ó¥Ó¥Ë", $arrConvenience[$_POST["X-PAY_CSV"]]);
-		$payment_total = lfSetConvMSG("¹ç·×¶â³Û", $_POST["X-TOTAL"]);
-		$receipt_no = lfSetConvMSG("¥³¥ó¥Ó¥ËÊ§¤¤½Ğ¤·ÈÖ¹æ", $_POST["X-PAY_NO1"]);
+		// ãƒ«ãƒŸãƒ¼ã‚ºã‹ã‚‰ã®å€¤ã®å–å¾—
+		$job_id = lfSetConvMSG("ã‚¸ãƒ§ãƒ–ID(REMISE)", $_POST["X-JOB_ID"]);
+		$payment_limit = lfSetConvMSG("æ”¯æ‰•ã„æœŸé™", $_POST["X-PAYDATE"]);
+		$conveni_type = lfSetConvMSG("æ”¯æ‰•ã„ã‚³ãƒ³ãƒ“ãƒ‹", $arrConvenience[$_POST["X-PAY_CSV"]]);
+		$payment_total = lfSetConvMSG("åˆè¨ˆé‡‘é¡", $_POST["X-TOTAL"]);
+		$receipt_no = lfSetConvMSG("ã‚³ãƒ³ãƒ“ãƒ‹æ‰•ã„å‡ºã—ç•ªå·", $_POST["X-PAY_NO1"]);
 
-		// ¥Õ¥¡¥ß¥ê¡¼¥Ş¡¼¥È¤Î¤ßURL¤¬¤Ê¤¤
+		// ãƒ•ã‚¡ãƒŸãƒªãƒ¼ãƒãƒ¼ãƒˆã®ã¿URLãŒãªã„
 		if ($_POST["X-PAY_CSV"] != "D030") {
-			$payment_url = lfSetConvMSG("¥³¥ó¥Ó¥ËÊ§¤¤½Ğ¤·URL", $_POST["X-PAY_NO2"]);
+			$payment_url = lfSetConvMSG("ã‚³ãƒ³ãƒ“ãƒ‹æ‰•ã„å‡ºã—URL", $_POST["X-PAY_NO2"]);
 		} else {
-			$payment_url = lfSetConvMSG("ÃíÊ¸ÈÖ¹æ", $_POST["X-PAY_NO2"]);
+			$payment_url = lfSetConvMSG("æ³¨æ–‡ç•ªå·", $_POST["X-PAY_NO2"]);
 		}
 		
-		$arrRet['cv_type'] = $conveni_type;				// ¥³¥ó¥Ó¥Ë¤Î¼ïÎà
-		$arrRet['cv_payment_url'] = $payment_url;		// Ê§¹şÉ¼URL(PC)
-		$arrRet['cv_receipt_no'] = $receipt_no;			// Ê§¹şÉ¼ÈÖ¹æ
-		$arrRet['cv_payment_limit'] = $payment_limit;	// »ÙÊ§¤¤´ü¸Â
-		$arrRet['title'] = lfSetConvMSG("¥³¥ó¥Ó¥Ë·èºÑ", true);
+		$arrRet['cv_type'] = $conveni_type;				// ã‚³ãƒ³ãƒ“ãƒ‹ã®ç¨®é¡
+		$arrRet['cv_payment_url'] = $payment_url;		// æ‰•è¾¼ç¥¨URL(PC)
+		$arrRet['cv_receipt_no'] = $receipt_no;			// æ‰•è¾¼ç¥¨ç•ªå·
+		$arrRet['cv_payment_limit'] = $payment_limit;	// æ”¯æ‰•ã„æœŸé™
+		$arrRet['title'] = lfSetConvMSG("ã‚³ãƒ³ãƒ“ãƒ‹æ±ºæ¸ˆ", true);
 		
-		// ·èºÑÁ÷¿®¥Ç¡¼¥¿ºîÀ®
+		// æ±ºæ¸ˆé€ä¿¡ãƒ‡ãƒ¼ã‚¿ä½œæˆ
 		$arrModule['module_id'] = MDL_REMISE_ID;
 		$arrModule['payment_total'] = $arrData["payment_total"];
 		$arrModule['payment_id'] = PAYMENT_CONVENIENCE_ID;
 		
-		// ¥¹¥Æ¡¼¥¿¥¹¤ÏÌ¤Æş¶â¤Ë¤¹¤ë
+		// ã‚¹ãƒ†ãƒ¼ã‚¿ã‚¹ã¯æœªå…¥é‡‘ã«ã™ã‚‹
 		$sqlval['status'] = 2;
 		
-		// ¥³¥ó¥Ó¥Ë·èºÑ¾ğÊó¤ò³ÊÇ¼
+		// ã‚³ãƒ³ãƒ“ãƒ‹æ±ºæ¸ˆæƒ…å ±ã‚’æ ¼ç´
 		$sqlval['conveni_data'] = serialize($arrRet);
 		$sqlval['memo01'] = PAYMENT_CONVENIENCE_ID;
 		$sqlval['memo02'] = serialize($arrRet);
@@ -130,51 +130,51 @@ if (isset($_POST["X-R_CODE"])) {
 		$sqlval['memo04'] = $_POST["X-JOB_ID"];
 		$sqlval['memo05'] = serialize($arrModule);
 
-		// ¼õÃí°ì»ş¥Æ¡¼¥Ö¥ë¤Ë¹¹¿·
+		// å—æ³¨ä¸€æ™‚ãƒ†ãƒ¼ãƒ–ãƒ«ã«æ›´æ–°
 		sfRegistTempOrder($uniqid, $sqlval);
 
 		header("Location: " . URL_SHOP_COMPLETE);
 	}
 }
 
-// EC-CUBEÂ¦¤ÎÄÌÃÎÍÑURL
+// EC-CUBEå´ã®é€šçŸ¥ç”¨URL
 $retUrl = SITE_URL . 'shopping/load_payment_module.php?module_id=' . MDL_REMISE_ID;
 $exitUrl = SITE_URL . 'shopping/load_payment_module.php';
 $tel = $arrData["order_tel01"].$arrData["order_tel02"].$arrData["order_tel03"];
 
-// ½»½êÀ°·Á
+// ä½æ‰€æ•´å½¢
 $pref = $arrPref[$arrData["order_pref"]];
 $address1 = mb_convert_kana($arrData["order_addr01"], "ASKHV");
 $address2 = mb_convert_kana($arrData["order_addr02"], "ASKHV");
 
-// ¾¦ÉÊÌ¾À°·Á(ºÇÂç7¸Ä¤Î¤¿¤á¡¢¾¦ÉÊÂå¶â¤È¤·¤ÆÁ´ÂÎ¤Ç½ĞÎÏ¤¹¤ë)
-$itemName = "¾¦ÉÊÂå¶â";
+// å•†å“åæ•´å½¢(æœ€å¤§7å€‹ã®ãŸã‚ã€å•†å“ä»£é‡‘ã¨ã—ã¦å…¨ä½“ã§å‡ºåŠ›ã™ã‚‹)
+$itemName = "å•†å“ä»£é‡‘";
 $itemPlace = $arrData["payment_total"] - $arrData["deliv_fee"];
 
 $arrSendData = array(
-	'SEND_URL' => $arrPayment[0]["memo05"],		// ÀÜÂ³ÀèURL
-	'S_TORIHIKI_NO' => $arrData["order_id"],		// ÀÁµáÈÖ¹æ(EC-CUBE)
-	'MAIL' => $arrData["order_email"],				// ¥á¡¼¥ë¥¢¥É¥ì¥¹
-	'NAME1' => $arrData["order_name01"],			// ¥æ¡¼¥¶¡¼Ì¾1
-	'NAME2' => $arrData["order_name02"],			// ¥æ¡¼¥¶¡¼Ì¾2
-	'KANA1' => $arrData["order_kana01"],			// ¥æ¡¼¥¶¡¼Ì¾(¥«¥Ê)1
-	'KANA2' => $arrData["order_kana02"],			// ¥æ¡¼¥¶¡¼Ì¾(¥«¥Ê)2
-	'TEL' => $tel,									// ÅÅÏÃÈÖ¹æ
-	'YUBIN1' => $arrData["order_zip01"],			// Í¹ÊØÈÖ¹æ1
-	'YUBIN2' => $arrData["order_zip02"],			// Í¹ÊØÈÖ¹æ2
-	'ADD1' => $pref,								// ½»½ê1
-	'ADD2' => $address1,							// ½»½ê2
-	'ADD3' => $address2,							// ½»½ê3
-	'MSUM_01' => $arrData["subtotal"],				// ¶â³Û
-	'TAX' => $arrData["deliv_fee"],					// Á÷ÎÁ + ÀÇ
-	'TOTAL' => $arrData["payment_total"],			// ¹ç·×¶â³Û
-	'SHOPCO' => $arrPayment[0]["memo01"],			// Å¹ÊŞ¥³¡¼¥É
-	'HOSTID' => $arrPayment[0]["memo02"],			// ¥Û¥¹¥ÈID
-	'RETURL' => $retUrl,							// ´°Î»ÄÌÃÎURL
-	'NG_RETURL' => $retUrl,						// NG´°Î»ÄÌÃÎURL
-	'EXITURL' => $exitUrl,							// Ìá¤êÀèURL
-	'MNAME_01' => $itemName,						// ¾¦ÉÊÌ¾
-	'MSUM_01' => $itemPlace,						// ¾¦ÉÊÂå¶â¹ç·×(Á÷ÎÁ+ÀÇ°Ê³°)
+	'SEND_URL' => $arrPayment[0]["memo05"],		// æ¥ç¶šå…ˆURL
+	'S_TORIHIKI_NO' => $arrData["order_id"],		// è«‹æ±‚ç•ªå·(EC-CUBE)
+	'MAIL' => $arrData["order_email"],				// ãƒ¡ãƒ¼ãƒ«ã‚¢ãƒ‰ãƒ¬ã‚¹
+	'NAME1' => $arrData["order_name01"],			// ãƒ¦ãƒ¼ã‚¶ãƒ¼å1
+	'NAME2' => $arrData["order_name02"],			// ãƒ¦ãƒ¼ã‚¶ãƒ¼å2
+	'KANA1' => $arrData["order_kana01"],			// ãƒ¦ãƒ¼ã‚¶ãƒ¼å(ã‚«ãƒŠ)1
+	'KANA2' => $arrData["order_kana02"],			// ãƒ¦ãƒ¼ã‚¶ãƒ¼å(ã‚«ãƒŠ)2
+	'TEL' => $tel,									// é›»è©±ç•ªå·
+	'YUBIN1' => $arrData["order_zip01"],			// éƒµä¾¿ç•ªå·1
+	'YUBIN2' => $arrData["order_zip02"],			// éƒµä¾¿ç•ªå·2
+	'ADD1' => $pref,								// ä½æ‰€1
+	'ADD2' => $address1,							// ä½æ‰€2
+	'ADD3' => $address2,							// ä½æ‰€3
+	'MSUM_01' => $arrData["subtotal"],				// é‡‘é¡
+	'TAX' => $arrData["deliv_fee"],					// é€æ–™ + ç¨
+	'TOTAL' => $arrData["payment_total"],			// åˆè¨ˆé‡‘é¡
+	'SHOPCO' => $arrPayment[0]["memo01"],			// åº—èˆ—ã‚³ãƒ¼ãƒ‰
+	'HOSTID' => $arrPayment[0]["memo02"],			// ãƒ›ã‚¹ãƒˆID
+	'RETURL' => $retUrl,							// å®Œäº†é€šçŸ¥URL
+	'NG_RETURL' => $retUrl,						// NGå®Œäº†é€šçŸ¥URL
+	'EXITURL' => $exitUrl,							// æˆ»ã‚Šå…ˆURL
+	'MNAME_01' => $itemName,						// å•†å“å
+	'MSUM_01' => $itemPlace,						// å•†å“ä»£é‡‘åˆè¨ˆ(é€æ–™+ç¨ä»¥å¤–)
 	'REMARKS3' => MDL_REMISE_POST_VALUE
 );
 
@@ -182,7 +182,7 @@ $objPage->arrSendData = $arrSendData;
 $objPage->arrForm =$objFormParam->getHashArray();
 $objView->assignobj($objPage);
 
-// ½ĞÎÏÆâÍÆ¤òSJIS¤Ë¤¹¤ë(¥ë¥ß¡¼¥ºÂĞ±ş)
+// å‡ºåŠ›å†…å®¹ã‚’SJISã«ã™ã‚‹(ãƒ«ãƒŸãƒ¼ã‚ºå¯¾å¿œ)
 mb_http_output(REMISE_SEND_ENCODE);
 $objView->display(MODULE_PATH . "mdl_remise/convenience.tpl");
 

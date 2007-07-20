@@ -5,12 +5,12 @@
  * http://www.lockon.co.jp/
  */
 *}-->
-<center>�ѥ���ɤ�˺�줿��</center>
+<center>パスワードを忘れた方</center>
 
 <hr>
 
-�ѥ���ɤ�ȯ�Ԥ���λ�������ޤ�������������ˤϲ����Υѥ���ɤ����Ѥ���������<br>
-�������ѥ���ɤϡ�MY�ڡ����Ρֲ����Ͽ�����ѹ��פ�ꤴ�ѹ����������ޤ���<br>
+パスワードの発行が完了いたしました。ログインには下記のパスワードをご利用ください。<br>
+※下記パスワードは、MYページの「会員登録内容変更」よりご変更いただけます。<br>
 
 <br>
 
@@ -19,11 +19,11 @@
 <br>
 <hr>
 
-<a href="<!--{$smarty.const.MOBILE_URL_CART_TOP}-->" accesskey="9"><!--{9|numeric_emoji}-->�����򸫤�</a><br>
-<a href="<!--{$smarty.const.MOBILE_URL_SITE_TOP}-->" accesskey="0"><!--{0|numeric_emoji}-->TOP�ڡ�����</a><br>
+<a href="<!--{$smarty.const.MOBILE_URL_CART_TOP}-->" accesskey="9"><!--{9|numeric_emoji}-->かごを見る</a><br>
+<a href="<!--{$smarty.const.MOBILE_URL_SITE_TOP}-->" accesskey="0"><!--{0|numeric_emoji}-->TOPページへ</a><br>
 
 <br>
 
-<!-- ���եå��� �������� -->
+<!-- ▼フッター ここから -->
 <!--{include file='footer.tpl'}-->
-<!-- ���եå��� �����ޤ� -->
+<!-- ▲フッター ここまで -->

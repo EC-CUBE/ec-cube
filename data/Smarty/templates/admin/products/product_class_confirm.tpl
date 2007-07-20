@@ -5,18 +5,18 @@
  * http://www.lockon.co.jp/
  */
 *}-->
-<!--¡ú¡ú¥á¥¤¥ó¥³¥ó¥Æ¥ó¥Ä¡ú¡ú-->
+<!--â˜…â˜…ãƒ¡ã‚¤ãƒ³ã‚³ãƒ³ãƒ†ãƒ³ãƒ„â˜…â˜…-->
 <table width="878" border="0" cellspacing="0" cellpadding="0" summary=" ">
 	<tr valign="top">
 		<td background="<!--{$smarty.const.URL_DIR}-->img/contents/navi_bg.gif" height="402">
-			<!--¢§SUB NAVI-->
+			<!--â–¼SUB NAVI-->
 			<!--{include file=$tpl_subnavi}-->
-			<!--¢¥SUB NAVI-->
+			<!--â–²SUB NAVI-->
 		</td>
 		<td class="mainbg">
-			<!--¢§ÅĞÏ¿¥Æ¡¼¥Ö¥ë¤³¤³¤«¤é-->
+			<!--â–¼ç™»éŒ²ãƒ†ãƒ¼ãƒ–ãƒ«ã“ã“ã‹ã‚‰-->
 			<table width="737" border="0" cellspacing="0" cellpadding="0" summary=" ">
-				<!--¥á¥¤¥ó¥¨¥ê¥¢-->
+				<!--ãƒ¡ã‚¤ãƒ³ã‚¨ãƒªã‚¢-->
 				<tr>
 					<td align="center">
 						<table width="706" border="0" cellspacing="0" cellpadding="0" summary=" ">
@@ -37,7 +37,7 @@
 									</tr>
 									<tr>
 										<td background="<!--{$smarty.const.URL_DIR}-->img/contents/contents_title_left_bg.gif"><img src="<!--{$smarty.const.URL_DIR}-->img/contents/contents_title_left.gif" width="22" height="12" alt=""></td>
-										<td bgcolor="#636469" width="638" class="fs14n"><span class="white"><!--¥³¥ó¥Æ¥ó¥Ä¥¿¥¤¥È¥ë-->µ¬³ÊÅĞÏ¿</span></td>
+										<td bgcolor="#636469" width="638" class="fs14n"><span class="white"><!--ã‚³ãƒ³ãƒ†ãƒ³ãƒ„ã‚¿ã‚¤ãƒˆãƒ«-->è¦æ ¼ç™»éŒ²</span></td>
 										<td background="<!--{$smarty.const.URL_DIR}-->img/contents/contents_title_right_bg.gif"><img src="<!--{$smarty.const.URL_DIR}-->img/common/_.gif" width="18" height="1" alt=""></td>
 									</tr>
 									<tr>
@@ -53,12 +53,12 @@
 									<!--{assign var=class_id1 value=$arrForm.class_id1}-->
 									<!--{assign var=class_id2 value=$arrForm.class_id2}-->
 									<tr bgcolor="#f2f1ec" align="center" class="fs12n">
-										<td width="150">µ¬³Ê1(<!--{$arrClass[$class_id1]|default:"Ì¤ÁªÂò"}-->)</td>
-										<td width="150">µ¬³Ê2(<!--{$arrClass[$class_id2]|default:"Ì¤ÁªÂò"}-->)</td>
-										<td width="100">¾¦ÉÊ¥³¡¼¥É</td>
-										<td width="80">ºß¸Ë(¸Ä)</td>
-										<td width="120"><!--{$smarty.const.NORMAL_PRICE_TITLE}-->(±ß)</td>
-										<td width="100"><!--{$smarty.const.SALE_PRICE_TITLE}-->(±ß)</td>
+										<td width="150">è¦æ ¼1(<!--{$arrClass[$class_id1]|default:"æœªé¸æŠ"}-->)</td>
+										<td width="150">è¦æ ¼2(<!--{$arrClass[$class_id2]|default:"æœªé¸æŠ"}-->)</td>
+										<td width="100">å•†å“ã‚³ãƒ¼ãƒ‰</td>
+										<td width="80">åœ¨åº«(å€‹)</td>
+										<td width="120"><!--{$smarty.const.NORMAL_PRICE_TITLE}-->(å††)</td>
+										<td width="100"><!--{$smarty.const.SALE_PRICE_TITLE}-->(å††)</td>
 									</tr>
 									<!--{section name=cnt loop=$tpl_count}-->
 									<!--{assign var=key value="check:`$smarty.section.cnt.iteration`"}-->
@@ -74,7 +74,7 @@
 										<!--{assign var=key2 value="stock_unlimited:`$smarty.section.cnt.iteration`"}-->
 										<td width="80" align="right">
 										<!--{if $arrForm[$key2] == 1}-->
-											ÌµÀ©¸Â
+											ç„¡åˆ¶é™
 										<!--{else}-->
 											<!--{$arrForm[$key1]}-->
 										<!--{/if}-->
@@ -87,7 +87,7 @@
 									<!--{/if}-->
 									<!--{/section}-->
 								<!--{else}-->
-									<tr bgcolor="#ffffff" class="fs12" align="center"><td>µ¬³Ê¤¬ÁªÂò¤µ¤ì¤Æ¤¤¤Ş¤»¤ó¡£</td></tr>
+									<tr bgcolor="#ffffff" class="fs12" align="center"><td>è¦æ ¼ãŒé¸æŠã•ã‚Œã¦ã„ã¾ã›ã‚“ã€‚</td></tr>
 								<!--{/if}-->
 								</table>
 								
@@ -102,9 +102,9 @@
 										<td bgcolor="#e9e7de" align="center">
 										<table border="0" cellspacing="0" cellpadding="0" summary=" ">
 											<tr>
-												<td><a href="#" onmouseover="chgImg('<!--{$smarty.const.URL_DIR}-->img/install/back_on.jpg','return')" onmouseout="chgImg('<!--{$smarty.const.URL_DIR}-->img/install/back.jpg','return')" onclick="fnModeSubmit('confirm_return','',''); return false" /><img  width="105" src="<!--{$smarty.const.URL_DIR}-->img/install/back.jpg"  height="24" alt="Á°¤ØÌá¤ë" border="0" name="return"></a>
+												<td><a href="#" onmouseover="chgImg('<!--{$smarty.const.URL_DIR}-->img/install/back_on.jpg','return')" onmouseout="chgImg('<!--{$smarty.const.URL_DIR}-->img/install/back.jpg','return')" onclick="fnModeSubmit('confirm_return','',''); return false" /><img  width="105" src="<!--{$smarty.const.URL_DIR}-->img/install/back.jpg"  height="24" alt="å‰ã¸æˆ»ã‚‹" border="0" name="return"></a>
 												<!--{if $tpl_check > 0}-->
-												<input type="image" onMouseover="chgImgImageSubmit('<!--{$smarty.const.URL_DIR}-->img/contents/btn_regist_on.jpg',this)" onMouseout="chgImgImageSubmit('<!--{$smarty.const.URL_DIR}-->img/contents/btn_regist.jpg',this)" src="<!--{$smarty.const.URL_DIR}-->img/contents/btn_regist.jpg" width="123" height="24" alt="¤³¤ÎÆâÍÆ¤ÇÅĞÏ¿¤¹¤ë" border="0" name="subm" >
+												<input type="image" onMouseover="chgImgImageSubmit('<!--{$smarty.const.URL_DIR}-->img/contents/btn_regist_on.jpg',this)" onMouseout="chgImgImageSubmit('<!--{$smarty.const.URL_DIR}-->img/contents/btn_regist.jpg',this)" src="<!--{$smarty.const.URL_DIR}-->img/contents/btn_regist.jpg" width="123" height="24" alt="ã“ã®å†…å®¹ã§ç™»éŒ²ã™ã‚‹" border="0" name="subm" >
 												<!--{/if}-->
 												</td>
 											</tr>
@@ -126,11 +126,11 @@
 						</table>
 					</td>
 				</tr>
-				<!--¥á¥¤¥ó¥¨¥ê¥¢-->
+				<!--ãƒ¡ã‚¤ãƒ³ã‚¨ãƒªã‚¢-->
 			</table>
-			<!--¢¥ÅĞÏ¿¥Æ¡¼¥Ö¥ë¤³¤³¤Ş¤Ç-->
+			<!--â–²ç™»éŒ²ãƒ†ãƒ¼ãƒ–ãƒ«ã“ã“ã¾ã§-->
 		</td>
 	</tr>
 </form>
 </table>
-<!--¡ú¡ú¥á¥¤¥ó¥³¥ó¥Æ¥ó¥Ä¡ú¡ú-->								
+<!--â˜…â˜…ãƒ¡ã‚¤ãƒ³ã‚³ãƒ³ãƒ†ãƒ³ãƒ„â˜…â˜…-->								

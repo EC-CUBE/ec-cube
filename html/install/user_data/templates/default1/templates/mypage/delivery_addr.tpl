@@ -26,14 +26,14 @@
 <div align="center">
 <a name="top" id="top"></a>
 
-<!--¢§CONTENTS-->
+<!--â–¼CONTENTS-->
 <table width="550" border="0" cellspacing="0" cellpadding="0" summary=" ">
 	<tr><td height="15"></td></tr>
 	<tr><td bgcolor="#ffa85c"><img src="<!--{$smarty.const.URL_DIR}-->misc/_.gif" width="1" height="5" alt=""></td></tr>
 	<tr>
 		<td align="center" bgcolor="#ffffff">
 
-		<!--¢§ÆşÎÏ¥Õ¥©¡¼¥à¤³¤³¤«¤é-->
+		<!--â–¼å…¥åŠ›ãƒ•ã‚©ãƒ¼ãƒ ã“ã“ã‹ã‚‰-->
 		<table width="500" border="0" cellspacing="0" cellpadding="0" summary=" ">
 		<form name="form1" id="form1" method="post" action="<!--{$smarty.server.PHP_SELF|escape}-->">
 		<input type="hidden" name="mode" value="edit">
@@ -42,33 +42,33 @@
 
 			<tr><td height="15"></td></tr>
 			<tr>
-				<td><img src="<!--{$smarty.const.URL_DIR}-->img/shopping/delivadd_title.jpg" width="500" height="40" alt="¿·¤·¤¤¤ªÆÏ¤±Àè¤ÎÄÉ²Ã¡¦ÊÑ¹¹"></td>
+				<td><img src="<!--{$smarty.const.URL_DIR}-->img/shopping/delivadd_title.jpg" width="500" height="40" alt="æ–°ã—ã„ãŠå±Šã‘å…ˆã®è¿½åŠ ãƒ»å¤‰æ›´"></td>
 			</tr>
 			<tr><td height="15"></td></tr>
 			<tr>
-				<td class="fs12">²¼µ­¹àÌÜ¤Ë¤´ÆşÎÏ¤¯¤À¤µ¤¤¡£¡Ö<span class="red">¢¨</span>¡×°õ¤ÏÆşÎÏÉ¬¿Ü¹àÌÜ¤Ç¤¹¡£<br>
-				ÆşÎÏ¸å¡¢°ìÈÖ²¼¤Î¡Ö³ÎÇ§¥Ú¡¼¥¸¤Ø¡×¥Ü¥¿¥ó¤ò¥¯¥ê¥Ã¥¯¤·¤Æ¤¯¤À¤µ¤¤¡£</td>
+				<td class="fs12">ä¸‹è¨˜é …ç›®ã«ã”å…¥åŠ›ãã ã•ã„ã€‚ã€Œ<span class="red">â€»</span>ã€å°ã¯å…¥åŠ›å¿…é ˆé …ç›®ã§ã™ã€‚<br>
+				å…¥åŠ›å¾Œã€ä¸€ç•ªä¸‹ã®ã€Œç¢ºèªãƒšãƒ¼ã‚¸ã¸ã€ãƒœã‚¿ãƒ³ã‚’ã‚¯ãƒªãƒƒã‚¯ã—ã¦ãã ã•ã„ã€‚</td>
 			</tr>
 			<tr><td height="15"></td></tr>
 			<tr>
 				<td bgcolor="#cccccc">
-				<!--ÆşÎÏ¥Õ¥©¡¼¥à¤³¤³¤«¤é-->
+				<!--å…¥åŠ›ãƒ•ã‚©ãƒ¼ãƒ ã“ã“ã‹ã‚‰-->
 				<table width="500" border="0" cellspacing="1" cellpadding="10" summary=" ">
 					<tr>
-						<td width="117" bgcolor="#f0f0f0" class="fs12">¤ªÌ¾Á°<span class="red">¢¨</span></td>
+						<td width="117" bgcolor="#f0f0f0" class="fs12">ãŠåå‰<span class="red">â€»</span></td>
 						<td width="340" bgcolor="#ffffff" class="fs12n">
 							<span class="red"><!--{$arrErr.name01}--><!--{$arrErr.name02}--></span>
-							À«&nbsp;<input type="text" name="name01" value="<!--{if $name01 == ""}--><!--{$arrOtherDeliv.name01|escape}--><!--{else}--><!--{$name01|escape}--><!--{/if}-->" maxlength="<!--{$smarty.const.STEXT_LEN}-->" style="<!--{$arrErr.name01|sfGetErrorColor}-->" size=15 class="box15" />¡¡
-							Ì¾&nbsp;<input type="text" name="name02" value="<!--{if $name02 == ""}--><!--{$arrOtherDeliv.name02|escape}--><!--{else}--><!--{$name02|escape}--><!--{/if}-->" maxlength="<!--{$smarty.const.STEXT_LEN}-->" style="<!--{$arrErr.name02|sfGetErrorColor}-->" size=15 class="box15" />
+							å§“&nbsp;<input type="text" name="name01" value="<!--{if $name01 == ""}--><!--{$arrOtherDeliv.name01|escape}--><!--{else}--><!--{$name01|escape}--><!--{/if}-->" maxlength="<!--{$smarty.const.STEXT_LEN}-->" style="<!--{$arrErr.name01|sfGetErrorColor}-->" size=15 class="box15" />ã€€
+							å&nbsp;<input type="text" name="name02" value="<!--{if $name02 == ""}--><!--{$arrOtherDeliv.name02|escape}--><!--{else}--><!--{$name02|escape}--><!--{/if}-->" maxlength="<!--{$smarty.const.STEXT_LEN}-->" style="<!--{$arrErr.name02|sfGetErrorColor}-->" size=15 class="box15" />
 						</td>
 					</tr>
 					<tr>
-						<td bgcolor="#f0f0f0" class="fs12">¤ªÌ¾Á°¡Ê¥Õ¥ê¥¬¥Ê¡Ë<span class="red">¢¨</span></td>
+						<td bgcolor="#f0f0f0" class="fs12">ãŠåå‰ï¼ˆãƒ•ãƒªã‚¬ãƒŠï¼‰<span class="red">â€»</span></td>
 						<td bgcolor="#ffffff" class="fs12n"><span class="red"><!--{$arrErr.kana01}--><!--{$arrErr.kana02}--></span>
-							¥»¥¤&nbsp;<input type="text" name="kana01" value="<!--{if $kana01 == ""}--><!--{$arrOtherDeliv.kana01|escape}--><!--{else}--><!--{$kana01|escape}--><!--{/if}-->" maxlength="<!--{$smarty.const.STEXT_LEN}-->" style="<!--{$arrErr.kana01|sfGetErrorColor}-->" size=15 class="box15" />¡¡¥á¥¤&nbsp;<input type="text" name="kana02" value="<!--{if $kana02 == ""}--><!--{$arrOtherDeliv.kana02|escape}--><!--{else}--><!--{$kana02|escape}--><!--{/if}-->" maxlength="<!--{$smarty.const.STEXT_LEN}-->" style="<!--{$arrErr.kana02|sfGetErrorColor}-->" size=15 class="box15" /></td>
+							ã‚»ã‚¤&nbsp;<input type="text" name="kana01" value="<!--{if $kana01 == ""}--><!--{$arrOtherDeliv.kana01|escape}--><!--{else}--><!--{$kana01|escape}--><!--{/if}-->" maxlength="<!--{$smarty.const.STEXT_LEN}-->" style="<!--{$arrErr.kana01|sfGetErrorColor}-->" size=15 class="box15" />ã€€ãƒ¡ã‚¤&nbsp;<input type="text" name="kana02" value="<!--{if $kana02 == ""}--><!--{$arrOtherDeliv.kana02|escape}--><!--{else}--><!--{$kana02|escape}--><!--{/if}-->" maxlength="<!--{$smarty.const.STEXT_LEN}-->" style="<!--{$arrErr.kana02|sfGetErrorColor}-->" size=15 class="box15" /></td>
 					</tr>
 					<tr>
-						<td bgcolor="#f0f0f0" class="fs12">Í¹ÊØÈÖ¹æ<span class="red">¢¨</span></td>
+						<td bgcolor="#f0f0f0" class="fs12">éƒµä¾¿ç•ªå·<span class="red">â€»</span></td>
 						<td bgcolor="#ffffff">
 							<table cellspacing="0" cellpadding="0" summary=" ">
 								<tr>
@@ -76,27 +76,27 @@
 										<!--{assign var=key1 value="zip01"}-->
 										<!--{assign var=key2 value="zip02"}-->
 										<span class="red"><!--{$arrErr[$key1]}--><!--{$arrErr[$key2]}--></span>
-										¢©&nbsp;<input type="text" name="zip01" value="<!--{if $zip01 == ""}--><!--{$arrOtherDeliv.zip01|escape}--><!--{else}--><!--{$zip01|escape}--><!--{/if}-->" maxlength="<!--{$smarty.const.ZIP01_LEN}-->" style="<!--{$arrErr[$key1]|sfGetErrorColor}-->; ime-mode: disabled;" size=6 class="box6" />&nbsp;-&nbsp;<input type="text" name="zip02" value="<!--{if $zip02 == ""}--><!--{$arrOtherDeliv.zip02|escape}--><!--{else}--><!--{$zip02|escape}--><!--{/if}-->" maxlength="<!--{$smarty.const.ZIP02_LEN}-->" style="<!--{$arrErr[$key2]|sfGetErrorColor}-->; ime-mode: disabled;" size=6 class="box6" />
+										ã€’&nbsp;<input type="text" name="zip01" value="<!--{if $zip01 == ""}--><!--{$arrOtherDeliv.zip01|escape}--><!--{else}--><!--{$zip01|escape}--><!--{/if}-->" maxlength="<!--{$smarty.const.ZIP01_LEN}-->" style="<!--{$arrErr[$key1]|sfGetErrorColor}-->; ime-mode: disabled;" size=6 class="box6" />&nbsp;-&nbsp;<input type="text" name="zip02" value="<!--{if $zip02 == ""}--><!--{$arrOtherDeliv.zip02|escape}--><!--{else}--><!--{$zip02|escape}--><!--{/if}-->" maxlength="<!--{$smarty.const.ZIP02_LEN}-->" style="<!--{$arrErr[$key2]|sfGetErrorColor}-->; ime-mode: disabled;" size=6 class="box6" />
 									</td>
 									<td>
-										&nbsp;&nbsp;<a href="../address/index.php" onclick="fnCallAddress('<!--{$smarty.const.URL_INPUT_ZIP}-->', 'zip01', 'zip02', 'pref', 'addr01'); return false;" target="_blank"><img src="<!--{$smarty.const.URL_DIR}-->img/common/address.gif" width="86" height="20" alt="½»½ê¼«Æ°ÆşÎÏ" /></a></td>
+										&nbsp;&nbsp;<a href="../address/index.php" onclick="fnCallAddress('<!--{$smarty.const.URL_INPUT_ZIP}-->', 'zip01', 'zip02', 'pref', 'addr01'); return false;" target="_blank"><img src="<!--{$smarty.const.URL_DIR}-->img/common/address.gif" width="86" height="20" alt="ä½æ‰€è‡ªå‹•å…¥åŠ›" /></a></td>
 									</td>
 								</tr>
 								<tr><td height="5"></td></tr>
 								<tr>
-									<td colspan="2" class="fs12">Í¹ÊØÈÖ¹æ¤¬¤ï¤«¤é¤Ê¤¤Êı¤Ï¢ª<a href="http://search.post.japanpost.jp/7zip/" target="_blank">¤³¤Á¤é</a></td>
+									<td colspan="2" class="fs12">éƒµä¾¿ç•ªå·ãŒã‚ã‹ã‚‰ãªã„æ–¹ã¯â†’<a href="http://search.post.japanpost.jp/7zip/" target="_blank">ã“ã¡ã‚‰</a></td>
 								</tr>
 							</table>
 						</td>
 					</tr>
 					<tr>
-						<td bgcolor="#f0f0f0" class="fs12">½»½ê<span class="red">¢¨</span></td>
+						<td bgcolor="#f0f0f0" class="fs12">ä½æ‰€<span class="red">â€»</span></td>
 						<td bgcolor="#ffffff">
 							<table cellspacing="0" cellpadding="0" summary=" " id="frame02">
 								<tr>
 									<td class="fs12n"><span class="red"><!--{$arrErr.pref}--></span>
 									<select name="pref" style="<!--{$arrErr.pref|sfGetErrorColor}-->">
-									<option value="" selected>ÁªÂò¤·¤Æ¤¯¤À¤µ¤¤</option>
+									<option value="" selected>é¸æŠã—ã¦ãã ã•ã„</option>
 									<!--{if $pref == ""}-->
 									<!--{html_options options=$arrPref selected=$arrOtherDeliv.pref|escape}-->
 									<!--{else}-->
@@ -126,18 +126,18 @@
 						</td>
 					</tr>
 					<tr>
-						<td bgcolor="#f0f0f0" class="fs12n">ÅÅÏÃÈÖ¹æ<span class="red">¢¨</span></td>
+						<td bgcolor="#f0f0f0" class="fs12n">é›»è©±ç•ªå·<span class="red">â€»</span></td>
 						<td bgcolor="#ffffff" class="fs12n"><span class="red"><!--{$arrErr.tel01}--><!--{$arrErr.tel02}--><!--{$arrErr.tel03}--></span>
 							<input type="text" name="tel01" value="<!--{if $tel01 == ""}--><!--{$arrOtherDeliv.tel01|escape}--><!--{else}--><!--{$tel01|escape}--><!--{/if}-->" maxlength="<!--{$smarty.const.TEL_ITEM_LEN}-->" style="<!--{$arrErr.tel01|sfGetErrorColor}-->" size=6 class="box6" />&nbsp;-&nbsp;<input type="text" name="tel02" value="<!--{if $tel02 == ""}--><!--{$arrOtherDeliv.tel02|escape}--><!--{else}--><!--{$tel02|escape}--><!--{/if}-->" maxlength="<!--{$smarty.const.TEL_ITEM_LEN}-->" style="<!--{$arrErr.tel02|sfGetErrorColor}-->" size=6 class="box6" />&nbsp;-&nbsp;<input type="text" name="tel03" value="<!--{if $tel03 == ""}--><!--{$arrOtherDeliv.tel03|escape}--><!--{else}--><!--{$tel03|escape}--><!--{/if}-->" maxlength="<!--{$smarty.const.TEL_ITEM_LEN}-->" style="<!--{$arrErr.tel03|sfGetErrorColor}-->" size=6 class="box6" /></td>
 					</tr>
 				</table>
-				<!--ÆşÎÏ¥Õ¥©¡¼¥à¤³¤³¤Ş¤Ç-->
+				<!--å…¥åŠ›ãƒ•ã‚©ãƒ¼ãƒ ã“ã“ã¾ã§-->
 				</td>
 			</tr>
 			<tr><td height="15"></td></tr>
 			<tr>
 				<td align="center">
-					<input type="image" onmouseover="chgImgImageSubmit('<!--{$smarty.const.URL_DIR}-->img/common/b_entry_on.gif',this);" onmouseout="chgImgImageSubmit('<!--{$smarty.const.URL_DIR}-->img/common/b_entry.gif',this);" src="<!--{$smarty.const.URL_DIR}-->img/common/b_entry.gif" width="150" height="30" alt="ÅĞÏ¿¤¹¤ë" name="register" id="register" />
+					<input type="image" onmouseover="chgImgImageSubmit('<!--{$smarty.const.URL_DIR}-->img/common/b_entry_on.gif',this);" onmouseout="chgImgImageSubmit('<!--{$smarty.const.URL_DIR}-->img/common/b_entry.gif',this);" src="<!--{$smarty.const.URL_DIR}-->img/common/b_entry.gif" width="150" height="30" alt="ç™»éŒ²ã™ã‚‹" name="register" id="register" />
 				</td>
 			</tr>
 			<tr><td height="30"></td></tr>

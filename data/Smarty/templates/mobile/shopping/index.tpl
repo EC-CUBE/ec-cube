@@ -5,27 +5,27 @@
  * http://www.lockon.co.jp/
  */
 *}-->
-<!--¢§CONTENTS-->
-<!--¢§MAIN ONTENTS-->
-<div align="center"><font color="#000080">¤´ÃíÊ¸¼êÂ³¤­</font></div><br>
+<!--â–¼CONTENTS-->
+<!--â–¼MAIN ONTENTS-->
+<div align="center"><font color="#000080">ã”æ³¨æ–‡æ‰‹ç¶šã</font></div><br>
 <hr>
 <!--{if !$tpl_valid_phone_id}-->
-<!--¢§²ñ°÷ÅÐÏ¿¤¬¤ªºÑ¤ß¤Ç¤Ê¤¤¤ªµÒÍÍ-->
-¢£½é¤á¤Æ¤´ÃíÊ¸¤ÎÊý<br>
-(¿·µ¬¤´ÅÐÏ¿)<br>
+<!--â–¼ä¼šå“¡ç™»éŒ²ãŒãŠæ¸ˆã¿ã§ãªã„ãŠå®¢æ§˜-->
+â– åˆã‚ã¦ã”æ³¨æ–‡ã®æ–¹<br>
+(æ–°è¦ã”ç™»éŒ²)<br>
 <form name="member_form" id="member_form" method="post" action="<!--{$smarty.const.MOBILE_URL_DIR}-->entry/kiyaku.php">
-	<div align="center"><input type="submit" value="¿·µ¬ÅÐÏ¿"></div><br>
+	<div align="center"><input type="submit" value="æ–°è¦ç™»éŒ²"></div><br>
 </form>
-<!--¢¥¤Þ¤À²ñ°÷ÅÐÏ¿¤µ¤ì¤Æ¤¤¤Ê¤¤¤ªµÒÍÍ-->
+<!--â–²ã¾ã ä¼šå“¡ç™»éŒ²ã•ã‚Œã¦ã„ãªã„ãŠå®¢æ§˜-->
 <!--{/if}-->
 
-<!--¢§²ñ°÷ÅÐÏ¿¤¬¤ªºÑ¤ß¤Î¤ªµÒÍÍ-->
+<!--â–¼ä¼šå“¡ç™»éŒ²ãŒãŠæ¸ˆã¿ã®ãŠå®¢æ§˜-->
 <form name="member_form" id="member_form" method="post" action="./deliv.php">
 	<input type="hidden" name="mode" value="login">
 <!--{if !$tpl_valid_phone_id}-->
-	¢£°ÊÁ°¤Ë¤´ÃíÊ¸¤µ¤ì¤¿Êý<br>
-	(¥â¥Ð¥¤¥ëËô¤ÏPC¤Ç¤´ÅÐÏ¿ºÑ¤ß)<br>
-	¢§¥á¡¼¥ë¥¢¥É¥ì¥¹<br>
+	â– ä»¥å‰ã«ã”æ³¨æ–‡ã•ã‚ŒãŸæ–¹<br>
+	(ãƒ¢ãƒã‚¤ãƒ«åˆã¯PCã§ã”ç™»éŒ²æ¸ˆã¿)<br>
+	â–¼ãƒ¡ãƒ¼ãƒ«ã‚¢ãƒ‰ãƒ¬ã‚¹<br>
 	<!--{assign var=key value="login_email"}-->
 	<font color="#FF0000"><!--{$arrErr[$key]}--></font>
 	<input type="text" name="<!--{$key}-->" value="<!--{$tpl_login_email|escape}-->" 
@@ -33,24 +33,24 @@
 <!--{else}-->
 <input type="hidden" name="login_email" value="dummy">
 <!--{/if}-->
-	¢§¥Ñ¥¹¥ï¡¼¥É<br>
+	â–¼ãƒ‘ã‚¹ãƒ¯ãƒ¼ãƒ‰<br>
 	<!--{assign var=key value="login_pass"}--><font color="#FF0000"><!--{$arrErr[$key]}--></font>
 	<input type="password" name="<!--{$key}-->" maxlength="<!--{$arrForm[$key].length}-->" size="40" istyle="3"><br>
-	<center><input type="submit" value="Á÷¿®" name="log"></center><br>
-	<a href="<!--{$smarty.const.MOBILE_URL_DIR}-->forgot/index.php">¥Ñ¥¹¥ï¡¼¥É¤ò¤ªËº¤ì¤ÎÊý¤Ï¤³¤Á¤é</a><br>
+	<center><input type="submit" value="é€ä¿¡" name="log"></center><br>
+	<a href="<!--{$smarty.const.MOBILE_URL_DIR}-->forgot/index.php">ãƒ‘ã‚¹ãƒ¯ãƒ¼ãƒ‰ã‚’ãŠå¿˜ã‚Œã®æ–¹ã¯ã“ã¡ã‚‰</a><br>
 </form>
-<!--¢¥²ñ°÷ÅÐÏ¿¤¬¤ªºÑ¤Î¤ªµÒÍÍ-->
-<!--¢¥MAIN ONTENTS-->
-<!--¢¥CONTENTS-->
+<!--â–²ä¼šå“¡ç™»éŒ²ãŒãŠæ¸ˆã®ãŠå®¢æ§˜-->
+<!--â–²MAIN ONTENTS-->
+<!--â–²CONTENTS-->
 
 <br>
 <hr>
 
-<a href="<!--{$smarty.const.MOBILE_URL_CART_TOP}-->" accesskey="9"><!--{9|numeric_emoji}-->¤«¤´¤ò¸«¤ë</a><br>
-<a href="<!--{$smarty.const.MOBILE_URL_SITE_TOP}-->" accesskey="0"><!--{0|numeric_emoji}-->TOP¥Ú¡¼¥¸¤Ø</a><br>
+<a href="<!--{$smarty.const.MOBILE_URL_CART_TOP}-->" accesskey="9"><!--{9|numeric_emoji}-->ã‹ã”ã‚’è¦‹ã‚‹</a><br>
+<a href="<!--{$smarty.const.MOBILE_URL_SITE_TOP}-->" accesskey="0"><!--{0|numeric_emoji}-->TOPãƒšãƒ¼ã‚¸ã¸</a><br>
 
 <br>
 
-<!-- ¢§¥Õ¥Ã¥¿¡¼ ¤³¤³¤«¤é -->
+<!-- â–¼ãƒ•ãƒƒã‚¿ãƒ¼ ã“ã“ã‹ã‚‰ -->
 <!--{include file='footer.tpl'}-->
-<!-- ¢¥¥Õ¥Ã¥¿¡¼ ¤³¤³¤Þ¤Ç -->
+<!-- â–²ãƒ•ãƒƒã‚¿ãƒ¼ ã“ã“ã¾ã§ -->

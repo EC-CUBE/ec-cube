@@ -18,7 +18,7 @@ class LC_Page {
 		$this->arrPref = $arrPref;
 		global $arrTAXRULE;
 		$this->arrTAXRULE = $arrTAXRULE;
-		$this->tpl_subtitle = 'ÆÃÄê¾¦¼è°úË¡';
+		$this->tpl_subtitle = 'ç‰¹å®šå•†å–å¼•æ³•';
 	}
 }
 
@@ -28,14 +28,14 @@ $objView = new SC_AdminView();
 $objSess = new SC_Session();
 $objQuery = new SC_Query();
 
-// Ç§¾Ú²ÄÈÝ¤ÎÈ½Äê
+// èªè¨¼å¯å¦ã®åˆ¤å®š
 sfIsSuccess($objSess);
 
-// ¥Ñ¥é¥á¡¼¥¿´ÉÍý¥¯¥é¥¹
+// ãƒ‘ãƒ©ãƒ¡ãƒ¼ã‚¿ç®¡ç†ã‚¯ãƒ©ã‚¹
 $objFormParam = new SC_FormParam();
-// ¥Ñ¥é¥á¡¼¥¿¾ðÊó¤Î½é´ü²½
+// ãƒ‘ãƒ©ãƒ¡ãƒ¼ã‚¿æƒ…å ±ã®åˆæœŸåŒ–
 lfInitParam();
-// POSTÃÍ¤Î¼èÆÀ
+// POSTå€¤ã®å–å¾—
 $objFormParam->setParam($_POST);
 
 $cnt = $objQuery->count("dtb_baseinfo");
@@ -47,30 +47,30 @@ if ($cnt > 0) {
 }
 
 if($_POST['mode'] != "") {
-	// ÆþÎÏÃÍ¤ÎÊÑ´¹
+	// å…¥åŠ›å€¤ã®å¤‰æ›
 	$objFormParam->convParam();
 	$objPage->arrErr = lfCheckError($arrRet);
 	
 	if(count($objPage->arrErr) == 0) {
 		switch($_POST['mode']) {
 		case 'update':
-			lfUpdateData(); // ´ûÂ¸ÊÔ½¸
+			lfUpdateData(); // æ—¢å­˜ç·¨é›†
 			break;
 		case 'insert':
-			lfInsertData(); // ¿·µ¬ºîÀ®
+			lfInsertData(); // æ–°è¦ä½œæˆ
 			break;
 		default:
 			break;
 		}
-		// ºÆÉ½¼¨
+		// å†è¡¨ç¤º
 		//sfReload();
-		$objPage->tpl_onload = "window.alert('ÆÃÄê¾¦¼è°úË¡¤ÎÅÐÏ¿¤¬´°Î»¤·¤Þ¤·¤¿¡£');";
+		$objPage->tpl_onload = "window.alert('ç‰¹å®šå•†å–å¼•æ³•ã®ç™»éŒ²ãŒå®Œäº†ã—ã¾ã—ãŸã€‚');";
 	}
 } else {
-	$arrCol = $objFormParam->getKeyList(); // ¥­¡¼Ì¾°ìÍ÷¤ò¼èÆÀ
+	$arrCol = $objFormParam->getKeyList(); // ã‚­ãƒ¼åä¸€è¦§ã‚’å–å¾—
 	$col	= sfGetCommaList($arrCol);
 	$arrRet = $objQuery->select($col, "dtb_baseinfo");
-	// DBÃÍ¤Î¼èÆÀ
+	// DBå€¤ã®å–å¾—
 	$objFormParam->setParam($arrRet[0]);
 }
 
@@ -78,64 +78,64 @@ $objPage->arrForm = $objFormParam->getFormParamList();
 $objView->assignobj($objPage);
 $objView->display(MAIN_FRAME);
 //--------------------------------------------------------------------------------------------------------------------------------------
-/* ¥Ñ¥é¥á¡¼¥¿¾ðÊó¤Î½é´ü²½ */
+/* ãƒ‘ãƒ©ãƒ¡ãƒ¼ã‚¿æƒ…å ±ã®åˆæœŸåŒ– */
 function lfInitParam() {
 	global $objFormParam;
-	$objFormParam->addParam("ÈÎÇä¶È¼Ô", "law_company", STEXT_LEN, "KVa", array("EXIST_CHECK", "MAX_LENGTH_CHECK"));
-	$objFormParam->addParam("±¿±ÄÀÕÇ¤¼Ô", "law_manager", STEXT_LEN, "KVa", array("EXIST_CHECK", "MAX_LENGTH_CHECK"));
-	$objFormParam->addParam("Í¹ÊØÈÖ¹æ1", "law_zip01", ZIP01_LEN, "n", array("EXIST_CHECK", "NUM_CHECK", "NUM_COUNT_CHECK"));
-	$objFormParam->addParam("Í¹ÊØÈÖ¹æ2", "law_zip02", ZIP02_LEN, "n", array("EXIST_CHECK", "NUM_CHECK", "NUM_COUNT_CHECK"));
-	$objFormParam->addParam("ÅÔÆ»ÉÜ¸©", "law_pref", INT_LEN, "n", array("EXIST_CHECK", "MAX_LENGTH_CHECK", "NUM_CHECK"));
-	$objFormParam->addParam("½»½ê1", "law_addr01", STEXT_LEN, "KVa", array("EXIST_CHECK", "MAX_LENGTH_CHECK"));
-	$objFormParam->addParam("½»½ê2", "law_addr02", STEXT_LEN, "KVa", array("EXIST_CHECK", "MAX_LENGTH_CHECK"));
-	$objFormParam->addParam("ÅÅÏÃÈÖ¹æ1", "law_tel01", TEL_ITEM_LEN, "n", array("EXIST_CHECK", "MAX_LENGTH_CHECK" ,"NUM_CHECK"));
-	$objFormParam->addParam("ÅÅÏÃÈÖ¹æ2", "law_tel02", TEL_ITEM_LEN, "n", array("EXIST_CHECK", "MAX_LENGTH_CHECK" ,"NUM_CHECK"));
-	$objFormParam->addParam("ÅÅÏÃÈÖ¹æ3", "law_tel03", TEL_ITEM_LEN, "n", array("EXIST_CHECK", "MAX_LENGTH_CHECK" ,"NUM_CHECK"));
-	$objFormParam->addParam("FAXÈÖ¹æ1", "law_fax01", TEL_ITEM_LEN, "n", array("MAX_LENGTH_CHECK" ,"NUM_CHECK"));
-	$objFormParam->addParam("FAXÈÖ¹æ2", "law_fax02", TEL_ITEM_LEN, "n", array("MAX_LENGTH_CHECK" ,"NUM_CHECK"));
-	$objFormParam->addParam("FAXÈÖ¹æ3", "law_fax03", TEL_ITEM_LEN, "n", array("MAX_LENGTH_CHECK" ,"NUM_CHECK"));
-	$objFormParam->addParam("¥á¡¼¥ë¥¢¥É¥ì¥¹", "law_email", STEXT_LEN, "KVa", array("EXIST_CHECK", "MAX_LENGTH_CHECK", "EMAIL_CHECK", "EMAIL_CHAR_CHECK"));
+	$objFormParam->addParam("è²©å£²æ¥­è€…", "law_company", STEXT_LEN, "KVa", array("EXIST_CHECK", "MAX_LENGTH_CHECK"));
+	$objFormParam->addParam("é‹å–¶è²¬ä»»è€…", "law_manager", STEXT_LEN, "KVa", array("EXIST_CHECK", "MAX_LENGTH_CHECK"));
+	$objFormParam->addParam("éƒµä¾¿ç•ªå·1", "law_zip01", ZIP01_LEN, "n", array("EXIST_CHECK", "NUM_CHECK", "NUM_COUNT_CHECK"));
+	$objFormParam->addParam("éƒµä¾¿ç•ªå·2", "law_zip02", ZIP02_LEN, "n", array("EXIST_CHECK", "NUM_CHECK", "NUM_COUNT_CHECK"));
+	$objFormParam->addParam("éƒ½é“åºœçœŒ", "law_pref", INT_LEN, "n", array("EXIST_CHECK", "MAX_LENGTH_CHECK", "NUM_CHECK"));
+	$objFormParam->addParam("ä½æ‰€1", "law_addr01", STEXT_LEN, "KVa", array("EXIST_CHECK", "MAX_LENGTH_CHECK"));
+	$objFormParam->addParam("ä½æ‰€2", "law_addr02", STEXT_LEN, "KVa", array("EXIST_CHECK", "MAX_LENGTH_CHECK"));
+	$objFormParam->addParam("é›»è©±ç•ªå·1", "law_tel01", TEL_ITEM_LEN, "n", array("EXIST_CHECK", "MAX_LENGTH_CHECK" ,"NUM_CHECK"));
+	$objFormParam->addParam("é›»è©±ç•ªå·2", "law_tel02", TEL_ITEM_LEN, "n", array("EXIST_CHECK", "MAX_LENGTH_CHECK" ,"NUM_CHECK"));
+	$objFormParam->addParam("é›»è©±ç•ªå·3", "law_tel03", TEL_ITEM_LEN, "n", array("EXIST_CHECK", "MAX_LENGTH_CHECK" ,"NUM_CHECK"));
+	$objFormParam->addParam("FAXç•ªå·1", "law_fax01", TEL_ITEM_LEN, "n", array("MAX_LENGTH_CHECK" ,"NUM_CHECK"));
+	$objFormParam->addParam("FAXç•ªå·2", "law_fax02", TEL_ITEM_LEN, "n", array("MAX_LENGTH_CHECK" ,"NUM_CHECK"));
+	$objFormParam->addParam("FAXç•ªå·3", "law_fax03", TEL_ITEM_LEN, "n", array("MAX_LENGTH_CHECK" ,"NUM_CHECK"));
+	$objFormParam->addParam("ãƒ¡ãƒ¼ãƒ«ã‚¢ãƒ‰ãƒ¬ã‚¹", "law_email", STEXT_LEN, "KVa", array("EXIST_CHECK", "MAX_LENGTH_CHECK", "EMAIL_CHECK", "EMAIL_CHAR_CHECK"));
 	$objFormParam->addParam("URL", "law_url", STEXT_LEN, "KVa", array("EXIST_CHECK", "MAX_LENGTH_CHECK", "URL_CHECK"));
-	$objFormParam->addParam("É¬Í×ÎÁ¶â", "law_term01", MTEXT_LEN, "KVa", array("EXIST_CHECK", "MAX_LENGTH_CHECK"));
-	$objFormParam->addParam("ÃíÊ¸ÊýË¡", "law_term02", MTEXT_LEN, "KVa", array("EXIST_CHECK", "MAX_LENGTH_CHECK"));
-	$objFormParam->addParam("»ÙÊ§ÊýË¡", "law_term03", MTEXT_LEN, "KVa", array("EXIST_CHECK", "MAX_LENGTH_CHECK"));
-	$objFormParam->addParam("»ÙÊ§´ü¸Â", "law_term04", MTEXT_LEN, "KVa", array("EXIST_CHECK", "MAX_LENGTH_CHECK"));
-	$objFormParam->addParam("°ú¤­ÅÏ¤·»þ´ü", "law_term05", MTEXT_LEN, "KVa", array("EXIST_CHECK", "MAX_LENGTH_CHECK"));
-	$objFormParam->addParam("ÊÖÉÊ¡¦¸ò´¹¤Ë¤Ä¤¤¤Æ", "law_term06", MTEXT_LEN, "KVa", array("EXIST_CHECK", "MAX_LENGTH_CHECK"));
+	$objFormParam->addParam("å¿…è¦æ–™é‡‘", "law_term01", MTEXT_LEN, "KVa", array("EXIST_CHECK", "MAX_LENGTH_CHECK"));
+	$objFormParam->addParam("æ³¨æ–‡æ–¹æ³•", "law_term02", MTEXT_LEN, "KVa", array("EXIST_CHECK", "MAX_LENGTH_CHECK"));
+	$objFormParam->addParam("æ”¯æ‰•æ–¹æ³•", "law_term03", MTEXT_LEN, "KVa", array("EXIST_CHECK", "MAX_LENGTH_CHECK"));
+	$objFormParam->addParam("æ”¯æ‰•æœŸé™", "law_term04", MTEXT_LEN, "KVa", array("EXIST_CHECK", "MAX_LENGTH_CHECK"));
+	$objFormParam->addParam("å¼•ãæ¸¡ã—æ™‚æœŸ", "law_term05", MTEXT_LEN, "KVa", array("EXIST_CHECK", "MAX_LENGTH_CHECK"));
+	$objFormParam->addParam("è¿”å“ãƒ»äº¤æ›ã«ã¤ã„ã¦", "law_term06", MTEXT_LEN, "KVa", array("EXIST_CHECK", "MAX_LENGTH_CHECK"));
 }
 
 function lfUpdateData() {
 	global $objFormParam;
-	// ÆþÎÏ¥Ç¡¼¥¿¤òÅÏ¤¹¡£
+	// å…¥åŠ›ãƒ‡ãƒ¼ã‚¿ã‚’æ¸¡ã™ã€‚
 	$sqlval = $objFormParam->getHashArray();
 	$sqlval['update_date'] = 'Now()';
 	$objQuery = new SC_Query();
-	// UPDATE¤Î¼Â¹Ô
+	// UPDATEã®å®Ÿè¡Œ
 	$ret = $objQuery->update("dtb_baseinfo", $sqlval);
 }
 
 function lfInsertData() {
 	global $objFormParam;
-	// ÆþÎÏ¥Ç¡¼¥¿¤òÅÏ¤¹¡£
+	// å…¥åŠ›ãƒ‡ãƒ¼ã‚¿ã‚’æ¸¡ã™ã€‚
 	$sqlval = $objFormParam->getHashArray();
 	$sqlval['update_date'] = 'Now()';
 	$objQuery = new SC_Query();
-	// INSERT¤Î¼Â¹Ô
+	// INSERTã®å®Ÿè¡Œ
 	$ret = $objQuery->insert("dtb_baseinfo", $sqlval);
 }
 
-/* ÆþÎÏÆâÍÆ¤Î¥Á¥§¥Ã¥¯ */
+/* å…¥åŠ›å†…å®¹ã®ãƒã‚§ãƒƒã‚¯ */
 function lfCheckError() {
 	global $objFormParam;
-	// ÆþÎÏ¥Ç¡¼¥¿¤òÅÏ¤¹¡£
+	// å…¥åŠ›ãƒ‡ãƒ¼ã‚¿ã‚’æ¸¡ã™ã€‚
 	$arrRet =  $objFormParam->getHashArray();
 	$objErr = new SC_CheckError($arrRet);
 	$objErr->arrErr = $objFormParam->checkError();
 	
-	// ÅÅÏÃÈÖ¹æ¥Á¥§¥Ã¥¯
+	// é›»è©±ç•ªå·ãƒã‚§ãƒƒã‚¯
 	$objErr->doFunc(array("TEL", "law_tel01", "law_tel02", "law_tel03", TEL_ITEM_LEN), array("TEL_CHECK"));
 	$objErr->doFunc(array("FAX", "law_fax01", "law_fax02", "law_fax03", TEL_ITEM_LEN), array("TEL_CHECK"));
-	$objErr->doFunc(array("Í¹ÊØÈÖ¹æ", "law_zip01", "law_zip02"), array("ALL_EXIST_CHECK"));
+	$objErr->doFunc(array("éƒµä¾¿ç•ªå·", "law_zip01", "law_zip02"), array("ALL_EXIST_CHECK"));
 	
 	return $objErr->arrErr;
 }

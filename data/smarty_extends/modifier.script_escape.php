@@ -1,9 +1,9 @@
 <?php
 /**
- * Script¥¿¥°¤ò¥¨¥¹¥±¡¼¥×¤¹¤ë
+ * Scriptã‚¿ã‚°ã‚’ã‚¨ã‚¹ã‚±ãƒ¼ãƒ—ã™ã‚‹
  *
- * @param  string $value ÆþÎÏ
- * @return string $value ¥Þ¥Ã¥Á¤·¤¿¾ì¹ç¤ÏÊÑ´¹¸å¤ÎÊ¸»úÎó¡¢¤·¤Ê¤¤¾ì¹ç¤ÏÆþÎÏ¤µ¤ì¤¿Ê¸»úÎó¤ò¤½¤Î¤Þ¤ÞÊÖ¤¹¡£
+ * @param  string $value å…¥åŠ›
+ * @return string $value ãƒžãƒƒãƒã—ãŸå ´åˆã¯å¤‰æ›å¾Œã®æ–‡å­—åˆ—ã€ã—ãªã„å ´åˆã¯å…¥åŠ›ã•ã‚ŒãŸæ–‡å­—åˆ—ã‚’ãã®ã¾ã¾è¿”ã™ã€‚
  */
 function smarty_modifier_script_escape($value) {
     

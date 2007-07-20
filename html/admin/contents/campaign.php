@@ -8,11 +8,11 @@ require_once("../require.php");
 require_once("./campaign_csv.php");
 require_once(DATA_PATH . "include/file_manager.inc");
 
-//---- Ç§¾Ú²ÄÈİ¤ÎÈ½Äê
+//---- èªè¨¼å¯å¦ã®åˆ¤å®š
 $objSess = new SC_Session();
 sfIsSuccess($objSess);
 
-//---- ¥Ú¡¼¥¸É½¼¨¥¯¥é¥¹
+//---- ãƒšãƒ¼ã‚¸è¡¨ç¤ºã‚¯ãƒ©ã‚¹
 class LC_Page {
 	
 	function LC_Page() {
@@ -20,8 +20,8 @@ class LC_Page {
 		$this->tpl_subnavi = 'contents/subnavi.tpl';
 		$this->tpl_subno = "campaign";
 		$this->tpl_mainno = 'contents';
-		$this->tpl_subtitle = '¥­¥ã¥ó¥Ú¡¼¥ó´ÉÍı';
-		// ¥«¡¼¥È¤Ë¾¦ÉÊ¤¬Æş¤Ã¤Æ¤¤¤ë¤Ë¥Á¥§¥Ã¥¯¤¬Æş¤Ã¤Æ¤¤¤ë¤«¥Á¥§¥Ã¥¯
+		$this->tpl_subtitle = 'ã‚­ãƒ£ãƒ³ãƒšãƒ¼ãƒ³ç®¡ç†';
+		// ã‚«ãƒ¼ãƒˆã«å•†å“ãŒå…¥ã£ã¦ã„ã‚‹ã«ãƒã‚§ãƒƒã‚¯ãŒå…¥ã£ã¦ã„ã‚‹ã‹ãƒã‚§ãƒƒã‚¯
 		$this->tpl_onload = "fnIsCartOn();";
 	}
 }
@@ -32,55 +32,55 @@ $objView = new SC_AdminView();
 $objQuery = new SC_Query();
 $objFormParam = new SC_FormParam();
 
-// Ç§¾Ú²ÄÈİ¤ÎÈ½Äê
+// èªè¨¼å¯å¦ã®åˆ¤å®š
 sfIsSuccess($objSess);
 
-// ¥Ñ¥é¥á¡¼¥¿¾ğÊó¤Î½é´ü²½
+// ãƒ‘ãƒ©ãƒ¡ãƒ¼ã‚¿æƒ…å ±ã®åˆæœŸåŒ–
 lfInitParam();
-// ¥Õ¥©¡¼¥à¤ÎÃÍ¤ò¥»¥Ã¥È
+// ãƒ•ã‚©ãƒ¼ãƒ ã®å€¤ã‚’ã‚»ãƒƒãƒˆ
 $objFormParam->setParam($_POST);
 
-// ÊÔ½¸½èÍı¤Î¾ì¹ç¤Ï¾õÂÖ¤òÊİ»ı
+// ç·¨é›†å‡¦ç†ã®å ´åˆã¯çŠ¶æ…‹ã‚’ä¿æŒ
 $objPage->is_update = $_POST['is_update'];
 
-// ¥Õ¥©¡¼¥à¤ÎÃÍ¤ò¥Æ¥ó¥×¥ì¡¼¥È¤ØÅÏ¤¹
+// ãƒ•ã‚©ãƒ¼ãƒ ã®å€¤ã‚’ãƒ†ãƒ³ãƒ—ãƒ¬ãƒ¼ãƒˆã¸æ¸¡ã™
 $objPage->arrForm = $objFormParam->getHashArray();
 $campaign_id = $_POST['campaign_id'];
 
 switch($_POST['mode']) {
-	// ¿·µ¬ÅĞÏ¿/ÊÔ½¸ÅĞÏ¿
+	// æ–°è¦ç™»éŒ²/ç·¨é›†ç™»éŒ²
 	case 'regist':
-		// ¥¨¥é¡¼¥Á¥§¥Ã¥¯
+		// ã‚¨ãƒ©ãƒ¼ãƒã‚§ãƒƒã‚¯
 		$objPage->arrErr = lfErrorCheck($campaign_id);
 		
 		if(count($objPage->arrErr) <= 0) {
-			// ÅĞÏ¿
+			// ç™»éŒ²
 			lfRegistCampaign($campaign_id);
 			
-			// ¥­¥ã¥ó¥Ú¡¼¥óTOP¤Ø¥ê¥À¥¤¥ì¥¯¥È
+			// ã‚­ãƒ£ãƒ³ãƒšãƒ¼ãƒ³TOPã¸ãƒªãƒ€ã‚¤ãƒ¬ã‚¯ãƒˆ
 			header("location: ".URL_CAMPAIGN_TOP);
 		}
 	
 		break;
-	// ÊÔ½¸²¡²¼»ş
+	// ç·¨é›†æŠ¼ä¸‹æ™‚
 	case 'update':
-		// ¥­¥ã¥ó¥Ú¡¼¥ó¾ğÊó¤ò¼èÆÀ
+		// ã‚­ãƒ£ãƒ³ãƒšãƒ¼ãƒ³æƒ…å ±ã‚’å–å¾—
 		$objPage->arrForm = lfGetCampaign($campaign_id);
 		$objPage->is_update = true;
 		break;
-	// ºï½ü²¡²¼»ş
+	// å‰Šé™¤æŠ¼ä¸‹æ™‚
 	case 'delete':
-		// ºï½ü
+		// å‰Šé™¤
 		lfDeleteCampaign($campaign_id);
-		// ¥­¥ã¥ó¥Ú¡¼¥óTOP¤Ø¥ê¥À¥¤¥ì¥¯¥È
+		// ã‚­ãƒ£ãƒ³ãƒšãƒ¼ãƒ³TOPã¸ãƒªãƒ€ã‚¤ãƒ¬ã‚¯ãƒˆ
 		header("location: ".URL_CAMPAIGN_TOP);
 		break;
-	// CSV½ĞÎÏ
+	// CSVå‡ºåŠ›
 	case 'csv':
-		// ¥ª¥×¥·¥ç¥ó¤Î»ØÄê
+		// ã‚ªãƒ—ã‚·ãƒ§ãƒ³ã®æŒ‡å®š
 		$option = "ORDER BY create_date DESC";
 			
-		// CSV½ĞÎÏ¥¿¥¤¥È¥ë¹Ô¤ÎºîÀ®
+		// CSVå‡ºåŠ›ã‚¿ã‚¤ãƒˆãƒ«è¡Œã®ä½œæˆ
 		$arrCsvOutput = sfSwapArray(sfgetCsvOutput(4, " WHERE csv_id = 4 AND status = 1"));
 			
 		if (count($arrCsvOutput) <= 0) break;
@@ -90,7 +90,7 @@ switch($_POST['mode']) {
 		$head = sfGetCSVList($arrCsvOutputTitle);
 		$data = lfGetCSV("dtb_campaign_order", "campaign_id = ?", $option, array($campaign_id), $arrCsvOutputCols);
 			
-		// CSV¤òÁ÷¿®¤¹¤ë¡£
+		// CSVã‚’é€ä¿¡ã™ã‚‹ã€‚
 		sfCSVDownload($head.$data);
 		exit;
 		break;
@@ -98,11 +98,11 @@ switch($_POST['mode']) {
 		break;
 }
 
-// ¥­¥ã¥ó¥Ú¡¼¥ó°ìÍ÷¼èÆÀ
+// ã‚­ãƒ£ãƒ³ãƒšãƒ¼ãƒ³ä¸€è¦§å–å¾—
 $objPage->arrCampaign = lfGetCampaignList();
 $objPage->campaign_id = $campaign_id;
 
-// ¥­¥ã¥ó¥Ú¡¼¥ó´ü´ÖÍÑ
+// ã‚­ãƒ£ãƒ³ãƒšãƒ¼ãƒ³æœŸé–“ç”¨
 $objDate = new SC_Date();
 $objPage->arrYear = $objDate->getYear();
 $objPage->arrMonth = $objDate->getMonth();
@@ -110,46 +110,46 @@ $objPage->arrDay = $objDate->getDay();
 $objPage->arrHour = $objDate->getHour();
 $objPage->arrMinutes = $objDate->getMinutes();
 
-//----¡¡¥Ú¡¼¥¸É½¼¨
+//----ã€€ãƒšãƒ¼ã‚¸è¡¨ç¤º
 $objView->assignobj($objPage);
 $objView->display(MAIN_FRAME);
 
 
 //---------------------------------------------------------------------------------------------------------------------------------------------------------
 /* 
- * ´Ø¿ôÌ¾¡§lfInitParam
- * ÀâÌÀ¡¡¡§ÆşÎÏ¾ğÊó¤Î½é´ü²½
+ * é–¢æ•°åï¼šlfInitParam
+ * èª¬æ˜ã€€ï¼šå…¥åŠ›æƒ…å ±ã®åˆæœŸåŒ–
  */
 function lfInitParam() {
 	global $objFormParam;
 		
-	$objFormParam->addParam("¥­¥ã¥ó¥Ú¡¼¥óÌ¾", "campaign_name", MTEXT_LEN, "KVa", array("EXIST_CHECK","SPTAB_CHECK","MAX_LENGTH_CHECK"));
+	$objFormParam->addParam("ã‚­ãƒ£ãƒ³ãƒšãƒ¼ãƒ³å", "campaign_name", MTEXT_LEN, "KVa", array("EXIST_CHECK","SPTAB_CHECK","MAX_LENGTH_CHECK"));
 	
-	$objFormParam->addParam("³«»ÏÆü»ş", "start_year", INT_LEN, "n", array("MAX_LENGTH_CHECK", "NUM_CHECK"));
-	$objFormParam->addParam("³«»ÏÆü»ş", "start_month", INT_LEN, "n", array("MAX_LENGTH_CHECK", "NUM_CHECK"));
-	$objFormParam->addParam("³«»ÏÆü»ş", "start_day", INT_LEN, "n", array("MAX_LENGTH_CHECK", "NUM_CHECK"));
-	$objFormParam->addParam("³«»ÏÆü»ş", "start_hour", INT_LEN, "n", array("MAX_LENGTH_CHECK", "NUM_CHECK"));
-	$objFormParam->addParam("³«»ÏÆü»ş", "start_minute", INT_LEN, "n", array("MAX_LENGTH_CHECK", "NUM_CHECK"));
+	$objFormParam->addParam("é–‹å§‹æ—¥æ™‚", "start_year", INT_LEN, "n", array("MAX_LENGTH_CHECK", "NUM_CHECK"));
+	$objFormParam->addParam("é–‹å§‹æ—¥æ™‚", "start_month", INT_LEN, "n", array("MAX_LENGTH_CHECK", "NUM_CHECK"));
+	$objFormParam->addParam("é–‹å§‹æ—¥æ™‚", "start_day", INT_LEN, "n", array("MAX_LENGTH_CHECK", "NUM_CHECK"));
+	$objFormParam->addParam("é–‹å§‹æ—¥æ™‚", "start_hour", INT_LEN, "n", array("MAX_LENGTH_CHECK", "NUM_CHECK"));
+	$objFormParam->addParam("é–‹å§‹æ—¥æ™‚", "start_minute", INT_LEN, "n", array("MAX_LENGTH_CHECK", "NUM_CHECK"));
 
-	$objFormParam->addParam("Ää»ßÆü»ş", "end_year", INT_LEN, "n", array("MAX_LENGTH_CHECK", "NUM_CHECK"));
-	$objFormParam->addParam("Ää»ßÆü»ş", "end_month", INT_LEN, "n", array("MAX_LENGTH_CHECK", "NUM_CHECK"));
-	$objFormParam->addParam("Ää»ßÆü»ş", "end_day", INT_LEN, "n", array("MAX_LENGTH_CHECK", "NUM_CHECK"));
-	$objFormParam->addParam("Ää»ßÆü»ş", "end_hour", INT_LEN, "n", array("MAX_LENGTH_CHECK", "NUM_CHECK"));
-	$objFormParam->addParam("Ää»ßÆü»ş", "end_minute", INT_LEN, "n", array("MAX_LENGTH_CHECK", "NUM_CHECK"));
+	$objFormParam->addParam("åœæ­¢æ—¥æ™‚", "end_year", INT_LEN, "n", array("MAX_LENGTH_CHECK", "NUM_CHECK"));
+	$objFormParam->addParam("åœæ­¢æ—¥æ™‚", "end_month", INT_LEN, "n", array("MAX_LENGTH_CHECK", "NUM_CHECK"));
+	$objFormParam->addParam("åœæ­¢æ—¥æ™‚", "end_day", INT_LEN, "n", array("MAX_LENGTH_CHECK", "NUM_CHECK"));
+	$objFormParam->addParam("åœæ­¢æ—¥æ™‚", "end_hour", INT_LEN, "n", array("MAX_LENGTH_CHECK", "NUM_CHECK"));
+	$objFormParam->addParam("åœæ­¢æ—¥æ™‚", "end_minute", INT_LEN, "n", array("MAX_LENGTH_CHECK", "NUM_CHECK"));
 
-	$objFormParam->addParam("¥Ç¥£¥ì¥¯¥È¥êÌ¾", "directory_name", MTEXT_LEN, "KVa", array("EXIST_CHECK","ALNUM_CHECK","SPTAB_CHECK","MAX_LENGTH_CHECK"));
-	$objFormParam->addParam("¿½¹ş¿ôÀ©¸æ", "limit_count", INT_LEN, "n", array("MAX_LENGTH_CHECK", "NUM_CHECK"));
-	$objFormParam->addParam("½ÅÊ£¿½¹şÀ©¸æ", "orverlapping_flg", INT_LEN, "n", array("MAX_LENGTH_CHECK", "NUM_CHECK"));
-	$objFormParam->addParam("¥«¡¼¥È¤Ë¾¦ÉÊ¤òÆş¤ì¤ë", "cart_flg", INT_LEN, "n", array("MAX_LENGTH_CHECK", "NUM_CHECK"));
-	$objFormParam->addParam("Á÷ÎÁÌµÎÁÀßÄê", "deliv_free_flg", INT_LEN, "n", array("MAX_LENGTH_CHECK", "NUM_CHECK"));
+	$objFormParam->addParam("ãƒ‡ã‚£ãƒ¬ã‚¯ãƒˆãƒªå", "directory_name", MTEXT_LEN, "KVa", array("EXIST_CHECK","ALNUM_CHECK","SPTAB_CHECK","MAX_LENGTH_CHECK"));
+	$objFormParam->addParam("ç”³è¾¼æ•°åˆ¶å¾¡", "limit_count", INT_LEN, "n", array("MAX_LENGTH_CHECK", "NUM_CHECK"));
+	$objFormParam->addParam("é‡è¤‡ç”³è¾¼åˆ¶å¾¡", "orverlapping_flg", INT_LEN, "n", array("MAX_LENGTH_CHECK", "NUM_CHECK"));
+	$objFormParam->addParam("ã‚«ãƒ¼ãƒˆã«å•†å“ã‚’å…¥ã‚Œã‚‹", "cart_flg", INT_LEN, "n", array("MAX_LENGTH_CHECK", "NUM_CHECK"));
+	$objFormParam->addParam("é€æ–™ç„¡æ–™è¨­å®š", "deliv_free_flg", INT_LEN, "n", array("MAX_LENGTH_CHECK", "NUM_CHECK"));
 
 }
 
 /* 
- * ´Ø¿ôÌ¾¡§lfErrorCheck()
- * °ú¿ô1 ¡§¥­¥ã¥ó¥Ú¡¼¥óID
- * ÀâÌÀ¡¡¡§¥¨¥é¡¼¥Á¥§¥Ã¥¯
- * Ìá¤êÃÍ¡§¥¨¥é¡¼Ê¸»ú³ÊÇ¼ÇÛÎó
+ * é–¢æ•°åï¼šlfErrorCheck()
+ * å¼•æ•°1 ï¼šã‚­ãƒ£ãƒ³ãƒšãƒ¼ãƒ³ID
+ * èª¬æ˜ã€€ï¼šã‚¨ãƒ©ãƒ¼ãƒã‚§ãƒƒã‚¯
+ * æˆ»ã‚Šå€¤ï¼šã‚¨ãƒ©ãƒ¼æ–‡å­—æ ¼ç´é…åˆ—
  */
 function lfErrorCheck($campaign_id = "") {
 	
@@ -160,27 +160,27 @@ function lfErrorCheck($campaign_id = "") {
 	$objErr = new SC_CheckError($arrList);
 	$objErr->arrErr = $objFormParam->checkError();
 	
-	$objErr->doFunc(array("³«»ÏÆü»ş", "start_year", "start_month", "start_day", "start_hour", "start_minute", "0"), array("CHECK_DATE2"));
-	$objErr->doFunc(array("Ää»ßÆü»ş", "end_year", "end_month", "end_day", "end_hour", "end_minute", "0"), array("CHECK_DATE2"));
-	$objErr->doFunc(array("³«»ÏÆü»ş", "Ää»ßÆü»ş", "start_year", "start_month", "start_day", "start_hour", "start_minute", "00", "end_year", "end_month", "end_day", "end_hour", "end_minute", "59"), array("CHECK_SET_TERM2"));
+	$objErr->doFunc(array("é–‹å§‹æ—¥æ™‚", "start_year", "start_month", "start_day", "start_hour", "start_minute", "0"), array("CHECK_DATE2"));
+	$objErr->doFunc(array("åœæ­¢æ—¥æ™‚", "end_year", "end_month", "end_day", "end_hour", "end_minute", "0"), array("CHECK_DATE2"));
+	$objErr->doFunc(array("é–‹å§‹æ—¥æ™‚", "åœæ­¢æ—¥æ™‚", "start_year", "start_month", "start_day", "start_hour", "start_minute", "00", "end_year", "end_month", "end_day", "end_hour", "end_minute", "59"), array("CHECK_SET_TERM2"));
 	
 	if(count($objErr->arrErr) <= 0) {
 
-		// ÊÔ½¸»şÍÑ¤Ë¸µ¤Î¥Ç¥£¥ì¥¯¥È¥êÌ¾¤ò¼èÆÀ¤¹¤ë¡£
+		// ç·¨é›†æ™‚ç”¨ã«å…ƒã®ãƒ‡ã‚£ãƒ¬ã‚¯ãƒˆãƒªåã‚’å–å¾—ã™ã‚‹ã€‚
 		if($campaign_id != "") {
 			$directory_name = $objQuery->get("dtb_campaign", "directory_name", "campaign_id = ?", array($campaign_id));
 		} else {
 			$directory_name = "";
 		}
 
-		// Æ±Ì¾¤Î¥Õ¥©¥ë¥À¤¬Â¸ºß¤¹¤ë¾ì¹ç¤Ï¥¨¥é¡¼
+		// åŒåã®ãƒ•ã‚©ãƒ«ãƒ€ãŒå­˜åœ¨ã™ã‚‹å ´åˆã¯ã‚¨ãƒ©ãƒ¼
 		if(file_exists(CAMPAIGN_TEMPLATE_PATH.$arrList['directory_name']) && $directory_name != $arrList['directory_name']) {
-			$objErr->arrErr['directory_name'] = "¢¨ Æ±Ì¾¤Î¥Ç¥£¥ì¥¯¥È¥ê¤¬¤¹¤Ç¤ËÂ¸ºß¤·¤Ş¤¹¡£<br/>";
+			$objErr->arrErr['directory_name'] = "â€» åŒåã®ãƒ‡ã‚£ãƒ¬ã‚¯ãƒˆãƒªãŒã™ã§ã«å­˜åœ¨ã—ã¾ã™ã€‚<br/>";
 		}
 		$ret = $objQuery->get("dtb_campaign", "directory_name", "directory_name = ? AND del_flg = 0", array($arrList['directory_name']));				
-		// DB¤Ë¤¹¤Ç¤ËÅĞÏ¿¤µ¤ì¤Æ¤¤¤Ê¤¤¤«¥Á¥§¥Ã¥¯
+		// DBã«ã™ã§ã«ç™»éŒ²ã•ã‚Œã¦ã„ãªã„ã‹ãƒã‚§ãƒƒã‚¯
 		if($ret != "" && $directory_name != $arrList['directory_name']) {
-			$objErr->arrErr['directory_name'] = "¢¨ ¤¹¤Ç¤ËÅĞÏ¿¤µ¤ì¤Æ¤¤¤ë¥Ç¥£¥ì¥¯¥È¥êÌ¾¤Ç¤¹¡£<br/>";
+			$objErr->arrErr['directory_name'] = "â€» ã™ã§ã«ç™»éŒ²ã•ã‚Œã¦ã„ã‚‹ãƒ‡ã‚£ãƒ¬ã‚¯ãƒˆãƒªåã§ã™ã€‚<br/>";
 		}
 	}
 	
@@ -188,10 +188,10 @@ function lfErrorCheck($campaign_id = "") {
 }
 
 /* 
- * ´Ø¿ôÌ¾¡§lfRegistCampaign()
- * °ú¿ô1 ¡§¥­¥ã¥ó¥Ú¡¼¥óID(¥¢¥Ã¥×¥Ç¡¼¥È»ş¤Ë»ØÄê)
- * ÀâÌÀ¡¡¡§¥­¥ã¥ó¥Ú¡¼¥óÅĞÏ¿/¹¹¿·
- * Ìá¤êÃÍ¡§Ìµ¤·
+ * é–¢æ•°åï¼šlfRegistCampaign()
+ * å¼•æ•°1 ï¼šã‚­ãƒ£ãƒ³ãƒšãƒ¼ãƒ³ID(ã‚¢ãƒƒãƒ—ãƒ‡ãƒ¼ãƒˆæ™‚ã«æŒ‡å®š)
+ * èª¬æ˜ã€€ï¼šã‚­ãƒ£ãƒ³ãƒšãƒ¼ãƒ³ç™»éŒ²/æ›´æ–°
+ * æˆ»ã‚Šå€¤ï¼šç„¡ã—
  */
 function lfRegistCampaign($campaign_id = "") {
 
@@ -202,13 +202,13 @@ function lfRegistCampaign($campaign_id = "") {
 	$arrInfo = $objSiteInfo->data;
 	$arrList = $objFormParam->getHashArray();	
 
-	// ³«»ÏÆü»ş¡¦½ªÎ»Æü»şÀ°·Á
+	// é–‹å§‹æ—¥æ™‚ãƒ»çµ‚äº†æ—¥æ™‚æ•´å½¢
 	$start_date = $arrList['start_year']."-".sprintf("%02d", $arrList['start_month'])."-".sprintf("%02d", $arrList['start_day'])." ".sprintf("%02d", $arrList['start_hour']).":".sprintf("%02d", $arrList['start_minute']).":00";
 	$end_date = $arrList['end_year']."-".sprintf("%02d", $arrList['end_month'])."-".sprintf("%02d", $arrList['end_day'])." ".sprintf("%02d", $arrList['end_hour']).":".sprintf("%02d", $arrList['end_minute']).":00";
 
-	// ¥İ¥¤¥ó¥È¥ì¡¼¥È¤ÏÀßÄê¤µ¤ì¤Æ¤¤¤Ê¤±¤ì¤Ğ0¤òÁŞÆş
+	// ãƒã‚¤ãƒ³ãƒˆãƒ¬ãƒ¼ãƒˆã¯è¨­å®šã•ã‚Œã¦ã„ãªã‘ã‚Œã°0ã‚’æŒ¿å…¥
 	if($arrInfo['point_rate'] == "") $arrInfo['point_rate'] = "0";
-	// ¥Õ¥é¥°¤ÏÀßÄê¤µ¤ì¤Æ¤¤¤Ê¤±¤ì¤Ğ0¤òÁŞÆş
+	// ãƒ•ãƒ©ã‚°ã¯è¨­å®šã•ã‚Œã¦ã„ãªã‘ã‚Œã°0ã‚’æŒ¿å…¥
 	if(!$arrList['limit_count']) $arrList['limit_count'] = "0";
 	if(!$arrList['orverlapping_flg']) $arrList['orverlapping_flg'] = "0";
 	if(!$arrList['cart_flg']) $arrList['cart_flg'] = "0";
@@ -225,12 +225,12 @@ function lfRegistCampaign($campaign_id = "") {
 	$sqlval['deliv_free_flg'] = $arrList['deliv_free_flg'];
 	$sqlval['update_date'] = "now()";
 	
-	// ¥­¥ã¥ó¥Ú¡¼¥óID¤Ç»ØÄê¤µ¤ì¤Æ¤¤¤ë¾ì¹ç¤Ïupdate
+	// ã‚­ãƒ£ãƒ³ãƒšãƒ¼ãƒ³IDã§æŒ‡å®šã•ã‚Œã¦ã„ã‚‹å ´åˆã¯update
 	if($campaign_id != "") {
 
-		// ¸µ¤Î¥Ç¥£¥ì¥¯¥È¥êÌ¾¤ò¼èÆÀÌ¾		
+		// å…ƒã®ãƒ‡ã‚£ãƒ¬ã‚¯ãƒˆãƒªåã‚’å–å¾—å		
 		$directory_name = $objQuery->get("dtb_campaign", "directory_name", "campaign_id = ?", array($campaign_id));
-		// ¥Õ¥¡¥¤¥ëÌ¾¤òÊÑ¹¹
+		// ãƒ•ã‚¡ã‚¤ãƒ«åã‚’å¤‰æ›´
 		@rename(CAMPAIGN_TEMPLATE_PATH . $directory_name , CAMPAIGN_TEMPLATE_PATH . $arrList['directory_name']);
 		@rename(CAMPAIGN_PATH . $directory_name , CAMPAIGN_PATH . $arrList['directory_name']);
 
@@ -239,7 +239,7 @@ function lfRegistCampaign($campaign_id = "") {
 		
 	} else {
 
-		// ¥­¥ã¥ó¥Ú¡¼¥ó¥Ú¡¼¥¸¥Ç¥£¥ì¥¯¥È¥êºîÀ®
+		// ã‚­ãƒ£ãƒ³ãƒšãƒ¼ãƒ³ãƒšãƒ¼ã‚¸ãƒ‡ã‚£ãƒ¬ã‚¯ãƒˆãƒªä½œæˆ
 		lfCreateTemplate(CAMPAIGN_TEMPLATE_PATH, $arrList['directory_name']);
 
 		$sqlval['create_date'] = "now()";	
@@ -249,9 +249,9 @@ function lfRegistCampaign($campaign_id = "") {
 }
 
 /* 
- * ´Ø¿ôÌ¾¡§lfGetCampaignList()
- * ÀâÌÀ¡¡¡§¥­¥ã¥ó¥Ú¡¼¥ó°ìÍ÷¤ò¼èÆÀ
- * Ìá¤êÃÍ¡§¥­¥ã¥ó¥Ú¡¼¥ó°ìÍ÷ÇÛÎó
+ * é–¢æ•°åï¼šlfGetCampaignList()
+ * èª¬æ˜ã€€ï¼šã‚­ãƒ£ãƒ³ãƒšãƒ¼ãƒ³ä¸€è¦§ã‚’å–å¾—
+ * æˆ»ã‚Šå€¤ï¼šã‚­ãƒ£ãƒ³ãƒšãƒ¼ãƒ³ä¸€è¦§é…åˆ—
  */
 function lfGetCampaignList() {
 	
@@ -265,10 +265,10 @@ function lfGetCampaignList() {
 }
 
 /* 
- * ´Ø¿ôÌ¾¡§lfGetCampaign()
- * °ú¿ô1 ¡§¥­¥ã¥ó¥Ú¡¼¥óID
- * ÀâÌÀ¡¡¡§¥­¥ã¥ó¥Ú¡¼¥ó¾ğÊó¼èÆÀ
- * Ìá¤êÃÍ¡§¥­¥ã¥ó¥Ú¡¼¥ó¾ğÊóÇÛÎó
+ * é–¢æ•°åï¼šlfGetCampaign()
+ * å¼•æ•°1 ï¼šã‚­ãƒ£ãƒ³ãƒšãƒ¼ãƒ³ID
+ * èª¬æ˜ã€€ï¼šã‚­ãƒ£ãƒ³ãƒšãƒ¼ãƒ³æƒ…å ±å–å¾—
+ * æˆ»ã‚Šå€¤ï¼šã‚­ãƒ£ãƒ³ãƒšãƒ¼ãƒ³æƒ…å ±é…åˆ—
  */
 function lfGetCampaign($campaign_id) {
 	
@@ -277,7 +277,7 @@ function lfGetCampaign($campaign_id) {
 	$col = "campaign_id,campaign_name,start_date,end_date,directory_name,limit_count,orverlapping_flg,cart_flg,deliv_free_flg";
 	$arrRet = $objQuery->select($col, "dtb_campaign", "campaign_id = ?", array($campaign_id));
 
-	// ³«»ÏÆü»ş¡¦Ää»ßÆü»ş¤òÊ¬²ò
+	// é–‹å§‹æ—¥æ™‚ãƒ»åœæ­¢æ—¥æ™‚ã‚’åˆ†è§£
 	$start_date = (date("Y/m/d/H/i/s" , strtotime($arrRet[0]['start_date'])));
 	list($arrRet[0]['start_year'],$arrRet[0]['start_month'],$arrRet[0]['start_day'],$arrRet[0]['start_hour'], $arrRet[0]['start_minute'], $arrRet[0]['start_second']) = split("/", $start_date);
 	$end_date = (date("Y/m/d/H/i/s" , strtotime($arrRet[0]['end_date'])));
@@ -287,18 +287,18 @@ function lfGetCampaign($campaign_id) {
 }
 
 /* 
- * ´Ø¿ôÌ¾¡§lfDeleteCampaign()
- * °ú¿ô1 ¡§¥­¥ã¥ó¥Ú¡¼¥óID
- * ÀâÌÀ¡¡¡§¥­¥ã¥ó¥Ú¡¼¥óºï½ü
- * Ìá¤êÃÍ¡§Ìµ¤·
+ * é–¢æ•°åï¼šlfDeleteCampaign()
+ * å¼•æ•°1 ï¼šã‚­ãƒ£ãƒ³ãƒšãƒ¼ãƒ³ID
+ * èª¬æ˜ã€€ï¼šã‚­ãƒ£ãƒ³ãƒšãƒ¼ãƒ³å‰Šé™¤
+ * æˆ»ã‚Šå€¤ï¼šç„¡ã—
  */
 function lfDeleteCampaign($campaign_id) {
 
 	global $objQuery;
 	
-	// ¥Ç¥£¥ì¥¯¥È¥êÌ¾¤ò¼èÆÀÌ¾		
+	// ãƒ‡ã‚£ãƒ¬ã‚¯ãƒˆãƒªåã‚’å–å¾—å		
 	$directory_name = $objQuery->get("dtb_campaign", "directory_name", "campaign_id = ?", array($campaign_id));
-	// ¥Õ¥¡¥¤¥ë¤òºï½ü
+	// ãƒ•ã‚¡ã‚¤ãƒ«ã‚’å‰Šé™¤
 	sfDeleteDir(CAMPAIGN_TEMPLATE_PATH . $directory_name);
 	sfDeleteDir(CAMPAIGN_PATH . $directory_name);
 
@@ -309,11 +309,11 @@ function lfDeleteCampaign($campaign_id) {
 }
 
 /* 
- * ´Ø¿ôÌ¾¡§lfCreateTemplate()
- * °ú¿ô1 ¡§¥Ç¥£¥ì¥¯¥È¥ê¥Ñ¥¹
- * °ú¿ô2 ¡§ºîÀ®¥Õ¥¡¥¤¥ëÌ¾
- * ÀâÌÀ¡¡¡§¥­¥ã¥ó¥Ú¡¼¥ó¤Î½é´ü¥Æ¥ó¥×¥ì¡¼¥ÈºîÀ®
- * Ìá¤êÃÍ¡§Ìµ¤·
+ * é–¢æ•°åï¼šlfCreateTemplate()
+ * å¼•æ•°1 ï¼šãƒ‡ã‚£ãƒ¬ã‚¯ãƒˆãƒªãƒ‘ã‚¹
+ * å¼•æ•°2 ï¼šä½œæˆãƒ•ã‚¡ã‚¤ãƒ«å
+ * èª¬æ˜ã€€ï¼šã‚­ãƒ£ãƒ³ãƒšãƒ¼ãƒ³ã®åˆæœŸãƒ†ãƒ³ãƒ—ãƒ¬ãƒ¼ãƒˆä½œæˆ
+ * æˆ»ã‚Šå€¤ï¼šç„¡ã—
  */
 function lfCreateTemplate($dir, $file) {
 	
@@ -321,11 +321,11 @@ function lfCreateTemplate($dir, $file) {
 	$arrRet = $objFormParam->getHashArray();
 
 	
-	// ºîÀ®¥Õ¥¡¥¤¥ë¥Ç¥£¥ì¥¯¥È¥ê
+	// ä½œæˆãƒ•ã‚¡ã‚¤ãƒ«ãƒ‡ã‚£ãƒ¬ã‚¯ãƒˆãƒª
 	$create_dir = $dir . $file;
 	$create_active_dir = $create_dir . "/" . CAMPAIGN_TEMPLATE_ACTIVE;
 	$create_end_dir = $create_dir . "/" . CAMPAIGN_TEMPLATE_END;
-	// ¥Ç¥Õ¥©¥ë¥È¥Õ¥¡¥¤¥ë¥Ç¥£¥ì¥¯¥È¥ê
+	// ãƒ‡ãƒ•ã‚©ãƒ«ãƒˆãƒ•ã‚¡ã‚¤ãƒ«ãƒ‡ã‚£ãƒ¬ã‚¯ãƒˆãƒª
 	$default_dir = $dir . "default";
 	$default_active_dir = $default_dir . "/" . CAMPAIGN_TEMPLATE_ACTIVE;
 	$default_end_dir = $default_dir . "/" . CAMPAIGN_TEMPLATE_END;
@@ -334,28 +334,28 @@ function lfCreateTemplate($dir, $file) {
 	$ret = sfCreateFile($create_active_dir, 0755);	
 	$ret = sfCreateFile($create_end_dir, 0755);
 
-	// ¥­¥ã¥ó¥Ú¡¼¥ó¼Â¹ÔPHP¤ò¥³¥Ô¡¼
+	// ã‚­ãƒ£ãƒ³ãƒšãƒ¼ãƒ³å®Ÿè¡ŒPHPã‚’ã‚³ãƒ”ãƒ¼
 	$ret = sfCreateFile(CAMPAIGN_PATH . $file);
 	copy($default_dir . "/src/index.php", CAMPAIGN_PATH . $file . "/index.php");
 	copy($default_dir . "/src/application.php", CAMPAIGN_PATH . $file . "/application.php");
 	copy($default_dir . "/src/complete.php", CAMPAIGN_PATH . $file . "/complete.php");
 	copy($default_dir . "/src/entry.php", CAMPAIGN_PATH . $file . "/entry.php");
 
-	// ¥Ç¥Õ¥©¥ë¥È¥Æ¥ó¥×¥ì¡¼¥ÈºîÀ®(¥­¥ã¥ó¥Ú¡¼¥óÃæ)
+	// ãƒ‡ãƒ•ã‚©ãƒ«ãƒˆãƒ†ãƒ³ãƒ—ãƒ¬ãƒ¼ãƒˆä½œæˆ(ã‚­ãƒ£ãƒ³ãƒšãƒ¼ãƒ³ä¸­)
 	$header = lfGetFileContents($default_active_dir."header.tpl");
 	sfWriteFile($header, $create_active_dir."header.tpl", "w");
 	$contents = lfGetFileContents($default_active_dir."contents.tpl");
 	if(!$arrRet['cart_flg']) {
-		$contents .= "\n" . '<!--{*¥í¥°¥¤¥ó¥Õ¥©¡¼¥à*}-->' . "\n";
+		$contents .= "\n" . '<!--{*ãƒ­ã‚°ã‚¤ãƒ³ãƒ•ã‚©ãƒ¼ãƒ *}-->' . "\n";
 		$contents .= lfGetFileContents(CAMPAIGN_BLOC_PATH . "login.tpl");
-		$contents .= '<!--{*²ñ°÷ÅĞÏ¿¥Õ¥©¡¼¥à*}-->'."\n";
+		$contents .= '<!--{*ä¼šå“¡ç™»éŒ²ãƒ•ã‚©ãƒ¼ãƒ *}-->'."\n";
 		$contents .= lfGetFileContents(CAMPAIGN_BLOC_PATH . "entry.tpl");
 	}
 	sfWriteFile($contents, $create_active_dir."contents.tpl", "w");
 	$footer = lfGetFileContents($default_active_dir."footer.tpl");
 	sfWriteFile($footer, $create_active_dir."footer.tpl", "w");
 	
-	// ¥µ¥¤¥È¥Õ¥ì¡¼¥àºîÀ®
+	// ã‚µã‚¤ãƒˆãƒ•ãƒ¬ãƒ¼ãƒ ä½œæˆ
 	$site_frame  = $header."\n";
 	$site_frame .= '<script type="text/javascript" src="<!--{$smarty.const.URL_DIR}-->js/navi.js"></script>'."\n";
 	$site_frame .= '<script type="text/javascript" src="<!--{$smarty.const.URL_DIR}-->js/site.js"></script>'."\n";
@@ -363,7 +363,7 @@ function lfCreateTemplate($dir, $file) {
 	$site_frame .= $footer."\n";
 	sfWriteFile($site_frame, $create_active_dir."site_frame.tpl", "w");
 
-	/* ¥Ç¥Õ¥©¥ë¥È¥Æ¥ó¥×¥ì¡¼¥ÈºîÀ®(¥­¥ã¥ó¥Ú¡¼¥ó½ªÎ») */
+	/* ãƒ‡ãƒ•ã‚©ãƒ«ãƒˆãƒ†ãƒ³ãƒ—ãƒ¬ãƒ¼ãƒˆä½œæˆ(ã‚­ãƒ£ãƒ³ãƒšãƒ¼ãƒ³çµ‚äº†) */
 	$header = lfGetFileContents($default_end_dir."header.tpl");
 	sfWriteFile($header, $create_end_dir."header.tpl", "w");
 	$contents = lfGetFileContents($default_end_dir."contents.tpl");
@@ -373,10 +373,10 @@ function lfCreateTemplate($dir, $file) {
 }
 
 /* 
- * ´Ø¿ôÌ¾¡§lfGetFileContents()
- * °ú¿ô1 ¡§¥Õ¥¡¥¤¥ë¥Ñ¥¹
- * ÀâÌÀ¡¡¡§¥Õ¥¡¥¤¥ëÆÉ¹ş
- * Ìá¤êÃÍ¡§Ìµ¤·
+ * é–¢æ•°åï¼šlfGetFileContents()
+ * å¼•æ•°1 ï¼šãƒ•ã‚¡ã‚¤ãƒ«ãƒ‘ã‚¹
+ * èª¬æ˜ã€€ï¼šãƒ•ã‚¡ã‚¤ãƒ«èª­è¾¼
+ * æˆ»ã‚Šå€¤ï¼šç„¡ã—
  */
 function lfGetFileContents($read_file) {
 	

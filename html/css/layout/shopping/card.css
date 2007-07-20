@@ -5,7 +5,7 @@
  */
 @charset "<!--{$smarty.const.CHAR_CODE}-->";
 
-/***¥³¥ó¥Æ¥ó¥Ä***/
+/***ã‚³ãƒ³ãƒ†ãƒ³ãƒ„***/
 #containerfull #maintitle{
 border: 0;
 margin: 0 0 15px 0;
@@ -13,8 +13,8 @@ padding: 0;
 width: 700px;
 }
 
-/**¥Æ¡¼¥Ö¥ë**/
-/*ÏÈ*/
+/**ãƒ†ãƒ¼ãƒ–ãƒ«**/
+/*æž */
 #containerfull #frame{
 border: 0;
 margin: 0;
@@ -23,7 +23,7 @@ width: 700px;
 background: #ccc;
 }
 
-/*¥³¥á¥ó¥È*/
+/*ã‚³ãƒ¡ãƒ³ãƒˆ*/
 #containerfull #comment01{
 border: 0;
 margin: 20px 0;
@@ -49,7 +49,7 @@ background: #fff;
 width: 507px;
 }
 
-/*¥Ü¥¿¥ó*/
+/*ãƒœã‚¿ãƒ³*/
 #containerfull #button{
 border: 0;
 margin: 20px 0 15px 0;
@@ -57,7 +57,7 @@ padding: 0;
 text-align: center;
 }
 
-/*¥Ù¥ê¥µ¥¤¥ó*/
+/*ãƒ™ãƒªã‚µã‚¤ãƒ³*/
 #containerfull #verisign{
 border: 0;
 margin: 35px 65px;

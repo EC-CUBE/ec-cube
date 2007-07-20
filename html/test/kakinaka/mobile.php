@@ -12,7 +12,7 @@ $arrData = array(
 	'paid' => 1	
 );
 
-// POST¥Ç¡¼¥¿¤òÁ÷¿®¤·¡¢±şÅú¾ğÊó¤ò¼èÆÀ¤¹¤ë
+// POSTãƒ‡ãƒ¼ã‚¿ã‚’é€ä¿¡ã—ã€å¿œç­”æƒ…å ±ã‚’å–å¾—ã™ã‚‹
 $response = sfSendPostData($order_url, $arrData, array(200));
 	
 sfprintr($_SERVER);

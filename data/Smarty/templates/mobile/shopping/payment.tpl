@@ -5,7 +5,7 @@
  * http://www.lockon.co.jp/
  */
 *}-->
-<center>»ÙÊ§¤¤ÊýË¡»ØÄê</center>
+<center>æ”¯æ‰•ã„æ–¹æ³•æŒ‡å®š</center>
 
 <hr>
 
@@ -29,18 +29,18 @@
 <br>
 <!--{/section}-->
 
-<center><input type="submit" value="¼¡¤Ø"></center>
-<center><input type="submit" name="return" value="Ìá¤ë"></center>
+<center><input type="submit" value="æ¬¡ã¸"></center>
+<center><input type="submit" name="return" value="æˆ»ã‚‹"></center>
 </form>
 
 <br>
 <hr>
 
-<a href="<!--{$smarty.const.MOBILE_URL_CART_TOP}-->" accesskey="9"><!--{9|numeric_emoji}-->¤«¤´¤ò¸«¤ë</a><br>
-<a href="<!--{$smarty.const.MOBILE_URL_SITE_TOP}-->" accesskey="0"><!--{0|numeric_emoji}-->TOP¥Ú¡¼¥¸¤Ø</a><br>
+<a href="<!--{$smarty.const.MOBILE_URL_CART_TOP}-->" accesskey="9"><!--{9|numeric_emoji}-->ã‹ã”ã‚’è¦‹ã‚‹</a><br>
+<a href="<!--{$smarty.const.MOBILE_URL_SITE_TOP}-->" accesskey="0"><!--{0|numeric_emoji}-->TOPãƒšãƒ¼ã‚¸ã¸</a><br>
 
 <br>
 
-<!-- ¢§¥Õ¥Ã¥¿¡¼ ¤³¤³¤«¤é -->
+<!-- â–¼ãƒ•ãƒƒã‚¿ãƒ¼ ã“ã“ã‹ã‚‰ -->
 <center>LOCKON CO.,LTD.</center>
-<!-- ¢¥¥Õ¥Ã¥¿¡¼ ¤³¤³¤Þ¤Ç -->
+<!-- â–²ãƒ•ãƒƒã‚¿ãƒ¼ ã“ã“ã¾ã§ -->

@@ -14,7 +14,7 @@ class LC_Page {
 		$this->tpl_subnavi = 'basis/subnavi.tpl';
 		$this->tpl_mainno = 'basis';
 		$this->tpl_subno = 'payment';
-		$this->tpl_subtitle = '»ÙÊ§ÊıË¡ÀßÄê';
+		$this->tpl_subtitle = 'æ”¯æ‰•æ–¹æ³•è¨­å®š';
 	}
 }
 $conn = new SC_DBConn();
@@ -22,24 +22,24 @@ $objPage = new LC_Page();
 $objView = new SC_AdminView();
 $objSess = new SC_Session();
 
-// Ç§¾Ú²ÄÈİ¤ÎÈ½Äê
+// èªè¨¼å¯å¦ã®åˆ¤å®š
 sfIsSuccess($objSess);
 
 switch($_POST['mode']) {
 	case 'delete':
-	// ¥é¥ó¥¯ÉÕ¤­¥ì¥³¡¼¥É¤Îºï½ü
+	// ãƒ©ãƒ³ã‚¯ä»˜ããƒ¬ã‚³ãƒ¼ãƒ‰ã®å‰Šé™¤
 	sfDeleteRankRecord("dtb_payment", "payment_id", $_POST['payment_id']);
-	// ºÆÉ½¼¨
+	// å†è¡¨ç¤º
 	sfReload();
 	break;
 case 'up':
 	sfRankUp("dtb_payment", "payment_id", $_POST['payment_id']);
-	// ºÆÉ½¼¨
+	// å†è¡¨ç¤º
 	sfReload();
 	break;
 case 'down':
 	sfRankDown("dtb_payment", "payment_id", $_POST['payment_id']);
-	// ºÆÉ½¼¨
+	// å†è¡¨ç¤º
 	sfReload();
 	break;
 }
@@ -50,10 +50,10 @@ $objPage->arrPaymentListFree = lfGetPaymentList(2);
 $objView->assignobj($objPage);
 $objView->display(MAIN_FRAME);
 //-----------------------------------------------------------------------------------------------------------------------------------
-// ÇÛÁ÷¶È¼Ô°ìÍ÷¤Î¼èÆÀ
+// é…é€æ¥­è€…ä¸€è¦§ã®å–å¾—
 function lfGetPaymentList($fix = 1) {
 	$objQuery = new SC_Query();
-	// ÇÛÁ÷¶È¼Ô°ìÍ÷¤Î¼èÆÀ
+	// é…é€æ¥­è€…ä¸€è¦§ã®å–å¾—
 	$col = "payment_id, payment_method, charge, rule, upper_rule, note, deliv_id, fix, charge_flg";
 	$where = "del_flg = 0";
 //	$where .= " AND fix = ?";

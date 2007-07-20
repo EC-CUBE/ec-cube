@@ -5,34 +5,34 @@
  * http://www.lockon.co.jp/
  */
 *}-->
-<center>�ܲ����Ͽ��λ</center>
+<center>本会員登録完了</center>
 
 <hr>
 
-����Ͽ����λ�������ޤ�����<br>
-����Ǥϥ���åԥ󥰤򤪳ڤ��ߤ���������<br>
+本登録が完了いたしました。<br>
+それではショッピングをお楽しみください。<br>
 
 <br>
 
-����Ȥ⤴���ܻ��ޤ��褦����������ꤤ�����夲�ޤ���<br>
+今後ともご愛顧賜りますようよろしくお願い申し上げます。<br>
 
 <br>
 
 <!--{$arrSiteInfo.company_name|escape}--><br>
-TEL��<!--{$arrSiteInfo.tel01}-->-<!--{$arrSiteInfo.tel02}-->-<!--{$arrSiteInfo.tel03}--> <!--{if $arrSiteInfo.business_hour != ""}-->�ʼ��ջ���/<!--{$arrSiteInfo.business_hour}-->��<!--{/if}--><br>
-E-mail��<a href="mailto:<!--{$arrSiteInfo.email02|escape}-->"><!--{$arrSiteInfo.email02|escape}--></a><br>
+TEL：<!--{$arrSiteInfo.tel01}-->-<!--{$arrSiteInfo.tel02}-->-<!--{$arrSiteInfo.tel03}--> <!--{if $arrSiteInfo.business_hour != ""}-->（受付時間/<!--{$arrSiteInfo.business_hour}-->）<!--{/if}--><br>
+E-mail：<a href="mailto:<!--{$arrSiteInfo.email02|escape}-->"><!--{$arrSiteInfo.email02|escape}--></a><br>
 
 <br>
 
 <!--{if !$tpl_cart_empty}-->
-<a href="<!--{$smarty.const.MOBILE_URL_DIR}-->shopping/deliv.php">����ʸ��³���ؿʤ�</a><br>
+<a href="<!--{$smarty.const.MOBILE_URL_DIR}-->shopping/deliv.php">ご注文手続きへ進む</a><br>
 <!--{/if}-->
 
-<a href="<!--{$smarty.const.MOBILE_URL_SITE_TOP}-->" accesskey="0"><!--{0|numeric_emoji}-->TOP�ڡ��������</a><br>
+<a href="<!--{$smarty.const.MOBILE_URL_SITE_TOP}-->" accesskey="0"><!--{0|numeric_emoji}-->TOPページに戻る</a><br>
 
 <br>
 <hr>
 
-<!-- ���եå��� �������� -->
+<!-- ▼フッター ここから -->
 <center>LOCKON CO.,LTD.</center>
-<!-- ���եå��� �����ޤ� -->
+<!-- ▲フッター ここまで -->

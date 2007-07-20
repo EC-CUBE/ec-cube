@@ -5,11 +5,11 @@
  * http://www.lockon.co.jp/
  */
 *}-->
-<div align="center">¿ôÎÌ»ØÄê</div>
+<div align="center">æ•°é‡æŒ‡å®š</div>
 <hr>
 
 <!--{if $arrErr.classcategory_id2 != ""}-->
-	<font color="#FF0000">¢¨¿ôÎÌ¤òÆþÎÏ¤·¤Æ²¼¤µ¤¤Ž¡</font><br>
+	<font color="#FF0000">â€»æ•°é‡ã‚’å…¥åŠ›ã—ã¦ä¸‹ã•ã„ï½¡</font><br>
 <!--{/if}-->
 <form method="post" action="<!--{$smarty.server.REQUEST_URI|escape}-->">
 	<input type="text" name="quantity" size="3" value="<!--{$arrForm.quantity.value|default:1}-->" maxlength=<!--{$smarty.const.INT_LEN}--> istyle="4"><br>
@@ -17,17 +17,17 @@
 	<input type="hidden" name="classcategory_id1" value="<!--{$arrForm.classcategory_id1.value}-->">
 	<input type="hidden" name="classcategory_id2" value="<!--{$arrForm.classcategory_id2.value}-->">
 	<input type="hidden" name="product_id" value="<!--{$tpl_product_id}-->">
-	<center><input type="submit" name="submit" value="¤«¤´¤ËÆþ¤ì¤ë"></center>
+	<center><input type="submit" name="submit" value="ã‹ã”ã«å…¥ã‚Œã‚‹"></center>
 </form>
 
 <br>
 <hr>
 
-<a href="<!--{$smarty.const.MOBILE_URL_CART_TOP}-->" accesskey="9"><!--{9|numeric_emoji}-->¤«¤´¤ò¸«¤ë</a><br>
-<a href="<!--{$smarty.const.MOBILE_URL_SITE_TOP}-->" accesskey="0"><!--{0|numeric_emoji}-->TOP¥Ú¡¼¥¸¤Ø</a><br>
+<a href="<!--{$smarty.const.MOBILE_URL_CART_TOP}-->" accesskey="9"><!--{9|numeric_emoji}-->ã‹ã”ã‚’è¦‹ã‚‹</a><br>
+<a href="<!--{$smarty.const.MOBILE_URL_SITE_TOP}-->" accesskey="0"><!--{0|numeric_emoji}-->TOPãƒšãƒ¼ã‚¸ã¸</a><br>
 
 <br>
 
-<!-- ¢§¥Õ¥Ã¥¿¡¼ ¤³¤³¤«¤é -->
+<!-- â–¼ãƒ•ãƒƒã‚¿ãƒ¼ ã“ã“ã‹ã‚‰ -->
 <!--{include file='footer.tpl'}-->
-<!-- ¢¥¥Õ¥Ã¥¿¡¼ ¤³¤³¤Þ¤Ç -->
+<!-- â–²ãƒ•ãƒƒã‚¿ãƒ¼ ã“ã“ã¾ã§ -->

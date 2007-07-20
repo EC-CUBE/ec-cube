@@ -5,20 +5,20 @@
  * http://www.lockon.co.jp/
  */
 *}-->
-<div align="center">епо©╢╟н╩</div>
+<div align="center">Г≥╩И▄╡Е╝▄Д╨├</div>
 <hr>
 
-╔А║╪╔К╔ч╔╛╔╦╔С╓непо©╓╛╢╟н╩цв╓╥╓ч╓╥╓©║ё<br>
-╨ё╦Е╓х╓Б╓╢╟╕╦э╩Р╓Й╓ч╓╧╓Х╓╕╓Х╓М╓╥╓╞╓╙╢Й╓╓©╫╓╥╬Е╓╡╓ч╓╧║ё<br>
+Ц┐║Ц┐╪Ц┐╚Ц┐·Ц┌╛Ц┌╦Ц┐ЁЦ│╝Г≥╩И▄╡Ц│▄Е╝▄Д╨├Х┤╢Ц│≈Ц│╬Ц│≈Ц│÷Ц─┌<br>
+Д╩┼Е╬▄Ц│╗Ц┌┌Ц│■Ф└⌡И║╖ХЁ°Ц┌┼Ц│╬Ц│≥Ц┌┬Ц│├Ц┌┬Ц┌█Ц│≈Ц│▐Ц│┼И║≤Ц│└Г■ЁЦ│≈Д╦┼Ц│▓Ц│╬Ц│≥Ц─┌<br>
 <br>
 
 <hr>
 
-<a href="<!--{$smarty.const.MOBILE_URL_CART_TOP}-->" accesskey="9"><!--{9|numeric_emoji}-->╓╚╓╢╓Р╦╚╓К</a><br>
-<a href="<!--{$smarty.const.MOBILE_URL_SITE_TOP}-->" accesskey="0"><!--{0|numeric_emoji}-->TOP╔з║╪╔╦╓ь</a><br>
+<a href="<!--{$smarty.const.MOBILE_URL_CART_TOP}-->" accesskey="9"><!--{9|numeric_emoji}-->Ц│▀Ц│■Ц┌▓Х╕▀Ц┌▀</a><br>
+<a href="<!--{$smarty.const.MOBILE_URL_SITE_TOP}-->" accesskey="0"><!--{0|numeric_emoji}-->TOPЦ┐ Ц┐╪Ц┌╦Ц│╦</a><br>
 
 <br>
 
-<!-- ╒╖╔у╔ц╔©║╪ ╓Ё╓Ё╓╚╓И -->
+<!-- Б√╪Ц┐∙Ц┐┐Ц┌©Ц┐╪ Ц│⌠Ц│⌠Ц│▀Ц┌┴ -->
 <!--{include file='footer.tpl'}-->
-<!-- ╒╔╔у╔ц╔©║╪ ╓Ё╓Ё╓ч╓г -->
+<!-- Б√╡Ц┐∙Ц┐┐Ц┌©Ц┐╪ Ц│⌠Ц│⌠Ц│╬Ц│╖ -->

@@ -19,7 +19,7 @@ class LC_Page {
 		$this->tpl_mainno = 'products';
 		$this->tpl_subno = 'trackback';
 		$this->tpl_pager = DATA_PATH . 'Smarty/templates/admin/pager.tpl';
-		$this->tpl_subtitle = '¥È¥é¥Ã¥¯¥Ð¥Ã¥¯´ÉÍý';
+		$this->tpl_subtitle = 'ãƒˆãƒ©ãƒƒã‚¯ãƒãƒƒã‚¯ç®¡ç†';
 	}
 }
 
@@ -29,49 +29,49 @@ $objSess = new SC_Session();
 $objDate = new SC_Date();
 $objQuery = new SC_Query();
 
-// ¾õÂÖ¤ÎÀßÄê
+// çŠ¶æ…‹ã®è¨­å®š
 $objPage->arrTrackBackStatus = $arrTrackBackStatus;
 
-// ÅÐÏ¿¡¦¹¹¿·¸¡º÷³«»ÏÇ¯
+// ç™»éŒ²ãƒ»æ›´æ–°æ¤œç´¢é–‹å§‹å¹´
 $objDate->setStartYear(RELEASE_YEAR);
 $objDate->setEndYear(DATE("Y"));
 $objPage->arrStartYear = $objDate->getYear();
 $objPage->arrStartMonth = $objDate->getMonth();
 $objPage->arrStartDay = $objDate->getDay();
-// ÅÐÏ¿¡¦¹¹¿·¸¡º÷½ªÎ»Ç¯
+// ç™»éŒ²ãƒ»æ›´æ–°æ¤œç´¢çµ‚äº†å¹´
 $objDate->setStartYear(RELEASE_YEAR);
 $objDate->setEndYear(DATE("Y"));
 $objPage->arrEndYear = $objDate->getYear();
 $objPage->arrEndMonth = $objDate->getMonth();
 $objPage->arrEndDay = $objDate->getDay();
 
-// Ç§¾Ú²ÄÈÝ¤ÎÈ½Äê
+// èªè¨¼å¯å¦ã®åˆ¤å®š
 sfIsSuccess($objSess);
 
-// ¥È¥é¥Ã¥¯¥Ð¥Ã¥¯¾ðÊó¤Î¥«¥é¥à¤Î¼èÆÀ(view¤È¤Î·ë¹ç¤Î¤¿¤á¡¢¥Æ¡¼¥Ö¥ë¤òA¤ÈÄêµÁ¤·¤Æ¤ª¤¯)
+// ãƒˆãƒ©ãƒƒã‚¯ãƒãƒƒã‚¯æƒ…å ±ã®ã‚«ãƒ©ãƒ ã®å–å¾—(viewã¨ã®çµåˆã®ãŸã‚ã€ãƒ†ãƒ¼ãƒ–ãƒ«ã‚’Aã¨å®šç¾©ã—ã¦ãŠã)
 $select = "A.trackback_id, A.product_id, A.blog_name, A.title, A.url, ";
 $select .= "A.excerpt, A.status, A.create_date, A.update_date, B.name";
 $from = "dtb_trackback AS A LEFT JOIN dtb_products AS B ON A.product_id = B.product_id ";
 
-// ¸¡º÷¥ï¡¼¥É¤Î°ú¤­·Ñ¤®
+// æ¤œç´¢ãƒ¯ãƒ¼ãƒ‰ã®å¼•ãç¶™ãŽ
 foreach ($_POST as $key => $val) {
 	if (ereg("^search_", $key)) {
 		$objPage->arrHidden[$key] = $val;
 	}
 }
 
-// ¥È¥é¥Ã¥¯¥Ð¥Ã¥¯¤Îºï½ü
+// ãƒˆãƒ©ãƒƒã‚¯ãƒãƒƒã‚¯ã®å‰Šé™¤
 if ($_POST['mode'] == "delete") {
 	$objQuery->exec("UPDATE dtb_trackback SET del_flg = 1, update_date = now() WHERE trackback_id = ?", array($_POST['trackback_id']));
 }
 	
 if ($_POST['mode'] == 'search' || $_POST['mode'] == 'csv' || $_POST['mode'] == 'delete'){
 	
-	//ºï½ü¤µ¤ì¤Æ¤¤¤Ê¤¤¾¦ÉÊ¤ò¸¡º÷
+	//å‰Šé™¤ã•ã‚Œã¦ã„ãªã„å•†å“ã‚’æ¤œç´¢
 	$where="A.del_flg = 0 AND B.del_flg = 0";
 	$objPage->arrForm = $_POST;
 
-	//¥¨¥é¡¼¥Á¥§¥Ã¥¯
+	//ã‚¨ãƒ©ãƒ¼ãƒã‚§ãƒƒã‚¯
 	$objPage->arrErr = lfCheckError();
 
 	if (!$objPage->arrErr) {
@@ -87,21 +87,21 @@ if ($_POST['mode'] == 'search' || $_POST['mode'] == 'csv' || $_POST['mode'] == '
 
 				case 'search_blog_name':
 					$val = ereg_replace(" ", "%", $val);
-					$val = ereg_replace("¡¡", "%", $val);
+					$val = ereg_replace("ã€€", "%", $val);
 					$where.= " AND A.blog_name ILIKE ? ";
 					$arrval[] = "%$val%";
 					break;
 			
 				case 'search_blog_title':
 					$val = ereg_replace(" ", "%", $val);
-					$val = ereg_replace("¡¡", "%", $val);
+					$val = ereg_replace("ã€€", "%", $val);
 					$where.= " AND A.title ILIKE ? ";
 					$arrval[] = "%$val%";
 					break;
 			
 				case 'search_blog_url':
 					$val = ereg_replace(" ", "%", $val);
-					$val = ereg_replace("¡¡", "%", $val);
+					$val = ereg_replace("ã€€", "%", $val);
 					$where.= " AND A.url ILIKE ? ";
 					$arrval[] = "%$val%";
 					break;
@@ -115,14 +115,14 @@ if ($_POST['mode'] == 'search' || $_POST['mode'] == 'csv' || $_POST['mode'] == '
 							
 				case 'search_name':
 					$val = ereg_replace(" ", "%", $val);
-					$val = ereg_replace("¡¡", "%", $val);
+					$val = ereg_replace("ã€€", "%", $val);
 					$where.= " AND B.name ILIKE ? ";
 					$arrval[] = "%$val%";
 					break;
 					
 				case 'search_product_code':
 					$val = ereg_replace(" ", "%", $val);
-					$val = ereg_replace("¡¡", "%", $val);
+					$val = ereg_replace("ã€€", "%", $val);
 					$where.= " AND B.product_id IN (SELECT product_id FROM dtb_products_class WHERE product_code ILIKE ? )";
 					$arrval[] = "%$val%";
 					break;
@@ -152,7 +152,7 @@ if ($_POST['mode'] == 'search' || $_POST['mode'] == 'csv' || $_POST['mode'] == '
 	
 	$order = "A.create_date DESC";
 	
-	// ¥Ú¡¼¥¸Á÷¤ê¤Î½èÍý
+	// ãƒšãƒ¼ã‚¸é€ã‚Šã®å‡¦ç†
 	if(is_numeric($_POST['search_page_max'])) {	
 		$page_max = $_POST['search_page_max'];
 	} else {
@@ -162,30 +162,30 @@ if ($_POST['mode'] == 'search' || $_POST['mode'] == 'csv' || $_POST['mode'] == '
 	$linemax = $objQuery->count($from, $where, $arrval);
 	$objPage->tpl_linemax = $linemax;
 	
-	// ¥Ú¡¼¥¸Á÷¤ê¤Î¼èÆÀ
+	// ãƒšãƒ¼ã‚¸é€ã‚Šã®å–å¾—
 	$objNavi = new SC_PageNavi($_POST['search_pageno'], $linemax, $page_max, "fnNaviSearchPage", NAVI_PMAX);
 	$objPage->arrPagenavi = $objNavi->arrPagenavi;
 	$startno = $objNavi->start_row;
 
 	$objPage->tpl_pageno = $_POST['search_pageno'];
 	
-	// ¼èÆÀÈÏ°Ï¤Î»ØÄê(³«»Ï¹ÔÈÖ¹æ¡¢¹Ô¿ô¤Î¥»¥Ã¥È)
+	// å–å¾—ç¯„å›²ã®æŒ‡å®š(é–‹å§‹è¡Œç•ªå·ã€è¡Œæ•°ã®ã‚»ãƒƒãƒˆ)
 	$objQuery->setlimitoffset($page_max, $startno);
 
-	// É½¼¨½ç½ø
+	// è¡¨ç¤ºé †åº
 	$objQuery->setorder($order);
 	
-	//¸¡º÷·ë²Ì¤Î¼èÆÀ
+	//æ¤œç´¢çµæžœã®å–å¾—
 	$objPage->arrTrackback = $objQuery->select($select, $from, $where, $arrval);
 	
-	//CSV¥À¥¦¥ó¥í¡¼¥É
+	//CSVãƒ€ã‚¦ãƒ³ãƒ­ãƒ¼ãƒ‰
 	if ($_POST['mode'] == 'csv'){
-		// ¥ª¥×¥·¥ç¥ó¤Î»ØÄê
+		// ã‚ªãƒ—ã‚·ãƒ§ãƒ³ã®æŒ‡å®š
 		$option = "ORDER BY A.trackback_id";
-		// CSV½ÐÎÏ¥¿¥¤¥È¥ë¹Ô¤ÎºîÀ®
+		// CSVå‡ºåŠ›ã‚¿ã‚¤ãƒˆãƒ«è¡Œã®ä½œæˆ
 		$head = sfGetCSVList($arrTRACKBACK_CVSTITLE);
 		$data = lfGetTrackbackCSV($where, '', $arrval);
-		// CSV¤òÁ÷¿®¤¹¤ë¡£
+		// CSVã‚’é€ä¿¡ã™ã‚‹ã€‚
 		sfCSVDownload($head.$data);
 		exit;
 	}	
@@ -196,21 +196,21 @@ $objView->display(MAIN_FRAME);
 
 //-------------------------------------------------------------------------------------
 
-// ÆþÎÏ¥¨¥é¡¼¥Á¥§¥Ã¥¯
+// å…¥åŠ›ã‚¨ãƒ©ãƒ¼ãƒã‚§ãƒƒã‚¯
 function lfCheckError() {
 	$objErr = new SC_CheckError();
 	switch ($_POST['mode']){
 		case 'search':
-		$objErr->doFunc(array("Åê¹Æ¼Ô", "search_startyear", "search_startmonth", "search_startday"), array("CHECK_DATE"));
-		$objErr->doFunc(array("³«»ÏÆü", "search_startyear", "search_startmonth", "search_startday"), array("CHECK_DATE"));
-		$objErr->doFunc(array("½ªÎ»Æü", "search_endyear", "search_endmonth", "search_endday"), array("CHECK_DATE"));
-		$objErr->doFunc(array("³«»ÏÆü", "½ªÎ»Æü", "search_startyear", "search_startmonth", "search_startday", "search_endyear", "search_endmonth", "search_endday"), array("CHECK_SET_TERM"));
+		$objErr->doFunc(array("æŠ•ç¨¿è€…", "search_startyear", "search_startmonth", "search_startday"), array("CHECK_DATE"));
+		$objErr->doFunc(array("é–‹å§‹æ—¥", "search_startyear", "search_startmonth", "search_startday"), array("CHECK_DATE"));
+		$objErr->doFunc(array("çµ‚äº†æ—¥", "search_endyear", "search_endmonth", "search_endday"), array("CHECK_DATE"));
+		$objErr->doFunc(array("é–‹å§‹æ—¥", "çµ‚äº†æ—¥", "search_startyear", "search_startmonth", "search_startday", "search_endyear", "search_endmonth", "search_endday"), array("CHECK_SET_TERM"));
 		break;
 		
 		case 'complete':
-		$objErr->doFunc(array("¤ª¤¹¤¹¤á¥ì¥Ù¥ë", "recommend_level"), array("SELECT_CHECK"));
-		$objErr->doFunc(array("¥¿¥¤¥È¥ë", "title", STEXT_LEN), array("EXIST_CHECK", "SPTAB_CHECK", "MAX_LENGTH_CHECK"));
-		$objErr->doFunc(array("¥³¥á¥ó¥È", "comment", LTEXT_LEN), array("EXIST_CHECK", "SPTAB_CHECK", "MAX_LENGTH_CHECK"));
+		$objErr->doFunc(array("ãŠã™ã™ã‚ãƒ¬ãƒ™ãƒ«", "recommend_level"), array("SELECT_CHECK"));
+		$objErr->doFunc(array("ã‚¿ã‚¤ãƒˆãƒ«", "title", STEXT_LEN), array("EXIST_CHECK", "SPTAB_CHECK", "MAX_LENGTH_CHECK"));
+		$objErr->doFunc(array("ã‚³ãƒ¡ãƒ³ãƒˆ", "comment", LTEXT_LEN), array("EXIST_CHECK", "SPTAB_CHECK", "MAX_LENGTH_CHECK"));
 		break;
 	}
 	return $objErr->arrErr;

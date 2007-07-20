@@ -7,11 +7,11 @@
 require_once("../require.php");
 
 class LC_Page {
-	var $tpl_category;	// Ê¬Îà(HOME:1,¿ÍÊªÅÐÏ¿:2,¿ÍÊª¸¡º÷:3,¥·¥¹¥Æ¥à:4,¥í¥°¥¢¥¦¥È:5)
-	var $list_data;		// ¥Æ¡¼¥Ö¥ë¥Ç¡¼¥¿¼èÆÀÍÑ
+	var $tpl_category;	// åˆ†é¡ž(HOME:1,äººç‰©ç™»éŒ²:2,äººç‰©æ¤œç´¢:3,ã‚·ã‚¹ãƒ†ãƒ :4,ãƒ­ã‚°ã‚¢ã‚¦ãƒˆ:5)
+	var $list_data;		// ãƒ†ãƒ¼ãƒ–ãƒ«ãƒ‡ãƒ¼ã‚¿å–å¾—ç”¨
 	var $arrAUTHORITY;
 	var $tpl_onload;
-	var $tpl_disppage;	// É½¼¨Ãæ¤Î¥Ú¡¼¥¸ÈÖ¹æ
+	var $tpl_disppage;	// è¡¨ç¤ºä¸­ã®ãƒšãƒ¼ã‚¸ç•ªå·
 	var $tpl_strnavi;
 	function LC_Page() {
 		$this->tpl_mainpage = 'system/index.tpl';
@@ -19,48 +19,48 @@ class LC_Page {
 		$this->tpl_mainno = 'system';
 		$this->tpl_subno = 'index';
 		$this->tpl_onload = 'fnGetRadioChecked();';
-		$this->tpl_subtitle = '¥á¥ó¥Ð¡¼´ÉÍý';
+		$this->tpl_subtitle = 'ãƒ¡ãƒ³ãƒãƒ¼ç®¡ç†';
 		global $arrAUTHORITY;
 		$this->arrAUTHORITY = $arrAUTHORITY;
 	}
 }
 
-// ¥»¥Ã¥·¥ç¥ó¥¯¥é¥¹
+// ã‚»ãƒƒã‚·ãƒ§ãƒ³ã‚¯ãƒ©ã‚¹
 $objSess = new SC_Session();
-// Ç§¾Ú²ÄÈÝ¤ÎÈ½Äê
+// èªè¨¼å¯å¦ã®åˆ¤å®š
 sfIsSuccess($objSess);
 
 $conn = new SC_DbConn();
 
-// ¥Æ¥ó¥×¥ì¡¼¥ÈÊÑ¿ô¤ÎÊÝ»ý¥¯¥é¥¹
+// ãƒ†ãƒ³ãƒ—ãƒ¬ãƒ¼ãƒˆå¤‰æ•°ã®ä¿æŒã‚¯ãƒ©ã‚¹
 $objPage = new LC_Page();
-// SQLºîÀ®ÍÑ¥ª¥Ö¥¸¥§¥¯¥ÈÀ¸À®
+// SQLä½œæˆç”¨ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆç”Ÿæˆ
 $objSql = new SC_SelectSql();
 $objSql->setSelect("SELECT member_id,name,department,login_id,authority,rank,work FROM dtb_member");
 $objSql->setOrder("rank DESC");
 $objSql->setWhere("del_flg <> 1 AND member_id <> ". ADMIN_ID);
 
-//´Ê°×¥¯¥¨¥ê¼Â¹Ô¥ª¥Ö¥¸¥§¥¯¥È
+//ç°¡æ˜“ã‚¯ã‚¨ãƒªå®Ÿè¡Œã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆ
 $oquery = new SC_Query();
-// ¹Ô¿ô¤Î¼èÆÀ
+// è¡Œæ•°ã®å–å¾—
 $linemax = $oquery->count("dtb_member", "del_flg <> 1 AND member_id <>".ADMIN_ID);
 
-// ²ÔÆ°Ãæ¤Î·ï¿ô¤ò¼èÆÀ
+// ç¨¼å‹•ä¸­ã®ä»¶æ•°ã‚’å–å¾—
 $workmax = $oquery->count("dtb_member", "work = 1 AND del_flg <> 1 AND member_id <>".ADMIN_ID);
 $objPage->workmax= $workmax;
 
-// ¥Ú¡¼¥¸Á÷¤ê¤Î½èÍý
+// ãƒšãƒ¼ã‚¸é€ã‚Šã®å‡¦ç†
 $objNavi = new SC_PageNavi($_GET['pageno'], $linemax, MEMBER_PMAX, "fnMemberPage", NAVI_PMAX);
 $objPage->tpl_strnavi = $objNavi->strnavi;
 $objPage->tpl_disppage = $objNavi->now_page;
 $objPage->tpl_pagemax = $objNavi->max_page;
 $startno = $objNavi->start_row;
 
-// ¼èÆÀÈÏ°Ï¤Î»ØÄê(³«»Ï¹ÔÈÖ¹æ¡¢¹Ô¿ô¤Î¥»¥Ã¥È)
+// å–å¾—ç¯„å›²ã®æŒ‡å®š(é–‹å§‹è¡Œç•ªå·ã€è¡Œæ•°ã®ã‚»ãƒƒãƒˆ)
 $objSql->setLimitOffset(MEMBER_PMAX, $startno);
 $objPage->list_data = $conn->getAll($objSql->getSql());
 
-// ¥Ú¡¼¥¸¤ÎÉ½¼¨
+// ãƒšãƒ¼ã‚¸ã®è¡¨ç¤º
 $objView = new SC_AdminView();
 $objView->assignobj($objPage);
 $objView->display(MAIN_FRAME);

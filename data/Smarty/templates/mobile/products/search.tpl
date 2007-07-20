@@ -5,28 +5,28 @@
  * http://www.lockon.co.jp/
  */
 *}-->
-<center>¾¦ÉÊ¸¡º÷</center>
+<center>å•†å“æ¤œç´¢</center>
 
 <hr>
 
-¤ªÃµ¤·¤Î¾¦ÉÊÌ¾¡¦·¿ÈÖ¤òÆþÎÏ¤·¤Æ¤¯¤À¤µ¤¤¡£<br>
+ãŠæŽ¢ã—ã®å•†å“åãƒ»åž‹ç•ªã‚’å…¥åŠ›ã—ã¦ãã ã•ã„ã€‚<br>
 
 <form method="get" action="<!--{$smarty.const.MOBILE_URL_DIR}-->products/list.php">
 <center>
 <input type="hidden" name="mode" value="search">
 <input type="text" name="name" size="18" maxlength="50" value="<!--{$smarty.get.name|escape}-->"><br>
-<input type="submit" name="search" value="¸¡º÷">
+<input type="submit" name="search" value="æ¤œç´¢">
 </center>
 </form>
 
 <br>
 <hr>
 
-<a href="<!--{$smarty.const.MOBILE_URL_CART_TOP}-->" accesskey="9"><!--{9|numeric_emoji}-->¤«¤´¤ò¸«¤ë</a><br>
-<a href="<!--{$smarty.const.MOBILE_URL_SITE_TOP}-->" accesskey="0"><!--{0|numeric_emoji}-->TOP¥Ú¡¼¥¸¤Ø</a><br>
+<a href="<!--{$smarty.const.MOBILE_URL_CART_TOP}-->" accesskey="9"><!--{9|numeric_emoji}-->ã‹ã”ã‚’è¦‹ã‚‹</a><br>
+<a href="<!--{$smarty.const.MOBILE_URL_SITE_TOP}-->" accesskey="0"><!--{0|numeric_emoji}-->TOPãƒšãƒ¼ã‚¸ã¸</a><br>
 
 <br>
 
-<!-- ¢§¥Õ¥Ã¥¿¡¼ ¤³¤³¤«¤é -->
+<!-- â–¼ãƒ•ãƒƒã‚¿ãƒ¼ ã“ã“ã‹ã‚‰ -->
 <!--{include file='footer.tpl'}-->
-<!-- ¢¥¥Õ¥Ã¥¿¡¼ ¤³¤³¤Þ¤Ç -->
+<!-- â–²ãƒ•ãƒƒã‚¿ãƒ¼ ã“ã“ã¾ã§ -->

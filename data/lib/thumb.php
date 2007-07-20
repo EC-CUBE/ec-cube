@@ -1,49 +1,49 @@
 <?php
-# MakeThumb(½ĞÎÏ¸µ²èÁü¥Ñ¥¹¡Ê¥Õ¥¡¥¤¥ëÌ¾¤Ş¤Ç¡Ë, ½ĞÎÏÀè¥Õ¥©¥ë¥À¡Ê/home/hoge/ ¤Ê¤É¡Ë , ºÇÂç²£Éı , ºÇÂç½ÄÉı , ¿·¥Õ¥¡¥¤¥ëÌ¾¡Ë
+# MakeThumb(å‡ºåŠ›å…ƒç”»åƒãƒ‘ã‚¹ï¼ˆãƒ•ã‚¡ã‚¤ãƒ«åã¾ã§ï¼‰, å‡ºåŠ›å…ˆãƒ•ã‚©ãƒ«ãƒ€ï¼ˆ/home/hoge/ ãªã©ï¼‰ , æœ€å¤§æ¨ªå¹… , æœ€å¤§ç¸¦å¹… , æ–°ãƒ•ã‚¡ã‚¤ãƒ«åï¼‰
 function MakeThumb($FromImgPath , $ToImgPath , $tmpMW , $tmpMH, $newFileName = ''){
 
-# ¢¡¡ş¢¡¡¡¥Ç¥Õ¥©¥ë¥ÈÃÍ¤ÎÀßÄê¡¡¢¡¡ş¢¡
-# É¬Í×¤Ë±ş¤¸¤ÆÊÑ¹¹¤·¤Æ²¼¤µ¤¤¡£
+# â—†â—‡â—†ã€€ãƒ‡ãƒ•ã‚©ãƒ«ãƒˆå€¤ã®è¨­å®šã€€â—†â—‡â—†
+# å¿…è¦ã«å¿œã˜ã¦å¤‰æ›´ã—ã¦ä¸‹ã•ã„ã€‚
 
-# ²èÁü¤ÎºÇÂç²£Éı¡ÊÃ±°Ì¡§¥Ô¥¯¥»¥ë¡Ë
+# ç”»åƒã®æœ€å¤§æ¨ªå¹…ï¼ˆå˜ä½ï¼šãƒ”ã‚¯ã‚»ãƒ«ï¼‰
 $ThmMaxWidth = 500;
 
-# ²èÁü¤ÎºÇÂç½ÄÉı¡ÊÃ±°Ì¡§¥Ô¥¯¥»¥ë¡Ë
+# ç”»åƒã®æœ€å¤§ç¸¦å¹…ï¼ˆå˜ä½ï¼šãƒ”ã‚¯ã‚»ãƒ«ï¼‰
 $ThmMaxHeight = 500;
 
-# ¥µ¥à¥Í¥¤¥ë²èÁü¤ÎÀÜÆ¬Ê¸»ú
+# ã‚µãƒ ãƒã‚¤ãƒ«ç”»åƒã®æ¥é ­æ–‡å­—
 $PreWord = $head;
 
-# ¢¡¡ş¢¡¡¡ÀßÄê¤³¤³¤Ş¤Ç¡¡¢¡¡ş¢¡
+# â—†â—‡â—†ã€€è¨­å®šã“ã“ã¾ã§ã€€â—†â—‡â—†
 
-	//³ÈÄ¥»Ò¼èÆÀ
+	//æ‹¡å¼µå­å–å¾—
 	if (!$ext) {
 		$array_ext = explode(".", $FromImgPath);
 		$ext = $array_ext[count($array_ext) - 1];
 	}
 	
 	$MW = $ThmMaxWidth;
-	if($tmpMW) $MW = $tmpMW; # $MW¤ËºÇÂç²£Éı¥»¥Ã¥È	
+	if($tmpMW) $MW = $tmpMW; # $MWã«æœ€å¤§æ¨ªå¹…ã‚»ãƒƒãƒˆ	
 	
 	$MH = $ThmMaxHeight;
-	if($tmpMH) $MH = $tmpMH; # $MH¤ËºÇÂç½ÄÉı¥»¥Ã¥È
+	if($tmpMH) $MH = $tmpMH; # $MHã«æœ€å¤§ç¸¦å¹…ã‚»ãƒƒãƒˆ
 	
-	if(empty($FromImgPath) || empty($ToImgPath)){ # ¥¨¥é¡¼½èÍı
-		return array(0,"½ĞÎÏ¸µ²èÁü¥Ñ¥¹¡¢¤Ş¤¿¤Ï½ĞÎÏÀè¥Õ¥©¥ë¥À¤¬»ØÄê¤µ¤ì¤Æ¤¤¤Ş¤»¤ó¡£");
+	if(empty($FromImgPath) || empty($ToImgPath)){ # ã‚¨ãƒ©ãƒ¼å‡¦ç†
+		return array(0,"å‡ºåŠ›å…ƒç”»åƒãƒ‘ã‚¹ã€ã¾ãŸã¯å‡ºåŠ›å…ˆãƒ•ã‚©ãƒ«ãƒ€ãŒæŒ‡å®šã•ã‚Œã¦ã„ã¾ã›ã‚“ã€‚");
 	}
 	
-	if(!file_exists($FromImgPath)){ # ¥¨¥é¡¼½èÍı
-		return array(0,"½ĞÎÏ¸µ²èÁü¤¬¸«¤Ä¤«¤ê¤Ş¤»¤ó¡£");
+	if(!file_exists($FromImgPath)){ # ã‚¨ãƒ©ãƒ¼å‡¦ç†
+		return array(0,"å‡ºåŠ›å…ƒç”»åƒãŒè¦‹ã¤ã‹ã‚Šã¾ã›ã‚“ã€‚");
 	}
 	
 	$size = @GetImageSize($FromImgPath);
 	$re_size = $size;
 	
-	if(!$size[2] || $size[2] > 3){ # ²èÁü¤Î¼ïÎà¤¬ÉÔÌÀ or swf
-		return array(0,"²èÁü·Á¼°¤¬¥µ¥İ¡¼¥È¤µ¤ì¤Æ¤¤¤Ş¤»¤ó¡£");
+	if(!$size[2] || $size[2] > 3){ # ç”»åƒã®ç¨®é¡ãŒä¸æ˜ or swf
+		return array(0,"ç”»åƒå½¢å¼ãŒã‚µãƒãƒ¼ãƒˆã•ã‚Œã¦ã„ã¾ã›ã‚“ã€‚");
 	}
 
-	//¥¢¥¹¥Ú¥¯¥ÈÈæ¸ÇÄê½èÍı
+	//ã‚¢ã‚¹ãƒšã‚¯ãƒˆæ¯”å›ºå®šå‡¦ç†
 	$tmp_w = $size[0] / $MW;
 	
 	if($MH != 0){
@@ -67,15 +67,15 @@ $PreWord = $head;
 		}
 	}	
 	
-	# ¥µ¥à¥Í¥¤¥ë²èÁü¥Õ¥¡¥¤¥ëÌ¾ºîÀ®½èÍı
-	$tmp = array_pop(explode("/",$FromImgPath)); # /¤Î°ìÈÖºÇ¸å¤òÀÚ¤ê½Ğ¤·
-	$FromFileName = array_shift(explode(".",$tmp)); # .¤Ç¶èÀÚ¤é¤ì¤¿ÉôÊ¬¤òÀÚ¤ê½Ğ¤·
-	$ToFile = $PreWord.$FromFileName; # ³ÈÄ¥»Ò°Ê³°¤ÎÉôÊ¬¤Ş¤Ç¤òºîÀ®
+	# ã‚µãƒ ãƒã‚¤ãƒ«ç”»åƒãƒ•ã‚¡ã‚¤ãƒ«åä½œæˆå‡¦ç†
+	$tmp = array_pop(explode("/",$FromImgPath)); # /ã®ä¸€ç•ªæœ€å¾Œã‚’åˆ‡ã‚Šå‡ºã—
+	$FromFileName = array_shift(explode(".",$tmp)); # .ã§åŒºåˆ‡ã‚‰ã‚ŒãŸéƒ¨åˆ†ã‚’åˆ‡ã‚Šå‡ºã—
+	$ToFile = $PreWord.$FromFileName; # æ‹¡å¼µå­ä»¥å¤–ã®éƒ¨åˆ†ã¾ã§ã‚’ä½œæˆ
 	
 	$ImgNew = imagecreatetruecolor($re_size[0],$re_size[1]);
 	
 	switch($size[2]) {
-	 	case "1": //gif·Á¼°
+	 	case "1": //gifå½¢å¼
 			if($tmp_w <= 1 && $tmp_h <= 1){
 				if ( $newFileName ) {
 					$ToFile = $newFileName;
@@ -84,14 +84,14 @@ $PreWord = $head;
 				} else {
 					$ToFile .= ".gif";
 				}
-				if(!@copy($FromImgPath , $ToImgPath.$ToFile)) { # ¥¨¥é¡¼½èÍı
-					return array(0,"¥Õ¥¡¥¤¥ë¤Î¥³¥Ô¡¼¤Ë¼ºÇÔ¤·¤Ş¤·¤¿¡£");
+				if(!@copy($FromImgPath , $ToImgPath.$ToFile)) { # ã‚¨ãƒ©ãƒ¼å‡¦ç†
+					return array(0,"ãƒ•ã‚¡ã‚¤ãƒ«ã®ã‚³ãƒ”ãƒ¼ã«å¤±æ•—ã—ã¾ã—ãŸã€‚");
 				}
 				ImageDestroy($ImgNew);
 				return array(1,$ToFile);
 			}
 					
-			ImageColorAllocate($ImgNew,255,235,214); //ÇØ·Ê¿§
+			ImageColorAllocate($ImgNew,255,235,214); //èƒŒæ™¯è‰²
 			$black = ImageColorAllocate($ImgNew,0,0,0);
 			$red = ImageColorAllocate($ImgNew,255,0,0);
 			Imagestring($ImgNew,4,5,5,"GIF $size[0]x$size[1]", $red);
@@ -106,13 +106,13 @@ $PreWord = $head;
 			}
 			$TmpPath = $ToImgPath.$ToFile;
 			@Imagepng($ImgNew,$TmpPath);
-			if(!@file_exists($TmpPath)){ # ²èÁü¤¬ºîÀ®¤µ¤ì¤Æ¤¤¤Ê¤¤¾ì¹ç
-				return array(0,"²èÁü¤Î½ĞÎÏ¤Ë¼ºÇÔ¤·¤Ş¤·¤¿¡£");
+			if(!@file_exists($TmpPath)){ # ç”»åƒãŒä½œæˆã•ã‚Œã¦ã„ãªã„å ´åˆ
+				return array(0,"ç”»åƒã®å‡ºåŠ›ã«å¤±æ•—ã—ã¾ã—ãŸã€‚");
 			}
 			ImageDestroy($ImgNew);
 			return array(1,$ToFile);
 			
-	 	case "2": //jpg·Á¼°
+	 	case "2": //jpgå½¢å¼
 			$ImgDefault = ImageCreateFromJpeg($FromImgPath);
 			//ImageCopyResized( $ImgNew,$ImgDefault, 0, 0, 0, 0,$re_size[0], $re_size[1],$size[0], $size[1]);
 			
@@ -134,13 +134,13 @@ $PreWord = $head;
 			}
 			$TmpPath = $ToImgPath.$ToFile;
 			@ImageJpeg($ImgNew,$TmpPath);
-			if(!@file_exists($TmpPath)){ # ²èÁü¤¬ºîÀ®¤µ¤ì¤Æ¤¤¤Ê¤¤¾ì¹ç
-				return array(0,"²èÁü¤Î½ĞÎÏ¤Ë¼ºÇÔ¤·¤Ş¤·¤¿¡£<br>${ImgNew}<br>${TmpPath}");
+			if(!@file_exists($TmpPath)){ # ç”»åƒãŒä½œæˆã•ã‚Œã¦ã„ãªã„å ´åˆ
+				return array(0,"ç”»åƒã®å‡ºåŠ›ã«å¤±æ•—ã—ã¾ã—ãŸã€‚<br>${ImgNew}<br>${TmpPath}");
 			}
 			$RetVal = $ToFile;
 	 		break;
 	 		
-	 	case "3": //png·Á¼°
+	 	case "3": //pngå½¢å¼
 			$ImgDefault = ImageCreateFromPNG($FromImgPath);
 			//ImageCopyResized($ImgNew, $ImgDefault, 0, 0, 0, 0,$re_size[0], $re_size[1],$size[0], $size[1]);
 			ImageCopyResampled($ImgNew, $ImgDefault, 0, 0, 0, 0,$re_size[0], $re_size[1],$size[0], $size[1]);
@@ -154,8 +154,8 @@ $PreWord = $head;
 			}
 			$TmpPath = $ToImgPath.$ToFile;
 			@ImagePNG($ImgNew,$TmpPath );
-			if(!@file_exists($TmpPath)){ # ²èÁü¤¬ºîÀ®¤µ¤ì¤Æ¤¤¤Ê¤¤¾ì¹ç
-				return array(0,"²èÁü¤Î½ĞÎÏ¤Ë¼ºÇÔ¤·¤Ş¤·¤¿¡£");
+			if(!@file_exists($TmpPath)){ # ç”»åƒãŒä½œæˆã•ã‚Œã¦ã„ãªã„å ´åˆ
+				return array(0,"ç”»åƒã®å‡ºåŠ›ã«å¤±æ•—ã—ã¾ã—ãŸã€‚");
 			}
 			$RetVal = $ToFile;
 			break;

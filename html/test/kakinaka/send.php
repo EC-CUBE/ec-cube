@@ -18,9 +18,9 @@ $req->setMethod(HTTP_REQUEST_METHOD_POST);
 $arrSendData = array();
 $req->addPostDataArray($arrData);
 if (!PEAR::isError($req->sendRequest())) {
-	echo("Á÷¿®´°Î»");
+	echo("é€ä¿¡å®Œäº†");
 } else {
-	echo("Á÷¿®¼ºÇÔ");
+	echo("é€ä¿¡å¤±æ•—");
 }
 
 sfprintr($req->getResponseBody());

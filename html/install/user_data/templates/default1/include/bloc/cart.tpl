@@ -3,10 +3,10 @@
  *
  * http://www.lockon.co.jp/
  *}-->
-<!--¸½ºß¤Î¥«¥´¤ÎÃæ¤³¤³¤«¤é-->
+<!--ç¾åœ¨ã®ã‚«ã‚´ã®ä¸­ã“ã“ã‹ã‚‰-->
 <table width="166" border="0" cellspacing="0" cellpadding="0" summary=" ">
 	<tr>
-		<td colspan="3"><img src="<!--{$smarty.const.URL_DIR}-->img/side/title_cartin.jpg" width="166" height="35" alt="¸½ºß¤Î¥«¥´¤ÎÃæ"></td>
+		<td colspan="3"><img src="<!--{$smarty.const.URL_DIR}-->img/side/title_cartin.jpg" width="166" height="35" alt="ç¾åœ¨ã®ã‚«ã‚´ã®ä¸­"></td>
 	</tr>
 	<tr>
 		<td bgcolor="#cccccc"><img src="<!--{$smarty.const.URL_DIR}-->img/common/_.gif" width="1" height="10" alt=""></td>
@@ -14,29 +14,29 @@
 		<table width="146" border="0" cellspacing="0" cellpadding="0" summary=" ">
 			<tr><td height="5"></td></tr>
 			<tr>
-				<td class="fs10">¾¦ÉÊ¿ô¡§<!--{$arrCartList.0.TotalQuantity|number_format|default:0}-->ÅÀ</td>
+				<td class="fs10">å•†å“æ•°ï¼š<!--{$arrCartList.0.TotalQuantity|number_format|default:0}-->ç‚¹</td>
 			</tr>
 			<tr><td height="10"><img src="<!--{$smarty.const.URL_DIR}-->img/side/line_146.gif" width="146" height="1" alt=""></td></tr>
 			<tr>
-				<td class="fs12"><span class="redst">¹ç·×¡§<!--{$arrCartList.0.ProductsTotal|number_format|default:0}-->±ß</span></td>
+				<td class="fs12"><span class="redst">åˆè¨ˆï¼š<!--{$arrCartList.0.ProductsTotal|number_format|default:0}-->å††</span></td>
 			</tr>
 			<tr><td height="5"></td></tr>
 			
-			<!-- ¥«¥´¤ÎÃæ¤Ë¾¦ÉÊ¤¬¤¢¤ë¾ì¹ç¤Ë¤Î¤ßÉ½¼¨ -->
+			<!-- ã‚«ã‚´ã®ä¸­ã«å•†å“ãŒã‚ã‚‹å ´åˆã«ã®ã¿è¡¨ç¤º -->
 			<!--{if $arrCartList.0.TotalQuantity > 0}-->
 			<tr>
 				<td class="fs10">
 				<!--{if $arrCartList.0.deliv_free > 0}-->
-					Á÷ÎÁ¼ê¿ôÎÁÌµÎÁ¤Ş¤Ç¤¢¤È<!--{$arrCartList.0.deliv_free|number_format|default:0}-->±ß¡ÊÀÇ¹ş¡Ë¤Ç¤¹¡£
+					é€æ–™æ‰‹æ•°æ–™ç„¡æ–™ã¾ã§ã‚ã¨<!--{$arrCartList.0.deliv_free|number_format|default:0}-->å††ï¼ˆç¨è¾¼ï¼‰ã§ã™ã€‚
 				<!--{else}-->
-					¸½ºß¡¢Á÷ÎÁ¤Ï¡Ö<span class="redst">ÌµÎÁ</span>¡×¤Ç¤¹¡£
+					ç¾åœ¨ã€é€æ–™ã¯ã€Œ<span class="redst">ç„¡æ–™</span>ã€ã§ã™ã€‚
 				<!--{/if}-->
 				</td>
 			</tr>
 			<tr><td height="10"></td></tr>
 			<!--{/if}-->
 			<tr>
-				<td align="center"><a href="<!--{$smarty.const.URL_DIR}-->cart/index.php" onmouseover="chgImg('<!--{$smarty.const.URL_DIR}-->img/side/button_cartin_on.gif','button_cartin');" onmouseout="chgImg('<!--{$smarty.const.URL_DIR}-->img/side/button_cartin.gif','button_cartin');"><img src="<!--{$smarty.const.URL_DIR}-->img/side/button_cartin.gif" width="87" height="22" alt="¥«¥´¤ÎÃæ¤ò¸«¤ë" border="0" name="button_cartin"></a></td>
+				<td align="center"><a href="<!--{$smarty.const.URL_DIR}-->cart/index.php" onmouseover="chgImg('<!--{$smarty.const.URL_DIR}-->img/side/button_cartin_on.gif','button_cartin');" onmouseout="chgImg('<!--{$smarty.const.URL_DIR}-->img/side/button_cartin.gif','button_cartin');"><img src="<!--{$smarty.const.URL_DIR}-->img/side/button_cartin.gif" width="87" height="22" alt="ã‚«ã‚´ã®ä¸­ã‚’è¦‹ã‚‹" border="0" name="button_cartin"></a></td>
 			</tr>
 		</table>
 		</td>
@@ -47,4 +47,4 @@
 	</tr>
 	<tr><td height="10"></td></tr>
 </table>
-<!--¸½ºß¤Î¥«¥´¤ÎÃæ¤³¤³¤Ş¤Ç-->
+<!--ç¾åœ¨ã®ã‚«ã‚´ã®ä¸­ã“ã“ã¾ã§-->

@@ -14,7 +14,7 @@ require_once("../require.php");
 class LC_Page{
 	function LC_Page() {
 		$this->tpl_mainpage = 'mypage/history.tpl';
-		$this->tpl_title = 'MY¥Ú¡¼¥¸/¹ØÆşÍúÎò°ìÍ÷';
+		$this->tpl_title = 'MYãƒšãƒ¼ã‚¸/è³¼å…¥å±¥æ­´ä¸€è¦§';
 		session_cache_limiter('private-no-expire');
 	}
 }
@@ -27,10 +27,10 @@ $objQuery = new SC_Query();
 $objCustomer = new SC_Customer();
 $pageNo = isset($_GET['pageno']) ? $_GET['pageno'] : 0;
 
-// ¥ì¥¤¥¢¥¦¥È¥Ç¥¶¥¤¥ó¤ò¼èÆÀ
+// ãƒ¬ã‚¤ã‚¢ã‚¦ãƒˆãƒ‡ã‚¶ã‚¤ãƒ³ã‚’å–å¾—
 $objPage = sfGetPageLayout($objPage, false, "mypage/index.php");
 
-// ¥í¥°¥¤¥ó¥Á¥§¥Ã¥¯
+// ãƒ­ã‚°ã‚¤ãƒ³ãƒã‚§ãƒƒã‚¯
 if(!isset($_SESSION['customer'])) {
 	sfDispSiteError(CUSTOMER_ERROR, "", false, "", true);
 }
@@ -44,28 +44,28 @@ $order = "order_id DESC";
 $linemax = $objQuery->count($from, $where, $arrval);
 $objPage->tpl_linemax = $linemax;
 
-// ¼èÆÀÈÏ°Ï¤Î»ØÄê(³«»Ï¹ÔÈÖ¹æ¡¢¹Ô¿ô¤Î¥»¥Ã¥È)
+// å–å¾—ç¯„å›²ã®æŒ‡å®š(é–‹å§‹è¡Œç•ªå·ã€è¡Œæ•°ã®ã‚»ãƒƒãƒˆ)
 $objQuery->setlimitoffset(HISTORY_NUM, $pageNo);
-// É½¼¨½ç½ø
+// è¡¨ç¤ºé †åº
 $objQuery->setorder($order);
 
-//¹ØÆşÍúÎò¤Î¼èÆÀ
+//è³¼å…¥å±¥æ­´ã®å–å¾—
 $objPage->arrOrder = $objQuery->select($col, $from, $where, $arrval);
 
 // next
 if ($pageNo + HISTORY_NUM < $linemax) {
-	$next = "<a href='history.php?pageno=" . ($pageNo + HISTORY_NUM) . "'>¼¡¤Ø¢ª</a>";
+	$next = "<a href='history.php?pageno=" . ($pageNo + HISTORY_NUM) . "'>æ¬¡ã¸â†’</a>";
 } else {
 	$next = "";
 }
 
 // previous
 if ($pageNo - HISTORY_NUM > 0) {
-	$previous = "<a href='history.php?pageno=" . ($pageNo - HISTORY_NUM) . "'>¢«Á°¤Ø</a>";
+	$previous = "<a href='history.php?pageno=" . ($pageNo - HISTORY_NUM) . "'>â†å‰ã¸</a>";
 } elseif ($pageNo == 0) {
 	$previous = "";
 } else {
-	$previous = "<a href='history.php?pageno=0'>¢«Á°¤Ø</a>";
+	$previous = "<a href='history.php?pageno=0'>â†å‰ã¸</a>";
 }
 
 // bar
@@ -76,6 +76,6 @@ if ($next != '' && $previous != '') {
 }
 
 $objPage->tpl_strnavi = $previous . $bar . $next;
-$objView->assignobj($objPage);				//$objpageÆâ¤ÎÁ´¤Æ¤Î¥Æ¥ó¥×¥ì¡¼¥ÈÊÑ¿ô¤òsmarty¤Ë³ÊÇ¼
-$objView->display(SITE_FRAME);				//¥Ñ¥¹¤È¥Æ¥ó¥×¥ì¡¼¥ÈÊÑ¿ô¤Î¸Æ¤Ó½Ğ¤·¡¢¼Â¹Ô
+$objView->assignobj($objPage);				//$objpageå†…ã®å…¨ã¦ã®ãƒ†ãƒ³ãƒ—ãƒ¬ãƒ¼ãƒˆå¤‰æ•°ã‚’smartyã«æ ¼ç´
+$objView->display(SITE_FRAME);				//ãƒ‘ã‚¹ã¨ãƒ†ãƒ³ãƒ—ãƒ¬ãƒ¼ãƒˆå¤‰æ•°ã®å‘¼ã³å‡ºã—ã€å®Ÿè¡Œ
 ?>

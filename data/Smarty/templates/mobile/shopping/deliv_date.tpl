@@ -5,7 +5,7 @@
  * http://www.lockon.co.jp/
  */
 *}-->
-<center>ÇÛÃ£Æü»þ»ØÄê</center>
+<center>é…é”æ—¥æ™‚æŒ‡å®š</center>
 
 <hr>
 
@@ -18,44 +18,44 @@
 <!--<input type="hidden" name="point_check" value="2">-->
 <!--{/if}-->
 
-¢£ÇÛÁ÷Æü»ØÄê<br>
+â– é…é€æ—¥æŒ‡å®š<br>
 <!--{assign var=key value="deliv_date"}-->
 <!--{if $arrErr[$key] != ""}-->
 <font color="red"><!--{$arrErr[$key]}--></font>
 <!--{/if}-->
 <!--{if $arrDelivDate}-->
 <select name="<!--{$key}-->">
-<option value="">»ØÄê¤Ê¤·</option>
+<option value="">æŒ‡å®šãªã—</option>
 <!--{html_options options=$arrDelivDate selected=$arrForm[$key].value}-->
 </select>
 <!--{else}-->
-¤´»ØÄêÄº¤±¤Þ¤»¤ó¡£
+ã”æŒ‡å®šé ‚ã‘ã¾ã›ã‚“ã€‚
 <!--{/if}-->
 <br><br>
 
-¢£»þ´ÖÂÓ»ØÄê<br>
+â– æ™‚é–“å¸¯æŒ‡å®š<br>
 <!--{assign var=key value="deliv_time_id"}-->
 <!--{if $arrErr[$key] != ""}-->
 <font color="red"><!--{$arrErr[$key]}--></font>
 <!--{/if}-->
 <select name="<!--{$key}-->">
-<option value="">»ØÄê¤Ê¤·</option>
+<option value="">æŒ‡å®šãªã—</option>
 <!--{html_options options=$arrDelivTime selected=$arrForm[$key].value}-->
 </select>
 <br>
 
-<center><input type="submit" value="¼¡¤Ø"></center>
-<center><input type="submit" name="return" value="Ìá¤ë"></center>
+<center><input type="submit" value="æ¬¡ã¸"></center>
+<center><input type="submit" name="return" value="æˆ»ã‚‹"></center>
 </form>
 
 <br>
 <hr>
 
-<a href="<!--{$smarty.const.MOBILE_URL_CART_TOP}-->" accesskey="9"><!--{9|numeric_emoji}-->¤«¤´¤ò¸«¤ë</a><br>
-<a href="<!--{$smarty.const.MOBILE_URL_SITE_TOP}-->" accesskey="0"><!--{0|numeric_emoji}-->TOP¥Ú¡¼¥¸¤Ø</a><br>
+<a href="<!--{$smarty.const.MOBILE_URL_CART_TOP}-->" accesskey="9"><!--{9|numeric_emoji}-->ã‹ã”ã‚’è¦‹ã‚‹</a><br>
+<a href="<!--{$smarty.const.MOBILE_URL_SITE_TOP}-->" accesskey="0"><!--{0|numeric_emoji}-->TOPãƒšãƒ¼ã‚¸ã¸</a><br>
 
 <br>
 
-<!-- ¢§¥Õ¥Ã¥¿¡¼ ¤³¤³¤«¤é -->
+<!-- â–¼ãƒ•ãƒƒã‚¿ãƒ¼ ã“ã“ã‹ã‚‰ -->
 <center>LOCKON CO.,LTD.</center>
-<!-- ¢¥¥Õ¥Ã¥¿¡¼ ¤³¤³¤Þ¤Ç -->
+<!-- â–²ãƒ•ãƒƒã‚¿ãƒ¼ ã“ã“ã¾ã§ -->

@@ -13,29 +13,29 @@ $arrCVSCOL = array(
 				);
 						
 $arrCVSTITLE = array(
-				'²óÅúID',
-				'¼ÁÌäID',
-				'²óÅúÆü»ş',
-				'²óÅúÌ¾',
-				'¸ÜµÒÌ¾1',
-				'¸ÜµÒÌ¾2',
-				'¸ÜµÒÌ¾¥«¥Ê1',
-				'¸ÜµÒÌ¾¥«¥Ê2',
-				'Í¹ÊØÈÖ¹æ1',
-				'Í¹ÊØÈÖ¹æ2',
-				'ÅÔÆ»ÉÜ¸©',
-				'½»½ê1',
-				'½»½ê2',
-				'ÅÅÏÃÈÖ¹æ1',
-				'ÅÅÏÃÈÖ¹æ2',
-				'ÅÅÏÃÈÖ¹æ3',
-				'¥á¡¼¥ë¥¢¥É¥ì¥¹',
-				'²óÅú1',
-				'²óÅú2',
-				'²óÅú3',
-				'²óÅú4',
-				'²óÅú5',
-				'²óÅú6'				
+				'å›ç­”ID',
+				'è³ªå•ID',
+				'å›ç­”æ—¥æ™‚',
+				'å›ç­”å',
+				'é¡§å®¢å1',
+				'é¡§å®¢å2',
+				'é¡§å®¢åã‚«ãƒŠ1',
+				'é¡§å®¢åã‚«ãƒŠ2',
+				'éƒµä¾¿ç•ªå·1',
+				'éƒµä¾¿ç•ªå·2',
+				'éƒ½é“åºœçœŒ',
+				'ä½æ‰€1',
+				'ä½æ‰€2',
+				'é›»è©±ç•ªå·1',
+				'é›»è©±ç•ªå·2',
+				'é›»è©±ç•ªå·3',
+				'ãƒ¡ãƒ¼ãƒ«ã‚¢ãƒ‰ãƒ¬ã‚¹',
+				'å›ç­”1',
+				'å›ç­”2',
+				'å›ç­”3',
+				'å›ç­”4',
+				'å›ç­”5',
+				'å›ç­”6'				
 			);
 
 
@@ -57,7 +57,7 @@ class LC_Page {
 		$this->tpl_mainno = 'contents';
 		$this->tpl_subnavi = 'contents/subnavi.tpl';
 		$this->tpl_subno = "inquiry";
-		$this->tpl_subtitle = '¥¢¥ó¥±¡¼¥È´ÉÍı';
+		$this->tpl_subtitle = 'ã‚¢ãƒ³ã‚±ãƒ¼ãƒˆç®¡ç†';
 	}
 }
 
@@ -66,12 +66,12 @@ $objPage = new LC_Page();
 $objView = new SC_AdminView();
 $objSess = new SC_Session();
 
-// Ç§¾Ú²ÄÈİ¤ÎÈ½Äê
+// èªè¨¼å¯å¦ã®åˆ¤å®š
 sfIsSuccess($objSess);
 
-$arrActive = array( "0"=>"²ÔÆ¯", "1"=>"Èó²ÔÆ¯" );
-$arrQuestion = array( "0"=>"»ÈÍÑ¤·¤Ê¤¤", "1"=>"¥Æ¥­¥¹¥È¥¨¥ê¥¢", "2"=>"¥Æ¥­¥¹¥È¥Ü¥Ã¥¯¥¹"
-					, "3"=>"¥Á¥§¥Ã¥¯¥Ü¥Ã¥¯¥¹", "4"=>"¥é¥¸¥ª¥Ü¥¿¥ó" 
+$arrActive = array( "0"=>"ç¨¼åƒ", "1"=>"éç¨¼åƒ" );
+$arrQuestion = array( "0"=>"ä½¿ç”¨ã—ãªã„", "1"=>"ãƒ†ã‚­ã‚¹ãƒˆã‚¨ãƒªã‚¢", "2"=>"ãƒ†ã‚­ã‚¹ãƒˆãƒœãƒƒã‚¯ã‚¹"
+					, "3"=>"ãƒã‚§ãƒƒã‚¯ãƒœãƒƒã‚¯ã‚¹", "4"=>"ãƒ©ã‚¸ã‚ªãƒœã‚¿ãƒ³" 
 				);
 				
 $sql = "SELECT *, cast(substring(create_date, 1, 10) as date) as disp_date FROM dtb_question WHERE del_flg = 0 ORDER BY question_id";
@@ -95,7 +95,7 @@ if ( $_GET['mode'] == 'regist' ){
 		if ( ! is_numeric($_POST['question_id']) ){
 			$objQuery = new SC_Query();
 			
-			//ÅĞÏ¿
+			//ç™»éŒ²
 			$value = serialize($_POST);
 			if (DB_TYPE == "pgsql") {
 				$question_id = $objQuery->nextval('dtb_question', 'question_id');
@@ -103,7 +103,7 @@ if ( $_GET['mode'] == 'regist' ){
 			
 			$sql_val = array( $value, $_POST['title'] ,$question_id );
 			$conn->query("INSERT INTO dtb_question ( question, question_name, question_id, create_date) VALUES (?, ?, ?, now())", $sql_val );
-			$objPage->MESSAGE = "ÅĞÏ¿¤¬´°Î»¤·¤Ş¤·¤¿";
+			$objPage->MESSAGE = "ç™»éŒ²ãŒå®Œäº†ã—ã¾ã—ãŸ";
 
 			if (DB_TYPE == "mysql") {
 				$question_id = $objQuery->nextval('dtb_question', 'question_id');
@@ -112,17 +112,17 @@ if ( $_GET['mode'] == 'regist' ){
 			$objPage->QUESTION_ID = $question_id;
 			sfReload();
 		} else {
-			//ÊÔ½¸
+			//ç·¨é›†
 			$value = serialize($_POST);
 			$sql_val = array( $value, $_POST['title'] ,$_POST['question_id'] );
 			$conn->query("UPDATE dtb_question SET question = ?, question_name = ? WHERE question_id = ?", $sql_val );
-			$objPage->MESSAGE = "ÊÔ½¸¤¬´°Î»¤·¤Ş¤·¤¿";
+			$objPage->MESSAGE = "ç·¨é›†ãŒå®Œäº†ã—ã¾ã—ãŸ";
 			$objPage->QUESTION_ID = $_POST['question_id'];
 			sfReload();
 		}
 	} else {
 		
-		//¥¨¥é¡¼É½¼¨
+		//ã‚¨ãƒ©ãƒ¼è¡¨ç¤º
 		$objPage->ERROR = $error;
 		$objPage->QUESTION_ID = $_REQUEST['question_id'];
 		$objPage->ERROR_COLOR = lfGetErrColor($error, ERR_COLOR);
@@ -140,10 +140,10 @@ if ( $_GET['mode'] == 'regist' ){
 			$list_data = $conn->getAll("SELECT result_id,question_id,question_date,question_name,name01,name02,kana01,kana02,zip01,zip02,pref,addr01,addr02,tel01,tel02,tel03,mail01,question01,question02,question03,question04,question05,question06 FROM dtb_question_result WHERE del_flg = 0 AND question_id = ? ORDER BY result_id ASC",array($_GET['question_id']));
 			$data = "";
 			for($i = 0; $i < count($list_data); $i++) {
-				// ³Æ¹àÌÜ¤òCSV½ĞÎÏÍÑ¤ËÊÑ´¹¤¹¤ë¡£
+				// å„é …ç›®ã‚’CSVå‡ºåŠ›ç”¨ã«å¤‰æ›ã™ã‚‹ã€‚
 				$data .= lfMakeCSV($list_data[$i]);
 			}
-			// CSV¤òÁ÷¿®¤¹¤ë
+			// CSVã‚’é€ä¿¡ã™ã‚‹
 			sfCSVDownload($head.$data);
 			exit;
 
@@ -164,18 +164,18 @@ if ( $_GET['mode'] == 'regist' ){
 
 
 
-//³Æ¥Ú¡¼¥¸¶¦ÄÌ
+//å„ãƒšãƒ¼ã‚¸å…±é€š
 $objPage->cnt_question = 6;
 $objPage->arrActive = $arrActive;
 $objPage->arrQuestion = $arrQuestion;
 
 
-//----¡¡¥Ú¡¼¥¸É½¼¨
+//----ã€€ãƒšãƒ¼ã‚¸è¡¨ç¤º
 $objView->assignobj($objPage);
 $objView->display(MAIN_FRAME);
 
 
-// ------------  ¥¨¥é¡¼¥Á¥§¥Ã¥¯½èÍıÉô ------------  
+// ------------  ã‚¨ãƒ©ãƒ¼ãƒã‚§ãƒƒã‚¯å‡¦ç†éƒ¨ ------------  
 
 function lfGetErrColor( $arr, $err_color ){
 	
@@ -190,34 +190,34 @@ function lfGetErrColor( $arr, $err_color ){
 }
 
 
-// ------------  ¥¨¥é¡¼¥Á¥§¥Ã¥¯½èÍıÉô ------------  
+// ------------  ã‚¨ãƒ©ãƒ¼ãƒã‚§ãƒƒã‚¯å‡¦ç†éƒ¨ ------------  
 
 function lfErrCheck (){
 
 	$objErr = new SC_CheckError();
 	$errMsg = "";
 
-	$objErr->doFunc( array( "²ÔÆ¯¡¦Èó²ÔÆ¯", "active" ), array( "SELECT_CHECK" ) );
+	$objErr->doFunc( array( "ç¨¼åƒãƒ»éç¨¼åƒ", "active" ), array( "SELECT_CHECK" ) );
 	
 	$_POST["title"] = mb_convert_kana( trim (  $_POST["title"] ), "K" );
-	$objErr->doFunc( array( "¥¢¥ó¥±¡¼¥ÈÌ¾", "title" ), array( "EXIST_CHECK" ) );
+	$objErr->doFunc( array( "ã‚¢ãƒ³ã‚±ãƒ¼ãƒˆå", "title" ), array( "EXIST_CHECK" ) );
 
 	$_POST["contents"] = mb_convert_kana( trim (  $_POST["contents"] ), "K" );
-	$objErr->doFunc( array( "¥¢¥ó¥±¡¼¥ÈÆâÍÆ" ,"contents", "3000" ), array( "EXIST_CHECK", "MAX_LENGTH_CHECK" ) );
+	$objErr->doFunc( array( "ã‚¢ãƒ³ã‚±ãƒ¼ãƒˆå†…å®¹" ,"contents", "3000" ), array( "EXIST_CHECK", "MAX_LENGTH_CHECK" ) );
 
 	
 	if ( ! $_POST['question'][0]["name"] ){
-		$objErr->arrErr['question'][0]["name"] = "£±¤Ä¤á¤Î¼ÁÌäÌ¾¤¬ÆşÎÏ¤µ¤ì¤Æ¤¤¤Ş¤»¤ó";
+		$objErr->arrErr['question'][0]["name"] = "ï¼‘ã¤ã‚ã®è³ªå•åãŒå…¥åŠ›ã•ã‚Œã¦ã„ã¾ã›ã‚“";
 	}
 	
-	//¡¡¥Á¥§¥Ã¥¯¥Ü¥Ã¥¯¥¹¡¢¥é¥¸¥ª¥Ü¥¿¥ó¤òÁªÂò¤·¤¿¾ì¹ç¤ÏºÇÄã1¤Ä°Ê¾å¹àÌÜ¤òµ­Æş¤µ¤»¤ë¡£
+	//ã€€ãƒã‚§ãƒƒã‚¯ãƒœãƒƒã‚¯ã‚¹ã€ãƒ©ã‚¸ã‚ªãƒœã‚¿ãƒ³ã‚’é¸æŠã—ãŸå ´åˆã¯æœ€ä½1ã¤ä»¥ä¸Šé …ç›®ã‚’è¨˜å…¥ã•ã›ã‚‹ã€‚
 	for( $i = 0; $i < count( $_POST["question"] ); $i++ ) {
 		
 		if ( $_POST["question"][$i]["kind"] ) {
 			if (strlen($_POST["question"][$i]["name"]) == 0) {
-				$objErr->arrErr["question"][$i]["name"] = "¥¿¥¤¥È¥ë¤òÆşÎÏ¤·¤Æ²¼¤µ¤¤¡£";
+				$objErr->arrErr["question"][$i]["name"] = "ã‚¿ã‚¤ãƒˆãƒ«ã‚’å…¥åŠ›ã—ã¦ä¸‹ã•ã„ã€‚";
 			} else if ( strlen($_POST["question"][$i]["name"]) > STEXT_LEN ) {
-				$objErr->arrErr["question"][$i]["name"] = "¥¿¥¤¥È¥ë¤Ï". STEXT_LEN  ."»ú°ÊÆâ¤ÇÆşÎÏ¤·¤Æ²¼¤µ¤¤¡£";
+				$objErr->arrErr["question"][$i]["name"] = "ã‚¿ã‚¤ãƒˆãƒ«ã¯". STEXT_LEN  ."å­—ä»¥å†…ã§å…¥åŠ›ã—ã¦ä¸‹ã•ã„ã€‚";
 			}
 		}
 		
@@ -226,7 +226,7 @@ function lfErrCheck (){
 			$temp_data = array();
 			for( $j = 0; $j < count( $_POST["question"][$i]["option"] ); $j++ ) {	
 
-				// ¹àÌÜ´Ö¡Ê¥Æ¥­¥¹¥È¥Ü¥Ã¥¯¥¹¡Ë¤¬¤¢¤¤¤Æ¤¤¤¿¤éµÍ¤á¤Æ¤¤¤¯
+				// é …ç›®é–“ï¼ˆãƒ†ã‚­ã‚¹ãƒˆãƒœãƒƒã‚¯ã‚¹ï¼‰ãŒã‚ã„ã¦ã„ãŸã‚‰è©°ã‚ã¦ã„ã
 				if( strlen( $_POST["question"][$i]["option"][$j] ) > 0 ) $temp_data[] = mb_convert_kana( trim ( $_POST["question"][$i]["option"][$j]  ), "asKVn" );
 
 			}
@@ -234,7 +234,7 @@ function lfErrCheck (){
 			 $_POST["question"][$i]["option"] = $temp_data;
 
 			if( ( strlen( $_POST["question"][$i] ["option"][0] ) == 0 ) || ( strlen( $_POST["question"][$i] ["option"][0] ) > 0
-			 && strlen( $_POST["question"][$i] ["option"][1] ) == 0 ) ) $objErr->arrErr["question"][$i]['kind'] = "²¼µ­¤Î2¤Ä°Ê¾å¤Î¹àÌÜ¤Ëµ­Æş¤·¤Æ¤¯¤À¤µ¤¤¡£";
+			 && strlen( $_POST["question"][$i] ["option"][1] ) == 0 ) ) $objErr->arrErr["question"][$i]['kind'] = "ä¸‹è¨˜ã®2ã¤ä»¥ä¸Šã®é …ç›®ã«è¨˜å…¥ã—ã¦ãã ã•ã„ã€‚";
 		}
 	}
 
@@ -244,7 +244,7 @@ function lfErrCheck (){
 
 
 function lfGetArrInput( $arr ){
-	// ÃÍ¤¬ÆşÎÏ¤µ¤ì¤¿ÇÛÎó¤Î¤ß¤òÊÖ¤¹
+	// å€¤ãŒå…¥åŠ›ã•ã‚ŒãŸé…åˆ—ã®ã¿ã‚’è¿”ã™
 	
 	if ( is_array($arr)	){
 		foreach ( $arr as $key=>$val ) {

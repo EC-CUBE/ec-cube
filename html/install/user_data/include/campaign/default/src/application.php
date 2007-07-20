@@ -6,15 +6,15 @@
  */
 require_once("../../require.php");
 
-//---- ¥Ú¡¼¥¸É½¼¨¥¯¥é¥¹
+//---- ãƒšãƒ¼ã‚¸è¡¨ç¤ºã‚¯ãƒ©ã‚¹
 class LC_Page {
 	
 	function LC_Page() {
 		$this->tpl_mainpage = TEMPLATE_DIR . '/campaign/application.tpl';
 		/*
-		 session_start»ş¤Îno-cache¥Ø¥Ã¥À¡¼¤òÍŞÀ©¤¹¤ë¤³¤È¤Ç
-		 ¡ÖÌá¤ë¡×¥Ü¥¿¥ó»ÈÍÑ»ş¤ÎÍ­¸ú´ü¸ÂÀÚ¤ìÉ½¼¨¤òÍŞÀ©¤¹¤ë¡£
-		 private-no-expire:¥¯¥é¥¤¥¢¥ó¥È¤Î¥­¥ã¥Ã¥·¥å¤òµö²Ä¤¹¤ë¡£
+		 session_startæ™‚ã®no-cacheãƒ˜ãƒƒãƒ€ãƒ¼ã‚’æŠ‘åˆ¶ã™ã‚‹ã“ã¨ã§
+		 ã€Œæˆ»ã‚‹ã€ãƒœã‚¿ãƒ³ä½¿ç”¨æ™‚ã®æœ‰åŠ¹æœŸé™åˆ‡ã‚Œè¡¨ç¤ºã‚’æŠ‘åˆ¶ã™ã‚‹ã€‚
+		 private-no-expire:ã‚¯ãƒ©ã‚¤ã‚¢ãƒ³ãƒˆã®ã‚­ãƒ£ãƒƒã‚·ãƒ¥ã‚’è¨±å¯ã™ã‚‹ã€‚
 		*/
 		session_cache_limiter('private-no-expire');	
 	}
@@ -25,28 +25,28 @@ $objView = new SC_SiteView(false);
 $objQuery = new SC_Query();
 $objCustomer = new SC_Customer();
 $objCampaignSess = new SC_CampaignSession();
-// ¥¯¥Ã¥­¡¼´ÉÍı¥¯¥é¥¹
+// ã‚¯ãƒƒã‚­ãƒ¼ç®¡ç†ã‚¯ãƒ©ã‚¹
 $objCookie = new SC_Cookie(COOKIE_EXPIRE);
 
-$objLoginFormParam = new SC_FormParam();	// ¥í¥°¥¤¥ó¥Õ¥©¡¼¥àÍÑ
-lfInitLoginFormParam();						// ½é´üÀßÄê
-$objLoginFormParam->setParam($_POST);		// POSTÃÍ¤Î¼èÆÀ
+$objLoginFormParam = new SC_FormParam();	// ãƒ­ã‚°ã‚¤ãƒ³ãƒ•ã‚©ãƒ¼ãƒ ç”¨
+lfInitLoginFormParam();						// åˆæœŸè¨­å®š
+$objLoginFormParam->setParam($_POST);		// POSTå€¤ã®å–å¾—
 
-// ¥Ç¥£¥ì¥¯¥È¥êÌ¾¤ò¼èÆÀ
+// ãƒ‡ã‚£ãƒ¬ã‚¯ãƒˆãƒªåã‚’å–å¾—
 $dir_name = dirname($_SERVER['PHP_SELF']);
 $arrDir = split('/', $dir_name);
 $dir_name = $arrDir[count($arrDir) -1];
 
-/* ¥»¥Ã¥·¥ç¥ó¤Ë¥­¥ã¥ó¥Ú¡¼¥ó¥Ç¡¼¥¿¤ò½ñ¤­¹ş¤à */
-// ¥­¥ã¥ó¥Ú¡¼¥ó¤«¤é¤ÎÁ«°Ü¤È¤¤¤¦¾ğÊó¤òÊİ»ı
+/* ã‚»ãƒƒã‚·ãƒ§ãƒ³ã«ã‚­ãƒ£ãƒ³ãƒšãƒ¼ãƒ³ãƒ‡ãƒ¼ã‚¿ã‚’æ›¸ãè¾¼ã‚€ */
+// ã‚­ãƒ£ãƒ³ãƒšãƒ¼ãƒ³ã‹ã‚‰ã®é·ç§»ã¨ã„ã†æƒ…å ±ã‚’ä¿æŒ
 $objCampaignSess->setIsCampaign();
-// ¥­¥ã¥ó¥Ú¡¼¥óID¤òÊİ»ı
+// ã‚­ãƒ£ãƒ³ãƒšãƒ¼ãƒ³IDã‚’ä¿æŒ
 $campaign_id = $objQuery->get("dtb_campaign", "campaign_id", "directory_name = ? AND del_flg = 0", array($dir_name));
 $objCampaignSess->setCampaignId($campaign_id);
-// ¥­¥ã¥ó¥Ú¡¼¥ó¥Ç¥£¥ì¥¯¥È¥êÌ¾¤òÊİ»ı
+// ã‚­ãƒ£ãƒ³ãƒšãƒ¼ãƒ³ãƒ‡ã‚£ãƒ¬ã‚¯ãƒˆãƒªåã‚’ä¿æŒ
 $objCampaignSess->setCampaignDir($dir_name);
 
-// ¥­¥ã¥ó¥Ú¡¼¥ó¤¬³«ºÅÃæ¤«¤ò¥Á¥§¥Ã¥¯
+// ã‚­ãƒ£ãƒ³ãƒšãƒ¼ãƒ³ãŒé–‹å‚¬ä¸­ã‹ã‚’ãƒã‚§ãƒƒã‚¯
 if(lfCheckActive($dir_name)) {
 	$status = CAMPAIGN_TEMPLATE_ACTIVE;
 	$objPage->is_active = true;
@@ -56,12 +56,12 @@ if(lfCheckActive($dir_name)) {
 }
 
 switch($_POST['mode']) {
-// ¥í¥°¥¤¥ó¥Á¥§¥Ã¥¯
+// ãƒ­ã‚°ã‚¤ãƒ³ãƒã‚§ãƒƒã‚¯
 case 'login':
 	$objLoginFormParam->toLower('login_email');
 	$objPage->arrErr = $objLoginFormParam->checkError();
 	$arrForm =  $objLoginFormParam->getHashArray();
-	// ¥¯¥Ã¥­¡¼ÊİÂ¸È½Äê
+	// ã‚¯ãƒƒã‚­ãƒ¼ä¿å­˜åˆ¤å®š
 	if($arrForm['login_memory'] == "1" && $arrForm['login_email'] != "") {
 		$objCookie->setCookie('login_email', $_POST['login_email']);
 	} else {
@@ -69,9 +69,9 @@ case 'login':
 	}
 
 	if(count($objPage->arrErr) == 0) {
-		// ¥í¥°¥¤¥óÈ½Äê
+		// ãƒ­ã‚°ã‚¤ãƒ³åˆ¤å®š
 		if(!$objCustomer->getCustomerDataFromEmailPass($arrForm['login_pass'], $arrForm['login_email'])) {
-			// ²¾ÅĞÏ¿¤ÎÈ½Äê
+			// ä»®ç™»éŒ²ã®åˆ¤å®š
 			$objQuery = new SC_Query;
 			$where = "email = ? AND status = 1 AND del_flg = 0";
 			$ret = $objQuery->count("dtb_customer", $where, array($arrForm['login_email']));
@@ -82,19 +82,19 @@ case 'login':
 				sfDispSiteError(SITE_LOGIN_ERROR);
 			}
 		} else {
-			// ½ÅÊ£¿½¹ş¥Á¥§¥Ã¥¯
+			// é‡è¤‡ç”³è¾¼ãƒã‚§ãƒƒã‚¯
 			$orverlapping_flg = $objQuery->get("dtb_campaign", "orverlapping_flg", "campaign_id = ?", array($objCampaignSess->getCampaignId()));
 
 			if($orverlapping_flg) {
 				if(lfOverlappingCheck($objCustomer->getValue('customer_id'))) {
-					$objPage->arrErr['login_email'] = "¢¨ Ê£¿ô²ó¤´±şÊç¤¹¤ë¤³¤È¤Ï½ĞÍè¤Ş¤»¤ó¡£";
+					$objPage->arrErr['login_email'] = "â€» è¤‡æ•°å›ã”å¿œå‹Ÿã™ã‚‹ã“ã¨ã¯å‡ºæ¥ã¾ã›ã‚“ã€‚";
 				}
 			}
 	
 			if(count($objPage->arrErr) == 0) {
-				// ¿½¹ş¾ğÊó¤òÅĞÏ¿
+				// ç”³è¾¼æƒ…å ±ã‚’ç™»éŒ²
 				lfRegistCampaignOrder($objCustomer->getValue('customer_id'));
-				// ´°Î»¥Ú¡¼¥¸¤Ø¥ê¥À¥¤¥ì¥¯¥È
+				// å®Œäº†ãƒšãƒ¼ã‚¸ã¸ãƒªãƒ€ã‚¤ãƒ¬ã‚¯ãƒˆ
 				header("location: ". CAMPAIGN_URL . "$dir_name/complete.php");
 			}
 		}
@@ -103,12 +103,12 @@ case 'login':
 default :
 	break;
 }
-// ÆşÎÏ¾ğÊó¤òÅÏ¤¹
+// å…¥åŠ›æƒ…å ±ã‚’æ¸¡ã™
 $objPage->arrForm = $_POST;
 $objPage->dir_name = $dir_name;
 $objPage->tpl_dir_name = CAMPAIGN_TEMPLATE_PATH . $dir_name  . "/" . $status;
 
-//----¡¡¥Ú¡¼¥¸É½¼¨
+//----ã€€ãƒšãƒ¼ã‚¸è¡¨ç¤º
 $objView->assignobj($objPage);
 $objView->display($objPage->tpl_mainpage);
 
@@ -116,22 +116,22 @@ $objView->display($objPage->tpl_mainpage);
 //---------------------------------------------------------------------------------------------------------------------------------------------------------
 
 /* 
- * ´Ø¿ôÌ¾¡§lfInitLoginFormParam()
- * ÀâÌÀ¡¡¡§¥í¥°¥¤¥ó¥Õ¥©¡¼¥à¤ò½é´ü²½
- * Ìá¤êÃÍ¡§Ìµ¤·
+ * é–¢æ•°åï¼šlfInitLoginFormParam()
+ * èª¬æ˜ã€€ï¼šãƒ­ã‚°ã‚¤ãƒ³ãƒ•ã‚©ãƒ¼ãƒ ã‚’åˆæœŸåŒ–
+ * æˆ»ã‚Šå€¤ï¼šç„¡ã—
  */
 function lfInitLoginFormParam() {
 	global $objLoginFormParam;
-	$objLoginFormParam->addParam("µ­²±¤¹¤ë", "login_memory", INT_LEN, "n", array("MAX_LENGTH_CHECK", "NUM_CHECK"));
-	$objLoginFormParam->addParam("¥á¡¼¥ë¥¢¥É¥ì¥¹", "login_email", STEXT_LEN, "KVa", array("EXIST_CHECK", "MAX_LENGTH_CHECK"));
-	$objLoginFormParam->addParam("¥Ñ¥¹¥ï¡¼¥É", "login_pass", STEXT_LEN, "KVa", array("EXIST_CHECK", "MAX_LENGTH_CHECK"));
+	$objLoginFormParam->addParam("è¨˜æ†¶ã™ã‚‹", "login_memory", INT_LEN, "n", array("MAX_LENGTH_CHECK", "NUM_CHECK"));
+	$objLoginFormParam->addParam("ãƒ¡ãƒ¼ãƒ«ã‚¢ãƒ‰ãƒ¬ã‚¹", "login_email", STEXT_LEN, "KVa", array("EXIST_CHECK", "MAX_LENGTH_CHECK"));
+	$objLoginFormParam->addParam("ãƒ‘ã‚¹ãƒ¯ãƒ¼ãƒ‰", "login_pass", STEXT_LEN, "KVa", array("EXIST_CHECK", "MAX_LENGTH_CHECK"));
 }
 
 /* 
- * ´Ø¿ôÌ¾¡§lfCheckActive()
- * °ú¿ô1 ¡§¥Ç¥£¥ì¥¯¥È¥êÌ¾
- * ÀâÌÀ¡¡¡§¥­¥ã¥ó¥Ú¡¼¥óÃæ¤«¥Á¥§¥Ã¥¯
- * Ìá¤êÃÍ¡§¥­¥ã¥ó¥Ú¡¼¥óÃæ¤Ê¤é true ½ªÎ»¤Ê¤é false
+ * é–¢æ•°åï¼šlfCheckActive()
+ * å¼•æ•°1 ï¼šãƒ‡ã‚£ãƒ¬ã‚¯ãƒˆãƒªå
+ * èª¬æ˜ã€€ï¼šã‚­ãƒ£ãƒ³ãƒšãƒ¼ãƒ³ä¸­ã‹ãƒã‚§ãƒƒã‚¯
+ * æˆ»ã‚Šå€¤ï¼šã‚­ãƒ£ãƒ³ãƒšãƒ¼ãƒ³ä¸­ãªã‚‰ true çµ‚äº†ãªã‚‰ false
  */
 function lfCheckActive($directory_name) {
 	
@@ -141,12 +141,12 @@ function lfCheckActive($directory_name) {
 	$col = "limit_count, total_count, start_date, end_date";
 	$arrRet = $objQuery->select($col, "dtb_campaign", "directory_name = ? AND del_flg = 0", array($directory_name));
 
-	// ³«»ÏÆü»ş¡¦Ää»ßÆü»ş¤òÀ®·¿
+	// é–‹å§‹æ—¥æ™‚ãƒ»åœæ­¢æ—¥æ™‚ã‚’æˆå‹
 	$start_date = (date("YmdHis", strtotime($arrRet[0]['start_date'])));
 	$end_date = (date("YmdHis", strtotime($arrRet[0]['end_date'])));
 	$now_date = (date("YmdHis"));
 
-	// ¥­¥ã¥ó¥Ú¡¼¥ó¤¬³«ºÅ´ü´Ö¤Ç¡¢¤«¤Ä¿½¹şÀ©¸ÂÆâ¤Ç¤¢¤ë
+	// ã‚­ãƒ£ãƒ³ãƒšãƒ¼ãƒ³ãŒé–‹å‚¬æœŸé–“ã§ã€ã‹ã¤ç”³è¾¼åˆ¶é™å†…ã§ã‚ã‚‹
 	if($now_date > $start_date && $now_date < $end_date
 			&& ($arrRet[0]['limit_count'] > $arrRet[0]['total_count'] || $arrRet[0]['limit_count'] < 1)) {
 		$is_active = true;
@@ -156,10 +156,10 @@ function lfCheckActive($directory_name) {
 }
 
 /* 
- * ´Ø¿ôÌ¾¡§lfRegistCampaignOrder()
- * ÀâÌÀ¡¡¡§¥­¥ã¥ó¥Ú¡¼¥ó¼õÃí¾ğÊó¤òÊİÂ¸
- * °ú¿ô1 ¡§¸ÜµÒID
- * Ìá¤êÃÍ¡§Ìµ¤·
+ * é–¢æ•°åï¼šlfRegistCampaignOrder()
+ * èª¬æ˜ã€€ï¼šã‚­ãƒ£ãƒ³ãƒšãƒ¼ãƒ³å—æ³¨æƒ…å ±ã‚’ä¿å­˜
+ * å¼•æ•°1 ï¼šé¡§å®¢ID
+ * æˆ»ã‚Šå€¤ï¼šç„¡ã—
  */
 function lfRegistCampaignOrder($customer_id) {
 
@@ -167,7 +167,7 @@ function lfRegistCampaignOrder($customer_id) {
 	global $objCampaignSess;
 	$campaign_id = $objCampaignSess->getCampaignId();
 
-	// ¼õÃí¥Ç¡¼¥¿¤ò¼èÆÀ
+	// å—æ³¨ãƒ‡ãƒ¼ã‚¿ã‚’å–å¾—
 	$cols = "
 			customer_id,
 			name01 as order_name01,
@@ -197,10 +197,10 @@ function lfRegistCampaignOrder($customer_id) {
 	$sqlval['campaign_id'] = $campaign_id;
     $sqlval['create_date'] = 'now()';
 		
-	// INSERT¤Î¼Â¹Ô
+	// INSERTã®å®Ÿè¡Œ
 	$objQuery->insert("dtb_campaign_order", $sqlval);
 	
-	// ¿½¤·¹ş¤ß¿ô¤Î¹¹¿·
+	// ç”³ã—è¾¼ã¿æ•°ã®æ›´æ–°
 	$total_count = $objQuery->get("dtb_campaign", "total_count", "campaign_id = ?", array($campaign_id));
 	$arrCampaign['total_count'] = $total_count += 1;
 	$objQuery->update("dtb_campaign", $arrCampaign, "campaign_id = ?", array($campaign_id));
@@ -208,10 +208,10 @@ function lfRegistCampaignOrder($customer_id) {
 }
 
 /* 
- * ´Ø¿ôÌ¾¡§lfOverlappingCheck()
- * ÀâÌÀ¡¡¡§½ÅÊ£±şÊç¥Á¥§¥Ã¥¯
- * °ú¿ô1 ¡§¸ÜµÒID
- * Ìá¤êÃÍ¡§¥Õ¥é¥° (½ÅÊ£¤¬¤¢¤Ã¤¿¤é true ½ÅÊ£¤¬¤Ê¤«¤Ã¤¿¤é false)
+ * é–¢æ•°åï¼šlfOverlappingCheck()
+ * èª¬æ˜ã€€ï¼šé‡è¤‡å¿œå‹Ÿãƒã‚§ãƒƒã‚¯
+ * å¼•æ•°1 ï¼šé¡§å®¢ID
+ * æˆ»ã‚Šå€¤ï¼šãƒ•ãƒ©ã‚° (é‡è¤‡ãŒã‚ã£ãŸã‚‰ true é‡è¤‡ãŒãªã‹ã£ãŸã‚‰ false)
  */
 function lfOverlappingCheck($customer_id) {
 	

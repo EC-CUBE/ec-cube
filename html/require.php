@@ -4,12 +4,14 @@
  *
  * http://www.lockon.co.jp/
  */
- 
+
 $include_dir = realpath(dirname( __FILE__));
 require_once($include_dir . "/define.php");
 require_once($include_dir . HTML2DATA_DIR. "conf/conf.php");
 require_once($include_dir . HTML2DATA_DIR . "include/module.inc");
-require_once($include_dir . HTML2DATA_DIR . "lib/glib.php");
+require_once($include_dir . HTML2DATA_DIR . "class/util_extends/GC_Utils_Ex.php");
+require_once($include_dir . HTML2DATA_DIR . "class/util_extends/SC_Utils_Ex.php");
+//require_once($include_dir . HTML2DATA_DIR . "lib/glib.php");
 require_once($include_dir . HTML2DATA_DIR . "lib/slib.php");
 require_once($include_dir . HTML2DATA_DIR . "class/SC_View.php");
 require_once($include_dir . HTML2DATA_DIR . "class/SC_DbConn.php");
@@ -33,22 +35,23 @@ require_once($include_dir . HTML2DATA_DIR . "class/SC_Page.php");
 require_once($include_dir . HTML2DATA_DIR . "class/SC_Pdf.php");
 require_once($include_dir . HTML2DATA_DIR . "class/GC_MobileUserAgent.php");
 require_once($include_dir . HTML2DATA_DIR . "class/GC_MobileEmoji.php");
-require_once($include_dir . HTML2DATA_DIR . "include/page_layout.inc");
+require_once($include_dir . HTML2DATA_DIR . "class/helper_extends/SC_Helper_PageLayout_Ex.php");
+//require_once($include_dir . HTML2DATA_DIR . "include/page_layout.inc");
 
-// ¥¢¥Ã¥×¥Ç¡¼¥È¤Ç¼èÆÀ¤·¤¿PHP¤òÆÉ¤ß½Ð¤¹
-sfLoadUpdateModule();
+// ã‚¢ãƒƒãƒ—ãƒ‡ãƒ¼ãƒˆã§å–å¾—ã—ãŸPHPã‚’èª­ã¿å‡ºã™
+SC_Utils::sfLoadUpdateModule();
 
-// ·ÈÂÓÃ¼Ëö¤Î¾ì¹ç¤Ï mobile °Ê²¼¤Ø¥ê¥À¥¤¥ì¥¯¥È¤¹¤ë¡£
+// æºå¸¯ç«¯æœ«ã®å ´åˆã¯ mobile ä»¥ä¸‹ã¸ãƒªãƒ€ã‚¤ãƒ¬ã‚¯ãƒˆã™ã‚‹ã€‚
 if (GC_MobileUserAgent::isMobile()) {
-	if (preg_match('|^' . URL_DIR . '(.*)$|', $_SERVER['REQUEST_URI'], $matches)) {
-		$path = $matches[1];
-	} else {
-		$path = '';
-	}
-	header("Location: " . URL_DIR . "mobile/$path");
-	exit;
+    if (preg_match('|^' . URL_DIR . '(.*)$|', $_SERVER['REQUEST_URI'], $matches)) {
+        $path = $matches[1];
+    } else {
+        $path = '';
+    }
+    header("Location: " . URL_DIR . "mobile/$path");
+    exit;
 }
 
-// ³¨Ê¸»úÊÑ´¹ (½üµî) ¥Õ¥£¥ë¥¿¡¼¤òÁÈ¤ß¹þ¤à¡£
+// çµµæ–‡å­—å¤‰æ› (é™¤åŽ») ãƒ•ã‚£ãƒ«ã‚¿ãƒ¼ã‚’çµ„ã¿è¾¼ã‚€ã€‚
 ob_start(array('GC_MobileEmoji', 'handler'));
 ?>

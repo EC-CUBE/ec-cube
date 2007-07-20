@@ -5,14 +5,14 @@
  * http://www.lockon.co.jp/
  */
 *}-->
-<div align="center">¥í¥°¥¤¥ó</div>
+<div align="center">ãƒ­ã‚°ã‚¤ãƒ³</div>
 <hr>
 
-<!--¢§CONTENTS-->
+<!--â–¼CONTENTS-->
 <form name="login_mypage" id="login_mypage" method="post" action="./index.php">
 	<input type="hidden" name="mode" value="login" >
 <!--{if !$tpl_valid_phone_id}-->
-	¢§¥á¡¼¥ë¥¢¥É¥ì¥¹<br>
+	â–¼ãƒ¡ãƒ¼ãƒ«ã‚¢ãƒ‰ãƒ¬ã‚¹<br>
 	<!--{assign var=key value="login_email"}-->
 	<font color="#FF0000"><!--{$arrErr[$key]}--></font>
 	<input type="text" name="<!--{$key}-->" value="<!--{$login_email|escape}-->" 
@@ -20,22 +20,22 @@
 <!--{else}-->
 	<input type="hidden" name="login_email" value="dummy">
 <!--{/if}-->
-	¢§¥Ñ¥¹¥ï¡¼¥É<br>
+	â–¼ãƒ‘ã‚¹ãƒ¯ãƒ¼ãƒ‰<br>
 	<!--{assign var=key value="login_pass"}--><font color="#FF0000"><!--{$arrErr[$key]}--></font>
 	<input type="password" name="<!--{$key}-->" maxlength="<!--{$arrForm[$key].length}-->" size="40" istyle="3"><br>
-	<center><input type="submit" value="Á÷¿®" name="log"></center><br>
-	<a href="<!--{$smarty.const.MOBILE_URL_DIR}-->forgot/index.php">¥Ñ¥¹¥ï¡¼¥É¤ò¤ªËº¤ì¤ÎÊý¤Ï¤³¤Á¤é</a><br>
+	<center><input type="submit" value="é€ä¿¡" name="log"></center><br>
+	<a href="<!--{$smarty.const.MOBILE_URL_DIR}-->forgot/index.php">ãƒ‘ã‚¹ãƒ¯ãƒ¼ãƒ‰ã‚’ãŠå¿˜ã‚Œã®æ–¹ã¯ã“ã¡ã‚‰</a><br>
 </form>
-<!--¢¥CONTENTS-->
+<!--â–²CONTENTS-->
 
 <br>
 <hr>
 
-<a href="<!--{$smarty.const.MOBILE_URL_CART_TOP}-->" accesskey="9"><!--{9|numeric_emoji}-->¤«¤´¤ò¸«¤ë</a><br>
-<a href="<!--{$smarty.const.MOBILE_URL_SITE_TOP}-->" accesskey="0"><!--{0|numeric_emoji}-->TOP¥Ú¡¼¥¸¤Ø</a><br>
+<a href="<!--{$smarty.const.MOBILE_URL_CART_TOP}-->" accesskey="9"><!--{9|numeric_emoji}-->ã‹ã”ã‚’è¦‹ã‚‹</a><br>
+<a href="<!--{$smarty.const.MOBILE_URL_SITE_TOP}-->" accesskey="0"><!--{0|numeric_emoji}-->TOPãƒšãƒ¼ã‚¸ã¸</a><br>
 
 <br>
 
-<!-- ¢§¥Õ¥Ã¥¿¡¼ ¤³¤³¤«¤é -->
+<!-- â–¼ãƒ•ãƒƒã‚¿ãƒ¼ ã“ã“ã‹ã‚‰ -->
 <!--{include file='footer.tpl'}-->
-<!-- ¢¥¥Õ¥Ã¥¿¡¼ ¤³¤³¤Þ¤Ç -->
+<!-- â–²ãƒ•ãƒƒã‚¿ãƒ¼ ã“ã“ã¾ã§ -->

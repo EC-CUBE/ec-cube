@@ -12,7 +12,7 @@ class LC_Page {
 	function LC_Page() {
 		$this->tpl_mainpage = 'shopping/complete.tpl';
 		$this->tpl_css = '/css/layout/shopping/complete.css';
-		$this->tpl_title = "¤´ÃíÊ¸´°Î»";
+		$this->tpl_title = "ã”æ³¨æ–‡å®Œäº†";
 		global $arrCONVENIENCE;
 		$this->arrCONVENIENCE = $arrCONVENIENCE;
 		global $arrCONVENIMESSAGE;
@@ -22,9 +22,9 @@ class LC_Page {
 		$objPage->arrCONVENIENCE = $arrCONVENIENCE;
 		$objPage->arrCONVENIMESSAGE = $arrCONVENIMESSAGE;
 		/*
-		 session_start»ş¤Îno-cache¥Ø¥Ã¥À¡¼¤òÍŞÀ©¤¹¤ë¤³¤È¤Ç
-		 ¡ÖÌá¤ë¡×¥Ü¥¿¥ó»ÈÍÑ»ş¤ÎÍ­¸ú´ü¸ÂÀÚ¤ìÉ½¼¨¤òÍŞÀ©¤¹¤ë¡£
-		 private-no-expire:¥¯¥é¥¤¥¢¥ó¥È¤Î¥­¥ã¥Ã¥·¥å¤òµö²Ä¤¹¤ë¡£
+		 session_startæ™‚ã®no-cacheãƒ˜ãƒƒãƒ€ãƒ¼ã‚’æŠ‘åˆ¶ã™ã‚‹ã“ã¨ã§
+		 ã€Œæˆ»ã‚‹ã€ãƒœã‚¿ãƒ³ä½¿ç”¨æ™‚ã®æœ‰åŠ¹æœŸé™åˆ‡ã‚Œè¡¨ç¤ºã‚’æŠ‘åˆ¶ã™ã‚‹ã€‚
+		 private-no-expire:ã‚¯ãƒ©ã‚¤ã‚¢ãƒ³ãƒˆã®ã‚­ãƒ£ãƒƒã‚·ãƒ¥ã‚’è¨±å¯ã™ã‚‹ã€‚
 		*/
 		session_cache_limiter('private-no-expire');		
 
@@ -40,34 +40,34 @@ $objSiteInfo = $objView->objSiteInfo;
 $arrInfo = $objSiteInfo->data;
 $objCustomer = new SC_Customer();
 
-// Á°¤Î¥Ú¡¼¥¸¤ÇÀµ¤·¤¯ÅĞÏ¿¼êÂ³¤­¤¬¹Ô¤ï¤ì¤¿¤«È½Äê
+// å‰ã®ãƒšãƒ¼ã‚¸ã§æ­£ã—ãç™»éŒ²æ‰‹ç¶šããŒè¡Œã‚ã‚ŒãŸã‹åˆ¤å®š
 sfIsPrePage($objSiteSess, true);
-// ¥æ¡¼¥¶¥æ¥Ë¡¼¥¯ID¤Î¼èÆÀ¤È¹ØÆş¾õÂÖ¤ÎÀµÅöÀ­¤ò¥Á¥§¥Ã¥¯
+// ãƒ¦ãƒ¼ã‚¶ãƒ¦ãƒ‹ãƒ¼ã‚¯IDã®å–å¾—ã¨è³¼å…¥çŠ¶æ…‹ã®æ­£å½“æ€§ã‚’ãƒã‚§ãƒƒã‚¯
 $uniqid = sfCheckNormalAccess($objSiteSess, $objCartSess);
 if ($uniqid != "") {
 	
-	// ´°Î»½èÍı
+	// å®Œäº†å‡¦ç†
 	$objQuery = new SC_Query();
 	$objQuery->begin();
 	$order_id = lfDoComplete($objQuery, $uniqid);
 	$objQuery->commit();
 	
-	// ¥»¥Ã¥·¥ç¥ó¤ËÊİ´É¤µ¤ì¤Æ¤¤¤ë¾ğÊó¤ò¹¹¿·¤¹¤ë
+	// ã‚»ãƒƒã‚·ãƒ§ãƒ³ã«ä¿ç®¡ã•ã‚Œã¦ã„ã‚‹æƒ…å ±ã‚’æ›´æ–°ã™ã‚‹
 	$objCustomer->updateSession();
 
-	// ´°Î»¥á¡¼¥ëÁ÷¿®
+	// å®Œäº†ãƒ¡ãƒ¼ãƒ«é€ä¿¡
 	if($order_id != "") {
 		sfSendOrderMail($order_id, '1');
 	}
 
-	//¤½¤ÎÂ¾¾ğÊó¤Î¼èÆÀ
+	//ãã®ä»–æƒ…å ±ã®å–å¾—
 	$other_data = $objQuery->get("dtb_order", "memo02", "order_id = ? ", array($order_id));
 	if($other_data != "") {
 		$arrOther = unserialize($other_data);
 		
-		// ¥Ç¡¼¥¿¤òÊÔ½¸
+		// ãƒ‡ãƒ¼ã‚¿ã‚’ç·¨é›†
 		foreach($arrOther as $key => $val){
-			// URL¤Î¾ì¹ç¤Ë¤Ï¥ê¥ó¥¯¤Ä¤­¤ÇÉ½¼¨¤µ¤»¤ë
+			// URLã®å ´åˆã«ã¯ãƒªãƒ³ã‚¯ã¤ãã§è¡¨ç¤ºã•ã›ã‚‹
 			if (preg_match('/^(https?|ftp)(:\/\/[-_.!~*\'()a-zA-Z0-9;\/?:\@&=+\$,%#]+)$/', $val["value"])) {
 				$arrOther[$key]["value"] = "<a href='#' onClick=\"window.open('". $val["value"] . "'); \" >" . $val["value"] ."</a>";
 			}
@@ -77,10 +77,10 @@ if ($uniqid != "") {
 		
 	}
 	
-	// ¥¢¥Õ¥£¥ê¥¨¥¤¥ÈÍÑ¥³¥ó¥Ğ¡¼¥¸¥ç¥ó¥¿¥°¤ÎÀßÄê
+	// ã‚¢ãƒ•ã‚£ãƒªã‚¨ã‚¤ãƒˆç”¨ã‚³ãƒ³ãƒãƒ¼ã‚¸ãƒ§ãƒ³ã‚¿ã‚°ã®è¨­å®š
 	$objPage->tpl_conv_page = AFF_SHOPPING_COMPLETE;
 	$objPage->tpl_aff_option = "order_id=$order_id";
-	//¹ç·×²Á³Ê¤Î¼èÆÀ
+	//åˆè¨ˆä¾¡æ ¼ã®å–å¾—
 	$total = $objQuery->get("dtb_order", "total", "order_id = ? ", array($order_id));
 	if($total != "") {
 		$objPage->tpl_aff_option.= "|total=$total";
@@ -92,31 +92,31 @@ $objPage->arrInfo = $arrInfo;
 $objView->assignobj($objPage);
 $objView->display(SITE_FRAME);
 //--------------------------------------------------------------------------------------------------------------------------
-// ¥¨¥Ó¥¹¥¿¥°°úÅÏ¤·ÍÑ¥Ç¡¼¥¿¤òÀ¸À®¤¹¤ë
+// ã‚¨ãƒ“ã‚¹ã‚¿ã‚°å¼•æ¸¡ã—ç”¨ãƒ‡ãƒ¼ã‚¿ã‚’ç”Ÿæˆã™ã‚‹
 function lfGetEbisData($order_id) {
 	$objQuery = new SC_Query();
 	$col = "customer_id, total, order_sex, order_job, to_number(to_char(age(current_timestamp, order_birth), 'YYY'), 999) AS order_age";
 	$arrRet = $objQuery->select($col, "dtb_order", "order_id = ?", array($order_id));
 	
 	if($arrRet[0]['customer_id'] > 0) {
-		// ²ñ°÷ÈÖ¹æ
+		// ä¼šå“¡ç•ªå·
 		$arrEbis['m1id'] = $arrRet[0]['customer_id'];
-		// Èó²ñ°÷or²ñ°÷
+		// éä¼šå“¡orä¼šå“¡
 		$arrEbis['o5id'] = '1';
 	} else {
-		// ²ñ°÷ÈÖ¹æ
+		// ä¼šå“¡ç•ªå·
 		$arrEbis['m1id'] = '';
-		// Èó²ñ°÷or²ñ°÷
+		// éä¼šå“¡orä¼šå“¡
 		$arrEbis['o5id'] = '2';	
 	}
 	
-	// ¹ØÆş¶â³Û
+	// è³¼å…¥é‡‘é¡
 	$arrEbis['a1id'] = $arrRet[0]['total'];
-	// À­ÊÌ
+	// æ€§åˆ¥
 	$arrEbis['o2id'] = $arrRet[0]['order_sex'];
-	// Ç¯Îğ
+	// å¹´é½¢
 	$arrEbis['o3id'] = $arrRet[0]['order_age'];
-	// ¿¦¶È
+	// è·æ¥­
 	$arrEbis['o4id'] = $arrRet[0]['order_job'];
 		
 	$objQuery->setgroupby("product_id");
@@ -124,7 +124,7 @@ function lfGetEbisData($order_id) {
 	$arrProducts = sfSwapArray($arrRet);
 	
 	$line = "";
-	// ¾¦ÉÊID¤ò¥¢¥ó¥À¡¼¥Ğ¡¼¤ÇÀÜÂ³¤¹¤ë¡£
+	// å•†å“IDã‚’ã‚¢ãƒ³ãƒ€ãƒ¼ãƒãƒ¼ã§æ¥ç¶šã™ã‚‹ã€‚
 	foreach($arrProducts['product_id'] as $val) {
 		if($line != "") {
 			$line .= "_$val";		
@@ -133,69 +133,69 @@ function lfGetEbisData($order_id) {
 		}
 	}
 	
-	// ¾¦ÉÊID	
+	// å•†å“ID	
 	$arrEbis['o1id'] = $line;
 	
 	return $arrEbis;
 }
 
-// ´°Î»½èÍı
+// å®Œäº†å‡¦ç†
 function lfDoComplete($objQuery, $uniqid) {
 	global $objCartSess;
 	global $objSiteSess;
 	global $objCustomer;
 	global $arrInfo;
 	
-	// °ì»ş¼õÃí¥Æ¡¼¥Ö¥ë¤ÎÆÉ¹ş
+	// ä¸€æ™‚å—æ³¨ãƒ†ãƒ¼ãƒ–ãƒ«ã®èª­è¾¼
 	$arrData = sfGetOrderTemp($uniqid);
 	
-	// ²ñ°÷¾ğÊóÅĞÏ¿½èÍı
+	// ä¼šå“¡æƒ…å ±ç™»éŒ²å‡¦ç†
 	if ($objCustomer->isLoginSuccess()) {
-		// ¿·¤ªÆÏ¤±Àè¤ÎÅĞÏ¿
+		// æ–°ãŠå±Šã‘å…ˆã®ç™»éŒ²
 		lfSetNewAddr($uniqid, $objCustomer->getValue('customer_id'));
-		// ¹ØÆş½¸·×¤ò¸ÜµÒ¥Æ¡¼¥Ö¥ë¤ËÈ¿±Ç
+		// è³¼å…¥é›†è¨ˆã‚’é¡§å®¢ãƒ†ãƒ¼ãƒ–ãƒ«ã«åæ˜ 
 		lfSetCustomerPurchase($objCustomer->getValue('customer_id'), $arrData, $objQuery);
 	} else {
-		//¹ØÆş»ş¶¯À©²ñ°÷ÅĞÏ¿
+		//è³¼å…¥æ™‚å¼·åˆ¶ä¼šå“¡ç™»éŒ²
 		switch(PURCHASE_CUSTOMER_REGIST) {
-		//Ìµ¸ú
+		//ç„¡åŠ¹
 		case '0':
-			// ¹ØÆş»ş²ñ°÷ÅĞÏ¿
+			// è³¼å…¥æ™‚ä¼šå“¡ç™»éŒ²
 			if($arrData['member_check'] == '1') {
-				// ²¾²ñ°÷ÅĞÏ¿
+				// ä»®ä¼šå“¡ç™»éŒ²
 				$customer_id = lfRegistPreCustomer($arrData, $arrInfo);
-				// ¹ØÆş½¸·×¤ò¸ÜµÒ¥Æ¡¼¥Ö¥ë¤ËÈ¿±Ç
+				// è³¼å…¥é›†è¨ˆã‚’é¡§å®¢ãƒ†ãƒ¼ãƒ–ãƒ«ã«åæ˜ 
 				lfSetCustomerPurchase($customer_id, $arrData, $objQuery);
 			}
 			break;
-		//Í­¸ú
+		//æœ‰åŠ¹
 		case '1':
-			// ²¾²ñ°÷ÅĞÏ¿
+			// ä»®ä¼šå“¡ç™»éŒ²
 			$customer_id = lfRegistPreCustomer($arrData, $arrInfo);
-			// ¹ØÆş½¸·×¤ò¸ÜµÒ¥Æ¡¼¥Ö¥ë¤ËÈ¿±Ç
+			// è³¼å…¥é›†è¨ˆã‚’é¡§å®¢ãƒ†ãƒ¼ãƒ–ãƒ«ã«åæ˜ 
 			lfSetCustomerPurchase($customer_id, $arrData, $objQuery);
 			break;
 		}
 		
 	}
-	// °ì»ş¥Æ¡¼¥Ö¥ë¤ò¼õÃí¥Æ¡¼¥Ö¥ë¤Ë³ÊÇ¼¤¹¤ë
+	// ä¸€æ™‚ãƒ†ãƒ¼ãƒ–ãƒ«ã‚’å—æ³¨ãƒ†ãƒ¼ãƒ–ãƒ«ã«æ ¼ç´ã™ã‚‹
 	$order_id = lfRegistOrder($objQuery, $arrData);
-	// ¥«¡¼¥È¾¦ÉÊ¤ò¼õÃí¾ÜºÙ¥Æ¡¼¥Ö¥ë¤Ë³ÊÇ¼¤¹¤ë
+	// ã‚«ãƒ¼ãƒˆå•†å“ã‚’å—æ³¨è©³ç´°ãƒ†ãƒ¼ãƒ–ãƒ«ã«æ ¼ç´ã™ã‚‹
 	lfRegistOrderDetail($objQuery, $order_id, $objCartSess);
-	// ¼õÃí°ì»ş¥Æ¡¼¥Ö¥ë¤Î¾ğÊó¤òºï½ü¤¹¤ë¡£
+	// å—æ³¨ä¸€æ™‚ãƒ†ãƒ¼ãƒ–ãƒ«ã®æƒ…å ±ã‚’å‰Šé™¤ã™ã‚‹ã€‚
 	lfDeleteTempOrder($objQuery, $uniqid);
 	
-	// ¥»¥Ã¥·¥ç¥ó¥«¡¼¥ÈÆâ¤Î¾¦ÉÊ¤òºï½ü¤¹¤ë¡£
+	// ã‚»ãƒƒã‚·ãƒ§ãƒ³ã‚«ãƒ¼ãƒˆå†…ã®å•†å“ã‚’å‰Šé™¤ã™ã‚‹ã€‚
 	$objCartSess->delAllProducts();
-	// ÃíÊ¸°ì»şID¤ò²ò½ü¤¹¤ë¡£
+	// æ³¨æ–‡ä¸€æ™‚IDã‚’è§£é™¤ã™ã‚‹ã€‚
 	$objSiteSess->unsetUniqId();
 	
 	return $order_id;
 }
 
-// ²ñ°÷ÅĞÏ¿¡Ê²¾ÅĞÏ¿¡Ë
+// ä¼šå“¡ç™»éŒ²ï¼ˆä»®ç™»éŒ²ï¼‰
 function lfRegistPreCustomer($arrData, $arrInfo) {
-	// ¹ØÆş»ş¤Î²ñ°÷ÅĞÏ¿
+	// è³¼å…¥æ™‚ã®ä¼šå“¡ç™»éŒ²
 	$sqlval['name01'] = $arrData['order_name01'];
 	$sqlval['name02'] = $arrData['order_name02'];
 	$sqlval['kana01'] = $arrData['order_kana01'];
@@ -217,15 +217,15 @@ function lfRegistPreCustomer($arrData, $arrInfo) {
 	$sqlval['reminder'] = $arrData['reminder'];
 	$sqlval['reminder_answer'] = $arrData['reminder_answer'];
 
-	// ¥á¥ë¥Ş¥¬ÇÛ¿®ÍÑ¥Õ¥é¥°¤ÎÈ½Äê
+	// ãƒ¡ãƒ«ãƒã‚¬é…ä¿¡ç”¨ãƒ•ãƒ©ã‚°ã®åˆ¤å®š
 	switch($arrData['mail_flag']) {
-	case '1':	// HTML¥á¡¼¥ë
+	case '1':	// HTMLãƒ¡ãƒ¼ãƒ«
 		$mail_flag = 4;
 		break;
-	case '2':	// TEXT¥á¡¼¥ë
+	case '2':	// TEXTãƒ¡ãƒ¼ãƒ«
 		$mail_flag = 5;
 		break;
-	case '3':	// ´õË¾¤Ê¤·
+	case '3':	// å¸Œæœ›ãªã—
 		$mail_flag = 6;
 		break;
 	default:
@@ -234,9 +234,9 @@ function lfRegistPreCustomer($arrData, $arrInfo) {
 	}
 	$sqlval['mailmaga_flg'] = $mail_flag;
 		
-	// ²ñ°÷²¾ÅĞÏ¿
+	// ä¼šå“¡ä»®ç™»éŒ²
 	$sqlval['status'] = 1;
-	// URLÈ½ÄêÍÑ¥­¡¼
+	// URLåˆ¤å®šç”¨ã‚­ãƒ¼
 	$sqlval['secret_key'] = sfGetUniqRandomId("t"); 
 	
 	$objQuery = new SC_Query();
@@ -244,11 +244,11 @@ function lfRegistPreCustomer($arrData, $arrInfo) {
 	$sqlval['update_date'] = "now()";
 	$objQuery->insert("dtb_customer", $sqlval);
 	
-	// ¸ÜµÒID¤Î¼èÆÀ
+	// é¡§å®¢IDã®å–å¾—
 	$arrRet = $objQuery->select("customer_id", "dtb_customer", "secret_key = ?", array($sqlval['secret_key']));
 	$customer_id = $arrRet[0]['customer_id'];
 
-	//¡¡²¾ÅĞÏ¿´°Î»¥á¡¼¥ëÁ÷¿®
+	//ã€€ä»®ç™»éŒ²å®Œäº†ãƒ¡ãƒ¼ãƒ«é€ä¿¡
 	$objMailPage = new LC_Page();
 	$objMailPage->to_name01 = $arrData['order_name01'];
 	$objMailPage->to_name02 = $arrData['order_name02'];
@@ -260,29 +260,29 @@ function lfRegistPreCustomer($arrData, $arrInfo) {
 	
 	$objMail = new GC_SendMail();
 	$objMail->setItem(
-						''										//¡¡°¸Àè
-						, sfMakeSubject("²ñ°÷ÅĞÏ¿¤Î¤´³ÎÇ§")		//¡¡¥µ¥Ö¥¸¥§¥¯¥È
-						, $body									//¡¡ËÜÊ¸
-						, $arrInfo['email03']					//¡¡ÇÛÁ÷¸µ¥¢¥É¥ì¥¹
-						, $arrInfo['shop_name']					//¡¡ÇÛÁ÷¸µ¡¡Ì¾Á°
-						, $arrInfo["email03"]					//¡¡reply_to
-						, $arrInfo["email04"]					//¡¡return_path
+						''										//ã€€å®›å…ˆ
+						, sfMakeSubject("ä¼šå“¡ç™»éŒ²ã®ã”ç¢ºèª")		//ã€€ã‚µãƒ–ã‚¸ã‚§ã‚¯ãƒˆ
+						, $body									//ã€€æœ¬æ–‡
+						, $arrInfo['email03']					//ã€€é…é€å…ƒã‚¢ãƒ‰ãƒ¬ã‚¹
+						, $arrInfo['shop_name']					//ã€€é…é€å…ƒã€€åå‰
+						, $arrInfo["email03"]					//ã€€reply_to
+						, $arrInfo["email04"]					//ã€€return_path
 						, $arrInfo["email04"]					//  Errors_to
 						, $arrInfo["email01"]					//  Bcc
 														);
-	// °¸Àè¤ÎÀßÄê
-	$name = $arrData['order_name01'] . $arrData['order_name02'] ." ÍÍ";
+	// å®›å…ˆã®è¨­å®š
+	$name = $arrData['order_name01'] . $arrData['order_name02'] ." æ§˜";
 	$objMail->setTo($arrData['order_email'], $name);			
 	$objMail->sendMail();
 	
 	return $customer_id;
 }
 
-// ¼õÃí°ì»ş¥Æ¡¼¥Ö¥ë¤Î¤ªÆÏ¤±Àè¤ò¥³¥Ô¡¼¤¹¤ë
+// å—æ³¨ä¸€æ™‚ãƒ†ãƒ¼ãƒ–ãƒ«ã®ãŠå±Šã‘å…ˆã‚’ã‚³ãƒ”ãƒ¼ã™ã‚‹
 function lfCopyDeliv($uniqid, $arrData) {
 	$objQuery = new SC_Query();
 	
-	// ÊÌ¤Î¤ªÆÏ¤±Àè¤ò»ØÄê¤·¤Æ¤¤¤Ê¤¤¾ì¹ç¡¢ÇÛÁ÷Àè¤ËÅĞÏ¿½»½ê¤ò¥³¥Ô¡¼¤¹¤ë¡£
+	// åˆ¥ã®ãŠå±Šã‘å…ˆã‚’æŒ‡å®šã—ã¦ã„ãªã„å ´åˆã€é…é€å…ˆã«ç™»éŒ²ä½æ‰€ã‚’ã‚³ãƒ”ãƒ¼ã™ã‚‹ã€‚
 	if($arrData["deliv_check"] != "1") {
 		$sqlval['deliv_name01'] = $arrData['order_name01'];
 		$sqlval['deliv_name02'] = $arrData['order_name02'];
@@ -301,26 +301,26 @@ function lfCopyDeliv($uniqid, $arrData) {
 	}
 }
 
-// ¼õÃí¥Æ¡¼¥Ö¥ë¤ØÅĞÏ¿
+// å—æ³¨ãƒ†ãƒ¼ãƒ–ãƒ«ã¸ç™»éŒ²
 function lfRegistOrder($objQuery, $arrData) {
 	$sqlval = $arrData;
 
-	// ¼õÃí¥Æ¡¼¥Ö¥ë¤Ë½ñ¤­¹ş¤Ş¤Ê¤¤Îó¤ò½üµî
-	unset($sqlval['mail_flag']);		// ¥á¥ë¥Ş¥¬¥Á¥§¥Ã¥¯
-	unset($sqlval['deliv_check']);		// ÊÌ¤Î¤ªÆÏ¤±Àè¥Á¥§¥Ã¥¯
-	unset($sqlval['point_check']);		// ¥İ¥¤¥ó¥ÈÍøÍÑ¥Á¥§¥Ã¥¯
-	unset($sqlval['member_check']);		// ¹ØÆş»ş²ñ°÷¥Á¥§¥Ã¥¯
-	unset($sqlval['password']);			// ¥í¥°¥¤¥ó¥Ñ¥¹¥ï¡¼¥É
-	unset($sqlval['reminder']);			// ¥ê¥Ş¥¤¥ó¥À¡¼¼ÁÌä
-	unset($sqlval['reminder_answer']);	// ¥ê¥Ş¥¤¥ó¥À¡¼Åú¤¨
-	unset($sqlval['session']);	        // ¥»¥Ã¥·¥ç¥ó
+	// å—æ³¨ãƒ†ãƒ¼ãƒ–ãƒ«ã«æ›¸ãè¾¼ã¾ãªã„åˆ—ã‚’é™¤å»
+	unset($sqlval['mail_flag']);		// ãƒ¡ãƒ«ãƒã‚¬ãƒã‚§ãƒƒã‚¯
+	unset($sqlval['deliv_check']);		// åˆ¥ã®ãŠå±Šã‘å…ˆãƒã‚§ãƒƒã‚¯
+	unset($sqlval['point_check']);		// ãƒã‚¤ãƒ³ãƒˆåˆ©ç”¨ãƒã‚§ãƒƒã‚¯
+	unset($sqlval['member_check']);		// è³¼å…¥æ™‚ä¼šå“¡ãƒã‚§ãƒƒã‚¯
+	unset($sqlval['password']);			// ãƒ­ã‚°ã‚¤ãƒ³ãƒ‘ã‚¹ãƒ¯ãƒ¼ãƒ‰
+	unset($sqlval['reminder']);			// ãƒªãƒã‚¤ãƒ³ãƒ€ãƒ¼è³ªå•
+	unset($sqlval['reminder_answer']);	// ãƒªãƒã‚¤ãƒ³ãƒ€ãƒ¼ç­”ãˆ
+	unset($sqlval['session']);	        // ã‚»ãƒƒã‚·ãƒ§ãƒ³
 
-	// ÃíÊ¸¥¹¥Æ¡¼¥¿¥¹:»ØÄê¤¬Ìµ¤±¤ì¤Ğ¿·µ¬¼õÉÕ¤ËÀßÄê
+	// æ³¨æ–‡ã‚¹ãƒ†ãƒ¼ã‚¿ã‚¹:æŒ‡å®šãŒç„¡ã‘ã‚Œã°æ–°è¦å—ä»˜ã«è¨­å®š
 	if($sqlval["status"] == ""){
 		$sqlval['status'] = '1';			
 	}
 	
-	// ÊÌ¤Î¤ªÆÏ¤±Àè¤ò»ØÄê¤·¤Æ¤¤¤Ê¤¤¾ì¹ç¡¢ÇÛÁ÷Àè¤ËÅĞÏ¿½»½ê¤ò¥³¥Ô¡¼¤¹¤ë¡£
+	// åˆ¥ã®ãŠå±Šã‘å…ˆã‚’æŒ‡å®šã—ã¦ã„ãªã„å ´åˆã€é…é€å…ˆã«ç™»éŒ²ä½æ‰€ã‚’ã‚³ãƒ”ãƒ¼ã™ã‚‹ã€‚
 	if($arrData["deliv_check"] != "1") {
 		$sqlval['deliv_name01'] = $arrData['order_name01'];
 		$sqlval['deliv_name02'] = $arrData['order_name02'];
@@ -336,37 +336,37 @@ function lfRegistOrder($objQuery, $arrData) {
 		$sqlval['deliv_tel03'] = $arrData['order_tel03'];
 	}
 	
-	$order_id = $arrData['order_id'];		// ¥ª¡¼¥À¡¼ID
-	$sqlval['create_date'] = 'now()';		// ¼õÃíÆü
+	$order_id = $arrData['order_id'];		// ã‚ªãƒ¼ãƒ€ãƒ¼ID
+	$sqlval['create_date'] = 'now()';		// å—æ³¨æ—¥
 	
-	// ¥²¥Ã¥È¤ÎÃÍ¤ò¥¤¥ó¥µ¡¼¥È
+	// ã‚²ãƒƒãƒˆã®å€¤ã‚’ã‚¤ãƒ³ã‚µãƒ¼ãƒˆ
 	//$sqlval = lfGetInsParam($sqlval);
 	
-	// INSERT¤Î¼Â¹Ô
+	// INSERTã®å®Ÿè¡Œ
 	$objQuery->insert("dtb_order", $sqlval);
 
 	return $order_id;
 }
 
-// ¼õÃí¾ÜºÙ¥Æ¡¼¥Ö¥ë¤ØÅĞÏ¿
+// å—æ³¨è©³ç´°ãƒ†ãƒ¼ãƒ–ãƒ«ã¸ç™»éŒ²
 function lfRegistOrderDetail($objQuery, $order_id, $objCartSess) {
-	// ¥«¡¼¥ÈÆâ¾ğÊó¤Î¼èÆÀ
+	// ã‚«ãƒ¼ãƒˆå†…æƒ…å ±ã®å–å¾—
 	$arrCart = $objCartSess->getCartList();
 	$max = count($arrCart);
 	
-	// ´û¤ËÂ¸ºß¤¹¤ë¾ÜºÙ¥ì¥³¡¼¥É¤ò¾Ã¤·¤Æ¤ª¤¯¡£
+	// æ—¢ã«å­˜åœ¨ã™ã‚‹è©³ç´°ãƒ¬ã‚³ãƒ¼ãƒ‰ã‚’æ¶ˆã—ã¦ãŠãã€‚
 	$objQuery->delete("dtb_order_detail", "order_id = $order_id");
 
-	// µ¬³ÊÌ¾°ìÍ÷
+	// è¦æ ¼åä¸€è¦§
 	$arrClassName = sfGetIDValueList("dtb_class", "class_id", "name");
-	// µ¬³ÊÊ¬ÎàÌ¾°ìÍ÷
+	// è¦æ ¼åˆ†é¡åä¸€è¦§
 	$arrClassCatName = sfGetIDValueList("dtb_classcategory", "classcategory_id", "name");
 			
 	for ($i = 0; $i < $max; $i++) {
-		// ¾¦ÉÊµ¬³Ê¾ğÊó¤Î¼èÆÀ	
+		// å•†å“è¦æ ¼æƒ…å ±ã®å–å¾—	
 		$arrData = sfGetProductsClass($arrCart[$i]['id']);
 		
-		// Â¸ºß¤¹¤ë¾¦ÉÊ¤Î¤ßÉ½¼¨¤¹¤ë¡£
+		// å­˜åœ¨ã™ã‚‹å•†å“ã®ã¿è¡¨ç¤ºã™ã‚‹ã€‚
 		if($arrData != "") {
 			$sqlval['order_id'] = $order_id;
 			$sqlval['product_id'] = $arrCart[$i]['id'][0];
@@ -380,7 +380,7 @@ function lfRegistOrderDetail($objQuery, $order_id, $objCartSess) {
 			$sqlval['price'] = $arrCart[$i]['price'];
 			$sqlval['quantity'] = $arrCart[$i]['quantity'];
 			lfReduceStock($objQuery, $arrCart[$i]['id'], $arrCart[$i]['quantity']);
-			// INSERT¤Î¼Â¹Ô
+			// INSERTã®å®Ÿè¡Œ
 			$objQuery->insert("dtb_order_detail", $sqlval);
 		} else {
 			sfDispSiteError(CART_NOT_FOUND, "", false, "", true);
@@ -388,7 +388,7 @@ function lfRegistOrderDetail($objQuery, $order_id, $objCartSess) {
 	}
 }
 
-/* ¼õÃí°ì»ş¥Æ¡¼¥Ö¥ë¤Îºï½ü */
+/* å—æ³¨ä¸€æ™‚ãƒ†ãƒ¼ãƒ–ãƒ«ã®å‰Šé™¤ */
 function lfDeleteTempOrder($objQuery, $uniqid) {
 	$where = "order_temp_id = ?";
 	$sqlval['del_flg'] = 1;
@@ -396,7 +396,7 @@ function lfDeleteTempOrder($objQuery, $uniqid) {
 	// $objQuery->delete("dtb_order_temp", $where, array($uniqid));
 }
 
-// ¼õÃí°ì»ş¥Æ¡¼¥Ö¥ë¤Î½»½ê¤¬ÅĞÏ¿ºÑ¤ß¥Æ¡¼¥Ö¥ë¤È°Û¤Ê¤ë¾ì¹ç¤Ï¡¢ÊÌ¤Î¤ªÆÏ¤±Àè¤ËÄÉ²Ã¤¹¤ë
+// å—æ³¨ä¸€æ™‚ãƒ†ãƒ¼ãƒ–ãƒ«ã®ä½æ‰€ãŒç™»éŒ²æ¸ˆã¿ãƒ†ãƒ¼ãƒ–ãƒ«ã¨ç•°ãªã‚‹å ´åˆã¯ã€åˆ¥ã®ãŠå±Šã‘å…ˆã«è¿½åŠ ã™ã‚‹
 function lfSetNewAddr($uniqid, $customer_id) {
 	$objQuery = new SC_Query();
 	$diff = false;
@@ -406,27 +406,27 @@ function lfSetNewAddr($uniqid, $customer_id) {
 	$where = "order_temp_id = ?";
 	$arrRet = $objQuery->select($col, "dtb_order_temp", $where, array($uniqid));
 	
-	// Í×ÁÇÌ¾¤Îdeliv_¤òºï½ü¤¹¤ë¡£
+	// è¦ç´ åã®deliv_ã‚’å‰Šé™¤ã™ã‚‹ã€‚
 	foreach($arrRet[0] as $key => $val) {
 		$keyname = ereg_replace("^deliv_", "", $key);
 		$arrNew[$keyname] = $val;
 	}
 	
-	// ²ñ°÷¾ğÊó¥Æ¡¼¥Ö¥ë¤È¤ÎÈæ³Ó
+	// ä¼šå“¡æƒ…å ±ãƒ†ãƒ¼ãƒ–ãƒ«ã¨ã®æ¯”è¼ƒ
 	$col = "name01,name02,kana01,kana02,tel01,tel02,tel03,zip01,zip02,pref,addr01,addr02";
 	$where = "customer_id = ?";
 	$arrCustomerAddr = $objQuery->select($col, "dtb_customer", $where, array($customer_id));
 	
-	// ²ñ°÷¾ğÊó¤Î½»½ê¤È°Û¤Ê¤ë¾ì¹ç
+	// ä¼šå“¡æƒ…å ±ã®ä½æ‰€ã¨ç•°ãªã‚‹å ´åˆ
 	if($arrNew != $arrCustomerAddr[0]) {
-		// ÊÌ¤Î¤ªÆÏ¤±Àè¥Æ¡¼¥Ö¥ë¤Î½»½ê¤ÈÈæ³Ó¤¹¤ë
+		// åˆ¥ã®ãŠå±Šã‘å…ˆãƒ†ãƒ¼ãƒ–ãƒ«ã®ä½æ‰€ã¨æ¯”è¼ƒã™ã‚‹
 		$col = "name01,name02,kana01,kana02,tel01,tel02,tel03,zip01,zip02,pref,addr01,addr02";
 		$where = "customer_id = ?";
 		$arrOtherAddr = $objQuery->select($col, "dtb_other_deliv", $where, array($customer_id));
 
 		foreach($arrOtherAddr as $arrval) {
 			if($arrNew == $arrval) {
-				// ¤¹¤Ç¤ËÆ±¤¸½»½ê¤¬ÅĞÏ¿¤µ¤ì¤Æ¤¤¤ë
+				// ã™ã§ã«åŒã˜ä½æ‰€ãŒç™»éŒ²ã•ã‚Œã¦ã„ã‚‹
 				$find_same = true;
 			}
 		}
@@ -436,7 +436,7 @@ function lfSetNewAddr($uniqid, $customer_id) {
 		}
 	}
 	
-	// ¿·¤·¤¤¤ªÆÏ¤±Àè¤¬ÅĞÏ¿ºÑ¤ß¤Î¤â¤Î¤È°Û¤Ê¤ë¾ì¹ç¤ÏÊÌ¤Î¤ªÆÏ¤±Àè¥Æ¡¼¥Ö¥ë¤ËÅĞÏ¿¤¹¤ë
+	// æ–°ã—ã„ãŠå±Šã‘å…ˆãŒç™»éŒ²æ¸ˆã¿ã®ã‚‚ã®ã¨ç•°ãªã‚‹å ´åˆã¯åˆ¥ã®ãŠå±Šã‘å…ˆãƒ†ãƒ¼ãƒ–ãƒ«ã«ç™»éŒ²ã™ã‚‹
 	if($diff) {
 		$sqlval = $arrNew;
 		$sqlval['customer_id'] = $customer_id;
@@ -444,7 +444,7 @@ function lfSetNewAddr($uniqid, $customer_id) {
 	}
 }
 
-/* ¹ØÆş¾ğÊó¤ò²ñ°÷¥Æ¡¼¥Ö¥ë¤ËÅĞÏ¿¤¹¤ë */
+/* è³¼å…¥æƒ…å ±ã‚’ä¼šå“¡ãƒ†ãƒ¼ãƒ–ãƒ«ã«ç™»éŒ²ã™ã‚‹ */
 function lfSetCustomerPurchase($customer_id, $arrData, $objQuery) {
 	$col = "first_buy_date, last_buy_date, buy_times, buy_total, point";
 	$where = "customer_id = ?";
@@ -459,7 +459,7 @@ function lfSetCustomerPurchase($customer_id, $arrData, $objQuery) {
 	$sqlval['buy_total']+= $arrData['total'];
 	$sqlval['point'] = ($sqlval['point'] + $arrData['add_point'] - $arrData['use_point']);
 	
-	// ¥İ¥¤¥ó¥È¤¬ÉÔÂ­¤·¤Æ¤¤¤ë¾ì¹ç
+	// ãƒã‚¤ãƒ³ãƒˆãŒä¸è¶³ã—ã¦ã„ã‚‹å ´åˆ
 	if($sqlval['point'] < 0) {
 		$objQuery->rollback();
 		sfDispSiteError(LACK_POINT);
@@ -468,20 +468,20 @@ function lfSetCustomerPurchase($customer_id, $arrData, $objQuery) {
 	$objQuery->update("dtb_customer", $sqlval, $where, array($customer_id));
 }
 
-// ºß¸Ë¤ò¸º¤é¤¹½èÍı
+// åœ¨åº«ã‚’æ¸›ã‚‰ã™å‡¦ç†
 function lfReduceStock($objQuery, $arrID, $quantity) {
 	$where = "product_id = ? AND classcategory_id1 = ? AND classcategory_id2 = ?";
 	$arrRet = $objQuery->select("stock, stock_unlimited", "dtb_products_class", $where, $arrID);
 	
-	// Çä¤êÀÚ¤ì¥¨¥é¡¼
+	// å£²ã‚Šåˆ‡ã‚Œã‚¨ãƒ©ãƒ¼
 	if(($arrRet[0]['stock_unlimited'] != '1' && $arrRet[0]['stock'] < $quantity) || $quantity == 0) {
 		$objQuery->rollback();
 		sfDispSiteError(SOLD_OUT, "", true);
-	// ÌµÀ©¸Â¤Î¾ì¹ç¡¢ºß¸Ë¤ÏNULL
+	// ç„¡åˆ¶é™ã®å ´åˆã€åœ¨åº«ã¯NULL
 	} elseif($arrRet[0]['stock_unlimited'] == '1') {
 		$sqlval['stock'] = null;
 		$objQuery->update("dtb_products_class", $sqlval, $where, $arrID);
-	// ºß¸Ë¤ò¸º¤é¤¹
+	// åœ¨åº«ã‚’æ¸›ã‚‰ã™
 	} else {
 		$sqlval['stock'] = ($arrRet[0]['stock'] - $quantity);
 		if($sqlval['stock'] == "") {
@@ -491,11 +491,11 @@ function lfReduceStock($objQuery, $arrID, $quantity) {
 	}
 }
 
-// GET¤ÎÃÍ¤ò¥¤¥ó¥µ¡¼¥ÈÍÑ¤ËÀ°¤¨¤ë
+// GETã®å€¤ã‚’ã‚¤ãƒ³ã‚µãƒ¼ãƒˆç”¨ã«æ•´ãˆã‚‹
 function lfGetInsParam($sqlVal){
 	
 	foreach($_GET as $key => $val){
-		// ¥«¥é¥à¤ÎÂ¸ºß¥Á¥§¥Ã¥¯
+		// ã‚«ãƒ©ãƒ ã®å­˜åœ¨ãƒã‚§ãƒƒã‚¯
 		if(sfColumnExists("dtb_order", $key)) $sqlVal[$key] = $val;
 	}
 	

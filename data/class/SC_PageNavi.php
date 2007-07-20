@@ -5,30 +5,30 @@
  * http://www.lockon.co.jp/
  */
 
-/* ¢¨»ÈÍÑ¾ò·ï¢¨
-	¡¦form¥¿¥°¤Ë°Ê²¼¤òÄÉ²Ã¤¹¤ë¡£
+/* â€»ä½¿ç”¨æ¡ä»¶â€»
+	ãƒ»formã‚¿ã‚°ã«ä»¥ä¸‹ã‚’è¿½åŠ ã™ã‚‹ã€‚
 		<input type="hidden" name="pageno" value="<!--{$tpl_pageno}-->">
-	¡¦¥½¡¼¥¹¤ÎºÇ½é¤Ë°Ê²¼¤òµ­½Ò¤¹¤ë¡£
+	ãƒ»ã‚½ãƒ¼ã‚¹ã®æœ€åˆã«ä»¥ä¸‹ã‚’è¨˜è¿°ã™ã‚‹ã€‚
 		$objPage->tpl_pageno = $_POST['pageno'];
-	¡¦$func_name¤Ë»ØÄê¤¹¤ëJavaScript¤ÎÎã
-		// ¥Ú¡¼¥¸¥Ê¥Ó¤Ç»ÈÍÑ¤¹¤ë
+	ãƒ»$func_nameã«æŒ‡å®šã™ã‚‹JavaScriptã®ä¾‹
+		// ãƒšãƒ¼ã‚¸ãƒŠãƒ“ã§ä½¿ç”¨ã™ã‚‹
 		function fnNaviPage(pageno) {
 			document.form1['pageno'].value = pageno;
 			document.form1.submit();
 		}		
 */
 class SC_PageNavi {
-	var $now_page;		// ¸½ºß¤Î¥Ú¡¼¥¸ÈÖ¹æ
-	var $max_page;		// ºÇ½ª¤Î¥Ú¡¼¥¸ÈÖ¹æ
-	var $start_row;		// ³«»Ï¥ì¥³¡¼¥É
-	var $strnavi;		// ¥Ú¡¼¥¸Á÷¤êÊ¸»úÎó
-	var $arrPagenavi = array();	// ¥Ú¡¼¥¸
+	var $now_page;		// ç¾åœ¨ã®ãƒšãƒ¼ã‚¸ç•ªå·
+	var $max_page;		// æœ€çµ‚ã®ãƒšãƒ¼ã‚¸ç•ªå·
+	var $start_row;		// é–‹å§‹ãƒ¬ã‚³ãƒ¼ãƒ‰
+	var $strnavi;		// ãƒšãƒ¼ã‚¸é€ã‚Šæ–‡å­—åˆ—
+	var $arrPagenavi = array();	// ãƒšãƒ¼ã‚¸
 
-	// ¥³¥ó¥¹¥È¥é¥¯¥¿
+	// ã‚³ãƒ³ã‚¹ãƒˆãƒ©ã‚¯ã‚¿
 	function SC_PageNavi($now_page, $all_row, $page_row, $func_name, $navi_max = NAVI_PMAX) {
 		$this->arrPagenavi['mode'] = 'search';
 
-		//¸½ºß¥Ú¡¼¥¸($now_page)¤¬Àµ¤·¤¤¿ôÃÍ¤Ç¤Ê¤¤¾ì¹ç
+		//ç¾åœ¨ãƒšãƒ¼ã‚¸($now_page)ãŒæ­£ã—ã„æ•°å€¤ã§ãªã„å ´åˆ
 		if (!eregi("^[[:digit:]]+$", $now_page) || $now_page < 1 || $now_page == "") {
 			$this->now_page = 1;
 		} else {
@@ -36,57 +36,57 @@ class SC_PageNavi {
 		}
 		$this->arrPagenavi['now_page'] = $this->now_page;
 
-		// ºÇ½ª¥Ú¡¼¥¸¤Î·×»»
+		// æœ€çµ‚ãƒšãƒ¼ã‚¸ã®è¨ˆç®—
 		$this->max_page = ceil($all_row/$page_row);
 
-		// ºÇ½ª¥Ú¡¼¥¸¤è¤ê¤â¸½ºß¥Ú¡¼¥¸¤¬Âç¤­¤¤¾ì¹ç¤Ï¡¢ºÇ½é¤ËÌá¤¹¡£
+		// æœ€çµ‚ãƒšãƒ¼ã‚¸ã‚ˆã‚Šã‚‚ç¾åœ¨ãƒšãƒ¼ã‚¸ãŒå¤§ãã„å ´åˆã¯ã€æœ€åˆã«æˆ»ã™ã€‚
 		if($this->max_page < $this->now_page) {
 			$this->now_page = 1;
 		}
 
 		$this->start_row = ($this->now_page - 1) * $page_row;
 	
-		// ³«»Ï¹Ô¤¬ÉÔÀµ¤Ê¾ì¹ç
+		// é–‹å§‹è¡ŒãŒä¸æ­£ãªå ´åˆ
 		if (!($this->start_row < $all_row && $this->start_row >= 0)) {
 			$this->start_row = 0;
 		}
 
 		if($all_row > 1) {
 
-			//¡ÖÁ°¤Ø¡×¡Ö¼¡¤Ø¡×¤ÎÀßÄê
+			//ã€Œå‰ã¸ã€ã€Œæ¬¡ã¸ã€ã®è¨­å®š
 			if ($this->now_page > 1) {
-				$before="<a href=\"". $_SERVER['PHP_SELF']. "\" onclick=\"$func_name('" . (($this->now_page) - 1) . "'); return false;\"><<Á°¤Ø</a> ";
+				$before="<a href=\"". $_SERVER['PHP_SELF']. "\" onclick=\"$func_name('" . (($this->now_page) - 1) . "'); return false;\"><<å‰ã¸</a> ";
 				$this->arrPagenavi['before'] = ($this->now_page) - 1;
 			}else{
 				$this->arrPagenavi['before'] = $this->now_page;
 			}
 			
 			if ($this->now_page < $this->max_page) {
-				$next="<a href=\"". $_SERVER['PHP_SELF']. "\" onclick=\"$func_name('" . (($this->now_page) + 1) ."'); return false;\">¼¡¤Ø>></a> ";
+				$next="<a href=\"". $_SERVER['PHP_SELF']. "\" onclick=\"$func_name('" . (($this->now_page) + 1) ."'); return false;\">æ¬¡ã¸>></a> ";
 				$this->arrPagenavi['next'] = ($this->now_page) + 1;
 			}else{
 				$this->arrPagenavi['next'] = $this->now_page;
 			}
 			
-			// É½¼¨¤¹¤ëºÇÂç¥Ê¥Ó¿ô¤ò·è¤á¤ë¡£
+			// è¡¨ç¤ºã™ã‚‹æœ€å¤§ãƒŠãƒ“æ•°ã‚’æ±ºã‚ã‚‹ã€‚
 			if($navi_max == "" || $navi_max > $this->max_page) {
-				// À©¸Â¥Ê¥Ó¿ô¤Î»ØÄê¤¬¤Ê¤¤¡£¥Ú¡¼¥¸ºÇÂç¿ô¤¬À©¸Â¥Ê¥Ó¿ô¤è¤ê¾¯¤Ê¤¤¡£
+				// åˆ¶é™ãƒŠãƒ“æ•°ã®æŒ‡å®šãŒãªã„ã€‚ãƒšãƒ¼ã‚¸æœ€å¤§æ•°ãŒåˆ¶é™ãƒŠãƒ“æ•°ã‚ˆã‚Šå°‘ãªã„ã€‚
 				$disp_max = $this->max_page;
 			} else {
-				// ¸½ºß¤Î¥Ú¡¼¥¸¡ÜÀ©¸Â¥Ê¥Ó¿ô¤¬É½¼¨¤µ¤ì¤ë¡£
+				// ç¾åœ¨ã®ãƒšãƒ¼ã‚¸ï¼‹åˆ¶é™ãƒŠãƒ“æ•°ãŒè¡¨ç¤ºã•ã‚Œã‚‹ã€‚
 				$disp_max = $this->now_page + $navi_max - 1;
-				// ¥Ú¡¼¥¸ºÇÂç¿ô¤òÄ¶¤¨¤Æ¤¤¤ë¾ì¹ç¤Ï¡¢¥Ú¡¼¥¸ºÇÂç¿ô¤Ë¹ç¤ï¤»¤ë¡£
+				// ãƒšãƒ¼ã‚¸æœ€å¤§æ•°ã‚’è¶…ãˆã¦ã„ã‚‹å ´åˆã¯ã€ãƒšãƒ¼ã‚¸æœ€å¤§æ•°ã«åˆã‚ã›ã‚‹ã€‚
 				if($disp_max > $this->max_page) {
 					$disp_max = $this->max_page;
 				}
 			}
 
-			// É½¼¨¤¹¤ëºÇ¾®¥Ê¥Ó¿ô¤ò·è¤á¤ë¡£
+			// è¡¨ç¤ºã™ã‚‹æœ€å°ãƒŠãƒ“æ•°ã‚’æ±ºã‚ã‚‹ã€‚
 			if($navi_max == "" || $navi_max > $this->now_page) {
-				// À©¸Â¥Ê¥Ó¿ô¤Î»ØÄê¤¬¤Ê¤¤¡£¸½ºß¥Ú¡¼¥¸ÈÖ¹æ¤¬À©¸Â¥Ê¥Ó¿ô¤è¤ê¾¯¤Ê¤¤¡£
+				// åˆ¶é™ãƒŠãƒ“æ•°ã®æŒ‡å®šãŒãªã„ã€‚ç¾åœ¨ãƒšãƒ¼ã‚¸ç•ªå·ãŒåˆ¶é™ãƒŠãƒ“æ•°ã‚ˆã‚Šå°‘ãªã„ã€‚
 				$disp_min = 1;
 			} else {
-				// ¸½ºß¤Î¥Ú¡¼¥¸-À©¸Â¥Ê¥Ó¿ô¤¬É½¼¨¤µ¤ì¤ë¡£
+				// ç¾åœ¨ã®ãƒšãƒ¼ã‚¸-åˆ¶é™ãƒŠãƒ“æ•°ãŒè¡¨ç¤ºã•ã‚Œã‚‹ã€‚
 				$disp_min = $this->now_page - $navi_max + 1;
 			}
 			

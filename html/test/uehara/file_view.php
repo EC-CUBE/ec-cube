@@ -7,7 +7,7 @@
 
 require_once("../../require.php");
 
-// ¥½¡¼¥¹¤È¤·¤ÆÉ½¼¨¤¹¤ë¥Õ¥¡¥¤¥ë¤òÄêµÁ(Ä¾ÀÜ¼Â¹Ô¤·¤Ê¤¤¥Õ¥¡¥¤¥ë)
+// ã‚½ãƒ¼ã‚¹ã¨ã—ã¦è¡¨ç¤ºã™ã‚‹ãƒ•ã‚¡ã‚¤ãƒ«ã‚’å®šç¾©(ç›´æ¥å®Ÿè¡Œã—ãªã„ãƒ•ã‚¡ã‚¤ãƒ«)
 $arrViewFile = array(
 					 'html',
 					 'htm',
@@ -17,13 +17,13 @@ $arrViewFile = array(
 					 'js',
 );
 
-// ³ÈÄ¥»Ò¼èÆÀ
+// æ‹¡å¼µå­å–å¾—
 $arrResult = split('\.', $_GET['file']);
 $ext = $arrResult[count($arrResult)-1];
 
-// ¥Õ¥¡¥¤¥ëÆâÍÆÉ½¼¨
+// ãƒ•ã‚¡ã‚¤ãƒ«å†…å®¹è¡¨ç¤º
 if(in_array($ext, $arrViewFile)) {
-	// ¥Õ¥¡¥¤¥ë¤òÆÉ¤ß¹ş¤ó¤ÇÉ½¼¨
+	// ãƒ•ã‚¡ã‚¤ãƒ«ã‚’èª­ã¿è¾¼ã‚“ã§è¡¨ç¤º
 	header("Content-type: text/plain\n\n");
 	print(sfReadFile(USER_PATH.$_GET['file']));
 } else {

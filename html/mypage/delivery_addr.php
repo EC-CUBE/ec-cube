@@ -11,7 +11,7 @@ session_start();
 class LC_Page{
 	function LC_Page(){
 		$this->tpl_mainpage = USER_PATH . 'templates/mypage/delivery_addr.tpl';
-		$this->tpl_title = "¿·¤·¤¤¤ªÆÏ¤±Àè¤ÎÄÉ²Ã¥ÊÑ¹¹";
+		$this->tpl_title = "æ–°ã—ã„ãŠå±Šã‘å…ˆã®è¿½åŠ ï½¥å¤‰æ›´";
 		global $arrPref;
 		$this->arrPref = $arrPref;
 	}
@@ -24,13 +24,13 @@ $objCustomer = new SC_Customer();
 $objConn = new SC_DBConn();
 $ParentPage = MYPAGE_DELIVADDR_URL;
 
-// GET¤Ç¥Ú¡¼¥¸¤ò»ØÄê¤µ¤ì¤Æ¤¤¤ë¾ì¹ç¤Ë¤Ï»ØÄê¥Ú¡¼¥¸¤ËÌá¤¹
+// GETã§ãƒšãƒ¼ã‚¸ã‚’æŒ‡å®šã•ã‚Œã¦ã„ã‚‹å ´åˆã«ã¯æŒ‡å®šãƒšãƒ¼ã‚¸ã«æˆ»ã™
 if (isset($_GET['page'])) {
 	$ParentPage = $_GET['page'];
 }
 $objPage->ParentPage = $ParentPage;
 
-//¥í¥°¥¤¥óÈ½Äê
+//ãƒ­ã‚°ã‚¤ãƒ³åˆ¤å®š
 if (!$objCustomer->isLoginSuccess()){
 	sfDispSiteError(CUSTOMER_ERROR);
 }
@@ -40,14 +40,14 @@ if ($_POST['mode'] == ""){
 }
 
 if ($_GET['other_deliv_id'] != ""){
-	//ÉÔÀµ¥¢¥¯¥»¥¹È½Äê
+	//ä¸æ­£ã‚¢ã‚¯ã‚»ã‚¹åˆ¤å®š
 	$flag = $objQuery->count("dtb_other_deliv", "customer_id=? AND other_deliv_id=?", array($objCustomer->getValue("customer_id"), $_SESSION['other_deliv_id']));
 	if (!$objCustomer->isLoginSuccess() || $flag == 0){
 		sfDispSiteError(CUSTOMER_ERROR);
 	}
 }
 
-//ÊÌ¤Î¤ªÆÏ¤±Àè£Ä£ÂÅĞÏ¿ÍÑ¥«¥é¥àÇÛÎó
+//åˆ¥ã®ãŠå±Šã‘å…ˆï¼¤ï¼¢ç™»éŒ²ç”¨ã‚«ãƒ©ãƒ é…åˆ—
 $arrRegistColumn = array(
 							 array(  "column" => "name01",		"convert" => "aKV" ),
 							 array(  "column" => "name02",		"convert" => "aKV" ),
@@ -72,7 +72,7 @@ switch ($_POST['mode']){
 				$objPage->$key = $val;
 			}
 		}else{
-			//ÊÌ¤Î¤ªÆÏ¤±ÀèÅĞÏ¿¿ô¤Î¼èÆÀ
+			//åˆ¥ã®ãŠå±Šã‘å…ˆç™»éŒ²æ•°ã®å–å¾—
 			$deliv_count = $objQuery->count("dtb_other_deliv", "customer_id=?", array($objCustomer->getValue('customer_id')));
 			if ($deliv_count < DELIV_ADDR_MAX or isset($_POST['other_deliv_id'])){
 				lfRegistData($_POST,$arrRegistColumn);
@@ -83,7 +83,7 @@ switch ($_POST['mode']){
 }
 
 if ($_GET['other_deliv_id'] != ""){
-	//ÊÌ¤Î¤ªÆÏ¤±Àè¾ğÊó¼èÆÀ
+	//åˆ¥ã®ãŠå±Šã‘å…ˆæƒ…å ±å–å¾—
 	$arrOtherDeliv = $objQuery->select("*", "dtb_other_deliv", "other_deliv_id=? ", array($_SESSION['other_deliv_id']));
 	$objPage->arrOtherDeliv = $arrOtherDeliv[0];
 }
@@ -93,29 +93,29 @@ $objView->display($objPage->tpl_mainpage);
 
 //-------------------------------------------------------------------------------------------------------------
 
-/* ¥¨¥é¡¼¥Á¥§¥Ã¥¯ */
+/* ã‚¨ãƒ©ãƒ¼ãƒã‚§ãƒƒã‚¯ */
 function lfErrorCheck() {
 	$objErr = new SC_CheckError();
 	
-	$objErr->doFunc(array("¤ªÌ¾Á°¡ÊÀ«¡Ë", 'name01', STEXT_LEN), array("EXIST_CHECK","SPTAB_CHECK","MAX_LENGTH_CHECK"));
-	$objErr->doFunc(array("¤ªÌ¾Á°¡ÊÌ¾¡Ë", 'name02', STEXT_LEN), array("EXIST_CHECK","SPTAB_CHECK", "MAX_LENGTH_CHECK"));
-	$objErr->doFunc(array("¥Õ¥ê¥¬¥Ê¡ÊÀ«¡Ë", 'kana01', STEXT_LEN), array("EXIST_CHECK","SPTAB_CHECK", "MAX_LENGTH_CHECK", "KANA_CHECK"));
-	$objErr->doFunc(array("¥Õ¥ê¥¬¥Ê¡ÊÌ¾¡Ë", 'kana02', STEXT_LEN), array("EXIST_CHECK","SPTAB_CHECK", "MAX_LENGTH_CHECK", "KANA_CHECK"));
-	$objErr->doFunc(array("Í¹ÊØÈÖ¹æ1", "zip01", ZIP01_LEN ) ,array("EXIST_CHECK", "NUM_CHECK", "NUM_COUNT_CHECK"));
-	$objErr->doFunc(array("Í¹ÊØÈÖ¹æ2", "zip02", ZIP02_LEN ) ,array("EXIST_CHECK", "NUM_CHECK", "NUM_COUNT_CHECK")); 
-	$objErr->doFunc(array("Í¹ÊØÈÖ¹æ", "zip01", "zip02"), array("ALL_EXIST_CHECK"));
-	$objErr->doFunc(array("ÅÔÆ»ÉÜ¸©", 'pref'), array("SELECT_CHECK","NUM_CHECK"));
-	$objErr->doFunc(array("¤´½»½ê¡Ê1¡Ë", "addr01", MTEXT_LEN), array("EXIST_CHECK","SPTAB_CHECK","MAX_LENGTH_CHECK"));
-	$objErr->doFunc(array("¤´½»½ê¡Ê2¡Ë", "addr02", MTEXT_LEN), array("EXIST_CHECK","SPTAB_CHECK","MAX_LENGTH_CHECK"));
-	$objErr->doFunc(array("¤ªÅÅÏÃÈÖ¹æ1", 'tel01'), array("EXIST_CHECK","NUM_CHECK"));
-	$objErr->doFunc(array("¤ªÅÅÏÃÈÖ¹æ2", 'tel02'), array("EXIST_CHECK","NUM_CHECK"));
-	$objErr->doFunc(array("¤ªÅÅÏÃÈÖ¹æ3", 'tel03'), array("EXIST_CHECK","NUM_CHECK"));
-	$objErr->doFunc(array("¤ªÅÅÏÃÈÖ¹æ", "tel01", "tel02", "tel03", TEL_LEN) ,array("TEL_CHECK"));
+	$objErr->doFunc(array("ãŠåå‰ï¼ˆå§“ï¼‰", 'name01', STEXT_LEN), array("EXIST_CHECK","SPTAB_CHECK","MAX_LENGTH_CHECK"));
+	$objErr->doFunc(array("ãŠåå‰ï¼ˆåï¼‰", 'name02', STEXT_LEN), array("EXIST_CHECK","SPTAB_CHECK", "MAX_LENGTH_CHECK"));
+	$objErr->doFunc(array("ãƒ•ãƒªã‚¬ãƒŠï¼ˆå§“ï¼‰", 'kana01', STEXT_LEN), array("EXIST_CHECK","SPTAB_CHECK", "MAX_LENGTH_CHECK", "KANA_CHECK"));
+	$objErr->doFunc(array("ãƒ•ãƒªã‚¬ãƒŠï¼ˆåï¼‰", 'kana02', STEXT_LEN), array("EXIST_CHECK","SPTAB_CHECK", "MAX_LENGTH_CHECK", "KANA_CHECK"));
+	$objErr->doFunc(array("éƒµä¾¿ç•ªå·1", "zip01", ZIP01_LEN ) ,array("EXIST_CHECK", "NUM_CHECK", "NUM_COUNT_CHECK"));
+	$objErr->doFunc(array("éƒµä¾¿ç•ªå·2", "zip02", ZIP02_LEN ) ,array("EXIST_CHECK", "NUM_CHECK", "NUM_COUNT_CHECK")); 
+	$objErr->doFunc(array("éƒµä¾¿ç•ªå·", "zip01", "zip02"), array("ALL_EXIST_CHECK"));
+	$objErr->doFunc(array("éƒ½é“åºœçœŒ", 'pref'), array("SELECT_CHECK","NUM_CHECK"));
+	$objErr->doFunc(array("ã”ä½æ‰€ï¼ˆ1ï¼‰", "addr01", MTEXT_LEN), array("EXIST_CHECK","SPTAB_CHECK","MAX_LENGTH_CHECK"));
+	$objErr->doFunc(array("ã”ä½æ‰€ï¼ˆ2ï¼‰", "addr02", MTEXT_LEN), array("EXIST_CHECK","SPTAB_CHECK","MAX_LENGTH_CHECK"));
+	$objErr->doFunc(array("ãŠé›»è©±ç•ªå·1", 'tel01'), array("EXIST_CHECK","NUM_CHECK"));
+	$objErr->doFunc(array("ãŠé›»è©±ç•ªå·2", 'tel02'), array("EXIST_CHECK","NUM_CHECK"));
+	$objErr->doFunc(array("ãŠé›»è©±ç•ªå·3", 'tel03'), array("EXIST_CHECK","NUM_CHECK"));
+	$objErr->doFunc(array("ãŠé›»è©±ç•ªå·", "tel01", "tel02", "tel03", TEL_LEN) ,array("TEL_CHECK"));
 	return $objErr->arrErr;
 	
 }
 
-/* ÅĞÏ¿¼Â¹Ô */
+/* ç™»éŒ²å®Ÿè¡Œ */
 function lfRegistData($array, $arrRegistColumn) {
 	global $objConn;
 	global $objCustomer;
@@ -128,7 +128,7 @@ function lfRegistData($array, $arrRegistColumn) {
 	
 	$arrRegist['customer_id'] = $objCustomer->getvalue('customer_id');
 	
-	//-- ÊÔ½¸ÅĞÏ¿¼Â¹Ô
+	//-- ç·¨é›†ç™»éŒ²å®Ÿè¡Œ
 	$objConn->query("BEGIN");
 	if ($array['other_deliv_id'] != ""){
 	$objConn->autoExecute("dtb_other_deliv", $arrRegist, "other_deliv_id='" .addslashes($array["other_deliv_id"]). "'");
@@ -138,24 +138,24 @@ function lfRegistData($array, $arrRegistColumn) {
 	$objConn->query("COMMIT");
 }
 
-//----¡¡¼èÆÀÊ¸»úÎó¤ÎÊÑ´¹
+//----ã€€å–å¾—æ–‡å­—åˆ—ã®å¤‰æ›
 function lfConvertParam($array, $arrRegistColumn) {
 	/*
-	 *	Ê¸»úÎó¤ÎÊÑ´¹
-	 *	K :  ¡ÖÈ¾³Ñ(Êİ¶¸)ÊÒ²¾Ì¾¡×¤ò¡ÖÁ´³ÑÊÒ²¾Ì¾¡×¤ËÊÑ´¹
-	 *	C :  ¡ÖÁ´³Ñ¤Ò¤é²¾Ì¾¡×¤ò¡ÖÁ´³Ñ¤«¤¿²¾Ì¾¡×¤ËÊÑ´¹
-	 *	V :  ÂùÅÀÉÕ¤­¤ÎÊ¸»ú¤ò°ìÊ¸»ú¤ËÊÑ´¹¡£"K","H"¤È¶¦¤Ë»ÈÍÑ¤·¤Ş¤¹	
-	 *	n :  ¡ÖÁ´³Ñ¡×¿ô»ú¤ò¡ÖÈ¾³Ñ(Êİ¶¸)¡×¤ËÊÑ´¹
-	 *  a :  Á´³Ñ±Ñ¿ô»ú¤òÈ¾³Ñ±Ñ¿ô»ú¤ËÊÑ´¹¤¹¤ë
+	 *	æ–‡å­—åˆ—ã®å¤‰æ›
+	 *	K :  ã€ŒåŠè§’(ï¾Šï¾ï½¶ï½¸)ç‰‡ä»®åã€ã‚’ã€Œå…¨è§’ç‰‡ä»®åã€ã«å¤‰æ›
+	 *	C :  ã€Œå…¨è§’ã²ã‚‰ä»®åã€ã‚’ã€Œå…¨è§’ã‹ãŸä»®åã€ã«å¤‰æ›
+	 *	V :  æ¿ç‚¹ä»˜ãã®æ–‡å­—ã‚’ä¸€æ–‡å­—ã«å¤‰æ›ã€‚"K","H"ã¨å…±ã«ä½¿ç”¨ã—ã¾ã™	
+	 *	n :  ã€Œå…¨è§’ã€æ•°å­—ã‚’ã€ŒåŠè§’(ï¾Šï¾ï½¶ï½¸)ã€ã«å¤‰æ›
+	 *  a :  å…¨è§’è‹±æ•°å­—ã‚’åŠè§’è‹±æ•°å­—ã«å¤‰æ›ã™ã‚‹
 	 */
-	// ¥«¥é¥àÌ¾¤È¥³¥ó¥Ğ¡¼¥È¾ğÊó
+	// ã‚«ãƒ©ãƒ åã¨ã‚³ãƒ³ãƒãƒ¼ãƒˆæƒ…å ±
 	foreach ($arrRegistColumn as $data) {
 		$arrConvList[ $data["column"] ] = $data["convert"];
 	}
 	
-	// Ê¸»úÊÑ´¹
+	// æ–‡å­—å¤‰æ›
 	foreach ($arrConvList as $key => $val) {
-		// POST¤µ¤ì¤Æ¤­¤¿ÃÍ¤Î¤ßÊÑ´¹¤¹¤ë¡£
+		// POSTã•ã‚Œã¦ããŸå€¤ã®ã¿å¤‰æ›ã™ã‚‹ã€‚
 		if(strlen(($array[$key])) > 0) {
 			$array[$key] = mb_convert_kana($array[$key] ,$val);
 		}

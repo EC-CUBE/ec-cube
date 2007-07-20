@@ -6,7 +6,7 @@
  */
 *}-->
 <body bgcolor="#ffffff" text="#555555" link="#3a75af" vlink="#3a75af" alink="#3a75af">
-<!--¢§MAIN-->
+<!--â–¼MAIN-->
 <!--{include file=$tpl_mainpage}-->
-<!--¢¥MAIN-->
+<!--â–²MAIN-->
 </body>

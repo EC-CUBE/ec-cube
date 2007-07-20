@@ -5,25 +5,25 @@
  * http://www.lockon.co.jp/
  */
 *}-->
-<center>¤´ÍøÍÑÊýË¡</center>
+<center>ã”åˆ©ç”¨æ–¹æ³•</center>
 
 <hr>
 
-<!-- ¢§¥á¥Ë¥å¡¼ ¤³¤³¤«¤é -->
-<a href="usage.php?page=1" accesskey="1"><!--{1|numeric_emoji}-->¾¦ÉÊ¤ÎÃµ¤·Êý</a><br>
-<a href="usage.php?page=2" accesskey="2"><!--{2|numeric_emoji}-->¤´ÃíÊ¸ÊýË¡</a><br>
-<a href="usage.php?page=3" accesskey="3"><!--{3|numeric_emoji}-->¤´ÃíÊ¸¸å</a><br>
-<a href="usage.php?page=4" accesskey="4"><!--{4|numeric_emoji}-->¾¦ÉÊÅþÃå¸å</a><br>
-<!-- ¢¥¥á¥Ë¥å¡¼ ¤³¤³¤Þ¤Ç -->
+<!-- â–¼ãƒ¡ãƒ‹ãƒ¥ãƒ¼ ã“ã“ã‹ã‚‰ -->
+<a href="usage.php?page=1" accesskey="1"><!--{1|numeric_emoji}-->å•†å“ã®æŽ¢ã—æ–¹</a><br>
+<a href="usage.php?page=2" accesskey="2"><!--{2|numeric_emoji}-->ã”æ³¨æ–‡æ–¹æ³•</a><br>
+<a href="usage.php?page=3" accesskey="3"><!--{3|numeric_emoji}-->ã”æ³¨æ–‡å¾Œ</a><br>
+<a href="usage.php?page=4" accesskey="4"><!--{4|numeric_emoji}-->å•†å“åˆ°ç€å¾Œ</a><br>
+<!-- â–²ãƒ¡ãƒ‹ãƒ¥ãƒ¼ ã“ã“ã¾ã§ -->
 
 <br>
 <hr>
 
-<a href="<!--{$smarty.const.MOBILE_URL_CART_TOP}-->" accesskey="9"><!--{9|numeric_emoji}-->¤«¤´¤ò¸«¤ë</a><br>
-<a href="<!--{$smarty.const.MOBILE_URL_SITE_TOP}-->" accesskey="0"><!--{0|numeric_emoji}-->TOP¥Ú¡¼¥¸¤Ø</a><br>
+<a href="<!--{$smarty.const.MOBILE_URL_CART_TOP}-->" accesskey="9"><!--{9|numeric_emoji}-->ã‹ã”ã‚’è¦‹ã‚‹</a><br>
+<a href="<!--{$smarty.const.MOBILE_URL_SITE_TOP}-->" accesskey="0"><!--{0|numeric_emoji}-->TOPãƒšãƒ¼ã‚¸ã¸</a><br>
 
 <br>
 
-<!-- ¢§¥Õ¥Ã¥¿¡¼ ¤³¤³¤«¤é -->
+<!-- â–¼ãƒ•ãƒƒã‚¿ãƒ¼ ã“ã“ã‹ã‚‰ -->
 <!--{include file='footer.tpl'}-->
-<!-- ¢¥¥Õ¥Ã¥¿¡¼ ¤³¤³¤Þ¤Ç -->
+<!-- â–²ãƒ•ãƒƒã‚¿ãƒ¼ ã“ã“ã¾ã§ -->

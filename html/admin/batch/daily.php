@@ -8,54 +8,54 @@ $daily_php_dir = realpath(dirname( __FILE__));
 require_once($daily_php_dir . "/../require.php");
 
 $term = 0;
-$start = 1;	// ½¸·×´ü´Ö¤Ï¡¢$start¢·$term¤Î´Ö¤È¤Ê¤ë¡£ÄÌ¾ïÁ°ÆüÊ¬¤«¤é¡£
+$start = 1;	// é›†è¨ˆæœŸé–“ã¯ã€$start~$termã®é–“ã¨ãªã‚‹ã€‚é€šå¸¸å‰æ—¥åˆ†ã‹ã‚‰ã€‚
 $command = false;
 
-// ½¸·×ÂĞ¾İ´ü´Ö¤Î¼èÆÀ¡Ê»ØÄêÆüÊ¬¤µ¤«¤Î¤Ü¤ë)
+// é›†è¨ˆå¯¾è±¡æœŸé–“ã®å–å¾—ï¼ˆæŒ‡å®šæ—¥åˆ†ã•ã‹ã®ã¼ã‚‹)
 if (sfIsInt($argv[1]) && $argv[1] <= 365) {
 	$term = $argv[1];
 	$command = true;
 }
 
-// ½¸·×³«»ÏÆü
+// é›†è¨ˆé–‹å§‹æ—¥
 if (sfIsInt($argv[2]) && $argv[2] <= 365) {
 	$start = $argv[2];
 	$command = true;
 }
 
 if($term > 0) {
-	// ½¸·×¤Î³«»Ï
+	// é›†è¨ˆã®é–‹å§‹
 	lfStartDailyTotal($term, $start, $command);
 }
 
-// ½¸·×¤Î³«»Ï
+// é›†è¨ˆã®é–‹å§‹
 function lfStartDailyTotal($term, $start, $command = false) {
 		
 	$now_time = time();
 		
-	// ¥°¥é¥Õ²èÁü¤Îºï½ü
+	// ã‚°ãƒ©ãƒ•ç”»åƒã®å‰Šé™¤
 	$path = GRAPH_DIR . "*.png";
 	system ("rm -rf $path");
 	
-	// ºï½ü¤µ¤ì¤¿¼õÃí¥Ç¡¼¥¿¤Î¼õÃí¾ÜºÙ¾ğÊó¤Îºï½ü
+	// å‰Šé™¤ã•ã‚ŒãŸå—æ³¨ãƒ‡ãƒ¼ã‚¿ã®å—æ³¨è©³ç´°æƒ…å ±ã®å‰Šé™¤
 	$objQuery = new SC_Query();
 	$where = "order_id IN (SELECT order_id FROM dtb_order WHERE del_flg = 1)";
 	$objQuery->delete("dtb_order_detail", $where);
 	
-	// ºÇ¸å¤Ë¹¹¿·¤µ¤ì¤¿ÆüÉÕ¤ò¼èÆÀ
+	// æœ€å¾Œã«æ›´æ–°ã•ã‚ŒãŸæ—¥ä»˜ã‚’å–å¾—
 	$ret = $objQuery->max("dtb_bat_order_daily", "create_date");
 	list($batch_last) = split("\.", $ret);
 	$pass = $now_time - strtotime($batch_last);
 		
-	// ºÇ¸å¤Î¥Ğ¥Ã¥Á¼Â¹Ô¤«¤éLOAD_BATCH_PASSÉÃ·Ğ²á¤·¤Æ¤¤¤Ê¤¤¤È¼Â¹Ô¤·¤Ê¤¤¡£
+	// æœ€å¾Œã®ãƒãƒƒãƒå®Ÿè¡Œã‹ã‚‰LOAD_BATCH_PASSç§’çµŒéã—ã¦ã„ãªã„ã¨å®Ÿè¡Œã—ãªã„ã€‚
 	if($pass < LOAD_BATCH_PASS) {
 		gfPrintLog("LAST BATCH " . $arrRet[0]['create_date'] . " > " . $batch_pass . " -> EXIT BATCH $batch_date");
 		return;
 	}
 
-	// ½¸·×
+	// é›†è¨ˆ
 	for ($i = $start; $i < $term; $i++) {
-		// ´ğËÜ»ş´Ö¤«¤é$iÆüÊ¬¤µ¤«¤Î¤Ü¤ë
+		// åŸºæœ¬æ™‚é–“ã‹ã‚‰$iæ—¥åˆ†ã•ã‹ã®ã¼ã‚‹
 		$tmp_time = $now_time - ($i * 24 * 3600);
 				
 		$batch_date = date("Y/m/d", $tmp_time);
@@ -65,15 +65,15 @@ function lfStartDailyTotal($term, $start, $command = false) {
 		lfBatOrderDailyHour($tmp_time);
 		lfBatOrderAge($tmp_time);
 		
-		// ¥¿¥¤¥à¥¢¥¦¥È¤òËÉ¤°
+		// ã‚¿ã‚¤ãƒ ã‚¢ã‚¦ãƒˆã‚’é˜²ã
 		sfFlush();
 	}
 }
 
-// ¥ê¥¢¥ë¥¿¥¤¥à¤Ç½¸·×¤ò¼Â»Ü¤¹¤ë¡£½¸·×¤¬½ªÎ»¤·¤Æ¤¤¤ë¥ì¥³¡¼¥É¤Ï¼Â»Ü¤·¤Ê¤¤¡£
+// ãƒªã‚¢ãƒ«ã‚¿ã‚¤ãƒ ã§é›†è¨ˆã‚’å®Ÿæ–½ã™ã‚‹ã€‚é›†è¨ˆãŒçµ‚äº†ã—ã¦ã„ã‚‹ãƒ¬ã‚³ãƒ¼ãƒ‰ã¯å®Ÿæ–½ã—ãªã„ã€‚
 /*
-	$sdate:YYYY-MM-DD hh:mm:ss·Á¼°¤ÎÆüÉÕ
-	$edate:YYYY-MM-DD hh:mm:ss·Á¼°¤ÎÆüÉÕ
+	$sdate:YYYY-MM-DD hh:mm:sså½¢å¼ã®æ—¥ä»˜
+	$edate:YYYY-MM-DD hh:mm:sså½¢å¼ã®æ—¥ä»˜
 */
 function lfRealTimeDailyTotal($sdate, $edate) {
 	$pass = strtotime($edate) - strtotime($sdate);
@@ -84,13 +84,13 @@ function lfRealTimeDailyTotal($sdate, $edate) {
 		$batch_date = date("Y/m/d H:i:s", $tmp_time);
 		$objQuery = new SC_Query();
 		$arrRet = $objQuery->select("order_date, create_date", "dtb_bat_order_daily", "order_date = ?", array($batch_date));
-		// ¤¹¤Ç¤Ë¥Ğ¥Ã¥Á½èÍı¤¬½ªÎ»¤·¤Æ¤¤¤ë¤«¥Á¥§¥Ã¥¯¤¹¤ë¡£
+		// ã™ã§ã«ãƒãƒƒãƒå‡¦ç†ãŒçµ‚äº†ã—ã¦ã„ã‚‹ã‹ãƒã‚§ãƒƒã‚¯ã™ã‚‹ã€‚
 		if(count($arrRet) > 0) {
 			list($create_date) = split("\.", $arrRet[0]['create_date']);
 			list($order_date) = split("\.", $arrRet[0]['order_date']);
 			$create_time = strtotime($create_date);
 			$order_time = strtotime($order_date);
-			// ¥ª¡¼¥À¡¼³«»ÏÆü¤è¤ê°ìÆü°Ê¾å¸å¤Ë½¸·×¤µ¤ì¤Æ¤¤¤ë¾ì¹ç¤Ï½¸·×¤·¤Ê¤ª¤µ¤Ê¤¤
+			// ã‚ªãƒ¼ãƒ€ãƒ¼é–‹å§‹æ—¥ã‚ˆã‚Šä¸€æ—¥ä»¥ä¸Šå¾Œã«é›†è¨ˆã•ã‚Œã¦ã„ã‚‹å ´åˆã¯é›†è¨ˆã—ãªãŠã•ãªã„
 			if($order_time + 86400 < $create_time || $tmp_time > time()) {
 				gfPrintLog("EXIT BATCH $batch_date $tmp_time" . " " . time());
 				continue;
@@ -103,12 +103,12 @@ function lfRealTimeDailyTotal($sdate, $edate) {
 	}
 }
 
-// ¥Ğ¥Ã¥Á½¸·×ÍÑ¤ÎSQLÊ¸¤ò¼èÆÀ¤¹¤ë¡£
+// ãƒãƒƒãƒé›†è¨ˆç”¨ã®SQLæ–‡ã‚’å–å¾—ã™ã‚‹ã€‚
 function lfGetOrderDailySQL($start, $end) {
 	$from = " FROM dtb_order AS T1 LEFT JOIN dtb_customer AS T2 USING ( customer_id ) ";
 	$where = " WHERE T1.del_flg = 0 AND T1.status <> " . ORDER_CANCEL . " AND T1.create_date BETWEEN '$start' AND '$end' ";
 
-/*	mysql¤Ç¤âÌäÂê¤Ê¤¤¤è¤¦¤Ë½¤Àµ
+/*	mysqlã§ã‚‚å•é¡Œãªã„ã‚ˆã†ã«ä¿®æ­£
 	$sql = "SELECT ";
 	$sql.= "COUNT(*) AS total_order, ";
 	$sql.= "SUM((SELECT COUNT(*) WHERE customer_id = 0)) AS nonmember, ";
@@ -122,7 +122,7 @@ function lfGetOrderDailySQL($start, $end) {
 	$sql.= "SUM(total) AS total, ";
 	$sql.= "int8(AVG(total)) AS total_average ";
 	$sql.= $from;
-	$sql.= $where;		// ¼õÃíºîÀ®Æü¤Ç¸¡º÷¤¹¤ë
+	$sql.= $where;		// å—æ³¨ä½œæˆæ—¥ã§æ¤œç´¢ã™ã‚‹
 */
 	$sql = "SELECT ";
 	$sql.= "COUNT(*) AS total_order, ";
@@ -137,16 +137,16 @@ function lfGetOrderDailySQL($start, $end) {
 	$sql.= "SUM(total) AS total, ";
 	$sql.= "(AVG(total)) AS total_average ";
 	$sql.= $from;
-	$sql.= $where;		// ¼õÃíºîÀ®Æü¤Ç¸¡º÷¤¹¤ë
+	$sql.= $where;		// å—æ³¨ä½œæˆæ—¥ã§æ¤œç´¢ã™ã‚‹
 
 	return $sql;
 }
 
-// Çä¾å¤²½¸·×¥Ğ¥Ã¥Á½èÍı(ÆüÊÌ)
+// å£²ä¸Šã’é›†è¨ˆãƒãƒƒãƒå‡¦ç†(æ—¥åˆ¥)
 function lfBatOrderDaily($time) {
 	global $arrWDAY;
 	
-	// ½¸·×ÂĞ¾İÆü¤ò¼èÆÀ¤¹¤ë
+	// é›†è¨ˆå¯¾è±¡æ—¥ã‚’å–å¾—ã™ã‚‹
 	$date = date("Y-m-d", $time);
 	
 	$start = $date . " 00:00:00";
@@ -159,7 +159,7 @@ function lfBatOrderDaily($time) {
 	
 	$sqlval = $arrRet[0];
 	
-	// ¶õÊ¸»ú¤ò"0"¤ËÊÑ´¹
+	// ç©ºæ–‡å­—ã‚’"0"ã«å¤‰æ›
 	foreach($sqlval as $key => $val) {
 		if ($val == "") {
 			$sqlval[$key] = "0";
@@ -181,24 +181,24 @@ function lfBatOrderDaily($time) {
 	$objQuery->insert("dtb_bat_order_daily", $sqlval);
 }
 
-// Çä¾å¤²½¸·×¥Ğ¥Ã¥Á½èÍı(»ş´ÖÊÌ) 
+// å£²ä¸Šã’é›†è¨ˆãƒãƒƒãƒå‡¦ç†(æ™‚é–“åˆ¥) 
 function lfBatOrderDailyHour($time) {
 	
-	// ½¸·×ÂĞ¾İÆü¤ò¼èÆÀ¤¹¤ë
+	// é›†è¨ˆå¯¾è±¡æ—¥ã‚’å–å¾—ã™ã‚‹
 	$date = date("Y-m-d", $time);
 	$objQuery = new SC_Query();
 	
 	$start = $date . " 00:00:00";
 	$objQuery->delete("dtb_bat_order_daily_hour", "order_date = ?", array($start));
 	
-	// 1»ş´ÖËè¤Ë½¸·×¤¹¤ë¡£
+	// 1æ™‚é–“æ¯ã«é›†è¨ˆã™ã‚‹ã€‚
 	for($i = 0; $i < 24; $i++) {
 		$sdate = sprintf("%s %02d:00:00", $date, $i);
 		$edate = sprintf("%s %02d:59:59", $date, $i);
 		$sql = lfGetOrderDailySQL($sdate, $edate);
 		$arrRet = $objQuery->getall($sql);
 		$sqlval = $arrRet[0];
-		// ¶õÊ¸»ú¤ò"0"¤ËÊÑ´¹
+		// ç©ºæ–‡å­—ã‚’"0"ã«å¤‰æ›
 		foreach($sqlval as $key => $val) {
 			if ($val == "") {
 				$sqlval[$key] = "0";
@@ -211,16 +211,16 @@ function lfBatOrderDailyHour($time) {
 	}	
 }
 
-// Çä¾å¤²½¸·×¥Ğ¥Ã¥Á½èÍı(Ç¯ÎğÊÌ) 
+// å£²ä¸Šã’é›†è¨ˆãƒãƒƒãƒå‡¦ç†(å¹´é½¢åˆ¥) 
 function lfBatOrderAge($time) {
 	
 	$age_loop = intval(BAT_ORDER_AGE / 10);
 	
-	// Ç¯Îğ¤ÎÈÏ°Ï¤ò»ØÄê¤·¤Æ¥Ç¡¼¥¿Ãê½Ğ
+	// å¹´é½¢ã®ç¯„å›²ã‚’æŒ‡å®šã—ã¦ãƒ‡ãƒ¼ã‚¿æŠ½å‡º
 	$sql.= "SELECT COUNT(*) AS order_count, SUM(total) AS total, (AVG(total)) AS total_average ";
 	$sql.= "FROM dtb_order ";
 	
-	// ½¸·×ÂĞ¾İÆü¤ò¼èÆÀ¤¹¤ë
+	// é›†è¨ˆå¯¾è±¡æ—¥ã‚’å–å¾—ã™ã‚‹
 	$date = date("Y-m-d", $time);
 	
 	$start = $date . " 00:00:00";
@@ -229,14 +229,14 @@ function lfBatOrderAge($time) {
 	$objQuery = new SC_Query();
 	$objQuery->delete("dtb_bat_order_daily_age", "order_date = ?", array($start));
 
-	/* ²ñ°÷½¸·× */
+	/* ä¼šå“¡é›†è¨ˆ */
 
 	$base_where = "WHERE (create_date BETWEEN ? AND ?) AND customer_id <> 0 AND del_flg = 0 AND status <> " . ORDER_CANCEL;
 
 	$end_date = date("Y/m/d", time()); 
 	$start_date = date("Y/m/d",strtotime("-10 year" ,strtotime($end_date)));
 	$end_date = date("Y/m/d",strtotime("1 day" ,strtotime($end_date)));
-	// Ç¯ÎğËè¤Ë½¸·×¤¹¤ë¡£
+	// å¹´é½¢æ¯ã«é›†è¨ˆã™ã‚‹ã€‚
 	for($i = 0; $i <= $age_loop; $i++) {
 		$where = $base_where . " AND order_birth >= cast('$start_date' as date)";
 		$start_age = $i * 10;
@@ -252,11 +252,11 @@ function lfBatOrderAge($time) {
 		$start_date = date("Y/m/d",strtotime("-10 year",strtotime($start_date)));
 	}
 	
-	// ÃÂÀ¸ÆüÆşÎÏ¤Ê¤·
+	// èª•ç”Ÿæ—¥å…¥åŠ›ãªã—
 	$where = $base_where . " AND order_birth IS NULL ";
 	lfBatOrderAgeSub($sql . $where, $start, $end, NULL, NULL, 1);
 
-	/* Èó²ñ°÷½¸·× */
+	/* éä¼šå“¡é›†è¨ˆ */
 	
 	$base_where = "WHERE (create_date BETWEEN ? AND ?) AND customer_id = 0 AND del_flg = 0 AND status <> " . ORDER_CANCEL;
 	$where = $base_where . " AND (to_number(to_char(age(current_timestamp, order_birth), 'YYY'), 999) BETWEEN ? AND ?) ";
@@ -264,7 +264,7 @@ function lfBatOrderAge($time) {
 	$end_date = date("Y/m/d", time()); 
 	$start_date = date("Y/m/d",strtotime("-10 year" ,strtotime($end_date)));
 	$end_date = date("Y/m/d",strtotime("1 day" ,strtotime($end_date)));
-	// Ç¯ÎğËè¤Ë½¸·×¤¹¤ë¡£
+	// å¹´é½¢æ¯ã«é›†è¨ˆã™ã‚‹ã€‚
 	for($i = 0; $i <= $age_loop; $i++) {
 		$where = $base_where . " AND order_birth >= cast('$start_date' as date)";
 		$start_age = $i * 10;
@@ -280,19 +280,19 @@ function lfBatOrderAge($time) {
 		$start_date = date("Y/m/d",strtotime("-10 year",strtotime($start_date)));
 	}
 	
-	// ÃÂÀ¸ÆüÆşÎÏ¤Ê¤·
+	// èª•ç”Ÿæ—¥å…¥åŠ›ãªã—
 	$where = $base_where . " AND order_birth IS NULL AND del_flg = 0";
 	lfBatOrderAgeSub($sql . $where, $start, $end, NULL, NULL, 0);	
 }
 
-// Çä¾å¤²½¸·×¥Ğ¥Ã¥Á½èÍı(Ç¯ÎğÊÌ) ÅĞÏ¿ÉôÊ¬
+// å£²ä¸Šã’é›†è¨ˆãƒãƒƒãƒå‡¦ç†(å¹´é½¢åˆ¥) ç™»éŒ²éƒ¨åˆ†
 function lfBatOrderAgeSub($sql, $start, $end, $start_age, $end_age, $member) {
 	$objQuery = new SC_Query();
 	
 	$arrRet = $objQuery->getall($sql, array($start, $end));
 	$sqlval = $arrRet[0];
 	
-	// ¶õÊ¸»ú¤ò"0"¤ËÊÑ´¹
+	// ç©ºæ–‡å­—ã‚’"0"ã«å¤‰æ›
 	foreach($sqlval as $key => $val) {
 		if ($val == "") {
 			$sqlval[$key] = "0";
@@ -308,7 +308,7 @@ function lfBatOrderAgeSub($sql, $start, $end, $start_age, $end_age, $member) {
 	$objQuery->insert("dtb_bat_order_daily_age", $sqlval);
 }
 
-// Ê¸»úÎó¤ËSingleQuotation¤òÉÕÍ¿¤¹¤ë
+// æ–‡å­—åˆ—ã«SingleQuotationã‚’ä»˜ä¸ã™ã‚‹
 function lfSingleQuot($value){
 	$ret = "";
 	if (DB_TYPE == "mysql") {

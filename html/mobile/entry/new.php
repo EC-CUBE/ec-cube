@@ -5,21 +5,21 @@
  *
  * http://www.lockon.co.jp/
  * 
- * ¿·µ¬ÅÐÏ¿
+ * æ–°è¦ç™»éŒ²
  */
 
 require_once('../require.php');
 
 class LC_Page {
 	function LC_Page() {
-		/** É¬¤ºÊÑ¹¹¤¹¤ë **/
-		$this->tpl_mainpage = 'entry/new.tpl';	// ¥á¥¤¥ó¥Æ¥ó¥×¥ì¡¼¥È
+		/** å¿…ãšå¤‰æ›´ã™ã‚‹ **/
+		$this->tpl_mainpage = 'entry/new.tpl';	// ãƒ¡ã‚¤ãƒ³ãƒ†ãƒ³ãƒ—ãƒ¬ãƒ¼ãƒˆ
 	}
 }
 
 $objPage = new LC_Page();
 
-// ¥ì¥¤¥¢¥¦¥È¥Ç¥¶¥¤¥ó¤ò¼èÆÀ
+// ãƒ¬ã‚¤ã‚¢ã‚¦ãƒˆãƒ‡ã‚¶ã‚¤ãƒ³ã‚’å–å¾—
 $objView = new SC_MobileView();
 $objView->assignobj($objPage);
 $objView->display(SITE_FRAME);

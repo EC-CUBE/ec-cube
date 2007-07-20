@@ -7,11 +7,11 @@ $cmd = $strmask . " -d " . $_GET['SendData'];
 
 $tmpResult = popen($cmd, "r");
 
-// ·ë²Ì¼èÆÀ
+// çµæœå–å¾—
 while( ! FEOF ( $tmpResult ) ) {
 	$result .= FGETS($tmpResult);
 }
-pclose($tmpResult);				// 	¥Ñ¥¤¥×¤òÊÄ¤¸¤ë
+pclose($tmpResult);				// 	ãƒ‘ã‚¤ãƒ—ã‚’é–‰ã˜ã‚‹
 
 $arrRet = lfGetPostArray($result);
 gfDebugLog($arrRet);

@@ -12,7 +12,7 @@
 <link rel="stylesheet" href="/user_data/css/contents.css" type="text/css" media="all" />
 <link rel="stylesheet" href="/css/common.css" type="text/css" media="all" />
 <link rel="stylesheet" href="/css/layout/index.css" type="text/css" media="all" />
-<title>╔ф╔╧╔х╓не╧/TOP╔з║╪╔╦</title>
+<title>Ц┐├Ц┌╧Ц┐┬Ц│╝Е╨≈/TOPЦ┐ Ц┐╪Ц┌╦</title>
 <meta name="author" content="">
 <meta name="description" content="">
 <meta name="keywords" content="">
@@ -45,7 +45,7 @@
 	</tr>
 	<tr><td bgcolor="#ff6600"><img src="/img/common/_.gif" width="778" height="1" alt=""></td></tr>
 </table>
-<!--╒╔HEADER-->
+<!--Б√╡HEADER-->
 <table width="780" border="0" cellspacing="0" cellpadding="0" summary=" ">
 	<tr>
 		<td bgcolor="#cccccc" width="1"><img src="/img/_.gif" width="1" height="10" alt="" /></td>

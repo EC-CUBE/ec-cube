@@ -6,16 +6,16 @@
  * http://www.lockon.co.jp/
  * 
  *
- * ете╨едеые╡еде╚/д┤═°═╤╩¤╦б
+ * уГвуГРуВдуГлуВ╡уВдуГИ/уБФхИйчФицЦ╣ц│Х
  */
 
 require_once('../require.php');
 
 class LC_Page {
 	function LC_Page() {
-		/** ╔мд║╩╤╣╣д╣ды **/
-		$this->tpl_mainpage = 'guide/usage.tpl';	// еседеєе╞еєе╫еьб╝е╚
-		$this->tpl_title = 'д┤═°═╤╩¤╦б';
+		/** х┐ЕуБЪхдЙцЫ┤уБЩуВЛ **/
+		$this->tpl_mainpage = 'guide/usage.tpl';	// уГбуВдуГ│уГЖуГ│уГЧуГмуГ╝уГИ
+		$this->tpl_title = 'уБФхИйчФицЦ╣ц│Х';
 	}
 }
 
@@ -30,7 +30,7 @@ case '4':
 	break;
 }
 
-// еьедевеже╚е╟е╢едеєдЄ╝ш╞└
+// уГмуВдуВвуВжуГИуГЗуВ╢уВдуГ│уВТхПЦх╛Ч
 $objPage = sfGetPageLayout($objPage, false, DEF_LAYOUT);
 
 $objView = new SC_MobileView();

@@ -18,7 +18,7 @@ class LC_Page {
 		$this->tpl_subnavi = 'products/subnavi.tpl';
 		$this->tpl_subno = 'index';
 		$this->tpl_pager = DATA_PATH . 'Smarty/templates/admin/pager.tpl';
-		$this->tpl_subtitle = '¾¦ÉÊ¥Ş¥¹¥¿';
+		$this->tpl_subtitle = 'å•†å“ãƒã‚¹ã‚¿';
 
 		global $arrPageMax;
 		$this->arrPageMax = $arrPageMax;
@@ -29,9 +29,9 @@ class LC_Page {
 		global $arrPRODUCTSTATUS_COLOR;
 		$this->arrPRODUCTSTATUS_COLOR = $arrPRODUCTSTATUS_COLOR;
 		/*
-		 session_start»ş¤Îno-cache¥Ø¥Ã¥À¡¼¤òÍŞÀ©¤¹¤ë¤³¤È¤Ç
-		 ¡ÖÌá¤ë¡×¥Ü¥¿¥ó»ÈÍÑ»ş¤ÎÍ­¸ú´ü¸ÂÀÚ¤ìÉ½¼¨¤òÍŞÀ©¤¹¤ë¡£
-		 private-no-expire:¥¯¥é¥¤¥¢¥ó¥È¤Î¥­¥ã¥Ã¥·¥å¤òµö²Ä¤¹¤ë¡£
+		 session_startæ™‚ã®no-cacheãƒ˜ãƒƒãƒ€ãƒ¼ã‚’æŠ‘åˆ¶ã™ã‚‹ã“ã¨ã§
+		 ã€Œæˆ»ã‚‹ã€ãƒœã‚¿ãƒ³ä½¿ç”¨æ™‚ã®æœ‰åŠ¹æœŸé™åˆ‡ã‚Œè¡¨ç¤ºã‚’æŠ‘åˆ¶ã™ã‚‹ã€‚
+		 private-no-expire:ã‚¯ãƒ©ã‚¤ã‚¢ãƒ³ãƒˆã®ã‚­ãƒ£ãƒƒã‚·ãƒ¥ã‚’è¨±å¯ã™ã‚‹ã€‚
 		*/
 		session_cache_limiter('private-no-expire');		
 	}
@@ -43,24 +43,24 @@ $objView = new SC_AdminView();
 
 $objDate = new SC_Date();
 
-// ÅĞÏ¿¡¦¹¹¿·¸¡º÷³«»ÏÇ¯
+// ç™»éŒ²ãƒ»æ›´æ–°æ¤œç´¢é–‹å§‹å¹´
 $objDate->setStartYear(RELEASE_YEAR);
 $objDate->setEndYear(DATE("Y"));
 $objPage->arrStartYear = $objDate->getYear();
 $objPage->arrStartMonth = $objDate->getMonth();
 $objPage->arrStartDay = $objDate->getDay();
-// ÅĞÏ¿¡¦¹¹¿·¸¡º÷½ªÎ»Ç¯
+// ç™»éŒ²ãƒ»æ›´æ–°æ¤œç´¢çµ‚äº†å¹´
 $objDate->setStartYear(RELEASE_YEAR);
 $objDate->setEndYear(DATE("Y"));
 $objPage->arrEndYear = $objDate->getYear();
 $objPage->arrEndMonth = $objDate->getMonth();
 $objPage->arrEndDay = $objDate->getDay();
 
-// Ç§¾Ú²ÄÈİ¤ÎÈ½Äê
+// èªè¨¼å¯å¦ã®åˆ¤å®š
 $objSess = new SC_Session();
 sfIsSuccess($objSess);
 
-//¥­¥ã¥ó¥Ú¡¼¥ó¤ÎÊÔ½¸»ş
+//ã‚­ãƒ£ãƒ³ãƒšãƒ¼ãƒ³ã®ç·¨é›†æ™‚
 if(sfIsInt($_POST['campaign_id']) && $_POST['mode'] == "camp_search") {
 	$objQuery = new SC_Query();
 	$search_data = $objQuery->get("dtb_campaign", "search_condition", "campaign_id = ? ", array($_POST['campaign_id']));
@@ -70,10 +70,10 @@ if(sfIsInt($_POST['campaign_id']) && $_POST['mode'] == "camp_search") {
 	}
 }
 
-// POSTÃÍ¤Î°ú¤­·Ñ¤®
+// POSTå€¤ã®å¼•ãç¶™ã
 $objPage->arrForm = $_POST;
 
-// ¸¡º÷¥ï¡¼¥É¤Î°ú¤­·Ñ¤®
+// æ¤œç´¢ãƒ¯ãƒ¼ãƒ‰ã®å¼•ãç¶™ã
 foreach ($_POST as $key => $val) {
 	if (ereg("^search_", $key) || ereg("^campaign_", $key)) {
 		switch($key) {
@@ -91,38 +91,38 @@ foreach ($_POST as $key => $val) {
 	}
 }
 
-// ¥Ú¡¼¥¸Á÷¤êÍÑ
+// ãƒšãƒ¼ã‚¸é€ã‚Šç”¨
 $objPage->arrHidden['search_pageno'] = $_POST['search_pageno'];
 
-// ¾¦ÉÊºï½ü
+// å•†å“å‰Šé™¤
 if ($_POST['mode'] == "delete") {
 	
 	if($_POST['category_id'] != "") {
-		// ¥é¥ó¥¯ÉÕ¤­¥ì¥³¡¼¥É¤Îºï½ü
+		// ãƒ©ãƒ³ã‚¯ä»˜ããƒ¬ã‚³ãƒ¼ãƒ‰ã®å‰Šé™¤
 		$where = "category_id = " . addslashes($_POST['category_id']);
 		sfDeleteRankRecord("dtb_products", "product_id", $_POST['product_id'], $where);
 	} else {
 		sfDeleteRankRecord("dtb_products", "product_id", $_POST['product_id']);
 	}
-	// »Ò¥Æ¡¼¥Ö¥ë(¾¦ÉÊµ¬³Ê)¤Îºï½ü
+	// å­ãƒ†ãƒ¼ãƒ–ãƒ«(å•†å“è¦æ ¼)ã®å‰Šé™¤
 	$objQuery = new SC_Query();
 	$objQuery->delete("dtb_products_class", "product_id = ?", array($_POST['product_id']));
 	
-	// ·ï¿ô¥«¥¦¥ó¥È¥Ğ¥Ã¥Á¼Â¹Ô
+	// ä»¶æ•°ã‚«ã‚¦ãƒ³ãƒˆãƒãƒƒãƒå®Ÿè¡Œ
 	sfCategory_Count($objQuery);	
 }
 
 
 if ($_POST['mode'] == "search" || $_POST['mode'] == "csv"  || $_POST['mode'] == "delete" || $_POST['mode'] == "delete_all" || $_POST['mode'] == "camp_search") {
-	// ÆşÎÏÊ¸»ú¤Î¶¯À©ÊÑ´¹
+	// å…¥åŠ›æ–‡å­—ã®å¼·åˆ¶å¤‰æ›
 	lfConvertParam();
-	// ¥¨¥é¡¼¥Á¥§¥Ã¥¯
+	// ã‚¨ãƒ©ãƒ¼ãƒã‚§ãƒƒã‚¯
 	$objPage->arrErr = lfCheckError();
 
 	$where = "del_flg = 0";
 	$view_where = "del_flg = 0";
 	
-	// ÆşÎÏ¥¨¥é¡¼¤Ê¤·
+	// å…¥åŠ›ã‚¨ãƒ©ãƒ¼ãªã—
 	if (count($objPage->arrErr) == 0) {
 
 		$arrval = array();
@@ -134,12 +134,12 @@ if ($_POST['mode'] == "search" || $_POST['mode'] == "csv"  || $_POST['mode'] == 
 			}
 			
 			switch ($key) {
-				case 'search_product_id':	// ¾¦ÉÊID
+				case 'search_product_id':	// å•†å“ID
 					$where .= " AND product_id = ?";
 					$view_where .= " AND product_id = ?";
 					$arrval[] = $val;
 					break;
-				case 'search_product_class_name': //µ¬³ÊÌ¾¾Î
+				case 'search_product_class_name': //è¦æ ¼åç§°
 					$where_in = " (SELECT classcategory_id FROM dtb_classcategory WHERE class_id IN (SELECT class_id FROM dtb_class WHERE name LIKE ?)) ";
 					$where .= " AND product_id IN (SELECT product_id FROM dtb_products_class WHERE classcategory_id1 IN " . $where_in;
 					$where .= " OR classcategory_id2 IN" . $where_in . ")";
@@ -149,12 +149,12 @@ if ($_POST['mode'] == "search" || $_POST['mode'] == "csv"  || $_POST['mode'] == 
 					$arrval[] = "%$val%";
 					$view_where = $where;
 					break;
-				case 'search_name':			// ¾¦ÉÊÌ¾
+				case 'search_name':			// å•†å“å
 					$where .= " AND name ILIKE ?";
 					$view_where .= " AND name ILIKE ?";
 					$arrval[] = "%$val%";
 					break;
-				case 'search_category_id':	// ¥«¥Æ¥´¥ê¡¼
+				case 'search_category_id':	// ã‚«ãƒ†ã‚´ãƒªãƒ¼
 					list($tmp_where, $tmp_arrval) = sfGetCatWhere($val);
 					if($tmp_where != "") {
 						$where.= " AND $tmp_where";
@@ -162,23 +162,23 @@ if ($_POST['mode'] == "search" || $_POST['mode'] == "csv"  || $_POST['mode'] == 
 						$arrval = array_merge((array)$arrval, (array)$tmp_arrval);
 					}
 					break;
-				case 'search_product_code':	// ¾¦ÉÊ¥³¡¼¥É
+				case 'search_product_code':	// å•†å“ã‚³ãƒ¼ãƒ‰
 					$where .= " AND product_id IN (SELECT product_id FROM dtb_products_class WHERE product_code ILIKE ? GROUP BY product_id)";
 					$view_where .= " AND EXISTS (SELECT product_id FROM dtb_products_class as cls WHERE cls.product_code ILIKE ? AND dtb_products.product_id = cls.product_id GROUP BY cls.product_id )";
 					$arrval[] = "%$val%";
 					break;
-				case 'search_startyear':	// ÅĞÏ¿¹¹¿·Æü¡ÊFROM¡Ë
+				case 'search_startyear':	// ç™»éŒ²æ›´æ–°æ—¥ï¼ˆFROMï¼‰
 					$date = sfGetTimestamp($_POST['search_startyear'], $_POST['search_startmonth'], $_POST['search_startday']);
 					$where.= " AND update_date >= '" . $_POST['search_startyear'] . "/" . $_POST['search_startmonth']. "/" .$_POST['search_startday'] . "'";
 					$view_where.= " AND update_date >= '" . $_POST['search_startyear'] . "/" . $_POST['search_startmonth']. "/" .$_POST['search_startday'] . "'";
 					break;
-				case 'search_endyear':		// ÅĞÏ¿¹¹¿·Æü¡ÊTO¡Ë
+				case 'search_endyear':		// ç™»éŒ²æ›´æ–°æ—¥ï¼ˆTOï¼‰
 					$date = sfGetTimestamp($_POST['search_endyear'], $_POST['search_endmonth'], $_POST['search_endday']);
 					$date = date('Y/m/d', strtotime($date) + 86400);
 					$where.= " AND update_date < date('" . $date . "')";
 					$view_where.= " AND update_date < date('" . $date . "')";
 					break;
-				case 'search_product_flag':	//¼ïÊÌ
+				case 'search_product_flag':	//ç¨®åˆ¥
 					global $arrSTATUS;
 					$search_product_flag = sfSearchCheckBoxes($val);
 					if($search_product_flag != "") {
@@ -187,7 +187,7 @@ if ($_POST['mode'] == "search" || $_POST['mode'] == "csv"  || $_POST['mode'] == 
 						$arrval[] = $search_product_flag;					
 					}
 					break;
-				case 'search_status':		// ¥¹¥Æ¡¼¥¿¥¹
+				case 'search_status':		// ã‚¹ãƒ†ãƒ¼ã‚¿ã‚¹
 					$tmp_where = "";
 					foreach ($val as $element){
 						if ($element != ""){
@@ -215,9 +215,9 @@ if ($_POST['mode'] == "search" || $_POST['mode'] == "csv"  || $_POST['mode'] == 
 		
 		switch($_POST['mode']) {
 		case 'csv':
-			// ¥ª¥×¥·¥ç¥ó¤Î»ØÄê
+			// ã‚ªãƒ—ã‚·ãƒ§ãƒ³ã®æŒ‡å®š
 			$option = "ORDER BY $order";
-			// CSV½ĞÎÏ¥¿¥¤¥È¥ë¹Ô¤ÎºîÀ®
+			// CSVå‡ºåŠ›ã‚¿ã‚¤ãƒˆãƒ«è¡Œã®ä½œæˆ
 			$arrOutput = sfSwapArray(sfgetCsvOutput(1, " WHERE csv_id = 1 AND status = 1"));
 			
 			if (count($arrOutput) <= 0) break;
@@ -229,38 +229,38 @@ if ($_POST['mode'] == "search" || $_POST['mode'] == "csv"  || $_POST['mode'] == 
 			
 			$data = lfGetProductsCSV($where, $option, $arrval, $arrOutputCols);
 
-			// CSV¤òÁ÷¿®¤¹¤ë¡£
+			// CSVã‚’é€ä¿¡ã™ã‚‹ã€‚
 			sfCSVDownload($head.$data);
 			exit;
 			break;
 		case 'delete_all':
-			// ¸¡º÷·ë²Ì¤ò¤¹¤Ù¤Æºï½ü
+			// æ¤œç´¢çµæœã‚’ã™ã¹ã¦å‰Šé™¤
 			$where = "product_id IN (SELECT product_id FROM vw_products_nonclass AS noncls  WHERE $where)";
 			$sqlval['del_flg'] = 1;
 			$objQuery->update("dtb_products", $sqlval, $where, $arrval);
 			break;
 		default:
-			// ÆÉ¤ß¹ş¤àÎó¤È¥Æ¡¼¥Ö¥ë¤Î»ØÄê
+			// èª­ã¿è¾¼ã‚€åˆ—ã¨ãƒ†ãƒ¼ãƒ–ãƒ«ã®æŒ‡å®š
 			$col = "product_id, name, category_id, main_list_image, status, product_code, price01, price02, stock, stock_unlimited";
 			$from = "vw_products_nonclass AS noncls ";
 
-			// ¹Ô¿ô¤Î¼èÆÀ
+			// è¡Œæ•°ã®å–å¾—
 			$linemax = $objQuery->count("dtb_products", $view_where, $arrval);
-			$objPage->tpl_linemax = $linemax;				// ²¿·ï¤¬³ºÅö¤·¤Ş¤·¤¿¡£É½¼¨ÍÑ
+			$objPage->tpl_linemax = $linemax;				// ä½•ä»¶ãŒè©²å½“ã—ã¾ã—ãŸã€‚è¡¨ç¤ºç”¨
 
-			// ¥Ú¡¼¥¸Á÷¤ê¤Î½èÍı
+			// ãƒšãƒ¼ã‚¸é€ã‚Šã®å‡¦ç†
 			if(is_numeric($_POST['search_page_max'])) {	
 				$page_max = $_POST['search_page_max'];
 			} else {
 				$page_max = SEARCH_PMAX;
 			}
 
-			// ¥Ú¡¼¥¸Á÷¤ê¤Î¼èÆÀ
+			// ãƒšãƒ¼ã‚¸é€ã‚Šã®å–å¾—
 			$objNavi = new SC_PageNavi($_POST['search_pageno'], $linemax, $page_max, "fnNaviSearchPage", NAVI_PMAX);
 			$startno = $objNavi->start_row;
 			$objPage->arrPagenavi = $objNavi->arrPagenavi;
 			
-			//¥­¥ã¥ó¥Ú¡¼¥ó¾¦ÉÊ¸¡º÷»ş¤Ï¡¢Á´·ë²Ì¤Î¾¦ÉÊID¤òÊÑ¿ô¤Ë³ÊÇ¼¤¹¤ë
+			//ã‚­ãƒ£ãƒ³ãƒšãƒ¼ãƒ³å•†å“æ¤œç´¢æ™‚ã¯ã€å…¨çµæœã®å•†å“IDã‚’å¤‰æ•°ã«æ ¼ç´ã™ã‚‹
 			if($_POST['search_mode'] == 'campaign') {
 				$arrRet = $objQuery->select($col, $from, $where, $arrval);
 				if(count($arrRet) > 0) {
@@ -270,15 +270,15 @@ if ($_POST['mode'] == "search" || $_POST['mode'] == "csv"  || $_POST['mode'] == 
 				}
 			}
 
-			// ¼èÆÀÈÏ°Ï¤Î»ØÄê(³«»Ï¹ÔÈÖ¹æ¡¢¹Ô¿ô¤Î¥»¥Ã¥È)
+			// å–å¾—ç¯„å›²ã®æŒ‡å®š(é–‹å§‹è¡Œç•ªå·ã€è¡Œæ•°ã®ã‚»ãƒƒãƒˆ)
 			if(DB_TYPE != "mysql") $objQuery->setlimitoffset($page_max, $startno);
-			// É½¼¨½ç½ø
+			// è¡¨ç¤ºé †åº
 			$objQuery->setorder($order);
 			
-			// view¤â¹Ê¹ş¤ß¤ò¤«¤±¤ë(mysqlÍÑ)
+			// viewã‚‚çµè¾¼ã¿ã‚’ã‹ã‘ã‚‹(mysqlç”¨)
 			sfViewWhere("&&noncls_where&&", $view_where, $arrval, $objQuery->order . " " .  $objQuery->setlimitoffset($page_max, $startno, true));
 
-			// ¸¡º÷·ë²Ì¤Î¼èÆÀ
+			// æ¤œç´¢çµæœã®å–å¾—
 			$objPage->arrProducts = $objQuery->select($col, $from, $where, $arrval);
 			
 			break;
@@ -286,50 +286,50 @@ if ($_POST['mode'] == "search" || $_POST['mode'] == "csv"  || $_POST['mode'] == 
 	}
 }
 	
-// ¥«¥Æ¥´¥ê¤ÎÆÉ¹ş
+// ã‚«ãƒ†ã‚´ãƒªã®èª­è¾¼
 $objPage->arrCatList = sfGetCategoryList();
 $objPage->arrCatIDName = lfGetIDName($objPage->arrCatList);
 
-// ²èÌÌ¤ÎÉ½¼¨
+// ç”»é¢ã®è¡¨ç¤º
 $objView->assignobj($objPage);
 $objView->display(MAIN_FRAME);
 
 //---------------------------------------------------------------------------------------------------------------------------------------------------------
 
-// ¼èÆÀÊ¸»úÎó¤ÎÊÑ´¹ 
+// å–å¾—æ–‡å­—åˆ—ã®å¤‰æ› 
 function lfConvertParam() {
 	global $objPage;
 	/*
-	 *	Ê¸»úÎó¤ÎÊÑ´¹
-	 *	K :  ¡ÖÈ¾³Ñ(Êİ¶¸)ÊÒ²¾Ì¾¡×¤ò¡ÖÁ´³ÑÊÒ²¾Ì¾¡×¤ËÊÑ´¹
-	 *	C :  ¡ÖÁ´³Ñ¤Ò¤é²¾Ì¾¡×¤ò¡ÖÁ´³Ñ¤«¤¿²¾Ì¾¡×¤ËÊÑ´¹
-	 *	V :  ÂùÅÀÉÕ¤­¤ÎÊ¸»ú¤ò°ìÊ¸»ú¤ËÊÑ´¹¡£"K","H"¤È¶¦¤Ë»ÈÍÑ¤·¤Ş¤¹	
-	 *	n :  ¡ÖÁ´³Ñ¡×¿ô»ú¤ò¡ÖÈ¾³Ñ(Êİ¶¸)¡×¤ËÊÑ´¹
+	 *	æ–‡å­—åˆ—ã®å¤‰æ›
+	 *	K :  ã€ŒåŠè§’(ï¾Šï¾ï½¶ï½¸)ç‰‡ä»®åã€ã‚’ã€Œå…¨è§’ç‰‡ä»®åã€ã«å¤‰æ›
+	 *	C :  ã€Œå…¨è§’ã²ã‚‰ä»®åã€ã‚’ã€Œå…¨è§’ã‹ãŸä»®åã€ã«å¤‰æ›
+	 *	V :  æ¿ç‚¹ä»˜ãã®æ–‡å­—ã‚’ä¸€æ–‡å­—ã«å¤‰æ›ã€‚"K","H"ã¨å…±ã«ä½¿ç”¨ã—ã¾ã™	
+	 *	n :  ã€Œå…¨è§’ã€æ•°å­—ã‚’ã€ŒåŠè§’(ï¾Šï¾ï½¶ï½¸)ã€ã«å¤‰æ›
 	 */
 	$arrConvList['search_name'] = "KVa";
 	$arrConvList['search_product_code'] = "KVa";
 	
-	// Ê¸»úÊÑ´¹
+	// æ–‡å­—å¤‰æ›
 	foreach ($arrConvList as $key => $val) {
-		// POST¤µ¤ì¤Æ¤­¤¿ÃÍ¤Î¤ßÊÑ´¹¤¹¤ë¡£
+		// POSTã•ã‚Œã¦ããŸå€¤ã®ã¿å¤‰æ›ã™ã‚‹ã€‚
 		if(isset($objPage->arrForm[$key])) {
 			$objPage->arrForm[$key] = mb_convert_kana($objPage->arrForm[$key] ,$val);
 		}
 	}
 }
 
-// ¥¨¥é¡¼¥Á¥§¥Ã¥¯ 
-// ÆşÎÏ¥¨¥é¡¼¥Á¥§¥Ã¥¯
+// ã‚¨ãƒ©ãƒ¼ãƒã‚§ãƒƒã‚¯ 
+// å…¥åŠ›ã‚¨ãƒ©ãƒ¼ãƒã‚§ãƒƒã‚¯
 function lfCheckError() {
 	$objErr = new SC_CheckError();
-	$objErr->doFunc(array("¾¦ÉÊID", "search_product_id"), array("NUM_CHECK"));
-	$objErr->doFunc(array("³«»ÏÆü", "search_startyear", "search_startmonth", "search_startday"), array("CHECK_DATE"));
-	$objErr->doFunc(array("½ªÎ»Æü", "search_endyear", "search_endmonth", "search_endday"), array("CHECK_DATE"));
-	$objErr->doFunc(array("³«»ÏÆü", "½ªÎ»Æü", "search_startyear", "search_startmonth", "search_startday", "search_endyear", "search_endmonth", "search_endday"), array("CHECK_SET_TERM"));
+	$objErr->doFunc(array("å•†å“ID", "search_product_id"), array("NUM_CHECK"));
+	$objErr->doFunc(array("é–‹å§‹æ—¥", "search_startyear", "search_startmonth", "search_startday"), array("CHECK_DATE"));
+	$objErr->doFunc(array("çµ‚äº†æ—¥", "search_endyear", "search_endmonth", "search_endday"), array("CHECK_DATE"));
+	$objErr->doFunc(array("é–‹å§‹æ—¥", "çµ‚äº†æ—¥", "search_startyear", "search_startmonth", "search_startday", "search_endyear", "search_endmonth", "search_endday"), array("CHECK_SET_TERM"));
 	return $objErr->arrErr;
 }
 
-// ¥Á¥§¥Ã¥¯¥Ü¥Ã¥¯¥¹ÍÑWHEREÊ¸ºîÀ®
+// ãƒã‚§ãƒƒã‚¯ãƒœãƒƒã‚¯ã‚¹ç”¨WHEREæ–‡ä½œæˆ
 function lfGetCBWhere($key, $max) {
 	$str = "";
 	$find = false;
@@ -347,7 +347,7 @@ function lfGetCBWhere($key, $max) {
 	return $str;
 }
 
-// ¥«¥Æ¥´¥êID¤ò¥­¡¼¡¢¥«¥Æ¥´¥êÌ¾¤òÃÍ¤Ë¤¹¤ëÇÛÎó¤òÊÖ¤¹¡£
+// ã‚«ãƒ†ã‚´ãƒªIDã‚’ã‚­ãƒ¼ã€ã‚«ãƒ†ã‚´ãƒªåã‚’å€¤ã«ã™ã‚‹é…åˆ—ã‚’è¿”ã™ã€‚
 function lfGetIDName($arrCatList) {
 	$max = count($arrCatList);
 	for ($cnt = 0; $cnt < $max; $cnt++ ) {

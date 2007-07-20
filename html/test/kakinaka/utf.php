@@ -2,7 +2,7 @@
 
 require_once("../../require.php");
 
-//---- ¥Ú¡¼¥¸É½¼¨ÍÑ¥¯¥é¥¹
+//---- ãƒšãƒ¼ã‚¸è¡¨ç¤ºç”¨ã‚¯ãƒ©ã‚¹
 class LC_Page {
 	function LC_Page() {
 		$this->tpl_mainpage = 'utf.tpl';

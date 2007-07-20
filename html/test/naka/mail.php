@@ -4,7 +4,7 @@ ini_set("mbstring.http_output", "UTF-8");
 ini_set("mbstring.internal_encoding", "UTF-8");
 
 $to = "naka@lockon.co.jp";
-$body = "¥Ζ¥Ή¥Θ¤Η¤Ή΅£¥Ά¥¤¥¦¥ν¥¨??????Ότ??";
+$body = "γƒ†γ‚Ήγƒγ§γ™γ€‚γ‚Άγ‚¤γ‚¦γƒ­γ‚¨??????ε½…??";
 
 $body = mb_convert_encoding($body, 'UTF-8', "EUC-JP");
 

@@ -6,11 +6,11 @@
  */
 require_once("../require.php");
 
-// Ç§¾Ú²ÄÈİ¤ÎÈ½Äê
+// èªè¨¼å¯å¦ã®åˆ¤å®š
 $objSess = new SC_Session();
 sfIsSuccess($objSess);
 
-//---- ¥Ú¡¼¥¸É½¼¨ÍÑ¥¯¥é¥¹
+//---- ãƒšãƒ¼ã‚¸è¡¨ç¤ºç”¨ã‚¯ãƒ©ã‚¹
 class LC_Page {
 	var $arrSession;
 	var $tpl_mode;
@@ -34,7 +34,7 @@ class LC_Page {
 		$this->tpl_subnavi = 'customer/subnavi.tpl';
 		$this->tpl_subno = 'index';
 		$this->tpl_pager = DATA_PATH . 'Smarty/templates/admin/pager.tpl';
-		$this->tpl_subtitle = '¸ÜµÒ¥Ş¥¹¥¿';
+		$this->tpl_subtitle = 'é¡§å®¢ãƒã‚¹ã‚¿';
 
 		global $arrPref;
 		$this->arrPref = $arrPref;
@@ -51,11 +51,11 @@ $objConn = new SC_DBConn();
 $objPage = new LC_Page();
 $objView = new SC_AdminView();
 $objDate = new SC_Date(1901);
-$objPage->arrYear = $objDate->getYear();	//¡¡ÆüÉÕ¥×¥ë¥À¥¦¥óÀßÄê
+$objPage->arrYear = $objDate->getYear();	//ã€€æ—¥ä»˜ãƒ—ãƒ«ãƒ€ã‚¦ãƒ³è¨­å®š
 $objPage->arrMonth = $objDate->getMonth();
 $objPage->arrDay = $objDate->getDay();
 
-//---- ÅĞÏ¿ÍÑ¥«¥é¥àÇÛÎó
+//---- ç™»éŒ²ç”¨ã‚«ãƒ©ãƒ é…åˆ—
 $arrRegistColumn = array(
 							 array(  "column" => "name01",		"convert" => "aKV" ),
 							 array(  "column" => "name02",		"convert" => "aKV" ),
@@ -86,10 +86,10 @@ $arrRegistColumn = array(
 							 array(  "column" => "status",		"convert" => "n" )
 						 );
 
-//---- ÅĞÏ¿½ü³°ÍÑ¥«¥é¥àÇÛÎó
+//---- ç™»éŒ²é™¤å¤–ç”¨ã‚«ãƒ©ãƒ é…åˆ—
 $arrRejectRegistColumn = array("year", "month", "day");
 
-// ¸¡º÷¾ò·ï¤òÊİ»ı
+// æ¤œç´¢æ¡ä»¶ã‚’ä¿æŒ
 if ($_POST['mode'] == "edit_search") {
 	$arrSearch = $_POST;
 }else{
@@ -103,10 +103,10 @@ if(is_array($arrSearch)){
 
 $objPage->arrSearchData= $arrSearchData;
 
-//----¡¡¸ÜµÒÊÔ½¸¾ğÊó¼èÆÀ
+//----ã€€é¡§å®¢ç·¨é›†æƒ…å ±å–å¾—
 if (($_POST["mode"] == "edit" || $_POST["mode"] == "edit_search") && is_numeric($_POST["edit_customer_id"])) {
 
-	//--¡¡¸ÜµÒ¥Ç¡¼¥¿¼èÆÀ
+	//--ã€€é¡§å®¢ãƒ‡ãƒ¼ã‚¿å–å¾—
 	$sql = "SELECT * FROM dtb_customer WHERE del_flg = 0 AND customer_id = ?";
 	$result = $objConn->getAll($sql, array($_POST["edit_customer_id"]));
 	$objPage->list_data = $result[0];
@@ -119,64 +119,64 @@ if (($_POST["mode"] == "edit" || $_POST["mode"] == "edit_search") && is_numeric(
 	$objPage->list_data["day"] = $birth[2];
 	
 	$objPage->list_data["password"] = DEFAULT_PASSWORD;
-	//DBÅĞÏ¿¤Î¥á¡¼¥ë¥¢¥É¥ì¥¹¤òÅÏ¤¹
+	//DBç™»éŒ²ã®ãƒ¡ãƒ¼ãƒ«ã‚¢ãƒ‰ãƒ¬ã‚¹ã‚’æ¸¡ã™
 	$objPage->tpl_edit_email = $result[0]['email'];
-	//¹ØÆşÍúÎò¾ğÊó¤Î¼èÆÀ
+	//è³¼å…¥å±¥æ­´æƒ…å ±ã®å–å¾—
 	$objPage->arrPurchaseHistory = lfPurchaseHistory($_POST['edit_customer_id']);
-	// »ÙÊ§¤¤ÊıË¡¤Î¼èÆÀ
+	// æ”¯æ‰•ã„æ–¹æ³•ã®å–å¾—
 	$objPage->arrPayment = sfGetIDValueList("dtb_payment", "payment_id", "payment_method");
 }
 
-//----¡¡¸ÜµÒ¾ğÊóÊÔ½¸
+//----ã€€é¡§å®¢æƒ…å ±ç·¨é›†
 if ( $_POST["mode"] != "edit" && $_POST["mode"] != "edit_search" && is_numeric($_POST["customer_id"])) {
 
-	//-- POST¥Ç¡¼¥¿¤Î°ú¤­·Ñ¤®
+	//-- POSTãƒ‡ãƒ¼ã‚¿ã®å¼•ãç¶™ã
 	$objPage->arrForm = $_POST;
-	$objPage->arrForm['email'] = strtolower($objPage->arrForm['email']);		// email¤Ï¤¹¤Ù¤Æ¾®Ê¸»ú¤Ç½èÍı
+	$objPage->arrForm['email'] = strtolower($objPage->arrForm['email']);		// emailã¯ã™ã¹ã¦å°æ–‡å­—ã§å‡¦ç†
 
-	//-- ÆşÎÏ¥Ç¡¼¥¿¤ÎÊÑ´¹
+	//-- å…¥åŠ›ãƒ‡ãƒ¼ã‚¿ã®å¤‰æ›
 	$objPage->arrForm = lfConvertParam($objPage->arrForm, $arrRegistColumn);
-	//-- ÆşÎÏ¥Á¥§¥Ã¥¯
+	//-- å…¥åŠ›ãƒã‚§ãƒƒã‚¯
 	$objPage->arrErr = lfErrorCheck($objPage->arrForm);
 
-	//-- ÆşÎÏ¥¨¥é¡¼È¯À¸ or ¥ê¥¿¡¼¥ó»ş
+	//-- å…¥åŠ›ã‚¨ãƒ©ãƒ¼ç™ºç”Ÿ or ãƒªã‚¿ãƒ¼ãƒ³æ™‚
 	if ($objPage->arrErr || $_POST["mode"] == "return") {
 		foreach($objPage->arrForm as $key => $val) {
 			$objPage->list_data[ $key ] = $val;
 		}
-		//¹ØÆşÍúÎò¾ğÊó¤Î¼èÆÀ
+		//è³¼å…¥å±¥æ­´æƒ…å ±ã®å–å¾—
 		$objPage->arrPurchaseHistory = lfPurchaseHistory($_POST['customer_id']);
-		// »ÙÊ§¤¤ÊıË¡¤Î¼èÆÀ
+		// æ”¯æ‰•ã„æ–¹æ³•ã®å–å¾—
 		$objPage->arrPayment = sfGetIDValueList("dtb_payment", "payment_id", "payment_method");
 		
 	} else {
-		//-- ³ÎÇ§
+		//-- ç¢ºèª
 		if ($_POST["mode"] == "confirm") {
 			$objPage->tpl_mainpage = 'customer/edit_confirm.tpl';
 			$passlen = strlen($objPage->arrForm['password']);
 			$objPage->passlen = lfPassLen($passlen);
 			
 		}
-		//--¡¡ÊÔ½¸
+		//--ã€€ç·¨é›†
 		if($_POST["mode"] == "complete") {
 			$objPage->tpl_mainpage = 'customer/edit_complete.tpl';
 			
-			// ¸½ºß¤Î²ñ°÷¾ğÊó¤ò¼èÆÀ¤¹¤ë
+			// ç¾åœ¨ã®ä¼šå“¡æƒ…å ±ã‚’å–å¾—ã™ã‚‹
 			$arrCusSts = $objQuery->getOne("SELECT status FROM dtb_customer WHERE customer_id = ?", array($_POST["customer_id"]));
 
-			// ²ñ°÷¾ğÊó¤¬ÊÑ¹¹¤µ¤ì¤Æ¤¤¤ë¾ì¹ç¤Ë¤Ï¥·¡¼¥¯¥ì¥Ã¥È¢ñ¤â¹¹¿·¤¹¤ë¡£
+			// ä¼šå“¡æƒ…å ±ãŒå¤‰æ›´ã•ã‚Œã¦ã„ã‚‹å ´åˆã«ã¯ã‚·ãƒ¼ã‚¯ãƒ¬ãƒƒãƒˆâ„–ã‚‚æ›´æ–°ã™ã‚‹ã€‚
 			if ($arrCusSts != $_POST['status']){
 				$secret = sfGetUniqRandomId("r");
 				$objPage->arrForm['secret_key'] = $secret;
 				array_push($arrRegistColumn, array('column' => 'secret_key', 'convert' => 'n'));
 			}
-			//-- ÊÔ½¸ÅĞÏ¿
+			//-- ç·¨é›†ç™»éŒ²
 			sfEditCustomerData($objPage->arrForm, $arrRegistColumn);
 		}
 	}
 }
 
-//----¡¡¥Ú¡¼¥¸É½¼¨
+//----ã€€ãƒšãƒ¼ã‚¸è¡¨ç¤º
 $objView->assignobj($objPage);
 $objView->display(MAIN_FRAME);
 
@@ -184,7 +184,7 @@ $objView->display(MAIN_FRAME);
 
 //-------------- function
 
-// ÊÔ½¸ÅĞÏ¿
+// ç·¨é›†ç™»éŒ²
 function lfRegisDatat($array, $arrRegistColumn) {
 	global $objConn;
 	global $objQuery;
@@ -199,7 +199,7 @@ function lfRegisDatat($array, $arrRegistColumn) {
 		$arrRegist["birth"] = $array["year"] ."/". $array["month"] ."/". $array["day"] ." 00:00:00";
 	}
 
-	//-- ¥Ñ¥¹¥ï¡¼¥É¤Î¹¹¿·¤¬¤¢¤ë¾ì¹ç¤Ï°Å¹æ²½¡£¡Ê¹¹¿·¤¬¤Ê¤¤¾ì¹ç¤ÏUPDATEÊ¸¤ò¹½À®¤·¤Ê¤¤¡Ë
+	//-- ãƒ‘ã‚¹ãƒ¯ãƒ¼ãƒ‰ã®æ›´æ–°ãŒã‚ã‚‹å ´åˆã¯æš—å·åŒ–ã€‚ï¼ˆæ›´æ–°ãŒãªã„å ´åˆã¯UPDATEæ–‡ã‚’æ§‹æˆã—ãªã„ï¼‰
 	if ($array["password"] != DEFAULT_PASSWORD) {
 		$arrRegist["password"] = sha1($array["password"] . ":" . AUTH_MAGIC);
 	} else {
@@ -208,7 +208,7 @@ function lfRegisDatat($array, $arrRegistColumn) {
 
 	$arrRegist["update_date"] = "Now()";
 
-	//-- ÊÔ½¸ÅĞÏ¿¼Â¹Ô
+	//-- ç·¨é›†ç™»éŒ²å®Ÿè¡Œ
 	$objConn->query("BEGIN");
 	$objQuery->Insert("dtb_customer", $arrRegist, "customer_id = '" .addslashes($array["customer_id"]). "'");
 
@@ -216,23 +216,23 @@ function lfRegisDatat($array, $arrRegistColumn) {
 }
 
 
-//----¡¡¼èÆÀÊ¸»úÎó¤ÎÊÑ´¹
+//----ã€€å–å¾—æ–‡å­—åˆ—ã®å¤‰æ›
 function lfConvertParam($array, $arrRegistColumn) {
 	/*
-	 *	Ê¸»úÎó¤ÎÊÑ´¹
-	 *	K :  ¡ÖÈ¾³Ñ(Êİ¶¸)ÊÒ²¾Ì¾¡×¤ò¡ÖÁ´³ÑÊÒ²¾Ì¾¡×¤ËÊÑ´¹
-	 *	C :  ¡ÖÁ´³Ñ¤Ò¤é²¾Ì¾¡×¤ò¡ÖÁ´³Ñ¤«¤¿²¾Ì¾¡×¤ËÊÑ´¹
-	 *	V :  ÂùÅÀÉÕ¤­¤ÎÊ¸»ú¤ò°ìÊ¸»ú¤ËÊÑ´¹¡£"K","H"¤È¶¦¤Ë»ÈÍÑ¤·¤Ş¤¹	
-	 *	n :  ¡ÖÁ´³Ñ¡×¿ô»ú¤ò¡ÖÈ¾³Ñ(Êİ¶¸)¡×¤ËÊÑ´¹
-	 *  a :  Á´³Ñ±Ñ¿ô»ú¤òÈ¾³Ñ±Ñ¿ô»ú¤ËÊÑ´¹¤¹¤ë
+	 *	æ–‡å­—åˆ—ã®å¤‰æ›
+	 *	K :  ã€ŒåŠè§’(ï¾Šï¾ï½¶ï½¸)ç‰‡ä»®åã€ã‚’ã€Œå…¨è§’ç‰‡ä»®åã€ã«å¤‰æ›
+	 *	C :  ã€Œå…¨è§’ã²ã‚‰ä»®åã€ã‚’ã€Œå…¨è§’ã‹ãŸä»®åã€ã«å¤‰æ›
+	 *	V :  æ¿ç‚¹ä»˜ãã®æ–‡å­—ã‚’ä¸€æ–‡å­—ã«å¤‰æ›ã€‚"K","H"ã¨å…±ã«ä½¿ç”¨ã—ã¾ã™	
+	 *	n :  ã€Œå…¨è§’ã€æ•°å­—ã‚’ã€ŒåŠè§’(ï¾Šï¾ï½¶ï½¸)ã€ã«å¤‰æ›
+	 *  a :  å…¨è§’è‹±æ•°å­—ã‚’åŠè§’è‹±æ•°å­—ã«å¤‰æ›ã™ã‚‹
 	 */
-	// ¥«¥é¥àÌ¾¤È¥³¥ó¥Ğ¡¼¥È¾ğÊó
+	// ã‚«ãƒ©ãƒ åã¨ã‚³ãƒ³ãƒãƒ¼ãƒˆæƒ…å ±
 	foreach ($arrRegistColumn as $data) {
 		$arrConvList[ $data["column"] ] = $data["convert"];
 	}
-	// Ê¸»úÊÑ´¹
+	// æ–‡å­—å¤‰æ›
 	foreach ($arrConvList as $key => $val) {
-		// POST¤µ¤ì¤Æ¤­¤¿ÃÍ¤Î¤ßÊÑ´¹¤¹¤ë¡£
+		// POSTã•ã‚Œã¦ããŸå€¤ã®ã¿å¤‰æ›ã™ã‚‹ã€‚
 		if(strlen(($array[$key])) > 0) {
 			$array[$key] = mb_convert_kana($array[$key] ,$val);
 		}
@@ -240,68 +240,68 @@ function lfConvertParam($array, $arrRegistColumn) {
 	return $array;
 }
 
-//---- ÆşÎÏ¥¨¥é¡¼¥Á¥§¥Ã¥¯
+//---- å…¥åŠ›ã‚¨ãƒ©ãƒ¼ãƒã‚§ãƒƒã‚¯
 function lfErrorCheck($array) {
 
 	global $objConn;
 	$objErr = new SC_CheckError($array);
 
-	$objErr->doFunc(array("²ñ°÷¾õÂÖ", 'status'), array("EXIST_CHECK"));
-	$objErr->doFunc(array("¤ªÌ¾Á°¡ÊÀ«¡Ë", 'name01', STEXT_LEN), array("EXIST_CHECK", "MAX_LENGTH_CHECK"));
-	$objErr->doFunc(array("¤ªÌ¾Á°¡ÊÌ¾¡Ë", 'name02', STEXT_LEN), array("EXIST_CHECK", "MAX_LENGTH_CHECK"));
-	$objErr->doFunc(array("¥Õ¥ê¥¬¥Ê¡ÊÀ«¡Ë", 'kana01', STEXT_LEN), array("EXIST_CHECK", "MAX_LENGTH_CHECK", "KANA_CHECK"));
-	$objErr->doFunc(array("¥Õ¥ê¥¬¥Ê¡ÊÌ¾¡Ë", 'kana02', STEXT_LEN), array("EXIST_CHECK", "MAX_LENGTH_CHECK", "KANA_CHECK"));
-	$objErr->doFunc(array("Í¹ÊØÈÖ¹æ1", "zip01", ZIP01_LEN ) ,array("EXIST_CHECK", "NUM_CHECK", "NUM_COUNT_CHECK"));
-	$objErr->doFunc(array("Í¹ÊØÈÖ¹æ2", "zip02", ZIP02_LEN ) ,array("EXIST_CHECK", "NUM_CHECK", "NUM_COUNT_CHECK")); 
-	$objErr->doFunc(array("Í¹ÊØÈÖ¹æ", "zip01", "zip02"), array("ALL_EXIST_CHECK"));
-	$objErr->doFunc(array("ÅÔÆ»ÉÜ¸©", 'pref'), array("SELECT_CHECK","NUM_CHECK"));
-	$objErr->doFunc(array("¤´½»½ê¡Ê1¡Ë", "addr01", MTEXT_LEN), array("EXIST_CHECK","MAX_LENGTH_CHECK"));
-	$objErr->doFunc(array("¤´½»½ê¡Ê2¡Ë", "addr02", MTEXT_LEN), array("EXIST_CHECK","MAX_LENGTH_CHECK"));
-	$objErr->doFunc(array('¥á¡¼¥ë¥¢¥É¥ì¥¹', "email", MTEXT_LEN) ,array("EXIST_CHECK", "NO_SPTAB", "EMAIL_CHECK", "EMAIL_CHAR_CHECK", "MAX_LENGTH_CHECK"));
+	$objErr->doFunc(array("ä¼šå“¡çŠ¶æ…‹", 'status'), array("EXIST_CHECK"));
+	$objErr->doFunc(array("ãŠåå‰ï¼ˆå§“ï¼‰", 'name01', STEXT_LEN), array("EXIST_CHECK", "MAX_LENGTH_CHECK"));
+	$objErr->doFunc(array("ãŠåå‰ï¼ˆåï¼‰", 'name02', STEXT_LEN), array("EXIST_CHECK", "MAX_LENGTH_CHECK"));
+	$objErr->doFunc(array("ãƒ•ãƒªã‚¬ãƒŠï¼ˆå§“ï¼‰", 'kana01', STEXT_LEN), array("EXIST_CHECK", "MAX_LENGTH_CHECK", "KANA_CHECK"));
+	$objErr->doFunc(array("ãƒ•ãƒªã‚¬ãƒŠï¼ˆåï¼‰", 'kana02', STEXT_LEN), array("EXIST_CHECK", "MAX_LENGTH_CHECK", "KANA_CHECK"));
+	$objErr->doFunc(array("éƒµä¾¿ç•ªå·1", "zip01", ZIP01_LEN ) ,array("EXIST_CHECK", "NUM_CHECK", "NUM_COUNT_CHECK"));
+	$objErr->doFunc(array("éƒµä¾¿ç•ªå·2", "zip02", ZIP02_LEN ) ,array("EXIST_CHECK", "NUM_CHECK", "NUM_COUNT_CHECK")); 
+	$objErr->doFunc(array("éƒµä¾¿ç•ªå·", "zip01", "zip02"), array("ALL_EXIST_CHECK"));
+	$objErr->doFunc(array("éƒ½é“åºœçœŒ", 'pref'), array("SELECT_CHECK","NUM_CHECK"));
+	$objErr->doFunc(array("ã”ä½æ‰€ï¼ˆ1ï¼‰", "addr01", MTEXT_LEN), array("EXIST_CHECK","MAX_LENGTH_CHECK"));
+	$objErr->doFunc(array("ã”ä½æ‰€ï¼ˆ2ï¼‰", "addr02", MTEXT_LEN), array("EXIST_CHECK","MAX_LENGTH_CHECK"));
+	$objErr->doFunc(array('ãƒ¡ãƒ¼ãƒ«ã‚¢ãƒ‰ãƒ¬ã‚¹', "email", MTEXT_LEN) ,array("EXIST_CHECK", "NO_SPTAB", "EMAIL_CHECK", "EMAIL_CHAR_CHECK", "MAX_LENGTH_CHECK"));
 	
-	//¸½²ñ°÷¤ÎÈ½Äê ¢ª¡¡¸½²ñ°÷¤â¤·¤¯¤Ï²¾ÅĞÏ¿Ãæ¤Ï¡¢¥á¥¢¥É°ì°Õ¤¬Á°Äó¤Ë¤Ê¤Ã¤Æ¤ë¤Î¤ÇÆ±¤¸¥á¥¢¥É¤ÇÅĞÏ¿ÉÔ²Ä
+	//ç¾ä¼šå“¡ã®åˆ¤å®š â†’ã€€ç¾ä¼šå“¡ã‚‚ã—ãã¯ä»®ç™»éŒ²ä¸­ã¯ã€ãƒ¡ã‚¢ãƒ‰ä¸€æ„ãŒå‰æã«ãªã£ã¦ã‚‹ã®ã§åŒã˜ãƒ¡ã‚¢ãƒ‰ã§ç™»éŒ²ä¸å¯
 	if (strlen($array["email"]) > 0) {
 		$sql = "SELECT customer_id FROM dtb_customer WHERE email ILIKE ? escape '#' AND (status = 1 OR status = 2) AND del_flg = 0 AND customer_id <> ?";
 		$checkMail = ereg_replace( "_", "#_", $array["email"]);
 		$result = $objConn->getAll($sql, array($checkMail, $array["customer_id"]));
 		if (count($result) > 0) {
-			$objErr->arrErr["email"] .= "¢¨ ¤¹¤Ç¤ËÅĞÏ¿¤µ¤ì¤Æ¤¤¤ë¥á¡¼¥ë¥¢¥É¥ì¥¹¤Ç¤¹¡£";
+			$objErr->arrErr["email"] .= "â€» ã™ã§ã«ç™»éŒ²ã•ã‚Œã¦ã„ã‚‹ãƒ¡ãƒ¼ãƒ«ã‚¢ãƒ‰ãƒ¬ã‚¹ã§ã™ã€‚";
 		} 
 	}
 	
-	$objErr->doFunc(array('¥á¡¼¥ë¥¢¥É¥ì¥¹(¥â¥Ğ¥¤¥ë)', "email_mobile", MTEXT_LEN) ,array("EMAIL_CHECK", "EMAIL_CHAR_CHECK", "MAX_LENGTH_CHECK"));
-	//¸½²ñ°÷¤ÎÈ½Äê ¢ª¡¡¸½²ñ°÷¤â¤·¤¯¤Ï²¾ÅĞÏ¿Ãæ¤Ï¡¢¥á¥¢¥É°ì°Õ¤¬Á°Äó¤Ë¤Ê¤Ã¤Æ¤ë¤Î¤ÇÆ±¤¸¥á¥¢¥É¤ÇÅĞÏ¿ÉÔ²Ä
+	$objErr->doFunc(array('ãƒ¡ãƒ¼ãƒ«ã‚¢ãƒ‰ãƒ¬ã‚¹(ãƒ¢ãƒã‚¤ãƒ«)', "email_mobile", MTEXT_LEN) ,array("EMAIL_CHECK", "EMAIL_CHAR_CHECK", "MAX_LENGTH_CHECK"));
+	//ç¾ä¼šå“¡ã®åˆ¤å®š â†’ã€€ç¾ä¼šå“¡ã‚‚ã—ãã¯ä»®ç™»éŒ²ä¸­ã¯ã€ãƒ¡ã‚¢ãƒ‰ä¸€æ„ãŒå‰æã«ãªã£ã¦ã‚‹ã®ã§åŒã˜ãƒ¡ã‚¢ãƒ‰ã§ç™»éŒ²ä¸å¯
 	if (strlen($array["email_mobile"]) > 0) {
 		$sql = "SELECT customer_id FROM dtb_customer WHERE email_mobile ILIKE ? escape '#' AND (status = 1 OR status = 2) AND del_flg = 0 AND customer_id <> ?";
 		$checkMail = ereg_replace( "_", "#_", $array["email_mobile"]);
 		$result = $objConn->getAll($sql, array($checkMail, $array["customer_id"]));
 		if (count($result) > 0) {
-			$objErr->arrErr["email_mobile"] .= "¢¨ ¤¹¤Ç¤ËÅĞÏ¿¤µ¤ì¤Æ¤¤¤ë¥á¡¼¥ë¥¢¥É¥ì¥¹(¥â¥Ğ¥¤¥ë)¤Ç¤¹¡£";
+			$objErr->arrErr["email_mobile"] .= "â€» ã™ã§ã«ç™»éŒ²ã•ã‚Œã¦ã„ã‚‹ãƒ¡ãƒ¼ãƒ«ã‚¢ãƒ‰ãƒ¬ã‚¹(ãƒ¢ãƒã‚¤ãƒ«)ã§ã™ã€‚";
 		} 
 	}
 	
 	
-	$objErr->doFunc(array("¤ªÅÅÏÃÈÖ¹æ1", 'tel01'), array("EXIST_CHECK"));
-	$objErr->doFunc(array("¤ªÅÅÏÃÈÖ¹æ2", 'tel02'), array("EXIST_CHECK"));
-	$objErr->doFunc(array("¤ªÅÅÏÃÈÖ¹æ3", 'tel03'), array("EXIST_CHECK"));
-	$objErr->doFunc(array("¤ªÅÅÏÃÈÖ¹æ", "tel01", "tel02", "tel03", TEL_LEN) ,array("TEL_CHECK"));
-	$objErr->doFunc(array("FAXÈÖ¹æ", "fax01", "fax02", "fax03", TEL_LEN) ,array("TEL_CHECK"));
-	$objErr->doFunc(array("¤´À­ÊÌ", "sex") ,array("SELECT_CHECK", "NUM_CHECK")); 
-	$objErr->doFunc(array("¤´¿¦¶È", "job") ,array("NUM_CHECK"));
+	$objErr->doFunc(array("ãŠé›»è©±ç•ªå·1", 'tel01'), array("EXIST_CHECK"));
+	$objErr->doFunc(array("ãŠé›»è©±ç•ªå·2", 'tel02'), array("EXIST_CHECK"));
+	$objErr->doFunc(array("ãŠé›»è©±ç•ªå·3", 'tel03'), array("EXIST_CHECK"));
+	$objErr->doFunc(array("ãŠé›»è©±ç•ªå·", "tel01", "tel02", "tel03", TEL_LEN) ,array("TEL_CHECK"));
+	$objErr->doFunc(array("FAXç•ªå·", "fax01", "fax02", "fax03", TEL_LEN) ,array("TEL_CHECK"));
+	$objErr->doFunc(array("ã”æ€§åˆ¥", "sex") ,array("SELECT_CHECK", "NUM_CHECK")); 
+	$objErr->doFunc(array("ã”è·æ¥­", "job") ,array("NUM_CHECK"));
 	if ($array["password"] != DEFAULT_PASSWORD) {
-		$objErr->doFunc(array("¥Ñ¥¹¥ï¡¼¥É", 'password', PASSWORD_LEN1, PASSWORD_LEN2), array("EXIST_CHECK", "ALNUM_CHECK", "NUM_RANGE_CHECK"));
+		$objErr->doFunc(array("ãƒ‘ã‚¹ãƒ¯ãƒ¼ãƒ‰", 'password', PASSWORD_LEN1, PASSWORD_LEN2), array("EXIST_CHECK", "ALNUM_CHECK", "NUM_RANGE_CHECK"));
 	}
-	$objErr->doFunc(array("¥Ñ¥¹¥ï¡¼¥É¤òËº¤ì¤¿¤È¤­¤Î¥Ò¥ó¥È ¼ÁÌä", "reminder") ,array("SELECT_CHECK", "NUM_CHECK")); 
-	$objErr->doFunc(array("¥Ñ¥¹¥ï¡¼¥É¤òËº¤ì¤¿¤È¤­¤Î¥Ò¥ó¥È Åú¤¨", "reminder_answer", STEXT_LEN) ,array("EXIST_CHECK", "MAX_LENGTH_CHECK"));
-	$objErr->doFunc(array("¥á¡¼¥ë¥Ş¥¬¥¸¥ó", "mailmaga_flg") ,array("SELECT_CHECK", "NUM_CHECK"));
-	$objErr->doFunc(array("À¸Ç¯·îÆü", "year", "month", "day"), array("CHECK_DATE"));
-	$objErr->doFunc(array("SHOPÍÑ¥á¥â", 'note', LTEXT_LEN), array("MAX_LENGTH_CHECK"));
-	$objErr->doFunc(array("½ê»ı¥İ¥¤¥ó¥È", "point", TEL_LEN) ,array("MAX_LENGTH_CHECK", "NUM_CHECK"));
+	$objErr->doFunc(array("ãƒ‘ã‚¹ãƒ¯ãƒ¼ãƒ‰ã‚’å¿˜ã‚ŒãŸã¨ãã®ãƒ’ãƒ³ãƒˆ è³ªå•", "reminder") ,array("SELECT_CHECK", "NUM_CHECK")); 
+	$objErr->doFunc(array("ãƒ‘ã‚¹ãƒ¯ãƒ¼ãƒ‰ã‚’å¿˜ã‚ŒãŸã¨ãã®ãƒ’ãƒ³ãƒˆ ç­”ãˆ", "reminder_answer", STEXT_LEN) ,array("EXIST_CHECK", "MAX_LENGTH_CHECK"));
+	$objErr->doFunc(array("ãƒ¡ãƒ¼ãƒ«ãƒã‚¬ã‚¸ãƒ³", "mailmaga_flg") ,array("SELECT_CHECK", "NUM_CHECK"));
+	$objErr->doFunc(array("ç”Ÿå¹´æœˆæ—¥", "year", "month", "day"), array("CHECK_DATE"));
+	$objErr->doFunc(array("SHOPç”¨ãƒ¡ãƒ¢", 'note', LTEXT_LEN), array("MAX_LENGTH_CHECK"));
+	$objErr->doFunc(array("æ‰€æŒãƒã‚¤ãƒ³ãƒˆ", "point", TEL_LEN) ,array("MAX_LENGTH_CHECK", "NUM_CHECK"));
 	return $objErr->arrErr;
 	
 }
 
-//¹ØÆşÍúÎò¾ğÊó¤Î¼èÆÀ
+//è³¼å…¥å±¥æ­´æƒ…å ±ã®å–å¾—
 function lfPurchaseHistory($customer_id){
 		global $objQuery;
 		global $objPage;
@@ -309,30 +309,30 @@ function lfPurchaseHistory($customer_id){
 		$objPage->tpl_pageno = $_POST['search_pageno'];
 		$objPage->edit_customer_id = $customer_id;
 
-		// ¥Ú¡¼¥¸Á÷¤ê¤Î½èÍı
+		// ãƒšãƒ¼ã‚¸é€ã‚Šã®å‡¦ç†
 		$page_max = SEARCH_PMAX;
-		//¹ØÆşÍúÎò¤Î·ï¿ô¼èÆÀ
+		//è³¼å…¥å±¥æ­´ã®ä»¶æ•°å–å¾—
 		$objPage->tpl_linemax = $objQuery->count("dtb_order","customer_id=? AND del_flg = 0 ", array($customer_id));
 		$linemax = $objPage->tpl_linemax;
 		
-		// ¥Ú¡¼¥¸Á÷¤ê¤Î¼èÆÀ
+		// ãƒšãƒ¼ã‚¸é€ã‚Šã®å–å¾—
 		$objNavi = new SC_PageNavi($_POST['search_pageno'], $linemax, $page_max, "fnNaviSearchPage2", NAVI_PMAX);
 		$objPage->arrPagenavi = $objNavi->arrPagenavi;
 		$objPage->arrPagenavi['mode'] = 'edit';
 		$startno = $objNavi->start_row;
 		
-		// ¼èÆÀÈÏ°Ï¤Î»ØÄê(³«»Ï¹ÔÈÖ¹æ¡¢¹Ô¿ô¤Î¥»¥Ã¥È)
+		// å–å¾—ç¯„å›²ã®æŒ‡å®š(é–‹å§‹è¡Œç•ªå·ã€è¡Œæ•°ã®ã‚»ãƒƒãƒˆ)
 		$objQuery->setlimitoffset($page_max, $startno);
-		// É½¼¨½ç½ø
+		// è¡¨ç¤ºé †åº
 		$order = "order_id DESC";
 		$objQuery->setorder($order);
-		//¹ØÆşÍúÎò¾ğÊó¤Î¼èÆÀ
+		//è³¼å…¥å±¥æ­´æƒ…å ±ã®å–å¾—
 		$arrPurchaseHistory = $objQuery->select("*", "dtb_order", "customer_id=? AND del_flg = 0 ", array($customer_id));
 		
 		return $arrPurchaseHistory;
 }
 
-//³ÎÇ§¥Ú¡¼¥¸ÍÑ¥Ñ¥¹¥ï¡¼¥ÉÉ½¼¨ÍÑ
+//ç¢ºèªãƒšãƒ¼ã‚¸ç”¨ãƒ‘ã‚¹ãƒ¯ãƒ¼ãƒ‰è¡¨ç¤ºç”¨
 
 function lfPassLen($passlen){
 	$ret = "";

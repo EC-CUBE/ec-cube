@@ -1,18 +1,22 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <projectDescription>
-	<name>ec-cube.net-rel</name>
+	<name>feature-module-update</name>
 	<comment></comment>
 	<projects>
 	</projects>
 	<buildSpec>
 		<buildCommand>
-			<name>org.trustudio.oss.core.PHPscriptbuilder</name>
+			<name>org.eclipse.php.core.PhpIncrementalProjectBuilder</name>
+			<arguments>
+			</arguments>
+		</buildCommand>
+		<buildCommand>
+			<name>org.eclipse.wst.validation.validationbuilder</name>
 			<arguments>
 			</arguments>
 		</buildCommand>
 	</buildSpec>
 	<natures>
-		<nature>org.trustudio.oss.core.scriptnature</nature>
-		<nature>org.trustudio.php.core.phpnature</nature>
+		<nature>org.eclipse.php.core.PHPNature</nature>
 	</natures>
 </projectDescription>

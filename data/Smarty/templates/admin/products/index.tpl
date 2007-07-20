@@ -7,7 +7,7 @@
 *}-->
 
 <script type="text/javascript">
-// URL¤ÎÉ½¼¨ÈóÉ½¼¨ÀÚ¤êÂØ¤¨
+// URLã®è¡¨ç¤ºéè¡¨ç¤ºåˆ‡ã‚Šæ›¿ãˆ
 function lfnDispChange(){
 	inner_id = 'switch';
 
@@ -21,7 +21,7 @@ function lfnDispChange(){
 			disp_id = 'disp_cat'+i;
 			document.getElementById(disp_id).style.display="none";
 			
-			document.getElementById(inner_id).innerHTML = '	URL <a href="#" onClick="lfnDispChange();"> <FONT Color="#FFFF99"> >> ¥«¥Æ¥´¥êÉ½¼¨</FONT></a>';
+			document.getElementById(inner_id).innerHTML = '	URL <a href="#" onClick="lfnDispChange();"> <FONT Color="#FFFF99"> >> ã‚«ãƒ†ã‚´ãƒªè¡¨ç¤º</FONT></a>';
 		}
 	}else{
 		for (i = 1; i <= cnt; i++) {
@@ -31,7 +31,7 @@ function lfnDispChange(){
 			disp_id = 'disp_cat'+i;
 			document.getElementById(disp_id).style.display="";
 			
-			document.getElementById(inner_id).innerHTML = '	¥«¥Æ¥´¥ê <a href="#" onClick="lfnDispChange();"> <FONT Color="#FFFF99"> >> URLÉ½¼¨</FONT></a>';
+			document.getElementById(inner_id).innerHTML = '	ã‚«ãƒ†ã‚´ãƒª <a href="#" onClick="lfnDispChange();"> <FONT Color="#FFFF99"> >> URLè¡¨ç¤º</FONT></a>';
 		}
 	}
 
@@ -39,7 +39,7 @@ function lfnDispChange(){
 
 </script>
 
-<!--¡ú¡ú¥á¥¤¥ó¥³¥ó¥Æ¥ó¥Ä¡ú¡ú-->
+<!--â˜…â˜…ãƒ¡ã‚¤ãƒ³ã‚³ãƒ³ãƒ†ãƒ³ãƒ„â˜…â˜…-->
 <table width="878" border="0" cellspacing="0" cellpadding="0" summary=" ">
 <form name="search_form" id="search_form" method="post" action="<!--{$smarty.server.PHP_SELF|escape}-->">
 <input type="hidden" name="mode" value="search">
@@ -50,12 +50,12 @@ function lfnDispChange(){
 <!--{/foreach}-->
 	<tr valign="top">
 		<td background="<!--{$smarty.const.URL_DIR}-->img/contents/navi_bg.gif" height="402">
-			<!-- ¥µ¥Ö¥Ê¥Ó -->
+			<!-- ã‚µãƒ–ãƒŠãƒ“ -->
 			<!--{include file=$tpl_subnavi}-->
 		</td>
 		<td class="mainbg">
 		<table width="737" border="0" cellspacing="0" cellpadding="0" summary=" ">
-			<!--¥á¥¤¥ó¥¨¥ê¥¢-->
+			<!--ãƒ¡ã‚¤ãƒ³ã‚¨ãƒªã‚¢-->
 			<tr>
 				<td align="center">
 				<table width="706" border="0" cellspacing="0" cellpadding="0" summary=" ">
@@ -72,7 +72,7 @@ function lfnDispChange(){
 							</tr>
 							<tr>
 								<td background="<!--{$smarty.const.URL_DIR}-->img/contents/contents_title_left_bg.gif"><img src="<!--{$smarty.const.URL_DIR}-->img/contents/contents_title_left.gif" width="22" height="12" alt=""></td>
-								<td bgcolor="#636469" width="638" class="fs14n"><span class="white"><!--¥³¥ó¥Æ¥ó¥Ä¥¿¥¤¥È¥ë-->¸¡º÷¾ò·ïÀßÄê</span></td>
+								<td bgcolor="#636469" width="638" class="fs14n"><span class="white"><!--ã‚³ãƒ³ãƒ†ãƒ³ãƒ„ã‚¿ã‚¤ãƒˆãƒ«-->æ¤œç´¢æ¡ä»¶è¨­å®š</span></td>
 								<td background="<!--{$smarty.const.URL_DIR}-->img/contents/contents_title_right_bg.gif"><img src="<!--{$smarty.const.URL_DIR}-->img/common/_.gif" width="18" height="1" alt=""></td>
 							</tr>
 							<tr>
@@ -82,66 +82,66 @@ function lfnDispChange(){
 								<td colspan="3"><img src="<!--{$smarty.const.URL_DIR}-->img/contents/main_bar.jpg" width="678" height="10" alt=""></td>
 							</tr>
 						</table>
-						<!--¸¡º÷¾ò·ïÀßÄê¥Æ¡¼¥Ö¥ë¤³¤³¤«¤é-->
+						<!--æ¤œç´¢æ¡ä»¶è¨­å®šãƒ†ãƒ¼ãƒ–ãƒ«ã“ã“ã‹ã‚‰-->
 						<table width="678" border="0" cellspacing="1" cellpadding="8" summary=" ">
 							<tr class="fs12">
-								<td bgcolor="#f2f1ec" width="110">¾¦ÉÊID</td>
+								<td bgcolor="#f2f1ec" width="110">å•†å“ID</td>
 								<td bgcolor="#ffffff" width="194"><span class="red"><!--{$arrErr.search_product_id}--></span><input type="text" name="search_product_id" value="<!--{$arrForm.search_product_id|escape}-->" size="30" class="box30" style="<!--{$arrErr.search_product_id|sfGetErrorColor}-->"/></td>
-								<td bgcolor="#f2f1ec" width="110">µ¬³ÊÌ¾¾Î</td>
+								<td bgcolor="#f2f1ec" width="110">è¦æ ¼åç§°</td>
 								<td bgcolor="#ffffff" width="195"><span class="red"><!--{$arrErr.search_product_class_name}--></span><input type="text" name="search_product_class_name" value="<!--{$arrForm.search_product_class_name|escape}-->" size="30" class="box30"style="<!--{$arrErr.search_product_class_name|sfGetErrorColor}-->" /></td>
 							</tr>
 							<tr class="fs12">
-								<td bgcolor="#f2f1ec" width="110">¾¦ÉÊ¥³¡¼¥É</td>
+								<td bgcolor="#f2f1ec" width="110">å•†å“ã‚³ãƒ¼ãƒ‰</td>
 								<td bgcolor="#ffffff" width="194"><input type="text" name="search_product_code" value="<!--{$arrForm.search_product_code|escape}-->" size="30" class="box30" /></td>
-								<td bgcolor="#f2f1ec" width="110">¾¦ÉÊÌ¾</td>
+								<td bgcolor="#f2f1ec" width="110">å•†å“å</td>
 								<td bgcolor="#ffffff" width="195"><input type="text" name="search_name" value="<!--{$arrForm.search_name|escape}-->" size="30" class="box30" /></td>
 							</tr>
 							<tr class="fs12">
-								<td bgcolor="#f2f1ec" width="110">¥«¥Æ¥´¥ê</td>
+								<td bgcolor="#f2f1ec" width="110">ã‚«ãƒ†ã‚´ãƒª</td>
 								<td bgcolor="#ffffff" width="194">
 									<select name="search_category_id" style="<!--{if $arrErr.search_category_id != ""}-->background-color: <!--{$smarty.const.ERR_COLOR}--><!--{/if}-->">
-									<option value="">ÁªÂò¤·¤Æ¤¯¤À¤µ¤¤</option>
+									<option value="">é¸æŠã—ã¦ãã ã•ã„</option>
 									<!--{html_options options=$arrCatList selected=$arrForm.search_category_id}-->
 									</select>
 								</td>
-								<td bgcolor="#f2f1ec" width="110">¼ïÊÌ</td>
+								<td bgcolor="#f2f1ec" width="110">ç¨®åˆ¥</td>
 								<td bgcolor="#ffffff" width="195">
 									<!--{html_checkboxes name="search_status" options=$arrDISP selected=$arrForm.search_status}-->
 								</td>
 							</tr class="fs12">
 							<tr class="fs12n">
-								<td bgcolor="#f2f1ec" width="110">ÅĞÏ¿¡¦¹¹¿·Æü</td>
+								<td bgcolor="#f2f1ec" width="110">ç™»éŒ²ãƒ»æ›´æ–°æ—¥</td>
 								<td bgcolor="#ffffff" width="499" colspan=3>
 									<span class="red"><!--{$arrErr.search_startyear}--></span>
 									<span class="red"><!--{$arrErr.search_endyear}--></span>		
 									<select name="search_startyear" style="<!--{$arrErr.search_startyear|sfGetErrorColor}-->">
 									<option value="">----</option>
 									<!--{html_options options=$arrStartYear selected=$arrForm.search_startyear}-->
-									</select>Ç¯
+									</select>å¹´
 									<select name="search_startmonth" style="<!--{$arrErr.search_startyear|sfGetErrorColor}-->">
 									<option value="">--</option>
 									<!--{html_options options=$arrStartMonth selected=$arrForm.search_startmonth}-->
-									</select>·î
+									</select>æœˆ
 									<select name="search_startday" style="<!--{$arrErr.search_startyear|sfGetErrorColor}-->">
 									<option value="">--</option>
 									<!--{html_options options=$arrStartDay selected=$arrForm.search_startday}-->
-									</select>Æü¡Á
+									</select>æ—¥ã€œ
 									<select name="search_endyear" style="<!--{$arrErr.search_endyear|sfGetErrorColor}-->">
 									<option value="">----</option>
 									<!--{html_options options=$arrEndYear selected=$arrForm.search_endyear}-->
-									</select>Ç¯
+									</select>å¹´
 									<select name="search_endmonth" style="<!--{$arrErr.search_endyear|sfGetErrorColor}-->">
 									<option value="">--</option>
 									<!--{html_options options=$arrEndMonth selected=$arrForm.search_endmonth}-->
-									</select>·î
+									</select>æœˆ
 									<select name="search_endday" style="<!--{$arrErr.search_endyear|sfGetErrorColor}-->">
 									<option value="">--</option>
 									<!--{html_options options=$arrEndDay selected=$arrForm.search_endday}-->
-									</select>Æü
+									</select>æ—¥
 								</td>
 							</tr>
 							<tr class="fs12n">
-								<td bgcolor="#f2f1ec" width="110">¥¹¥Æ¡¼¥¿¥¹</td>
+								<td bgcolor="#f2f1ec" width="110">ã‚¹ãƒ†ãƒ¼ã‚¿ã‚¹</td>
 								<td bgcolor="#ffffff" width="499" colspan="3">
 								<!--{html_checkboxes name="search_product_flag" options=$arrSTATUS selected=$arrForm.search_product_flag}-->
 								</td>
@@ -159,15 +159,15 @@ function lfnDispChange(){
 								<td bgcolor="#e9e7de" align="center">
 								<table border="0" cellspacing="0" cellpadding="0" summary=" ">
 									<tr>
-										<td class="fs12n">¸¡º÷·ë²ÌÉ½¼¨·ï¿ô
+										<td class="fs12n">æ¤œç´¢çµæœè¡¨ç¤ºä»¶æ•°
 											<!--{assign var=key value="search_page_max"}-->
 											<span class="red12"><!--{$arrErr[$key]}--></span>
 											<select name="<!--{$key}-->" style="<!--{$arrErr[$key]|sfGetErrorColor}-->">
 											<!--{html_options options=$arrPageMax selected=$arrForm.search_page_max}-->
-											</select> ·ï
+											</select> ä»¶
 										</td>
 										<td><img src="<!--{$smarty.const.URL_DIR}-->img/common/_.gif" width="10" height="1" alt=""></td>
-										<td><input type="image" name="subm" onMouseover="chgImgImageSubmit('<!--{$smarty.const.URL_DIR}-->img/contents/btn_search_on.jpg',this)" onMouseout="chgImgImageSubmit('<!--{$smarty.const.URL_DIR}-->img/contents/btn_search.jpg',this)" src="<!--{$smarty.const.URL_DIR}-->img/contents/btn_search.jpg" width="123" height="24" alt="¤³¤Î¾ò·ï¤Ç¸¡º÷¤¹¤ë" border="0"></td>
+										<td><input type="image" name="subm" onMouseover="chgImgImageSubmit('<!--{$smarty.const.URL_DIR}-->img/contents/btn_search_on.jpg',this)" onMouseout="chgImgImageSubmit('<!--{$smarty.const.URL_DIR}-->img/contents/btn_search.jpg',this)" src="<!--{$smarty.const.URL_DIR}-->img/contents/btn_search.jpg" width="123" height="24" alt="ã“ã®æ¡ä»¶ã§æ¤œç´¢ã™ã‚‹" border="0"></td>
 									</tr>
 								</table>
 								</td>
@@ -177,7 +177,7 @@ function lfnDispChange(){
 								<td colspan="3"><img src="<!--{$smarty.const.URL_DIR}-->img/contents/tbl_bottom.gif" width="678" height="8" alt=""></td>
 							</tr>
 						</table>
-						<!--¸¡º÷¾ò·ïÀßÄê¥Æ¡¼¥Ö¥ë¤³¤³¤Ş¤Ç-->
+						<!--æ¤œç´¢æ¡ä»¶è¨­å®šãƒ†ãƒ¼ãƒ–ãƒ«ã“ã“ã¾ã§-->
 						</td>
 						<td background="<!--{$smarty.const.URL_DIR}-->img/contents/main_right.jpg"><img src="<!--{$smarty.const.URL_DIR}-->img/common/_.gif" width="14" height="1" alt=""></td>
 					</tr>
@@ -188,17 +188,17 @@ function lfnDispChange(){
 				</table>
 				</td>
 			</tr>
-			<!--¥á¥¤¥ó¥¨¥ê¥¢-->
+			<!--ãƒ¡ã‚¤ãƒ³ã‚¨ãƒªã‚¢-->
 		</table>
 		</td>
 	</tr>
 </form>	
 </table>
-<!--¡ú¡ú¥á¥¤¥ó¥³¥ó¥Æ¥ó¥Ä¡ú¡ú-->
+<!--â˜…â˜…ãƒ¡ã‚¤ãƒ³ã‚³ãƒ³ãƒ†ãƒ³ãƒ„â˜…â˜…-->
 
 <!--{if count($arrErr) == 0 and ($smarty.post.mode == 'search' or $smarty.post.mode == 'delete')}-->
 
-<!--¡ú¡ú¸¡º÷·ë²Ì°ìÍ÷¡ú¡ú-->
+<!--â˜…â˜…æ¤œç´¢çµæœä¸€è¦§â˜…â˜…-->
 <table width="878" border="0" cellspacing="0" cellpadding="0" summary=" ">
 <form name="form1" id="form1" method="post" action="<!--{$smarty.server.PHP_SELF|escape}-->">
 <input type="hidden" name="mode" value="search">
@@ -214,7 +214,7 @@ function lfnDispChange(){
 			<tr>
 				<td><img src="<!--{$smarty.const.URL_DIR}-->img/contents/search_left.gif" width="19" height="22" alt=""></td>
 				<td>
-				<!--¸¡º÷·ë²Ì-->
+				<!--æ¤œç´¢çµæœ-->
 				<table border="0" cellspacing="0" cellpadding="0" summary=" ">
 					<tr>
 						<td><img src="<!--{$smarty.const.URL_DIR}-->img/contents/reselt_left_top.gif" width="22" height="5" alt=""></td>
@@ -223,7 +223,7 @@ function lfnDispChange(){
 					</tr>
 					<tr>
 						<td background="<!--{$smarty.const.URL_DIR}-->img/contents/reselt_left_bg.gif"><img src="<!--{$smarty.const.URL_DIR}-->img/contents/reselt_left_middle.gif" width="22" height="12" alt=""></td>
-						<td bgcolor="#393a48" class="white10">¸¡º÷·ë²Ì°ìÍ÷¡¡<span class="reselt"><!--¸¡º÷·ë²Ì¿ô--><!--{$tpl_linemax}-->·ï</span>&nbsp;¤¬³ºÅö¤·¤Ş¤·¤¿¡£</td>
+						<td bgcolor="#393a48" class="white10">æ¤œç´¢çµæœä¸€è¦§ã€€<span class="reselt"><!--æ¤œç´¢çµæœæ•°--><!--{$tpl_linemax}-->ä»¶</span>&nbsp;ãŒè©²å½“ã—ã¾ã—ãŸã€‚</td>
 						<td background="<!--{$smarty.const.URL_DIR}-->img/contents/reselt_right_bg.gif"><img src="<!--{$smarty.const.URL_DIR}-->img/common/_.gif" width="22" height="8" alt=""></td>
 					</tr>
 					<tr>
@@ -232,15 +232,15 @@ function lfnDispChange(){
 						<td><img src="<!--{$smarty.const.URL_DIR}-->img/contents/reselt_right_bottom.gif" width="22" height="5" alt=""></td>
 					</tr>
 				</table>
-				<!--¸¡º÷·ë²Ì-->
+				<!--æ¤œç´¢çµæœ-->
 				<!--{if $smarty.const.ADMIN_MODE == '1'}-->
-				<input type="button" name="subm" value="¸¡º÷·ë²Ì¤ò¤¹¤Ù¤Æºï½ü" onclick="fnModeSubmit('delete_all','','');" />
+				<input type="button" name="subm" value="æ¤œç´¢çµæœã‚’ã™ã¹ã¦å‰Šé™¤" onclick="fnModeSubmit('delete_all','','');" />
 				<!--{/if}-->
 				</td>
 				<td><img src="<!--{$smarty.const.URL_DIR}-->img/common/_.gif" width="8" height="1" alt=""></td>
 				<td><a href="#" onmouseover="chgImg('<!--{$smarty.const.URL_DIR}-->img/contents/btn_csv_on.jpg','btn_csv');" onmouseout="chgImg('<!--{$smarty.const.URL_DIR}-->img/contents/btn_csv.jpg','btn_csv');"  onclick="fnModeSubmit('csv','','');" ><img src="<!--{$smarty.const.URL_DIR}-->img/contents/btn_csv.jpg" width="99" height="22" alt="CSV DOWNLOAD" border="0" name="btn_csv" id="btn_csv"></a></td>
 				<td><img src="<!--{$smarty.const.URL_DIR}-->img/common/_.gif" width="8" height="1" alt=""></td>
-				<td><a href="../contents/csv.php?tpl_subno_csv=product"><span class="fs12n"> >> CSV½ĞÎÏ¹àÌÜÀßÄê </span></a></td>
+				<td><a href="../contents/csv.php?tpl_subno_csv=product"><span class="fs12n"> >> CSVå‡ºåŠ›é …ç›®è¨­å®š </span></a></td>
 			</tr>
 		</table>
 		</td>
@@ -261,34 +261,34 @@ function lfnDispChange(){
 				<tr>
 					<td bgcolor="#cccccc">
 					
-					<!--¸¡º÷·ë²ÌÉ½¼¨¥Æ¡¼¥Ö¥ë-->
+					<!--æ¤œç´¢çµæœè¡¨ç¤ºãƒ†ãƒ¼ãƒ–ãƒ«-->
 					<table width="840" border="0" cellspacing="1" cellpadding="5" summary=" ">
 						<tr bgcolor="#636469" align="center" class="fs12n">
-							<td width="50" rowspan="2"><span class="white">¾¦ÉÊID</span></td>
-							<td width="90" rowspan="2"><span class="white">¾¦ÉÊ²èÁü</span></td>
-							<td width="90"><span class="white">¾¦ÉÊ¥³¡¼¥É</span></td>
-							<td width="350"><span class="white">¾¦ÉÊÌ¾</span></td>
-							<td width="60"><span class="white">ºß¸Ë</span></td>
-							<td width="50" rowspan="2"><span class="white">ÊÔ½¸</span></td>
-							<td width="50" rowspan="2"><span class="white">³ÎÇ§</span></td>
+							<td width="50" rowspan="2"><span class="white">å•†å“ID</span></td>
+							<td width="90" rowspan="2"><span class="white">å•†å“ç”»åƒ</span></td>
+							<td width="90"><span class="white">å•†å“ã‚³ãƒ¼ãƒ‰</span></td>
+							<td width="350"><span class="white">å•†å“å</span></td>
+							<td width="60"><span class="white">åœ¨åº«</span></td>
+							<td width="50" rowspan="2"><span class="white">ç·¨é›†</span></td>
+							<td width="50" rowspan="2"><span class="white">ç¢ºèª</span></td>
 							<!--{if $smarty.const.OPTION_CLASS_REGIST == 1}-->
-							<td width="50" rowspan="2"><span class="white">µ¬³Ê</span></td>
+							<td width="50" rowspan="2"><span class="white">è¦æ ¼</span></td>
 							<!--{/if}-->
-							<td width="50"><span class="white">ºï½ü</span></td>
+							<td width="50"><span class="white">å‰Šé™¤</span></td>
 						</tr>
 						<tr bgcolor="#636469" align="center" class="fs12n">
-							<td width="90"><span class="white">²Á³Ê(±ß)</span></td>
+							<td width="90"><span class="white">ä¾¡æ ¼(å††)</span></td>
 							<td width="430">
 								<span class="white"  id="switch">
-									¥«¥Æ¥´¥ê <a href="#" onClick="lfnDispChange();"> <FONT Color="#FFFF99"> >> URLÉ½¼¨</FONT></a>
+									ã‚«ãƒ†ã‚´ãƒª <a href="#" onClick="lfnDispChange();"> <FONT Color="#FFFF99"> >> URLè¡¨ç¤º</FONT></a>
 								</span>
 							</td>
-							<td width="60"><span class="white">¼ïÊÌ</span></td>
-							<td width="50"><span class="white">Ê£À½</span></td>
+							<td width="60"><span class="white">ç¨®åˆ¥</span></td>
+							<td width="50"><span class="white">è¤‡è£½</span></td>
 						</tr>
 
 						<!--{section name=cnt loop=$arrProducts}-->
-						<!--¢§¾¦ÉÊ<!--{$smarty.section.cnt.iteration}-->-->
+						<!--â–¼å•†å“<!--{$smarty.section.cnt.iteration}-->-->
 						<!--{assign var=status value="`$arrProducts[cnt].status`"}-->
 						<tr bgcolor="<!--{$arrPRODUCTSTATUS_COLOR[$status]}-->" class="fs12n">
 							<td rowspan="2" align="center"><!--{$arrProducts[cnt].product_id}--></td>
@@ -303,23 +303,23 @@ function lfnDispChange(){
 							<td><!--{$arrProducts[cnt].product_code|escape|default:"-"}--></td>
 							<td><!--{$arrProducts[cnt].name|escape}--></td>
 							<td align="center">
-							<!--{* ºß¸Ë *}-->
+							<!--{* åœ¨åº« *}-->
 							<!--{if $arrProducts[cnt].stock_unlimited == '1'}-->
-							ÌµÀ©¸Â
+							ç„¡åˆ¶é™
 							<!--{else}-->
 							<!--{$arrProducts[cnt].stock|escape|default:"-"}-->
 							<!--{/if}-->
 							</td>
-							<td align="center" rowspan="2"><span class="icon_edit"><a href="<!--{$smarty.const.URL_DIR}-->" onclick="fnChangeAction('./product.php'); fnModeSubmit('pre_edit', 'product_id', <!--{$arrProducts[cnt].product_id}-->); return false;" >ÊÔ½¸</a></span></td>
-							<td align="center" rowspan="2"><span class="icon_confirm"><a href="<!--{$smarty.const.SITE_URL|sfTrimURL}-->/products/detail.php?product_id=<!--{$arrProducts[cnt].product_id}-->&admin=on" target="_blank">³ÎÇ§</a></td>
+							<td align="center" rowspan="2"><span class="icon_edit"><a href="<!--{$smarty.const.URL_DIR}-->" onclick="fnChangeAction('./product.php'); fnModeSubmit('pre_edit', 'product_id', <!--{$arrProducts[cnt].product_id}-->); return false;" >ç·¨é›†</a></span></td>
+							<td align="center" rowspan="2"><span class="icon_confirm"><a href="<!--{$smarty.const.SITE_URL|sfTrimURL}-->/products/detail.php?product_id=<!--{$arrProducts[cnt].product_id}-->&admin=on" target="_blank">ç¢ºèª</a></td>
 							<!--{if $smarty.const.OPTION_CLASS_REGIST == 1}-->
-							<td align="center" rowspan="2"><span class="icon_class"><a href="<!--{$smarty.const.URL_DIR}-->" onclick="fnChangeAction('./product_class.php'); fnModeSubmit('pre_edit', 'product_id', <!--{$arrProducts[cnt].product_id}-->); return false;" >µ¬³Ê</a></td>
+							<td align="center" rowspan="2"><span class="icon_class"><a href="<!--{$smarty.const.URL_DIR}-->" onclick="fnChangeAction('./product_class.php'); fnModeSubmit('pre_edit', 'product_id', <!--{$arrProducts[cnt].product_id}-->); return false;" >è¦æ ¼</a></td>
 							<!--{/if}-->
-							<td align="center"><span class="icon_delete"><a href="<!--{$smarty.const.URL_DIR}-->" onclick="fnSetFormValue('category_id', '<!--{$arrProducts[cnt].category_id}-->'); fnModeSubmit('delete', 'product_id', <!--{$arrProducts[cnt].product_id}-->); return false;">ºï½ü</a></span></td>
+							<td align="center"><span class="icon_delete"><a href="<!--{$smarty.const.URL_DIR}-->" onclick="fnSetFormValue('category_id', '<!--{$arrProducts[cnt].category_id}-->'); fnModeSubmit('delete', 'product_id', <!--{$arrProducts[cnt].product_id}-->); return false;">å‰Šé™¤</a></span></td>
 						</tr>
 						<tr bgcolor="<!--{$arrPRODUCTSTATUS_COLOR[$status]}-->" class="fs12n">
 							<td align="right">
-							<!--{* ²Á³Ê *}-->
+							<!--{* ä¾¡æ ¼ *}-->
 							<!--{if $arrProducts[cnt].price02 != ""}-->
 							<!--{$arrProducts[cnt].price02|number_format}-->
 							<!--{else}-->
@@ -327,7 +327,7 @@ function lfnDispChange(){
 							<!--{/if}-->
 							</td>
 							<td>
-							<!--{* ¥«¥Æ¥´¥êÌ¾ *}-->
+							<!--{* ã‚«ãƒ†ã‚´ãƒªå *}-->
 							<div id="disp_cat<!--{$smarty.section.cnt.iteration}-->" style="display:<!--{$cat_flg}-->">
 							<!--{assign var=key value=$arrProducts[cnt].category_id}-->
 							<!--{$arrCatList[$key]|sfTrim}-->
@@ -338,16 +338,16 @@ function lfnDispChange(){
 							<!--{$smarty.const.SITE_URL|sfTrimURL}-->/products/detail.php?product_id=<!--{$arrProducts[cnt].product_id}-->
 							</div>
 							</td>
-							<!--{* É½¼¨ *}-->
+							<!--{* è¡¨ç¤º *}-->
 							<!--{assign var=key value=$arrProducts[cnt].status}-->
 							<td align="center"><!--{$arrDISP[$key]}--></td>
-							<td align="center"><span class="icon_copy"><a href="<!--{$smarty.const.URL_DIR}-->" onclick="fnChangeAction('./product.php'); fnModeSubmit('copy', 'product_id', <!--{$arrProducts[cnt].product_id}-->); return false;" >Ê£À½</a></span></td>
+							<td align="center"><span class="icon_copy"><a href="<!--{$smarty.const.URL_DIR}-->" onclick="fnChangeAction('./product.php'); fnModeSubmit('copy', 'product_id', <!--{$arrProducts[cnt].product_id}-->); return false;" >è¤‡è£½</a></span></td>
 						</tr>
-						<!--¢¥¾¦ÉÊ<!--{$smarty.section.cnt.iteration}-->-->
+						<!--â–²å•†å“<!--{$smarty.section.cnt.iteration}-->-->
 						<!--{/section}-->
 						<input type="hidden" name="item_cnt" value="<!--{$arrProducts|@count}-->">
 					</table>
-					<!--¸¡º÷·ë²ÌÉ½¼¨¥Æ¡¼¥Ö¥ë-->
+					<!--æ¤œç´¢çµæœè¡¨ç¤ºãƒ†ãƒ¼ãƒ–ãƒ«-->
 					</td>
 				</tr>
 			</table>
@@ -358,5 +358,5 @@ function lfnDispChange(){
 </form>
 </table>		
 
-<!--¡ú¡ú¸¡º÷·ë²Ì°ìÍ÷¡ú¡ú-->		
+<!--â˜…â˜…æ¤œç´¢çµæœä¸€è¦§â˜…â˜…-->		
 <!--{/if}-->

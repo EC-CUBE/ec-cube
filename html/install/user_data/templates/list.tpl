@@ -5,7 +5,7 @@
  *}-->
 <script type="text/javascript">
 <!--
-// ¥»¥ì¥¯¥È¥Ü¥Ã¥¯¥¹¤Ë¹àÌÜ¤ò³ä¤êÅö¤Æ¤ë¡£
+// ã‚»ãƒ¬ã‚¯ãƒˆãƒœãƒƒã‚¯ã‚¹ã«é …ç›®ã‚’å‰²ã‚Šå½“ã¦ã‚‹ã€‚
 function lnSetSelect(name1, name2, id, val) {
 	sele1 = document.form1[name1];
 	sele2 = document.form1[name2];
@@ -15,13 +15,13 @@ function lnSetSelect(name1, name2, id, val) {
 	if(sele1 && sele2) {
 		index = sele1.selectedIndex;
 		
-		// ¥»¥ì¥¯¥È¥Ü¥Ã¥¯¥¹¤Î¥¯¥ê¥¢
+		// ã‚»ãƒ¬ã‚¯ãƒˆãƒœãƒƒã‚¯ã‚¹ã®ã‚¯ãƒªã‚¢
 		count = sele2.options.length;
 		for(i = count; i >= 0; i--) {
 			sele2.options[i] = null;
 		}
 		
-		// ¥»¥ì¥¯¥È¥Ü¥Ã¥¯¥¹¤ËÃÍ¤ò³ä¤êÅö¤Æ¤ë
+		// ã‚»ãƒ¬ã‚¯ãƒˆãƒœãƒƒã‚¯ã‚¹ã«å€¤ã‚’å‰²ã‚Šå½“ã¦ã‚‹
 		len = lists[index].length;
 		for(i = 0; i < len; i++) {
 			sele2.options[i] = new Option(lists[index][i], vals[index][i]);
@@ -34,11 +34,11 @@ function lnSetSelect(name1, name2, id, val) {
 //-->
 </script>
 
-<!--¢§CONTENTS-->
+<!--â–¼CONTENTS-->
 <table width="" cellspacing="0" cellpadding="0" summary=" ">
 	<tr>
 		<td bgcolor="#ffffff" align="left">
-		<!--¢§MAIN CONTENTS-->
+		<!--â–¼MAIN CONTENTS-->
 		<table cellspacing="0" cellpadding="0" summary=" " id="container">
 			<tr valign="top">
 				<form name="form1" id="form1" method="post" action="<!--{$smarty.server.REQUEST_URI|escape}-->">
@@ -48,7 +48,7 @@ function lnSetSelect(name1, name2, id, val) {
 				<input type="hidden" name="product_id" value="">
 
 				<td id="right">
-				<!--¥¿¥¤¥È¥ë¤³¤³¤«¤é-->
+				<!--ã‚¿ã‚¤ãƒˆãƒ«ã“ã“ã‹ã‚‰-->
 				<table width="" border="0" cellspacing="0" cellpadding="0" summary=" ">
 					<tr><td colspan="3"><img src="<!--{$smarty.const.URL_DIR}-->img/products/title_top.gif" width="580" height="8" alt=""></td></tr>
 					<tr bgcolor="#ffebca">
@@ -56,7 +56,7 @@ function lnSetSelect(name1, name2, id, val) {
 						<td>
 						<table width="546" border="0" cellspacing="0" cellpadding="0" summary=" ">
 							<tr valign="top">
-								<td class="fs18"><span class="blackst"><!--¡ú¥¿¥¤¥È¥ë¡ú--><!--{$tpl_subtitle}--></span></td>
+								<td class="fs18"><span class="blackst"><!--â˜…ã‚¿ã‚¤ãƒˆãƒ«â˜…--><!--{$tpl_subtitle}--></span></td>
 							</tr>
 						</table>
 						</td>
@@ -65,10 +65,10 @@ function lnSetSelect(name1, name2, id, val) {
 					<tr><td colspan="3"><img src="<!--{$smarty.const.URL_DIR}-->img/products/title_under.gif" width="580" height="8" alt=""></td></tr>
 					<tr><td height="10"></td></tr>
 				</table>
-				<!--¥¿¥¤¥È¥ë¤³¤³¤Ş¤Ç-->
+				<!--ã‚¿ã‚¤ãƒˆãƒ«ã“ã“ã¾ã§-->
 
-				<!--¸¡º÷¾ò·ï¤³¤³¤«¤é-->
-				<!--{if $tpl_subtitle == "¸¡º÷·ë²Ì"}-->
+				<!--æ¤œç´¢æ¡ä»¶ã“ã“ã‹ã‚‰-->
+				<!--{if $tpl_subtitle == "æ¤œç´¢çµæœ"}-->
 				<table width="" border="0" cellspacing="0" cellpadding="0" summary=" ">
 					<tr><td><img src="<!--{$smarty.const.URL_DIR}-->img/products/flame_top.gif" width="580" height="8" alt=""></td></tr>
 					<tr>
@@ -84,8 +84,8 @@ function lnSetSelect(name1, name2, id, val) {
 								<table width="540" border="0" cellspacing="0" cellpadding="0" summary=" ">
 									<tr><td height="10"></td></tr>
 									<tr>
-										<td class="fs12"><!--¡ú¸¡º÷·ë²Ì¡ú--><span class="blackst">¾¦ÉÊ¥«¥Æ¥´¥ê¡§</span><span class="black"><!--{$arrSearch.category|escape}--></span><br>
-										<span class="blackst">¾¦ÉÊÌ¾¡§</span><span class="black"><!--{$arrSearch.name|escape}--></span>
+										<td class="fs12"><!--â˜…æ¤œç´¢çµæœâ˜…--><span class="blackst">å•†å“ã‚«ãƒ†ã‚´ãƒªï¼š</span><span class="black"><!--{$arrSearch.category|escape}--></span><br>
+										<span class="blackst">å•†å“åï¼š</span><span class="black"><!--{$arrSearch.name|escape}--></span>
 									</tr>
 									<tr><td height="10"></td></tr>
 								</table>
@@ -99,9 +99,9 @@ function lnSetSelect(name1, name2, id, val) {
 					<tr><td height="15"></td></tr>
 				</table>
 				<!--{/if}-->
-				<!--¸¡º÷¾ò·ï¤³¤³¤Ş¤Ç-->
+				<!--æ¤œç´¢æ¡ä»¶ã“ã“ã¾ã§-->
 				
-				<!--·ï¿ô¤³¤³¤«¤é-->
+				<!--ä»¶æ•°ã“ã“ã‹ã‚‰-->
 				<!--{if $tpl_linemax > 0}-->
 				<table width="" border="0" cellspacing="0" cellpadding="0" summary=" ">
 					<tr><td><img src="<!--{$smarty.const.URL_DIR}-->img/products/flame_top.gif" width="580" height="8" alt=""></td></tr>
@@ -109,8 +109,8 @@ function lnSetSelect(name1, name2, id, val) {
 						<td align="center" bgcolor="#f3f3f3">
 						<table width="560" border="0" cellspacing="0" cellpadding="0" summary=" ">
 							<tr>
-								<td class="fs12" align="left"><span class="redst"><!--{$tpl_linemax}--></span>·ï¤Î¾¦ÉÊ¤¬¤´¤¶¤¤¤Ş¤¹¡£<!--{$tpl_strnavi}--></td>
-								<td class="fs12" align="right"><!--{if $orderby != 'price'}--><a href="#" onclick="fnModeSubmit('', 'orderby', 'price')">²Á³Ê½ç</a><!--{else}--><strong>²Á³Ê½ç</strong><!--{/if}-->¡¡<!--{if $orderby != "date"}--><a href="#" onclick="fnModeSubmit('', 'orderby', 'date')">¿·Ãå½ç</a><!--{else}--><strong>¿·Ãå½ç</strong><!--{/if}--></td>
+								<td class="fs12" align="left"><span class="redst"><!--{$tpl_linemax}--></span>ä»¶ã®å•†å“ãŒã”ã–ã„ã¾ã™ã€‚<!--{$tpl_strnavi}--></td>
+								<td class="fs12" align="right"><!--{if $orderby != 'price'}--><a href="#" onclick="fnModeSubmit('', 'orderby', 'price')">ä¾¡æ ¼é †</a><!--{else}--><strong>ä¾¡æ ¼é †</strong><!--{/if}-->ã€€<!--{if $orderby != "date"}--><a href="#" onclick="fnModeSubmit('', 'orderby', 'date')">æ–°ç€é †</a><!--{else}--><strong>æ–°ç€é †</strong><!--{/if}--></td>
 							</tr>
 						</table>
 						</td>
@@ -118,7 +118,7 @@ function lnSetSelect(name1, name2, id, val) {
 					<tr><td><img src="<!--{$smarty.const.URL_DIR}-->img/products/flame_top.gif" width="580" height="8" alt=""></td></tr>
 					<tr><td height="15"></td></tr>
 				</table>
-				<!--·ï¿ô¤³¤³¤Ş¤Ç-->
+				<!--ä»¶æ•°ã“ã“ã¾ã§-->
 				<!--{else}-->
 				<!--{include file="frontparts/search_zero.tpl"}-->
 				<!--{/if}-->
@@ -126,16 +126,16 @@ function lnSetSelect(name1, name2, id, val) {
 				<table width="580" cellspacing="0" cellpadding="0" summary=" " id="contents">
 				<!--{section name=cnt loop=$arrProducts}-->
 				<!--{assign var=id value=$arrProducts[cnt].product_id}-->
-				<!--¢§¾¦ÉÊ¤³¤³¤«¤é-->
+				<!--â–¼å•†å“ã“ã“ã‹ã‚‰-->
 				<tr valign="top">
 					<td><a name="product<!--{$id}-->" id="product<!--{$id}-->"></a></td>
-					<td align="center" valign="middle"><!--¡ú²èÁü¡ú--><div id="picture"><a href="<!--{$smarty.const.DETAIL_P_HTML}--><!--{$arrProducts[cnt].product_id}-->"><!--¾¦ÉÊ¼Ì¿¿--><img src="<!--{$smarty.const.IMAGE_SAVE_URL|sfTrimURL}-->/<!--{$arrProducts[cnt].main_list_image}-->" alt="<!--{$arrProducts[cnt].name|escape}-->" /></a></div></td>
+					<td align="center" valign="middle"><!--â˜…ç”»åƒâ˜…--><div id="picture"><a href="<!--{$smarty.const.DETAIL_P_HTML}--><!--{$arrProducts[cnt].product_id}-->"><!--å•†å“å†™çœŸ--><img src="<!--{$smarty.const.IMAGE_SAVE_URL|sfTrimURL}-->/<!--{$arrProducts[cnt].main_list_image}-->" alt="<!--{$arrProducts[cnt].name|escape}-->" /></a></div></td>
 					<td align="right">
 						<table width="420" border="0" cellspacing="0" cellpadding="0" summary=" ">
-							<!--¥¢¥¤¥³¥ó-->
+							<!--ã‚¢ã‚¤ã‚³ãƒ³-->
 							<tr>
 								<td colspan="2">
-								<!--¾¦ÉÊ¥¹¥Æ¡¼¥¿¥¹-->
+								<!--å•†å“ã‚¹ãƒ†ãƒ¼ã‚¿ã‚¹-->
 								<!--{assign var=sts_cnt value=0}-->
 								<!--{section name=flg loop=$arrProducts[cnt].product_flag|count_characters}-->
 									<!--{if $arrProducts[cnt].product_flag[flg] == "1"}-->
@@ -143,10 +143,10 @@ function lnSetSelect(name1, name2, id, val) {
 										<!--{assign var=sts_cnt value=$sts_cnt+1}-->
 									<!--{/if}-->
 								<!--{/section}-->
-								<!--¾¦ÉÊ¥¹¥Æ¡¼¥¿¥¹-->
+								<!--å•†å“ã‚¹ãƒ†ãƒ¼ã‚¿ã‚¹-->
 								</td>
 							</tr>
-							<!--¥¢¥¤¥³¥ó-->
+							<!--ã‚¢ã‚¤ã‚³ãƒ³-->
 							<!--{if $sts_cnt > 0}-->
 							<tr><td height="8"></td></tr>
 							<!--{/if}-->
@@ -155,7 +155,7 @@ function lnSetSelect(name1, name2, id, val) {
 								<table width="440" border="0" cellspacing="0" cellpadding="0" summary=" ">
 									<tr><td height="5"></td></tr>
 									<tr>
-										<td class="fs14"><!--¡ú¾¦ÉÊÌ¾¡ú-->¡¡<a href="<!--{$smarty.const.DETAIL_P_HTML}--><!--{$arrProducts[cnt].product_id}-->" class="over"><!--¾¦ÉÊÌ¾--><strong><!--{$arrProducts[cnt].name|escape}--></strong></a></td>
+										<td class="fs14"><!--â˜…å•†å“åâ˜…-->ã€€<a href="<!--{$smarty.const.DETAIL_P_HTML}--><!--{$arrProducts[cnt].product_id}-->" class="over"><!--å•†å“å--><strong><!--{$arrProducts[cnt].name|escape}--></strong></a></td>
 									</tr>
 									<tr><td height="5"></td></tr>
 								</table>
@@ -164,28 +164,28 @@ function lnSetSelect(name1, name2, id, val) {
 							<tr><td colspan="2" bgcolor="#ebebd6"><img src="<!--{$smarty.const.URL_DIR}-->img/common/_.gif" width="1" height="2" alt=""></td></tr>
 							<tr><td height="8"></td></tr>
 							<tr>
-								<td colspan="2" class="fs12"><!--¡ú¥³¥á¥ó¥È¡ú--><!--{$arrProducts[cnt].main_list_comment|escape|nl2br}--></td>
+								<td colspan="2" class="fs12"><!--â˜…ã‚³ãƒ¡ãƒ³ãƒˆâ˜…--><!--{$arrProducts[cnt].main_list_comment|escape|nl2br}--></td>
 							</tr>
 							<tr><td height="8"></td></tr>
 							<tr>
 								<td>
-									<span class="red"><span class="fs12">²Á³Ê</span><span class="fs10">(ÀÇ¹ş)</span></span><span class="redst"><span class="fs12">¡§
+									<span class="red"><span class="fs12">ä¾¡æ ¼</span><span class="fs10">(ç¨è¾¼)</span></span><span class="redst"><span class="fs12">ï¼š
 									<!--{if $arrProducts[cnt].price02_min == $arrProducts[cnt].price02_max}-->
 										<!--{$arrProducts[cnt].price02_min|sfPreTax:$arrSiteInfo.tax:$arrSiteInfo.tax_rule|number_format}-->
 									<!--{else}-->
-										<!--{$arrProducts[cnt].price02_min|sfPreTax:$arrSiteInfo.tax:$arrSiteInfo.tax_rule|number_format}-->¡Á<!--{$arrProducts[cnt].price02_max|sfPreTax:$arrSiteInfo.tax:$arrSiteInfo.tax_rule|number_format}-->
+										<!--{$arrProducts[cnt].price02_min|sfPreTax:$arrSiteInfo.tax:$arrSiteInfo.tax_rule|number_format}-->ã€œ<!--{$arrProducts[cnt].price02_max|sfPreTax:$arrSiteInfo.tax:$arrSiteInfo.tax_rule|number_format}-->
 									<!--{/if}-->
-									±ß</span></span>
+									å††</span></span>
 								</td>
 								<!--{assign var=name value="detail`$smarty.section.cnt.iteration`"}-->
-								<td align="right"><a href="<!--{$smarty.const.DETAIL_P_HTML}--><!--{$arrProducts[cnt].product_id}-->" onmouseover="chgImg('<!--{$smarty.const.URL_DIR}-->img/products/b_detail_on.gif','<!--{$name}-->');" onmouseout="chgImg('<!--{$smarty.const.URL_DIR}-->img/products/b_detail.gif','<!--{$name}-->');"><img src="<!--{$smarty.const.URL_DIR}-->img/products/b_detail.gif" width="115" height="25" alt="¾Ü¤·¤¯¤Ï¤³¤Á¤é" name="<!--{$name}-->" id="<!--{$name}-->" /></a></td>
+								<td align="right"><a href="<!--{$smarty.const.DETAIL_P_HTML}--><!--{$arrProducts[cnt].product_id}-->" onmouseover="chgImg('<!--{$smarty.const.URL_DIR}-->img/products/b_detail_on.gif','<!--{$name}-->');" onmouseout="chgImg('<!--{$smarty.const.URL_DIR}-->img/products/b_detail.gif','<!--{$name}-->');"><img src="<!--{$smarty.const.URL_DIR}-->img/products/b_detail.gif" width="115" height="25" alt="è©³ã—ãã¯ã“ã¡ã‚‰" name="<!--{$name}-->" id="<!--{$name}-->" /></a></td>
 							</tr>
 							<!--{if $arrProducts[cnt].stock_max == 0 && $arrProducts[cnt].stock_unlimited_max != 1}-->
 								<tr>
-									<td class="fs12"><span class="red">¿½¤·Ìõ¤´¤¶¤¤¤Ş¤»¤ó¤¬¡¢Âşº£ÉÊÀÚ¤ìÃæ¤Ç¤¹¡£</span></td>
+									<td class="fs12"><span class="red">ç”³ã—è¨³ã”ã–ã„ã¾ã›ã‚“ãŒã€åªä»Šå“åˆ‡ã‚Œä¸­ã§ã™ã€‚</span></td>
 								</tr>
 							<!--{else}-->
-								<!--¢§Çã¤¤Êª¤«¤´-->
+								<!--â–¼è²·ã„ç‰©ã‹ã”-->
 								<tr><td height=5></td></tr>
 								<tr valign="top" align="right" id="price">
 									<td id="right" colspan=2>
@@ -196,24 +196,24 @@ function lnSetSelect(name1, name2, id, val) {
 													<!--{if $tpl_classcat_find1[$id]}-->
 													<!--{assign var=class1 value=classcategory_id`$id`_1}-->
 													<!--{assign var=class2 value=classcategory_id`$id`_2}-->
-													<tr><td colspan="2" height="10" align="center" class="fs12"><span class="redst"><!--{if $arrErr[$class1] != ""}-->¢¨ <!--{$tpl_class_name1[$id]}-->¤òÆşÎÏ¤·¤Æ²¼¤µ¤¤¡£<!--{/if}--></span></td></tr>
+													<tr><td colspan="2" height="10" align="center" class="fs12"><span class="redst"><!--{if $arrErr[$class1] != ""}-->â€» <!--{$tpl_class_name1[$id]}-->ã‚’å…¥åŠ›ã—ã¦ä¸‹ã•ã„ã€‚<!--{/if}--></span></td></tr>
 													<tr>
-														<td align="right" class="fs12st"><!--{$tpl_class_name1[$id]|escape}-->¡§ </td>
+														<td align="right" class="fs12st"><!--{$tpl_class_name1[$id]|escape}-->ï¼š </td>
 														<td>
 															<select name="<!--{$class1}-->" style="<!--{$arrErr[$class1]|sfGetErrorColor}-->" onchange="lnSetSelect('<!--{$class1}-->', '<!--{$class2}-->', '<!--{$id}-->','');">
-															<option value="">ÁªÂò¤·¤Æ¤¯¤À¤µ¤¤</option>
+															<option value="">é¸æŠã—ã¦ãã ã•ã„</option>
 															<!--{html_options options=$arrClassCat1[$id] selected=$arrForm[$class1]}-->
 															</select>
 														</td>
 													</tr>
 													<!--{/if}-->
 													<!--{if $tpl_classcat_find2[$id]}-->
-													<tr><td colspan="2" height="5" align="center" class="fs12"><span class="redst"><!--{if $arrErr[$class2] != ""}-->¢¨ <!--{$tpl_class_name2[$id]}-->¤òÆşÎÏ¤·¤Æ²¼¤µ¤¤¡£<!--{/if}--></span></td></tr>
+													<tr><td colspan="2" height="5" align="center" class="fs12"><span class="redst"><!--{if $arrErr[$class2] != ""}-->â€» <!--{$tpl_class_name2[$id]}-->ã‚’å…¥åŠ›ã—ã¦ä¸‹ã•ã„ã€‚<!--{/if}--></span></td></tr>
 													<tr>
-														<td align="right" class="fs12st"><!--{$tpl_class_name2[$id]|escape}-->¡§ </td>
+														<td align="right" class="fs12st"><!--{$tpl_class_name2[$id]|escape}-->ï¼š </td>
 														<td>
 															<select name="<!--{$class2}-->" style="<!--{$arrErr[$class2]|sfGetErrorColor}-->">
-															<option value="">ÁªÂò¤·¤Æ¤¯¤À¤µ¤¤</option>
+															<option value="">é¸æŠã—ã¦ãã ã•ã„</option>
 															</select>
 														</td>
 													</tr>
@@ -221,12 +221,12 @@ function lnSetSelect(name1, name2, id, val) {
 													<!--{assign var=quantity value=quantity`$id`}-->		
 													<tr><td colspan="2" height="10" align="center" class="fs12"><span class="redst"><!--{$arrErr[$quantity]}--></span></td></tr>
 													<tr>
-														<td align="right" width="115" class="fs12st">¸Ä¿ô¡§ 
+														<td align="right" width="115" class="fs12st">å€‹æ•°ï¼š 
 															<!--{if $arrErr.quantity != ""}--><br/><span class="redst"><!--{$arrErr.quantity}--></span><!--{/if}-->
 															<input type="text" name="<!--{$quantity}-->" size="3" class="box3" value="<!--{$arrForm[$quantity]|default:1}-->" maxlength=<!--{$smarty.const.INT_LEN}--> style="<!--{$arrErr[$quantity]|sfGetErrorColor}-->" >
 														</td>
 														<td width="170" align="center">
-															<a href="" onclick="fnChangeAction('<!--{$smarty.server.REQUEST_URI|escape}-->#product<!--{$id}-->'); fnModeSubmit('cart','product_id','<!--{$id}-->'); return false;" onmouseover="chgImg('<!--{$smarty.const.URL_DIR}-->img/products/b_cartin_on.gif','cart<!--{$id}-->');" onmouseout="chgImg('<!--{$smarty.const.URL_DIR}-->img/products/b_cartin.gif','cart<!--{$id}-->');"><img src="<!--{$smarty.const.URL_DIR}-->img/products/b_cartin.gif" width="115" height="25" alt="¥«¥´¤ËÆş¤ì¤ë" name="cart<!--{$id}-->" id="cart<!--{$id}-->" /></a>
+															<a href="" onclick="fnChangeAction('<!--{$smarty.server.REQUEST_URI|escape}-->#product<!--{$id}-->'); fnModeSubmit('cart','product_id','<!--{$id}-->'); return false;" onmouseover="chgImg('<!--{$smarty.const.URL_DIR}-->img/products/b_cartin_on.gif','cart<!--{$id}-->');" onmouseout="chgImg('<!--{$smarty.const.URL_DIR}-->img/products/b_cartin.gif','cart<!--{$id}-->');"><img src="<!--{$smarty.const.URL_DIR}-->img/products/b_cartin.gif" width="115" height="25" alt="ã‚«ã‚´ã«å…¥ã‚Œã‚‹" name="cart<!--{$id}-->" id="cart<!--{$id}-->" /></a>
 														</td>
 													</tr>
 													<tr><td height="10"></td></tr>
@@ -236,7 +236,7 @@ function lnSetSelect(name1, name2, id, val) {
 										</table>
 									</td>
 								</tr>
-								<!--¢¥Çã¤¤Êª¤«¤´-->	
+								<!--â–²è²·ã„ç‰©ã‹ã”-->	
 							<!--{/if}-->					
 						</table>
 					</td>
@@ -245,7 +245,7 @@ function lnSetSelect(name1, name2, id, val) {
 				<!--{/section}-->
 				</table>
 
-				<!--·ï¿ô¤³¤³¤«¤é-->
+				<!--ä»¶æ•°ã“ã“ã‹ã‚‰-->
 				<!--{if $tpl_linemax > 0}-->
 				<table width="580" border="0" cellspacing="0" cellpadding="0" summary=" ">
 					<tr><td><img src="<!--{$smarty.const.URL_DIR}-->img/products/flame_top.gif" width="580" height="8" alt=""></td></tr>
@@ -253,8 +253,8 @@ function lnSetSelect(name1, name2, id, val) {
 						<td align="center" bgcolor="#f3f3f3">
 						<table width="560" border="0" cellspacing="0" cellpadding="0" summary=" ">
 							<tr>
-								<td class="fs12" align="left"><span class="redst"><!--{$tpl_linemax}--></span>·ï¤Î¾¦ÉÊ¤¬¤´¤¶¤¤¤Ş¤¹¡£<!--{$tpl_strnavi}--></td>
-								<td class="fs12" align="right"><!--{if $orderby != 'price'}--><a href="#" onclick="fnModeSubmit('', 'orderby', 'price')">²Á³Ê½ç</a><!--{else}--><strong>²Á³Ê½ç</strong><!--{/if}-->¡¡<!--{if $orderby != "date"}--><a href="#" onclick="fnModeSubmit('', 'orderby', 'date')">¿·Ãå½ç</a><!--{else}--><strong>¿·Ãå½ç</strong><!--{/if}--> </td>
+								<td class="fs12" align="left"><span class="redst"><!--{$tpl_linemax}--></span>ä»¶ã®å•†å“ãŒã”ã–ã„ã¾ã™ã€‚<!--{$tpl_strnavi}--></td>
+								<td class="fs12" align="right"><!--{if $orderby != 'price'}--><a href="#" onclick="fnModeSubmit('', 'orderby', 'price')">ä¾¡æ ¼é †</a><!--{else}--><strong>ä¾¡æ ¼é †</strong><!--{/if}-->ã€€<!--{if $orderby != "date"}--><a href="#" onclick="fnModeSubmit('', 'orderby', 'date')">æ–°ç€é †</a><!--{else}--><strong>æ–°ç€é †</strong><!--{/if}--> </td>
 							</tr>
 						</table>
 						</td>
@@ -262,14 +262,14 @@ function lnSetSelect(name1, name2, id, val) {
 					<tr><td><img src="<!--{$smarty.const.URL_DIR}-->img/products/flame_top.gif" width="580" height="8" alt=""></td></tr>
 					<tr><td height="15"></td></tr>
 				</table>
-				<!--·ï¿ô¤³¤³¤Ş¤Ç-->
+				<!--ä»¶æ•°ã“ã“ã¾ã§-->
 				<!--{/if}-->
 				</form>
-				<!--¢¥RIGHT CONTENTS-->
+				<!--â–²RIGHT CONTENTS-->
 			</tr>
 		</table>
-		<!--¢¥MAIN CONTENTS-->
+		<!--â–²MAIN CONTENTS-->
 		</td>
 	</tr>
 </table>
-<!--¢¥CONTENTS-->
+<!--â–²CONTENTS-->

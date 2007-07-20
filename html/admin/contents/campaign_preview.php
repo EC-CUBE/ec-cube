@@ -6,7 +6,7 @@
  */
 require_once("../require.php");
 
-//---- ¥Ú¡¼¥¸É½¼¨¥¯¥é¥¹
+//---- ãƒšãƒ¼ã‚¸è¡¨ç¤ºã‚¯ãƒ©ã‚¹
 class LC_Page {
 	
 	function LC_Page() {
@@ -17,12 +17,12 @@ $objPage = new LC_Page();
 $objView = new SC_SiteView(false);
 $objQuery = new SC_Query();
 
-// Àµ¤·¤¯ÃÍ¤¬¼èÆÀ¤Ç¤­¤Ê¤¤¾ì¹ç¤Ï¥­¥ã¥ó¥Ú¡¼¥óTOP¤Ø
+// æ­£ã—ãå€¤ãŒå–å¾—ã§ããªã„å ´åˆã¯ã‚­ãƒ£ãƒ³ãƒšãƒ¼ãƒ³TOPã¸
 if($_GET['campaign_id'] == "" || $_GET['status'] == "") {
 	header("location: ".URL_CAMPAIGN_TOP);
 }
 
-// status¤ÎÈ½ÊÌ
+// statusã®åˆ¤åˆ¥
 switch($_GET['status']) {
 	case 'active':
 		$status = CAMPAIGN_TEMPLATE_ACTIVE;
@@ -35,11 +35,11 @@ switch($_GET['status']) {
 		break;
 }
 
-// ¥Ç¥£¥ì¥¯¥È¥êÌ¾¤ò¼èÆÀÌ¾		
+// ãƒ‡ã‚£ãƒ¬ã‚¯ãƒˆãƒªåã‚’å–å¾—å		
 $directory_name = $objQuery->get("dtb_campaign", "directory_name", "campaign_id = ?", array($_GET['campaign_id']));
 
 $template_dir = CAMPAIGN_TEMPLATE_PATH . $directory_name  . "/" . $status . "preview.tpl";
 
-//----¡¡¥Ú¡¼¥¸É½¼¨
+//----ã€€ãƒšãƒ¼ã‚¸è¡¨ç¤º
 $objView->assignobj($objPage);
 $objView->display($template_dir);

@@ -10,4 +10,4 @@ CREATE TABLE dtb_site_control (
     PRIMARY KEY  (control_id)
 ) TYPE=InnoDB;
 
-INSERT INTO dtb_site_control (control_title, control_text, create_date, update_date) VALUES('¥È¥é¥Ã¥¯¥Ğ¥Ã¥¯µ¡Ç½', '¥È¥é¥Ã¥¯¥Ğ¥Ã¥¯µ¡Ç½¤ò»ÈÍÑ¤¹¤ë¤«¤É¤¦¤«¤ò·èÄê¤·¤Ş¤¹¡£', NOW(), NOW());
+INSERT INTO dtb_site_control (control_title, control_text, create_date, update_date) VALUES('ãƒˆãƒ©ãƒƒã‚¯ãƒãƒƒã‚¯æ©Ÿèƒ½', 'ãƒˆãƒ©ãƒƒã‚¯ãƒãƒƒã‚¯æ©Ÿèƒ½ã‚’ä½¿ç”¨ã™ã‚‹ã‹ã©ã†ã‹ã‚’æ±ºå®šã—ã¾ã™ã€‚', NOW(), NOW());

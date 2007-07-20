@@ -5,7 +5,7 @@
  * http://www.lockon.co.jp/
  */
 *}-->
-<!--°°-->
+<!--„ÄÄ-->
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="ja" lang="ja">
 
@@ -34,15 +34,15 @@ self.moveTo(20,20);self.focus();
 </noscript>
 
 <div align="center">
-<!--°˙°˙°˙•·•§•Û•≥•Û•∆•Û•ƒ°˙°˙°˙-->
+<!--‚òÖ‚òÖ‚òÖ„É°„Ç§„É≥„Ç≥„É≥„ÉÜ„É≥„ÉÑ‚òÖ‚òÖ‚òÖ-->
 <table width="500" border="0" cellspacing="0" cellpadding="0" summary=" ">
 <form name="form1" id="form1" method="post" action="<!--{$smarty.server.REQUEST_URI|escape}-->">
 <input type="hidden" name="mode" value="edit">
 	<tr valign="top">
 		<td class="mainbg">
-			<!--¢ß≈–œø•∆°º•÷•Î§≥§≥§´§È-->
+			<!--‚ñºÁôªÈå≤„ÉÜ„Éº„Éñ„É´„Åì„Åì„Åã„Çâ-->
 			<table width="500" border="0" cellspacing="0" cellpadding="0" summary=" ">
-				<!--•·•§•Û•®•Í•¢-->
+				<!--„É°„Ç§„É≥„Ç®„É™„Ç¢-->
 				<tr>
 					<td align="center">
 						<table width="470" border="0" cellspacing="0" cellpadding="0" summary=" ">
@@ -59,7 +59,7 @@ self.moveTo(20,20);self.focus();
 										</tr>
 										<tr>
 											<td background="<!--{$smarty.const.URL_DIR}-->img/contents/contents_title_left_bg.gif"><img src="<!--{$smarty.const.URL_DIR}-->img/contents/contents_title_left.gif" width="22" height="12" alt=""></td>
-											<td bgcolor="#636469" width="402" class="fs14n"><span class="white"><!--•≥•Û•∆•Û•ƒ•ø•§•»•Î--><!--{$tpl_subtitle}--></span></td>
+											<td bgcolor="#636469" width="402" class="fs14n"><span class="white"><!--„Ç≥„É≥„ÉÜ„É≥„ÉÑ„Çø„Ç§„Éà„É´--><!--{$tpl_subtitle}--></span></td>
 											<td background="<!--{$smarty.const.URL_DIR}-->img/contents/contents_title_right_bg.gif"><img src="<!--{$smarty.const.URL_DIR}-->img/common/_.gif" width="18" height="1" alt=""></td>
 										</tr>
 										<tr>
@@ -72,9 +72,9 @@ self.moveTo(20,20);self.focus();
 
 									<table width="442" border="0" cellspacing="1" cellpadding="5" summary=" ">
 										<tr bgcolor="#f2f1ec" align="center" class="fs12n">
-											<td width="120">•¡•ß•√•Ø∆‚Õ∆</td>
-											<td width="40">∑Î≤Ã</td>
-											<td width="300">æ‹∫Ÿ</td>
+											<td width="120">„ÉÅ„Çß„ÉÉ„ÇØÂÜÖÂÆπ</td>
+											<td width="40">ÁµêÊûú</td>
+											<td width="300">Ë©≥Á¥∞</td>
 										</tr>
 										<!--{section name=i loop=$arrList}-->
 										<tr class="fs12n">
@@ -96,14 +96,14 @@ self.moveTo(20,20);self.focus();
 						</table>
 					</td>
 				</tr>
-				<!--•·•§•Û•®•Í•¢-->
+				<!--„É°„Ç§„É≥„Ç®„É™„Ç¢-->
 			</table>
-			<!--¢•≈–œø•∆°º•÷•Î§≥§≥§ﬁ§«-->
+			<!--‚ñ≤ÁôªÈå≤„ÉÜ„Éº„Éñ„É´„Åì„Åì„Åæ„Åß-->
 		</td>
 	</tr>
 </form>
 </table>
-<!--°˙°˙•·•§•Û•≥•Û•∆•Û•ƒ°˙°˙-->
+<!--‚òÖ‚òÖ„É°„Ç§„É≥„Ç≥„É≥„ÉÜ„É≥„ÉÑ‚òÖ‚òÖ-->
 </div>
 
 </body>

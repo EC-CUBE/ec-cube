@@ -14,7 +14,7 @@ class LC_Page {
 	function LC_Page() {
 		$this->tpl_mainpage = 'shopping/confirm.tpl';
 		$this->tpl_css = URL_DIR.'css/layout/shopping/confirm.css';
-		$this->tpl_title = "¤´ÆþÎÏÆâÍÆ¤Î¤´³ÎÇ§";
+		$this->tpl_title = "ã”å…¥åŠ›å†…å®¹ã®ã”ç¢ºèª";
 		global $arrPref;
 		$this->arrPref = $arrPref;
 		global $arrSex;
@@ -24,9 +24,9 @@ class LC_Page {
 		global $arrReminder;
 		$this->arrReminder = $arrReminder;
 		/*
-		 session_start»þ¤Îno-cache¥Ø¥Ã¥À¡¼¤òÍÞÀ©¤¹¤ë¤³¤È¤Ç
-		 ¡ÖÌá¤ë¡×¥Ü¥¿¥ó»ÈÍÑ»þ¤ÎÍ­¸ú´ü¸ÂÀÚ¤ìÉ½¼¨¤òÍÞÀ©¤¹¤ë¡£
-		 private-no-expire:¥¯¥é¥¤¥¢¥ó¥È¤Î¥­¥ã¥Ã¥·¥å¤òµö²Ä¤¹¤ë¡£
+		 session_startæ™‚ã®no-cacheãƒ˜ãƒƒãƒ€ãƒ¼ã‚’æŠ‘åˆ¶ã™ã‚‹ã“ã¨ã§
+		 ã€Œæˆ»ã‚‹ã€ãƒœã‚¿ãƒ³ä½¿ç”¨æ™‚ã®æœ‰åŠ¹æœŸé™åˆ‡ã‚Œè¡¨ç¤ºã‚’æŠ‘åˆ¶ã™ã‚‹ã€‚
+		 private-no-expire:ã‚¯ãƒ©ã‚¤ã‚¢ãƒ³ãƒˆã®ã‚­ãƒ£ãƒƒã‚·ãƒ¥ã‚’è¨±å¯ã™ã‚‹ã€‚
 		*/
 		session_cache_limiter('private-no-expire');		
 
@@ -43,23 +43,23 @@ $objCustomer = new SC_Customer();
 $arrInfo = $objSiteInfo->data;
 $objQuery = new SC_Query();
 
-// Á°¤Î¥Ú¡¼¥¸¤ÇÀµ¤·¤¯ÅÐÏ¿¼êÂ³¤­¤¬¹Ô¤ï¤ì¤¿µ­Ï¿¤¬¤¢¤ë¤«È½Äê
+// å‰ã®ãƒšãƒ¼ã‚¸ã§æ­£ã—ãç™»éŒ²æ‰‹ç¶šããŒè¡Œã‚ã‚ŒãŸè¨˜éŒ²ãŒã‚ã‚‹ã‹åˆ¤å®š
 sfIsPrePage($objSiteSess);
 
-// ¥æ¡¼¥¶¥æ¥Ë¡¼¥¯ID¤Î¼èÆÀ¤È¹ØÆþ¾õÂÖ¤ÎÀµÅöÀ­¤ò¥Á¥§¥Ã¥¯
+// ãƒ¦ãƒ¼ã‚¶ãƒ¦ãƒ‹ãƒ¼ã‚¯IDã®å–å¾—ã¨è³¼å…¥çŠ¶æ…‹ã®æ­£å½“æ€§ã‚’ãƒã‚§ãƒƒã‚¯
 $uniqid = sfCheckNormalAccess($objSiteSess, $objCartSess);
 $objPage->tpl_uniqid = $uniqid;
 
-// ¥«¡¼¥È½¸·×½èÍý
+// ã‚«ãƒ¼ãƒˆé›†è¨ˆå‡¦ç†
 $objPage = sfTotalCart($objPage, $objCartSess, $arrInfo);
-// °ì»þ¼õÃí¥Æ¡¼¥Ö¥ë¤ÎÆÉ¹þ
+// ä¸€æ™‚å—æ³¨ãƒ†ãƒ¼ãƒ–ãƒ«ã®èª­è¾¼
 $arrData = sfGetOrderTemp($uniqid);
-// ¥«¡¼¥È½¸·×¤ò¸µ¤ËºÇ½ª·×»»
+// ã‚«ãƒ¼ãƒˆé›†è¨ˆã‚’å…ƒã«æœ€çµ‚è¨ˆç®—
 $arrData = sfTotalConfirm($arrData, $objPage, $objCartSess, $arrInfo, $objCustomer, $objCampaignSess);
-// ¥­¥ã¥ó¥Ú¡¼¥ó¤«¤é¤ÎÁ«°Ü¤ÇÁ÷ÎÁ¤¬ÌµÎÁ¤À¤Ã¤¿¾ì¹ç¤Î½èÍý
+// ã‚­ãƒ£ãƒ³ãƒšãƒ¼ãƒ³ã‹ã‚‰ã®é·ç§»ã§é€æ–™ãŒç„¡æ–™ã ã£ãŸå ´åˆã®å‡¦ç†
 if($objCampaignSess->getIsCampaign()) {
 	$deliv_free_flg = $objQuery->get("dtb_campaign", "deliv_free_flg", "campaign_id = ?", array($objCampaignSess->getCampaignId()));
-	// Á÷ÎÁÌµÎÁ¤¬ÀßÄê¤µ¤ì¤Æ¤¤¤¿¾ì¹ç
+	// é€æ–™ç„¡æ–™ãŒè¨­å®šã•ã‚Œã¦ã„ãŸå ´åˆ
 	if($deliv_free_flg) {
 		$arrData['payment_total'] -= $arrData['deliv_fee'];
 		$arrData['deliv_fee'] = 0;
@@ -67,19 +67,19 @@ if($objCampaignSess->getIsCampaign()) {
 }
 
 
-// ¥«¡¼¥ÈÆâ¤Î¾¦ÉÊ¤ÎÇä¤êÀÚ¤ì¥Á¥§¥Ã¥¯
+// ã‚«ãƒ¼ãƒˆå†…ã®å•†å“ã®å£²ã‚Šåˆ‡ã‚Œãƒã‚§ãƒƒã‚¯
 $objCartSess->chkSoldOut($objCartSess->getCartList());
 
-// ²ñ°÷¥í¥°¥¤¥ó¥Á¥§¥Ã¥¯
+// ä¼šå“¡ãƒ­ã‚°ã‚¤ãƒ³ãƒã‚§ãƒƒã‚¯
 if($objCustomer->isLoginSuccess()) {
 	$objPage->tpl_login = '1';
 	$objPage->tpl_user_point = $objCustomer->getValue('point');
 }
 
-// ·èºÑ¶èÊ¬¤ò¼èÆÀ¤¹¤ë
+// æ±ºæ¸ˆåŒºåˆ†ã‚’å–å¾—ã™ã‚‹
 $payment_type = "";
 if(sfColumnExists("dtb_payment", "memo01")){
-	// MEMO03¤ËÃÍ¤¬Æþ¤Ã¤Æ¤¤¤ë¾ì¹ç¤Ë¤Ï¡¢¥â¥¸¥å¡¼¥ëÄÉ²Ã¤µ¤ì¤¿¤â¤Î¤È¤ß¤Ê¤¹
+	// MEMO03ã«å€¤ãŒå…¥ã£ã¦ã„ã‚‹å ´åˆã«ã¯ã€ãƒ¢ã‚¸ãƒ¥ãƒ¼ãƒ«è¿½åŠ ã•ã‚ŒãŸã‚‚ã®ã¨ã¿ãªã™
 	$sql = "SELECT memo03 FROM dtb_payment WHERE payment_id = ?";
 	$arrPayment = $objQuery->getall($sql, array($arrData['payment_id']));
 	$payment_type = $arrPayment[0]["memo03"];
@@ -88,16 +88,16 @@ $objPage->payment_type = $payment_type;
 
 
 switch($_POST['mode']) {
-// Á°¤Î¥Ú¡¼¥¸¤ËÌá¤ë
+// å‰ã®ãƒšãƒ¼ã‚¸ã«æˆ»ã‚‹
 case 'return':
-	// Àµ¾ï¤Ê¿ä°Ü¤Ç¤¢¤ë¤³¤È¤òµ­Ï¿¤·¤Æ¤ª¤¯
+	// æ­£å¸¸ãªæŽ¨ç§»ã§ã‚ã‚‹ã“ã¨ã‚’è¨˜éŒ²ã—ã¦ãŠã
 	$objSiteSess->setRegistFlag();
 	header("Location: " . URL_SHOP_PAYMENT);
 	exit;
 	break;
 case 'confirm':
-	// ¤³¤Î»þÅÀ¤Ç¥ª¡¼¥À¡¼ID¤ò³ÎÊÝ¤·¤Æ¤ª¤¯¡Ê¥¯¥ì¥¸¥Ã¥È¡¢¥³¥ó¥Ó¥Ë·èºÑ¤ÇÉ¬Í×¤Ê¤¿¤á¡Ë
-	// postgresql¤Èmysql¤È¤Ç½èÍý¤òÊ¬¤±¤ë
+	// ã“ã®æ™‚ç‚¹ã§ã‚ªãƒ¼ãƒ€ãƒ¼IDã‚’ç¢ºä¿ã—ã¦ãŠãï¼ˆã‚¯ãƒ¬ã‚¸ãƒƒãƒˆã€ã‚³ãƒ³ãƒ“ãƒ‹æ±ºæ¸ˆã§å¿…è¦ãªãŸã‚ï¼‰
+	// postgresqlã¨mysqlã¨ã§å‡¦ç†ã‚’åˆ†ã‘ã‚‹
 	if (DB_TYPE == "pgsql") {
 		$order_id = $objQuery->nextval("dtb_order","order_id");
 	}elseif (DB_TYPE == "mysql") {
@@ -105,15 +105,15 @@ case 'confirm':
 	}
 	$arrData["order_id"] = $order_id;
     
-    // ¥»¥Ã¥·¥ç¥ó¾ðÊó¤òÊÝ»ý
+    // ã‚»ãƒƒã‚·ãƒ§ãƒ³æƒ…å ±ã‚’ä¿æŒ
     $arrData['session'] = serialize($_SESSION);
 	
-	// ½¸·×·ë²Ì¤ò¼õÃí°ì»þ¥Æ¡¼¥Ö¥ë¤ËÈ¿±Ç
+	// é›†è¨ˆçµæžœã‚’å—æ³¨ä¸€æ™‚ãƒ†ãƒ¼ãƒ–ãƒ«ã«åæ˜ 
 	sfRegistTempOrder($uniqid, $arrData);
-	// Àµ¾ï¤ËÅÐÏ¿¤µ¤ì¤¿¤³¤È¤òµ­Ï¿¤·¤Æ¤ª¤¯
+	// æ­£å¸¸ã«ç™»éŒ²ã•ã‚ŒãŸã“ã¨ã‚’è¨˜éŒ²ã—ã¦ãŠã
 	$objSiteSess->setRegistFlag();
 	
-	// ·èºÑÊýË¡¤Ë¤è¤ê²èÌÌÀÚÂØ
+	// æ±ºæ¸ˆæ–¹æ³•ã«ã‚ˆã‚Šç”»é¢åˆ‡æ›¿
 	if($payment_type != "") {
 		$_SESSION["payment_id"] = $arrData['payment_id'];
 		header("Location: " . URL_SHOP_MODULE);
@@ -128,7 +128,7 @@ default:
 $objPage->arrData = $arrData;
 $objPage->arrInfo = $arrInfo;
 $objView->assignobj($objPage);
-// ¥Õ¥ì¡¼¥à¤òÁªÂò(¥­¥ã¥ó¥Ú¡¼¥ó¥Ú¡¼¥¸¤«¤éÁ«°Ü¤Ê¤éÊÑ¹¹)
+// ãƒ•ãƒ¬ãƒ¼ãƒ ã‚’é¸æŠž(ã‚­ãƒ£ãƒ³ãƒšãƒ¼ãƒ³ãƒšãƒ¼ã‚¸ã‹ã‚‰é·ç§»ãªã‚‰å¤‰æ›´)
 $objCampaignSess->pageView($objView);
 //--------------------------------------------------------------------------------------------------------------------------
 ?>

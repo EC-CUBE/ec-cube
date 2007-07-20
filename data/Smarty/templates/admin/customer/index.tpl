@@ -14,7 +14,7 @@
 	}
 	
 	function fnDelete(customer_id) {
-		if (confirm('¤³¤Î¸ÜµÒ¾ðÊó¤òºï½ü¤·¤Æ¤âµ¹¤·¤¤¤Ç¤¹¤«¡©')) {
+		if (confirm('ã“ã®é¡§å®¢æƒ…å ±ã‚’å‰Šé™¤ã—ã¦ã‚‚å®œã—ã„ã§ã™ã‹ï¼Ÿ')) {
 			document.form1.mode.value = "delete"
 			document.form1['edit_customer_id'].value = customer_id;
 			document.form1.submit();
@@ -38,18 +38,18 @@
 //-->
 </script>
 
-<!--¡ú¡ú¥á¥¤¥ó¥³¥ó¥Æ¥ó¥Ä¡ú¡ú-->
+<!--â˜…â˜…ãƒ¡ã‚¤ãƒ³ã‚³ãƒ³ãƒ†ãƒ³ãƒ„â˜…â˜…-->
 <table width="878" border="0" cellspacing="0" cellpadding="0" summary=" ">
 <form name="form_search" id="form_search" method="post" action="<!--{$smarty.server.PHP_SELF|escape}-->">
 <input type="hidden" name="mode" value="search">
 	<tr valign="top">
 		<td background="<!--{$smarty.const.URL_DIR}-->img/contents/navi_bg.gif" height="402">
-			<!-- ¥µ¥Ö¥Ê¥Ó -->
+			<!-- ã‚µãƒ–ãƒŠãƒ“ -->
 			<!--{include file=$tpl_subnavi}-->
 		</td>
 		<td class="mainbg">
 		<table width="737" border="0" cellspacing="0" cellpadding="0" summary=" ">
-			<!--¥á¥¤¥ó¥¨¥ê¥¢-->
+			<!--ãƒ¡ã‚¤ãƒ³ã‚¨ãƒªã‚¢-->
 			<tr>
 				<td align="center">
 				<table width="706" border="0" cellspacing="0" cellpadding="0" summary=" ">
@@ -66,7 +66,7 @@
 							</tr>
 							<tr>
 								<td background="<!--{$smarty.const.URL_DIR}-->img/contents/contents_title_left_bg.gif"><img src="<!--{$smarty.const.URL_DIR}-->img/contents/contents_title_left.gif" width="22" height="12" alt=""></td>
-								<td bgcolor="#636469" width="638" class="fs14n"><span class="white"><!--¥³¥ó¥Æ¥ó¥Ä¥¿¥¤¥È¥ë-->¸¡º÷¾ò·ïÀßÄê</span></td>
+								<td bgcolor="#636469" width="638" class="fs14n"><span class="white"><!--ã‚³ãƒ³ãƒ†ãƒ³ãƒ„ã‚¿ã‚¤ãƒˆãƒ«-->æ¤œç´¢æ¡ä»¶è¨­å®š</span></td>
 								<td background="<!--{$smarty.const.URL_DIR}-->img/contents/contents_title_right_bg.gif"><img src="<!--{$smarty.const.URL_DIR}-->img/common/_.gif" width="18" height="1" alt=""></td>
 							</tr>
 							<tr>
@@ -76,168 +76,168 @@
 								<td colspan="3"><img src="<!--{$smarty.const.URL_DIR}-->img/contents/main_bar.jpg" width="678" height="10" alt=""></td>
 							</tr>
 						</table>
-						<!--¸¡º÷¾ò·ïÀßÄê¥Æ¡¼¥Ö¥ë¤³¤³¤«¤é-->
+						<!--æ¤œç´¢æ¡ä»¶è¨­å®šãƒ†ãƒ¼ãƒ–ãƒ«ã“ã“ã‹ã‚‰-->
 						<table width="678" border="0" cellspacing="1" cellpadding="8" summary=" ">
 							<tr class="fs12n">
-								<td bgcolor="#f2f1ec" width="110">¸ÜµÒ¥³¡¼¥É</td>
+								<td bgcolor="#f2f1ec" width="110">é¡§å®¢ã‚³ãƒ¼ãƒ‰</td>
 								<td bgcolor="#ffffff" width="194"><!--{if $arrErr.customer_id}--><span class="red12"><!--{$arrErr.customer_id}--></span><br><!--{/if}--><input type="text" name="customer_id" maxlength="<!--{$smarty.const.INT_LEN}-->" value="<!--{$arrForm.customer_id|escape}-->" size="30" class="box30" <!--{if $arrErr.customer_id}--><!--{sfSetErrorStyle}--><!--{/if}--> /></td>
-								<td bgcolor="#f2f1ec" width="110">ÅÔÆ»ÉÜ¸©</td>
+								<td bgcolor="#f2f1ec" width="110">éƒ½é“åºœçœŒ</td>
 								<td bgcolor="#ffffff" width="195">
 									<!--{if $arrErr.pref}--><span class="red12"><!--{$arrErr.pref}--></span><br><!--{/if}-->
 									<select name="pref">
-										<option value="" selected="selected" <!--{if $arrErr.name}--><!--{sfSetErrorStyle}--><!--{/if}-->>ÅÔÆ»ÉÜ¸©¤òÁªÂò</option>
+										<option value="" selected="selected" <!--{if $arrErr.name}--><!--{sfSetErrorStyle}--><!--{/if}-->>éƒ½é“åºœçœŒã‚’é¸æŠž</option>
 										<!--{html_options options=$arrPref selected=$arrForm.pref}-->
 									</select>
 								</td>
 							</tr>
 							<tr class="fs12n">
-								<td bgcolor="#f2f1ec" width="110">¸ÜµÒÌ¾</td>
+								<td bgcolor="#f2f1ec" width="110">é¡§å®¢å</td>
 								<td bgcolor="#ffffff" width="194"><!--{if $arrErr.name}--><span class="red12"><!--{$arrErr.name}--></span><br><!--{/if}--><input type="text" name="name" maxlength="<!--{$smarty.const.STEXT_LEN}-->" value="<!--{$arrForm.name|escape}-->" size="30" class="box30" <!--{if $arrErr.name}--><!--{sfSetErrorStyle}--><!--{/if}--> /></td>
-								<td bgcolor="#f2f1ec" width="110">¸ÜµÒÌ¾¡Ê¥«¥Ê¡Ë</td>
+								<td bgcolor="#f2f1ec" width="110">é¡§å®¢åï¼ˆã‚«ãƒŠï¼‰</td>
 								<td bgcolor="#ffffff" width="195"><!--{if $arrErr.kana}--><span class="red12"><!--{$arrErr.kana}--></span><br><!--{/if}--><input type="text" name="kana" maxlength="<!--{$smarty.const.STEXT_LEN}-->" value="<!--{$arrForm.kana|escape}-->" size="30" class="box30" <!--{if $arrErr.kana}--><!--{sfSetErrorStyle}--><!--{/if}--> /></td>
 							<tr class="fs12n">
-								<td bgcolor="#f2f1ec" width="110">À­ÊÌ</td>
+								<td bgcolor="#f2f1ec" width="110">æ€§åˆ¥</td>
 								<td bgcolor="#ffffff" width="194"><!--{html_checkboxes name="sex" options=$arrSex separator="&nbsp;" selected=$arrForm.sex}--></td>
-								<td bgcolor="#f2f1ec" width="110">ÃÂÀ¸·î</td>
+								<td bgcolor="#f2f1ec" width="110">èª•ç”Ÿæœˆ</td>
 								<td bgcolor="#ffffff" width="195"><!--{if $arrErr.birth_month}--><span class="red12"><!--{$arrErr.birth_month}--></span><br><!--{/if}-->
 									<select name="birth_month" style="<!--{$arrErr.birth_month|sfGetErrorColor}-->" >
 										<option value="" selected="selected">--</option>
 										<!--{html_options options=$objDate->getMonth() selected=$arrForm.birth_month}-->
-									</select>·î
+									</select>æœˆ
 								</td>
 							</tr>
 							<tr class="fs12n">			
-								<td bgcolor="#f2f1ec" width="110">ÃÂÀ¸Æü</td>
+								<td bgcolor="#f2f1ec" width="110">èª•ç”Ÿæ—¥</td>
 								<td bgcolor="#ffffff" width="499" colspan="3">
 									<!--{if $arrErr.b_start_year || $arrErr.b_end_year}--><span class="red12"><!--{$arrErr.b_start_year}--><!--{$arrErr.b_end_year}--></span><br><!--{/if}-->
 									<select name="b_start_year" <!--{if $arrErr.b_start_year || $arrErr.b_end_year}--><!--{sfSetErrorStyle}--><!--{/if}-->>
 										<option value="" selected="selected">------</option>
 										<!--{html_options options=$arrYear selected=$arrForm.b_start_year}-->
-									</select>Ç¯
+									</select>å¹´
 									<select name="b_start_month" <!--{if $arrErr.b_start_year || $arrErr.b_end_year}--><!--{sfSetErrorStyle}--><!--{/if}-->>
 										<option value="" selected="selected">----</option>
 										<!--{html_options options=$arrMonth selected=$arrForm.b_start_month}-->
-									</select>·î
+									</select>æœˆ
 									<select name="b_start_day" <!--{if $arrErr.b_start_year || $arrErr.b_end_year}--><!--{sfSetErrorStyle}--><!--{/if}-->>
 										<option value="" selected="selected">----</option>
 										<!--{html_options options=$arrDay selected=$arrForm.b_start_day}-->
-									</select>Æü¡Á
+									</select>æ—¥ã€œ
 									<select name="b_end_year" <!--{if $arrErr.b_start_year || $arrErr.b_end_year}--><!--{sfSetErrorStyle}--><!--{/if}-->>
 										<option value="" selected="selected">------</option>
 										<!--{html_options options=$arrYear selected=$arrForm.b_end_year}-->
-									</select>Ç¯
+									</select>å¹´
 									<select name="b_end_month" <!--{if $arrErr.b_start_year || $arrErr.b_end_year}--><!--{sfSetErrorStyle}--><!--{/if}-->>
 										<option value="" selected="selected">----</option>
 										<!--{html_options options=$arrMonth selected=$arrForm.b_end_month}-->
-									</select>·î
+									</select>æœˆ
 									<select name="b_end_day" <!--{if $arrErr.b_start_year || $arrErr.b_end_year}--><!--{sfSetErrorStyle}--><!--{/if}-->>
 										<option value="" selected="selected">----</option>
 										<!--{html_options options=$arrDay selected=$arrForm.b_end_day}-->
-									</select>Æü
+									</select>æ—¥
 								</td>
 							</tr>
 							<tr class="fs12n">
-								<td bgcolor="#f2f1ec" width="110">¥á¡¼¥ë¥¢¥É¥ì¥¹</td>
+								<td bgcolor="#f2f1ec" width="110">ãƒ¡ãƒ¼ãƒ«ã‚¢ãƒ‰ãƒ¬ã‚¹</td>
 								<td bgcolor="#ffffff" width="499" colspan="3"><!--{if $arrErr.email}--><span class="red12"><!--{$arrErr.email}--></span><!--{/if}--><input type="text" name="email" maxlength="<!--{$smarty.const.STEXT_LEN}-->" value="<!--{$arrForm.email|escape}-->" size="60" class="box60" <!--{if $arrErr.email}--><!--{sfSetErrorStyle}--><!--{/if}-->/></td>
 							</tr>
 							<tr class="fs12n">
-								<td bgcolor="#f2f1ec" width="110">·ÈÂÓ¥á¡¼¥ë¥¢¥É¥ì¥¹</td>
+								<td bgcolor="#f2f1ec" width="110">æºå¸¯ãƒ¡ãƒ¼ãƒ«ã‚¢ãƒ‰ãƒ¬ã‚¹</td>
 								<td bgcolor="#ffffff" width="499" colspan="3"><!--{if $arrErr.email_mobile}--><span class="red12"><!--{$arrErr.email_mobile}--></span><!--{/if}--><input type="text" name="email_mobile" maxlength="<!--{$smarty.const.STEXT_LEN}-->" value="<!--{$arrForm.email_mobile|escape}-->" size="60" class="box60" <!--{if $arrErr.email_mobile}--><!--{sfSetErrorStyle}--><!--{/if}-->/></td>
 							</tr>
 							<tr class="fs12n">
-								<td bgcolor="#f2f1ec" width="110">ÅÅÏÃÈÖ¹æ</td>
+								<td bgcolor="#f2f1ec" width="110">é›»è©±ç•ªå·</td>
 								<td bgcolor="#ffffff" width="499" colspan="3"><!--{if $arrErr.tel}--><span class="red12"><!--{$arrErr.tel}--></span><br><!--{/if}--><input type="text" name="tel" maxlength="<!--{$smarty.const.TEL_LEN}-->" value="<!--{$arrForm.tel|escape}-->" size="60" class="box60" /></td>
 							</tr>
 							<tr class="fs12n">
-								<td bgcolor="#f2f1ec" width="110">¿¦¶È</td>
+								<td bgcolor="#f2f1ec" width="110">è·æ¥­</td>
 								<td bgcolor="#ffffff" width="499" colspan="3"><!--{html_checkboxes name="job" options=$arrJob separator="&nbsp;" selected=$arrForm.job}--></td>
 							</tr>
 							<tr class="fs12n">
-								<td bgcolor="#f2f1ec" width="110">¹ØÆþ¶â³Û</td>
-								<td bgcolor="#ffffff" width="194"><!--{if $arrErr.buy_total_from || $arrErr.buy_total_to}--><span class="red12"><!--{$arrErr.buy_total_from}--><!--{$arrErr.buy_total_to}--></span><br><!--{/if}--><input type="text" name="buy_total_from" maxlength="<!--{$smarty.const.INT_LEN}-->" value="<!--{$arrForm.buy_total_from|escape}-->" size="6" class="box6" <!--{if $arrErr.buy_total_from || $arrErr.buy_total_to}--><!--{sfSetErrorStyle}--><!--{/if}--> /> ±ß ¡Á <input type="text" name="buy_total_to" maxlength="<!--{$smarty.const.INT_LEN}-->" value="<!--{$arrForm.buy_total_to|escape}-->" size="6" class="box6" <!--{if $arrErr.buy_total_from || $arrErr.buy_total_to}--><!--{sfSetErrorStyle}--><!--{/if}--> /> ±ß</td>
-								<td bgcolor="#f2f1ec" width="110">¹ØÆþ²ó¿ô</td>
-								<td bgcolor="#ffffff" width="195"><!--{if $arrErr.buy_times_from || $arrErr.buy_times_to}--><span class="red12"><!--{$arrErr.buy_times_from}--><!--{$arrErr.buy_times_to}--></span><br><!--{/if}--><input type="text" name="buy_times_from" maxlength="<!--{$smarty.const.INT_LEN}-->" value="<!--{$arrForm.buy_times_from|escape}-->" size="6" class="box6" <!--{if $arrErr.buy_times_from || $arrErr.buy_times_to}--><!--{sfSetErrorStyle}--><!--{/if}--> /> ²ó ¡Á <input type="text" name="buy_times_to" maxlength="<!--{$smarty.const.INT_LEN}-->" value="<!--{$arrForm.buy_times_to|escape}-->" size="6" class="box6" <!--{if $arrErr.buy_times_from || $arrErr.buy_times_to}--><!--{sfSetErrorStyle}--><!--{/if}--> /> ²ó</td>
+								<td bgcolor="#f2f1ec" width="110">è³¼å…¥é‡‘é¡</td>
+								<td bgcolor="#ffffff" width="194"><!--{if $arrErr.buy_total_from || $arrErr.buy_total_to}--><span class="red12"><!--{$arrErr.buy_total_from}--><!--{$arrErr.buy_total_to}--></span><br><!--{/if}--><input type="text" name="buy_total_from" maxlength="<!--{$smarty.const.INT_LEN}-->" value="<!--{$arrForm.buy_total_from|escape}-->" size="6" class="box6" <!--{if $arrErr.buy_total_from || $arrErr.buy_total_to}--><!--{sfSetErrorStyle}--><!--{/if}--> /> å†† ã€œ <input type="text" name="buy_total_to" maxlength="<!--{$smarty.const.INT_LEN}-->" value="<!--{$arrForm.buy_total_to|escape}-->" size="6" class="box6" <!--{if $arrErr.buy_total_from || $arrErr.buy_total_to}--><!--{sfSetErrorStyle}--><!--{/if}--> /> å††</td>
+								<td bgcolor="#f2f1ec" width="110">è³¼å…¥å›žæ•°</td>
+								<td bgcolor="#ffffff" width="195"><!--{if $arrErr.buy_times_from || $arrErr.buy_times_to}--><span class="red12"><!--{$arrErr.buy_times_from}--><!--{$arrErr.buy_times_to}--></span><br><!--{/if}--><input type="text" name="buy_times_from" maxlength="<!--{$smarty.const.INT_LEN}-->" value="<!--{$arrForm.buy_times_from|escape}-->" size="6" class="box6" <!--{if $arrErr.buy_times_from || $arrErr.buy_times_to}--><!--{sfSetErrorStyle}--><!--{/if}--> /> å›ž ã€œ <input type="text" name="buy_times_to" maxlength="<!--{$smarty.const.INT_LEN}-->" value="<!--{$arrForm.buy_times_to|escape}-->" size="6" class="box6" <!--{if $arrErr.buy_times_from || $arrErr.buy_times_to}--><!--{sfSetErrorStyle}--><!--{/if}--> /> å›ž</td>
 							</tr>
 							<tr class="fs12n">
-								<td bgcolor="#f2f1ec" width="110">ÅÐÏ¿¡¦¹¹¿·Æü</td>
+								<td bgcolor="#f2f1ec" width="110">ç™»éŒ²ãƒ»æ›´æ–°æ—¥</td>
 								<td bgcolor="#ffffff" width="499" colspan="3">
 									<!--{if $arrErr.start_year || $arrErr.end_year}--><span class="red12"><!--{$arrErr.start_year}--><!--{$arrErr.end_year}--></span><br><!--{/if}-->
 									<select name="start_year" <!--{if $arrErr.start_year || $arrErr.end_year}--><!--{sfSetErrorStyle}--><!--{/if}-->>
 										<option value="" selected="selected">----</option>
 										<!--{html_options options=$arrYear selected=$arrForm.start_year}-->
-									</select>Ç¯
+									</select>å¹´
 									<select name="start_month" <!--{if $arrErr.start_year || $arrErr.end_year}--><!--{sfSetErrorStyle}--><!--{/if}-->>
 										<option value="" selected="selected">--</option>
 										<!--{html_options options=$arrMonth selected=$arrForm.start_month}-->
-									</select>·î
+									</select>æœˆ
 									<select name="start_day" <!--{if $arrErr.start_year || $arrErr.end_year}--><!--{sfSetErrorStyle}--><!--{/if}-->>
 										<option value="" selected="selected">--</option>
 										<!--{html_options options=$arrDay selected=$arrForm.start_day}-->
-									</select>Æü¡Á
+									</select>æ—¥ã€œ
 									<select name="end_year" <!--{if $arrErr.start_year || $arrErr.end_year}--><!--{sfSetErrorStyle}--><!--{/if}-->>
 										<option value="" selected="selected">----</option>
 										<!--{html_options options=$arrYear selected=$arrForm.end_year}-->
-									</select>Ç¯
+									</select>å¹´
 									<select name="end_month" <!--{if $arrErr.start_year || $arrErr.end_year}--><!--{sfSetErrorStyle}--><!--{/if}-->>
 										<option value="" selected="selected">--</option>
 										<!--{html_options options=$arrMonth selected=$arrForm.end_month}-->
-									</select>·î
+									</select>æœˆ
 									<select name="end_day" <!--{if $arrErr.start_year || $arrErr.end_year}--><!--{sfSetErrorStyle}--><!--{/if}-->>
 										<option value="" selected="selected">--</option>
 										<!--{html_options options=$arrDay selected=$arrForm.end_day}-->
-									</select>Æü
+									</select>æ—¥
 								</td>
 							</tr>
 				
 							<tr class="fs12n">
-								<td bgcolor="#f2f1ec" width="110">ºÇ½ª¹ØÆþÆü</td>
+								<td bgcolor="#f2f1ec" width="110">æœ€çµ‚è³¼å…¥æ—¥</td>
 								<td bgcolor="#ffffff" width="499" colspan="3">
 									<!--{if $arrErr.buy_start_year || $arrErr.buy_end_year}--><span class="red12"><!--{$arrErr.buy_start_year}--><!--{$arrErr.buy_end_year}--></span><br><!--{/if}-->
 									<select name="buy_start_year" style="<!--{$arrErr.buy_start_year|sfGetErrorColor}-->">
 										<option value="" selected="selected">----</option>
 										<!--{html_options options=$objDate->getYear($smarty.const.RELEASE_YEAR)  selected=$arrForm.buy_start_year}-->
-									</select>Ç¯
+									</select>å¹´
 									<select name="buy_start_month" style="<!--{$arrErr.buy_start_year|sfGetErrorColor}-->">
 										<option value="" selected="selected">--</option>
 										<!--{html_options options=$arrMonth selected=$arrForm.buy_start_month}-->
-									</select>·î
+									</select>æœˆ
 									<select name="buy_start_day" style="<!--{$arrErr.buy_start_year|sfGetErrorColor}-->">
 										<option value="" selected="selected">--</option>
 										<!--{html_options options=$arrDay selected=$arrForm.buy_start_day}-->
-									</select>Æü¡Á
+									</select>æ—¥ã€œ
 									<select name="buy_end_year" style="<!--{$arrErr.buy_end_year|sfGetErrorColor}-->">
 										<option value="" selected="selected">----</option>
 										<!--{html_options options=$objDate->getYear($smarty.const.RELEASE_YEAR)  selected=$arrForm.buy_end_year}-->
-									</select>Ç¯
+									</select>å¹´
 									<select name="buy_end_month" style="<!--{$arrErr.buy_end_year|sfGetErrorColor}-->">
 										<option value="" selected="selected">--</option>
 										<!--{html_options options=$arrMonth selected=$arrForm.buy_end_month}-->
-									</select>·î
+									</select>æœˆ
 									<select name="buy_end_day" style="<!--{$arrErr.buy_end_year|sfGetErrorColor}-->">
 										<option value="" selected="selected">--</option>
 										<!--{html_options options=$arrDay selected=$arrForm.buy_end_day}-->
-									</select>Æü
+									</select>æ—¥
 								</td>
 							</tr>
 							<tr class="fs12n">
-								<td bgcolor="#f2f1ec" width="110">¹ØÆþ¾¦ÉÊÌ¾</td>
+								<td bgcolor="#f2f1ec" width="110">è³¼å…¥å•†å“å</td>
 								<td bgcolor="#ffffff" width="194">
 									<!--{if $arrErr.buy_product_name}--><span class="red12"><!--{$arrErr.buy_product_name}--></span><!--{/if}-->
 									<span style="<!--{$arrErr.buy_product_name|sfGetErrorColor}-->">
 									<input type="text" name="buy_product_name" maxlength="<!--{$smarty.const.STEXT_LEN}-->" value="<!--{$arrForm.buy_product_name|escape}-->" size="30" class="box30" style="<!--{$arrErr.buy_product_name|sfGetErrorColor}-->"/>
 									</span>
 								</td>
-								<td bgcolor="#f2f1ec" width="110">¹ØÆþ¾¦ÉÊ<br />¥³¡¼¥É</td>
+								<td bgcolor="#f2f1ec" width="110">è³¼å…¥å•†å“<br />ã‚³ãƒ¼ãƒ‰</td>
 								<td bgcolor="#ffffff" width="195">
 								<!--{if $arrErr.buy_product_code}--><span class="red12"><!--{$arrErr.buy_product_code}--></span><!--{/if}-->
 								<input type="text" name="buy_product_code" value="<!--{$arrForm.buy_product_code}-->" maxlength="<!--{$smarty.const.STEXT_LEN}-->" size="30" class="box30" style="<!--{$arrErr.buy_product_code|sfGetErrorColor}-->" >
 								</td>				
 							</tr>
 							<tr class="fs12n">
-								<td bgcolor="#f2f1ec" width="110">¥«¥Æ¥´¥ê</td>
+								<td bgcolor="#f2f1ec" width="110">ã‚«ãƒ†ã‚´ãƒª</td>
 								<td bgcolor="#ffffff" width="499" colspan="3">
 									<select name="category_id" style="<!--{if $arrErr.category_id != ""}-->background-color: <!--{$smarty.const.ERR_COLOR}--><!--{/if}-->">
-										<option value="">ÁªÂò¤·¤Æ¤¯¤À¤µ¤¤</option>
+										<option value="">é¸æŠžã—ã¦ãã ã•ã„</option>
 										<!--{html_options options=$arrCatList selected=$arrForm.category_id}-->
 									</select>
 								</td>
@@ -254,13 +254,13 @@
 								<td bgcolor="#e9e7de" align="center">
 								<table border="0" cellspacing="0" cellpadding="0" summary=" ">
 									<tr>
-										<td class="fs12n">¸¡º÷·ë²ÌÉ½¼¨·ï¿ô
+										<td class="fs12n">æ¤œç´¢çµæžœè¡¨ç¤ºä»¶æ•°
 											<select name="page_rows">
 												<!--{html_options options=$arrPageRows selected=$arrForm.page_rows}-->
-											</select> ·ï</td>
+											</select> ä»¶</td>
 										</td>
 										<td><img src="<!--{$smarty.const.URL_DIR}-->img/common/_.gif" width="10" height="1" alt=""></td>
-										<td><input type="image" name="subm" onMouseover="chgImgImageSubmit('<!--{$smarty.const.URL_DIR}-->img/contents/btn_search_on.jpg',this)" onMouseout="chgImgImageSubmit('<!--{$smarty.const.URL_DIR}-->img/contents/btn_search.jpg',this)" src="<!--{$smarty.const.URL_DIR}-->img/contents/btn_search.jpg" width="123" height="24" alt="¤³¤Î¾ò·ï¤Ç¸¡º÷¤¹¤ë" border="0" ></td>
+										<td><input type="image" name="subm" onMouseover="chgImgImageSubmit('<!--{$smarty.const.URL_DIR}-->img/contents/btn_search_on.jpg',this)" onMouseout="chgImgImageSubmit('<!--{$smarty.const.URL_DIR}-->img/contents/btn_search.jpg',this)" src="<!--{$smarty.const.URL_DIR}-->img/contents/btn_search.jpg" width="123" height="24" alt="ã“ã®æ¡ä»¶ã§æ¤œç´¢ã™ã‚‹" border="0" ></td>
 									</tr>
 								</table>
 								</td>
@@ -270,7 +270,7 @@
 								<td colspan="3"><img src="<!--{$smarty.const.URL_DIR}-->img/contents/tbl_bottom.gif" width="678" height="8" alt=""></td>
 							</tr>
 						</table>
-						<!--¸¡º÷¾ò·ïÀßÄê¥Æ¡¼¥Ö¥ë¤³¤³¤Þ¤Ç-->
+						<!--æ¤œç´¢æ¡ä»¶è¨­å®šãƒ†ãƒ¼ãƒ–ãƒ«ã“ã“ã¾ã§-->
 						</td>
 						<td background="<!--{$smarty.const.URL_DIR}-->img/contents/main_right.jpg"><img src="<!--{$smarty.const.URL_DIR}-->img/common/_.gif" width="14" height="1" alt=""></td>
 					</tr>
@@ -281,17 +281,17 @@
 				</table>
 				</td>
 			</tr>
-			<!--¥á¥¤¥ó¥¨¥ê¥¢-->
+			<!--ãƒ¡ã‚¤ãƒ³ã‚¨ãƒªã‚¢-->
 		</table>
 		</td>
 	</tr>
 </form>	
 </table>
-<!--¡ú¡ú¥á¥¤¥ó¥³¥ó¥Æ¥ó¥Ä¡ú¡ú-->
+<!--â˜…â˜…ãƒ¡ã‚¤ãƒ³ã‚³ãƒ³ãƒ†ãƒ³ãƒ„â˜…â˜…-->
 
 <!--{if count($arrErr) == 0 and ($smarty.post.mode == 'search' or $smarty.post.mode == 'delete') }-->
 
-<!--¡ú¡ú¸¡º÷·ë²Ì°ìÍ÷¡ú¡ú-->
+<!--â˜…â˜…æ¤œç´¢çµæžœä¸€è¦§â˜…â˜…-->
 <table width="878" border="0" cellspacing="0" cellpadding="0" summary=" ">
 <form name="form1" id="form1" method="post" action="<!--{$smarty.server.PHP_SELF|escape}-->">
 <!--{foreach from=$smarty.post key="key" item="item"}-->
@@ -316,7 +316,7 @@
 			<tr>
 				<td><img src="<!--{$smarty.const.URL_DIR}-->img/contents/search_left.gif" width="19" height="22" alt=""></td>
 				<td>
-				<!--¸¡º÷·ë²Ì-->
+				<!--æ¤œç´¢çµæžœ-->
 				<table border="0" cellspacing="0" cellpadding="0" summary=" ">
 					<tr>
 						<td><img src="<!--{$smarty.const.URL_DIR}-->img/contents/reselt_left_top.gif" width="22" height="5" alt=""></td>
@@ -325,7 +325,7 @@
 					</tr>
 					<tr>
 						<td background="<!--{$smarty.const.URL_DIR}-->img/contents/reselt_left_bg.gif"><img src="<!--{$smarty.const.URL_DIR}-->img/contents/reselt_left_middle.gif" width="22" height="12" alt=""></td>
-						<td bgcolor="#393a48" class="white10">¸¡º÷·ë²Ì°ìÍ÷¡¡<span class="reselt"><!--¸¡º÷·ë²Ì¿ô--><!--{$tpl_linemax}-->·ï</span>&nbsp;¤¬³ºÅö¤·¤Þ¤·¤¿¡£</td>
+						<td bgcolor="#393a48" class="white10">æ¤œç´¢çµæžœä¸€è¦§ã€€<span class="reselt"><!--æ¤œç´¢çµæžœæ•°--><!--{$tpl_linemax}-->ä»¶</span>&nbsp;ãŒè©²å½“ã—ã¾ã—ãŸã€‚</td>
 						<td background="<!--{$smarty.const.URL_DIR}-->img/contents/reselt_right_bg.gif"><img src="<!--{$smarty.const.URL_DIR}-->img/common/_.gif" width="22" height="8" alt=""></td>
 					</tr>
 					<tr>
@@ -334,15 +334,15 @@
 						<td><img src="<!--{$smarty.const.URL_DIR}-->img/contents/reselt_right_bottom.gif" width="22" height="5" alt=""></td>
 					</tr>
 				</table>
-				<!--¸¡º÷·ë²Ì-->
+				<!--æ¤œç´¢çµæžœ-->
 				<!--{if $smarty.const.ADMIN_MODE == '1'}-->
-				<input type="button" name="subm" value="¸¡º÷·ë²Ì¤ò¤¹¤Ù¤Æºï½ü" onclick="fnModeSubmit('delete_all','','');" />
+				<input type="button" name="subm" value="æ¤œç´¢çµæžœã‚’ã™ã¹ã¦å‰Šé™¤" onclick="fnModeSubmit('delete_all','','');" />
 				<!--{/if}-->
 				</td>
 				<td><img src="<!--{$smarty.const.URL_DIR}-->img/common/_.gif" width="8" height="1" alt=""></td>
 				<td><a href="#" onmouseover="chgImg('<!--{$smarty.const.URL_DIR}-->img/contents/btn_csv_on.jpg','btn_csv');" onmouseout="chgImg('<!--{$smarty.const.URL_DIR}-->img/contents/btn_csv.jpg','btn_csv');"  onclick="fnModeSubmit('csv','','');" ><img src="<!--{$smarty.const.URL_DIR}-->img/contents/btn_csv.jpg" width="99" height="22" alt="CSV DOWNLOAD" border="0" name="btn_csv" id="btn_csv"></a></td>
 				<td><img src="<!--{$smarty.const.URL_DIR}-->img/common/_.gif" width="8" height="1" alt=""></td>
-				<td><a href="../contents/csv.php?tpl_subno_csv=customer"><span class="fs12n"> >> CSV½ÐÎÏ¹àÌÜÀßÄê </span></a></td>
+				<td><a href="../contents/csv.php?tpl_subno_csv=customer"><span class="fs12n"> >> CSVå‡ºåŠ›é …ç›®è¨­å®š </span></a></td>
 			</tr>
 		</table>
 		</td>
@@ -363,41 +363,41 @@
 				<tr><td height="12"></td></tr>
 				<tr>
 					<td bgcolor="#cccccc">
-					<!--¸¡º÷·ë²ÌÉ½¼¨¥Æ¡¼¥Ö¥ë-->
+					<!--æ¤œç´¢çµæžœè¡¨ç¤ºãƒ†ãƒ¼ãƒ–ãƒ«-->
 					<table width="840" border="0" cellspacing="1" cellpadding="5" summary=" ">
 						<tr bgcolor="#636469" align="center" class="fs12n">
-							<td width="50" rowspan="2"><span class="white">¼ïÊÌ</span></td>
-							<td width="120"><span class="white">¸ÜµÒ¥³¡¼¥É</span></td>
-							<td width="300" rowspan="2"><span class="white">¸ÜµÒÌ¾/¡Ê¥«¥Ê¡Ë</span></td>
-							<td width="50" rowspan="2"><span class="white">À­ÊÌ</span></td>
+							<td width="50" rowspan="2"><span class="white">ç¨®åˆ¥</span></td>
+							<td width="120"><span class="white">é¡§å®¢ã‚³ãƒ¼ãƒ‰</span></td>
+							<td width="300" rowspan="2"><span class="white">é¡§å®¢å/ï¼ˆã‚«ãƒŠï¼‰</span></td>
+							<td width="50" rowspan="2"><span class="white">æ€§åˆ¥</span></td>
 							<td width="250"><span class="white">TEL</span></td>
-							<td width="50" rowspan="2"><span class="white">ÊÔ½¸</span></td>
-							<td width="50" rowspan="2"><span class="white">ºï½ü</span></td>
+							<td width="50" rowspan="2"><span class="white">ç·¨é›†</span></td>
+							<td width="50" rowspan="2"><span class="white">å‰Šé™¤</span></td>
 						</tr>
 						<tr bgcolor="#636469" align="center" class="fs12n">
-							<td width=""><span class="white">ÅÔÆ»ÉÜ¸©</span></td>
-							<td width=""><span class="white">¥á¡¼¥ë¥¢¥É¥ì¥¹</span></td>
+							<td width=""><span class="white">éƒ½é“åºœçœŒ</span></td>
+							<td width=""><span class="white">ãƒ¡ãƒ¼ãƒ«ã‚¢ãƒ‰ãƒ¬ã‚¹</span></td>
 						</tr>
 						<!--{section name=data loop=$search_data}-->
-							<!--¸ÜµÒ<!--{$smarty.section.data.iteration}-->-->
+							<!--é¡§å®¢<!--{$smarty.section.data.iteration}-->-->
 							<tr bgcolor="#ffffff" class="fs12n">
-								<td align="center" rowspan="2"><!--{if $search_data[data].status eq 1}-->²¾<!--{else}-->ËÜ<!--{/if}--></td>
+								<td align="center" rowspan="2"><!--{if $search_data[data].status eq 1}-->ä»®<!--{else}-->æœ¬<!--{/if}--></td>
 								<td><!--{$search_data[data].customer_id|escape}--></td>
 								<td rowspan="2"><!--{$search_data[data].name01|escape}--> <!--{$search_data[data].name02|escape}-->(<!--{$search_data[data].kana01|escape}--> <!--{$search_data[data].kana02|escape}-->)</td>
-								<td align="center" rowspan="2"><!--{if $search_data[data].sex eq 1}-->ÃËÀ­<!--{else}-->½÷À­<!--{/if}--></td>
+								<td align="center" rowspan="2"><!--{if $search_data[data].sex eq 1}-->ç”·æ€§<!--{else}-->å¥³æ€§<!--{/if}--></td>
 								<td><!--{$search_data[data].tel01|escape}-->-<!--{$search_data[data].tel02|escape}-->-<!--{$search_data[data].tel03|escape}--></td>
-								<td align="center" rowspan="2"><span class="icon_edit"><a href="#" onclick="return fnEdit('<!--{$search_data[data].customer_id|escape}-->');">ÊÔ½¸</a></span>
+								<td align="center" rowspan="2"><span class="icon_edit"><a href="#" onclick="return fnEdit('<!--{$search_data[data].customer_id|escape}-->');">ç·¨é›†</a></span>
 								</td>
-								<td align="center" rowspan="2"><span class="icon_delete"><a href="#" onclick="return fnDelete('<!--{$search_data[data].customer_id|escape}-->');">ºï½ü</a></span></td>
+								<td align="center" rowspan="2"><span class="icon_delete"><a href="#" onclick="return fnDelete('<!--{$search_data[data].customer_id|escape}-->');">å‰Šé™¤</a></span></td>
 							</tr>
 							<tr bgcolor="#ffffff" class="fs12n">
 								<td width=""><!--{assign var=pref value=$search_data[data].pref}--><!--{$arrPref[$pref]}--></td>
 								<td width=""><!--{mailto address=$search_data[data].email encode="javascript"}--></a></td>
 							</tr>
-							<!--¸ÜµÒ<!--{$smarty.section.data.iteration}-->-->
+							<!--é¡§å®¢<!--{$smarty.section.data.iteration}-->-->
 						<!--{/section}-->
 					</table>
-					<!--¸¡º÷·ë²ÌÉ½¼¨¥Æ¡¼¥Ö¥ë-->
+					<!--æ¤œç´¢çµæžœè¡¨ç¤ºãƒ†ãƒ¼ãƒ–ãƒ«-->
 					</td>
 				</tr>
 			</table>
@@ -408,6 +408,6 @@
 	</tr>
 </form>
 </table>		
-<!--¡ú¡ú¸¡º÷·ë²Ì°ìÍ÷¡ú¡ú-->		
+<!--â˜…â˜…æ¤œç´¢çµæžœä¸€è¦§â˜…â˜…-->		
 
 <!--{/if}-->

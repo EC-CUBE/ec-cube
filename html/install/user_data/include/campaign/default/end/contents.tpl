@@ -13,14 +13,14 @@
 				<table width="604" border="0" cellspacing="0" cellpadding="0" summary=" ">
 					<tr><td height="13"></td></tr>
 					<tr>
-						<td>�����ڡ���λ</td>
+						<td>キャンペーン終了</td>
 					</tr>
 					<tr><td height="20"></td></tr>
 				</table>
 				
 				<table width="530" border="0" cellspacing="0" cellpadding="0" summary=" ">
 					<tr>
-						<td class="fs12">�����ڡ���Ͻ�λ�������ޤ�����</td>
+						<td class="fs12">キャンペーンは終了いたしました。</td>
 					</tr>
 					<tr><td height="10"></td></tr>
 				</table>

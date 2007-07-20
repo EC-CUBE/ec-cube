@@ -16,7 +16,7 @@ class LC_Page {
 		$this->tpl_mainno = 'basis';
 		global $arrPref;
 		$this->arrPref = $arrPref;
-		$this->tpl_subtitle = 'ÇÛÁ÷¶È¼ÔÀßÄê';
+		$this->tpl_subtitle = 'é…é€æ¥­è€…è¨­å®š';
 	}
 }
 
@@ -26,24 +26,24 @@ $objView = new SC_AdminView();
 $objSess = new SC_Session();
 $objQuery = new SC_Query();
 
-// Ç§¾Ú²ÄÈİ¤ÎÈ½Äê
+// èªè¨¼å¯å¦ã®åˆ¤å®š
 sfIsSuccess($objSess);
 
-// ¥Ñ¥é¥á¡¼¥¿´ÉÍı¥¯¥é¥¹
+// ãƒ‘ãƒ©ãƒ¡ãƒ¼ã‚¿ç®¡ç†ã‚¯ãƒ©ã‚¹
 $objFormParam = new SC_FormParam();
-// ¥Ñ¥é¥á¡¼¥¿¾ğÊó¤Î½é´ü²½
+// ãƒ‘ãƒ©ãƒ¡ãƒ¼ã‚¿æƒ…å ±ã®åˆæœŸåŒ–
 lfInitParam();
-// POSTÃÍ¤Î¼èÆÀ
+// POSTå€¤ã®å–å¾—
 $objFormParam->setParam($_POST);
 
 switch($_POST['mode']) {
 case 'edit':
-	// ÆşÎÏÃÍ¤ÎÊÑ´¹
+	// å…¥åŠ›å€¤ã®å¤‰æ›
 	$objFormParam->convParam();
 	$objPage->arrErr = lfCheckError();
 	if(count($objPage->arrErr) == 0) {
 		$objPage->tpl_deliv_id = lfRegistData();
-		$objPage->tpl_onload = "window.alert('ÇÛÁ÷¶È¼ÔÀßÄê¤¬´°Î»¤·¤Ş¤·¤¿¡£');";
+		$objPage->tpl_onload = "window.alert('é…é€æ¥­è€…è¨­å®šãŒå®Œäº†ã—ã¾ã—ãŸã€‚');";
 	}
 	break;
 case 'pre_edit':
@@ -60,32 +60,32 @@ $objPage->arrForm = $objFormParam->getFormParamList();
 $objView->assignobj($objPage);
 $objView->display(MAIN_FRAME);
 //--------------------------------------------------------------------------------------------------------------------------------------
-/* ¥Ñ¥é¥á¡¼¥¿¾ğÊó¤Î½é´ü²½ */
+/* ãƒ‘ãƒ©ãƒ¡ãƒ¼ã‚¿æƒ…å ±ã®åˆæœŸåŒ– */
 function lfInitParam() {
 	global $objFormParam;
-	$objFormParam->addParam("ÇÛÁ÷¶È¼ÔÌ¾", "name", STEXT_LEN, "KVa", array("EXIST_CHECK", "MAX_LENGTH_CHECK"));
-	$objFormParam->addParam("Ì¾¾Î", "service_name", STEXT_LEN, "KVa", array("EXIST_CHECK", "MAX_LENGTH_CHECK"));
-	$objFormParam->addParam("ÅÁÉ¼No.³ÎÇ§URL", "confirm_url", STEXT_LEN, "n", array("URL_CHECK", "MAX_LENGTH_CHECK"), "http://");
+	$objFormParam->addParam("é…é€æ¥­è€…å", "name", STEXT_LEN, "KVa", array("EXIST_CHECK", "MAX_LENGTH_CHECK"));
+	$objFormParam->addParam("åç§°", "service_name", STEXT_LEN, "KVa", array("EXIST_CHECK", "MAX_LENGTH_CHECK"));
+	$objFormParam->addParam("ä¼ç¥¨No.ç¢ºèªURL", "confirm_url", STEXT_LEN, "n", array("URL_CHECK", "MAX_LENGTH_CHECK"), "http://");
 	
 	for($cnt = 1; $cnt <= DELIVTIME_MAX; $cnt++) {
-		$objFormParam->addParam("ÇÛÁ÷»ş´Ö$cnt", "deliv_time$cnt", STEXT_LEN, "KVa", array("MAX_LENGTH_CHECK"));
+		$objFormParam->addParam("é…é€æ™‚é–“$cnt", "deliv_time$cnt", STEXT_LEN, "KVa", array("MAX_LENGTH_CHECK"));
 	}
 	
 	if(INPUT_DELIV_FEE) {
 		for($cnt = 1; $cnt <= DELIVFEE_MAX; $cnt++) {
-			$objFormParam->addParam("ÇÛÁ÷ÎÁ¶â$cnt", "fee$cnt", PRICE_LEN, "n", array("EXIST_CHECK", "MAX_LENGTH_CHECK", "NUM_CHECK"));
+			$objFormParam->addParam("é…é€æ–™é‡‘$cnt", "fee$cnt", PRICE_LEN, "n", array("EXIST_CHECK", "MAX_LENGTH_CHECK", "NUM_CHECK"));
 		}
 	}
 }
 
-/* DB¤ËÅĞÏ¿¤¹¤ë */
+/* DBã«ç™»éŒ²ã™ã‚‹ */
 function lfRegistData() {
 	global $objFormParam;
 	$arrRet = $objFormParam->getHashArray();
 	$objQuery = new SC_Query();
 	$objQuery->begin();
 
-	// ÆşÎÏ¥Ç¡¼¥¿¤òÅÏ¤¹¡£
+	// å…¥åŠ›ãƒ‡ãƒ¼ã‚¿ã‚’æ¸¡ã™ã€‚
 	$sqlval['name'] = $arrRet['name'];
 	$sqlval['service_name'] = $arrRet['service_name'];
 	$sqlval['confirm_url'] = $arrRet['confirm_url'];
@@ -99,7 +99,7 @@ function lfRegistData() {
 		$objQuery->delete("dtb_delivfee", $where, array($deliv_id));
 		$objQuery->delete("dtb_delivtime", $where, array($deliv_id));
 	} else {
-		// ÅĞÏ¿¤¹¤ëÇÛÁ÷¶È¼ÔID¤Î¼èÆÀ
+		// ç™»éŒ²ã™ã‚‹é…é€æ¥­è€…IDã®å–å¾—
 
 		if (DB_TYPE == "pgsql") {
 			$deliv_id = $objQuery->nextval('dtb_deliv', 'deliv_id');
@@ -108,7 +108,7 @@ function lfRegistData() {
 		
 		$sqlval['rank'] = $objQuery->max("dtb_deliv", "rank") + 1;
 		$sqlval['create_date'] = 'Now()';
-		// INSERT¤Î¼Â¹Ô
+		// INSERTã®å®Ÿè¡Œ
 		$objQuery->insert("dtb_deliv", $sqlval);
 		
 		if (DB_TYPE == "mysql") {
@@ -117,27 +117,27 @@ function lfRegistData() {
 	}
 	
 	$sqlval = array();
-	// ÇÛÁ÷»ş´Ö¤ÎÀßÄê
+	// é…é€æ™‚é–“ã®è¨­å®š
 	for($cnt = 1; $cnt <= DELIVTIME_MAX; $cnt++) {
 		$keyname = "deliv_time$cnt";
 		if($arrRet[$keyname] != "") {
 			$sqlval['deliv_id'] = $deliv_id;
 			$sqlval['deliv_time'] = $arrRet[$keyname];
-			// INSERT¤Î¼Â¹Ô
+			// INSERTã®å®Ÿè¡Œ
 			$objQuery->insert("dtb_delivtime", $sqlval);
 		}
 	}
 	
 	if(INPUT_DELIV_FEE) {
 		$sqlval = array();
-		// ÇÛÁ÷ÎÁ¶â¤ÎÀßÄê
+		// é…é€æ–™é‡‘ã®è¨­å®š
 		for($cnt = 1; $cnt <= DELIVFEE_MAX; $cnt++) {
 			$keyname = "fee$cnt";
 			if($arrRet[$keyname] != "") {
 				$sqlval['deliv_id'] = $deliv_id;
 				$sqlval['fee'] = $arrRet[$keyname];
 				$sqlval['pref'] = $cnt;
-				// INSERT¤Î¼Â¹Ô
+				// INSERTã®å®Ÿè¡Œ
 				$objQuery->insert("dtb_delivfee", $sqlval);
 			}
 		}
@@ -146,23 +146,23 @@ function lfRegistData() {
 	return $deliv_id;
 }
 
-/* ÇÛÁ÷¶È¼Ô¾ğÊó¤Î¼èÆÀ */
+/* é…é€æ¥­è€…æƒ…å ±ã®å–å¾— */
 function lfGetDelivData($deliv_id) {
 	global $objFormParam;
 	$objQuery = new SC_Query();
-	// ÇÛÁ÷¶È¼Ô°ìÍ÷¤Î¼èÆÀ
+	// é…é€æ¥­è€…ä¸€è¦§ã®å–å¾—
 	$col = "deliv_id, name, service_name, confirm_url";
 	$where = "deliv_id = ?";
 	$table = "dtb_deliv";
 	$arrRet = $objQuery->select($col, $table, $where, array($deliv_id));
 	$objFormParam->setParam($arrRet[0]);
-	// ÇÛÁ÷»ş´Ö¤Î¼èÆÀ
+	// é…é€æ™‚é–“ã®å–å¾—
 	$col = "deliv_time";
 	$where = "deliv_id = ?  ORDER BY time_id";
 	$table = "dtb_delivtime";
 	$arrRet = $objQuery->select($col, $table, $where, array($deliv_id));
 	$objFormParam->setParamList($arrRet, 'deliv_time');
-	// ÇÛÁ÷ÎÁ¶â¤Î¼èÆÀ
+	// é…é€æ–™é‡‘ã®å–å¾—
 	$col = "fee";
 	$where = "deliv_id = ? ORDER BY pref";
 	$table = "dtb_delivfee";
@@ -170,19 +170,19 @@ function lfGetDelivData($deliv_id) {
 	$objFormParam->setParamList($arrRet, 'fee');
 }
 
-/* ÆşÎÏÆâÍÆ¤Î¥Á¥§¥Ã¥¯ */
+/* å…¥åŠ›å†…å®¹ã®ãƒã‚§ãƒƒã‚¯ */
 function lfCheckError() {
 	global $objFormParam;
-	// ÆşÎÏ¥Ç¡¼¥¿¤òÅÏ¤¹¡£
+	// å…¥åŠ›ãƒ‡ãƒ¼ã‚¿ã‚’æ¸¡ã™ã€‚
 	$arrRet =  $objFormParam->getHashArray();
 	$objErr = new SC_CheckError($arrRet);
 	$objErr->arrErr = $objFormParam->checkError();
 	
 	if(!isset($objErr->arrErr['name']) && $_POST['deliv_id'] == "") {
-		// ´ûÂ¸¥Á¥§¥Ã¥¯
+		// æ—¢å­˜ãƒã‚§ãƒƒã‚¯
 		$ret = sfIsRecord("dtb_deliv", "service_name", array($arrRet['service_name']));
 		if ($ret) {
-			$objErr->arrErr['name'] = "¢¨ Æ±¤¸Ì¾¾Î¤ÎÁÈ¤ß¹ç¤ï¤»¤ÏÅĞÏ¿¤Ç¤­¤Ş¤»¤ó¡£<br>";
+			$objErr->arrErr['name'] = "â€» åŒã˜åç§°ã®çµ„ã¿åˆã‚ã›ã¯ç™»éŒ²ã§ãã¾ã›ã‚“ã€‚<br>";
 		}
 	}
 	

@@ -15,8 +15,8 @@ class LC_Page {
 		$this->tpl_subno = 'template';
 		$this->tpl_subno_template = 'upload';
 		$this->tpl_mainno = "design";
-		$this->tpl_subtitle = '¥¢¥Ã¥×¥í¡¼¥É';
-		$this->template_name = '¥¢¥Ã¥×¥í¡¼¥É';
+		$this->tpl_subtitle = 'ã‚¢ãƒƒãƒ—ãƒ­ãƒ¼ãƒ‰';
+		$this->template_name = 'ã‚¢ãƒƒãƒ—ãƒ­ãƒ¼ãƒ‰';
 	}
 }
 
@@ -25,20 +25,20 @@ $objView = new SC_AdminView();
 $objSess = new SC_Session();
 $objQuery = new SC_Query();
 
-// Ç§¾Ú²ÄÈİ¤ÎÈ½Äê
+// èªè¨¼å¯å¦ã®åˆ¤å®š
 $objSess = new SC_Session();
 sfIsSuccess($objSess);
 
-// ¥¢¥Ã¥×¥í¡¼¥É¤·¤¿¥Õ¥¡¥¤¥ë¤ò¥Õ¥©¥ë¥À
+// ã‚¢ãƒƒãƒ—ãƒ­ãƒ¼ãƒ‰ã—ãŸãƒ•ã‚¡ã‚¤ãƒ«ã‚’ãƒ•ã‚©ãƒ«ãƒ€
 $new_file_dir = USER_TEMPLATE_PATH.$_POST['template_code'];
 
-// ¥Õ¥¡¥¤¥ë´ÉÍı¥¯¥é¥¹
+// ãƒ•ã‚¡ã‚¤ãƒ«ç®¡ç†ã‚¯ãƒ©ã‚¹
 $objUpFile = new SC_UploadFile(TEMPLATE_TEMP_DIR, $new_file_dir);
-// ¥Õ¥¡¥¤¥ë¾ğÊó¤Î½é´ü²½
+// ãƒ•ã‚¡ã‚¤ãƒ«æƒ…å ±ã®åˆæœŸåŒ–
 lfInitFile();
-// ¥Ñ¥é¥á¡¼¥¿´ÉÍı¥¯¥é¥¹
+// ãƒ‘ãƒ©ãƒ¡ãƒ¼ã‚¿ç®¡ç†ã‚¯ãƒ©ã‚¹
 $objFormParam = new SC_FormParam();
-// ¥Ñ¥é¥á¡¼¥¿¾ğÊó¤Î½é´ü²½
+// ãƒ‘ãƒ©ãƒ¡ãƒ¼ã‚¿æƒ…å ±ã®åˆæœŸåŒ–
 lfInitParam();
 
 switch($_POST['mode']) {
@@ -48,29 +48,29 @@ case 'upload':
 	
 	$objPage->arrErr = lfErrorCheck($arrRet);
 
-	// ¥Õ¥¡¥¤¥ë¤ò°ì»ş¥Õ¥©¥ë¥À¤ØÊİÂ¸
+	// ãƒ•ã‚¡ã‚¤ãƒ«ã‚’ä¸€æ™‚ãƒ•ã‚©ãƒ«ãƒ€ã¸ä¿å­˜
 	$ret = $objUpFile->makeTempFile('template_file', false);
 	if($ret != "") {
 		$objPage->arrErr['template_file'] = $ret;
 	} else if(count($objPage->arrErr) <= 0) {
-		// ¥Õ¥©¥ë¥ÀºîÀ®
+		// ãƒ•ã‚©ãƒ«ãƒ€ä½œæˆ
 		$ret = @mkdir($new_file_dir);
-		// °ì»ş¥Õ¥©¥ë¥À¤«¤éÊİÂ¸¥Ç¥£¥ì¥¯¥È¥ê¤Ø°ÜÆ°
+		// ä¸€æ™‚ãƒ•ã‚©ãƒ«ãƒ€ã‹ã‚‰ä¿å­˜ãƒ‡ã‚£ãƒ¬ã‚¯ãƒˆãƒªã¸ç§»å‹•
 		$objUpFile->moveTempFile();
-		// ²òÅà
+		// è§£å‡
 		lfUnpacking($new_file_dir, $_FILES['template_file']['name'], $new_file_dir."/");
-		// DB¤Ë¥Æ¥ó¥×¥ì¡¼¥È¾ğÊó¤òÊİÂ¸
+		// DBã«ãƒ†ãƒ³ãƒ—ãƒ¬ãƒ¼ãƒˆæƒ…å ±ã‚’ä¿å­˜
 		lfRegistTemplate($arrRet);
-		// ´°Î»É½¼¨javascript
-		$objPage->tpl_onload = "alert('¥Æ¥ó¥×¥ì¡¼¥È¥Õ¥¡¥¤¥ë¤ò¥¢¥Ã¥×¥í¡¼¥É¤·¤Ş¤·¤¿¡£');";
-		// ¥Õ¥©¡¼¥àÃÍ¤ò¥¯¥ê¥¢
+		// å®Œäº†è¡¨ç¤ºjavascript
+		$objPage->tpl_onload = "alert('ãƒ†ãƒ³ãƒ—ãƒ¬ãƒ¼ãƒˆãƒ•ã‚¡ã‚¤ãƒ«ã‚’ã‚¢ãƒƒãƒ—ãƒ­ãƒ¼ãƒ‰ã—ã¾ã—ãŸã€‚');";
+		// ãƒ•ã‚©ãƒ¼ãƒ å€¤ã‚’ã‚¯ãƒªã‚¢
 		$objFormParam->setParam(array('template_code' => "", 'template_name' => ""));
 	}
 	break;
 default:
 	break;
 }
-// ²èÌÌ¤ÎÉ½¼¨
+// ç”»é¢ã®è¡¨ç¤º
 $objPage->arrForm = $objFormParam->getFormParamList();
 $objView->assignobj($objPage);
 $objView->display(MAIN_FRAME);
@@ -78,30 +78,30 @@ $objView->display(MAIN_FRAME);
 //---------------------------------------------------------------------------------------------------------------------------------------------------------
 
 /* 
- * ´Ø¿ôÌ¾¡§lfInitFile()
- * ÀâÌÀ¡¡¡§¥Õ¥¡¥¤¥ë¾ğÊó¤Î½é´ü²½
+ * é–¢æ•°åï¼šlfInitFile()
+ * èª¬æ˜ã€€ï¼šãƒ•ã‚¡ã‚¤ãƒ«æƒ…å ±ã®åˆæœŸåŒ–
  */
 function lfInitFile() {
 	global $objUpFile;
 
-	$objUpFile->addFile("¥Æ¥ó¥×¥ì¡¼¥È¥Õ¥¡¥¤¥ë", 'template_file', array(), TEMPLATE_SIZE, true, 0, 0, false);
+	$objUpFile->addFile("ãƒ†ãƒ³ãƒ—ãƒ¬ãƒ¼ãƒˆãƒ•ã‚¡ã‚¤ãƒ«", 'template_file', array(), TEMPLATE_SIZE, true, 0, 0, false);
 }
 
 /* 
- * ´Ø¿ôÌ¾¡§lfInitParam()
- * ÀâÌÀ¡¡¡§¥Ñ¥é¥á¡¼¥¿¾ğÊó¤Î½é´ü²½
+ * é–¢æ•°åï¼šlfInitParam()
+ * èª¬æ˜ã€€ï¼šãƒ‘ãƒ©ãƒ¡ãƒ¼ã‚¿æƒ…å ±ã®åˆæœŸåŒ–
  */
 function lfInitParam() {
 	global $objFormParam;
 		
-	$objFormParam->addParam("¥Æ¥ó¥×¥ì¡¼¥È¥³¡¼¥É", "template_code", STEXT_LEN, "KVa", array("EXIST_CHECK","SPTAB_CHECK","MAX_LENGTH_CHECK", "ALNUM_CHECK"));
-	$objFormParam->addParam("¥Æ¥ó¥×¥ì¡¼¥ÈÌ¾", "template_name", STEXT_LEN, "KVa", array("EXIST_CHECK","SPTAB_CHECK","MAX_LENGTH_CHECK"));
+	$objFormParam->addParam("ãƒ†ãƒ³ãƒ—ãƒ¬ãƒ¼ãƒˆã‚³ãƒ¼ãƒ‰", "template_code", STEXT_LEN, "KVa", array("EXIST_CHECK","SPTAB_CHECK","MAX_LENGTH_CHECK", "ALNUM_CHECK"));
+	$objFormParam->addParam("ãƒ†ãƒ³ãƒ—ãƒ¬ãƒ¼ãƒˆå", "template_name", STEXT_LEN, "KVa", array("EXIST_CHECK","SPTAB_CHECK","MAX_LENGTH_CHECK"));
 }
 
 /* 
- * ´Ø¿ôÌ¾¡§lfErrorCheck()
- * °ú¿ô1 ¡§¥Õ¥©¡¼¥à¤ÎÃÍ
- * ÀâÌÀ¡¡¡§¥¨¥é¡¼¥Á¥§¥Ã¥¯
+ * é–¢æ•°åï¼šlfErrorCheck()
+ * å¼•æ•°1 ï¼šãƒ•ã‚©ãƒ¼ãƒ ã®å€¤
+ * èª¬æ˜ã€€ï¼šã‚¨ãƒ©ãƒ¼ãƒã‚§ãƒƒã‚¯
  */
 function lfErrorCheck($arrList) {
 	global $objQuery;
@@ -111,34 +111,34 @@ function lfErrorCheck($arrList) {
 	$objErr->arrErr = $objFormParam->checkError();
 	
 	if(count($objErr->arrErr) <= 0) {
-		// Æ±Ì¾¤Î¥Õ¥©¥ë¥À¤¬Â¸ºß¤¹¤ë¾ì¹ç¤Ï¥¨¥é¡¼
+		// åŒåã®ãƒ•ã‚©ãƒ«ãƒ€ãŒå­˜åœ¨ã™ã‚‹å ´åˆã¯ã‚¨ãƒ©ãƒ¼
 		if(file_exists(USER_TEMPLATE_PATH.$arrList['template_code'])) {
-			$objErr->arrErr['template_code'] = "¢¨ Æ±Ì¾¤Î¥Õ¥¡¥¤¥ë¤¬¤¹¤Ç¤ËÂ¸ºß¤·¤Ş¤¹¡£<br/>";
+			$objErr->arrErr['template_code'] = "â€» åŒåã®ãƒ•ã‚¡ã‚¤ãƒ«ãŒã™ã§ã«å­˜åœ¨ã—ã¾ã™ã€‚<br/>";
 		}
-		// DB¤Ë¤¹¤Ç¤ËÅĞÏ¿¤µ¤ì¤Æ¤¤¤Ê¤¤¤«¥Á¥§¥Ã¥¯
+		// DBã«ã™ã§ã«ç™»éŒ²ã•ã‚Œã¦ã„ãªã„ã‹ãƒã‚§ãƒƒã‚¯
 		$ret = $objQuery->get("dtb_templates", "template_code", "template_code = ?", array($arrList['template_code']));
 		if($ret != "") {
-			$objErr->arrErr['template_code'] = "¢¨ ¤¹¤Ç¤ËÅĞÏ¿¤µ¤ì¤Æ¤¤¤ë¥Æ¥ó¥×¥ì¡¼¥È¥³¡¼¥É¤Ç¤¹¡£<br/>";
+			$objErr->arrErr['template_code'] = "â€» ã™ã§ã«ç™»éŒ²ã•ã‚Œã¦ã„ã‚‹ãƒ†ãƒ³ãƒ—ãƒ¬ãƒ¼ãƒˆã‚³ãƒ¼ãƒ‰ã§ã™ã€‚<br/>";
 		}
-		// ¥Õ¥¡¥¤¥ë¤Î³ÈÄ¥»Ò¥Á¥§¥Ã¥¯(.tar/tar.gz¤Î¤ßµö²Ä)
+		// ãƒ•ã‚¡ã‚¤ãƒ«ã®æ‹¡å¼µå­ãƒã‚§ãƒƒã‚¯(.tar/tar.gzã®ã¿è¨±å¯)
 		$errFlag = true;
 		$array_ext = explode(".", $_FILES['template_file']['name']);
 		$ext = $array_ext[ count ( $array_ext ) - 1 ];
 		$ext = strtolower($ext);
-		// .tar¥Á¥§¥Ã¥¯
+		// .tarãƒã‚§ãƒƒã‚¯
 		if ($ext == 'tar') {
 			$errFlag = false;
 		}
 
 		$ext = $array_ext[ count ( $array_ext ) - 2 ].".".$ext;
 		$ext = strtolower($ext);
-		// .tar.gz¥Á¥§¥Ã¥¯
+		// .tar.gzãƒã‚§ãƒƒã‚¯
 		if ($ext== 'tar.gz') {
 			$errFlag = false;
 		}
 		
 		if($errFlag) {
-			$objErr->arrErr['template_file'] = "¢¨ ¥¢¥Ã¥×¥í¡¼¥É¤¹¤ë¥Æ¥ó¥×¥ì¡¼¥È¥Õ¥¡¥¤¥ë¤Çµö²Ä¤µ¤ì¤Æ¤¤¤ë·Á¼°¤Ï¡¢tar/tar.gz¤Ç¤¹¡£<br />";		
+			$objErr->arrErr['template_file'] = "â€» ã‚¢ãƒƒãƒ—ãƒ­ãƒ¼ãƒ‰ã™ã‚‹ãƒ†ãƒ³ãƒ—ãƒ¬ãƒ¼ãƒˆãƒ•ã‚¡ã‚¤ãƒ«ã§è¨±å¯ã•ã‚Œã¦ã„ã‚‹å½¢å¼ã¯ã€tar/tar.gzã§ã™ã€‚<br />";		
 		}
 	}
 	
@@ -146,14 +146,14 @@ function lfErrorCheck($arrList) {
 }
 
 /* 
- * ´Ø¿ôÌ¾¡§lfErrorCheck()
- * °ú¿ô1 ¡§¥Ñ¥é¥á¡¼¥¿
- * ÀâÌÀ¡¡¡§¥Æ¥ó¥×¥ì¡¼¥È¥Ç¡¼¥¿ÅĞÏ¿
+ * é–¢æ•°åï¼šlfErrorCheck()
+ * å¼•æ•°1 ï¼šãƒ‘ãƒ©ãƒ¡ãƒ¼ã‚¿
+ * èª¬æ˜ã€€ï¼šãƒ†ãƒ³ãƒ—ãƒ¬ãƒ¼ãƒˆãƒ‡ãƒ¼ã‚¿ç™»éŒ²
  */
 function lfRegistTemplate($arrList) {
 	global $objQuery;
 	
-	// INSERT¤¹¤ëÃÍ¤òºîÀ®¤¹¤ë¡£
+	// INSERTã™ã‚‹å€¤ã‚’ä½œæˆã™ã‚‹ã€‚
 	$sqlval['template_code'] = $arrList['template_code'];
 	$sqlval['template_name'] = $arrList['template_name'];
 	$sqlval['create_date'] = "now()";
@@ -163,27 +163,27 @@ function lfRegistTemplate($arrList) {
 }
 
 /* 
- * ´Ø¿ôÌ¾¡§lfUnpacking
- * °ú¿ô1 ¡§¥Ç¥£¥ì¥¯¥È¥ê
- * °ú¿ô2 ¡§¥Õ¥¡¥¤¥ë¥Í¡¼¥à
- * °ú¿ô3 ¡§²òÅà¥Ç¥£¥ì¥¯¥È¥ê
- * ÀâÌÀ¡¡¡§¥Æ¥ó¥×¥ì¡¼¥È¥Ç¡¼¥¿ÅĞÏ¿
+ * é–¢æ•°åï¼šlfUnpacking
+ * å¼•æ•°1 ï¼šãƒ‡ã‚£ãƒ¬ã‚¯ãƒˆãƒª
+ * å¼•æ•°2 ï¼šãƒ•ã‚¡ã‚¤ãƒ«ãƒãƒ¼ãƒ 
+ * å¼•æ•°3 ï¼šè§£å‡ãƒ‡ã‚£ãƒ¬ã‚¯ãƒˆãƒª
+ * èª¬æ˜ã€€ï¼šãƒ†ãƒ³ãƒ—ãƒ¬ãƒ¼ãƒˆãƒ‡ãƒ¼ã‚¿ç™»éŒ²
  */
 function lfUnpacking($dir, $file_name, $unpacking_dir) {
 
-	// °µ½Ì¥Õ¥é¥°TRUE¤Ïgzip²òÅà¤ò¤ª¤³¤Ê¤¦
+	// åœ§ç¸®ãƒ•ãƒ©ã‚°TRUEã¯gzipè§£å‡ã‚’ãŠã“ãªã†
 	$tar = new Archive_Tar("$dir/$file_name", TRUE);
 
-	// ³ÈÄ¥»Ò¤òÀÚ¤ê¼è¤ë
+	// æ‹¡å¼µå­ã‚’åˆ‡ã‚Šå–ã‚‹
 	$unpacking_name = ereg_replace("\.tar$", "", $file_name);
 	$unpacking_name = ereg_replace("\.tar\.gz$", "", $file_name);
 
-	// »ØÄê¤µ¤ì¤¿¥Õ¥©¥ë¥ÀÆâ¤Ë²òÅà¤¹¤ë
+	// æŒ‡å®šã•ã‚ŒãŸãƒ•ã‚©ãƒ«ãƒ€å†…ã«è§£å‡ã™ã‚‹
 	$err = $tar->extractModify($unpacking_dir, $unpacking_name);
 
-	// ¥Õ¥©¥ë¥Àºï½ü
+	// ãƒ•ã‚©ãƒ«ãƒ€å‰Šé™¤
 	@sfDelFile("$dir/$unpacking_name");
-	// °µ½Ì¥Õ¥¡¥¤¥ëºï½ü
+	// åœ§ç¸®ãƒ•ã‚¡ã‚¤ãƒ«å‰Šé™¤
 	@unlink("$dir/$file_name");
 
 	return $err;

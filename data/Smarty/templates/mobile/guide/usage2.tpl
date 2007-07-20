@@ -5,22 +5,22 @@
  * http://www.lockon.co.jp/
  */
 *}-->
-<center>¤´ÃíÊ¸ÊýË¡</center>
+<center>ã”æ³¨æ–‡æ–¹æ³•</center>
 
 <hr>
 
-<!-- ¢§ËÜÊ¸ ¤³¤³¤«¤é -->
-¡Ö¤´ÃíÊ¸ÊýË¡¡×¤ÎËÜÊ¸<br>
-<!-- ¢¥ËÜÊ¸ ¤³¤³¤Þ¤Ç -->
+<!-- â–¼æœ¬æ–‡ ã“ã“ã‹ã‚‰ -->
+ã€Œã”æ³¨æ–‡æ–¹æ³•ã€ã®æœ¬æ–‡<br>
+<!-- â–²æœ¬æ–‡ ã“ã“ã¾ã§ -->
 
 <br>
 <hr>
 
-<a href="<!--{$smarty.const.MOBILE_URL_CART_TOP}-->" accesskey="9"><!--{9|numeric_emoji}-->¤«¤´¤ò¸«¤ë</a><br>
-<a href="<!--{$smarty.const.MOBILE_URL_SITE_TOP}-->" accesskey="0"><!--{0|numeric_emoji}-->TOP¥Ú¡¼¥¸¤Ø</a><br>
+<a href="<!--{$smarty.const.MOBILE_URL_CART_TOP}-->" accesskey="9"><!--{9|numeric_emoji}-->ã‹ã”ã‚’è¦‹ã‚‹</a><br>
+<a href="<!--{$smarty.const.MOBILE_URL_SITE_TOP}-->" accesskey="0"><!--{0|numeric_emoji}-->TOPãƒšãƒ¼ã‚¸ã¸</a><br>
 
 <br>
 
-<!-- ¢§¥Õ¥Ã¥¿¡¼ ¤³¤³¤«¤é -->
+<!-- â–¼ãƒ•ãƒƒã‚¿ãƒ¼ ã“ã“ã‹ã‚‰ -->
 <!--{include file='footer.tpl'}-->
-<!-- ¢¥¥Õ¥Ã¥¿¡¼ ¤³¤³¤Þ¤Ç -->
+<!-- â–²ãƒ•ãƒƒã‚¿ãƒ¼ ã“ã“ã¾ã§ -->

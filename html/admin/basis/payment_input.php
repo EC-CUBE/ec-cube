@@ -11,7 +11,7 @@ class LC_Page {
 	var $tpl_mode;
 	function LC_Page() {
 		$this->tpl_mainpage = 'basis/payment_input.tpl';
-		$this->tpl_subtitle = '»ÙÊ§ÊıË¡ÀßÄê';
+		$this->tpl_subtitle = 'æ”¯æ‰•æ–¹æ³•è¨­å®š';
 	}
 }
 
@@ -20,48 +20,48 @@ $objPage = new LC_Page();
 $objView = new SC_AdminView();
 $objSess = new SC_Session();
 
-// Ç§¾Ú²ÄÈİ¤ÎÈ½Äê
+// èªè¨¼å¯å¦ã®åˆ¤å®š
 sfIsSuccess($objSess);
 
-// ¥Õ¥¡¥¤¥ë´ÉÍı¥¯¥é¥¹
+// ãƒ•ã‚¡ã‚¤ãƒ«ç®¡ç†ã‚¯ãƒ©ã‚¹
 $objUpFile = new SC_UploadFile(IMAGE_TEMP_DIR, IMAGE_SAVE_DIR);
-// ¥Õ¥¡¥¤¥ë¾ğÊó¤Î½é´ü²½
+// ãƒ•ã‚¡ã‚¤ãƒ«æƒ…å ±ã®åˆæœŸåŒ–
 $objUpFile = lfInitFile($objUpFile);
-// Hidden¤«¤é¤Î¥Ç¡¼¥¿¤ò°ú¤­·Ñ¤°
+// Hiddenã‹ã‚‰ã®ãƒ‡ãƒ¼ã‚¿ã‚’å¼•ãç¶™ã
 $objUpFile->setHiddenFileList($_POST);
 
-// ¥Ñ¥é¥á¡¼¥¿´ÉÍı¥¯¥é¥¹
+// ãƒ‘ãƒ©ãƒ¡ãƒ¼ã‚¿ç®¡ç†ã‚¯ãƒ©ã‚¹
 $objFormParam = new SC_FormParam();
-// ¥Ñ¥é¥á¡¼¥¿¾ğÊó¤Î½é´ü²½
+// ãƒ‘ãƒ©ãƒ¡ãƒ¼ã‚¿æƒ…å ±ã®åˆæœŸåŒ–
 lfInitParam();
-// POSTÃÍ¤Î¼èÆÀ
+// POSTå€¤ã®å–å¾—
 $objFormParam->setParam($_POST);
 
 switch($_POST['mode']) {
 case 'edit':
-	// ÆşÎÏÃÍ¤ÎÊÑ´¹
+	// å…¥åŠ›å€¤ã®å¤‰æ›
 	$objFormParam->convParam();
 
-	// ¥¨¥é¡¼¥Á¥§¥Ã¥¯
+	// ã‚¨ãƒ©ãƒ¼ãƒã‚§ãƒƒã‚¯
 	$objPage->arrErr = lfCheckError();
 	$objPage->charge_flg = $_POST["charge_flg"];
 	if(count($objPage->arrErr) == 0) {
 		lfRegistData($_POST['payment_id']);
-		// °ì»ş¥Õ¥¡¥¤¥ë¤òËÜÈÖ¥Ç¥£¥ì¥¯¥È¥ê¤Ë°ÜÆ°¤¹¤ë
+		// ä¸€æ™‚ãƒ•ã‚¡ã‚¤ãƒ«ã‚’æœ¬ç•ªãƒ‡ã‚£ãƒ¬ã‚¯ãƒˆãƒªã«ç§»å‹•ã™ã‚‹
 		$objUpFile->moveTempFile();
-		// ¿Æ¥¦¥£¥ó¥É¥¦¤ò¹¹¿·¤¹¤ë¤è¤¦¤Ë¥»¥Ã¥È¤¹¤ë¡£
+		// è¦ªã‚¦ã‚£ãƒ³ãƒ‰ã‚¦ã‚’æ›´æ–°ã™ã‚‹ã‚ˆã†ã«ã‚»ãƒƒãƒˆã™ã‚‹ã€‚
 		$objPage->tpl_onload="fnUpdateParent('".URL_PAYMENT_TOP."'); window.close();";
 	}
 	
 	break;
-// ²èÁü¤Î¥¢¥Ã¥×¥í¡¼¥É
+// ç”»åƒã®ã‚¢ãƒƒãƒ—ãƒ­ãƒ¼ãƒ‰
 case 'upload_image':
-	// ¥Õ¥¡¥¤¥ëÂ¸ºß¥Á¥§¥Ã¥¯
+	// ãƒ•ã‚¡ã‚¤ãƒ«å­˜åœ¨ãƒã‚§ãƒƒã‚¯
 	$objPage->arrErr = array_merge($objPage->arrErr, $objUpFile->checkEXISTS($_POST['image_key']));
-	// ²èÁüÊİÂ¸½èÍı
+	// ç”»åƒä¿å­˜å‡¦ç†
 	$objPage->arrErr[$_POST['image_key']] = $objUpFile->makeTempFile($_POST['image_key']);
 	break;
-// ²èÁü¤Îºï½ü
+// ç”»åƒã®å‰Šé™¤
 case 'delete_image':
 	$objUpFile->deleteFile($_POST['image_key']);
 	break;
@@ -76,7 +76,7 @@ if($_POST['mode'] == "") {
 			$arrRet = lfGetData($_GET['payment_id']);
 			$objFormParam->setParam($arrRet);
 			$objPage->charge_flg = $arrRet["charge_flg"];
-			// DB¥Ç¡¼¥¿¤«¤é²èÁü¥Õ¥¡¥¤¥ëÌ¾¤ÎÆÉ¹ş
+			// DBãƒ‡ãƒ¼ã‚¿ã‹ã‚‰ç”»åƒãƒ•ã‚¡ã‚¤ãƒ«åã®èª­è¾¼
 			$objUpFile->setDBFileList($arrRet);
 			$objPage->tpl_payment_id = $_GET['payment_id'];
 		}
@@ -91,32 +91,32 @@ if($_POST['mode'] == "") {
 $objPage->arrDelivList = sfGetIDValueList("dtb_deliv", "deliv_id", "service_name");
 $objPage->arrForm = $objFormParam->getFormParamList();
 
-// FORMÉ½¼¨ÍÑÇÛÎó¤òÅÏ¤¹¡£
+// FORMè¡¨ç¤ºç”¨é…åˆ—ã‚’æ¸¡ã™ã€‚
 $objPage->arrFile = $objUpFile->getFormFileList(IMAGE_TEMP_URL, IMAGE_SAVE_URL);
-// HIDDENÍÑ¤ËÇÛÎó¤òÅÏ¤¹¡£
+// HIDDENç”¨ã«é…åˆ—ã‚’æ¸¡ã™ã€‚
 $objPage->arrHidden = array_merge((array)$objPage->arrHidden, (array)$objUpFile->getHiddenFileList());
 
 $objView->assignobj($objPage);
 $objView->display($objPage->tpl_mainpage);
 //-----------------------------------------------------------------------------------------------------------------------------------
-/* ¥Õ¥¡¥¤¥ë¾ğÊó¤Î½é´ü²½ */
+/* ãƒ•ã‚¡ã‚¤ãƒ«æƒ…å ±ã®åˆæœŸåŒ– */
 function lfInitFile($objUpFile) {
-	$objUpFile->addFile("¥í¥´²èÁü", 'payment_image', array('gif'), IMAGE_SIZE, false, CLASS_IMAGE_WIDTH, CLASS_IMAGE_HEIGHT);
+	$objUpFile->addFile("ãƒ­ã‚´ç”»åƒ", 'payment_image', array('gif'), IMAGE_SIZE, false, CLASS_IMAGE_WIDTH, CLASS_IMAGE_HEIGHT);
 	return $objUpFile;
 }
 
-/* ¥Ñ¥é¥á¡¼¥¿¾ğÊó¤Î½é´ü²½ */
+/* ãƒ‘ãƒ©ãƒ¡ãƒ¼ã‚¿æƒ…å ±ã®åˆæœŸåŒ– */
 function lfInitParam() {
 	global $objFormParam;
-	$objFormParam->addParam("»ÙÊ§ÊıË¡", "payment_method", STEXT_LEN, "KVa", array("EXIST_CHECK", "MAX_LENGTH_CHECK"));
-	$objFormParam->addParam("¼ê¿ôÎÁ", "charge", PRICE_LEN, "n", array("EXIST_CHECK", "NUM_CHECK", "MAX_LENGTH_CHECK"));
-	$objFormParam->addParam("ÍøÍÑ¾ò·ï(¡Á±ß°Ê¾å)", "rule", PRICE_LEN, "n", array("NUM_CHECK", "MAX_LENGTH_CHECK"));
-	$objFormParam->addParam("ÍøÍÑ¾ò·ï(¡Á±ß°Ê²¼)", "upper_rule", PRICE_LEN, "n", array("NUM_CHECK", "MAX_LENGTH_CHECK"));
-	$objFormParam->addParam("ÇÛÁ÷¥µ¡¼¥Ó¥¹", "deliv_id", INT_LEN, "n", array("EXIST_CHECK", "NUM_CHECK", "MAX_LENGTH_CHECK"));
-	$objFormParam->addParam("¸ÇÄê", "fix");
+	$objFormParam->addParam("æ”¯æ‰•æ–¹æ³•", "payment_method", STEXT_LEN, "KVa", array("EXIST_CHECK", "MAX_LENGTH_CHECK"));
+	$objFormParam->addParam("æ‰‹æ•°æ–™", "charge", PRICE_LEN, "n", array("EXIST_CHECK", "NUM_CHECK", "MAX_LENGTH_CHECK"));
+	$objFormParam->addParam("åˆ©ç”¨æ¡ä»¶(ã€œå††ä»¥ä¸Š)", "rule", PRICE_LEN, "n", array("NUM_CHECK", "MAX_LENGTH_CHECK"));
+	$objFormParam->addParam("åˆ©ç”¨æ¡ä»¶(ã€œå††ä»¥ä¸‹)", "upper_rule", PRICE_LEN, "n", array("NUM_CHECK", "MAX_LENGTH_CHECK"));
+	$objFormParam->addParam("é…é€ã‚µãƒ¼ãƒ“ã‚¹", "deliv_id", INT_LEN, "n", array("EXIST_CHECK", "NUM_CHECK", "MAX_LENGTH_CHECK"));
+	$objFormParam->addParam("å›ºå®š", "fix");
 }
 
-/* DB¤«¤é¥Ç¡¼¥¿¤òÆÉ¤ß¹ş¤à */
+/* DBã‹ã‚‰ãƒ‡ãƒ¼ã‚¿ã‚’èª­ã¿è¾¼ã‚€ */
 function lfGetData($payment_id) {
 	$objQuery = new SC_Query();
 	$where = "payment_id = ?";
@@ -124,64 +124,64 @@ function lfGetData($payment_id) {
 	return $arrRet[0];
 }
 
-/* DB¤Ø¥Ç¡¼¥¿¤òÅĞÏ¿¤¹¤ë */
+/* DBã¸ãƒ‡ãƒ¼ã‚¿ã‚’ç™»éŒ²ã™ã‚‹ */
 function lfRegistData($payment_id = "") {
 	global $objFormParam;
 	global $objUpFile;
 	
 	$objQuery = new SC_Query();
 	$sqlval = $objFormParam->getHashArray();
-	$arrRet = $objUpFile->getDBFileList();	// ¥Õ¥¡¥¤¥ëÌ¾¤Î¼èÆÀ
+	$arrRet = $objUpFile->getDBFileList();	// ãƒ•ã‚¡ã‚¤ãƒ«åã®å–å¾—
 	$sqlval = array_merge($sqlval, $arrRet);	
 	$sqlval['update_date'] = 'Now()';
 	
 	if($sqlval['fix'] != '1') {
-		$sqlval['fix'] = 2;	// ¼«Í³ÀßÄê
+		$sqlval['fix'] = 2;	// è‡ªç”±è¨­å®š
 	}
 	
-	// ¿·µ¬ÅĞÏ¿
+	// æ–°è¦ç™»éŒ²
 	if($payment_id == "") {
-		// INSERT¤Î¼Â¹Ô
+		// INSERTã®å®Ÿè¡Œ
 		$sqlval['creator_id'] = $_SESSION['member_id'];
 		$sqlval['rank'] = $objQuery->max("dtb_payment", "rank") + 1;
 		$sqlval['create_date'] = 'Now()';
 		$objQuery->insert("dtb_payment", $sqlval);
-	// ´ûÂ¸ÊÔ½¸
+	// æ—¢å­˜ç·¨é›†
 	} else {
 		$where = "payment_id = ?";
 		$objQuery->update("dtb_payment", $sqlval, $where, array($payment_id));
 	}
 }
 
-/*¡¡ÍøÍÑ¾ò·ï¤Î¿ôÃÍ¥Á¥§¥Ã¥¯ */
+/*ã€€åˆ©ç”¨æ¡ä»¶ã®æ•°å€¤ãƒã‚§ãƒƒã‚¯ */
 
-/* ÆşÎÏÆâÍÆ¤Î¥Á¥§¥Ã¥¯ */
+/* å…¥åŠ›å†…å®¹ã®ãƒã‚§ãƒƒã‚¯ */
 function lfCheckError() {
 	global $objFormParam;
 	
-	// DB¤Î¥Ç¡¼¥¿¤ò¼èÆÀ
+	// DBã®ãƒ‡ãƒ¼ã‚¿ã‚’å–å¾—
 	$arrPaymentData = lfGetData($_POST['payment_id']);
 	
-	// ¼ê¿ôÎÁ¤òÀßÄê¤Ç¤­¤Ê¤¤¾ì¹ç¤Ë¤Ï¡¢¼ê¿ôÎÁ¤ò0¤Ë¤¹¤ë
+	// æ‰‹æ•°æ–™ã‚’è¨­å®šã§ããªã„å ´åˆã«ã¯ã€æ‰‹æ•°æ–™ã‚’0ã«ã™ã‚‹
 	if($arrPaymentData["charge_flg"] == 2) $objFormParam->setValue("charge", "0");
 	
-	// ÆşÎÏ¥Ç¡¼¥¿¤òÅÏ¤¹¡£
+	// å…¥åŠ›ãƒ‡ãƒ¼ã‚¿ã‚’æ¸¡ã™ã€‚
 	$arrRet =  $objFormParam->getHashArray();
 	$objErr = new SC_CheckError($arrRet);
 	$objErr->arrErr = $objFormParam->checkError();
 	
-	// ÍøÍÑ¾ò·ï(²¼¸Â)¥Á¥§¥Ã¥¯
+	// åˆ©ç”¨æ¡ä»¶(ä¸‹é™)ãƒã‚§ãƒƒã‚¯
 	if($arrRet["rule"] < $arrPaymentData["rule_min"] and $arrPaymentData["rule_min"] != ""){
-		$objErr->arrErr["rule"] = "ÍøÍÑ¾ò·ï(²¼¸Â)¤Ï" . $arrPaymentData["rule_min"] ."±ß°Ê¾å¤Ë¤·¤Æ¤¯¤À¤µ¤¤¡£<br>";
+		$objErr->arrErr["rule"] = "åˆ©ç”¨æ¡ä»¶(ä¸‹é™)ã¯" . $arrPaymentData["rule_min"] ."å††ä»¥ä¸Šã«ã—ã¦ãã ã•ã„ã€‚<br>";
 	}
 	
-	// ÍøÍÑ¾ò·ï(¾å¸Â)¥Á¥§¥Ã¥¯
+	// åˆ©ç”¨æ¡ä»¶(ä¸Šé™)ãƒã‚§ãƒƒã‚¯
 	if($arrRet["upper_rule"] > $arrPaymentData["upper_rule_max"] and $arrPaymentData["upper_rule_max"] != ""){
-		$objErr->arrErr["upper_rule"] = "ÍøÍÑ¾ò·ï(¾å¸Â)¤Ï" . $arrPaymentData["upper_rule_max"] ."±ß°Ê²¼¤Ë¤·¤Æ¤¯¤À¤µ¤¤¡£<br>";
+		$objErr->arrErr["upper_rule"] = "åˆ©ç”¨æ¡ä»¶(ä¸Šé™)ã¯" . $arrPaymentData["upper_rule_max"] ."å††ä»¥ä¸‹ã«ã—ã¦ãã ã•ã„ã€‚<br>";
 	}
 	
-	// ÍøÍÑ¾ò·ï¥Á¥§¥Ã¥¯
-	$objErr->doFunc(array("ÍøÍÑ¾ò·ï(¡Á±ß°Ê¾å)", "ÍøÍÑ¾ò·ï(¡Á±ß°Ê²¼)", "rule", "upper_rule"), array("GREATER_CHECK"));
+	// åˆ©ç”¨æ¡ä»¶ãƒã‚§ãƒƒã‚¯
+	$objErr->doFunc(array("åˆ©ç”¨æ¡ä»¶(ã€œå††ä»¥ä¸Š)", "åˆ©ç”¨æ¡ä»¶(ã€œå††ä»¥ä¸‹)", "rule", "upper_rule"), array("GREATER_CHECK"));
 	
 	return $objErr->arrErr;
 }

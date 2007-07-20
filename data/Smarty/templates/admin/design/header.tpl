@@ -5,18 +5,18 @@
  * http://www.lockon.co.jp/
  */
 *}-->
-<!--°˙°˙•·•§•Û•≥•Û•∆•Û•ƒ°˙°˙-->
+<!--‚òÖ‚òÖ„É°„Ç§„É≥„Ç≥„É≥„ÉÜ„É≥„ÉÑ‚òÖ‚òÖ-->
 <table width="878" border="0" cellspacing="0" cellpadding="0" summary=" ">
 	<tr valign="top">
 		<td background="<!--{$smarty.const.URL_DIR}-->img/contents/navi_bg.gif" height="402">
-			<!--¢ßSUB NAVI-->
+			<!--‚ñºSUB NAVI-->
 			<!--{include file=$tpl_subnavi}-->
-			<!--¢•SUB NAVI-->
+			<!--‚ñ≤SUB NAVI-->
 		</td>
 		<td class="mainbg">
-			<!--¢ß≈–œø•∆°º•÷•Î§≥§≥§´§È-->
+			<!--‚ñºÁôªÈå≤„ÉÜ„Éº„Éñ„É´„Åì„Åì„Åã„Çâ-->
 			<table width="737" border="0" cellspacing="0" cellpadding="0" summary=" ">
-				<!--•·•§•Û•®•Í•¢-->
+				<!--„É°„Ç§„É≥„Ç®„É™„Ç¢-->
 				<tr>
 					<td align="center">
 						<table width="706" border="0" cellspacing="0" cellpadding="0" summary=" ">
@@ -33,7 +33,7 @@
 									</tr>
 									<tr>
 										<td background="<!--{$smarty.const.URL_DIR}-->img/contents/contents_title_left_bg.gif"><img src="<!--{$smarty.const.URL_DIR}-->img/contents/contents_title_left.gif" width="22" height="12" alt=""></td>
-										<td bgcolor="#636469" width="638" class="fs14n"><span class="white"><!--•≥•Û•∆•Û•ƒ•ø•§•»•Î-->•ÿ•√•¿°ºé••’•√•ø°º ‘Ω∏</span></td>
+										<td bgcolor="#636469" width="638" class="fs14n"><span class="white"><!--„Ç≥„É≥„ÉÜ„É≥„ÉÑ„Çø„Ç§„Éà„É´-->„Éò„ÉÉ„ÉÄ„ÉºÔΩ•„Éï„ÉÉ„Çø„ÉºÁ∑®ÈõÜ</span></td>
 										<td background="<!--{$smarty.const.URL_DIR}-->img/contents/contents_title_right_bg.gif"><img src="<!--{$smarty.const.URL_DIR}-->img/common/_.gif" width="18" height="1" alt=""></td>
 									</tr>
 									<tr>
@@ -44,24 +44,24 @@
 									</tr>
 								</table>
 
-								<!--¢ß•ÿ•√•¿°º ‘Ω∏°°§≥§≥§´§È-->
+								<!--‚ñº„Éò„ÉÉ„ÉÄ„ÉºÁ∑®ÈõÜ„ÄÄ„Åì„Åì„Åã„Çâ-->
 								<table width="678" border="0" cellspacing="1" cellpadding="8" summary=" ">
 									<tr class="fs12n">
-										<td bgcolor="#f2f1ec" align="center"><strong>•ÿ•√•¿°º ‘Ω∏</strong></td>
+										<td bgcolor="#f2f1ec" align="center"><strong>„Éò„ÉÉ„ÉÄ„ÉºÁ∑®ÈõÜ</strong></td>
 									</tr>
-									<!-- •◊•Ï•”•Â°º§≥§≥§´§È -->
+									<!-- „Éó„É¨„Éì„É•„Éº„Åì„Åì„Åã„Çâ -->
 									<!--{ if $header_prev == "on"}-->
 									<tr class="fs12n">
 										<td bgcolor="#ffffff" align="center">
 											<!--{if $browser_type == 1 }-->
 											    <div style="zoom:0.8"><!--{include file="`$smarty.const.HTML_PATH`user_data/include/preview/header.tpl"}--></div>
 											<!--{ else }-->
-												<span class="red12"><b>•◊•Ï•”•Â°º§œIE§«§Œ§ﬂ…Ωº®§µ§Ï§ﬁ§π°£</b></span>
+												<span class="red12"><b>„Éó„É¨„Éì„É•„Éº„ÅØIE„Åß„ÅÆ„ÅøË°®Á§∫„Åï„Çå„Åæ„Åô„ÄÇ</b></span>
 											<!--{ /if }-->
 										</td>
 									</tr>
 									<!--{ /if }-->
-									<!-- •◊•Ï•”•Â°º§≥§≥§ﬁ§« -->
+									<!-- „Éó„É¨„Éì„É•„Éº„Åì„Åì„Åæ„Åß -->
 									
 									<form name="form_header" id="form_header" method="post" action="<!--{$smarty.server.PHP_SELF|escape}-->" >
 									<input type="hidden" name="mode" value="">
@@ -73,7 +73,7 @@
 												<br/>
 													<textarea name="header" cols=90 rows=<!--{$header_row}--> align="left" wrap=off style="width: 650px;"><!--{$header_data|smarty:nodefaults}--></textarea>
 												<div align="right">
-												<input type="button" value=<!--{if $header_row > 13}-->"æÆ§µ§Ø§π§Î"<!--{else}-->"¬Á§≠§Ø§π§Î"<!--{/if}--> onClick="ChangeSize(this, header, 50, 13, header_row)">
+												<input type="button" value=<!--{if $header_row > 13}-->"Â∞è„Åï„Åè„Åô„Çã"<!--{else}-->"Â§ß„Åç„Åè„Åô„Çã"<!--{/if}--> onClick="ChangeSize(this, header, 50, 13, header_row)">
 												</div>
 												<br/>
 											</td>
@@ -91,8 +91,8 @@
 										<table border="0" cellspacing="0" cellpadding="0" summary=" ">
 											<tr>
 												<td>
-												<input type='button' value='≈–œø' name='subm' onclick="fnFormModeSubmit('form_header','confirm','','');"  />
-												<input type='button' value='•◊•Ï•”•Â°º' name='preview' onclick="lfnSetBrowser('form_header', 'browser_type'); fnFormModeSubmit('form_header','preview','','');"  />
+												<input type='button' value='ÁôªÈå≤' name='subm' onclick="fnFormModeSubmit('form_header','confirm','','');"  />
+												<input type='button' value='„Éó„É¨„Éì„É•„Éº' name='preview' onclick="lfnSetBrowser('form_header', 'browser_type'); fnFormModeSubmit('form_header','preview','','');"  />
 												</td>
 											</tr>
 										</table>
@@ -105,16 +105,16 @@
 								</form>
 								</table>
 
-								<!--¢••ÿ•√•¿°º ‘Ω∏°°§≥§≥§ﬁ§«-->
+								<!--‚ñ≤„Éò„ÉÉ„ÉÄ„ÉºÁ∑®ÈõÜ„ÄÄ„Åì„Åì„Åæ„Åß-->
 
 								<table width="678" border="0" cellspacing="0" cellpadding="0" summary=" ">
 									<tr><td colspan="3"><img src="<!--{$smarty.const.URL_DIR}-->img/contents/main_bar.jpg" width="678" height="10" alt=""></td></tr>
 								</table>
 
-								<!--¢ß•’•√•ø°º ‘Ω∏°°§≥§≥§´§È-->
+								<!--‚ñº„Éï„ÉÉ„Çø„ÉºÁ∑®ÈõÜ„ÄÄ„Åì„Åì„Åã„Çâ-->
 								<table width="678" border="0" cellspacing="1" cellpadding="8" summary=" ">
 									<tr class="fs12n">
-										<td bgcolor="#f2f1ec" align="center" colspan="3"><strong>•’•√•ø°º ‘Ω∏</strong></td>
+										<td bgcolor="#f2f1ec" align="center" colspan="3"><strong>„Éï„ÉÉ„Çø„ÉºÁ∑®ÈõÜ</strong></td>
 									</tr>
 									<!--{ if $footer_prev == "on"}-->
 									<tr class="fs12n">
@@ -122,7 +122,7 @@
 											<!--{if $browser_type == 1 }-->
 												<div style="zoom:0.8"><!--{include file="`$smarty.const.HTML_PATH`/user_data/include/preview/footer.tpl"}--></div>
 											<!--{ else }-->
-												<span class="red12"><b>•◊•Ï•”•Â°º§œIE§«§Œ§ﬂ…Ωº®§µ§Ï§ﬁ§π°£</b></span>
+												<span class="red12"><b>„Éó„É¨„Éì„É•„Éº„ÅØIE„Åß„ÅÆ„ÅøË°®Á§∫„Åï„Çå„Åæ„Åô„ÄÇ</b></span>
 											<!--{ /if }-->
 										</td>
 									</tr>
@@ -138,7 +138,7 @@
 												<br/>
 												<textarea name="footer" cols=90 rows=<!--{$footer_row}--> align="left" wrap=off style="width: 650px;"><!--{$footer_data|smarty:nodefaults}--></textarea>
 												<div align="right">
-												<input type="button" value=<!--{if $footer_row > 13}-->"æÆ§µ§Ø§π§Î"<!--{else}-->"¬Á§≠§Ø§π§Î"<!--{/if}--> onClick="ChangeSize(this, footer, 50, 13, footer_row)">
+												<input type="button" value=<!--{if $footer_row > 13}-->"Â∞è„Åï„Åè„Åô„Çã"<!--{else}-->"Â§ß„Åç„Åè„Åô„Çã"<!--{/if}--> onClick="ChangeSize(this, footer, 50, 13, footer_row)">
 												</div>
 												<br/>
 											</td>
@@ -156,8 +156,8 @@
 										<table border="0" cellspacing="0" cellpadding="0" summary=" ">
 											<tr>
 												<td>
-												<input type='button' value='≈–œø' name='subm' onclick="fnFormModeSubmit('form_footer','confirm','','');"  />
-												<input type='button' value='•◊•Ï•”•Â°º' name='preview' onclick="lfnSetBrowser('form_footer', 'browser_type'); fnFormModeSubmit('form_footer','preview','','');"  />
+												<input type='button' value='ÁôªÈå≤' name='subm' onclick="fnFormModeSubmit('form_footer','confirm','','');"  />
+												<input type='button' value='„Éó„É¨„Éì„É•„Éº' name='preview' onclick="lfnSetBrowser('form_footer', 'browser_type'); fnFormModeSubmit('form_footer','preview','','');"  />
 												</td>
 											</tr>
 										</table>
@@ -169,7 +169,7 @@
 									</tr>
 								</form>
 								</table>								
-								<!--¢••’•√•ø°º ‘Ω∏°°§≥§≥§ﬁ§«-->
+								<!--‚ñ≤„Éï„ÉÉ„Çø„ÉºÁ∑®ÈõÜ„ÄÄ„Åì„Åì„Åæ„Åß-->
 								</td>
 								<td background="<!--{$smarty.const.URL_DIR}-->img/contents/main_right.jpg"><img src="<!--{$smarty.const.URL_DIR}-->img/common/_.gif" width="14" height="1" alt=""></td>
 							</tr>
@@ -180,25 +180,25 @@
 						</table>
 					</td>
 				</tr>
-				<!--•·•§•Û•®•Í•¢-->
+				<!--„É°„Ç§„É≥„Ç®„É™„Ç¢-->
 			</table>
-			<!--¢•≈–œø•∆°º•÷•Î§≥§≥§ﬁ§«-->
+			<!--‚ñ≤ÁôªÈå≤„ÉÜ„Éº„Éñ„É´„Åì„Åì„Åæ„Åß-->
 		</td>
 	</tr>
 </table>
-<!--°˙°˙•·•§•Û•≥•Û•∆•Û•ƒ°˙°˙-->
+<!--‚òÖ‚òÖ„É°„Ç§„É≥„Ç≥„É≥„ÉÜ„É≥„ÉÑ‚òÖ‚òÖ-->
 
 <script type="text/javascript">
-	/* •∆•≠•π•»•®•Í•¢§Œ¬Á§≠§µ§Ú —ππ§π§Î */
+	/* „ÉÜ„Ç≠„Çπ„Éà„Ç®„É™„Ç¢„ÅÆÂ§ß„Åç„Åï„ÇíÂ§âÊõ¥„Åô„Çã */
 	function ChangeSize(button, TextArea, Max, Min, row_tmp){
 		if(TextArea.rows <= Min){
-			TextArea.rows=Max; button.value="æÆ§µ§Ø§π§Î"; row_tmp.value=Max;
+			TextArea.rows=Max; button.value="Â∞è„Åï„Åè„Åô„Çã"; row_tmp.value=Max;
 		}else{
-			TextArea.rows =Min; button.value="¬Á§≠§Ø§π§Î"; row_tmp.value=Min;
+			TextArea.rows =Min; button.value="Â§ß„Åç„Åè„Åô„Çã"; row_tmp.value=Min;
 		}
 	}
 	
-	/* •÷•È•¶•∂§ŒºÔŒ‡§Ú•ª•√•»§π§Î */
+	/* „Éñ„É©„Ç¶„Ç∂„ÅÆÁ®ÆÈ°û„Çí„Çª„ÉÉ„Éà„Åô„Çã */
 	function lfnSetBrowser(form, item){
 		browser_type = 0;
 		if(navigator.userAgent.indexOf("MSIE") >= 0){

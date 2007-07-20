@@ -7,13 +7,13 @@
 require_once("../require.php");
 
 $objCustomer = new SC_Customer();
-// ¥¯¥Ã¥­¡¼´ÉÍý¥¯¥é¥¹
+// ã‚¯ãƒƒã‚­ãƒ¼ç®¡ç†ã‚¯ãƒ©ã‚¹
 $objCookie = new SC_Cookie(COOKIE_EXPIRE);
-// ¥Ñ¥é¥á¡¼¥¿´ÉÍý¥¯¥é¥¹
+// ãƒ‘ãƒ©ãƒ¡ãƒ¼ã‚¿ç®¡ç†ã‚¯ãƒ©ã‚¹
 $objFormParam = new SC_FormParam();
-// ¥Ñ¥é¥á¡¼¥¿¾ðÊó¤Î½é´ü²½
+// ãƒ‘ãƒ©ãƒ¡ãƒ¼ã‚¿æƒ…å ±ã®åˆæœŸåŒ–
 lfInitParam();
-// POSTÃÍ¤Î¼èÆÀ
+// POSTå€¤ã®å–å¾—
 $objFormParam->setParam($_POST);
 
 switch($_POST['mode']) {
@@ -22,7 +22,7 @@ case 'login':
 	$arrErr = $objFormParam->checkError();
 	$arrForm =  $objFormParam->getHashArray();
 	
-	// ¥¯¥Ã¥­¡¼ÊÝÂ¸È½Äê
+	// ã‚¯ãƒƒã‚­ãƒ¼ä¿å­˜åˆ¤å®š
 	if ($arrForm['mypage_login_memory'] == "1" && $arrForm['mypage_login_email'] != "") {
 		$objCookie->setCookie('login_email', $_POST['mypage_login_email']);
 	} else {
@@ -50,11 +50,11 @@ case 'login':
 }
 
 //-----------------------------------------------------------------------------------------------------------------------------------
-/* ¥Ñ¥é¥á¡¼¥¿¾ðÊó¤Î½é´ü²½ */
+/* ãƒ‘ãƒ©ãƒ¡ãƒ¼ã‚¿æƒ…å ±ã®åˆæœŸåŒ– */
 function lfInitParam() {
 	global $objFormParam;
-	$objFormParam->addParam("µ­²±¤¹¤ë", "mypage_login_memory", INT_LEN, "n", array("MAX_LENGTH_CHECK", "NUM_CHECK"));
-	$objFormParam->addParam("¥á¡¼¥ë¥¢¥É¥ì¥¹", "mypage_login_email", STEXT_LEN, "KVa", array("EXIST_CHECK", "MAX_LENGTH_CHECK"));
-	$objFormParam->addParam("¥Ñ¥¹¥ï¡¼¥É", "mypage_login_pass", STEXT_LEN, "KVa", array("EXIST_CHECK", "MAX_LENGTH_CHECK"));
+	$objFormParam->addParam("è¨˜æ†¶ã™ã‚‹", "mypage_login_memory", INT_LEN, "n", array("MAX_LENGTH_CHECK", "NUM_CHECK"));
+	$objFormParam->addParam("ãƒ¡ãƒ¼ãƒ«ã‚¢ãƒ‰ãƒ¬ã‚¹", "mypage_login_email", STEXT_LEN, "KVa", array("EXIST_CHECK", "MAX_LENGTH_CHECK"));
+	$objFormParam->addParam("ãƒ‘ã‚¹ãƒ¯ãƒ¼ãƒ‰", "mypage_login_pass", STEXT_LEN, "KVa", array("EXIST_CHECK", "MAX_LENGTH_CHECK"));
 }
 ?>

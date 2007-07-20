@@ -16,12 +16,12 @@ class LC_Page {
 		$this->tpl_css = URL_DIR.'css/layout/shopping/index.css';
 		global $arrPref;
 		$this->arrPref = $arrPref;
-		$this->tpl_title = "¤ªÆÏ¤±Àè»ØÄê";		// ¥¿¥¤¥È¥ë
+		$this->tpl_title = "ãŠå±Šã‘å…ˆæŒ‡å®š";		// ã‚¿ã‚¤ãƒˆãƒ«
 
 		/*
-		 session_start»þ¤Îno-cache¥Ø¥Ã¥À¡¼¤òÍÞÀ©¤¹¤ë¤³¤È¤Ç
-		 ¡ÖÌá¤ë¡×¥Ü¥¿¥ó»ÈÍÑ»þ¤ÎÍ­¸ú´ü¸ÂÀÚ¤ìÉ½¼¨¤òÍÞÀ©¤¹¤ë¡£
-		 private-no-expire:¥¯¥é¥¤¥¢¥ó¥È¤Î¥­¥ã¥Ã¥·¥å¤òµö²Ä¤¹¤ë¡£
+		 session_startæ™‚ã®no-cacheãƒ˜ãƒƒãƒ€ãƒ¼ã‚’æŠ‘åˆ¶ã™ã‚‹ã“ã¨ã§
+		 ã€Œæˆ»ã‚‹ã€ãƒœã‚¿ãƒ³ä½¿ç”¨æ™‚ã®æœ‰åŠ¹æœŸé™åˆ‡ã‚Œè¡¨ç¤ºã‚’æŠ‘åˆ¶ã™ã‚‹ã€‚
+		 private-no-expire:ã‚¯ãƒ©ã‚¤ã‚¢ãƒ³ãƒˆã®ã‚­ãƒ£ãƒƒã‚·ãƒ¥ã‚’è¨±å¯ã™ã‚‹ã€‚
 		*/
 		session_cache_limiter('private-no-expire');		
 
@@ -34,26 +34,26 @@ $objSiteSess = new SC_SiteSession();
 $objCartSess = new SC_CartSession();
 $objCampaignSess = new SC_CampaignSession();
 $objCustomer = new SC_Customer();
-// ¥¯¥Ã¥­¡¼´ÉÍý¥¯¥é¥¹
+// ã‚¯ãƒƒã‚­ãƒ¼ç®¡ç†ã‚¯ãƒ©ã‚¹
 $objCookie = new SC_Cookie(COOKIE_EXPIRE);
-// ¥Ñ¥é¥á¡¼¥¿´ÉÍý¥¯¥é¥¹
+// ãƒ‘ãƒ©ãƒ¡ãƒ¼ã‚¿ç®¡ç†ã‚¯ãƒ©ã‚¹
 $objFormParam = new SC_FormParam();
-// ¥Ñ¥é¥á¡¼¥¿¾ðÊó¤Î½é´ü²½
+// ãƒ‘ãƒ©ãƒ¡ãƒ¼ã‚¿æƒ…å ±ã®åˆæœŸåŒ–
 lfInitParam();
-// POSTÃÍ¤Î¼èÆÀ
+// POSTå€¤ã®å–å¾—
 $objFormParam->setParam($_POST);
 
-$objLoginFormParam = new SC_FormParam();	// ¥í¥°¥¤¥ó¥Õ¥©¡¼¥àÍÑ
-lfInitLoginFormParam();						// ½é´üÀßÄê
-$objLoginFormParam->setParam($_POST);		// POSTÃÍ¤Î¼èÆÀ
+$objLoginFormParam = new SC_FormParam();	// ãƒ­ã‚°ã‚¤ãƒ³ãƒ•ã‚©ãƒ¼ãƒ ç”¨
+lfInitLoginFormParam();						// åˆæœŸè¨­å®š
+$objLoginFormParam->setParam($_POST);		// POSTå€¤ã®å–å¾—
 
-// ¥æ¡¼¥¶¥æ¥Ë¡¼¥¯ID¤Î¼èÆÀ¤È¹ØÆþ¾õÂÖ¤ÎÀµÅöÀ­¤ò¥Á¥§¥Ã¥¯
+// ãƒ¦ãƒ¼ã‚¶ãƒ¦ãƒ‹ãƒ¼ã‚¯IDã®å–å¾—ã¨è³¼å…¥çŠ¶æ…‹ã®æ­£å½“æ€§ã‚’ãƒã‚§ãƒƒã‚¯
 $uniqid = sfCheckNormalAccess($objSiteSess, $objCartSess);
 $objPage->tpl_uniqid = $uniqid;
 
-// ¥í¥°¥¤¥ó¥Á¥§¥Ã¥¯
+// ãƒ­ã‚°ã‚¤ãƒ³ãƒã‚§ãƒƒã‚¯
 if($_POST['mode'] != 'login' && !$objCustomer->isLoginSuccess()) {
-	// ÉÔÀµ¥¢¥¯¥»¥¹¤È¤ß¤Ê¤¹
+	// ä¸æ­£ã‚¢ã‚¯ã‚»ã‚¹ã¨ã¿ãªã™
 	sfDispSiteError(CUSTOMER_ERROR);
 }
 
@@ -62,7 +62,7 @@ case 'login':
 	$objLoginFormParam->toLower('login_email');
 	$objPage->arrErr = $objLoginFormParam->checkError();
 	$arrForm =  $objLoginFormParam->getHashArray();
-	// ¥¯¥Ã¥­¡¼ÊÝÂ¸È½Äê
+	// ã‚¯ãƒƒã‚­ãƒ¼ä¿å­˜åˆ¤å®š
 	if($arrForm['login_memory'] == "1" && $arrForm['login_email'] != "") {
 		$objCookie->setCookie('login_email', $_POST['login_email']);
 	} else {
@@ -70,9 +70,9 @@ case 'login':
 	}
 
 	if(count($objPage->arrErr) == 0) {
-		// ¥í¥°¥¤¥óÈ½Äê
+		// ãƒ­ã‚°ã‚¤ãƒ³åˆ¤å®š
 		if(!$objCustomer->getCustomerDataFromEmailPass($arrForm['login_pass'], $arrForm['login_email'])) {
-			// ²¾ÅÐÏ¿¤ÎÈ½Äê
+			// ä»®ç™»éŒ²ã®åˆ¤å®š
 			$objQuery = new SC_Query;
 			$where = "email = ? AND status = 1 AND del_flg = 0";
 			$ret = $objQuery->count("dtb_customer", $where, array($arrForm['login_email']));
@@ -84,12 +84,12 @@ case 'login':
 			}
 		} 
 	} else {
-		// ¥í¥°¥¤¥ó¥Ú¡¼¥¸¤ËÌá¤ë
+		// ãƒ­ã‚°ã‚¤ãƒ³ãƒšãƒ¼ã‚¸ã«æˆ»ã‚‹
 		header("Location: " . URL_SHOP_TOP);
 		exit;	
 	}
 	break;
-// ºï½ü
+// å‰Šé™¤
 case 'delete':
 	if (sfIsInt($_POST['other_deliv_id'])) {
 		$objQuery = new SC_Query();
@@ -98,36 +98,36 @@ case 'delete':
 		$objFormParam->setValue('select_addr_id', '');
 	}
 	break;
-// ²ñ°÷ÅÐÏ¿½»½ê¤ËÁ÷¤ë
+// ä¼šå“¡ç™»éŒ²ä½æ‰€ã«é€ã‚‹
 case 'customer_addr':
-	// ²ñ°÷ÅÐÏ¿½»½ê¤¬¥Á¥§¥Ã¥¯¤µ¤ì¤Æ¤¤¤ë¾ì¹ç
+	// ä¼šå“¡ç™»éŒ²ä½æ‰€ãŒãƒã‚§ãƒƒã‚¯ã•ã‚Œã¦ã„ã‚‹å ´åˆ
 	if ($_POST['deliv_check'] == '-1') {
-		// ²ñ°÷¾ðÊó¤Î½»½ê¤ò¼õÃí°ì»þ¥Æ¡¼¥Ö¥ë¤Ë½ñ¤­¹þ¤à
+		// ä¼šå“¡æƒ…å ±ã®ä½æ‰€ã‚’å—æ³¨ä¸€æ™‚ãƒ†ãƒ¼ãƒ–ãƒ«ã«æ›¸ãè¾¼ã‚€
 		lfRegistDelivData($uniqid, $objCustomer);
-		// Àµ¾ï¤ËÅÐÏ¿¤µ¤ì¤¿¤³¤È¤òµ­Ï¿¤·¤Æ¤ª¤¯
+		// æ­£å¸¸ã«ç™»éŒ²ã•ã‚ŒãŸã“ã¨ã‚’è¨˜éŒ²ã—ã¦ãŠã
 		$objSiteSess->setRegistFlag();
-		// ¤ª»ÙÊ§¤¤ÊýË¡ÁªÂò¥Ú¡¼¥¸¤Ø°ÜÆ°
+		// ãŠæ”¯æ‰•ã„æ–¹æ³•é¸æŠžãƒšãƒ¼ã‚¸ã¸ç§»å‹•
 		header("Location: " . URL_SHOP_PAYMENT);
 		exit;
-	// ÊÌ¤Î¤ªÆÏ¤±Àè¤¬¥Á¥§¥Ã¥¯¤µ¤ì¤Æ¤¤¤ë¾ì¹ç
+	// åˆ¥ã®ãŠå±Šã‘å…ˆãŒãƒã‚§ãƒƒã‚¯ã•ã‚Œã¦ã„ã‚‹å ´åˆ
 	} elseif($_POST['deliv_check'] >= 1) {
 		if (sfIsInt($_POST['deliv_check'])) {
-			// ÅÐÏ¿ºÑ¤ß¤ÎÊÌ¤Î¤ªÆÏ¤±Àè¤ò¼õÃí°ì»þ¥Æ¡¼¥Ö¥ë¤Ë½ñ¤­¹þ¤à
+			// ç™»éŒ²æ¸ˆã¿ã®åˆ¥ã®ãŠå±Šã‘å…ˆã‚’å—æ³¨ä¸€æ™‚ãƒ†ãƒ¼ãƒ–ãƒ«ã«æ›¸ãè¾¼ã‚€
 			lfRegistOtherDelivData($uniqid, $objCustomer, $_POST['deliv_check']);
-			// Àµ¾ï¤ËÅÐÏ¿¤µ¤ì¤¿¤³¤È¤òµ­Ï¿¤·¤Æ¤ª¤¯
+			// æ­£å¸¸ã«ç™»éŒ²ã•ã‚ŒãŸã“ã¨ã‚’è¨˜éŒ²ã—ã¦ãŠã
 			$objSiteSess->setRegistFlag();
-			// ¤ª»ÙÊ§¤¤ÊýË¡ÁªÂò¥Ú¡¼¥¸¤Ø°ÜÆ°
+			// ãŠæ”¯æ‰•ã„æ–¹æ³•é¸æŠžãƒšãƒ¼ã‚¸ã¸ç§»å‹•
 			header("Location: " . URL_SHOP_PAYMENT);
 			exit;
 		}
 	}else{
-		// ¥¨¥é¡¼¤òÊÖ¤¹
-		$arrErr['deli'] = '¢¨ ¤ªÆÏ¤±Àè¤òÁªÂò¤·¤Æ¤¯¤À¤µ¤¤¡£';
+		// ã‚¨ãƒ©ãƒ¼ã‚’è¿”ã™
+		$arrErr['deli'] = 'â€» ãŠå±Šã‘å…ˆã‚’é¸æŠžã—ã¦ãã ã•ã„ã€‚';
 	}	
 	break;
-// Á°¤Î¥Ú¡¼¥¸¤ËÌá¤ë
+// å‰ã®ãƒšãƒ¼ã‚¸ã«æˆ»ã‚‹
 case 'return':
-	// ³ÎÇ§¥Ú¡¼¥¸¤Ø°ÜÆ°
+	// ç¢ºèªãƒšãƒ¼ã‚¸ã¸ç§»å‹•
 	header("Location: " . URL_CART_TOP);
 	exit;
 	break;
@@ -139,14 +139,14 @@ default:
 	break;
 }
 
-/** É½¼¨½èÍý **/
+/** è¡¨ç¤ºå‡¦ç† **/
 
-// ²ñ°÷ÅÐÏ¿½»½ê¤Î¼èÆÀ
+// ä¼šå“¡ç™»éŒ²ä½æ‰€ã®å–å¾—
 $col = "name01, name02, pref, addr01, addr02";
 $where = "customer_id = ?";
 $objQuery = new SC_Query();
 $arrCustomerAddr = $objQuery->select($col, "dtb_customer", $where, array($_SESSION['customer']['customer_id']));
-// ÊÌ¤Î¤ªÆÏ¤±Àè½»½ê¤Î¼èÆÀ
+// åˆ¥ã®ãŠå±Šã‘å…ˆä½æ‰€ã®å–å¾—
 $col = "other_deliv_id, name01, name02, pref, addr01, addr02";
 $objQuery->setorder("other_deliv_id DESC");
 $objOtherAddr = $objQuery->select($col, "dtb_other_deliv", $where, array($_SESSION['customer']['customer_id']));
@@ -158,45 +158,45 @@ foreach($objOtherAddr as $val) {
 	$cnt++;
 }
 
-// ÆþÎÏÃÍ¤Î¼èÆÀ
+// å…¥åŠ›å€¤ã®å–å¾—
 $objPage->arrForm = $objFormParam->getFormParamList();
 $objPage->arrErr = $arrErr;
 
 $objView->assignobj($objPage);
-// ¥Õ¥ì¡¼¥à¤òÁªÂò(¥­¥ã¥ó¥Ú¡¼¥ó¥Ú¡¼¥¸¤«¤éÁ«°Ü¤Ê¤éÊÑ¹¹)
+// ãƒ•ãƒ¬ãƒ¼ãƒ ã‚’é¸æŠž(ã‚­ãƒ£ãƒ³ãƒšãƒ¼ãƒ³ãƒšãƒ¼ã‚¸ã‹ã‚‰é·ç§»ãªã‚‰å¤‰æ›´)
 $objCampaignSess->pageView($objView);
 //--------------------------------------------------------------------------------------------------------------------------
-/* ¥Ñ¥é¥á¡¼¥¿¾ðÊó¤Î½é´ü²½ */
+/* ãƒ‘ãƒ©ãƒ¡ãƒ¼ã‚¿æƒ…å ±ã®åˆæœŸåŒ– */
 function lfInitParam() {
 	global $objFormParam;
-	$objFormParam->addParam("¤ªÌ¾Á°1", "deliv_name01", STEXT_LEN, "KVa", array("EXIST_CHECK", "SPTAB_CHECK", "MAX_LENGTH_CHECK"));
-	$objFormParam->addParam("¤ªÌ¾Á°2", "deliv_name02", STEXT_LEN, "KVa", array("EXIST_CHECK", "SPTAB_CHECK", "MAX_LENGTH_CHECK"));
-	$objFormParam->addParam("¥Õ¥ê¥¬¥Ê1", "deliv_kana01", STEXT_LEN, "KVCa", array("EXIST_CHECK", "SPTAB_CHECK", "MAX_LENGTH_CHECK"));
-	$objFormParam->addParam("¥Õ¥ê¥¬¥Ê2", "deliv_kana02", STEXT_LEN, "KVCa", array("EXIST_CHECK", "SPTAB_CHECK", "MAX_LENGTH_CHECK"));
-	$objFormParam->addParam("Í¹ÊØÈÖ¹æ1", "deliv_zip01", ZIP01_LEN, "n", array("EXIST_CHECK", "NUM_CHECK", "NUM_COUNT_CHECK"));
-	$objFormParam->addParam("Í¹ÊØÈÖ¹æ2", "deliv_zip02", ZIP02_LEN, "n", array("EXIST_CHECK", "NUM_CHECK", "NUM_COUNT_CHECK"));
-	$objFormParam->addParam("ÅÔÆ»ÉÜ¸©", "deliv_pref", INT_LEN, "n", array("EXIST_CHECK", "MAX_LENGTH_CHECK", "NUM_CHECK"));
-	$objFormParam->addParam("½»½ê1", "deliv_addr01", STEXT_LEN, "KVa", array("EXIST_CHECK", "SPTAB_CHECK", "MAX_LENGTH_CHECK"));
-	$objFormParam->addParam("½»½ê2", "deliv_addr02", STEXT_LEN, "KVa", array("EXIST_CHECK", "SPTAB_CHECK", "MAX_LENGTH_CHECK"));
-	$objFormParam->addParam("ÅÅÏÃÈÖ¹æ1", "deliv_tel01", TEL_ITEM_LEN, "n", array("EXIST_CHECK", "MAX_LENGTH_CHECK" ,"NUM_CHECK"));
-	$objFormParam->addParam("ÅÅÏÃÈÖ¹æ2", "deliv_tel02", TEL_ITEM_LEN, "n", array("EXIST_CHECK", "MAX_LENGTH_CHECK" ,"NUM_CHECK"));
-	$objFormParam->addParam("ÅÅÏÃÈÖ¹æ3", "deliv_tel03", TEL_ITEM_LEN, "n", array("EXIST_CHECK", "MAX_LENGTH_CHECK" ,"NUM_CHECK"));
+	$objFormParam->addParam("ãŠåå‰1", "deliv_name01", STEXT_LEN, "KVa", array("EXIST_CHECK", "SPTAB_CHECK", "MAX_LENGTH_CHECK"));
+	$objFormParam->addParam("ãŠåå‰2", "deliv_name02", STEXT_LEN, "KVa", array("EXIST_CHECK", "SPTAB_CHECK", "MAX_LENGTH_CHECK"));
+	$objFormParam->addParam("ãƒ•ãƒªã‚¬ãƒŠ1", "deliv_kana01", STEXT_LEN, "KVCa", array("EXIST_CHECK", "SPTAB_CHECK", "MAX_LENGTH_CHECK"));
+	$objFormParam->addParam("ãƒ•ãƒªã‚¬ãƒŠ2", "deliv_kana02", STEXT_LEN, "KVCa", array("EXIST_CHECK", "SPTAB_CHECK", "MAX_LENGTH_CHECK"));
+	$objFormParam->addParam("éƒµä¾¿ç•ªå·1", "deliv_zip01", ZIP01_LEN, "n", array("EXIST_CHECK", "NUM_CHECK", "NUM_COUNT_CHECK"));
+	$objFormParam->addParam("éƒµä¾¿ç•ªå·2", "deliv_zip02", ZIP02_LEN, "n", array("EXIST_CHECK", "NUM_CHECK", "NUM_COUNT_CHECK"));
+	$objFormParam->addParam("éƒ½é“åºœçœŒ", "deliv_pref", INT_LEN, "n", array("EXIST_CHECK", "MAX_LENGTH_CHECK", "NUM_CHECK"));
+	$objFormParam->addParam("ä½æ‰€1", "deliv_addr01", STEXT_LEN, "KVa", array("EXIST_CHECK", "SPTAB_CHECK", "MAX_LENGTH_CHECK"));
+	$objFormParam->addParam("ä½æ‰€2", "deliv_addr02", STEXT_LEN, "KVa", array("EXIST_CHECK", "SPTAB_CHECK", "MAX_LENGTH_CHECK"));
+	$objFormParam->addParam("é›»è©±ç•ªå·1", "deliv_tel01", TEL_ITEM_LEN, "n", array("EXIST_CHECK", "MAX_LENGTH_CHECK" ,"NUM_CHECK"));
+	$objFormParam->addParam("é›»è©±ç•ªå·2", "deliv_tel02", TEL_ITEM_LEN, "n", array("EXIST_CHECK", "MAX_LENGTH_CHECK" ,"NUM_CHECK"));
+	$objFormParam->addParam("é›»è©±ç•ªå·3", "deliv_tel03", TEL_ITEM_LEN, "n", array("EXIST_CHECK", "MAX_LENGTH_CHECK" ,"NUM_CHECK"));
 	$objFormParam->addParam("", "deliv_check");	
 }
 
 function lfInitLoginFormParam() {
 	global $objLoginFormParam;
-	$objLoginFormParam->addParam("µ­²±¤¹¤ë", "login_memory", INT_LEN, "n", array("MAX_LENGTH_CHECK", "NUM_CHECK"));
-	$objLoginFormParam->addParam("¥á¡¼¥ë¥¢¥É¥ì¥¹", "login_email", STEXT_LEN, "KVa", array("EXIST_CHECK", "MAX_LENGTH_CHECK"));
-	$objLoginFormParam->addParam("¥Ñ¥¹¥ï¡¼¥É", "login_pass", STEXT_LEN, "KVa", array("EXIST_CHECK", "MAX_LENGTH_CHECK"));
+	$objLoginFormParam->addParam("è¨˜æ†¶ã™ã‚‹", "login_memory", INT_LEN, "n", array("MAX_LENGTH_CHECK", "NUM_CHECK"));
+	$objLoginFormParam->addParam("ãƒ¡ãƒ¼ãƒ«ã‚¢ãƒ‰ãƒ¬ã‚¹", "login_email", STEXT_LEN, "KVa", array("EXIST_CHECK", "MAX_LENGTH_CHECK"));
+	$objLoginFormParam->addParam("ãƒ‘ã‚¹ãƒ¯ãƒ¼ãƒ‰", "login_pass", STEXT_LEN, "KVa", array("EXIST_CHECK", "MAX_LENGTH_CHECK"));
 }
 
-/* DB¤Ø¥Ç¡¼¥¿¤ÎÅÐÏ¿ */
+/* DBã¸ãƒ‡ãƒ¼ã‚¿ã®ç™»éŒ² */
 function lfRegistNewAddrData($uniqid, $objCustomer) {
 	global $objFormParam;
 	$arrRet = $objFormParam->getHashArray();
 	$sqlval = $objFormParam->getDbArray();
-	// ÅÐÏ¿¥Ç¡¼¥¿¤ÎºîÀ®
+	// ç™»éŒ²ãƒ‡ãƒ¼ã‚¿ã®ä½œæˆ
 	$sqlval['deliv_check'] = '1';
 	$sqlval['order_temp_id'] = $uniqid;
 	$sqlval['update_date'] = 'Now()';
@@ -206,9 +206,9 @@ function lfRegistNewAddrData($uniqid, $objCustomer) {
 	sfRegistTempOrder($uniqid, $sqlval);
 }
 
-/* ²ñ°÷¾ðÊó¤Î½»½ê¤ò°ì»þ¼õÃí¥Æ¡¼¥Ö¥ë¤Ø */
+/* ä¼šå“¡æƒ…å ±ã®ä½æ‰€ã‚’ä¸€æ™‚å—æ³¨ãƒ†ãƒ¼ãƒ–ãƒ«ã¸ */
 function lfRegistDelivData($uniqid, $objCustomer) {
-	// ÅÐÏ¿¥Ç¡¼¥¿¤ÎºîÀ®
+	// ç™»éŒ²ãƒ‡ãƒ¼ã‚¿ã®ä½œæˆ
 	$sqlval['order_temp_id'] = $uniqid;
 	$sqlval['update_date'] = 'Now()';
 	$sqlval['customer_id'] = $objCustomer->getValue('customer_id');
@@ -233,9 +233,9 @@ function lfRegistDelivData($uniqid, $objCustomer) {
 	sfRegistTempOrder($uniqid, $sqlval);
 }
 
-/* ÊÌ¤Î¤ªÆÏ¤±Àè½»½ê¤ò°ì»þ¼õÃí¥Æ¡¼¥Ö¥ë¤Ø */
+/* åˆ¥ã®ãŠå±Šã‘å…ˆä½æ‰€ã‚’ä¸€æ™‚å—æ³¨ãƒ†ãƒ¼ãƒ–ãƒ«ã¸ */
 function lfRegistOtherDelivData($uniqid, $objCustomer, $other_deliv_id) {
-	// ÅÐÏ¿¥Ç¡¼¥¿¤ÎºîÀ®
+	// ç™»éŒ²ãƒ‡ãƒ¼ã‚¿ã®ä½œæˆ
 	$sqlval['order_temp_id'] = $uniqid;
 	$sqlval['update_date'] = 'Now()';
 	$sqlval['customer_id'] = $objCustomer->getValue('customer_id');
@@ -261,17 +261,17 @@ function lfRegistOtherDelivData($uniqid, $objCustomer, $other_deliv_id) {
 	sfRegistTempOrder($uniqid, $sqlval);
 }
 
-/* ÆþÎÏÆâÍÆ¤Î¥Á¥§¥Ã¥¯ */
+/* å…¥åŠ›å†…å®¹ã®ãƒã‚§ãƒƒã‚¯ */
 function lfCheckError() {
 	global $objFormParam;
-	// ÆþÎÏ¥Ç¡¼¥¿¤òÅÏ¤¹¡£
+	// å…¥åŠ›ãƒ‡ãƒ¼ã‚¿ã‚’æ¸¡ã™ã€‚
 	$arrRet =  $objFormParam->getHashArray();
 	$objErr = new SC_CheckError($arrRet);
 	$objErr->arrErr = $objFormParam->checkError();
-	// Ê£¿ô¹àÌÜ¥Á¥§¥Ã¥¯
+	// è¤‡æ•°é …ç›®ãƒã‚§ãƒƒã‚¯
 	if ($_POST['mode'] == 'login'){
-	$objErr->doFunc(array("¥á¡¼¥ë¥¢¥É¥ì¥¹", "login_email", STEXT_LEN), array("EXIST_CHECK"));
-	$objErr->doFunc(array("¥Ñ¥¹¥ï¡¼¥É", "login_pass", STEXT_LEN), array("EXIST_CHECK"));
+	$objErr->doFunc(array("ãƒ¡ãƒ¼ãƒ«ã‚¢ãƒ‰ãƒ¬ã‚¹", "login_email", STEXT_LEN), array("EXIST_CHECK"));
+	$objErr->doFunc(array("ãƒ‘ã‚¹ãƒ¯ãƒ¼ãƒ‰", "login_pass", STEXT_LEN), array("EXIST_CHECK"));
 	}
 	$objErr->doFunc(array("TEL", "deliv_tel01", "deliv_tel02", "deliv_tel03", TEL_ITEM_LEN), array("TEL_CHECK"));
 	return $objErr->arrErr;

@@ -5,17 +5,17 @@
  * http://www.lockon.co.jp/
  */
 *}-->
-<!--°˙°˙•·•§•Û•≥•Û•∆•Û•ƒ°˙°˙-->
+<!--‚òÖ‚òÖ„É°„Ç§„É≥„Ç≥„É≥„ÉÜ„É≥„ÉÑ‚òÖ‚òÖ-->
 <table width="878" border="0" cellspacing="0" cellpadding="0" summary=" ">
 	<tr valign="top">
 		<td background="<!--{$smarty.const.URL_DIR}-->img/contents/navi_bg.gif" height="402">
-			<!--¢ßSUB NAVI-->
+			<!--‚ñºSUB NAVI-->
 			<!--{include file=$tpl_subnavi}-->
-			<!--¢•SUB NAVI-->
+			<!--‚ñ≤SUB NAVI-->
 		</td>
 		<td class="mainbg" >
 		<table width="737" border="0" cellspacing="0" cellpadding="0" summary=" ">
-			<!--•·•§•Û•®•Í•¢-->
+			<!--„É°„Ç§„É≥„Ç®„É™„Ç¢-->
 			<tr>
 				<td align="center">
 				<table width="706" border="0" cellspacing="0" cellpadding="0" summary=" ">
@@ -28,14 +28,14 @@
 						<td background="<!--{$smarty.const.URL_DIR}-->img/contents/main_left.jpg"><img src="<!--{$smarty.const.URL_DIR}-->img/common/_.gif" width="14" height="1" alt=""></td>
 						<td bgcolor="#cccccc">
 						
-						<!--≈–œø•∆°º•÷•Î§≥§≥§´§È-->
+						<!--ÁôªÈå≤„ÉÜ„Éº„Éñ„É´„Åì„Åì„Åã„Çâ-->
 						<table width="678" border="0" cellspacing="0" cellpadding="0" summary=" ">
 							<tr>
 								<td colspan="3"><img src="<!--{$smarty.const.URL_DIR}-->img/contents/contents_title_top.gif" width="678" height="7" alt=""></td>
 							</tr>
 							<tr>
 								<td background="<!--{$smarty.const.URL_DIR}-->img/contents/contents_title_left_bg.gif"><img src="<!--{$smarty.const.URL_DIR}-->img/contents/contents_title_left.gif" width="22" height="12" alt=""></td>
-								<td bgcolor="#636469" width="638" class="fs14n"><span class="white"><!--•≥•Û•∆•Û•ƒ•ø•§•»•Î-->•÷•Ì•√•Ø ‘Ω∏</span></td>
+								<td bgcolor="#636469" width="638" class="fs14n"><span class="white"><!--„Ç≥„É≥„ÉÜ„É≥„ÉÑ„Çø„Ç§„Éà„É´-->„Éñ„É≠„ÉÉ„ÇØÁ∑®ÈõÜ</span></td>
 								<td background="<!--{$smarty.const.URL_DIR}-->img/contents/contents_title_right_bg.gif"><img src="<!--{$smarty.const.URL_DIR}-->img/common/_.gif" width="18" height="1" alt=""></td>
 							</tr>
 							<tr>
@@ -46,14 +46,14 @@
 							</tr>
 						</table>
 
-						<!--¢ß•÷•Ì•√•Ø ‘Ω∏°°§≥§≥§´§È-->
+						<!--‚ñº„Éñ„É≠„ÉÉ„ÇØÁ∑®ÈõÜ„ÄÄ„Åì„Åì„Åã„Çâ-->
 						<table width="678" border="0" cellspacing="1" cellpadding="8" summary=" ">
 							<tr class="fs12n">
-								<td bgcolor="#f2f1ec" align="center"><strong>•÷•Ì•√•Ø ‘Ω∏</strong></td>
+								<td bgcolor="#f2f1ec" align="center"><strong>„Éñ„É≠„ÉÉ„ÇØÁ∑®ÈõÜ</strong></td>
 							</tr>
 							<!--{if $arrBlocData.tpl_path != '' and $preview == on}-->
 							<tr class="fs12n">
-								<td bgcolor="#eeeeee" align="left"><strong>•◊•Ï•”•Â°º°ß</strong></td>
+								<td bgcolor="#eeeeee" align="left"><strong>„Éó„É¨„Éì„É•„ÉºÔºö</strong></td>
 							</tr>
 							<tr class="fs12n">
 								<td bgcolor="#ffffff" align="center" valign="middle">
@@ -69,13 +69,13 @@
 							<tr class="fs12n">
 								<td bgcolor="#ffffff" align="left">
 									<!--{ if $arrErr.bloc_name != "" }--> <div align="center"> <span class="red12"><!--{$arrErr.bloc_name}--></span></div> <!--{/if}-->
-									•÷•Ì•√•ØÃæ°ß<input type="text" name="bloc_name" value="<!--{$arrBlocData.bloc_name|escape}-->" maxlength="<!--{$smarty.const.STEXT_LEN}-->" style="<!--{if $arrErr.bloc_name != ""}-->background-color: <!--{$smarty.const.ERR_COLOR}--><!--{/if}-->" size="60" class="box60" /><span class="red"> ° æÂ∏¬<!--{$smarty.const.STEXT_LEN}--> ∏ª˙°À</span>
+									„Éñ„É≠„ÉÉ„ÇØÂêçÔºö<input type="text" name="bloc_name" value="<!--{$arrBlocData.bloc_name|escape}-->" maxlength="<!--{$smarty.const.STEXT_LEN}-->" style="<!--{if $arrErr.bloc_name != ""}-->background-color: <!--{$smarty.const.ERR_COLOR}--><!--{/if}-->" size="60" class="box60" /><span class="red"> Ôºà‰∏äÈôê<!--{$smarty.const.STEXT_LEN}-->ÊñáÂ≠óÔºâ</span>
 								</td>
 							</tr>
 							<tr class="fs12n">
 								<td bgcolor="#ffffff" align="left">
 									<!--{ if $arrErr.filename != "" }--> <div align="center"> <span class="red12"><!--{$arrErr.filename}--></span></div> <!--{/if}-->
-									•’•°•§•ÎÃæ°ß<input type="text" name="filename" value="<!--{$arrBlocData.filename|escape}-->" maxlength="<!--{$smarty.const.STEXT_LEN}-->" style="<!--{if $arrErr.filename != ""}-->background-color: <!--{$smarty.const.ERR_COLOR}-->;<!--{/if}-->" size="60" class="box60" />.tpl<span class="red"> ° æÂ∏¬<!--{$smarty.const.STEXT_LEN}--> ∏ª˙°À</span>
+									„Éï„Ç°„Ç§„É´ÂêçÔºö<input type="text" name="filename" value="<!--{$arrBlocData.filename|escape}-->" maxlength="<!--{$smarty.const.STEXT_LEN}-->" style="<!--{if $arrErr.filename != ""}-->background-color: <!--{$smarty.const.ERR_COLOR}-->;<!--{/if}-->" size="60" class="box60" />.tpl<span class="red"> Ôºà‰∏äÈôê<!--{$smarty.const.STEXT_LEN}-->ÊñáÂ≠óÔºâ</span>
 								</td>
 							</tr>
 						
@@ -87,28 +87,28 @@
 									<input type="hidden" name="html_area_row" value="<!--{$text_row}-->">
 									</div>
 									<div align="right">
-									<input type="button" value=<!--{if $text_row > 13}-->"æÆ§µ§Ø§π§Î"<!--{else}-->"¬Á§≠§Ø§π§Î"<!--{/if}--> onClick="ChangeSize(this, bloc_html, 50, 13, html_area_row)">
+									<input type="button" value=<!--{if $text_row > 13}-->"Â∞è„Åï„Åè„Åô„Çã"<!--{else}-->"Â§ß„Åç„Åè„Åô„Çã"<!--{/if}--> onClick="ChangeSize(this, bloc_html, 50, 13, html_area_row)">
 									</div>
 									<br/>
 								</td>
 							</tr>
 							<tr class="fs12n">
 								<td bgcolor="#f2f1ec" align="center">
-									<input type='button' value='≈–œø' name='subm' onclick="fnFormModeSubmit('form_bloc','confirm','','');"  />
-									<input type='button' value='•◊•Ï•”•Â°º' name='preview' onclick="fnFormModeSubmit('form_bloc','preview','','');"  />
+									<input type='button' value='ÁôªÈå≤' name='subm' onclick="fnFormModeSubmit('form_bloc','confirm','','');"  />
+									<input type='button' value='„Éó„É¨„Éì„É•„Éº' name='preview' onclick="fnFormModeSubmit('form_bloc','preview','','');"  />
 								</td>
 							</tr>
 						</table>
-						<!--¢••÷•Ì•√•Ø ‘Ω∏°°§≥§≥§ﬁ§«-->
+						<!--‚ñ≤„Éñ„É≠„ÉÉ„ÇØÁ∑®ÈõÜ„ÄÄ„Åì„Åì„Åæ„Åß-->
 
 						<table width="678" border="0" cellspacing="0" cellpadding="0" summary=" ">
 							<tr><td colspan="3"><img src="<!--{$smarty.const.URL_DIR}-->img/contents/main_bar.jpg" width="678" height="10" alt=""></td></tr>
 						</table>
 
-						<!--¢ß•÷•Ì•√•Ø∞ÏÕ˜°°§≥§≥§´§È-->
+						<!--‚ñº„Éñ„É≠„ÉÉ„ÇØ‰∏ÄË¶ß„ÄÄ„Åì„Åì„Åã„Çâ-->
 						<table width="678" border="0" cellspacing="1" cellpadding="5" summary=" ">
 							<tr class="fs12n">
-								<td bgcolor="#f2f1ec" align="center" colspan=2 ><strong> ‘Ω∏≤ƒ«Ω•÷•Ì•√•Ø</strong></td>
+								<td bgcolor="#f2f1ec" align="center" colspan=2 ><strong>Á∑®ÈõÜÂèØËÉΩ„Éñ„É≠„ÉÉ„ÇØ</strong></td>
 							</tr>
 							
 							<!--{foreach key=key item=item from=$arrBlocList}-->
@@ -118,7 +118,7 @@
 								</td>
 								<td  align="center" width=140 bgcolor="<!--{if $item.bloc_id == $bloc_id}--><!--{$smarty.const.SELECT_RGB}--><!--{else}-->#ffffff<!--{/if}-->">
 									<!--{if $item.del_flg == 0}-->
-									<input type="button" value="∫ÔΩ¸" name="del<!--{$item.bloc_id}-->" onclick="fnFormModeSubmit('form_bloc','delete','bloc_id',this.name.substr(3));"  />
+									<input type="button" value="ÂâäÈô§" name="del<!--{$item.bloc_id}-->" onclick="fnFormModeSubmit('form_bloc','delete','bloc_id',this.name.substr(3));"  />
 									<input type="hidden" value="<!--{$item.bloc_id}-->" name="del_id<!--{$item.bloc_id}-->">
 									<!--{/if}-->
 								</td>
@@ -127,11 +127,11 @@
 					
 							<tr class="fs12n">
 								<td bgcolor="#f2f1ec" align="center" colspan=2>
-								<input type='button' value='ø∑µ¨•÷•Ì•√•Ø∫Ó¿Æ' name='subm' onclick="location.href='http://<!--{$smarty.server.HTTP_HOST}--><!--{$smarty.server.PHP_SELF|escape}-->'">
+								<input type='button' value='Êñ∞Ë¶è„Éñ„É≠„ÉÉ„ÇØ‰ΩúÊàê' name='subm' onclick="location.href='http://<!--{$smarty.server.HTTP_HOST}--><!--{$smarty.server.PHP_SELF|escape}-->'">
 								</td>
 							</tr>
 						</table>
-						<!--¢••÷•Ì•√•Ø∞ÏÕ˜°°§≥§≥§ﬁ§«-->
+						<!--‚ñ≤„Éñ„É≠„ÉÉ„ÇØ‰∏ÄË¶ß„ÄÄ„Åì„Åì„Åæ„Åß-->
 
 						</td>
 						<td background="<!--{$smarty.const.URL_DIR}-->img/contents/main_right.jpg"><img src="<!--{$smarty.const.URL_DIR}-->img/common/_.gif" width="14" height="1" alt=""></td>
@@ -144,11 +144,11 @@
 				</table>
 				</td>
 			</tr>
-			<!--•·•§•Û•®•Í•¢-->
+			<!--„É°„Ç§„É≥„Ç®„É™„Ç¢-->
 		</table>
 		</td>
 	</tr>
 </form>	
 </table>
-<!--°˙°˙•·•§•Û•≥•Û•∆•Û•ƒ°˙°˙-->		
+<!--‚òÖ‚òÖ„É°„Ç§„É≥„Ç≥„É≥„ÉÜ„É≥„ÉÑ‚òÖ‚òÖ-->		
 

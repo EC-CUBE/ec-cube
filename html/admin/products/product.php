@@ -20,7 +20,7 @@ class LC_Page {
 		$this->tpl_subnavi = 'products/subnavi.tpl';
 		$this->tpl_mainno = 'products';		
 		$this->tpl_subno = 'product';
-		$this->tpl_subtitle = '¾¦ÉÊÅĞÏ¿';
+		$this->tpl_subtitle = 'å•†å“ç™»éŒ²';
 		global $arrSRANK;
 		$this->arrSRANK = $arrSRANK;
 		global $arrDISP;
@@ -44,43 +44,43 @@ $objView = new SC_AdminView();
 $objSiteInfo = new SC_SiteInfo();
 $objQuery = new SC_Query();
 
-// Ç§¾Ú²ÄÈİ¤ÎÈ½Äê
+// èªè¨¼å¯å¦ã®åˆ¤å®š
 $objSess = new SC_Session();
 sfIsSuccess($objSess);
 
-// ¥Õ¥¡¥¤¥ë´ÉÍı¥¯¥é¥¹
+// ãƒ•ã‚¡ã‚¤ãƒ«ç®¡ç†ã‚¯ãƒ©ã‚¹
 $objUpFile = new SC_UploadFile(IMAGE_TEMP_DIR, IMAGE_SAVE_DIR);
 
-// ¥Õ¥¡¥¤¥ë¾ğÊó¤Î½é´ü²½
+// ãƒ•ã‚¡ã‚¤ãƒ«æƒ…å ±ã®åˆæœŸåŒ–
 lfInitFile();
-// Hidden¤«¤é¤Î¥Ç¡¼¥¿¤ò°ú¤­·Ñ¤°
+// Hiddenã‹ã‚‰ã®ãƒ‡ãƒ¼ã‚¿ã‚’å¼•ãç¶™ã
 $objUpFile->setHiddenFileList($_POST);
 
-// ¸¡º÷¥Ñ¥é¥á¡¼¥¿¤Î°ú¤­·Ñ¤®
+// æ¤œç´¢ãƒ‘ãƒ©ãƒ¡ãƒ¼ã‚¿ã®å¼•ãç¶™ã
 foreach ($_POST as $key => $val) {
 	if (ereg("^search_", $key)) {
 		$objPage->arrSearchHidden[$key] = $val;	
 	}
 }
 
-// FORM¥Ç¡¼¥¿¤Î°ú¤­·Ñ¤®
+// FORMãƒ‡ãƒ¼ã‚¿ã®å¼•ãç¶™ã
 $objPage->arrForm = $_POST;
 
 switch($_POST['mode']) {
-// ¸¡º÷²èÌÌ¤«¤é¤ÎÊÔ½¸
+// æ¤œç´¢ç”»é¢ã‹ã‚‰ã®ç·¨é›†
 case 'pre_edit':
 case 'copy' :
-	// ÊÔ½¸»ş
+	// ç·¨é›†æ™‚
 	if(sfIsInt($_POST['product_id'])){
-		// DB¤«¤é¾¦ÉÊ¾ğÊó¤ÎÆÉ¹ş
+		// DBã‹ã‚‰å•†å“æƒ…å ±ã®èª­è¾¼
 		$arrForm = lfGetProduct($_POST['product_id']);
-		// DB¥Ç¡¼¥¿¤«¤é²èÁü¥Õ¥¡¥¤¥ëÌ¾¤ÎÆÉ¹ş
+		// DBãƒ‡ãƒ¼ã‚¿ã‹ã‚‰ç”»åƒãƒ•ã‚¡ã‚¤ãƒ«åã®èª­è¾¼
 		$objUpFile->setDBFileList($arrForm);
 		
 		if($_POST['mode'] == "copy"){
 			$arrForm["copy_product_id"] = $arrForm["product_id"];
 			$arrForm["product_id"] = "";
-			// ²èÁü¥Õ¥¡¥¤¥ë¤Î¥³¥Ô¡¼
+			// ç”»åƒãƒ•ã‚¡ã‚¤ãƒ«ã®ã‚³ãƒ”ãƒ¼
 			$arrKey = $objUpFile->keyname;
 			$arrSaveFile = $objUpFile->save_file;
 			
@@ -90,20 +90,20 @@ case 'copy' :
 		}
 		$objPage->arrForm = $arrForm;
 		
-		// ¾¦ÉÊ¥¹¥Æ¡¼¥¿¥¹¤ÎÊÑ´¹
+		// å•†å“ã‚¹ãƒ†ãƒ¼ã‚¿ã‚¹ã®å¤‰æ›
 		$arrRet = sfSplitCBValue($objPage->arrForm['product_flag'], "product_flag");
 		$objPage->arrForm = array_merge($objPage->arrForm, $arrRet);
-		// DB¤«¤é¤ª¤¹¤¹¤á¾¦ÉÊ¤ÎÆÉ¤ß¹ş¤ß
+		// DBã‹ã‚‰ãŠã™ã™ã‚å•†å“ã®èª­ã¿è¾¼ã¿
 		$objPage->arrRecommend = lfPreGetRecommendProducts($_POST['product_id']);
 		
-		// µ¬³ÊÅĞÏ¿¤¢¤ê¤Ê¤·È½Äê
+		// è¦æ ¼ç™»éŒ²ã‚ã‚Šãªã—åˆ¤å®š
 		$objPage->tpl_nonclass = lfCheckNonClass($_POST['product_id']);
-		lfProductPage();		// ¾¦ÉÊÅĞÏ¿¥Ú¡¼¥¸
+		lfProductPage();		// å•†å“ç™»éŒ²ãƒšãƒ¼ã‚¸
 	}
 	break;
-// ¾¦ÉÊÅĞÏ¿¡¦ÊÔ½¸
+// å•†å“ç™»éŒ²ãƒ»ç·¨é›†
 case 'edit':
-	// µ¬³ÊÅĞÏ¿¤¢¤ê¤Ê¤·È½Äê
+	// è¦æ ¼ç™»éŒ²ã‚ã‚Šãªã—åˆ¤å®š
 	$tpl_nonclass = lfCheckNonClass($_POST['product_id']);
 	
 	if($_POST['product_id'] == "" and sfIsInt($_POST['copy_product_id'])){
@@ -111,75 +111,75 @@ case 'edit':
 	}
 	$objPage->tpl_nonclass = $tpl_nonclass;
 	
-	// ÆşÎÏÃÍ¤ÎÊÑ´¹
+	// å…¥åŠ›å€¤ã®å¤‰æ›
 	$objPage->arrForm = lfConvertParam($objPage->arrForm);
-	// ¥¨¥é¡¼¥Á¥§¥Ã¥¯
+	// ã‚¨ãƒ©ãƒ¼ãƒã‚§ãƒƒã‚¯
 	$objPage->arrErr = lfErrorCheck($objPage->arrForm);
-	// ¥Õ¥¡¥¤¥ëÂ¸ºß¥Á¥§¥Ã¥¯
+	// ãƒ•ã‚¡ã‚¤ãƒ«å­˜åœ¨ãƒã‚§ãƒƒã‚¯
 	$objPage->arrErr = array_merge((array)$objPage->arrErr, (array)$objUpFile->checkEXISTS());
-	// ¥¨¥é¡¼¤Ê¤·¤Î¾ì¹ç
+	// ã‚¨ãƒ©ãƒ¼ãªã—ã®å ´åˆ
 	if(count($objPage->arrErr) == 0) {
-		lfProductConfirmPage(); // ³ÎÇ§¥Ú¡¼¥¸
+		lfProductConfirmPage(); // ç¢ºèªãƒšãƒ¼ã‚¸
 	} else {
-		lfProductPage();		// ¾¦ÉÊÅĞÏ¿¥Ú¡¼¥¸
+		lfProductPage();		// å•†å“ç™»éŒ²ãƒšãƒ¼ã‚¸
 	}
 	break;
-// ³ÎÇ§¥Ú¡¼¥¸¤«¤é´°Î»¥Ú¡¼¥¸¤Ø
+// ç¢ºèªãƒšãƒ¼ã‚¸ã‹ã‚‰å®Œäº†ãƒšãƒ¼ã‚¸ã¸
 case 'complete':
 	$objPage->tpl_mainpage = 'products/complete.tpl';
 	
-	$objPage->tpl_product_id = lfRegistProduct($_POST);		// ¥Ç¡¼¥¿ÅĞÏ¿
+	$objPage->tpl_product_id = lfRegistProduct($_POST);		// ãƒ‡ãƒ¼ã‚¿ç™»éŒ²
 	
 	$objQuery = new SC_Query();
-	// ·ï¿ô¥«¥¦¥ó¥È¥Ğ¥Ã¥Á¼Â¹Ô
+	// ä»¶æ•°ã‚«ã‚¦ãƒ³ãƒˆãƒãƒƒãƒå®Ÿè¡Œ
 	sfCategory_Count($objQuery);
-	// °ì»ş¥Õ¥¡¥¤¥ë¤òËÜÈÖ¥Ç¥£¥ì¥¯¥È¥ê¤Ë°ÜÆ°¤¹¤ë
+	// ä¸€æ™‚ãƒ•ã‚¡ã‚¤ãƒ«ã‚’æœ¬ç•ªãƒ‡ã‚£ãƒ¬ã‚¯ãƒˆãƒªã«ç§»å‹•ã™ã‚‹
 	$objUpFile->moveTempFile();
 
 	break;
-// ²èÁü¤Î¥¢¥Ã¥×¥í¡¼¥É
+// ç”»åƒã®ã‚¢ãƒƒãƒ—ãƒ­ãƒ¼ãƒ‰
 case 'upload_image':
-	// ¥Õ¥¡¥¤¥ëÂ¸ºß¥Á¥§¥Ã¥¯
+	// ãƒ•ã‚¡ã‚¤ãƒ«å­˜åœ¨ãƒã‚§ãƒƒã‚¯
 	$objPage->arrErr = array_merge((array)$objPage->arrErr, (array)$objUpFile->checkEXISTS($_POST['image_key']));
-	// ²èÁüÊİÂ¸½èÍı
+	// ç”»åƒä¿å­˜å‡¦ç†
 	$objPage->arrErr[$_POST['image_key']] = $objUpFile->makeTempFile($_POST['image_key']);
 
-	// Ãæ¡¢¾®²èÁüÀ¸À®
+	// ä¸­ã€å°ç”»åƒç”Ÿæˆ
 	lfSetScaleImage();
 
-	lfProductPage(); // ¾¦ÉÊÅĞÏ¿¥Ú¡¼¥¸
+	lfProductPage(); // å•†å“ç™»éŒ²ãƒšãƒ¼ã‚¸
 	break;
-// ²èÁü¤Îºï½ü
+// ç”»åƒã®å‰Šé™¤
 case 'delete_image':
 	$objUpFile->deleteFile($_POST['image_key']);
-	lfProductPage(); // ¾¦ÉÊÅĞÏ¿¥Ú¡¼¥¸
+	lfProductPage(); // å•†å“ç™»éŒ²ãƒšãƒ¼ã‚¸
 	break;
-// ³ÎÇ§¥Ú¡¼¥¸¤«¤é¤ÎÌá¤ê
+// ç¢ºèªãƒšãƒ¼ã‚¸ã‹ã‚‰ã®æˆ»ã‚Š
 case 'confirm_return':
-	// µ¬³ÊÅĞÏ¿¤¢¤ê¤Ê¤·È½Äê
+	// è¦æ ¼ç™»éŒ²ã‚ã‚Šãªã—åˆ¤å®š
 	$objPage->tpl_nonclass = lfCheckNonClass($_POST['product_id']);
-	lfProductPage();		// ¾¦ÉÊÅĞÏ¿¥Ú¡¼¥¸
+	lfProductPage();		// å•†å“ç™»éŒ²ãƒšãƒ¼ã‚¸
 	break;
-// ¤ª¤¹¤¹¤á¾¦ÉÊÁªÂò
+// ãŠã™ã™ã‚å•†å“é¸æŠ
 case 'recommend_select' :
-	lfProductPage();		// ¾¦ÉÊÅĞÏ¿¥Ú¡¼¥¸
+	lfProductPage();		// å•†å“ç™»éŒ²ãƒšãƒ¼ã‚¸
 	break;
 default:
-	// ¸ø³«¡¦Èó¸ø³«¤Î¥Ç¥Õ¥©¥ë¥ÈÃÍ
+	// å…¬é–‹ãƒ»éå…¬é–‹ã®ãƒ‡ãƒ•ã‚©ãƒ«ãƒˆå€¤
 	$objPage->arrForm['status'] = DEFAULT_PRODUCT_DISP;
-	lfProductPage();		// ¾¦ÉÊÅĞÏ¿¥Ú¡¼¥¸
+	lfProductPage();		// å•†å“ç™»éŒ²ãƒšãƒ¼ã‚¸
 	break;
 }
 
 if($_POST['mode'] != 'pre_edit') {
-	// ¤ª¤¹¤¹¤á¾¦ÉÊ¤ÎÆÉ¤ß¹ş¤ß
+	// ãŠã™ã™ã‚å•†å“ã®èª­ã¿è¾¼ã¿
 	$objPage->arrRecommend = lfGetRecommendProducts();
 }
 
-// ´ğËÜ¾ğÊó¤òÅÏ¤¹
+// åŸºæœ¬æƒ…å ±ã‚’æ¸¡ã™
 $objPage->arrInfo = $objSiteInfo->data;
 
-// ¥µ¥Ö¾ğÊó¤ÎÆşÎÏ¤¬¤¢¤ë¤«¤É¤¦¤«¥Á¥§¥Ã¥¯¤¹¤ë
+// ã‚µãƒ–æƒ…å ±ã®å…¥åŠ›ãŒã‚ã‚‹ã‹ã©ã†ã‹ãƒã‚§ãƒƒã‚¯ã™ã‚‹
 $sub_find = false;
 for ($cnt = 1; $cnt <= PRODUCTSUB_MAX; $cnt++) {
 	if(	$objPage->arrForm['sub_title'.$cnt] != "" || 
@@ -192,14 +192,14 @@ for ($cnt = 1; $cnt <= PRODUCTSUB_MAX; $cnt++) {
 		break;
 	}
 }
-// ¥µ¥Ö¾ğÊóÉ½¼¨¡¦ÈóÉ½¼¨¤Î¥Á¥§¥Ã¥¯¤Ë»ÈÍÑ¤¹¤ë¡£
+// ã‚µãƒ–æƒ…å ±è¡¨ç¤ºãƒ»éè¡¨ç¤ºã®ãƒã‚§ãƒƒã‚¯ã«ä½¿ç”¨ã™ã‚‹ã€‚
 $objPage->sub_find = $sub_find;
 
 $objView->assignobj($objPage);
 $objView->display(MAIN_FRAME);
 //-----------------------------------------------------------------------------------------------------------------------------
 
-/* ¤ª¤¹¤¹¤á¾¦ÉÊ¤ÎÆÉ¤ß¹ş¤ß */
+/* ãŠã™ã™ã‚å•†å“ã®èª­ã¿è¾¼ã¿ */
 function lfGetRecommendProducts() {
 	global $objPage;
 	$objQuery = new SC_Query();
@@ -219,9 +219,9 @@ function lfGetRecommendProducts() {
 	return $arrRecommend;
 }
 
-/* ¤ª¤¹¤¹¤á¾¦ÉÊ¤ÎÅĞÏ¿ */
+/* ãŠã™ã™ã‚å•†å“ã®ç™»éŒ² */
 function lfInsertRecommendProducts($objQuery, $arrList, $product_id) {
-	// °ìÃ¶¥ª¥¹¥¹¥á¾¦ÉÊ¤ò¤¹¤Ù¤Æºï½ü¤¹¤ë
+	// ä¸€æ—¦ã‚ªã‚¹ã‚¹ãƒ¡å•†å“ã‚’ã™ã¹ã¦å‰Šé™¤ã™ã‚‹
 	$objQuery->delete("dtb_recommend_products", "product_id = ?", array($product_id));
 	$sqlval['product_id'] = $product_id;
 	$rank = RECOMMEND_PRODUCT_MAX;
@@ -242,7 +242,7 @@ function lfInsertRecommendProducts($objQuery, $arrList, $product_id) {
 	}
 }
 
-/* ÅĞÏ¿ºÑ¤ß¤ª¤¹¤¹¤á¾¦ÉÊ¤ÎÆÉ¤ß¹ş¤ß */
+/* ç™»éŒ²æ¸ˆã¿ãŠã™ã™ã‚å•†å“ã®èª­ã¿è¾¼ã¿ */
 function lfPreGetRecommendProducts($product_id) {
 	$objQuery = new SC_Query();
 	$objQuery->setorder("rank DESC");
@@ -260,14 +260,14 @@ function lfPreGetRecommendProducts($product_id) {
 	return $arrRecommend;
 }
 
-/* ¾¦ÉÊ¾ğÊó¤ÎÆÉ¤ß¹ş¤ß */
+/* å•†å“æƒ…å ±ã®èª­ã¿è¾¼ã¿ */
 function lfGetProduct($product_id) {
 	$objQuery = new SC_Query();
 	$col = "*";
 	$table = "vw_products_nonclass AS noncls ";
 	$where = "product_id = ?";
 	
-	// view¤â¹Ê¹ş¤ß(mysqlÂĞ±ş)
+	// viewã‚‚çµè¾¼ã¿(mysqlå¯¾å¿œ)
 	sfViewWhere("&&noncls_where&&", $where, array($product_id));
 	
 	$arrRet = $objQuery->select($col, $table, $where, array($product_id));
@@ -275,12 +275,12 @@ function lfGetProduct($product_id) {
 	return $arrRet[0];
 }
 
-/* ¾¦ÉÊÅĞÏ¿¥Ú¡¼¥¸É½¼¨ÍÑ */
+/* å•†å“ç™»éŒ²ãƒšãƒ¼ã‚¸è¡¨ç¤ºç”¨ */
 function lfProductPage() {
 	global $objPage;
 	global $objUpFile;
 	
-	// ¥«¥Æ¥´¥ê¤ÎÆÉ¹ş
+	// ã‚«ãƒ†ã‚´ãƒªã®èª­è¾¼
 	list($objPage->arrCatVal, $objPage->arrCatOut) = sfGetLevelCatList(false);
 
 	if($objPage->arrForm['status'] == "") {
@@ -288,17 +288,17 @@ function lfProductPage() {
 	}
 	
 	if(!is_array($objPage->arrForm['product_flag'])) {
-		// ¾¦ÉÊ¥¹¥Æ¡¼¥¿¥¹¤ÎÊ¬³äÆÉ¹ş
+		// å•†å“ã‚¹ãƒ†ãƒ¼ã‚¿ã‚¹ã®åˆ†å‰²èª­è¾¼
 		$objPage->arrForm['product_flag'] = sfSplitCheckBoxes($objPage->arrForm['product_flag']);
 	}
 	
-	// HIDDENÍÑ¤ËÇÛÎó¤òÅÏ¤¹¡£
+	// HIDDENç”¨ã«é…åˆ—ã‚’æ¸¡ã™ã€‚
 	$objPage->arrHidden = array_merge((array)$objPage->arrHidden, (array)$objUpFile->getHiddenFileList());
-	// FormÍÑÇÛÎó¤òÅÏ¤¹¡£
+	// Formç”¨é…åˆ—ã‚’æ¸¡ã™ã€‚
 	$objPage->arrFile = $objUpFile->getFormFileList(IMAGE_TEMP_URL, IMAGE_SAVE_URL);
 	
 	
-	// ¥¢¥ó¥«¡¼¤òÀßÄê
+	// ã‚¢ãƒ³ã‚«ãƒ¼ã‚’è¨­å®š
 	if($_POST['image_key'] != ""){
 		$anchor_hash = "location.hash='#" . $_POST['image_key'] . "'";
 	}elseif($_POST['anchor_key'] != ""){
@@ -308,28 +308,28 @@ function lfProductPage() {
 	$objPage->tpl_onload = "fnCheckSaleLimit('" . DISABLED_RGB . "'); fnCheckStockLimit('" . DISABLED_RGB . "'); " . $anchor_hash;
 }
 
-/* ¥Õ¥¡¥¤¥ë¾ğÊó¤Î½é´ü²½ */
+/* ãƒ•ã‚¡ã‚¤ãƒ«æƒ…å ±ã®åˆæœŸåŒ– */
 function lfInitFile() {
 	global $objUpFile;
-	$objUpFile->addFile("°ìÍ÷-¥á¥¤¥ó²èÁü", 'main_list_image', array('jpg', 'gif', 'png'),IMAGE_SIZE, true, SMALL_IMAGE_WIDTH, SMALL_IMAGE_HEIGHT);
-	$objUpFile->addFile("¾ÜºÙ-¥á¥¤¥ó²èÁü", 'main_image', array('jpg', 'gif', 'png'), IMAGE_SIZE, true, NORMAL_IMAGE_WIDTH, NORMAL_IMAGE_HEIGHT);
-	$objUpFile->addFile("¾ÜºÙ-¥á¥¤¥ó³ÈÂç²èÁü", 'main_large_image', array('jpg', 'gif', 'png'), IMAGE_SIZE, false, LARGE_IMAGE_WIDTH, LARGE_IMAGE_HEIGHT);
+	$objUpFile->addFile("ä¸€è¦§-ãƒ¡ã‚¤ãƒ³ç”»åƒ", 'main_list_image', array('jpg', 'gif', 'png'),IMAGE_SIZE, true, SMALL_IMAGE_WIDTH, SMALL_IMAGE_HEIGHT);
+	$objUpFile->addFile("è©³ç´°-ãƒ¡ã‚¤ãƒ³ç”»åƒ", 'main_image', array('jpg', 'gif', 'png'), IMAGE_SIZE, true, NORMAL_IMAGE_WIDTH, NORMAL_IMAGE_HEIGHT);
+	$objUpFile->addFile("è©³ç´°-ãƒ¡ã‚¤ãƒ³æ‹¡å¤§ç”»åƒ", 'main_large_image', array('jpg', 'gif', 'png'), IMAGE_SIZE, false, LARGE_IMAGE_WIDTH, LARGE_IMAGE_HEIGHT);
 	for ($cnt = 1; $cnt <= PRODUCTSUB_MAX; $cnt++) {
-		$objUpFile->addFile("¾ÜºÙ-¥µ¥Ö²èÁü$cnt", "sub_image$cnt", array('jpg', 'gif', 'png'), IMAGE_SIZE, false, NORMAL_SUBIMAGE_WIDTH, NORMAL_SUBIMAGE_HEIGHT);	
-		$objUpFile->addFile("¾ÜºÙ-¥µ¥Ö³ÈÂç²èÁü$cnt", "sub_large_image$cnt", array('jpg', 'gif', 'png'), IMAGE_SIZE, false, LARGE_SUBIMAGE_WIDTH, LARGE_SUBIMAGE_HEIGHT);
+		$objUpFile->addFile("è©³ç´°-ã‚µãƒ–ç”»åƒ$cnt", "sub_image$cnt", array('jpg', 'gif', 'png'), IMAGE_SIZE, false, NORMAL_SUBIMAGE_WIDTH, NORMAL_SUBIMAGE_HEIGHT);	
+		$objUpFile->addFile("è©³ç´°-ã‚µãƒ–æ‹¡å¤§ç”»åƒ$cnt", "sub_large_image$cnt", array('jpg', 'gif', 'png'), IMAGE_SIZE, false, LARGE_SUBIMAGE_WIDTH, LARGE_SUBIMAGE_HEIGHT);
 	}
-	$objUpFile->addFile("¾¦ÉÊÈæ³Ó²èÁü", 'file1', array('jpg', 'gif', 'png'), IMAGE_SIZE, false, OTHER_IMAGE1_WIDTH, OTHER_IMAGE1_HEIGHT);
-	$objUpFile->addFile("¾¦ÉÊ¾ÜºÙ¥Õ¥¡¥¤¥ë", 'file2', array('pdf'), PDF_SIZE, false, 0, 0, false);
+	$objUpFile->addFile("å•†å“æ¯”è¼ƒç”»åƒ", 'file1', array('jpg', 'gif', 'png'), IMAGE_SIZE, false, OTHER_IMAGE1_WIDTH, OTHER_IMAGE1_HEIGHT);
+	$objUpFile->addFile("å•†å“è©³ç´°ãƒ•ã‚¡ã‚¤ãƒ«", 'file2', array('pdf'), PDF_SIZE, false, 0, 0, false);
 }
 
-/* ¾¦ÉÊ¤ÎÅĞÏ¿ */
+/* å•†å“ã®ç™»éŒ² */
 function lfRegistProduct($arrList) {
 	global $objUpFile;
 	global $arrSTATUS;
 	$objQuery = new SC_Query();
 	$objQuery->begin();
 	
-	// INSERT¤¹¤ëÃÍ¤òºîÀ®¤¹¤ë¡£
+	// INSERTã™ã‚‹å€¤ã‚’ä½œæˆã™ã‚‹ã€‚
 	$sqlval['name'] = $arrList['name'];
 	$sqlval['category_id'] = $arrList['category_id'];
 	$sqlval['status'] = $arrList['status'];
@@ -363,9 +363,9 @@ function lfRegistProduct($arrList) {
 			$product_id = $objQuery->nextval("dtb_products", "product_id");
 			$sqlval['product_id'] = $product_id;
 		}
-		// ¥«¥Æ¥´¥êÆâ¤ÇºÇÂç¤Î¥é¥ó¥¯¤ò³ä¤êÅö¤Æ¤ë
+		// ã‚«ãƒ†ã‚´ãƒªå†…ã§æœ€å¤§ã®ãƒ©ãƒ³ã‚¯ã‚’å‰²ã‚Šå½“ã¦ã‚‹
 		$sqlval['rank'] = $objQuery->max("dtb_products", "rank", "category_id = ?", array($arrList['category_id'])) + 1;
-		// INSERT¤Î¼Â¹Ô
+		// INSERTã®å®Ÿè¡Œ
 		$sqlval['create_date'] = "Now()";
 		$objQuery->insert("dtb_products", $sqlval);
 
@@ -374,15 +374,15 @@ function lfRegistProduct($arrList) {
 			$sqlval['product_id'] = $product_id;
 		}
 		
-		// ¥³¥Ô¡¼¾¦ÉÊ¤Î¾ì¹ç¤Ë¤Ïµ¬³Ê¤â¥³¥Ô¡¼¤¹¤ë
+		// ã‚³ãƒ”ãƒ¼å•†å“ã®å ´åˆã«ã¯è¦æ ¼ã‚‚ã‚³ãƒ”ãƒ¼ã™ã‚‹
 		if($_POST["copy_product_id"] != "" and sfIsInt($_POST["copy_product_id"])){
-			// dtb_products_class ¤Î¥«¥é¥à¤ò¼èÆÀ
+			// dtb_products_class ã®ã‚«ãƒ©ãƒ ã‚’å–å¾—
 			$arrColList = sfGetColumnList("dtb_products_class", $objQuery);
 			$arrColList_tmp = array_flip($arrColList);
 
-			// ¥³¥Ô¡¼¤·¤Ê¤¤Îó
-			unset($arrColList[$arrColList_tmp["product_class_id"]]);	 //µ¬³ÊID
-			unset($arrColList[$arrColList_tmp["product_id"]]);			 //¾¦ÉÊID
+			// ã‚³ãƒ”ãƒ¼ã—ãªã„åˆ—
+			unset($arrColList[$arrColList_tmp["product_class_id"]]);	 //è¦æ ¼ID
+			unset($arrColList[$arrColList_tmp["product_id"]]);			 //å•†å“ID
 
 			$col = sfGetCommaList($arrColList);
 
@@ -392,23 +392,23 @@ function lfRegistProduct($arrList) {
 
 	} else {
 		$product_id = $arrList['product_id'];
-		// ºï½üÍ×µá¤Î¤¢¤Ã¤¿´ûÂ¸¥Õ¥¡¥¤¥ë¤Îºï½ü
+		// å‰Šé™¤è¦æ±‚ã®ã‚ã£ãŸæ—¢å­˜ãƒ•ã‚¡ã‚¤ãƒ«ã®å‰Šé™¤
 		$arrRet = lfGetProduct($arrList['product_id']);
 		$objUpFile->deleteDBFile($arrRet);
 		
-		// ¥«¥Æ¥´¥êÆâ¥é¥ó¥¯¤ÎÄ´À°½èÍı
+		// ã‚«ãƒ†ã‚´ãƒªå†…ãƒ©ãƒ³ã‚¯ã®èª¿æ•´å‡¦ç†
 		$old_catid = $objQuery->get("dtb_products", "category_id", "product_id = ?", array($arrList['product_id']));
 		sfMoveCatRank($objQuery, "dtb_products", "product_id", "category_id", $old_catid, $arrList['category_id'], $arrList['product_id']);
 		
-		// UPDATE¤Î¼Â¹Ô
+		// UPDATEã®å®Ÿè¡Œ
 		$where = "product_id = ?";
 		$objQuery->update("dtb_products", $sqlval, $where, array($arrList['product_id']));
 	}
 	
-	// µ¬³ÊÅĞÏ¿
+	// è¦æ ¼ç™»éŒ²
 	sfInsertProductClass($objQuery, $arrList, $product_id);
 	
-	// ¤ª¤¹¤¹¤á¾¦ÉÊÅĞÏ¿
+	// ãŠã™ã™ã‚å•†å“ç™»éŒ²
 	lfInsertRecommendProducts($objQuery, $arrList, $product_id);
 	
 	$objQuery->commit();
@@ -416,18 +416,18 @@ function lfRegistProduct($arrList) {
 }
 
 
-/* ¼èÆÀÊ¸»úÎó¤ÎÊÑ´¹ */
+/* å–å¾—æ–‡å­—åˆ—ã®å¤‰æ› */
 function lfConvertParam($array) {
 	/*
-	 *	Ê¸»úÎó¤ÎÊÑ´¹
-	 *	K :  ¡ÖÈ¾³Ñ(Êİ¶¸)ÊÒ²¾Ì¾¡×¤ò¡ÖÁ´³ÑÊÒ²¾Ì¾¡×¤ËÊÑ´¹
-	 *	C :  ¡ÖÁ´³Ñ¤Ò¤é²¾Ì¾¡×¤ò¡ÖÁ´³Ñ¤«¤¿²¾Ì¾¡×¤ËÊÑ´¹
-	 *	V :  ÂùÅÀÉÕ¤­¤ÎÊ¸»ú¤ò°ìÊ¸»ú¤ËÊÑ´¹¡£"K","H"¤È¶¦¤Ë»ÈÍÑ¤·¤Ş¤¹	
-	 *	n :  ¡ÖÁ´³Ñ¡×¿ô»ú¤ò¡ÖÈ¾³Ñ(Êİ¶¸)¡×¤ËÊÑ´¹
+	 *	æ–‡å­—åˆ—ã®å¤‰æ›
+	 *	K :  ã€ŒåŠè§’(ï¾Šï¾ï½¶ï½¸)ç‰‡ä»®åã€ã‚’ã€Œå…¨è§’ç‰‡ä»®åã€ã«å¤‰æ›
+	 *	C :  ã€Œå…¨è§’ã²ã‚‰ä»®åã€ã‚’ã€Œå…¨è§’ã‹ãŸä»®åã€ã«å¤‰æ›
+	 *	V :  æ¿ç‚¹ä»˜ãã®æ–‡å­—ã‚’ä¸€æ–‡å­—ã«å¤‰æ›ã€‚"K","H"ã¨å…±ã«ä½¿ç”¨ã—ã¾ã™	
+	 *	n :  ã€Œå…¨è§’ã€æ•°å­—ã‚’ã€ŒåŠè§’(ï¾Šï¾ï½¶ï½¸)ã€ã«å¤‰æ›
 	 */
-	// ¿ÍÊª´ğËÜ¾ğÊó
+	// äººç‰©åŸºæœ¬æƒ…å ±
 	
-	// ¥¹¥İ¥Ã¥È¾¦ÉÊ
+	// ã‚¹ãƒãƒƒãƒˆå•†å“
 	$arrConvList['name'] = "KVa";
 	$arrConvList['main_list_comment'] = "KVa";
 	$arrConvList['main_comment'] = "KVa";
@@ -438,10 +438,10 @@ function lfConvertParam($array) {
 	$arrConvList['point_rate'] = "n";
 	$arrConvList['product_code'] = "KVna";
 	$arrConvList['comment1'] = "a";
-	//¥Û¥Í¥±¡¼¥­:Á÷ÎÁ¤Î»ØÄê¤Ê¤·
+	//ãƒ›ãƒã‚±ãƒ¼ã‚­:é€æ–™ã®æŒ‡å®šãªã—
 	$arrConvList['deliv_fee'] = "n";
 	
-	// ¾ÜºÙ-¥µ¥Ö
+	// è©³ç´°-ã‚µãƒ–
 	for ($cnt = 1; $cnt <= PRODUCTSUB_MAX; $cnt++) {
 		$arrConvList["sub_title$cnt"] = "KVa";
 	}
@@ -449,14 +449,14 @@ function lfConvertParam($array) {
 		$arrConvList["sub_comment$cnt"] = "KVa";
 	}
 	
-	// ¤ª¤¹¤¹¤á¾¦ÉÊ
+	// ãŠã™ã™ã‚å•†å“
 	for ($cnt = 1; $cnt <= RECOMMEND_PRODUCT_MAX; $cnt++) {
 		$arrConvList["recommend_comment$cnt"] = "KVa";
 	}
 
-	// Ê¸»úÊÑ´¹
+	// æ–‡å­—å¤‰æ›
 	foreach ($arrConvList as $key => $val) {
-		// POST¤µ¤ì¤Æ¤­¤¿ÃÍ¤Î¤ßÊÑ´¹¤¹¤ë¡£
+		// POSTã•ã‚Œã¦ããŸå€¤ã®ã¿å¤‰æ›ã™ã‚‹ã€‚
 		if(isset($array[$key])) {
 			$array[$key] = mb_convert_kana($array[$key] ,$val);
 		}
@@ -468,70 +468,70 @@ function lfConvertParam($array) {
 	return $array;
 }
 
-// ÆşÎÏ¥¨¥é¡¼¥Á¥§¥Ã¥¯
+// å…¥åŠ›ã‚¨ãƒ©ãƒ¼ãƒã‚§ãƒƒã‚¯
 function lfErrorCheck($array) {
 	global $objPage;
 	global $arrAllowedTag;
 	
 	$objErr = new SC_CheckError($array);
-	$objErr->doFunc(array("¾¦ÉÊÌ¾", "name", STEXT_LEN), array("EXIST_CHECK", "SPTAB_CHECK", "MAX_LENGTH_CHECK"));
-	$objErr->doFunc(array("¾¦ÉÊ¥«¥Æ¥´¥ê", "category_id", STEXT_LEN), array("EXIST_CHECK", "SPTAB_CHECK", "MAX_LENGTH_CHECK"));
-	$objErr->doFunc(array("°ìÍ÷-¥á¥¤¥ó¥³¥á¥ó¥È", "main_list_comment", MTEXT_LEN), array("EXIST_CHECK", "SPTAB_CHECK", "MAX_LENGTH_CHECK"));
-	$objErr->doFunc(array("¾ÜºÙ-¥á¥¤¥ó¥³¥á¥ó¥È", "main_comment", LLTEXT_LEN), array("EXIST_CHECK", "SPTAB_CHECK", "MAX_LENGTH_CHECK"));
-	$objErr->doFunc(array("¾ÜºÙ-¥á¥¤¥ó¥³¥á¥ó¥È", "main_comment", $arrAllowedTag), array("HTML_TAG_CHECK"));
-	$objErr->doFunc(array("¥İ¥¤¥ó¥ÈÉÕÍ¿Î¨", "point_rate", PERCENTAGE_LEN), array("EXIST_CHECK", "NUM_CHECK", "SPTAB_CHECK", "MAX_LENGTH_CHECK"));
-	$objErr->doFunc(array("¾¦ÉÊÁ÷ÎÁ", "deliv_fee", PRICE_LEN), array("NUM_CHECK", "SPTAB_CHECK", "MAX_LENGTH_CHECK"));
-	$objErr->doFunc(array("¸¡º÷¥ï¡¼¥É", "comment3", LLTEXT_LEN), array("SPTAB_CHECK", "MAX_LENGTH_CHECK"));
-	$objErr->doFunc(array("¥á¡¼¥«¡¼URL", "comment1", URL_LEN), array("SPTAB_CHECK", "URL_CHECK", "MAX_LENGTH_CHECK"));
-	$objErr->doFunc(array("È¯Á÷ÆüÌÜ°Â", "deliv_date_id", INT_LEN), array("NUM_CHECK"));
+	$objErr->doFunc(array("å•†å“å", "name", STEXT_LEN), array("EXIST_CHECK", "SPTAB_CHECK", "MAX_LENGTH_CHECK"));
+	$objErr->doFunc(array("å•†å“ã‚«ãƒ†ã‚´ãƒª", "category_id", STEXT_LEN), array("EXIST_CHECK", "SPTAB_CHECK", "MAX_LENGTH_CHECK"));
+	$objErr->doFunc(array("ä¸€è¦§-ãƒ¡ã‚¤ãƒ³ã‚³ãƒ¡ãƒ³ãƒˆ", "main_list_comment", MTEXT_LEN), array("EXIST_CHECK", "SPTAB_CHECK", "MAX_LENGTH_CHECK"));
+	$objErr->doFunc(array("è©³ç´°-ãƒ¡ã‚¤ãƒ³ã‚³ãƒ¡ãƒ³ãƒˆ", "main_comment", LLTEXT_LEN), array("EXIST_CHECK", "SPTAB_CHECK", "MAX_LENGTH_CHECK"));
+	$objErr->doFunc(array("è©³ç´°-ãƒ¡ã‚¤ãƒ³ã‚³ãƒ¡ãƒ³ãƒˆ", "main_comment", $arrAllowedTag), array("HTML_TAG_CHECK"));
+	$objErr->doFunc(array("ãƒã‚¤ãƒ³ãƒˆä»˜ä¸ç‡", "point_rate", PERCENTAGE_LEN), array("EXIST_CHECK", "NUM_CHECK", "SPTAB_CHECK", "MAX_LENGTH_CHECK"));
+	$objErr->doFunc(array("å•†å“é€æ–™", "deliv_fee", PRICE_LEN), array("NUM_CHECK", "SPTAB_CHECK", "MAX_LENGTH_CHECK"));
+	$objErr->doFunc(array("æ¤œç´¢ãƒ¯ãƒ¼ãƒ‰", "comment3", LLTEXT_LEN), array("SPTAB_CHECK", "MAX_LENGTH_CHECK"));
+	$objErr->doFunc(array("ãƒ¡ãƒ¼ã‚«ãƒ¼URL", "comment1", URL_LEN), array("SPTAB_CHECK", "URL_CHECK", "MAX_LENGTH_CHECK"));
+	$objErr->doFunc(array("ç™ºé€æ—¥ç›®å®‰", "deliv_date_id", INT_LEN), array("NUM_CHECK"));
 	
 	if($objPage->tpl_nonclass) {
-		$objErr->doFunc(array("¾¦ÉÊ¥³¡¼¥É", "product_code", STEXT_LEN), array("EXIST_CHECK", "SPTAB_CHECK","MAX_LENGTH_CHECK","MAX_LENGTH_CHECK"));
-		$objErr->doFunc(array("ÄÌ¾ï²Á³Ê", "price01", PRICE_LEN), array("ZERO_CHECK", "SPTAB_CHECK", "NUM_CHECK", "MAX_LENGTH_CHECK"));
-		$objErr->doFunc(array("¾¦ÉÊ²Á³Ê", "price02", PRICE_LEN), array("EXIST_CHECK", "NUM_CHECK", "ZERO_CHECK", "SPTAB_CHECK", "MAX_LENGTH_CHECK"));
+		$objErr->doFunc(array("å•†å“ã‚³ãƒ¼ãƒ‰", "product_code", STEXT_LEN), array("EXIST_CHECK", "SPTAB_CHECK","MAX_LENGTH_CHECK","MAX_LENGTH_CHECK"));
+		$objErr->doFunc(array("é€šå¸¸ä¾¡æ ¼", "price01", PRICE_LEN), array("ZERO_CHECK", "SPTAB_CHECK", "NUM_CHECK", "MAX_LENGTH_CHECK"));
+		$objErr->doFunc(array("å•†å“ä¾¡æ ¼", "price02", PRICE_LEN), array("EXIST_CHECK", "NUM_CHECK", "ZERO_CHECK", "SPTAB_CHECK", "MAX_LENGTH_CHECK"));
 			
 		if($array['stock_unlimited'] != "1") {
-			$objErr->doFunc(array("ºß¸Ë¿ô", "stock", AMOUNT_LEN), array("EXIST_CHECK", "SPTAB_CHECK", "NUM_CHECK", "MAX_LENGTH_CHECK"));
+			$objErr->doFunc(array("åœ¨åº«æ•°", "stock", AMOUNT_LEN), array("EXIST_CHECK", "SPTAB_CHECK", "NUM_CHECK", "MAX_LENGTH_CHECK"));
 		}
 	}
 	
 	if($array['sale_unlimited'] != "1") {	
-		$objErr->doFunc(array("¹ØÆşÀ©¸Â", "sale_limit", AMOUNT_LEN), array("EXIST_CHECK", "SPTAB_CHECK", "ZERO_CHECK", "NUM_CHECK", "MAX_LENGTH_CHECK"));
+		$objErr->doFunc(array("è³¼å…¥åˆ¶é™", "sale_limit", AMOUNT_LEN), array("EXIST_CHECK", "SPTAB_CHECK", "ZERO_CHECK", "NUM_CHECK", "MAX_LENGTH_CHECK"));
 	}
 	
 	if(isset($objErr->arrErr['category_id'])) {
-		// ¼«Æ°ÁªÂò¤òËÉ¤°¤¿¤á¤Ë¥À¥ß¡¼Ê¸»ú¤òÆş¤ì¤Æ¤ª¤¯
+		// è‡ªå‹•é¸æŠã‚’é˜²ããŸã‚ã«ãƒ€ãƒŸãƒ¼æ–‡å­—ã‚’å…¥ã‚Œã¦ãŠã
 		$objPage->arrForm['category_id'] = "#";
 	}
 	
 	for ($cnt = 1; $cnt <= PRODUCTSUB_MAX; $cnt++) {
-		$objErr->doFunc(array("¾ÜºÙ-¥µ¥Ö¥¿¥¤¥È¥ë$cnt", "sub_title$cnt", STEXT_LEN), array("SPTAB_CHECK", "MAX_LENGTH_CHECK"));
-		$objErr->doFunc(array("¾ÜºÙ-¥µ¥Ö¥³¥á¥ó¥È$cnt", "sub_comment$cnt", LLTEXT_LEN), array("SPTAB_CHECK", "MAX_LENGTH_CHECK"));
-		$objErr->doFunc(array("¾ÜºÙ-¥µ¥Ö¥³¥á¥ó¥È$cnt", "sub_comment$cnt", $arrAllowedTag),  array("HTML_TAG_CHECK"));	
+		$objErr->doFunc(array("è©³ç´°-ã‚µãƒ–ã‚¿ã‚¤ãƒˆãƒ«$cnt", "sub_title$cnt", STEXT_LEN), array("SPTAB_CHECK", "MAX_LENGTH_CHECK"));
+		$objErr->doFunc(array("è©³ç´°-ã‚µãƒ–ã‚³ãƒ¡ãƒ³ãƒˆ$cnt", "sub_comment$cnt", LLTEXT_LEN), array("SPTAB_CHECK", "MAX_LENGTH_CHECK"));
+		$objErr->doFunc(array("è©³ç´°-ã‚µãƒ–ã‚³ãƒ¡ãƒ³ãƒˆ$cnt", "sub_comment$cnt", $arrAllowedTag),  array("HTML_TAG_CHECK"));	
 	}
 	
 	for ($cnt = 1; $cnt <= RECOMMEND_PRODUCT_MAX; $cnt++) {
 		if($_POST["recommend_id$cnt"] != "" && $_POST["recommend_delete$cnt"] != 1) {
-			$objErr->doFunc(array("¤ª¤¹¤¹¤á¾¦ÉÊ¥³¥á¥ó¥È$cnt", "recommend_comment$cnt", LTEXT_LEN), array("SPTAB_CHECK", "MAX_LENGTH_CHECK"));
+			$objErr->doFunc(array("ãŠã™ã™ã‚å•†å“ã‚³ãƒ¡ãƒ³ãƒˆ$cnt", "recommend_comment$cnt", LTEXT_LEN), array("SPTAB_CHECK", "MAX_LENGTH_CHECK"));
 		}
 	}
 	
 	return $objErr->arrErr;
 }
 
-/* ³ÎÇ§¥Ú¡¼¥¸É½¼¨ÍÑ */
+/* ç¢ºèªãƒšãƒ¼ã‚¸è¡¨ç¤ºç”¨ */
 function lfProductConfirmPage() {
 	global $objPage;
 	global $objUpFile;
 	$objPage->tpl_mainpage = 'products/confirm.tpl';
 	$objPage->arrForm['mode'] = 'complete';
-	// ¥«¥Æ¥´¥ê¤ÎÆÉ¹ş
+	// ã‚«ãƒ†ã‚´ãƒªã®èª­è¾¼
 	$objPage->arrCatList = sfGetCategoryList();
-	// FormÍÑÇÛÎó¤òÅÏ¤¹¡£
+	// Formç”¨é…åˆ—ã‚’æ¸¡ã™ã€‚
 	$objPage->arrFile = $objUpFile->getFormFileList(IMAGE_TEMP_URL, IMAGE_SAVE_URL);
 }
 
-/* µ¬³Ê¤¢¤êÈ½ÄêÍÑ(µ¬³Ê¤¬ÅĞÏ¿¤µ¤ì¤Æ¤¤¤Ê¤¤¾ì¹ç:TRUE) */
+/* è¦æ ¼ã‚ã‚Šåˆ¤å®šç”¨(è¦æ ¼ãŒç™»éŒ²ã•ã‚Œã¦ã„ãªã„å ´åˆ:TRUE) */
 function lfCheckNonClass($product_id) {
 	if(sfIsInt($product_id)) {
 		$objQuery  = new SC_Query();
@@ -544,20 +544,20 @@ function lfCheckNonClass($product_id) {
 	return true;
 }
 
-// ½Ì¾®¤·¤¿²èÁü¤ò¥»¥Ã¥È¤¹¤ë
+// ç¸®å°ã—ãŸç”»åƒã‚’ã‚»ãƒƒãƒˆã™ã‚‹
 function lfSetScaleImage(){
 	
 	$subno = str_replace("sub_large_image", "", $_POST['image_key']);
 	switch ($_POST['image_key']){
 		case "main_large_image":
-			// ¾ÜºÙ¥á¥¤¥ó²èÁü
+			// è©³ç´°ãƒ¡ã‚¤ãƒ³ç”»åƒ
 			lfMakeScaleImage($_POST['image_key'], "main_image");
 		case "main_image":
-			// °ìÍ÷¥á¥¤¥ó²èÁü
+			// ä¸€è¦§ãƒ¡ã‚¤ãƒ³ç”»åƒ
 			lfMakeScaleImage($_POST['image_key'], "main_list_image");
 			break;
 		case "sub_large_image" . $subno:
-			// ¥µ¥Ö¥á¥¤¥ó²èÁü
+			// ã‚µãƒ–ãƒ¡ã‚¤ãƒ³ç”»åƒ
 			lfMakeScaleImage($_POST['image_key'], "sub_image" . $subno);
 			break;
 		default:
@@ -565,7 +565,7 @@ function lfSetScaleImage(){
 	}
 }
 
-// ½Ì¾®²èÁüÀ¸À®
+// ç¸®å°ç”»åƒç”Ÿæˆ
 function lfMakeScaleImage($from_key, $to_key, $forced = false){
 	global $objUpFile;
 	$arrImageKey = array_flip($objUpFile->keyname);
@@ -579,10 +579,10 @@ function lfMakeScaleImage($from_key, $to_key, $forced = false){
 	}
 	
 	if(file_exists($from_path)){
-		// ¸µ²èÁü¥µ¥¤¥º¤ò¼èÆÀ
+		// å…ƒç”»åƒã‚µã‚¤ã‚ºã‚’å–å¾—
 		list($from_w, $from_h) = getimagesize($from_path);
 		
-		// À¸À®Àè¤Î²èÁü¥µ¥¤¥º¤ò¼èÆÀ
+		// ç”Ÿæˆå…ˆã®ç”»åƒã‚µã‚¤ã‚ºã‚’å–å¾—
 		$to_w = $objUpFile->width[$arrImageKey[$to_key]];
 		$to_h = $objUpFile->height[$arrImageKey[$to_key]];
 		

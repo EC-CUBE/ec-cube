@@ -5,19 +5,19 @@
  *
  * http://www.lockon.co.jp/
  * 
- * ¶õ¥á¡¼¥ë¼õ¤±ÉÕ¤±¥¢¥É¥ì¥¹¤Î¥³¥Ş¥ó¥ÉÌ¾¤È¥È¡¼¥¯¥ó¤Î´Ö¤Î¶èÀÚ¤êÊ¸»ú
+ * ç©ºãƒ¡ãƒ¼ãƒ«å—ã‘ä»˜ã‘ã‚¢ãƒ‰ãƒ¬ã‚¹ã®ã‚³ãƒãƒ³ãƒ‰åã¨ãƒˆãƒ¼ã‚¯ãƒ³ã®é–“ã®åŒºåˆ‡ã‚Šæ–‡å­—
  */
 define('MOBILE_KARA_MAIL_EXTENSION_DELIMITER', '_');
 
 /**
- * ¥â¥Ğ¥¤¥ë¥µ¥¤¥È¤Î¶õ¥á¡¼¥ë¤ò°·¤¦¥¯¥é¥¹
+ * ãƒ¢ãƒã‚¤ãƒ«ã‚µã‚¤ãƒˆã®ç©ºãƒ¡ãƒ¼ãƒ«ã‚’æ‰±ã†ã‚¯ãƒ©ã‚¹
  */
 class GC_MobileKaraMail {
 	/**
-	 * ´Ä¶­ÊÑ¿ô¤«¤é MTA ¤òÈ½ÊÌ¤·¡¢ÂĞ±ş¤¹¤ë GC_MobileKaraMail ¤Ş¤¿¤Ï¤½¤Î¥µ¥Ö¥¯¥é¥¹
-	 * ¤Î¥¤¥ó¥¹¥¿¥ó¥¹¤òºîÀ®¤¹¤ë¡£
+	 * ç’°å¢ƒå¤‰æ•°ã‹ã‚‰ MTA ã‚’åˆ¤åˆ¥ã—ã€å¯¾å¿œã™ã‚‹ GC_MobileKaraMail ã¾ãŸã¯ãã®ã‚µãƒ–ã‚¯ãƒ©ã‚¹
+	 * ã®ã‚¤ãƒ³ã‚¹ã‚¿ãƒ³ã‚¹ã‚’ä½œæˆã™ã‚‹ã€‚
 	 *
-	 * @return object GC_MobileKaraMail ¤Ş¤¿¤Ï¤½¤Î¥µ¥Ö¥¯¥é¥¹¤Î¥¤¥ó¥¹¥¿¥ó¥¹¤òÊÖ¤¹¡£
+	 * @return object GC_MobileKaraMail ã¾ãŸã¯ãã®ã‚µãƒ–ã‚¯ãƒ©ã‚¹ã®ã‚¤ãƒ³ã‚¹ã‚¿ãƒ³ã‚¹ã‚’è¿”ã™ã€‚
 	 */
 	function &factory() {
 		if (isset($_ENV['EXTENSION'])) {
@@ -32,7 +32,7 @@ class GC_MobileKaraMail {
 	}
 
 	/**
-	 * É¸½àÆşÎÏ¤«¤é¥á¡¼¥ë¤òÆÉ¤ß¹ş¤ß¡¢É¬Í×¤Ê¾ğÊó¤ò¼èÆÀ¤¹¤ë¡£
+	 * æ¨™æº–å…¥åŠ›ã‹ã‚‰ãƒ¡ãƒ¼ãƒ«ã‚’èª­ã¿è¾¼ã¿ã€å¿…è¦ãªæƒ…å ±ã‚’å–å¾—ã™ã‚‹ã€‚
 	 *
 	 * @return void
 	 */
@@ -45,7 +45,7 @@ class GC_MobileKaraMail {
 
 		$fp = fopen('php://stdin', 'r');
 
-		// From ¹Ô¤ò²òÀÏ¤¹¤ë¡£
+		// From è¡Œã‚’è§£æã™ã‚‹ã€‚
 		$from_line = rtrim(fgets($fp));
 		if (preg_match('/^From\\s+"?([^\\s"@]+)"?@([^\\s@]+)/', $from_line, $matches)) {
 			$this->sender = $matches[1] . '@' . $matches[2];
@@ -54,7 +54,7 @@ class GC_MobileKaraMail {
 			$this->sender = null;
 		}
 
-		// »Ä¤ê¤Î¥Ø¥Ã¥À¡¼¤ò²òÀÏ¤¹¤ë¡£
+		// æ®‹ã‚Šã®ãƒ˜ãƒƒãƒ€ãƒ¼ã‚’è§£æã™ã‚‹ã€‚
 		$data = '';
 		while (!feof($fp)) {
 			$data .= fgets($fp);
@@ -65,7 +65,7 @@ class GC_MobileKaraMail {
 		$structure = Mail_mimeDecode::decode(array('input' => $data));
 		$this->recipient = @$structure->headers['to'];
 
-		// °¸Àè¥¢¥É¥ì¥¹¤«¤é³ÈÄ¥ÉôÊ¬¤ò¼èÆÀ¤¹¤ë¡£
+		// å®›å…ˆã‚¢ãƒ‰ãƒ¬ã‚¹ã‹ã‚‰æ‹¡å¼µéƒ¨åˆ†ã‚’å–å¾—ã™ã‚‹ã€‚
 		$pos = strpos($this->recipient, MOBILE_KARA_MAIL_ADDRESS_DELIMITER);
 		if ($pos !== false) {
 			$extension_and_domain = substr($this->recipient, $pos + 1);
@@ -84,7 +84,7 @@ class GC_MobileKaraMail {
 	}
 
 	/**
-	 * ÇÛ¿®¤¬´°Î»¤·¤¿¤³¤È¤ò¼¨¤¹½ªÎ»¥¹¥Æ¡¼¥¿¥¹¤Ç¥×¥í¥°¥é¥à¤ò½ªÎ»¤¹¤ë¡£
+	 * é…ä¿¡ãŒå®Œäº†ã—ãŸã“ã¨ã‚’ç¤ºã™çµ‚äº†ã‚¹ãƒ†ãƒ¼ã‚¿ã‚¹ã§ãƒ—ãƒ­ã‚°ãƒ©ãƒ ã‚’çµ‚äº†ã™ã‚‹ã€‚
 	 *
 	 * @return void
 	 */
@@ -93,7 +93,7 @@ class GC_MobileKaraMail {
 	}
 
 	/**
-	 * °ì»şÅª¤Ê¥¨¥é¡¼¤ò¼¨¤¹½ªÎ»¥¹¥Æ¡¼¥¿¥¹¤Ç¥×¥í¥°¥é¥à¤ò½ªÎ»¤¹¤ë¡£
+	 * ä¸€æ™‚çš„ãªã‚¨ãƒ©ãƒ¼ã‚’ç¤ºã™çµ‚äº†ã‚¹ãƒ†ãƒ¼ã‚¿ã‚¹ã§ãƒ—ãƒ­ã‚°ãƒ©ãƒ ã‚’çµ‚äº†ã™ã‚‹ã€‚
 	 *
 	 * @return void
 	 */
@@ -102,22 +102,22 @@ class GC_MobileKaraMail {
 	}
 
 	/**
-	 * Á÷¿®¼Ô¤Î¥á¡¼¥ë¥¢¥É¥ì¥¹¤ò¼èÆÀ¤¹¤ë¡£
+	 * é€ä¿¡è€…ã®ãƒ¡ãƒ¼ãƒ«ã‚¢ãƒ‰ãƒ¬ã‚¹ã‚’å–å¾—ã™ã‚‹ã€‚
 	 *
-	 * parse() ¼Â¹Ô¸å¤Ë»ÈÍÑ¤¹¤ë¤³¤È¡£
+	 * parse() å®Ÿè¡Œå¾Œã«ä½¿ç”¨ã™ã‚‹ã“ã¨ã€‚
 	 *
-	 * @return string|false Á÷¿®¼Ô¤Î¥á¡¼¥ë¥¢¥É¥ì¥¹¤òÊÖ¤¹¡£¼èÆÀ¤Ç¤­¤Ê¤«¤Ã¤¿¾ì¹ç¤Ï false ¤òÊÖ¤¹¡£
+	 * @return string|false é€ä¿¡è€…ã®ãƒ¡ãƒ¼ãƒ«ã‚¢ãƒ‰ãƒ¬ã‚¹ã‚’è¿”ã™ã€‚å–å¾—ã§ããªã‹ã£ãŸå ´åˆã¯ false ã‚’è¿”ã™ã€‚
 	 */
 	function getSender() {
 		return isset($this->sender) ? $this->sender : false;
 	}
 
 	/**
-	 * °¸Àè¤Î¥á¡¼¥ë¥¢¥É¥ì¥¹¤Î³ÈÄ¥ÉôÊ¬¤«¤é¥³¥Ş¥ó¥ÉÌ¾¤ò¼èÆÀ¤¹¤ë¡£
+	 * å®›å…ˆã®ãƒ¡ãƒ¼ãƒ«ã‚¢ãƒ‰ãƒ¬ã‚¹ã®æ‹¡å¼µéƒ¨åˆ†ã‹ã‚‰ã‚³ãƒãƒ³ãƒ‰åã‚’å–å¾—ã™ã‚‹ã€‚
 	 *
-	 * parse() ¼Â¹Ô¸å¤Ë»ÈÍÑ¤¹¤ë¤³¤È¡£
+	 * parse() å®Ÿè¡Œå¾Œã«ä½¿ç”¨ã™ã‚‹ã“ã¨ã€‚
 	 *
-	 * @return string|false ¥³¥Ş¥ó¥ÉÌ¾¤òÊÖ¤¹¡£¼èÆÀ¤Ç¤­¤Ê¤«¤Ã¤¿¾ì¹ç¤Ï false ¤òÊÖ¤¹¡£
+	 * @return string|false ã‚³ãƒãƒ³ãƒ‰åã‚’è¿”ã™ã€‚å–å¾—ã§ããªã‹ã£ãŸå ´åˆã¯ false ã‚’è¿”ã™ã€‚
 	 */
 	function getCommand() {
 		if (!isset($this->extension)) {
@@ -133,11 +133,11 @@ class GC_MobileKaraMail {
 	}
 
 	/**
-	 * °¸Àè¤Î¥á¡¼¥ë¥¢¥É¥ì¥¹¤Î³ÈÄ¥ÉôÊ¬¤«¤é¥È¡¼¥¯¥ó¤ò¼èÆÀ¤¹¤ë¡£
+	 * å®›å…ˆã®ãƒ¡ãƒ¼ãƒ«ã‚¢ãƒ‰ãƒ¬ã‚¹ã®æ‹¡å¼µéƒ¨åˆ†ã‹ã‚‰ãƒˆãƒ¼ã‚¯ãƒ³ã‚’å–å¾—ã™ã‚‹ã€‚
 	 *
-	 * parse() ¼Â¹Ô¸å¤Ë»ÈÍÑ¤¹¤ë¤³¤È¡£
+	 * parse() å®Ÿè¡Œå¾Œã«ä½¿ç”¨ã™ã‚‹ã“ã¨ã€‚
 	 *
-	 * @return string|false ¥È¡¼¥¯¥ó¤òÊÖ¤¹¡£¼èÆÀ¤Ç¤­¤Ê¤«¤Ã¤¿¾ì¹ç¤Ï false ¤òÊÖ¤¹¡£
+	 * @return string|false ãƒˆãƒ¼ã‚¯ãƒ³ã‚’è¿”ã™ã€‚å–å¾—ã§ããªã‹ã£ãŸå ´åˆã¯ false ã‚’è¿”ã™ã€‚
 	 */
 	function getToken() {
 		if (!isset($this->extension)) {
@@ -154,7 +154,7 @@ class GC_MobileKaraMail {
 }
 
 /**
- * ¥â¥Ğ¥¤¥ë¥µ¥¤¥È¤Î¶õ¥á¡¼¥ë¤ò°·¤¦¥¯¥é¥¹ (PostfixÍÑ)
+ * ãƒ¢ãƒã‚¤ãƒ«ã‚µã‚¤ãƒˆã®ç©ºãƒ¡ãƒ¼ãƒ«ã‚’æ‰±ã†ã‚¯ãƒ©ã‚¹ (Postfixç”¨)
  */
 class GC_MobileKaraMail_Postfix extends GC_MobileKaraMail {
 	/**
@@ -174,7 +174,7 @@ class GC_MobileKaraMail_Postfix extends GC_MobileKaraMail {
 }
 
 /**
- * ¥â¥Ğ¥¤¥ë¥µ¥¤¥È¤Î¶õ¥á¡¼¥ë¤ò°·¤¦¥¯¥é¥¹ (qmailÍÑ)
+ * ãƒ¢ãƒã‚¤ãƒ«ã‚µã‚¤ãƒˆã®ç©ºãƒ¡ãƒ¼ãƒ«ã‚’æ‰±ã†ã‚¯ãƒ©ã‚¹ (qmailç”¨)
  */
 class GC_MobileKaraMail_Qmail extends GC_MobileKaraMail {
 	/**
@@ -193,7 +193,7 @@ class GC_MobileKaraMail_Qmail extends GC_MobileKaraMail {
 	}
 
 	/**
-	 * °ì»şÅª¤Ê¥¨¥é¡¼¤ò¼¨¤¹½ªÎ»¥¹¥Æ¡¼¥¿¥¹¤Ç¥×¥í¥°¥é¥à¤ò½ªÎ»¤¹¤ë¡£
+	 * ä¸€æ™‚çš„ãªã‚¨ãƒ©ãƒ¼ã‚’ç¤ºã™çµ‚äº†ã‚¹ãƒ†ãƒ¼ã‚¿ã‚¹ã§ãƒ—ãƒ­ã‚°ãƒ©ãƒ ã‚’çµ‚äº†ã™ã‚‹ã€‚
 	 *
 	 * @return void
 	 */

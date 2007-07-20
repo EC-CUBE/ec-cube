@@ -16,7 +16,7 @@
 <script type="text/javascript" src="<!--{$smarty.const.URL_DIR}-->js/navi.js"></script>
 <script type="text/javascript" src="<!--{$smarty.const.URL_DIR}-->js/win_op.js"></script>
 <script type="text/javascript" src="<!--{$smarty.const.URL_DIR}-->js/site.js"></script>
-<title><!--{$arrSiteInfo.shop_name}-->/╓╙╣рмм╓ню╪╫Я╓╜╧Ч╓ъ║й╢╟н╩╔з║╪╔╦║к</title>
+<title><!--{$arrSiteInfo.shop_name}-->/Ц│┼Е╝╒Ф╖≤Ц│╝Её╟Ф⌡╦Ц│█Х╬╪Ц│©О╪┬Е╝▄Д╨├Ц┐ Ц┐╪Ц┌╦О╪┴</title>
 </head>
 
 <body bgcolor="#ffe9e6" text="#555555" link="#3a75af" vlink="#3a75af" alink="#3a75af" leftmargin="0" topmargin="0" marginwidth="0" marginheight="0" onLoad="preLoadImg('<!--{$smarty.const.URL_DIR}-->')">
@@ -32,7 +32,7 @@
 		<table width="500" border="0" cellspacing="0" cellpadding="0" summary=" ">
 			<tr><td height="15"></td></tr>
 			<tr>
-				<td><img src="<!--{$smarty.const.URL_DIR}-->img/products/review_title.jpg" width="500" height="40" alt="╓╙╣рмм╓ню╪╫Я╓╜╧Ч╓ъ"></td>
+				<td><img src="<!--{$smarty.const.URL_DIR}-->img/products/review_title.jpg" width="500" height="40" alt="Ц│┼Е╝╒Ф╖≤Ц│╝Её╟Ф⌡╦Ц│█Х╬╪Ц│©"></td>
 			</tr>
 			<tr><td height="15"></td></tr>
 			<tr>
@@ -40,9 +40,9 @@
 				<table width="490" border="0" cellspacing="0" cellpadding="0" summary=" ">
 					<tr><td height="5"></td></tr>
 					<tr>
-						<td align="center" height="200" bgcolor="#ffffff"><span class="fs14"><span class="redst">епо©╓╛╢╟н╩╓╥╓ч╓╥╓©║ё╓╢мЬмя╓╒╓Й╓╛╓х╓╕╓╢╓╤╓╓╓ч╓╥╓©║ё</span></span><br>
-						<span class="fs12">йю╪р╓к╓фепо©фБмф╓РЁнг╖╓╣╓╩╓ф╓╓╓©╓ю╓╜║╒╔ш║╪╔Ю╔з║╪╔╦╓кх©╠г╓╣╓╩╓©╓╓╓х╩в╓╓╓ч╓╧║ё<br>
-						╨ё╓╥╓п╓И╓╞╓╙бт╓а╓╞╓ю╓╣╓╓╓ч╓╩║ё</span></td>
+						<td align="center" height="200" bgcolor="#ffffff"><span class="fs14"><span class="redst">Г≥╩И▄╡Ц│▄Е╝▄Д╨├Ц│≈Ц│╬Ц│≈Ц│÷Ц─┌Ц│■Е┬╘Г■╗Ц│┌Ц┌┼Ц│▄Ц│╗Ц│├Ц│■Ц│√Ц│└Ц│╬Ц│≈Ц│÷Ц─┌</span></span><br>
+						<span class="fs12">Е╪┼Г╓╬Ц│╚Ц│╕Г≥╩И▄╡Е├┘Е╝╧Ц┌▓Г╒╨Х╙█Ц│∙Ц│⌡Ц│╕Ц│└Ц│÷Ц│═Ц│█Ц─│Ц┐⌡Ц┐╪Ц┐═Ц┐ Ц┐╪Ц┌╦Ц│╚Е▐█Ф≤═Ц│∙Ц│⌡Ц│÷Ц│└Ц│╗Ф─²Ц│└Ц│╬Ц│≥Ц─┌<br>
+						Д╩┼Ц│≈Ц│╟Ц┌┴Ц│▐Ц│┼Е╬┘Ц│║Ц│▐Ц│═Ц│∙Ц│└Ц│╬Ц│⌡Ц─┌</span></td>
 					</tr>
 					<tr><td height="5"></td></tr>
 				</table>
@@ -50,7 +50,7 @@
 			</tr>
 			<tr><td height="15"></td></tr>
 			<tr>
-				<td align="center"><a href="javascript:window.close()" onmouseover="chgImg('<!--{$smarty.const.URL_DIR}-->img/common/b_close_on.gif','b_close');" onmouseout="chgImg('<!--{$smarty.const.URL_DIR}-->img/common/b_close.gif','b_close');"><img src="<!--{$smarty.const.URL_DIR}-->img/common/b_close.gif" width="150" height="30" alt="йд╓╦╓К" border="0" name="b_close"></a></td>
+				<td align="center"><a href="javascript:window.close()" onmouseover="chgImg('<!--{$smarty.const.URL_DIR}-->img/common/b_close_on.gif','b_close');" onmouseout="chgImg('<!--{$smarty.const.URL_DIR}-->img/common/b_close.gif','b_close');"><img src="<!--{$smarty.const.URL_DIR}-->img/common/b_close.gif" width="150" height="30" alt="И√┴Ц│≤Ц┌▀" border="0" name="b_close"></a></td>
 			</tr>
 			<tr><td height="30"></td></tr>
 		</table>

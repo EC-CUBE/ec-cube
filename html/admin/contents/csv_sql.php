@@ -17,7 +17,7 @@ class LC_Page {
 		$this->tpl_subno = 'csv';
 		$this->tpl_subno_csv = 'csv_sql';
 		$this->tpl_mainno = "contents";
-		$this->tpl_subtitle = 'CSV½ĞÎÏÀßÄê';
+		$this->tpl_subtitle = 'CSVå‡ºåŠ›è¨­å®š';
 	}
 }
 
@@ -27,11 +27,11 @@ $objView = new SC_AdminView();
 $objPage->arrSubnavi = $arrSubnavi;
 $objPage->arrSubnaviName = $arrSubnaviName;
 
-// Ç§¾Ú²ÄÈİ¤ÎÈ½Äê
+// èªè¨¼å¯å¦ã®åˆ¤å®š
 $objSess = new SC_Session();
 sfIsSuccess($objSess);
 
-// SQL_ID¤Î¼èÆÀ
+// SQL_IDã®å–å¾—
 if ($_POST['sql_id'] != "") {
 	$sql_id = $_POST['sql_id'];
 }elseif($_GET['sql_id'] != ""){
@@ -43,26 +43,26 @@ if ($_POST['sql_id'] != "") {
 $mode = $_POST['mode'];
 
 switch($_POST['mode']) {
-	// ¥Ç¡¼¥¿¤ÎÅĞÏ¿
+	// ãƒ‡ãƒ¼ã‚¿ã®ç™»éŒ²
 	case "confirm":
-		// ¥¨¥é¡¼¥Á¥§¥Ã¥¯
+		// ã‚¨ãƒ©ãƒ¼ãƒã‚§ãƒƒã‚¯
 		$objPage->arrErr = lfCheckError($_POST);
 		
 		if (count($objPage->arrErr) <= 0){
-			// ¥Ç¡¼¥¿¤Î¹¹¿·
+			// ãƒ‡ãƒ¼ã‚¿ã®æ›´æ–°
 			$sql_id = lfUpdData($sql_id, $_POST);
-			// ´°Î»¥á¥Ã¥»¡¼¥¸É½¼¨
-			$objPage->tpl_onload = "alert('ÅĞÏ¿¤¬´°Î»¤·¤Ş¤·¤¿¡£');";
+			// å®Œäº†ãƒ¡ãƒƒã‚»ãƒ¼ã‚¸è¡¨ç¤º
+			$objPage->tpl_onload = "alert('ç™»éŒ²ãŒå®Œäº†ã—ã¾ã—ãŸã€‚');";
 		}
 		break;
 	
-	// ³ÎÇ§²èÌÌ
+	// ç¢ºèªç”»é¢
 	case "preview":
-		// SQLÊ¸É½¼¨
+		// SQLæ–‡è¡¨ç¤º
 		$sql = "SELECT \n" . $_POST['csv_sql'];
 		$objPage->sql = $sql;
 		
-		// ¥¨¥é¡¼É½¼¨
+		// ã‚¨ãƒ©ãƒ¼è¡¨ç¤º
 		$objErrMsg = lfCheckSQL($_POST);
 		if ($objErrMsg != "") {
 			$errMsg = $objErrMsg->message . "\n" . $objErrMsg->userinfo;
@@ -72,25 +72,25 @@ switch($_POST['mode']) {
 
 		$objPage->objView = $objView;
 		
-		// ²èÌÌ¤ÎÉ½¼¨
+		// ç”»é¢ã®è¡¨ç¤º
 		$objView->assignobj($objPage);
 		$objView->display('contents/csv_sql_view.tpl');
 		exit;
 		break;
 
-	// ¿·µ¬ºîÀ®
+	// æ–°è¦ä½œæˆ
 	case "new_page":
 		header("location: ./csv_sql.php");
 		break;
 		
-	// ¥Ç¡¼¥¿ºï½ü
+	// ãƒ‡ãƒ¼ã‚¿å‰Šé™¤
 	case "delete":
 		lfDelData($sql_id);
 		header("location: ./csv_sql.php");
 		break;
 		
 	case "csv_output":
-		// CSV½ĞÎÏ¥Ç¡¼¥¿¼èÆÀ
+		// CSVå‡ºåŠ›ãƒ‡ãƒ¼ã‚¿å–å¾—
 		$arrCsvData = lfGetSqlList(" WHERE sql_id = ?", array($_POST['csv_output_id']));
 		
 		$objQuery = new SC_Query();
@@ -108,52 +108,52 @@ switch($_POST['mode']) {
 			$header .= "\n";
 
 			$data = lfGetCSVData($arrCsvOutputData, $arrKey);
-			// CSV½ĞÎÏ
+			// CSVå‡ºåŠ›
 			sfCSVDownload($header.$data);
 			exit;
 		break;
 		}else{
-			$objPage->tpl_onload = "alert('½ĞÎÏ¥Ç¡¼¥¿¤¬¤¢¤ê¤Ş¤»¤ó¡£');";
+			$objPage->tpl_onload = "alert('å‡ºåŠ›ãƒ‡ãƒ¼ã‚¿ãŒã‚ã‚Šã¾ã›ã‚“ã€‚');";
 			$sql_id = "";
 			$_POST="";
 		}
 		break;
 }
 
-// mode ¤¬ confirm °Ê³°¤Î¤È¤­¤Ï´°Î»¥á¥Ã¥»¡¼¥¸¤Ï½ĞÎÏ¤·¤Ê¤¤
+// mode ãŒ confirm ä»¥å¤–ã®ã¨ãã¯å®Œäº†ãƒ¡ãƒƒã‚»ãƒ¼ã‚¸ã¯å‡ºåŠ›ã—ãªã„
 if ($mode != "confirm" and $mode != "csv_output") {
 	$objPage->tpl_onload = "";
 }
 
-// ÅĞÏ¿ºÑ¤ßSQL°ìÍ÷¼èÆÀ
+// ç™»éŒ²æ¸ˆã¿SQLä¸€è¦§å–å¾—
 $arrSqlList = lfGetSqlList();
 
-// ÊÔ½¸ÍÑSQL¥Ç¡¼¥¿¤Î¼èÆÀ
+// ç·¨é›†ç”¨SQLãƒ‡ãƒ¼ã‚¿ã®å–å¾—
 if ($sql_id != "") {
 	$arrSqlData = lfGetSqlList(" WHERE sql_id = ?", array($sql_id));
 }
 
-// ¥Æ¡¼¥Ö¥ë°ìÍ÷¤ò¼èÆÀ¤¹¤ë
+// ãƒ†ãƒ¼ãƒ–ãƒ«ä¸€è¦§ã‚’å–å¾—ã™ã‚‹
 $arrTableList = lfGetTableList();
 $arrTableList = sfSwapArray($arrTableList);
 
-// ¸½ºßÁªÂò¤µ¤ì¤Æ¤¤¤ë¥Æ¡¼¥Ö¥ë¤ò¼èÆÀ¤¹¤ë
+// ç¾åœ¨é¸æŠã•ã‚Œã¦ã„ã‚‹ãƒ†ãƒ¼ãƒ–ãƒ«ã‚’å–å¾—ã™ã‚‹
 if ($_POST['selectTable'] == ""){
 	$selectTable = $arrTableList['table_name'][0];
 }else{
 	$selectTable = $_POST['selectTable'];
 }
 
-// ¥«¥é¥à°ìÍ÷¤ò¼èÆÀ¤¹¤ë
+// ã‚«ãƒ©ãƒ ä¸€è¦§ã‚’å–å¾—ã™ã‚‹
 $arrColList = lfGetColumnList($selectTable);
 $arrColList =  sfSwapArray($arrColList);
 
-// É½¼¨¤µ¤»¤ëÆâÍÆ¤òÊÔ½¸
+// è¡¨ç¤ºã•ã›ã‚‹å†…å®¹ã‚’ç·¨é›†
 foreach ($arrTableList['description'] as $key => $val) {
-	$arrTableList['description'][$key] = $arrTableList['table_name'][$key] . "¡§" . $arrTableList['description'][$key];
+	$arrTableList['description'][$key] = $arrTableList['table_name'][$key] . "ï¼š" . $arrTableList['description'][$key];
 }
 foreach ($arrColList['description'] as $key => $val) {
-	$arrColList['description'][$key] = $arrColList['column_name'][$key] . "¡§" . $arrColList['description'][$key];
+	$arrColList['description'][$key] = $arrColList['column_name'][$key] . "ï¼š" . $arrColList['description'][$key];
 }
 
 
@@ -161,34 +161,34 @@ $arrDiff = array_diff(sfGetColumnList($selectTable), $arrColList["column_name"])
 $arrColList["column_name"] = array_merge($arrColList["column_name"], $arrDiff);
 $arrColList["description"] = array_merge($arrColList["description"], $arrDiff);
 
-// ¥Æ¥ó¥×¥ì¡¼¥È¤Ë½ĞÎÏ¤¹¤ë¥Ç¡¼¥¿¤ò¥»¥Ã¥È
-$objPage->arrSqlList = $arrSqlList;																// SQL°ìÍ÷
-$objPage->arrTableList = sfarrCombine($arrTableList['table_name'], $arrTableList['description']);	// ¥Æ¡¼¥Ö¥ë°ìÍ÷
-$objPage->arrColList = sfarrCombine($arrColList['column_name'],$arrColList['description']);			// ¥«¥é¥à°ìÍ÷
-$objPage->selectTable = $selectTable;															// ÁªÂò¤µ¤ì¤Æ¤¤¤ë¥Æ¡¼¥Ö¥ë
-$objPage->sql_id = $sql_id;																		// ÁªÂò¤µ¤ì¤Æ¤¤¤ëSQL
+// ãƒ†ãƒ³ãƒ—ãƒ¬ãƒ¼ãƒˆã«å‡ºåŠ›ã™ã‚‹ãƒ‡ãƒ¼ã‚¿ã‚’ã‚»ãƒƒãƒˆ
+$objPage->arrSqlList = $arrSqlList;																// SQLä¸€è¦§
+$objPage->arrTableList = sfarrCombine($arrTableList['table_name'], $arrTableList['description']);	// ãƒ†ãƒ¼ãƒ–ãƒ«ä¸€è¦§
+$objPage->arrColList = sfarrCombine($arrColList['column_name'],$arrColList['description']);			// ã‚«ãƒ©ãƒ ä¸€è¦§
+$objPage->selectTable = $selectTable;															// é¸æŠã•ã‚Œã¦ã„ã‚‹ãƒ†ãƒ¼ãƒ–ãƒ«
+$objPage->sql_id = $sql_id;																		// é¸æŠã•ã‚Œã¦ã„ã‚‹SQL
 
-// POST¤µ¤ì¤¿¥Ç¡¼¥¿¤ò¥»¥Ã¥È¤¹¤ë
+// POSTã•ã‚ŒãŸãƒ‡ãƒ¼ã‚¿ã‚’ã‚»ãƒƒãƒˆã™ã‚‹
 if (count($_POST) > 0) {
 	$arrSqlData[0]['sql_name'] = $_POST['sql_name'];
 	$arrSqlData[0]['csv_sql'] = $_POST['csv_sql'];
 }
-$objPage->arrSqlData = $arrSqlData[0];															// ÁªÂò¤µ¤ì¤Æ¤¤¤ëSQL¥Ç¡¼¥¿
+$objPage->arrSqlData = $arrSqlData[0];															// é¸æŠã•ã‚Œã¦ã„ã‚‹SQLãƒ‡ãƒ¼ã‚¿
 
-// ²èÌÌ¤ÎÉ½¼¨
+// ç”»é¢ã®è¡¨ç¤º
 $objView->assignobj($objPage);
 $objView->display(MAIN_FRAME);
 
 //---------------------------------------------------------------------------------------------------------------------------------------------------------
 /**************************************************************************************************************
- * ´Ø¿ôÌ¾	¡§lfGetTableList
- * ½èÍıÆâÍÆ	¡§¥Æ¡¼¥Ö¥ë°ìÍ÷¤ò¼èÆÀ¤¹¤ë
- * °ú¿ô		¡§¤Ê¤·
- * Ìá¤êÃÍ ¡¡¡§¼èÆÀ·ë²Ì
+ * é–¢æ•°å	ï¼šlfGetTableList
+ * å‡¦ç†å†…å®¹	ï¼šãƒ†ãƒ¼ãƒ–ãƒ«ä¸€è¦§ã‚’å–å¾—ã™ã‚‹
+ * å¼•æ•°		ï¼šãªã—
+ * æˆ»ã‚Šå€¤ ã€€ï¼šå–å¾—çµæœ
  **************************************************************************************************************/
 function lfGetTableList(){
 	$objQuery = new SC_Query();
-	$arrRet = array();		// ·ë²Ì¼èÆÀÍÑ
+	$arrRet = array();		// çµæœå–å¾—ç”¨
 
 	$sql = "";
 	$sql .= "SELECT table_name, description FROM dtb_table_comment WHERE column_name IS NULL ORDER BY table_name";
@@ -200,14 +200,14 @@ function lfGetTableList(){
 
 
 /**************************************************************************************************************
- * ´Ø¿ôÌ¾	¡§lfGetColunmList
- * ½èÍıÆâÍÆ	¡§¥Æ¡¼¥Ö¥ë¤Î¥«¥é¥à°ìÍ÷¤ò¼èÆÀ¤¹¤ë
- * °ú¿ô		¡§$selectTable¡§¥Æ¡¼¥Ö¥ëÌ¾¾Î
- * Ìá¤êÃÍ ¡¡¡§¼èÆÀ·ë²Ì
+ * é–¢æ•°å	ï¼šlfGetColunmList
+ * å‡¦ç†å†…å®¹	ï¼šãƒ†ãƒ¼ãƒ–ãƒ«ã®ã‚«ãƒ©ãƒ ä¸€è¦§ã‚’å–å¾—ã™ã‚‹
+ * å¼•æ•°		ï¼š$selectTableï¼šãƒ†ãƒ¼ãƒ–ãƒ«åç§°
+ * æˆ»ã‚Šå€¤ ã€€ï¼šå–å¾—çµæœ
  **************************************************************************************************************/
 function lfGetColumnList($selectTable){
 	$objQuery = new SC_Query();
-	$arrRet = array();		// ·ë²Ì¼èÆÀÍÑ
+	$arrRet = array();		// çµæœå–å¾—ç”¨
 	$sql = "";
 	$sql .= " SELECT column_name, description FROM dtb_table_comment WHERE table_name = ? AND column_name IS NOT NULL";
 	$arrRet = $objQuery->getAll($sql, array($selectTable));	
@@ -217,15 +217,15 @@ function lfGetColumnList($selectTable){
 }
 
 /**************************************************************************************************************
- * ´Ø¿ôÌ¾	¡§lfGetSqlList
- * ½èÍıÆâÍÆ	¡§ÅĞÏ¿ºÑ¤ßSQL°ìÍ÷¤ò¼èÆÀ¤¹¤ë
- * °ú¿ô1	¡§$where¡§Where¶ç
- * °ú¿ô2	¡§$arrData¡§¹Ê¤ê¹ş¤ß¥Ç¡¼¥¿
- * Ìá¤êÃÍ ¡¡¡§¼èÆÀ·ë²Ì
+ * é–¢æ•°å	ï¼šlfGetSqlList
+ * å‡¦ç†å†…å®¹	ï¼šç™»éŒ²æ¸ˆã¿SQLä¸€è¦§ã‚’å–å¾—ã™ã‚‹
+ * å¼•æ•°1	ï¼š$whereï¼šWhereå¥
+ * å¼•æ•°2	ï¼š$arrDataï¼šçµã‚Šè¾¼ã¿ãƒ‡ãƒ¼ã‚¿
+ * æˆ»ã‚Šå€¤ ã€€ï¼šå–å¾—çµæœ
  **************************************************************************************************************/
 function lfGetSqlList($where = "" , $arrData = array()){
 	$objQuery = new SC_Query();
-	$arrRet = array();		// ·ë²Ì¼èÆÀÍÑ
+	$arrRet = array();		// çµæœå–å¾—ç”¨
 	
 	$sql = "";
 	$sql .= " SELECT";
@@ -237,7 +237,7 @@ function lfGetSqlList($where = "" , $arrData = array()){
 	$sql .= " FROM";
 	$sql .= "     dtb_csv_sql";
 	
-	// Where¶ç¤Î»ØÄê¤¬¤¢¤ì¤Ğ·ë¹ç¤¹¤ë
+	// Whereå¥ã®æŒ‡å®šãŒã‚ã‚Œã°çµåˆã™ã‚‹
 	if ($where != "") {
 		$sql .= " $where ";
 	}else{
@@ -245,7 +245,7 @@ function lfGetSqlList($where = "" , $arrData = array()){
 	}
 	$sql .= " ";
 
-	// ¥Ç¡¼¥¿¤ò°ú¿ô¤ÇÅÏ¤µ¤ì¤Æ¤¤¤ë¾ì¹ç¤Ë¤Ï¥»¥Ã¥È¤¹¤ë
+	// ãƒ‡ãƒ¼ã‚¿ã‚’å¼•æ•°ã§æ¸¡ã•ã‚Œã¦ã„ã‚‹å ´åˆã«ã¯ã‚»ãƒƒãƒˆã™ã‚‹
 	if (count($arrData) > 0) {
 		$arrRet = $objQuery->getall($sql, $arrData);
 	}else{
@@ -257,21 +257,21 @@ function lfGetSqlList($where = "" , $arrData = array()){
 }
 
 /**************************************************************************************************************
- * ´Ø¿ôÌ¾	¡§lfUpdCsvOutput
- * ½èÍıÆâÍÆ	¡§ÆşÎÏ¹àÌÜ¤Î¥¨¥é¡¼¥Á¥§¥Ã¥¯¤ò¹Ô¤¦
- * °ú¿ô		¡§POST¥Ç¡¼¥¿
- * ÌáÃÍ		¡§¥¨¥é¡¼ÆâÍÆ
+ * é–¢æ•°å	ï¼šlfUpdCsvOutput
+ * å‡¦ç†å†…å®¹	ï¼šå…¥åŠ›é …ç›®ã®ã‚¨ãƒ©ãƒ¼ãƒã‚§ãƒƒã‚¯ã‚’è¡Œã†
+ * å¼•æ•°		ï¼šPOSTãƒ‡ãƒ¼ã‚¿
+ * æˆ»å€¤		ï¼šã‚¨ãƒ©ãƒ¼å†…å®¹
  **************************************************************************************************************/
 function lfCheckError($data){
 	$objErr = new SC_CheckError();
-	$objErr->doFunc( array("Ì¾¾Î", "sql_name"), array("EXIST_CHECK") );
-	$objErr->doFunc( array("SQLÊ¸", "csv_sql", "30000"), array("EXIST_CHECK", "MAX_LENGTH_CHECK") );
+	$objErr->doFunc( array("åç§°", "sql_name"), array("EXIST_CHECK") );
+	$objErr->doFunc( array("SQLæ–‡", "csv_sql", "30000"), array("EXIST_CHECK", "MAX_LENGTH_CHECK") );
 	
-	// SQL¤ÎÂÅÅöÀ­¥Á¥§¥Ã¥¯
+	// SQLã®å¦¥å½“æ€§ãƒã‚§ãƒƒã‚¯
 	if ($objErr->arrErr['csv_sql'] == "") {
 		$objsqlErr = lfCheckSQL($data);
 		if ($objsqlErr != "") {
-			$objErr->arrErr["csv_sql"] = "SQLÊ¸¤¬ÉÔÀµ¤Ç¤¹¡£SQLÊ¸¤ò¸«Ä¾¤·¤Æ¤¯¤À¤µ¤¤";
+			$objErr->arrErr["csv_sql"] = "SQLæ–‡ãŒä¸æ­£ã§ã™ã€‚SQLæ–‡ã‚’è¦‹ç›´ã—ã¦ãã ã•ã„";
 		}
 	}
 	
@@ -280,10 +280,10 @@ function lfCheckError($data){
 }
 
 /**************************************************************************************************************
- * ´Ø¿ôÌ¾	¡§lfCheckSQL
- * ½èÍıÆâÍÆ	¡§ÆşÎÏ¤µ¤ì¤¿SQLÊ¸¤¬Àµ¤·¤¤¤«¥Á¥§¥Ã¥¯¤ò¹Ô¤¦
- * °ú¿ô		¡§POST¥Ç¡¼¥¿
- * ÌáÃÍ		¡§¥¨¥é¡¼ÆâÍÆ
+ * é–¢æ•°å	ï¼šlfCheckSQL
+ * å‡¦ç†å†…å®¹	ï¼šå…¥åŠ›ã•ã‚ŒãŸSQLæ–‡ãŒæ­£ã—ã„ã‹ãƒã‚§ãƒƒã‚¯ã‚’è¡Œã†
+ * å¼•æ•°		ï¼šPOSTãƒ‡ãƒ¼ã‚¿
+ * æˆ»å€¤		ï¼šã‚¨ãƒ©ãƒ¼å†…å®¹
  **************************************************************************************************************/
 function lfCheckSQL($data){
 	$err = "";
@@ -302,42 +302,42 @@ function lfprintr($data){
 }
 
 /**************************************************************************************************************
- * ´Ø¿ôÌ¾	¡§lfUpdData
- * ½èÍıÆâÍÆ	¡§DB¤Ë¥Ç¡¼¥¿¤òÊİÂ¸¤¹¤ë
- * °ú¿ô1	¡§$sql_id¥¥¥¹¹¿·¤¹¤ë¥Ç¡¼¥¿¤ÎSQL_ID
- * °ú¿ô2	¡§$arrData¥¥¥¹¹¿·¥Ç¡¼¥¿
- * Ìá¤êÃÍ	¡§$sql_id:SQL_ID¤òÊÖ¤¹
+ * é–¢æ•°å	ï¼šlfUpdData
+ * å‡¦ç†å†…å®¹	ï¼šDBã«ãƒ‡ãƒ¼ã‚¿ã‚’ä¿å­˜ã™ã‚‹
+ * å¼•æ•°1	ï¼š$sql_idï½¥ï½¥ï½¥æ›´æ–°ã™ã‚‹ãƒ‡ãƒ¼ã‚¿ã®SQL_ID
+ * å¼•æ•°2	ï¼š$arrDataï½¥ï½¥ï½¥æ›´æ–°ãƒ‡ãƒ¼ã‚¿
+ * æˆ»ã‚Šå€¤	ï¼š$sql_id:SQL_IDã‚’è¿”ã™
  **************************************************************************************************************/
 function lfUpdData($sql_id = "", $arrData = array()){
-	$objQuery = new SC_Query();		// DBÁàºî¥ª¥Ö¥¸¥§¥¯¥È
-	$sql = "";						// ¥Ç¡¼¥¿¼èÆÀSQLÀ¸À®ÍÑ
-	$arrRet = array();				// ¥Ç¡¼¥¿¼èÆÀÍÑ(¹¹¿·È½Äê)
-	$arrVal = array();				// ¥Ç¡¼¥¿¹¹¿·
+	$objQuery = new SC_Query();		// DBæ“ä½œã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆ
+	$sql = "";						// ãƒ‡ãƒ¼ã‚¿å–å¾—SQLç”Ÿæˆç”¨
+	$arrRet = array();				// ãƒ‡ãƒ¼ã‚¿å–å¾—ç”¨(æ›´æ–°åˆ¤å®š)
+	$arrVal = array();				// ãƒ‡ãƒ¼ã‚¿æ›´æ–°
 
-	// sql_id ¤¬»ØÄê¤µ¤ì¤Æ¤¤¤ë¾ì¹ç¤Ë¤ÏUPDATE
+	// sql_id ãŒæŒ‡å®šã•ã‚Œã¦ã„ã‚‹å ´åˆã«ã¯UPDATE
 	if ($sql_id != "") {
-		// Â¸ºß¥Á¥§¥Ã¥¯
+		// å­˜åœ¨ãƒã‚§ãƒƒã‚¯
 		$arrSqlData = lfGetSqlList(" WHERE sql_id = ?", array($sql_id));
 		if (count($arrSqlData) > 0) {
-			// ¥Ç¡¼¥¿¹¹¿·
+			// ãƒ‡ãƒ¼ã‚¿æ›´æ–°
 			$sql = "UPDATE dtb_csv_sql SET sql_name = ?, csv_sql = ?, update_date = now() WHERE sql_id = ? ";
 			$arrVal= array($arrData['sql_name'], $arrData['csv_sql'], $sql_id);
 		}else{
-			// ¥Ç¡¼¥¿¤Î¿·µ¬ºîÀ®
+			// ãƒ‡ãƒ¼ã‚¿ã®æ–°è¦ä½œæˆ
 			$sql_id = "";
 			$sql = "INSERT INTO dtb_csv_sql (sql_name, csv_sql, create_date, update_date) values (?, ?, now(), now()) ";
 			$arrVal= array($arrData['sql_name'], $arrData['csv_sql']);
 			
 		}
 	}else{
-		// ¥Ç¡¼¥¿¤Î¿·µ¬ºîÀ®
+		// ãƒ‡ãƒ¼ã‚¿ã®æ–°è¦ä½œæˆ
 		$sql = "INSERT INTO dtb_csv_sql (sql_name, csv_sql, create_date, update_date) values (?, ?, now(), now()) ";
 		$arrVal= array($arrData['sql_name'], $arrData['csv_sql']);
 	}
-	// SQL¼Â¹Ô	
+	// SQLå®Ÿè¡Œ	
 	$arrRet = $objQuery->query($sql,$arrVal);
 	
-	// ¿·µ¬ºîÀ®»ş¤Ï$sql_id¤ò¼èÆÀ
+	// æ–°è¦ä½œæˆæ™‚ã¯$sql_idã‚’å–å¾—
 	if ($sql_id == "") {
 		$arrNewData = lfGetSqlList(" ORDER BY create_date DESC");
 		$sql_id = $arrNewData[0]['sql_id'];
@@ -348,41 +348,41 @@ function lfUpdData($sql_id = "", $arrData = array()){
 
 
 /**************************************************************************************************************
- * ´Ø¿ôÌ¾	¡§lfDelData
- * ½èÍıÆâÍÆ	¡§¥Ç¡¼¥¿¤òºï½ü¤¹¤ë
- * °ú¿ô1	¡§$sql_id¥¥¥ºï½ü¤¹¤ë¥Ç¡¼¥¿¤ÎSQL_ID
- * Ìá¤êÃÍ	¡§¼Â¹Ô·ë²Ì¡¡TRUE¡§À®¸ù FALSE¡§¼ºÇÔ
+ * é–¢æ•°å	ï¼šlfDelData
+ * å‡¦ç†å†…å®¹	ï¼šãƒ‡ãƒ¼ã‚¿ã‚’å‰Šé™¤ã™ã‚‹
+ * å¼•æ•°1	ï¼š$sql_idï½¥ï½¥ï½¥å‰Šé™¤ã™ã‚‹ãƒ‡ãƒ¼ã‚¿ã®SQL_ID
+ * æˆ»ã‚Šå€¤	ï¼šå®Ÿè¡Œçµæœã€€TRUEï¼šæˆåŠŸ FALSEï¼šå¤±æ•—
  **************************************************************************************************************/
 function lfDelData($sql_id = ""){
-	$objQuery = new SC_Query();		// DBÁàºî¥ª¥Ö¥¸¥§¥¯¥È
-	$sql = "";						// ¥Ç¡¼¥¿¼èÆÀSQLÀ¸À®ÍÑ
-	$Ret = false;					// ¼Â¹Ô·ë²Ì
+	$objQuery = new SC_Query();		// DBæ“ä½œã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆ
+	$sql = "";						// ãƒ‡ãƒ¼ã‚¿å–å¾—SQLç”Ÿæˆç”¨
+	$Ret = false;					// å®Ÿè¡Œçµæœ
 
-	// sql_id ¤¬»ØÄê¤µ¤ì¤Æ¤¤¤ë¾ì¹ç¤Î¤ß¼Â¹Ô
+	// sql_id ãŒæŒ‡å®šã•ã‚Œã¦ã„ã‚‹å ´åˆã®ã¿å®Ÿè¡Œ
 	if ($sql_id != "") {
-		// ¥Ç¡¼¥¿¤Îºï½ü
+		// ãƒ‡ãƒ¼ã‚¿ã®å‰Šé™¤
 		$sql = "DELETE FROM dtb_csv_sql WHERE sql_id = ? ";
-		// SQL¼Â¹Ô	
+		// SQLå®Ÿè¡Œ	
 		$ret = $objQuery->query($sql,array($sql_id));
 	}else{
 		$ret = false;
 	}
 
-	// ·ë²Ì¤òÊÖ¤¹
+	// çµæœã‚’è¿”ã™
 	return $ret;
 }
 
 
-//---- CSV½ĞÎÏÍÑ¥Ç¡¼¥¿¼èÆÀ
+//---- CSVå‡ºåŠ›ç”¨ãƒ‡ãƒ¼ã‚¿å–å¾—
 function lfGetCSVData( $array, $arrayIndex){	
 	for ($i=0; $i<count($array); $i++){
 		for ($j=0; $j<count($array[$i]); $j++ ){
 			if ( $j > 0 ) $return .= ",";
 			$return .= "\"";			
 			if ( $arrayIndex ){
-				$return .= mb_ereg_replace("<","¡ã",mb_ereg_replace( "\"","\"\"",$array[$i][$arrayIndex[$j]] )) ."\"";	
+				$return .= mb_ereg_replace("<","ï¼œ",mb_ereg_replace( "\"","\"\"",$array[$i][$arrayIndex[$j]] )) ."\"";	
 			} else {
-				$return .= mb_ereg_replace("<","¡ã",mb_ereg_replace( "\"","\"\"",$array[$i][$j] )) ."\"";
+				$return .= mb_ereg_replace("<","ï¼œ",mb_ereg_replace( "\"","\"\"",$array[$i][$j] )) ."\"";
 			}
 		}
 		$return .= "\n";			

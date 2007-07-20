@@ -5,42 +5,42 @@
  * http://www.lockon.co.jp/
  */
 *}-->
-<!-- ¢§¥í¥´ ¤³¤³¤«¤é -->
+<!-- â–¼ãƒ­ã‚´ ã“ã“ã‹ã‚‰ -->
 <center><img src="<!--{$smarty.const.URL_DIR}-->img/header/logo.gif"></center>
-<!-- ¢¥¥í¥´ ¤³¤³¤Þ¤Ç -->
+<!-- â–²ãƒ­ã‚´ ã“ã“ã¾ã§ -->
 
 <br>
 
-<!-- ¢§¿·Ãå¾ðÊó ¤³¤³¤«¤é -->
+<!-- â–¼æ–°ç€æƒ…å ± ã“ã“ã‹ã‚‰ -->
 <!--{include_php file=`$smarty.const.MOBILE_HTML_PATH`frontparts/bloc/news.php}-->
-<!-- ¢¥¿·Ãå¾ðÊó ¤³¤³¤Þ¤Ç -->
+<!-- â–²æ–°ç€æƒ…å ± ã“ã“ã¾ã§ -->
 
 <br>
 
-<!-- ¢§¥Ô¥Ã¥¯¥¢¥Ã¥×¾¦ÉÊ ¤³¤³¤«¤é -->
+<!-- â–¼ãƒ”ãƒƒã‚¯ã‚¢ãƒƒãƒ—å•†å“ ã“ã“ã‹ã‚‰ -->
 <hr>
 <!--{include_php file=`$smarty.const.MOBILE_HTML_PATH`frontparts/bloc/best5.php}-->
 <hr>
-<!-- ¢¥¥Ô¥Ã¥¯¥¢¥Ã¥×¾¦ÉÊ ¤³¤³¤Þ¤Ç -->
+<!-- â–²ãƒ”ãƒƒã‚¯ã‚¢ãƒƒãƒ—å•†å“ ã“ã“ã¾ã§ -->
 
 <br>
 
-<!-- ¢§¥á¥Ë¥å¡¼ ¤³¤³¤«¤é -->
-<!--{1|numeric_emoji}-->¾¦ÉÊ¥«¥Æ¥´¥ê<br>
+<!-- â–¼ãƒ¡ãƒ‹ãƒ¥ãƒ¼ ã“ã“ã‹ã‚‰ -->
+<!--{1|numeric_emoji}-->å•†å“ã‚«ãƒ†ã‚´ãƒª<br>
 <!--{include_php file=`$smarty.const.MOBILE_HTML_PATH`frontparts/bloc/category.php}-->
-<a href="products/search.php" accesskey="2"><!--{2|numeric_emoji}-->¾¦ÉÊ¸¡º÷</a><br>
+<a href="products/search.php" accesskey="2"><!--{2|numeric_emoji}-->å•†å“æ¤œç´¢</a><br>
 <!--{if $isLogin eq true}-->
-<a href="mypage/refusal.php" accesskey="3"><!--{3|numeric_emoji}-->²ñ°÷Âà²ñ</a><br>
+<a href="mypage/refusal.php" accesskey="3"><!--{3|numeric_emoji}-->ä¼šå“¡é€€ä¼š</a><br>
 <!--{else}-->
-<a href="entry/new.php" accesskey="3"><!--{3|numeric_emoji}-->²ñ°÷ÅÐÏ¿</a><br>
+<a href="entry/new.php" accesskey="3"><!--{3|numeric_emoji}-->ä¼šå“¡ç™»éŒ²</a><br>
 <!--{/if}-->
-<a href="guide/index.php" accesskey="4"><!--{4|numeric_emoji}-->¤´ÍøÍÑ¥¬¥¤¥É</a><br>
-<a href="contact/index.php" accesskey="5"><!--{5|numeric_emoji}-->¤ªÌä¤¤¹ç¤»</a><br>
-<a href="mypage/index.php" accesskey="6" utn><!--{6|numeric_emoji}-->MY¥Ú¡¼¥¸</a><br>
-<!-- ¢¥¥á¥Ë¥å¡¼ ¤³¤³¤Þ¤Ç -->
+<a href="guide/index.php" accesskey="4"><!--{4|numeric_emoji}-->ã”åˆ©ç”¨ã‚¬ã‚¤ãƒ‰</a><br>
+<a href="contact/index.php" accesskey="5"><!--{5|numeric_emoji}-->ãŠå•ã„åˆã›</a><br>
+<a href="mypage/index.php" accesskey="6" utn><!--{6|numeric_emoji}-->MYãƒšãƒ¼ã‚¸</a><br>
+<!-- â–²ãƒ¡ãƒ‹ãƒ¥ãƒ¼ ã“ã“ã¾ã§ -->
 
 <br>
 
-<!-- ¢§¥Õ¥Ã¥¿¡¼ ¤³¤³¤«¤é -->
+<!-- â–¼ãƒ•ãƒƒã‚¿ãƒ¼ ã“ã“ã‹ã‚‰ -->
 <!--{include file='footer.tpl'}-->
-<!-- ¢¥¥Õ¥Ã¥¿¡¼ ¤³¤³¤Þ¤Ç -->
+<!-- â–²ãƒ•ãƒƒã‚¿ãƒ¼ ã“ã“ã¾ã§ -->

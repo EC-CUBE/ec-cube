@@ -28,7 +28,7 @@ require_once($include_dir . "/.." . HTML2DATA_DIR . "class/SC_CustomerList.php")
 require_once($include_dir . "/.." . HTML2DATA_DIR . "class/SC_Customer.php");
 require_once($include_dir . "/.." . HTML2DATA_DIR . "class/SC_Pdf.php");
 
-// ¥¢¥Ã¥×¥Ç¡¼¥È¤Ç¼èÆÀ¤·¤¿PHP¤òÆÉ¤ß½Ð¤¹
+// ã‚¢ãƒƒãƒ—ãƒ‡ãƒ¼ãƒˆã§å–å¾—ã—ãŸPHPã‚’èª­ã¿å‡ºã™
 sfLoadUpdateModule();
 
 ?>

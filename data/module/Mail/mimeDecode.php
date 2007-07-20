@@ -69,8 +69,8 @@ require_once dirname(__FILE__) . '/../PEAR.php';
 		> headers. Therefore I made the following function:
 		> 
 		> function decode_utf8($txt) {
-		> $trans=array("�&#8216;"=>"õ","ű"=>"û","Ő"=>"�&#8226;","Ű"
-		=>"�&#8250;");
+		> $trans=array("?#8216;"=>"探","撤"=>"短","?"=>"?#8226;","徹"
+		=>"?#8250;");
 		> $txt=strtr($txt,$trans);
 		> return(utf8_decode($txt));
 		> }

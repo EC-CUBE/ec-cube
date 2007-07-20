@@ -5,11 +5,11 @@
  * http://www.lockon.co.jp/
  */
 *}-->
-<!--¢§CONTENTS-->
-<!--¢§MAIN ONTENTS-->
-<!--¡ú¥¨¥é¡¼¥á¥Ã¥»¡¼¥¸--><!--{$tpl_error}--><br>
+<!--â–¼CONTENTS-->
+<!--â–¼MAIN ONTENTS-->
+<!--â˜…ã‚¨ãƒ©ãƒ¼ãƒ¡ãƒƒã‚»ãƒ¼ã‚¸--><!--{$tpl_error}--><br>
 <!--{if $return_top}-->
-<a href="<!--{$smarty.const.MOBILE_URL_SITE_TOP}-->" accesskey="0"><!--{0|numeric_emoji}-->TOP¥Ú¡¼¥¸¤Ø</a>
+<a href="<!--{$smarty.const.MOBILE_URL_SITE_TOP}-->" accesskey="0"><!--{0|numeric_emoji}-->TOPãƒšãƒ¼ã‚¸ã¸</a>
 <!--{/if}-->
-<!--¢¥MAIN ONTENTS-->
-<!--¢¥CONTENTS-->
+<!--â–²MAIN ONTENTS-->
+<!--â–²CONTENTS-->

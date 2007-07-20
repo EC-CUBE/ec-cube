@@ -5,33 +5,33 @@
  * http://www.lockon.co.jp/
  */
 *}-->
-<center>¤´ÍøÍÑµ¬Ìó(<!--{$tpl_kiyaku_index+1}-->/<!--{$tpl_kiyaku_last_index+1}-->)</center>
+<center>ã”åˆ©ç”¨è¦ç´„(<!--{$tpl_kiyaku_index+1}-->/<!--{$tpl_kiyaku_last_index+1}-->)</center>
 
 <hr>
 
-<!-- ¢§ËÜÊ¸ ¤³¤³¤«¤é -->
+<!-- â–¼æœ¬æ–‡ ã“ã“ã‹ã‚‰ -->
 <font color="#ff0000"><!--{$tpl_kiyaku_title|escape}--></font><br>
 <!--{$tpl_kiyaku_text|escape}--><br>
-<!-- ¢¥ËÜÊ¸ ¤³¤³¤Þ¤Ç -->
+<!-- â–²æœ¬æ–‡ ã“ã“ã¾ã§ -->
 
 <!--{if !$tpl_kiyaku_is_first || !$tpl_kiyaku_is_last}-->
 <br>
 <!--{if !$tpl_kiyaku_is_first}-->
-<a href="kiyaku.php?page=<!--{$tpl_kiyaku_index-1}-->" accesskey="1"><!--{1|numeric_emoji}-->Ìá¤ë</a><br>
+<a href="kiyaku.php?page=<!--{$tpl_kiyaku_index-1}-->" accesskey="1"><!--{1|numeric_emoji}-->æˆ»ã‚‹</a><br>
 <!--{/if}-->
 <!--{if !$tpl_kiyaku_is_last}-->
-<a href="kiyaku.php?page=<!--{$tpl_kiyaku_index+1}-->" accesskey="2"><!--{2|numeric_emoji}-->¿Ê¤à</a><br>
+<a href="kiyaku.php?page=<!--{$tpl_kiyaku_index+1}-->" accesskey="2"><!--{2|numeric_emoji}-->é€²ã‚€</a><br>
 <!--{/if}-->
 <!--{/if}-->
 
 <br>
 <hr>
 
-<a href="<!--{$smarty.const.MOBILE_URL_CART_TOP}-->" accesskey="9"><!--{9|numeric_emoji}-->¤«¤´¤ò¸«¤ë</a><br>
-<a href="<!--{$smarty.const.MOBILE_URL_SITE_TOP}-->" accesskey="0"><!--{0|numeric_emoji}-->TOP¥Ú¡¼¥¸¤Ø</a><br>
+<a href="<!--{$smarty.const.MOBILE_URL_CART_TOP}-->" accesskey="9"><!--{9|numeric_emoji}-->ã‹ã”ã‚’è¦‹ã‚‹</a><br>
+<a href="<!--{$smarty.const.MOBILE_URL_SITE_TOP}-->" accesskey="0"><!--{0|numeric_emoji}-->TOPãƒšãƒ¼ã‚¸ã¸</a><br>
 
 <br>
 
-<!-- ¢§¥Õ¥Ã¥¿¡¼ ¤³¤³¤«¤é -->
+<!-- â–¼ãƒ•ãƒƒã‚¿ãƒ¼ ã“ã“ã‹ã‚‰ -->
 <!--{include file='footer.tpl'}-->
-<!-- ¢¥¥Õ¥Ã¥¿¡¼ ¤³¤³¤Þ¤Ç -->
+<!-- â–²ãƒ•ãƒƒã‚¿ãƒ¼ ã“ã“ã¾ã§ -->

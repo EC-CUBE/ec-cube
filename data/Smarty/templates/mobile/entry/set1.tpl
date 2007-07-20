@@ -5,33 +5,33 @@
  * http://www.lockon.co.jp/
  */
 *}-->
-<div align="center">²ñ°÷¾ðÊóÆþÎÏ 2/3</div>
+<div align="center">ä¼šå“¡æƒ…å ±å…¥åŠ› 2/3</div>
 <hr>
 <form name="form1" method="post" action="<!--{$smarty.server.PHP_SELF|escape}-->">
 	<input type="hidden" name="mode" value="set2">
 
-	<font color="#FF0000">*¤ÏÉ¬¿Ü¹àÌÜ¤Ç¤¹¡£</font><br>
+	<font color="#FF0000">*ã¯å¿…é ˆé …ç›®ã§ã™ã€‚</font><br>
 	<br>
 
-	¡ÚÀ­ÊÌ¡Û<font color="#FF0000">*</font><br>
+	ã€æ€§åˆ¥ã€‘<font color="#FF0000">*</font><br>
 	<font color="#FF0000"><!--{$arrErr.sex}--></font>
-	<input type="radio" name="sex" value="1" <!--{if $sex eq 1}-->checked<!--{/if}--> />ÃËÀ­&nbsp;<input type="radio" name="sex" value="2" <!--{if $sex eq 2}-->checked<!--{/if}--> />½÷À­<br>
+	<input type="radio" name="sex" value="1" <!--{if $sex eq 1}-->checked<!--{/if}--> />ç”·æ€§&nbsp;<input type="radio" name="sex" value="2" <!--{if $sex eq 2}-->checked<!--{/if}--> />å¥³æ€§<br>
 
-	¡ÚÀ¸Ç¯·îÆü¡Û<font color="#FF0000">*</font><br>
+	ã€ç”Ÿå¹´æœˆæ—¥ã€‘<font color="#FF0000">*</font><br>
 	<font color="#FF0000"><!--{$arrErr.year}--><!--{$arrErr.month}--><!--{$arrErr.day}--></font>
-	<input type="text" name="year" value="<!--{$year|escape}-->" size="4" maxlength="4" istyle="4">Ç¯<br>
+	<input type="text" name="year" value="<!--{$year|escape}-->" size="4" maxlength="4" istyle="4">å¹´<br>
 	<select name="month">
 		<option value="">--</option>
 		<!--{html_options options=$arrMonth selected=$month}-->
-	</select>·î<br>
+	</select>æœˆ<br>
 	<select name="day">
 		<option value="">--</option>
 		<!--{html_options options=$arrDay selected=$day}-->
-	</select>Æü<br>
+	</select>æ—¥<br>
 
 	<!--{assign var=key1 value="zip01"}-->
 	<!--{assign var=key2 value="zip02"}-->
-	¡ÚÍ¹ÊØÈÖ¹æ¡Û<font color="#FF0000">*</font><br>
+	ã€éƒµä¾¿ç•ªå·ã€‘<font color="#FF0000">*</font><br>
 	<font color="#FF0000"><!--{$arrErr[$key1]}--><!--{$arrErr[$key2]}--></font>
 	<!--{assign var="size1" value="`$smarty.const.ZIP01_LEN+2`"}-->
 	<!--{assign var="size2" value="`$smarty.const.ZIP02_LEN+2`"}-->
@@ -39,8 +39,8 @@
 	&nbsp;-&nbsp;
 	<input size="<!--{$size2}-->" type="text" name="zip02" value="<!--{if $zip02 == ""}--><!--{$arrOtherDeliv.zip02|escape}--><!--{else}--><!--{$zip02|escape}--><!--{/if}-->" maxlength="<!--{$smarty.const.ZIP02_LEN}-->" istyle="4"><br>
 
-	<input type="submit" name="submit" value="¼¡¤Ø"><br>
-	<input type="submit" name="return" value="Ìá¤ë">
+	<input type="submit" name="submit" value="æ¬¡ã¸"><br>
+	<input type="submit" name="return" value="æˆ»ã‚‹">
 
 	<!--{foreach from=$list_data key=key item=item}-->
 		<input type="hidden" name="<!--{$key|escape}-->" value="<!--{$item|escape}-->">
@@ -50,11 +50,11 @@
 <br>
 <hr>
 
-<a href="<!--{$smarty.const.MOBILE_URL_CART_TOP}-->" accesskey="9"><!--{9|numeric_emoji}-->¤«¤´¤ò¸«¤ë</a><br>
-<a href="<!--{$smarty.const.MOBILE_URL_SITE_TOP}-->" accesskey="0"><!--{0|numeric_emoji}-->TOP¥Ú¡¼¥¸¤Ø</a><br>
+<a href="<!--{$smarty.const.MOBILE_URL_CART_TOP}-->" accesskey="9"><!--{9|numeric_emoji}-->ã‹ã”ã‚’è¦‹ã‚‹</a><br>
+<a href="<!--{$smarty.const.MOBILE_URL_SITE_TOP}-->" accesskey="0"><!--{0|numeric_emoji}-->TOPãƒšãƒ¼ã‚¸ã¸</a><br>
 
 <br>
 
-<!-- ¢§¥Õ¥Ã¥¿¡¼ ¤³¤³¤«¤é -->
+<!-- â–¼ãƒ•ãƒƒã‚¿ãƒ¼ ã“ã“ã‹ã‚‰ -->
 <!--{include file='footer.tpl'}-->
-<!-- ¢¥¥Õ¥Ã¥¿¡¼ ¤³¤³¤Þ¤Ç -->
+<!-- â–²ãƒ•ãƒƒã‚¿ãƒ¼ ã“ã“ã¾ã§ -->
