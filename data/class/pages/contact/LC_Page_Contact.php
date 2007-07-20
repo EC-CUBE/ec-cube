@@ -129,7 +129,7 @@ class LC_Page_Contact extends LC_Page {
             $this->arrForm = $this->lfConvertParam($this->arrForm,$arrConvertColumn);
             $this->arrErr = $this->lfErrorCheck($this->arrForm);
             if(!$this->arrErr) {
-                lfSendMail($CONF, $objPage);
+                $this->lfSendMail($CONF, $objPage);
                 // FIXME 完了ページへ移動する
                 header("location: ./complete.php");
                 exit;
@@ -234,7 +234,7 @@ class LC_Page_Contact extends LC_Page {
             $fromMail_name = $CONF["shop_name"];
             $fromMail_address = $CONF["email02"];
         }
-        $subject = sfMakeSubject("お問い合わせがありました。");
+        $subject = SC_Utils_Ex::sfMakeSubject("お問い合わせがありました。");
         $objMail->setItem(
                               $CONF["email02"]					//　宛先
                             , $subject							//　サブジェクト
@@ -247,7 +247,7 @@ class LC_Page_Contact extends LC_Page {
                                                             );
         $objMail->sendMail();
 
-        $subject = sfMakeSubject("お問い合わせを受け付けました。");
+        $subject = SC_Utils_Ex::sfMakeSubject("お問い合わせを受け付けました。");
         $objMail->setItem(
                               ''								//　宛先
                             , $subject							//　サブジェクト
