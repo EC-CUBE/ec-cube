@@ -160,7 +160,7 @@ class LC_Page_Contact extends LC_Page {
     // }}}
     // {{{ protected functions
 
-    //エラーチェック処理部
+    //エラーチェック処理部 FIXME
     function lfErrorCheck($array) {
         $objErr = new SC_CheckError($array);
         $objErr->doFunc(array("お名前(姓)", 'name01', STEXT_LEN), array("EXIST_CHECK","SPTAB_CHECK","MAX_LENGTH_CHECK"));
