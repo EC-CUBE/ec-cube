@@ -19,17 +19,8 @@ class LC_Page_Contact extends LC_Page {
 
     // {{{ properties
 
-    /**メインテンプレート */
-    var $tpl_mainpage;
-
-    /** CSS のパス */
-    var $tpl_css;
-
-    /** タイトル */
-    var $tpl_title;
-
-    /** カテゴリ */
-    var $tpl_page_category;
+    /** 都道府県の配列 */
+    var $arrPref;
 
     // }}}
     // {{{ functions

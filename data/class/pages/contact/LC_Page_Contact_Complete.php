@@ -17,20 +17,6 @@ require_once(CLASS_PATH . "pages/LC_Page.php");
  */
 class LC_Page_Contact_Complete extends LC_Page {
 
-    // {{{ properties
-
-    /**メインテンプレート */
-    var $tpl_mainpage = 'contact/complete.tpl';
-
-    /** CSS のパス */
-    var $tpl_css;
-
-    /** タイトル */
-    var $tpl_title = 'お問い合わせ(完了ページ)';
-
-    /** ページナンバー */
-    var $tpl_mainno = 'contact';
-
     // }}}
     // {{{ functions
 
@@ -41,6 +27,9 @@ class LC_Page_Contact_Complete extends LC_Page {
      */
     function init() {
         parent::init();
+        $this->tpl_mainpage = 'contact/complete.tpl';
+        $this->tpl_title = 'お問い合わせ(完了ページ)';
+        $this->tpl_mainno = 'contact';
         $this->tpl_css = array();
         $this->tpl_css[1] = URL_DIR.'css/layout/contact/index.css';
     }

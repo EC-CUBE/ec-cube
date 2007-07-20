@@ -19,12 +19,7 @@ class LC_Page_Inquiry extends LC_Page {
 
     // {{{ properties
 
-    /** メインテンプレート */
-    var $tpl_mainpage = 'inquiry/index.tpl';
-
-    /** メインナンバー */
-    var $tpl_mainno = 'contents';
-
+    // TODO
     var $errmsg;
     var $arrPref;
 
@@ -41,6 +36,8 @@ class LC_Page_Inquiry extends LC_Page {
      */
     function init() {
         parent::init();
+        $this->tpl_mainpage = 'inquiry/index.tpl';
+        $this->tpl_mainno = 'contents';
     }
 
     /**

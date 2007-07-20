@@ -17,14 +17,6 @@ require_once(CLASS_PATH . "pages/LC_Page.php");
  */
 class LC_Page_Order extends LC_Page {
 
-    // {{{ properties
-
-    /**メインテンプレート */
-    var $tpl_mainpage;
-
-    /** CSS のパス */
-    var $tpl_css;
-
     // }}}
     // {{{ functions
 

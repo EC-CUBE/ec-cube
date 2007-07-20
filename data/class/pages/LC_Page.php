@@ -18,7 +18,22 @@
  */
 class LC_Page {
 
-    // {{{ valiables
+    // {{{ properties
+
+    /** メインテンプレート */
+    var $tpl_mainpage;
+
+    /** メインナンバー */
+    var $tpl_mainno;
+
+    /** CSS のパス */
+    var $tpl_css;
+
+    /** タイトル */
+    var $tpl_title;
+
+    /** カテゴリ */
+    var $tpl_page_category;
 
     /**
      * 安全に POST するための URL
