@@ -139,7 +139,7 @@ foreach ($_REQUEST as $key => $value) {
 	if ($key == session_name() || $key == 'pageno') {
 		continue;
 	}
-	$objURL->addQueryString($key, mb_convert_encoding($value, 'SJIS', 'EUC-JP'));
+	$objURL->addQueryString($key, mb_convert_encoding($value, 'SJIS', 'UTF-8'));
 }
 
 if ($objPage->objNavi->now_page > 1) {
