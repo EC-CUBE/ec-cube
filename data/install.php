@@ -1,8 +1,8 @@
 <?php
     define ('ECCUBE_INSTALL', 'ON');
     define ('HTML_PATH', '/home/web/comu-utf8.ec-cube.net/html/');
-    define ('SITE_URL', 'http://comu-utf8.ec-cube.net/eccube-utf8/');
-    define ('SSL_URL', 'http://comu-utf8.ec-cube.net/eccube-utf8/');
+    define ('SITE_URL', 'http://comu-utf8.ec-cube.net/');
+    define ('SSL_URL', 'http://comu-utf8.ec-cube.net/');
     define ('URL_DIR', '/');
     define ('DOMAIN_NAME', '');
     define ('DB_TYPE', 'pgsql');
