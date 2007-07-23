@@ -96,6 +96,7 @@ class LC_Page {
         if (preg_match("/(" . preg_quote(SITE_URL, '/')
                           . "|" . preg_quote(SSL_URL, '/') . ")/", $url)) {
 
+            // TODO パラメータが存在する場合の対応
             header("Location: " . $url . "?" . TRANSACTION_ID_NAME . "=" . $this->getToken());
         }
         return false;
@@ -159,6 +160,62 @@ class LC_Page {
         unset($_SESSION[TRANSACTION_ID_NAME]);
 
         return $ret;
+    }
+
+    /**
+     * $path から URL を取得する.
+     *
+     * 以下の順序で 引数 $path から URL を取得する.
+     * 1. realpath($path) で $path の 絶対パスを取得
+     * 2. $_SERVER['DOCUMENT_ROOT'] と一致する文字列を削除
+     * 3. $useSSL の値に応じて, SITE_URL 又は, SSL_URL を付与する.
+     *
+     * 返り値に, QUERY_STRING を含めたい場合は, key => value 形式
+     * の配列を $param へ渡す.
+     *
+     * @param string $path 結果を取得するためのパス
+     * @param array $param URL に付与するパラメータの配列
+     * @param boolean $useSSL 結果に SSL_URL を使用する場合 true,
+     * 				           SITE_URL を使用する場合 false,
+     * 						   デフォルト false
+     * @param string $documentRoot DocumentRoot の文字列. 指定しない場合は,
+     *                              $_SERVER['DOCUMENT_ROOT'] が付与される.
+     * @return string $path の存在する http(s):// から始まる絶対パス
+     */
+    function getLocation($path, $param = array(), $useSSL = false, $documentRoot = "") {
+
+        if (empty($documentRoot)) {
+            $documentRoot = $_SERVER['DOCUMENT_ROOT'];
+        }
+        // DocumentRoot を削除した文字列を取得.
+        $root = str_replace($documentRoot, "", realpath($path));
+        // 先頭の / を削除
+        $root = substr_replace($root, "", 0, 1);
+
+        if ($useSSL) {
+            $url = SSL_URL . $root;
+        } else {
+            $url = SITE_URL . $root;
+        }
+
+        // QUERY_STRING 生成
+        $queryString = "";
+        $i = count($param);
+        foreach ($param as $key => $val) {
+            $queryString .= $key . "=" . $val;
+
+            if ($i > 1) {
+                $queryString .= "&";
+            }
+            $i--;
+        }
+
+        // QUERY_STRING が存在する場合は付与して返す.
+        if (empty($queryString)) {
+            return $url;
+        } else {
+            return $url . "?" . $queryString;
+        }
     }
 
     // }}}
