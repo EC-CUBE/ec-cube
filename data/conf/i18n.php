@@ -17,10 +17,8 @@ case 'ko-kr':
     break;
 case 'en':
 case 'en-us':
-    $language = 'en';
-    break;
 default:
-    $language = 'C';
+    $language = 'en';
     break;
 }
 $text = file_get_contents(LOCALE_DIR . $language . '.html');
