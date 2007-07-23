@@ -9,6 +9,6 @@ php_flag magic_quotes_gpc 0
 
 // 国際化用
 php_value mbstring.detect_order auto
-php_value mbstring.encoding_translation Off
+#php_value mbstring.encoding_translation Off
 php_value tring.http_output UTF-8
 php_value mbstring.internal_encoding UTF-8
