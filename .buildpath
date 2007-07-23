@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<classpath>
+	<classpathentry path="" kind="src"/>
+	<classpathentry path="org.trustudio.php.launching.PHP_CONTAINER" kind="con"/>
+	<classpathentry path="" kind="output"/>
+</classpath>
