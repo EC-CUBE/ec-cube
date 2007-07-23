@@ -316,7 +316,7 @@ class SC_Utils {
 
     /* エラーページの表示 */
     function sfDispError($type) {
-
+// FIXME
 //        class LC_ErrorPage {
 //            function LC_ErrorPage() {
 //                $this->tpl_mainpage = 'login_error.tpl';
@@ -359,7 +359,7 @@ class SC_Utils {
         if ($objSiteSess != "") {
             $objSiteSess->setNowPage('error');
         }
-
+// FIXME
 //        class LC_ErrorPage {
 //            function LC_ErrorPage() {
 //                $this->tpl_mainpage = 'error.tpl';
