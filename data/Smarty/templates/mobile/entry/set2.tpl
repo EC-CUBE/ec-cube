@@ -39,7 +39,7 @@
 
 	【メールマガジン】<br>
 	お得な情報を希望されますか？<br>
-	配信希望<input type="checkbox" name="mailmaga_flg" value="on" <!--{if $mailmaga_flg eq 'on'}-->checked<!--{/if}--> /><br>
+	配信希望<input type="checkbox" name="mailmaga_flg" value="on" <!--{if $mailmaga_flg eq 'on' || $mailmaga_flg == 2}-->checked<!--{/if}--> /><br>
 	（希望されない場合はチェックをはずしてください）<br>
 	<br>
 
