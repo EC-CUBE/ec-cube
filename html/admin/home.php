@@ -199,7 +199,7 @@ function lfGetNewOrder() {
 // お知らせ取得
 function lfGetInfo() {
 	// 更新情報を最新にする
-	$objQuery = new SC_Query();
+	#$objQuery = new SC_Query();
 	$path = UPDATE_HTTP . "info.txt";
 	$fp = @fopen($path, "rb");
 	
@@ -208,7 +208,12 @@ function lfGetInfo() {
 		sfErrorHeader(">> " . $path . "の取得に失敗しました。");
 	} else {
 		while (!feof($fp)) {
-			$arrRet[] = $arrCSV = fgetcsv($fp, UPDATE_CSV_LINE_MAX);
+			#$arrRet[] = $arrCSV = fgetcsv($fp, UPDATE_CSV_LINE_MAX);
+			$arrCSV = fgetcsv($fp, UPDATE_CSV_LINE_MAX);
+			foreach ($arrCSV AS $key=>$val) {
+				$tmp[$key] = mb_convert_encoding($val, CHAR_CODE, 'EUC-JP');
+			}
+			$arrRet[] = $tmp;
 		}
 		fclose($fp);
 	}
