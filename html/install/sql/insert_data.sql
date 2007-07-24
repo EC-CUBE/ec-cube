@@ -3,7 +3,7 @@ CREATE INDEX dtb_products_class_product_id_key ON dtb_products_class(product_id)
 CREATE INDEX dtb_order_detail_product_id_key ON dtb_order_detail(product_id);
 CREATE INDEX dtb_category_category_id_key ON dtb_category(category_id);
 
-INSERT INTO dtb_member (name, login_id, password, creator_id, authority, work, del_flg, create_date, update_date) 
+INSERT INTO dtb_member (name, login_id, password, creator_id, authority, work, del_flg, create_date, update_date)
 VALUES ('dummy','dummy',' ',0,0,1,1, now(), now());
 
 insert into dtb_bloc ( bloc_name, tpl_path, filename, php_path, del_flg, create_date, update_date ) values ('カテゴリ',	'include/bloc/category.tpl', 'category','frontparts/bloc/category.php', 1, now(), now());
@@ -244,7 +244,7 @@ http://------.co.jp
 
 ',0,Now(), now());
 
-insert into dtb_news (news_date,rank, news_title, news_comment, creator_id, create_date, update_date) 
+insert into dtb_news (news_date,rank, news_title, news_comment, creator_id, create_date, update_date)
 values(now(),1,'サイトオープンいたしました!','一人暮らしからオフィスなどさまざまなシーンで あなたの生活をサポートするグッズをご家庭へお届けします！一人暮らしからオフィスなどさまざまなシーンで あなたの生活をサポートするグッズをご家庭へお届けします！一人暮らしからオフィスなどさまざまなシーンで あなたの生活をサポートするグッズをご家庭へお届けします！',1, now(), now());
 
 INSERT INTO dtb_deliv (name,service_name,confirm_url,rank,status,del_flg,creator_id,create_date,update_date)
@@ -306,7 +306,7 @@ INSERT INTO dtb_payment (payment_method,charge,rule,deliv_id,rank,note,fix,statu
 INSERT INTO dtb_payment (payment_method,charge,rule,deliv_id,rank,note,fix,status,del_flg,creator_id,create_date,update_date,payment_image,upper_rule) VALUES ('銀行振込', 0, NULL, 1, 2, NULL, 2, 1, 0, 1, now(), now(), NULL, NULL);
 INSERT INTO dtb_payment (payment_method,charge,rule,deliv_id,rank,note,fix,status,del_flg,creator_id,create_date,update_date,payment_image,upper_rule) VALUES ('代金引換', 0, NULL, 1, 1, NULL, 2, 1, 0, 1, now(), now(), NULL, NULL);
 
-INSERT INTO dtb_products (name,deliv_fee,sale_limit,sale_unlimited,category_id,rank,status,product_flag,point_rate,comment1,comment2,comment3,comment4,comment5,comment6,file1,file2,file3,file4,file5,file6,main_list_comment,main_list_image,main_comment,main_image,main_large_image,sub_title1,sub_comment1,sub_image1,sub_large_image1,sub_title2,sub_comment2,sub_image2,sub_large_image2,sub_title3,sub_comment3,sub_image3,sub_large_image3,sub_title4,sub_comment4,sub_image4,sub_large_image4,sub_title5,sub_comment5,sub_image5,sub_large_image5,sub_title6,sub_comment6,sub_image6,sub_large_image6,del_flg,creator_id,create_date,update_date,deliv_date_id) 
+INSERT INTO dtb_products (name,deliv_fee,sale_limit,sale_unlimited,category_id,rank,status,product_flag,point_rate,comment1,comment2,comment3,comment4,comment5,comment6,file1,file2,file3,file4,file5,file6,main_list_comment,main_list_image,main_comment,main_image,main_large_image,sub_title1,sub_comment1,sub_image1,sub_large_image1,sub_title2,sub_comment2,sub_image2,sub_large_image2,sub_title3,sub_comment3,sub_image3,sub_large_image3,sub_title4,sub_comment4,sub_image4,sub_large_image4,sub_title5,sub_comment5,sub_image5,sub_large_image5,sub_title6,sub_comment6,sub_image6,sub_large_image6,del_flg,creator_id,create_date,update_date,deliv_date_id)
 VALUES ('アイスクリーム', NULL, NULL, 1, 5, 1, 1, '10010', 10, NULL, NULL, 'アイス,バニラ,チョコ,抹茶', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '暑い夏にどうぞ。', '08311201_44f65122ee5fe.jpg', '冷たいものはいかがですか？', '08311202_44f6515906a41.jpg', '08311203_44f651959bcb5.jpg', NULL, '<b>おいしいよ<b>', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0, 2, now(), now(), 2);
 INSERT INTO dtb_products (name,deliv_fee,sale_limit,sale_unlimited,category_id,rank,status,product_flag,point_rate,comment1,comment2,comment3,comment4,comment5,comment6,file1,file2,file3,file4,file5,file6,main_list_comment,main_list_image,main_comment,main_image,main_large_image,sub_title1,sub_comment1,sub_image1,sub_large_image1,sub_title2,sub_comment2,sub_image2,sub_large_image2,sub_title3,sub_comment3,sub_image3,sub_large_image3,sub_title4,sub_comment4,sub_image4,sub_large_image4,sub_title5,sub_comment5,sub_image5,sub_large_image5,sub_title6,sub_comment6,sub_image6,sub_large_image6,del_flg,creator_id,create_date,update_date,deliv_date_id)
 VALUES ('おなべ', NULL, 5, NULL, 4, 1, 1, '11001', 5, NULL, NULL, '鍋,なべ,ナベ', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '一人用からあります。', '08311311_44f661811fec0.jpg', 'たまには鍋でもどうでしょう。', '08311313_44f661dc649fb.jpg', '08311313_44f661e5698a6.jpg', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0, 2, now(), now(), 3);
@@ -316,7 +316,7 @@ VALUES (1, 3, 6, 'ice-01', NULL, 1, NULL, 150, 120, NULL, 2, now(), now());
 DELETE FROM dtb_products_class;
 INSERT INTO dtb_products_class (product_id,classcategory_id1,classcategory_id2,product_code,stock,stock_unlimited,sale_limit,price01,price02,status,creator_id,create_date,update_date)
 VALUES (1, 3, 6, 'ice-01', NULL, 1, NULL, 150, 120, NULL, 2, now(), now());
-INSERT INTO dtb_products_class (product_id,classcategory_id1,classcategory_id2,product_code,stock,stock_unlimited,sale_limit,price01,price02,status,creator_id,create_date,update_date) 
+INSERT INTO dtb_products_class (product_id,classcategory_id1,classcategory_id2,product_code,stock,stock_unlimited,sale_limit,price01,price02,status,creator_id,create_date,update_date)
 VALUES (1, 3, 5, 'ice-01', NULL, 1, NULL, 150, 120, NULL, 2, now(), now());
 INSERT INTO dtb_products_class (product_id,classcategory_id1,classcategory_id2,product_code,stock,stock_unlimited,sale_limit,price01,price02,status,creator_id,create_date,update_date)
 VALUES (1, 3, 4, 'ice-01', NULL, 1, NULL, 150, 120, NULL, 2, now(), now());
@@ -347,7 +347,7 @@ INSERT INTO dtb_classcategory (name,class_id,status,rank,creator_id,create_date,
 INSERT INTO dtb_classcategory (name,class_id,status,rank,creator_id,create_date,update_date,del_flg) VALUES ('M', 2, NULL, 2, 2, now(), now(), 0);
 INSERT INTO dtb_classcategory (name,class_id,status,rank,creator_id,create_date,update_date,del_flg) VALUES ('S', 2, NULL, 3, 2, now(), now(), 0);
 
-INSERT INTO dtb_classcategory (classcategory_id, class_id, rank, creator_id, create_date, update_date) 
+INSERT INTO dtb_classcategory (classcategory_id, class_id, rank, creator_id, create_date, update_date)
 VALUES (0, 0, 0, 0, now(), now());
 UPDATE dtb_classcategory SET classcategory_id = 0 WHERE class_id = 0;
 
@@ -366,13 +366,13 @@ INSERT INTO dtb_category_total_count VALUES (2, NULL, now());
 INSERT INTO dtb_category_total_count VALUES (5, 1, now());
 INSERT INTO dtb_category_total_count VALUES (4, 1, now());
 
-INSERT INTO dtb_kiyaku (kiyaku_title, kiyaku_text, rank, creator_id, update_date, del_flg, create_date) 
+INSERT INTO dtb_kiyaku (kiyaku_title, kiyaku_text, rank, creator_id, update_date, del_flg, create_date)
 VALUES ('第1条（会員）','1. 「会員」とは、当社が定める手続に従い本規約に同意の上、入会の申し込みを行う個人をいいます。
 2. 「会員情報」とは、会員が当社に開示した会員の属性に関する情報および会員の取引に関する履歴等の情報をいいます。
 3. 本規約は、すべての会員に適用され、登録手続時および登録後にお守りいただく規約です。',
 12,0,Now(),0, now());
 
-INSERT INTO dtb_kiyaku (kiyaku_title, kiyaku_text, rank, creator_id, update_date, del_flg, create_date) 
+INSERT INTO dtb_kiyaku (kiyaku_title, kiyaku_text, rank, creator_id, update_date, del_flg, create_date)
 VALUES ('第2条（登録）','1. 会員資格
 本規約に同意の上、所定の入会申込みをされたお客様は、所定の登録手続完了後に会員としての資格を有します。会員登録手続は、会員となるご本人が行ってください。代理による登録は一切認められません。なお、過去に会員資格が取り消された方やその他当社が相応しくないと判断した方からの会員申込はお断りする場合があります。
 
@@ -385,16 +385,16 @@ VALUES ('第2条（登録）','1. 会員資格
 (3)パスワードを用いて当社に対して行われた意思表示は、会員本人の意思表示とみなし、そのために生じる支払等はすべて会員の責任となります。',
 11,0,Now(),0, now());
 
-INSERT INTO dtb_kiyaku (kiyaku_title, kiyaku_text, rank, creator_id, update_date, del_flg, create_date) 
+INSERT INTO dtb_kiyaku (kiyaku_title, kiyaku_text, rank, creator_id, update_date, del_flg, create_date)
 VALUES ('第3条（変更）','1. 会員は、氏名、住所など当社に届け出た事項に変更があった場合には、速やかに当社に連絡するものとします。
 2. 変更登録がなされなかったことにより生じた損害について、当社は一切責任を負いません。また、変更登録がなされた場合でも、変更登録前にすでに手続がなされた取引は、変更登録前の情報に基づいて行われますのでご注意ください。',
 10,0,Now(),0, now());
 
-INSERT INTO dtb_kiyaku (kiyaku_title, kiyaku_text, rank, creator_id, update_date, del_flg, create_date) 
+INSERT INTO dtb_kiyaku (kiyaku_title, kiyaku_text, rank, creator_id, update_date, del_flg, create_date)
 VALUES ('第4条（退会）','会員が退会を希望する場合には、会員本人が退会手続きを行ってください。所定の退会手続の終了後に、退会となります。',
 9,0,Now(),0, now());
 
-INSERT INTO dtb_kiyaku (kiyaku_title, kiyaku_text, rank, creator_id, update_date, del_flg, create_date) 
+INSERT INTO dtb_kiyaku (kiyaku_title, kiyaku_text, rank, creator_id, update_date, del_flg, create_date)
 VALUES ('第5条（会員資格の喪失及び賠償義務）','1. 会員が、会員資格取得申込の際に虚偽の申告をしたとき、通信販売による代金支払債務を怠ったとき、その他当社が会員として不適当と認める事由があるときは、当社は、会員資格を取り消すことができることとします。
 2. 会員が、以下の各号に定める行為をしたときは、これにより当社が被った損害を賠償する責任を負います。
 (1)会員番号、パスワードを不正に利用すること
@@ -403,7 +403,7 @@ VALUES ('第5条（会員資格の喪失及び賠償義務）','1. 会員が、�
 (4)その他、この利用規約に反する行為をすること',
 8,0,Now(),0, now());
 
-INSERT INTO dtb_kiyaku (kiyaku_title, kiyaku_text, rank, creator_id, update_date, del_flg, create_date) 
+INSERT INTO dtb_kiyaku (kiyaku_title, kiyaku_text, rank, creator_id, update_date, del_flg, create_date)
 VALUES ('第6条（会員情報の取扱い）','1. 当社は、原則として会員情報を会員の事前の同意なく第三者に対して開示することはありません。ただし、次の各号の場合には、会員の事前の同意なく、当社は会員情報その他のお客様情報を開示できるものとします。
 (1)法令に基づき開示を求められた場合
 (2)当社の権利、利益、名誉等を保護するために必要であると当社が判断した場合
@@ -411,7 +411,7 @@ VALUES ('第6条（会員情報の取扱い）','1. 当社は、原則として�
 3. 当社は、会員に対して、メールマガジンその他の方法による情報提供（広告を含みます）を行うことができるものとします。会員が情報提供を希望しない場合は、当社所定の方法に従い、その旨を通知して頂ければ、情報提供を停止します。ただし、本サービス運営に必要な情報提供につきましては、会員の希望により停止をすることはできません。',
 7,0,Now(),0, now());
 
-INSERT INTO dtb_kiyaku (kiyaku_title, kiyaku_text, rank, creator_id, update_date, del_flg, create_date) 
+INSERT INTO dtb_kiyaku (kiyaku_title, kiyaku_text, rank, creator_id, update_date, del_flg, create_date)
 VALUES ('第7条（禁止事項）','本サービスの利用に際して、会員に対し次の各号の行為を行うことを禁止します。
 
 1. 法令または本規約、本サービスご利用上のご注意、本サービスでのお買い物上のご注意その他の本規約等に違反すること
@@ -425,7 +425,7 @@ VALUES ('第7条（禁止事項）','本サービスの利用に際して、会�
 9. その他当社が不適切と判断すること',
 6,0,Now(),0, now());
 
-INSERT INTO dtb_kiyaku (kiyaku_title, kiyaku_text, rank, creator_id, update_date, del_flg, create_date) 
+INSERT INTO dtb_kiyaku (kiyaku_title, kiyaku_text, rank, creator_id, update_date, del_flg, create_date)
 VALUES ('第8条（サービスの中断・停止等）','1. 当社は、本サービスの稼動状態を良好に保つために、次の各号の一に該当する場合、予告なしに、本サービスの提供全てあるいは一部を停止することがあります。
 (1)システムの定期保守および緊急保守のために必要な場合
 (2)システムに負荷が集中した場合
@@ -433,20 +433,68 @@ VALUES ('第8条（サービスの中断・停止等）','1. 当社は、本サ�
 (4)その他、止むを得ずシステムの停止が必要と当社が判断した場合',
 5,0,Now(),0, now());
 
-INSERT INTO dtb_kiyaku (kiyaku_title, kiyaku_text, rank, creator_id, update_date, del_flg, create_date) 
+INSERT INTO dtb_kiyaku (kiyaku_title, kiyaku_text, rank, creator_id, update_date, del_flg, create_date)
 VALUES ('第9条（サービスの変更・廃止）','当社は、その判断によりサービスの全部または一部を事前の通知なく、適宜変更・廃止できるものとします。',
 4,0,Now(),0, now());
 
-INSERT INTO dtb_kiyaku (kiyaku_title, kiyaku_text, rank, creator_id, update_date, del_flg, create_date) 
+INSERT INTO dtb_kiyaku (kiyaku_title, kiyaku_text, rank, creator_id, update_date, del_flg, create_date)
 VALUES ('第10条（免責）','1. 通信回線やコンピュータなどの障害によるシステムの中断・遅滞・中止・データの消失、データへの不正アクセスにより生じた損害、その他当社のサービスに関して会員に生じた損害について、当社は一切責任を負わないものとします。
 2. 当社は、当社のウェブページ・サーバ・ドメインなどから送られるメール・コンテンツに、コンピュータ・ウィルスなどの有害なものが含まれていないことを保証いたしません。
 3. 会員が本規約等に違反したことによって生じた損害については、当社は一切責任を負いません。',
 3,0,Now(),0, now());
 
-INSERT INTO dtb_kiyaku (kiyaku_title, kiyaku_text, rank, creator_id, update_date, del_flg, create_date) 
+INSERT INTO dtb_kiyaku (kiyaku_title, kiyaku_text, rank, creator_id, update_date, del_flg, create_date)
 VALUES ('第11条（本規約の改定）','当社は、本規約を任意に改定できるものとし、また、当社において本規約を補充する規約（以下「補充規約」といいます）を定めることができます。本規約の改定または補充は、改定後の本規約または補充規約を当社所定のサイトに掲示したときにその効力を生じるものとします。この場合、会員は、改定後の規約および補充規約に従うものと致します。',
 2,0,Now(),0, now());
 
-INSERT INTO dtb_kiyaku (kiyaku_title, kiyaku_text, rank, creator_id, update_date, del_flg, create_date) 
+INSERT INTO dtb_kiyaku (kiyaku_title, kiyaku_text, rank, creator_id, update_date, del_flg, create_date)
 VALUES ('第12条（準拠法、管轄裁判所）','本規約に関して紛争が生じた場合、当社本店所在地を管轄する地方裁判所を第一審の専属的合意管轄裁判所とします。 ',
 1,0,Now(),0, now());
+
+INSERT INTO mtb_pref (pref_id, pref_name, rank) VALUES ('1', '北海道', '1');
+INSERT INTO mtb_pref (pref_id, pref_name, rank) VALUES ('2', '青森県', '2');
+INSERT INTO mtb_pref (pref_id, pref_name, rank) VALUES ('3', '岩手県', '3');
+INSERT INTO mtb_pref (pref_id, pref_name, rank) VALUES ('4', '宮城県', '4');
+INSERT INTO mtb_pref (pref_id, pref_name, rank) VALUES ('5', '秋田県', '5');
+INSERT INTO mtb_pref (pref_id, pref_name, rank) VALUES ('6', '山形県', '6');
+INSERT INTO mtb_pref (pref_id, pref_name, rank) VALUES ('7', '福島県', '7');
+INSERT INTO mtb_pref (pref_id, pref_name, rank) VALUES ('8', '茨城県', '8');
+INSERT INTO mtb_pref (pref_id, pref_name, rank) VALUES ('9', '栃木県', '9');
+INSERT INTO mtb_pref (pref_id, pref_name, rank) VALUES ('10', '群馬県', '10');
+INSERT INTO mtb_pref (pref_id, pref_name, rank) VALUES ('11', '埼玉県', '11');
+INSERT INTO mtb_pref (pref_id, pref_name, rank) VALUES ('12', '千葉県', '12');
+INSERT INTO mtb_pref (pref_id, pref_name, rank) VALUES ('13', '東京都', '13');
+INSERT INTO mtb_pref (pref_id, pref_name, rank) VALUES ('14', '神奈川県', '14');
+INSERT INTO mtb_pref (pref_id, pref_name, rank) VALUES ('15', '新潟県', '15');
+INSERT INTO mtb_pref (pref_id, pref_name, rank) VALUES ('16', '富山県', '16');
+INSERT INTO mtb_pref (pref_id, pref_name, rank) VALUES ('17', '石川県', '17');
+INSERT INTO mtb_pref (pref_id, pref_name, rank) VALUES ('18', '福井県', '18');
+INSERT INTO mtb_pref (pref_id, pref_name, rank) VALUES ('19', '山梨県', '19');
+INSERT INTO mtb_pref (pref_id, pref_name, rank) VALUES ('20', '長野県', '20');
+INSERT INTO mtb_pref (pref_id, pref_name, rank) VALUES ('21', '岐阜県', '21');
+INSERT INTO mtb_pref (pref_id, pref_name, rank) VALUES ('22', '静岡県', '22');
+INSERT INTO mtb_pref (pref_id, pref_name, rank) VALUES ('23', '愛知県', '23');
+INSERT INTO mtb_pref (pref_id, pref_name, rank) VALUES ('24', '三重県', '24');
+INSERT INTO mtb_pref (pref_id, pref_name, rank) VALUES ('25', '滋賀県', '25');
+INSERT INTO mtb_pref (pref_id, pref_name, rank) VALUES ('26', '京都府', '26');
+INSERT INTO mtb_pref (pref_id, pref_name, rank) VALUES ('27', '大阪府', '27');
+INSERT INTO mtb_pref (pref_id, pref_name, rank) VALUES ('28', '兵庫県', '28');
+INSERT INTO mtb_pref (pref_id, pref_name, rank) VALUES ('29', '奈良県', '29');
+INSERT INTO mtb_pref (pref_id, pref_name, rank) VALUES ('30', '和歌山県', '30');
+INSERT INTO mtb_pref (pref_id, pref_name, rank) VALUES ('31', '鳥取県', '31');
+INSERT INTO mtb_pref (pref_id, pref_name, rank) VALUES ('32', '島根県', '32');
+INSERT INTO mtb_pref (pref_id, pref_name, rank) VALUES ('33', '岡山県', '33');
+INSERT INTO mtb_pref (pref_id, pref_name, rank) VALUES ('34', '広島県', '34');
+INSERT INTO mtb_pref (pref_id, pref_name, rank) VALUES ('35', '山口県', '35');
+INSERT INTO mtb_pref (pref_id, pref_name, rank) VALUES ('36', '徳島県', '36');
+INSERT INTO mtb_pref (pref_id, pref_name, rank) VALUES ('37', '香川県', '37');
+INSERT INTO mtb_pref (pref_id, pref_name, rank) VALUES ('38', '愛媛県', '38');
+INSERT INTO mtb_pref (pref_id, pref_name, rank) VALUES ('39', '高知県', '39');
+INSERT INTO mtb_pref (pref_id, pref_name, rank) VALUES ('40', '福岡県', '40');
+INSERT INTO mtb_pref (pref_id, pref_name, rank) VALUES ('41', '佐賀県', '41');
+INSERT INTO mtb_pref (pref_id, pref_name, rank) VALUES ('42', '長崎県', '42');
+INSERT INTO mtb_pref (pref_id, pref_name, rank) VALUES ('43', '熊本県', '43');
+INSERT INTO mtb_pref (pref_id, pref_name, rank) VALUES ('44', '大分県', '44');
+INSERT INTO mtb_pref (pref_id, pref_name, rank) VALUES ('45', '宮崎県', '45');
+INSERT INTO mtb_pref (pref_id, pref_name, rank) VALUES ('46', '鹿児島県', '46');
+INSERT INTO mtb_pref (pref_id, pref_name, rank) VALUES ('47', '沖縄県', '47');
