@@ -1,18 +1,20 @@
 <?php
-require_once('LLReader/Util.php');
-//require_once('LLReader/Constant.php');
+require_once('PLLagger/Util.php');
+//require_once('PLLgger/Constant.php');
 
-class LLReader {
+class PLLagger {
     private $config;
     private $plugins;
     private $feeds;
     private $update_feeds;
+    private $corrent_phase;
     
     public function __construct($config){
         $this->config  = $config;
         $this->plugins = array();
         $this->feeds   = array();
-        $this->update_feeds = array();
+        $this->update_feeds  = array();
+        $this->corrent_phase = 'Init';
     }
     
     public function run () {
@@ -25,6 +27,7 @@ class LLReader {
         );
         
         foreach ( $phases as $phase ) {
+            $this->corrent_phase = $phase;
             $plugins = $this->get_plugins($phase);
             
             foreach ( $plugins as $plugin ) {
@@ -35,7 +38,7 @@ class LLReader {
     
     private function load_plugins () {
         foreach ($this->config['plugins'] as $name => $config) {
-            $class   = 'LLReader_Plugin_' . $name;
+            $class   = 'PLLagger_Plugin_' . $name;
             $include = preg_replace('/_/', '/', $class) . '.php';
             $ret     = include_once($include);
             
@@ -64,11 +67,11 @@ class LLReader {
     }
     
     public function log ($msg) {
-        LLReader_Util::log($msg);
+        PLLagger_Util::log($this->corrent_phase, $msg);
     }
     
     public function p ($var) {
-        LLReader_Util::p($var);
+        PLLagger_Util::p($var);
     }
     
     public function _die ($msg) {
@@ -92,6 +95,10 @@ class LLReader {
     
     public function add_feed ($feed) {
         $this->feeds[] = $feed;
+    }
+    
+    public function update_feed ($feed) {
+    
     }
 }
 ?>

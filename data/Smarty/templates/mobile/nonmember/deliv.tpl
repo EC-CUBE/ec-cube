@@ -18,11 +18,8 @@
 <form method="post" action="<!--{$smarty.server.PHP_SELF|escape}-->">
 <input type="hidden" name="uniqid" value="<!--{$tpl_uniqid}-->">
 <input type="hidden" name="deli" value="<!--{$smarty.section.cnt.iteration}-->">
-<!--{if $smarty.section.cnt.first}-->
 <input type="hidden" name="mode" value="customer_addr">
-<input type="hidden" name="other_deliv_id" value="">
-<!--{else}-->
-<input type="hidden" name="mode" value="other_addr">
+
 <input type="hidden" name="other_deliv_id" value="<!--{$arrAddr[cnt].other_deliv_id}-->">
 <!--{/if}-->
 ■配送先<!--{$smarty.section.cnt.iteration}--><br>
@@ -39,6 +36,7 @@
 
 ■その他のお届け先を指定<br>
 <form method="get" action="deliv_addr.php">
+<input type="hidden" name="mode" value="other_addr">
 <center><input type="submit" value="新規登録"></center>
 </form>
 <!--▲CONTENTS-->

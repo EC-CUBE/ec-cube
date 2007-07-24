@@ -111,6 +111,9 @@ case 'confirm':
     // セッション情報を保持
     $arrData['session'] = serialize($_SESSION);
     	
+    // セッション情報を保持
+    $arrData['session'] = serialize($_SESSION);
+    
 	// 集計結果を受注一時テーブルに反映
 	sfRegistTempOrder($uniqid, $arrData);
 	// 正常に登録されたことを記録しておく

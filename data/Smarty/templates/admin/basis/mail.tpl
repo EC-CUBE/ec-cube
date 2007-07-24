@@ -106,15 +106,12 @@ function lfnCheckSubmit(){
 										<td bgcolor="#f2f1ec">メール形式<span class="red"> *</span></td>
 										<td bgcolor="#ffffff">
 										<!--{assign var=key value="send_type"}-->
-										<!--{if $arrForm.template_id > 1}-->
-										<!--{html_radios_ex name="send_type" options=$arrSendType separator="&nbsp;" selected=$arrForm[$key]}-->
-										<!--{else}-->
-											<!--{if $arrForm.template_id=='0'}-->
+										<!--{if $arrForm.template_id == 1}-->
 											<input type="radio" name="send_type" value="0" id="send_type_0" checked="checked" /><label for="send_type_0">パソコン</label>&nbsp;
-											<!--{else}-->
+										<!--{elseif $arrForm.template_id == 2}-->
 											<input type="radio" name="send_type" value="1" id="send_type_1" checked="checked" /><label for="send_type_1">携帯</label>&nbsp;
-											<!--{/if}-->
-											<!--{* <!--{html_radios_ex name="send_type" options=$arrSendType separator="&nbsp;" selected=$arrForm[$key]}--> *}-->
+										<!--{else}-->
+											<!--{html_radios_ex name="send_type" options=$arrSendType separator="&nbsp;" selected=$arrForm[$key]}-->
 										<!--{/if}-->
 										</td>
 									</tr>

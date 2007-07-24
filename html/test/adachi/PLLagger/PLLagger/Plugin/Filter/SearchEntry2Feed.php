@@ -1,38 +1,42 @@
 <?php
 
-require_once('LLReader/Plugin.php');
+require_once('PLLagger/Plugin.php');
 
-class LLReader_Plugin_Filter_SearchEntry2Feed extends LLReader_Plugin {
-    public function execute ($llr) {
+class PLLagger_Plugin_Filter_SearchEntry2Feed extends PLLagger_Plugin {
+    public function execute ($pll) {
         $config = $this->get_config();
-        $maches_entries = array();
         
-        $feeds = $llr->get_feeds();
+        $feeds = $pll->get_feeds();
         foreach ( $feeds as $feed ) {
+            $hits = array();
             
+            // because a lot of 'Notice' occured...
             $err_rep = ini_get('error_reporting');
             error_reporting(E_ALL ^ E_NOTICE);
             
             foreach ( $feed as $entry ) {
                 
                 $pattern = mb_convert_encoding($config['regex'], 'UTF-8', 'EUC-JP, SJIS, UTF-8');
-                if ( preg_match_all($pattern , $entry->title, $maches) ) {
-                    $maches_entries[] = $entry;
-                    $llr->log(mb_convert_encoding($feed->title,  'EUC-JP', 'UTF-8')
-                             . ':' . mb_convert_encoding($entry->title, 'EUC-JP', 'UTF-8'));
+                if ( preg_match_all($pattern , $entry->title, $matches) ) {
+                    $hits[] = $entry;
+                    //$pll->log(mb_convert_encoding($feed->title,  'EUC-JP', 'UTF-8')
+                    //         . ':' . mb_convert_encoding($entry->title, 'EUC-JP', 'UTF-8'));
                 }
-                else {
-                    
-                } 
             }
             
             error_reporting($err_rep);
+            
+            $count = count($hits);
+            $pll->log('[Filter_SearchEntry2Feed] ' . $feed->title . " : $count entries hit");
+            
+            if ( $count > 0 ) {
+                $pll->update_feed($this->create_feed($pll, $feed, $hits));
+            }
         }
-        //new LLReader_Feed($maches_entries[0]->__toString());
-        //$llr->p(mb_convert_encoding($maches_entries[0]->title, 'EUC-JP', 'UTF-8'));
     }
     
-    private function entry2feed ($llr, $feed, $entries) {
+    private function create_feed ($pll, $feed, $entries) {
+        return ;
         $output = "<?xml version=\"1.0\"?>
                     <rss version=\"2.0\">
                         <channel>
@@ -56,7 +60,7 @@ class LLReader_Plugin_Filter_SearchEntry2Feed extends LLReader_Plugin {
                         </item>";
         }
         
-        return new LLReader_Feed($output);
+        return new PLLagger_Feed($output);
     }
 }
 

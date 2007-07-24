@@ -60,7 +60,7 @@ $objView->assignobj($objPage);		//変数をテンプレートにアサインする
 $objView->display(MAIN_FRAME);		//テンプレートの出力
 //-------------------------------------------------------------------------------------------------------
 // 更新ファイルの取得
-function lfCopyUpdateFile($file) {
+function lfCopyUpdateFile($file, $icon = false) {
 	global $objPage;
 	
 	$src_path = sfRmDupSlash(UPDATE_HTTP . $file . ".txt");
@@ -92,7 +92,9 @@ function lfCopyUpdateFile($file) {
 			fclose($dst_fp);
 		}
 	}
-	
+    
+	if($icon === true) return $flg_ok;
+    
 	if($flg_ok) {
 		$objPage->update_mess.= ">> " . $dst_path . "：コピー成功<br>";
 	} else {
@@ -170,6 +172,8 @@ function lfLoadUpdateList() {
 					$sqlval['release_date'] = $arrCSV[12];
 					$sqlval['module_x'] = $arrCSV[14];
 					$sqlval['module_y'] = $arrCSV[15];
+                    $sqlval['icon'] = $arrCSV[16];
+                    $sqlval['url'] = $arrCSV[17];
 					// モジュールが対応している本体のバージョン
 					$sqlval['eccube_version'] = $arrCSV[13];					
 					// 既存レコードのチェック
@@ -182,6 +186,10 @@ function lfLoadUpdateList() {
 						$sqlval['create_date'] = "now()";
 						$objQuery->insert("dtb_module", $sqlval);
 					}
+                    // アイコンファイルのダウンロード
+                    if ( !empty($arrCSV[16]) ) {
+                        lfCopyUpdateFile($arrCSV[16], true);
+                    }
 			} else {
 				sfErrorHeader(">> カラム数が一致しません。：".count($arrCSV));
 			}
@@ -227,7 +235,7 @@ function lfInstallModule() {
 	} else {
 		sfErrorHeader(">> 対象の機能は、配布を終了しております。");
 		$flg_ok = false;
-	}
+	} 
 	
 	// 必要なSQL文の実行
 	if($arrRet[0]['install_sql'] != "") {
@@ -249,9 +257,10 @@ function lfInstallModule() {
 		}
 	}
 	
-	if($flg_ok) {		
+	if($flg_ok) {
 		$path = MODULE_PATH . $arrRet[0]['extern_php'];
 		$sqlval['now_version'] = sfGetFileVersion($path);
+        
 		$sqlval['update_date'] = "now()";
 		$objQuery->update("dtb_module", $sqlval, "module_id = ?", array($arrRet[0]['module_id']));
 	}

@@ -68,10 +68,12 @@ if (!empty($_POST['return'])) {
 		// 正常な推移であることを記録しておく
 		$objSiteSess->setRegistFlag();
 		//header("Location: " . gfAddSessionId(MOBILE_URL_SHOP_TOP));
-        header("Location: " . gfAddSessionId('../shopping/index.php'));
+        header("Location: " . gfAddSessionId('../nonmember/deliv.php'));
 		exit;
+//        $_POST['mode'] = "deliv_date";
 	}
 }
+
 switch($_POST['mode']) {
 // 支払い方法指定 → 配達日時指定
 case 'deliv_date':

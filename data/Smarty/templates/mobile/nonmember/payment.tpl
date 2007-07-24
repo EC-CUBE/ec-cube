@@ -31,7 +31,7 @@
 <!--{/section}-->
 
 <center><input type="submit" value="¼¡¤Ø"></center>
-<!--<center><input type="submit" name="return" value="Ìá¤ë"></center>-->
+<center><input type="submit" name="return" value="Ìá¤ë"></center>
 </form>
 
 <br>

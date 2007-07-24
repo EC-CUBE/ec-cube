@@ -94,7 +94,7 @@ define("UPDATE_CSV_LINE_MAX", 4096);
 // アップデート管理用CSVカラム数
 define("UPDATE_CSV_COL_MAX", 13);
 // モジュール管理用CSVカラム数
-define("MODULE_CSV_COL_MAX", 16);
+define("MODULE_CSV_COL_MAX", 18);
 // モジュール管理用CSVファイル
 define("MODULE_CSV", "module.txt");
 //--------------------------------------------------------------------------------------------------------
@@ -119,7 +119,7 @@ define("CREDIT_HTTP_ANALYZE_URL", CREDIT_HTTP_DOMAIN . CREDIT_HTTP_ANALYZE_PROGR
 define("CHAR_CODE", "EUC-JP");
 
 // EC-CUBEバージョン情報
-define("ECCUBE_VERSION", "1.4.1-beta");
+define("ECCUBE_VERSION", "1.4.2-beta");
 
 // 決済モジュール付与文言
 define("ECCUBE_PAYMENT", "EC-CUBE");
@@ -189,7 +189,7 @@ define("REVIEW_REGIST_MAX", 5);
  * サイト定義定数
  */
 /* システム関連 */
-define ('DEBUG_MODE', false);                          // デバッグモード(true：sfPrintRやDBのエラーメッセージを出力する、false：出力しない)
+define ('DEBUG_MODE', true);                          // デバッグモード(true：sfPrintRやDBのエラーメッセージを出力する、false：出力しない)
 define ("ADMIN_ID", "1");								// 管理ユーザID(メンテナンス用表示されない。)
 define ("CUSTOMER_CONFIRM_MAIL", false);				// 会員登録時に仮会員確認メールを送信するか（true:仮会員、false:本会員）
 define ("MELMAGA_SEND", true);							// メルマガ配信抑制(false:OFF、true:ON)
@@ -207,7 +207,7 @@ define ("PARENT_CAT_MAX", 12);							// 親カテゴリのカテゴリIDの最大数（これ以下
 define ("NUMBER_MAX", 1000000000);						// GET値変更などのいたずらを防ぐため最大数制限を設ける。
 define ("POINT_RULE", 2);								// ポイントの計算ルール(1:四捨五入、2:切り捨て、3:切り上げ)
 define ("POINT_VALUE", 1);								// 1ポイント当たりの値段(円)
-define ("ADMIN_MODE", 0);								// 管理モード 1:有効　0:無効(納品時)
+define ("ADMIN_MODE", 1);								// 管理モード 1:有効　0:無効(納品時)
 define ("DAILY_BATCH_MODE", false);						// 売上集計バッチモード(true:バッチで集計する ※要cron設定、false:リアルタイムで集計する)
 define ("MAX_LOG_QUANTITY", 5);							// ログファイル最大数(ログテーション)
 define ("MAX_LOG_SIZE", "1000000");						// 1つのログファイルに保存する最大容量(byte)
@@ -917,6 +917,79 @@ $arrSiteControlTrackBack = array(
 $arrSiteControlAffiliate = array(
 	1 => "有効",
 	2 => "無効"
+);
+
+/*--------- ▲エビスタグモジュール用 ---------*/
+/** 
+ * 項目を変更する場合の依存関係：
+ * 属性情報の定数、$arrEBiSTagOptions
+ * module.incのlfThanksPageTag()のswitch文に処理を追加
+ */
+// 属性情報
+define('EBiS_TAG_ATTR_NOTHING',     '0'); // 取得しない
+define('EBiS_TAG_ATTR_CUSTOMER_ID', '1'); // 顧客ID
+define('EBiS_TAG_ATTR_PAYMENT',     '2'); // 購入金額
+define('EBiS_TAG_ATTR_JOB',         '3'); // 職業
+define('EBiS_TAG_ATTR_SEX',         '4'); // 性別
+define('EBiS_TAG_ATTR_AGE',         '5'); // 年齢
+define('EBiS_TAG_ATTR_IS_CUSTOMER', '6'); // 会員・非会員
+
+// 顧客IDのradio button用配列
+$arrEBiSTagCustomerId = array(
+    EBiS_TAG_ATTR_CUSTOMER_ID => '取得する',
+    EBiS_TAG_ATTR_NOTHING     => '取得しない',
+);
+
+// 購入金額のradio button用配列
+$arrEBiSTagPayment = array(
+    EBiS_TAG_ATTR_PAYMENT => '取得する',
+    EBiS_TAG_ATTR_NOTHING => '取得しない',
+);
+
+// 任意項目の数
+define('EBiS_TAG_OPTIONS_MAX', 5);
+
+// 任意項目のoptions用配列
+$arrEBiSTagOptions = array(
+    EBiS_TAG_ATTR_NOTHING => '取得しない',
+    EBiS_TAG_ATTR_JOB     => '職業',
+    EBiS_TAG_ATTR_SEX     => '性別',
+    EBiS_TAG_ATTR_AGE     => '年齢',
+    EBiS_TAG_ATTR_IS_CUSTOMER => '会員・非会員'
+);
+
+// エビスタグ名
+$arrEBiSTagAttrTagName = array(
+    'm1id', 'a1id',
+    'o1id', 'o2id', 'o3id', 'o4id', 'o5id',
+);
+
+// 性別(英語)
+$arrSexEN = array(
+    1 => 'male',
+    2 => 'female',
+);
+
+// 職業(英語)
+$arrJobEN = array(
+    1 => "Public Service",    // 公務員
+    2 => "Consultant",        // コンサルタント
+    3 => "Computers",         // コンピュータ関連技術職
+    4 => "Electronics",       // コンピュータ関連以外の技術職
+    5 => "Finance",           // 金融関係
+    6 => "Doctor",            // 医師
+    7 => "Lawyer",            // 弁護士
+    8 => "General",           // 総務・人事・事務
+    9 => "Sales",             // 営業・販売
+    10 => "Research/Develop", // 研究・開発
+    11 => "Advertising",      // 広報・宣伝
+    12 => "Marketing/PR",     // 企画・マーケティング
+    13 => "Design",           // デザイン関係
+    14 => "Management",       // 会社経営・役員
+    15 => "Publishing/Media", // 出版・マスコミ
+    16 => "Students",         // 学生・フリーター
+    17 => "Housewife",        // 主婦
+    18 => "Other"             // その他
 );
 
 /*--------- ▲View管理用 ---------*/

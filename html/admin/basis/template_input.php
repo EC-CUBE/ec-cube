@@ -47,13 +47,11 @@ if ( $_POST['mode'] == 'regist' ) {
 	
 	// 新規登録
 	$objPage->arrForm = lfConvData( $_POST );
-	//print_r($objPage->arrForm);print("<br>");
     $objPage->arrErr = lfErrorCheck($objPage->arrForm);
 	
 	if ( ! $objPage->arrErr ){
 		// エラーが無いときは登録・編集
 		lfRegistData( $objPage->arrForm, $_POST['template_id']);	
-		//sfReload("mode=complete");	// 自分を再読込して、完了画面へ遷移
 	}
 } 
 

@@ -72,27 +72,6 @@ $uniqid = sfCheckNormalAccess($objSiteSess, $objCartSess);
 $objPage->tpl_uniqid = $uniqid;
 
 switch($_POST['mode']) {
-case 'nonmember_confirm':
-    $objPage = lfSetNonMember($objPage);
-    // ※breakなし
-case 'confirm':
-    // 入力値の変換
-    $objFormParam->convParam();
-    $objFormParam->toLower('order_mail');
-    $objFormParam->toLower('order_mail_check');
-    $objPage->arrErr = lfCheckError();
-    // 入力エラーなし
-    if(count($objPage->arrErr) == 0) {
-        // DBへのデータ登録
-        lfRegistData($uniqid);
-        // 正常に登録されたことを記録しておく
-        $objSiteSess->setRegistFlag();
-        // お支払い方法選択ページへ移動
-        header("Location: " . gfAddSessionId(MOBILE_URL_SHOP_PAYMENT));
-        exit;       
-    }
-    
-    break;
 // 前のページに戻る
 case 'return':
     // 確認ページへ移動
@@ -108,13 +87,14 @@ default:
     }
     // ユーザユニークIDの取得
     $uniqid = $objSiteSess->getUniqId();
-    $objQuery = new SC_Query();
-    $where = "order_temp_id = ?";
-    $arrRet = $objQuery->select("*", "dtb_order_temp", $where, array($uniqid));
-    // DB値の取得
-    $objFormParam->setParam($arrRet[0]);
-    $objFormParam->setValue('order_email_check', $arrRet[0]['order_email']);
-    $objFormParam->setDBDate($arrRet[0]['order_birth']);
+//    $objQuery = new SC_Query();
+//    $where = "order_temp_id = ?";
+//    $arrRet = $objQuery->select("*", "dtb_order_temp", $where, array($uniqid));
+//    sfprintr($arrRet);
+//    // DB値の取得
+//    $objFormParam->setParam($arrRet[0]);
+//    $objFormParam->setValue('order_email_check', $arrRet[0]['order_email']);
+//    $objFormParam->setDBDate($arrRet[0]['order_birth']);
     break;
 }
 
@@ -132,7 +112,7 @@ $objPage->arrDay = $objDate->getDay();
 
 // 入力値の取得
 $objPage->arrForm = $objFormParam->getFormParamList();
-
+sfprintr($_SESSION);
 //objPageの情報をobjViewに格納
 $objView->assignobj($objPage);
 $objView->display(SITE_FRAME);
@@ -172,7 +152,6 @@ function lfSetNonMember($objPage) {
                          );
 
 //---- 登録除外用カラム配列
-//$arrRejectRegistColumn = array("year", "month", "day", "email02", "email_mobile02","password","password02","reminder","reminder_answer");
 $arrRejectRegistColumn = array("year", "month", "day", "email02", "email_mobile02", "password02");
         
     $objPage->tpl_mainpage = 'nonmember/nonmember_set1.tpl';
@@ -186,7 +165,7 @@ $arrRejectRegistColumn = array("year", "month", "day", "email02", "email_mobile0
         $objPage->arrForm['year'] = '';
     }
     
-    //$objPage->arrForm['email'] = strtolower($objPage->arrForm['email']);        // emailはすべて小文字で処理
+    $objPage->arrForm['email'] = strtolower($objPage->arrForm['email']);        // emailはすべて小文字で処理
     
     //-- 入力データの変換
     $objPage->arrForm = lfConvertParam($objPage->arrForm, $arrRegistColumn);
@@ -196,7 +175,6 @@ $arrRejectRegistColumn = array("year", "month", "day", "email02", "email_mobile0
     if (!empty($_POST["return"])) {
         switch ($_POST["mode2"]) {
         case "deliv_date":  
-        
             break;
         case "deliv":
             $_POST["mode2"] = "set3";
@@ -212,12 +190,11 @@ $arrRejectRegistColumn = array("year", "month", "day", "email02", "email_mobile0
 
     //--　入力エラーチェック
     if (!empty($_POST["mode2"])) {
-            if ($_POST["mode2"] == "set2") {
+        if ($_POST["mode2"] == "set2") {
             $objPage->arrErr = lfErrorCheck1($objPage->arrForm);
             $objPage->tpl_mainpage = 'nonmember/nonmember_set1.tpl';
             $objPage->tpl_title = 'お客様情報入力(1/3)';
         } elseif ($_POST["mode2"] == "set3") {
-            
             $objPage->arrErr = lfErrorCheck2($objPage->arrForm);
             $objPage->tpl_mainpage = 'nonmember/nonmember_set2.tpl';
             $objPage->tpl_title = 'お客様情報入力(2/3)';
@@ -229,7 +206,7 @@ $arrRejectRegistColumn = array("year", "month", "day", "email02", "email_mobile0
     
     //フォームの値を$objPageのキーとして代入していく
    foreach($objPage->arrForm as $key => $val) {
-        $objPage->$key = $val;
+            $objPage->$key = $val;
         }
     }
 
@@ -254,7 +231,6 @@ $arrRejectRegistColumn = array("year", "month", "day", "email02", "email_mobile0
 
         //--　テンプレート設定
         if ($_POST["mode2"] == "set2") {
-            
             $objPage->tpl_mainpage = 'nonmember/nonmember_set2.tpl';
             $objPage->tpl_title = 'お客様情報入力(2/3)';
         } elseif ($_POST["mode2"] == "set3") {
@@ -282,11 +258,14 @@ $arrRejectRegistColumn = array("year", "month", "day", "email02", "email_mobile0
         foreach($objPage->arrForm as $key => $val) {
             if ($key != "mode2" && $key != "submit" && $key != "confirm" && $key != "return" && $key != session_name() && !in_array($key, $checkVal)) {
                 $objPage->list_data[ $key ] = $val;
+                $_SESSION['user_info'][$key] = $val;
             }
         }
-        
-        //header("Location:" . gfAddSessionId("./deliv.php"));
-        
+//        sfprintr($_SESSION['user_info']);
+       if($_POST["mode2"] == "deliv"){
+            $_SESSION['user_info']['mode2'] = "deliv"; 
+            header("Location:" . gfAddSessionId("./deliv.php"));
+       }
     }
     return $objPage;
 }
@@ -324,7 +303,6 @@ function lfRegistData($uniqid) {
         $objQuery->update("dtb_order_temp", $sqlval, $where, array($uniqid));
     }
 }
-
 
 /* パラメータ情報の初期化 */
 function lfInitParam() {
@@ -366,8 +344,6 @@ function lfInitParam() {
     $objFormParam->addParam("電話番号3", "deliv_tel03", TEL_ITEM_LEN, "n", array("MAX_LENGTH_CHECK" ,"NUM_CHECK"));
     $objFormParam->addParam("メールマガジン", "mail_flag", INT_LEN, "n", array("MAX_LENGTH_CHECK", "NUM_CHECK"), 1);
 }
-
-/* DBへデータの登録 */
 
 /* 入力内容のチェック */
 function lfCheckError() {

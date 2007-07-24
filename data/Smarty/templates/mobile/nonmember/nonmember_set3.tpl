@@ -9,7 +9,7 @@
 <div align="center">お客様情報入力 3/3</div>
 <hr>
 	<!--<form name="form1" method="post" action="<!--{$smarty.server.PHP_SELF|escape}-->">-->
-	<form name="form1" method="post" action="./deliv.php">
+	<form name="form1" method="post" action="./index.php">
 	<input type="hidden" name="mode" value="nonmember">
 	<input type="hidden" name="mode2" value="deliv">
 	<input type="hidden" name="uniqid" value="<!--{$tpl_uniqid}-->">
@@ -40,12 +40,6 @@
 	<input type="text" size="<!--{$size}-->" name="tel02" value="<!--{$tel02|escape}-->" maxlength="<!--{$smarty.const.TEL_ITEM_LEN}-->" istyle="4">
 	&nbsp;-&nbsp;
 	<input type="text" size="<!--{$size}-->" name="tel03" value="<!--{$tel03|escape}-->" maxlength="<!--{$smarty.const.TEL_ITEM_LEN}-->" istyle="4"><br>
-
-	<!--【メールマガジン】<br>
-	お得な情報を希望されますか？<br>
-	配信希望<input type="checkbox" name="mailmaga_flg" value="on" <!--{if $mailmaga_flg eq 'on'}-->checked<!--{/if}--> /><br>
-	（希望されない場合はチェックをはずしてください）<br>
-	<br>-->
 
 	<input type="submit" name="submit" value="次へ"><br>
 	<input type="submit" name="return" value="戻る">

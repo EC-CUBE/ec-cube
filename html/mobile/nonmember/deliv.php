@@ -42,14 +42,17 @@ $uniqid = sfCheckNormalAccess($objSiteSess, $objCartSess);
 // ユニークIDを引き継ぐ
 $objPage->tpl_uniqid = $uniqid;
 
-if(!empty($_POST["mode2"]) ){
-    if ($_POST["mode2"] == "deliv") {
+
+//前のページからの遷移によって分岐
+if(!empty($_POST["mode2"]) || $_SESSION['user_info'] ){
+    if ($_POST["mode2"] == "deliv" || $_SESSION['user_info']["mode2"] == "deliv") {
             
+           
             $objFormParam = new SC_FormParam();
             // パラメータ情報の初期化
            
             // POST値の取得
-            $objFormParam->setParam($_POST);
+            $objFormParam->setParam($_SESSION['user_info']);
             $arrRet = $objFormParam->getHashArray();
             $sqlval = $objFormParam->getDbArray();
             
@@ -57,14 +60,14 @@ if(!empty($_POST["mode2"]) ){
             $objPage->arrForm = $objFormParam->getFormParamList();
             $objPage->arrErr = $arrErr;
             
-           foreach($_POST as $key => $value){
+           foreach($_SESSION['user_info'] as $key => $value){
                $objPage->arrAddr[0][$key] = $value;
            }
             
             //データベースの一時保存用テーブルdtb_order_tempにデータを格納する
             lfRegistDataTemp($objPage->arrAddr[0]['uniqid'],$objPage->arrAddr[0]); 
             
-            lfCopyDeliv($objPage->tpl_uniqid, $_POST);
+            lfCopyDeliv($objPage->tpl_uniqid, $_SESSION['user_info']);
            
             $objPage->tpl_mainpage = 'nonmember/nonmember_deliv.tpl';
             $objPage->tpl_title = 'お届け先情報';
@@ -74,7 +77,7 @@ if(!empty($_POST["mode2"]) ){
         }
         
         if ($_POST["mode2"] == "customer_addr") {
-            //print_r($_POST);
+
             if ($_POST['deli'] != "") {
                 header("Location:" . gfAddSessionId("./payment.php"));
             exit;
@@ -82,9 +85,9 @@ if(!empty($_POST["mode2"]) ){
                 // エラーを返す
                 $arrErr['deli'] = '※ お届け先を選択してください。';
             }
-        }
-//戻るボタン用処理        
-}elseif(!empty($_POST["mode"]) && $_POST["mode"]=="deliv_date"){  
+        }     
+//戻るボタン用処理   
+}elseif($_POST["mode"]!="nonmember"){  
     //uniqidからデータベースのデータを読み込み表示する
     $objQuery = new SC_Query();
     $where = "order_temp_id = ?";
@@ -100,6 +103,7 @@ if(!empty($_POST["mode2"]) ){
     $objView->assignobj($objPage);
     $objView->display(SITE_FRAME);
 }
+
 
 /**
  *入力された情報をデータベースdtb_order_tempに格納する

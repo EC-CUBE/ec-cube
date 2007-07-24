@@ -15,7 +15,6 @@ require_once( $INC_PATH ."/../include/session.inc" );
 
 // 全ページ共通エラー
 $GLOBAL_ERR = "";
-
 // インストール初期処理
 sfInitInstall();
 
@@ -1710,7 +1709,7 @@ function sfSendTemplateMail($to, $to_name, $template_id, $objPage) {
 /** 受注完了メール送信
  *  $template_id が 1：携帯用テンプレート、0：PC用テンプレート
  */
-function sfSendOrderMail($order_id, $template_id, $subject = "", $body, $send = true) {
+function sfSendOrderMail($order_id, $template_id, $subject = "", $body = "", $send = true) {
 	global $arrMAILTPLPATH;
 	
 	$objPage = new LC_Page();
@@ -1746,7 +1745,7 @@ function sfSendOrderMail($order_id, $template_id, $subject = "", $body, $send = 
 
 	$objPage->arrCustomer = $arrCustomer;
 	$objPage->arrOrder = $arrOrder;
-
+    
 	//その他決済情報
 	if($arrOrder['memo02'] != "") {
 		$arrOther = unserialize($arrOrder['memo02']);
@@ -1772,7 +1771,7 @@ function sfSendOrderMail($order_id, $template_id, $subject = "", $body, $send = 
 	$objMailView = new SC_SiteView();
 	// メール本文の取得
 	$objMailView->assignobj($objPage);
-    $name = $objPage->arrCustomer['name01']." ".$objPage->arrCustomer['name02'];
+    $name = $objPage->arrOrder['order_name01']." ".$objPage->arrOrder['order_name02'];
     $objPage->tpl_body = ereg_replace( "(\{name\})", $name ,  $objPage->tpl_body );
     $tmp_subject = ereg_replace( "(\{name\})", $name ,  $tmp_subject );
     

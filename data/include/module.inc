@@ -1,40 +1,36 @@
 <?php
 
-// タグ出力用クラス
+// エビスタグ出力用クラス
 class LC_EbisPage {
-	function LC_EbisPage() {
-		$this->tpl_mainpage = MODULE_PATH . "ebis_tag_text.tpl";
-	}
+    function LC_EbisPage() {
+        $this->tpl_mainpage = MODULE_PATH . "mdl_ebis_tag/ebis_tag_text.tpl";
+    }
 }
 
 // エビスタグの発行
 function sfPrintEbisTag($pid = "") {
 	$objQuery = new SC_Query();
-	$arrRet = $objQuery->select("sub_data", "dtb_module", "module_id = ?", array(EBIS_TAG_MID));
+	$arrRet   = $objQuery->select("sub_data", "dtb_module", "module_id = ?", array(EBIS_TAG_MID));
 	$arrSubData = unserialize($arrRet[0]['sub_data']);
-	$arrEbis = array();
-	
-	if($arrSubData['cid'] != "") {
-		$arrEbis['cid'] = $arrSubData['cid'];
-	} else {
-		return;
-	}
-	
-	// 「/」が重複しているものへの対応
-	$php_self = ereg_replace("[/]+", "/", $_SERVER['PHP_SELF']);
-	// PHPファイルの後ろに「/」がついてしまっているものへの対応
-	$php_self = ereg_replace(".php[/]+$", ".php", $php_self);
-	
+    
+    if ( empty($arrSubData['cid']) ) return;
+    
+    $arrEbis = array(
+        'cid'       => $arrSubData['cid'],
+        'login_url' => $arrSubData['login_url'],
+    );
+    
 	if(!is_array($pid) && $pid != "") {
 		if(!ereg(".tpl$", $pid)) {
 			// ページIDを上書きする
 			$arrEbis['pid'] = $pid;
 		} else {
 			// テンプレートのパスが与えられている場合
-			$temp_id = ereg_replace(HTML_PATH,"",$pid);			
-			$temp_id = ereg_replace("^[/]+","",$temp_id);
-			$temp_id = ereg_replace(".tpl$","",$temp_id);
-			$temp_id = ereg_replace("[\./]","_",$temp_id);
+            $temp_id = str_replace(USER_TEMPLATE_PATH, '', $pid);
+            $temp_id = str_replace(HTML_PATH,   '',  $temp_id);
+            $temp_id = preg_replace('|^/+|',    '',  $temp_id);
+            $temp_id = preg_replace('|\.tpl$|', '',  $temp_id);
+            $temp_id = preg_replace('|[\./]|',  '_', $temp_id);
 			$arrEbis['pid'] = $temp_id;
 		}
 	}	
@@ -50,7 +46,10 @@ function sfPrintEbisTag($pid = "") {
 		$filename = basename($_SERVER["REQUEST_URI"]);
 		$arrEbis['pid'] = ereg_replace("detail.php\?product_id=", "detail-p", $filename);
 	}
-	
+
+    // 購入完了ページ(thanksページ)は特殊IDを発行
+    lfSetThanksPegeTag($arrEbis, $arrSubData);
+
 	// ID割り当てされていないページは、自動的に生成する。
 	if($arrEbis['pid'] == "") {				
 		$temp_id = ereg_replace("^[/]+","",$_SERVER['PHP_SELF']);
@@ -58,7 +57,7 @@ function sfPrintEbisTag($pid = "") {
 		$temp_id = ereg_replace("[\./]","_",$temp_id);
 		$arrEbis['pid'] = $temp_id;
 	}
-			
+
 	// ページIDが登録されている場合のみタグを出力する。
 	if($arrEbis['pid'] != "") {
 		$objSubPage = new LC_EbisPage();
@@ -67,6 +66,78 @@ function sfPrintEbisTag($pid = "") {
 		$objSubView->assignobj($objSubPage);
 		$objSubView->display($objSubPage->tpl_mainpage);
 	}
+}
+
+// 購入完了画面のエビスタグを設定
+function lfSetThanksPegeTag(&$arrEbis, $arrSubData){
+    $pattern = "|/shopping/complete.php$|";
+    $target  = $_SERVER["REQUEST_URI"];
+    if( !preg_match($pattern, $target) ) return;
+    
+    global $arrEBiSTagAttrTagName;
+    global $arrJobEN;
+    global $arrSexEN;
+    global $order_id;
+    
+    $objQuery = new SC_Query();
+    $arrRet   = $objQuery->select('*', 'dtb_order', 'order_id = ?', array($order_id));
+    $arrCustomerInfo = $arrRet[0];
+    $arrEbis['pid']  = 'thanks'; // ページIDをセット
+    
+    /**
+     * $arrSubData == Array (
+     *      [user] => username
+     *      [pass] => password
+     *      [login_url] => http://login_url/
+     *      [cid] => ebis_parameter
+     *      [m1id] => 1
+     *      [a1id] => 2
+     *      [o1id] => 3
+     *      [o2id] => 4
+     *      [o3id] => 0
+     *      [o4id] => 0
+     *      [o5id] => 0
+     * )
+     * $arrEBiSTagAttrTagName == Array(
+     *      'm1id', 'a1id', 'o1id', 'o2id'
+     *      'o3id', 'o4id', 'o5id'
+     * )
+     **/
+    
+    foreach ($arrEBiSTagAttrTagName as $tagname) {
+        if ( empty($arrSubData[$tagname]) ) continue;
+        
+        $value = $arrSubData[$tagname];
+        
+        // 属性情報をセット
+        switch ($value) {
+        case EBiS_TAG_ATTR_CUSTOMER_ID:
+            $arrEbis[$tagname] = $arrCustomerInfo['customer_id'];
+            break;
+        case EBiS_TAG_ATTR_PAYMENT:
+            $arrEbis[$tagname] = $arrCustomerInfo['payment_total'];
+            break;
+        case EBiS_TAG_ATTR_JOB:
+            if ( empty($arrCustomerInfo['order_job']) ) break;
+            $arrEbis[$tagname] = $arrJobEN[$arrCustomerInfo['order_job']];
+            break;
+        case EBiS_TAG_ATTR_SEX:
+            $arrEbis[$tagname] = $arrSexEN[$arrCustomerInfo['order_sex']];
+            break;
+        case EBiS_TAG_ATTR_AGE:
+            if ( empty($arrCustomerInfo['order_birth']) ) break;
+            $arrEbis[$tagname] = gfGetAge($arrCustomerInfo['order_birth']);
+            break;
+        case EBiS_TAG_ATTR_IS_CUSTOMER:
+            if ( $arrCustomerInfo['customer_id'] == '0' ) {
+                $arrEbis[$tagname] = '0';
+            } else {
+                $arrEbis[$tagname] = '1';
+            }
+            break;
+        default:
+        }
+    }
 }
 
 // コンバージョンタグの発行

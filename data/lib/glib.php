@@ -169,10 +169,7 @@ function gfLogRotation($max_log, $max_size, $path) {
 			$count = count($arrLog);
 			for($i = $count; 1 <= $i; $i--) {
 				$move_number = $i + 1;
-				
-				if(file_exists("$path.$move_number")) unlink("$path.$move_number");
-				copy("$dirname/" . $arrLog[$i - 1], "$path.$move_number");		
-				
+				@copy("$dirname/" . $arrLog[$i - 1], "$path.$move_number");
 			}
 			$ret = copy($path, "$path.1");
 			

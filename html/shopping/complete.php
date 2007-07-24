@@ -39,6 +39,7 @@ $objCampaignSess = new SC_CampaignSession();
 $objSiteInfo = $objView->objSiteInfo;
 $arrInfo = $objSiteInfo->data;
 $objCustomer = new SC_Customer();
+$order_id = '';
 
 // 前のページで正しく登録手続きが行われたか判定
 sfIsPrePage($objSiteSess);

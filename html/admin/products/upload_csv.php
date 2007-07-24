@@ -304,6 +304,15 @@ function lfRegistProduct($objQuery, $line = "") {
             $product_id = $objQuery->get_auto_increment("dtb_products");
         }
 		$sqlval['product_id'] = $product_id;
+		// 新規登録
+        // postgresqlとmysqlとで処理を分ける
+        if (DB_TYPE == "pgsql") {
+            $product_id = $objQuery->nextval("dtb_products","product_id");
+        }elseif (DB_TYPE == "mysql") {
+            $product_id = $objQuery->get_auto_increment("dtb_products");
+        }
+        
+        $sqlval['product_id'] = $product_id;
 		$sqlval['create_date'] = $time;
 		
 		// カテゴリ内で最大のランクを割り当てる
