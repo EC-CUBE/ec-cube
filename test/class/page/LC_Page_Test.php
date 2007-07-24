@@ -14,7 +14,7 @@ require_once("PHPUnit/TestCase.php");
  *
  * @package Page
  * @author LOCKON CO.,LTD.
- * @version $Id$
+ * @version $Id:LC_Page_Test.php 15116 2007-07-23 11:32:53Z nanasess $
  */
 class LC_Page_Test extends PHPUnit_TestCase {
 
@@ -108,6 +108,66 @@ class LC_Page_Test extends PHPUnit_TestCase {
     function testCreateToken() {
         // 40文字の16進数
         $this->assertEquals(1, preg_match("/[a-f0-9]{40,}/", LC_Page::createToken()));
+    }
+
+    /**
+     * LC_Page::getLocation() のテストケース.
+     */
+    function testGetLocation() {
+        $objPage = new LC_Page();
+        $_SERVER['DOCUMENT_ROOT'] = realpath("../../../html");
+        $url = $objPage->getLocation("../../../html/abouts/index.php");
+
+        $this->assertEquals(SITE_URL . "abouts/index.php", $url);
+        unset($_SERVER['DOCUMENT_ROOT']);
+    }
+
+    /**
+     * LC_Page::getLocation() のテストケース.
+     *
+     * QueryString 付与
+     */
+    function testGetLocationWithQueryString() {
+        $objPage = new LC_Page();
+        $_SERVER['DOCUMENT_ROOT'] = realpath("../../../html");
+
+        $queryString = array("mode" => "update", "type" => "text");
+        $url = $objPage->getLocation("../../../html/abouts/index.php", $queryString);
+
+        $this->assertEquals(SITE_URL . "abouts/index.php?mode=update&type=text", $url);
+        unset($_SERVER['DOCUMENT_ROOT']);
+    }
+
+    /**
+     * LC_Page::getLocation() のテストケース.
+     *
+     * SSL_URL 使用
+     */
+    function testGetLocationUseSSL() {
+        $objPage = new LC_Page();
+        $_SERVER['DOCUMENT_ROOT'] = realpath("../../../html");
+
+        $queryString = array("mode" => "update", "type" => "text");
+        $url = $objPage->getLocation("../../../html/abouts/index.php", $queryString, true);
+
+        $this->assertEquals(SSL_URL . "abouts/index.php?mode=update&type=text", $url);
+        unset($_SERVER['DOCUMENT_ROOT']);
+    }
+
+    /**
+     * LC_Page::getLocation() のテストケース.
+     *
+     * DocumentRoot 指定
+     */
+    function testGetLocationWithDocumentRoot() {
+        $objPage = new LC_Page();
+        $documentRoot = realpath("../../../html");
+
+        $queryString = array("mode" => "update", "type" => "text");
+        $url = $objPage->getLocation("../../../html/abouts/index.php", array(),
+                                     false, $documentRoot);
+
+        $this->assertEquals(SITE_URL . "abouts/index.php", $url);
     }
 }
 ?>
