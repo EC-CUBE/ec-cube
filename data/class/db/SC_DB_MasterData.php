@@ -31,7 +31,9 @@ class SC_DB_MasterData {
      * @return array マスタデータ
      */
     function getMasterData($name) {
-        // TODO
+        $objQuery = new SC_Query();
+        $result = $objQuery->select("*", $name);
+        return $result;
     }
 
     /**
