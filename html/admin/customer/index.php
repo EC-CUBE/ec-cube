@@ -7,6 +7,8 @@
 require_once("../require.php");
 require_once(DATA_PATH . "include/csv_output.inc");
 
+phpinfo();
+
 //---- ページ表示用クラス
 class LC_Page {
 	var $arrSession;
