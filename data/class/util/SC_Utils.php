@@ -5,6 +5,9 @@
  * http://www.lockon.co.jp/
  */
 
+// {{{ requires
+require_once(CLASS_PATH . "page_extends/error/LC_Page_Error_Ex.php");
+
 /**
  * 各種ユーティリティクラス.
  *
@@ -369,7 +372,9 @@ class SC_Utils {
 //        }
 
         //$objPage = new LC_ErrorPage();
-        $objPage = new LC_Page();
+        $objPage = new LC_Page_Error_Ex();
+        $objPage->init();
+
 
         if($is_mobile === true) {
             $objView = new SC_MobileView();
@@ -459,6 +464,7 @@ class SC_Utils {
         } else {
             $objView->display(SITE_FRAME);
         }
+        register_shutdown_function(array($objPage, "destroy"));
         exit;
     }
 
@@ -490,6 +496,21 @@ class SC_Utils {
             }
         }
         return true;
+    }
+
+    /**
+     * 文字列をアスタリスクへ変換する.
+     *
+     * @param string $passlen 変換する文字列
+     * @return string アスタリスクへ変換した文字列
+     */
+    function lfPassLen($passlen){
+        $ret = "";
+        for ($i=0;$i<$passlen;true){
+            $ret.="*";
+            $i++;
+        }
+        return $ret;
     }
 
     /**

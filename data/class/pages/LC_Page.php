@@ -35,15 +35,8 @@ class LC_Page {
     /** カテゴリ */
     var $tpl_page_category;
 
-    /**
-     * 安全に POST するための URL
-     */
-    var $postURL;
-
-    /**
-     * このページで使用する遷移先
-     */
-    var $transitions;
+    /** トランザクションID */
+    var $transactionid;
 
     // }}}
     // {{{ functions
@@ -53,9 +46,7 @@ class LC_Page {
      *
      * @return void
      */
-    function init() {
-        $this->postURL = $_SERVER['PHP_SELF'];
-    }
+    function init() {}
 
     /**
      * Page のプロセス.
@@ -79,6 +70,7 @@ class LC_Page {
      * @return void
      */
     function checkPreviousURI() {
+        // TODO 必要性検討
     }
 
     /**
@@ -96,8 +88,11 @@ class LC_Page {
         if (preg_match("/(" . preg_quote(SITE_URL, '/')
                           . "|" . preg_quote(SSL_URL, '/') . ")/", $url)) {
 
-            // TODO パラメータが存在する場合の対応
-            header("Location: " . $url . "?" . TRANSACTION_ID_NAME . "=" . $this->getToken());
+            $suffix = "?";
+            if (!empty($_SERVER['QUERY_STRING'])) {
+                $suffix = "&";
+            }
+            header("Location: " . $url . $suffix . TRANSACTION_ID_NAME . "=" . $this->getToken());
         }
         return false;
     }
@@ -184,8 +179,13 @@ class LC_Page {
      */
     function getLocation($path, $param = array(), $useSSL = false, $documentRoot = "") {
 
+        // TODO $_SERVER['DOCUMENT_ROOT'] をインストーラでチェックする.
         if (empty($documentRoot)) {
             $documentRoot = $_SERVER['DOCUMENT_ROOT'];
+
+            if (empty($documentRoot)) {
+                die("[BUG] can't get DOCUMENT_ROOT");
+            }
         }
         // DocumentRoot を削除した文字列を取得.
         $root = str_replace($documentRoot, "", realpath($path));
