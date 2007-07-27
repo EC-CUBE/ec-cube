@@ -29,7 +29,7 @@ class SC_DB_MasterData {
 
     // {{{ properties
 
-    /** SC_Query インスタンス **/
+    /** SC_Query インスタンス */
     var $objQuery;
 
     // }}}
