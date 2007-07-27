@@ -342,7 +342,7 @@ function lfRegistOrder($objQuery, $arrData) {
 	
 	// ゲットの値をインサート
 	//$sqlval = lfGetInsParam($sqlval);
-	
+	sfPrintR($sqlval);
 	// INSERTの実行
 	$objQuery->insert("dtb_order", $sqlval);
 
