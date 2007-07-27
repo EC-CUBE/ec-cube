@@ -93,7 +93,7 @@ class SC_DB_MasterData {
         foreach ($masterData as $key => $val) {
             $sqlVal = array($columns[0] => $key,
                             $columns[1] => $val,
-                            $columns[2] => $i);
+                            $columns[2] => (string) $i);
             $this->objQuery->insert($name, $sqlVal);
             $i++;
         }
@@ -129,17 +129,14 @@ class SC_DB_MasterData {
         }
         // マスタデータを削除
         $this->deleteMasterData($name, false);
+
         // マスタデータを追加
         $this->registMasterData($name, $columns, $masterData, false);
+
         if ($autoCommit) {
             $this->objQuery->commit();
         }
-
-        // キャッシュを消去
-        $this->clearCache($name);
-        // 新規にデータを取得してキャッシュ生成
-        $newData = $this->getMasterData($name, $columns);
-        return count($newData);
+        return count($masterData);
     }
 
     /**
@@ -154,7 +151,18 @@ class SC_DB_MasterData {
      */
     function deleteMasterData($name, $autoCommit = true) {
         $this->objQuery = new SC_Query();
-        return $this->objQuery->delete($name);
+        if ($autoCommit) {
+            $this->objQuery->begin();
+        }
+
+        // DB の内容とキャッシュをクリア
+        $result = $this->objQuery->delete($name);
+        $this->clearCache($name);
+
+        if ($autoCommit) {
+            $this->objQuery->commit();
+        }
+        return $result;
     }
 
     /**
@@ -164,7 +172,10 @@ class SC_DB_MasterData {
      * @return bool 消去した場合 true
      */
     function clearCache($name) {
-        unlink(MASTER_DATA_DIR . $name . ".php");
+        $masterDataFile = MASTER_DATA_DIR . $name . ".php";
+        if (is_file($masterDataFile)) {
+            unlink($masterDataFile);
+        }
     }
 
     /**

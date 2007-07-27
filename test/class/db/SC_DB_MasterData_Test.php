@@ -41,5 +41,28 @@ class SC_DB_MasterData_Test extends PHPUnit_TestCase {
         }
         $this->assertEquals($expected, $actual);
     }
+
+    /**
+     * SC_DB_MasterData::updateMasterData() のテストケース
+     */
+    function testUpdateMasterData() {
+
+        $columns = array("pref_id", "pref_name", "rank");
+        $masterData = new SC_DB_MasterData_Ex();
+
+        // Transaction を有効にするため接続しておく
+        $masterData->objQuery = new SC_Query();
+        $masterData->objQuery->begin();
+
+        $expected = array("10" => "北海道", "20" => "愛知", "30" => "岐阜");
+        $masterData->updateMasterData("mtb_pref", $columns, $expected, false);
+
+        $actual = $masterData->getMasterData("mtb_pref", $columns);
+
+        $this->assertEquals($expected, $actual);
+
+        $masterData->objQuery->rollback();
+        $masterData->clearCache("mtb_pref");
+    }
 }
 ?>
