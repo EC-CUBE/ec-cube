@@ -30,7 +30,7 @@ class LC_Page {
 
 	}
 }
-echo 'ok1';
+
 $conn = new SC_DBConn();
 $objPage = new LC_Page();
 $objView = new SC_MobileView();
@@ -44,9 +44,9 @@ $objCustomer = new SC_Customer();
 sfIsPrePage($objSiteSess, true);
 // ユーザユニークIDの取得と購入状態の正当性をチェック
 $uniqid = sfCheckNormalAccess($objSiteSess, $objCartSess);
-echo 'ok2';
+
 if ($uniqid != "") {
-	echo 'ok3';
+
 	// 完了処理
 	$objQuery = new SC_Query();
 	$objQuery->begin();
@@ -55,7 +55,7 @@ if ($uniqid != "") {
 	
 	// セッションに保管されている情報を更新する
 	$objCustomer->updateSession();
-    echo 'ok4';
+
 	// 完了メール送信
 	if($order_id != "") {
 		sfSendOrderMail($order_id, '1');
@@ -342,7 +342,7 @@ function lfRegistOrder($objQuery, $arrData) {
 	
 	// ゲットの値をインサート
 	//$sqlval = lfGetInsParam($sqlval);
-	sfPrintR($sqlval);
+
 	// INSERTの実行
 	$objQuery->insert("dtb_order", $sqlval);
 
