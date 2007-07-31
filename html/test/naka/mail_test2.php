@@ -2,12 +2,11 @@
     require_once("../../require.php");
 	$objMail = new GC_SendMail();
 	
-	$objMail->setItemHtml("naka@lockon.co.jp", "テスト２", "<b>あ</b>", "test@lockon.co.jp", "from", "test@lockon.co.jp", "test@lockon.co.jp");
+	$objMail->setItem("naka@lockon.co.jp", "足立", "<b>足立くんです。</b>", "test@lockon.co.jp", "from", "test@lockon.co.jp", "test@lockon.co.jp");
+	$objMail->sendMail();
 	
-	//　メール送信
-	if( mb_send_mail($objMail->to, $objMail->subject, $objMail->body, $objMail->header) ) {
-		return true;
-	}
+	$objMail->setItemHtml("naka@lockon.co.jp", "足立HTML", "<b>足立くんです。</b>", "test@lockon.co.jp", "from", "test@lockon.co.jp", "test@lockon.co.jp");
+	$objMail->sendMail();	
 	
 	
 ?>
