@@ -28,8 +28,6 @@ class GC_SendMail {
 		 $cc			-> カーボンコピー
 		 $bcc			-> ブラインドカーボンコピー
 	*/	
-	
-	
 	function setTo($to, $to_name = "") {
 		if($to_name != "") {
 			$name = ereg_replace("<","＜", $to_name);
@@ -40,60 +38,62 @@ class GC_SendMail {
 			$this->to = $to;
 		}
 	}
+	
+	function setItem( $to, $subject, $body, $fromaddress, $from_name, $reply_to="", $return_path="", $errors_to="", $bcc="", $cc ="" ) {
+		$this->header		 = "Mime-Version: 1.0\n";
+		$this->header		.= "Content-Type: text/plain; charset=ISO-2022-JP\n";
+		$this->header		.= "Content-Transfer-Encoding: 7bit\n";
+		$this->setBase($to, $subject, $body, $fromaddress, $from_name, $reply_to, $return_path, $errors_to, $bcc, $cc);
+	}
 		
-	function setItem( $to, $subject, $body, $fromaddress, $from_name, $reply_to, $return_path, $errors_to="", $bcc="", $cc ="" ) {
+	function setItemHtml( $to, $subject, $body, $fromaddress, $from_name, $reply_to="", $return_path="", $errors_to="", $bcc="", $cc ="" ) {
+		$this->header		 = "Mime-Version: 1.0\n";
+		$this->header		.= "Content-Type: text/html; charset=ISO-2022-JP\n";
+		$this->header		.= "Content-Transfer-Encoding: 7bit\n";
+		$this->setBase($to, $subject, $body, $fromaddress, $from_name, $reply_to, $return_path, $errors_to, $bcc, $cc);
+	}
+	
+	function setBase( $to, $subject, $body, $fromaddress, $from_name, $reply_to="", $return_path="", $errors_to="", $bcc="", $cc ="" ) {
 		
 		$this->to			 = $to;
-		$this->subject		 = $subject;
+		$this->subject		 = mb_encode_mimeheader($subject);
 
 		// iso-2022-jpだと特殊文字が？で送信されるのでJISを使用する。
 		$this->body			 = mb_convert_encoding( $body, "JIS", CHAR_CODE);
-
+		//$this->body			 = $body;
+				
 		// ヘッダーに日本語を使用する場合はMb_encode_mimeheaderでエンコードする。
 		$from_name = ereg_replace("<","＜", $from_name);
 		$from_name = ereg_replace(">","＞", $from_name);
-		$from_name = mb_convert_encoding($from_name,"JIS",CHAR_CODE); 
-		$this->header		 = "From: ". Mb_encode_mimeheader( $from_name )."<".$fromaddress.">\n";
-		$this->header		.= "Reply-To: ". $reply_to . "\n";
-		$this->header		.= "Cc: " . $cc. "\n";
-		$this->header		.= "Bcc: " . $bcc . "\n";
-		$this->header		.= "Errors-To: ". $errors_to ."\n";
+		$from_name = mb_convert_encoding($from_name,"JIS",CHAR_CODE);
 		
-		$this->return_path   = $return_path;
-	}
+		$this->header.= "From: ". mb_encode_mimeheader( $from_name )."<".$fromaddress.">\n";
 
-	function setItemHtml( $to, $subject, $body, $fromaddress, $from_name, $reply_to, $return_path, $errors_to="", $bcc="", $cc ="" ) {
-			
-		$this->to			 = $to;
-		$this->subject		 = mb_encode_mimeheader($subject);
-		$this->body			 = mb_convert_encoding( $body, "JIS", CHAR_CODE);
-		$this->header		 = "Mime-Version: 1.0\n";
-		$this->header		.= "Content-Type: text/html; charset=iso-2022-jp\n";
-		$this->header		.= "Content-Transfer-Encoding: 7bit\n";
-		$this->header		.= "From: ". Mb_encode_mimeheader( $from_name )."<".$fromaddress.">\n";
-		$this->header		.= "Reply-To: ". $reply_to . "\n";
-		$this->header		.= "Cc: " . $cc. "\n";
-		$this->header		.= "Bcc: " . $bcc . "\n";
-		$this->header		.= "Errors-To: ". $errors_to ."\n";
-		$this->return_path   = $return_path;
-	}
+		if($reply_to != "") {
+			$this->header.= "Reply-To: ". $reply_to . "\n";			
+		} else {
+			$this->header.= "Reply-To: ". $fromaddress . "\n";			
+		}
+		
+		if($cc != "") {
+			$this->header.= "Cc: " . $cc. "\n";			
+		}
+		
+		if($bcc != "") {
+			$this->header.= "Bcc: " . $bcc . "\n";			
+		}
 
+		if($errors_to != "") {
+			$this->header.= "Errors-To: ". $errors_to ."\n";
+		}
+	}
+	
 	//	メール送信を実行する
 	function sendMail() {
-
-		Mb_language( "Japanese" );
-		
-		//　メール送信
-		if( mb_send_mail( $this->to, $this->subject, $this->body, $this->header) ) {
-			return true;
-		}
-		return false;
+		return $this->sendHtmlMail();
 	}
 
 	function sendHtmlMail() {
-
-		Mb_language( "Japanese" );	
-		
 		//　メール送信
 		if( mail( $this->to, $this->subject, $this->body, $this->header) ) {
 			return true;
