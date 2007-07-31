@@ -60,7 +60,6 @@ class GC_SendMail {
 
 		// iso-2022-jpだと特殊文字が？で送信されるのでJISを使用する。
 		$this->body			 = mb_convert_encoding( $body, "JIS", CHAR_CODE);
-		//$this->body			 = $body;
 				
 		// ヘッダーに日本語を使用する場合はMb_encode_mimeheaderでエンコードする。
 		$from_name = ereg_replace("<","＜", $from_name);
