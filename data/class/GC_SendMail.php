@@ -16,18 +16,6 @@ class GC_SendMail {
 	var $return_path;	//　return path
 	var $mailer;
 
-	/*	ヘッダ等を格納
-		 $to			-> 送信先メールアドレス
-		 $subject		-> メールのタイトル
-		 $body			-> メール本文
-		 $fromaddress	-> 送信元のメールアドレス
-		 $header		-> ヘッダー
-		 $from_name		-> 送信元の名前（全角OK）
-		 $reply_to		-> reply_to設定
-		 $return_path	-> return-pathアドレス設定（エラーメール返送用）
-		 $cc			-> カーボンコピー
-		 $bcc			-> ブラインドカーボンコピー
-	*/	
 	function setTo($to, $to_name = "") {
 		if($to_name != "") {
 			$name = ereg_replace("<","＜", $to_name);
@@ -52,9 +40,20 @@ class GC_SendMail {
 		$this->header		.= "Content-Transfer-Encoding: 7bit\n";
 		$this->setBase($to, $subject, $body, $fromaddress, $from_name, $reply_to, $return_path, $errors_to, $bcc, $cc);
 	}
-	
+
+	/*	ヘッダ等を格納
+		 $to			-> 送信先メールアドレス
+		 $subject		-> メールのタイトル
+		 $body			-> メール本文
+		 $fromaddress	-> 送信元のメールアドレス
+		 $header		-> ヘッダー
+		 $from_name		-> 送信元の名前（全角OK）
+		 $reply_to		-> reply_to設定
+		 $return_path	-> return-pathアドレス設定（エラーメール返送用）
+		 $cc			-> カーボンコピー
+		 $bcc			-> ブラインドカーボンコピー
+	*/		
 	function setBase( $to, $subject, $body, $fromaddress, $from_name, $reply_to="", $return_path="", $errors_to="", $bcc="", $cc ="" ) {
-		
 		$this->to			 = $to;
 		$this->subject		 = mb_encode_mimeheader($subject);
 
@@ -64,7 +63,7 @@ class GC_SendMail {
 		// ヘッダーに日本語を使用する場合はMb_encode_mimeheaderでエンコードする。
 		$from_name = ereg_replace("<","＜", $from_name);
 		$from_name = ereg_replace(">","＞", $from_name);
-		$from_name = mb_convert_encoding($from_name,"JIS",CHAR_CODE);
+		//$from_name = mb_convert_encoding($from_name,"JIS",CHAR_CODE);
 		
 		$this->header.= "From: ". mb_encode_mimeheader( $from_name )."<".$fromaddress.">\n";
 
