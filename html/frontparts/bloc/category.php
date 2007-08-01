@@ -38,9 +38,9 @@ function lfGetCatTree($parent_category_id, $count_check = false, $objSubPage) {
     $objQuery->setoption("ORDER BY rank DESC");
     $arrRet = $objQuery->select($col, $from, $where);
 
-    $arrParentID = SC_Utils::sfGetParents($objQuery, 'dtb_category', 'parent_category_id', 'category_id', $parent_category_id);
-    $arrBrothersID = SC_Utils::sfGetBrothersArray($arrRet, 'parent_category_id', 'category_id', $arrParentID);
-    $arrChildrenID = SC_Utils::sfGetUnderChildrenArray($arrRet, 'parent_category_id', 'category_id', $parent_category_id);
+    $arrParentID = SC_Utils_Ex::sfGetParents($objQuery, 'dtb_category', 'parent_category_id', 'category_id', $parent_category_id);
+    $arrBrothersID = SC_Utils_Ex::sfGetBrothersArray($arrRet, 'parent_category_id', 'category_id', $arrParentID);
+    $arrChildrenID = SC_Utils_Ex::sfGetUnderChildrenArray($arrRet, 'parent_category_id', 'category_id', $parent_category_id);
 
     $objSubPage->root_parent_id = $arrParentID[0];
 
