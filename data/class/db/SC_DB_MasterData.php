@@ -32,6 +32,9 @@ class SC_DB_MasterData {
     /** SC_Query インスタンス */
     var $objQuery;
 
+    /** デフォルトのテーブルカラム名 */
+    var $columns = array("id", "name", "rank");
+
     // }}}
     // {{{ functions
 
@@ -52,7 +55,10 @@ class SC_DB_MasterData {
      *                        を表すカラム名を格納した配列
      * @return array マスタデータ
      */
-    function getMasterData($name, $columns) {
+    function getMasterData($name, $columns = array()) {
+
+        $columns = $this->getDefaultColumnName($columns);
+
         // 可変変数を定義
         $valiable = "_" . $name . "_master";
         // キャッシュを読み込み
@@ -85,6 +91,9 @@ class SC_DB_MasterData {
      * @return integer マスタデータの登録数
      */
     function registMasterData($name, $columns, $masterData, $autoCommit = true) {
+
+        $columns = $this->getDefaultColumnName($columns);
+
         $this->objQuery = new SC_Query();
         if ($autoCommit) {
             $this->objQuery->begin();
@@ -227,12 +236,16 @@ class SC_DB_MasterData {
      *
      * 返り値は, key => value 形式の配列である.
      *
+     * @access private
      * @param string $name マスタデータ名
      * @param array $columns [0] => キー, [1] => 表示文字列, [2] => 表示順
      *                        を表すカラム名を格納した配列
      * @return array マスタデータ
      */
-    function getDbMasterData($name, $columns) {
+    function getDbMasterData($name, $columns = array()) {
+
+        $columns = $this->getDefaultColumnName($columns);
+
         $this->objQuery = new SC_Query();
         $this->objQuery->setorder($columns[2]);
         $results = $this->objQuery->select($columns[0] . ", " . $columns[1], $name);
@@ -244,6 +257,23 @@ class SC_DB_MasterData {
             $masterData[$result[$columns[0]]] = $result[$columns[1]];
         }
         return $masterData;
+    }
+
+    /**
+     * デフォルトのカラム名の配列を返す.
+     *
+     * 引数 $columns が空の場合, デフォルトのカラム名の配列を返す.
+     * 空でない場合は, 引数の値をそのまま返す.
+     *
+     * @param array $columns [0] => キー, [1] => 表示文字列, [2] => 表示順
+     *                        を表すカラム名を格納した配列
+     * @return array カラム名を格納した配列
+     */
+    function getDefaultColumnName($columns = array()) {
+        if (!empty($columns)) {
+            return $columns;
+        }
+        return $this->columns;
     }
 }
 ?>
