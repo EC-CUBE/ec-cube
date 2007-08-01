@@ -485,7 +485,7 @@ class SC_Utils {
             // 警告表示させる？
             // sfErrorHeader('>> referrerが無効になっています。');
         } else {
-            $domain  = sfIsHTTPS() ? SSL_URL : SITE_URL;
+            $domain  = SC_Utils::sfIsHTTPS() ? SSL_URL : SITE_URL;
             $pattern = sprintf('|^%s.*|', $domain);
             $referer = $_SERVER['HTTP_REFERER'];
 
@@ -933,7 +933,7 @@ class SC_Utils {
 
         for($cnt = 0; $cnt < $max; $cnt++) {
             if($keysize != "") {
-                $key = sfCutString($arrList[$cnt][$keyname], $keysize);
+                $key = $this->sfCutString($arrList[$cnt][$keyname], $keysize);
             } else {
                 $key = $arrList[$cnt][$keyname];
             }
@@ -958,7 +958,7 @@ class SC_Utils {
 
         for($cnt = 0; $cnt < $max; $cnt++) {
             if($keysize != "") {
-                $key = sfCutString($arrList[$cnt][$keyname], $keysize);
+                $key = $this->sfCutString($arrList[$cnt][$keyname], $keysize);
             } else {
                 $key = $arrList[$cnt][$keyname];
             }
@@ -1230,7 +1230,7 @@ class SC_Utils {
 
     /* 子IDの配列を返す */
     function sfGetChildsID($table, $pid_name, $id_name, $id) {
-        $arrRet = sfGetChildrenArray($table, $pid_name, $id_name, $id);
+        $arrRet = SC_Utils::sfGetChildrenArray($table, $pid_name, $id_name, $id);
         return $arrRet;
     }
 
@@ -1322,7 +1322,7 @@ class SC_Utils {
 
     /* ポイント付与 */
     function sfPrePoint($price, $point_rate, $rule = POINT_RULE, $product_id = "") {
-        if(sfIsInt($product_id)) {
+        if(SC_Utils::sfIsInt($product_id)) {
             $objQuery = new SC_Query();
             $where = "now() >= cast(start_date as date) AND ";
             $where .= "now() < cast(end_date as date) AND ";
@@ -1998,9 +1998,9 @@ class SC_Utils {
             $g_category_on = true;
             $category_id = (int) $category_id;
             $product_id = (int) $product_id;
-            if(SC_Utils::sfIsInt($category_id) && sfIsRecord("dtb_category","category_id", $category_id)) {
+            if(SC_Utils_Ex::sfIsInt($category_id) && SC_Utils_Ex::sfIsRecord("dtb_category","category_id", $category_id)) {
                 $g_category_id = $category_id;
-            } else if (SC_Utils::sfIsInt($product_id) && sfIsRecord("dtb_products","product_id", $product_id, "status = 1")) {
+            } else if (SC_Utils_Ex::sfIsInt($product_id) && SC_Utils_Ex::sfIsRecord("dtb_products","product_id", $product_id, "status = 1")) {
                 $objQuery = new SC_Query();
                 $where = "product_id = ?";
                 $category_id = $objQuery->get("dtb_products", "category_id", $where, array($product_id));
@@ -2026,9 +2026,9 @@ class SC_Utils {
             $objQuery = new SC_Query();
             if($_GET['product_id'] != "" || $_GET['category_id'] != "") {
                 // 選択中のカテゴリIDを判定する
-                $category_id = sfGetCategoryId($_GET['product_id'], $_GET['category_id']);
+                $category_id = SC_Utils::sfGetCategoryId($_GET['product_id'], $_GET['category_id']);
                 // ROOTカテゴリIDの取得
-                 $arrRet = sfGetParents($objQuery, 'dtb_category', 'parent_category_id', 'category_id', $category_id);
+                 $arrRet = SC_Utils::sfGetParents($objQuery, 'dtb_category', 'parent_category_id', 'category_id', $category_id);
                  $root_id = $arrRet[0];
             } else {
                 // ROOTカテゴリIDをなしに設定する
@@ -2042,7 +2042,7 @@ class SC_Utils {
     /* カテゴリから商品を検索する場合のWHERE文と値を返す */
     function sfGetCatWhere($category_id) {
         // 子カテゴリIDの取得
-        $arrRet = sfGetChildsID("dtb_category", "parent_category_id", "category_id", $category_id);
+        $arrRet = SC_Utils::sfGetChildsID("dtb_category", "parent_category_id", "category_id", $category_id);
         $tmp_where = "";
         foreach ($arrRet as $val) {
             if($tmp_where == "") {
@@ -2557,11 +2557,11 @@ class SC_Utils {
         $arrChildren = array();
         $arrChildren[] = $id;
 
-        $arrRet = sfGetChildrenArraySub($arrData, $pid_name, $id_name, $arrPID);
+        $arrRet = SC_Utils::sfGetChildrenArraySub($arrData, $pid_name, $id_name, $arrPID);
 
         while(count($arrRet) > 0) {
             $arrChildren = array_merge($arrChildren, $arrRet);
-            $arrRet = sfGetChildrenArraySub($arrData, $pid_name, $id_name, $arrRet);
+            $arrRet = SC_Utils::sfGetChildrenArraySub($arrData, $pid_name, $id_name, $arrRet);
         }
 
         return $arrChildren;
@@ -2719,7 +2719,7 @@ class SC_Utils {
         // 商品が属するカテゴリIDを縦に取得
         $objQuery = new SC_Query();
         $arrRet = array();
-        $arrCatID = sfGetParents($objQuery, "dtb_category", "parent_category_id", "category_id", $category_id);
+        $arrCatID = SC_Utils_Ex::sfGetParents($objQuery, "dtb_category", "parent_category_id", "category_id", $category_id);
         $arrRet['id'] = $arrCatID[0];
 
         // カテゴリー名称を取得する
