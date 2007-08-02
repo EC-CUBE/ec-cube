@@ -35,7 +35,7 @@ CREATE TABLE dtb_bat_order_daily_age (
     end_age smallint,
     member smallint,
     order_date datetime,
-    create_date datetime NOT NULL 
+    create_date datetime NOT NULL
 ) TYPE=InnoDB ;
 
 CREATE TABLE dtb_update (
@@ -229,7 +229,7 @@ CREATE TABLE dtb_send_history (
     del_flg smallint NOT NULL DEFAULT 0,
     creator_id int NOT NULL,
     create_date datetime NOT NULL ,
-    update_date datetime NOT NULL 
+    update_date datetime NOT NULL
 ) TYPE=InnoDB ;
 
 CREATE TABLE dtb_send_customer (
@@ -390,7 +390,7 @@ CREATE TABLE dtb_bat_order_daily_hour (
     total_average numeric NOT NULL DEFAULT 0,
     hour smallint NOT NULL DEFAULT 0,
     order_date datetime ,
-    create_date datetime NOT NULL 
+    create_date datetime NOT NULL
 ) TYPE=InnoDB ;
 
 CREATE TABLE dtb_recommend_products (
@@ -401,7 +401,7 @@ CREATE TABLE dtb_recommend_products (
     status smallint NOT NULL DEFAULT 0,
     creator_id int NOT NULL,
     create_date datetime NOT NULL ,
-    update_date datetime NOT NULL 
+    update_date datetime NOT NULL
 ) TYPE=InnoDB ;
 
 CREATE TABLE dtb_review (
@@ -425,19 +425,19 @@ CREATE TABLE dtb_customer_reading (
     reading_product_id int NOT NULL,
     customer_id int NOT NULL,
     create_date datetime NOT NULL,
-    update_date datetime NOT NULL 
+    update_date datetime NOT NULL
 ) TYPE=InnoDB ;
 
 CREATE TABLE dtb_category_count (
     category_id int NOT NULL,
     product_count int NOT NULL,
-    create_date datetime NOT NULL 
+    create_date datetime NOT NULL
 ) TYPE=InnoDB ;
 
 CREATE TABLE dtb_category_total_count (
     category_id int NOT NULL,
     product_count int,
-    create_date datetime NOT NULL 
+    create_date datetime NOT NULL
 ) TYPE=InnoDB ;
 
 CREATE TABLE dtb_news (
@@ -529,7 +529,7 @@ CREATE TABLE dtb_customer_mail_temp (
     temp_id varchar(50) NOT NULL UNIQUE,
     end_flag smallint,
     update_date datetime NOT NULL ,
-    create_data datetime NOT NULL 
+    create_data datetime NOT NULL
 ) TYPE=InnoDB ;
 
 CREATE TABLE dtb_order (
@@ -791,7 +791,7 @@ CREATE TABLE dtb_bat_relate_products (
     product_id int,
     relate_product_id int,
     customer_id int,
-    create_date datetime 
+    create_date datetime
 ) TYPE=InnoDB ;
 
 CREATE TABLE dtb_campaign (
@@ -810,7 +810,7 @@ CREATE TABLE dtb_campaign (
     search_condition text,
     del_flg smallint NOT NULL DEFAULT 0,
     create_date datetime NOT NULL,
-    update_date datetime NOT NULL 
+    update_date datetime NOT NULL
 ) TYPE=InnoDB ;
 
 CREATE TABLE dtb_campaign_detail (
@@ -834,7 +834,7 @@ CREATE TABLE dtb_pagelayout (
     keyword text,
     update_url text,
     create_date datetime NOT NULL ,
-    update_date datetime NOT NULL 
+    update_date datetime NOT NULL
 ) TYPE=InnoDB ;
 
 CREATE TABLE dtb_bloc (
@@ -864,7 +864,7 @@ CREATE TABLE dtb_csv (
     rank int,
     status smallint NOT NULL DEFAULT 1,
     create_date datetime NOT NULL ,
-    update_date datetime NOT NULL 
+    update_date datetime NOT NULL
 ) TYPE=InnoDB ;
 
 CREATE TABLE dtb_csv_sql (
@@ -890,15 +890,15 @@ CREATE TABLE dtb_user_regist (
     status smallint NOT NULL,
     del_flg smallint DEFAULT 0,
     create_date datetime NOT NULL,
-    update_date datetime NOT NULL 
+    update_date datetime NOT NULL
 ) TYPE=InnoDB ;
 
-CREATE TABLE dtb_templates 
+CREATE TABLE dtb_templates
 (
     template_code        varchar(50) NOT NULL UNIQUE    ,
     template_name        text            ,
     create_date        datetime        NOT NULL    ,
-    update_date        datetime        NOT NULL    
+    update_date        datetime        NOT NULL
 ) TYPE=InnoDB ;
 
 CREATE TABLE dtb_table_comment

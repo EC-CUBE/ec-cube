@@ -732,7 +732,8 @@ CREATE TABLE dtb_order_detail (
 CREATE TABLE mtb_pref (
     pref_id int2 NOT NULL,
     pref_name text,
-    rank int2 NOT NULL DEFAULT 0
+    rank int2 NOT NULL DEFAULT 0,
+    PRIMARY KEY (pref_id)
 );
 
 CREATE TABLE dtb_member (
@@ -893,7 +894,7 @@ CREATE TABLE dtb_user_regist (
     update_date timestamp NOT NULL DEFAULT now()
 );
 
-create table dtb_templates 
+create table dtb_templates
 (
 template_code        text        NOT NULL UNIQUE    ,
 template_name        text            ,
