@@ -6,6 +6,9 @@
  */
 
 // {{{ requires
+if (!defined("CLASS_PATH")) {
+    //define("CLASS_PATH", "../../data/class/");
+}
 require_once(CLASS_PATH . "db_extends/SC_DB_MasterData_Ex.php");
 require_once("PHPUnit/TestCase.php");
 
@@ -63,6 +66,16 @@ class SC_DB_MasterData_Test extends PHPUnit_TestCase {
 
         $masterData->objQuery->rollback();
         $masterData->clearCache("mtb_pref");
+    }
+
+    /**
+     * SC_DB_MasterData::createCache() のテストケース.
+     */
+    function testCreateCache() {
+        $masterData = new SC_DB_MasterData_Ex();
+        $masterData->createCache("mtb_constants", $masterData->getMasterData("mtb_constants"), true);
+
+        $this->assertEquals(true, defined("ECCUBE_VERSION"));
     }
 }
 ?>

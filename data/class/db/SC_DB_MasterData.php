@@ -192,26 +192,23 @@ class SC_DB_MasterData {
      *
      * 引数 $name のマスタデータキャッシュを生成する.
      * 既存のキャッシュが存在する場合は上書きする.
+     * 引数 $isDefine が true の場合は, 定数を生成する.
      *
      * @param string $name マスタデータ名
      * @param array $masterData マスタデータ
+     * @param bool $isDefine 定数を生成する場合 true
      * @return bool キャッシュの生成に成功した場合 true
      */
-    function createCache($name, $masterData) {
+    function createCache($name, $masterData, $isDefine = false) {
 
-        // 配列の定義を文字列にする
-        $data = "<?php\n"
-              . "\$_" . $name . "_master = array(\n";
-        $i = count($masterData);
-        foreach ($masterData as $key => $val) {
-            $data .= "'" . $key . "' => '" . $val . "'";
-            if ($i > 1) {
-                $data .= ",\n";
-            }
-            $i--;
+        // マスタデータを文字列にする
+        $data = "<?php\n";
+        if ($isDefine) {
+            $data .= $this->getMasterDataAsDefine($masterData);
+        } else {
+            $data .= $this->getMasterDataAsString($name, $masterData);
         }
-        $data .= ");\n"
-              .  "?>\n";
+        $data .=  "?>\n";
 
         // ファイルを書き出しモードで開く
         $path = MASTER_DATA_DIR . $name . ".php";
@@ -274,6 +271,43 @@ class SC_DB_MasterData {
             return $columns;
         }
         return $this->columns;
+    }
+
+    /**
+     * マスタデータの配列を配列定義の文字列として出力する.
+     *
+     * @access private
+     * @param string $name マスタデータ名
+     * @param array $masterData マスタデータの配列
+     * @return string 配列定義の文字列
+     */
+    function getMasterDataAsString($name, $masterData) {
+        $data = "\$_" . $name . "_master = array(\n";
+        $i = count($masterData);
+        foreach ($masterData as $key => $val) {
+            $data .= "'" . $key . "' => '" . $val . "'";
+            if ($i > 1) {
+                $data .= ",\n";
+            }
+            $i--;
+        }
+        $data .= ");\n";
+        return $data;
+    }
+
+    /**
+     * マスタデータの配列を定数定義の文字列として出力する.
+     *
+     * @access private
+     * @param array $masterData マスタデータの配列
+     * @return string 定数定義の文字列
+     */
+    function getMasterDataAsDefine($masterData) {
+        $data = "";
+        foreach ($masterData as $key => $val) {
+            $data .= "define('" . $key . "', " . $val . ");\n";
+        }
+        return $data;
     }
 }
 ?>
