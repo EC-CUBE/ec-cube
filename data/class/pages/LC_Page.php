@@ -118,9 +118,10 @@ class LC_Page {
      * @return string トランザクショントークンの文字列
      */
     function getToken() {
-        $token = $this->createToken();
-        $_SESSION[TRANSACTION_ID_NAME] = $token;
-        return $token;
+        if (empty($_SESSION[TRANSACTION_ID_NAME])) {
+            $_SESSION[TRANSACTION_ID_NAME] = $this->createToken();
+        }
+        return $_SESSION[TRANSACTION_ID_NAME];
     }
 
     /**
@@ -153,7 +154,6 @@ class LC_Page {
         }
 
         unset($_SESSION[TRANSACTION_ID_NAME]);
-
         return $ret;
     }
 
