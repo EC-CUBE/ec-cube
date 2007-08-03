@@ -204,7 +204,8 @@ class SC_DB_MasterData {
         // マスタデータを文字列にする
         $data = "<?php\n";
         if ($isDefine) {
-            $data .= $this->getMasterDataAsDefine($masterData);
+            $data .= $this->getMasterDataAsDefine($masterData,
+                    $this->getDbMasterData("mtb_constants", array("id", "remarks", "rank")));
         } else {
             $data .= $this->getMasterDataAsString($name, $masterData);
         }
@@ -267,10 +268,12 @@ class SC_DB_MasterData {
      * @return array カラム名を格納した配列
      */
     function getDefaultColumnName($columns = array()) {
+
         if (!empty($columns)) {
             return $columns;
+        } else {
+            return $this->columns;
         }
-        return $this->columns;
     }
 
     /**
@@ -300,11 +303,15 @@ class SC_DB_MasterData {
      *
      * @access private
      * @param array $masterData マスタデータの配列
+     * @param array $comments コメントの配列
      * @return string 定数定義の文字列
      */
-    function getMasterDataAsDefine($masterData) {
+    function getMasterDataAsDefine($masterData, $comments = array()) {
         $data = "";
         foreach ($masterData as $key => $val) {
+            if (isset($comments[$key])) {
+                $data .= "/** " . $comments[$key] . " */\n";
+            }
             $data .= "define('" . $key . "', " . $val . ");\n";
         }
         return $data;
