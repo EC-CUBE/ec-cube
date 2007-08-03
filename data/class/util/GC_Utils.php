@@ -95,7 +95,7 @@ class GC_Utils {
      * [注釈] -
      *----------------------------------------------------------------------*/
     function gfDebugLog($obj){
-            gfPrintLog("*** start Debug ***");
+            GC_Utils::gfPrintLog("*** start Debug ***");
             ob_start();
             print_r($obj);
             $buffer = ob_get_contents();
@@ -103,10 +103,10 @@ class GC_Utils {
             $fp = fopen(LOG_PATH, "a+");
             fwrite( $fp, $buffer."\n" );
             fclose( $fp );
-            gfPrintLog("*** end Debug ***");
+            GC_Utils::gfPrintLog("*** end Debug ***");
 
             // ログテーション
-            gfLogRotation(MAX_LOG_QUANTITY, MAX_LOG_SIZE, LOG_PATH);
+            GC_Utils::gfLogRotation(MAX_LOG_QUANTITY, MAX_LOG_SIZE, LOG_PATH);
     }
 
     /*----------------------------------------------------------------------
@@ -137,7 +137,7 @@ class GC_Utils {
         }
 
         // ログテーション
-        gfLogRotation(MAX_LOG_QUANTITY, MAX_LOG_SIZE, $path);
+        GC_Utils::gfLogRotation(MAX_LOG_QUANTITY, MAX_LOG_SIZE, $path);
     }
 
     /**
