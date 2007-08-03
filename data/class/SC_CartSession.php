@@ -80,7 +80,7 @@ class SC_CartSession {
                 // 税込み合計
                 $price = $_SESSION[$this->key][$i]['price'];
                 $quantity = $_SESSION[$this->key][$i]['quantity'];
-                $pre_tax = sfPreTax($price, $arrInfo['tax'], $arrInfo['tax_rule']);
+                $pre_tax = SC_Utils_Ex::sfPreTax($price, $arrInfo['tax'], $arrInfo['tax_rule']);
                 $total = $pre_tax * $quantity;
                 return $total;
             }
@@ -148,7 +148,7 @@ class SC_CartSession {
         for($i = 0; $i <= $max; $i++) {
             $price = $_SESSION[$this->key][$i]['price'];
             $quantity = $_SESSION[$this->key][$i]['quantity'];
-            $tax = sfTax($price, $arrInfo['tax'], $arrInfo['tax_rule']);
+            $tax = SC_Utils_Ex::sfTax($price, $arrInfo['tax'], $arrInfo['tax_rule']);
             $total+= ($tax * $quantity);
         }
         return $total;
@@ -164,7 +164,7 @@ class SC_CartSession {
             $quantity = $_SESSION[$this->key][$i]['quantity'];
             $point_rate = $_SESSION[$this->key][$i]['point_rate'];
             $id = $_SESSION[$this->key][$i]['id'][0];
-            $point = sfPrePoint($price, $point_rate, POINT_RULE, $id);
+            $point = SC_Utils_Ex::sfPrePoint($price, $point_rate, POINT_RULE, $id);
             $total+= ($point * $quantity);
         }
         return $total;
