@@ -47,38 +47,8 @@ class LC_Page_Entry extends LC_Page {
         $masterData = new SC_DB_MasterData_Ex();
         $this->arrPref = $masterData->getMasterData("mtb_pref",
                                 array("pref_id", "pref_name", "rank"));
-
-        // TODO
-        $this->arrJob = array(
-                    1 => "公務員",
-                    2 => "コンサルタント",
-                    3 => "コンピュータ関連技術職",
-                    4 => "コンピュータ関連以外の技術職",
-                    5 => "金融関係",
-                    6 => "医師",
-                    7 => "弁護士",
-                    8 => "総務・人事・事務",
-                    9 => "営業・販売",
-                    10 => "研究・開発",
-                    11 => "広報・宣伝",
-                    12 => "企画・マーケティング",
-                    13 => "デザイン関係",
-                    14 => "会社経営・役員",
-                    15 => "出版・マスコミ関係",
-                    16 => "学生・フリーター",
-                    17 => "主婦",
-                    18 => "その他"
-                );
-        // TODO
-        $this->arrReminder = array(
-                        1 => "母親の旧姓は？",
-                        2 => "お気に入りのマンガは？",
-                        3 => "大好きなペットの名前は？",
-                        4 => "初恋の人の名前は？",
-                        5 => "面白かった映画は？",
-                        6 => "尊敬していた先生の名前は？",
-                        7 => "好きな食べ物は？"
-                    );
+        $this->arrJob = $masterData->getMasterData("mtb_job");
+        $this->arrReminder = $masterData->getMasterData("mtb_reminder");
         $this->arrYear = $objDate->getYear('', 1950);	//　日付プルダウン設定
         $this->arrMonth = $objDate->getMonth();
         $this->arrDay = $objDate->getDay();
