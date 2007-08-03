@@ -4,19 +4,15 @@
  *
  * http://www.lockon.co.jp/
  */
-
+// {{{ requires
 require_once("../require.php");
+require_once(CLASS_PATH . "page_extends/products/LC_Page_Products_ReviewComplete_Ex.php");
 
-class LC_Page {
-	function LC_Page() {
-		$this->tpl_mainpage = 'products/review_complete.tpl';
-	}
-}
+// }}}
+// {{{ generate page
 
-$objPage = new LC_Page();
-$objView = new SC_SiteView();
-
-$objView->assignobj($objPage);
-$objView->display($objPage->tpl_mainpage);					
-
+$objPage = new LC_Page_Products_ReviewComplete_Ex();
+$objPage->init();
+$objPage->process();
+register_shutdown_function(array($objPage, "destroy"));
 ?>
