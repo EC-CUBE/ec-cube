@@ -138,7 +138,7 @@ class LC_Page_Products_Detail extends LC_Page {
         case 'cart':
             // 入力値の変換
             $this->objFormParam->convParam();
-            $this->arrErr = lfCheckError();
+            $this->arrErr = $this->lfCheckError();
             if(count($this->arrErr) == 0) {
                 $objCartSess = new SC_CartSession();
                 $classcategory_id1 = $_POST['classcategory_id1'];
@@ -155,7 +155,7 @@ class LC_Page_Products_Detail extends LC_Page {
                 }
 
                 $objCartSess->setPrevURL($_SERVER['REQUEST_URI']);
-                $objCartSess->addProduct(array($_POST['product_id'], $classcategory_id1, $classcategory_id2), $objFormParam->getValue('quantity'));
+                $objCartSess->addProduct(array($_POST['product_id'], $classcategory_id1, $classcategory_id2), $this->objFormParam->getValue('quantity'));
                 header("Location: " . URL_CART_TOP);
 
                 exit;
@@ -186,8 +186,7 @@ class LC_Page_Products_Detail extends LC_Page {
 
         // サブタイトルを取得
         $arrFirstCat = SC_Utils_Ex::sfGetFirstCat($arrRet[0]['category_id']);
-        $tpl_subtitle = $arrFirstCat['name'];
-        $this->tpl_subtitle = $tpl_subtitle;
+        $this->tpl_subtitle = $arrFirstCat['name'];
 
         // DBからのデータを引き継ぐ
         $this->objUpFile->setDBFileList($this->arrProduct);
