@@ -18,12 +18,22 @@ require_once(CLASS_PATH . "pages/LC_Page.php");
 class LC_Page_Products_Detail extends LC_Page {
 
     // TODO
+    /** ステータス */
     var $arrSTATUS;
+
+    /** ステータス画像 */
     var $arrSTATUS_IMAGE;
+
+    /** 発送予定日 */
     var $arrDELIVERYDATE;
+
+    /** おすすめレベル */
     var $arrRECOMMEND;
 
+    /** フォームパラメータ */
     var $objFormParam;
+
+    /** アップロードファイル */
     var $objUpFile;
 
     // }}}
@@ -36,6 +46,11 @@ class LC_Page_Products_Detail extends LC_Page {
      */
     function init() {
         parent::init();
+        $masterData = new SC_DB_MasterData_Ex();
+        $this->arrSTATUS = $masterData->getMasterData("mtb_status");
+        $this->arrSTATUS_IMAGE = $masterData->getMasterData("mtb_status_image");
+        $this->arrDELIVERYDATE = $masterData->getMasterData("mtb_delivery_date");
+        $this->arrRECOMMEND = $masterData->getMasterData("mtb_recommend");
     }
 
     /**
