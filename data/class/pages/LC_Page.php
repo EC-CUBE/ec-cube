@@ -121,6 +121,7 @@ class LC_Page {
      * 遷移先のページで, LC_Page::isValidToken() の返り値をチェックすることにより,
      * 画面遷移の妥当性が確認できる.
      *
+     * @access protected
      * @return string トランザクショントークンの文字列
      */
     function getToken() {
@@ -137,6 +138,7 @@ class LC_Page {
      * この関数を使用するためには, 前画面のページクラスで LC_Page::getToken()
      * を呼んでおく必要がある.
      *
+     * @access protected
      * @return boolean トランザクショントークンが有効な場合 true
      */
     function isValidToken() {
@@ -174,6 +176,7 @@ class LC_Page {
      * 返り値に, QUERY_STRING を含めたい場合は, key => value 形式
      * の配列を $param へ渡す.
      *
+     * @access protected
      * @param string $path 結果を取得するためのパス
      * @param array $param URL に付与するパラメータの配列
      * @param boolean $useSSL 結果に SSL_URL を使用する場合 true,
@@ -232,12 +235,26 @@ class LC_Page {
         }
     }
 
+    /**
+     * クライアントのキャッシュを許可する.
+     *
+     * session_start時のno-cacheヘッダーを抑制することで
+     * 「戻る」ボタン使用時の有効期限切れ表示を抑制する.
+     *
+     * @access protected
+     * @return void
+     */
+    function allowClientCache() {
+        session_cache_limiter('private-no-expire');
+    }
+
     // }}}
     // {{{ private functions
 
     /**
      * トランザクショントークン用の予測困難な文字列を生成して返す.
      *
+     * @access private
      * @return string トランザクショントークン用の文字列
      */
     function createToken() {
