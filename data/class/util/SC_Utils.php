@@ -474,7 +474,7 @@ class SC_Utils {
         if($ret != SUCCESS) {
             if($disp_error) {
                 // エラーページの表示
-                sfDispError($ret);
+                SC_Utils::sfDispError($ret);
             }
             return false;
         }
@@ -491,7 +491,7 @@ class SC_Utils {
 
             // 管理画面から以外の遷移の場合はエラー画面を表示
             if (!preg_match($pattern, $referer)) {
-                if ($disp_error) sfDispError(INVALID_MOVE_ERRORR);
+                if ($disp_error) SC_Utils::sfDispError(INVALID_MOVE_ERRORR);
                 return false;
             }
         }
@@ -1311,7 +1311,7 @@ class SC_Utils {
         $adjust = pow(10 ,$pow-1);
 
         // 整数且つ0出なければ桁数指定を行う
-        if(sfIsInt($adjust) and $pow > 1){
+        if(SC_Utils::sfIsInt($adjust) and $pow > 1){
             $ret = (round($value * $adjust)/$adjust);
         }
 
