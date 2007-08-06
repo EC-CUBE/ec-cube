@@ -1178,22 +1178,6 @@ class SC_Utils {
         return "";
     }
 
-    // SELECTボックス用リストの作成
-    function sfGetIDValueList($table, $keyname, $valname) {
-        $objQuery = new SC_Query();
-        $col = "$keyname, $valname";
-        $objQuery->setwhere("del_flg = 0");
-        $objQuery->setorder("rank DESC");
-        $arrList = $objQuery->select($col, $table);
-        $count = count($arrList);
-        for($cnt = 0; $cnt < $count; $cnt++) {
-            $key = $arrList[$cnt][$keyname];
-            $val = $arrList[$cnt][$valname];
-            $arrRet[$key] = $val;
-        }
-        return $arrRet;
-    }
-
     function sfTrim($str) {
         $ret = ereg_replace("^[　 \n\r]*", "", $str);
         $ret = ereg_replace("[　 \n\r]*$", "", $ret);
@@ -1770,58 +1754,6 @@ class SC_Utils {
         $objQuery->insert("dtb_mail_history", $sqlval);
     }
 
-    /* 会員情報を一時受注テーブルへ */
-    function sfGetCustomerSqlVal($uniqid, $sqlval) {
-        $objCustomer = new SC_Customer();
-        // 会員情報登録処理
-        if ($objCustomer->isLoginSuccess()) {
-            // 登録データの作成
-            $sqlval['order_temp_id'] = $uniqid;
-            $sqlval['update_date'] = 'Now()';
-            $sqlval['customer_id'] = $objCustomer->getValue('customer_id');
-            $sqlval['order_name01'] = $objCustomer->getValue('name01');
-            $sqlval['order_name02'] = $objCustomer->getValue('name02');
-            $sqlval['order_kana01'] = $objCustomer->getValue('kana01');
-            $sqlval['order_kana02'] = $objCustomer->getValue('kana02');
-            $sqlval['order_sex'] = $objCustomer->getValue('sex');
-            $sqlval['order_zip01'] = $objCustomer->getValue('zip01');
-            $sqlval['order_zip02'] = $objCustomer->getValue('zip02');
-            $sqlval['order_pref'] = $objCustomer->getValue('pref');
-            $sqlval['order_addr01'] = $objCustomer->getValue('addr01');
-            $sqlval['order_addr02'] = $objCustomer->getValue('addr02');
-            $sqlval['order_tel01'] = $objCustomer->getValue('tel01');
-            $sqlval['order_tel02'] = $objCustomer->getValue('tel02');
-            $sqlval['order_tel03'] = $objCustomer->getValue('tel03');
-            if (defined('MOBILE_SITE')) {
-                $sqlval['order_email'] = $objCustomer->getValue('email_mobile');
-            } else {
-                $sqlval['order_email'] = $objCustomer->getValue('email');
-            }
-            $sqlval['order_job'] = $objCustomer->getValue('job');
-            $sqlval['order_birth'] = $objCustomer->getValue('birth');
-        }
-        return $sqlval;
-    }
-
-    // 受注一時テーブルへの書き込み処理
-    function sfRegistTempOrder($uniqid, $sqlval) {
-        if($uniqid != "") {
-            // 既存データのチェック
-            $objQuery = new SC_Query();
-            $where = "order_temp_id = ?";
-            $cnt = $objQuery->count("dtb_order_temp", $where, array($uniqid));
-            // 既存データがない場合
-            if ($cnt == 0) {
-                // 初回書き込み時に会員の登録済み情報を取り込む
-                $sqlval = sfGetCustomerSqlVal($uniqid, $sqlval);
-                $sqlval['create_date'] = "now()";
-                $objQuery->insert("dtb_order_temp", $sqlval);
-            } else {
-                $objQuery->update("dtb_order_temp", $sqlval, $where, array($uniqid));
-            }
-        }
-    }
-
     /* 会員のメルマガ登録があるかどうかのチェック(仮会員を含まない) */
     function sfCheckCustomerMailMaga($email) {
         $col = "email, mailmaga_flg, customer_id";
@@ -1863,14 +1795,6 @@ class SC_Utils {
         }
 
         return $return;
-    }
-
-    // 受注一時テーブルから情報を取得する
-    function sfGetOrderTemp($order_temp_id) {
-        $objQuery = new SC_Query();
-        $where = "order_temp_id = ?";
-        $arrRet = $objQuery->select("*", "dtb_order_temp", $where, array($order_temp_id));
-        return $arrRet[0];
     }
 
     // カテゴリID取得判定用のグローバル変数(一度取得されていたら再取得しないようにする)
