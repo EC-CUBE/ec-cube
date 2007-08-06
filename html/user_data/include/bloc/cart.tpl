@@ -14,7 +14,8 @@
 		<table width="146" border="0" cellspacing="0" cellpadding="0" summary=" ">
 			<tr><td height="5"></td></tr>
 			<tr>
-				<td class="fs10">商品数：<!--{$arrCartList.0.TotalQuantity|number_format|default:0}-->点</td>
+				<!--{assign var=val value=$arrCartList.0.TotalQuantity|number_format|default:0}-->
+				<td class="fs10"><!--{$smarty.const._lang_product_quantity|replace:"__%Quantity%__":$val}--></td>
 			</tr>
 			<tr><td height="10"><img src="<!--{$smarty.const.URL_DIR}-->img/side/line_146.gif" width="146" height="1" alt=""></td></tr>
 			<tr>
