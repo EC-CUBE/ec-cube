@@ -35,6 +35,12 @@ class LC_Page {
     /** カテゴリ */
     var $tpl_page_category;
 
+    /** ログインメールアドレス */
+    var $tpl_login_email;
+
+    /** body タグの onload 属性 */
+    var $tpl_onload;
+
     /** トランザクションID */
     var $transactionid;
 
