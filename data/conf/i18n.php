@@ -26,7 +26,7 @@ $preVar = explode('<!--end-->', $text);
 foreach ($preVar AS $preVar_1) {
 	$preVar_2 = explode('-->', $preVar_1);
 	$preVar_3 = explode('<!--', $preVar_2[0]);
-	$newVar = str_replace('', '_', $preVar_3[1]);
+	$newVar = str_replace(' ', '_', $preVar_3[1]);
 	#$_GLOBALS['_lang'][$newVar] = $preVar_2[1];
 	define('_lang_' . $newVar, $preVar_2[1]);
 }
