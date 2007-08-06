@@ -193,11 +193,19 @@ class LC_Page {
                 die("[BUG] can't get DOCUMENT_ROOT");
             }
         }
+
+        // $path が / で始まっている場合
+        if (substr($path, 0, 1) == "/") {
+            $realPath = realpath(HTML_PATH . substr_replace($path, "", 0, 1));
+        } else {
+            // 相対パスの場合
+            $realPath = realpath($path);
+        }
+
         // DocumentRoot を削除した文字列を取得.
-        $root = str_replace($documentRoot, "", realpath($path));
+        $root = str_replace($documentRoot, "", $realPath);
         // 先頭の / を削除
         $root = substr_replace($root, "", 0, 1);
-
         if ($useSSL) {
             $url = SSL_URL . $root;
         } else {

@@ -125,6 +125,20 @@ class LC_Page_Test extends PHPUnit_TestCase {
     /**
      * LC_Page::getLocation() のテストケース.
      *
+     * 絶対パス
+     */
+    function testGetLocationWithFullPath() {
+        $objPage = new LC_Page();
+        $_SERVER['DOCUMENT_ROOT'] = realpath("../html");
+        $url = $objPage->getLocation("/abouts/index.php");
+
+        $this->assertEquals(SITE_URL . "abouts/index.php", $url);
+        unset($_SERVER['DOCUMENT_ROOT']);
+    }
+
+    /**
+     * LC_Page::getLocation() のテストケース.
+     *
      * QueryString 付与
      */
     function testGetLocationWithQueryString() {
