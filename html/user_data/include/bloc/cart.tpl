@@ -15,11 +15,12 @@
 			<tr><td height="5"></td></tr>
 			<tr>
 				<!--{assign var=val value=$arrCartList.0.TotalQuantity|number_format|default:0}-->
-				<td class="fs10"><!--{$smarty.const._lang_product_quantity|replace:"__%Quantity%__":$val}--></td>
+				<td class="fs10"><!--{$smarty.const._lang_product_quantity|replace:"__%QUANTITY%__":$val}--></td>
 			</tr>
 			<tr><td height="10"><img src="<!--{$smarty.const.URL_DIR}-->img/side/line_146.gif" width="146" height="1" alt=""></td></tr>
 			<tr>
-				<td class="fs12"><span class="redst">合計：<!--{$arrCartList.0.ProductsTotal|number_format|default:0}-->円</span></td>
+				<!--{assign var=val value=$arrCartList.0.ProductsTotal|number_format|default:0}-->
+				<td class="fs12"><span class="redst"><!--{$smarty.const._lang_total_price|replace:"__%PRICE%__":$val}--></span></td>
 			</tr>
 			<tr><td height="5"><!--{$arrCartList.0.free_rule}--></td></tr>
 			
