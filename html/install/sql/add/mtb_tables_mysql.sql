@@ -2,7 +2,7 @@ CREATE TABLE mtb_permission (
     id text,
     name text,
     rank int2 NOT NULL DEFAULT 0,
-    PRIMARY KEY (id)
+    PRIMARY KEY (id(32))
 ) TYPE=InnoDB;
 
 CREATE TABLE mtb_disable_logout (
@@ -255,5 +255,5 @@ CREATE TABLE mtb_constants (
     name text,
     rank int2 NOT NULL DEFAULT 0,
     remarks text,
-    PRIMARY KEY (id)
+    PRIMARY KEY (id(32))
 ) TYPE=InnoDB;
