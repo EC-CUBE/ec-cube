@@ -24,26 +24,8 @@ class SC_Helper_DB {
      * @return string データベースのバージョン
      */
     function sfGetDBVersion($dsn = "") {
-        if($dsn == "") {
-            if(defined('DEFAULT_DSN')) {
-                $dsn = DEFAULT_DSN;
-            } else {
-                return;
-            }
-        }
-
-        $objQuery = new SC_Query($dsn, true, true);
-        list($db_type) = split(":", $dsn);
-        if($db_type == 'mysql') {
-            $val = $objQuery->getOne("select version()");
-            $version = "MySQL " . $val;
-        }
-        if($db_type == 'pgsql') {
-            $val = $objQuery->getOne("select version()");
-            $arrLine = split(" " , $val);
-            $version = $arrLine[0] . " " . $arrLine[1];
-        }
-        return $version;
+        $dbFactory = SC_DB_DBFactory::getInstance();
+        return $dbFactory->sfGetDBVersion($dsn);
     }
 
     /**
@@ -54,39 +36,17 @@ class SC_Helper_DB {
      * @return テーブルが存在する場合 true
      */
     function sfTabaleExists($table_name, $dsn = "") {
-        if($dsn == "") {
-            if(defined('DEFAULT_DSN')) {
-                $dsn = DEFAULT_DSN;
-            } else {
-                return;
-            }
-        }
+        $dbFactory = SC_DB_DBFactory::getInstance();
+        $dsn = $dbFactory->getDSN($dsn);
 
         $objQuery = new SC_Query($dsn, true, true);
         // 正常に接続されている場合
         if(!$objQuery->isError()) {
             list($db_type) = split(":", $dsn);
-            // postgresqlとmysqlとで処理を分ける
-            if ($db_type == "pgsql") {
-                $sql = "SELECT
-                            relname
-                        FROM
-                            pg_class
-                        WHERE
-                            (relkind = 'r' OR relkind = 'v') AND
-                            relname = ?
-                        GROUP BY
-                            relname";
-                $arrRet = $objQuery->getAll($sql, array($table_name));
-                if(count($arrRet) > 0) {
-                    return true;
-                }
-            }else if ($db_type == "mysql") {
-                $sql = "SHOW TABLE STATUS LIKE ?";
-                $arrRet = $objQuery->getAll($sql, array($table_name));
-                if(count($arrRet) > 0) {
-                    return true;
-                }
+            $sql = $dbFactory->getTableExistsSql();
+            $arrRet = $objQuery->getAll($sql, array($table_name));
+            if(count($arrRet) > 0) {
+                return true;
             }
         }
         return false;
@@ -109,16 +69,11 @@ class SC_Helper_DB {
      * 				 引数 $add == false でカラムが存在しない場合 false
      */
     function sfColumnExists($table_name, $col_name, $col_type = "", $dsn = "", $add = false) {
-        if($dsn == "") {
-            if(defined('DEFAULT_DSN')) {
-                $dsn = DEFAULT_DSN;
-            } else {
-                return;
-            }
-        }
+        $dbFactory = SC_DB_DBFactory::getInstance();
+        $dsn = $dbFactory->getDSN($dsn);
 
         // テーブルが無ければエラー
-        if(!sfTabaleExists($table_name, $dsn)) return false;
+        if(!$this->sfTabaleExists($table_name, $dsn)) return false;
 
         $objQuery = new SC_Query($dsn, true, true);
         // 正常に接続されている場合
@@ -126,7 +81,7 @@ class SC_Helper_DB {
             list($db_type) = split(":", $dsn);
 
             // カラムリストを取得
-            $arrRet = sfGetColumnList($table_name, $objQuery, $db_type);
+            $arrRet = $dbFactory->sfGetColumnList($table_name);
             if(count($arrRet) > 0) {
                 if(in_array($col_name, $arrRet)){
                     return true;
@@ -139,7 +94,6 @@ class SC_Helper_DB {
             $objQuery->query("ALTER TABLE $table_name ADD $col_name $col_type ");
             return true;
         }
-
         return false;
     }
 
@@ -161,51 +115,23 @@ class SC_Helper_DB {
      * 				 引数 $add == false でインデックスが存在しない場合 false
      */
     function sfIndexExists($table_name, $col_name, $index_name, $length = "", $dsn = "", $add = false) {
-        if($dsn == "") {
-            if(defined('DEFAULT_DSN')) {
-                $dsn = DEFAULT_DSN;
-            } else {
-                return;
-            }
-        }
+        $dbFactory = SC_DB_DBFactory::getInstance();
+        $dsn = $dbFactory->getDSN($dsn);
 
         // テーブルが無ければエラー
-        if(!sfTabaleExists($table_name, $dsn)) return false;
+        if (!$this->sfTabaleExists($table_name, $dsn)) return false;
 
         $objQuery = new SC_Query($dsn, true, true);
-        // 正常に接続されている場合
-        if(!$objQuery->isError()) {
-            list($db_type) = split(":", $dsn);
-            switch($db_type) {
-            case 'pgsql':
-                // インデックスの存在確認
-                $arrRet = $objQuery->getAll("SELECT relname FROM pg_class WHERE relname = ?", array($index_name));
-                break;
-            case 'mysql':
-                // インデックスの存在確認
-                $arrRet = $objQuery->getAll("SHOW INDEX FROM ? WHERE Key_name = ?", array($table_name, $index_name));
-                break;
-            default:
-                return false;
-            }
-            // すでにインデックスが存在する場合
-            if(count($arrRet) > 0) {
-                return true;
-            }
+        $arrRet = $dbFactory->getTableIndex($index_name, $table_name);
+
+        // すでにインデックスが存在する場合
+        if(count($arrRet) > 0) {
+            return true;
         }
 
         // インデックスを作成する
         if($add){
-            switch($db_type) {
-            case 'pgsql':
-                $objQuery->query("CREATE INDEX ? ON ? (?)", array($index_name, $table_name, $col_name));
-                break;
-            case 'mysql':
-                $objQuery->query("CREATE INDEX ? ON ? (?(?))", array($index_name, $table_name, $col_name, $length));
-                break;
-            default:
-                return false;
-            }
+            $dbFactory->createTableIndex($index_name, $table_name, $col_name, $length());
             return true;
         }
         return false;
@@ -223,13 +149,9 @@ class SC_Helper_DB {
      *               $add == false で, データが存在しない場合 false
      */
     function sfDataExists($table_name, $where, $arrval, $dsn = "", $sql = "", $add = false) {
-        if($dsn == "") {
-            if(defined('DEFAULT_DSN')) {
-                $dsn = DEFAULT_DSN;
-            } else {
-                return;
-            }
-        }
+        $dbFactory = SC_DB_DBFactory::getInstance();
+        $dsn = $dbFactory->getDSN($dsn);
+
         $objQuery = new SC_Query($dsn, true, true);
         $count = $objQuery->count($table_name, $where, $arrval);
 
@@ -281,9 +203,9 @@ class SC_Helper_DB {
      */
     function sfTotalCart($objPage, $objCartSess, $arrInfo) {
         // 規格名一覧
-        $arrClassName = SC_Utils::sfGetIDValueList("dtb_class", "class_id", "name");
+        $arrClassName = SC_Utils_Ex::sfGetIDValueList("dtb_class", "class_id", "name");
         // 規格分類名一覧
-        $arrClassCatName = SC_Utils::sfGetIDValueList("dtb_classcategory", "classcategory_id", "name");
+        $arrClassCatName = SC_Utils_Ex::sfGetIDValueList("dtb_classcategory", "classcategory_id", "name");
 
         $objPage->tpl_total_pretax = 0;		// 費用合計(税込み)
         $objPage->tpl_total_tax = 0;		// 消費税合計
