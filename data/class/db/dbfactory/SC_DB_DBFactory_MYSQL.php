@@ -54,6 +54,56 @@ class SC_DB_DBFactory_MYSQL extends SC_DB_DBFactory {
     }
 
     /**
+     * テーブルの存在チェックを行う SQL 文を返す.
+     *
+     * @return string テーブルの存在チェックを行う SQL 文
+     */
+    function getTableExistsSql() {
+        return "SHOW TABLE STATUS LIKE ?";
+    }
+
+    /**
+     * インデックスの検索結果を配列で返す.
+     *
+     * @param string $index_name インデックス名
+     * @param string $table_name テーブル名
+     * @return array インデックスの検索結果の配列
+     */
+    function getTableIndex($index_name, $table_name = "") {
+        $objQuery = new SC_Query("", true, true);
+        return $objQuery->getAll("SHOW INDEX FROM " . $table_name . " WHERE Key_name = ?",
+                                 array($index_name));
+    }
+
+    /**
+     * インデックスを作成する.
+     *
+     * @param string $index_name インデックス名
+     * @param string $table_name テーブル名
+     * @param string $col_name カラム名
+     * @param integer $length 作成するインデックスのバイト長
+     * @return void
+     */
+    function createTableIndex($index_name, $table_name, $col_name, $length = 0) {
+        $objQuery = new SC_Query($dsn, true, true);
+        $objQuery->query("CREATE INDEX ? ON ? (?(?))", array($index_name, $table_name, $col_name, $length));
+    }
+
+    /**
+     * テーブルのカラム一覧を取得する.
+     *
+     * @param string $table_name テーブル名
+     * @return array テーブルのカラム一覧の配列
+     */
+    function sfGetColumnList($table_name) {
+        $objQuery = new SC_Query();
+        $sql = "SHOW COLUMNS FROM " . $table_name;
+        $arrColList = $objQuery->getAll($sql);
+        $arrColList = SC_Utils_Ex::sfswaparray($arrColList);
+        return $arrColList["Field"];
+    }
+
+    /**
      * SQL の中の View の存在をチェックする.
      *
      * @access private

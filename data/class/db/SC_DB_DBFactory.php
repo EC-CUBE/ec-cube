@@ -61,9 +61,10 @@ class SC_DB_DBFactory {
     /**
      * DBのバージョンを取得する.
      *
-     * @param string $dsn データベース接続詞
+     * @param string $dsn データソース名
+     * @return string データベースのバージョン
      */
-    function sfGetDBVersion($dsn = "") {}
+    function sfGetDBVersion($dsn = "") { return null; }
 
     /**
      * MySQL 用の SQL 文に変更する.
@@ -71,6 +72,41 @@ class SC_DB_DBFactory {
      * @param string $sql SQL 文
      * @return string MySQL 用に置換した SQL 文
      */
-    function sfChangeMySQL($sql) {}
+    function sfChangeMySQL($sql) { return null; }
+
+    /**
+     * テーブルの存在チェックを行う SQL 文を返す.
+     *
+     * @return string テーブルの存在チェックを行う SQL 文
+     */
+    function getTableExistsSql() { return null; }
+
+    /**
+     * インデックスの検索結果を配列で返す.
+     *
+     * @param string $index_name インデックス名
+     * @param string $table_name テーブル名
+     * @return array インデックスの検索結果の配列
+     */
+    function getTableIndex($index_name, $table_name = "") { return array(); }
+
+    /**
+     * インデックスを作成する.
+     *
+     * @param string $index_name インデックス名
+     * @param string $table_name テーブル名
+     * @param string $col_name カラム名
+     * @param integer $length 作成するインデックスのバイト長
+     * @return void
+     */
+    function createTableIndex($index_name, $table_name, $col_name, $length = 0) {}
+
+    /**
+     * テーブルのカラム一覧を取得する.
+     *
+     * @param string $table_name テーブル名
+     * @return array テーブルのカラム一覧の配列
+     */
+    function sfGetColumnList($table_name) { array(); }
 }
 ?>
