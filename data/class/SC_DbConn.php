@@ -19,6 +19,8 @@ class SC_DbConn{
     var $error_mail_title;
     var $dsn;
     var $err_disp = true;
+    var $dbFactory;
+
 
     // コンストラクタ
     function SC_DbConn($dsn = "", $err_disp = true, $new = false){
@@ -44,12 +46,13 @@ class SC_DbConn{
         $this->error_mail_to = DB_ERROR_MAIL_TO;
         $this->error_mail_title = DB_ERROR_MAIL_SUBJECT;
         $this->err_disp = $err_disp;
+        $this->dbFactory = SC_DB_DBFactory::getInstance();
     }
 
     // クエリの実行
     function query($n ,$arr = "", $ignore_err = false){
         // mysqlの場合にはビュー表を変換する
-        if (DB_TYPE == "mysql") $n = sfChangeMySQL($n);
+        if (DB_TYPE == "mysql") $n = $this->dbFactory->sfChangeMySQL($n);
 
         if ( $arr ) {
             $result = $this->conn->query($n, $arr);
@@ -69,7 +72,7 @@ class SC_DbConn{
     function getOne($n, $arr = ""){
 
         // mysqlの場合にはビュー表を変換する
-        if (DB_TYPE == "mysql") $n = sfChangeMySQL($n);
+        if (DB_TYPE == "mysql") $n = $this->dbFactory->sfChangeMySQL($n);
 
         if ( $arr ) {
             $result = $this->conn->getOne($n, $arr);
@@ -87,7 +90,7 @@ class SC_DbConn{
     function getRow($n, $arr = ""){
 
         // mysqlの場合にはビュー表を変換する
-        if (DB_TYPE == "mysql") $n = sfChangeMySQL($n);
+        if (DB_TYPE == "mysql") $n = $this->dbFactory->sfChangeMySQL($n);
 
         if ( $arr ) {
             $result = $this->conn->getRow($n, $arr);
@@ -105,7 +108,7 @@ class SC_DbConn{
     function getAll($n, $arr = ""){
 
         // mysqlの場合にはビュー表を変換する
-        if (DB_TYPE == "mysql") $n = sfChangeMySQL($n);
+        if (DB_TYPE == "mysql") $n = $this->dbFactory->sfChangeMySQL($n);
 
         if(PEAR::isError($this->conn)) {
             if(ADMIN_MODE){
