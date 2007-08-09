@@ -35,13 +35,14 @@ define ("AUTH_MAGIC", "31eafcbd7a81d7b401a7fdc12bba047c02d1fae6");
 define ("MULTI_WEB_SERVER_MODE", false);    // 負荷分散モード(true:ON false:OFF)
 
 /*
- *  host:IPアドレスで指定する。
+ *  host_name:任意のサーバ名
+ *  host:IPアドレスで指定
  *  user:FTPユーザ
  *  pass:FTPパスワード
  */
 $arrWEB_SERVERS = array(
     array('host_name' => 'web1', 'host' => '127.0.0.1',   'user' => 'users', 'pass' => 'pass'),        // WEBサーバ1
-    array('host_name' => 'web2', 'host' => 'host2',   'user' => 'users', 'pass' => 'pass'),        // WEBサーバ2
+    array('host_name' => 'web2', 'host' => 'host2',   'user' => 'users', 'pass' => 'pass'),            // WEBサーバ2
 );
 //////////////////////////////////////////////////////////////////////////////////?///////////////////////////////////////////
 
