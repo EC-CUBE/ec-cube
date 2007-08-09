@@ -26,24 +26,25 @@ class SC_View {
         $this->_smarty->register_modifier("sfConvSendDateToDisp", array("SC_Utils_Ex", "sfConvSendDateToDisp"));
         $this->_smarty->register_modifier("sfConvSendWdayToDisp", array("SC_Utils_Ex", "sfConvSendWdayToDisp"));
         $this->_smarty->register_modifier("sfGetVal", array("SC_Utils_Ex", "sfGetVal"));
-        $this->_smarty->register_function("sfSetErrorStyle", array("SC_Utils_Ex", "sfSetErrorStyle"));
-        $this->_smarty->register_function("sfGetErrorColor", array("SC_Utils_Ex", "sfGetErrorColor"));
-        $this->_smarty->register_function("sfTrim", array("SC_Utils_Ex", "sfTrim"));
-        $this->_smarty->register_function("sfPreTax", array("SC_Utils_Ex", "sfPreTax"));
-        $this->_smarty->register_function("sfPrePoint", array("SC_Utils_Ex", "sfPrePoint"));
-        $this->_smarty->register_function("sfGetChecked",array("SC_Utils_Ex", "sfGetChecked"));
-        $this->_smarty->register_function("sfTrimURL", array("SC_Utils_Ex", "sfTrimURL"));
-        $this->_smarty->register_function("sfMultiply", array("SC_Utils_Ex", "sfMultiply"));
-        $this->_smarty->register_function("sfPutBR", array("SC_Utils_Ex", "sfPutBR"));
-        $this->_smarty->register_function("sfRmDupSlash", array("SC_Utils_Ex", "sfRmDupSlash"));
-        $this->_smarty->register_function("sfCutString", array("SC_Utils_Ex", "sfCutString"));
+        $this->_smarty->register_modifier("sfSetErrorStyle", array("SC_Utils_Ex", "sfSetErrorStyle"));
+        $this->_smarty->register_modifier("sfGetErrorColor", array("SC_Utils_Ex", "sfGetErrorColor"));
+        $this->_smarty->register_modifier("sfTrim", array("SC_Utils_Ex", "sfTrim"));
+        $this->_smarty->register_modifier("sfPreTax", array("SC_Utils_Ex", "sfPreTax"));
+        $this->_smarty->register_modifier("sfPrePoint", array("SC_Utils_Ex", "sfPrePoint"));
+        $this->_smarty->register_modifier("sfGetChecked",array("SC_Utils_Ex", "sfGetChecked"));
+        $this->_smarty->register_modifier("sfTrimURL", array("SC_Utils_Ex", "sfTrimURL"));
+        $this->_smarty->register_modifier("sfMultiply", array("SC_Utils_Ex", "sfMultiply"));
+        $this->_smarty->register_modifier("sfPutBR", array("SC_Utils_Ex", "sfPutBR"));
+        $this->_smarty->register_modifier("sfRmDupSlash", array("SC_Utils_Ex", "sfRmDupSlash"));
+        $this->_smarty->register_modifier("sfCutString", array("SC_Utils_Ex", "sfCutString"));
         $this->_smarty->plugins_dir=array("plugins", $SC_VIEW_PHP_DIR . "/../smarty_extends");
-        $this->_smarty->register_function("sf_mb_convert_encoding", array("SC_Utils_Ex", "sf_mb_convert_encoding"));
-        $this->_smarty->register_function("sf_mktime", array("SC_Utils_Ex", "sf_mktime"));
-        $this->_smarty->register_function("sf_date", array("SC_Utils_Ex", "sf_date"));
-        $this->_smarty->register_function("str_replace", array("SC_Utils_Ex", "str_replace"));
-        $this->_smarty->register_function("sfPrintEbisTag", array("SC_Utils_Ex", "sfPrintEbisTag"));
-        $this->_smarty->register_function("sfPrintAffTag", array("SC_Utils_Ex", "sfPrintAffTag"));
+        $this->_smarty->register_modifier("sf_mb_convert_encoding", array("SC_Utils_Ex", "sf_mb_convert_encoding"));
+        $this->_smarty->register_modifier("sf_mktime", array("SC_Utils_Ex", "sf_mktime"));
+        $this->_smarty->register_modifier("sf_date", array("SC_Utils_Ex", "sf_date"));
+        $this->_smarty->register_modifier("str_replace", array("SC_Utils_Ex", "str_replace"));
+//        $this->_smarty->register_modifier("sfPrintEbisTag", array("SC_Utils_Ex", "sfPrintEbisTag"));
+//        $this->_smarty->register_modifier("sfPrintAffTag", array("SC_Utils_Ex", "sfPrintAffTag"));
+        $this->_smarty->register_modifier("sfGetCategoryId", array("SC_Utils_Ex", "sfGetCategoryId"));
         $this->_smarty->register_function("sfIsHTTPS", array("SC_Utils_Ex", "sfIsHTTPS"));
         $this->_smarty->default_modifiers = array('script_escape');
 
@@ -120,7 +121,7 @@ class SC_View {
         global $SC_VIEW_PHP_DIR;
 
         $array['tpl_mainnavi'] = $SC_VIEW_PHP_DIR . '/../Smarty/templates/frontparts/mainnavi.tpl';
-        $array['tpl_root_id'] = SC_Utils::sfGetRootId();
+        $array['tpl_root_id'] = SC_Utils_Ex::sfGetRootId();
         $this->assignarray($array);
     }
 
@@ -128,6 +129,8 @@ class SC_View {
     function debug($var = true){
         $this->_smarty->debugging = $var;
     }
+
+
 }
 
 class SC_AdminView extends SC_View{
@@ -152,7 +155,7 @@ class SC_SiteView extends SC_View{
         $this->initpath();
 
         // PHP5ではsessionをスタートする前にヘッダー情報を送信していると警告が出るため、先にセッションをスタートするように変更
-        SC_Utils::sfDomainSessionStart();
+        SC_Utils_Ex::sfDomainSessionStart();
 
         if($cart){
             $include_dir = realpath(dirname( __FILE__));
@@ -186,4 +189,66 @@ class SC_MobileView extends SC_SiteView {
         $this->_smarty->compile_dir = MOBILE_COMPILE_DIR;
     }
 }
+
+//function sfCutString($str, $len, $byte = true, $commadisp = true) {
+//        if($byte) {
+//            if(strlen($str) > ($len + 2)) {
+//                $ret =substr($str, 0, $len);
+//                $cut = substr($str, $len);
+//            } else {
+//                $ret = $str;
+//                $commadisp = false;
+//            }
+//        } else {
+//            if(mb_strlen($str) > ($len + 1)) {
+//                $ret = mb_substr($str, 0, $len);
+//                $cut = mb_substr($str, $len);
+//            } else {
+//                $ret = $str;
+//                $commadisp = false;
+//            }
+//        }
+//
+//        // 絵文字タグの途中で分断されないようにする。
+//        if (isset($cut)) {
+//            // 分割位置より前の最後の [ 以降を取得する。
+//            $head = strrchr($ret, '[');
+//
+//            // 分割位置より後の最初の ] 以前を取得する。
+//            $tail_pos = strpos($cut, ']');
+//            if ($tail_pos !== false) {
+//                $tail = substr($cut, 0, $tail_pos + 1);
+//            }
+//
+//            // 分割位置より前に [、後に ] が見つかった場合は、[ から ] までを
+//            // 接続して絵文字タグ1個分になるかどうかをチェックする。
+//            if ($head !== false && $tail_pos !== false) {
+//                $subject = $head . $tail;
+//                if (preg_match('/^\[emoji:e?\d+\]$/', $subject)) {
+//                    // 絵文字タグが見つかったので削除する。
+//                    $ret = substr($ret, 0, -strlen($head));
+//                }
+//            }
+//        }
+//
+//        if($commadisp){
+//            $ret = $ret . "...";
+//        }
+//        return $ret;
+//    }
+//
+//function sfRmDupSlash($istr){
+//        if(ereg("^http://", $istr)) {
+//            $str = substr($istr, 7);
+//            $head = "http://";
+//        } else if(ereg("^https://", $istr)) {
+//            $str = substr($istr, 8);
+//            $head = "https://";
+//        } else {
+//            $str = $istr;
+//        }
+//        $str = ereg_replace("[/]+", "/", $str);
+//        $ret = $head . $str;
+//        return $ret;
+//    }
 ?>
