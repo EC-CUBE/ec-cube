@@ -35,6 +35,8 @@ $objFormParam->setParam($_POST);
 // 通常時は親カテゴリを0に設定する。
 $objPage->arrForm['parent_category_id'] = $_POST['parent_category_id'];
 
+sfprintr($_POST);
+
 switch($_POST['mode']) {
 case 'edit':
 	$objFormParam->convParam();
