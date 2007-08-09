@@ -6,8 +6,8 @@
  */
 
 // {{{ requires
-require_once($include_dir . "/../data/class/db/dbfactory/SC_DB_DBFactory_MYSQL.php");
-require_once($include_dir . "/../data/class/db/dbfactory/SC_DB_DBFactory_PGSQL.php");
+require_once(CLASS_PATH . "db/dbfactory/SC_DB_DBFactory_MYSQL.php");
+require_once(CLASS_PATH . "db/dbfactory/SC_DB_DBFactory_PGSQL.php");
 
 /**
  * DBに依存した処理を抽象化するファクトリークラス.
