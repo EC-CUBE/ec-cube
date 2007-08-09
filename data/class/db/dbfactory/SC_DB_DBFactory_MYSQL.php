@@ -6,7 +6,7 @@
  */
 
 // {{{ requires
-require_once($include_dir . "/../data/class/db/SC_DB_DBFactory.php"); // FIXME
+require_once(CLASS_PATH . "db/SC_DB_DBFactory.php");
 
 /**
  * MySQL 固有の処理をするクラス.
