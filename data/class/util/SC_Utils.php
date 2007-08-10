@@ -89,18 +89,6 @@ class SC_Utils {
         }
     }
 
-    function sf_getBasisData() {
-        //DBから設定情報を取得
-        $objConn = new SC_DbConn(DEFAULT_DSN);
-        $result = $objConn->getAll("SELECT * FROM dtb_baseinfo");
-        if(is_array($result[0])) {
-            foreach ( $result[0] as $key=>$value ){
-                $CONF["$key"] = $value;
-            }
-        }
-        return $CONF;
-    }
-
     // 装飾付きエラーメッセージの表示
     function sfErrorHeader($mess, $print = false) {
         global $GLOBAL_ERR;
@@ -1625,32 +1613,6 @@ class SC_Utils {
             }
         }
         return $g_category_id;
-    }
-
-    // ROOTID取得判定用のグローバル変数(一度取得されていたら再取得しないようにする)
-    //$g_root_on = false;
-    //$g_root_id = "";
-
-    /* 選択中のアイテムのルートカテゴリIDを取得する */
-    function sfGetRootId() {
-        global $g_root_on;
-        global $g_root_id;
-        if(!$g_root_on)	{
-            $g_root_on = true;
-            $objQuery = new SC_Query();
-            if($_GET['product_id'] != "" || $_GET['category_id'] != "") {
-                // 選択中のカテゴリIDを判定する
-                $category_id = SC_Utils::sfGetCategoryId($_GET['product_id'], $_GET['category_id']);
-                // ROOTカテゴリIDの取得
-                 $arrRet = SC_Utils::sfGetParents($objQuery, 'dtb_category', 'parent_category_id', 'category_id', $category_id);
-                 $root_id = $arrRet[0];
-            } else {
-                // ROOTカテゴリIDをなしに設定する
-                $root_id = "";
-            }
-            $g_root_id = $root_id;
-        }
-        return $g_root_id;
     }
 
     /* カテゴリから商品を検索する場合のWHERE文と値を返す */

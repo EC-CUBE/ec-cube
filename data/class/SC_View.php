@@ -121,7 +121,9 @@ class SC_View {
         global $SC_VIEW_PHP_DIR;
 
         $array['tpl_mainnavi'] = $SC_VIEW_PHP_DIR . '/../Smarty/templates/frontparts/mainnavi.tpl';
-        $array['tpl_root_id'] = SC_Utils_Ex::sfGetRootId();
+
+        $objDb = new SC_Helper_DB_Ex();
+        $array['tpl_root_id'] = $objDb->sfGetRootId();
         $this->assignarray($array);
     }
 

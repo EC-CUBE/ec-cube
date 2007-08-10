@@ -14,6 +14,14 @@
  */
 class SC_Helper_DB {
 
+    // {{{ properties
+
+    /** ルートカテゴリ取得フラグ */
+    var $g_root_on;
+
+    /** ルートカテゴリID */
+    var $g_root_id;
+
     // }}}
     // {{{ functions
 
@@ -165,6 +173,48 @@ class SC_Helper_DB {
             $objQuery->exec($sql);
         }
         return $ret;
+    }
+
+    /**
+     * 店舗基本情報を取得する.
+     *
+     * @return array 店舗基本情報の配列
+     */
+    function sf_getBasisData() {
+        //DBから設定情報を取得
+        $objConn = new SC_DbConn();
+        $result = $objConn->getAll("SELECT * FROM dtb_baseinfo");
+        if(is_array($result[0])) {
+            foreach ( $result[0] as $key=>$value ){
+                $CONF["$key"] = $value;
+            }
+        }
+        return $CONF;
+    }
+
+    /* 選択中のアイテムのルートカテゴリIDを取得する */
+    function sfGetRootId() {
+
+        if(!$this->g_root_on)	{
+            $this->g_root_on = true;
+            $objQuery = new SC_Query();
+
+            if (!isset($_GET['product_id'])) $_GET['product_id'] = "";
+            if (!isset($_GET['category_id'])) $_GET['category_id'] = "";
+
+            if(!empty($_GET['product_id']) || !empty($_GET['category_id'])) {
+                // 選択中のカテゴリIDを判定する
+                $category_id = SC_Utils_Ex::sfGetCategoryId($_GET['product_id'], $_GET['category_id']);
+                // ROOTカテゴリIDの取得
+                $arrRet = SC_Utils_Ex::sfGetParents($objQuery, 'dtb_category', 'parent_category_id', 'category_id', $category_id);
+                $root_id = $arrRet[0];
+            } else {
+                // ROOTカテゴリIDをなしに設定する
+                $root_id = "";
+            }
+            $this->g_root_id = $root_id;
+        }
+        return $this->g_root_id;
     }
 
     /**
