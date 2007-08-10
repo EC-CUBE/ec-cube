@@ -235,6 +235,7 @@ INSERT INTO mtb_constants VALUES ('MODULE_DIR','"downloads/module/"',22,'ダウ�
 INSERT INTO mtb_constants VALUES ('MODULE_PATH','DATA_PATH . MODULE_DIR',23,'ダウンロードモジュール保存ディレクトリ');
 INSERT INTO mtb_constants VALUES ('UPDATE_DIR','"downloads/update/"',24,'HotFix保存ディレクトリ');
 INSERT INTO mtb_constants VALUES ('UPDATE_PATH','DATA_PATH . UPDATE_DIR',25,'HotFix保存ディレクトリ');
+INSERT INTO mtb_constants VALUES ('MAX_LIFETIME', '7200', 26, 'DBセッションの有効期限(秒)');
 -- INSERT INTO mtb_constants VALUES ('CLASS_PATH','DATA_PATH . "class/"',26,'クラスパス');
 INSERT INTO mtb_constants VALUES ('MASTER_DATA_DIR','DATA_PATH . "conf/cache/"',27,'マスタデータキャッシュディレクトリ');
 INSERT INTO mtb_constants VALUES ('UPDATE_HTTP','"http://www.lockon.co.jp/share/"',28,'アップデート管理用ファイル格納場所　');
