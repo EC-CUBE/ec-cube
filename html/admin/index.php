@@ -4,16 +4,15 @@
  *
  * http://www.lockon.co.jp/
  */
+// {{{ requires
 require_once("./require.php");
+require_once(CLASS_PATH . "page_extends/admin/LC_Page_Admin_Ex.php");
 
-class LC_Page {
-	function LC_Page() {
-		$this->tpl_mainpage = 'login.tpl';
-	}
-}
+// }}}
+// {{{ generate page
 
-$objPage = new LC_Page();
-$objView = new SC_AdminView();
-$objView->assignobj($objPage);
-$objView->display(LOGIN_FRAME);
+$objPage = new LC_Page_Admin_Ex();
+$objPage->init();
+$objPage->process();
+register_shutdown_function(array($objPage, "destroy"));
 ?>
