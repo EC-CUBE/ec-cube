@@ -40,6 +40,15 @@ class LC_Page_Index extends LC_Page {
     }
 
     /**
+     * モバイルページを初期化する.
+     *
+     * @return void
+     */
+    function mobileInit() {
+        $this->tpl_mainpage = 'top.tpl';
+    }
+
+    /**
      * Page のプロセス.
      *
      * @return void
@@ -52,6 +61,21 @@ class LC_Page_Index extends LC_Page {
         $layout = new SC_Helper_PageLayout_Ex();
         $this = $layout->sfGetPageLayout($this, false, "index.php");
 
+        $objView->assignobj($this);
+        $objView->display(SITE_FRAME);
+    }
+
+    /**
+     * Page のプロセス(モバイル).
+     *
+     * @return void
+     */
+    function mobileProcess() {
+        $conn = new SC_DBConn();
+        $objCustomer = new SC_Customer();
+
+        $objView = new SC_MobileView();
+        $objView->assign("isLogin", $objCustomer->isLoginSuccess());
         $objView->assignobj($this);
         $objView->display(SITE_FRAME);
     }
