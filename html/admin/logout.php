@@ -4,10 +4,15 @@
  *
  * http://www.lockon.co.jp/
  */
+// {{{ requires
 require_once("./require.php");
+require_once(CLASS_PATH . "page_extends/admin/LC_Page_Admin_Logout_Ex.php");
 
-$objSess = new SC_Session();
-$objSess->logout();
+// }}}
+// {{{ generate page
 
-header("Location: " . URL_DIR . "admin/index.php");
+$objPage = new LC_Page_Admin_Logout_Ex();
+$objPage->init();
+$objPage->process();
+register_shutdown_function(array($objPage, "destroy"));
 ?>

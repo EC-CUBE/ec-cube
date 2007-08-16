@@ -97,7 +97,7 @@ class SC_Session {
         // 最終的に、セッションを破壊する
         session_destroy();
         // ログに記録する
-        gfPrintLog("logout : user=".$this->login_id." auth=".$this->authority." sid=".$this->sid);
+        GC_Utils_Ex::gfPrintLog("logout : user=".$this->login_id." auth=".$this->authority." sid=".$this->sid);
     }
 
     // 関連セッションのみ破棄する。
@@ -108,7 +108,7 @@ class SC_Session {
         unset($_SESSION['member_id']);
         unset($_SESSION['uniqid']);
         // ログに記録する
-        gfPrintLog("logout : user=".$this->login_id." auth=".$this->authority." sid=".$this->sid);
+        GC_Utils_Ex::gfPrintLog("logout : user=".$this->login_id." auth=".$this->authority." sid=".$this->sid);
     }
 }
 ?>
