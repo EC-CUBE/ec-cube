@@ -110,16 +110,9 @@ class SC_Utils {
 
     /* エラーページの表示 */
     function sfDispError($type) {
-// FIXME
-//        class LC_ErrorPage {
-//            function LC_ErrorPage() {
-//                $this->tpl_mainpage = 'login_error.tpl';
-//                $this->tpl_title = 'エラー';
-//            }
-//        }
 
-        //$objPage = new LC_ErrorPage();
-        $objPage = new LC_Page();
+        $objPage = new LC_Page_Error_Ex();
+        $objPage->init();
         $objView = new SC_AdminView();
 
         switch ($type) {
@@ -148,21 +141,13 @@ class SC_Utils {
 
     /* サイトエラーページの表示 */
     function sfDispSiteError($type, $objSiteSess = "", $return_top = false, $err_msg = "", $is_mobile = false) {
+        // FIXME
         global $objCampaignSess;
 
         if ($objSiteSess != "") {
             $objSiteSess->setNowPage('error');
         }
-// FIXME
-//        class LC_ErrorPage {
-//            function LC_ErrorPage() {
-//                $this->tpl_mainpage = 'error.tpl';
-//                $this->tpl_css = URL_DIR.'css/layout/error.css';
-//                $this->tpl_title = 'エラー';
-//            }
-//        }
 
-        //$objPage = new LC_ErrorPage();
         $objPage = new LC_Page_Error_Ex();
         $objPage->init();
 
