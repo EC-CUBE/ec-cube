@@ -2485,6 +2485,23 @@ class SC_Utils {
         return $response;
     }
 
+    /**
+     * $array の要素を $arrConvList で指定した方式で mb_convert_kana を適用する.
+     *
+     * @param array $array 変換する文字列の配列
+     * @param array $arrConvList mb_convert_kana の適用ルール
+     * @return array 変換後の配列
+     * @see mb_convert_kana
+     */
+    function mbConvertKanaWithArray($array, $arrConvList) {
+        foreach ($arrConvList as $key => $val) {
+            if(isset($array[$key])) {
+                $array[$key] = mb_convert_kana($array[$key] ,$val);
+            }
+        }
+        return $array;
+    }
+
     /* デバッグ用 ------------------------------------------------------------------------------------------------*/
     function sfPrintR($obj) {
         print("<div style='font-size: 12px;color: #00FF00;'>\n");
