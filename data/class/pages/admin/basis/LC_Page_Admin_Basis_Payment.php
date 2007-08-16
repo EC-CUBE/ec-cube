@@ -69,8 +69,8 @@ class LC_Page_Admin_Basis_Payment extends LC_Page {
             break;
         }
 
-        $objPage->arrDelivList = $objDb->sfGetIDValueList("dtb_deliv", "deliv_id", "service_name");
-        $objPage->arrPaymentListFree = $this->lfGetPaymentList(2);
+        $this->arrDelivList = $objDb->sfGetIDValueList("dtb_deliv", "deliv_id", "service_name");
+        $this->arrPaymentListFree = $this->lfGetPaymentList(2);
 
         $objView->assignobj($this);
         $objView->display(MAIN_FRAME);
