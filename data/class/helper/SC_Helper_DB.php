@@ -441,5 +441,207 @@ class SC_Helper_DB {
         }
         return $arrRet;
     }
+
+    /**
+     * ランキングを上げる.
+     *
+     * @param string $table テーブル名
+     * @param string $colname カラム名
+     * @param string|integer $id テーブルのキー
+     * @param string $andwhere SQL の AND 条件である WHERE 句
+     * @return void
+     */
+    function sfRankUp($table, $colname, $id, $andwhere = "") {
+        $objQuery = new SC_Query();
+        $objQuery->begin();
+        $where = "$colname = ?";
+        if($andwhere != "") {
+            $where.= " AND $andwhere";
+        }
+        // 対象項目のランクを取得
+        $rank = $objQuery->get($table, "rank", $where, array($id));
+        // ランクの最大値を取得
+        $maxrank = $objQuery->max($table, "rank", $andwhere);
+        // ランクが最大値よりも小さい場合に実行する。
+        if($rank < $maxrank) {
+            // ランクが一つ上のIDを取得する。
+            $where = "rank = ?";
+            if($andwhere != "") {
+                $where.= " AND $andwhere";
+            }
+            $uprank = $rank + 1;
+            $up_id = $objQuery->get($table, $colname, $where, array($uprank));
+            // ランク入れ替えの実行
+            $sqlup = "UPDATE $table SET rank = ?, update_date = Now() WHERE $colname = ?";
+            $objQuery->exec($sqlup, array($rank + 1, $id));
+            $objQuery->exec($sqlup, array($rank, $up_id));
+        }
+        $objQuery->commit();
+    }
+
+    /**
+     * ランキングを下げる.
+     *
+     * @param string $table テーブル名
+     * @param string $colname カラム名
+     * @param string|integer $id テーブルのキー
+     * @param string $andwhere SQL の AND 条件である WHERE 句
+     * @return void
+     */
+    function sfRankDown($table, $colname, $id, $andwhere = "") {
+        $objQuery = new SC_Query();
+        $objQuery->begin();
+        $where = "$colname = ?";
+        if($andwhere != "") {
+            $where.= " AND $andwhere";
+        }
+        // 対象項目のランクを取得
+        $rank = $objQuery->get($table, "rank", $where, array($id));
+
+        // ランクが1(最小値)よりも大きい場合に実行する。
+        if($rank > 1) {
+            // ランクが一つ下のIDを取得する。
+            $where = "rank = ?";
+            if($andwhere != "") {
+                $where.= " AND $andwhere";
+            }
+            $downrank = $rank - 1;
+            $down_id = $objQuery->get($table, $colname, $where, array($downrank));
+            // ランク入れ替えの実行
+            $sqlup = "UPDATE $table SET rank = ?, update_date = Now() WHERE $colname = ?";
+            $objQuery->exec($sqlup, array($rank - 1, $id));
+            $objQuery->exec($sqlup, array($rank, $down_id));
+        }
+        $objQuery->commit();
+    }
+
+    /**
+     * 指定順位へ移動する.
+     *
+     * @param string $tableName テーブル名
+     * @param string $keyIdColumn キーを保持するカラム名
+     * @param string|integer $keyId キーの値
+     * @param integer $pos 指定順位
+     * @param string $where SQL の AND 条件である WHERE 句
+     * @return void
+     */
+    function sfMoveRank($tableName, $keyIdColumn, $keyId, $pos, $where = "") {
+        $objQuery = new SC_Query();
+        $objQuery->begin();
+
+        // 自身のランクを取得する
+        $rank = $objQuery->get($tableName, "rank", "$keyIdColumn = ?", array($keyId));
+        $max = $objQuery->max($tableName, "rank", $where);
+
+        // 値の調整（逆順）
+        if($pos > $max) {
+            $position = 1;
+        } else if($pos < 1) {
+            $position = $max;
+        } else {
+            $position = $max - $pos + 1;
+        }
+
+        if( $position > $rank ) $term = "rank - 1";	//入れ替え先の順位が入れ換え元の順位より大きい場合
+        if( $position < $rank ) $term = "rank + 1";	//入れ替え先の順位が入れ換え元の順位より小さい場合
+
+        // 指定した順位の商品から移動させる商品までのrankを１つずらす
+        $sql = "UPDATE $tableName SET rank = $term, update_date = NOW() WHERE rank BETWEEN ? AND ? AND del_flg = 0";
+        if($where != "") {
+            $sql.= " AND $where";
+        }
+
+        if( $position > $rank ) $objQuery->exec( $sql, array( $rank + 1, $position ));
+        if( $position < $rank ) $objQuery->exec( $sql, array( $position, $rank - 1 ));
+
+        // 指定した順位へrankを書き換える。
+        $sql  = "UPDATE $tableName SET rank = ?, update_date = NOW() WHERE $keyIdColumn = ? AND del_flg = 0 ";
+        if($where != "") {
+            $sql.= " AND $where";
+        }
+
+        $objQuery->exec( $sql, array( $position, $keyId ) );
+        $objQuery->commit();
+    }
+
+    /**
+     * ランクを含むレコードを削除する.
+     *
+     * レコードごと削除する場合は、$deleteをtrueにする
+     *
+     * @param string $table テーブル名
+     * @param string $colname カラム名
+     * @param string|integer $id テーブルのキー
+     * @param string $andwhere SQL の AND 条件である WHERE 句
+     * @param bool $delete レコードごと削除する場合 true,
+     *                     レコードごと削除しない場合 false
+     * @return void
+     */
+    function sfDeleteRankRecord($table, $colname, $id, $andwhere = "",
+                                $delete = false) {
+        $objQuery = new SC_Query();
+        $objQuery->begin();
+        // 削除レコードのランクを取得する。
+        $where = "$colname = ?";
+        if($andwhere != "") {
+            $where.= " AND $andwhere";
+        }
+        $rank = $objQuery->get($table, "rank", $where, array($id));
+
+        if(!$delete) {
+            // ランクを最下位にする、DELフラグON
+            $sqlup = "UPDATE $table SET rank = 0, del_flg = 1, update_date = Now() ";
+            $sqlup.= "WHERE $colname = ?";
+            // UPDATEの実行
+            $objQuery->exec($sqlup, array($id));
+        } else {
+            $objQuery->delete($table, "$colname = ?", array($id));
+        }
+
+        // 追加レコードのランクより上のレコードを一つずらす。
+        $where = "rank > ?";
+        if($andwhere != "") {
+            $where.= " AND $andwhere";
+        }
+        $sqlup = "UPDATE $table SET rank = (rank - 1) WHERE $where";
+        $objQuery->exec($sqlup, array($rank));
+        $objQuery->commit();
+    }
+
+    /**
+     * レコードの存在チェックを行う.
+     *
+     * @param string $table テーブル名
+     * @param string $col カラム名
+     * @param array $arrval 要素の配列
+     * @param array $addwhere SQL の AND 条件である WHERE 句
+     * @return bool レコードが存在する場合 true
+     */
+    function sfIsRecord($table, $col, $arrval, $addwhere = "") {
+        $objQuery = new SC_Query();
+        $arrCol = split("[, ]", $col);
+
+        $where = "del_flg = 0";
+
+        if($addwhere != "") {
+            $where.= " AND $addwhere";
+        }
+
+        foreach($arrCol as $val) {
+            if($val != "") {
+                if($where == "") {
+                    $where = "$val = ?";
+                } else {
+                    $where.= " AND $val = ?";
+                }
+            }
+        }
+        $ret = $objQuery->get($table, $col, $where, $arrval);
+
+        if($ret != "") {
+            return true;
+        }
+        return false;
+    }
 }
 ?>
