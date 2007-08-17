@@ -411,7 +411,14 @@ class SC_Utils {
         return $arrVal[($cnt - 2)];
     }
 
-    // 現在のサイトを更新（ただしポストは行わない）
+
+
+
+    /**
+     * 現在のサイトを更新（ただしポストは行わない）
+     *
+     * @deprecated LC_Page::reload() を使用して下さい.
+     */
     function sfReload($get = "") {
         if ($_SERVER["SERVER_PORT"] == "443" ){
             $url = ereg_replace(URL_DIR . "$", "", SSL_URL);
