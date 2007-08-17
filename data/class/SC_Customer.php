@@ -9,16 +9,16 @@
  *  [概要] 会員管理クラス
  */
 class SC_Customer {
-	
+
 	var $conn;
 	var $email;
-	var $customer_data;		// 会員情報   
-		
+	var $customer_data;		// 会員情報
+
 	function SC_Customer( $conn = '', $email = '', $pass = '' ) {
 		// セッション開始
 		/* startSessionから移動 2005/11/04 中川 */
 		sfDomainSessionStart();
-		
+
 		// DB接続オブジェクト生成
 		$DB_class_name = "SC_DbConn";
 		if ( is_object($conn)){
@@ -29,11 +29,11 @@ class SC_Customer {
 		} else {
 			if (class_exists($DB_class_name)){
 				//$DB_class_nameのインスタンスを作成する
-				$this->conn = new SC_DbConn();			
+				$this->conn = new SC_DbConn();
 			}
 		}
-			
-		if ( is_object($this->conn) ) { 
+
+		if ( is_object($this->conn) ) {
 			// 正常にDBに接続できる
 			if ( $email ){
 				// emailから顧客情報を取得する
@@ -43,12 +43,12 @@ class SC_Customer {
 			echo "DB接続オブジェクトの生成に失敗しています";
 			exit;
 		}
-		
+
 		if ( strlen($email) > 0 && strlen($pass) > 0 ){
-			$this->getCustomerDataFromEmailPass( $email, $pass );
+			$this->getCustomerDataFromEmailPass($pass, $email);
 		}
 	}
-	
+
 	function getCustomerDataFromEmailPass( $pass, $email, $mobile = false ) {
 		$sql_mobile = $mobile ? ' OR email_mobile ILIKE ?' : '';
 		$arrValues = array($email);
@@ -59,7 +59,7 @@ class SC_Customer {
 		$sql = "SELECT * FROM dtb_customer WHERE (email ILIKE ?" . $sql_mobile . ") AND del_flg = 0 AND status = 2";
 		$result = $this->conn->getAll($sql, $arrValues);
 		$data = $result[0];
-		
+
 		// パスワードが合っていれば顧客情報をcustomer_dataにセットしてtrueを返す
 		if ( sha1($pass . ":" . AUTH_MAGIC) == $data['password'] ){
 			$this->customer_data = $data;
@@ -158,7 +158,7 @@ class SC_Customer {
 
 		$this->customer_data['email_mobile'] = $this->customer_data['email'];
 	}
-	
+
 	// パスワードを確認せずにログイン
 	function setLogin($email) {
 		// 本登録された会員のみ
@@ -168,7 +168,7 @@ class SC_Customer {
 		$this->customer_data = $data;
 		$this->startSession();
 	}
-	
+
 	// セッション情報を最新の情報に更新する
 	function updateSession() {
 		$sql = "SELECT * FROM dtb_customer WHERE customer_id = ? AND del_flg = 0";
@@ -177,7 +177,7 @@ class SC_Customer {
 		$this->customer_data = $arrRet[0];
 		$_SESSION['customer'] = $this->customer_data;
 	}
-		
+
 	// ログイン情報をセッションに登録し、ログに書き込む
 	function startSession() {
 		sfDomainSessionStart();
@@ -193,7 +193,7 @@ class SC_Customer {
 		// ログに記録する
 		gfPrintLog("logout : user=".$this->customer_data['customer_id'] ."\t"."ip=". $_SERVER['REMOTE_HOST'], CUSTOMER_LOG_PATH );
 	}
-	
+
 	// ログインに成功しているか判定する。
 	function isLoginSuccess($dont_check_email_mobile = false) {
 		// ログイン時のメールアドレスとDBのメールアドレスが一致している場合
@@ -212,12 +212,12 @@ class SC_Customer {
 		}
 		return false;
 	}
-		
+
 	// パラメータの取得
 	function getValue($keyname) {
 		return $_SESSION['customer'][$keyname];
 	}
-	
+
 	// パラメータのセット
 	function setValue($keyname, $val) {
 		$_SESSION['customer'][$keyname] = $val;
@@ -227,13 +227,13 @@ class SC_Customer {
 	function hasValue($keyname) {
 		return isset($_SESSION['customer'][$keyname]);
 	}
-	
+
 	// 誕生日月であるかどうかの判定
 	function isBirthMonth() {
 		$arrRet = split("[- :/]", $_SESSION['customer']['birth']);
 		$birth_month = intval($arrRet[1]);
 		$now_month = intval(date("m"));
-		
+
 		if($birth_month == $now_month) {
 			return true;
 		}
