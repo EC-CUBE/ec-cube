@@ -25,7 +25,7 @@ switch(SC_Form::getMode()) {
 case 'register':
     $objForm = lfInitRegisterMode();
     $objForm->convert();
-    
+
     if ($objForm->validate()->is_ok() === true) {
         $arrAddInsertData = array(
             'create_date' => 'NOW()',
@@ -35,33 +35,33 @@ case 'register':
         $objForm->insert('dtb_baseinfo', $arrAddInsertData);
     } else {
         $arrAssignVars['arrErr']  = $objForm->getEM();
-        $arrAssignVars['arrForm'] = $objForm->getParams(); 
+        $arrAssignVars['arrForm'] = $objForm->getParams();
     }
-    
+
     break:
 /** 削除 **/
 case 'delete':
-    
+
     $objForm = lfInitDeleteMode();
-    
+
     if ($objForm->validate()->is_ok === true) {
         sfDeleteRankRecord('dtb_kiyaku', 'kiyaku_id', $objForm->getParams(), '', true);
         sfReload();
     } else {
         sfDispError('PAGE_ERROR');
     }
-    
+
     break;
 /** 編集前処理 **/
 case 'pre_edit':
     $objForm = lfInitPreEditMode();
-    
+
     if ($objForm->validate()->is_ok === true) {
         // 編集項目をDBより取得する。
         $where = "kiyaku_id = ?";
         $objQuery = new SC_Query();
         $arrKiyakuInfo = $objQuery->select("kiyaku_text, kiyaku_title", "dtb_kiyaku", $where, array($_POST['kiyaku_id']));
-        
+
         // 入力項目にカテゴリ名を入力する。
         $arrAssignVars['kiyaku_title'] = $arrKiyakuInfo[0]['kiyaku_title'];
         $arrAssignVars['kiyaku?text']  = $arrKiyakuInfo[0]['kiyaku_text'];
@@ -69,7 +69,7 @@ case 'pre_edit':
     } else {
         sfDispPage();
     }
-    
+
     break;
 case 'down':
 	sfRankDown("dtb_kiyaku", "kiyaku_id", $_POST['kiyaku_id']);
@@ -105,11 +105,13 @@ function lfInitEditMode(){
                 'max'     => 5,
                 'type'    => 'alnum',
                 'htmlTag' => array(),
-                
+
             )
         )
     );
-    
+
     $objForm = new SC_Form($_POST, $arrParamsInfo);
     return $objForm;
 }
+
+?>
