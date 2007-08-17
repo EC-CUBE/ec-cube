@@ -5,6 +5,9 @@
  * http://www.lockon.co.jp/
  */
 
+// {{{ requires
+require_once(DATA_PATH . 'module/Net/URL.php');
+
 /**
  * Web Page を制御する基底クラス
  *
@@ -88,17 +91,19 @@ class LC_Page {
      * @param string $url リダイレクト先 URL
      * @return void|boolean $url に SITE_URL 及び, SSL_URL を含まない場合 false,
      * 						 正常に遷移可能な場合は, $url の URL へ遷移する.
+     * @see Net_URL
      */
     function sendRedirect($url) {
 
         if (preg_match("/(" . preg_quote(SITE_URL, '/')
                           . "|" . preg_quote(SSL_URL, '/') . ")/", $url)) {
 
-            $suffix = "?";
+            $netURL = new Net_URL($url);
             if (!empty($_SERVER['QUERY_STRING'])) {
-                $suffix = "&";
+                $netURL->addRawQueryString($_SERVER['QUERY_STRING']);
             }
-            header("Location: " . $url . $suffix . TRANSACTION_ID_NAME . "=" . $this->getToken());
+            $netURL->addQueryString(TRANSACTION_ID_NAME, $this->getToken());
+            header("Location: " . $netURL->getURL());
         }
         return false;
     }
@@ -185,6 +190,7 @@ class LC_Page {
      * @param string $documentRoot DocumentRoot の文字列. 指定しない場合は,
      *                              $_SERVER['DOCUMENT_ROOT'] が付与される.
      * @return string $path の存在する http(s):// から始まる絶対パス
+     * @see Net_URL
      */
     function getLocation($path, $param = array(), $useSSL = false, $documentRoot = "") {
 
@@ -215,24 +221,38 @@ class LC_Page {
             $url = SITE_URL . $root;
         }
 
+        $netURL = new Net_URL($url);
         // QUERY_STRING 生成
-        $queryString = "";
-        $i = count($param);
         foreach ($param as $key => $val) {
-            $queryString .= $key . "=" . $val;
+            $netURL->addQueryString($key, $val);
+        }
 
-            if ($i > 1) {
-                $queryString .= "&";
+        return $netURL->getURL();
+    }
+
+    /**
+     * ページをリロードする.
+     *
+     * 引数 $queryString に, $_SERVER['QUERY_STRING'] の値を使用してはならない.
+     * この関数は, 内部で LC_Page::sendRedirect() を使用するため,
+     * $_SERVER['QUERY_STRING'] の値は自動的に付与される.
+     *
+     * @param array $queryString QueryString の配列
+     * @return void
+     * @see Net_URL
+     */
+    function reload($queryString = array()) {
+
+        // 現在の URL を取得
+        $netURL = new Net_URL();
+
+        // QueryString を付与
+        if (!empty($queryString)) {
+            foreach ($queryString as $key => $val) {
+                $netURL->addQueryString($key, $val);
             }
-            $i--;
         }
-
-        // QUERY_STRING が存在する場合は付与して返す.
-        if (empty($queryString)) {
-            return $url;
-        } else {
-            return $url . "?" . $queryString;
-        }
+        $this->sendRedirect($netURL->getURL());
     }
 
     /**
