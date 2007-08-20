@@ -33,7 +33,7 @@ case 'login':
 	} else {
 		$objCookie->setCookie('login_email', '');
 	}
-	
+
 	if(count($arrErr) == 0) {
 		if($objCustomer->getCustomerDataFromEmailPass($arrForm['login_pass'], $arrForm['login_email'])) {
 			header("Location: " . $_POST['url']);
@@ -42,7 +42,7 @@ case 'login':
 			$objQuery = new SC_Query;
 			$where = "email ILIKE ? AND status = 1 AND del_flg = 0";
 			$ret = $objQuery->count("dtb_customer", $where, array($arrForm['login_email']));
-			
+
 			if($ret > 0) {
 				sfDispSiteError(TEMP_LOGIN_ERROR);
 			} else {
@@ -63,7 +63,7 @@ case 'logout':
 	if ($mypage_url_search == 2){
         header("Location: /mypage/login.php");
 	}else{
-        header("Location: " . $_POST['url']);	
+        header("Location: " . $_POST['url']);
 	}
 	exit;
 	break;
@@ -80,20 +80,27 @@ function lfInitParam() {
 
 /* POSTされるURLのチェック*/
 function lfIsValidURL() {
-    $site_url  = sfIsHTTPS() ? SSL_URL : SITE_URL;
-    $check_url = trim($_POST['url']);
+    $arrValidUrl = array(SSL_URL, SITE_URL, '/');
+    $targetUrl   = $_POST['url'];
 
-    // ローカルドメインチェック
-    if (!preg_match("|^$site_url|", $check_url) && !preg_match("|^/|", $check_url)) {
-        return false;
+    // $arrValidUrlにマッチしない場合は不正なURL
+    $match = false;
+    foreach ($arrValidUrl as $validUrl) {
+        $pattern = sprintf('/^%s/' , preg_quote($validUrl, '/'));
+        gfPrintLog($pattern . ':' . $targetUrl);
+        if ( preg_match($pattern, $targetUrl) ) {
+            $match = true;
+            break;
+        }
     }
-    
-    // 改行コード(CR・LF)・NULLバイトチェック
+    if (!$match) return false;
+
+    // 改行コード(CR・LF)・NULLバイトを含む場合は不正なURL
     $pattern = '/\r|\n|\0|%0D|%0A|%00/';
-    if (preg_match_all($pattern, $check_url, $matches) > 0) {
+    if (preg_match_all($pattern, $targetUrl, $matches)) {
         return false;
     }
-    
+
     return true;
 }
 
