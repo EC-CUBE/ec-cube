@@ -28,13 +28,13 @@ function sfGetDBVersion($dsn = "") {
 			return;
 		}
 	}
-	
+
 	$objQuery = new SC_Query($dsn, true, true);
 	list($db_type) = split(":", $dsn);
 	if($db_type == 'mysql') {
 		$val = $objQuery->getOne("select version()");
 		$version = "MySQL " . $val;
-	}	
+	}
 	if($db_type == 'pgsql') {
 		$val = $objQuery->getOne("select version()");
 		$arrLine = split(" " , $val);
@@ -52,7 +52,7 @@ function sfTabaleExists($table_name, $dsn = "") {
 			return;
 		}
 	}
-	
+
 	$objQuery = new SC_Query($dsn, true, true);
 	// 正常に接続されている場合
 	if(!$objQuery->isError()) {
@@ -64,8 +64,8 @@ function sfTabaleExists($table_name, $dsn = "") {
 					FROM
 					    pg_class
 					WHERE
-						(relkind = 'r' OR relkind = 'v') AND 
-					    relname = ? 
+						(relkind = 'r' OR relkind = 'v') AND
+					    relname = ?
 					GROUP BY
 						relname";
 			$arrRet = $objQuery->getAll($sql, array($table_name));
@@ -95,12 +95,12 @@ function sfColumnExists($table_name, $col_name, $col_type = "", $dsn = "", $add 
 
 	// テーブルが無ければエラー
 	if(!sfTabaleExists($table_name, $dsn)) return false;
-	
+
 	$objQuery = new SC_Query($dsn, true, true);
 	// 正常に接続されている場合
 	if(!$objQuery->isError()) {
 		list($db_type) = split(":", $dsn);
-		
+
 		// カラムリストを取得
 		$arrRet = sfGetColumnList($table_name, $objQuery, $db_type);
 		if(count($arrRet) > 0) {
@@ -109,13 +109,13 @@ function sfColumnExists($table_name, $col_name, $col_type = "", $dsn = "", $add 
 			}
 		}
 	}
-	
+
 	// カラムを追加する
 	if($add){
 		$objQuery->query("ALTER TABLE $table_name ADD $col_name $col_type ");
 		return true;
 	}
-	
+
 	return false;
 }
 
@@ -131,11 +131,11 @@ function sfIndexExists($table_name, $col_name, $index_name, $length = "", $dsn =
 
 	// テーブルが無ければエラー
 	if(!sfTabaleExists($table_name, $dsn)) return false;
-	
+
 	$objQuery = new SC_Query($dsn, true, true);
 	// 正常に接続されている場合
 	if(!$objQuery->isError()) {
-		list($db_type) = split(":", $dsn);		
+		list($db_type) = split(":", $dsn);
 		switch($db_type) {
 		case 'pgsql':
 			// インデックスの存在確認
@@ -143,7 +143,7 @@ function sfIndexExists($table_name, $col_name, $index_name, $length = "", $dsn =
 			break;
 		case 'mysql':
 			// インデックスの存在確認
-			$arrRet = $objQuery->getAll("SHOW INDEX FROM ? WHERE Key_name = ?", array($table_name, $index_name));			
+			$arrRet = $objQuery->getAll("SHOW INDEX FROM ? WHERE Key_name = ?", array($table_name, $index_name));
 			break;
 		default:
 			return false;
@@ -153,7 +153,7 @@ function sfIndexExists($table_name, $col_name, $index_name, $length = "", $dsn =
 			return true;
 		}
 	}
-	
+
 	// インデックスを作成する
 	if($add){
 		switch($db_type) {
@@ -161,13 +161,13 @@ function sfIndexExists($table_name, $col_name, $index_name, $length = "", $dsn =
 			$objQuery->query("CREATE INDEX ? ON ? (?)", array($index_name, $table_name, $col_name));
 			break;
 		case 'mysql':
-			$objQuery->query("CREATE INDEX ? ON ? (?(?))", array($index_name, $table_name, $col_name, $length));			
+			$objQuery->query("CREATE INDEX ? ON ? (?(?))", array($index_name, $table_name, $col_name, $length));
 			break;
 		default:
 			return false;
 		}
 		return true;
-	}	
+	}
 	return false;
 }
 
@@ -192,7 +192,7 @@ function sfDataExists($table_name, $where, $arrval, $dsn = "", $sql = "", $add =
 	if(!$ret && $add) {
 		$objQuery->exec($sql);
 	}
-	
+
 	return $ret;
 }
 
@@ -200,7 +200,7 @@ function sfDataExists($table_name, $where, $arrval, $dsn = "", $sql = "", $add =
  * サイト管理情報から値を取得する。
  * データが存在する場合、必ず1以上の数値が設定されている。
  * 0を返した場合は、呼び出し元で対応すること。
- * 
+ *
  * @param $control_id 管理ID
  * @param $dsn DataSource
  * @return $control_flg フラグ
@@ -231,7 +231,7 @@ function sfGetSiteControlFlg($control_id, $dsn = "") {
 	if (count($arrSiteControl) > 0) {
 		$control_flg = $arrSiteControl[0]["control_flg"];
 	}
-	
+
 	return $control_flg;
 }
 
@@ -239,7 +239,7 @@ function sfGetSiteControlFlg($control_id, $dsn = "") {
 function sfGetColumnList($table_name, $objQuery = "", $db_type = DB_TYPE){
 	if($objQuery == "") $objQuery = new SC_Query();
 	$arrRet = array();
-	
+
 	// postgresqlとmysqlとで処理を分ける
 	if ($db_type == "pgsql") {
 		$sql = "SELECT a.attname FROM pg_class c, pg_attribute a WHERE c.relname=? AND c.oid=a.attrelid AND a.attnum > 0 AND not a.attname like '........pg.dropped.%........' ORDER BY a.attnum";
@@ -267,12 +267,12 @@ function sfInitInstall() {
 		if(file_exists($path)) {
 			sfErrorHeader(">> /install/index.phpは、インストール完了後にファイルを削除してください。");
 		}
-		
+
 		// 旧バージョンのinstall.phpのチェック
 		$path = HTML_PATH . "install.php";
 		if(file_exists($path)) {
 			sfErrorHeader(">> /install.phpはセキュリティーホールとなります。削除してください。");
-		}		
+		}
 	}
 }
 
@@ -311,7 +311,7 @@ function sfErrorHeader($mess, $print = false) {
 	$GLOBAL_ERR.= "</td>\n";
 	$GLOBAL_ERR.= "	</tr>\n";
 	$GLOBAL_ERR.= "</table>\n";
-	
+
 	if($print) {
 		print($GLOBAL_ERR);
 	}
@@ -319,7 +319,7 @@ function sfErrorHeader($mess, $print = false) {
 
 /* エラーページの表示 */
 function sfDispError($type) {
-	
+
 	class LC_ErrorPage {
 		function LC_ErrorPage() {
 			$this->tpl_mainpage = 'login_error.tpl';
@@ -329,7 +329,7 @@ function sfDispError($type) {
 
 	$objPage = new LC_ErrorPage();
 	$objView = new SC_AdminView();
-	
+
 	switch ($type) {
 	    case LOGIN_ERROR:
 			$objPage->tpl_error="ＩＤまたはパスワードが正しくありません。<br />もう一度ご確認のうえ、再度入力してください。";
@@ -347,21 +347,21 @@ function sfDispError($type) {
 	    	$objPage->tpl_error="エラーが発生しました。<br />もう一度ご確認のうえ、再度ログインしてください。";
 			break;
 	}
-	
+
 	$objView->assignobj($objPage);
 	$objView->display(LOGIN_FRAME);
-	
+
 	exit;
 }
 
 /* サイトエラーページの表示 */
 function sfDispSiteError($type, $objSiteSess = "", $return_top = false, $err_msg = "", $is_mobile = false) {
 	global $objCampaignSess;
-	
+
 	if ($objSiteSess != "") {
 		$objSiteSess->setNowPage('error');
 	}
-	
+
 	class LC_ErrorPage {
 		function LC_ErrorPage() {
 			$this->tpl_mainpage = 'error.tpl';
@@ -369,15 +369,15 @@ function sfDispSiteError($type, $objSiteSess = "", $return_top = false, $err_msg
 			$this->tpl_title = 'エラー';
 		}
 	}
-	
+
 	$objPage = new LC_ErrorPage();
-	
+
 	if($is_mobile === true) {
-		$objView = new SC_MobileView();		
+		$objView = new SC_MobileView();
 	} else {
 		$objView = new SC_SiteView();
 	}
-	
+
 	switch ($type) {
 	    case PRODUCT_NOT_FOUND:
 			$objPage->tpl_error="ご指定のページはございません。";
@@ -449,17 +449,17 @@ function sfDispSiteError($type, $objSiteSess = "", $return_top = false, $err_msg
 	    	$objPage->tpl_error="エラーが発生しました。";
 			break;
 	}
-	
+
 	$objPage->return_top = $return_top;
-	
+
 	$objView->assignobj($objPage);
-	
+
 	if(is_object($objCampaignSess)) {
 		// フレームを選択(キャンペーンページから遷移なら変更)
 		$objCampaignSess->pageView($objView);
 	} else {
 		$objView->display(SITE_FRAME);
-	}	
+	}
 	exit;
 }
 
@@ -480,12 +480,14 @@ function sfIsSuccess($objSess, $disp_error = true) {
         // 警告表示させる？
         // sfErrorHeader('>> referrerが無効になっています。');
     } else {
-        $domain  = sfIsHTTPS() ? SSL_URL : SITE_URL;
-        $pattern = sprintf('|^%s.*|', $domain);
+        $siteurl = preg_quote(SITE_URL, "/");
+        $sslurl  = preg_quote(SSL_URL, "/");
+
+        $pattern = "/^($siteurl|$sslurl)/";
         $referer = $_SERVER['HTTP_REFERER'];
 
         // 管理画面から以外の遷移の場合はエラー画面を表示
-        if (!preg_match($pattern, $referer)) {
+        if ( !preg_match($pattern, $referer) ) {
             if ($disp_error) sfDispError(INVALID_MOVE_ERRORR);
             return false;
         }
@@ -495,7 +497,7 @@ function sfIsSuccess($objSess, $disp_error = true) {
 
 /**
  * HTTPSかどうかを判定
- * 
+ *
  * @return bool
  */
 function sfIsHTTPS () {
@@ -529,7 +531,7 @@ function sfIsPrePage($objSiteSess, $is_mobile = false) {
 	$ret = $objSiteSess->isPrePage();
 	if($ret != true) {
 		// エラーページの表示
-		sfDispSiteError(PAGE_ERROR, $objSiteSess, false, "", $is_mobile);			
+		sfDispSiteError(PAGE_ERROR, $objSiteSess, false, "", $is_mobile);
 	}
 }
 
@@ -544,7 +546,7 @@ function sfCheckNormalAccess($objSiteSess, $objCartSess) {
 		// エラーページの表示
 		sfDispSiteError(CANCEL_PURCHASE, $objSiteSess);
 	}
-	
+
 	// カート内が空でないか || 購入ボタンを押してから変化がないか
 	$quantity = $objCartSess->getTotalQuantity();
 	$ret = $objCartSess->checkChangeCart();
@@ -558,7 +560,7 @@ function sfCheckNormalAccess($objSiteSess, $objCartSess) {
 
 /* DB用日付文字列取得 */
 function sfGetTimestamp($year, $month, $day, $last = false) {
-	if($year != "" && $month != "" && $day != "") {	
+	if($year != "" && $month != "" && $day != "") {
 		if($last) {
 			$time = "23:59:59";
 		} else {
@@ -580,20 +582,20 @@ function sfIsInt($value) {
 }
 
 function sfCSVDownload($data, $prefix = ""){
-	
+
 	if($prefix == "") {
 		$dir_name = sfUpDirName();
 		$file_name = $dir_name . date("ymdHis") .".csv";
 	} else {
 		$file_name = $prefix . date("ymdHis") .".csv";
 	}
-	
+
 	/* HTTPヘッダの出力 */
 	Header("Content-disposition: attachment; filename=${file_name}");
 	Header("Content-type: application/octet-stream; name=${file_name}");
 	Header("Cache-Control: ");
 	Header("Pragma: ");
-	
+
 	/* i18n~ だと正常に動作しないため、mb~ に変更
 	if (i18n_discover_encoding($data) == CHAR_CODE){
 		$data = i18n_convert($data,'SJIS',CHAR_CODE);
@@ -602,7 +604,7 @@ function sfCSVDownload($data, $prefix = ""){
 	if (mb_internal_encoding() == CHAR_CODE){
 		$data = mb_convert_encoding($data,'SJIS',CHAR_CODE);
 	}
-	
+
 	/* データを出力 */
 	echo $data;
 }
@@ -622,7 +624,7 @@ function sfReload($get = "") {
 	} else {
 		$url = ereg_replace(URL_DIR . "$", "", SITE_URL);
 	}
-	
+
 	if($get != "") {
 		header("Location: ". $url . $_SERVER['PHP_SELF'] . "?" . $get);
 	} else {
@@ -670,7 +672,7 @@ function sfRankDown($table, $colname, $id, $andwhere = "") {
 	}
 	// 対象項目のランクを取得
 	$rank = $objQuery->get($table, "rank", $where, array($id));
-		
+
 	// ランクが1(最小値)よりも大きい場合に実行する。
 	if($rank > 1) {
 		// ランクが一つ下のIDを取得する。
@@ -692,11 +694,11 @@ function sfRankDown($table, $colname, $id, $andwhere = "") {
 function sfMoveRank($tableName, $keyIdColumn, $keyId, $pos, $where = "") {
 	$objQuery = new SC_Query();
 	$objQuery->begin();
-		
+
 	// 自身のランクを取得する
-	$rank = $objQuery->get($tableName, "rank", "$keyIdColumn = ?", array($keyId));	
+	$rank = $objQuery->get($tableName, "rank", "$keyIdColumn = ?", array($keyId));
 	$max = $objQuery->max($tableName, "rank", $where);
-		
+
 	// 値の調整（逆順）
 	if($pos > $max) {
 		$position = 1;
@@ -705,7 +707,7 @@ function sfMoveRank($tableName, $keyIdColumn, $keyId, $pos, $where = "") {
 	} else {
 		$position = $max - $pos + 1;
 	}
-	
+
 	if( $position > $rank ) $term = "rank - 1";	//入れ替え先の順位が入れ換え元の順位より大きい場合
 	if( $position < $rank ) $term = "rank + 1";	//入れ替え先の順位が入れ換え元の順位より小さい場合
 
@@ -714,7 +716,7 @@ function sfMoveRank($tableName, $keyIdColumn, $keyId, $pos, $where = "") {
 	if($where != "") {
 		$sql.= " AND $where";
 	}
-	
+
 	if( $position > $rank ) $objQuery->exec( $sql, array( $rank + 1, $position ));
 	if( $position < $rank ) $objQuery->exec( $sql, array( $position, $rank - 1 ));
 
@@ -723,7 +725,7 @@ function sfMoveRank($tableName, $keyIdColumn, $keyId, $pos, $where = "") {
 	if($where != "") {
 		$sql.= " AND $where";
 	}
-	
+
 	$objQuery->exec( $sql, array( $position, $keyId ) );
 	$objQuery->commit();
 }
@@ -733,7 +735,7 @@ function sfMoveRank($tableName, $keyIdColumn, $keyId, $pos, $where = "") {
 function sfDeleteRankRecord($table, $colname, $id, $andwhere = "", $delete = false) {
 	$objQuery = new SC_Query();
 	$objQuery->begin();
-	// 削除レコードのランクを取得する。		
+	// 削除レコードのランクを取得する。
 	$where = "$colname = ?";
 	if($andwhere != "") {
 		$where.= " AND $andwhere";
@@ -749,7 +751,7 @@ function sfDeleteRankRecord($table, $colname, $id, $andwhere = "", $delete = fal
 	} else {
 		$objQuery->delete($table, "$colname = ?", array($id));
 	}
-	
+
 	// 追加レコードのランクより上のレコードを一つずらす。
 	$where = "rank > ?";
 	if($andwhere != "") {
@@ -764,13 +766,13 @@ function sfDeleteRankRecord($table, $colname, $id, $andwhere = "", $delete = fal
 function sfIsRecord($table, $col, $arrval, $addwhere = "") {
 	$objQuery = new SC_Query();
 	$arrCol = split("[, ]", $col);
-		
+
 	$where = "del_flg = 0";
-	
+
 	if($addwhere != "") {
 		$where.= " AND $addwhere";
 	}
-		
+
 	foreach($arrCol as $val) {
 		if($val != "") {
 			if($where == "") {
@@ -781,7 +783,7 @@ function sfIsRecord($table, $col, $arrval, $addwhere = "") {
 		}
 	}
 	$ret = $objQuery->get($table, $col, $where, $arrval);
-	
+
 	if($ret != "") {
 		return true;
 	}
@@ -805,12 +807,12 @@ function sfMergeCBValue($keyname, $max) {
 // html_checkboxesの値をマージして2進数形式に変更する。
 function sfMergeCheckBoxes($array, $max) {
 	$ret = "";
-	if(is_array($array)) {	
+	if(is_array($array)) {
 		foreach($array as $val) {
 			$arrTmp[$val] = "1";
 		}
 	}
-	for($i = 1; $i <= $max; $i++) {	
+	for($i = 1; $i <= $max; $i++) {
 		if($arrTmp[$i] == "1") {
 			$ret.= "1";
 		} else {
@@ -829,7 +831,7 @@ function sfMergeParamCheckBoxes($array) {
 			if($ret != "") {
 				$ret.= "-$val";
 			} else {
-				$ret = $val;			
+				$ret = $val;
 			}
 		}
 	} else {
@@ -848,15 +850,15 @@ function sfSearchCheckBoxes($array) {
 			$max = $val;
 		}
 	}
-	for($i = 1; $i <= $max; $i++) {	
+	for($i = 1; $i <= $max; $i++) {
 		if($arrTmp[$i] == "1") {
 			$ret.= "1";
 		} else {
 			$ret.= "_";
 		}
 	}
-	
-	if($ret != "") {	
+
+	if($ret != "") {
 		$ret.= "%";
 	}
 	return $ret;
@@ -904,13 +906,13 @@ function sfSplitCBValue($val, $keyname = "") {
 
 // キーと値をセットした配列を取得
 function sfArrKeyValue($arrList, $keyname, $valname, $len_max = "", $keysize = "") {
-	
+
 	$max = count($arrList);
-	
+
 	if($len_max != "" && $max > $len_max) {
 		$max = $len_max;
 	}
-	
+
 	for($cnt = 0; $cnt < $max; $cnt++) {
 		if($keysize != "") {
 			$key = sfCutString($arrList[$cnt][$keyname], $keysize);
@@ -918,24 +920,24 @@ function sfArrKeyValue($arrList, $keyname, $valname, $len_max = "", $keysize = "
 			$key = $arrList[$cnt][$keyname];
 		}
 		$val = $arrList[$cnt][$valname];
-		
+
 		if(!isset($arrRet[$key])) {
 			$arrRet[$key] = $val;
 		}
-		
+
 	}
 	return $arrRet;
 }
 
 // キーと値をセットした配列を取得(値が複数の場合)
 function sfArrKeyValues($arrList, $keyname, $valname, $len_max = "", $keysize = "", $connect = "") {
-	
+
 	$max = count($arrList);
-	
+
 	if($len_max != "" && $max > $len_max) {
 		$max = $len_max;
 	}
-	
+
 	for($cnt = 0; $cnt < $max; $cnt++) {
 		if($keysize != "") {
 			$key = sfCutString($arrList[$cnt][$keyname], $keysize);
@@ -943,11 +945,11 @@ function sfArrKeyValues($arrList, $keyname, $valname, $len_max = "", $keysize = 
 			$key = $arrList[$cnt][$keyname];
 		}
 		$val = $arrList[$cnt][$valname];
-		
+
 		if($connect != "") {
 			$arrRet[$key].= "$val".$connect;
 		} else {
-			$arrRet[$key][] = $val;		
+			$arrRet[$key][] = $val;
 		}
 	}
 	return $arrRet;
@@ -973,7 +975,7 @@ function sfGetCommaList($array, $space=true) {
 	}else{
 		return false;
 	}
-	
+
 }
 
 /* 配列の要素をCSVフォーマットで出力する。*/
@@ -1043,12 +1045,12 @@ function sfSetErrorStyle(){
 function sfCheckNumLength( $value ){
 	if ( ! is_numeric($value)  ){
 		return false;
-	} 
-	
+	}
+
 	if ( strlen($value) > 9 ) {
 		return false;
 	}
-	
+
 	return true;
 }
 
@@ -1066,13 +1068,13 @@ function sfSearchKey($array, $word, $default) {
 function sfGetCategoryList($addwhere = "", $products_check = false, $head = CATEGORY_HEAD) {
 	$objQuery = new SC_Query();
 	$where = "del_flg = 0";
-	
+
 	if($addwhere != "") {
 		$where.= " AND $addwhere";
 	}
-		
+
 	$objQuery->setoption("ORDER BY rank DESC");
-	
+
 	if($products_check) {
 		$col = "T1.category_id, category_name, level";
 		$from = "dtb_category AS T1 LEFT JOIN dtb_category_total_count AS T2 ON T1.category_id = T2.category_id";
@@ -1081,9 +1083,9 @@ function sfGetCategoryList($addwhere = "", $products_check = false, $head = CATE
 		$col = "category_id, category_name, level";
 		$from = "dtb_category";
 	}
-	
+
 	$arrRet = $objQuery->select($col, $from, $where);
-			
+
 	$max = count($arrRet);
 	for($cnt = 0; $cnt < $max; $cnt++) {
 		$id = $arrRet[$cnt]['category_id'];
@@ -1110,20 +1112,20 @@ function sfGetLevelCatList($parent_zero = true) {
 	$objQuery->setoption("ORDER BY rank DESC");
 	$arrRet = $objQuery->select($col, "dtb_category", $where);
 	$max = count($arrRet);
-	
+
 	for($cnt = 0; $cnt < $max; $cnt++) {
 		if($parent_zero) {
 			if($arrRet[$cnt]['level'] == LEVEL_MAX) {
 				$arrValue[$cnt] = $arrRet[$cnt]['category_id'];
 			} else {
-				$arrValue[$cnt] = ""; 
+				$arrValue[$cnt] = "";
 			}
 		} else {
 			$arrValue[$cnt] = $arrRet[$cnt]['category_id'];
 		}
-		
+
 		$arrOutput[$cnt] = "";
-		/*	 		
+		/*
 		for($n = 1; $n < $arrRet[$cnt]['level']; $n++) {
 			$arrOutput[$cnt].= "　";
 		}
@@ -1194,7 +1196,7 @@ function sfGetParentsCol($objQuery, $table, $id_name, $col_name, $arrId ) {
 	$col = $col_name;
 	$len = count($arrId);
 	$where = "";
-	
+
 	for($cnt = 0; $cnt < $len; $cnt++) {
 		if($where == "") {
 			$where = "$id_name = ?";
@@ -1202,10 +1204,10 @@ function sfGetParentsCol($objQuery, $table, $id_name, $col_name, $arrId ) {
 			$where.= " OR $id_name = ?";
 		}
 	}
-	
+
 	$objQuery->setorder("level");
 	$arrRet = $objQuery->select($col, $table, $where, $arrId);
-	return $arrRet;	
+	return $arrRet;
 }
 
 /* 子IDの配列を返す */
@@ -1220,7 +1222,7 @@ function sfMoveCatRank($objQuery, $table, $id_name, $cat_name, $old_catid, $new_
 		return;
 	}
 	// 旧カテゴリでのランク削除処理
-	// 移動レコードのランクを取得する。		
+	// 移動レコードのランクを取得する。
 	$where = "$id_name = ?";
 	$rank = $objQuery->get($table, "rank", $where, array($id));
 	// 削除レコードのランクより上のレコードを一つ下にずらす。
@@ -1264,7 +1266,7 @@ function sfTax($price, $tax, $tax_rule) {
 function sfPreTax($price, $tax, $tax_rule) {
 	$real_tax = $tax / 100;
 	$ret = $price * (1 + $real_tax);
-	
+
 	switch($tax_rule) {
 	// 四捨五入
 	case 1:
@@ -1294,7 +1296,7 @@ function sfRound($value, $pow = 0){
 	if(sfIsInt($adjust) and $pow > 1){
 		$ret = (round($value * $adjust)/$adjust);
 	}
-	
+
 	$ret = round($ret);
 
 	return $ret;
@@ -1306,7 +1308,7 @@ function sfPrePoint($price, $point_rate, $rule = POINT_RULE, $product_id = "") {
 		$objQuery = new SC_Query();
 	    $where = "now() >= cast(start_date as date) AND ";
 	    $where .= "now() < cast(end_date as date) AND ";
-		
+
 		$where .= "del_flg = 0 AND campaign_id IN (SELECT campaign_id FROM dtb_campaign_detail where product_id = ? )";
 		//登録(更新)日付順
 		$objQuery->setorder('update_date DESC');
@@ -1356,7 +1358,7 @@ function sfGetClassCatCount() {
 	$arrList = $objQuery->getall($sql);
 	// キーと値をセットした配列を取得
 	$arrRet = sfArrKeyValue($arrList, 'class_id', 'count');
-	
+
 	return $arrRet;
 }
 
@@ -1365,7 +1367,7 @@ function sfInsertProductClass($objQuery, $arrList, $product_id) {
 	// すでに規格登録があるかどうかをチェックする。
 	$where = "product_id = ? AND classcategory_id1 <> 0 AND classcategory_id1 <> 0";
 	$count = $objQuery->count("dtb_products_class", $where,  array($product_id));
-	
+
 	// すでに規格登録がない場合
 	if($count == 0) {
 		// 既存規格の削除
@@ -1381,11 +1383,11 @@ function sfInsertProductClass($objQuery, $arrList, $product_id) {
 		$sqlval['price02'] = $arrList['price02'];
 		$sqlval['creator_id'] = $_SESSION['member_id'];
 		$sqlval['create_date'] = "now()";
-		
+
 		if($_SESSION['member_id'] == "") {
 			$sqlval['creator_id'] = '0';
 		}
-		
+
 		// INSERTの実行
 		$objQuery->insert("dtb_products_class", $sqlval);
 	}
@@ -1406,15 +1408,15 @@ function sfTrimURL($url) {
 
 /* 商品規格情報の取得 */
 function sfGetProductsClass($arrID) {
-	list($product_id, $classcategory_id1, $classcategory_id2) = $arrID;	
-	
+	list($product_id, $classcategory_id1, $classcategory_id2) = $arrID;
+
 	if($classcategory_id1 == "") {
 		$classcategory_id1 = '0';
 	}
 	if($classcategory_id2 == "") {
 		$classcategory_id2 = '0';
 	}
-		
+
 	// 商品規格取得
 	$objQuery = new SC_Query();
 	$col = "product_id, deliv_fee, name, product_code, main_list_image, main_image, price01, price02, point_rate, product_class_id, classcategory_id1, classcategory_id2, class_id1, class_id2, stock, stock_unlimited, sale_limit, sale_unlimited";
@@ -1429,33 +1431,33 @@ function sfGetProductsClass($arrID) {
 function sfTotalConfirm($arrData, $objPage, $objCartSess, $arrInfo, $objCustomer = "") {
 	// 商品の合計個数
 	$total_quantity = $objCartSess->getTotalQuantity(true);
-	
+
 	// 税金の取得
 	$arrData['tax'] = $objPage->tpl_total_tax;
 	// 小計の取得
-	$arrData['subtotal'] = $objPage->tpl_total_pretax;	
-	
+	$arrData['subtotal'] = $objPage->tpl_total_pretax;
+
 	// 合計送料の取得
 	$arrData['deliv_fee'] = 0;
-		
+
 	// 商品ごとの送料が有効の場合
 	if (OPTION_PRODUCT_DELIV_FEE == 1) {
 		$arrData['deliv_fee']+= $objCartSess->getAllProductsDelivFee();
 	}
-	
+
 	// 配送業者の送料が有効の場合
 	if (OPTION_DELIV_FEE == 1) {
 		// 送料の合計を計算する
 		$arrData['deliv_fee']+= sfGetDelivFee($arrData['deliv_pref'], $arrData['payment_id']);
 	}
-	
+
 	// 送料無料の購入数が設定されている場合
 	if(DELIV_FREE_AMOUNT > 0) {
 		if($total_quantity >= DELIV_FREE_AMOUNT) {
 			$arrData['deliv_fee'] = 0;
-		}	
+		}
 	}
-		
+
 	// 送料無料条件が設定されている場合
 	if($arrInfo['free_rule'] > 0) {
 		// 小計が無料条件を超えている場合
@@ -1472,7 +1474,7 @@ function sfTotalConfirm($arrData, $objPage, $objCartSess, $arrInfo, $objCustomer
 	$arrData['payment_total'] = $arrData['total'] - ($arrData['use_point'] * POINT_VALUE);
 	// 加算ポイントの計算
 	$arrData['add_point'] = sfGetAddPoint($objPage->tpl_total_point, $arrData['use_point'], $arrInfo);
-	
+
 	if($objCustomer != "") {
 		// 誕生日月であった場合
 		if($objCustomer->isBirthMonth()) {
@@ -1480,11 +1482,11 @@ function sfTotalConfirm($arrData, $objPage, $objCartSess, $arrInfo, $objCustomer
 			$arrData['add_point'] += $arrData['birth_point'];
 		}
 	}
-	
+
 	if($arrData['add_point'] < 0) {
 		$arrData['add_point'] = 0;
 	}
-	
+
 	return $arrData;
 }
 
@@ -1494,24 +1496,24 @@ function sfTotalCart($objPage, $objCartSess, $arrInfo) {
 	$arrClassName = sfGetIDValueList("dtb_class", "class_id", "name");
 	// 規格分類名一覧
 	$arrClassCatName = sfGetIDValueList("dtb_classcategory", "classcategory_id", "name");
-	
+
 	$objPage->tpl_total_pretax = 0;		// 費用合計(税込み)
 	$objPage->tpl_total_tax = 0;		// 消費税合計
 	$objPage->tpl_total_point = 0;		// ポイント合計
-	
+
 	// カート内情報の取得
 	$arrCart = $objCartSess->getCartList();
 	$max = count($arrCart);
 	$cnt = 0;
 
 	for ($i = 0; $i < $max; $i++) {
-		// 商品規格情報の取得	
+		// 商品規格情報の取得
 		$arrData = sfGetProductsClass($arrCart[$i]['id']);
 		$limit = "";
 		// DBに存在する商品
 		if (count($arrData) > 0) {
-			
-			// 購入制限数を求める。			
+
+			// 購入制限数を求める。
 			if ($arrData['stock_unlimited'] != '1' && $arrData['sale_unlimited'] != '1') {
 				if($arrData['sale_limit'] < $arrData['stock']) {
 					$limit = $arrData['sale_limit'];
@@ -1526,7 +1528,7 @@ function sfTotalCart($objPage, $objCartSess, $arrInfo) {
 					$limit = $arrData['stock'];
 				}
 			}
-						
+
 			if($limit != "" && $limit < $arrCart[$i]['quantity']) {
 				// カート内商品数を制限に合わせる
 				$objCartSess->setProductValue($arrCart[$i]['id'], 'quantity', $limit);
@@ -1535,7 +1537,7 @@ function sfTotalCart($objPage, $objCartSess, $arrInfo) {
 			} else {
 				$quantity = $arrCart[$i]['quantity'];
 			}
-			
+
 			$objPage->arrProductsClass[$cnt] = $arrData;
 			$objPage->arrProductsClass[$cnt]['quantity'] = $quantity;
 			$objPage->arrProductsClass[$cnt]['cart_no'] = $arrCart[$i]['cart_no'];
@@ -1543,12 +1545,12 @@ function sfTotalCart($objPage, $objCartSess, $arrInfo) {
 			$objPage->arrProductsClass[$cnt]['class_name2'] = $arrClassName[$arrData['class_id2']];
 			$objPage->arrProductsClass[$cnt]['classcategory_name1'] = $arrClassCatName[$arrData['classcategory_id1']];
 			$objPage->arrProductsClass[$cnt]['classcategory_name2'] = $arrClassCatName[$arrData['classcategory_id2']];
-			
+
 			// 画像サイズ
 			list($image_width, $image_height) = getimagesize(IMAGE_SAVE_DIR . basename($objPage->arrProductsClass[$cnt]["main_image"]));
 			$objPage->arrProductsClass[$cnt]["tpl_image_width"] = $image_width + 60;
 			$objPage->arrProductsClass[$cnt]["tpl_image_height"] = $image_height + 80;
-			
+
 			// 価格の登録
 			if ($arrData['price02'] != "") {
 				$objCartSess->setProductValue($arrCart[$i]['id'], 'price', $arrData['price02']);
@@ -1569,15 +1571,15 @@ function sfTotalCart($objPage, $objCartSess, $arrInfo) {
 			$objCartSess->delProductKey('id', $arrCart[$i]['id']);
 		}
 	}
-	
+
 	// 全商品合計金額(税込み)
 	$objPage->tpl_total_pretax = $objCartSess->getAllProductsTotal($arrInfo);
 	// 全商品合計消費税
 	$objPage->tpl_total_tax = $objCartSess->getAllProductsTax($arrInfo);
 	// 全商品合計ポイント
 	$objPage->tpl_total_point = $objCartSess->getAllProductsPoint();
-	
-	return $objPage;	
+
+	return $objPage;
 }
 
 /* DBから取り出した日付の文字列を調整する。*/
@@ -1588,7 +1590,7 @@ function sfDispDBDate($dbdate, $time = true) {
 		if ($time) {
 			$str = sprintf("%04d/%02d/%02d %02d:%02d", $y, $m, $d, $H, $M);
 		} else {
-			$str = sprintf("%04d/%02d/%02d", $y, $m, $d, $H, $M);						
+			$str = sprintf("%04d/%02d/%02d", $y, $m, $d, $H, $M);
 		}
 	} else {
 		$str = "";
@@ -1598,31 +1600,31 @@ function sfDispDBDate($dbdate, $time = true) {
 
 function sfGetDelivTime($payment_id = "") {
 	$objQuery = new SC_Query();
-	
+
 	$deliv_id = "";
-	
+
 	if($payment_id != "") {
 		$where = "del_flg = 0 AND payment_id = ?";
 		$arrRet = $objQuery->select("deliv_id", "dtb_payment", $where, array($payment_id));
 		$deliv_id = $arrRet[0]['deliv_id'];
 	}
-	
+
 	if($deliv_id != "") {
 		$objQuery->setorder("time_id");
 		$where = "deliv_id = ?";
 		$arrRet= $objQuery->select("time_id, deliv_time", "dtb_delivtime", $where, array($deliv_id));
 	}
-	
-	return $arrRet;	
+
+	return $arrRet;
 }
 
 
 // 都道府県、支払い方法から配送料金を取得する
 function sfGetDelivFee($pref, $payment_id = "") {
 	$objQuery = new SC_Query();
-	
+
 	$deliv_id = "";
-	
+
 	// 支払い方法が指定されている場合は、対応した配送業者を取得する
 	if($payment_id != "") {
 		$where = "del_flg = 0 AND payment_id = ?";
@@ -1634,22 +1636,22 @@ function sfGetDelivFee($pref, $payment_id = "") {
 		$objQuery->setOrder("rank DESC");
 		$objQuery->setLimitOffset(1);
 		$arrRet = $objQuery->select("deliv_id", "dtb_deliv", $where);
-		$deliv_id = $arrRet[0]['deliv_id'];	
+		$deliv_id = $arrRet[0]['deliv_id'];
 	}
-	
+
 	// 配送業者から配送料を取得
 	if($deliv_id != "") {
-		
+
 		// 都道府県が指定されていない場合は、東京都の番号を指定しておく
 		if($pref == "") {
 			$pref = 13;
 		}
-		
+
 		$objQuery = new SC_Query();
 		$where = "deliv_id = ? AND pref = ?";
 		$arrRet= $objQuery->select("fee", "dtb_delivfee", $where, array($deliv_id, $pref));
-	}	
-	return $arrRet[0]['fee'];	
+	}
+	return $arrRet[0]['fee'];
 }
 
 /* 支払い方法の取得 */
@@ -1659,7 +1661,7 @@ function sfGetPayment() {
 	$where = "del_flg = 0";
 	$objQuery->setorder("fix, rank DESC");
 	$arrRet = $objQuery->select("payment_id, payment_method, rule", "dtb_payment", $where);
-	return $arrRet;	
+	return $arrRet;
 }
 
 /* 配列をキー名ごとの配列に変更する */
@@ -1688,15 +1690,15 @@ function sfSendTemplateMail($to, $to_name, $template_id, $objPage) {
 	$objPage->tpl_header = $arrRet[0]['header'];
 	$objPage->tpl_footer = $arrRet[0]['footer'];
 	$tmp_subject = $arrRet[0]['subject'];
-	
+
 	$objSiteInfo = new SC_SiteInfo();
 	$arrInfo = $objSiteInfo->data;
-	
+
 	$objMailView = new SC_SiteView();
 	// メール本文の取得
 	$objMailView->assignobj($objPage);
 	$body = $objMailView->fetch($arrMAILTPLPATH[$template_id]);
-	
+
 	// メール送信処理
 	$objSendMail = new GC_SendMail();
 	$from = $arrInfo['email03'];
@@ -1710,14 +1712,14 @@ function sfSendTemplateMail($to, $to_name, $template_id, $objPage) {
 /* 受注完了メール送信 */
 function sfSendOrderMail($order_id, $template_id, $subject = "", $header = "", $footer = "", $send = true) {
 	global $arrMAILTPLPATH;
-	
+
 	$objPage = new LC_Page();
 	$objSiteInfo = new SC_SiteInfo();
 	$arrInfo = $objSiteInfo->data;
 	$objPage->arrInfo = $arrInfo;
-	
+
 	$objQuery = new SC_Query();
-		
+
 	if($subject == "" && $header == "" && $footer == "") {
 		// メールテンプレート情報の取得
 		$where = "template_id = ?";
@@ -1730,15 +1732,15 @@ function sfSendOrderMail($order_id, $template_id, $subject = "", $header = "", $
 		$objPage->tpl_footer = $footer;
 		$tmp_subject = $subject;
 	}
-	
+
 	// 受注情報の取得
 	$where = "order_id = ?";
 	$arrRet = $objQuery->select("*", "dtb_order", $where, array($order_id));
 	$arrOrder = $arrRet[0];
 	$arrOrderDetail = $objQuery->select("*", "dtb_order_detail", $where, array($order_id));
-	
+
 	$objPage->Message_tmp = $arrOrder['message'];
-		
+
 	// 顧客情報の取得
 	$customer_id = $arrOrder['customer_id'];
 	$arrRet = $objQuery->select("point", "dtb_customer", "customer_id = ?", array($customer_id));
@@ -1750,30 +1752,30 @@ function sfSendOrderMail($order_id, $template_id, $subject = "", $header = "", $
 	//その他決済情報
 	if($arrOrder['memo02'] != "") {
 		$arrOther = unserialize($arrOrder['memo02']);
-		
+
 		foreach($arrOther as $other_key => $other_val){
 			if(sfTrim($other_val["value"]) == ""){
 				$arrOther[$other_key]["value"] = "";
 			}
 		}
-		
+
 		$objPage->arrOther = $arrOther;
 	}
 
 	// 都道府県変換
 	global $arrPref;
 	$objPage->arrOrder['deliv_pref'] = $arrPref[$objPage->arrOrder['deliv_pref']];
-	
+
 	$objPage->arrOrderDetail = $arrOrderDetail;
-	
+
 	$objCustomer = new SC_Customer();
 	$objPage->tpl_user_point = $objCustomer->getValue('point');
-	
+
 	$objMailView = new SC_SiteView();
 	// メール本文の取得
 	$objMailView->assignobj($objPage);
 	$body = $objMailView->fetch($arrMAILTPLPATH[$template_id]);
-	
+
 	// メール送信処理
 	$objSendMail = new GC_SendMail();
 	$bcc = $arrInfo['email01'];
@@ -1781,7 +1783,7 @@ function sfSendOrderMail($order_id, $template_id, $subject = "", $header = "", $
 	$error = $arrInfo['email04'];
 
 	$tosubject = sfMakeSubject($tmp_subject);
-	
+
 	$objSendMail->setItem('', $tosubject, $body, $from, $arrInfo['shop_name'], $from, $error, $error, $bcc);
 	$objSendMail->setTo($arrOrder["order_email"], $arrOrder["order_name01"] . " ". $arrOrder["order_name02"] ." 様");
 
@@ -1813,7 +1815,7 @@ function sfSendTplMail($to, $subject, $tplpath, $objPage) {
 	$from = $arrInfo['email03'];
 	$error = $arrInfo['email04'];
 	$objSendMail->setItem($to, $subject, $body, $from, $arrInfo['shop_name'], $from, $error, $error, $bcc);
-	$objSendMail->sendMail();	
+	$objSendMail->sendMail();
 }
 
 // 通常のメール送信
@@ -1831,11 +1833,11 @@ function sfSendMail($to, $subject, $body) {
 
 //件名にテンプレートを用いる
 function sfMakeSubject($subject){
-	
+
 	$objQuery = new SC_Query();
 	$objMailView = new SC_SiteView();
 	$objPage = new LC_Page();
-	
+
 	$arrInfo = $objQuery->select("*","dtb_baseinfo");
 	$arrInfo = $arrInfo[0];
 	$objPage->tpl_shopname=$arrInfo['shop_name'];
@@ -1843,7 +1845,7 @@ function sfMakeSubject($subject){
 	$objMailView->assignobj($objPage);
 	$mailtitle = $objMailView->fetch('mail_templates/mail_title.tpl');
 	$ret = $mailtitle.$subject;
-	return $ret; 
+	return $ret;
 }
 
 // メール配信履歴への登録
@@ -1858,7 +1860,7 @@ function sfSaveMailHistory($order_id, $template_id, $subject, $body) {
 		$sqlval['creator_id'] = '0';
 	}
 	$sqlval['mail_body'] = $body;
-	
+
 	$objQuery = new SC_Query();
 	$objQuery->insert("dtb_mail_history", $sqlval);
 }
@@ -1935,26 +1937,26 @@ function sfGetAuthonlyResult($dir, $file_name, $name01, $name02, $card_no, $card
 	$path = $dir .$file_name;		// cgiファイルのフルパス生成
 	$now_dir = getcwd();			// requireがうまくいかないので、cgi実行ディレクトリに移動する
 	chdir($dir);
-	
+
 	// パイプ渡しでコマンドラインからcgi起動
 	$cmd = "$path card_no=$card_no name01=$name01 name02=$name02 card_exp=$card_exp amount=$amount order_id=$order_id jpo_info=$jpo_info";
 
 	$tmpResult = popen($cmd, "r");
-	
+
 	// 結果取得
 	while( ! FEOF ( $tmpResult ) ) {
 		$result .= FGETS($tmpResult);
 	}
 	pclose($tmpResult);				// 	パイプを閉じる
 	chdir($now_dir);				//　元にいたディレクトリに帰る
-	
+
 	// 結果を連想配列へ格納
 	$result = ereg_replace("&$", "", $result);
 	foreach (explode("&",$result) as $data) {
 		list($key, $val) = explode("=", $data, 2);
 		$return[$key] = $val;
 	}
-	
+
 	return $return;
 }
 
@@ -2040,7 +2042,7 @@ function sfGetCatWhere($category_id) {
 function sfGetAddPoint($totalpoint, $use_point, $arrInfo) {
 	// 購入商品の合計ポイントから利用したポイントのポイント換算価値を引く方式
 	$add_point = $totalpoint - intval($use_point * ($arrInfo['point_rate'] / 100));
-	
+
 	if($add_point < 0) {
 		$add_point = '0';
 	}
@@ -2060,7 +2062,7 @@ function sfGetUniqRandomId($head = "") {
 function sfGetBestProducts( $conn, $category_id = 0){
 	// 既に登録されている内容を取得する
 	$sql = "SELECT name, main_image, main_list_image, price01_min, price01_max, price02_min, price02_max, point_rate,
-			 A.product_id, A.comment FROM dtb_best_products as A LEFT JOIN vw_products_allclass AS allcls 
+			 A.product_id, A.comment FROM dtb_best_products as A LEFT JOIN vw_products_allclass AS allcls
 			USING (product_id) WHERE A.category_id = ? AND A.del_flg = 0 AND status = 1 ORDER BY A.rank";
 	$arrItems = $conn->getAll($sql, array($category_id));
 
@@ -2080,7 +2082,7 @@ function sfManualEscape($data) {
 		$ret = ereg_replace("_", "\\_", $ret);
 		return $ret;
 	}
-	
+
 	// 配列の場合
 	foreach($data as $val) {
 		if (DB_TYPE == "pgsql") {
@@ -2141,7 +2143,7 @@ function sfPutBR($str, $size) {
 	$cnt = 0;
 	$line = array();
 	$ret = "";
-	
+
 	while($str[$i] != "") {
 		$line[$cnt].=$str[$i];
 		$i++;
@@ -2150,7 +2152,7 @@ function sfPutBR($str, $size) {
 			$cnt++;
 		}
 	}
-	
+
 	foreach($line as $val) {
 		$ret.=$val;
 	}
@@ -2170,26 +2172,26 @@ function sfRmDupSlash($istr){
 	}
 	$str = ereg_replace("[/]+", "/", $str);
 	$ret = $head . $str;
-	return $ret;	
+	return $ret;
 }
 
 function sfEncodeFile($filepath, $enc_type, $out_dir) {
 	$ifp = fopen($filepath, "r");
-	
+
 	$basename = basename($filepath);
 	$outpath = $out_dir . "enc_" . $basename;
-	
+
 	$ofp = fopen($outpath, "w+");
-	
+
 	while(!feof($ifp)) {
 		$line = fgets($ifp);
 		$line = mb_convert_encoding($line, $enc_type, "auto");
 		fwrite($ofp,  $line);
 	}
-	
+
 	fclose($ofp);
 	fclose($ifp);
-	
+
 	return 	$outpath;
 }
 
@@ -2244,13 +2246,13 @@ function sfCutString($str, $len, $byte = true, $commadisp = true) {
 function sfTermMonth($year, $month, $close_day) {
 	$end_year = $year;
 	$end_month = $month;
-	
+
 	// 開始月が終了月と同じか否か
 	$same_month = false;
-	
+
 	// 該当月の末日を求める。
 	$end_last_day = date("d", mktime(0, 0, 0, $month + 1, 0, $year));
-	
+
 	// 月の末日が締め日より少ない場合
 	if($end_last_day < $close_day) {
 		// 締め日を月末日に合わせる
@@ -2258,13 +2260,13 @@ function sfTermMonth($year, $month, $close_day) {
 	} else {
 		$end_day = $close_day;
 	}
-	
+
 	// 前月の取得
 	$tmp_year = date("Y", mktime(0, 0, 0, $month, 0, $year));
 	$tmp_month = date("m", mktime(0, 0, 0, $month, 0, $year));
 	// 前月の末日を求める。
 	$start_last_day = date("d", mktime(0, 0, 0, $month, 0, $year));
-	
+
 	// 前月の末日が締め日より少ない場合
 	if ($start_last_day < $close_day) {
 		// 月末日に合わせる
@@ -2272,16 +2274,16 @@ function sfTermMonth($year, $month, $close_day) {
 	} else {
 		$tmp_day = $close_day;
 	}
-	
+
 	// 先月の末日の翌日を取得する
 	$start_year = date("Y", mktime(0, 0, 0, $tmp_month, $tmp_day + 1, $tmp_year));
 	$start_month = date("m", mktime(0, 0, 0, $tmp_month, $tmp_day + 1, $tmp_year));
 	$start_day = date("d", mktime(0, 0, 0, $tmp_month, $tmp_day + 1, $tmp_year));
-	
+
 	// 日付の作成
 	$start_date = sprintf("%d/%d/%d 00:00:00", $start_year, $start_month, $start_day);
 	$end_date = sprintf("%d/%d/%d 23:59:59", $end_year, $end_month, $end_day);
-	
+
 	return array($start_date, $end_date);
 }
 
@@ -2289,14 +2291,14 @@ function sfTermMonth($year, $month, $close_day) {
 function sfGetPdfRgb($hexrgb) {
 	$hex = substr($hexrgb, 0, 2);
 	$r = hexdec($hex) / 255;
-	
+
 	$hex = substr($hexrgb, 2, 2);
 	$g = hexdec($hex) / 255;
-	
+
 	$hex = substr($hexrgb, 4, 2);
 	$b = hexdec($hex) / 255;
-	
-	return array($r, $g, $b);	
+
+	return array($r, $g, $b);
 }
 
 //メルマガ仮登録とメール配信
@@ -2304,14 +2306,14 @@ function sfRegistTmpMailData($mail_flag, $email){
 	$objQuery = new SC_Query();
 	$objConn = new SC_DBConn();
 	$objPage = new LC_Page();
-	
+
 	$random_id = sfGetUniqRandomId();
 	$arrRegistMailMagazine["mail_flag"] = $mail_flag;
 	$arrRegistMailMagazine["email"] = $email;
 	$arrRegistMailMagazine["temp_id"] =$random_id;
 	$arrRegistMailMagazine["end_flag"]='0';
 	$arrRegistMailMagazine["update_date"] = 'now()';
-	
+
 	//メルマガ仮登録用フラグ
 	$flag = $objQuery->count("dtb_customer_mail_temp", "email=?", array($email));
 	$objConn->query("BEGIN");
@@ -2319,7 +2321,7 @@ function sfRegistTmpMailData($mail_flag, $email){
 		case '0':
 		$objConn->autoExecute("dtb_customer_mail_temp",$arrRegistMailMagazine);
 		break;
-	
+
 		case '1':
 		$objConn->autoExecute("dtb_customer_mail_temp",$arrRegistMailMagazine, "email = '" .addslashes($email). "'");
 		break;
@@ -2332,12 +2334,12 @@ function sfRegistTmpMailData($mail_flag, $email){
 		$objPage->tpl_name = "登録";
 		$objPage->tpl_kindname = "HTML";
 		break;
-		
+
 		case '2':
 		$objPage->tpl_name = "登録";
 		$objPage->tpl_kindname = "テキスト";
 		break;
-		
+
 		case '3':
 		$objPage->tpl_name = "解除";
 		break;
@@ -2383,7 +2385,7 @@ function sfCustomDisplay($objPage, $is_mobile = false) {
 		$path = $_SERVER["REQUEST_URI"] . "index.php";
 	} else {
 		$path = $_SERVER["REQUEST_URI"];
-	}	
+	}
 
 	if($_GET['tpl'] != "") {
 		$tpl_name = $_GET['tpl'];
@@ -2396,9 +2398,9 @@ function sfCustomDisplay($objPage, $is_mobile = false) {
 	$template_path = TEMPLATE_FTP_DIR . $tpl_name;
 
 	if($is_mobile === true) {
-		$objView = new SC_MobileView();			
+		$objView = new SC_MobileView();
 		$objView->assignobj($objPage);
-		$objView->display(SITE_FRAME);		
+		$objView->display(SITE_FRAME);
 	} else if(file_exists($template_path)) {
 		$objView = new SC_UserView(TEMPLATE_FTP_DIR, COMPILE_FTP_DIR);
 		$objView->assignobj($objPage);
@@ -2413,7 +2415,7 @@ function sfCustomDisplay($objPage, $is_mobile = false) {
 //会員編集登録処理
 function sfEditCustomerData($array, $arrRegistColumn) {
 	$objQuery = new SC_Query();
-	
+
 	foreach ($arrRegistColumn as $data) {
 		if ($data["column"] != "password") {
 			if($array[ $data['column'] ] != "") {
@@ -2430,9 +2432,9 @@ function sfEditCustomerData($array, $arrRegistColumn) {
 	}
 
 	//-- パスワードの更新がある場合は暗号化。（更新がない場合はUPDATE文を構成しない）
-	if ($array["password"] != DEFAULT_PASSWORD) $arrRegist["password"] = sha1($array["password"] . ":" . AUTH_MAGIC); 
+	if ($array["password"] != DEFAULT_PASSWORD) $arrRegist["password"] = sha1($array["password"] . ":" . AUTH_MAGIC);
 	$arrRegist["update_date"] = "NOW()";
-	
+
 	//-- 編集登録実行
 	if (defined('MOBILE_SITE')) {
 		$arrRegist['email_mobile'] = $arrRegist['email'];
@@ -2446,12 +2448,12 @@ function sfEditCustomerData($array, $arrRegistColumn) {
 // PHPのmb_convert_encoding関数をSmartyでも使えるようにする
 function sf_mb_convert_encoding($str, $encode = 'CHAR_CODE') {
 	return  mb_convert_encoding($str, $encode);
-}	
+}
 
 // PHPのmktime関数をSmartyでも使えるようにする
 function sf_mktime($format, $hour=0, $minute=0, $second=0, $month=1, $day=1, $year=1999) {
 	return  date($format,mktime($hour, $minute, $second, $month, $day, $year));
-}	
+}
 
 // PHPのdate関数をSmartyでも使えるようにする
 function sf_date($format, $timestamp = '') {
@@ -2477,11 +2479,11 @@ function sfChangeCheckBox($data , $tpl = false){
 
 function sfCategory_Count($objQuery){
 	$sql = "";
-	
+
 	//テーブル内容の削除
 	$objQuery->query("DELETE FROM dtb_category_count");
 	$objQuery->query("DELETE FROM dtb_category_total_count");
-	
+
 	//各カテゴリ内の商品数を数えて格納
 	$sql = " INSERT INTO dtb_category_count(category_id, product_count, create_date) ";
 	$sql .= " SELECT T1.category_id, count(T2.category_id), now() FROM dtb_category AS T1 LEFT JOIN dtb_products AS T2 ";
@@ -2489,21 +2491,21 @@ function sfCategory_Count($objQuery){
 	$sql .= " WHERE T2.del_flg = 0 AND T2.status = 1 ";
 	$sql .= " GROUP BY T1.category_id, T2.category_id ";
 	$objQuery->query($sql);
-	
+
 	//子カテゴリ内の商品数を集計する
 	$arrCat = $objQuery->getAll("SELECT * FROM dtb_category");
-	
+
 	$sql = "";
 	foreach($arrCat as $key => $val){
-		
+
 		// 子ID一覧を取得
-		$arrRet = sfGetChildrenArray('dtb_category', 'parent_category_id', 'category_id', $val['category_id']);	
+		$arrRet = sfGetChildrenArray('dtb_category', 'parent_category_id', 'category_id', $val['category_id']);
 		$line = sfGetCommaList($arrRet);
-		
+
 		$sql = " INSERT INTO dtb_category_total_count(category_id, product_count, create_date) ";
 		$sql .= " SELECT ?, SUM(product_count), now() FROM dtb_category_count ";
 		$sql .= " WHERE category_id IN (" . $line . ")";
-				
+
 		$objQuery->query($sql, array($val['category_id']));
 	}
 }
@@ -2512,18 +2514,18 @@ function sfCategory_Count($objQuery){
 function sfarrCombine($arrKeys, $arrValues) {
 
 	if(count($arrKeys) <= 0 and count($arrValues) <= 0) return array();
-	
+
     $keys = array_values($arrKeys);
-    $vals = array_values($arrValues); 
-	
-    $max = max( count( $keys ), count( $vals ) ); 
-    $combine_ary = array(); 
-    for($i=0; $i<$max; $i++) { 
-        $combine_ary[$keys[$i]] = $vals[$i]; 
-    } 
-    if(is_array($combine_ary)) return $combine_ary; 
-    
-	return false; 
+    $vals = array_values($arrValues);
+
+    $max = max( count( $keys ), count( $vals ) );
+    $combine_ary = array();
+    for($i=0; $i<$max; $i++) {
+        $combine_ary[$keys[$i]] = $vals[$i];
+    }
+    if(is_array($combine_ary)) return $combine_ary;
+
+	return false;
 }
 
 /* 階層構造のテーブルから子ID配列を取得する */
@@ -2531,19 +2533,19 @@ function sfGetChildrenArray($table, $pid_name, $id_name, $id) {
 	$objQuery = new SC_Query();
 	$col = $pid_name . "," . $id_name;
  	$arrData = $objQuery->select($col, $table);
-	
+
 	$arrPID = array();
 	$arrPID[] = $id;
 	$arrChildren = array();
 	$arrChildren[] = $id;
-	
+
 	$arrRet = sfGetChildrenArraySub($arrData, $pid_name, $id_name, $arrPID);
-	
+
 	while(count($arrRet) > 0) {
 		$arrChildren = array_merge($arrChildren, $arrRet);
 		$arrRet = sfGetChildrenArraySub($arrData, $pid_name, $id_name, $arrRet);
 	}
-	
+
 	return $arrChildren;
 }
 
@@ -2551,14 +2553,14 @@ function sfGetChildrenArray($table, $pid_name, $id_name, $id) {
 function sfGetChildrenArraySub($arrData, $pid_name, $id_name, $arrPID) {
 	$arrChildren = array();
 	$max = count($arrData);
-	
+
 	for($i = 0; $i < $max; $i++) {
 		foreach($arrPID as $val) {
 			if($arrData[$i][$pid_name] == $val) {
 				$arrChildren[] = $arrData[$i][$id_name];
 			}
 		}
-	}	
+	}
 	return $arrChildren;
 }
 
@@ -2568,20 +2570,20 @@ function sfGetParentsArray($table, $pid_name, $id_name, $id) {
 	$objQuery = new SC_Query();
 	$col = $pid_name . "," . $id_name;
  	$arrData = $objQuery->select($col, $table);
-	
+
 	$arrParents = array();
 	$arrParents[] = $id;
 	$child = $id;
-	
+
 	$ret = sfGetParentsArraySub($arrData, $pid_name, $id_name, $child);
 
 	while($ret != "") {
 		$arrParents[] = $ret;
 		$ret = sfGetParentsArraySub($arrData, $pid_name, $id_name, $ret);
 	}
-	
+
 	$arrParents = array_reverse($arrParents);
-	
+
 	return $arrParents;
 }
 
@@ -2601,7 +2603,7 @@ function sfGetParentsArraySub($arrData, $pid_name, $id_name, $child) {
 /* 階層構造のテーブルから与えられたIDの兄弟を取得する */
 function sfGetBrothersArray($arrData, $pid_name, $id_name, $arrPID) {
 	$max = count($arrData);
-	
+
 	$arrBrothers = array();
 	foreach($arrPID as $id) {
 		// 親IDを検索する
@@ -2616,7 +2618,7 @@ function sfGetBrothersArray($arrData, $pid_name, $id_name, $arrPID) {
 			if($arrData[$i][$pid_name] == $parent) {
 				$arrBrothers[] = $arrData[$i][$id_name];
 			}
-		}					
+		}
 	}
 	return $arrBrothers;
 }
@@ -2624,14 +2626,14 @@ function sfGetBrothersArray($arrData, $pid_name, $id_name, $arrPID) {
 /* 階層構造のテーブルから与えられたIDの直属の子を取得する */
 function sfGetUnderChildrenArray($arrData, $pid_name, $id_name, $parent) {
 	$max = count($arrData);
-	
+
 	$arrChildren = array();
 	// 子IDを検索する
 	for($i = 0; $i < $max; $i++) {
 		if($arrData[$i][$pid_name] == $parent) {
 			$arrChildren[] = $arrData[$i][$id_name];
 		}
-	}					
+	}
 	return $arrChildren;
 }
 
@@ -2649,7 +2651,7 @@ function sfGetCatTree($parent_category_id, $count_check = false) {
 	$col .= " cat.create_date,";
 	$col .= " cat.update_date,";
 	$col .= " cat.del_flg, ";
-	$col .= " ttl.product_count";	
+	$col .= " ttl.product_count";
 	$from = "dtb_category as cat left join dtb_category_total_count as ttl on ttl.category_id = cat.category_id";
 	// 登録商品数のチェック
 	if($count_check) {
@@ -2659,9 +2661,9 @@ function sfGetCatTree($parent_category_id, $count_check = false) {
 	}
 	$objQuery->setoption("ORDER BY rank DESC");
 	$arrRet = $objQuery->select($col, $from, $where);
-	
+
 	$arrParentID = sfGetParents($objQuery, 'dtb_category', 'parent_category_id', 'category_id', $parent_category_id);
-	
+
 	foreach($arrRet as $key => $array) {
 		foreach($arrParentID as $val) {
 			if($array['category_id'] == $val) {
@@ -2678,9 +2680,9 @@ function sfGetCatTree($parent_category_id, $count_check = false) {
 function sfGetCatCombName($category_id){
 	// 商品が属するカテゴリIDを縦に取得
 	$objQuery = new SC_Query();
-	$arrCatID = sfGetParents($objQuery, "dtb_category", "parent_category_id", "category_id", $category_id);	
+	$arrCatID = sfGetParents($objQuery, "dtb_category", "parent_category_id", "category_id", $category_id);
 	$ConbName = "";
-	
+
 	// カテゴリー名称を取得する
 	foreach($arrCatID as $key => $val){
 		$sql = "SELECT category_name FROM dtb_category WHERE category_id = ?";
@@ -2690,7 +2692,7 @@ function sfGetCatCombName($category_id){
 	}
 	// 最後の ｜ をカットする
 	$ConbName = substr_replace($ConbName, "", strlen($ConbName) - 2, 2);
-	
+
 	return $ConbName;
 }
 
@@ -2699,14 +2701,14 @@ function sfGetFirstCat($category_id){
 	// 商品が属するカテゴリIDを縦に取得
 	$objQuery = new SC_Query();
 	$arrRet = array();
-	$arrCatID = sfGetParents($objQuery, "dtb_category", "parent_category_id", "category_id", $category_id);	
+	$arrCatID = sfGetParents($objQuery, "dtb_category", "parent_category_id", "category_id", $category_id);
 	$arrRet['id'] = $arrCatID[0];
-	
+
 	// カテゴリー名称を取得する
 	$sql = "SELECT category_name FROM dtb_category WHERE category_id = ?";
 	$arrVal = array($arrRet['id']);
 	$arrRet['name'] = $objQuery->getOne($sql,$arrVal);
-	
+
 	return $arrRet;
 }
 
@@ -2714,7 +2716,7 @@ function sfGetFirstCat($category_id){
 function sfChangeMySQL($sql){
 	// 改行、タブを1スペースに変換
 	$sql = preg_replace("/[\r\n\t]/"," ",$sql);
-	
+
 	$sql = sfChangeView($sql);		// view表をインラインビューに変換する
 	$sql = sfChangeILIKE($sql);		// ILIKE検索をLIKE検索に変換する
 	$sql = sfChangeRANDOM($sql);	// RANDOM()をRAND()に変換する
@@ -2737,7 +2739,7 @@ function sfInArray($sql){
 
 // SQLシングルクォート対応
 function sfQuoteSmart($in){
-	
+
     if (is_int($in) || is_double($in)) {
         return $in;
     } elseif (is_bool($in)) {
@@ -2748,19 +2750,19 @@ function sfQuoteSmart($in){
         return "'" . str_replace("'", "''", $in) . "'";
     }
 }
-	
+
 // view表をインラインビューに変換する
 function sfChangeView($sql){
 	global $arrView;
 	global $arrViewWhere;
-	
+
 	$arrViewTmp = $arrView;
 
 	// viewのwhereを変換
 	foreach($arrViewTmp as $key => $val){
 		$arrViewTmp[$key] = strtr($arrViewTmp[$key], $arrViewWhere);
 	}
-	
+
 	// viewを変換
 	$changesql = strtr($sql, $arrViewTmp);
 
@@ -2798,14 +2800,14 @@ function sfCopyDir($src, $des, $mess, $override = false){
 
 	$oldmask = umask(0);
 	$mod= stat($src);
-	
+
 	// ディレクトリがなければ作成する
 	if(!file_exists($des)) {
 		if(!mkdir($des, $mod[2])) {
 			print("path:" . $des);
 		}
 	}
-	
+
 	$fileArray=glob( $src."*" );
 	foreach( $fileArray as $key => $data_ ){
 		// CVS管理ファイルはコピーしない
@@ -2818,7 +2820,7 @@ function sfCopyDir($src, $des, $mess, $override = false){
 		if(ereg("/CVS/Root", $data_)) {
 			break;
 		}
-		
+
 		mb_ereg("^(.*[\/])(.*)",$data_, $matches);
 		$data=$matches[2];
 		if( is_dir( $data_ ) ){
@@ -2852,20 +2854,20 @@ function sfDelFile($dir){
 		}else if (is_dir($del_file)){
 			$ret = sfDelFile($del_file);
 		}
-		
+
 		if(!$ret){
 			return $ret;
 		}
 	}
-    
+
     // 閉じる
     closedir($dh);
-    
+
 	// フォルダを削除
 	return rmdir($dir);
 }
 
-/* 
+/*
  * 関数名：sfWriteFile
  * 引数1 ：書き込むデータ
  * 引数2 ：ファイルパス
@@ -2892,27 +2894,27 @@ function sfWriteFile($str, $path, $type, $permission = "") {
 	if($permission != "") {
 		chmod($path, $permission);
 	}
-	
+
 	return true;
 }
-	
+
 function sfFlush($output = " ", $sleep = 0){
 	// 実行時間を制限しない
 	set_time_limit(0);
 	// 出力をバッファリングしない(==日本語自動変換もしない)
 	ob_end_clean();
-	
+
 	// IEのために256バイト空文字出力
 	echo str_pad('',256);
-	
+
 	// 出力はブランクだけでもいいと思う
 	echo $output;
 	// 出力をフラッシュする
 	flush();
-	
+
 	ob_end_flush();
-	ob_start();	
-	
+	ob_start();
+
 	// 時間のかかる処理
 	sleep($sleep);
 }
@@ -2938,35 +2940,35 @@ function sfGetFileVersion($path) {
 // 指定したURLに対してPOSTでデータを送信する
 function sfSendPostData($url, $arrData, $arrOkCode = array()){
 	require_once(DATA_PATH . "module/Request.php");
-	
+
 	// 送信インスタンス生成
 	$req = new HTTP_Request($url);
-	
+
 	$req->addHeader('User-Agent', 'DoCoMo/2.0　P2101V(c100)');
 	$req->setMethod(HTTP_REQUEST_METHOD_POST);
-	
+
 	// POSTデータ送信
 	$req->addPostDataArray($arrData);
-	
+
 	// エラーが無ければ、応答情報を取得する
 	if (!PEAR::isError($req->sendRequest())) {
-		
+
 		// レスポンスコードがエラー判定なら、空を返す
 		$res_code = $req->getResponseCode();
-		
+
 		if(!in_array($res_code, $arrOkCode)){
 			$response = "";
 		}else{
 			$response = $req->getResponseBody();
 		}
-		
+
 	} else {
 		$response = "";
 	}
-	
+
 	// POSTデータクリア
-	$req->clearPostData();	
-	
+	$req->clearPostData();
+
 	return $response;
 }
 
