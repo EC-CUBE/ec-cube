@@ -17,4 +17,3 @@ $objPage->init();
 $objPage->process();
 register_shutdown_function(array($objPage, "destroy"));
 ?>
-?>
