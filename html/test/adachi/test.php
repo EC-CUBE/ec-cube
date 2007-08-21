@@ -113,5 +113,5 @@ function lfInitEditMode(){
     $objForm = new SC_Form($_POST, $arrParamsInfo);
     return $objForm;
 }
-testtesttest
+testtesttesttest
 ?>
