@@ -58,9 +58,8 @@ case 'login':
 case 'logout':
 	// ログイン情報の解放
 	$objCustomer->EndSession();
-	$mypage_url_search = strpos('.'.$_POST['url'], "mypage");
 	//マイページログイン中はログイン画面へ移行
-	if ($mypage_url_search == 2){
+	if ( preg_match('/mypage/', $_POST['url']) ){
         header("Location: /mypage/login.php");
 	}else{
         header("Location: " . $_POST['url']);
