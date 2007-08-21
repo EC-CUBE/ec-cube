@@ -596,11 +596,6 @@ function sfCSVDownload($data, $prefix = ""){
 	Header("Cache-Control: ");
 	Header("Pragma: ");
 
-	/* i18n~ だと正常に動作しないため、mb~ に変更
-	if (i18n_discover_encoding($data) == CHAR_CODE){
-		$data = i18n_convert($data,'SJIS',CHAR_CODE);
-	}
-	*/
 	if (mb_internal_encoding() == CHAR_CODE){
 		$data = mb_convert_encoding($data,'SJIS',CHAR_CODE);
 	}
