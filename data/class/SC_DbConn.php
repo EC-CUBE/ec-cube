@@ -173,7 +173,7 @@ class SC_DbConn{
         $url = '';
         $errmsg = '';
 
-        if ($_SERVER['HTTPS'] == "on") {
+        if (SC_Utils_Ex::sfIsHTTPS()) {
             $url = "https://";
         } else {
             $url = "http://";
