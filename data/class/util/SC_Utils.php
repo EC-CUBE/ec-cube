@@ -452,7 +452,7 @@ class SC_Utils {
             }
         }
         for($i = 1; $i <= $max; $i++) {
-            if($arrTmp[$i] == "1") {
+            if(isset($arrTmp) && $arrTmp[$i] == "1") {
                 $ret.= "1";
             } else {
                 $ret.= "0";
@@ -505,6 +505,7 @@ class SC_Utils {
 
     // 2進数形式の値をhtml_checkboxes対応の値に切り替える
     function sfSplitCheckBoxes($val) {
+        $arrRet = array();
         $len = strlen($val);
         for($i = 0; $i < $len; $i++) {
             if(substr($val, $i, 1) == "1") {
