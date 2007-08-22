@@ -45,6 +45,9 @@ class SC_Query {
 	
 	function select($col, $table, $where = "", $arrval = array()){
 		$sqlse = $this->getsql($col, $table, $where);
+        // DBに依存した SQL へ変換
+        $dbFactory = SC_DB_DBFactory::getInstance();
+        $sqlse = $dbFactory->sfChangeMySQL($sqlse);
 		$ret = $this->conn->getAll($sqlse, $arrval);
 		return $ret;
 	}
@@ -124,8 +127,8 @@ class SC_Query {
 	
 	function setlimitoffset($limit, $offset = 0, $return = false) {
 		if (is_numeric($limit) && is_numeric($offset)){
-			
-			$option.= " LIMIT " . $limit;
+
+			$option = " LIMIT " . $limit;
 			$option.= " OFFSET " . $offset;
 			
 			if($return){
