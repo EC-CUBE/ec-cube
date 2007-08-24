@@ -19,13 +19,14 @@ class LC_Page_Cart extends LC_Page {
 
     // {{{ properties
 
-    // TODO
+    /** セッションの配列 */
     var $arrSession;
+
+    /** カテゴリの配列 */
     var $arrProductsClass;
-    var $tpl_total_pretax;
-    var $tpl_total_tax;
-    var $tpl_total_point;
-    var $tpl_message;
+
+    /** 商品規格情報の配列 */
+    var $arrData;
 
     // }}}
     // {{{ functions
@@ -63,6 +64,8 @@ class LC_Page_Cart extends LC_Page {
             $this->tpl_message = "商品購入中にカート内容が変更されましたので、お手数ですが購入手続きをやり直して下さい。";
         }
 
+        if (!isset($_POST['mode'])) $_POST['mode'] = "";
+
         switch($_POST['mode']) {
         case 'up':
             $objCartSess->upQuantity($_POST['cart_no']);
@@ -83,9 +86,9 @@ class LC_Page_Cart extends LC_Page {
             $cnt = 0;
             for ($i = 0; $i < $max; $i++) {
                 // 商品規格情報の取得
-                $arrData = $db->sfGetProductsClass($arrRet[$i]['id']);
+                $this->arrData = $db->sfGetProductsClass($arrRet[$i]['id']);
                 // DBに存在する商品
-                if($arrData != "") {
+                if($this->arrData != "") {
                     $cnt++;
                 }
             }
@@ -116,7 +119,7 @@ class LC_Page_Cart extends LC_Page {
 
         // カート集計処理
         $this = $db->sfTotalCart($this, $objCartSess, $arrInfo);
-        $this->arrData = SC_Utils_Ex::sfTotalConfirm($arrData, $this, $objCartSess, $arrInfo, $objCustomer);
+        $this->arrData = SC_Utils_Ex::sfTotalConfirm($this->arrData, $this, $objCartSess, $arrInfo, $objCustomer);
 
         $this->arrInfo = $arrInfo;
 
