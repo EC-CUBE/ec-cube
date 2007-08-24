@@ -17,7 +17,6 @@ require_once(CLASS_PATH . "pages/LC_Page.php");
  */
 class LC_Page_Products_Detail extends LC_Page {
 
-    // TODO
     /** ステータス */
     var $arrSTATUS;
 
@@ -62,6 +61,7 @@ class LC_Page_Products_Detail extends LC_Page {
         $objView = new SC_SiteView();
         $objCustomer = new SC_Customer();
         $objQuery = new SC_Query();
+        $objDb = new SC_Helper_DB_Ex();
 
         // レイアウトデザインを取得
         $helper = new SC_Helper_PageLayout_Ex();
@@ -80,20 +80,21 @@ class LC_Page_Products_Detail extends LC_Page {
         $this->lfInitFile();
 
         // 管理ページからの確認の場合は、非公開の商品も表示する。
-        if($_GET['admin'] == 'on') {
+        if(isset($_GET['admin']) && $_GET['admin'] == 'on') {
             $where = "del_flg = 0";
         } else {
             $where = "del_flg = 0 AND status = 1";
         }
 
-        if($_POST['mode'] != "") {
+        if(isset($_POST['mode']) && $_POST['mode'] != "") {
             $tmp_id = $_POST['product_id'];
         } else {
             $tmp_id = $_GET['product_id'];
         }
 
         // 値の正当性チェック
-        if(!SC_Utils_Ex::sfIsInt($_GET['product_id']) || !SC_Utils_Ex::sfIsRecord("dtb_products", "product_id", $tmp_id, $where)) {
+        if(!SC_Utils_Ex::sfIsInt($_GET['product_id'])
+                || !$objDb->sfIsRecord("dtb_products", "product_id", $tmp_id, $where)) {
             SC_Utils_Ex::sfDispSiteError(PRODUCT_NOT_FOUND);
         }
         // ログイン判定
@@ -133,6 +134,8 @@ class LC_Page_Products_Detail extends LC_Page {
 
         // 商品IDをFORM内に保持する。
         $this->tpl_product_id = $tmp_id;
+
+        if (!isset($_['mode'])) $_POST['mode'] = "";
 
         switch($_POST['mode']) {
         case 'cart':
@@ -252,22 +255,25 @@ class LC_Page_Products_Detail extends LC_Page {
     /* 規格選択セレクトボックスの作成 */
     function lfMakeSelect($this, $product_id) {
 
+        $objDb = new SC_Helper_DB_Ex();
         $classcat_find1 = false;
         $classcat_find2 = false;
         // 在庫ありの商品の有無
         $stock_find = false;
 
         // 規格名一覧
-        $arrClassName = SC_Utils_Ex::sfGetIDValueList("dtb_class", "class_id", "name");
+        $arrClassName = $objDb->sfGetIDValueList("dtb_class", "class_id", "name");
         // 規格分類名一覧
-        $arrClassCatName = SC_Utils_Ex::sfGetIDValueList("dtb_classcategory", "classcategory_id", "name");
+        $arrClassCatName = $objDb->sfGetIDValueList("dtb_classcategory", "classcategory_id", "name");
         // 商品規格情報の取得
         $arrProductsClass = $this->lfGetProductsClass($product_id);
 
         // 規格1クラス名の取得
-        $this->tpl_class_name1 = $arrClassName[$arrProductsClass[0]['class_id1']];
+        $this->tpl_class_name1 = isset($arrClassName[$arrProductsClass[0]['class_id1']])
+                                        ? $arrClassName[$arrProductsClass[0]['class_id1']] : "";
         // 規格2クラス名の取得
-        $this->tpl_class_name2 = $arrClassName[$arrProductsClass[0]['class_id2']];
+        $this->tpl_class_name2 = isset($arrClassName[$arrProductsClass[0]['class_id2']])
+                                        ? $arrClassName[$arrProductsClass[0]['class_id2']] : "";
 
         // すべての組み合わせ数
         $count = count($arrProductsClass);
@@ -302,6 +308,7 @@ class LC_Page_Products_Detail extends LC_Page {
             $classcat_id2 = $arrProductsClass[$i]['classcategory_id2'];
 
             // セレクトボックス表示値
+            if (!isset($arrList[$list_id])) $arrList[$list_id] = "";
             if($arrList[$list_id] == "") {
                 $arrList[$list_id] = "\tlist".$list_id." = new Array('選択してください', '".$arrClassCatName[$classcat_id2]."'";
             } else {
@@ -309,6 +316,7 @@ class LC_Page_Products_Detail extends LC_Page {
             }
 
             // セレクトボックスPOST値
+            if (!isset($arrVal[$list_id])) $arrVal[$list_id] = "";
             if($arrVal[$list_id] == "") {
                 $arrVal[$list_id] = "\tval".$list_id." = new Array('', '".$classcat_id2."'";
             } else {
@@ -351,7 +359,8 @@ class LC_Page_Products_Detail extends LC_Page {
         $this->tpl_javascript.=$vals.");\n";
 
         // 選択されている規格2ID
-        $this->tpl_onload = "lnSetSelect('form1', 'classcategory_id1', 'classcategory_id2', '" . $_POST['classcategory_id2'] . "');";
+        if (!isset($_POST['classcategory_id2'])) $_POST['classcategory_id2'] = "";
+        $this->tpl_onload = "lnSetSelect('form1', 'classcategory_id1', 'classcategory_id2', '" . htmlspecialchars($_POST['classcategory_id2'], ENT_QUOTES) . "');";
 
         // 規格1が設定されている
         if($arrProductsClass[0]['classcategory_id1'] != '0') {
@@ -394,6 +403,7 @@ class LC_Page_Products_Detail extends LC_Page {
 
     /* 登録済みオススメ商品の読み込み */
     function lfPreGetRecommendProducts($product_id) {
+        $arrRecommend = array();
         $objQuery = new SC_Query();
         $objQuery->setorder("rank DESC");
         $arrRet = $objQuery->select("recommend_product_id, comment", "dtb_recommend_products", "product_id = ?", array($product_id));
@@ -505,6 +515,7 @@ class LC_Page_Products_Detail extends LC_Page {
     }
 
     function lfConvertParam() {
+        if (!isset($this->arrForm['quantity']['value'])) $this->arrForm['quantity']['value'] = "";
         $value = $this->arrForm['quantity']['value'];
         $this->arrForm['quantity']['value'] = htmlspecialchars($value, ENT_QUOTES, CHAR_CODE);
     }
