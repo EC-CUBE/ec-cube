@@ -197,7 +197,9 @@ class SC_Customer {
     // ログインに成功しているか判定する。
     function isLoginSuccess($dont_check_email_mobile = false) {
         // ログイン時のメールアドレスとDBのメールアドレスが一致している場合
-        if(SC_Utils_Ex::sfIsInt($_SESSION['customer']['customer_id'])) {
+        if(isset($_SESSION['customer']['customer_id'])
+            && SC_Utils_Ex::sfIsInt($_SESSION['customer']['customer_id'])) {
+
             $objQuery = new SC_Query();
             $email = $objQuery->get("dtb_customer", "email", "customer_id = ?", array($_SESSION['customer']['customer_id']));
             if($email == $_SESSION['customer']['email']) {
@@ -215,7 +217,7 @@ class SC_Customer {
 
     // パラメータの取得
     function getValue($keyname) {
-        return $_SESSION['customer'][$keyname];
+        return isset($_SESSION['customer'][$keyname]) ? $_SESSION['customer'][$keyname] : "";
     }
 
     // パラメータのセット
@@ -230,12 +232,14 @@ class SC_Customer {
 
     // 誕生日月であるかどうかの判定
     function isBirthMonth() {
-        $arrRet = split("[- :/]", $_SESSION['customer']['birth']);
-        $birth_month = intval($arrRet[1]);
-        $now_month = intval(date("m"));
+        if (isset($_SESSION['customer']['birth'])) {
+            $arrRet = split("[- :/]", $_SESSION['customer']['birth']);
+            $birth_month = intval($arrRet[1]);
+            $now_month = intval(date("m"));
 
-        if($birth_month == $now_month) {
-            return true;
+            if($birth_month == $now_month) {
+                return true;
+            }
         }
         return false;
     }
