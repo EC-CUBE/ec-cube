@@ -107,6 +107,6 @@ class SC_DB_DBFactory {
      * @param string $table_name テーブル名
      * @return array テーブルのカラム一覧の配列
      */
-    function sfGetColumnList($table_name) { array(); }
+    function sfGetColumnList($table_name) { return array(); }
 }
 ?>
