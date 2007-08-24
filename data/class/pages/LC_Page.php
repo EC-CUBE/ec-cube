@@ -32,6 +32,9 @@ class LC_Page {
     /** CSS のパス */
     var $tpl_css;
 
+    /** JavaScript */
+    var $tpl_javascript;
+
     /** タイトル */
     var $tpl_title;
 
@@ -43,6 +46,9 @@ class LC_Page {
 
     /** body タグの onload 属性 */
     var $tpl_onload;
+
+    /** 送料合計 */
+    var $tpl_total_deliv_fee;
 
     /** トランザクションID */
     var $transactionid;
