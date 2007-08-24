@@ -57,6 +57,7 @@ class LC_Page_Products_List extends LC_Page {
      */
     function process() {
         $conn = new SC_DBConn();
+        $objDb = new SC_Helper_DB_Ex();
 
         //表示件数の選択
         if(isset($_POST['disp_number'])
@@ -132,11 +133,11 @@ class LC_Page_Products_List extends LC_Page {
         $layout = new SC_Helper_PageLayout_Ex();
         $this = $layout->sfGetPageLayout($this, false, "products/list.php");
 
-        if(isset($_POST['mode']) && $_POST['mode'] == "cart" 
+        if(isset($_POST['mode']) && $_POST['mode'] == "cart"
            && $_POST['product_id'] != "") {
-            
+
             // 値の正当性チェック
-            if(!SC_Utils_Ex::sfIsInt($_POST['product_id']) || !SC_Utils_Ex::sfIsRecord("dtb_products", "product_id", $_POST['product_id'], "del_flg = 0 AND status = 1")) {
+            if(!SC_Utils_Ex::sfIsInt($_POST['product_id']) || !$objDb->sfIsRecord("dtb_products", "product_id", $_POST['product_id'], "del_flg = 0 AND status = 1")) {
                 SC_Utils_Ex::sfDispSiteError(PRODUCT_NOT_FOUND);
             } else {
                 // 入力値の変換
@@ -157,12 +158,11 @@ class LC_Page_Products_List extends LC_Page {
                     }
                     $objCartSess->setPrevURL($_SERVER['REQUEST_URI']);
                     $objCartSess->addProduct(array($_POST['product_id'], $classcategory_id1, $classcategory_id2), $_POST[$quantity]);
-                    header("Location: " . URL_CART_TOP);
+                    $this->sendRedirect($this->getLocation(URL_CART_TOP));
                     exit;
                 }
             }
         }
-
 
         $this->tpl_subtitle = $tpl_subtitle;
 
@@ -227,7 +227,7 @@ class LC_Page_Products_List extends LC_Page {
         $where = "del_flg = 0 AND status = 1 ";
         // カテゴリからのWHERE文字列取得
         if ( $category_id ) {
-            list($tmp_where, $arrval) = SC_Utils_Ex::sfGetCatWhere($category_id);
+            list($tmp_where, $arrval) = $objDb->sfGetCatWhere($category_id);
             if($tmp_where != "") {
                 $where.= " AND $tmp_where";
             }
