@@ -303,10 +303,10 @@ class SC_Helper_DB {
                 $objPage->arrProductsClass[$cnt]['quantity'] = $quantity;
                 $objPage->arrProductsClass[$cnt]['cart_no'] = $arrCart[$i]['cart_no'];
                 $objPage->arrProductsClass[$cnt]['class_name1'] =
-                    isset($arrClassName[$arrData['class_id1']]) 
+                    isset($arrClassName[$arrData['class_id1']])
                         ? $arrClassName[$arrData['class_id1']] : "";
 
-                $objPage->arrProductsClass[$cnt]['class_name2'] = 
+                $objPage->arrProductsClass[$cnt]['class_name2'] =
                     isset($arrClassName[$arrData['class_id2']])
                         ? $arrClassName[$arrData['class_id2']] : "";
 
