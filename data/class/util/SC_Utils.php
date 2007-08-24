@@ -731,15 +731,6 @@ class SC_Utils {
         return $ret;
     }
 
-    /* 所属するすべての階層の親IDを配列で返す */
-    function sfGetParents($objQuery, $table, $pid_name, $id_name, $id) {
-        $arrRet = SC_Utils::sfGetParentsArray($table, $pid_name, $id_name, $id);
-        // 配列の先頭1つを削除する。
-        array_shift($arrRet);
-        return $arrRet;
-    }
-
-
     /* 親IDの配列を元に特定のカラムを取得する。*/
     function sfGetParentsCol($objQuery, $table, $id_name, $col_name, $arrId ) {
         $col = $col_name;
@@ -756,12 +747,6 @@ class SC_Utils {
 
         $objQuery->setorder("level");
         $arrRet = $objQuery->select($col, $table, $where, $arrId);
-        return $arrRet;
-    }
-
-    /* 子IDの配列を返す */
-    function sfGetChildsID($table, $pid_name, $id_name, $id) {
-        $arrRet = SC_Utils::sfGetChildrenArray($table, $pid_name, $id_name, $id);
         return $arrRet;
     }
 
@@ -865,7 +850,9 @@ class SC_Utils {
             $arrRet = $objQuery->select("campaign_name, campaign_point_rate", "dtb_campaign", $where, array($product_id));
         }
         //複数のキャンペーンに登録されている商品は、最新のキャンペーンからポイントを取得
-        if($arrRet[0]['campaign_point_rate'] != "") {
+        if(isset($arrRet[0]['campaign_point_rate'])
+           && $arrRet[0]['campaign_point_rate'] != "") {
+
             $campaign_point_rate = $arrRet[0]['campaign_point_rate'];
             $real_point = $campaign_point_rate / 100;
         } else {
@@ -891,7 +878,7 @@ class SC_Utils {
             break;
         }
         //キャンペーン商品の場合
-        if($campaign_point_rate != "") {
+        if(isset($campaign_point_rate) && $campaign_point_rate != "") {
             $ret = "(".$arrRet[0]['campaign_name']."ポイント率".$campaign_point_rate."%)".$ret;
         }
         return $ret;
@@ -962,6 +949,12 @@ class SC_Utils {
 
     /* 集計情報を元に最終計算 */
     function sfTotalConfirm($arrData, $objPage, $objCartSess, $arrInfo, $objCustomer = "") {
+        // 未定義変数を定義
+        if (!isset($arrData['deliv_pref'])) $arrData['deliv_pref'] = "";
+        if (!isset($arrData['payment_id'])) $arrData['payment_id'] = "";
+        if (!isset($arrData['charge'])) $arrData['charge'] = "";
+        if (!isset($arrData['use_point'])) $arrData['use_point'] = "";
+
         // 商品の合計個数
         $total_quantity = $objCartSess->getTotalQuantity(true);
 
@@ -981,7 +974,10 @@ class SC_Utils {
         // 配送業者の送料が有効の場合
         if (OPTION_DELIV_FEE == 1) {
             // 送料の合計を計算する
-            $arrData['deliv_fee']+= SC_Utils::sfGetDelivFee($arrData['deliv_pref'], $arrData['payment_id']);
+            $arrData['deliv_fee']
+                += SC_Utils::sfGetDelivFee($arrData['deliv_pref'],
+                                           $arrData['payment_id']);
+
         }
 
         // 送料無料の購入数が設定されている場合
@@ -1375,23 +1371,6 @@ class SC_Utils {
             }
         }
         return $g_category_id;
-    }
-
-    /* カテゴリから商品を検索する場合のWHERE文と値を返す */
-    function sfGetCatWhere($category_id) {
-        // 子カテゴリIDの取得
-        $arrRet = SC_Utils::sfGetChildsID("dtb_category", "parent_category_id", "category_id", $category_id);
-        $tmp_where = "";
-        foreach ($arrRet as $val) {
-            if($tmp_where == "") {
-                $tmp_where.= " category_id IN ( ?";
-            } else {
-                $tmp_where.= ",? ";
-            }
-            $arrval[] = $val;
-        }
-        $tmp_where.= " ) ";
-        return array($tmp_where, $arrval);
     }
 
     /* 加算ポイントの計算式 */
