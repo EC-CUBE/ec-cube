@@ -35,7 +35,7 @@ class SC_CampaignSession {
 
     /* キャンペーンページからの遷移情報を取得 */
     function getIsCampaign() {
-        return $_SESSION[$this->key][$this->is_campaign];
+        return isset($_SESSION[$this->key][$this->is_campaign]) ? $_SESSION[$this->key][$this->is_campaign] : false;
     }
 
     /* キャンペーン情報を削除 */
