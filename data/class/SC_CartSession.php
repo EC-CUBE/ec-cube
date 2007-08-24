@@ -76,7 +76,9 @@ class SC_CartSession {
     function getProductTotal($arrInfo, $id) {
         $max = $this->getMax();
         for($i = 0; $i <= $max; $i++) {
-            if($_SESSION[$this->key][$i]['id'] == $id) {
+            if(isset($_SESSION[$this->key][$i]['id']) 
+               && $_SESSION[$this->key][$i]['id'] == $id) {
+
                 // 税込み合計
                 $price = $_SESSION[$this->key][$i]['price'];
                 $quantity = $_SESSION[$this->key][$i]['quantity'];
@@ -92,7 +94,8 @@ class SC_CartSession {
     function setProductValue($id, $key, $val) {
         $max = $this->getMax();
         for($i = 0; $i <= $max; $i++) {
-            if($_SESSION[$this->key][$i]['id'] == $id) {
+            if(isset($_SESSION[$this->key][$i]['id']) 
+               && $_SESSION[$this->key][$i]['id'] == $id) {
                 $_SESSION[$this->key][$i][$key] = $val;
             }
         }
@@ -132,8 +135,17 @@ class SC_CartSession {
         $total = 0;
         $max = $this->getMax();
         for($i = 0; $i <= $max; $i++) {
+
+            if (!isset($_SESSION[$this->key][$i]['price'])) {
+                $_SESSION[$this->key][$i]['price'] = "";
+            }
             $price = $_SESSION[$this->key][$i]['price'];
+
+            if (!isset($_SESSION[$this->key][$i]['quantity'])) {
+                $_SESSION[$this->key][$i]['quantity'] = "";
+            }
             $quantity = $_SESSION[$this->key][$i]['quantity'];
+
             $pre_tax = SC_Utils::sfPreTax($price, $arrInfo['tax'], $arrInfo['tax_rule']);
             $total+= ($pre_tax * $quantity);
         }
@@ -162,7 +174,15 @@ class SC_CartSession {
         for($i = 0; $i <= $max; $i++) {
             $price = $_SESSION[$this->key][$i]['price'];
             $quantity = $_SESSION[$this->key][$i]['quantity'];
+
+            if (!isset($_SESSION[$this->key][$i]['point_rate'])) {
+                $_SESSION[$this->key][$i]['point_rate'] = "";
+            }
             $point_rate = $_SESSION[$this->key][$i]['point_rate'];
+
+            if (!isset($_SESSION[$this->key][$i]['id'][0])) {
+                $_SESSION[$this->key][$i]['id'][0] = "";
+            }
             $id = $_SESSION[$this->key][$i]['id'][0];
             $point = SC_Utils_Ex::sfPrePoint($price, $point_rate, POINT_RULE, $id);
             $total+= ($point * $quantity);
@@ -246,7 +266,8 @@ class SC_CartSession {
     function getCartList() {
         $max = $this->getMax();
         for($i = 0; $i <= $max; $i++) {
-            if($_SESSION[$this->key][$i]['cart_no'] != "") {
+            if(isset($_SESSION[$this->key][$i]['cart_no']) 
+               && $_SESSION[$this->key][$i]['cart_no'] != "") {
                 $arrRet[] = $_SESSION[$this->key][$i];
             }
         }
