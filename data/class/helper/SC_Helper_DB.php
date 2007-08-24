@@ -252,10 +252,11 @@ class SC_Helper_DB {
      * @return LC_Page 集計処理後のページクラスインスタンス
      */
     function sfTotalCart($objPage, $objCartSess, $arrInfo) {
+        $objDb = new SC_Helper_DB_Ex();
         // 規格名一覧
-        $arrClassName = SC_Utils_Ex::sfGetIDValueList("dtb_class", "class_id", "name");
+        $arrClassName = $objDb->sfGetIDValueList("dtb_class", "class_id", "name");
         // 規格分類名一覧
-        $arrClassCatName = SC_Utils_Ex::sfGetIDValueList("dtb_classcategory", "classcategory_id", "name");
+        $arrClassCatName = $objDb->sfGetIDValueList("dtb_classcategory", "classcategory_id", "name");
 
         $objPage->tpl_total_pretax = 0;		// 費用合計(税込み)
         $objPage->tpl_total_tax = 0;		// 消費税合計
@@ -301,10 +302,19 @@ class SC_Helper_DB {
                 $objPage->arrProductsClass[$cnt] = $arrData;
                 $objPage->arrProductsClass[$cnt]['quantity'] = $quantity;
                 $objPage->arrProductsClass[$cnt]['cart_no'] = $arrCart[$i]['cart_no'];
-                $objPage->arrProductsClass[$cnt]['class_name1'] = $arrClassName[$arrData['class_id1']];
-                $objPage->arrProductsClass[$cnt]['class_name2'] = $arrClassName[$arrData['class_id2']];
-                $objPage->arrProductsClass[$cnt]['classcategory_name1'] = $arrClassCatName[$arrData['classcategory_id1']];
-                $objPage->arrProductsClass[$cnt]['classcategory_name2'] = $arrClassCatName[$arrData['classcategory_id2']];
+                $objPage->arrProductsClass[$cnt]['class_name1'] =
+                    isset($arrClassName[$arrData['class_id1']]) 
+                        ? $arrClassName[$arrData['class_id1']] : "";
+
+                $objPage->arrProductsClass[$cnt]['class_name2'] = 
+                    isset($arrClassName[$arrData['class_id2']])
+                        ? $arrClassName[$arrData['class_id2']] : "";
+
+                $objPage->arrProductsClass[$cnt]['classcategory_name1'] =
+                    $arrClassCatName[$arrData['classcategory_id1']];
+
+                $objPage->arrProductsClass[$cnt]['classcategory_name2'] =
+                    $arrClassCatName[$arrData['classcategory_id2']];
 
                 // 画像サイズ
                 list($image_width, $image_height) = getimagesize(IMAGE_SAVE_DIR . basename($objPage->arrProductsClass[$cnt]["main_image"]));
@@ -536,6 +546,20 @@ class SC_Helper_DB {
     }
 
     /**
+     * 子IDの配列を返す.
+     *
+     * @param string $table テーブル名
+     * @param string $pid_name 親ID名
+     * @param string $id_name ID名
+     * @param integer $id ID
+     * @param array 子ID の配列
+     */
+    function sfGetChildsID($table, $pid_name, $id_name, $id) {
+        $arrRet = $this->sfGetChildrenArray($table, $pid_name, $id_name, $id);
+        return $arrRet;
+    }
+
+    /**
      * 階層構造のテーブルから子ID配列を取得する.
      *
      * @param string $table テーブル名
@@ -615,6 +639,28 @@ class SC_Helper_DB {
         $arrParents = array_reverse($arrParents);
 
         return $arrParents;
+    }
+
+    /**
+     * カテゴリから商品を検索する場合のWHERE文と値を返す.
+     *
+     * @param integer $category_id カテゴリID
+     * @return array 商品を検索する場合の配列
+     */
+    function sfGetCatWhere($category_id) {
+        // 子カテゴリIDの取得
+        $arrRet = $this->sfGetChildsID("dtb_category", "parent_category_id", "category_id", $category_id);
+        $tmp_where = "";
+        foreach ($arrRet as $val) {
+            if($tmp_where == "") {
+                $tmp_where.= " category_id IN ( ?";
+            } else {
+                $tmp_where.= ",? ";
+            }
+            $arrval[] = $val;
+        }
+        $tmp_where.= " ) ";
+        return array($tmp_where, $arrval);
     }
 
     /**
@@ -854,5 +900,6 @@ class SC_Helper_DB {
         }
         return false;
     }
+
 }
 ?>
