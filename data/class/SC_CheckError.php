@@ -74,6 +74,7 @@ class SC_CheckError {
 		if(isset($this->arrErr[$value[1]])) {
 			return;
 		}
+        if (!isset($this->arrParam[$value[1]])) $this->arrParam[$value[1]] = "";
 		if(strlen($this->arrParam[$value[1]]) != 0 && ereg("^[ 　\t\r\n]+$", $this->arrParam[$value[1]])){						
 			$this->arrErr[$value[1]] = "※ " . $value[0] . "にスペース、タブ、改行のみの入力はできません。<br />";
 		}
@@ -85,6 +86,7 @@ class SC_CheckError {
 		if(isset($this->arrErr[$value[1]])) {
 			return;
 		}
+        if (!isset($this->arrParam[$value[1]])) $this->arrParam[$value[1]] = "";
 		if(strlen($this->arrParam[$value[1]]) != 0 && mb_ereg("[　 \t\r\n]+", $this->arrParam[$value[1]])){						
 			$this->arrErr[$value[1]] = "※ " . $value[0] . "にスペース、タブ、改行は含めないで下さい。<br />";
 		}
@@ -95,6 +97,7 @@ class SC_CheckError {
 		if(isset($this->arrErr[$value[1]])) {
 			return;
 		}
+        if (!isset($this->arrParam[$value[1]])) $this->arrParam[$value[1]] = "";
 		if(strlen($this->arrParam[$value[1]]) != 0 && ereg("^[0]+[0-9]+$", $this->arrParam[$value[1]])){						
 			$this->arrErr[$value[1]] = "※ " . $value[0] . "に0で始まる数値が入力されています。<br />";
 		}
@@ -106,6 +109,7 @@ class SC_CheckError {
 		if(isset($this->arrErr[$value[1]])) {
 			return;
 		}
+        if (!isset($this->arrParam[$value[1]])) $this->arrParam[$value[1]] = "";
 		if( strlen($this->arrParam[$value[1]]) == 0 ){						
 			$this->arrErr[$value[1]] = "※ " . $value[0] . "が選択されていません。<br />";
 		}
@@ -117,6 +121,7 @@ class SC_CheckError {
 		if(isset($this->arrErr[$value[2]]) || isset($this->arrErr[$value[3]])) {
 			return;
 		}
+        if (!isset($this->arrParam[$value[1]])) $this->arrParam[$value[1]] = "";
 		// 文字数の取得			
 		if( $this->arrParam[$value[2]] != $this->arrParam[$value[3]]) {
 			$this->arrErr[$value[2]] = "※ " . $value[0] . "と" . $value[1] . "が一致しません。<br />";
@@ -129,6 +134,7 @@ class SC_CheckError {
 		if(isset($this->arrErr[$value[2]]) || isset($this->arrErr[$value[3]])) {
 			return;
 		}
+        if (!isset($this->arrParam[$value[1]])) $this->arrParam[$value[1]] = "";
 		// 文字数の取得			
 		if( $this->arrParam[$value[2]] == $this->arrParam[$value[3]]) {
 			$this->arrErr[$value[2]] = "※ " . $value[0] . "と" . $value[1] . "は、同じ値を使用できません。<br />";
@@ -141,6 +147,7 @@ class SC_CheckError {
 		if(isset($this->arrErr[$value[2]]) || isset($this->arrErr[$value[3]])) {
 			return;
 		}
+        if (!isset($this->arrParam[$value[1]])) $this->arrParam[$value[1]] = "";
 		// 文字数の取得			
 		if($this->arrParam[$value[2]] != "" && $this->arrParam[$value[3]] != "" && ($this->arrParam[$value[2]] > $this->arrParam[$value[3]])) {
 			$this->arrErr[$value[2]] = "※ " . $value[0] . "は" . $value[1] . "より大きい値を入力できません。<br />";
@@ -154,6 +161,7 @@ class SC_CheckError {
 		if(isset($this->arrErr[$value[1]])) {
 			return;
 		}
+        if (!isset($this->arrParam[$value[1]])) $this->arrParam[$value[1]] = "";
 		// 文字数の取得			
 		if( mb_strlen($this->arrParam[$value[1]]) > $value[2] ) {
 			$this->arrErr[$value[1]] = "※ " . $value[0] . "は" . $value[2] . "字以下で入力してください。<br />";
@@ -166,6 +174,7 @@ class SC_CheckError {
 		if(isset($this->arrErr[$value[1]])) {
 			return;
 		}										
+        if (!isset($this->arrParam[$value[1]])) $this->arrParam[$value[1]] = "";
 		// 文字数の取得		
 		if( mb_strlen($this->arrParam[$value[1]]) < $value[2] ) {
 			$this->arrErr[$value[1]] = "※ " . $value[0] . "は" . $value[2] . "字以上で入力してください。<br />";
@@ -178,6 +187,7 @@ class SC_CheckError {
 		if(isset($this->arrErr[$value[1]])) {
 			return;
 		}
+        if (!isset($this->arrParam[$value[1]])) $this->arrParam[$value[1]] = "";
 		// 文字数の取得			
 		if($this->arrParam[$value[1]] > $value[2] ) {
 			$this->arrErr[$value[1]] = "※ " . $value[0] . "は" . $value[2] . "以下で入力してください。<br />";
@@ -190,6 +200,7 @@ class SC_CheckError {
 		if(isset($this->arrErr[$value[1]])) {
 			return;
 		}
+        if (!isset($this->arrParam[$value[1]])) $this->arrParam[$value[1]] = "";
 		if($this->arrParam[$value[1]] < $value[2] ) {
 			$this->arrErr[$value[1]] = "※ " . $value[0] . "は" . $value[2] . "以上で入力してください。<br />";
 		}
@@ -202,6 +213,7 @@ class SC_CheckError {
 		if(isset($this->arrErr[$value[1]])) {
 			return;
 		}
+        if (!isset($this->arrParam[$value[1]])) $this->arrParam[$value[1]] = "";
 		if( strlen($this->arrParam[$value[1]]) > 0 && !EregI("^[[:digit:]]+$", $this->arrParam[$value[1]])) { 
 			$this->arrErr[$value[1]] = "※ " . $value[0] . "は数字で入力してください。<br />";	
 		}
@@ -213,6 +225,7 @@ class SC_CheckError {
 		if(isset($this->arrErr[$value[1]])) {
 			return;
 		}
+        if (!isset($this->arrParam[$value[1]])) $this->arrParam[$value[1]] = "";
 		if( strlen($this->arrParam[$value[1]]) > 0 && !EregI("^[[:digit:]]+[\.]?[[:digit:]]+$", $this->arrParam[$value[1]])) { 
 			$this->arrErr[$value[1]] = "※ " . $value[0] . "は数字で入力してください。<br />";	
 		}
@@ -222,6 +235,7 @@ class SC_CheckError {
 		if(isset($this->arrErr[$value[1]])) {
 			return;
 		}
+        if (!isset($this->arrParam[$value[1]])) $this->arrParam[$value[1]] = "";
 		if( strlen($this->arrParam[$value[1]]) > 0 && !EregI("^[[:alpha:]]+$", $this->arrParam[$value[1]])) { 
 			$this->arrErr[$value[1]] = "※ " . $value[0] . "は半角英字で入力してください。<br />";	
 		}
