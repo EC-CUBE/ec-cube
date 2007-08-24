@@ -407,6 +407,217 @@ class SC_Helper_DB {
     }
 
     /**
+     * カテゴリツリーの取得を行う.
+     *
+     * $products_check:true商品登録済みのものだけ取得する
+     *
+     * @param string $addwhere 追加する WHERE 句
+     * @param bool $products_check 商品の存在するカテゴリのみ取得する場合 true
+     * @param string $head カテゴリ名のプレフィックス文字列
+     * @return array カテゴリツリーの配列
+     */
+    function sfGetCategoryList($addwhere = "", $products_check = false, $head = CATEGORY_HEAD) {
+        $objQuery = new SC_Query();
+        $where = "del_flg = 0";
+
+        if($addwhere != "") {
+            $where.= " AND $addwhere";
+        }
+
+        $objQuery->setoption("ORDER BY rank DESC");
+
+        if($products_check) {
+            $col = "T1.category_id, category_name, level";
+            $from = "dtb_category AS T1 LEFT JOIN dtb_category_total_count AS T2 ON T1.category_id = T2.category_id";
+            $where .= " AND product_count > 0";
+        } else {
+            $col = "category_id, category_name, level";
+            $from = "dtb_category";
+        }
+
+        $arrRet = $objQuery->select($col, $from, $where);
+
+        $max = count($arrRet);
+        for($cnt = 0; $cnt < $max; $cnt++) {
+            $id = $arrRet[$cnt]['category_id'];
+            $name = $arrRet[$cnt]['category_name'];
+            $arrList[$id] = "";
+            /*
+            for($n = 1; $n < $arrRet[$cnt]['level']; $n++) {
+                $arrList[$id].= "　";
+            }
+            */
+            for($cat_cnt = 0; $cat_cnt < $arrRet[$cnt]['level']; $cat_cnt++) {
+                $arrList[$id].= $head;
+            }
+            $arrList[$id].= $name;
+        }
+        return $arrList;
+    }
+
+    /**
+     * カテゴリーツリーの取得を行う.
+     *
+     * 親カテゴリの Value=0 を対象とする
+     *
+     * @param bool $parent_zero 親カテゴリの Value=0 の場合 true
+     * @return array カテゴリツリーの配列
+     */
+    function sfGetLevelCatList($parent_zero = true) {
+        $objQuery = new SC_Query();
+        $col = "category_id, category_name, level";
+        $where = "del_flg = 0";
+        $objQuery->setoption("ORDER BY rank DESC");
+        $arrRet = $objQuery->select($col, "dtb_category", $where);
+        $max = count($arrRet);
+
+        for($cnt = 0; $cnt < $max; $cnt++) {
+            if($parent_zero) {
+                if($arrRet[$cnt]['level'] == LEVEL_MAX) {
+                    $arrValue[$cnt] = $arrRet[$cnt]['category_id'];
+                } else {
+                    $arrValue[$cnt] = "";
+                }
+            } else {
+                $arrValue[$cnt] = $arrRet[$cnt]['category_id'];
+            }
+
+            $arrOutput[$cnt] = "";
+            /*
+            for($n = 1; $n < $arrRet[$cnt]['level']; $n++) {
+                $arrOutput[$cnt].= "　";
+            }
+            */
+            for($cat_cnt = 0; $cat_cnt < $arrRet[$cnt]['level']; $cat_cnt++) {
+                $arrOutput[$cnt].= CATEGORY_HEAD;
+            }
+            $arrOutput[$cnt].= $arrRet[$cnt]['category_name'];
+        }
+        return array($arrValue, $arrOutput);
+    }
+
+    /**
+     * カテゴリ数の登録を行う.
+     *
+     * @param SC_Query $objQuery SC_Query インスタンス
+     * @return void
+     */
+    function sfCategory_Count($objQuery){
+        $sql = "";
+
+        //テーブル内容の削除
+        $objQuery->query("DELETE FROM dtb_category_count");
+        $objQuery->query("DELETE FROM dtb_category_total_count");
+
+        //各カテゴリ内の商品数を数えて格納
+        $sql = " INSERT INTO dtb_category_count(category_id, product_count, create_date) ";
+        $sql .= " SELECT T1.category_id, count(T2.category_id), now() FROM dtb_category AS T1 LEFT JOIN dtb_products AS T2 ";
+        $sql .= " ON T1.category_id = T2.category_id  ";
+        $sql .= " WHERE T2.del_flg = 0 AND T2.status = 1 ";
+        $sql .= " GROUP BY T1.category_id, T2.category_id ";
+        $objQuery->query($sql);
+
+        //子カテゴリ内の商品数を集計する
+        $arrCat = $objQuery->getAll("SELECT * FROM dtb_category");
+
+        $sql = "";
+        foreach($arrCat as $key => $val){
+
+            // 子ID一覧を取得
+            $arrRet = $this->sfGetChildrenArray('dtb_category', 'parent_category_id', 'category_id', $val['category_id']);
+            $line = SC_Utils_Ex::sfGetCommaList($arrRet);
+
+            $sql = " INSERT INTO dtb_category_total_count(category_id, product_count, create_date) ";
+            $sql .= " SELECT ?, SUM(product_count), now() FROM dtb_category_count ";
+            $sql .= " WHERE category_id IN (" . $line . ")";
+
+            $objQuery->query($sql, array($val['category_id']));
+        }
+    }
+
+    /**
+     * 階層構造のテーブルから子ID配列を取得する.
+     *
+     * @param string $table テーブル名
+     * @param string $pid_name 親ID名
+     * @param string $id_name ID名
+     * @param integer $id ID番号
+     * @return array 子IDの配列
+     */
+    function sfGetChildrenArray($table, $pid_name, $id_name, $id) {
+        $objQuery = new SC_Query();
+        $col = $pid_name . "," . $id_name;
+         $arrData = $objQuery->select($col, $table);
+
+        $arrPID = array();
+        $arrPID[] = $id;
+        $arrChildren = array();
+        $arrChildren[] = $id;
+
+        $arrRet = $this->sfGetChildrenArraySub($arrData, $pid_name, $id_name, $arrPID);
+
+        while(count($arrRet) > 0) {
+            $arrChildren = array_merge($arrChildren, $arrRet);
+            $arrRet = $this->sfGetChildrenArraySub($arrData, $pid_name, $id_name, $arrRet);
+        }
+
+        return $arrChildren;
+    }
+
+    /**
+     * 親ID直下の子IDをすべて取得する.
+     *
+     * @param array $arrData 親カテゴリの配列
+     * @param string $pid_name 親ID名
+     * @param string $id_name ID名
+     * @param array $arrPID 親IDの配列
+     * @return array 子IDの配列
+     */
+    function sfGetChildrenArraySub($arrData, $pid_name, $id_name, $arrPID) {
+        $arrChildren = array();
+        $max = count($arrData);
+
+        for($i = 0; $i < $max; $i++) {
+            foreach($arrPID as $val) {
+                if($arrData[$i][$pid_name] == $val) {
+                    $arrChildren[] = $arrData[$i][$id_name];
+                }
+            }
+        }
+        return $arrChildren;
+    }
+
+    /**
+     * 階層構造のテーブルから親ID配列を取得する.
+     *
+     * @param string $table テーブル名
+     * @param string $pid_name 親ID名
+     * @param string $id_name ID名
+     * @param integer $id ID
+     * @return array 親IDの配列
+     */
+    function sfGetParentsArray($table, $pid_name, $id_name, $id) {
+        $objQuery = new SC_Query();
+        $col = $pid_name . "," . $id_name;
+         $arrData = $objQuery->select($col, $table);
+
+        $arrParents = array();
+        $arrParents[] = $id;
+        $child = $id;
+
+        $ret = SC_Utils::sfGetParentsArraySub($arrData, $pid_name, $id_name, $child);
+
+        while($ret != "") {
+            $arrParents[] = $ret;
+            $ret = SC_Utils::sfGetParentsArraySub($arrData, $pid_name, $id_name, $ret);
+        }
+
+        $arrParents = array_reverse($arrParents);
+
+        return $arrParents;
+    }
+
+    /**
      * 受注一時テーブルから情報を取得する.
      *
      * @param integer $order_temp_id 受注一時ID
