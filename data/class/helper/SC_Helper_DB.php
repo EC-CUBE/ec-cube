@@ -612,6 +612,24 @@ class SC_Helper_DB {
     }
 
     /**
+     * 所属するすべての階層の親IDを配列で返す.
+     *
+     * @param SC_Query $objQuery SC_Query インスタンス
+     * @param string $table テーブル名
+     * @param string $pid_name 親ID名
+     * @param string $id_name ID名
+     * @param integer $id ID
+     * @return array 親IDの配列
+     */
+    function sfGetParents($objQuery, $table, $pid_name, $id_name, $id) {
+        $objDb = new SC_Helper_DB_Ex();
+        $arrRet = $objDb->sfGetParentsArray($table, $pid_name, $id_name, $id);
+        // 配列の先頭1つを削除する。
+        array_shift($arrRet);
+        return $arrRet;
+    }
+
+    /**
      * 階層構造のテーブルから親ID配列を取得する.
      *
      * @param string $table テーブル名
