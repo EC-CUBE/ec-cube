@@ -50,7 +50,7 @@ class LC_Page_Admin_Products extends LC_Page {
      */
     function process() {
         $objView = new SC_AdminView();
-
+        $objDb = new SC_Helper_DB_Ex();
         $objDate = new SC_Date();
 
         // 登録・更新検索開始年
@@ -92,7 +92,7 @@ class LC_Page_Admin_Products extends LC_Page {
                 switch($key) {
                     case 'search_product_flag':
                     case 'search_status':
-                        $this->arrHidden[$key] = sfMergeParamCheckBoxes($val);
+                        $this->arrHidden[$key] = SC_Utils_Ex::sfMergeParamCheckBoxes($val);
                         if(!is_array($val)) {
                             $this->arrForm[$key] = split("-", $val);
                         }
@@ -113,16 +113,16 @@ class LC_Page_Admin_Products extends LC_Page {
             if($_POST['category_id'] != "") {
                 // ランク付きレコードの削除
                 $where = "category_id = " . addslashes($_POST['category_id']);
-                sfDeleteRankRecord("dtb_products", "product_id", $_POST['product_id'], $where);
+                $objDb->sfDeleteRankRecord("dtb_products", "product_id", $_POST['product_id'], $where);
             } else {
-                sfDeleteRankRecord("dtb_products", "product_id", $_POST['product_id']);
+                $objDb->sfDeleteRankRecord("dtb_products", "product_id", $_POST['product_id']);
             }
             // 子テーブル(商品規格)の削除
             $objQuery = new SC_Query();
             $objQuery->delete("dtb_products_class", "product_id = ?", array($_POST['product_id']));
 
             // 件数カウントバッチ実行
-            SC_Utils_Ex::sfCategory_Count($objQuery);
+            $objDb->sfCategory_Count($objQuery);
         }
 
 
@@ -181,19 +181,19 @@ class LC_Page_Admin_Products extends LC_Page {
                             $arrval[] = "%$val%";
                             break;
                         case 'search_startyear':	// 登録更新日（FROM）
-                            $date = sfGetTimestamp($_POST['search_startyear'], $_POST['search_startmonth'], $_POST['search_startday']);
+                            $date = SC_Utils_Ex::sfGetTimestamp($_POST['search_startyear'], $_POST['search_startmonth'], $_POST['search_startday']);
                             $where.= " AND update_date >= '" . $_POST['search_startyear'] . "/" . $_POST['search_startmonth']. "/" .$_POST['search_startday'] . "'";
                             $view_where.= " AND update_date >= '" . $_POST['search_startyear'] . "/" . $_POST['search_startmonth']. "/" .$_POST['search_startday'] . "'";
                             break;
                         case 'search_endyear':		// 登録更新日（TO）
-                            $date = sfGetTimestamp($_POST['search_endyear'], $_POST['search_endmonth'], $_POST['search_endday']);
+                            $date = SC_Utils_Ex::sfGetTimestamp($_POST['search_endyear'], $_POST['search_endmonth'], $_POST['search_endday']);
                             $date = date('Y/m/d', strtotime($date) + 86400);
                             $where.= " AND update_date < date('" . $date . "')";
                             $view_where.= " AND update_date < date('" . $date . "')";
                             break;
                         case 'search_product_flag':	//種別
                             global $arrSTATUS;
-                            $search_product_flag = sfSearchCheckBoxes($val);
+                            $search_product_flag = SC_Utils_Ex::sfSearchCheckBoxes($val);
                             if($search_product_flag != "") {
                                 $where.= " AND product_flag LIKE ?";
                                 $view_where.= " AND product_flag LIKE ?";
@@ -231,19 +231,19 @@ class LC_Page_Admin_Products extends LC_Page {
                     // オプションの指定
                     $option = "ORDER BY $order";
                     // CSV出力タイトル行の作成
-                    $arrOutput = sfSwapArray(sfgetCsvOutput(1, " WHERE csv_id = 1 AND status = 1"));
+                    $arrOutput = SC_Utils_Ex::sfSwapArray(sfgetCsvOutput(1, " WHERE csv_id = 1 AND status = 1"));
 
                     if (count($arrOutput) <= 0) break;
 
                     $arrOutputCols = $arrOutput['col'];
                     $arrOutputTitle = $arrOutput['disp_name'];
 
-                    $head = sfGetCSVList($arrOutputTitle);
+                    $head = SC_Utils_Ex::sfGetCSVList($arrOutputTitle);
 
-                    $data = lfGetProductsCSV($where, $option, $arrval, $arrOutputCols);
+                    $data = $this->lfGetProductsCSV($where, $option, $arrval, $arrOutputCols);
 
                     // CSVを送信する。
-                    sfCSVDownload($head.$data);
+                    SC_Utils_Ex::sfCSVDownload($head.$data);
                     exit;
                     break;
                 case 'delete_all':
