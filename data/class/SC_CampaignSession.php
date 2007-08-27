@@ -50,7 +50,8 @@ class SC_CampaignSession {
 
     /* キャンペーンディレクトリ名を取得 */
     function getCampaignDir() {
-        return $_SESSION[$this->key][$this->campaign_dir];
+        return isset($_SESSION[$this->key][$this->campaign_dir])
+                ? $_SESSION[$this->key][$this->campaign_dir] : "";
     }
 
     /* キャンペーンページならフレームを変更 */
