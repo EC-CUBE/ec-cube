@@ -17,7 +17,7 @@ require_once(CLASS_PATH . "db/SC_DB_DBFactory.php");
  *
  * @package DB
  * @author LOCKON CO.,LTD.
- * @version $Id$
+ * @version $Id:SC_DB_DBFactory_MYSQL.php 15267 2007-08-09 12:31:52Z nanasess $
  */
 class SC_DB_DBFactory_MYSQL extends SC_DB_DBFactory {
 
@@ -104,6 +104,27 @@ class SC_DB_DBFactory_MYSQL extends SC_DB_DBFactory {
     }
 
     /**
+     * View の WHERE 句を置換する.
+     *
+     * @param string $target 置換対象の文字列
+     * @param string $where 置換する文字列
+     * @param array $arrval WHERE 句の要素の配列
+     * @param string $option SQL 文の追加文字列
+     * @return string 置換後の SQL 文
+     */
+    function sfViewWhere($target, $where = "", $arrval = array(), $option = ""){
+
+        $arrWhere = split("[?]", $where);
+        $where_tmp = " WHERE " . $arrWhere[0];
+        for($i = 1; $i < count($arrWhere); $i++){
+            $where_tmp .= SC_Utils_Ex::sfQuoteSmart($arrval[$i - 1]) . $arrWhere[$i];
+        }
+        $arrWhere = $this->getWhereConverter();
+        $arrWhere[$target] = $where_tmp . " " . $option;
+        return $arrWhere[$target];
+    }
+
+    /**
      * SQL の中の View の存在をチェックする.
      *
      * @access private
@@ -166,26 +187,6 @@ class SC_DB_DBFactory_MYSQL extends SC_DB_DBFactory {
     function sfChangeRANDOM($sql){
         $changesql = eregi_replace("( RANDOM)", " RAND", $sql);
         return $changesql;
-    }
-
-    /**
-     * View の WHERE 句を置換する.
-     *
-     * @access private
-     * @param string $target 置換対象の文字列
-     * @param string $where 置換する文字列
-     * @param array $arrval WHERE 句の要素の配列
-     * @param string $option SQL 文の追加文字列
-     * @return string 置換後の SQL 文
-     */
-    function sfViewWhere($target, $where = "", $arrval = array(), $option = ""){
-        global $arrViewWhere;
-        $arrWhere = split("[?]", $where);
-        $where_tmp = " WHERE " . $arrWhere[0];
-        for($i = 1; $i < count($arrWhere); $i++){
-            $where_tmp .= SC_Utils_Ex::sfQuoteSmart($arrval[$i - 1]) . $arrWhere[$i];
-        }
-        $arrViewWhere[$target] = $where_tmp . " " . $option;
     }
 
     /**
