@@ -76,7 +76,7 @@ class SC_CartSession {
     function getProductTotal($arrInfo, $id) {
         $max = $this->getMax();
         for($i = 0; $i <= $max; $i++) {
-            if(isset($_SESSION[$this->key][$i]['id']) 
+            if(isset($_SESSION[$this->key][$i]['id'])
                && $_SESSION[$this->key][$i]['id'] == $id) {
 
                 // 税込み合計
@@ -94,7 +94,7 @@ class SC_CartSession {
     function setProductValue($id, $key, $val) {
         $max = $this->getMax();
         for($i = 0; $i <= $max; $i++) {
-            if(isset($_SESSION[$this->key][$i]['id']) 
+            if(isset($_SESSION[$this->key][$i]['id'])
                && $_SESSION[$this->key][$i]['id'] == $id) {
                 $_SESSION[$this->key][$i][$key] = $val;
             }
@@ -265,8 +265,9 @@ class SC_CartSession {
 
     function getCartList() {
         $max = $this->getMax();
+        $arrRet = array();
         for($i = 0; $i <= $max; $i++) {
-            if(isset($_SESSION[$this->key][$i]['cart_no']) 
+            if(isset($_SESSION[$this->key][$i]['cart_no'])
                && $_SESSION[$this->key][$i]['cart_no'] != "") {
                 $arrRet[] = $_SESSION[$this->key][$i];
             }
