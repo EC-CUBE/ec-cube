@@ -1345,34 +1345,6 @@ class SC_Utils {
         return $return;
     }
 
-    // カテゴリID取得判定用のグローバル変数(一度取得されていたら再取得しないようにする)
-    //$g_category_on = false;
-    //$g_category_id = "";
-
-    /* 選択中のカテゴリを取得する */
-    function sfGetCategoryId($product_id, $category_id) {
-        global $g_category_on;
-        global $g_category_id;
-        if(!$g_category_on)	{
-            $g_category_on = true;
-            $category_id = (int) $category_id;
-            $product_id = (int) $product_id;
-            $objDb = new SC_Helper_DB_Ex();
-            if(SC_Utils_Ex::sfIsInt($category_id) && $objDb->sfIsRecord("dtb_category","category_id", $category_id)) {
-                $g_category_id = $category_id;
-            } else if (SC_Utils_Ex::sfIsInt($product_id) && $objDb->sfIsRecord("dtb_products","product_id", $product_id, "status = 1")) {
-                $objQuery = new SC_Query();
-                $where = "product_id = ?";
-                $category_id = $objQuery->get("dtb_products", "category_id", $where, array($product_id));
-                $g_category_id = $category_id;
-            } else {
-                // 不正な場合は、0を返す。
-                $g_category_id = 0;
-            }
-        }
-        return $g_category_id;
-    }
-
     /* 加算ポイントの計算式 */
     function sfGetAddPoint($totalpoint, $use_point, $arrInfo) {
         // 購入商品の合計ポイントから利用したポイントのポイント換算価値を引く方式
@@ -1878,81 +1850,6 @@ class SC_Utils {
             }
         }
         return $arrChildren;
-    }
-
-
-    // カテゴリツリーの取得
-    function sfGetCatTree($parent_category_id, $count_check = false) {
-        $objQuery = new SC_Query();
-        $col = "";
-        $col .= " cat.category_id,";
-        $col .= " cat.category_name,";
-        $col .= " cat.parent_category_id,";
-        $col .= " cat.level,";
-        $col .= " cat.rank,";
-        $col .= " cat.creator_id,";
-        $col .= " cat.create_date,";
-        $col .= " cat.update_date,";
-        $col .= " cat.del_flg, ";
-        $col .= " ttl.product_count";
-        $from = "dtb_category as cat left join dtb_category_total_count as ttl on ttl.category_id = cat.category_id";
-        // 登録商品数のチェック
-        if($count_check) {
-            $where = "del_flg = 0 AND product_count > 0";
-        } else {
-            $where = "del_flg = 0";
-        }
-        $objQuery->setoption("ORDER BY rank DESC");
-        $arrRet = $objQuery->select($col, $from, $where);
-
-        $arrParentID = sfGetParents($objQuery, 'dtb_category', 'parent_category_id', 'category_id', $parent_category_id);
-
-        foreach($arrRet as $key => $array) {
-            foreach($arrParentID as $val) {
-                if($array['category_id'] == $val) {
-                    $arrRet[$key]['display'] = 1;
-                    break;
-                }
-            }
-        }
-
-        return $arrRet;
-    }
-
-    // 親カテゴリーを連結した文字列を取得する
-    function sfGetCatCombName($category_id){
-        // 商品が属するカテゴリIDを縦に取得
-        $objQuery = new SC_Query();
-        $arrCatID = sfGetParents($objQuery, "dtb_category", "parent_category_id", "category_id", $category_id);
-        $ConbName = "";
-
-        // カテゴリー名称を取得する
-        foreach($arrCatID as $key => $val){
-            $sql = "SELECT category_name FROM dtb_category WHERE category_id = ?";
-            $arrVal = array($val);
-            $CatName = $objQuery->getOne($sql,$arrVal);
-            $ConbName .= $CatName . ' | ';
-        }
-        // 最後の ｜ をカットする
-        $ConbName = substr_replace($ConbName, "", strlen($ConbName) - 2, 2);
-
-        return $ConbName;
-    }
-
-    // 指定したカテゴリーIDの大カテゴリーを取得する
-    function sfGetFirstCat($category_id){
-        // 商品が属するカテゴリIDを縦に取得
-        $objQuery = new SC_Query();
-        $arrRet = array();
-        $arrCatID = SC_Utils_Ex::sfGetParents($objQuery, "dtb_category", "parent_category_id", "category_id", $category_id);
-        $arrRet['id'] = $arrCatID[0];
-
-        // カテゴリー名称を取得する
-        $sql = "SELECT category_name FROM dtb_category WHERE category_id = ?";
-        $arrVal = array($arrRet['id']);
-        $arrRet['name'] = $objQuery->getOne($sql,$arrVal);
-
-        return $arrRet;
     }
 
     // SQLシングルクォート対応

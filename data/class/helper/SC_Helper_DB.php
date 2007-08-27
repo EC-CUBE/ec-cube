@@ -22,6 +22,12 @@ class SC_Helper_DB {
     /** ルートカテゴリID */
     var $g_root_id;
 
+    /** 選択中カテゴリ取得フラグ */
+    var $g_category_on;
+
+    /** 選択中カテゴリID */
+    var $g_category_id;
+
     // }}}
     // {{{ functions
 
@@ -204,9 +210,9 @@ class SC_Helper_DB {
 
             if(!empty($_GET['product_id']) || !empty($_GET['category_id'])) {
                 // 選択中のカテゴリIDを判定する
-                $category_id = SC_Utils_Ex::sfGetCategoryId($_GET['product_id'], $_GET['category_id']);
+                $category_id = $this->sfGetCategoryId($_GET['product_id'], $_GET['category_id']);
                 // ROOTカテゴリIDの取得
-                $arrRet = SC_Utils_Ex::sfGetParents($objQuery, 'dtb_category', 'parent_category_id', 'category_id', $category_id);
+                $arrRet = $this->sfGetParents($objQuery, 'dtb_category', 'parent_category_id', 'category_id', $category_id);
                 $root_id = $arrRet[0];
             } else {
                 // ROOTカテゴリIDをなしに設定する
@@ -419,6 +425,96 @@ class SC_Helper_DB {
     /**
      * カテゴリツリーの取得を行う.
      *
+     * @param integer $parent_category_id 親カテゴリID
+     * @param bool $count_check 登録商品数のチェックを行う場合 true
+     * @return array カテゴリツリーの配列
+     */
+    function sfGetCatTree($parent_category_id, $count_check = false) {
+        $objQuery = new SC_Query();
+        $col = "";
+        $col .= " cat.category_id,";
+        $col .= " cat.category_name,";
+        $col .= " cat.parent_category_id,";
+        $col .= " cat.level,";
+        $col .= " cat.rank,";
+        $col .= " cat.creator_id,";
+        $col .= " cat.create_date,";
+        $col .= " cat.update_date,";
+        $col .= " cat.del_flg, ";
+        $col .= " ttl.product_count";
+        $from = "dtb_category as cat left join dtb_category_total_count as ttl on ttl.category_id = cat.category_id";
+        // 登録商品数のチェック
+        if($count_check) {
+            $where = "del_flg = 0 AND product_count > 0";
+        } else {
+            $where = "del_flg = 0";
+        }
+        $objQuery->setoption("ORDER BY rank DESC");
+        $arrRet = $objQuery->select($col, $from, $where);
+
+        $arrParentID = sfGetParents($objQuery, 'dtb_category', 'parent_category_id', 'category_id', $parent_category_id);
+
+        foreach($arrRet as $key => $array) {
+            foreach($arrParentID as $val) {
+                if($array['category_id'] == $val) {
+                    $arrRet[$key]['display'] = 1;
+                    break;
+                }
+            }
+        }
+
+        return $arrRet;
+    }
+
+    /**
+     * 親カテゴリーを連結した文字列を取得する.
+     *
+     * @param integer $category_id カテゴリID
+     * @return string 親カテゴリーを連結した文字列
+     */
+    function sfGetCatCombName($category_id){
+        // 商品が属するカテゴリIDを縦に取得
+        $objQuery = new SC_Query();
+        $arrCatID = sfGetParents($objQuery, "dtb_category", "parent_category_id", "category_id", $category_id);
+        $ConbName = "";
+
+        // カテゴリー名称を取得する
+        foreach($arrCatID as $key => $val){
+            $sql = "SELECT category_name FROM dtb_category WHERE category_id = ?";
+            $arrVal = array($val);
+            $CatName = $objQuery->getOne($sql,$arrVal);
+            $ConbName .= $CatName . ' | ';
+        }
+        // 最後の ｜ をカットする
+        $ConbName = substr_replace($ConbName, "", strlen($ConbName) - 2, 2);
+
+        return $ConbName;
+    }
+
+    /**
+     * 指定したカテゴリーIDの大カテゴリーを取得する.
+     *
+     * @param integer $category_id カテゴリID
+     * @return array 指定したカテゴリーIDの大カテゴリー
+     */
+    function sfGetFirstCat($category_id){
+        // 商品が属するカテゴリIDを縦に取得
+        $objQuery = new SC_Query();
+        $arrRet = array();
+        $arrCatID = $this->sfGetParents($objQuery, "dtb_category", "parent_category_id", "category_id", $category_id);
+        $arrRet['id'] = $arrCatID[0];
+
+        // カテゴリー名称を取得する
+        $sql = "SELECT category_name FROM dtb_category WHERE category_id = ?";
+        $arrVal = array($arrRet['id']);
+        $arrRet['name'] = $objQuery->getOne($sql,$arrVal);
+
+        return $arrRet;
+    }
+
+    /**
+     * カテゴリツリーの取得を行う.
+     *
      * $products_check:true商品登録済みのものだけ取得する
      *
      * @param string $addwhere 追加する WHERE 句
@@ -504,6 +600,35 @@ class SC_Helper_DB {
             $arrOutput[$cnt].= $arrRet[$cnt]['category_name'];
         }
         return array($arrValue, $arrOutput);
+    }
+
+    /**
+     * 選択中のカテゴリを取得する.
+     *
+     * @param integer $product_id プロダクトID
+     * @param integer $category_id カテゴリID
+     * @return integer 選択中のカテゴリID
+     *
+     */
+    function sfGetCategoryId($product_id, $category_id) {
+
+        if(!$this->g_category_on)	{
+            $this->g_category_on = true;
+            $category_id = (int) $category_id;
+            $product_id = (int) $product_id;
+            if(SC_Utils_Ex::sfIsInt($category_id) && $this->sfIsRecord("dtb_category","category_id", $category_id)) {
+                $this->g_category_id = $category_id;
+            } else if (SC_Utils_Ex::sfIsInt($product_id) && $this->sfIsRecord("dtb_products","product_id", $product_id, "status = 1")) {
+                $objQuery = new SC_Query();
+                $where = "product_id = ?";
+                $category_id = $objQuery->get("dtb_products", "category_id", $where, array($product_id));
+                $this->g_category_id = $category_id;
+            } else {
+                // 不正な場合は、0を返す。
+                $this->g_category_id = 0;
+            }
+        }
+        return $this->g_category_id;
     }
 
     /**
@@ -622,8 +747,7 @@ class SC_Helper_DB {
      * @return array 親IDの配列
      */
     function sfGetParents($objQuery, $table, $pid_name, $id_name, $id) {
-        $objDb = new SC_Helper_DB_Ex();
-        $arrRet = $objDb->sfGetParentsArray($table, $pid_name, $id_name, $id);
+        $arrRet = $this->sfGetParentsArray($table, $pid_name, $id_name, $id);
         // 配列の先頭1つを削除する。
         array_shift($arrRet);
         return $arrRet;
