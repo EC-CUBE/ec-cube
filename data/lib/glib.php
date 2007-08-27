@@ -177,6 +177,7 @@ function gfLogRotation($max_log, $max_size, $path) {
 			if($ret) {
 				unlink($path);			
 				touch($path);
+				chmod($path, 0666);
 			}
 		}
 	}
