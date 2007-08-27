@@ -17,11 +17,6 @@ require_once(CLASS_PATH . "pages/LC_Page.php");
  */
 class LC_Page_Contact extends LC_Page {
 
-    // {{{ properties
-
-    /** 都道府県の配列 */
-    var $arrPref;
-
     // }}}
     // {{{ functions
 
@@ -37,9 +32,8 @@ class LC_Page_Contact extends LC_Page {
         $this->tpl_title = 'お問い合わせ(入力ページ)';
         $this->tpl_page_category = 'contact';
 
-        // FIXME
-        global $arrPref;
-        $this->arrPref = $arrPref;
+        $masterData = new SC_DB_MasterData_Ex();
+        $this->arrPref = $masterData->getMasterData("mtb_pref", array("pref_id", "pref_name", "rank"));
     }
 
     /**
