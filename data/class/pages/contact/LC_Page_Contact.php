@@ -51,7 +51,8 @@ class LC_Page_Contact extends LC_Page {
         $conn = new SC_DBConn();
         $objView = new SC_SiteView();
         $objCampaignSess = new SC_CampaignSession();
-        $CONF = SC_Utils_Ex::sf_getBasisData();			// 店舗基本情報
+        $objDb = new SC_Helper_DB_Ex();
+        $CONF = $objDb->sf_getBasisData();			// 店舗基本情報
         SC_Utils_Ex::sfDomainSessionStart();
 
         $objCustomer = new SC_Customer();
@@ -90,7 +91,9 @@ class LC_Page_Contact extends LC_Page {
                                      array(  "column" => "contents",   "convert" => "aKV")
                                   );
 
-        switch ($_POST['mode']){
+        if (!isset($_POST['mode'])) $_POST['mode'] = "";
+
+        switch ($_POST['mode']) {
             case 'confirm':
             // エラーチェック
             $this->arrForm = $_POST;
