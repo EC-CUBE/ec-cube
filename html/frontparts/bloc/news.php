@@ -4,26 +4,14 @@
  *
  * http://www.lockon.co.jp/
  */
-class LC_NewsPage {
-	function LC_NewsPage() {
-		/** 必ず変更する **/
-		$this->tpl_mainpage = BLOC_PATH . 'news.tpl';	// メイン
-	}
-}
+// {{{ requires
+require_once(CLASS_PATH . "page_extends/frontparts/bloc/LC_Page_FrontParts_Bloc_News_Ex.php");
 
-$objSubPage = new LC_NewsPage();
-$objSubView = new SC_SiteView();
+// }}}
+// {{{ generate page
 
-//新着情報取得
-$objSubPage->arrNews = lfGetNews();
-
-$objSubView->assignobj($objSubPage);
-$objSubView->display($objSubPage->tpl_mainpage);
-//-----------------------------------------------------------------------------------------------------------------------------------
-function lfGetNews(){
-	$conn = new SC_DBConn();
-	$sql = "SELECT *, cast(substring(news_date,1,10) as date) as news_date_disp FROM dtb_news WHERE del_flg = '0' ORDER BY rank DESC";
-	$list_data = $conn->getAll($sql);
-	return $list_data;	
-}
+$objPage = new LC_Page_FrontParts_BLoc_News_Ex();
+$objPage->init();
+$objPage->process();
+register_shutdown_function(array($objPage, "destroy"));
 ?>

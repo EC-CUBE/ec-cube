@@ -4,31 +4,14 @@
  *
  * http://www.lockon.co.jp/
  */
-class LC_SearchProductsPage {
-    function LC_SearchProductsPage() {
-        /** 必ず変更する **/
-        $this->tpl_mainpage = BLOC_PATH . 'search_products.tpl';	// メイン
-    }
-}
+// {{{ requires
+require_once(CLASS_PATH . "page_extends/frontparts/bloc/LC_Page_FrontParts_Bloc_SearchProducts_Ex.php");
 
-$objSubPage = new LC_SearchProductsPage();
-$arrSearch = array();	// 検索項目表示用
+// }}}
+// {{{ generate page
 
-// 選択中のカテゴリIDを判定する
-$objSubPage->category_id = SC_Utils_Ex::sfGetCategoryId($_GET['product_id'], $_GET['category_id']);
-// カテゴリ検索用選択リスト
-$arrRet = SC_Utils_Ex::sfGetCategoryList('', true, '　');
-
-if(is_array($arrRet)) {
-    // 文字サイズを制限する
-    foreach($arrRet as $key => $val) {
-        $arrRet[$key] = SC_Utils_Ex::sfCutString($val, SEARCH_CATEGORY_LEN);
-    }
-}
-$objSubPage->arrCatList = $arrRet;
-
-$objSubView = new SC_SiteView();
-$objSubView->assignobj($objSubPage);
-$objSubView->display($objSubPage->tpl_mainpage);
-//-----------------------------------------------------------------------------------------------------------------------------------
+$objPage = new LC_Page_FrontParts_BLoc_SearchProducts_Ex();
+$objPage->init();
+$objPage->process();
+register_shutdown_function(array($objPage, "destroy"));
 ?>
