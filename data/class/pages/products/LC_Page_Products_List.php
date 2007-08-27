@@ -72,7 +72,7 @@ class LC_Page_Products_List extends LC_Page {
         $this->orderby = isset($_POST['orderby']) ? $_POST['orderby'] : "";
 
         // GETのカテゴリIDを元に正しいカテゴリIDを取得する。
-        $category_id = SC_Utils_Ex::sfGetCategoryId("", $_GET['category_id']);
+        $category_id = $objDb->sfGetCategoryId("", $_GET['category_id']);
 
         if (!isset($_GET['mode'])) $_GET['mode'] = "";
         if (!isset($_GET['name'])) $_GET['name'] = "";
@@ -85,7 +85,7 @@ class LC_Page_Products_List extends LC_Page {
         } elseif ($category_id == "" ) {
             $tpl_subtitle = "全商品";
         } else {
-            $arrFirstCat = SC_Utils_Ex::sfGetFirstCat($category_id);
+            $arrFirstCat = $objDb->sfGetFirstCat($category_id);
             $tpl_subtitle = $arrFirstCat['name'];
         }
 

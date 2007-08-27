@@ -188,7 +188,7 @@ class LC_Page_Products_Detail extends LC_Page {
         }
 
         // サブタイトルを取得
-        $arrFirstCat = SC_Utils_Ex::sfGetFirstCat($arrRet[0]['category_id']);
+        $arrFirstCat = $objDb->sfGetFirstCat($arrRet[0]['category_id']);
         $this->tpl_subtitle = $arrFirstCat['name'];
 
         // DBからのデータを引き継ぐ

@@ -38,16 +38,17 @@ class LC_Page_Products_DetailImage extends LC_Page {
     function process() {
         $objView = new SC_SiteView();
         $objCartSess = new SC_CartSession("", false);
+        $objDb = new SC_Helper_DB_Ex();
 
         // 管理ページからの確認の場合は、非公開の商品も表示する。
-        if($_GET['admin'] == 'on') {
+        if(isset($_GET['admim']) && $_GET['admin'] == 'on') {
             $where = "del_flg = 0";
         } else {
             $where = "del_flg = 0 AND status = 1";
         }
 
         // 値の正当性チェック
-        if(!SC_Utils_Ex::sfIsInt($_GET['product_id']) || !SC_Utils_Ex::sfIsRecord("dtb_products", "product_id", $_GET['product_id'], $where)) {
+        if(!SC_Utils_Ex::sfIsInt($_GET['product_id']) || !$objDb->sfIsRecord("dtb_products", "product_id", $_GET['product_id'], $where)) {
             SC_Utils_Ex::sfDispSiteError(PRODUCT_NOT_FOUND);
         }
 
