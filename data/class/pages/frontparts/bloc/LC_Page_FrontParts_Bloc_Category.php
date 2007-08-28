@@ -44,9 +44,9 @@ class LC_Page_FrontParts_Bloc_Category extends LC_Page {
 
         // 選択中のカテゴリID
         $this->tpl_category_id = $category_id;
-        $this = $this->lfGetCatTree($category_id, true, $this);
+        $objPage = $this->lfGetCatTree($category_id, true, $this);
 
-        $objSubView->assignobj($this);
+        $objSubView->assignobj($objPage);
         $objSubView->display($this->tpl_mainpage);
     }
 
