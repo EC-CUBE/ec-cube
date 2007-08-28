@@ -124,7 +124,7 @@ class LC_Page_Entry extends LC_Page {
             $this->arrForm = $this->lfConvertParam($this->arrForm, $arrRegistColumn);
 
             //--　入力エラーチェック
-            //$this->arrErr = $this->lfErrorCheck($this->arrForm); TODO
+            $this->arrErr = $this->lfErrorCheck($this->arrForm);
 
             if ($this->arrErr || $_POST["mode"] == "return") {		// 入力エラーのチェック
                 foreach($this->arrForm as $key => $val) {
@@ -341,7 +341,7 @@ class LC_Page_Entry extends LC_Page {
         // 文字変換
         foreach ($arrConvList as $key => $val) {
             // POSTされてきた値のみ変換する。
-            if(strlen(($array[$key])) > 0) {
+            if(isset($array[$key]) && strlen($array[$key]) > 0) {
                 $array[$key] = mb_convert_kana($array[$key] ,$val);
             }
         }
@@ -376,15 +376,17 @@ class LC_Page_Entry extends LC_Page {
             if(count($arrRet) > 0) {
                 if($arrRet[0]['del_flg'] != '1') {
                     // 会員である場合
+                    if (!isset($objErr->arrErr['email'])) $objErr->arrErr['email'] = "";
                     $objErr->arrErr["email"] .= "※ すでに会員登録で使用されているメールアドレスです。<br />";
                 } else {
                     // 退会した会員である場合
-                    $leave_time = sfDBDatetoTime($arrRet[0]['update_date']);
+                    $leave_time = SC_Utils_Ex::sfDBDatetoTime($arrRet[0]['update_date']);
                     $now_time = time();
                     $pass_time = $now_time - $leave_time;
                     // 退会から何時間-経過しているか判定する。
                     $limit_time = ENTRY_LIMIT_HOUR * 3600;
                     if($pass_time < $limit_time) {
+                        if (!isset($objErr->arrErr['email'])) $objErr->arrErr['email'] = "";
                         $objErr->arrErr["email"] .= "※ 退会から一定期間の間は、同じメールアドレスを使用することはできません。<br />";
                     }
                 }
