@@ -164,7 +164,7 @@ class SC_Customer {
         // 本登録された会員のみ
         $sql = "SELECT * FROM dtb_customer WHERE email ILIKE ? AND del_flg = 0 AND status = 2";
         $result = $this->conn->getAll($sql, array($email));
-        $data = $result[0];
+        $data = isset($result[0]) ? $result[0] : "";
         $this->customer_data = $data;
         $this->startSession();
     }
@@ -180,10 +180,10 @@ class SC_Customer {
 
     // ログイン情報をセッションに登録し、ログに書き込む
     function startSession() {
-        sfDomainSessionStart();
+        SC_Utils_Ex::sfDomainSessionStart();
         $_SESSION['customer'] = $this->customer_data;
         // セッション情報の保存
-        gfPrintLog("access : user=".$this->customer_data['customer_id'] ."\t"."ip=". $_SERVER['REMOTE_HOST'], CUSTOMER_LOG_PATH );
+        GC_Utils_Ex::gfPrintLog("access : user=".$this->customer_data['customer_id'] ."\t"."ip=". $_SERVER['REMOTE_HOST'], CUSTOMER_LOG_PATH );
     }
 
     // ログアウト　$_SESSION['customer']を解放し、ログに書き込む
@@ -191,7 +191,7 @@ class SC_Customer {
         // $_SESSION['customer']の解放
         unset($_SESSION['customer']);
         // ログに記録する
-        gfPrintLog("logout : user=".$this->customer_data['customer_id'] ."\t"."ip=". $_SERVER['REMOTE_HOST'], CUSTOMER_LOG_PATH );
+        GC_Utils_Ex::gfPrintLog("logout : user=".$this->customer_data['customer_id'] ."\t"."ip=". $_SERVER['REMOTE_HOST'], CUSTOMER_LOG_PATH );
     }
 
     // ログインに成功しているか判定する。
