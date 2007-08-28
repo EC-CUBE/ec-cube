@@ -43,9 +43,9 @@ class LC_Page_Abouts extends LC_Page {
 
         // レイアウトデザインを取得
         $layout = new SC_Helper_PageLayout_Ex();
-        $this = $layout->sfGetPageLayout($this, false, DEF_LAYOUT);
+        $objPage = $layout->sfGetPageLayout($this, false, DEF_LAYOUT);
 
-        $objView->assignobj($this);
+        $objView->assignobj($objPage);
         $objView->display(SITE_FRAME);
     }
 
