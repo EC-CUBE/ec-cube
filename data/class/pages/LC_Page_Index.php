@@ -59,9 +59,9 @@ class LC_Page_Index extends LC_Page {
 
         // レイアウトデザインを取得
         $layout = new SC_Helper_PageLayout_Ex();
-        $this = $layout->sfGetPageLayout($this, false, "index.php");
+        $objPage = $layout->sfGetPageLayout($this, false, "index.php");
 
-        $objView->assignobj($this);
+        $objView->assignobj($objPage);
         $objView->display(SITE_FRAME);
     }
 
