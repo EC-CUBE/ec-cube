@@ -117,7 +117,7 @@ class LC_Page_Contact extends LC_Page {
             $this->arrForm = $this->lfConvertParam($this->arrForm,$arrConvertColumn);
             $this->arrErr = $this->lfErrorCheck($this->arrForm);
             if(!$this->arrErr) {
-                $this->lfSendMail($CONF, $objPage);
+                $this->lfSendMail($CONF, $this);
                 // 完了ページへ移動する
                 $this->sendRedirect($this->getLocation("./complete.php", array(), true));
                 exit;
@@ -169,8 +169,8 @@ class LC_Page_Contact extends LC_Page {
 
         if (REVIEW_ALLOW_URL == false) {
             // URLの入力を禁止
-            global $arrReviewDenyURL;
-            $objErr->doFunc(array("URL", "contents", $arrReviewDenyURL), array("PROHIBITED_STR_CHECK"));
+            $masterData = new SC_DB_MasterData_Ex();
+            $objErr->doFunc(array("URL", "contents", $masterData->getMasterData("mtb_review_deny_url")), array("PROHIBITED_STR_CHECK"));
         }
 
         return $objErr->arrErr;
