@@ -78,17 +78,6 @@ class LC_Page {
     function destroy() {}
 
     /**
-     * 遷移元が自サイトかどうかチェックする.
-     *
-     * 遷移元が自サイト以外の場合はエラーページへ遷移する.
-     *
-     * @return void
-     */
-    function checkPreviousURI() {
-        // TODO 必要性検討
-    }
-
-    /**
      * 指定の URL へリダイレクトする.
      *
      * リダイレクト先 URL に SITE_URL 及び SSL_URL を含むかチェックし,
