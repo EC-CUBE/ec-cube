@@ -190,15 +190,15 @@ class LC_Page {
      * @access protected
      * @param string $path 結果を取得するためのパス
      * @param array $param URL に付与するパラメータの配列
-     * @param boolean $useSSL 結果に SSL_URL を使用する場合 true,
+     * @param mixed $useSSL 結果に SSL_URL を使用する場合 true,
      * 				           SITE_URL を使用する場合 false,
-     * 						   デフォルト false
+     * 						   デフォルト "escape" 現在のスキーマを使用
      * @param string $documentRoot DocumentRoot の文字列. 指定しない場合は,
      *                              $_SERVER['DOCUMENT_ROOT'] が付与される.
      * @return string $path の存在する http(s):// から始まる絶対パス
      * @see Net_URL
      */
-    function getLocation($path, $param = array(), $useSSL = false, $documentRoot = "") {
+    function getLocation($path, $param = array(), $useSSL = "escape", $documentRoot = "") {
 
         // TODO $_SERVER['DOCUMENT_ROOT'] をインストーラでチェックする.
         if (empty($documentRoot)) {
@@ -221,10 +221,20 @@ class LC_Page {
         $root = str_replace($documentRoot, "", $realPath);
         // 先頭の / を削除
         $root = substr_replace($root, "", 0, 1);
-        if ($useSSL) {
+
+        // スキーマを定義
+        if ($useSSL === true) {
             $url = SSL_URL . $root;
-        } else {
+        } elseif ($useSSL === false){
             $url = SITE_URL . $root;
+        } elseif ($useSSL == "escape") {
+            if (SC_Utils_Ex::sfIsHTTPS()) {
+                $url = SSL_URL . $root;
+            } else {
+                $url = SITE_URL . $root;
+            }
+        } else {
+            die("[BUG] Illegal Parametor of \$useSSL ");
         }
 
         $netURL = new Net_URL($url);
