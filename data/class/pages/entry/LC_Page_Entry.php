@@ -30,6 +30,7 @@ class LC_Page_Entry extends LC_Page {
         $this->tpl_css = URL_DIR.'css/layout/entry/index.css';
         $this->tpl_mainpage = 'entry/index.tpl';
         $this->tpl_title .= '会員登録(入力ページ)';
+        $this->year = "";
     }
 
     /**
@@ -38,11 +39,13 @@ class LC_Page_Entry extends LC_Page {
      * @return void
      */
     function process() {
-        $CONF = SC_Utils_Ex::sf_getBasisData();					// 店舗基本情報
+
         $objConn = new SC_DbConn();
         $objView = new SC_SiteView();
         $objCustomer = new SC_Customer();
         $objCampaignSess = new SC_CampaignSession();
+        $objDb = new SC_Helper_DB_Ex();
+        $CONF = $objDb->sf_getBasisData();
         $objDate = new SC_Date(START_BIRTH_YEAR, date("Y",strtotime("now")));
         $masterData = new SC_DB_MasterData_Ex();
         $this->arrPref = $masterData->getMasterData("mtb_pref",
@@ -64,7 +67,7 @@ class LC_Page_Entry extends LC_Page {
 
         // レイアウトデザインを取得
         $layout = new SC_Helper_PageLayout_Ex();
-        $this = $layout->sfGetPageLayout($this, false, DEF_LAYOUT);
+        $objPage = $layout->sfGetPageLayout($this, false, DEF_LAYOUT);
 
         //---- 登録用カラム配列
         $arrRegistColumn = array(
@@ -194,7 +197,7 @@ class LC_Page_Entry extends LC_Page {
                     //$objMail->sendMail(); TODO
 
                     // 完了ページに移動させる。
-                    $this->sendRedirect($this->getLocation("./complete.php", array(), true));
+                    $this->sendRedirect($this->getLocation("./complete.php"));
                     exit;
                 }
             }
@@ -207,7 +210,7 @@ class LC_Page_Entry extends LC_Page {
         $this->transactionid = $this->getToken();
 
         //----　ページ表示
-        $objView->assignobj($this);
+        $objView->assignobj($objPage);
         // フレームを選択(キャンペーンページから遷移なら変更)
         $objCampaignSess->pageView($objView);
     }
