@@ -65,7 +65,7 @@ class LC_Page_Products_Detail extends LC_Page {
 
         // レイアウトデザインを取得
         $helper = new SC_Helper_PageLayout_Ex();
-        $this = $helper->sfGetPageLayout($this, false, "products/detail.php");
+        $helper->sfGetPageLayout($this, false, "products/detail.php");
 
         // パラメータ管理クラス
         $this->objFormParam = new SC_FormParam();
@@ -130,7 +130,7 @@ class LC_Page_Products_Detail extends LC_Page {
 
 
         // 規格選択セレクトボックスの作成
-        $this = $this->lfMakeSelect($this, $tmp_id);
+        $this->lfMakeSelect($tmp_id);
 
         // 商品IDをFORM内に保持する。
         $this->tpl_product_id = $tmp_id;
@@ -159,8 +159,7 @@ class LC_Page_Products_Detail extends LC_Page {
 
                 $objCartSess->setPrevURL($_SERVER['REQUEST_URI']);
                 $objCartSess->addProduct(array($_POST['product_id'], $classcategory_id1, $classcategory_id2), $this->objFormParam->getValue('quantity'));
-                header("Location: " . URL_CART_TOP);
-
+                $this->sendRedirect($this->getLocation(URL_CART_TOP));
                 exit;
             }
             break;
@@ -253,7 +252,7 @@ class LC_Page_Products_Detail extends LC_Page {
     }
 
     /* 規格選択セレクトボックスの作成 */
-    function lfMakeSelect($this, $product_id) {
+    function lfMakeSelect($product_id) {
 
         $objDb = new SC_Helper_DB_Ex();
         $classcat_find1 = false;
@@ -375,8 +374,6 @@ class LC_Page_Products_Detail extends LC_Page {
         $this->tpl_classcat_find1 = $classcat_find1;
         $this->tpl_classcat_find2 = $classcat_find2;
         $this->tpl_stock_find = $stock_find;
-
-        return $this;
     }
 
     /* パラメータ情報の初期化 */
