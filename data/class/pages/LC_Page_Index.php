@@ -17,14 +17,6 @@ require_once(CLASS_PATH . "pages/LC_Page.php");
  */
 class LC_Page_Index extends LC_Page {
 
-    // {{{ properties
-
-    /**メインテンプレート */
-    var $tpl_mainpage;
-
-    /** CSS のパス */
-    var $tpl_css;
-
     // }}}
     // {{{ functions
 
@@ -59,9 +51,9 @@ class LC_Page_Index extends LC_Page {
 
         // レイアウトデザインを取得
         $layout = new SC_Helper_PageLayout_Ex();
-        $objPage = $layout->sfGetPageLayout($this, false, "index.php");
+        $layout->sfGetPageLayout($this, false, "index.php");
 
-        $objView->assignobj($objPage);
+        $objView->assignobj($this);
         $objView->display(SITE_FRAME);
     }
 
