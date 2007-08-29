@@ -67,7 +67,7 @@ class LC_Page_Entry extends LC_Page {
 
         // レイアウトデザインを取得
         $layout = new SC_Helper_PageLayout_Ex();
-        $objPage = $layout->sfGetPageLayout($this, false, DEF_LAYOUT);
+        $layout->sfGetPageLayout($this, false, DEF_LAYOUT);
 
         //---- 登録用カラム配列
         $arrRegistColumn = array(
@@ -105,7 +105,6 @@ class LC_Page_Entry extends LC_Page {
 
         if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
-            // TODO transaction check
             if (!$this->isValidToken()) {
                 SC_Utils_Ex::sfDispSiteError(PAGE_ERROR, "", true);
             }
@@ -156,7 +155,7 @@ class LC_Page_Entry extends LC_Page {
                     }
 
                     // 会員情報の登録
-                    //$this->uniqid = $this->lfRegistData ($this->arrForm, $arrRegistColumn, $arrRejectRegistColumn, CUSTOMER_CONFIRM_MAIL); TODO
+                    $this->uniqid = $this->lfRegistData ($this->arrForm, $arrRegistColumn, $arrRejectRegistColumn, CUSTOMER_CONFIRM_MAIL);
 
                     $this->tpl_css = '/css/layout/entry/complete.css';
                     $this->tpl_mainpage = 'entry/complete.tpl';
@@ -194,7 +193,7 @@ class LC_Page_Entry extends LC_Page {
                     // 宛先の設定
                     $name = $_POST["name01"] . $_POST["name02"] ." 様";
                     $objMail->setTo($_POST["email"], $name);
-                    //$objMail->sendMail(); TODO
+                    $objMail->sendMail();
 
                     // 完了ページに移動させる。
                     $this->sendRedirect($this->getLocation("./complete.php"));
@@ -210,7 +209,7 @@ class LC_Page_Entry extends LC_Page {
         $this->transactionid = $this->getToken();
 
         //----　ページ表示
-        $objView->assignobj($objPage);
+        $objView->assignobj($this);
         // フレームを選択(キャンペーンページから遷移なら変更)
         $objCampaignSess->pageView($objView);
     }
