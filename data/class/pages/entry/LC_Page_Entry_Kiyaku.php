@@ -43,7 +43,7 @@ class LC_Page_Entry_Kiyaku extends LC_Page {
 
         // レイアウトデザインを取得
         $layout = new SC_Helper_PageLayout_Ex();
-        $objPage = $layout->sfGetPageLayout($this, false, DEF_LAYOUT);
+        $layout->sfGetPageLayout($this, false, DEF_LAYOUT);
 
         // 規約内容の取得
         $objQuery = new SC_Query();
@@ -61,7 +61,7 @@ class LC_Page_Entry_Kiyaku extends LC_Page {
         $this->is_campaign = $objCampaignSess->getIsCampaign();
         $this->campaign_dir = $objCampaignSess->getCampaignDir();
 
-        $objView->assignobj($objPage);
+        $objView->assignobj($this);
         // フレームを選択(キャンペーンページから遷移なら変更)
         $objCampaignSess->pageView($objView);
     }
