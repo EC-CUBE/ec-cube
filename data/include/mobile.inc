@@ -14,10 +14,15 @@ require_once DATA_PATH . 'class/SC_Query.php';
  * @return void
  */
 function lfMobileCheckCompatibility() {
+	
+
+	
 	if (!GC_MobileUserAgent::isSupported()) {
 		header('Location: ' . URL_DIR . 'unsupported/index.php');
 		exit;
 	}
+	
+
 }
 
 /**
@@ -88,6 +93,7 @@ function lfMobileGetSessionId() {
 	if (!isset($sessionId)) {
 		$sessionId = lfMobileGetExtSessionId();
 	}
+    
 	if (!isset($sessionId)) {
 		return false;
 	}
@@ -115,6 +121,7 @@ function lfMobileGetSessionId() {
 function lfMobileValidateSession() {
 	// 配列 mobile が登録されているかどうかをチェックする。
 	if (!is_array(@$_SESSION['mobile'])) {
+		gfprintlog("配列mobileが登録されていない。");
 		return false;
 	}
 
@@ -123,7 +130,7 @@ function lfMobileValidateSession() {
 		gfPrintLog("Session expired at " .
 		           date('Y/m/d H:i:s', @$_SESSION['mobile']['expires']) .
 		           ' : sid=' . session_id());
-
+		gfprintlog("SESSION有効期限を過ぎている");		           
 		return false;
 	}
 
@@ -133,9 +140,9 @@ function lfMobileValidateSession() {
 		gfPrintLog("User agent model mismatch : " .
 		           "\"$model\" != \"" . @$_SESSION['mobile']['model'] .
 		           '" (expected), sid=' . session_id());
+		gfprintlog("携帯端末の機種が一致しない");	
 		return false;
 	}
-
 	return true;
 }
 
@@ -145,6 +152,8 @@ function lfMobileValidateSession() {
  * @return void
  */
 function lfMobileInitSession() {
+	$session_ok = true;
+	
 	// セッションIDの受け渡しにクッキーを使用しない。
 	ini_set('session.use_cookies', '0');
 
@@ -152,10 +161,28 @@ function lfMobileInitSession() {
 	$sessionId = lfMobileGetSessionId();
 
 	session_start();
-
+    
+    // 新規にセットされるためlfMobileGetSessionId()からの戻りは""となる。
+    if($sessionId == "") {
+	    gfprintlog("lfMobileInitSession()：セッションセット -> OK");
+    } else {
+	    gfprintlog("lfMobileInitSession()：セッションセット -> NG");
+	    $session_ok = false;        
+    }
+    
+    if(lfMobileValidateSession()) {
+        gfprintlog("lfMobileInitSession()：有効性チェック -> OK");
+    } else {
+        gfprintlog("lfMobileInitSession()：有効性チェック -> NG");
+        $session_ok = false;
+    }
+    gfprintlog("lfMobileInitSession()：REQUEST_METHOD -> " . $_SERVER['REQUEST_METHOD']);
+    gfprintlog("lfMobileInitSession()：session_id() -> " . session_id());
+    gfprintlog("lfMobileInitSession()：GET PHPSESSID ---> " . $_GET["PHPSESSID"]);
+    
 	// セッションIDまたはセッションデータが無効な場合は、セッションIDを再生成
 	// し、セッションデータを初期化する。
-	if ($sessionId === false || !lfMobileValidateSession()) {
+	if (!$session_ok) {
 		session_regenerate_id();
 		$_SESSION = array('mobile' => array('model'    => GC_MobileUserAgent::getModel(),
 		                                    'phone_id' => GC_MobileUserAgent::getId(),
@@ -163,9 +190,12 @@ function lfMobileInitSession() {
 
 		// 新しいセッションIDを付加してリダイレクトする。
 		if ($_SERVER['REQUEST_METHOD'] == 'GET') {
+			gfprintlog("GET要求の取得:".$_GET['PHPSESSID']);
+			gfprintlog("リダイレクト:".gfAddSessionId());
 			// GET の場合は同じページにリダイレクトする。
 			header('Location: ' . gfAddSessionId());
 		} else {
+			gfprintlog("GET要求がなし");
 			// GET 以外の場合はトップページへリダイレクトする。
 			header('Location: ' . URL_SITE_TOP . '?' . SID);
 		}
@@ -222,7 +252,6 @@ function lfMobileInitOutput() {
  */
 function sfMobileInit() {
 	lfMobileInitInput();
-
 	if (basename(dirname($_SERVER['SCRIPT_NAME'])) != 'unsupported') {
 		lfMobileCheckCompatibility();
 		lfMobileInitSession();
@@ -396,8 +425,7 @@ function sfMobileSetExtSessionId($param_key, $param_value, $url) {
  * @return boolean 携帯のメールアドレスの場合はtrue、それ以外の場合はfalseを返す。
  */
 function gfIsMobileMailAddress($address) {
-    // pdx.ne.jp(ウィルコム)追加
-	$arrMobileMailDomains = array('docomo.ne.jp', 'ezweb.ne.jp', 'softbank.ne.jp', 'vodafone.ne.jp', 'pdx.ne.jp');
+	$arrMobileMailDomains = array('docomo.ne.jp', 'ezweb.ne.jp', 'softbank.ne.jp', 'vodafone.ne.jp');
 
 	if (defined('MOBILE_ADDITIONAL_MAIL_DOMAINS')) {
 		$arrMobileMailDomains = array_merge($arrMobileMailDomains, split('[ ,]+', MOBILE_ADDITIONAL_MAIL_DOMAINS));
