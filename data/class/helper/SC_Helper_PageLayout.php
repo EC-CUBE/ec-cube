@@ -20,12 +20,12 @@ class SC_Helper_PageLayout {
     /**
      * ページのレイアウト情報をセットする.
      *
-     * LC_Page オブジェクトにページのレイアウト情報をセットして返す.
+     * LC_Page オブジェクトにページのレイアウト情報をセットする.
      *
      * @param LC_Page $objPage ページ情報
      * @param boolean $preview プレビュー表示の場合 true
      * @param string $url ページのURL
-     * @return LC_Page ページのレイアウト情報
+     * @return void
      */
     function sfGetPageLayout(&$objPage, $preview = false, $url = ""){
         $arrPageLayout = array();
@@ -62,8 +62,6 @@ class SC_Helper_PageLayout {
         $arrPageLayout['MainFoot']  = $this->lfGetNavi($arrNavi,4);	// メイン下部
 
         $objPage->arrPageLayout = $arrPageLayout;
-
-        return $objPage;
     }
 
     /**
