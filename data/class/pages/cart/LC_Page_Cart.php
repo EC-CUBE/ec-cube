@@ -118,7 +118,7 @@ class LC_Page_Cart extends LC_Page {
         }
 
         // カート集計処理
-        $objPage = $db->sfTotalCart($this, $objCartSess, $arrInfo);
+        $db->sfTotalCart($this, $objCartSess, $arrInfo);
         $this->arrData = SC_Utils_Ex::sfTotalConfirm($this->arrData, $this, $objCartSess, $arrInfo, $objCustomer);
 
         $this->arrInfo = $arrInfo;
@@ -136,7 +136,7 @@ class LC_Page_Cart extends LC_Page {
         // 前頁のURLを取得
         $this->tpl_prev_url = $objCartSess->getPrevURL();
 
-        $objView->assignobj($objPage);
+        $objView->assignobj($this);
         // フレームを選択(キャンペーンページから遷移なら変更)
         $objCampaignSess->pageView($objView);
     }
