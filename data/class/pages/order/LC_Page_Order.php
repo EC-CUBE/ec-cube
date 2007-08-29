@@ -40,11 +40,15 @@ class LC_Page_Order extends LC_Page {
 
         // レイアウトデザインを取得
         $layout = new SC_Helper_PageLayout_Ex();
-        $this = $layout->sfGetPageLayout($this, false, DEF_LAYOUT);
-
-        $arrRet = $objQuery->getall("SELECT * FROM dtb_baseinfo",array());
-        $this->arrRet = $arrRet[0];
-        $this->arrPref = $arrPref;
+        $layout->sfGetPageLayout($this, false, DEF_LAYOUT);
+        // FIXME
+        //$arrRet = $objQuery->getall("SELECT * FROM dtb_baseinfo",array());
+        //$this->arrRet = $arrRet[0];
+        $objDb = new SC_Helper_DB_Ex();
+        $this->arrRet = $objDb->sf_getBasisData();
+        $masterData = new SC_DB_MasterData_Ex();
+        $this->arrPref = $masterData->getMasterData("mtb_pref",
+                                 array("pref_id", "pref_name", "rank"));
 
         $objView->assignobj($this);
         $objView->display(SITE_FRAME);
