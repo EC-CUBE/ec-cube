@@ -27,7 +27,7 @@ class SC_Helper_PageLayout {
      * @param string $url ページのURL
      * @return LC_Page ページのレイアウト情報
      */
-    function sfGetPageLayout($objPage, $preview = false, $url = ""){
+    function sfGetPageLayout(&$objPage, $preview = false, $url = ""){
         $arrPageLayout = array();
 
         // 現在のURLの取得

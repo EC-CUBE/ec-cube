@@ -257,7 +257,7 @@ class SC_Helper_DB {
      * @param array $arrInfo 商品情報の配列
      * @return LC_Page 集計処理後のページクラスインスタンス
      */
-    function sfTotalCart($objPage, $objCartSess, $arrInfo) {
+    function sfTotalCart(&$objPage, $objCartSess, $arrInfo) {
         $objDb = new SC_Helper_DB_Ex();
         // 規格名一覧
         $arrClassName = $objDb->sfGetIDValueList("dtb_class", "class_id", "name");
