@@ -110,7 +110,7 @@ class LC_Page_Products_List extends LC_Page {
             }
 
             // 商品一覧の表示処理
-            $this = $this->lfDispProductsList($category_id, $_GET['name'], $this->disp_number, $_POST['orderby']);
+            $this->lfDispProductsList($category_id, $_GET['name'], $this->disp_number, $_POST['orderby']);
 
             // 検索条件を画面に表示
             // カテゴリー検索条件
@@ -131,7 +131,7 @@ class LC_Page_Products_List extends LC_Page {
 
         // レイアウトデザインを取得
         $layout = new SC_Helper_PageLayout_Ex();
-        $this = $layout->sfGetPageLayout($this, false, "products/list.php");
+        $layout->sfGetPageLayout($this, false, "products/list.php");
 
         if(isset($_POST['mode']) && $_POST['mode'] == "cart"
            && $_POST['product_id'] != "") {
@@ -269,9 +269,9 @@ class LC_Page_Products_List extends LC_Page {
         // 企画セレクトボックス設定
         if($disp_num == 15) {
             for($i = 0; $i < count($this->arrProducts); $i++) {
-                $this = $this->lfMakeSelect($this->arrProducts[$i]['product_id'], $arrClassName, $arrClassCatName);
+                $this->lfMakeSelect($this->arrProducts[$i]['product_id'], $arrClassName, $arrClassCatName);
                 // 購入制限数を取得
-                $this = $this->lfGetSaleLimit($this->arrProducts[$i]);
+                $this->lfGetSaleLimit($this->arrProducts[$i]);
             }
         }
 
@@ -408,9 +408,8 @@ class LC_Page_Products_List extends LC_Page {
         $this->tpl_classcat_find1[$product_id] = $classcat_find1;
         $this->tpl_classcat_find2[$product_id] = $classcat_find2;
         $this->tpl_stock_find[$product_id] = $stock_find;
-
-        return $this;
     }
+
     /* 商品規格情報の取得 */
     function lfGetProductsClass($product_id) {
         $arrRet = array();
@@ -455,8 +454,6 @@ class LC_Page_Products_List extends LC_Page {
         } else {
             $this->tpl_sale_limit[$product['product_id']] = $product['sale_limit'];
         }
-
-        return $this;
     }
 
     //支払方法の取得
