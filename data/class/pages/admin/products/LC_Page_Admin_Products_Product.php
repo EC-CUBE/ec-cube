@@ -282,6 +282,7 @@ class LC_Page_Admin_Products_Product extends LC_Page {
 
     /* 登録済みおすすめ商品の読み込み */
     function lfPreGetRecommendProducts($product_id) {
+        $arrRecommend = array();
         $objQuery = new SC_Query();
         $objQuery->setorder("rank DESC");
         $arrRet = $objQuery->select("recommend_product_id, comment", "dtb_recommend_products", "product_id = ?", array($product_id));
