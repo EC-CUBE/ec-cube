@@ -44,56 +44,56 @@ case 'csv_upload':
 	$err = false;
 	// エラーチェック
 	$arrErr['csv_file'] = $objUpFile->makeTempFile('csv_file');
-	
+
 	if($arrErr['css_file'] == "") {
 		$arrErr = $objUpFile->checkEXISTS();
 	}
 
 	// 実行時間を制限しない
 	set_time_limit(0);
-	
+
 	// 出力をバッファリングしない(==日本語自動変換もしない)
 	ob_end_clean();
-	
+
 	// IEのために256バイト空文字出力
 	echo str_pad('',256);
-		
+
 	if($arrErr['csv_file'] == "") {
 		// 一時ファイル名の取得
 		$filepath = $objUpFile->getTempFilePath('csv_file');
 		// エンコード
 		$enc_filepath = sfEncodeFile($filepath, CHAR_CODE, CSV_TEMP_DIR);
-		
+
 		// レコード数を得る
-		$rec_count = lfCSVRecordCount($enc_filepath);		
-		
+		$rec_count = lfCSVRecordCount($enc_filepath);
+
 		$fp = fopen($enc_filepath, "r");
 		$line = 0;		// 行数
 		$regist = 0;	// 登録数
-		
+
 		$objQuery = new SC_Query();
 		$objQuery->begin();
-		
-		echo "■　CSV登録進捗状況 <br/><br/>\n";				
-				
+
+		echo "■　CSV登録進捗状況 <br/><br/>\n";
+
 		while(!feof($fp) && !$err) {
 			$arrCSV = fgetcsv($fp, CSV_LINE_MAX);
-						
+
 			// 行カウント
 			$line++;
-			
+
 			if($line <= 1) {
 				continue;
-			}			
-								
+			}
+
 			// 項目数カウント
 			$max = count($arrCSV);
-			
+
 			// 項目数が1以下の場合は無視する
 			if($max <= 1) {
-				continue;			
+				continue;
 			}
-			
+
 			// 項目数チェック
 			if($max != $colmax) {
 				echo "※ 項目数が" . $max . "個検出されました。項目数は" . $colmax . "個になります。</br>\n";
@@ -108,27 +108,27 @@ case 'csv_upload':
 				// <br>なしでエラー取得する。
 				$arrCSVErr = lfCheckError();
 			}
-			
+
 			// 入力エラーチェック
 			if(count($arrCSVErr) > 0) {
 				echo "<font color=\"red\">■" . $line . "行目でエラーが発生しました。</font></br>\n";
 				foreach($arrCSVErr as $val) {
-					echo "<font color=\"red\">$val</font></br>\n";	
+					echo "<font color=\"red\">" . htmlspecialchars($val, ENT_QUOTES) . "</font></br>\n";
 				}
 				$err = true;
 			}
-			
+
 			if(!$err) {
 				lfRegistProduct($objQuery, $line);
 				$regist++;
 			}
 			$arrParam = $objFormParam->getHashArray();
- 
+
 			if(!$err) echo $line." / ".$rec_count. "行目　（商品ID：".$arrParam['product_id']." / 商品名：".$arrParam['name'].")\n<br />";
 			flush();
 		}
 		fclose($fp);
-		
+
 		if(!$err) {
 			$objQuery->commit();
 			echo "■" . $regist . "件のレコードを登録しました。";
@@ -139,12 +139,12 @@ case 'csv_upload':
 		}
 	} else {
 		foreach($arrErr as $val) {
-			echo "<font color=\"red\">$val</font></br>\n";	
+			echo "<font color=\"red\">$val</font></br>\n";
 		}
 	}
 	echo "<br/><a href=\"javascript:window.close()\">→閉じる</a>";
 	flush();
-	exit;	
+	exit;
 	break;
 default:
 	break;
@@ -155,7 +155,7 @@ $objView->display(MAIN_FRAME);
 
 //--------------------------------------------------------------------------------------------------------------------------
 
-/* 
+/*
  * 関数名：lfInitFile
  * 説明　：ファイル情報の初期化
  */function lfInitFile() {
@@ -163,19 +163,19 @@ $objView->display(MAIN_FRAME);
 	$objUpFile->addFile("CSVファイル", 'csv_file', array('csv'), CSV_SIZE, true, 0, 0, false);
 }
 
-/* 
+/*
  * 関数名：lfInitParam
  * 説明　：入力情報の初期化
  */
 function lfInitParam() {
 	global $objFormParam;
-		
+
 	$objFormParam->addParam("商品ID", "product_id", INT_LEN, "n", array("MAX_LENGTH_CHECK","NUM_CHECK"));
 	$objFormParam->addParam("商品規格ID", "product_class_id", INT_LEN, "n", array("MAX_LENGTH_CHECK","NUM_CHECK"));
-	
+
 	$objFormParam->addParam("規格名1", "dummy1");
 	$objFormParam->addParam("規格名2", "dummy2");
-	
+
 	$objFormParam->addParam("商品名", "name", STEXT_LEN, "KVa", array("EXIST_CHECK","SPTAB_CHECK","MAX_LENGTH_CHECK"));
 	$objFormParam->addParam("公開フラグ(1:公開 2:非公開)", "status", INT_LEN, "n", array("EXIST_CHECK","MAX_LENGTH_CHECK","NUM_CHECK"));
 	$objFormParam->addParam("商品ステータス", "product_flag", INT_LEN, "n", array("EXIST_CHECK","MAX_LENGTH_CHECK","NUM_CHECK"));
@@ -199,38 +199,38 @@ function lfInitParam() {
 	$objFormParam->addParam("詳細-サブコメント(1)", "sub_comment1", LTEXT_LEN, "KVa", array("SPTAB_CHECK","MAX_LENGTH_CHECK"));
 	$objFormParam->addParam("詳細-サブ画像(1)", "sub_image1", LTEXT_LEN, "KVa", array("FILE_EXISTS","SPTAB_CHECK","MAX_LENGTH_CHECK"));
 	$objFormParam->addParam("詳細-サブ拡大画像(1)", "sub_large_image1", LTEXT_LEN, "KVa", array("FILE_EXISTS","SPTAB_CHECK","MAX_LENGTH_CHECK"));
-	
+
 	$objFormParam->addParam("詳細-サブタイトル(2)", "sub_title2", LTEXT_LEN, "KVa", array("SPTAB_CHECK","MAX_LENGTH_CHECK"));
 	$objFormParam->addParam("詳細-サブコメント(2)", "sub_comment2", LTEXT_LEN, "KVa", array("SPTAB_CHECK","MAX_LENGTH_CHECK"));
 	$objFormParam->addParam("詳細-サブ画像(2)", "sub_image2", LTEXT_LEN, "KVa", array("FILE_EXISTS","SPTAB_CHECK","MAX_LENGTH_CHECK"));
 	$objFormParam->addParam("詳細-サブ拡大画像(2)", "sub_large_image2", LTEXT_LEN, "KVa", array("FILE_EXISTS","SPTAB_CHECK","MAX_LENGTH_CHECK"));
-	
+
 	$objFormParam->addParam("詳細-サブタイトル(3)", "sub_title3", LTEXT_LEN, "KVa", array("SPTAB_CHECK","MAX_LENGTH_CHECK"));
 	$objFormParam->addParam("詳細-サブコメント(3)", "sub_comment3", LTEXT_LEN, "KVa", array("SPTAB_CHECK","MAX_LENGTH_CHECK"));
 	$objFormParam->addParam("詳細-サブ画像(3)", "sub_image3", LTEXT_LEN, "KVa", array("FILE_EXISTS","SPTAB_CHECK","MAX_LENGTH_CHECK"));
 	$objFormParam->addParam("詳細-サブ拡大画像(3)", "sub_large_image3", LTEXT_LEN, "KVa", array("FILE_EXISTS","SPTAB_CHECK","MAX_LENGTH_CHECK"));
-		
+
 	$objFormParam->addParam("詳細-サブタイトル(4)", "sub_title4", LTEXT_LEN, "KVa", array("SPTAB_CHECK","MAX_LENGTH_CHECK"));
 	$objFormParam->addParam("詳細-サブコメント(4)", "sub_comment4", LTEXT_LEN, "KVa", array("SPTAB_CHECK","MAX_LENGTH_CHECK"));
 	$objFormParam->addParam("詳細-サブ画像(4)", "sub_image4", LTEXT_LEN, "KVa", array("FILE_EXISTS","SPTAB_CHECK","MAX_LENGTH_CHECK"));
 	$objFormParam->addParam("詳細-サブ拡大画像(4)", "sub_large_image4", LTEXT_LEN, "KVa", array("FILE_EXISTS","SPTAB_CHECK","MAX_LENGTH_CHECK"));
-		
+
 	$objFormParam->addParam("詳細-サブタイトル(5)", "sub_title5", LTEXT_LEN, "KVa", array("SPTAB_CHECK","MAX_LENGTH_CHECK"));
 	$objFormParam->addParam("詳細-サブコメント(5)", "sub_comment5", LTEXT_LEN, "KVa", array("SPTAB_CHECK","MAX_LENGTH_CHECK"));
 	$objFormParam->addParam("詳細-サブ画像(5)", "sub_image5", LTEXT_LEN, "KVa", array("FILE_EXISTS","SPTAB_CHECK","MAX_LENGTH_CHECK"));
 	$objFormParam->addParam("詳細-サブ拡大画像(5)", "sub_large_image5", LTEXT_LEN, "KVa", array("FILE_EXISTS","SPTAB_CHECK","MAX_LENGTH_CHECK"));
-	
+
 	$objFormParam->addParam("発送日目安", "deliv_date_id", INT_LEN, "n", array("MAX_LENGTH_CHECK","NUM_CHECK"));
-	
+
     for ($cnt = 1; $cnt <= RECOMMEND_PRODUCT_MAX; $cnt++) {
         $objFormParam->addParam("おすすめ商品($cnt)", "recommend_product_id$cnt", INT_LEN, "n", array("MAX_LENGTH_CHECK","NUM_CHECK"));
         $objFormParam->addParam("詳細-サブコメント($cnt)", "recommend_comment$cnt", LTEXT_LEN, "KVa", array("SPTAB_CHECK","MAX_LENGTH_CHECK"));
     }
-    
+
 	$objFormParam->addParam("商品カテゴリ", "category_id", STEXT_LEN, "n", array("EXIST_CHECK", "SPTAB_CHECK", "MAX_LENGTH_CHECK"));
 }
 
-/* 
+/*
  * 関数名：lfRegistProduct
  * 引数1 ：SC_Queryオブジェクト
  * 説明　：商品登録
@@ -238,7 +238,7 @@ function lfInitParam() {
 function lfRegistProduct($objQuery, $line = "") {
 	global $objFormParam;
 	$arrRet = $objFormParam->getHashArray();
-	
+
 	// dtb_products以外に登録される値を除外する。
 	foreach($arrRet as $key => $val) {
 		switch($key) {
@@ -273,16 +273,16 @@ function lfRegistProduct($objQuery, $line = "") {
 	if($line != "") {
 		$microtime = sprintf("%06d", $line);
 		$time .= ".$microtime";
-	}	
+	}
 	$sqlval['update_date'] = $time;
 	$sqlval['creator_id'] = $_SESSION['member_id'];
-		
+
 	if($sqlval['sale_limit'] == "") {
 		$sqlval['sale_unlimited'] = '1';
 	} else {
-		$sqlval['sale_unlimited'] = '0';		
+		$sqlval['sale_unlimited'] = '0';
 	}
-	
+
 	if($sqlval['status'] == "") {
 		$sqlval['status'] = 2;
 	}
@@ -311,20 +311,20 @@ function lfRegistProduct($objQuery, $line = "") {
         }elseif (DB_TYPE == "mysql") {
             $product_id = $objQuery->get_auto_increment("dtb_products");
         }
-        
+
         $sqlval['product_id'] = $product_id;
 		$sqlval['create_date'] = $time;
-		
+
 		// カテゴリ内で最大のランクを割り当てる
 		$sqlval['rank'] = $objQuery->max("dtb_products", "rank", "category_id = ?", array($arrRet['category_id'])) + 1;
-		
+
 		// INSERTの実行
 		$objQuery->insert("dtb_products", $sqlval);
 	}
-	
+
 	// 規格登録
 	lfRegistProductClass($objQuery, $arrRet, $sqlval['product_id'], $arrRet['product_class_id']);
-	
+
 	// おすすめ商品登録
 	$objQuery->delete("dtb_recommend_products", "product_id = ?", array($sqlval['product_id']));
 	for($i = 1; $i <= RECOMMEND_PRODUCT_MAX; $i++) {
@@ -346,7 +346,7 @@ function lfRegistProduct($objQuery, $line = "") {
 	}
 }
 
-/* 
+/*
  * 関数名：lfRegistProductClass
  * 引数1 ：SC_Queryオブジェクト
  * 引数2 ：商品規格情報配列
@@ -360,7 +360,7 @@ function lfRegistProductClass($objQuery, $arrList, $product_id, $product_class_i
 	if($sqlval['stock'] == "") {
 		$sqlval['stock_unlimited'] = '1';
 	} else {
-		$sqlval['stock_unlimited'] = '0';		
+		$sqlval['stock_unlimited'] = '0';
 	}
 	$sqlval['price01'] = $arrList['price01'];
 	$sqlval['price02'] = $arrList['price02'];
@@ -368,7 +368,7 @@ function lfRegistProductClass($objQuery, $arrList, $product_id, $product_class_i
 	if($sqlval['member_id'] == "") {
 		$sqlval['creator_id'] = '0';
 	}
-		
+
 	if($product_class_id == "") {
 		// 新規登録
 		$where = "product_id = ?";
@@ -382,11 +382,11 @@ function lfRegistProductClass($objQuery, $arrList, $product_id, $product_class_i
 	} else {
 		// 既存編集
 		$where = "product_id = ? AND product_class_id = ?";
-		$objQuery->update("dtb_products_class", $sqlval, $where, array($product_id, $product_class_id));	
+		$objQuery->update("dtb_products_class", $sqlval, $where, array($product_id, $product_class_id));
 	}
 }
 
-/* 
+/*
  * 関数名：lfCheckError
  * 説明　：入力チェック
  */
@@ -396,7 +396,7 @@ function lfCheckError() {
 	$arrRet =  $objFormParam->getHashArray();
 	$objErr = new SC_CheckError($arrRet);
 	$objErr->arrErr = $objFormParam->checkError(false);
-	
+
 	if(count($objErr->arrErr) == 0) {
 		$objQuery = new SC_Query();
 		// 商品ID、規格IDの存在チェック
@@ -406,7 +406,7 @@ function lfCheckError() {
 				$objErr->arrErr['product_id'] = "※ 指定の商品IDは、登録されていません。";
 			}
 		}
-				
+
 		if($arrRet['product_class_id'] != "") {
 			$count = 0;
 			if($arrRet['product_id'] != "") {
@@ -416,7 +416,7 @@ function lfCheckError() {
 				$objErr->arrErr['product_class_id'] = "※ 指定の規格IDは、登録されていません。";
 			}
 		}
-		
+
 		// 存在するカテゴリIDかチェック
 		$count = $objQuery->count("dtb_category", "category_id = ?", array($arrRet['category_id']));
 		if($count == 0) {
@@ -426,20 +426,20 @@ function lfCheckError() {
 	return $objErr->arrErr;
 }
 
-/* 
+/*
  * 関数名：lfCSVRecordCount
  * 説明　：CSVのカウント数を得る
  * 引数1 ：ファイルパス
  */
 function lfCSVRecordCount($file_name) {
-	
+
 	$count = 0;
 	$fp = fopen($file_name, "r");
 	while(!feof($fp)) {
 		$arrCSV = fgetcsv($fp, CSV_LINE_MAX);
 		$count++;
 	}
-	
+
 	return $count-1;
 }
 ?>
