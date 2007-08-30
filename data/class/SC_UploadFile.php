@@ -142,8 +142,12 @@ class SC_UploadFile {
             if(isset($this->temp_file[$cnt]) && $this->temp_file[$cnt] != "") {
 
                 $objImage->moveTempImage($this->temp_file[$cnt], $this->save_dir);
+
                 // すでに保存ファイルがあった場合は削除する。
-                if($this->save_file[$cnt] != "" && !ereg("^sub/", $this->save_file[$cnt])) {
+                if(isset($this->save_file[$cnt])
+                   && $this->save_file[$cnt] != ""
+                   && !ereg("^sub/", $this->save_file[$cnt])) {
+
                     $objImage->deleteImage($this->save_file[$cnt], $this->save_dir);
                 }
             }
@@ -235,7 +239,7 @@ class SC_UploadFile {
             if(isset($this->temp_file[$cnt]) && $this->temp_file[$cnt] != "") {
                 $arrRet[$val] = $this->temp_file[$cnt];
             } else  {
-                $arrRet[$val] = $this->save_file[$cnt];
+                $arrRet[$val] = isset($this->save_file[$cnt]) ? $this->save_file[$cnt] : "";
             }
             $cnt++;
         }
