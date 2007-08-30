@@ -9,22 +9,13 @@
 require_once(CLASS_PATH . "pages/LC_Page.php");
 
 /**
- * XXX のページクラス.
+ * アンケート のページクラス.
  *
  * @package Page
  * @author LOCKON CO.,LTD.
  * @version $Id$
  */
 class LC_Page_Inquiry extends LC_Page {
-
-    // {{{ properties
-
-    // TODO
-    var $errmsg;
-    var $arrPref;
-
-    var $QUESTION;
-    var $question_id;
 
     // }}}
     // {{{ functions
@@ -53,7 +44,9 @@ class LC_Page_Inquiry extends LC_Page {
 
 
         // 都道府県プルダウン用配列
-        $objPage->arrPref = $arrPref;
+        $masterData = new SC_DB_MasterData_Ex();
+        $this->arrPrfef = $masterData->getMasterData("mtb_pref",
+                                  array("pref_id", "pref_name", "rank"));
 
         // CSV保存項目
         //---- 登録用カラム配列 オプション以外
@@ -84,58 +77,58 @@ class LC_Page_Inquiry extends LC_Page {
         // テンプレート登録項目取得
         $sql = "SELECT question_id, question FROM dtb_question WHERE question_id = ?";
         $result = $conn->getAll( $sql, array($_REQUEST['question_id']) );
-        $objPage->QUESTION = lfGetArrInput( unserialize( $result[0]['question'] ) );
+        $this->QUESTION = $this->lfGetArrInput( unserialize( $result[0]['question'] ) );
 
-        $objPage->question_id = $_REQUEST['question_id'];
+        $this->question_id = $_REQUEST['question_id'];
 
-        $objPage->arrHidden = sfMakeHiddenArray($_POST);
-        unset($objPage->arrHidden['mode']);
+        $this->arrHidden = SC_Utils_Ex::sfMakeHiddenArray($_POST);
+        unset($this->arrHidden['mode']);
 
-        if ( (int)$objPage->QUESTION["delete"] !== 0 ){
+        if ( (int)$this->QUESTION["delete"] !== 0 ){
 
             $objPage->tpl_mainpage = "inquiry/closed.tpl";
 
         } elseif( $_POST['mode'] == "confirm" ) {
 
             //--　入力エラーチェック
-            $objPage->arrForm = $_POST;
-            $objPage->arrForm = lfConvertParam($objPage->arrForm, $arrRegistColumn);
-            $objPage->arrErr = lfErrorCheck($objPage->arrForm);
-            $objPage->arrErr = lfGetArrInput($objPage->arrErr);
+            $this->arrForm = $_POST;
+            $this->arrForm = $this->lfConvertParam($this->arrForm, $arrRegistColumn);
+            $this->arrErr = $this->lfErrorCheck($this->arrForm);
+            $this->arrErr = $this->lfGetArrInput($this->arrErr);
 
-            if( ! $objPage->arrErr ) {
-                $objPage->tpl_mainpage = "inquiry/confirm.tpl";
+            if( ! $this->arrErr ) {
+                $this->tpl_mainpage = "inquiry/confirm.tpl";
             }
 
 
         }elseif( $_POST['mode'] == "return"){
-            $objPage->arrForm = $_POST;
+            $this->arrForm = $_POST;
 
         }elseif( $_POST['mode'] == "regist" )  {
 
             //--　入力文字・変換＆エラーチェック
-            $objPage->arrForm = $_POST;
-            $objPage->arrForm = lfConvertParam($objPage->arrForm, $arrRegistColumn);
-            $objPage->arrErr = lfErrorCheck($objPage->arrForm);
-            $objPage->arrErr = lfGetArrInput($objPage->arrErr);
+            $this->arrForm = $_POST;
+            $this->arrForm = $this->lfConvertParam($this->arrForm, $arrRegistColumn);
+            $this->arrErr = $this->lfErrorCheck($this->arrForm);
+            $this->arrErr = $this->GGlfGetArrInput($this->arrErr);
 
 
-            if( ! $objPage->arrErr ) {
+            if( ! $this->arrErr ) {
 
                 //完了画面
-                $objPage->tpl_mainpage = "inquiry/complete.tpl";
+                $this->tpl_mainpage = "inquiry/complete.tpl";
 
 
                 //--------- ▼ SQL ---------//
 
                     // テーブルに入れるように整形する
-                    $arrOption = $objPage->arrForm['option'];
-                    unset ($objPage->arrForm['email02']);
-                    $objPage->arrForm['mail01'] = $objPage->arrForm['email'];
-                    unset ($objPage->arrForm['email']);
-                    unset ($objPage->arrForm['option']);
-                    $objPage->arrForm['question_id'] = $objPage->question_id;
-                    $objPage->arrForm['question_name'] = $objPage->QUESTION['title'];
+                    $arrOption = $this->arrForm['option'];
+                    unset ($this->arrForm['email02']);
+                    $this->arrForm['mail01'] = $this->arrForm['email'];
+                    unset ($this->arrForm['email']);
+                    unset ($this->arrForm['option']);
+                    $this->arrForm['question_id'] = $this->question_id;
+                    $this->arrForm['question_name'] = $this->QUESTION['title'];
                     for ( $i=0; $i<(count($arrOption)); $i++ ){
                         $tmp = "";
                         if ( is_array($arrOption[$i]) ){
@@ -143,30 +136,30 @@ class LC_Page_Inquiry extends LC_Page {
                                 if ( $j>0 ) $tmp .= ",";
                                 $tmp .= $arrOption[$i][$j];
                             }
-                            $objPage->arrForm['question0'.($i+1)] = $tmp;
+                            $this->arrForm['question0'.($i+1)] = $tmp;
                         } else {
-                            $objPage->arrForm['question0'.($i+1)] = $arrOption[$i];
+                            $this->arrForm['question0'.($i+1)] = $arrOption[$i];
                         }
                     }
-                    $objPage->arrForm['create_date'] = "now()";
+                    $this->arrForm['create_date'] = "now()";
                     // ＤＢ登録
                     $objQuery = new SC_Query();
-                    $objQuery->insert("dtb_question_result", $objPage->arrForm );
+                    $objQuery->insert("dtb_question_result", $this->arrForm );
 
                 //--------- ▲ SQL ---------//
 
             }
         }
 
-        $objPage->cnt_question = 6;
-        $objPage->arrActive = $arrActive;
-        $objPage->arrQuestion = $arrQuestion;
+        $this->cnt_question = 6;
+        $this->arrActive = $arrActive;
+        $this->arrQuestion = $arrQuestion;
 
 
         //----　ページ表示
         $objView->_smarty->register_function("lfArray_Search_key_Smarty","lfArray_Search_key_Smarty");
-        $objView->assignobj($objPage);
-        $objView->display($objPage->tpl_mainpage);
+        $objView->assignobj($this);
+        $objView->display($this->tpl_mainpage);
     }
 
     /**
