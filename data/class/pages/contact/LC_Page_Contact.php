@@ -65,7 +65,7 @@ class LC_Page_Contact extends LC_Page {
 
         // レイアウトデザインを取得
         $layout = new SC_Helper_PageLayout_Ex();
-        $this->assignPage = $layout->sfGetPageLayout($this, false, DEF_LAYOUT);
+        $layout->sfGetPageLayout($this, false, DEF_LAYOUT);
 
         //フォーム値変換用カラム
         $arrConvertColumn = array(
@@ -131,7 +131,7 @@ class LC_Page_Contact extends LC_Page {
         }
 
         //----　ページ表示
-        $objView->assignobj($this->assignPage);
+        $objView->assignobj($this);
         // フレームを選択(キャンペーンページから遷移なら変更)
         $objCampaignSess->pageView($objView);
     }
