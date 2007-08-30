@@ -13,6 +13,8 @@ require_once(CLASS_PATH . "page_extends/error/LC_Page_Error_Ex.php");
  *
  * 主に static 参照するユーティリティ系の関数群
  *
+ * :XXX: 内部でインスタンスを生成している関数は, Helper クラスへ移動するべき...
+ *
  * @package Util
  * @author LOCKON CO.,LTD.
  * @version $Id$
