@@ -452,7 +452,7 @@ class SC_Helper_DB {
         $objQuery->setoption("ORDER BY rank DESC");
         $arrRet = $objQuery->select($col, $from, $where);
 
-        $arrParentID = sfGetParents($objQuery, 'dtb_category', 'parent_category_id', 'category_id', $parent_category_id);
+        $arrParentID = $this->sfGetParents($objQuery, 'dtb_category', 'parent_category_id', 'category_id', $parent_category_id);
 
         foreach($arrRet as $key => $array) {
             foreach($arrParentID as $val) {
