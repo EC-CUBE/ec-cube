@@ -35,7 +35,8 @@ class SC_CartSession {
 
     // 商品購入中の変更があったかをチェックする。
     function getCancelPurchase() {
-        $ret = $_SESSION[$this->key]['cancel_purchase'];
+        $ret = isset($_SESSION[$this->key]['cancel_purchase'])
+            ? $_SESSION[$this->key]['cancel_purchase'] : "";
         $_SESSION[$this->key]['cancel_purchase'] = false;
         return $ret;
     }
