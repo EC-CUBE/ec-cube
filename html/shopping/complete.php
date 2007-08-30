@@ -62,9 +62,11 @@ if ($uniqid != "") {
     
     //登録されているメールアドレスが携帯かPCかに応じて注文完了メールのテンプレートを変える
     if(ereg("(ezweb.ne.jp$|docomo.ne.jp$|softbank.ne.jp$|vodafone.ne.jp$)",$order_email[0]['order_email'])){
-              sfSendOrderMail($order_id, '1',"","");
+            // モバイル版
+    		sfSendOrderMail($order_id, '2');
         }else{
-              sfSendOrderMail($order_id, '0',"","");
+			// PC版
+        	sfSendOrderMail($order_id, '1');
         }
 	}
 

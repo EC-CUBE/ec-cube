@@ -223,7 +223,8 @@ insert into dtb_csv(csv_id,col,disp_name,rank,create_date,update_date)values(4,'
 
 INSERT INTO dtb_templates (template_code, template_name, create_date, update_date) VALUES('default1','デフォルト1', now(), now());
 
-insert into dtb_mailtemplate (subject, body, creator_id, update_date, create_date, send_type, template_name) values (
+insert into dtb_mailtemplate (template_id, subject, body, creator_id, update_date, create_date, send_type, template_name) values (
+'1',
 'ご注文ありがとうございます。',
 '{name}様
 
@@ -243,7 +244,8 @@ Now(),
 0,
 '受注完了テンプレート(PC用)');
 
-insert into dtb_mailtemplate (subject, body, creator_id, update_date, create_date, send_type, template_name) values (
+insert into dtb_mailtemplate (template_id, subject, body, creator_id, update_date, create_date, send_type, template_name) values (
+'2',
 'ご注文ありがとうございます。',
 '{name}様
 

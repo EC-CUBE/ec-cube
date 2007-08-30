@@ -539,6 +539,7 @@ function sfCheckNormalAccess($objSiteSess, $objCartSess) {
 	$objCartSess->saveCurrentCart($uniqid);
 	// POSTのユニークIDとセッションのユニークIDを比較(ユニークIDがPOSTされていない場合はスルー)
 	$ret = $objSiteSess->checkUniqId();
+	
 	if($ret != true) {
 		// エラーページの表示
 		sfDispSiteError(CANCEL_PURCHASE, $objSiteSess);
@@ -1754,11 +1755,10 @@ function sfSendOrderMail($order_id, $template_id, $subject = "", $body = "", $se
 			if(sfTrim($other_val["value"]) == ""){
 				$arrOther[$other_key]["value"] = "";
 			}
-		}
-		
+		}		
 		$objPage->arrOther = $arrOther;
 	}
-
+		
 	// 都道府県変換
 	global $arrPref;
 	$objPage->arrOrder['deliv_pref'] = $arrPref[$objPage->arrOrder['deliv_pref']];
@@ -1771,19 +1771,15 @@ function sfSendOrderMail($order_id, $template_id, $subject = "", $body = "", $se
 	$objMailView = new SC_SiteView();
 	// メール本文の取得
 	$objMailView->assignobj($objPage);
+	
     $name = $objPage->arrOrder['order_name01']." ".$objPage->arrOrder['order_name02'];
     $objPage->tpl_body = ereg_replace( "(\{name\})", $name ,  $objPage->tpl_body );
     $tmp_subject = ereg_replace( "(\{name\})", $name ,  $tmp_subject );
-    
-    // $template_id==1は携帯用
-    if($template_id == '1'){
-	   $body = $objMailView->fetch($arrMAILTPLPATH[1]);
-       $body = ereg_replace( "(\{order\})", $body ,  $objPage->tpl_body );
-    }else{
-       $body = $objMailView->fetch($arrMAILTPLPATH[0]); 
-       $body = ereg_replace( "(\{order\})", $body ,  $objPage->tpl_body );
-    }
-    
+	 
+    // 受注動的部分を取得
+	$body = $objMailView->fetch($arrMAILTPLPATH[$template_id]);
+    $body = ereg_replace( "(\{order\})", $body ,  $objPage->tpl_body );
+        
 	// メール送信処理
 	$objSendMail = new GC_SendMail();
 	$bcc = $arrInfo['email01'];
@@ -1794,7 +1790,6 @@ function sfSendOrderMail($order_id, $template_id, $subject = "", $body = "", $se
 	
 	$objSendMail->setItem('', $tosubject, $body, $from, $arrInfo['shop_name'], $from, $error, $error, $bcc);
 	$objSendMail->setTo($arrOrder["order_email"], $arrOrder["order_name01"] . " ". $arrOrder["order_name02"] ." 様");
-
 
 	// 送信フラグ:trueの場合は、送信する。
 	if($send) {
