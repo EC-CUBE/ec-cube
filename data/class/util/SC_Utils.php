@@ -893,7 +893,7 @@ class SC_Utils {
         $objQuery = new SC_Query();
         $arrList = $objQuery->getall($sql);
         // キーと値をセットした配列を取得
-        $arrRet = sfArrKeyValue($arrList, 'class_id', 'count');
+        $arrRet = SC_Utils::sfArrKeyValue($arrList, 'class_id', 'count');
 
         return $arrRet;
     }
