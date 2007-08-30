@@ -27,6 +27,14 @@ class LC_Page_Order extends LC_Page {
      */
     function init() {
         parent::init();
+        $this->tpl_css = URL_DIR.'css/layout/order/index.css';
+        $this->tpl_mainpage = 'order/index.tpl';
+        $this->tpl_page_category = 'order';
+        $this->tpl_title = '特定商取引に関する法律';
+
+        $masterData = new SC_DB_MasterData_Ex();
+        $this->arrPref = $masterData->getMasterData("mtb_pref",
+                                 array("pref_id", "pref_name", "rank"));
     }
 
     /**
@@ -37,18 +45,12 @@ class LC_Page_Order extends LC_Page {
     function process() {
         $objView = new SC_SiteView();
         $objQuery = new SC_Query();
+        $layout = new SC_Helper_PageLayout_Ex();
+        $objDb = new SC_Helper_DB_Ex();
 
         // レイアウトデザインを取得
-        $layout = new SC_Helper_PageLayout_Ex();
         $layout->sfGetPageLayout($this, false, DEF_LAYOUT);
-        // FIXME
-        //$arrRet = $objQuery->getall("SELECT * FROM dtb_baseinfo",array());
-        //$this->arrRet = $arrRet[0];
-        $objDb = new SC_Helper_DB_Ex();
         $this->arrRet = $objDb->sf_getBasisData();
-        $masterData = new SC_DB_MasterData_Ex();
-        $this->arrPref = $masterData->getMasterData("mtb_pref",
-                                 array("pref_id", "pref_name", "rank"));
 
         $objView->assignobj($this);
         $objView->display(SITE_FRAME);
