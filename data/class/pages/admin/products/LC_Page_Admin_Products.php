@@ -262,7 +262,7 @@ class LC_Page_Admin_Products extends LC_Page {
                     $this->tpl_linemax = $linemax;				// 何件が該当しました。表示用
 
                     // ページ送りの処理
-                    if(is_num($_POST['search_page_max'])) {
+                    if(is_numeric($_POST['search_page_max'])) {
                         $page_max = $_POST['search_page_max'];
                     } else {
                         $page_max = SEARCH_PMAX;
