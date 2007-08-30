@@ -440,12 +440,12 @@ class LC_Page_Admin_Products_Product extends LC_Page {
         } else {
             $product_id = $arrList['product_id'];
             // 削除要求のあった既存ファイルの削除
-            $arrRet = lfGetProduct($arrList['product_id']);
+            $arrRet = $this->lfGetProduct($arrList['product_id']);
             $this->objUpFile->deleteDBFile($arrRet);
 
             // カテゴリ内ランクの調整処理
             $old_catid = $objQuery->get("dtb_products", "category_id", "product_id = ?", array($arrList['product_id']));
-            sfMoveCatRank($objQuery, "dtb_products", "product_id", "category_id", $old_catid, $arrList['category_id'], $arrList['product_id']);
+            SC_Utils_Ex::sfMoveCatRank($objQuery, "dtb_products", "product_id", "category_id", $old_catid, $arrList['category_id'], $arrList['product_id']);
 
             // UPDATEの実行
             $where = "product_id = ?";
