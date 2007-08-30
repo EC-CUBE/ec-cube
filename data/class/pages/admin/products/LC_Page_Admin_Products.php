@@ -262,7 +262,7 @@ class LC_Page_Admin_Products extends LC_Page {
                     $this->tpl_linemax = $linemax;				// 何件が該当しました。表示用
 
                     // ページ送りの処理
-                    if(is_numeric($_POST['search_page_max'])) {
+                    if(is_num($_POST['search_page_max'])) {
                         $page_max = $_POST['search_page_max'];
                     } else {
                         $page_max = SEARCH_PMAX;
@@ -288,7 +288,7 @@ class LC_Page_Admin_Products extends LC_Page {
                     // 表示順序
                     $objQuery->setorder($order);
 //
-//                    // viewも絞込みをかける(mysql用)
+//                    // viewも絞込みをかける(mysql用) TODO
 //                    sfViewWhere("&&noncls_where&&", $view_where, $arrval, $objQuery->order . " " .  $objQuery->setlimitoffset($page_max, $startno, true));
 //
                     // 検索結果の取得
@@ -300,7 +300,7 @@ class LC_Page_Admin_Products extends LC_Page {
         }
 
         // カテゴリの読込
-        $this->arrCatList = SC_Utils_Ex::sfGetCategoryList();
+        $this->arrCatList = $objDb->sfGetCategoryList();
         $this->arrCatIDName = $this->lfGetIDName($this->arrCatList);
 
         // 画面の表示
