@@ -512,7 +512,7 @@ class LC_Page_Shopping_Complete extends LC_Page {
         // ポイントが不足している場合
         if($sqlval['point'] < 0) {
             $objQuery->rollback();
-            sfDispSiteError(LACK_POINT);
+            SC_Utils_Ex::sfDispSiteError(LACK_POINT);
         }
 
         $objQuery->update("dtb_customer", $sqlval, $where, array($customer_id));
@@ -526,7 +526,7 @@ class LC_Page_Shopping_Complete extends LC_Page {
         // 売り切れエラー
         if(($arrRet[0]['stock_unlimited'] != '1' && $arrRet[0]['stock'] < $quantity) || $quantity == 0) {
             $objQuery->rollback();
-            sfDispSiteError(SOLD_OUT, "", true);
+            SC_Utils_Ex::sfDispSiteError(SOLD_OUT, "", true);
         // 無制限の場合、在庫はNULL
         } elseif($arrRet[0]['stock_unlimited'] == '1') {
             $sqlval['stock'] = null;
