@@ -19,7 +19,11 @@ define ("DB_ERROR_MAIL_SUBJECT", "OS_TEST_ERROR");
 
 if(defined('DB_TYPE') && defined('DB_USER') && defined('DB_PASSWORD') && defined('DB_SERVER') && defined('DB_PORT') && defined('DB_NAME')) {
 	// サイト用DB
-	define ("DEFAULT_DSN", DB_TYPE . "://" . DB_USER . ":" . DB_PASSWORD . "@" . DB_SERVER . ":" .DB_PORT . "/" . DB_NAME);
+    if (DB_TYPE == 'oci8') { // TODO
+        define ("DEFAULT_DSN", DB_TYPE . "://" . DB_USER . ":" . DB_PASSWORD . "@" . DB_SERVER);
+    } else {
+        define ("DEFAULT_DSN", DB_TYPE . "://" . DB_USER . ":" . DB_PASSWORD . "@" . DB_SERVER . ":" .DB_PORT . "/" . DB_NAME);
+    }
 }
 
 // 郵便番号専用DB
