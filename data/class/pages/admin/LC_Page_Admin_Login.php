@@ -44,6 +44,9 @@ class LC_Page_Admin_Login extends LC_Page {
         $this->objSess = new SC_Session();
         $ret = false;
 
+        if (!isset($_POST['login_id'])) $_POST['login_id'] = "";
+        if (!isset($_POST['password'])) $_POST['password'] = "";
+
         // 入力判定
         if(strlen($_POST{'login_id'}) > 0 && strlen($_POST{'password'}) > 0) {
             // 認証パスワードの判定
