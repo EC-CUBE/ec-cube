@@ -9,26 +9,15 @@
  * モバイルサイト/トップページ
  */
 
-require_once('./require.php');
+// {{{ requires
+require_once("./require.php");
+require_once(CLASS_PATH . "page_extends/LC_Page_Index_Ex.php");
 
-class LC_Page {
-	function LC_Page() {
-		/** 必ず変更する **/
-		$this->tpl_mainpage = 'top.tpl';	// メインテンプレート
-	}
-}
+// }}}
+// {{{ generate page
 
-$objPage = new LC_Page();
-$conn = new SC_DBConn();
-$objCustomer = new SC_Customer();
-
-// レイアウトデザインを取得
-//$objPage = sfGetPageLayout($objPage, false, 'index.php');
-
-$objView = new SC_MobileView();
-$objView->assign("isLogin", $objCustomer->isLoginSuccess());
-$objView->assignobj($objPage);
-$objView->display(SITE_FRAME);
-
-//-----------------------------------------------------------------------------------------------------------------------------------
+$objPage = new LC_Page_Index_Ex();
+$objPage->mobileInit();
+$objPage->mobileProcess();
+register_shutdown_function(array($objPage, "destroy"));
 ?>
