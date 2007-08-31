@@ -1,4 +1,5 @@
-<?php //-*- coding: utf-8 -*-
+<!-- -*- coding: utf-8 -*- -->
+<?php
 /*
  * Copyright(c) 2000-2007 LOCKON CO.,LTD. All Rights Reserved.
  *
@@ -6,16 +7,16 @@
  */
 
 // {{{ requires
-require_once(CLASS_PATH . "pages/LC_Page.php");
+require_once(CLASS_PATH . "pages/error/LC_Page_Error.php");
 
 /**
  * エラー表示のページクラス
  *
  * @package Page
  * @author LOCKON CO.,LTD.
- * @version $Id$
+ * @version $Id: LC_Page_Error.php 15141 2007-07-27 10:59:11Z nanasess $
  */
-class LC_Page_Error extends LC_Page {
+class LC_Page_Error_DispError extends LC_Page_Error {
 
     // }}}
     // {{{ functions
@@ -27,7 +28,7 @@ class LC_Page_Error extends LC_Page {
      */
     function init() {
         parent::init();
-        $this->tpl_mainpage = 'error.tpl';
+        $this->tpl_mainpage = 'login_error.tpl';
         $this->tpl_css = URL_DIR.'css/layout/error.css';
         $this->tpl_title = 'エラー';
     }
