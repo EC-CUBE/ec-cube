@@ -25,70 +25,71 @@
 </noscript>
 <div align="center">
 <table width="550" border="0" cellspacing="0" cellpadding="0" summary=" ">
-	<tr><td height="15"></td></tr>
-	<tr><td bgcolor="#ffa85c"><img src="../misc/_.gif" width="1" height="5" alt=""></td></tr>
-	<tr>
-		<td align="center" bgcolor="ffffff">
-		<table width="500" border="0" cellspacing="0" cellpadding="0" summary=" ">
-		<form name="form1" method="post" action="<!--{$smarty.server.PHP_SELF|escape}-->">
-		<input type="hidden" name="mode" value="complete">
-		<!--{foreach from=$arrForm key=key item=item}-->
-		<!--{if $key ne "mode"}-->
-		<input type="hidden" name="<!--{$key|escape}-->" value="<!--{$item|escape}-->"><!--{/if}-->
-		<!--{/foreach}-->
-			<tr><td height="15"></td></tr>
-			<tr>
-				<td><img src="<!--{$smarty.const.URL_DIR}-->img/products/review_title.jpg" width="500" height="40" alt="お客様の声書き込み"></td>
-			</tr>
-			<tr><td height="15"></td></tr>
-			<tr>
-				<td bgcolor="#cccccc">
-				<table width="500" border="0" cellspacing="1" cellpadding="10" summary=" ">
-					<tr>
-						<td width="107" bgcolor="#f0f0f0" class="fs12n">商品名</td>
-						<td width="350" bgcolor="#ffffff" class="fs12n"><!--{$arrForm.name|escape}--></td>
-					</tr>
-					<tr>
-						<td bgcolor="#f0f0f0" class="fs12n">投稿者名<span class="red">※</span></td>
-						<td bgcolor="#ffffff" class="fs12n"><!--{$arrForm.reviewer_name|escape}--></td>
-					</tr>
-					<tr>
-						<td bgcolor="#f0f0f0" class="fs12n">ホームページアドレス</td>
-						<td bgcolor="#ffffff" class="fs12n"><!--{$arrForm.reviewer_url}--></td>
-					</tr>
-					<tr>
-						<td bgcolor="#f0f0f0" class="fs12n">性別</td>
-						<td bgcolor="#ffffff" class="fs12n"><!--{if $arrForm.sex eq 1 }-->男性<!--{elseif $arrForm.sex eq 2 }-->女性<!--{/if}--></td>
-					</tr>
-					<tr>
-						<td bgcolor="#f0f0f0" class="fs12n">おすすめレベル<span class="red">※</span></td>
-						<td bgcolor="#ffffff" class="fs12n"><span class="red"><!--{$arrRECOMMEND[$arrForm.recommend_level]}--></span></td>
-					</tr>
-					<tr>
-						<td bgcolor="#f0f0f0" class="fs12">タイトル<span class="red">※</span></td>
-						<td bgcolor="#ffffff" class="fs12"><!--{$arrForm.title|escape}--></td>
-					</tr>
-					<tr>
-						<td bgcolor="#f0f0f0" class="fs12">コメント<span class="red">※</span></td>
-						<td bgcolor="#ffffff" class="fs12"><!--{$arrForm.comment|escape|nl2br}--></td>
-					</tr>
-				</table>
-				</td>
-			</tr>
-			<tr><td height="15"></td></tr>
-			<tr>
-				<td align="center">
-					<input type="image" onclick=" mode.value='return';" onmouseover="chgImgImageSubmit('<!--{$smarty.const.URL_DIR}-->img/common/b_back_on.gif',this)" onmouseout="chgImgImageSubmit('<!--{$smarty.const.URL_DIR}-->img/common/b_back.gif',this)" src="<!--{$smarty.const.URL_DIR}-->img/common/b_back.gif" width="150" height="30" alt="戻る"  name="back" id="back" />
-					<input type="image" onmouseover="chgImgImageSubmit('<!--{$smarty.const.URL_DIR}-->img/common/b_send_on.gif',this)" onmouseout="chgImgImageSubmit('<!--{$smarty.const.URL_DIR}-->img/common/b_send.gif',this)" src="<!--{$smarty.const.URL_DIR}-->img/common/b_send.gif" width="150" height="30" alt="送信"  name="send" id="send" />
-				</td>
-			</tr>
-			<tr><td height="30"></td></tr>
-		</form>
-		</table>
-		</td>
-	</tr>
-	<tr><td bgcolor="#ffa85c"><img src="../misc/_.gif" width="1" height="5" alt=""></td></tr>
-	<tr><td height="20"></td></tr>
+    <tr><td height="15"></td></tr>
+    <tr><td bgcolor="#ffa85c"><img src="../misc/_.gif" width="1" height="5" alt=""></td></tr>
+    <tr>
+        <td align="center" bgcolor="ffffff">
+        <table width="500" border="0" cellspacing="0" cellpadding="0" summary=" ">
+        <form name="form1" method="post" action="<!--{$smarty.server.PHP_SELF|escape}-->">
+        <input type="hidden" name="mode" value="complete">
+        <!--{foreach from=$arrForm key=key item=item}-->
+        <!--{if $key ne "mode"}-->
+        <input type="hidden" name="<!--{$key|escape}-->" value="<!--{$item|escape}-->"><!--{/if}-->
+        <!--{/foreach}-->
+        <input type="hidden" name="<!--{$smarty.const.TRANSACTION_ID_NAME}-->" value="<!--{$transactionid}-->">
+            <tr><td height="15"></td></tr>
+            <tr>
+                <td><img src="<!--{$smarty.const.URL_DIR}-->img/products/review_title.jpg" width="500" height="40" alt="お客様の声書き込み"></td>
+            </tr>
+            <tr><td height="15"></td></tr>
+            <tr>
+                <td bgcolor="#cccccc">
+                <table width="500" border="0" cellspacing="1" cellpadding="10" summary=" ">
+                    <tr>
+                        <td width="107" bgcolor="#f0f0f0" class="fs12n">商品名</td>
+                        <td width="350" bgcolor="#ffffff" class="fs12n"><!--{$arrForm.name|escape}--></td>
+                    </tr>
+                    <tr>
+                        <td bgcolor="#f0f0f0" class="fs12n">投稿者名<span class="red">※</span></td>
+                        <td bgcolor="#ffffff" class="fs12n"><!--{$arrForm.reviewer_name|escape}--></td>
+                    </tr>
+                    <tr>
+                        <td bgcolor="#f0f0f0" class="fs12n">ホームページアドレス</td>
+                        <td bgcolor="#ffffff" class="fs12n"><!--{$arrForm.reviewer_url}--></td>
+                    </tr>
+                    <tr>
+                        <td bgcolor="#f0f0f0" class="fs12n">性別</td>
+                        <td bgcolor="#ffffff" class="fs12n"><!--{if $arrForm.sex eq 1 }-->男性<!--{elseif $arrForm.sex eq 2 }-->女性<!--{/if}--></td>
+                    </tr>
+                    <tr>
+                        <td bgcolor="#f0f0f0" class="fs12n">おすすめレベル<span class="red">※</span></td>
+                        <td bgcolor="#ffffff" class="fs12n"><span class="red"><!--{$arrRECOMMEND[$arrForm.recommend_level]}--></span></td>
+                    </tr>
+                    <tr>
+                        <td bgcolor="#f0f0f0" class="fs12">タイトル<span class="red">※</span></td>
+                        <td bgcolor="#ffffff" class="fs12"><!--{$arrForm.title|escape}--></td>
+                    </tr>
+                    <tr>
+                        <td bgcolor="#f0f0f0" class="fs12">コメント<span class="red">※</span></td>
+                        <td bgcolor="#ffffff" class="fs12"><!--{$arrForm.comment|escape|nl2br}--></td>
+                    </tr>
+                </table>
+                </td>
+            </tr>
+            <tr><td height="15"></td></tr>
+            <tr>
+                <td align="center">
+                    <input type="image" onclick=" mode.value='return';" onmouseover="chgImgImageSubmit('<!--{$smarty.const.URL_DIR}-->img/common/b_back_on.gif',this)" onmouseout="chgImgImageSubmit('<!--{$smarty.const.URL_DIR}-->img/common/b_back.gif',this)" src="<!--{$smarty.const.URL_DIR}-->img/common/b_back.gif" width="150" height="30" alt="戻る"  name="back" id="back" />
+                    <input type="image" onmouseover="chgImgImageSubmit('<!--{$smarty.const.URL_DIR}-->img/common/b_send_on.gif',this)" onmouseout="chgImgImageSubmit('<!--{$smarty.const.URL_DIR}-->img/common/b_send.gif',this)" src="<!--{$smarty.const.URL_DIR}-->img/common/b_send.gif" width="150" height="30" alt="送信"  name="send" id="send" />
+                </td>
+            </tr>
+            <tr><td height="30"></td></tr>
+        </form>
+        </table>
+        </td>
+    </tr>
+    <tr><td bgcolor="#ffa85c"><img src="../misc/_.gif" width="1" height="5" alt=""></td></tr>
+    <tr><td height="20"></td></tr>
 </table>
 </div>
 </body>
