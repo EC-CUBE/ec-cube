@@ -5,9 +5,6 @@
  * http://www.lockon.co.jp/
  */
 
-// {{{ requires
-require_once(CLASS_PATH . "page_extends/error/LC_Page_Error_Ex.php");
-
 /**
  * 各種ユーティリティクラス.
  *
@@ -113,7 +110,9 @@ class SC_Utils {
     /* エラーページの表示 */
     function sfDispError($type) {
 
-        $objPage = new LC_Page_Error_Ex();
+        require_once(CLASS_PATH . "page_extends/error/LC_Page_Error_DispError_Ex.php");
+
+        $objPage = new LC_Page_Error_DispError_Ex();
         $objPage->init();
         $objView = new SC_AdminView();
 
@@ -137,12 +136,14 @@ class SC_Utils {
 
         $objView->assignobj($objPage);
         $objView->display(LOGIN_FRAME);
-
         exit;
     }
 
     /* サイトエラーページの表示 */
     function sfDispSiteError($type, $objSiteSess = "", $return_top = false, $err_msg = "", $is_mobile = false) {
+
+        require_once(CLASS_PATH . "page_extends/error/LC_Page_Error_Ex.php");
+
         // FIXME
         global $objCampaignSess;
 
