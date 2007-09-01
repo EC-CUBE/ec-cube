@@ -4,6 +4,9 @@
  *
  * http://www.lockon.co.jp/
  */
+/*
+ * FIXME トラックバック機能の移植完了後に修正する
+ */
 require_once("../require.php");
 
 class LC_Page {
@@ -11,7 +14,7 @@ class LC_Page {
 	function LC_Page() {
 		$this->tpl_mainpage = 'products/trackback_edit.tpl';
 		$this->tpl_subnavi = 'products/subnavi.tpl';
-		$this->tpl_mainno = 'products';		
+		$this->tpl_mainno = 'products';
 		$this->tpl_subno = 'trackback';
 		$this->tpl_subtitle = 'トラックバック管理';
 	}
@@ -36,7 +39,7 @@ foreach ($_POST as $key => $val){
 $objPage->arrTrackBackStatus = $arrTrackBackStatus;
 
 //取得文字列の変換用カラム
-$arrRegistColumn = array (		
+$arrRegistColumn = array (
 						array( "column" => "update_date"),
 						array( "column" => "status"),
 						array(	"column" => "title","convert" => "KVa"),
@@ -98,7 +101,7 @@ function lfConvertParam($array, $arrRegistColumn) {
 	 *	文字列の変換
 	 *	K :  「半角(ﾊﾝｶｸ)片仮名」を「全角片仮名」に変換
 	 *	C :  「全角ひら仮名」を「全角かた仮名」に変換
-	 *	V :  濁点付きの文字を一文字に変換。"K","H"と共に使用します	
+	 *	V :  濁点付きの文字を一文字に変換。"K","H"と共に使用します
 	 *	n :  「全角」数字を「半角(ﾊﾝｶｸ)」に変換
 	 *  a :  全角英数字を半角英数字に変換する
 	 */
@@ -106,7 +109,7 @@ function lfConvertParam($array, $arrRegistColumn) {
 	foreach ($arrRegistColumn as $data) {
 		$arrConvList[ $data["column"] ] = $data["convert"];
 	}
-	
+
 	// 文字変換
 	foreach ($arrConvList as $key => $val) {
 		// POSTされてきた値のみ変換する。
