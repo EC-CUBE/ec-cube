@@ -91,7 +91,7 @@ class SC_UploadFile {
                                 $this->temp_file[$cnt] = $_FILES[$keyname]['name'];
                             }
                             $result  = copy($_FILES[$keyname]['tmp_name'], $this->temp_dir. "/". $this->temp_file[$cnt]);
-                            gfPrintLog($_FILES[$keyname]['name']." -> ".$this->temp_dir. "/". $this->temp_file[$cnt]);
+                            GC_Utils_Ex::gfPrintLog($_FILES[$keyname]['name']." -> ".$this->temp_dir. "/". $this->temp_file[$cnt]);
                         }
                     }
                 }
