@@ -629,7 +629,7 @@ class SC_Utils {
                 $val = mb_convert_encoding($val, CHAR_CODE, CHAR_CODE);
                 $line .= "\"".$val."\",";
             }
-            $line = ereg_replace(",$", "\n", $line);
+            $line = ereg_replace(",$", "\r\n", $line);
         }else{
             return false;
         }
