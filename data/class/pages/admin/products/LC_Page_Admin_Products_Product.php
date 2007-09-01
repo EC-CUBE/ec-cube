@@ -445,7 +445,7 @@ class LC_Page_Admin_Products_Product extends LC_Page {
 
             // カテゴリ内ランクの調整処理
             $old_catid = $objQuery->get("dtb_products", "category_id", "product_id = ?", array($arrList['product_id']));
-            SC_Utils_Ex::sfMoveCatRank($objQuery, "dtb_products", "product_id", "category_id", $old_catid, $arrList['category_id'], $arrList['product_id']);
+            $objDb->sfMoveCatRank($objQuery, "dtb_products", "product_id", "category_id", $old_catid, $arrList['category_id'], $arrList['product_id']);
 
             // UPDATEの実行
             $where = "product_id = ?";
