@@ -144,7 +144,7 @@ class SC_Helper_CSV {
                 $line .= "\"".$tmp."\",";
             }
             // 文末の","を変換
-            $line = ereg_replace(",$", "\n", $line);
+            $line = ereg_replace(",$", "\r\n", $line);
         }
         return $line;
     }
@@ -175,7 +175,7 @@ class SC_Helper_CSV {
             $line .= "\"".$tmp."\",";
         }
         // 文末の","を変換
-        $line = ereg_replace(",$", "\n", $line);
+        $line = ereg_replace(",$", "\r\n", $line);
         return $line;
     }
 
@@ -199,7 +199,7 @@ class SC_Helper_CSV {
             $line .= "\"".$tmp."\",";
         }
         // 文末の","を変換
-        $line = ereg_replace(",$", "\n", $line);
+        $line = ereg_replace(",$", "\r\n", $line);
         return $line;
     }
 
