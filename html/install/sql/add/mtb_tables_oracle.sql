@@ -1,3 +1,6 @@
+--
+-- FIXME 要修正
+--
 CREATE TABLE mtb_permission (
     id varchar2(128),
     name varchar2(4000),
