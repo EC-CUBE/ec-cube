@@ -95,6 +95,7 @@ class SC_Helper_CSV {
         $max = count($list_data);
         for($i = 0; $i < $max; $i++) {
             // 各項目をCSV出力用に変換する。
+            if (!isset($data)) $data = "";
             $data .= $this->lfMakeReviewCSV($list_data[$i]);
         }
         return $data;
@@ -154,13 +155,14 @@ class SC_Helper_CSV {
             $tmp = "";
             switch($key) {
             case 'sex':
-                $tmp = $this->arrSex[$val];
+                $tmp = isset($this->arrSex[$val]) ? $this->arrSex[$val] : "";
                 break;
             case 'recommend_level':
-                $tmp = $this->arrRECOMMEND[$val];
+                $tmp = isset($this->arrRECOMMEND[$val]) ? $this->arrRECOMMEND[$val]
+                                                        : "";
                 break;
             case 'status':
-                $tmp = $this->arrDISP[$val];
+                $tmp = isset($this->arrDISP[$val]) ? $this->arrDISP[$val] : "";
                 break;
             default:
                 $tmp = $val;
