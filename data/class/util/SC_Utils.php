@@ -623,6 +623,7 @@ class SC_Utils {
 
     /* 配列の要素をCSVフォーマットで出力する。*/
     function sfGetCSVList($array) {
+        $line = "";
         if (count($array) > 0) {
             foreach($array as $key => $val) {
                 $val = mb_convert_encoding($val, CHAR_CODE, CHAR_CODE);
