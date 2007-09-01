@@ -76,6 +76,7 @@ class SC_Helper_CSV {
             $list_data[$i]['classcategory_id2'] = $arrClassCatName[$list_data[$i]['classcategory_id2']];
 
             // 各項目をCSV出力用に変換する。
+            if (!isset($data)) $data = "";
             $data .= $this->lfMakeProductsCSV($list_data[$i]);
         }
         return $data;
@@ -114,6 +115,7 @@ class SC_Helper_CSV {
         $max = count($list_data);
         for($i = 0; $i < $max; $i++) {
             // 各項目をCSV出力用に変換する。
+            if (!isset($data)) $data = "";
             $data .= $this->lfMakeTrackbackCSV($list_data[$i]);
         }
         return $data;
@@ -306,5 +308,5 @@ class SC_Helper_CSV {
                                            'A.create_date'
                                            );
     }
-  }
+}
 ?>
