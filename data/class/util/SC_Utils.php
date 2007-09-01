@@ -14,7 +14,7 @@
  *
  * @package Util
  * @author LOCKON CO.,LTD.
- * @version $Id$
+ * @version $Id:SC_Utils.php 15532 2007-08-31 14:39:46Z nanasess $
  */
 class SC_Utils {
 
@@ -381,7 +381,7 @@ class SC_Utils {
     function sfCSVDownload($data, $prefix = ""){
 
         if($prefix == "") {
-            $dir_name = sfUpDirName();
+            $dir_name = SC_Utils::sfUpDirName();
             $file_name = $dir_name . date("ymdHis") .".csv";
         } else {
             $file_name = $prefix . date("ymdHis") .".csv";
