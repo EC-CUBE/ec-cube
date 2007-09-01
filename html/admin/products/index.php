@@ -7,7 +7,6 @@
 
 // {{{ requires
 require_once("../require.php");
-require_once("./index_csv.php");
 require_once(CLASS_PATH . "page_extends/admin/products/LC_Page_Admin_Products_Ex.php");
 
 // }}}
