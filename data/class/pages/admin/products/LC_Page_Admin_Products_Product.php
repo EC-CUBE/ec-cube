@@ -181,7 +181,7 @@ class LC_Page_Admin_Products_Product extends LC_Page {
         // 確認ページからの戻り
         case 'confirm_return':
             // 規格登録ありなし判定
-            $this->tpl_nonclass = lfCheckNonClass($_POST['product_id']);
+            $this->tpl_nonclass = $this->lfCheckNonClass($_POST['product_id']);
             $this->lfProductPage();		// 商品登録ページ
             break;
         // おすすめ商品選択
@@ -247,6 +247,8 @@ class LC_Page_Admin_Products_Product extends LC_Page {
             $delkey = "recommend_delete" . $i;
             $commentkey = "recommend_comment" . $i;
 
+            if (!isset($_POST[$delkey])) $_POST[$delkey] = null;
+
             if((isset($_POST[$keyname]) && !empty($_POST[$keyname])) && $_POST[$delkey] != 1) {
                 $arrRet = $objQuery->select("main_list_image, product_code_min, name", "vw_products_allclass AS allcls", "product_id = ?", array($_POST[$keyname]));
                 $arrRecommend[$i] = $arrRet[0];
@@ -267,6 +269,9 @@ class LC_Page_Admin_Products_Product extends LC_Page {
             $keyname = "recommend_id" . $i;
             $commentkey = "recommend_comment" . $i;
             $deletekey = "recommend_delete" . $i;
+
+            if (!isset($arrList[$deletekey])) $arrList[$deletekey] = null;
+
             if($arrList[$keyname] != "" && $arrList[$deletekey] != '1') {
                 $sqlval['recommend_product_id'] = $arrList[$keyname];
                 $sqlval['comment'] = $arrList[$commentkey];
@@ -556,7 +561,12 @@ class LC_Page_Admin_Products_Product extends LC_Page {
         }
 
         for ($cnt = 1; $cnt <= RECOMMEND_PRODUCT_MAX; $cnt++) {
-            if($_POST["recommend_id$cnt"] != "" && $_POST["recommend_delete$cnt"] != 1) {
+
+            if (!isset($_POST["recommend_delete$cnt"]))  $_POST["recommend_delete$cnt"] = "";
+
+            if(isset($_POST["recommend_id$cnt"])
+               && $_POST["recommend_id$cnt"] != ""
+               && $_POST["recommend_delete$cnt"] != 1) {
                 $objErr->doFunc(array("おすすめ商品コメント$cnt", "recommend_comment$cnt", LTEXT_LEN), array("SPTAB_CHECK", "MAX_LENGTH_CHECK"));
             }
         }
