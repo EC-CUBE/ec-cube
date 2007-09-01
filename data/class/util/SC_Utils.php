@@ -735,46 +735,6 @@ class SC_Utils {
         return $ret;
     }
 
-    /* 親IDの配列を元に特定のカラムを取得する。*/
-    function sfGetParentsCol($objQuery, $table, $id_name, $col_name, $arrId ) {
-        $col = $col_name;
-        $len = count($arrId);
-        $where = "";
-
-        for($cnt = 0; $cnt < $len; $cnt++) {
-            if($where == "") {
-                $where = "$id_name = ?";
-            } else {
-                $where.= " OR $id_name = ?";
-            }
-        }
-
-        $objQuery->setorder("level");
-        $arrRet = $objQuery->select($col, $table, $where, $arrId);
-        return $arrRet;
-    }
-
-    /* カテゴリ変更時の移動処理 */
-    function sfMoveCatRank($objQuery, $table, $id_name, $cat_name, $old_catid, $new_catid, $id) {
-        if ($old_catid == $new_catid) {
-            return;
-        }
-        // 旧カテゴリでのランク削除処理
-        // 移動レコードのランクを取得する。
-        $where = "$id_name = ?";
-        $rank = $objQuery->get($table, "rank", $where, array($id));
-        // 削除レコードのランクより上のレコードを一つ下にずらす。
-        $where = "rank > ? AND $cat_name = ?";
-        $sqlup = "UPDATE $table SET rank = (rank - 1) WHERE $where";
-        $objQuery->exec($sqlup, array($rank, $old_catid));
-        // 新カテゴリでの登録処理
-        // 新カテゴリの最大ランクを取得する。
-        $max_rank = $objQuery->max($table, "rank", "$cat_name = ?", array($new_catid)) + 1;
-        $where = "$id_name = ?";
-        $sqlup = "UPDATE $table SET rank = ? WHERE $where";
-        $objQuery->exec($sqlup, array($max_rank, $id));
-    }
-
     /* 税金計算 */
     function sfTax($price, $tax, $tax_rule) {
         $real_tax = $tax / 100;
