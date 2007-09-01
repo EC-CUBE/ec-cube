@@ -26,7 +26,6 @@ class SC_View {
         $this->_smarty->register_modifier("sfConvSendDateToDisp", array("SC_Utils_Ex", "sfConvSendDateToDisp"));
         $this->_smarty->register_modifier("sfConvSendWdayToDisp", array("SC_Utils_Ex", "sfConvSendWdayToDisp"));
         $this->_smarty->register_modifier("sfGetVal", array("SC_Utils_Ex", "sfGetVal"));
-        $this->_smarty->register_modifier("sfSetErrorStyle", array("SC_Utils_Ex", "sfSetErrorStyle"));
         $this->_smarty->register_modifier("sfGetErrorColor", array("SC_Utils_Ex", "sfGetErrorColor"));
         $this->_smarty->register_modifier("sfTrim", array("SC_Utils_Ex", "sfTrim"));
         $this->_smarty->register_modifier("sfPreTax", array("SC_Utils_Ex", "sfPreTax"));
@@ -46,6 +45,7 @@ class SC_View {
 //        $this->_smarty->register_modifier("sfPrintAffTag", array("SC_Utils_Ex", "sfPrintAffTag"));
         $this->_smarty->register_modifier("sfGetCategoryId", array("SC_Utils_Ex", "sfGetCategoryId"));
         $this->_smarty->register_function("sfIsHTTPS", array("SC_Utils_Ex", "sfIsHTTPS"));
+        $this->_smarty->register_function("sfSetErrorStyle", array("SC_Utils_Ex", "sfSetErrorStyle"));
         $this->_smarty->default_modifiers = array('script_escape');
 
         if(ADMIN_MODE == '1') {
