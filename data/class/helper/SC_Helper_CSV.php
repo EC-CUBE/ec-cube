@@ -70,13 +70,13 @@ class SC_Helper_CSV {
         // 規格分類名一覧
         $arrClassCatName = $objDb->sfGetIDValueList("dtb_classcategory", "classcategory_id", "name");
 
+        if (!isset($data)) $data = "";
         for($i = 0; $i < $max; $i++) {
             // 関連商品情報の付与
             $list_data[$i]['classcategory_id1'] = $arrClassCatName[$list_data[$i]['classcategory_id1']];
             $list_data[$i]['classcategory_id2'] = $arrClassCatName[$list_data[$i]['classcategory_id2']];
 
             // 各項目をCSV出力用に変換する。
-            if (!isset($data)) $data = "";
             $data .= $this->lfMakeProductsCSV($list_data[$i]);
         }
         return $data;
@@ -94,9 +94,9 @@ class SC_Helper_CSV {
         $list_data = $objQuery->select($cols, $from, $where, $arrval);
 
         $max = count($list_data);
+        if (!isset($data)) $data = "";
         for($i = 0; $i < $max; $i++) {
             // 各項目をCSV出力用に変換する。
-            if (!isset($data)) $data = "";
             $data .= $this->lfMakeReviewCSV($list_data[$i]);
         }
         return $data;
@@ -113,9 +113,9 @@ class SC_Helper_CSV {
         $list_data = $objQuery->select($cols, $from, $where, $arrval);
 
         $max = count($list_data);
+        if (!isset($data)) $data = "";
         for($i = 0; $i < $max; $i++) {
             // 各項目をCSV出力用に変換する。
-            if (!isset($data)) $data = "";
             $data .= $this->lfMakeTrackbackCSV($list_data[$i]);
         }
         return $data;
