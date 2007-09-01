@@ -13,7 +13,7 @@ require_once(CLASS_PATH . "pages/LC_Page.php");
  *
  * @package Page
  * @author LOCKON CO.,LTD.
- * @version $Id$
+ * @version $Id:LC_Page_Admin_Products.php 15532 2007-08-31 14:39:46Z nanasess $
  */
 class LC_Page_Admin_Products extends LC_Page {
 
@@ -228,10 +228,14 @@ class LC_Page_Admin_Products extends LC_Page {
 
                 switch($_POST['mode']) {
                 case 'csv':
+
+                    require_once(CLASS_PATH . "helper_extends/SC_Helper_CSV_Ex.php");
+
+                    $objCSV = new SC_Helper_CSV_Ex();
                     // オプションの指定
                     $option = "ORDER BY $order";
                     // CSV出力タイトル行の作成
-                    $arrOutput = SC_Utils_Ex::sfSwapArray(sfgetCsvOutput(1, " WHERE csv_id = 1 AND status = 1"));
+                    $arrOutput = SC_Utils_Ex::sfSwapArray($objCSV->sfgetCsvOutput(1, " WHERE csv_id = 1 AND status = 1"));
 
                     if (count($arrOutput) <= 0) break;
 
@@ -240,7 +244,7 @@ class LC_Page_Admin_Products extends LC_Page {
 
                     $head = SC_Utils_Ex::sfGetCSVList($arrOutputTitle);
 
-                    $data = $this->lfGetProductsCSV($where, $option, $arrval, $arrOutputCols);
+                    $data = $objCSV->lfGetProductsCSV($where, $option, $arrval, $arrOutputCols);
 
                     // CSVを送信する。
                     SC_Utils_Ex::sfCSVDownload($head.$data);

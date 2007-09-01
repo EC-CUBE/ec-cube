@@ -15,7 +15,7 @@ require_once(CLASS_PATH . "pages/LC_Page.php");
  *
  * @package Page
  * @author LOCKON CO.,LTD.
- * @version $Id$
+ * @version $Id:LC_Page_Admin_Products_UploadCSV.php 15532 2007-08-31 14:39:46Z nanasess $
  */
 class LC_Page_Admin_Products_UploadCSV extends LC_Page {
 
@@ -88,7 +88,7 @@ class LC_Page_Admin_Products_UploadCSV extends LC_Page {
             // IEのために256バイト空文字出力
             echo str_pad('',256);
 
-            if($arrErr['csv_file'] == "") {
+            if(empty($arrErr['csv_file'])) {
                 // 一時ファイル名の取得
                 $filepath = $this->objUpFile->getTempFilePath('csv_file');
                 // エンコード
@@ -281,6 +281,8 @@ class LC_Page_Admin_Products_UploadCSV extends LC_Page {
      */
     function lfRegistProduct($objQuery, $line = "") {
 
+        $objDb = new SC_Helper_DB_Ex();
+
         $arrRet = $this->objFormParam->getHashArray();
 
         // dtb_products以外に登録される値を除外する。
@@ -334,7 +336,7 @@ class LC_Page_Admin_Products_UploadCSV extends LC_Page {
         if($arrRet['product_id'] != "" && $arrRet['product_class_id'] != "") {
             // カテゴリ内ランクの調整処理
             $old_catid = $objQuery->get("dtb_products", "category_id", "product_id = ?", array($arrRet['product_id']));
-            sfMoveCatRank($objQuery, "dtb_products", "product_id", "category_id", $old_catid, $arrRet['category_id'], $arrRet['product_id']);
+            $objDb->sfMoveCatRank($objQuery, "dtb_products", "product_id", "category_id", $old_catid, $arrRet['category_id'], $arrRet['product_id']);
 
             // UPDATEの実行
             $where = "product_id = ?";
@@ -402,6 +404,8 @@ class LC_Page_Admin_Products_UploadCSV extends LC_Page {
         $sqlval['price01'] = $arrList['price01'];
         $sqlval['price02'] = $arrList['price02'];
         $sqlval['creator_id'] = $_SESSION['member_id'];
+
+        // FIXME $sqlval['member_id'] は何処から出てくる?
         if($sqlval['member_id'] == "") {
             $sqlval['creator_id'] = '0';
         }
