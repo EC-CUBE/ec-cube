@@ -115,7 +115,8 @@ class SC_CustomerList extends SC_SelectSql {
             $this->arrVal[] = ereg_replace("-", "", $searchTel);
         }
 
-        //　性別
+        //性別
+        if (!isset($this->arrSql['sex'])) $this->arrSql['sex'] = "";
         if ( is_array( $this->arrSql['sex'] ) ){
             $arrSexVal = $this->setItemTerm( $this->arrSql['sex'] ,"sex" );
             foreach ($arrSexVal as $data) {
@@ -123,7 +124,8 @@ class SC_CustomerList extends SC_SelectSql {
             }
         }
 
-        //　職業
+        //職業
+        if (!isset($this->arrSql['job'])) $this->arrSql['job'] = "";
         if ( is_array( $this->arrSql['job'] ) ){
             if ( in_array("不明", $this->arrSql['job'] ) ) {
                 $arrJobVal = $this->setItemTermWithNull( $this->arrSql['job'] ,"job" );
@@ -293,14 +295,16 @@ class SC_CustomerList extends SC_SelectSql {
                 $this->arrVal = array_merge((array)$this->arrVal, (array)$tmp_arrval);
             }
         }
-        //　携帯電話番号
+        //携帯電話番号
+        if (!isset($this->arrSql['cell'])) $this->arrSql['cell'] = "";
         if ( is_numeric( $this->arrSql['cell'] ) ) {
             $this->setWhere( "(cell01 || cell02 || cell03 LIKE ?)" );
             $searchTel = $this->addSearchStr($this->arrSql['cell']);
             $this->arrVal[] = ereg_replace("-", "", $searchTel);
         }
 
-        //　キャンペーン
+        //キャンペーン
+        if (!isset($this->arrSql['campaign_id'])) $this->arrSql['campaign_id'] = "";
         if ( is_numeric( $this->arrSql['campaign_id'] ) ) {
             $this->setWhere( " customer_id IN (SELECT distinct customer_id FROM dtb_campaign_order WHERE campaign_id = ?)" );
             $this->arrVal[] = $this->arrSql['campaign_id'];
