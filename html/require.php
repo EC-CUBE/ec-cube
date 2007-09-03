@@ -36,6 +36,7 @@ require_once(CLASS_PATH . "SC_CartSession.php");
 require_once(CLASS_PATH . "SC_SiteSession.php");
 require_once(CLASS_PATH . "SC_CampaignSession.php");
 require_once(CLASS_PATH . "SC_Customer.php");
+require_once(CLASS_PATH . "SC_CustomerList.php");
 require_once(CLASS_PATH . "SC_Cookie.php");
 require_once(CLASS_PATH . "SC_Page.php");
 require_once(CLASS_PATH . "SC_Pdf.php");
