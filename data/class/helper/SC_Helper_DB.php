@@ -423,6 +423,45 @@ class SC_Helper_DB {
     }
 
     /**
+     * 会員編集登録処理を行う.
+     *
+     * @param array $array パラメータの配列
+     * @param array $arrRegistColumn 登録するカラムの配列
+     * @return void
+     */
+    function sfEditCustomerData($array, $arrRegistColumn) {
+        $objQuery = new SC_Query();
+
+        foreach ($arrRegistColumn as $data) {
+            if ($data["column"] != "password") {
+                if($array[ $data['column'] ] != "") {
+                    $arrRegist[ $data["column"] ] = $array[ $data["column"] ];
+                } else {
+                    $arrRegist[ $data['column'] ] = NULL;
+                }
+            }
+        }
+        if (strlen($array["year"]) > 0 && strlen($array["month"]) > 0 && strlen($array["day"]) > 0) {
+            $arrRegist["birth"] = $array["year"] ."/". $array["month"] ."/". $array["day"] ." 00:00:00";
+        } else {
+            $arrRegist["birth"] = NULL;
+        }
+
+        //-- パスワードの更新がある場合は暗号化。（更新がない場合はUPDATE文を構成しない）
+        if ($array["password"] != DEFAULT_PASSWORD) $arrRegist["password"] = sha1($array["password"] . ":" . AUTH_MAGIC);
+        $arrRegist["update_date"] = "NOW()";
+
+        //-- 編集登録実行
+        if (defined('MOBILE_SITE')) {
+            $arrRegist['email_mobile'] = $arrRegist['email'];
+            unset($arrRegist['email']);
+        }
+        $objQuery->begin();
+        $objQuery->update("dtb_customer", $arrRegist, "customer_id = ? ", array($array['customer_id']));
+        $objQuery->commit();
+    }
+
+    /**
      * カテゴリツリーの取得を行う.
      *
      * @param integer $parent_category_id 親カテゴリID
