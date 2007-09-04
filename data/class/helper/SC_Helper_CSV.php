@@ -45,6 +45,8 @@ class SC_Helper_CSV {
         $this->init();
 
         $masterData = new SC_DB_MasterData_Ex();
+        $this->arrPref = $masterData->getMasterData("mtb_pref",
+                                  array("pref_id", "pref_name", "rank"));
         $this->arrSex = $masterData->getMasterData("mtb_sex");
         $this->arrDISP = $masterData->getMasterData("mtb_disp");
         $this->arrRECOMMEND = $masterData->getMasterData("mtb_recommend");
@@ -175,6 +177,7 @@ class SC_Helper_CSV {
         $list_data = $objQuery->select($cols, $from, $where, $arrval);
 
         $max = count($list_data);
+        if (!isset($data)) $data = "";
         for($i = 0; $i < $max; $i++) {
             // 各項目をCSV出力用に変換する。
             $data .= $this->lfMakeCSV($list_data[$i]);
@@ -184,15 +187,13 @@ class SC_Helper_CSV {
 
     // 各項目をCSV出力用に変換する。
     function lfMakeCSV($list) {
-        global $arrPref;
-
         $line = "";
 
         foreach($list as $key => $val) {
             $tmp = "";
             switch($key) {
             case 'order_pref':
-                $tmp = $arrPref[$val];
+                $tmp = $this->arrPref[$val];
                 break;
             default:
                 $tmp = $val;
@@ -203,7 +204,7 @@ class SC_Helper_CSV {
             $line .= "\"".$tmp."\",";
         }
         // 文末の","を変換
-        $line = ereg_replace(",$", "\r\n", $line);
+        $line = $this->replaceLineSuffix($line);
         return $line;
     }
 
@@ -230,7 +231,7 @@ class SC_Helper_CSV {
                 $line .= "\"".$tmp."\",";
             }
             // 文末の","を変換
-            $line = ereg_replace(",$", "\r\n", $line);
+            $line = $this->replaceLineSuffix($line);
         }
         return $line;
     }
@@ -261,7 +262,7 @@ class SC_Helper_CSV {
             $line .= "\"".$tmp."\",";
         }
         // 文末の","を変換
-        $line = ereg_replace(",$", "\r\n", $line);
+        $line = $this->replaceLineSuffix($line);
         return $line;
     }
 
@@ -285,8 +286,19 @@ class SC_Helper_CSV {
             $line .= "\"".$tmp."\",";
         }
         // 文末の","を変換
-        $line = ereg_replace(",$", "\r\n", $line);
+        $line = $this->replaceLineSuffix($line);
         return $line;
+    }
+
+    /**
+     * 行末の ',' を CRLF へ変換する.
+     *
+     * @access private
+     * @param string $line CSV出力用の1行分の文字列
+     * @return string 行末の ',' を CRLF に変換した文字列
+     */
+    function replaceLineSuffix($line) {
+        return mb_ereg_replace(",$", "\r\n", $line);
     }
 
     /**
