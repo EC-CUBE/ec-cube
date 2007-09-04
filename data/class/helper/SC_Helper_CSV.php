@@ -290,49 +290,6 @@ class SC_Helper_CSV {
     }
 
     /**
-     * CSV出力項目を取得する.
-     *
-     * @param integer $csv_id CSV ID
-     * @param string $where SQL の WHERE 句
-     * @param array $arrVal WHERE 句の要素
-     * @return array CSV 出力項目の配列
-     */
-    function sfgetCsvOutput($csv_id = "", $where = "", $arrVal = array()){
-        $objQuery = new SC_Query();
-        $arrData = array();
-        $ret = array();
-
-        $sql = "";
-        $sql .= " SELECT ";
-        $sql .= "     no, ";
-        $sql .= "     csv_id, ";
-        $sql .= "     col, ";
-        $sql .= "     disp_name, ";
-        $sql .= "     rank, ";
-        $sql .= "     status, ";
-        $sql .= "     create_date, ";
-        $sql .= "     update_date ";
-        $sql .= " FROM ";
-        $sql .= "     dtb_csv ";
-
-        if ($where != "") {
-            $sql .= $where;
-            $arrData = $arrVal;
-        }elseif($csv_id != ""){
-            $sql .= " WHERE csv_id = ? ";
-            $arrData = array($csv_id);
-        }
-
-        $sql .= " ORDER BY ";
-        $sql .= "     rank , no";
-        $sql .= " ";
-
-        $ret = $objQuery->getall($sql, $arrData);
-
-        return $ret;
-    }
-
-    /**
      * 項目情報を初期化する.
      *
      * @access private
