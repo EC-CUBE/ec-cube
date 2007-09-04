@@ -250,6 +250,20 @@ class SC_Helper_DB {
     }
 
     /**
+     * 支払い方法を取得する.
+     *
+     * @return void
+     */
+    function sfGetPayment() {
+        $objQuery = new SC_Query();
+        // 購入金額が条件額以下の項目を取得
+        $where = "del_flg = 0";
+        $objQuery->setorder("fix, rank DESC");
+        $arrRet = $objQuery->select("payment_id, payment_method, rule", "dtb_payment", $where);
+        return $arrRet;
+    }
+
+    /**
      * カート内商品の集計処理を行う.
      *
      * @param LC_Page $objPage ページクラスのインスタンス
