@@ -999,62 +999,6 @@ class SC_Utils {
         return $str;
     }
 
-    function sfGetDelivTime($payment_id = "") {
-        $objQuery = new SC_Query();
-
-        $deliv_id = "";
-
-        if($payment_id != "") {
-            $where = "del_flg = 0 AND payment_id = ?";
-            $arrRet = $objQuery->select("deliv_id", "dtb_payment", $where, array($payment_id));
-            $deliv_id = $arrRet[0]['deliv_id'];
-        }
-
-        if($deliv_id != "") {
-            $objQuery->setorder("time_id");
-            $where = "deliv_id = ?";
-            $arrRet= $objQuery->select("time_id, deliv_time", "dtb_delivtime", $where, array($deliv_id));
-        }
-
-        return $arrRet;
-    }
-
-
-    // 都道府県、支払い方法から配送料金を取得する
-    function sfGetDelivFee($pref, $payment_id = "") {
-        $objQuery = new SC_Query();
-
-        $deliv_id = "";
-
-        // 支払い方法が指定されている場合は、対応した配送業者を取得する
-        if($payment_id != "") {
-            $where = "del_flg = 0 AND payment_id = ?";
-            $arrRet = $objQuery->select("deliv_id", "dtb_payment", $where, array($payment_id));
-            $deliv_id = $arrRet[0]['deliv_id'];
-        // 支払い方法が指定されていない場合は、先頭の配送業者を取得する
-        } else {
-            $where = "del_flg = 0";
-            $objQuery->setOrder("rank DESC");
-            $objQuery->setLimitOffset(1);
-            $arrRet = $objQuery->select("deliv_id", "dtb_deliv", $where);
-            $deliv_id = $arrRet[0]['deliv_id'];
-        }
-
-        // 配送業者から配送料を取得
-        if($deliv_id != "") {
-
-            // 都道府県が指定されていない場合は、東京都の番号を指定しておく
-            if($pref == "") {
-                $pref = 13;
-            }
-
-            $objQuery = new SC_Query();
-            $where = "deliv_id = ? AND pref = ?";
-            $arrRet= $objQuery->select("fee", "dtb_delivfee", $where, array($deliv_id, $pref));
-        }
-        return $arrRet[0]['fee'];
-    }
-
     /* 配列をキー名ごとの配列に変更する */
     function sfSwapArray($array) {
         $max = count($array);
