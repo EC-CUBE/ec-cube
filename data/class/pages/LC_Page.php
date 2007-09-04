@@ -273,9 +273,6 @@ class LC_Page {
         session_cache_limiter('private-no-expire');
     }
 
-    // }}}
-    // {{{ protected functions
-
     /**
      * デバック出力を行う.
      *
