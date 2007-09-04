@@ -17,7 +17,7 @@ require_once(DATA_PATH . 'module/Net/URL.php');
  *
  * @package Page
  * @author LOCKON CO.,LTD.
- * @version $Id$
+ * @version $Id:LC_Page.php 15532 2007-08-31 14:39:46Z nanasess $
  */
 class LC_Page {
 
@@ -271,6 +271,19 @@ class LC_Page {
      */
     function allowClientCache() {
         session_cache_limiter('private-no-expire');
+    }
+
+    // }}}
+    // {{{ protected functions
+
+    /**
+     * デバック出力を行う.
+     *
+     * @param mixed $val デバックする要素
+     * @return void
+     */
+    function p($val) {
+        SC_Utils_Ex::sfPrintR($val);
     }
 
     // }}}
