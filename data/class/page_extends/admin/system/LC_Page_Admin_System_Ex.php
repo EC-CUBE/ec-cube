@@ -15,7 +15,7 @@ require_once(CLASS_PATH . "pages/admin/system/LC_Page_Admin_System.php");
  *
  * @package Page
  * @author LOCKON CO.,LTD.
- * @version $Id:$
+ * @version $Id$
  */
 class LC_Page_Admin_System_Ex extends LC_Page_Admin_System {
 

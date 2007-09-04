@@ -13,7 +13,7 @@ require_once(CLASS_PATH . "pages/LC_Page.php");
  *
  * @package Page
  * @author LOCKON CO.,LTD.
- * @version $Id:$
+ * @version $Id$
  */
 class LC_Page_Admin_System extends LC_Page {
 
@@ -98,7 +98,7 @@ class LC_Page_Admin_System extends LC_Page {
      }
 
     /**
-     * 開始行番号、行数を指定して管理者データを取得する.
+     * 開始行番号, 行数を指定して管理者データを取得する.
      *
      * @access private
      * @param integer $startno 開始行番号
@@ -117,27 +117,4 @@ class LC_Page_Admin_System extends LC_Page {
         return $arrMemberData;
      }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 ?>
