@@ -1947,7 +1947,8 @@ class SC_Utils {
         print("<div style='font-size: 12px;color: #00FF00;'>\n");
         print("<strong>**デバッグ中**</strong><br />\n");
         print("<pre>\n");
-        print_r($obj);
+        //print_r($obj);
+        var_dump($obj);
         print("</pre>\n");
         print("<strong>**デバッグ中**</strong></div>\n");
     }
