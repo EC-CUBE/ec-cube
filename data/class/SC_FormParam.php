@@ -349,7 +349,7 @@ class SC_FormParam {
         $cnt = 0;
         foreach($this->keyname as $val) {
             if($val == $keyname) {
-                if(!is_array($this->param[$cnt])) {
+                if(isset($this->param[$cnt]) && !is_array($this->param[$cnt])) {
                     $this->param[$cnt] = split("-", $this->param[$cnt]);
                 }
             }
