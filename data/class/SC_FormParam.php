@@ -228,6 +228,8 @@ class SC_FormParam {
          */
         $cnt = 0;
         foreach ($this->keyname as $val) {
+            if (!isset($this->param[$cnt])) $this->param[$cnt] = "";
+
             if(!is_array($this->param[$cnt])) {
                 if($this->convert[$cnt] != "") {
                     $this->param[$cnt] = mb_convert_kana($this->param[$cnt] ,$this->convert[$cnt]);
