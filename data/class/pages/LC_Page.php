@@ -279,6 +279,9 @@ class LC_Page {
     /**
      * デバック出力を行う.
      *
+     * デバック用途のみに使用すること.
+     *
+     * @access protected
      * @param mixed $val デバックする要素
      * @return void
      */
