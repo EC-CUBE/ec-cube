@@ -164,6 +164,49 @@ class SC_Helper_CSV {
         return $data;
     }
 
+    // CSV出力データを作成する。
+    function lfGetCSV($from, $where, $option, $arrval, $arrCsvOutputCols = "") {
+
+        $cols = SC_Utils_Ex::sfGetCommaList($arrCsvOutputCols);
+
+        $objQuery = new SC_Query();
+        $objQuery->setoption($option);
+
+        $list_data = $objQuery->select($cols, $from, $where, $arrval);
+
+        $max = count($list_data);
+        for($i = 0; $i < $max; $i++) {
+            // 各項目をCSV出力用に変換する。
+            $data .= $this->lfMakeCSV($list_data[$i]);
+        }
+        return $data;
+    }
+
+    // 各項目をCSV出力用に変換する。
+    function lfMakeCSV($list) {
+        global $arrPref;
+
+        $line = "";
+
+        foreach($list as $key => $val) {
+            $tmp = "";
+            switch($key) {
+            case 'order_pref':
+                $tmp = $arrPref[$val];
+                break;
+            default:
+                $tmp = $val;
+                break;
+            }
+
+            $tmp = ereg_replace("[\",]", " ", $tmp);
+            $line .= "\"".$tmp."\",";
+        }
+        // 文末の","を変換
+        $line = ereg_replace(",$", "\r\n", $line);
+        return $line;
+    }
+
     // 各項目をCSV出力用に変換する。(商品)
     function lfMakeProductsCSV($list) {
         $line = "";
