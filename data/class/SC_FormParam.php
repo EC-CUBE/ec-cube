@@ -307,6 +307,7 @@ class SC_FormParam {
                 $arrRet[$val]['value'] = $this->param[$cnt];
             }
 
+            // TODO 未定義値の対応...
             if($this->default[$cnt] != "" && $this->param[$cnt] == "") {
                 $arrRet[$val]['value'] = $this->default[$cnt];
             }
