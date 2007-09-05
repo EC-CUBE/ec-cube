@@ -13,7 +13,7 @@ require_once(CLASS_PATH . "pages/LC_Page.php");
  *
  * @package Page
  * @author LOCKON CO.,LTD.
- * @version $Id$
+ * @version $Id:LC_Page_Shopping_Confirm.php 15532 2007-08-31 14:39:46Z nanasess $
  */
 class LC_Page_Shopping_Confirm extends LC_Page {
 
@@ -63,11 +63,11 @@ class LC_Page_Shopping_Confirm extends LC_Page {
         $this->tpl_uniqid = $uniqid;
 
         // カート集計処理
-        $this = SC_Utils_Ex::sfTotalCart($this, $objCartSess, $arrInfo);
+        $objDb->sfTotalCart($this, $objCartSess, $arrInfo);
         // 一時受注テーブルの読込
-        $arrData = SC_Utils_Ex::sfGetOrderTemp($uniqid);
+        $arrData = $objDb->sfGetOrderTemp($uniqid);
         // カート集計を元に最終計算
-        $arrData = sfTotalConfirm($arrData, $this, $objCartSess, $arrInfo, $objCustomer, $objCampaignSess);
+        $arrData = $objDb->sfTotalConfirm($arrData, $this, $objCartSess, $arrInfo, $objCustomer, $objCampaignSess);
         // キャンペーンからの遷移で送料が無料だった場合の処理
         if($objCampaignSess->getIsCampaign()) {
             $deliv_free_flg = $objQuery->get("dtb_campaign", "deliv_free_flg", "campaign_id = ?", array($objCampaignSess->getCampaignId()));
@@ -98,6 +98,7 @@ class LC_Page_Shopping_Confirm extends LC_Page {
         }
         $this->payment_type = $payment_type;
 
+        if (!isset($_POST['mode'])) $_POST['mode'] = "";
 
         switch($_POST['mode']) {
         // 前のページに戻る
