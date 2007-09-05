@@ -1153,6 +1153,7 @@ class SC_Helper_DB {
         $objQuery = new SC_Query();
 
         $deliv_id = "";
+        $arrRet = array();
 
         if($payment_id != "") {
             $where = "del_flg = 0 AND payment_id = ?";
