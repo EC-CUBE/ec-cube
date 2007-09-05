@@ -13,7 +13,7 @@ require_once(CLASS_PATH . "pages/LC_Page.php");
  *
  * @package Page
  * @author LOCKON CO.,LTD.
- * @version $Id$
+ * @version $Id:LC_Page_Shopping_Payment.php 15532 2007-08-31 14:39:46Z nanasess $
  */
 class LC_Page_Shopping_Payment extends LC_Page {
 
@@ -53,6 +53,7 @@ class LC_Page_Shopping_Payment extends LC_Page {
         $objSiteSess = new SC_SiteSession();
         $objCartSess = new SC_CartSession();
         $objCampaignSess = new SC_CampaignSession();
+        $objDb = new SC_Helper_DB_Ex();
         $this->objCustomer = new SC_Customer();
         $objSiteInfo = $objView->objSiteInfo;
         $arrInfo = $objSiteInfo->data;
@@ -70,9 +71,9 @@ class LC_Page_Shopping_Payment extends LC_Page {
         $this->tpl_uniqid = $uniqid;
 
         // 会員ログインチェック
-        if($objCustomer->isLoginSuccess()) {
+        if($this->objCustomer->isLoginSuccess()) {
             $this->tpl_login = '1';
-            $this->tpl_user_point = $objCustomer->getValue('point');
+            $this->tpl_user_point = $this->objCustomer->getValue('point');
             //戻り先URL
             $this->tpl_back_url = URL_DELIV_TOP;
         } else {
@@ -80,11 +81,15 @@ class LC_Page_Shopping_Payment extends LC_Page {
         }
 
         // 金額の取得 (購入途中で売り切れた場合にはこの関数内にてその商品の個数が０になる)
-        $this = SC_Utils_Ex::sfTotalCart($this, $objCartSess, $arrInfo);
-        $this->arrData = SC_Utils_Ex::sfTotalConfirm($arrData, $this, $objCartSess, $arrInfo);
+        $objDb->sfTotalCart($this, $objCartSess, $arrInfo);
+
+        if (empty($arrData)) $arrData = array();
+        $this->arrData = $objDb->sfTotalConfirm($arrData, $this, $objCartSess, $arrInfo);
 
         // カー都内の商品の売り切れチェック
         $objCartSess->chkSoldOut($objCartSess->getCartList());
+
+        if (!isset($_POST['mode'])) $_POST['mode'] = "";
 
         switch($_POST['mode']) {
         case 'confirm':
@@ -132,10 +137,10 @@ class LC_Page_Shopping_Payment extends LC_Page {
         // 支払い方法の取得
         $this->arrPayment = $this->lfGetPayment($total_pretax);
         // 配送時間の取得
-        $arrRet = $this->sfGetDelivTime($this->objFormParam->getValue('payment_id'));
+        $arrRet = $objDb->sfGetDelivTime($this->objFormParam->getValue('payment_id'));
         $this->arrDelivTime = SC_Utils_Ex::sfArrKeyValue($arrRet, 'time_id', 'deliv_time');
-        $this->objCustomer = $objCustomer;
-        //　配送日一覧の取得
+
+        // 配送日一覧の取得
         $this->arrDelivDate = $this->lfGetDelivDate();
 
         $this->arrForm = $this->objFormParam->getFormParamList();
