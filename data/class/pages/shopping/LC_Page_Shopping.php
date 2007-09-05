@@ -13,7 +13,7 @@ require_once(CLASS_PATH . "pages/LC_Page.php");
  *
  * @package Page
  * @author LOCKON CO.,LTD.
- * @version $Id$
+ * @version $Id:LC_Page_Shopping.php 15532 2007-08-31 14:39:46Z nanasess $
  */
 class LC_Page_Shopping extends LC_Page {
 
@@ -22,8 +22,8 @@ class LC_Page_Shopping extends LC_Page {
     /** フォームパラメータ */
     var $objFormParam;
 
-    // TODO
-    var $arrSession;
+    /** 年 */
+    var $year;
 
     // }}}
     // {{{ functions
@@ -78,9 +78,11 @@ class LC_Page_Shopping extends LC_Page {
             }
         }
 
+        if (!isset($_POST['mode'])) $_POST['mode'] = "";
+
         switch($_POST['mode']) {
         case 'nonmember_confirm':
-            $this = $this->lfSetNonMember($this);
+            $this->lfSetNonMember($this);
             // ※breakなし
         case 'confirm':
             // 入力値の変換
@@ -101,7 +103,7 @@ class LC_Page_Shopping extends LC_Page {
                 // 正常に登録されたことを記録しておく
                 $objSiteSess->setRegistFlag();
                 // お支払い方法選択ページへ移動
-                $this->sendRedirect($this->getLocation(URL_SHOP_PAYMENT, array()));
+                $this->sendRedirect($this->getLocation(URL_SHOP_PAYMENT));
                 exit;
             }
 
@@ -109,21 +111,25 @@ class LC_Page_Shopping extends LC_Page {
         // 前のページに戻る
         case 'return':
             // 確認ページへ移動
-            $this->sendRedirect($this->getLocation(URL_CART_TOP, array()));
+            $this->sendRedirect($this->getLocation(URL_CART_TOP));
             exit;
             break;
         case 'nonmember':
-            $this = $this->lfSetNonMember($this);
+            $this->lfSetNonMember($this);
             // ※breakなし
         default:
-            if($_GET['from'] == 'nonmember') {
-                $this = $this->lfSetNonMember($this);
+            if(isset($_GET['form']) && $_GET['from'] == 'nonmember') {
+                $this->lfSetNonMember($this);
             }
             // ユーザユニークIDの取得
             $uniqid = $objSiteSess->getUniqId();
             $objQuery = new SC_Query();
             $where = "order_temp_id = ?";
             $arrRet = $objQuery->select("*", "dtb_order_temp", $where, array($uniqid));
+            if (empty($arrRet)) $arrRet = array(
+                                                array('order_email' => "",
+                                                      'order_birth' => ""));
+
             // DB値の取得
             $this->objFormParam->setParam($arrRet[0]);
             $this->objFormParam->setValue('order_email_check', $arrRet[0]['order_email']);
@@ -150,7 +156,7 @@ class LC_Page_Shopping extends LC_Page {
         // 入力値の取得
         $this->arrForm = $this->objFormParam->getFormParamList();
 
-        if($this->arrForm['year']['value'] == ""){
+        if(empty($this->arrForm['year']['value'])){
             $this->arrForm['year']['value'] = '----';
         }
 
@@ -170,11 +176,10 @@ class LC_Page_Shopping extends LC_Page {
     }
 
     /* 非会員入力ページのセット */
-    function lfSetNonMember($objPage) {
+    function lfSetNonMember(&$objPage) {
         $objPage->tpl_mainpage = 'shopping/nonmember_input.tpl';
         $objPage->tpl_css = array();
         $objPage->tpl_css[] = URL_DIR.'css/layout/login/nonmember.css';
-        return $objPage;
     }
 
     /* パラメータ情報の初期化 */
