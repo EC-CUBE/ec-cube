@@ -54,6 +54,7 @@ require_once(CLASS_PATH . "helper_extends/SC_Helper_Mail_Ex.php");
 SC_Utils_Ex::sfLoadUpdateModule();
 
 // 携帯端末の場合は mobile 以下へリダイレクトする。
+// TODO LC_Page::init() に移動可能か？
 if (GC_MobileUserAgent::isMobile()) {
     if (preg_match('|^' . URL_DIR . '(.*)$|', $_SERVER['REQUEST_URI'], $matches)) {
         $path = $matches[1];
