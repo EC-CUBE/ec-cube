@@ -59,7 +59,7 @@ class SC_SiteSession {
 
     /* ユニークIDのチェック */
     function checkUniqId() {
-        if($_POST['uniqid'] != "") {
+        if(!empty($_POST['uniqid'])) {
             if($_POST['uniqid'] != $_SESSION['site']['uniqid']) {
                 return false;
             }
