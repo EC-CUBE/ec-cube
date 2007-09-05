@@ -1,7 +1,13 @@
 #!/usr/local/bin/php
 <?php
+/*
+ * Copyright(c) 2000-2007 LOCKON CO.,LTD. All Rights Reserved.
+ *
+ * http://www.lockon.co.jp/
+ */
+
 /**
- * ¥Õ¥¡¥¤¥ë¤Î¥¨¥ó¥³¡¼¥Ç¥£¥ó¥°¤ò $fromEncoding ¤«¤é $toEncoding ¤ØÊÑ´¹¤·¤Ş¤¹.
+ * ãƒ•ã‚¡ã‚¤ãƒ«ã®ã‚¨ãƒ³ã‚³ãƒ¼ãƒ‡ã‚£ãƒ³ã‚°ã‚’ $fromEncoding ã‹ã‚‰ $toEncoding ã¸å¤‰æ›ã—ã¾ã™.
  *
  * @author  Kentaro Ohkouchi<ohkouchi@loop-az.jp>
  * @since   PHP4.3.0(cli)
@@ -9,22 +15,22 @@
  */
 
 /**
- * ÊÑ´¹¤·¤¿¤¤¥Õ¥¡¥¤¥ë¤Î³ÈÄ¥»Ò¤ò¥«¥ó¥Ş¶èÀÚ¤ê¤ÇÍåÎó.
+ * å¤‰æ›ã—ãŸã„ãƒ•ã‚¡ã‚¤ãƒ«ã®æ‹¡å¼µå­ã‚’ã‚«ãƒ³ãƒåŒºåˆ‡ã‚Šã§ç¾…åˆ—.
  */
 $includes = "php,inc,tpl,css,sql,js";
 
 /**
- * ½ü³°¤¹¤ë¥Õ¥¡¥¤¥ëÌ¾¤ò¥«¥ó¥Ş¶èÀÚ¤ê¤ÇÍåÎó.
+ * é™¤å¤–ã™ã‚‹ãƒ•ã‚¡ã‚¤ãƒ«åã‚’ã‚«ãƒ³ãƒåŒºåˆ‡ã‚Šã§ç¾…åˆ—.
  */
 $excludes = "convert.php";
 
 /**
- * ÊÑ´¹¸µ¥¨¥ó¥³¡¼¥Ç¥£¥ó¥°.
+ * å¤‰æ›å…ƒã‚¨ãƒ³ã‚³ãƒ¼ãƒ‡ã‚£ãƒ³ã‚°.
  */
 $fromEncoding = "EUC-JP";
 
 /**
- * ÊÑ´¹Àè¥¨¥ó¥³¡¼¥Ç¥£¥ó¥°.
+ * å¤‰æ›å…ˆã‚¨ãƒ³ã‚³ãƒ¼ãƒ‡ã‚£ãƒ³ã‚°.
  */
 $toEncoding = "UTF-8";
 
@@ -35,46 +41,46 @@ $fileArrays = listdirs('.');
 foreach ($fileArrays as $path) {
     if (is_file($path)) {
 
-        // ¥Õ¥¡¥¤¥ëÌ¾¤ò¼èÆÀ
+        // ãƒ•ã‚¡ã‚¤ãƒ«åã‚’å–å¾—
         $fileName = pathinfo($path, PATHINFO_BASENAME);
-        
-        // ³ÈÄ¥»Ò¤ò¼èÆÀ
+
+        // æ‹¡å¼µå­ã‚’å–å¾—
         $suffix = pathinfo($path, PATHINFO_EXTENSION);
 
-        // ½ü³°¥Õ¥¡¥¤¥ë¤ò¥¹¥­¥Ã¥×
+        // é™¤å¤–ãƒ•ã‚¡ã‚¤ãƒ«ã‚’ã‚¹ã‚­ãƒƒãƒ—
         if (in_array($fileName, $excludeArray)) {
             echo "excludes by " . $path . "\n";
             continue;
         }
 
-        // ÊÑ´¹ÂĞ¾İ¤ò½ç¤Ë½èÍı
+        // å¤‰æ›å¯¾è±¡ã‚’é †ã«å‡¦ç†
         foreach ($includeArray as $include) {
             if ($suffix == $include) {
-            	
-            	// ¥Õ¥¡¥¤¥ëÆâÍÆ¤ò¼èÆÀ¤·, ¥¨¥ó¥³¡¼¥Ç¥£¥ó¥°ÊÑ´¹
+
+                // ãƒ•ã‚¡ã‚¤ãƒ«å†…å®¹ã‚’å–å¾—ã—, ã‚¨ãƒ³ã‚³ãƒ¼ãƒ‡ã‚£ãƒ³ã‚°å¤‰æ›
                 $contents = file_get_contents($path);
                 $convertedContents = mb_convert_encoding($contents,
                                                          $toEncoding,
                                                          $fromEncoding);
 
-                // ½ñ¤­¹ş¤ß¤Ç¤­¤ë¤«¡©
+                // æ›¸ãè¾¼ã¿ã§ãã‚‹ã‹ï¼Ÿ
                 if (is_writable($path)) {
 
-                    // ¥Õ¥¡¥¤¥ë¤ò½ñ¤­½Ğ¤·¥â¡¼¥É¤Ç³«¤¯
+                    // ãƒ•ã‚¡ã‚¤ãƒ«ã‚’æ›¸ãå‡ºã—ãƒ¢ãƒ¼ãƒ‰ã§é–‹ã
                     $handle = fopen($path, "w");
                     if (!$handle) {
                         echo "Cannot open file (". $path . ")";
                         continue;
                     }
 
-                    // ¥³¡¼¥ÉÊÑ´¹¤·¤¿ÆâÍÆ¤ò½ñ¤­¹ş¤à 
+                    // ã‚³ãƒ¼ãƒ‰å¤‰æ›ã—ãŸå†…å®¹ã‚’æ›¸ãè¾¼ã‚€
                     if (fwrite($handle, $convertedContents) === false) {
                         echo "Cannot write to file (" . $path . ")";
                         continue;
                     }
 
                     echo "converted " . $path . "\n";
-                    // ¥Õ¥¡¥¤¥ë¤òÊÄ¤¸¤ë
+                    // ãƒ•ã‚¡ã‚¤ãƒ«ã‚’é–‰ã˜ã‚‹
                     fclose($handle);
                 } else {
 
@@ -86,10 +92,10 @@ foreach ($fileArrays as $path) {
 }
 
 /**
- * $dir ¤òºÆµ¢Åª¤ËÃ©¤Ã¤Æ¥Ñ¥¹Ì¾¤òÇÛÎó¤ÇÊÖ¤¹.
- * 
- * @param string Ç¤°Õ¤Î¥Ñ¥¹Ì¾
- * @return array $dir ¤è¤ê²¼ÁØ¤ËÂ¸ºß¤¹¤ë¥Ñ¥¹Ì¾¤ÎÇÛÎó
+ * $dir ã‚’å†å¸°çš„ã«è¾¿ã£ã¦ãƒ‘ã‚¹åã‚’é…åˆ—ã§è¿”ã™.
+ *
+ * @param string ä»»æ„ã®ãƒ‘ã‚¹å
+ * @return array $dir ã‚ˆã‚Šä¸‹å±¤ã«å­˜åœ¨ã™ã‚‹ãƒ‘ã‚¹åã®é…åˆ—
  * @see http://www.php.net/glob
  */
 function listdirs($dir) {
