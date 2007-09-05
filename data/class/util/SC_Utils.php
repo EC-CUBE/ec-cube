@@ -549,7 +549,7 @@ class SC_Utils {
 
     // キーと値をセットした配列を取得
     function sfArrKeyValue($arrList, $keyname, $valname, $len_max = "", $keysize = "") {
-
+        $arrRet = array();
         $max = count($arrList);
 
         if($len_max != "" && $max > $len_max) {
