@@ -1211,6 +1211,86 @@ class SC_Helper_DB {
     }
 
     /**
+     * 集計情報を元に最終計算を行う.
+     *
+     * @param array $arrData 各種情報
+     * @param LC_Page $objPage LC_Page インスタンス
+     * @param SC_CartSession $objCartSess SC_CartSession インスタンス
+     * @param array $arrInfo 店舗情報の配列
+     * @param SC_Customer $objCustomer SC_Customer インスタンス
+     * @return array 最終計算後の配列
+     */
+    function sfTotalConfirm($arrData, &$objPage, &$objCartSess, $arrInfo, &$objCustomer = "") {
+        // 未定義変数を定義
+        if (!isset($arrData['deliv_pref'])) $arrData['deliv_pref'] = "";
+        if (!isset($arrData['payment_id'])) $arrData['payment_id'] = "";
+        if (!isset($arrData['charge'])) $arrData['charge'] = "";
+        if (!isset($arrData['use_point'])) $arrData['use_point'] = "";
+
+        // 商品の合計個数
+        $total_quantity = $objCartSess->getTotalQuantity(true);
+
+        // 税金の取得
+        $arrData['tax'] = $objPage->tpl_total_tax;
+        // 小計の取得
+        $arrData['subtotal'] = $objPage->tpl_total_pretax;
+
+        // 合計送料の取得
+        $arrData['deliv_fee'] = 0;
+
+        // 商品ごとの送料が有効の場合
+        if (OPTION_PRODUCT_DELIV_FEE == 1) {
+            $arrData['deliv_fee']+= $objCartSess->getAllProductsDelivFee();
+        }
+
+        // 配送業者の送料が有効の場合
+        if (OPTION_DELIV_FEE == 1) {
+            // 送料の合計を計算する
+            $arrData['deliv_fee']
+                += $this->sfGetDelivFee($arrData['deliv_pref'],
+                                           $arrData['payment_id']);
+
+        }
+
+        // 送料無料の購入数が設定されている場合
+        if(DELIV_FREE_AMOUNT > 0) {
+            if($total_quantity >= DELIV_FREE_AMOUNT) {
+                $arrData['deliv_fee'] = 0;
+            }
+        }
+
+        // 送料無料条件が設定されている場合
+        if($arrInfo['free_rule'] > 0) {
+            // 小計が無料条件を超えている場合
+            if($arrData['subtotal'] >= $arrInfo['free_rule']) {
+                $arrData['deliv_fee'] = 0;
+            }
+        }
+
+        // 合計の計算
+        $arrData['total'] = $objPage->tpl_total_pretax;	// 商品合計
+        $arrData['total']+= $arrData['deliv_fee'];		// 送料
+        $arrData['total']+= $arrData['charge'];			// 手数料
+        // お支払い合計
+        $arrData['payment_total'] = $arrData['total'] - ($arrData['use_point'] * POINT_VALUE);
+        // 加算ポイントの計算
+        $arrData['add_point'] = SC_Utils::sfGetAddPoint($objPage->tpl_total_point, $arrData['use_point'], $arrInfo);
+
+        if($objCustomer != "") {
+            // 誕生日月であった場合
+            if($objCustomer->isBirthMonth()) {
+                $arrData['birth_point'] = BIRTH_MONTH_POINT;
+                $arrData['add_point'] += $arrData['birth_point'];
+            }
+        }
+
+        if($arrData['add_point'] < 0) {
+            $arrData['add_point'] = 0;
+        }
+        return $arrData;
+    }
+
+    /**
      * レコードの存在チェックを行う.
      *
      * @param string $table テーブル名
