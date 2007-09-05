@@ -13,7 +13,7 @@ require_once(CLASS_PATH . "pages/LC_Page.php");
  *
  * @package Page
  * @author LOCKON CO.,LTD.
- * @version $Id$
+ * @version $Id:LC_Page_Cart.php 15532 2007-08-31 14:39:46Z nanasess $
  */
 class LC_Page_Cart extends LC_Page {
 
@@ -110,7 +110,7 @@ class LC_Page_Cart extends LC_Page {
                 // カートを購入モードに設定
                 $objCartSess->saveCurrentCart($uniqid);
                 // 購入ページへ
-                $this->sendRedirect(URL_SHOP_TOP, array());
+                $this->sendRedirect(URL_SHOP_TOP);
             }
             break;
         default:
@@ -119,7 +119,7 @@ class LC_Page_Cart extends LC_Page {
 
         // カート集計処理
         $db->sfTotalCart($this, $objCartSess, $arrInfo);
-        $this->arrData = SC_Utils_Ex::sfTotalConfirm($this->arrData, $this, $objCartSess, $arrInfo, $objCustomer);
+        $this->arrData = $db->sfTotalConfirm($this->arrData, $this, $objCartSess, $arrInfo, $objCustomer);
 
         $this->arrInfo = $arrInfo;
 
