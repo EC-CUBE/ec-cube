@@ -12,7 +12,7 @@ require_once(CLASS_PATH . "page_extends/shopping/LC_Page_Shopping_Deliv_Ex.php")
 // }}}
 // {{{ generate page
 
-$objPage = new LC_Page_Shopping_Ex();
+$objPage = new LC_Page_Shopping_Deliv_Ex();
 $objPage->init();
 $objPage->process();
 register_shutdown_function(array($objPage, "destroy"));
