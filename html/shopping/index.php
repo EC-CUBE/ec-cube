@@ -4,7 +4,6 @@
  *
  * http://www.lockon.co.jp/
  */
-
 // {{{ requires
 require_once("../require.php");
 require_once(CLASS_PATH . "page_extends/shopping/LC_Page_Shopping_Ex.php");

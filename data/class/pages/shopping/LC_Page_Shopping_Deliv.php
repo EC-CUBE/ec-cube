@@ -13,7 +13,7 @@ require_once(CLASS_PATH . "pages/LC_Page.php");
  *
  * @package Page
  * @author LOCKON CO.,LTD.
- * @version $Id$
+ * @version $Id:LC_Page_Shopping_Deliv.php 15532 2007-08-31 14:39:46Z nanasess $
  */
 class LC_Page_Shopping_Deliv extends LC_Page {
 
@@ -70,7 +70,9 @@ class LC_Page_Shopping_Deliv extends LC_Page {
 
         // ユーザユニークIDの取得と購入状態の正当性をチェック
         $uniqid = SC_Utils_Ex::sfCheckNormalAccess($objSiteSess, $objCartSess);
-        $objPage->tpl_uniqid = $uniqid;
+        $this->tpl_uniqid = $uniqid;
+
+        if (!isset($_POST['mode'])) $_POST['mode'] = "";
 
         // ログインチェック
         if($_POST['mode'] != 'login' && !$objCustomer->isLoginSuccess()) {
@@ -81,7 +83,7 @@ class LC_Page_Shopping_Deliv extends LC_Page {
         switch($_POST['mode']) {
         case 'login':
             $this->objLoginFormParam->toLower('login_email');
-            $objPage->arrErr = $this->objLoginFormParam->checkError();
+            $this->arrErr = $this->objLoginFormParam->checkError();
             $arrForm =  $this->objLoginFormParam->getHashArray();
             // クッキー保存判定
             if($arrForm['login_memory'] == "1" && $arrForm['login_email'] != "") {
@@ -90,7 +92,7 @@ class LC_Page_Shopping_Deliv extends LC_Page {
                 $objCookie->setCookie('login_email', '');
             }
 
-            if(count($objPage->arrErr) == 0) {
+            if(count($this->arrErr) == 0) {
                 // ログイン判定
                 if(!$objCustomer->getCustomerDataFromEmailPass($arrForm['login_pass'], $arrForm['login_email'])) {
                     // 仮登録の判定
@@ -156,6 +158,7 @@ class LC_Page_Shopping_Deliv extends LC_Page {
             $objQuery = new SC_Query();
             $where = "order_temp_id = ?";
             $arrRet = $objQuery->select("*", "dtb_order_temp", $where, array($uniqid));
+            if (empty($arrRet)) $arrRet = array("");
             $this->objFormParam->setParam($arrRet[0]);
             break;
         }
@@ -171,19 +174,20 @@ class LC_Page_Shopping_Deliv extends LC_Page {
         $col = "other_deliv_id, name01, name02, pref, addr01, addr02";
         $objQuery->setorder("other_deliv_id DESC");
         $objOtherAddr = $objQuery->select($col, "dtb_other_deliv", $where, array($_SESSION['customer']['customer_id']));
-        $objPage->arrAddr = $arrCustomerAddr;
-        $objPage->tpl_addrmax = count($objOtherAddr);
+        $this->arrAddr = $arrCustomerAddr;
+        $this->tpl_addrmax = count($objOtherAddr);
         $cnt = 1;
         foreach($objOtherAddr as $val) {
-            $objPage->arrAddr[$cnt] = $val;
+            $this->arrAddr[$cnt] = $val;
             $cnt++;
         }
 
         // 入力値の取得
-        $objPage->arrForm = $this->objFormParam->getFormParamList();
-        $objPage->arrErr = $arrErr;
+        if (!isset($arrErr)) $arrErr = array();
+        $this->arrForm = $this->objFormParam->getFormParamList();
+        $this->arrErr = $arrErr;
 
-        $objView->assignobj($objPage);
+        $objView->assignobj($this);
         // フレームを選択(キャンペーンページから遷移なら変更)
         $objCampaignSess->pageView($objView);
     }

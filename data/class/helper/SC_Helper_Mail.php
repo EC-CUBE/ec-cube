@@ -44,7 +44,7 @@ class SC_Helper_Mail {
         $objMailView = new SC_SiteView();
         // メール本文の取得
         $objMailView->assignobj($objPage);
-        $body = $objMailView->fetch($arrMAILTPLPATH[$template_id]);
+        $body = $objMailView->fetch($this->arrMAILTPLPATH[$template_id]);
 
         // メール送信処理
         $objSendMail = new GC_SendMail();
@@ -58,7 +58,6 @@ class SC_Helper_Mail {
 
     /* 受注完了メール送信 */
     function sfSendOrderMail($order_id, $template_id, $subject = "", $header = "", $footer = "", $send = true) {
-        global $arrMAILTPLPATH;
 
         $objPage = new LC_Page();
         $objSiteInfo = new SC_SiteInfo();
@@ -110,7 +109,7 @@ class SC_Helper_Mail {
         }
 
         // 都道府県変換
-        $objPage->arrOrder['deliv_pref'] = $arrPref[$objPage->arrOrder['deliv_pref']];
+        $objPage->arrOrder['deliv_pref'] = $this->arrPref[$objPage->arrOrder['deliv_pref']];
 
         $objPage->arrOrderDetail = $arrOrderDetail;
 
@@ -120,7 +119,7 @@ class SC_Helper_Mail {
         $objMailView = new SC_SiteView();
         // メール本文の取得
         $objMailView->assignobj($objPage);
-        $body = $objMailView->fetch($arrMAILTPLPATH[$template_id]);
+        $body = $objMailView->fetch($this->arrMAILTPLPATH[$template_id]);
 
         // メール送信処理
         $objSendMail = new GC_SendMail();
@@ -128,7 +127,7 @@ class SC_Helper_Mail {
         $from = $arrInfo['email03'];
         $error = $arrInfo['email04'];
 
-        $tosubject = SC_Utils::sfMakeSubject($objQuery, $objMailView,
+        $tosubject = $this->sfMakeSubject($objQuery, $objMailView,
                                              $objPage, $tmp_subject);
 
         $objSendMail->setItem('', $tosubject, $body, $from, $arrInfo['shop_name'], $from, $error, $error, $bcc);
@@ -138,7 +137,7 @@ class SC_Helper_Mail {
         // 送信フラグ:trueの場合は、送信する。
         if($send) {
             if ($objSendMail->sendMail()) {
-                $this->fSaveMailHistory($order_id, $template_id, $tosubject, $body);
+                $this->sfSaveMailHistory($order_id, $template_id, $tosubject, $body);
             }
         }
 

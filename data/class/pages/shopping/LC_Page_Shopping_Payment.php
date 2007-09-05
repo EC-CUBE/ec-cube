@@ -248,14 +248,14 @@ class LC_Page_Shopping_Payment extends LC_Page {
         $sqlval['update_date'] = 'Now()';
 
         if($sqlval['payment_id'] != "") {
-            list($sqlval['payment_method'], $sqlval['charge']) = lfGetPaymentInfo($sqlval['payment_id']);
+            list($sqlval['payment_method'], $sqlval['charge']) = $this->lfGetPaymentInfo($sqlval['payment_id']);
         } else {
             $sqlval['payment_id'] = '0';
             $sqlval['payment_method'] = "";
         }
 
         if($sqlval['deliv_time_id'] != "") {
-            list($sqlval['deliv_id'], $sqlval['deliv_time']) = lfGetDelivTimeInfo($sqlval['deliv_time_id']);
+            list($sqlval['deliv_id'], $sqlval['deliv_time']) = $this->lfGetDelivTimeInfo($sqlval['deliv_time_id']);
         } else {
             $sqlval['deliv_time_id'] = '0';
             $sqlval['deliv_id'] = '0';

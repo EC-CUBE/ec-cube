@@ -13,7 +13,7 @@ require_once(CLASS_PATH . "pages/LC_Page.php");
  *
  * @package Page
  * @author LOCKON CO.,LTD.
- * @version $Id$
+ * @version $Id:LC_Page_Shopping_Complete.php 15532 2007-08-31 14:39:46Z nanasess $
  */
 class LC_Page_Shopping_Complete extends LC_Page {
 
@@ -31,11 +31,9 @@ class LC_Page_Shopping_Complete extends LC_Page {
         $this->tpl_css = URL_DIR.'css/layout/shopping/complete.css';
         $this->tpl_title = "ご注文完了";
 
-        // TODO
-        $this->arrCONVENIENCE = $arrCONVENIENCE;
-        $this->arrCONVENIMESSAGE = $arrCONVENIMESSAGE;
-        $objPage->arrCONVENIENCE = $arrCONVENIENCE;
-        $objPage->arrCONVENIMESSAGE = $arrCONVENIMESSAGE;
+        $masterData = new SC_DB_MasterData_Ex();
+        $this->arrCONVENIENCE = $masterData->getMasterData("mtb_convenience");
+        $this->arrCONVENIMESSAGE = $masterData->getMasterData("mtb_conveni_message");
 
         $this->allowClientCache();
     }
@@ -54,25 +52,26 @@ class LC_Page_Shopping_Complete extends LC_Page {
         $objSiteInfo = $objView->objSiteInfo;
         $this->arrInfo = $objSiteInfo->data;
         $this->objCustomer = new SC_Customer();
+        $mailHelper = new SC_Helper_Mail_Ex();
 
         // 前のページで正しく登録手続きが行われたか判定
-        SC_Utils_Ex::sfIsPrePage($objSiteSess);
+        SC_Utils_Ex::sfIsPrePage($this->objSiteSess);
         // ユーザユニークIDの取得と購入状態の正当性をチェック
-        $uniqid = SC_Utils_Ex::sfCheckNormalAccess($objSiteSess, $objCartSess);
+        $uniqid = SC_Utils_Ex::sfCheckNormalAccess($this->objSiteSess, $this->objCartSess);
         if ($uniqid != "") {
 
             // 完了処理
             $objQuery = new SC_Query();
             $objQuery->begin();
-            $order_id = lfDoComplete($objQuery, $uniqid);
+            $order_id = $this->lfDoComplete($objQuery, $uniqid);
             $objQuery->commit();
 
             // セッションに保管されている情報を更新する
-            $objCustomer->updateSession();
+            $this->objCustomer->updateSession();
 
             // 完了メール送信
             if($order_id != "") {
-                SC_Utils_Ex::sfSendOrderMail($order_id, '1');
+                $mailHelper->sfSendOrderMail($order_id, '1');
             }
 
             // その他情報の取得
@@ -108,17 +107,16 @@ class LC_Page_Shopping_Complete extends LC_Page {
             }
         }
 
-        $this->arrInfo = $arrInfo;
         // キャンペーンからの遷移かチェック
-        $this->is_campaign = $objCampaignSess->getIsCampaign();
-        $this->campaign_dir = $objCampaignSess->getCampaignDir();
+        $this->is_campaign = $this->objCampaignSess->getIsCampaign();
+        $this->campaign_dir = $this->objCampaignSess->getCampaignDir();
 
         $objView->assignobj($this);
         // フレームを選択(キャンペーンページから遷移なら変更)
-        $objCampaignSess->pageView($objView);
+        $this->objCampaignSess->pageView($objView);
 
         // セッション開放
-        $objCampaignSess->delCampaign();
+        $this->objCampaignSess->delCampaign();
     }
 
     /**
@@ -178,18 +176,18 @@ class LC_Page_Shopping_Complete extends LC_Page {
     }
 
     // 完了処理
-    function lfDoComplete($objQuery, $uniqid) {
+    function lfDoComplete(&$objQuery, $uniqid) {
         $objDb = new SC_Helper_DB_Ex();
 
         // 一時受注テーブルの読込
         $arrData = $objDb->sfGetOrderTemp($uniqid);
 
         // 会員情報登録処理
-        if ($objCustomer->isLoginSuccess()) {
+        if ($this->objCustomer->isLoginSuccess()) {
             // 新お届け先の登録
-            $this->lfSetNewAddr($uniqid, $objCustomer->getValue('customer_id'));
+            $this->lfSetNewAddr($uniqid, $this->objCustomer->getValue('customer_id'));
             // 購入集計を顧客テーブルに反映
-            $this->lfSetCustomerPurchase($objCustomer->getValue('customer_id'), $arrData, $objQuery);
+            $this->lfSetCustomerPurchase($this->objCustomer->getValue('customer_id'), $arrData, $objQuery);
         } else {
             //購入時強制会員登録
             switch(PURCHASE_CUSTOMER_REGIST) {
@@ -198,7 +196,7 @@ class LC_Page_Shopping_Complete extends LC_Page {
                 // 購入時会員登録
                 if($arrData['member_check'] == '1') {
                     // 仮会員登録
-                    $customer_id = $this->lfRegistPreCustomer($arrData, $arrInfo);
+                    $customer_id = $this->lfRegistPreCustomer($arrData, $this->arrInfo);
                     // 購入集計を顧客テーブルに反映
                     $this->lfSetCustomerPurchase($customer_id, $arrData, $objQuery);
                 }
@@ -206,7 +204,7 @@ class LC_Page_Shopping_Complete extends LC_Page {
             //有効
             case '1':
                 // 仮会員登録
-                $customer_id = $this->lfRegistPreCustomer($arrData, $arrInfo);
+                $customer_id = $this->lfRegistPreCustomer($arrData, $this->arrInfo);
                 // 購入集計を顧客テーブルに反映
                 $this->lfSetCustomerPurchase($customer_id, $arrData, $objQuery);
                 break;
@@ -214,20 +212,20 @@ class LC_Page_Shopping_Complete extends LC_Page {
 
         }
         // 一時テーブルを受注テーブルに格納する
-        $order_id = $this->lfRegistOrder($objQuery, $arrData, $objCampaignSess);
+        $order_id = $this->lfRegistOrder($objQuery, $arrData, $this->objCampaignSess);
         // カート商品を受注詳細テーブルに格納する
-        $this->lfRegistOrderDetail($objQuery, $order_id, $objCartSess);
+        $this->lfRegistOrderDetail($objQuery, $order_id, $this->objCartSess);
         // 受注一時テーブルの情報を削除する。
         $this->lfDeleteTempOrder($objQuery, $uniqid);
         // キャンペーンからの遷移の場合登録する。
-        if($objCampaignSess->getIsCampaign() and $objCartSess->chkCampaign($objCampaignSess->getCampaignId())) {
+        if($this->objCampaignSess->getIsCampaign() and $this->objCartSess->chkCampaign($this->objCampaignSess->getCampaignId())) {
             $this->lfRegistCampaignOrder($objQuery, $objCampaignSess, $order_id);
         }
 
         // セッションカート内の商品を削除する。
-        $objCartSess->delAllProducts();
+        $this->objCartSess->delAllProducts();
         // 注文一時IDを解除する。
-        $objSiteSess->unsetUniqId();
+        $this->objSiteSess->unsetUniqId();
 
         return $order_id;
     }
@@ -298,10 +296,12 @@ class LC_Page_Shopping_Complete extends LC_Page {
         $objMailView->assignobj($objMailPage);
         $body = $objMailView->fetch("mail_templates/customer_mail.tpl");
 
+        $mailHelper = new SC_Helper_Mail_Ex();
+
         $objMail = new GC_SendMail();
         $objMail->setItem(
                             ''										//　宛先
-                            , sfMakeSubject("会員登録のご確認")		//　サブジェクト
+                            , $mailHelper->sfMakeSubject("会員登録のご確認")		//　サブジェクト
                             , $body									//　本文
                             , $arrInfo['email03']					//　配送元アドレス
                             , $arrInfo['shop_name']					//　配送元　名前
@@ -370,7 +370,7 @@ class LC_Page_Shopping_Complete extends LC_Page {
     }
 
     // 受注詳細テーブルへ登録
-    function lfRegistOrderDetail($objQuery, $order_id, $objCartSess) {
+    function lfRegistOrderDetail(&$objQuery, $order_id, &$objCartSess) {
         $objDb = new SC_Helper_DB_Ex();
         // カート内情報の取得
         $arrCart = $objCartSess->getCartList();
@@ -411,7 +411,7 @@ class LC_Page_Shopping_Complete extends LC_Page {
     }
 
     // キャンペーン受注テーブルへ登録
-    function lfRegistCampaignOrder($objQuery, $objCampaignSess, $order_id) {
+    function lfRegistCampaignOrder(&$objQuery, &$objCampaignSess, $order_id) {
 
         // 受注データを取得
         $cols = "order_id, campaign_id, customer_id, message, order_name01, order_name02,".
@@ -439,7 +439,7 @@ class LC_Page_Shopping_Complete extends LC_Page {
 
 
     /* 受注一時テーブルの削除 */
-    function lfDeleteTempOrder($objQuery, $uniqid) {
+    function lfDeleteTempOrder(&$objQuery, $uniqid) {
         $where = "order_temp_id = ?";
         $sqlval['del_flg'] = 1;
         $objQuery->update("dtb_order_temp", $sqlval, $where, array($uniqid));
@@ -495,7 +495,7 @@ class LC_Page_Shopping_Complete extends LC_Page {
     }
 
     /* 購入情報を会員テーブルに登録する */
-    function lfSetCustomerPurchase($customer_id, $arrData, $objQuery) {
+    function lfSetCustomerPurchase($customer_id, $arrData, &$objQuery) {
         $col = "first_buy_date, last_buy_date, buy_times, buy_total, point";
         $where = "customer_id = ?";
         $arrRet = $objQuery->select($col, "dtb_customer", $where, array($customer_id));
@@ -519,7 +519,7 @@ class LC_Page_Shopping_Complete extends LC_Page {
     }
 
     // 在庫を減らす処理
-    function lfReduceStock($objQuery, $arrID, $quantity) {
+    function lfReduceStock(&$objQuery, $arrID, $quantity) {
         $where = "product_id = ? AND classcategory_id1 = ? AND classcategory_id2 = ?";
         $arrRet = $objQuery->select("stock, stock_unlimited", "dtb_products_class", $where, $arrID);
 
@@ -543,10 +543,10 @@ class LC_Page_Shopping_Complete extends LC_Page {
 
     // GETの値をインサート用に整える
     function lfGetInsParam($sqlVal){
-
+        $objDb = new SC_Helper_DB_Ex();
         foreach($_GET as $key => $val){
             // カラムの存在チェック
-            if(sfColumnExists("dtb_order", $key)) $sqlVal[$key] = $val;
+            if($objDb->sfColumnExists("dtb_order", $key)) $sqlVal[$key] = $val;
         }
 
         return $sqlVal;
