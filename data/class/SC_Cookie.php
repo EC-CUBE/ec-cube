@@ -23,7 +23,7 @@ class SC_Cookie {
 
     // クッキー取得
     function getCookie($key) {
-        return $_COOKIE[$key];
+        return isset($_COOKIE[$key]) ? $_COOKIE[$key] : null;
     }
 }
 ?>

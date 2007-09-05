@@ -100,10 +100,13 @@ class SC_FormParam {
     }
 
     function setDBDate($db_date, $year_key = 'year', $month_key = 'month', $day_key = 'day') {
-        list($y, $m, $d) = split("[- ]", $db_date);
-        $this->setValue($year_key, $y);
-        $this->setValue($month_key, $m);
-        $this->setValue($day_key, $d);
+
+        if (!empty($db_date)) {
+            list($y, $m, $d) = split("[- ]", $db_date);
+            $this->setValue($year_key, $y);
+            $this->setValue($month_key, $m);
+            $this->setValue($day_key, $d);
+        }
     }
 
     // キーに対応した値をセットする。
@@ -307,7 +310,11 @@ class SC_FormParam {
                 $arrRet[$val]['value'] = $this->param[$cnt];
             }
 
-            // TODO 未定義値の対応...
+            /*
+             * :XXX: isset() でチェックできない
+             */
+            if (empty($this->param[$cnt])) $this->param[$cnt] = "";
+
             if($this->default[$cnt] != "" && $this->param[$cnt] == "") {
                 $arrRet[$val]['value'] = $this->default[$cnt];
             }
