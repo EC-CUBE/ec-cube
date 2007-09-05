@@ -13,7 +13,7 @@ require_once(CLASS_PATH . "pages/LC_Page.php");
  *
  * @package Page
  * @author LOCKON CO.,LTD.
- * @version $Id$
+ * @version $Id:LC_Page_FrontParts_LoginCheck.php 15532 2007-08-31 14:39:46Z nanasess $
  */
 class LC_Page_FrontParts_LoginCheck extends LC_Page {
 
@@ -120,7 +120,7 @@ class LC_Page_FrontParts_LoginCheck extends LC_Page {
 
     /* POSTされるURLのチェック*/
     function lfIsValidURL() {
-        $site_url  = sfIsHTTPS() ? SSL_URL : SITE_URL;
+        $site_url  = SC_Utils_Ex::sfIsHTTPS() ? SSL_URL : SITE_URL;
         $check_url = trim($_POST['url']);
 
         // ローカルドメインチェック
