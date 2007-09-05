@@ -105,7 +105,7 @@ class LC_Page_Shopping_Confirm extends LC_Page {
         case 'return':
             // 正常な推移であることを記録しておく
             $objSiteSess->setRegistFlag();
-            header("Location: " . URL_SHOP_PAYMENT);
+            $this->sendRedirect($this->getLocation(URL_SHOP_PAYMENT));
             exit;
             break;
         case 'confirm':
@@ -122,7 +122,7 @@ class LC_Page_Shopping_Confirm extends LC_Page {
             $arrData['session'] = serialize($_SESSION);
 
             // 集計結果を受注一時テーブルに反映
-            sfRegistTempOrder($uniqid, $arrData);
+            $objDb->sfRegistTempOrder($uniqid, $arrData);
             // 正常に登録されたことを記録しておく
             $objSiteSess->setRegistFlag();
 
@@ -130,9 +130,9 @@ class LC_Page_Shopping_Confirm extends LC_Page {
             if($payment_type != "") {
                 // TODO 決済方法のモジュールは Plugin として実装したい
                 $_SESSION["payment_id"] = $arrData['payment_id'];
-                header("Location: " . URL_SHOP_MODULE);
+                $this->sendRedirect($this->getLocation(URL_SHOP_MODULE));
             }else{
-                header("Location: " . URL_SHOP_COMPLETE);
+                $this->sendRedirect($this->getLocation(URL_SHOP_COMPLETE));
             }
             break;
         default:
