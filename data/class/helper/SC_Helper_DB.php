@@ -187,15 +187,12 @@ class SC_Helper_DB {
      * @return array 店舗基本情報の配列
      */
     function sf_getBasisData() {
-        //DBから設定情報を取得
-        $objConn = new SC_DbConn();
-        $result = $objConn->getAll("SELECT * FROM dtb_baseinfo");
-        if(is_array($result[0])) {
-            foreach ( $result[0] as $key=>$value ){
-                $CONF["$key"] = $value;
-            }
-        }
-        return $CONF;
+        $objQuery = new SC_Query();
+        $arrRet = $objQuery->select('*', 'dtb_baseinfo');
+
+        if (isset($arrRet[0])) return $arrRet[0];
+
+        return array();
     }
 
     /* 選択中のアイテムのルートカテゴリIDを取得する */
