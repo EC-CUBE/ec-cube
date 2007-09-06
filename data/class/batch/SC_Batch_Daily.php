@@ -238,7 +238,7 @@ class SC_Batch_Daily {
         $age_loop = intval(BAT_ORDER_AGE / 10);
 
         // 年齢の範囲を指定してデータ抽出
-        $sql.= "SELECT COUNT(*) AS order_count, SUM(total) AS total, (AVG(total)) AS total_average ";
+        $sql = "SELECT COUNT(*) AS order_count, SUM(total) AS total, (AVG(total)) AS total_average ";
         $sql.= "FROM dtb_order ";
 
         // 集計対象日を取得する
