@@ -1218,7 +1218,7 @@ class SC_Helper_DB {
      * @param SC_Customer $objCustomer SC_Customer インスタンス
      * @return array 最終計算後の配列
      */
-    function sfTotalConfirm($arrData, &$objPage, &$objCartSess, $arrInfo, &$objCustomer = "") {
+    function sfTotalConfirm($arrData, &$objPage, &$objCartSess, $arrInfo, $objCustomer = "") {
         // 未定義変数を定義
         if (!isset($arrData['deliv_pref'])) $arrData['deliv_pref'] = "";
         if (!isset($arrData['payment_id'])) $arrData['payment_id'] = "";
