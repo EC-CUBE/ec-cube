@@ -72,9 +72,9 @@ class LC_Page_Admin_Total extends LC_Page {
         $this->lfSaveDateSession();
 
         if(isset($_GET['draw_image']) && $_GET['draw_image'] != ""){
-            define(DRAW_IMAGE , true);
+            define('DRAW_IMAGE' , true);
         }else{
-            define(DRAW_IMAGE , false);
+            define('DRAW_IMAGE' , false);
         }
 
         // パラメータ管理クラス
@@ -98,7 +98,7 @@ class LC_Page_Admin_Total extends LC_Page {
         case 'search':
             // 入力値の変換
             $this->objFormParam->convParam();
-            $this->arrErr = $this->lfCheckError($arrRet);
+            $this->arrErr = $this->lfCheckError();
             $arrRet = $this->objFormParam->getHashArray();
 
             // 入力エラーなし
@@ -184,6 +184,7 @@ class LC_Page_Admin_Total extends LC_Page {
                     break;
                     // 期間別集計
                 default:
+                    if (!isset($type)) $type = "";
                     if($type == "") {
                         $type = 'day';
                     }
@@ -333,13 +334,13 @@ class LC_Page_Admin_Total extends LC_Page {
         $list = $_SESSION['total'];
 
         // セッション情報に開始月度が保存されていない。
-        if($_SESSION['total']['startyear_m'] == "") {
+        if(empty($_SESSION['total']['startyear_m'])) {
             $list['startyear_m'] = $year;
             $list['startmonth_m'] = $month;
         }
 
         // セッション情報に開始日付、終了日付が保存されていない。
-        if($_SESSION['total']['startyear'] == "" && $_SESSION['total']['endyear'] == "") {
+        if(empty($_SESSION['total']['startyear']) && empty($_SESSION['total']['endyear'])) {
             $list['startyear'] = $year;
             $list['startmonth'] = $month;
             $list['startday'] = $day;
@@ -553,6 +554,7 @@ class LC_Page_Admin_Total extends LC_Page {
 
     // グラフ用のPNGファイル名
     function lfGetGraphPng($keyname) {
+        if (!isset($_POST['search_startyear_m'])) $_POST['search_startyear_m'] = "";
         if($_POST['search_startyear_m'] != "") {
             $pngname = sprintf("%s_%02d%02d.png", $keyname, substr($_POST['search_startyear_m'],2), $_POST['search_startmonth_m']);
         } else {
@@ -805,6 +807,7 @@ class LC_Page_Admin_Total extends LC_Page {
             break;
         }
 
+        if (!isset($where)) $where = "";
 
         // 取得日付の指定
         if($sdate != "") {
@@ -821,6 +824,8 @@ class LC_Page_Admin_Total extends LC_Page {
             $edate_next = date("Y/m/d",strtotime("1 day" ,strtotime($edate)));
             $where.= " order_date < date('" . $edate_next ."')";
         }
+
+        if (!isset($arrval)) $arrval = array();
 
         // 検索結果の取得
         $objPage->arrResults = $objQuery->select($col, $from, $where, $arrval);
