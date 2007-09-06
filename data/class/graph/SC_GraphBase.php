@@ -260,8 +260,19 @@ class SC_GraphBase {
             $text_width = $this->getTextWidth($text, $font_size);
             imagefilledrectangle($this->image, $left - 2, $top - 2, $left + $text_width + 2, $top + $font_size + 2, $this->labelbg_color);
         }
-        //$text = mb_convert_encoding($text, "UTF-8", CHAR_CODE);
-        $text = mb_convert_encoding($text, CHAR_CODE);
+        /*
+         * XXX EUC-JP にしないと Warning がでる.
+         *     --enable-gd-jis-conv も関係していそうだが, このオプションを
+         *     つけなくても出る.
+         *
+         *     Warning: imagettftext() [function.imagettftext]:
+         *     any2eucjp(): something happen in
+         *
+         *     http://www.php.net/imagettftext を見ると, UTF-8 にしろと
+         *     書いてあるのに何故？
+         */
+        $text = mb_convert_encoding($text, "EUC-JP", CHAR_CODE);
+        //$text = mb_convert_encoding($text, CHAR_CODE);
         if($color != NULL) {
             ImageTTFText($this->image, $font_size, $angle, $left, $top + $font_size, $color, FONT_PATH, $text);
         } else {

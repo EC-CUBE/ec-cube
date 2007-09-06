@@ -54,6 +54,16 @@ class LC_Page_Admin_Total extends LC_Page {
         // キャッシュ回避のために日付を渡す
         $this->cashtime = time();
         $this->objBatch = new SC_Batch_Daily_Ex();
+
+        // TODO エレガントじゃない...
+        if (!isset($_POST['search_startyear'])) $_POST['search_startyear'] = "";
+        if (!isset($_POST['search_startmonth'])) $_POST['search_startmonth'] = "";
+        if (!isset($_POST['search_startday'])) $_POST['search_startday'] = "";
+        if (!isset($_POST['search_endyear'])) $_POST['search_endyear'] = "";
+        if (!isset($_POST['search_endmonth'])) $_POST['search_endmonth'] = "";
+        if (!isset($_POST['search_endday'])) $_POST['search_endday'] = "";
+
+        if (!isset($_POST['search_startyear_m'])) $_POST['search_startyear_m'] = "";
     }
 
     /**
@@ -100,9 +110,8 @@ class LC_Page_Admin_Total extends LC_Page {
             $this->objFormParam->convParam();
             $this->arrErr = $this->lfCheckError();
             $arrRet = $this->objFormParam->getHashArray();
-
             // 入力エラーなし
-            if (count($this->arrErr) == 0) {
+            if (empty($this->arrErr)) {
                 foreach ($arrRet as $key => $val) {
                     if($val == "") {
                         continue;
@@ -121,9 +130,10 @@ class LC_Page_Admin_Total extends LC_Page {
                         break;
                     }
                 }
-
                 if($this->objFormParam->getValue('type') != "") {
                     $type = $this->objFormParam->getValue('type');
+                } else {
+                    $type = "";
                 }
 
                 $page = $this->objFormParam->getValue('page');
@@ -232,8 +242,6 @@ class LC_Page_Admin_Total extends LC_Page {
             break;
         }
 
-
-
         // 登録・更新日検索用
         $objDate = new SC_Date();
         $objDate->setStartYear(RELEASE_YEAR);
@@ -245,7 +253,6 @@ class LC_Page_Admin_Total extends LC_Page {
         $this->arrForm = $this->objFormParam->getFormParamList();
 
         $this->tpl_subtitle = $this->arrTitle[$this->objFormParam->getValue('page')];
-
         $objView->assignobj($this);
         $objView->display(MAIN_FRAME);
     }
@@ -463,11 +470,12 @@ class LC_Page_Admin_Total extends LC_Page {
     function lfGetGraphPie($arrResults, $keyname, $type, $title = "", $sdate = "", $edate = "") {
 
         $ret_path = "";
-
         // 結果が0行以上ある場合のみグラフを生成する。
         if(count($arrResults) > 0) {
             // グラフの生成
-            $arrList = sfArrKeyValue($arrResults, $keyname, "total", GRAPH_PIE_MAX, GRAPH_LABEL_MAX);
+            $arrList = SC_Utils_Ex::sfArrKeyValue($arrResults, $keyname,
+                                                  "total", GRAPH_PIE_MAX,
+                                                  GRAPH_LABEL_MAX);
 
             // 一時ファイル名の取得
             $pngname = $this->lfGetGraphPng($type);
@@ -515,7 +523,7 @@ class LC_Page_Admin_Total extends LC_Page {
         // 結果が0行以上ある場合のみグラフを生成する。
         if(count($arrResults) > 0) {
             // グラフの生成
-            $arrList = sfArrKeyValue($arrResults, $keyname, "total", GRAPH_PIE_MAX, GRAPH_LABEL_MAX);
+            $arrList = SC_Utils_Ex::sfArrKeyValue($arrResults, $keyname, "total", GRAPH_PIE_MAX, GRAPH_LABEL_MAX);
 
             // 一時ファイル名の取得
             $pngname = $this->lfGetGraphPng($type);
@@ -556,7 +564,7 @@ class LC_Page_Admin_Total extends LC_Page {
 
     // グラフ用のPNGファイル名
     function lfGetGraphPng($keyname) {
-        if (!isset($_POST['search_startyear_m'])) $_POST['search_startyear_m'] = "";
+
         if($_POST['search_startyear_m'] != "") {
             $pngname = sprintf("%s_%02d%02d.png", $keyname, substr($_POST['search_startyear_m'],2), $_POST['search_startmonth_m']);
         } else {
@@ -567,6 +575,7 @@ class LC_Page_Admin_Total extends LC_Page {
 
     // 会員、非会員集計のWHERE分の作成
     function lfGetWhereMember($col_date, $sdate, $edate, $type, $col_member = "customer_id") {
+        $where = "";
         // 取得日付の指定
         if($sdate != "") {
             if ($where != "") {
@@ -604,7 +613,7 @@ class LC_Page_Admin_Total extends LC_Page {
             break;
         }
 
-        return array($where, $arrval);
+        return array($where, array());
     }
 
     /** 会員別集計 **/
@@ -702,7 +711,7 @@ class LC_Page_Admin_Total extends LC_Page {
         // 円グラフの生成
         if($graph) {
             $image_key = "job_" . $type;
-            $objPage->tpl_image = lfGetGraphPie($objPage->arrResults, "job_name", $image_key, "(売上比率)", $sdate, $edate);
+            $objPage->tpl_image = $this->lfGetGraphPie($objPage->arrResults, "job_name", $image_key, "(売上比率)", $sdate, $edate);
         }
     }
 
