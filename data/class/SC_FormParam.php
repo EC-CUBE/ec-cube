@@ -337,7 +337,7 @@ class SC_FormParam {
         $cnt = 0;
         foreach($this->keyname as $val) {
             if($val == $keyname) {
-                $ret = $this->param[$cnt];
+                $ret = isset($this->param[$cnt]) ? $this->param[$cnt] : "";
                 break;
             }
             $cnt++;
