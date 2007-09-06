@@ -558,7 +558,7 @@ class SC_Utils {
 
         for($cnt = 0; $cnt < $max; $cnt++) {
             if($keysize != "") {
-                $key = $this->sfCutString($arrList[$cnt][$keyname], $keysize);
+                $key = SC_Utils::sfCutString($arrList[$cnt][$keyname], $keysize);
             } else {
                 $key = $arrList[$cnt][$keyname];
             }
@@ -583,7 +583,7 @@ class SC_Utils {
 
         for($cnt = 0; $cnt < $max; $cnt++) {
             if($keysize != "") {
-                $key = $this->sfCutString($arrList[$cnt][$keyname], $keysize);
+                $key = SC_Utils::sfCutString($arrList[$cnt][$keyname], $keysize);
             } else {
                 $key = $arrList[$cnt][$keyname];
             }
