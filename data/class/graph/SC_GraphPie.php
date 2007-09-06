@@ -28,6 +28,8 @@ class SC_GraphPie extends SC_GraphBase{
 
     // データを360°値に変換する
     function getCircleData($array) {
+        $total = "";
+        $new_total = "";
         if(!is_array($array)) {
             return;
         }
@@ -187,8 +189,8 @@ class SC_GraphPie extends SC_GraphBase{
         for($i = 0; $i < $rd_max; $i++) {
             $center = $start + ($arrRad[$i] / 2);
             $end = $start + $arrRad[$i];
-            list($sx, $sy) = lfGetArcPos($this->cx, $this->cy, ($this->cw / 1.5), ($this->ch / 1.5), $center);
-            list($ex, $ey) = lfGetArcPos($this->cx, $this->cy, ($this->cw * 1.5), ($this->ch * 1.5), $center);
+            list($sx, $sy) = $this->lfGetArcPos($this->cx, $this->cy, ($this->cw / 1.5), ($this->ch / 1.5), $center);
+            list($ex, $ey) = $this->lfGetArcPos($this->cx, $this->cy, ($this->cw * 1.5), ($this->ch * 1.5), $center);
             // 指示線の描画
             imageline($this->image, $sx, $sy, $ex + 2, $ey - PIE_LABEL_UP, $this->flame_color);
             $this->setText(FONT_SIZE, $ex - 10, $ey - PIE_LABEL_UP - FONT_SIZE, $this->arrLabel[$i], NULL, 0, true);
