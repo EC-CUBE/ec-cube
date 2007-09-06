@@ -42,6 +42,10 @@ class LC_Page_Admin_App extends LC_Page {
      * @return void
      */
     function process() {
+
+        // ログインチェック
+        SC_Utils::sfIsSuccess(new SC_Session());
+
         $objView = new SC_AdminView();
         $objView->assignObj($this);
         $objView->display(MAIN_FRAME);
