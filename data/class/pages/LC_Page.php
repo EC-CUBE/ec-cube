@@ -206,6 +206,12 @@ class LC_Page {
             $realPath = realpath($path);
         }
 
+        // FIXME OS依存の処理は別クラスに分ける？
+        // Windowsの場合は, ディレクトリの区切り文字を\から/に変換する
+        if (substr(PHP_OS, 0, 3) == 'WIN') {
+            $realPath = str_replace("\\", "/", $realPath);
+        }
+
         // DocumentRoot を削除した文字列を取得.
         $root = str_replace($documentRoot, "", $realPath);
         // 先頭の / を削除
