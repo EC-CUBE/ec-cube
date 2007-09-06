@@ -13,7 +13,7 @@ require_once(CLASS_PATH . "pages/LC_Page.php");
  *
  * @package Page
  * @author LOCKON CO.,LTD.
- * @version $Id$
+ * @version $Id:LC_Page_Entry.php 15532 2007-08-31 14:39:46Z nanasess $
  */
 class LC_Page_Entry extends LC_Page {
 
@@ -168,12 +168,14 @@ class LC_Page_Entry extends LC_Page {
                     $objMailText = new SC_SiteView();
                     $objMailText->assignobj($this);
 
+                    $mailHelper = new SC_Helper_Mail_Ex();
+                    $objQuery = new SC_Query();
                     // 仮会員が有効の場合
                     if(CUSTOMER_CONFIRM_MAIL == true) {
-                        $subject = SC_Utils_Ex::sfMakesubject('会員登録のご確認');
+                        $subject = $mailHelper->sfMakesubject($objQuery, $objMailText, $this, '会員登録のご確認');
                         $toCustomerMail = $objMailText->fetch("mail_templates/customer_mail.tpl");
                     } else {
-                        $subject = SC_Utils_Ex::sfMakesubject('会員登録のご完了');
+                        $subject = $mailHelper->sfMakesubject($objQuery, $objMailText, $this, '会員登録のご完了');
                         $toCustomerMail = $objMailText->fetch("mail_templates/customer_regist_mail.tpl");
                         // ログイン状態にする
                         $objCustomer->setLogin($_POST["email"]);
