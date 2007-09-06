@@ -310,6 +310,8 @@ class LC_Page_Admin_Total extends LC_Page {
 
     /* セッションに入力期間を記録する */
     function lfSaveDateSession() {
+        if (!isset($_POST['form'])) $_POST['form'] = "";
+
         if($_POST['form'] == 1) {
             $_SESSION['total']['startyear_m'] = $_POST['search_startyear_m'];
             $_SESSION['total']['startmonth_m'] = $_POST['search_startmonth_m'];
@@ -331,7 +333,7 @@ class LC_Page_Admin_Total extends LC_Page {
         $month = date("m");
         $day = date("d");
 
-        $list = $_SESSION['total'];
+        $list = isset($_SESSION['total']) ? $_SESSION['total'] : "";
 
         // セッション情報に開始月度が保存されていない。
         if(empty($_SESSION['total']['startyear_m'])) {
