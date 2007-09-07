@@ -47,6 +47,7 @@ class LC_Page_Admin_Mail extends LC_Page {
         $this->arrHtmlmail[''] = "すべて";
         $this->arrHtmlmail[1] = $this->arrMAILMAGATYPE[1];
         $this->arrHtmlmail[2] = $this->arrMAILMAGATYPE[2];
+        $this->arrMagazineTypeAll = $masterData->getMasterData("mtb_magazine_type");
 
         //---- 検索用項目配列
         $this->arrHtmlmail = array( "" => "両方",  1 => "HTML", 2 => "TEXT" );
