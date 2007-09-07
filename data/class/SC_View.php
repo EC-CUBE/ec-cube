@@ -41,6 +41,7 @@ class SC_View {
         $this->_smarty->register_modifier("sf_mktime", array("SC_Utils_Ex", "sf_mktime"));
         $this->_smarty->register_modifier("sf_date", array("SC_Utils_Ex", "sf_date"));
         $this->_smarty->register_modifier("str_replace", array("SC_Utils_Ex", "str_replace"));
+        $this->_smarty->register_modifier("sfGetEnabled", array("SC_Utils_Ex", "sfGetEnabled"));
 //        $this->_smarty->register_modifier("sfPrintEbisTag", array("SC_Utils_Ex", "sfPrintEbisTag"));
 //        $this->_smarty->register_modifier("sfPrintAffTag", array("SC_Utils_Ex", "sfPrintAffTag"));
         $this->_smarty->register_modifier("sfGetCategoryId", array("SC_Utils_Ex", "sfGetCategoryId"));
