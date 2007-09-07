@@ -250,13 +250,13 @@ class LC_Page_Admin_Mail extends LC_Page {
             */
         case 'input':
             //-- 入力値コンバート
-            $this->list_data = $this->lfConvertParam($_POST, $arrSearchColumn);
+            $this->list_data = $this->lfConvertParam($_POST, $this->arrSearchColumn);
             //-- 入力エラーのチェック
             $this->arrErr = $this->lfErrorCheck($this->list_data);
             //-- エラーなし
             if (!is_array($this->arrErr)) {
                 //-- 現在時刻の取得
-                $this->arrNowDate = $this-lfGetNowDate();
+                $this->arrNowDate = $this->lfGetNowDate();
                 $this->arrHidden = $this->lfGetHidden($this->list_data); // hidden要素作成
                 $this->tpl_mainpage = 'mail/input.tpl';
             }
@@ -266,7 +266,7 @@ class LC_Page_Admin_Mail extends LC_Page {
             */
         case 'template':
             //-- 入力値コンバート
-            $this->list_data = $this->lfConvertParam($_POST, $arrSearchColumn);
+            $this->list_data = $this->lfConvertParam($_POST, $this->arrSearchColumn);
 
             //-- 時刻設定の取得
             $this->arrNowDate['year'] = $_POST['send_year'];
@@ -317,8 +317,8 @@ class LC_Page_Admin_Mail extends LC_Page {
         case 'regist_back':
         case 'regist_complete':
             //-- 入力値コンバート
-            $arrCheckColumn = array_merge( $arrSearchColumn, $arrRegistColumn );
-            $this->list_data = $this->lfConvertParam($_POST, $arrCheckColumn);
+            $arrCheckColumn = array_merge( $this->arrSearchColumn, $this->arrRegistColumn );
+            $this->list_data = $this->lfConvertParam($_POST, $this->arrCheckColumn);
 
             //現在時刻の取得
             $this->arrNowDate = $this->lfGetNowDate();
