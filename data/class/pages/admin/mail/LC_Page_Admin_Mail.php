@@ -713,7 +713,7 @@ class LC_Page_Admin_Mail extends LC_Page {
     /* テンプレートIDからテンプレートデータを取得 */
     function getTemplateData($conn, $id){
 
-        if ( sfCheckNumLength($id) ){
+        if ( SC_Utils_Ex::sfCheckNumLength($id) ){
             $sql = "SELECT * FROM dtb_mailmaga_template WHERE template_id = ? ORDER BY template_id DESC";
             $result = $conn->getAll( $sql, array($id) );
             if ( is_array($result) ) {
