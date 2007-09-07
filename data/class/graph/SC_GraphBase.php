@@ -268,8 +268,11 @@ class SC_GraphBase {
          *     Warning: imagettftext() [function.imagettftext]:
          *     any2eucjp(): something happen in
          *
+         *     PHP Bugs: #42218
+         *
          *     http://www.php.net/imagettftext を見ると, UTF-8 にしろと
-         *     書いてあるのに何故？
+         *     書いてあるのに...
+         *
          */
         $text = mb_convert_encoding($text, "EUC-JP", CHAR_CODE);
         //$text = mb_convert_encoding($text, CHAR_CODE);
