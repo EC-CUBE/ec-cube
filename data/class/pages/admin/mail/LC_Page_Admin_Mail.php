@@ -201,14 +201,15 @@ class LC_Page_Admin_Mail extends LC_Page {
         case 'search':
         case 'back':
             //-- 入力値コンバート
-            $this->list_data = $this->lfConvertParam($_POST, $arrSearchColumn);
+            $this->list_data = $this->lfConvertParam($_POST, $this->arrSearchColumn);
 
             //-- 入力エラーのチェック
             $this->arrErr = $this->lfErrorCheck($this->list_data);
 
             //-- 検索開始
             if (!is_array($this->arrErr)) {
-                $this->list_data['name'] = SC_Utils_Ex::sfManualEscape($this->list_data['name']);
+                $this->list_data['name'] = isset($this->list_data['name'])
+                    ? SC_Utils_Ex::sfManualEscape($this->list_data['name']) : "";
                 // hidden要素作成
                 $this->arrHidden = $this->lfGetHidden($this->list_data);
 
@@ -228,7 +229,7 @@ class LC_Page_Admin_Mail extends LC_Page {
                 $this->tpl_linemax = $linemax;               // 何件が該当しました。表示用
 
                 // ページ送りの取得
-                $objNavi = new SC_PageNavi($_POST['search_pageno'], $linemax, SEARCH_PMAX, "fnResultPageNavi", NAVI_PMAX);
+                $objNavi = new SC_PageNavi($this->tpl_pageno, $linemax, SEARCH_PMAX, "fnResultPageNavi", NAVI_PMAX);
                 $this->arrPagenavi = $objNavi->arrPagenavi;
                 $startno = $objNavi->start_row;
 
@@ -606,7 +607,7 @@ class LC_Page_Admin_Mail extends LC_Page {
 
         $new_array = array();
         foreach ($arrConvList as $key => $val) {
-            if ( strlen($array[$key]) > 0 ){                        // データのあるものだけ返す
+            if (isset($array[$key]) &&  strlen($array[$key]) > 0 ){                        // データのあるものだけ返す
                 $new_array[$key] = $array[$key];
                 if( strlen($val) > 0) {
                     $new_array[$key] = mb_convert_kana($new_array[$key] ,$val);
@@ -635,6 +636,10 @@ class LC_Page_Admin_Mail extends LC_Page {
 
         $objErr->doFunc(array("購入回数(開始)", "buy_times_from", INT_LEN), array("NUM_CHECK","MAX_LENGTH_CHECK"));
         $objErr->doFunc(array("購入回数(終了)", "buy_times_to", INT_LEN), array("NUM_CHECK","MAX_LENGTH_CHECK"));
+        if (!isset($array['buy_total_from'])) $array['buy_total_from'] = "";
+        if (!isset($array['buy_total_to'])) $array['buy_total_to'] = "";
+        if (!isset($array['buy_times_from'])) $array['buy_times_from'] = "";
+        if (!isset($array['buy_times_from'])) $array['buy_times_from'] = "";
         if ((is_numeric($array["buy_total_from"]) && is_numeric($array["buy_total_to"]) ) && ($array["buy_times_from"] > $array["buy_times_to"]) ) $objErr->arrErr["buy_times_from"] .= "※ 購入回数の指定範囲が不正です。";
 
         $objErr->doFunc(array("誕生月", "birth_month", 2), array("NUM_CHECK","MAX_LENGTH_CHECK"));
