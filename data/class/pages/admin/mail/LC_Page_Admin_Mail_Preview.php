@@ -45,6 +45,10 @@ class LC_Page_Admin_Mail_Preview extends LC_Page {
         SC_Utils_Ex::sfIsSuccess($objSess);
 
         if (!isset($_POST['body'])) $_POST['body'] = "";
+        if (!isset($_REQUEST['method'])) $_REQUEST['method'] = "";
+        if (!isset($_REQUEST['id'])) $_REQUEST['id'] = "";
+        if (!isset($_GET['send_id'])) $_GET['send_id'] = "";
+
         if ( $_POST['body'] ){
             $this->body = $_POST['body'];
 
@@ -103,7 +107,6 @@ class LC_Page_Admin_Mail_Preview extends LC_Page {
             }
             $result = $conn->getAll($sql, array($id));
 
-            $this->p($result);
             if ( $result ){
                 if ( $result[0]["mail_method"] == 2 ){
                     // テキスト形式の時はタグ文字をエスケープ
