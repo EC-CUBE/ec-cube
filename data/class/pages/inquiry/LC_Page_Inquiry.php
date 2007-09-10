@@ -13,7 +13,7 @@ require_once(CLASS_PATH . "pages/LC_Page.php");
  *
  * @package Page
  * @author LOCKON CO.,LTD.
- * @version $Id$
+ * @version $Id:LC_Page_Inquiry.php 15532 2007-08-31 14:39:46Z nanasess $
  */
 class LC_Page_Inquiry extends LC_Page {
 
@@ -45,7 +45,7 @@ class LC_Page_Inquiry extends LC_Page {
 
         // 都道府県プルダウン用配列
         $masterData = new SC_DB_MasterData_Ex();
-        $this->arrPrfef = $masterData->getMasterData("mtb_pref",
+        $this->arrPref = $masterData->getMasterData("mtb_pref",
                                   array("pref_id", "pref_name", "rank"));
 
         // CSV保存項目
@@ -68,6 +68,7 @@ class LC_Page_Inquiry extends LC_Page {
                             );
 
 
+        if (!isset($_POST['mode'])) $_POST['mode'] = "";
 
         if ( ( ! $_POST['mode'] == 'confirm' ) && ( ! is_numeric($_REQUEST['question_id']) ) ){
             echo "不正アクセス";
@@ -84,7 +85,8 @@ class LC_Page_Inquiry extends LC_Page {
         $this->arrHidden = SC_Utils_Ex::sfMakeHiddenArray($_POST);
         unset($this->arrHidden['mode']);
 
-        if ( (int)$this->QUESTION["delete"] !== 0 ){
+        if (isset($this->QUESTION["delete"])
+            && (int)$this->QUESTION["delete"] !== 0 ){
 
             $objPage->tpl_mainpage = "inquiry/closed.tpl";
 
@@ -110,7 +112,7 @@ class LC_Page_Inquiry extends LC_Page {
             $this->arrForm = $_POST;
             $this->arrForm = $this->lfConvertParam($this->arrForm, $arrRegistColumn);
             $this->arrErr = $this->lfErrorCheck($this->arrForm);
-            $this->arrErr = $this->GGlfGetArrInput($this->arrErr);
+            $this->arrErr = $this->lfGetArrInput($this->arrErr);
 
 
             if( ! $this->arrErr ) {
@@ -152,12 +154,12 @@ class LC_Page_Inquiry extends LC_Page {
         }
 
         $this->cnt_question = 6;
-        $this->arrActive = $arrActive;
-        $this->arrQuestion = $arrQuestion;
+        $this->arrActive = isset($arrActive) ? $arrActive : "";
+        $this->arrQuestion = isset($arrQuestion) ? $arrQuestion : "";
 
 
         //----　ページ表示
-        $objView->_smarty->register_function("lfArray_Search_key_Smarty","lfArray_Search_key_Smarty");
+        $objView->_smarty->register_modifier("lfArray_Search_key_Smarty","lfArray_Search_key_Smarty");
         $objView->assignobj($this);
         $objView->display($this->tpl_mainpage);
     }
@@ -201,7 +203,7 @@ class LC_Page_Inquiry extends LC_Page {
         $objErr->doFunc(array('メールアドレス(確認)', "email02", MTEXT_LEN) ,array("EXIST_CHECK", "SPTAB_CHECK", "EMAIL_CHECK", "EMAIL_CHAR_CHECK", "MAX_LENGTH_CHECK"));
         $objErr->doFunc(array('メールアドレス', 'メールアドレス(確認)', "email", "email02") ,array("EQUAL_CHECK"));
 
-        $objErr->arrErr["option"] =  array_map( "lfCheckNull", (array)$_POST['option'] );
+        $objErr->arrErr["option"] =  array_map(array($this, "lfCheckNull"), (array)$_POST['option'] );
 
         return $objErr->arrErr;
     }
@@ -249,13 +251,14 @@ class LC_Page_Inquiry extends LC_Page {
      */
     function lfGetArrInput( $arr ){
         // 値が入力された配列のみを返す
+        $return = array();
 
         if ( is_array($arr)	){
             foreach ( $arr as $key=>$val ) {
                 if ( is_string($val) && strlen($val) > 0 ){
                     $return[$key] = $val;
                 } elseif ( is_array( $val ) ) {
-                    $data = lfGetArrInput ( $val );
+                    $data = $this->lfGetArrInput ( $val );
                     if ( $data ){
                         $return[$key] = $data;
                     }
@@ -289,12 +292,13 @@ class LC_Page_Inquiry extends LC_Page {
      * @return unknown
      */
     function lfCheckNull ( $val ){
+        $return = array();
 
         if ( ( ! is_array( $val ) ) && ( strlen( $val ) < 1 ) ){
             $return = "1";
         } elseif ( is_array( $val ) ) {
             foreach ($val as $line) {
-                $return = lfCheckNull( $line );
+                $return = $this->lfCheckNull( $line );
             }
         }
         return $return;

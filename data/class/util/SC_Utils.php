@@ -1276,7 +1276,7 @@ class SC_Utils {
                     $keyname = $key;
                 }
                 if(is_array($val)) {
-                    $arrDst = sfMakeHiddenArray($val, $arrDst, $keyname);
+                    $arrDst = SC_Utils::sfMakeHiddenArray($val, $arrDst, $keyname);
                 } else {
                     $arrDst[$keyname] = $val;
                 }
