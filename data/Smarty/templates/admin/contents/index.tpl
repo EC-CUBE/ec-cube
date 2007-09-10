@@ -56,7 +56,7 @@ function moving(news_id,rank, max_rank) {
 			j ++;
 	    }
 	}
-	
+
 	if ( j > 1) {
 		alert( '移動順位は１つだけ入力してください。' );
 		return false;
@@ -77,7 +77,7 @@ function moving(news_id,rank, max_rank) {
 		return false;
 	} else if( val > max_rank ){
 		alert( '入力された順位は、登録数の最大値を超えています。' );
-		return false;	
+		return false;
 	} else {
 		ml.moveposition.value = val;
 		ml.rank.value = rank;
@@ -109,7 +109,7 @@ function moving(news_id,rank, max_rank) {
 				<tr>
 					<td align="center">
 						<table width="706" border="0" cellspacing="0" cellpadding="0" summary=" ">
-						
+
 							<tr><td height="14"></td></tr>
 							<tr>
 								<td colspan="3"><img src="<!--{$smarty.const.URL_DIR}-->img/contents/main_top.jpg" width="706" height="14" alt=""></td>
@@ -135,7 +135,7 @@ function moving(news_id,rank, max_rank) {
 								</table>
 
 								<!--▼登録テーブルここから-->
-								<table width="678" border="0" cellspacing="1" cellpadding="8" summary=" ">	
+								<table width="678" border="0" cellspacing="1" cellpadding="8" summary=" ">
 									<thead>
 									<tr class="fs12n">
 										<td bgcolor="#f2f1ec" width="78">日付<span class="red"> *</span></td>
@@ -179,7 +179,7 @@ function moving(news_id,rank, max_rank) {
 									</tfoot>
 								</table>
 								<!--▲登録テーブルここまで-->
-								
+
 								<table width="678" border="0" cellspacing="0" cellpadding="0" summary=" ">
 									<tr>
 										<td bgcolor="#cccccc"><img src="<!--{$smarty.const.URL_DIR}-->img/common/_.gif" width="1" height="5" alt=""></td>
@@ -202,11 +202,11 @@ function moving(news_id,rank, max_rank) {
 									</tr>
 									</form>
 								</table>
-								
+
 								<table width="678" border="0" cellspacing="0" cellpadding="0" summary=" ">
 									<tr><td colspan="3"><img src="<!--{$smarty.const.URL_DIR}-->img/contents/main_bar.jpg" width="678" height="10" alt=""></td></tr>
 								</table>
-								
+
 								<table width="678" border="0" cellspacing="0" cellpadding="0" summary=" ">
 									<tr>
 										<td colspan="3"><img src="<!--{$smarty.const.URL_DIR}-->img/contents/contents_title_top.gif" width="678" height="7" alt=""></td>
@@ -248,7 +248,7 @@ function moving(news_id,rank, max_rank) {
 										<!--{assign var=db_rank value="`$list_data[data].rank`"}-->
 										<!--{assign var=rank value="`$line_max-$db_rank+1`"}-->
 										<td width="" align="center"><!--{$rank}--></td>
-										<td width="" align="center"><!--{"-"|str_replace:"/":$list_data[data].cast_news_date}--></td>
+										<td width="" align="center"><!--{$list_data[data].cast_news_date|date_format:"%Y/%m/%d"}--></td>
 										<td width="">
 											<!--{if $list_data[data].link_method eq 1 && $list_data[data].news_url != ""}--><a href="<!--{$list_data[data].news_url}-->" ><!--{$list_data[data].news_title|escape|nl2br}--></a>
 											<!--{elseif $list_data[data].link_method eq 1 && $list_data[data].news_url == ""}--><!--{$list_data[data].news_title|escape|nl2br}-->
@@ -269,11 +269,11 @@ function moving(news_id,rank, max_rank) {
 									<tr bgcolor="#ffffff" class="fs12n">
 										<td colspan="6">現在データはありません。</td>
 									</tr>
-									<!--{/section}-->								
+									<!--{/section}-->
 								</form>
 								</table>
 								<!--▲一覧表示エリアここまで-->
-									
+
 								</td>
 								<td background="<!--{$smarty.const.URL_DIR}-->img/contents/main_right.jpg"><img src="<!--{$smarty.const.URL_DIR}-->img/common/_.gif" width="14" height="1" alt=""></td>
 							</tr>
