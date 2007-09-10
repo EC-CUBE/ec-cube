@@ -66,9 +66,9 @@ class LC_Page_Admin_Contents_Recommend extends LC_Page {
 
             // 入力文字の強制変換
             $this->arrForm = $_POST;
-            $this->arrForm = lfConvertParam($this->arrForm, $arrRegistColumn);
+            $this->arrForm = $this->lfConvertParam($this->arrForm, $arrRegistColumn);
             // エラーチェック
-            $this->arrErr[$this->arrForm['rank']] = lfErrorCheck();
+            $this->arrErr[$this->arrForm['rank']] = $this->lfErrorCheck();
             if ( ! $this->arrErr[$this->arrForm['rank']]) {
                 // 古いのを消す
                 $sql = "DELETE FROM dtb_best_products WHERE category_id = ? AND rank = ?";
@@ -154,7 +154,7 @@ class LC_Page_Admin_Contents_Recommend extends LC_Page {
         // 文字変換
         $new_array = array();
         foreach ($arrConvList as $key => $val) {
-            $new_array[$key] = $array[$key];
+            $new_array[$key] = isset($array[$key]) ? $array[$key] : "";
             if( strlen($val) > 0) {
                 $new_array[$key] = mb_convert_kana($new_array[$key] ,$val);
             }
