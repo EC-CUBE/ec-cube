@@ -19,6 +19,7 @@
 <script type="text/javascript" src="<!--{$smarty.const.URL_DIR}-->js/site.js"></script>
 <script type="text/javascript" src="<!--{$smarty.const.URL_DIR}-->js/admin.js"></script>
 <script type="text/javascript" src="<!--{$smarty.const.URL_DIR}-->js/file_manager.js"></script>
+<script type="text/javascript" src="<!--{$smarty.const.URL_DIR}-->js/jquery.js"></script>
 
 <!--{include file='css/contents.tpl'}-->
 
