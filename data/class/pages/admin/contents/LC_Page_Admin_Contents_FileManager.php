@@ -84,6 +84,7 @@ class LC_Page_Admin_Contents_FileManager extends LC_Page {
 
                 } else {
                     // javascriptで別窓表示(テンプレート側に渡す)
+                    // FIXME
                     $file_url = ereg_replace(USER_PATH, "", $_POST['select_file']);
                     $tpl_onload = "win02('./file_view.php?file=". $file_url ."', 'user_data', '600', '400');";
                 }
