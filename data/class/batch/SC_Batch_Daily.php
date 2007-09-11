@@ -14,7 +14,7 @@
  * @author LOCKON CO.,LTD.
  * @version $Id$
  */
-class SC_Batch_Daily {
+class SC_Batch_Daily extends SC_Batch {
 
 
     /**
@@ -26,26 +26,36 @@ class SC_Batch_Daily {
     function SC_Batch_Daily($argv = "") {
 
         if (!empty($argv)) {
-            $term = 0;
-            $start = 1;	// 集計期間は、$start~$termの間となる。通常前日分から。
-            $command = false;
+            $this->execute($argv);
+        }
+    }
 
-            // 集計対象期間の取得（指定日分さかのぼる)
-            if (SC_Utils_Ex::sfIsInt($argv[1]) && $argv[1] <= 365) {
-                $term = $argv[1];
-                $command = true;
-            }
+    /**
+     * バッチ処理を実行する.
+     *
+     * @param mixed $argv コマンドライン引数
+     * @return void
+     */
+    function execute($argv = "") {
+        $term = 0;
+        $start = 1;	// 集計期間は、$start~$termの間となる。通常前日分から。
+        $command = false;
 
-            // 集計開始日
-            if (SC_Utils_Ex::sfIsInt($argv[2]) && $argv[2] <= 365) {
-                $start = $argv[2];
-                $command = true;
-            }
+        // 集計対象期間の取得（指定日分さかのぼる)
+        if (SC_Utils_Ex::sfIsInt($argv[1]) && $argv[1] <= 365) {
+            $term = $argv[1];
+            $command = true;
+        }
 
-            if($term > 0) {
-                // 集計の開始
-                $this->lfStartDailyTotal($term, $start, $command);
-            }
+        // 集計開始日
+        if (SC_Utils_Ex::sfIsInt($argv[2]) && $argv[2] <= 365) {
+            $start = $argv[2];
+            $command = true;
+        }
+
+        if($term > 0) {
+            // 集計の開始
+            $this->lfStartDailyTotal($term, $start, $command);
         }
     }
 
