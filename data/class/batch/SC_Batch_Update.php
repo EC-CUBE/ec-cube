@@ -27,7 +27,7 @@ class SC_Batch_Update extends SC_Batch {
     /**
      * 除外するファイル名をカンマ区切りで羅列.
      */
-    var $excludes = "distinfo.php,update.php";
+    var $excludes = "distinfo.php";
 
     /**
      * バッチ処理を実行する.
