@@ -929,6 +929,7 @@ class SC_Utils {
 
     /* 配列をキー名ごとの配列に変更する */
     function sfSwapArray($array) {
+        $arrRet = array();
         $max = count($array);
         for($i = 0; $i < $max; $i++) {
             foreach($array[$i] as $key => $val) {
