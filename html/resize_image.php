@@ -3,8 +3,8 @@
 $include_dir = realpath(dirname( __FILE__));
 require_once($include_dir . "/define.php");
 
-require_once($include_dir . HTML2DATA_DIR. "lib/gdthumb.php");
-require_once($include_dir . HTML2DATA_DIR. "lib/glib.php");
+require_once($include_dir . HTML2DATA_DIR. "module/gdthumb.php");
+require_once($include_dir . HTML2DATA_DIR. "class/util_extends/GC_Utils_Ex.php");
 require_once($include_dir . HTML2DATA_DIR. "conf/conf.php");
 
 $objThumb = new gdthumb();
@@ -13,12 +13,12 @@ $file = NO_IMAGE_DIR;
 
 // NO_IMAGE_DIR以外のファイル名が渡された場合、ファイル名のチェックを行う
 if ( isset($_GET['image']) && $_GET['image'] !== NO_IMAGE_DIR) {
-    
+
     // ファイル名が正しい場合だけ、$fileを設定
-    if ( lfCheckFileName() === true ) {
+    if ( $this->lfCheckFileName() === true ) {
         $file = IMAGE_SAVE_DIR . $_GET['image'];
     } else {
-        gfPrintLog('invalid access :resize_image.php $_GET["image"]=' . $_GET['image']);
+        GC_Utils_Ex::gfPrintLog('invalid access :resize_image.php $_GET["image"]=' . $_GET['image']);
     }
 }
 

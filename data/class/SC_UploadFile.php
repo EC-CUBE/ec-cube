@@ -6,7 +6,7 @@
  */
 
 $SC_UPLOADFILE_DIR = realpath(dirname( __FILE__));
-require_once($SC_UPLOADFILE_DIR . "/../lib/gdthumb.php");
+require_once($SC_UPLOADFILE_DIR . "/../module/gdthumb.php");
 
 /* アップロードファイル管理クラス */
 class SC_UploadFile {
