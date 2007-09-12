@@ -4,51 +4,16 @@
  *
  * http://www.lockon.co.jp/
  */
+
+// {{{ requires
 require_once("../../require.php");
+require_once(CLASS_PATH . "page_extends/admin/design/LC_Page_Admin_Design_CSS_Ex.php");
 
-class LC_Page {
-	var $arrForm;
-	var $arrHidden;
+// }}}
+// {{{ generate page
 
-	function LC_Page() {
-		$this->tpl_mainpage = 'design/css.tpl';
-		$this->tpl_subnavi 	= 'design/subnavi.tpl';
-		$this->area_row = 30;
-		$this->tpl_subno = "css";
-		$this->tpl_mainno = "design";
-		$this->tpl_subtitle = 'CSS編集';
-	}
-}
-
-$objPage = new LC_Page();
-$objView = new SC_AdminView();
-
-// 認証可否の判定
-$objSess = new SC_Session();
-sfIsSuccess($objSess);
-
-$css_path = USER_PATH . "css/contents.css";
-
-// データ更新処理
-if ($_POST['mode'] == 'confirm'){
-	// プレビュー用テンプレートに書き込み	
-	$fp = fopen($css_path,"w");
-	fwrite($fp, $_POST['css']);
-	fclose($fp);
-	
-	$objPage->tpl_onload="alert('登録が完了しました。');";
-}
-
-// CSSファイルの読み込み
-if(file_exists($css_path)){
-	$css_data = file_get_contents($css_path);
-}
-
-// テキストエリアに表示
-$objPage->css_data = $css_data;
-
-// 画面の表示
-$objView->assignobj($objPage);
-$objView->display(MAIN_FRAME);
-
-//---------------------------------------------------------------------------------------------------------------------------------------------------------
+$objPage = new LC_Page_Admin_Design_CSS_Ex();
+$objPage->init();
+$objPage->process();
+register_shutdown_function(array($objPage, "destroy"));
+?>
