@@ -212,6 +212,7 @@ class LC_Page_Admin_Design_MainEdit extends LC_Page {
         $objView->assignobj($this);
         $objView->display(MAIN_FRAME);
     }
+
     /**
      * デストラクタ.
      *

@@ -192,7 +192,9 @@ class SC_Helper_PageLayout {
         $arrDelData = array();			// 更新データ生成用
 
         // page_id が空でない場合にはdeleteを実行
-        if ($page_id !== '') {
+        if ($page_id != '') {
+
+            $arrPageData = $this->lfgetPageData(" page_id = ? " , array($page_id));
             // SQL生成
             $sql = " DELETE FROM dtb_pagelayout WHERE page_id = ?";
 

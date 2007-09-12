@@ -50,7 +50,7 @@ class LC_Page_Admin_Design extends LC_Page {
         // ページIDを取得
         if (isset($_GET['page_id'])) {
             $page_id = $_GET['page_id'];
-        }else if ($_POST['page_id']){
+        }else if (isset($_POST['page_id'])){
             $page_id = $_POST['page_id'];
         }else{
             $page_id = 1;
@@ -192,6 +192,7 @@ class LC_Page_Admin_Design extends LC_Page {
         // データ削除処理 ベースデータでなければファイルを削除
         if ($_POST['mode'] == 'delete' and  !$objLayout->lfCheckBaseData($page_id)) {
             $objLayout->lfDelPageData($page_id);
+            $this->sendRedirect($this->getLocation("./index.php"));
         }
 
         // ブロック情報を画面配置用に編集
@@ -350,7 +351,8 @@ class LC_Page_Admin_Design extends LC_Page {
 
         $tpl_arrBloc[$cnt]['target_id'] = $arrTarget[$val['target_id']];
         $tpl_arrBloc[$cnt]['bloc_id'] = $val['bloc_id'];
-        $tpl_arrBloc[$cnt]['bloc_row'] = $val['bloc_row'];
+        $tpl_arrBloc[$cnt]['bloc_row'] =
+            isset($val['bloc_row']) ? $val['bloc_row'] : "";
 
         foreach($arrBloc as $bloc_key => $bloc_val){
             if ($bloc_val['bloc_id'] == $val['bloc_id']) {
