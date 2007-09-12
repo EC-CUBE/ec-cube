@@ -61,6 +61,7 @@ class SC_UploadFile {
     }
 
     // アップロードされたファイルを保存する。
+    // FIXME see. http://www.php.net/manual/en/features.file-upload.php
     function makeTempFile($keyname, $rename = true) {
         $objErr = new SC_CheckError();
         $cnt = 0;
