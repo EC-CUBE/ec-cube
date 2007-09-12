@@ -56,7 +56,7 @@ class LC_Page_Admin_Design_MainEdit extends LC_Page {
         // ブロックIDを取得
         if (isset($_POST['page_id'])) {
             $page_id = $_POST['page_id'];
-        }else if ($_GET['page_id']){
+        }else if (isset($_GET['page_id'])){
             $page_id = $_GET['page_id'];
         }else{
             $page_id = '';
@@ -160,7 +160,7 @@ class LC_Page_Admin_Design_MainEdit extends LC_Page {
         if ($_POST['mode'] == 'confirm') {
 
             // エラーチェック
-            $this->arrErr = lfErrorCheck($_POST);
+            $this->arrErr = $this->lfErrorCheck($_POST);
 
             // エラーがなければ更新処理を行う
             if (count($this->arrErr) == 0) {
@@ -186,7 +186,7 @@ class LC_Page_Admin_Design_MainEdit extends LC_Page {
                 // 編集可能ページの場合にのみ処理を行う
                 if ($arrPageData[0]['edit_flg'] != 2) {
                     // 新規作成した場合のために改にページIDを取得する
-                    $arrPageData = lfgetPageData(" url = ? " , array(USER_URL.$_POST['url'].".php"));
+                    $arrPageData = $this->objLayout->lfgetPageData(" url = ? " , array(USER_URL.$_POST['url'].".php"));
                     $page_id = $arrPageData[0]['page_id'];
                 }
                 $this->sendRedirect($this->getLocation("./main_edit.php",
@@ -195,8 +195,8 @@ class LC_Page_Admin_Design_MainEdit extends LC_Page {
             }else{
                 // エラーがあれば入力時のデータを表示する
                 $this->arrPageData = $_POST;
-                $this->arrPageData['header_chk'] = sfChangeCheckBox(sfChangeCheckBox($_POST['header_chk']), true);
-                $this->arrPageData['footer_chk'] = sfChangeCheckBox(sfChangeCheckBox($_POST['footer_chk']), true);
+                $this->arrPageData['header_chk'] = SC_Utils_Ex::sfChangeCheckBox(SC_Utils_Ex::sfChangeCheckBox($_POST['header_chk']), true);
+                $this->arrPageData['footer_chk'] = SC_Utils_Ex::sfChangeCheckBox(SC_Utils_Ex::sfChangeCheckBox($_POST['footer_chk']), true);
                 $this->arrPageData['directory'] = $_POST['url'];
                 $this->arrPageData['filename'] = "";
             }
@@ -205,6 +205,7 @@ class LC_Page_Admin_Design_MainEdit extends LC_Page {
         // データ削除処理 ベースデータでなければファイルを削除
         if ($_POST['mode'] == 'delete' and 	!$this->objLayout->lfCheckBaseData($page_id)) {
             $this->objLayout->lfDelPageData($_POST['page_id']);
+            $this->sendRedirect($this->getLocation("./main_edit.php"));
         }
 
         // 画面の表示
@@ -317,8 +318,8 @@ class LC_Page_Admin_Design_MainEdit extends LC_Page {
                             ,$php_dir									// PHPディレクトリ
                             ,$tpl_dir									// TPLディレクトリ
                             ,$filename									// ファイル名
-                            ,sfChangeCheckBox($arrData['header_chk'])	// ヘッダー使用
-                            ,sfChangeCheckBox($arrData['footer_chk'])	// フッター使用
+                            ,SC_Utils_Ex::sfChangeCheckBox($arrData['header_chk'])	// ヘッダー使用
+                            ,SC_Utils_Ex::sfChangeCheckBox($arrData['footer_chk'])	// フッター使用
                             ,$_SERVER['HTTP_REFERER']					// 更新URL
                             );
 
@@ -342,7 +343,7 @@ class LC_Page_Admin_Design_MainEdit extends LC_Page {
         }
 
         $check_url = USER_URL . $array['url'] . ".php";
-        if( strlen($array['url']) > 0 && !ereg( "^https?://+($|[a-zA-Z0-9_~=&\?\.\/-])+$", $check_url ) ) {
+        if( strlen($array['url']) > 0 && !ereg( "^https?://+($|[a-zA-Z0-9:_~=&\?\.\/-])+$", $check_url ) ) {
             $objErr->arrErr['url'] = "※ URLを正しく入力してください。<br />";
         }
 

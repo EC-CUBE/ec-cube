@@ -10,7 +10,7 @@
  *
  * @package Helper
  * @author LOCKON CO.,LTD.
- * @version $Id$
+ * @version $Id:SC_Helper_PageLayout.php 15532 2007-08-31 14:39:46Z nanasess $
  */
 class SC_Helper_PageLayout {
 
@@ -200,12 +200,9 @@ class SC_Helper_PageLayout {
             $ret = $objDBConn->query($sql,array($page_id));
 
             // ファイルの削除
-            lfDelFile($arrPageData[0]);
+            $this->lfDelFile($arrPageData[0]);
         }
-
-        // FIXME 削除数を返し, 遷移は Page クラスで行う
-        header("location: ".$_SERVER['REQUEST_URI']);
-
+        return $ret;
     }
 
     /**
