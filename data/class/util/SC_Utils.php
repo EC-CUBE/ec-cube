@@ -1662,6 +1662,20 @@ class SC_Utils {
         return $array;
     }
 
+    /**
+     * XML宣言を出力する.
+     *
+     * XML宣言があると問題が発生する UA は出力しない.
+     *
+     * @return string XML宣言の文字列
+     */
+    function printXMLDeclaration() {
+        $ua = $_SERVER['HTTP_USER_AGENT'];
+        if (!preg_match("/MSIE/", $ua) || preg_match("/MSIE 7/", $ua)) {
+            print('<?xml version="1.0" encoding="' . CHAR_CODE . '"?>');
+        }
+    }
+
     /* デバッグ用 ------------------------------------------------------------------------------------------------*/
     function sfPrintR($obj) {
         print("<div style='font-size: 12px;color: #00FF00;'>\n");
