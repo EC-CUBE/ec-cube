@@ -104,6 +104,22 @@ class SC_DB_DBFactory_MYSQL extends SC_DB_DBFactory {
     }
 
     /**
+     * テーブルを検索する.
+     *
+     * 引数に部分一致するテーブル名を配列で返す.
+     *
+     * @param string $expression 検索文字列
+     * @return array テーブル名の配列
+     */
+    function findTableNames($expression) {
+        $objQuery = new SC_Query();
+        $sql = "SHOW TABLES LIKE ?";
+        $arrColList = $objQuery->getAll($sql, array("%" . $expression . "%"));
+        $arrColList = SC_Utils_Ex::sfswaparray($arrColList, false);
+        return $arrColList[0];
+    }
+
+    /**
      * View の WHERE 句を置換する.
      *
      * @param string $target 置換対象の文字列

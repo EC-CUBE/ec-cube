@@ -18,7 +18,7 @@ require_once(CLASS_PATH . "db/SC_DB_DBFactory.php");
  *
  * @package DB
  * @author LOCKON CO.,LTD.
- * @version $Id$
+ * @version $Id:SC_DB_DBFactory_PGSQL.php 15532 2007-08-31 14:39:46Z nanasess $
  */
 class SC_DB_DBFactory_PGSQL extends SC_DB_DBFactory {
 
@@ -108,6 +108,33 @@ class SC_DB_DBFactory_PGSQL extends SC_DB_DBFactory {
         $arrColList = $objQuery->getAll($sql, array($table_name));
         $arrColList = SC_Utils_Ex::sfswaparray($arrColList);
         return $arrColList["attname"];
+    }
+
+    /**
+     * テーブルを検索する.
+     *
+     * 引数に部分一致するテーブル名を配列で返す.
+     *
+     * @param string $expression 検索文字列
+     * @return array テーブル名の配列
+     */
+    function findTableNames($expression) {
+        $objQuery = new SC_Query();
+        $sql = "   SELECT c.relname AS name, "
+            .  "     CASE c.relkind "
+            .  "     WHEN 'r' THEN 'table' "
+            .  "     WHEN 'v' THEN 'view' END AS type "
+            .  "     FROM pg_catalog.pg_class c "
+            .  "LEFT JOIN pg_catalog.pg_namespace n "
+            .  "       ON n.oid = c.relnamespace "
+            .  "    WHERE c.relkind IN ('r','v') "
+            .  "      AND n.nspname NOT IN ('pg_catalog', 'pg_toast') "
+            .  "      AND pg_catalog.pg_table_is_visible(c.oid) "
+            .  "      AND c.relname LIKE ?"
+            .  " ORDER BY 1,2;";
+        $arrColList = $objQuery->getAll($sql, array("%" . $expression . "%"));
+        $arrColList = SC_Utils_Ex::sfswaparray($arrColList, false);
+        return $arrColList[0];
     }
 }
 ?>

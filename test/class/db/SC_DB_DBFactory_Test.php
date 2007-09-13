@@ -10,17 +10,18 @@ require_once($include_dir . "/../data/class/db_extends/SC_DB_DBFactory_Ex.php");
 require_once("PHPUnit/TestCase.php");
 
 /**
- * SC_DB_DBFactory のテストケース.
+ * SC_DB_DBFactory TestCase
  *
  * @package DB
  * @author LOCKON CO.,LTD.
- * @version $Id$
+ * @version $Id:SC_DB_DBFactory_Test.php 15532 2007-08-31 14:39:46Z nanasess $
  */
 class SC_DB_DBFactory_Test extends PHPUnit_TestCase {
 
     // }}}
     // {{{ functions
 
+    /* TODO
     function testSfGetDBVersion() {
         $dbFactory = SC_DB_DBFactory::getInstance();
         $objQuery = new SC_Query(DEFAULT_DSN, true, true);
@@ -35,5 +36,19 @@ class SC_DB_DBFactory_Test extends PHPUnit_TestCase {
             default:
         }
     }
+    */
+
+    function testFindTableNames() {
+        $dbFactory = SC_DB_DBFactory::getInstance();
+        $objQuery = new SC_Query(DEFAULT_DSN, true, true);
+        $actual = $dbFactory->findTableNames("mtb_pre");
+        $this->assertEquals("mtb_pref", $actual[0]);
+    }
 }
+
+/*
+ * Local variables:
+ * coding: utf-8
+ * End:
+ */
 ?>

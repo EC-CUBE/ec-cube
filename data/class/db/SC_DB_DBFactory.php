@@ -14,7 +14,7 @@ require_once(CLASS_PATH . "db/dbfactory/SC_DB_DBFactory_PGSQL.php");
  *
  * @package DB
  * @author LOCKON CO.,LTD.
- * @version $Id$
+ * @version $Id:SC_DB_DBFactory.php 15532 2007-08-31 14:39:46Z nanasess $
  */
 class SC_DB_DBFactory {
 
@@ -108,5 +108,15 @@ class SC_DB_DBFactory {
      * @return array テーブルのカラム一覧の配列
      */
     function sfGetColumnList($table_name) { return array(); }
+
+    /**
+     * テーブルを検索する.
+     *
+     * 引数に部分一致するテーブル名を配列で返す.
+     *
+     * @param string $expression 検索文字列
+     * @return array テーブル名の配列
+     */
+    function findTableNames($expression) { return array(); }
 }
 ?>
