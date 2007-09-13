@@ -1,0 +1,142 @@
+@charset "utf-8";
+
+
+/* 下層共通指定
+----------------------------------------------- */
+div#undercolumn {
+	float: right;
+	width: 580px;
+	margin: 15px 0 0 0;
+}
+
+div#undercolumn h2.title{
+	width: 580px;
+	margin: 0 0 15px 0;
+}
+
+div#undercolumn table {
+	width: 570px;
+}
+
+
+
+
+/* ◎◎について
+----------------------------------------------- */
+div#undercolumn_aboutus {
+
+}
+
+div#undercolumn_aboutus table th {
+	width: 140px;
+}
+
+
+/* 特定商取引法
+----------------------------------------------- */
+div#undercolumn_order {
+
+}
+
+div#undercolumn_order table th {
+	width: 140px;
+}
+
+
+/* お問い合わせ
+----------------------------------------------- */
+div#undercolumn_contact {
+
+}
+
+div#undercolumn_contact .box120 {
+	width: 120px;
+	padding: 2px;
+	border: 1px solid #ccc;
+}
+
+div#undercolumn_contact .box60 {
+	width: 60px;
+	padding: 2px;
+	border: 1px solid #ccc;
+}
+
+div#undercolumn_contact .box380 {
+	width: 380px;
+	margin: 5px 0 0 0;
+	padding: 2px;
+	border: 1px solid #ccc;
+}
+
+div#undercolumn_contact .area380 {
+	width: 380px;
+	height: 250px;
+	margin: 5px 0 0 0;
+	padding: 2px;
+	border: 1px solid #ccc;
+}
+
+div#undercolumn_contact .zipimg img {
+	margin: 5px 0 0 0;
+}
+
+
+/* 会員登録
+----------------------------------------------- */
+div#undercolumn_entry {
+
+}
+
+div#undercolumn_entry .area470 {
+	width: 570px;
+	height: 520px;
+	margin: 5px 0 0 0;
+	padding: 2px;
+	border: 1px solid #ccc;
+}
+
+div#undercolumn_entry .box120 {
+	width: 120px;
+	padding: 2px;
+	border: 1px solid #ccc;
+}
+
+div#undercolumn_entry .box60 {
+	width: 60px;
+	padding: 2px;
+	border: 1px solid #ccc;
+}
+
+div#undercolumn_entry .box380 {
+	width: 380px;
+	margin: 5px 0 0 0;
+	padding: 2px;
+	border: 1px solid #ccc;
+}
+
+div#undercolumn_entry .box320 {
+	width: 320px;
+	margin: 5px 0 0 0;
+	padding: 2px;
+	border: 1px solid #ccc;
+}
+
+div#undercolumn_entry .zipimg img {
+	margin: 5px 0 0 0;
+}
+
+div#undercolumn_entry div#completetext {
+	width: 470px;
+	margin: 15px auto 0 auto;
+	padding: 15px;
+	border: 5px solid #ccc;
+}
+
+div#undercolumn_entry div#completetext em {
+	font-weight: bold;
+}
+
+div#undercolumn_entry div#completetext p{
+	padding: 20px 0 0 0;
+	text-align: left;
+}

@@ -1,0 +1,332 @@
+@charset "utf-8";
+* {
+    border: 0;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: Verdana,Arial,Helvetica,sans-serif;
+    color: #555555;
+    background-color: #ffe9e6;
+    font-size: 72.5%;
+    line-height: 150%;
+    letter-spacing:1px;
+}
+
+li {
+    list-style-type: none;
+}
+/*PHOTO*/
+.picture {
+    border: 1px solid #ccc;
+}
+/* フロート回り込み解除
+----------------------------------------------- */
+br.clear {
+    clear: both;
+    display: none;
+    font-size: 0px;
+    line-height: 0%;
+    height: 0px
+}
+/* リンク指定
+----------------------------------------------- */
+a { text-decoration: underline; }
+a:link { color: #3a75af; }
+a:visited { color: #3a75af; }
+a:hover { color: #ff6600; }
+/* フォント
+----------------------------------------------- */
+h1,h2,h3,h4,h5 {
+    font-size: 100%;
+    line-height: 150%;
+}
+.price { color: #ff0000; font-weight: bold; }
+.attention { color: #ff0000; }
+.mini { font-size: 90%; }
+em {
+    font-style: normal;
+    color: #ff0000;
+}
+/* テーブル共通指定
+----------------------------------------------- */
+table  {
+    margin: 15px auto 0 auto;
+    border-top: 1px solid #ccc;
+    border-left: 1px solid #ccc;
+    border-collapse: collapse;
+    text-align: left;
+}
+table th {
+    padding: 8px;
+    border-right: 1px solid #ccc;
+    border-bottom: 1px solid #ccc;
+    background-color: #f0f0f0;
+    font-weight: normal;
+}
+table td {
+    padding: 8px;
+    border-right: 1px solid #ccc;
+    border-bottom: 1px solid #ccc;
+}
+div.tblareabtn {
+    clear: both;
+    margin: 15px 0 0 0;
+    text-align: center;
+}
+.phototd {
+    width: 75px;
+    text-align: center;
+}
+.centertd {
+    text-align: center;
+}
+.pricetd {
+    text-align: right;
+}
+.pricetd em {
+    font-weight: bold;
+}
+div#completetext {
+    width: 470px;
+    margin: 15px auto 0 auto;
+    padding: 15px;
+    border: 5px solid #ccc;
+}
+div#completetext em {
+    font-weight: bold;
+}
+div#completetext p{
+    padding: 20px 0 0 0;
+    text-align: left;
+}
+
+
+/* ヘッダーロゴ
+------------------------------------------------ */
+div#header {
+    background: url("../img/header/bg.gif");
+    width: 780px;
+    height: 95px;
+    margin: 0 auto;
+}
+div#header h1 a {
+    float: left;
+    display: block;
+    margin: 8px 0 0 0;
+    width: 292px;
+    height: 81px;
+    background: url("../img/header/logo.jpg");
+}
+div#header em {
+    display: none;
+}
+
+
+/* ヘッダーナビ
+----------------------------------------------- */
+div#information {
+    float: right;
+    padding: 60px 8px 0 0;
+}
+div#information ul li {
+    display: inline;
+}
+/* フレーム
+----------------------------------------------- */
+div#container {
+    width: 764px;
+    margin: 0 auto;
+    padding: 0 8px;
+    background-color: #fff;
+    text-align: left;
+}
+#container:after {/* firefox背景色表示用 */
+    content: "";
+    display: block;
+    clear: both;
+    height: 1px;
+    overflow: hidden;
+}
+
+div#leftcolumn {
+    float: left;
+    width: 166px;
+}
+
+div#leftcolumn h2 {
+    padding: 15px 0 0 0;
+}
+
+div#centercolumn {
+    float: left;
+    width: 432px;
+    padding: 15px 0 0 0;
+}
+
+div#centercolumn h2 {
+    padding: 15px 0 0 0;
+}
+
+div#rightcolumn {
+    float: left;
+    width: 166px;
+}
+
+div#rightcolumn h2 {
+    padding: 15px 0 0 0;
+}
+
+
+/* カゴの中
+----------------------------------------------- */
+div#cartarea {
+    width: 144px;
+    padding: 10px;
+    border: solid 1px #ccc;
+}
+
+div#cartarea p {
+    padding: 5px 0 10px 0;
+}
+
+div#cartarea p.item {
+    padding: 0 0 10px 0;
+    background: url("../img/side/line_146.gif") no-repeat bottom;
+}
+
+div#cartarea .btn {
+    padding: 0;
+    text-align: center;
+}
+
+
+/* カテゴリー
+----------------------------------------------- */
+div#categoryarea {
+    width: 144px;
+    padding: 0 10px;
+    border: solid 1px #ccc;
+    background-color: #fff1e3;
+}
+
+div#categoryarea dl {
+    padding: 10px 0;
+    background: url("../img/side/line_146.gif") no-repeat bottom;
+}
+
+div#categoryarea dl.end {
+    padding: 10px 0;
+    background: url("") no-repeat bottom;
+}
+
+div#categoryarea dl dt {
+    padding: 0 0 0 20px;
+    font-weight: bold;
+    background: url("../img/common/arrow_blue.gif") no-repeat;
+}
+
+div#categoryarea dl dt.onmark {
+    padding: 0 0 0 20px;
+    font-weight: bold;
+    background: url("../img/common/arrow_red.gif") no-repeat;
+}
+
+div#categoryarea dl dd {
+    padding: 0 0 0 20px;
+}
+
+a.onlink {  text-decoration: underline; }
+a.onlink:link { color: #ff0000; }
+a.onlink:visited { color: #ff0000; }
+a.onlink:hover { color: #ff0000; }
+
+
+/* ガイドリンク
+----------------------------------------------- */
+#guidearea {
+    padding: 15px 0 0 0;
+    line-height: 0;
+}
+
+/* ログイン
+----------------------------------------------- */
+div#loginarea {
+    width: 144px;
+    padding: 0 10px 10px 10px;
+    border: solid 1px #ccc;
+}
+
+div#loginarea p {
+    padding: 8px 0 0 0;
+}
+
+div#login img {
+    padding: 0 5px 0 0;
+    vertical-align: bottom;
+}
+
+div#loginarea .btn {
+    text-align: center;
+}
+
+#loginarea .box96 {
+    width: 96px;
+    border: solid 1px #ccc;
+}
+
+
+/* 検索
+----------------------------------------------- */
+div#searcharea {
+    width: 144px;
+    padding: 0 10px 10px 10px;
+    border: solid 1px #ccc;
+}
+
+div#searcharea p {
+    padding: 8px 0 0 0;
+}
+
+div#searcharea .btn {
+    text-align: center;
+}
+
+#searcharea .box142 {
+    width: 142px;
+    border: solid 1px #ccc;
+}
+
+
+/* バナー
+----------------------------------------------- */
+ul#banner {
+    padding: 15px 0 0 0;
+}
+
+#banner li {
+    padding: 0 0 10px 0;
+}
+
+
+/* フッター
+----------------------------------------------- */
+#pagetop {
+    width: 764px;
+    margin: 0 auto;
+    padding: 30px 8px 15px 8px;
+    background-color: #fff;
+    text-align: right;
+}
+
+#fotter {
+    width: 764px;
+    margin: 0 auto;
+    padding: 15px 8px;
+    border-top: 1px solid #ff6600;
+    background-color: #ffa85c;
+    font-size: 90%;
+    color: #fff;
+    text-align: left;
+}

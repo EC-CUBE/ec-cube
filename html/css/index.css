@@ -1,0 +1,82 @@
+@charset "utf-8";
+
+
+/* FLASH
+----------------------------------------------- */
+div#flasharea {
+    width: 400px;
+    margin: 0 auto;
+}
+
+
+/* ニュース
+----------------------------------------------- */
+div#newsarea {
+    width: 400px;
+    margin: 0 auto;
+    font-size: 90%;
+}
+
+div#news dl {
+    padding: 10px 0;
+    background: url("../img/common/line_400.gif") no-repeat bottom;
+}
+
+div#news dl.end {
+    padding: 10px 0;
+    background: url("") no-repeat bottom;
+}
+
+div#news dl dt {
+    padding: 0 0 0 20px;
+    background: url("../img/top/news_icon.gif") no-repeat;
+}
+
+
+/* おすすめ
+----------------------------------------------- */
+div#recomendarea {
+    width: 400px;
+    margin: 0 auto;
+}
+
+div.recomendblock {
+    clear: both;
+    width: 400px;
+    padding: 10px 0;
+    overflow: auto;
+    background: url("../img/common/line_402.gif") no-repeat bottom;
+}
+
+div.recomendleft {
+    float: left;
+    margin: 0 5px 0 0;
+}
+
+div.recomendleft p {
+    margin: 0 0 5px 0;
+}
+
+div.recomendright {
+    float: right;
+    width: 190px;
+    position: relative;
+}
+
+div.recomendright img {
+    display: block;
+    float: left;
+    margin: 0 5px 0 0;
+}
+
+div.recomendright p {
+    margin: 0 0 5px 0;
+}
+
+div.recomendleft h3 {
+    font-size: 100%;
+}
+
+div.recomendright h3 {
+    font-size: 100%;
+}

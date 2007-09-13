@@ -1,0 +1,212 @@
+@charset "utf-8";
+
+
+/* 下層共通指定
+----------------------------------------------- */
+div#under02column {
+	width: 700px;
+	margin: 15px auto 0 auto;
+}
+
+div#under02column h2.title{
+	width: 700px;
+	margin: 0 0 15px 0;
+}
+
+div#under02column table {
+	width: 690px;
+}
+
+
+
+
+/* カートの中
+----------------------------------------------- */
+div#under02column_cart {
+
+}
+
+div#under02column_cart .totalmoneyarea {
+	width: 680px;
+	margin: 15px auto 0 auto;
+	padding: 10px 5px;
+	border: 1px solid #ccc;
+	text-align: center;
+}
+
+div#under02column_cart th {
+	text-align: center;
+}
+
+div#under02column table th.resulttd {
+	text-align: right;
+}
+
+
+/* お客様情報入力
+----------------------------------------------- */
+div#under02column_customer {
+
+}
+
+.flowarea {
+	margin: 0 0 20px 0;
+}
+
+div#under02column_customer th em {
+	color: #000;
+	font-weight: bold;
+}
+
+div#under02column_customer .box120 {
+	width: 120px;
+	padding: 2px;
+	border: 1px solid #ccc;
+}
+
+div#under02column_customer .box60 {
+	width: 60px;
+	padding: 2px;
+	border: 1px solid #ccc;
+}
+
+div#under02column_customer .box380 {
+	width: 380px;
+	margin: 5px 0 0 0;
+	padding: 2px;
+	border: 1px solid #ccc;
+}
+
+div#under02column_customer .box320 {
+	width: 320px;
+	margin: 5px 0 0 0;
+	padding: 2px;
+	border: 1px solid #ccc;
+}
+
+div#under02column_customer .zipimg img {
+	margin: 5px 0 0 0;
+}
+
+
+/* お届け先指定
+----------------------------------------------- */
+div#under02column_shopping table th {
+	text-align: center;
+}
+
+.addbtn {
+	margin: 10px 0 0 0;
+}
+
+
+/* お支払い方法・お届け時間等の指定
+----------------------------------------------- */
+div#under02column_shopping .payarea {
+	width: 670px;
+	margin: 0 auto;
+}
+
+div#under02column_shopping h3 {
+	margin: 0 0 15px 0;
+}
+
+div#under02column_shopping .payarea02 {
+	width: 670px;
+	margin: 40px auto 0 auto;
+}
+
+div#under02column_shopping .payarea02 div {
+	margin: 10px 0 0 0;
+}
+
+div#under02column_shopping .payarea02 em {
+	font-weight: bold;
+	color: #000;
+}
+
+div#under02column_shopping .payarea table {
+	width: 670px;
+}
+
+div#under02column_shopping .payarea table th {
+	text-align: center;
+}
+
+div#under02column_shopping .payarea02 .area660 {
+	width: 660px;
+	height: 150px;
+	margin: 5px 0 0 0;
+	padding: 2px;
+	border: 1px solid #ccc;
+}
+
+
+/* 確認
+----------------------------------------------- */
+div#under02column_shopping table.delivname th {
+	text-align: left;
+	width: 140px;
+}
+
+div#under02column_shopping table.delivname caption {
+	border-top: 1px solid #ccc;
+	border-right: 1px solid #ccc;
+	border-left: 1px solid #ccc;
+	padding: 8px;
+	background-color: #f0f0f0;
+	text-align: left;
+	font-weight: bold;
+	color: #000;
+}
+
+
+/* ログイン
+----------------------------------------------- */
+div#under02column_login {
+
+}
+
+div#under02column_login .loginarea {
+	width: 620px;
+	margin: 0 auto 20px auto;
+	padding: 20px 15px;
+	border: 5px solid #ccc;
+}
+
+div#under02column_login .loginarea .inputtext {
+	width: 500px;
+	margin: 15px auto 0 auto;
+}
+
+div#under02column_login .loginarea .inputtext02 {
+	width: 500px;
+	margin: 15px auto 0 auto;
+	font-size: 90%;
+}
+
+div#under02column_login .loginarea .inputbox {
+	width: 460px;
+	margin: 15px auto 0 auto;
+	padding: 15px 20px;
+	background: #f0f0f0;
+}
+
+div#under02column_login .loginarea .inputbox .passwd {
+	margin: 15px 0 0 0;
+}
+
+div#under02column_login .loginarea .inputbox .box300 {
+	width: 300px;
+	margin: 5px 0 0 0;
+	padding: 2px;
+	border: 1px solid #ccc;
+}
+
+div#under02column_login .loginarea .inputbox02 {
+	width: 460px;
+	margin: 15px auto 0 auto;
+	padding: 15px 20px;
+	background: #f0f0f0;
+	text-align: center;
+}

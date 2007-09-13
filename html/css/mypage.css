@@ -1,0 +1,111 @@
+@charset "utf-8";
+
+
+/* MYPAGE共通指定
+----------------------------------------------- */
+div#mypagecolumn {
+    width: 700px;
+    margin: 15px auto 0 auto;
+}
+
+div#mypagecolumn h2.title{
+    width: 700px;
+    margin: 0 0 15px 0;
+}
+
+div#mypagecolumn table {
+    width: 510px;
+}
+
+div#mycontentsarea table th.resulttd {
+    text-align: right;
+}
+
+div#mycontentsarea table.delivname th {
+    text-align: left;
+    width: 140px;
+}
+
+div#mycontentsarea table caption {
+    border-top: 1px solid #ccc;
+    border-right: 1px solid #ccc;
+    border-left: 1px solid #ccc;
+    padding: 8px;
+    background-color: #f0f0f0;
+    text-align: left;
+    font-weight: bold;
+    color: #000;
+}
+
+
+/* 購入履歴一覧/詳細
+----------------------------------------------- */
+div#mynavarea {
+    float: left;
+    width: 185px;
+}
+
+div#mycontentsarea {
+    float: right;
+}
+
+div#mycontentsarea h3 {
+    margin: 0 0 10px 0;
+}
+
+div#mycontentsarea table th {
+    text-align: center;
+}
+
+div#mycontentsarea p.myconditionarea {
+    clear: both;
+    width: 500px;
+    margin: 0 auto;
+    padding: 5px;
+    border: solid 1px #333;
+}
+
+
+/* 会員登録内容変更/>退会
+----------------------------------------------- */
+div#mycontentsarea .box120 {
+    width: 120px;
+    padding: 2px;
+    border: 1px solid #ccc;
+}
+
+div#mycontentsarea .box60 {
+    width: 60px;
+    padding: 2px;
+    border: 1px solid #ccc;
+}
+
+div#mycontentsarea .box300 {
+    width: 300px;
+    margin: 5px 0 0 0;
+    padding: 2px;
+    border: 1px solid #ccc;
+}
+
+div#mycontentsarea .box260 {
+    width: 260px;
+    margin: 5px 0 0 0;
+    padding: 2px;
+    border: 1px solid #ccc;
+}
+
+div#mycontentsarea .zipimg img {
+    margin: 5px 0 0 0;
+}
+
+div#mycontentsarea #completetext {
+    width: 470px;
+    margin: 15px auto 0 auto;
+    padding: 15px;
+    border: 5px solid #ccc;
+}
+
+div#completetext p.changetext {
+    padding: 40px 0;
+    text-align: center;
+}

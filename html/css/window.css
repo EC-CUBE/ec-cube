@@ -1,0 +1,108 @@
+@charset "utf-8";
+
+
+/* 商品詳細拡大写真
+----------------------------------------------- */
+div#bigimage {
+    width: 520px;
+    margin: 15px auto 0 auto;
+    background-color: #ffffff;
+}
+
+div#bigimage img {
+    padding: 10px;
+    background-color: #ffffff;
+}
+
+
+/* カート拡大写真
+----------------------------------------------- */
+div#cartimage {
+    width: 310px;
+    margin: 15px auto 0 auto;
+    background-color: #ffffff;
+}
+
+div#cartimage img {
+    padding: 10px;
+    background-color: #ffffff;
+}
+
+
+/* お客様の声の書き込み・新しいお届け先の追加・変更
+----------------------------------------------- */
+div#windowcolumn {
+    width: 550px;
+    margin: 15px auto 0 auto;
+    background-color: #fff;
+    border-top: 5px solid #ffa85c;
+    border-bottom: 5px solid #ffa85c;
+}
+
+div#windowcolumn h2 {
+    width: 500px;
+    margin: 0 0 15px 0;
+}
+
+div#windowarea {
+    width: 500px;
+    margin: 15px auto 0 auto;
+}
+
+div#windowarea p.windowtext {
+    margin: 15px 0 0 0;
+}
+
+div#windowarea table {
+    width: 490px;
+}
+
+div#windowarea .zipimg img {
+    margin: 5px 0 0 0;
+}
+
+div#windowarea .box350 {
+    width: 350px;
+    padding: 2px;
+    border: 1px solid #ccc;
+}
+
+div#windowarea .area350 {
+    width: 350px;
+    height: 120px;
+    border: 1px solid #ccc;
+}
+
+div#windowarea .box120 {
+    width: 120px;
+    padding: 2px;
+    border: 1px solid #ccc;
+}
+
+div#windowarea .box60 {
+    width: 60px;
+    padding: 2px;
+    border: 1px solid #ccc;
+}
+
+div#windowarea .box300 {
+    width: 300px;
+    padding: 2px;
+    border: 1px solid #ccc;
+}
+
+div#windowarea .btn {
+    margin: 15px 0 30px 0;
+    text-align: center;
+}
+
+div#windowarea #completebox {
+    width: 490px;
+    margin: 15px 0 0 0;
+    border: 5px solid #ccc;
+}
+
+div#windowarea #completebox p{
+    padding: 60px 5px;
+    text-align: center;
+}
