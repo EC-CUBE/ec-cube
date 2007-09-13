@@ -111,7 +111,7 @@ class SC_DB_DBFactory_MYSQL extends SC_DB_DBFactory {
      * @param string $expression 検索文字列
      * @return array テーブル名の配列
      */
-    function findTableNames($expression) {
+    function findTableNames($expression = "") {
         $objQuery = new SC_Query();
         $sql = "SHOW TABLES LIKE ?";
         $arrColList = $objQuery->getAll($sql, array("%" . $expression . "%"));

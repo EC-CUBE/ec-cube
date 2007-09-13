@@ -117,6 +117,6 @@ class SC_DB_DBFactory {
      * @param string $expression 検索文字列
      * @return array テーブル名の配列
      */
-    function findTableNames($expression) { return array(); }
+    function findTableNames($expression = "") { return array(); }
 }
 ?>

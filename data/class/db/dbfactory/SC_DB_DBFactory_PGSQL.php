@@ -118,7 +118,7 @@ class SC_DB_DBFactory_PGSQL extends SC_DB_DBFactory {
      * @param string $expression 検索文字列
      * @return array テーブル名の配列
      */
-    function findTableNames($expression) {
+    function findTableNames($expression = "") {
         $objQuery = new SC_Query();
         $sql = "   SELECT c.relname AS name, "
             .  "     CASE c.relkind "
