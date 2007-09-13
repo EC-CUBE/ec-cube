@@ -47,7 +47,8 @@ class SC_View {
         $this->_smarty->register_modifier("sfGetCategoryId", array("SC_Utils_Ex", "sfGetCategoryId"));
         $this->_smarty->register_function("sfIsHTTPS", array("SC_Utils_Ex", "sfIsHTTPS"));
         $this->_smarty->register_function("sfSetErrorStyle", array("SC_Utils_Ex", "sfSetErrorStyle"));
-        $this->_smarty->default_modifiers = array('script_escape');
+        $this->_smarty->register_function("printXMLDeclaration", array("SC_Utils_Ex", "printXMLDeclaration"));
+        $this->_smarty->default_modifiers = array('script_escape', "escape");
 
         if(ADMIN_MODE == '1') {
             $this->time_start = time();
@@ -141,6 +142,7 @@ class SC_AdminView extends SC_View{
         parent::SC_View(false);
         $this->_smarty->template_dir = TEMPLATE_ADMIN_DIR;
         $this->_smarty->compile_dir = COMPILE_ADMIN_DIR;
+        $this->_smarty->default_modifiers = array('script_escape');
         $this->initpath();
     }
 
