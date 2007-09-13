@@ -928,12 +928,18 @@ class SC_Utils {
     }
 
     /* 配列をキー名ごとの配列に変更する */
-    function sfSwapArray($array) {
+    function sfSwapArray($array, $isColumnName = true) {
         $arrRet = array();
         $max = count($array);
         for($i = 0; $i < $max; $i++) {
+            $j = 0;
             foreach($array[$i] as $key => $val) {
-                $arrRet[$key][] = $val;
+                if ($isColumnName) {
+                    $arrRet[$key][] = $val;
+                } else {
+                    $arrRet[$j][] = $val;
+                }
+                $j++;
             }
         }
         return $arrRet;
