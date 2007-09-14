@@ -45,6 +45,10 @@ class LC_Page_Admin_Design extends LC_Page {
         $objSess = new SC_Session();
         $objLayout = new SC_Helper_PageLayout_Ex();
 
+        // 認証可否の判定
+        $objSess = new SC_Session();
+        SC_Utils_Ex::sfIsSuccess($objSess);
+
         //if (!isset($_POST['page_id'])) $_POST['page_id'] = "";
 
         // ページIDを取得
@@ -222,10 +226,6 @@ class LC_Page_Admin_Design extends LC_Page {
         // ページ名称を取得
         $arrPageData = $objLayout->lfgetPageData(' page_id = ?', array($page_id));
         $this->arrPageData = $arrPageData[0];
-
-        // 認証可否の判定
-        $objSess = new SC_Session();
-        SC_Utils_Ex::sfIsSuccess($objSess);
 
         global $GLOBAL_ERR; // FIXME
         $errCnt = 0;
