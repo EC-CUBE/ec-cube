@@ -7,7 +7,6 @@
 
 $SC_VIEW_PHP_DIR = realpath(dirname(__FILE__));
 require_once($SC_VIEW_PHP_DIR . "/../module/Smarty/libs/Smarty.class.php");
-require_once($SC_VIEW_PHP_DIR . "/../include/php_ini.inc");
 //require_once(CLASS_PATH . "util_extends/SC_Utils_Ex.php");
 
 class SC_View {
@@ -48,7 +47,7 @@ class SC_View {
         $this->_smarty->register_function("sfIsHTTPS", array("SC_Utils_Ex", "sfIsHTTPS"));
         $this->_smarty->register_function("sfSetErrorStyle", array("SC_Utils_Ex", "sfSetErrorStyle"));
         $this->_smarty->register_function("printXMLDeclaration", array("SC_Utils_Ex", "printXMLDeclaration"));
-        $this->_smarty->default_modifiers = array('script_escape', "escape");
+        $this->_smarty->default_modifiers = array('script_escape');
 
         if(ADMIN_MODE == '1') {
             $this->time_start = time();
