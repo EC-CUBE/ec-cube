@@ -207,7 +207,7 @@ INSERT INTO mtb_site_control_track_back VALUES ('1', '有効',0);
 INSERT INTO mtb_site_control_track_back VALUES ('2', '無効',1);
 INSERT INTO mtb_site_control_affiliate VALUES ('1', '有効',0);
 INSERT INTO mtb_site_control_affiliate VALUES ('2', '無効',1);
-INSERT INTO mtb_constants VALUES ('SAMPLE_ADDRESS1','"市区町村名（例：東京都千代田区神田神保町）"',1,'フロント表示関連');
+INSERT INTO mtb_constants VALUES ('SAMPLE_ADDRESS1','"市区町村名（例：千代田区神田神保町）"',1,'フロント表示関連');
 INSERT INTO mtb_constants VALUES ('SAMPLE_ADDRESS2','"番地・ビル名（例：1-3-5）"',2,'フロント表示関連');
 INSERT INTO mtb_constants VALUES ('USER_DIR','"user_data/"',3,'ユーザファイル保存先');
 INSERT INTO mtb_constants VALUES ('USER_PATH','HTML_PATH . USER_DIR',4,'ユーザファイル保存先');
