@@ -69,6 +69,18 @@ class SC_CheckError {
         }
     }
 
+    /*　必須入力の判定(逆順)　*/
+    // value[0] = 判定対象 value[1] = 項目名
+    function EXIST_CHECK_REVERSE( $value ) {			// 受け取りがない場合エラーを返す
+        if(isset($this->arrErr[$value[0]])) {
+            return;
+        }
+        $this->createParam($value);
+        if( strlen($this->arrParam[$value[0]]) == 0 ){
+            $this->arrErr[$value[0]] = "※ " . $value[0] . "が入力されていません。<br />";
+        }
+    }
+
     /*　スペース、タブの判定　*/
     // value[0] = 項目名 value[1] = 判定対象
     function SPTAB_CHECK( $value ) {			// 受け取りがない場合エラーを返す
@@ -865,6 +877,35 @@ class SC_CheckError {
         if(preg_match_all($pattern, $this->arrParam[$value[1]], $matches)) {
             $this->arrErr[$value[1]] = "※ " . $value[0] . "は入力できません。<br />";
         }
+    }
+
+    /**
+     * PHPコードとして評価可能かチェックする.
+     *
+     * @access private
+     * @param array $value [0] => 項目名, [1] => 評価する文字列
+     * @return void
+     */
+    function EVAL_CHECK($value) {
+        if (isset($this->arrErr[$value[0]])) {
+            return;
+        }
+        $this->createParam($value);
+        if ($this->evalCheck($value[1]) === false) {
+            $this->arrErr[$value[0]] = "※ " . $value[0] . " の形式が不正です。<br />";
+        }
+    }
+
+    /**
+     * $value が PHPコードとして評価可能かチェックする.
+     *
+     * @access private
+     * @param mixed PHPコードとして評価する文字列
+     * @return mixed PHPコードとして評価できない場合 false,
+     *               評価可能な場合は評価した値
+     */
+    function evalCheck($value) {
+        return @eval("return " . $value . ";");
     }
 
     /**
