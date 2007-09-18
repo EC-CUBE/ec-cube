@@ -8,7 +8,7 @@
 <!--★★メインコンテンツ★★-->
 <table width="878" border="0" cellspacing="0" cellpadding="0" summary=" ">
 <form name="form1" id="form1" method="post" action="./parameter.php">
-<input type="hidden" name="mode" value="<!--{$tpl_mode}-->">
+<input type="hidden" name="mode" value="update">
 	<tr valign="top">
 		<td background="<!--{$smarty.const.URL_DIR}-->img/contents/navi_bg.gif" height="402">
 			<!--▼SUB NAVI-->
@@ -56,6 +56,10 @@
     </ul>
   </td>
 </tr>
+<tr>
+  <th bgcolor="#f2f1ec" class="fs10n">定数名</th>
+  <th bgcolor="#f2f1ec" class="fs10n">パラメータ値</th>
+</tr>
 <!--{section name=cnt loop=$arrKeys}-->
 <tr>
   <th bgcolor="#f2f1ec" width="100" style="text-align: left; font-size: 70%">
@@ -65,6 +69,8 @@
     <div style="font-size: 80%; color: #666666"><!--{$arrComments[cnt]|escape}--></div>
     <div>
       <input type="text" name="<!--{$arrKeys[cnt]|escape}-->" value="<!--{$arrValues[cnt]|escape}-->" size="64">
+	<!--{assign var=key value=$arrKeys[cnt]}-->
+	<span class="red12"><!--{$arrErr.$key}--></span>
     </div>
   </td>
 </tr>
