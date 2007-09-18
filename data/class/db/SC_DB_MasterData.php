@@ -138,7 +138,7 @@ class SC_DB_MasterData {
         $i = 0;
         foreach ($masterData as $key => $val) {
             $sqlVal = array($columns[1] => $val);
-            $this->objQuery->update($name, $sqlVal, $columns[0] . " = " .  $key);
+            $this->objQuery->update($name, $sqlVal, $columns[0] . " = " .  SC_Utils_Ex::sfQuoteSmart($key));
             $i++;
         }
         if ($autoCommit) {
