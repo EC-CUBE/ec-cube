@@ -945,6 +945,22 @@ class SC_Utils {
         return $arrRet;
     }
 
+    /**
+     * 連想配列から新たな配列を生成して返す.
+     *
+     * @param array 連想配列
+     * @return array 連想配列の値のみの配列
+     */
+    function getHash2Array($hash) {
+        $array = array();
+        $i = 0;
+        foreach ($hash as $val) {
+            $array[$i] = $val;
+            $i++;
+        }
+        return $array;
+    }
+
     /* かけ算をする（Smarty用) */
     function sfMultiply($num1, $num2) {
         return ($num1 * $num2);
