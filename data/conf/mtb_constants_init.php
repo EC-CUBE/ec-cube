@@ -83,8 +83,6 @@ define('CREDIT_HTTP_ANALYZE_PROGRAM', "rcv_credit.php");
 define('CREDIT_HTTP_ANALYZE_URL', CREDIT_HTTP_DOMAIN . CREDIT_HTTP_ANALYZE_PROGRAM);
 /** 文字コード */
 define('CHAR_CODE', "UTF-8");
-/** EC-CUBEバージョン情報 */
-define('ECCUBE_VERSION', "1.5");
 /** 決済モジュール付与文言 */
 define('ECCUBE_PAYMENT', "EC-CUBE");
 /** PEAR::DBのデバッグモード */
