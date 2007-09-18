@@ -233,9 +233,8 @@ INSERT INTO mtb_constants VALUES ('MODULE_PATH','DATA_PATH . MODULE_DIR',23,'ダ
 INSERT INTO mtb_constants VALUES ('UPDATE_DIR','"downloads/update/"',24,'HotFix保存ディレクトリ');
 INSERT INTO mtb_constants VALUES ('UPDATE_PATH','DATA_PATH . UPDATE_DIR',25,'HotFix保存ディレクトリ');
 INSERT INTO mtb_constants VALUES ('MAX_LIFETIME', '7200', 26, 'DBセッションの有効期限(秒)');
--- INSERT INTO mtb_constants VALUES ('CLASS_PATH','DATA_PATH . "class/"',26,'クラスパス');
 INSERT INTO mtb_constants VALUES ('MASTER_DATA_DIR','DATA_PATH . "conf/cache/"',27,'マスタデータキャッシュディレクトリ');
-INSERT INTO mtb_constants VALUES ('UPDATE_HTTP','"http://www.lockon.co.jp/share/"',28,'アップデート管理用ファイル格納場所　');
+INSERT INTO mtb_constants VALUES ('UPDATE_HTTP','"http://www.lockon.co.jp/share/"',28,'アップデート管理用ファイル格納場所');
 INSERT INTO mtb_constants VALUES ('UPDATE_CSV_LINE_MAX','4096',29,'アップデート管理用CSV1行辺りの最大文字数');
 INSERT INTO mtb_constants VALUES ('UPDATE_CSV_COL_MAX','13',30,'アップデート管理用CSVカラム数');
 INSERT INTO mtb_constants VALUES ('MODULE_CSV_COL_MAX','16',31,'モジュール管理用CSVカラム数');
@@ -247,7 +246,6 @@ INSERT INTO mtb_constants VALUES ('CREDIT_HTTP_DOMAIN','"http://rcv.ec-cube.net/
 INSERT INTO mtb_constants VALUES ('CREDIT_HTTP_ANALYZE_PROGRAM','"rcv_credit.php"',37,'決済受信用URL');
 INSERT INTO mtb_constants VALUES ('CREDIT_HTTP_ANALYZE_URL','CREDIT_HTTP_DOMAIN . CREDIT_HTTP_ANALYZE_PROGRAM',38,'決済受信用URL');
 INSERT INTO mtb_constants VALUES ('CHAR_CODE','"UTF-8"',39,'文字コード');
-INSERT INTO mtb_constants VALUES ('ECCUBE_VERSION','"1.5"',40,'EC-CUBEバージョン情報');
 INSERT INTO mtb_constants VALUES ('ECCUBE_PAYMENT','"EC-CUBE"',41,'決済モジュール付与文言');
 INSERT INTO mtb_constants VALUES ('PEAR_DB_DEBUG','9',42,'PEAR::DBのデバッグモード');
 INSERT INTO mtb_constants VALUES ('LOAD_BATCH_PASS','3600',43,'バッチを実行する最短の間隔(秒)');
