@@ -14,7 +14,7 @@ require_once("PHPUnit/TestCase.php");
  *
  * @package DB
  * @author LOCKON CO.,LTD.
- * @version $Id$
+ * @version $Id:SC_DB_MasterData_Test.php 15532 2007-08-31 14:39:46Z nanasess $
  */
 class SC_DB_MasterData_Test extends PHPUnit_TestCase {
 
@@ -25,7 +25,6 @@ class SC_DB_MasterData_Test extends PHPUnit_TestCase {
      * SC_DB_MasterData::getMasterData() のテストケース
      */
     function testGetMasterData() {
-
         $columns = array("pref_id", "pref_name", "rank");
         $masterData = new SC_DB_MasterData_Ex();
         $actual = $masterData->getMasterData("mtb_pref", $columns);
@@ -57,9 +56,11 @@ class SC_DB_MasterData_Test extends PHPUnit_TestCase {
         $expected = array("10" => "北海道", "20" => "愛知", "30" => "岐阜");
         $masterData->updateMasterData("mtb_pref", $columns, $expected, false);
 
-        $actual = $masterData->getMasterData("mtb_pref", $columns);
+        $actual = $masterData->getDBMasterData("mtb_pref", $columns);
 
-        $this->assertEquals($expected, $actual);
+        $this->assertEquals($expected["10"], $actual["10"]);
+        $this->assertEquals($expected["20"], $actual["20"]);
+        $this->assertEquals($expected["30"], $actual["30"]);
 
         $masterData->objQuery->rollback();
         $masterData->clearCache("mtb_pref");
@@ -70,7 +71,11 @@ class SC_DB_MasterData_Test extends PHPUnit_TestCase {
      */
     function testCreateCache() {
         $masterData = new SC_DB_MasterData_Ex();
-        $masterData->createCache("mtb_constants", $masterData->getMasterData("mtb_constants"), true);
+        $datas = $masterData->getDBMasterData("mtb_constants");
+        $commentColumn = array("id", "remarks", "rank");
+        $masterData->clearCache("mtb_constants");
+        $masterData->createCache("mtb_constants", $datas, true,
+                                         array("id", "remarks", "rank"));
         $this->assertEquals(true, defined("ECCUBE_VERSION"));
     }
 }

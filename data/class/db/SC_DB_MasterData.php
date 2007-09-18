@@ -23,7 +23,7 @@
  *
  * @package DB
  * @author LOCKON CO.,LTD.
- * @version $Id$
+ * @version $Id:SC_DB_MasterData.php 15532 2007-08-31 14:39:46Z nanasess $
  */
 class SC_DB_MasterData {
 
@@ -109,19 +109,13 @@ class SC_DB_MasterData {
         if ($autoCommit) {
             $this->objQuery->commit();
         }
-
-        // キャッシュを消去
-        $this->clearCache($name);
-        // 新規にデータを取得してキャッシュ生成
-        $newData = $this->getMasterData($name, $columns);
         return $i;
     }
 
     /**
      * マスタデータを更新する.
      *
-     * 引数 $masterData の値でマスタデータを更新し,
-     * キャッシュを更新する.
+     * 引数 $masterData の値でマスタデータを更新する.
      * $masterData は key => value 形式の配列である必要がある.
      *
      * @param string $name マスタデータ名
@@ -132,20 +126,25 @@ class SC_DB_MasterData {
      * @return integer マスタデータの更新数
      */
     function updateMasterData($name, $columns, $masterData, $autoCommit = true) {
+
+        $columns = $this->getDefaultColumnName($columns);
+
         $this->objQuery = new SC_Query();
         if ($autoCommit) {
             $this->objQuery->begin();
         }
-        // マスタデータを削除
-        $this->deleteMasterData($name, false);
 
-        // マスタデータを追加
-        $this->registMasterData($name, $columns, $masterData, false);
-
+        // 指定のデータを更新
+        $i = 0;
+        foreach ($masterData as $key => $val) {
+            $sqlVal = array($columns[1] => $val);
+            $this->objQuery->update($name, $sqlVal, $columns[0] . " = " .  $key);
+            $i++;
+        }
         if ($autoCommit) {
             $this->objQuery->commit();
         }
-        return count($masterData);
+        return $i;
     }
 
     /**
@@ -192,20 +191,34 @@ class SC_DB_MasterData {
      *
      * 引数 $name のマスタデータキャッシュを生成する.
      * 既存のキャッシュが存在する場合は上書きする.
+     *
      * 引数 $isDefine が true の場合は, 定数を生成する.
+     * 定数コメントを生成する場合は, $commentColumn を指定する.
      *
      * @param string $name マスタデータ名
      * @param array $masterData マスタデータ
      * @param bool $isDefine 定数を生成する場合 true
+     * @param array $commentColumn [0] => キー, [1] => コメント文字列,
+                                   [2] => 表示順 を表すカラム名を格納した配列
      * @return bool キャッシュの生成に成功した場合 true
      */
-    function createCache($name, $masterData, $isDefine = false) {
+    function createCache($name, $masterData, $isDefine = false,
+                         $commentColumn = array()) {
 
         // マスタデータを文字列にする
         $data = "<?php\n";
+        // 定数を生成する場合
         if ($isDefine) {
-            $data .= $this->getMasterDataAsDefine($masterData,
-                    $this->getDbMasterData("mtb_constants", array("id", "remarks", "rank")));
+
+            // 定数コメントを生成する場合
+            if (!empty($commentColumn)) {
+                $data .= $this->getMasterDataAsDefine($masterData,
+                                 $this->getDbMasterData($name, $commentColumn));
+            } else {
+                $data .= $this->getMasterDataAsDefine($masterData);
+            }
+
+        // 配列を生成する場合
         } else {
             $data .= $this->getMasterDataAsString($name, $masterData);
         }
@@ -224,9 +237,6 @@ class SC_DB_MasterData {
         return true;
     }
 
-    // }}}
-    // {{{ private functions
-
     /**
      * DBからマスタデータを取得する.
      *
@@ -234,7 +244,6 @@ class SC_DB_MasterData {
      *
      * 返り値は, key => value 形式の配列である.
      *
-     * @access private
      * @param string $name マスタデータ名
      * @param array $columns [0] => キー, [1] => 表示文字列, [2] => 表示順
      *                        を表すカラム名を格納した配列
@@ -256,6 +265,9 @@ class SC_DB_MasterData {
         }
         return $masterData;
     }
+
+    // }}}
+    // {{{ private functions
 
     /**
      * デフォルトのカラム名の配列を返す.
@@ -309,7 +321,7 @@ class SC_DB_MasterData {
     function getMasterDataAsDefine($masterData, $comments = array()) {
         $data = "";
         foreach ($masterData as $key => $val) {
-            if (isset($comments[$key])) {
+            if (!empty($comments[$key])) {
                 $data .= "/** " . $comments[$key] . " */\n";
             }
             $data .= "define('" . $key . "', " . $val . ");\n";
