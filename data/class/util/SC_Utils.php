@@ -948,15 +948,25 @@ class SC_Utils {
     /**
      * 連想配列から新たな配列を生成して返す.
      *
+     * $requires が指定された場合, $requires に含まれるキーの値のみを返す.
+     *
      * @param array 連想配列
+     * @param array 必須キーの配列
      * @return array 連想配列の値のみの配列
      */
-    function getHash2Array($hash) {
+    function getHash2Array($hash, $requires = array()) {
         $array = array();
         $i = 0;
-        foreach ($hash as $val) {
-            $array[$i] = $val;
-            $i++;
+        foreach ($hash as $key => $val) {
+            if (!empty($requires)) {
+                if (in_array($key, $requires)) {
+                    $array[$i] = $val;
+                    $i++;
+                }
+            } else {
+                $array[$i] = $val;
+                $i++;
+            }
         }
         return $array;
     }
