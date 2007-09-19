@@ -349,8 +349,6 @@ INSERT INTO mtb_constants VALUES ('NORMAL_PRICE_TITLE','"通常価格"',140,'価
 INSERT INTO mtb_constants VALUES ('SALE_PRICE_TITLE','"販売価格"',141,'価格名称');
 INSERT INTO mtb_constants VALUES ('LOG_PATH','DATA_PATH . "logs/site.log"',142,'ログファイル');
 INSERT INTO mtb_constants VALUES ('CUSTOMER_LOG_PATH','DATA_PATH . "logs/customer.log"',143,'会員ログイン ログファイル');
-INSERT INTO mtb_constants VALUES ('TEMPLATE_ADMIN_DIR','DATA_PATH . "Smarty/templates/admin"',144,'SMARTYテンプレート');
-INSERT INTO mtb_constants VALUES ('TEMPLATE_DIR','DATA_PATH . "Smarty/templates"',145,'SMARTYテンプレート');
 INSERT INTO mtb_constants VALUES ('COMPILE_ADMIN_DIR','DATA_PATH . "Smarty/templates_c/admin"',146,'SMARTYコンパイル');
 INSERT INTO mtb_constants VALUES ('COMPILE_DIR','DATA_PATH . "Smarty/templates_c"',147,'SMARTYコンパイル');
 INSERT INTO mtb_constants VALUES ('TEMPLATE_FTP_DIR','USER_PATH . "templates/"',148,'SMARTYテンプレート(FTP許可)');
@@ -489,3 +487,7 @@ INSERT INTO mtb_constants VALUES ('TRACKBACK_VIEW_MAX','10',280,'フロント最
 INSERT INTO mtb_constants VALUES ('TRACKBACK_TO_URL','SITE_URL . "tb/index.php?pid="',281,'トラックバック先URL');
 INSERT INTO mtb_constants VALUES ('SITE_CONTROL_TRACKBACK','1',282,'サイト管理 トラックバック');
 INSERT INTO mtb_constants VALUES ('SITE_CONTROL_AFFILIATE','2',283,'サイト管理 アフィリエイト');
+INSERT INTO mtb_constants VALUES ('DEFAULT_TEMPLATE_NAME', '"default"', 300,'デフォルトテンプレート名');
+INSERT INTO mtb_constants VALUES ('TEMPLATE_NAME', 'DEFAULT_TEMPLATE_NAME', 301,'テンプレート名');
+INSERT INTO mtb_constants VALUES ('TEMPLATE_ADMIN_DIR','DATA_PATH . "Smarty/templates/" . TEMPLATE_NAME . "/admin"', 302,'SMARTYテンプレート(管理ページ)');
+INSERT INTO mtb_constants VALUES ('TEMPLATE_DIR','DATA_PATH . "Smarty/" . TEMPLATE_NAME . "/templates"', 303,'SMARTYテンプレート');
