@@ -66,7 +66,6 @@ class LC_Page_Admin_Basis_Parameter extends LC_Page {
 
             // エラーチェック
             $this->arrErr = $this->errorCheck();
-
             // エラーの無い場合は update
             if (empty($this->arrErr)) {
                 $this->update();
@@ -121,6 +120,7 @@ class LC_Page_Admin_Basis_Parameter extends LC_Page {
         $mtb_constants = $masterData->getDBMasterData("mtb_constants");
 
         // キャッシュを生成
+        $masterData->clearCache("mtb_constants");
         $masterData->createCache("mtb_constants", $mtb_constants, true,
                                  array("id", "remarks", "rank"));
     }
