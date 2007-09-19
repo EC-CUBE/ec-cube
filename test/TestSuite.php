@@ -6,6 +6,7 @@
  * http://www.lockon.co.jp/
  */
 
+ini_set("include_path", ".:/usr/local/share/pear");
 // {{{ requires
 require_once("../html/require.php");
 require_once("class/page/LC_Page_Test.php");
