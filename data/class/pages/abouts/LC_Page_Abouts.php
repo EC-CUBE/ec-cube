@@ -13,7 +13,7 @@ require_once(CLASS_PATH . "pages/LC_Page.php");
  *
  * @package Page
  * @author LOCKON CO.,LTD.
- * @version $Id$
+ * @version $Id:LC_Page_Abouts.php 15532 2007-08-31 14:39:46Z nanasess $
  */
 class LC_Page_Abouts extends LC_Page {
 
@@ -43,9 +43,9 @@ class LC_Page_Abouts extends LC_Page {
 
         // レイアウトデザインを取得
         $layout = new SC_Helper_PageLayout_Ex();
-        $objPage = $layout->sfGetPageLayout($this, false, DEF_LAYOUT);
+        $layout->sfGetPageLayout($this, false, DEF_LAYOUT);
 
-        $objView->assignobj($objPage);
+        $objView->assignobj($this);
         $objView->display(SITE_FRAME);
     }
 
