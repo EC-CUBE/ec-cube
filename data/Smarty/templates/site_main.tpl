@@ -3,16 +3,15 @@
  *
  * http://www.lockon.co.jp/
  *}-->
-<body bgcolor="#ffe9e6" text="#555555" link="#3a75af" vlink="#3a75af" alink="#3a75af" leftmargin="0" topmargin="0" marginwidth="0" marginheight="0" onLoad="preLoadImg('<!--{$smarty.const.URL_DIR}-->'); <!--{$tpl_onload}-->">
+<body onLoad="preLoadImg('<!--{$smarty.const.URL_DIR}-->'); <!--{$tpl_onload}-->">
 <noscript>
-<link rel="stylesheet" href="<!--{$smarty.const.URL_DIR}-->css/common.css" type="text/css" />
+<link rel="stylesheet" href="<!--{$smarty.const.URL_DIR}-->user_data/css/common.css" type="text/css" />
 </noscript>
 
-<div align="center">
 <a name="top" id="top"></a>
 
 <!--▼HEADER-->
-<!--{if $arrPageLayout.header_chk != 2}--> 
+<!--{if $arrPageLayout.header_chk != 2}-->
 <!--{assign var=header_dir value="`$smarty.const.HTML_PATH`user_data/include/header.tpl"}-->
 <!--{include file= $header_dir}-->
 <!--{/if}-->
@@ -24,7 +23,7 @@
 	<tr>
 		<td bgcolor="#cccccc" width="1"><img src="<!--{$smarty.const.URL_DIR}-->img/_.gif" width="1" height="10" alt="" /></td>
 		<td bgcolor="#ffffff" width="1"><img src="<!--{$smarty.const.URL_DIR}-->img/_.gif" width="5" height="1" alt="" /></td>
-		<td bgcolor="#ffffff" align="left" width=100%> 
+		<td bgcolor="#ffffff" align="left" width=100%>
 
 		<!--{*パンクズ-->
 		<div id="pan"><span class="fs12n"><a href="<!--{$smarty.const.SITE_URL}-->index.php">トップページ</a> ＞ <span class="redst">お問い合わせ</span></span></div>
@@ -52,10 +51,10 @@
 					<td bgcolor="#ffffff" width="5"><img src="<!--{$smarty.const.URL_DIR}-->img/_.gif" width="5" height="1" alt="" /></td>
 				<!--{/if}-->
 				<!--▲左ナビ-->
-			
+
 				<td align="center" width=100%>
 			        <table border="0" cellspacing="0" cellpadding="0" summary=" ">
-			        
+
 					<!--▼メイン上部-->
 					<!--{if $arrPageLayout.MainHead|@count > 0}-->
 					<tr><td align="center">
@@ -76,9 +75,9 @@
 					</td><tr>
 					<!--{/if}-->
 					<!--▲メイン上部-->
-					
+
 					<tr><td align="center"><!--{include file=$tpl_mainpage}--></td></tr>
-					
+
 					<!--▼メイン下部-->
 					<tr><td align="center">
 					<!--{if $arrPageLayout.MainFoot|@count > 0}-->
@@ -98,8 +97,8 @@
 						</table>
 					<!--{/if}-->
 					</td><tr>
-					<!--▲メイン下部-->					
-	
+					<!--▲メイン下部-->
+
 					</table>
 				</td>
 
@@ -135,7 +134,7 @@
 <!--▲MAIN-->
 
 <!--▼FOTTER-->
-<!--{if $arrPageLayout.footer_chk != 2}--> 
+<!--{if $arrPageLayout.footer_chk != 2}-->
 <!--{include file="`$smarty.const.HTML_PATH`user_data/include/footer.tpl"}-->
 <!--{/if}-->
 <!--▲FOTTER-->

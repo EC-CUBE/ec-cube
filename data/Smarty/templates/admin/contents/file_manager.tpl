@@ -78,7 +78,7 @@
 														</td>
 														<td align="right"></td>
 														<td></td>
-													</tr>										
+													</tr>
 													<!--{/if}-->
 													<!--{section name=cnt loop=$arrFileList}-->
 													<!--{assign var="id" value="select_file`$smarty.section.cnt.index`"}-->
@@ -115,7 +115,7 @@
 								<table width="678" border="0" cellspacing="1" cellpadding="8" summary=" ">
 									<tr class="fs12n">
 										<td bgcolor="#f2f1ec">ファイルのアップロード</td>
-										<td bgcolor="#ffffff"><span class="red"><!--{$arrErr.upload_file}--></span><input type="file" name="upload_file" size="64" class="box54" <!--{if $arrErr.upload_file}-->style="background-color:<!--{$smarty.const.ERR_COLOR|escape}-->"<!--{/if}-->><input type="button" onclick="setTreeStatus('tree_status');fnModeSubmit('upload','',''); return false;" value="アップロード"></td>
+										<td bgcolor="#ffffff"><span class="red"><!--{$arrErr.upload_file}--></span><input type="file" name="upload_file" size="64" <!--{if $arrErr.upload_file}-->style="background-color:<!--{$smarty.const.ERR_COLOR|escape}-->"<!--{/if}-->><input type="button" onclick="setTreeStatus('tree_status');fnModeSubmit('upload','',''); return false;" value="アップロード"></td>
 									</tr>
 									<tr class="fs12n">
 										<td bgcolor="#f2f1ec">フォルダ作成</td>
@@ -127,7 +127,7 @@
 								<table width="678" border="0" cellspacing="0" cellpadding="0" summary=" ">
 									<tr><td colspan="3"><img src="<!--{$smarty.const.URL_DIR}-->img/contents/main_bar.jpg" width="678" height="10" alt=""></td></tr>
 								</table>
-									
+
 								</td>
 								<td background="<!--{$smarty.const.URL_DIR}-->img/contents/main_right.jpg"><img src="<!--{$smarty.const.URL_DIR}-->img/common/_.gif" width="14" height="1" alt=""></td>
 							</tr>
