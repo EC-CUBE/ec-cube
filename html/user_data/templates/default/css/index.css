@@ -63,7 +63,7 @@ div.recomendright {
     position: relative;
 }
 
-div.recomendright img {
+div.recomendleft img, div.recomendright img {
     display: block;
     float: left;
     margin: 0 5px 0 0;
