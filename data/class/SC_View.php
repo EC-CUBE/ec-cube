@@ -147,6 +147,9 @@ class SC_View {
      * @return void
      */
     function display($template, $display = false) {
+        // テンプレート切り替え処理
+        $this->initDisplay($template);
+
         // グローバルエラーの表示
         $this->displayGlobalError($display);
 
@@ -156,6 +159,12 @@ class SC_View {
         // ベンチマーク結果の表示
         $this->displayBenchMark();
     }
+
+    /**
+     *  テンプレート切り替え処理を行う.
+     *  実装は子クラスで行う.
+     */
+    function initDisplay($template) {}
 
     /**
      * グローバルエラーを表示する.
@@ -238,28 +247,24 @@ class SC_AdminView extends SC_View{
         parent::SC_View(false);
         $this->_smarty->template_dir = TEMPLATE_ADMIN_DIR;
         $this->_smarty->compile_dir = COMPILE_ADMIN_DIR;
-        $this->assignDefaultVars();
     }
 
-    function display($template) {
+    function initDisplay($template) {
         $tpl_mainpage  = $this->_smarty->get_template_vars('tpl_mainpage');
         $template_name = $this->getTemplateName();
 
         // テンプレートパッケージが選択されている場合
         if ($template_name) {
             $template_dir = TPL_PKG_PATH . $template_name . '/templates/admin/';
-            $compile_dir  = TPL_PKG_PATH . $template_name . '/templates_c/';
 
             // tpl_mainpageとmain_frame.tplが両方存在する時のみテンプレートパッケージで出力
             if (file_exists($template_dir . $tpl_mainpage)
                 && file_exists($template_dir . $template)) {
 
                 $this->_smarty->template_dir = $template_dir;
-                $this->_smarty->compile_dir  = $compile_dir;
+                $this->_smarty->compile_dir .= "/$template_name";
             }
         }
-
-        $this->_smarty->display($template);
     }
 }
 
@@ -281,14 +286,13 @@ class SC_SiteView extends SC_View{
         }
     }
 
-    function display($template) {
+    function initDisplay($template) {
         $tpl_mainpage  = $this->_smarty->get_template_vars('tpl_mainpage');
         $template_name = $this->getTemplateName();
 
         // テンプレートパッケージが選択されている場合
         if ($template_name) {
             $template_dir = TPL_PKG_PATH . $template_name . '/templates/';
-            $compile_dir  = TPL_PKG_PATH . $template_name . '/templates_c/';
 
             // tpl_mainpageとsite_frame.tplが両方存在する時のみテンプレートパッケージで出力
             if (
@@ -296,11 +300,9 @@ class SC_SiteView extends SC_View{
                 && file_exists($template_dir . $template)) {
 
                 $this->_smarty->template_dir = $template_dir;
-                $this->_smarty->compile_dir  = $compile_dir;
+                $this->_smarty->compile_dir .= "/$template_name";
             }
         }
-
-        $this->_smarty->display($template);
     }
 }
 class SC_UserView extends SC_SiteView{
