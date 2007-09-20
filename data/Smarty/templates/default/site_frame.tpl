@@ -5,12 +5,13 @@
  *
  * http://www.lockon.co.jp/
  *}-->
+<html xmlns="http://www.w3.org/1999/xhtml" lang="ja" xml:lang="ja">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=<!--{$smarty.const.CHAR_CODE}-->" />
 <meta http-equiv="Content-Script-Type" content="text/javascript" />
 <meta http-equiv="Content-Style-Type" content="text/css" />
 <link rel="stylesheet" href="<!--{$smarty.const.URL_DIR}--><!--{$smarty.const.USER_DIR}-->css/common.css" type="text/css" media="all" />
-<link rel="alternate" type="application/rss+xml" title="RSS" href="<!--{$smarty.const.SITE_URL}-->/rss/index.php">
+<link rel="alternate" type="application/rss+xml" title="RSS" href="<!--{$smarty.const.SITE_URL}-->/rss/index.php" />
 <script type="text/javascript" src="<!--{$TPL_DIR}-->js/css.js"></script>
 <script type="text/javascript" src="<!--{$TPL_DIR}-->js/navi.js"></script>
 <script type="text/javascript" src="<!--{$TPL_DIR}-->js/win_op.js"></script>
