@@ -76,6 +76,7 @@ class SC_View {
         $this->_smarty->register_function("sfPrintAffTag","sfPrintAffTag");
         $this->_smarty->register_function("sfIsHTTPS","sfIsHTTPS");
         $this->_smarty->default_modifiers = array('script_escape');
+        $this->_smarty->force_compile = true;
     }
 
     /**
@@ -226,8 +227,6 @@ class SC_View {
      * 使用しているテンプレートパッケージ名を取得する
      */
     function getTemplateName() {
-        if (!defined('DEFAULT_DSN')) return null;
-
         $objQuery = new SC_Query();
         $arrRet = $objQuery->select('top_tpl', 'dtb_baseinfo');
 
@@ -328,6 +327,7 @@ class SC_InstallView extends SC_View{
         $this->_smarty->template_dir = $template_dir;
         $this->_smarty->compile_dir = $compile_dir;
     }
+    function getTemplateName() {}
 }
 
 class SC_MobileView extends SC_SiteView {
