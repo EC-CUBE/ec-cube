@@ -3,11 +3,11 @@
  *
  * http://www.lockon.co.jp/
  */
-var IMG_FOLDER_CLOSE   = "../../img/admin/contents/folder_close.gif";		// フォルダクローズ時画像
-var IMG_FOLDER_OPEN    = "../../img/admin/contents/folder_open.gif";		// フォルダオープン時画像
-var IMG_PLUS           = "../../img/admin/contents/plus.gif";				// プラスライン
-var IMG_MINUS          = "../../img/admin/contents/minus.gif";				// マイナスライン
-var IMG_NORMAL         = "../../img/admin/contents/space.gif";				// スペース
+var IMG_FOLDER_CLOSE   = "../../user_data/templates/default/img/admin/contents/folder_close.gif";		// フォルダクローズ時画像
+var IMG_FOLDER_OPEN    = "../../user_data/templates/default/img/admin/contents/folder_open.gif";		// フォルダオープン時画像
+var IMG_PLUS           = "../../user_data/templates/default/img/admin/contents/plus.gif";				// プラスライン
+var IMG_MINUS          = "../../user_data/templates/default/img/admin/contents/minus.gif";				// マイナスライン
+var IMG_NORMAL         = "../../user_data/templates/default/img/admin/contents/space.gif";				// スペース
 
 var tree = "";						// 生成HTML格納
 var count = 0;						// ループカウンタ
@@ -22,12 +22,12 @@ function fnTreeView(view_id, arrTree, openFolder, selectHidden, treeHidden, mode
 	selectFileHidden = selectHidden;
 	treeStatusHidden = treeHidden;
 	modeHidden = mode;
-	
+
 	for(i = 0; i < arrTree.length; i++) {
-		
+
 		id = arrTree[i][0];
 		level = arrTree[i][3];
-		
+
 		if(i == 0) {
 			old_id = "0";
 			old_level = 0;
@@ -35,7 +35,7 @@ function fnTreeView(view_id, arrTree, openFolder, selectHidden, treeHidden, mode
 			old_id = arrTree[i-1][0];
 			old_level = arrTree[i-1][3];
 		}
-	
+
 		// 階層上へ戻る
 		if(level <= (old_level - 1)) {
 			tmp_level = old_level - level;
@@ -43,10 +43,10 @@ function fnTreeView(view_id, arrTree, openFolder, selectHidden, treeHidden, mode
 				tree += '</div>';
 			}
 		}
-		
+
 		// 同一階層で次のフォルダへ
 		if(id != old_id && level == old_level) tree += '</div>';
-	
+
 		// 階層の分だけスペースを入れる
 		for(space_cnt = 0; space_cnt < arrTree[i][3]; space_cnt++) {
 			tree += "&nbsp;&nbsp;&nbsp;";
@@ -90,10 +90,10 @@ function fnTreeView(view_id, arrTree, openFolder, selectHidden, treeHidden, mode
 		}
 		tree += '<a href="javascript:fnFolderOpen(\''+ arrTree[i][2] +'\')"><img src="'+ folder_img +'" border="0" name="tree_img'+ i +'" id="tree_img'+ i +'">&nbsp;'+ file_name +'</a><br/>';
 		tree += '<div id="tree'+ i +'" style="display:'+ display +'">';
-	
+
 	}
 	fnDrow(view_id, tree);
-	//document.tree_form.tree_test2.focus();	
+	//document.tree_form.tree_test2.focus();
 }
 
 // Tree状態をhiddenにセット
@@ -202,7 +202,7 @@ function fnGetMyBrowser() {
 	else if (myN6) myBR="N6";       // NS6以上
 	else if (myN4) myBR="N4";       // NN4
 	else           myBR="";         // その他
-		
+
 	return myBR;
 }
 
