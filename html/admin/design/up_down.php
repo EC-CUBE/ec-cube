@@ -123,8 +123,11 @@ function lfValidateUpload($objForm) {
         $arrErr['template_code'] = "※ 同名のファイルがすでに存在します。<br/>";
     }
 
-    // Smartyのコンパイルディレクトリと同一名は不可
-    if(file_exists(COMPILE_DIR . '/' . $arrForm['template_code'])) {
+    // 登録不可の文字列チェック
+    $arrIgnoreCode = array(
+        'admin', 'mobile', 'default'
+    );
+    if(in_array($arrForm['template_code'], $arrIgnoreCode)) {
         $arrErr['template_code'] = "※ このテンプレートコードは使用できません。<br/>";
     }
 
