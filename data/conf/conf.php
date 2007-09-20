@@ -70,8 +70,9 @@ define("USER_TEMPLATE_PATH", USER_PATH . USER_TEMPLATE_DIR);
 // テンプレートファイル一時保存先
 define("TEMPLATE_TEMP_DIR", HTML_PATH . "upload/temp_template/");
 
-// テンプレートパッケージ保存先
-define('TPL_PKG_PATH', USER_PATH . 'tpl_packages/');
+// テンプレートパッケージ
+define('TPL_PKG_DIR', 'tpl_packages/');
+define('TPL_PKG_PATH', USER_PATH . TPL_PKG_DIR);
 
 // ユーザー作成画面のデフォルトPHPファイル
 define("USER_DEF_PHP", HTML_PATH . "__default.php");
