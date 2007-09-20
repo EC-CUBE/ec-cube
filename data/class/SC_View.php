@@ -254,25 +254,6 @@ class SC_AdminView extends SC_View{
         $this->_smarty->compile_dir = COMPILE_ADMIN_DIR;
     }
 
-    function initDisplay($template) {
-        if (empty($this->tplName)) return;
-
-        $tpl_mainpage  = $this->_smarty->get_template_vars('tpl_mainpage');
-        $template_name = $this->tplName;
-
-        // テンプレートパッケージが選択されている場合
-        if ($template_name) {
-            $template_dir = TPL_PKG_PATH . $template_name . '/templates/admin/';
-
-            // tpl_mainpageとmain_frame.tplが両方存在する時のみテンプレートパッケージで出力
-            if (file_exists($template_dir . $tpl_mainpage)
-                && file_exists($template_dir . $template)) {
-echo '<font color="#ffffff">ok</font>';
-                $this->_smarty->template_dir = $template_dir;
-                $this->_smarty->compile_dir  = COMPILE_DIR . "/$template_name";
-            }
-        }
-    }
 }
 
 class SC_SiteView extends SC_View{
@@ -297,19 +278,15 @@ class SC_SiteView extends SC_View{
         if (empty($this->tplName)) return;
 
         $tpl_mainpage  = $this->_smarty->get_template_vars('tpl_mainpage');
-        $template_name = $this->tplName;
+        $template_dir = TPL_PKG_PATH . $this->tplName . '/templates/';
 
-        // テンプレートパッケージが選択されている場合
-        if ($template_name) {
-            $template_dir = TPL_PKG_PATH . $template_name . '/templates/';
-
-            // tpl_mainpageとsite_frame.tplが両方存在する時のみテンプレートパッケージで出力
-            if (
-                (file_exists($template_dir . $tpl_mainpage) || file_exists($tpl_mainpage))
-                && file_exists($template_dir . $template)) {
-echo 'ok';
-                $this->_smarty->template_dir = $template_dir;
-                $this->_smarty->compile_dir  = COMPILE_DIR . "/$template_name";
+        $win = "^[a-zA-Z]{1}:";
+        $other = "^\/";
+        $pattern = "/($win)|($other)/";
+        if (!preg_match($pattern, $tpl_mainpage)) {
+            $tpl_pkg_mainpage = $template_dir . $tpl_mainpage;
+            if (file_exists($tpl_pkg_mainpage)) {
+                $this->assign('tpl_mainpage', $tpl_pkg_mainpage);
             }
         }
     }
