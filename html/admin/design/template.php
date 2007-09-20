@@ -47,6 +47,11 @@ case 'register':
 
     $template_code = $objForm->getValue('template_code');
 
+    if ($template_code == 'default') {
+        $objPage->tpl_onload="alert('初期デザインへ戻しました。');";
+        break;
+    }
+
     // DBへ使用するテンプレートを登録
     lfRegisterTemplate($template_code);
 
@@ -163,7 +168,6 @@ function lfChangeTemplate($template_code){
         $mess = $from . 'は存在しません';
     } else {
         $to = USER_PATH;
-        $to = HTML_PATH . 'user_data/';
         $mess = sfCopyDir($from, $to, '', true);
     }
     return $mess;
