@@ -275,8 +275,14 @@ class SC_SiteView extends SC_View{
     }
 
     function initDisplay($template) {
+        // テンプレートを使用していない場合はreturn
         if (empty($this->tplName)) return;
 
+        /**
+         * tpl_mainpageが相対パスであれば
+         * ユーザーテンプレートへの絶対パスに変更し
+         * そのファイルが存在するばあいはtpl_meinpageを再度assignし上書きする
+         */
         $tpl_mainpage  = $this->_smarty->get_template_vars('tpl_mainpage');
         $template_dir = TPL_PKG_PATH . $this->tplName . '/templates/';
 
