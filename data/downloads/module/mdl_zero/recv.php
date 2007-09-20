@@ -1,5 +1,20 @@
 <?php
 
+require_once('./require.php');
+
+//ページ管理クラス
+class LC_Page {
+    //コンストラクタ
+    function LC_Page() {
+        //メインテンプレートの指定
+        $this->tpl_mainpage = MODULE_PATH . 'mdl_zero/mdl_zero.tpl';
+        $this->tpl_subtitle = 'ゼロ決済モジュール';
+    }
+}
+
+$objPage = new LC_Page();
+$objView = new SC_AdminView();
+$objQuery = new SC_Query();
 $objSiteSess = new SC_SiteSession();
 $objCartSess = new SC_CartSession();
 $objCampaignSess = new SC_CampaignSession();
@@ -17,23 +32,26 @@ foreach($arrResult as $key => $val){
 	gfPrintLog( "\t" . $key . " => " . $val, $log_path);
 }
 
-$objQuery->begin();
-$order_id = lfDoComplete($objQuery, $arrResult);
-$objQuery->commit();
+if(!empty($_GET["clientip"])){
+	$objQuery->begin();
+	$order_id = lfDoComplete($objQuery, $arrResult);
+	$objQuery->commit();
+}
 
 // 完了メール送信
 if(sfIsInt($order_id)) {
-
     $order_email = $objQuery->select("order_email", "dtb_order", "order_id = ?", array($order_id));
     
     //登録されているメールアドレスが携帯かPCかに応じて注文完了メールのテンプレートを変える
     if(ereg("(ezweb.ne.jp$|docomo.ne.jp$|softbank.ne.jp$|vodafone.ne.jp$)",$order_email[0]['order_email'])){
-        sfSendOrderMail($order_id, '1',"","");
-    }else{
-      sfSendOrderMail($order_id, '0',"","");
-    }
+		// モバイル版
+    	sfSendOrderMail($order_id, '2');
+	}else{
+		// PC版
+		sfSendOrderMail($order_id, '1');
+	}
     print("OK");
-}else{
+} else {
     // エラーの場合受信データを送信
     gfPrintLog("!!!!!!!!!!!! zero error !!!!!!!!!!!!!!", $log_path);
     ob_start();
@@ -41,7 +59,6 @@ if(sfIsInt($order_id)) {
     print_r($arrResult);
     $msg = ob_get_contents();
     ob_end_clean();
-    mb_send_mail("kakinaka@lockon.co.jp", "ゼロクレジットエラー:" . $arrResult['sendid'], $msg . "\n");
     print("NG");
 }
 gfPrintLog("**************************************** zero end ****************************************", $log_path);
@@ -63,7 +80,6 @@ function lfDoComplete($objQuery, $arrResult) {
     $money =  $arrResult["money"];    // payment_total
 
     $arrCrilentIP = $objQuery->select("memo02, memo04", "dtb_payment", "payment_id = ? and del_flg = 0", array($arrSendid[1]));
-    //$client_id = $objQuery->getAll("SELECT memo04 FROM dtb_payment WHERE payment_id = ? and del_flg = 0", array($arrSendid[1]));
     
     // 加盟店コードが違う場合にはエラー
     if(count($arrResult)){
