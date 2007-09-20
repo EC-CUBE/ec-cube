@@ -65,7 +65,7 @@ class LC_Page_Admin_Design_Bloc extends LC_Page {
         // bloc_id が指定されている場合にはブロックデータの取得
         if ($bloc_id != '') {
             $arrBlocData = $this->lfgetBlocData(" bloc_id = ? " , array($bloc_id));
-            $arrBlocData[0]['tpl_path'] = USER_PATH . $arrBlocData[0]['tpl_path'];
+            $arrBlocData[0]['tpl_path'] = TEMPLATE_DIR . $arrBlocData[0]['tpl_path'];
 
             // テンプレートファイルの読み込み
             $arrBlocData[0]['tpl_data'] = file_get_contents($arrBlocData[0]['tpl_path']);
