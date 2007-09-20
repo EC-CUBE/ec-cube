@@ -5,7 +5,7 @@
  *}-->
 <body onload="preLoadImg('<!--{$smarty.const.URL_DIR}-->'); <!--{$tpl_onload}-->">
 <noscript>
-  <link rel="stylesheet" href="<!--{$smarty.const.URL_DIR}--><!--{$smarty.const.USER_DIR}-->css/common.css" type="text/css" />
+  <p>JavaScript を有効にしてご利用下さい.</p>
 </noscript>
 
 <a name="top" id="top"></a>
