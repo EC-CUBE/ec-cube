@@ -244,23 +244,16 @@ class SC_AdminView extends SC_View{
     function display($template) {
         $tpl_mainpage  = $this->_smarty->get_template_vars('tpl_mainpage');
         $template_name = $this->getTemplateName();
-echo $tpl_mainpage;
-echo '<br>';
-echo $template_name;
-echo '<br>';
 
         // テンプレートパッケージが選択されている場合
         if ($template_name) {
             $template_dir = TPL_PKG_PATH . $template_name . '/templates/admin/';
             $compile_dir  = TPL_PKG_PATH . $template_name . '/templates_c/';
-echo $template_dir;
-echo '<br>';
-echo $template;
-echo '<br>';
+
             // tpl_mainpageとmain_frame.tplが両方存在する時のみテンプレートパッケージで出力
             if (file_exists($template_dir . $tpl_mainpage)
                 && file_exists($template_dir . $template)) {
-echo 'aqa<br>';
+
                 $this->_smarty->template_dir = $template_dir;
                 $this->_smarty->compile_dir  = $compile_dir;
             }
