@@ -8,7 +8,6 @@ require_once '../require.php';
 require_once DATA_PATH . "module/Tar.php";
 require_once DATA_PATH . "module/SearchReplace.php";
 require_once DATA_PATH . "include/file_manager.inc";
-sfPrintR($_POST);
 
 // 認証可否の判定
 $objSession = new SC_Session();
@@ -73,10 +72,12 @@ case 'delete':
     }
 
     $template_code = $objForm->getValue('template_code_delete');
+    if ($template_code == lfGetNowTemplate()) {
+        $objPage->tpl_onload = "alert('選択中のテンプレートは削除出来ません');";
+        break;
+    }
 
-    //TODO　dtb_baseinfoのtoptplをクリア
-    //TODO　dtb_templatesから削除
-    //TODO　use_data/package内の該当ファイルを削除
+    lfDeleteTemplate($template_code);
     break;
 
 // プレビューボタン押下時
@@ -126,6 +127,7 @@ function lfInitDelete() {
 
     return $objForm;
 }
+
 /**
  * 現在適用しているテンプレートパッケージ名を取得する.
  *
@@ -173,5 +175,12 @@ function lfGetAllTemplates() {
     if (empty($arrRet)) return array();
 
     return $arrRet;
+}
+
+function lfDeleteTemplate($template_code) {
+    $objQuery = new SC_Query();
+    $objQuery->delete('dtb_templates', 'template_code = ?', array($template_code));
+
+    sfDelFile(TPL_PKG_PATH . $template_code);
 }
 ?>
