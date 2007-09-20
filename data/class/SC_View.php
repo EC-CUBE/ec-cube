@@ -71,6 +71,10 @@ class SC_View {
                 define('LOAD_SITEINFO', 1);
             }
         }
+
+        // テンプレート変数を割り当て
+        $this->assign("TPL_DIR", URL_DIR . USER_DIR
+                      . "templates/" . TEMPLATE_NAME . "/");
     }
 
     // テンプレートに値を割り当てる
@@ -141,12 +145,7 @@ class SC_AdminView extends SC_View{
         parent::SC_View(false);
         $this->_smarty->template_dir = TEMPLATE_ADMIN_DIR;
         $this->_smarty->compile_dir = COMPILE_ADMIN_DIR;
-        $this->_smarty->default_modifiers = array('script_escape');
         $this->initpath();
-    }
-
-    function printr($data){
-        print_r($data);
     }
 }
 
