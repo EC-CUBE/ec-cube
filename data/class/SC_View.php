@@ -32,6 +32,9 @@ class SC_View {
         // Smarty初期化
         $this->initSmarty();
 
+        $this->tplName = $this->getTemplateName();
+        $this->assignDefaultVars();
+
         // サイト情報をassignする
         if($assignSiteInfo) $this->assignSiteInfo();
     }
@@ -92,7 +95,7 @@ class SC_View {
     function assignDefaultVars() {
         $arrDefaultParams = array(
             'URL_DIR' => URL_DIR,
-            'TPL_PKG_URL' => URL_DIR . USER_DIR . $this->getTemplateName() . '/'
+            'TPL_PKG_URL' => URL_DIR . USER_DIR . TPL_PKG_DIR . $this->tplName . '/'
         );
         $this->assignArray($arrDefaultParams);
     }
@@ -220,9 +223,11 @@ class SC_View {
     }
 
     /**
-     * 使用しているテンプレートパッケージのパスを取得する
+     * 使用しているテンプレートパッケージ名を取得する
      */
     function getTemplateName() {
+        if (!defined('DEFAULT_DSN')) return null;
+
         $objQuery = new SC_Query();
         $arrRet = $objQuery->select('top_tpl', 'dtb_baseinfo');
 
@@ -251,7 +256,7 @@ class SC_AdminView extends SC_View{
 
     function initDisplay($template) {
         $tpl_mainpage  = $this->_smarty->get_template_vars('tpl_mainpage');
-        $template_name = $this->getTemplateName();
+        $template_name = $this->tplName;
 
         // テンプレートパッケージが選択されている場合
         if ($template_name) {
@@ -288,7 +293,7 @@ class SC_SiteView extends SC_View{
 
     function initDisplay($template) {
         $tpl_mainpage  = $this->_smarty->get_template_vars('tpl_mainpage');
-        $template_name = $this->getTemplateName();
+        $template_name = $this->tplName;
 
         // テンプレートパッケージが選択されている場合
         if ($template_name) {
