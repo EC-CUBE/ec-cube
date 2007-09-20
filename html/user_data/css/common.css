@@ -1,9 +1,9 @@
 @charset "utf-8";
 
-@import url("../../css/main.css");
-@import url("../../css/index.css");
-@import url("../../css/products.css");
-@import url("../../css/under.css");
-@import url("../../css/under02.css");
-@import url("../../css/mypage.css");
-@import url("../../css/window.css");
+@import url("../templates/default/css/main.css");
+@import url("../templates/default/css/index.css");
+@import url("../templates/default/css/products.css");
+@import url("../templates/default/css/under.css");
+@import url("../templates/default/css/under02.css");
+@import url("../templates/default/css/mypage.css");
+@import url("../templates/default/css/window.css");
