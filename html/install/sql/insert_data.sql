@@ -6,13 +6,13 @@ CREATE INDEX dtb_category_category_id_key ON dtb_category(category_id);
 INSERT INTO dtb_member (name, login_id, password, creator_id, authority, work, del_flg, create_date, update_date)
 VALUES ('dummy','dummy',' ',0,0,1,1, now(), now());
 
-insert into dtb_bloc ( bloc_name, tpl_path, filename, php_path, del_flg, create_date, update_date ) values ('カテゴリ',	'include/bloc/category.tpl', 'category','frontparts/bloc/category.php', 1, now(), now());
-insert into dtb_bloc ( bloc_name, tpl_path, filename, php_path, del_flg, create_date, update_date ) values ('利用ガイド','include/bloc/guide.tpl', 'guide','', 1, now(), now());
-insert into dtb_bloc ( bloc_name, tpl_path, filename, php_path, del_flg, create_date, update_date ) values ('かごの中',	'include/bloc/cart.tpl', 'cart','frontparts/bloc/cart.php', 1, now(), now());
-insert into dtb_bloc ( bloc_name, tpl_path, filename, php_path, del_flg, create_date, update_date ) values ('商品検索',	'include/bloc/search_products.tpl', 'search_products','frontparts/bloc/search_products.php', 1, now(), now());
-insert into dtb_bloc ( bloc_name, tpl_path, filename, php_path, del_flg, create_date, update_date ) values ('新着情報',	'include/bloc/news.tpl', 'news','frontparts/bloc/news.php', 1, now(), now());
-insert into dtb_bloc ( bloc_name, tpl_path, filename, php_path, del_flg, create_date, update_date ) values ('ログイン',	'include/bloc/login.tpl', 'login','frontparts/bloc/login.php', 1, now(), now());
-insert into dtb_bloc ( bloc_name, tpl_path, filename, php_path, del_flg, create_date, update_date ) values ('オススメ商品','include/bloc/best5.tpl', 'best5','frontparts/bloc/best5.php', 1, now(), now());
+insert into dtb_bloc ( bloc_name, tpl_path, filename, php_path, del_flg, create_date, update_date ) values ('カテゴリ',	'bloc/category.tpl', 'category','frontparts/bloc/category.php', 1, now(), now());
+insert into dtb_bloc ( bloc_name, tpl_path, filename, php_path, del_flg, create_date, update_date ) values ('利用ガイド','bloc/guide.tpl', 'guide','', 1, now(), now());
+insert into dtb_bloc ( bloc_name, tpl_path, filename, php_path, del_flg, create_date, update_date ) values ('かごの中',	'bloc/cart.tpl', 'cart','frontparts/bloc/cart.php', 1, now(), now());
+insert into dtb_bloc ( bloc_name, tpl_path, filename, php_path, del_flg, create_date, update_date ) values ('商品検索',	'bloc/search_products.tpl', 'search_products','frontparts/bloc/search_products.php', 1, now(), now());
+insert into dtb_bloc ( bloc_name, tpl_path, filename, php_path, del_flg, create_date, update_date ) values ('新着情報',	'bloc/news.tpl', 'news','frontparts/bloc/news.php', 1, now(), now());
+insert into dtb_bloc ( bloc_name, tpl_path, filename, php_path, del_flg, create_date, update_date ) values ('ログイン',	'bloc/login.tpl', 'login','frontparts/bloc/login.php', 1, now(), now());
+insert into dtb_bloc ( bloc_name, tpl_path, filename, php_path, del_flg, create_date, update_date ) values ('オススメ商品', 'bloc/best5.tpl', 'best5','frontparts/bloc/best5.php', 1, now(), now());
 
 insert into dtb_pagelayout (page_name,url,php_dir,tpl_dir,filename,edit_flg, create_date, update_date)values('TOPページ','index.php',' ','user_data/templates/','top',2,now(),now());
 insert into dtb_pagelayout (page_name,url,php_dir,tpl_dir,filename,edit_flg, create_date, update_date)values('商品一覧ページ','products/list.php',' ','user_data/templates/','list',2,now(),now());
