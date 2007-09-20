@@ -33,7 +33,7 @@ case 'download':
     exit;
     break;
 
-// インポートボタン押下時の処理
+// アップロードボタン押下時の処理
 case 'upload':
     // フォームパラメータ初期化
     $objForm = lfInitUpload();
@@ -123,6 +123,11 @@ function lfValidateUpload($objForm) {
         $arrErr['template_code'] = "※ 同名のファイルがすでに存在します。<br/>";
     }
 
+    // Smartyのコンパイルディレクトリと同一名は不可
+    if(file_exists(COMPILE_DIR . '/' . $arrForm['template_code'])) {
+        $arrErr['template_code'] = "※ このテンプレートコードは使用できません。<br/>";
+    }
+
     // DBにすでに登録されていないかチェック
     $objQuery = new SC_Query();
     $ret = $objQuery->count("dtb_templates", "template_code = ?", array($arrForm['template_code']));
@@ -160,13 +165,16 @@ function lfValidateUpload($objForm) {
  * @return void
  */
 function lfAddTemplates($objForm, $objUpFile) {
-    $pkg_dir = TPL_PKG_PATH . $objForm->getValue('template_code');
+    $template_code = $objForm->getValue('template_code');
+    $template_dir = TPL_PKG_PATH . $objForm->getValue('template_code');
+    $compile_dir  = COMPILE_DIR . "/$template_code";
     // フォルダ作成
-    $ret = @mkdir($pkg_dir);
+    mkdir($template_dir);
+    mkdir($compile_dir);
     // 一時フォルダから保存ディレクトリへ移動
     $objUpFile->moveTempFile();
     // 解凍
-    lfUnpacking($pkg_dir, $_FILES['template_file']['name']);
+    lfUnpacking($template_dir, $_FILES['template_file']['name']);
     // DBにテンプレート情報を保存
     lfRegisterTemplates($objForm->getHashArray());
 }
@@ -174,7 +182,7 @@ function lfAddTemplates($objForm, $objUpFile) {
  * アップロードされたtarアーカイブを解凍する.
  *
  * TODO 処理がわかりにくいので直す,
- * $file_nameは$objUpFileの初期化時にTPL_PKG_PATHが保存先になっているため必要なんです
+ * $file_nameは$objUpFileの初期化時にTPL_PKG_PATHが保存先になっているため必要
  *
  * @param string $dir 解凍先ディレクトリ
  * @param strin $file_name アーカイブのファイル名
