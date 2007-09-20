@@ -163,7 +163,7 @@ function lfChangeTemplate($template_code){
         $mess = $from . 'は存在しません';
     } else {
         $to = USER_PATH;
-        $to = HTML_PATH . 'user_data2/';
+        $to = HTML_PATH . 'user_data/';
         $mess = sfCopyDir($from, $to, '', true);
     }
     return $mess;
