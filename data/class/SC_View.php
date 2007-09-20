@@ -17,6 +17,8 @@ class SC_View {
     var $objSiteInfo;
     /** ページ出力ベンチマークの開始時間 */
     var $time_start;
+    /** 使用しているテンプレートパッケージ名 */
+    var $tplName;
 
     /**
      * コンストラクタ
@@ -85,12 +87,12 @@ class SC_View {
     }
 
     /**
-     * デフォルトパラメータをassignする.
+     * デフォルトのテンプレート変数をassignする.
      */
-    function defaultAssign() {
+    function assignDefaultVars() {
         $arrDefaultParams = array(
             'URL_DIR' => URL_DIR,
-            //'TPL_PKG_DIR' => $this->getTemplatePath()
+            'TPL_PKG_URL' => URL_DIR . USER_DIR . $this->getTemplateName() . '/'
         );
         $this->assignArray($arrDefaultParams);
     }
@@ -211,18 +213,12 @@ class SC_View {
     /**
      * 使用しているテンプレートパッケージのパスを取得する
      */
-    function getTemplatePath() {
+    function getTemplateName() {
         $objQuery = new SC_Query();
         $arrRet = $objQuery->select('top_tpl', 'dtb_baseinfo');
 
         if (isset($arrRet[0]['top_tpl'])) {
-            $selectTemplate = $arrRet[0]['top_tpl'];
-            $TPL_PKG_PATH = USER_PATH . "packages/${selectTemplate}/";
-
-            $TPL_PKG_DIR = URL_DIR . USER_DIR . "packages/${selectTemplate}/";
-            $this->assign('TPL_PKG_DIR', $TPL_PKG_DIR);
-
-            return $TPL_PKG_PATH;
+            return $arrRet[0]['top_tpl'];
         }
         return null;
     }
@@ -242,20 +238,31 @@ class SC_AdminView extends SC_View{
         parent::SC_View(false);
         $this->_smarty->template_dir = TEMPLATE_ADMIN_DIR;
         $this->_smarty->compile_dir = COMPILE_ADMIN_DIR;
+        $this->assignDefaultVars();
     }
 
     function display($template) {
-        $tpl_mainpage = $this->_smarty->get_template_vars('tpl_mainpage');
-        $template_dir = $this->getTemplatePath();
+        $tpl_mainpage  = $this->_smarty->get_template_vars('tpl_mainpage');
+        $template_name = $this->getTemplateName();
+echo $tpl_mainpage;
+echo '<br>';
+echo $template_name;
+echo '<br>';
 
-        if ($template_dir) {
-            $template_dir .= 'templates/admin/';
-
+        // テンプレートパッケージが選択されている場合
+        if ($template_name) {
+            $template_dir = TPL_PKG_PATH . $template_name . '/templates/admin/';
+            $compile_dir  = TPL_PKG_PATH . $template_name . '/templates_c/';
+echo $template_dir;
+echo '<br>';
+echo $template;
+echo '<br>';
             // tpl_mainpageとmain_frame.tplが両方存在する時のみテンプレートパッケージで出力
             if (file_exists($template_dir . $tpl_mainpage)
                 && file_exists($template_dir . $template)) {
-
+echo 'aqa<br>';
                 $this->_smarty->template_dir = $template_dir;
+                $this->_smarty->compile_dir  = $compile_dir;
             }
         }
 
@@ -282,24 +289,27 @@ class SC_SiteView extends SC_View{
     }
 
     function display($template) {
-        $tpl_mainpage = $this->_smarty->get_template_vars('tpl_mainpage');
-        $template_dir = $this->getTemplatePath();
+        $tpl_mainpage  = $this->_smarty->get_template_vars('tpl_mainpage');
+        $template_name = $this->getTemplateName();
 
-        if ($template_dir) {
-            $template_dir .= 'templates/';
+        // テンプレートパッケージが選択されている場合
+        if ($template_name) {
+            $template_dir = TPL_PKG_PATH . $template_name . '/templates/';
+            $compile_dir  = TPL_PKG_PATH . $template_name . '/templates_c/';
 
+            // tpl_mainpageとsite_frame.tplが両方存在する時のみテンプレートパッケージで出力
             if (
                 (file_exists($template_dir . $tpl_mainpage) || file_exists($tpl_mainpage))
                 && file_exists($template_dir . $template)) {
 
                 $this->_smarty->template_dir = $template_dir;
+                $this->_smarty->compile_dir  = $compile_dir;
             }
         }
 
         $this->_smarty->display($template);
     }
 }
-
 class SC_UserView extends SC_SiteView{
     function SC_UserView($template_dir, $compile_dir = COMPILE_DIR) {
         parent::SC_SiteView();
