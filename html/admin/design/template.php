@@ -48,7 +48,8 @@ case 'register':
     $template_code = $objForm->getValue('template_code');
 
     if ($template_code == 'default') {
-        $objPage->tpl_onload="alert('初期デザインへ戻しました。');";
+        lfRegisterTemplate('');
+        $objPage->tpl_onload="alert('登録が完了しました。');";
         break;
     }
 
@@ -58,6 +59,7 @@ case 'register':
     // テンプレートの上書き
     lfChangeTemplate($template_code);
 
+    // XXX コンパイルファイルのクリア処理を行う
     $objView->_smarty->clear_compiled_tpl();
 
     // 完了メッセージ

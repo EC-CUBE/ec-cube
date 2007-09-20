@@ -267,9 +267,9 @@ class SC_AdminView extends SC_View{
             // tpl_mainpageとmain_frame.tplが両方存在する時のみテンプレートパッケージで出力
             if (file_exists($template_dir . $tpl_mainpage)
                 && file_exists($template_dir . $template)) {
-
+echo '<font color="#ffffff">ok</font>';
                 $this->_smarty->template_dir = $template_dir;
-                $this->_smarty->compile_dir .= "/$template_name";
+                $this->_smarty->compile_dir  = COMPILE_DIR . "/$template_name";
             }
         }
     }
@@ -307,9 +307,9 @@ class SC_SiteView extends SC_View{
             if (
                 (file_exists($template_dir . $tpl_mainpage) || file_exists($tpl_mainpage))
                 && file_exists($template_dir . $template)) {
-
+echo 'ok';
                 $this->_smarty->template_dir = $template_dir;
-                $this->_smarty->compile_dir .= "/$template_name";
+                $this->_smarty->compile_dir  = COMPILE_DIR . "/$template_name";
             }
         }
     }

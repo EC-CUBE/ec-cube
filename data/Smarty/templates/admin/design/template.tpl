@@ -87,6 +87,10 @@ function submitRegister() {
 												<!--<td width="50">確認</td>-->
 												<td width="50">削除</td>
 											</tr>
+											<tr bgcolor="#ffffff" align="center" class="fs12n">
+												<td width=""><input type="radio" name="template_code" value="default" <!--{if !$tplcode}-->checked<!--{/if}-->></td>
+												<td width="" colspan="3">テンプレートを使用しない</td>
+											</tr>
 											<!--{foreach from=$templates item=tpl}-->
 											<!--{assign var=tplcode value=$tpl.template_code}-->
 											<tr bgcolor="#ffffff" align="center" class="fs12">

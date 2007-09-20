@@ -154,9 +154,11 @@ function confirmSubmit(mode, msg) {
 										<td bgcolor="#ffffff" align="left">
 											デザイン管理で作成したファイルのダウンロードを行います。<br/>
 											ダウンロードファイルには下記の内容が含まれます。
+											<!--{if $now_template}-->
 											<ul>
 												<li>user_data/tpl_packages/<!--{$now_template}-->/*</li>
 											</ul>
+											<!--{/if}-->
 											<ul>
 												<li>user_data/css/contents.css</li>
 												<li>user_data/include/*</li>
