@@ -6,7 +6,7 @@
 <!--▼おすすめ情報ここから-->
 <table width="400" border="0" cellspacing="0" cellpadding="0" summary=" ">
 	<tr>
-		<td colspan="2"><img src="<!--{$smarty.const.URL_DIR}-->img/top/osusume.jpg" width="400" height="29" alt="おすすめ情報"></td>
+		<td colspan="2"><img src="<!--{$TPL_DIR}-->img/top/osusume.jpg" width="400" height="29" alt="おすすめ情報"></td>
 	</tr>
 	<tr><td height="10"></td></tr>
 
@@ -77,8 +77,8 @@
 	
 	<!--{if !$smarty.section.cnt.last}-->
 	<tr>
-		<td height="20"><img src="<!--{$smarty.const.URL_DIR}-->img/common/line_190.gif" width="190" height="1" alt=""></td>
-		<td align="right"><img src="<!--{$smarty.const.URL_DIR}-->img/common/line_190.gif" width="190" height="1" alt=""></td>
+		<td height="20"><img src="<!--{$TPL_DIR}-->img/common/line_190.gif" width="190" height="1" alt=""></td>
+		<td align="right"><img src="<!--{$TPL_DIR}-->img/common/line_190.gif" width="190" height="1" alt=""></td>
 	</tr>
 	<!--{/if}-->
 	

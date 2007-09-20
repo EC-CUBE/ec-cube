@@ -18,7 +18,7 @@
 <!--{include file='css/contents.tpl'}-->
 <style type="text/css">
 body {
-	background: #fff url(<!--{$smarty.const.URL_DIR}-->img/login/bg.jpg);
+	background: #fff url(<!--{$TPL_DIR}-->img/login/bg.jpg);
 	background-repeat: repeat-x;
 }
 </style>
@@ -37,10 +37,10 @@ body {
 <table width="556" border="0" cellspacing="0" cellpadding="0" summary=" ">
 	<tr><td height="15"></td></tr>
 	<tr>
-		<td colspan="3"><img src="<!--{$smarty.const.URL_DIR}-->img/contents/error_top.jpg" width="562" height="14" alt=""></td>
+		<td colspan="3"><img src="<!--{$TPL_DIR}-->img/contents/error_top.jpg" width="562" height="14" alt=""></td>
 	</tr>
 	<tr>
-		<td background="<!--{$smarty.const.URL_DIR}-->img/contents/main_left.jpg"><img src="<!--{$smarty.const.URL_DIR}-->img/common/_.gif" width="14" height="1" alt=""></td>
+		<td background="<!--{$TPL_DIR}-->img/contents/main_left.jpg"><img src="<!--{$TPL_DIR}-->img/common/_.gif" width="14" height="1" alt=""></td>
 		<td bgcolor="#cccccc">
 		<table width="534" border="0" cellspacing="0" cellpadding="0" summary=" " bgcolor="#cccccc">
 			<tr>
@@ -59,10 +59,10 @@ body {
 			</tr>							
 		</table>
 		</td>
-		<td background="<!--{$smarty.const.URL_DIR}-->img/contents/main_right.jpg"><img src="<!--{$smarty.const.URL_DIR}-->img/common/_.gif" width="14" height="1" alt=""></td>
+		<td background="<!--{$TPL_DIR}-->img/contents/main_right.jpg"><img src="<!--{$TPL_DIR}-->img/common/_.gif" width="14" height="1" alt=""></td>
 	</tr>
 	<tr>
-		<td colspan="3"><img src="<!--{$smarty.const.URL_DIR}-->img/contents/error_bottom.jpg" width="562" height="14" alt=""></td>
+		<td colspan="3"><img src="<!--{$TPL_DIR}-->img/contents/error_bottom.jpg" width="562" height="14" alt=""></td>
 	</tr>
 	<tr><td height="2"></td></tr>
 </table>

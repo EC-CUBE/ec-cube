@@ -13,7 +13,7 @@
 		<!--▼MAIN ONTENTS-->
 		<table width="" border="0" cellspacing="0" cellpadding="0" summary=" ">
 			<tr>
-				<td><img src="<!--{$smarty.const.URL_DIR}-->img/mypage/title.jpg" width="700" height="40" alt="MYページ"></td>
+				<td><img src="<!--{$TPL_DIR}-->img/mypage/title.jpg" width="700" height="40" alt="MYページ"></td>
 			</tr>
 			<tr><td height="15"></td></tr>
 		</table>
@@ -29,7 +29,7 @@
 				<td align="right">
 				<table width="515" border="0" cellspacing="0" cellpadding="0" summary=" ">
 					<tr>
-						<td><!--★タイトル--><img src="<!--{$smarty.const.URL_DIR}-->img/mypage/subtitle01.gif" width="515" height="32" alt="購入履歴一覧"></td>
+						<td><!--★タイトル--><img src="<!--{$TPL_DIR}-->img/mypage/subtitle01.gif" width="515" height="32" alt="購入履歴一覧"></td>
 					</tr>
 					<tr><td height="15"></td></tr>
 					

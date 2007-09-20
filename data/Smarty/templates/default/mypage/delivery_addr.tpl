@@ -42,7 +42,7 @@
 
 			<tr><td height="15"></td></tr>
 			<tr>
-				<td><img src="<!--{$smarty.const.URL_DIR}-->img/shopping/delivadd_title.jpg" width="500" height="40" alt="新しいお届け先の追加・変更"></td>
+				<td><img src="<!--{$TPL_DIR}-->img/shopping/delivadd_title.jpg" width="500" height="40" alt="新しいお届け先の追加・変更"></td>
 			</tr>
 			<tr><td height="15"></td></tr>
 			<tr>
@@ -79,7 +79,7 @@
 										〒&nbsp;<input type="text" name="zip01" value="<!--{if $zip01 == ""}--><!--{$arrOtherDeliv.zip01|escape}--><!--{else}--><!--{$zip01|escape}--><!--{/if}-->" maxlength="<!--{$smarty.const.ZIP01_LEN}-->" style="<!--{$arrErr[$key1]|sfGetErrorColor}-->; ime-mode: disabled;" size=6 class="box6" />&nbsp;-&nbsp;<input type="text" name="zip02" value="<!--{if $zip02 == ""}--><!--{$arrOtherDeliv.zip02|escape}--><!--{else}--><!--{$zip02|escape}--><!--{/if}-->" maxlength="<!--{$smarty.const.ZIP02_LEN}-->" style="<!--{$arrErr[$key2]|sfGetErrorColor}-->; ime-mode: disabled;" size=6 class="box6" />
 									</td>
 									<td>
-										&nbsp;&nbsp;<a href="../address/index.php" onclick="fnCallAddress('<!--{$smarty.const.URL_INPUT_ZIP}-->', 'zip01', 'zip02', 'pref', 'addr01'); return false;" target="_blank"><img src="<!--{$smarty.const.URL_DIR}-->img/common/address.gif" width="86" height="20" alt="住所自動入力" /></a></td>
+										&nbsp;&nbsp;<a href="../address/index.php" onclick="fnCallAddress('<!--{$smarty.const.URL_INPUT_ZIP}-->', 'zip01', 'zip02', 'pref', 'addr01'); return false;" target="_blank"><img src="<!--{$TPL_DIR}-->img/common/address.gif" width="86" height="20" alt="住所自動入力" /></a></td>
 									</td>
 								</tr>
 								<tr><td height="5"></td></tr>
@@ -137,7 +137,7 @@
 			<tr><td height="15"></td></tr>
 			<tr>
 				<td align="center">
-					<input type="image" onmouseover="chgImgImageSubmit('<!--{$smarty.const.URL_DIR}-->img/common/b_entry_on.gif',this);" onmouseout="chgImgImageSubmit('<!--{$smarty.const.URL_DIR}-->img/common/b_entry.gif',this);" src="<!--{$smarty.const.URL_DIR}-->img/common/b_entry.gif" width="150" height="30" alt="登録する" name="register" id="register" />
+					<input type="image" onmouseover="chgImgImageSubmit('<!--{$TPL_DIR}-->img/common/b_entry_on.gif',this);" onmouseout="chgImgImageSubmit('<!--{$TPL_DIR}-->img/common/b_entry.gif',this);" src="<!--{$TPL_DIR}-->img/common/b_entry.gif" width="150" height="30" alt="登録する" name="register" id="register" />
 				</td>
 			</tr>
 			<tr><td height="30"></td></tr>

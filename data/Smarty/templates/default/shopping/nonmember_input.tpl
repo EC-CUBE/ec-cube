@@ -14,7 +14,7 @@
 		<!--購入手続きの流れ-->
 		<table width="100%" border="0" cellspacing="0" cellpadding="0" summary=" ">
 			<tr>
-				<td><img src="<!--{$smarty.const.URL_DIR}-->img/shopping/flow01.gif" width="700" height="36" alt="購入手続きの流れ"></td>
+				<td><img src="<!--{$TPL_DIR}-->img/shopping/flow01.gif" width="700" height="36" alt="購入手続きの流れ"></td>
 			</tr>
 			<tr><td height="15"></td></tr>
 		</table>
@@ -22,7 +22,7 @@
 		
 		<table width="100%" border="0" cellspacing="0" cellpadding="0" summary=" ">
 			<tr>
-				<td><img src="<!--{$smarty.const.URL_DIR}-->img/shopping/info_title.jpg" width="700" height="40" alt="お客様情報入力"></td>
+				<td><img src="<!--{$TPL_DIR}-->img/shopping/info_title.jpg" width="700" height="40" alt="お客様情報入力"></td>
 			</tr>
 			<tr><td height="15"></td></tr>
 			<tr>
@@ -70,7 +70,7 @@
 							</tr>
 							<tr><td height="5"></td></tr>
 							<tr>
-								<td><a href="<!--{$smarty.const.URL_DIR}-->address/index.php" onclick="fnCallAddress('<!--{$smarty.const.URL_INPUT_ZIP}-->', 'order_zip01', 'order_zip02', 'order_pref', 'order_addr01'); return false;" target="_blank"><img src="<!--{$smarty.const.URL_DIR}-->img/common/address.gif" width="86" height="20" alt="住所自動入力" /></a></td>
+								<td><a href="<!--{$smarty.const.URL_DIR}-->address/index.php" onclick="fnCallAddress('<!--{$smarty.const.URL_INPUT_ZIP}-->', 'order_zip01', 'order_zip02', 'order_pref', 'order_addr01'); return false;" target="_blank"><img src="<!--{$TPL_DIR}-->img/common/address.gif" width="86" height="20" alt="住所自動入力" /></a></td>
 								<td class="fs10n">&nbsp;郵便番号を入力後、クリックしてください。</td>
 							</tr>
 						</table>
@@ -276,7 +276,7 @@
 							</tr>
 							<tr><td height="5"></td></tr>
 							<tr>
-								<td><a href="<!--{$smarty.const.URL_DIR}-->address/index.php" onclick="fnCallAddress('<!--{$smarty.const.URL_INPUT_ZIP}-->', '<!--{$key1}-->', '<!--{$key2}-->', 'deliv_pref', 'deliv_addr01'); return false;" target="_blank"><img src="<!--{$smarty.const.URL_DIR}-->img/common/address.gif" width="86" height="20" alt="住所自動入力" /></a></td>
+								<td><a href="<!--{$smarty.const.URL_DIR}-->address/index.php" onclick="fnCallAddress('<!--{$smarty.const.URL_INPUT_ZIP}-->', '<!--{$key1}-->', '<!--{$key2}-->', 'deliv_pref', 'deliv_addr01'); return false;" target="_blank"><img src="<!--{$TPL_DIR}-->img/common/address.gif" width="86" height="20" alt="住所自動入力" /></a></td>
 								<td class="fs10n">&nbsp;郵便番号を入力後、クリックしてください。</td>
 							</tr>
 						</table>
@@ -345,7 +345,7 @@
 			<tr><td height="25"></td></tr>
 			<tr align="center">
 				<td>
-					<input type="image" onmouseover="chgImgImageSubmit('<!--{$smarty.const.URL_DIR}-->img/common/b_next_on.gif',this)" onmouseout="chgImgImageSubmit('<!--{$smarty.const.URL_DIR}-->img/common/b_next.gif',this)" src="<!--{$smarty.const.URL_DIR}-->img/common/b_next.gif" width="150" height="30" alt="次へ" border="0" name="next" id="next" />
+					<input type="image" onmouseover="chgImgImageSubmit('<!--{$TPL_DIR}-->img/common/b_next_on.gif',this)" onmouseout="chgImgImageSubmit('<!--{$TPL_DIR}-->img/common/b_next.gif',this)" src="<!--{$TPL_DIR}-->img/common/b_next.gif" width="150" height="30" alt="次へ" border="0" name="next" id="next" />
 				</td>
 			</tr>
 		</table>

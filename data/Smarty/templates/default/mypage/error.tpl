@@ -33,7 +33,7 @@
 </div>
 
 <div class="button">
-<a href="javascript:window.close()" onmouseOver="chgImg('<!--{$smarty.const.URL_DIR}-->img/button/close_on.jpg','close');" onmouseout="chgImg('<!--{$smarty.const.URL_DIR}-->img/button/close.jpg','close');"><img src="<!--{$smarty.const.URL_DIR}-->img/button/close.jpg" width="129" height="32" alt="閉じる" name="close" id="close" /></a></div>
+<a href="javascript:window.close()" onmouseOver="chgImg('<!--{$TPL_DIR}-->img/button/close_on.jpg','close');" onmouseout="chgImg('<!--{$TPL_DIR}-->img/button/close.jpg','close');"><img src="<!--{$TPL_DIR}-->img/button/close.jpg" width="129" height="32" alt="閉じる" name="close" id="close" /></a></div>
 <!--▲MAIN CONTENTS-->
 <!--▲CONTENTS-->
 </div>

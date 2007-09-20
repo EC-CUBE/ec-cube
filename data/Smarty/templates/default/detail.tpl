@@ -53,9 +53,9 @@ function lnSetSelect(form, name1, name2, val) {
 				<td align="right" bgcolor="#ffffff">
 				<!--タイトルここから-->
 				<table width="580" border="0" cellspacing="0" cellpadding="0" summary=" ">
-					<tr><td colspan="3"><img src="<!--{$smarty.const.URL_DIR}-->img/products/title_top.gif" width="580" height="8" alt=""></td></tr>
+					<tr><td colspan="3"><img src="<!--{$TPL_DIR}-->img/products/title_top.gif" width="580" height="8" alt=""></td></tr>
 					<tr bgcolor="#ffebca">
-						<td><img src="<!--{$smarty.const.URL_DIR}-->img/products/title_icon.gif" width="29" height="24" alt=""></td>
+						<td><img src="<!--{$TPL_DIR}-->img/products/title_icon.gif" width="29" height="24" alt=""></td>
 						<td>
 						<table width="546" border="0" cellspacing="0" cellpadding="0" summary=" ">
 							<tr valign="top">
@@ -63,9 +63,9 @@ function lnSetSelect(form, name1, name2, val) {
 							</tr>
 						</table>
 						</td>
-						<td><img src="<!--{$smarty.const.URL_DIR}-->img/products/title_left.gif" width="5" height="24" alt=""></td>
+						<td><img src="<!--{$TPL_DIR}-->img/products/title_left.gif" width="5" height="24" alt=""></td>
 					</tr>
-					<tr><td colspan="3"><img src="<!--{$smarty.const.URL_DIR}-->img/products/title_under.gif" width="580" height="8" alt=""></td></tr>
+					<tr><td colspan="3"><img src="<!--{$TPL_DIR}-->img/products/title_under.gif" width="580" height="8" alt=""></td></tr>
 					<tr><td height="10"></td></tr>
 				</table>
 				<!--タイトルここまで-->
@@ -92,7 +92,7 @@ function lnSetSelect(form, name1, name2, val) {
 							<tr>
 								<td>
 								<!--{if $arrProduct.main_large_image != ""}-->
-									<!--★拡大する★--><a href="<!--{$smarty.server.PHP_SELF|escape}-->" onclick="win01('./detail_image.php?product_id=<!--{$arrProduct.product_id}-->&image=main_large_image<!--{if $smarty.get.admin == 'on'}-->&admin=on<!--{/if}-->','detail_image', '<!--{$arrFile.main_large_image.width+60}-->', '<!--{$arrFile.main_large_image.height+80}-->'); return false;" target="_blank"><img src="<!--{$smarty.const.URL_DIR}-->img/products/b_expansion.gif" width="85" height="13" alt="画像を拡大する" /></a>
+									<!--★拡大する★--><a href="<!--{$smarty.server.PHP_SELF|escape}-->" onclick="win01('./detail_image.php?product_id=<!--{$arrProduct.product_id}-->&image=main_large_image<!--{if $smarty.get.admin == 'on'}-->&admin=on<!--{/if}-->','detail_image', '<!--{$arrFile.main_large_image.width+60}-->', '<!--{$arrFile.main_large_image.height+80}-->'); return false;" target="_blank"><img src="<!--{$TPL_DIR}-->img/products/b_expansion.gif" width="85" height="13" alt="画像を拡大する" /></a>
 								<!--{/if}-->
 								</td>
 							</tr>
@@ -171,7 +171,7 @@ function lnSetSelect(form, name1, name2, val) {
 							<!--{if $tpl_classcat_find1}-->
 							<tr><td height="5" colspan="2" align="left" class="fs12"><span class="redst"><!--{if $arrErr.classcategory_id1 != ""}-->※ <!--{$tpl_class_name1}-->を入力して下さい。<!--{/if}--></span></td></tr>
 							<tr>
-								<td class="fs12"><img src="<!--{$smarty.const.URL_DIR}-->img/common/arrow_gray.gif" width="15" height="10" alt=""><strong><!--{$tpl_class_name1}--></strong></td>
+								<td class="fs12"><img src="<!--{$TPL_DIR}-->img/common/arrow_gray.gif" width="15" height="10" alt=""><strong><!--{$tpl_class_name1}--></strong></td>
 							</tr>
 							<tr><td height="3"></td></tr>
 							<tr>
@@ -188,7 +188,7 @@ function lnSetSelect(form, name1, name2, val) {
 								<!--{if $tpl_classcat_find2}-->
 								<tr><td height="5" colspan="2" align="left" class="fs12"><span class="redst"><!--{if $arrErr.classcategory_id2 != ""}-->※ <!--{$tpl_class_name2}-->を入力して下さい。<!--{/if}--></span></td></tr>
 								<tr>
-									<td class="fs12"><img src="<!--{$smarty.const.URL_DIR}-->img/common/arrow_gray.gif" width="15" height="10" alt=""><strong><!--{$tpl_class_name2}--></strong></td>
+									<td class="fs12"><img src="<!--{$TPL_DIR}-->img/common/arrow_gray.gif" width="15" height="10" alt=""><strong><!--{$tpl_class_name2}--></strong></td>
 								</tr>
 								<tr><td height="3"></td></tr>
 								<tr>
@@ -201,16 +201,16 @@ function lnSetSelect(form, name1, name2, val) {
 								<tr><td height="10"></td></tr>
 								<!--{/if}-->
 								<tr>
-									<td class="fs12"><!--{if $arrErr.quantity != ""}--><span class="redst"><!--{$arrErr.quantity}--></span><br/><!--{/if}--><img src="<!--{$smarty.const.URL_DIR}-->img/common/arrow_gray.gif" width="15" height="10" alt=""><strong>個　数</strong>
+									<td class="fs12"><!--{if $arrErr.quantity != ""}--><span class="redst"><!--{$arrErr.quantity}--></span><br/><!--{/if}--><img src="<!--{$TPL_DIR}-->img/common/arrow_gray.gif" width="15" height="10" alt=""><strong>個　数</strong>
 										<input type="text" name="quantity" size="3" class="box3" value="<!--{$arrForm.quantity.value|default:1}-->" maxlength=<!--{$smarty.const.INT_LEN}--> style="<!--{$arrErr.quantity|sfGetErrorColor}-->" >
 									</td>
 								</tr>
 							<!--{/if}-->
-							<tr><td height="20"><img src="<!--{$smarty.const.URL_DIR}-->img/common/line_280.gif" width="280" height="1" alt=""></td></tr>
+							<tr><td height="20"><img src="<!--{$TPL_DIR}-->img/common/line_280.gif" width="280" height="1" alt=""></td></tr>
 							<tr>
 								<td align="center">
 									<!--{if $tpl_stock_find}-->
-										<!--★カゴに入れる★--><a href="<!--{$smarty.server.PHP_SELF|escape}-->" onclick="document.form1.submit(); return false;" onmouseover="chgImg('<!--{$smarty.const.URL_DIR}-->img/products/b_cartin_on.gif','cart');" onmouseout="chgImg('<!--{$smarty.const.URL_DIR}-->img/products/b_cartin.gif','cart');"><img src="<!--{$smarty.const.URL_DIR}-->img/products/b_cartin.gif" width="115" height="25" alt="カゴに入れる" name="cart" id="cart" /></a>
+										<!--★カゴに入れる★--><a href="<!--{$smarty.server.PHP_SELF|escape}-->" onclick="document.form1.submit(); return false;" onmouseover="chgImg('<!--{$TPL_DIR}-->img/products/b_cartin_on.gif','cart');" onmouseout="chgImg('<!--{$TPL_DIR}-->img/products/b_cartin.gif','cart');"><img src="<!--{$TPL_DIR}-->img/products/b_cartin.gif" width="115" height="25" alt="カゴに入れる" name="cart" id="cart" /></a>
 									<!--{else}-->
 										<table width="285" cellspacing="0" cellpadding="0" summary=" ">
 										<tr><td height="10"></td></tr>
@@ -263,7 +263,7 @@ function lnSetSelect(form, name1, name2, val) {
 								<tr><td height="8"></td></tr>
 								<tr>
 									<!--{if $arrFile[$lkey].filepath != ""}-->
-										<td align="center"><div id="more"><a href="<!--{$smarty.server.PHP_SELF|escape}-->" onclick="win01('./detail_image.php?product_id=<!--{$arrProduct.product_id}-->&image=<!--{$lkey}--><!--{if $smarty.get.admin == 'on'}-->&admin=on<!--{/if}-->','detail_image','<!--{$arrFile[$lkey].width+60}-->','<!--{$arrFile[$lkey].height+80}-->'); return false;" onmouseover="chgImg('../img/products/b_expansion_on.gif','expansion02');" onmouseout="chgImg('../img/products/b_expansion.gif','expansion02');" target="_blank"><img src="<!--{$smarty.const.URL_DIR}-->img/products/b_expansion.gif" width="85" height="13" alt="画像を拡大する" /></a></div></td>
+										<td align="center"><div id="more"><a href="<!--{$smarty.server.PHP_SELF|escape}-->" onclick="win01('./detail_image.php?product_id=<!--{$arrProduct.product_id}-->&image=<!--{$lkey}--><!--{if $smarty.get.admin == 'on'}-->&admin=on<!--{/if}-->','detail_image','<!--{$arrFile[$lkey].width+60}-->','<!--{$arrFile[$lkey].height+80}-->'); return false;" onmouseover="chgImg('../img/products/b_expansion_on.gif','expansion02');" onmouseout="chgImg('../img/products/b_expansion.gif','expansion02');" target="_blank"><img src="<!--{$TPL_DIR}-->img/products/b_expansion.gif" width="85" height="13" alt="画像を拡大する" /></a></div></td>
 									<!--{/if}-->
 								</tr>
 							</table>
@@ -280,13 +280,13 @@ function lnSetSelect(form, name1, name2, val) {
 				<!--お客様の声ここから-->
 				<table width="580" border="0" cellspacing="0" cellpadding="0" summary=" ">
 					<tr>
-						<td><img src="<!--{$smarty.const.URL_DIR}-->img/products/title_voice.jpg" width="580" height="30" alt="この商品に対するお客様の声"></td>
+						<td><img src="<!--{$TPL_DIR}-->img/products/title_voice.jpg" width="580" height="30" alt="この商品に対するお客様の声"></td>
 					</tr>
 					<tr><td height="10"></td></tr>
 					<tr>
 						<td>
 						<!--{if count($arrReview) < $smarty.const.REVIEW_REGIST_MAX}-->
-							<!--★新規コメントを書き込む★--><a href="./review.php" onClick="win02('./review.php?product_id=<!--{$arrProduct.product_id}-->','review','580','580'); return false;" onMouseOver="chgImg('../img/products/b_comment_on.gif','review');" onMouseOut="chgImg('../img/products/b_comment.gif','review');" target="_blank"><img src="<!--{$smarty.const.URL_DIR}-->img/products/b_comment.gif" width="150" height="22" alt="新規コメントを書き込む" name="review" id="review" /></a>
+							<!--★新規コメントを書き込む★--><a href="./review.php" onClick="win02('./review.php?product_id=<!--{$arrProduct.product_id}-->','review','580','580'); return false;" onMouseOver="chgImg('../img/products/b_comment_on.gif','review');" onMouseOut="chgImg('../img/products/b_comment.gif','review');" target="_blank"><img src="<!--{$TPL_DIR}-->img/products/b_comment.gif" width="150" height="22" alt="新規コメントを書き込む" name="review" id="review" /></a>
 						<!--{/if}-->
 						</td>
 					</tr>
@@ -306,7 +306,7 @@ function lnSetSelect(form, name1, name2, val) {
 					</tr>
 			
 					<!--{if !$smarty.section.cnt.last}-->
-					<tr><td height="20"><img src="<!--{$smarty.const.URL_DIR}-->img/common/line_580.gif" width="580" height="1" alt=""></td></tr>
+					<tr><td height="20"><img src="<!--{$TPL_DIR}-->img/common/line_580.gif" width="580" height="1" alt=""></td></tr>
 					<!--{/if}-->
 					
 					<!--{/section}-->
@@ -319,7 +319,7 @@ function lnSetSelect(form, name1, name2, val) {
 				<!--▼トラックバックここから-->
 				<table width="580" border="0" cellspacing="0" cellpadding="0" summary=" ">
 					<tr>
-						<td><img src="<!--{$smarty.const.URL_DIR}-->img/products/title_tb.jpg" width="580" height="30" alt="この商品に対するトラックバック"></td>
+						<td><img src="<!--{$TPL_DIR}-->img/products/title_tb.jpg" width="580" height="30" alt="この商品に対するトラックバック"></td>
 					</tr>
 					<tr><td height="10"></td></tr>
 					<tr>
@@ -341,7 +341,7 @@ function lnSetSelect(form, name1, name2, val) {
 					</tr>
 			
 					<!--{if !$smarty.section.cnt.last}-->
-					<tr><td height="20"><img src="<!--{$smarty.const.URL_DIR}-->img/common/line_580.gif" width="580" height="1" alt=""></td></tr>
+					<tr><td height="20"><img src="<!--{$TPL_DIR}-->img/common/line_580.gif" width="580" height="1" alt=""></td></tr>
 					<!--{/if}-->
 					
 					<!--{/section}-->
@@ -356,7 +356,7 @@ function lnSetSelect(form, name1, name2, val) {
 				<!--▼オススメ商品ここから-->
 				<table width="580" border="0" cellspacing="0" cellpadding="0" summary=" ">
 					<tr>
-						<td colspan=3><img src="<!--{$smarty.const.URL_DIR}-->img/products/title_recommend.jpg" width="580" height="30" alt="オススメ商品" /></td>
+						<td colspan=3><img src="<!--{$TPL_DIR}-->img/products/title_recommend.jpg" width="580" height="30" alt="オススメ商品" /></td>
 					</tr>
 					<tr><td colspan=3 height="10"></td></tr>
 					<tr>
@@ -364,9 +364,9 @@ function lnSetSelect(form, name1, name2, val) {
 					<!--{section name=cnt loop=$arrRecommend step=2}-->
 					<!--{if $smarty.section.cnt.index >= 2}-->
 					<tr>
-						<td height="25"><img src="<!--{$smarty.const.URL_DIR}-->img/common/line_280.gif" width="280" height="1" alt="" /></td>
+						<td height="25"><img src="<!--{$TPL_DIR}-->img/common/line_280.gif" width="280" height="1" alt="" /></td>
 						<td></td>
-						<td align="left"><img src="<!--{$smarty.const.URL_DIR}-->img/common/line_280.gif" width="280" height="1" alt="" /></td>
+						<td align="left"><img src="<!--{$TPL_DIR}-->img/common/line_280.gif" width="280" height="1" alt="" /></td>
 					</tr>
 					<!--{/if}-->
 					

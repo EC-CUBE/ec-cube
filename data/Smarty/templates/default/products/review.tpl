@@ -36,7 +36,7 @@
         <input type="hidden" name="<!--{$smarty.const.TRANSACTION_ID_NAME}-->" value="<!--{$transactionid}-->">
             <tr><td height="15"></td></tr>
             <tr>
-                <td><img src="<!--{$smarty.const.URL_DIR}-->img/products/review_title.jpg" width="500" height="40" alt="お客様の声書き込み"></td>
+                <td><img src="<!--{$TPL_DIR}-->img/products/review_title.jpg" width="500" height="40" alt="お客様の声書き込み"></td>
             </tr>
             <tr><td height="15"></td></tr>
             <tr>
@@ -90,7 +90,7 @@
             <tr><td height="15"></td></tr>
             <tr>
                 <td align="center">
-                <input type="image" onMouseover="chgImgImageSubmit('<!--{$smarty.const.URL_DIR}-->img/common/b_confirm_on.gif',this)" onMouseout="chgImgImageSubmit('<!--{$smarty.const.URL_DIR}-->img/common/b_confirm.gif',this)" src="<!--{$smarty.const.URL_DIR}-->img/common/b_confirm.gif" width="150" height="30" alt="確認ページへ" name="conf" id="conf">
+                <input type="image" onMouseover="chgImgImageSubmit('<!--{$TPL_DIR}-->img/common/b_confirm_on.gif',this)" onMouseout="chgImgImageSubmit('<!--{$TPL_DIR}-->img/common/b_confirm.gif',this)" src="<!--{$TPL_DIR}-->img/common/b_confirm.gif" width="150" height="30" alt="確認ページへ" name="conf" id="conf">
                 </td>
             </tr>
             <tr><td height="30"></td></tr>

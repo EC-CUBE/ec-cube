@@ -5,7 +5,7 @@
  * http://www.lockon.co.jp/
  */
 *}-->
-<style type="text/css">    
+<style type="text/css">
     div.dragged_elm {
         position:   absolute;
         border:     1px solid black;
@@ -14,7 +14,7 @@
         cursor:		move;
         PADDING-RIGHT: 	2px;
         PADDING-LEFT: 	2px;
-        PADDING-BOTTOM: 5px; 
+        PADDING-BOTTOM: 5px;
         PADDING-TOP: 	5px;
         FONT-SIZE: 		10pt;
     }
@@ -42,25 +42,25 @@ function fnTargetSelf(){
 function init () {
     document.body.ondrag = function () { return false; };
     document.body.onselectstart = function () { return false; };
-    
+
     // ウィンドウサイズを取得
 	scrX = GetWindowSize("width");
-	scrY = GetWindowSize("height");    
-    
+	scrY = GetWindowSize("height");
+
 	// ウィンドウサイズ変更イベントに関連付け
     window.onresize = fnMoveObject;
 
     // divタグを取得
     all_elms = document.getElementsByTagName ( 'div' );
-    
+
 	// tdタグを取得
 	all_td = document.getElementsByTagName ( 'td' );
 
 	// 配列作成
 	fnCreateArr(0);
-	
+
 	// alerttest(0);
-	
+
     // 並び替え
 	fnMoveObject();
 
@@ -69,7 +69,7 @@ function init () {
 
 </script>
 
-<script type="text/javascript" src="<!--{$smarty.const.URL_DIR}-->js/layout_design.js"></script>
+<script type="text/javascript" src="<!--{$TPL_DIR}-->js/layout_design.js"></script>
 
 <!--★★メインコンテンツ★★-->
 <table width="878" border="0" cellspacing="0" cellpadding="0" summary=" ">
@@ -78,7 +78,7 @@ function init () {
 <input type="hidden" name="page_id" value="<!--{$page_id}-->">
 <input type="hidden" name="bloc_cnt" value="<!--{$bloc_cnt}-->">
 	<tr valign="top">
-		<td background="<!--{$smarty.const.URL_DIR}-->img/contents/navi_bg.gif" height="402">
+		<td background="<!--{$TPL_DIR}-->img/contents/navi_bg.gif" height="402">
 			<!--▼SUB NAVI-->
 			<!--{include file=$tpl_subnavi}-->
 			<!--▲SUB NAVI-->
@@ -92,27 +92,27 @@ function init () {
 
 					<tr><td height="14"></td></tr>
 					<tr>
-						<td colspan="3"><img src="<!--{$smarty.const.URL_DIR}-->img/contents/main_top.jpg" width="706" height="14" alt=""></td>
+						<td colspan="3"><img src="<!--{$TPL_DIR}-->img/contents/main_top.jpg" width="706" height="14" alt=""></td>
 					</tr>
 					<tr>
-						<td background="<!--{$smarty.const.URL_DIR}-->img/contents/main_left.jpg"><img src="<!--{$smarty.const.URL_DIR}-->img/common/_.gif" width="14" height="1" alt=""></td>
+						<td background="<!--{$TPL_DIR}-->img/contents/main_left.jpg"><img src="<!--{$TPL_DIR}-->img/common/_.gif" width="14" height="1" alt=""></td>
 						<td bgcolor="#cccccc">
 
 						<!--登録テーブルここから-->
 						<table width="678" border="0" cellspacing="0" cellpadding="0" summary=" ">
 							<tr>
-								<td colspan="3"><img src="<!--{$smarty.const.URL_DIR}-->img/contents/contents_title_top.gif" width="678" height="7" alt=""></td>
+								<td colspan="3"><img src="<!--{$TPL_DIR}-->img/contents/contents_title_top.gif" width="678" height="7" alt=""></td>
 							</tr>
 							<tr>
-								<td background="<!--{$smarty.const.URL_DIR}-->img/contents/contents_title_left_bg.gif"><img src="<!--{$smarty.const.URL_DIR}-->img/contents/contents_title_left.gif" width="22" height="12" alt=""></td>
+								<td background="<!--{$TPL_DIR}-->img/contents/contents_title_left_bg.gif"><img src="<!--{$TPL_DIR}-->img/contents/contents_title_left.gif" width="22" height="12" alt=""></td>
 								<td bgcolor="#636469" width="638" class="fs14n"><span class="white"><!--コンテンツタイトル-->レイアウト編集</span></td>
-								<td background="<!--{$smarty.const.URL_DIR}-->img/contents/contents_title_right_bg.gif"><img src="<!--{$smarty.const.URL_DIR}-->img/common/_.gif" width="18" height="1" alt=""></td>
+								<td background="<!--{$TPL_DIR}-->img/contents/contents_title_right_bg.gif"><img src="<!--{$TPL_DIR}-->img/common/_.gif" width="18" height="1" alt=""></td>
 							</tr>
 							<tr>
-								<td colspan="3"><img src="<!--{$smarty.const.URL_DIR}-->img/contents/contents_title_bottom.gif" width="678" height="7" alt=""></td>
+								<td colspan="3"><img src="<!--{$TPL_DIR}-->img/contents/contents_title_bottom.gif" width="678" height="7" alt=""></td>
 							</tr>
 							<tr>
-								<td colspan="3"><img src="<!--{$smarty.const.URL_DIR}-->img/contents/main_bar.jpg" width="678" height="10" alt=""></td>
+								<td colspan="3"><img src="<!--{$TPL_DIR}-->img/contents/main_bar.jpg" width="678" height="10" alt=""></td>
 							</tr>
 						</table>
 
@@ -188,7 +188,7 @@ function init () {
 									</table>
 								</td>
 								<!--▲レイアウト　ここまで-->
-				
+
 								<!--▼未使用ブロック　ここから-->
 								<td bgcolor="#ffffff" align="center" valign = 'top'>
 									<table width="140" border="0" cellspacing="" cellpadding="" summary=" " bgcolor="#ffffff">
@@ -214,9 +214,9 @@ function init () {
 							</tr>
 						</table>
 						<!--▲レイアウト編集　ここまで-->
-						
+
 						<table width="678" border="0" cellspacing="0" cellpadding="0" summary=" ">
-							<tr><td colspan="3"><img src="<!--{$smarty.const.URL_DIR}-->img/contents/main_bar.jpg" width="678" height="10" alt=""></td></tr>
+							<tr><td colspan="3"><img src="<!--{$TPL_DIR}-->img/contents/main_bar.jpg" width="678" height="10" alt=""></td></tr>
 						</table>
 
 						<!--▼ページ一覧　ここから-->
@@ -254,10 +254,10 @@ function init () {
 						<!--▲ページ一覧　ここまで-->
 
 						</td>
-						<td background="<!--{$smarty.const.URL_DIR}-->img/contents/main_right.jpg"><img src="<!--{$smarty.const.URL_DIR}-->img/common/_.gif" width="14" height="1" alt=""></td>
+						<td background="<!--{$TPL_DIR}-->img/contents/main_right.jpg"><img src="<!--{$TPL_DIR}-->img/common/_.gif" width="14" height="1" alt=""></td>
 					</tr>
 					<tr>
-						<td colspan="3"><img src="<!--{$smarty.const.URL_DIR}-->img/contents/main_bottom.jpg" width="706" height="14" alt=""></td>
+						<td colspan="3"><img src="<!--{$TPL_DIR}-->img/contents/main_bottom.jpg" width="706" height="14" alt=""></td>
 					</tr>
 					<tr><td height="30"></td></tr>
 
@@ -270,7 +270,7 @@ function init () {
 	</tr>
 
 </table>
-<!--★★メインコンテンツ★★-->		
+<!--★★メインコンテンツ★★-->
 
 <!--{foreach key=key item=item from=$tpl_arrBloc name="bloc_loop"}-->
 <div align=center target_id="<!--{$item.target_id}-->" did="<!--{$smarty.foreach.bloc_loop.iteration}-->" class="dragged_elm" id="<!--{$item.target_id}-->"

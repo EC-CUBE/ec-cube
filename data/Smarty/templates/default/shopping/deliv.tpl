@@ -12,7 +12,7 @@
 		<table width="700" border="0" cellspacing="0" cellpadding="0" summary=" ">
 			<tr><td height="15"></td></tr>
 			<tr>
-				<td><img src="<!--{$smarty.const.URL_DIR}-->img/shopping/flow01.gif" width="700" height="36" alt="購入手続きの流れ"></td>
+				<td><img src="<!--{$TPL_DIR}-->img/shopping/flow01.gif" width="700" height="36" alt="購入手続きの流れ"></td>
 			</tr>
 			<tr><td height="15"></td></tr>
 		</table>
@@ -25,7 +25,7 @@
 		<input type="hidden" name="uniqid" value="<!--{$tpl_uniqid}-->">
 		<input type="hidden" name="other_deliv_id" value="">
 			<tr>
-				<td><img src="<!--{$smarty.const.URL_DIR}-->img/shopping/deliv_title.jpg" width="700" height="40" alt="お届け先の指定"></td>
+				<td><img src="<!--{$TPL_DIR}-->img/shopping/deliv_title.jpg" width="700" height="40" alt="お届け先の指定"></td>
 			</tr>
 			<tr><td height="15"></td></tr>
 			<tr>
@@ -37,7 +37,7 @@
 			<!--{if $tpl_addrmax < $smarty.const.DELIV_ADDR_MAX}-->
 			<tr>
 				<td>
-					<a href="<!--{$smarty.const.URL_DIR}-->mypage/delivery_addr.php" onclick="win02('<!--{$smarty.const.URL_DIR}-->mypage/delivery_addr.php?page=<!--{$smarty.server.PHP_SELF|escape}-->','new_deiv','600','640'); return false;" onmouseover="chgImg('<!--{$smarty.const.URL_DIR}-->img/common/newadress_on.gif','addition');" onmouseout="chgImg('<!--{$smarty.const.URL_DIR}-->img/common/newadress.gif','addition');"><img src="<!--{$smarty.const.URL_DIR}-->img/common/newadress.gif" width="160" height="22" alt="新しいお届け先を追加する" name="addition" id="addition" /></a>
+					<a href="<!--{$smarty.const.URL_DIR}-->mypage/delivery_addr.php" onclick="win02('<!--{$smarty.const.URL_DIR}-->mypage/delivery_addr.php?page=<!--{$smarty.server.PHP_SELF|escape}-->','new_deiv','600','640'); return false;" onmouseover="chgImg('<!--{$TPL_DIR}-->img/common/newadress_on.gif','addition');" onmouseout="chgImg('<!--{$TPL_DIR}-->img/common/newadress.gif','addition');"><img src="<!--{$TPL_DIR}-->img/common/newadress.gif" width="160" height="22" alt="新しいお届け先を追加する" name="addition" id="addition" /></a>
 				</td>
 			</tr>
 			<tr><td height="20"></td></tr>
@@ -97,8 +97,8 @@
 			<tr><td height="25"></td></tr>
 			<tr align="center">
 				<td>
-					<a href="<!--{$smarty.const.URL_DIR}-->cart/index.php" onmouseover="chgImgImageSubmit('<!--{$smarty.const.URL_DIR}-->img/common/b_back_on.gif',back03)" onmouseout="chgImgImageSubmit('<!--{$smarty.const.URL_DIR}-->img/common/b_back.gif',back03)"><img src="<!--{$smarty.const.URL_DIR}-->img/common/b_back.gif" width="150" height="30" alt="戻る" border="0" name="back03" id="back03"/></a>
-					<img src="<!--{$smarty.const.URL_DIR}-->img/_.gif" width="12" height="" alt="" /><input type="image" onmouseover="chgImgImageSubmit('<!--{$smarty.const.URL_DIR}-->img/shopping/b_select_on.gif',this)" onmouseout="chgImgImageSubmit('<!--{$smarty.const.URL_DIR}-->img/shopping/b_select.gif',this)" src="<!--{$smarty.const.URL_DIR}-->img/shopping/b_select.gif" width="190" height="30" alt="選択したお届け先に送る" border="0" name="send_button" id="send_button" />
+					<a href="<!--{$smarty.const.URL_DIR}-->cart/index.php" onmouseover="chgImgImageSubmit('<!--{$TPL_DIR}-->img/common/b_back_on.gif',back03)" onmouseout="chgImgImageSubmit('<!--{$TPL_DIR}-->img/common/b_back.gif',back03)"><img src="<!--{$TPL_DIR}-->img/common/b_back.gif" width="150" height="30" alt="戻る" border="0" name="back03" id="back03"/></a>
+					<img src="<!--{$TPL_DIR}-->img/_.gif" width="12" height="" alt="" /><input type="image" onmouseover="chgImgImageSubmit('<!--{$TPL_DIR}-->img/shopping/b_select_on.gif',this)" onmouseout="chgImgImageSubmit('<!--{$TPL_DIR}-->img/shopping/b_select.gif',this)" src="<!--{$TPL_DIR}-->img/shopping/b_select.gif" width="190" height="30" alt="選択したお届け先に送る" border="0" name="send_button" id="send_button" />
 				</td>
 			</tr>
 		</form>

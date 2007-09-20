@@ -18,13 +18,13 @@
 				<!--▼RIGHT CONTENTS-->
 				<td id="right">
 				<!--タイトル-->
-				<div id="maintitle"><img src="<!--{$smarty.const.URL_DIR}-->img/mypage/title.jpg" width="570" height="40" alt="マイページ" /></div>
+				<div id="maintitle"><img src="<!--{$TPL_DIR}-->img/mypage/title.jpg" width="570" height="40" alt="マイページ" /></div>
 				<!--タイトル-->
 				<!--▼MYページナビ-->
 				<!--{include file=$tpl_navi}-->
 				<!--▲MYページナビ-->
 				<!--サブタイトル-->
-				<div id="subtitle"><img src="<!--{$smarty.const.URL_DIR}-->img/mypage/subtitle07.gif" width="110" height="16" alt="閲覧履歴" /></div>
+				<div id="subtitle"><img src="<!--{$TPL_DIR}-->img/mypage/subtitle07.gif" width="110" height="16" alt="閲覧履歴" /></div>
 				<!--サブタイトル-->
 				
 				<!--{if $arrForm}-->

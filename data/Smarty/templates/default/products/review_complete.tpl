@@ -32,7 +32,7 @@
 		<table width="500" border="0" cellspacing="0" cellpadding="0" summary=" ">
 			<tr><td height="15"></td></tr>
 			<tr>
-				<td><img src="<!--{$smarty.const.URL_DIR}-->img/products/review_title.jpg" width="500" height="40" alt="お客様の声書き込み"></td>
+				<td><img src="<!--{$TPL_DIR}-->img/products/review_title.jpg" width="500" height="40" alt="お客様の声書き込み"></td>
 			</tr>
 			<tr><td height="15"></td></tr>
 			<tr>
@@ -50,7 +50,7 @@
 			</tr>
 			<tr><td height="15"></td></tr>
 			<tr>
-				<td align="center"><a href="javascript:window.close()" onmouseover="chgImg('<!--{$smarty.const.URL_DIR}-->img/common/b_close_on.gif','b_close');" onmouseout="chgImg('<!--{$smarty.const.URL_DIR}-->img/common/b_close.gif','b_close');"><img src="<!--{$smarty.const.URL_DIR}-->img/common/b_close.gif" width="150" height="30" alt="閉じる" border="0" name="b_close"></a></td>
+				<td align="center"><a href="javascript:window.close()" onmouseover="chgImg('<!--{$TPL_DIR}-->img/common/b_close_on.gif','b_close');" onmouseout="chgImg('<!--{$TPL_DIR}-->img/common/b_close.gif','b_close');"><img src="<!--{$TPL_DIR}-->img/common/b_close.gif" width="150" height="30" alt="閉じる" border="0" name="b_close"></a></td>
 			</tr>
 			<tr><td height="30"></td></tr>
 		</table>

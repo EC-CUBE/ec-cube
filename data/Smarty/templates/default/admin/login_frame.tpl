@@ -18,7 +18,7 @@
 <!--{include file='css/contents.tpl'}-->
 <style type="text/css">
 body {
-	background: #fff url(<!--{$smarty.const.URL_DIR}-->img/login/bg.jpg);
+	background: #fff url(<!--{$TPL_DIR}-->img/login/bg.jpg);
 	background-repeat: repeat-x;
 }
 </style>

@@ -39,7 +39,7 @@
         <input type="hidden" name="<!--{$smarty.const.TRANSACTION_ID_NAME}-->" value="<!--{$transactionid}-->">
             <tr><td height="15"></td></tr>
             <tr>
-                <td><img src="<!--{$smarty.const.URL_DIR}-->img/products/review_title.jpg" width="500" height="40" alt="お客様の声書き込み"></td>
+                <td><img src="<!--{$TPL_DIR}-->img/products/review_title.jpg" width="500" height="40" alt="お客様の声書き込み"></td>
             </tr>
             <tr><td height="15"></td></tr>
             <tr>
@@ -79,8 +79,8 @@
             <tr><td height="15"></td></tr>
             <tr>
                 <td align="center">
-                    <input type="image" onclick=" mode.value='return';" onmouseover="chgImgImageSubmit('<!--{$smarty.const.URL_DIR}-->img/common/b_back_on.gif',this)" onmouseout="chgImgImageSubmit('<!--{$smarty.const.URL_DIR}-->img/common/b_back.gif',this)" src="<!--{$smarty.const.URL_DIR}-->img/common/b_back.gif" width="150" height="30" alt="戻る"  name="back" id="back" />
-                    <input type="image" onmouseover="chgImgImageSubmit('<!--{$smarty.const.URL_DIR}-->img/common/b_send_on.gif',this)" onmouseout="chgImgImageSubmit('<!--{$smarty.const.URL_DIR}-->img/common/b_send.gif',this)" src="<!--{$smarty.const.URL_DIR}-->img/common/b_send.gif" width="150" height="30" alt="送信"  name="send" id="send" />
+                    <input type="image" onclick=" mode.value='return';" onmouseover="chgImgImageSubmit('<!--{$TPL_DIR}-->img/common/b_back_on.gif',this)" onmouseout="chgImgImageSubmit('<!--{$TPL_DIR}-->img/common/b_back.gif',this)" src="<!--{$TPL_DIR}-->img/common/b_back.gif" width="150" height="30" alt="戻る"  name="back" id="back" />
+                    <input type="image" onmouseover="chgImgImageSubmit('<!--{$TPL_DIR}-->img/common/b_send_on.gif',this)" onmouseout="chgImgImageSubmit('<!--{$TPL_DIR}-->img/common/b_send.gif',this)" src="<!--{$TPL_DIR}-->img/common/b_send.gif" width="150" height="30" alt="送信"  name="send" id="send" />
                 </td>
             </tr>
             <tr><td height="30"></td></tr>

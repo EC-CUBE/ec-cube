@@ -17,7 +17,7 @@
 		<!--{/if}-->
 		<!--{/foreach}-->
 			<tr>
-				<td><img src="<!--{$smarty.const.URL_DIR}-->img/contact/title.jpg" width="580" height="40" alt="お問い合わせ"></td>
+				<td><img src="<!--{$TPL_DIR}-->img/contact/title.jpg" width="580" height="40" alt="お問い合わせ"></td>
 			</tr>
 			<tr><td height="15"></td></tr>
 			<tr>
@@ -65,8 +65,8 @@
 			<tr><td height="25"></td></tr>
 			<tr align="center">
 				<td>
-					<a href="<!--{$smarty.server.PHP_SELF|escape}-->" onclick="fnModeSubmit('return', '', ''); return false;" onmouseover="chgImg('<!--{$smarty.const.URL_DIR}-->img/common/b_back_on.gif','back02');" onmouseout="chgImg('<!--{$smarty.const.URL_DIR}-->img/common/b_back.gif','back02');"><img src="<!--{$smarty.const.URL_DIR}-->img/common/b_back.gif" width="150" height="30" alt="戻る" name="back02" id="back02" /></a><img src="<!--{$smarty.const.URL_DIR}-->img/_.gif" width="20" height="" alt="" />
-					<input type="image" onmouseover="chgImgImageSubmit('<!--{$smarty.const.URL_DIR}-->img/common/b_complete_on.gif',this)" onmouseout="chgImgImageSubmit('<!--{$smarty.const.URL_DIR}-->img/common/b_complete.gif',this)" src="<!--{$smarty.const.URL_DIR}-->img/common/b_complete.gif" width="150" height="30" alt="完了ページへ" border="0" name="send" id="send" />	
+					<a href="<!--{$smarty.server.PHP_SELF|escape}-->" onclick="fnModeSubmit('return', '', ''); return false;" onmouseover="chgImg('<!--{$TPL_DIR}-->img/common/b_back_on.gif','back02');" onmouseout="chgImg('<!--{$TPL_DIR}-->img/common/b_back.gif','back02');"><img src="<!--{$TPL_DIR}-->img/common/b_back.gif" width="150" height="30" alt="戻る" name="back02" id="back02" /></a><img src="<!--{$TPL_DIR}-->img/_.gif" width="20" height="" alt="" />
+					<input type="image" onmouseover="chgImgImageSubmit('<!--{$TPL_DIR}-->img/common/b_complete_on.gif',this)" onmouseout="chgImgImageSubmit('<!--{$TPL_DIR}-->img/common/b_complete.gif',this)" src="<!--{$TPL_DIR}-->img/common/b_complete.gif" width="150" height="30" alt="完了ページへ" border="0" name="send" id="send" />	
 				</td>
 			</tr>
 		</form>

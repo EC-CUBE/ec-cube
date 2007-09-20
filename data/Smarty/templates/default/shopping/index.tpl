@@ -10,7 +10,7 @@
 		<!--▼MAIN ONTENTS-->
 		<table width="700" border="0" cellspacing="0" cellpadding="0" summary=" ">
 			<tr>
-				<td><img src="<!--{$smarty.const.URL_DIR}-->img/login/title.jpg" width="700" height="40" alt="ログイン"></td>
+				<td><img src="<!--{$TPL_DIR}-->img/login/title.jpg" width="700" height="40" alt="ログイン"></td>
 			</tr>
 			<tr><td height="20"></td></tr>
 		</table>
@@ -25,7 +25,7 @@
 						<table width="604" border="0" cellspacing="0" cellpadding="0" summary=" ">
 							<tr><td height="13"></td></tr>
 							<tr>
-								<td><img src="<!--{$smarty.const.URL_DIR}-->img/login/member.gif" width="202" height="16" alt="会員登録がお済みのお客様"></td>
+								<td><img src="<!--{$TPL_DIR}-->img/login/member.gif" width="202" height="16" alt="会員登録がお済みのお客様"></td>
 							</tr>
 							<tr><td height="20"></td></tr>
 						</table>
@@ -42,7 +42,7 @@
 								<table width="490" border="0" cellspacing="0" cellpadding="0" summary=" ">
 									<tr><td height="20"></td></tr>
 									<tr>
-										<td><img src="<!--{$smarty.const.URL_DIR}-->img/login/mailadress.gif" width="92" height="13" alt="メールアドレス"></td>
+										<td><img src="<!--{$TPL_DIR}-->img/login/mailadress.gif" width="92" height="13" alt="メールアドレス"></td>
 										<td class="fs12">
 											<!--{assign var=key value="login_email"}--><span class="red"><!--{$arrErr[$key]}--></span>
 											<input type="text" name="<!--{$key}-->" value="<!--{$tpl_login_email|escape}-->" maxlength="<!--{$arrForm[$key].length}-->" style="<!--{$arrErr[$key]|sfGetErrorColor}-->; ime-mode: disabled;" size="40" class="box40" />
@@ -54,7 +54,7 @@
 									</tr>
 									<tr><td height="10"></td></tr>
 									<tr>
-										<td><img src="<!--{$smarty.const.URL_DIR}-->img/login/password.gif" width="92" height="13" alt="パスワード"></td>
+										<td><img src="<!--{$TPL_DIR}-->img/login/password.gif" width="92" height="13" alt="パスワード"></td>
 										<td class="fs12">
 											<!--{assign var=key value="login_pass"}--><span class="red"><!--{$arrErr[$key]}--></span>
 											<input type="password" name="<!--{$key}-->" maxlength="<!--{$arrForm[$key].length}-->" style="<!--{$arrErr[$key]|sfGetErrorColor}-->" size="40" class="box40" />
@@ -67,7 +67,7 @@
 							<tr><td height="20"></td></tr>
 							<tr>
 								<td align="center">
-									<input type="image" onmouseover="chgImgImageSubmit('<!--{$smarty.const.URL_DIR}-->img/login/b_login_on.gif',this)" onmouseout="chgImgImageSubmit('<!--{$smarty.const.URL_DIR}-->img/login/b_login.gif',this)" src="<!--{$smarty.const.URL_DIR}-->img/login/b_login.gif" width="140" height="30" alt="ログイン" name="log" id="log" />
+									<input type="image" onmouseover="chgImgImageSubmit('<!--{$TPL_DIR}-->img/login/b_login_on.gif',this)" onmouseout="chgImgImageSubmit('<!--{$TPL_DIR}-->img/login/b_login.gif',this)" src="<!--{$TPL_DIR}-->img/login/b_login.gif" width="140" height="30" alt="ログイン" name="log" id="log" />
 								</td>
 							</tr>
 							<tr><td height="15"></td></tr>
@@ -99,7 +99,7 @@
 						<table width="604" border="0" cellspacing="0" cellpadding="0" summary=" ">
 							<tr><td height="13"></td></tr>
 							<tr>
-								<td><img src="<!--{$smarty.const.URL_DIR}-->img/login/guest.gif" width="247" height="16" alt="まだ会員登録されていないお客様"></td>
+								<td><img src="<!--{$TPL_DIR}-->img/login/guest.gif" width="247" height="16" alt="まだ会員登録されていないお客様"></td>
 							</tr>
 							<tr><td height="20"></td></tr>
 						</table>
@@ -118,8 +118,8 @@
 									<tr><td height="20"></td></tr>
 									<tr>
 										<td align="center">
-											<a href="<!--{$smarty.const.URL_DIR}-->entry/kiyaku.php" onmouseover="chgImg('<!--{$smarty.const.URL_DIR}-->img/login/b_gotoentry_on.gif','b_gotoentry');" onmouseout="chgImg('<!--{$smarty.const.URL_DIR}-->img/login/b_gotoentry.gif','b_gotoentry');"><img src="<!--{$smarty.const.URL_DIR}-->img/login/b_gotoentry.gif" width="130" height="30" alt="会員登録をする" border="0" name="b_gotoentry"></a>　
-											<input type="image" onmouseover="chgImgImageSubmit('<!--{$smarty.const.URL_DIR}-->img/login/b_buystep_on.gif',this)" onmouseout="chgImgImageSubmit('<!--{$smarty.const.URL_DIR}-->img/login/b_buystep.gif',this)" src="<!--{$smarty.const.URL_DIR}-->img/login/b_buystep.gif" width="130" height="30" alt="購入手続きへ" name="buystep" id="buystep" />
+											<a href="<!--{$smarty.const.URL_DIR}-->entry/kiyaku.php" onmouseover="chgImg('<!--{$TPL_DIR}-->img/login/b_gotoentry_on.gif','b_gotoentry');" onmouseout="chgImg('<!--{$TPL_DIR}-->img/login/b_gotoentry.gif','b_gotoentry');"><img src="<!--{$TPL_DIR}-->img/login/b_gotoentry.gif" width="130" height="30" alt="会員登録をする" border="0" name="b_gotoentry"></a>　
+											<input type="image" onmouseover="chgImgImageSubmit('<!--{$TPL_DIR}-->img/login/b_buystep_on.gif',this)" onmouseout="chgImgImageSubmit('<!--{$TPL_DIR}-->img/login/b_buystep.gif',this)" src="<!--{$TPL_DIR}-->img/login/b_buystep.gif" width="130" height="30" alt="購入手続きへ" name="buystep" id="buystep" />
 										</td>
 									</tr>
 									<tr><td height="20"></td></tr>

@@ -12,7 +12,7 @@
 
 <!--▼HEADER-->
 <!--{if $arrPageLayout.header_chk != 2}-->
-<!--{assign var=header_dir value="`$smarty.const.HTML_PATH`user_data/include/header.tpl"}-->
+<!--{assign var=header_dir value="`$smarty.const.TEMPLATE_DIR`header.tpl"}-->
 <!--{include file= $header_dir}-->
 <!--{/if}-->
 <!--▲HEADER-->
@@ -21,8 +21,8 @@
 <div id="base">
 <table width="780" border="0" cellspacing="0" cellpadding="0" summary=" ">
 	<tr>
-		<td bgcolor="#cccccc" width="1"><img src="<!--{$smarty.const.URL_DIR}-->img/_.gif" width="1" height="10" alt="" /></td>
-		<td bgcolor="#ffffff" width="1"><img src="<!--{$smarty.const.URL_DIR}-->img/_.gif" width="5" height="1" alt="" /></td>
+		<td bgcolor="#cccccc" width="1"><img src="<!--{$TPL_DIR}-->img/_.gif" width="1" height="10" alt="" /></td>
+		<td bgcolor="#ffffff" width="1"><img src="<!--{$TPL_DIR}-->img/_.gif" width="5" height="1" alt="" /></td>
 		<td bgcolor="#ffffff" align="left" width=100%>
 
 		<!--{*パンクズ-->
@@ -48,7 +48,7 @@
 				    <!--{/foreach}-->
 					</table>
 					</td>
-					<td bgcolor="#ffffff" width="5"><img src="<!--{$smarty.const.URL_DIR}-->img/_.gif" width="5" height="1" alt="" /></td>
+					<td bgcolor="#ffffff" width="5"><img src="<!--{$TPL_DIR}-->img/_.gif" width="5" height="1" alt="" /></td>
 				<!--{/if}-->
 				<!--▲左ナビ-->
 
@@ -104,7 +104,7 @@
 
 				<!--▼右ナビ-->
 				<!--{if $arrPageLayout.RightNavi|@count > 0}-->
-					<td bgcolor="#ffffff" width="5"><img src="<!--{$smarty.const.URL_DIR}-->img/_.gif" width="5" height="1" alt="" /></td>
+					<td bgcolor="#ffffff" width="5"><img src="<!--{$TPL_DIR}-->img/_.gif" width="5" height="1" alt="" /></td>
 					<td align="right" bgcolor="#ffffff">
 				        <table border="0" cellspacing="0" cellpadding="0" summary=" ">
 				        <!--{foreach key=RightNaviKey item=RightNaviItem from=$arrPageLayout.RightNavi}-->
@@ -124,8 +124,8 @@
 				<!--▲右ナビ-->
 			</tr>
 		</table>
-		<td bgcolor="#ffffff"><img src="<!--{$smarty.const.URL_DIR}-->img/_.gif" width="9" height="1" alt="" /></td>
-		<td bgcolor="#cccccc"><img src="<!--{$smarty.const.URL_DIR}-->img/_.gif" width="1" height="10" alt="" /></td>
+		<td bgcolor="#ffffff"><img src="<!--{$TPL_DIR}-->img/_.gif" width="9" height="1" alt="" /></td>
+		<td bgcolor="#cccccc"><img src="<!--{$TPL_DIR}-->img/_.gif" width="1" height="10" alt="" /></td>
 		</td>
 	</tr>
 </table>
@@ -135,7 +135,7 @@
 
 <!--▼FOTTER-->
 <!--{if $arrPageLayout.footer_chk != 2}-->
-<!--{include file="`$smarty.const.HTML_PATH`user_data/include/footer.tpl"}-->
+<!--{include file="`$smarty.const.TEMPLATE_DIR`footer.tpl"}-->
 <!--{/if}-->
 <!--▲FOTTER-->
 </div>

@@ -10,14 +10,14 @@
 		<!--▼MAIN ONTENTS-->
 		<table width="700" border="0" cellspacing="0" cellpadding="0" summary=" ">
 			<tr>
-				<td><img src="<!--{$smarty.const.URL_DIR}-->img/cart/title.jpg" width="700" height="40" alt="現在のカゴの中"></td>
+				<td><img src="<!--{$TPL_DIR}-->img/cart/title.jpg" width="700" height="40" alt="現在のカゴの中"></td>
 			</tr>
 			<tr><td height="15"></td></tr>
 			<tr>
-				<td><img src="<!--{$smarty.const.URL_DIR}-->img/cart/flame_top.gif" width="700" height="15" alt=""></td>
+				<td><img src="<!--{$TPL_DIR}-->img/cart/flame_top.gif" width="700" height="15" alt=""></td>
 			</tr>
 			<tr>
-				<td align="center" background="<!--{$smarty.const.URL_DIR}-->img/cart/flame_bg.gif">
+				<td align="center" background="<!--{$TPL_DIR}-->img/cart/flame_bg.gif">
 				<table width="680" border="0" cellspacing="0" cellpadding="0" summary=" ">
 					<tr>
 						<td align="center" class="fs14">
@@ -45,7 +45,7 @@
 				</td>
 			</tr>
 			<tr>
-				<td><img src="<!--{$smarty.const.URL_DIR}-->img/cart/flame_bottom.gif" width="700" height="15" alt=""></td>
+				<td><img src="<!--{$TPL_DIR}-->img/cart/flame_bottom.gif" width="700" height="15" alt=""></td>
 			</tr>
 			<tr><td height="15"></td></tr>
 			<tr>
@@ -102,9 +102,9 @@
 								</tr>
 								<tr><td height="5"></td></tr>
 								<tr>
-									<td><a href="<!--{$smarty.server.PHP_SELF|escape}-->" onclick="fnChangeAction('<!--{$smarty.server.PHP_SELF|escape}-->'); fnModeSubmit('up','cart_no','<!--{$arrProductsClass[cnt].cart_no}-->'); return false"><img src="<!--{$smarty.const.URL_DIR}-->img/button/plus.gif" width="16" height="16" alt="＋" /></a></td>
-									<td><img src="<!--{$smarty.const.URL_DIR}-->img/_.gif" width="10" height="1" alt="" /></td>
-									<td><a href="<!--{$smarty.server.PHP_SELF|escape}-->" onclick="fnChangeAction('<!--{$smarty.server.PHP_SELF|escape}-->'); fnModeSubmit('down','cart_no','<!--{$arrProductsClass[cnt].cart_no}-->'); return false"><img src="<!--{$smarty.const.URL_DIR}-->img/button/minus.gif" width="16" height="16" alt="-" /></a></td>
+									<td><a href="<!--{$smarty.server.PHP_SELF|escape}-->" onclick="fnChangeAction('<!--{$smarty.server.PHP_SELF|escape}-->'); fnModeSubmit('up','cart_no','<!--{$arrProductsClass[cnt].cart_no}-->'); return false"><img src="<!--{$TPL_DIR}-->img/button/plus.gif" width="16" height="16" alt="＋" /></a></td>
+									<td><img src="<!--{$TPL_DIR}-->img/_.gif" width="10" height="1" alt="" /></td>
+									<td><a href="<!--{$smarty.server.PHP_SELF|escape}-->" onclick="fnChangeAction('<!--{$smarty.server.PHP_SELF|escape}-->'); fnModeSubmit('down','cart_no','<!--{$arrProductsClass[cnt].cart_no}-->'); return false"><img src="<!--{$TPL_DIR}-->img/button/minus.gif" width="16" height="16" alt="-" /></a></td>
 								</tr>
 							</table>
 							</td>
@@ -143,16 +143,16 @@
 			</tr>
 			<tr><td height="30"></td></tr>
 			<tr>
-				<td align="center"><img src="<!--{$smarty.const.URL_DIR}-->img/cart/text.gif" width="390" height="13" alt="上記内容でよろしければ「レジへ行く」ボタンをクリックしてください。"></td>
+				<td align="center"><img src="<!--{$TPL_DIR}-->img/cart/text.gif" width="390" height="13" alt="上記内容でよろしければ「レジへ行く」ボタンをクリックしてください。"></td>
 			</tr>
 			<tr><td height="20"></td></tr>
 
 			<tr>
 				<td align="center">
 					<!--{if $tpl_prev_url != ""}-->
-					<a href="<!--{$tpl_prev_url}-->" onmouseOver="chgImg('<!--{$smarty.const.URL_DIR}-->img/cart/b_continue_on.gif','back');" onmouseOut="chgImg('<!--{$smarty.const.URL_DIR}-->img/cart/b_continue.gif','back');"><img src="<!--{$smarty.const.URL_DIR}-->img/cart/b_continue.gif" width="150" height="30" alt="買い物を続ける" name="back" id="back" /></a>　
+					<a href="<!--{$tpl_prev_url}-->" onmouseOver="chgImg('<!--{$TPL_DIR}-->img/cart/b_continue_on.gif','back');" onmouseOut="chgImg('<!--{$TPL_DIR}-->img/cart/b_continue.gif','back');"><img src="<!--{$TPL_DIR}-->img/cart/b_continue.gif" width="150" height="30" alt="買い物を続ける" name="back" id="back" /></a>　
 					<!--{/if}-->
-					<input type="image" onMouseover="chgImgImageSubmit('<!--{$smarty.const.URL_DIR}-->img/cart/b_buystep_on.gif',this)" onMouseout="chgImgImageSubmit('<!--{$smarty.const.URL_DIR}-->img/cart/b_buystep.gif',this)" src="<!--{$smarty.const.URL_DIR}-->img/cart/b_buystep.gif" width="150" height="30" alt="購入手続きへ" name="confirm" />
+					<input type="image" onMouseover="chgImgImageSubmit('<!--{$TPL_DIR}-->img/cart/b_buystep_on.gif',this)" onMouseout="chgImgImageSubmit('<!--{$TPL_DIR}-->img/cart/b_buystep.gif',this)" src="<!--{$TPL_DIR}-->img/cart/b_buystep.gif" width="150" height="30" alt="購入手続きへ" name="confirm" />
 				</td>
 			</tr>
 			</form>

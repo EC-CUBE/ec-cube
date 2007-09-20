@@ -26,9 +26,9 @@
 				<td>
 					<div id="button">
 						<!--{if $return_top}-->
-							<a href="<!--{$smarty.const.URL_DIR}-->index.php" onmouseover="chgImg('<!--{$smarty.const.URL_DIR}-->img/common/b_toppage_on.gif','b_toppage');" onmouseout="chgImg('<!--{$smarty.const.URL_DIR}-->img/common/b_toppage.gif','b_toppage');"><img src="<!--{$smarty.const.URL_DIR}-->img/common/b_toppage.gif" width="150" height="30" alt="トップページへ" border="0" name="b_toppage"></a>
+							<a href="<!--{$smarty.const.URL_DIR}-->index.php" onmouseover="chgImg('<!--{$TPL_DIR}-->img/common/b_toppage_on.gif','b_toppage');" onmouseout="chgImg('<!--{$TPL_DIR}-->img/common/b_toppage.gif','b_toppage');"><img src="<!--{$TPL_DIR}-->img/common/b_toppage.gif" width="150" height="30" alt="トップページへ" border="0" name="b_toppage"></a>
 						<!--{else}-->
-							<a href="javascript:history.back()" onmouseOver="chgImg('<!--{$smarty.const.URL_DIR}-->img/common/b_back_on.gif','b_back');" onmouseOut="chgImg('<!--{$smarty.const.URL_DIR}-->img/common/b_back.gif','b_back');"><img src="<!--{$smarty.const.URL_DIR}-->img/common/b_back.gif" width="150" height="30" alt="戻る" name="b_back" id="b_back" /></a>
+							<a href="javascript:history.back()" onmouseOver="chgImg('<!--{$TPL_DIR}-->img/common/b_back_on.gif','b_back');" onmouseOut="chgImg('<!--{$TPL_DIR}-->img/common/b_back.gif','b_back');"><img src="<!--{$TPL_DIR}-->img/common/b_back.gif" width="150" height="30" alt="戻る" name="b_back" id="b_back" /></a>
 						<!--{/if}-->
 					</div>
 				</td>

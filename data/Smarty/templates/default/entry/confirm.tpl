@@ -16,7 +16,7 @@
             <!--{/foreach}-->
             <input type="hidden" name="<!--{$smarty.const.TRANSACTION_ID_NAME}-->" value="<!--{$transactionid}-->">
             <tr>
-                <td><img src="<!--{$smarty.const.URL_DIR}-->img/entry/title.jpg" width="580" height="40" alt="会員登録"></td>
+                <td><img src="<!--{$TPL_DIR}-->img/entry/title.jpg" width="580" height="40" alt="会員登録"></td>
             </tr>
             <tr><td height="15"></td></tr>
             <tr>
@@ -99,9 +99,9 @@
             <tr><td height="25"></td></tr>
             <tr align="center">
                 <td>
-                    <a href="<!--{$smarty.server.PHP_SELF|escape}-->" onclick="fnModeSubmit('return', '', ''); return false;" onmouseover="chgImg('<!--{$smarty.const.URL_DIR}-->img/common/b_back_on.gif','back')" onmouseout="chgImg('<!--{$smarty.const.URL_DIR}-->img/common/b_back.gif','back')"><img src="<!--{$smarty.const.URL_DIR}-->img/common/b_back.gif" width="150" height="30" alt="戻る" border="0" name="back" id="back" /></a>
-                    <img src="<!--{$smarty.const.URL_DIR}-->img/_.gif" width="20" height="" alt="" />
-                    <input type="image" onmouseover="chgImgImageSubmit('<!--{$smarty.const.URL_DIR}-->img/entry/b_entrycomp_on.gif',this)" onmouseout="chgImgImageSubmit('<!--{$smarty.const.URL_DIR}-->img/entry/b_entrycomp.gif',this)" src="<!--{$smarty.const.URL_DIR}-->img/entry/b_entrycomp.gif" width="150" height="30" alt="送信" border="0" name="send" id="send" />
+                    <a href="<!--{$smarty.server.PHP_SELF|escape}-->" onclick="fnModeSubmit('return', '', ''); return false;" onmouseover="chgImg('<!--{$TPL_DIR}-->img/common/b_back_on.gif','back')" onmouseout="chgImg('<!--{$TPL_DIR}-->img/common/b_back.gif','back')"><img src="<!--{$TPL_DIR}-->img/common/b_back.gif" width="150" height="30" alt="戻る" border="0" name="back" id="back" /></a>
+                    <img src="<!--{$TPL_DIR}-->img/_.gif" width="20" height="" alt="" />
+                    <input type="image" onmouseover="chgImgImageSubmit('<!--{$TPL_DIR}-->img/entry/b_entrycomp_on.gif',this)" onmouseout="chgImgImageSubmit('<!--{$TPL_DIR}-->img/entry/b_entrycomp.gif',this)" src="<!--{$TPL_DIR}-->img/entry/b_entrycomp.gif" width="150" height="30" alt="送信" border="0" name="send" id="send" />
                 </td>
             </tr>
         </form>
