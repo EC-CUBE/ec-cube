@@ -1,11 +1,15 @@
 <?php
-
+// FIXME クラスにする
 $include_dir = realpath(dirname( __FILE__));
 require_once($include_dir . "/define.php");
-
+if (!defined("CLASS_PATH")) {
+    /** クラスパス */
+    define("CLASS_PATH", $include_dir . HTML2DATA_DIR . "class/");
+}
+require_once($include_dir . HTML2DATA_DIR. "conf/conf.php");
 require_once($include_dir . HTML2DATA_DIR. "module/gdthumb.php");
 require_once($include_dir . HTML2DATA_DIR. "class/util_extends/GC_Utils_Ex.php");
-require_once($include_dir . HTML2DATA_DIR. "conf/conf.php");
+
 
 $objThumb = new gdthumb();
 
@@ -15,7 +19,7 @@ $file = NO_IMAGE_DIR;
 if ( isset($_GET['image']) && $_GET['image'] !== NO_IMAGE_DIR) {
 
     // ファイル名が正しい場合だけ、$fileを設定
-    if ( $this->lfCheckFileName() === true ) {
+    if ( lfCheckFileName() === true ) {
         $file = IMAGE_SAVE_DIR . $_GET['image'];
     } else {
         GC_Utils_Ex::gfPrintLog('invalid access :resize_image.php $_GET["image"]=' . $_GET['image']);
