@@ -17,17 +17,17 @@ div#newsarea {
     font-size: 90%;
 }
 
-div#news dl {
+div#newsarea dl {
     padding: 10px 0;
     background: url("../img/common/line_400.gif") no-repeat bottom;
 }
 
-div#news dl.end {
+div#newsarea dl.end {
     padding: 10px 0;
     background: url("") no-repeat bottom;
 }
 
-div#news dl dt {
+div#newsarea dl dt {
     padding: 0 0 0 20px;
     background: url("../img/top/news_icon.gif") no-repeat;
 }
