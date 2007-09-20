@@ -3,9 +3,9 @@
  *
  * http://www.lockon.co.jp/
  *}-->
-<body onLoad="preLoadImg('<!--{$smarty.const.URL_DIR}-->'); <!--{$tpl_onload}-->">
+<body onload="preLoadImg('<!--{$smarty.const.URL_DIR}-->'); <!--{$tpl_onload}-->">
 <noscript>
-<link rel="stylesheet" href="<!--{$smarty.const.URL_DIR}-->user_data/css/common.css" type="text/css" />
+  <link rel="stylesheet" href="<!--{$smarty.const.URL_DIR}--><!--{$smarty.const.USER_DIR}-->css/common.css" type="text/css" />
 </noscript>
 
 <a name="top" id="top"></a>
@@ -17,128 +17,88 @@
 <!--{/if}-->
 <!--▲HEADER-->
 
-<!--▼MAIN-->
-<div id="base">
-<table width="780" border="0" cellspacing="0" cellpadding="0" summary=" ">
-	<tr>
-		<td bgcolor="#cccccc" width="1"><img src="<!--{$TPL_DIR}-->img/_.gif" width="1" height="10" alt="" /></td>
-		<td bgcolor="#ffffff" width="1"><img src="<!--{$TPL_DIR}-->img/_.gif" width="5" height="1" alt="" /></td>
-		<td bgcolor="#ffffff" align="left" width=100%>
+<!--▼CONTENTS-->
+<div id="container">
 
-		<!--{*パンクズ-->
-		<div id="pan"><span class="fs12n"><a href="<!--{$smarty.const.SITE_URL}-->index.php">トップページ</a> ＞ <span class="redst">お問い合わせ</span></span></div>
-		<!--パンクズ*}-->
+  <!--▼LEFT COLUMN-->
+  <div id="leftcolumn">
+    <!--▼左ナビ-->
+    <!--{if $arrPageLayout.LeftNavi|@count > 0}-->
+      <!--{foreach key=LeftNaviKey item=LeftNaviItem from=$arrPageLayout.LeftNavi}-->
+        <!-- ▼<!--{$LeftNaviItem.bloc_name}--> ここから-->
+          <!--{if $LeftNaviItem.php_path != ""}-->
+            <!--{include_php file=$LeftNaviItem.php_path}-->
+          <!--{else}-->
+            <!--{include file=$LeftNaviItem.tpl_path}-->
+          <!--{/if}-->
+        <!-- ▲<!--{$LeftNaviItem.bloc_name}--> ここまで-->
+      <!--{/foreach}-->
+    <!--{/if}-->
+    <!--▲左ナビ-->
+  </div>
+  <!--▲LEFT COLUMN-->
 
-		<table width="100%" border="0" cellspacing="0" cellpadding="0" summary=" ">
-			<tr valign="top">
-				<!--▼左ナビ-->
-				<!--{if $arrPageLayout.LeftNavi|@count > 0}-->
-			        <td align="left">
-			        <table border="0" cellspacing="0" cellpadding="0" summary=" ">
-			        	<!--{foreach key=LeftNaviKey item=LeftNaviItem from=$arrPageLayout.LeftNavi}-->
-				        <tr><td align="center">
-				        <!-- ▼<!--{$LeftNaviItem.bloc_name}--> ここから-->
-			        	<!--{if $LeftNaviItem.php_path != ""}-->
-							<!--{include_php file=$LeftNaviItem.php_path}-->
-						<!--{else}-->
-							<!--{include file=$LeftNaviItem.tpl_path}-->
-						<!--{/if}-->
-				        <!-- ▲<!--{$LeftNaviItem.bloc_name}--> ここまで-->
-				        </td></tr>
-				    <!--{/foreach}-->
-					</table>
-					</td>
-					<td bgcolor="#ffffff" width="5"><img src="<!--{$TPL_DIR}-->img/_.gif" width="5" height="1" alt="" /></td>
-				<!--{/if}-->
-				<!--▲左ナビ-->
+  <!--▼CENTER COLUMN-->
+  <div id="centercolumn">
+    <!--▼メイン上部-->
+    <!--{if $arrPageLayout.MainHead|@count > 0}-->
+      <!--{foreach key=MainHeadKey item=MainHeadItem from=$arrPageLayout.MainHead}-->
+        <!-- ▼<!--{$MainHeadItem.bloc_name}--> ここから-->
+        <!--{if $MainHeadItem.php_path != ""}-->
+          <!--{include_php file=$MainHeadItem.php_path}-->
+        <!--{else}-->
+          <!--{include file=$MainHeadItem.tpl_path}-->
+        <!--{/if}-->
+        <!-- ▲<!--{$MainHeadItem.bloc_name}--> ここまで-->
+      <!--{/foreach}-->
+    <!--{/if}-->
+    <!--▲メイン上部-->
 
-				<td align="center" width=100%>
-			        <table border="0" cellspacing="0" cellpadding="0" summary=" ">
+    <!--{include file=$tpl_mainpage}-->
 
-					<!--▼メイン上部-->
-					<!--{if $arrPageLayout.MainHead|@count > 0}-->
-					<tr><td align="center">
-				        <table border="0" cellspacing="0" cellpadding="0" summary=" ">
-				        <!--{foreach key=MainHeadKey item=MainHeadItem from=$arrPageLayout.MainHead}-->
-					        <tr><td height=3><td></tr>
-					        <tr><td align="center">
-					        <!-- ▼<!--{$MainHeadItem.bloc_name}--> ここから-->
-				        	<!--{if $MainHeadItem.php_path != ""}-->
-								<!--{include_php file=$MainHeadItem.php_path}-->
-							<!--{else}-->
-								<!--{include file=$MainHeadItem.tpl_path}-->
-							<!--{/if}-->
-					        <!-- ▲<!--{$MainHeadItem.bloc_name}--> ここまで-->
-					        </td></tr>
-						<!--{/foreach}-->
-						</table>
-					</td><tr>
-					<!--{/if}-->
-					<!--▲メイン上部-->
+    <!--▼メイン下部-->
+    <!--{if $arrPageLayout.MainFoot|@count > 0}-->
+      <!--{foreach key=MainFootKey item=MainFootItem from=$arrPageLayout.MainFoot}-->
+        <!-- ▼<!--{$MainFootItem.bloc_name}--> ここから-->
+        <!--{if $MainFootItem.php_path != ""}-->
+          <!--{include_php file=$MainFootItem.php_path}-->
+        <!--{else}-->
+          <!--{include file=$MainFootItem.tpl_path}-->
+        <!--{/if}-->
+        <!-- ▲<!--{$MainFootItem.bloc_name}--> ここまで-->
+      <!--{/foreach}-->
+    <!--{/if}-->
+    <!--▲メイン下部-->
+  </div>
+  <!--▲CENTER COLUMN-->
 
-					<tr><td align="center"><!--{include file=$tpl_mainpage}--></td></tr>
-
-					<!--▼メイン下部-->
-					<tr><td align="center">
-					<!--{if $arrPageLayout.MainFoot|@count > 0}-->
-			        <table border="0" cellspacing="0" cellpadding="0" summary=" ">
-				        <!--{foreach key=MainFootKey item=MainFootItem from=$arrPageLayout.MainFoot}-->
-					        <tr><td height=3><td></tr>
-					        <tr><td align="center">
-					        <!-- ▼<!--{$MainFootItem.bloc_name}--> ここから-->
-				        	<!--{if $MainFootItem.php_path != ""}-->
-								<!--{include_php file=$MainFootItem.php_path}-->
-							<!--{else}-->
-								<!--{include file=$MainFootItem.tpl_path}-->
-							<!--{/if}-->
-					        <!-- ▲<!--{$MainFootItem.bloc_name}--> ここまで-->
-					        </td></tr>
-						<!--{/foreach}-->
-						</table>
-					<!--{/if}-->
-					</td><tr>
-					<!--▲メイン下部-->
-
-					</table>
-				</td>
-
-				<!--▼右ナビ-->
-				<!--{if $arrPageLayout.RightNavi|@count > 0}-->
-					<td bgcolor="#ffffff" width="5"><img src="<!--{$TPL_DIR}-->img/_.gif" width="5" height="1" alt="" /></td>
-					<td align="right" bgcolor="#ffffff">
-				        <table border="0" cellspacing="0" cellpadding="0" summary=" ">
-				        <!--{foreach key=RightNaviKey item=RightNaviItem from=$arrPageLayout.RightNavi}-->
-					        <tr><td align="center">
-					        <!-- ▼<!--{$RightNaviItem.bloc_name}--> ここから-->
-				        	<!--{if $RightNaviItem.php_path != ""}-->
-								<!--{include_php file=$RightNaviItem.php_path}-->
-							<!--{else}-->
-								<!--{include file=$RightNaviItem.tpl_path}-->
-							<!--{/if}-->
-					        <!-- ▲<!--{$RightNaviItem.bloc_name}--> ここまで-->
-					        </td></tr>
-						<!--{/foreach}-->
-						</table>
-					</td>
-				<!--{/if}-->
-				<!--▲右ナビ-->
-			</tr>
-		</table>
-		<td bgcolor="#ffffff"><img src="<!--{$TPL_DIR}-->img/_.gif" width="9" height="1" alt="" /></td>
-		<td bgcolor="#cccccc"><img src="<!--{$TPL_DIR}-->img/_.gif" width="1" height="10" alt="" /></td>
-		</td>
-	</tr>
-</table>
+  <!--▼RIGHT COLUMN-->
+  <div id="rightcolumn">
+    <!--▼右ナビ-->
+    <!--{if $arrPageLayout.RightNavi|@count > 0}-->
+      <!--{foreach key=RightNaviKey item=RightNaviItem from=$arrPageLayout.RightNavi}-->
+        <!-- ▼<!--{$RightNaviItem.bloc_name}--> ここから-->
+        <!--{if $RightNaviItem.php_path != ""}-->
+          <!--{include_php file=$RightNaviItem.php_path}-->
+        <!--{else}-->
+          <!--{include file=$RightNaviItem.tpl_path}-->
+        <!--{/if}-->
+        <!-- ▲<!--{$RightNaviItem.bloc_name}--> ここまで-->
+      <!--{/foreach}-->
+    <!--{/if}-->
+    <!--▲右ナビ-->
+  </div>
+  <!--▲RIGHT COLUMN-->
 
 </div>
-<!--▲MAIN-->
+<!--▲CONTENTS-->
 
 <!--▼FOTTER-->
 <!--{if $arrPageLayout.footer_chk != 2}-->
 <!--{include file="`$smarty.const.TEMPLATE_DIR`footer.tpl"}-->
 <!--{/if}-->
 <!--▲FOTTER-->
-</div>
+
 <!--{* EBiSタグ表示用 *}-->
 <!--{$tpl_mainpage|sfPrintEbisTag}-->
 <!--{* アフィリエイトタグ表示用 *}-->
