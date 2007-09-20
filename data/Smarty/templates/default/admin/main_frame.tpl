@@ -5,10 +5,6 @@
  * http://www.lockon.co.jp/
  */
 *}-->
-<!--{* 長い変数は assign しておく
-    ----------------------------------------------------------------------- *}-->
-<!--{assign var=TPL_DIR value=`$smarty.const.URL_DIR``$smarty.const.USER_DIR`templates/`$smarty.const.TEMPLATE_NAME`/}-->
-<!--{* -------------------------------------------------------------------- *}-->
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <html lang="ja">
 <head>
