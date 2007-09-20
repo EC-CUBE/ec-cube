@@ -11,12 +11,38 @@ require_once($SC_VIEW_PHP_DIR . "/../include/php_ini.inc");
 
 class SC_View {
 
+    /** Smartyインスタンス */
     var $_smarty;
-    var $objSiteInfo; // サイト情報
+    /** SC_SiteInfoのインスタンス */
+    var $objSiteInfo;
+    /** ページ出力ベンチマークの開始時間 */
+    var $time_start;
 
-    // コンストラクタ
-    function SC_View($siteinfo = true) {
-        global $SC_VIEW_PHP_DIR;
+    /**
+     * コンストラクタ
+     *
+     * @param boolean $assignSiteInfo サイト情報をassignするかどうか
+     */
+    function SC_View($assignSiteInfo = true) {
+        // ページ出力のベンチマークスタート
+        $this->setStartTime();
+
+        // Smarty初期化
+        $this->initSmarty();
+
+        // サイト情報をassignする
+        if($assignSiteInfo) $this->assignSiteInfo();
+    }
+
+    /**
+     * Smartyの初期化.
+     * 修飾詞やテンプレート関数の定義を行う.
+     *
+     * @param void
+     * @return void
+     */
+    function initSmarty() {
+        $SC_VIEW_PHP_DIR = realpath(dirname(__FILE__));
 
         $this->_smarty = new Smarty;
         $this->_smarty->left_delimiter = '<!--{';
@@ -36,7 +62,7 @@ class SC_View {
         $this->_smarty->register_function("sfPutBR", "sfPutBR");
         $this->_smarty->register_function("sfRmDupSlash", "sfRmDupSlash");
         $this->_smarty->register_function("sfCutString", "sfCutString");
-        $this->_smarty->plugins_dir=array("plugins", $SC_VIEW_PHP_DIR . "/../smarty_extends");
+        $this->_smarty->plugins_dir = array("plugins", $SC_VIEW_PHP_DIR . "/../smarty_extends");
         $this->_smarty->register_function("sf_mb_convert_encoding","sf_mb_convert_encoding");
         $this->_smarty->register_function("sf_mktime","sf_mktime");
         $this->_smarty->register_function("sf_date","sf_date");
@@ -45,76 +71,167 @@ class SC_View {
         $this->_smarty->register_function("sfPrintAffTag","sfPrintAffTag");
         $this->_smarty->register_function("sfIsHTTPS","sfIsHTTPS");
         $this->_smarty->default_modifiers = array('script_escape');
+    }
 
-        if(ADMIN_MODE == '1') {
-            $this->time_start = time();
-        }
+    /**
+     * ページ出力ベンチマークの開始時間をセットする.
+     *
+     * @param void
+     * @return void
+     */
+    function setStartTime() {
+        // TODO PEAR::BenchMark使う？
+        $this->time_start = time();
+    }
 
-        // サイト情報を取得する
-        if($siteinfo) {
-            if(!defined('LOAD_SITEINFO')) {
-                $this->objSiteInfo = new SC_SiteInfo();
-                $arrInfo['arrSiteInfo'] = $this->objSiteInfo->data;
+    /**
+     * デフォルトパラメータをassignする.
+     */
+    function defaultAssign() {
+        $arrDefaultParams = array(
+            'URL_DIR' => URL_DIR,
+            //'TPL_PKG_DIR' => $this->getTemplatePath()
+        );
+        $this->assignArray($arrDefaultParams);
+    }
 
-                // 都道府県名を変換
-                global $arrPref;
-                $arrInfo['arrSiteInfo']['pref'] = $arrPref[$arrInfo['arrSiteInfo']['pref']];
+    /**
+     * サイト情報をassignする.
+     *
+     * @param void
+     * @return void
+     */
+    function assignSiteInfo() {
+        if (!defined('LOAD_SITEINFO')) {
+            $this->objSiteInfo = new SC_SiteInfo();
+            $arrInfo['arrSiteInfo'] = $this->objSiteInfo->data;
 
-                 // サイト情報を割り当てる
-                foreach ($arrInfo as $key => $value){
-                    $this->_smarty->assign($key, $value);
-                }
+            // 都道府県名を変換
+            global $arrPref;
+            $arrInfo['arrSiteInfo']['pref'] = $arrPref[$arrInfo['arrSiteInfo']['pref']];
 
-                define('LOAD_SITEINFO', 1);
-            }
+            // サイト情報を割り当てる
+            $this->assignArray($arrInfo);
+
+            define('LOAD_SITEINFO', 1);
         }
     }
 
-    // テンプレートに値を割り当てる
-    function assign($val1, $val2) {
-        $this->_smarty->assign($val1, $val2);
+    /**
+     * テンプレートに値を割り当てる
+     *
+     * @param string $key
+     * @param mixed $value
+     * @return void
+     */
+    function assign($key, $value) {
+        $this->_smarty->assign($key, $value);
     }
 
-    // テンプレートの処理結果を取得
+    /**
+     * テンプレートの処理結果を取得
+     *
+     * @param string $template tplファイルのパス
+     * @return string 出力結果
+     */
     function fetch($template) {
         return $this->_smarty->fetch($template);
     }
 
-    // テンプレートの処理結果を表示
-    function display($template, $no_error = false) {
-        if(!$no_error) {
+    /**
+     * テンプレートの処理結果を表示.
+     *
+     * @param string $template tplファイルのパス
+     * @return void
+     */
+    function display($template, $display = false) {
+        // グローバルエラーの表示
+        $this->displayGlobalError($display);
+
+        // 画面表示
+        $this->_smarty->display($template);
+
+        // ベンチマーク結果の表示
+        $this->displayBenchMark();
+    }
+
+    /**
+     * グローバルエラーを表示する.
+     *
+     * @param boolean $display
+     * @return void
+     */
+    function displayGlobalError($display = false) {
+        if (!$display) {
             global $GLOBAL_ERR;
             if(!defined('OUTPUT_ERR')) {
                 print($GLOBAL_ERR);
                 define('OUTPUT_ERR','ON');
             }
         }
+    }
 
-        $this->_smarty->display($template);
-        if(ADMIN_MODE == '1') {
+    /**
+     * ページ出力ベンチマークの結果を表示する.
+     * ADMIN_MODEがtrueのときのみ有効.
+     *
+     * @param void
+     * @return void
+     */
+    function displayBenchMark() {
+        if (ADMIN_MODE) {
             $time_end = time();
             $time = $time_end - $this->time_start;
             print("処理時間:" . $time . "秒");
         }
     }
 
-      // オブジェクト内の変数をすべて割り当てる。
-      function assignobj($obj) {
-        $data = get_object_vars($obj);
+    /**
+     * オブジェクトのメンバ変数をassignする.
+     *
+     * @param object $obj LC_Pageのインスタンス
+     * @return void
+     */
+    function assignObj($obj) {
+        $this->assignArray(get_object_vars($obj));
+    }
 
-        foreach ($data as $key => $value){
-            $this->_smarty->assign($key, $value);
+    /**
+     * 連想配列をassignする.
+     *
+     * @param array $arrAssignVars assignする連想配列
+     * @return void
+     */
+    function assignArray($arrAssignVars) {
+        foreach ($arrAssignVars as $key => $val) {
+            $this->assign($key, $val);
         }
-      }
+    }
 
-      // 連想配列内の変数をすべて割り当てる。
-      function assignarray($array) {
-          foreach ($array as $key => $val) {
-              $this->_smarty->assign($key, $val);
-          }
-      }
+    /**
+     * 使用しているテンプレートパッケージのパスを取得する
+     */
+    function getTemplatePath() {
+        $objQuery = new SC_Query();
+        $arrRet = $objQuery->select('top_tpl', 'dtb_baseinfo');
 
-    // デバッグ
+        if (isset($arrRet[0]['top_tpl'])) {
+            $selectTemplate = $arrRet[0]['top_tpl'];
+            $TPL_PKG_PATH = USER_PATH . "packages/${selectTemplate}/";
+
+            $TPL_PKG_DIR = URL_DIR . USER_DIR . "packages/${selectTemplate}/";
+            $this->assign('TPL_PKG_DIR', $TPL_PKG_DIR);
+
+            return $TPL_PKG_PATH;
+        }
+        return null;
+    }
+    /**
+     * Smartyのデバッグ出力を有効にする.
+     *
+     * @param void
+     * @return void
+     */
     function debug($var = true){
         $this->_smarty->debugging = $var;
     }
@@ -125,6 +242,24 @@ class SC_AdminView extends SC_View{
         parent::SC_View(false);
         $this->_smarty->template_dir = TEMPLATE_ADMIN_DIR;
         $this->_smarty->compile_dir = COMPILE_ADMIN_DIR;
+    }
+
+    function display($template) {
+        $tpl_mainpage = $this->_smarty->get_template_vars('tpl_mainpage');
+        $template_dir = $this->getTemplatePath();
+
+        if ($template_dir) {
+            $template_dir .= 'templates/admin/';
+
+            // tpl_mainpageとmain_frame.tplが両方存在する時のみテンプレートパッケージで出力
+            if (file_exists($template_dir . $tpl_mainpage)
+                && file_exists($template_dir . $template)) {
+
+                $this->_smarty->template_dir = $template_dir;
+            }
+        }
+
+        $this->_smarty->display($template);
     }
 }
 
@@ -145,6 +280,24 @@ class SC_SiteView extends SC_View{
             $objCartSess->setPrevURL($_SERVER['REQUEST_URI']);
         }
     }
+
+    function display($template) {
+        $tpl_mainpage = $this->_smarty->get_template_vars('tpl_mainpage');
+        $template_dir = $this->getTemplatePath();
+
+        if ($template_dir) {
+            $template_dir .= 'templates/';
+
+            if (
+                (file_exists($template_dir . $tpl_mainpage) || file_exists($tpl_mainpage))
+                && file_exists($template_dir . $template)) {
+
+                $this->_smarty->template_dir = $template_dir;
+            }
+        }
+
+        $this->_smarty->display($template);
+    }
 }
 
 class SC_UserView extends SC_SiteView{
@@ -152,6 +305,10 @@ class SC_UserView extends SC_SiteView{
         parent::SC_SiteView();
         $this->_smarty->template_dir = $template_dir;
         $this->_smarty->compile_dir = $compile_dir;
+    }
+
+    function display($template) {
+        $this->_smarty->display($template);
     }
 }
 
@@ -170,4 +327,5 @@ class SC_MobileView extends SC_SiteView {
         $this->_smarty->compile_dir = MOBILE_COMPILE_DIR;
     }
 }
+
 ?>
