@@ -96,6 +96,7 @@ class SC_View {
     function assignDefaultVars() {
         $arrDefaultParams = array(
             'URL_DIR' => URL_DIR,
+            // FIXME tplNameがnullの場合の処理
             'TPL_PKG_URL' => URL_DIR . USER_DIR . TPL_PKG_DIR . $this->tplName . '/'
         );
         $this->assignArray($arrDefaultParams);
@@ -254,6 +255,8 @@ class SC_AdminView extends SC_View{
     }
 
     function initDisplay($template) {
+        if (empty($this->tplName)) return;
+
         $tpl_mainpage  = $this->_smarty->get_template_vars('tpl_mainpage');
         $template_name = $this->tplName;
 
@@ -291,6 +294,8 @@ class SC_SiteView extends SC_View{
     }
 
     function initDisplay($template) {
+        if (empty($this->tplName)) return;
+
         $tpl_mainpage  = $this->_smarty->get_template_vars('tpl_mainpage');
         $template_name = $this->tplName;
 
