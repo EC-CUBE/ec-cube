@@ -19,8 +19,8 @@
 </h2>
   <div id="loginarea">
     <form name="login_form" id="login_form" method="post" action="<!--{$smarty.const.SSL_URL}-->frontparts/login_check.php" onsubmit="return fnCheckLogin('login_form')">
-      <input type="hidden" name="mode" value="login">
-      <input type="hidden" name="url" value="<!--{$url|escape}-->">
+      <input type="hidden" name="mode" value="login" />
+      <input type="hidden" name="url" value="<!--{$url|escape}-->" />
       <div id="login">
         <!--{if $tpl_login}-->
         <p>ようこそ<br />
@@ -42,11 +42,11 @@
           <a href="<!--{$smarty.const.SSL_URL|sfTrimURL}-->/forgot/index.php" onclick="win01('<!--{$smarty.const.SSL_URL|sfTrimURL}-->/forgot/index.php','forget','600','400'); return false;" target="_blank">パスワードを忘れた方はこちら</a>
         </p>
         <p>
-          <input type="checkbox" name="login_memory" value="1" checked="<!--{$tpl_login_memory|sfGetChecked:1}-->" />
+          <input type="checkbox" name="login_memory" value="1" <!--{$tpl_login_memory|sfGetChecked:1}--> />
           <img src="<!--{$TPL_DIR}-->img/header/memory.gif" width="18" height="9" alt="記憶" />
         </p>
         <p class="btn">
-          <input type="image" onmouseover="chgImgImageSubmit('<!--{$TPL_DIR}-->img/side/button_login_on.gif',this)" onmouseout="chgImgImageSubmit('<!--{$TPL_DIR}-->img/side/button_login.gif',this)" src="<!--{$TPL_DIR}-->img/side/button_login.gif" width="51" height="22" alt="ログイン" border="0" name="subm" />
+          <input type="image" onmouseover="chgImgImageSubmit('<!--{$TPL_DIR}-->img/side/button_login_on.gif',this)" onmouseout="chgImgImageSubmit('<!--{$TPL_DIR}-->img/side/button_login.gif',this)" src="<!--{$TPL_DIR}-->img/side/button_login.gif" style="width: 51px; height: 22px; border: none" alt="ログイン" name="subm" />
         </p>
         <!--{/if}-->
         <!--ログインフォーム-->
