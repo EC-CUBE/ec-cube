@@ -5,7 +5,7 @@
  *}-->
 <!--現在のカゴの中ここから-->
   <h2>
-    <img src="<!--{$TPL_DIR}-->img/side/title_cartin.jpg" width="166" height="35" alt="現在のカゴの中">
+    <img src="<!--{$TPL_DIR}-->img/side/title_cartin.jpg" width="166" height="35" alt="現在のカゴの中" />
   </h2>
   <div id="cartarea">
     <p class="item">商品数：<!--{$arrCartList.0.TotalQuantity|number_format|default:0}-->点</p>
@@ -22,7 +22,7 @@
     </p>
     <p class="btn">
       <a href="<!--{$smarty.const.URL_DIR}-->cart/index.php" onmouseover="chgImg('<!--{$TPL_DIR}-->img/side/button_cartin_on.gif','button_cartin');" onmouseout="chgImg('<!--{$TPL_DIR}-->img/side/button_cartin.gif','button_cartin');">
-        <img src="<!--{$TPL_DIR}-->img/side/button_cartin.gif" width="87" height="22" alt="カゴの中を見る" border="0" name="button_cartin" />
+        <img src="<!--{$TPL_DIR}-->img/side/button_cartin.gif" width="87" height="22" alt="カゴの中を見る" border="0" name="button_cartin" id="button_cartin "/>
       </a>
      </p>
   </div>
