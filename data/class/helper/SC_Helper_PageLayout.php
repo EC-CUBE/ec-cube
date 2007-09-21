@@ -43,7 +43,8 @@ class SC_Helper_PageLayout {
 
         // メインテンプレートファイルを設定
         if (!isset($objPage->tpl_mainpage)) {
-            $objPage->tpl_mainpage = HTML_PATH . $arrPageData[0]['tpl_dir'] . $arrPageData[0]['filename'] . ".tpl";
+            // $objPage->tpl_mainpage = HTML_PATH . $arrPageData[0]['tpl_dir'] . $arrPageData[0]['filename'] . ".tpl";
+            $objPage->tpl_mainpage = TEMPLATE_DIR . $arrPageData[0]['filename'] . ".tpl";
         }
 
         // ページタイトルを設定
@@ -82,7 +83,7 @@ class SC_Helper_PageLayout {
         $sql .= " ,page_name";			// 名称
         $sql .= " ,url";				// URL
         $sql .= " ,php_dir";			// php保存先ディレクトリ
-        $sql .= " ,tpl_dir";			// tpl保存先ディdレクトリ
+        $sql .= " ,tpl_dir";			// tpl保存先ディレクトリ
         $sql .= " ,filename";			// ファイル名称
         $sql .= " ,header_chk ";		// ヘッダー使用FLG
         $sql .= " ,footer_chk ";		// フッター使用FLG
@@ -167,8 +168,8 @@ class SC_Helper_PageLayout {
                         $arrNavi[$key]['php_path'] = HTML_PATH . $val['php_path'];
                         $arrNavi[$key]['include'] = "<!--{include file='".$val['php_path']."'}-->";
                     }else{
-                        $arrNavi[$key]['tpl_path'] = USER_PATH . $val['tpl_path'];
-                        $arrNavi[$key]['include'] = "<!--{include file='". USER_PATH . $val['tpl_path'] ."'}-->";
+                        $arrNavi[$key]['tpl_path'] = TEMPLATE_DIR . $val['tpl_path'];
+                        $arrNavi[$key]['include'] = "<!--{include file='". TEMPLATE_DIR . $val['tpl_path'] ."'}-->";
                     }
 
                     $arrRet[] = $arrNavi[$key];
