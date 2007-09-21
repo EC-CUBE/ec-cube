@@ -1,6 +1,6 @@
 <?php
 
-require_once('./require.php');
+require_once('../require.php');
 
 //ページ管理クラス
 class LC_Page {
