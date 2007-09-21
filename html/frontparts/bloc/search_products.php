@@ -5,10 +5,10 @@
  * http://www.lockon.co.jp/
  */
 class LC_SearchProductsPage {
-	function LC_SearchProductsPage() {
-		/** 必ず変更する **/
-		$this->tpl_mainpage = BLOC_PATH . 'search_products.tpl';	// メイン
-	}
+    function LC_SearchProductsPage() {
+        /** 必ず変更する **/
+        $this->tpl_mainpage = 'include/bloc/search_products.tpl';	// メイン
+    }
 }
 
 $objSubPage = new LC_SearchProductsPage();
@@ -20,14 +20,14 @@ $objSubPage->category_id = sfGetCategoryId($_GET['product_id'], $_GET['category_
 $arrRet = sfGetCategoryList('', true, '　');
 
 if(is_array($arrRet)) {
-	// 文字サイズを制限する
-	foreach($arrRet as $key => $val) {
-		$arrRet[$key] = sfCutString($val, SEARCH_CATEGORY_LEN);
-	}
+    // 文字サイズを制限する
+    foreach($arrRet as $key => $val) {
+        $arrRet[$key] = sfCutString($val, SEARCH_CATEGORY_LEN);
+    }
 }
 $objSubPage->arrCatList = $arrRet;
 
-$objSubView = new SC_SiteView();
+$objSubView = new SC_UserView(USER_PATH);
 $objSubView->assignobj($objSubPage);
 $objSubView->display($objSubPage->tpl_mainpage);
 //-----------------------------------------------------------------------------------------------------------------------------------

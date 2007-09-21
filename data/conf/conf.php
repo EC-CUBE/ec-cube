@@ -1,10 +1,10 @@
 <?php
 /**
- * 
+ *
  * Copyright(c) 2000-2007 LOCKON CO.,LTD. All Rights Reserved.
  *
  * http://www.lockon.co.jp/
- * 
+ *
  */
 
 $CONF_PHP_PATH = realpath( dirname( __FILE__) );
@@ -14,20 +14,20 @@ require_once($CONF_PHP_PATH ."/core.php" );
 //--------------------------------------------------------------------------------------------------------
 /** エラーレベル設定
 /*
- *	'E_ERROR'             => 大な実行時エラー。これは、メモリ確保に関する問題のように復帰で きないエラーを示します。スクリプトの実行は中断されます。 
+ *	'E_ERROR'             => 大な実行時エラー。これは、メモリ確保に関する問題のように復帰で きないエラーを示します。スクリプトの実行は中断されます。
  *	'E_WARNING'           => 実行時の警告 (致命的なエラーではない)。スクリプトの実行は中断さ れません
- *	'E_PARSE'             => コンパイル時のパースエラー。パースエラーはパーサでのみ生成されま す。 
+ *	'E_PARSE'             => コンパイル時のパースエラー。パースエラーはパーサでのみ生成されま す。
  *	'E_NOTICE'            => 実行時の警告。エラーを発しうる状況に遭遇したことを示す。 ただし通常のスクリプト実行の場合にもこの警告を発することがありうる。
- *	'E_CORE_ERROR'        => PHPの初期始動時点での致命的なエラー。E_ERRORに 似ているがPHPのコアによって発行される点が違う。 
- *	'E_CORE_WARNING'      => （致命的ではない）警告。PHPの初期始動時に発生する。 E_WARNINGに似ているがPHPのコアによって発行される 点が違う。 
- *	'E_COMPILE_ERROR'     => コンパイル時の致命的なエラー。E_ERRORに 似ているがZendスクリプティングエンジンによって発行される点が違う。 
- *	'E_COMPILE_WARNING'   => コンパイル時の警告（致命的ではない）。E_WARNINGに 似ているがZendスクリプティングエンジンによって発行される点が違う。 
- *	'E_USER_ERROR'        => ユーザーによって発行されるエラーメッセージ。E_ERROR に似ているがPHPコード上でtrigger_error()関数を 使用した場合に発行される点が違う。 
- *	'E_USER_WARNING'      => ユーザーによって発行される警告メッセージ。E_WARNING に似ているがPHPコード上でtrigger_error()関数を 使用した場合に発行される点が違う。 
- *	'E_USER_NOTICE'       => ユーザーによって発行される注意メッセージ。E_NOTICEに に似ているがPHPコード上でtrigger_error()関数を 使用した場合に発行される点が違う。 
- *	'E_ALL'               => サポートされる全てのエラーと警告。PHP < 6 では E_STRICT レベルのエラーは除く。 
+ *	'E_CORE_ERROR'        => PHPの初期始動時点での致命的なエラー。E_ERRORに 似ているがPHPのコアによって発行される点が違う。
+ *	'E_CORE_WARNING'      => （致命的ではない）警告。PHPの初期始動時に発生する。 E_WARNINGに似ているがPHPのコアによって発行される 点が違う。
+ *	'E_COMPILE_ERROR'     => コンパイル時の致命的なエラー。E_ERRORに 似ているがZendスクリプティングエンジンによって発行される点が違う。
+ *	'E_COMPILE_WARNING'   => コンパイル時の警告（致命的ではない）。E_WARNINGに 似ているがZendスクリプティングエンジンによって発行される点が違う。
+ *	'E_USER_ERROR'        => ユーザーによって発行されるエラーメッセージ。E_ERROR に似ているがPHPコード上でtrigger_error()関数を 使用した場合に発行される点が違う。
+ *	'E_USER_WARNING'      => ユーザーによって発行される警告メッセージ。E_WARNING に似ているがPHPコード上でtrigger_error()関数を 使用した場合に発行される点が違う。
+ *	'E_USER_NOTICE'       => ユーザーによって発行される注意メッセージ。E_NOTICEに に似ているがPHPコード上でtrigger_error()関数を 使用した場合に発行される点が違う。
+ *	'E_ALL'               => サポートされる全てのエラーと警告。PHP < 6 では E_STRICT レベルのエラーは除く。
  *	'E_STRICT'            => ※PHP5からサポート 実行時の注意。コードの相互運用性や互換性を維持するために PHP がコードの変更を提案する。
- *	'E_RECOVERABLE_ERROR' => ※PHP5からサポート キャッチできる致命的なエラー。危険なエラーが発生したが、 エンジンが不安定な状態になるほどではないことを表す。 ユーザ定義のハンドラでエラーがキャッチされなかった場合 (set_error_handler() も参照ください) は、 E_ERROR として異常終了する。 
+ *	'E_RECOVERABLE_ERROR' => ※PHP5からサポート キャッチできる致命的なエラー。危険なエラーが発生したが、 エンジンが不安定な状態になるほどではないことを表す。 ユーザ定義のハンドラでエラーがキャッチされなかった場合 (set_error_handler() も参照ください) は、 E_ERROR として異常終了する。
  */
 error_reporting(E_ALL & ~E_NOTICE);
 //error_reporting(E_ALL);
@@ -69,6 +69,10 @@ define("USER_TEMPLATE_DIR", "templates/");
 define("USER_TEMPLATE_PATH", USER_PATH . USER_TEMPLATE_DIR);
 // テンプレートファイル一時保存先
 define("TEMPLATE_TEMP_DIR", HTML_PATH . "upload/temp_template/");
+
+// テンプレートパッケージ
+define('TPL_PKG_DIR', 'tpl_packages/');
+define('TPL_PKG_PATH', USER_PATH . TPL_PKG_DIR);
 
 // ユーザー作成画面のデフォルトPHPファイル
 define("USER_DEF_PHP", HTML_PATH . "__default.php");
@@ -119,7 +123,7 @@ define("CREDIT_HTTP_ANALYZE_URL", CREDIT_HTTP_DOMAIN . CREDIT_HTTP_ANALYZE_PROGR
 define("CHAR_CODE", "EUC-JP");
 
 // EC-CUBEバージョン情報
-define("ECCUBE_VERSION", "1.4.2-beta");
+define("ECCUBE_VERSION", "1.4.3-beta");
 
 // 決済モジュール付与文言
 define("ECCUBE_PAYMENT", "EC-CUBE");
@@ -136,7 +140,7 @@ define("CLOSE_DAY", 31);	// 締め日の指定(末日の場合は、31を指定してください。)
 define("FAVORITE_ERROR", 13);
 
 /** グラフ関連 **/
-	
+
 define("LIB_DIR", DATA_PATH . "lib/");						// ライブラリのパス
 define("TTF_DIR", DATA_PATH . "fonts/");					// フォントのパス
 define("GRAPH_DIR", HTML_PATH . "upload/graph_image/");		// グラフ格納ディレクトリ
@@ -417,7 +421,7 @@ define ("URL_SHOP_TOP", SSL_URL . "shopping/index.php");						// 会員情報入力
 define ("URL_ENTRY_TOP", SSL_URL . "entry/index.php");	 						// 会員登録ページTOP
 define ("URL_SITE_TOP", URL_DIR . "index.php");									// サイトトップ
 define ("URL_CART_TOP", URL_DIR . "cart/index.php");							// カートトップ
-define ("URL_DELIV_TOP", URL_DIR . "shopping/deliv.php");						// 配送時間設定 
+define ("URL_DELIV_TOP", URL_DIR . "shopping/deliv.php");						// 配送時間設定
 define ("URL_MYPAGE_TOP", SSL_URL . "mypage/login.php");						// Myページトップ
 define ("URL_SHOP_CONFIRM", URL_DIR . "shopping/confirm.php");					// 購入確認ページ
 define ("URL_SHOP_PAYMENT", URL_DIR . "shopping/payment.php");					// お支払い方法選択ページ
@@ -435,7 +439,7 @@ define ("MYPAGE_DELIVADDR_URL", URL_DIR . "mypage/delivery.php");				// マイペー
 /*
  * サイト定義変数
  */
- 
+
 // アクセス権限
 // 0:管理者のみアクセス可能
 // 1:一般以上がアクセス可能
@@ -455,11 +459,11 @@ $arrPERMISSION["/admin/search/delete_note.php"] = 1;
 
 // ログアウト不可ページ
 $arrDISABLE_LOGOUT = array(
-	1 => "/shopping/deliv.php",
-	2 => "/shopping/payment.php",
-	3 => "/shopping/confirm.php",
-	4 => "/shopping/card.php",
-	5 => "/shopping/loan.php",
+    1 => "/shopping/deliv.php",
+    2 => "/shopping/payment.php",
+    3 => "/shopping/confirm.php",
+    4 => "/shopping/card.php",
+    5 => "/shopping/loan.php",
 );
 
 // メンバー管理-権限
@@ -502,60 +506,60 @@ $arrSTATUS_IMAGE[5] = URL_DIR . "img/right_product/icon05.gif";
 
 // 入力許可するタグ
 $arrAllowedTag = array(
-	"table",
-	"tr",
-	"td",
-	"a",
-	"b",
-	"blink",
-	"br",
-	"center",
-	"font",
-	"h",
-	"hr",
-	"img",
-	"li",
-	"strong",
-	"p",
-	"div",
-	"i",
-	"u",
-	"s",
-	"/table",
-	"/tr",
-	"/td",
-	"/a",
-	"/b",
-	"/blink",
-	"/br",
-	"/center",
-	"/font",
-	"/h",
-	"/hr",
-	"/img",
-	"/li",
-	"/strong",
-	"/p",
-	"/div",
-	"/i",
-	"/u",
-	"/s"
+    "table",
+    "tr",
+    "td",
+    "a",
+    "b",
+    "blink",
+    "br",
+    "center",
+    "font",
+    "h",
+    "hr",
+    "img",
+    "li",
+    "strong",
+    "p",
+    "div",
+    "i",
+    "u",
+    "s",
+    "/table",
+    "/tr",
+    "/td",
+    "/a",
+    "/b",
+    "/blink",
+    "/br",
+    "/center",
+    "/font",
+    "/h",
+    "/hr",
+    "/img",
+    "/li",
+    "/strong",
+    "/p",
+    "/div",
+    "/i",
+    "/u",
+    "/s"
 );
 
 // １ページ表示行数
 $arrPageMax = array(
-	10 => "10",
-	20 => "20",
-	30 => "30",
-	40 => "40",
-	50 => "50",
-	60 => "60",
-	70 => "70",
-	80 => "80",
-	90 => "90",
-	100 => "100",
-);	
-	
+    10 => "10",
+    20 => "20",
+    30 => "30",
+    40 => "40",
+    50 => "50",
+    60 => "60",
+    70 => "70",
+    80 => "80",
+    90 => "90",
+    100 => "100",
+);
+
 // メルマガ種別
 $arrMagazineType["1"] = "HTML";
 $arrMagazineType["2"] = "テキスト";
@@ -566,146 +570,146 @@ $arrMagazineTypeAll["3"] = "HTMLテンプレート";
 
 /* メルマガ種別 */
 $arrMAILMAGATYPE = array(
-	1 => "HTMLメール",
-	2 => "テキストメール",
-	3 => "希望しない"
+    1 => "HTMLメール",
+    2 => "テキストメール",
+    3 => "希望しない"
 );
 
 /* おすすめレベル */
 $arrRECOMMEND = array(
-	5 => "★★★★★",
-	4 => "★★★★",
-	3 => "★★★",
-	2 => "★★",
-	1 => "★"
+    5 => "★★★★★",
+    4 => "★★★★",
+    3 => "★★★",
+    2 => "★★",
+    1 => "★"
 );
 
 $arrTAXRULE = array(
-	1 => "四捨五入",
-	2 => "切り捨て",
-	3 => "切り上げ"
+    1 => "四捨五入",
+    2 => "切り捨て",
+    3 => "切り上げ"
 );
 
 
 // メールテンプレートの種類
 $arrMAILTEMPLATE = array(
-	 1 => "PC：注文受付メール"
-	,2 => "PC：注文キャンセル受付メール"
-	,3 => "PC：取り寄せ確認メール"
-	,4 => "携帯：注文受付メール"
-	,5 => "携帯：注文キャンセル受付メール"
-	,6 => "携帯：取り寄せ確認メール"
+     1 => "PC：注文受付メール"
+    ,2 => "PC：注文キャンセル受付メール"
+    ,3 => "PC：取り寄せ確認メール"
+    ,4 => "携帯：注文受付メール"
+    ,5 => "携帯：注文キャンセル受付メール"
+    ,6 => "携帯：取り寄せ確認メール"
 );
 
 // 各テンプレートのパス
 $arrMAILTPLPATH = array(
-	1 => "mail_templates/order_mail.tpl",
+    1 => "mail_templates/order_mail.tpl",
     2 => "mobile/mail_templates/order_mail.tpl"
 );
 
 /* 都道府県配列 */
 $arrPref = array(
-					1 => "北海道",
-					2 => "青森県",
-					3 => "岩手県",
-					4 => "宮城県",
-					5 => "秋田県",
-					6 => "山形県",
-					7 => "福島県",
-					8 => "茨城県",
-					9 => "栃木県",
-					10 => "群馬県",
-					11 => "埼玉県",
-					12 => "千葉県",
-					13 => "東京都",
-					14 => "神奈川県",
-					15 => "新潟県",
-					16 => "富山県",
-					17 => "石川県",
-					18 => "福井県",
-					19 => "山梨県",
-					20 => "長野県",
-					21 => "岐阜県",
-					22 => "静岡県",
-					23 => "愛知県",
-					24 => "三重県",
-					25 => "滋賀県",
-					26 => "京都府",
-					27 => "大阪府",
-					28 => "兵庫県",
-					29 => "奈良県",
-					30 => "和歌山県",
-					31 => "鳥取県",
-					32 => "島根県",
-					33 => "岡山県",
-					34 => "広島県",
-					35 => "山口県",
-					36 => "徳島県",
-					37 => "香川県",
-					38 => "愛媛県",
-					39 => "高知県",
-					40 => "福岡県",
-					41 => "佐賀県",
-					42 => "長崎県",
-					43 => "熊本県",
-					44 => "大分県",
-					45 => "宮崎県",
-					46 => "鹿児島県",
-					47 => "沖縄県"
-				);
-				
+                    1 => "北海道",
+                    2 => "青森県",
+                    3 => "岩手県",
+                    4 => "宮城県",
+                    5 => "秋田県",
+                    6 => "山形県",
+                    7 => "福島県",
+                    8 => "茨城県",
+                    9 => "栃木県",
+                    10 => "群馬県",
+                    11 => "埼玉県",
+                    12 => "千葉県",
+                    13 => "東京都",
+                    14 => "神奈川県",
+                    15 => "新潟県",
+                    16 => "富山県",
+                    17 => "石川県",
+                    18 => "福井県",
+                    19 => "山梨県",
+                    20 => "長野県",
+                    21 => "岐阜県",
+                    22 => "静岡県",
+                    23 => "愛知県",
+                    24 => "三重県",
+                    25 => "滋賀県",
+                    26 => "京都府",
+                    27 => "大阪府",
+                    28 => "兵庫県",
+                    29 => "奈良県",
+                    30 => "和歌山県",
+                    31 => "鳥取県",
+                    32 => "島根県",
+                    33 => "岡山県",
+                    34 => "広島県",
+                    35 => "山口県",
+                    36 => "徳島県",
+                    37 => "香川県",
+                    38 => "愛媛県",
+                    39 => "高知県",
+                    40 => "福岡県",
+                    41 => "佐賀県",
+                    42 => "長崎県",
+                    43 => "熊本県",
+                    44 => "大分県",
+                    45 => "宮崎県",
+                    46 => "鹿児島県",
+                    47 => "沖縄県"
+                );
+
 /* 職業配列 */
 $arrJob = array(
-					1 => "公務員",
-					2 => "コンサルタント",
-					3 => "コンピュータ関連技術職",
-					4 => "コンピュータ関連以外の技術職",
-					5 => "金融関係",
-					6 => "医師",
-					7 => "弁護士",
-					8 => "総務・人事・事務",
-					9 => "営業・販売",
-					10 => "研究・開発",
-					11 => "広報・宣伝",
-					12 => "企画・マーケティング",
-					13 => "デザイン関係",
-					14 => "会社経営・役員",
-					15 => "出版・マスコミ関係",
-					16 => "学生・フリーター",
-					17 => "主婦",
-					18 => "その他"
-				);
+                    1 => "公務員",
+                    2 => "コンサルタント",
+                    3 => "コンピュータ関連技術職",
+                    4 => "コンピュータ関連以外の技術職",
+                    5 => "金融関係",
+                    6 => "医師",
+                    7 => "弁護士",
+                    8 => "総務・人事・事務",
+                    9 => "営業・販売",
+                    10 => "研究・開発",
+                    11 => "広報・宣伝",
+                    12 => "企画・マーケティング",
+                    13 => "デザイン関係",
+                    14 => "会社経営・役員",
+                    15 => "出版・マスコミ関係",
+                    16 => "学生・フリーター",
+                    17 => "主婦",
+                    18 => "その他"
+                );
 
 /* パスワードの答え配列 */
 $arrReminder = array(
-						1 => "親の旧姓は？",
-						2 => "お気に入りのマンガは？",
-						3 => "大好きなペットの名前は？",
-						4 => "初恋の人の名前は？",
-						5 => "面白かった映画は？",
-						6 => "尊敬していた先生の名前は？",
-						7 => "好きな食べ物は？"
-					);
+                        1 => "親の旧姓は？",
+                        2 => "お気に入りのマンガは？",
+                        3 => "大好きなペットの名前は？",
+                        4 => "初恋の人の名前は？",
+                        5 => "面白かった映画は？",
+                        6 => "尊敬していた先生の名前は？",
+                        7 => "好きな食べ物は？"
+                    );
 /*　性別配列　*/
 $arrSex = array(
-					1 => "男性",
-					2 => "女性"
-				);
+                    1 => "男性",
+                    2 => "女性"
+                );
 
 /*　メールアドレス種別　*/
 define ("MAIL_TYPE_PC",1);
 define ("MAIL_TYPE_MOBILE",2);
 $arrMailType = array(
-					MAIL_TYPE_PC => "パソコン用メールアドレス",
-					MAIL_TYPE_MOBILE => "携帯用メールアドレス"
-				);	
+                    MAIL_TYPE_PC => "パソコン用メールアドレス",
+                    MAIL_TYPE_MOBILE => "携帯用メールアドレス"
+                );
 
 /*  携帯ドメイン指定　*/
 $arrDOMAIN = array(
                         1 => "PCドメイン",
                         2 => "携帯ドメイン"
                     );
-				
+
 
 $arrDomainType = array(
                       1 => "@docomo.ne.jp",
@@ -725,21 +729,21 @@ $arrDomainType = array(
                       15 => "@dj.pdx.ne.jp",
                       16 => "@dk.pdx.ne.jp",
                       17 => "@wm.pdx.ne.jp"
-                  );				
-				
-/*　1行数　*/		
+                  );
+
+/*　1行数　*/
 $arrPageRows = array(
-						10 => 10,
-						20 => 20,
-						30 => 30,
-						40 => 40,
-						50 => 50,
-						60 => 60,
-						70 => 70,
-						80 => 80,
-						90 => 90,
-						100 => 100,
-					);
+                        10 => 10,
+                        20 => 20,
+                        30 => 30,
+                        40 => 40,
+                        50 => 50,
+                        60 => 60,
+                        70 => 70,
+                        80 => 80,
+                        90 => 90,
+                        100 => 100,
+                    );
 
 /* 受注ステータス */
 define ("ORDER_NEW",1);	 		// 新規注文
@@ -751,12 +755,12 @@ define ("ORDER_DELIV",5);		// 発送済み
 
 /* 受注ステータス */
 $arrORDERSTATUS = array(
-	ORDER_NEW        => "新規受付",
-	ORDER_PAY_WAIT   => "入金待ち",
-	ORDER_PRE_END    => "入金済み",
-	ORDER_CANCEL     => "キャンセル",
-	ORDER_BACK_ORDER => "取り寄せ中",
-	ORDER_DELIV      => "発送済み"
+    ORDER_NEW        => "新規受付",
+    ORDER_PAY_WAIT   => "入金待ち",
+    ORDER_PRE_END    => "入金済み",
+    ORDER_CANCEL     => "キャンセル",
+    ORDER_BACK_ORDER => "取り寄せ中",
+    ORDER_DELIV      => "発送済み"
 );
 
 // 受注ステータス変更の際にポイント等を加算するステータス番号（発送済み）
@@ -764,31 +768,31 @@ define("ODERSTATUS_COMMIT", ORDER_DELIV);
 
 /* 商品種別の表示色 */
 $arrPRODUCTSTATUS_COLOR = array(
-	1 => "#FFFFFF",
-	2 => "#C9C9C9",
-	3 => "#DDE6F2"
+    1 => "#FFFFFF",
+    2 => "#C9C9C9",
+    3 => "#DDE6F2"
 );
 
 $arrORDERSTATUS_COLOR = array(
-	1 => "#FFFFFF",
-	2 => "#FFDE9B",
-	3 => "#C9C9C9",
-	4 => "#FFD9D9",
-	5 => "#BFDFFF",
-	6 => "#FFFFAB"
+    1 => "#FFFFFF",
+    2 => "#FFDE9B",
+    3 => "#C9C9C9",
+    4 => "#FFD9D9",
+    5 => "#BFDFFF",
+    6 => "#FFFFAB"
 );
 
 // 曜日
 $arrWDAY = array(
-	0 => "日",
-	1 => "月",
-	2 => "火",
-	3 => "水",
-	4 => "木",
-	5 => "金",
-	6 => "土"
-);			
-		
+    0 => "日",
+    1 => "月",
+    2 => "火",
+    3 => "水",
+    4 => "木",
+    5 => "金",
+    6 => "土"
+);
+
 /* 新着情報管理画面 */
 define ("ADMIN_NEWS_STARTYEAR", 2005);	// 開始年(西暦)
 
@@ -804,15 +808,15 @@ define ("BEST_MIN", 3);				// ベスト商品の最小登録数（登録数が満たない場合は表示
 
 //発送日目安
 $arrDELIVERYDATE = array(
-	1 => "即日",
-	2 => "1〜2日後",
-	3 => "3〜4日後",
-	4 => "1週間以降",
-	5 => "2週間以降",
-	6 => "3週間以降",
-	7 => "1ヶ月以降",
-	8 => "2ヶ月以降",
-	9 => "お取り寄せ(商品入荷後)"
+    1 => "即日",
+    2 => "1〜2日後",
+    3 => "3〜4日後",
+    4 => "1週間以降",
+    5 => "2週間以降",
+    6 => "3週間以降",
+    7 => "1ヶ月以降",
+    8 => "2ヶ月以降",
+    9 => "お取り寄せ(商品入荷後)"
 );
 
 /* 配達可能な日付以降のプルダウン表示最大日数 */
@@ -823,9 +827,9 @@ define("PURCHASE_CUSTOMER_REGIST", 0);	//1:有効　0:無効
 
 /* 商品リスト表示件数 */
 $arrPRODUCTLISTMAX = array(
-	15 => '15件',
-	30 => '30件',
-	50 => '50件'
+    15 => '15件',
+    30 => '30件',
+    50 => '50件'
 );
 
 /* この商品を買った人はこんな商品も買っています　表示件数 */
@@ -835,20 +839,20 @@ define("RELATED_PRODUCTS_MAX", 3);
 
 //コンビニの種類
 $arrCONVENIENCE = array(
-	1 => 'セブンイレブン',
-	2 => 'ファミリーマート',
-	3 => 'サークルKサンクス',
-	4 => 'ローソン・セイコーマート',
-	5 => 'ミニストップ・デイリーヤマザキ・ヤマザキデイリーストア',
+    1 => 'セブンイレブン',
+    2 => 'ファミリーマート',
+    3 => 'サークルKサンクス',
+    4 => 'ローソン・セイコーマート',
+    5 => 'ミニストップ・デイリーヤマザキ・ヤマザキデイリーストア',
 );
 
 //各種コンビニ用メッセージ
 $arrCONVENIMESSAGE = array(
-	1 => "上記URLから振込票を印刷、もしくは振込票番号を紙に控えて、全国のセブンイレブンにてお支払いください。",
-	2 => "企業コード、受付番号を紙などに控えて、全国のファミリーマートにお支払いください。",
-	3 => "上記URLから振込票を印刷、もしくはケータイ決済番号を紙などに控えて、全国のサークルKサンクスにてお支払ください。",
-	4 => "振込票番号を紙に控えて、全国のローソンまたはセイコーマートにてお支払いください。",
-	5 => "上記URLから振込票を印刷し、全国のミニストップ・デイリーヤマザキ・ヤマザキデイリーストアにてお支払いください。"
+    1 => "上記URLから振込票を印刷、もしくは振込票番号を紙に控えて、全国のセブンイレブンにてお支払いください。",
+    2 => "企業コード、受付番号を紙などに控えて、全国のファミリーマートにお支払いください。",
+    3 => "上記URLから振込票を印刷、もしくはケータイ決済番号を紙などに控えて、全国のサークルKサンクスにてお支払ください。",
+    4 => "振込票番号を紙に控えて、全国のローソンまたはセイコーマートにてお支払いください。",
+    5 => "上記URLから振込票を印刷し、全国のミニストップ・デイリーヤマザキ・ヤマザキデイリーストアにてお支払いください。"
 );
 
 //支払期限
@@ -861,17 +865,17 @@ define("CAMPAIGN_REGIST_MAX", 20);
 
 //DBの種類
 $arrDB = array(
-	1 => 'PostgreSQL',
-	2 => 'MySQL'
+    1 => 'PostgreSQL',
+    2 => 'MySQL'
 );
 
 // ブロック配置
 $arrTarget = array(
-	1 => "LeftNavi",
-	2 => "MainHead",
-	3 => "RightNavi",
-	4 => "MainFoot",
-	5 => "Unused"
+    1 => "LeftNavi",
+    2 => "MainHead",
+    3 => "RightNavi",
+    4 => "MainFoot",
+    5 => "Unused"
 );
 
 /*--------- ▲商品レビュー用 ---------*/
@@ -897,9 +901,9 @@ define ("TRACKBACK_TO_URL", SITE_URL . "tb/index.php?pid=");	// トラックバック先
 
 // 状態
 $arrTrackBackStatus = array(
-	1 => "表示",
-	2 => "非表示",
-	3 => "スパム"
+    1 => "表示",
+    2 => "非表示",
+    3 => "スパム"
 );
 
 /*--------- ▲サイト管理用 ---------*/
@@ -909,18 +913,18 @@ define ("SITE_CONTROL_AFFILIATE", 2);		// アフィリエイト
 
 // トラックバック
 $arrSiteControlTrackBack = array(
-	1 => "有効",
-	2 => "無効"
+    1 => "有効",
+    2 => "無効"
 );
 
 // アフィリエイト
 $arrSiteControlAffiliate = array(
-	1 => "有効",
-	2 => "無効"
+    1 => "有効",
+    2 => "無効"
 );
 
 /*--------- ▲エビスタグモジュール用 ---------*/
-/** 
+/**
  * 項目を変更する場合の依存関係：
  * 属性情報の定数、$arrEBiSTagOptions
  * module.incのlfThanksPageTag()のswitch文に処理を追加
@@ -996,31 +1000,31 @@ $arrJobEN = array(
 
 // ViewのWhere句置換用
 $arrViewWhere = array(
-	"&&crscls_where&&" => "",
-	"&&crsprdcls_where&&" =>"",
-	"&&noncls_where&&" => "",
-	"&&allcls_where&&" => "",
-	"&&allclsdtl_where&&" => "",
-	"&&prdcls_where&&" => "",
-	"&&catcnt_where&&" => ""
+    "&&crscls_where&&" => "",
+    "&&crsprdcls_where&&" =>"",
+    "&&noncls_where&&" => "",
+    "&&allcls_where&&" => "",
+    "&&allclsdtl_where&&" => "",
+    "&&prdcls_where&&" => "",
+    "&&catcnt_where&&" => ""
 );
 
 // View変換用(MySQL対応)
 
 $arrView = array(
-	"vw_cross_class" => '
-		(SELECT T1.class_id AS class_id1, T2.class_id AS class_id2, T1.classcategory_id AS classcategory_id1, T2.classcategory_id AS classcategory_id2, T1.name AS name1, T2.name AS name2, T1.rank AS rank1, T2.rank AS rank2
-		FROM dtb_classcategory AS T1, dtb_classcategory AS T2 ) ',
+    "vw_cross_class" => '
+        (SELECT T1.class_id AS class_id1, T2.class_id AS class_id2, T1.classcategory_id AS classcategory_id1, T2.classcategory_id AS classcategory_id2, T1.name AS name1, T2.name AS name2, T1.rank AS rank1, T2.rank AS rank2
+        FROM dtb_classcategory AS T1, dtb_classcategory AS T2 ) ',
 
-	"vw_cross_products_class" =>'
-		(SELECT T1.class_id1, T1.class_id2, T1.classcategory_id1, T1.classcategory_id2, T2.product_id,
-		T1.name1, T1.name2, T2.product_code, T2.stock, T2.price01, T2.price02, T1.rank1, T1.rank2
-		FROM (SELECT T1.class_id AS class_id1, T2.class_id AS class_id2, T1.classcategory_id AS classcategory_id1, T2.classcategory_id AS classcategory_id2, T1.name AS name1, T2.name AS name2, T1.rank AS rank1, T2.rank AS rank2
-		FROM dtb_classcategory AS T1, dtb_classcategory AS T2 ) AS T1 LEFT JOIN dtb_products_class AS T2 
-		ON T1.classcategory_id1 = T2.classcategory_id1 AND T1.classcategory_id2 = T2.classcategory_id2) ',
+    "vw_cross_products_class" =>'
+        (SELECT T1.class_id1, T1.class_id2, T1.classcategory_id1, T1.classcategory_id2, T2.product_id,
+        T1.name1, T1.name2, T2.product_code, T2.stock, T2.price01, T2.price02, T1.rank1, T1.rank2
+        FROM (SELECT T1.class_id AS class_id1, T2.class_id AS class_id2, T1.classcategory_id AS classcategory_id1, T2.classcategory_id AS classcategory_id2, T1.name AS name1, T2.name AS name2, T1.rank AS rank1, T2.rank AS rank2
+        FROM dtb_classcategory AS T1, dtb_classcategory AS T2 ) AS T1 LEFT JOIN dtb_products_class AS T2
+        ON T1.classcategory_id1 = T2.classcategory_id1 AND T1.classcategory_id2 = T2.classcategory_id2) ',
 
-	"vw_products_allclass" => '
-		(SELECT
+    "vw_products_allclass" => '
+        (SELECT
         product_id,
         product_code_min,
         product_code_max,
@@ -1055,124 +1059,124 @@ $arrView = array(
         dtb_products AS T1 RIGHT JOIN (SELECT product_id AS product_id_sub, MIN(product_code) AS product_code_min, MAX(product_code) AS product_code_max, MIN(price01) AS price01_min, MAX(price01) AS price01_max, MIN(price02) AS price02_min, MAX(price02) AS price02_max, MIN(stock) AS stock_min, MAX(stock) AS stock_max, MIN(stock_unlimited) AS stock_unlimited_min, MAX(stock_unlimited) AS stock_unlimited_max FROM dtb_products_class GROUP BY product_id) AS T2 ON T1.product_id = T2.product_id_sub
     ) ',
 
-	"vw_products_allclass_detail" => '
-		(SELECT product_id,price01_min,price01_max,price02_min,price02_max,stock_min,stock_max,stock_unlimited_min,stock_unlimited_max,
-		del_flg,status,name,comment1,comment2,comment3,deliv_fee,main_comment,main_image,main_large_image,
-		sub_title1,sub_comment1,sub_image1,sub_large_image1,
-		sub_title2,sub_comment2,sub_image2,sub_large_image2,
-		sub_title3,sub_comment3,sub_image3,sub_large_image3,
-		sub_title4,sub_comment4,sub_image4,sub_large_image4,
-		sub_title5,sub_comment5,sub_image5,sub_large_image5,
-		product_flag,deliv_date_id,sale_limit,point_rate,sale_unlimited,file1,file2,category_id
-		FROM ( SELECT * FROM (dtb_products AS T1 RIGHT JOIN 
-		(SELECT 
-		product_id AS product_id_sub,
-		MIN(price01) AS price01_min,
-		MAX(price01) AS price01_max,
-		MIN(price02) AS price02_min,
-		MAX(price02) AS price02_max,
-		MIN(stock) AS stock_min,
-		MAX(stock) AS stock_max,
-		MIN(stock_unlimited) AS stock_unlimited_min,
-		MAX(stock_unlimited) AS stock_unlimited_max
-		FROM dtb_products_class GROUP BY product_id) AS T2
-		ON T1.product_id = T2.product_id_sub ) ) AS T3 LEFT JOIN (SELECT rank AS category_rank, category_id AS sub_category_id FROM dtb_category) AS T4
-		ON T3.category_id = T4.sub_category_id) ',
+    "vw_products_allclass_detail" => '
+        (SELECT product_id,price01_min,price01_max,price02_min,price02_max,stock_min,stock_max,stock_unlimited_min,stock_unlimited_max,
+        del_flg,status,name,comment1,comment2,comment3,deliv_fee,main_comment,main_image,main_large_image,
+        sub_title1,sub_comment1,sub_image1,sub_large_image1,
+        sub_title2,sub_comment2,sub_image2,sub_large_image2,
+        sub_title3,sub_comment3,sub_image3,sub_large_image3,
+        sub_title4,sub_comment4,sub_image4,sub_large_image4,
+        sub_title5,sub_comment5,sub_image5,sub_large_image5,
+        product_flag,deliv_date_id,sale_limit,point_rate,sale_unlimited,file1,file2,category_id
+        FROM ( SELECT * FROM (dtb_products AS T1 RIGHT JOIN
+        (SELECT
+        product_id AS product_id_sub,
+        MIN(price01) AS price01_min,
+        MAX(price01) AS price01_max,
+        MIN(price02) AS price02_min,
+        MAX(price02) AS price02_max,
+        MIN(stock) AS stock_min,
+        MAX(stock) AS stock_max,
+        MIN(stock_unlimited) AS stock_unlimited_min,
+        MAX(stock_unlimited) AS stock_unlimited_max
+        FROM dtb_products_class GROUP BY product_id) AS T2
+        ON T1.product_id = T2.product_id_sub ) ) AS T3 LEFT JOIN (SELECT rank AS category_rank, category_id AS sub_category_id FROM dtb_category) AS T4
+        ON T3.category_id = T4.sub_category_id) ',
 
-	"vw_product_class" => '
-		(SELECT * FROM 
-		(SELECT T3.product_class_id, T3.product_id AS product_id_sub, classcategory_id1, classcategory_id2, 
-		T3.rank AS rank1, T4.rank AS rank2, T3.class_id AS class_id1, T4.class_id AS class_id2,
-		stock, price01, price02, stock_unlimited, product_code
-		FROM ( SELECT 
-		        T1.product_class_id,
-		        T1.product_id,
-		        classcategory_id1,
-		        classcategory_id2,
-		        T2.rank,
-		        T2.class_id,
-		        stock,
-		        price01,
-		        price02,
-		        stock_unlimited,
-		        product_code		
-		 FROM (dtb_products_class AS T1 LEFT JOIN dtb_classcategory AS T2
-		ON T1.classcategory_id1 = T2.classcategory_id))
-		AS T3 LEFT JOIN dtb_classcategory AS T4
-		ON T3.classcategory_id2 = T4.classcategory_id) AS T5 LEFT JOIN dtb_products AS T6
-		ON product_id_sub = T6.product_id) ',
+    "vw_product_class" => '
+        (SELECT * FROM
+        (SELECT T3.product_class_id, T3.product_id AS product_id_sub, classcategory_id1, classcategory_id2,
+        T3.rank AS rank1, T4.rank AS rank2, T3.class_id AS class_id1, T4.class_id AS class_id2,
+        stock, price01, price02, stock_unlimited, product_code
+        FROM ( SELECT
+                T1.product_class_id,
+                T1.product_id,
+                classcategory_id1,
+                classcategory_id2,
+                T2.rank,
+                T2.class_id,
+                stock,
+                price01,
+                price02,
+                stock_unlimited,
+                product_code
+         FROM (dtb_products_class AS T1 LEFT JOIN dtb_classcategory AS T2
+        ON T1.classcategory_id1 = T2.classcategory_id))
+        AS T3 LEFT JOIN dtb_classcategory AS T4
+        ON T3.classcategory_id2 = T4.classcategory_id) AS T5 LEFT JOIN dtb_products AS T6
+        ON product_id_sub = T6.product_id) ',
 
-	"vw_category_count" => '
-		(SELECT T1.category_id, T1.category_name, T1.parent_category_id, T1.level, T1.rank, T2.product_count
-		FROM dtb_category AS T1 LEFT JOIN dtb_category_total_count AS T2
-		ON T1.category_id = T2.category_id) '
+    "vw_category_count" => '
+        (SELECT T1.category_id, T1.category_name, T1.parent_category_id, T1.level, T1.rank, T2.product_count
+        FROM dtb_category AS T1 LEFT JOIN dtb_category_total_count AS T2
+        ON T1.category_id = T2.category_id) '
 );
 
 $vw_products_nonclass = "
-		(SELECT 
-		    T1.product_id,
-		    T1.name,
-		    T1.deliv_fee,
-		    T1.sale_limit,
-		    T1.sale_unlimited,
-		    T1.category_id,
-		    T1.rank,
-		    T1.status,
-		    T1.product_flag,
-		    T1.point_rate,
-		    T1.comment1,
-		    T1.comment2,
-		    T1.comment3,
-		    T1.comment4,
-		    T1.comment5,
-		    T1.comment6,
-		    T1.file1,
-		    T1.file2,
-		    T1.file3,
-		    T1.file4,
-		    T1.file5,
-		    T1.file6,
-		    T1.main_list_comment,
-		    T1.main_list_image,
-		    T1.main_comment,
-		    T1.main_image,
-		    T1.main_large_image,";
-            
+        (SELECT
+            T1.product_id,
+            T1.name,
+            T1.deliv_fee,
+            T1.sale_limit,
+            T1.sale_unlimited,
+            T1.category_id,
+            T1.rank,
+            T1.status,
+            T1.product_flag,
+            T1.point_rate,
+            T1.comment1,
+            T1.comment2,
+            T1.comment3,
+            T1.comment4,
+            T1.comment5,
+            T1.comment6,
+            T1.file1,
+            T1.file2,
+            T1.file3,
+            T1.file4,
+            T1.file5,
+            T1.file6,
+            T1.main_list_comment,
+            T1.main_list_image,
+            T1.main_comment,
+            T1.main_image,
+            T1.main_large_image,";
+
 for ($cnt = 1; $cnt <= PRODUCTSUB_MAX; $cnt++) {
             $vw_products_nonclass.= "
-		    T1.sub_title$cnt,
-		    T1.sub_comment$cnt,
-		    T1.sub_image$cnt,
+            T1.sub_title$cnt,
+            T1.sub_comment$cnt,
+            T1.sub_image$cnt,
             T1.sub_large_image$cnt,";
 }
 
 $vw_products_nonclass.= "
-		    T1.del_flg,
-		    T1.creator_id,
-		    T1.create_date,
-		    T1.update_date,
-		    T1.deliv_date_id,
-		    T2.product_id_sub,
-		    T2.product_code,
-		    T2.price01,
-		    T2.price02,
-		    T2.stock,
-		    T2.stock_unlimited,
-		    T2.classcategory_id1,
-		    T2.classcategory_id2
-		FROM (SELECT * FROM dtb_products &&noncls_where&&) AS T1 LEFT JOIN 
-		(SELECT
-		product_id AS product_id_sub,
-		product_code,
-		price01,
-		price02,
-		stock,
-		stock_unlimited,
-		classcategory_id1,
-		classcategory_id2
-		FROM dtb_products_class WHERE classcategory_id1 = 0 AND classcategory_id2 = 0) 
-		AS T2
-		ON T1.product_id = T2.product_id_sub) ";
+            T1.del_flg,
+            T1.creator_id,
+            T1.create_date,
+            T1.update_date,
+            T1.deliv_date_id,
+            T2.product_id_sub,
+            T2.product_code,
+            T2.price01,
+            T2.price02,
+            T2.stock,
+            T2.stock_unlimited,
+            T2.classcategory_id1,
+            T2.classcategory_id2
+        FROM (SELECT * FROM dtb_products &&noncls_where&&) AS T1 LEFT JOIN
+        (SELECT
+        product_id AS product_id_sub,
+        product_code,
+        price01,
+        price02,
+        stock,
+        stock_unlimited,
+        classcategory_id1,
+        classcategory_id2
+        FROM dtb_products_class WHERE classcategory_id1 = 0 AND classcategory_id2 = 0)
+        AS T2
+        ON T1.product_id = T2.product_id_sub) ";
 
 $arrView['vw_products_nonclass'] = $vw_products_nonclass;
 ?>
