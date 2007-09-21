@@ -254,7 +254,8 @@ class LC_Page_Products_List extends LC_Page {
 
         $strnavi = $objNavi->strnavi;
         $strnavi = str_replace('onclick="fnNaviPage', 'onclick="form1.mode.value=\''.'\'; fnNaviPage', $strnavi);
-        $this->tpl_strnavi = $strnavi;       // 表示文字列
+        // 表示文字列
+        $this->tpl_strnavi = empty($strnavi) ? "&nbsp;" : $strnavi;
         $startno = $objNavi->start_row;                 // 開始行
 
         // 取得範囲の指定(開始行番号、行数のセット)
