@@ -13,7 +13,7 @@ require_once(CLASS_PATH . "pages/LC_Page.php");
  *
  * @package Page
  * @author LOCKON CO.,LTD.
- * @version $Id$
+ * @version $Id:LC_Page_Products_Review.php 15532 2007-08-31 14:39:46Z nanasess $
  */
 class LC_Page_Products_Review extends LC_Page {
 
@@ -74,6 +74,8 @@ class LC_Page_Products_Review extends LC_Page {
                                      array(  "column" => "comment", "convert" => "aKV" ),
 
                                 );
+
+        if (!isset($_POST['mode'])) $_POST['mode'] = "";
         switch ($_POST['mode']){
         case 'confirm':
             $arrForm = $this->lfConvertParam($_POST, $arrRegistColumn);
@@ -198,7 +200,7 @@ class LC_Page_Products_Review extends LC_Page {
         // 文字変換
         foreach ($arrConvList as $key => $val) {
             // POSTされてきた値のみ変換する。
-            if(strlen(($array[$key])) > 0) {
+            if(!empty($array[$key])) {
                 $array[$key] = mb_convert_kana($array[$key] ,$val);
             }
         }
