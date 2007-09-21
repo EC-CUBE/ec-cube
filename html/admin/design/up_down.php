@@ -9,7 +9,8 @@ require_once DATA_PATH . "module/Tar.php";
 require_once DATA_PATH . 'include/file_manager.inc';
 
 // ログインチェック
-sfIsSuccess(new SC_Session());
+$objSession = new SC_Session();
+sfIsSuccess($objSession);
 
 class LC_Page {
     var $tpl_mainpage = 'design/up_down.tpl';
@@ -25,16 +26,27 @@ class LC_Page {
 $objPage = new LC_Page();
 $objPage->now_template = lfGetNowTemplate();
 
+// uniqidをテンプレートへ埋め込み
+$objPage->uniqid = $objSession->getUniqId();
+
 switch(lfGetMode()) {
 
 // ダウンロードボタン押下時の処理
 case 'download':
+    // 画面遷移の正当性チェック
+    if (!sfIsValidTransition($objSession)) {
+        sfDispError('');
+    }
     lfDownloadCreatedFiles();
     exit;
     break;
 
 // アップロードボタン押下時の処理
 case 'upload':
+    // 画面遷移の正当性チェック
+    if (!sfIsValidTransition($objSession)) {
+        sfDispError('');
+    }
     // フォームパラメータ初期化
     $objForm = lfInitUpload();
     // エラーチェック
@@ -221,7 +233,7 @@ function lfRegisterTemplates($arrForm) {
 }
 /**
  * ユーザが作成したファイルをアーカイブしダウンロードさせる
- *
+ * TODO 要リファクタリング
  * @param void
  * @return void
  */
@@ -231,6 +243,7 @@ function lfDownloadCreatedFiles() {
     $tmpUserEditDir = $tmpDir . 'user_edit/';
 
     if (!mkdir($tmpDir)) return ;
+    if (!mkdir($tmpDir . 'templates')) return ;
     if (!mkdir($tmpUserEditDir)) return ;
 
     lfCopyTplPackage($tmpDir);
@@ -285,8 +298,9 @@ function lfCopyUserEdit($to) {
  */
 function lfCopyTplPackage($to) {
     $nowTpl = lfGetNowTemplate();
-    $from = TPL_PKG_PATH . $nowTpl . '/';
+    if (!$nowTpl) return;
 
+    $from = TPL_PKG_PATH . $nowTpl . '/';
     sfCopyDir($from, $to, '');
 }
 /**
