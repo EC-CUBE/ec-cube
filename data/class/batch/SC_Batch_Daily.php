@@ -5,6 +5,9 @@
  * http://www.lockon.co.jp/
  */
 
+// {{{ requires
+require_once(CLASS_PATH . "batch/SC_Batch.php");
+
 /**
  * 日次バッチクラス.
  *
