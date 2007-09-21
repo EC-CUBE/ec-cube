@@ -362,7 +362,7 @@ class LC_Page_Admin_Products_ProductClass extends LC_Page {
          *  n :  「全角」数字を「半角(ﾊﾝｶｸ)」に変換
          */
 
-        $no = 1;
+        $no = 1; // FIXME 未定義変数の修正
         while($array["classcategory_id1:".$no] != "") {
             $arrConvList["product_code:".$no] = "KVa";
             $arrConvList["price01:".$no] = "n";
@@ -384,8 +384,7 @@ class LC_Page_Admin_Products_ProductClass extends LC_Page {
     // 商品規格エラーチェック
     function lfProductClassError($array) {
         $objErr = new SC_CheckError($array);
-        $no = 1;
-
+        $no = 1; // FIXME 未定義変数の修正
         while($array["classcategory_id1:".$no] != "") {
             if($array["check:".$no] == 1) {
                 $objErr->doFunc(array("商品コード", "product_code:".$no, STEXT_LEN), array("MAX_LENGTH_CHECK"));
