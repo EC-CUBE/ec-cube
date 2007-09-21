@@ -13,7 +13,7 @@ require_once(CLASS_PATH . "pages/LC_Page.php");
  *
  * @package Page
  * @author LOCKON CO.,LTD.
- * @version $Id$
+ * @version $Id:LC_Page_Products_Detail.php 15532 2007-08-31 14:39:46Z nanasess $
  */
 class LC_Page_Products_Detail extends LC_Page {
 
@@ -218,7 +218,12 @@ class LC_Page_Products_Detail extends LC_Page {
         $this->arrRelateProducts = $this->lfGetRelateProducts($tmp_id);
 
         // 拡大画像のウィンドウサイズをセット
-        $image_path = IMAGE_SAVE_DIR . basename($this->arrFile["main_large_image"]["filepath"]);
+        if (isset($this->arrFile["main_large_image"])) {
+            $image_path = IMAGE_SAVE_DIR . basename($this->arrFile["main_large_image"]["filepath"]);
+        } else {
+            $image_path = "";
+        }
+
         list($large_width, $large_height) = getimagesize($image_path);
         $this->tpl_large_width = $large_width + 60;
         $this->tpl_large_height = $large_height + 80;
