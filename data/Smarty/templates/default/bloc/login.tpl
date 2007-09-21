@@ -4,6 +4,7 @@
  * http://www.lockon.co.jp/
  *}-->
 <!--▼ログインここから-->
+<!--{* FIXME *}-->
 <!--{if $smarty.post.url == ""}-->
     <!--{if sfIsHTTPS}-->
         <!--{assign var=url value="https://`$smarty.server.HTTP_HOST``$smarty.server.REQUEST_URI`"}-->
