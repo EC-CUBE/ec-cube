@@ -6,7 +6,7 @@
 <!--▼おすすめ情報ここから-->
 <div id="recomendarea">
   <h2>
-    <img src="<!--{$TPL_DIR}-->img/top/osusume.jpg" width="400" height="29" alt="おすすめ情報">
+    <img src="<!--{$TPL_DIR}-->img/top/osusume.jpg" width="400" height="29" alt="おすすめ情報" />
   </h2>
   <!--{section name=cnt loop=$arrBestProducts step=2}-->
   <div class="recomendblock">
@@ -18,7 +18,7 @@
     <!--{/if}-->
 
       <a href="<!--{$smarty.const.URL_DIR}-->products/detail.php?product_id=<!--{$arrBestProducts[cnt].product_id}-->">
-        <img src="<!--{$smarty.const.SITE_URL}-->resize_image.php?image=<!--{$image_path|sfRmDupSlash}-->&width=48&height=48" alt="<!--{$arrBestProducts[cnt].name|escape}-->">
+        <img src="<!--{$smarty.const.SITE_URL}-->resize_image.php?image=<!--{$image_path|sfRmDupSlash}-->&width=48&height=48" alt="<!--{$arrBestProducts[cnt].name|escape}-->" />
       </a>
 
       <h3>
@@ -49,7 +49,7 @@
         <!--{/if}-->
 
       <a href="<!--{$smarty.const.URL_DIR}-->products/detail.php?product_id=<!--{$arrBestProducts[$cnt2].product_id}-->">
-        <img src="<!--{$smarty.const.SITE_URL}-->resize_image.php?image=<!--{$image_path|sfRmDupSlash}-->&width=48&height=48" alt="<!--{$arrBestProducts[$cnt2].name|escape}-->">
+        <img src="<!--{$smarty.const.SITE_URL}-->resize_image.php?image=<!--{$image_path|sfRmDupSlash}-->&width=48&height=48" alt="<!--{$arrBestProducts[$cnt2].name|escape}-->" />
       </a>
 
       <h3>
