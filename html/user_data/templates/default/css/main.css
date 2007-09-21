@@ -133,6 +133,9 @@ div#information {
 div#information ul li {
     display: inline;
 }
+div#information ul li a {
+    text-decoration: none;
+}
 /* フレーム
 ----------------------------------------------- */
 div#container {
