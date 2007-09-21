@@ -27,6 +27,7 @@ class SC_PageNavi {
     // コンストラクタ
     function SC_PageNavi($now_page, $all_row, $page_row, $func_name, $navi_max = NAVI_PMAX) {
         $this->arrPagenavi['mode'] = 'search';
+        $ps = htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES);
 
         //現在ページ($now_page)が正しい数値でない場合
         if (!eregi("^[[:digit:]]+$", $now_page) || $now_page < 1 || $now_page == "") {
@@ -58,14 +59,14 @@ class SC_PageNavi {
             $next = "";
             // FIXME ちゃんとサニタイズしよう
             if ($this->now_page > 1) {
-                $before="<a href=\"". $_SERVER['PHP_SELF']. "\" onclick=\"$func_name('" . (($this->now_page) - 1) . "'); return false;\"><<前へ</a> ";
+                $before="<a href=\"". $ps . "\" onclick=\"$func_name('" . (($this->now_page) - 1) . "'); return false;\"><<前へ</a> ";
                 $this->arrPagenavi['before'] = ($this->now_page) - 1;
             }else{
                 $this->arrPagenavi['before'] = $this->now_page;
             }
 
             if ($this->now_page < $this->max_page) {
-                $next="<a href=\"". $_SERVER['PHP_SELF']. "\" onclick=\"$func_name('" . (($this->now_page) + 1) ."'); return false;\">次へ>></a> ";
+                $next="<a href=\"". $ps . "\" onclick=\"$func_name('" . (($this->now_page) + 1) ."'); return false;\">次へ>></a> ";
                 $this->arrPagenavi['next'] = ($this->now_page) + 1;
             }else{
                 $this->arrPagenavi['next'] = $this->now_page;
@@ -105,7 +106,7 @@ class SC_PageNavi {
                 if ($i == $this->now_page) {
                     $page_number .= "<strong>$i</strong> ";
                 } else {
-                    $page_number.="<a href=\"". $_SERVER['PHP_SELF']. "\" onclick=\"$func_name('$i'); return false;\">$i</a> ";
+                    $page_number.="<a href=\"".  $ps . "\" onclick=\"$func_name('$i'); return false;\">$i</a> ";
                 }
 
                 $page_number.=$sep;
