@@ -1698,7 +1698,7 @@ class SC_Utils {
     function printXMLDeclaration() {
         $ua = $_SERVER['HTTP_USER_AGENT'];
         if (!preg_match("/MSIE/", $ua) || preg_match("/MSIE 7/", $ua)) {
-            print('<?xml version="1.0" encoding="' . CHAR_CODE . '"?>');
+            print("<?xml version='1.0' encoding='" . CHAR_CODE . "'?>\n");
         }
     }
 
