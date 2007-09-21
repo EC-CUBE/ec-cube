@@ -242,6 +242,9 @@ class LC_Page_Products_List extends LC_Page {
             $arrval[] = "%$ret%";
         }
 
+        if (empty($arrval)) {
+            $arrval = array();
+        }
         // 行数の取得
         $linemax = $objQuery->count("vw_products_allclass AS allcls", $where, $arrval);
         $this->tpl_linemax = $linemax;   // 何件が該当しました。表示用
