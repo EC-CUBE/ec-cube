@@ -13,7 +13,7 @@ require_once(CLASS_PATH . "pages/LC_Page.php");
  *
  * @package Page
  * @author LOCKON CO.,LTD.
- * @version $Id$
+ * @version $Id:LC_Page_Products_List.php 15532 2007-08-31 14:39:46Z nanasess $
  */
 class LC_Page_Products_List extends LC_Page {
 
@@ -99,7 +99,7 @@ class LC_Page_Products_List extends LC_Page {
         if(($count >= BEST_MIN) && $this->lfIsRootCategory($category_id) && ($_GET['mode'] != 'search') ) {
             // 商品TOPの表示処理
             /** 必ず指定する **/
-            $this->tpl_mainpage = HTML_PATH . "user_data/templates/list.tpl";        // メインテンプレート
+            $this->tpl_mainpage = TEMPLATE_DIR . "list.tpl";        // メインテンプレート
 
             $this->arrBestItems = SC_Utils_Ex::sfGetBestProducts($conn, $category_id);
             $this->BEST_ROOP_MAX = ceil((BEST_MAX-1)/2);
@@ -206,7 +206,7 @@ class LC_Page_Products_List extends LC_Page {
         $this->tpl_pageno = isset($_POST['pageno']) ? $_POST['pageno'] : "";
 
         //表示件数でテンプレートを切り替える
-        $this->tpl_mainpage = HTML_PATH . "user_data/templates/list.tpl";        // メインテンプレート
+        $this->tpl_mainpage = TEMPLATE_DIR . "list.tpl";        // メインテンプレート
 
         //表示順序
         switch($orderby) {
