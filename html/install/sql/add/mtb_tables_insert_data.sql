@@ -212,8 +212,6 @@ INSERT INTO mtb_constants VALUES ('SAMPLE_ADDRESS2','"番地・ビル名（例�
 INSERT INTO mtb_constants VALUES ('USER_DIR','"user_data/"',3,'ユーザファイル保存先');
 INSERT INTO mtb_constants VALUES ('USER_PATH','HTML_PATH . USER_DIR',4,'ユーザファイル保存先');
 INSERT INTO mtb_constants VALUES ('USER_INC_PATH','USER_PATH . "include/"',5,'ユーザインクルードファイル保存先');
-INSERT INTO mtb_constants VALUES ('BLOC_DIR','"include/bloc/"',6,'ブロックファイル保存先');
-INSERT INTO mtb_constants VALUES ('BLOC_PATH','USER_PATH . BLOC_DIR',7,'ブロックファイル保存先');
 INSERT INTO mtb_constants VALUES ('CAMPAIGN_DIR','"cp/"',8,'キャンペーンファイル保存先');
 INSERT INTO mtb_constants VALUES ('CAMPAIGN_URL','URL_DIR . CAMPAIGN_DIR',9,'キャンペーン関連');
 INSERT INTO mtb_constants VALUES ('CAMPAIGN_PATH','HTML_PATH . CAMPAIGN_DIR',10,'キャンペーン関連');
@@ -491,3 +489,5 @@ INSERT INTO mtb_constants VALUES ('DEFAULT_TEMPLATE_NAME', '"default"', 300,'デ
 INSERT INTO mtb_constants VALUES ('TEMPLATE_NAME', 'DEFAULT_TEMPLATE_NAME', 301,'テンプレート名');
 INSERT INTO mtb_constants VALUES ('TEMPLATE_ADMIN_DIR','DATA_PATH . "Smarty/templates/" . TEMPLATE_NAME . "/admin"', 302,'SMARTYテンプレート(管理ページ)');
 INSERT INTO mtb_constants VALUES ('TEMPLATE_DIR','DATA_PATH . "Smarty/" . TEMPLATE_NAME . "/templates"', 303,'SMARTYテンプレート');
+INSERT INTO mtb_constants VALUES ('BLOC_DIR','"bloc/"',304,'ブロックファイル保存先');
+INSERT INTO mtb_constants VALUES ('BLOC_PATH','USER_PATH . BLOC_DIR',305,'ブロックファイル保存先');
