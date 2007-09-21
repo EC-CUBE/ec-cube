@@ -13,7 +13,7 @@ require_once(CLASS_PATH . "pages/LC_Page.php");
  *
  * @package Page
  * @author LOCKON CO.,LTD.
- * @version $Id$
+ * @version $Id:LC_Page_Index.php 15532 2007-08-31 14:39:46Z nanasess $
  */
 class LC_Page_Index extends LC_Page {
 
@@ -27,8 +27,7 @@ class LC_Page_Index extends LC_Page {
      */
     function init() {
         parent::init();
-        $this->tpl_mainpage = HTML_PATH . "user_data/templates/top.tpl";
-        $this->tpl_css = URL_DIR . 'css/layout/index.css';
+        $this->tpl_mainpage =  TEMPLATE_DIR . "top.tpl";
     }
 
     /**
