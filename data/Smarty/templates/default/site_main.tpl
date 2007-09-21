@@ -38,8 +38,11 @@
   </div>
   <!--▲LEFT COLUMN-->
 
+  <!--{if $arrPageLayout.MainHead|@count > 0 || $arrPageLayout.MainFoot|@count > 0  }-->
   <!--▼CENTER COLUMN-->
   <div id="centercolumn">
+  <!--{/if}-->
+
     <!--▼メイン上部-->
     <!--{if $arrPageLayout.MainHead|@count > 0}-->
       <!--{foreach key=MainHeadKey item=MainHeadItem from=$arrPageLayout.MainHead}-->
@@ -69,8 +72,11 @@
       <!--{/foreach}-->
     <!--{/if}-->
     <!--▲メイン下部-->
+
+  <!--{if $arrPageLayout.MainHead|@count > 0 || $arrPageLayout.MainFoot|@count > 0  }-->
   </div>
   <!--▲CENTER COLUMN-->
+  <!--{/if}-->
 
   <!--▼RIGHT COLUMN-->
   <div id="rightcolumn">
