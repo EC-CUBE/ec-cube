@@ -917,7 +917,9 @@ class SC_CheckError {
      */
     function createParam($value) {
         foreach ($value as $key) {
-            if (!isset($this->arrParam[$key])) $this->arrParam[$key] = "";
+            if (is_string($key) || is_int($key)) {
+                if (empty($this->arrParam[$key]))  $this->arrParam[$key] = "";
+            }
         }
     }
 }
