@@ -28,10 +28,10 @@ class LC_Page_Admin_Products_ProductSelect extends LC_Page {
     function init() {
         parent::init();
         $this->tpl_mainpage = 'products/product_select.tpl';
-		$this->tpl_mainno = 'products';
-		$this->tpl_subnavi = '';
-		$this->tpl_subno = "";
-		$this->tpl_subtitle = '商品選択';
+        $this->tpl_mainno = 'products';
+        $this->tpl_subnavi = '';
+        $this->tpl_subno = "";
+        $this->tpl_subtitle = '商品選択';
 
     }
 
@@ -102,8 +102,11 @@ class LC_Page_Admin_Products_ProductSelect extends LC_Page {
 
             $objQuery = new SC_Query();
             // 行数の取得
+            if (empty($arrval)) {
+                $arrval = array();
+            }
             $linemax = $objQuery->count("dtb_products", $where, $arrval);
-            $this->tpl_linemax = $linemax;				// 何件が該当しました。表示用
+            $this->tpl_linemax = $linemax;              // 何件が該当しました。表示用
 
             // ページ送りの処理
             if(isset($_POST['search_page_max'])
@@ -115,7 +118,7 @@ class LC_Page_Admin_Products_ProductSelect extends LC_Page {
 
             // ページ送りの取得
             $objNavi = new SC_PageNavi($_POST['search_pageno'], $linemax, $page_max, "fnNaviSearchOnlyPage", NAVI_PMAX);
-            $this->tpl_strnavi = $objNavi->strnavi;		// 表示文字列
+            $this->tpl_strnavi = $objNavi->strnavi;     // 表示文字列
             $startno = $objNavi->start_row;
 
             // 取得範囲の指定(開始行番号、行数のセット)
@@ -150,11 +153,11 @@ class LC_Page_Admin_Products_ProductSelect extends LC_Page {
     /* 取得文字列の変換 */
     function lfConvertParam() {
         /*
-         *	文字列の変換
-         *	K :  「半角(ﾊﾝｶｸ)片仮名」を「全角片仮名」に変換
-         *	C :  「全角ひら仮名」を「全角かた仮名」に変換
-         *	V :  濁点付きの文字を一文字に変換。"K","H"と共に使用します
-         *	n :  「全角」数字を「半角(ﾊﾝｶｸ)」に変換
+         *  文字列の変換
+         *  K :  「半角(ﾊﾝｶｸ)片仮名」を「全角片仮名」に変換
+         *  C :  「全角ひら仮名」を「全角かた仮名」に変換
+         *  V :  濁点付きの文字を一文字に変換。"K","H"と共に使用します
+         *  n :  「全角」数字を「半角(ﾊﾝｶｸ)」に変換
          */
         $arrConvList['search_name'] = "KVa";
         $arrConvList['search_product_code'] = "KVa";
