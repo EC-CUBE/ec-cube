@@ -33,7 +33,7 @@ class LC_Page_Admin_Products_Review extends LC_Page {
         $this->tpl_subnavi = 'products/subnavi.tpl';
         $this->tpl_mainno = 'products';
         $this->tpl_subno = 'review';
-        $this->tpl_pager = DATA_PATH . 'Smarty/templates/admin/pager.tpl';
+        $this->tpl_pager = TEMPLATE_DIR . 'admin/pager.tpl';
         $this->tpl_subtitle = 'レビュー管理';
 
         $masterData = new SC_DB_MasterData_Ex();
