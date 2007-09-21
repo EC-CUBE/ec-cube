@@ -49,7 +49,7 @@
 									<td colspan="3"><img src="<!--{$TPL_DIR}-->img/contents/main_bar.jpg" width="678" height="10" alt=""></td>
 								</tr>
 							</table>
-							<table width="678" border="0" cellspacing="1" cellpadding="8" summary=" ">				
+							<table width="678" border="0" cellspacing="1" cellpadding="8" summary=" ">
 								<tr>
 									<td bgcolor="#f2f1ec" width="160" class="fs12n">商品名</td>
 									<td bgcolor="#ffffff" width="557" class="fs12n">
@@ -73,11 +73,11 @@
 									<td bgcolor="#f2f1ec" width="160" class="fs12n">商品ステータス</td>
 									<td bgcolor="#ffffff" width="557" class="fs12n">
 									<!--{section name=cnt loop=$arrForm.product_flag|count_characters}-->
-										<!--{if $arrForm.product_flag[cnt] == "1"}--><!--{assign var=key value="`$smarty.section.cnt.iteration`"}--><img src="<!--{$arrSTATUS_IMAGE[$key]}-->"><!--{/if}-->
+										<!--{if $arrForm.product_flag[cnt] == "1"}--><!--{assign var=key value="`$smarty.section.cnt.iteration`"}--><img src="<!--{$TPL_DIR}--><!--{$arrSTATUS_IMAGE[$key]}-->"><!--{/if}-->
 									<!--{/section}-->
 									</td>
 								</tr>
-								
+
 								<!--{if $tpl_nonclass == true}-->
 								<tr>
 									<td bgcolor="#f2f1ec" width="160" class="fs12n">商品コード</td>
@@ -119,7 +119,7 @@
 									<td bgcolor="#ffffff" width="557" class="fs12n">
 									<!--{$arrDELIVERYDATE[$arrForm.deliv_date_id]|escape}-->
 									</td>
-								</tr>			
+								</tr>
 								<tr>
 									<td bgcolor="#f2f1ec" width="160" class="fs12n">購入制限</td>
 									<td bgcolor="#ffffff" width="557" class="fs12n">
@@ -225,10 +225,10 @@
 								</tr>
 								<!--▲商品<!--{$smarty.section.cnt.iteration}-->-->
 								<!--{/section}-->
-								
-								<!--{if $smarty.const.OPTION_RECOMMEND == 1}-->	
+
+								<!--{if $smarty.const.OPTION_RECOMMEND == 1}-->
 								<!--▼関連商品-->
-								<!--{section name=cnt loop=$smarty.const.RECOMMEND_PRODUCT_MAX}-->			
+								<!--{section name=cnt loop=$smarty.const.RECOMMEND_PRODUCT_MAX}-->
 								<!--{assign var=recommend_no value="`$smarty.section.cnt.iteration`"}-->
 								<tr>
 									<td bgcolor="#f2f1ec" width="160" class="fs12n">関連商品(<!--{$smarty.section.cnt.iteration}-->)<br>
@@ -283,9 +283,9 @@
 						<td colspan="3"><img src="<!--{$TPL_DIR}-->img/contents/main_bottom.jpg" width="706" height="14" alt=""></td>
 					</tr>
 					<tr><td height="30"></td></tr>
-			
+
 					</table>
-						
+
 					<!--▲登録テーブルここまで-->
 					</form>
 					<!--▲MAIN CONTENTS-->
