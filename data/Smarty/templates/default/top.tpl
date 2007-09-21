@@ -4,5 +4,5 @@
  * http://www.lockon.co.jp/
  *}-->
 <div id="flasharea">
-  <img src="<!--{$TPL_DIR}-->img/main/image.gif" alt="EC-CUBEイメージ"/>
+  <img src="<!--{$TPL_DIR}-->img/main/image.gif" alt="EC-CUBEイメージ" />
 </div>
