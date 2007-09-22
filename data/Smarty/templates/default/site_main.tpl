@@ -38,7 +38,9 @@
   </div>
   <!--▲LEFT COLUMN-->
 
-  <!--{if $arrPageLayout.MainHead|@count > 0 || $arrPageLayout.MainFoot|@count > 0  }-->
+
+  <!--{assign var=top_tpl value="`$smarty.const.TEMPLATE_DIR`top.tpl"}-->
+  <!--{if $tpl_mainpage == $top_tpl}-->
   <!--▼CENTER COLUMN-->
   <div id="centercolumn">
   <!--{/if}-->
@@ -73,7 +75,7 @@
     <!--{/if}-->
     <!--▲メイン下部-->
 
-  <!--{if $arrPageLayout.MainHead|@count > 0 || $arrPageLayout.MainFoot|@count > 0  }-->
+  <!--{if $tpl_mainpage == $top_tpl}-->
   </div>
   <!--▲CENTER COLUMN-->
   <!--{/if}-->
