@@ -83,8 +83,7 @@ function lnSetSelect(name1, name2, id, val) {
      <div class="listrightblock">
        <!--アイコン-->
        <!--商品ステータス-->
-       <!--{assign var=sts_cnt value=0}-->
-       <!--{if $sts_cnt > 0}-->
+       <!--{if count($arrProducts[cnt].product_flag) > 0}-->
        <ul>
          <!--{section name=flg loop=$arrProducts[cnt].product_flag|count_characters}-->
            <!--{if $arrProducts[cnt].product_flag[flg] == "1"}-->
