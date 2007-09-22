@@ -6,7 +6,7 @@
  */
 
 /** フロント表示関連 */
-define('SAMPLE_ADDRESS1', "市区町村名（例：千代田区神田神保町）");
+define('SAMPLE_ADDRESS1', "市区町村名（例：東京都千代田区神田神保町）");
 /** フロント表示関連 */
 define('SAMPLE_ADDRESS2', "番地・ビル名（例：1-3-5）");
 /** ユーザファイル保存先 */
@@ -15,10 +15,6 @@ define('USER_DIR', "user_data/");
 define('USER_PATH', HTML_PATH . USER_DIR);
 /** ユーザインクルードファイル保存先 */
 define('USER_INC_PATH', USER_PATH . "include/");
-/** ブロックファイル保存先 */
-define('BLOC_DIR', "include/bloc/");
-/** ブロックファイル保存先 */
-define('BLOC_PATH', USER_PATH . BLOC_DIR);
 /** キャンペーンファイル保存先 */
 define('CAMPAIGN_DIR', "cp/");
 /** キャンペーン関連 */
@@ -289,10 +285,6 @@ define('SALE_PRICE_TITLE', "販売価格");
 define('LOG_PATH', DATA_PATH . "logs/site.log");
 /** 会員ログイン ログファイル */
 define('CUSTOMER_LOG_PATH', DATA_PATH . "logs/customer.log");
-/** SMARTYテンプレート */
-define('TEMPLATE_ADMIN_DIR', DATA_PATH . "Smarty/templates/admin");
-/** SMARTYテンプレート */
-define('TEMPLATE_DIR', DATA_PATH . "Smarty/templates");
 /** SMARTYコンパイル */
 define('COMPILE_ADMIN_DIR', DATA_PATH . "Smarty/templates_c/admin");
 /** SMARTYコンパイル */
@@ -379,7 +371,6 @@ define('DELIVTIME_MAX', 16);
 define('DELIVFEE_MAX', 47);
 /** 短い項目の文字数（名前など) */
 define('STEXT_LEN', 50);
-/**  */
 define('SMTEXT_LEN', 100);
 /** 長い項目の文字数（住所など） */
 define('MTEXT_LEN', 200);
@@ -569,4 +560,16 @@ define('TRACKBACK_TO_URL', SITE_URL . "tb/index.php?pid=");
 define('SITE_CONTROL_TRACKBACK', 1);
 /** サイト管理 アフィリエイト */
 define('SITE_CONTROL_AFFILIATE', 2);
+/** デフォルトテンプレート名 */
+define('DEFAULT_TEMPLATE_NAME', "default");
+/** テンプレート名 */
+define('TEMPLATE_NAME', DEFAULT_TEMPLATE_NAME);
+/** SMARTYテンプレート(管理ページ) */
+define('TEMPLATE_ADMIN_DIR', DATA_PATH . "Smarty/templates/" . TEMPLATE_NAME . "/admin/");
+/** SMARTYテンプレート */
+define('TEMPLATE_DIR', DATA_PATH . "Smarty/templates/" . TEMPLATE_NAME . "/");
+/** ブロックファイル保存先 */
+define('BLOC_DIR', "bloc/");
+/** ブロックファイル保存先 */
+define('BLOC_PATH', TEMPLATE_DIR . BLOC_DIR);
 ?>
