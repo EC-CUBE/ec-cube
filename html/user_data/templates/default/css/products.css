@@ -279,6 +279,22 @@ div#customervoicearea li {
     background: url("../img/common/line_580.gif") no-repeat bottom;
 }
 
+/* トラックバック
+----------------------------------------------- */
+div#trackbackarea {
+    clear: both;
+    width: 580px;
+    padding: 35px 0 0 0;
+}
+
+div#trackbackarea h2 {
+    padding: 0 0 10px 0;
+}
+
+div#trackbackarea .box500 {
+    width: 500px;
+    border: solid 1px #ccc;
+}
 
 /* この商品を買った人はこんな商品も買っています
 ----------------------------------------------- */
