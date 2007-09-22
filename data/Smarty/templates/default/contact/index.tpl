@@ -25,11 +25,11 @@
           姓&nbsp;<input type="text"
                          class="box120"
                          name="name01"
-                         value="<!--{$name01|escape|default:$arrData.name01|escape}-->"
+                         value="<!--{$name01|default:$arrData.name01|escape}-->"
                          maxlength="<!--{$smarty.const.STEXT_LEN}-->"
                          style="<!--{$arrErr.name01|sfGetErrorColor}-->" />　
           名&nbsp;<input type="text" class="box120" name="name02"
-                         value="<!--{$name02|escape|default:$arrData.name02|escape}-->"
+                         value="<!--{$name02|default:$arrData.name02|escape}-->"
                          maxlength="<!--{$smarty.const.STEXT_LEN}-->"
                          style="<!--{$arrErr.name02|sfGetErrorColor}-->" />
         </td>
@@ -41,13 +41,13 @@
           セイ&nbsp;<input type="text"
                            class="box120"
                            name="kana01"
-                           value="<!--{$kana01|escape|default:$arrData.kana01|escape}-->"
+                           value="<!--{$kana01|default:$arrData.kana01|escape}-->"
                            maxlength="<!--{$smarty.const.STEXT_LEN}-->"
                            style="<!--{$arrErr.kana01|sfGetErrorColor}-->" />　
           メイ&nbsp;<input type="text"
                            class="box120"
                            name="kana02"
-                           value="<!--{$kana02|escape|default:$arrData.kana02|escape}-->"
+                           value="<!--{$kana02|default:$arrData.kana02|escape}-->"
                            maxlength="<!--{$smarty.const.STEXT_LEN}-->"
                            style="<!--{$arrErr.kana02|sfGetErrorColor}-->" />
         </td>
@@ -61,13 +61,13 @@
             <input type="text"
                    name="zip01"
                    class="box60"
-                   value="<!--{$zip01|escape|default:$arrData.zip01|escape}-->"
+                   value="<!--{$zip01|default:$arrData.zip01|escape}-->"
                    maxlength="<!--{$smarty.const.ZIP01_LEN}-->"
                    style="<!--{$arrErr.zip01|sfGetErrorColor}-->" />&nbsp;-&nbsp;
             <input type="text"
                    name="zip02"
                    class="box60"
-                   value="<!--{$zip02|escape|default:$arrData.zip02|escape}-->"
+                   value="<!--{$zip02|default:$arrData.zip02|escape}-->"
                    maxlength="<!--{$smarty.const.ZIP02_LEN}-->"
                    style="<!--{$arrErr.zip02|sfGetErrorColor}-->" />　
             <a href="http://search.post.japanpost.jp/7zip/" target="_blank"><span class="fs10">郵便番号検索</span></a>
@@ -87,14 +87,14 @@
           
           <select name="pref" style="<!--{$arrErr.pref|sfGetErrorColor}-->">
           <option value="">都道府県を選択</option>
-          <!--{html_options options=$arrPref selected=$pref|escape|default:$arrData.pref|escape}-->
+          <!--{html_options options=$arrPref selected=$pref|default:$arrData.pref|escape}-->
           </select>
           
           <p class="mini">
             <input type="text"
                    class="box380"
                    name="addr01"
-                   value="<!--{$addr01|escape|default:$arrData.addr01|escape}-->"
+                   value="<!--{$addr01|default:$arrData.addr01|escape}-->"
                    style="<!--{$arrErr.addr01|sfGetErrorColor}-->" /><br />
             <!--{$smarty.const.SAMPLE_ADDRESS1}-->
           </p>
@@ -103,7 +103,7 @@
             <input type="text"
                    class="box380"
                    name="addr02"
-                   value="<!--{$addr02|escape|default:$arrData.addr02|escape}-->"
+                   value="<!--{$addr02|default:$arrData.addr02|escape}-->"
                    style="<!--{$arrErr.addr02|sfGetErrorColor}-->" /><br />
             <!--{$smarty.const.SAMPLE_ADDRESS1}-->
           </p>
@@ -118,19 +118,19 @@
           <input type="text" 
                  class="box60"
                  name="tel01"
-                 value="<!--{$tel01|escape|default:$arrData.tel01|escape}-->"
+                 value="<!--{$tel01|default:$arrData.tel01|escape}-->"
                  maxlength="<!--{$smarty.const.TEL_ITEM_LEN}-->"
                  style="<!--{$arrErr.tel01|sfGetErrorColor}-->" />&nbsp;-&nbsp;
           <input type="text" 
                  class="box60"
                  name="tel02"
-                 value="<!--{$tel02|escape|default:$arrData.tel02|escape}-->"
+                 value="<!--{$tel02|default:$arrData.tel02|escape}-->"
                  maxlength="<!--{$smarty.const.TEL_ITEM_LEN}-->"
                  style="<!--{$arrErr.tel02|sfGetErrorColor}-->" />&nbsp;-&nbsp;
           <input type="text" 
                  class="box60"
                  name="tel03"
-                 value="<!--{$tel03|escape|default:$arrData.tel03|escape}-->"
+                 value="<!--{$tel03|default:$arrData.tel03|escape}-->"
                  maxlength="<!--{$smarty.const.TEL_ITEM_LEN}-->"
                  style="<!--{$arrErr.tel03|sfGetErrorColor}-->" />
         </td>
@@ -142,7 +142,7 @@
           <input type="text"
                  class="box380"
                  name="email"
-                 value="<!--{$email|escape|default:$arrData.email|escape}-->"
+                 value="<!--{$email|default:$arrData.email|escape}-->"
                  maxlength="<!--{$smarty.const.MTEXT_LEN}-->"
                  style="<!--{$arrErr.email|sfGetErrorColor}-->" /><br />
           <!--{* ログインしていれば入力済みにする *}-->
