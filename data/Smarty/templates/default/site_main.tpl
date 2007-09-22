@@ -39,8 +39,7 @@
   <!--▲LEFT COLUMN-->
 
 
-  <!--{assign var=top_tpl value="`$smarty.const.TEMPLATE_DIR`top.tpl"}-->
-  <!--{if $tpl_mainpage == $top_tpl}-->
+  <!--{if $tpl_column_num == 3}-->
   <!--▼CENTER COLUMN-->
   <div id="centercolumn">
   <!--{/if}-->
@@ -75,10 +74,9 @@
     <!--{/if}-->
     <!--▲メイン下部-->
 
-  <!--{if $tpl_mainpage == $top_tpl}-->
+  <!--{if $tpl_column_num == 3}-->
   </div>
   <!--▲CENTER COLUMN-->
-  <!--{/if}-->
 
   <!--▼RIGHT COLUMN-->
   <div id="rightcolumn">
@@ -97,6 +95,7 @@
     <!--▲右ナビ-->
   </div>
   <!--▲RIGHT COLUMN-->
+  <!--{/if}-->
 
 </div>
 <!--▲CONTENTS-->
