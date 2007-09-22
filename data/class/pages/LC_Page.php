@@ -27,7 +27,7 @@ class LC_Page {
     var $tpl_mainpage;
 
     /** テンプレートのカラム数 */
-    var $tpl_column_numl = 2;
+    var $tpl_column_num = 2;
 
     /** メインナンバー */
     var $tpl_mainno;
