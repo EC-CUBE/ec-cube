@@ -27,7 +27,7 @@ $objView = new SC_SiteView();
 $objView->assignobj($objPage);
 $objView->display(SITE_FRAME);
 $end_time=$start_time = sfGetMicrotime_float();
-echo 'Script Execution Time: ' . round($end - $start, 3) . ' seconds'; 
+sfprintr( 'Script Execution Time: ' . round($end - $start, 3) . ' seconds'); 
 //-----------------------------------------------------------------------------------------------------------------------------------
 // Function to calculate script execution time. 
 function sfGetMicrotime_float () { 
