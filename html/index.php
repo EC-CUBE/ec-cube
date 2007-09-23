@@ -4,7 +4,8 @@
  *
  * http://www.lockon.co.jp/
  */
-
+$start_time = sfGetMicrotime_float();
+ 
 require_once("./require.php");
 
 class LC_Page {
@@ -25,5 +26,14 @@ $objPage = sfGetPageLayout($objPage, false, "index.php");
 $objView = new SC_SiteView();
 $objView->assignobj($objPage);
 $objView->display(SITE_FRAME);
+$end_time=$start_time = sfGetMicrotime_float();
+echo 'Script Execution Time: ' . round($end - $start, 3) . ' seconds'; 
 //-----------------------------------------------------------------------------------------------------------------------------------
+// Function to calculate script execution time. 
+function sfGetMicrotime_float () { 
+	list ($msec, $sec) = explode(' ', microtime()); 
+	$microtime = (float)$msec + (float)$sec; 
+	return $microtime; 
+} 
+
 ?>
