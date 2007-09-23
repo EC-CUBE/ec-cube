@@ -31,7 +31,7 @@ $objView->display(SITE_FRAME);
 $end_time=$start_time = sfGetMicrotime_float();
 sfprintr( 'Script Execution Time: ' . round($end - $start, 3) . ' seconds'); 
 //-----------------------------------------------------------------------------------------------------------------------------------
-// Function to calculate script execution time. 
+// Function to calculate script execution time.  
 function sfGetMicrotime_float () { 
 	list ($msec, $sec) = explode(' ', microtime()); 
 	$microtime = (float)$msec + (float)$sec; 
