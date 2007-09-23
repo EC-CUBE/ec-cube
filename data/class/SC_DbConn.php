@@ -10,10 +10,12 @@ require_once($current_dir . "/../module/DB.php");
 require_once($current_dir . "/../module/MDB2.php");
 
 $objDbConn = "";
+$objDbConnMDB2 = "";
 
 class SC_DbConn{
 
 	var $conn;
+    var $conn_mdb2;
 	var $result; 
 	var $includePath;
 	var $error_mail_to;
@@ -35,6 +37,7 @@ class SC_DbConn{
 			} else {
 				if(defined('DEFAULT_DSN')) {
 					$objDbConn = DB::connect(DEFAULT_DSN, $options);
+					$objDbConnMDB2 =& MDB2::factory($dsn); 
 					$this->dsn = DEFAULT_DSN;
 				} else {
 					return;
@@ -42,6 +45,7 @@ class SC_DbConn{
 			}
 		}
 		$this->conn = $objDbConn;
+		$this->conn_mdb2 = $objDbConnMDB2;
 		$this->error_mail_to = DB_ERROR_MAIL_TO;
 		$this->error_mail_title = DB_ERROR_MAIL_SUBJECT;
 		$this->err_disp = $err_disp;
@@ -115,9 +119,11 @@ class SC_DbConn{
         }
 
 		if ( $arr ){
-			$result = $this->conn->getAll($n, $arr, DB_FETCHMODE_ASSOC);
+			//$result = $this->conn->getAll($n, $arr, DB_FETCHMODE_ASSOC);
+            $result = $this->conn_mdb2->queryAll($n, $arr, DB_FETCHMODE_ASSOC);
 		} else {
-			$result = $this->conn->getAll($n, DB_FETCHMODE_ASSOC);
+			//$result = $this->conn->getAll($n, DB_FETCHMODE_ASSOC);
+            $result = $this->conn_mdb2->queryAll($n, DB_FETCHMODE_ASSOC);
 		}
 		
 		if ($this->conn->isError($result)){
