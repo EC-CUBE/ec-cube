@@ -48,7 +48,7 @@ class SC_DbConn{
 				}
 			}
 		}
-        $objDbConnMDB2->queryAll("SELECT * FROM dtb_baseinfo"); 
+//        $objDbConnMDB2->queryAll("SELECT * FROM dtb_baseinfo"); 
         
 		$this->conn = $objDbConn;
 		$this->conn_mdb2 = $objDbConnMDB2;
