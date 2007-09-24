@@ -48,6 +48,7 @@ class SC_DbConn{
 				}
 			}
 		}
+        $objDbConnMDB2->setFetchMode(MDB2_FETCHMODE_ASSOC); 
         
 		$this->conn = $objDbConn;
 		$this->conn_mdb2 = $objDbConnMDB2;
@@ -55,7 +56,6 @@ class SC_DbConn{
 		$this->error_mail_title = DB_ERROR_MAIL_SUBJECT;
 		$this->err_disp = $err_disp;
         
-        $this->conn_mdb2->setFetchMode(MDB2_FETCHMODE_ASSOC); 
 	}
 	
 	// クエリの実行
