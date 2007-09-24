@@ -928,7 +928,7 @@ class MDB2
         // safe_mode does notwork with is_readable()
         if (!@ini_get('safe_mode')) {
              $dirs = explode(PATH_SEPARATOR, ini_get('include_path'));
-             //$dirs[] = DATA_PATH . "module/";
+             $dirs[] = DATA_PATH . "module/";
              
              foreach ($dirs as $dir) {
                  if (is_readable($dir . DIRECTORY_SEPARATOR . $file)) {
@@ -1857,17 +1857,9 @@ class MDB2_Driver_Common extends PEAR
                 $class_name = 'MDB2_Driver_'.$module.'_'.$this->phptype;
                 $file_name = str_replace('_', DIRECTORY_SEPARATOR, $class_name).'.php';
             }
-            /*
-            if ($module != "Datatype" && ($phptype_specific === false
-                || (!MDB2::classExists($class_name) && !MDB2::fileExists($file_name)))
-            ) {
-                $version = false;
-                $class_name = 'MDB2_'.$module;
-                $file_name = str_replace('_', DIRECTORY_SEPARATOR, $class_name).'.php';
-            }
-            */
-            if ( ($phptype_specific === false
-                || (!MDB2::classExists($class_name) && !MDB2::fileExists($file_name)))
+            
+            if ($phptype_specific === false
+                || (!MDB2::classExists($class_name) && !MDB2::fileExists($file_name))
             ) {
                 $version = false;
                 $class_name = 'MDB2_'.$module;
