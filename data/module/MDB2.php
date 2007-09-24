@@ -1855,6 +1855,12 @@ class MDB2_Driver_Common extends PEAR
                 $class_name = 'MDB2_Driver_'.$module.'_'.$this->phptype;
                 $file_name = str_replace('_', DIRECTORY_SEPARATOR, $class_name).'.php';
             }
+            
+            sfprintr($class_name);
+            sfprintr($file_name);
+            sfprintr(!MDB2::classExists($class_name))
+            sfprintr(!MDB2::fileExists($file_name));
+            
             if ($phptype_specific === false
                 || (!MDB2::classExists($class_name) && !MDB2::fileExists($file_name))
             ) {
@@ -1920,7 +1926,6 @@ class MDB2_Driver_Common extends PEAR
             $module = $this->options['modules'][$match[1]];
             $method = strtolower($match[2]).$match[3];
             if (!isset($this->modules[$module]) || !is_object($this->modules[$module])) {
-                sfprintr($module.":1");
                 $result =& $this->loadModule($module);
                 if (PEAR::isError($result)) {
                     return $result;
@@ -2691,7 +2696,6 @@ class MDB2_Driver_Common extends PEAR
             return 'NULL';
         }
         if ($type) {
-            sfprintr($module.":2");
             $this->loadModule('Datatype', null, true);
             return $this->datatype->implodeArray($col, $type);
         }
@@ -3015,7 +3019,6 @@ class MDB2_Driver_Common extends PEAR
      */
     function quote($value, $type = null, $quote = true, $escape_wildcards = false)
     {
-        sfprintr($module.":3");
         $result = $this->loadModule('Datatype', null, true);
         if (PEAR::isError($result)) {
             return $result;
@@ -3042,7 +3045,6 @@ class MDB2_Driver_Common extends PEAR
      */
     function getDeclaration($type, $name, $field)
     {
-        sfprintr($module.":4");
         $result = $this->loadModule('Datatype', null, true);
         if (PEAR::isError($result)) {
             return $result;
@@ -3065,7 +3067,6 @@ class MDB2_Driver_Common extends PEAR
      */
     function compareDefinition($current, $previous)
     {
-        sfprintr($module.":5");
         $result = $this->loadModule('Datatype', null, true);
         if (PEAR::isError($result)) {
             return $result;
@@ -3415,7 +3416,6 @@ class MDB2_Result_Common extends MDB2_Result
      */
     function setResultTypes($types)
     {
-        sfprintr($module.":6");
         $load = $this->db->loadModule('Datatype', null, true);
         if (PEAR::isError($load)) {
             return $load;
