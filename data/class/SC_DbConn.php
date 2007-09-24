@@ -124,10 +124,10 @@ class SC_DbConn{
 
 		if ( $arr ){
 			//$result = $this->conn->getAll($n, $arr, DB_FETCHMODE_ASSOC);
-            $result = $this->conn_mdb2->getAll($n, $arr, DB_FETCHMODE_ASSOC);
+            $result = $this->conn_mdb2->extended->getAll($n, $arr, DB_FETCHMODE_ASSOC);
 		} else {
 			//$result = $this->conn->getAll($n, DB_FETCHMODE_ASSOC);
-            $result = $this->conn_mdb2->getAll($n, DB_FETCHMODE_ASSOC);
+            $result = $this->conn_mdb2->extended->getAll($n, DB_FETCHMODE_ASSOC);
 		}
 		
 		if ($this->conn->isError($result)){
