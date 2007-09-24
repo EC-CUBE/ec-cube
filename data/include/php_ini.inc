@@ -9,8 +9,6 @@ ini_set("mbstring.internal_encoding", CHAR_CODE);
 ini_set("mbstring.detect_order", "auto");
 ini_set("mbstring.substitute_character", "none");
 
-ini_set("safe_mode", "1");
-
 // 移行はINI_SETで変更可能かどうかが微妙なので .htaccess で変更する
 /*
 ini_set("mbstring.language", "Japanese");
