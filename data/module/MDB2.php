@@ -1862,7 +1862,9 @@ class MDB2_Driver_Common extends PEAR
                 $class_name = 'MDB2_'.$module;
                 $file_name = str_replace('_', DIRECTORY_SEPARATOR, $class_name).'.php';
             }
-
+            
+            sfprintr($class_name);
+            
             $err = MDB2::loadClass($class_name, $this->getOption('debug'));
             if (PEAR::isError($err)) {
                 return $err;
