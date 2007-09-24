@@ -48,11 +48,14 @@ class SC_DbConn{
 				}
 			}
 		}
+        
 		$this->conn = $objDbConn;
 		$this->conn_mdb2 = $objDbConnMDB2;
 		$this->error_mail_to = DB_ERROR_MAIL_TO;
 		$this->error_mail_title = DB_ERROR_MAIL_SUBJECT;
 		$this->err_disp = $err_disp;
+        
+        $this->conn_mdb2->setFetchMode(MDB2_FETCHMODE_ASSOC); 
 	}
 	
 	// クエリの実行
@@ -124,10 +127,10 @@ class SC_DbConn{
 
 		if ( $arr ){
 			//$result = $this->conn->getAll($n, $arr, DB_FETCHMODE_ASSOC);
-            $result = $this->conn_mdb2->extended->getAll($n, null, $arr, DB_FETCHMODE_ASSOC);
+            $result = $this->conn_mdb2->extended->getAll($n, null, $arr);
 		} else {
 			//$result = $this->conn->getAll($n, DB_FETCHMODE_ASSOC);
-            $result = $this->conn_mdb2->extended->getAll($n, null, DB_FETCHMODE_ASSOC);
+            $result = $this->conn_mdb2->extended->getAll($n, null);
 		}
 		
 		if ($this->conn->isError($result)){
