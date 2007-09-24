@@ -35,11 +35,13 @@ class SC_DbConn{
 			if($dsn != "") {
 				$objDbConn = DB::connect($dsn, $options);
 				$objDbConnMDB2 = MDB2::factory($dsn, $options); 
+                $objDbConnMDB2 ->loadModule('Extended', null, false);
 				$this->dsn = $dsn;
 			} else {
 				if(defined('DEFAULT_DSN')) {
 					$objDbConn = DB::connect(DEFAULT_DSN, $options);
 					$objDbConnMDB2 = MDB2::factory(DEFAULT_DSN, $options); 
+                    $objDbConnMDB2 ->loadModule('Extended', null, false);
 					$this->dsn = DEFAULT_DSN;
 				} else {
 					return;
