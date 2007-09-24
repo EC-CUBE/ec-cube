@@ -944,7 +944,7 @@ class MDB2
         }
         return false;
         */
-        $fp = @fopen(DATA_PATH . "module/" . $file, 'r', true);
+        $fp = @fopen($file, 'r', true);
         if (is_resource($fp)) {
             @fclose($fp);
             return true;
