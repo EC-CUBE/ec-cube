@@ -49,7 +49,7 @@ class SC_DbConn{
 				}
 			}
 		}
-        $objDbConnMDB2->setFetchMode(MDB2_FETCHMODE_ASSOC); 
+//        $objDbConnMDB2->setFetchMode(MDB2_FETCHMODE_ASSOC); 
 
 		$this->conn = $objDbConn;
 		$this->conn_mdb2 = $objDbConnMDB2;
@@ -128,10 +128,10 @@ class SC_DbConn{
 
 		if ( $arr ){
 			//$result = $this->conn->getAll($n, $arr, DB_FETCHMODE_ASSOC);
-            $result = $this->conn_mdb2->extended->getAll($n, null, $arr);
+            $result = $this->conn_mdb2->extended->getAll($n, null, $arr, null, DB_FETCHMODE_ASSOC, true);
 		} else {
 			//$result = $this->conn->getAll($n, DB_FETCHMODE_ASSOC);
-            $result = $this->conn_mdb2->extended->getAll($n, null);
+            $result = $this->conn_mdb2->extended->getAll($n, null, array(), null, DB_FETCHMODE_ASSOC, true);
 		}
         
 		if ($this->conn->isError($result)){
