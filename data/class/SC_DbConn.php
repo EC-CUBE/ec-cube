@@ -48,8 +48,7 @@ class SC_DbConn{
 				}
 			}
 		}
-        $objMDB2_Driver_Common = new MDB2_Driver_Common();
-        $objMDB2_Driver_Common->setFetchMode(MDB2_FETCHMODE_ASSOC); 
+//        $objDbConnMDB2->setFetchMode(MDB2_FETCHMODE_ASSOC); 
         
 		$this->conn = $objDbConn;
 		$this->conn_mdb2 = $objDbConnMDB2;
