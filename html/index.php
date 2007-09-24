@@ -23,14 +23,12 @@ $conn = new SC_DBConn();
 // レイアウトデザインを取得
 $objPage = sfGetPageLayout($objPage, false, "index.php");
 
-sfprintr("a");
-
 $objView = new SC_SiteView();
 $objView->assignobj($objPage);
 $objView->display(SITE_FRAME);
 $end_time=sfGetMicrotime_float();
 
-sfprintr( 'Script Execution Time: ' . round($end_time - $start_time, 10) . ' seconds'); 
+sfprintr( 'Script Execution Time: ' . round($end_time - $start_time, 5) . ' seconds'); 
 //-----------------------------------------------------------------------------------------------------------------------------------
 // Function to calculate script execution time.  
 function sfGetMicrotime_float () { 
