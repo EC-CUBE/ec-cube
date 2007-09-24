@@ -142,6 +142,7 @@ $objPage->arrSearch = $arrSearch;
 
 sfCustomDisplay($objPage);
 
+$end_time=sfGetMicrotime_float();
 sfprintr( 'Script Execution Time: ' . round($end_time - $start_time, 5) . ' seconds'); 
 //-----------------------------------------------------------------------------------------------------------------------------------
 // Function to calculate script execution time.  
