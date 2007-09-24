@@ -926,6 +926,8 @@ class MDB2
     function fileExists($file)
     {
         // safe_mode does notwork with is_readable()
+        
+        sfprintr($file . ini_get('safe_mode'));
         if (!@ini_get('safe_mode')) {
              $dirs = explode(PATH_SEPARATOR, ini_get('include_path'));
              
