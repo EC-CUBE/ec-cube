@@ -33,11 +33,12 @@ class SC_DbConn{
 		if(!isset($objDbConn->connection) || $new) {
 			if($dsn != "") {
 				$objDbConn = DB::connect($dsn, $options);
+				$objDbConnMDB2 = MDB2::factory($dsn, $options); 
 				$this->dsn = $dsn;
 			} else {
 				if(defined('DEFAULT_DSN')) {
 					$objDbConn = DB::connect(DEFAULT_DSN, $options);
-					$objDbConnMDB2 =& MDB2::factory($dsn); 
+					$objDbConnMDB2 = MDB2::factory($dsn, $options); 
 					$this->dsn = DEFAULT_DSN;
 				} else {
 					return;
