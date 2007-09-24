@@ -52,7 +52,12 @@
  * @author      Lukas Smith <smith@pooteeweet.org>
  */
 
-require_once 'PEAR.php';
+if(!defined('MDB2_PHP_DIR')) {
+	$MDB2_PHP_DIR = realpath(dirname( __FILE__));
+	define("MDB2_PHP_DIR", $MDB2_PHP_DIR);	
+}
+
+require_once MDB2_PHP_DIR . '/PEAR.php';
 
 // {{{ Error constants
 
