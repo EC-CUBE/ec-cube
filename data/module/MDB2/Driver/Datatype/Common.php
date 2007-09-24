@@ -44,7 +44,7 @@
 //
 // $Id: Common.php,v 1.126 2007/03/28 16:49:43 quipo Exp $
 
-require_once DATA_PATH . 'module/MDB2/LOB.php';
+require_once 'MDB2/LOB.php';
 
 /**
  * @package  MDB2
