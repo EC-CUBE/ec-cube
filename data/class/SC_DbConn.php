@@ -8,6 +8,7 @@
 $current_dir = realpath(dirname(__FILE__));
 require_once($current_dir . "/../module/DB.php");
 require_once($current_dir . "/../module/MDB2.php");
+require_once($current_dir . "/../module/MDB2/Extended.php");
 
 $objDbConn = "";
 $objDbConnMDB2 = "";
@@ -120,11 +121,11 @@ class SC_DbConn{
         }
 
 		if ( $arr ){
-			//$result = $this->conn->getAll($n, $arr, DB_FETCHMODE_ASSOC);
-            $result = $this->conn_mdb2->queryAll($n, $arr, DB_FETCHMODE_ASSOC);
+			$result = $this->conn->getAll($n, $arr, DB_FETCHMODE_ASSOC);
+            //$result = $this->conn_mdb2->queryAll($n, $arr, DB_FETCHMODE_ASSOC);
 		} else {
-			//$result = $this->conn->getAll($n, DB_FETCHMODE_ASSOC);
-            $result = $this->conn_mdb2->queryAll($n, DB_FETCHMODE_ASSOC);
+			$result = $this->conn->getAll($n, DB_FETCHMODE_ASSOC);
+            //$result = $this->conn_mdb2->queryAll($n, DB_FETCHMODE_ASSOC);
 		}
 		
 		if ($this->conn->isError($result)){
