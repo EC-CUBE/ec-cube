@@ -49,8 +49,8 @@ class SC_DbConn{
 				}
 			}
 		}
-//        $objDbConnMDB2->queryAll("SELECT * FROM dtb_baseinfo"); 
-        sfprintr($objDbConnMDB2);
+        $objDbConnMDB2->setFetchMode(MDB2_FETCHMODE_ASSOC); 
+
 		$this->conn = $objDbConn;
 		$this->conn_mdb2 = $objDbConnMDB2;
 		$this->error_mail_to = DB_ERROR_MAIL_TO;
