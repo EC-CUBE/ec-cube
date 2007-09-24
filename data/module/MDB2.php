@@ -928,6 +928,7 @@ class MDB2
         // safe_mode does notwork with is_readable()
         if (!@ini_get('safe_mode')) {
              $dirs = explode(PATH_SEPARATOR, ini_get('include_path'));
+             sfprintr($dirs);
              foreach ($dirs as $dir) {
                  if (is_readable($dir . DIRECTORY_SEPARATOR . $file)) {
                      return true;
@@ -1861,9 +1862,6 @@ class MDB2_Driver_Common extends PEAR
             sfprintr($file_name);
             sfprintr(!MDB2::classExists($class_name));
             sfprintr(!MDB2::fileExists($file_name));
-            
-            sfprintr($phptype_specific === false);
-            sfprintr(!MDB2::classExists($class_name) && !MDB2::fileExists($file_name));
             
             if ($phptype_specific === false
                 || (!MDB2::classExists($class_name) && !MDB2::fileExists($file_name))
