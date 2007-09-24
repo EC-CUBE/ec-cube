@@ -27,6 +27,7 @@ class SC_DbConn{
 	// コンストラクタ
 	function SC_DbConn($dsn = "", $err_disp = true, $new = false){
 		global $objDbConn;
+		global $objDbConnMDB2;
 		
 		// Debugモード指定
 		$options['debug'] = PEAR_DB_DEBUG;
