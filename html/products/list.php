@@ -4,7 +4,7 @@
  *
  * http://www.lockon.co.jp/
  */
-
+$start_time = sfGetMicrotime_float();
 require_once("../require.php");
 require_once(DATA_PATH . "include/page_layout.inc");
 
@@ -142,7 +142,15 @@ $objPage->arrSearch = $arrSearch;
 
 sfCustomDisplay($objPage);
 
+sfprintr( 'Script Execution Time: ' . round($end_time - $start_time, 5) . ' seconds'); 
 //-----------------------------------------------------------------------------------------------------------------------------------
+// Function to calculate script execution time.  
+function sfGetMicrotime_float () { 
+	list ($msec, $sec) = explode(' ', microtime()); 
+	$microtime = (float)$msec + (float)$sec; 
+	return $microtime; 
+} 
+
 /* カテゴリIDがルートかどうかの判定 */
 function lfIsRootCategory($category_id) {
     $objQuery = new SC_Query();
