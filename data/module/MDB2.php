@@ -928,13 +928,13 @@ class MDB2
         // safe_mode does notwork with is_readable()
         if (!@ini_get('safe_mode')) {
              $dirs = explode(PATH_SEPARATOR, ini_get('include_path'));
+             
              foreach ($dirs as $dir) {
                  if (is_readable($dir . DIRECTORY_SEPARATOR . $file)) {
                      return true;
                  }
             }
         } else {
-            sfprintr($file);
             $fp = @fopen($file, 'r', true);
             if (is_resource($fp)) {
                 @fclose($fp);
