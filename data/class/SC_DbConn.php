@@ -131,7 +131,7 @@ class SC_DbConn{
             $result = $this->conn_mdb2->extended->getAll($n, null, $arr, null, DB_FETCHMODE_ASSOC, true);
 		} else {
 			//$result = $this->conn->getAll($n, DB_FETCHMODE_ASSOC);
-            $result = $this->conn_mdb2->extended->getAll($n, null, array(), null, DB_FETCHMODE_ASSOC, true);
+            $result = $this->conn_mdb2->extended->getAll($n, null, null, null, DB_FETCHMODE_ASSOC, true);
 		}
         
 		if ($this->conn->isError($result)){
