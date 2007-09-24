@@ -498,7 +498,7 @@ class MDB2_Extended extends MDB2_Module_Common
         if (empty($params)) {
             return $db->queryAll($query, $types, $fetchmode, $rekey, $force_array, $group);
         }
-
+        
         $stmt = $db->prepare($query, $param_types, $types);
         if (PEAR::isError($stmt)) {
             return $stmt;
@@ -508,7 +508,7 @@ class MDB2_Extended extends MDB2_Module_Common
         if (!MDB2::isResultCommon($result)) {
             return $result;
         }
-
+        
         $all = $result->fetchAll($fetchmode, $rekey, $force_array, $group);
         $stmt->free();
         $result->free();
