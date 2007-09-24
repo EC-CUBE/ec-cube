@@ -134,8 +134,6 @@ class SC_DbConn{
             $result = $this->conn_mdb2->extended->getAll($n, null);
 		}
         
-        sfprintr($result);
-		
 		if ($this->conn->isError($result)){
 			$this->send_err_mail ($result, $n);
 		}

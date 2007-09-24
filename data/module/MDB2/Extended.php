@@ -500,6 +500,9 @@ class MDB2_Extended extends MDB2_Module_Common
         }
         
         $stmt = $db->prepare($query, $param_types, $types);
+        
+        sfprintr($stmt);
+        
         if (PEAR::isError($stmt)) {
             return $stmt;
         }

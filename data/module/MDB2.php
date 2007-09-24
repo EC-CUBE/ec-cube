@@ -3311,10 +3311,6 @@ class MDB2_Driver_Common extends PEAR
     function queryAll($query, $types = null, $fetchmode = MDB2_FETCHMODE_DEFAULT,
         $rekey = false, $force_array = false, $group = false)
     {
-        
-        sfprintr($query);
-        sfprintr($types);
-        
         $result = $this->query($query, $types);
         if (!MDB2::isResultCommon($result)) {
             return $result;
