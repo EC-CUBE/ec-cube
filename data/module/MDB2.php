@@ -1858,7 +1858,7 @@ class MDB2_Driver_Common extends PEAR
             
             sfprintr($class_name);
             sfprintr($file_name);
-            sfprintr(!MDB2::classExists($class_name))
+            sfprintr(!MDB2::classExists($class_name));
             sfprintr(!MDB2::fileExists($file_name));
             
             if ($phptype_specific === false
