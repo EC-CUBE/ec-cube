@@ -131,6 +131,10 @@ div.listrightblock .btnbox {
     float: right;
 }
 
+div.listrightblock .box54 {
+    width: 54px;
+    border: solid 1px #ccc;
+}
 
 /* 商品詳細 */
 
