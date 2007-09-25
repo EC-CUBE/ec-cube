@@ -46,7 +46,7 @@
           <img src="<!--{$TPL_DIR}-->img/header/memory.gif" width="18" height="9" alt="記憶" />
         </p>
         <p class="btn">
-          <input type="image" onmouseover="chgImgImageSubmit('<!--{$TPL_DIR}-->img/side/button_login_on.gif',this)" onmouseout="chgImgImageSubmit('<!--{$TPL_DIR}-->img/side/button_login.gif',this)" src="<!--{$TPL_DIR}-->img/side/button_login.gif" style="width: 51px; height: 22px; border: none" alt="ログイン" name="subm" />
+          <input type="image" onmouseover="chgImgImageSubmit('<!--{$TPL_DIR}-->img/side/button_login_on.gif',this)" onmouseout="chgImgImageSubmit('<!--{$TPL_DIR}-->img/side/button_login.gif',this)" src="<!--{$TPL_DIR}-->img/side/button_login.gif" class="box51" alt="ログイン" name="subm" />
         </p>
         <!--{/if}-->
         <!--ログインフォーム-->
