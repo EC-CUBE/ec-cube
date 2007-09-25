@@ -119,6 +119,16 @@
           </td>
         </tr>
         <tr>
+          <th>希望するパスワード<span class="attention">※</span><br />
+            <span class="mini">パスワードは購入時に必要です</span></th>
+          <td>
+            <span class="attention"><!--{$arrErr.password}--><!--{$arrErr.password02}--></span>
+            <div><input type="password" name="password" value="<!--{$arrForm.password}-->" size="15" class="box120" style="<!--{$arrErr.password|sfGetErrorColor}-->"/></div>
+            <p class="mini attention">半角英数字4〜10文字でお願いします。（記号不可）</p>
+            <div><input type="password" name="password02" value="<!--{$arrForm.password02}-->" size="15" class="box120"  style="<!--{$arrErr.password02|sfGetErrorColor}-->"/></div>
+            <p class="mini attention">確認のために2度入力してください。</p>
+        </tr>
+        <tr>
           <th>パスワードを忘れた時のヒント<span class="attention">※</span></th>
           <td>
             <span class="attention"><!--{$arrErr.reminder}--><!--{$arrErr.reminder_answer}--></span>
