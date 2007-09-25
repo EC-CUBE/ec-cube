@@ -167,7 +167,7 @@ if ($_POST['mode'] == 'confirm') {
 			$page_id = $arrPageData[0]['page_id'];
 		}
 
-		header("location: ./main_edit.php?page_id=$page_id&msg=on");
+		header("location: " . sfGetCurrentUri() . "/main_edit.php?page_id=$page_id&msg=on");
 	}else{
 		// エラーがあれば入力時のデータを表示する
 		$objPage->arrPageData = $_POST;

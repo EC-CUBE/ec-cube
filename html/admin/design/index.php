@@ -64,12 +64,12 @@ $arrBloc = lfgetBlocData();
 
 // 新規ブロック作成
 if ($_POST['mode'] == 'new_bloc') {
-	header("location: ./bloc.php");
+	header("location: " . sfGetCurrentUri() . "/bloc.php");
 }
 
 // 新規ページ作成
 if ($_POST['mode'] == 'new_page') {
-	header("location: ./main_edit.php");
+	header("location: " . sfGetCurrentUri() . "/main_edit.php");
 }
 
 // データ登録処理
@@ -153,7 +153,7 @@ if ($_POST['mode'] == 'confirm' or $_POST['mode'] == 'preview') {
 		$_SESSION['preview'] = "ON";
 		header("Location: ". URL_DIR . "preview/index.php");
 	}else{
-		header("Location: ./index.php?page_id=$page_id&msg=on");
+		header("Location: " . sfGetCurrentUri() . "/index.php?page_id=$page_id&msg=on");
 	}
 }
 

@@ -84,7 +84,7 @@ case 'complete':
 			//登録実行
 			lfRegistRecommendData($arrForm, $arrRegistColumn);
 			//レビュー書き込み完了ページへ
-			header("Location: ./review_complete.php");
+			header("Location: " . sfGetCurrentUri() . "/review_complete.php");
 			exit;
 		}
 	} else {

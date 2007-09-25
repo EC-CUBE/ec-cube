@@ -30,7 +30,7 @@ case 'login':
 	}
 	if ($count == 0){
 		if($objCustomer->getCustomerDataFromEmailPass($arrForm['mypage_login_pass'], $arrForm['mypage_login_email'])) {
-			header("Location: ./index.php");
+			header("Location: " . sfGetCurrentUri() . "/index.php");
 			exit;
 		} else {
 			$objQuery = new SC_Query;

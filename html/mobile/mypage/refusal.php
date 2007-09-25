@@ -38,7 +38,7 @@ if (!$objCustomer->isLoginSuccess()){
 $objPage = sfGetPageLayout($objPage, false, "mypage/index.php");
 
 if (isset($_POST['no'])) {
-	header("Location: " . gfAddSessionId("index.php"));
+	header("Location: " . gfAddSessionId(sfGetCurrentUri() . "/index.php"));
 	exit;
 } elseif (isset($_POST['complete'])){
 	//会員削除
@@ -48,7 +48,7 @@ if (isset($_POST['no'])) {
 	if (DB_TYPE == "mysql")	$where = sfChangeILIKE($where);
 	$objCustomer->EndSession();
 	//完了ページへ
-	header("Location: " . gfAddSessionId("refusal_complete.php"));
+	header("Location: " . gfAddSessionId(sfGetCurrentUri() . "/refusal_complete.php"));
 	exit;
 }
 

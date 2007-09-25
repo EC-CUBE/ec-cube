@@ -71,7 +71,7 @@ if( $_POST['mode'] == 'new' || $_POST['mode'] == 'edit') {
 			// メンバーの追加
 			fnInsertMember();
 			// リロードによる二重登録対策のため、同じページに飛ばす。
-			header("Location: ". $_SERVER['PHP_SELF'] . "?mode=reload");	
+			header("Location: " . sfGetCurrentUri(true) . "?mode=reload");	
 			exit;
 		}
 		if($_POST['mode'] == 'edit') {

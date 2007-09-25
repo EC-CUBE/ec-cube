@@ -87,7 +87,7 @@ if (isset($_REQUEST['btnRegist'])) {
 	$objMail->sendMail();
 
 	// 完了ページに移動させる。
-	header("Location:" . gfAddSessionId("./complete.php"));
+	header("Location:" . gfAddSessionId(sfGetCurrentUri() . "/complete.php"));
 	exit;
 } else {
 	sfDispSiteError(CUSTOMER_ERROR, "", false, "", true);
