@@ -118,43 +118,56 @@ function lnSetSelect(name1, name2, id, val) {
        </p>
 
          <!--{if $arrProducts[cnt].stock_max == 0 && $arrProducts[cnt].stock_unlimited_max != 1}-->
-           <p>申し訳ございませんが、只今品切れ中です。</p>
+           <p><em>申し訳ございませんが、只今品切れ中です。</em></p>
          <!--{else}-->
            <!--▼買い物かご-->
+           <div class="in_cart">
+             <dl>
          <!--{if $tpl_classcat_find1[$id]}-->
            <!--{assign var=class1 value=classcategory_id`$id`_1}-->
            <!--{assign var=class2 value=classcategory_id`$id`_2}-->
-           <!--{if $arrErr[$class1] != ""}-->
-             ※ <!--{$tpl_class_name1[$id]}-->を入力して下さい。
-           <!--{/if}-->
-           <!--{$tpl_class_name1[$id]|escape}-->：
-           <select name="<!--{$class1}-->" style="<!--{$arrErr[$class1]|sfGetErrorColor}-->" onchange="lnSetSelect('<!--{$class1}-->', '<!--{$class2}-->', '<!--{$id}-->','');">
+           <dt><!--{$tpl_class_name1[$id]|escape}-->：</dt>
+           <dd><select name="<!--{$class1}-->" style="<!--{$arrErr[$class1]|sfGetErrorColor}-->" onchange="lnSetSelect('<!--{$class1}-->', '<!--{$class2}-->', '<!--{$id}-->','');">
              <option value="">選択してください</option>
              <!--{html_options options=$arrClassCat1[$id] selected=$arrForm[$class1]}-->
            </select>
+             <!--{if $arrErr[$class1] != ""}-->
+             <br /><span class="attention">※ <!--{$tpl_class_name1[$id]}-->を入力して下さい。</span>
+             <!--{/if}-->
+           </dd>
+
            <!--{/if}-->
            <!--{if $tpl_classcat_find2[$id]}-->
-             <!--{if $arrErr[$class2] != ""}-->
-               ※ <!--{$tpl_class_name2[$id]}-->を入力して下さい。
-             <!--{/if}-->
-             <!--{$tpl_class_name2[$id]|escape}-->：
-             <select name="<!--{$class2}-->" style="<!--{$arrErr[$class2]|sfGetErrorColor}-->">
+             <dt><!--{$tpl_class_name2[$id]|escape}-->：</dt>
+             <dd><select name="<!--{$class2}-->" style="<!--{$arrErr[$class2]|sfGetErrorColor}-->">
                <option value="">選択してください</option>
              </select>
-           <!--{/if}-->
 
+	     <!--{if $arrErr[$class2] != ""}-->
+             <br /><span class="attention">※ <!--{$tpl_class_name2[$id]}-->を入力して下さい。</span>
+             <!--{/if}-->
+	     </dd>
+
+           <!--{/if}-->
            <!--{assign var=quantity value=quantity`$id`}-->
-           <!--{$arrErr[$quantity]}-->
-             個数：
-           <!--{if $arrErr.quantity != ""}--><br /><!--{$arrErr.quantity}--><!--{/if}-->
-             <input type="text" name="<!--{$quantity}-->" size="3" class="box3" value="<!--{$arrForm[$quantity]|default:1}-->" maxlength=<!--{$smarty.const.INT_LEN}--> style="<!--{$arrErr[$quantity]|sfGetErrorColor}-->" />
-             <a href="" onclick="fnChangeAction('<!--{$smarty.server.REQUEST_URI|escape}-->#product<!--{$id}-->'); fnModeSubmit('cart','product_id','<!--{$id}-->'); return false;" onmouseover="chgImg('<!--{$TPL_DIR}-->img/products/b_cartin_on.gif','cart<!--{$id}-->');" onmouseout="chgImg('<!--{$TPL_DIR}-->img/products/b_cartin.gif','cart<!--{$id}-->');">
+
+           <dt>個数：</dt>
+           <dd><input type="text" name="<!--{$quantity}-->" size="3" class="box54" value="<!--{$arrForm[$quantity]|default:1}-->" maxlength="<!--{$smarty.const.INT_LEN}-->" style="<!--{$arrErr[$quantity]|sfGetErrorColor}-->" />
+	     <!--{if $arrErr[$quantity] != ""}-->
+	     <br /><span class="attention"><!--{$arrErr[$quantity]}--></span>
+	     <!--{/if}-->
+	   </dd>
+         </dl>
+	     <div class="cartbtn">
+             <a href="<!--{$smarty.server.REQUEST_URI|escape}-->#product<!--{$id}-->" onclick="fnChangeAction('<!--{$smarty.server.REQUEST_URI|escape}-->#product<!--{$id}-->'); fnModeSubmit('cart','product_id','<!--{$id}-->'); return false;" onmouseover="chgImg('<!--{$TPL_DIR}-->img/products/b_cartin_on.gif','cart<!--{$id}-->');" onmouseout="chgImg('<!--{$TPL_DIR}-->img/products/b_cartin.gif','cart<!--{$id}-->');">
                <img src="<!--{$TPL_DIR}-->img/products/b_cartin.gif" width="115" height="25" alt="カゴに入れる" name="cart<!--{$id}-->" id="cart<!--{$id}-->" />
              </a>
+	     </div>
+           </div>
              <!--▲買い物かご-->
            <!--{/if}-->
-     </div>
-    </div>
+          </div>
+       </div>
          <!--{/section}-->
 
   <!--件数ここから-->
