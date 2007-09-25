@@ -352,7 +352,6 @@ class LC_Page_Entry extends LC_Page {
     //---- 入力エラーチェック
     function lfErrorCheck($array) {
 
-        global $objConn;
         $objErr = new SC_CheckError($array);
 
         $objErr->doFunc(array("お名前（姓）", 'name01', STEXT_LEN), array("EXIST_CHECK", "NO_SPTAB", "SPTAB_CHECK" ,"MAX_LENGTH_CHECK"));
@@ -412,7 +411,6 @@ class LC_Page_Entry extends LC_Page {
 
         $objErr->doFunc(array("生年月日", "year", "month", "day"), array("CHECK_DATE"));
         $objErr->doFunc(array("メールマガジン", 'mailmaga_flg'), array("SELECT_CHECK"));
-
         return $objErr->arrErr;
     }
 
