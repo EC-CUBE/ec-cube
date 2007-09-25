@@ -28,11 +28,12 @@
           所持ポイント：<span class="price"> <!--{$tpl_user_point|number_format|default:0}--> pt</span>
         </p>
           <!--{if !$tpl_disable_logout}-->
-        <p>
+        <p class="btn">
           <a href="<!--{$smarty.server.PHP_SELF|escape}-->" onclick="fnFormModeSubmit('login_form', 'logout', '', ''); return false;">
             <img src="<!--{$TPL_DIR}-->img/header/logout.gif" width="44" height="21" alt="ログアウト" />
           </a>
         </p>
+       </div>
           <!--{/if}-->
         <!--{else}-->
         <p><img src="<!--{$TPL_DIR}-->img/side/icon_mail.gif" width="40" height="21" alt="メールアドレス" /><input type="text" name="login_email" class="box96" value="<!--{$tpl_login_email|escape}-->" /></p>
