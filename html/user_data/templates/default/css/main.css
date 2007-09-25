@@ -17,6 +17,11 @@ body {
 li {
     list-style-type: none;
 }
+
+select {
+    border: solid 1px #ccc;
+}
+
 /*PHOTO*/
 .picture {
     border: 1px solid #ccc;
@@ -320,6 +325,16 @@ input[type='image'] {
 
 input[type='image'].box150 {
     width: 150px;
+    height: 30px;
+}
+
+input[type='image'].box140 {
+    width: 140px;
+    height: 30px;
+}
+
+input[type='image'].box130 {
+    width: 130px;
     height: 30px;
 }
 
