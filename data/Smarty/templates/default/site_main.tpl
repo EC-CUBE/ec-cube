@@ -78,7 +78,7 @@
   </div>
   <!--{* ▲CENTER COLUMN *}-->
 
-  <!--{* ▼RIGHT COLUMN *}n-->
+  <!--{* ▼RIGHT COLUMN *}-->
   <div id="rightcolumn">
     <!--{* ▼右ナビ *}-->
     <!--{if $arrPageLayout.RightNavi|@count > 0}-->
