@@ -143,26 +143,26 @@ function lnSetSelect(name1, name2, id, val) {
                <option value="">選択してください</option>
              </select>
 
-	     <!--{if $arrErr[$class2] != ""}-->
+             <!--{if $arrErr[$class2] != ""}-->
              <br /><span class="attention">※ <!--{$tpl_class_name2[$id]}-->を入力して下さい。</span>
              <!--{/if}-->
-	     </dd>
+             </dd>
 
            <!--{/if}-->
            <!--{assign var=quantity value=quantity`$id`}-->
 
            <dt>個数：</dt>
            <dd><input type="text" name="<!--{$quantity}-->" size="3" class="box54" value="<!--{$arrForm[$quantity]|default:1}-->" maxlength="<!--{$smarty.const.INT_LEN}-->" style="<!--{$arrErr[$quantity]|sfGetErrorColor}-->" />
-	     <!--{if $arrErr[$quantity] != ""}-->
-	     <br /><span class="attention"><!--{$arrErr[$quantity]}--></span>
-	     <!--{/if}-->
-	   </dd>
+             <!--{if $arrErr[$quantity] != ""}-->
+             <br /><span class="attention"><!--{$arrErr[$quantity]}--></span>
+             <!--{/if}-->
+           </dd>
          </dl>
-	     <div class="cartbtn">
+             <div class="cartbtn">
              <a href="<!--{$smarty.server.REQUEST_URI|escape}-->#product<!--{$id}-->" onclick="fnChangeAction('<!--{$smarty.server.REQUEST_URI|escape}-->#product<!--{$id}-->'); fnModeSubmit('cart','product_id','<!--{$id}-->'); return false;" onmouseover="chgImg('<!--{$TPL_DIR}-->img/products/b_cartin_on.gif','cart<!--{$id}-->');" onmouseout="chgImg('<!--{$TPL_DIR}-->img/products/b_cartin.gif','cart<!--{$id}-->');">
                <img src="<!--{$TPL_DIR}-->img/products/b_cartin.gif" width="115" height="25" alt="カゴに入れる" name="cart<!--{$id}-->" id="cart<!--{$id}-->" />
              </a>
-	     </div>
+             </div>
            </div>
              <!--▲買い物かご-->
            <!--{/if}-->
