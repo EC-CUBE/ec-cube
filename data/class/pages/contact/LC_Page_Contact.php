@@ -13,7 +13,7 @@ require_once(CLASS_PATH . "pages/LC_Page.php");
  *
  * @package Page
  * @author LOCKON CO.,LTD.
- * @version $Id$
+ * @version $Id:LC_Page_Contact.php 15532 2007-08-31 14:39:46Z nanasess $
  */
 class LC_Page_Contact extends LC_Page {
 
@@ -43,7 +43,7 @@ class LC_Page_Contact extends LC_Page {
      */
     function process() {
         $conn = new SC_DBConn();
-        $objView = new SC_SiteView();
+        $this->objView = new SC_SiteView();
         $objCampaignSess = new SC_CampaignSession();
         $objDb = new SC_Helper_DB_Ex();
         $CONF = $objDb->sf_getBasisData();			// 店舗基本情報
@@ -51,9 +51,7 @@ class LC_Page_Contact extends LC_Page {
 
         $objCustomer = new SC_Customer();
 
-        if ($objCustomer->isloginSuccess()){
-            $objPage->arrData = $_SESSION['customer'];
-        }
+        $this->arrData = isset($_SESSION['customer']) ? $_SESSION['customer'] : "";
 
         //SSLURL判定
         if (SSLURL_CHECK == 1){
@@ -131,9 +129,9 @@ class LC_Page_Contact extends LC_Page {
         }
 
         //----　ページ表示
-        $objView->assignobj($this);
+        $this->objView->assignobj($this);
         // フレームを選択(キャンペーンページから遷移なら変更)
-        $objCampaignSess->pageView($objView);
+        $objCampaignSess->pageView($this->objView);
     }
 
     /**
@@ -203,11 +201,11 @@ class LC_Page_Contact extends LC_Page {
 
     // ------------  メール送信 ------------
 
-    function lfSendMail($CONF, $objPage){
+    function lfSendMail($CONF, &$objPage){
         //　パスワード変更お知らせメール送信
-
+        $objQuery = new SC_Query();
         $objMailText = new SC_SiteView();
-        $objSiteInfo = $objView->objSiteInfo;
+        $objSiteInfo = $this->objView->objSiteInfo;
         $arrInfo = $objSiteInfo->data;
         $objPage->tpl_shopname=$arrInfo['shop_name'];
         $objPage->tpl_infoemail = $arrInfo['email02'];
@@ -222,7 +220,8 @@ class LC_Page_Contact extends LC_Page {
             $fromMail_name = $CONF["shop_name"];
             $fromMail_address = $CONF["email02"];
         }
-        $subject = SC_Utils_Ex::sfMakeSubject("お問い合わせがありました。");
+        $helperMail = new SC_Helper_Mail_Ex();
+        $subject = $helperMail->sfMakeSubject($objQuery, $objMailText, $this, "お問い合わせがありました。");
         $objMail->setItem(
                               $CONF["email02"]					//　宛先
                             , $subject							//　サブジェクト
@@ -235,7 +234,7 @@ class LC_Page_Contact extends LC_Page {
                                                             );
         $objMail->sendMail();
 
-        $subject = SC_Utils_Ex::sfMakeSubject("お問い合わせを受け付けました。");
+        $subject = $helperMail->sfMakeSubject($objQuery, $objMailText, $this, "お問い合わせを受け付けました。");
         $objMail->setItem(
                               ''								//　宛先
                             , $subject							//　サブジェクト
