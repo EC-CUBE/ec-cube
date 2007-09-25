@@ -7,7 +7,7 @@
     *}-->
 <!--▼CONTENTS-->
 <div id="undercolumn">
-  
+
   <div id="undercolumn_aboutus">
     <h2 class="title"><img src="<!--{$TPL_DIR}-->img/aboutus/title.jpg" width="580" height="40" alt="当サイトについて" /></h2>
 
@@ -53,7 +53,7 @@
       <!--{if $_site.email02}-->
       <tr>
         <th>メールアドレス</th>
-        <td><a href="mailto:<!--{$_site.email02|escape}-->"><!--{$_site.email02|escape}--></a></td>
+        <td><a href="mailto:<!--{$_site.email02|escape:'hex'}-->"><!--{$_site.email02|escape:'hexentity'}--></a></td>
       </tr>
       <!--{/if}-->
 
@@ -63,14 +63,14 @@
         <td><!--{$_site.business_hour|escape}--></td>
       </tr>
       <!--{/if}-->
-      
+
       <!--{if $_site.business_hour}-->
       <tr>
         <th>取扱商品</th>
         <td><!--{$_site.good_traded|escape|nl2br}--></td>
       </tr>
       <!--{/if}-->
-      
+
       <!--{if $_site.message}-->
       <tr>
         <th>メッセージ</th>
