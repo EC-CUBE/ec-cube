@@ -10,7 +10,6 @@
   <div id="cartarea">
     <p class="item">商品数：<!--{$arrCartList.0.TotalQuantity|number_format|default:0}-->点</p>
     <p>合計：<span class="price"><!--{$arrCartList.0.ProductsTotal|number_format|default:0}-->円</span><br />
-    <!--{$arrCartList.0.free_rule}-->
     <!-- カゴの中に商品がある場合にのみ表示 -->
     <!--{if $arrCartList.0.TotalQuantity > 0 and $arrCartList.0.free_rule > 0}-->
       <!--{if $arrCartList.0.deliv_free > 0}-->
