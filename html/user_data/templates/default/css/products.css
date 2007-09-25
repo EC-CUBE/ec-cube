@@ -126,9 +126,46 @@ div.listrightblock .pricebox {
     float: left;
 }
 
+div.listrightblock .in_cart {
+    margin: 20px auto 5px 130px;
+    padding: 10px;
+    width: 285px;
+    clear: both;
+    background-color: #ecf5ff;
+    border: 1px solid #CCCCCC;
+}
+
+div.listrightblock .quantity {
+    width: 150px;
+}
+
 div.listrightblock .btnbox {
+    margin: 0 0 10px 0;
     padding: 1px;
     float: right;
+}
+
+div.listrightblock dt {
+    width: 75px;
+    float: left;
+    text-align: right;
+    padding: 3px;
+    font-weight: bold;
+}
+
+div.listrightblock dd {
+    padding: 3px;
+}
+
+div.listrightblock .cartbtn {
+    clear: both;
+    text-align: center;
+}
+
+div.listrightblock .cartbtn img {
+    display: block;
+    width: 115px;
+    margin: 5px auto 0 auto;
 }
 
 div.listrightblock .box54 {
@@ -200,12 +237,8 @@ div#detailrightblock dt {
     background: url("../img/common/arrow_gray.gif") no-repeat left center;
 }
 
-div#detailrightblock dd{
+div#detailrightblock dd {
     margin: 0 15px 0 0;
-}
-
-div#detailrightblock select {
-    border: solid 1px #ccc;
 }
 
 div#detailrightblock .box54 {
