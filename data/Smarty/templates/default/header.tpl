@@ -20,7 +20,7 @@
         </a>
       </li>
       <li>
-        <a href="<!--{$smarty.const.URL_DIR}-->entry/index.php"
+        <a href="<!--{$smarty.const.URL_DIR}-->entry/kiyaku.php"
            onmouseover="chgImg('<!--{$TPL_DIR}-->img/header/member_on.gif','member');"
            onmouseout="chgImg('<!--{$TPL_DIR}-->img/header/member.gif','member');">
           <img src="<!--{$TPL_DIR}-->img/header/member.gif" width="95" height="20" alt="会員登録" name="member" id="member" />
