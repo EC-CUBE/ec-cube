@@ -10,7 +10,7 @@
       <p><em>【重要】 会員登録をされる前に、下記ご利用規約をよくお読みください。</em><br />
       規約には、本サービスを使用するに当たってのあなたの権利と義務が規定されております。<br />
      「規約に同意して会員登録をする」ボタン をクリックすると、あなたが本規約の全ての条件に同意したことになります。</p>
-     <form name="form1" method="post" action="./index.php">
+     <form name="form1" id="form1" method="post" action="<!--{$smarty.server.PHP_SELF|escape}-->">
        <textarea name="textfield" class="area470"  cols="80" rows="30"
                  readonly="readonly"><!--{$tpl_kiyaku_text}--></textarea>
        <div class="tblareabtn">
