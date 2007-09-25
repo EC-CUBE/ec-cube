@@ -323,6 +323,11 @@ input[type='image'].box150 {
     height: 30px;
 }
 
+input[type='image'].box51 {
+    width: 51px;
+    height: 22px;
+}
+
 /* フッター
 ----------------------------------------------- */
 #pagetop {
