@@ -10,19 +10,19 @@
 
 <a name="top" id="top"></a>
 
-<!--▼HEADER-->
+<!--{* ▼HEADER *}-->
 <!--{if $arrPageLayout.header_chk != 2}-->
 <!--{assign var=header_dir value="`$smarty.const.TEMPLATE_DIR`header.tpl"}-->
 <!--{include file= $header_dir}-->
 <!--{/if}-->
-<!--▲HEADER-->
+<!--{* ▲HEADER *}-->
 
-<!--▼CONTENTS-->
+<!--{* ▼CONTENTS *}-->
 <div id="container">
 
-  <!--▼LEFT COLUMN-->
+  <!--{* ▼LEFT COLUMN *}-->
   <div id="leftcolumn">
-    <!--▼左ナビ-->
+    <!--{* ▼左ナビ *}-->
     <!--{if $arrPageLayout.LeftNavi|@count > 0}-->
       <!--{foreach key=LeftNaviKey item=LeftNaviItem from=$arrPageLayout.LeftNavi}-->
         <!-- ▼<!--{$LeftNaviItem.bloc_name}--> ここから-->
@@ -34,17 +34,17 @@
         <!-- ▲<!--{$LeftNaviItem.bloc_name}--> ここまで-->
       <!--{/foreach}-->
     <!--{/if}-->
-    <!--▲左ナビ-->
+    <!--{* ▲左ナビ *}-->
   </div>
-  <!--▲LEFT COLUMN-->
+  <!--{* ▲LEFT COLUMN *}-->
 
 
   <!--{if $tpl_column_num == 3}-->
-  <!--▼CENTER COLUMN-->
+  <!--{* ▼CENTER COLUMN *}-->
   <div id="centercolumn">
   <!--{/if}-->
 
-    <!--▼メイン上部-->
+    <!--{* ▼メイン上部 *}-->
     <!--{if $arrPageLayout.MainHead|@count > 0}-->
       <!--{foreach key=MainHeadKey item=MainHeadItem from=$arrPageLayout.MainHead}-->
         <!-- ▼<!--{$MainHeadItem.bloc_name}--> ここから-->
@@ -56,11 +56,11 @@
         <!-- ▲<!--{$MainHeadItem.bloc_name}--> ここまで-->
       <!--{/foreach}-->
     <!--{/if}-->
-    <!--▲メイン上部-->
+    <!--{* ▲メイン上部 *}-->
 
     <!--{include file=$tpl_mainpage}-->
 
-    <!--▼メイン下部-->
+    <!--{* ▼メイン下部 *}-->
     <!--{if $arrPageLayout.MainFoot|@count > 0}-->
       <!--{foreach key=MainFootKey item=MainFootItem from=$arrPageLayout.MainFoot}-->
         <!-- ▼<!--{$MainFootItem.bloc_name}--> ここから-->
@@ -72,15 +72,15 @@
         <!-- ▲<!--{$MainFootItem.bloc_name}--> ここまで-->
       <!--{/foreach}-->
     <!--{/if}-->
-    <!--▲メイン下部-->
+    <!--{* ▲メイン下部 *}-->
 
   <!--{if $tpl_column_num == 3}-->
   </div>
-  <!--▲CENTER COLUMN-->
+  <!--{* ▲CENTER COLUMN *}-->
 
-  <!--▼RIGHT COLUMN-->
+  <!--{* ▼RIGHT COLUMN *}n-->
   <div id="rightcolumn">
-    <!--▼右ナビ-->
+    <!--{* ▼右ナビ *}-->
     <!--{if $arrPageLayout.RightNavi|@count > 0}-->
       <!--{foreach key=RightNaviKey item=RightNaviItem from=$arrPageLayout.RightNavi}-->
         <!-- ▼<!--{$RightNaviItem.bloc_name}--> ここから-->
@@ -92,19 +92,19 @@
         <!-- ▲<!--{$RightNaviItem.bloc_name}--> ここまで-->
       <!--{/foreach}-->
     <!--{/if}-->
-    <!--▲右ナビ-->
+    <!--{* ▲右ナビ *}-->
   </div>
-  <!--▲RIGHT COLUMN-->
+  <!--{* ▲RIGHT COLUMN *}-->
   <!--{/if}-->
 
 </div>
-<!--▲CONTENTS-->
+<!--{* ▲CONTENTS *}-->
 
-<!--▼FOTTER-->
+<!--{* ▼FOTTER *}-->
 <!--{if $arrPageLayout.footer_chk != 2}-->
 <!--{include file="`$smarty.const.TEMPLATE_DIR`footer.tpl"}-->
 <!--{/if}-->
-<!--▲FOTTER-->
+<!--{* ▲FOTTER *}-->
 
 <!--{* EBiSタグ表示用 *}-->
 <!--{$tpl_mainpage|sfPrintEbisTag}-->
