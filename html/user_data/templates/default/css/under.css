@@ -4,18 +4,18 @@
 /* 下層共通指定
 ----------------------------------------------- */
 div#undercolumn {
-	float: right;
-	width: 580px;
-	margin: 15px 0 0 0;
+    float: right;
+    width: 580px;
+    margin: 15px 0 0 0;
 }
 
 div#undercolumn h2.title{
-	width: 580px;
-	margin: 0 0 15px 0;
+    width: 580px;
+    margin: 0 0 15px 0;
 }
 
 div#undercolumn table {
-	width: 570px;
+    width: 570px;
 }
 
 
@@ -28,7 +28,7 @@ div#undercolumn_aboutus {
 }
 
 div#undercolumn_aboutus table th {
-	width: 140px;
+    width: 140px;
 }
 
 
@@ -39,7 +39,7 @@ div#undercolumn_order {
 }
 
 div#undercolumn_order table th {
-	width: 140px;
+    width: 140px;
 }
 
 
@@ -50,34 +50,34 @@ div#undercolumn_contact {
 }
 
 div#undercolumn_contact .box120 {
-	width: 120px;
-	padding: 2px;
-	border: 1px solid #ccc;
+    width: 120px;
+    padding: 2px;
+    border: 1px solid #ccc;
 }
 
 div#undercolumn_contact .box60 {
-	width: 60px;
-	padding: 2px;
-	border: 1px solid #ccc;
+    width: 60px;
+    padding: 2px;
+    border: 1px solid #ccc;
 }
 
 div#undercolumn_contact .box380 {
-	width: 380px;
-	margin: 5px 0 0 0;
-	padding: 2px;
-	border: 1px solid #ccc;
+    width: 380px;
+    margin: 5px 0 0 0;
+    padding: 2px;
+    border: 1px solid #ccc;
 }
 
 div#undercolumn_contact .area380 {
-	width: 380px;
-	height: 250px;
-	margin: 5px 0 0 0;
-	padding: 2px;
-	border: 1px solid #ccc;
+    width: 380px;
+    height: 250px;
+    margin: 5px 0 0 0;
+    padding: 2px;
+    border: 1px solid #ccc;
 }
 
 div#undercolumn_contact .zipimg img {
-	margin: 5px 0 0 0;
+    margin: 5px 0 0 0;
 }
 
 
@@ -88,55 +88,61 @@ div#undercolumn_entry {
 }
 
 div#undercolumn_entry .area470 {
-	width: 570px;
-	height: 520px;
-	margin: 5px 0 0 0;
-	padding: 2px;
-	border: 1px solid #ccc;
+    width: 570px;
+    height: 520px;
+    margin: 5px 0 0 0;
+    padding: 2px;
+    border: 1px solid #ccc;
 }
 
 div#undercolumn_entry .box120 {
-	width: 120px;
-	padding: 2px;
-	border: 1px solid #ccc;
+    width: 120px;
+    padding: 2px;
+    border: 1px solid #ccc;
 }
 
 div#undercolumn_entry .box60 {
-	width: 60px;
-	padding: 2px;
-	border: 1px solid #ccc;
+    width: 60px;
+    padding: 2px;
+    border: 1px solid #ccc;
 }
 
 div#undercolumn_entry .box380 {
-	width: 380px;
-	margin: 5px 0 0 0;
-	padding: 2px;
-	border: 1px solid #ccc;
+    width: 380px;
+    margin: 5px 0 0 0;
+    padding: 2px;
+    border: 1px solid #ccc;
 }
 
 div#undercolumn_entry .box320 {
-	width: 320px;
-	margin: 5px 0 0 0;
-	padding: 2px;
-	border: 1px solid #ccc;
+    width: 320px;
+    margin: 5px 0 0 0;
+    padding: 2px;
+    border: 1px solid #ccc;
 }
 
 div#undercolumn_entry .zipimg img {
-	margin: 5px 0 0 0;
+    margin: 5px 0 0 0;
 }
 
 div#undercolumn_entry div#completetext {
-	width: 470px;
-	margin: 15px auto 0 auto;
-	padding: 15px;
-	border: 5px solid #ccc;
+    width: 470px;
+    margin: 15px auto 0 auto;
+    padding: 15px;
+    border: 5px solid #ccc;
 }
 
 div#undercolumn_entry div#completetext em {
-	font-weight: bold;
+    font-weight: bold;
 }
 
 div#undercolumn_entry div#completetext p{
-	padding: 20px 0 0 0;
-	text-align: left;
+    padding: 20px 0 0 0;
+    text-align: left;
+}
+
+div#undercolumn_entry dt {
+    float: left;
+    width: 4em
+    border: 1px solid #FF0000;
 }
