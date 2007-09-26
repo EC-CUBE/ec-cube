@@ -36,6 +36,7 @@ class LC_Page_Shopping_Deliv extends LC_Page {
     function init() {
         parent::init();
         $this->tpl_mainpage = 'shopping/deliv.tpl';
+        $this->tpl_column_num = 1;
         $this->tpl_css = URL_DIR.'css/layout/shopping/index.css';
         $masterData = new SC_DB_MasterData();
         $this->arrPref = $masterData->getMasterData("mtb_pref", array("pref_id", "pref_name", "rank"));
