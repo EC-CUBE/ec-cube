@@ -60,7 +60,13 @@
     <!--{/if}-->
     <!--{* ▲メイン上部 *}-->
 
+    <!--{if $tpl_column_num == 1}-->
+    <div id="one_column">
+    <!--{/if}-->
     <!--{include file=$tpl_mainpage}-->
+    <!--{if $tpl_column_num == 1}-->
+    </div>
+    <!--{/if}-->
 
     <!--{* ▼メイン下部 *}-->
     <!--{if $arrPageLayout.MainFoot|@count > 0}-->
