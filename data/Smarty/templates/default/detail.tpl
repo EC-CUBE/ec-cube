@@ -119,11 +119,10 @@ function lnSetSelect(form, name1, name2, val) {
         <input type="hidden" name="mode" value="cart" />
         <input type="hidden" name="product_id" value="<!--{$tpl_product_id}-->" />
         <!--{if $tpl_classcat_find1}-->
-          <!--{if $arrErr.classcategory_id1 != ""}-->
-        <span class="attention">※ <!--{$tpl_class_name1}-->を入力して下さい。</span>
-          <!--{/if}-->
         <dl>
-          <dt><!--{$tpl_class_name1}--></dt>
+          <dt>
+            <!--{$tpl_class_name1}-->
+          </dt>
           <dd>
             <select name="classcategory_id1"
                     style="<!--{$arrErr.classcategory_id1|sfGetErrorColor}-->"
@@ -131,15 +130,15 @@ function lnSetSelect(form, name1, name2, val) {
               <option value="">選択してください</option>
               <!--{html_options options=$arrClassCat1 selected=$arrForm.classcategory_id1.value}-->
             </select>
+            <!--{if $arrErr.classcategory_id1 != ""}-->
+            <br /><span class="attention">※ <!--{$tpl_class_name1}-->を入力して下さい。</span>
+          <!--{/if}-->
           </dd>
         </dl>
         <!--{/if}-->
 
         <!--{if $tpl_stock_find}-->
           <!--{if $tpl_classcat_find2}-->
-            <!--{if $arrErr.classcategory_id2 != ""}-->
-        <span class="attention">※ <!--{$tpl_class_name2}-->を入力して下さい。</span>
-            <!--{/if}-->
         <dl>
           <dt><!--{$tpl_class_name2}--></dt>
           <dd>
@@ -147,24 +146,28 @@ function lnSetSelect(form, name1, name2, val) {
                     style="<!--{$arrErr.classcategory_id2|sfGetErrorColor}-->">
               <option value="">選択してください</option>
             </select>
+            <!--{if $arrErr.classcategory_id2 != ""}-->
+            <br /><span class="attention">※ <!--{$tpl_class_name2}-->を入力して下さい。</span>
+            <!--{/if}-->
           </dd>
         </dl>
           <!--{/if}-->
 
-          <!--{if $arrErr.quantity != ""}-->
-        <span class="attention"><!--{$arrErr.quantity}--></span>
-          <!--{/if}-->
         <dl>
-          <dt>個　数</dt>
-          <dd><input type="text" name="quantity" class="box54" value="<!--{$arrForm.quantity.value|default:1}-->" maxlength="<!--{$smarty.const.INT_LEN}-->" style="<!--{$arrErr.quantity|sfGetErrorColor}-->" /></dd>
+          <dt>個&nbsp;&nbsp;数</dt>
+          <dd><input type="text" name="quantity" class="box54" value="<!--{$arrForm.quantity.value|default:1}-->" maxlength="<!--{$smarty.const.INT_LEN}-->" style="<!--{$arrErr.quantity|sfGetErrorColor}-->" />
+           <!--{if $arrErr.quantity != ""}-->
+           <br /><span class="attention"><!--{$arrErr.quantity}--></span>
+           <!--{/if}-->
+          </dd>
         </dl>
         <!--{/if}-->
 
         <!--{if $tpl_stock_find}-->
         <p class="btn">
           <!--★カゴに入れる★-->
-          <a href="<!--{$smarty.server.PHP_SELF|escape}-->" onclick="document.form1.submit(); return false;" onmouseover="chgImg('<!--{$TPL_DIR}-->img/products/b_cartin_on.gif','cart');" onmouseout="chgImg('<!--{$TPL_DIR}-->img/products/b_cartin.gif','cart');">
-            <img src="<!--{$TPL_DIR}-->img/products/b_cartin.gif" width="115" height="25" alt="カゴに入れる" name="cart" />
+          <a href="javascript:void(document.form1.submit())" onmouseover="chgImg('<!--{$TPL_DIR}-->img/products/b_cartin_on.gif','cart');" onmouseout="chgImg('<!--{$TPL_DIR}-->img/products/b_cartin.gif','cart');">
+            <img src="<!--{$TPL_DIR}-->img/products/b_cartin.gif" width="115" height="25" alt="カゴに入れる" name="cart" id="cart" />
           </a>
         </p>
         <!--{else}-->
