@@ -46,7 +46,7 @@
       </div>
 
       <div class="payarea02">
-        <h3><img src="<!--{$TPL_DIR}-->img/shopping/subtitle02.gif" width="670" height="33" alt="お届け時間の指定"></h3>
+        <h3><img src="<!--{$TPL_DIR}-->img/shopping/subtitle02.gif" width="670" height="33" alt="お届け時間の指定" /></h3>
         <p>ご希望の方は、お届け時間を選択してください。</p>
         <div>
           <!--★配達日指定★-->
@@ -72,7 +72,7 @@
       </div>
 
       <div class="payarea02">
-        <h3><img src="<!--{$TPL_DIR}-->img/shopping/subtitle03.gif" width="670" height="33" alt="その他お問い合わせ"></h3>
+        <h3><img src="<!--{$TPL_DIR}-->img/shopping/subtitle03.gif" width="670" height="33" alt="その他お問い合わせ" /></h3>
         <p>その他お問い合わせ事項がございましたら、こちらにご入力ください。</p>
         <div>
          <!--★その他お問い合わせ事項★-->
@@ -80,6 +80,7 @@
          <span class="attention"><!--{$arrErr[$key]}--></span>
          <textarea name="<!--{$key}-->"  style="<!--{$arrErr[$key]|sfGetErrorColor}-->" cols="80" rows="8" class="area660" wrap="head"><!--{$arrForm[$key].value|escape}--></textarea>
          <span class="attention"> （<!--{$smarty.const.LTEXT_LEN}-->文字まで）</span>
+        </div>
       </div>
 
       <!-- ▼ポイント使用 ここから -->
@@ -95,8 +96,8 @@
         <ul>
           <li><input type="radio" id="point_on" name="point_check" value="1" <!--{$arrForm.point_check.value|sfGetChecked:1}--> onclick="fnCheckInputPoint();" /><label for="point_on">ポイントを使用する</label></li>
            <!--{assign var=key value="use_point"}-->
-           <span class="attention"><!--{$arrErr[$key]}--></span>
-           <li class="underline">今回のお買い物で、<input type="text" name="<!--{$key}-->" value="<!--{$arrForm[$key].value|default:$tpl_user_point}-->" maxlength="<!--{$arrForm[$key].length}-->" style="<!--{$arrErr[$key]|sfGetErrorColor}-->" size="6" class="box60" />&nbsp;ポイントを使用する。</li>
+
+           <li class="underline">今回のお買い物で、<input type="text" name="<!--{$key}-->" value="<!--{$arrForm[$key].value|default:$tpl_user_point}-->" maxlength="<!--{$arrForm[$key].length}-->" style="<!--{$arrErr[$key]|sfGetErrorColor}-->" size="6" class="box60" />&nbsp;ポイントを使用する。<span class="attention"><!--{$arrErr[$key]}--></span></li>
            <li><input type="radio" id="point_off" name="point_check" value="2" <!--{$arrForm.point_check.value|sfGetChecked:2}--> onclick="fnCheckInputPoint();" /><label for="point_off">ポイントを使用しない</label></li>
          </ul>
       </div>
@@ -106,7 +107,7 @@
 
       <div class="tblareabtn">
         <a href="<!--{$tpl_back_url|escape}-->" onmouseover="chgImg('<!--{$TPL_DIR}-->img/common/b_back_on.gif','back03')" onmouseout="chgImg('<!--{$TPL_DIR}-->img/common/b_back.gif','back03')">
-          <img src="<!--{$TPL_DIR}-->img/common/b_back.gif" width="150" height="30" alt="戻る" border="0" name="back03" id="back03" / >
+          <img src="<!--{$TPL_DIR}-->img/common/b_back.gif" width="150" height="30" alt="戻る" border="0" name="back03" id="back03" />
         </a>&nbsp;
         <input type="image" onmouseover="chgImgImageSubmit('<!--{$TPL_DIR}-->img/common/b_next_on.gif',this)" onmouseout="chgImgImageSubmit('<!--{$TPL_DIR}-->img/common/b_next.gif',this)" src="<!--{$TPL_DIR}-->img/common/b_next.gif" class="box150" alt="次へ" name="next" id="next" />
       </div>
@@ -114,5 +115,3 @@
   </div>
 </div>
 <!--▲CONTENTS-->
-
-
