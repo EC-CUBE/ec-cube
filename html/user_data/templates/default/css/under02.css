@@ -245,3 +245,21 @@ div#under02column_login .loginarea .inputbox02 {
     background: #f0f0f0;
     text-align: center;
 }
+
+/* エラー
+----------------------------------------------- */
+div#under02column_error {
+
+}
+
+div#under02column_error .messagearea {
+    width: 680px;
+    margin: 15px auto 0 auto;
+    padding: 10px 5px;
+    border: 5px solid #ccc;
+    text-align: center;
+}
+
+div#under02column_error .messagearea .error {
+    padding: 120px 0;
+}
