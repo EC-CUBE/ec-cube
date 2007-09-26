@@ -13,7 +13,7 @@ require_once(CLASS_PATH . "pages/LC_Page.php");
  *
  * @package Page
  * @author LOCKON CO.,LTD.
- * @version $Id$
+ * @version $Id:LC_Page_FrontParts_Bloc_Login.php 15532 2007-08-31 14:39:46Z nanasess $
  */
 class LC_Page_FrontParts_Bloc_Login extends LC_Page {
 
@@ -63,6 +63,7 @@ class LC_Page_FrontParts_Bloc_Login extends LC_Page {
 
         $this->tpl_disable_logout = $this->lfCheckDisableLogout();
         $objSubView = new SC_SiteView();
+        $this->transactionid = $this->getToken();
         $objSubView->assignobj($this);
         $objSubView->display($this->tpl_mainpage);
     }
