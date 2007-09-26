@@ -13,7 +13,7 @@ require_once(CLASS_PATH . "pages/LC_Page.php");
  *
  * @package Page
  * @author LOCKON CO.,LTD.
- * @version $Id$
+ * @version $Id:LC_Page_Error.php 15532 2007-08-31 14:39:46Z nanasess $
  */
 class LC_Page_Error extends LC_Page {
 
@@ -28,6 +28,7 @@ class LC_Page_Error extends LC_Page {
     function init() {
         parent::init();
         $this->tpl_mainpage = 'error.tpl';
+        $this->tpl_column_num = 1;
         $this->tpl_css = URL_DIR.'css/layout/error.css';
         $this->tpl_title = 'エラー';
     }
