@@ -17,6 +17,10 @@ div#mypagecolumn table {
     width: 510px;
 }
 
+div#mycontentsarea {
+    width: 510px;
+}
+
 div#mycontentsarea table th.resulttd {
     text-align: right;
 }
@@ -43,6 +47,11 @@ div#mycontentsarea table caption {
 div#mynavarea {
     float: left;
     width: 185px;
+}
+
+div#mynavarea li {
+    display: block;
+    height: 30px;
 }
 
 div#mycontentsarea {
