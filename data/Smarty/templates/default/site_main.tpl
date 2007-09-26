@@ -20,8 +20,10 @@
 <!--{* ▼CONTENTS *}-->
 <div id="container">
 
+  <!--{if $tpl_column_num > 1}-->
   <!--{* ▼LEFT COLUMN *}-->
   <div id="leftcolumn">
+
     <!--{* ▼左ナビ *}-->
     <!--{if $arrPageLayout.LeftNavi|@count > 0}-->
       <!--{foreach key=LeftNaviKey item=LeftNaviItem from=$arrPageLayout.LeftNavi}-->
@@ -37,7 +39,7 @@
     <!--{* ▲左ナビ *}-->
   </div>
   <!--{* ▲LEFT COLUMN *}-->
-
+  <!--{/if}-->
 
   <!--{if $tpl_column_num == 3}-->
   <!--{* ▼CENTER COLUMN *}-->
