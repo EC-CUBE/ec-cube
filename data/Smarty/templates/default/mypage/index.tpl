@@ -9,7 +9,7 @@
   <!--{if $tpl_navi != ""}-->
     <!--{include file=$tpl_navi}-->
   <!--{else}-->
-    <!--{include file=`$smarty.const.USER_PATH`templates/mypage/navi.tpl}-->
+    <!--{include file=`$smarty.const.TEMPLATE_DIR`mypage/navi.tpl}-->
   <!--{/if}-->
   <div id="mycontentsarea">
     <form name="form1" method="post" action="<!--{$smarty.server.PHP_SELF|escape}-->">
