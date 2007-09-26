@@ -151,6 +151,26 @@ div#under02column_shopping .payarea02 .area660 {
     border: 1px solid #ccc;
 }
 
+div#under02column_shopping .pointarea div {
+    border: 3px solid #ccc;
+    padding: 5px;
+    text-align: center;
+}
+
+div#under02column_shopping .pointarea ul {
+    margin: 10px auto;
+    width: 500px;
+}
+
+div#under02column_shopping .pointarea li {
+    text-align: left;
+    padding: 2px 10px;
+}
+
+div#under02column_shopping .pointarea li.underline {
+    border-bottom: 1px dashed #ccc;
+    margin-bottom: 7px;
+}
 
 /* 確認
 ----------------------------------------------- */
