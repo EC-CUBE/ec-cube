@@ -151,6 +151,11 @@ div#under02column_shopping .payarea02 .area660 {
     border: 1px solid #ccc;
 }
 
+div#under02column_shopping .pointarea {
+    width: 670px;
+    margin: 40px auto 0 auto;
+}
+
 div#under02column_shopping .pointarea div {
     border: 3px solid #ccc;
     padding: 5px;
@@ -174,22 +179,22 @@ div#under02column_shopping .pointarea li.underline {
 
 /* 確認
 ----------------------------------------------- */
-div#under02column_shopping table.delivname th {
-    text-align: left;
-    width: 140px;
-}
 
-div#under02column_shopping table.delivname caption {
-    border-top: 1px solid #ccc;
-    border-right: 1px solid #ccc;
-    border-left: 1px solid #ccc;
-    padding: 8px;
-    background-color: #f0f0f0;
+div#under02column_shopping table.delivname thead th {
+    width: 690px;
     text-align: left;
     font-weight: bold;
-    color: #000;
 }
 
+div#under02column_shopping table.delivname tbody th {
+    text-align: left;
+    width: 155px;
+}
+
+div#under02column_shopping table.delivname td {
+    text-align: left;
+    width: 550px;
+}
 
 /* ログイン
 ----------------------------------------------- */
