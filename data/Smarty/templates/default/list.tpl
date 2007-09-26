@@ -3,8 +3,7 @@
  *
  * http://www.lockon.co.jp/
  *}-->
-<script type="text/javascript">
-<!--
+<script type="text/javascript">//<![CDATA[
 // セレクトボックスに項目を割り当てる。
 function lnSetSelect(name1, name2, id, val) {
         sele1 = document.form1[name1];
@@ -31,7 +30,7 @@ function lnSetSelect(name1, name2, id, val) {
                 }
         }
 }
-//-->
+//]]>
 </script>
 
 <!--▼CONTENTS-->
@@ -118,7 +117,7 @@ function lnSetSelect(name1, name2, id, val) {
        </p>
 
          <!--{if $arrProducts[cnt].stock_max == 0 && $arrProducts[cnt].stock_unlimited_max != 1}-->
-           <p><em>申し訳ございませんが、只今品切れ中です。</em></p>
+           <p class="soldout"><em>申し訳ございませんが、只今品切れ中です。</em></p>
          <!--{else}-->
            <!--▼買い物かご-->
            <div class="in_cart">
