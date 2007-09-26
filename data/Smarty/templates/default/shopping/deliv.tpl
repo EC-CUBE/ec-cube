@@ -75,7 +75,7 @@
 
       <div class="tblareabtn">
         <a href="<!--{$smarty.const.URL_DIR}-->cart/index.php" onmouseover="chgImgImageSubmit('<!--{$TPL_DIR}-->img/common/b_back_on.gif',back03)" onmouseout="chgImgImageSubmit('<!--{$TPL_DIR}-->img/common/b_back.gif',back03)">
-          <img src="<!--{$TPL_DIR}-->img/common/b_back.gif" width="150" height="30" alt="戻る" border="0" name="back03" id="back03"/>
+          <img src="<!--{$TPL_DIR}-->img/common/b_back.gif" width="150" height="30" alt="戻る" border="0" name="back03" id="back03" />
         </a>
         <input type="image" onmouseover="chgImgImageSubmit('<!--{$TPL_DIR}-->img/shopping/b_select_on.gif',this)" onmouseout="chgImgImageSubmit('<!--{$TPL_DIR}-->img/shopping/b_select.gif',this)" src="<!--{$TPL_DIR}-->img/shopping/b_select.gif" alt="選択したお届け先に送る" class="box190" name="send_button" id="send_button" />
       </div>
