@@ -135,7 +135,7 @@ class LC_Page_Products_Detail extends LC_Page {
         // 商品IDをFORM内に保持する。
         $this->tpl_product_id = $tmp_id;
 
-        if (!isset($_['mode'])) $_POST['mode'] = "";
+        if (!isset($_POST['mode'])) $_POST['mode'] = "";
 
         switch($_POST['mode']) {
         case 'cart':
