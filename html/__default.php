@@ -22,8 +22,7 @@ class LC_Page_User extends LC_Page {
      */
     function init() {
         parent::init();
-        // メインCSSパス
-        $this->tpl_css = URL_DIR.'css/layout/contact/index.css';
+        $this->tpl_column_num = 3;
     }
 
     /**
