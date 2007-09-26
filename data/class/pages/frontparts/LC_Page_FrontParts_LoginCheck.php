@@ -92,7 +92,7 @@ class LC_Page_FrontParts_LoginCheck extends LC_Page {
             $mypage_url_search = strpos('.'.$_POST['url'], "mypage");
             //マイページログイン中はログイン画面へ移行
             if ($mypage_url_search == 2){
-                $this->sendRedirect($this->getLocation("/mypage/login.php"));
+                $this->sendRedirect($this->getLocation(URL_DIR . "mypage/login.php"));
             }else{
                 $this->sendRedirect($this->getLocation($_POST['url']));
             }
