@@ -5,6 +5,7 @@
      * @return void
      */
     function mobileInit() {
+        $this->init();
     }
 
     /**
@@ -14,4 +15,9 @@
      */
     function mobileProcess() {
     }
+/*
+ * Local variables:
+ * coding: utf-8
+ * End:
+ */
 ?>
