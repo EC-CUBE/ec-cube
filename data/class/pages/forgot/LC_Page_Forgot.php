@@ -13,7 +13,7 @@ require_once(CLASS_PATH . "pages/LC_Page.php");
  *
  * @package Page
  * @author LOCKON CO.,LTD.
- * @version $Id$
+ * @version $Id:LC_Page_Forgot.php 15532 2007-08-31 14:39:46Z nanasess $
  */
 class LC_Page_Forgot extends LC_Page {
 
@@ -54,10 +54,16 @@ class LC_Page_Forgot extends LC_Page {
 
         // 店舗基本情報を取得
         $objDb = new SC_Helper_DB_Ex();
-        $CONF = $objb->sf_getBasisData();
+        $CONF = $objDb->sf_getBasisData();
+
+        $masterData = new SC_DB_MasterData_Ex();
+        $arrReminder = $masterData->getMasterData("mtb_reminder");
 
         // クッキー管理クラス
         $objCookie = new SC_Cookie(COOKIE_EXPIRE);
+
+        if (!isset($_POST['mode'])) $_POST['mode'] = "";
+        if (!isset($_POST['email'])) $_POST['email'] = "";
 
         if ( $_POST['mode'] == 'mail_check' ){
             //メアド入力時
@@ -65,7 +71,8 @@ class LC_Page_Forgot extends LC_Page {
             $sql = "SELECT * FROM dtb_customer WHERE email ILIKE ? AND status = 2 AND del_flg = 0";
             $result = $conn->getAll($sql, array($_POST['email']) );
 
-            if ( $result[0]['reminder'] ){		// 本会員登録済みの場合
+            // 本会員登録済みの場合
+            if (isset($result[0]['reminder']) &&  $result[0]['reminder']){
                 // 入力emailが存在する
                 $_SESSION['forgot']['email'] = $_POST['email'];
                 $_SESSION['forgot']['reminder'] = $result[0]['reminder'];
@@ -96,7 +103,7 @@ class LC_Page_Forgot extends LC_Page {
                     // ヒミツの答えが正しい
 
                     // 新しいパスワードを設定する
-                    $this->temp_password = gfMakePassword(8);
+                    $this->temp_password = GC_Utils_Ex::gfMakePassword(8);
 
                     if(FORGOT_MAIL == 1) {
                         // メールで変更通知をする
@@ -164,12 +171,10 @@ class LC_Page_Forgot extends LC_Page {
      */
     function lfSendMail($CONF, $email, $customer_name, $temp_password){
         //　パスワード変更お知らせメール送信
-
-        $objPage = new LC_Page();
-        $objPage->customer_name = $customer_name;
-        $objPage->temp_password = $temp_password;
+        $this->customer_name = $customer_name;
+        $this->temp_password = $temp_password;
         $objMailText = new SC_SiteView();
-        $objMailText->assignobj($objPage);
+        $objMailText->assignobj($this);
 
         $toCustomerMail = $objMailText->fetch("mail_templates/forgot_mail.tpl");
         $objMail = new GC_SendMail();
