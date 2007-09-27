@@ -25,7 +25,7 @@
  * @package Smarty
  */
 
-/* $Id: Config_File.class.php 3 2006-08-23 03:04:20Z naka $ */
+/* $Id$ */
 
 /**
  * Config file reading class

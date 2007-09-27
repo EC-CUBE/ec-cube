@@ -16,7 +16,7 @@
 // | Author: Vincent Blavet <vincent@phpconcept.net>                      |
 // +----------------------------------------------------------------------+
 //
-// $Id: Tar.php 4772 2006-10-12 06:52:48Z naka $
+// $Id$
 
 if(!defined('TAR_PHP_DIR')) {
 	$TAR_PHP_DIR = realpath(dirname( __FILE__));

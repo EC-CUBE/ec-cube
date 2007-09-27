@@ -17,7 +17,7 @@
 // |          Chuck Hagenbuch <chuck@horde.org>                           |
 // +----------------------------------------------------------------------+
 //
-// $Id: Socket.php 6959 2006-11-13 06:40:52Z kakinaka $
+// $Id$
 
 if(!defined('SOCKET_PHP_DIR')) {
 	$SOCKET_PHP_DIR = realpath(dirname( __FILE__));

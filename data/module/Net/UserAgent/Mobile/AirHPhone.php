@@ -15,7 +15,7 @@
  * @author     KUBO Atsuhiro <iteman@users.sourceforge.net>
  * @copyright  2003-2007 KUBO Atsuhiro <iteman@users.sourceforge.net>
  * @license    http://www.php.net/license/3_0.txt  PHP License 3.0
- * @version    CVS: $Id: AirHPhone.php,v 1.12 2007/02/20 14:39:45 kuboa Exp $
+ * @version    CVS: $Id$
  * @link       http://www.willcom-inc.com/ja/service/contents_service/club_air_edge/for_phone/homepage/index.html
  * @see        Net_UserAgent_Mobile_Common
  * @since      File available since Release 0.5

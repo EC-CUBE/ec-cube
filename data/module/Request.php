@@ -32,7 +32,7 @@
 // | Author: Richard Heyes <richard@phpguru.org>                           |
 // +-----------------------------------------------------------------------+
 //
-// $Id: Request.php 10017 2006-12-27 02:29:54Z kaki $
+// $Id$
 //
 // HTTP_Request Class
 //
