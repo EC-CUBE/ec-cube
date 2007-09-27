@@ -85,7 +85,7 @@ class LC_Page_Mypage_Refusal extends LC_Page {
 
             $objCustomer->EndSession();
             //完了ページへ
-            $this->sendRedirect($this->getLocation("./refusal_complate.php"));
+            $this->sendRedirect($this->getLocation("./refusal_complete.php"));
             exit;
         }
 
