@@ -7,12 +7,12 @@
 
 // {{{ requires
 require_once("../require.php");
-require_once(CLASS_PATH . "page_extends/mypage/LC_Page_Mypage_RefusalComplate_Ex.php");
+require_once(CLASS_PATH . "page_extends/mypage/LC_Page_Mypage_RefusalComplete_Ex.php");
 
 // }}}
 // {{{ generate page
 
-$objPage = new LC_Page_Mypage_RefusalComplate_Ex();
+$objPage = new LC_Page_Mypage_RefusalComplete_Ex();
 $objPage->init();
 $objPage->process();
 register_shutdown_function(array($objPage, "destroy"));

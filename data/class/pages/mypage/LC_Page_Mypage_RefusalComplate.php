@@ -15,7 +15,7 @@ require_once(CLASS_PATH . "pages/LC_Page.php");
  * @author LOCKON CO.,LTD.
  * @version $Id$
  */
-class LC_Page_Mypage_RefusalComplate extends LC_Page {
+class LC_Page_Mypage_RefusalComplete extends LC_Page {
 
     // }}}
     // {{{ functions

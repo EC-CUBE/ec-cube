@@ -6,7 +6,7 @@
  */
 
 // {{{ requires
-require_once(CLASS_PATH . "pages/mypage/LC_Page_Mypage_RefusalComplate.php");
+require_once(CLASS_PATH . "pages/mypage/LC_Page_Mypage_RefusalComplete.php");
 
 /**
  * 退会完了 のページクラス(拡張).
@@ -17,7 +17,7 @@ require_once(CLASS_PATH . "pages/mypage/LC_Page_Mypage_RefusalComplate.php");
  * @author LOCKON CO.,LTD.
  * @version $Id$
  */
-class LC_Page_Mypage_RefusalComplate_Ex extends LC_Page_Mypage_RefusalComplate {
+class LC_Page_Mypage_RefusalComplete_Ex extends LC_Page_Mypage_RefusalComplete {
 
     // }}}
     // {{{ functions
