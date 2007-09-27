@@ -48,7 +48,7 @@ require_once(CLASS_PATH . "helper_extends/SC_Helper_PageLayout_Ex.php");
 require_once(CLASS_PATH . "helper_extends/SC_Helper_DB_Ex.php");
 require_once(CLASS_PATH . "helper_extends/SC_Helper_Mobile_Ex.php");
 require_once(CLASS_PATH . "helper_extends/SC_Helper_Session_Ex.php");
-
+include_once($include_dir . "require_plugin.php");
 // セッションハンドラ開始
 $objSession = new SC_Helper_Session_Ex();
 
