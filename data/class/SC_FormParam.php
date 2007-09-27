@@ -256,7 +256,7 @@ class SC_FormParam {
         $cnt = 0;
         foreach($this->keyname as $val) {
             if($keyname == "" || $keyname == $val) {
-                $arrRet[$val] = $this->param[$cnt];
+                $arrRet[$val] = isset($this->param[$cnt]) ? $this->param[$cnt] : "";
                 $cnt++;
             }
         }
@@ -268,7 +268,7 @@ class SC_FormParam {
         $cnt = 0;
         foreach ($this->keyname as $val) {
             if ($this->input_db[$cnt]) {
-                $arrRet[$val] = $this->param[$cnt];
+                $arrRet[$val] = isset($this->param[$cnt]) ? $this->param[$cnt] : "";
             }
             $cnt++;
         }
