@@ -143,6 +143,128 @@ class LC_Page_Cart extends LC_Page {
     }
 
     /**
+     * モバイルページを初期化する.
+     *
+     * @return void
+     */
+    function mobileInit() {
+        $this->init();
+    }
+
+    /**
+     * Page のプロセス(モバイル).
+     *
+     * @return void
+     */
+    function mobileProcess() {
+
+        // 買い物を続ける場合
+        if($_REQUEST['continue']) {
+            $this->sendRedirect(MOBILE_URL_SITE_TOP,
+                                SC_Helper_Mobile_Ex::sessionIdArray());
+            exit;
+        }
+
+        $objView = new SC_MobileView(false);
+        $objCartSess = new SC_CartSession("", false);
+        $objSiteSess = new SC_SiteSession();
+        $objSiteInfo = $objView->objSiteInfo;
+        $objCustomer = new SC_Customer();
+        $objDb = new SC_Helper_DB_Ex();
+
+        // 基本情報の取得
+        $arrInfo = $objSiteInfo->data;
+
+        // 商品購入中にカート内容が変更された。
+        if($objCartSess->getCancelPurchase()) {
+            $this->tpl_message = "商品購入中にｶｰﾄ内容が変更されましたので､お手数ですが購入手続きをやり直して下さい｡";
+        }
+
+        if (!isset($_POST['mode'])) $_POST['mode'] = "";
+
+        switch($_POST['mode']) {
+        case 'confirm':
+            // カート内情報の取得
+            $arrRet = $objCartSess->getCartList();
+            $max = count($arrRet);
+            $cnt = 0;
+            for ($i = 0; $i < $max; $i++) {
+                // 商品規格情報の取得
+                $arrData = $objDb->sfGetProductsClass($arrRet[$i]['id']);
+                // DBに存在する商品
+                if($arrData != "") {
+                    $cnt++;
+                }
+            }
+            // カート商品が1件以上存在する場合
+            if($cnt > 0) {
+                // 正常に登録されたことを記録しておく
+                $objSiteSess->setRegistFlag();
+                $pre_uniqid = $objSiteSess->getUniqId();
+                // 注文一時IDの発行
+                $objSiteSess->setUniqId();
+                $uniqid = $objSiteSess->getUniqId();
+                // エラーリトライなどで既にuniqidが存在する場合は、設定を引き継ぐ
+                if($pre_uniqid != "") {
+                    $sqlval['order_temp_id'] = $uniqid;
+                    $where = "order_temp_id = ?";
+                    $objQuery = new SC_Query();
+                    $objQuery->update("dtb_order_temp", $sqlval, $where, array($pre_uniqid));
+                }
+                // カートを購入モードに設定
+                $objCartSess->saveCurrentCart($uniqid);
+                // 購入ページへ
+                $this->sendRedirect(MOBILE_URL_SHOP_TOP,
+                                    SC_Helper_Mobile_Ex::sessionIdArray());
+                exit;
+            }
+            break;
+        default:
+            break;
+        }
+
+        if (!isset($_GET['mode'])) $_GET['mode'] = "";
+
+        switch($_GET['mode']) {
+        case 'up':
+            $objCartSess->upQuantity($_GET['cart_no']);
+            $this->reload(SC_Helper_Mobile_Ex::sessionIdArray());
+            break;
+        case 'down':
+            $objCartSess->downQuantity($_GET['cart_no']);
+            $this->reload(SC_Helper_Mobile_Ex::sessionIdArray());
+            break;
+        case 'delete':
+            $objCartSess->delProduct($_GET['cart_no']);
+            $this->reload(SC_Helper_Mobile_Ex::sessionIdArray());
+            break;
+        }
+
+        // カート集計処理
+        $this = $objDb->sfTotalCart($this, $objCartSess, $arrInfo);
+        $this->arrData = $objDb->sfTotalConfirm($arrData, $this, $objCartSess, $arrInfo, $objCustomer);
+
+        $this->arrInfo = $arrInfo;
+
+        // ログイン判定
+        if($objCustomer->isLoginSuccess()) {
+            $this->tpl_login = true;
+            $this->tpl_user_point = $objCustomer->getValue('point');
+            $this->tpl_name = $objCustomer->getValue('name01');
+        }
+
+        // 送料無料までの金額を計算
+        $tpl_deliv_free = $this->arrInfo['free_rule'] - $this->tpl_total_pretax;
+        $this->tpl_deliv_free = $tpl_deliv_free;
+
+        // 前頁のURLを取得
+        $this->tpl_prev_url = $objCartSess->getPrevURL();
+
+        $objView->assignobj($this);
+        $objView->display(SITE_FRAME);
+    }
+
+    /**
      * デストラクタ.
      *
      * @return void
