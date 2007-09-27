@@ -49,6 +49,9 @@ class SC_Customer {
         }
     }
 
+    /*
+     * XXX ILIKE で良い?
+     */
     function getCustomerDataFromEmailPass( $pass, $email, $mobile = false ) {
         $sql_mobile = $mobile ? ' OR email_mobile ILIKE ?' : '';
         $arrValues = array($email);
