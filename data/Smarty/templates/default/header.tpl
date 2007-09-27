@@ -13,10 +13,10 @@
   <div id="information">
     <ul>
       <li>
-        <a href="<!--{$smarty.const.URL_DIR}-->mypage/index.php"
+        <a href="<!--{$smarty.const.URL_DIR}-->mypage/login.php"
            onmouseover="chgImg('<!--{$TPL_DIR}-->img/header/mypage_on.gif','mypage');"
            onmouseout="chgImg('<!--{$TPL_DIR}-->img/header/mypage.gif','mypage');">
-          <img src="<!--{$TPL_DIR}-->img/header/mypage.gif" width="95" height="20" alt="ログイン情報変更" name="mypage" id="mypage" />
+          <img src="<!--{$TPL_DIR}-->img/header/mypage.gif" width="95" height="20" alt="MYページ" name="mypage" id="mypage" />
         </a>
       </li>
       <li>
