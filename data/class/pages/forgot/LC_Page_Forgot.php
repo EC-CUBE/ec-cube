@@ -68,7 +68,7 @@ class LC_Page_Forgot extends LC_Page {
         if ( $_POST['mode'] == 'mail_check' ){
             //メアド入力時
             $_POST['email'] = strtolower($_POST['email']);
-            $sql = "SELECT * FROM dtb_customer WHERE email ILIKE ? AND status = 2 AND del_flg = 0";
+            $sql = "SELECT * FROM dtb_customer WHERE email = ? AND status = 2 AND del_flg = 0";
             $result = $conn->getAll($sql, array($_POST['email']) );
 
             // 本会員登録済みの場合
@@ -80,7 +80,7 @@ class LC_Page_Forgot extends LC_Page {
                 $this->Reminder = $arrReminder[$_SESSION['forgot']['reminder']];
                 $this->tpl_mainpage = 'forgot/secret.tpl';
             } else {
-                $sql = "SELECT customer_id FROM dtb_customer WHERE email ILIKE ? AND status = 1 AND del_flg = 0";	//仮登録中の確認
+                $sql = "SELECT customer_id FROM dtb_customer WHERE email = ? AND status = 1 AND del_flg = 0";	//仮登録中の確認
                 $result = $conn->getAll($sql, array($_POST['email']) );
                 if ($result) {
                     $this->errmsg = "ご入力のemailアドレスは現在仮登録中です。<br>登録の際にお送りしたメールのURLにアクセスし、<br>本会員登録をお願いします。";
@@ -95,7 +95,7 @@ class LC_Page_Forgot extends LC_Page {
             if ( $_SESSION['forgot']['email'] ) {
                 // ヒミツの答えの回答が正しいかチェック
 
-                $sql = "SELECT * FROM dtb_customer WHERE email ILIKE ? AND del_flg = 0";
+                $sql = "SELECT * FROM dtb_customer WHERE email = ? AND del_flg = 0";
                 $result = $conn->getAll($sql, array($_SESSION['forgot']['email']) );
                 $data = $result[0];
 
