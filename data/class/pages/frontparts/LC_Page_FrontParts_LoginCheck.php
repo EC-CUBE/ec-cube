@@ -11,6 +11,8 @@ require_once(CLASS_PATH . "pages/LC_Page.php");
 /**
  * ログインチェック のページクラス.
  *
+ * TODO mypage/LC_Page_Mypage_LoginCheck と統合
+ *
  * @package Page
  * @author LOCKON CO.,LTD.
  * @version $Id:LC_Page_FrontParts_LoginCheck.php 15532 2007-08-31 14:39:46Z nanasess $
