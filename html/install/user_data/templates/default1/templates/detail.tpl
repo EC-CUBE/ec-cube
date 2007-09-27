@@ -315,6 +315,43 @@ function lnSetSelect(form, name1, name2, val) {
 				</table>
 				<!--お客様の声ここまで-->
 
+				<!--{if $arrTrackbackView == "ON"}-->
+				<!--▼トラックバックここから-->
+				<table width="580" border="0" cellspacing="0" cellpadding="0" summary=" ">
+					<tr>
+						<td><img src="<!--{$smarty.const.URL_DIR}-->img/products/title_tb.jpg" width="580" height="30" alt="この商品に対するトラックバック"></td>
+					</tr>
+					<tr><td height="10"></td></tr>
+					<tr>
+						<td class="fs12"><strong>この商品のトラックバック先URL</strong></td>
+					</tr>
+					<tr><td height="5"></td></tr>
+					<tr>
+						<td class="fs12"><input type="text" name="trackback" value="<!--{$trackback_url}-->" size="100"></td>
+					</tr>
+					<!--{if $arrTrackback}-->
+					<tr><td height="5"></td></tr>
+					<!--{section name=cnt loop=$arrTrackback}-->
+					<tr>
+						<td class="fs12"><strong><!--{$arrTrackback[cnt].create_date|sfDispDBDate:false}-->　<a href="<!--{$arrTrackback[cnt].url}-->" target="_blank"><!--{$arrTrackback[cnt].title|escape}--></a> from <!--{$arrTrackback[cnt].blog_name|escape}--></strong></td>
+					</tr>
+					<tr><td height="5"></td></tr>
+					<tr>
+						<td class="fs12"><!--{$arrTrackback[cnt].excerpt|escape|mb_strimwidth:0:200:"..."}--></td>
+					</tr>
+			
+					<!--{if !$smarty.section.cnt.last}-->
+					<tr><td height="20"><img src="<!--{$smarty.const.URL_DIR}-->img/common/line_580.gif" width="580" height="1" alt=""></td></tr>
+					<!--{/if}-->
+					
+					<!--{/section}-->
+					<!--{/if}-->
+					
+					<tr><td height="30"></td></tr>
+				</table>
+				<!--▲トラックバックここまで-->
+				<!--{/if}-->
+
 				<!--{if $arrRecommend}-->
 				<!--▼オススメ商品ここから-->
 				<table width="580" border="0" cellspacing="0" cellpadding="0" summary=" ">
@@ -344,7 +381,8 @@ function lnSetSelect(form, name1, name2, val) {
 									<!--{else}-->
 										<!--{assign var=image_path value="`$smarty.const.NO_IMAGE_DIR`"}-->
 									<!--{/if}-->
-									<img src="<!--{$smarty.const.SITE_URL}-->resize_image.php?image=<!--{$image_path|sfRmDupSlash}-->&width=65&height=65" alt="<!--{$arrRecommend[cnt].name|escape}-->"></a></td>
+									<img src="<!--{$smarty.const.SITE_URL}-->resize_image.php?image=<!--{$image_path|sfRmDupSlash}-->&width=65&height=65" alt="<!--{$arrRecommend[cnt].name|escape}-->"></a>
+									</td>
 									<td align="right">
 									<table width="145" border="0" cellspacing="0" cellpadding="0" summary=" ">
 										<tr>

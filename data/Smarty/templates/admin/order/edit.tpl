@@ -8,7 +8,7 @@
 <script type="text/javascript">
 <!--
 	function fnEdit(customer_id) {
-		document.form1.action = '/admin/customer/edit.php';
+		document.form1.action = '<!--{$smarty.const.URL_DIR}-->admin/customer/edit.php';
 		document.form1.mode.value = "edit"
 		document.form1['edit_customer_id'].value = customer_id;
 		document.form1.submit();

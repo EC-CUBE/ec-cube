@@ -55,6 +55,7 @@ $objPage->tpl_town = $town;
 
 // 郵便番号が発見された場合
 if(count($data_list) > 0) {
+    lfCheckInput();
 	$func = "fnPutAddress('" . $_GET['input1'] . "','" . $_GET['input2']. "');";
 	$objPage->tpl_onload = "$func";
 	$objPage->tpl_start = "window.close();";
@@ -69,13 +70,31 @@ $objView->display("input_zip.tpl");
 /* 入力エラーのチェック */
 function fnErrorCheck() {
 	// エラーメッセージ配列の初期化
-	$objErr = new SC_CheckError();
+	$objErr = new SC_CheckError($_GET);
 	
 	// 郵便番号
-	$objErr->doFunc( array("郵便番号1",'zip1',ZIP01_LEN ) ,array( "NUM_COUNT_CHECK" ) );
-	$objErr->doFunc( array("郵便番号2",'zip2',ZIP02_LEN ) ,array( "NUM_COUNT_CHECK" ) );
+	$objErr->doFunc( array("郵便番号1",'zip1',ZIP01_LEN ) ,array( "NUM_CHECK", "NUM_COUNT_CHECK" ) );
+	$objErr->doFunc( array("郵便番号2",'zip2',ZIP02_LEN ) ,array( "NUM_CHECK", "NUM_COUNT_CHECK" ) );
 	
 	return $objErr->arrErr;
 }
 
+/**
+ * input1,2の入力チェック
+ * 英数字アンダーバー以外が入力された場合、
+ * 不正なアクセスとみなしエラー画面へ遷移
+ * @param void
+ * @return void
+ */
+function lfCheckInput(){
+    $pattern = "/^[0-9a-z_]+$/";
+    foreach (array('input1', 'input2') as $key_name) {
+        $ret = preg_match_all($pattern, $_GET[$key_name], $matches);
+        if (!$ret) {
+            $msg = sprintf('invalid param: $_GET[%s]="%s"', $key_name, $_GET[$key_name]);
+            gfPrintLog($msg);
+            sfDispSiteError('');
+        }
+    }
+}
 ?>

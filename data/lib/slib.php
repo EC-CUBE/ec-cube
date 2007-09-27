@@ -480,12 +480,14 @@ function sfIsSuccess($objSess, $disp_error = true) {
         // 警告表示させる？
         // sfErrorHeader('>> referrerが無効になっています。');
     } else {
-        $domain  = sfIsHTTPS() ? SSL_URL : SITE_URL;
-        $pattern = sprintf('|^%s.*|', $domain);
+        $siteurl = preg_quote(SITE_URL, "/");
+        $sslurl  = preg_quote(SSL_URL, "/");
+
+        $pattern = "/^($siteurl|$sslurl)/";
         $referer = $_SERVER['HTTP_REFERER'];
 
         // 管理画面から以外の遷移の場合はエラー画面を表示
-        if (!preg_match($pattern, $referer)) {
+        if ( !preg_match($pattern, $referer) ) {
             if ($disp_error) sfDispError(INVALID_MOVE_ERRORR);
             return false;
         }
@@ -594,11 +596,6 @@ function sfCSVDownload($data, $prefix = ""){
     Header("Cache-Control: ");
     Header("Pragma: ");
 
-    /* i18n~ だと正常に動作しないため、mb~ に変更
-    if (i18n_discover_encoding($data) == CHAR_CODE){
-        $data = i18n_convert($data,'SJIS',CHAR_CODE);
-    }
-    */
     if (mb_internal_encoding() == CHAR_CODE){
         $data = mb_convert_encoding($data,'SJIS',CHAR_CODE);
     }

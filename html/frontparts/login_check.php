@@ -58,9 +58,8 @@ case 'login':
 case 'logout':
 	// ログイン情報の解放
 	$objCustomer->EndSession();
-	$mypage_url_search = strpos('.'.$_POST['url'], "mypage");
 	//マイページログイン中はログイン画面へ移行
-	if ($mypage_url_search == 2){
+	if ( preg_match('/mypage/', $_POST['url']) ){
 	header("Location: /mypage/login.php");
 	}else{
 	header("Location: " . $_POST['url']);	
@@ -80,18 +79,24 @@ function lfInitParam() {
 
 /* POSTされるURLのチェック*/
 function lfIsValidURL() {
-    $site_url  = sfIsHTTPS() ? SSL_URL : SITE_URL;
-    $check_url = trim($_POST['url']);
+    $arrValidUrl = array(SSL_URL, SITE_URL, '/');
+    $targetUrl   = $_POST['url'];
     
-    // ドメインチェック
-    $pattern = "|^$site_url|";
-    if (!preg_match($pattern, $check_url)) {
-        return false;
+    // $arrValidUrlにマッチしない場合は不正なURL
+    $match = false;
+    foreach ($arrValidUrl as $validUrl) {
+        $pattern = sprintf('/^%s/' , preg_quote($validUrl, '/'));
+        gfPrintLog($pattern . ':' . $targetUrl);
+        if ( preg_match($pattern, $targetUrl) ) {
+            $match = true;
+            break;
+        }
     }
+    if (!$match) return false;
 
-    // 改行コード(CR・LF)・NULLバイトチェック
+    // 改行コード(CR・LF)・NULLバイトを含む場合は不正なURL
     $pattern = '/\r|\n|\0|%0D|%0A|%00/';
-    if (preg_match_all($pattern, $check_url, $matches)) {
+    if (preg_match_all($pattern, $targetUrl, $matches)) {
         return false;
     }
     

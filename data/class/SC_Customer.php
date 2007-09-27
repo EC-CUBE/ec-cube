@@ -45,7 +45,7 @@ class SC_Customer {
 		}
 		
 		if ( strlen($email) > 0 && strlen($pass) > 0 ){
-			$this->getCustomerDataFromEmailPass( $email, $pass );
+			$this->getCustomerDataFromEmailPass($pass, $email);
 		}
 	}
 	

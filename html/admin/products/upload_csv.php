@@ -113,7 +113,7 @@ case 'csv_upload':
 			if(count($arrCSVErr) > 0) {
 				echo "<font color=\"red\">■" . $line . "行目でエラーが発生しました。</font></br>\n";
 				foreach($arrCSVErr as $val) {
-					echo "<font color=\"red\">$val</font></br>\n";	
+					echo "<font color=\"red\">" . htmlspecialchars($val, ENT_QUOTES) . "</font></br>\n";
 				}
 				$err = true;
 			}

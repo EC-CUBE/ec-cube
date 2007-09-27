@@ -142,7 +142,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 		} elseif ($_POST["mode"] == "set2") {
 			$checkVal = array("sex", "year", "month", "day", "zip01", "zip02");
 		} else {
-			$checkVal = array("pref", "addr01", "addr02", "tel01", "tel02", "tel03", "mail_flag");
+			$checkVal = array("pref", "addr01", "addr02", "tel01", "tel02", "tel03", "mailmaga_flg");
 		}
 
 		foreach($objPage->arrForm as $key => $val) {
@@ -173,10 +173,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 			$objPage->passlen = lfPassLen($passlen);
 			
 			//メール受け取り
-			if (strtolower($objPage->arrForm['mail_flag']) == "on") {
-				$objPage->arrForm['mail_flag']  = "2";
+			if (strtolower($objPage->arrForm['mailmaga_flg']) == "on") {
+				$objPage->arrForm['mailmaga_flg']  = "2";
 			} else {
-				$objPage->arrForm['mail_flag']  = "3";
+				$objPage->arrForm['mailmaga_flg']  = "3";
 			}
 
 			$objPage->tpl_mainpage = 'entry/confirm.tpl';

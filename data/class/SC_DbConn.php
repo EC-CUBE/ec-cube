@@ -108,11 +108,8 @@ class SC_DbConn{
 		if (DB_TYPE == "mysql") $n = sfChangeMySQL($n);
 		
 		if(PEAR::isError($this->conn)) {
-			if(ADMIN_MODE){
-				sfErrorHeader("DBへの接続に失敗しました。:" . $this->dsn);
-			}else{
-				sfErrorHeader("DBへの接続に失敗しました。:");
-			}
+			sfErrorHeader("DBへの接続に失敗しました。");
+            gfPrintLog("couldn't connect : " . $this->dsn);
 			return 0;
 		}
 
