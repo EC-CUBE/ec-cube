@@ -251,6 +251,7 @@ class SC_FormParam {
 
     // 連想配列の作成
     function getHashArray($keyname = "") {
+        $arrRet = array();
         $cnt = 0;
         foreach($this->keyname as $val) {
             if($keyname == "" || $keyname == $val) {
