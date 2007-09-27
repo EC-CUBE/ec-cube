@@ -140,6 +140,7 @@ class SC_FormParam {
         $cnt = 0;
         foreach($this->keyname as $val) {
             foreach($this->arrCheck[$cnt] as $func) {
+                if (!isset($this->param[$cnt])) $this->param[$cnt] = "";
                 switch($func) {
                 case 'EXIST_CHECK':
                 case 'NUM_CHECK':
