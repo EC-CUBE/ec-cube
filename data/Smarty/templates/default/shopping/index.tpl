@@ -41,8 +41,11 @@
        パスワードを忘れた方は<a href="<!--{$smarty.const.SSL_URL|sfTrimURL}-->/forgot/index.php" onclick="win01('<!--{$smarty.const.SSL_URL|sfTrimURL}-->/forgot/index.php','forget','600','400'); return false;" target="_blank">こちら</a>からパスワードの再発行を行ってください。<br />
       メールアドレスを忘れた方は、お手数ですが、<a href="<!--{$smarty.const.URL_DIR}-->contact/index.php">お問い合わせページ</a>からお問い合わせください。
      </p>
-  </div>
-  <div class="loginarea">
+   </div>
+    </form>
+    <form name="member_form2" id="member_form2" method="post" action="./index.php">
+      <input type="hidden" name="mode" value="nonmember" />
+    <div class="loginarea">
     <p>
       <img src="<!--{$TPL_DIR}-->img/login/guest.gif" width="247" height="16" alt="まだ会員登録されていないお客様" />
     </p>
