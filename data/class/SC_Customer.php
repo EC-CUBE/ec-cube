@@ -60,7 +60,11 @@ class SC_Customer {
         // 本登録された会員のみ
         $sql = "SELECT * FROM dtb_customer WHERE (email = ?" . $sql_mobile . ") AND del_flg = 0 AND status = 2";
         $result = $this->conn->getAll($sql, $arrValues);
-        $data = $result[0];
+        if (empty($result)) {
+            return false;
+        } else {
+            $data = $result[0];
+        }
 
         // パスワードが合っていれば顧客情報をcustomer_dataにセットしてtrueを返す
         if ( sha1($pass . ":" . AUTH_MAGIC) == $data['password'] ){
