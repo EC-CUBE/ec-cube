@@ -49,17 +49,16 @@ class SC_Customer {
         }
     }
 
-    /*
-     * XXX ILIKE で良い?
-     */
     function getCustomerDataFromEmailPass( $pass, $email, $mobile = false ) {
-        $sql_mobile = $mobile ? ' OR email_mobile ILIKE ?' : '';
+        // 小文字に変換
+        $email = strtolower($email);
+        $sql_mobile = $mobile ? ' OR email_mobile = ?' : '';
         $arrValues = array($email);
         if ($mobile) {
             $arrValues[] = $email;
         }
         // 本登録された会員のみ
-        $sql = "SELECT * FROM dtb_customer WHERE (email ILIKE ?" . $sql_mobile . ") AND del_flg = 0 AND status = 2";
+        $sql = "SELECT * FROM dtb_customer WHERE (email = ?" . $sql_mobile . ") AND del_flg = 0 AND status = 2";
         $result = $this->conn->getAll($sql, $arrValues);
         $data = $result[0];
 
