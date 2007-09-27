@@ -255,6 +255,16 @@ class SC_Helper_Mobile {
     }
 
     /**
+     * セッション ID を付加した配列を返す.
+     *
+     * @param array $array 元となる配列
+     * @param array セッション ID を追加した配列
+     */
+    function sessionIdArray($array = array()) {
+        return array_merge($array, array(session_name() => session_id());
+    }
+
+    /**
      * 空メール用のトークンを生成する。
      *
      * @return string 生成したトークンを返す。
