@@ -135,6 +135,32 @@ class LC_Page_Contact extends LC_Page {
     }
 
     /**
+     * モバイルページを初期化する.
+     *
+     * @return void
+     */
+    function mobileInit() {
+        $this->init();
+    }
+
+    /**
+     * Page のプロセス(モバイル).
+     *
+     * @return void
+     */
+    function mobileProcess() {
+        $conn = new SC_DBConn();
+        $objView = new SC_MobileView();
+        $objDb = new SC_Helper_DB_Ex();
+        $CONF = $objDb->sf_getBasisData();			// 店舗基本情報
+
+        //----　ページ表示
+        $objView->assignobj($this);
+        $objView->assignarray($CONF);
+        $objView->display(SITE_FRAME);
+    }
+
+    /**
      * デストラクタ.
      *
      * @return void
