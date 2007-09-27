@@ -339,6 +339,11 @@ input[type='image'].box190 {
     height: 30px;
 }
 
+input[type='image'].box180 {
+    width: 180px;
+    height: 30px;
+}
+
 input[type='image'].box150 {
     width: 150px;
     height: 30px;
