@@ -74,6 +74,15 @@ div#mycontentsarea p.myconditionarea {
     border: solid 1px #333;
 }
 
+div#mycontentsarea p.delivempty {
+    clear: both;
+    width: 500px;
+    margin: 30px auto;
+    padding: 10px;
+    border: solid 5px #CCC;
+    text-align: center;
+}
+
 
 /* 会員登録内容変更/>退会
 ----------------------------------------------- */
