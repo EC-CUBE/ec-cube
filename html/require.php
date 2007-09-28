@@ -45,4 +45,23 @@ require_once(CLASS_PATH . "helper_extends/SC_Helper_DB_Ex.php");
 require_once(CLASS_PATH . "helper_extends/SC_Helper_Session_Ex.php");
 require_once(CLASS_PATH . "helper_extends/SC_Helper_Mail_Ex.php");
 include_once($include_dir . "/require_plugin.php");
+
+// 携帯端末の場合は mobile 以下へリダイレクトする。
+if (GC_MobileUserAgent::isMobile()) {
+    if (preg_match('|^' . URL_DIR . '(.*)$|', $_SERVER['REQUEST_URI'], $matches)) {
+        $path = $matches[1];
+    } else {
+        $path = '';
+    }
+
+    header("Location: "
+           .  SC_Utils_Ex::sfRmDupSlash(SITE_URL . URL_DIR . "mobile/" . $path));
+    exit;
+}
+
+// 絵文字変換 (除去) フィルターを組み込む。
+ob_start(array('GC_MobileEmoji', 'handler'));
+
+// アップデートで取得したPHPを読み出す
+SC_Utils_Ex::sfLoadUpdateModule();
 ?>

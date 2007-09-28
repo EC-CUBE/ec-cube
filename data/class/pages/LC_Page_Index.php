@@ -37,6 +37,7 @@ class LC_Page_Index extends LC_Page {
      * @return void
      */
     function mobileInit() {
+        parent::mobileInit();
         $this->tpl_mainpage = 'top.tpl';
     }
 

@@ -19,9 +19,6 @@ require_once(CLASS_PATH . "util_extends/GC_Utils_Ex.php");
 require_once(CLASS_PATH . "util_extends/SC_Utils_Ex.php");
 require_once(CLASS_PATH . "db_extends/SC_DB_MasterData_Ex.php");
 require_once(CLASS_PATH . "db_extends/SC_DB_DBFactory_Ex.php");
-//require_once($include_dir . "/.." . HTML2DATA_DIR . "include/mobile.inc");
-//require_once($include_dir . "/.." . HTML2DATA_DIR . "lib/glib.php");
-//require_once($include_dir . "/.." . HTML2DATA_DIR . "lib/slib.php");
 require_once(CLASS_PATH . "SC_View.php");
 require_once(CLASS_PATH . "SC_DbConn.php");
 require_once(CLASS_PATH . "SC_Session.php");
@@ -49,10 +46,9 @@ require_once(CLASS_PATH . "helper_extends/SC_Helper_DB_Ex.php");
 require_once(CLASS_PATH . "helper_extends/SC_Helper_Mobile_Ex.php");
 require_once(CLASS_PATH . "helper_extends/SC_Helper_Session_Ex.php");
 include_once($include_dir . "/require_plugin.php");
+
 // セッションハンドラ開始
 $objSession = new SC_Helper_Session_Ex();
-
-//require_once($include_dir . "/.." . HTML2DATA_DIR . "include/page_layout.inc");
 
 // アップデートで取得したPHPを読み出す
 SC_Utils_Ex::sfLoadUpdateModule();
