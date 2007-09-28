@@ -17,8 +17,6 @@ require_once(CLASS_PATH . "util_extends/GC_Utils_Ex.php");
 require_once(CLASS_PATH . "util_extends/SC_Utils_Ex.php");
 require_once(CLASS_PATH . "db_extends/SC_DB_MasterData_Ex.php");
 require_once(CLASS_PATH . "db_extends/SC_DB_DBFactory_Ex.php");
-//require_once($include_dir . HTML2DATA_DIR . "lib/glib.php");
-//require_once($include_dir . HTML2DATA_DIR . "lib/slib.php");
 require_once(CLASS_PATH . "SC_View.php");
 require_once(CLASS_PATH . "SC_DbConn.php");
 require_once(CLASS_PATH . "SC_Session.php");
@@ -46,26 +44,5 @@ require_once(CLASS_PATH . "helper_extends/SC_Helper_PageLayout_Ex.php");
 require_once(CLASS_PATH . "helper_extends/SC_Helper_DB_Ex.php");
 require_once(CLASS_PATH . "helper_extends/SC_Helper_Session_Ex.php");
 require_once(CLASS_PATH . "helper_extends/SC_Helper_Mail_Ex.php");
-include_once($inclde_dir . "/require_plugin.php");
-
-// セッションハンドラ開始
-//$objSession = new SC_Helper_Session_Ex();
-
-// アップデートで取得したPHPを読み出す
-SC_Utils_Ex::sfLoadUpdateModule();
-
-// 携帯端末の場合は mobile 以下へリダイレクトする。
-// TODO LC_Page::init() に移動可能か？
-if (GC_MobileUserAgent::isMobile()) {
-    if (preg_match('|^' . URL_DIR . '(.*)$|', $_SERVER['REQUEST_URI'], $matches)) {
-        $path = $matches[1];
-    } else {
-        $path = '';
-    }
-    header("Location: " . URL_DIR . "mobile/$path");
-    exit;
-}
-
-// 絵文字変換 (除去) フィルターを組み込む。
-ob_start(array('GC_MobileEmoji', 'handler'));
+include_once($include_dir . "/require_plugin.php");
 ?>

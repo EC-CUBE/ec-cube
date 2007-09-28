@@ -64,7 +64,24 @@ class LC_Page {
      *
      * @return void
      */
-    function init() {}
+    function init() {
+
+        // 携帯端末の場合は mobile 以下へリダイレクトする。
+        if (GC_MobileUserAgent::isMobile()) {
+            if (preg_match('|^' . URL_DIR . '(.*)$|', $_SERVER['REQUEST_URI'], $matches)) {
+                $path = $matches[1];
+            } else {
+                $path = '';
+            }
+            $this->sendRedirect($this->getLocation(URL_DIR . "mobile/" . $path));
+            exit;
+        }
+        // 絵文字変換 (除去) フィルターを組み込む。
+        ob_start(array('GC_MobileEmoji', 'handler'));
+
+        // アップデートで取得したPHPを読み出す
+        SC_Utils_Ex::sfLoadUpdateModule();
+    }
 
     /**
      * Page のプロセス.
