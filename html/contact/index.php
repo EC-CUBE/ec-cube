@@ -180,7 +180,9 @@ function lfSendMail($objPage){
     $objMail = new GC_SendMail();
 
     if ( $objPage->arrForm['email'] ) {
-        $fromMail_name    = $objPage->arrForm['name01'] . " ออ";
+        $name01 = $objPage->arrForm['name01'];
+        $name02 = $objPage->arrForm['name02'];
+        $fromMail_name    = "$name01 $name02 ออ";
         $fromMail_address = $objPage->arrForm['email'];
     } else {
         $fromMail_name    = $arrSiteInfo["shop_name"];
