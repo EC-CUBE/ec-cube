@@ -51,7 +51,7 @@ class LC_Page_Forgot extends LC_Page {
         $conn = new SC_DBConn();
         $objView = null;
 
-        if (MOBILE_SITE) {
+        if (defined("MOBILE_SITE") && MOBILE_SITE) {
             $objView = new SC_MobileView();
         } else {
             $objView = new SC_SiteView();
@@ -154,7 +154,7 @@ class LC_Page_Forgot extends LC_Page {
         }
 
         // モバイルサイトの場合はトークン生成
-        if (MOBILE_SITE) {
+        if (defined("MOBILE_SITE") && MOBILE_SITE) {
             $this->createMobileToken();
         }
 
