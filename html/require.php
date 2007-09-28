@@ -54,8 +54,14 @@ if (GC_MobileUserAgent::isMobile()) {
         $path = '';
     }
 
+    $url = "";
+    if (SC_Utils_Ex::sfIsHTTPS()) {
+        $url = SSL_URL;
+    } else {
+        $url = SITE_URL;
+    }
     header("Location: "
-           .  SC_Utils_Ex::sfRmDupSlash(SITE_URL . URL_DIR . "mobile/" . $path));
+           .  SC_Utils_Ex::sfRmDupSlash($url . URL_DIR . "mobile/" . $path));
     exit;
 }
 
