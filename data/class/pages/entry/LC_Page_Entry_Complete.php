@@ -69,6 +69,32 @@ class LC_Page_Entry_Complete extends LC_Page {
     }
 
     /**
+     * モバイルページを初期化する.
+     *
+     * @return void
+     */
+    function mobileInit() {
+        $this->init();
+    }
+
+    /**
+     * Page のプロセス(モバイル).
+     *
+     * @return void
+     */
+    function mobileProcess() {
+        $objView = new SC_MobileView();
+
+        // レイアウトデザインを取得
+        $objLayout = new SC_Helper_PageLayout_Ex();
+        $objLayout->sfGetPageLayout($this, false, DEF_LAYOUT);
+
+        //----　ページ表示
+        $objView->assignobj($this);
+        $objView->display(SITE_FRAME);
+    }
+
+    /**
      * デストラクタ.
      *
      * @return void

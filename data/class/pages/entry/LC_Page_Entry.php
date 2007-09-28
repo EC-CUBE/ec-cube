@@ -36,10 +36,10 @@ class LC_Page_Entry extends LC_Page {
                                 array("pref_id", "pref_name", "rank"));
         $this->arrJob = $masterData->getMasterData("mtb_job");
         $this->arrReminder = $masterData->getMasterData("mtb_reminder");
-        $objDate = new SC_Date();
-        $this->arrYear = $objDate->getYear('', 1950);	//　日付プルダウン設定
-        $this->arrMonth = $objDate->getMonth();
-        $this->arrDay = $objDate->getDay();
+        $this->objDate = new SC_Date(START_BIRTH_YEAR, date("Y",strtotime("now")));
+        $this->arrYear = $this->objDate->getYear('', 1950);	//　日付プルダウン設定
+        $this->arrMonth = $this->objDate->getMonth();
+        $this->arrDay = $this->objDate->getDay();
     }
 
     /**
@@ -306,7 +306,8 @@ class LC_Page_Entry extends LC_Page {
             //-- POSTデータの引き継ぎ
             $this->arrForm = $_POST;
 
-            if($this->arrForm['year'] == '----') {
+            if(isset($this->arrForm['year'])
+               && $this->arrForm['year'] == '----') {
                 $this->arrForm['year'] = '';
             }
 
@@ -388,7 +389,7 @@ class LC_Page_Entry extends LC_Page {
                     $this->passlen = $this->lfPassLen($passlen);
 
                     //メール受け取り
-                    if (strtolower($this->arrForm['mail_flag']) == "on") {
+                    if (isset($this->arrForm['mail_flag']) && strtolower($this->arrForm['mail_flag']) == "on") {
                         $this->arrForm['mail_flag']  = "2";
                     } else {
                         $this->arrForm['mail_flag']  = "3";
@@ -479,6 +480,7 @@ class LC_Page_Entry extends LC_Page {
                     $objMailText = new SC_MobileView();
                     $objMailText->assignobj($this);
                     $objHelperMail = new SC_Helper_Mail_Ex();
+                    $objQuery = new SC_Query();
 
                     // 仮会員が有効の場合
                     if(CUSTOMER_CONFIRM_MAIL == true) {
