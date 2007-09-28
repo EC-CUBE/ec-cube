@@ -1,10 +1,10 @@
 <?php
 /**
- * 
+ *
  * Copyright(c) 2000-2007 LOCKON CO.,LTD. All Rights Reserved.
  *
  * http://www.lockon.co.jp/
- * 
+ *
  *
  *
  * モバイルサイト共有設定ファイル
@@ -12,9 +12,13 @@
 
 //--------------------------------------------------------------------------------------------------------
 
-define('MOBILE_TEMPLATE_DIR', DATA_PATH . 'Smarty/templates/mobile');	// SMARTYテンプレート
-define('MOBILE_COMPILE_DIR', DATA_PATH . 'Smarty/templates_c/mobile');	// SMARTYコンパイル
+define('MOBILE_TEMPLATE_DIR', TEMPLATE_DIR . 'mobile');	// SMARTYテンプレート
+define('MOBILE_COMPILE_DIR', COMPILE_DIR . 'mobile');	// SMARTYコンパイル
 
+// MOBILE_COMPILE_DIR が無ければ作る
+if (!file_exists(MOBILE_COMPILE_DIR)) {
+        mkdir(MOBILE_COMPILE_DIR);
+}
 /**
  * モバイルサイトであることを表す定数
  */
