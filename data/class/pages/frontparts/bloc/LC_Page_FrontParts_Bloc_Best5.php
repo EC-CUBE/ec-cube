@@ -13,7 +13,7 @@ require_once(CLASS_PATH . "pages/LC_Page.php");
  *
  * @package Page
  * @author LOCKON CO.,LTD.
- * @version $Id$
+ * @version $Id:LC_Page_FrontParts_Bloc_Best5.php 15532 2007-08-31 14:39:46Z nanasess $
  */
 class LC_Page_FrontParts_Bloc_Best5 extends LC_Page {
 
@@ -36,7 +36,11 @@ class LC_Page_FrontParts_Bloc_Best5 extends LC_Page {
      * @return void
      */
     function process() {
-        $objSubView = new SC_SiteView();
+        if (defined(MOBILE_SITE) && MOBILE_SITE) {
+            $objView = new SC_MobileView();
+        } else {
+            $objView = new SC_SiteView();
+        }
         $objSiteInfo = $objView->objSiteInfo;
 
         // 基本情報を渡す
@@ -46,8 +50,27 @@ class LC_Page_FrontParts_Bloc_Best5 extends LC_Page {
         //おすすめ商品表示
         $this->arrBestProducts = $this->lfGetRanking();
 
-        $objSubView->assignobj($this);
-        $objSubView->display($this->tpl_mainpage);
+        $objView->assignobj($this);
+        $objView->display($this->tpl_mainpage);
+    }
+
+    /**
+     * モバイルページを初期化する.
+     *
+     * @return void
+     */
+    function mobileInit() {
+         $this->tpl_mainpage = MOBILE_TEMPLATE_DIR . "frontparts/"
+            . BLOC_DIR . 'best5.tpl';
+    }
+
+    /**
+     * Page のプロセス(モバイル).
+     *
+     * @return void
+     */
+    function mobileProcess() {
+        $this->process();
     }
 
     /**
