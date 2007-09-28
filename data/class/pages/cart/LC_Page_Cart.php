@@ -161,8 +161,7 @@ class LC_Page_Cart extends LC_Page {
         // 買い物を続ける場合
         if (!isset($_REQUEST['continue'])) $_REQUEST['continue'] = "";
         if($_REQUEST['continue']) {
-            $this->sendRedirect(MOBILE_URL_SITE_TOP,
-                                SC_Helper_Mobile_Ex::sessionIdArray());
+            $this->sendRedirect($this->getLocation(MOBILE_URL_SITE_TOP, array(session_name() => session_id())));
             exit;
         }
 
@@ -215,8 +214,7 @@ class LC_Page_Cart extends LC_Page {
                 // カートを購入モードに設定
                 $objCartSess->saveCurrentCart($uniqid);
                 // 購入ページへ
-                $this->sendRedirect(MOBILE_URL_SHOP_TOP,
-                                    SC_Helper_Mobile_Ex::sessionIdArray());
+                $this->sendRedirect(SC_Helper_Mobile_Ex::gfAddSessionId(MOBILE_URL_SHOP_TOP));
                 exit;
             }
             break;
@@ -226,18 +224,21 @@ class LC_Page_Cart extends LC_Page {
 
         if (!isset($_GET['mode'])) $_GET['mode'] = "";
 
+        /*
+         * FIXME sendRedirect() を使った方が良いが無限ループしてしまう...
+         */
         switch($_GET['mode']) {
         case 'up':
             $objCartSess->upQuantity($_GET['cart_no']);
-            $this->reload(SC_Helper_Mobile_Ex::sessionIdArray());
+            SC_Utils_Ex::sfReload(session_name() . "=" . session_id());
             break;
         case 'down':
             $objCartSess->downQuantity($_GET['cart_no']);
-            $this->reload(SC_Helper_Mobile_Ex::sessionIdArray());
+            SC_Utils_Ex::sfReload(session_name() . "=" . session_id());
             break;
         case 'delete':
             $objCartSess->delProduct($_GET['cart_no']);
-            $this->reload(SC_Helper_Mobile_Ex::sessionIdArray());
+            SC_Utils_Ex::sfReload(session_name() . "=" . session_id());
             break;
         }
 
