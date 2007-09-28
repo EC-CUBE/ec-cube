@@ -36,6 +36,7 @@ class LC_Page_Entry extends LC_Page {
                                 array("pref_id", "pref_name", "rank"));
         $this->arrJob = $masterData->getMasterData("mtb_job");
         $this->arrReminder = $masterData->getMasterData("mtb_reminder");
+        $objDate = new SC_Date();
         $this->arrYear = $objDate->getYear('', 1950);	//　日付プルダウン設定
         $this->arrMonth = $objDate->getMonth();
         $this->arrDay = $objDate->getDay();
@@ -454,7 +455,7 @@ class LC_Page_Entry extends LC_Page {
                         exit();
                     }
 
-                    $this->uniqid = $this->lfRegistData ($this->arrForm, $arrRegistColumn, $arrRejectRegistColumn, CUSTOMER_CONFIRM_MAIL, true, $this->arrForm["email");
+                    $this->uniqid = $this->lfRegistData ($this->arrForm, $arrRegistColumn, $arrRejectRegistColumn, CUSTOMER_CONFIRM_MAIL, true, $this->arrForm["email"]);
 
                     // 空メールを受信済みの場合はすぐに本登録完了にする。
                     if (isset($_SESSION['mobile']['kara_mail_from'])) {
@@ -462,7 +463,7 @@ class LC_Page_Entry extends LC_Page {
                         $param = array("mode" => "regist",
                                        "id" => $this->uniqid,
                                        session_name() => session_id());
-                        $this->sendRedirect($this->getLocation(MOBILE_URL_DIR . "regist/index.php". $param);
+                        $this->sendRedirect($this->getLocation(MOBILE_URL_DIR . "regist/index.php", $param));
                         exit;
                     }
 
@@ -510,7 +511,7 @@ class LC_Page_Entry extends LC_Page {
 
                     // 完了ページに移動させる。
                     $this->sendRedirect($this->getLocation("./complete.php",
-                                                           SC_Helper_Mobile_Ex::sessionIdArray());
+                                                           SC_Helper_Mobile_Ex::sessionIdArray()));
                     exit;
                 }
             }
