@@ -7,7 +7,7 @@
 require_once("../require.php");
 
 sfDomainSessionStart();
-error_reporting(E_ALL);
+
 class LC_Page {
     function LC_Page() {
         $this->tpl_css      = URL_DIR . 'css/layout/contact/index.css';	// メインCSSパス
