@@ -167,6 +167,124 @@ class LC_Page_Shopping extends LC_Page {
     }
 
     /**
+     * モバイルページを初期化する.
+     *
+     * @return void
+     */
+    function mobileInit() {
+        $this->init();
+        $this->tpl_mainpage = MOBILE_TEMPLATE_DIR . 'shopping/index.tpl';
+    }
+
+    /**
+     * Page のプロセス(モバイル).
+     *
+     * @return void
+     */
+    function mobileProcess() {
+        $conn = new SC_DBConn();
+        $objView = new SC_MobileView();
+        $objSiteSess = new SC_SiteSession();
+        $objCartSess = new SC_CartSession();
+        $objCustomer = new SC_Customer();
+        $objCookie = new SC_Cookie();
+        $this->objFormParam = new SC_FormParam();			// フォーム用
+        $helperMobile = new SC_Helper_Mobile_Ex();
+        $this->lfInitParam();								// パラメータ情報の初期化
+        $this->objFormParam->setParam($_POST);			// POST値の取得
+
+        // ユーザユニークIDの取得と購入状態の正当性をチェック
+        $uniqid = SC_Utils_Ex::sfCheckNormalAccess($objSiteSess, $objCartSess);
+
+        $this->tpl_uniqid = $uniqid;
+
+        // ログインチェック
+        if($objCustomer->isLoginSuccess()) {
+            // すでにログインされている場合は、お届け先設定画面に転送
+            $this->sendRedirect($this->getLocation($helperMobile->gfAddSessionId('./deliv.php')));
+            exit;
+        }
+
+        // 携帯端末IDが一致する会員が存在するかどうかをチェックする。
+        $this->tpl_valid_phone_id = $objCustomer->checkMobilePhoneId();
+
+        switch($_POST['mode']) {
+        case 'nonmember_confirm':
+            $this->lfSetNonMember($this);
+            // ※breakなし
+        case 'confirm':
+            // 入力値の変換
+            $this->objFormParam->convParam();
+            $this->objFormParam->toLower('order_mail');
+            $this->objFormParam->toLower('order_mail_check');
+
+            $this->arrErr = $this->lfCheckError();
+
+            // 入力エラーなし
+            if(count($this->arrErr) == 0) {
+                // DBへのデータ登録
+                $this->lfRegistData($uniqid);
+                // 正常に登録されたことを記録しておく
+                $objSiteSess->setRegistFlag();
+                // お支払い方法選択ページへ移動
+                $this->sendRedirect($this->getLocation($helperMobile->gfAddSessionId(MOBILE_URL_SHOP_PAYMENT)));
+                exit;
+            }
+
+            break;
+            // 前のページに戻る
+        case 'return':
+            // 確認ページへ移動
+            $this->sendRedirect($this->getLocation($helperMobile->gfAddSessionId(MOBILE_URL_CART_TOP)));
+            exit;
+            break;
+        case 'nonmember':
+            $this->lfSetNonMember($this);
+            // ※breakなし
+        default:
+            if($_GET['from'] == 'nonmember') {
+                $this->lfSetNonMember($this);
+            }
+            // ユーザユニークIDの取得
+            $uniqid = $objSiteSess->getUniqId();
+            $objQuery = new SC_Query();
+            $where = "order_temp_id = ?";
+            $arrRet = $objQuery->select("*", "dtb_order_temp", $where, array($uniqid));
+            // DB値の取得
+            $this->objFormParam->setParam($arrRet[0]);
+            $this->objFormParam->setValue('order_email_check', $arrRet[0]['order_email']);
+            $this->objFormParam->setDBDate($arrRet[0]['order_birth']);
+            break;
+        }
+
+        // クッキー判定
+        $this->tpl_login_email = $objCookie->getCookie('login_email');
+        if($this->tpl_login_email != "") {
+            $this->tpl_login_memory = "1";
+        }
+
+        // 選択用日付の取得
+        $objDate = new SC_Date(START_BIRTH_YEAR);
+        $this->arrYear = $objDate->getYear('', 1950);	//　日付プルダウン設定
+        $this->arrMonth = $objDate->getMonth();
+        $this->arrDay = $objDate->getDay();
+
+        if($this->year == '') {
+            $this->year = '----';
+        }
+
+        // 入力値の取得
+        $this->arrForm = $this->objFormParam->getFormParamList();
+
+        if($this->arrForm['year']['value'] == ""){
+            $this->arrForm['year']['value'] = '----';
+        }
+
+        $objView->assignobj($this);
+        $objView->display(SITE_FRAME);
+    }
+
+    /**
      * デストラクタ.
      *
      * @return void
