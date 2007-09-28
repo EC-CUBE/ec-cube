@@ -12,7 +12,7 @@
 	<!--{$tpl_message}--><br>
 <!--{/if}-->
 <!--{if count($arrProductsClass) > 0}-->
-<form name="form1" id="form1" method="post" action="<!--{$smarty.server.PHP_SELF|escape}-->" utn>
+<form name="form1" id="form1" method="post" action="<!--{$smarty.server.PHP_SELF|escape}-->">
 	<input type="hidden" name="mode" value="confirm">
 	<input type="hidden" name="cart_no" value="">
 	<!--ご注文内容ここから-->
