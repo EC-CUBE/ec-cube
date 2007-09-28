@@ -1,10 +1,10 @@
 <?php
 /**
- * 
+ *
  * Copyright(c) 2000-2007 LOCKON CO.,LTD. All Rights Reserved.
  *
  * http://www.lockon.co.jp/
- * 
+ *
  *
  * 退会完了
  */
@@ -29,7 +29,7 @@ $objPage->CustomerName2 = $objCustomer->getvalue('name02');
 $objPage->CustomerPoint = $objCustomer->getvalue('point');
 
 // レイアウトデザインを取得
-$objPage = sfGetPageLayout($objPage, false, "mypage/index.php");
+//$objPage = sfGetPageLayout($objPage, false, "mypage/index.php");
 
 $objView->assignobj($objPage);
 $objView->display(SITE_FRAME);

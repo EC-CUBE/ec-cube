@@ -1,10 +1,10 @@
 <?php
 /**
- * 
+ *
  * Copyright(c) 2000-2007 LOCKON CO.,LTD. All Rights Reserved.
  *
  * http://www.lockon.co.jp/
- * 
+ *
  *
  * MyPage
  */
@@ -33,7 +33,7 @@ lfInitParam();
 $objFormParam->setParam($_POST);
 
 // レイアウトデザインを取得
-$objPage = sfGetPageLayout($objPage, false, "mypage/index.php");
+//$objPage = sfGetPageLayout($objPage, false, "mypage/index.php");
 
 // 携帯端末IDが一致する会員が存在するかどうかをチェックする。
 $objPage->tpl_valid_phone_id = $objCustomer->checkMobilePhoneId();
@@ -43,7 +43,7 @@ if($_POST['mode'] == 'login') {
 	$objFormParam->toLower('login_email');
 	$arrErr = $objFormParam->checkError();
 	$arrForm =  $objFormParam->getHashArray();
-	
+
 	// クッキー保存判定
 	if ($arrForm['login_memory'] == "1" && $arrForm['login_email'] != "") {
 		$objCookie->setCookie('login_email', $_POST['login_email']);
@@ -62,7 +62,7 @@ if($_POST['mode'] == 'login') {
 
 			// 携帯のメールアドレスが登録されていない場合
 			if (!$objCustomer->hasValue('email_mobile')) {
-				header('Location: ' . gfAddSessionId('../entry/email_mobile.php'));
+				header('Location: ' . SC_Helper_DB_Ex::gfAddSessionId('../entry/email_mobile.php'));
 				exit;
 			}
 		} else {
@@ -71,9 +71,9 @@ if($_POST['mode'] == 'login') {
 			$ret = $objQuery->count("dtb_customer", $where, array($arrForm['login_email']));
 
 			if($ret > 0) {
-				sfDispSiteError(TEMP_LOGIN_ERROR, "", false, "", true);
+                SC_Utils_Ex::sfDispSiteError(TEMP_LOGIN_ERROR, "", false, "", true);
 			} else {
-				sfDispSiteError(SITE_LOGIN_ERROR, "", false, "", true);
+                SC_Utils_Ex::sfDispSiteError(SITE_LOGIN_ERROR, "", false, "", true);
 			}
 		}
 	}

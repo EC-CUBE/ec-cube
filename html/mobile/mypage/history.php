@@ -1,10 +1,10 @@
 <?php
 /**
- * 
+ *
  * Copyright(c) 2000-2007 LOCKON CO.,LTD. All Rights Reserved.
  *
  * http://www.lockon.co.jp/
- * 
+ *
  *
  * MyPage
  */
@@ -13,7 +13,7 @@ require_once("../require.php");
 
 class LC_Page{
 	function LC_Page() {
-		$this->tpl_mainpage = 'mypage/history.tpl';
+		$this->tpl_mainpage = MOBILE_TEMPLATE_DIR . 'mypage/history.tpl';
 		$this->tpl_title = 'MYページ/購入履歴一覧';
 		session_cache_limiter('private-no-expire');
 	}
@@ -28,11 +28,12 @@ $objCustomer = new SC_Customer();
 $pageNo = isset($_GET['pageno']) ? $_GET['pageno'] : 0;
 
 // レイアウトデザインを取得
-$objPage = sfGetPageLayout($objPage, false, "mypage/index.php");
+//$objLayout = new SC_Helper_PageLayout_Ex();
+//$objLayout->sfGetPageLayout($objPage, false, "mypage/index.php");
 
 // ログインチェック
 if(!isset($_SESSION['customer'])) {
-	sfDispSiteError(CUSTOMER_ERROR, "", false, "", true);
+    SC_Utils_Ex::sfDispSiteError(CUSTOMER_ERROR, "", false, "", true);
 }
 
 $col = "order_id, create_date, payment_id, payment_total";

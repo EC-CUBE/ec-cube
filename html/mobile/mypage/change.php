@@ -1,10 +1,10 @@
 <?php
 /**
- * 
+ *
  * Copyright(c) 2000-2007 LOCKON CO.,LTD. All Rights Reserved.
  *
  * http://www.lockon.co.jp/
- * 
+ *
  *
  * 情報変更
  */
@@ -19,7 +19,8 @@ class LC_Page {
 }
 
 //---- ページ初期設定
-$CONF = sf_getBasisData();					// 店舗基本情報
+$objDb = new SC_Helper_DB_Ex();
+$CONF = $objDb->sf_getBasisData();					// 店舗基本情報
 $objConn = new SC_DbConn();
 $objPage = new LC_Page();
 $objView = new SC_MobileView();
@@ -34,7 +35,7 @@ $objPage->arrMonth = $objDate->getMonth();
 $objPage->arrDay = $objDate->getDay();
 
 // レイアウトデザインを取得
-$objPage = sfGetPageLayout($objPage, false, DEF_LAYOUT);
+//$objPage = sfGetPageLayout($objPage, false, DEF_LAYOUT);
 
 //---- 登録用カラム配列
 $arrRegistColumn = array(
@@ -61,7 +62,7 @@ $arrRegistColumn = array(
 							 array(  "column" => "reminder", "convert" => "n" ),
 							 array(  "column" => "reminder_answer", "convert" => "aKV"),
 							 array(  "column" => "password", "convert" => "a" ),
-							 array(  "column" => "mailmaga_flg", "convert" => "n" )			 
+							 array(  "column" => "mailmaga_flg", "convert" => "n" )
 						 );
 
 //---- 登録除外用カラム配列
@@ -78,9 +79,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 	if($objPage->arrForm['year'] == '----') {
 		$objPage->arrForm['year'] = '';
 	}
-	
+
 	$objPage->arrForm['email'] = strtolower($objPage->arrForm['email']);		// emailはすべて小文字で処理
-	
+
 	//-- 入力データの変換
 	$objPage->arrForm = lfConvertParam($objPage->arrForm, $arrRegistColumn);
 
@@ -183,7 +184,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 			//-- 入力データの変換
 			$arrForm = lfConvertParam($_POST, $arrRegistColumn);
 			$arrForm['email'] = strtolower($arrForm['email']);		// emailはすべて小文字で処理
-	
+
 			//エラーチェック
 			$objPage->arrErr = lfErrorCheck($objPage->arrForm);
 			$email_flag = true;
@@ -200,14 +201,14 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 			if($objPage->arrErr == "" && $email_flag) {
 				$arrForm['customer_id'] = $objCustomer->getValue('customer_id');
 				//-- 編集登録
-				sfEditCustomerData($arrForm, $arrRegistColumn);
+				$objDb->sfEditCustomerData($arrForm, $arrRegistColumn);
 				//セッション情報を最新の状態に更新する
 				$objCustomer->updateSession();
 				//完了ページへ
 				header("Location: " . gfAddSessionId("change_complete.php"));
 				exit;
 			} else {
-				sfDispSiteError(CUSTOMER_ERROR, "", false, "", true);
+                SC_Utils_Ex::sfDispSiteError(CUSTOMER_ERROR, "", false, "", true);
 			}
 
 		}
@@ -235,26 +236,26 @@ function lfRegistData ($array, $arrRegistColumn, $arrRejectRegistColumn) {
 			$arrRegist[ $data["column"] ] = $array[ $data["column"] ];
 		}
 	}
-		
+
 	// 誕生日が入力されている場合
 	if (strlen($array["year"]) > 0 ) {
 		$arrRegist["birth"] = $array["year"] ."/". $array["month"] ."/". $array["day"] ." 00:00:00";
 	}
-	
+
 	// パスワードの暗号化
 	$arrRegist["password"] = sha1($arrRegist["password"] . ":" . AUTH_MAGIC);
-	
+
 	$count = 1;
 	while ($count != 0) {
 		$uniqid = sfGetUniqRandomId("t");
 		$count = $objConn->getOne("SELECT COUNT(*) FROM dtb_customer WHERE secret_key = ?", array($uniqid));
 	}
-	
+
 	$arrRegist["secret_key"] = $uniqid;		// 仮登録ID発行
 	$arrRegist["create_date"] = "now()"; 	// 作成日
 	$arrRegist["update_date"] = "now()"; 	// 更新日
 	$arrRegist["first_buy_date"] = "";	 	// 最初の購入日
-	
+
 	// 携帯メールアドレス
 	$arrRegist['email_mobile'] = $arrRegist['email'];
 
@@ -274,7 +275,7 @@ function lfConvertParam($array, $arrRegistColumn) {
 	 *	文字列の変換
 	 *	K :  「半角(ﾊﾝｶｸ)片仮名」を「全角片仮名」に変換
 	 *	C :  「全角ひら仮名」を「全角かた仮名」に変換
-	 *	V :  濁点付きの文字を一文字に変換。"K","H"と共に使用します	
+	 *	V :  濁点付きの文字を一文字に変換。"K","H"と共に使用します
 	 *	n :  「全角」数字を「半角(ﾊﾝｶｸ)」に変換
 	 *  a :  全角英数字を半角英数字に変換する
 	 */
@@ -297,13 +298,13 @@ function lfConvertParam($array, $arrRegistColumn) {
 
 function lfErrorCheck($array) {
 	$objErr = new SC_CheckError($array);
-	
+
 	$objErr->doFunc(array("お名前（姓）", 'name01', STEXT_LEN), array("EXIST_CHECK", "SPTAB_CHECK" ,"MAX_LENGTH_CHECK"));
 	$objErr->doFunc(array("お名前（名）", 'name02', STEXT_LEN), array("EXIST_CHECK", "SPTAB_CHECK" ,"MAX_LENGTH_CHECK"));
 	$objErr->doFunc(array("お名前（カナ/姓）", 'kana01', STEXT_LEN), array("EXIST_CHECK", "SPTAB_CHECK" ,"MAX_LENGTH_CHECK", "KANA_CHECK"));
 	$objErr->doFunc(array("お名前（カナ/名）", 'kana02', STEXT_LEN), array("EXIST_CHECK", "SPTAB_CHECK" ,"MAX_LENGTH_CHECK", "KANA_CHECK"));
 	$objErr->doFunc(array("郵便番号1", "zip01", ZIP01_LEN ) ,array("EXIST_CHECK", "SPTAB_CHECK" ,"NUM_CHECK", "NUM_COUNT_CHECK"));
-	$objErr->doFunc(array("郵便番号2", "zip02", ZIP02_LEN ) ,array("EXIST_CHECK", "SPTAB_CHECK" ,"NUM_CHECK", "NUM_COUNT_CHECK")); 
+	$objErr->doFunc(array("郵便番号2", "zip02", ZIP02_LEN ) ,array("EXIST_CHECK", "SPTAB_CHECK" ,"NUM_CHECK", "NUM_COUNT_CHECK"));
 	$objErr->doFunc(array("郵便番号", "zip01", "zip02"), array("ALL_EXIST_CHECK"));
 	$objErr->doFunc(array("都道府県", 'pref'), array("SELECT_CHECK","NUM_CHECK"));
 	$objErr->doFunc(array("市区町村", "addr01", MTEXT_LEN), array("EXIST_CHECK","SPTAB_CHECK" ,"MAX_LENGTH_CHECK"));
@@ -314,14 +315,14 @@ function lfErrorCheck($array) {
 	$objErr->doFunc(array("電話番号3", 'tel03'), array("EXIST_CHECK","SPTAB_CHECK"));
 	$objErr->doFunc(array("電話番号", "tel01", "tel02", "tel03", TEL_LEN) ,array("TEL_CHECK"));
 	$objErr->doFunc(array("FAX番号", "fax01", "fax02", "fax03", TEL_LEN) ,array("TEL_CHECK"));
-	$objErr->doFunc(array("性別", "sex") ,array("SELECT_CHECK", "NUM_CHECK")); 
+	$objErr->doFunc(array("性別", "sex") ,array("SELECT_CHECK", "NUM_CHECK"));
 	$objErr->doFunc(array("ご職業", "job") ,array("NUM_CHECK"));
 	$objErr->doFunc(array("生年月日", "year", "month", "day"), array("CHECK_DATE"));
 	$objErr->doFunc(array("パスワード", 'password', PASSWORD_LEN1, PASSWORD_LEN2), array("EXIST_CHECK", "ALNUM_CHECK", "NUM_RANGE_CHECK"));
-	$objErr->doFunc(array("パスワード確認用の質問", "reminder") ,array("SELECT_CHECK", "NUM_CHECK")); 
+	$objErr->doFunc(array("パスワード確認用の質問", "reminder") ,array("SELECT_CHECK", "NUM_CHECK"));
 	$objErr->doFunc(array("パスワード確認用の質問の答え", "reminder_answer", STEXT_LEN) ,array("EXIST_CHECK", "MAX_LENGTH_CHECK"));
 	return $objErr->arrErr;
-	
+
 }
 
 //---- 入力エラーチェック
@@ -330,7 +331,7 @@ function lfErrorCheck1($array) {
 	global $objConn;
 	global $objCustomer;
 	$objErr = new SC_CheckError($array);
-	
+
 	$objErr->doFunc(array("お名前（姓）", 'name01', STEXT_LEN), array("EXIST_CHECK", "NO_SPTAB", "SPTAB_CHECK" ,"MAX_LENGTH_CHECK"));
 	$objErr->doFunc(array("お名前（名）", 'name02', STEXT_LEN), array("EXIST_CHECK", "NO_SPTAB", "SPTAB_CHECK" , "MAX_LENGTH_CHECK"));
 	$objErr->doFunc(array("お名前（カナ/姓）", 'kana01', STEXT_LEN), array("EXIST_CHECK", "NO_SPTAB", "SPTAB_CHECK" ,"MAX_LENGTH_CHECK", "KANA_CHECK"));
@@ -353,7 +354,7 @@ function lfErrorCheck1($array) {
 				$now_time = time();
 				$pass_time = $now_time - $leave_time;
 				// 退会から何時間-経過しているか判定する。
-				$limit_time = ENTRY_LIMIT_HOUR * 3600;						
+				$limit_time = ENTRY_LIMIT_HOUR * 3600;
 				if($pass_time < $limit_time) {
 					$objErr->arrErr["email"] .= "※ 退会から一定期間の間は、同じメールアドレスを使用することはできません。<br />";
 				}
@@ -362,9 +363,9 @@ function lfErrorCheck1($array) {
 	}
 
 	$objErr->doFunc(array("パスワード", 'password', PASSWORD_LEN1, PASSWORD_LEN2), array("EXIST_CHECK", "SPTAB_CHECK" ,"ALNUM_CHECK", "NUM_RANGE_CHECK"));
-	$objErr->doFunc(array("パスワード確認用の質問", "reminder") ,array("SELECT_CHECK", "NUM_CHECK")); 
+	$objErr->doFunc(array("パスワード確認用の質問", "reminder") ,array("SELECT_CHECK", "NUM_CHECK"));
 	$objErr->doFunc(array("パスワード確認用の質問の答え", "reminder_answer", STEXT_LEN) ,array("EXIST_CHECK","SPTAB_CHECK" , "MAX_LENGTH_CHECK"));
-	
+
 	return $objErr->arrErr;
 }
 
@@ -373,12 +374,12 @@ function lfErrorCheck2($array) {
 
 	global $objConn, $objDate;
 	$objErr = new SC_CheckError($array);
-	
+
 	$objErr->doFunc(array("郵便番号1", "zip01", ZIP01_LEN ) ,array("EXIST_CHECK", "SPTAB_CHECK" ,"NUM_CHECK", "NUM_COUNT_CHECK"));
-	$objErr->doFunc(array("郵便番号2", "zip02", ZIP02_LEN ) ,array("EXIST_CHECK", "SPTAB_CHECK" ,"NUM_CHECK", "NUM_COUNT_CHECK")); 
+	$objErr->doFunc(array("郵便番号2", "zip02", ZIP02_LEN ) ,array("EXIST_CHECK", "SPTAB_CHECK" ,"NUM_CHECK", "NUM_COUNT_CHECK"));
 	$objErr->doFunc(array("郵便番号", "zip01", "zip02"), array("ALL_EXIST_CHECK"));
 
-	$objErr->doFunc(array("性別", "sex") ,array("SELECT_CHECK", "NUM_CHECK")); 
+	$objErr->doFunc(array("性別", "sex") ,array("SELECT_CHECK", "NUM_CHECK"));
 	$objErr->doFunc(array("生年月日 (年)", "year", 4), array("EXIST_CHECK", "SPTAB_CHECK", "NUM_CHECK", "NUM_COUNT_CHECK"));
 	if (!isset($objErr->arrErr['year'])) {
 		$objErr->doFunc(array("生年月日 (年)", "year", $objDate->getStartYear()), array("MIN_CHECK"));
@@ -388,7 +389,7 @@ function lfErrorCheck2($array) {
 	if (!isset($objErr->arrErr['year']) && !isset($objErr->arrErr['month']) && !isset($objErr->arrErr['day'])) {
 		$objErr->doFunc(array("生年月日", "year", "month", "day"), array("CHECK_DATE"));
 	}
-	
+
 	return $objErr->arrErr;
 }
 
@@ -397,7 +398,7 @@ function lfErrorCheck3($array) {
 
 	global $objConn;
 	$objErr = new SC_CheckError($array);
-	
+
 	$objErr->doFunc(array("都道府県", 'pref'), array("SELECT_CHECK","NUM_CHECK"));
 	$objErr->doFunc(array("市区町村", "addr01", MTEXT_LEN), array("EXIST_CHECK","SPTAB_CHECK" ,"MAX_LENGTH_CHECK"));
 	$objErr->doFunc(array("番地", "addr02", MTEXT_LEN), array("EXIST_CHECK","SPTAB_CHECK" ,"MAX_LENGTH_CHECK"));
@@ -405,7 +406,7 @@ function lfErrorCheck3($array) {
 	$objErr->doFunc(array("電話番号2", 'tel02'), array("EXIST_CHECK","SPTAB_CHECK" ));
 	$objErr->doFunc(array("電話番号3", 'tel03'), array("EXIST_CHECK","SPTAB_CHECK" ));
 	$objErr->doFunc(array("電話番号", "tel01", "tel02", "tel03",TEL_ITEM_LEN) ,array("TEL_CHECK"));
-	
+
 	return $objErr->arrErr;
 }
 
@@ -462,16 +463,16 @@ function lfGetCustomerData(){
 
 	//メルマガフラグ取得
 	$arrForm['mailmaga_flg'] = $objQuery->get("dtb_customer","mailmaga_flg","email=?", array($objCustomer->getValue('email_mobile')));
-	
+
 	//誕生日の年月日取得
 	if (isset($arrForm['birth'])){
 		$birth = split(" ", $arrForm["birth"]);
 		list($year, $month, $day) = split("-",$birth[0]);
-		
+
 		$arrForm['year'] = $year;
 		$arrForm['month'] = $month;
 		$arrForm['day'] = $day;
-		
+
 	}
 	return $arrForm;
 }

@@ -194,6 +194,196 @@ class LC_Page_Shopping_Deliv extends LC_Page {
     }
 
     /**
+     * モバイルページを初期化する.
+     *
+     * @return void
+     */
+    function mobileInit() {
+        $this->init();
+    }
+
+    /**
+     * Page のプロセス(モバイル).
+     *
+     * @return void
+     */
+    function mobileProcess() {
+        $objView = new SC_MobileView();
+        $objSiteSess = new SC_SiteSession();
+        $objCartSess = new SC_CartSession();
+        $objCustomer = new SC_Customer();
+        // クッキー管理クラス
+        $objCookie = new SC_Cookie(COOKIE_EXPIRE);
+        // パラメータ管理クラス
+        $this->objFormParam = new SC_FormParam();
+        // パラメータ情報の初期化
+        $this->lfInitParam();
+        // POST値の取得
+        $this->objFormParam->setParam($_POST);
+
+        $this->objLoginFormParam = new SC_FormParam();	// ログインフォーム用
+        $this->lfInitLoginFormParam();						// 初期設定
+        $this->objLoginFormParam->setParam($_POST);		// POST値の取得
+
+        // ユーザユニークIDの取得と購入状態の正当性をチェック
+        $uniqid = SC_Utils_Ex::sfCheckNormalAccess($objSiteSess, $objCartSess);
+        $this->tpl_uniqid = $uniqid;
+
+        // ログインチェック
+        if($_POST['mode'] != 'login' && !$objCustomer->isLoginSuccess()) {
+            // 不正アクセスとみなす
+            SC_Utils_Ex::sfDispSiteError(CUSTOMER_ERROR, "", false, "", true);
+        }
+
+        switch($_POST['mode']) {
+        case 'login':
+            $this->objLoginFormParam->toLower('login_email');
+            $this->arrErr = $this->objLoginFormParam->checkError();
+            $arrForm =  $this->objLoginFormParam->getHashArray();
+            // クッキー保存判定
+            if($arrForm['login_memory'] == "1" && $arrForm['login_email'] != "") {
+                $objCookie->setCookie('login_email', $_POST['login_email']);
+            } else {
+                $objCookie->setCookie('login_email', '');
+            }
+
+            if(count($this->arrErr) == 0) {
+                // ログイン判定
+                if(!$objCustomer->getCustomerDataFromMobilePhoneIdPass($arrForm['login_pass']) &&
+                   !$objCustomer->getCustomerDataFromEmailPass($arrForm['login_pass'], $arrForm['login_email'], true)) {
+                    // 仮登録の判定
+                    $objQuery = new SC_Query;
+                    $where = "email = ? AND status = 1 AND del_flg = 0";
+                    $ret = $objQuery->count("dtb_customer", $where, array($arrForm['login_email']));
+
+                    if($ret > 0) {
+                        SC_Utils_Ex::sfDispSiteError(TEMP_LOGIN_ERROR, "", false, "", true);
+                    } else {
+                        SC_Utils_Ex::sfDispSiteError(SITE_LOGIN_ERROR, "", false, "", true);
+                    }
+                }
+            } else {
+                // ログインページに戻る
+                $this->sendRedirect($this->getLocation(SC_Helper_Mobile_Ex::gfAddSessionId(MOBILE_URL_SHOP_TOP)));
+                exit;
+            }
+
+            // ログインが成功した場合は携帯端末IDを保存する。
+            $objCustomer->updateMobilePhoneId();
+
+            // 携帯のメールアドレスをコピーする。
+            $objCustomer->updateEmailMobile();
+
+            // 携帯のメールアドレスが登録されていない場合
+            if (!$objCustomer->hasValue('email_mobile')) {
+                 $this->sendRedirect($this->getLocation(SC_Helper_Mobile_Ex::gfAddSessionId("../entry/email_mobile.php")));
+                exit;
+            }
+            break;
+            // 削除
+        case 'delete':
+            if (SC_Utils_Ex::sfIsInt($_POST['other_deliv_id'])) {
+                $objQuery = new SC_Query();
+                $where = "other_deliv_id = ?";
+                $arrRet = $objQuery->delete("dtb_other_deliv", $where, array($_POST['other_deliv_id']));
+                $this->objFormParam->setValue('select_addr_id', '');
+            }
+            break;
+            // 会員登録住所に送る
+        case 'customer_addr':
+            // お届け先がチェックされている場合には更新処理を行う
+            if ($_POST['deli'] != "") {
+                // 会員情報の住所を受注一時テーブルに書き込む
+                $this->lfRegistDelivData($uniqid, $objCustomer);
+                // 正常に登録されたことを記録しておく
+                $objSiteSess->setRegistFlag();
+                // お支払い方法選択ページへ移動
+                $this->sendRedirect($this->getLocation(SC_Helper_Mobile_Ex::gfAddSessionId(MOBILE_URL_SHOP_PAYMENT)));
+                exit;
+            }else{
+                // エラーを返す
+                $arrErr['deli'] = '※ お届け先を選択してください。';
+            }
+            break;
+
+            // 登録済みの別のお届け先に送る
+        case 'other_addr':
+            // お届け先がチェックされている場合には更新処理を行う
+            if ($_POST['deli'] != "") {
+                if (sfIsInt($_POST['other_deliv_id'])) {
+                    // 登録済みの別のお届け先を受注一時テーブルに書き込む
+                    $this->lfRegistOtherDelivData($uniqid, $objCustomer, $_POST['other_deliv_id']);
+                    // 正常に登録されたことを記録しておく
+                    $objSiteSess->setRegistFlag();
+                    // お支払い方法選択ページへ移動
+                    $this->sendRedirect($this->getLocation(SC_Helper_Mobile_Ex::gfAddSessionId(MOBILE_URL_SHOP_PAYMENT)));
+                    exit;
+                }
+            }else{
+                // エラーを返す
+                $arrErr['deli'] = '※ お届け先を選択してください。';
+            }
+            break;
+
+            /*
+            // 別のお届け先を指定
+            case 'new_addr':
+            // 入力値の変換
+            $this->objFormParam->convParam();
+            $this->arrErr = lfCheckError($arrRet);
+            // 入力エラーなし
+            if(count($this->arrErr) == 0) {
+            // DBへお届け先を登録
+            lfRegistNewAddrData($uniqid, $objCustomer);
+            // 正常に登録されたことを記録しておく
+            $objSiteSess->setRegistFlag();
+            // お支払い方法選択ページへ移動
+            header("Location: " . URL_SHOP_PAYMENT);
+            exit;
+            }
+            break;
+            */
+
+            // 前のページに戻る
+        case 'return':
+            // 確認ページへ移動
+            $this->sendRedirect($this->getLocation(SC_Helper_Mobile_Ex::gfAddSessionId(MOBILE_URL_CART_TOP)));
+            exit;
+            break;
+        default:
+            $objQuery = new SC_Query();
+            $where = "order_temp_id = ?";
+            $arrRet = $objQuery->select("*", "dtb_order_temp", $where, array($uniqid));
+            $this->objFormParam->setParam($arrRet[0]);
+            break;
+        }
+
+        /** 表示処理 **/
+
+        // 会員登録住所の取得
+        $col = "name01, name02, pref, addr01, addr02, zip01, zip02";
+        $where = "customer_id = ?";
+        $objQuery = new SC_Query();
+        $arrCustomerAddr = $objQuery->select($col, "dtb_customer", $where, array($_SESSION['customer']['customer_id']));
+        // 別のお届け先住所の取得
+        $col = "other_deliv_id, name01, name02, pref, addr01, addr02, zip01, zip02";
+        $objQuery->setorder("other_deliv_id DESC");
+        $objOtherAddr = $objQuery->select($col, "dtb_other_deliv", $where, array($_SESSION['customer']['customer_id']));
+        $this->arrAddr = $arrCustomerAddr;
+        $cnt = 1;
+        foreach($objOtherAddr as $val) {
+            $this->arrAddr[$cnt] = $val;
+            $cnt++;
+        }
+
+        // 入力値の取得
+        $this->arrForm = $this->objFormParam->getFormParamList();
+        $this->arrErr = $arrErr;
+        $objView->assignobj($this);
+        $objView->display(SITE_FRAME);
+    }
+
+    /**
      * デストラクタ.
      *
      * @return void

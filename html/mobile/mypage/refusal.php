@@ -1,10 +1,10 @@
 <?php
 /**
- * 
+ *
  * Copyright(c) 2000-2007 LOCKON CO.,LTD. All Rights Reserved.
  *
  * http://www.lockon.co.jp/
- * 
+ *
  *
  * 退会処理
  */
@@ -25,7 +25,7 @@ $objQuery = new SC_Query();
 
 //ログイン判定
 if (!$objCustomer->isLoginSuccess()){
-	sfDispSiteError(CUSTOMER_ERROR, "", false, "", true);
+    SC_Utils_Ex::sfDispSiteError(CUSTOMER_ERROR, "", false, "", true);
 }else {
 	//マイページトップ顧客情報表示用
 	$objPage->CustomerName1 = $objCustomer->getvalue('name01');
@@ -35,20 +35,19 @@ if (!$objCustomer->isLoginSuccess()){
 
 
 // レイアウトデザインを取得
-$objPage = sfGetPageLayout($objPage, false, "mypage/index.php");
+//$objPage = sfGetPageLayout($objPage, false, "mypage/index.php");
 
 if (isset($_POST['no'])) {
-	header("Location: " . gfAddSessionId("index.php"));
+	header("Location: " . SC_Helper_Mobile_Ex::gfAddSessionId("index.php"));
 	exit;
 } elseif (isset($_POST['complete'])){
 	//会員削除
 	$objQuery->exec("UPDATE dtb_customer SET del_flg=1, update_date=now() WHERE customer_id=?", array($objCustomer->getValue('customer_id')));
 
-	$where = "email ILIKE ?";
-	if (DB_TYPE == "mysql")	$where = sfChangeILIKE($where);
+	$where = "email = ?";
 	$objCustomer->EndSession();
 	//完了ページへ
-	header("Location: " . gfAddSessionId("refusal_complete.php"));
+	header("Location: " . SC_Helper_Mobile_Ex::gfAddSessionId("refusal_complete.php"));
 	exit;
 }
 
