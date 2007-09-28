@@ -27,7 +27,7 @@ class SC_Helper_Mobile {
      */
     function lfMobileCheckCompatibility() {
         if (!GC_MobileUserAgent::isSupported()) {
-            header('Location: ' . URL_DIR . 'unsupported/index.php');
+            header('Location: ' . URL_DIR . 'mobile/unsupported/index.php');
             exit;
         }
     }
