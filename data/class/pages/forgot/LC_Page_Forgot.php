@@ -49,7 +49,14 @@ class LC_Page_Forgot extends LC_Page {
      */
     function process() {
         $conn = new SC_DBConn();
-        $objView = new SC_SiteView();
+        $objView = null;
+
+        if (MOBILE_SITE) {
+            $objView = new SC_MobileView();
+        } else {
+            $objView = new SC_SiteView();
+        }
+
         $objSess = new SC_Session();
 
         // 店舗基本情報を取得
@@ -146,9 +153,32 @@ class LC_Page_Forgot extends LC_Page {
             $this->tpl_login_email = $objCookie->getCookie('login_email');
         }
 
+        // モバイルサイトの場合はトークン生成
+        if (MOBILE_SITE) {
+            $this->createMobileToken();
+        }
+
         //----　ページ表示
         $objView->assignobj($this);
         $objView->display($this->tpl_mainpage);
+    }
+
+    /**
+     * モバイルページを初期化する.
+     *
+     * @return void
+     */
+    function mobileInit() {
+        $this->init();
+    }
+
+    /**
+     * Page のプロセス(モバイル).
+     *
+     * @return void
+     */
+    function mobileProcess() {
+        $this->process();
     }
 
     /**
@@ -192,6 +222,22 @@ class LC_Page_Forgot extends LC_Page {
                                                             );
         $objMail->setTo($email, $customer_name ." 様");
         $objMail->sendMail();
+    }
+
+    /**
+     * モバイル空メール用のトークン作成
+     *
+     * @return void
+     */
+    function createMobileToken() {
+        $objMobile = new SC_Helper_Mobile_Ex();
+        // 空メール用のトークンを作成。
+        if (MOBILE_USE_KARA_MAIL) {
+            $token = $objMobile->gfPrepareKaraMail('forgot/index.php');
+            if ($token !== false) {
+                $objPage->tpl_kara_mail_to = MOBILE_KARA_MAIL_ADDRESS_USER . MOBILE_KARA_MAIL_ADDRESS_DELIMITER . 'forgot_' . $token . '@' . MOBILE_KARA_MAIL_ADDRESS_DOMAIN;
+	}
+}
     }
 }
 ?>
