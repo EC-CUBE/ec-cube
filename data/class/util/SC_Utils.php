@@ -1253,6 +1253,9 @@ class SC_Utils {
     }
 
     //メルマガ仮登録とメール配信
+    /*
+     * FIXME
+     */
     function sfRegistTmpMailData($mail_flag, $email){
         $objQuery = new SC_Query();
         $objConn = new SC_DBConn();
@@ -1329,7 +1332,7 @@ class SC_Utils {
     /*
         index.php?tpl=test.tpl
     */
-    function sfCustomDisplay($objPage, $is_mobile = false) {
+    function sfCustomDisplay(&$objPage, $is_mobile = false) {
         $basename = basename($_SERVER["REQUEST_URI"]);
 
         if($basename == "") {
