@@ -13,7 +13,7 @@ require_once(CLASS_PATH . "pages/LC_Page.php");
  *
  * @package Page
  * @author LOCKON CO.,LTD.
- * @version $Id$
+ * @version $Id:LC_Page_FrontParts_Bloc_News.php 15532 2007-08-31 14:39:46Z nanasess $
  */
 class LC_Page_FrontParts_Bloc_News extends LC_Page {
 
@@ -36,13 +36,37 @@ class LC_Page_FrontParts_Bloc_News extends LC_Page {
      * @return void
      */
     function process() {
-        $objSubView = new SC_SiteView();
+        if (defined("MOBILE_SITE") && MOBILE_SITE) {
+            $objSubView = new SC_SiteView();
+        } else {
+            $objSubView = new SC_MobileView();
+        }
 
         //新着情報取得
         $this->arrNews = $this->lfGetNews();
 
         $objSubView->assignobj($this);
         $objSubView->display($this->tpl_mainpage);
+    }
+
+
+    /**
+     * モバイルページを初期化する.
+     *
+     * @return void
+     */
+    function mobileInit() {
+        $this->tpl_mainpage = MOBILE_TEMPLATE_DIR . "frontparts/"
+            . BLOC_DIR . 'news.tpl';
+    }
+
+    /**
+     * Page のプロセス(モバイル).
+     *
+     * @return void
+     */
+    function mobileProcess() {
+        $this->process();
     }
 
     /**
