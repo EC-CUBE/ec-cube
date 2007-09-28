@@ -1,26 +1,23 @@
 <?php
 /**
- * 
+ *
  * Copyright(c) 2000-2007 LOCKON CO.,LTD. All Rights Reserved.
  *
  * http://www.lockon.co.jp/
- * 
+ *
+ *
+ * モバイルサイト/登録完了
  */
+
+// {{{ requires
 require_once("../require.php");
+require_once(CLASS_PATH . "page_extends/magazine/LC_Page_Magazine_Complete_Ex.php");
 
-class LC_Page {
-	function LC_Page() {
-		$this->tpl_mainpage = 'magazine/complete.tpl';		// メインテンプレート
-		$this->tpl_title .= 'メルマガ登録(完了ページ)';			//　ページタイトル
-	}
-}
+// }}}
+// {{{ generate page
 
-$objPage = new LC_Page();
-$objView = new SC_MobileView();
-
-//----　ページ表示
-$objView->assignobj($objPage);
-$objView->display(SITE_FRAME);
-
-//----------------------------------------------------------------------------------------------------------------------
+$objPage = new LC_Page_Magazine_Complete_Ex();
+$objPage->mobileInit();
+$objPage->mobileProcess();
+register_shutdown_function(array($objPage, "destroy"));
 ?>
