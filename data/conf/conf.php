@@ -8,7 +8,8 @@
  */
 
 $CONF_PHP_PATH = realpath( dirname( __FILE__) );
-require_once($CONF_PHP_PATH ."/../install.php");
+//require_once($CONF_PHP_PATH ."/../install.php");
+require_once($CONF_PHP_PATH ."/../install_pgsql.php");
 require_once($CONF_PHP_PATH ."/core.php" );
 
 /**
@@ -23,6 +24,9 @@ error_reporting(E_ALL);
 
 // 定数を設定する
 defineConstants();
+
+// Smarty コンパイルディレクトリを生成する.
+createCacheDir();
 
 /**
  * マルチバイト文字列設定
@@ -76,6 +80,31 @@ function defineConstants() {
         require_once($CONF_PHP_PATH . "/cache/mtb_constants.php");
     } else {
         die("html/install/mtb_constants.php が存在しません.");
+    }
+}
+
+/**
+ * 各種キャッシュディレクトリを生成する.
+ *
+ * 注意: この関数を外部で使用することは推奨しません.
+ *
+ * Smarty キャッシュディレクトリを生成する.
+ *
+ * @access private
+ * @return void
+ */
+function createCacheDir() {
+
+    if (!file_exists(COMPILE_DIR)) {
+        mkdir(COMPILE_DIR);
+    }
+
+    if (!file_exists(COMPILE_ADMIN_DIR)) {
+        mkdir(COMPILE_ADMIN_DIR);
+    }
+
+    if (!file_exists(COMPILE_FTP_DIR)) {
+        mkdir(COMPILE_FTP_DIR);
     }
 }
 ?>
