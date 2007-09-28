@@ -13,7 +13,7 @@ require_once(CLASS_PATH . "pages/LC_Page.php");
  *
  * @package Page
  * @author LOCKON CO.,LTD.
- * @version $Id$
+ * @version $Id:LC_Page_FrontParts_Bloc_Category.php 15532 2007-08-31 14:39:46Z nanasess $
  */
 class LC_Page_FrontParts_Bloc_Category extends LC_Page {
 
@@ -47,6 +47,30 @@ class LC_Page_FrontParts_Bloc_Category extends LC_Page {
         $objPage = $this->lfGetCatTree($category_id, true, $this);
 
         $objSubView->assignobj($objPage);
+        $objSubView->display($this->tpl_mainpage);
+    }
+
+    /**
+     * モバイルページを初期化する.
+     *
+     * @return void
+     */
+    function mobileInit() {
+        $this->tpl_mainpage = MOBILE_TEMPLATE_DIR . "frontparts/"
+            . BLOC_DIR . 'category.tpl';
+    }
+
+    /**
+     * Page のプロセス(モバイル).
+     *
+     * @return void
+     */
+    function mobileProcess() {
+        $objSubView = new SC_MobileView();
+
+       $this->lfGetMainCat(true, $this);
+
+        $objSubView->assignobj($this);
         $objSubView->display($this->tpl_mainpage);
     }
 
@@ -92,6 +116,37 @@ class LC_Page_FrontParts_Bloc_Category extends LC_Page {
         }
 
         $objSubPage->arrTree = $arrRet;
+        return $objSubPage;
+    }
+
+    // メインカテゴリーの取得
+    function lfGetMainCat($count_check = false, &$objSubPage) {
+        $objQuery = new SC_Query();
+        $col = "*";
+        $from = "dtb_category left join dtb_category_total_count using (category_id)";
+        // メインカテゴリーとその直下のカテゴリーを取得する。
+        $where = 'level <= 2 AND del_flg = 0';
+        // 登録商品数のチェック
+        if($count_check) {
+            $where .= " AND product_count > 0";
+        }
+        $objQuery->setoption("ORDER BY rank DESC");
+        $arrRet = $objQuery->select($col, $from, $where);
+
+        // メインカテゴリーを抽出する。
+        $arrMainCat = array();
+        foreach ($arrRet as $cat) {
+            if ($cat['level'] != 1) {
+                continue;
+            }
+
+            // 子カテゴリーを持つかどうかを調べる。
+            $arrChildrenID = SC_Utils_Ex::sfGetUnderChildrenArray($arrRet, 'parent_category_id', 'category_id', $cat['category_id']);
+            $cat['has_children'] = count($arrChildrenID) > 0;
+            $arrMainCat[] = $cat;
+        }
+
+        $objSubPage->arrCat = $arrMainCat;
         return $objSubPage;
     }
 }
