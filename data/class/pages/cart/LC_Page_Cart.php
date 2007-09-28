@@ -159,6 +159,7 @@ class LC_Page_Cart extends LC_Page {
     function mobileProcess() {
 
         // 買い物を続ける場合
+        if (!isset($_REQUEST['continue'])) $_REQUEST['continue'] = "";
         if($_REQUEST['continue']) {
             $this->sendRedirect(MOBILE_URL_SITE_TOP,
                                 SC_Helper_Mobile_Ex::sessionIdArray());
@@ -241,7 +242,10 @@ class LC_Page_Cart extends LC_Page {
         }
 
         // カート集計処理
-        $this = $objDb->sfTotalCart($this, $objCartSess, $arrInfo);
+        if (empty($arrData)) {
+            $arrData = array();
+        }
+        $objDb->sfTotalCart($this, $objCartSess, $arrInfo);
         $this->arrData = $objDb->sfTotalConfirm($arrData, $this, $objCartSess, $arrInfo, $objCustomer);
 
         $this->arrInfo = $arrInfo;
