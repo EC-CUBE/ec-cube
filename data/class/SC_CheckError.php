@@ -854,7 +854,8 @@ class SC_CheckError {
             return;
         }
         $this->createParam($value);
-        if(strlen($this->arrParam[$value[1]]) > 0 && !gfIsMobileMailAddress($this->arrParam[$value[1]])) {
+        $objMobile = new SC_Helper_Mobile_Ex();
+        if(strlen($this->arrParam[$value[1]]) > 0 && !$objMobile->gfIsMobileMailAddress($this->arrParam[$value[1]])) {
             $this->arrErr[$value[1]] = "※ " . $value[0] . "は携帯電話のものではありません。<br />";
         }
     }
