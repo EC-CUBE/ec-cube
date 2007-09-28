@@ -261,7 +261,7 @@ class SC_Helper_Mobile {
      * @param array セッション ID を追加した配列
      */
     function sessionIdArray($array = array()) {
-        return array_merge($array, array(session_name() => session_id());
+        return array_merge($array, array(session_name() => session_id()));
     }
 
     /**
