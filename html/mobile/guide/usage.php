@@ -1,41 +1,23 @@
 <?php
 /**
- * 
+ *
  * Copyright(c) 2000-2007 LOCKON CO.,LTD. All Rights Reserved.
  *
  * http://www.lockon.co.jp/
- * 
+ *
  *
  * モバイルサイト/ご利用方法
  */
 
-require_once('../require.php');
+// {{{ requires
+require_once("../require.php");
+require_once(CLASS_PATH . "page_extends/guide/LC_Page_Guide_Usage_Ex.php");
 
-class LC_Page {
-	function LC_Page() {
-		/** 必ず変更する **/
-		$this->tpl_mainpage = 'guide/usage.tpl';	// メインテンプレート
-		$this->tpl_title = 'ご利用方法';
-	}
-}
+// }}}
+// {{{ generate page
 
-$objPage = new LC_Page();
-
-switch (@$_GET['page']) {
-case '1':
-case '2':
-case '3':
-case '4':
-	$objPage->tpl_mainpage = 'guide/usage' . $_GET['page'] . '.tpl';
-	break;
-}
-
-// レイアウトデザインを取得
-$objPage = sfGetPageLayout($objPage, false, DEF_LAYOUT);
-
-$objView = new SC_MobileView();
-$objView->assignobj($objPage);
-$objView->display(SITE_FRAME);
-
-//-----------------------------------------------------------------------------------------------------------------------------------
+$objPage = new LC_Page_Guide_Usage_Ex();
+$objPage->mobileInit();
+$objPage->mobileProcess();
+register_shutdown_function(array($objPage, "destroy"));
 ?>

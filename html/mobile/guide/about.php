@@ -1,31 +1,23 @@
 <?php
 /**
- * 
+ *
  * Copyright(c) 2000-2007 LOCKON CO.,LTD. All Rights Reserved.
  *
  * http://www.lockon.co.jp/
- * 
+ *
+ *
  * モバイルサイト/運営会社紹介
  */
 
-require_once('../require.php');
+// {{{ requires
+require_once("../require.php");
+require_once(CLASS_PATH . "page_extends/guide/LC_Page_Guide_About_Ex.php");
 
-class LC_Page {
-	function LC_Page() {
-		/** 必ず変更する **/
-		$this->tpl_mainpage = 'guide/about.tpl';	// メインテンプレート
-		$this->tpl_title = 'プライバシーポリシー';
-	}
-}
+// }}}
+// {{{ generate page
 
-$objPage = new LC_Page();
-
-// レイアウトデザインを取得
-$objPage = sfGetPageLayout($objPage, false, DEF_LAYOUT);
-
-$objView = new SC_MobileView();
-$objView->assignobj($objPage);
-$objView->display(SITE_FRAME);
-
-//-----------------------------------------------------------------------------------------------------------------------------------
+$objPage = new LC_Page_Guide_About_Ex();
+$objPage->mobileInit();
+$objPage->mobileProcess();
+register_shutdown_function(array($objPage, "destroy"));
 ?>
