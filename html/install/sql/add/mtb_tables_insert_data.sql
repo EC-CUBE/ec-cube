@@ -347,10 +347,6 @@ INSERT INTO mtb_constants VALUES ('NORMAL_PRICE_TITLE','"通常価格"',140,'価
 INSERT INTO mtb_constants VALUES ('SALE_PRICE_TITLE','"販売価格"',141,'価格名称');
 INSERT INTO mtb_constants VALUES ('LOG_PATH','DATA_PATH . "logs/site.log"',142,'ログファイル');
 INSERT INTO mtb_constants VALUES ('CUSTOMER_LOG_PATH','DATA_PATH . "logs/customer.log"',143,'会員ログイン ログファイル');
-INSERT INTO mtb_constants VALUES ('COMPILE_ADMIN_DIR','DATA_PATH . "Smarty/templates_c/admin"',146,'SMARTYコンパイル');
-INSERT INTO mtb_constants VALUES ('COMPILE_DIR','DATA_PATH . "Smarty/templates_c"',147,'SMARTYコンパイル');
-INSERT INTO mtb_constants VALUES ('TEMPLATE_FTP_DIR','USER_PATH . "templates/"',148,'SMARTYテンプレート(FTP許可)');
-INSERT INTO mtb_constants VALUES ('COMPILE_FTP_DIR','DATA_PATH . "Smarty/templates_c/user_data/"',149,'SMARTYコンパイル');
 INSERT INTO mtb_constants VALUES ('IMAGE_TEMP_DIR','HTML_PATH . "upload/temp_image/"',150,'画像一時保存');
 INSERT INTO mtb_constants VALUES ('IMAGE_SAVE_DIR','HTML_PATH . "upload/save_image/"',151,'画像保存先');
 INSERT INTO mtb_constants VALUES ('IMAGE_TEMP_URL','URL_DIR . "upload/temp_image/"',152,'画像一時保存URL');
@@ -485,9 +481,15 @@ INSERT INTO mtb_constants VALUES ('TRACKBACK_VIEW_MAX','10',280,'フロント最
 INSERT INTO mtb_constants VALUES ('TRACKBACK_TO_URL','SITE_URL . "tb/index.php?pid="',281,'トラックバック先URL');
 INSERT INTO mtb_constants VALUES ('SITE_CONTROL_TRACKBACK','1',282,'サイト管理 トラックバック');
 INSERT INTO mtb_constants VALUES ('SITE_CONTROL_AFFILIATE','2',283,'サイト管理 アフィリエイト');
+
+-- テンプレート関連
 INSERT INTO mtb_constants VALUES ('DEFAULT_TEMPLATE_NAME', '"default"', 300,'デフォルトテンプレート名');
 INSERT INTO mtb_constants VALUES ('TEMPLATE_NAME', 'DEFAULT_TEMPLATE_NAME', 301,'テンプレート名');
-INSERT INTO mtb_constants VALUES ('TEMPLATE_ADMIN_DIR','DATA_PATH . "Smarty/templates/" . TEMPLATE_NAME . "/admin"', 302,'SMARTYテンプレート(管理ページ)');
-INSERT INTO mtb_constants VALUES ('TEMPLATE_DIR','DATA_PATH . "Smarty/" . TEMPLATE_NAME . "/templates"', 303,'SMARTYテンプレート');
-INSERT INTO mtb_constants VALUES ('BLOC_DIR','"bloc/"',304,'ブロックファイル保存先');
-INSERT INTO mtb_constants VALUES ('BLOC_PATH','USER_PATH . BLOC_DIR',305,'ブロックファイル保存先');
+INSERT INTO mtb_constants VALUES ('TEMPLATE_DIR','DATA_PATH . "Smarty/templates/" . TEMPLATE_NAME . "/"', 302,'SMARTYテンプレート');
+INSERT INTO mtb_constants VALUES ('TEMPLATE_ADMIN_DIR','TEMPLATE_DIR . "admin/"', 303,'SMARTYテンプレート(管理ページ)');
+INSERT INTO mtb_constants VALUES ('COMPILE_DIR','DATA_PATH . "Smarty/templates_c/" . TEMPLATE_NAME . "/"',304,'SMARTYコンパイル');
+INSERT INTO mtb_constants VALUES ('COMPILE_ADMIN_DIR','COMPILE_DIR . "admin/"',305,'SMARTYコンパイル(管理ページ)');
+INSERT INTO mtb_constants VALUES ('TEMPLATE_FTP_DIR','USER_PATH . "templates/" . TEMPLATE_NAME . "/"', 306,'SMARTYテンプレート(FTP許可)');
+INSERT INTO mtb_constants VALUES ('COMPILE_FTP_DIR','COMPILE_DIR . USER_DIR', 307,'SMARTYコンパイル(FTP許可)');
+INSERT INTO mtb_constants VALUES ('BLOC_DIR','"bloc/"', 308,'ブロックファイル保存先');
+INSERT INTO mtb_constants VALUES ('BLOC_PATH','USER_PATH . BLOC_DIR', 309,'ブロックファイル保存先');

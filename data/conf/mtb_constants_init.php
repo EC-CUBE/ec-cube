@@ -285,14 +285,6 @@ define('SALE_PRICE_TITLE', "販売価格");
 define('LOG_PATH', DATA_PATH . "logs/site.log");
 /** 会員ログイン ログファイル */
 define('CUSTOMER_LOG_PATH', DATA_PATH . "logs/customer.log");
-/** SMARTYコンパイル */
-define('COMPILE_ADMIN_DIR', DATA_PATH . "Smarty/templates_c/admin");
-/** SMARTYコンパイル */
-define('COMPILE_DIR', DATA_PATH . "Smarty/templates_c");
-/** SMARTYテンプレート(FTP許可) */
-define('TEMPLATE_FTP_DIR', USER_PATH . "templates/");
-/** SMARTYコンパイル */
-define('COMPILE_FTP_DIR', DATA_PATH . "Smarty/templates_c/user_data/");
 /** 画像一時保存 */
 define('IMAGE_TEMP_DIR', HTML_PATH . "upload/temp_image/");
 /** 画像保存先 */
@@ -564,10 +556,18 @@ define('SITE_CONTROL_AFFILIATE', 2);
 define('DEFAULT_TEMPLATE_NAME', "default");
 /** テンプレート名 */
 define('TEMPLATE_NAME', DEFAULT_TEMPLATE_NAME);
-/** SMARTYテンプレート(管理ページ) */
-define('TEMPLATE_ADMIN_DIR', DATA_PATH . "Smarty/templates/" . TEMPLATE_NAME . "/admin/");
 /** SMARTYテンプレート */
 define('TEMPLATE_DIR', DATA_PATH . "Smarty/templates/" . TEMPLATE_NAME . "/");
+/** SMARTYテンプレート(管理ページ) */
+define('TEMPLATE_ADMIN_DIR', TEMPLATE_DIR . "admin/");
+/** SMARTYコンパイル */
+define('COMPILE_DIR', DATA_PATH . "Smarty/templates_c/" . TEMPLATE_NAME . "/");
+/** SMARTYコンパイル(管理ページ) */
+define('COMPILE_ADMIN_DIR', COMPILE_DIR . "admin/");
+/** SMARTYテンプレート(FTP許可) */
+define('TEMPLATE_FTP_DIR', USER_PATH . "templates/" . TEMPLATE_NAME . "/");
+/** SMARTYコンパイル(FTP許可) */
+define('COMPILE_FTP_DIR', COMPILE_DIR . USER_DIR);
 /** ブロックファイル保存先 */
 define('BLOC_DIR', "bloc/");
 /** ブロックファイル保存先 */
