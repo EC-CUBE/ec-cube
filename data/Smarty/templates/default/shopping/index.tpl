@@ -11,6 +11,7 @@
    </h2>
     <form name="member_form" id="member_form" method="post" action="./deliv.php" onsubmit="return fnCheckLogin('member_form')">
    <div class="loginarea">
+     <input type="hidden" name="<!--{$smarty.const.TRANSACTION_ID_NAME}-->" value="<!--{$transactionid}-->" />
      <p><img src="<!--{$TPL_DIR}-->img/login/member.gif" width="202" height="16" alt="会員登録がお済みのお客様" /></p>
      <p class="inputtext">会員の方は、登録時に入力されたメールアドレスとパスワードでログインしてください。</p>
        <input type="hidden" name="mode" value="login" />
@@ -45,6 +46,7 @@
     </form>
     <form name="member_form2" id="member_form2" method="post" action="./index.php">
       <input type="hidden" name="mode" value="nonmember" />
+      <input type="hidden" name="<!--{$smarty.const.TRANSACTION_ID_NAME}-->" value="<!--{$transactionid}-->" />
     <div class="loginarea">
     <p>
       <img src="<!--{$TPL_DIR}-->img/login/guest.gif" width="247" height="16" alt="まだ会員登録されていないお客様" />
