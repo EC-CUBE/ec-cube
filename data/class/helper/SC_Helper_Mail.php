@@ -53,7 +53,7 @@ class SC_Helper_Mail {
         $tosubject = $tmp_subject;
         $objSendMail->setItem('', $tosubject, $body, $from, $arrInfo['shop_name'], $from, $error, $error);
         $objSendMail->setTo($to, $to_name);
-        $objSendMail->sendMail();	// メール送信
+        $objSendMail->sendMail();    // メール送信
     }
 
     /* 受注完了メール送信 */
@@ -215,7 +215,7 @@ class SC_Helper_Mail {
         $objQuery = new SC_Query();
         $arrRet = $objQuery->select($col, $from, $where, array($email));
         // 会員のメールアドレスが登録されている
-        if($arrRet[0]['customer_id'] != "") {
+        if(empty($arrRet[0]['customer_id'])) {
             return true;
         }
         return false;
