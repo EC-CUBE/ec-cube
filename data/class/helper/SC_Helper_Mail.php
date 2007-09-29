@@ -215,7 +215,7 @@ class SC_Helper_Mail {
         $objQuery = new SC_Query();
         $arrRet = $objQuery->select($col, $from, $where, array($email));
         // 会員のメールアドレスが登録されている
-        if(empty($arrRet[0]['customer_id'])) {
+        if(!empty($arrRet[0]['customer_id'])) {
             return true;
         }
         return false;
