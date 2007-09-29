@@ -106,3 +106,34 @@ div#windowarea #completebox p{
     padding: 60px 5px;
     text-align: center;
 }
+
+/* 郵便番号検索
+----------------------------------------------- */
+div#zipsearchcolumn {
+    width: 460px;
+    margin: 15px auto 0 auto;
+    background-color: #fff;
+    border-top: 5px solid #ffa85c;
+    border-bottom: 5px solid #ffa85c;
+}
+
+div#zipsearchcolumn h2 {
+    width: 460px;
+    margin: 0 0 15px 0;
+}
+
+div#zipsearcharea {
+    width: 460px;
+    margin: 15px auto 0 auto;
+}
+
+div#zipsearchcolumn .btn {
+    margin: 15px 0 30px 0;
+    text-align: center;
+}
+
+div#zipsearcharea #completebox p{
+    padding: 60px 5px;
+    text-align: center;
+}
+
