@@ -31,7 +31,7 @@ class LC_Page_Admin_Order extends LC_Page {
         $this->tpl_subnavi = 'order/subnavi.tpl';
         $this->tpl_mainno = 'order';
         $this->tpl_subno = 'index';
-        $this->tpl_pager = DATA_PATH . 'Smarty/templates/admin/pager.tpl';
+        $this->tpl_pager = TEMPLATE_DIR . 'admin/pager.tpl';
         $this->tpl_subtitle = '受注管理';
 
         $masterData = new SC_DB_MasterData_Ex();

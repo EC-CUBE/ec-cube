@@ -20,20 +20,20 @@ class LC_Page_Admin_Customer_Edit extends LC_Page {
     // {{{ properties
     // TODO
     var $arrSession;
-	var $tpl_mode;
-	var $list_data;
+    var $tpl_mode;
+    var $list_data;
 
-	var $arrErr;
-	var $arrYear;
-	var $arrMonth;
-	var $arrDay;
-	var $arrPref;
-	var $arrJob;
-	var $arrSex;
-	var $arrReminder;
-	var $count;
+    var $arrErr;
+    var $arrYear;
+    var $arrMonth;
+    var $arrDay;
+    var $arrPref;
+    var $arrJob;
+    var $arrSex;
+    var $arrReminder;
+    var $count;
 
-	var $tpl_strnavi;
+    var $tpl_strnavi;
 
 
     // }}}
@@ -47,17 +47,17 @@ class LC_Page_Admin_Customer_Edit extends LC_Page {
     function init() {
         parent::init();
         $this->tpl_mainpage = 'customer/edit.tpl';
-		$this->tpl_mainno = 'customer';
-		$this->tpl_subnavi = 'customer/subnavi.tpl';
-		$this->tpl_subno = 'index';
-		$this->tpl_pager = DATA_PATH . 'Smarty/templates/admin/pager.tpl';
-		$this->tpl_subtitle = '顧客マスタ';
+        $this->tpl_mainno = 'customer';
+        $this->tpl_subnavi = 'customer/subnavi.tpl';
+        $this->tpl_subno = 'index';
+        $this->tpl_pager = TEMPLATE_DIR . 'admin/pager.tpl';
+        $this->tpl_subtitle = '顧客マスタ';
 
         $masterData = new SC_DB_MasterData_Ex();
-		$this->arrPref = $masterData->getMasterData("mtb_pref", array("pref_id", "pref_name", "rank"));
-		$this->arrJob = $masterData->getMasterData("mtb_job");
-		$this->arrSex = $masterData->getMasterData("mtb_sex");
-		$this->arrReminder = $masterData->getMasterData("mtb_reminder");
+        $this->arrPref = $masterData->getMasterData("mtb_pref", array("pref_id", "pref_name", "rank"));
+        $this->arrJob = $masterData->getMasterData("mtb_job");
+        $this->arrSex = $masterData->getMasterData("mtb_sex");
+        $this->arrReminder = $masterData->getMasterData("mtb_reminder");
     }
 
     /**
@@ -76,39 +76,39 @@ class LC_Page_Admin_Customer_Edit extends LC_Page {
         $objView = new SC_AdminView();
         $objDb = new SC_Helper_DB_Ex();
         $objDate = new SC_Date(1901);
-        $this->arrYear = $objDate->getYear();	//　日付プルダウン設定
+        $this->arrYear = $objDate->getYear();    //　日付プルダウン設定
         $this->arrMonth = $objDate->getMonth();
         $this->arrDay = $objDate->getDay();
 
         //---- 登録用カラム配列
         $arrRegistColumn = array(
-                                 array(  "column" => "name01",		"convert" => "aKV" ),
-                                 array(  "column" => "name02",		"convert" => "aKV" ),
-                                 array(  "column" => "kana01",		"convert" => "CKV" ),
-                                 array(  "column" => "kana02",		"convert" => "CKV" ),
-                                 array(  "column" => "zip01",		"convert" => "n" ),
-                                 array(  "column" => "zip02",		"convert" => "n" ),
-                                 array(  "column" => "pref",		"convert" => "n" ),
-                                 array(  "column" => "addr01",		"convert" => "aKV" ),
-                                 array(  "column" => "addr02",		"convert" => "aKV" ),
-                                 array(  "column" => "email",		"convert" => "a" ),
-                                 array(  "column" => "email_mobile",	"convert" => "a" ),
-                                 array(  "column" => "tel01",		"convert" => "n" ),
-                                 array(  "column" => "tel02",		"convert" => "n" ),
-                                 array(  "column" => "tel03",		"convert" => "n" ),
-                                 array(  "column" => "fax01",		"convert" => "n" ),
-                                 array(  "column" => "fax02",		"convert" => "n" ),
-                                 array(  "column" => "fax03",		"convert" => "n" ),
-                                 array(  "column" => "sex",			"convert" => "n" ),
-                                 array(  "column" => "job",			"convert" => "n" ),
-                                 array(  "column" => "birth",		"convert" => "n" ),
-                                 array(  "column" => "password",	"convert" => "a" ),
-                                 array(  "column" => "reminder",	"convert" => "n" ),
+                                 array(  "column" => "name01",        "convert" => "aKV" ),
+                                 array(  "column" => "name02",        "convert" => "aKV" ),
+                                 array(  "column" => "kana01",        "convert" => "CKV" ),
+                                 array(  "column" => "kana02",        "convert" => "CKV" ),
+                                 array(  "column" => "zip01",        "convert" => "n" ),
+                                 array(  "column" => "zip02",        "convert" => "n" ),
+                                 array(  "column" => "pref",        "convert" => "n" ),
+                                 array(  "column" => "addr01",        "convert" => "aKV" ),
+                                 array(  "column" => "addr02",        "convert" => "aKV" ),
+                                 array(  "column" => "email",        "convert" => "a" ),
+                                 array(  "column" => "email_mobile",    "convert" => "a" ),
+                                 array(  "column" => "tel01",        "convert" => "n" ),
+                                 array(  "column" => "tel02",        "convert" => "n" ),
+                                 array(  "column" => "tel03",        "convert" => "n" ),
+                                 array(  "column" => "fax01",        "convert" => "n" ),
+                                 array(  "column" => "fax02",        "convert" => "n" ),
+                                 array(  "column" => "fax03",        "convert" => "n" ),
+                                 array(  "column" => "sex",            "convert" => "n" ),
+                                 array(  "column" => "job",            "convert" => "n" ),
+                                 array(  "column" => "birth",        "convert" => "n" ),
+                                 array(  "column" => "password",    "convert" => "a" ),
+                                 array(  "column" => "reminder",    "convert" => "n" ),
                                  array(  "column" => "reminder_answer", "convert" => "aKV" ),
                                  array(  "column" => "mailmaga_flg", "convert" => "n" ),
-                                 array(  "column" => "note",		"convert" => "aKV" ),
-                                 array(  "column" => "point",		"convert" => "n" ),
-                                 array(  "column" => "status",		"convert" => "n" )
+                                 array(  "column" => "note",        "convert" => "aKV" ),
+                                 array(  "column" => "point",        "convert" => "n" ),
+                                 array(  "column" => "status",        "convert" => "n" )
                                  );
 
         //---- 登録除外用カラム配列
@@ -157,7 +157,7 @@ class LC_Page_Admin_Customer_Edit extends LC_Page {
 
             //-- POSTデータの引き継ぎ
             $this->arrForm = $_POST;
-            $this->arrForm['email'] = strtolower($this->arrForm['email']);		// emailはすべて小文字で処理
+            $this->arrForm['email'] = strtolower($this->arrForm['email']);        // emailはすべて小文字で処理
 
             //-- 入力データの変換
             $this->arrForm = $this->lfConvertParam($this->arrForm, $arrRegistColumn);
@@ -250,11 +250,11 @@ class LC_Page_Admin_Customer_Edit extends LC_Page {
     //----　取得文字列の変換
     function lfConvertParam($array, $arrRegistColumn) {
         /*
-         *	文字列の変換
-         *	K :  「半角(ﾊﾝｶｸ)片仮名」を「全角片仮名」に変換
-         *	C :  「全角ひら仮名」を「全角かた仮名」に変換
-         *	V :  濁点付きの文字を一文字に変換。"K","H"と共に使用します
-         *	n :  「全角」数字を「半角(ﾊﾝｶｸ)」に変換
+         *    文字列の変換
+         *    K :  「半角(ﾊﾝｶｸ)片仮名」を「全角片仮名」に変換
+         *    C :  「全角ひら仮名」を「全角かた仮名」に変換
+         *    V :  濁点付きの文字を一文字に変換。"K","H"と共に使用します
+         *    n :  「全角」数字を「半角(ﾊﾝｶｸ)」に変換
          *  a :  全角英数字を半角英数字に変換する
          */
         // カラム名とコンバート情報
@@ -333,30 +333,30 @@ class LC_Page_Admin_Customer_Edit extends LC_Page {
 
     //購入履歴情報の取得
     function lfPurchaseHistory($customer_id){
-		$this->tpl_pageno = $_POST['search_pageno'];
-		$this->edit_customer_id = $customer_id;
+        $this->tpl_pageno = $_POST['search_pageno'];
+        $this->edit_customer_id = $customer_id;
 
-		// ページ送りの処理
-		$page_max = SEARCH_PMAX;
-		//購入履歴の件数取得
-		$this->tpl_linemax = $this->objQuery->count("dtb_order","customer_id=? AND del_flg = 0 ", array($customer_id));
-		$linemax = $this->tpl_linemax;
+        // ページ送りの処理
+        $page_max = SEARCH_PMAX;
+        //購入履歴の件数取得
+        $this->tpl_linemax = $this->objQuery->count("dtb_order","customer_id=? AND del_flg = 0 ", array($customer_id));
+        $linemax = $this->tpl_linemax;
 
-		// ページ送りの取得
-		$objNavi = new SC_PageNavi($_POST['search_pageno'], $linemax, $page_max, "fnNaviSearchPage2", NAVI_PMAX);
-		$this->arrPagenavi = $objNavi->arrPagenavi;
-		$this->arrPagenavi['mode'] = 'edit';
-		$startno = $objNavi->start_row;
+        // ページ送りの取得
+        $objNavi = new SC_PageNavi($_POST['search_pageno'], $linemax, $page_max, "fnNaviSearchPage2", NAVI_PMAX);
+        $this->arrPagenavi = $objNavi->arrPagenavi;
+        $this->arrPagenavi['mode'] = 'edit';
+        $startno = $objNavi->start_row;
 
-		// 取得範囲の指定(開始行番号、行数のセット)
-		$this->objQuery->setlimitoffset($page_max, $startno);
-		// 表示順序
-		$order = "order_id DESC";
-		$this->objQuery->setorder($order);
-		//購入履歴情報の取得
-		$arrPurchaseHistory = $this->objQuery->select("*", "dtb_order", "customer_id=? AND del_flg = 0 ", array($customer_id));
+        // 取得範囲の指定(開始行番号、行数のセット)
+        $this->objQuery->setlimitoffset($page_max, $startno);
+        // 表示順序
+        $order = "order_id DESC";
+        $this->objQuery->setorder($order);
+        //購入履歴情報の取得
+        $arrPurchaseHistory = $this->objQuery->select("*", "dtb_order", "customer_id=? AND del_flg = 0 ", array($customer_id));
 
-		return $arrPurchaseHistory;
+        return $arrPurchaseHistory;
     }
 
     //確認ページ用パスワード表示用
