@@ -180,7 +180,7 @@ class SC_Customer {
         $sql = "SELECT * FROM dtb_customer WHERE customer_id = ? AND del_flg = 0";
         $customer_id = $this->getValue('customer_id');
         $arrRet = $this->conn->getAll($sql, array($customer_id));
-        $this->customer_data = $arrRet[0];
+        $this->customer_data = isset($arrRet[0]) ? $arrRet[0] : "";
         $_SESSION['customer'] = $this->customer_data;
     }
 
