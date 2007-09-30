@@ -30,6 +30,7 @@ class LC_Page_Shopping_Complete extends LC_Page {
         $this->tpl_mainpage = 'shopping/complete.tpl';
         $this->tpl_css = URL_DIR.'css/layout/shopping/complete.css';
         $this->tpl_title = "ご注文完了";
+        $this->tpl_column_num = 1;
 
         $masterData = new SC_DB_MasterData_Ex();
         $this->arrCONVENIENCE = $masterData->getMasterData("mtb_convenience");
@@ -194,7 +195,7 @@ class LC_Page_Shopping_Complete extends LC_Page {
             //無効
             case '0':
                 // 購入時会員登録
-                if($arrData['member_check'] == '1') {
+                if(isset($arrData['member_check']) && $arrData['member_check'] == '1') {
                     // 仮会員登録
                     $customer_id = $this->lfRegistPreCustomer($arrData, $this->arrInfo);
                     // 購入集計を顧客テーブルに反映
