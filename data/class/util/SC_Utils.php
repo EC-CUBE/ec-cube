@@ -99,7 +99,7 @@ class SC_Utils {
         $GLOBAL_ERR.= "<td bgcolor='#ffeebb' height='25' colspan='2' align='center'>\n";
         $GLOBAL_ERR.= "<SPAN style='color:red; font-size:12px'><strong>" . $mess . "</strong></span>\n";
         $GLOBAL_ERR.= "</td>\n";
-        $GLOBAL_ERR.= "	</tr>\n";
+        $GLOBAL_ERR.= "    </tr>\n";
         $GLOBAL_ERR.= "</table>\n";
 
         if($print) {
@@ -332,7 +332,7 @@ class SC_Utils {
         }
     }
 
-    function sfCheckNormalAccess(&$objSiteSess, $objCartSess) {
+    function sfCheckNormalAccess(&$objSiteSess, &$objCartSess) {
         // ユーザユニークIDの取得
         $uniqid = $objSiteSess->getUniqId();
         // 購入ボタンを押した時のカート内容がコピーされていない場合のみコピーする。
@@ -367,7 +367,7 @@ class SC_Utils {
         } else {
             $date = "";
         }
-        return 	$date;
+        return     $date;
     }
 
     // INT型の数値チェック
@@ -648,13 +648,13 @@ class SC_Utils {
 
 
     /*-----------------------------------------------------------------*/
-    /*	check_set_term
-    /*	年月日に別れた2つの期間の妥当性をチェックし、整合性と期間を返す
+    /*    check_set_term
+    /*    年月日に別れた2つの期間の妥当性をチェックし、整合性と期間を返す
     /*　引数 (開始年,開始月,開始日,終了年,終了月,終了日)
     /*　戻値 array(１，２，３）
-    /*  		１．開始年月日 (YYYY/MM/DD 000000)
-    /*			２．終了年月日 (YYYY/MM/DD 235959)
-    /*			３．エラー ( 0 = OK, 1 = NG )
+    /*          １．開始年月日 (YYYY/MM/DD 000000)
+    /*            ２．終了年月日 (YYYY/MM/DD 235959)
+    /*            ３．エラー ( 0 = OK, 1 = NG )
     /*-----------------------------------------------------------------*/
     function sfCheckSetTerm ( $start_year, $start_month, $start_day, $end_year, $end_month, $end_day ) {
 
@@ -979,8 +979,8 @@ class SC_Utils {
     // カードの処理結果を返す
     function sfGetAuthonlyResult($dir, $file_name, $name01, $name02, $card_no, $card_exp, $amount, $order_id, $jpo_info = "10"){
 
-        $path = $dir .$file_name;		// cgiファイルのフルパス生成
-        $now_dir = getcwd();			// requireがうまくいかないので、cgi実行ディレクトリに移動する
+        $path = $dir .$file_name;        // cgiファイルのフルパス生成
+        $now_dir = getcwd();            // requireがうまくいかないので、cgi実行ディレクトリに移動する
         chdir($dir);
 
         // パイプ渡しでコマンドラインからcgi起動
@@ -992,8 +992,8 @@ class SC_Utils {
         while( ! FEOF ( $tmpResult ) ) {
             $result .= FGETS($tmpResult);
         }
-        pclose($tmpResult);				// 	パイプを閉じる
-        chdir($now_dir);				//　元にいたディレクトリに帰る
+        pclose($tmpResult);                //     パイプを閉じる
+        chdir($now_dir);                //　元にいたディレクトリに帰る
 
         // 結果を連想配列へ格納
         $result = ereg_replace("&$", "", $result);
@@ -1143,7 +1143,7 @@ class SC_Utils {
         fclose($ofp);
         fclose($ifp);
 
-        return 	$outpath;
+        return     $outpath;
     }
 
     function sfCutString($str, $len, $byte = true, $commadisp = true) {
