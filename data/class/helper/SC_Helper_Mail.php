@@ -211,7 +211,11 @@ class SC_Helper_Mail {
     function sfCheckCustomerMailMaga($email) {
         $col = "email, mailmaga_flg, customer_id";
         $from = "dtb_customer";
+        /*
+         * FIXME 会員を削除しても登録済と扱われてしまう？
+         */
         $where = "email = ? AND status = 2";
+        // $where = "email = ? AND status = 2 AND del_flg = 0";
         $objQuery = new SC_Query();
         $arrRet = $objQuery->select($col, $from, $where, array($email));
         // 会員のメールアドレスが登録されている
