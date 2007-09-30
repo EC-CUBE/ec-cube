@@ -90,7 +90,7 @@ class SC_Helper_Mail {
         // 顧客情報の取得
         $customer_id = $arrOrder['customer_id'];
         $arrRet = $objQuery->select("point", "dtb_customer", "customer_id = ?", array($customer_id));
-        $arrCustomer = $arrRet[0];
+        $arrCustomer = isset($arrRet[0]) ? $arrRet[0] : "";
 
         $objPage->arrCustomer = $arrCustomer;
         $objPage->arrOrder = $arrOrder;
