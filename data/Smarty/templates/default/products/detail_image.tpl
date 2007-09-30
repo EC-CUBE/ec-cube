@@ -23,7 +23,7 @@
 
 <body onload="preLoadImg('<!--{$smarty.const.URL_DIR}-->')">
 <noscript>
- <p>JavaScript¤òÍ­¸ú¤Ë¤·¤Æ¤´ÍøÍÑ²¼¤µ¤¤</p>
+ <p>JavaScriptã‚’æœ‰åŠ¹ã«ã—ã¦ã”åˆ©ç”¨ä¸‹ã•ã„</p>
 </noscript>
 <!--{if $tpl_width > 300}-->
   <!--{assign key=id name=bigimage}-->
