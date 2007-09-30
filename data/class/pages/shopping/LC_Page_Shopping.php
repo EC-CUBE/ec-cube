@@ -36,12 +36,12 @@ class LC_Page_Shopping extends LC_Page {
     function init() {
         parent::init();
         $this->tpl_mainpage = 'shopping/index.tpl';
+        $this->tpl_column_num = 1;
         $masterData = new SC_DB_MasterData();
         $this->arrPref = $masterData->getMasterData("mtb_pref", array("pref_id", "pref_name", "rank"));
         $this->arrSex = $masterData->getMasterData("mtb_sex");
         $this->arrJob = $masterData->getMasterData("mtb_job");
         $this->tpl_onload = 'fnCheckInputDeliv();';
-
         $this->allowClientCache();
     }
 
@@ -58,12 +58,13 @@ class LC_Page_Shopping extends LC_Page {
         $objCampaignSess = new SC_CampaignSession();
         $objCustomer = new SC_Customer();
         $objCookie = new SC_Cookie();
-        $this->objFormParam = new SC_FormParam();			// フォーム用
-        $this->lfInitParam();								// パラメータ情報の初期化
-        $this->objFormParam->setParam($_POST);			// POST値の取得
+        $this->objFormParam = new SC_FormParam();            // フォーム用
+        $this->lfInitParam();                                // パラメータ情報の初期化
+        $this->objFormParam->setParam($_POST);            // POST値の取得
 
         // ユーザユニークIDの取得と購入状態の正当性をチェック
-        $this->tpl_uniqid = SC_Utils_Ex::sfCheckNormalAccess($objSiteSess, $objCartSess);
+        $uniqid = SC_Utils_Ex::sfCheckNormalAccess($objSiteSess, $objCartSess);
+        $this->tpl_uniqid = $uniqid;
 
         // ログインチェック
         if($objCustomer->isLoginSuccess()) {
@@ -145,7 +146,7 @@ class LC_Page_Shopping extends LC_Page {
 
         // 選択用日付の取得
         $objDate = new SC_Date(START_BIRTH_YEAR);
-        $this->arrYear = $objDate->getYear('', 1950);	//　日付プルダウン設定
+        $this->arrYear = $objDate->getYear('', 1950);    //　日付プルダウン設定
         $this->arrMonth = $objDate->getMonth();
         $this->arrDay = $objDate->getDay();
 
@@ -188,10 +189,10 @@ class LC_Page_Shopping extends LC_Page {
         $objCartSess = new SC_CartSession();
         $objCustomer = new SC_Customer();
         $objCookie = new SC_Cookie();
-        $this->objFormParam = new SC_FormParam();			// フォーム用
+        $this->objFormParam = new SC_FormParam();            // フォーム用
         $helperMobile = new SC_Helper_Mobile_Ex();
-        $this->lfInitParam();								// パラメータ情報の初期化
-        $this->objFormParam->setParam($_POST);			// POST値の取得
+        $this->lfInitParam();                                // パラメータ情報の初期化
+        $this->objFormParam->setParam($_POST);            // POST値の取得
 
         // ユーザユニークIDの取得と購入状態の正当性をチェック
         $uniqid = SC_Utils_Ex::sfCheckNormalAccess($objSiteSess, $objCartSess);
@@ -265,7 +266,7 @@ class LC_Page_Shopping extends LC_Page {
 
         // 選択用日付の取得
         $objDate = new SC_Date(START_BIRTH_YEAR);
-        $this->arrYear = $objDate->getYear('', 1950);	//　日付プルダウン設定
+        $this->arrYear = $objDate->getYear('', 1950);    //　日付プルダウン設定
         $this->arrMonth = $objDate->getMonth();
         $this->arrDay = $objDate->getDay();
 
@@ -372,7 +373,7 @@ class LC_Page_Shopping extends LC_Page {
         $objErr->arrErr = $this->objFormParam->checkError();
 
         // 別のお届け先チェック
-        if($_POST['deliv_check'] == "1") {
+        if(isset($_POST['deliv_check']) && $_POST['deliv_check'] == "1") {
             $objErr->doFunc(array("お名前（姓）", "deliv_name01"), array("EXIST_CHECK"));
             $objErr->doFunc(array("お名前（名）", "deliv_name02"), array("EXIST_CHECK"));
             $objErr->doFunc(array("フリガナ（セイ）", "deliv_kana01"), array("EXIST_CHECK"));
@@ -398,7 +399,8 @@ class LC_Page_Shopping extends LC_Page {
         $objErr->doFunc(array("メールアドレス", "メールアドレス（確認）", "order_email", "order_email_check"), array("EQUAL_CHECK"));
 
         // すでにメルマガテーブルに会員としてメールアドレスが登録されている場合
-        if(SC_Utils_Ex::sfCheckCustomerMailMaga($arrRet['order_email'])) {
+        $helperMail = new SC_Helper_Mail_Ex();
+        if($helperMail->sfCheckCustomerMailMaga($arrRet['order_email'])) {
             $objErr->arrErr['order_email'] = "このメールアドレスはすでに登録されています。<br />";
         }
 
