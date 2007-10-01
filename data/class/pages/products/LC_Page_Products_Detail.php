@@ -279,14 +279,9 @@ class LC_Page_Products_Detail extends LC_Page {
         // ファイル情報の初期化
         $this->lfInitFile();
 
-        // 管理ページからの確認の場合は、非公開の商品も表示する。
-        if($_GET['admin'] == 'on') {
-            $where = "del_flg = 0";
-        } else {
-            $where = "del_flg = 0 AND status = 1";
-        }
+        if (!isset($_POST['mode'])) $_POST['mode'] = "";
 
-        if($_POST['mode'] != "") {
+        if(!empty($_POST['mode'])) {
             $tmp_id = $_POST['product_id'];
         } else {
             $tmp_id = $_GET['product_id'];
@@ -445,9 +440,11 @@ class LC_Page_Products_Detail extends LC_Page {
         $this->arrRelateProducts = $this->lfGetRelateProducts($tmp_id);
 
         // 拡大画像のウィンドウサイズをセット
-        list($large_width, $large_height) = getimagesize(IMAGE_SAVE_DIR . basename($this->arrFile["main_large_image"]["filepath"]));
-        $this->tpl_large_width = $large_width + 60;
-        $this->tpl_large_height = $large_height + 80;
+        if (!empty($this->arrFile["main_large_image"])) {
+            list($large_width, $large_height) = getimagesize(IMAGE_SAVE_DIR . basename($this->arrFile["main_large_image"]["filepath"]));
+        }
+        $this->tpl_large_width = isset($large_width) ? $large_width + 60 : 0;
+        $this->tpl_large_height = isset($large_height) ? $large_height + 80 : 0;
 
         $objView->assignobj($this);
         $objView->display(SITE_FRAME);
