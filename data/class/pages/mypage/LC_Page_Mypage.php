@@ -136,6 +136,8 @@ class LC_Page_MyPage extends LC_Page {
         // 携帯端末IDが一致する会員が存在するかどうかをチェックする。
         $this->tpl_valid_phone_id = $objCustomer->checkMobilePhoneId();
 
+        if (!isset($_POST['mode'])) $_POST['mode'] = "";
+
         // ログイン処理
         if($_POST['mode'] == 'login') {
             $objFormParam->toLower('login_email');
@@ -181,6 +183,7 @@ class LC_Page_MyPage extends LC_Page {
         if(!$objCustomer->isLoginSuccess()) {
             $this->tpl_mainpage = 'mypage/login.tpl';
             $objView->assignArray($objFormParam->getHashArray());
+            if (empty($arrErr)) $arrErr = array();
             $objView->assignArray(array("arrErr" => $arrErr));
         }else {
             //マイページトップ顧客情報表示用
