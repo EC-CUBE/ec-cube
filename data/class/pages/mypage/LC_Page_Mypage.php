@@ -159,7 +159,7 @@ class LC_Page_MyPage extends LC_Page {
 
                     // 携帯のメールアドレスが登録されていない場合
                     if (!$objCustomer->hasValue('email_mobile')) {
-                        $this->sendRedirect($this->getLocation("../entry/email_mobile.php", array(session_name() =>, session_id())));
+                        $this->sendRedirect($this->getLocation("../entry/email_mobile.php", array(session_name() => session_id())));
                         exit;
                     }
                 } else {
