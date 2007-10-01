@@ -48,7 +48,7 @@
 						<table border="0" cellspacing="0" cellpadding="0" summary=" ">
 							<tr>
 								<td colspan="2"><span class="fs12n"><!--{$arrErr.zip01}--><!--{$arrErr.zip02}--></span>
-								¢©&nbsp;<input type="text" name="zip01" size="6" value="<!--{$zip01|escape|default:$arrData.zip01|escape}-->" maxlength="<!--{$smarty.const.ZIP01_LEN}-->" style="<!--{$arrErr.zip01|sfGetErrorColor}-->" />&nbsp;-&nbsp;<input type="text" name="zip02" size="6" value="<!--{$zip02|escape|default:$arrData.zip02|escape}-->" maxlength="<!--{$smarty.const.ZIP02_LEN}-->" style="<!--{$arrErr.zip02|sfGetErrorColor}-->" />°°<a href="http://search.post.japanpost.jp/7zip/" target="_blank"><span class="fs10">Õπ ÿ»÷πÊ∏°∫˜</span></a></td>
+								¢©&nbsp;<input type="text" name="zip01" size="6" value="<!--{$zip01|escape|default:$arrData.zip01|escape}-->" maxlength="<!--{$smarty.const.ZIP01_LEN}-->" style="<!--{$arrErr.zip01|sfGetErrorColor}-->" />&nbsp;-&nbsp;<input type="text" name="zip02" size="6" value="<!--{$zip02|escape|default:$arrData.zip02|escape}-->" maxlength="<!--{$smarty.const.ZIP02_LEN}-->" style="<!--{$arrErr.zip02|sfGetErrorColor}-->" />°°<a href="http://search.post.japanpost.jp/zipcode//" target="_blank"><span class="fs10">Õπ ÿ»÷πÊ∏°∫˜</span></a></td>
 							</tr>
 							<tr><td height="5"></td></tr>
 							<tr>
