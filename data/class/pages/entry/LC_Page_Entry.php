@@ -683,8 +683,9 @@ class LC_Page_Entry extends LC_Page {
 
         //現会員の判定 →　現会員もしくは仮登録中は、メアド一意が前提になってるので同じメアドで登録不可
         if (strlen($array["email"]) > 0) {
-            $objQuery = new SC_Query();
-            $arrRet = $objQuery->select("email, update_date, del_flg", "dtb_customer","email ILIKE ? ORDER BY del_flg", array($array["email"]));
+            $array["email"] = strtolower($array["email"));
+            $objquery = new SC_Query();
+            $arrRet = $objQuery->select("email, update_date, del_flg", "dtb_customer","email = ? ORDER BY del_flg", array($array["email"]));
 
             if(count($arrRet) > 0) {
                 if($arrRet[0]['del_flg'] != '1') {
