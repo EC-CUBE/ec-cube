@@ -26,9 +26,9 @@
  <p>JavaScriptを有効にしてご利用下さい</p>
 </noscript>
 <!--{if $tpl_width > 300}-->
-  <!--{assign key=id name=bigimage}-->
+  <!--{assign var=id value=bigimage}-->
 <!--{else}-->
-  <!--{assign key=id name=cartimage}-->
+  <!--{assign var=id value=cartimage}-->
 <!--{/if}-->
 <div id="<!--{$id}-->"><a href="javascript:window.close()");><img src="<!--{$smarty.const.IMAGE_SAVE_URL}--><!--{$tpl_image}-->" width="<!--{$tpl_width}-->" height="<!--{$tpl_height}-->" alt="<!--{$tpl_name}-->" /></a></div>
 </body>
