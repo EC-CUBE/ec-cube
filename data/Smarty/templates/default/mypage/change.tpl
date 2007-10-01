@@ -37,7 +37,7 @@
           <!--{assign var=key1 value="zip01"}-->
           <!--{assign var=key2 value="zip02"}-->
           〒&nbsp;<input type="text" name="zip01" value="<!--{$arrForm.zip01}-->" maxlength="<!--{$smarty.const.ZIP01_LEN}-->" style="<!--{$arrErr.zip01|sfGetErrorColor}-->; ime-mode: disabled;" size="6" class="box60" />&nbsp;-&nbsp;<input type="text" name="zip02" value="<!--{$arrForm.zip02}-->" maxlength="<!--{$smarty.const.ZIP02_LEN}-->" style="<!--{$arrErr.zip02|sfGetErrorColor}-->; ime-mode: disabled;" size="6" class="box60" />&nbsp;
-          <a href="http://search.post.japanpost.jp/7zip/" target="_blank"><span class="fs12">郵便番号検索</span></a>
+          <a href="http://search.post.japanpost.jp/zipcode/" target="_blank"><span class="fs12">郵便番号検索</span></a>
           <p class="zipimg"><a href="<!--{$smarty.const.URL_DIR}-->input_zip.php" onclick="fnCallAddress('<!--{$smarty.const.URL_INPUT_ZIP}-->', 'zip01', 'zip02', 'pref', 'addr01'); return false;" target="_blank"><img src="<!--{$TPL_DIR}-->img/common/address.gif" width="86" height="20" alt="住所自動入力" /></a>
           <span class="mini">&nbsp;郵便番号を入力後、クリックしてください。</span></p>
           <span class="attention"><!--{$arrErr[$key1]}--><!--{$arrErr[$key2]}--></span>

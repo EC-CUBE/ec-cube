@@ -70,7 +70,7 @@
                    value="<!--{$zip02|default:$arrData.zip02|escape}-->"
                    maxlength="<!--{$smarty.const.ZIP02_LEN}-->"
                    style="<!--{$arrErr.zip02|sfGetErrorColor}-->" />　
-            <a href="http://search.post.japanpost.jp/7zip/" target="_blank"><span class="fs10">郵便番号検索</span></a>
+            <a href="http://search.post.japanpost.jp/zipcode/" target="_blank"><span class="fs10">郵便番号検索</span></a>
           </p>
           <p class="zipimg">
             <a href="javascript:fnCallAddress('<!--{$smarty.const.URL_INPUT_ZIP}-->', 'zip01', 'zip02', 'pref', 'addr01');">
