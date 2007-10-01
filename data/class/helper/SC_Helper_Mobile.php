@@ -309,7 +309,7 @@ class SC_Helper_Mobile {
         $try = 10;
 
         while ($try > 0) {
-            $arrValues['token'] = $token = lfGenerateKaraMailToken();
+            $arrValues['token'] = $token = $this->lfGenerateKaraMailToken();
 
             $objQuery->insert('dtb_mobile_kara_mail', $arrValues);
             $count = $objQuery->count('dtb_mobile_kara_mail', 'token = ?', array($token));
