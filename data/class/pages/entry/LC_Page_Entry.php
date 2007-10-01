@@ -358,7 +358,7 @@ class LC_Page_Entry extends LC_Page {
                 } elseif ($_POST["mode"] == "set2") {
                     $checkVal = array("sex", "year", "month", "day", "zip01", "zip02");
                 } else {
-                    $checkVal = array("pref", "addr01", "addr02", "tel01", "tel02", "tel03", "mail_flag");
+                    $checkVal = array("pref", "addr01", "addr02", "tel01", "tel02", "tel03", "mailmaga_flg");
                 }
 
                 foreach($this->arrForm as $key => $val) {
@@ -389,10 +389,11 @@ class LC_Page_Entry extends LC_Page {
                     $this->passlen = $this->lfPassLen($passlen);
 
                     //メール受け取り
-                    if (isset($this->arrForm['mail_flag']) && strtolower($this->arrForm['mail_flag']) == "on") {
-                        $this->arrForm['mail_flag']  = "2";
+                    if (!isset($this->arrForm['mailmaga_flg'])) $this->arrForm['mailmaga_flg']  = "";
+                    if (strtolower($this->arrForm['mailmaga_flg']) == "on") {
+                        $this->arrForm['mailmaga_flg']  = "2";
                     } else {
-                        $this->arrForm['mail_flag']  = "3";
+                        $this->arrForm['mailmaga_flg']  = "3";
                     }
 
                     $this->tpl_mainpage = 'entry/confirm.tpl';
@@ -405,7 +406,7 @@ class LC_Page_Entry extends LC_Page {
                 if ($_POST["mode"] == "set1") {
                     $checkVal = array("sex", "year", "month", "day", "zip01", "zip02");
                 } elseif ($_POST["mode"] == "set2") {
-                    $checkVal = array("pref", "addr01", "addr02", "tel01", "tel02", "tel03", "mail_flag");
+                    $checkVal = array("pref", "addr01", "addr02", "tel01", "tel02", "tel03", "mailmaga_flg");
                 } else {
                     $checkVal = array();
                 }
