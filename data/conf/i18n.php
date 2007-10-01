@@ -1,5 +1,5 @@
 <?php
-if (defined(DATA_PATH)) {
+if (defined('DATA_PATH')) {
     define('LOCALE_DIR', DATA_PATH . 'locale/');
 
     $accept_language = '';
