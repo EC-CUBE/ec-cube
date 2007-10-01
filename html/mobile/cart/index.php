@@ -6,7 +6,7 @@
  * http://www.lockon.co.jp/
  *
  *
- * モバイルサイト/XXX
+ * モバイルサイト/カート
  */
 
 // {{{ requires
