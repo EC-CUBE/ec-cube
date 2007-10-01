@@ -65,7 +65,7 @@
 									<input type="text" name="<!--{$key1}-->" value="<!--{$arrForm[$key1].value|escape}-->" maxlength="<!--{$arrForm[$key1].length}-->" style="<!--{$arrErr[$key1]|sfGetErrorColor}-->"  size="6" />
 									 - 
 									<input type="text"  name="<!--{$key2}-->" value="<!--{$arrForm[$key2].value|escape}-->" maxlength="<!--{$arrForm[$key2].length}-->" style="<!--{$arrErr[$key2]|sfGetErrorColor}-->"  size="6" />°°
-									<a href="http://search.post.japanpost.jp/7zip/" target="_blank"><span class="fs10">Õπ ÿ»÷πÊ∏°∫˜</span></a>
+									<a href="http://search.post.japanpost.jp/zipcode/index.html" target="_blank"><span class="fs10">Õπ ÿ»÷πÊ∏°∫˜</span></a>
 								</td>
 							</tr>
 							<tr><td height="5"></td></tr>
@@ -271,7 +271,7 @@
 									<input type="text" name="<!--{$key1}-->" value="<!--{$arrForm[$key1].value|escape}-->" maxlength="<!--{$arrForm[$key1].length}-->" style="<!--{$arrErr[$key1]|sfGetErrorColor}-->"  size="6" />
 									 - 
 									<input type="text"  name="<!--{$key2}-->" value="<!--{$arrForm[$key2].value|escape}-->" maxlength="<!--{$arrForm[$key2].length}-->" style="<!--{$arrErr[$key2]|sfGetErrorColor}-->"  size="6" />°°
-									<a href="http://search.post.japanpost.jp/7zip/" target="_blank"><span class="fs10">Õπ ÿ»÷πÊ∏°∫˜</span></a>
+									<a href="http://search.post.japanpost.jp/zipcode/index.html" target="_blank"><span class="fs10">Õπ ÿ»÷πÊ∏°∫˜</span></a>
 								</td>
 							</tr>
 							<tr><td height="5"></td></tr>
