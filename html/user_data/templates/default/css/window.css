@@ -18,7 +18,7 @@ div#bigimage img {
 /* カート拡大写真
 ----------------------------------------------- */
 div#cartimage {
-    width: 310px;
+    width: 280px;
     margin: 15px auto 0 auto;
     background-color: #ffffff;
 }
