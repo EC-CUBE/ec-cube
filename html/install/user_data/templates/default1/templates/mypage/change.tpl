@@ -57,7 +57,7 @@
 										<!--{assign var=key2 value="zip02"}-->
 										<td colspan="2"><span class="fs12n"><span class="red"><!--{$arrErr[$key1]}--><!--{$arrErr[$key2]}--></span>
 										〒&nbsp;<input type="text" name="zip01" value="<!--{$arrForm.zip01}-->" maxlength="<!--{$smarty.const.ZIP01_LEN}-->" style="<!--{$arrErr.zip01|sfGetErrorColor}-->; ime-mode: disabled;" size=6 class="box6" />&nbsp;-&nbsp;<input type="text" name="zip02" value="<!--{$arrForm.zip02}-->" maxlength="<!--{$smarty.const.ZIP02_LEN}-->" style="<!--{$arrErr.zip02|sfGetErrorColor}-->; ime-mode: disabled;" size=6 class="box6" />　
-										<a href="http://search.post.japanpost.jp/7zip/" target="_blank"><span class="fs12">郵便番号検索</span></a></td>
+										<a href="http://search.post.japanpost.jp/zipcode/" target="_blank"><span class="fs12">郵便番号検索</span></a></td>
 									</tr>
 									<tr><td height="5"></td></tr>
 									<tr>

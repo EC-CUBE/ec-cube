@@ -84,7 +84,7 @@
 								</tr>
 								<tr><td height="5"></td></tr>
 								<tr>
-									<td colspan="2" class="fs12">郵便番号がわからない方は→<a href="http://search.post.japanpost.jp/7zip/" target="_blank">こちら</a></td>
+									<td colspan="2" class="fs12">郵便番号がわからない方は→<a href="http://search.post.japanpost.jp/zipcode/" target="_blank">こちら</a></td>
 								</tr>
 							</table>
 						</td>
