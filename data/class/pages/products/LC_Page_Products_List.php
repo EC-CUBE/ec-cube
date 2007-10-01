@@ -200,7 +200,8 @@ class LC_Page_Products_List extends LC_Page {
         $objDb = new SC_Helper_DB_Ex();
 
         //表示件数の選択
-        if(SC_Utils_Ex::sfIsInt($_REQUEST['disp_number'])) {
+        if(isset($_REQUEST['disp_number'])
+           && SC_Utils_Ex::sfIsInt($_REQUEST['disp_number'])) {
             $this->disp_number = $_REQUEST['disp_number'];
         } else {
             //最小表示件数を選択
@@ -208,7 +209,7 @@ class LC_Page_Products_List extends LC_Page {
         }
 
         //表示順序の保存
-        $this->orderby = $_REQUEST['orderby'];
+        $this->orderby = isset($_REQUEST['orderby']) ? $_REQUEST['orderby'] : "";
 
         // GETのカテゴリIDを元に正しいカテゴリIDを取得する。
         $category_id = $objDb->sfGetCategoryId("", $_GET['category_id']);
@@ -216,6 +217,12 @@ class LC_Page_Products_List extends LC_Page {
         // タイトル編集
         $tpl_subtitle = "";
         $tpl_search_mode = false;
+
+        if (!isset($_GET['mode'])) $_GET['mode'] = "";
+        if (!isset($_POST['mode'])) $_POST['mode'] = "";
+        if (!isset($_GET['name'])) $_GET['name'] = "";
+        if (!isset($_REQUEST['orderby'])) $_REQUEST['orderby'] = "";
+
         if($_GET['mode'] == 'search'){
             $tpl_subtitle = "検索結果";
             $tpl_search_mode = true;
@@ -305,7 +312,7 @@ class LC_Page_Products_List extends LC_Page {
             if ($key == session_name() || $key == 'pageno') {
                 continue;
             }
-            $objURL->addQueryString($key, mb_convert_encoding($value, 'SJIS', 'EUC-JP'));
+            $objURL->addQueryString($key, mb_convert_encoding($value, 'SJIS', CHAR_CODE));
         }
 
         if ($this->objNavi->now_page > 1) {
@@ -403,13 +410,13 @@ class LC_Page_Products_List extends LC_Page {
         $this->tpl_linemax = $linemax;   // 何件が該当しました。表示用
 
         // ページ送りの取得
-        $objNavi = new SC_PageNavi($this->tpl_pageno, $linemax, $disp_num, "fnNaviPage", NAVI_PMAX);
+        $this->objNavi = new SC_PageNavi($this->tpl_pageno, $linemax, $disp_num, "fnNaviPage", NAVI_PMAX);
 
-        $strnavi = $objNavi->strnavi;
+        $strnavi = $this->objNavi->strnavi;
         $strnavi = str_replace('onclick="fnNaviPage', 'onclick="form1.mode.value=\''.'\'; fnNaviPage', $strnavi);
         // 表示文字列
         $this->tpl_strnavi = empty($strnavi) ? "&nbsp;" : $strnavi;
-        $startno = $objNavi->start_row;                 // 開始行
+        $startno = $this->objNavi->start_row;                 // 開始行
 
         // 取得範囲の指定(開始行番号、行数のセット)
         $objQuery->setlimitoffset($disp_num, $startno);
