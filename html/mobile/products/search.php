@@ -1,32 +1,23 @@
 <?php
 /**
- * 
+ *
  * Copyright(c) 2000-2007 LOCKON CO.,LTD. All Rights Reserved.
  *
  * http://www.lockon.co.jp/
- * 
  *
- * モバイルサイト/商品検索フォーム
+ *
+ * モバイルサイト/商品検索
  */
 
-require_once('../require.php');
+// {{{ requires
+require_once("../require.php");
+require_once(CLASS_PATH . "page_extends/products/LC_Page_Products_Search_Ex.php");
 
-class LC_Page {
-	function LC_Page() {
-		/** 必ず指定する **/
-		$this->tpl_mainpage = 'products/search.tpl';			// メインテンプレート
-		$this->tpl_title = '商品検索';
-	}
-}
+// }}}
+// {{{ generate page
 
-$objPage = new LC_Page();
-$objView = new SC_MobileView();
-
-// レイアウトデザインを取得
-$objPage = sfGetPageLayout($objPage, false, DEF_LAYOUT);
-
-$objView->assignobj($objPage);
-$objView->display(SITE_FRAME);
-
-//-----------------------------------------------------------------------------------------------------------------------------------
+$objPage = new LC_Page_Products_Search_Ex();
+$objPage->mobileInit();
+$objPage->mobileProcess();
+register_shutdown_function(array($objPage, "destroy"));
 ?>
