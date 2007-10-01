@@ -122,6 +122,8 @@ class SC_Helper_Mobile {
     /**
      * セッションデータが有効かどうかをチェックする。
      *
+     * FIXME "@" でエラーを抑制するのは良くない
+     *
      * @return boolean セッションデータが有効な場合は true、無効な場合は false を返す。
      */
     function lfMobileValidateSession() {
@@ -132,7 +134,7 @@ class SC_Helper_Mobile {
 
         // 有効期限を過ぎていないかどうかをチェックする。
         if (intval(@$_SESSION['mobile']['expires']) < time()) {
-            gfPrintLog("Session expired at " .
+            GC_Utils_Ex::gfPrintLog("Session expired at " .
                        date('Y/m/d H:i:s', @$_SESSION['mobile']['expires']) .
                        ' : sid=' . session_id());
 
@@ -142,7 +144,7 @@ class SC_Helper_Mobile {
         // 携帯端末の機種が一致するかどうかをチェックする。
         $model = GC_MobileUserAgent::getModel();
         if (@$_SESSION['mobile']['model'] != $model) {
-            gfPrintLog("User agent model mismatch : " .
+            GC_Utils_Ex::gfPrintLog("User agent model mismatch : " .
                        "\"$model\" != \"" . @$_SESSION['mobile']['model'] .
                        '" (expected), sid=' . session_id());
             return false;
