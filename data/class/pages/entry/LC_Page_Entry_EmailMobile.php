@@ -27,9 +27,6 @@ class LC_Page_Entry_EmailMobile extends LC_Page {
      */
     function init() {
         parent::init();
-        $this->tpl_mainpage = 'entry/email_mobile.tpl';
-        $this->tpl_title = '携帯メール登録';
-        $this->allowClientCache();
     }
 
     /**
@@ -38,6 +35,25 @@ class LC_Page_Entry_EmailMobile extends LC_Page {
      * @return void
      */
     function process() {
+    }
+
+    /**
+     * モバイルページを初期化する.
+     *
+     * @return void
+     */
+    function mobileInit() {
+        $this->tpl_mainpage = 'entry/email_mobile.tpl';
+        $this->tpl_title = '携帯メール登録';
+        $this->allowClientCache();
+    }
+
+    /**
+     * Page のプロセス(モバイル).
+     *
+     * @return void
+     */
+    function mobileProcess() {
         $objView = new SC_MobileView;
         $objCustomer = new SC_Customer;
         $objFormParam = new SC_FormParam;
