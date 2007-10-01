@@ -130,9 +130,6 @@ class LC_Page_MyPage extends LC_Page {
         // POST値の取得
         $objFormParam->setParam($_POST);
 
-        // レイアウトデザインを取得
-        //$objPage = sfGetPageLayout($objPage, false, "mypage/index.php");
-
         // 携帯端末IDが一致する会員が存在するかどうかをチェックする。
         $this->tpl_valid_phone_id = $objCustomer->checkMobilePhoneId();
 
@@ -162,7 +159,7 @@ class LC_Page_MyPage extends LC_Page {
 
                     // 携帯のメールアドレスが登録されていない場合
                     if (!$objCustomer->hasValue('email_mobile')) {
-                        header('Location: ' . SC_Helper_DB_Ex::gfAddSessionId('../entry/email_mobile.php'));
+                        $this->sendRedirect($this->getLocation("../entry/email_mobile.php", array(session_name() =>, session_id())));
                         exit;
                     }
                 } else {
