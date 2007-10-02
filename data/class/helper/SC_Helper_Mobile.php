@@ -104,12 +104,6 @@ class SC_Helper_Mobile {
             return false;
         }
 
-        // セッションIDのフォーマットをチェックする。
-        if (preg_match('/^[0-9a-zA-Z,-]{32,}$/', $sessionId) < 1) {
-            GC_Utils_Ex::gfPrintLog("Invalid session id : sid=$sessionId");
-            return false;
-        }
-
         // セッションIDの存在をチェックする。
         $objSession = new SC_Helper_Session_Ex();
         if ($objSession->sfSessRead($sessionId) === null) {
