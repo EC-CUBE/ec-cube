@@ -91,6 +91,80 @@ class LC_Page_Mypage_Hisotory extends LC_Page {
         parent::destroy();
     }
 
+    /**
+     * モバイルページを初期化する.
+     *
+     * @return void
+     */
+    function mobileInit() {
+        $this->tpl_mainpage = MOBILE_TEMPLATE_DIR . 'mypage/history.tpl';
+        $this->tpl_title = 'MYページ/購入履歴一覧';
+        $this->allowClientCache();
+    }
+
+    /**
+     * Page のプロセス(モバイル).
+     *
+     * @return void
+     */
+    function mobileProcess() {
+        define ("HISTORY_NUM", 5);
+
+        $objView = new SC_MobileView();
+        $objQuery = new SC_Query();
+        $objCustomer = new SC_Customer();
+        $pageNo = isset($_GET['pageno']) ? (int) $_GET['pageno'] : 0; // TODO
+
+        // ログインチェック
+        if(!isset($_SESSION['customer'])) {
+            SC_Utils_Ex::sfDispSiteError(CUSTOMER_ERROR, "", false, "", true);
+        }
+
+        $col = "order_id, create_date, payment_id, payment_total";
+        $from = "dtb_order";
+        $where = "del_flg = 0 AND customer_id=?";
+        $arrval = array($objCustomer->getvalue('customer_id'));
+        $order = "order_id DESC";
+
+        $linemax = $objQuery->count($from, $where, $arrval);
+        $this->tpl_linemax = $linemax;
+
+        // 取得範囲の指定(開始行番号、行数のセット)
+        $objQuery->setlimitoffset(HISTORY_NUM, $pageNo);
+        // 表示順序
+        $objQuery->setorder($order);
+
+        //購入履歴の取得
+        $this->arrOrder = $objQuery->select($col, $from, $where, $arrval);
+
+        // next
+        if ($pageNo + HISTORY_NUM < $linemax) {
+            $next = "<a href='history.php?pageno=" . ($pageNo + HISTORY_NUM) . "'>次へ→</a>";
+        } else {
+            $next = "";
+        }
+
+        // previous
+        if ($pageNo - HISTORY_NUM > 0) {
+            $previous = "<a href='history.php?pageno=" . ($pageNo - HISTORY_NUM) . "'>←前へ</a>";
+        } elseif ($pageNo == 0) {
+            $previous = "";
+        } else {
+            $previous = "<a href='history.php?pageno=0'>←前へ</a>";
+        }
+
+        // bar
+        if ($next != '' && $previous != '') {
+            $bar = " | ";
+        } else {
+            $bar = "";
+        }
+
+        $this->tpl_strnavi = $previous . $bar . $next;
+        $objView->assignobj($this);				//$objpage内の全てのテンプレート変数をsmartyに格納
+        $objView->display(SITE_FRAME);				//パスとテンプレート変数の呼び出し、実行
+    }
+
     //受注詳細データの取得
     function lfGetOrderData($order_id) {
         //受注番号が数字であれば
