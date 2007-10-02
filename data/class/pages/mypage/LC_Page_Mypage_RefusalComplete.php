@@ -58,6 +58,35 @@ class LC_Page_Mypage_RefusalComplete extends LC_Page {
     }
 
     /**
+     * モバイルページを初期化する.
+     *
+     * @return void
+     */
+    function mobileInit() {
+        $this->tpl_mainpage = 'mypage/refusal_complete.tpl';
+        $this->tpl_title = "MYページ/退会手続き(完了ページ)";
+        $this->point_disp = false;
+    }
+
+    /**
+     * Page のプロセス(モバイル).
+     *
+     * @return void
+     */
+    function mobileProcess() {
+        $objView = new SC_MobileView();
+
+        $objCustomer = new SC_Customer();
+        //マイページトップ顧客情報表示用
+        $this->CustomerName1 = $objCustomer->getvalue('name01');
+        $this->CustomerName2 = $objCustomer->getvalue('name02');
+        $this->CustomerPoint = $objCustomer->getvalue('point');
+
+        $objView->assignobj($this);
+        $objView->display(SITE_FRAME);
+    }
+
+    /**
      * デストラクタ.
      *
      * @return void

@@ -6,77 +6,18 @@
  * http://www.lockon.co.jp/
  *
  *
- * MyPage
+ * モバイルサイト/購入履歴
  */
 
+// {{{ requires
 require_once("../require.php");
+require_once(CLASS_PATH . "page_extends/mypage/LC_Page_Mypage_History_Ex.php");
 
-class LC_Page{
-	function LC_Page() {
-		$this->tpl_mainpage = MOBILE_TEMPLATE_DIR . 'mypage/history.tpl';
-		$this->tpl_title = 'MYページ/購入履歴一覧';
-		session_cache_limiter('private-no-expire');
-	}
-}
+// }}}
+// {{{ generate page
 
-define ("HISTORY_NUM", 5);
-
-$objPage = new LC_Page();
-$objView = new SC_MobileView();
-$objQuery = new SC_Query();
-$objCustomer = new SC_Customer();
-$pageNo = isset($_GET['pageno']) ? $_GET['pageno'] : 0;
-
-// レイアウトデザインを取得
-//$objLayout = new SC_Helper_PageLayout_Ex();
-//$objLayout->sfGetPageLayout($objPage, false, "mypage/index.php");
-
-// ログインチェック
-if(!isset($_SESSION['customer'])) {
-    SC_Utils_Ex::sfDispSiteError(CUSTOMER_ERROR, "", false, "", true);
-}
-
-$col = "order_id, create_date, payment_id, payment_total";
-$from = "dtb_order";
-$where = "del_flg = 0 AND customer_id=?";
-$arrval = array($objCustomer->getvalue('customer_id'));
-$order = "order_id DESC";
-
-$linemax = $objQuery->count($from, $where, $arrval);
-$objPage->tpl_linemax = $linemax;
-
-// 取得範囲の指定(開始行番号、行数のセット)
-$objQuery->setlimitoffset(HISTORY_NUM, $pageNo);
-// 表示順序
-$objQuery->setorder($order);
-
-//購入履歴の取得
-$objPage->arrOrder = $objQuery->select($col, $from, $where, $arrval);
-
-// next
-if ($pageNo + HISTORY_NUM < $linemax) {
-	$next = "<a href='history.php?pageno=" . ($pageNo + HISTORY_NUM) . "'>次へ→</a>";
-} else {
-	$next = "";
-}
-
-// previous
-if ($pageNo - HISTORY_NUM > 0) {
-	$previous = "<a href='history.php?pageno=" . ($pageNo - HISTORY_NUM) . "'>←前へ</a>";
-} elseif ($pageNo == 0) {
-	$previous = "";
-} else {
-	$previous = "<a href='history.php?pageno=0'>←前へ</a>";
-}
-
-// bar
-if ($next != '' && $previous != '') {
-	$bar = " | ";
-} else {
-	$bar = "";
-}
-
-$objPage->tpl_strnavi = $previous . $bar . $next;
-$objView->assignobj($objPage);				//$objpage内の全てのテンプレート変数をsmartyに格納
-$objView->display(SITE_FRAME);				//パスとテンプレート変数の呼び出し、実行
+$objPage = new LC_Page_Mypage_History_Ex();
+$objPage->mobileInit();
+$objPage->mobileProcess();
+register_shutdown_function(array($objPage, "destroy"));
 ?>

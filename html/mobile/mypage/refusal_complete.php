@@ -6,32 +6,18 @@
  * http://www.lockon.co.jp/
  *
  *
- * 退会完了
+ * モバイルサイト/退会完了
  */
 
+// {{{ requires
 require_once("../require.php");
+require_once(CLASS_PATH . "page_extends/mypage/LC_Page_Mypage_RefusalComplete_Ex.php");
 
-class LC_Page{
-	function LC_Page(){
-		$this->tpl_mainpage = 'mypage/refusal_complete.tpl';
-		$this->tpl_title = "MYページ/退会手続き(完了ページ)";
-		$this->point_disp = false;
-	}
-}
+// }}}
+// {{{ generate page
 
-$objPage = new LC_Page();
-$objView = new SC_MobileView();
-
-$objCustomer = new SC_Customer();
-//マイページトップ顧客情報表示用
-$objPage->CustomerName1 = $objCustomer->getvalue('name01');
-$objPage->CustomerName2 = $objCustomer->getvalue('name02');
-$objPage->CustomerPoint = $objCustomer->getvalue('point');
-
-// レイアウトデザインを取得
-//$objPage = sfGetPageLayout($objPage, false, "mypage/index.php");
-
-$objView->assignobj($objPage);
-$objView->display(SITE_FRAME);
-
+$objPage = new LC_Page_Mypage_RefusalComplete_Ex();
+$objPage->mobileInit();
+$objPage->mobileProcess();
+register_shutdown_function(array($objPage, "destroy"));
 ?>

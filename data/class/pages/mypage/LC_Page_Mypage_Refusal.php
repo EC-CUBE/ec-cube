@@ -94,6 +94,55 @@ class LC_Page_Mypage_Refusal extends LC_Page {
     }
 
     /**
+     * モバイルページを初期化する.
+     *
+     * @return void
+     */
+    function mobileInit() {
+        $this->tpl_mainpage = 'mypage/refusal.tpl';
+        $this->tpl_title = "MYページ/退会手続き(入力ページ)";
+
+    }
+
+    /**
+     * Page のプロセス(モバイル).
+     *
+     * @return void
+     */
+    function mobileProcess() {
+        $objView = new SC_MobileView();
+        $objCustomer = new SC_Customer();
+        $objQuery = new SC_Query();
+
+        //ログイン判定
+        if (!$objCustomer->isLoginSuccess()){
+            SC_Utils_Ex::sfDispSiteError(CUSTOMER_ERROR, "", false, "", true);
+        }else {
+            //マイページトップ顧客情報表示用
+            $this->CustomerName1 = $objCustomer->getvalue('name01');
+            $this->CustomerName2 = $objCustomer->getvalue('name02');
+            $this->CustomerPoint = $objCustomer->getvalue('point');
+        }
+
+        if (isset($_POST['no'])) {
+            $this->sendRedirect($this->getLocation(SC_Helper_Mobile_Ex::gfAddSessionId("index.php")));
+            exit;
+        } elseif (isset($_POST['complete'])){
+            //会員削除
+            $objQuery->exec("UPDATE dtb_customer SET del_flg=1, update_date=now() WHERE customer_id=?", array($objCustomer->getValue('customer_id')));
+
+            $where = "email = ?";
+            $objCustomer->EndSession();
+            //完了ページへ
+            $this->sendRedirect($this->getLocation(SC_Helper_Mobile_Ex::gfAddSessionId("refusal_complete.php")));
+            exit;
+        }
+
+        $objView->assignobj($this);
+        $objView->display(SITE_FRAME);
+    }
+
+    /**
      * デストラクタ.
      *
      * @return void
