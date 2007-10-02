@@ -7,8 +7,8 @@
 *}-->
 <!--★★メインコンテンツ★★-->
 <table width="878" border="0" cellspacing="0" cellpadding="0" summary=" ">
-<form name="form1" id="form1" method="post" action="./index.php">
-<input type="hidden" name="mode" value="<!--{$tpl_mode}-->">
+<form name="form1" id="form1" method="post" action="<!--{$smarty.server.PHP_SELF}-->">
+<input type="hidden" name="mode" value="edit">
 	<tr valign="top">
 		<td background="<!--{$TPL_DIR}-->img/contents/navi_bg.gif" height="402">
 			<!--▼SUB NAVI-->
@@ -49,13 +49,33 @@
 								<table width="678" border="0" cellspacing="1" cellpadding="8" summary=" ">
 
 									<tr>
-										<td bgcolor="#f2f1ec" width="180" class="fs12n">定数名</td>
-										<td bgcolor="#ffffff" width="537" class="fs10n">
-										<span class="red12"><!--{$arrErr.company_name}--></span>
-										<input type="text" name="company_name" value="<!--{$arrForm.company_name|escape}-->" maxlength="<!--{$smarty.const.STEXT_LEN}-->" size="60" class="box60" style="<!--{if $arrErr.company_name != ""}-->background-color: <!--{$smarty.const.ERR_COLOR}--><!--{/if}-->" /><span class="red"> （上限<!--{$smarty.const.STEXT_LEN}-->文字）</span></td>
+										<td bgcolor="#f2f1ec" width="180" class="fs12n">
+										<select name="master_data_name">
+										<option value="">選択してください</option>
+										<!--{html_options output=$arrMasterDataName values=$arrMasterDataName}-->
+										</select>
+										<input type="submit" value="選択">
+										</td>
 									</tr>
-
-
+								</table>
+								
+								<table width="678" border="0" cellspacing="1" cellpadding="8" summary=" ">
+									<tr class="fs12n">
+										<td bgcolor="#f2f1ec" align="center"><strong>マスタデータ編集</strong></td>
+									</tr>
+									<!--{section name=cnt start=1 loop=$arrMasterData}-->						
+									<tr class="fs12n">
+										<td bgcolor="#ffffff" align="left">
+											値：<input type="text" name="bloc_name" value="<!--{$arrMasterData[cnt]}-->" maxlength="50" style="" size="60" class="box60" />
+										</td>
+									</tr>
+		                            <!--{/section}-->
+								</table>
+								
+								
+								
+								
+								
 								<table width="678" border="0" cellspacing="0" cellpadding="0" summary=" ">
 									<tr>
 										<td bgcolor="#cccccc"><img src="<!--{$TPL_DIR}-->img/common/_.gif" width="1" height="5" alt=""></td>

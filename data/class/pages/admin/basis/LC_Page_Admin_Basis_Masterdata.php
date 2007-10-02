@@ -41,7 +41,20 @@ class LC_Page_Admin_Basis_Masterdata extends LC_Page {
     function process() {
         $objView = new SC_AdminView();
         $dbFactory = SC_DB_DBFactory::getInstance();
-        $this->tableList = $dbFactory->findTableNames();
+        $this->arrMasterDataName = $dbFactory->findTableNames("mtb_");
+        $masterData = new SC_DB_MasterData_Ex();
+        
+        
+        if (!isset($_POST["mode"])) $_POST["mode"] = "";
+        
+        switch ($_POST["mode"]) {
+        	case "edit":
+        		
+        		$this->arrMasterData = $masterData->getDbMasterData($_POST["master_data_name"]);
+        		break;
+        	default:
+        }
+        
         $objView->assignobj($this);
         $objView->display(MAIN_FRAME);
     }
