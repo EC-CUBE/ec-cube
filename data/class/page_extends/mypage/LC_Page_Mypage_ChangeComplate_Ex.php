@@ -6,18 +6,18 @@
  */
 
 // {{{ requires
-require_once(CLASS_PATH . "pages/mypage/LC_Page_Mypage_ChangeComplate.php");
+require_once(CLASS_PATH . "pages/mypage/LC_Page_Mypage_ChangeComplete.php");
 
 /**
  * 登録内容変更完了 のページクラス(拡張).
  *
- * LC_Page_Mypage_ChangeComplate をカスタマイズする場合はこのクラスを編集する.
+ * LC_Page_Mypage_ChangeComplete をカスタマイズする場合はこのクラスを編集する.
  *
  * @package Page
  * @author LOCKON CO.,LTD.
  * @version $Id$
  */
-class LC_Page_Mypage_ChangeComplate_Ex extends LC_Page_Mypage_ChangeComplate {
+class LC_Page_Mypage_ChangeComplete_Ex extends LC_Page_Mypage_ChangeComplete {
 
     // }}}
     // {{{ functions
