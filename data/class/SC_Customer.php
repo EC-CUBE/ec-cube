@@ -189,7 +189,7 @@ class SC_Customer {
         SC_Utils_Ex::sfDomainSessionStart();
         $_SESSION['customer'] = $this->customer_data;
         // セッション情報の保存
-        GC_Utils_Ex::gfPrintLog("access : user=".$this->customer_data['customer_id'] ."\t"."ip=". $_SERVER['REMOTE_HOST'], CUSTOMER_LOG_PATH );
+        GC_Utils_Ex::gfPrintLog("access : user=".$this->customer_data['customer_id'] ."\t"."ip=". $this->getRemoteHost(), CUSTOMER_LOG_PATH );
     }
 
     // ログアウト　$_SESSION['customer']を解放し、ログに書き込む
@@ -197,7 +197,7 @@ class SC_Customer {
         // $_SESSION['customer']の解放
         unset($_SESSION['customer']);
         // ログに記録する
-        GC_Utils_Ex::gfPrintLog("logout : user=".$this->customer_data['customer_id'] ."\t"."ip=". $_SERVER['REMOTE_HOST'], CUSTOMER_LOG_PATH );
+        GC_Utils_Ex::gfPrintLog("logout : user=".$this->customer_data['customer_id'] ."\t"."ip=". $this->getRemoteHost(), CUSTOMER_LOG_PATH );
     }
 
     // ログインに成功しているか判定する。
@@ -248,6 +248,25 @@ class SC_Customer {
             }
         }
         return false;
+    }
+
+    /**
+     * $_SERVER['REMOTE_HOST'] または $_SERVER['REMOTE_ADDR'] を返す.
+     *
+     * $_SERVER['REMOTE_HOST'] が取得できない場合は $_SERVER['REMOTE_ADDR']
+     * を返す.
+     *
+     * @return string $_SERVER['REMOTE_HOST'] 又は $_SERVER['REMOTE_ADDR']の文字列
+     */
+    function getRemoteHost() {
+
+        if (!empty($_SERVER['REMOTE_HOST'])) {
+            return $_SERVER['REMOTE_HOST'];
+        } elseif (!empty($_SERVER['REMOTE_ADDR'])) {
+            return $_SERVER['REMOTE_ADDR'];
+        } else {
+            return "";
+        }
     }
 }
 ?>
