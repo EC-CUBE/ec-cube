@@ -1919,11 +1919,11 @@ function sfRegistTempOrder($uniqid, $sqlval) {
     }
 }
 
-/* 会員のメルマガ登録があるかどうかのチェック(仮会員を含まない) */
+/* 会員登録があるかどうかのチェック(仮会員を含まない) */
 function sfCheckCustomerMailMaga($email) {
     $col = "email, mailmaga_flg, customer_id";
     $from = "dtb_customer";
-    $where = "email = ? AND status = 2";
+    $where = "email = ? AND status = 2 AND del_flg = 0";
     $objQuery = new SC_Query();
     $arrRet = $objQuery->select($col, $from, $where, array($email));
     // 会員のメールアドレスが登録されている
