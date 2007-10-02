@@ -256,6 +256,8 @@ class LC_Page_Products_Detail extends LC_Page {
     /**
      * Page のプロセス(モバイル).
      *
+     * FIXME 要リファクタリング
+     *
      * @return void
      */
     function mobileProcess() {
@@ -324,7 +326,7 @@ class LC_Page_Products_Detail extends LC_Page {
 
 
         // 規格選択セレクトボックスの作成
-        $this->lfMakeSelect($tmp_id);
+        $this->lfMakeSelectMobile($this, $tmp_id);
 
         // 商品IDをFORM内に保持する。
         $this->tpl_product_id = $tmp_id;
@@ -586,6 +588,103 @@ class LC_Page_Products_Detail extends LC_Page {
         $this->tpl_classcat_find1 = $classcat_find1;
         $this->tpl_classcat_find2 = $classcat_find2;
         $this->tpl_stock_find = $stock_find;
+    }
+
+    /* 規格選択セレクトボックスの作成
+     * FIXME 要リファクタリング
+     */
+    function lfMakeSelectMobile(&$objPage, $product_id) {
+
+        $objDb = new SC_Helper_DB_Ex();
+        $classcat_find1 = false;
+        $classcat_find2 = false;
+        // 在庫ありの商品の有無
+        $stock_find = false;
+
+        // 規格名一覧
+        $arrClassName = $objDb->sfGetIDValueList("dtb_class", "class_id", "name");
+        // 規格分類名一覧
+        $arrClassCatName = $objDb->sfGetIDValueList("dtb_classcategory", "classcategory_id", "name");
+        // 商品規格情報の取得
+        $arrProductsClass = $this->lfGetProductsClass($product_id);
+
+        // 規格1クラス名の取得
+        $objPage->tpl_class_name1 = $arrClassName[$arrProductsClass[0]['class_id1']];
+        // 規格2クラス名の取得
+        $objPage->tpl_class_name2 = $arrClassName[$arrProductsClass[0]['class_id2']];
+
+        // すべての組み合わせ数
+        $count = count($arrProductsClass);
+
+        $classcat_id1 = "";
+
+        $arrSele1 = array();
+        $arrSele2 = array();
+        $arrList = array();
+
+        $list_id = 0;
+        $arrList[0] = "\tlist0 = new Array('選択してください'";
+        $arrVal[0] = "\tval0 = new Array(''";
+
+        for ($i = 0; $i < $count; $i++) {
+            // 在庫のチェック
+            if($arrProductsClass[$i]['stock'] <= 0 && $arrProductsClass[$i]['stock_unlimited'] != '1') {
+                continue;
+            }
+
+            $stock_find = true;
+
+            // 規格1のセレクトボックス用
+            if($classcat_id1 != $arrProductsClass[$i]['classcategory_id1']){
+                $arrList[$list_id].=");\n";
+                $arrVal[$list_id].=");\n";
+                $classcat_id1 = $arrProductsClass[$i]['classcategory_id1'];
+                $arrSele1[$classcat_id1] = $arrClassCatName[$classcat_id1];
+            }
+
+            // 規格2のセレクトボックス用
+            if($arrProductsClass[$i]['classcategory_id1'] == $_POST['classcategory_id1'] and $classcat_id2 != $arrProductsClass[$i]['classcategory_id2']) {
+                $classcat_id2 = $arrProductsClass[$i]['classcategory_id2'];
+                $arrSele2[$classcat_id2] = $arrClassCatName[$classcat_id2];
+            }
+
+            $list_id++;
+
+            // セレクトボックス表示値
+            if($arrList[$list_id] == "") {
+                $arrList[$list_id] = "\tlist".$list_id." = new Array('選択してください', '".$arrClassCatName[$classcat_id2]."'";
+            } else {
+                $arrList[$list_id].= ", '".$arrClassCatName[$classcat_id2]."'";
+            }
+
+            // セレクトボックスPOST値
+            if($arrVal[$list_id] == "") {
+                $arrVal[$list_id] = "\tval".$list_id." = new Array('', '".$classcat_id2."'";
+            } else {
+                $arrVal[$list_id].= ", '".$classcat_id2."'";
+            }
+        }
+
+        //$arrList[$list_id].=");\n";
+        $arrVal[$list_id].=");\n";
+
+        // 規格1
+        $objPage->arrClassCat1 = $arrSele1;
+        $objPage->arrClassCat2 = $arrSele2;
+
+        // 規格1が設定されている
+        if($arrProductsClass[0]['classcategory_id1'] != '0') {
+            $classcat_find1 = true;
+        }
+
+        // 規格2が設定されている
+        if($arrProductsClass[0]['classcategory_id2'] != '0') {
+            $classcat_find2 = true;
+        }
+
+        $objPage->tpl_classcat_find1 = $classcat_find1;
+        $objPage->tpl_classcat_find2 = $classcat_find2;
+        $objPage->tpl_stock_find = $stock_find;
     }
 
     /* パラメータ情報の初期化 */
