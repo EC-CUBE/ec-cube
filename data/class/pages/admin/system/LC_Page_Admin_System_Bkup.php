@@ -213,7 +213,12 @@ class LC_Page_Admin_System_Bkup extends LC_Page {
                 if ($val == "dtb_pagelayout"){
                     $arrData = $objQuery->getAll("SELECT * FROM $val ORDER BY page_id");
                 }else{
-                    $arrData = $objQuery->getAll("SELECT * FROM $val");
+                    /*
+                     * TODO とりあえず郵便番号DBはバックアップ対象外
+                     */
+                    if ($val != "mtb_zip") {
+                        $arrData = $objQuery->getAll("SELECT * FROM $val");
+                    }
                 }
 
                 // CSVデータ生成
