@@ -30,7 +30,7 @@
 </head>
 
 <!-- ¢§ £Â£Ï£Ä£ÙÉô ¥¹¥¿¡¼¥È -->
-<!--{include file='./site_main.tpl'}-->
+<!--{include file="$tpl_site_main"}-->
 <!-- ¢¥ £Â£Ï£Ä£ÙÉô ¥¨¥ó¥É -->
 
 </html>
