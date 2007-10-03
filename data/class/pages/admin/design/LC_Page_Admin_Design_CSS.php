@@ -47,7 +47,9 @@ class LC_Page_Admin_Design_CSS extends LC_Page {
         $objSess = new SC_Session();
         SC_Utils_Ex::sfIsSuccess($objSess);
 
-        $css_path = USER_PATH . "css/contents.css";
+        $css_path = USER_PATH . "css/common.css";
+
+        if (!isset($_POST['mode'])) $_POST['mode'] = "";
 
         // データ更新処理
         if ($_POST['mode'] == 'confirm'){
