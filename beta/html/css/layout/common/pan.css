@@ -1,0 +1,25 @@
+/*
+ * Copyright(c) 2000-2007 LOCKON CO.,LTD. All Rights Reserved.
+ *
+ * http://www.lockon.co.jp/
+ */
+@charset "<!--{$smarty.const.CHAR_CODE}-->"; 
+
+/*パンくず*/
+#pan{
+border-width: 0 0 1px 0;
+border-style: solid;
+border-color: #ccc;
+background: #f0f0f0;
+margin: 0;
+padding: 10px;
+text-align: left;
+width: 100%; 
+voice-family: "\"}\""; 
+voice-family: inherit;
+width: 100%;
+}
+
+html>body #pan {
+width:100%;
+} 
