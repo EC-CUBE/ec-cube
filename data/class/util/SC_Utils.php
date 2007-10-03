@@ -1512,7 +1512,7 @@ class SC_Utils {
             mb_ereg("^(.*[\/])(.*)",$data_, $matches);
             $data=$matches[2];
             if( is_dir( $data_ ) ){
-                $mess = sfCopyDir( $data_.'/', $des.$data.'/', $mess);
+                $mess = SC_Utils::sfCopyDir( $data_.'/', $des.$data.'/', $mess);
             }else{
                 if(!$override && file_exists($des.$data)) {
                     $mess.= $des.$data . "：ファイルが存在します\n";
@@ -1540,7 +1540,7 @@ class SC_Utils {
             if(is_file($del_file)){
                 $ret = unlink($dir . "/" . $file);
             }else if (is_dir($del_file)){
-                $ret = sfDelFile($del_file);
+                $ret = SC_Utils::sfDelFile($del_file);
             }
 
             if(!$ret){
