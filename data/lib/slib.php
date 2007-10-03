@@ -1707,8 +1707,9 @@ function sfSendTemplateMail($to, $to_name, $template_id, $objPage) {
     $objSendMail->sendMail();	// メール送信
 }
 
-/** 受注完了メール送信
- *  $template_id が 1：携帯用テンプレート、0：PC用テンプレート
+/**
+ *  受注完了メール送信
+ *  要修正(trac #172)
  */
 function sfSendOrderMail($order_id, $template_id, $subject = "", $body = "", $send = true) {
     global $arrMAILTPLPATH;
