@@ -383,14 +383,14 @@ function lfDispStep0($objPage) {
 
 			// ディレクトリの場合
 			if(is_dir($val)) {
-				if(!is_writable($val))) {
+				if(!is_writable($val)) {
 					$mess.= ">> ○：$real_path($mode) <br>アクセス権限は正常です。<br>";
 				} else {
 					$mess.= ">> ×：$real_path($mode) <br>ユーザ書込み権限(777等)を付与して下さい。<br>";
 					$err_file = true;
 				}
 			} else {
-            if(!is_writable($val)) {
+			if(!is_writable($val)) {
 					$mess.= ">> ○：$real_path($mode) <br>アクセス権限は正常です。<br>";
 				} else {
 					$mess.= ">> ×：$real_path($mode) <br>ユーザ書込み権限(666等)を付与して下さい。<br>";
@@ -429,7 +429,7 @@ function lfDispStep0($objPage) {
 		if(!file_exists($path)) {
 			mkdir($path);
 		}
-        $path = "../upload/mobile_image";
+		$path = "../upload/mobile_image";
 		if(!file_exists($path)) {
 			mkdir($path);
 		}
@@ -795,8 +795,8 @@ function lfMakeConfigFile() {
 	$url_dir = ereg_replace("^https?://[a-zA-Z0-9_~=&\?\.\-]+", "", $normal_url);
 
 	$data_path = sfRmDupSlash($root_dir . HTML2DATA_DIR);
-    $data_path = realpath($data_path);
-    // 語尾に'/'をつける
+	$data_path = realpath($data_path);
+	// 語尾に'/'をつける
 	if (!ereg("/$", $data_path)) {
 		$data_path = $data_path . "/";
 	}
@@ -817,10 +817,10 @@ function lfMakeConfigFile() {
 	"    define ('DB_NAME', '" . $objDBParam->getValue('db_name') . "');\n" .
 	"    define ('DB_PORT', '" . $objDBParam->getValue('db_port') .  "');\n" .
 	"    define ('DATA_PATH', '".$data_path."');\n" .
-    "    define ('MOBILE_HTML_PATH', HTML_PATH . 'mobile/');\n" .
-    "    define ('MOBILE_SITE_URL', SITE_URL . 'mobile/');\n" .
-    "    define ('MOBILE_SSL_URL', SSL_URL . 'mobile/');\n" .
-    "    define ('MOBILE_URL_DIR', URL_DIR . 'mobile/');\n" .
+	"    define ('MOBILE_HTML_PATH', HTML_PATH . 'mobile/');\n" .
+	"    define ('MOBILE_SITE_URL', SITE_URL . 'mobile/');\n" .
+	"    define ('MOBILE_SSL_URL', SSL_URL . 'mobile/');\n" .
+	"    define ('MOBILE_URL_DIR', URL_DIR . 'mobile/');\n" .
 	"?>";
 
 	if($fp = fopen($filepath,"w")) {
@@ -862,7 +862,7 @@ function lfMakeConfigFile() {
 
 // テーブルの追加（既にテーブルが存在する場合は作成しない）
 function lfAddTable($table_name, $dsn) {
-    global $objPage;
+	global $objPage;
 	$arrErr = array();
 	if(!sfTabaleExists($table_name, $dsn)) {
 		list($db_type) = split(":", $dsn);
@@ -875,7 +875,7 @@ function lfAddTable($table_name, $dsn) {
 		}
 	} else {
 		$objPage->tpl_message.="○：追加テーブル($table_name)が確認されました。<br>";
-    }
+	}
 
 	return $arrErr;
 }
@@ -959,7 +959,7 @@ function lfAddColumn($dsn) {
 	// 顧客
 	sfColumnExists("dtb_customer", "mailmaga_flg", "int2", $dsn, true);
 
-    // インデックスの確認
+	// インデックスの確認
 	if (!sfColumnExists("dtb_customer", "mobile_phone_id", "text", $dsn, true)) {
 		// インデックスの追加
 		sfIndexExists("dtb_customer", "mobile_phone_id", "dtb_customer_mobile_phone_id_key", 64, $dsn, true);
