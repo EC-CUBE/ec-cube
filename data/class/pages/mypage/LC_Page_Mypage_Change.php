@@ -389,7 +389,7 @@ class LC_Page_Mypage_Change extends LC_Page {
                         //セッション情報を最新の状態に更新する
                         $objCustomer->updateSession();
                         //完了ページへ
-                        $this->sendRedirect($this->getLocation("./change_complete.php", array(session_name(), session_id()));
+                        $this->sendRedirect($this->getLocation("./change_complete.php", array(session_name(), session_id())));
                         exit;
                     } else {
                         SC_Utils_Ex::sfDispSiteError(CUSTOMER_ERROR, "", false, "", true);
