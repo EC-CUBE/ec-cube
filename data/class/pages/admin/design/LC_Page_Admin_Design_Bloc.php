@@ -190,7 +190,6 @@ class LC_Page_Admin_Design_Bloc extends LC_Page {
      */
     function destroy() {
         parent::destroy();
-        $this->p(USER_PATH . BLOC_DIR);
     }
 
     /**
