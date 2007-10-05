@@ -204,7 +204,7 @@ class LC_Page_Admin_System_Bkup extends LC_Page {
         // 各テーブル情報を取得する
         foreach($arrTableList as $key => $val){
 
-            if ($val != "dtb_bkup") {
+            if (!($val == "dtb_bkup" || $val == "mtb_zip")) {
 
                 // 自動採番型の構成を取得する
                 $csv_autoinc .= $this->lfGetAutoIncrement($val);
@@ -230,10 +230,10 @@ class LC_Page_Admin_System_Bkup extends LC_Page {
 
                     }
                     // CSV出力データ生成
-                    $csv_data .= $val . "\n";
-                    $csv_data .= $arrKyes . "\n";
+                    $csv_data .= $val . "\r\n";
+                    $csv_data .= $arrKyes . "\r\n";
                     $csv_data .= $data;
-                    $csv_data .= "\n";
+                    $csv_data .= "\r\n";
                 }
 
                 // タイムアウトを防ぐ
@@ -318,7 +318,7 @@ class LC_Page_Admin_System_Bkup extends LC_Page {
             SC_Utils_Ex::sfDelFile($bkup_dir);
         }
 
-        return $arrErr;
+        return isset($arrErr) ? $arrErr : array();
     }
 
     /* 配列の要素をCSVフォーマットで出力する。*/
