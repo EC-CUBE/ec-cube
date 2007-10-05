@@ -5,29 +5,15 @@
  * http://www.lockon.co.jp/
  */
 
+// {{{ requires
 require_once("../require.php");
-require_once(DATA_PATH . "include/file_manager.inc");
+require_once(CLASS_PATH . "page_extends/admin/contents/LC_Page_Admin_Contents_FileView_Ex.php");
 
-// ソースとして表示するファイルを定義(直接実行しないファイル)
-$arrViewFile = array(
-					 'html',
-					 'htm',
-					 'tpl',
-					 'php',
-					 'css',
-					 'js',
-);
+// }}}
+// {{{ generate page
 
-// 拡張子取得
-$arrResult = split('\.', $_GET['file']);
-$ext = $arrResult[count($arrResult)-1];
-
-// ファイル内容表示
-if(in_array($ext, $arrViewFile)) {
-	// ファイルを読み込んで表示
-	header("Content-type: text/plain\n\n");
-	print(sfReadFile(USER_PATH.$_GET['file']));
-} else {
-	header("Location: ".USER_URL.$_GET['file']);
-}
+$objPage = new LC_Page_Admin_Contents_FileView_Ex();
+$objPage->init();
+$objPage->process();
+register_shutdown_function(array($objPage, "destroy"));
 ?>
