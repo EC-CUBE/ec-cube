@@ -213,12 +213,7 @@ class LC_Page_Admin_System_Bkup extends LC_Page {
                 if ($val == "dtb_pagelayout"){
                     $arrData = $objQuery->getAll("SELECT * FROM $val ORDER BY page_id");
                 }else{
-                    /*
-                     * TODO とりあえず郵便番号DBはバックアップ対象外
-                     */
-                    if ($val != "mtb_zip") {
-                        $arrData = $objQuery->getAll("SELECT * FROM $val");
-                    }
+                    $arrData = $objQuery->getAll("SELECT * FROM $val");
                 }
 
                 // CSVデータ生成
@@ -334,7 +329,7 @@ class LC_Page_Admin_System_Bkup extends LC_Page {
                 $val = str_replace("\"", "\\\"", $val);
                 $line .= "\"".$val."\",";
             }
-            $line = ereg_replace(",$", "\n", $line);
+            $line = ereg_replace(",$", "\r\n", $line);
         }else{
             return false;
         }
