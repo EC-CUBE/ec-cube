@@ -76,6 +76,21 @@ class SC_View {
         // テンプレート変数を割り当て
         $this->assign("TPL_DIR", URL_DIR . USER_DIR
                       . "templates/" . TEMPLATE_NAME . "/");
+
+        // ヘッダとフッタを割り当て
+        $header_tpl = USER_INC_PATH . "header.tpl";
+        $footer_tpl = USER_INC_PATH . "footer.tpl";
+
+        // ユーザー作成のテンプレートが無ければ, 指定テンプレートを割り当て
+        if (!$this->_smarty->template_exists($header_tpl)) {
+            $header_tpl = TEMPLATE_DIR . "header.tpl";
+        }
+        if (!$this->_smarty->template_exists($footer_tpl)) {
+            $footer_tpl = TEMPLATE_DIR . "footer.tpl";
+        }
+
+        $this->assign("header_tpl", $header_tpl);
+        $this->assign("footer_tpl", $footer_tpl);
     }
 
     // テンプレートに値を割り当てる

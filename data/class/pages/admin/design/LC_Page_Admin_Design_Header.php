@@ -83,13 +83,26 @@ class LC_Page_Admin_Design_Header extends LC_Page {
             if (!is_dir($pre_DIR)) {
                 mkdir($pre_DIR);
             }
-            copy(USER_INC_PATH . "header.tpl", $pre_DIR . "header.tpl");
-            copy(USER_INC_PATH . "footer.tpl", $pre_DIR . "footer.tpl");
+
+            // ユーザーパスにテンプレートが存在しなければ,
+            // 指定テンプレートから読み込む
+            $header_tpl = USER_INC_PATH . "header.tpl";
+            if (!is_file($header_tpl)) {
+                $header_tpl = TEMPLATE_DIR . "header.tpl";
+            }
+            $footer_tpl = USER_INC_PATH . "footer.tpl";
+            if (!is_file($footer_tpl)) {
+                $footer_tpl = TEMPLATE_DIR . "footer.tpl";
+            }
+
+            copy($header_tpl, $pre_DIR . "header.tpl");
+            copy($footer_tpl, $pre_DIR . "footer.tpl");
+
 
             // ヘッダーファイルの読み込み
-            $header_data = file_get_contents(USER_INC_PATH . "header.tpl");
+            $header_data = file_get_contents($header_tpl);
             // フッターファイルの読み込み
-            $footer_data = file_get_contents(USER_INC_PATH . "footer.tpl");
+            $footer_data = file_get_contents($footer_tpl);
 
         }
 

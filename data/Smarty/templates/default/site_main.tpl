@@ -12,8 +12,7 @@
 
 <!--{* ▼HEADER *}-->
 <!--{if $arrPageLayout.header_chk != 2}-->
-<!--{assign var=header_dir value="`$smarty.const.TEMPLATE_DIR`header.tpl"}-->
-<!--{include file= $header_dir}-->
+<!--{include file= $header_tpl}-->
 <!--{/if}-->
 <!--{* ▲HEADER *}-->
 
@@ -110,7 +109,7 @@
 
 <!--{* ▼FOTTER *}-->
 <!--{if $arrPageLayout.footer_chk != 2}-->
-<!--{include file="`$smarty.const.TEMPLATE_DIR`footer.tpl"}-->
+<!--{include file=$footer_tpl}-->
 <!--{/if}-->
 <!--{* ▲FOTTER *}-->
 
