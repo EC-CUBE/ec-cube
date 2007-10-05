@@ -8,7 +8,8 @@
  */
 
 $CONF_PHP_PATH = realpath( dirname( __FILE__) );
-require_once($CONF_PHP_PATH ."/../install.php");
+//require_once($CONF_PHP_PATH ."/../install.php");
+require_once($CONF_PHP_PATH ."/../install_pgsql.php");
 require_once($CONF_PHP_PATH ."/core.php" );
 
 /**
@@ -96,6 +97,10 @@ function createCacheDir() {
 
     if (!file_exists(COMPILE_DIR)) {
         mkdir(COMPILE_DIR);
+    }
+
+    if (!file_exists(MOBILE_COMPILE_DIR)) {
+        mkdir(MOBILE_COMPILE_DIR);
     }
 
     if (!file_exists(COMPILE_ADMIN_DIR)) {
