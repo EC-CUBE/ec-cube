@@ -46,6 +46,9 @@ require_once(CLASS_PATH . "helper_extends/SC_Helper_Session_Ex.php");
 require_once(CLASS_PATH . "helper_extends/SC_Helper_Mail_Ex.php");
 include_once($include_dir . "/require_plugin.php");
 
+// インストールチェック
+SC_Utils_Ex::sfInitInstall();
+
 // 携帯端末の場合は mobile 以下へリダイレクトする。
 if (GC_MobileUserAgent::isMobile()) {
     if (preg_match('|^' . URL_DIR . '(.*)$|', $_SERVER['REQUEST_URI'], $matches)) {
