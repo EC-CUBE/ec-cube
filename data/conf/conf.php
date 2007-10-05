@@ -18,8 +18,8 @@ require_once($CONF_PHP_PATH ."/core.php" );
  *   開発時 - E_ALL
  *   運用時 - E_ALL & ~E_NOTICE
  */
-//error_reporting(E_ALL & ~E_NOTICE);
-error_reporting(E_ALL);
+error_reporting(E_ALL & ~E_NOTICE);
+//error_reporting(E_ALL);
 
 // 定数を設定する
 defineConstants();
