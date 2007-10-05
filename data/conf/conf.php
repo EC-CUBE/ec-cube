@@ -25,7 +25,9 @@ error_reporting(E_ALL);
 defineConstants();
 
 // Smarty コンパイルディレクトリを生成する.
-createCacheDir();
+if (defined("HTML_PATH")) {
+    createCacheDir();
+}
 
 /**
  * マルチバイト文字列設定
