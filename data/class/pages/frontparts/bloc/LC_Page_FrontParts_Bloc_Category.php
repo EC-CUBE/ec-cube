@@ -27,7 +27,12 @@ class LC_Page_FrontParts_Bloc_Category extends LC_Page {
      */
     function init() {
         parent::init();
-        $this->tpl_mainpage = BLOC_PATH . 'category.tpl';
+        $bloc_file = 'category.tpl';
+        if (is_file(USER_PATH . BLOC_DIR . $bloc_file)) {
+            $this->tpl_mainpage = USER_PATH . BLOC_DIR . $bloc_file;
+        } else {
+            $this->tpl_mainpage = BLOC_PATH . $bloc_file;
+        }
     }
 
     /**

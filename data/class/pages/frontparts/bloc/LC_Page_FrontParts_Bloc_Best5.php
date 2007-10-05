@@ -27,7 +27,12 @@ class LC_Page_FrontParts_Bloc_Best5 extends LC_Page {
      */
     function init() {
         parent::init();
-        $this->tpl_mainpage = BLOC_PATH . 'best5.tpl';
+        $bloc_file = 'best5.tpl';
+        if (is_file(USER_PATH . BLOC_DIR . $bloc_file)) {
+            $this->tpl_mainpage = USER_PATH . BLOC_DIR . $bloc_file;
+        } else {
+            $this->tpl_mainpage = BLOC_PATH . $bloc_file;
+        }
     }
 
     /**

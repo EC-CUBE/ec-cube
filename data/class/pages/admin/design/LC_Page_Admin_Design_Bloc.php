@@ -65,7 +65,17 @@ class LC_Page_Admin_Design_Bloc extends LC_Page {
         // bloc_id が指定されている場合にはブロックデータの取得
         if ($bloc_id != '') {
             $arrBlocData = $this->lfgetBlocData(" bloc_id = ? " , array($bloc_id));
-            $arrBlocData[0]['tpl_path'] = TEMPLATE_DIR . $arrBlocData[0]['tpl_path'];
+
+            // ユーザー作成ブロックが存在する場合
+            if (is_file(USER_PATH . $arrBlocData[0]['tpl_path'])) {
+                $arrBlocData[0]['tpl_path'] = USER_PATH
+                    . $arrBlocData[0]['tpl_path'];
+
+            // 存在しない場合は指定テンプレートのブロックを取得
+            } else {
+                $arrBlocData[0]['tpl_path'] = TEMPLATE_DIR
+                    . $arrBlocData[0]['tpl_path'];
+            }
 
             // テンプレートファイルの読み込み
             $arrBlocData[0]['tpl_data'] = file_get_contents($arrBlocData[0]['tpl_path']);
@@ -112,13 +122,14 @@ class LC_Page_Admin_Design_Bloc extends LC_Page {
                 $this->lfEntryBlocData($_POST);
 
                 // ファイルの削除
-                $del_file=BLOC_PATH . $arrBlocData[0]['filename']. '.tpl';
+                //$del_file=BLOC_PATH . $arrBlocData[0]['filename']. '.tpl';
+                $del_file = USER_PATH . $arrBlocData[0]['tpl_path'];
                 if (file_exists($del_file)) {
                     unlink($del_file);
                 }
 
                 // ファイル作成
-                $fp = fopen(BLOC_PATH . $_POST['filename'] . '.tpl',"w");
+                $fp = fopen(USER_PATH . BLOC_DIR . $_POST['filename'] . '.tpl',"w");
                 fwrite($fp, $_POST['bloc_html']); // FIXME
                 fclose($fp);
 
@@ -179,6 +190,7 @@ class LC_Page_Admin_Design_Bloc extends LC_Page {
      */
     function destroy() {
         parent::destroy();
+        $this->p(USER_PATH . BLOC_DIR);
     }
 
     /**

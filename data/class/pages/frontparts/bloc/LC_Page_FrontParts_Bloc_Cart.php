@@ -13,7 +13,7 @@ require_once(CLASS_PATH . "pages/LC_Page.php");
  *
  * @package Page
  * @author LOCKON CO.,LTD.
- * @version $Id$
+ * @version $Id:LC_Page_FrontParts_Bloc_Cart.php 15532 2007-08-31 14:39:46Z nanasess $
  */
 class LC_Page_FrontParts_Bloc_Cart extends LC_Page {
 
@@ -27,7 +27,12 @@ class LC_Page_FrontParts_Bloc_Cart extends LC_Page {
      */
     function init() {
         parent::init();
-        $this->tpl_mainpage = BLOC_PATH . 'cart.tpl';
+        $bloc_file = 'cart.tpl';
+        if (is_file(USER_PATH . BLOC_DIR . $bloc_file)) {
+            $this->tpl_mainpage = USER_PATH . BLOC_DIR . $bloc_file;
+        } else {
+            $this->tpl_mainpage = BLOC_PATH . $bloc_file;
+        }
     }
 
     /**
