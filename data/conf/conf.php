@@ -41,7 +41,7 @@ ini_set("mbstring.detect_order", "auto");
 ini_set("mbstring.substitute_character", "none");
 
 /** EC-CUBEのバージョン */
-define('ECCUBE_VERSION', "1.5");
+define('ECCUBE_VERSION', "2.0");
 
 /**
  * 定数を設定する.
@@ -56,8 +56,8 @@ define('ECCUBE_VERSION', "1.5");
  */
 function defineConstants() {
     $CONF_PHP_PATH = realpath( dirname( __FILE__) );
-
-    $errorMessage = "data/conf/cache/mtb_constants.php が生成できません";
+    $errorMessage = "data/conf/cache/mtb_constants.php が生成できません\n"
+        . "data/conf/cache/にユーザ書込み権限(777等)を付与して下さい。";
     // 定数を設定
     if (is_file($CONF_PHP_PATH . "/cache/mtb_constants.php")) {
         require_once($CONF_PHP_PATH . "/cache/mtb_constants.php");
@@ -78,7 +78,7 @@ function defineConstants() {
 
         require_once($CONF_PHP_PATH . "/cache/mtb_constants.php");
     } else {
-        die("html/install/mtb_constants.php が存在しません.");
+        die($CONF_PHP_PATH . "/mtb_constants_init.php");
     }
 }
 
