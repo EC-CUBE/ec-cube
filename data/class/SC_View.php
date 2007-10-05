@@ -60,7 +60,8 @@ class SC_View {
                 $arrInfo['arrSiteInfo'] = $this->objSiteInfo->data;
 
                 // 都道府県名を変換
-                global $arrPref;
+                $masterData = new SC_DB_MasterData_Ex();
+                $arrPref = $masterData->getMasterData("mtb_pref", array("pref_id", "pref_name", "rank"));
                 $arrInfo['arrSiteInfo']['pref'] = $arrPref[$arrInfo['arrSiteInfo']['pref']];
 
                  // サイト情報を割り当てる
