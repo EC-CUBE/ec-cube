@@ -98,9 +98,6 @@ class LC_Page_Products_List extends LC_Page {
         // ・検索モードでない。
         if(($count >= BEST_MIN) && $this->lfIsRootCategory($category_id) && ($_GET['mode'] != 'search') ) {
             // 商品TOPの表示処理
-            /** 必ず指定する **/
-            $this->tpl_mainpage = TEMPLATE_DIR . "list.tpl";        // メインテンプレート
-
             $this->arrBestItems = SC_Utils_Ex::sfGetBestProducts($conn, $category_id);
             $this->BEST_ROOP_MAX = ceil((BEST_MAX-1)/2);
         } else {
@@ -364,9 +361,6 @@ class LC_Page_Products_List extends LC_Page {
         $objQuery = new SC_Query();
         $objDb = new SC_Helper_DB_Ex();
         $this->tpl_pageno = isset($_POST['pageno']) ? $_POST['pageno'] : "";
-
-        //表示件数でテンプレートを切り替える
-        $this->tpl_mainpage = TEMPLATE_DIR . "list.tpl";        // メインテンプレート
 
         //表示順序
         switch($orderby) {
