@@ -27,7 +27,6 @@ class LC_Page_Index extends LC_Page {
      */
     function init() {
         parent::init();
-        $this->tpl_mainpage =  TEMPLATE_DIR . "top.tpl";
         $this->tpl_column_num = 3;
     }
 
