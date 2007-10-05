@@ -62,18 +62,18 @@ class SC_Utils {
         // インストール済みが定義されていない。
         if(!defined('ECCUBE_INSTALL')) {
             if(!ereg("/install/", $_SERVER['PHP_SELF'])) {
-                header("Location: ./install/");
+                header("Location: ". SITE_URL . "install/");
             }
         } else {
             $path = HTML_PATH . "install/index.php";
             if(file_exists($path)) {
-                sfErrorHeader(">> /install/index.phpは、インストール完了後にファイルを削除してください。");
+                SC_Utils::sfErrorHeader(">> /install/index.phpは、インストール完了後にファイルを削除してください。");
             }
 
             // 旧バージョンのinstall.phpのチェック
             $path = HTML_PATH . "install.php";
             if(file_exists($path)) {
-                sfErrorHeader(">> /install.phpはセキュリティーホールとなります。削除してください。");
+                SC_Utils::sfErrorHeader(">> /install.phpはセキュリティーホールとなります。削除してください。");
             }
         }
     }
