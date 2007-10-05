@@ -30,7 +30,7 @@ $objDb = new SC_Helper_DB_Ex();
 $temp_dir = $INSTALL_DIR . '/temp';
 //$mode = lfGetFileMode($temp_dir);
 
-if(!is_writed($temp_dir)) {
+if(!is_writable($temp_dir)) {
     SC_Utils_Ex::sfErrorHeader($temp_dir . "にユーザ書込み権限(777等)を付与して下さい。", true);
     exit;
 }
