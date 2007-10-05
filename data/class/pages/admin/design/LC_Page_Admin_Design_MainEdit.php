@@ -85,6 +85,10 @@ class LC_Page_Admin_Design_MainEdit extends LC_Page {
             $tpl_file = HTML_PATH . $arrPageData[0]['tpl_dir'] . $arrPageData[0]['filename'] . ".tpl";
             if (file_exists($tpl_file)){
                 $arrPageData[0]['tpl_data'] = file_get_contents($tpl_file);
+
+            // 存在してなければ, 指定されたテンプレートのファイルを読み込む
+            } else {
+                $arrPageData[0]['tpl_data'] = file_get_contents(TEMPLATE_DIR . $arrPageData[0]['filename'] . ".tpl");
             }
 
             // チェックボックスの値変更

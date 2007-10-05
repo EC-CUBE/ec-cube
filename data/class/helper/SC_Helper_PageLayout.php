@@ -43,8 +43,18 @@ class SC_Helper_PageLayout {
 
         // メインテンプレートファイルを設定
         if (!isset($objPage->tpl_mainpage)) {
-            // $objPage->tpl_mainpage = HTML_PATH . $arrPageData[0]['tpl_dir'] . $arrPageData[0]['filename'] . ".tpl";
-            $objPage->tpl_mainpage = TEMPLATE_DIR . $arrPageData[0]['filename'] . ".tpl";
+
+            // カスタムテンプレートのパスを取得
+            $user_tpl =  HTML_PATH . $arrPageData[0]['tpl_dir'] . $arrPageData[0]['filename'] . ".tpl";
+
+            // カスタムテンプレートの存在チェック
+            if (is_file($user_tpl)) {
+                $objPage->tpl_mainpage = $user_tpl;
+
+            // 存在しない場合は指定テンプレートを使用
+            } else {
+                $objPage->tpl_mainpage = TEMPLATE_DIR . $arrPageData[0]['filename'] . ".tpl";
+            }
         }
 
         // ページタイトルを設定
