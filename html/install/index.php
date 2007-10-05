@@ -385,14 +385,14 @@ function lfDispStep0($objPage) {
 
             // ディレクトリの場合
             if(is_dir($val)) {
-                if(!is_writable($val)) {
+                if(is_writable($val)) {
                     $mess.= ">> ○：$real_path($mode) <br>アクセス権限は正常です。<br>";
                 } else {
                     $mess.= ">> ×：$real_path($mode) <br>ユーザ書込み権限(777等)を付与して下さい。<br>";
                     $err_file = true;
                 }
             } else {
-            if(!is_writable($val)) {
+                if(is_writable($val)) {
                     $mess.= ">> ○：$real_path($mode) <br>アクセス権限は正常です。<br>";
                 } else {
                     $mess.= ">> ×：$real_path($mode) <br>ユーザ書込み権限(666等)を付与して下さい。<br>";
