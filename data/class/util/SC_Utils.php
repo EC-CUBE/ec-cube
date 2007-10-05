@@ -62,7 +62,7 @@ class SC_Utils {
         // インストール済みが定義されていない。
         if(!defined('ECCUBE_INSTALL')) {
             if(!ereg("/install/", $_SERVER['PHP_SELF'])) {
-                header("Location: ". SITE_URL . "install/");
+                header("Location: ./install/"); // TODO 絶対URL にする
             }
         } else {
             $path = HTML_PATH . "install/index.php";
