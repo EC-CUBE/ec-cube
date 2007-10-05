@@ -334,10 +334,16 @@ class SC_Helper_DB {
                     $arrClassCatName[$arrData['classcategory_id2']];
 
                 // 画像サイズ
-                list($image_width, $image_height) = getimagesize(IMAGE_SAVE_DIR . basename($objPage->arrProductsClass[$cnt]["main_image"]));
-                $objPage->arrProductsClass[$cnt]["tpl_image_width"] = $image_width + 60;
-                $objPage->arrProductsClass[$cnt]["tpl_image_height"] = $image_height + 80;
+                $main_image_path = IMAGE_SAVE_DIR . basename($objPage->arrProductsClass[$cnt]["main_image"]);
+                if(file_exists($main_image_path)) {
+	                list($image_width, $image_height) = getimagesize($main_image_path);
+                } else {
+                	$image_width = 0;
+                	$image_height = 0;
+                }
 
+                $objPage->arrProductsClass[$cnt]["tpl_image_width"] = $image_width + 60;
+	            $objPage->arrProductsClass[$cnt]["tpl_image_height"] = $image_height + 80;
                 // 価格の登録
                 if ($arrData['price02'] != "") {
                     $objCartSess->setProductValue($arrCart[$i]['id'], 'price', $arrData['price02']);

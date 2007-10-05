@@ -58,11 +58,17 @@ class LC_Page_Products_DetailImage extends LC_Page {
         $objQuery = new SC_Query();
         $col = "name, $image_key";
         $arrRet = $objQuery->select($col, "dtb_products", "product_id = ?", array($_GET['product_id']));
-
-        list($width, $height) = getimagesize(IMAGE_SAVE_DIR . $arrRet[0][$image_key]);
-        $this->tpl_width = $width;
-        $this->tpl_height = $height;
-
+		$image_path = IMAGE_SAVE_DIR . $arrRet[0][$image_key];
+		
+		if(file_exists($image_path)) {
+	        list($width, $height) = getimagesize($image_path);
+		} else {
+			$width = 0;
+			$height = 0;
+		}
+	    
+		$this->tpl_width = $width;
+	    $this->tpl_height = $height;
         $this->tpl_table_width = $this->tpl_width + 20;
         $this->tpl_table_height = $this->tpl_height + 20;
 
