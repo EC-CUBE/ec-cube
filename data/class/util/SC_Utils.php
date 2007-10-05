@@ -261,7 +261,7 @@ class SC_Utils {
         // 「リファラ無」 の場合はスルー
         // 「リファラ有」 かつ 「管理画面からの遷移でない」 場合にエラー画面を表示する
         if ( empty($_SERVER['HTTP_REFERER']) ) {
-            // 警告表示させる？
+            // TODO 警告表示させる？
             // sfErrorHeader('>> referrerが無効になっています。');
         } else {
             $domain  = SC_Utils::sfIsHTTPS() ? SSL_URL : SITE_URL;
