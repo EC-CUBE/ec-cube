@@ -21,7 +21,7 @@ class GC_SendMail {
 			$name = ereg_replace("<","＜", $to_name);
 			$name = ereg_replace(">","＞", $name);
 			
-			if(WINDOWS != true) {
+			if(OS_TYPE != 'WIN') {
 				// windowsでは文字化けするので使用しない。
 				$name = mb_convert_encoding($name,"JIS",CHAR_CODE);	
 			}
@@ -70,7 +70,7 @@ class GC_SendMail {
 		$from_name = ereg_replace("<","＜", $from_name);
 		$from_name = ereg_replace(">","＞", $from_name);
 		
-		if(WINDOWS != true) {
+		if(OS_TYPE != 'WIN') {
 			// windowsでは文字化けするので使用しない。
 			$from_name = mb_convert_encoding($from_name,"JIS",CHAR_CODE);		
 		}

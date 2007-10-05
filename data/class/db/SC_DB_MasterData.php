@@ -33,7 +33,7 @@ class SC_DB_MasterData {
     var $objQuery;
 
     /** デフォルトのテーブルカラム名 */
-    var $columns = array("id", "name", "rank");
+    var $columns = array("id", "name", "rank", "remarks");
 
     // }}}
     // {{{ functions
@@ -145,6 +145,40 @@ class SC_DB_MasterData {
             $this->objQuery->commit();
         }
         return $i;
+    }
+    
+    /**
+     * マスタデータを追加する.
+     *
+     * 引数 $masterData の値でマスタデータを更新する.
+     * $masterData は key => value 形式の配列である必要がある.
+     *
+     * @param string $name マスタデータ名
+     * @param string $key キー名
+     * @param string $comment コメント
+     * @param bool $autoCommit トランザクションを自動的に commit する場合 true
+     * @return integer マスタデータの更新数
+     */
+    function insertMasterData($name, $key, $value, $comment, $autoCommit = true) {
+
+        $columns = $this->getDefaultColumnName();
+
+        $this->objQuery = new SC_Query();
+        if ($autoCommit) {
+            $this->objQuery->begin();
+        }
+		
+        // 指定のデータを追加
+       	$sqlVal[$columns[0]] = $key;            
+        $sqlVal[$columns[1]] = $value;
+        $sqlVal[$columns[2]] = $this->objQuery->max($name, $columns[2]) + 1;        
+        $sqlVal[$columns[3]] = $comment;
+        $this->objQuery->insert($name, $sqlVal);
+        
+        if ($autoCommit) {
+            $this->objQuery->commit();
+        }
+        return 1;
     }
 
     /**

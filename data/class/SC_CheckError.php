@@ -906,6 +906,10 @@ class SC_CheckError {
      *               評価可能な場合は評価した値
      */
     function evalCheck($value) {
+    	// falseは、正当な式と評価する。
+    	if($value === "false") {
+    		return true;
+    	}    	
         return @eval("return " . $value . ";");
     }
 
