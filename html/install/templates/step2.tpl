@@ -7,11 +7,11 @@
 function lfnChangePort(db_type) {
 
 	type = db_type.value;
-	
+
 	if (type == 'pgsql') {
 		form1.db_port.value = '<!--{$arrDB_PORT.pgsql}-->';
 	}
-	
+
 	if (type == 'mysql') {
 		form1.db_port.value = '<!--{$arrDB_PORT.mysql}-->';
 	}
@@ -81,7 +81,7 @@ function lfnChangePort(db_type) {
 			<span class="red"><!--{$arrErr[$key]}--></span>
 			<input type="password" name="<!--{$key}-->" value="<!--{$arrForm[$key].value|escape}-->" maxlength="<!--{$arrForm[$key].length}-->" style="<!--{$arrErr[$key]|sfGetErrorColor}-->" size="40" class="box40" />
 			</td>
-		</tr>		
+		</tr>
 	</table>
 	</td>
 </tr>
@@ -91,10 +91,10 @@ function lfnChangePort(db_type) {
 	<tr><td height="20"></td></tr>
 	<tr>
 		<td align="center">
-		<a href="#" onmouseover="chgImg('../img/install/back_on.jpg','back')" onmouseout="chgImg('../img/install/back.jpg','back')" onclick="document.form1['mode'].value='return_step1';document.form1.submit();return false;" /><img  width="105" src="../img/install/back.jpg"  height="24" alt="前へ戻る" border="0" name="back"></a>
-		<input type="image" onMouseover="chgImgImageSubmit('../img/install/next_on.jpg',this)" onMouseout="chgImgImageSubmit('../img/install/next.jpg',this)" src="../img/install/next.jpg" width="105" height="24" alt="次へ進む" border="0" name="next">
+		<a href="#" onmouseover="chgImg('../user_data/templates/default/img/install/back_on.jpg','back')" onmouseout="chgImg('../user_data/templates/default/img/install/back.jpg','back')" onclick="document.form1['mode'].value='return_step1';document.form1.submit();return false;" /><img  width="105" src="../user_data/templates/default/img/install/back.jpg"  height="24" alt="前へ戻る" border="0" name="back"></a>
+		<input type="image" onMouseover="chgImgImageSubmit('../user_data/templates/default/img/install/next_on.jpg',this)" onMouseout="chgImgImageSubmit('../user_data/templates/default/img/install/next.jpg',this)" src="../user_data/templates/default/img/install/next.jpg" width="105" height="24" alt="次へ進む" border="0" name="next">
 		</td>
 	</tr>
 	<tr><td height="30"></td></tr>
 </from>
-</table>								
+</table>
