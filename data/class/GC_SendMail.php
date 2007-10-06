@@ -55,6 +55,47 @@ class GC_SendMail {
 		$this->to = $this->getNameAddress($to_name, $to);
 	}
 	
+	// 送信元の設定
+	function setFrom($from, $from_name = "") {
+		$this->from = $this->getNameAddress($from_name, $from);
+	}
+	
+	// CCの設定
+	function setCc($cc, $cc_name = "") {
+		if($cc != "") {
+			$this->cc = $this->getNameAddress($cc_name, $cc);
+		}
+	}
+	
+	// BCCの設定
+	function setBCc($bcc) {
+		if($bcc != "") {
+			$this->bcc = $bcc;
+		}
+	}
+	
+	// Reply-Toの設定
+	function setReplyTo($reply_to) {
+		if($reply_to != "") {
+			$this->reply_to = $reply_to;			
+		}		
+	}
+	
+	// Return-Pathの設定
+	function setReturnPath($return_path) {
+		$this->return_path = $return_path;
+	}	
+	
+	// 件名の設定
+	function setSubject($subject) {
+		$this->subject = mb_encode_mimeheader($subject);
+	}
+	
+	// 本文の設定
+	function setBody($body) {
+		$this->body = mb_convert_encoding($body, "JIS", CHAR_CODE);
+	}
+	
 	// SMTPサーバの設定
 	function setHost($host) {
 		$this->host = $host;
@@ -119,25 +160,20 @@ class GC_SendMail {
 	*/		
 	function setBase( $to, $subject, $body, $fromaddress, $from_name, $reply_to="", $return_path="", $errors_to="", $bcc="", $cc ="" ) {
 		// 宛先設定
-		$this->to			 = $to;
+		$this->to = $to;	
 		// 件名設定
-		$this->subject		 = mb_encode_mimeheader($subject);
+		$this->setSubject($subject);
 		// 本文設定(iso-2022-jpだと特殊文字が？で送信されるのでJISを使用する)
-		$this->body			 = mb_convert_encoding( $body, "JIS", CHAR_CODE);
+		$this->setBody($body);
 		// 送信元設定
-		$this->from = $this->getNameAddress($from_name, $fromaddress);
+		$this->setFrom($fromaddress, $from_name);
 		// 返信先設定
-		if($reply_to != "") {
-			$this->reply_to = $reply_to;			
-		}		
+		$this->setReplyTo($reply_to);
 		// CC設定
-		if($cc != "") {
-			$this->cc = $cc;	
-		}
+		$this->setCc($cc);
 		// BCC設定
-		if($bcc != "") {
-			$this->bcc = $bcc;			
-		}
+		$this->setBcc($bcc);
+		
 		// Errors-Toは、ほとんどのSMTPで無視され、Return-Pathが優先されるためReturn_Pathに設定する。
 		if($errors_to != "") {
 			$this->return_path = $errors_to;
@@ -157,7 +193,7 @@ class GC_SendMail {
 		$arrHeader['Return-Path'] = $this->return_path;
 		
 		if($this->reply_to != "") {
-			$arrHeader['Reply'] = $this->reply_to;
+			$arrHeader['Reply-To'] = $this->reply_to;
 		}
 		
 		if($this->cc != "") {
