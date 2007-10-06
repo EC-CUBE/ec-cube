@@ -96,6 +96,7 @@ case 'step2':
 case 'step3':
     // 入力データを渡す。
     $arrRet =  $objDBParam->getHashArray();
+    define("DB_TYPE", $arrRet['db_type']);
     $dsn = $arrRet['db_type']."://".$arrRet['db_user'].":".$arrRet['db_password']."@".$arrRet['db_server'].":".$arrRet['db_port']."/".$arrRet['db_name'];
 
     /*
@@ -152,7 +153,6 @@ case 'step3':
     // 初期データの作成
     if(count($objPage->arrErr) == 0) {
         $objPage->arrErr = lfExecuteSQL("./sql/insert_data.sql", $dsn);
-
         if(count($objPage->arrErr) == 0) {
             $objPage->tpl_message.="○：初期データの作成に成功しました。<br>";
         } else {
@@ -197,6 +197,9 @@ case 'step4':
 case 'drop':
     // 入力データを渡す。
     $arrRet =  $objDBParam->getHashArray();
+    if (!defined("DB_TYPE")) {
+        define("DB_TYPE", $arrRet['db_type']);
+    }
     $dsn = $arrRet['db_type']."://".$arrRet['db_user'].":".$arrRet['db_password']."@".$arrRet['db_server'].":".$arrRet['db_port']."/".$arrRet['db_name'];
 
     // 追加テーブルがあれば削除する。
@@ -554,6 +557,9 @@ function lfDispStep4($objPage) {
     if (!ereg("/$", $normal_url)) $normal_url = $normal_url . "/";
 
     $arrDbParam = $objDBParam->getHashArray();
+    if (!defined("DB_TYPE")) {
+        define("DB_TYPE", $arrDbParam['db_type']);
+    }
     $dsn = $arrDbParam['db_type']."://".$arrDbParam['db_user'].":".$arrDbParam['db_password']."@".$arrDbParam['db_server'].":".$arrDbParam['db_port']."/".$arrDbParam['db_name'];
 
     $objPage->tpl_site_url = $normal_url;
@@ -706,6 +712,7 @@ function lfCheckWebError($objFormParam) {
 // 入力内容のチェック
 function lfCheckDBError($objFormParam) {
     global $objPage;
+    global $objDb;
 
     // 入力データを渡す。
     $arrRet =  $objFormParam->getHashArray();
@@ -716,6 +723,7 @@ function lfCheckDBError($objFormParam) {
     if(count($objErr->arrErr) == 0) {
         // 接続確認
         $dsn = $arrRet['db_type']."://".$arrRet['db_user'].":".$arrRet['db_password']."@".$arrRet['db_server'].":".$arrRet['db_port']."/".$arrRet['db_name'];
+        define("DB_TYPE", $arrRet['db_type']);
         // Debugモード指定
         $options['debug'] = PEAR_DB_DEBUG;
         $objDB = DB::connect($dsn, $options);
@@ -728,7 +736,7 @@ function lfCheckDBError($objFormParam) {
             // エラー文を取得する
             ereg("\[(.*)\]", $objDB->userinfo, $arrKey);
             $objErr->arrErr['all'].= $arrKey[0] . "<br>";
-            gfPrintLog($objDB->userinfo, INSTALL_LOG);
+            GC_Utils_Ex::gfPrintLog($objDB->userinfo, INSTALL_LOG);
         }
     }
     return $objErr->arrErr;
@@ -762,13 +770,13 @@ function lfExecuteSQL($filepath, $dsn, $disp_err = true) {
                         ereg("\[(.*)\]", $ret->userinfo, $arrKey);
                         $arrErr['all'].= $arrKey[0] . "<br>";
                         $objPage->update_mess.=">> テーブル構成の変更に失敗しました。<br>";
-                        gfPrintLog($ret->userinfo, INSTALL_LOG);
+                        GC_Utils_Ex::gfPrintLog($ret->userinfo, INSTALL_LOG);
                     }
                 }
             }
         } else {
             $arrErr['all'] = ">> " . $objDB->message;
-            gfPrintLog($objDB->userinfo, INSTALL_LOG);
+            GC_Utils_Ex::gfPrintLog($objDB->userinfo, INSTALL_LOG);
         }
     }
     return $arrErr;
@@ -798,7 +806,7 @@ function lfMakeConfigFile() {
     }
 
     // ディレクトリの取得
-    $url_dir = ereg_replace("^https?://[a-zA-Z0-9_~=&\?\.\-]+", "", $normal_url);
+    $url_dir = ereg_replace("^https?://[a-zA-Z0-9_:~=&\?\.\-]+", "", $normal_url);
 
     $data_path = SC_Utils_Ex::sfRmDupSlash($root_dir . HTML2DATA_DIR);
     $data_path = realpath($data_path);
@@ -903,7 +911,7 @@ function lfDropTable($table_name, $dsn) {
             // エラー文を取得する
             ereg("\[(.*)\]", $objDB->userinfo, $arrKey);
             $arrErr['all'].= $arrKey[0] . "<br>";
-            gfPrintLog($objDB->userinfo, INSTALL_LOG);
+            GC_Utils_Ex::gfPrintLog($objDB->userinfo, INSTALL_LOG);
         }
     }
     return $arrErr;
@@ -912,6 +920,7 @@ function lfDropTable($table_name, $dsn) {
 // カラムの追加（既にカラムが存在する場合は作成しない）
 function lfAddColumn($dsn) {
     global $objDBParam;
+    global $objDb;
 
     // 受注テーブル
     $objDb->sfColumnExists("dtb_order", "memo01", "text", $dsn, true);
@@ -970,7 +979,7 @@ function lfAddColumn($dsn) {
     // インデックスの確認
     if (!$objDb->sfColumnExists("dtb_customer", "mobile_phone_id", "text", $dsn, true)) {
         // インデックスの追加
-        sfIndexExists("dtb_customer", "mobile_phone_id", "dtb_customer_mobile_phone_id_key", 64, $dsn, true);
+        $objDb->sfIndexExists("dtb_customer", "mobile_phone_id", "dtb_customer_mobile_phone_id_key", 64, $dsn, true);
     }
 
     // 顧客メール

@@ -981,8 +981,6 @@ INSERT INTO mtb_constants VALUES ('TRACKBACK_VIEW_MAX','10',280,'フロント最
 INSERT INTO mtb_constants VALUES ('TRACKBACK_TO_URL','SITE_URL . "tb/index.php?pid="',281,'トラックバック先URL');
 INSERT INTO mtb_constants VALUES ('SITE_CONTROL_TRACKBACK','1',282,'サイト管理 トラックバック');
 INSERT INTO mtb_constants VALUES ('SITE_CONTROL_AFFILIATE','2',283,'サイト管理 アフィリエイト');
-
--- テンプレート関連
 INSERT INTO mtb_constants VALUES ('DEFAULT_TEMPLATE_NAME', '"default"', 300,'デフォルトテンプレート名');
 INSERT INTO mtb_constants VALUES ('TEMPLATE_NAME', 'DEFAULT_TEMPLATE_NAME', 301,'テンプレート名');
 INSERT INTO mtb_constants VALUES ('TEMPLATE_DIR','DATA_PATH . "Smarty/templates/" . TEMPLATE_NAME . "/"', 302,'SMARTYテンプレート');
@@ -993,8 +991,6 @@ INSERT INTO mtb_constants VALUES ('TEMPLATE_FTP_DIR','USER_PATH . "templates/" .
 INSERT INTO mtb_constants VALUES ('COMPILE_FTP_DIR','COMPILE_DIR . USER_DIR', 307,'SMARTYコンパイル(FTP許可)');
 INSERT INTO mtb_constants VALUES ('BLOC_DIR','"bloc/"', 308,'ブロックファイル保存先');
 INSERT INTO mtb_constants VALUES ('BLOC_PATH','TEMPLATE_DIR . BLOC_DIR', 309,'ブロックファイル保存先');
-
--- モバイル関連
 INSERT INTO mtb_constants VALUES ('MOBILE_TEMPLATE_DIR', 'TEMPLATE_DIR . "mobile/"', 400,'SMARTYテンプレート(mobile)');
 INSERT INTO mtb_constants VALUES ('MOBILE_COMPILE_DIR', 'COMPILE_DIR . "mobile/"', 401,'SMARTYコンパイル(mobile)');
 INSERT INTO mtb_constants VALUES ('MOBILE_SESSION_LIFETIME', '1800', 402,'セッションの存続時間 (秒)');
