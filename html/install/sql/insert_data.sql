@@ -1007,7 +1007,7 @@ INSERT INTO mtb_constants VALUES ('MOBILE_IMAGE_DIR', '"upload/mobile_image"', 4
 INSERT INTO mtb_constants VALUES ('MOBILE_IMAGE_URL', '"upload/mobile_image"', 409,'携帯電話向け変換画像保存ディレクトリ');
 INSERT INTO mtb_constants VALUES ('MOBILE_URL_SITE_TOP', 'MOBILE_URL_DIR . "index.php"', 410,'モバイルURL');
 INSERT INTO mtb_constants VALUES ('MOBILE_URL_CART_TOP', 'MOBILE_URL_DIR . "cart/index.php"', 411,'カートトップ');
-INSERT INTO mtb_constants VALUES ('MOBILE_URL_SHOP_CONFIRM', 'MOBILE_SSL_URL . "shopping/index.php"', 412,'会員情報入力');
+INSERT INTO mtb_constants VALUES ('MOBILE_URL_SHOP_TOP', 'MOBILE_SSL_URL . "shopping/index.php"', 412,'会員情報入力');
 INSERT INTO mtb_constants VALUES ('MOBILE_URL_SHOP_CONFIRM', 'MOBILE_URL_DIR . "shopping/confirm.php"', 413,'購入確認ページ');
 INSERT INTO mtb_constants VALUES ('MOBILE_URL_SHOP_PAYMENT', 'MOBILE_URL_DIR . "shopping/payment.php"', 414,'お支払い方法選択ページ');
 INSERT INTO mtb_constants VALUES ('MOBILE_DETAIL_P_HTML', 'MOBILE_URL_DIR . "products/detail.php?product_id="', 415,'商品詳細(HTML出力)');
