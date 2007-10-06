@@ -36,6 +36,10 @@ require_once(CLASS_PATH . "SC_Pdf.php");
 require_once(CLASS_PATH . "helper_extends/SC_Helper_PageLayout_Ex.php");
 require_once(CLASS_PATH . "helper_extends/SC_Helper_DB_Ex.php");
 
+require_once($include_dir . "/.." . HTML2DATA_DIR . "module/Mail/Mail.php");
+require_once($include_dir . "/.." . HTML2DATA_DIR . "module/Mail/mime.php");
+
+
 // インストールチェック
 SC_Utils_Ex::sfInitInstall();
 
