@@ -9,7 +9,7 @@ require_once("../../admin/require.php");
             $sendResut = array( 
             	"to" => 'abnana210@softbank.ne.jp',  	 		//　顧客宛先 
 	 	        "Subject" => mb_encode_mimeheader("てすと"),	//　Subject  
-	 	        "From" => 'test01@lockon.co.jp',              	//　送信元メールアドレス 
+	 	        "From" => 'test01@lockon.co.jp',              	//　送信元メールアドレス
                 "Reply-To" => 'test02@lockon.co.jp',          	//　reply_to 
                 "Return-Path" => 'test03@lockon.co.jp',         //　return_path
             );

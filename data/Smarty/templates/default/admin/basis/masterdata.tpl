@@ -43,25 +43,22 @@
 										<td colspan="3"><img src="<!--{$TPL_DIR}-->img/contents/main_bar.jpg" width="678" height="10" alt=""></td>
 									</tr>
 								</table>
+<table width="678" border="0" cellspacing="1" cellpadding="8" summary=" ">
 <form name="form1" id="form1" method="post" action="<!--{$smarty.server.PHP_SELF|escape}-->">
 <input type="hidden" name="mode" value="show">
-
-<table width="678" border="0" cellspacing="1" cellpadding="8" summary=" ">
   <tr>
-    <td bgcolor="#f2f1ec" width="180" class="fs12n">
+    <td bgcolor="#f2f1ec" width="180" class="fs12n" colspan="2">
       <select name="master_data_name" id="master_data_name">
       <!--{html_options output=$arrMasterDataName values=$arrMasterDataName selected=$masterDataName}-->
       </select>
       <input type="submit" value="選択">
     </td>
   </tr>
-</table>
 </form>
-<!--{if count($arrMasterData) > 0}-->
+
 <form name="form2" id="form2" method="post" action="<!--{$smarty.server.PHP_SELF|escape}-->">
 <input type="hidden" name="mode" value="edit">
 <input type="hidden" name="master_data_name" value="<!--{$masterDataName}-->">
-<table width="678" border="0" cellspacing="1" cellpadding="8" summary=" ">
   <tr class="fs12n">
     <td bgcolor="#f2f1ec" align="center" colspan="2"><strong>マスタデータ編集</strong></td>
   </tr>
@@ -106,8 +103,9 @@
             class="box60" />
     </td>
   </tr>
-</table>
 </form>
+</table>
+
 								<table width="678" border="0" cellspacing="0" cellpadding="0" summary=" ">
 									<tr>
 										<td bgcolor="#cccccc"><img src="<!--{$TPL_DIR}-->img/common/_.gif" width="1" height="5" alt=""></td>
@@ -132,7 +130,6 @@
 										<td colspan="3"><img src="<!--{$TPL_DIR}-->img/contents/tbl_bottom.gif" width="678" height="8" alt=""></td>
 									</tr>
 								</table>
-<!--{/if}-->
 								</td>
 								<td background="<!--{$TPL_DIR}-->img/contents/main_right.jpg"><img src="<!--{$TPL_DIR}-->img/common/_.gif" width="14" height="1" alt=""></td>
 							</tr>
