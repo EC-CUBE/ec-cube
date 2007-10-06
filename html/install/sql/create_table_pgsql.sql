@@ -1162,6 +1162,13 @@ CREATE TABLE mtb_site_control_affiliate (
     PRIMARY KEY (id)
 );
 
+CREATE TABLE mtb_mobile_domain (
+    id int2,
+    name text,
+    rank int2 NOT NULL DEFAULT 0,
+    PRIMARY KEY (id)
+);
+
 CREATE TABLE mtb_constants (
     id text,
     name text,
