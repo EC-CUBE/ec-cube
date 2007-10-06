@@ -74,6 +74,7 @@ DROP TABLE mtb_mail_tpl_path;
 DROP TABLE mtb_mail_template;
 DROP TABLE mtb_mail_magazine_type;
 DROP TABLE mtb_magazine_type;
+DROP TABLE mtb_mobile_domain;
 DROP TABLE mtb_job;
 DROP TABLE mtb_disp;
 DROP TABLE mtb_disable_logout;
