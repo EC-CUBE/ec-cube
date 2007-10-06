@@ -58,8 +58,11 @@ define('ECCUBE_VERSION', "2.0");
  */
 function defineConstants() {
     $CONF_PHP_PATH = realpath( dirname( __FILE__) );
-    $errorMessage = "data/conf/cache/mtb_constants.php が生成できません\n"
-        . "data/conf/cache/にユーザ書込み権限(777等)を付与して下さい。";
+    $errorMessage = "<div style='color: #F00; font-weight: bold; "
+        . "background-color: #FEB; text-align: center'>"
+        . $CONF_PHP_PATH
+        . "/cacheにユーザ書込み権限(777等)を付与して下さい。</div>";
+
     // 定数を設定
     if (is_file($CONF_PHP_PATH . "/cache/mtb_constants.php")) {
         require_once($CONF_PHP_PATH . "/cache/mtb_constants.php");
@@ -69,16 +72,20 @@ function defineConstants() {
                       . "/mtb_constants_init.php")) {
 
         $mtb_constants = file_get_contents($CONF_PHP_PATH . "/mtb_constants_init.php");
-        $handle = fopen($CONF_PHP_PATH . "/cache/mtb_constants.php", "w");
-        if (!$handle) {
-            die($errorMessage);
-        }
-        if (fwrite($handle, $mtb_constants) === false) {
-            die($errorMessage);
-        }
-        fclose($handle);
+        if (is_writable($CONF_PHP_PATH . "/cache/")) {
+            $handle = fopen($CONF_PHP_PATH . "/cache/mtb_constants.php", "w");
+            if (!$handle) {
+                die($errorMessage);
+            }
+            if (fwrite($handle, $mtb_constants) === false) {
+                die($errorMessage);
+            }
+            fclose($handle);
 
-        require_once($CONF_PHP_PATH . "/cache/mtb_constants.php");
+            require_once($CONF_PHP_PATH . "/cache/mtb_constants.php");
+        } else {
+            die($errorMessage);
+        }
     } else {
         die($CONF_PHP_PATH . "/mtb_constants_init.php");
     }
