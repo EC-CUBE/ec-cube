@@ -97,7 +97,7 @@
 	<tr valign="top">
 		<td background="<!--{$TPL_DIR}-->img/common/left_bg.jpg"><img src="<!--{$TPL_DIR}-->img/common/left.jpg" width="17" height="443" alt=""></td>
 		<td>
-		<!--{if $smarty.server.REQUEST_URI != $smarty.const.URL_HOME}-->
+		<!--{if $smarty.server.PHP_SELF != $smarty.const.URL_HOME}-->
 			<!--★★タイトル★★-->
 			<table width="878" border="0" cellspacing="0" cellpadding="0" summary=" ">
 				<tr>
