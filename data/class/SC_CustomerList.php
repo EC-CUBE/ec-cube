@@ -11,9 +11,13 @@
 class SC_CustomerList extends SC_SelectSql {
 
     var $arrColumnCSV;
-
+	    	
     function SC_CustomerList($array, $mode = '') {
         parent::SC_SelectSql($array);
+        
+        $masterData = new SC_DB_MasterData_Ex();
+        $arrMobileDomain = $masterData->getMasterData("mtb_mobile_domain");
+        
         $objDb = new SC_Helper_DB_Ex();
 
         if($mode == "") {
@@ -34,38 +38,6 @@ class SC_CustomerList extends SC_SelectSql {
         if($mode == "magazine") {
             $this->setWhere("(del_flg = 0 OR del_flg IS NULL)");
             $this->setWhere("status = 2");
-
-            /*　会員のみ対象とするため削除
-            if(is_array($this->arrSql['customer'])) {
-                $tmp_where = "";
-                foreach($this->arrSql['customer'] as $val) {
-                    if($tmp_where != "") {
-                        $tmp_where.= " OR ";
-                    }
-                    switch($val) {
-                    // 会員
-                    case '1':
-                        $tmp_where.= "status = 2";
-                        break;
-                    // メルマガ登録
-                    case '2':
-                        $tmp_where.= "customer_id IS NULL";
-                        break;
-                    // CSV登録
-                    case '3':
-                        $tmp_where.= "customer_id IS NULL";
-                        break;
-                    default:
-                        $tmp_where = "";
-                        break;
-                    }
-                }
-                if($tmp_where != "") {
-                    $tmp_where = "(" . $tmp_where . ")";
-                }
-                $this->setWhere($tmp_where);
-            }
-            */
             // 登録日を示すカラム
             $regdate_col = 'dtb_customer.create_date';
         }
@@ -175,6 +147,7 @@ class SC_CustomerList extends SC_SelectSql {
 
         //　E-MAIL(mobile)
         if (!isset($this->arrSql['email_mobile'])) $this->arrSql['email_mobile'] = "";
+        
         if (strlen($this->arrSql['email_mobile']) > 0) {
             //カンマ区切りで複数の条件指定可能に
             $this->arrSql['email_mobile'] = explode(",", $this->arrSql['email_mobile']);
@@ -204,8 +177,15 @@ class SC_CustomerList extends SC_SelectSql {
         //　配信メールアドレス種別
         if ( $mode == 'magazine' ){
             if (!isset($this->arrSql['mail_type'])) $this->arrSql['mail_type'] = "";
-            if ( strlen($this->arrSql['mail_type']) > 0 && $this->arrSql['mail_type'] == 2) {
-                $this->setWhere( " dtb_customer.email_mobile <> ''  ");
+            // PCサイトメールが指定されている場合
+            if ( strlen($this->arrSql['mail_type']) > 0 && $this->arrSql['mail_type'] == 1) {
+				// 携帯ドメインを外す。
+            	foreach($arrMobileDomain as $mobile_domain) {
+					$this->setWhere(" dtb_customer.email NOT ILIKE '%$mobile_domain' ");            		
+            	}
+            // 携帯サイトメールが指定されている場合
+            } else if( strlen($this->arrSql['mail_type']) > 0 && $this->arrSql['mail_type'] == 2) {
+				$this->setWhere( " dtb_customer.email_mobile <> ''  ");
             }
         }
 
