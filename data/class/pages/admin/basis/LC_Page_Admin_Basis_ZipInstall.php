@@ -62,7 +62,7 @@ class LC_Page_Admin_Basis_ZipInstall extends LC_Page {
         if(!$fp) {
             SC_Utils_Ex::sfErrorHeader(">> " . ZIP_CSV_FILE_PATH . "の取得に失敗しました。");
         } else {
-            print("<img src='".URL_DIR."img/install/main_w.jpg'><br>");
+            print("<img src='".TEMPLATE_DIR."img/install/main_w.jpg'><br>");
             $this->myFlush();
 
             // CSVの件数を数える
@@ -72,7 +72,7 @@ class LC_Page_Admin_Basis_ZipInstall extends LC_Page {
                 $line++;
             }
 
-            print("<img src='".URL_DIR."img/install/space_w.gif'>");
+            print("<img src='".TEMPLATE_DIR."img/install/space_w.gif'>");
             $this->myFlush();
 
             // ファイルポインタを戻す
@@ -111,17 +111,17 @@ class LC_Page_Admin_Basis_ZipInstall extends LC_Page {
                 $cnt++;
                 // $disp_line件ごとに進捗表示する
                 if($cnt % $disp_line == 0 && $img_cnt < IMAGE_MAX) {
-                    print("<img src='".URL_DIR."img/install/graph_1_w.gif'>");
+                    print("<img src='".TEMPLATE_DIR."img/install/graph_1_w.gif'>");
                     $this->myFlush();
                     $img_cnt++;
                 }
             }
             fclose($fp);
 
-            print("<img src='".URL_DIR."img/install/space_w.gif'><br>\n");
+            print("<img src='".TEMPLATE_DIR."img/install/space_w.gif'><br>\n");
             print("<table width='700' height='50' border='0' cellpadding='0' cellspacing='0' bgcolor='#494E5F'>\n");
             print("<tr>\n");
-            print("<td align='center'><a href='javascript:window.close()'><img src='".URL_DIR."img/install/close.gif' alt='CLOSE' width='85' height='22' border='0' /></a></td>\n");
+            print("<td align='center'><a href='javascript:window.close()'><img src='".TEMPLATE_DIR."img/install/close.gif' alt='CLOSE' width='85' height='22' border='0' /></a></td>\n");
             print("</tr>\n");
             print("</table>\n");
         }
