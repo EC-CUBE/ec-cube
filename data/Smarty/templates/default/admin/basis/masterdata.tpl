@@ -43,68 +43,73 @@
 										<td colspan="3"><img src="<!--{$TPL_DIR}-->img/contents/main_bar.jpg" width="678" height="10" alt=""></td>
 									</tr>
 								</table>
-<table width="678" border="0" cellspacing="1" cellpadding="8" summary=" ">
-<form name="form1" id="form1" method="post" action="<!--{$smarty.server.PHP_SELF|escape}-->">
-<input type="hidden" name="mode" value="show">
-  <tr>
-    <td bgcolor="#f2f1ec" width="180" class="fs12n" colspan="2">
-      <select name="master_data_name" id="master_data_name">
-      <!--{html_options output=$arrMasterDataName values=$arrMasterDataName selected=$masterDataName}-->
-      </select>
-      <input type="submit" value="選択">
-    </td>
-  </tr>
-</form>
+								
+								<table width="678" border="0" cellspacing="1" cellpadding="8" summary=" ">
+								<form name="form1" id="form1" method="post" action="<!--{$smarty.server.PHP_SELF|escape}-->">
+								<input type="hidden" name="mode" value="show">
+								  <tr>
+								    <td bgcolor="#f2f1ec" width="180" class="fs12n" colspan="2">
+								      <select name="master_data_name" id="master_data_name">
+								      <!--{html_options output=$arrMasterDataName values=$arrMasterDataName selected=$masterDataName}-->
+								      </select>
+								      <input type="submit" value="選択">
+								    </td>
+								  </tr>
+								</form>
 
-<form name="form2" id="form2" method="post" action="<!--{$smarty.server.PHP_SELF|escape}-->">
-<input type="hidden" name="mode" value="edit">
-<input type="hidden" name="master_data_name" value="<!--{$masterDataName}-->">
-  <tr class="fs12n">
-    <td bgcolor="#f2f1ec" align="center" colspan="2"><strong>マスタデータ編集</strong></td>
-  </tr>
-  <tr class="fs12n">
-    <td bgcolor="#ffffff" align="left" colspan="2">
-      <ul class="red">
-        <li>マスタデータの値を設定できます。</li>
-        <li>重複したIDを登録することはできません。</li>
-        <li>空のIDを登録すると、値は削除されます。</li>
-        <li>設定値によってはサイトが機能しなくなる場合もありますので、十分ご注意下さい。</li>
-      </ul>
-    </td>
-  </tr>
-  <!--{if $errorMessage != ""}-->
-  <tr class="fs12n">
-    <td bgcolor="#ffffff" align="left" colspan="2">
-      <span class="red"><!--{$errorMessage}--></span>
-    </td>
-  </tr>
-  <!--{/if}-->
 
-  <!--{foreach from=$arrMasterData item=val key=key}-->
-  <tr class="fs12n">
-    <td bgcolor="#ffffff" align="left">
-    ID：<input type="text" name="id[]" value="<!--{$key|escape}-->" size="6">
-    </td>
-    <td bgcolor="#ffffff" align="left">
-    値：<input type="text" name="name[]" value="<!--{$val|escape}-->" style="" size="60"
-            class="box60" />
-    </td>
-  </tr>
-  <!--{/foreach}-->
-  <tr class="fs12n">
-    <td bgcolor="#f2f1ec" align="center" colspan="2">追加のデータ</td>
-  </tr>
-  <tr class="fs12n">
-    <td bgcolor="#ffffff" align="left">
-    ID：<input type="text" name="id[]" size="6">
-    </td>
-    <td bgcolor="#ffffff" align="left">
-    値：<input type="text" name="name[]" style="" size="60"
-            class="box60" />
-    </td>
-  </tr>
-</form>
-</table>
+								<!--{if $smarty.post.mode == 'show'}-->
+							
+								<form name="form2" id="form2" method="post" action="<!--{$smarty.server.PHP_SELF|escape}-->">
+								<input type="hidden" name="mode" value="edit">
+								<input type="hidden" name="master_data_name" value="<!--{$masterDataName}-->">
+								  <tr class="fs12n">
+								    <td bgcolor="#f2f1ec" align="center" colspan="2"><strong>マスタデータ編集</strong></td>
+								  </tr>
+								  <tr class="fs12n">
+								    <td bgcolor="#ffffff" align="left" colspan="2">
+								      <ul class="red">
+								        <li>マスタデータの値を設定できます。</li>
+								        <li>重複したIDを登録することはできません。</li>
+								        <li>空のIDを登録すると、値は削除されます。</li>
+								        <li>設定値によってはサイトが機能しなくなる場合もありますので、十分ご注意下さい。</li>
+								      </ul>
+								    </td>
+								  </tr>
+
+								  <!--{if $errorMessage != ""}-->
+								  <tr class="fs12n">
+								    <td bgcolor="#ffffff" align="left" colspan="2">
+								      <span class="red"><!--{$errorMessage}--></span>
+								    </td>
+								  </tr>
+								  <!--{/if}-->
+								
+								  <!--{foreach from=$arrMasterData item=val key=key}-->
+								  <tr class="fs12n">
+								    <td bgcolor="#ffffff" align="left">
+								    ID：<input type="text" name="id[]" value="<!--{$key|escape}-->" size="6">
+								    </td>
+								    <td bgcolor="#ffffff" align="left">
+								    値：<input type="text" name="name[]" value="<!--{$val|escape}-->" style="" size="60"
+								            class="box60" />
+								    </td>
+								  </tr>
+								  <!--{/foreach}-->
+								  <tr class="fs12n">
+								    <td bgcolor="#f2f1ec" align="center" colspan="2">追加のデータ</td>
+								  </tr>
+								  <tr class="fs12n">
+								    <td bgcolor="#ffffff" align="left">
+								    ID：<input type="text" name="id[]" size="6">
+								    </td>
+								    <td bgcolor="#ffffff" align="left">
+								    値：<input type="text" name="name[]" style="" size="60"
+								            class="box60" />
+								    </td>
+								  </tr>
+								</form>
+								</table>
 
 								<table width="678" border="0" cellspacing="0" cellpadding="0" summary=" ">
 									<tr>
@@ -118,7 +123,7 @@
 										<table border="0" cellspacing="0" cellpadding="0" summary=" ">
 											<tr>
 												<td>
-<input onClick="return document.form2.submit()" type="image" onMouseover="chgImgImageSubmit('<!--{$TPL_DIR}-->img/contents/btn_regist_on.jpg',this)" onMouseout="chgImgImageSubmit('<!--{$TPL_DIR}-->img/contents/btn_regist.jpg',this)" src="<!--{$TPL_DIR}-->img/contents/btn_regist.jpg" width="123" height="24" alt="この内容で登録する" border="0" name="subm" >
+													<input onClick="return document.form2.submit()" type="image" onMouseover="chgImgImageSubmit('<!--{$TPL_DIR}-->img/contents/btn_regist_on.jpg',this)" onMouseout="chgImgImageSubmit('<!--{$TPL_DIR}-->img/contents/btn_regist.jpg',this)" src="<!--{$TPL_DIR}-->img/contents/btn_regist.jpg" width="123" height="24" alt="この内容で登録する" border="0" name="subm" >
 												</td>
 											</tr>
 										</table>
@@ -129,7 +134,9 @@
 									<tr>
 										<td colspan="3"><img src="<!--{$TPL_DIR}-->img/contents/tbl_bottom.gif" width="678" height="8" alt=""></td>
 									</tr>
+								<!--{/if}-->
 								</table>
+
 								</td>
 								<td background="<!--{$TPL_DIR}-->img/contents/main_right.jpg"><img src="<!--{$TPL_DIR}-->img/common/_.gif" width="14" height="1" alt=""></td>
 							</tr>
