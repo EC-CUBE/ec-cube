@@ -7,7 +7,7 @@ require_once("../../admin/require.php");
 	              
             //-- 送信するメールの内容と送信先
             $sendResut = array( 
-            	"to" => 'abnana210@softbank.ne.jp',  	 		//　顧客宛先 
+            	"to" => 'naka@lockon.co.jp',  	 		//　顧客宛先 
 	 	        "Subject" => mb_encode_mimeheader("てすと"),	//　Subject  
 	 	        "From" => 'test01@lockon.co.jp',              	//　送信元メールアドレス
                 "Reply-To" => 'test02@lockon.co.jp',          	//　reply_to 

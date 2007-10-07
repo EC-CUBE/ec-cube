@@ -38,10 +38,6 @@ class GC_SendMail {
 		$this->port = SMTP_PORT;
 		$this->objMailMime = new Mail_mime();
 		mb_language( "Japanese" );
-		$this->arrTEXTEncode['text_charset'] = "ISO-2022-JP";
-		$this->arrHTMLEncode['head_charset'] = "ISO-2022-JP";
-        $this->arrHTMLEncode['html_encoding'] = "ISO-2022-JP";
-        $this->arrHTMLEncode['html_charset'] = "ISO-2022-JP";
         $arrHost = array(   
                 'host' => $this->host,
                 'port' => $this->port
@@ -185,8 +181,9 @@ class GC_SendMail {
 	}
 	
 	// ヘッダーを返す
-	function getHeader() {
+	function getBaseHeader() {
 		//-- 送信するメールの内容と送信先
+		$arrHeader['MIME-Version'] = '1.0';
 		$arrHeader['To'] = $this->to;
 		$arrHeader['Subject'] = $this->subject;
 		$arrHeader['From'] = $this->from;
@@ -206,28 +203,40 @@ class GC_SendMail {
 		return $arrHeader;
 	}
 	
+	// ヘッダーを返す
+	function getTEXTHeader() {
+		$arrHeader = $this->getBaseHeader();
+		$arrHeader['Content-Type'] = "text/plain; charset=\"ISO-2022-JP\"";
+    	$arrHeader['Content-Transfer-Encoding'] = "7bit";	
+		return $arrHeader;
+	}
+	
+	// ヘッダーを返す
+	function getHTMLHeader() {
+		$arrHeader = $this->getBaseHeader();
+		$arrHeader['Content-Type'] = "text/html; charset=\"ISO-2022-JP\"";
+    	$arrHeader['Content-Transfer-Encoding'] = "ISO-2022-JP";	
+		return $arrHeader;
+	}
+	
 	//	TXTメール送信を実行する
 	function sendMail() {
-		$this->objMailMime->setTXTBody($this->body);
-		$body = $this->objMailMime->get($this->arrTEXTEncode);
-		$header = $this->getHeader();
+		$header = $this->getTEXTHeader();
         // メール送信
-        $result = $this->objMail->send($this->to, $header, $body);           
+        $result = $this->objMail->send($this->to, $header, $this->body);           
 		if (PEAR::isError($result)) { 
 			GC_Utils_Ex::gfPrintLog($result->getMessage());
 			GC_Utils_Ex::gfDebugLog($header);
 			return false;		
 		}
-		return true;		
+		return true;
 	}
 	
 	// HTMLメール送信を実行する
 	function sendHtmlMail() {
-		$this->objMailMime->setHTMLBody($this->body);
-		$body = $this->objMailMime->get($this->arrHTMLEncode);
-		$header = $this->getHeader();
+		$header = $this->getHTMLHeader();
         // メール送信
-        $result = $this->objMail->send($this->to, $header, $body);           
+        $result = $this->objMail->send($this->to, $header, $this->body);           
 		if (PEAR::isError($result)) { 
 			GC_Utils_Ex::gfPrintLog($result->getMessage());
 			GC_Utils_Ex::gfDebugLog($header);	
