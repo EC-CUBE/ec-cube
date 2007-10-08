@@ -2377,10 +2377,12 @@ function sfDBDatetoTime($db_date) {
     return $time;
 }
 
-// 出力の際にテンプレートを切り替えられる
-/*
-    index.php?tpl=test.tpl
-*/
+/**
+ * 出力の際にテンプレートを切り替えられる
+ * 1.4.3a-beta以降では使用しない
+ *
+ * index.php?tpl=test.tpl
+ */
 function sfCustomDisplay($objPage, $is_mobile = false) {
     $basename = basename($_SERVER["REQUEST_URI"]);
 
