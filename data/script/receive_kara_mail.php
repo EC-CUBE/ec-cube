@@ -8,12 +8,12 @@ require_once dirname(__FILE__) . '/../conf/mobile_conf.php';
 require_once DATA_PATH . '/include/php_ini.inc';
 require_once DATA_PATH . '/include/mobile.inc';
 require_once DATA_PATH . '/lib/slib.php';
-require_once DATA_PATH . '/class/GC_MobileKaraMail.php';
+require_once DATA_PATH . '/class/SC_MobileKaraMail.php';
 require_once DATA_PATH . '/class/SC_SendMail.php';
 
 $CONF = sf_getBasisData();
 
-$objMail =& GC_MobileKaraMail::factory();
+$objMail =& SC_MobileKaraMail::factory();
 $objMail->parse();
 $token = $objMail->getToken();
 $sender = $objMail->getSender();

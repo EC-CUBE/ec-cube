@@ -14,7 +14,7 @@ require_once(dirname(__FILE__) . '/../module/Net/UserAgent/Mobile.php');
  * 対象とする携帯端末は $_SERVER から決定する。
  * すべてのメソッドはクラスメソッド。
  */
-class GC_MobileUserAgent {
+class SC_MobileUserAgent {
 	/**
 	 * 携帯端末のキャリアを表す文字列を取得する。
 	 *
@@ -100,7 +100,7 @@ class GC_MobileUserAgent {
 	 * @return boolean 携帯端末ではない場合は true、それ以外の場合は false を返す。
 	 */
 	function isNonMobile() {
-		return !GC_MobileUserAgent::isMobile();
+		return !SC_MobileUserAgent::isMobile();
 	}
 
 	/**

@@ -17,7 +17,7 @@ function smarty_block_marquee($params, $content, &$smarty, &$repeat) {
 	$content = rtrim($content);
 
 	// marqueeタグを使用しない場合
-	if (defined('MOBILE_SITE') && GC_MobileUserAgent::getCarrier() == 'docomo') {
+	if (defined('MOBILE_SITE') && SC_MobileUserAgent::getCarrier() == 'docomo') {
 		return "<div>\n$content\n</div>\n";
 	}
 

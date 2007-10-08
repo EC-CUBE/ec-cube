@@ -26,7 +26,7 @@ class SC_Helper_Mobile {
      * @return void
      */
     function lfMobileCheckCompatibility() {
-        if (!GC_MobileUserAgent::isSupported()) {
+        if (!SC_MobileUserAgent::isSupported()) {
             header('Location: ' . URL_DIR . 'mobile/unsupported/index.php');
             exit;
         }
@@ -136,7 +136,7 @@ class SC_Helper_Mobile {
         }
 
         // 携帯端末の機種が一致するかどうかをチェックする。
-        $model = GC_MobileUserAgent::getModel();
+        $model = SC_MobileUserAgent::getModel();
         if (@$_SESSION['mobile']['model'] != $model) {
             GC_Utils_Ex::gfPrintLog("User agent model mismatch : " .
                        "\"$model\" != \"" . @$_SESSION['mobile']['model'] .
@@ -165,8 +165,8 @@ class SC_Helper_Mobile {
         // し、セッションデータを初期化する。
         if ($sessionId === false || !$this->lfMobileValidateSession()) {
             session_regenerate_id();
-            $_SESSION = array('mobile' => array('model'    => GC_MobileUserAgent::getModel(),
-                                                'phone_id' => GC_MobileUserAgent::getId(),
+            $_SESSION = array('mobile' => array('model'    => SC_MobileUserAgent::getModel(),
+                                                'phone_id' => SC_MobileUserAgent::getId(),
                                                 'expires'  => time() + MOBILE_SESSION_LIFETIME));
 
             // 新しいセッションIDを付加してリダイレクトする。
@@ -181,7 +181,7 @@ class SC_Helper_Mobile {
         }
 
         // 携帯端末IDを取得できた場合はセッションデータに保存する。
-        $phoneId = GC_MobileUserAgent::getId();
+        $phoneId = SC_MobileUserAgent::getId();
         if ($phoneId !== false) {
             $_SESSION['mobile']['phone_id'] = $phoneId;
         }
@@ -211,10 +211,10 @@ class SC_Helper_Mobile {
         mb_http_output('SJIS-win');
 
         // 絵文字タグを絵文字コードに変換する。
-        ob_start(array('GC_MobileEmoji', 'handler'));
+        ob_start(array('SC_MobileEmoji', 'handler'));
 
         // 端末に合わせて画像サイズを変換する。
-        ob_start(array('GC_MobileImage', 'handler'));
+        ob_start(array('SC_MobileImage', 'handler'));
 
         // 全角カタカナを半角カタカナに変換する。
         ob_start(create_function('$buffer', 'return mb_convert_kana($buffer, "k", "SJIS-win");'));

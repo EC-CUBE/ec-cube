@@ -12,20 +12,20 @@ define('MOBILE_KARA_MAIL_EXTENSION_DELIMITER', '_');
 /**
  * モバイルサイトの空メールを扱うクラス
  */
-class GC_MobileKaraMail {
+class SC_MobileKaraMail {
 	/**
-	 * 環境変数から MTA を判別し、対応する GC_MobileKaraMail またはそのサブクラス
+	 * 環境変数から MTA を判別し、対応する SC_MobileKaraMail またはそのサブクラス
 	 * のインスタンスを作成する。
 	 *
-	 * @return object GC_MobileKaraMail またはそのサブクラスのインスタンスを返す。
+	 * @return object SC_MobileKaraMail またはそのサブクラスのインスタンスを返す。
 	 */
 	function &factory() {
 		if (isset($_ENV['EXTENSION'])) {
-			$objInstance = new GC_MobileKaraMail_Postfix;
+			$objInstance = new SC_MobileKaraMail_Postfix;
 		} elseif (isset($_ENV['DEFAULT'])) {
-			$objInstance = new GC_MobileKaraMail_Qmail;
+			$objInstance = new SC_MobileKaraMail_Qmail;
 		} else {
-			$objInstance = new GC_MobileKaraMail;
+			$objInstance = new SC_MobileKaraMail;
 		}
 
 		return $objInstance;
@@ -156,9 +156,9 @@ class GC_MobileKaraMail {
 /**
  * モバイルサイトの空メールを扱うクラス (Postfix用)
  */
-class GC_MobileKaraMail_Postfix extends GC_MobileKaraMail {
+class SC_MobileKaraMail_Postfix extends SC_MobileKaraMail {
 	/**
-	 * @see GC_MobileKaraMail::parse()
+	 * @see SC_MobileKaraMail::parse()
 	 */
 	function parse() {
 		if (@$this->parsed) {
@@ -176,9 +176,9 @@ class GC_MobileKaraMail_Postfix extends GC_MobileKaraMail {
 /**
  * モバイルサイトの空メールを扱うクラス (qmail用)
  */
-class GC_MobileKaraMail_Qmail extends GC_MobileKaraMail {
+class SC_MobileKaraMail_Qmail extends SC_MobileKaraMail {
 	/**
-	 * @see GC_MobileKaraMail::parse()
+	 * @see SC_MobileKaraMail::parse()
 	 */
 	function parse() {
 		if (@$this->parsed) {

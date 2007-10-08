@@ -45,8 +45,8 @@ require_once(CLASS_PATH . "SC_CustomerList.php");
 require_once(CLASS_PATH . "SC_Cookie.php");
 require_once(CLASS_PATH . "SC_Page.php");
 require_once(CLASS_PATH . "SC_Pdf.php");
-require_once(CLASS_PATH . "GC_MobileUserAgent.php");
-require_once(CLASS_PATH . "GC_MobileEmoji.php");
+require_once(CLASS_PATH . "SC_MobileUserAgent.php");
+require_once(CLASS_PATH . "SC_MobileEmoji.php");
 require_once(CLASS_EX_PATH . "helper_extends/SC_Helper_PageLayout_Ex.php");
 require_once(CLASS_EX_PATH . "helper_extends/SC_Helper_DB_Ex.php");
 require_once(CLASS_EX_PATH . "helper_extends/SC_Helper_Session_Ex.php");
@@ -57,7 +57,7 @@ include_once($include_dir . "/require_plugin.php");
 SC_Utils_Ex::sfInitInstall();
 
 // 携帯端末の場合は mobile 以下へリダイレクトする。
-if (GC_MobileUserAgent::isMobile()) {
+if (SC_MobileUserAgent::isMobile()) {
     if (preg_match('|^' . URL_DIR . '(.*)$|', $_SERVER['REQUEST_URI'], $matches)) {
         $path = $matches[1];
     } else {
@@ -76,7 +76,7 @@ if (GC_MobileUserAgent::isMobile()) {
 }
 
 // 絵文字変換 (除去) フィルターを組み込む。
-ob_start(array('GC_MobileEmoji', 'handler'));
+ob_start(array('SC_MobileEmoji', 'handler'));
 
 // アップデートで取得したPHPを読み出す
 SC_Utils_Ex::sfLoadUpdateModule();

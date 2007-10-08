@@ -16,7 +16,7 @@ require_once(MOBILE_IMAGE_INC_PATH . "/image_converter.inc");
 /**
  * 画像変換クラス
  */
-class GC_MobileImage {
+class SC_MobileImage {
 	/**
 	 * 画像を端末の解像度に合わせて変換する
 	 * output buffering 用コールバック関数
@@ -27,8 +27,8 @@ class GC_MobileImage {
 	function handler($buffer) {
 
 		// 端末情報を取得する
-		$carrier = GC_MobileUserAgent::getCarrier();
-		$model   = GC_MobileUserAgent::getModel();
+		$carrier = SC_MobileUserAgent::getCarrier();
+		$model   = SC_MobileUserAgent::getModel();
 
 		// 携帯電話の場合のみ処理を行う
 		if ($carrier !== FALSE) {
