@@ -47,7 +47,7 @@ class SC_Helper_Mail {
         $body = $objMailView->fetch($this->arrMAILTPLPATH[$template_id]);
 
         // メール送信処理
-        $objSendMail = new GC_SendMail();
+        $objSendMail = new SC_SendMail();
         $from = $arrInfo['email03'];
         $error = $arrInfo['email04'];
         $tosubject = $tmp_subject;
@@ -122,7 +122,7 @@ class SC_Helper_Mail {
         $body = $objMailView->fetch($this->arrMAILTPLPATH[$template_id]);
 
         // メール送信処理
-        $objSendMail = new GC_SendMail();
+        $objSendMail = new SC_SendMail();
         $bcc = $arrInfo['email01'];
         $from = $arrInfo['email03'];
         $error = $arrInfo['email04'];
@@ -155,7 +155,7 @@ class SC_Helper_Mail {
         $objMailView->assignobj($objPage);
         $body = $objMailView->fetch($tplpath);
         // メール送信処理
-        $objSendMail = new GC_SendMail();
+        $objSendMail = new SC_SendMail();
         $to = mb_encode_mimeheader($to);
         $bcc = $arrInfo['email01'];
         $from = $arrInfo['email03'];
@@ -169,7 +169,7 @@ class SC_Helper_Mail {
         $objSiteInfo = new SC_SiteInfo();
         $arrInfo = $objSiteInfo->data;
         // メール送信処理
-        $objSendMail = new GC_SendMail();
+        $objSendMail = new SC_SendMail();
         $bcc = $arrInfo['email01'];
         $from = $arrInfo['email03'];
         $error = $arrInfo['email04'];

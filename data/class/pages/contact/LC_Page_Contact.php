@@ -237,7 +237,7 @@ class LC_Page_Contact extends LC_Page {
         $objPage->tpl_infoemail = $arrInfo['email02'];
         $objMailText->assignobj($objPage);
         $toCustomerMail = $objMailText->fetch("mail_templates/contact_mail.tpl");
-        $objMail = new GC_SendMail();
+        $objMail = new SC_SendMail();
 
         if ( $objPage->arrForm['email'] ) {
             $fromMail_name = $objPage->arrForm['name01'] ." 様";

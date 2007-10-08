@@ -109,7 +109,7 @@ class LC_Page_Magazine_Confirm extends LC_Page {
 
             $objMailText->assignobj($this);
             $toCustomerMail = $objMailText->fetch("mail_templates/mailmagazine_" . $_REQUEST['mode'] . ".tpl");
-            $objMail = new GC_SendMail();
+            $objMail = new SC_SendMail();
             $objMail->setItem(
                               ''									//　宛先
                               , $subject							//　サブジェクト

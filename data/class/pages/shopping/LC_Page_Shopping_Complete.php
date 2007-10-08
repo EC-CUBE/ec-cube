@@ -299,7 +299,7 @@ class LC_Page_Shopping_Complete extends LC_Page {
 
         $mailHelper = new SC_Helper_Mail_Ex();
 
-        $objMail = new GC_SendMail();
+        $objMail = new SC_SendMail();
         $objMail->setItem(
                             ''										//　宛先
                             , $mailHelper->sfMakeSubject("会員登録のご確認")		//　サブジェクト

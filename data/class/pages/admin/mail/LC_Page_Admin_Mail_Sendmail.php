@@ -82,7 +82,7 @@ class LC_Page_Admin_Mail_Sendmail extends LC_Page {
 		
 		//---- 送信結果フラグ用SQL
 		$sql_flag ="UPDATE dtb_send_customer SET send_flag = ? WHERE send_id = ? AND customer_id = ?";
-		$objMail = new GC_SendMail();
+		$objMail = new SC_SendMail();
 		
 		//----　メール生成と送信
 		for( $i = 0; $i < $count; $i++ ) {

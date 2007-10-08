@@ -175,7 +175,7 @@ function lfSendRegistMail($registSecretKey) {
 	$objMailText->assign("name02", $data["name02"]);
 	$toCustomerMail = $objMailText->fetch("mail_templates/customer_regist_mail.tpl");
 	$subject = sfMakeSubject('本会員登録が完了しました。');
-	$objMail = new GC_SendMail();
+	$objMail = new SC_SendMail();
 
 	$objMail->setItem(
 						  ''								//　宛先

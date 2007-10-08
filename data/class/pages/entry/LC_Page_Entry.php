@@ -181,7 +181,7 @@ class LC_Page_Entry extends LC_Page {
                         $objCustomer->setLogin($_POST["email"]);
                     }
 
-                    $objMail = new GC_SendMail();
+                    $objMail = new SC_SendMail();
                     $objMail->setItem(
                                         ''									//　宛先
                                         , $subject							//　サブジェクト
@@ -495,7 +495,7 @@ class LC_Page_Entry extends LC_Page {
                         $objCustomer->setLogin($_POST["email"]);
                     }
 
-                    $objMail = new GC_SendMail();
+                    $objMail = new SC_SendMail();
                     $objMail->setItem(
                                       ''									//　宛先
                                       , $subject							//　サブジェクト

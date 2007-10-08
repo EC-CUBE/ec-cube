@@ -207,7 +207,7 @@ class LC_Page_Forgot extends LC_Page {
         $objMailText->assignobj($this);
 
         $toCustomerMail = $objMailText->fetch("mail_templates/forgot_mail.tpl");
-        $objMail = new GC_SendMail();
+        $objMail = new SC_SendMail();
 
         $objMail->setItem(
                               ''								//　宛先

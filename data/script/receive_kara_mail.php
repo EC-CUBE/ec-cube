@@ -9,7 +9,7 @@ require_once DATA_PATH . '/include/php_ini.inc';
 require_once DATA_PATH . '/include/mobile.inc';
 require_once DATA_PATH . '/lib/slib.php';
 require_once DATA_PATH . '/class/GC_MobileKaraMail.php';
-require_once DATA_PATH . '/class/GC_SendMail.php';
+require_once DATA_PATH . '/class/SC_SendMail.php';
 
 $CONF = sf_getBasisData();
 
@@ -29,7 +29,7 @@ if (gfRegisterKaraMail($token, $sender)) {
 	              SITE_URL . "\n";
 }
 
-$objReply = new GC_SendMail;
+$objReply = new SC_SendMail;
 $objReply->setItem($sender, "【{$CONF["shop_name"]}】$subject", $reply_body,
                    $CONF['email03'], $CONF['shop_name'], $CONF['email03'], $CONF['email04']);
 $objReply->sendMail();

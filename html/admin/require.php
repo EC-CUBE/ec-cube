@@ -28,7 +28,7 @@ require_once(CLASS_PATH . "SC_Date.php");
 require_once(CLASS_PATH . "SC_Image.php");
 require_once(CLASS_PATH . "SC_UploadFile.php");
 require_once(CLASS_PATH . "SC_SiteInfo.php");
-require_once(CLASS_PATH . "GC_SendMail.php");
+require_once(CLASS_PATH . "SC_SendMail.php");
 require_once(CLASS_PATH . "SC_FormParam.php");
 require_once(CLASS_PATH . "SC_CustomerList.php");
 require_once(CLASS_PATH . "SC_Customer.php");

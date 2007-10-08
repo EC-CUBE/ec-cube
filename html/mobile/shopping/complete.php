@@ -258,7 +258,7 @@ function lfRegistPreCustomer($arrData, $arrInfo) {
 	$objMailView->assignobj($objMailPage);
 	$body = $objMailView->fetch("mail_templates/customer_mail.tpl");
 	
-	$objMail = new GC_SendMail();
+	$objMail = new SC_SendMail();
 	$objMail->setItem(
 						''										//　宛先
 						, sfMakeSubject("会員登録のご確認")		//　サブジェクト

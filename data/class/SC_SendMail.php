@@ -9,7 +9,7 @@ require_once(dirname(__FILE__) . '/../module/Mail/Mail.php');
 require_once(dirname(__FILE__) . '/../module/Mail/mime.php');
 
 //--- テキスト/HTML　メール送信
-class GC_SendMail {
+class SC_SendMail {
 
 	var $to;			//	送信先
 	var $subject;		//	題名
@@ -25,7 +25,7 @@ class GC_SendMail {
 	var $objMail;
 			
 	// コンストラクタ
-	function GC_SendMail() {
+	function SC_SendMail() {
 		$this->to = "";
 		$this->subject = "";
 		$this->body = "";
