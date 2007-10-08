@@ -19,6 +19,8 @@ class SC_View {
     var $time_start;
     /** 使用しているテンプレートパッケージ名 */
     var $tplName;
+    /** displayするtplファイル名 */
+    var $template;
 
     /**
      * コンストラクタ
@@ -76,7 +78,7 @@ class SC_View {
         $this->_smarty->register_function("sfPrintAffTag","sfPrintAffTag");
         $this->_smarty->register_function("sfIsHTTPS","sfIsHTTPS");
         $this->_smarty->default_modifiers = array('script_escape');
-        $this->_smarty->force_compile = true;
+        $this->_smarty->force_compile = DEBUG_MODE;
     }
 
     /**
@@ -153,14 +155,16 @@ class SC_View {
      * @return void
      */
     function display($template, $display = false) {
+        $this->template = $template;
+
         // テンプレート切り替え処理
-        $this->initDisplay($template);
+        $this->initTemplate();
 
         // グローバルエラーの表示
         $this->displayGlobalError($display);
 
         // 画面表示
-        $this->_smarty->display($template);
+        $this->_smarty->display($this->template);
 
         // ベンチマーク結果の表示
         $this->displayBenchMark();
@@ -170,7 +174,7 @@ class SC_View {
      *  テンプレート切り替え処理を行う.
      *  実装は子クラスで行う.
      */
-    function initDisplay($template) {}
+    function initTemplate() {}
 
     /**
      * グローバルエラーを表示する.
@@ -275,33 +279,65 @@ class SC_SiteView extends SC_View{
         }
     }
 
-    function initDisplay($template) {
+    function initTemplate() {
         // テンプレートを使用していない場合はreturn
         if (empty($this->tplName)) return;
 
+        // 現在使用しているテンプレートパッケージのパス
+        // ***/html/user_data/tpl_packages/***/templates/
+        $template_dir = TPL_PKG_PATH . $this->tplName . '/templates/';
+        // FIXME ここにモバイル用処理を挟みたくない...
+        if ($this->_smarty->template_dir == MOBILE_TEMPLATE_DIR) {
+            $template_dir .= 'mobile/';
+        }
+
         /**
+         * tpl_mainpageのテンプレート適応処理
+         *
          * tpl_mainpageが相対パスであれば
          * ユーザーテンプレートへの絶対パスに変更し
          * そのファイルが存在するばあいはtpl_meinpageを再度assignし上書きする
          */
         $tpl_mainpage  = $this->_smarty->get_template_vars('tpl_mainpage');
-        $template_dir = TPL_PKG_PATH . $this->tplName . '/templates/';
 
         $win = "^[a-zA-Z]{1}:";
         $other = "^\/";
         $pattern = "/($win)|($other)/";
-        if (!preg_match($pattern, $tpl_mainpage)) {
+
+        if (!is_null($tpl_mainpage) && !preg_match($pattern, $tpl_mainpage)) {
             $tpl_pkg_mainpage = $template_dir . $tpl_mainpage;
             if (file_exists($tpl_pkg_mainpage)) {
                 $this->assign('tpl_mainpage', $tpl_pkg_mainpage);
             }
         }
+
+        // site_frame.tplのテンプレート適用処理
+        if ($this->template == SITE_FRAME) {
+            if(file_exists($template_dir . SITE_FRAME)) {
+                $this->template = $template_dir . SITE_FRAME;
+            }
+        // $this->templateがSITE_FRAMEでない場合
+        // $objView->display($objPage->tpl_mainpage)など
+        } else {
+            if(file_exists($template_dir . $this->template)) {
+                $this->template = $template_dir . $this->template;
+            }
+        }
+
+        // site_main.tplのテンプレート適応処理
         $tpl_site_main = $template_dir . 'site_main.tpl';
         if (file_exists($tpl_site_main)) {
             $this->assign('tpl_site_main', $tpl_site_main);
         }
     }
+
+    function fetch($template) {
+        $this->template = $template;
+        $this->initTemplate();
+        return $this->_smarty->fetch($this->template);
+    }
 }
+
 class SC_UserView extends SC_SiteView{
     function SC_UserView($template_dir, $compile_dir = COMPILE_DIR) {
         parent::SC_SiteView();
@@ -320,6 +356,7 @@ class SC_InstallView extends SC_View{
         $this->_smarty->template_dir = $template_dir;
         $this->_smarty->compile_dir = $compile_dir;
     }
+    // SC_View::getTemplateName()のDBアクセス処理を行わないようにオーバーライド
     function getTemplateName() {}
 }
 
@@ -330,5 +367,4 @@ class SC_MobileView extends SC_SiteView {
         $this->_smarty->compile_dir = MOBILE_COMPILE_DIR;
     }
 }
-
 ?>
