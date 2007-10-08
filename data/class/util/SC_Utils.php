@@ -142,7 +142,7 @@ class SC_Utils {
     /* サイトエラーページの表示 */
     function sfDispSiteError($type, $objSiteSess = "", $return_top = false, $err_msg = "", $is_mobile = false) {
 
-        require_once(CLASS_PATH . "page_extends/error/LC_Page_Error_Ex.php");
+        require_once(CLASS_EX_PATH . "page_extends/error/LC_Page_Error_Ex.php");
 
         // FIXME
         global $objCampaignSess;
