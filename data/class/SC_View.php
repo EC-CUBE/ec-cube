@@ -114,14 +114,14 @@ class SC_View {
     function assignSiteInfo() {
         if (!defined('LOAD_SITEINFO')) {
             $this->objSiteInfo = new SC_SiteInfo();
-            $arrInfo['arrSiteInfo'] = $this->objSiteInfo->data;
+            $arrSiteInfo = $this->objSiteInfo->data;
 
             // 都道府県名を変換
             global $arrPref;
-            $arrInfo['arrSiteInfo']['pref'] = $arrPref[$arrInfo['arrSiteInfo']['pref']];
+            $arrSiteInfo['pref'] = $arrPref[$arrInfo['pref']];
 
             // サイト情報を割り当てる
-            $this->assignArray($arrInfo);
+            $this->assign('arrSiteInfo', $arrSiteInfo);
 
             define('LOAD_SITEINFO', 1);
         }
