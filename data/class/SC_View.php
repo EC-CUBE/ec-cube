@@ -118,7 +118,7 @@ class SC_View {
 
             // 都道府県名を変換
             global $arrPref;
-            $arrSiteInfo['pref'] = $arrPref[$arrInfo['pref']];
+            $arrSiteInfo['pref'] = $arrPref[$arrSiteInfo['pref']];
 
             // サイト情報を割り当てる
             $this->assign('arrSiteInfo', $arrSiteInfo);
