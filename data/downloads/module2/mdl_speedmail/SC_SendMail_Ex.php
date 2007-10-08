@@ -7,6 +7,7 @@
 
 // {{{ requires
 require_once(CLASS_PATH . "SC_SendMail.php");
+require_once(realpath(dirname( __FILE__)) . "/include.php");
 
 /**
  * メール送信クラス(拡張).
@@ -21,5 +22,17 @@ class SC_SendMail_Ex extends SC_SendMail {
 	function SC_SendMail_Ex() {
 		parent::SC_SendMail();
 	}
+	
+	//	TXTメール送信を実行する
+	function sendMail() {
+		$this->setReturnPath(ERROR_MAIL);
+		return parent::sendMail();
+	}
+	
+	// HTMLメール送信を実行する
+	function sendHtmlMail() {
+		$this->setReturnPath(ERROR_MAIL);
+		return parent::sendHtmlMail();
+	}	
 }
 ?>
