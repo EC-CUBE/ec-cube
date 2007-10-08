@@ -8,6 +8,13 @@
 // {{{ requires
 require_once(CLASS_PATH . "pages/LC_Page.php");
 
+// SC_SendMailの拡張
+if(file_exists(MODULE2_PATH . "module_inc.php")) {
+	require_once(MODULE2_PATH . "module_inc.php");
+} else {
+	require_once(CLASS_EX_PATH . "SC_SendMail_Ex.php");
+}
+
 /**
  * メール配信履歴 のページクラス.
  *
@@ -82,7 +89,7 @@ class LC_Page_Admin_Mail_Sendmail extends LC_Page {
 		
 		//---- 送信結果フラグ用SQL
 		$sql_flag ="UPDATE dtb_send_customer SET send_flag = ? WHERE send_id = ? AND customer_id = ?";
-		$objMail = new SC_SendMail();
+		$objMail = new SC_SendMail_Ex();
 		
 		//----　メール生成と送信
 		for( $i = 0; $i < $count; $i++ ) {

@@ -17,7 +17,6 @@ if (!defined("CLASS_EX_PATH")) {
     define("CLASS_EX_PATH", $include_dir . HTML2DATA_DIR . "class_extends/");
 }
 
-
 require_once($include_dir . HTML2DATA_DIR. "conf/conf.php");
 require_once($include_dir . HTML2DATA_DIR . "include/module.inc");
 require_once(CLASS_EX_PATH . "util_extends/GC_Utils_Ex.php");

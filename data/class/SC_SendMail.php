@@ -245,10 +245,4 @@ class SC_SendMail {
 		return true;
 	}
 }
-
-if(file_exists(MODULE2_PATH . "module_inc.php")) {
-	
-} else {
-	
-}
 ?>
