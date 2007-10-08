@@ -287,7 +287,7 @@ class SC_SiteView extends SC_View{
         // ***/html/user_data/tpl_packages/***/templates/
         $template_dir = TPL_PKG_PATH . $this->tplName . '/templates/';
         // FIXME ここにモバイル用処理を挟みたくない...
-        if ($this->_smarty->template_dir == MOBILE_TEMPLATE_DIR) {
+        if (defined(MOBILE_TEMPLATE_DIR) && $this->_smarty->template_dir == MOBILE_TEMPLATE_DIR) {
             $template_dir .= 'mobile/';
         }
 
