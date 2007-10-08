@@ -221,7 +221,7 @@ insert into dtb_csv(csv_id,col,disp_name,rank,create_date,update_date)values(4,'
 insert into dtb_csv(csv_id,col,disp_name,rank,create_date,update_date)values(4,'deliv_addr02','住所2',38,now(),now());
 insert into dtb_csv(csv_id,col,disp_name,rank,create_date,update_date)values(4,'payment_total','お支払い合計',39,now(),now());
 
-INSERT INTO dtb_templates (template_code, template_name, create_date, update_date) VALUES('default1','デフォルト1', now(), now());
+INSERT INTO dtb_templates (template_code, template_name, create_date, update_date) VALUES('default1','ふとんやさん', now(), now());
 
 insert into dtb_mailtemplate (template_id, subject, body, creator_id, update_date, create_date, send_type, template_name) values (
 '1',

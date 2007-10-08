@@ -46,9 +46,11 @@ case 'edit':
     if(count($objPage->arrErr) == 0) {
         // データ更新
         lfUpdPaymentDB();
-        
         // javascript実行
         $objPage->tpl_onload = 'alert("登録完了しました。\n基本情報＞支払方法設定より詳細設定をしてください。"); window.close();';
+    	// 決済結果受付ファイルのコピー
+    	copy(MODULE_PATH . "mdl_zero/zero_recv.php", HTML_PATH . "user_data/zero_recv.php");
+    
     }
     break;
 case 'module_del':
@@ -123,6 +125,7 @@ function lfChkConnect(){
         
         // エラーがあるかチェックする
         if(!ereg("^<HTML>",$arrResponse )){
+        	sfPrintR($arrResponse);
             $arrRet["pc_clientip"] = "入力データが正しくありません<br>";
         }
     }
@@ -141,6 +144,7 @@ function lfChkConnect(){
         
         // エラーがあるかチェックする
         if(!ereg("^<HTML>",$arrResponse )){
+        	sfPrintR($arrResponse);
             $arrRet["mobile_clientip"] = "入力データが正しくありません<br>";
         }
     }

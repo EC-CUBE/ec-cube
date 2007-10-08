@@ -97,7 +97,8 @@ class SC_View {
         $arrDefaultParams = array(
             'URL_DIR' => URL_DIR,
             // FIXME tplNameがnullの場合の処理
-            'TPL_PKG_URL' => URL_DIR . USER_DIR . TPL_PKG_DIR . $this->tplName . '/'
+            'TPL_PKG_URL' => URL_DIR . USER_DIR . TPL_PKG_DIR . $this->tplName . '/',
+            'tpl_site_main' => 'site_main.tpl'
         );
         $this->assignArray($arrDefaultParams);
     }
@@ -294,6 +295,10 @@ class SC_SiteView extends SC_View{
             if (file_exists($tpl_pkg_mainpage)) {
                 $this->assign('tpl_mainpage', $tpl_pkg_mainpage);
             }
+        }
+        $tpl_site_main = $template_dir . 'site_main.tpl';
+        if (file_exists($tpl_site_main)) {
+            $this->assign('tpl_site_main', $tpl_site_main);
         }
     }
 }

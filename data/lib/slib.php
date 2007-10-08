@@ -1707,8 +1707,9 @@ function sfSendTemplateMail($to, $to_name, $template_id, $objPage) {
     $objSendMail->sendMail();	// メール送信
 }
 
-/** 受注完了メール送信
- *  $template_id が 1：携帯用テンプレート、0：PC用テンプレート
+/**
+ *  受注完了メール送信
+ *  要修正(trac #172)
  */
 function sfSendOrderMail($order_id, $template_id, $subject = "", $body = "", $send = true) {
     global $arrMAILTPLPATH;
@@ -1919,11 +1920,11 @@ function sfRegistTempOrder($uniqid, $sqlval) {
     }
 }
 
-/* 会員のメルマガ登録があるかどうかのチェック(仮会員を含まない) */
+/* 会員登録があるかどうかのチェック(仮会員を含まない) */
 function sfCheckCustomerMailMaga($email) {
     $col = "email, mailmaga_flg, customer_id";
     $from = "dtb_customer";
-    $where = "email = ? AND status = 2";
+    $where = "email = ? AND status = 2 AND del_flg = 0";
     $objQuery = new SC_Query();
     $arrRet = $objQuery->select($col, $from, $where, array($email));
     // 会員のメールアドレスが登録されている
