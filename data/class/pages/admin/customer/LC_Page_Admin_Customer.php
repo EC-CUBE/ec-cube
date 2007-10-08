@@ -252,7 +252,7 @@ class LC_Page_Admin_Customer extends LC_Page {
 
                 switch($_POST['mode']) {
                 case 'csv':
-                    require_once(CLASS_PATH . "helper_extends/SC_Helper_CSV_Ex.php");
+                    require_once(CLASS_EX_PATH . "helper_extends/SC_Helper_CSV_Ex.php");
 
                     $objCSV = new SC_Helper_CSV_Ex();
                     $i = 0;

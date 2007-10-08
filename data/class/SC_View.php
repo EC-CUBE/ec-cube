@@ -7,7 +7,7 @@
 
 $SC_VIEW_PHP_DIR = realpath(dirname(__FILE__));
 require_once($SC_VIEW_PHP_DIR . "/../module/Smarty/libs/Smarty.class.php");
-//require_once(CLASS_PATH . "util_extends/SC_Utils_Ex.php");
+//require_once(CLASS_EX_PATH . "util_extends/SC_Utils_Ex.php");
 
 class SC_View {
 

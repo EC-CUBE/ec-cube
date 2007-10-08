@@ -11,7 +11,7 @@
 
 // {{{ requires
 require_once("../require.php");
-require_once(CLASS_PATH . "page_extends/contact/LC_Page_Contact_Ex.php");
+require_once(CLASS_EX_PATH . "page_extends/contact/LC_Page_Contact_Ex.php");
 
 // }}}
 // {{{ generate page

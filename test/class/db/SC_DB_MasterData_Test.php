@@ -6,7 +6,7 @@
  */
 
 // {{{ requires
-require_once(CLASS_PATH . "db_extends/SC_DB_MasterData_Ex.php");
+require_once(CLASS_EX_PATH . "db_extends/SC_DB_MasterData_Ex.php");
 require_once("PHPUnit/TestCase.php");
 
 /**

@@ -7,7 +7,7 @@
 
 // {{{ requires
 require_once("../require.php");
-require_once(CLASS_PATH . "page_extends/inquiry/LC_Page_Inquiry_Ex.php");
+require_once(CLASS_EX_PATH . "page_extends/inquiry/LC_Page_Inquiry_Ex.php");
 
 // }}}
 // {{{ generate page

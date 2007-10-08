@@ -15,10 +15,10 @@ if (!defined("CLASS_PATH")) {
 require_once($include_dir . "/.." . HTML2DATA_DIR . "conf/conf.php");
 require_once($include_dir . "/.." . HTML2DATA_DIR . "conf/mobile_conf.php");
 require_once($include_dir . "/.." . HTML2DATA_DIR . "include/module.inc");
-require_once(CLASS_PATH . "util_extends/GC_Utils_Ex.php");
-require_once(CLASS_PATH . "util_extends/SC_Utils_Ex.php");
-require_once(CLASS_PATH . "db_extends/SC_DB_MasterData_Ex.php");
-require_once(CLASS_PATH . "db_extends/SC_DB_DBFactory_Ex.php");
+require_once(CLASS_EX_PATH . "util_extends/GC_Utils_Ex.php");
+require_once(CLASS_EX_PATH . "util_extends/SC_Utils_Ex.php");
+require_once(CLASS_EX_PATH . "db_extends/SC_DB_MasterData_Ex.php");
+require_once(CLASS_EX_PATH . "db_extends/SC_DB_DBFactory_Ex.php");
 require_once(CLASS_PATH . "SC_View.php");
 require_once(CLASS_PATH . "SC_DbConn.php");
 require_once(CLASS_PATH . "SC_Session.php");
@@ -41,11 +41,11 @@ require_once(CLASS_PATH . "SC_Pdf.php");
 require_once(CLASS_PATH . "GC_MobileUserAgent.php");
 require_once(CLASS_PATH . "GC_MobileEmoji.php");
 require_once(CLASS_PATH . "GC_MobileImage.php");
-require_once(CLASS_PATH . "helper_extends/SC_Helper_PageLayout_Ex.php");
-require_once(CLASS_PATH . "helper_extends/SC_Helper_DB_Ex.php");
-require_once(CLASS_PATH . "helper_extends/SC_Helper_Mobile_Ex.php");
-require_once(CLASS_PATH . "helper_extends/SC_Helper_Session_Ex.php");
-require_once(CLASS_PATH . "helper_extends/SC_Helper_Mail_Ex.php");
+require_once(CLASS_EX_PATH . "helper_extends/SC_Helper_PageLayout_Ex.php");
+require_once(CLASS_EX_PATH . "helper_extends/SC_Helper_DB_Ex.php");
+require_once(CLASS_EX_PATH . "helper_extends/SC_Helper_Mobile_Ex.php");
+require_once(CLASS_EX_PATH . "helper_extends/SC_Helper_Session_Ex.php");
+require_once(CLASS_EX_PATH . "helper_extends/SC_Helper_Mail_Ex.php");
 include_once($include_dir . "/require_plugin.php");
 
 // セッションハンドラ開始

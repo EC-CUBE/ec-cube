@@ -7,7 +7,7 @@
 
 // {{{ requires
 require_once(CLASS_PATH . "pages/LC_Page.php");
-require_once(CLASS_PATH . "helper_extends/SC_Helper_FileManager_Ex.php");
+require_once(CLASS_EX_PATH . "helper_extends/SC_Helper_FileManager_Ex.php");
 
 /**
  * ファイル管理 のページクラス.

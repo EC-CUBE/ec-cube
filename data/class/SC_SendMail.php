@@ -246,4 +246,9 @@ class SC_SendMail {
 	}
 }
 
+if(file_exists(MODULE2_PATH . "module_inc.php")) {
+	
+} else {
+	
+}
 ?>

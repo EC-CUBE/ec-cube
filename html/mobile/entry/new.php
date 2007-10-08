@@ -11,7 +11,7 @@
 
 // {{{ requires
 require_once("../require.php");
-require_once(CLASS_PATH . "page_extends/entry/LC_Page_Entry_New_Ex.php");
+require_once(CLASS_EX_PATH . "page_extends/entry/LC_Page_Entry_New_Ex.php");
 
 // }}}
 // {{{ generate page

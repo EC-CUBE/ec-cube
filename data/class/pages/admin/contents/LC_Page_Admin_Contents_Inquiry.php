@@ -143,7 +143,7 @@ class LC_Page_Admin_Contents_Inquiry extends LC_Page {
             $this->reload();
 
         } elseif ( ( $_GET['mode'] == 'csv' ) && ( SC_Utils_Ex::sfCheckNumLength($_GET['question_id']) ) ){
-            require_once(CLASS_PATH . "helper_extends/SC_Helper_CSV_Ex.php");
+            require_once(CLASS_EX_PATH . "helper_extends/SC_Helper_CSV_Ex.php");
 
             $objCSV = new SC_Helper_CSV_Ex();
             $head = SC_Utils_Ex::sfGetCSVList($this->arrCVSTITLE);

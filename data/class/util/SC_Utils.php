@@ -110,7 +110,7 @@ class SC_Utils {
     /* エラーページの表示 */
     function sfDispError($type) {
 
-        require_once(CLASS_PATH . "page_extends/error/LC_Page_Error_DispError_Ex.php");
+        require_once(CLASS_EX_PATH . "page_extends/error/LC_Page_Error_DispError_Ex.php");
 
         $objPage = new LC_Page_Error_DispError_Ex();
         $objPage->init();

@@ -7,7 +7,7 @@
 
 // {{{ requires
 require_once("../require.php");
-require_once(CLASS_PATH . "page_extends/admin/app/LC_Page_Admin_App_Settings_Ex.php");
+require_once(CLASS_EX_PATH . "page_extends/admin/app/LC_Page_Admin_App_Settings_Ex.php");
 
 // }}}
 // {{{ generate page

@@ -6,7 +6,7 @@
  */
 
 // {{{ requires
-require_once(CLASS_PATH . "page_extends/frontparts/bloc/LC_Page_FrontParts_Bloc_Category_Ex.php");
+require_once(CLASS_EX_PATH . "page_extends/frontparts/bloc/LC_Page_FrontParts_Bloc_Category_Ex.php");
 
 // }}}
 // {{{ generate page
