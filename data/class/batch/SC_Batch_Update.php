@@ -27,7 +27,7 @@ class SC_Batch_Update extends SC_Batch {
     /**
      * 除外するファイル名をカンマ区切りで羅列.
      */
-    var $excludes = "distinfo.php";
+    var $excludes = "distinfo.php,update.php";
 
     /**
      * バッチ処理を実行する.
@@ -38,7 +38,7 @@ class SC_Batch_Update extends SC_Batch {
     function execute($target = ".") {
         $includeArray = explode(',', $this->includes);
         $excludeArray = explode(',', $this->excludes);
-        $fileArrays = listdirs($target);
+        $fileArrays = $this->listdirs($target);
 
         foreach ($fileArrays as $path) {
             if (is_file($path)) {
@@ -54,7 +54,7 @@ class SC_Batch_Update extends SC_Batch {
 
                 // distinfo.php を読み込む
                 if ($fileName == "distinfo.php") {
-                    @include_once($fileName);
+                    include_once($fileName);
                 }
 
                 // 除外ファイルをスキップ
@@ -119,7 +119,7 @@ class SC_Batch_Update extends SC_Batch {
         if (count($dirs) > 0) {
             foreach ($dirs as $d) $alldirs[] = $d;
         }
-        foreach ($dirs as $dir) listdirs($dir);
+        foreach ($dirs as $dir) $this->listdirs($dir);
         return $alldirs;
     }
 }
