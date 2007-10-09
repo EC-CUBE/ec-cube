@@ -1715,8 +1715,8 @@ function sfSendTemplateMail($to, $to_name, $template_id, $objPage) {
  * 受注完了メールの送信
  *
  * template_idに対応するsend_typeが
- * 0ならPC用メール,
- * 1ならモバイル用メール
+ * 1ならPC用メール,
+ * 2ならモバイル用メール
  * を送信する
  */
 function sfSendOrderMail($order_id, $template_id, $subject = "", $body = "", $send = true) {
