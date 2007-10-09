@@ -185,21 +185,10 @@ class LC_Page {
      * @param mixed $useSSL 結果に SSL_URL を使用する場合 true,
      * 				           SITE_URL を使用する場合 false,
      * 						   デフォルト "escape" 現在のスキーマを使用
-     * @param string $documentRoot DocumentRoot の文字列. 指定しない場合は,
-     *                              $_SERVER['DOCUMENT_ROOT'] が付与される.
      * @return string $path の存在する http(s):// から始まる絶対パス
      * @see Net_URL
      */
-    function getLocation($path, $param = array(), $useSSL = "escape", $documentRoot = "") {
-
-        // TODO $_SERVER['DOCUMENT_ROOT'] をインストーラでチェックする.
-        if (empty($documentRoot)) {
-            $documentRoot = $_SERVER['DOCUMENT_ROOT'];
-
-            if (empty($documentRoot)) {
-                die("[BUG] can't get DOCUMENT_ROOT");
-            }
-        }
+    function getLocation($path, $param = array(), $useSSL = "escape") {
 
         // $path が / で始まっている場合
         if (substr($path, 0, 1) == "/") {
@@ -215,10 +204,8 @@ class LC_Page {
             $realPath = str_replace("\\", "/", $realPath);
         }
 
-        // DocumentRoot を削除した文字列を取得.
-        $root = str_replace($documentRoot, "", $realPath);
-        // 先頭の / を削除
-        $root = substr_replace($root, "", 0, 1);
+        // HTML_PATH を削除した文字列を取得.
+        $root = str_replace(HTML_PATH, "", $realPath);
 
         // スキーマを定義
         if ($useSSL === true) {
