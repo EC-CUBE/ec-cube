@@ -4,30 +4,16 @@
  *
  * http://www.lockon.co.jp/
  */
-require_once("../require.php");
 
-class LC_Page {
-	function LC_Page() {
-		$this->tpl_mainpage = 'order/mail_view.tpl';
-	}
-}
+// {{{ requires
+require_once("../../require.php");
+require_once(CLASS_EX_PATH . "page_extends/admin/order/LC_Page_Admin_Order_MailView_Ex.php");
 
-$objPage = new LC_Page();
-$objView = new SC_AdminView();
-$objSess = new SC_Session();
+// }}}
+// {{{ generate page
 
-// 認証可否の判定
-sfIsSuccess($objSess);
-
-if(sfIsInt($_GET['send_id'])) {
-	$objQuery = new SC_Query();
-	$col = "subject, mail_body";
-	$where = "send_id = ?";
-	$arrRet = $objQuery->select($col, "dtb_mail_history", $where, array($_GET['send_id']));
-	$objPage->tpl_subject = $arrRet[0]['subject'];
-	$objPage->tpl_body = $arrRet[0]['mail_body'];
-}
-
-$objView->assignobj($objPage);
-$objView->display($objPage->tpl_mainpage);
-//-----------------------------------------------------------------------------------------------------------------------------------
+$objPage = new LC_Page_Admin_Order_MailView_Ex();
+$objPage->init();
+$objPage->process();
+register_shutdown_function(array($objPage, "destroy"));
+?>
