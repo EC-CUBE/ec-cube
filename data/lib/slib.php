@@ -1678,7 +1678,10 @@ function sfMultiply($num1, $num2) {
     return ($num1 * $num2);
 }
 
-/* DBに登録されたテンプレートメールの送信 */
+/**
+ * DBに登録されたテンプレートメールの送信
+ * ※現在は使用しない関数
+ */
 function sfSendTemplateMail($to, $to_name, $template_id, $objPage) {
     global $arrMAILTPLPATH;
     $objQuery = new SC_Query();
@@ -1708,8 +1711,13 @@ function sfSendTemplateMail($to, $to_name, $template_id, $objPage) {
 }
 
 /**
- *  受注完了メール送信
- *  要修正(trac #172)
+ *
+ * 受注完了メールの送信
+ *
+ * template_idに対応するsend_typeが
+ * 0ならPC用メール,
+ * 1ならモバイル用メール
+ * を送信する
  */
 function sfSendOrderMail($order_id, $template_id, $subject = "", $body = "", $send = true) {
     global $arrMAILTPLPATH;
@@ -1721,12 +1729,15 @@ function sfSendOrderMail($order_id, $template_id, $subject = "", $body = "", $se
 
     $objQuery = new SC_Query();
 
+    $where = "template_id = ?";
+    $arrTemplate = $objQuery->select("subject, body, send_type", "dtb_mailtemplate", $where, array($template_id));
+    // send_typeを取得
+    $send_type = $arrTemplate[0]['send_type'];
+
     if($subject == "" && $body == "" ) {
         // メールテンプレート情報の取得
-        $where = "template_id = ?";
-        $arrRet = $objQuery->select("subject, body", "dtb_mailtemplate", $where, array($template_id));
-        $objPage->tpl_body = $arrRet[0]['body'];
-        $tmp_subject = $arrRet[0]['subject'];
+        $objPage->tpl_body = $arrTemplate[0]['body'];
+        $tmp_subject = $arrTemplate[0]['subject'];
     } else {
         $objPage->tpl_body = $body;
         $tmp_subject = $subject;
@@ -1770,6 +1781,7 @@ function sfSendOrderMail($order_id, $template_id, $subject = "", $body = "", $se
     $objPage->tpl_user_point = $objCustomer->getValue('point');
 
     $objMailView = new SC_SiteView();
+
     // メール本文の取得
     $objMailView->assignobj($objPage);
 
@@ -1778,7 +1790,7 @@ function sfSendOrderMail($order_id, $template_id, $subject = "", $body = "", $se
     $tmp_subject = ereg_replace( "(\{name\})", $name ,  $tmp_subject );
 
     // 受注動的部分を取得
-    $body = $objMailView->fetch($arrMAILTPLPATH[$template_id]);
+    $body = $objMailView->fetch($arrMAILTPLPATH[$send_type]);
     $body = ereg_replace( "(\{order\})", $body ,  $objPage->tpl_body );
 
     // メール送信処理
@@ -1801,7 +1813,10 @@ function sfSendOrderMail($order_id, $template_id, $subject = "", $body = "", $se
     return $objSendMail;
 }
 
-// テンプレートを使用したメールの送信
+/**
+ * テンプレートを使用したメールの送信
+ * ※現在は使用しない関数
+ */
 function sfSendTplMail($to, $subject, $tplpath, $objPage) {
     $objMailView = new SC_SiteView();
     $objSiteInfo = new SC_SiteInfo();

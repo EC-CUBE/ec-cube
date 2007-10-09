@@ -1,10 +1,10 @@
 <?php
 /**
- * 
+ *
  * Copyright(c) 2000-2007 LOCKON CO.,LTD. All Rights Reserved.
  *
  * http://www.lockon.co.jp/
- * 
+ *
  */
 require_once("../require.php");
 
@@ -26,7 +26,7 @@ class LC_Page {
 		 「戻る」ボタン使用時の有効期限切れ表示を抑制する。
 		 private-no-expire:クライアントのキャッシュを許可する。
 		*/
-		session_cache_limiter('private-no-expire');		
+		session_cache_limiter('private-no-expire');
 
 	}
 }
@@ -45,25 +45,25 @@ sfIsPrePage($objSiteSess, true);
 // ユーザユニークIDの取得と購入状態の正当性をチェック
 $uniqid = sfCheckNormalAccess($objSiteSess, $objCartSess);
 if ($uniqid != "") {
-	
+
 	// 完了処理
 	$objQuery = new SC_Query();
 	$objQuery->begin();
 	$order_id = lfDoComplete($objQuery, $uniqid);
 	$objQuery->commit();
-	
+
 	// セッションに保管されている情報を更新する
 	$objCustomer->updateSession();
 
 	// 完了メール送信 4は携帯版
 	if($order_id != "") {
 		$order_email = $objQuery->select("order_email", "dtb_order", "order_id = ?", array($order_id));
-    
+
     //登録されているメールアドレスが携帯かPCかに応じて注文完了メールのテンプレートを変える
     if(ereg("(ezweb.ne.jp$|docomo.ne.jp$|softbank.ne.jp$|vodafone.ne.jp$)",$order_email[0]['order_email'])){
-              sfSendOrderMail($order_id, '1', '', '');
+              sfSendOrderMail($order_id, '2', '', '');
         }else{
-              sfSendOrderMail($order_id, '0', '', '');
+              sfSendOrderMail($order_id, '1', '', '');
         }
 	}
 
@@ -71,7 +71,7 @@ if ($uniqid != "") {
 	$other_data = $objQuery->get("dtb_order", "memo02", "order_id = ? ", array($order_id));
 	if($other_data != "") {
 		$arrOther = unserialize($other_data);
-		
+
 		// データを編集
 		foreach($arrOther as $key => $val){
 			// URLの場合にはリンクつきで表示させる
@@ -79,11 +79,11 @@ if ($uniqid != "") {
 				$arrOther[$key]["value"] = "<a href='#' onClick=\"window.open('". $val["value"] . "'); \" >" . $val["value"] ."</a>";
 			}
 		}
-				
+
 		$objPage->arrOther = $arrOther;
-		
+
 	}
-	
+
 	// アフィリエイト用コンバージョンタグの設定
 	$objPage->tpl_conv_page = AFF_SHOPPING_COMPLETE;
 	$objPage->tpl_aff_option = "order_id=$order_id";
@@ -104,7 +104,7 @@ function lfGetEbisData($order_id) {
 	$objQuery = new SC_Query();
 	$col = "customer_id, total, order_sex, order_job, to_number(to_char(age(current_timestamp, order_birth), 'YYY'), 999) AS order_age";
 	$arrRet = $objQuery->select($col, "dtb_order", "order_id = ?", array($order_id));
-	
+
 	if($arrRet[0]['customer_id'] > 0) {
 		// 会員番号
 		$arrEbis['m1id'] = $arrRet[0]['customer_id'];
@@ -114,9 +114,9 @@ function lfGetEbisData($order_id) {
 		// 会員番号
 		$arrEbis['m1id'] = '';
 		// 非会員or会員
-		$arrEbis['o5id'] = '2';	
+		$arrEbis['o5id'] = '2';
 	}
-	
+
 	// 購入金額
 	$arrEbis['a1id'] = $arrRet[0]['total'];
 	// 性別
@@ -125,24 +125,24 @@ function lfGetEbisData($order_id) {
 	$arrEbis['o3id'] = $arrRet[0]['order_age'];
 	// 職業
 	$arrEbis['o4id'] = $arrRet[0]['order_job'];
-		
+
 	$objQuery->setgroupby("product_id");
 	$arrRet = $objQuery->select("product_id", "dtb_order_detail", "order_id = ?", array($order_id));
 	$arrProducts = sfSwapArray($arrRet);
-	
+
 	$line = "";
 	// 商品IDをアンダーバーで接続する。
 	foreach($arrProducts['product_id'] as $val) {
 		if($line != "") {
-			$line .= "_$val";		
+			$line .= "_$val";
 		} else {
 			$line .= "$val";
 		}
 	}
-	
-	// 商品ID	
+
+	// 商品ID
 	$arrEbis['o1id'] = $line;
-	
+
 	return $arrEbis;
 }
 
@@ -152,10 +152,10 @@ function lfDoComplete($objQuery, $uniqid) {
 	global $objSiteSess;
 	global $objCustomer;
 	global $arrInfo;
-	
+
 	// 一時受注テーブルの読込
 	$arrData = sfGetOrderTemp($uniqid);
-	
+
 	// 会員情報登録処理
 	if ($objCustomer->isLoginSuccess()) {
 		// 新お届け先の登録
@@ -183,7 +183,7 @@ function lfDoComplete($objQuery, $uniqid) {
 			lfSetCustomerPurchase($customer_id, $arrData, $objQuery);
 			break;
 		}
-		
+
 	}
 	// 一時テーブルを受注テーブルに格納する
 	$order_id = lfRegistOrder($objQuery, $arrData);
@@ -191,12 +191,12 @@ function lfDoComplete($objQuery, $uniqid) {
 	lfRegistOrderDetail($objQuery, $order_id, $objCartSess);
 	// 受注一時テーブルの情報を削除する。
 	lfDeleteTempOrder($objQuery, $uniqid);
-	
+
 	// セッションカート内の商品を削除する。
 	$objCartSess->delAllProducts();
 	// 注文一時IDを解除する。
 	$objSiteSess->unsetUniqId();
-	
+
 	return $order_id;
 }
 
@@ -240,17 +240,17 @@ function lfRegistPreCustomer($arrData, $arrInfo) {
 		break;
 	}
 	$sqlval['mailmaga_flg'] = $mail_flag;
-		
+
 	// 会員仮登録
 	$sqlval['status'] = 1;
 	// URL判定用キー
-	$sqlval['secret_key'] = sfGetUniqRandomId("t"); 
-	
+	$sqlval['secret_key'] = sfGetUniqRandomId("t");
+
 	$objQuery = new SC_Query();
 	$sqlval['create_date'] = "now()";
 	$sqlval['update_date'] = "now()";
 	$objQuery->insert("dtb_customer", $sqlval);
-	
+
 	// 顧客IDの取得
 	$arrRet = $objQuery->select("customer_id", "dtb_customer", "secret_key = ?", array($sqlval['secret_key']));
 	$customer_id = $arrRet[0]['customer_id'];
@@ -261,10 +261,10 @@ function lfRegistPreCustomer($arrData, $arrInfo) {
 	$objMailPage->to_name02 = $arrData['order_name02'];
 	$objMailPage->CONF = $arrInfo;
 	$objMailPage->uniqid = $sqlval['secret_key'];
-	$objMailView = new SC_SiteView();
+	$objMailView = new SC_MobileView();
 	$objMailView->assignobj($objMailPage);
 	$body = $objMailView->fetch("/mail_templates/customer_mail.tpl");
-	
+
 	$objMail = new GC_SendMail();
 	$objMail->setItem(
 						''										//　宛先
@@ -280,16 +280,16 @@ function lfRegistPreCustomer($arrData, $arrInfo) {
 	// 宛先の設定
 	$name = $arrData['order_name01'] . $arrData['order_name02'] ." 様";
 	$arrData['order_email'] = $objQuery->select("email_mobile", "dtb_customer", "secret_key = ?", array($sqlval['secret_key']));
-	$objMail->setTo($arrData['order_email'], $name);			
+	$objMail->setTo($arrData['order_email'], $name);
 	$objMail->sendMail();
-	
+
 	return $customer_id;
 }
 
 // 受注一時テーブルのお届け先をコピーする
 function lfCopyDeliv($uniqid, $arrData) {
 	$objQuery = new SC_Query();
-	
+
 	// 別のお届け先を指定していない場合、配送先に登録住所をコピーする。
 	if($arrData["deliv_check"] != "1") {
 		$sqlval['deliv_name01'] = $arrData['order_name01'];
@@ -325,9 +325,9 @@ function lfRegistOrder($objQuery, $arrData) {
 
 	// 注文ステータス:指定が無ければ新規受付に設定
 	if($sqlval["status"] == ""){
-		$sqlval['status'] = '1';			
+		$sqlval['status'] = '1';
 	}
-	
+
 	// 別のお届け先を指定していない場合、配送先に登録住所をコピーする。
 	if($arrData["deliv_check"] != "1") {
 		$sqlval['deliv_name01'] = $arrData['order_name01'];
@@ -343,13 +343,13 @@ function lfRegistOrder($objQuery, $arrData) {
 		$sqlval['deliv_tel02'] = $arrData['order_tel02'];
 		$sqlval['deliv_tel03'] = $arrData['order_tel03'];
 	}
-	
+
 	$order_id = $arrData['order_id'];		// オーダーID
 	$sqlval['create_date'] = 'now()';		// 受注日
-	
+
 	// ゲットの値をインサート
 	//$sqlval = lfGetInsParam($sqlval);
-	
+
 	// INSERTの実行
 	$objQuery->insert("dtb_order", $sqlval);
 
@@ -361,7 +361,7 @@ function lfRegistOrderDetail($objQuery, $order_id, $objCartSess) {
 	// カート内情報の取得
 	$arrCart = $objCartSess->getCartList();
 	$max = count($arrCart);
-	
+
 	// 既に存在する詳細レコードを消しておく。
 	$objQuery->delete("dtb_order_detail", "order_id = $order_id");
 
@@ -369,11 +369,11 @@ function lfRegistOrderDetail($objQuery, $order_id, $objCartSess) {
 	$arrClassName = sfGetIDValueList("dtb_class", "class_id", "name");
 	// 規格分類名一覧
 	$arrClassCatName = sfGetIDValueList("dtb_classcategory", "classcategory_id", "name");
-			
+
 	for ($i = 0; $i < $max; $i++) {
-		// 商品規格情報の取得	
+		// 商品規格情報の取得
 		$arrData = sfGetProductsClass($arrCart[$i]['id']);
-		
+
 		// 存在する商品のみ表示する。
 		if($arrData != "") {
 			$sqlval['order_id'] = $order_id;
@@ -384,7 +384,7 @@ function lfRegistOrderDetail($objQuery, $order_id, $objCartSess) {
 			$sqlval['product_code'] = $arrData['product_code'];
 			$sqlval['classcategory_name1'] = $arrClassCatName[$arrData['classcategory_id1']];
 			$sqlval['classcategory_name2'] = $arrClassCatName[$arrData['classcategory_id2']];
-			$sqlval['point_rate'] = $arrCart[$i]['point_rate'];			
+			$sqlval['point_rate'] = $arrCart[$i]['point_rate'];
 			$sqlval['price'] = $arrCart[$i]['price'];
 			$sqlval['quantity'] = $arrCart[$i]['quantity'];
 			lfReduceStock($objQuery, $arrCart[$i]['id'], $arrCart[$i]['quantity']);
@@ -409,22 +409,22 @@ function lfSetNewAddr($uniqid, $customer_id) {
 	$objQuery = new SC_Query();
 	$diff = false;
 	$find_same = false;
-	
+
 	$col = "deliv_name01,deliv_name02,deliv_kana01,deliv_kana02,deliv_tel01,deliv_tel02,deliv_tel03,deliv_zip01,deliv_zip02,deliv_pref,deliv_addr01,deliv_addr02";
 	$where = "order_temp_id = ?";
 	$arrRet = $objQuery->select($col, "dtb_order_temp", $where, array($uniqid));
-	
+
 	// 要素名のdeliv_を削除する。
 	foreach($arrRet[0] as $key => $val) {
 		$keyname = ereg_replace("^deliv_", "", $key);
 		$arrNew[$keyname] = $val;
 	}
-	
+
 	// 会員情報テーブルとの比較
 	$col = "name01,name02,kana01,kana02,tel01,tel02,tel03,zip01,zip02,pref,addr01,addr02";
 	$where = "customer_id = ?";
 	$arrCustomerAddr = $objQuery->select($col, "dtb_customer", $where, array($customer_id));
-	
+
 	// 会員情報の住所と異なる場合
 	if($arrNew != $arrCustomerAddr[0]) {
 		// 別のお届け先テーブルの住所と比較する
@@ -438,12 +438,12 @@ function lfSetNewAddr($uniqid, $customer_id) {
 				$find_same = true;
 			}
 		}
-		
+
 		if(!$find_same) {
 			$diff = true;
 		}
 	}
-	
+
 	// 新しいお届け先が登録済みのものと異なる場合は別のお届け先テーブルに登録する
 	if($diff) {
 		$sqlval = $arrNew;
@@ -458,7 +458,7 @@ function lfSetCustomerPurchase($customer_id, $arrData, $objQuery) {
 	$where = "customer_id = ?";
 	$arrRet = $objQuery->select($col, "dtb_customer", $where, array($customer_id));
 	$sqlval = $arrRet[0];
-	
+
 	if($sqlval['first_buy_date'] == "") {
 		$sqlval['first_buy_date'] = "Now()";
 	}
@@ -466,13 +466,13 @@ function lfSetCustomerPurchase($customer_id, $arrData, $objQuery) {
 	$sqlval['buy_times']++;
 	$sqlval['buy_total']+= $arrData['total'];
 	$sqlval['point'] = ($sqlval['point'] + $arrData['add_point'] - $arrData['use_point']);
-	
+
 	// ポイントが不足している場合
 	if($sqlval['point'] < 0) {
 		$objQuery->rollback();
 		sfDispSiteError(LACK_POINT);
 	}
-	
+
 	$objQuery->update("dtb_customer", $sqlval, $where, array($customer_id));
 }
 
@@ -480,7 +480,7 @@ function lfSetCustomerPurchase($customer_id, $arrData, $objQuery) {
 function lfReduceStock($objQuery, $arrID, $quantity) {
 	$where = "product_id = ? AND classcategory_id1 = ? AND classcategory_id2 = ?";
 	$arrRet = $objQuery->select("stock, stock_unlimited", "dtb_products_class", $where, $arrID);
-	
+
 	// 売り切れエラー
 	if(($arrRet[0]['stock_unlimited'] != '1' && $arrRet[0]['stock'] < $quantity) || $quantity == 0) {
 		$objQuery->rollback();
@@ -494,19 +494,19 @@ function lfReduceStock($objQuery, $arrID, $quantity) {
 		$sqlval['stock'] = ($arrRet[0]['stock'] - $quantity);
 		if($sqlval['stock'] == "") {
 			$sqlval['stock'] = '0';
-		}		
+		}
 		$objQuery->update("dtb_products_class", $sqlval, $where, $arrID);
 	}
 }
 
 // GETの値をインサート用に整える
 function lfGetInsParam($sqlVal){
-	
+
 	foreach($_GET as $key => $val){
 		// カラムの存在チェック
 		if(sfColumnExists("dtb_order", $key)) $sqlVal[$key] = $val;
 	}
-	
+
 	return $sqlVal;
 }
 
