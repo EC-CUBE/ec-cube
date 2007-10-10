@@ -12,6 +12,12 @@ if (!defined("CLASS_PATH")) {
     /** クラスパス */
     define("CLASS_PATH", $include_dir . "/.." . HTML2DATA_DIR . "class/");
 }
+
+if (!defined("CLASS_EX_PATH")) {
+    /** クラスパス */
+    define("CLASS_EX_PATH", $include_dir . HTML2DATA_DIR . "class_extends/");
+}
+
 require_once($include_dir . "/.." . HTML2DATA_DIR . "conf/conf.php");
 require_once($include_dir . "/.." . HTML2DATA_DIR . "conf/mobile_conf.php");
 require_once($include_dir . "/.." . HTML2DATA_DIR . "include/module.inc");
