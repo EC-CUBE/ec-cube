@@ -49,7 +49,8 @@ class LC_Page_Regist extends LC_Page {
         $objView = new SC_SiteView();
         $objSiteInfo = $objView->objSiteInfo;
         $objCustomer = new SC_Customer();
-        $this->CONF = SC_Utils_Ex::sf_getBasisData();
+        $objDb = new SC_Helper_DB_Ex();
+        $this->CONF = $objDb->sf_getBasisData();
         $this->arrInfo = $objSiteInfo->data;
 
         // キャンペーンからの登録の場合の処理
@@ -61,15 +62,13 @@ class LC_Page_Regist extends LC_Page {
         if ($_GET["mode"] == "regist") {
 
             //-- 入力チェック
-            $this->arrErr = lfErrorCheck($_GET);
+            $this->arrErr = $this->lfErrorCheck($_GET);
             if ($this->arrErr) {
                 $this->tpl_mainpage = 'regist/error.tpl';
                 $this->tpl_css = "/css/layout/regist/error.css";
                 $this->tpl_title = 'エラー';
 
             } else {
-                //$this->tpl_mainpage = 'regist/complete.tpl';
-                //$this->tpl_title = ' 会員登録(完了ページ)';
                 $registSecretKey = $this->lfRegistData($_GET);			//本会員登録（フラグ変更）
                 $this->lfSendRegistMail($registSecretKey);				//本会員登録完了メール送信
 
@@ -81,6 +80,68 @@ class LC_Page_Regist extends LC_Page {
             }
 
         //--　それ以外のアクセスは無効とする
+        } else {
+            $this->arrErr["id"] = "無効なアクセスです。";
+            $this->tpl_mainpage = 'regist/error.tpl';
+            $this->tpl_css = "/css/layout/regist/error.css";
+            $this->tpl_title = 'エラー';
+
+        }
+
+        //----　ページ表示
+        $objView->assignobj($this);
+        $objView->display(SITE_FRAME);
+    }
+
+
+    /**
+     * モバイルページを初期化する.
+     *
+     * @return void
+     */
+    function mobileInit() {
+    }
+
+    /**
+     * Page のプロセス(モバイル).
+     *
+     * @return void
+     */
+    function mobileProcess() {
+        $objConn = new SC_DBConn();
+        $objView = new SC_MobileView();
+        $objSiteInfo = $objView->objSiteInfo;
+        $objCustomer = new SC_Customer();
+        $objDb = new SC_Helper_DB_Ex();
+        $this->CONF = $objDb->sf_getBasisData();
+        $arrInfo = $objSiteInfo->data;
+
+        //--　本登録完了のためにメールから接続した場合
+        if ($_GET["mode"] == "regist") {
+	
+            //-- 入力チェック
+            $this->arrErr = lfErrorCheck($_GET);
+            if ($this->arrErr) {
+                $this->tpl_mainpage = 'regist/error.tpl';
+                $this->tpl_css = "/css/layout/regist/error.css";
+                $this->tpl_title = 'エラー';
+
+            } else {
+                //$this->tpl_mainpage = 'regist/complete.tpl';
+                //$this->tpl_title = ' 会員登録(完了ページ)';
+                $registSecretKey = lfRegistData($_GET);			//本会員登録（フラグ変更）
+                lfSendRegistMail($registSecretKey);				//本会員登録完了メール送信
+
+                // ログイン済みの状態にする。
+                $objQuery = new SC_Query();
+                $email = $objQuery->get("dtb_customer", "email", "secret_key = ?", array($registSecretKey));
+                $objCustomer->setLogin($email);
+                $this->sendRedirect($this->getLocation("./complete.php"));
+                header("Location: " . gfAddSessionId("./complete.php"));
+                exit;
+            }
+
+            //--　それ以外のアクセスは無効とする
         } else {
             $this->arrErr["id"] = "無効なアクセスです。";
             $this->tpl_mainpage = 'regist/error.tpl';
