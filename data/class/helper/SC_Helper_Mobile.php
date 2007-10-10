@@ -414,8 +414,8 @@ class SC_Helper_Mobile {
      * @return boolean 携帯のメールアドレスの場合はtrue、それ以外の場合はfalseを返す。
      */
     function gfIsMobileMailAddress($address) {
-        // pdx.ne.jp(ウィルコム)追加
-        $arrMobileMailDomains = array('docomo.ne.jp', 'ezweb.ne.jp', 'softbank.ne.jp', 'vodafone.ne.jp', 'pdx.ne.jp');
+        $masterData = new SC_DB_MasterData_Ex();
+        $arrMobileMailDomains = $masterData->getMasterData("mtb_mobile_domain");
 
         if (defined('MOBILE_ADDITIONAL_MAIL_DOMAINS')) {
             $arrMobileMailDomains = array_merge($arrMobileMailDomains, split('[ ,]+', MOBILE_ADDITIONAL_MAIL_DOMAINS));
