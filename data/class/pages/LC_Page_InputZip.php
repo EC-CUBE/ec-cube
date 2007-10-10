@@ -53,17 +53,22 @@ class LC_Page_InputZip extends LC_Page {
         $sqlse = "SELECT state, city, town FROM mtb_zip WHERE zipcode = ?";
 
         $data_list = $conn->getAll($sqlse, array($zipcode));
-        if (empty($data_list)) $data_list = "";
+        if (empty($data_list)) $data_list = array();
 
         $masterData = new SC_DB_MasterData_Ex();
         $arrPref = $masterData->getMasterData("mtb_pref", array("pref_id", "pref_name", "rank"));
         // インデックスと値を反転させる。
         $arrREV_PREF = array_flip($arrPref);
 
-        $this->tpl_state = isset($arrREV_PREF[$data_list[0]['state']])
-            ? $arrREV_PREF[$data_list[0]['state']] : "";
-        $this->tpl_city = isset($data_list[0]['city']) ? $data_list[0]['city'] : "";
-        $town =  isset($data_list[0]['town']) ? $data_list[0]['town'] : "";
+        if (!empty($data_list)) {
+            $this->tpl_state = isset($arrREV_PREF[$data_list[0]['state']])
+                ? $arrREV_PREF[$data_list[0]['state']] : "";
+            $this->tpl_city = isset($data_list[0]['city']) ? $data_list[0]['city'] : "";
+            $town =  isset($data_list[0]['town']) ? $data_list[0]['town'] : "";
+        } else {
+            $town = "";
+        }
+
         /*
          総務省からダウンロードしたデータをそのままインポートすると
          以下のような文字列が入っているので	対策する。
