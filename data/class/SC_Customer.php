@@ -146,13 +146,15 @@ class SC_Customer {
      * @return void
      */
     function updateEmailMobile() {
+
+        $objMobile = new SC_Helper_Mobile_Ex();
         // すでに email_mobile に値が入っている場合は何もしない。
         if ($this->customer_data['email_mobile'] != '') {
             return;
         }
 
         // email が携帯のメールアドレスではない場合は何もしない。
-        if (!gfIsMobileMailAddress($this->customer_data['email'])) {
+        if (!$objMobile->gfIsMobileMailAddress($this->customer_data['email'])) {
             return;
         }
 
