@@ -81,6 +81,14 @@
         </td>
       </tr>
       <tr>
+        <th>携帯メールアドレス</th>
+        <td>
+          <input type="text" name="email_mobile" value="<!--{$arrForm.email_mobile}-->" style="<!--{$arrErr.email_mobile|sfGetErrorColor}-->; ime-mode: disabled;" maxlength="<!--{$smarty.const.MTEXT_LEN}-->" size="40" class="box300" /><div class="attention"><!--{$arrErr.email_mobile}--></div><br />
+          <input type="text" name="email_mobile02" value="<!--{if $arrForm.email_mobile02 == ""}--><!--{$arrForm.email_mobile}--><!--{else}--><!--{$arrForm.email_mobile02}--><!--{/if}-->" style="<!--{$arrErr.email_mobile02|sfGetErrorColor}-->; ime-mode: disabled;" maxlength="<!--{$smarty.const.MTEXT_LEN}-->" size="40" class="box300" /><div class="attention"><!--{$arrErr.email_mobile02}--></div><br />
+          <p class="mini"><em>確認のため2度入力してください。</em></p>
+        </td>
+      </tr>
+      <tr>
         <th>性別<span class="attention">※</span></th>
         <td>
           <input type="radio" id="man" name="sex" value="1" style="<!--{$arrErr.sex|sfGetErrorColor}-->" <!--{if $arrForm.sex eq 1}--> checked="checked" <!--{/if}--> /><label for="man">男性</label>

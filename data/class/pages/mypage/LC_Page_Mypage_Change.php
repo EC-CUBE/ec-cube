@@ -17,6 +17,7 @@ require_once(CLASS_PATH . "pages/LC_Page.php");
  */
 class LC_Page_Mypage_Change extends LC_Page {
 
+
     // }}}
     // {{{ functions
 
@@ -88,6 +89,7 @@ class LC_Page_Mypage_Change extends LC_Page {
                                  array(  "column" => "addr01",      "convert" => "aKV" ),
                                  array(  "column" => "addr02",      "convert" => "aKV" ),
                                  array(  "column" => "email",       "convert" => "a" ),
+                                 array(  "column" => "email_mobile", "convert" => "a" ),
                                  array(  "column" => "tel01",       "convert" => "n" ),
                                  array(  "column" => "tel02",       "convert" => "n" ),
                                  array(  "column" => "tel03",       "convert" => "n" ),
@@ -103,28 +105,18 @@ class LC_Page_Mypage_Change extends LC_Page {
                                  array(  "column" => "mailmaga_flg", "convert" => "n" )
                                  );
 
+        //メールアドレス種別
+        $arrMailType = array("email" => true, "email_mobile" => true);
+
         if (!isset($_POST['mode'])) $_POST['mode'] = "";
 
         switch ($_POST['mode']){
 
         case 'confirm':
-            //-- 入力データの変換
-            $this->arrForm = $_POST;
-            $this->arrForm = $this->lfConvertParam($this->arrForm, $arrRegistColumn);
-            $this->arrForm['email'] = strtolower($this->arrForm['email']);      // emailはすべて小文字で処理
 
-            //エラーチェック
-            $this->arrErr = $this->lfErrorCheck($this->arrForm);
-            $email_flag = true;
-            //メールアドレスを変更している場合、メールアドレスの重複チェック
-            if ($this->arrForm['email'] != $this->objCustomer->getValue('email')){
-                $email_cnt = $this->objQuery->count("dtb_customer","del_flg=0 AND email=?", array($this->arrForm['email']));
-                if ($email_cnt > 0){
-                    $email_flag = false;
-                }
-            }
             //エラーなしでかつメールアドレスが重複していない場合
-            if ($this->arrErr == "" && $email_flag == true){
+            if ($this->checkErrorTotal($arrRegistColumn, $arrMailType)) {
+
                 //確認ページへ
                 $this->tpl_mainpage = TEMPLATE_DIR . 'mypage/change_confirm.tpl';
                 $this->tpl_title = 'MYページ/会員登録内容変更(確認ページ)';
@@ -132,11 +124,8 @@ class LC_Page_Mypage_Change extends LC_Page {
                 $this->passlen = $this->lfPassLen($passlen);
             } else {
                 $this->lfFormReturn($this->arrForm,$this);
-                if ($email_flag == false){
-                    $this->arrErr['email'].="既に使用されているメールアドレスです。";
-                }
             }
-            //}
+
             break;
 
         case 'return':
@@ -145,27 +134,12 @@ class LC_Page_Mypage_Change extends LC_Page {
             break;
 
         case 'complete':
-
-            //-- 入力データの変換
-            $arrForm = $this->lfConvertParam($_POST, $arrRegistColumn);
-            $arrForm['email'] = strtolower($arrForm['email']);      // emailはすべて小文字で処理
-
-            //エラーチェック
-            $this->arrErr = $this->lfErrorCheck($arrForm);
-            $email_flag = true;
-            if($arrForm['email'] != $this->objCustomer->getValue('email')) {
-                //メールアドレスの重複チェック
-                $email_cnt = $this->objQuery->count("dtb_customer","del_flg=0 AND email=?", array($arrForm['email']));
-                if ($email_cnt > 0){
-                    $email_flag = false;
-                }
-            }
             //エラーなしでかつメールアドレスが重複していない場合
-            if($this->arrErr == "" && $email_flag) {
-                $arrForm['customer_id'] = $this->objCustomer->getValue('customer_id');
+            if ($this->checkErrorTotal($arrRegistColumn, $arrMailType)) {
+                $this->arrForm['customer_id'] = $this->objCustomer->getValue('customer_id');
                 //-- 編集登録
                 $objDb = new SC_Helper_DB_Ex();
-                $objDb->sfEditCustomerData($arrForm, $arrRegistColumn);
+                $objDb->sfEditCustomerData($this->arrForm, $arrRegistColumn);
                 //セッション情報を最新の状態に更新する
                 $this->objCustomer->updateSession();
                 //完了ページへ
@@ -219,7 +193,10 @@ class LC_Page_Mypage_Change extends LC_Page {
         $objView = new SC_MobileView();
         $objDate = new SC_Date(START_BIRTH_YEAR, date("Y",strtotime("now")));
         $objQuery = new SC_Query();
-        $objCustomer = new SC_Customer();
+        $this->objCustomer = new SC_Customer();
+
+        //メールアドレス種別
+        $arrMailType = array("email" => true, "email_mobile" => true);
 
         //---- 登録用カラム配列
         $arrRegistColumn = array(
@@ -252,7 +229,7 @@ class LC_Page_Mypage_Change extends LC_Page {
         //---- 登録除外用カラム配列
         $arrRejectRegistColumn = array("year", "month", "day", "email02", "email_mobile02", "password02");
 
-        $this->arrForm = lfGetCustomerData();
+        $this->arrForm = $this->lfGetCustomerData();
         $this->arrForm['password'] = DEFAULT_PASSWORD;
 
         if ($_SERVER["REQUEST_METHOD"] == "POST") {
@@ -364,7 +341,7 @@ class LC_Page_Mypage_Change extends LC_Page {
 
                 //--　仮登録と完了画面
                 if ($_POST["mode"] == "complete") {
-
+                    /*
                     //-- 入力データの変換
                     $arrForm = $this->lfConvertParam($_POST, $arrRegistColumn);
                     $arrForm['email'] = strtolower($arrForm['email']);		// emailはすべて小文字で処理
@@ -380,14 +357,14 @@ class LC_Page_Mypage_Change extends LC_Page {
                             $email_flag = false;
                         }
                     }
-
+                    */
                     //エラーなしでかつメールアドレスが重複していない場合
-                    if($this->arrErr == "" && $email_flag) {
-                        $arrForm['customer_id'] = $objCustomer->getValue('customer_id');
+                    if($this->checkErrorTotal($arrRegistColumn, $arrMailType, true)) {
+                        $this->arrForm['customer_id'] = $this->objCustomer->getValue('customer_id');
                         //-- 編集登録
                         $objDb->sfEditCustomerData($arrForm, $arrRegistColumn);
                         //セッション情報を最新の状態に更新する
-                        $objCustomer->updateSession();
+                        $this->objCustomer->updateSession();
                         //完了ページへ
                         $this->sendRedirect($this->getLocation("./change_complete.php", array(session_name(), session_id())));
                         exit;
@@ -415,6 +392,59 @@ class LC_Page_Mypage_Change extends LC_Page {
      */
     function destroy() {
         parent::destroy();
+    }
+
+    /**
+     * すべてのエラーチェックを行う.
+     *
+     * @param array $arrRegistColumn 登録カラムの配列
+     * @param array $arrMailType メール種別とフラグを格納した配列
+     * @param bool $isMobile モバイル版登録チェックの場合 true
+     * @return bool エラーの無い場合 true
+     */
+    function checkErrorTotal(&$arrRegistColumn, &$arrMailType, $isMobile = false) {
+        //-- 入力データの変換
+        $this->arrForm = $_POST;
+        $this->arrForm = $this->lfConvertParam($this->arrForm, $arrRegistColumn);
+
+        // emailはすべて小文字で処理
+        foreach ($arrMailType as $mailType) {
+            if (!isset($this->arrForm[$mailType])) {
+                $this->arrForm[$mailType] = "";
+            }
+            $this->arrForm[$mailType] = strtolower($this->arrForm[$mailType]);
+        }
+
+        //エラーチェック
+        $this->arrErr = $isMobile
+            ? $this->lfErrorCheckMobile($this->arrForm)
+            : $this->lfErrorCheck($this->arrForm);
+
+        //メールアドレスを変更している場合、メールアドレスの重複チェック
+        $arrMailType2 = $arrMailType;
+        foreach ($arrMailType as $mailType => $mailTypeValue) {
+
+            if ($this->arrForm[$mailType]
+                != $this->objCustomer->getValue($mailType)){
+
+                $email_cnt = $this->objQuery->count("dtb_customer",
+                                 "del_flg=0 AND " . $mailType . "= ?",
+                                  array($this->arrForm[$mailType]));
+                if ($email_cnt > 0){
+                    $arrMailType2[$mailTypeValue] = false;
+                    $this->arrErr[$mailType] .= "既に使用されているメールアドレスです。";
+                }
+            }
+        }
+
+        // エラーが存在せず, メールアドレスの重複が無い場合は true
+        if (empty($this->arrErr)
+            && $arrMailType2['email'] == true
+            && $arrMailType2['email_mobile'] == true) {
+            return true;
+        } else {
+            return false;
+        }
     }
 
     /* パラメータ情報の初期化 */
@@ -451,6 +481,9 @@ class LC_Page_Mypage_Change extends LC_Page {
         $objErr->doFunc(array('メールアドレス', "email", MTEXT_LEN) ,array("EXIST_CHECK", "EMAIL_CHECK", "NO_SPTAB" ,"EMAIL_CHAR_CHECK", "MAX_LENGTH_CHECK"));
         $objErr->doFunc(array('メールアドレス(確認)', "email02", MTEXT_LEN) ,array("EXIST_CHECK", "EMAIL_CHECK","NO_SPTAB" , "EMAIL_CHAR_CHECK", "MAX_LENGTH_CHECK"));
         $objErr->doFunc(array('メールアドレス', 'メールアドレス(確認)', "email", "email02") ,array("EQUAL_CHECK"));
+        $objErr->doFunc(array('携帯メールアドレス', "email_mobile", MTEXT_LEN) ,array("EXIST_CHECK", "EMAIL_CHECK", "NO_SPTAB" ,"EMAIL_CHAR_CHECK", "MAX_LENGTH_CHECK", "MOBILE_DOMAIN_CHECK"));
+        $objErr->doFunc(array('携帯メールアドレス(確認)', "email_mobile02", MTEXT_LEN) ,array("EXIST_CHECK", "EMAIL_CHECK","NO_SPTAB" , "EMAIL_CHAR_CHECK", "MAX_LENGTH_CHECK", "MOBILE_DOMAIN_CHECK"));
+        $objErr->doFunc(array('携帯メールアドレス', '携帯メールアドレス(確認)', "email_mobile", "email_mobile02") ,array("EQUAL_CHECK"));
         $objErr->doFunc(array("お電話番号1", 'tel01'), array("EXIST_CHECK","SPTAB_CHECK"));
         $objErr->doFunc(array("お電話番号2", 'tel02'), array("EXIST_CHECK","SPTAB_CHECK"));
         $objErr->doFunc(array("お電話番号3", 'tel03'), array("EXIST_CHECK","SPTAB_CHECK"));
@@ -665,7 +698,7 @@ class LC_Page_Mypage_Change extends LC_Page {
         $array["customer_id"] = $objCustomer->getValue('customer_id');
         if (strlen($array["email"]) > 0) {
             $objQuery = new SC_Query();
-            $arrRet = $objQuery->select("email, update_date, del_flg", "dtb_customer","customer_id <> ? and (email ILIKE ? OR email_mobile ILIKE ?) ORDER BY del_flg", array($array["customer_id"], $array["email"], $array["email"]));
+            $arrRet = $objQuery->select("email, update_date, del_flg", "dtb_customer","customer_id <> ? and (email = ? OR email_mobile = ?) ORDER BY del_flg", array($array["customer_id"], $array["email"], $array["email"]));
 
             if(count($arrRet) > 0) {
                 if($arrRet[0]['del_flg'] != '1') {
@@ -673,7 +706,7 @@ class LC_Page_Mypage_Change extends LC_Page {
                     $objErr->arrErr["email"] .= "※ すでに会員登録で使用されているメールアドレスです。<br />";
                 } else {
                     // 退会した会員である場合
-                    $leave_time = sfDBDatetoTime($arrRet[0]['update_date']);
+                    $leave_time = SC_Utils_Ex::sfDBDatetoTime($arrRet[0]['update_date']);
                     $now_time = time();
                     $pass_time = $now_time - $leave_time;
                     // 退会から何時間-経過しているか判定する。
@@ -773,7 +806,7 @@ class LC_Page_Mypage_Change extends LC_Page {
         $arrForm['email'] = $arrForm['email_mobile'];
 
         //メルマガフラグ取得
-        $arrForm['mailmaga_flg'] = $objQuery->get("dtb_customer","mailmaga_flg","email=?", array($objCustomer->getValue('email_mobile')));
+        $arrForm['mailmaga_flg'] = $objQuery->get("dtb_customer","mailmaga_flg","email_mobile=?", array($objCustomer->getValue('email_mobile')));
 
         //誕生日の年月日取得
         if (isset($arrForm['birth'])){

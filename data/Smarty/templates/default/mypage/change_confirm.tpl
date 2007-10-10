@@ -51,6 +51,16 @@
           <td><a href="<!--{$arrForm.email|escape:'hex'}-->"><!--{$arrForm.email|escape:'hexentity'}--></a></td>
         </tr>
         <tr>
+          <th>携帯メールアドレス</th>
+          <td>
+            <!--{if strlen($arrForm.email_mobile) > 0}-->
+            <a href="<!--{$arrForm.email_mobile|escape:'hex'}-->"><!--{$arrForm.email_mobile|escape:'hexentity'}--></a>
+            <!--{else}-->
+            未登録
+            <!--{/if}-->
+          </td>
+        </tr>
+        <tr>
           <th>性別<span class="attention">※</span></th>
           <td><!--{$arrSex[$arrForm.sex]}--></td>
         </tr>
