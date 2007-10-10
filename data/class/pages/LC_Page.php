@@ -87,11 +87,12 @@ class LC_Page {
      * LC_Page::getToken() の値を URLパラメータで自動的に付与する.
      *
      * @param string $url リダイレクト先 URL
+     * @param boolean $isMobile モバイル用にセッションIDを付与する場合 true
      * @return void|boolean $url に SITE_URL 及び, SSL_URL を含まない場合 false,
      * 						 正常に遷移可能な場合は, $url の URL へ遷移する.
      * @see Net_URL
      */
-    function sendRedirect($url) {
+    function sendRedirect($url, $isMobile = false) {
 
         if (preg_match("/(" . preg_quote(SITE_URL, '/')
                           . "|" . preg_quote(SSL_URL, '/') . ")/", $url)) {
@@ -99,6 +100,9 @@ class LC_Page {
             $netURL = new Net_URL($url);
             if (!empty($_SERVER['QUERY_STRING'])) {
                 $netURL->addRawQueryString($_SERVER['QUERY_STRING']);
+            }
+            if ($isMobile) {
+                $netURL->addQueryString(session_name(), session_id());
             }
             $netURL->addQueryString(TRANSACTION_ID_NAME, $this->getToken());
             header("Location: " . $netURL->getURL());
@@ -242,10 +246,16 @@ class LC_Page {
      * @return void
      * @see Net_URL
      */
-    function reload($queryString = array()) {
+    function reload($queryString = array(), $removeQueryString = false) {
 
         // 現在の URL を取得
         $netURL = new Net_URL();
+
+        if ($removeQueryString) {
+            foreach ($_SERVER['QUERY_STRING'] as $name) {
+                $netURL->removeQueryString($name);
+            }
+        }
 
         // QueryString を付与
         if (!empty($queryString)) {
