@@ -506,6 +506,23 @@ class SC_CheckError {
         }
     }
 
+    /**
+     * 携帯キャリアのドメイン判定.
+     *
+     * @param array $value [0] => 項目名, [1] => 判定対象メールアドレス
+     * @return void
+     */
+    function MOBILE_DOMAIN_CHECK($value) {
+        if (isset($this->arrErr[$value[1]])) {
+            return;
+        }
+        $this->createParam($value);
+        $objMobile = new SC_Helper_Mobile_Ex();
+        if (strlen($this->arrParam[$value[1]]) > 0 && !$objMobile->gfIsMobileMailAddress($this->arrParam[$value[1]])) {
+            $this->arrErr[$value[1]] = "※ " . $value[0] . "は携帯メールアドレスのドメインではありません。<br />";
+        }
+    }
+
     /*　URL形式の判定　*/
     //  value[0] = 項目名 value[1] = 判定対象URL
     function URL_CHECK( $value ){				//　URLを正規表現で判定する。デフォルトでhttp://があってもOK
