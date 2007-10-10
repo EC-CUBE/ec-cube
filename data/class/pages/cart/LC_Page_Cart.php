@@ -67,6 +67,9 @@ class LC_Page_Cart extends LC_Page {
 
         if (!isset($_POST['mode'])) $_POST['mode'] = "";
 
+        /*
+         * FIXME reload() を使った方が良いが無限ループしてしまう...
+         */
         switch($_POST['mode']) {
         case 'up':
             $objCartSess->upQuantity($_POST['cart_no']);
@@ -161,7 +164,7 @@ class LC_Page_Cart extends LC_Page {
         // 買い物を続ける場合
         if (!isset($_REQUEST['continue'])) $_REQUEST['continue'] = "";
         if($_REQUEST['continue']) {
-            $this->sendRedirect($this->getLocation(MOBILE_URL_SITE_TOP, array(session_name() => session_id())));
+            $this->sendRedirect($this->getLocation(MOBILE_URL_SITE_TOP), true);
             exit;
         }
 
@@ -214,7 +217,7 @@ class LC_Page_Cart extends LC_Page {
                 // カートを購入モードに設定
                 $objCartSess->saveCurrentCart($uniqid);
                 // 購入ページへ
-                $this->sendRedirect(SC_Helper_Mobile_Ex::gfAddSessionId(MOBILE_URL_SHOP_TOP));
+                $this->sendRedirect(MOBILE_URL_SHOP_TOP, true);
 
                 exit;
             }
