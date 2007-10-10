@@ -15,7 +15,7 @@ if (!defined("CLASS_PATH")) {
 
 if (!defined("CLASS_EX_PATH")) {
     /** クラスパス */
-    define("CLASS_EX_PATH", $include_dir . HTML2DATA_DIR . "class_extends/");
+    define("CLASS_EX_PATH", $include_dir . "/.." . HTML2DATA_DIR . "class_extends/");
 }
 
 require_once($include_dir . "/.." . HTML2DATA_DIR . "conf/conf.php");
