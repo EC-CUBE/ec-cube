@@ -269,11 +269,11 @@ class SC_Helper_DB {
      * @return LC_Page 集計処理後のページクラスインスタンス
      */
     function sfTotalCart(&$objPage, $objCartSess, $arrInfo) {
-        $objDb = new SC_Helper_DB_Ex();
+
         // 規格名一覧
-        $arrClassName = $objDb->sfGetIDValueList("dtb_class", "class_id", "name");
+        $arrClassName = $this->sfGetIDValueList("dtb_class", "class_id", "name");
         // 規格分類名一覧
-        $arrClassCatName = $objDb->sfGetIDValueList("dtb_classcategory", "classcategory_id", "name");
+        $arrClassCatName = $this->sfGetIDValueList("dtb_classcategory", "classcategory_id", "name");
 
         $objPage->tpl_total_pretax = 0;		// 費用合計(税込み)
         $objPage->tpl_total_tax = 0;		// 消費税合計
