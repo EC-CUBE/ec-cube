@@ -15,7 +15,7 @@ require_once(CLASS_PATH . "pages/LC_Page.php");
  * @author LOCKON CO.,LTD.
  * @version $Id$
  */
-class LC_Page_HistoryDetail extends LC_Page {
+class LC_Page_Mypage_HistoryDetail extends LC_Page {
 
     // }}}
     // {{{ functions
@@ -67,7 +67,7 @@ class LC_Page_HistoryDetail extends LC_Page {
         $cnt = $objQuery->count($from, $where, $arrval);
 
         //ログインしていない、またはDBに情報が無い場合
-        if (!$objCustomer->isLoginSuccess() or $cnt == 0){
+        if (!$objCustomer->isLoginSuccess(true) or $cnt == 0){
             SC_Utils_Ex::sfDispSiteError(CUSTOMER_ERROR, "", false, "", true);
         } else {
             //受注詳細データの取得
