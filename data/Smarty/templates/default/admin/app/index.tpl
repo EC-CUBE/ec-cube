@@ -5,6 +5,59 @@
  * http://www.lockon.co.jp/
  */
 *}-->
+<script type="text/javascript"><!--
+(function() {
+  var eccube = function() {}
+  var ownersstore = function() {
+    this.setup = function() {
+      var $j = jQuery.noConflict();
+      $j("#loading").ajaxStart(function(){
+          $j(this).show();
+      });
+      $j("#loading").ajaxStop(function(){
+          $j(this).hide();
+      });
+    }
+  }
+  eccube.prototype = {
+    ownersstore: new ownersstore()
+  }
+  window.eccube = eccube;
+})();
+    
+    
+    
+
+
+
+function loadList() {
+    var $j = jQuery.noConflict();
+
+    $j("#ownerssore_loading").ajaxStart(function(){
+        $j(this).html("<img src='<!--{$TPL_DIR}-->img/ajax/loading.gif'>").show();
+    });
+    $j("#ownerssore_loading").ajaxStop(function(){
+        $j(this).hide();
+    });
+    
+    $j.post(
+        '<!--{$smarty.const.URL_DIR}-->upgrade/index.php',
+        {mode: 'products_list'},
+        function(resp) {
+            if (resp.body) {
+                $j("#ownersstore_products_list").html(resp.body);
+            } else {
+                $j("#ownersstore_products_list").load(
+                    "<!--{$smarty.const.URL_DIR}-->upgrade/api/error.html"
+                );
+            }
+        },
+        'json'
+    )
+}
+
+//-->
+</script>
 <!--★★メインコンテンツ★★-->
 <table width="878" border="0" cellspacing="0" cellpadding="0" summary=" ">
 <form name="form1" id="form1" method="post" action="">
@@ -45,51 +98,24 @@
 									<tr>
 										<td colspan="3"><img src="<!--{$TPL_DIR}-->img/contents/main_bar.jpg" width="678" height="10" alt=""></td>
 									</tr>
+									<tr><td colspan="3" bgcolor="#ffffff" height="5"></td></tr>
+									<tr>
+									    <td colspan="3" bgcolor="#ffffff" align="center">
+									        <input type="button" onclick="loadList();" value="オーナーズストア購入商品の一覧を取得">
+									    </td>
+									</tr>
+									<tr>
+									    <td colspan="3" bgcolor="#ffffff" height="35" align="center">
+									        <div id="ownerssore_loading"></div>
+									    </td>
+									</tr>
 								</table>
 								<!--サブタイトルここまで-->
 								
-								<table width="678" border="0" cellspacing="0" cellpadding="8" summary=" ">
-									<!--アプリ情報-->
-									<tr bgcolor="#ffffff" class="fs12n">
-									<td width="60"><img src="<!--{$smarty.const.URL_DIR}-->test/logo2.gif"></td>
-									<td width="420"><span class="fs24n"><strong>自動アップデート</storong></span></td>
-									<td width="218">
-										<p>【ステータス】</p>
-										<p>2007/08/09アップデート実行済み</p>
-									</td>
-									</tr>
-									
-									<tr bgcolor="#ffffff" class="fs12n">
-									<td width="60"></td>
-									<td width="400">EC-CUBEを最新に保ちます</td>
-									<td width="218">
-										<input type="button" value="インストール">
-										<input type="button" value="アップデート">
-									</td>
-									</tr>
-									
-									<tr bgcolor="#ffffff"><td colspan="3"><hr></td></tr>
-									
-									<!--アプリ情報-->
-									<tr bgcolor="#ffffff" class="fs12n">
-									<td width="60"><img src="<!--{$smarty.const.URL_DIR}-->test/logo.gif"></td>
-									<td width="400"><span class="fs24n"><strong>AD EBiSタグ埋め込み　1.0.5</storong></span></td>
-									<td width="218">
-										<p>【ステータス】</p>
-										<p>只今、入金待ちです。</p>
-									</td>
-									</tr>
-									
-									<tr bgcolor="#ffffff" class="fs12n">
-									<td width="60"></td>
-									<td width="400">アドエビス（アクセス解析オプションを含む）のタグを<br>自動的に埋め込みます</td>
-									<td width="218">
-										<input type="button" value="インストール">
-										<input type="button" value="アップデート">
-									</td>
-									</tr>
-									
-								</table>
+								<!--購入商品一覧ここから-->
+								<div id="ownersstore_products_list"></div>
+								<!--購入商品一覧ここまで-->
+								
 								</td>
 								<td background="<!--{$TPL_DIR}-->img/contents/main_right.jpg"><img src="<!--{$TPL_DIR}-->img/common/_.gif" width="14" height="1" alt=""></td>
 							</tr>
