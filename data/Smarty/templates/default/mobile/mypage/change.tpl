@@ -11,11 +11,17 @@
 	<input type="hidden" name="mode" value="set1">
 
 	<font color="#FF0000">*は必須項目です。</font><br>
+	PCと携帯のメールアドレスが登録できます。<br>
 	<br>
 
 	【メールアドレス】<font color="#FF0000">※</font><br>
 	<font color="#FF0000"><!--{$arrErr.email}--></font>
 	<input type="text" name="email" value="<!--{$arrForm.email|escape}-->" istyle="3">
+	<br>
+
+	【携帯メールアドレス】<br>
+	<font color="#FF0000"><!--{$arrErr.email_mobile}--></font>
+	<input type="text" name="email_mobile" value="<!--{$arrForm.email_mobile|escape}-->" istyle="3">
 	<br>
 
 	【パスワード】<font color="#FF0000">※</font><br>

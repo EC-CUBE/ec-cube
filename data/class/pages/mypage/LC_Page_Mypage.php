@@ -154,19 +154,20 @@ class LC_Page_MyPage extends LC_Page {
                     // ログインが成功した場合は携帯端末IDを保存する。
                     $objCustomer->updateMobilePhoneId();
 
-                    // 携帯のメールアドレスをコピーする。
-                    $objCustomer->updateEmailMobile();
-
-                    // XXX 動作しない時がある...
-                    // 携帯のメールアドレスが登録されていない場合
-                    if (!$objCustomer->hasValue('email_mobile')) {
-                        $this->sendRedirect($this->getLocation("../entry/email_mobile.php", array(session_name() => session_id())));
-                        exit;
+                    /*
+                     * email がモバイルドメインでは無く,
+                     * 携帯メールアドレスが登録されていない場合
+                     */
+                    $objMobile = new SC_Helper_Mobile_Ex();
+                    if (!$objMobile->gfIsMobileMailAddress($objCustomer->getValue('email'))) {
+                        if (!$objCustomer->hasValue('email_mobile')) {
+                            $this->sendRedirect($this->getLocation("../entry/email_mobile.php"), true);
+                        }
                     }
                 } else {
                     $objQuery = new SC_Query;
-                    $where = "email = ? AND status = 1 AND del_flg = 0";
-                    $ret = $objQuery->count("dtb_customer", $where, array($arrForm['login_email']));
+                    $where = "(email = ? OR email_mobile = ?) AND status = 1 AND del_flg = 0";
+                    $ret = $objQuery->count("dtb_customer", $where, array($arrForm['login_email'], $arrForm['login_email']));
 
                     if($ret > 0) {
                         SC_Utils_Ex::sfDispSiteError(TEMP_LOGIN_ERROR, "", false, "", true);
@@ -177,8 +178,11 @@ class LC_Page_MyPage extends LC_Page {
             }
         }
 
-        // ログインチェック
-        if(!$objCustomer->isLoginSuccess()) {
+        /*
+         * ログインチェック
+         * 携帯メールの登録を必須にする場合は isLoginSuccess(false) にする
+         */
+        if(!$objCustomer->isLoginSuccess(true)) {
             $this->tpl_mainpage = 'mypage/login.tpl';
             $objView->assignArray($objFormParam->getHashArray());
             if (empty($arrErr)) $arrErr = array();
@@ -207,7 +211,7 @@ class LC_Page_MyPage extends LC_Page {
 
     function lfErrorCheck() {
         $objErr = new SC_CheckError();
-        $objErr->doFunc(array("メールアドレス", "login_email", STEXT_LEN), array("EXIST_CHECK","SPTAB_CHECK","EMAIL_CHECK","MAX_LENGTH_CHECK"));
+        $objErr->doFunc(array("メールアドレス", "login_email", MTEXT_LEN), array("EXIST_CHECK","SPTAB_CHECK","EMAIL_CHECK","MAX_LENGTH_CHECK"));
         $objErr->dofunc(array("パスワード", "login_password", PASSWORD_LEN2), array("EXIST_CHECK","ALNUM_CHECK"));
         return $objErr->arrErr;
     }
@@ -216,8 +220,8 @@ class LC_Page_MyPage extends LC_Page {
     function lfInitParam(&$objFormParam) {
 
         $objFormParam->addParam("記憶する", "login_memory", INT_LEN, "n", array("MAX_LENGTH_CHECK", "NUM_CHECK"));
-        $objFormParam->addParam("メールアドレス", "login_email", STEXT_LEN, "KVa", array("EXIST_CHECK", "MAX_LENGTH_CHECK"));
-        $objFormParam->addParam("パスワード", "login_pass", STEXT_LEN, "KVa", array("EXIST_CHECK", "MAX_LENGTH_CHECK"));
+        $objFormParam->addParam("メールアドレス", "login_email", MTEXT_LEN, "a", array("EXIST_CHECK", "MAX_LENGTH_CHECK"));
+        $objFormParam->addParam("パスワード", "login_pass", STEXT_LEN, "a", array("EXIST_CHECK", "MAX_LENGTH_CHECK"));
     }
 
 }

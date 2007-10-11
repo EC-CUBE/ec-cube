@@ -469,10 +469,6 @@ class SC_Helper_DB {
         $arrRegist["update_date"] = "NOW()";
 
         //-- 編集登録実行
-        if (defined('MOBILE_SITE')) {
-            $arrRegist['email_mobile'] = $arrRegist['email'];
-            unset($arrRegist['email']);
-        }
         $objQuery->begin();
         $objQuery->update("dtb_customer", $arrRegist, "customer_id = ? ", array($array['customer_id']));
         $objQuery->commit();

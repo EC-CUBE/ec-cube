@@ -25,6 +25,7 @@
 <font color="#ff0000"><!--{$arrErr[$key]|default:''}--></font>
 <input type="text" name="email_mobile" value="<!--{$arrForm[$key].value|escape}-->" size="40" maxlength="<!--{$arrForm[$key].length}-->" istyle="3"><br>
 <center><input type="submit" value="送信"></center>
+<center><a href="../mypage/index.php" accesskey="0">今は登録しない</a></center>
 </form>
 <!--{/if}-->
 

@@ -18,6 +18,10 @@
 	<!--{$list_data.email|escape}--><br>
 	<br>
 
+	【携帯ﾒｰﾙｱﾄﾞﾚｽ】<br>
+	<!--{$list_data.email_mobile|escape|default:"未登録"}--><br>
+	<br>
+
 	【ﾊﾟｽﾜｰﾄﾞ確認用質問】<br>
 	<!--{$arrReminder[$list_data.reminder]|escape}--><br>
 	<br>

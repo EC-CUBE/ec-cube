@@ -179,6 +179,13 @@ class LC_Page_Mypage_Change extends LC_Page {
         $this->tpl_mainpage = 'mypage/change.tpl';		// メインテンプレート
         $this->tpl_title .= '登録変更(1/3)';			// ページタイトル
 
+        $masterData = new SC_DB_MasterData_Ex();
+        $this->arrReminder = $masterData->getMasterData("mtb_reminder");
+        $this->arrPref = $masterData->getMasterData("mtb_pref",
+                                 array("pref_id", "pref_name", "rank"));
+        $this->arrJob = $masterData->getMasterData("mtb_job");
+        $this->arrMAILMAGATYPE = $masterData->getMasterData("mtb_mail_magazine_type");
+        $this->arrSex = $masterData->getMasterData("mtb_sex");
     }
 
     /**
@@ -191,8 +198,8 @@ class LC_Page_Mypage_Change extends LC_Page {
         $CONF = $objDb->sf_getBasisData();					// 店舗基本情報
         $objConn = new SC_DbConn();
         $objView = new SC_MobileView();
-        $objDate = new SC_Date(START_BIRTH_YEAR, date("Y",strtotime("now")));
-        $objQuery = new SC_Query();
+        $this->objDate = new SC_Date(START_BIRTH_YEAR, date("Y",strtotime("now")));
+        $this->objQuery = new SC_Query();
         $this->objCustomer = new SC_Customer();
 
         //メールアドレス種別
@@ -237,11 +244,13 @@ class LC_Page_Mypage_Change extends LC_Page {
             //-- POSTデータの引き継ぎ
             $this->arrForm = array_merge($this->arrForm, $_POST);
 
+            if (!isset($this->arrForm['year'])) $this->arrForm['year'] = "";
             if($this->arrForm['year'] == '----') {
                 $this->arrForm['year'] = '';
             }
 
-            $this->arrForm['email'] = strtolower($this->arrForm['email']);		// emailはすべて小文字で処理
+            // emailはすべて小文字で処理
+            $this->paramToLower($arrMailType);
 
             //-- 入力データの変換
             $this->arrForm = $this->lfConvertParam($this->arrForm, $arrRegistColumn);
@@ -277,13 +286,9 @@ class LC_Page_Mypage_Change extends LC_Page {
             }
 
             if ($this->arrErr || !empty($_POST["return"])) {		// 入力エラーのチェック
-                foreach($this->arrForm as $key => $val) {
-                    $this->$key = $val;
-                }
-
                 //-- データの設定
                 if ($_POST["mode"] == "set1") {
-                    $checkVal = array("email", "password", "reminder", "reminder_answer", "name01", "name02", "kana01", "kana02");
+                    $checkVal = array("email", "email_mobile", "password", "reminder", "reminder_answer", "name01", "name02", "kana01", "kana02");
                 } elseif ($_POST["mode"] == "set2") {
                     $checkVal = array("sex", "year", "month", "day", "zip01", "zip02");
                 } else {
@@ -308,9 +313,10 @@ class LC_Page_Mypage_Change extends LC_Page {
                 } elseif ($_POST["mode"] == "confirm") {
                     //パスワード表示
                     $passlen = strlen($this->arrForm['password']);
-                    $this->passlen = lfPassLen($passlen);
+                    $this->passlen = $this->lfPassLen($passlen);
 
                     // メール受け取り
+                    if (!isset($_POST['mailmaga_flg'])) $_POST['mailmaga_flg'] = "";
                     if (strtolower($_POST['mailmaga_flg']) == "on") {
                         $_POST['mailmaga_flg']  = "2";
                     } else {
@@ -341,32 +347,15 @@ class LC_Page_Mypage_Change extends LC_Page {
 
                 //--　仮登録と完了画面
                 if ($_POST["mode"] == "complete") {
-                    /*
-                    //-- 入力データの変換
-                    $arrForm = $this->lfConvertParam($_POST, $arrRegistColumn);
-                    $arrForm['email'] = strtolower($arrForm['email']);		// emailはすべて小文字で処理
-
-                    //エラーチェック
-                    $this->arrErr = $this->lfErrorCheckMobile($this->arrForm);
-                    $email_flag = true;
-
-                    if($this->arrForm['email'] != $objCustomer->getValue('email_mobile')) {
-                        //メールアドレスの重複チェック
-                        $email_cnt = $objQuery->count("dtb_customer","del_flg=0 AND (email=? OR email_mobile=?)", array($this->arrForm['email'], $this->arrForm['email']));
-                        if ($email_cnt > 0){
-                            $email_flag = false;
-                        }
-                    }
-                    */
                     //エラーなしでかつメールアドレスが重複していない場合
                     if($this->checkErrorTotal($arrRegistColumn, $arrMailType, true)) {
                         $this->arrForm['customer_id'] = $this->objCustomer->getValue('customer_id');
                         //-- 編集登録
-                        $objDb->sfEditCustomerData($arrForm, $arrRegistColumn);
+                        $objDb->sfEditCustomerData($this->arrForm, $arrRegistColumn);
                         //セッション情報を最新の状態に更新する
                         $this->objCustomer->updateSession();
                         //完了ページへ
-                        $this->sendRedirect($this->getLocation("./change_complete.php", array(session_name(), session_id())));
+                        $this->sendRedirect($this->getLocation("./change_complete.php"), true);
                         exit;
                     } else {
                         SC_Utils_Ex::sfDispSiteError(CUSTOMER_ERROR, "", false, "", true);
@@ -408,12 +397,7 @@ class LC_Page_Mypage_Change extends LC_Page {
         $this->arrForm = $this->lfConvertParam($this->arrForm, $arrRegistColumn);
 
         // emailはすべて小文字で処理
-        foreach ($arrMailType as $mailType) {
-            if (!isset($this->arrForm[$mailType])) {
-                $this->arrForm[$mailType] = "";
-            }
-            $this->arrForm[$mailType] = strtolower($this->arrForm[$mailType]);
-        }
+        $this->paramToLower($arrMailType);
 
         //エラーチェック
         $this->arrErr = $isMobile
@@ -481,8 +465,8 @@ class LC_Page_Mypage_Change extends LC_Page {
         $objErr->doFunc(array('メールアドレス', "email", MTEXT_LEN) ,array("EXIST_CHECK", "EMAIL_CHECK", "NO_SPTAB" ,"EMAIL_CHAR_CHECK", "MAX_LENGTH_CHECK"));
         $objErr->doFunc(array('メールアドレス(確認)', "email02", MTEXT_LEN) ,array("EXIST_CHECK", "EMAIL_CHECK","NO_SPTAB" , "EMAIL_CHAR_CHECK", "MAX_LENGTH_CHECK"));
         $objErr->doFunc(array('メールアドレス', 'メールアドレス(確認)', "email", "email02") ,array("EQUAL_CHECK"));
-        $objErr->doFunc(array('携帯メールアドレス', "email_mobile", MTEXT_LEN) ,array("EXIST_CHECK", "EMAIL_CHECK", "NO_SPTAB" ,"EMAIL_CHAR_CHECK", "MAX_LENGTH_CHECK", "MOBILE_DOMAIN_CHECK"));
-        $objErr->doFunc(array('携帯メールアドレス(確認)', "email_mobile02", MTEXT_LEN) ,array("EXIST_CHECK", "EMAIL_CHECK","NO_SPTAB" , "EMAIL_CHAR_CHECK", "MAX_LENGTH_CHECK", "MOBILE_DOMAIN_CHECK"));
+        $objErr->doFunc(array('携帯メールアドレス', "email_mobile", MTEXT_LEN) ,array("EMAIL_CHECK", "NO_SPTAB" ,"EMAIL_CHAR_CHECK", "MAX_LENGTH_CHECK", "MOBILE_EMAIL_CHECK"));
+        $objErr->doFunc(array('携帯メールアドレス(確認)', "email_mobile02", MTEXT_LEN), array("EMAIL_CHECK","NO_SPTAB" , "EMAIL_CHAR_CHECK", "MAX_LENGTH_CHECK", "MOBILE_EMAIL_CHECK"));
         $objErr->doFunc(array('携帯メールアドレス', '携帯メールアドレス(確認)', "email_mobile", "email_mobile02") ,array("EQUAL_CHECK"));
         $objErr->doFunc(array("お電話番号1", 'tel01'), array("EXIST_CHECK","SPTAB_CHECK"));
         $objErr->doFunc(array("お電話番号2", 'tel02'), array("EXIST_CHECK","SPTAB_CHECK"));
@@ -548,7 +532,11 @@ class LC_Page_Mypage_Change extends LC_Page {
         return $arrForm;
     }
 
-    // 編集登録
+    /**
+     * 編集登録
+     * TODO
+     * @deprecated 未使用?
+     */
     function lfRegistData($array, $arrRegistColumn) {
 
         foreach ($arrRegistColumn as $data) {
@@ -606,6 +594,10 @@ class LC_Page_Mypage_Change extends LC_Page {
     // }}}
     // {{{ mobile functions
 
+    /**
+     * TODO
+     * @deprecated 未使用?
+     */
     function lfRegistDataMobile ($array, $arrRegistColumn,
                                  $arrRejectRegistColumn) {
 
@@ -626,7 +618,7 @@ class LC_Page_Mypage_Change extends LC_Page {
 
         $count = 1;
         while ($count != 0) {
-            $uniqid = sfGetUniqRandomId("t");
+            $uniqid = SC_Utils_Ex::sfGetUniqRandomId("t");
             $count = $objConn->getOne("SELECT COUNT(*) FROM dtb_customer WHERE secret_key = ?", array($uniqid));
         }
 
@@ -636,14 +628,10 @@ class LC_Page_Mypage_Change extends LC_Page {
         $arrRegist["first_buy_date"] = "";	 	// 最初の購入日
 
         // 携帯メールアドレス
-        $arrRegist['email_mobile'] = $arrRegist['email'];
+        //$arrRegist['email_mobile'] = $arrRegist['email'];
 
         //-- 仮登録実行
-        $objConn->query("BEGIN");
-
-        $objQuery = new SC_Query();
-        $objQuery->insert("dtb_customer", $arrRegist);
-        $objConn->query("COMMIT");
+        $this->objQuery->insert("dtb_customer", $arrRegist);
 
         return $uniqid;
     }
@@ -652,31 +640,32 @@ class LC_Page_Mypage_Change extends LC_Page {
     //エラーチェック
 
     function lfErrorCheckMobile($array) {
-	$objErr = new SC_CheckError($array);
+        $objErr = new SC_CheckError($array);
 
-	$objErr->doFunc(array("お名前（姓）", 'name01', STEXT_LEN), array("EXIST_CHECK", "SPTAB_CHECK" ,"MAX_LENGTH_CHECK"));
-	$objErr->doFunc(array("お名前（名）", 'name02', STEXT_LEN), array("EXIST_CHECK", "SPTAB_CHECK" ,"MAX_LENGTH_CHECK"));
-	$objErr->doFunc(array("お名前（カナ/姓）", 'kana01', STEXT_LEN), array("EXIST_CHECK", "SPTAB_CHECK" ,"MAX_LENGTH_CHECK", "KANA_CHECK"));
-	$objErr->doFunc(array("お名前（カナ/名）", 'kana02', STEXT_LEN), array("EXIST_CHECK", "SPTAB_CHECK" ,"MAX_LENGTH_CHECK", "KANA_CHECK"));
-	$objErr->doFunc(array("郵便番号1", "zip01", ZIP01_LEN ) ,array("EXIST_CHECK", "SPTAB_CHECK" ,"NUM_CHECK", "NUM_COUNT_CHECK"));
-	$objErr->doFunc(array("郵便番号2", "zip02", ZIP02_LEN ) ,array("EXIST_CHECK", "SPTAB_CHECK" ,"NUM_CHECK", "NUM_COUNT_CHECK"));
-	$objErr->doFunc(array("郵便番号", "zip01", "zip02"), array("ALL_EXIST_CHECK"));
-	$objErr->doFunc(array("都道府県", 'pref'), array("SELECT_CHECK","NUM_CHECK"));
-	$objErr->doFunc(array("市区町村", "addr01", MTEXT_LEN), array("EXIST_CHECK","SPTAB_CHECK" ,"MAX_LENGTH_CHECK"));
-	$objErr->doFunc(array("番地", "addr02", MTEXT_LEN), array("EXIST_CHECK","SPTAB_CHECK" ,"MAX_LENGTH_CHECK"));
-	$objErr->doFunc(array('メールアドレス', "email", MTEXT_LEN) ,array("EXIST_CHECK", "EMAIL_CHECK", "NO_SPTAB" ,"EMAIL_CHAR_CHECK", "MAX_LENGTH_CHECK"));
-	$objErr->doFunc(array("電話番号1", 'tel01'), array("EXIST_CHECK","SPTAB_CHECK"));
-	$objErr->doFunc(array("電話番号2", 'tel02'), array("EXIST_CHECK","SPTAB_CHECK"));
-	$objErr->doFunc(array("電話番号3", 'tel03'), array("EXIST_CHECK","SPTAB_CHECK"));
-	$objErr->doFunc(array("電話番号", "tel01", "tel02", "tel03", TEL_LEN) ,array("TEL_CHECK"));
-	$objErr->doFunc(array("FAX番号", "fax01", "fax02", "fax03", TEL_LEN) ,array("TEL_CHECK"));
-	$objErr->doFunc(array("性別", "sex") ,array("SELECT_CHECK", "NUM_CHECK"));
-	$objErr->doFunc(array("ご職業", "job") ,array("NUM_CHECK"));
-	$objErr->doFunc(array("生年月日", "year", "month", "day"), array("CHECK_DATE"));
-	$objErr->doFunc(array("パスワード", 'password', PASSWORD_LEN1, PASSWORD_LEN2), array("EXIST_CHECK", "ALNUM_CHECK", "NUM_RANGE_CHECK"));
-	$objErr->doFunc(array("パスワード確認用の質問", "reminder") ,array("SELECT_CHECK", "NUM_CHECK"));
-	$objErr->doFunc(array("パスワード確認用の質問の答え", "reminder_answer", STEXT_LEN) ,array("EXIST_CHECK", "MAX_LENGTH_CHECK"));
-	return $objErr->arrErr;
+        $objErr->doFunc(array("お名前（姓）", 'name01', STEXT_LEN), array("EXIST_CHECK", "SPTAB_CHECK" ,"MAX_LENGTH_CHECK"));
+        $objErr->doFunc(array("お名前（名）", 'name02', STEXT_LEN), array("EXIST_CHECK", "SPTAB_CHECK" ,"MAX_LENGTH_CHECK"));
+        $objErr->doFunc(array("お名前（カナ/姓）", 'kana01', STEXT_LEN), array("EXIST_CHECK", "SPTAB_CHECK" ,"MAX_LENGTH_CHECK", "KANA_CHECK"));
+        $objErr->doFunc(array("お名前（カナ/名）", 'kana02', STEXT_LEN), array("EXIST_CHECK", "SPTAB_CHECK" ,"MAX_LENGTH_CHECK", "KANA_CHECK"));
+        $objErr->doFunc(array("郵便番号1", "zip01", ZIP01_LEN ) ,array("EXIST_CHECK", "SPTAB_CHECK" ,"NUM_CHECK", "NUM_COUNT_CHECK"));
+        $objErr->doFunc(array("郵便番号2", "zip02", ZIP02_LEN ) ,array("EXIST_CHECK", "SPTAB_CHECK" ,"NUM_CHECK", "NUM_COUNT_CHECK"));
+        $objErr->doFunc(array("郵便番号", "zip01", "zip02"), array("ALL_EXIST_CHECK"));
+        $objErr->doFunc(array("都道府県", 'pref'), array("SELECT_CHECK","NUM_CHECK"));
+        $objErr->doFunc(array("市区町村", "addr01", MTEXT_LEN), array("EXIST_CHECK","SPTAB_CHECK" ,"MAX_LENGTH_CHECK"));
+        $objErr->doFunc(array("番地", "addr02", MTEXT_LEN), array("EXIST_CHECK","SPTAB_CHECK" ,"MAX_LENGTH_CHECK"));
+        $objErr->doFunc(array('メールアドレス', "email", MTEXT_LEN) ,array("EXIST_CHECK", "EMAIL_CHECK", "NO_SPTAB" ,"EMAIL_CHAR_CHECK", "MAX_LENGTH_CHECK"));
+        $objErr->doFunc(array('携帯メールアドレス', "email_mobile", MTEXT_LEN) ,array("EMAIL_CHECK", "NO_SPTAB" ,"EMAIL_CHAR_CHECK", "MAX_LENGTH_CHECK", "MOBILE_EMAIL_CHECK"));
+        $objErr->doFunc(array("電話番号1", 'tel01'), array("EXIST_CHECK","SPTAB_CHECK"));
+        $objErr->doFunc(array("電話番号2", 'tel02'), array("EXIST_CHECK","SPTAB_CHECK"));
+        $objErr->doFunc(array("電話番号3", 'tel03'), array("EXIST_CHECK","SPTAB_CHECK"));
+        $objErr->doFunc(array("電話番号", "tel01", "tel02", "tel03", TEL_LEN) ,array("TEL_CHECK"));
+        $objErr->doFunc(array("FAX番号", "fax01", "fax02", "fax03", TEL_LEN) ,array("TEL_CHECK"));
+        $objErr->doFunc(array("性別", "sex") ,array("SELECT_CHECK", "NUM_CHECK"));
+        $objErr->doFunc(array("ご職業", "job") ,array("NUM_CHECK"));
+        $objErr->doFunc(array("生年月日", "year", "month", "day"), array("CHECK_DATE"));
+        $objErr->doFunc(array("パスワード", 'password', PASSWORD_LEN1, PASSWORD_LEN2), array("EXIST_CHECK", "ALNUM_CHECK", "NUM_RANGE_CHECK"));
+        $objErr->doFunc(array("パスワード確認用の質問", "reminder") ,array("SELECT_CHECK", "NUM_CHECK"));
+        $objErr->doFunc(array("パスワード確認用の質問の答え", "reminder_answer", STEXT_LEN) ,array("EXIST_CHECK", "MAX_LENGTH_CHECK"));
+        return $objErr->arrErr;
 
     }
 
@@ -684,21 +673,19 @@ class LC_Page_Mypage_Change extends LC_Page {
     //---- 入力エラーチェック
     function lfErrorCheck1($array) {
 
-        global $objConn;
-        global $objCustomer;
         $objErr = new SC_CheckError($array);
 
         $objErr->doFunc(array("お名前（姓）", 'name01', STEXT_LEN), array("EXIST_CHECK", "NO_SPTAB", "SPTAB_CHECK" ,"MAX_LENGTH_CHECK"));
         $objErr->doFunc(array("お名前（名）", 'name02', STEXT_LEN), array("EXIST_CHECK", "NO_SPTAB", "SPTAB_CHECK" , "MAX_LENGTH_CHECK"));
         $objErr->doFunc(array("お名前（カナ/姓）", 'kana01', STEXT_LEN), array("EXIST_CHECK", "NO_SPTAB", "SPTAB_CHECK" ,"MAX_LENGTH_CHECK", "KANA_CHECK"));
         $objErr->doFunc(array("お名前（カナ/名）", 'kana02', STEXT_LEN), array("EXIST_CHECK", "NO_SPTAB", "SPTAB_CHECK" ,"MAX_LENGTH_CHECK", "KANA_CHECK"));
-        $objErr->doFunc(array('メールアドレス', "email", MTEXT_LEN) ,array("NO_SPTAB", "EXIST_CHECK", "EMAIL_CHECK", "SPTAB_CHECK" ,"EMAIL_CHAR_CHECK", "MAX_LENGTH_CHECK", "MOBILE_EMAIL_CHECK"));
+        $objErr->doFunc(array('メールアドレス', "email", MTEXT_LEN) ,array("NO_SPTAB", "EXIST_CHECK", "EMAIL_CHECK", "SPTAB_CHECK" ,"EMAIL_CHAR_CHECK", "MAX_LENGTH_CHECK"));
+        $objErr->doFunc(array('携帯メールアドレス', "email_mobile", MTEXT_LEN) ,array("NO_SPTAB", "EMAIL_CHECK", "SPTAB_CHECK" ,"EMAIL_CHAR_CHECK", "MAX_LENGTH_CHECK", "MOBILE_EMAIL_CHECK"));
 
         //現会員の判定 →　現会員もしくは仮登録中は、メアド一意が前提になってるので同じメアドで登録不可
-        $array["customer_id"] = $objCustomer->getValue('customer_id');
+        $array["customer_id"] = $this->objCustomer->getValue('customer_id');
         if (strlen($array["email"]) > 0) {
-            $objQuery = new SC_Query();
-            $arrRet = $objQuery->select("email, update_date, del_flg", "dtb_customer","customer_id <> ? and (email = ? OR email_mobile = ?) ORDER BY del_flg", array($array["customer_id"], $array["email"], $array["email"]));
+            $arrRet = $this->objQuery->select("email, update_date, del_flg", "dtb_customer","customer_id <> ? and (email = ? OR email_mobile = ?) ORDER BY del_flg", array($array["customer_id"], $array["email"], $array["email"]));
 
             if(count($arrRet) > 0) {
                 if($arrRet[0]['del_flg'] != '1') {
@@ -728,7 +715,6 @@ class LC_Page_Mypage_Change extends LC_Page {
     //---- 入力エラーチェック
     function lfErrorCheck2($array) {
 
-        global $objConn, $objDate;
         $objErr = new SC_CheckError($array);
 
         $objErr->doFunc(array("郵便番号1", "zip01", ZIP01_LEN ) ,array("EXIST_CHECK", "SPTAB_CHECK" ,"NUM_CHECK", "NUM_COUNT_CHECK"));
@@ -736,12 +722,11 @@ class LC_Page_Mypage_Change extends LC_Page {
         $objErr->doFunc(array("郵便番号", "zip01", "zip02"), array("ALL_EXIST_CHECK"));
 
         $objErr->doFunc(array("性別", "sex") ,array("SELECT_CHECK", "NUM_CHECK"));
-        $objErr->doFunc(array("生年月日 (年)", "year", 4), array("EXIST_CHECK", "SPTAB_CHECK", "NUM_CHECK", "NUM_COUNT_CHECK"));
-        if (!isset($objErr->arrErr['year'])) {
-            $objErr->doFunc(array("生年月日 (年)", "year", $objDate->getStartYear()), array("MIN_CHECK"));
-            $objErr->doFunc(array("生年月日 (年)", "year", $objDate->getEndYear()), array("MAX_CHECK"));
+        $objErr->doFunc(array("生年月日 (年)", "year", 4), array("SPTAB_CHECK", "NUM_CHECK", "NUM_COUNT_CHECK"));
+        if (!empty($array["year"])) {
+            $objErr->doFunc(array("生年月日 (年)", "year", $this->objDate->getStartYear()), array("MIN_CHECK"));
+            $objErr->doFunc(array("生年月日 (年)", "year", $this->objDate->getEndYear()), array("MAX_CHECK"));
         }
-        $objErr->doFunc(array("生年月日 (月日)", "month", "day"), array("SELECT_CHECK"));
         if (!isset($objErr->arrErr['year']) && !isset($objErr->arrErr['month']) && !isset($objErr->arrErr['day'])) {
             $objErr->doFunc(array("生年月日", "year", "month", "day"), array("CHECK_DATE"));
         }
@@ -752,7 +737,6 @@ class LC_Page_Mypage_Change extends LC_Page {
     //---- 入力エラーチェック
     function lfErrorCheck3($array) {
 
-        global $objConn;
         $objErr = new SC_CheckError($array);
 
         $objErr->doFunc(array("都道府県", 'pref'), array("SELECT_CHECK","NUM_CHECK"));
@@ -798,15 +782,15 @@ class LC_Page_Mypage_Change extends LC_Page {
 
     //顧客情報の取得
     function lfGetCustomerDataMobile(){
-        global $objQuery;
-        global $objCustomer;
+
         //顧客情報取得
-        $ret = $objQuery->select("*","dtb_customer","customer_id=?", array($objCustomer->getValue('customer_id')));
+        $ret = $this->objQuery->select("*","dtb_customer","customer_id=?", array($this->objCustomer->getValue('customer_id')));
         $arrForm = $ret[0];
-        $arrForm['email'] = $arrForm['email_mobile'];
+        //$arrForm['email'] = $arrForm['email_mobile'];
 
         //メルマガフラグ取得
-        $arrForm['mailmaga_flg'] = $objQuery->get("dtb_customer","mailmaga_flg","email_mobile=?", array($objCustomer->getValue('email_mobile')));
+        // TODO たぶん未使用
+        $arrForm['mailmaga_flg'] = $this->objQuery->get("dtb_customer","mailmaga_flg","email_mobile=?", array($this->objCustomer->getValue('email_mobile')));
 
         //誕生日の年月日取得
         if (isset($arrForm['birth'])){
@@ -821,5 +805,20 @@ class LC_Page_Mypage_Change extends LC_Page {
         return $arrForm;
     }
 
+    /**
+     * フォームパラメータの内容を小文字に変換する.
+     *
+     * @param array $arrParam パラメータ名の配列
+     * @return void
+     */
+    function paramToLower(&$arrParam) {
+
+        foreach ($arrParam as $param) {
+            if (!isset($this->arrForm[$param])) {
+                $this->arrForm[$param] = "";
+            }
+            $this->arrForm[$param] = strtolower($this->arrForm[$param]);
+        }
+    }
 }
 ?>
