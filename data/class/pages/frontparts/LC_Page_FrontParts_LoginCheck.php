@@ -59,6 +59,11 @@ class LC_Page_FrontParts_LoginCheck extends LC_Page {
         case 'login':
             $this->objFormParam->toLower('login_email');
             $arrErr = $this->objFormParam->checkError();
+
+            // エラーの場合はエラー画面に遷移
+            if (count($arrErr) > 0) {
+                SC_Utils_Ex::sfDispSiteError(TEMP_LOGIN_ERROR);
+            }
             $arrForm =  $this->objFormParam->getHashArray();
             // クッキー保存判定
             if ($arrForm['login_memory'] == "1" && $arrForm['login_email'] != "") {
@@ -68,13 +73,14 @@ class LC_Page_FrontParts_LoginCheck extends LC_Page {
             }
 
             if(count($arrErr) == 0) {
-                if($objCustomer->getCustomerDataFromEmailPass($arrForm['login_pass'], $arrForm['login_email'])) {
+                if($objCustomer->getCustomerDataFromEmailPass($arrForm['login_pass'], $arrForm['login_email'], true)) {
                     $this->sendRedirect($this->getLocation($_POST['url']));
                     exit;
                 } else {
+                    $arrForm['login_email'] = strtolower($arrForm['login_email']);
                     $objQuery = new SC_Query;
-                    $where = "email ILIKE ? AND status = 1 AND del_flg = 0";
-                    $ret = $objQuery->count("dtb_customer", $where, array($arrForm['login_email']));
+                    $where = "(email = ? OR email_mobile = ?) AND status = 1 AND del_flg = 0";
+                    $ret = $objQuery->count("dtb_customer", $where, array($arrForm['login_email'], $arrForm['login_email']));
 
                     if($ret > 0) {
                         SC_Utils_Ex::sfDispSiteError(TEMP_LOGIN_ERROR);
@@ -115,8 +121,8 @@ class LC_Page_FrontParts_LoginCheck extends LC_Page {
     /* パラメータ情報の初期化 */
     function lfInitParam() {
         $this->objFormParam->addParam("記憶する", "login_memory", INT_LEN, "n", array("MAX_LENGTH_CHECK", "NUM_CHECK"));
-        $this->objFormParam->addParam("メールアドレス", "login_email", STEXT_LEN, "a", array("EXIST_CHECK", "MAX_LENGTH_CHECK"));
-        $this->objFormParam->addParam("パスワード", "login_pass", STEXT_LEN, "", array("EXIST_CHECK", "MAX_LENGTH_CHECK"));
+        $this->objFormParam->addParam("メールアドレス", "login_email", MTEXT_LEN, "a", array("EXIST_CHECK", "MAX_LENGTH_CHECK", "EMAIL_CHECK", "NO_SPTAB" ,"EMAIL_CHAR_CHECK"));
+        $this->objFormParam->addParam("パスワード", "login_pass", MTEXT_LEN, "", array("EXIST_CHECK", "MAX_LENGTH_CHECK"));
     }
 }
 ?>

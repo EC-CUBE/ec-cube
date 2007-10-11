@@ -54,6 +54,11 @@ class LC_Page_Mypage_LoginCheck extends LC_Page {
         case 'login':
             $this->objFormParam->toLower('mypage_login_email');
             $arrErr = $this->objFormParam->checkError();
+
+            // エラーの場合はエラー画面に遷移
+            if (count($arrErr) > 0) {
+                SC_Utils_Ex::sfDispSiteError(TEMP_LOGIN_ERROR);
+            }
             $arrForm =  $this->objFormParam->getHashArray();
             // クッキー保存判定
             if ($arrForm['mypage_login_memory'] == "1" && $arrForm['mypage_login_email'] != "") {
@@ -62,23 +67,25 @@ class LC_Page_Mypage_LoginCheck extends LC_Page {
                 $objCookie->setCookie('login_email', '');
             }
 
-              if($objCustomer->getCustomerDataFromEmailPass($arrForm['mypage_login_pass'], $arrForm['mypage_login_email'])) {
-                  $this->sendRedirect($this->getLocation("./index.php"));
-                  exit;
-              } else {
-                  $objQuery = new SC_Query;
-                  $where = "email = ? AND status = 1 AND del_flg = 0";
-                  $ret = $objQuery->count("dtb_customer", $where, array($arrForm['mypage_login_email']));
+            if($objCustomer->getCustomerDataFromEmailPass($arrForm['mypage_login_pass'], $arrForm['mypage_login_email'], true)) {
+                $this->sendRedirect($this->getLocation("./index.php"));
+                exit;
+            } else {
+                $arrForm['mypage_login_email'] = strtolower($arrForm['mypage_login_email']);
+                $objQuery = new SC_Query;
+                $where = "(email = ? OR email_mobile = ?) AND status = 1 AND del_flg = 0";
+                $ret = $objQuery->count("dtb_customer", $where, array($arrForm['mypage_login_email'], $arrForm['mypage_login_email']));
 
-                  if($ret > 0) {
-                      SC_Utils_Ex::sfDispSiteError(TEMP_LOGIN_ERROR);
-                  } else {
-                      SC_Utils_Ex::sfDispSiteError(SITE_LOGIN_ERROR);
-                  }
+                if($ret > 0) {
+                    SC_Utils_Ex::sfDispSiteError(TEMP_LOGIN_ERROR);
+                } else {
+                    SC_Utils_Ex::sfDispSiteError(SITE_LOGIN_ERROR);
                 }
+            }
             break;
         }
     }
+
     /**
      * デストラクタ.
      *
@@ -91,8 +98,8 @@ class LC_Page_Mypage_LoginCheck extends LC_Page {
     /* パラメータ情報の初期化 */
     function lfInitParam() {
         $this->objFormParam->addParam("記憶する", "mypage_login_memory", INT_LEN, "n", array("MAX_LENGTH_CHECK", "NUM_CHECK"));
-        $this->objFormParam->addParam("メールアドレス", "mypage_login_email", STEXT_LEN, "KVa", array("EXIST_CHECK", "MAX_LENGTH_CHECK"));
-        $this->objFormParam->addParam("パスワード", "mypage_login_pass", STEXT_LEN, "KVa", array("EXIST_CHECK", "MAX_LENGTH_CHECK"));
+        $this->objFormParam->addParam("メールアドレス", "mypage_login_email", MTEXT_LEN, "a", array("EXIST_CHECK", "MAX_LENGTH_CHECK", "EMAIL_CHECK", "NO_SPTAB" ,"EMAIL_CHAR_CHECK"));
+        $this->objFormParam->addParam("パスワード", "mypage_login_pass", MTEXT_LEN, "KVa", array("EXIST_CHECK", "MAX_LENGTH_CHECK"));
     }
 }
 ?>
