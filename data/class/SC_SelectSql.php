@@ -169,7 +169,7 @@ class SC_SelectSql {
 
         for( $i = 0; $i < $count; $i++ ) {
 
-            if( isset( $arrWhere[$i]["value"] ) ) $statement .= $arrWhere[$i]["column"] ." = '" . addslashes( $arrWhere[$i]["value"] ) ."' OR "  ;
+            if( isset( $arrWhere[$i]["value"] ) ) $statement .= $arrWhere[$i]["column"] ." = " . SC_Utils_Ex::sfQuoteSmart($arrWhere[$i]["value"]) ." OR "  ;
         }
 
         $statement = "( " . rtrim( $statement, " OR " ) . " )";

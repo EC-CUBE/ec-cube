@@ -129,15 +129,14 @@ class LC_Page_Regist extends LC_Page {
             } else {
                 //$this->tpl_mainpage = 'regist/complete.tpl';
                 //$this->tpl_title = ' 会員登録(完了ページ)';
-                $registSecretKey = lfRegistData($_GET);			//本会員登録（フラグ変更）
-                lfSendRegistMail($registSecretKey);				//本会員登録完了メール送信
+                $registSecretKey = $this->lfRegistData($_GET);			//本会員登録（フラグ変更）
+                $this->lfSendRegistMail($registSecretKey);				//本会員登録完了メール送信
 
                 // ログイン済みの状態にする。
                 $objQuery = new SC_Query();
                 $email = $objQuery->get("dtb_customer", "email", "secret_key = ?", array($registSecretKey));
                 $objCustomer->setLogin($email);
-                $this->sendRedirect($this->getLocation("./complete.php"));
-                header("Location: " . gfAddSessionId("./complete.php"));
+                $this->sendRedirect($this->getLocation("./complete.php"), true);
                 exit;
             }
 
@@ -187,7 +186,7 @@ class LC_Page_Regist extends LC_Page {
 
         $arrRet = $objQuery->select("point", "dtb_customer", $where, array($array["id"]));
         // 会員登録時の加算ポイント(購入時会員登録の場合は、ポイント加算）
-        $arrRegist['point'] = $arrRet[0]['point'] + addslashes($arrInfo['welcome_point']);
+        $arrRegist['point'] = $arrRet[0]['point'] + $arrInfo['welcome_point'];
 
         $objQuery->update("dtb_customer", $arrRegist, $where, array($array["id"]));
 
@@ -228,7 +227,7 @@ class LC_Page_Regist extends LC_Page {
             break;
         }
 
-        $objQuery->update("dtb_customer", $arrRegistMail, "email = '" .addslashes($email). "' AND del_flg = 0");
+        $objQuery->update("dtb_customer", $arrRegistMail, "email = " . SC_Utils_Ex::sfQuoteSmart($email). " AND del_flg = 0");
         $objConn->query("COMMIT");
 
         return $secret;		// 本登録IDを返す

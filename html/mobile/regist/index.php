@@ -86,7 +86,7 @@ function lfRegistData($array) {
 	
 	$arrRet = $objQuery->select("point", "dtb_customer", $where, array($array["id"]));
 	// 会員登録時の加算ポイント(購入時会員登録の場合は、ポイント加算）
-	$arrRegist['point'] = $arrRet[0]['point'] + addslashes($arrInfo['welcome_point']);
+	$arrRegist['point'] = $arrRet[0]['point'] + $arrInfo['welcome_point'];
 	
 	$objQuery->update("dtb_customer", $arrRegist, $where, array($array["id"]));
 
@@ -127,7 +127,7 @@ function lfRegistData($array) {
 		break;
 	}
 
-	$objQuery->update("dtb_customer", $arrRegistMail, "email = '" .addslashes($email). "' AND del_flg = 0");
+	$objQuery->update("dtb_customer", $arrRegistMail, "email = " . SC_Utils_Ex::sfQuoteSmart($email). " AND del_flg = 0");
 	$objConn->query("COMMIT");
 		
 	return $secret;		// 本登録IDを返す

@@ -112,7 +112,7 @@ class LC_Page_Admin_Products extends LC_Page {
 
             if($_POST['category_id'] != "") {
                 // ランク付きレコードの削除
-                $where = "category_id = " . addslashes($_POST['category_id']);
+                $where = "category_id = " . SC_Utils_Ex::sfQuoteSmart($_POST['category_id']);
                 $objDb->sfDeleteRankRecord("dtb_products", "product_id", $_POST['product_id'], $where);
             } else {
                 $objDb->sfDeleteRankRecord("dtb_products", "product_id", $_POST['product_id']);

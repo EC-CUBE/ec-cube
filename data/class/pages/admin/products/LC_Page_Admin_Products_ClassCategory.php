@@ -13,7 +13,7 @@ require_once(CLASS_PATH . "pages/LC_Page.php");
  *
  * @package Page
  * @author LOCKON CO.,LTD.
- * @version $Id$
+ * @version $Id:LC_Page_Admin_Products_ClassCategory.php 15532 2007-08-31 14:39:46Z nanasess $
  */
 class LC_Page_Admin_Products_ClassCategory extends LC_Page {
 
@@ -70,6 +70,12 @@ class LC_Page_Admin_Products_ClassCategory extends LC_Page {
 
         if (!isset($_POST['mode'])) $_POST['mode'] = "";
 
+        if (isset($_POST['class_id'])) {
+            if (!SC_Utils_Ex::sfIsInt($_POST['class_id'])) {
+                SC_Utils_Ex::sfDispError("");
+            }
+        }
+
         // 新規作成 or 編集
         switch($_POST['mode']) {
             // 登録ボタン押下
@@ -97,7 +103,7 @@ class LC_Page_Admin_Products_ClassCategory extends LC_Page {
             // 削除
         case 'delete':
             // ランク付きレコードの削除
-            $where = "class_id = " . addslashes($_POST['class_id']);
+            $where = "class_id = " . SC_Utils_Ex::sfQuoteSmart($_POST['class_id']);
             $objDb->sfDeleteRankRecord("dtb_classcategory", "classcategory_id", $_POST['classcategory_id'], $where, true);
             break;
             // 編集前処理
@@ -111,11 +117,11 @@ class LC_Page_Admin_Products_ClassCategory extends LC_Page {
             $this->tpl_classcategory_id = $_POST['classcategory_id'];
             break;
         case 'down':
-            $where = "class_id = " . addslashes($_POST['class_id']);
+            $where = "class_id = " . SC_Utils_Ex::sfQuoteSmart($_POST['class_id']);
             $objDb->sfRankDown("dtb_classcategory", "classcategory_id", $_POST['classcategory_id'], $where);
             break;
         case 'up':
-            $where = "class_id = " . addslashes($_POST['class_id']);
+            $where = "class_id = " . SC_Utils_Ex::sfQuoteSmart($_POST['class_id']);
             $objDb->sfRankUp("dtb_classcategory", "classcategory_id", $_POST['classcategory_id'], $where);
             break;
         default:

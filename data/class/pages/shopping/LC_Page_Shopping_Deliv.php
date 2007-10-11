@@ -135,9 +135,9 @@ class LC_Page_Shopping_Deliv extends LC_Page {
                 exit;
             // 別のお届け先がチェックされている場合
             } elseif($_POST['deliv_check'] >= 1) {
-                if (sfIsInt($_POST['deliv_check'])) {
+                if (SC_Utils_Ex::sfIsInt($_POST['deliv_check'])) {
                     // 登録済みの別のお届け先を受注一時テーブルに書き込む
-                    lfRegistOtherDelivData($uniqid, $objCustomer, $_POST['deliv_check']);
+                    $this->lfRegistOtherDelivData($uniqid, $objCustomer, $_POST['deliv_check']);
                     // 正常に登録されたことを記録しておく
                     $objSiteSess->setRegistFlag();
                     // お支払い方法選択ページへ移動

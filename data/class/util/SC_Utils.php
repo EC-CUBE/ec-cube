@@ -1277,7 +1277,7 @@ class SC_Utils {
             break;
 
             case '1':
-            $objConn->autoExecute("dtb_customer_mail_temp",$arrRegistMailMagazine, "email = '" .addslashes($email). "'");
+                $objConn->autoExecute("dtb_customer_mail_temp",$arrRegistMailMagazine, "email = " .SC_Utils::sfQuoteSmart($email));
             break;
         }
         $objConn->query("COMMIT");

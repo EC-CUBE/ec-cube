@@ -209,7 +209,7 @@ function lfRegistData($array, $arrRegistColumn) {
 	//-- 編集登録実行
 	$objConn->query("BEGIN");
 	if ($array['other_deliv_id'] != ""){
-		$objConn->autoExecute("dtb_other_deliv", $arrRegist, "other_deliv_id='" .addslashes($array["other_deliv_id"]). "'");
+		$objConn->autoExecute("dtb_other_deliv", $arrRegist, "other_deliv_id=" SC_Utils_Ex::sfQuoteSmart($array["other_deliv_id"]));
 	}else{
 		$objConn->autoExecute("dtb_other_deliv", $arrRegist);
 

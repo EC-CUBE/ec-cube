@@ -205,7 +205,7 @@ class LC_Page_Admin_Customer extends LC_Page {
 
             if ($result_customer[0]["status"] == 2) {           //本会員削除
                 $arrDel = array("del_flg" => 1, "update_date" => "NOW()");
-                $objQuery->conn->autoExecute("dtb_customer", $arrDel, "customer_id = " .addslashes($_POST["edit_customer_id"]) );
+                $objQuery->conn->autoExecute("dtb_customer", $arrDel, "customer_id = " . SC_Utils_Ex::sfQuoteSmart($_POST["edit_customer_id"]) );
             } elseif ($result_customer[0]["status"] == 1) {     //仮会員削除
                 $sql = "DELETE FROM dtb_customer WHERE customer_id = ?";
                 $objQuery->conn->query($sql, array($_POST["edit_customer_id"]));
@@ -243,7 +243,7 @@ class LC_Page_Admin_Customer extends LC_Page {
                 $objSelect->setLimitOffset($page_max, $offset);
 
                 if ($_POST["mode"] == 'csv') {
-                    $searchSql = $objSelect->getListCSV($arrColumnCSV);
+                    $searchSql = $objSelect->getListCSV($this->arrColumnCSV);
                 }else{
                     $searchSql = $objSelect->getList();
                 }
@@ -278,9 +278,9 @@ class LC_Page_Admin_Customer extends LC_Page {
                     }
 
                     //-　CSV出力
-                    $data = lfGetCSVData($this->search_data, $arrColumn);
+                    $data = $this->lfGetCSVData($this->search_data, $arrColumn);
 
-                    sfCSVDownload($header.$data);
+                    SC_Utils_Ex::sfCSVDownload($header.$data);
                     exit;
                     break;
                 case 'delete_all':
@@ -294,7 +294,7 @@ class LC_Page_Admin_Customer extends LC_Page {
 
                     if ($result_customer[0]["status"] == 2) {           //本会員削除
                         $arrDel = array("del_flg" => 1, "update_date" => "NOW()");
-                        $objQuery->conn->autoExecute("dtb_customer", $arrDel, "customer_id = " .addslashes($_POST["del_customer_id"]) );
+                        $objQuery->conn->autoExecute("dtb_customer", $arrDel, "customer_id = " . SC_Utils_Ex::sfQuoteSmart($_POST["del_customer_id"]) );
                     } elseif ($result_customer[0]["status"] == 1) {     //仮会員削除
                         $sql = "DELETE FROM dtb_customer WHERE customer_id = ?";
                         $objQuery->conn->query($sql, array($_POST["del_customer_id"]));
