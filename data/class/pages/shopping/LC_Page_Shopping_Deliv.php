@@ -115,7 +115,7 @@ class LC_Page_Shopping_Deliv extends LC_Page {
             break;
         // 削除
         case 'delete':
-            if (sfIsInt($_POST['other_deliv_id'])) {
+            if (SC_Utils_Ex::sfIsInt($_POST['other_deliv_id'])) {
                 $objQuery = new SC_Query();
                 $where = "other_deliv_id = ?";
                 $arrRet = $objQuery->delete("dtb_other_deliv", $where, array($_POST['other_deliv_id']));
@@ -230,7 +230,7 @@ class LC_Page_Shopping_Deliv extends LC_Page {
         $this->tpl_uniqid = $uniqid;
 
         // ログインチェック
-        if($_POST['mode'] != 'login' && !$objCustomer->isLoginSuccess()) {
+        if($_POST['mode'] != 'login' && !$objCustomer->isLoginSuccess(true)) {
             // 不正アクセスとみなす
             SC_Utils_Ex::sfDispSiteError(CUSTOMER_ERROR, "", false, "", true);
         }
@@ -264,20 +264,22 @@ class LC_Page_Shopping_Deliv extends LC_Page {
                 }
             } else {
                 // ログインページに戻る
-                $this->sendRedirect($this->getLocation(SC_Helper_Mobile_Ex::gfAddSessionId(MOBILE_URL_SHOP_TOP)));
+                $this->sendRedirect($this->getLocation(MOBILE_URL_SHOP_TOP), true);
                 exit;
             }
 
             // ログインが成功した場合は携帯端末IDを保存する。
             $objCustomer->updateMobilePhoneId();
 
-            // 携帯のメールアドレスをコピーする。
-            $objCustomer->updateEmailMobile();
-
-            // 携帯のメールアドレスが登録されていない場合
-            if (!$objCustomer->hasValue('email_mobile')) {
-                 $this->sendRedirect($this->getLocation(SC_Helper_Mobile_Ex::gfAddSessionId("../entry/email_mobile.php")));
-                exit;
+            /*
+             * email がモバイルドメインでは無く,
+             * 携帯メールアドレスが登録されていない場合
+             */
+            $objMobile = new SC_Helper_Mobile_Ex();
+            if (!$objMobile->gfIsMobileMailAddress($objCustomer->getValue('email'))) {
+                if (!$objCustomer->hasValue('email_mobile')) {
+                    $this->sendRedirect($this->getLocation("../entry/email_mobile.php"), true);
+                }
             }
             break;
             // 削除
@@ -298,7 +300,7 @@ class LC_Page_Shopping_Deliv extends LC_Page {
                 // 正常に登録されたことを記録しておく
                 $objSiteSess->setRegistFlag();
                 // お支払い方法選択ページへ移動
-                $this->sendRedirect($this->getLocation(SC_Helper_Mobile_Ex::gfAddSessionId(MOBILE_URL_SHOP_PAYMENT)));
+                $this->sendRedirect($this->getLocation(MOBILE_URL_SHOP_PAYMENT), true);
                 exit;
             }else{
                 // エラーを返す
@@ -316,7 +318,7 @@ class LC_Page_Shopping_Deliv extends LC_Page {
                     // 正常に登録されたことを記録しておく
                     $objSiteSess->setRegistFlag();
                     // お支払い方法選択ページへ移動
-                    $this->sendRedirect($this->getLocation(SC_Helper_Mobile_Ex::gfAddSessionId(MOBILE_URL_SHOP_PAYMENT)));
+                    $this->sendRedirect($this->getLocation(MOBILE_URL_SHOP_PAYMENT), true);
                     exit;
                 }
             }else{
@@ -347,7 +349,7 @@ class LC_Page_Shopping_Deliv extends LC_Page {
             // 前のページに戻る
         case 'return':
             // 確認ページへ移動
-            $this->sendRedirect($this->getLocation(SC_Helper_Mobile_Ex::gfAddSessionId(MOBILE_URL_CART_TOP)));
+            $this->sendRedirect($this->getLocation(MOBILE_URL_CART_TOP), true);
             exit;
             break;
         default:
