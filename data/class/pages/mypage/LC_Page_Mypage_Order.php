@@ -35,6 +35,23 @@ class LC_Page_Mypage_Order extends LC_Page {
      * @return void
      */
     function process() {
+    }
+
+    /**
+     * モバイルページを初期化する.
+     *
+     * @return void
+     */
+    function mobileInit() {
+        $this->init();
+    }
+
+    /**
+     * Page のプロセス(モバイル).
+     *
+     * @return void
+     */
+    function mobileProcess() {
         $objCustomer = new SC_Customer();
         $objCartSess = new SC_CartSession();
 
@@ -42,7 +59,7 @@ class LC_Page_Mypage_Order extends LC_Page {
         $arrDisp = $this->lfGetOrderDetail($_POST['order_id']);
 
         //ログインしていない、またはDBに情報が無い場合
-        if (!$objCustomer->isLoginSuccess() or count($arrDisp) == 0){
+        if (!$objCustomer->isLoginSuccess(true) or count($arrDisp) == 0){
             SC_Utils_Ex::sfDispSiteError(CUSTOMER_ERROR, "", false, "", true);
         }
 
@@ -54,8 +71,7 @@ class LC_Page_Mypage_Order extends LC_Page {
 
             $objCartSess->addProduct(array($product_id, $cate_id1, $cate_id2), $quantity);
         }
-        $this->sendRedirect($this->getLocation(MOBILE_URL_CART_TOP,
-                            array(session_name() => session_id())));
+        $this->sendRedirect($this->getLocation(MOBILE_URL_CART_TOP), true);
     }
 
     /**
