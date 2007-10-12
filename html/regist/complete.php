@@ -7,12 +7,12 @@
 
 // {{{ requires
 require_once("../require.php");
-require_once(CLASS_EX_PATH . "page_extends/regist/LC_Page_Regist_Complate_Ex.php");
+require_once(CLASS_EX_PATH . "page_extends/regist/LC_Page_Regist_Complete_Ex.php");
 
 // }}}
 // {{{ generate page
 
-$objPage = new LC_Page_Regist_Complate_Ex();
+$objPage = new LC_Page_Regist_Complete_Ex();
 $objPage->init();
 $objPage->process();
 register_shutdown_function(array($objPage, "destroy"));

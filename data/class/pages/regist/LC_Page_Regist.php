@@ -44,7 +44,6 @@ class LC_Page_Regist extends LC_Page {
      * @return void
      */
     function process() {
-        $objConn = new SC_DBConn();
         $objQuery = new SC_Query();
         $objView = new SC_SiteView();
         $objSiteInfo = $objView->objSiteInfo;
@@ -108,7 +107,7 @@ class LC_Page_Regist extends LC_Page {
      * @return void
      */
     function mobileProcess() {
-        $objConn = new SC_DBConn();
+        $objQuery = new SC_Query();
         $objView = new SC_MobileView();
         $objSiteInfo = $objView->objSiteInfo;
         $objCustomer = new SC_Customer();
@@ -120,20 +119,17 @@ class LC_Page_Regist extends LC_Page {
         if ($_GET["mode"] == "regist") {
 	
             //-- 入力チェック
-            $this->arrErr = lfErrorCheck($_GET);
+            $this->arrErr = $this->lfErrorCheck($_GET);
             if ($this->arrErr) {
                 $this->tpl_mainpage = 'regist/error.tpl';
-                $this->tpl_css = "/css/layout/regist/error.css";
                 $this->tpl_title = 'エラー';
 
             } else {
-                //$this->tpl_mainpage = 'regist/complete.tpl';
-                //$this->tpl_title = ' 会員登録(完了ページ)';
                 $registSecretKey = $this->lfRegistData($_GET);			//本会員登録（フラグ変更）
                 $this->lfSendRegistMail($registSecretKey);				//本会員登録完了メール送信
 
                 // ログイン済みの状態にする。
-                $objQuery = new SC_Query();
+
                 $email = $objQuery->get("dtb_customer", "email", "secret_key = ?", array($registSecretKey));
                 $objCustomer->setLogin($email);
                 $this->sendRedirect($this->getLocation("./complete.php"), true);
@@ -166,22 +162,20 @@ class LC_Page_Regist extends LC_Page {
     //---- 登録
     function lfRegistData($array) {
         $objQuery = new SC_Query();
-        $objConn = new SC_DBConn();
         $this->arrInfo;
 
         do {
             $secret = SC_Utils_Ex::sfGetUniqRandomId("r");
-        } while( ($result = $objConn->getOne("SELECT COUNT(*) FROM dtb_customer WHERE secret_key = ?", array($secret)) ) != 0);
+        } while( ($result = $objQuery->getOne("SELECT COUNT(*) FROM dtb_customer WHERE secret_key = ?", array($secret)) ) != 0);
 
         $sql = "SELECT email FROM dtb_customer WHERE secret_key = ? AND status = 1";
-        $email = $objConn->getOne($sql, array($array["id"]));
+        $email = $objQuery->getOne($sql, array($array["id"]));
 
-        $objConn->query("BEGIN");
+        $objQuery->begin();
         $arrRegist["secret_key"] = $secret;	//　本登録ID発行
         $arrRegist["status"] = 2;
         $arrRegist["update_date"] = "NOW()";
 
-        $objQuery = new SC_Query();
         $where = "secret_key = ? AND status = 1";
 
         $arrRet = $objQuery->select("point", "dtb_customer", $where, array($array["id"]));
@@ -207,7 +201,7 @@ class LC_Page_Regist extends LC_Page {
         */
 
         $sql = "SELECT mailmaga_flg FROM dtb_customer WHERE email = ?";
-        $result = $objConn->getOne($sql, array($email));
+        $result = $objQuery->getOne($sql, array($email));
 
         switch($result) {
         // 仮HTML
@@ -228,7 +222,7 @@ class LC_Page_Regist extends LC_Page {
         }
 
         $objQuery->update("dtb_customer", $arrRegistMail, "email = " . SC_Utils_Ex::sfQuoteSmart($email). " AND del_flg = 0");
-        $objConn->query("COMMIT");
+        $objQuery->commit();
 
         return $secret;		// 本登録IDを返す
     }
@@ -236,7 +230,7 @@ class LC_Page_Regist extends LC_Page {
     //---- 入力エラーチェック
     function lfErrorCheck($array) {
 
-        $objConn = new SC_DbConn();
+        $objQuery = new SC_Query();
         $objErr = new SC_CheckError($array);
 
         $objErr->doFunc(array("仮登録ID", 'id'), array("EXIST_CHECK"));
@@ -246,7 +240,7 @@ class LC_Page_Regist extends LC_Page {
         if (! $objErr->arrErr["id"]) {
 
             $sql = "SELECT customer_id FROM dtb_customer WHERE secret_key = ? AND status = 1 AND del_flg = 0";
-            $result = $objConn->getOne($sql, array($array["id"]));
+            $result = $objQuery->getOne($sql, array($array["id"]));
 
             if (! is_numeric($result)) {
                 $objErr->arrErr["id"] .= "※ 既に会員登録が完了しているか、無効なURLです。<br>";
@@ -260,32 +254,32 @@ class LC_Page_Regist extends LC_Page {
 
     //---- 正会員登録完了メール送信
     function lfSendRegistMail($registSecretKey) {
-        $objConn = new SC_DbConn();
-        global $CONF;
+        $objQuery = new SC_Query();
+        $objHelperMail = new SC_Helper_Mail_Ex();
 
         //-- 姓名を取得
         $sql = "SELECT email, name01, name02 FROM dtb_customer WHERE secret_key = ?";
-        $result = $objConn->getAll($sql, array($registSecretKey));
+        $result = $objQuery->getAll($sql, array($registSecretKey));
         $data = $result[0];
 
         //--　メール送信
         $objMailText = new SC_SiteView();
-        $objMailText->assign("CONF", $CONF);
+        $objMailText->assign("CONF", $this->CONF);
         $objMailText->assign("name01", $data["name01"]);
         $objMailText->assign("name02", $data["name02"]);
         $toCustomerMail = $objMailText->fetch("mail_templates/customer_regist_mail.tpl");
-        $subject = sfMakeSubject('会員登録が完了しました。');
+        $subject = $objHelperMail->sfMakesubject($objQuery, $objMailText, $this, '会員登録が完了しました。');
         $objMail = new SC_SendMail();
 
         $objMail->setItem(
-                              ''								//　宛先
-                            , $subject//"【" .$CONF["shop_name"]. "】".ENTRY_CUSTOMER_REGIST_SUBJECT 		//　サブジェクト
-                            , $toCustomerMail					//　本文
-                            , $CONF["email03"]					//　配送元アドレス
-                            , $CONF["shop_name"]				//　配送元　名前
-                            , $CONF["email03"]					//　reply_to
-                            , $CONF["email04"]					//　return_path
-                            , $CONF["email04"]					//  Errors_to
+                              ''                                //　宛先
+                            , $subject                          //　サブジェクト
+                            , $toCustomerMail                   //　本文
+                            , $CONF["email03"]                  //　配送元アドレス
+                            , $CONF["shop_name"]                //　配送元　名前
+                            , $CONF["email03"]                  //　reply_to
+                            , $CONF["email04"]                  //　return_path
+                            , $CONF["email04"]                  //  Errors_to
                         );
         // 宛先の設定
         $name = $data["name01"] . $data["name02"] ." 様";

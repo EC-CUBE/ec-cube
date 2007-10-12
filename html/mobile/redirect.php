@@ -6,20 +6,18 @@
  * http://www.lockon.co.jp/
  *
  *
- * モバイルサイト/空メールの返信からの遷移
+ * モバイルサイト/メールからのリダイレクト
  */
 
-// FIXME
-define('SKIP_MOBILE_INIT', true);
-require_once 'require.php';
+// {{{ requires
+require_once("./require.php");
+require_once(CLASS_EX_PATH . "page_extends/LC_Page_Redirect_Ex.php");
 
-if (isset($_GET['token'])) {
-	$next_url = GC_Utils_Ex::gfFinishKaraMail($_GET['token']);
-}
+// }}}
+// {{{ generate page
 
-if (isset($next_url) && $next_url !== false) {
-	header("Location: $next_url");
-} else {
-	header('Location: ' . MOBILE_SITE_URL);
-}
+$objPage = new LC_Page_Redirect_Ex();
+$objPage->mobileInit();
+$objPage->mobileProcess();
+register_shutdown_function(array($objPage, "destroy"));
 ?>

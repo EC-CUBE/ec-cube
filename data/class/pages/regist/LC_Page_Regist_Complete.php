@@ -13,7 +13,7 @@ require_once(CLASS_PATH . "pages/LC_Page.php");
  *
  * @package Page
  * @author LOCKON CO.,LTD.
- * @version $Id$
+ * @version $Id:LC_Page_Regist_Complete.php 15532 2007-08-31 14:39:46Z nanasess $
  */
 class LC_Page_Regist_Complete extends LC_Page {
 
@@ -53,16 +53,41 @@ class LC_Page_Regist_Complete extends LC_Page {
 
         // レイアウトデザインを取得
         $helper = new SC_Helper_PageLayout_Ex();
-        $this = $helper->sfGetPageLayout($this, false, DEF_LAYOUT);
+        $helper->sfGetPageLayout($this, false, DEF_LAYOUT);
 
-        $objView->assignobj($objPage);
+        $objView->assignobj($this);
         // フレームを選択(キャンペーンページから遷移なら変更)
-        if($objPage->dir_name != "") {
+        if($this->dir_name != "") {
             $objView->display(CAMPAIGN_TEMPLATE_PATH . $dir_name  . "/active/site_frame.tpl");
             $objCampaignSess->delCampaign();
         } else {
             $objView->display(SITE_FRAME);
         }
+    }
+
+    /**
+     * モバイルページを初期化する.
+     *
+     * @return void
+     */
+    function mobileInit() {
+        $this->init();
+    }
+
+    /**
+     * Page のプロセス(モバイル).
+     *
+     * @return void
+     */
+    function mobileProcess() {
+        $objView = new SC_MobileView();
+
+        // カートが空かどうかを確認する。
+        $objCartSess = new SC_CartSession("", false);
+        $this->tpl_cart_empty = count($objCartSess->getCartList()) < 1;
+
+        $objView->assignobj($this);
+        $objView->display(SITE_FRAME);
     }
 
     /**
