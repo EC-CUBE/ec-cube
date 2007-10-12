@@ -181,7 +181,8 @@ class LC_Page_Admin_Design extends LC_Page {
                 $this->lfSetPreData($arrPageData, $objLayout);
 
                 $_SESSION['preview'] = "ON";
-                $this->sendRedirect($this->getLocation(URL_DIR . "preview/index.php"));
+
+                $this->sendRedirect($this->getLocation(URL_DIR . "preview/index.php", array("filename" => $arrPageData[0]["filename"])));
 
             }else{
                 $this->sendRedirect($this->getLocation("./index.php",
@@ -418,21 +419,21 @@ class LC_Page_Admin_Design extends LC_Page {
         $arrPreData = $objLayout->lfgetPageData(" page_id = ? " , array("0"));
 
         // tplファイルの削除
-        $del_tpl = USER_PATH . "templates/" . TEMPLATE_NAME . "/"
-            . $arrPreData[0]['filename'] . '.tpl';
+        $del_tpl = USER_PATH . "templates/" . $arrPreData[0]['filename'] . '.tpl';
 
         if (file_exists($del_tpl)){
             unlink($del_tpl);
         }
 
-        // プレビュー用tplファイルのコピー
-        $tplfile = $arrPageData[0]['tpl_dir'] . $arrPageData[0]['filename'];
+        $tplfile = TEMPLATE_DIR . $arrPageData[0]['filename'];
 
-        if($tplfile == ""){
-            // tplファイルが空の場合にはMYページと判断
-            $tplfile = "user_data/templates/mypage/index";
+        // filename が空の場合にはMYページと判断
+        if($arrPageData[0]['filename'] == ""){
+            $tplfile = TEMPLATE_DIR . "mypage/index";
         }
-        copy(HTML_PATH . $tplfile . ".tpl", USER_PATH . "templates/"
+
+        // プレビュー用tplファイルのコピー
+        copy($tplfile . ".tpl", USER_PATH . "templates/"
              . TEMPLATE_NAME . "/" . $filename . ".tpl");
 
         // 更新データの取得

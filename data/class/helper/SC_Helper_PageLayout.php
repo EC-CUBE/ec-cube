@@ -39,6 +39,8 @@ class SC_Helper_PageLayout {
             $arrPageData = $this->lfgetPageData(" url = ? " , array($url));
         }else{
             $arrPageData = $this->lfgetPageData(" page_id = ? " , array("0"));
+            $objPage->tpl_mainpage = USER_PATH . "templates/"
+                . TEMPLATE_NAME . "/" . $arrPageData[0]['filename'] . ".tpl";
         }
 
         // メインテンプレートファイルを設定
