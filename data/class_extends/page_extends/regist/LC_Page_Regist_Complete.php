@@ -6,7 +6,7 @@
  */
 
 // {{{ requires
-require_once(CLASS_PATH . "pages/regist/LC_Page_Regist_Complate.php");
+require_once(CLASS_PATH . "pages/regist/LC_Page_Regist_Complete.php");
 
 /**
  * 会員登録完了のページクラス(拡張).
@@ -17,7 +17,7 @@ require_once(CLASS_PATH . "pages/regist/LC_Page_Regist_Complate.php");
  * @author LOCKON CO.,LTD.
  * @version $Id$
  */
-class LC_Page_Regist_Complate_Ex extends LC_Page_Regist_Complate {
+class LC_Page_Regist_Complete_Ex extends LC_Page_Regist_Complete {
 
     // }}}
     // {{{ functions
