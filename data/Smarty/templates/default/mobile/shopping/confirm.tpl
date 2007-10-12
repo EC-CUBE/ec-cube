@@ -18,7 +18,8 @@
 <br>
 
 【配送先】<br>
-<!--{if $arrData.deliv_check == 1}-->
+<!--{* 別のお届け先が選択されている場合 *}-->
+<!--{if $arrData.deliv_check >= 1}-->
 <!--{$arrData.deliv_name01|escape}--> <!--{$arrData.deliv_name02|escape}--><br>
 〒<!--{$arrData.deliv_zip01|escape}-->-<!--{$arrData.deliv_zip02|escape}--><br>
 <!--{$arrPref[$arrData.deliv_pref]}--><!--{$arrData.deliv_addr01|escape}--><!--{$arrData.deliv_addr02|escape}--><br>

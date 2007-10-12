@@ -349,8 +349,13 @@ class SC_Utils {
         $ret = $objCartSess->checkChangeCart();
         if($ret == true || !($quantity > 0)) {
             // カート情報表示に強制移動する
-            header("Location: ".URL_CART_TOP); // FIXME
-            exit;
+            // FIXME false を返して, Page クラスで遷移させるべき...
+            if (defined("MOBILE_SITE")) {
+                header("Location: ". MOBILE_URL_CART_TOP
+                       . "?" . session_name() . "=" . session_id());
+            } else {
+                header("Location: ".URL_CART_TOP);
+            }
         }
         return $uniqid;
     }

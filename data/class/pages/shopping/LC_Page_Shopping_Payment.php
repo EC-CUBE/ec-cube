@@ -87,7 +87,7 @@ class LC_Page_Shopping_Payment extends LC_Page {
         if (empty($arrData)) $arrData = array();
         $this->arrData = $objDb->sfTotalConfirm($arrData, $this, $objCartSess, $arrInfo);
 
-        // カー都内の商品の売り切れチェック
+        // カート内の商品の売り切れチェック
         $objCartSess->chkSoldOut($objCartSess->getCartList());
 
         if (!isset($_POST['mode'])) $_POST['mode'] = "";
@@ -152,6 +152,151 @@ class LC_Page_Shopping_Payment extends LC_Page {
     }
 
     /**
+     * モバイルページを初期化する.
+     *
+     * @return void
+     */
+    function mobileInit() {
+        $this->init();
+    }
+
+    /**
+     * Page のプロセス(モバイル).
+     *
+     * @return void
+     */
+    function mobileProcess() {
+        $objView = new SC_MobileView();
+        $objSiteSess = new SC_SiteSession();
+        $objCartSess = new SC_CartSession();
+        $this->objCustomer = new SC_Customer();
+        $objDb = new SC_Helper_DB_Ex();
+        $objSiteInfo = $objView->objSiteInfo;
+        $arrInfo = $objSiteInfo->data;
+
+        // パラメータ管理クラス
+        $this->objFormParam = new SC_FormParam();
+        // パラメータ情報の初期化
+        $this->lfInitParam();
+        // POST値の取得
+        $this->objFormParam->setParam($_POST);
+
+        // ユーザユニークIDの取得と購入状態の正当性をチェック
+        $uniqid = SC_Utils_Ex::sfCheckNormalAccess($objSiteSess, $objCartSess);
+        // ユニークIDを引き継ぐ
+        $this->tpl_uniqid = $uniqid;
+
+        // 会員ログインチェック
+        if($this->objCustomer->isLoginSuccess(true)) {
+            $this->tpl_login = '1';
+            $this->tpl_user_point = $this->objCustomer->getValue('point');
+        }
+
+        // 金額の取得 (購入途中で売り切れた場合にはこの関数内にてその商品の個数が０になる)
+        $objDb->sfTotalCart($this, $objCartSess, $arrInfo);
+        if (empty($arrData)) $arrData = array();
+        $this->arrData = $objDb->sfTotalConfirm($arrData, $this, $objCartSess, $arrInfo);
+
+        // カー都内の商品の売り切れチェック
+        $objCartSess->chkSoldOut($objCartSess->getCartList(), true);
+
+        if (!isset($_POST['mode'])) $_POST['mode'] = "";
+
+        // 戻るボタンの処理
+        if (!empty($_POST['return'])) {
+            switch ($_POST['mode']) {
+            case 'confirm':
+                $_POST['mode'] = 'payment';
+                break;
+            default:
+                // 正常な推移であることを記録しておく
+                $objSiteSess->setRegistFlag();
+                $this->sendRedirect(MOBILE_URL_SHOP_TOP, true);
+                exit;
+            }
+        }
+
+        switch($_POST['mode']) {
+            // 支払い方法指定 → 配達日時指定
+        case 'deliv_date':
+            // 入力値の変換
+            $this->objFormParam->convParam();
+            $this->arrErr = $this->lfCheckError($this->arrData);
+            if (!isset($this->arrErr['payment_id'])) {
+                // 支払い方法の入力エラーなし
+                $this->tpl_mainpage = 'shopping/deliv_date.tpl';
+                $this->tpl_title = "配達日時指定";
+                break;
+            } else {
+                // ユーザユニークIDの取得
+                $uniqid = $objSiteSess->getUniqId();
+                // 受注一時テーブルからの情報を格納
+                $this->lfSetOrderTempData($uniqid);
+            }
+            break;
+        case 'confirm':
+            // 入力値の変換
+            $this->objFormParam->convParam();
+            $this->arrErr = $this->lfCheckError($this->arrData );
+            // 入力エラーなし
+            if(count($this->arrErr) == 0) {
+                // DBへのデータ登録
+                $this->lfRegistData($uniqid);
+                // 正常に登録されたことを記録しておく
+                $objSiteSess->setRegistFlag();
+                // 確認ページへ移動
+                $this->sendRedirect($this->getLocation(MOBILE_URL_SHOP_CONFIRM), true);
+                exit;
+            }else{
+                // ユーザユニークIDの取得
+                $uniqid = $objSiteSess->getUniqId();
+                // 受注一時テーブルからの情報を格納
+                $this->lfSetOrderTempData($uniqid);
+                if (!isset($this->arrErr['payment_id'])) {
+                    // 支払い方法の入力エラーなし
+                    $this->tpl_mainpage = 'shopping/deliv_date.tpl';
+                    $this->tpl_title = "配達日時指定";
+                }
+            }
+            break;
+            // 前のページに戻る
+        case 'return':
+            // 非会員の場合
+            // 正常な推移であることを記録しておく
+            $objSiteSess->setRegistFlag();
+            $this->sendRedirect(MOBILE_URL_SHOP_TOP, true);
+            exit;
+            break;
+            // 支払い方法が変更された場合
+        case 'payment':
+            // ここのbreakは、意味があるので外さないで下さい。
+            break;
+        default:
+            // 受注一時テーブルからの情報を格納
+            $this->lfSetOrderTempData($uniqid);
+            break;
+        }
+
+        // 店舗情報の取得
+        $arrInfo = $objSiteInfo->data;
+        // 購入金額の取得得
+        $total_pretax = $objCartSess->getAllProductsTotal($arrInfo);
+        // 支払い方法の取得
+        $this->arrPayment = $this->lfGetPayment($total_pretax);
+        // 配送時間の取得
+        $arrRet = $objDb->sfGetDelivTime($this->objFormParam->getValue('payment_id'));
+        $this->arrDelivTime = SC_Utils_Ex::sfArrKeyValue($arrRet, 'time_id', 'deliv_time');
+
+        // 配送日一覧の取得
+        $this->arrDelivDate = $this->lfGetDelivDate();
+
+        $this->arrForm = $this->objFormParam->getFormParamList();
+
+        $objView->assignobj($this);
+        $objView->display(SITE_FRAME);
+    }
+
+    /**
      * デストラクタ.
      *
      * @return void
@@ -207,6 +352,8 @@ class LC_Page_Shopping_Payment extends LC_Page {
         $objErr = new SC_CheckError($arrRet);
         $objErr->arrErr = $this->objFormParam->checkError();
 
+        if (!isset($_POST['point_check'])) $_POST['point_check'] = "";
+
         if($_POST['point_check'] == '1') {
             $objErr->doFunc(array("ポイントを使用する", "point_check"), array("EXIST_CHECK"));
             $objErr->doFunc(array("ポイント", "use_point"), array("EXIST_CHECK"));
@@ -214,11 +361,12 @@ class LC_Page_Shopping_Payment extends LC_Page {
             if($max_point == "") {
                 $max_point = 0;
             }
+            // FIXME mobile 互換のため br は閉じない...
             if($arrRet['use_point'] > $max_point) {
-                $objErr->arrErr['use_point'] = "※ ご利用ポイントが所持ポイントを超えています。<br />";
+                $objErr->arrErr['use_point'] = "※ ご利用ポイントが所持ポイントを超えています。<br>";
             }
             if(($arrRet['use_point'] * POINT_VALUE) > $arrData['subtotal']) {
-                $objErr->arrErr['use_point'] = "※ ご利用ポイントがご購入金額を超えています。<br />";
+                $objErr->arrErr['use_point'] = "※ ご利用ポイントがご購入金額を超えています。<br>";
             }
         }
         return $objErr->arrErr;

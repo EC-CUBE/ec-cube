@@ -229,6 +229,8 @@ class LC_Page_Shopping_Deliv extends LC_Page {
         $uniqid = SC_Utils_Ex::sfCheckNormalAccess($objSiteSess, $objCartSess);
         $this->tpl_uniqid = $uniqid;
 
+        if (!isset($_POST['mode'])) $_POST['mode'] = "";
+
         // ログインチェック
         if($_POST['mode'] != 'login' && !$objCustomer->isLoginSuccess(true)) {
             // 不正アクセスとみなす
@@ -274,6 +276,9 @@ class LC_Page_Shopping_Deliv extends LC_Page {
             /*
              * email がモバイルドメインでは無く,
              * 携帯メールアドレスが登録されていない場合
+             *
+             * XXX 携帯メールアドレスの登録が無いと, 
+             *     配送先が空欄になってしまう場合がある
              */
             $objMobile = new SC_Helper_Mobile_Ex();
             if (!$objMobile->gfIsMobileMailAddress($objCustomer->getValue('email'))) {
@@ -312,7 +317,7 @@ class LC_Page_Shopping_Deliv extends LC_Page {
         case 'other_addr':
             // お届け先がチェックされている場合には更新処理を行う
             if ($_POST['deli'] != "") {
-                if (sfIsInt($_POST['other_deliv_id'])) {
+                if (SC_Utils_Ex::sfIsInt($_POST['other_deliv_id'])) {
                     // 登録済みの別のお届け先を受注一時テーブルに書き込む
                     $this->lfRegistOtherDelivData($uniqid, $objCustomer, $_POST['other_deliv_id']);
                     // 正常に登録されたことを記録しておく
@@ -379,6 +384,7 @@ class LC_Page_Shopping_Deliv extends LC_Page {
         }
 
         // 入力値の取得
+        if (!isset($arrErr)) $arrErr = array();
         $this->arrForm = $this->objFormParam->getFormParamList();
         $this->arrErr = $arrErr;
         $objView->assignobj($this);

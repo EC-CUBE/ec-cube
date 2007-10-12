@@ -129,6 +129,83 @@ class LC_Page_Shopping_Complete extends LC_Page {
         parent::destroy();
     }
 
+    /**
+     * モバイルページを初期化する.
+     *
+     * @return void
+     */
+    function mobileInit() {
+        $this->init();
+    }
+
+    /**
+     * Page のプロセス(モバイル).
+     *
+     * @return void
+     */
+    function mobileProcess() {
+        $conn = new SC_DBConn();
+        $objView = new SC_MobileView();
+        $this->objSiteSess = new SC_SiteSession();
+        $this->objCartSess = new SC_CartSession();
+        $objSiteInfo = $objView->objSiteInfo;
+        $this->arrInfo = $objSiteInfo->data;
+        $this->objCustomer = new SC_Customer();
+        $mailHelper = new SC_Helper_Mail_Ex();
+
+        // 前のページで正しく登録手続きが行われたか判定
+        SC_Utils_Ex::sfIsPrePage($this->objSiteSess, true);
+        // ユーザユニークIDの取得と購入状態の正当性をチェック
+        $uniqid = SC_Utils_Ex::sfCheckNormalAccess($this->objSiteSess, $this->objCartSess);
+        if ($uniqid != "") {
+
+            // 完了処理
+            $objQuery = new SC_Query();
+            $objQuery->begin();
+            $order_id = $this->lfDoComplete($objQuery, $uniqid);
+            $objQuery->commit();
+
+            // セッションに保管されている情報を更新する
+            $this->objCustomer->updateSession();
+
+            // 完了メール送信
+            if($order_id != "") {
+                $mailHelper->sfSendOrderMail($order_id, '1');
+            }
+
+            //その他情報の取得
+
+            $other_data = $objQuery->get("dtb_order", "memo02", "order_id = ? ", array($order_id));
+            if($other_data != "") {
+                $arrOther = unserialize($other_data);
+
+                // データを編集
+                foreach($arrOther as $key => $val){
+                    // URLの場合にはリンクつきで表示させる
+                    if (preg_match('/^(https?|ftp)(:\/\/[-_.!~*\'()a-zA-Z0-9;\/?:\@&=+\$,%#]+)$/', $val["value"])) {
+                        $arrOther[$key]["value"] = "<a href='#' onClick=\"window.open('". $val["value"] . "'); \" >" . $val["value"] ."</a>";
+                    }
+                }
+
+                $this->arrOther = $arrOther;
+
+            }
+
+            // アフィリエイト用コンバージョンタグの設定
+            $this->tpl_conv_page = AFF_SHOPPING_COMPLETE;
+            $this->tpl_aff_option = "order_id=$order_id";
+            //合計価格の取得
+            $total = $objQuery->get("dtb_order", "total", "order_id = ? ", array($order_id));
+            if($total != "") {
+                $this->tpl_aff_option.= "|total=$total";
+            }
+        }
+
+        $objView->assignobj($this);
+        $objView->display(SITE_FRAME);
+    }
+
+
     // エビスタグ引渡し用データを生成する
     function lfGetEbisData($order_id) {
         $objQuery = new SC_Query();
@@ -213,14 +290,20 @@ class LC_Page_Shopping_Complete extends LC_Page {
 
         }
         // 一時テーブルを受注テーブルに格納する
-        $order_id = $this->lfRegistOrder($objQuery, $arrData, $this->objCampaignSess);
+        if (defined("MOBILE_SITE")) {
+            $order_id = $this->lfRegistOrder($objQuery, $arrData);
+        } else {
+            $order_id = $this->lfRegistOrder($objQuery, $arrData, $this->objCampaignSess);
+        }
         // カート商品を受注詳細テーブルに格納する
         $this->lfRegistOrderDetail($objQuery, $order_id, $this->objCartSess);
         // 受注一時テーブルの情報を削除する。
         $this->lfDeleteTempOrder($objQuery, $uniqid);
         // キャンペーンからの遷移の場合登録する。
-        if($this->objCampaignSess->getIsCampaign() and $this->objCartSess->chkCampaign($this->objCampaignSess->getCampaignId())) {
-            $this->lfRegistCampaignOrder($objQuery, $objCampaignSess, $order_id);
+        if (!defined("MOBILE_SITE")) {
+            if($this->objCampaignSess->getIsCampaign() and $this->objCartSess->chkCampaign($this->objCampaignSess->getCampaignId())) {
+                $this->lfRegistCampaignOrder($objQuery, $objCampaignSess, $order_id);
+            }
         }
 
         // セッションカート内の商品を削除する。
@@ -320,7 +403,7 @@ class LC_Page_Shopping_Complete extends LC_Page {
     }
 
     // 受注テーブルへ登録
-    function lfRegistOrder($objQuery, $arrData, $objCampaignSess) {
+    function lfRegistOrder($objQuery, $arrData, $objCampaignSess = null) {
         $sqlval = $arrData;
 
         // 受注テーブルに書き込まない列を除去
@@ -359,7 +442,9 @@ class LC_Page_Shopping_Complete extends LC_Page {
         $sqlval['create_date'] = 'now()';		// 受注日
 
         // キャンペーンID
-        if($objCampaignSess->getIsCampaign()) $sqlval['campaign_id'] = $objCampaignSess->getCampaignId();
+        if (!defined("MOBILE_SITE")) {
+            if($objCampaignSess->getIsCampaign()) $sqlval['campaign_id'] = $objCampaignSess->getCampaignId();
+        }
 
         // ゲットの値をインサート
         //$sqlval = lfGetInsParam($sqlval);
@@ -406,7 +491,11 @@ class LC_Page_Shopping_Complete extends LC_Page {
                 // INSERTの実行
                 $objQuery->insert("dtb_order_detail", $sqlval);
             } else {
-                SC_Utils_Ex::sfDispSiteError(CART_NOT_FOUND);
+                if (defined("MOBILE_SITE")) {
+                    SC_Utils_Ex::sfDispSiteError(CART_NOT_FOUND, "", false, "", true);
+                } else {
+                    SC_Utils_Ex::sfDispSiteError(CART_NOT_FOUND);
+                }
             }
         }
     }

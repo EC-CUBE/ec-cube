@@ -218,7 +218,6 @@ class LC_Page_Cart extends LC_Page {
                 $objCartSess->saveCurrentCart($uniqid);
                 // 購入ページへ
                 $this->sendRedirect(MOBILE_URL_SHOP_TOP, true);
-
                 exit;
             }
             break;
@@ -256,7 +255,7 @@ class LC_Page_Cart extends LC_Page {
         $this->arrInfo = $arrInfo;
 
         // ログイン判定
-        if($objCustomer->isLoginSuccess()) {
+        if($objCustomer->isLoginSuccess(true)) {
             $this->tpl_login = true;
             $this->tpl_user_point = $objCustomer->getValue('point');
             $this->tpl_name = $objCustomer->getValue('name01');

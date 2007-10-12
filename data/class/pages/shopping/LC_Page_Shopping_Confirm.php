@@ -148,6 +148,108 @@ class LC_Page_Shopping_Confirm extends LC_Page {
     }
 
     /**
+     * モバイルページを初期化する.
+     *
+     * @return void
+     */
+    function mobileInit() {
+        $this->init();
+    }
+
+    /**
+     * Page のプロセス(モバイル).
+     *
+     * @return void
+     */
+    function mobileProcess() {
+        $objView = new SC_MobileView();
+        $objCartSess = new SC_CartSession();
+        $objSiteInfo = $objView->objSiteInfo;
+        $objSiteSess = new SC_SiteSession();
+        $objCustomer = new SC_Customer();
+        $arrInfo = $objSiteInfo->data;
+        $objQuery = new SC_Query();
+        $objDb = new SC_Helper_DB_Ex();
+
+        // 前のページで正しく登録手続きが行われた記録があるか判定
+        SC_Utils_Ex::sfIsPrePage($objSiteSess, true);
+
+        // ユーザユニークIDの取得と購入状態の正当性をチェック
+        $uniqid = SC_Utils_Ex::sfCheckNormalAccess($objSiteSess, $objCartSess);
+        $this->tpl_uniqid = $uniqid;
+
+        // カート集計処理
+        $objDb->sfTotalCart($this, $objCartSess, $arrInfo);
+        // 一時受注テーブルの読込
+        $arrData = $objDb->sfGetOrderTemp($uniqid);
+        // カート集計を元に最終計算
+        $arrData = $objDb->sfTotalConfirm($arrData, $this, $objCartSess, $arrInfo, $objCustomer);
+
+        // カート内の商品の売り切れチェック
+        $objCartSess->chkSoldOut($objCartSess->getCartList());
+
+        // 会員ログインチェック
+        if($objCustomer->isLoginSuccess(true)) {
+            $this->tpl_login = '1';
+            $this->tpl_user_point = $objCustomer->getValue('point');
+        }
+
+        // 決済区分を取得する
+        $payment_type = "";
+        if($objDb->sfColumnExists("dtb_payment", "memo01")){
+            // MEMO03に値が入っている場合には、モジュール追加されたものとみなす
+            $sql = "SELECT memo03 FROM dtb_payment WHERE payment_id = ?";
+            $arrPayment = $objQuery->getall($sql, array($arrData['payment_id']));
+            $payment_type = $arrPayment[0]["memo03"];
+        }
+        $this->payment_type = $payment_type;
+
+        if (!isset($_POST['mode'])) $_POST['mode'] = "";
+
+        switch($_POST['mode']) {
+            // 前のページに戻る
+        case 'return':
+            // 正常な推移であることを記録しておく
+            $objSiteSess->setRegistFlag();
+            $this->sendRedirect($this->getLocation(MOBILE_URL_SHOP_PAYMENT), true);
+            exit;
+            break;
+        case 'confirm':
+            // この時点でオーダーIDを確保しておく（クレジット、コンビニ決済で必要なため）
+            // postgresqlとmysqlとで処理を分ける
+            if (DB_TYPE == "pgsql") {
+                $order_id = $objQuery->nextval("dtb_order","order_id");
+            }elseif (DB_TYPE == "mysql") {
+                $order_id = $objQuery->get_auto_increment("dtb_order");
+            }
+            $arrData["order_id"] = $order_id;
+
+            // セッション情報を保持
+            $arrData['session'] = serialize($_SESSION);
+
+            // 集計結果を受注一時テーブルに反映
+            $objDb->sfRegistTempOrder($uniqid, $arrData);
+            // 正常に登録されたことを記録しておく
+            $objSiteSess->setRegistFlag();
+
+            // 決済方法により画面切替
+            if($payment_type != "") {
+                $_SESSION["payment_id"] = $arrData['payment_id'];
+                $this->sendRedirect($this->getLocation(MOBILE_URL_SHOP_MODULE), true);
+            }else{
+                $this->sendRedirect($this->getLocation(MOBILE_URL_SHOP_COMPLETE), true);
+            }
+            break;
+        default:
+            break;
+        }
+        $this->arrData = $arrData;
+        $this->arrInfo = $arrInfo;
+        $objView->assignobj($this);
+        $objView->display(SITE_FRAME);
+    }
+
+    /**
      * デストラクタ.
      *
      * @return void

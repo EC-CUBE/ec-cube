@@ -200,14 +200,16 @@ class LC_Page_Shopping extends LC_Page {
         $this->tpl_uniqid = $uniqid;
 
         // ログインチェック
-        if($objCustomer->isLoginSuccess()) {
+        if($objCustomer->isLoginSuccess(true)) {
             // すでにログインされている場合は、お届け先設定画面に転送
-            $this->sendRedirect($this->getLocation($helperMobile->gfAddSessionId('./deliv.php')));
+            $this->sendRedirect($this->getLocation('./deliv.php'), true);
             exit;
         }
 
         // 携帯端末IDが一致する会員が存在するかどうかをチェックする。
         $this->tpl_valid_phone_id = $objCustomer->checkMobilePhoneId();
+
+        if (!isset($_POST['mode'])) $_POST['mode'] = "";
 
         switch($_POST['mode']) {
         case 'nonmember_confirm':
@@ -225,10 +227,14 @@ class LC_Page_Shopping extends LC_Page {
             if(count($this->arrErr) == 0) {
                 // DBへのデータ登録
                 $this->lfRegistData($uniqid);
+
+                // お届け先のコピー
+                $this->lfCopyDeliv($uniqid, $_POST);
+
                 // 正常に登録されたことを記録しておく
                 $objSiteSess->setRegistFlag();
                 // お支払い方法選択ページへ移動
-                $this->sendRedirect($this->getLocation(SC_Helper_Mobile_Ex::gfAddSessionId(MOBILE_URL_SHOP_PAYMENT)));
+                $this->sendRedirect($this->getLocation(MOBILE_URL_SHOP_PAYMENT), true);
                 exit;
             }
 
@@ -236,7 +242,7 @@ class LC_Page_Shopping extends LC_Page {
             // 前のページに戻る
         case 'return':
             // 確認ページへ移動
-            $this->sendRedirect($this->getLocation(SC_Helper_Mobile_Ex::gfAddSessionId(MOBILE_URL_CART_TOP)));
+            $this->sendRedirect($this->getLocation(MOBILE_URL_CART_TOP), true);
             exit;
             break;
         case 'nonmember':
@@ -251,6 +257,11 @@ class LC_Page_Shopping extends LC_Page {
             $objQuery = new SC_Query();
             $where = "order_temp_id = ?";
             $arrRet = $objQuery->select("*", "dtb_order_temp", $where, array($uniqid));
+
+            if (empty($arrRet)) $arrRet = array(
+                                                array('order_email' => "",
+                                                      'order_birth' => ""));
+
             // DB値の取得
             $this->objFormParam->setParam($arrRet[0]);
             $this->objFormParam->setValue('order_email_check', $arrRet[0]['order_email']);
