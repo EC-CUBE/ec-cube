@@ -125,7 +125,7 @@ class LC_Page_Mypage_Refusal extends LC_Page {
         }
 
         if (isset($_POST['no'])) {
-            $this->sendRedirect($this->getLocation(SC_Helper_Mobile_Ex::gfAddSessionId("index.php")));
+            $this->sendRedirect($this->getLocation("./index.php"), true);
             exit;
         } elseif (isset($_POST['complete'])){
             //会員削除
@@ -134,7 +134,7 @@ class LC_Page_Mypage_Refusal extends LC_Page {
             $where = "email = ?";
             $objCustomer->EndSession();
             //完了ページへ
-            $this->sendRedirect($this->getLocation(SC_Helper_Mobile_Ex::gfAddSessionId("refusal_complete.php")));
+            $this->sendRedirect($this->getLocation("./refusal_complete.php"), true);
             exit;
         }
 

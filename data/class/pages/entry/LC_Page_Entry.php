@@ -513,8 +513,7 @@ class LC_Page_Entry extends LC_Page {
                     $objMail->sendMail();
 
                     // 完了ページに移動させる。
-                    $this->sendRedirect($this->getLocation("./complete.php",
-                                                           SC_Helper_Mobile_Ex::sessionIdArray()));
+                    $this->sendRedirect($this->getLocation("./complete.php"), true);
                     exit;
                 }
             }

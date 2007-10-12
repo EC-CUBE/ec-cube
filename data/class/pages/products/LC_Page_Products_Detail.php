@@ -392,7 +392,7 @@ class LC_Page_Products_Detail extends LC_Page {
 
                 $objCartSess->setPrevURL($_SERVER['REQUEST_URI']);
                 $objCartSess->addProduct(array($_POST['product_id'], $classcategory_id1, $classcategory_id2), $this->objFormParam->getValue('quantity'));
-                $this->sendRedirect(SC_Helper_Mobile_Ex::gfAddSessionId(MOBILE_URL_CART_TOP));
+                $this->sendRedirect($this->getLocation(MOBILE_URL_CART_TOP), true);
                 exit;
             }
             break;
