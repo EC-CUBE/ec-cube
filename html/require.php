@@ -42,7 +42,6 @@ require_once(CLASS_PATH . "SC_CampaignSession.php");
 require_once(CLASS_PATH . "SC_Customer.php");
 require_once(CLASS_PATH . "SC_CustomerList.php");
 require_once(CLASS_PATH . "SC_Cookie.php");
-require_once(CLASS_PATH . "SC_Page.php");
 require_once(CLASS_PATH . "SC_Pdf.php");
 require_once(CLASS_PATH . "SC_MobileUserAgent.php");
 require_once(CLASS_PATH . "SC_MobileEmoji.php");
