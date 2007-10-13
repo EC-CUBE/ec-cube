@@ -27,7 +27,6 @@ class LC_Page_Contact extends LC_Page {
      */
     function init() {
         parent::init();
-        $this->tpl_css = URL_DIR.'css/layout/contact/index.css';
         $this->tpl_mainpage = 'contact/index.tpl';
         $this->tpl_title = 'お問い合わせ(入力ページ)';
         $this->tpl_page_category = 'contact';

@@ -35,7 +35,6 @@ class LC_Page_Regist extends LC_Page {
      */
     function init() {
         parent::init();
-        $this->tpl_css = URL_DIR.'css/layout/regist/index.css';
     }
 
     /**
@@ -117,7 +116,7 @@ class LC_Page_Regist extends LC_Page {
 
         //--　本登録完了のためにメールから接続した場合
         if ($_GET["mode"] == "regist") {
-	
+
             //-- 入力チェック
             $this->arrErr = $this->lfErrorCheck($_GET);
             if ($this->arrErr) {

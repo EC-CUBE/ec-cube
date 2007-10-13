@@ -35,7 +35,6 @@ class LC_Page_Shopping_Payment extends LC_Page {
      */
     function init() {
         parent::init();
-        $this->tpl_css = URL_DIR.'css/layout/shopping/pay.css';
         $this->tpl_mainpage = 'shopping/payment.tpl';
         $this->tpl_column_num = 1;
         $this->tpl_onload = 'fnCheckInputPoint();';

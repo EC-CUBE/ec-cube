@@ -29,7 +29,6 @@ class LC_Page_Error_DispError extends LC_Page_Error {
     function init() {
         parent::init();
         $this->tpl_mainpage = 'login_error.tpl';
-        $this->tpl_css = URL_DIR.'css/layout/error.css';
         $this->tpl_title = 'エラー';
     }
 

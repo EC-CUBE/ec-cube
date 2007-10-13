@@ -29,7 +29,6 @@ class LC_Page_Error extends LC_Page {
         parent::init();
         $this->tpl_mainpage = 'error.tpl';
         $this->tpl_column_num = 1;
-        $this->tpl_css = URL_DIR.'css/layout/error.css';
         $this->tpl_title = 'エラー';
     }
 

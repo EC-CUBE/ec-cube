@@ -27,7 +27,6 @@ class LC_Page_Entry_Complete extends LC_Page {
      */
     function init() {
         parent::init();
-        $this->tpl_css = URL_DIR.'css/layout/entry/complete.css';
 
         // メインテンプレートを設定
         if(CUSTOMER_CONFIRM_MAIL == true) {

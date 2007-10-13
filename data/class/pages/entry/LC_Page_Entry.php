@@ -27,7 +27,6 @@ class LC_Page_Entry extends LC_Page {
      */
     function init() {
         parent::init();
-        $this->tpl_css = URL_DIR.'css/layout/entry/index.css';
         $this->tpl_mainpage = 'entry/index.tpl';
         $this->tpl_title .= '会員登録(入力ページ)';
         $this->year = "";

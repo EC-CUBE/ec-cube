@@ -30,8 +30,6 @@ class LC_Page_Contact_Complete extends LC_Page {
         $this->tpl_mainpage = 'contact/complete.tpl';
         $this->tpl_title = 'お問い合わせ(完了ページ)';
         $this->tpl_mainno = 'contact';
-        $this->tpl_css = array();
-        $this->tpl_css[1] = URL_DIR.'css/layout/contact/index.css';
     }
 
     /**
