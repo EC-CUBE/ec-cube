@@ -201,26 +201,29 @@ class LC_Page {
             // 相対パスの場合
             $realPath = realpath($path);
         }
-
+		
         // FIXME OS依存の処理は別クラスに分ける？
         // Windowsの場合は, ディレクトリの区切り文字を\から/に変換する
         if (substr(PHP_OS, 0, 3) == 'WIN') {
             $realPath = str_replace("\\", "/", $realPath);
+            $htmlPath = str_replace("\\", "/", HTML_PATH);
+            $rootPath = str_replace($htmlPath, "", $realPath);
+        } else {
+        	// HTML_PATH を削除した文字列を取得.
+        	$rootPath = str_replace(HTML_PATH, "", $realPath);
         }
-
-        // HTML_PATH を削除した文字列を取得.
-        $root = str_replace(HTML_PATH, "", $realPath);
-
+                
+        
         // スキーマを定義
         if ($useSSL === true) {
-            $url = SSL_URL . $root;
+            $url = SSL_URL . $rootPath;
         } elseif ($useSSL === false){
-            $url = SITE_URL . $root;
+            $url = SITE_URL . $rootPath;
         } elseif ($useSSL == "escape") {
             if (SC_Utils_Ex::sfIsHTTPS()) {
-                $url = SSL_URL . $root;
+                $url = SSL_URL . $rootPath;
             } else {
-                $url = SITE_URL . $root;
+                $url = SITE_URL . $rootPath;
             }
         } else {
             die("[BUG] Illegal Parametor of \$useSSL ");
