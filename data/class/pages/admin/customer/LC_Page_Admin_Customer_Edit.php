@@ -292,7 +292,7 @@ class LC_Page_Admin_Customer_Edit extends LC_Page {
         //現会員の判定 →　現会員もしくは仮登録中は、メアド一意が前提になってるので同じメアドで登録不可
         if (strlen($array["email"]) > 0) {
             $array['email'] = strtolower($array['email']);
-            $sql = "SELECT customer_id FROM dtb_customer WHERE email = ? escape '#' AND (status = 1 OR status = 2) AND del_flg = 0 AND customer_id <> ?";
+            $sql = "SELECT customer_id FROM dtb_customer WHERE email ILIKE ? escape '#' AND (status = 1 OR status = 2) AND del_flg = 0 AND customer_id <> ?";
             $checkMail = ereg_replace( "_", "#_", $array["email"]);
             $result = $this->objConn->getAll($sql, array($checkMail, $array["customer_id"]));
             if (count($result) > 0) {
@@ -304,7 +304,7 @@ class LC_Page_Admin_Customer_Edit extends LC_Page {
         //現会員の判定 →　現会員もしくは仮登録中は、メアド一意が前提になってるので同じメアドで登録不可
         if (strlen($array["email_mobile"]) > 0) {
             $array['email_mobile'] = strtolower($array['email_mobile']);
-            $sql = "SELECT customer_id FROM dtb_customer WHERE email_mobile = ? escape '#' AND (status = 1 OR status = 2) AND del_flg = 0 AND customer_id <> ?";
+            $sql = "SELECT customer_id FROM dtb_customer WHERE email_mobile ILIKE ? escape '#' AND (status = 1 OR status = 2) AND del_flg = 0 AND customer_id <> ?";
             $checkMail = ereg_replace( "_", "#_", $array["email_mobile"]);
             $result = $this->objConn->getAll($sql, array($checkMail, $array["customer_id"]));
             if (count($result) > 0) {
