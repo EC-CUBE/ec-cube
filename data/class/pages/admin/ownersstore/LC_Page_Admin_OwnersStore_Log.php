@@ -28,9 +28,9 @@ class LC_Page_Admin_OwnersStore_Log extends LC_Page {
     function init() {
         parent::init();
 
-        $this->tpl_mainpage = 'app/log.tpl';
-        $this->tpl_subnavi  = 'app/subnavi.tpl';
-        $this->tpl_mainno   = 'app';
+        $this->tpl_mainpage = 'ownersstore/log.tpl';
+        $this->tpl_subnavi  = 'ownersstore/subnavi.tpl';
+        $this->tpl_mainno   = 'ownersstore';
         $this->tpl_subno    = 'log';
         $this->tpl_subtitle = 'ログ管理';
     }
