@@ -5,59 +5,19 @@
  * http://www.lockon.co.jp/
  */
 *}-->
-<script type="text/javascript"><!--
-(function() {
-  var eccube = function() {}
-  var ownersstore = function() {
-    this.setup = function() {
-      var $j = jQuery.noConflict();
-      $j("#loading").ajaxStart(function(){
-          $j(this).show();
-      });
-      $j("#loading").ajaxStop(function(){
-          $j(this).hide();
-      });
-    }
-  }
-  eccube.prototype = {
-    ownersstore: new ownersstore()
-  }
-  window.eccube = eccube;
-})();
-    
-    
-    
 
+<!--{*
+オーナーズストア通信処理用のjsとcssを読み込む
+onclickなどで
+OwnersStore.download();やOwnersStore.products_list();を呼び出すことで
+配信サーバとの通信処理を行う
 
+購入商品一覧はid="ownersstore_products_list"に出力される
 
-function loadList() {
-    var $j = jQuery.noConflict();
+*}-->
+<link rel="stylesheet" href="<!--{$smarty.const.URL_DIR}-->user_data/templates/default/css/thickbox.css" type="text/css" media="screen" />
+<script type="text/javascript" src="<!--{$smarty.const.URL_DIR}-->user_data/templates/default/js/ownersstore.js"></script>
 
-    $j("#ownerssore_loading").ajaxStart(function(){
-        $j(this).html("<img src='<!--{$TPL_DIR}-->img/ajax/loading.gif'>").show();
-    });
-    $j("#ownerssore_loading").ajaxStop(function(){
-        $j(this).hide();
-    });
-    
-    $j.post(
-        '<!--{$smarty.const.URL_DIR}-->upgrade/index.php',
-        {mode: 'products_list'},
-        function(resp) {
-            if (resp.body) {
-                $j("#ownersstore_products_list").html(resp.body);
-            } else {
-                $j("#ownersstore_products_list").load(
-                    "<!--{$smarty.const.URL_DIR}-->upgrade/api/error.html"
-                );
-            }
-        },
-        'json'
-    )
-}
-
-//-->
-</script>
 <!--★★メインコンテンツ★★-->
 <table width="878" border="0" cellspacing="0" cellpadding="0" summary=" ">
 <form name="form1" id="form1" method="post" action="">
@@ -101,12 +61,7 @@ function loadList() {
 									<tr><td colspan="3" bgcolor="#ffffff" height="5"></td></tr>
 									<tr>
 									    <td colspan="3" bgcolor="#ffffff" align="center">
-									        <input type="button" onclick="loadList();" value="オーナーズストア購入商品の一覧を取得">
-									    </td>
-									</tr>
-									<tr>
-									    <td colspan="3" bgcolor="#ffffff" height="35" align="center">
-									        <div id="ownerssore_loading"></div>
+									        <input type="button" onclick="OwnersStore.products_list();return false;" value="購入商品の一覧を取得">
 									    </td>
 									</tr>
 								</table>
