@@ -41,7 +41,7 @@ class LC_Page_Admin_App_Settings extends LC_Page {
         $this->tpl_subnavi  = 'app/subnavi.tpl';
         $this->tpl_mainno   = 'app';
         $this->tpl_subno    = 'settings';
-        $this->tpl_subtitle = 'アプリケーション設定';
+        $this->tpl_subtitle = 'オーナーズストア設定';
     }
 
     /**
