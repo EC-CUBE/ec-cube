@@ -9,14 +9,15 @@
 require_once(CLASS_PATH . "pages/LC_Page.php");
 
 /**
- * アプリケーション管理:インストールログ のページクラス.
+ * EC-CUBEアプリケーション管理 のページクラス.
  *
  * @package Page
  * @author LOCKON CO.,LTD.
  * @version $Id$
  */
-class LC_Page_Admin_App_Log extends LC_Page {
+class LC_Page_Admin_OwnersStore extends LC_Page {
 
+    var $tpl_subno = 'index';
     // }}}
     // {{{ functions
 
@@ -28,11 +29,11 @@ class LC_Page_Admin_App_Log extends LC_Page {
     function init() {
         parent::init();
 
-        $this->tpl_mainpage = 'app/log.tpl';
-        $this->tpl_subnavi  = 'app/subnavi.tpl';
-        $this->tpl_mainno   = 'app';
-        $this->tpl_subno    = 'log';
-        $this->tpl_subtitle = 'ログ管理';
+        $this->tpl_mainpage = 'ownersstore/index.tpl';
+        $this->tpl_subnavi  = 'ownersstore/subnavi.tpl';
+        $this->tpl_mainno   = 'ownersstore';
+        $this->tpl_subno    = 'index';
+        $this->tpl_subtitle = '購入商品一覧';
     }
 
     /**
@@ -45,7 +46,6 @@ class LC_Page_Admin_App_Log extends LC_Page {
         // ログインチェック
         SC_Utils::sfIsSuccess(new SC_Session());
 
-        // ページ出力
         $objView = new SC_AdminView();
         $objView->assignObj($this);
         $objView->display(MAIN_FRAME);

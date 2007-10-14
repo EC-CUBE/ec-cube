@@ -15,7 +15,7 @@ require_once(CLASS_PATH . "pages/LC_Page.php");
  * @author LOCKON CO.,LTD.
  * @version $Id$
  */
-class LC_Page_Admin_App_Settings extends LC_Page {
+class LC_Page_Admin_OwnersStore_Settings extends LC_Page {
 
     /** SC_FormParamのインスタンス */
     var $objForm;
@@ -37,9 +37,9 @@ class LC_Page_Admin_App_Settings extends LC_Page {
     function init() {
         parent::init();
 
-        $this->tpl_mainpage = 'app/settings.tpl';
-        $this->tpl_subnavi  = 'app/subnavi.tpl';
-        $this->tpl_mainno   = 'app';
+        $this->tpl_mainpage = 'ownersstore/settings.tpl';
+        $this->tpl_subnavi  = 'ownersstore/subnavi.tpl';
+        $this->tpl_mainno   = 'ownersstore';
         $this->tpl_subno    = 'settings';
         $this->tpl_subtitle = '認証キー設定';
     }
