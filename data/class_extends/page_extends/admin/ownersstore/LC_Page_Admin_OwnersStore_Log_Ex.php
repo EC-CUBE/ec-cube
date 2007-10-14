@@ -6,18 +6,18 @@
  */
 
 // {{{ requires
-require_once(CLASS_PATH . "pages/admin/app/LC_Page_Admin_App_Settings.php");
+require_once(CLASS_PATH . "pages/admin/app/LC_Page_Admin_OwnersStore_Log.php");
 
 /**
- * EC-CUBEアプリケーション管理:アプリケーション設定 のページクラス(拡張).
+ * オーナーズストア管理:インストールログ のページクラス(拡張).
  *
- * LC_Page_Admin_App_Settings をカスタマイズする場合はこのクラスを編集する.
+ * LC_Page_Admin_OwnersStore_Log をカスタマイズする場合はこのクラスを編集する.
  *
  * @package Page
  * @author LOCKON CO.,LTD.
  * @version $Id$
  */
-class LC_Page_Admin_App_Settings_Ex extends LC_Page_Admin_App_Settings {
+class LC_Page_Admin_OwnersStore_Log_Ex extends LC_Page_Admin_OwnersStore_Log {
 
     // }}}
     // {{{ functions

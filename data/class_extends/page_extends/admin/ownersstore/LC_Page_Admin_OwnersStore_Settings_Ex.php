@@ -6,18 +6,18 @@
  */
 
 // {{{ requires
-require_once(CLASS_PATH . "pages/admin/app/LC_Page_Admin_App_Log.php");
+require_once(CLASS_PATH . "pages/admin/ownersstore/LC_Page_Admin_OwnersStore_Settings.php");
 
 /**
- * アプリケーション管理:インストールログ のページクラス(拡張).
+ * オーナーズストア管理:認証キー設定 のページクラス(拡張).
  *
- * LC_Page_Admin_App_Log をカスタマイズする場合はこのクラスを編集する.
+ * LC_Page_Admin_OwnersStore_Settings をカスタマイズする場合はこのクラスを編集する.
  *
  * @package Page
  * @author LOCKON CO.,LTD.
  * @version $Id$
  */
-class LC_Page_Admin_App_Log_Ex extends LC_Page_Admin_App_Log {
+class LC_Page_Admin_OwnersStore_Settings_Ex extends LC_Page_Admin_OwnersStore_Settings {
 
     // }}}
     // {{{ functions

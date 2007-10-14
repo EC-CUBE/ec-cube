@@ -6,18 +6,18 @@
  */
 
 // {{{ requires
-require_once(CLASS_PATH . "pages/admin/app/LC_Page_Admin_App.php");
+require_once(CLASS_PATH . "pages/admin/ownersstore/LC_Page_Admin_OwnersStore.php");
 
 /**
- * EC-CUBEアプリケーション管理 のページクラス(拡張).
+ * オーナーズストア管理：購入商品一覧 のページクラス(拡張).
  *
- * LC_Page_Admin_App をカスタマイズする場合はこのクラスを編集する.
+ * LC_Page_Admin_OwnersStore をカスタマイズする場合はこのクラスを編集する.
  *
  * @package Page
  * @author LOCKON CO.,LTD.
  * @version $Id$
  */
-class LC_Page_Admin_App_Ex extends LC_Page_Admin_App {
+class LC_Page_Admin_OwnersStore_Ex extends LC_Page_Admin_OwnersStore {
 
     // }}}
     // {{{ functions
