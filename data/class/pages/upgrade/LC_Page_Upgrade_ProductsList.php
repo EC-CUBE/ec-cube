@@ -7,8 +7,6 @@
 
 // {{{ requires
 require_once CLASS_PATH . 'pages/LC_Page.php';
-require_once DATA_PATH  . 'module/Services/JSON.php';
-require_once DATA_PATH  . 'module/Request.php';
 
 /**
  * XXX のページクラス.
@@ -38,7 +36,7 @@ class LC_Page_Upgrade_ProductsList extends LC_Page {
      */
     function process() {
         $objSess = new SC_Session();
-        if ( $objSess->isSuccess() !== true) {
+        if ($objSess->isSuccess() !== true) {
             // TODO エラー処理
         }
 
@@ -70,8 +68,5 @@ class LC_Page_Upgrade_ProductsList extends LC_Page {
     function destroy() {
         parent::destroy();
     }
-
-
-    function createResponceHTML() {}
 }
 ?>
