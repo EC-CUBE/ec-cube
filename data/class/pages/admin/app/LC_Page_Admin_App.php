@@ -33,7 +33,7 @@ class LC_Page_Admin_App extends LC_Page {
         $this->tpl_subnavi  = 'app/subnavi.tpl';
         $this->tpl_mainno   = 'app';
         $this->tpl_subno    = 'index';
-        $this->tpl_subtitle = '購入商品管理';
+        $this->tpl_subtitle = '購入商品一覧';
     }
 
     /**
