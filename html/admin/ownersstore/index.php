@@ -7,12 +7,12 @@
 
 // {{{ requires
 require_once("../require.php");
-require_once(CLASS_EX_PATH . "page_extends/admin/app/LC_Page_Admin_App_Ex.php");
+require_once(CLASS_EX_PATH . "page_extends/admin/ownersstore/LC_Page_Admin_OwnersStore_Ex.php");
 
 // }}}
 // {{{ generate page
 
-$objPage = new LC_Page_Admin_App_Ex();
+$objPage = new LC_Page_Admin_OwnersStore_Ex();
 $objPage->init();
 $objPage->process();
 register_shutdown_function(array($objPage, "destroy"));
