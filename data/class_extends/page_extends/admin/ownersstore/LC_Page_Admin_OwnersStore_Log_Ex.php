@@ -6,7 +6,7 @@
  */
 
 // {{{ requires
-require_once(CLASS_PATH . "pages/admin/app/LC_Page_Admin_OwnersStore_Log.php");
+require_once(CLASS_PATH . "pages/admin/ownersstore/LC_Page_Admin_OwnersStore_Log.php");
 
 /**
  * オーナーズストア管理:インストールログ のページクラス(拡張).
