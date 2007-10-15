@@ -89,7 +89,7 @@ class LC_Page {
      * @param string $url リダイレクト先 URL
      * @param boolean $isMobile モバイル用にセッションIDを付与する場合 true
      * @return void|boolean $url に SITE_URL 及び, SSL_URL を含まない場合 false,
-     * 						 正常に遷移可能な場合は, $url の URL へ遷移する.
+     *                       正常に遷移可能な場合は, $url の URL へ遷移する.
      * @see Net_URL
      */
     function sendRedirect($url, $isMobile = false) {
@@ -187,8 +187,8 @@ class LC_Page {
      * @param string $path 結果を取得するためのパス
      * @param array $param URL に付与するパラメータの配列
      * @param mixed $useSSL 結果に SSL_URL を使用する場合 true,
-     * 				           SITE_URL を使用する場合 false,
-     * 						   デフォルト "escape" 現在のスキーマを使用
+     *                         SITE_URL を使用する場合 false,
+     *                         デフォルト "escape" 現在のスキーマを使用
      * @return string $path の存在する http(s):// から始まる絶対パス
      * @see Net_URL
      */
@@ -201,7 +201,7 @@ class LC_Page {
             // 相対パスの場合
             $realPath = realpath($path);
         }
-		
+
         // FIXME OS依存の処理は別クラスに分ける？
         // Windowsの場合は, ディレクトリの区切り文字を\から/に変換する
         if (substr(PHP_OS, 0, 3) == 'WIN') {
@@ -209,11 +209,11 @@ class LC_Page {
             $htmlPath = str_replace("\\", "/", HTML_PATH);
             $rootPath = str_replace($htmlPath, "", $realPath);
         } else {
-        	// HTML_PATH を削除した文字列を取得.
-        	$rootPath = str_replace(HTML_PATH, "", $realPath);
+            // HTML_PATH を削除した文字列を取得.
+            $rootPath = str_replace(HTML_PATH, "", $realPath);
         }
-                
-        
+
+
         // スキーマを定義
         if ($useSSL === true) {
             $url = SSL_URL . $rootPath;
@@ -246,6 +246,7 @@ class LC_Page {
      * $_SERVER['QUERY_STRING'] の値は自動的に付与される.
      *
      * @param array $queryString QueryString の配列
+     * @param bool $removeQueryString 付与されていた QueryString を削除する場合 true
      * @return void
      * @see Net_URL
      */
