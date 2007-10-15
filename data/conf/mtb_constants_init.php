@@ -613,55 +613,55 @@ define('OWNERSSTORE_STATUS_SUCCESS', 'SUCCESS');
 /** オーナーズストア通信ステータス (失敗) */
 define('OWNERSSTORE_STATUS_ERROR',   'ERROR');
 /** オーナーズストア通信時のエラーコード：認証キーが設定されていない */
-define('OWNERSSTORE_ERR_EK_KEY_MISSING', '100');
+define('OWNERSSTORE_ERR_EK_KEY_MISSING', 100);
 /** オーナーズストア通信時のエラーコード：POSTパラメータが不正 */
-define('OWNERSSTORE_ERR_EK_POST_PARAM', '101');
+define('OWNERSSTORE_ERR_EK_POST_PARAM', 101);
 /** オーナーズストア通信時のエラーコード：管理画面の認証に失敗した */
-define('OWNERSSTORE_ERR_PL_ADMIN_AUTH', '200');
+define('OWNERSSTORE_ERR_PL_ADMIN_AUTH', 200);
 /** オーナーズストア通信時のエラーコード：トランザクションIDが不正 */
-define('OWNERSSTORE_ERR_PL_TRANSACTION','201');
+define('OWNERSSTORE_ERR_PL_TRANSACTION',201);
 /** オーナーズストア通信時のエラーコード：HTTPリクエストに失敗した */
-define('OWNERSSTORE_ERR_PL_HTTP_REQ', '202');
+define('OWNERSSTORE_ERR_PL_HTTP_REQ', 202);
 /** オーナーズストア通信時のエラーコード：レスポンスコードが200でない */
-define('OWNERSSTORE_ERR_PL_HTTP_RESP_CODE', '203');
+define('OWNERSSTORE_ERR_PL_HTTP_RESP_CODE', 203);
 /** オーナーズストア通信時のエラーコード：管理画面の認証に失敗した */
-define('OWNERSSTORE_ERR_DL_ADMIN_AUTH', '300');
+define('OWNERSSTORE_ERR_DL_ADMIN_AUTH', 300);
 /** オーナーズストア通信時のエラーコード：トランザクションIDが不正 */
-define('OWNERSSTORE_ERR_DL_TRANSACTION', '301');
+define('OWNERSSTORE_ERR_DL_TRANSACTION', 301);
 /** オーナーズストア通信時のエラーコード：HTTPリクエストに失敗した */
-define('OWNERSSTORE_ERR_DL_HTTP_REQ', '302');
+define('OWNERSSTORE_ERR_DL_HTTP_REQ', 302);
 /** オーナーズストア通信時のエラーコード：レスポンスコードが200でない */
-define('OWNERSSTORE_ERR_DL_HTTP_RESP_CODE', '303');
+define('OWNERSSTORE_ERR_DL_HTTP_RESP_CODE', 303);
 /** オーナーズストア通信時のエラーコード：POSTパラメータが不正 */
-define('OWNERSSTORE_ERR_DL_POST_PARAM', '304');
+define('OWNERSSTORE_ERR_DL_POST_PARAM', 304);
 /** オーナーズストア通信時のエラーコード：ファイルの書き込みに失敗した */
-define('OWNERSSTORE_ERR_DL_FILE_WRITE', '305');
+define('OWNERSSTORE_ERR_DL_FILE_WRITE', 305);
 /** オーナーズストア通信時のエラーコード：一時ディレクトリの作成に失敗した */
-define('OWNERSSTORE_ERR_DL_MKDIR',  '306');
+define('OWNERSSTORE_ERR_DL_MKDIR',  306);
 /** オーナーズストア通信時のエラーコード：アーカイブの展開に失敗した */
-define('OWNERSSTORE_ERR_DL_EXTRACT_ARCHIVE', '307');
+define('OWNERSSTORE_ERR_DL_EXTRACT_ARCHIVE', 307);
 /** オーナーズストア通信時のエラーコード：アップデートバッチの実行に失敗した */
-define('OWNERSSTORE_ERR_DL_UPDATE_BATCH', '308');
+define('OWNERSSTORE_ERR_DL_UPDATE_BATCH', 308);
 /** オーナーズストア通信時のエラーコード：POSTパラメータが不正 */
-define('OWNERSSTORE_ERR_SERVER_PL_POST_PARAM', '400');
+define('OWNERSSTORE_ERR_SERVER_PL_POST_PARAM', 400);
 /** オーナーズストア通信時のエラーコード：会員データが存在しない */
-define('OWNERSSTORE_ERR_SERVER_PL_NO_USER', '401');
+define('OWNERSSTORE_ERR_SERVER_PL_NO_USER', 401);
 /** オーナーズストア通信時のエラーコード：HTTPリクエストに失敗した */
-define('OWNERSSTORE_ERR_SERVER_PL_HTTP_REQ', '402');
+define('OWNERSSTORE_ERR_SERVER_PL_HTTP_REQ', 402);
 /** オーナーズストア通信時のエラーコード：レスポンスコードが200でない */
-define('OWNERSSTORE_ERR_SERVER_PL_HTTP_RESP_CODE', '403');
+define('OWNERSSTORE_ERR_SERVER_PL_HTTP_RESP_CODE', 403);
 /** オーナーズストア通信時のエラーコード：オーナーズストア認証に失敗した */
-define('OWNERSSTORE_ERR_SERVER_PL_AUTH', '404');
+define('OWNERSSTORE_ERR_SERVER_PL_AUTH', 404);
 /** オーナーズストア通信時のエラーコード：POSTパラメータが不正 */
-define('OWNERSSTORE_ERR_SERVER_DL_POST_PARAM',  '500');
+define('OWNERSSTORE_ERR_SERVER_DL_POST_PARAM',  500);
 /** オーナーズストア通信時のエラーコード：会員データが存在しない */
-define('OWNERSSTORE_ERR_SERVER_DL_NO_USER', '501');
+define('OWNERSSTORE_ERR_SERVER_DL_NO_USER', 501);
 /** オーナーズストア通信時のエラーコード：HTTPリクエストに失敗した */
-define('OWNERSSTORE_ERR_SERVER_DL_HTTP_REQ',  '502');
+define('OWNERSSTORE_ERR_SERVER_DL_HTTP_REQ',  502);
 /** オーナーズストア通信時のエラーコード：レスポンスコードが200でない */
-define('OWNERSSTORE_ERR_SERVER_DL_HTTP_RESP_CODE', '503');
+define('OWNERSSTORE_ERR_SERVER_DL_HTTP_RESP_CODE', 503);
 /** オーナーズストア通信時のエラーコード：オーナーズストア認証に失敗した */
-define('OWNERSSTORE_ERR_SERVER_DL_AUTH', '504');
+define('OWNERSSTORE_ERR_SERVER_DL_AUTH', 504);
 /** オーナーズストア通信時のエラーコード：*/
-define('OWNERSSTORE_ERR_SERVER_DL_DOWNLOAD_NOTHING','505');
+define('OWNERSSTORE_ERR_SERVER_DL_DOWNLOAD_NOTHING', 505);
 ?>
