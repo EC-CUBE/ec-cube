@@ -366,6 +366,8 @@ define ("AMOUNT_LEN", 6);		// 在庫数、販売制限数
 define ("ZIP01_LEN", 3);		// 郵便番号1
 define ("ZIP02_LEN", 4);		// 郵便番号2
 define ("TEL_ITEM_LEN", 6);		// 電話番号各項目制限
+define ("TEL_LEN_MOBILE_MIN", 9);     // 電話番号各項目制限
+define ("TEL_LEN_MOBILE_MAX", 12);     // 電話番号各項目制限
 define ("TEL_LEN", 12);			// 電話番号総数
 define ("PASSWORD_LEN1", 4);	// パスワード1
 define ("PASSWORD_LEN2", 10);	// パスワード2
