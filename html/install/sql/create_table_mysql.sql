@@ -1,3 +1,7 @@
+CREATE TABLE dtb_ownersstore_settings (
+    public_key text
+) TYPE=InnoDB ;
+
 CREATE TABLE dtb_kiyaku (
     kiyaku_id int auto_increment primary key NOT NULL,
     kiyaku_title text NOT NULL,

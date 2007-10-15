@@ -1,3 +1,7 @@
+CREATE TABLE dtb_ownersstore_settings (
+    public_key text
+);
+
 CREATE TABLE dtb_kiyaku (
     kiyaku_id serial NOT NULL,
     kiyaku_title text NOT NULL,
