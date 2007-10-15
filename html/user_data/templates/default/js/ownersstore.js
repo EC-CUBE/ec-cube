@@ -1,7 +1,24 @@
+/*
+ * Thickbox 3.1 - One Box To Rule Them All.
+ * By Cody Lindley (http://www.codylindley.com)
+ * Copyright (c) 2007 cody lindley
+ * Licensed under the MIT License: http://www.opensource.org/licenses/mit-license.php
+*/
+
 (function() {
+// オーナーズストア通信スクリプトのパス
+var upgrade_url = '<!--{$smarty.const.URL_DIR}-->upgrade/index.php';
+
+// ロード中メッセージ(配信サーバと通信中です…)
+var loading_message = '\u30B5\u30FC\u30D0\u3068\u901A\u4FE1\u4E2D\u3067\u3059';
+
+// ロード中画像の先読み
+var loading_img = new Image();
+loading_img.src = '/user_data/templates/default/img/ajax/loading.gif';
+
 var OwnersStore = function() {}
 OwnersStore.prototype = {
-    // detect MacX and Firefox use.
+    // detect Mac and Firefox use.
     detectMacFF: function() {
         var ua = navigator.userAgent.toLowerCase();
         if (ua.indexOf('mac') != -1 && ua.indexOf('firefox') != -1) {
@@ -54,8 +71,8 @@ OwnersStore.prototype = {
         //add and show loader to the page
         $("body").append(
               "<div id='TB_load'>"
-            + "  <p style='color:#ffffff'>Connecting Server . . .</p>"
-            + "  <img src='/user_data/templates/default/img/ajax/loading.gif' />"
+            + "  <p style='color:#ffffff'>" + loading_message + "</p>"
+            + "  <img src='" + loading_img.src + "' />"
             + "</div>"
         );
         $('#TB_load').show();
