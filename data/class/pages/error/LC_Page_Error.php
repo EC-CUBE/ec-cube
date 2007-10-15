@@ -32,7 +32,7 @@ class LC_Page_Error extends LC_Page {
     var $err_msg = "";
 
     /** モバイルサイトの場合 true */
-    var $is_mobile = false
+    var $is_mobile = false;
 
     // }}}
     // {{{ functions
