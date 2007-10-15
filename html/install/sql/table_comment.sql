@@ -47,3 +47,4 @@ INSERT INTO dtb_table_comment(table_name,description) values ('dtb_user_regist',
 INSERT INTO dtb_table_comment(table_name,description) values ('dtb_kiyaku','会員規約');
 INSERT INTO dtb_table_comment(table_name,description) values ('mtb_zip','郵便番号マスタ');
 INSERT INTO dtb_table_comment(table_name,description) values ('dtb_templates','テンプレート');
+INSERT INTO dtb_table_comment(table_name,description) values ('dtb_ownersstore_settings','オーナーズストア設定');

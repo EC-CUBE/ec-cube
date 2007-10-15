@@ -48,6 +48,7 @@ DROP TABLE dtb_csv_sql;
 DROP TABLE dtb_user_regist;
 DROP TABLE dtb_templates;
 DROP TABLE dtb_table_comment;
+DROP TABLE dtb_ownersstore_settings
 DROP TABLE mtb_work;
 DROP TABLE mtb_wday;
 DROP TABLE mtb_track_back_status;
