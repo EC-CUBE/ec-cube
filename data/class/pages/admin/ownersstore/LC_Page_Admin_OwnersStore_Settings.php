@@ -125,7 +125,7 @@ class LC_Page_Admin_OwnersStore_Settings extends LC_Page {
 
         // エラーがなければDBへ登録
         $arrForm = $this->objForm->getHashArray();
-        $this->registerAppSettings($arrForm);
+        $this->registerOwnersStoreSettings($arrForm);
 
         $this->arrForm = $arrForm;
 
@@ -147,7 +147,7 @@ class LC_Page_Admin_OwnersStore_Settings extends LC_Page {
         }
 
         $objForm = new SC_FormParam();
-        $objForm->addParam('認証キー', 'public_key', MTEXT_LEN, '', array('EXIST_CHECK', 'ALNUM_CHECK', 'MAX_LENGTH_CHECK'));
+        $objForm->addParam('認証キー', 'public_key', LTEXT_LEN, '', array('EXIST_CHECK', 'ALNUM_CHECK', 'MAX_LENGTH_CHECK'));
         $objForm->setParam($_POST);
 
         $this->objForm = $objForm;
@@ -171,17 +171,25 @@ class LC_Page_Admin_OwnersStore_Settings extends LC_Page {
      * @return void
      */
     function execDefaultMode() {
-        // $this->arrForm = $this->getAppSettings();
+        $this->arrForm = $this->getOwnersStoreSettings();
     }
 
     /**
      * DBへ入力内容を登録する.
      *
-     * @param array $arrSettingsData アプリケーション設定の連想配列
+     * @param array $arrSettingsData ｵｰﾅｰｽﾞｽﾄｱ設定の連想配列
      * @return void
      */
-    function registerAppSettings($arrSettingsData) {
+    function registerOwnersStoreSettings($arrSettingsData) {
+        $table = 'dtb_ownersstore_settings';
+        $objQuery = new SC_Query();
+        $count = $objQuery->count($table);
 
+        if ($count) {
+            $objQuery->update($table, $arrSettingsData);
+        } else {
+            $objQuery->insert($table, $arrSettingsData);
+        }
     }
 
     /**
@@ -190,13 +198,12 @@ class LC_Page_Admin_OwnersStore_Settings extends LC_Page {
      * @param void
      * @return array
      */
-    function getAppSettings(){
-        $table   = 'dtb_application_settings';
+    function getOwnersStoreSettings(){
+        $table   = 'dtb_ownersstore_settings';
         $colmuns = '*';
-        $where   = 'app_id = 1';
 
         $objQuery = new SC_Query();
-        $arrRet = $objQuery->select($colmuns, $table, $where);
+        $arrRet = $objQuery->select($colmuns, $table);
 
         if (isset($arrRet[0])) return $arrRet[0];
 

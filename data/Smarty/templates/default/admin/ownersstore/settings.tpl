@@ -54,7 +54,7 @@
 								<table width="678" border="0" cellspacing="1" cellpadding="8" summary=" ">
 									<tr>
 										<td colspan="2" bgcolor="#f2f1ec" width="678" class="fs12n">
-											※<a href="http://www.lockon.co.jp">EC-CUBEアプリケーション販売ショップ</a>で認証キーを取得しましょう！
+											※<a href="http://store.eccube.net" target="_blank">EC-CUBEオーナーズストア</a>で認証キーを取得しましょう！
 										</td>
 									</tr>
 									<tr>
