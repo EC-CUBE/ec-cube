@@ -189,6 +189,7 @@ class LC_Page_Admin_Design_Template extends LC_Page {
         foreach($arrTemplate as $key => $val){
             $arrTemplateImage['image'][$val['template_code']] = $filepath . $val['template_code'] . "/" . $Image;
             $arrTemplateImage['code'][$key] = $val['template_code'];
+            $arrTemplateImage['name'][$key] = $val['template_name'];
         }
 
         // 初期チェック
