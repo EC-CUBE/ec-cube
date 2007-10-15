@@ -114,28 +114,9 @@ class SC_Utils {
 
         $objPage = new LC_Page_Error_DispError_Ex();
         $objPage->init();
-        $objView = new SC_AdminView();
-
-        switch ($type) {
-            case LOGIN_ERROR:
-                $objPage->tpl_error="ＩＤまたはパスワードが正しくありません。<br />もう一度ご確認のうえ、再度入力してください。";
-                break;
-            case ACCESS_ERROR:
-                $objPage->tpl_error="ログイン認証の有効期限切れの可能性があります。<br />もう一度ご確認のうえ、再度ログインしてください。";
-                break;
-            case AUTH_ERROR:
-                $objPage->tpl_error="このファイルにはアクセス権限がありません。<br />もう一度ご確認のうえ、再度ログインしてください。";
-                break;
-            case INVALID_MOVE_ERRORR:
-                $objPage->tpl_error="不正なページ移動です。<br />もう一度ご確認のうえ、再度入力してください。";
-                break;
-            default:
-                $objPage->tpl_error="エラーが発生しました。<br />もう一度ご確認のうえ、再度ログインしてください。";
-                break;
-        }
-
-        $objView->assignobj($objPage);
-        $objView->display(LOGIN_FRAME);
+        $objPage->type = $type;
+        $objPage->process();
+        register_shutdown_function(array($objPage, "destroy"));
         exit;
     }
 
@@ -144,105 +125,14 @@ class SC_Utils {
 
         require_once(CLASS_EX_PATH . "page_extends/error/LC_Page_Error_Ex.php");
 
-        // FIXME
-        global $objCampaignSess;
-
-        if ($objSiteSess != "") {
-            $objSiteSess->setNowPage('error');
-        }
-
         $objPage = new LC_Page_Error_Ex();
         $objPage->init();
-
-
-        if($is_mobile === true) {
-            $objView = new SC_MobileView();
-        } else {
-            $objView = new SC_SiteView();
-        }
-
-        switch ($type) {
-            case PRODUCT_NOT_FOUND:
-                $objPage->tpl_error="ご指定のページはございません。";
-                break;
-            case PAGE_ERROR:
-                $objPage->tpl_error="不正なページ移動です。";
-                break;
-            case CART_EMPTY:
-                $objPage->tpl_error="カートに商品ががありません。";
-                break;
-            case CART_ADD_ERROR:
-                $objPage->tpl_error="購入処理中は、カートに商品を追加することはできません。";
-                break;
-            case CANCEL_PURCHASE:
-                $objPage->tpl_error="この手続きは無効となりました。以下の要因が考えられます。<br />・セッション情報の有効期限が切れてる場合<br />・購入手続き中に新しい購入手続きを実行した場合<br />・すでに購入手続きを完了している場合";
-                break;
-            case CATEGORY_NOT_FOUND:
-                $objPage->tpl_error="ご指定のカテゴリは存在しません。";
-                break;
-            case SITE_LOGIN_ERROR:
-                $objPage->tpl_error="メールアドレスもしくはパスワードが正しくありません。";
-                break;
-            case TEMP_LOGIN_ERROR:
-                $objPage->tpl_error="メールアドレスもしくはパスワードが正しくありません。<br />本登録がお済みでない場合は、仮登録メールに記載されている<br />URLより本登録を行ってください。";
-                break;
-            case CUSTOMER_ERROR:
-                $objPage->tpl_error="不正なアクセスです。";
-                break;
-            case SOLD_OUT:
-                $objPage->tpl_error="申し訳ございませんが、ご購入の直前で売り切れた商品があります。この手続きは無効となりました。";
-                break;
-            case CART_NOT_FOUND:
-                $objPage->tpl_error="申し訳ございませんが、カート内の商品情報の取得に失敗しました。この手続きは無効となりました。";
-                break;
-            case LACK_POINT:
-                $objPage->tpl_error="申し訳ございませんが、ポイントが不足しております。この手続きは無効となりました。";
-                break;
-            case FAVORITE_ERROR:
-                $objPage->tpl_error="既にお気に入りに追加されている商品です。";
-                break;
-            case EXTRACT_ERROR:
-                $objPage->tpl_error="ファイルの解凍に失敗しました。\n指定のディレクトリに書き込み権限が与えられていない可能性があります。";
-                break;
-            case FTP_DOWNLOAD_ERROR:
-                $objPage->tpl_error="ファイルのFTPダウンロードに失敗しました。";
-                break;
-            case FTP_LOGIN_ERROR:
-                $objPage->tpl_error="FTPログインに失敗しました。";
-                break;
-            case FTP_CONNECT_ERROR:
-                $objPage->tpl_error="FTPログインに失敗しました。";
-                break;
-            case CREATE_DB_ERROR:
-                $objPage->tpl_error="DBの作成に失敗しました。\n指定のユーザーには、DB作成の権限が与えられていない可能性があります。";
-                break;
-            case DB_IMPORT_ERROR:
-                $objPage->tpl_error="データベース構造のインポートに失敗しました。\nsqlファイルが壊れている可能性があります。";
-                break;
-            case FILE_NOT_FOUND:
-                $objPage->tpl_error="指定のパスに、設定ファイルが存在しません。";
-                break;
-            case WRITE_FILE_ERROR:
-                $objPage->tpl_error="設定ファイルに書き込めません。\n設定ファイルに書き込み権限を与えてください。";
-                break;
-            case FREE_ERROR_MSG:
-                $objPage->tpl_error=$err_msg;
-                break;
-             default:
-                $objPage->tpl_error="エラーが発生しました。";
-                break;
-        }
-
+        $objPage->type = $type;
+        $objPage->objSiteSess = $objSiteSess;
         $objPage->return_top = $return_top;
-
-        $objView->assignobj($objPage);
-
-        if(is_object($objCampaignSess)) {
-            // フレームを選択(キャンペーンページから遷移なら変更)
-            $objCampaignSess->pageView($objView);
-        } else {
-            $objView->display(SITE_FRAME);
-        }
+        $objPage->err_msg = $err_msg;
+        $objPage->is_mobile = $is_mobile;
+        $objPage->process();
         register_shutdown_function(array($objPage, "destroy"));
         exit;
     }
