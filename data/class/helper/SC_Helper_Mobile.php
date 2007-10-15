@@ -6,7 +6,7 @@
  */
 
 // {{{ requires
-require_once(DATA_PATH . 'module/Net/URL.php');
+require_once(CLASS_PATH . '../module/Net/URL.php');
 require_once(CLASS_PATH . "SC_DbConn.php");
 require_once(CLASS_PATH . 'SC_Query.php');
 
