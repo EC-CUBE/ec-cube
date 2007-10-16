@@ -44,10 +44,6 @@ class LC_Page_Admin_Contents_CsvSql extends LC_Page {
         $objView = new SC_AdminView();
         $objDbFactory = SC_DB_DBFactory_Ex::getInstance();
 
-        $masterData = new SC_DB_MasterData_Ex();
-        //$this->arrSubnavi = $masterData->getMasterData("mtb_subnavi");
-        //$this->arrSubnaviName = $masterData->getMasterData("mtb_subnavi_name");
-
         // 認証可否の判定
         $objSess = new SC_Session();
         SC_Utils_Ex::sfIsSuccess($objSess);
