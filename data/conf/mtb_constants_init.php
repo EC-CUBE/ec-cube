@@ -663,5 +663,5 @@ define('OWNERSSTORE_ERR_SERVER_DL_HTTP_RESP_CODE', 503);
 /** オーナーズストア通信時のエラーコード：オーナーズストア認証に失敗した */
 define('OWNERSSTORE_ERR_SERVER_DL_AUTH', 504);
 /** オーナーズストア通信時のエラーコード：*/
-define('OWNERSSTORE_ERR_SERVER_DL_DOWNLOAD_NOTHING', 505);
+define('OWNERSSTORE_ERR_SERVER_DL_DOWNLOAD', 505);
 ?>
