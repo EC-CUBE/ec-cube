@@ -13,15 +13,18 @@ if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
 // {{{ requires
 require_once '../require.php';
 require_once '../admin/require.php';
-require_once DATA_PATH  . 'module/Services/JSON.php';
+require_once DATA_PATH . 'module/Services/JSON.php';
+require_once DATA_PATH . 'module/Request.php';
+require_once DATA_PATH . "module/Tar.php";
 
 // }}}
 // {{{ generate page
 
 $objPage = lfPageFactory();
+register_shutdown_function(array($objPage, "destroy"));
 $objPage->init();
 $objPage->process();
-register_shutdown_function(array($objPage, "destroy"));
+
 
 function lfPageFactory() {
     $mode = isset($_POST['mode']) ? $_POST['mode'] : '';
@@ -38,6 +41,10 @@ function lfPageFactory() {
     case 'products_list':
         $file  .= 'ProductsList.php';
         $class .= 'ProductsList';
+        break;
+    case 'download':
+        $file  .= 'Download.php';
+        $class .= 'Download';
         break;
     default:
         header("HTTP/1.1 400 Bad Request");
