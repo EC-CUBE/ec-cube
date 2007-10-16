@@ -1,0 +1,210 @@
+<?php
+/*
+ * Copyright(c) 2000-2007 LOCKON CO.,LTD. All Rights Reserved.
+ *
+ * http://www.lockon.co.jp/
+ */
+
+// {{{ requires
+require_once CLASS_PATH . 'pages/upgrade/LC_Page_Upgrade_Base.php';
+error_reporting(E_ALL);
+/**
+ * ダウンロード処理を担当する.
+ *
+ * TODO 要リファクタリング
+ *
+ * @package Page
+ * @author LOCKON CO.,LTD.
+ * @version $Id$
+ */
+class LC_Page_Upgrade_Download extends LC_Page_Upgrade_Base {
+
+    /** SC_Sessionオブジェクト */
+    var $objSession = null;
+    /** Services_Jsonオブジェクト */
+    var $objJson = null;
+    /** HTTP_Requestオブジェクト */
+    var $objReq = null;
+    /** SC_FromParamオブジェクト */
+    var $objForm = null;
+
+    // }}}
+    // {{{ functions
+
+    /**
+     * Page を初期化する.
+     *
+     * @return void
+     */
+    function init() {
+        $this->objSess = new SC_Session();
+        $this->objJson = new Services_Json();
+        $rhis->objReq  = new HTTP_Request();
+        $this->objForm = new SC_FormParam();
+        $this->objForm->addParam(
+            'product_id', 'product_id', INT_LEN, '',
+            array('EXIST_CHECK', 'NUM_CHECK', 'MAX_LENGTH_CHECK')
+        );
+        $this->objForm->setParam($_POST);
+    }
+
+    /**
+     * Page のプロセス.
+     *
+     * @return void
+     */
+    function process() {
+        $errFormat = '* error! code:%s / debug:%s';
+
+        GC_Utils::gfPrintLog('###Download Start###');
+
+        // 管理画面ログインチェック
+        GC_Utils::gfPrintLog('* admin auth start');
+        if ($this->objSess->isSuccess() !== SUCCESS) {
+            $arrErr = array(
+                'status'  => OWNERSSTORE_STATUS_ERROR,
+                'errcode' => OWNERSSTORE_ERR_DL_ADMIN_AUTH,
+                'body' => '管理画面にログインしていません'
+            );
+            echo $this->objJson->encode($arrErr);
+            GC_Utils::gfPrintLog(
+                sprintf($errFormat, $arrErr['errcode'], serialize($_SESSION))
+            );
+            exit;
+        }
+
+        // パラメーチェック
+        GC_Utils::gfPrintLog('* post parameter check start');
+        if ($arrErr = $this->objForm->checkError()) {
+            $arrErr = array(
+                'status'  => OWNERSSTORE_STATUS_ERROER,
+                'errcode' => OWNERSSTORE_ERR_DL_POST_PARAM,
+                'body' => 'パラメータが不正です。'
+            );
+            echo $this->objJson->encode($arrErr);
+            GC_Utils::gfPrintLog(
+                sprintf($errFormat, $arrErr['errcode'], serialize($_POST))
+            );
+            exit;
+        }
+
+        // TODO CSRF対策が必須
+
+        // ダウンロードリクエストを開始
+        GC_Utils::gfPrintLog('* http request start');
+        $resp = $this->request(
+            'download',
+            array('product_id' => $this->objForm->getValue('product_id'))
+        );
+
+        // リクエストのエラーチェック
+        GC_Utils::gfPrintLog('* http response check start');
+        if (PEAR::isError($resp)) {
+            $arrErr = array(
+                'status'  => OWNERSSTORE_STATUS_ERROR,
+                'errcode' => OWNERSSTORE_ERR_DL_HTTP_REQ,
+                'body' => 'サーバとの通信に失敗しました。エラーコード:' . OWNERSSTORE_ERR_DL_HTTP_REQ
+            );
+            echo $this->objJson->encode($arrErr);
+            GC_Utils::gfPrintLog(
+                sprintf($errFormat, $arrErr['errcode'], serialize($resp))
+            );
+            exit;
+        }
+
+        // ダウンロードデータの保存
+        $jsonData = $resp->getResponseBody();
+        $objRet   = $this->objJson->decode($resp->getResponseBody($jsonData));
+        if ($objRet->status == OWNERSSTORE_STATUS_SUCCESS) {
+            GC_Utils::gfPrintLog('* save file start');
+            $time = time();
+            $dir  = DATA_PATH . 'downloads/tmp/';
+            $filename = $time . '.tar.gz';
+
+            $data = base64_decode($objRet->body);
+
+            if ($fp = fopen($dir . $filename, "w")) {
+                fwrite($fp, $data);
+                fclose($fp);
+            } else {
+                $arrErr = array(
+                    'status'  => OWNERSSTORE_STATUS_ERROR,
+                    'errcode' => OWNERSSTORE_ERR_DL_FILE_WRITE,
+                    'body' => 'ファイルの書き込みに失敗しました。'
+                );
+                echo $this->objJson->encode($arrErr);
+                GC_Utils::gfPrintLog(
+                    sprintf($errFormat, $arrErr['errcode'], serialize($dir . $filename))
+                );
+                exit;
+            }
+            // ダウンロードアーカイブを展開する
+            $exract_dir = $dir . $time;
+            if (!@mkdir($exract_dir)) {
+                $arrErr = array(
+                    'status'  => OWNERSSTORE_STATUS_ERROR,
+                    'errcode' => OWNERSSTORE_ERR_DL_MKDIR,
+                    'body' => 'ディレクトリを作成できません。'
+                );
+                echo $this->objJson->encode($arrErr);
+                GC_Utils::gfPrintLog(
+                    sprintf($errFormat, $arrErr['errcode'], serialize($exract_dir))
+                );
+                exit;
+            }
+
+            $tar = new Archive_Tar($dir . $filename);
+            $tar->extract($exract_dir);
+
+            include_once CLASS_PATH . 'batch/SC_Batch_Update.php';
+            $objBatch = new SC_Batch_Update();
+            $arrCopyLog = $objBatch->execute($exract_dir);
+
+            // テーブルの更新
+            // $this->updateMdlTable($objRet);
+
+            $arrParam = array(
+                'status'  => OWNERSSTORE_STATUS_SUCCESS,
+                'body' => wordwrap(implode('\n', $arrCopyLog), 80, "<br />\n")
+            );
+            echo $this->objJson->encode($arrParam);
+            GC_Utils::gfPrintLog('* file save ok');
+            exit;
+        } else {
+            echo $jsonData;
+            GC_Utils::gfPrintLog(
+                sprintf($errFormat, $objRet->errcode, serialize(array($resp, $objRet)))
+            );
+            exit;
+        }
+    }
+
+    /**
+     * デストラクタ
+     *
+     * @return void
+     */
+    function destroy() {
+        GC_Utils::gfPrintLog('###Download End###');
+    }
+
+    /**
+     * dtb_moduleを更新する
+     *
+     * @param object $objRet
+     */
+    function updateMdlTable($objRet) {
+        $table = 'dtb_module';
+        $objQuery = new SC_Query;
+
+        $count = $objQuery->count($objRet, 'module_id=?', array($objRet->product_id));
+        if ($count) {
+            $arrUpdate = array();
+            $objQuery->update($table, $arrUpdate);
+        } else {
+            $arrInsert = array();
+            $objQuery->insert($table, $arrInsert);
+        }
+    }
+}
+?>

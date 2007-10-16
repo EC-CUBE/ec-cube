@@ -17,6 +17,11 @@ require_once CLASS_PATH . 'pages/LC_Page.php';
  */
 class LC_Page_Upgrade_Base extends LC_Page {
 
+    /** Services_Jsonオブジェクト */
+    var $objJson = null;
+    /** HTTP_Requestオブジェクト */
+    var $objReq  = null;
+
     // }}}
     // {{{ functions
 
@@ -42,13 +47,9 @@ class LC_Page_Upgrade_Base extends LC_Page {
         $e = $objReq->sendRequest();
         if (PEAR::isError($e)) {
             return $e;
+        } else {
+            return $objReq;
         }
-
-        if (($code = $objReq->getResponseCode()) !== 200) {
-            return PEAR::raiseError('HTTP RESPONSE CODE:' . $code);
-        }
-
-        return $objReq->getResponseBody();
     }
 
     /**
@@ -65,6 +66,24 @@ class LC_Page_Upgrade_Base extends LC_Page {
             'body'    => $message
         );
         echo $this->objJson->encode(array_merge($arrData, $arrParam));
+    }
+
+    /**
+     * jsonデータを生成する
+     *
+     * @param string $status ステータス
+     * @param string $body エラーメッセージHTMLなど
+     * @param integer $errcode エラーコード
+     * @param array $addData 追加データ
+     * @return string jsonデータ
+     */
+    function createJsonData($status, $body = '', $errcode = '', $addData = array()) {
+        $arrParams = array(
+            'status'  => $status,
+            'body'    => $body,
+            'errcode' => $errcode,
+        );
+        return $this->objJson->encode(array_merge($arrParams, $addData));
     }
 
     /**

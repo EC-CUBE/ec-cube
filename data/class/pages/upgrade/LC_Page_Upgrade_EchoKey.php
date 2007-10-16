@@ -9,7 +9,7 @@
 require_once CLASS_PATH . 'pages/LC_Page.php';
 
 /**
- * XXX のページクラス.
+ * オーナーズストア認証キーを返すページクラス.
  *
  * @package Page
  * @author LOCKON CO.,LTD.
@@ -17,6 +17,9 @@ require_once CLASS_PATH . 'pages/LC_Page.php';
  */
 class LC_Page_Upgrade_EchoKey extends LC_Page {
 
+    /** Services_Jsonオブジェクト */
+    var $objJson = null;
+    /** SC_FromParamオブジェクト */
     var $objForm = null;
 
     // }}}
@@ -28,13 +31,11 @@ class LC_Page_Upgrade_EchoKey extends LC_Page {
      * @return void
      */
     function init() {
-        parent::init();
+        $this->objJson = new Services_JSON();
 
         $this->objForm = new SC_FormParam();
-        $this->objForm->addParam('seed', 'seed', '', '', array('EXIST_CHECK', 'ALNUM_CHECK'));
+        $this->objForm->addParam('seed', 'seed', MLTEXT_LEN, '', array('EXIST_CHECK', 'ALNUM_CHECK', 'MAX_LENGTH_CHECK'));
         $this->objForm->setParam($_POST);
-
-        $this->objJson = new Services_Json;
     }
 
     /**
@@ -43,10 +44,21 @@ class LC_Page_Upgrade_EchoKey extends LC_Page {
      * @return void
      */
     function process() {
-        $objJSON = new Services_JSON();
+        $errFormat = '* error! code:%s / debug:%s';
+
+        GC_Utils::gfPrintLog('###Echo Key Start###');
+
         // リクエストの検証
-        if ($this->isValidRequest() !== true) {
-            // TODO Bad Requestを返すように変更する
+        if ($this->objForm->checkError()) {
+            $arrErr = array(
+                'status'  => OWNERSSTORE_STATUS_ERROR,
+                'errcode' => OWNERSSTORE_ERR_EK_POST_PARAM,
+                'body' => '配信サーバとの通信中にエラーが発生しました(ERRORCODE:' . OWNERSSTORE_ERR_EK_POST_PARAM . ')'
+            );
+            echo $this->objJson->encode($arrErr);
+            GC_Utils::gfPrintLog(
+                sprintf($errFormat, $arrErr['errcode'], serialize($_POST))
+            );
             exit;
         }
 
@@ -54,13 +66,26 @@ class LC_Page_Upgrade_EchoKey extends LC_Page {
 
         // 認証キーが設定されていない場合
         if (empty($public_key)) {
-            // TODO データ形式の統一が必要
-            echo serialize('エラーメッセージ');
+            $arrErr = array(
+                'status'  => OWNERSSTORE_STATUS_ERROR,
+                'errcode' => OWNERSSTORE_ERR_EK_KEY_MISSING,
+                'body' => '配信との通信中にエラーが発生しました(ERRORCODE:' . OWNERSSTORE_ERR_EK_KEY_MISSING . ')'
+            );
+            echo $this->objJson->encode($arrErr);
+            GC_Utils::gfPrintLog(
+                sprintf($errFormat, $arrErr['errcode'], serialize($_POST))
+            );
             exit;
         }
 
         // 認証キー + 配信サーバから送られるランダムな値をsha1()にかけechoする
-        echo $objJSON->encode(array('body' => sha1($public_key . $_POST['seed'])));
+        $arrParams = array(
+            'status' => OWNERSSTORE_STATUS_SUCCESS,
+            'body'   => sha1($public_key . $this->objForm->getValue('seed'))
+        );
+
+        echo $this->objJson->encode($arrParams);
+        GC_Utils::gfPrintLog('* echo key ok');
         exit;
     }
 
@@ -70,22 +95,10 @@ class LC_Page_Upgrade_EchoKey extends LC_Page {
      * @return void
      */
     function destroy() {
-        parent::destroy();
+        GC_Utils::gfPrintLog('###Echo Key End###');
     }
 
-    /**
-     * リクエストの検証
-     *
-     * @param void
-     * @return boolean
-     */
-    function isValidRequest() {
-        // TODO 未実装
-        return true;
-
-    }
-
-    /**
+     /**
      * DBから認証キーを取得する
      * 無い場合はnullを返す
      *
@@ -93,9 +106,8 @@ class LC_Page_Upgrade_EchoKey extends LC_Page {
      * @return string|null 認証キー
      */
     function getPublicKey() {
-        $table  = 'dtb_application_settings';
+        $table  = 'dtb_ownersstore_settings';
         $col    = 'public_key';
-        $where  = 'application_settings_id = 1';
 
         $objQuery = new SC_Query();
 
