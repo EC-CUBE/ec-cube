@@ -36,6 +36,7 @@ class LC_Page {
 		global $arrDELIVERYDATE;
 		$this->arrDELIVERYDATE = $arrDELIVERYDATE;
 		$this->tpl_nonclass = true;
+		$this->tpl_movilink_flg = sfIsMoviLink();
 	}
 }
 
@@ -271,7 +272,18 @@ function lfGetProduct($product_id) {
 	sfViewWhere("&&noncls_where&&", $where, array($product_id));
 	
 	$arrRet = $objQuery->select($col, $table, $where, array($product_id));
-		
+	
+	// モビリンクが有効な場合
+	if(sfIsMoviLink()) {
+		$col = "movilink_net_percent, movilink_net_fix, movilink_draft_text1, movilink_draft_text2, movilink_code1, movilink_kana, movilink_price";
+		$table = "dtb_products";
+		$where = "product_id = ?";
+		$arrMoviLink = $objQuery->select($col, $table, $where, array($product_id));		
+		foreach($arrMoviLink[0] as $key => $val) {
+			$arrRet[0][$key] = $val;
+		}
+	}	
+	
 	return $arrRet[0];
 }
 
@@ -350,6 +362,18 @@ function lfRegistProduct($arrList) {
 	$sqlval['deliv_date_id'] = $arrList['deliv_date_id'];
 	$sqlval['update_date'] = "Now()";
 	$sqlval['creator_id'] = $_SESSION['member_id'];
+	
+	// モビリンクが有効な場合
+	if(sfIsMoviLink()) {
+		$sqlval['movilink_net_percent'] = $arrList['movilink_net_percent'];
+		$sqlval['movilink_net_fix'] = $arrList['movilink_net_fix'];
+		$sqlval['movilink_draft_text1'] = $arrList['movilink_draft_text1'];
+		$sqlval['movilink_draft_text2'] = $arrList['movilink_draft_text2'];
+		$sqlval['movilink_code1'] = $arrList['movilink_code1'];	
+		$sqlval['movilink_kana'] = $arrList['movilink_kana'];	
+		$sqlval['movilink_price'] = $arrList['movilink_price'];	
+	}
+	
 	$arrRet = $objUpFile->getDBFileList();
 	$sqlval = array_merge($sqlval, $arrRet);
 		
@@ -484,6 +508,28 @@ function lfErrorCheck($array) {
 	$objErr->doFunc(array("検索ワード", "comment3", LLTEXT_LEN), array("SPTAB_CHECK", "MAX_LENGTH_CHECK"));
 	$objErr->doFunc(array("メーカーURL", "comment1", URL_LEN), array("SPTAB_CHECK", "URL_CHECK", "MAX_LENGTH_CHECK"));
 	$objErr->doFunc(array("発送日目安", "deliv_date_id", INT_LEN), array("NUM_CHECK"));
+	
+	// モビリンクが有効な場合
+	if(sfIsMoviLink()) {
+		$objErr->doFunc(array("広告主様商品コード", "movilink_code1", STEXT_LEN), array("EXIST_CHECK", "MAX_LENGTH_CHECK"));
+		$objErr->doFunc(array("商品名(フリガナ)", "movilink_kana", STEXT_LEN), array("EXIST_CHECK", "KANA_CHECK", "MAX_LENGTH_CHECK"));
+		$objErr->doFunc(array("商品価格", "movilink_price", INT_LEN), array("EXIST_CHECK", "NUM_CHECK", "MAX_LENGTH_CHECK"));
+				
+		if($array['movilink_net_fix'] == "") {
+			$objErr->doFunc(array("商品報酬率", "movilink_net_percent", PERCENTAGE_LEN), array("EXIST_CHECK", "NUM_CHECK", "MAX_LENGTH_CHECK"));
+		}
+		
+		if($array['movilink_net_percent'] == "") {
+			$objErr->doFunc(array("商品報酬額", "movilink_net_fix", INT_LEN), array("EXIST_CHECK", "NUM_CHECK", "MAX_LENGTH_CHECK"));
+		}
+		
+		if($array['movilink_net_fix'] != "" && $array['movilink_net_percent'] != "") {
+			$objErr->arrErr['movilink_net_fix'] = "※ 商品報酬率か商品報酬額のどちらかを記入してください<br>";
+			$objErr->arrErr['movilink_net_percent'] = "※ 商品報酬率か商品報酬額のどちらかを記入してください<br>"; 
+		}
+		$objErr->doFunc(array("広告タグ原稿1", "movilink_draft_text1", 8), array("EXIST_CHECK", "MAX_LENGTH_CHECK"));
+		$objErr->doFunc(array("広告タグ原稿2", "movilink_draft_text2", 8), array("EXIST_CHECK", "MAX_LENGTH_CHECK"));
+	}
 	
 	if($objPage->tpl_nonclass) {
 		$objErr->doFunc(array("商品コード", "product_code", STEXT_LEN), array("EXIST_CHECK", "SPTAB_CHECK","MAX_LENGTH_CHECK","MAX_LENGTH_CHECK"));

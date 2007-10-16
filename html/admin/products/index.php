@@ -28,6 +28,7 @@ class LC_Page {
 		$this->arrSTATUS = $arrSTATUS;
 		global $arrPRODUCTSTATUS_COLOR;
 		$this->arrPRODUCTSTATUS_COLOR = $arrPRODUCTSTATUS_COLOR;
+		$this->tpl_movilink_flg = sfIsMoviLink();
 		/*
 		 session_start時のno-cacheヘッダーを抑制することで
 		 「戻る」ボタン使用時の有効期限切れ表示を抑制する。
@@ -113,7 +114,7 @@ if ($_POST['mode'] == "delete") {
 }
 
 
-if ($_POST['mode'] == "search" || $_POST['mode'] == "csv"  || $_POST['mode'] == "delete" || $_POST['mode'] == "delete_all" || $_POST['mode'] == "camp_search") {
+if(isset($_POST['mode'])) {
 	// 入力文字の強制変換
 	lfConvertParam();
 	// エラーチェック
@@ -228,6 +229,25 @@ if ($_POST['mode'] == "search" || $_POST['mode'] == "csv"  || $_POST['mode'] == 
 			$head = sfGetCSVList($arrOutputTitle);
 			
 			$data = lfGetProductsCSV($where, $option, $arrval, $arrOutputCols);
+
+			// CSVを送信する。
+			sfCSVDownload($head.$data);
+			exit;
+			break;
+		case 'csv_movilink':
+			// オプションの指定
+			$option = "ORDER BY $order";
+			// CSV出力タイトル行の作成
+			$arrOutput = sfSwapArray(sfgetCsvOutput(CSV_ID_MOVI, " WHERE csv_id = ? AND status = 1", array(CSV_ID_MOVI)));
+						
+			if (count($arrOutput) <= 0) break;
+			
+			$arrOutputCols = $arrOutput['col'];
+			$arrOutputTitle = $arrOutput['disp_name'];
+			
+			$head = sfGetMovilinkCSVList($arrOutputTitle);
+			
+			$data = sfGetMovilinkCSV($where, $option, $arrval, $arrOutputCols);
 
 			// CSVを送信する。
 			sfCSVDownload($head.$data);

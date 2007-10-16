@@ -73,6 +73,26 @@ function lfGetProductsCSV($where, $option, $arrval, $arrOutputCols) {
 	return $data;
 }
 
+// CSV出力データを作成する。(MOVILINK)
+function lfGetMovilinkCSV($where, $option, $arrval, $arrOutputCols) {
+	global $arrPRODUCTS_CVSCOL;
+
+	$from = "dtb_products";
+	$cols = sfGetCommaList($arrOutputCols);
+	
+	$objQuery = new SC_Query();
+	$objQuery->setoption($option);
+	
+	$list_data = $objQuery->select($cols, $from, $where, $arrval);
+	$max = count($list_data);
+	
+	for($i = 0; $i < $max; $i++) {
+		// 各項目をCSV出力用に変換する。
+		$data .= lfMakeProductsCSV($list_data[$i]);	
+	}
+	return $data;
+}
+
 // CSV出力データを作成する。(レビュー)
 function lfGetReviewCSV($where, $option, $arrval) {
 	global $arrREVIEW_CVSCOL;
