@@ -5,6 +5,14 @@
  * Licensed under the MIT License: http://www.opensource.org/licenses/mit-license.php
 */
 
+/*
+ * ownersstore.js
+ *
+ * オーナーズストア通信用ライブラリ.
+ * CSSやjavascriptのオーバーレイ処理はThickboxのものを使っています.
+ *
+*/
+
 (function() {
 // オーナーズストア通信スクリプトのパス
 var upgrade_url = '<!--{$smarty.const.URL_DIR}-->upgrade/index.php';
@@ -79,8 +87,9 @@ OwnersStore.prototype = {
     },
     // show results
     show_result: function(resp, status) {
-        var title = status;
+        var title    = resp.status;
         var contents = resp.body;
+        var errcode  = resp.errcode || '';
 
         var TB_WIDTH = 700;
         var TB_HEIGHT = 400;
@@ -90,7 +99,7 @@ OwnersStore.prototype = {
         if ($("#TB_window").css("display") != "block"){
             $("#TB_window").append(
                 "<div id='TB_title'>"
-              + "  <div id='TB_ajaxWindowTitle'>" + title + "</div>"
+              + "  <div id='TB_ajaxWindowTitle'></div>"
               + "  <div id='TB_closeAjaxWindow'><a href='#' id='TB_closeWindowButton' onclick='OwnersStore.remove();'>close</a></div>"
               + "</div>"
               + "<div id='TB_ajaxContent' style='width:" + ajaxContentW + "px;height:" + ajaxContentH + "px'>"
@@ -101,9 +110,8 @@ OwnersStore.prototype = {
             $("#TB_ajaxContent")[0].style.width = ajaxContentW +"px";
             $("#TB_ajaxContent")[0].style.height = ajaxContentH +"px";
             $("#TB_ajaxContent")[0].scrollTop = 0;
-            $("#TB_ajaxWindowTitle").html(contents);
-		}
 
+		}
 
         $("#TB_load").remove();
         $("#TB_window").css({marginLeft: '-' + parseInt((TB_WIDTH / 2),10) + 'px', width: TB_WIDTH + 'px'});
@@ -112,6 +120,8 @@ OwnersStore.prototype = {
         if (!(jQuery.browser.msie && jQuery.browser.version < 7)) {
             $("#TB_window").css({marginTop: '-' + parseInt((TB_HEIGHT / 2),10) + 'px'});
         }
+
+        $("#TB_ajaxWindowTitle").html(title);
         $("#TB_ajaxContent").html(contents);
 		$("#TB_window").css({display:"block"});
     },
