@@ -1176,7 +1176,6 @@ CREATE TABLE mtb_constants (
     id text,
     name text,
     rank int2 NOT NULL DEFAULT 0,
-    remarks text,
-    PRIMARY KEY (id(32))
+    remarks text
 ) TYPE=InnoDB;
 
