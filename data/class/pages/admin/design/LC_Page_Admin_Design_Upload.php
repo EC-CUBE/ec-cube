@@ -56,7 +56,6 @@ class LC_Page_Admin_Design_Upload extends LC_Page {
 
         // アップロードしたファイルを格納するディレクトリ
         $new_file_dir = USER_TEMPLATE_PATH . $_POST['template_code'];
-        $this->p($new_file_dir);
         // ファイル管理クラス
         $objUpFile = new SC_UploadFile(TEMPLATE_TEMP_DIR, $new_file_dir);
         // ファイル情報の初期化
@@ -89,7 +88,8 @@ class LC_Page_Admin_Design_Upload extends LC_Page {
                 // Smarty テンプレートをコピー
                 $target_smarty = $new_file_dir . "/Smarty/";
                 $mess .= SC_Utils_Ex::sfCopyDir($target_smarty, DATA_PATH . "Smarty/templates/" . $_POST['template_code'] . "/", $mess);
-
+                // コピー済みファイルを削除
+                SC_Utils_Ex::sfDelFile($target_smarty);
                 // DBにテンプレート情報を保存
                 $this->lfRegistTemplate($arrRet, $objQuery);
                 // 完了表示javascript
