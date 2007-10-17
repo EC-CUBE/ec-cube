@@ -642,6 +642,8 @@ define('OWNERSSTORE_ERR_DL_MKDIR',  306);
 define('OWNERSSTORE_ERR_DL_EXTRACT_ARCHIVE', 307);
 /** オーナーズストア通信時のエラーコード：アップデートバッチの実行に失敗した */
 define('OWNERSSTORE_ERR_DL_UPDATE_BATCH', 308);
+/** オーナーズストア通信時のエラーコード：*/
+define('OWNERSSTORE_ERR_DL_INVALID_JSON_DATA', 309);
 /** オーナーズストア通信時のエラーコード：POSTパラメータが不正 */
 define('OWNERSSTORE_ERR_SERVER_PL_POST_PARAM', 400);
 /** オーナーズストア通信時のエラーコード：会員データが存在しない */
