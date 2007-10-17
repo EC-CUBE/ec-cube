@@ -624,6 +624,8 @@ define('OWNERSSTORE_ERR_PL_TRANSACTION',201);
 define('OWNERSSTORE_ERR_PL_HTTP_REQ', 202);
 /** オーナーズストア通信時のエラーコード：レスポンスコードが200でない */
 define('OWNERSSTORE_ERR_PL_HTTP_RESP_CODE', 203);
+/** オーナーズストア通信時のエラーコード：JSONデータが不正 */
+define('OWNERSSTORE_ERR_PL_INVALID_JSON_DATA', 204);
 /** オーナーズストア通信時のエラーコード：管理画面の認証に失敗した */
 define('OWNERSSTORE_ERR_DL_ADMIN_AUTH', 300);
 /** オーナーズストア通信時のエラーコード：トランザクションIDが不正 */
@@ -642,7 +644,7 @@ define('OWNERSSTORE_ERR_DL_MKDIR',  306);
 define('OWNERSSTORE_ERR_DL_EXTRACT_ARCHIVE', 307);
 /** オーナーズストア通信時のエラーコード：アップデートバッチの実行に失敗した */
 define('OWNERSSTORE_ERR_DL_UPDATE_BATCH', 308);
-/** オーナーズストア通信時のエラーコード：*/
+/** オーナーズストア通信時のエラーコード：：JSONデータが不正 */
 define('OWNERSSTORE_ERR_DL_INVALID_JSON_DATA', 309);
 /** オーナーズストア通信時のエラーコード：POSTパラメータが不正 */
 define('OWNERSSTORE_ERR_SERVER_PL_POST_PARAM', 400);
