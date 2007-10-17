@@ -119,10 +119,10 @@ class LC_Page_TrackBack extends LC_Page {
         $arrData = $objFormParam->getHashArray();
 
         // エラーチェック(トラックバックが成り立たないので、URL以外も必須とする)
-        $objPage->arrErr = $this->lfCheckError($objFormParam);
+        $this->arrErr = $this->lfCheckError($objFormParam);
 
         // エラーがない場合はデータを更新
-        if(count($objPage->arrErr) == 0) {
+        if(count($this->arrErr) == 0) {
 
             // 商品コードの取得(GET)
             if (isset($_GET["pid"])) {
@@ -145,6 +145,9 @@ class LC_Page_TrackBack extends LC_Page {
                     GC_Utils_Ex::gfPrintLog("--- PRODUCT NOT EXISTS : " . $product_id, $log_path);
                 }
             }
+        }
+        foreach($this->arrErr as $key => $val) {
+            GC_Utils_Ex::gfPrintLog( "\t" . $key . " => " . $val, $log_path);
         }
         // NG
         $this->IfResponseNg();
@@ -202,7 +205,7 @@ class LC_Page_TrackBack extends LC_Page {
         $log_path = DATA_PATH . "logs/tb_result.log";
 
         // スパムフィルター
-        if (lfSpamFilter($arrData)) {
+        if ($this->lfSpamFilter($arrData)) {
             $arrData["status"] = TRACKBACK_STATUS_NOT_VIEW;
         } else {
             $arrData["status"] = TRACKBACK_STATUS_SPAM;

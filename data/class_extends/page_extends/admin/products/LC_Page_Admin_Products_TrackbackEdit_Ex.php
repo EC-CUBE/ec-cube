@@ -6,18 +6,18 @@
  */
 
 // {{{ requires
-require_once(CLASS_PATH . "pages/tb/LC_Page_TrackBack.php");
+require_once(CLASS_PATH . "pages/admin/products/LC_Page_Admin_Products_TrackbackEdit.php");
 
 /**
- * トラックバック のページクラス(拡張).
+ * トラックバック編集 のページクラス(拡張).
  *
- * LC_Page_TrackBack をカスタマイズする場合はこのクラスを編集する.
+ * LC_Page_TrackBack_Edit をカスタマイズする場合はこのクラスを編集する.
  *
  * @package Page
  * @author LOCKON CO.,LTD.
  * @version $Id$
  */
-class LC_Page_TrackBack_Ex extends LC_Page_TrackBack {
+class LC_Page_Admin_Products_TrackbackEdit_Ex extends LC_Page_Admin_Products_TrackbackEdit {
 
     // }}}
     // {{{ functions
