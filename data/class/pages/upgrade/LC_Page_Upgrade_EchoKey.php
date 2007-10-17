@@ -53,7 +53,7 @@ class LC_Page_Upgrade_EchoKey extends LC_Page {
             $arrErr = array(
                 'status'  => OWNERSSTORE_STATUS_ERROR,
                 'errcode' => OWNERSSTORE_ERR_EK_POST_PARAM,
-                'body' => '配信サーバとの通信中にエラーが発生しました(ERRORCODE:' . OWNERSSTORE_ERR_EK_POST_PARAM . ')'
+                'body' => '配信サーバとの通信中にエラーが発生しました。エラーコード:' . OWNERSSTORE_ERR_EK_POST_PARAM
             );
             echo $this->objJson->encode($arrErr);
             GC_Utils::gfPrintLog(
@@ -69,7 +69,7 @@ class LC_Page_Upgrade_EchoKey extends LC_Page {
             $arrErr = array(
                 'status'  => OWNERSSTORE_STATUS_ERROR,
                 'errcode' => OWNERSSTORE_ERR_EK_KEY_MISSING,
-                'body' => '配信との通信中にエラーが発生しました(ERRORCODE:' . OWNERSSTORE_ERR_EK_KEY_MISSING . ')'
+                'body' => '配信サーバとの通信中にエラーが発生しました。エラーコード:' . OWNERSSTORE_ERR_EK_KEY_MISSING
             );
             echo $this->objJson->encode($arrErr);
             GC_Utils::gfPrintLog(
