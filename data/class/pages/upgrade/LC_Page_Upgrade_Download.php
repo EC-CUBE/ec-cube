@@ -239,6 +239,7 @@ class LC_Page_Upgrade_Download extends LC_Page_Upgrade_Base {
     /**
      * 配信サーバへダウンロード完了を通知する.
      *
+     * FIXME エラーコード追加
      * @param array #arrCookies Cookie配列
      * @retrun
      */
