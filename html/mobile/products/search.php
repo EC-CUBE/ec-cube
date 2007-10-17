@@ -17,7 +17,7 @@ require_once(CLASS_EX_PATH . "page_extends/products/LC_Page_Products_Search_Ex.p
 // {{{ generate page
 
 $objPage = new LC_Page_Products_Search_Ex();
+register_shutdown_function(array($objPage, "destroy"));
 $objPage->mobileInit();
 $objPage->mobileProcess();
-$objPage->process();
 ?>

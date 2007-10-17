@@ -17,7 +17,7 @@ require_once(CLASS_EX_PATH . "page_extends/mypage/LC_Page_Mypage_ChangeComplete_
 // {{{ generate page
 
 $objPage = new LC_Page_Mypage_ChangeComplete_Ex();
+register_shutdown_function(array($objPage, "destroy"));
 $objPage->mobileInit();
 $objPage->mobileProcess();
-$objPage->process();
 ?>
