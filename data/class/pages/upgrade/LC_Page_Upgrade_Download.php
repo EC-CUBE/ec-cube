@@ -49,6 +49,20 @@ class LC_Page_Upgrade_Download extends LC_Page_Upgrade_Base {
     }
 
     /**
+     * 使用してません
+     * こんな感じで書けたら楽かな...
+     */
+    function _process() {
+        $result = $this->_try();
+        if ($e = $this->_catch($result)) {
+            GC_Utils::gfPrintLog(sprintf($e->log_format, $e->stacktrace));
+            $this->_throw($e->json);
+            exit;
+        }
+        echo $result;
+    }
+
+    /**
      * Page のプロセス.
      *
      * @return void
@@ -75,11 +89,11 @@ class LC_Page_Upgrade_Download extends LC_Page_Upgrade_Base {
 
         // パラメーチェック
         GC_Utils::gfPrintLog('* post parameter check start');
-        if ($arrErr = $this->objForm->checkError()) {
+        if ($this->objForm->checkError()) {
             $arrErr = array(
                 'status'  => OWNERSSTORE_STATUS_ERROER,
                 'errcode' => OWNERSSTORE_ERR_DL_POST_PARAM,
-                'body' => 'パラメータが不正です。'
+                'body' => '配信サーバとの通信中にエラーが発生しました。エラーコード:' . OWNERSSTORE_ERR_DL_POST_PARAM
             );
             echo $this->objJson->encode($arrErr);
             GC_Utils::gfPrintLog(
@@ -103,7 +117,7 @@ class LC_Page_Upgrade_Download extends LC_Page_Upgrade_Base {
             $arrErr = array(
                 'status'  => OWNERSSTORE_STATUS_ERROR,
                 'errcode' => OWNERSSTORE_ERR_DL_HTTP_REQ,
-                'body' => 'サーバとの通信に失敗しました。エラーコード:' . OWNERSSTORE_ERR_DL_HTTP_REQ
+                'body' => '配信サーバとの通信中にエラーが発生しました。エラーコード:' . OWNERSSTORE_ERR_DL_HTTP_REQ
             );
             echo $this->objJson->encode($arrErr);
             GC_Utils::gfPrintLog(
@@ -112,10 +126,24 @@ class LC_Page_Upgrade_Download extends LC_Page_Upgrade_Base {
             exit;
         }
 
-        // ダウンロードデータの保存
+        // JSONデータの検証
         $jsonData = $resp->getResponseBody();
         $objRet   = $this->objJson->decode($resp->getResponseBody($jsonData));
-        if ($objRet->status == OWNERSSTORE_STATUS_SUCCESS) {
+        GC_Utils::gfPrintLog('* json data check start');
+        if (empty($objRet)) {
+            $arrErr = array(
+                'status'  => OWNERSSTORE_STATUS_ERROR,
+                'errcode' => OWNERSSTORE_ERR_DL_INVALID_JSON_DATA,
+                'body' => '配信サーバとの通信中にエラーが発生しました。エラーコード:' . OWNERSSTORE_ERR_DL_INVALID_JSON_DATA
+            );
+            echo $this->objJson->encode($arrErr);
+            GC_Utils::gfPrintLog(
+                sprintf($errFormat, $arrErr['errcode'], serialize($resp))
+            );
+            exit;
+        }
+        // ダウンロードデータの保存
+        if ($objRet->status === OWNERSSTORE_STATUS_SUCCESS) {
             GC_Utils::gfPrintLog('* save file start');
             $time = time();
             $dir  = DATA_PATH . 'downloads/tmp/';
@@ -130,7 +158,7 @@ class LC_Page_Upgrade_Download extends LC_Page_Upgrade_Base {
                 $arrErr = array(
                     'status'  => OWNERSSTORE_STATUS_ERROR,
                     'errcode' => OWNERSSTORE_ERR_DL_FILE_WRITE,
-                    'body' => 'ファイルの書き込みに失敗しました。'
+                    'body' => '配信サーバとの通信中にエラーが発生しました。エラーコード:' . OWNERSSTORE_ERR_DL_FILE_WRITE
                 );
                 echo $this->objJson->encode($arrErr);
                 GC_Utils::gfPrintLog(
@@ -144,7 +172,7 @@ class LC_Page_Upgrade_Download extends LC_Page_Upgrade_Base {
                 $arrErr = array(
                     'status'  => OWNERSSTORE_STATUS_ERROR,
                     'errcode' => OWNERSSTORE_ERR_DL_MKDIR,
-                    'body' => 'ディレクトリを作成できません。'
+                    'body' => '配信サーバとの通信中にエラーが発生しました。エラーコード:' . OWNERSSTORE_ERR_DL_MKDIR
                 );
                 echo $this->objJson->encode($arrErr);
                 GC_Utils::gfPrintLog(
@@ -165,7 +193,7 @@ class LC_Page_Upgrade_Download extends LC_Page_Upgrade_Base {
 
             $arrParam = array(
                 'status'  => OWNERSSTORE_STATUS_SUCCESS,
-                'body' => wordwrap(implode('\n', $arrCopyLog), 80, "<br />\n")
+                'body' => 'インストール/アップデートに成功しました！'
             );
             echo $this->objJson->encode($arrParam);
             GC_Utils::gfPrintLog('* file save ok');
