@@ -92,9 +92,34 @@ class LC_Page_Upgrade_ProductsList extends LC_Page {
             );
             exit;
         }
-        // FIXME 画像ファイルダウンロード, jsonデータ検証処理など
-        GC_Utils::gfPrintLog('* get products list ok');
-        echo $objReq->getResponseBody();
+
+        $body = $objReq->getResponseBody();
+        $jsonData = $this->objJson->decode($body);
+        GC_Utils::gfPrintLog('* json deta check start');
+        if (empty($jsonData)) {
+            $arrErr = array(
+                'status'  => OWNERSSTORE_STATUS_ERROR,
+                'errcode' => OWNERSSTORE_ERR_PL_INVALID_JSON_DATA,
+                'body' => '配信サーバとの通信中にエラーが発生しました。エラーコード:' . OWNERSSTORE_ERR_PL_INVALID_JSON_DATA
+            );
+            echo $this->objJson->encode($arrErr);
+            GC_Utils::gfPrintLog(
+                sprintf($errFormat, $arrErr['errcode'], serialize($body))
+            );
+            exit;
+        }
+        GC_Utils::gfPrintLog('* json status check start');
+        if ($jsonData->status === OWNERSSTORE_STATUS_SUCCESS) {
+            GC_Utils::gfPrintLog('* get products list ok');
+            echo $body;
+            exit;
+        } else {
+            echo $body;
+            GC_Utils::gfPrintLog(
+                sprintf($errFormat, $jsonData->errcode, serialize($objReq))
+            );
+            exit;
+        }
     }
 
     /**
