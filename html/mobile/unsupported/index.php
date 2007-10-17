@@ -15,5 +15,5 @@ require_once(CLASS_EX_PATH . "page_extends/unsupported/LC_Page_Unsupported_Ex.ph
 $objPage = new LC_Page_Unsupported_Ex();
 register_shutdown_function(array($objPage, "destroy"));
 $objPage->init();
-$objPage->mobileProcess();
+$objPage->process();
 ?>
