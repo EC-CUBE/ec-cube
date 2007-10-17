@@ -51,50 +51,5 @@ class LC_Page_Upgrade_Base extends LC_Page {
             return $objReq;
         }
     }
-
-    /**
-     * ユーザへ結果を通知する.
-     *
-     * @param integer $status ステータスコード
-     * @param string $message ステータスメッセージ
-     * @param array arrParam 追加パラメータ
-     * @return void
-     */
-    function displayJson($status, $message, $arrParam = array()) {
-        $arrData = array(
-            'status'  => $status,
-            'body'    => $message
-        );
-        echo $this->objJson->encode(array_merge($arrData, $arrParam));
-    }
-
-    /**
-     * jsonデータを生成する
-     *
-     * @param string $status ステータス
-     * @param string $body エラーメッセージHTMLなど
-     * @param integer $errcode エラーコード
-     * @param array $addData 追加データ
-     * @return string jsonデータ
-     */
-    function createJsonData($status, $body = '', $errcode = '', $addData = array()) {
-        $arrParams = array(
-            'status'  => $status,
-            'body'    => $body,
-            'errcode' => $errcode,
-        );
-        return $this->objJson->encode(array_merge($arrParams, $addData));
-    }
-
-    /**
-     * ログ出力を行う
-     *
-     * @param integer $message logメッセージ
-     * @param string $val debug用パラメータ
-     */
-    function log($message, $val = null) {
-        $msg = sprintf("%s / debug: %s", $message, serialize($val));
-        GC_Utils::gfPrintLog($msg, DATA_PATH . 'logs/ownersstore.log');
-    }
 }
 ?>
