@@ -19,5 +19,5 @@ require_once(CLASS_EX_PATH . "page_extends/mypage/LC_Page_Mypage_RefusalComplete
 $objPage = new LC_Page_Mypage_RefusalComplete_Ex();
 $objPage->mobileInit();
 $objPage->mobileProcess();
-register_shutdown_function(array($objPage, "destroy"));
+$objPage->process();
 ?>

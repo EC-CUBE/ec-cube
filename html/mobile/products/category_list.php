@@ -19,5 +19,5 @@ require_once(CLASS_EX_PATH . "page_extends/products/LC_Page_Products_CategoryLis
 $objPage = new LC_Page_Products_CategoryList_Ex();
 $objPage->mobileInit();
 $objPage->mobileProcess();
-register_shutdown_function(array($objPage, "destroy"));
+$objPage->process();
 ?>

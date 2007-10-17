@@ -19,5 +19,5 @@ require_once(CLASS_EX_PATH . "page_extends/guide/LC_Page_Guide_Usage_Ex.php");
 $objPage = new LC_Page_Guide_Usage_Ex();
 $objPage->mobileInit();
 $objPage->mobileProcess();
-register_shutdown_function(array($objPage, "destroy"));
+$objPage->process();
 ?>

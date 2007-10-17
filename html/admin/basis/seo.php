@@ -13,7 +13,7 @@ require_once(CLASS_EX_PATH . "page_extends/admin/basis/LC_Page_Admin_Basis_Seo_E
 // {{{ generate page
 
 $objPage = new LC_Page_Admin_Basis_Seo_Ex();
+register_shutdown_function(array($objPage, "destroy"));
 $objPage->init();
 $objPage->process();
-register_shutdown_function(array($objPage, "destroy"));
 ?>

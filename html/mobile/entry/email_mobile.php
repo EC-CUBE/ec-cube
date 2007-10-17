@@ -19,5 +19,5 @@ require_once(CLASS_EX_PATH . "page_extends/entry/LC_Page_Entry_EmailMobile_Ex.ph
 $objPage = new LC_Page_Entry_EmailMobile_Ex();
 $objPage->mobileInit();
 $objPage->mobileProcess();
-register_shutdown_function(array($objPage, "destroy"));
+$objPage->process();
 ?>

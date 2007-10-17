@@ -13,7 +13,7 @@ require_once(CLASS_EX_PATH . "page_extends/admin/total/LC_Page_Admin_Total_Ex.ph
 // {{{ generate page
 
 $objPage = new LC_Page_Admin_Total_Ex();
+register_shutdown_function(array($objPage, "destroy"));
 $objPage->init();
 $objPage->process();
-register_shutdown_function(array($objPage, "destroy"));
 ?>

@@ -15,7 +15,7 @@ ini_set("max_execution_time", 600);
 // {{{ generate page
 
 $objPage = new LC_Page_Admin_Basis_ZipInstall_Ex();
+register_shutdown_function(array($objPage, "destroy"));
 $objPage->init();
 $objPage->process();
-register_shutdown_function(array($objPage, "destroy"));
 ?>

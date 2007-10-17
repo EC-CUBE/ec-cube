@@ -19,5 +19,5 @@ require_once(CLASS_EX_PATH . "page_extends/LC_Page_Redirect_Ex.php");
 $objPage = new LC_Page_Redirect_Ex();
 $objPage->mobileInit();
 $objPage->mobileProcess();
-register_shutdown_function(array($objPage, "destroy"));
+$objPage->process();
 ?>

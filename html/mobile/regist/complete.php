@@ -19,5 +19,5 @@ require_once(CLASS_EX_PATH . "page_extends/regist/LC_Page_Regist_Complete_Ex.php
 $objPage = new LC_Page_Regist_Complete_Ex();
 $objPage->mobileInit();
 $objPage->mobileProcess();
-register_shutdown_function(array($objPage, "destroy"));
+$objPage->process();
 ?>

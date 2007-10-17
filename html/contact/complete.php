@@ -13,7 +13,7 @@ require_once(CLASS_EX_PATH . "page_extends/contact/LC_Page_Contact_Complete_Ex.p
 // {{{ generate page
 
 $objPage = new LC_Page_Contact_Complete_Ex();
+register_shutdown_function(array($objPage, "destroy"));
 $objPage->init();
 $objPage->process();
-register_shutdown_function(array($objPage, "destroy"));
 ?>

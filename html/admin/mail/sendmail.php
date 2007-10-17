@@ -13,7 +13,7 @@ require_once(CLASS_EX_PATH . "page_extends/admin/mail/LC_Page_Admin_Mail_Sendmai
 // {{{ generate page
 
 $objPage = new LC_Page_Admin_Mail_Sendmail_Ex();
+register_shutdown_function(array($objPage, "destroy"));
 $objPage->init();
 $objPage->process();
-register_shutdown_function(array($objPage, "destroy"));
 ?>

@@ -19,5 +19,5 @@ require_once(CLASS_EX_PATH . "page_extends/shopping/LC_Page_Shopping_DelivAddr_E
 $objPage = new LC_Page_Shopping_DelivAddr_Ex();
 $objPage->mobileInit();
 $objPage->mobileProcess();
-register_shutdown_function(array($objPage, "destroy"));
+$objPage->process();
 ?>
