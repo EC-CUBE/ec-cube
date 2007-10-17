@@ -188,6 +188,7 @@ class LC_Page_Upgrade_Download extends LC_Page_Upgrade_Base {
             $objBatch = new SC_Batch_Update();
             $arrCopyLog = $objBatch->execute($exract_dir);
 
+            $this->notifyDownload($resp->getResponseCookies(), $objRet->product_data);
             // テーブルの更新
             // $this->updateMdlTable($objRet);
 
@@ -233,6 +234,46 @@ class LC_Page_Upgrade_Download extends LC_Page_Upgrade_Base {
             $arrInsert = array();
             $objQuery->insert($table, $arrInsert);
         }
+    }
+
+    /**
+     * 配信サーバへダウンロード完了を通知する.
+     *
+     * @param array #arrCookies Cookie配列
+     * @retrun
+     */
+    function notifyDownload($arrCookies) {
+        $objReq = new HTTP_Request();
+        $objReq->setUrl('http://cube-shopaccount/upgrade/index.php');
+        $objReq->setMethod('POST');
+        $objReq->addPostData('mode', 'download_log');
+
+        // Cookie追加
+        foreach ($arrCookies as $cookie) {
+            $objReq->addCookie($cookie['name'], $cookie['value']);
+        }
+
+        $e = $objReq->sendRequest();
+        if (PEAR::isError($e)) {
+            $arrErr = array(
+                'status'  => OWNERSSTORE_STATUS_ERROR,
+                'errcode' => 999,
+                'body'    => '配信サーバとの通信中にエラーが発生しました。エラーコード:' . 999
+            );
+            return $arrErr;
+        }
+
+        if ($objReq->getResponseCode() !== 200) {
+            $arrErr = array(
+                'status'  => OWNERSSTORE_STATUS_ERROR,
+                'errcode' => 999,
+                'body'    => '配信サーバとの通信中にエラーが発生しました。エラーコード:' . 999
+            );
+            return $arrErr;
+        }
+        echo $objReq->getResponseBody();
+        // TODO STATUSチェック
+        return true;
     }
 }
 ?>
