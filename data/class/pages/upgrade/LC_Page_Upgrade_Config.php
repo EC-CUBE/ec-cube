@@ -43,8 +43,10 @@ class LC_Page_Upgrade_Config extends LC_Page_Upgrade_Base {
         $rhis->objReq  = new HTTP_Request();
         $this->objForm = new SC_FormParam();
         $this->objForm->addParam(
-            'product_id', 'product_id', INT_LEN, '',
-            array('EXIST_CHECK', 'NUM_CHECK', 'MAX_LENGTH_CHECK')
+            'product_id', 'product_id', INT_LEN, '', array('EXIST_CHECK', 'NUM_CHECK', 'MAX_LENGTH_CHECK')
+        );
+        $this->objForm->addParam(
+            'auto_update_flg', 'auto_update_flg', INT_LEN, '', array('EXIST_CHECK', 'NUM_CHECK', 'MAX_LENGTH_CHECK')
         );
         $this->objForm->setParam($_POST);
     }
@@ -86,7 +88,9 @@ class LC_Page_Upgrade_Config extends LC_Page_Upgrade_Base {
         $objReq->setMethod('POST');
         $objReq->addPostData('site_url', SITE_URL);
         $objReq->addPostData('ssl_url', SSL_URL);
+        $objReq->setPostData('mode');
         $objReq->addPostData('product_id', $objForm->getValue('product_id'));
+        $objReq->addPostData('auto_update_flg', $objForm->getValue('auto_update_flg'));
 
         GC_Utils::gfPrintLog('* http request start');
         $e = $objReq->sendRequest();
