@@ -996,7 +996,6 @@ INSERT INTO mtb_constants VALUES ('CAMPAIGN_BLOC_DIR','"bloc/"',315,'キャン�
 INSERT INTO mtb_constants VALUES ('CAMPAIGN_BLOC_PATH','CAMPAIGN_TEMPLATE_PATH . CAMPAIGN_BLOC_DIR',316,'キャンペーン関連');
 INSERT INTO mtb_constants VALUES ('CAMPAIGN_TEMPLATE_ACTIVE','"active/"',317,'キャンペーン関連');
 INSERT INTO mtb_constants VALUES ('CAMPAIGN_TEMPLATE_END','"end/"',318,'キャンペーン関連');
-
 INSERT INTO mtb_constants VALUES ('MOBILE_TEMPLATE_DIR', 'TEMPLATE_DIR . "mobile/"', 400,'SMARTYテンプレート(mobile)');
 INSERT INTO mtb_constants VALUES ('MOBILE_COMPILE_DIR', 'COMPILE_DIR . "mobile/"', 401,'SMARTYコンパイル(mobile)');
 INSERT INTO mtb_constants VALUES ('MOBILE_SESSION_LIFETIME', '1800', 402,'セッションの存続時間 (秒)');
