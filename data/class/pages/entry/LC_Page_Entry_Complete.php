@@ -46,6 +46,8 @@ class LC_Page_Entry_Complete extends LC_Page {
      * @return void
      */
     function process() {
+        global $objCampaignSess;
+
         $objView = new SC_SiteView();
         $objCampaignSess = new SC_CampaignSession();
 

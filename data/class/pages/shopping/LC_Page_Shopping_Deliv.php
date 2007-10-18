@@ -51,6 +51,8 @@ class LC_Page_Shopping_Deliv extends LC_Page {
      * @return void
      */
     function process() {
+        global $objCampaignSess;
+
         $objView = new SC_SiteView();
         $objSiteSess = new SC_SiteSession();
         $objCartSess = new SC_CartSession();

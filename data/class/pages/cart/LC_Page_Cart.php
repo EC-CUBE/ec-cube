@@ -49,6 +49,8 @@ class LC_Page_Cart extends LC_Page {
      * @return void
      */
     function process() {
+        global $objCampaignSess;
+
         $objView = new SC_SiteView(false);
         $objCartSess = new SC_CartSession("", false);
         $objSiteSess = new SC_SiteSession();

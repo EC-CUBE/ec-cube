@@ -47,6 +47,7 @@ class LC_Page_Entry extends LC_Page {
      * @return void
      */
     function process() {
+        global $objCampaignSess;
 
         $objConn = new SC_DbConn();
         $objView = new SC_SiteView();

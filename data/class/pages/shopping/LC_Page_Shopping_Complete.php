@@ -45,6 +45,8 @@ class LC_Page_Shopping_Complete extends LC_Page {
      * @return void
      */
     function process() {
+        global $objCampaignSess;
+
         $conn = new SC_DBConn();
         $objView = new SC_SiteView();
         $this->objSiteSess = new SC_SiteSession();

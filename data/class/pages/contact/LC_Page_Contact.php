@@ -41,6 +41,8 @@ class LC_Page_Contact extends LC_Page {
      * @return void
      */
     function process() {
+        global $objCampaignSess;
+
         $conn = new SC_DBConn();
         $this->objView = new SC_SiteView();
         $objCampaignSess = new SC_CampaignSession();

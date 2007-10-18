@@ -37,6 +37,8 @@ class LC_Page_Entry_Kiyaku extends LC_Page {
      * @return void
      */
     function process() {
+        global $objCampaignSess;
+
         $objView = new SC_SiteView();
         $objCustomer = new SC_Customer();
         $objCampaignSess = new SC_CampaignSession();

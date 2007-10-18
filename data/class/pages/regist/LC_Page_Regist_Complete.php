@@ -37,6 +37,8 @@ class LC_Page_Regist_Complete extends LC_Page {
      * @return void
      */
     function process() {
+        global $objCampaignSess;
+
         $objView = new SC_SiteView();
         $objQuery = new SC_Query();
         $objCampaignSess = new SC_CampaignSession();

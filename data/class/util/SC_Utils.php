@@ -122,10 +122,12 @@ class SC_Utils {
 
     /* サイトエラーページの表示 */
     function sfDispSiteError($type, $objSiteSess = "", $return_top = false, $err_msg = "", $is_mobile = false) {
+        global $objCampaignSess;
 
         require_once(CLASS_EX_PATH . "page_extends/error/LC_Page_Error_Ex.php");
 
         $objPage = new LC_Page_Error_Ex();
+        register_shutdown_function(array($objPage, "destroy"));
         $objPage->init();
         $objPage->type = $type;
         $objPage->objSiteSess = $objSiteSess;
@@ -133,7 +135,6 @@ class SC_Utils {
         $objPage->err_msg = $err_msg;
         $objPage->is_mobile = $is_mobile;
         $objPage->process();
-        register_shutdown_function(array($objPage, "destroy"));
         exit;
     }
 

@@ -46,6 +46,8 @@ class LC_Page_Shopping_Confirm extends LC_Page {
      * @return void
      */
     function process() {
+        global $objCampaignSess;
+
         $objView = new SC_SiteView();
         $objCartSess = new SC_CartSession();
         $objSiteInfo = $objView->objSiteInfo;

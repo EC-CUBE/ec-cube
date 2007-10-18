@@ -51,6 +51,8 @@ class LC_Page_Shopping extends LC_Page {
      * @return void
      */
     function process() {
+        global $objCampaignSess;
+
         $conn = new SC_DBConn();
         $objView = new SC_SiteView();
         $objSiteSess = new SC_SiteSession();
