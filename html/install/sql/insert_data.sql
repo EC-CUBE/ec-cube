@@ -717,15 +717,6 @@ INSERT INTO mtb_constants VALUES ('SAMPLE_ADDRESS2','"番地・ビル名（例�
 INSERT INTO mtb_constants VALUES ('USER_DIR','"user_data/"',3,'ユーザファイル保存先');
 INSERT INTO mtb_constants VALUES ('USER_PATH','HTML_PATH . USER_DIR',4,'ユーザファイル保存先');
 INSERT INTO mtb_constants VALUES ('USER_INC_PATH','USER_PATH . "include/"',5,'ユーザインクルードファイル保存先');
-INSERT INTO mtb_constants VALUES ('CAMPAIGN_DIR','"cp/"',8,'キャンペーンファイル保存先');
-INSERT INTO mtb_constants VALUES ('CAMPAIGN_URL','URL_DIR . CAMPAIGN_DIR',9,'キャンペーン関連');
-INSERT INTO mtb_constants VALUES ('CAMPAIGN_PATH','HTML_PATH . CAMPAIGN_DIR',10,'キャンペーン関連');
-INSERT INTO mtb_constants VALUES ('CAMPAIGN_TEMPLATE_DIR','"include/campaign/"',11,'キャンペーン関連');
-INSERT INTO mtb_constants VALUES ('CAMPAIGN_TEMPLATE_PATH','USER_PATH . CAMPAIGN_TEMPLATE_DIR',12,'キャンペーン関連');
-INSERT INTO mtb_constants VALUES ('CAMPAIGN_BLOC_DIR','"bloc/"',13,'キャンペーン関連');
-INSERT INTO mtb_constants VALUES ('CAMPAIGN_BLOC_PATH','CAMPAIGN_TEMPLATE_PATH . CAMPAIGN_BLOC_DIR',14,'キャンペーン関連');
-INSERT INTO mtb_constants VALUES ('CAMPAIGN_TEMPLATE_ACTIVE','"active/"',15,'キャンペーン関連');
-INSERT INTO mtb_constants VALUES ('CAMPAIGN_TEMPLATE_END','"end/"',16,'キャンペーン関連');
 INSERT INTO mtb_constants VALUES ('USER_TEMPLATE_DIR','"templates/"',17,'テンプレートファイル保存先');
 INSERT INTO mtb_constants VALUES ('USER_TEMPLATE_PATH','USER_PATH . USER_TEMPLATE_DIR',18,'テンプレートファイル保存先');
 INSERT INTO mtb_constants VALUES ('TEMPLATE_TEMP_DIR','HTML_PATH . "upload/temp_template/"',19,'テンプレートファイル一時保存先');
@@ -996,6 +987,16 @@ INSERT INTO mtb_constants VALUES ('TEMPLATE_FTP_DIR','USER_PATH . "templates/" .
 INSERT INTO mtb_constants VALUES ('COMPILE_FTP_DIR','COMPILE_DIR . USER_DIR', 307,'SMARTYコンパイル(FTP許可)');
 INSERT INTO mtb_constants VALUES ('BLOC_DIR','"bloc/"', 308,'ブロックファイル保存先');
 INSERT INTO mtb_constants VALUES ('BLOC_PATH','TEMPLATE_DIR . BLOC_DIR', 309,'ブロックファイル保存先');
+INSERT INTO mtb_constants VALUES ('CAMPAIGN_DIR','"cp/"',310,'キャンペーンファイル保存先');
+INSERT INTO mtb_constants VALUES ('CAMPAIGN_URL','URL_DIR . CAMPAIGN_DIR',311,'キャンペーン関連');
+INSERT INTO mtb_constants VALUES ('CAMPAIGN_PATH','HTML_PATH . CAMPAIGN_DIR',312,'キャンペーン関連');
+INSERT INTO mtb_constants VALUES ('CAMPAIGN_TEMPLATE_DIR','"campaign/"',313,'キャンペーン関連');
+INSERT INTO mtb_constants VALUES ('CAMPAIGN_TEMPLATE_PATH','TEMPLATE_DIR . CAMPAIGN_TEMPLATE_DIR',314,'キャンペーン関連');
+INSERT INTO mtb_constants VALUES ('CAMPAIGN_BLOC_DIR','"bloc/"',315,'キャンペーン関連');
+INSERT INTO mtb_constants VALUES ('CAMPAIGN_BLOC_PATH','CAMPAIGN_TEMPLATE_PATH . CAMPAIGN_BLOC_DIR',316,'キャンペーン関連');
+INSERT INTO mtb_constants VALUES ('CAMPAIGN_TEMPLATE_ACTIVE','"active/"',317,'キャンペーン関連');
+INSERT INTO mtb_constants VALUES ('CAMPAIGN_TEMPLATE_END','"end/"',318,'キャンペーン関連');
+
 INSERT INTO mtb_constants VALUES ('MOBILE_TEMPLATE_DIR', 'TEMPLATE_DIR . "mobile/"', 400,'SMARTYテンプレート(mobile)');
 INSERT INTO mtb_constants VALUES ('MOBILE_COMPILE_DIR', 'COMPILE_DIR . "mobile/"', 401,'SMARTYコンパイル(mobile)');
 INSERT INTO mtb_constants VALUES ('MOBILE_SESSION_LIFETIME', '1800', 402,'セッションの存続時間 (秒)');
