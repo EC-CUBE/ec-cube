@@ -8,7 +8,7 @@
     <h2 class="title">
       <img src="<!--{$TPL_DIR}-->img/login/title.jpg" width="700" height="40" alt="ログイン" />
    </h2>
-    <form name="member_form" id="member_form" method="post" action="./deliv.php" onsubmit="return fnCheckLogin('member_form')">
+    <form name="member_form" id="member_form" method="post" action="<!--{$smarty.server.PHP_SELF|escape}-->" onsubmit="return fnCheckLogin('member_form')">
    <div class="loginarea">
      <input type="hidden" name="<!--{$smarty.const.TRANSACTION_ID_NAME}-->" value="<!--{$transactionid}-->" />
      <p><img src="<!--{$TPL_DIR}-->img/login/member.gif" width="202" height="16" alt="会員登録がお済みのお客様" /></p>

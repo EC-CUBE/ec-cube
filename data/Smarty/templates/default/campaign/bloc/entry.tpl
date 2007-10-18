@@ -11,14 +11,14 @@
     <p>
       <img src="<!--{$TPL_DIR}-->img/login/guest.gif" width="247" height="16" alt="まだ会員登録されていないお客様" />
     </p>
-    <p class="inputtext">会員登録をすると便利なMyページをご利用いただけます。<br />
-      また、ログインするだけで、毎回お名前や住所などを入力することなくスムーズにお買い物をお楽しみいただけます。
+    <p class="inputtext">お申込を行う為には、会員登録が必要です。
+      会員登録をするボタンをクリックして会員登録を行ってください。
     </p>
     <div class="inputbox02">
-      <a href="<!--{$smarty.const.URL_DIR}-->entry/kiyaku.php" onmouseover="chgImg('<!--{$TPL_DIR}-->img/login/b_gotoentry_on.gif','b_gotoentry');" onmouseout="chgImg('<!--{$TPL_DIR}-->img/login/b_gotoentry.gif','b_gotoentry');">
+
+      <a href="<!--{$smarty.const.CAMPAIGN_URL}--><!--{$dir_name}-->/entry.php" onmouseover="chgImg('<!--{$TPL_DIR}-->img/login/b_gotoentry_on.gif','b_gotoentry');" onmouseout="chgImg('<!--{$TPL_DIR}-->img/login/b_gotoentry.gif','b_gotoentry');">
         <img src="<!--{$TPL_DIR}-->img/login/b_gotoentry.gif" width="130" height="30" alt="会員登録をする" border="0" name="b_gotoentry" />
       </a>
-      <input type="image" onmouseover="chgImgImageSubmit('<!--{$TPL_DIR}-->img/login/b_buystep_on.gif',this)" onmouseout="chgImgImageSubmit('<!--{$TPL_DIR}-->img/login/b_buystep.gif',this)" src="<!--{$TPL_DIR}-->img/login/b_buystep.gif" class="box130"  alt="購入手続きへ" name="buystep" id="buystep" />
     </div>
   </div>
 </form>

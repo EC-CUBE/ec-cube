@@ -3,43 +3,23 @@
  *
  * http://www.lockon.co.jp/
  *}-->
-<!--▼CONTENTS-->
-<table width="760" border="0" cellspacing="0" cellpadding="0" summary=" ">
-	<tr>
-		<td align="center" bgcolor="#ffffff">
-		<!--▼MAIN ONTENTS-->		
-		
-		<table width="640" border="0" cellspacing="0" cellpadding="0" summary=" ">
-			<tr>
-				<td align="center" bgcolor="#cccccc">
-				<table width="630" border="0" cellspacing="0" cellpadding="0" summary=" ">
-					<tr><td height="5"></td></tr>
-					<tr>
-						<td align="center" bgcolor="#ffffff">			
-							<!--ご注文完了の文章ここから-->
-							<table width="590" border="0" cellspacing="0" cellpadding="0" summary=" ">
-								<tr><td height="25"></td></tr>
-								<tr>
-									<td class="fs12"><span class="redst"><!--{$campaign_name|escape}-->にご応募いただき、ありがとうございました。</span></td>
-								</tr>
-								<tr><td height="20"></td></tr>
-								<tr>
-									<td class="fs12">今後ともご愛顧賜りますようよろしくお願い申し上げます。</td>
-								</tr>
-								<tr><td height="20"></td></tr>
-								<tr><td height="25"></td></tr>
-							</table>
-							<!--ご注文完了の文章ここまで-->
-						</td>
-					</tr>
-					<tr><td height="5"></td></tr>
-				</table>
-				</td>
-			</tr>
-			<tr><td height="20"></td></tr>
-		</table>
-		<!--▲MAIN ONTENTS-->
-		</td>
-	</tr>
-</table>
+<div id="completetext">
+      <em><!--{$campaign_name|escape}-->にご応募いただき、ありがとうございました。</em>
+
+      <p> 今後ともご愛顧賜りますようよろしくお願い申し上げます。</p>
+
+      <p><!--{$arrInfo.shop_name|escape}--><br />
+        TEL：<!--{$arrInfo.tel01}-->-<!--{$arrInfo.tel02}-->-<!--{$arrInfo.tel03}--> <!--{if $arrInfo.business_hour != ""}-->（受付時間/<!--{$arrInfo.business_hour}-->）<!--{/if}--><br />
+        E-mail：<a href="mailto:<!--{$arrInfo.email02|escape:'hex'}-->"><!--{$arrInfo.email02|escape:'hexentity'}--></a></p>
+    </div>
+
+    <div class="tblareabtn">
+      <!--{if $is_campaign}-->
+        <a href="<!--{$smarty.const.CAMPAIGN_URL}--><!--{$campaign_dir}-->/index.php" onmouseover="chgImg('<!--{$TPL_DIR}-->img/common/b_toppage_on.gif','b_toppage');" onmouseout="chgImg('<!--{$TPL_DIR}-->img/common/b_toppage.gif','b_toppage');"><img src="<!--{$TPL_DIR}-->img/common/b_toppage.gif" width="150" height="30" alt="トップページへ" border="0" name="b_toppage" /></a>
+      <!--{else}-->
+        <a href="<!--{$smarty.const.URL_DIR}-->index.php" onmouseover="chgImg('<!--{$TPL_DIR}-->img/common/b_toppage_on.gif','b_toppage');" onmouseout="chgImg('<!--{$TPL_DIR}-->img/common/b_toppage.gif','b_toppage');"><img src="<!--{$TPL_DIR}-->img/common/b_toppage.gif" width="150" height="30" alt="トップページへ" border="0" name="b_toppage" /></a>
+      <!--{/if}-->
+    </div>
+  </div>
+</div>
 <!--▲CONTENTS-->
