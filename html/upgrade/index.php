@@ -46,6 +46,10 @@ function lfPageFactory() {
         $file  .= 'Download.php';
         $class .= 'Download';
         break;
+    case 'auto_update':
+        $file  .= 'AutoUpdate.php';
+        $class .= 'AutoUpdate';
+        break;
     default:
         header("HTTP/1.1 400 Bad Request");
         exit();
