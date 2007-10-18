@@ -8,6 +8,7 @@
 // {{{ requires
 require_once(CLASS_PATH . "pages/LC_Page.php");
 require_once(CLASS_EX_PATH . "helper_extends/SC_Helper_CSV_Ex.php");
+require_once(CLASS_EX_PATH . "helper_extends/SC_Helper_FileManager_Ex.php");
 
 /**
  * キャンペーン管理 のページクラス.
@@ -331,6 +332,7 @@ class LC_Page_Admin_Contents_Campaign extends LC_Page {
      */
     function lfCreateTemplate($dir, $file, &$objFormParam) {
 
+        $objFileManager = new SC_Helper_FileManager_Ex();
         $arrRet = $objFormParam->getHashArray();
 
 
@@ -343,12 +345,12 @@ class LC_Page_Admin_Contents_Campaign extends LC_Page {
         $default_active_dir = $default_dir . "/" . CAMPAIGN_TEMPLATE_ACTIVE;
         $default_end_dir = $default_dir . "/" . CAMPAIGN_TEMPLATE_END;
 
-        $ret = SC_Utils_Ex::sfCreateFile($create_dir, 0755);
-        $ret = SC_Utils_Ex::sfCreateFile($create_active_dir, 0755);
-        $ret = SC_Utils_Ex::sfCreateFile($create_end_dir, 0755);
+        $ret = $objFileManager->sfCreateFile($create_dir, 0755);
+        $ret = $objFileManager->sfCreateFile($create_active_dir, 0755);
+        $ret = $objFileManager->sfCreateFile($create_end_dir, 0755);
 
         // キャンペーン実行PHPをコピー
-        $ret = SC_Utils_Ex::sfCreateFile(CAMPAIGN_PATH . $file);
+        $ret = $objFileManager->sfCreateFile(CAMPAIGN_PATH . $file);
         copy($default_dir . "/src/index.php", CAMPAIGN_PATH . $file . "/index.php");
         copy($default_dir . "/src/application.php", CAMPAIGN_PATH . $file . "/application.php");
         copy($default_dir . "/src/complete.php", CAMPAIGN_PATH . $file . "/complete.php");
@@ -364,7 +366,7 @@ class LC_Page_Admin_Contents_Campaign extends LC_Page {
             $contents .= '<!--{*会員登録フォーム*}-->'."\n";
             $contents .= $this->lfGetFileContents(CAMPAIGN_BLOC_PATH . "entry.tpl");
         }
-        SC_Utils_Ex::nsfWriteFile($contents, $create_active_dir."contents.tpl", "w");
+        SC_Utils_Ex::sfWriteFile($contents, $create_active_dir."contents.tpl", "w");
         $footer = $this->lfGetFileContents($default_active_dir."footer.tpl");
         SC_Utils_Ex::sfWriteFile($footer, $create_active_dir."footer.tpl", "w");
 
