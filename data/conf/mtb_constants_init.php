@@ -15,24 +15,6 @@ define('USER_DIR', "user_data/");
 define('USER_PATH', HTML_PATH . USER_DIR);
 /** ユーザインクルードファイル保存先 */
 define('USER_INC_PATH', USER_PATH . "include/");
-/** キャンペーンファイル保存先 */
-define('CAMPAIGN_DIR', "cp/");
-/** キャンペーン関連 */
-define('CAMPAIGN_URL', URL_DIR . CAMPAIGN_DIR);
-/** キャンペーン関連 */
-define('CAMPAIGN_PATH', HTML_PATH . CAMPAIGN_DIR);
-/** キャンペーン関連 */
-define('CAMPAIGN_TEMPLATE_DIR', "include/campaign/");
-/** キャンペーン関連 */
-define('CAMPAIGN_TEMPLATE_PATH', USER_PATH . CAMPAIGN_TEMPLATE_DIR);
-/** キャンペーン関連 */
-define('CAMPAIGN_BLOC_DIR', "bloc/");
-/** キャンペーン関連 */
-define('CAMPAIGN_BLOC_PATH', CAMPAIGN_TEMPLATE_PATH . CAMPAIGN_BLOC_DIR);
-/** キャンペーン関連 */
-define('CAMPAIGN_TEMPLATE_ACTIVE', "active/");
-/** キャンペーン関連 */
-define('CAMPAIGN_TEMPLATE_END', "end/");
 /** テンプレートファイル保存先 */
 define('USER_TEMPLATE_DIR', "templates/");
 /** テンプレートファイル保存先 */
@@ -576,6 +558,24 @@ define('BLOC_PATH', TEMPLATE_DIR . BLOC_DIR);
 define('MOBILE_TEMPLATE_DIR', TEMPLATE_DIR . "mobile/");
 /** SMARTYコンパイル(mobile) */
 define('MOBILE_COMPILE_DIR', COMPILE_DIR . "mobile/");
+/** キャンペーンファイル保存先 */
+define('CAMPAIGN_DIR', "cp/");
+/** キャンペーン関連 */
+define('CAMPAIGN_URL', URL_DIR . CAMPAIGN_DIR);
+/** キャンペーン関連 */
+define('CAMPAIGN_PATH', HTML_PATH . CAMPAIGN_DIR);
+/** キャンペーン関連 */
+define('CAMPAIGN_TEMPLATE_DIR', "campaign/");
+/** キャンペーン関連 */
+define('CAMPAIGN_TEMPLATE_PATH', TEMPLATE_DIR . CAMPAIGN_TEMPLATE_DIR);
+/** キャンペーン関連 */
+define('CAMPAIGN_BLOC_DIR', "bloc/");
+/** キャンペーン関連 */
+define('CAMPAIGN_BLOC_PATH', CAMPAIGN_TEMPLATE_PATH . CAMPAIGN_BLOC_DIR);
+/** キャンペーン関連 */
+define('CAMPAIGN_TEMPLATE_ACTIVE', "active/");
+/** キャンペーン関連 */
+define('CAMPAIGN_TEMPLATE_END', "end/");
 /** セッションの存続時間 (秒) */
 define('MOBILE_SESSION_LIFETIME', 1800);
 /** 空メール機能を使用するかどうか */
