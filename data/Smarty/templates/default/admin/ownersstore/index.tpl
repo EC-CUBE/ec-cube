@@ -58,12 +58,6 @@ OwnersStore.download();やOwnersStore.products_list();を呼び出すことで
 									<tr>
 										<td colspan="3"><img src="<!--{$TPL_DIR}-->img/contents/main_bar.jpg" width="678" height="10" alt=""></td>
 									</tr>
-									<tr><td colspan="3" bgcolor="#ffffff" height="5"></td></tr>
-									<tr>
-									    <td colspan="3" bgcolor="#ffffff" align="center">
-									        <input type="button" onclick="OwnersStore.products_list();return false;" value="購入商品の一覧を取得">
-									    </td>
-									</tr>
 								</table>
 								<!--サブタイトルここまで-->
 								
@@ -71,6 +65,28 @@ OwnersStore.download();やOwnersStore.products_list();を呼び出すことで
 								<div id="ownersstore_products_list"></div>
 								<!--購入商品一覧ここまで-->
 								
+                                <table width="678" border="0" cellspacing="0" cellpadding="0" summary=" ">
+                                    <tr>
+                                        <td bgcolor="#cccccc"><img src="<!--{$TPL_DIR}-->img/common/_.gif" width="1" height="5" alt=""></td>
+                                        <td><img src="<!--{$TPL_DIR}-->img/contents/tbl_top.gif" width="676" height="7" alt=""></td>
+                                        <td bgcolor="#cccccc"><img src="<!--{$TPL_DIR}-->img/common/_.gif" width="1" height="5" alt=""></td>
+                                    </tr>
+                                    <tr>
+                                        <td bgcolor="#cccccc"><img src="<!--{$TPL_DIR}-->img/common/_.gif" width="1" height="10" alt=""></td>
+                                        <td bgcolor="#e9e7de" align="center">
+                                        <table border="0" cellspacing="0" cellpadding="0" summary=" ">
+                                            <tr>
+                                                <td><input type="button" onclick="OwnersStore.products_list();return false;" value="購入商品一覧を取得する"/></td>
+                                            </tr>
+                                        </table>
+                                        </td>
+                                        <td bgcolor="#cccccc"><img src="<!--{$TPL_DIR}-->img/common/_.gif" width="1" height="10" alt=""></td>
+                                    </tr>
+                                    <tr>
+                                        <td colspan="3"><img src="<!--{$TPL_DIR}-->img/contents/tbl_bottom.gif" width="678" height="8" alt=""></td>
+                                    </tr>
+                                </table>
+                                
 								</td>
 								<td background="<!--{$TPL_DIR}-->img/contents/main_right.jpg"><img src="<!--{$TPL_DIR}-->img/common/_.gif" width="14" height="1" alt=""></td>
 							</tr>
