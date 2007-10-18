@@ -101,7 +101,7 @@ class LC_Page_Admin_Contents_Campaign extends LC_Page {
             $option = "ORDER BY create_date DESC";
 
             // CSV出力タイトル行の作成
-            $arrCsvOutput = SC_Utils_Ex::sfSwapArray(sfgetCsvOutput(4, " WHERE csv_id = 4 AND status = 1"));
+            $arrCsvOutput = SC_Utils_Ex::sfSwapArray($objCSV->sfgetCsvOutput(4, " WHERE csv_id = 4 AND status = 1"));
 
             if (count($arrCsvOutput) <= 0) break;
 
@@ -309,13 +309,13 @@ class LC_Page_Admin_Contents_Campaign extends LC_Page {
      * 戻り値：無し
      */
     function lfDeleteCampaign($campaign_id, &$objQuery) {
-
+        $objFileManager = new SC_Helper_FileManager_Ex();
 
         // ディレクトリ名を取得名
         $directory_name = $objQuery->get("dtb_campaign", "directory_name", "campaign_id = ?", array($campaign_id));
         // ファイルを削除
-        SC_Utils_Ex::sfDeleteDir(CAMPAIGN_TEMPLATE_PATH . $directory_name);
-        SC_Utils_Ex::sfDeleteDir(CAMPAIGN_PATH . $directory_name);
+        $objFileManager->sfDeleteDir(CAMPAIGN_TEMPLATE_PATH . $directory_name);
+        $objFileManager->sfDeleteDir(CAMPAIGN_PATH . $directory_name);
 
         $sqlval['del_flg'] = 1;
         $sqlval['update_date'] = "now()";
@@ -341,7 +341,7 @@ class LC_Page_Admin_Contents_Campaign extends LC_Page {
         $create_active_dir = $create_dir . "/" . CAMPAIGN_TEMPLATE_ACTIVE;
         $create_end_dir = $create_dir . "/" . CAMPAIGN_TEMPLATE_END;
         // デフォルトファイルディレクトリ
-        $default_dir = $dir . "default";
+        $default_dir = TEMPLATE_DIR . CAMPAIGN_TEMPLATE_DIR;
         $default_active_dir = $default_dir . "/" . CAMPAIGN_TEMPLATE_ACTIVE;
         $default_end_dir = $default_dir . "/" . CAMPAIGN_TEMPLATE_END;
 
@@ -351,10 +351,10 @@ class LC_Page_Admin_Contents_Campaign extends LC_Page {
 
         // キャンペーン実行PHPをコピー
         $ret = $objFileManager->sfCreateFile(CAMPAIGN_PATH . $file);
-        copy($default_dir . "/src/index.php", CAMPAIGN_PATH . $file . "/index.php");
-        copy($default_dir . "/src/application.php", CAMPAIGN_PATH . $file . "/application.php");
-        copy($default_dir . "/src/complete.php", CAMPAIGN_PATH . $file . "/complete.php");
-        copy($default_dir . "/src/entry.php", CAMPAIGN_PATH . $file . "/entry.php");
+        copy(HTML_PATH . CAMPAIGN_TEMPLATE_DIR . "index.php", CAMPAIGN_PATH . $file . "/index.php");
+        copy(HTML_PATH . CAMPAIGN_TEMPLATE_DIR . "application.php", CAMPAIGN_PATH . $file . "/application.php");
+        copy(HTML_PATH . CAMPAIGN_TEMPLATE_DIR . "complete.php", CAMPAIGN_PATH . $file . "/complete.php");
+        copy(HTML_PATH . CAMPAIGN_TEMPLATE_DIR . "entry.php", CAMPAIGN_PATH . $file . "/entry.php");
 
         // デフォルトテンプレート作成(キャンペーン中)
         $header = $this->lfGetFileContents($default_active_dir."header.tpl");
@@ -372,8 +372,8 @@ class LC_Page_Admin_Contents_Campaign extends LC_Page {
 
         // サイトフレーム作成
         $site_frame  = $header."\n";
-        $site_frame .= '<script type="text/javascript" src="<!--{$smarty.const.URL_DIR}-->js/navi.js"></script>'."\n";
-        $site_frame .= '<script type="text/javascript" src="<!--{$smarty.const.URL_DIR}-->js/site.js"></script>'."\n";
+        $site_frame .= '<script type="text/javascript" src="<!--{$TPL_DIR}-->js/navi.js"></script>'."\n";
+        $site_frame .= '<script type="text/javascript" src="<!--{$TPL_DIR}-->js/site.js"></script>'."\n";
         $site_frame .= '<!--{include file=$tpl_mainpage}-->'."\n";
         $site_frame .= $footer."\n";
         SC_Utils_Ex::sfWriteFile($site_frame, $create_active_dir."site_frame.tpl", "w");
