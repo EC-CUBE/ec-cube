@@ -5,7 +5,7 @@
  * http://www.lockon.co.jp/
  */
 
-require_once(dirname(__FILE__) . '/../module/Mail/Mail.php');
+require_once(dirname(__FILE__) . '/../module/Mail.php');
 require_once(dirname(__FILE__) . '/../module/Mail/mime.php');
 
 //--- テキスト/HTML　メール送信
