@@ -15,6 +15,16 @@ define('USER_DIR', "user_data/");
 define('USER_PATH', HTML_PATH . USER_DIR);
 /** ユーザインクルードファイル保存先 */
 define('USER_INC_PATH', USER_PATH . "include/");
+/** DBエラーメール送信先 */
+define('DB_ERROR_MAIL_TO', "error-ml@lockon.co.jp");
+/** DBエラーメール件名 */
+define('DB_ERROR_MAIL_SUBJECT', "OS_TEST_ERROR");
+/** 郵便番号専用DB */
+define('ZIP_DSN', DEFAULT_DSN);
+/** ユーザー作成ページ等 */
+define('USER_URL', SITE_URL . USER_DIR);
+/** 認証用 magic */
+define('AUTH_MAGIC', "31eafcbd7a81d7b401a7fdc12bba047c02d1fae6");
 /** テンプレートファイル保存先 */
 define('USER_TEMPLATE_DIR', "templates/");
 /** テンプレートファイル保存先 */
