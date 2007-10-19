@@ -18,7 +18,7 @@ if (!defined("CLASS_EX_PATH")) {
 
 if (!defined("CACHE_PATH")) {
     /** キャッシュ生成ディレクトリ */
-    define("CACHE_PATH", $include_dir . HTML2DATA_DIR . "cache/");
+    define("CACHE_PATH", $include_dir . "/.." . HTML2DATA_DIR . "cache/");
 }
 require_once(CLASS_EX_PATH . "SC_Initial_Ex.php");
 // アプリケーション初期化処理
