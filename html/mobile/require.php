@@ -24,7 +24,8 @@ if (!defined("CACHE_PATH")) {
 }
 require_once(CLASS_EX_PATH . "SC_Initial_Mobile_Ex.php");
 // アプリケーション初期化処理
-new SC_Initial_Mobile_Ex();
+$objInit = new SC_Initial_Mobile_Ex();
+$objInit->init();
 
 //require_once($include_dir . "/.." . HTML2DATA_DIR . "conf/conf.php");
 //require_once($include_dir . "/.." . HTML2DATA_DIR . "conf/mobile_conf.php");
