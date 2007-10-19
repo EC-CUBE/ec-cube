@@ -32,6 +32,8 @@ class LC_Page {
 	}
 }
 
+sfInitMovilink();
+
 $objPage = new LC_Page();
 $objView = new SC_MobileView();
 $objCustomer = new SC_Customer();

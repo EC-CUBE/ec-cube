@@ -50,10 +50,4 @@ if (GC_MobileUserAgent::isMobile()) {
 
 // 絵文字変換 (除去) フィルターを組み込む。
 ob_start(array('GC_MobileEmoji', 'handler'));
-
-// モビリンクモジュールの確認
-$movilink_inc = MODULE_PATH . "mdl_movilink/mdl_movilink.inc";
-if(file_exists($movilink_inc)) {
-	sfInitMovilink();
-}
 ?>
