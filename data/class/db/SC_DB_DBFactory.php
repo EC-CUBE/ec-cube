@@ -34,6 +34,7 @@ class SC_DB_DBFactory {
             break;
 
         default:
+            return new SC_DB_DBFactory();
         }
     }
 
@@ -52,7 +53,7 @@ class SC_DB_DBFactory {
             if(defined('DEFAULT_DSN')) {
                 $dsn = DEFAULT_DSN;
             } else {
-                return;
+                return "";
             }
         }
         return $dsn;

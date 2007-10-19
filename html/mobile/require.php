@@ -18,8 +18,16 @@ if (!defined("CLASS_EX_PATH")) {
     define("CLASS_EX_PATH", $include_dir . "/.." . HTML2DATA_DIR . "class_extends/");
 }
 
-require_once($include_dir . "/.." . HTML2DATA_DIR . "conf/conf.php");
-require_once($include_dir . "/.." . HTML2DATA_DIR . "conf/mobile_conf.php");
+if (!defined("CACHE_PATH")) {
+    /** キャッシュ生成ディレクトリ */
+    define("CACHE_PATH", $include_dir . "/.." . HTML2DATA_DIR . "cache/");
+}
+require_once(CLASS_EX_PATH . "SC_Initial_Mobile_Ex.php");
+// アプリケーション初期化処理
+new SC_Initial_Mobile_Ex();
+
+//require_once($include_dir . "/.." . HTML2DATA_DIR . "conf/conf.php");
+//require_once($include_dir . "/.." . HTML2DATA_DIR . "conf/mobile_conf.php");
 require_once($include_dir . "/.." . HTML2DATA_DIR . "include/module.inc");
 require_once(CLASS_EX_PATH . "util_extends/GC_Utils_Ex.php");
 require_once(CLASS_EX_PATH . "util_extends/SC_Utils_Ex.php");

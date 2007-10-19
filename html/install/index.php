@@ -31,7 +31,7 @@ $temp_dir = $INSTALL_DIR . '/temp';
 //$mode = lfGetFileMode($temp_dir);
 
 if(!is_writable($temp_dir)) {
-    SC_Utils_Ex::sfErrorHeader($temp_dir . "にユーザ書込み権限(777等)を付与して下さい。", true);
+    SC_Utils_Ex::sfErrorHeader($temp_dir . "にユーザ書込み権限(777, 707等)を付与して下さい。", true);
     exit;
 }
 
@@ -373,38 +373,42 @@ function lfDispStep0($objPage) {
         "../user_data",
         "../cp",
         "../upload",
-        ".." . HTML2DATA_DIR . "Smarty/templates_c",
-        ".." . HTML2DATA_DIR . "conf/cache",
-        ".." . HTML2DATA_DIR . "downloads",
-        ".." . HTML2DATA_DIR . "logs"
+        ".." . HTML2DATA_DIR . "cache/",
+        ".." . HTML2DATA_DIR . "class/",
+        ".." . HTML2DATA_DIR . "Smarty/",
+        ".." . HTML2DATA_DIR . "downloads/"
     );
 
     $mess = "";
     $err_file = false;
     foreach($arrWriteFile as $val) {
-        if(file_exists($val)) {
-            $mode = lfGetFileMode($val);
-            $real_path = realpath($val);
 
-            // ディレクトリの場合
-            if(is_dir($val)) {
-                if(is_writable($val)) {
-                    $mess.= ">> ○：$real_path($mode) <br>アクセス権限は正常です。<br>";
+        $arrDirs = listdirs($val);
+        foreach ($arrDirs as $path) {
+            if(file_exists($path)) {
+                $mode = lfGetFileMode($path);
+                $real_path = realpath($path);
+
+                // ディレクトリの場合
+                if(is_dir($path)) {
+                    if(is_writable($path)) {
+                        //$mess.= ">> ○：$real_path($mode) <br>アクセス権限は正常です。<br>";
+                    } else {
+                        $mess.= ">> ×：$real_path($mode) <br>ユーザ書込み権限(777, 707等)を付与して下さい。<br>";
+                        $err_file = true;
+                    }
                 } else {
-                    $mess.= ">> ×：$real_path($mode) <br>ユーザ書込み権限(777等)を付与して下さい。<br>";
-                    $err_file = true;
+                    if(is_writable($path)) {
+                        //$mess.= ">> ○：$real_path($mode) <br>アクセス権限は正常です。<br>";
+                    } else {
+                        $mess.= ">> ×：$real_path($mode) <br>ユーザ書込み権限(666, 606等)を付与して下さい。<br>";
+                        $err_file = true;
+                    }
                 }
             } else {
-                if(is_writable($val)) {
-                    $mess.= ">> ○：$real_path($mode) <br>アクセス権限は正常です。<br>";
-                } else {
-                    $mess.= ">> ×：$real_path($mode) <br>ユーザ書込み権限(666等)を付与して下さい。<br>";
-                    $err_file = true;
-                }
+                $mess.= ">> ×：$path が見つかりません。<br>";
+                $err_file = true;
             }
-        } else {
-            $mess.= ">> ×：$val が見つかりません。<br>";
-            $err_file = true;
         }
     }
 
@@ -450,6 +454,7 @@ function lfDispStep0($objPage) {
         if(!file_exists($path)) {
             mkdir($path);
         }
+        $mess.= ">> ○：アクセス権限は正常です。<br>";
     }
 
     $objPage->mess = $mess;
@@ -1043,5 +1048,22 @@ function lfInsertCSVData($csv_id,$col,$disp_name,$rank,$create_date,$update_date
     global $objDb;
     $sql = "insert into dtb_csv(csv_id,col,disp_name,rank,create_date,update_date) values($csv_id,'$col','$disp_name',$rank,$create_date,$update_date);";
     $objDb->sfDataExists("dtb_csv", "csv_id = ? AND col = ?", array($csv_id, $col), $dsn, $sql, true);
+}
+
+/**
+ * $dir を再帰的に辿ってパス名を配列で返す.
+ *
+ * @param string 任意のパス名
+ * @return array $dir より下層に存在するパス名の配列
+ * @see http://www.php.net/glob
+ */
+function listdirs($dir) {
+    static $alldirs = array();
+    $dirs = glob($dir . '/*');
+    if (count($dirs) > 0) {
+        foreach ($dirs as $d) $alldirs[] = $d;
+    }
+    foreach ($dirs as $dir) listdirs($dir);
+    return $alldirs;
 }
 ?>
