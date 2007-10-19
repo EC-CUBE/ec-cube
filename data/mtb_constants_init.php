@@ -1,7 +1,7 @@
 <?php
 /**
  * 定数群の初期設定ファイル.
- * 通常は, DB の mtb_constants テーブルの内容が, data/conf/cache/mtb_constants.php
+ * 通常は, DB の mtb_constants テーブルの内容が, data/cache/mtb_constants.php
  * にキャッシュされて使用される.
  */
 
