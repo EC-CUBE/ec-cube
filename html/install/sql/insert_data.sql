@@ -977,7 +977,7 @@ INSERT INTO mtb_constants VALUES ('TRACKBACK_VIEW_MAX','10',280,'フロント最
 INSERT INTO mtb_constants VALUES ('TRACKBACK_TO_URL','SITE_URL . "tb/index.php?pid="',281,'トラックバック先URL');
 INSERT INTO mtb_constants VALUES ('SITE_CONTROL_TRACKBACK','1',282,'サイト管理 トラックバック');
 INSERT INTO mtb_constants VALUES ('SITE_CONTROL_AFFILIATE','2',283,'サイト管理 アフィリエイト');
-INSERT INTO mtb_constants VALUES ('USE_SMTP','false',284,'SMTP使用フラグ');
+INSERT INTO mtb_constants VALUES ('MAIL_BACKEND','"smtp"',284,'Pear::Mail バックエンド:mail|smtp|sendmail');
 INSERT INTO mtb_constants VALUES ('OS_TYPE','"LINUX"',285,'OS種別:WIN|LINUX');
 INSERT INTO mtb_constants VALUES ('SMTP_HOST','"127.0.0.1"',286,'SMTPサーバー');
 INSERT INTO mtb_constants VALUES ('SMTP_PORT','"25"',287,'SMTPポート');

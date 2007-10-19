@@ -534,8 +534,8 @@ define('TRACKBACK_TO_URL', SITE_URL . "tb/index.php?pid=");
 define('SITE_CONTROL_TRACKBACK', 1);
 /** サイト管理 アフィリエイト */
 define('SITE_CONTROL_AFFILIATE', 2);
-/** SMTP使用フラグ */
-define('USE_SMTP', false);
+/** Pear::Mail バックエンド:mail|smtp|sendmail */
+define('MAIL_BACKEND', 'smtp');
 /** OS種別:WIN|LINUX */
 define('OS_TYPE', "LINUX");
 /** SMTPサーバー */
