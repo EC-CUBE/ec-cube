@@ -73,7 +73,7 @@ class LC_Page_Regist extends LC_Page {
                 // ログイン済みの状態にする。
                 $email = $objQuery->get("dtb_customer", "email", "secret_key = ?", array($registSecretKey));
                 $objCustomer->setLogin($email);
-                $this->sendRedirect($this->getLocation("./complate.php", $etc_val));
+                $this->sendRedirect($this->getLocation("./complete.php", $etc_val));
                 exit;
             }
 
