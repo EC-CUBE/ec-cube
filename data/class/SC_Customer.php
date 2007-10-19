@@ -170,8 +170,8 @@ class SC_Customer {
     // パスワードを確認せずにログイン
     function setLogin($email) {
         // 本登録された会員のみ
-        $sql = "SELECT * FROM dtb_customer WHERE email = ? AND del_flg = 0 AND status = 2";
-        $result = $this->conn->getAll($sql, array($email));
+        $sql = "SELECT * FROM dtb_customer WHERE (email = ? OR email_mobile = ?) AND del_flg = 0 AND status = 2";
+        $result = $this->conn->getAll($sql, array($email, $email));
         $data = isset($result[0]) ? $result[0] : "";
         $this->customer_data = $data;
         $this->startSession();

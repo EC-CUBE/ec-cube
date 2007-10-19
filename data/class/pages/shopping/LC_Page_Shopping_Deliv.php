@@ -257,8 +257,8 @@ class LC_Page_Shopping_Deliv extends LC_Page {
                    !$objCustomer->getCustomerDataFromEmailPass($arrForm['login_pass'], $arrForm['login_email'], true)) {
                     // 仮登録の判定
                     $objQuery = new SC_Query;
-                    $where = "email = ? AND status = 1 AND del_flg = 0";
-                    $ret = $objQuery->count("dtb_customer", $where, array($arrForm['login_email']));
+                    $where = "(email = ? OR email_mobile = ?) AND status = 1 AND del_flg = 0";
+                    $ret = $objQuery->count("dtb_customer", $where, array($arrForm['login_email'], $arrForm['login_email']));
 
                     if($ret > 0) {
                         SC_Utils_Ex::sfDispSiteError(TEMP_LOGIN_ERROR, "", false, "", true);
@@ -276,11 +276,8 @@ class LC_Page_Shopping_Deliv extends LC_Page {
             $objCustomer->updateMobilePhoneId();
 
             /*
-             * email がモバイルドメインでは無く,
-             * 携帯メールアドレスが登録されていない場合
-             *
-             * XXX 携帯メールアドレスの登録が無いと, 
-             *     配送先が空欄になってしまう場合がある
+             * 携帯メールアドレスが登録されていない場合は,
+             * 携帯メールアドレス登録画面へ遷移
              */
             $objMobile = new SC_Helper_Mobile_Ex();
             if (!$objMobile->gfIsMobileMailAddress($objCustomer->getValue('email'))) {

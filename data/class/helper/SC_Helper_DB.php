@@ -410,7 +410,7 @@ class SC_Helper_DB {
     function sfGetCustomerSqlVal($uniqid, $sqlval) {
         $objCustomer = new SC_Customer();
         // 会員情報登録処理
-        if ($objCustomer->isLoginSuccess()) {
+        if ($objCustomer->isLoginSuccess(true)) {
             // 登録データの作成
             $sqlval['order_temp_id'] = $uniqid;
             $sqlval['update_date'] = 'Now()';
@@ -429,7 +429,12 @@ class SC_Helper_DB {
             $sqlval['order_tel02'] = $objCustomer->getValue('tel02');
             $sqlval['order_tel03'] = $objCustomer->getValue('tel03');
             if (defined('MOBILE_SITE')) {
-                $sqlval['order_email'] = $objCustomer->getValue('email_mobile');
+                $email_mobile = $objCustomer->getValue('email_mobile');
+                if (empty($email_mobile)) {
+                    $sqlval['order_email'] = $objCustomer->getValue('email');
+                } else {
+                    $sqlval['order_email'] = $email_mobile;
+                }
             } else {
                 $sqlval['order_email'] = $objCustomer->getValue('email');
             }

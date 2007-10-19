@@ -198,7 +198,7 @@ class LC_Page_Shopping_Payment extends LC_Page {
         if (empty($arrData)) $arrData = array();
         $this->arrData = $objDb->sfTotalConfirm($arrData, $this, $objCartSess, $arrInfo);
 
-        // カー都内の商品の売り切れチェック
+        // カート内の商品の売り切れチェック
         $objCartSess->chkSoldOut($objCartSess->getCartList(), true);
 
         if (!isset($_POST['mode'])) $_POST['mode'] = "";
