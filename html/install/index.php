@@ -376,6 +376,7 @@ function lfDispStep0($objPage) {
         ".." . HTML2DATA_DIR . "cache/",
         ".." . HTML2DATA_DIR . "class/",
         ".." . HTML2DATA_DIR . "Smarty/",
+        ".." . HTML2DATA_DIR . "logs/",
         ".." . HTML2DATA_DIR . "downloads/"
     );
 
