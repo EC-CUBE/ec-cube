@@ -46,7 +46,7 @@ define('UPDATE_PATH', DATA_PATH . UPDATE_DIR);
 /** DBセッションの有効期限(秒) */
 define('MAX_LIFETIME', 7200);
 /** マスタデータキャッシュディレクトリ */
-define('MASTER_DATA_DIR', DATA_PATH . "conf/cache/");
+define('MASTER_DATA_DIR', DATA_PATH . "cache/");
 /** アップデート管理用ファイル格納場所　 */
 define('UPDATE_HTTP', "http://www.lockon.co.jp/share/");
 /** アップデート管理用CSV1行辺りの最大文字数 */
