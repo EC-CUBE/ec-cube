@@ -15,12 +15,13 @@ define("MDL_MOVILINK_ID", 12);
 define("MODULE_NAME", "モビル連携モジュール");
 
 /**** ▼定数宣言 *********************************************************************************************/
-// セッション開始
-sfDomainSessionStart();
-if($_GET['aflkey'] != "") {
-	$_SESSION['aflkey'] = $_GET['aflkey'];
+
+function sfInitMovilink() {
+	if($_GET['aflkey'] != "") {
+		$_SESSION['aflkey'] = $_GET['aflkey'];
+	}
+	sfPrintR($_SESSION);
 }
-sfPrintR($_SESSION);
 
 /**************************************************************************************************************
  * 関数名	：sfSetModuleDB
