@@ -37,8 +37,8 @@ class SC_Initial {
         $this->requireInitialConfig();
         $this->defineDSN();
         $this->setErrorReporting();
-        $this->mbstringInit();
         $this->defineConstants();
+        $this->mbstringInit();
         $this->createCacheDir();
     }
 
