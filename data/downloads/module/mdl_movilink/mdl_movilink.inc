@@ -7,12 +7,20 @@
  */
 require_once(DATA_PATH . "include/csv_output.inc");
 require_once(DATA_PATH . "module/Request.php");
+require_once(DATA_PATH . "lib/slib.php");
 
 /**** ▼定数宣言 *********************************************************************************************/
 
 define("MDL_MOVILINK_ID", 12);
 define("MODULE_NAME", "モビル連携モジュール");
 
+/**** ▼定数宣言 *********************************************************************************************/
+// セッション開始
+sfDomainSessionStart();
+if($_GET['aflkey'] != "") {
+	$_SESSION['aflkey'] = $_GET['aflkey'];
+}
+sfPrintR($_SESSION);
 
 /**************************************************************************************************************
  * 関数名	：sfSetModuleDB
@@ -127,8 +135,8 @@ function sfSetMoviLinkCSV() {
 	$arrInsData[]=array("name"=>"キャリア別商品url（au）",value=>"'' as movilink_url_ez");
 	$arrInsData[]=array("name"=>"キャリア別商品url（ソフトバンクモバイル）",value=>"'' as movilink_url_sb");
 	$arrInsData[]=array("name"=>"商品画像url",value=>"main_list_image as movilink_image_url");
-	$arrInsData[]=array("name"=>"商品画像url(モバイル)",value=>"'' as movilink_image_url_mobile");
-	$arrInsData[]=array("name"=>"商品画像サムネイルurl",value=>"'' as movilink_image_thumbnail_url");
+	$arrInsData[]=array("name"=>"商品画像url(モバイル)",value=>"main_list_image as movilink_image_url_mobile");
+	$arrInsData[]=array("name"=>"商品画像サムネイルurl",value=>"main_list_image as movilink_image_thumbnail_url");
 	$arrInsData[]=array("name"=>"商品コミッション率",value=>"'' as commission_percent");
 	
 	// 更新データ分ループ
@@ -214,29 +222,36 @@ function sfMakeMovilinkCSV($list) {
 	$line = "";
 	if(is_array($list)) {
 		foreach($list as $key => $val) {
-			$tmp = "";
-			$blank_flag = false;
-			switch($key) {
-			case 'movilink_draft_text1':
-				$tmp = $list['movilink_draft_text1'] . "\n" . $list['movilink_draft_text2'];
-				break;
-			case 'movilink_draft_text2':
-				$blank_flag = true;				
-				break;
-			case 'movilink_image_url':
-				$tmp = SITE_URL . "upload/save_image/" . $val;
-				break;
-			case 'movilink_url':
-				$tmp = MOBILE_SITE_URL . "products/detail.php?product_id=" . $val;
-				break;
-			default:
-				$tmp = $val;
-				break;
-			}
-			
-			if(!$blank_flag) {
-				$tmp = str_replace("\"", "\\\"", $tmp);
-				$line .= "\"".$tmp."\",";
+			// モビル用商品コードが入力されていない場合は出力しない。
+			if($list['movilink_code1'] != "") {
+				$tmp = "";
+				$blank_flag = false;
+				switch($key) {
+				// 広告タグ原稿
+				case 'movilink_draft_text1':
+					$tmp = $list['movilink_draft_text1'] . "\n" . $list['movilink_draft_text2'];
+					break;
+				case 'movilink_draft_text2':
+					$blank_flag = true;				
+					break;
+				// 商品画像url
+				case 'movilink_image_url':
+				case 'movilink_image_url_mobile':
+				case 'movilink_image_thumbnail_url':
+					$tmp = SITE_URL . "upload/save_image/" . $val;
+					break;
+				// 商品url
+				case 'movilink_url':
+					$tmp = MOBILE_SITE_URL . "products/detail.php?product_id=" . $val;
+					break;
+				default:
+					$tmp = $val;
+					break;
+				}
+				if(!$blank_flag) {
+					$tmp = str_replace("\"", "\\\"", $tmp);
+					$line .= "\"".$tmp."\",";
+				}
 			}
 		}
 		// 文末の","を変換
