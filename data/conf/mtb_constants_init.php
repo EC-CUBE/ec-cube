@@ -534,6 +534,12 @@ define('TRACKBACK_TO_URL', SITE_URL . "tb/index.php?pid=");
 define('SITE_CONTROL_TRACKBACK', 1);
 /** サイト管理 アフィリエイト */
 define('SITE_CONTROL_AFFILIATE', 2);
+/** OS種別:WIN|LINUX */
+define('OS_TYPE', "LINUX");
+/** SMTPサーバー */
+define('SMTP_HOST', "127.0.0.1");
+/** SMTPポート */
+define('SMTP_PORT', "25");
 /** デフォルトテンプレート名 */
 define('DEFAULT_TEMPLATE_NAME', "default");
 /** テンプレート名 */
