@@ -91,7 +91,7 @@ class SC_Utils {
     // 装飾付きエラーメッセージの表示
     function sfErrorHeader($mess, $print = false) {
         global $GLOBAL_ERR;
-        $GLOBAL_ERR.="<div style='color: #F00; font-weight: bold; "
+        $GLOBAL_ERR.="<div style='color: #F00; font-weight: bold; font-size: 12px;"
             . "background-color: #FEB; text-align: center; padding: 5px;'>";
         $GLOBAL_ERR.= $mess;
         $GLOBAL_ERR.= "</div>";
