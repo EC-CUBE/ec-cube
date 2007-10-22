@@ -6,7 +6,7 @@
  */
 
 // {{{ requires
-require_once(CLASS_PATH . "pages/LC_Page.php");
+require_once(CLASS_PATH . "pages/frontparts/bloc/LC_Page_FrontParts_Bloc.php");
 
 /**
  * Best5 のページクラス.
@@ -15,7 +15,7 @@ require_once(CLASS_PATH . "pages/LC_Page.php");
  * @author LOCKON CO.,LTD.
  * @version $Id:LC_Page_FrontParts_Bloc_Best5.php 15532 2007-08-31 14:39:46Z nanasess $
  */
-class LC_Page_FrontParts_Bloc_Best5 extends LC_Page {
+class LC_Page_FrontParts_Bloc_Best5 extends LC_Page_FrontParts_Bloc {
 
     // }}}
     // {{{ functions
@@ -28,11 +28,7 @@ class LC_Page_FrontParts_Bloc_Best5 extends LC_Page {
     function init() {
         parent::init();
         $bloc_file = 'best5.tpl';
-        if (is_file(USER_PATH . BLOC_DIR . $bloc_file)) {
-            $this->tpl_mainpage = USER_PATH . BLOC_DIR . $bloc_file;
-        } else {
-            $this->tpl_mainpage = BLOC_PATH . $bloc_file;
-        }
+        $this->setTplMainpage($bloc_file);
     }
 
     /**
