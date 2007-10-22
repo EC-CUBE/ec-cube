@@ -50,6 +50,10 @@ function lfPageFactory() {
         $file  .= 'AutoUpdate.php';
         $class .= 'AutoUpdate';
         break;
+    case 'site_check':
+        $file  .= 'SiteCheck.php';
+        $class .= 'SiteCheck';
+        break;
     default:
         header("HTTP/1.1 400 Bad Request");
         exit();
