@@ -686,4 +686,8 @@ define('OWNERSSTORE_ERR_SERVER_DL_HTTP_RESP_CODE', 503);
 define('OWNERSSTORE_ERR_SERVER_DL_AUTH', 504);
 /** オーナーズストア通信時のエラーコード：*/
 define('OWNERSSTORE_ERR_SERVER_DL_DOWNLOAD', 505);
+/** オーナーズストアURL **/
+define('OWNERSSTORE_URL', 'http://store.ec-cube.net/');
+/** アップデート機能アクセス許可IP */
+define('OWNERSSTORE_IP', '210.188.195.143');
 ?>
