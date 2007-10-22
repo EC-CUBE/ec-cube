@@ -1054,3 +1054,5 @@ INSERT INTO mtb_constants VALUES ('OWNERSSTORE_ERR_SERVER_DL_HTTP_REQ', '502', 5
 INSERT INTO mtb_constants VALUES ('OWNERSSTORE_ERR_SERVER_DL_HTTP_RESP_CODE', '503', 527, 'オーナーズストア通信エラーコード');
 INSERT INTO mtb_constants VALUES ('OWNERSSTORE_ERR_SERVER_DL_AUTH', '504', 528, 'オーナーズストア通信エラーコード');
 INSERT INTO mtb_constants VALUES ('OWNERSSTORE_ERR_SERVER_DL_DOWNLOAD', '505', 529, 'オーナーズストア通信エラーコード');
+INSERT INTO mtb_constants VALUES ('OWNERSSTORE_URL', '"http://store.ec-cube.net/"', 530, 'オーナーズストアURL');
+INSERT INTO mtb_constants VALUES ('OWNERSSTORE_IP', '"210.188.195.143"', 531, 'アップデート機能アクセス許可IP');
