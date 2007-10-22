@@ -41,6 +41,7 @@ class LC_Page_Upgrade_SiteCheck extends LC_Page {
         $objReq->setUrl(OWNERSSTORE_URL . 'upgrade/index.php');
         $objReq->setMethod('POST');
         $objReq->addPostData('mode', 'site_check');
+        $objReq->addPostData('eccube_version', ECCUBE_VERSION);
 
         if (PEAR::isError($e = $objReq->sendRequest())) {
             exit;
@@ -57,7 +58,6 @@ class LC_Page_Upgrade_SiteCheck extends LC_Page {
             $arrParam = array(
                 'status' => OWNERSSTORE_STATUS_SUCCESS,
                 'id'     => $objRet->id,
-                'eccube_version' => ECCUBE_VERSION
             );
             echo $objJson->encode($arrParam);
             exit;
