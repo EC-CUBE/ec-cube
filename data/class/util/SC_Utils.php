@@ -67,13 +67,13 @@ class SC_Utils {
         } else {
             $path = HTML_PATH . "install/index.php";
             if(file_exists($path)) {
-                SC_Utils::sfErrorHeader(">> /install/index.phpは、インストール完了後にファイルを削除してください。");
+                SC_Utils::sfErrorHeader("&gt;&gt; /install/index.phpは、インストール完了後にファイルを削除してください。");
             }
 
             // 旧バージョンのinstall.phpのチェック
             $path = HTML_PATH . "install.php";
             if(file_exists($path)) {
-                SC_Utils::sfErrorHeader(">> /install.phpはセキュリティーホールとなります。削除してください。");
+                SC_Utils::sfErrorHeader("&gt;&gt; /install.phpはセキュリティーホールとなります。削除してください。");
             }
         }
     }
@@ -91,17 +91,10 @@ class SC_Utils {
     // 装飾付きエラーメッセージの表示
     function sfErrorHeader($mess, $print = false) {
         global $GLOBAL_ERR;
-        if($GLOBAL_ERR == "") {
-            $GLOBAL_ERR = "<meta http-equiv='Content-Type' content='text/html; charset=" . CHAR_CODE . "'>\n";
-        }
-        $GLOBAL_ERR.= "<table width='100%' border='0' cellspacing='0' cellpadding='0' summary=' '>\n";
-        $GLOBAL_ERR.= "<tr>\n";
-        $GLOBAL_ERR.= "<td bgcolor='#ffeebb' height='25' colspan='2' align='center'>\n";
-        $GLOBAL_ERR.= "<SPAN style='color:red; font-size:12px'><strong>" . $mess . "</strong></span>\n";
-        $GLOBAL_ERR.= "</td>\n";
-        $GLOBAL_ERR.= "    </tr>\n";
-        $GLOBAL_ERR.= "</table>\n";
-
+        $GLOBAL_ERR.="<div style='color: #F00; font-weight: bold; "
+            . "background-color: #FEB; text-align: center; padding: 5px;'>";
+        $GLOBAL_ERR.= $mess;
+        $GLOBAL_ERR.= "</div>";
         if($print) {
             print($GLOBAL_ERR);
         }

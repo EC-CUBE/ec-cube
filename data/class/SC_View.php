@@ -110,7 +110,8 @@ class SC_View {
         if(!$no_error) {
             global $GLOBAL_ERR;
             if(!defined('OUTPUT_ERR')) {
-                print($GLOBAL_ERR);
+                // GLOBAL_ERR を割り当て
+                $this->assign("GLOBAL_ERR", $GLOBAL_ERR);
                 define('OUTPUT_ERR','ON');
             }
         }

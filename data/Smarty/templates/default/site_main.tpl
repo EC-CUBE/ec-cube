@@ -4,6 +4,7 @@
  * http://www.lockon.co.jp/
  *}-->
 <body onload="preLoadImg('<!--{$smarty.const.URL_DIR}-->'); <!--{$tpl_onload}-->">
+<!--{$GLOBAL_ERR}-->
 <noscript>
   <p>JavaScript を有効にしてご利用下さい.</p>
 </noscript>
