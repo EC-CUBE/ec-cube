@@ -57,7 +57,7 @@ class LC_Page_MyPage extends LC_Page {
         $objLayout->sfGetPageLayout($this, false, "mypage/index.php");
 
         // ログインチェック
-        if(!isset($_SESSION['customer'])) {
+        if(!$objCustomer->isLoginSuccess()) {
             SC_Utils_Ex::sfDispSiteError(CUSTOMER_ERROR);
         }else {
             //マイページトップ顧客情報表示用
