@@ -299,7 +299,17 @@ function sfConnectMovilinkURL($order_id) {
 	
 	$url = "http://c.moaf.jp/eres/?sid=" . $site_id . "&aflkey=" . $aflkey . "&uid1=" . $order_id . "&items=" . $items;
 	
-	sfPrintR($url);	
+	$req = new HTTP_Request($url);
+	
+	// GET¤Î¾ì¹ç
+	$req->setMethod(HTTP_REQUEST_METHOD_GET);
+	$ret = $req->sendRequest();
+	if (!PEAR::isError($ret)) {
+	    $body = $req->getResponseBody();
+	    gfPrintLog($body);
+	}else{
+	    gfPrintLog($ret->getMessage());
+	}
 }
  
 
