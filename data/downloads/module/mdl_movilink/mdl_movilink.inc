@@ -18,9 +18,8 @@ define("MODULE_NAME", "モビル連携モジュール");
 
 function sfInitMovilink() {
 	if($_GET['aflkey'] != "") {
-		$_SESSION['aflkey'] = $_GET['aflkey'];
+		$_SESSION['movilink_aflkey'] = $_GET['aflkey'];
 	}
-	sfPrintR($_SESSION);
 }
 
 /**************************************************************************************************************
