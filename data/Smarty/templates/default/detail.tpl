@@ -214,12 +214,10 @@ function lnSetSelect(form, name1, name2, val) {
     <!--{else}-->
     <p><!--★サブテキスト★--><!--{$arrProduct[$ckey]|nl2br}--></p>
     <!--{/if}-->
-
   </div>
   <!--{/if}-->
   <!--{/section}-->
   <!--▲サブコメントここまで-->
-
 
 
   <!--この商品に対するお客様の声-->
@@ -336,6 +334,7 @@ function lnSetSelect(form, name1, name2, val) {
     </div>
     <!--{/if}-->
   <!--{/section}-->
+  </div>
 <!--{/if}-->
 </div>
 <!--▲CONTENTS-->
