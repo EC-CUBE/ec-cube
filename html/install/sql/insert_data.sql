@@ -1,4 +1,3 @@
---CREATE INDEX dtb_products_category_id_key ON dtb_products(category_id);
 CREATE INDEX dtb_products_class_product_id_key ON dtb_products_class(product_id);
 CREATE INDEX dtb_order_detail_product_id_key ON dtb_order_detail(product_id);
 CREATE INDEX dtb_category_category_id_key ON dtb_category(category_id);
