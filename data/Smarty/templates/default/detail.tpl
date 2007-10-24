@@ -273,11 +273,10 @@ function lnSetSelect(form, name1, name2, val) {
   <!--{if $arrRecommend}-->
   <div id="whoboughtarea">
     <h2><img src="<!--{$TPL_DIR}-->img/products/title_recommend.jpg" width="580" height="30" alt="オススメ商品" /></h2>
-    <!--{section name=cnt loop=$arrRecommend}-->
-    <!--{if ($smarty.section.cnt.index % 2) == 0}-->
     <div class="whoboughtblock">
-    <!--{/if}-->
 
+    <!--{section name=cnt loop=$arrRecommend}-->
+      <!--{if ($smarty.section.cnt.index % 2) == 0}-->
       <!--{if $arrRecommend[cnt].product_id}-->
       <!-- 左列 -->
       <div class="whoboughtleft">
@@ -305,22 +304,24 @@ function lnSetSelect(form, name1, name2, val) {
       </div>
       <!-- 左列 -->
       <!--{/if}-->
+      <!--{/if}-->
 
-      <!--{assign var=nextCnt value=$smarty.section.cnt.index+1}-->
-      <!--{if $arrRecommend[$nextCnt].product_id}-->
+      <!--{if ($smarty.section.cnt.index % 2) != 0}-->
+      <!--{* assign var=nextCnt value=$smarty.section.cnt.index+1 *}-->
+      <!--{if $arrRecommend[cnt].product_id}-->
       <!-- 右列 -->
       <div class="whoboughtright">
-        <a href="<!--{$smarty.const.DETAIL_P_HTML}--><!--{$arrRecommend[$nextCnt].product_id}-->">
-        <!--{if $arrRecommend[$nextCnt].main_list_image != ""}-->
-          <!--{assign var=image_path value="`$arrRecommend[$nextCnt].main_list_image`"}-->
+        <a href="<!--{$smarty.const.DETAIL_P_HTML}--><!--{$arrRecommend[cnt].product_id}-->">
+        <!--{if $arrRecommend[cnt].main_list_image != ""}-->
+          <!--{assign var=image_path value="`$arrRecommend[cnt].main_list_image`"}-->
         <!--{else}-->
           <!--{assign var=image_path value="`$smarty.const.NO_IMAGE_DIR`"}-->
         <!--{/if}-->
-          <img src="<!--{$smarty.const.SITE_URL}-->resize_image.php?image=<!--{$image_path|sfRmDupSlash}-->&amp;width=65&amp;height=65" alt="<!--{$arrRecommend[$nextCnt].name|escape}-->" />
+          <img src="<!--{$smarty.const.SITE_URL}-->resize_image.php?image=<!--{$image_path|sfRmDupSlash}-->&amp;width=65&amp;height=65" alt="<!--{$arrRecommend[cnt].name|escape}-->" />
         </a>
-        <!--{assign var=price02_min value=`$arrRecommend[$nextCnt].price02_min`}-->
-        <!--{assign var=price02_max value=`$arrRecommend[$nextCnt].price02_max`}-->
-        <h3><a href="<!--{$smarty.const.DETAIL_P_HTML}--><!--{$arrRecommend[$nextCnt].product_id}-->"><!--{$arrRecommend[$nextCnt].name|escape}--></a></h3>
+        <!--{assign var=price02_min value=`$arrRecommend[cnt].price02_min`}-->
+        <!--{assign var=price02_max value=`$arrRecommend[cnt].price02_max`}-->
+        <h3><a href="<!--{$smarty.const.DETAIL_P_HTML}--><!--{$arrRecommend[cnt].product_id}-->"><!--{$arrRecommend[cnt].name|escape}--></a></h3>
 
         <p>価格<span class="mini">(税込)</span>：<span class="price">
 
@@ -329,11 +330,13 @@ function lnSetSelect(form, name1, name2, val) {
         <!--{else}-->
           <!--{$price02_min|sfPreTax:$arrSiteInfo.tax:$arrSiteInfo.tax_rule|number_format}-->〜<!--{$price02_max|sfPreTax:$arrSiteInfo.tax:$arrSiteInfo.tax_rule|number_format}-->
         <!--{/if}-->円</span></p>
-        <p class="mini"><!--{$arrRecommend[$nextCnt].comment|escape|nl2br}--></p>
+        <p class="mini"><!--{$arrRecommend[cnt].comment|escape|nl2br}--></p>
       </div>
       <!-- 右列 -->
     <!--{/if}-->
-    <!--{if ($smarty.section.cnt.index % 2) == 0 || $smarty.section.cnt.last}-->
+    <!--{/if}-->
+
+    <!--{if $smarty.section.cnt.last}-->
     </div>
     <!--{/if}-->
   <!--{/section}-->

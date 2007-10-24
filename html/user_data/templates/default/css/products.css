@@ -354,13 +354,14 @@ div.whoboughtblock {
     width: 580px;
     padding: 10px 0;
     overflow: auto;
-    background: url("../img/common/line_578.gif") no-repeat bottom;
 }
 
 div.whoboughtleft {
     float: left;
     width: 280px;
+    padding: 10px 0;
     position: relative;
+    background: url("../img/common/line_578.gif") no-repeat bottom;
 }
 
 div.whoboughtleft img {
@@ -376,7 +377,9 @@ div.whoboughtleft p {
 div.whoboughtright {
     float: right;
     width: 280px;
+    padding: 10px 0;
     position: relative;
+    background: url("../img/common/line_578.gif") no-repeat bottom;
 }
 
 div.whoboughtright img {
