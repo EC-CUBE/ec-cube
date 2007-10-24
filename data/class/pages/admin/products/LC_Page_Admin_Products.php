@@ -259,7 +259,7 @@ class LC_Page_Admin_Products extends LC_Page {
                 default:
                     // 読み込む列とテーブルの指定
                     $col = "product_id, name, category_id, main_list_image, status, product_code, price01, price02, stock, stock_unlimited";
-                    $from = "vw_products_nonclass AS allcls ";
+                    $from = "vw_products_nonclass AS noncls ";
 
                     // 行数の取得
                     $linemax = $objQuery->count("dtb_products", $view_where, $arrval);

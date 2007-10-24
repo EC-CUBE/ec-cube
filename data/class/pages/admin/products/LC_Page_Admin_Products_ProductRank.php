@@ -101,7 +101,7 @@ class LC_Page_Admin_Products_ProductRank extends LC_Page {
     function lfGetProduct($category_id) {
         $objQuery = new SC_Query();
         $col = "product_id, name, main_list_image, rank";
-        $table = "vw_products_allclass ";
+        $table = "vw_products_allclass AS allcls";
         $where = "del_flg = 0 AND category_id = ?";
 
         // 行数の取得
