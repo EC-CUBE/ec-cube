@@ -277,6 +277,8 @@ function lnSetSelect(form, name1, name2, val) {
     <!--{if ($smarty.section.cnt.index % 2) == 0}-->
     <div class="whoboughtblock">
     <!--{/if}-->
+
+      <!--{if $arrRecommend[cnt].product_id}-->
       <!-- 左列 -->
       <div class="whoboughtleft">
       <!--{if $arrRecommend[cnt].main_list_image != ""}-->
@@ -302,6 +304,7 @@ function lnSetSelect(form, name1, name2, val) {
         <p class="mini"><!--{$arrRecommend[cnt].comment|escape|nl2br}--></p>
       </div>
       <!-- 左列 -->
+      <!--{/if}-->
 
       <!--{assign var=nextCnt value=$smarty.section.cnt.index+1}-->
       <!--{if $arrRecommend[$nextCnt].product_id}-->

@@ -87,7 +87,7 @@ class LC_Page_FrontParts_Bloc_Best5 extends LC_Page_FrontParts_Bloc {
     function lfGetRanking(){
         $objQuery = new SC_Query();
 
-        $col = "A.*, name, price02_min, price01_min, main_list_image ";
+        $col = "DISTINCT A.*, name, price02_min, price01_min, main_list_image ";
         $from = "dtb_best_products AS A INNER JOIN vw_products_allclass AS allcls using(product_id)";
         $where = "status = 1";
         $order = "rank";

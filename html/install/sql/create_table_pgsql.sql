@@ -356,6 +356,13 @@ CREATE TABLE dtb_category (
     del_flg  int2 NOT NULL DEFAULT 0
 );
 
+CREATE TABLE dtb_product_categories (
+    product_id int4 NOT NULL,
+    category_id int4 NOT NULL,
+    rank int4,
+    PRIMARY KEY(product_id, category_id)
+);
+
 CREATE TABLE dtb_bat_order_daily (
     total_order numeric NOT NULL DEFAULT 0,
     member numeric NOT NULL DEFAULT 0,

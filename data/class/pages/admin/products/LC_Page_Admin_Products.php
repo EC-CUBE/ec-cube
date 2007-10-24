@@ -168,10 +168,10 @@ class LC_Page_Admin_Products extends LC_Page {
                             $arrval[] = "%$val%";
                             break;
                         case 'search_category_id':	// カテゴリー
-                            list($tmp_where, $tmp_arrval) = SC_Utils_Ex::sfGetCatWhere($val);
+                            list($tmp_where, $tmp_arrval) = $objDb->sfGetCatWhere($val);
                             if($tmp_where != "") {
-                                $where.= " AND $tmp_where";
-                                $view_where.= " AND $tmp_where";
+                                $where.= " AND product_id IN (SELECT product_id FROM dtb_product_categories WHERE " . $tmp_where . ")";
+                                $view_where.= " AND product_id IN (SELECT product_id FROM dtb_product_categories WHERE " . $tmp_where . ")";
                                 $arrval = array_merge((array)$arrval, (array)$tmp_arrval);
                             }
                             break;
@@ -259,7 +259,7 @@ class LC_Page_Admin_Products extends LC_Page {
                 default:
                     // 読み込む列とテーブルの指定
                     $col = "product_id, name, category_id, main_list_image, status, product_code, price01, price02, stock, stock_unlimited";
-                    $from = "vw_products_nonclass AS noncls ";
+                    $from = "vw_products_nonclass AS allcls ";
 
                     // 行数の取得
                     $linemax = $objQuery->count("dtb_products", $view_where, $arrval);

@@ -25,7 +25,7 @@
       <!--{if $arrTree[cnt].display == 1}-->
 
           <!--{* 選択したカテゴリ *}-->
-          <!--{if $tpl_category_id == $arrTree[cnt].category_id || $root_parent_id == $arrTree[cnt].category_id}-->
+          <!--{if in_array($arrTree[cnt].category_id, $tpl_category_id) || in_array($arrTree[cnt].category_id, $root_parent_id)}-->
               <!--{if $level == 1}-->
                   <dl><dt class="onmark">
               <!--{else}-->
@@ -42,7 +42,7 @@
           <!--{/if}-->
 
           <!--{* 選択したカテゴリ *}-->
-          <!--{if $tpl_category_id == $arrTree[cnt].category_id }-->
+          <!--{if in_array($arrTree[cnt].category_id, $tpl_category_id) }-->
               <a href="<!--{$smarty.const.URL_DIR}-->products/list.php?category_id=<!--{$arrTree[cnt].category_id}-->" class="onlink"><!--{$disp_name|sfCutString:20|escape}-->(<!--{$arrTree[cnt].product_count|default:0}-->)</a>
 
           <!--{* 未選択カテゴリ *}-->

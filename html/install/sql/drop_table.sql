@@ -16,6 +16,7 @@ DROP TABLE dtb_products_class;
 DROP TABLE dtb_class;
 DROP TABLE dtb_classcategory;
 DROP TABLE dtb_category;
+DROP TABLE dtb_product_categories;
 DROP TABLE dtb_bat_order_daily;
 DROP TABLE dtb_bat_order_daily_hour;
 DROP TABLE dtb_recommend_products;

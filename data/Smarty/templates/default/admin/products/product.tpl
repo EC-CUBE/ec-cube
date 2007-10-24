@@ -12,9 +12,26 @@ function lfDispSwitch(id){
 	if (obj.style.display == 'none') {
 		obj.style.display = '';
 	} else {
-		obj.style.display = 'none';		
+		obj.style.display = 'none';
 	}
 }
+
+// セレクトボックスのリストを移動
+//（移動元セレクトボックスID, 移動先セレクトボックスID）
+function fnMoveSelect(select, target) {
+	$('#' + select).children().each(function() {
+		if (this.selected) {
+			$('#' + target).append(this);
+			$('#' + target).children().attr({selected: false});
+		}
+	});
+}
+
+// target の子要素を選択状態にする
+function selectAll(target) {
+	$('#' + target).children().attr({selected: true});
+}
+
 </script>
 <!--★★メインコンテンツ★★-->
 <table width="878" border="0" cellspacing="0" cellpadding="0" summary=" ">
@@ -83,10 +100,25 @@ function lfDispSwitch(id){
 										<td bgcolor="#f2f1ec" width="160" class="fs12n">商品カテゴリ<span class="red"> *</span></td>
 										<td bgcolor="#ffffff" width="557">
 										<span class="red12"><!--{$arrErr.category_id}--></span>
-										<select name="category_id" style="<!--{if $arrErr.category_id != ""}-->background-color: <!--{$smarty.const.ERR_COLOR}--><!--{/if}-->" onchange="">
-										<option value="">選択してください</option>
-										<!--{html_options values=$arrCatVal output=$arrCatOut selected=$arrForm.category_id}-->
-										</select></td>
+										<table>
+											<tr>
+												<td>
+													<select name="category_id_unselect[]" id="category_id_unselect" onchange="" size="10" style="height:20ex" multiple>
+														<!--{html_options values=$arrCatVal output=$arrCatOut selected=$arrForm.category_id}-->
+													</select>
+												</td>
+												<td>
+													<input type="button" name="on_select" value="&nbsp;&nbsp;登録&nbsp;-&gt;&nbsp;&nbsp;" onClick="fnMoveSelect('category_id_unselect','category_id')"><br><br>
+													<input type="button" name="un_select" value="&nbsp;&nbsp;&lt;-&nbsp;削除&nbsp;&nbsp;" onClick="fnMoveSelect('category_id','category_id_unselect')">
+												</td>
+												<td>
+													<select name="category_id[]" id="category_id" style="<!--{if $arrErr.category_id != ""}-->background-color: <!--{$smarty.const.ERR_COLOR}--><!--{/if}--> height:20ex" onchange="" size="10" multiple>
+
+													</select>
+												</td>
+											</tr>
+										</table>
+										</td>
 									</tr>
 									<tr>
 										<td bgcolor="#f2f1ec" width="160" class="fs12n">公開・非公開<span class="red"> *</span></td>
@@ -395,7 +427,7 @@ function lfDispSwitch(id){
 													<a href="#" onmouseover="chgImg('<!--{$TPL_DIR}-->img/contents/btn_search_back_on.jpg','back');" onmouseout="chgImg('<!--{$TPL_DIR}-->img/contents/btn_search_back.jpg','back');" onClick="fnChangeAction('<!--{$smarty.const.URL_SEARCH_TOP}-->'); fnModeSubmit('search','',''); return false;"><img src="<!--{$TPL_DIR}-->img/contents/btn_search_back.jpg" width="123" height="24" alt="検索画面に戻る" border="0" name="back"></a>
 												<!--▲検索結果へ戻る-->
 												<!--{/if}-->
-												<input type="image" onMouseover="chgImgImageSubmit('<!--{$TPL_DIR}-->img/contents/btn_confirm_on.jpg',this)" onMouseout="chgImgImageSubmit('<!--{$TPL_DIR}-->img/contents/btn_confirm.jpg',this)" src="<!--{$TPL_DIR}-->img/contents/btn_confirm.jpg" width="123" height="24" alt="確認ページへ" border="0" name="subm" >
+												<input type="image" onMouseover="chgImgImageSubmit('<!--{$TPL_DIR}-->img/contents/btn_confirm_on.jpg',this)" onMouseout="chgImgImageSubmit('<!--{$TPL_DIR}-->img/contents/btn_confirm.jpg',this)" onClick="selectAll('category_id')" src="<!--{$TPL_DIR}-->img/contents/btn_confirm.jpg" width="123" height="24" alt="確認ページへ" border="0" name="subm" >
 											</td>
 											</tr>
 										</table>

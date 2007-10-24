@@ -41,13 +41,13 @@ class LC_Page_FrontParts_Bloc_Category extends LC_Page_FrontParts_Bloc {
         $objDb = new SC_Helper_DB_Ex();
 
         // 選択中のカテゴリIDを判定する
-        $category_id = $objDb->sfGetCategoryId($_GET['product_id'], $_GET['category_id']);
+        $arrCategory_id = $objDb->sfGetCategoryId($_GET['product_id'], $_GET['category_id']);
 
         // 選択中のカテゴリID
-        $this->tpl_category_id = $category_id;
-        $objPage = $this->lfGetCatTree($category_id, true, $this);
+        $this->tpl_category_id = empty($arrCategory_id) ? array(0) : $arrCategory_id;;
+        $this->lfGetCatTree($this->tpl_category_id, true, $this);
 
-        $objSubView->assignobj($objPage);
+        $objSubView->assignobj($this);
         $objSubView->display($this->tpl_mainpage);
     }
 
@@ -85,7 +85,7 @@ class LC_Page_FrontParts_Bloc_Category extends LC_Page_FrontParts_Bloc {
     }
 
     // カテゴリツリーの取得
-    function lfGetCatTree($parent_category_id, $count_check = false, $objSubPage) {
+    function lfGetCatTree($arrParent_category_id, $count_check = false) {
         $objQuery = new SC_Query();
         $objDb = new SC_Helper_DB_Ex();
         $col = "*";
@@ -99,25 +99,26 @@ class LC_Page_FrontParts_Bloc_Category extends LC_Page_FrontParts_Bloc {
         $objQuery->setoption("ORDER BY rank DESC");
         $arrRet = $objQuery->select($col, $from, $where);
 
-        $arrParentID = $objDb->sfGetParents($objQuery, 'dtb_category', 'parent_category_id', 'category_id', $parent_category_id);
-        $arrBrothersID = SC_Utils_Ex::sfGetBrothersArray($arrRet, 'parent_category_id', 'category_id', $arrParentID);
-        $arrChildrenID = SC_Utils_Ex::sfGetUnderChildrenArray($arrRet, 'parent_category_id', 'category_id', $parent_category_id);
+        foreach ($arrParent_category_id as $category_id) {
+            $arrParentID = $objDb->sfGetParents($objQuery, 'dtb_category', 'parent_category_id', 'category_id', $category_id);
+            $arrBrothersID = SC_Utils_Ex::sfGetBrothersArray($arrRet, 'parent_category_id', 'category_id', $arrParentID);
+            $arrChildrenID = SC_Utils_Ex::sfGetUnderChildrenArray($arrRet, 'parent_category_id', 'category_id', $category_id);
 
-        $objSubPage->root_parent_id = $arrParentID[0];
+            $this->root_parent_id[] = $arrParentID[0];
 
-        $arrDispID = array_merge($arrBrothersID, $arrChildrenID);
+            $arrDispID = array_merge($arrBrothersID, $arrChildrenID);
 
-        foreach($arrRet as $key => $array) {
-            foreach($arrDispID as $val) {
-                if($array['category_id'] == $val) {
-                    $arrRet[$key]['display'] = 1;
-                    break;
+            foreach($arrRet as $key => $array) {
+                foreach($arrDispID as $val) {
+                    if($array['category_id'] == $val) {
+                        $arrRet[$key]['display'] = 1;
+                        break;
+                    }
                 }
             }
         }
 
-        $objSubPage->arrTree = $arrRet;
-        return $objSubPage;
+        $this->arrTree = $arrRet;
     }
 
     // メインカテゴリーの取得

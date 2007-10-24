@@ -370,6 +370,17 @@ class SC_Query {
         return $ret;
     }
 
+    // 1列取得
+    function getCol($table, $col, $where = "", $arrval = array()) {
+        if (strlen($where) <= 0) {
+            $sqlse = "SELECT $col FROM $table";
+        } else {
+            $sqlse = "SELECT $col FROM $table WHERE $where";
+        }
+        // SQL文の実行
+        return $this->conn->getCol($sqlse, $col, $arrval);
+    }
+
     // レコードの削除
     function delete($table, $where = "", $arrval = array()) {
         if(strlen($where) <= 0) {

@@ -210,7 +210,7 @@ class SC_Helper_DB {
                 $category_id = $this->sfGetCategoryId($_GET['product_id'], $_GET['category_id']);
                 // ROOTカテゴリIDの取得
                 $arrRet = $this->sfGetParents($objQuery, 'dtb_category', 'parent_category_id', 'category_id', $category_id);
-                $root_id = $arrRet[0];
+                $root_id = isset($arrRet[0]) ? $arrRet[0] : "";
             } else {
                 // ROOTカテゴリIDをなしに設定する
                 $root_id = "";
@@ -336,14 +336,14 @@ class SC_Helper_DB {
                 // 画像サイズ
                 $main_image_path = IMAGE_SAVE_DIR . basename($objPage->arrProductsClass[$cnt]["main_image"]);
                 if(file_exists($main_image_path)) {
-	                list($image_width, $image_height) = getimagesize($main_image_path);
+                    list($image_width, $image_height) = getimagesize($main_image_path);
                 } else {
-                	$image_width = 0;
-                	$image_height = 0;
+                    $image_width = 0;
+                    $image_height = 0;
                 }
 
                 $objPage->arrProductsClass[$cnt]["tpl_image_width"] = $image_width + 60;
-	            $objPage->arrProductsClass[$cnt]["tpl_image_height"] = $image_height + 80;
+                $objPage->arrProductsClass[$cnt]["tpl_image_height"] = $image_height + 80;
                 // 価格の登録
                 if ($arrData['price02'] != "") {
                     $objCartSess->setProductValue($arrCart[$i]['id'], 'price', $arrData['price02']);
@@ -555,7 +555,7 @@ class SC_Helper_DB {
     function sfGetCatCombName($category_id){
         // 商品が属するカテゴリIDを縦に取得
         $objQuery = new SC_Query();
-        $arrCatID = sfGetParents($objQuery, "dtb_category", "parent_category_id", "category_id", $category_id);
+        $arrCatID = $this->sfGetParents($objQuery, "dtb_category", "parent_category_id", "category_id", $category_id);
         $ConbName = "";
 
         // カテゴリー名称を取得する
@@ -651,7 +651,7 @@ class SC_Helper_DB {
      */
     function sfGetLevelCatList($parent_zero = true) {
         $objQuery = new SC_Query();
-        $col = "category_id, category_name, level";
+        $col = "category_id, parent_category_id, category_name, level";
         $where = "del_flg = 0";
         $objQuery->setoption("ORDER BY rank DESC");
         $arrRet = $objQuery->select($col, "dtb_category", $where);
@@ -669,46 +669,165 @@ class SC_Helper_DB {
             }
 
             $arrOutput[$cnt] = "";
-            /*
-            for($n = 1; $n < $arrRet[$cnt]['level']; $n++) {
-                $arrOutput[$cnt].= "　";
+
+            // 子カテゴリから親カテゴリを検索
+            $parent_category_id = $arrRet[$cnt]['parent_category_id'];
+            for($cat_cnt = $arrRet[$cnt]['level']; $cat_cnt > 1; $cat_cnt--) {
+
+                foreach ($arrRet as $arrCat) {
+                    // 親が見つかったら順番に代入
+                    if ($arrCat['category_id'] == $parent_category_id) {
+
+                        $arrOutput[$cnt] = CATEGORY_HEAD
+                            . $arrCat['category_name'] . $arrOutput[$cnt];
+                        $parent_category_id = $arrCat['parent_category_id'];
+                    }
+                }
             }
-            */
-            for($cat_cnt = 0; $cat_cnt < $arrRet[$cnt]['level']; $cat_cnt++) {
-                $arrOutput[$cnt].= CATEGORY_HEAD;
-            }
-            $arrOutput[$cnt].= $arrRet[$cnt]['category_name'];
+            $arrOutput[$cnt].= CATEGORY_HEAD . $arrRet[$cnt]['category_name'];
         }
+
         return array($arrValue, $arrOutput);
     }
 
     /**
-     * 選択中のカテゴリを取得する.
+     * 選択中の商品のカテゴリを取得する.
      *
      * @param integer $product_id プロダクトID
      * @param integer $category_id カテゴリID
-     * @return integer 選択中のカテゴリID
+     * @return array 選択中の商品のカテゴリIDの配列
      *
      */
-    function sfGetCategoryId($product_id, $category_id) {
+    function sfGetCategoryId($product_id, $category_id = 0) {
 
-        if(!$this->g_category_on)	{
+        if(!$this->g_category_on) {
             $this->g_category_on = true;
             $category_id = (int) $category_id;
             $product_id = (int) $product_id;
             if(SC_Utils_Ex::sfIsInt($category_id) && $this->sfIsRecord("dtb_category","category_id", $category_id)) {
-                $this->g_category_id = $category_id;
+                $this->g_category_id = array($category_id);
             } else if (SC_Utils_Ex::sfIsInt($product_id) && $this->sfIsRecord("dtb_products","product_id", $product_id, "status = 1")) {
                 $objQuery = new SC_Query();
                 $where = "product_id = ?";
-                $category_id = $objQuery->get("dtb_products", "category_id", $where, array($product_id));
+                $category_id = $objQuery->getCol("dtb_product_categories", "category_id", "product_id = ?", array($product_id));
                 $this->g_category_id = $category_id;
             } else {
-                // 不正な場合は、0を返す。
-                $this->g_category_id = 0;
+                // 不正な場合は、空の配列を返す。
+                $this->g_category_id = array();
             }
         }
         return $this->g_category_id;
+    }
+
+    /**
+     * 商品をカテゴリの先頭に追加する.
+     *
+     * @param integer $category_id カテゴリID
+     * @param integer $product_id プロダクトID
+     * @return void
+     */
+    function addProductBeforCategories($category_id, $product_id) {
+
+        $sqlval = array("category_id" => $category_id,
+                        "product_id" => $product_id);
+
+        $objQuery = new SC_Query();
+
+        // 現在の商品カテゴリを取得
+        $arrCat = $objQuery->select("product_id, category_id, rank",
+                                    "dtb_product_categories",
+                                    "category_id = ?",
+                                    array($category_id));
+
+        $max = 0;
+        foreach ($arrCat as $val) {
+            // 同一商品が存在する場合は登録しない
+            if ($val["product_id"] == $product_id) {
+                return;
+            }
+            // 最上位ランクを取得
+            $max = ($max > $val["rank"]) ? $val["rank"] : $max;
+        }
+        $sqlval["rank"] = $max;
+        $objQuery->insert("dtb_product_categories", $sqlval);
+    }
+
+    /**
+     * 商品をカテゴリの末尾に追加する.
+     *
+     * @param integer $category_id カテゴリID
+     * @param integer $product_id プロダクトID
+     * @return void
+     */
+    function addProductAfterCategories($category_id, $product_id) {
+        $sqlval = array("category_id" => $category_id,
+                        "product_id" => $product_id);
+
+        $objQuery = new SC_Query();
+
+        // 現在の商品カテゴリを取得
+        $arrCat = $objQuery->select("product_id, category_id, rank",
+                                    "dtb_product_categories",
+                                    "category_id = ?",
+                                    array($category_id));
+
+        $min = 0;
+        foreach ($arrCat as $val) {
+            // 同一商品が存在する場合は登録しない
+            if ($val["product_id"] == $product_id) {
+                return;
+            }
+            // 最下位ランクを取得
+            $min = ($min < $val["rank"]) ? $val["rank"] : $min;
+        }
+        $sqlval["rank"] = $min;
+        $objQuery->insert("dtb_product_categories", $sqlval);
+    }
+
+    /**
+     * 商品をカテゴリから削除する.
+     *
+     * @param integer $category_id カテゴリID
+     * @param integer $product_id プロダクトID
+     * @return void
+     */
+    function removeProductByCategories($category_id, $product_id) {
+        $sqlval = array("category_id" => $category_id,
+                        "product_id" => $product_id);
+        $objQuery = new SC_Query();
+        $objQuery->delete("dtb_product_categories",
+                          "category_id = ? AND product_id = ?", $sqlval);
+    }
+
+    /**
+     * 商品カテゴリを更新する.
+     *
+     * @param array $arrCategory_id 登録するカテゴリIDの配列
+     * @param integer $product_id プロダクトID
+     * @return void
+     */
+    function updateProductCategories($arrCategory_id, $product_id) {
+        $objQuery = new SC_Query();
+
+        // 現在のカテゴリ情報を取得
+        $arrCurrentCat = $objQuery->select("product_id, category_id, rank",
+                                           "dtb_product_categories",
+                                           "product_id = ?",
+                                           array($product_id));
+
+        // 登録するカテゴリ情報と比較
+        foreach ($arrCurrentCat as $val) {
+
+            // 登録しないカテゴリを削除
+            if (!in_array($val["category_id"], $arrCategory_id)) {
+                $this->removeProductByCategories($val["category_id"], $product_id);
+            }
+        }
+
+        // カテゴリを登録
+        foreach ($arrCategory_id as $category_id) {
+            $this->addProductBeforCategories($category_id, $product_id);
+        }
     }
 
     /**
@@ -726,9 +845,12 @@ class SC_Helper_DB {
 
         //各カテゴリ内の商品数を数えて格納
         $sql = " INSERT INTO dtb_category_count(category_id, product_count, create_date) ";
-        $sql .= " SELECT T1.category_id, count(T2.category_id), now() FROM dtb_category AS T1 LEFT JOIN dtb_products AS T2 ";
-        $sql .= " ON T1.category_id = T2.category_id  ";
-        $sql .= " WHERE T2.del_flg = 0 AND T2.status = 1 ";
+        $sql .= " SELECT T1.category_id, count(T2.category_id), now() ";
+        $sql .= " FROM dtb_category AS T1 LEFT JOIN dtb_product_categories AS T2";
+        $sql .= " ON T1.category_id = T2.category_id ";
+        $sql .= " LEFT JOIN dtb_products AS T3";
+        $sql .= " ON T2.product_id = T3.product_id";
+        $sql .= " WHERE T3.del_flg = 0 AND T3.status = 1 ";
         $sql .= " GROUP BY T1.category_id, T2.category_id ";
         $objQuery->query($sql);
 
@@ -845,7 +967,7 @@ class SC_Helper_DB {
     function sfGetParentsArray($table, $pid_name, $id_name, $id) {
         $objQuery = new SC_Query();
         $col = $pid_name . "," . $id_name;
-         $arrData = $objQuery->select($col, $table);
+        $arrData = $objQuery->select($col, $table);
 
         $arrParents = array();
         $arrParents[] = $id;
@@ -951,7 +1073,7 @@ class SC_Helper_DB {
             $uprank = $rank + 1;
             $up_id = $objQuery->get($table, $colname, $where, array($uprank));
             // ランク入れ替えの実行
-            $sqlup = "UPDATE $table SET rank = ?, update_date = Now() WHERE $colname = ?";
+            $sqlup = "UPDATE $table SET rank = ? WHERE $colname = ?";
             $objQuery->exec($sqlup, array($rank + 1, $id));
             $objQuery->exec($sqlup, array($rank, $up_id));
         }
@@ -987,7 +1109,7 @@ class SC_Helper_DB {
             $downrank = $rank - 1;
             $down_id = $objQuery->get($table, $colname, $where, array($downrank));
             // ランク入れ替えの実行
-            $sqlup = "UPDATE $table SET rank = ?, update_date = Now() WHERE $colname = ?";
+            $sqlup = "UPDATE $table SET rank = ? WHERE $colname = ?";
             $objQuery->exec($sqlup, array($rank - 1, $id));
             $objQuery->exec($sqlup, array($rank, $down_id));
         }
@@ -1010,7 +1132,7 @@ class SC_Helper_DB {
 
         // 自身のランクを取得する
         $rank = $objQuery->get($tableName, "rank", "$keyIdColumn = ?", array($keyId));
-        $max = $objQuery->max($tableName, "rank", $where);
+        $max = $objQuery->max($tableName, "rank", $where, array($keyId));
 
         // 値の調整（逆順）
         if($pos > $max) {
@@ -1025,7 +1147,7 @@ class SC_Helper_DB {
         if( $position < $rank ) $term = "rank + 1";	//入れ替え先の順位が入れ換え元の順位より小さい場合
 
         // 指定した順位の商品から移動させる商品までのrankを１つずらす
-        $sql = "UPDATE $tableName SET rank = $term, update_date = NOW() WHERE rank BETWEEN ? AND ? AND del_flg = 0";
+        $sql = "UPDATE $tableName SET rank = $term WHERE rank BETWEEN ? AND ?";
         if($where != "") {
             $sql.= " AND $where";
         }
@@ -1034,7 +1156,7 @@ class SC_Helper_DB {
         if( $position < $rank ) $objQuery->exec( $sql, array( $position, $rank - 1 ));
 
         // 指定した順位へrankを書き換える。
-        $sql  = "UPDATE $tableName SET rank = ?, update_date = NOW() WHERE $keyIdColumn = ? AND del_flg = 0 ";
+        $sql  = "UPDATE $tableName SET rank = ? WHERE $keyIdColumn = ? ";
         if($where != "") {
             $sql.= " AND $where";
         }
@@ -1069,7 +1191,7 @@ class SC_Helper_DB {
 
         if(!$delete) {
             // ランクを最下位にする、DELフラグON
-            $sqlup = "UPDATE $table SET rank = 0, del_flg = 1, update_date = Now() ";
+            $sqlup = "UPDATE $table SET rank = 0, del_flg = 1 ";
             $sqlup.= "WHERE $colname = ?";
             // UPDATEの実行
             $objQuery->exec($sqlup, array($id));

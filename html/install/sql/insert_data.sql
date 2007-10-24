@@ -1,4 +1,4 @@
-CREATE INDEX dtb_products_category_id_key ON dtb_products(category_id);
+--CREATE INDEX dtb_products_category_id_key ON dtb_products(category_id);
 CREATE INDEX dtb_products_class_product_id_key ON dtb_products_class(product_id);
 CREATE INDEX dtb_order_detail_product_id_key ON dtb_order_detail(product_id);
 CREATE INDEX dtb_category_category_id_key ON dtb_category(category_id);
@@ -307,9 +307,9 @@ INSERT INTO dtb_payment (payment_method,charge,rule,deliv_id,rank,note,fix,statu
 INSERT INTO dtb_payment (payment_method,charge,rule,deliv_id,rank,note,fix,status,del_flg,creator_id,create_date,update_date,payment_image,upper_rule) VALUES ('代金引換', 0, NULL, 1, 1, NULL, 2, 1, 0, 1, now(), now(), NULL, NULL);
 
 INSERT INTO dtb_products (name,deliv_fee,sale_limit,sale_unlimited,category_id,rank,status,product_flag,point_rate,comment1,comment2,comment3,comment4,comment5,comment6,file1,file2,file3,file4,file5,file6,main_list_comment,main_list_image,main_comment,main_image,main_large_image,sub_title1,sub_comment1,sub_image1,sub_large_image1,sub_title2,sub_comment2,sub_image2,sub_large_image2,sub_title3,sub_comment3,sub_image3,sub_large_image3,sub_title4,sub_comment4,sub_image4,sub_large_image4,sub_title5,sub_comment5,sub_image5,sub_large_image5,sub_title6,sub_comment6,sub_image6,sub_large_image6,del_flg,creator_id,create_date,update_date,deliv_date_id)
-VALUES ('アイスクリーム', NULL, NULL, 1, 5, 1, 1, '10010', 10, NULL, NULL, 'アイス,バニラ,チョコ,抹茶', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '暑い夏にどうぞ。', '08311201_44f65122ee5fe.jpg', '冷たいものはいかがですか？', '08311202_44f6515906a41.jpg', '08311203_44f651959bcb5.jpg', NULL, '<b>おいしいよ<b>', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0, 2, now(), now(), 2);
+VALUES ('アイスクリーム', NULL, NULL, NULL, 5, 1, 1, '10010', 10, NULL, NULL, 'アイス,バニラ,チョコ,抹茶', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '暑い夏にどうぞ。', '08311201_44f65122ee5fe.jpg', '冷たいものはいかがですか？', '08311202_44f6515906a41.jpg', '08311203_44f651959bcb5.jpg', NULL, '<b>おいしいよ<b>', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0, 2, now(), now(), 2);
 INSERT INTO dtb_products (name,deliv_fee,sale_limit,sale_unlimited,category_id,rank,status,product_flag,point_rate,comment1,comment2,comment3,comment4,comment5,comment6,file1,file2,file3,file4,file5,file6,main_list_comment,main_list_image,main_comment,main_image,main_large_image,sub_title1,sub_comment1,sub_image1,sub_large_image1,sub_title2,sub_comment2,sub_image2,sub_large_image2,sub_title3,sub_comment3,sub_image3,sub_large_image3,sub_title4,sub_comment4,sub_image4,sub_large_image4,sub_title5,sub_comment5,sub_image5,sub_large_image5,sub_title6,sub_comment6,sub_image6,sub_large_image6,del_flg,creator_id,create_date,update_date,deliv_date_id)
-VALUES ('おなべ', NULL, 5, NULL, 4, 1, 1, '11001', 5, NULL, NULL, '鍋,なべ,ナベ', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '一人用からあります。', '08311311_44f661811fec0.jpg', 'たまには鍋でもどうでしょう。', '08311313_44f661dc649fb.jpg', '08311313_44f661e5698a6.jpg', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0, 2, now(), now(), 3);
+VALUES ('おなべ', NULL, 5, NULL, NULL, 1, 1, '11001', 5, NULL, NULL, '鍋,なべ,ナベ', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '一人用からあります。', '08311311_44f661811fec0.jpg', 'たまには鍋でもどうでしょう。', '08311313_44f661dc649fb.jpg', '08311313_44f661e5698a6.jpg', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0, 2, now(), now(), 3);
 
 INSERT INTO dtb_products_class (product_id,classcategory_id1,classcategory_id2,product_code,stock,stock_unlimited,sale_limit,price01,price02,status,creator_id,create_date,update_date)
 VALUES (1, 3, 6, 'ice-01', NULL, 1, NULL, 150, 120, NULL, 2, now(), now());
@@ -356,6 +356,9 @@ INSERT INTO dtb_category (category_name,parent_category_id,level,rank,creator_id
 INSERT INTO dtb_category (category_name,parent_category_id,level,rank,creator_id,create_date,update_date,del_flg) VALUES ('お菓子', 1, 2, 2, 2, now(), now(), 0);
 INSERT INTO dtb_category (category_name,parent_category_id,level,rank,creator_id,create_date,update_date,del_flg) VALUES ('なべ', 1, 2, 3, 2, now(), now(), 0);
 INSERT INTO dtb_category (category_name,parent_category_id,level,rank,creator_id,create_date,update_date,del_flg) VALUES ('アイス', 3, 3, 1, 2, now(), now(), 0);
+
+INSERT INTO dtb_product_categories (product_id,category_id,rank) VALUES (1,5,1);
+INSERT INTO dtb_product_categories (product_id,category_id,rank) VALUES (2,4,2);
 
 INSERT INTO dtb_category_count VALUES (4, 1, now());
 INSERT INTO dtb_category_count VALUES (5, 1, now());

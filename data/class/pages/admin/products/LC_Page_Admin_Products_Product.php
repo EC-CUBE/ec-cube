@@ -311,10 +311,13 @@ class LC_Page_Admin_Products_Product extends LC_Page {
         $table = "vw_products_nonclass AS noncls ";
         $where = "product_id = ?";
 
-        // viewも絞込み(mysql対応) TODO
-        //sfViewWhere("&&noncls_where&&", $where, array($product_id));
-
         $arrRet = $objQuery->select($col, $table, $where, array($product_id));
+
+        // カテゴリID を取得
+        $arrRet[0]['category_id'] = $objQuery->getCol("dtb_product_categories",
+                                                      "category_id",
+                                                      "product_id = ?",
+                                                      array($product_id));
 
         return $arrRet[0];
     }
@@ -326,6 +329,9 @@ class LC_Page_Admin_Products_Product extends LC_Page {
         // カテゴリの読込
         list($this->arrCatVal, $this->arrCatOut) = $objDb->sfGetLevelCatList(false);
 
+        if (isset($this->arrForm['category_id']) && !is_array($this->arrForm['category_id'])) {
+            $this->arrForm['category_id'] = unserialize($this->arrForm['category_id']);
+        }
         if($this->arrForm['status'] == "") {
             $this->arrForm['status'] = 1;
         }
@@ -350,7 +356,7 @@ class LC_Page_Admin_Products_Product extends LC_Page {
             $anchor_hash = "";
         }
 
-        $this->tpl_onload = "fnCheckSaleLimit('" . DISABLED_RGB . "'); fnCheckStockLimit('" . DISABLED_RGB . "'); " . $anchor_hash;
+        $this->tpl_onload = "fnCheckSaleLimit('" . DISABLED_RGB . "'); fnCheckStockLimit('" . DISABLED_RGB . "'); fnMoveSelect('category_id_unselect', 'category_id');" . $anchor_hash;
     }
 
     /* ファイル情報の初期化 */
@@ -373,7 +379,7 @@ class LC_Page_Admin_Products_Product extends LC_Page {
         $objQuery->begin();
 
         // 配列の添字を定義
-        $checkArray = array("name", "category_id", "status", "product_flag",
+        $checkArray = array("name", "status", "product_flag",
                             "main_list_comment", "main_comment", "point_rate",
                             "deliv_fee", "comment1", "comment2", "comment3",
                             "comment4", "comment5", "comment6", "main_list_comment",
@@ -382,7 +388,7 @@ class LC_Page_Admin_Products_Product extends LC_Page {
 
         // INSERTする値を作成する。
         $sqlval['name'] = $arrList['name'];
-        $sqlval['category_id'] = $arrList['category_id'];
+        //$sqlval['category_id'] = $arrList['category_id'];
         $sqlval['status'] = $arrList['status'];
         $sqlval['product_flag'] = $arrList['product_flag'];
         $sqlval['main_list_comment'] = $arrList['main_list_comment'];
@@ -415,10 +421,14 @@ class LC_Page_Admin_Products_Product extends LC_Page {
                 $sqlval['product_id'] = $product_id;
             }
             // カテゴリ内で最大のランクを割り当てる
-            $sqlval['rank'] = $objQuery->max("dtb_products", "rank", "category_id = ?", array($arrList['category_id'])) + 1;
+            //$sqlval['rank'] = $objQuery->max("dtb_products", "rank", "category_id = ?", array($arrList['category_id'])) + 1;
+
             // INSERTの実行
             $sqlval['create_date'] = "Now()";
             $objQuery->insert("dtb_products", $sqlval);
+
+            // カテゴリを更新
+            $objDb->updateProductCategories($arrList['category_id'], $sqlval['product_id']);
 
             if (DB_TYPE == "mysql") {
                 $product_id = $objQuery->nextval("dtb_products", "product_id");
@@ -426,7 +436,7 @@ class LC_Page_Admin_Products_Product extends LC_Page {
             }
 
             // コピー商品の場合には規格もコピーする
-            if($_POST["copy_product_id"] != "" and sfIsInt($_POST["copy_product_id"])){
+            if($_POST["copy_product_id"] != "" and SC_Utils_Ex::sfIsInt($_POST["copy_product_id"])){
                 // dtb_products_class のカラムを取得
                 $dbFactory = SC_DB_DBFactory::getInstance();
                 $arrColList = $dbFactory->sfGetColumnList("dtb_products_class", $objQuery);
@@ -448,13 +458,13 @@ class LC_Page_Admin_Products_Product extends LC_Page {
             $arrRet = $this->lfGetProduct($arrList['product_id']);
             $this->objUpFile->deleteDBFile($arrRet);
 
-            // カテゴリ内ランクの調整処理
-            $old_catid = $objQuery->get("dtb_products", "category_id", "product_id = ?", array($arrList['product_id']));
-            $objDb->sfMoveCatRank($objQuery, "dtb_products", "product_id", "category_id", $old_catid, $arrList['category_id'], $arrList['product_id']);
-
+            $arrList['category_id'] = unserialize($arrList['category_id']);
             // UPDATEの実行
             $where = "product_id = ?";
             $objQuery->update("dtb_products", $sqlval, $where, array($arrList['product_id']));
+
+            // カテゴリを更新
+            $objDb->updateProductCategories($arrList['category_id'], $arrList['product_id']);
         }
 
         // 規格登録
@@ -525,7 +535,7 @@ class LC_Page_Admin_Products_Product extends LC_Page {
 
         $objErr = new SC_CheckError($array);
         $objErr->doFunc(array("商品名", "name", STEXT_LEN), array("EXIST_CHECK", "SPTAB_CHECK", "MAX_LENGTH_CHECK"));
-        $objErr->doFunc(array("商品カテゴリ", "category_id", STEXT_LEN), array("EXIST_CHECK", "SPTAB_CHECK", "MAX_LENGTH_CHECK"));
+        //$objErr->doFunc(array("商品カテゴリ", "category_id", STEXT_LEN), array("EXIST_CHECK", "SPTAB_CHECK", "MAX_LENGTH_CHECK"));
         $objErr->doFunc(array("一覧-メインコメント", "main_list_comment", MTEXT_LEN), array("EXIST_CHECK", "SPTAB_CHECK", "MAX_LENGTH_CHECK"));
         $objErr->doFunc(array("詳細-メインコメント", "main_comment", LLTEXT_LEN), array("EXIST_CHECK", "SPTAB_CHECK", "MAX_LENGTH_CHECK"));
         $objErr->doFunc(array("詳細-メインコメント", "main_comment", $this->arrAllowedTag), array("HTML_TAG_CHECK"));
@@ -548,12 +558,12 @@ class LC_Page_Admin_Products_Product extends LC_Page {
         if(isset($array['sale_unlimited']) && $array['sale_unlimited'] != "1") {
             $objErr->doFunc(array("購入制限", "sale_limit", AMOUNT_LEN), array("EXIST_CHECK", "SPTAB_CHECK", "ZERO_CHECK", "NUM_CHECK", "MAX_LENGTH_CHECK"));
         }
-
+        /*
         if(isset($objErr->arrErr['category_id'])) {
             // 自動選択を防ぐためにダミー文字を入れておく
             $this->arrForm['category_id'] = "#";
         }
-
+        */
         for ($cnt = 1; $cnt <= PRODUCTSUB_MAX; $cnt++) {
             $objErr->doFunc(array("詳細-サブタイトル$cnt", "sub_title$cnt", STEXT_LEN), array("SPTAB_CHECK", "MAX_LENGTH_CHECK"));
             $objErr->doFunc(array("詳細-サブコメント$cnt", "sub_comment$cnt", LLTEXT_LEN), array("SPTAB_CHECK", "MAX_LENGTH_CHECK"));
@@ -571,6 +581,23 @@ class LC_Page_Admin_Products_Product extends LC_Page {
             }
         }
 
+        // カテゴリID のチェック
+        if (empty($array['category_id'])) {
+            $objErr->arrErr['category_id'] = "※ カテゴリが選択されていません。<br />";
+        } else {
+            $arrCategory_id = array();
+            for ($i = 0; $i < count($array['category_id']); $i++) {
+                $arrCategory_id['category_id' . $i] = $array['category_id'][$i];
+            }
+            $objCheckCategory = new SC_CheckError($arrCategory_id);
+            for ($i = 0; $i < count($array['category_id']); $i++) {
+                $objCheckCategory->doFunc(array("商品カテゴリ", "category_id" . $i, STEXT_LEN), array("SPTAB_CHECK", "MAX_LENGTH_CHECK"));
+            }
+            if (!empty($objCheckCategory->arrErr)) {
+                $objErr->arrErr = array_merge($objErr->arrErr,
+                                              $objCheckCategory->arrErr);
+            }
+        }
         return $objErr->arrErr;
     }
 
@@ -578,9 +605,20 @@ class LC_Page_Admin_Products_Product extends LC_Page {
     function lfProductConfirmPage() {
         $this->tpl_mainpage = 'products/confirm.tpl';
         $this->arrForm['mode'] = 'complete';
+
         $objDb = new SC_Helper_DB_Ex();
-        // カテゴリの読込
-        $this->arrCatList = $objDb->sfGetCategoryList();
+
+        // カテゴリ表示
+        $this->arrCategory_id = $this->arrForm['category_id'];
+        $this->arrCatList = array();
+        list($arrCatVal, $arrCatOut) = $objDb->sfGetLevelCatList(false);
+        for ($i = 0; $i < count($arrCatVal); $i++) {
+            $this->arrCatList[$arrCatVal[$i]] = $arrCatOut[$i];
+        }
+
+        // hidden に渡す値は serialize する
+        $this->arrForm['category_id'] = serialize($this->arrForm['category_id']);
+
         // Form用配列を渡す。
         $this->arrFile = $this->objUpFile->getFormFileList(IMAGE_TEMP_URL, IMAGE_SAVE_URL);
     }

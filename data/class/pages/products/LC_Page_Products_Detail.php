@@ -187,7 +187,8 @@ class LC_Page_Products_Detail extends LC_Page {
         }
 
         // サブタイトルを取得
-        $arrFirstCat = $objDb->sfGetFirstCat($arrRet[0]['category_id']);
+        $arrCategory_id = $objDb->sfGetCategoryId($arrRet[0]['product_id']);
+        $arrFirstCat = $objDb->sfGetFirstCat($arrCategory_id[0]);
         $this->tpl_subtitle = $arrFirstCat['name'];
 
         // DBからのデータを引き継ぐ
@@ -620,11 +621,6 @@ class LC_Page_Products_Detail extends LC_Page {
 
         $arrSele1 = array();
         $arrSele2 = array();
-        $arrList = array();
-
-        $list_id = 0;
-        $arrList[0] = "\tlist0 = new Array('選択してください'";
-        $arrVal[0] = "\tval0 = new Array(''";
 
         for ($i = 0; $i < $count; $i++) {
             // 在庫のチェック
@@ -636,8 +632,6 @@ class LC_Page_Products_Detail extends LC_Page {
 
             // 規格1のセレクトボックス用
             if($classcat_id1 != $arrProductsClass[$i]['classcategory_id1']){
-                $arrList[$list_id].=");\n";
-                $arrVal[$list_id].=");\n";
                 $classcat_id1 = $arrProductsClass[$i]['classcategory_id1'];
                 $arrSele1[$classcat_id1] = $arrClassCatName[$classcat_id1];
             }
@@ -647,26 +641,7 @@ class LC_Page_Products_Detail extends LC_Page {
                 $classcat_id2 = $arrProductsClass[$i]['classcategory_id2'];
                 $arrSele2[$classcat_id2] = $arrClassCatName[$classcat_id2];
             }
-
-            $list_id++;
-
-            // セレクトボックス表示値
-            if($arrList[$list_id] == "") {
-                $arrList[$list_id] = "\tlist".$list_id." = new Array('選択してください', '".$arrClassCatName[$classcat_id2]."'";
-            } else {
-                $arrList[$list_id].= ", '".$arrClassCatName[$classcat_id2]."'";
-            }
-
-            // セレクトボックスPOST値
-            if($arrVal[$list_id] == "") {
-                $arrVal[$list_id] = "\tval".$list_id." = new Array('', '".$classcat_id2."'";
-            } else {
-                $arrVal[$list_id].= ", '".$classcat_id2."'";
-            }
         }
-
-        //$arrList[$list_id].=");\n";
-        $arrVal[$list_id].=");\n";
 
         // 規格1
         $objPage->arrClassCat1 = $arrSele1;
@@ -717,9 +692,16 @@ class LC_Page_Products_Detail extends LC_Page {
         $arrRet = $objQuery->select("recommend_product_id, comment", "dtb_recommend_products", "product_id = ?", array($product_id));
         $max = count($arrRet);
         $no = 0;
+        $from = "vw_products_allclass AS T1 "
+                . " JOIN ("
+                . " SELECT max(T2.rank) AS product_rank, "
+                . "        T2.product_id"
+                . "   FROM dtb_product_categories T2  "
+                . " GROUP BY product_id) AS T3 USING (product_id)";
+        $objQuery->setorder("product_rank DESC");
         for($i = 0; $i < $max; $i++) {
             $where = "del_flg = 0 AND product_id = ? AND status = 1";
-            $arrProductInfo = $objQuery->select("main_list_image, price02_min, price02_max, price01_min, price01_max, name, point_rate", "vw_products_allclass  AS allcls", $where, array($arrRet[$i]['recommend_product_id']));
+            $arrProductInfo = $objQuery->select("DISTINCT main_list_image, price02_min, price02_max, price01_min, price01_max, name, point_rate, product_rank", $from, $where, array($arrRet[$i]['recommend_product_id']));
 
             if(count($arrProductInfo) > 0) {
                 $arrRecommend[$no] = $arrProductInfo[0];
@@ -759,7 +741,7 @@ class LC_Page_Products_Detail extends LC_Page {
         $objQuery->insert("dtb_customer_reading", $sqlval);
     }
 
-    //この商品を買った人はこんな商品も買っています
+    //この商品を買った人はこんな商品も買っています FIXME
     function lfGetRelateProducts($tmp_id) {
         $objQuery = new SC_Query;
         //自動抽出

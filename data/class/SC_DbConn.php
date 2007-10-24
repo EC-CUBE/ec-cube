@@ -104,6 +104,23 @@ class SC_DbConn{
         return $this->result;
     }
 
+    function getCol($n, $col, $arr = "") {
+
+        // mysqlの場合にはビュー表を変換する
+        if (DB_TYPE == "mysql") $n = $this->dbFactory->sfChangeMySQL($n);
+
+        if ($arr) {
+            $result = $this->conn->getCol($n, $col, $arr);
+        } else {
+            $result = $this->conn->getCol($n, $col);
+        }
+        if ($this->conn->isError($result)) {
+            $this->send_err_mail($result, $n);
+        }
+        $this->result = $result;
+        return $this->result;
+    }
+
     // SELECT文の実行結果を全て取得
     function getAll($n, $arr = ""){
 

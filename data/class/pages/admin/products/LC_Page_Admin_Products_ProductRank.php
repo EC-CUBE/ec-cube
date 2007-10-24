@@ -57,19 +57,19 @@ class LC_Page_Admin_Products_ProductRank extends LC_Page {
         if (!isset($_POST['mode'])) $_POST['mode'] = "";
         switch($_POST['mode']) {
         case 'up':
-            $where = "category_id = " . addslashes($_POST['parent_category_id']);
-            $objDb->sfRankUp("dtb_products", "product_id", $_POST['product_id'], $where);
+            $where = "category_id = " . SC_Utils_Ex::sfQuoteSmart($_POST['parent_category_id']);
+            $objDb->sfRankUp("dtb_product_categories", "product_id", $_POST['product_id'], $where);
             break;
         case 'down':
-            $where = "category_id = " . addslashes($_POST['parent_category_id']);
-            $objDb->sfRankDown("dtb_products", "product_id", $_POST['product_id'], $where);
+            $where = "category_id = " . SC_Utils_Ex::sfQuoteSmart($_POST['parent_category_id']);
+            $objDb->sfRankDown("dtb_product_categories", "product_id", $_POST['product_id'], $where);
             break;
         case 'move':
             $key = "pos-".$_POST['product_id'];
             $input_pos = mb_convert_kana($_POST[$key], "n");
             if(SC_Utils_Ex::sfIsInt($input_pos)) {
-                $where = "category_id = " . addslashes($_POST['parent_category_id']);
-                $objDb->sfMoveRank("dtb_products", "product_id", $_POST['product_id'], $input_pos, $where);
+                $where = "category_id = " . SC_Utils_Ex::sfQuoteSmart($_POST['parent_category_id']);
+                $objDb->sfMoveRank("dtb_product_categories", "product_id", $_POST['product_id'], $input_pos, "category_id = ?");
             }
             break;
         case 'tree':
@@ -100,12 +100,12 @@ class LC_Page_Admin_Products_ProductRank extends LC_Page {
     /* 商品読み込み */
     function lfGetProduct($category_id) {
         $objQuery = new SC_Query();
-        $col = "product_id, name, main_list_image, rank, product_code";
-        $table = "vw_products_nonclass AS noncls ";
+        $col = "product_id, name, main_list_image, rank";
+        $table = "vw_products_allclass ";
         $where = "del_flg = 0 AND category_id = ?";
 
         // 行数の取得
-        $linemax = $objQuery->count("dtb_products", $where, array($category_id));
+        $linemax = $objQuery->count("dtb_product_categories", "category_id = ?", array($category_id));
         // 順位、該当件数表示用
         $this->tpl_linemax = $linemax;
 

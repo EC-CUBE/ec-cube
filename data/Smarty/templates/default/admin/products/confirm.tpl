@@ -59,8 +59,10 @@
 								<tr>
 									<td bgcolor="#f2f1ec" width="160" class="fs12n">商品カテゴリ</td>
 									<td bgcolor="#ffffff" width="557" class="fs12n">
-									<!--{assign var=key value=$arrForm.category_id}-->
-									<!--{$arrCatList[$key]|strip|sfTrim}-->
+									<!--{section name=cnt loop=$arrCategory_id}-->
+										<!--{assign var=key value=$arrCategory_id[cnt]}-->
+										<!--{$arrCatList[$key]|strip|sfTrim}--><br>
+									<!--{/section}-->
 									</td>
 								</tr>
 								<tr>

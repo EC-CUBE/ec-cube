@@ -47,7 +47,7 @@ CREATE VIEW vw_products_nonclass AS
         ON T1.product_id = T2.product_id_sub;
 
 CREATE VIEW vw_products_allclass AS
-     SELECT product_id,
+     SELECT T5.product_id,
             product_code_min,
             product_code_max,
             price01_min,
@@ -59,49 +59,67 @@ CREATE VIEW vw_products_allclass AS
             stock_unlimited_min,
             stock_unlimited_max,
             category_rank,
-            category_id,
-            del_flg,
-            status,
-            name,
-            comment1,
-            comment2,
-            comment3,
-            rank,
-            main_list_comment,
-            main_image,
-            main_list_image,
-            product_flag,
-            deliv_date_id,
-            sale_limit,
-            point_rate,
-            sale_unlimited,
-            create_date,
-            deliv_fee
+            T5.category_id,
+            T5.del_flg,
+            T5.status,
+            T5.name,
+            T5.comment1,
+            T5.comment2,
+            T5.comment3,
+            T5.rank,
+            T5.main_list_comment,
+            T5.main_image,
+            T5.main_list_image,
+            T5.product_flag,
+            T5.deliv_date_id,
+            T5.sale_limit,
+            T5.point_rate,
+            T5.sale_unlimited,
+            T5.create_date,
+            T5.deliv_fee
        FROM
-             ((dtb_products AS T1
-     LEFT JOIN
-               dtb_product_categories AS T2
-            ON T1.product_id = T2.product_id)
-   RIGHT JOIN
-      (SELECT
-              product_id AS product_id_sub,
-              MIN(product_code) AS product_code_min,
-              MAX(product_code) AS product_code_max,
-              MIN(price01) AS price01_min,
-              MAX(price01) AS price01_max,
-              MIN(price02) AS price02_min,
-              MAX(price02) AS price02_max,
-              MIN(stock) AS stock_min,
-              MAX(stock) AS stock_max,
-              MIN(stock_unlimited) AS stock_unlimited_min,
-              MAX(stock_unlimited) AS stock_unlimited_max
-         FROM dtb_products_class GROUP BY product_id) AS T3
-         ON T1.product_id = T3.product_id_sub) AS T4
-  LEFT JOIN
-      (SELECT rank AS category_rank,
-              category_id AS sub_category_id
-        FROM dtb_category) AS T5
-         ON T4.category_id = T5.sub_category_id;
+             ((SELECT T1.product_id,
+                      T1.del_flg,
+                      T1.status,
+                      T1.name,
+                      T1.comment1,
+                      T1.comment2,
+                      T1.comment3,
+                      T1.main_list_comment,
+                      T1.main_image,
+                      T1.main_list_image,
+                      T1.product_flag,
+                      T1.deliv_date_id,
+                      T1.sale_limit,
+                      T1.point_rate,
+                      T1.sale_unlimited,
+                      T1.create_date,
+                      T1.deliv_fee,
+                      T2.category_id,
+                      T1.rank
+                 FROM dtb_products AS T1
+            LEFT JOIN dtb_product_categories AS T2
+                   ON T1.product_id = T2.product_id) AS T3
+    RIGHT JOIN
+          (SELECT product_id AS product_id_sub,
+                  MIN(product_code) AS product_code_min,
+                  MAX(product_code) AS product_code_max,
+                  MIN(price01) AS price01_min,
+                  MAX(price01) AS price01_max,
+                  MIN(price02) AS price02_min,
+                  MAX(price02) AS price02_max,
+                  MIN(stock) AS stock_min,
+                  MAX(stock) AS stock_max,
+                  MIN(stock_unlimited) AS stock_unlimited_min,
+                  MAX(stock_unlimited) AS stock_unlimited_max
+             FROM dtb_products_class
+         GROUP BY product_id) AS T4
+               ON T3.product_id = T4.product_id_sub) AS T5
+    LEFT JOIN
+        (SELECT rank AS category_rank,
+                category_id AS sub_category_id
+           FROM dtb_category) AS T6
+          ON T5.category_id = T6.sub_category_id;
 
 CREATE VIEW vw_products_allclass_detail AS
      SELECT product_id,

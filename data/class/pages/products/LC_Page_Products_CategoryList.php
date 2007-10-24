@@ -87,7 +87,8 @@ class LC_Page_Products_CategoryList extends LC_Page {
     function lfGetCategories($category_id, $count_check = false, &$objPage) {
         $objDb = new SC_Helper_DB_Ex();
         // カテゴリーの正しいIDを取得する。
-        $category_id = $objDb->sfGetCategoryId('', $category_id);
+        $arrCategory_id = $objDb->sfGetCategoryId('', $category_id);
+        $category_id = $arrCategory_id[0];
         if ($category_id == 0) {
             SC_Utils_Ex::sfDispSiteError(CATEGORY_NOT_FOUND, "", false, "", true);
         }
