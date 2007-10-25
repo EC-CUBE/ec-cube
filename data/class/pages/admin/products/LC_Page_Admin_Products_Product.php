@@ -573,7 +573,7 @@ class LC_Page_Admin_Products_Product extends LC_Page {
 
         // カテゴリID のチェック
         if (empty($array['category_id'])) {
-            $objErr->arrErr['category_id'] = "※ カテゴリが選択されていません。<br />";
+            $objErr->arrErr['category_id'] = "※ 商品カテゴリが選択されていません。<br />";
         } else {
             $arrCategory_id = array();
             for ($i = 0; $i < count($array['category_id']); $i++) {
