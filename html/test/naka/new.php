@@ -28,6 +28,7 @@ function sfCombzReserve() {
 		
 	if (!PEAR::isError($ret)) {
 	    $response = $req->getResponseBody();
+	    $response = mb_convert_encoding($response, "EUC-JP", "Shift-JIS");
 		print($response);	    
 	} else {
 		print($ret->getMessage());
