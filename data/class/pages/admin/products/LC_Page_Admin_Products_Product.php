@@ -388,7 +388,6 @@ class LC_Page_Admin_Products_Product extends LC_Page {
 
         // INSERTする値を作成する。
         $sqlval['name'] = $arrList['name'];
-        //$sqlval['category_id'] = $arrList['category_id'];
         $sqlval['status'] = $arrList['status'];
         $sqlval['product_flag'] = $arrList['product_flag'];
         $sqlval['main_list_comment'] = $arrList['main_list_comment'];
@@ -410,6 +409,8 @@ class LC_Page_Admin_Products_Product extends LC_Page {
         $arrRet = $this->objUpFile->getDBFileList();
         $sqlval = array_merge($sqlval, $arrRet);
 
+        $arrList['category_id'] = unserialize($arrList['category_id']);
+
         for ($cnt = 1; $cnt <= PRODUCTSUB_MAX; $cnt++) {
             $sqlval['sub_title'.$cnt] = $arrList['sub_title'.$cnt];
             $sqlval['sub_comment'.$cnt] = $arrList['sub_comment'.$cnt];
@@ -420,8 +421,6 @@ class LC_Page_Admin_Products_Product extends LC_Page {
                 $product_id = $objQuery->nextval("dtb_products", "product_id");
                 $sqlval['product_id'] = $product_id;
             }
-            // カテゴリ内で最大のランクを割り当てる
-            //$sqlval['rank'] = $objQuery->max("dtb_products", "rank", "category_id = ?", array($arrList['category_id'])) + 1;
 
             // INSERTの実行
             $sqlval['create_date'] = "Now()";
@@ -458,7 +457,6 @@ class LC_Page_Admin_Products_Product extends LC_Page {
             $arrRet = $this->lfGetProduct($arrList['product_id']);
             $this->objUpFile->deleteDBFile($arrRet);
 
-            $arrList['category_id'] = unserialize($arrList['category_id']);
             // UPDATEの実行
             $where = "product_id = ?";
             $objQuery->update("dtb_products", $sqlval, $where, array($arrList['product_id']));
@@ -487,7 +485,6 @@ class LC_Page_Admin_Products_Product extends LC_Page {
          *	V :  濁点付きの文字を一文字に変換。"K","H"と共に使用します
          *	n :  「全角」数字を「半角(ﾊﾝｶｸ)」に変換
          */
-        // 人物基本情報
 
         // スポット商品
         $arrConvList['name'] = "KVa";
@@ -500,7 +497,6 @@ class LC_Page_Admin_Products_Product extends LC_Page {
         $arrConvList['point_rate'] = "n";
         $arrConvList['product_code'] = "KVna";
         $arrConvList['comment1'] = "a";
-        //ホネケーキ:送料の指定なし
         $arrConvList['deliv_fee'] = "n";
 
         // 詳細-サブ
@@ -535,7 +531,6 @@ class LC_Page_Admin_Products_Product extends LC_Page {
 
         $objErr = new SC_CheckError($array);
         $objErr->doFunc(array("商品名", "name", STEXT_LEN), array("EXIST_CHECK", "SPTAB_CHECK", "MAX_LENGTH_CHECK"));
-        //$objErr->doFunc(array("商品カテゴリ", "category_id", STEXT_LEN), array("EXIST_CHECK", "SPTAB_CHECK", "MAX_LENGTH_CHECK"));
         $objErr->doFunc(array("一覧-メインコメント", "main_list_comment", MTEXT_LEN), array("EXIST_CHECK", "SPTAB_CHECK", "MAX_LENGTH_CHECK"));
         $objErr->doFunc(array("詳細-メインコメント", "main_comment", LLTEXT_LEN), array("EXIST_CHECK", "SPTAB_CHECK", "MAX_LENGTH_CHECK"));
         $objErr->doFunc(array("詳細-メインコメント", "main_comment", $this->arrAllowedTag), array("HTML_TAG_CHECK"));
@@ -558,12 +553,7 @@ class LC_Page_Admin_Products_Product extends LC_Page {
         if(isset($array['sale_unlimited']) && $array['sale_unlimited'] != "1") {
             $objErr->doFunc(array("購入制限", "sale_limit", AMOUNT_LEN), array("EXIST_CHECK", "SPTAB_CHECK", "ZERO_CHECK", "NUM_CHECK", "MAX_LENGTH_CHECK"));
         }
-        /*
-        if(isset($objErr->arrErr['category_id'])) {
-            // 自動選択を防ぐためにダミー文字を入れておく
-            $this->arrForm['category_id'] = "#";
-        }
-        */
+
         for ($cnt = 1; $cnt <= PRODUCTSUB_MAX; $cnt++) {
             $objErr->doFunc(array("詳細-サブタイトル$cnt", "sub_title$cnt", STEXT_LEN), array("SPTAB_CHECK", "MAX_LENGTH_CHECK"));
             $objErr->doFunc(array("詳細-サブコメント$cnt", "sub_comment$cnt", LLTEXT_LEN), array("SPTAB_CHECK", "MAX_LENGTH_CHECK"));
