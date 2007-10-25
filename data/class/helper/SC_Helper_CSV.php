@@ -121,6 +121,19 @@ class SC_Helper_CSV {
             $list_data[$i]['classcategory_id1'] = $arrClassCatName[$list_data[$i]['classcategory_id1']];
             $list_data[$i]['classcategory_id2'] = $arrClassCatName[$list_data[$i]['classcategory_id2']];
 
+            $arrCategory_id = $objQuery->getCol("dtb_product_categories",
+                              "category_id",
+                              "product_id = ?",
+                              array($list_data[$i]['product_id']));
+
+            // カテゴリID 付与
+            for ($j = 0; $j < count($arrCategory_id); $j++) {
+                $list_data[$i]['category_id'] .= $arrCategory_id[$j];
+                if ($j < count($arrCategory_id) - 1) {
+                    $list_data[$i]['category_id'] .= "|";
+                }
+            }
+
             // 各項目をCSV出力用に変換する。
             $data .= $this->lfMakeProductsCSV($list_data[$i]);
         }
