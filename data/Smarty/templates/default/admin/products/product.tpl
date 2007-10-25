@@ -233,10 +233,10 @@ function selectAll(target) {
 										<a name="main_large_image"></a>
 										<span class="red12"><!--{$arrErr[$key]}--></span>
 										<!--{if $arrFile[$key].filepath != ""}-->
-										<img src="<!--{$arrFile[$key].filepath}-->" alt="<!--{$arrForm.name|escape}-->" />　<a href="" onclick="fnModeSubmit('delete_image', 'image_key', '<!--{$key}-->'); return false;">[画像の取り消し]</a><br>
+										<img src="<!--{$arrFile[$key].filepath}-->" alt="<!--{$arrForm.name|escape}-->" />　<a href="" onclick="selectAll('category_id'); fnModeSubmit('delete_image', 'image_key', '<!--{$key}-->'); return false;">[画像の取り消し]</a><br>
 										<!--{/if}-->
 										<input type="file" name="main_list_image" size="50" class="box50" style="<!--{$arrErr[$key]|sfGetErrorColor}-->" />
-										<input type="button" name="btn" onclick="fnModeSubmit('upload_image', 'image_key', '<!--{$key}-->')" value="アップロード">
+										<input type="button" name="btn" onclick="selectAll('category_id'); fnModeSubmit('upload_image', 'image_key', '<!--{$key}-->')" value="アップロード">
 										</td>
 									</tr>
 									<tr>
@@ -245,10 +245,10 @@ function selectAll(target) {
 										<td bgcolor="#ffffff" width="557" class="fs12n">
 										<span class="red12"><!--{$arrErr[$key]}--></span>
 										<!--{if $arrFile[$key].filepath != ""}-->
-										<img src="<!--{$arrFile[$key].filepath}-->" alt="<!--{$arrForm.name|escape}-->" />　<a href="" onclick="fnModeSubmit('delete_image', 'image_key', '<!--{$key}-->'); return false;">[画像の取り消し]</a><br>
+										<img src="<!--{$arrFile[$key].filepath}-->" alt="<!--{$arrForm.name|escape}-->" />　<a href="" onclick="selectAll('category_id'); fnModeSubmit('delete_image', 'image_key', '<!--{$key}-->'); return false;">[画像の取り消し]</a><br>
 										<!--{/if}-->
 										<input type="file" name="main_image" size="50" class="box50" style="<!--{$arrErr[$key]|sfGetErrorColor}-->" />
-										<input type="button" name="btn" onclick="fnModeSubmit('upload_image', 'image_key', '<!--{$key}-->')" value="アップロード">
+										<input type="button" name="btn" onclick="selectAll('category_id'); fnModeSubmit('upload_image', 'image_key', '<!--{$key}-->')" value="アップロード">
 										</td>
 									</tr>
 									<tr>
@@ -257,10 +257,10 @@ function selectAll(target) {
 										<td bgcolor="#ffffff" width="557" class="fs12n">
 										<span class="red12"><!--{$arrErr[$key]}--></span>
 										<!--{if $arrFile[$key].filepath != ""}-->
-										<img src="<!--{$arrFile[$key].filepath}-->" alt="<!--{$arrForm.name|escape}-->" />　<a href="" onclick="fnModeSubmit('delete_image', 'image_key', '<!--{$key}-->'); return false;">[画像の取り消し]</a><br>
+										<img src="<!--{$arrFile[$key].filepath}-->" alt="<!--{$arrForm.name|escape}-->" />　<a href="" onclick="selectAll('category_id'); fnModeSubmit('delete_image', 'image_key', '<!--{$key}-->'); return false;">[画像の取り消し]</a><br>
 										<!--{/if}-->
 										<input type="file" name="<!--{$key}-->" size="50" class="box50" style="<!--{$arrErr[$key]|sfGetErrorColor}-->" />
-										<input type="button" name="btn" onclick="fnModeSubmit('upload_image', 'image_key', '<!--{$key}-->')" value="アップロード">
+										<input type="button" name="btn" onclick="selectAll('category_id'); fnModeSubmit('upload_image', 'image_key', '<!--{$key}-->')" value="アップロード">
 										</td>
 									</tr>
 									<!--{*　カラー比較画像、商品詳細ファイルは非対応 
@@ -270,10 +270,10 @@ function selectAll(target) {
 										<!--{assign var=key value="file1"}-->
 										<span class="red12"><!--{$arrErr[$key]}--></span>
 										<!--{if $arrFile[$key].filepath != ""}-->
-										<img src="<!--{$arrFile[$key].filepath}-->" alt="<!--{$arrForm.name|escape}-->" width="<!--{$arrFile[$key].width}-->" height="<!--{$arrFile[$key].height}-->" />　<a href="" onclick="fnModeSubmit('delete_image', 'image_key', '<!--{$key}-->'); return false;">[画像の取り消し]</a><br>
+										<img src="<!--{$arrFile[$key].filepath}-->" alt="<!--{$arrForm.name|escape}-->" width="<!--{$arrFile[$key].width}-->" height="<!--{$arrFile[$key].height}-->" />　<a href="" onclick="selectAll('category_id'); fnModeSubmit('delete_image', 'image_key', '<!--{$key}-->'); return false;">[画像の取り消し]</a><br>
 										<!--{/if}-->
 										<input type="file" name="<!--{$key}-->" size="50" class="box50" />
-										<input type="button" name="btn" onclick="fnModeSubmit('upload_image', 'image_key', '<!--{$key}-->')" value="アップロード">
+										<input type="button" name="btn" onclick="selectAll('category_id'); fnModeSubmit('upload_image', 'image_key', '<!--{$key}-->')" value="アップロード">
 										</td>
 									</tr>
 									<tr>
@@ -282,11 +282,11 @@ function selectAll(target) {
 										<!--{assign var=key value="file2"}-->
 										<span class="red12"><!--{$arrErr[$key]}--></span>
 										<!--{if $arrFile[$key].filepath != ""}-->
-										<input type="button" name="pdf" value="ファイル確認" onclick="fnOpenNoMenu('<!--{$arrFile[$key].filepath}-->')"/>
-										<a href="" onclick="fnModeSubmit('delete_image', 'image_key', '<!--{$key}-->'); return false;">[ファイルの取り消し]</a><br>
+										<input type="button" name="pdf" value="ファイル確認" onclick="selectAll('category_id'); fnOpenNoMenu('<!--{$arrFile[$key].filepath}-->')"/>
+										<a href="" onclick="selectAll('category_id'); fnModeSubmit('delete_image', 'image_key', '<!--{$key}-->'); return false;">[ファイルの取り消し]</a><br>
 										<!--{/if}-->
 										<input type="file" name="<!--{$key}-->" size="50" class="box50" />
-										<input type="button" name="btn" onclick="fnModeSubmit('upload_image', 'image_key', '<!--{$key}-->')" value="アップロード">
+										<input type="button" name="btn" onclick="selectAll('category_id'); fnModeSubmit('upload_image', 'image_key', '<!--{$key}-->')" value="アップロード">
 										</td>
 									</tr>		
 									*}-->
@@ -295,7 +295,7 @@ function selectAll(target) {
 								<table width="678" border="0" cellspacing="0" cellpadding="0" summary=" ">
 									<tr height="36" align="center">
 										<td bgcolor="#cccccc"><img src="<!--{$TPL_DIR}-->img/common/_.gif" width="1" height="10" alt=""></td>
-										<td bgcolor="#f2f1ec" width="676"><input type="button" name="btn" onclick="lfDispSwitch('sub_detail');" value="サブ情報表示/非表示"></td>
+										<td bgcolor="#f2f1ec" width="676"><input type="button" name="btn" onclick="selectAll('category_id'); lfDispSwitch('sub_detail');" value="サブ情報表示/非表示"></td>
 										<td bgcolor="#cccccc"><img src="<!--{$TPL_DIR}-->img/common/_.gif" width="1" height="10" alt=""></td>
 									</tr>
 									<tr height="1" align="center">
@@ -335,10 +335,10 @@ function selectAll(target) {
 										<a name="<!--{$largekey}-->"></a>
 										<span class="red12"><!--{$arrErr[$key]}--></span>
 										<!--{if $arrFile[$key].filepath != ""}-->
-										<img src="<!--{$arrFile[$key].filepath}-->" alt="<!--{$arrForm.name|escape}-->" />　<a href="" onclick="fnModeSubmit('delete_image', 'image_key', '<!--{$key}-->'); return false;">[画像の取り消し]</a><br>
+										<img src="<!--{$arrFile[$key].filepath}-->" alt="<!--{$arrForm.name|escape}-->" />　<a href="" onclick="selectAll('category_id'); fnModeSubmit('delete_image', 'image_key', '<!--{$key}-->'); return false;">[画像の取り消し]</a><br>
 										<!--{/if}-->
 										<input type="file" name="<!--{$key}-->" size="50" class="box50" style="<!--{$arrErr[$key]|sfGetErrorColor}-->"/>
-										<input type="button" name="btn" onclick="fnModeSubmit('upload_image', 'image_key', '<!--{$key}-->')" value="アップロード">
+										<input type="button" name="btn" onclick="selectAll('category_id'); fnModeSubmit('upload_image', 'image_key', '<!--{$key}-->')" value="アップロード">
 										</td>
 									</tr>
 									<tr>
@@ -347,10 +347,10 @@ function selectAll(target) {
 										<td bgcolor="#ffffff" width="557" class="fs12n">
 										<span class="red12"><!--{$arrErr[$key]}--></span>
 										<!--{if $arrFile[$key].filepath != ""}-->
-										<img src="<!--{$arrFile[$key].filepath}-->" alt="<!--{$arrForm.name|escape}-->" />　<a href="" onclick="fnModeSubmit('delete_image', 'image_key', '<!--{$key}-->'); return false;">[画像の取り消し]</a><br>
+										<img src="<!--{$arrFile[$key].filepath}-->" alt="<!--{$arrForm.name|escape}-->" />　<a href="" onclick="selectAll('category_id'); fnModeSubmit('delete_image', 'image_key', '<!--{$key}-->'); return false;">[画像の取り消し]</a><br>
 										<!--{/if}-->
 										<input type="file" name="<!--{$key}-->" size="50" class="box50" style="<!--{$arrErr[$key]|sfGetErrorColor}-->"/>
-										<input type="button" name="btn" onclick="fnModeSubmit('upload_image', 'image_key', '<!--{$key}-->')" value="アップロード">
+										<input type="button" name="btn" onclick="selectAll('category_id'); fnModeSubmit('upload_image', 'image_key', '<!--{$key}-->')" value="アップロード">
 										</td>
 									</tr>
 									<!--▲商品<!--{$smarty.section.cnt.iteration}-->-->
@@ -362,7 +362,7 @@ function selectAll(target) {
 								<table width="678" border="0" cellspacing="0" cellpadding="0" summary=" ">
 									<tr height="36" align="center">
 										<td bgcolor="#cccccc"><img src="<!--{$TPL_DIR}-->img/common/_.gif" width="1" height="10" alt=""></td>
-										<td bgcolor="#f2f1ec" width="676"><input type="button" name="btn" onclick="lfDispSwitch('recommend_select');" value="関連商品表示/非表示"></td>
+										<td bgcolor="#f2f1ec" width="676"><input type="button" name="btn" onclick="selectAll('category_id'); lfDispSwitch('recommend_select');" value="関連商品表示/非表示"></td>
 										<td bgcolor="#cccccc"><img src="<!--{$TPL_DIR}-->img/common/_.gif" width="1" height="10" alt=""></td>
 									</tr>
 									<tr height="1" align="center">
@@ -394,7 +394,7 @@ function selectAll(target) {
 										<td bgcolor="#ffffff" width="557" class="fs12">
 										<a name="<!--{$anckey}-->"></a>
 										<input type="hidden" name="<!--{$key}-->" value="<!--{$arrRecommend[$recommend_no].product_id|escape}-->">
-										<input type="button" name="change" value="変更" onclick="win03('./product_select.php?no=<!--{$smarty.section.cnt.iteration}-->', 'search', '500', '500'); " >
+										<input type="button" name="change" value="変更" onclick="selectAll('category_id'); win03('./product_select.php?no=<!--{$smarty.section.cnt.iteration}-->', 'search', '500', '500'); " >
 										<!--{assign var=key value="recommend_delete`$smarty.section.cnt.iteration`"}-->
 										<input type="checkbox" name="<!--{$key}-->" value="1">削除<br>
 										商品コード:<!--{$arrRecommend[$recommend_no].product_code_min}--><br>
