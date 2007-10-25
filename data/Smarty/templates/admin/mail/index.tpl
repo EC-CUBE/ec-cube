@@ -369,7 +369,13 @@
 				<!--{/if}-->
 				</td>
 				<td><img src="<!--{$smarty.const.URL_DIR}-->img/common/_.gif" width="8" height="1" alt=""></td>
-				<td><input type="submit" name="subm" value="配信内容を設定する" onclick="document.form1['mode'].value='input';"/></td>
+				<td><input type="submit" name="subm" value="配信内容を設定する" onclick="document.form1['mode'].value='input';"/>
+				<!--{* コンビーズモジュール連携用 *}-->
+				<!--{assign var=path value=`$smarty.const.MODULE_PATH`mdl_combz/combz_mail.tpl}-->
+				<!--{if file_exists($path)}-->
+					<!--{include file=$path}-->
+				<!--{/if}-->
+				</td>
 			</tr>
 		</table>
 		</td>

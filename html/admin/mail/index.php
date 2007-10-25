@@ -7,6 +7,10 @@
 require_once("../require.php");
 require_once("./inc_mailmagazine.php");
 
+if(file_exists(MODULE_PATH . 'mdl_combz/mdl_combz.inc')) {
+	require_once(MODULE_PATH . 'mdl_combz/mdl_combz.inc');
+}
+
 class LC_Page {
 	var $arrSession;
 	var $arrHtmlmail;
@@ -275,6 +279,10 @@ case 'regist_complete':
 			}
 		}
 	}
+	break;
+// コンビーズ連携用
+case 'combz':
+	$objPage->combz_return = sfCombzPost($_POST['combz_type']);
 	break;
 default:
 	$objPage->list_data['mail_type'] = 1;
