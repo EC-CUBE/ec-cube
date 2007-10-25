@@ -378,7 +378,7 @@ class LC_Page_Products_List extends LC_Page {
             break;
 
         default:
-            $col = "DISTINCT product_id, product_code_min, product_code_max,"
+            $col = "DISTINCT T1.product_id, product_code_min, product_code_max,"
                 . " price01_min, price01_max, price02_min, price02_max, "
                 . " stock_min, stock_max, stock_unlimited_min, "
                 . " stock_unlimited_max, del_flg, status, name, comment1, "

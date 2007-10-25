@@ -323,7 +323,7 @@ class SC_DB_DBFactory_MYSQL extends SC_DB_DBFactory {
                 ON T1.product_id = T2.product_id_sub) ',
 
             "vw_products_allclass" => '
-   (SELECT product_id,
+   (SELECT T1.product_id,
            product_code_min,
            product_code_max,
            price01_min,
