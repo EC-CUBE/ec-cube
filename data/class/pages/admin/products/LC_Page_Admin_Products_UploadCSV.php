@@ -11,8 +11,6 @@ require_once(CLASS_PATH . "pages/LC_Page.php");
 /**
  * CSV アップロード のページクラス.
  *
- * :XXX: 要テスト
- *
  * @package Page
  * @author LOCKON CO.,LTD.
  * @version $Id:LC_Page_Admin_Products_UploadCSV.php 15532 2007-08-31 14:39:46Z nanasess $
@@ -269,7 +267,7 @@ class LC_Page_Admin_Products_UploadCSV extends LC_Page {
             $this->objFormParam->addParam("詳細-サブコメント($cnt)", "recommend_comment$cnt", LTEXT_LEN, "KVa", array("SPTAB_CHECK","MAX_LENGTH_CHECK"));
         }
 
-        $this->objFormParam->addParam("商品カテゴリ", "category_id", STEXT_LEN, "n", array("EXIST_CHECK", "SPTAB_CHECK", "MAX_LENGTH_CHECK"));
+        $this->objFormParam->addParam("商品カテゴリ", "category_id", STEXT_LEN, "n", array("EXIST_CHECK", "SPTAB_CHECK"));
     }
 
     /**
@@ -305,6 +303,7 @@ class LC_Page_Admin_Products_UploadCSV extends LC_Page {
             case 'recommend_comment4':
             case 'recommend_comment5':
             case 'recommend_comment6':
+            case 'category_id':
                 break;
             default:
                 if(!ereg("^dummy", $key)) {
@@ -313,6 +312,7 @@ class LC_Page_Admin_Products_UploadCSV extends LC_Page {
                 break;
             }
         }
+
         // 登録時間を生成(DBのnow()だとcommitした際、すべて同一の時間になってしまう)
         $time = date("Y-m-d H:i:s");
         // 秒以下を生成
@@ -334,9 +334,6 @@ class LC_Page_Admin_Products_UploadCSV extends LC_Page {
         }
 
         if($arrRet['product_id'] != "" && $arrRet['product_class_id'] != "") {
-            // カテゴリ内ランクの調整処理
-            $old_catid = $objQuery->get("dtb_products", "category_id", "product_id = ?", array($arrRet['product_id']));
-            $objDb->sfMoveCatRank($objQuery, "dtb_products", "product_id", "category_id", $old_catid, $arrRet['category_id'], $arrRet['product_id']);
 
             // UPDATEの実行
             $where = "product_id = ?";
@@ -353,12 +350,13 @@ class LC_Page_Admin_Products_UploadCSV extends LC_Page {
             $sqlval['product_id'] = $product_id;
             $sqlval['create_date'] = $time;
 
-            // カテゴリ内で最大のランクを割り当てる
-            $sqlval['rank'] = $objQuery->max("dtb_products", "rank", "category_id = ?", array($arrRet['category_id'])) + 1;
-
             // INSERTの実行
             $objQuery->insert("dtb_products", $sqlval);
         }
+
+        // カテゴリ登録
+        $arrCategory_id = explode("|", $arrRet["category_id"]);
+        $objDb->updateProductCategories($arrCategory_id, $sqlval['product_id']);
 
         // 規格登録
         $this->lfRegistProductClass($objQuery, $arrRet, $sqlval['product_id'], $arrRet['product_class_id']);
@@ -405,7 +403,7 @@ class LC_Page_Admin_Products_UploadCSV extends LC_Page {
         $sqlval['price02'] = $arrList['price02'];
         $sqlval['creator_id'] = $_SESSION['member_id'];
 
-        // FIXME $sqlval['member_id'] は何処から出てくる?
+        // TODO $sqlval['member_id'] は何処から出てくる?
         if($sqlval['member_id'] == "") {
             $sqlval['creator_id'] = '0';
         }
@@ -460,9 +458,12 @@ class LC_Page_Admin_Products_UploadCSV extends LC_Page {
             }
 
             // 存在するカテゴリIDかチェック
-            $count = $objQuery->count("dtb_category", "category_id = ?", array($arrRet['category_id']));
-            if($count == 0) {
-                $objErr->arrErr['product_id'] = "※ 指定のカテゴリIDは、登録されていません。";
+            $arrCategory_id = explode("|", $arrRet['category_id']);
+            foreach ($arrCategory_id as $category_id) {
+                $count = $objQuery->count("dtb_category", "category_id = ?", array($category_id));
+                if($count == 0) {
+                    $objErr->arrErr['product_id'] = "※ 指定のカテゴリIDは、登録されていません。";
+                }
             }
         }
         return $objErr->arrErr;
