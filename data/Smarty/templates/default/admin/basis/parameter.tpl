@@ -68,9 +68,9 @@
   <td bgcolor="#ffffff" width="537" class="fs10n">
     <div style="font-size: 80%; color: #666666"><!--{$arrComments[cnt]|escape}--></div>
     <div>
-      <input type="text" name="<!--{$arrKeys[cnt]|escape}-->" value="<!--{$arrValues[cnt]|escape}-->" size="64">
-	<!--{assign var=key value=$arrKeys[cnt]}-->
-	<span class="red12"><!--{$arrErr.$key}--></span>
+      <!--{assign var=key value=$arrKeys[cnt]}-->
+      <input type="text" name="<!--{$arrKeys[cnt]|escape}-->" value="<!--{$arrValues[cnt]|escape}-->" size="64" style="<!--{if $arrErr.$key != ""}-->background-color: <!--{$smarty.const.ERR_COLOR}--><!--{/if}-->">
+      <span class="red12"><!--{$arrErr.$key}--></span>
     </div>
   </td>
 </tr>

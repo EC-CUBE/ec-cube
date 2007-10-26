@@ -69,10 +69,13 @@ class LC_Page_Admin_Basis_Parameter extends LC_Page {
             // エラーの無い場合は update
             if (empty($this->arrErr)) {
                 $this->update();
+                $this->tpl_onload = "window.alert('パラメータの設定が完了しました。');";
             } else {
                 $this->arrValues = SC_Utils_Ex::getHash2Array($this->arrForm,
                                                               $this->arrKeys);
+                $this->tpl_onload = "window.alert('エラーが発生しました。入力内容をご確認下さい。');";
             }
+
         }
 
         if (empty($this->arrErr)) {
