@@ -77,7 +77,7 @@ class LC_Page_Products_List extends LC_Page {
         if (!isset($_GET['mode'])) $_GET['mode'] = "";
         if (!isset($_GET['name'])) $_GET['name'] = "";
         if (!isset($_POST['orderby'])) $_POST['orderby'] = "";
-        if (empty($arrCategory_id)) $arrCategory_id = array("");
+        if (empty($arrCategory_id)) $arrCategory_id = array("0");
 
         // タイトル編集
         $tpl_subtitle = "";
@@ -212,6 +212,7 @@ class LC_Page_Products_List extends LC_Page {
         // GETのカテゴリIDを元に正しいカテゴリIDを取得する。
         $arrCategory_id = $objDb->sfGetCategoryId("", $_GET['category_id']);
 
+
         // タイトル編集
         $tpl_subtitle = "";
         $tpl_search_mode = false;
@@ -220,6 +221,7 @@ class LC_Page_Products_List extends LC_Page {
         if (!isset($_POST['mode'])) $_POST['mode'] = "";
         if (!isset($_GET['name'])) $_GET['name'] = "";
         if (!isset($_REQUEST['orderby'])) $_REQUEST['orderby'] = "";
+        if (empty($arrCategory_id)) $arrCategory_id = array("0");
 
         if($_GET['mode'] == 'search'){
             $tpl_subtitle = "検索結果";
