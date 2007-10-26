@@ -130,7 +130,7 @@ class LC_Page_Admin_Design_Bloc extends LC_Page {
 
                 // ファイル作成
                 $fp = fopen(USER_PATH . BLOC_DIR . $_POST['filename'] . '.tpl',"w");
-                fwrite($fp, $_POST['bloc_html']); // FIXME
+                fwrite($fp, $_POST['bloc_html']); // FIXME いきなり POST はちょっと...
                 fclose($fp);
 
                 $arrBlocData = $this->lfgetBlocData(" filename = ? " , array($_POST['filename']));

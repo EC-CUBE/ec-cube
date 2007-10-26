@@ -226,7 +226,7 @@ class LC_Page_Admin_Design extends LC_Page {
         $arrPageData = $objLayout->lfgetPageData(' page_id = ?', array($page_id));
         $this->arrPageData = $arrPageData[0];
 
-        global $GLOBAL_ERR; // FIXME
+        global $GLOBAL_ERR;
         $errCnt = 0;
         if ($GLOBAL_ERR != "") {
             $arrGlobalErr = explode("\n",$GLOBAL_ERR);
