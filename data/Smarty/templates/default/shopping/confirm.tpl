@@ -3,6 +3,20 @@
  *
  * http://www.lockon.co.jp/
  *}-->
+<script type="text/javascript">//<![CDATA[
+var send = true;
+
+function fnCheckSubmit() {
+	if(send) {
+		send = false;
+		return true;
+	} else {
+		alert("只今、処理中です。しばらくお待ち下さい。");
+		return false;
+	}
+}
+//]]>
+</script>
 <!--▼CONTENTS-->
 <div id="under02column">
   <div id="under02column_shopping">
@@ -197,9 +211,9 @@
       <div class="tblareabtn">
         <a href="./payment.php" onmouseover="chgImgImageSubmit('<!--{$TPL_DIR}-->img/common/b_back_on.gif',back03)" onmouseout="chgImgImageSubmit('<!--{$TPL_DIR}-->img/common/b_back.gif',back03)"><img src="<!--{$TPL_DIR}-->img/common/b_back.gif" width="150" height="30" alt="戻る" border="0" name="back03" id="back03" /></a>&nbsp;
         <!--{if $payment_type != ""}-->
-        <input type="image" onmouseover="chgImgImageSubmit('<!--{$TPL_DIR}-->img/common/b_next_on.gif',this)" onmouseout="chgImgImageSubmit('<!--{$TPL_DIR}-->img/common/b_next.gif',this)" src="<!--{$TPL_DIR}-->img/common/b_next.gif" alt="次へ" class="box150" name="next" id="next" />
+        <input type="image" onclick="return fnCheckSubmit();" onmouseover="chgImgImageSubmit('<!--{$TPL_DIR}-->img/common/b_next_on.gif',this)" onmouseout="chgImgImageSubmit('<!--{$TPL_DIR}-->img/common/b_next.gif',this)" src="<!--{$TPL_DIR}-->img/common/b_next.gif" alt="次へ" class="box150" name="next" id="next" />
         <!--{else}-->
-        <input type="image" onmouseover="chgImgImageSubmit('<!--{$TPL_DIR}-->img/shopping/b_ordercomp_on.gif',this)" onmouseout="chgImgImageSubmit('<!--{$TPL_DIR}-->img/shopping/b_ordercomp.gif',this)" src="<!--{$TPL_DIR}-->img/shopping/b_ordercomp.gif" alt="ご注文完了ページへ" class="box150" name="next" id="next" />
+        <input type="image" onclick="return fnCheckSubmit();" onmouseover="chgImgImageSubmit('<!--{$TPL_DIR}-->img/shopping/b_ordercomp_on.gif',this)" onmouseout="chgImgImageSubmit('<!--{$TPL_DIR}-->img/shopping/b_ordercomp.gif',this)" src="<!--{$TPL_DIR}-->img/shopping/b_ordercomp.gif" alt="ご注文完了ページへ" class="box150" name="next" id="next" />
         <!--{/if}-->
       </div>
     </form>
