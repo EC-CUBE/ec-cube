@@ -73,6 +73,7 @@ class LC_Page_Admin_Basis_Masterdata extends LC_Page {
                                               array("id", "name", "rank"),
                                               $arrData, false);
                 $masterData->objQuery->commit();
+                $this->tpl_onload = "window.alert('マスタデータの設定が完了しました。');";
             }
 
         case "show":
