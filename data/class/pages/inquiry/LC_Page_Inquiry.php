@@ -211,8 +211,8 @@ class LC_Page_Inquiry extends LC_Page {
     /**
      * 取得文字列の変換
      *
-     * @param array TODO
-     * @param array TODO
+     * @param array $array 取得文字列の配列
+     * @param array フォームパラメータの配列
      * @return array 変換後の文字列
      **/
     function lfConvertParam($array, $arrRegistColumn) {
@@ -244,9 +244,8 @@ class LC_Page_Inquiry extends LC_Page {
 
     /**
      * 値が入力された配列のみを返す.
-     * TODO 要リファクタリング
      *
-     * @param array $arr TODO
+     * @param array $arr 入力文字列
      * @return array 値が入力された配列
      */
     function lfGetArrInput( $arr ){
@@ -269,15 +268,15 @@ class LC_Page_Inquiry extends LC_Page {
     }
 
     /**
-     * TODO
+     * 配列の Smarty 変数の存在をチェックする.
      *
-     * @param unknown_type $palams
-     * @return unknown
+     * @param array $params フォームパラメータの配列
+     * @return Smarty 変数が存在する場合 true
      */
-    function lfArray_Search_key_Smarty ( $palams ){
+    function lfArray_Search_key_Smarty ( $params ){
 
-        $val = $palams['val'];
-        $arr = $palams['arr'];
+        $val = $params['val'];
+        $arr = $params['arr'];
 
         $revers_arr = array_flip($arr);
         return array_search( $val ,$revers_arr );
@@ -286,10 +285,10 @@ class LC_Page_Inquiry extends LC_Page {
     }
 
     /**
-     * TODO
+     * 引数が null かチェックする.
      *
-     * @param unknown_type $val
-     * @return unknown
+     * @param mixed $val 入力データ
+     * @return integer|array 引数に null が含まれる場合 1, それ以外は空の配列
      */
     function lfCheckNull ( $val ){
         $return = array();
