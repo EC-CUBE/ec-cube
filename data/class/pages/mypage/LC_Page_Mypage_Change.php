@@ -199,6 +199,10 @@ class LC_Page_Mypage_Change extends LC_Page {
         $objConn = new SC_DbConn();
         $objView = new SC_MobileView();
         $this->objDate = new SC_Date(START_BIRTH_YEAR, date("Y",strtotime("now")));
+        $this->arrYear = $this->objDate->getYear();
+        $this->arrMonth = $this->objDate->getMonth();
+        $this->arrDay = $this->objDate->getDay();
+
         $this->objQuery = new SC_Query();
         $this->objCustomer = new SC_Customer();
 
