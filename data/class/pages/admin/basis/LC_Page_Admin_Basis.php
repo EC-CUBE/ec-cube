@@ -79,8 +79,7 @@ class LC_Page_Admin_Basis extends LC_Page {
                 default:
                     break;
                 }
-                // 再表示
-                SC_Utils_Ex::sfReload();
+                $this->tpl_onload = "window.alert('SHOPマスタの登録が完了しました。');";
             }
         } else {
             $arrCol = $this->lfGetCol();
