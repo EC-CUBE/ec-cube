@@ -166,7 +166,7 @@ class SC_GraphPie extends SC_GraphBase{
             $end = $start + $arrRad[$i];
             // 前面のみ
             if($end > 90 && $end < 270) {
-                list($ax, $ay) = lfGetArcPos($x, $y, $w, $h, $end);
+                list($ax, $ay) = $this->lfGetArcPos($x, $y, $w, $h, $end);
                 // ラインのずれを補正する
                 if($end > 180) {
                     $ax = $ax + 1;
