@@ -312,10 +312,7 @@ class SC_FormParam {
                 $arrRet[$val]['value'] = $this->param[$cnt];
             }
 
-            /*
-             * :XXX: isset() でチェックできない
-             */
-            if (empty($this->param[$cnt])) $this->param[$cnt] = "";
+            if (!isset($this->param[$cnt])) $this->param[$cnt] = "";
 
             if($this->default[$cnt] != "" && $this->param[$cnt] == "") {
                 $arrRet[$val]['value'] = $this->default[$cnt];
