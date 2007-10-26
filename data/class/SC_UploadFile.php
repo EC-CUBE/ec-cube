@@ -291,8 +291,10 @@ class SC_UploadFile {
             if($val == $keyname || $keyname == "") {
                 // 必須であればエラーチェック
                 if ($this->necessary[$cnt] == true) {
-                    if(isset($this->save_file[$cnt]) && $this->save_file[$cnt] == ""
-                            && isset($this->temp_file[$cnt]) && $this->temp_file[$cnt] == "") {
+                    if (!isset($this->save_file[$cnt])) $this->save_file[$cnt] = "";
+                    if (!isset($this->temp_file[$cnt])) $this->temp_file[$cnt] = "";
+                    if($this->save_file[$cnt] == ""
+                            &&  $this->temp_file[$cnt] == "") {
                         $arrRet[$val] = "※ " . $this->disp_name[$cnt] . "がアップロードされていません。<br>";
                     }
                 }
