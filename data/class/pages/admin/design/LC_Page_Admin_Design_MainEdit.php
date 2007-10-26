@@ -27,14 +27,13 @@ class LC_Page_Admin_Design_MainEdit extends LC_Page {
      */
     function init() {
         parent::init();
-		$this->tpl_mainpage = 'design/main_edit.tpl';
-		$this->tpl_subnavi 	= 'design/subnavi.tpl';
-		$this->user_URL	 	= USER_URL;
-		$this->text_row 	= 13;
-		$this->tpl_subno = "main_edit";
-		$this->tpl_mainno = "design";
-		$this->tpl_subtitle = 'ページ詳細設定';
-
+        $this->tpl_mainpage = 'design/main_edit.tpl';
+        $this->tpl_subnavi  = 'design/subnavi.tpl';
+        $this->user_URL     = USER_URL;
+        $this->text_row     = 13;
+        $this->tpl_subno = "main_edit";
+        $this->tpl_mainno = "design";
+        $this->tpl_subtitle = 'ページ詳細設定';
     }
 
     /**
@@ -125,7 +124,7 @@ class LC_Page_Admin_Design_MainEdit extends LC_Page {
             $this->lfEntryPageData($_POST);
 
             // TPLファイル作成
-            $cre_tpl = USER_PATH . "templates/" . $url . '.tpl';
+            $cre_tpl = USER_PATH . "templates/" . TEMPLATE_NAME . "/" . $url . '.tpl';
             $this->lfCreateFile($cre_tpl);
 
             // blocposition を削除
@@ -157,7 +156,7 @@ class LC_Page_Admin_Design_MainEdit extends LC_Page {
             }
 
             $_SESSION['preview'] = "ON";
-            $this->sendRedirect($this->getLocation(URL_DIR . "preview/index.php"));
+            $this->sendRedirect($this->getLocation(URL_DIR . "preview/index.php", array("filename" => $arrPageData[0]["filename"])));
         }
 
         // データ登録処理
