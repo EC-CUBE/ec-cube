@@ -346,7 +346,7 @@ define('MEMBER_PMAX', 10);
 /** 検索ページ表示行数 */
 define('SEARCH_PMAX', 10);
 /** ページ番号の最大表示個数 */
-define('NAVI_PMAX', 5);
+define('NAVI_PMAX', 4);
 /** 商品サブ情報最大数 */
 define('PRODUCTSUB_MAX', 5);
 /** 配送時間の最大表示数 */

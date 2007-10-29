@@ -81,7 +81,7 @@ class SC_PageNavi {
             }
 
             if ($this->now_page < $this->max_page) {
-                $next="<a href=\"". $ps . "\" onclick=\"$func_name('" . (($this->now_page) + 1) ."'); return false;\">次へ&gt;&gt;</a> ";
+                $next=" <a href=\"". $ps . "\" onclick=\"$func_name('" . (($this->now_page) + 1) ."'); return false;\">次へ&gt;&gt;</a>";
                 $this->arrPagenavi['next'] = ($this->now_page) + 1;
             }else{
                 $this->arrPagenavi['next'] = $this->now_page;
@@ -120,9 +120,9 @@ class SC_PageNavi {
                 }
 
                 if ($i == $this->now_page) {
-                    $page_number .= "<strong>$i</strong> ";
+                    $page_number .= "<strong>$i</strong>";
                 } else {
-                    $page_number.="<a href=\"".  $ps . "\" onclick=\"$func_name('$i'); return false;\">$i</a> ";
+                    $page_number.="<a href=\"".  $ps . "\" onclick=\"$func_name('$i'); return false;\">$i</a>";
                 }
 
                 $page_number.=$sep;

@@ -885,7 +885,7 @@ INSERT INTO mtb_constants VALUES ('INVALID_MOVE_ERRORR','4',180,'不正な遷移
 INSERT INTO mtb_constants VALUES ('PRODUCTS_LIST_MAX','15',181,'商品一覧表示数');
 INSERT INTO mtb_constants VALUES ('MEMBER_PMAX','10',182,'メンバー管理ページ表示行数');
 INSERT INTO mtb_constants VALUES ('SEARCH_PMAX','10',183,'検索ページ表示行数');
-INSERT INTO mtb_constants VALUES ('NAVI_PMAX','5',184,'ページ番号の最大表示個数');
+INSERT INTO mtb_constants VALUES ('NAVI_PMAX','4',184,'ページ番号の最大表示個数');
 INSERT INTO mtb_constants VALUES ('PRODUCTSUB_MAX','5',185,'商品サブ情報最大数');
 INSERT INTO mtb_constants VALUES ('DELIVTIME_MAX','16',186,'配送時間の最大表示数');
 INSERT INTO mtb_constants VALUES ('DELIVFEE_MAX','47',187,'配送料金の最大表示数');

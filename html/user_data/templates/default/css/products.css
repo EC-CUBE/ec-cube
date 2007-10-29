@@ -42,6 +42,7 @@ ul.pagenumberarea li.left {
 
 ul.pagenumberarea li.center {
     text-align: center;
+    white-space: pre;
 }
 
 ul.pagenumberarea li.right {
