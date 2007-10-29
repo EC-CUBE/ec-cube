@@ -113,7 +113,6 @@ class SC_SelectSql {
         if( ( $from_year == "" ) && ( $from_month == "" ) && ( $from_day == "" ) && ( $to_year != "" ) && ( $to_month != "" ) && ( $to_day != "" ) ) {
             $this->setWhere( $column ." < date('" . $date2 . "')");
         }
-        return $return;
     }
 
     // checkboxなどで同一カラム内で単一、もしくは複数選択肢が有る場合　例: AND ( sex = xxx OR sex = xxx OR sex = xxx  ) AND ...
