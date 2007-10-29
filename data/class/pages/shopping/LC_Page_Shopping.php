@@ -326,8 +326,6 @@ class LC_Page_Shopping extends LC_Page {
     /* 非会員入力ページのセット */
     function lfSetNonMember(&$objPage) {
         $objPage->tpl_mainpage = 'shopping/nonmember_input.tpl';
-        $objPage->tpl_css = array();
-        $objPage->tpl_css[] = URL_DIR.'css/layout/login/nonmember.css';
     }
 
     /* パラメータ情報の初期化 */
