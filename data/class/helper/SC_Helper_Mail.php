@@ -212,6 +212,7 @@ class SC_Helper_Mail {
         $sqlval['order_id'] = $order_id;
         $sqlval['template_id'] = $template_id;
         $sqlval['send_date'] = "Now()";
+        if (!isset($_SESSION['member_id'])) $_SESSION['member_id'] = "";
         if($_SESSION['member_id'] != "") {
             $sqlval['creator_id'] = $_SESSION['member_id'];
         } else {
@@ -223,15 +224,11 @@ class SC_Helper_Mail {
         $objQuery->insert("dtb_mail_history", $sqlval);
     }
 
-    /* 会員のメルマガ登録があるかどうかのチェック(仮会員を含まない) */
+    /* 会員登録があるかどうかのチェック(仮会員を含まない) */
     function sfCheckCustomerMailMaga($email) {
         $col = "email, mailmaga_flg, customer_id";
         $from = "dtb_customer";
-        /*
-         * FIXME 会員を削除しても登録済と扱われてしまう？
-         */
-        //$where = "email = ? AND status = 2";
-        $where = "email = ? AND status = 2 AND del_flg = 0";
+        $where = "(email = ? OR email_mobile = ?) AND status = 2 AND del_flg = 0";
         $objQuery = new SC_Query();
         $arrRet = $objQuery->select($col, $from, $where, array($email));
         // 会員のメールアドレスが登録されている

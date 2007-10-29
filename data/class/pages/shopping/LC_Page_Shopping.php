@@ -427,12 +427,6 @@ class LC_Page_Shopping extends LC_Page {
         $objErr->doFunc(array("生年月日", "year", "month", "day"), array("CHECK_DATE"));
         $objErr->doFunc(array("メールアドレス", "メールアドレス（確認）", "order_email", "order_email_check"), array("EQUAL_CHECK"));
 
-        // すでにメルマガテーブルに会員としてメールアドレスが登録されている場合
-        $helperMail = new SC_Helper_Mail_Ex();
-        if($helperMail->sfCheckCustomerMailMaga($arrRet['order_email'])) {
-            $objErr->arrErr['order_email'] = "このメールアドレスはすでに登録されています。<br />";
-        }
-
         return $objErr->arrErr;
     }
 

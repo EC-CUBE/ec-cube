@@ -68,7 +68,8 @@ class LC_Page_Regist extends LC_Page {
         $this->arrInfo = $objSiteInfo->data;
 
         // キャンペーンからの登録の場合の処理
-        if($_GET["cp"] != "") {
+
+        if(!empty($_GET["cp"])) {
             $etc_val = array("cp" => $_GET['cp']);
         }
 
@@ -78,10 +79,7 @@ class LC_Page_Regist extends LC_Page {
             //-- 入力チェック
             $this->arrErr = $this->lfErrorCheck($_GET);
             if ($this->arrErr) {
-                $this->tpl_mainpage = 'regist/error.tpl';
-                $this->tpl_css = "/css/layout/regist/error.css";
-                $this->tpl_title = 'エラー';
-
+                SC_Utils_Ex::sfDispSiteError(FREE_ERROR_MSG, "", true, $this->arrErr["id"]);
             } else {
                 $registSecretKey = $this->lfRegistData($_GET);			//本会員登録（フラグ変更）
                 $this->lfSendRegistMail($registSecretKey);				//本会員登録完了メール送信
@@ -95,11 +93,7 @@ class LC_Page_Regist extends LC_Page {
 
         //--　それ以外のアクセスは無効とする
         } else {
-            $this->arrErr["id"] = "無効なアクセスです。";
-            $this->tpl_mainpage = 'regist/error.tpl';
-            $this->tpl_css = "/css/layout/regist/error.css";
-            $this->tpl_title = 'エラー';
-
+            SC_Utils_Ex::sfDispSiteError(FREE_ERROR_MSG, "", true, "無効なアクセスです。");
         }
 
         //----　ページ表示
@@ -155,9 +149,7 @@ class LC_Page_Regist extends LC_Page {
         } else {
             $this->arrErr["id"] = "無効なアクセスです。";
             $this->tpl_mainpage = 'regist/error.tpl';
-            $this->tpl_css = "/css/layout/regist/error.css";
             $this->tpl_title = 'エラー';
-
         }
 
         //----　ページ表示
@@ -258,7 +250,7 @@ class LC_Page_Regist extends LC_Page {
             $result = $objQuery->getOne($sql, array($array["id"]));
 
             if (! is_numeric($result)) {
-                $objErr->arrErr["id"] .= "※ 既に会員登録が完了しているか、無効なURLです。<br>";
+                $objErr->arrErr["id"] = "※ 既に会員登録が完了しているか、無効なURLです。<br>";
                 return $objErr->arrErr;
 
             }
@@ -287,14 +279,14 @@ class LC_Page_Regist extends LC_Page {
         $objMail = new SC_SendMail();
 
         $objMail->setItem(
-                              ''                                //　宛先
-                            , $subject                          //　サブジェクト
-                            , $toCustomerMail                   //　本文
-                            , $CONF["email03"]                  //　配送元アドレス
-                            , $CONF["shop_name"]                //　配送元　名前
-                            , $CONF["email03"]                  //　reply_to
-                            , $CONF["email04"]                  //　return_path
-                            , $CONF["email04"]                  //  Errors_to
+                              ''                                // 宛先
+                            , $subject                          // サブジェクト
+                            , $toCustomerMail                   // 本文
+                            , $this->CONF["email03"]            // 配送元アドレス
+                            , $this->CONF["shop_name"]          // 配送元 名前
+                            , $this->CONF["email03"]            // reply_to
+                            , $this->CONF["email04"]            // return_path
+                            , $this->CONF["email04"]            // Errors_to
                         );
         // 宛先の設定
         $name = $data["name01"] . $data["name02"] ." 様";
