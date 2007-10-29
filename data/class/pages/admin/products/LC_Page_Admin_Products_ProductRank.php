@@ -122,7 +122,7 @@ class LC_Page_Admin_Products_ProductRank extends LC_Page {
         $where = "del_flg = 0 AND T2.category_id = ?";
 
         // 行数の取得
-        $linemax = $objQuery->count("dtb_product_categories", "category_id = ?", array($category_id));
+        $linemax = $objQuery->count($table, "T2.category_id = ?", array($category_id));
         // 順位、該当件数表示用
         $this->tpl_linemax = $linemax;
 
