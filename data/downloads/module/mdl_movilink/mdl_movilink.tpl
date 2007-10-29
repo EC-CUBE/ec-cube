@@ -74,17 +74,6 @@ function win_open(URL){
 											<td colspan="3"><img src="<!--{$smarty.const.URL_DIR}-->img/contents/main_bar.jpg" width="442" height="10" alt=""></td>
 										</tr>
 									</table>
-
-									<table width="442" border="0" cellspacing="1" cellpadding="8" summary=" ">
-										<tr class="fs12n">
-											<td bgcolor="#ffffff">
-												ゼウス決済モジュールをご利用頂く為には、ユーザ様ご自身で
-												株式会社ゼウス様とご契約を行っていただく必要があります。 <br/>
-												お申し込みにつきましては、下記のページから、お申し込みを行って下さい。<br/><br/>
-												<a href="#" onClick="win_open('http://www.cardservice.co.jp/')" > ＞＞ ゼウス決済システムについて</a>
-											</td>
-										</tr>
-									</table>
 									
 									<table width="442" border="0" cellspacing="0" cellpadding="0" summary=" ">
 										<tr><td><img src="<!--{$smarty.const.URL_DIR}-->img/contents/main_bar.jpg" width="442" height="10" alt=""></td></tr>

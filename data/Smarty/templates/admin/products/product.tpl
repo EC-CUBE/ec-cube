@@ -279,7 +279,7 @@ function lfDispSwitch(id){
 										<input type="text" name="<!--{$key}-->" value="<!--{$arrForm[$key]}-->" size="20" class="box20" maxlength="<!--{$smarty.const.INT_LEN}-->" style="<!--{if $arrErr[$key] != ""}-->background-color: <!--{$smarty.const.ERR_COLOR}--><!--{/if}-->"/><br>
 										<!--{assign var=key value="movilink_draft_text2"}-->
 										<span class="red12"><!--{$arrErr[$key]}--></span>
-										<input type="text" name="<!--{$key}-->" value="<!--{$arrForm[$key]}-->" size="20" class="box20" maxlength="<!--{$smarty.const.INT_LEN}-->" style="<!--{if $arrErr[$key] != ""}-->background-color: <!--{$smarty.const.ERR_COLOR}--><!--{/if}-->"/><span class="red10"> （半角数字で入力）</span></td>
+										<input type="text" name="<!--{$key}-->" value="<!--{$arrForm[$key]}-->" size="20" class="box20" maxlength="<!--{$smarty.const.INT_LEN}-->" style="<!--{if $arrErr[$key] != ""}-->background-color: <!--{$smarty.const.ERR_COLOR}--><!--{/if}-->"/><span class="red10"> （8文字×2行で入力）</span></td>
 									</tr>
 									<!--{/if}-->
 									
