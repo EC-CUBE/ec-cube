@@ -75,7 +75,7 @@ self.moveTo(20,20);self.focus();
 											<td width="300" bgcolor="#ffffff">
 											<!--{assign var=key value="pubid"}-->
 											<span class="red12"><!--{$arrErr[$key]}--></span>
-											<input type="text" name="<!--{$key}-->" style="ime-mode:disabled; <!--{$arrErr[$key]|sfGetErrorColor}-->" value="<!--{$arrForm[$key]}-->" class="box10" maxlength="<!--{$arrForm[$key].length}-->">
+											<input type="text" name="<!--{$key}-->" style="ime-mode:disabled; <!--{$arrErr[$key]|sfGetErrorColor}-->" value="<!--{$arrForm[$key]}-->" class="box20" maxlength="<!--{$arrForm[$key].length}-->">
 											</td>
 										</tr>
 										<tr class="fs12n">
@@ -83,7 +83,7 @@ self.moveTo(20,20);self.focus();
 											<td width="300" bgcolor="#ffffff">
 											<!--{assign var=key value="pw"}-->
 											<span class="red12"><!--{$arrErr[$key]}--></span>
-											<input type="password" name="<!--{$key}-->" style="ime-mode:disabled; <!--{$arrErr[$key]|sfGetErrorColor}-->" value="<!--{$arrForm[$key]}-->" class="box10" maxlength="<!--{$arrForm[$key].length}-->">
+											<input type="password" name="<!--{$key}-->" style="ime-mode:disabled; <!--{$arrErr[$key]|sfGetErrorColor}-->" value="<!--{$arrForm[$key]}-->" class="box20" maxlength="<!--{$arrForm[$key].length}-->">
 											</td>
 										</tr>
 										<tr class="fs12n">
@@ -91,7 +91,7 @@ self.moveTo(20,20);self.focus();
 											<td width="300" bgcolor="#ffffff">
 											<!--{assign var=key value="magid"}-->
 											<span class="red12"><!--{$arrErr[$key]}--></span>
-											<input type="text" name="<!--{$key}-->" style="ime-mode:disabled; <!--{$arrErr[$key]|sfGetErrorColor}-->" value="<!--{$arrForm[$key]}-->" class="box10" maxlength="<!--{$arrForm[$key].length}-->">
+											<input type="text" name="<!--{$key}-->" style="ime-mode:disabled; <!--{$arrErr[$key]|sfGetErrorColor}-->" value="<!--{$arrForm[$key]}-->" class="box20" maxlength="<!--{$arrForm[$key].length}-->">
 											</td>
 										</tr>
 										<tr class="fs12n">
