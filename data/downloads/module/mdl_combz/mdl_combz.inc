@@ -10,6 +10,49 @@ require_once(DATA_PATH . "lib/slib.php");
 
 define('COMBZ_ENCODE', 'Shift-JIS');
 
+/**** ▼定数宣言 *********************************************************************************************/
+
+define("MDL_COMBZ_ID", 13);
+define("MODULE_NAME", "コンビーズ連動モジュール");
+define("MODULE_ID", MDL_COMBZ_ID);
+
+/**************************************************************************************************************
+ * 関数名	：sfSetModuleDB
+ * 処理内容	：必要なデータを取得する。
+ * 引数1	：
+ * 引数2	：
+ * 引数3	：
+ * 戻り値	：取得結果
+ **************************************************************************************************************/
+function sfSetModuleDB($module_id, $objFormParam){
+    global $objQuery;
+    $arrRet = $objFormParam->getHashArray();
+    foreach($arrRet as $key => $val) {
+    	$arrVal[$key] = $val;
+    }    
+	$sqlval['sub_data'] = serialize($arrVal);	
+    $objQuery->update("dtb_module", $sqlval, "module_id = ?", array($module_id));
+}
+
+/**************************************************************************************************************
+ * 関数名	：sfGetModuleDB
+ * 処理内容	：必要なデータを取得する。
+ * 引数1	：
+ * 引数2	：
+ * 引数3	：
+ * 戻り値	：取得結果
+ **************************************************************************************************************/
+// DBからデータを取得する
+function sfGetModuleDB($module_id){
+   	$objQuery = new SC_Query();
+    $arrVal = array($module_id);
+    $arrRet = array();
+    $sql = "SELECT 
+                sub_data
+            FROM dtb_module WHERE module_id = ? " . $where;
+    $arrRet = $objQuery->getall($sql, $arrVal);
+    return unserialize($arrRet[0]['sub_data']);
+}
 /**************************************************************************************************************
  * 関数名	：sfCombzReserve
  * 処理内容	：
@@ -23,13 +66,9 @@ function sfCombzReserve($where, $arrval) {
 	ini_set("mbstring.http_output", COMBZ_ENCODE);
 	ini_set("default_charset", COMBZ_ENCODE);
 	ini_set("mbstring.internal_encoding", COMBZ_ENCODE);
-		
-	$arrForm = array(
-		'pubid' => 'u7gu',
-		'pw' => 'iejkngt67',
-		'magid' => 'j7zb',
-	);
 	
+	//データを取得
+ 	$arrForm = sfGetModuleDB(MODULE_ID);
 	//ページ管理クラス
 	class LC_ReservePage {
 		//コンストラクタ
@@ -64,11 +103,8 @@ function sfCombzRegist($where, $arrval) {
 	ini_set("default_charset", COMBZ_ENCODE);
 	ini_set("mbstring.internal_encoding", COMBZ_ENCODE);
 		
-	$arrForm = array(
-		'pubid' => 'u7gu',
-		'pw' => 'iejkngt67',
-		'magid' => 'j7zb',
-	);
+	//データを取得
+ 	$arrForm = sfGetModuleDB(MODULE_ID);
 	
 	//ページ管理クラス
 	class LC_ReservePage {
@@ -84,14 +120,14 @@ function sfCombzRegist($where, $arrval) {
 	
 	$objQuery = new SC_Query();
 	$arrRet = $objQuery->select("email, email_mobile", "dtb_customer", $where, $arrval);
-	
+	$arrForm['set_data'] = "";
 	for($i = 0; $i < count($arrRet); $i++) {
 		if($arrRet[$i]['email'] != "") {
-			$arrForm['set_data'] = 	$arrRet[$i]['email'] . "\n";
+			$arrForm['set_data'].= 	$arrRet[$i]['email'] . "\n";
 		}
-		if($arrRet[$i]['email_mobile'] != "") {
-			$arrForm['set_data'] = 	$arrRet[$i]['email_mobile'] . "\n";	
-		}		
+		if($arrRet[$i]['email_mobile'] != "" && $arrRet[$i]['email'] != $arrRet[$i]['email_mobile']) {
+			$arrForm['set_data'].= 	$arrRet[$i]['email_mobile'] . "\n";	
+		}
 	}
 		
 	$objPage->arrForm = $arrForm;
