@@ -8,6 +8,8 @@
 require_once(DATA_PATH . "module/Request.php");
 require_once(DATA_PATH . "lib/slib.php");
 
+define('COMBZ_ENCODE', 'Shift-JIS');
+
 /**************************************************************************************************************
  * 関数名	：sfCombzReserve
  * 処理内容	：
@@ -16,29 +18,36 @@ require_once(DATA_PATH . "lib/slib.php");
  * 引数3	：
  * 戻り値	：取得結果
  **************************************************************************************************************/
-function sfCombzReserve() {
-	$arrPost = array(
-		'mode' => 'reserve',
+function sfCombzReserve($where, $arrval) {
+	ini_set("mbstring.http_input", COMBZ_ENCODE);
+	ini_set("mbstring.http_output", COMBZ_ENCODE);
+	ini_set("default_charset", COMBZ_ENCODE);
+	ini_set("mbstring.internal_encoding", COMBZ_ENCODE);
+		
+	$arrForm = array(
 		'pubid' => 'u7gu',
 		'pw' => 'iejkngt67',
 		'magid' => 'j7zb',
-		'subject' => 'lockon test subject',
-		'body' => 'this is body',		
 	);
 	
-	$req = new HTTP_Request('http://menu2.combzmail.jp/ex_eccube.cgi');
-	$req->setMethod(HTTP_REQUEST_METHOD_POST);
-	$req->addPostDataArray($arrPost);
-	$ret = $req->sendRequest();
-		
-	if (!PEAR::isError($ret)) {
-	    $response = $req->getResponseBody();
-	    $response = mb_convert_encoding($response, "EUC-JP", "Shift-JIS");
-		print($response);	    
-	} else {
-		print($ret->getMessage());
+	//ページ管理クラス
+	class LC_ReservePage {
+		//コンストラクタ
+		function LC_ReservePage() {
+			//メインテンプレートの指定
+			$this->tpl_mainpage = MODULE_PATH . 'mdl_combz/combz_reserve.tpl';
+		}
 	}
-	$req->clearPostData();
+	
+	$objPage = new LC_ReservePage();
+	$objView = new SC_AdminView();
+	$objQuery = new SC_Query();
+	
+	$objPage->arrForm = $arrForm;
+	$objView->assignobj($objPage);						//変数をテンプレートにアサインする
+	$fetch = $objView->fetch($objPage->tpl_mainpage);	//テンプレートの出力
+	$fetch = mb_convert_encoding($fetch, COMBZ_ENCODE);
+	print($fetch);
 }
 
 /**************************************************************************************************************
@@ -49,29 +58,48 @@ function sfCombzReserve() {
  * 引数3	：
  * 戻り値	：取得結果
  **************************************************************************************************************/
-function sfCombzRegist() {
-	$arrPost = array(
-		'mode' => 'add_form',
+function sfCombzRegist($where, $arrval) {
+	ini_set("mbstring.http_input", COMBZ_ENCODE);
+	ini_set("mbstring.http_output", COMBZ_ENCODE);
+	ini_set("default_charset", COMBZ_ENCODE);
+	ini_set("mbstring.internal_encoding", COMBZ_ENCODE);
+		
+	$arrForm = array(
 		'pubid' => 'u7gu',
 		'pw' => 'iejkngt67',
 		'magid' => 'j7zb',
-		'set_data' => 'test03@lockon.co.jp',
-		'set_data' => 'test04@lockon.co.jp',
 	);
 	
-	$req = new HTTP_Request('http://menu2.combzmail.jp/ex_eccube.cgi');
-	$req->setMethod(HTTP_REQUEST_METHOD_POST);
-	$req->addPostDataArray($arrPost);
-	$ret = $req->sendRequest();
-		
-	if (!PEAR::isError($ret)) {
-	    $response = $req->getResponseBody();
-	    //$response = mb_convert_encoding($response, "EUC-JP", "Shift-JIS");
-		print($response);	    
-	} else {
-		print($ret->getMessage());
+	//ページ管理クラス
+	class LC_ReservePage {
+		//コンストラクタ
+		function LC_ReservePage() {
+			//メインテンプレートの指定
+			$this->tpl_mainpage = MODULE_PATH . 'mdl_combz/combz_regist.tpl';
+		}
 	}
-	$req->clearPostData();
+	
+	$objPage = new LC_ReservePage();
+	$objView = new SC_AdminView();
+	
+	$objQuery = new SC_Query();
+	$arrRet = $objQuery->select("email, email_mobile", "dtb_customer", $where, $arrval);
+	
+	for($i = 0; $i < count($arrRet); $i++) {
+		if($arrRet[$i]['email'] != "") {
+			$arrForm['set_data'] = 	$arrRet[$i]['email'] . "\n";
+		}
+		if($arrRet[$i]['email_mobile'] != "") {
+			$arrForm['set_data'] = 	$arrRet[$i]['email_mobile'] . "\n";	
+		}		
+	}
+		
+	$objPage->arrForm = $arrForm;
+	$objView->assignobj($objPage);						//変数をテンプレートにアサインする
+	$fetch = $objView->fetch($objPage->tpl_mainpage);	//テンプレートの出力
+	$fetch = mb_convert_encoding($fetch, COMBZ_ENCODE);
+	print($fetch);
+	
 }
 
 /**************************************************************************************************************
@@ -82,13 +110,13 @@ function sfCombzRegist() {
  * 引数3	：
  * 戻り値	：取得結果
  **************************************************************************************************************/
-function sfCombzPost($combz_type) {
+function sfCombzPost($combz_type, $where, $arrval) {
 	switch($combz_type) {
 	case 'reserve':
-		sfCombzReserve();
+		sfCombzReserve($where, $arrval);
 		break;
 	case 'regist':
-		sfCombzRegist();
+		sfCombzRegist($where, $arrval);
 		break;
 	default:
 		print("コンビーズ連携：不正な値です。");
