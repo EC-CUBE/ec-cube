@@ -73,16 +73,15 @@ class SC_PageNavi {
             //「前へ」「次へ」の設定
             $before = "";
             $next = "";
-            // FIXME ちゃんとサニタイズしよう
             if ($this->now_page > 1) {
-                $before="<a href=\"". $ps . "\" onclick=\"$func_name('" . (($this->now_page) - 1) . "'); return false;\"><<前へ</a> ";
+                $before="<a href=\"". $ps . "\" onclick=\"$func_name('" . (($this->now_page) - 1) . "'); return false;\">&lt;&lt;前へ</a> ";
                 $this->arrPagenavi['before'] = ($this->now_page) - 1;
             }else{
                 $this->arrPagenavi['before'] = $this->now_page;
             }
 
             if ($this->now_page < $this->max_page) {
-                $next="<a href=\"". $ps . "\" onclick=\"$func_name('" . (($this->now_page) + 1) ."'); return false;\">次へ>></a> ";
+                $next="<a href=\"". $ps . "\" onclick=\"$func_name('" . (($this->now_page) + 1) ."'); return false;\">次へ&gt;&gt;</a> ";
                 $this->arrPagenavi['next'] = ($this->now_page) + 1;
             }else{
                 $this->arrPagenavi['next'] = $this->now_page;
@@ -111,14 +110,15 @@ class SC_PageNavi {
             }
 
             $this->arrPagenavi['arrPageno'] = array();
+            $page_number = "";
             for ($i=$disp_min; $i <= $disp_max; $i++) {
+
                 if($i != $disp_max) {
                     $sep = " | ";
                 } else {
                     $sep = "";
                 }
 
-                $page_number = "";
                 if ($i == $this->now_page) {
                     $page_number .= "<strong>$i</strong> ";
                 } else {
