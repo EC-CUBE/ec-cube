@@ -68,7 +68,7 @@ class LC_Page_Admin_Products_ProductRank extends LC_Page {
 
         // 通常時は親カテゴリを0に設定する。
         $this->arrForm['parent_category_id'] =
-            isset($_POST['parent_category_id']) ? $_POST['parent_category_id'] : "";
+            isset($_POST['parent_category_id']) ? $_POST['parent_category_id'] : 0;
 
         if (!isset($_POST['mode'])) $_POST['mode'] = "";
         switch($_POST['mode']) {
@@ -85,7 +85,7 @@ class LC_Page_Admin_Products_ProductRank extends LC_Page {
             $input_pos = mb_convert_kana($_POST[$key], "n");
             if(SC_Utils_Ex::sfIsInt($input_pos)) {
                 $where = "category_id = " . SC_Utils_Ex::sfQuoteSmart($_POST['parent_category_id']);
-                $objDb->sfMoveRank("dtb_product_categories", "product_id", $_POST['product_id'], $input_pos, "category_id = ?");
+                $objDb->sfMoveRank("dtb_product_categories", "product_id", $_POST['product_id'], $input_pos, $where);
             }
             break;
         case 'tree':
@@ -135,9 +135,6 @@ class LC_Page_Admin_Products_ProductRank extends LC_Page {
         if(DB_TYPE != "mysql") $objQuery->setlimitoffset(SEARCH_PMAX, $startno);
 
         $objQuery->setorder("rank DESC");
-
-        // viewも絞込みをかける(mysql用)
-        //sfViewWhere("&&noncls_where&&", $where, array($category_id), $objQuery->order . " " .  $objQuery->setlimitoffset(SEARCH_PMAX, $startno, true)); TODO
 
         $arrRet = $objQuery->select($col, $table, $where, array($category_id));
         return $arrRet;

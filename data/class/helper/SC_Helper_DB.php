@@ -1148,7 +1148,8 @@ class SC_Helper_DB {
 
         // 自身のランクを取得する
         $rank = $objQuery->get($tableName, "rank", "$keyIdColumn = ?", array($keyId));
-        $max = $objQuery->max($tableName, "rank", $where, array($keyId));
+
+        $max = $objQuery->max($tableName, "rank", $where);
 
         // 値の調整（逆順）
         if($pos > $max) {
@@ -1159,8 +1160,14 @@ class SC_Helper_DB {
             $position = $max - $pos + 1;
         }
 
-        if( $position > $rank ) $term = "rank - 1";	//入れ替え先の順位が入れ換え元の順位より大きい場合
-        if( $position < $rank ) $term = "rank + 1";	//入れ替え先の順位が入れ換え元の順位より小さい場合
+        //入れ替え先の順位が入れ換え元の順位より大きい場合
+        if( $position > $rank ) $term = "rank - 1";
+
+        //入れ替え先の順位が入れ換え元の順位より小さい場合
+        if( $position < $rank ) $term = "rank + 1";
+
+        // XXX 入れ替え先の順位が入れ替え元の順位と同じ場合
+        if (!isset($term)) $term = "rank";
 
         // 指定した順位の商品から移動させる商品までのrankを１つずらす
         $sql = "UPDATE $tableName SET rank = $term WHERE rank BETWEEN ? AND ?";
