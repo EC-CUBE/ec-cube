@@ -116,7 +116,7 @@ class LC_Page_Admin_Products_ProductRank extends LC_Page {
     /* 商品読み込み */
     function lfGetProduct($category_id) {
         $objQuery = new SC_Query();
-        $col = "product_id, name, main_list_image, T2.rank, product_code";
+        $col = "T2.product_id, name, main_list_image, T2.rank, product_code";
         $table = "vw_products_nonclass AS noncls "
             . " LEFT JOIN dtb_product_categories AS T2 USING (product_id)";
         $where = "del_flg = 0 AND T2.category_id = ?";
