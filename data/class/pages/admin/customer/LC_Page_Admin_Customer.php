@@ -17,26 +17,6 @@ require_once(CLASS_PATH . "pages/LC_Page.php");
  */
 class LC_Page_Admin_Customer extends LC_Page {
 
-    // {{{ properties
-
-    // TODO
-    var $arrSession;
-    var $tpl_mode;
-    var $list_data;
-    var $search_data;
-    var $arrErr;
-    var $arrYear;
-    var $arrMonth;
-    var $arrDay;
-    var $arrJob;
-    var $arrSex;
-    var $arrPageMax;
-    var $count;
-    var $search_SQL;
-    var $tpl_strnavi;
-    var $arrHtmlmail;
-
-
     // }}}
     // {{{ functions
 
