@@ -1,9 +1,25 @@
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <html lang="ja">
 <!--{*
+ * This file is part of EC-CUBE
+ *
  * Copyright(c) 2000-2007 LOCKON CO.,LTD. All Rights Reserved.
  *
  * http://www.lockon.co.jp/
+ *
+ * This program is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU General Public License
+ * as published by the Free Software Foundation; either version 2
+ * of the License, or (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  *}-->
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=<!--{$smarty.const.CHAR_CODE}-->">
@@ -25,93 +41,93 @@
 
 <!--▼HEADER-->
 <table width="912" border="0" cellspacing="0" cellpadding="0" summary=" ">
-	<tr valign="top">
-		<td><img src="../user_data/templates/default/img/header/header_left.jpg" width="17" height="50" alt=""></td>
-		<td>
-		<table width="878" border="0" cellspacing="0" cellpadding="0" summary=" " background="../user_data/templates/default/img/header/header_bg2.jpg">
-			<tr valign="top">
-				<td><img src="../user_data/templates/default/img/admin/header/logo.jpg" width="230" height="50" alt="EC CUBE" border="0"></td>
-				<td width="648" align="right"></td>
-			</tr>
-		</table>
-		</td>
-		<td><img src="../user_data/templates/default/img/header/header_right.jpg" width="17" height="50" alt=""></td>
-	</tr>
+    <tr valign="top">
+        <td><img src="../user_data/templates/default/img/header/header_left.jpg" width="17" height="50" alt=""></td>
+        <td>
+        <table width="878" border="0" cellspacing="0" cellpadding="0" summary=" " background="../user_data/templates/default/img/header/header_bg2.jpg">
+            <tr valign="top">
+                <td><img src="../user_data/templates/default/img/admin/header/logo.jpg" width="230" height="50" alt="EC CUBE" border="0"></td>
+                <td width="648" align="right"></td>
+            </tr>
+        </table>
+        </td>
+        <td><img src="../user_data/templates/default/img/header/header_right.jpg" width="17" height="50" alt=""></td>
+    </tr>
 </table>
 <!--▲HEADER-->
 
 <!--▼CONTENTS-->
 <table width="912" border="0" cellspacing="0" cellpadding="0" summary=" ">
-	<tr valign="top">
-		<td background="../user_data/templates/default/img/common/left_bg.jpg"><img src="../user_data/templates/default/img/common/left.jpg" width="17" height="443" alt=""></td>
-		<td>
-		<!--★★メインコンテンツ★★-->
-		<table width="878" border="0" cellspacing="0" cellpadding="0" summary=" ">
-			<tr valign="top">
-				<td class="mainbg" align="center" height="450">
-				<table width="562" border="0" cellspacing="0" cellpadding="0" summary=" ">
-					<tr><td height="40"></td></tr>
-					<tr>
-						<td colspan="3"><img src="../user_data/templates/default/img/contents/error_top.jpg" width="562" height="14" alt=""></td>
-					</tr>
-					<tr>
-						<td background="../user_data/templates/default/img/contents/main_left.jpg"><img src="../user_data/templates/default/img/common/_.gif" width="14" height="1" alt=""></td>
-						<td bgcolor="#cccccc">
-						<!--検索条件設定テーブルここから-->
-						<table width="534" border="0" cellspacing="0" cellpadding="0" summary=" ">
-							<tr>
-								<td bgcolor="#ffffff" align="center">
-								<!--{include file=$tpl_mainpage}-->
-								</td>
-							</tr>
-						</table>
-						<!--検索条件設定テーブルここまで-->
-						</td>
-						<td background="../user_data/templates/default/img/contents/main_right.jpg"><img src="../user_data/templates/default/img/common/_.gif" width="14" height="1" alt=""></td>
-					</tr>
-					<tr>
-						<td colspan="3"><img src="../user_data/templates/default/img/contents/error_bottom.jpg" width="562" height="14" alt=""></td>
-					</tr>
-					<tr><td height="40"></td></tr>
-				</table>
-				</td>
-			</tr>
-		</table>
-		<!--★★メインコンテンツ★★-->
-		</td>
-		<td background="../user_data/templates/default/img/common/right_bg.jpg"><div align="justify"><img src="../user_data/templates/default/img/common/right.jpg" width="17" height="443" alt=""></div></td>
-	</tr>
+    <tr valign="top">
+        <td background="../user_data/templates/default/img/common/left_bg.jpg"><img src="../user_data/templates/default/img/common/left.jpg" width="17" height="443" alt=""></td>
+        <td>
+        <!--★★メインコンテンツ★★-->
+        <table width="878" border="0" cellspacing="0" cellpadding="0" summary=" ">
+            <tr valign="top">
+                <td class="mainbg" align="center" height="450">
+                <table width="562" border="0" cellspacing="0" cellpadding="0" summary=" ">
+                    <tr><td height="40"></td></tr>
+                    <tr>
+                        <td colspan="3"><img src="../user_data/templates/default/img/contents/error_top.jpg" width="562" height="14" alt=""></td>
+                    </tr>
+                    <tr>
+                        <td background="../user_data/templates/default/img/contents/main_left.jpg"><img src="../user_data/templates/default/img/common/_.gif" width="14" height="1" alt=""></td>
+                        <td bgcolor="#cccccc">
+                        <!--検索条件設定テーブルここから-->
+                        <table width="534" border="0" cellspacing="0" cellpadding="0" summary=" ">
+                            <tr>
+                                <td bgcolor="#ffffff" align="center">
+                                <!--{include file=$tpl_mainpage}-->
+                                </td>
+                            </tr>
+                        </table>
+                        <!--検索条件設定テーブルここまで-->
+                        </td>
+                        <td background="../user_data/templates/default/img/contents/main_right.jpg"><img src="../user_data/templates/default/img/common/_.gif" width="14" height="1" alt=""></td>
+                    </tr>
+                    <tr>
+                        <td colspan="3"><img src="../user_data/templates/default/img/contents/error_bottom.jpg" width="562" height="14" alt=""></td>
+                    </tr>
+                    <tr><td height="40"></td></tr>
+                </table>
+                </td>
+            </tr>
+        </table>
+        <!--★★メインコンテンツ★★-->
+        </td>
+        <td background="../user_data/templates/default/img/common/right_bg.jpg"><div align="justify"><img src="../user_data/templates/default/img/common/right.jpg" width="17" height="443" alt=""></div></td>
+    </tr>
 </table>
 <!--▲CONTENTS-->
 
 <!--▼FOOTER-->
 <table width="912" border="0" cellspacing="0" cellpadding="0" summary=" ">
-	<tr valign="top">
-		<td background="../user_data/templates/default/img/common/left_bg.jpg"><img src="../user_data/templates/default/img/common/_.gif" width="17" height="1" alt=""></td>
-		<td bgcolor="#636469">
-		<table width="878" border="0" cellspacing="0" cellpadding="0" summary=" ">
-			<tr>
-				<td align="center" bgcolor="#f0f0f0">
-				<table width="840" border="0" cellspacing="0" cellpadding="0" summary=" ">
-					<tr>
-						<td height="45" align="right"><a href="#top"><img src="../user_data/templates/default/img/admin/common/pagetop.gif" width="105" height="17" alt="GO TO PAGE TOP" border="0"></a></td>
-					</tr>
-				</table>
-				</td>
-			</tr>
-		</table>
-		<table width="878" border="0" cellspacing="0" cellpadding="10" summary=" ">
-			<tr>
-				<td class="fs10n"><span class="gray">&nbsp;Copyright &copy; 2000-2007 LOCKON CO.,LTD. All Rights Reserved.</span></td>
-			</tr>
-		</table>
-		</td>
-		<td background="../user_data/templates/default/img/common/right_bg.jpg"><img src="../user_data/templates/default/img/common/_.gif" width="17" height="1" alt=""></td>
-	</tr>
-	<tr>
-		<td colspan="3"><img src="../user_data/templates/default/img/common/fotter.jpg" width="912" height="19" alt=""></td>
-	</tr>
-	<tr><td height="10"></td></tr>
+    <tr valign="top">
+        <td background="../user_data/templates/default/img/common/left_bg.jpg"><img src="../user_data/templates/default/img/common/_.gif" width="17" height="1" alt=""></td>
+        <td bgcolor="#636469">
+        <table width="878" border="0" cellspacing="0" cellpadding="0" summary=" ">
+            <tr>
+                <td align="center" bgcolor="#f0f0f0">
+                <table width="840" border="0" cellspacing="0" cellpadding="0" summary=" ">
+                    <tr>
+                        <td height="45" align="right"><a href="#top"><img src="../user_data/templates/default/img/admin/common/pagetop.gif" width="105" height="17" alt="GO TO PAGE TOP" border="0"></a></td>
+                    </tr>
+                </table>
+                </td>
+            </tr>
+        </table>
+        <table width="878" border="0" cellspacing="0" cellpadding="10" summary=" ">
+            <tr>
+                <td class="fs10n"><span class="gray">&nbsp;Copyright &copy; 2000-2007 LOCKON CO.,LTD. All Rights Reserved.</span></td>
+            </tr>
+        </table>
+        </td>
+        <td background="../user_data/templates/default/img/common/right_bg.jpg"><img src="../user_data/templates/default/img/common/_.gif" width="17" height="1" alt=""></td>
+    </tr>
+    <tr>
+        <td colspan="3"><img src="../user_data/templates/default/img/common/fotter.jpg" width="912" height="19" alt=""></td>
+    </tr>
+    <tr><td height="10"></td></tr>
 </table>
 <!--▲FOOTER-->
 </div>

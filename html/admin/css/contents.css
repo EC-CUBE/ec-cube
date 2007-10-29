@@ -1,14 +1,30 @@
 /*
+ * This file is part of EC-CUBE
+ *
  * Copyright(c) 2000-2007 LOCKON CO.,LTD. All Rights Reserved.
  *
  * http://www.lockon.co.jp/
+ *
+ * This program is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU General Public License
+ * as published by the Free Software Foundation; either version 2
+ * of the License, or (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
- 
-@charset "<!--{$smarty.const.CHAR_CODE}-->";
+
+@charset "utf-8";
 
 input,select,option,textarea {
-	font-family:"ＭＳ Ｐゴシック","Hiragino Maru Gothic Pro","ヒラギノ丸ゴ Pro W4",Osaka,sans-serif;
-	font-size: 13px;
+    font-family:"ＭＳ Ｐゴシック","Hiragino Maru Gothic Pro","ヒラギノ丸ゴ Pro W4",Osaka,sans-serif;
+    font-size: 13px;
 }
 
 
@@ -68,122 +84,122 @@ a:hover { color: #f9a406; text-decoration: underline; }
 
 
 .infodate {
-	color: #cccccc; font-size: 62.5%; font-weight: bold;
-	padding: 0 0 0 8px;
+    color: #cccccc; font-size: 62.5%; font-weight: bold;
+    padding: 0 0 0 8px;
 }
 
 .infottl {
-	color: #ffffff;
-	font-size: 62.5%;
-	line-height: 150%;
+    color: #ffffff;
+    font-size: 62.5%;
+    line-height: 150%;
 }
 
 .info {
-	padding: 0 4px;
-	display: block;
+    padding: 0 4px;
+    display: block;
 }
 
 .title {
-	padding: 0px 0px 20px 25px;
-	color: #ffffff;
-	font-weight: bold;
-	line-height: 120%;
+    padding: 0px 0px 20px 25px;
+    color: #ffffff;
+    font-weight: bold;
+    line-height: 120%;
 }
 
 
 
 /*navi*/
 #menu_navi {
-	table-layout: fixed;
+    table-layout: fixed;
 }
 
 
 .navi a:visited {
-	color:#ffffff;
-	text-decoration:none;
+    color:#ffffff;
+    text-decoration:none;
 }
 
 .navi a:hover {
-	background-color: #a5a5a5;
-	color:#000000;
-	text-decoration:none;
+    background-color: #a5a5a5;
+    color:#000000;
+    text-decoration:none;
 }
 
 .navi_text {
-	font-size: 75%;
-	padding: 0 0 0 8px;
+    font-size: 75%;
+    padding: 0 0 0 8px;
 }
 
 
 .navi-on a:visited {
-	color:#000000;
-	text-decoration:none;
+    color:#000000;
+    text-decoration:none;
 }
 
 .navi-on a:hover {
-	background-color: #a5a5a5;
-	color:#000000;
-	text-decoration:none;
+    background-color: #a5a5a5;
+    color:#000000;
+    text-decoration:none;
 }
 
 
 /*subnavi*/
 .subnavi a{
-	background-color: #818287;
-	width:140px;
-	padding: 6px 5px 4px 5px;
-	color:#ffffff;
-	text-decoration:none;
-	display:block;
+    background-color: #818287;
+    width:140px;
+    padding: 6px 5px 4px 5px;
+    color:#ffffff;
+    text-decoration:none;
+    display:block;
 }
 
 .subnavi a:visited {
-	color:#ffffff;
-	text-decoration:none;
+    color:#ffffff;
+    text-decoration:none;
 }
 
 .subnavi a:hover {
-	background-color: #b7b7b7;
-	color:#000000;
-	text-decoration:none;
+    background-color: #b7b7b7;
+    color:#000000;
+    text-decoration:none;
 }
 
 .subnavi_text {
-	font-size: 71%;
-	padding: 0 0 0 8px;
+    font-size: 71%;
+    padding: 0 0 0 8px;
 }
 
 .subnavi-on a{
-	background-color: #b7b7b7;
-	width:140px;
-	padding: 6px 5px 4px 5px;
-	color:#000000;
-	text-decoration:none;
-	display:block;
+    background-color: #b7b7b7;
+    width:140px;
+    padding: 6px 5px 4px 5px;
+    color:#000000;
+    text-decoration:none;
+    display:block;
 }
 
 .subnavi-on a:visited {
-	color:#000000;
-	text-decoration:none;
+    color:#000000;
+    text-decoration:none;
 }
 
 .subnavi-on a:hover {
-	background-color: #b7b7b7;
-	color:#000000;
-	text-decoration:none;
+    background-color: #b7b7b7;
+    color:#000000;
+    text-decoration:none;
 }
 
 .number-on a:visited {
-	color:#ffffff;
-	text-decoration:none;
+    color:#ffffff;
+    text-decoration:none;
 }
 
 .number a:visited {
-	color:#ffffff;
-	text-decoration:none;
+    color:#ffffff;
+    text-decoration:none;
 }
 
 /*IMG*/
 img {
-	border: 0;
+    border: 0;
 }
