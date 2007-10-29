@@ -116,9 +116,10 @@ class LC_Page_Admin_Products_ProductRank extends LC_Page {
     /* 商品読み込み */
     function lfGetProduct($category_id) {
         $objQuery = new SC_Query();
-        $col = "product_id, name, main_list_image, rank";
-        $table = "vw_products_allclass AS allcls";
-        $where = "del_flg = 0 AND category_id = ?";
+        $col = "product_id, name, main_list_image, T2.rank, product_code";
+        $table = "vw_products_nonclass AS noncls "
+            . " LEFT JOIN dtb_product_categories AS T2 USING (product_id)";
+        $where = "del_flg = 0 AND T2.category_id = ?";
 
         // 行数の取得
         $linemax = $objQuery->count("dtb_product_categories", "category_id = ?", array($category_id));
