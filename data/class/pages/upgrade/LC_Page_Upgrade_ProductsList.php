@@ -23,6 +23,8 @@
 
 // {{{ requires
 require_once CLASS_PATH . 'pages/LC_Page.php';
+require_once 'utils/LC_Utils_Upgrade.php';
+require_once 'utils/LC_Utils_Upgrade_Log.php';
 
 /**
  * オーナーズストア購入商品一覧を返すページクラス.
@@ -43,7 +45,7 @@ class LC_Page_Upgrade_ProductsList extends LC_Page {
      */
     function init() {
         $this->objJson = new Services_Json();
-        $this->objSess = new SC_Session();
+        $this->objLog  = new LC_Utils_Upgrade_Log('Products List');
     }
 
     /**
@@ -52,88 +54,76 @@ class LC_Page_Upgrade_ProductsList extends LC_Page {
      * @return void
      */
     function process() {
-        $errFormat = '* error! code:%s / debug:%s';
-
-        GC_Utils::gfPrintLog('###ProductsList Start###');
+        $this->objLog->start();
 
         // 管理画面ログインチェック
-        GC_Utils::gfPrintLog('* admin auth start');
-        if ($this->objSess->isSuccess() !== SUCCESS) {
+        $this->objLog->log('* admin auth start');
+        if (LC_Utils_Upgrade::isLoggedInAdminPage() !== true) {
             $arrErr = array(
                 'status'  => OWNERSSTORE_STATUS_ERROR,
                 'errcode' => OWNERSSTORE_ERR_PL_ADMIN_AUTH,
-                'body' => '配信サーバとの通信中にエラーが発生しました。エラーコード:' . OWNERSSTORE_ERR_PL_ADMIN_AUTH
+                'body' => LC_Utils_Upgrade::getErrMessage(OWNERSSTORE_ERR_PL_ADMIN_AUTH)
             );
             echo $this->objJson->encode($arrErr);
-            GC_Utils::gfPrintLog(
-                sprintf($errFormat, $arrErr['errcode'], serialize($this->objSess))
-            );
+            $this->objLog->errLog($arrErr['errcode']);
             exit;
         }
-
-        // TODO CSRF対策が必須
-
-        $objReq = new HTTP_Request();
-        $objReq->setUrl('http://cube-shopaccount/upgrade/index.php'); // TODO URL定数化
-        $objReq->setMethod('POST');
-        $objReq->addPostData('mode', 'products_list');
-        $objReq->addPostData('site_url', SITE_URL);
-        $objReq->addPostData('ssl_url', SSL_URL);
 
         // リクエストを開始
-        GC_Utils::gfPrintLog('* http request start');
-        if (PEAR::isError($e = $objReq->sendRequest())) {
+        $this->objLog->log('* http request start');
+        $objReq = LC_Utils_Upgrade::request('products_list');
+
+        // リクエストチェック
+        $this->objLog->log('* http request check start');
+        if (PEAR::isError($objReq)) {
             $arrErr = array(
                 'status'  => OWNERSSTORE_STATUS_ERROR,
-                'errcode' => OWNERSSTORE_ERR_DL_HTTP_REQ,
-                'body' => '配信サーバとの通信中にエラーが発生しました。エラーコード:' . OWNERSSTORE_ERR_DL_HTTP_REQ
+                'errcode' => OWNERSSTORE_ERR_PL_HTTP_REQ,
+                'body' => LC_Utils_Upgrade::getErrMessage(OWNERSSTORE_ERR_PL_HTTP_REQ)
             );
             echo $this->objJson->encode($arrErr);
-            GC_Utils::gfPrintLog(
-                sprintf($errFormat, $arrErr['errcode'], serialize($e))
-            );
+            $this->objLog->errLog($arrErr['errcode'], $objReq);
             exit;
         }
 
-        GC_Utils::gfPrintLog('* http response check start');
+        // レスポンスチェック
+        $this->objLog->log('* http response check start');
         if ($objReq->getResponseCode() !== 200) {
             $arrErr = array(
                 'status'  => OWNERSSTORE_STATUS_ERROR,
-                'errcode' => OWNERSSTORE_ERR_DL_HTTP_RESP_CODE,
-                'body' => '配信サーバとの通信中にエラーが発生しました。エラーコード:' . OWNERSSTORE_ERR_DL_HTTP_RESP_CODE
+                'errcode' => OWNERSSTORE_ERR_PL_HTTP_RESP_CODE,
+                'body' => LC_Utils_Upgrade::getErrMessage(OWNERSSTORE_ERR_PL_HTTP_RESP_CODE)
             );
             echo $this->objJson->encode($arrErr);
-            GC_Utils::gfPrintLog(
-                sprintf($errFormat, $arrErr['errcode'], serialize($objReq))
-            );
+            $this->objLog->errLog($arrErr['errcode'], $objReq);
             exit;
         }
 
         $body = $objReq->getResponseBody();
-        $jsonData = $this->objJson->decode($body);
-        GC_Utils::gfPrintLog('* json deta check start');
-        if (empty($jsonData)) {
+        $objRet = $this->objJson->decode($body);
+
+        // JSONデータのチェック
+        $this->objLog->log('* json deta check start');
+        if (empty($objRet)) {
             $arrErr = array(
                 'status'  => OWNERSSTORE_STATUS_ERROR,
                 'errcode' => OWNERSSTORE_ERR_PL_INVALID_JSON_DATA,
-                'body' => '配信サーバとの通信中にエラーが発生しました。エラーコード:' . OWNERSSTORE_ERR_PL_INVALID_JSON_DATA
+                'body' => LC_Utils_Upgrade::getErrMessage(OWNERSSTORE_ERR_PL_INVALID_JSON_DATA)
             );
             echo $this->objJson->encode($arrErr);
-            GC_Utils::gfPrintLog(
-                sprintf($errFormat, $arrErr['errcode'], serialize($body))
-            );
+            $this->objLog->errLog($arrErr['errcode'], $body);
             exit;
         }
-        GC_Utils::gfPrintLog('* json status check start');
-        if ($jsonData->status === OWNERSSTORE_STATUS_SUCCESS) {
-            GC_Utils::gfPrintLog('* get products list ok');
+
+        // ステータスチェック
+        $this->objLog->log('* json status check start');
+        if ($objRet->status === OWNERSSTORE_STATUS_SUCCESS) {
+            $this->objLog->log('* get products list ok');
             echo $body;
             exit;
         } else {
             echo $body;
-            GC_Utils::gfPrintLog(
-                sprintf($errFormat, $jsonData->errcode, serialize($objReq))
-            );
+            $this->objLog->errLog($objRet->errcode, $objReq);
             exit;
         }
     }
@@ -144,7 +134,7 @@ class LC_Page_Upgrade_ProductsList extends LC_Page {
      * @return void
      */
     function destroy() {
-        GC_Utils::gfPrintLog('###ProductsList END###');
+        $this->objLog->end();
     }
 }
 ?>

@@ -23,6 +23,9 @@
 
 // {{{ requires
 require_once CLASS_PATH . 'pages/LC_Page.php';
+require_once 'utils/LC_Utils_Upgrade.php';
+require_once 'utils/LC_Utils_Upgrade_Log.php';
+
 
 /**
  * オーナーズストア認証キーを返すページクラス.
@@ -48,6 +51,7 @@ class LC_Page_Upgrade_EchoKey extends LC_Page {
      */
     function init() {
         $this->objJson = new Services_JSON();
+        $this->objLog  = new LC_Utils_Upgrade_Log('Echo Key');
 
         $this->objForm = new SC_FormParam();
         $this->objForm->addParam('seed', 'seed', MLTEXT_LEN, '', array('EXIST_CHECK', 'ALNUM_CHECK', 'MAX_LENGTH_CHECK'));
@@ -60,21 +64,30 @@ class LC_Page_Upgrade_EchoKey extends LC_Page {
      * @return void
      */
     function process() {
-        $errFormat = '* error! code:%s / debug:%s';
+        $objLog =& $this->objLog;
+        $objLog->start();
 
-        GC_Utils::gfPrintLog('###Echo Key Start###');
+        // IPアドレスの検証
+        if (LC_Utils_Upgrade::isValidIP() !== true) {
+            $arrErr = array(
+                'status'  => OWNERSSTORE_STATUS_ERROR,
+                'errcode' => OWNERSSTORE_ERR_EK_POST_PARAM,
+                'body' => LC_Utils_Upgrade::getErrMessage(OWNERSSTORE_ERR_EK_INVALID_IP)
+            );
+            echo $this->objJson->encode($arrErr);
+            $objLog->errLog($arrErr['errcode'], $_SERVER['REMOTE_ADDR']);
+            exit;
+        }
 
         // リクエストの検証
         if ($this->objForm->checkError()) {
             $arrErr = array(
                 'status'  => OWNERSSTORE_STATUS_ERROR,
                 'errcode' => OWNERSSTORE_ERR_EK_POST_PARAM,
-                'body' => '配信サーバとの通信中にエラーが発生しました。エラーコード:' . OWNERSSTORE_ERR_EK_POST_PARAM
+                'body' => LC_Utils_Upgrade::getErrMessage(OWNERSSTORE_ERR_EK_POST_PARAM)
             );
             echo $this->objJson->encode($arrErr);
-            GC_Utils::gfPrintLog(
-                sprintf($errFormat, $arrErr['errcode'], serialize($_POST))
-            );
+            $objLog->errLog($arrErr['errcode'], $_POST);
             exit;
         }
 
@@ -85,12 +98,10 @@ class LC_Page_Upgrade_EchoKey extends LC_Page {
             $arrErr = array(
                 'status'  => OWNERSSTORE_STATUS_ERROR,
                 'errcode' => OWNERSSTORE_ERR_EK_KEY_MISSING,
-                'body' => '配信サーバとの通信中にエラーが発生しました。エラーコード:' . OWNERSSTORE_ERR_EK_KEY_MISSING
+                'body' => LC_Utils_Upgrade::getErrMessage(OWNERSSTORE_ERR_EK_KEY_MISSING)
             );
             echo $this->objJson->encode($arrErr);
-            GC_Utils::gfPrintLog(
-                sprintf($errFormat, $arrErr['errcode'], serialize($_POST))
-            );
+            $objLog->errLog($arrErr['errcode']);
             exit;
         }
 
@@ -101,7 +112,6 @@ class LC_Page_Upgrade_EchoKey extends LC_Page {
         );
 
         echo $this->objJson->encode($arrParams);
-        GC_Utils::gfPrintLog('* echo key ok');
         exit;
     }
 
@@ -111,7 +121,7 @@ class LC_Page_Upgrade_EchoKey extends LC_Page {
      * @return void
      */
     function destroy() {
-        GC_Utils::gfPrintLog('###Echo Key End###');
+        $this->objLog->end();
     }
 
      /**
