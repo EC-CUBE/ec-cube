@@ -95,8 +95,8 @@ OwnersStore.prototype = {
         var contents = resp.body;
         var errcode  = resp.errcode || '';
 
-        var TB_WIDTH = 700;
-        var TB_HEIGHT = 400;
+        var TB_WIDTH = 400;
+        var TB_HEIGHT = 300;
         var ajaxContentW = TB_WIDTH - 20;
         var ajaxContentH = TB_HEIGHT - 45;
 
@@ -143,13 +143,19 @@ OwnersStore.prototype = {
     // get products list
     products_list: function() {
         this.show_loading();
+        var show = this.show_result;
         var remove = this.remove;
+        $().ajaxError(this.show_result);
         $.post(
-            upgrade_url,
+           upgrade_url,
             {mode: 'products_list'},
             function(resp, status) {
-                remove();
-                $('#ownersstore_products_list').html(resp.body);
+                if (resp.status == 'ERROR') {
+                    show(resp, status);
+                } else {
+                    remove();
+                    $('#ownersstore_products_list').html(resp.body);
+                }
             },
             'json'
         )
