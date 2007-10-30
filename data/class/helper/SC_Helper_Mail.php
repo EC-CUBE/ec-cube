@@ -116,7 +116,7 @@ class SC_Helper_Mail {
             $arrOther = unserialize($arrOrder['memo02']);
 
             foreach($arrOther as $other_key => $other_val){
-                if(sfTrim($other_val["value"]) == ""){
+                if(SC_Utils_Ex::sfTrim($other_val["value"]) == ""){
                     $arrOther[$other_key]["value"] = "";
                 }
             }
