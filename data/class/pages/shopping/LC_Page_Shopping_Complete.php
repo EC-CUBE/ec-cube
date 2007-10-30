@@ -44,7 +44,6 @@ class LC_Page_Shopping_Complete extends LC_Page {
     function init() {
         parent::init();
         $this->tpl_mainpage = 'shopping/complete.tpl';
-        $this->tpl_css = URL_DIR.'css/layout/shopping/complete.css';
         $this->tpl_title = "ご注文完了";
         $this->tpl_column_num = 1;
 
