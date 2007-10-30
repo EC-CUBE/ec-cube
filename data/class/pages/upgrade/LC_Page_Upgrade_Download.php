@@ -22,10 +22,12 @@
  */
 
 // {{{ requires
-require_once CLASS_PATH . 'pages/upgrade/LC_Page_Upgrade_Base.php';
-error_reporting(E_ALL);
+require_once CLASS_PATH . 'pages/LC_Page.php';
+require_once 'utils/LC_Utils_Upgrade.php';
+require_once 'utils/LC_Utils_Upgrade_Log.php';
+
 /**
- * ダウンロード処理を担当する.
+ * オーナーズストアからダウンロードデータを取得する.
  *
  * TODO 要リファクタリング
  *
@@ -33,16 +35,7 @@ error_reporting(E_ALL);
  * @author LOCKON CO.,LTD.
  * @version $Id$
  */
-class LC_Page_Upgrade_Download extends LC_Page_Upgrade_Base {
-
-    /** SC_Sessionオブジェクト */
-    var $objSession = null;
-    /** Services_Jsonオブジェクト */
-    var $objJson = null;
-    /** HTTP_Requestオブジェクト */
-    var $objReq = null;
-    /** SC_FromParamオブジェクト */
-    var $objForm = null;
+class LC_Page_Upgrade_Download extends LC_Page {
 
     // }}}
     // {{{ functions
@@ -53,29 +46,16 @@ class LC_Page_Upgrade_Download extends LC_Page_Upgrade_Base {
      * @return void
      */
     function init() {
-        $this->objSess = new SC_Session();
         $this->objJson = new Services_Json();
-        $rhis->objReq  = new HTTP_Request();
+        $this->objLog = new LC_Utils_Upgrade_Log('Download');
+
         $this->objForm = new SC_FormParam();
         $this->objForm->addParam(
             'product_id', 'product_id', INT_LEN, '',
             array('EXIST_CHECK', 'NUM_CHECK', 'MAX_LENGTH_CHECK')
         );
         $this->objForm->setParam($_POST);
-    }
 
-    /**
-     * 使用してません
-     * こんな感じで書けたら楽かな...
-     */
-    function _process() {
-        $result = $this->_try();
-        if ($e = $this->_catch($result)) {
-            GC_Utils::gfPrintLog(sprintf($e->log_format, $e->stacktrace));
-            $this->_throw($e->json);
-            exit;
-        }
-        echo $result;
     }
 
     /**
@@ -84,83 +64,87 @@ class LC_Page_Upgrade_Download extends LC_Page_Upgrade_Base {
      * @return void
      */
     function process() {
-        $errFormat = '* error! code:%s / debug:%s';
-
-        GC_Utils::gfPrintLog('###Download Start###');
+        $this->objLog->start();
 
         // 管理画面ログインチェック
-        GC_Utils::gfPrintLog('* admin auth start');
-        if ($this->objSess->isSuccess() !== SUCCESS) {
+        $this->objLog->log('* admin auth start');
+        if (LC_Utils_Upgrade::isLoggedInAdminPage() !== true) {
             $arrErr = array(
                 'status'  => OWNERSSTORE_STATUS_ERROR,
                 'errcode' => OWNERSSTORE_ERR_DL_ADMIN_AUTH,
-                'body' => '管理画面にログインしていません'
+                'body' => LC_Utils_Upgrade::getErrMessage(OWNERSSTORE_ERR_DL_ADMIN_AUTH)
             );
             echo $this->objJson->encode($arrErr);
-            GC_Utils::gfPrintLog(
-                sprintf($errFormat, $arrErr['errcode'], serialize($_SESSION))
-            );
+            $this->objLog->errLog($arrErr['errcode']);
             exit;
         }
 
         // パラメーチェック
-        GC_Utils::gfPrintLog('* post parameter check start');
+        $this->objLog->log('* post parameter check start');
         if ($this->objForm->checkError()) {
             $arrErr = array(
                 'status'  => OWNERSSTORE_STATUS_ERROER,
                 'errcode' => OWNERSSTORE_ERR_DL_POST_PARAM,
-                'body' => '配信サーバとの通信中にエラーが発生しました。エラーコード:' . OWNERSSTORE_ERR_DL_POST_PARAM
+                'body' => LC_Utils_Upgrade::getErrMessage(OWNERSSTORE_ERR_DL_POST_PARAM)
             );
             echo $this->objJson->encode($arrErr);
-            GC_Utils::gfPrintLog(
-                sprintf($errFormat, $arrErr['errcode'], serialize($_POST))
-            );
+            $this->objLog->errLog($arrErr['errcode'], $_POST);
             exit;
         }
 
         // TODO CSRF対策が必須
 
         // ダウンロードリクエストを開始
-        GC_Utils::gfPrintLog('* http request start');
-        $resp = $this->request(
+        $this->objLog->log('* http request start');
+        $objReq = LC_Utils_Upgrade::request(
             'download',
             array('product_id' => $this->objForm->getValue('product_id'))
         );
 
-        // リクエストのエラーチェック
-        GC_Utils::gfPrintLog('* http response check start');
-        if (PEAR::isError($resp)) {
+        // リクエストの懸賞
+        $this->objLog->log('* http request check start');
+        if (PEAR::isError($objReq)) {
             $arrErr = array(
                 'status'  => OWNERSSTORE_STATUS_ERROR,
                 'errcode' => OWNERSSTORE_ERR_DL_HTTP_REQ,
-                'body' => '配信サーバとの通信中にエラーが発生しました。エラーコード:' . OWNERSSTORE_ERR_DL_HTTP_REQ
+                'body' => LC_Utils_Upgrade::getErrMessage(OWNERSSTORE_ERR_DL_HTTP_REQ)
             );
             echo $this->objJson->encode($arrErr);
-            GC_Utils::gfPrintLog(
-                sprintf($errFormat, $arrErr['errcode'], serialize($resp))
+            $this->objLog->errLog($arrErr['errcode'], $objReq);
+            exit;
+        }
+
+        // レスポンスの検証
+        $this->objLog->log('* http response check start');
+        if ($objReq->getResponseCode() !== 200) {
+            $arrErr = array(
+                'status'  => OWNERSSTORE_STATUS_ERROR,
+                'errcode' => OWNERSSTORE_ERR_DL_HTTP_RESP_CODE,
+                'body' => LC_Utils_Upgrade::getErrMessage(OWNERSSTORE_ERR_DL_HTTP_RESP_CODE)
             );
+            echo $this->objJson->encode($arrErr);
+            $this->objLog->errLog($arrErr['errcode'], $objReq);
             exit;
         }
 
         // JSONデータの検証
-        $jsonData = $resp->getResponseBody();
-        $objRet   = $this->objJson->decode($resp->getResponseBody($jsonData));
-        GC_Utils::gfPrintLog('* json data check start');
+        $body = $objReq->getResponseBody();
+        $objRet = $this->objJson->decode($body);
+
+        $this->objLog->log('* json data check start');
         if (empty($objRet)) {
             $arrErr = array(
                 'status'  => OWNERSSTORE_STATUS_ERROR,
                 'errcode' => OWNERSSTORE_ERR_DL_INVALID_JSON_DATA,
-                'body' => '配信サーバとの通信中にエラーが発生しました。エラーコード:' . OWNERSSTORE_ERR_DL_INVALID_JSON_DATA
+                'body' => LC_Utils_Upgrade::getErrMessage(OWNERSSTORE_ERR_DL_INVALID_JSON_DATA)
             );
             echo $this->objJson->encode($arrErr);
-            GC_Utils::gfPrintLog(
-                sprintf($errFormat, $arrErr['errcode'], serialize($resp))
-            );
+            $this->objLog->errLog($arrErr['errcode'], $objReq);
             exit;
         }
         // ダウンロードデータの保存
         if ($objRet->status === OWNERSSTORE_STATUS_SUCCESS) {
-            GC_Utils::gfPrintLog('* save file start');
+           $this->objLog->log('* save file start');
             $time = time();
             $dir  = DATA_PATH . 'downloads/tmp/';
             $filename = $time . '.tar.gz';
@@ -174,26 +158,23 @@ class LC_Page_Upgrade_Download extends LC_Page_Upgrade_Base {
                 $arrErr = array(
                     'status'  => OWNERSSTORE_STATUS_ERROR,
                     'errcode' => OWNERSSTORE_ERR_DL_FILE_WRITE,
-                    'body' => '配信サーバとの通信中にエラーが発生しました。エラーコード:' . OWNERSSTORE_ERR_DL_FILE_WRITE
+                    'body' => LC_Utils_Upgrade::getErrMessage(OWNERSSTORE_ERR_DL_FILE_WRITE)
                 );
                 echo $this->objJson->encode($arrErr);
-                GC_Utils::gfPrintLog(
-                    sprintf($errFormat, $arrErr['errcode'], serialize($dir . $filename))
-                );
+                $this->objLog->errLog($arrErr['errcode'], $dir . $filename);
                 exit;
             }
+
             // ダウンロードアーカイブを展開する
             $exract_dir = $dir . $time;
             if (!@mkdir($exract_dir)) {
                 $arrErr = array(
                     'status'  => OWNERSSTORE_STATUS_ERROR,
                     'errcode' => OWNERSSTORE_ERR_DL_MKDIR,
-                    'body' => '配信サーバとの通信中にエラーが発生しました。エラーコード:' . OWNERSSTORE_ERR_DL_MKDIR
+                    'body' => LC_Utils_Upgrade::getErrMessage(OWNERSSTORE_ERR_DL_MKDIR)
                 );
                 echo $this->objJson->encode($arrErr);
-                GC_Utils::gfPrintLog(
-                    sprintf($errFormat, $arrErr['errcode'], serialize($exract_dir))
-                );
+                $this->objLog->errLog($arrErr['errcode'], $exract_dir);
                 exit;
             }
 
@@ -204,22 +185,22 @@ class LC_Page_Upgrade_Download extends LC_Page_Upgrade_Base {
             $objBatch = new SC_Batch_Update();
             $arrCopyLog = $objBatch->execute($exract_dir);
 
-            $this->notifyDownload($resp->getResponseCookies(), $objRet->product_data);
             // テーブルの更新
-            // $this->updateMdlTable($objRet);
+            $this->updateMdlTable($objRet->product_data);
+
+            // 配信サーバへ通知
+            $this->notifyDownload($objReq->getResponseCookies());
 
             $arrParam = array(
                 'status'  => OWNERSSTORE_STATUS_SUCCESS,
                 'body' => 'インストール/アップデートに成功しました！'
             );
             echo $this->objJson->encode($arrParam);
-            GC_Utils::gfPrintLog('* file save ok');
+            $this->objLog->log('* file save ok');
             exit;
         } else {
-            echo $jsonData;
-            GC_Utils::gfPrintLog(
-                sprintf($errFormat, $objRet->errcode, serialize(array($resp, $objRet)))
-            );
+            echo $body;
+            $this->objLog->errLog($arrErr['errcode'], array($objRet, $objReq));
             exit;
         }
     }
@@ -230,7 +211,7 @@ class LC_Page_Upgrade_Download extends LC_Page_Upgrade_Base {
      * @return void
      */
     function destroy() {
-        GC_Utils::gfPrintLog('###Download End###');
+        $this->objLog->end();
     }
 
     /**
@@ -240,14 +221,24 @@ class LC_Page_Upgrade_Download extends LC_Page_Upgrade_Base {
      */
     function updateMdlTable($objRet) {
         $table = 'dtb_module';
+        $where = 'module_id = ?';
         $objQuery = new SC_Query;
 
-        $count = $objQuery->count($objRet, 'module_id=?', array($objRet->product_id));
+        $count = $objQuery->count($table, $where, array($objRet->product_id));
         if ($count) {
-            $arrUpdate = array();
-            $objQuery->update($table, $arrUpdate);
+            $arrUpdate = array(
+                'module_name' => $objRet->name,
+                'update_date' => 'NOW()'
+            );
+            $objQuery->update($table, $arrUpdate ,$where, array($objRet->product_id));
         } else {
-            $arrInsert = array();
+            $arrInsert = array(
+                'module_id' => $objRet->product_id,
+                'module_name' => $objRet->name,
+                'auto_update_flg' => '0',
+                'create_date'     => 'NOW()',
+                'update_date' => 'NOW()'
+            );
             $objQuery->insert($table, $arrInsert);
         }
     }
@@ -260,36 +251,8 @@ class LC_Page_Upgrade_Download extends LC_Page_Upgrade_Base {
      * @retrun
      */
     function notifyDownload($arrCookies) {
-        $objReq = new HTTP_Request();
-        $objReq->setUrl('http://cube-shopaccount/upgrade/index.php');
-        $objReq->setMethod('POST');
-        $objReq->addPostData('mode', 'download_log');
+        $objReq = LC_Utils_Upgrade::request('download_log', array(), $arrCookies);
 
-        // Cookie追加
-        foreach ($arrCookies as $cookie) {
-            $objReq->addCookie($cookie['name'], $cookie['value']);
-        }
-
-        $e = $objReq->sendRequest();
-        if (PEAR::isError($e)) {
-            $arrErr = array(
-                'status'  => OWNERSSTORE_STATUS_ERROR,
-                'errcode' => 999,
-                'body'    => '配信サーバとの通信中にエラーが発生しました。エラーコード:' . 999
-            );
-            return $arrErr;
-        }
-
-        if ($objReq->getResponseCode() !== 200) {
-            $arrErr = array(
-                'status'  => OWNERSSTORE_STATUS_ERROR,
-                'errcode' => 999,
-                'body'    => '配信サーバとの通信中にエラーが発生しました。エラーコード:' . 999
-            );
-            return $arrErr;
-        }
-        echo $objReq->getResponseBody();
-        // TODO STATUSチェック
         return true;
     }
 }
