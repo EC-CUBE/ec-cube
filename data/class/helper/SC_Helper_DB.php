@@ -714,7 +714,12 @@ class SC_Helper_DB {
      * @return array 選択中の商品のカテゴリIDの配列
      *
      */
-    function sfGetCategoryId($product_id, $category_id = 0) {
+    function sfGetCategoryId($product_id, $category_id = 0, $closed = false) {
+        if ($closed) {
+            $status = "";
+        } else {
+            $status = "status = 1";
+        }
 
         if(!$this->g_category_on) {
             $this->g_category_on = true;
@@ -722,7 +727,7 @@ class SC_Helper_DB {
             $product_id = (int) $product_id;
             if(SC_Utils_Ex::sfIsInt($category_id) && $this->sfIsRecord("dtb_category","category_id", $category_id)) {
                 $this->g_category_id = array($category_id);
-            } else if (SC_Utils_Ex::sfIsInt($product_id) && $this->sfIsRecord("dtb_products","product_id", $product_id, "status = 1")) {
+            } else if (SC_Utils_Ex::sfIsInt($product_id) && $this->sfIsRecord("dtb_products","product_id", $product_id, $status)) {
                 $objQuery = new SC_Query();
                 $where = "product_id = ?";
                 $category_id = $objQuery->getCol("dtb_product_categories", "category_id", "product_id = ?", array($product_id));

@@ -97,8 +97,11 @@ class LC_Page_Products_Detail extends LC_Page {
 
         // 管理ページからの確認の場合は、非公開の商品も表示する。
         if(isset($_GET['admin']) && $_GET['admin'] == 'on') {
+            SC_Utils_Ex::sfIsSuccess(new SC_Session());
+            $status = true;
             $where = "del_flg = 0";
         } else {
+            $status = false;
             $where = "del_flg = 0 AND status = 1";
         }
 
@@ -201,9 +204,8 @@ class LC_Page_Products_Detail extends LC_Page {
         } else {
           $this->tpl_sale_limit = $this->arrProduct['sale_limit'];
         }
-
         // サブタイトルを取得
-        $arrCategory_id = $objDb->sfGetCategoryId($arrRet[0]['product_id']);
+        $arrCategory_id = $objDb->sfGetCategoryId($arrRet[0]['product_id'], $status);
         $arrFirstCat = $objDb->sfGetFirstCat($arrCategory_id[0]);
         $this->tpl_subtitle = $arrFirstCat['name'];
 
