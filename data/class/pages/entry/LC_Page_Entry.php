@@ -171,6 +171,7 @@ class LC_Page_Entry extends LC_Page {
                     }
 
                     // 会員情報の登録
+                    $this->CONF = $CONF;
                     $this->uniqid = $this->lfRegistData ($this->arrForm, $arrRegistColumn, $arrRejectRegistColumn, CUSTOMER_CONFIRM_MAIL);
 
                     $this->tpl_css = '/css/layout/entry/complete.css';
@@ -178,7 +179,6 @@ class LC_Page_Entry extends LC_Page {
                     $this->tpl_title = '会員登録(完了ページ)';
 
                     //　完了メール送信
-                    $this->CONF = $CONF;
                     $this->name01 = $_POST['name01'];
                     $this->name02 = $_POST['name02'];
                     $objMailText = new SC_SiteView();
@@ -473,6 +473,7 @@ class LC_Page_Entry extends LC_Page {
                         exit();
                     }
 
+                    $this->CONF = $CONF;
                     $this->uniqid = $this->lfRegistData ($this->arrForm, $arrRegistColumn, $arrRejectRegistColumn, CUSTOMER_CONFIRM_MAIL, true, $this->arrForm["email"]);
 
                     // 空メールを受信済みの場合はすぐに本登録完了にする。
@@ -491,7 +492,6 @@ class LC_Page_Entry extends LC_Page {
                     $objMobile->sfMobileSetExtSessionId('id', $this->uniqid, 'regist/index.php');
 
                     //　仮登録完了メール送信
-                    $this->CONF = $CONF;
                     $this->to_name01 = $_POST['name01'];
                     $this->to_name02 = $_POST['name02'];
                     $objMailText = new SC_MobileView();
@@ -610,6 +610,7 @@ class LC_Page_Entry extends LC_Page {
         $arrRegist["create_date"] = "now()"; 	// 作成日
         $arrRegist["update_date"] = "now()"; 	// 更新日
         $arrRegist["first_buy_date"] = "";	 	// 最初の購入日
+        $arrRegist["point"] = $this->CONF["welcome_point"]; // 入会時ポイント
 
         if ($isMobile) {
             // 携帯メールアドレス
