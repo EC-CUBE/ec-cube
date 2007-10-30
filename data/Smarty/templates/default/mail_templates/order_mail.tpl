@@ -69,11 +69,11 @@
 手数料 ￥ <!--{$arrOrder.charge|number_format|default:0}-->
 ===============================================================
 合　計 ￥ <!--{$arrOrder.payment_total|number_format|default:0}-->
+<!--{if $arrOrder.customer_id}-->
 ===============================================================
-
 <!--{* ご注文前のポイント {$tpl_user_point} pt *}-->
 ご使用ポイント <!--{$arrOrder.use_point|default:0}--> pt
 今回加算される加算ポイント <!--{$arrOrder.add_point|default:0}--> pt
 保持ポイント <!--{$arrCustomer.point|default:0}--> pt
-
+<!--{/if}-->
 <!--{$tpl_footer}-->
