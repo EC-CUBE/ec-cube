@@ -1060,3 +1060,11 @@ INSERT INTO mtb_constants VALUES ('OWNERSSTORE_URL', '"http://store.ec-cube.net/
 INSERT INTO mtb_constants VALUES ('OWNERSSTORE_IP', '"210.188.195.143"', 531, 'アップデート機能アクセス許可IP');
 INSERT INTO mtb_constants VALUES ('OWNERSSTORE_LOG_PATH', 'DATA_PATH . "logs/ownersstore.log"', 532, 'オーナーズストアログパス');
 INSERT INTO mtb_constants VALUES ('OWNERSSTORE_ERR_EK_INVALID_IP', '102', 533, 'オーナーズストア通信エラーコード');
+INSERT INTO mtb_constants VALUES ('OWNERSSTORE_ERR_AU_INVALID_IP', '600', 534, 'オーナーズストア通信エラーコード');
+INSERT INTO mtb_constants VALUES ('OWNERSSTORE_ERR_AU_POST_PARAM', '601', 535, 'オーナーズストア通信エラーコード');
+INSERT INTO mtb_constants VALUES ('OWNERSSTORE_ERR_AU_NO_UPDATE', '602', 536, 'オーナーズストア通信エラーコード');
+INSERT INTO mtb_constants VALUES ('OWNERSSTORE_ERR_AU_HTTP_REQ', '603', 537, 'オーナーズストア通信エラーコード');
+INSERT INTO mtb_constants VALUES ('OWNERSSTORE_ERR_AU_HTTP_RESP_CODE', '604', 538, 'オーナーズストア通信エラーコード');
+INSERT INTO mtb_constants VALUES ('OWNERSSTORE_ERR_AU_INVALID_JSON_DATA', '605', 539, 'オーナーズストア通信エラーコード');
+INSERT INTO mtb_constants VALUES ('OWNERSSTORE_ERR_AU_FILE_WRITE', '606', 540, 'オーナーズストア通信エラーコード');
+INSERT INTO mtb_constants VALUES ('OWNERSSTORE_ERR_AU_MKDIR', '607', 541, 'オーナーズストア通信エラーコード');
