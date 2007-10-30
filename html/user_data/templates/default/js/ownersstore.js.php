@@ -1,3 +1,7 @@
+<?php
+require_once '../../../../require.php';
+ob_start();
+?>
 /*
  * Thickbox 3.1 - One Box To Rule Them All.
  * By Cody Lindley (http://www.codylindley.com)
@@ -15,14 +19,14 @@
 
 (function() {
 // オーナーズストア通信スクリプトのパス
-var upgrade_url = '<!--{$smarty.const.URL_DIR}-->upgrade/index.php';
+var upgrade_url = '[%URL_DIR%]upgrade/index.php';
 
 // ロード中メッセージ(配信サーバと通信中です…)
 var loading_message = '\u30B5\u30FC\u30D0\u3068\u901A\u4FE1\u4E2D\u3067\u3059';
 
 // ロード中画像の先読み
 var loading_img = new Image();
-loading_img.src = '/user_data/templates/default/img/ajax/loading.gif';
+loading_img.src = '[%URL_DIR%]user_data/templates/default/img/ajax/loading.gif';
 
 var OwnersStore = function() {}
 OwnersStore.prototype = {
@@ -111,7 +115,7 @@ OwnersStore.prototype = {
             $("#TB_ajaxContent")[0].style.height = ajaxContentH +"px";
             $("#TB_ajaxContent")[0].scrollTop = 0;
 
-		}
+        }
 
         $("#TB_load").remove();
         $("#TB_window").css({marginLeft: '-' + parseInt((TB_WIDTH / 2),10) + 'px', width: TB_WIDTH + 'px'});
@@ -123,14 +127,14 @@ OwnersStore.prototype = {
 
         $("#TB_ajaxWindowTitle").html(title);
         $("#TB_ajaxContent").html(contents);
-		$("#TB_window").css({display:"block"});
+        $("#TB_window").css({display:"block"});
     },
 
     // exexute install or update
     download: function(product_id) {
         this.show_loading();
         $.post(
-            '/upgrade/index.php',
+            upgrade_url,
             {mode: 'download', product_id: product_id},
             this.show_result,
             'json'
@@ -141,7 +145,7 @@ OwnersStore.prototype = {
         this.show_loading();
         var remove = this.remove;
         $.post(
-            '/upgrade/index.php',
+            upgrade_url,
             {mode: 'products_list'},
             function(resp, status) {
                 remove();
@@ -153,4 +157,7 @@ OwnersStore.prototype = {
 }
 window.OwnersStore = new OwnersStore();
 })();
-
+<?php
+header('Content-Type: application/x-javascript');
+echo str_replace('[%URL_DIR%]', URL_DIR, ob_get_clean());
+?>
