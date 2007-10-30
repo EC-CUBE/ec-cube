@@ -76,13 +76,17 @@ class LC_Page_Admin_Basis_Seo extends LC_Page {
         $objLayout = new SC_Helper_PageLayout_Ex();
         $this->arrPageData = $objLayout->lfgetPageData(" edit_flg = 2 ");
 
-        if (isset($_POST['page_id'])) $page_id = $_POST['page_id'];
+        if (isset($_POST['page_id'])) {
+            $page_id = $_POST['page_id'];
+        } else {
+            $page_id = "";
+        }
 
         if (!isset($_POST['mode'])) $_POST['mode'] = "";
 
         if($_POST['mode'] == "confirm") {
             // エラーチェック
-            $this->arrErr[$page_id] = $this->lfErrorCheck($arrPOST['meta'][$page_id]);
+            $this->arrErr[$page_id] = $this->lfErrorCheck($_POST['meta'][$page_id]);
 
             // エラーがなければデータを更新
             if(count($this->arrErr[$page_id]) == 0) {
@@ -96,26 +100,24 @@ class LC_Page_Admin_Basis_Seo extends LC_Page {
                 $this->lfUpdPageData($arrUpdData);
             }else{
                 // POSTのデータを再表示
-                $arrPageData = lfSetData($arrPageData, $arrPOST['meta']);
+                $arrPageData = $this->lfSetData($arrPageData, $_POST['meta']);
                 $this->arrPageData = $arrPageData;
             }
         }
 
         $arrDisp_flg = array();
         // エラーがなければデータの取得
-        if (isset($page_id) && isset($this->arrErr[$page_id])) {
-
-            if(count($this->arrErr[$page_id]) == 0) {
-                // データの取得
-                $arrPageData = $objLayout->lfgetPageData(" edit_flg = 2 ");
-                $this->arrPageData = $arrPageData;
-            }
-
-            // 表示･非表示切り替え
-            foreach($arrPageData as $key => $val){
-                $arrDisp_flg[$val['page_id']] = $_POST['disp_flg'.$val['page_id']];
-            }
+        if(count($this->arrErr[$page_id]) == 0) {
+            // データの取得
+            $arrPageData = $objLayout->lfgetPageData(" edit_flg = 2 ");
+            $this->arrPageData = $arrPageData;
         }
+
+        // 表示･非表示切り替え
+        foreach($arrPageData as $key => $val){
+            $arrDisp_flg[$val['page_id']] = $_POST['disp_flg'.$val['page_id']];
+        }
+
         $this->disp_flg = $arrDisp_flg;
 
         $objView->assignobj($this);
