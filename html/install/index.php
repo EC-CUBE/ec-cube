@@ -389,6 +389,7 @@ function lfDispStep0($objPage) {
         "../user_data",
         "../cp",
         "../upload",
+        "../mobile/converted_images",
         ".." . HTML2DATA_DIR . "cache/",
         ".." . HTML2DATA_DIR . "class/",
         ".." . HTML2DATA_DIR . "Smarty/",
@@ -400,7 +401,12 @@ function lfDispStep0($objPage) {
     $err_file = false;
     foreach($arrWriteFile as $val) {
 
-        $arrDirs = listdirs($val);
+        if (is_dir($val)) {
+            $arrDirs = listdirs($val);
+        } else {
+            $arrDirs = array($val);
+        }
+
         foreach ($arrDirs as $path) {
             if(file_exists($path)) {
                 $mode = lfGetFileMode($path);
