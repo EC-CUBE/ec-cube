@@ -70,14 +70,6 @@ class LC_Page_Contact extends LC_Page {
 
         $this->arrData = isset($_SESSION['customer']) ? $_SESSION['customer'] : "";
 
-        //SSLURL判定
-        if (SSLURL_CHECK == 1){
-            $ssl_url= SC_Utils_Ex::sfRmDupSlash(SSL_URL.$_SERVER['REQUEST_URI']);
-            if (!ereg("^https://", $non_ssl_url)){
-                SC_Utils_Ex::sfDispSiteError(URL_ERROR);
-            }
-        }
-
         // レイアウトデザインを取得
         $layout = new SC_Helper_PageLayout_Ex();
         $layout->sfGetPageLayout($this, false, DEF_LAYOUT);
@@ -245,7 +237,7 @@ class LC_Page_Contact extends LC_Page {
     // ------------  メール送信 ------------
 
     function lfSendMail($CONF, &$objPage){
-        //　パスワード変更お知らせメール送信
+
         $objQuery = new SC_Query();
         $objMailText = new SC_SiteView();
         $objSiteInfo = $this->objView->objSiteInfo;

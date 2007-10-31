@@ -72,14 +72,6 @@ class LC_Page_Entry extends LC_Page {
         $objDb = new SC_Helper_DB_Ex();
         $CONF = $objDb->sf_getBasisData();
         $objDate = new SC_Date(START_BIRTH_YEAR, date("Y",strtotime("now")));
-        //SSLURL判定
-        if (SSLURL_CHECK == 1){
-            $ssl_url= SC_Utils_Ex::sfRmDupSlash(SSL_URL.$_SERVER['REQUEST_URI']);
-            if (!ereg("^https://", $non_ssl_url)){
-                // TODO エラーメッセージはデフォルト値でOK?
-                SC_Utils_Ex::sfDispSiteError(URL_ERROR);
-            }
-        }
 
         // レイアウトデザインを取得
         $layout = new SC_Helper_PageLayout_Ex();
@@ -268,14 +260,6 @@ class LC_Page_Entry extends LC_Page {
                 $this->tpl_title = '会員登録(空メール)';
                 $this->tpl_kara_mail_to = MOBILE_KARA_MAIL_ADDRESS_USER . MOBILE_KARA_MAIL_ADDRESS_DELIMITER . 'entry_' . $token . '@' . MOBILE_KARA_MAIL_ADDRESS_DOMAIN;
                 $this->tpl_from_address = $CONF['email03'];
-            }
-        }
-
-        //SSLURL判定
-        if (SSLURL_CHECK == 1){
-            $ssl_url= SC_Utils_Ex::sfRmDupSlash(MOBILE_SSL_URL.$_SERVER['REQUEST_URI']);
-            if (!ereg("^https://", $non_ssl_url)){
-                SC_Utils_Ex::sfDispSiteError(URL_ERROR, "", false, "", true);
             }
         }
 

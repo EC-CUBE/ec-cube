@@ -71,14 +71,6 @@ class LC_Page_CampaignEntry extends LC_Page {
         $CONF = $objView->objSiteInfo->data;
         $objCampaignSess = new SC_CampaignSession();
 
-        //SSLURL判定
-        if (SSLURL_CHECK == 1){
-            $ssl_url= sfRmDupSlash(SSL_URL.$_SERVER['REQUEST_URI']);
-            if (!ereg("^https://", $non_ssl_url)){
-                sfDispSiteError(URL_ERROR);
-            }
-        }
-
         // レイアウトデザインを取得
         $objLayout = new SC_Helper_PageLayout_Ex();
         $objLayout->sfGetPageLayout($this, false, DEF_LAYOUT);

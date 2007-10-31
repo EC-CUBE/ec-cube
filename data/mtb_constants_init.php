@@ -127,8 +127,6 @@ define('RECOMMEND_PRODUCT_MAX', 6);
 define('DELIV_ADDR_MAX', 20);
 /** 閲覧履歴保存数 */
 define('CUSTOMER_READING_MAX', 30);
-/** SSLURL判定 */
-define('SSLURL_CHECK', 0);
 /** 管理画面ステータス一覧表示件数 */
 define('ORDER_STATUS_MAX', 50);
 /** フロントレビュー書き込み最大数 */

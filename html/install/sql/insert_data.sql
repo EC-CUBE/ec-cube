@@ -776,7 +776,6 @@ INSERT INTO mtb_constants VALUES ('DEFAULT_PASSWORD','"UAhgGR3L"',65,'会員登�
 INSERT INTO mtb_constants VALUES ('RECOMMEND_PRODUCT_MAX','6',66,'おすすめ商品数');
 INSERT INTO mtb_constants VALUES ('DELIV_ADDR_MAX','20',67,'別のお届け先最大登録数');
 INSERT INTO mtb_constants VALUES ('CUSTOMER_READING_MAX','30',68,'閲覧履歴保存数');
-INSERT INTO mtb_constants VALUES ('SSLURL_CHECK','0',69,'SSLURL判定');
 INSERT INTO mtb_constants VALUES ('ORDER_STATUS_MAX','50',70,'管理画面ステータス一覧表示件数');
 INSERT INTO mtb_constants VALUES ('REVIEW_REGIST_MAX','5',71,'フロントレビュー書き込み最大数');
 INSERT INTO mtb_constants VALUES ('DEBUG_MODE','0',72,'デバッグモード(true：sfPrintRやDBのエラーメッセージを出力する、false：出力しない)');

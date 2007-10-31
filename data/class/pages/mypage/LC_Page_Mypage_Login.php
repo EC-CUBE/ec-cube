@@ -61,14 +61,6 @@ class LC_Page_Mypage_Login extends LC_Page {
         // クッキー管理クラス
         $objCookie = new SC_Cookie(COOKIE_EXPIRE);
 
-        //SSLURL判定
-        if (SSLURL_CHECK == 1){
-            $ssl_url= sfRmDupSlash(SSL_URL.$_SERVER['REQUEST_URI']);
-            if (!ereg("^https://", $non_ssl_url)){
-                SC_Utils_Ex::sfDispSiteError(URL_ERROR);
-            }
-        }
-
         // ログイン判定
         if($objCustomer->isLoginSuccess()) {
             $this->sendRedirect($this->getLocation("./index.php"));
