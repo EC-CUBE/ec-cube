@@ -227,14 +227,14 @@ class LC_Page_Upgrade_Download extends LC_Page {
         $count = $objQuery->count($table, $where, array($objRet->product_id));
         if ($count) {
             $arrUpdate = array(
-                'module_name' => $objRet->name,
+                'module_name' => $objRet->product_code,
                 'update_date' => 'NOW()'
             );
             $objQuery->update($table, $arrUpdate ,$where, array($objRet->product_id));
         } else {
             $arrInsert = array(
                 'module_id' => $objRet->product_id,
-                'module_name' => $objRet->name,
+                'module_name' => $objRet->product_code,
                 'auto_update_flg' => '0',
                 'create_date'     => 'NOW()',
                 'update_date' => 'NOW()'
