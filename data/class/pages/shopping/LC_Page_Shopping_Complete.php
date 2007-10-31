@@ -278,7 +278,7 @@ class LC_Page_Shopping_Complete extends LC_Page {
         $arrData = $objDb->sfGetOrderTemp($uniqid);
 
         // 会員情報登録処理
-        if ($this->objCustomer->isLoginSuccess()) {
+        if ($this->objCustomer->isLoginSuccess(true)) {
             // 新お届け先の登録
             $this->lfSetNewAddr($uniqid, $this->objCustomer->getValue('customer_id'));
             // 購入集計を顧客テーブルに反映
