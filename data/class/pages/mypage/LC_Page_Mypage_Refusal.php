@@ -131,7 +131,7 @@ class LC_Page_Mypage_Refusal extends LC_Page {
         $objQuery = new SC_Query();
 
         //ログイン判定
-        if (!$objCustomer->isLoginSuccess()){
+        if (!$objCustomer->isLoginSuccess(true)){
             SC_Utils_Ex::sfDispSiteError(CUSTOMER_ERROR, "", false, "", true);
         }else {
             //マイページトップ顧客情報表示用

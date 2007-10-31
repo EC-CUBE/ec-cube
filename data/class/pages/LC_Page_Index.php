@@ -83,7 +83,7 @@ class LC_Page_Index extends LC_Page {
         $objCustomer = new SC_Customer();
 
         $objView = new SC_MobileView();
-        $objView->assign("isLogin", $objCustomer->isLoginSuccess());
+        $objView->assign("isLogin", $objCustomer->isLoginSuccess(true));
         $objView->assignobj($this);
         $objView->display(SITE_FRAME);
     }
