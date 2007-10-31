@@ -44,7 +44,6 @@ class LC_Page_Admin_Products_Review extends LC_Page {
      */
     function init() {
         parent::init();
-        session_start(); // TODO 必要？
         $this->tpl_mainpage = 'products/review.tpl';
         $this->tpl_subnavi = 'products/subnavi.tpl';
         $this->tpl_mainno = 'products';
