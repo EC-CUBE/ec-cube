@@ -285,9 +285,6 @@ class LC_Page_Products_Detail extends LC_Page {
         $objQuery = new SC_Query();
         $objDb = new SC_Helper_DB_Ex();
 
-        // レイアウトデザインを取得
-        // $objPage = sfGetPageLayout($objPage, false, "products/detail.php");
-
         // パラメータ管理クラス
         $this->objFormParam = new SC_FormParam();
         // パラメータ情報の初期化
@@ -308,12 +305,8 @@ class LC_Page_Products_Detail extends LC_Page {
             $tmp_id = $_GET['product_id'];
         }
 
-        // 値の正当性チェック
-        /*if(!SC_Utils_Ex::sfIsInt($_GET['product_id']) || !$objDb->sfIsRecord("dtb_products", "product_id", $tmp_id, $where)) {
-            SC_Utils_Ex::sfDispSiteError(PRODUCT_NOT_FOUND, "", false, "", true);
-            }*/
         // ログイン判定
-        if($objCustomer->isLoginSuccess()) {
+        if($objCustomer->isLoginSuccess(true)) {
             //お気に入りボタン表示
             $this->tpl_login = true;
 
