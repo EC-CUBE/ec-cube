@@ -37,8 +37,8 @@ require_once DATA_PATH . "module/Tar.php";
 // {{{ generate page
 
 $objPage = lfPageFactory();
-register_shutdown_function(array($objPage, "destroy"));
 $objPage->init();
+register_shutdown_function(array($objPage, "destroy"));
 $objPage->process();
 
 
