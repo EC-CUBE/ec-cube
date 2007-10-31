@@ -33,25 +33,6 @@ require_once(CLASS_PATH . "pages/LC_Page.php");
  */
 class LC_Page_Admin_Customer_Edit extends LC_Page {
 
-    // {{{ properties
-    // TODO
-    var $arrSession;
-    var $tpl_mode;
-    var $list_data;
-
-    var $arrErr;
-    var $arrYear;
-    var $arrMonth;
-    var $arrDay;
-    var $arrPref;
-    var $arrJob;
-    var $arrSex;
-    var $arrReminder;
-    var $count;
-
-    var $tpl_strnavi;
-
-
     // }}}
     // {{{ functions
 
@@ -156,8 +137,8 @@ class LC_Page_Admin_Customer_Edit extends LC_Page {
             $birth = split("-",$birth[0]);
 
             $this->list_data["year"] = $birth[0];
-            $this->list_data["month"] = $birth[1];
-            $this->list_data["day"] = $birth[2];
+            $this->list_data["month"] = isset($birth[1]) ? $birth[1] : "";
+            $this->list_data["day"] = isset($birth[2]) ? $birth[2] : "";
 
             $this->list_data["password"] = DEFAULT_PASSWORD;
             //DB登録のメールアドレスを渡す
