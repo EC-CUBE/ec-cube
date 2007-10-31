@@ -47,7 +47,7 @@ if(!empty($module_id) && is_numeric($module_id)) {
             require_once $config_path;
             exit;
         } else {
-            die("モジュールの取得に失敗しました: $path");
+            die("モジュールの取得に失敗しました: $config_path");
         }
     } else {
         die("モジュールが存在しません: module_id => $module_id");
