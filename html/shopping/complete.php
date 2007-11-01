@@ -103,6 +103,8 @@ if ($uniqid != "") {
 	}
 }
 
+sfConnectMovilinkURL($order_id);
+
 $objPage->arrInfo = $arrInfo;
 // キャンペーンからの遷移かチェック
 $objPage->is_campaign = $objCampaignSess->getIsCampaign();

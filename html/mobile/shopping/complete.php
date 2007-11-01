@@ -94,6 +94,8 @@ if ($uniqid != "") {
 	}
 }
 
+sfConnectMovilinkURL($order_id);
+
 $objPage->arrInfo = $arrInfo;
 
 $objView->assignobj($objPage);

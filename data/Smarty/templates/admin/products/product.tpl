@@ -231,33 +231,58 @@ function lfDispSwitch(id){
 										<input type="button" name="btn" onclick="fnModeSubmit('upload_image', 'image_key', '<!--{$key}-->')" value="アップロード">
 										</td>
 									</tr>
-									<!--{*　カラー比較画像、商品詳細ファイルは非対応 
-									<tr>
-										<td bgcolor="#f2f1ec" width="160" class="fs12n">カラー比較画像<br />[500×500]</td>
-										<td bgcolor="#ffffff" width="557" class="fs12n">
-										<!--{assign var=key value="file1"}-->
+									
+									<!--{if $tpl_movilink_flg}-->
+									<tr class="fs12n">
+										<td bgcolor="#f2f1ec" colspan="2">▼モビル連携用▼</td>
+									</tr>									
+									<tr class="fs12n">
+										<td bgcolor="#f2f1ec" width="160">広告主様商品コード<span class="red12"> *</span></td>
+										<td bgcolor="#ffffff" width="557">
+										<!--{assign var=key value="movilink_code1"}-->
 										<span class="red12"><!--{$arrErr[$key]}--></span>
-										<!--{if $arrFile[$key].filepath != ""}-->
-										<img src="<!--{$arrFile[$key].filepath}-->" alt="<!--{$arrForm.name|escape}-->" width="<!--{$arrFile[$key].width}-->" height="<!--{$arrFile[$key].height}-->" />　<a href="" onclick="fnModeSubmit('delete_image', 'image_key', '<!--{$key}-->'); return false;">[画像の取り消し]</a><br>
-										<!--{/if}-->
-										<input type="file" name="<!--{$key}-->" size="50" class="box50" />
-										<input type="button" name="btn" onclick="fnModeSubmit('upload_image', 'image_key', '<!--{$key}-->')" value="アップロード">
-										</td>
+										<input type="text" name="<!--{$key}-->" value="<!--{$arrForm[$key]}-->" size="20" class="box20" maxlength="<!--{$smarty.const.INT_LEN}-->" style="<!--{if $arrErr[$key] != ""}-->background-color: <!--{$smarty.const.ERR_COLOR}--><!--{/if}-->"/></td>
 									</tr>
-									<tr>
-										<td bgcolor="#f2f1ec" width="160" class="fs12n">商品詳細ファイル</td>
-										<td bgcolor="#ffffff" width="557" class="fs10n">
-										<!--{assign var=key value="file2"}-->
+									<tr class="fs12n">
+										<td bgcolor="#f2f1ec" width="160">商品名(フリガナ)<span class="red12"> *</span></td>
+										<td bgcolor="#ffffff" width="557">
+										<!--{assign var=key value="movilink_kana"}-->
 										<span class="red12"><!--{$arrErr[$key]}--></span>
-										<!--{if $arrFile[$key].filepath != ""}-->
-										<input type="button" name="pdf" value="ファイル確認" onclick="fnOpenNoMenu('<!--{$arrFile[$key].filepath}-->')"/>
-										<a href="" onclick="fnModeSubmit('delete_image', 'image_key', '<!--{$key}-->'); return false;">[ファイルの取り消し]</a><br>
-										<!--{/if}-->
-										<input type="file" name="<!--{$key}-->" size="50" class="box50" />
-										<input type="button" name="btn" onclick="fnModeSubmit('upload_image', 'image_key', '<!--{$key}-->')" value="アップロード">
-										</td>
-									</tr>		
-									*}-->
+										<input type="text" name="<!--{$key}-->" value="<!--{$arrForm[$key]}-->" size="40" class="box40" maxlength="<!--{$smarty.const.INT_LEN}-->" style="<!--{if $arrErr[$key] != ""}-->background-color: <!--{$smarty.const.ERR_COLOR}--><!--{/if}-->"/></td>
+									</tr>
+									<tr class="fs12n">
+										<td bgcolor="#f2f1ec" width="160">商品価格<span class="red12"> *</span></td>
+										<td bgcolor="#ffffff" width="557">
+										<!--{assign var=key value="movilink_price"}-->
+										<span class="red12"><!--{$arrErr[$key]}--></span>
+										<input type="text" name="<!--{$key}-->" value="<!--{$arrForm[$key]}-->" size="6" class="box6" maxlength="<!--{$smarty.const.INT_LEN}-->" style="<!--{if $arrErr[$key] != ""}-->background-color: <!--{$smarty.const.ERR_COLOR}--><!--{/if}-->"/>円<span class="red10"> （半角数字で入力）</span></td>
+									</tr>
+									<tr class="fs12n">
+										<td bgcolor="#f2f1ec" width="160">商品報酬率<span class="red12"> *</span></td>
+										<td bgcolor="#ffffff" width="557">
+										<!--{assign var=key value="movilink_net_percent"}-->
+										<span class="red12"><!--{$arrErr[$key]}--></span>
+										<input type="text" name="<!--{$key}-->" value="<!--{$arrForm[$key]}-->" size="6" class="box6" maxlength="<!--{$smarty.const.INT_LEN}-->" style="<!--{if $arrErr[$key] != ""}-->background-color: <!--{$smarty.const.ERR_COLOR}--><!--{/if}-->"/>％<span class="red10"> （半角数字で入力）</span></td>
+									</tr>
+									<tr class="fs12n">
+										<td bgcolor="#f2f1ec" width="160">商品報酬額<span class="red12"> *</span></td>
+										<td bgcolor="#ffffff" width="557">
+										<!--{assign var=key value="movilink_net_fix"}-->
+										<span class="red12"><!--{$arrErr[$key]}--></span>
+										<input type="text" name="<!--{$key}-->" value="<!--{$arrForm[$key]}-->" size="6" class="box6" maxlength="<!--{$smarty.const.INT_LEN}-->" style="<!--{if $arrErr[$key] != ""}-->background-color: <!--{$smarty.const.ERR_COLOR}--><!--{/if}-->"/>円<span class="red10"> （半角数字で入力）</span></td>
+									</tr>
+									<tr class="fs12n">
+										<td bgcolor="#f2f1ec" width="160">広告タグ原稿<span class="red12"> *</span></td>
+										<td bgcolor="#ffffff" width="557"> 
+										<!--{assign var=key value="movilink_draft_text1"}-->
+										<span class="red12"><!--{$arrErr[$key]}--></span>
+										<input type="text" name="<!--{$key}-->" value="<!--{$arrForm[$key]}-->" size="20" class="box20" maxlength="<!--{$smarty.const.INT_LEN}-->" style="<!--{if $arrErr[$key] != ""}-->background-color: <!--{$smarty.const.ERR_COLOR}--><!--{/if}-->"/><br>
+										<!--{assign var=key value="movilink_draft_text2"}-->
+										<span class="red12"><!--{$arrErr[$key]}--></span>
+										<input type="text" name="<!--{$key}-->" value="<!--{$arrForm[$key]}-->" size="20" class="box20" maxlength="<!--{$smarty.const.INT_LEN}-->" style="<!--{if $arrErr[$key] != ""}-->background-color: <!--{$smarty.const.ERR_COLOR}--><!--{/if}-->"/><span class="red10"> （8文字×2行で入力）</span></td>
+									</tr>
+									<!--{/if}-->
+									
 								</table>
 
 								<table width="678" border="0" cellspacing="0" cellpadding="0" summary=" ">

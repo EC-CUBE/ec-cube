@@ -5,18 +5,22 @@
  * http://www.lockon.co.jp/
  */
 
+define("CSV_ID_MOVI",5);
+ 
 $arrSubnavi = array(
 	1 => 'product',
 	2 => 'customer',
 	3 => 'order',
-	4 => 'campaign'
+	4 => 'campaign',
+	CSV_ID_MOVI => 'movilink'
 );
 
 $arrSubnaviName = array(
 	1 => '商品管理',
 	2 => '顧客管理',
 	3 => '受注管理',
-	4 => 'キャンペーン'
+	4 => 'キャンペーン',
+	CSV_ID_MOVI => 'モビル連携'
 );
 
 /**************************************************************************************************************

@@ -31,6 +31,12 @@ class LC_Page {
 	}
 }
 
+// モビリンク初期処理
+if(function_exists('sfInitMovilink')) {
+	sfDomainSessionStart();
+	sfInitMovilink();
+}
+
 $objPage = new LC_Page();
 $objView = new SC_SiteView();
 $objCustomer = new SC_Customer();

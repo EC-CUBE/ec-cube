@@ -181,4 +181,10 @@ function sfAlterMemo(){
 	}
 }
 
+// モビリンクモジュールの読み込み
+$movilink_inc = MODULE_PATH . "mdl_movilink/mdl_movilink.inc";
+if(file_exists($movilink_inc)) {
+	require_once($movilink_inc);
+}
+
 ?>

@@ -189,6 +189,47 @@
 									<!--{/if}-->
 									</td>
 								</tr>
+								
+								<!--{if $tpl_movilink_flg}-->
+									<tr class="fs12n">
+										<td bgcolor="#f2f1ec" width="160">π≠πºÁÕÕæ¶… •≥°º•…</td>
+										<td bgcolor="#ffffff" width="557">
+										<!--{assign var=key value="movilink_code1"}-->
+										<!--{$arrForm[$key]}--><!--{if $arrForm[$key] != ""}--><!--{/if}--></td>
+									</tr>
+									<tr class="fs12n">
+										<td bgcolor="#f2f1ec" width="160">æ¶… Ãæ(•’•Í•¨• )</td>
+										<td bgcolor="#ffffff" width="557">
+										<!--{assign var=key value="movilink_kana"}-->
+										<!--{$arrForm[$key]}--><!--{if $arrForm[$key] != ""}--><!--{/if}--></td>
+									</tr>
+									<tr class="fs12n">
+										<td bgcolor="#f2f1ec" width="160">æ¶… ≤¡≥ </td>
+										<td bgcolor="#ffffff" width="557">
+										<!--{assign var=key value="movilink_price"}-->
+										<!--{$arrForm[$key]}--><!--{if $arrForm[$key] != ""}-->±ﬂ<!--{/if}--></td>
+									</tr>
+									<tr class="fs12n">
+										<td bgcolor="#f2f1ec" width="160">æ¶…  ÛΩ∑Œ®</td>
+										<td bgcolor="#ffffff" width="557">
+										<!--{assign var=key value="movilink_net_percent"}-->
+										<!--{$arrForm[$key]}--><!--{if $arrForm[$key] != ""}-->°Û<!--{/if}--></td>
+									</tr>
+									<tr class="fs12n">
+										<td bgcolor="#f2f1ec" width="160">æ¶…  ÛΩ∑≥€</td>
+										<td bgcolor="#ffffff" width="557">
+										<!--{assign var=key value="movilink_net_fix"}-->
+										<!--{$arrForm[$key]}--><!--{if $arrForm[$key] != ""}-->±ﬂ<!--{/if}--></td>									</tr>
+									<tr class="fs12n">
+										<td bgcolor="#f2f1ec" width="160">π≠π•ø•∞∏∂π∆</td>
+										<td bgcolor="#ffffff" width="557">
+										<!--{assign var=key value="movilink_draft_text1"}-->
+										<!--{$arrForm[$key]}--><br>
+										<!--{assign var=key value="movilink_draft_text2"}-->
+										<!--{$arrForm[$key]}--></td>
+									</tr>
+								<!--{/if}-->
+								
 								<!--{section name=cnt loop=$smarty.const.PRODUCTSUB_MAX}-->
 								<!--¢ßæ¶… <!--{$smarty.section.cnt.iteration}-->-->
 								<tr>
