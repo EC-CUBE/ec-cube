@@ -6,6 +6,10 @@
  */
 require_once("../require.php");
 
+if(file_exists(MODULE_PATH . 'mdl_paygent/mdl_paygent.inc')) {
+	require_once(MODULE_PATH . 'mdl_paygent/mdl_paygent.inc');
+}
+
 class LC_Page {
 	function LC_Page() {
 		$this->tpl_mainpage = 'order/edit.tpl';
@@ -22,6 +26,11 @@ class LC_Page {
 
 $conn = new SC_DBConn();
 $objPage = new LC_Page();
+
+if(function_exists("sfPaygentOrderPage")) {
+	$objPage = sfPaygentOrderPage($objPage);
+}
+
 $objView = new SC_AdminView();
 $objSess = new SC_Session();
 $objSiteInfo = new SC_SiteInfo();
@@ -85,6 +94,10 @@ case 'cheek':
 	if(count($objPage->arrErr) == 0) {
 		$objPage->arrErr = lfCheek($arrInfo);
 	}
+	break;
+// ペイジェント対応
+case 'paygent_order':
+	$objPage->paygent_return = sfPaygentOrder($_POST['paygent_type'], $order_id);
 	break;
 default:
 	break;

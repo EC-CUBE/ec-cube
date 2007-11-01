@@ -18,10 +18,6 @@
 </script>
 <!--★★メインコンテンツ★★-->
 <table width="878" border="0" cellspacing="0" cellpadding="0" summary=" ">
-<form name="form1" id="form1" method="post" action="<!--{$smarty.server.PHP_SELF|escape}-->">
-<input type="hidden" name="mode" value="edit">
-<input type="hidden" name="order_id" value="<!--{$tpl_order_id}-->">
-<input type="hidden" name="edit_customer_id" value="<!--{$tpl_order_id}-->">
 	<tr valign="top">
 		<td background="<!--{$smarty.const.URL_DIR}-->img/contents/navi_bg.gif" height="402">
 			<!--▼SUB NAVI-->
@@ -45,6 +41,10 @@
 						
 						<!--登録テーブルここから-->
 						<table width="678" border="0" cellspacing="0" cellpadding="0" summary=" ">
+						<form name="form1" id="form1" method="post" action="<!--{$smarty.server.PHP_SELF|escape}-->">
+						<input type="hidden" name="mode" value="edit">
+						<input type="hidden" name="order_id" value="<!--{$tpl_order_id}-->">
+						<input type="hidden" name="edit_customer_id" value="<!--{$tpl_order_id}-->">
 							<tr>
 								<td colspan="3"><img src="<!--{$smarty.const.URL_DIR}-->img/contents/contents_title_top.gif" width="678" height="7" alt=""></td>
 							</tr>
@@ -60,7 +60,13 @@
 								<td colspan="3"><img src="<!--{$smarty.const.URL_DIR}-->img/contents/main_bar.jpg" width="678" height="10" alt=""></td>
 							</tr>
 						</table>
-
+						
+						<!--{* ペイジェントモジュール連携用 *}-->
+						<!--{assign var=path value=`$smarty.const.MODULE_PATH`mdl_paygent/paygent_order.tpl}-->
+						<!--{if file_exists($path)}-->
+							<!--{include file=$path}-->
+						<!--{/if}-->
+						
 						<!--▼お客様情報ここから-->
 						<table width="678" border="0" cellspacing="1" cellpadding="8" summary=" ">
 							<tr class="fs12n">

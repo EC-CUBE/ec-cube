@@ -7,6 +7,10 @@
 require_once("../require.php");
 require_once("./index_csv.php");
 
+if(file_exists(MODULE_PATH . 'mdl_paygent/mdl_paygent.inc')) {
+	require_once(MODULE_PATH . 'mdl_paygent/mdl_paygent.inc');
+}
+
 class LC_Page {
 	function LC_Page() {
 		$this->tpl_mainpage = 'order/index.tpl';
@@ -28,6 +32,11 @@ class LC_Page {
 
 $conn = new SC_DBConn();
 $objPage = new LC_Page();
+
+if(function_exists("sfPaygentOrderPage")) {
+	$objPage = sfPaygentOrderPage($objPage);
+}
+
 $objView = new SC_AdminView();
 $objSess = new SC_Session();
 // パラメータ管理クラス
