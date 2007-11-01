@@ -7,6 +7,10 @@
 require_once("../require.php");
 require_once("./inc_mailmagazine.php");
 
+if(file_exists(MODULE_PATH . 'mdl_combz/mdl_combz.inc')) {
+	require_once(MODULE_PATH . 'mdl_combz/mdl_combz.inc');
+}
+
 class LC_Page {
 	var $arrSession;
 	var $arrHtmlmail;
@@ -127,6 +131,8 @@ switch($_POST['mode']) {
 case 'delete':
 case 'search':
 case 'back':
+// コンビーズ連携用
+case 'combz':
 	//-- 入力値コンバート
 	$objPage->list_data = lfConvertParam($_POST, $arrSearchColumn);
 		
@@ -169,6 +175,10 @@ case 'back':
 		$objPage->arrResults = $objQuery->select($col, $from, $where, $arrval);
 		//現在時刻の取得
 		$objPage->arrNowDate = lfGetNowDate();
+	}
+	
+	if($_POST['mode'] == 'combz' && function_exists('sfCombzPost')) {
+		$objPage->combz_return = sfCombzPost($_POST['combz_type'], $where, $arrval);
 	}
 	break;
 /*
