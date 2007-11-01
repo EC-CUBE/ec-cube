@@ -17,8 +17,6 @@
 <script type="text/javascript" src="<!--{$smarty.const.URL_DIR}-->js/css.js"></script>
 <script type="text/javascript" src="<!--{$smarty.const.URL_DIR}-->js/navi.js"></script>
 <script type="text/javascript" src="<!--{$smarty.const.URL_DIR}-->js/win_op.js"></script>
-<script type="text/javascript" src="<!--{$smarty.const.URL_DIR}-->js/site.js"></script>
-<script type="text/javascript" src="<!--{$smarty.const.URL_DIR}-->js/admin.js"></script>
 <title>コンビーズ予約発行</title>
 <script type="text/javascript">
 <!--
@@ -68,7 +66,19 @@ self.moveTo(20,20);self.focus();
 											<td colspan="3"><img src="<!--{$smarty.const.URL_DIR}-->img/contents/main_bar.jpg" width="442" height="10" alt=""></td>
 										</tr>
 									</table>
-
+									<table width="442" border="0" cellspacing="1" cellpadding="8" summary=" ">
+										<tr class="fs12n">
+											<td bgcolor="#ffffff">
+												※ 登録後、コンビーズ管理画面上で発行日時を指定してください。<br />
+												※ メルマガ件名、メルマガ本文は登録後に、修正することができます。
+											</td>
+										</tr>
+									</table>
+									<table width="442" border="0" cellspacing="0" cellpadding="0" summary=" ">
+										<tr>
+											<td colspan="3"><img src="<!--{$smarty.const.URL_DIR}-->img/contents/main_bar.jpg" width="442" height="10" alt=""></td>
+										</tr>
+									</table>
 									<table width="442" border="0" cellspacing="1" cellpadding="5" summary=" ">
 										<tr class="fs12n">
 											<td width="" bgcolor="#f3f3f3">発行者ID<span class="red"> ※</span></td>
@@ -103,11 +113,13 @@ self.moveTo(20,20);self.focus();
 											</td>
 										</tr>
 										<tr class="fs12n">
-											<td width="" bgcolor="#f3f3f3">メルマガ本文</td>
-											<td width="300" bgcolor="#ffffff">
+											<td width="" align="center" bgcolor="#f3f3f3" colspan="2">メルマガ本文</td>
+										</tr>
+										<tr class="fs12n"  align="center">
+											<td width="300" align="center" bgcolor="#ffffff" colspan="2">
 											<!--{assign var=key value="body"}-->
 											<span class="red12"><!--{$arrErr[$key]}--></span>
-											<input type="text" name="<!--{$key}-->" style="ime-mode:disabled; <!--{$arrErr[$key]|sfGetErrorColor}-->" value="<!--{$arrForm[$key]}-->" class="box20" maxlength="<!--{$arrForm[$key].length}-->">
+											<textarea name="<!--{$key}-->" cols="55" rows="20" class="area30" maxlength="<!--{$smarty.const.LLTEXT_LEN}-->" style="<!--{$arrErr.comment3|sfGetErrorColor}-->"><!--{$arrForm[$key]}--></textarea>
 											</td>
 										</tr>										
 									</table>
