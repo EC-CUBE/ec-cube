@@ -88,3 +88,4 @@ DROP TABLE mtb_constants;
 DROP TABLE mtb_class;
 DROP TABLE mtb_authority;
 DROP TABLE mtb_allowed_tag;
+DROP TABLE mtb_ownersstore_err;

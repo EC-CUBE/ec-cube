@@ -1179,10 +1179,16 @@ CREATE TABLE mtb_mobile_domain (
     PRIMARY KEY (id)
 ) TYPE=InnoDB;
 
+CREATE TABLE mtb_ownersstore_err (
+    id int2,
+    name text,
+    rank int2 NOT NULL DEFAULT 0,
+    PRIMARY KEY (id)
+) TYPE=InnoDB;
+
 CREATE TABLE mtb_constants (
     id text,
     name text,
     rank int2 NOT NULL DEFAULT 0,
     remarks text
 ) TYPE=InnoDB;
-
