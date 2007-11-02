@@ -61,6 +61,19 @@ class LC_Page_Admin_OwnersStore_Log extends LC_Page {
         // ログインチェック
         SC_Utils::sfIsSuccess(new SC_Session());
 
+        $arrModuleData = $this->getModuleData();
+        $log = '';
+        if (count($arrModuleData)) {
+            foreach($arrModuleData as $module) {
+                $name = $module['module_name'];
+                $update_date = SC_Utils_Ex::sfDispDBDate($module['update_date']);
+
+                $log .= sprintf("[%s] %s モジュール が更新されました。\n", $update_date, $name);
+            }
+        }
+
+        $this->log = $log;
+
         // ページ出力
         $objView = new SC_AdminView();
         $objView->assignObj($this);
@@ -74,6 +87,13 @@ class LC_Page_Admin_OwnersStore_Log extends LC_Page {
      */
     function destroy() {
         parent::destroy();
+    }
+
+    function getModuleData() {
+        $objQuery = new SC_Query;
+        $objQuery->setOrder('update_date desc');
+        $arrRet = $objQuery->select('*', 'dtb_module');
+        return empty($arrRet) ? array() : $arrRet;
     }
 }
 ?>

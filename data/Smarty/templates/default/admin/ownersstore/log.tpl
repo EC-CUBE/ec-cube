@@ -73,8 +73,12 @@
 											<p>インストールログ</p>
 										</td>
 										<td bgcolor="#ffffff" width="518" class="fs10n">
-											<!--{assign var="key" value="install_log"}-->
-											<textarea name="<!--{$key}-->" cols="60" rows="8" class="area70" maxlength="" style=""><!--{$arrForm[$key]|escape}--></textarea>
+											<textarea name=""
+											          cols="60"
+											          rows="8"
+											          class="area70"
+											          maxlength=""
+											          style=""><!--{$log|escape}--></textarea>
 										</td>
 									</tr>
 								</table>
