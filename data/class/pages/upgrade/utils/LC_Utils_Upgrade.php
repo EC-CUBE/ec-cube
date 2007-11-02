@@ -98,7 +98,7 @@ class LC_Utils_Upgrade {
         $masterData = new SC_DB_MasterData();
         $arrErrMsg = $masterData->getMasterData("mtb_ownersstore_err");
         return isset($arrErrMsg[$errcode])
-            ? $arrErrMsg[$errcode]
+            ? $arrErrMsg[$errcode] . " エラーコード:$errcode"
             : "配信サーバとの通信中にエラーが発生しました。エラーコード:$errcode";
     }
 }
