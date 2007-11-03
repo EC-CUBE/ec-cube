@@ -111,6 +111,7 @@ class GC_Utils {
      * [注釈] -
      *----------------------------------------------------------------------*/
     function gfDebugLog($obj){
+        if(DEBUG_MODE === true) {
             GC_Utils::gfPrintLog("*** start Debug ***");
             ob_start();
             print_r($obj);
@@ -120,9 +121,9 @@ class GC_Utils {
             fwrite( $fp, $buffer."\n" );
             fclose( $fp );
             GC_Utils::gfPrintLog("*** end Debug ***");
-
             // ログテーション
             GC_Utils::gfLogRotation(MAX_LOG_QUANTITY, MAX_LOG_SIZE, LOG_PATH);
+		}
     }
 
     /*----------------------------------------------------------------------
