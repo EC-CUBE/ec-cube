@@ -267,18 +267,15 @@ class SC_SendMail {
      * @return array メーラーバックエンドに応じたパラメータの配列
      */
     function getBackendParams($backend) {
-
         switch ($backend) {
         case "mail":
-            return array();
+			$arrParams = array();
             break;
-
         case "sendmail":
             $arrParams = array('sendmail_path' => '/usr/bin/sendmail',
                                'sendmail_args' => '-i'
                                );
             break;
-
         case "smtp":
         default:
             $arrParams = array(
@@ -286,6 +283,7 @@ class SC_SendMail {
                                'port' => $this->port
                                );
         }
+        return $arrParams;
     }
 }
 ?>
