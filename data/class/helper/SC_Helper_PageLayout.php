@@ -208,12 +208,14 @@ class SC_Helper_PageLayout {
                 if ($target_id == $val['target_id']){
                     if ($val['php_path'] != '') {
                         $arrNavi[$key]['php_path'] = HTML_PATH . $val['php_path'];
-                        $arrNavi[$key]['include'] = "<!--{include file='".$val['php_path']."'}-->";
                     }else{
-                        $arrNavi[$key]['tpl_path'] = TEMPLATE_DIR . $val['tpl_path'];
-                        $arrNavi[$key]['include'] = "<!--{include file='". TEMPLATE_DIR . $val['tpl_path'] ."'}-->";
+                    	$user_block_path = USER_PATH . $val['tpl_path'];
+                    	if(file_exists($user_block_path)) {
+                    	   $arrNavi[$key]['tpl_path'] = $user_block_path;
+                    	} else {
+	                        $arrNavi[$key]['tpl_path'] = TEMPLATE_DIR . $val['tpl_path'];
+                    	}
                     }
-
                     $arrRet[] = $arrNavi[$key];
                 }
             }
