@@ -212,19 +212,34 @@ class SC_DbConn{
             $url = "http://";
         }
         $url .= $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'];
-
-        $errmsg  = $url."\n\n";
-        $errmsg .= $sql . "\n";
-        $errmsg .= $result->message . "\n\n";
-        $errmsg .= $result->userinfo . "\n\n";
-
+			
+		$errmsg = $url."\n\n";
+		$errmsg.= "SERVER_ADDR:" . $_SERVER['SERVER_ADDR'] . "\n";
+		$errmsg.= "REMOTE_ADDR:" . $_SERVER['REMOTE_ADDR'] . "\n";
+		$errmsg.= "USER_AGENT:" . $_SERVER['HTTP_USER_AGENT'] . "\n\n";		
+		$errmsg.= $sql . "\n";
+		$errmsg.= $result->message . "\n\n";
+		$errmsg.= $result->userinfo . "\n\n";
+		
+		$arrRbacktrace = array_reverse($result->backtrace);
+					
+		foreach($arrRbacktrace as $backtrace) {
+			if($backtrace['class'] != "") {
+				$func = $backtrace['class'] . "->" . $backtrace['function'];
+			} else {
+				$func = $backtrace['function'];					
+			}
+			
+			$errmsg.= $backtrace['file'] . " " . $backtrace['line'] . ":" . $func . "\n";
+		}
+		
         if ($this->err_disp || DEBUG_MODE === true) {
             print('<pre>');
             print_r(htmlspecialchars($errmsg, ENT_QUOTES, CHAR_CODE));
             print('</pre>');
         }
 		        
-        GC_Utils_Ex::gfDebugLog($errmsg);
+        GC_Utils_Ex::gfPrintLog($errmsg);
 
         exit();
     }
