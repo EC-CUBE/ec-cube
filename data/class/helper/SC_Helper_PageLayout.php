@@ -44,7 +44,8 @@ class SC_Helper_PageLayout {
      * @return void
      */
     function sfGetPageLayout(&$objPage, $preview = false, $url = ""){
-        $arrPageLayout = array();
+        $debug_message = "";
+    	$arrPageLayout = array();
 
         // 現在のURLの取得
         if ($preview === false) {
@@ -58,22 +59,31 @@ class SC_Helper_PageLayout {
             $objPage->tpl_mainpage = USER_PATH . "templates/"
                 . TEMPLATE_NAME . "/" . $arrPageData[0]['filename'] . ".tpl";
         }
-
-        // メインテンプレートファイルを設定
-        if (!isset($objPage->tpl_mainpage)) {
-
-            // カスタムテンプレートのパスを取得
+		
+        foreach($arrPageData[0] as $key => $val) {
+        	 $debug_message.= "arrPageData[$key]：" . $val . "\n";
+        }
+        
+        $debug_message.= "TEMPLATE_NAME：".TEMPLATE_NAME . "\n";
+        
+        // tpl_mainpageの設定なし、又はトップページの場合
+        if (!isset($objPage->tpl_mainpage) || $url == "index.php") {
+            // ユーザテンプレートのパスを取得
             $user_tpl =  HTML_PATH . $arrPageData[0]['tpl_dir'] . $arrPageData[0]['filename'] . ".tpl";
-
-            // カスタムテンプレートの存在チェック
+            // ユーザテンプレートの存在チェック
             if (is_file($user_tpl)) {
                 $objPage->tpl_mainpage = $user_tpl;
-
+                $debug_message.= "tpl_mainpage：ユーザーテンプレート\n";
             // 存在しない場合は指定テンプレートを使用
             } else {
                 $objPage->tpl_mainpage = TEMPLATE_DIR . $arrPageData[0]['filename'] . ".tpl";
+                $debug_message.= "tpl_mainpage：標準テンプレート\n";
             }
+        } else {
+            $debug_message.= "tpl_mainpage：設定あり" . "\n";
         }
+        
+        $debug_message.= "tpl_mainpage：" . $objPage->tpl_mainpage . "\n";
 
         // ページタイトルを設定
         if (!isset($objPage->tpl_title)) {
@@ -89,8 +99,12 @@ class SC_Helper_PageLayout {
         $arrPageLayout['MainHead']  = $this->lfGetNavi($arrNavi,2);	// メイン上部
         $arrPageLayout['RightNavi'] = $this->lfGetNavi($arrNavi,3);	// RIGHT NAVI
         $arrPageLayout['MainFoot']  = $this->lfGetNavi($arrNavi,4);	// メイン下部
-
+        
+        GC_Utils::gfDebugLog($arrPageLayout);
+                
         $objPage->arrPageLayout = $arrPageLayout;
+        
+        GC_Utils::gfDebugLog($debug_message);
     }
 
     /**
