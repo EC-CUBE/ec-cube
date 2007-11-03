@@ -218,12 +218,12 @@ class SC_DbConn{
         $errmsg .= $result->message . "\n\n";
         $errmsg .= $result->userinfo . "\n\n";
 
-        if ($this->err_disp && DEBUG_MODE === true) {
+        if ($this->err_disp || DEBUG_MODE === true) {
             print('<pre>');
             print_r(htmlspecialchars($errmsg, ENT_QUOTES, CHAR_CODE));
             print('</pre>');
         }
-
+		        
         GC_Utils_Ex::gfDebugLog($errmsg);
 
         exit();
