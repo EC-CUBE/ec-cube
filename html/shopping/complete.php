@@ -103,7 +103,9 @@ if ($uniqid != "") {
 	}
 }
 
-sfConnectMovilinkURL($order_id);
+if(function_exists('sfConnectMovilinkURL')) {
+	sfConnectMovilinkURL($order_id);
+}
 
 $objPage->arrInfo = $arrInfo;
 // キャンペーンからの遷移かチェック
