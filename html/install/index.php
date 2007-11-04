@@ -44,7 +44,6 @@ $objDb = new SC_Helper_DB_Ex();
 
 // テンプレートコンパイルディレクトリの書込み権限チェック
 $temp_dir = $INSTALL_DIR . '/temp';
-//$mode = lfGetFileMode($temp_dir);
 
 if(!is_writable($temp_dir)) {
     SC_Utils_Ex::sfErrorHeader($temp_dir . "にユーザ書込み権限(777, 707等)を付与して下さい。", true);
@@ -400,13 +399,14 @@ function lfDispStep0($objPage) {
     $mess = "";
     $err_file = false;
     foreach($arrWriteFile as $val) {
-
+		// listdirsの保持データを初期化
+    	initdirs();
         if (is_dir($val)) {
-            $arrDirs = listdirs($val);
+           $arrDirs = listdirs($val);
         } else {
             $arrDirs = array($val);
         }
-
+        
         foreach ($arrDirs as $path) {
             if(file_exists($path)) {
                 $mode = lfGetFileMode($path);
@@ -414,16 +414,12 @@ function lfDispStep0($objPage) {
 
                 // ディレクトリの場合
                 if(is_dir($path)) {
-                    if(is_writable($path)) {
-                        //$mess.= ">> ○：$real_path($mode) <br>アクセス権限は正常です。<br>";
-                    } else {
+                    if(!is_writable($path)) {
                         $mess.= ">> ×：$real_path($mode) <br>ユーザ書込み権限(777, 707等)を付与して下さい。<br>";
                         $err_file = true;
                     }
                 } else {
-                    if(is_writable($path)) {
-                        //$mess.= ">> ○：$real_path($mode) <br>アクセス権限は正常です。<br>";
-                    } else {
+                    if(!is_writable($path)) {
                         $mess.= ">> ×：$real_path($mode) <br>ユーザ書込み権限(666, 606等)を付与して下さい。<br>";
                         $err_file = true;
                     }
@@ -1080,8 +1076,9 @@ function lfInsertCSVData($csv_id,$col,$disp_name,$rank,$create_date,$update_date
  * @return array $dir より下層に存在するパス名の配列
  * @see http://www.php.net/glob
  */
+$alldirs = array();
 function listdirs($dir) {
-    static $alldirs = array();
+    global $alldirs;
     $dirs = glob($dir . '/*');
     if (count($dirs) > 0) {
         foreach ($dirs as $d) $alldirs[] = $d;
@@ -1089,4 +1086,13 @@ function listdirs($dir) {
     foreach ($dirs as $dir) listdirs($dir);
     return $alldirs;
 }
+
+/**
+ * 保持したスタティック変数をクリアする。
+ */
+function initdirs() {
+    global $alldirs;
+	$alldirs = array();
+}
+
 ?>
