@@ -1,35 +1,28 @@
-<!--{*
+﻿<!--{*
 /*
- * This file is part of EC-CUBE
- *
  * Copyright(c) 2000-2007 LOCKON CO.,LTD. All Rights Reserved.
  *
  * http://www.lockon.co.jp/
- *
- * This program is free software; you can redistribute it and/or
- * modify it under the terms of the GNU General Public License
- * as published by the Free Software Foundation; either version 2
- * of the License, or (at your option) any later version.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 *}-->
+<script type="text/javascript"><!--
+function submitRegister() {
+	var form = document.form1;
+	var msg  = "テンプレートを変更します。\n既存のデータは上書きされますがよろしいですか？";
+
+	if (window.confirm(msg)) {
+		form['mode'].value = 'register';
+		form.submit();
+	}
+}
+// -->
+</script>
 <!--★★メインコンテンツ★★-->
 <table width="878" border="0" cellspacing="0" cellpadding="0" summary=" ">
-<form name="form1" id="form1" method="post" action="<!--{$smarty.server.PHP_SELF|escape}-->" onsubmit="return lfnModeSubmit('confirm')">
-<!--{foreach from=$smarty.post key="key" item="item"}-->
-<!--{if $key ne "mode"}--><input type="hidden" name="<!--{$key|escape}-->" value="<!--{$item|escape}-->">
-<!--{/if}-->
-<!--{/foreach}-->
+<form name="form1" method="post" action="">
 <input type="hidden" name="mode" value="">
-<input type="hidden" name="tpl_subno_template" value="<!--{$tpl_subno_template}-->">
+<input type="hidden" name="template_code_delete" value="">
+<input type="hidden" name="uniqid" value="<!--{$uniqid}-->">
 	<tr valign="top">
 		<td background="<!--{$TPL_DIR}-->img/contents/navi_bg.gif" height="402">
 			<!--▼SUB NAVI-->
@@ -56,7 +49,7 @@
 									</tr>
 									<tr>
 										<td background="<!--{$TPL_DIR}-->img/contents/contents_title_left_bg.gif"><img src="<!--{$TPL_DIR}-->img/contents/contents_title_left.gif" width="22" height="12" alt=""></td>
-										<td bgcolor="#636469" width="638" class="fs14n"><span class="white"><!--コンテンツタイトル--><!--{$template_name}--></span></td>
+										<td bgcolor="#636469" width="638" class="fs14n"><span class="white"><!--コンテンツタイトル-->テンプレート設定</span></td>
 										<td background="<!--{$TPL_DIR}-->img/contents/contents_title_right_bg.gif"><img src="<!--{$TPL_DIR}-->img/common/_.gif" width="18" height="1" alt=""></td>
 									</tr>
 									<tr>
@@ -66,64 +59,54 @@
 										<td colspan="3"><img src="<!--{$TPL_DIR}-->img/contents/main_bar.jpg" width="678" height="10" alt=""></td>
 									</tr>
 								</table>
-
-								<table width="678" border="0" cellspacing="1" cellpadding="8" summary=" ">
-									<tr class="fs12n">
-										<td bgcolor="#f2f1ec" align="center"><strong>現在のテンプレート</strong></td>
-									</tr>
-									<tr class="fs12n">
-										<td bgcolor="#ffffff" align="center"><img height=500 width=400 src="<!--{$smarty.const.URL_DIR}--><!--{$arrTemplate.image[$MainImage]}-->" name="main_img" ></td>
-									</tr>
-								</table>
-
-								<table width="678" border="0" cellspacing="0" cellpadding="0" summary=" ">
-									<tr><td colspan="3"><img src="<!--{$TPL_DIR}-->img/contents/main_bar.jpg" width="678" height="10" alt=""></td></tr>
-								</table>
 								
 								<table width="678" border="0" cellspacing="1" cellpadding="8" summary=" ">
-									<tr class="fs12n">
-										<td bgcolor="#f2f1ec" align="center" colspan="3"><strong>テンプレート一覧</strong></td>
-									</tr>
-									
-									<!--{section name=template loop=$arrTemplate.image step=3}-->
-									<!--{*foreach key=key item=item from=$arrTemplate.image*}-->
-										<tr>
-										<!--{assign var=cnt value=$smarty.section.template.iteration-1}-->
-										<!--{assign var=key value=$cnt*$smarty.section.template.step}-->
-										<!--{assign var=code value=$arrTemplate.code[$key]}-->
-										<!--{assign var=image value=$arrTemplate.image[$code]}-->
-										<td bgcolor="#ffffff" align="center"><!--{$arrTemplate[template]}-->
-											<span class="fs12">【<!--{$arrTemplate.name[$key]}-->】</span><br/>
-											<label for="radio<!--{$key}-->"><img src="<!--{$smarty.const.URL_DIR}--><!--{$image}-->" width="160" height="200" name="<!--{$key}-->" alt="<!--{$code}-->"></label><br>
-											<span class="fs10n"><label for="radio<!--{$key}-->"><input type="radio" name="check_template" value="<!--{$code}-->" id="radio<!--{$key}-->" onClick="ChangeImage('<!--{$smarty.const.URL_DIR}--><!--{$image}-->');" <!--{if $arrTemplate.check[$code] != ""}-->checked<!--{/if}-->>選択</label></span>
-										</td>
-										<!--{assign var=cnt value=$smarty.section.template.iteration-1}-->
-										<!--{assign var=key value=$cnt*$smarty.section.template.step+1}-->
-										<!--{assign var=code value=$arrTemplate.code[$key]}-->
-										<!--{assign var=image value=$arrTemplate.image[$code]}-->
-										<!--{if $image != ""}-->
-										<td bgcolor="#ffffff" align="center"><!--{$arrTemplate[template]}-->
-											<span class="fs12">【<!--{$arrTemplate.name[$key]}-->】</span><br/>
-											<label for="radio<!--{$key}-->"><img src="<!--{$smarty.const.URL_DIR}--><!--{$image}-->" width="160" height="200" name="<!--{$key}-->" alt="<!--{$code}-->></label><br>
-											<span class="fs10n"><label for="radio<!--{$key}-->"><input type="radio" name="check_template" value="<!--{$code}-->" id="radio<!--{$key}-->" onClick="ChangeImage('<!--{$smarty.const.URL_DIR}--><!--{$image}-->');" <!--{if $arrTemplate.check[$code] != ""}-->checked<!--{/if}-->>選択</label></span>
-										</td>
-										<!--{/if}-->
-										<!--{assign var=cnt value=$smarty.section.template.iteration-1}-->
-										<!--{assign var=key value=$cnt*$smarty.section.template.step+2}-->
-										<!--{assign var=code value=$arrTemplate.code[$key]}-->
-										<!--{assign var=image value=$arrTemplate.image[$code]}-->
-										<!--{if $image != ""}-->
-										<td bgcolor="#ffffff" align="center"><!--{$arrTemplate[template]}-->
-											<span class="fs12">【<!--{$code}-->】</span><br/>
-											<label for="radio<!--{$key}-->"><img src="<!--{$smarty.const.URL_DIR}--><!--{$image}-->" width="160" height="200" name="<!--{$key}-->" alt="<!--{$code}-->></label><br>
-											<span class="fs10n"><label for="radio<!--{$key}-->"><input type="radio" name="check_template" value="<!--{$code}-->" id="radio<!--{$key}-->" onClick="ChangeImage('<!--{$smarty.const.URL_DIR}--><!--{$image}-->');" <!--{if $arrTemplate.check[$code] != ""}-->checked<!--{/if}-->>選択</label></span>
-										</td>
-										<!--{/if}-->
+								<tr bgcolor="#f2f1ec" class="fs12n">
+									<td>
+										テンプレートを選択し、「この内容で登録する」ボタンを押すと、<br>
+										選択したテンプレートへデザインを変更することが出来ます。<br>
+										<br>
+										変更した場合、下のファイルが上書きされます。
+										<ul>
+											<li>user_data/css/contents.css</li>
+											<li>user_data/include/*</li>
+											<li>user_data/templates/mypage/*</li>
+											<li>user_data/templates/detail.tpl</li>
+											<li>user_data/templates/list.tpl</li>
+											<li>user_data/templates/top.tpl</li>
+										</ul>
+									</td>
+								</tr>
+								<tr bgcolor="#ffffff" class="fs12n">
+									<td>
+										<table width="650" bgcolor="#cccccc" border="0" cellspacing="1" cellpadding="5" summary=" ">
+											<tr bgcolor="#f2f1ec" align="center" class="fs12n">
+												<td width="">選択</td>
+												<td width="">名前</td>
+												<td width="">保存先</td>
+												<!--<td width="50">確認</td>-->
+												<td width="50">削除</td>
+											</tr>
+											<tr bgcolor="#ffffff" align="center" class="fs12n">
+												<td width=""><input type="radio" name="template_code" value="default" <!--{if !$tplcode}-->checked<!--{/if}-->></td>
+												<td width="" colspan="3">テンプレートを使用しない</td>
+											</tr>
+											<!--{foreach from=$templates item=tpl}-->
+											<!--{assign var=tplcode value=$tpl.template_code}-->
+											<tr bgcolor="#ffffff" align="center" class="fs12">
+												<td width="" ><input type="radio" name="template_code" value="<!--{$tplcode|escape}-->" <!--{if $tplcode == $now_template}-->checked<!--{/if}-->></td>
+												<td width=""><!--{$tpl.template_name|escape}--></td>
+												<td width="">user_data/tpl_packages/<!--{$tplcode|escape}-->/</td>
+												<!--<td width=""><span class="icon_confirm"><a href="" onClick="">確認</span></a></td>-->
+												<td width=""><span class="icon_delete"><a href="" onClick="fnModeSubmit('delete','template_code_delete','<!--{$tplcode}-->');return false;">削除</a></span></td>
+											</tr>
+											<!--{/foreach}-->
 
-										</tr>
-									<!--{/section}-->
+										</table>
+									</td>
+								</tr>
 								</table>
-
+								
 								<table width="678" border="0" cellspacing="0" cellpadding="0" summary=" ">
 									<tr>
 										<td bgcolor="#cccccc"><img src="<!--{$TPL_DIR}-->img/common/_.gif" width="1" height="5" alt=""></td>
@@ -136,8 +119,9 @@
 										<table border="0" cellspacing="0" cellpadding="0" summary=" ">
 											<tr>
 												<td>
-													<a href="javascript:fnModeSubmit('download', '', '');"><img onMouseover="chgImgImageSubmit('<!--{$TPL_DIR}-->img/contents/btn_download_on.jpg',this)" onMouseout="chgImgImageSubmit('<!--{$TPL_DIR}-->img/contents/btn_download.jpg',this)" src="<!--{$TPL_DIR}-->img/contents/btn_download.jpg" width="123" height="24" alt="ダウンロード" border="0" name="subm"></a>
-													<input type="image" onMouseover="chgImgImageSubmit('<!--{$TPL_DIR}-->img/contents/btn_regist_on.jpg',this)" onMouseout="chgImgImageSubmit('<!--{$TPL_DIR}-->img/contents/btn_regist.jpg',this)" src="<!--{$TPL_DIR}-->img/contents/btn_regist.jpg" width="123" height="24" alt="この内容で登録する" border="0" name="subm">
+													<a href="" onClick="submitRegister();return false;">
+													<img onMouseover="chgImgImageSubmit('<!--{$TPL_DIR}-->img/contents/btn_regist_on.jpg',this)" onMouseout="chgImgImageSubmit('<!--{$TPL_DIR}-->img/contents/btn_regist.jpg',this)" src="<!--{$TPL_DIR}-->img/contents/btn_regist.jpg" width="123" height="24" alt="この内容で登録する" border="0" name="subm">
+													</a>
 												</td>
 											</tr>
 										</table>
@@ -166,21 +150,3 @@
 </form>
 </table>
 <!--★★メインコンテンツ★★-->
-
-<script type="text/javascript">
-function ChangeImage(strUrl)
-{
-	document.main_img.src=strUrl;
-}
-
-// モードとキーを指定してSUBMITを行う。
-function lfnModeSubmit(mode) {
-	if(!window.confirm('登録しても宜しいですか?')){
-		return false;
-	}
-	document.form1['mode'].value = mode;
-	return true;
-}
-
-
-</script>

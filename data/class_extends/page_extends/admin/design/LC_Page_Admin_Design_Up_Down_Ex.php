@@ -22,32 +22,47 @@
  */
 
 // {{{ requires
-require_once(CLASS_PATH . "pages/LC_Page.php");
+require_once(CLASS_PATH . "pages/admin/design/LC_Page_Admin_Design_Up_Down.php");
 
 /**
- * ブロック の基底クラス.
+ * テンプレートアップロード のページクラス(拡張).
+ *
+ * LC_Page_Admin_Design_Upload をカスタマイズする場合はこのクラスを編集する.
  *
  * @package Page
  * @author LOCKON CO.,LTD.
- * @version $Id$
+ * @version $Id: LC_Page_Admin_Design_Upload_Ex.php 16582 2007-10-29 03:06:29Z nanasess $
  */
-class LC_Page_FrontParts_Bloc extends LC_Page {
+class LC_Page_Admin_Design_Up_Down_Ex extends LC_Page_Admin_Design_Up_Down {
+
+    // }}}
+    // {{{ functions
+
     /**
-     * ブロックファイルに応じて tpl_mainpage を設定する
+     * Page を初期化する.
      *
-     * @param string $bloc_file ブロックファイル名
      * @return void
      */
-    function setTplMainpage($bloc_file) {
-    	$debug_message = "";
-    	$user_bloc_path = USER_PATH . BLOC_DIR . $bloc_file;
-        if (is_file($user_bloc_path)) {
-            $this->tpl_mainpage = $user_bloc_path;
-        } else {
-            $this->tpl_mainpage = BLOC_PATH . $bloc_file;
-        }
-        $debug_message = "block：" . $this->tpl_mainpage . "\n";
-        GC_Utils::gfDebugLog($debug_message);
+    function init() {
+        parent::init();
+    }
+
+    /**
+     * Page のプロセス.
+     *
+     * @return void
+     */
+    function process() {
+        parent::process();
+    }
+
+    /**
+     * デストラクタ.
+     *
+     * @return void
+     */
+    function destroy() {
+        parent::destroy();
     }
 }
 ?>
