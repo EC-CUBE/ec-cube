@@ -21,6 +21,9 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 
+ // {{{ requires
+require_once(DATA_PATH. "module/Tar.php");
+ 
 /**
  * 各種ユーティリティクラス.
  *
@@ -1413,7 +1416,7 @@ class SC_Utils {
     }
         
     // ディレクトリ以下のファイルを再帰的にコピー
-    function sfCopyDir($src, $des, $mess, $override = false){
+    function sfCopyDir($src, $des, $mess = "", $override = false){
         if(!is_dir($src)){
             return false;
         }
@@ -1464,27 +1467,29 @@ class SC_Utils {
 
     // 指定したフォルダ内のファイルを全て削除する
     function sfDelFile($dir){
-        $dh = opendir($dir);
-        // フォルダ内のファイルを削除
-        while($file = readdir($dh)){
-            if ($file == "." or $file == "..") continue;
-            $del_file = $dir . "/" . $file;
-            if(is_file($del_file)){
-                $ret = unlink($dir . "/" . $file);
-            }else if (is_dir($del_file)){
-                $ret = SC_Utils::sfDelFile($del_file);
-            }
-
-            if(!$ret){
-                return $ret;
-            }
-        }
-
-        // 閉じる
-        closedir($dh);
-
-        // フォルダを削除
-        return rmdir($dir);
+    	if(file_exists($dir)) {
+	    	$dh = opendir($dir);
+	        // フォルダ内のファイルを削除
+	        while($file = readdir($dh)){
+	            if ($file == "." or $file == "..") continue;
+	            $del_file = $dir . "/" . $file;
+	            if(is_file($del_file)){
+	                $ret = unlink($dir . "/" . $file);
+	            }else if (is_dir($del_file)){
+	                $ret = SC_Utils::sfDelFile($del_file);
+	            }
+	
+	            if(!$ret){
+	                return $ret;
+	            }
+	        }
+	
+	        // 閉じる
+	        closedir($dh);
+	
+	        // フォルダを削除
+	        return rmdir($dir);
+    	}
     }
 
     /*
@@ -1928,6 +1933,41 @@ class SC_Utils {
 	    return $str; 
 	}
     
+	
+	/**
+	 * ユーザが作成したファイルをアーカイブしダウンロードさせる
+	 * TODO 要リファクタリング
+	 * @param void
+	 * @return void
+	 */
+	function downloadArchiveFiles($dir) {
+		$debug_message = "";
+	    // ダウンロードされるファイル名
+		$dlFileName = 'tpl_package_' . date('YmdHis') . '.tar.gz';
+		
+	    // ファイル一覧取得
+	    $arrFileHash = SC_Utils::sfGetFileList($dir);
+	    foreach($arrFileHash as $val) {
+	        $arrFileList[] = $val['file_name'];
+	        $debug_message.= "圧縮：".$val['file_name']."\n";
+	    }
+	    GC_Utils::gfDebugLog($debug_message);	    
+	    
+	    // ディレクトリを移動
+	    chdir($dir);
+	    // 圧縮をおこなう
+	    $tar = new Archive_Tar($dlFileName, true);
+	    $tar->create($arrFileList);
+		
+	    // ダウンロード用HTTPヘッダ出力
+	    header("Content-disposition: attachment; filename=${dlFileName}");
+	    header("Content-type: application/octet-stream; name=${dlFileName}");
+	    header("Content-Length: " . filesize($dlFileName));
+	    readfile($dlFileName);
+	    unlink($dir . "/" . $dlFileName);
+	    exit;
+	}
+	
     /* デバッグ用 ------------------------------------------------------------------------------------------------*/
     function sfPrintR($obj) {
         print("<div style='font-size: 12px;color: #00FF00;'>\n");

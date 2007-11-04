@@ -75,10 +75,9 @@ class LC_Page_Admin_Design_Up_Down extends LC_Page {
 		    if (!SC_Utils::sfIsValidTransition($objSession)) {
 		        SC_Utils::sfDispError('');
 		    }
-		    $this->lfDownloadCreatedFiles();
+		    SC_Utils::downloadArchiveFiles(TEMPLATE_DIR);
 		    exit;
 		    break;
-		
 		// アップロードボタン押下時の処理
 		case 'upload':
 		    // 画面遷移の正当性チェック
@@ -143,7 +142,7 @@ class LC_Page_Admin_Design_Up_Down extends LC_Page {
 	 * @return object SC_UploadFileのインスタンス
 	 */
 	function lfInitUploadFile($objForm) {
-	    $pkg_dir = TPL_PKG_PATH . $objForm->getValue('template_code');
+	    $pkg_dir = SMARTY_TEMPLATES_DIR . $objForm->getValue('template_code');
 	    $objUpFile = new SC_UploadFile(TEMPLATE_TEMP_DIR, $pkg_dir);
 	    $objUpFile->addFile("テンプレートファイル", 'template_file', array(), TEMPLATE_SIZE, true, 0, 0, false);
 	
@@ -229,17 +228,24 @@ class LC_Page_Admin_Design_Up_Down extends LC_Page {
 	 */
 	function lfAddTemplates($objForm, $objUpFile) {
 	    $template_code = $objForm->getValue('template_code');
-	    $template_dir = TPL_PKG_PATH . $objForm->getValue('template_code');
-	    $compile_dir  = COMPILE_DIR . "/$template_code";
+	    $template_dir = SMARTY_TEMPLATES_DIR . $template_code;
+	    $compile_dir  = DATA_PATH . "Smarty/templates_c/" . $template_code;
 	    // フォルダ作成
-	    mkdir($template_dir);
-	    mkdir($compile_dir);
+	    if(!file_exists($template_dir)) {
+	    	mkdir($template_dir);
+	    }
+	    if(!file_exists($compile_dir)) {
+		    mkdir($compile_dir);
+	    }
+	    	    
 	    // 一時フォルダから保存ディレクトリへ移動
 	    $objUpFile->moveTempFile();
+	    
 	    // 解凍
-	    lfUnpacking($template_dir, $_FILES['template_file']['name']);
+	    $this->lfUnpacking($template_dir, $_FILES['template_file']['name']);
+	    	    
 	    // DBにテンプレート情報を保存
-	    lfRegisterTemplates($objForm->getHashArray());
+	    $this->lfRegisterTemplates($objForm->getHashArray());
 	}
 	/**
 	 * アップロードされたtarアーカイブを解凍する.
@@ -252,20 +258,20 @@ class LC_Page_Admin_Design_Up_Down extends LC_Page {
 	 * @return string Archive_Tar::extractModify()のエラー
 	 */
 	function lfUnpacking($dir, $file_name) {
-	
-	    // 圧縮フラグTRUEはgzip解凍をおこなう
+		// 圧縮フラグTRUEはgzip解凍をおこなう
 	    $tar = new Archive_Tar("$dir/$file_name", true);
-	
+    
 	    // 拡張子を切り取る
 	    $unpacking_name = preg_replace("/(\.tar|\.tar\.gz)$/", "", $file_name);
 	
 	    // 指定されたフォルダ内に解凍する
-	    $err = $tar->extractModify("$dir/", $unpacking_name);
-	
+	    $tar->extractModify("$dir/", $unpacking_name);
+	    GC_Utils_Ex::gfPrintLog("解凍：" . $dir."/".$file_name."->".$dir."/".$unpacking_name);
+	   	
 	    // フォルダ削除
-	    @sfDelFile("$dir/$unpacking_name");
+	    SC_Utils::sfDelFile("$dir/$unpacking_name");
 	    // 圧縮ファイル削除
-	    @unlink("$dir/$file_name");
+	    unlink("$dir/$file_name");
 	
 	    return $err;
 	}
@@ -286,29 +292,24 @@ class LC_Page_Admin_Design_Up_Down extends LC_Page {
 	 * @return void
 	 */
 	function lfDownloadCreatedFiles() {
-	    $dlFileName = 'tpl_package_' . date('YmdHis') . '.tar.gz';
-	    $tmpDir = TEMPLATE_TEMP_DIR . time() . '/';
-	    $tmpUserEditDir = $tmpDir . 'user_edit/';
-	
-	    if (!mkdir($tmpDir)) return ;
-	    if (!mkdir($tmpDir . 'templates')) return ;
-	    if (!mkdir($tmpUserEditDir)) return ;
-	
-	    $this->lfCopyTplPackage($tmpDir);
-	    $this->lfCopyUserEdit($tmpUserEditDir);
-	
+		$debug_message = "";
+	    // ダウンロードされるファイル名
+		$dlFileName = 'tpl_package_' . date('YmdHis') . '.tar.gz';
+		
 	    // ファイル一覧取得
-	    $arrFileHash = SC_Utils::sfGetFileList($tmpDir);
+	    $arrFileHash = SC_Utils::sfGetFileList(TEMPLATE_DIR);
 	    foreach($arrFileHash as $val) {
 	        $arrFileList[] = $val['file_name'];
+	        $debug_message.= "圧縮：".$val['file_name']."\n";
 	    }
-	
+	    GC_Utils::gfDebugLog($debug_message);	    
+	    
 	    // ディレクトリを移動
-	    chdir($tmpDir);
+	    chdir(TEMPLATE_DIR);
 	    // 圧縮をおこなう
 	    $tar = new Archive_Tar($dlFileName, true);
 	    $tar->create($arrFileList);
-	
+		
 	    // ダウンロード用HTTPヘッダ出力
 	    header("Content-disposition: attachment; filename=${dlFileName}");
 	    header("Content-type: application/octet-stream; name=${dlFileName}");

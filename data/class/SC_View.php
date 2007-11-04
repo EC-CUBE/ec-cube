@@ -92,8 +92,7 @@ class SC_View {
         }
 
         // テンプレート変数を割り当て
-        $this->assign("TPL_DIR", URL_DIR . USER_DIR
-                      . "templates/" . TEMPLATE_NAME . "/");
+        $this->assign("TPL_DIR", TPL_DIR);
 
         // ヘッダとフッタを割り当て
         $header_tpl = USER_INC_PATH . "header.tpl";

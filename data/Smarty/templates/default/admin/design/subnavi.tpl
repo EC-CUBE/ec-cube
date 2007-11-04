@@ -20,7 +20,7 @@
 	<tr><td><img src="<!--{$TPL_DIR}-->img/contents/navi_line.gif" width="140" height="2" alt=""></td></tr>
 	<tr><td class=<!--{if $tpl_subno != 'template'}-->"navi"<!--{else}-->"navi-on"<!--{/if}-->><a href="./template.php"	onMouseOver="naviStyleChange('template', '#a5a5a5')" <!--{if $tpl_subno != 'template'}-->onMouseOut="naviStyleChange('template', '#636469')"<!--{/if}--> id="template"><img src="<!--{$TPL_DIR}-->img/contents/icon.jpg" width="15" height="9" alt="" border="0"><span class="navi_text">テンプレート設定</span></a></td></tr>
 	<tr><td><img src="<!--{$TPL_DIR}-->img/contents/navi_line.gif" width="140" height="2" alt=""></td></tr>
-	<tr><td class=<!--{if $tpl_subno != 'up_down'}-->"navi"<!--{else}-->"navi-on"<!--{/if}-->><a href="./up_down.php"	onMouseOver="naviStyleChange('up_down', '#a5a5a5')" <!--{if $tpl_subno != 'up_down'}-->onMouseOut="naviStyleChange('up_down', '#636469')"<!--{/if}--> id="up_down"><img src="<!--{$TPL_DIR}-->img/contents/icon.jpg" width="15" height="9" alt="" border="0"><span class="navi_text">ｱｯﾌﾟﾛｰﾄﾞ/ﾀﾞｳﾝﾛｰﾄﾞ</span></a></td></tr>
+	<tr><td class=<!--{if $tpl_subno != 'up_down'}-->"navi"<!--{else}-->"navi-on"<!--{/if}-->><a href="./up_down.php"	onMouseOver="naviStyleChange('up_down', '#a5a5a5')" <!--{if $tpl_subno != 'up_down'}-->onMouseOut="naviStyleChange('up_down', '#636469')"<!--{/if}--> id="up_down"><img src="<!--{$TPL_DIR}-->img/contents/icon.jpg" width="15" height="9" alt="" border="0"><span class="navi_text">テンプレート追加</span></a></td></tr>
 	<tr><td><img src="<!--{$TPL_DIR}-->img/contents/navi_line.gif" width="140" height="2" alt=""></td></tr>
 	<!--ナビ-->
 </table>

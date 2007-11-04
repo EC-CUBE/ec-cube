@@ -41,7 +41,6 @@ require_once(CLASS_EX_PATH . "SC_Initial_Ex.php");
 $objInit = new SC_Initial_Ex();
 $objInit->init();
 
-//require_once($include_dir . "/.." . HTML2DATA_DIR . "conf/conf.php");
 require_once($include_dir . "/.." . HTML2DATA_DIR . "include/module.inc");
 require_once(CLASS_EX_PATH . "util_extends/GC_Utils_Ex.php");
 require_once(CLASS_EX_PATH . "util_extends/SC_Utils_Ex.php");

@@ -49,12 +49,14 @@ class SC_Image {
     //--- ファイルを指定保存DIRへ移動
     function moveTempImage($filename, $save_dir) {
         // コピー元ファイル、コピー先ディレクトリが存在する場合にのみ実行する
-        if(file_exists($this->tmp_dir.$filename) && file_exists($save_dir)) {
-            if(copy($this->tmp_dir . $filename , $save_dir."/".$filename)) {
-                unlink( $this->tmp_dir . $filename );
+        $from_path = $this->tmp_dir.$filename;
+        $to_path = $save_dir."/".$filename;
+        if(file_exists($from_path) && file_exists($save_dir)) {
+            if(copy($from_path , $to_path)) {
+                unlink($from_path);
             }
         } else {
-            GC_Utils_Ex::gfDebugLog($this->tmp_dir.$filename."の移動に失敗しました。");
+            GC_Utils_Ex::gfDebugLog($from_path."->".$to_path."のcopyに失敗しました。");
         }
     }
 

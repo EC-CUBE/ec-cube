@@ -103,7 +103,7 @@ class LC_Page_Admin_Design_Upload extends LC_Page {
                 $mess = "";
                 // Smarty テンプレートをコピー
                 $target_smarty = $new_file_dir . "/Smarty/";
-                $mess .= SC_Utils_Ex::sfCopyDir($target_smarty, DATA_PATH . "Smarty/templates/" . $_POST['template_code'] . "/", $mess);
+                $mess .= SC_Utils_Ex::sfCopyDir($target_smarty, SMARTY_TEMPLATES_DIR . $_POST['template_code'] . "/", $mess);
                 // コピー済みファイルを削除
                 SC_Utils_Ex::sfDelFile($target_smarty);
                 // DBにテンプレート情報を保存

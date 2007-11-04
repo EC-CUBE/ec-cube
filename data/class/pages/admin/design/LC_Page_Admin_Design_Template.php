@@ -99,13 +99,11 @@ class LC_Page_Admin_Design_Template extends LC_Page {
 		    }
 		
 		    $template_code = $objForm->getValue('template_code');
-		
-		    if ($template_code == 'default') {
-		        $this->lfRegisterTemplate('');
-		        $this->tpl_onload="alert('登録が完了しました。');";
-		        break;
+			
+		    if($template_code == "") {
+		    	$template_code = "default";
 		    }
-		
+			
 		    // DBへ使用するテンプレートを登録
 		    $this->lfRegisterTemplate($template_code);
 		
@@ -122,16 +120,16 @@ class LC_Page_Admin_Design_Template extends LC_Page {
 		// 削除ボタン押下時
 		case 'delete':
 		    // 画面遷移の正当性チェック
-		    if (!sfIsValidTransition($objSession)) {
-		        sfDispError('');
+		    if (!SC_Utils::sfIsValidTransition($objSession)) {
+		        SC_Utils::sfDispError('');
 		    }
 		    // パラメータ検証
 		    $objForm = $this->lfInitDelete();
 		    if ($objForm->checkError()) {
-		        sfDispError('');
+		        SC_Utils::sfDispError('');
 		    }
 		
-		    $template_code = $objForm->getValue('template_code_delete');
+		    $template_code = $objForm->getValue('template_code_temp');
 		    if ($template_code == $this->lfGetNowTemplate()) {
 		        $this->tpl_onload = "alert('選択中のテンプレートは削除出来ません');";
 		        break;
@@ -140,6 +138,20 @@ class LC_Page_Admin_Design_Template extends LC_Page {
 		    $this->lfDeleteTemplate($template_code);
 		    break;
 		
+		// downloadボタン押下時
+		case 'download':
+		    // 画面遷移の正当性チェック
+		    if (!SC_Utils::sfIsValidTransition($objSession)) {
+		        SC_Utils::sfDispError('');
+		    }
+			// パラメータ検証
+		    $objForm = $this->lfInitDownload();
+		    $template_code = $objForm->getValue('template_code_temp');
+		    // ユーザデータの下のファイルも保存する。
+			SC_Utils::sfCopyDir(USER_TEMPLATE_PATH . $template_code . "/", SMARTY_TEMPLATES_DIR . $template_code . "/");
+		    SC_Utils::downloadArchiveFiles(SMARTY_TEMPLATES_DIR . $template_code);
+		    break;
+		    
 		// プレビューボタン押下時
 		case 'preview':
 		    break;
@@ -184,11 +196,22 @@ class LC_Page_Admin_Design_Template extends LC_Page {
 	function lfInitDelete() {
 	    $objForm = new SC_FormParam();
 	    $objForm->addParam(
-	        'template_code_delete', 'template_code_delete', STEXT_LEN, '',
+	        'template_code_temp', 'template_code_temp', STEXT_LEN, '',
 	        array("EXIST_CHECK","SPTAB_CHECK","MAX_LENGTH_CHECK", "ALNUM_CHECK")
 	    );
 	    $objForm->setParam($_POST);
+		
+	    return $objForm;
+	}
 	
+	function lfInitDownload() {
+	    $objForm = new SC_FormParam();
+	    $objForm->addParam(
+	        'template_code_temp', 'template_code_temp', STEXT_LEN, '',
+	        array("EXIST_CHECK","SPTAB_CHECK","MAX_LENGTH_CHECK", "ALNUM_CHECK")
+	    );
+	    $objForm->setParam($_POST);
+		
 	    return $objForm;
 	}
 	
@@ -212,10 +235,15 @@ class LC_Page_Admin_Design_Template extends LC_Page {
 	 */
 	function lfRegisterTemplate($template_code) {
 	    $objQuery = new SC_Query();
-	    $objQuery->update(
-	        'dtb_baseinfo',
-	        array('top_tpl'=> $template_code)
-	    );
+	    $sqlval['name'] = "\"" . $template_code . "\"";
+		$objQuery->update("mtb_constants", $sqlval, "id = ?", array('DEFAULT_TEMPLATE_NAME'));
+		// キャッシュを生成
+		$masterData = new SC_DB_MasterData_Ex();
+		// 更新したデータを取得
+        $mtb_constants = $masterData->getDBMasterData("mtb_constants");
+        $masterData->clearCache("mtb_constants");
+        $masterData->createCache("mtb_constants", $mtb_constants, true,
+                                 array("id", "remarks", "rank"));
 	}
 	/**
 	 * テンプレートを上書きコピーする.

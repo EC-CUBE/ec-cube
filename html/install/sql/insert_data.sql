@@ -1019,7 +1019,9 @@ INSERT INTO mtb_constants VALUES ('SMTP_HOST','"127.0.0.1"',286,'SMTPサーバ�
 INSERT INTO mtb_constants VALUES ('SMTP_PORT','"25"',287,'SMTPポート');
 INSERT INTO mtb_constants VALUES ('DEFAULT_TEMPLATE_NAME', '"default"', 300,'デフォルトテンプレート名');
 INSERT INTO mtb_constants VALUES ('TEMPLATE_NAME', 'DEFAULT_TEMPLATE_NAME', 301,'テンプレート名');
-INSERT INTO mtb_constants VALUES ('TEMPLATE_DIR','DATA_PATH . "Smarty/templates/" . TEMPLATE_NAME . "/"', 302,'SMARTYテンプレート');
+INSERT INTO mtb_constants VALUES ('SMARTY_TEMPLATES_DIR',' DATA_PATH . "Smarty/templates/"', 301,'SMARTYテンプレート');
+INSERT INTO mtb_constants VALUES ('TPL_DIR','URL_DIR . USER_DIR . "templates/" . TEMPLATE_NAME . "/"', 301,'SMARTYテンプレート');
+INSERT INTO mtb_constants VALUES ('TEMPLATE_DIR','SMARTY_TEMPLATE_DIR . TEMPLATE_NAME . "/"', 302,'SMARTYテンプレート');
 INSERT INTO mtb_constants VALUES ('TEMPLATE_ADMIN_DIR','TEMPLATE_DIR . "admin/"', 303,'SMARTYテンプレート(管理ページ)');
 INSERT INTO mtb_constants VALUES ('COMPILE_DIR','DATA_PATH . "Smarty/templates_c/" . TEMPLATE_NAME . "/"',304,'SMARTYコンパイル');
 INSERT INTO mtb_constants VALUES ('COMPILE_ADMIN_DIR','COMPILE_DIR . "admin/"',305,'SMARTYコンパイル(管理ページ)');

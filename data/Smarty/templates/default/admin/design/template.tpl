@@ -21,7 +21,7 @@ function submitRegister() {
 <table width="878" border="0" cellspacing="0" cellpadding="0" summary=" ">
 <form name="form1" method="post" action="">
 <input type="hidden" name="mode" value="">
-<input type="hidden" name="template_code_delete" value="">
+<input type="hidden" name="template_code_temp" value="">
 <input type="hidden" name="uniqid" value="<!--{$uniqid}-->">
 	<tr valign="top">
 		<td background="<!--{$TPL_DIR}-->img/contents/navi_bg.gif" height="402">
@@ -65,16 +65,6 @@ function submitRegister() {
 									<td>
 										テンプレートを選択し、「この内容で登録する」ボタンを押すと、<br>
 										選択したテンプレートへデザインを変更することが出来ます。<br>
-										<br>
-										変更した場合、下のファイルが上書きされます。
-										<ul>
-											<li>user_data/css/contents.css</li>
-											<li>user_data/include/*</li>
-											<li>user_data/templates/mypage/*</li>
-											<li>user_data/templates/detail.tpl</li>
-											<li>user_data/templates/list.tpl</li>
-											<li>user_data/templates/top.tpl</li>
-										</ul>
 									</td>
 								</tr>
 								<tr bgcolor="#ffffff" class="fs12n">
@@ -84,21 +74,17 @@ function submitRegister() {
 												<td width="">選択</td>
 												<td width="">名前</td>
 												<td width="">保存先</td>
-												<!--<td width="50">確認</td>-->
+												<td width="">ダウンロード</td>
 												<td width="50">削除</td>
-											</tr>
-											<tr bgcolor="#ffffff" align="center" class="fs12n">
-												<td width=""><input type="radio" name="template_code" value="default" <!--{if !$tplcode}-->checked<!--{/if}-->></td>
-												<td width="" colspan="3">テンプレートを使用しない</td>
 											</tr>
 											<!--{foreach from=$templates item=tpl}-->
 											<!--{assign var=tplcode value=$tpl.template_code}-->
 											<tr bgcolor="#ffffff" align="center" class="fs12">
-												<td width="" ><input type="radio" name="template_code" value="<!--{$tplcode|escape}-->" <!--{if $tplcode == $now_template}-->checked<!--{/if}-->></td>
+												<td width="" ><input type="radio" name="template_code" value="<!--{$tplcode|escape}-->" <!--{if $tplcode == $smarty.const.DEFAULT_TEMPLATE_NAME}-->checked<!--{/if}-->></td>
 												<td width=""><!--{$tpl.template_name|escape}--></td>
-												<td width="">user_data/tpl_packages/<!--{$tplcode|escape}-->/</td>
-												<!--<td width=""><span class="icon_confirm"><a href="" onClick="">確認</span></a></td>-->
-												<td width=""><span class="icon_delete"><a href="" onClick="fnModeSubmit('delete','template_code_delete','<!--{$tplcode}-->');return false;">削除</a></span></td>
+												<td width="" align="left">data/Smarty/templates/<!--{$tplcode|escape}-->/</td>
+												<td width=""><span class="icon_confirm"><a href="" onClick="fnModeSubmit('download','template_code_temp','<!--{$tplcode}-->');return false;">ダウンロード</a></span></td>
+												<td width=""><span class="icon_delete"><a href="" onClick="fnModeSubmit('delete','template_code_temp','<!--{$tplcode}-->');return false;">削除</a></span></td>
 											</tr>
 											<!--{/foreach}-->
 
