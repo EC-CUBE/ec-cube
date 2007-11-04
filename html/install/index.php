@@ -406,7 +406,7 @@ function lfDispStep0($objPage) {
         } else {
             $arrDirs = array($val);
         }
-        
+
         foreach ($arrDirs as $path) {
             if(file_exists($path)) {
                 $mode = lfGetFileMode($path);
@@ -786,6 +786,7 @@ function lfExecuteSQL($filepath, $dsn, $disp_err = true) {
             $sql = preg_replace("/[\r\n\t]/"," ",$sql);
             $sql_split = split(";",$sql);
             foreach($sql_split as $key => $val){
+                echo ' ';
                 if (trim($val) != "") {
                     $ret = $objDB->query($val);
                     if(PEAR::isError($ret) && $disp_err) {
