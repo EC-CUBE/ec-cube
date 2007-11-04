@@ -105,12 +105,13 @@ class LC_Page_Admin_Design_Bloc extends LC_Page {
         }
 
         if (!isset($_POST['mode'])) $_POST['mode'] = "";
-
-        // プレビュー表示
-        if ($_POST['mode'] == "preview") {
+                
+        switch($_POST['mode']) {
+        case 'preview':
             // プレビューファイル作成
             $prev_path = USER_INC_PATH . 'preview/bloc_preview.tpl';
-            // TODO 一応, is_write 等でチェックすべき?
+            // ディレクトリの作成            
+            SC_Utils::sfMakeDir($prev_path);            
             $fp = fopen($prev_path,"w");
             fwrite($fp, $_POST['bloc_html']); // FIXME いきなり POST はちょっと...
             fclose($fp);
@@ -122,13 +123,9 @@ class LC_Page_Admin_Design_Bloc extends LC_Page {
             $this->arrBlocData['bloc_name'] = $_POST['bloc_name'];
             $this->arrBlocData['filename'] = $_POST['filename'];
             $this->text_row = $_POST['html_area_row'];
-        }else{
-            $this->preview = "off";
-        }
-
-        // データ登録処理
-        if ($_POST['mode'] == 'confirm') {
-
+        	break;
+        case 'confirm':
+        	$this->preview = "off";
             // エラーチェック
             $this->arrErr = $this->lfErrorCheck($_POST);
 
@@ -137,15 +134,17 @@ class LC_Page_Admin_Design_Bloc extends LC_Page {
                 // DBへデータを更新する
                 $this->lfEntryBlocData($_POST);
 
-                // ファイルの削除
-                //$del_file=BLOC_PATH . $arrBlocData[0]['filename']. '.tpl';
-                $del_file = USER_PATH . $arrBlocData[0]['tpl_path'];
-                if (file_exists($del_file)) {
-                    unlink($del_file);
+                // 旧ファイルの削除
+                $old_bloc_path = USER_PATH . $arrBlocData[0]['tpl_path'];
+                if (file_exists($old_bloc_path)) {
+                    unlink($old_bloc_path);
                 }
-
+				
                 // ファイル作成
-                $fp = fopen(USER_PATH . BLOC_DIR . $_POST['filename'] . '.tpl',"w");
+                $new_bloc_path = USER_PATH . BLOC_DIR . $_POST['filename'] . ".tpl";
+               	// ディレクトリの作成            
+            	SC_Utils::sfMakeDir($new_bloc_path);
+                $fp = fopen($new_bloc_path,"w");
                 fwrite($fp, $_POST['bloc_html']); // FIXME いきなり POST はちょっと...
                 fclose($fp);
 
@@ -159,16 +158,14 @@ class LC_Page_Admin_Design_Bloc extends LC_Page {
                 // エラーがあれば入力時のデータを表示する
                 $this->arrBlocData = $_POST;
             }
-        }
-
-        // データ削除処理
-        if ($_POST['mode'] == 'delete') {
-
-            // DBへデータを更新する
-            $objDBConn = new SC_DbConn;		// DB操作オブジェクト
-            $sql = "";						// データ更新SQL生成用
-            $ret = ""; 						// データ更新結果格納用
-            $arrDelData = array();			// 更新データ生成用
+        	break;
+        case 'delete':
+        	$this->preview = "off";
+        	 // DBへデータを更新する
+            $objDBConn = new SC_DbConn;     // DB操作オブジェクト
+            $sql = "";                      // データ更新SQL生成用
+            $ret = "";                      // データ更新結果格納用
+            $arrDelData = array();          // 更新データ生成用
 
             // 更新データ生成
             $arrUpdData = array($arrData['bloc_name'], BLOC_DIR . $arrData['filename'] . '.tpl', $arrData['filename']);
@@ -192,7 +189,13 @@ class LC_Page_Admin_Design_Bloc extends LC_Page {
                 }
             }
             $this->sendRedirect($this->getLocation("./bloc.php"));
-        }
+        	break;
+        default:
+        	if(isset($_POST['mode'])) {
+        	   GC_Utils::gfPrintLog("MODEエラー：".$_POST['mode']);
+        	}
+        	break;
+        }        
 
         // 画面の表示
         $objView->assignobj($this);
