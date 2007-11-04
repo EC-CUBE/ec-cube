@@ -1384,7 +1384,34 @@ class SC_Utils {
             return "'" . str_replace("'", "''", $in) . "'";
         }
     }
-
+    
+    // ディレクトリを再帰的に生成する
+    function sfMakeDir($path) {
+        static $count = 0;
+        $count++;  // 無限ループ回避
+    	$dir = dirname($path);
+    	if(ereg("^[/]$", $dir) || ereg("^[A-Z]:[\\]$", $dir) || $count > 256) {
+    		// ルートディレクトリで終了
+    		return;
+		} else {
+			if(is_writable(dirname($dir))) {
+				if(!file_exists($dir)) {
+					mkdir($dir);
+	            	GC_Utils::gfPrintLog("mkdir $dir");
+				}
+			} else {
+            	SC_Utils::sfMakeDir($dir);
+				if(is_writable(dirname($dir))) {
+					if(!file_exists($dir)) {
+						mkdir($dir);
+	                    GC_Utils::gfPrintLog("mkdir $dir");
+					}
+				}        
+    	   }
+    	}
+    	return;
+    }
+        
     // ディレクトリ以下のファイルを再帰的にコピー
     function sfCopyDir($src, $des, $mess, $override = false){
         if(!is_dir($src)){
