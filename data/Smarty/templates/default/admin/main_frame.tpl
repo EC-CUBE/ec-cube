@@ -75,7 +75,7 @@
 				<table border="0" cellspacing="0" cellpadding="0" summary=" ">
 					<tr><td height="11"></td></tr>
 					<tr>
-						<td><a href="<!--{$smarty.const.URL_DIR}-->admin/ownersstore/index.php" onmouseover="chgImg('<!--{$TPL_DIR}-->img/header/ownersstore.jpg','ownersstore');" onmouseout="chgImg('<!--{$TPL_DIR}-->img/header/ownersstore.jpg','ownersstore');"><img src="<!--{$TPL_DIR}-->img/header/ownersstore.jpg" width="69" height="17" alt="OWNERS STORE" border="0" name="ownersstore" id="ownersstore"></a></td>
+						<td><a href="<!--{$smarty.const.URL_DIR}-->admin/ownersstore/index.php" onmouseover="chgImg('<!--{$TPL_DIR}-->img/header/ownersstore.jpg','ownersstore');" onmouseout="chgImg('<!--{$TPL_DIR}-->img/header/ownersstore.jpg','ownersstore');"><img src="<!--{$TPL_DIR}-->img/header/ownersstore.jpg" width="115" height="22" alt="OWNERS STORE" border="0" name="ownersstore" id="ownersstore"></a></td>
 						<td><img src="<!--{$TPL_DIR}-->img/common/_.gif" width="10" height="1" alt=""></td>
 						<td><a href="<!--{$smarty.const.URL_HOME}-->" onmouseover="chgImg('<!--{$TPL_DIR}-->img/header/mainpage_on.gif','mainpage');" onmouseout="chgImg('<!--{$TPL_DIR}-->img/header/mainpage.gif','mainpage');"><img src="<!--{$TPL_DIR}-->img/header/mainpage.gif" width="69" height="17" alt="MAIN PAGE" border="0" name="mainpage" id="mainpage"></a></td>
 						<td><img src="<!--{$TPL_DIR}-->img/common/_.gif" width="10" height="1" alt=""></td>
