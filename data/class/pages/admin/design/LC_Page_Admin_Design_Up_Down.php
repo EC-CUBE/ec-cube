@@ -51,6 +51,7 @@ class LC_Page_Admin_Design_Up_Down extends LC_Page {
 	    $this->tpl_subtitle = 'アップロード/ダウンロード';
 	    $this->arrErr  = array();
 	    $this->arrForm = array();
+	    ini_set("max_execution_time", 300);
     }
 
     /**

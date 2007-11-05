@@ -24,6 +24,7 @@
   // {{{ requires
 require_once(CLASS_PATH . "pages/LC_Page.php");
 require_once(DATA_PATH . "module/Tar.php");
+require_once(CLASS_EX_PATH . "helper_extends/SC_Helper_FileManager_Ex.php");
 
 /**
  * テンプレート設定 のページクラス.
@@ -67,6 +68,7 @@ class LC_Page_Admin_Design_Template extends LC_Page {
 	    $this->tpl_subtitle = 'テンプレート設定';
 	    $this->arrErr  = array();
 	    $this->arrForm = array();
+	   	ini_set("max_execution_time", 300);
     }
 
     /**
@@ -148,8 +150,8 @@ class LC_Page_Admin_Design_Template extends LC_Page {
 		    $objForm = $this->lfInitDownload();
 		    $template_code = $objForm->getValue('template_code_temp');
 		    // ユーザデータの下のファイルも保存する。
-			SC_Utils::sfCopyDir(USER_TEMPLATE_PATH . $template_code . "/", SMARTY_TEMPLATES_DIR . $template_code . "/");
-		    SC_Utils::downloadArchiveFiles(SMARTY_TEMPLATES_DIR . $template_code);
+			SC_Utils::sfCopyDir(USER_TEMPLATE_PATH . $template_code . "/", SMARTY_TEMPLATES_DIR . $template_code . "/user_data/");
+		    SC_Helper_FileManager::downloadArchiveFiles(SMARTY_TEMPLATES_DIR . $template_code);
 		    break;
 		    
 		// プレビューボタン押下時

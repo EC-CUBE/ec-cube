@@ -21,6 +21,9 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 
+// {{{ requires
+require_once(dirname(__FILE__) . '/../../module/Tar.php');
+
 /**
  * ファイル管理 のヘルパークラス.
  *
@@ -335,5 +338,39 @@ class SC_Helper_FileManager {
 
         return $str;
     }
+    
+	/**
+	 * ユーザが作成したファイルをアーカイブしダウンロードさせる
+	 * TODO 要リファクタリング
+	 * @param void
+	 * @return void
+	 */
+	function downloadArchiveFiles($dir) {
+		$debug_message = "";
+	    // ダウンロードされるファイル名
+		$dlFileName = 'tpl_package_' . date('YmdHis') . '.tar.gz';
+		
+	    // ファイル一覧取得
+	    $arrFileHash = SC_Utils::sfGetFileList($dir);
+	    foreach($arrFileHash as $val) {
+	        $arrFileList[] = $val['file_name'];
+	        $debug_message.= "圧縮：".$val['file_name']."\n";
+	    }
+	    GC_Utils::gfDebugLog($debug_message);	    
+	    
+	    // ディレクトリを移動
+	    chdir($dir);
+	    // 圧縮をおこなう
+	    $tar = new Archive_Tar($dlFileName, true);
+	    $tar->create($arrFileList);
+		
+	    // ダウンロード用HTTPヘッダ出力
+	    header("Content-disposition: attachment; filename=${dlFileName}");
+	    header("Content-type: application/octet-stream; name=${dlFileName}");
+	    header("Content-Length: " . filesize($dlFileName));
+	    readfile($dlFileName);
+	    unlink($dir . $dlFileName);
+	    exit;
+	}    
 }
 ?>
