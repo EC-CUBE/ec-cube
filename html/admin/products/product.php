@@ -18,7 +18,7 @@ class LC_Page {
 	function LC_Page() {
 		$this->tpl_mainpage = 'products/product.tpl';
 		$this->tpl_subnavi = 'products/subnavi.tpl';
-		$this->tpl_mainno = 'products';		
+		$this->tpl_mainno = 'products';
 		$this->tpl_subno = 'product';
 		$this->tpl_subtitle = '商品登録';
 		global $arrSRANK;
@@ -36,7 +36,8 @@ class LC_Page {
 		global $arrDELIVERYDATE;
 		$this->arrDELIVERYDATE = $arrDELIVERYDATE;
 		$this->tpl_nonclass = true;
-		$this->tpl_movilink_flg = sfIsMoviLink();
+		$this->tpl_movilink_flg
+		    = function_exists('sfIsMoviLink') ? sfIsMoviLink() : '';
 	}
 }
 
@@ -60,7 +61,7 @@ $objUpFile->setHiddenFileList($_POST);
 // 検索パラメータの引き継ぎ
 foreach ($_POST as $key => $val) {
 	if (ereg("^search_", $key)) {
-		$objPage->arrSearchHidden[$key] = $val;	
+		$objPage->arrSearchHidden[$key] = $val;
 	}
 }
 
@@ -77,26 +78,26 @@ case 'copy' :
 		$arrForm = lfGetProduct($_POST['product_id']);
 		// DBデータから画像ファイル名の読込
 		$objUpFile->setDBFileList($arrForm);
-		
+
 		if($_POST['mode'] == "copy"){
 			$arrForm["copy_product_id"] = $arrForm["product_id"];
 			$arrForm["product_id"] = "";
 			// 画像ファイルのコピー
 			$arrKey = $objUpFile->keyname;
 			$arrSaveFile = $objUpFile->save_file;
-			
+
 			foreach($arrSaveFile as $key => $val){
-				lfMakeScaleImage($arrKey[$key], $arrKey[$key], true); 
+				lfMakeScaleImage($arrKey[$key], $arrKey[$key], true);
 			}
 		}
 		$objPage->arrForm = $arrForm;
-		
+
 		// 商品ステータスの変換
 		$arrRet = sfSplitCBValue($objPage->arrForm['product_flag'], "product_flag");
 		$objPage->arrForm = array_merge($objPage->arrForm, $arrRet);
 		// DBからおすすめ商品の読み込み
 		$objPage->arrRecommend = lfPreGetRecommendProducts($_POST['product_id']);
-		
+
 		// 規格登録ありなし判定
 		$objPage->tpl_nonclass = lfCheckNonClass($_POST['product_id']);
 		lfProductPage();		// 商品登録ページ
@@ -106,12 +107,12 @@ case 'copy' :
 case 'edit':
 	// 規格登録ありなし判定
 	$tpl_nonclass = lfCheckNonClass($_POST['product_id']);
-	
+
 	if($_POST['product_id'] == "" and sfIsInt($_POST['copy_product_id'])){
 		$tpl_nonclass = lfCheckNonClass($_POST['copy_product_id']);
 	}
 	$objPage->tpl_nonclass = $tpl_nonclass;
-	
+
 	// 入力値の変換
 	$objPage->arrForm = lfConvertParam($objPage->arrForm);
 	// エラーチェック
@@ -128,9 +129,9 @@ case 'edit':
 // 確認ページから完了ページへ
 case 'complete':
 	$objPage->tpl_mainpage = 'products/complete.tpl';
-	
+
 	$objPage->tpl_product_id = lfRegistProduct($_POST);		// データ登録
-	
+
 	$objQuery = new SC_Query();
 	// 件数カウントバッチ実行
 	sfCategory_Count($objQuery);
@@ -183,11 +184,11 @@ $objPage->arrInfo = $objSiteInfo->data;
 // サブ情報の入力があるかどうかチェックする
 $sub_find = false;
 for ($cnt = 1; $cnt <= PRODUCTSUB_MAX; $cnt++) {
-	if(	$objPage->arrForm['sub_title'.$cnt] != "" || 
-		$objPage->arrForm['sub_comment'.$cnt] != "" || 
-		$objPage->arrForm['sub_image'.$cnt] != "" || 
-		$objPage->arrForm['sub_large_image'.$cnt] != ""	|| 
-		is_array($objPage->arrFile['sub_image'.$cnt]) || 
+	if(	$objPage->arrForm['sub_title'.$cnt] != "" ||
+		$objPage->arrForm['sub_comment'.$cnt] != "" ||
+		$objPage->arrForm['sub_image'.$cnt] != "" ||
+		$objPage->arrForm['sub_large_image'.$cnt] != ""	||
+		is_array($objPage->arrFile['sub_image'.$cnt]) ||
 		is_array($objPage->arrFile['sub_large_image'.$cnt])) {
 		$sub_find = true;
 		break;
@@ -204,14 +205,14 @@ $objView->display(MAIN_FRAME);
 function lfGetRecommendProducts() {
 	global $objPage;
 	$objQuery = new SC_Query();
-	
+
 	for($i = 1; $i <= RECOMMEND_PRODUCT_MAX; $i++) {
 		$keyname = "recommend_id" . $i;
 		$delkey = "recommend_delete" . $i;
 		$commentkey = "recommend_comment" . $i;
 
 		if($_POST[$keyname] != "" && $_POST[$delkey] != 1) {
-			$arrRet = $objQuery->select("main_list_image, product_code_min, name", "vw_products_allclass AS allcls", "product_id = ?", array($_POST[$keyname])); 
+			$arrRet = $objQuery->select("main_list_image, product_code_min, name", "vw_products_allclass AS allcls", "product_id = ?", array($_POST[$keyname]));
 			$arrRecommend[$i] = $arrRet[0];
 			$arrRecommend[$i]['product_id'] = $_POST[$keyname];
 			$arrRecommend[$i]['comment'] = $objPage->arrForm[$commentkey];
@@ -250,9 +251,9 @@ function lfPreGetRecommendProducts($product_id) {
 	$arrRet = $objQuery->select("recommend_product_id, comment", "dtb_recommend_products", "product_id = ?", array($product_id));
 	$max = count($arrRet);
 	$no = 1;
-	
+
 	for($i = 0; $i < $max; $i++) {
-		$arrProductInfo = $objQuery->select("main_list_image, product_code_min, name", "vw_products_allclass AS allcls", "product_id = ?", array($arrRet[$i]['recommend_product_id'])); 
+		$arrProductInfo = $objQuery->select("main_list_image, product_code_min, name", "vw_products_allclass AS allcls", "product_id = ?", array($arrRet[$i]['recommend_product_id']));
 		$arrRecommend[$no] = $arrProductInfo[0];
 		$arrRecommend[$no]['product_id'] = $arrRet[$i]['recommend_product_id'];
 		$arrRecommend[$no]['comment'] = $arrRet[$i]['comment'];
@@ -267,23 +268,23 @@ function lfGetProduct($product_id) {
 	$col = "*";
 	$table = "vw_products_nonclass AS noncls ";
 	$where = "product_id = ?";
-	
+
 	// viewも絞込み(mysql対応)
 	sfViewWhere("&&noncls_where&&", $where, array($product_id));
-	
+
 	$arrRet = $objQuery->select($col, $table, $where, array($product_id));
-	
+
 	// モビリンクが有効な場合
 	if(sfIsMoviLink()) {
 		$col = "movilink_net_percent, movilink_net_fix, movilink_draft_text1, movilink_draft_text2, movilink_code1, movilink_kana, movilink_price";
 		$table = "dtb_products";
 		$where = "product_id = ?";
-		$arrMoviLink = $objQuery->select($col, $table, $where, array($product_id));		
+		$arrMoviLink = $objQuery->select($col, $table, $where, array($product_id));
 		foreach($arrMoviLink[0] as $key => $val) {
 			$arrRet[0][$key] = $val;
 		}
-	}	
-	
+	}
+
 	return $arrRet[0];
 }
 
@@ -291,32 +292,32 @@ function lfGetProduct($product_id) {
 function lfProductPage() {
 	global $objPage;
 	global $objUpFile;
-	
+
 	// カテゴリの読込
 	list($objPage->arrCatVal, $objPage->arrCatOut) = sfGetLevelCatList(false);
 
 	if($objPage->arrForm['status'] == "") {
 		$objPage->arrForm['status'] = 1;
 	}
-	
+
 	if(!is_array($objPage->arrForm['product_flag'])) {
 		// 商品ステータスの分割読込
 		$objPage->arrForm['product_flag'] = sfSplitCheckBoxes($objPage->arrForm['product_flag']);
 	}
-	
+
 	// HIDDEN用に配列を渡す。
 	$objPage->arrHidden = array_merge((array)$objPage->arrHidden, (array)$objUpFile->getHiddenFileList());
 	// Form用配列を渡す。
 	$objPage->arrFile = $objUpFile->getFormFileList(IMAGE_TEMP_URL, IMAGE_SAVE_URL);
-	
-	
+
+
 	// アンカーを設定
 	if($_POST['image_key'] != ""){
 		$anchor_hash = "location.hash='#" . $_POST['image_key'] . "'";
 	}elseif($_POST['anchor_key'] != ""){
 		$anchor_hash = "location.hash='#" . $_POST['anchor_key'] . "'";
 	}
-		
+
 	$objPage->tpl_onload = "fnCheckSaleLimit('" . DISABLED_RGB . "'); fnCheckStockLimit('" . DISABLED_RGB . "'); " . $anchor_hash;
 }
 
@@ -327,7 +328,7 @@ function lfInitFile() {
 	$objUpFile->addFile("詳細-メイン画像", 'main_image', array('jpg', 'gif', 'png'), IMAGE_SIZE, true, NORMAL_IMAGE_WIDTH, NORMAL_IMAGE_HEIGHT);
 	$objUpFile->addFile("詳細-メイン拡大画像", 'main_large_image', array('jpg', 'gif', 'png'), IMAGE_SIZE, false, LARGE_IMAGE_WIDTH, LARGE_IMAGE_HEIGHT);
 	for ($cnt = 1; $cnt <= PRODUCTSUB_MAX; $cnt++) {
-		$objUpFile->addFile("詳細-サブ画像$cnt", "sub_image$cnt", array('jpg', 'gif', 'png'), IMAGE_SIZE, false, NORMAL_SUBIMAGE_WIDTH, NORMAL_SUBIMAGE_HEIGHT);	
+		$objUpFile->addFile("詳細-サブ画像$cnt", "sub_image$cnt", array('jpg', 'gif', 'png'), IMAGE_SIZE, false, NORMAL_SUBIMAGE_WIDTH, NORMAL_SUBIMAGE_HEIGHT);
 		$objUpFile->addFile("詳細-サブ拡大画像$cnt", "sub_large_image$cnt", array('jpg', 'gif', 'png'), IMAGE_SIZE, false, LARGE_SUBIMAGE_WIDTH, LARGE_SUBIMAGE_HEIGHT);
 	}
 	$objUpFile->addFile("商品比較画像", 'file1', array('jpg', 'gif', 'png'), IMAGE_SIZE, false, OTHER_IMAGE1_WIDTH, OTHER_IMAGE1_HEIGHT);
@@ -340,7 +341,7 @@ function lfRegistProduct($arrList) {
 	global $arrSTATUS;
 	$objQuery = new SC_Query();
 	$objQuery->begin();
-	
+
 	// INSERTする値を作成する。
 	$sqlval['name'] = $arrList['name'];
 	$sqlval['category_id'] = $arrList['category_id'];
@@ -348,7 +349,7 @@ function lfRegistProduct($arrList) {
 	$sqlval['product_flag'] = $arrList['product_flag'];
 	$sqlval['main_list_comment'] = $arrList['main_list_comment'];
 	$sqlval['main_comment'] = $arrList['main_comment'];
-	$sqlval['point_rate'] = $arrList['point_rate'];	
+	$sqlval['point_rate'] = $arrList['point_rate'];
 	$sqlval['deliv_fee'] = $arrList['deliv_fee'];
 	$sqlval['comment1'] = $arrList['comment1'];
 	$sqlval['comment2'] = $arrList['comment2'];
@@ -362,21 +363,21 @@ function lfRegistProduct($arrList) {
 	$sqlval['deliv_date_id'] = $arrList['deliv_date_id'];
 	$sqlval['update_date'] = "Now()";
 	$sqlval['creator_id'] = $_SESSION['member_id'];
-	
+
 	// モビリンクが有効な場合
 	if(sfIsMoviLink()) {
 		$sqlval['movilink_net_percent'] = $arrList['movilink_net_percent'];
 		$sqlval['movilink_net_fix'] = $arrList['movilink_net_fix'];
 		$sqlval['movilink_draft_text1'] = $arrList['movilink_draft_text1'];
 		$sqlval['movilink_draft_text2'] = $arrList['movilink_draft_text2'];
-		$sqlval['movilink_code1'] = $arrList['movilink_code1'];	
-		$sqlval['movilink_kana'] = $arrList['movilink_kana'];	
-		$sqlval['movilink_price'] = $arrList['movilink_price'];	
+		$sqlval['movilink_code1'] = $arrList['movilink_code1'];
+		$sqlval['movilink_kana'] = $arrList['movilink_kana'];
+		$sqlval['movilink_price'] = $arrList['movilink_price'];
 	}
-	
+
 	$arrRet = $objUpFile->getDBFileList();
 	$sqlval = array_merge($sqlval, $arrRet);
-		
+
 	for ($cnt = 1; $cnt <= PRODUCTSUB_MAX; $cnt++) {
 		$sqlval['sub_title'.$cnt] = $arrList['sub_title'.$cnt];
 		$sqlval['sub_comment'.$cnt] = $arrList['sub_comment'.$cnt];
@@ -397,7 +398,7 @@ function lfRegistProduct($arrList) {
 			$product_id = $objQuery->nextval("dtb_products", "product_id");
 			$sqlval['product_id'] = $product_id;
 		}
-		
+
 		// コピー商品の場合には規格もコピーする
 		if($_POST["copy_product_id"] != "" and sfIsInt($_POST["copy_product_id"])){
 			// dtb_products_class のカラムを取得
@@ -411,7 +412,7 @@ function lfRegistProduct($arrList) {
 			$col = sfGetCommaList($arrColList);
 
 			$objQuery->query("INSERT INTO dtb_products_class (product_id, ". $col .") SELECT ?, " . $col. " FROM dtb_products_class WHERE product_id = ? ORDER BY product_class_id", array($product_id, $_POST["copy_product_id"]));
-			
+
 		}
 
 	} else {
@@ -419,22 +420,22 @@ function lfRegistProduct($arrList) {
 		// 削除要求のあった既存ファイルの削除
 		$arrRet = lfGetProduct($arrList['product_id']);
 		$objUpFile->deleteDBFile($arrRet);
-		
+
 		// カテゴリ内ランクの調整処理
 		$old_catid = $objQuery->get("dtb_products", "category_id", "product_id = ?", array($arrList['product_id']));
 		sfMoveCatRank($objQuery, "dtb_products", "product_id", "category_id", $old_catid, $arrList['category_id'], $arrList['product_id']);
-		
+
 		// UPDATEの実行
 		$where = "product_id = ?";
 		$objQuery->update("dtb_products", $sqlval, $where, array($arrList['product_id']));
 	}
-	
+
 	// 規格登録
 	sfInsertProductClass($objQuery, $arrList, $product_id);
-	
+
 	// おすすめ商品登録
 	lfInsertRecommendProducts($objQuery, $arrList, $product_id);
-	
+
 	$objQuery->commit();
 	return $product_id;
 }
@@ -446,11 +447,11 @@ function lfConvertParam($array) {
 	 *	文字列の変換
 	 *	K :  「半角(ﾊﾝｶｸ)片仮名」を「全角片仮名」に変換
 	 *	C :  「全角ひら仮名」を「全角かた仮名」に変換
-	 *	V :  濁点付きの文字を一文字に変換。"K","H"と共に使用します	
+	 *	V :  濁点付きの文字を一文字に変換。"K","H"と共に使用します
 	 *	n :  「全角」数字を「半角(ﾊﾝｶｸ)」に変換
 	 */
 	// 人物基本情報
-	
+
 	// スポット商品
 	$arrConvList['name'] = "KVa";
 	$arrConvList['main_list_comment'] = "KVa";
@@ -464,7 +465,7 @@ function lfConvertParam($array) {
 	$arrConvList['comment1'] = "a";
 	// 送料の指定なし
 	$arrConvList['deliv_fee'] = "n";
-	
+
 	// 詳細-サブ
 	for ($cnt = 1; $cnt <= PRODUCTSUB_MAX; $cnt++) {
 		$arrConvList["sub_title$cnt"] = "KVa";
@@ -472,7 +473,7 @@ function lfConvertParam($array) {
 	for ($cnt = 1; $cnt <= PRODUCTSUB_MAX; $cnt++) {
 		$arrConvList["sub_comment$cnt"] = "KVa";
 	}
-	
+
 	// おすすめ商品
 	for ($cnt = 1; $cnt <= RECOMMEND_PRODUCT_MAX; $cnt++) {
 		$arrConvList["recommend_comment$cnt"] = "KVa";
@@ -485,10 +486,10 @@ function lfConvertParam($array) {
 			$array[$key] = mb_convert_kana($array[$key] ,$val);
 		}
 	}
-	
+
 	global $arrSTATUS;
 	$array['product_flag'] = sfMergeCheckBoxes($array['product_flag'], count($arrSTATUS));
-	
+
 	return $array;
 }
 
@@ -496,7 +497,7 @@ function lfConvertParam($array) {
 function lfErrorCheck($array) {
 	global $objPage;
 	global $arrAllowedTag;
-	
+
 	$objErr = new SC_CheckError($array);
 	$objErr->doFunc(array("商品名", "name", STEXT_LEN), array("EXIST_CHECK", "SPTAB_CHECK", "MAX_LENGTH_CHECK"));
 	$objErr->doFunc(array("商品カテゴリ", "category_id", STEXT_LEN), array("EXIST_CHECK", "SPTAB_CHECK", "MAX_LENGTH_CHECK"));
@@ -508,60 +509,60 @@ function lfErrorCheck($array) {
 	$objErr->doFunc(array("検索ワード", "comment3", LLTEXT_LEN), array("SPTAB_CHECK", "MAX_LENGTH_CHECK"));
 	$objErr->doFunc(array("メーカーURL", "comment1", URL_LEN), array("SPTAB_CHECK", "URL_CHECK", "MAX_LENGTH_CHECK"));
 	$objErr->doFunc(array("発送日目安", "deliv_date_id", INT_LEN), array("NUM_CHECK"));
-	
+
 	// モビリンクが有効な場合
 	if(sfIsMoviLink()) {
 		$objErr->doFunc(array("広告主様商品コード", "movilink_code1", STEXT_LEN), array("EXIST_CHECK", "MAX_LENGTH_CHECK"));
 		$objErr->doFunc(array("商品名(フリガナ)", "movilink_kana", STEXT_LEN), array("EXIST_CHECK", "KANA_CHECK", "MAX_LENGTH_CHECK"));
 		$objErr->doFunc(array("商品価格", "movilink_price", INT_LEN), array("EXIST_CHECK", "NUM_CHECK", "MAX_LENGTH_CHECK"));
-				
+
 		if($array['movilink_net_fix'] == "") {
 			$objErr->doFunc(array("商品報酬率", "movilink_net_percent", PERCENTAGE_LEN), array("EXIST_CHECK", "NUM_CHECK", "MAX_LENGTH_CHECK"));
 		}
-		
+
 		if($array['movilink_net_percent'] == "") {
 			$objErr->doFunc(array("商品報酬額", "movilink_net_fix", INT_LEN), array("EXIST_CHECK", "NUM_CHECK", "MAX_LENGTH_CHECK"));
 		}
-		
+
 		if($array['movilink_net_fix'] != "" && $array['movilink_net_percent'] != "") {
 			$objErr->arrErr['movilink_net_fix'] = "※ 商品報酬率か商品報酬額のどちらかを記入してください<br>";
-			$objErr->arrErr['movilink_net_percent'] = "※ 商品報酬率か商品報酬額のどちらかを記入してください<br>"; 
+			$objErr->arrErr['movilink_net_percent'] = "※ 商品報酬率か商品報酬額のどちらかを記入してください<br>";
 		}
 		$objErr->doFunc(array("広告タグ原稿1", "movilink_draft_text1", 8), array("EXIST_CHECK", "MAX_LENGTH_CHECK"));
 		$objErr->doFunc(array("広告タグ原稿2", "movilink_draft_text2", 8), array("EXIST_CHECK", "MAX_LENGTH_CHECK"));
 	}
-	
+
 	if($objPage->tpl_nonclass) {
 		$objErr->doFunc(array("商品コード", "product_code", STEXT_LEN), array("EXIST_CHECK", "SPTAB_CHECK","MAX_LENGTH_CHECK","MAX_LENGTH_CHECK"));
 		$objErr->doFunc(array("通常価格", "price01", PRICE_LEN), array("ZERO_CHECK", "SPTAB_CHECK", "NUM_CHECK", "MAX_LENGTH_CHECK"));
 		$objErr->doFunc(array("商品価格", "price02", PRICE_LEN), array("EXIST_CHECK", "NUM_CHECK", "ZERO_CHECK", "SPTAB_CHECK", "MAX_LENGTH_CHECK"));
-			
+
 		if($array['stock_unlimited'] != "1") {
 			$objErr->doFunc(array("在庫数", "stock", AMOUNT_LEN), array("EXIST_CHECK", "SPTAB_CHECK", "NUM_CHECK", "MAX_LENGTH_CHECK"));
 		}
 	}
-	
-	if($array['sale_unlimited'] != "1") {	
+
+	if($array['sale_unlimited'] != "1") {
 		$objErr->doFunc(array("購入制限", "sale_limit", AMOUNT_LEN), array("EXIST_CHECK", "SPTAB_CHECK", "ZERO_CHECK", "NUM_CHECK", "MAX_LENGTH_CHECK"));
 	}
-	
+
 	if(isset($objErr->arrErr['category_id'])) {
 		// 自動選択を防ぐためにダミー文字を入れておく
 		$objPage->arrForm['category_id'] = "#";
 	}
-	
+
 	for ($cnt = 1; $cnt <= PRODUCTSUB_MAX; $cnt++) {
 		$objErr->doFunc(array("詳細-サブタイトル$cnt", "sub_title$cnt", STEXT_LEN), array("SPTAB_CHECK", "MAX_LENGTH_CHECK"));
 		$objErr->doFunc(array("詳細-サブコメント$cnt", "sub_comment$cnt", LLTEXT_LEN), array("SPTAB_CHECK", "MAX_LENGTH_CHECK"));
-		$objErr->doFunc(array("詳細-サブコメント$cnt", "sub_comment$cnt", $arrAllowedTag),  array("HTML_TAG_CHECK"));	
+		$objErr->doFunc(array("詳細-サブコメント$cnt", "sub_comment$cnt", $arrAllowedTag),  array("HTML_TAG_CHECK"));
 	}
-	
+
 	for ($cnt = 1; $cnt <= RECOMMEND_PRODUCT_MAX; $cnt++) {
 		if($_POST["recommend_id$cnt"] != "" && $_POST["recommend_delete$cnt"] != 1) {
 			$objErr->doFunc(array("おすすめ商品コメント$cnt", "recommend_comment$cnt", LTEXT_LEN), array("SPTAB_CHECK", "MAX_LENGTH_CHECK"));
 		}
 	}
-	
+
 	return $objErr->arrErr;
 }
 
@@ -592,7 +593,7 @@ function lfCheckNonClass($product_id) {
 
 // 縮小した画像をセットする
 function lfSetScaleImage(){
-	
+
 	$subno = str_replace("sub_large_image", "", $_POST['image_key']);
 	switch ($_POST['image_key']){
 		case "main_large_image":
@@ -615,7 +616,7 @@ function lfSetScaleImage(){
 function lfMakeScaleImage($from_key, $to_key, $forced = false){
 	global $objUpFile;
 	$arrImageKey = array_flip($objUpFile->keyname);
-	
+
 	if($objUpFile->temp_file[$arrImageKey[$from_key]]){
 		$from_path = $objUpFile->temp_dir . $objUpFile->temp_file[$arrImageKey[$from_key]];
 	}elseif($objUpFile->save_file[$arrImageKey[$from_key]]){
@@ -623,18 +624,18 @@ function lfMakeScaleImage($from_key, $to_key, $forced = false){
 	}else{
 		return "";
 	}
-	
+
 	if(file_exists($from_path)){
 		// 元画像サイズを取得
 		list($from_w, $from_h) = getimagesize($from_path);
-		
+
 		// 生成先の画像サイズを取得
 		$to_w = $objUpFile->width[$arrImageKey[$to_key]];
 		$to_h = $objUpFile->height[$arrImageKey[$to_key]];
-		
-		
+
+
 		if($forced) $objUpFile->save_file[$arrImageKey[$to_key]] = "";
-		
+
 		if(($objUpFile->temp_file[$arrImageKey[$to_key]] == "" and $objUpFile->save_file[$arrImageKey[$to_key]] == "")){
 			$path = $objUpFile->makeThumb($from_path, $to_w, $to_h);
 			$objUpFile->temp_file[$arrImageKey[$to_key]] = basename($path);
