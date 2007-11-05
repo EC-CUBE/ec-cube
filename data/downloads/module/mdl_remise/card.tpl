@@ -7,29 +7,29 @@
 <script type="text/javascript">
 <!--
 function preLoadImg(URL){
-    arrImgList = new Array (
-        URL+"img/header/basis_on.jpg",URL+"img/header/product_on.jpg",URL+"img/header/customer_on.jpg",URL+"img/header/order_on.jpg",
-        URL+"img/header/sales_on.jpg",URL+"img/header/mail_on.jpg",URL+"img/header/contents_on.jpg",
-        URL+"img/header/mainpage_on.gif",URL+"img/header/sitecheck_on.gif",URL+"img/header/logout.gif",
-        URL+"img/contents/btn_search_on.jpg",URL+"img/contents/btn_regist_on.jpg",
-        URL+"img/contents/btn_csv_on.jpg",URL+"img/contents/arrow_left.jpg",URL+"img/contents/arrow_right.jpg"
-    );
-    arrPreLoad = new Array();
-    for (i in arrImgList) {
-        arrPreLoad[i] = new Image();
-        arrPreLoad[i].src = arrImgList[i];
-    }
-    preLoadFlag = "true";
+	arrImgList = new Array (
+		URL+"img/header/basis_on.jpg",URL+"img/header/product_on.jpg",URL+"img/header/customer_on.jpg",URL+"img/header/order_on.jpg",
+		URL+"img/header/sales_on.jpg",URL+"img/header/mail_on.jpg",URL+"img/header/contents_on.jpg",
+		URL+"img/header/mainpage_on.gif",URL+"img/header/sitecheck_on.gif",URL+"img/header/logout.gif",
+		URL+"img/contents/btn_search_on.jpg",URL+"img/contents/btn_regist_on.jpg",
+		URL+"img/contents/btn_csv_on.jpg",URL+"img/contents/arrow_left.jpg",URL+"img/contents/arrow_right.jpg"
+	);
+	arrPreLoad = new Array();
+	for (i in arrImgList) {
+		arrPreLoad[i] = new Image();
+		arrPreLoad[i].src = arrImgList[i];
+	}
+	preLoadFlag = "true";
 }
 
 function chgImg(fileName,imgName){
-    if (preLoadFlag == "true") {
-        document.images[imgName].src = fileName;
-    }
+	if (preLoadFlag == "true") {
+		document.images[imgName].src = fileName;
+	}
 }
 
 function chgImgImageSubmit(fileName,imgObj){
-    imgObj.src = fileName;
+	imgObj.src = fileName;
 }
 function fnFormModeSubmit(form, mode, keyname, keyid) {
 	document.forms[form]['mode'].value = mode;
@@ -40,20 +40,20 @@ function fnFormModeSubmit(form, mode, keyname, keyid) {
 }
 // 支払い方法が選択されているかを判定する
 function lfMethodChecked() {
-    var methods = document.form1.METHOD;
-    var checked = false;
-    
-    var max = methods.length;
-    for (var i = 0; i < max; i++) {
-        if (methods[i].checked) {
-            checked = true;
-        }
-    }
-    if (checked) {
-        document.form1.submit();
-    } else {
-        alert('支払い方法を選択してください。');
-    }
+	var methods = document.form1.METHOD;
+	var checked = false;
+
+	var max = methods.length;
+	for (var i = 0; i < max; i++) {
+		if (methods[i].checked) {
+			checked = true;
+		}
+	}
+	if (checked) {
+		document.form1.submit();
+	} else {
+		alert('支払い方法を選択してください。');
+	}
 }
 //-->
 </script>
@@ -107,14 +107,14 @@ function lfMethodChecked() {
 						<td width="10%" align="center" bgcolor="#f0f0f0" class="fs12">選択</td>
 						<td width="90%" bgcolor="#f0f0f0" class="fs12">支払い方法</td>
 					</tr>
-					<!--{foreach key=key item=item from=$arrCreMet}-->
+					<!--{foreach key=key item=item from=$arrCreMet name=method_loop}-->
 					<tr>
 						<td align="center" bgcolor="#ffffff" class="fs12">
 							<input type="radio"
 								   name="METHOD"
 								   id="<!--{$key}-->"
 								   value="<!--{$key}-->"
-								   style="<!--{$arrErr.arrCreMet|sfGetErrorColor}-->" <!--{if $smarty.post.arrCreMet == $key}-->checked<!--{/if}--> />
+								   style="<!--{$arrErr.arrCreMet|sfGetErrorColor}-->" <!--{if $smarty.foreach.method_loop.first}-->checked<!--{/if}--> />
 						</td>
 						<td bgcolor="#ffffff" class="fs12"><label for="<!--{$key}-->"><!--{$item|escape}--></label></td>
 					</tr>
@@ -183,7 +183,7 @@ function lfMethodChecked() {
 					</a>
 					<img src="<!--{$smarty.const.URL_DIR}-->img/_.gif" width="20" height="" alt="" />
 					<input type="image"
-					       onClick="lfMethodChecked();return false;"
+						   onClick="lfMethodChecked();return false;"
 						   onmouseover="chgImgImageSubmit('<!--{$smarty.const.URL_DIR}-->img/shopping/b_ordercomp_on.gif',this)"
 						   onmouseout="chgImgImageSubmit('<!--{$smarty.const.URL_DIR}-->img/shopping/b_ordercomp.gif',this)"
 						   src="<!--{$smarty.const.URL_DIR}-->img/shopping/b_ordercomp.gif"
