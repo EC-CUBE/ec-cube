@@ -80,7 +80,7 @@ function submitRegister() {
 											<!--{foreach from=$templates item=tpl}-->
 											<!--{assign var=tplcode value=$tpl.template_code}-->
 											<tr bgcolor="#ffffff" align="center" class="fs12">
-												<td width="" ><input type="radio" name="template_code" value="<!--{$tplcode|escape}-->" <!--{if $tplcode == $smarty.const.DEFAULT_TEMPLATE_NAME}-->checked<!--{/if}-->></td>
+												<td width="" ><input type="radio" name="template_code" value="<!--{$tplcode|escape}-->" <!--{if $tplcode == $tpl_select}-->checked<!--{/if}-->></td>
 												<td width=""><!--{$tpl.template_name|escape}--></td>
 												<td width="" align="left">data/Smarty/templates/<!--{$tplcode|escape}-->/</td>
 												<td width=""><span class="icon_confirm"><a href="" onClick="fnModeSubmit('download','template_code_temp','<!--{$tplcode}-->');return false;">ダウンロード</a></span></td>
