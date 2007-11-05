@@ -42,7 +42,7 @@ case 'edit':
     // エラーなしの場合にはデータを更新    
     if(count($objPage->arrErr) == 0) {
         // データ更新
-        sfSetModuleDB(MODULE_ID, $objFormParam);
+        sfCombzSetModuleDB(MODULE_ID, $objFormParam);
         // javascript実行
         $objPage->tpl_onload = 'alert("登録完了しました。"); window.close();';
     }
@@ -85,7 +85,7 @@ function lfCheckError(){
 function lfLoadData(){
     global $objFormParam;
     //データを取得
-    $arrRet = sfGetModuleDB(MODULE_ID);
+    $arrRet = sfCombzGetModuleDB(MODULE_ID);
     // 値をセット
     $objFormParam->setParam($arrRet);
 }

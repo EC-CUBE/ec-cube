@@ -17,14 +17,14 @@ define("MODULE_NAME", "コンビーズ連動モジュール");
 define("MODULE_ID", MDL_COMBZ_ID);
 
 /**************************************************************************************************************
- * 関数名	：sfSetModuleDB
+ * 関数名	：sfCombzSetModuleDB
  * 処理内容	：必要なデータを取得する。
  * 引数1	：
  * 引数2	：
  * 引数3	：
  * 戻り値	：取得結果
  **************************************************************************************************************/
-function sfSetModuleDB($module_id, $objFormParam){
+function sfCombzSetModuleDB($module_id, $objFormParam){
     global $objQuery;
     $arrRet = $objFormParam->getHashArray();
     foreach($arrRet as $key => $val) {
@@ -35,7 +35,7 @@ function sfSetModuleDB($module_id, $objFormParam){
 }
 
 /**************************************************************************************************************
- * 関数名	：sfGetModuleDB
+ * 関数名	：sfCombzGetModuleDB
  * 処理内容	：必要なデータを取得する。
  * 引数1	：
  * 引数2	：
@@ -43,7 +43,7 @@ function sfSetModuleDB($module_id, $objFormParam){
  * 戻り値	：取得結果
  **************************************************************************************************************/
 // DBからデータを取得する
-function sfGetModuleDB($module_id){
+function sfCombzGetModuleDB($module_id){
    	$objQuery = new SC_Query();
     $arrVal = array($module_id);
     $arrRet = array();
@@ -68,7 +68,7 @@ function sfCombzReserve($where, $arrval) {
 	ini_set("mbstring.internal_encoding", COMBZ_ENCODE);
 	
 	//データを取得
- 	$arrForm = sfGetModuleDB(MODULE_ID);
+ 	$arrForm = sfCombzGetModuleDB(MODULE_ID);
 	//ページ管理クラス
 	class LC_ReservePage {
 		//コンストラクタ
@@ -104,7 +104,7 @@ function sfCombzRegist($where, $arrval) {
 	ini_set("mbstring.internal_encoding", COMBZ_ENCODE);
 		
 	//データを取得
- 	$arrForm = sfGetModuleDB(MODULE_ID);
+ 	$arrForm = sfCombzGetModuleDB(MODULE_ID);
 	
 	//ページ管理クラス
 	class LC_ReservePage {
