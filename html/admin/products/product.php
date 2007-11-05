@@ -275,7 +275,7 @@ function lfGetProduct($product_id) {
 	$arrRet = $objQuery->select($col, $table, $where, array($product_id));
 
 	// モビリンクが有効な場合
-	if(sfIsMoviLink()) {
+	if(function_exists('sfIsMoviLink()') && sfIsMoviLink()) {
 		$col = "movilink_net_percent, movilink_net_fix, movilink_draft_text1, movilink_draft_text2, movilink_code1, movilink_kana, movilink_price";
 		$table = "dtb_products";
 		$where = "product_id = ?";
