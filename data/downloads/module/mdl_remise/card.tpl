@@ -6,12 +6,54 @@
 <!--▼CONTENTS-->
 <script type="text/javascript">
 <!--
+function preLoadImg(URL){
+    arrImgList = new Array (
+        URL+"img/header/basis_on.jpg",URL+"img/header/product_on.jpg",URL+"img/header/customer_on.jpg",URL+"img/header/order_on.jpg",
+        URL+"img/header/sales_on.jpg",URL+"img/header/mail_on.jpg",URL+"img/header/contents_on.jpg",
+        URL+"img/header/mainpage_on.gif",URL+"img/header/sitecheck_on.gif",URL+"img/header/logout.gif",
+        URL+"img/contents/btn_search_on.jpg",URL+"img/contents/btn_regist_on.jpg",
+        URL+"img/contents/btn_csv_on.jpg",URL+"img/contents/arrow_left.jpg",URL+"img/contents/arrow_right.jpg"
+    );
+    arrPreLoad = new Array();
+    for (i in arrImgList) {
+        arrPreLoad[i] = new Image();
+        arrPreLoad[i].src = arrImgList[i];
+    }
+    preLoadFlag = "true";
+}
+
+function chgImg(fileName,imgName){
+    if (preLoadFlag == "true") {
+        document.images[imgName].src = fileName;
+    }
+}
+
+function chgImgImageSubmit(fileName,imgObj){
+    imgObj.src = fileName;
+}
 function fnFormModeSubmit(form, mode, keyname, keyid) {
 	document.forms[form]['mode'].value = mode;
 	if(keyname != "" && keyid != "") {
 		document.forms[form][keyname].value = keyid;
 	}
 	document.forms[form].submit();
+}
+// 支払い方法が選択されているかを判定する
+function lfMethodChecked() {
+    var methods = document.form1.METHOD;
+    var checked = false;
+    
+    var max = methods.length;
+    for (var i = 0; i < max; i++) {
+        if (methods[i].checked) {
+            checked = true;
+        }
+    }
+    if (checked) {
+        document.form1.submit();
+    } else {
+        alert('支払い方法を選択してください。');
+    }
 }
 //-->
 </script>
@@ -67,7 +109,13 @@ function fnFormModeSubmit(form, mode, keyname, keyid) {
 					</tr>
 					<!--{foreach key=key item=item from=$arrCreMet}-->
 					<tr>
-						<td align="center" bgcolor="#ffffff" class="fs12"><input type="radio" name="METHOD" id="<!--{$key}-->" value="<!--{$key}-->" style="<!--{$arrErr.arrCreMet|sfGetErrorColor}-->" <!--{if $smarty.post.arrCreMet == $key}-->checked<!--{/if}-->></td>
+						<td align="center" bgcolor="#ffffff" class="fs12">
+							<input type="radio"
+								   name="METHOD"
+								   id="<!--{$key}-->"
+								   value="<!--{$key}-->"
+								   style="<!--{$arrErr.arrCreMet|sfGetErrorColor}-->" <!--{if $smarty.post.arrCreMet == $key}-->checked<!--{/if}--> />
+						</td>
 						<td bgcolor="#ffffff" class="fs12"><label for="<!--{$key}-->"><!--{$item|escape}--></label></td>
 					</tr>
 					<!--{/foreach}-->
@@ -109,8 +157,8 @@ function fnFormModeSubmit(form, mode, keyname, keyid) {
 							<!--{assign var=key value="ELIO"}-->
 							<span class="red"><!--{$arrErr[$key]}--></span>
 							<input type="checkbox"
-							       name="<!--{$key}-->"
-							       value="<!--{$arrSendData.ELIO|escape}-->">　本画面後に表示される「eLIO決済」画面から、eLIOカードをかざしてください。
+								   name="<!--{$key}-->"
+								   value="<!--{$arrSendData.ELIO|escape}-->">　本画面後に表示される「eLIO決済」画面から、eLIOカードをかざしてください。
 						</td>
 					</tr>
 				</table>
@@ -135,6 +183,7 @@ function fnFormModeSubmit(form, mode, keyname, keyid) {
 					</a>
 					<img src="<!--{$smarty.const.URL_DIR}-->img/_.gif" width="20" height="" alt="" />
 					<input type="image"
+					       onClick="lfMethodChecked();return false;"
 						   onmouseover="chgImgImageSubmit('<!--{$smarty.const.URL_DIR}-->img/shopping/b_ordercomp_on.gif',this)"
 						   onmouseout="chgImgImageSubmit('<!--{$smarty.const.URL_DIR}-->img/shopping/b_ordercomp.gif',this)"
 						   src="<!--{$smarty.const.URL_DIR}-->img/shopping/b_ordercomp.gif"
