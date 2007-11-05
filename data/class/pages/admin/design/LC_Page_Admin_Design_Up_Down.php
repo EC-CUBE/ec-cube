@@ -24,6 +24,7 @@
 // {{{ requires
 require_once(CLASS_PATH . "pages/LC_Page.php");
 require_once(DATA_PATH. "module/Tar.php");
+require_once(CLASS_EX_PATH . "helper_extends/SC_Helper_FileManager_Ex.php");
 
 /**
  * テンプレートアップロード のページクラス.
@@ -72,12 +73,6 @@ class LC_Page_Admin_Design_Up_Down extends LC_Page {
 		
 		// ダウンロードボタン押下時の処理
 		case 'download':
-		    // 画面遷移の正当性チェック
-		    if (!SC_Utils::sfIsValidTransition($objSession)) {
-		        SC_Utils::sfDispError('');
-		    }
-		    SC_Utils::downloadArchiveFiles(TEMPLATE_DIR);
-		    exit;
 		    break;
 		// アップロードボタン押下時の処理
 		case 'upload':
@@ -243,39 +238,17 @@ class LC_Page_Admin_Design_Up_Down extends LC_Page {
 	    $objUpFile->moveTempFile();
 	    
 	    // 解凍
-	    $this->lfUnpacking($template_dir, $_FILES['template_file']['name']);
-	    	    
+	    SC_Helper_FileManager::unpackFile($template_dir . "/" . $_FILES['template_file']['name']);
+	    // ユーザデータの下のファイルをコピーする
+        $from_dir = SMARTY_TEMPLATES_DIR . $template_code . "/_packages/";	    
+	    $to_dir = USER_PATH . "packages/" . $template_code . "/";
+	    SC_Utils::sfMakeDir($to_dir);
+        SC_Utils::sfCopyDir($from_dir, $to_dir);
+	    
 	    // DBにテンプレート情報を保存
 	    $this->lfRegisterTemplates($objForm->getHashArray());
 	}
-	/**
-	 * アップロードされたtarアーカイブを解凍する.
-	 *
-	 * TODO 処理がわかりにくいので直す,
-	 * $file_nameは$objUpFileの初期化時にTPL_PKG_PATHが保存先になっているため必要
-	 *
-	 * @param string $dir 解凍先ディレクトリ
-	 * @param strin $file_name アーカイブのファイル名
-	 * @return string Archive_Tar::extractModify()のエラー
-	 */
-	function lfUnpacking($dir, $file_name) {
-		// 圧縮フラグTRUEはgzip解凍をおこなう
-	    $tar = new Archive_Tar("$dir/$file_name", true);
-    
-	    // 拡張子を切り取る
-	    $unpacking_name = preg_replace("/(\.tar|\.tar\.gz)$/", "", $file_name);
 	
-	    // 指定されたフォルダ内に解凍する
-	    $tar->extractModify("$dir/", $unpacking_name);
-	    GC_Utils_Ex::gfPrintLog("解凍：" . $dir."/".$file_name."->".$dir."/".$unpacking_name);
-	   	
-	    // フォルダ削除
-	    SC_Utils::sfDelFile("$dir/$unpacking_name");
-	    // 圧縮ファイル削除
-	    unlink("$dir/$file_name");
-	
-	    return $err;
-	}
 	/**
 	 * dtb_templatesへ入力内容を登録する.
 	 *
@@ -286,42 +259,7 @@ class LC_Page_Admin_Design_Up_Down extends LC_Page {
 	    $objQuery = new SC_Query();
 	    $objQuery->insert('dtb_templates', $arrForm);
 	}
-	/**
-	 * ユーザが作成したファイルをアーカイブしダウンロードさせる
-	 * TODO 要リファクタリング
-	 * @param void
-	 * @return void
-	 */
-	function lfDownloadCreatedFiles() {
-		$debug_message = "";
-	    // ダウンロードされるファイル名
-		$dlFileName = 'tpl_package_' . date('YmdHis') . '.tar.gz';
-		
-	    // ファイル一覧取得
-	    $arrFileHash = SC_Utils::sfGetFileList(TEMPLATE_DIR);
-	    foreach($arrFileHash as $val) {
-	        $arrFileList[] = $val['file_name'];
-	        $debug_message.= "圧縮：".$val['file_name']."\n";
-	    }
-	    GC_Utils::gfDebugLog($debug_message);	    
-	    
-	    // ディレクトリを移動
-	    chdir(TEMPLATE_DIR);
-	    // 圧縮をおこなう
-	    $tar = new Archive_Tar($dlFileName, true);
-	    $tar->create($arrFileList);
-		
-	    // ダウンロード用HTTPヘッダ出力
-	    header("Content-disposition: attachment; filename=${dlFileName}");
-	    header("Content-type: application/octet-stream; name=${dlFileName}");
-	    header("Content-Length: " . filesize($dlFileName));
-	    readfile($dlFileName);
-	
-	    // 圧縮ファイル削除
-	    unlink($dlFileName);
-	    // 一時フォルダ削除
-	    SC_Utils::sfDelFile($tmpDir);
-	}
+
 	/**
 	 * デザイン管理で作成されたファイルをupload/temp_template/以下にコピーする
 	 *
