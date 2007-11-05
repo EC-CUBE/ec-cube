@@ -1930,6 +1930,17 @@ class SC_Utils {
 	    return $str; 
 	}
 	
+    /**
+     * 出力バッファをフラッシュし, バッファリングを開始する.
+     *
+     * @return void
+     */
+    function flush() {
+        flush();
+        ob_end_flush();
+        ob_start();
+    }
+	
     /* デバッグ用 ------------------------------------------------------------------------------------------------*/
     function sfPrintR($obj) {
         print("<div style='font-size: 12px;color: #00FF00;'>\n");
