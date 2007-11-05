@@ -314,6 +314,7 @@ function lfRegistData($order_id) {
 	$sql .= " SET";
 	$sql .= "     payment_method = (SELECT payment_method FROM dtb_payment WHERE payment_id = ?)";
 	$sql .= "     ,deliv_time = (SELECT deliv_time FROM dtb_delivtime WHERE time_id = ? AND deliv_id = (SELECT deliv_id FROM dtb_payment WHERE payment_id = ? ))";
+	$sql .= "     ,update_date = NOW()";
 	$sql .= " WHERE order_id = ?";
 	
 	if ($arrRet['deliv_time_id'] == "") {
