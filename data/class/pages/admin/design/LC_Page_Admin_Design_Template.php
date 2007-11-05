@@ -150,7 +150,10 @@ class LC_Page_Admin_Design_Template extends LC_Page {
 		    $objForm = $this->lfInitDownload();
 		    $template_code = $objForm->getValue('template_code_temp');
 		    // ユーザデータの下のファイルも保存する。
-			SC_Utils::sfCopyDir(USER_TEMPLATE_PATH . $template_code . "/", SMARTY_TEMPLATES_DIR . $template_code . "/user_data/");
+		    $from_dir = USER_TEMPLATE_PATH . $template_code . "/";
+		    $to_dir = SMARTY_TEMPLATES_DIR . $template_code . "/_packages/";
+		    SC_Utils::sfMakeDir($to_dir);
+			SC_Utils::sfCopyDir($from_dir, $to_dir);
 		    SC_Helper_FileManager::downloadArchiveFiles(SMARTY_TEMPLATES_DIR . $template_code);
 		    break;
 		    
