@@ -68,6 +68,7 @@ class LC_Page_Admin_Design_Template extends LC_Page {
 	    $this->tpl_subtitle = 'テンプレート設定';
 	    $this->arrErr  = array();
 	    $this->arrForm = array();
+	    $this->tpl_select = DEFAULT_TEMPLATE_NAME;
 	   	ini_set("max_execution_time", 300);
     }
 
@@ -101,7 +102,8 @@ class LC_Page_Admin_Design_Template extends LC_Page {
 		    }
 		
 		    $template_code = $objForm->getValue('template_code');
-			
+            $this->tpl_select = $template_code;
+		    
 		    if($template_code == "") {
 		    	$template_code = "default";
 		    }
@@ -114,7 +116,7 @@ class LC_Page_Admin_Design_Template extends LC_Page {
 		
 		    // XXX コンパイルファイルのクリア処理を行う
 		    $objView->_smarty->clear_compiled_tpl();
-		
+		    
 		    // 完了メッセージ
 		    $this->tpl_onload="alert('登録が完了しました。');";
 		    break;
