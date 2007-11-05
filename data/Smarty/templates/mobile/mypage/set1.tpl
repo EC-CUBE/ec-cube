@@ -18,7 +18,7 @@
 	<input type="radio" name="sex" value="1" <!--{if $arrForm.sex eq "1"}-->checked<!--{/if}--> />男性&nbsp;
 	<input type="radio" name="sex" value="2" <!--{if $arrForm.sex eq "2"}-->checked<!--{/if}--> />女性<br>
 
-	【生年月日】<font color="#FF0000">*</font><br>
+	【生年月日】<br>
 	<font color="#FF0000"><!--{$arrErr.year}--><!--{$arrErr.month}--><!--{$arrErr.day}--></font>
 	<input type="text" name="year" value="<!--{$arrForm.year|escape}-->" size="4" maxlength="4" istyle="4">年<br>
 	<select name="month">

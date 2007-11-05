@@ -379,15 +379,7 @@ function lfErrorCheck2($array) {
 	$objErr->doFunc(array("郵便番号", "zip01", "zip02"), array("ALL_EXIST_CHECK"));
 
 	$objErr->doFunc(array("性別", "sex") ,array("SELECT_CHECK", "NUM_CHECK")); 
-	$objErr->doFunc(array("生年月日 (年)", "year", 4), array("EXIST_CHECK", "SPTAB_CHECK", "NUM_CHECK", "NUM_COUNT_CHECK"));
-	if (!isset($objErr->arrErr['year'])) {
-		$objErr->doFunc(array("生年月日 (年)", "year", $objDate->getStartYear()), array("MIN_CHECK"));
-		$objErr->doFunc(array("生年月日 (年)", "year", $objDate->getEndYear()), array("MAX_CHECK"));
-	}
-	$objErr->doFunc(array("生年月日 (月日)", "month", "day"), array("SELECT_CHECK"));
-	if (!isset($objErr->arrErr['year']) && !isset($objErr->arrErr['month']) && !isset($objErr->arrErr['day'])) {
-		$objErr->doFunc(array("生年月日", "year", "month", "day"), array("CHECK_DATE"));
-	}
+	$objErr->doFunc(array("生年月日", "year", "month", "day"), array("CHECK_DATE"));
 	
 	return $objErr->arrErr;
 }
