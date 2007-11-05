@@ -55,7 +55,8 @@ switch($mode) {
 		if (count($objPage->arrErr) == 0) {
 			// データ更新
 			lfUpdPaymentDB();
-
+            // 決済結果受付ファイルのコピー
+            copy(MODULE_PATH . "mdl_remise/remise_recv.php", HTML_PATH . "user_data/remise_recv.php");
 			// javascript実行
 			$objPage->tpl_onload = 'alert("登録完了しました。\n基本情報＞支払方法設定より詳細設定をしてください。"); window.close();';
 		}
