@@ -79,7 +79,7 @@
 						<!--∏°∫˜æÚ∑Ô¿ﬂƒÍ•∆°º•÷•Î§≥§≥§´§È-->
 						<table width="678" border="0" cellspacing="1" cellpadding="8" summary=" ">
 							<tr class="fs12n">
-								<td bgcolor="#f2f1ec" width="110">∏‹µ“•≥°º•…</td>
+								<td bgcolor="#f2f1ec" width="110">∏‹µ“ID</td>
 								<td bgcolor="#ffffff" width="194"><!--{if $arrErr.customer_id}--><span class="red12"><!--{$arrErr.customer_id}--></span><br><!--{/if}--><input type="text" name="customer_id" maxlength="<!--{$smarty.const.INT_LEN}-->" value="<!--{$arrForm.customer_id|escape}-->" size="30" class="box30" <!--{if $arrErr.customer_id}--><!--{sfSetErrorStyle}--><!--{/if}--> /></td>
 								<td bgcolor="#f2f1ec" width="110">≈‘∆ª…‹∏©</td>
 								<td bgcolor="#ffffff" width="195">
@@ -367,7 +367,7 @@
 					<table width="840" border="0" cellspacing="1" cellpadding="5" summary=" ">
 						<tr bgcolor="#636469" align="center" class="fs12n">
 							<td width="50" rowspan="2"><span class="white">ºÔ Ã</span></td>
-							<td width="120"><span class="white">∏‹µ“•≥°º•…</span></td>
+							<td width="120"><span class="white">∏‹µ“ID</span></td>
 							<td width="300" rowspan="2"><span class="white">∏‹µ“Ãæ/° •´• °À</span></td>
 							<td width="50" rowspan="2"><span class="white">¿≠ Ã</span></td>
 							<td width="250"><span class="white">TEL</span></td>

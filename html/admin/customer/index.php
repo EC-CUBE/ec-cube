@@ -302,7 +302,7 @@ function lfCheckError($array) {
 
 	$objErr = new SC_CheckError($array);
 	
-	$objErr->doFunc(array("¸ÜµÒ¥³¡¼¥É", "customer_id", INT_LEN), array("NUM_CHECK","MAX_LENGTH_CHECK"));
+	$objErr->doFunc(array("¸ÜµÒID", "customer_id", INT_LEN), array("NUM_CHECK","MAX_LENGTH_CHECK"));
 	$objErr->doFunc(array("ÅÔÆ»ÉÜ¸©", "pref", 2), array("NUM_CHECK","MAX_LENGTH_CHECK"));
 	$objErr->doFunc(array("¸ÜµÒÌ¾", "name", STEXT_LEN), array("MAX_LENGTH_CHECK"));
 	$objErr->doFunc(array("¸ÜµÒÌ¾(¥«¥Ê)", "kana", STEXT_LEN), array("SPTAB_CHECK" ,"MAX_LENGTH_CHECK", "KANABLANK_CHECK"));
