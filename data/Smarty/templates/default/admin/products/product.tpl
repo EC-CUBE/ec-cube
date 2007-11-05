@@ -119,17 +119,17 @@ function selectAll(target) {
 										<table>
 											<tr>
 												<td>
-													<select name="category_id_unselect[]" id="category_id_unselect" onchange="" size="10" style="height:20ex" multiple>
-														<!--{html_options values=$arrCatVal output=$arrCatOut selected=$arrForm.category_id}-->
+													<select name="category_id[]" id="category_id" style="<!--{if $arrErr.category_id != ""}-->background-color: <!--{$smarty.const.ERR_COLOR}--><!--{/if}--> height: 120px;" onchange="" size="10" multiple>
+
 													</select>
 												</td>
 												<td>
-													<input type="button" name="on_select" value="&nbsp;&nbsp;登録&nbsp;-&gt;&nbsp;&nbsp;" onClick="fnMoveSelect('category_id_unselect','category_id')"><br><br>
-													<input type="button" name="un_select" value="&nbsp;&nbsp;&lt;-&nbsp;削除&nbsp;&nbsp;" onClick="fnMoveSelect('category_id','category_id_unselect')">
+													<input type="button" name="on_select" value="&nbsp;&nbsp;&lt;-&nbsp;登録&nbsp;&nbsp;" onClick="fnMoveSelect('category_id_unselect','category_id')"><br><br>
+													<input type="button" name="un_select" value="&nbsp;&nbsp;削除&nbsp;-&gt;&nbsp;&nbsp;" onClick="fnMoveSelect('category_id','category_id_unselect')">
 												</td>
 												<td>
-													<select name="category_id[]" id="category_id" style="<!--{if $arrErr.category_id != ""}-->background-color: <!--{$smarty.const.ERR_COLOR}--><!--{/if}--> height:20ex" onchange="" size="10" multiple>
-
+													<select name="category_id_unselect[]" id="category_id_unselect" onchange="" size="10" style="height: 120px;" multiple>
+														<!--{html_options values=$arrCatVal output=$arrCatOut selected=$arrForm.category_id}-->
 													</select>
 												</td>
 											</tr>
