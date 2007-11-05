@@ -1,12 +1,14 @@
 <?php
 /**
- * 
+ *
  * @copyright	2000-2007 LOCKON CO.,LTD. All Rights Reserved.
  * @version	CVS: $Id: mdl_remise.inc 7162 2006-11-18 09:53:33Z inoue $
  * @link		http://www.lockon.co.jp/
  *
  */
 
+// ルミーズモジュールバージョン
+define('MDL_REMISE_VERSION', 1.2);
 // ルミーズモジュールID
 define("MDL_REMISE_ID", 5);
 
