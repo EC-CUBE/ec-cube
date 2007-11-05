@@ -1,10 +1,4 @@
 <?php
-/**
- * 定数群の初期設定ファイル.
- * 通常は, DB の mtb_constants テーブルの内容が, data/cache/mtb_constants.php
- * にキャッシュされて使用される.
- */
-
 /** フロント表示関連 */
 define('SAMPLE_ADDRESS1', "市区町村名（例：千代田区神田神保町）");
 /** フロント表示関連 */
@@ -28,7 +22,9 @@ define('AUTH_MAGIC', "31eafcbd7a81d7b401a7fdc12bba047c02d1fae6");
 /** テンプレートファイル保存先 */
 define('USER_TEMPLATE_DIR', "templates/");
 /** テンプレートファイル保存先 */
-define('USER_TEMPLATE_PATH', USER_PATH . USER_TEMPLATE_DIR);
+define('USER_PACKAGE_DIR', "packages/");
+/** テンプレートファイル保存先 */
+define('USER_TEMPLATE_PATH', USER_PATH . USER_PACKAGE_DIR);
 /** テンプレートファイル一時保存先 */
 define('TEMPLATE_TEMP_DIR', HTML_PATH . "upload/temp_template/");
 /** ユーザー作成画面のデフォルトPHPファイル */
@@ -47,7 +43,7 @@ define('UPDATE_PATH', DATA_PATH . UPDATE_DIR);
 define('MAX_LIFETIME', 7200);
 /** マスタデータキャッシュディレクトリ */
 define('MASTER_DATA_DIR', DATA_PATH . "cache/");
-/** アップデート管理用ファイル格納場所　 */
+/** アップデート管理用ファイル格納場所 */
 define('UPDATE_HTTP', "http://www.lockon.co.jp/share/");
 /** アップデート管理用CSV1行辺りの最大文字数 */
 define('UPDATE_CSV_LINE_MAX', 4096);
@@ -543,7 +539,7 @@ define('SITE_CONTROL_TRACKBACK', 1);
 /** サイト管理 アフィリエイト */
 define('SITE_CONTROL_AFFILIATE', 2);
 /** Pear::Mail バックエンド:mail|smtp|sendmail */
-define('MAIL_BACKEND', 'smtp');
+define('MAIL_BACKEND', "smtp");
 /** OS種別:WIN|LINUX */
 define('OS_TYPE', "LINUX");
 /** SMTPサーバー */
@@ -555,7 +551,11 @@ define('DEFAULT_TEMPLATE_NAME', "default");
 /** テンプレート名 */
 define('TEMPLATE_NAME', DEFAULT_TEMPLATE_NAME);
 /** SMARTYテンプレート */
-define('TEMPLATE_DIR', DATA_PATH . "Smarty/templates/" . TEMPLATE_NAME . "/");
+define('SMARTY_TEMPLATES_DIR',  DATA_PATH . "Smarty/templates/");
+/** SMARTYテンプレート */
+define('TPL_DIR', URL_DIR . USER_DIR . USER_PACKAGE_DIR . TEMPLATE_NAME . "/");
+/** SMARTYテンプレート */
+define('TEMPLATE_DIR', SMARTY_TEMPLATE_DIR . TEMPLATE_NAME . "/");
 /** SMARTYテンプレート(管理ページ) */
 define('TEMPLATE_ADMIN_DIR', TEMPLATE_DIR . "admin/");
 /** SMARTYコンパイル */
@@ -563,17 +563,13 @@ define('COMPILE_DIR', DATA_PATH . "Smarty/templates_c/" . TEMPLATE_NAME . "/");
 /** SMARTYコンパイル(管理ページ) */
 define('COMPILE_ADMIN_DIR', COMPILE_DIR . "admin/");
 /** SMARTYテンプレート(FTP許可) */
-define('TEMPLATE_FTP_DIR', USER_PATH . "templates/" . TEMPLATE_NAME . "/");
+define('TEMPLATE_FTP_DIR', USER_PATH . USER_PACKAGE_DIR . TEMPLATE_NAME . "/");
 /** SMARTYコンパイル(FTP許可) */
 define('COMPILE_FTP_DIR', COMPILE_DIR . USER_DIR);
 /** ブロックファイル保存先 */
 define('BLOC_DIR', "bloc/");
 /** ブロックファイル保存先 */
 define('BLOC_PATH', TEMPLATE_DIR . BLOC_DIR);
-/** SMARTYテンプレート(mobile) */
-define('MOBILE_TEMPLATE_DIR', TEMPLATE_DIR . "mobile/");
-/** SMARTYコンパイル(mobile) */
-define('MOBILE_COMPILE_DIR', COMPILE_DIR . "mobile/");
 /** キャンペーンファイル保存先 */
 define('CAMPAIGN_DIR', "cp/");
 /** キャンペーン関連 */
@@ -592,100 +588,124 @@ define('CAMPAIGN_BLOC_PATH', CAMPAIGN_TEMPLATE_PATH . CAMPAIGN_BLOC_DIR);
 define('CAMPAIGN_TEMPLATE_ACTIVE', "active/");
 /** キャンペーン関連 */
 define('CAMPAIGN_TEMPLATE_END', "end/");
+/** SMARTYテンプレート(mobile) */
+define('MOBILE_TEMPLATE_DIR', TEMPLATE_DIR . "mobile/");
+/** SMARTYコンパイル(mobile) */
+define('MOBILE_COMPILE_DIR', COMPILE_DIR . "mobile/");
 /** セッションの存続時間 (秒) */
 define('MOBILE_SESSION_LIFETIME', 1800);
 /** 空メール機能を使用するかどうか */
 define('MOBILE_USE_KARA_MAIL', false);
 /** 空メール受け付けアドレスのユーザー名部分 */
 define('MOBILE_KARA_MAIL_ADDRESS_USER', "eccube");
-/** 空メール受け付けアドレスのユーザー名とコマンドの間の区切り文字 qmail の場合は '-' */
+/** 空メール受け付けアドレスのユーザー名とコマンドの間の区切り文字 qmail の場合は - */
 define('MOBILE_KARA_MAIL_ADDRESS_DELIMITER', "+");
 /** 空メール受け付けアドレスのドメイン部分 */
 define('MOBILE_KARA_MAIL_ADDRESS_DOMAIN', "mobile.ec-cube.net");
-/** 携帯のメールアドレスではないが、携帯だとみなすドメインのリスト 任意の数の「,」「 」で区切る。*/
+/** 携帯のメールアドレスではないが、携帯だとみなすドメインのリスト 任意の数の「,」「 」で区切る。 */
 define('MOBILE_ADDITIONAL_MAIL_DOMAINS', "rebelt.co.jp, lockon.co.jp");
 /** 携帯電話向け変換画像保存ディレクトリ */
-define('MOBILE_IMAGE_DIR', HTML_PATH . "upload/mobile_image");
+define('MOBILE_IMAGE_DIR', "upload/mobile_image");
 /** 携帯電話向け変換画像保存ディレクトリ */
-define('MOBILE_IMAGE_URL', URL_DIR . "upload/mobile_image");
+define('MOBILE_IMAGE_URL', "upload/mobile_image");
 /** モバイルURL */
-define ('MOBILE_URL_SITE_TOP', MOBILE_URL_DIR . "index.php");
+define('MOBILE_URL_SITE_TOP', MOBILE_URL_DIR . "index.php");
 /** カートトップ */
-define ("MOBILE_URL_CART_TOP", MOBILE_URL_DIR . "cart/index.php");
+define('MOBILE_URL_CART_TOP', MOBILE_URL_DIR . "cart/index.php");
 /** 会員情報入力 */
-define ("MOBILE_URL_SHOP_TOP", MOBILE_SSL_URL . "shopping/index.php");
+define('MOBILE_URL_SHOP_TOP', MOBILE_SSL_URL . "shopping/index.php");
 /** 購入確認ページ */
-define ("MOBILE_URL_SHOP_CONFIRM", MOBILE_URL_DIR . "shopping/confirm.php");
+define('MOBILE_URL_SHOP_CONFIRM', MOBILE_URL_DIR . "shopping/confirm.php");
 /** お支払い方法選択ページ */
-define ("MOBILE_URL_SHOP_PAYMENT", MOBILE_URL_DIR . "shopping/payment.php");
+define('MOBILE_URL_SHOP_PAYMENT', MOBILE_URL_DIR . "shopping/payment.php");
 /** 商品詳細(HTML出力) */
-define ("MOBILE_DETAIL_P_HTML", MOBILE_URL_DIR . "products/detail.php?product_id=");
+define('MOBILE_DETAIL_P_HTML', MOBILE_URL_DIR . "products/detail.php?product_id=");
 /** 購入完了画面 */
-define ("MOBILE_URL_SHOP_COMPLETE", MOBILE_URL_DIR . "shopping/complete.php");
+define('MOBILE_URL_SHOP_COMPLETE', MOBILE_URL_DIR . "shopping/complete.php");
 /** モジュール追加用画面 */
-define ("MOBILE_URL_SHOP_MODULE", MOBILE_URL_DIR . "shopping/load_payment_module.php");
-/** オーナーズストア通信ステータス (成功) */
-define('OWNERSSTORE_STATUS_SUCCESS', 'SUCCESS');
-/** オーナーズストア通信ステータス (失敗) */
-define('OWNERSSTORE_STATUS_ERROR',   'ERROR');
-/** オーナーズストア通信時のエラーコード：認証キーが設定されていない */
+define('MOBILE_URL_SHOP_MODULE', MOBILE_URL_DIR . "shopping/load_payment_module.php");
+/** オーナーズストア通信ステータス(成功) */
+define('OWNERSSTORE_STATUS_SUCCESS', "SUCCESS");
+/** オーナーズストア通信ステータス(失敗) */
+define('OWNERSSTORE_STATUS_ERROR', "ERROR");
+/** オーナーズストア通信エラーコード */
 define('OWNERSSTORE_ERR_EK_KEY_MISSING', 100);
-/** オーナーズストア通信時のエラーコード：POSTパラメータが不正 */
+/** オーナーズストア通信エラーコード */
 define('OWNERSSTORE_ERR_EK_POST_PARAM', 101);
-/** オーナーズストア通信時のエラーコード：管理画面の認証に失敗した */
+/** オーナーズストア通信エラーコード */
 define('OWNERSSTORE_ERR_PL_ADMIN_AUTH', 200);
-/** オーナーズストア通信時のエラーコード：トランザクションIDが不正 */
-define('OWNERSSTORE_ERR_PL_TRANSACTION',201);
-/** オーナーズストア通信時のエラーコード：HTTPリクエストに失敗した */
+/** オーナーズストア通信エラーコード */
+define('OWNERSSTORE_ERR_PL_TRANSACTION', 201);
+/** オーナーズストア通信エラーコード */
 define('OWNERSSTORE_ERR_PL_HTTP_REQ', 202);
-/** オーナーズストア通信時のエラーコード：レスポンスコードが200でない */
+/** オーナーズストア通信エラーコード */
 define('OWNERSSTORE_ERR_PL_HTTP_RESP_CODE', 203);
-/** オーナーズストア通信時のエラーコード：JSONデータが不正 */
+/** オーナーズストア通信エラーコード */
 define('OWNERSSTORE_ERR_PL_INVALID_JSON_DATA', 204);
-/** オーナーズストア通信時のエラーコード：管理画面の認証に失敗した */
+/** オーナーズストア通信エラーコード */
 define('OWNERSSTORE_ERR_DL_ADMIN_AUTH', 300);
-/** オーナーズストア通信時のエラーコード：トランザクションIDが不正 */
+/** オーナーズストア通信エラーコード */
 define('OWNERSSTORE_ERR_DL_TRANSACTION', 301);
-/** オーナーズストア通信時のエラーコード：HTTPリクエストに失敗した */
+/** オーナーズストア通信エラーコード */
 define('OWNERSSTORE_ERR_DL_HTTP_REQ', 302);
-/** オーナーズストア通信時のエラーコード：レスポンスコードが200でない */
+/** オーナーズストア通信エラーコード */
 define('OWNERSSTORE_ERR_DL_HTTP_RESP_CODE', 303);
-/** オーナーズストア通信時のエラーコード：POSTパラメータが不正 */
+/** オーナーズストア通信エラーコード */
 define('OWNERSSTORE_ERR_DL_POST_PARAM', 304);
-/** オーナーズストア通信時のエラーコード：ファイルの書き込みに失敗した */
+/** オーナーズストア通信エラーコード */
 define('OWNERSSTORE_ERR_DL_FILE_WRITE', 305);
-/** オーナーズストア通信時のエラーコード：一時ディレクトリの作成に失敗した */
-define('OWNERSSTORE_ERR_DL_MKDIR',  306);
-/** オーナーズストア通信時のエラーコード：アーカイブの展開に失敗した */
+/** オーナーズストア通信エラーコード */
+define('OWNERSSTORE_ERR_DL_MKDIR', 306);
+/** オーナーズストア通信エラーコード */
 define('OWNERSSTORE_ERR_DL_EXTRACT_ARCHIVE', 307);
-/** オーナーズストア通信時のエラーコード：アップデートバッチの実行に失敗した */
+/** オーナーズストア通信エラーコード */
 define('OWNERSSTORE_ERR_DL_UPDATE_BATCH', 308);
-/** オーナーズストア通信時のエラーコード：：JSONデータが不正 */
+/** オーナーズストア通信エラーコード */
 define('OWNERSSTORE_ERR_DL_INVALID_JSON_DATA', 309);
-/** オーナーズストア通信時のエラーコード：POSTパラメータが不正 */
+/** オーナーズストア通信エラーコード */
 define('OWNERSSTORE_ERR_SERVER_PL_POST_PARAM', 400);
-/** オーナーズストア通信時のエラーコード：会員データが存在しない */
+/** オーナーズストア通信エラーコード */
 define('OWNERSSTORE_ERR_SERVER_PL_NO_USER', 401);
-/** オーナーズストア通信時のエラーコード：HTTPリクエストに失敗した */
+/** オーナーズストア通信エラーコード */
 define('OWNERSSTORE_ERR_SERVER_PL_HTTP_REQ', 402);
-/** オーナーズストア通信時のエラーコード：レスポンスコードが200でない */
+/** オーナーズストア通信エラーコード */
 define('OWNERSSTORE_ERR_SERVER_PL_HTTP_RESP_CODE', 403);
-/** オーナーズストア通信時のエラーコード：オーナーズストア認証に失敗した */
+/** オーナーズストア通信エラーコード */
 define('OWNERSSTORE_ERR_SERVER_PL_AUTH', 404);
-/** オーナーズストア通信時のエラーコード：POSTパラメータが不正 */
-define('OWNERSSTORE_ERR_SERVER_DL_POST_PARAM',  500);
-/** オーナーズストア通信時のエラーコード：会員データが存在しない */
+/** オーナーズストア通信エラーコード */
+define('OWNERSSTORE_ERR_SERVER_DL_POST_PARAM', 500);
+/** オーナーズストア通信エラーコード */
 define('OWNERSSTORE_ERR_SERVER_DL_NO_USER', 501);
-/** オーナーズストア通信時のエラーコード：HTTPリクエストに失敗した */
-define('OWNERSSTORE_ERR_SERVER_DL_HTTP_REQ',  502);
-/** オーナーズストア通信時のエラーコード：レスポンスコードが200でない */
+/** オーナーズストア通信エラーコード */
+define('OWNERSSTORE_ERR_SERVER_DL_HTTP_REQ', 502);
+/** オーナーズストア通信エラーコード */
 define('OWNERSSTORE_ERR_SERVER_DL_HTTP_RESP_CODE', 503);
-/** オーナーズストア通信時のエラーコード：オーナーズストア認証に失敗した */
+/** オーナーズストア通信エラーコード */
 define('OWNERSSTORE_ERR_SERVER_DL_AUTH', 504);
-/** オーナーズストア通信時のエラーコード：*/
+/** オーナーズストア通信エラーコード */
 define('OWNERSSTORE_ERR_SERVER_DL_DOWNLOAD', 505);
-/** オーナーズストアURL **/
-define('OWNERSSTORE_URL', 'http://store.ec-cube.net/');
+/** オーナーズストアURL */
+define('OWNERSSTORE_URL', "http://store.ec-cube.net/");
 /** アップデート機能アクセス許可IP */
-define('OWNERSSTORE_IP', '210.188.195.143');
+define('OWNERSSTORE_IP', "210.188.195.143");
+/** オーナーズストアログパス */
+define('OWNERSSTORE_LOG_PATH', DATA_PATH . "logs/ownersstore.log");
+/** オーナーズストア通信エラーコード */
+define('OWNERSSTORE_ERR_EK_INVALID_IP', 102);
+/** オーナーズストア通信エラーコード */
+define('OWNERSSTORE_ERR_AU_INVALID_IP', 600);
+/** オーナーズストア通信エラーコード */
+define('OWNERSSTORE_ERR_AU_POST_PARAM', 601);
+/** オーナーズストア通信エラーコード */
+define('OWNERSSTORE_ERR_AU_NO_UPDATE', 602);
+/** オーナーズストア通信エラーコード */
+define('OWNERSSTORE_ERR_AU_HTTP_REQ', 603);
+/** オーナーズストア通信エラーコード */
+define('OWNERSSTORE_ERR_AU_HTTP_RESP_CODE', 604);
+/** オーナーズストア通信エラーコード */
+define('OWNERSSTORE_ERR_AU_INVALID_JSON_DATA', 605);
+/** オーナーズストア通信エラーコード */
+define('OWNERSSTORE_ERR_AU_FILE_WRITE', 606);
+/** オーナーズストア通信エラーコード */
+define('OWNERSSTORE_ERR_AU_MKDIR', 607);
 ?>
