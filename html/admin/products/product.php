@@ -511,7 +511,7 @@ function lfErrorCheck($array) {
 	$objErr->doFunc(array("発送日目安", "deliv_date_id", INT_LEN), array("NUM_CHECK"));
 
 	// モビリンクが有効な場合
-	if(sfIsMoviLink()) {
+	if(function_exists('sfIsMoviLink') && sfIsMoviLink()) {
 		$objErr->doFunc(array("広告主様商品コード", "movilink_code1", STEXT_LEN), array("EXIST_CHECK", "MAX_LENGTH_CHECK"));
 		$objErr->doFunc(array("商品名(フリガナ)", "movilink_kana", STEXT_LEN), array("EXIST_CHECK", "KANA_CHECK", "MAX_LENGTH_CHECK"));
 		$objErr->doFunc(array("商品価格", "movilink_price", INT_LEN), array("EXIST_CHECK", "NUM_CHECK", "MAX_LENGTH_CHECK"));
