@@ -143,7 +143,6 @@
 			<input type="hidden" name="MNAME_01" value="<!--{$arrSendData.MNAME_01|escape}-->">
 			<input type="hidden" name="MSUM_01" value="<!--{$arrSendData.MSUM_01|escape}-->">
 			<input type="hidden" name="REMARKS3" value="<!--{$arrSendData.REMARKS3|escape}-->">
-			<input type="hidden" name="mode" value="return">
 			
 			<tr><td height="20"></td></tr>
 			
