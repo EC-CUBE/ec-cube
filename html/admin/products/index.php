@@ -246,9 +246,11 @@ if(isset($_POST['mode'])) {
 			$arrOutputCols = $arrOutput['col'];
 			$arrOutputTitle = $arrOutput['disp_name'];
 
-			$head = sfGetMovilinkCSVList($arrOutputTitle);
+			$head = function_exists('sfGetMovilinkCSVList') ? sfGetMovilinkCSVList($arrOutputTitle) : '';
 
-			$data = sfGetMovilinkCSV($where, $option, $arrval, $arrOutputCols);
+			$data = function_exists('sfGetMovilinkCSV')
+			    ? sfGetMovilinkCSV($where, $option, $arrval, $arrOutputCols)
+			    : '';
 
 			// CSVを送信する。
 			sfCSVDownload($head.$data);

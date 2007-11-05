@@ -365,7 +365,7 @@ function lfRegistProduct($arrList) {
 	$sqlval['creator_id'] = $_SESSION['member_id'];
 
 	// モビリンクが有効な場合
-	if(sfIsMoviLink()) {
+	if(function_exists('sfIsMoviLink') && sfIsMoviLink()) {
 		$sqlval['movilink_net_percent'] = $arrList['movilink_net_percent'];
 		$sqlval['movilink_net_fix'] = $arrList['movilink_net_fix'];
 		$sqlval['movilink_draft_text1'] = $arrList['movilink_draft_text1'];
