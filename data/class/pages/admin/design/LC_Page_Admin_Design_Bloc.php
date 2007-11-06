@@ -60,7 +60,8 @@ class LC_Page_Admin_Design_Bloc extends LC_Page {
     function process() {
         $objView = new SC_AdminView();
         $this->objLayout = new SC_Helper_PageLayout_Ex();
-
+        $package_path = USER_TEMPLATE_PATH . "/" . TEMPLATE_NAME . "/";
+        
         // 認証可否の判定
         $objSess = new SC_Session();
         SC_Utils_Ex::sfIsSuccess($objSess);
@@ -83,16 +84,14 @@ class LC_Page_Admin_Design_Bloc extends LC_Page {
             $arrBlocData = $this->lfgetBlocData(" bloc_id = ? " , array($bloc_id));
 
             // ユーザー作成ブロックが存在する場合
-            if (is_file(USER_PATH . $arrBlocData[0]['tpl_path'])) {
-                $arrBlocData[0]['tpl_path'] = USER_PATH
-                    . $arrBlocData[0]['tpl_path'];
+            if (is_file($package_path . $arrBlocData[0]['tpl_path'])) {
+                $arrBlocData[0]['tpl_path'] = $package_path . $arrBlocData[0]['tpl_path'];
 
             // 存在しない場合は指定テンプレートのブロックを取得
             } else {
-                $arrBlocData[0]['tpl_path'] = TEMPLATE_DIR
-                    . $arrBlocData[0]['tpl_path'];
+                $arrBlocData[0]['tpl_path'] = TEMPLATE_DIR . $arrBlocData[0]['tpl_path'];
             }
-
+            
             // テンプレートファイルの読み込み
             $arrBlocData[0]['tpl_data'] = file_get_contents($arrBlocData[0]['tpl_path']);
             $this->arrBlocData = $arrBlocData[0];
@@ -135,13 +134,13 @@ class LC_Page_Admin_Design_Bloc extends LC_Page {
                 $this->lfEntryBlocData($_POST);
 
                 // 旧ファイルの削除
-                $old_bloc_path = USER_PATH . $arrBlocData[0]['tpl_path'];
+                $old_bloc_path = $package_path . $arrBlocData[0]['tpl_path'];
                 if (file_exists($old_bloc_path)) {
                     unlink($old_bloc_path);
                 }
 				
                 // ファイル作成
-                $new_bloc_path = USER_PATH . BLOC_DIR . $_POST['filename'] . ".tpl";
+                $new_bloc_path = $package_path . BLOC_DIR . $_POST['filename'] . ".tpl";
                	// ディレクトリの作成            
             	SC_Utils::sfMakeDir($new_bloc_path);
                 $fp = fopen($new_bloc_path,"w");
@@ -183,7 +182,7 @@ class LC_Page_Admin_Design_Bloc extends LC_Page {
                 $ret = $objDBConn->query($sql,array($_POST['bloc_id']));
 
                 // ファイルの削除
-                $del_file = BLOC_PATH . $arrBlocData[0]['filename']. '.tpl';
+                $del_file = $package_path . BLOC_DIR . $arrBlocData[0]['filename']. '.tpl';
                 if(file_exists($del_file)){
                     unlink($del_file);
                 }
