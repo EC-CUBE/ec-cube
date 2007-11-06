@@ -31,8 +31,8 @@ OwnersStore.download();やOwnersStore.products_list();を呼び出すことで
 購入商品一覧はid="ownersstore_products_list"に出力される
 
 *}-->
-<link rel="stylesheet" href="<!--{$smarty.const.URL_DIR}-->user_data/templates/default/css/thickbox.css" type="text/css" media="screen" />
-<script type="text/javascript" src="<!--{$smarty.const.URL_DIR}-->user_data/templates/default/js/ownersstore.js.php"></script>
+<link rel="stylesheet" href="<!--{$smarty.const.URL_DIR}-->user_data/packages/default/css/thickbox.css" type="text/css" media="screen" />
+<script type="text/javascript" src="<!--{$smarty.const.URL_DIR}-->user_data/packages/default/js/ownersstore.js.php"></script>
 
 <!--★★メインコンテンツ★★-->
 <table width="878" border="0" cellspacing="0" cellpadding="0" summary=" ">

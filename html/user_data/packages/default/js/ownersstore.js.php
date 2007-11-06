@@ -26,7 +26,7 @@ var loading_message = '\u30B5\u30FC\u30D0\u3068\u901A\u4FE1\u4E2D\u3067\u3059';
 
 // ロード中画像の先読み
 var loading_img = new Image();
-loading_img.src = '[%URL_DIR%]user_data/templates/default/img/ajax/loading.gif';
+loading_img.src = '[%URL_DIR%]user_data/packages/default/img/ajax/loading.gif';
 
 var OwnersStore = function() {}
 OwnersStore.prototype = {
