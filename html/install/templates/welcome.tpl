@@ -39,7 +39,7 @@
 	<tr><td height="30"></td></tr>
 	<tr>
 		<td align="center">
-		<input type="image" onMouseover="chgImgImageSubmit('../user_data/templates/default/img/install/next_on.jpg',this)" onMouseout="chgImgImageSubmit('../user_data/templates/default/img/install/next.jpg',this)" src="../user_data/templates/default/img/install/next.jpg" width="105" height="24" alt="次へ進む" border="0" name="next">
+		<input type="image" onMouseover="chgImgImageSubmit('../<!--{$default_dir}-->/img/install/next_on.jpg',this)" onMouseout="chgImgImageSubmit('../<!--{$default_dir}-->/img/install/next.jpg',this)" src="../<!--{$default_dir}-->/img/install/next.jpg" width="105" height="24" alt="次へ進む" border="0" name="next">
 		</td>
 	</tr>
 	<tr><td height="30"></td></tr>

@@ -25,7 +25,8 @@ $INSTALL_DIR = realpath(dirname( __FILE__));
 require_once("../" . HTML2DATA_DIR . "module/Request.php");
 
 define("INSTALL_LOG", "./temp/install.log");
-
+ini_set("max_execution_time", 300);
+        
 class LC_Page {
     function LC_Page() {
         $this->arrDB_TYPE = array(
@@ -399,8 +400,8 @@ function lfDispStep0($objPage) {
     $mess = "";
     $err_file = false;
     foreach($arrWriteFile as $val) {
-		// listdirsの保持データを初期化
-    	initdirs();
+        // listdirsの保持データを初期化
+        initdirs();
         if (is_dir($val)) {
            $arrDirs = listdirs($val);
         } else {
@@ -417,11 +418,15 @@ function lfDispStep0($objPage) {
                     if(!is_writable($path)) {
                         $mess.= ">> ×：$real_path($mode) <br>ユーザ書込み権限(777, 707等)を付与して下さい。<br>";
                         $err_file = true;
+                    } else {
+                        GC_Utils_Ex::gfPrintLog("WRITABLE：".$path, INSTALL_LOG);
                     }
                 } else {
                     if(!is_writable($path)) {
                         $mess.= ">> ×：$real_path($mode) <br>ユーザ書込み権限(666, 606等)を付与して下さい。<br>";
                         $err_file = true;
+                    } else {
+                        GC_Utils_Ex::gfPrintLog("WRITABLE：".$path, INSTALL_LOG);
                     }
                 }
             } else {
@@ -1093,7 +1098,7 @@ function listdirs($dir) {
  */
 function initdirs() {
     global $alldirs;
-	$alldirs = array();
+    $alldirs = array();
 }
 
 ?>
