@@ -40,7 +40,7 @@ class LC_Page_FrontParts_Bloc extends LC_Page {
      */
     function setTplMainpage($bloc_file) {
     	$debug_message = "";
-    	$user_bloc_path = USER_TEMPLATE_PATH . "/" . TEMPLATE_NAME . "/" . BLOC_DIR . $bloc_file;
+    	$user_bloc_path = USER_TEMPLATE_PATH . TEMPLATE_NAME . "/" . BLOC_DIR . $bloc_file;
         if (is_file($user_bloc_path)) {
             $this->tpl_mainpage = $user_bloc_path;
         } else {
