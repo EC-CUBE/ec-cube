@@ -144,9 +144,9 @@ function lfMethodChecked() {
 				<!--分割回数ここまで-->
 				</td>
 			</tr>
-
 			<tr><td height="20"></td></tr>
 
+			<!--{if $smarty.const.REMISE_ELIO_USE}-->
 			<tr>
 				<td bgcolor="#cccccc">
 				<!--eLIO決済ここから-->
@@ -165,8 +165,9 @@ function lfMethodChecked() {
 				<!--eLIO決済ここまで-->
 				</td>
 			</tr>
-
 			<tr><td height="20"></td></tr>
+			<!--{/if}-->
+
 			<tr>
 				<td align="center">
 					<a href=""
