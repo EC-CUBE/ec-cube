@@ -8,7 +8,7 @@
 <script type="text/javascript"><!--
 function submitRegister() {
 	var form = document.form1;
-	var msg  = "テンプレートを変更します。\n既存のデータは上書きされますがよろしいですか？";
+	var msg  = "テンプレートを変更します。";
 
 	if (window.confirm(msg)) {
 		form['mode'].value = 'register';
