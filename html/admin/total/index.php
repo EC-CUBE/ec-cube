@@ -534,6 +534,262 @@ function lfGetGraphPng($keyname) {
 	return $pngname;
 }
 
+/** 期間別集計 **/
+function lfGetOrderTerm($type, $sdate, $edate, $objPage, $graph = true) {
+	$tmp_col = "sum(total_order) as total_order, sum(men) as men, sum(women) as women,";
+	$tmp_col.= "sum(men_member) as men_member, sum(men_nonmember) as men_nonmember,";
+	$tmp_col.= "sum(women_member) as women_member, sum(women_nonmember) as women_nonmember,";
+	$tmp_col.= "sum(total) as total, (avg(total_average)) as total_average";
+	$objQuery = new SC_Query();
+	
+	switch($type) {
+	// 月別
+	case 'month':
+		$col = $tmp_col . ",key_month";
+		$objQuery->setgroupby("key_month");
+		$objQuery->setOrder("key_month");
+		$objPage->keyname = "key_month";
+		$objPage->tpl_tail = "月";
+		$from = "dtb_bat_order_daily";
+		$xtitle = "(月別)";
+		$ytitle = "(売上合計)";
+		break;
+	// 年別
+	case 'year':
+		$col = $tmp_col . ",key_year";
+		$objQuery->setgroupby("key_year");
+		$objQuery->setOrder("key_year");
+		$objPage->keyname = "key_year";
+		$objPage->tpl_tail = "年";
+		$from = "dtb_bat_order_daily";
+		$xtitle = "(年別)";
+		$ytitle = "(売上合計)";
+		break;
+	// 曜日別
+	case 'wday':
+		$col = $tmp_col . ",key_wday, wday";
+		$objQuery->setgroupby("key_wday, wday");
+		$objQuery->setOrder("wday");
+		$objPage->keyname = "key_wday";
+		$objPage->tpl_tail = "曜日";
+		$from = "dtb_bat_order_daily";
+		$xtitle = "(曜日別)";
+		$ytitle = "(売上合計)";
+		break;
+	// 時間別
+	case 'hour':
+		$col = $tmp_col . ",hour";
+		$objQuery->setgroupby("hour");
+		$objQuery->setOrder("hour");
+		$objPage->keyname = "hour";
+		$objPage->tpl_tail = "時";
+		$from = "dtb_bat_order_daily_hour";
+		$xtitle = "(時間別)";
+		$ytitle = "(売上合計)";
+		break;
+	default:
+		$col = "*";
+		$objQuery->setOrder("key_day");
+		$objPage->keyname = "key_day";
+		$from = "dtb_bat_order_daily";
+		$xtitle = "(日別)";
+		$ytitle = "(売上合計)";
+		break;
+	}
+	
+	// 取得日付の指定
+	if($sdate != "") {
+		if ($where != "") {
+			$where.= " AND ";
+		}			
+		$where.= " order_date >= '". $sdate ."'";
+	}
+	
+	if($edate != "") {
+		if ($where != "") {
+			$where.= " AND ";
+		}
+		$edate_next = date("Y/m/d",strtotime("1 day" ,strtotime($edate)));
+		$where.= " order_date < date('" . $edate_next ."')";
+	}
+	
+	// 検索結果の取得
+	$objPage->arrResults = $objQuery->select($col, $from, $where, $arrval);
+	
+	// 折れ線グラフの生成	
+	if($graph) {
+		$image_key = "term_" . $type;
+		$objPage->tpl_image = lfGetGraphLine($objPage->arrResults, $objPage->keyname, $image_key, $xtitle, $ytitle, $sdate, $edate);
+	}
+	
+	// 検索結果が0でない場合
+	if(count($objPage->arrResults) > 0) {
+		// 最終集計行取得する
+		$col = $tmp_col;
+		$objQuery = new SC_Query();
+		$arrRet = $objQuery->select($col, $from, $where, $arrval);
+		$arrRet[0][$objPage->keyname] = "合計";
+		$objPage->arrResults[] = $arrRet[0];
+	}
+	
+	// 平均値の計算
+	$max = count($objPage->arrResults);
+	for($i = 0; $i < $max; $i++) {
+		if($objPage->arrResults[$i]['total_order'] > 0) {
+			$objPage->arrResults[$i]['total_average'] = intval($objPage->arrResults[$i]['total'] / $objPage->arrResults[$i]['total_order']);
+		}
+	}
+	
+	return $objPage;
+}
+
+/** 商品別集計 **/
+function lfGetOrderProducts($type, $sdate, $edate, $objPage, $graph = true, $mode = "") {
+	list($where, $arrval) = lfGetWhereMember('create_date', $sdate, $edate, $type);
+    
+    $where .= " AND del_flg=0 AND status <> ". ORDER_CANCEL;
+	
+	$sql = "SELECT T1.product_id, T1.product_code, T1.product_name as name, T1.products_count, T1.order_count, T1.price, T1.total ";
+	$sql.= "FROM ( ";
+	$sql.= "SELECT product_id, product_name, product_code, price, ";
+	$sql.= "COUNT(*) AS order_count, ";
+	$sql.= "SUM(quantity) AS products_count, ";
+	$sql.= "(price * sum(quantity)) AS total ";
+	$sql.= "FROM dtb_order_detail WHERE order_id IN (SELECT order_id FROM dtb_order WHERE $where ) ";
+	$sql.= "GROUP BY product_id, product_name, product_code, price ";
+	$sql.= ") AS T1 ";
+	$sql.= "ORDER BY T1.total DESC ";
+	
+	if($mode != "csv") {
+		$sql.= "LIMIT ". PRODUCTS_TOTAL_MAX;
+	}
+	
+	$objQuery = new SC_Query();
+	$objPage->arrResults = $objQuery->getall($sql, $arrval);
+	
+	// 円グラフの生成
+	if($graph) {
+		$image_key = "products_". $type;
+		$objPage->tpl_image = lfGetGraphPie($objPage->arrResults, "name", $image_key, "(売上比率)", $sdate, $edate);
+	}
+	
+	return $objPage;
+}
+
+/** 年代別集計 **/
+function lfGetOrderAge($type, $sdate, $edate, $objPage, $graph = true) {
+	list($where, $arrval) = lfGetWhereMember('order_date', $sdate, $edate, $type, "member");
+	
+	$sql = "SELECT SUM(order_count) AS order_count, SUM(total) AS total, start_age, end_age ";
+	$sql.= "FROM dtb_bat_order_daily_age WHERE $where ";
+	$sql.= "GROUP BY start_age, end_age ORDER BY start_age, end_age";
+
+	$objQuery = new SC_Query();
+	$objPage->arrResults = $objQuery->getall($sql, $arrval);
+	
+	$max = count($objPage->arrResults);
+	for($i = 0; $i < $max; $i++) {
+		if($objPage->arrResults[$i]['order_count'] > 0) {
+			$objPage->arrResults[$i]['total_average'] = intval($objPage->arrResults[$i]['total'] / $objPage->arrResults[$i]['order_count']);
+		}	
+		$start_age = $objPage->arrResults[$i]['start_age'];
+		$end_age = $objPage->arrResults[$i]['end_age'];
+		if($start_age != "" || $end_age != "") {
+			if($end_age != 999) {
+				$objPage->arrResults[$i]['age_name'] = $start_age. "〜" . $end_age. "歳";
+			} else {
+				$objPage->arrResults[$i]['age_name'] = $start_age. "歳〜";
+			}
+		} else {
+			$objPage->arrResults[$i]['age_name'] = "未回答";
+		}
+	}
+	
+	// 棒グラフの生成
+	if($graph) {
+		$image_key = "age_" . $type;
+		$xtitle = "(年齢)";
+		$ytitle = "(売上合計)";
+		$objPage->tpl_image = lfGetGraphBar($objPage->arrResults, "age_name", $image_key, $xtitle, $ytitle, $sdate, $edate);
+	}
+	
+	return $objPage;
+}
+
+/** 職業別集計 **/
+function lfGetOrderJob($type, $sdate, $edate, $objPage, $graph = true) {
+	global $arrJob;	
+		
+	list($where, $arrval) = lfGetWhereMember('T2.create_date', $sdate, $edate, $type);
+	
+	$sql = "SELECT job, count(*) AS order_count, SUM(total) AS total, (AVG(total)) AS total_average ";
+	$sql.= "FROM dtb_customer AS T1 LEFT JOIN dtb_order AS T2 USING ( customer_id ) WHERE $where AND T2.del_flg = 0 AND T2.status <> ". ORDER_CANCEL;
+	$sql.= " GROUP BY job ORDER BY total DESC";
+	
+	$objQuery = new SC_Query();
+	$objPage->arrResults = $objQuery->getall($sql, $arrval);
+    
+	$max = count($objPage->arrResults);
+	for($i = 0; $i < $max; $i++) {
+		$job_key = $objPage->arrResults[$i]['job'];
+		if($job_key != "") {
+			$objPage->arrResults[$i]['job_name'] = $arrJob[$job_key];
+		} else {
+			$objPage->arrResults[$i]['job_name'] = "未回答";
+		}
+	}
+
+	// 円グラフの生成	
+	if($graph) {
+		$image_key = "job_" . $type;
+		$objPage->tpl_image = lfGetGraphPie($objPage->arrResults, "job_name", $image_key, "(売上比率)", $sdate, $edate);
+	}
+	
+	return $objPage;
+}
+
+/** 会員別集計 **/
+function lfGetOrderMember($type, $sdate, $edate, $objPage, $graph = true) {
+	global $arrSex;
+		
+	list($where, $arrval) = lfGetWhereMember('create_date', $sdate, $edate, $type);
+	
+	// 会員集計の取得
+	$col = "COUNT(*) AS order_count, SUM(total) AS total, (AVG(total)) AS total_average, order_sex";
+	$from = "dtb_order";
+	$objQuery = new SC_Query();
+	$objQuery->setGroupBy("order_sex");
+	
+	$tmp_where = $where . " AND customer_id <> 0 AND del_flg = 0 AND status <> ". ORDER_CANCEL;
+	$arrRet = $objQuery->select($col, $from, $tmp_where, $arrval);
+	
+	// 会員購入であることを記録する。
+	$max = count($arrRet);
+	for($i = 0; $i < $max; $i++) {
+		$arrRet[$i]['member_name'] = '会員'.$arrSex[$arrRet[$i]['order_sex']];
+	}
+	$objPage->arrResults = $arrRet;
+	
+	// 非会員集計の取得
+	$tmp_where = $where . " AND customer_id = 0 AND del_flg = 0 AND status <> ". ORDER_CANCEL;
+	$arrRet = $objQuery->select($col, $from, $tmp_where, $arrval);
+	// 非会員購入であることを記録する。
+	$max = count($arrRet);
+	for($i = 0; $i < $max; $i++) {
+		$arrRet[$i]['member_name'] = '非会員'.$arrSex[$arrRet[$i]['order_sex']];
+	}
+	
+	$objPage->arrResults = array_merge($objPage->arrResults, $arrRet);
+	
+	// 円グラフの生成
+	if($graph) {	
+		$image_key = "member";
+		$objPage->tpl_image = lfGetGraphPie($objPage->arrResults, "member_name", $image_key, "(売上比率)", $sdate, $edate);
+	}
+	
+	return $objPage;
+}
+
 // 会員、非会員集計のWHERE分の作成
 function lfGetWhereMember($col_date, $sdate, $edate, $type, $col_member = "customer_id") {
 	// 取得日付の指定
@@ -574,265 +830,6 @@ function lfGetWhereMember($col_date, $sdate, $edate, $type, $col_member = "custo
 	}
 	
 	return array($where, $arrval);
-}
-
-/** 会員別集計 **/
-function lfGetOrderMember($type, $sdate, $edate, $objPage, $graph = true) {
-	global $arrSex;
-		
-	list($where, $arrval) = lfGetWhereMember('create_date', $sdate, $edate, $type);
-	
-	// 会員集計の取得
-	$col = "COUNT(*) AS order_count, SUM(total) AS total, (AVG(total)) AS total_average, order_sex";
-	$from = "dtb_order";
-	$objQuery = new SC_Query();
-	$objQuery->setGroupBy("order_sex");
-	
-	$tmp_where = $where . " AND customer_id <> 0 AND del_flg = 0 ";
-	$arrRet = $objQuery->select($col, $from, $tmp_where, $arrval);
-	
-	// 会員購入であることを記録する。
-	$max = count($arrRet);
-	for($i = 0; $i < $max; $i++) {
-		$arrRet[$i]['member_name'] = '会員'.$arrSex[$arrRet[$i]['order_sex']];
-	}
-	$objPage->arrResults = $arrRet;
-	
-	// 非会員集計の取得
-	$tmp_where = $where . " AND customer_id = 0 AND del_flg = 0 ";
-	$arrRet = $objQuery->select($col, $from, $tmp_where, $arrval);
-	// 非会員購入であることを記録する。
-	$max = count($arrRet);
-	for($i = 0; $i < $max; $i++) {
-		$arrRet[$i]['member_name'] = '非会員'.$arrSex[$arrRet[$i]['order_sex']];
-	}
-	
-	$objPage->arrResults = array_merge($objPage->arrResults, $arrRet);
-	
-	// 円グラフの生成
-	if($graph) {	
-		$image_key = "member";
-		$objPage->tpl_image = lfGetGraphPie($objPage->arrResults, "member_name", $image_key, "(売上比率)", $sdate, $edate);
-	}
-	
-	return $objPage;
-}
-
-/** 商品別集計 **/
-function lfGetOrderProducts($type, $sdate, $edate, $objPage, $graph = true, $mode = "") {
-	list($where, $arrval) = lfGetWhereMember('create_date', $sdate, $edate, $type);
-    
-    $where .= " and del_flg=0 and status <> " . ORDER_CANCEL;
-	
-	$sql = "SELECT T1.product_id, T1.product_code, T1.product_name as name, T1.products_count, T1.order_count, T1.price, T1.total ";
-	$sql.= "FROM ( ";
-	$sql.= "SELECT product_id, product_name, product_code, price, ";
-	$sql.= "COUNT(*) AS order_count, ";
-	$sql.= "SUM(quantity) AS products_count, ";
-	$sql.= "(price * sum(quantity)) AS total ";
-	$sql.= "FROM dtb_order_detail WHERE order_id IN (SELECT order_id FROM dtb_order WHERE $where ) ";
-	$sql.= "GROUP BY product_id, product_name, product_code, price ";
-	$sql.= ") AS T1 ";
-	$sql.= "ORDER BY T1.total DESC ";
-	
-	if($mode != "csv") {
-		$sql.= "LIMIT " . PRODUCTS_TOTAL_MAX;
-	}
-	
-	$objQuery = new SC_Query();
-	$objPage->arrResults = $objQuery->getall($sql, $arrval);
-	
-	// 円グラフの生成
-	if($graph) {
-		$image_key = "products_" . $type;
-		$objPage->tpl_image = lfGetGraphPie($objPage->arrResults, "name", $image_key, "(売上比率)", $sdate, $edate);
-	}
-	
-	return $objPage;
-}
-
-/** 職業別集計 **/
-function lfGetOrderJob($type, $sdate, $edate, $objPage, $graph = true) {
-	global $arrJob;	
-		
-	list($where, $arrval) = lfGetWhereMember('T2.create_date', $sdate, $edate, $type);
-	
-	$sql = "SELECT job, count(*) AS order_count, SUM(total) AS total, (AVG(total)) AS total_average ";
-	$sql.= "FROM dtb_customer AS T1 LEFT JOIN dtb_order AS T2 USING ( customer_id ) WHERE $where AND T2.del_flg = 0 and T2.status <> " . ORDER_CANCEL;
-	$sql.= " GROUP BY job ORDER BY total DESC";
-	
-	$objQuery = new SC_Query();
-	$objPage->arrResults = $objQuery->getall($sql, $arrval);
-    
-	$max = count($objPage->arrResults);
-	for($i = 0; $i < $max; $i++) {
-		$job_key = $objPage->arrResults[$i]['job'];
-		if($job_key != "") {
-			$objPage->arrResults[$i]['job_name'] = $arrJob[$job_key];
-		} else {
-			$objPage->arrResults[$i]['job_name'] = "未回答";
-		}
-	}
-
-	// 円グラフの生成	
-	if($graph) {
-		$image_key = "job_" . $type;
-		$objPage->tpl_image = lfGetGraphPie($objPage->arrResults, "job_name", $image_key, "(売上比率)", $sdate, $edate);
-	}
-	
-	return $objPage;
-}
-
-/** 年代別集計 **/
-function lfGetOrderAge($type, $sdate, $edate, $objPage, $graph = true) {
-
-	list($where, $arrval) = lfGetWhereMember('order_date', $sdate, $edate, $type, "member");
-	
-	$sql = "SELECT SUM(order_count) AS order_count, SUM(total) AS total, start_age, end_age ";
-	$sql.= "FROM dtb_bat_order_daily_age WHERE $where ";
-	$sql.= "GROUP BY start_age, end_age ORDER BY start_age, end_age";
-
-	$objQuery = new SC_Query();
-	$objPage->arrResults = $objQuery->getall($sql, $arrval);
-	
-	$max = count($objPage->arrResults);
-	for($i = 0; $i < $max; $i++) {
-		if($objPage->arrResults[$i]['order_count'] > 0) {
-			$objPage->arrResults[$i]['total_average'] = intval($objPage->arrResults[$i]['total'] / $objPage->arrResults[$i]['order_count']);
-		}	
-		$start_age = $objPage->arrResults[$i]['start_age'];
-		$end_age = $objPage->arrResults[$i]['end_age'];
-		if($start_age != "" || $end_age != "") {
-			if($end_age != 999) {
-				$objPage->arrResults[$i]['age_name'] = $start_age . "〜" . $end_age . "歳";
-			} else {
-				$objPage->arrResults[$i]['age_name'] = $start_age . "歳〜";
-			}
-		} else {
-			$objPage->arrResults[$i]['age_name'] = "未回答";
-		}
-	}
-	
-	// 棒グラフの生成
-	if($graph) {
-		$image_key = "age_" . $type;
-		$xtitle = "(年齢)";
-		$ytitle = "(売上合計)";
-		$objPage->tpl_image = lfGetGraphBar($objPage->arrResults, "age_name", $image_key, $xtitle, $ytitle, $sdate, $edate);
-	}
-	
-	return $objPage;
-}
-
-/** 期間別集計 **/
-function lfGetOrderTerm($type, $sdate, $edate, $objPage, $graph = true) {
-		
-		$tmp_col = "sum(total_order) as total_order, sum(men) as men, sum(women) as women,";
-		$tmp_col.= "sum(men_member) as men_member, sum(men_nonmember) as men_nonmember,";
-		$tmp_col.= "sum(women_member) as women_member, sum(women_nonmember) as women_nonmember,";
-		$tmp_col.= "sum(total) as total, (avg(total_average)) as total_average";
-		$objQuery = new SC_Query();
-		
-		switch($type) {
-		// 月別
-		case 'month':
-			$col = $tmp_col . ",key_month";
-			$objQuery->setgroupby("key_month");
-			$objQuery->setOrder("key_month");
-			$objPage->keyname = "key_month";
-			$objPage->tpl_tail = "月";
-			$from = "dtb_bat_order_daily";
-			$xtitle = "(月別)";
-			$ytitle = "(売上合計)";
-			break;
-		// 年別
-		case 'year':
-			$col = $tmp_col . ",key_year";
-			$objQuery->setgroupby("key_year");
-			$objQuery->setOrder("key_year");
-			$objPage->keyname = "key_year";
-			$objPage->tpl_tail = "年";
-			$from = "dtb_bat_order_daily";
-			$xtitle = "(年別)";
-			$ytitle = "(売上合計)";
-			break;
-		// 曜日別
-		case 'wday':
-			$col = $tmp_col . ",key_wday, wday";
-			$objQuery->setgroupby("key_wday, wday");
-			$objQuery->setOrder("wday");
-			$objPage->keyname = "key_wday";
-			$objPage->tpl_tail = "曜日";
-			$from = "dtb_bat_order_daily";
-			$xtitle = "(曜日別)";
-			$ytitle = "(売上合計)";
-			break;
-		// 時間別
-		case 'hour':
-			$col = $tmp_col . ",hour";
-			$objQuery->setgroupby("hour");
-			$objQuery->setOrder("hour");
-			$objPage->keyname = "hour";
-			$objPage->tpl_tail = "時";
-			$from = "dtb_bat_order_daily_hour";
-			$xtitle = "(時間別)";
-			$ytitle = "(売上合計)";
-			break;
-		default:
-			$col = "*";
-			$objQuery->setOrder("key_day");
-			$objPage->keyname = "key_day";
-			$from = "dtb_bat_order_daily";
-			$xtitle = "(日別)";
-			$ytitle = "(売上合計)";
-			break;
-		}
-		
-
-	// 取得日付の指定
-		if($sdate != "") {
-			if ($where != "") {
-				$where.= " AND ";
-			}			
-			$where.= " order_date >= '". $sdate ."'";
-		}
-		
-		if($edate != "") {
-			if ($where != "") {
-				$where.= " AND ";
-			}
-			$edate_next = date("Y/m/d",strtotime("1 day" ,strtotime($edate)));
-			$where.= " order_date < date('" . $edate_next ."')";
-		}
-		
-		// 検索結果の取得
-		$objPage->arrResults = $objQuery->select($col, $from, $where, $arrval);
-        
-		// 折れ線グラフの生成	
-		if($graph) {
-			$image_key = "term_" . $type;
-			$objPage->tpl_image = lfGetGraphLine($objPage->arrResults, $objPage->keyname, $image_key, $xtitle, $ytitle, $sdate, $edate);
-		}
-		
-		// 検索結果が0でない場合
-		if(count($objPage->arrResults) > 0) {
-			// 最終集計行取得する
-			$col = $tmp_col;
-			$objQuery = new SC_Query();
-			$arrRet = $objQuery->select($col, $from, $where, $arrval);
-			$arrRet[0][$objPage->keyname] = "合計";
-			$objPage->arrResults[] = $arrRet[0];
-		}
-
-		// 平均値の計算
-		$max = count($objPage->arrResults);
-		for($i = 0; $i < $max; $i++) {
-			if($objPage->arrResults[$i]['total_order'] > 0) {
-				$objPage->arrResults[$i]['total_average'] = intval($objPage->arrResults[$i]['total'] / $objPage->arrResults[$i]['total_order']);
-			}
-		}
-		
-		return $objPage;
 }
 
 ?>
