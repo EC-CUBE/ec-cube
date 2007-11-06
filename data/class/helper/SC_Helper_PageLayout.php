@@ -209,14 +209,20 @@ class SC_Helper_PageLayout {
                     if ($val['php_path'] != '') {
                         $arrNavi[$key]['php_path'] = HTML_PATH . $val['php_path'];
                     }else{
-                    	$user_block_path = USER_PATH . $val['tpl_path'];
-                    	if(file_exists($user_block_path)) {
+                    	$user_block_path = USER_TEMPLATE_PATH . TEMPLATE_NAME . "/" . $val['tpl_path'];
+                    	if(is_file($user_block_path)) {
                     	   $arrNavi[$key]['tpl_path'] = $user_block_path;
                     	} else {
-	                        $arrNavi[$key]['tpl_path'] = TEMPLATE_DIR . $val['tpl_path'];
+                           $arrNavi[$key]['tpl_path'] = TEMPLATE_DIR . $val['tpl_path'];
                     	}
                     }
-                    $arrRet[] = $arrNavi[$key];
+                    
+                    // phpから呼び出されるか、tplファイルが存在する場合
+                    if($val['php_path'] != '' || is_file($arrNavi[$key]['tpl_path'])) {
+                        $arrRet[] = $arrNavi[$key];
+                    } else {
+                        GC_Utils::gfPrintLog("ブロック読み込みエラー：" . $arrNavi[$key]['tpl_path']);
+                    }
                 }
             }
         }
