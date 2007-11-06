@@ -555,7 +555,7 @@ define('SMARTY_TEMPLATES_DIR',  DATA_PATH . "Smarty/templates/");
 /** SMARTYテンプレート */
 define('TPL_DIR', URL_DIR . USER_DIR . USER_PACKAGE_DIR . TEMPLATE_NAME . "/");
 /** SMARTYテンプレート */
-define('TEMPLATE_DIR', SMARTY_TEMPLATE_DIR . TEMPLATE_NAME . "/");
+define('TEMPLATE_DIR', SMARTY_TEMPLATES_DIR . TEMPLATE_NAME . "/");
 /** SMARTYテンプレート(管理ページ) */
 define('TEMPLATE_ADMIN_DIR', TEMPLATE_DIR . "admin/");
 /** SMARTYコンパイル */
