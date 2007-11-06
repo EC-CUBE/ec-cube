@@ -68,7 +68,7 @@ define("REMISE_IP_ADDRESS_S", "211.0.149.169");
 define("REMISE_IP_ADDRESS_E", "211.0.149.169");
 
 // eLIO決済を使用するかどうかのフラグ(0:しない 1:する)
-define('REMISE_ELIO_USE', 0);
+define('REMISE_ELIO_USE', 1);
 
 // 決済方法
 $arrPayment = array(
