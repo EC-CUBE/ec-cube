@@ -95,8 +95,8 @@ class SC_View {
         $this->assign("TPL_DIR", TPL_DIR);
 
         // ヘッダとフッタを割り当て
-        $header_tpl = USER_INC_PATH . "header.tpl";
-        $footer_tpl = USER_INC_PATH . "footer.tpl";
+        $header_tpl = USER_PATH . USER_PACKAGE_DIR . TEMPLATE_NAME . "/" . "header.tpl";
+        $footer_tpl = USER_PATH . USER_PACKAGE_DIR . TEMPLATE_NAME . "/" . "footer.tpl";
 
         // ユーザー作成のテンプレートが無ければ, 指定テンプレートを割り当て
         if (!$this->_smarty->template_exists($header_tpl)) {

@@ -67,7 +67,7 @@ class LC_Page_Admin_Design_MainEdit extends LC_Page {
 
         // ページ一覧を取得
         $this->arrPageList = $this->objLayout->lfgetPageData();
-
+        
         // ブロックIDを取得
         if (isset($_POST['page_id'])) {
             $page_id = $_POST['page_id'];
@@ -97,10 +97,9 @@ class LC_Page_Admin_Design_MainEdit extends LC_Page {
             }
 
             // テンプレートファイルが存在していれば読み込む
-            $tpl_file = HTML_PATH . $arrPageData[0]['tpl_dir'] . $arrPageData[0]['filename'] . ".tpl";
+            $tpl_file =  USER_TEMPLATE_PATH . "/" . TEMPLATE_NAME . "/" . $arrPageData[0]['filename'] . ".tpl";
             if (file_exists($tpl_file)){
                 $arrPageData[0]['tpl_data'] = file_get_contents($tpl_file);
-
             // 存在してなければ, 指定されたテンプレートのファイルを読み込む
             } else {
                 $arrPageData[0]['tpl_data'] = file_get_contents(TEMPLATE_DIR . $arrPageData[0]['filename'] . ".tpl");
@@ -118,18 +117,21 @@ class LC_Page_Admin_Design_MainEdit extends LC_Page {
 
         // プレビュー処理
         if (!isset($_POST['mode'])) $_POST['mode'] = "";
-
+        
         if ($_POST['mode'] == 'preview') {
 
             $page_id_old = $page_id;
+            // プレビューの場合ページIDを0にセットする。
             $page_id = "0";
-            $url = uniqid("");
-
-            $_POST['page_id'] = $page_id;
-            $_POST['url'] = $url;
-
-            $arrPreData = $this->objLayout->lfgetPageData(" page_id = ? " , array($page_id));
-
+            $url = basename($_POST['url']);
+            
+            $tmpPost = $_POST;
+            $tmpPost['page_id'] = $page_id;
+            $tmpPost['url'] = $url;
+            $tmpPost['tpl_dir'] = USER_PATH . "templates/preview/";
+            
+            $arrPreData = $this->objLayout->lfgetPageData("page_id = ?" , array($page_id));
+            
             // tplファイルの削除
             $del_tpl = USER_PATH . "templates/" . $arrPreData[0]['filename'] . '.tpl';
             if (file_exists($del_tpl)){
@@ -137,12 +139,12 @@ class LC_Page_Admin_Design_MainEdit extends LC_Page {
             }
 
             // DBへデータを更新する
-            $this->lfEntryPageData($_POST);
+            $this->lfEntryPageData($tmpPost);
 
             // TPLファイル作成
-            $cre_tpl = USER_PATH . "templates/" . TEMPLATE_NAME . "/" . $url . '.tpl';
-            $this->lfCreateFile($cre_tpl);
-
+            $preview_tpl = USER_PATH . "templates/preview/" . TEMPLATE_NAME . "/" . $url . '.tpl';
+            $this->lfCreateFile($preview_tpl);
+            
             // blocposition を削除
             $objDBConn = new SC_DbConn;		// DB操作オブジェクト
             $sql = 'delete from dtb_blocposition where page_id = 0';
@@ -168,9 +170,7 @@ class LC_Page_Admin_Design_MainEdit extends LC_Page {
                         $ret = $objDBConn->query($sql,$val);
                     }
                 }
-
             }
-
             $_SESSION['preview'] = "ON";
             $this->sendRedirect($this->getLocation(URL_DIR . "preview/index.php", array("filename" => $arrPageData[0]["filename"])));
         }
@@ -183,7 +183,6 @@ class LC_Page_Admin_Design_MainEdit extends LC_Page {
 
             // エラーがなければ更新処理を行う
             if (count($this->arrErr) == 0) {
-
                 // DBへデータを更新する
                 $this->lfEntryPageData($_POST);
 
@@ -191,14 +190,13 @@ class LC_Page_Admin_Design_MainEdit extends LC_Page {
                 if (!$this->objLayout->lfCheckBaseData($page_id)) {
                     // ファイル削除
                     $this->objLayout->lfDelFile($arrPageData[0]);
-
                     // PHPファイル作成
                     $cre_php = USER_PATH . $_POST['url'] . ".php";
                     $this->lfCreatePHPFile($cre_php);
                 }
 
                 // TPLファイル作成
-                $cre_tpl = dirname(USER_PATH . "templates/" . $_POST['url']) . "/" . basename($_POST['url']) . '.tpl';
+                $cre_tpl = USER_TEMPLATE_PATH . "/" . TEMPLATE_NAME . "/" . basename($_POST['url']) . '.tpl';
 
                 $this->lfCreateFile($cre_tpl);
 
@@ -254,14 +252,14 @@ class LC_Page_Admin_Design_MainEdit extends LC_Page {
         $arrUpdData = array();			// 更新データ生成用
         $arrChk = array();				// 排他チェック用
 
-        // 更新データ生成
+        // 更新データの変換
         $arrUpdData = $this->lfGetUpdData($arrData);
 
         // データが存在しているかチェックを行う
         if($arrData['page_id'] !== ''){
-            $arrChk = $this->objLayout->lfgetPageData(" page_id = ?", array($arrData['page_id']));
+            $arrChk = $this->objLayout->lfgetPageData("page_id = ?", array($arrData['page_id']));
         }
-
+        
         // page_id が空 若しくは データが存在していない場合にはINSERTを行う
         if ($arrData['page_id'] === '' or !isset($arrChk[0])) {
             // SQL生成
@@ -313,24 +311,18 @@ class LC_Page_Admin_Design_MainEdit extends LC_Page {
      * @return array 更新データ
      */
     function lfGetUpdData($arrData){
-
         // ベースデータの場合には変更しない。
         if ($this->objLayout->lfCheckBaseData($arrData['page_id'])) {
             $arrPageData = $this->objLayout->lfgetPageData( ' page_id = ? ' , array($arrData['page_id']));
-
             $name = $arrPageData[0]['page_name'] ;
             $url = $arrPageData[0]['url'];
-            $php_dir = $arrPageData[0]['php_dir'];
-            $tpl_dir = $arrPageData[0]['tpl_dir'];
             $filename = $arrPageData[0]['filename'];
         }else{
             $name = $arrData['page_name'] ;
             $url = USER_URL.$arrData['url'].".php";
-            $php_dir = dirname(USER_DIR.$arrData['url'])."/";
-            $tpl_dir = dirname(USER_DIR."templates/".$arrData['url'])."/";
             $filename = basename($arrData['url']);
         }
-
+        
         // 更新データ配列の作成
         $arrUpdData = array(
                             $name										// 名称
@@ -369,10 +361,11 @@ class LC_Page_Admin_Design_MainEdit extends LC_Page {
 
         // 同一のURLが存在している場合にはエラー
         if(!isset($objErr->arrErr['url']) and $array['url'] !== ''){
-            $arrChk = $this->objLayout->lfgetPageData(" url = ? " , array(USER_URL . $array['url'].".php"));
+        	// URLのチェック（プレビュー用のレコードは含まない）
+            $arrChk = $this->objLayout->lfgetPageData(" url = ? AND page_id <> 0" , array(USER_URL . $array['url'].".php"));
 
             if (count($arrChk[0]) >= 1 and $arrChk[0]['page_id'] != $array['page_id']) {
-                $objErr->arrErr['url'] = '※ 同じURLのデータが存在しています。別のURLを付けてください。';
+                $objErr->arrErr['url'] = '※ 同じURLのデータが存在しています。別のURLを付けてください。<br />';
             }
         }
 

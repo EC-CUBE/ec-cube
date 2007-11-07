@@ -105,7 +105,7 @@ else if(navigator.userAgent.indexOf("Mozilla") >= 0){
 						<table width="678" border="0" cellspacing="1" cellpadding="8" summary=" ">
 							<tr class="fs12n">
 								<td bgcolor="#ffffff" align="left" colspan=2>
-									<!--{ if $arrErr.page_name != "" }--> <div align="center"> <span class="red12"><!--{$arrErr.page_name}--></span></div> <!--{/if}-->
+									<!--{ if $arrErr.page_name != "" }--><span class="red12"><!--{$arrErr.page_name}--></span><!--{/if}-->
 									<!--{if $arrPageData.edit_flg == 2}-->
 										名称：<!--{$arrPageData.page_name|escape}--><input type="hidden" name="page_name" value="<!--{$arrPageData.page_name|escape}-->" />
 									<!--{else}-->
@@ -115,12 +115,12 @@ else if(navigator.userAgent.indexOf("Mozilla") >= 0){
 							</tr>
 							<tr class="fs12n">
 								<td bgcolor="#ffffff" align="left" colspan=2>
-									<!--{ if $arrErr.url != "" }--> <div align="center"> <span class="red12"><!--{$arrErr.url}--></span></div> <!--{/if}-->
+									<!--{ if $arrErr.url != "" }--><span class="red12"><!--{$arrErr.url}--></span><!--{/if}-->
 									URL：<!--{if $arrPageData.edit_flg == 2}-->
 											<!--{$smarty.const.SITE_URL}--><!--{$arrPageData.url|escape}-->
 											<input type="hidden" name="url" value="<!--{$arrPageData.filename|escape}-->" maxlength="<!--{$smarty.const.STEXT_LEN}-->" />
 										<!--{else}-->
-											<!--{$user_URL}--><input type="text" name="url" value="<!--{$arrPageData.directory|escape}--><!--{$arrPageData.filename|escape}-->" maxlength="<!--{$smarty.const.STEXT_LEN}-->" style="<!--{if $arrErr.url != ""}-->background-color: <!--{$smarty.const.ERR_COLOR}-->;<!--{/if}--> ime-mode: disabled;" size="60" class="box60" />.php<span class="red"> （上限<!--{$smarty.const.STEXT_LEN}-->文字）</span>
+											<!--{$user_URL}--><input type="text" name="url" value="<!--{$arrPageData.directory|escape}--><!--{$arrPageData.filename|escape}-->" maxlength="<!--{$smarty.const.STEXT_LEN}-->" style="<!--{if $arrErr.url != ""}-->background-color: <!--{$smarty.const.ERR_COLOR}-->;<!--{/if}--> ime-mode: disabled;" size="40" class="box40" />.php<span class="red"> （上限<!--{$smarty.const.STEXT_LEN}-->文字）</span>
 										<!--{/if}-->
 								</td>
 							</tr>
@@ -166,7 +166,6 @@ else if(navigator.userAgent.indexOf("Mozilla") >= 0){
 							</tr>
 							
 							<!--{foreach key=key item=item from=$arrPageList}-->
-							<!--{if $item.tpl_dir != "" }-->
 							<tr class="fs12n" height=20>
 								<td align="center" width=600 bgcolor="<!--{if $item.page_id == $page_id}--><!--{$smarty.const.SELECT_RGB}--><!--{else}-->#ffffff<!--{/if}-->">
 									<a href="<!--{$smarty.server.PHP_SELF|escape}-->?page_id=<!--{$item.page_id}-->" ><!--{$item.page_name}--></a>
@@ -182,7 +181,6 @@ else if(navigator.userAgent.indexOf("Mozilla") >= 0){
 									<!--{/if}-->
 								</td>
 							</tr>
-							<!--{/if}-->
 							<!--{/foreach}-->
 							<tr class="fs12n">
 								<td bgcolor="#f2f1ec" align="center" colspan=3>

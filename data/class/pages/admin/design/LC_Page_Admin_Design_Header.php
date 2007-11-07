@@ -77,7 +77,7 @@ class LC_Page_Admin_Design_Header extends LC_Page {
 
             // 登録時はプレビュー用テンプレートをコピーする
             if ($_POST['mode'] == 'confirm'){
-                copy($pre_DIR.$division.".tpl", USER_INC_PATH . $division . ".tpl");
+                copy($pre_DIR.$division.".tpl", USER_PATH . USER_PACKAGE_DIR . TEMPLATE_NAME . "/" . $division . ".tpl");
                 // 完了メッセージ（プレビュー時は表示しない）
                 $this->tpl_onload="alert('登録が完了しました。');";
 
@@ -102,11 +102,11 @@ class LC_Page_Admin_Design_Header extends LC_Page {
 
             // ユーザーパスにテンプレートが存在しなければ,
             // 指定テンプレートから読み込む
-            $header_tpl = USER_INC_PATH . "header.tpl";
+            $header_tpl = USER_PATH . USER_PACKAGE_DIR . TEMPLATE_NAME . "/" . "header.tpl";
             if (!is_file($header_tpl)) {
                 $header_tpl = TEMPLATE_DIR . "header.tpl";
             }
-            $footer_tpl = USER_INC_PATH . "footer.tpl";
+            $footer_tpl = USER_PATH . USER_PACKAGE_DIR . TEMPLATE_NAME . "/" . "footer.tpl";
             if (!is_file($footer_tpl)) {
                 $footer_tpl = TEMPLATE_DIR . "footer.tpl";
             }
@@ -114,12 +114,10 @@ class LC_Page_Admin_Design_Header extends LC_Page {
             copy($header_tpl, $pre_DIR . "header.tpl");
             copy($footer_tpl, $pre_DIR . "footer.tpl");
 
-
             // ヘッダーファイルの読み込み
             $header_data = file_get_contents($header_tpl);
             // フッターファイルの読み込み
             $footer_data = file_get_contents($footer_tpl);
-
         }
 
         // テキストエリアに表示

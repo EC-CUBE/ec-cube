@@ -117,23 +117,19 @@ class LC_Page_Admin_Design extends LC_Page {
 
         // データ登録処理
         if ($_POST['mode'] == 'confirm' or $_POST['mode'] == 'preview') {
-
-            $arrPageData = array();
+            $page_id = $_POST['page_id'];
             if ($_POST['mode'] == 'preview') {
-                $arrPageData = $objLayout->lfgetPageData(" page_id = ? " , array($page_id));
-                $page_id = "0";
-                $_POST['page_id'] = "0";
-            }
-
+                $page_id = '0';
+            } 
             $masterData = new SC_DB_MasterData_Ex();
             $arrTarget = $masterData->getMasterData("mtb_target");
-
+            
             // 更新用にデータを整える
             $arrUpdBlocData = array();
             $arrTargetFlip = array_flip($arrTarget);
 
             $upd_cnt = 1;
-            $arrUpdData[$upd_cnt]['page_id'] = $_POST['page_id'];
+            $arrUpdData[$upd_cnt]['page_id'] = $page_id;
 
             // POSTのデータを使いやすいように修正
             for($upd_cnt = 1; $upd_cnt <= $_POST['bloc_cnt']; $upd_cnt++){
@@ -161,8 +157,11 @@ class LC_Page_Admin_Design extends LC_Page {
                 // ブロックの順序を取得
                 $bloc_row = $this->lfGetRowID($arrUpdBlocData, $val);
                 $arrUpdBlocData[$key]['bloc_row'] = $bloc_row;
-                $arrUpdBlocData[$key]['page_id']    = $_POST['page_id'];    // ページID
-
+                $arrUpdBlocData[$key]['page_id']    =  $page_id;    // ページID
+                
+                /*
+                ターゲットID 1:レフトナビ 2:ライトナビ 3:イン画面上部 4:メイン画面下部 5:欄外
+                */
                 if ($arrUpdBlocData[$key]['target_id'] == 5) {
                     $arrUpdBlocData[$key]['bloc_row'] = "0";
                 }
@@ -430,21 +429,21 @@ class LC_Page_Admin_Design extends LC_Page {
         $sql = "";                      // データ更新SQL生成用
         $ret = "";                      // データ更新結果格納用
         $arrUpdData = array();          // 更新データ生成用
-        $filename = uniqid("");
-
+        $filename = $arrPageData[0]['filename'];
+        
         $arrPreData = $objLayout->lfgetPageData(" page_id = ? " , array("0"));
 
         // tplファイルの削除
-        $del_tpl = USER_PATH . "templates/" . $arrPreData[0]['filename'] . '.tpl';
+        $del_tpl = USER_PATH . "templates/" . $filename . '.tpl';
 
         if (file_exists($del_tpl)){
             unlink($del_tpl);
         }
 
-        $tplfile = TEMPLATE_DIR . $arrPageData[0]['filename'];
+        $tplfile = TEMPLATE_DIR . $filename;
 
         // filename が空の場合にはMYページと判断
-        if($arrPageData[0]['filename'] == ""){
+        if($filename == ""){
             $tplfile = TEMPLATE_DIR . "mypage/index";
         }
 

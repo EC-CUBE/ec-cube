@@ -43,6 +43,7 @@ class LC_Page_Preview extends LC_Page {
      */
     function init() {
         parent::init();
+        $this->tpl_column_num = 3;
     }
 
     /**
@@ -58,11 +59,6 @@ class LC_Page_Preview extends LC_Page {
             // レイアウトデザインを取得
             $objLayout = new SC_Helper_PageLayout_Ex();
             $objLayout->sfGetPageLayout($this, true);
-
-            // top ページは 3カラム
-            if (isset($_GET['filename']) && $_GET['filename'] == "top") {
-                $this->tpl_column_num = 3;
-            }
 
             // 画面の表示
             $objView->assignobj($this);

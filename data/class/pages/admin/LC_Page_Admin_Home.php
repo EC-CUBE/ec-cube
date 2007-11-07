@@ -256,7 +256,8 @@ class LC_Page_Admin_Home extends LC_Page {
             SC_Utils_Ex::sfErrorHeader(">> " . $path . "の取得に失敗しました。");
         } else {
             while (!feof($fp)) {
-                $arrRet[] = $arrCSV = fgetcsv($fp, UPDATE_CSV_LINE_MAX);
+                $arrCSV = fgetcsv($fp, UPDATE_CSV_LINE_MAX);
+                $arrRet[] = $arrCSV;
             }
             fclose($fp);
         }
@@ -267,15 +268,15 @@ class LC_Page_Admin_Home extends LC_Page {
         } else {
             $newArrRet = array();
             foreach ($arrRet as $inKey => $inArr) {
-
               $inVal = array();
-              foreach($inArr as $key => $val) {
-
-                $inVal[$key] = mb_convert_encoding($val, CHAR_CODE, "EUC-JP");
+              if(is_array($inArr)) {
+	              foreach($inArr as $key => $val) {
+	
+	                $inVal[$key] = mb_convert_encoding($val, CHAR_CODE, "EUC-JP");
+	              }
+	              $newArrRet[$inKey] = $inVal;
               }
-              $newArrRet[$inKey] = $inVal;
             }
-
             return $newArrRet;
         }
     }

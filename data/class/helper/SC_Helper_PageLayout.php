@@ -56,7 +56,7 @@ class SC_Helper_PageLayout {
             $arrPageData = $this->lfgetPageData(" url = ? " , array($url));
         }else{
             $arrPageData = $this->lfgetPageData(" page_id = ? " , array("0"));
-            $objPage->tpl_mainpage = USER_PATH . "templates/"
+            $objPage->tpl_mainpage = USER_PATH . "templates/preview/"
                 . TEMPLATE_NAME . "/" . $arrPageData[0]['filename'] . ".tpl";
         }
 		
@@ -69,7 +69,9 @@ class SC_Helper_PageLayout {
         // tpl_mainpageの設定なし、又はトップページの場合
         if (!isset($objPage->tpl_mainpage) || $url == "index.php") {
             // ユーザテンプレートのパスを取得
-            $user_tpl =  HTML_PATH . $arrPageData[0]['tpl_dir'] . $arrPageData[0]['filename'] . ".tpl";
+            $user_tpl =  HTML_PATH . USER_DIR . USER_PACKAGE_DIR . TEMPLATE_NAME . "/" . $arrPageData[0]['filename'] . ".tpl";
+            $debug_message.= "ユーザテンプレートチェック：".$user_tpl."\n";
+            
             // ユーザテンプレートの存在チェック
             if (is_file($user_tpl)) {
                 $objPage->tpl_mainpage = $user_tpl;
@@ -142,12 +144,12 @@ class SC_Helper_PageLayout {
 
         // where句の指定があれば追加
         if ($where != '') {
-            $sql .= $where;
+            $sql .= " " . $where . " ";
         }else{
-            $sql .= "     page_id != 0 ";
+            $sql .= " page_id <> 0 ";
         }
 
-        $sql .= " ORDER BY 	page_id";
+        $sql .= " ORDER BY page_id";
 
         $arrRet = $objDBConn->getAll($sql, $arrVal);
 
@@ -180,7 +182,7 @@ class SC_Helper_PageLayout {
         if ($preview == true) {
             $sql .= "     page_id = (SELECT page_id FROM dtb_pagelayout WHERE page_id = '0')";
         }else{
-            $sql .= "     page_id = (SELECT page_id FROM dtb_pagelayout WHERE url = ?)";
+            $sql .= "     page_id = (SELECT page_id FROM dtb_pagelayout WHERE page_id <> '0' AND url = ?)";
             $arrData = array($url);
         }
         $sql .= " ORDER BY target_id,bloc_row";
