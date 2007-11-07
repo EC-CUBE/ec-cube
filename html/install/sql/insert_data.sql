@@ -766,7 +766,7 @@ INSERT INTO mtb_constants VALUES ('UPDATE_DIR','"downloads/update/"',24,'HotFix�
 INSERT INTO mtb_constants VALUES ('UPDATE_PATH','DATA_PATH . UPDATE_DIR',25,'HotFix保存ディレクトリ');
 INSERT INTO mtb_constants VALUES ('MAX_LIFETIME', '7200', 26, 'DBセッションの有効期限(秒)');
 INSERT INTO mtb_constants VALUES ('MASTER_DATA_DIR','DATA_PATH . "cache/"',27,'マスタデータキャッシュディレクトリ');
-INSERT INTO mtb_constants VALUES ('UPDATE_HTTP','"http://www.lockon.co.jp/share/"',28,'アップデート管理用ファイル格納場所');
+INSERT INTO mtb_constants VALUES ('UPDATE_HTTP','"http://sv01.ec-cube.net/info/index.php"',28,'アップデート管理用ファイル格納場所');
 INSERT INTO mtb_constants VALUES ('UPDATE_CSV_LINE_MAX','4096',29,'アップデート管理用CSV1行辺りの最大文字数');
 INSERT INTO mtb_constants VALUES ('UPDATE_CSV_COL_MAX','13',30,'アップデート管理用CSVカラム数');
 INSERT INTO mtb_constants VALUES ('MODULE_CSV_COL_MAX','16',31,'モジュール管理用CSVカラム数');

@@ -22,7 +22,9 @@
  */
 
 // {{{ requires
-require_once(CLASS_PATH . "pages/LC_Page.php");
+require_once CLASS_PATH . "pages/LC_Page.php";
+require_once DATA_PATH . 'module/Services/JSON.php';
+require_once DATA_PATH . 'module/Request.php';
 
 /**
  * 管理画面ホーム のページクラス.
@@ -244,41 +246,35 @@ class LC_Page_Admin_Home extends LC_Page {
         return $arrRet;
     }
 
-    // お知らせ取得
+    /**
+     * リリース情報を取得する.
+     *
+     * @return unknown
+     */
     function lfGetInfo() {
-        // 更新情報を最新にする
-        $objQuery = new SC_Query();
-        $path = UPDATE_HTTP . "info.txt";
-        $fp = @fopen($path, "rb");
-
-        $arrRet = array();
-        if(!$fp) {
-            SC_Utils_Ex::sfErrorHeader(">> " . $path . "の取得に失敗しました。");
-        } else {
-            while (!feof($fp)) {
-                $arrCSV = fgetcsv($fp, UPDATE_CSV_LINE_MAX);
-                $arrRet[] = $arrCSV;
-            }
-            fclose($fp);
+        $query = '';
+        // TODO サイト情報の送信可否設定を行う
+        if (true) {
+            $query = '?site_url=' . SITE_URL . '&eccube_version=' . ECCUBE_VERSION;
         }
 
-        // CHAR_CODE が EUC-JP 以外の場合は CHAR_CODE へ変換
-        if (CHAR_CODE == "EUC-JP") {
-            return $arrRet;
-        } else {
-            $newArrRet = array();
-            foreach ($arrRet as $inKey => $inArr) {
-              $inVal = array();
-              if(is_array($inArr)) {
-	              foreach($inArr as $key => $val) {
-	
-	                $inVal[$key] = mb_convert_encoding($val, CHAR_CODE, "EUC-JP");
-	              }
-	              $newArrRet[$inKey] = $inVal;
-              }
-            }
-            return $newArrRet;
+        $url = UPDATE_HTTP . $query;
+        $jsonStr = @file_get_contents($url);
+
+        $objJson = new Services_JSON;
+        $arrTmpData = is_string($jsonStr) ? $objJson->decode($jsonStr) : null;
+
+        if (empty($arrTmpData)) {
+            SC_Utils_Ex::sfErrorHeader(">> 更新情報の取得に失敗しました。");
+            return array();
         }
+
+        $arrInfo = array();
+        foreach ($arrTmpData as $objData) {
+            $arrInfo[] = get_object_vars($objData);
+        }
+
+        return $arrInfo;
     }
 }
 ?>

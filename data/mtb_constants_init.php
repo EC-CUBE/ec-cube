@@ -44,7 +44,7 @@ define('MAX_LIFETIME', 7200);
 /** マスタデータキャッシュディレクトリ */
 define('MASTER_DATA_DIR', DATA_PATH . "cache/");
 /** アップデート管理用ファイル格納場所 */
-define('UPDATE_HTTP', "http://www.lockon.co.jp/share/");
+define('UPDATE_HTTP', "http://sv01.ec-cube.net/info/index.php");
 /** アップデート管理用CSV1行辺りの最大文字数 */
 define('UPDATE_CSV_LINE_MAX', 4096);
 /** アップデート管理用CSVカラム数 */

@@ -159,7 +159,7 @@
 				<td align="center">
 				<table width="266" border="0" cellspacing="0" cellpadding="0" summary=" ">
 					<!--お知らせここから-->
-					<!--{section name=i loop=$arrInfo}-->
+					<!--{foreach item=info from=$arrInfo}-->
 					<tr><td height="15"></td></tr>
 					<tr>
 						<td><img src="<!--{$TPL_DIR}-->img/contents/infottl_top_left.jpg" width="12" height="5" alt="" border="0"></td>
@@ -167,22 +167,36 @@
 						<td><img src="<!--{$TPL_DIR}-->img/contents/infottl_top_right.jpg" width="5" height="5" alt="" border="0"></td>
 					</tr>
 					<tr>
-						<td background="<!--{$TPL_DIR}-->img/contents/infottl_day_left.jpg"><img src="<!--{$TPL_DIR}-->img/contents/infottl_day_left.jpg" width="12" height="10" alt="" border="0"></td>
-						<td background="<!--{$TPL_DIR}-->img/contents/infottl_bg01.jpg"><img src="<!--{$TPL_DIR}-->img/contents/icon.jpg" width="15" height="9" alt=""><span class="infodate"><!--{$arrInfo[i][0]}--></span></td>
-						<td background="<!--{$TPL_DIR}-->img/contents/infottl_day_right.jpg"><img src="<!--{$TPL_DIR}-->img/contents/infottl_day_right.jpg" width="5" height="10" alt="" border="0"></td>
+						<td background="<!--{$TPL_DIR}-->img/contents/infottl_day_left.jpg">
+						    <img src="<!--{$TPL_DIR}-->img/contents/infottl_day_left.jpg" width="12" height="10" alt="" border="0">
+						</td>
+						<td background="<!--{$TPL_DIR}-->img/contents/infottl_bg01.jpg">
+						    <img src="<!--{$TPL_DIR}-->img/contents/icon.jpg"
+						         width="15"
+						         height="9"
+						         alt="">
+						    <span class="infodate"><!--{$info.disp_date|sfDispDBDate:false|escape}--></span>
+						</td>
+						<td background="<!--{$TPL_DIR}-->img/contents/infottl_day_right.jpg">
+						    <img src="<!--{$TPL_DIR}-->img/contents/infottl_day_right.jpg"
+						         width="5"
+						         height="10"
+						         alt=""
+						         border="0">
+						</td>
 					</tr>
 					<tr><td colspan="3"><img src="<!--{$TPL_DIR}-->img/contents/infottl_middle.jpg" width="266" height="8" alt="" border="0"></td></tr>
 					<tr>
 						<td background="<!--{$TPL_DIR}-->img/contents/infottl_bottom_left.jpg"><img src="<!--{$TPL_DIR}-->img/common/_.gif" width="12" height="1" alt=""></td>
-						<td background="<!--{$TPL_DIR}-->img/contents/infottl_bg02.jpg" class="infottl"><!--{$arrInfo[i][1]}--></td>
+						<td background="<!--{$TPL_DIR}-->img/contents/infottl_bg02.jpg" class="infottl"><!--{$info.title}--></td>
 						<td background="<!--{$TPL_DIR}-->img/contents/infottl_bottom_right.jpg"><img src="<!--{$TPL_DIR}-->img/common/_.gif" width="5" height="1" alt=""></td>
 					</tr>
 					<tr><td colspan="3"><img src="<!--{$TPL_DIR}-->img/contents/infottl_bottom.jpg" width="266" height="7" alt="" border="0"></td></tr>
 					<tr><td height="5"></td></tr>
 					<tr>
-						<td colspan="3" class="fs10"><span class="info"><!--{$arrInfo[i][2]}--></span></td>
+						<td colspan="3" class="fs10"><span class="info"><!--{$info.body}--></span></td>
 					</tr>
-					<!--{/section}-->
+					<!--{/foreach}-->
 					<!--お知らせここまで-->
 				</table>
 				</td>
