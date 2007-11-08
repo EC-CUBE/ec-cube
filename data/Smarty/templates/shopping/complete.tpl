@@ -50,6 +50,7 @@
 											<!--{if $key != "title"}--><!--{if $item.name != ""}--><!--{$item.name}-->¡§<!--{/if}--><!--{$item.value|nl2br}--><br/><!--{/if}-->
 											<!--{/foreach}-->
 										</tr>
+										<tr><td height="20"></td></tr>
 									</table>
 									</td>
 								</tr>
