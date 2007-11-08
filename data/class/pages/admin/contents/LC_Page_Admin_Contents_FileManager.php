@@ -92,8 +92,8 @@ class LC_Page_Admin_Contents_FileManager extends LC_Page {
         case 'view':
             // エラーチェック
             $arrErr = $this->lfErrorCheck();
-            if(!is_array($arrErr)) {
 
+            if(!is_array($arrErr)) {
                 // 選択されたファイルがディレクトリなら移動
                 if(is_dir($_POST['select_file'])) {
                     ///$now_dir = $_POST['select_file'];
@@ -102,9 +102,9 @@ class LC_Page_Admin_Contents_FileManager extends LC_Page {
 
                 } else {
                     // javascriptで別窓表示(テンプレート側に渡す)
-                    // FIXME
+                    // FIXME XSS対策すること
                     $file_url = ereg_replace(USER_PATH, "", $_POST['select_file']);
-                    $tpl_onload = "win02('./file_view.php?file=". $file_url ."', 'user_data', '600', '400');";
+                    $this->tpl_onload = "win02('./file_view.php?file=". $file_url ."', 'user_data', '600', '400');";
                 }
             }
             break;
