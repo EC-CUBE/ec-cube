@@ -144,13 +144,14 @@ class LC_Page_Upgrade_Download extends LC_Page {
         }
         // ダウンロードデータの保存
         if ($objRet->status === OWNERSSTORE_STATUS_SUCCESS) {
-           $this->objLog->log('* save file start');
+            $this->objLog->log('* save file start');
             $time = time();
             $dir  = DATA_PATH . 'downloads/tmp/';
             $filename = $time . '.tar.gz';
 
             $data = base64_decode($objRet->body);
 
+            $this->objLog->log("* open ${filename} start");
             if ($fp = fopen($dir . $filename, "w")) {
                 fwrite($fp, $data);
                 fclose($fp);
@@ -167,6 +168,7 @@ class LC_Page_Upgrade_Download extends LC_Page {
 
             // ダウンロードアーカイブを展開する
             $exract_dir = $dir . $time;
+            $this->objLog->log("* mkdir ${exract_dir} start");
             if (!@mkdir($exract_dir)) {
                 $arrErr = array(
                     'status'  => OWNERSSTORE_STATUS_ERROR,
@@ -178,17 +180,21 @@ class LC_Page_Upgrade_Download extends LC_Page {
                 exit;
             }
 
+            $this->objLog->log("* extract ${dir}${filename} start");
             $tar = new Archive_Tar($dir . $filename);
             $tar->extract($exract_dir);
 
+            $this->objLog->log("* copy batch start");
             include_once CLASS_PATH . 'batch/SC_Batch_Update.php';
             $objBatch = new SC_Batch_Update();
             $arrCopyLog = $objBatch->execute($exract_dir);
 
             // テーブルの更新
+            $this->objLog->log("* insert/update dtb_module start");
             $this->updateMdlTable($objRet->product_data);
 
             // 配信サーバへ通知
+            $this->objLog->log("* notify to lockon server start");
             $this->notifyDownload($objReq->getResponseCookies());
 
             $arrParam = array(
