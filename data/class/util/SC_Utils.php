@@ -85,12 +85,6 @@ class SC_Utils {
             if(file_exists($path)) {
                 SC_Utils::sfErrorHeader("&gt;&gt; /install/index.phpは、インストール完了後にファイルを削除してください。");
             }
-
-            // 旧バージョンのinstall.phpのチェック
-            $path = HTML_PATH . "install.php";
-            if(file_exists($path)) {
-                SC_Utils::sfErrorHeader("&gt;&gt; /install.phpはセキュリティーホールとなります。削除してください。");
-            }
         }
     }
 
