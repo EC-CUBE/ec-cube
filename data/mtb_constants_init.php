@@ -607,7 +607,7 @@ define('MOBILE_ADDITIONAL_MAIL_DOMAINS', "rebelt.co.jp, lockon.co.jp");
 /** 携帯電話向け変換画像保存ディレクトリ */
 define('MOBILE_IMAGE_DIR', "upload/mobile_image");
 /** 携帯電話向け変換画像保存ディレクトリ */
-define('MOBILE_IMAGE_URL', "upload/mobile_image");
+define('MOBILE_IMAGE_URL', URL_DIR . "upload/mobile_image");
 /** モバイルURL */
 define('MOBILE_URL_SITE_TOP', MOBILE_URL_DIR . "index.php");
 /** カートトップ */
