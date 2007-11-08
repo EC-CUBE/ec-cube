@@ -102,7 +102,7 @@ class LC_Page_Admin_Order extends LC_Page {
         if (!isset($arrRet)) $arrRet = array();
 
         if($_POST['mode'] == 'delete') {
-            if(sfIsInt($_POST['order_id'])) {
+            if(SC_Utils_Ex::sfIsInt($_POST['order_id'])) {
                 $objQuery = new SC_Query();
                 $where = "order_id = ?";
                 $sqlval['del_flg'] = '1';
