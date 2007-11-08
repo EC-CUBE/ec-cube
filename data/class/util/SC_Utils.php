@@ -1217,44 +1217,6 @@ class SC_Utils {
         return $time;
     }
 
-    // 出力の際にテンプレートを切り替えられる
-    /*
-        index.php?tpl=test.tpl
-    */
-    function sfCustomDisplay(&$objPage, $is_mobile = false) {
-        $basename = basename($_SERVER["REQUEST_URI"]);
-
-        if($basename == "") {
-            $path = $_SERVER["REQUEST_URI"] . "index.php";
-        } else {
-            $path = $_SERVER["REQUEST_URI"];
-        }
-
-        if(isset($_GET['tpl']) && $_GET['tpl'] != "") {
-            $tpl_name = $_GET['tpl'];
-        } else {
-            $tpl_name = ereg_replace("^/", "", $path);
-            $tpl_name = ereg_replace("/", "_", $tpl_name);
-            $tpl_name = ereg_replace("(\.php$|\.html$)", ".tpl", $tpl_name);
-        }
-
-        $template_path = TEMPLATE_FTP_DIR . $tpl_name;
-
-        if($is_mobile === true) {
-            $objView = new SC_MobileView();
-            $objView->assignobj($objPage);
-            $objView->display(SITE_FRAME);
-        } else if(file_exists($template_path)) {
-            $objView = new SC_UserView(TEMPLATE_FTP_DIR, COMPILE_FTP_DIR);
-            $objView->assignobj($objPage);
-            $objView->display($tpl_name);
-        } else {
-            $objView = new SC_SiteView();
-            $objView->assignobj($objPage);
-            $objView->display(SITE_FRAME);
-        }
-    }
-
     // PHPのmb_convert_encoding関数をSmartyでも使えるようにする
     function sf_mb_convert_encoding($str, $encode = 'CHAR_CODE') {
         return  mb_convert_encoding($str, $encode);
