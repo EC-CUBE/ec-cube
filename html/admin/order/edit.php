@@ -97,7 +97,7 @@ case 'cheek':
 	break;
 // ペイジェント対応
 case 'paygent_order':
-	$objPage->paygent_return = sfPaygentOrder($_POST['paygent_type'], $order_id, $objPage->arrDisp['memo06']);
+	$objPage->paygent_return = sfPaygentOrder($_POST['paygent_type'], $order_id);
 	break;
 default:
 	break;
