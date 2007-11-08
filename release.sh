@@ -2,8 +2,8 @@
 
 CURRENT_DIR=`pwd`
 TMP_DIR=/tmp
-SVN_PATH=https://svn.ec-cube.net/open/branches/feature-module-update
-ECCUBE_VERSION=2.0
+SVN_PATH=file:///home/svn/open/branches/feature-module-update
+ECCUBE_VERSION=2.0.0-beta
 WRK_DIR=eccube-$ECCUBE_VERSION
 
 if [ ! -d $TMP_DIR ]; then
@@ -22,6 +22,8 @@ rm -rf $WRK_DIR/templates
 rm -rf $WRK_DIR/convert.php
 rm -rf $WRK_DIR/release.sh
 rm -rf $WRK_DIR/html/test
+rm -rf $WRK_DIR/data/downloads/module/*
+rm -rf $WRK_DIR/data/downloads/module2/*
 find ./$WRK_DIR -name "dummy" -delete
 find ./$WRK_DIR -name "info.php" -delete
 
