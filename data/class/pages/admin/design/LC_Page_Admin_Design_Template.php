@@ -98,7 +98,7 @@ class LC_Page_Admin_Design_Template extends LC_Page {
 		    // パラメータ検証
 		    $objForm = $this->lfInitRegister();
 		    if ($objForm->checkError()) {
-		        sfDispError('');
+		        SC_Utils_Ex::sfDispError('');
 		    }
 
 		    $template_code = $objForm->getValue('template_code');
