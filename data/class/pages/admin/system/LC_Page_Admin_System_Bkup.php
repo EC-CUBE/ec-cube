@@ -49,7 +49,7 @@ class LC_Page_Admin_System_Bkup extends LC_Page {
         $this->tpl_subno = 'bkup';
         $this->tpl_subtitle = 'バックアップ管理';
 
-        $this->bkup_dir = USER_PATH . "bkup/";
+        $this->bkup_dir = DATA_PATH . "downloads/backup/";
 
     }
 
@@ -287,6 +287,7 @@ class LC_Page_Admin_System_Bkup extends LC_Page {
 
         // 各種ファイルコピー
         if ($err) {
+            /**
             // 商品画像ファイルをコピー
             // ディレクトリが存在していなければ作成する
             $image_dir = $bkup_dir . "save_image/";
@@ -314,7 +315,7 @@ class LC_Page_Admin_System_Bkup extends LC_Page {
             if (!is_dir(dirname($css_dir))) $err = mkdir(dirname($css_dir));
             $copy_mess = "";
             $copy_mess = SC_Utils_Ex::sfCopyDir("../../user_data/css/",$css_dir, $copy_mess);
-
+            **/
             //圧縮フラグTRUEはgzip圧縮をおこなう
             $tar = new Archive_Tar($this->bkup_dir . $bkup_name.".tar.gz", TRUE);
 
@@ -339,6 +340,7 @@ class LC_Page_Admin_System_Bkup extends LC_Page {
 
     /* 配列の要素をCSVフォーマットで出力する。*/
     function lfGetCSVList($array) {
+        $line = '';
         if (count($array) > 0) {
             foreach($array as $key => $val) {
                 $val = mb_convert_encoding($val, CHAR_CODE, CHAR_CODE);
@@ -495,6 +497,7 @@ class LC_Page_Admin_System_Bkup extends LC_Page {
             if ($err) $this->lfSetAutoInc($objQuery, $bkup_dir . "autoinc_data.csv");
 
             // 各種ファイルのコピー
+            /**
             if ($err) {
                 // 画像のコピー
                 $image_dir = $bkup_dir . "save_image/";
@@ -518,7 +521,7 @@ class LC_Page_Admin_System_Bkup extends LC_Page {
 
                 // バックアップデータの削除
                 SC_Utils_Ex::sfDelFile($bkup_dir);
-            }
+            }**/
 
             // リストア成功ならコミット失敗ならロールバック
             if ($err) {
