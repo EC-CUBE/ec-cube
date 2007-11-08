@@ -20,7 +20,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
- 
+
  */
 $include_dir = realpath(dirname( __FILE__));
 require_once($include_dir . "/../define.php");
@@ -80,9 +80,6 @@ include_once($include_dir . "/require_plugin.php");
 
 // セッションハンドラ開始
 $objSession = new SC_Helper_Session_Ex();
-
-// アップデートで取得したPHPを読み出す
-SC_Utils_Ex::sfLoadUpdateModule();
 
 // モバイルサイト用の初期処理を実行する。
 if (!defined('SKIP_MOBILE_INIT')) {

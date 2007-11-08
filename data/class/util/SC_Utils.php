@@ -88,16 +88,6 @@ class SC_Utils {
         }
     }
 
-    // アップデートで生成されたPHPを読み出し
-    function sfLoadUpdateModule() {
-        // URL設定ディレクトリを削除
-        $main_php = ereg_replace(URL_DIR, "", $_SERVER['PHP_SELF']);
-        $extern_php = UPDATE_PATH . $main_php;
-        if(file_exists($extern_php)) {
-            require_once($extern_php);
-        }
-    }
-
     // 装飾付きエラーメッセージの表示
     function sfErrorHeader($mess, $print = false) {
         global $GLOBAL_ERR;

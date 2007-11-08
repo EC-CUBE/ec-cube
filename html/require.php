@@ -101,7 +101,4 @@ if (SC_MobileUserAgent::isMobile()) {
 
 // 絵文字変換 (除去) フィルターを組み込む。
 ob_start(array('SC_MobileEmoji', 'handler'));
-
-// アップデートで取得したPHPを読み出す
-SC_Utils_Ex::sfLoadUpdateModule();
 ?>

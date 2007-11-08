@@ -68,10 +68,6 @@ require_once(CLASS_EX_PATH . "helper_extends/SC_Helper_DB_Ex.php");
 require_once($include_dir . "/.." . HTML2DATA_DIR . "module/Mail.php");
 require_once($include_dir . "/.." . HTML2DATA_DIR . "module/Mail/mime.php");
 
-
 // インストールチェック
 SC_Utils_Ex::sfInitInstall();
-
-// アップデートで取得したPHPを読み出す
-SC_Utils_Ex::sfLoadUpdateModule();
 ?>
