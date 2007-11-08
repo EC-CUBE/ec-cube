@@ -274,9 +274,8 @@ class LC_Page {
         $netURL = new Net_URL();
 
         if ($removeQueryString) {
-            foreach ($_SERVER['QUERY_STRING'] as $name) {
-                $netURL->removeQueryString($name);
-            }
+            $netURL->querystring = array();
+            $_SERVER['QUERY_STRING'] = '';
         }
 
         // QueryString を付与
@@ -285,6 +284,7 @@ class LC_Page {
                 $netURL->addQueryString($key, $val);
             }
         }
+
         $this->sendRedirect($netURL->getURL());
     }
 
