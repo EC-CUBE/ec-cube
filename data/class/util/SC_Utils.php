@@ -20,7 +20,7 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
- 
+
 /**
  * 各種ユーティリティクラス.
  *
@@ -1384,7 +1384,7 @@ class SC_Utils {
             return "'" . str_replace("'", "''", $in) . "'";
         }
     }
-    
+
     // ディレクトリを再帰的に生成する
     function sfMakeDir($path) {
         static $count = 0;
@@ -1406,12 +1406,12 @@ class SC_Utils {
 						mkdir($dir);
 	                    GC_Utils::gfPrintLog("mkdir $dir");
 					}
-				}        
+				}
     	   }
     	}
     	return;
     }
-        
+
     // ディレクトリ以下のファイルを再帰的にコピー
     function sfCopyDir($src, $des, $mess = "", $override = false){
         if(!is_dir($src)){
@@ -1475,15 +1475,15 @@ class SC_Utils {
 	            }else if (is_dir($del_file)){
 	                $ret = SC_Utils::sfDelFile($del_file);
 	            }
-	
+
 	            if(!$ret){
 	                return $ret;
 	            }
 	        }
-	
+
 	        // 閉じる
 	        closedir($dh);
-	
+
 	        // フォルダを削除
 	        return rmdir($dir);
     	}
@@ -1534,7 +1534,7 @@ class SC_Utils {
         // 出力をフラッシュする
         flush();
 
-        ob_end_flush();
+        ob_flush();
         ob_start();
 
         // 時間のかかる処理
@@ -1638,8 +1638,8 @@ class SC_Utils {
             print("<?xml version='1.0' encoding='" . CHAR_CODE . "'?>\n");
         }
     }
-	
-	/* 
+
+	/*
 	 * 関数名：sfGetFileList()
 	 * 説明　：指定パス配下のディレクトリ取得
 	 * 引数1 ：取得するディレクトリパス
@@ -1647,51 +1647,51 @@ class SC_Utils {
 	function sfGetFileList($dir) {
 		$arrFileList = array();
 		$arrDirList = array();
-		
+
 		if (is_dir($dir)) {
-			if ($dh = opendir($dir)) { 
+			if ($dh = opendir($dir)) {
 				$cnt = 0;
 				// 行末の/を取り除く
 				while (($file = readdir($dh)) !== false) $arrDir[] = $file;
 				$dir = ereg_replace("/$", "", $dir);
 				// アルファベットと数字でソート
 				natcasesort($arrDir);
-				foreach($arrDir as $file) {				
+				foreach($arrDir as $file) {
 					// ./ と ../を除くファイルのみを取得
 					if($file != "." && $file != "..") {
-	
+
 						$path = $dir."/".$file;
 						// SELECT内の見た目を整えるため指定文字数で切る
-						$file_name = SC_Utils::sfCutString($file, FILE_NAME_LEN);						
+						$file_name = SC_Utils::sfCutString($file, FILE_NAME_LEN);
 						$file_size = SC_Utils::sfCutString(SC_Utils::sfGetDirSize($path), FILE_NAME_LEN);
 						$file_time = date("Y/m/d", filemtime($path));
-						
+
 						// ディレクトリとファイルで格納配列を変える
 						if(is_dir($path)) {
 							$arrDirList[$cnt]['file_name'] = $file;
 							$arrDirList[$cnt]['file_path'] = $path;
 							$arrDirList[$cnt]['file_size'] = $file_size;
-							$arrDirList[$cnt]['file_time'] = $file_time; 
+							$arrDirList[$cnt]['file_time'] = $file_time;
 							$arrDirList[$cnt]['is_dir'] = true;
 						} else {
 							$arrFileList[$cnt]['file_name'] = $file;
 							$arrFileList[$cnt]['file_path'] = $path;
 							$arrFileList[$cnt]['file_size'] = $file_size;
-							$arrFileList[$cnt]['file_time'] = $file_time; 
+							$arrFileList[$cnt]['file_time'] = $file_time;
 							$arrFileList[$cnt]['is_dir'] = false;
 						}
 						$cnt++;
 					}
 		        }
-		        closedir($dh); 
+		        closedir($dh);
 		    }
 		}
-	
+
 		// フォルダを先頭にしてマージ
 		return array_merge($arrDirList, $arrFileList);
 	}
-	
-	/* 
+
+	/*
 	 * 関数名：sfGetDirSize()
 	 * 説明　：指定したディレクトリのバイト数を取得
 	 * 引数1 ：ディレクトリ
@@ -1700,18 +1700,18 @@ class SC_Utils {
 		if(file_exists($dir)) {
 			// ディレクトリの場合下層ファイルの総量を取得
 			if (is_dir($dir)) {
-			    $handle = opendir($dir); 
+			    $handle = opendir($dir);
 			    while ($file = readdir($handle)) {
 					// 行末の/を取り除く
 					$dir = ereg_replace("/$", "", $dir);
 					$path = $dir."/".$file;
-			        if ($file != '..' && $file != '.' && !is_dir($path)) { 
-			            $bytes += filesize($path); 
+			        if ($file != '..' && $file != '.' && !is_dir($path)) {
+			            $bytes += filesize($path);
 			        } else if (is_dir($path) && $file != '..' && $file != '.') {
 						// 下層ファイルのバイト数を取得する為、再帰的に呼び出す。
-			            $bytes += SC_Utils::sfGetDirSize($path); 
-			        } 
-			    } 
+			            $bytes += SC_Utils::sfGetDirSize($path);
+			        }
+			    }
 			} else {
 				// ファイルの場合
 				$bytes = filesize($dir);
@@ -1719,11 +1719,11 @@ class SC_Utils {
 		}
 		// ディレクトリ(ファイル)が存在しない場合は0byteを返す
 		if($bytes == "") $bytes = 0;
-		
+
 	    return $bytes;
 	}
-	
-	/* 
+
+	/*
 	 * 関数名：sfDeleteDir()
 	 * 説明　：指定したディレクトリを削除
 	 * 引数1 ：削除ファイル
@@ -1753,32 +1753,32 @@ class SC_Utils {
 			} else {
 				// ファイル削除
 				$arrResult[0]['result'] = @unlink("$dir");
-				$arrResult[0]['file_name'] = "$dir";			
+				$arrResult[0]['file_name'] = "$dir";
 			}
 		}
-		
+
 		return $arrResult;
 	}
-	
-	/* 
+
+	/*
 	 * 関数名：sfGetFileTree()
 	 * 説明　：ツリー生成用配列取得(javascriptに渡す用)
 	 * 引数1 ：ディレクトリ
 	 * 引数2 ：現在のツリーの状態開いているフォルダのパスが | 区切りで格納
 	 */
 	function sfGetFileTree($dir, $tree_status) {
-		
+
 		$cnt = 0;
 		$arrTree = array();
 		$default_rank = count(split('/', $dir));
-	
+
 		// 文末の/を取り除く
-		$dir = ereg_replace("/$", "", $dir);	
+		$dir = ereg_replace("/$", "", $dir);
 		// 最上位層を格納(user_data/)
 		if(sfDirChildExists($dir)) {
 			$arrTree[$cnt]['type'] = "_parent";
 		} else {
-			$arrTree[$cnt]['type'] = "_child";	
+			$arrTree[$cnt]['type'] = "_child";
 		}
 		$arrTree[$cnt]['path'] = $dir;
 		$arrTree[$cnt]['rank'] = 0;
@@ -1789,14 +1789,14 @@ class SC_Utils {
 		} else {
 			$arrTree[$cnt]['open'] = true;
 		}
-		$cnt++;	
-	
+		$cnt++;
+
 		sfGetFileTreeSub($dir, $default_rank, $cnt, $arrTree, $tree_status);
-	
+
 		return $arrTree;
 	}
-	
-	/* 
+
+	/*
 	 * 関数名：sfGetFileTree()
 	 * 説明　：ツリー生成用配列取得(javascriptに渡す用)
 	 * 引数1 ：ディレクトリ
@@ -1805,10 +1805,10 @@ class SC_Utils {
 	 * 引数4 ：現在のツリーの状態開いているフォルダのパスが | 区切りで格納
 	 */
 	function sfGetFileTreeSub($dir, $default_rank, &$cnt, &$arrTree, $tree_status) {
-		
+
 		if(file_exists($dir)) {
 			if ($handle = opendir("$dir")) {
-				while (false !== ($item = readdir($handle))) $arrDir[] = $item; 
+				while (false !== ($item = readdir($handle))) $arrDir[] = $item;
 				// アルファベットと数字でソート
 				natcasesort($arrDir);
 				foreach($arrDir as $item) {
@@ -1822,9 +1822,9 @@ class SC_Utils {
 							if(sfDirChildExists($path)) {
 								$arrTree[$cnt]['type'] = "_parent";
 							} else {
-								$arrTree[$cnt]['type'] = "_child";	
+								$arrTree[$cnt]['type'] = "_child";
 							}
-							
+
 							// 階層を割り出す
 							$arrCnt = split('/', $path);
 							$rank = count($arrCnt);
@@ -1842,8 +1842,8 @@ class SC_Utils {
 			closedir($handle);
 		}
 	}
-	
-	/* 
+
+	/*
 	 * 関数名：sfDirChildExists()
 	 * 説明　：指定したディレクトリ配下にファイルがあるか
 	 * 引数1 ：ディレクトリ
@@ -1851,22 +1851,22 @@ class SC_Utils {
 	function sfDirChildExists($dir) {
 		if(file_exists($dir)) {
 			if (is_dir($dir)) {
-			    $handle = opendir($dir); 
+			    $handle = opendir($dir);
 			    while ($file = readdir($handle)) {
 					// 行末の/を取り除く
 					$dir = ereg_replace("/$", "", $dir);
 					$path = $dir."/".$file;
-					if ($file != '..' && $file != '.' && is_dir($path)) { 
+					if ($file != '..' && $file != '.' && is_dir($path)) {
 						return true;
-			        } 
-			    } 
+			        }
+			    }
 			}
 		}
-	    
+
 		return false;
 	}
-	
-	/* 
+
+	/*
 	 * 関数名：lfIsFileOpen()
 	 * 説明　：指定したファイルが前回開かれた状態にあったかチェック
 	 * 引数1 ：ディレクトリ
@@ -1877,11 +1877,11 @@ class SC_Utils {
 		if(in_array($dir, $arrTreeStatus)) {
 			return true;
 		}
-		
+
 		return false;
 	}
-	
-	/* 
+
+	/*
 	 * 関数名：sfDownloadFile()
 	 * 引数1 ：ファイルパス
 	 * 説明　：ファイルのダウンロード
@@ -1894,8 +1894,8 @@ class SC_Utils {
 		Header("Pragma: ");
 		echo (sfReadFile($file));
 	}
-	
-	/* 
+
+	/*
 	 * 関数名：sfCreateFile()
 	 * 引数1 ：ファイルパス
 	 * 引数2 ：パーミッション
@@ -1908,28 +1908,28 @@ class SC_Utils {
 		} else {
 			$ret = @mkdir($file);
 		}
-		
+
 		return $ret;
 	}
-	
-	/* 
+
+	/*
 	 * 関数名：sfReadFile()
 	 * 引数1 ：ファイルパス
 	 * 説明　：ファイル読込
 	 */
-	function sfReadFile($filename) { 
-	    $str = ""; 
-	    // バイナリモードでオープン 
-	    $fp = @fopen($filename, "rb" ); 
-	    //ファイル内容を全て変数に読み込む 
-	    if($fp) { 
-	        $str = @fread($fp, filesize($filename)+1); 
-	    } 
+	function sfReadFile($filename) {
+	    $str = "";
+	    // バイナリモードでオープン
+	    $fp = @fopen($filename, "rb" );
+	    //ファイル内容を全て変数に読み込む
+	    if($fp) {
+	        $str = @fread($fp, filesize($filename)+1);
+	    }
 	    @fclose($fp);
-	
-	    return $str; 
+
+	    return $str;
 	}
-	
+
     /**
      * 出力バッファをフラッシュし, バッファリングを開始する.
      *
@@ -1940,7 +1940,7 @@ class SC_Utils {
         ob_end_flush();
         ob_start();
     }
-	
+
     /* デバッグ用 ------------------------------------------------------------------------------------------------*/
     function sfPrintR($obj) {
         print("<div style='font-size: 12px;color: #00FF00;'>\n");
