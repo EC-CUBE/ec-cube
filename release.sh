@@ -33,7 +33,6 @@ chmod -R 777 $WRK_DIR/html/install/temp
 chmod -R 777 $WRK_DIR/html/user_data
 chmod -R 777 $WRK_DIR/html/upload
 chmod -R 777 $WRK_DIR/html/cp
-chmod -R 777 $WRK_DIR/html/mobile/converted_images
 chmod -R 777 $WRK_DIR/data/cache
 chmod -R 777 $WRK_DIR/data/downloads
 chmod -R 777 $WRK_DIR/data/Smarty

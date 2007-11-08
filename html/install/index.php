@@ -26,7 +26,7 @@ require_once("../" . HTML2DATA_DIR . "module/Request.php");
 
 define("INSTALL_LOG", "./temp/install.log");
 ini_set("max_execution_time", 300);
-        
+
 class LC_Page {
     function LC_Page() {
         $this->arrDB_TYPE = array(
@@ -389,7 +389,6 @@ function lfDispStep0($objPage) {
         "../user_data",
         "../cp",
         "../upload",
-        "../mobile/converted_images",
         ".." . HTML2DATA_DIR . "cache/",
         ".." . HTML2DATA_DIR . "class/",
         ".." . HTML2DATA_DIR . "Smarty/",
