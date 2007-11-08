@@ -1047,7 +1047,7 @@ INSERT INTO mtb_constants VALUES ('MOBILE_KARA_MAIL_ADDRESS_USER', '"eccube"', 4
 INSERT INTO mtb_constants VALUES ('MOBILE_KARA_MAIL_ADDRESS_DELIMITER', '"+"', 405,'空メール受け付けアドレスのユーザー名とコマンドの間の区切り文字 qmail の場合は -');
 INSERT INTO mtb_constants VALUES ('MOBILE_KARA_MAIL_ADDRESS_DOMAIN', '"mobile.ec-cube.net"', 406,'空メール受け付けアドレスのドメイン部分');
 INSERT INTO mtb_constants VALUES ('MOBILE_ADDITIONAL_MAIL_DOMAINS', '"rebelt.co.jp, lockon.co.jp"', 407,'携帯のメールアドレスではないが、携帯だとみなすドメインのリスト 任意の数の「,」「 」で区切る。');
-INSERT INTO mtb_constants VALUES ('MOBILE_IMAGE_DIR', '"upload/mobile_image"', 408,'携帯電話向け変換画像保存ディレクトリ');
+INSERT INTO mtb_constants VALUES ('MOBILE_IMAGE_DIR', 'HTML_PATH . "upload/mobile_image"', 408,'携帯電話向け変換画像保存ディレクトリ');
 INSERT INTO mtb_constants VALUES ('MOBILE_IMAGE_URL', 'URL_DIR . "upload/mobile_image"', 409,'携帯電話向け変換画像保存ディレクトリ');
 INSERT INTO mtb_constants VALUES ('MOBILE_URL_SITE_TOP', 'MOBILE_URL_DIR . "index.php"', 410,'モバイルURL');
 INSERT INTO mtb_constants VALUES ('MOBILE_URL_CART_TOP', 'MOBILE_URL_DIR . "cart/index.php"', 411,'カートトップ');
