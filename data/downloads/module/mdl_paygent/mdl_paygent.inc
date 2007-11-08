@@ -77,16 +77,26 @@ define ("SEVEN_CHARGE_MAX", 300000);
 // 電文バージョン
 define ("TELEGRAM_VERSION", '1.0');
 
+// コンビニコード
+define ("CODE_SEVENELEVEN", "00C001");	// セブンイレブン
+define ("CODE_LOWSON", "00C002");		// ローソン
+define ("CODE_MINISTOP", "00C004");		// ミニストップ
+define ("CODE_FAMILYMART", "00C005");	// ファミリーマート
+define ("CODE_SUNKUS", "00C006");		// サンクス
+define ("CODE_CIRCLEK", "00C007");		// サークルK
+define ("CODE_YAMAZAKI", "00C014");		// デイリーヤマザキ
+define ("CODE_SEICOMART", "00C016");	// セイコーマート
+
 //コンビニの種類
 $arrConvenience = array(
-	'00C016' => 'セイコーマート',
-	'00C002' => 'ローソン',
-	'00C004' => 'ミニストップ',
-	'00C005' => 'ファミリーマート',
-	'00C006' => 'サンクス',
-	'00C007' => 'サークルK',
-	'00C014' => 'デイリーヤマザキ',
-	'00C001' => 'セブンイレブン'
+	CODE_SEICOMART => 'セイコーマート',
+	CODE_LOWSON => 'ローソン',
+	CODE_MINISTOP => 'ミニストップ',
+	CODE_FAMILYMART => 'ファミリーマート',
+	CODE_SUNKUS => 'サンクス',
+	CODE_CIRCLEK => 'サークルK',
+	CODE_YAMAZAKI => 'デイリーヤマザキ',
+	CODE_SEVENELEVEN => 'セブンイレブン'
 );
 	
 // ネットバンクの種類
@@ -118,7 +128,7 @@ $arrPaymentClass = array(
  * 引数3	：
  * 戻り値	：取得結果
  **************************************************************************************************************/
-function sfGetPaygentShare($telegram_kind, $order_id, $arrParam) {
+function sfGetPaygentShare($telegram_kind, $order_id, $arrParam, $payment_id = "") {
 	
 	/** 共通電文 **/	
 	// マーチャントID
@@ -133,6 +143,8 @@ function sfGetPaygentShare($telegram_kind, $order_id, $arrParam) {
 	$arrSend['telegram_version'] = TELEGRAM_VERSION;
 	// マーチャント取引ID
 	$arrSend['trading_id'] = $order_id;
+	// 決済ID
+	if (strlen($payment_id) > 0) $arrSend['payment_id'] = $payment_id;
 	// EC-CUBEからの電文であることを示す。
 	$arrSend['partner'] = 'lockon';
 	
@@ -192,7 +204,7 @@ function sfSendPaygentCredit($arrData, $arrInput, $uniqid) {
 	$p->post();
 
 	// 応答を処理
-	$arrRet = sfPaygentResponse(PAYGENT_CREDIT, $p, $uniqid);
+	$arrRet = sfPaygentResponse(PAYGENT_CREDIT, $p, $uniqid, $arrInput);
 	
 	return $arrRet;
 }
@@ -249,7 +261,7 @@ function sfSendPaygentConveni($arrData, $arrInput, $uniqid) {
 	$p->post();
 
 	// 応答を処理
-	$arrRet = sfPaygentResponse(PAYGENT_CONVENI, $p, $uniqid);
+	$arrRet = sfPaygentResponse(PAYGENT_CONVENI, $p, $uniqid, $arrInput);
 		
 	return $arrRet;
 }
@@ -306,7 +318,7 @@ function sfSendPaygentATM($arrData, $arrInput, $uniqid) {
 	$p->post();
 	
 	// 応答を処理
-	$arrRet = sfPaygentResponse(PAYGENT_ATM, $p, $uniqid);
+	$arrRet = sfPaygentResponse(PAYGENT_ATM, $p, $uniqid, $arrInput);
 	
 	return $arrRet;
 }
@@ -381,7 +393,7 @@ function sfSendPaygentBANK($arrData, $arrInput, $uniqid) {
 	$p->post();
 	
 	// 応答を処理
-	$arrRet = sfPaygentResponse(PAYGENT_BANK, $p, $uniqid);
+	$arrRet = sfPaygentResponse(PAYGENT_BANK, $p, $uniqid, $arrInput);
 	
 	return $arrRet;
 }
@@ -394,8 +406,7 @@ function sfSendPaygentBANK($arrData, $arrInput, $uniqid) {
  * 引数3	：
  * 戻り値	：取得結果
  **************************************************************************************************************/
-
-function sfPaygentResponse($telegram_kind, $objPaygent, $uniqid) {
+function sfPaygentResponse($telegram_kind, $objPaygent, $uniqid, $arrInput) {
 	global $arrConvenience;
 	global $arrInitStatus;
 	
@@ -439,29 +450,54 @@ function sfPaygentResponse($telegram_kind, $objPaygent, $uniqid) {
 		$arrVal["memo02"] = serialize(array());		
 		break;
 	// コンビニ決済の場合
-	case PAYGENT_CONVENI:		
+	case PAYGENT_CONVENI:
 		// タイトルを設定する
-		$arrMemo['title'] = sfSetConvMSG("コンビニお支払情報", true);	
-		//払込票番号
-		$arrMemo['receipt_number'] = sfSetConvMSG("払込票番号", $arrRes[0]['receipt_number']);
+		$arrMemo['title'] = sfSetConvMSG("コンビニお支払情報", true);
+		// コンビニ情報の取得
 		$arrCVS = split("-", $arrRes[0]['usable_cvs_company_id']);
 		foreach($arrCVS as $val) {
 			if($cvsLine != "") {
-				$cvsLine.= ",".$arrConvenience[$val];				
+				$cvsLine.= ",".$arrConvenience[$val];
 			} else {
 				$cvsLine = $arrConvenience[$val];
 			}
 		}
-		//対象コンビニ
-		$arrMemo['usable_cvs_company_id'] = sfSetConvMSG("お支払可能なコンビニ", $cvsLine);			
-		
-		//払込票URL(PC)
-		/*
-		 * セブンイレブンの場合のみ払込票URLが有効なので表示する。
-		 */
-		if($arrRes[0]['receipt_print_url'] != "" && $cvsLine == $arrConvenience['00C001']) {
+		// 決済ベンダ受付番号（コンビニによって名称が異なる）
+		switch ($arrInput['cvs_company_id']) {
+		// セブンイレブン
+		case CODE_SEVENELEVEN:
+			$receipt_num_name = "払込票番号";
+			break;
+		// ローソン，ファミリーマート
+		case CODE_LOWSON:
+		case CODE_FAMILYMART:
+			$receipt_num_name = "お客様番号";
+			break;
+		// ミニストップ，サンクス，サークルK，デイリーヤマザキ
+		case CODE_MINISTOP:
+		case CODE_SUNKUS:
+		case CODE_CIRCLEK:
+		case CODE_YAMAZAKI:
+			$receipt_num_name = "ケータイ／オンライン決済番号";
+			break;
+		// セイコーマート
+		case CODE_SEICOMART:
+			$receipt_num_name = "お客様の受付番号";
+			break;
+		default:
+			break;
+		}
+		$arrMemo['receipt_number'] = sfSetConvMSG($receipt_num_name, $arrRes[0]['receipt_number']);
+		// 払込票URL(PC) ： セブンイレブンの場合のみ払込票URLが有効なので表示する。
+		if($arrRes[0]['receipt_print_url'] != "" && $arrInput['cvs_company_id'] == CODE_SEVENELEVEN) {
 			$arrMemo['receipt_print_url'] = sfSetConvMSG("払込票URL", $arrRes[0]['receipt_print_url']);
-		}			
+		}
+		// 確認番号 ： ローソン，ファミリーマートのみ確認番号が必要なので表示する。
+		if ($arrInput['cvs_company_id'] == CODE_LOWSON || $arrInput['cvs_company_id'] == CODE_FAMILYMART) {
+			$arrMemo['confirm_number'] = sfSetConvMSG("確認番号", "400008");
+		}
+		// 対象コンビニ
+		$arrMemo['usable_cvs_company_id'] = sfSetConvMSG("お支払可能なコンビニ", $cvsLine);
 		// 支払期日
 		$arrMemo['payment_limit_date'] = sfSetConvMSG("お支払期日", date("Y年m月d日", strtotime($arrRes[0]['payment_limit_date'])));
 		// ヘルプ画面
@@ -747,7 +783,7 @@ function sfGetPaymentStatus($objPaygent, $arrSend, $notice_id = "") {
  * 引数3	：
  * 戻り値	：取得結果
  **************************************************************************************************************/
-function sfPaygentOrder($paygent_type, $order_id) {
+function sfPaygentOrder($paygent_type, $order_id, $payment_id) {
 	global $arrDispKind;
 	
 	// 接続モジュールのインスタンス取得 (コンストラクタ)と初期化
@@ -768,7 +804,7 @@ function sfPaygentOrder($paygent_type, $order_id) {
 		$kind = PAYGENT_CARD_COMMIT_CANCEL;
 		break;
 	}
-	$arrSend = sfGetPaygentShare($kind, $order_id, $arrPaymentDB[0]);
+	$arrSend = sfGetPaygentShare($kind, $order_id, $arrPaymentDB[0], $payment_id);
 	
 	// 電文の送付
 	foreach($arrSend as $key => $val) {
