@@ -190,9 +190,7 @@ class LC_Page_Products_List extends LC_Page {
         $this->category_id = $arrCategory_id[0];
         $this->arrSearch = $arrSearch;
 
-        $objView = new SC_SiteView();
-        $objView->assignobj($this);
-        $objView->display(SITE_FRAME);
+        SC_Utils_Ex::sfCustomDisplay($this);
     }
 
     /**
@@ -349,10 +347,7 @@ class LC_Page_Products_List extends LC_Page {
         $this->category_id = $arrCategory_id[0];
         $this->arrSearch = $arrSearch;
         $this->tpl_mainpage = MOBILE_TEMPLATE_DIR . "products/list.tpl";
-
-        $objView = new SC_MobileView();
-        $objView->assignobj($this);
-        $objView->display(SITE_FRAME);
+        SC_Utils_Ex::sfCustomDisplay($this, true);
     }
 
     /**
@@ -447,7 +442,7 @@ class LC_Page_Products_List extends LC_Page {
         // 行数の取得
         $linemax = count($objQuery->getAll("SELECT DISTINCT product_id "
                                          . "FROM vw_products_allclass AS allcls "
-                                         . (!empty($where) ? " WHERE " . $where
+                                         . (!empty($where) ? " WHERE " . $where 
                                                            : ""), $arrval));
 
         $this->tpl_linemax = $linemax;   // 何件が該当しました。表示用
