@@ -124,7 +124,7 @@
 							</tr>
 							<!--{/if}-->
 							<tr class="fs12n">
-								<td width="140" bgcolor="#f2f1ec">稼働・非稼働</td>
+								<td width="140" bgcolor="#f2f1ec">稼働・非稼働<span class="red">*</span></td>
 								<td width="637" bgcolor="#ffffff">
 								<span <!--{if $ERROR.active}--><!--{sfSetErrorStyle}--><!--{/if}-->>
 								<!--{html_radios name="active" options=$arrActive selected=$smarty.post.active}-->
@@ -139,13 +139,13 @@
 								</td>
 							</tr>
 								<tr class="fs12n">
-								<td width="140" bgcolor="#f2f1ec">アンケート内容</td>
+								<td width="140" bgcolor="#f2f1ec">アンケート内容<span class="red">*</span></td>
 								<td width="637" bgcolor="#ffffff"><textarea name="contents" cols="60" rows="4" class="area60" wrap="physical" <!--{if $ERROR.contents}--><!--{sfSetErrorStyle}--><!--{/if}-->><!--{$smarty.post.contents}--></textarea>
 								<!--{if $ERROR.contents}--><br><span class="red"><!--{$ERROR.contents}--></span><!--{/if}--></td>
 							</tr>		
 							<!--{section name=question loop=$cnt_question}-->
 							<tr class="fs12n">
-								<td width="140" bgcolor="#f2f1ec">質問<!--{if $smarty.section.question.iteration eq 1}--><span class="red">*</span><!--{/if}--><!--{$smarty.section.question.iteration}--></td>
+								<td width="140" bgcolor="#f2f1ec">質問<!--{$smarty.section.question.iteration}--><!--{if $smarty.section.question.iteration eq 1}--><span class="red">*</span><!--{/if}--></td>
 								<td width="637" bgcolor="#ffffff">
 								<input type="text" name="question[<!--{$smarty.section.question.index}-->][name]" size="70" class="box70" maxlength="<!--{$smarty.const.STEXT_LEN}-->" value="<!--{$smarty.post.question[$smarty.section.question.index].name|escape}-->" <!--{if $ERROR.question[$smarty.section.question.index].name}--><!--{sfSetErrorStyle}--><!--{/if}-->>
 								<!--{if $ERROR.question[$smarty.section.question.index].name}--><br><span class="red"><!--{$ERROR.question[$smarty.section.question.index].name}--></span><!--{/if}-->
