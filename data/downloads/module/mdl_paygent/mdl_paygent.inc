@@ -782,16 +782,17 @@ function sfGetPaymentStatus($objPaygent, $arrSend, $notice_id = "") {
  * 引数3	：
  * 戻り値	：取得結果
  **************************************************************************************************************/
-function sfPaygentOrder($paygent_type, $order_id, $payment_id) {
+function sfPaygentOrder($paygent_type, $order_id) {
 	global $arrDispKind;
 	
 	// 接続モジュールのインスタンス取得 (コンストラクタ)と初期化
 	$objPaygent = new PaygentB2BModule();
 	$objPaygent->init();
 	
-	//　設定パラメータの取得
+	// 設定パラメータの取得
 	$arrPaymentDB = sfGetPaymentDB(MDL_PAYGENT_ID);
 	
+	// 処理分岐
 	switch($paygent_type) {
 	case 'auth_cancel':
 		$kind = PAYGENT_AUTH_CANCEL;
@@ -803,6 +804,11 @@ function sfPaygentOrder($paygent_type, $order_id, $payment_id) {
 		$kind = PAYGENT_CARD_COMMIT_CANCEL;
 		break;
 	}
+	
+	// 決済IDの取得
+	$objQuery = new SC_Query();
+	$payment_id = $objQuery->get("dtb_order", "memo06", "order_id = ?", array($order_id));
+	
 	$arrSend = sfGetPaygentShare($kind, $order_id, $arrPaymentDB[0], $payment_id);
 	
 	// 電文の送付
