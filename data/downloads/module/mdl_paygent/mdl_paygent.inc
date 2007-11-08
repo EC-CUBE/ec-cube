@@ -453,15 +453,6 @@ function sfPaygentResponse($telegram_kind, $objPaygent, $uniqid, $arrInput) {
 	case PAYGENT_CONVENI:
 		// タイトルを設定する
 		$arrMemo['title'] = sfSetConvMSG("コンビニお支払情報", true);
-		// コンビニ情報の取得
-		$arrCVS = split("-", $arrRes[0]['usable_cvs_company_id']);
-		foreach($arrCVS as $val) {
-			if($cvsLine != "") {
-				$cvsLine.= ",".$arrConvenience[$val];
-			} else {
-				$cvsLine = $arrConvenience[$val];
-			}
-		}
 		// 決済ベンダ受付番号（コンビニによって名称が異なる）
 		switch ($arrInput['cvs_company_id']) {
 		// セブンイレブン
@@ -497,6 +488,14 @@ function sfPaygentResponse($telegram_kind, $objPaygent, $uniqid, $arrInput) {
 			$arrMemo['confirm_number'] = sfSetConvMSG("確認番号", "400008");
 		}
 		// 対象コンビニ
+		$arrCVS = split("-", $arrRes[0]['usable_cvs_company_id']);
+		foreach($arrCVS as $val) {
+			if($cvsLine != "") {
+				$cvsLine.= ",".$arrConvenience[$val];
+			} else {
+				$cvsLine = $arrConvenience[$val];
+			}
+		}
 		$arrMemo['usable_cvs_company_id'] = sfSetConvMSG("お支払可能なコンビニ", $cvsLine);
 		// 支払期日
 		$arrMemo['payment_limit_date'] = sfSetConvMSG("お支払期日", date("Y年m月d日", strtotime($arrRes[0]['payment_limit_date'])));
