@@ -27,11 +27,11 @@ function fnRegistMember() {
 	lstitem[1] = 'login_id';
 	lstitem[2] = 'password';
 	lstitem[3] = 'authority';
-	
+
 	var max = lstitem.length;
 	var errflg = false;
 	var cnt = 0;
-	
+
 	//　必須項目のチェック
 	for(cnt = 0; cnt < max; cnt++) {
 		if(document.form1[lstitem[cnt]].value == "") {
@@ -39,15 +39,15 @@ function fnRegistMember() {
 			break;
 		}
 	}
-	
-	// 必須項目が入力されていない場合	
+
+	// 必須項目が入力されていない場合
 	if(errflg == true) {
 		alert('必須項目を入力して下さい。');
 		return false;
 	} else {
 		if(window.confirm('内容を登録しても宜しいでしょうか')){
 			return true;
-		} else {  
+		} else {
 			return false;
 		}
 	}
@@ -60,7 +60,7 @@ function fnUpdateParent(url) {
 		window.opener.location.href = url;
 	} else {
 		window.close();
-	}		
+	}
 }
 
 // 親ウィンドウをポストさせる。
@@ -70,7 +70,7 @@ function fnSubmitParent() {
 		window.opener.document.form1.submit();
 	} else {
 		window.close();
-	}		
+	}
 }
 
 //指定されたidの削除を行うページを実行する。
@@ -100,12 +100,12 @@ function fnGetRadioChecked() {
 			   最初の名前の検出であるかどうかの判定 */
 			// 1回目の検出
 			if(startname != name) {
-				startname = name;	
+				startname = name;
 				ret = document.form1.elements[cnt].checked;
 				if(ret == true){
 					// 稼働がチェックされている。
 					lstsave[name] = 1;
-				}	
+				}
 			// 2回目の検出
 			} else {
 				ret = document.form1.elements[cnt].checked;
@@ -237,6 +237,7 @@ function fnAllUnCheck() {
 function fnDelete(url) {
 	if(window.confirm('登録内容を削除しても宜しいでしょうか')){
 		location.href = url;
+		return false;
 	}
 }
 
@@ -267,7 +268,7 @@ function fnCheckStockLimit(icolor) {
 function fnCheckStockNoLimit(no, icolor) {
 	$check_key = "stock_unlimited:"+no;
 	$input_key = "stock:"+no;
-	
+
 	list = new Array($input_key	);
 	if(document.form1[$check_key].checked) {
 		fnChangeDisabled(list, icolor);
@@ -281,7 +282,7 @@ function fnCheckStockNoLimit(no, icolor) {
 function fnCheckSaleLimit(icolor) {
 	list = new Array(
 		'sale_limit'
-		);	
+		);
 	if(document.form1['sale_unlimited'].checked) {
 		fnChangeDisabled(list, icolor);
 		document.form1['sale_limit'].value = "";
@@ -295,9 +296,9 @@ function fnCheckAllStockLimit(max, icolor) {
 	for(no = 1; no <= max; no++) {
 		$check_key = "stock_unlimited:"+no;
 		$input_key = "stock:"+no;
-		
+
 		list = new Array($input_key);
-	
+
 		if(document.form1[$check_key].checked) {
 			fnChangeDisabled(list, icolor);
 			document.form1[$input_key].value = "";
@@ -307,7 +308,7 @@ function fnCheckAllStockLimit(max, icolor) {
 	}
 }
 
-// Form指定のSubmit 
+// Form指定のSubmit
 function fnFormSubmit(form) {
 	document.forms[form].submit();
 }
@@ -338,7 +339,7 @@ function fnmerumagaupdateConfirm() {
 
 // フォームに代入してからサブミットする。
 function fnInsertValAndSubmit( fm, ele, val, msg ){
-	
+
 	if ( msg ){
 		ret = window.confirm(msg);
 	} else {
@@ -355,7 +356,7 @@ function fnInsertValAndSubmit( fm, ele, val, msg ){
 // 自分以外の要素を有効・無効にする
 function fnSetDisabled ( f_name, e_name, flag ) {
 	fm = document[f_name];
-	
+
 	//　必須項目のチェック
 	for(cnt = 0; cnt < fm.elements.length; cnt++) {
 		if( fm[cnt].name != e_name && fm[cnt].name != 'subm' && fm[cnt].name != 'mode') {
@@ -394,7 +395,7 @@ function fnDelListContents(sel1, sel2, mode_name) {
 			fm[sel2].value = fm[sel2].value.replace(fm[sel1].options[i].value, "");
 		}
 	}
-	
+
 	fm["mode"].value = mode_name;
 	fm.submit();
 }
@@ -408,15 +409,15 @@ function fnCopyValue(length, icolor) {
 		fm['price01:' + i].value = fm['price01:1'].value;
 		fm['price02:' + i].value = fm['price02:1'].value;
 		fm['stock_unlimited:' + i].checked = fm['stock_unlimited:1'].checked;
-		fm['stock:' + i].disabled = fm['stock:1'].disabled;		
+		fm['stock:' + i].disabled = fm['stock:1'].disabled;
 		fm['stock:' + i].style.backgroundColor = fm['stock:1'].style.backgroundColor;
-	}	
+	}
 }
 
 // タグの表示非表示切り替え
 function fnDispChange(disp_id, inner_id, disp_flg){
 	disp_state = document.getElementById(disp_id).style.display;
-	
+
 	if (disp_state == "") {
 		document.form1[disp_flg].value="none";
 		document.getElementById(disp_id).style.display="none";
@@ -424,10 +425,9 @@ function fnDispChange(disp_id, inner_id, disp_flg){
 	}else{
 		document.form1[disp_flg].value="";
 		document.getElementById(disp_id).style.display="";
-		document.getElementById(inner_id).innerHTML = ' <FONT Color="#FFFF99"> >> 非表示 </FONT>'; 
+		document.getElementById(inner_id).innerHTML = ' <FONT Color="#FFFF99"> >> 非表示 </FONT>';
 	}
 }
 
 
 
-	
