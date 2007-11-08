@@ -103,6 +103,7 @@ class LC_Page_Admin_Contents_Inquiry extends LC_Page {
 
         if (!isset($_GET['mode'])) $_GET['mode'] = "";
 
+        // アンケートを作成ボタン押下時
         if ( $_GET['mode'] == 'regist' ){
 
             for ( $i=0; $i<count($_POST["question"]); $i++ ) {
@@ -115,7 +116,7 @@ class LC_Page_Admin_Contents_Inquiry extends LC_Page {
             $error = $this->lfErrCheck();
 
             if ( ! $error  ){
-
+                // 新規登録
                 if ( ! is_numeric($_POST['question_id']) ){
                     $objQuery = new SC_Query();
 
@@ -134,7 +135,9 @@ class LC_Page_Admin_Contents_Inquiry extends LC_Page {
                     }
 
                     $this->QUESTION_ID = $question_id;
-                    $this->reload();
+                    $this->reload(null, true);
+
+                // 編集
                 } else {
                     //編集
                     $value = serialize($_POST);
@@ -142,7 +145,7 @@ class LC_Page_Admin_Contents_Inquiry extends LC_Page {
                     $conn->query("UPDATE dtb_question SET question = ?, question_name = ? WHERE question_id = ?", $sql_val );
                     $this->MESSAGE = "編集が完了しました";
                     $this->QUESTION_ID = $_POST['question_id'];
-                    $this->reload();
+                    $this->reload(null, true);
                 }
             } else {
 
@@ -150,14 +153,16 @@ class LC_Page_Admin_Contents_Inquiry extends LC_Page {
                 $this->ERROR = $error;
                 $this->QUESTION_ID = $_REQUEST['question_id'];
                 $this->ERROR_COLOR = $this->lfGetErrColor($error, ERR_COLOR);
-
             }
+
+        // 削除ボタン押下時
         } elseif ( ( $_GET['mode'] == 'delete' ) && ( SC_Utils_Ex::sfCheckNumLength($_GET['question_id']) )  ){
 
             $sql = "UPDATE dtb_question SET del_flg = 1 WHERE question_id = ?";
             $conn->query( $sql, array( $_GET['question_id'] ) );
-            $this->reload();
+            $this->reload(null, true);
 
+        // CSVダウンロードボタン押下時
         } elseif ( ( $_GET['mode'] == 'csv' ) && ( SC_Utils_Ex::sfCheckNumLength($_GET['question_id']) ) ){
             require_once(CLASS_EX_PATH . "helper_extends/SC_Helper_CSV_Ex.php");
 
@@ -173,6 +178,7 @@ class LC_Page_Admin_Contents_Inquiry extends LC_Page {
             SC_Utils_Ex::sfCSVDownload($head.$data);
             exit;
 
+        // 初回表示 or 編集ボタン押下時
         } else {
             if (!isset($_GET['question_id'])) $_GET['question_id'] = "";
 
