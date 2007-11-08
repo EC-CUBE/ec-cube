@@ -642,7 +642,7 @@ class LC_Page_Admin_Total extends LC_Page {
         $objQuery = new SC_Query();
         $objQuery->setGroupBy("order_sex");
 
-        $tmp_where = $where . " AND customer_id <> 0 AND del_flg = 0 ";
+        $tmp_where = $where . " AND customer_id <> 0 AND del_flg = 0 AND status <> " . ORDER_CANCEL;
         $arrRet = $objQuery->select($col, $from, $tmp_where, $arrval);
 
         // 会員購入であることを記録する。
@@ -653,7 +653,7 @@ class LC_Page_Admin_Total extends LC_Page {
         $objPage->arrResults = $arrRet;
 
         // 非会員集計の取得
-        $tmp_where = $where . " AND customer_id = 0 AND del_flg = 0 ";
+        $tmp_where = $where . " AND customer_id = 0 AND del_flg = 0 AND status <> " . ORDER_CANCEL;
         $arrRet = $objQuery->select($col, $from, $tmp_where, $arrval);
         // 非会員購入であることを記録する。
         $max = count($arrRet);
